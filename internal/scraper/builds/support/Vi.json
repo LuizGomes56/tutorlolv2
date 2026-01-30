@@ -1,20 +1,20 @@
 [
   [
-    "SunderedSky",
-    "DeathsDance",
     "BlackCleaver",
+    "Eclipse",
     "EdgeOfNight",
-    "SpiritVisage",
-    "SteraksGage"
+    "Opportunity",
+    "SerpentsFang",
+    "SunderedSky"
   ],
   [
-    "SuddenImpact",
-    "GrislyMementos",
-    "RelentlessHunter",
-    "Triumph",
-    "LegendAlacrity",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "GrislyMementos",
+    "HealthScaling",
+    "LegendAlacrity",
+    "RelentlessHunter",
+    "SuddenImpact",
+    "Triumph"
   ]
 ]

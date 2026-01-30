@@ -1,20 +1,19 @@
 [
   [
-    "HorizonFocus",
     "ArchangelsStaff",
-    "ZhonyasHourglass",
     "BloodlettersCurse",
     "Cryptbloom",
-    "RabadonsDeathcap"
+    "HorizonFocus",
+    "LudensEcho",
+    "ZhonyasHourglass"
   ],
   [
-    "ManaflowBand",
-    "Transcendence",
-    "Scorch",
-    "PresenceOfMind",
+    "AdaptiveForce",
+    "HealthScaling",
     "LegendHaste",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "ManaflowBand",
+    "PresenceOfMind",
+    "Scorch",
+    "Transcendence"
   ]
 ]

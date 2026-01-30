@@ -1,24 +1,24 @@
 {
   "colloq": ";",
   "depth": 3,
-  "description": "<mainText><stats><attention>40</attention> Armor<br><attention>50</attention> Move Speed</stats><br><br><passive>Plating</passive><br>Reduces incoming damage from Attacks by 10%.<br><br><passive>Noxian Endurance</passive> (0s)<br>After taking physical damage from a Champion, gain a <shield></shield> <physicalDamage>physical</physicalDamage> <shield>shield</shield> for 4 seconds.</mainText>",
+  "description": "<mainText><stats><attention>35</attention> Armor<br><attention>45</attention> Move Speed</stats><br><br><passive>Plating</passive><br>Reduces incoming damage from Attacks by 10%.<br><br><passive>Noxian Endurance</passive> (0s)<br>After taking physical damage from a Champion, gain a <shield></shield> <physicalDamage>physical</physicalDamage> <shield>shield</shield> for 5 seconds.</mainText>",
   "from": [
     "3047"
   ],
   "gold": {
-    "base": 500,
+    "base": 0,
     "purchasable": true,
-    "sell": 1190,
-    "total": 1700
+    "sell": 840,
+    "total": 1200
   },
   "image": {
     "full": "3174.png",
     "group": "item",
     "h": 48,
-    "sprite": "item3.png",
+    "sprite": "item4.png",
     "w": 48,
-    "x": 432,
-    "y": 240
+    "x": 192,
+    "y": 48
   },
   "maps": {
     "11": true,
@@ -32,8 +32,8 @@
   "name": "Armored Advance",
   "plaintext": "Deal damage to empower your heals and shields",
   "stats": {
-    "FlatArmorMod": 40,
-    "FlatMovementSpeedMod": 50
+    "FlatArmorMod": 35,
+    "FlatMovementSpeedMod": 45
   },
   "tags": [
     "Armor",

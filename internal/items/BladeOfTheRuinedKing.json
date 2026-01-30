@@ -1,52 +1,49 @@
 {
+  "version": "16.2.1",
   "riot_id": 3153,
-  "item_id": "BladeOfTheRuinedKing",
-  "name": "Blade of the Ruined King",
+  "name": "Blade of The Ruined King",
   "price": 3200,
   "sell": 2240,
   "tier": 3,
   "maps": [
     [
-      "Tft",
-      false
-    ],
-    [
       "SummonersRift",
       true
-    ],
-    [
-      "Arena",
-      false
     ],
     [
       "Aram",
       true
     ],
     [
-      "SummonersRift",
-      false
-    ],
-    [
       "NexusBlitz",
       true
     ],
     [
-      "SummonersRift",
+      "Tft",
+      false
+    ],
+    [
+      "Arena",
+      false
+    ],
+    [
+      "UnknownMap33",
+      false
+    ],
+    [
+      "UnknownMap35",
       true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "AttackDamage",
-      "value": 40
+      "AttackDamage": 40
     },
     {
-      "name": "LifeSteal",
-      "value": 10
+      "AttackSpeed": 25
     },
     {
-      "name": "AttackSpeed",
-      "value": 25
+      "LifeSteal": 10
     }
   ],
   "damage_type": "Physical",
@@ -113,19 +110,13 @@
     1043,
     1037
   ],
-  "builds_from_item_ids": [
-    "VampiricScepter",
-    "RecurveBow",
-    "Pickaxe"
-  ],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
-    "minimum_damage": "ctx.enemy_current_health - ((0.06 * ctx.enemy_current_health * (1 - 0.06 * ctx.physical_multiplier) - ctx.ad + ctx.ad * (1 - 0.06 * ctx.physical_multiplier)) / 0.06)",
+    "minimum_damage": "ctx.enemy_health - ((0.06 * ctx.enemy_health * (1 - 0.06 * ctx.physical_multiplier) - ctx.ad + ctx.ad * (1 - 0.06 * ctx.physical_multiplier)) / 0.06)",
     "maximum_damage": "zero"
   },
   "melee": {
-    "minimum_damage": "ctx.enemy_current_health - ((0.09 * ctx.enemy_current_health * (1 - 0.09 * ctx.physical_multiplier) - ctx.ad + ctx.ad * (1 - 0.09 * ctx.physical_multiplier)) / 0.09)",
+    "minimum_damage": "ctx.enemy_health - ((0.09 * ctx.enemy_health * (1 - 0.09 * ctx.physical_multiplier) - ctx.ad + ctx.ad * (1 - 0.09 * ctx.physical_multiplier)) / 0.09)",
     "maximum_damage": "zero"
   },
   "attributes": "Undefined",

@@ -1,20 +1,19 @@
 [
   [
-    "AxiomArc",
-    "SerpentsFang",
-    "ProfaneHydra",
-    "Opportunity",
+    "Bastionbreaker",
     "Hubris",
-    "ChempunkChainsword"
+    "Opportunity",
+    "ProfaneHydra",
+    "SerpentsFang",
+    "YoumuusGhostblade"
   ],
   [
-    "SuddenImpact",
+    "AdaptiveForce",
     "GrislyMementos",
-    "TreasureHunter",
-    "PresenceOfMind",
+    "HealthScaling",
     "LastStand",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "PresenceOfMind",
+    "SuddenImpact",
+    "TreasureHunter"
   ]
 ]

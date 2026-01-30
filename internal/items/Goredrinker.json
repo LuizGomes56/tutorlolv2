@@ -1,11 +1,19 @@
 {
-  "riot_id": 226630,
-  "item_id": "Goredrinker",
+  "version": "16.2.1",
+  "riot_id": 6630,
   "name": "Goredrinker",
-  "price": 0,
-  "sell": 400,
-  "tier": 3,
+  "price": 3200,
+  "sell": 2240,
+  "tier": 0,
   "maps": [
+    [
+      "SummonersRift",
+      false
+    ],
+    [
+      "Aram",
+      false
+    ],
     [
       "NexusBlitz",
       false
@@ -15,42 +23,30 @@
       false
     ],
     [
-      "Aram",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
       "Arena",
-      true
+      false
     ],
     [
-      "SummonersRift",
+      "UnknownMap33",
+      false
+    ],
+    [
+      "UnknownMap35",
       false
     ]
   ],
   "prettified_stats": [
     {
-      "name": "Health",
-      "value": 400
+      "AbilityHaste": 20
     },
     {
-      "name": "AbilityHaste",
-      "value": 20
+      "AttackDamage": 55
     },
     {
-      "name": "AttackDamage",
-      "value": 55
+      "Health": 400
     },
     {
-      "name": "Omnivamp",
-      "value": 10
+      "Omnivamp": 8
     }
   ],
   "damage_type": "Unknown",
@@ -72,7 +68,7 @@
       "percent": 0.0
     },
     "attackDamage": {
-      "flat": 55.0,
+      "flat": 0.0,
       "percent": 0.0
     },
     "attackSpeed": {
@@ -88,7 +84,7 @@
       "percent": 0.0
     },
     "health": {
-      "flat": 400.0,
+      "flat": 0.0,
       "percent": 0.0
     },
     "lifesteal": {
@@ -113,9 +109,7 @@
     }
   },
   "builds_from_riot_ids": [],
-  "builds_from_item_ids": [],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"
@@ -125,5 +119,5 @@
     "maximum_damage": "zero"
   },
   "attributes": "Undefined",
-  "purchasable": true
+  "purchasable": false
 }

@@ -1,19 +1,11 @@
 {
+  "version": "16.2.1",
   "riot_id": 3003,
-  "item_id": "ArchangelsStaff",
   "name": "Archangel's Staff",
   "price": 2900,
   "sell": 2030,
   "tier": 3,
   "maps": [
-    [
-      "Arena",
-      false
-    ],
-    [
-      "NexusBlitz",
-      true
-    ],
     [
       "SummonersRift",
       true
@@ -23,30 +15,35 @@
       true
     ],
     [
+      "NexusBlitz",
+      true
+    ],
+    [
       "Tft",
       false
     ],
     [
-      "SummonersRift",
+      "Arena",
       false
     ],
     [
-      "SummonersRift",
+      "UnknownMap33",
+      false
+    ],
+    [
+      "UnknownMap35",
       true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "AbilityHaste",
-      "value": 25
+      "AbilityHaste": 25
     },
     {
-      "name": "AbilityPower",
-      "value": 70
+      "AbilityPower": 70
     },
     {
-      "name": "Mana",
-      "value": 600
+      "Mana": 600
     }
   ],
   "damage_type": "Unknown",
@@ -113,13 +110,7 @@
     3802,
     3108
   ],
-  "builds_from_item_ids": [
-    "TearOfTheGoddess",
-    "LostChapter",
-    "FiendishCodex"
-  ],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

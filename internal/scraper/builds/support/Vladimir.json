@@ -1,20 +1,19 @@
 [
   [
+    "BloodlettersCurse",
+    "HorizonFocus",
+    "RylaisCrystalScepter",
     "Stormsurge",
-    "CosmicDrive",
-    "HextechRocketbelt",
-    "Shadowflame",
-    "Heartsteel",
-    "BansheesVeil"
+    "ZhonyasHourglass"
   ],
   [
-    "NimbusCloak",
-    "Transcendence",
-    "Scorch",
-    "LegendHaste",
-    "LastStand",
     "AbilityHaste",
     "AdaptiveForce",
-    "HealthScaling"
+    "GatheringStorm",
+    "HealthScaling",
+    "LastStand",
+    "LegendHaste",
+    "NimbusCloak",
+    "Transcendence"
   ]
 ]

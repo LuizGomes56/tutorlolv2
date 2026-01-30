@@ -1,20 +1,20 @@
 [
   [
-    "MawOfMalmortius",
     "BlackCleaver",
     "Eclipse",
-    "ProfaneHydra",
-    "SerpentsFang",
-    "SteraksGage"
+    "GuardianAngel",
+    "MawOfMalmortius",
+    "MortalReminder",
+    "SerpentsFang"
   ],
   [
-    "Triumph",
-    "LegendHaste",
+    "AbilityHaste",
+    "AdaptiveForce",
+    "CashBack",
+    "HealthScaling",
+    "JackOfAllTrades",
     "LastStand",
-    "MagicalFootwear",
-    "CosmicInsight",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "LegendHaste",
+    "Triumph"
   ]
 ]

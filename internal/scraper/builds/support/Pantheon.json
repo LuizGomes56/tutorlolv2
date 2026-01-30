@@ -1,20 +1,19 @@
 [
   [
-    "YoumuusGhostblade",
-    "SerpentsFang",
-    "EdgeOfNight",
+    "Bastionbreaker",
     "ChempunkChainsword",
-    "BladeOfTheRuinedKing",
-    "MawOfMalmortius"
+    "EdgeOfNight",
+    "MawOfMalmortius",
+    "SerpentsFang",
+    "YoumuusGhostblade"
   ],
   [
-    "Triumph",
-    "LegendHaste",
-    "CoupDeGrace",
+    "AdaptiveForce",
     "CheapShot",
+    "CoupDeGrace",
+    "HealthScaling",
+    "LegendHaste",
     "RelentlessHunter",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "Triumph"
   ]
 ]

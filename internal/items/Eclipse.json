@@ -1,15 +1,11 @@
 {
+  "version": "16.2.1",
   "riot_id": 6692,
-  "item_id": "Eclipse",
   "name": "Eclipse",
   "price": 2900,
   "sell": 2030,
   "tier": 3,
   "maps": [
-    [
-      "Arena",
-      false
-    ],
     [
       "SummonersRift",
       true
@@ -23,26 +19,28 @@
       true
     ],
     [
-      "SummonersRift",
-      true
-    ],
-    [
       "Tft",
       false
     ],
     [
-      "SummonersRift",
+      "Arena",
       false
+    ],
+    [
+      "UnknownMap33",
+      false
+    ],
+    [
+      "UnknownMap35",
+      true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "AttackDamage",
-      "value": 60
+      "AbilityHaste": 15
     },
     {
-      "name": "AbilityHaste",
-      "value": 15
+      "AttackDamage": 60
     }
   ],
   "damage_type": "Unknown",
@@ -109,13 +107,7 @@
     1037,
     1036
   ],
-  "builds_from_item_ids": [
-    "CaulfieldsWarhammer",
-    "Pickaxe",
-    "LongSword"
-  ],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

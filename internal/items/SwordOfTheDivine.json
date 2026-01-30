@@ -1,48 +1,49 @@
 {
-  "riot_id": 443060,
-  "item_id": "SwordOfTheDivine",
+  "version": "16.2.1",
+  "riot_id": 3131,
   "name": "Sword of the Divine",
-  "price": 0,
-  "sell": 400,
-  "tier": 3,
+  "price": 2300,
+  "sell": 1610,
+  "tier": 0,
   "maps": [
+    [
+      "SummonersRift",
+      false
+    ],
     [
       "Aram",
       false
     ],
     [
-      "SummonersRift",
-      false
+      "NexusBlitz",
+      true
     ],
     [
       "Tft",
       false
     ],
     [
-      "NexusBlitz",
-      false
-    ],
-    [
       "Arena",
-      true
-    ],
-    [
-      "SummonersRift",
       false
     ],
     [
-      "SummonersRift",
+      "UnknownMap33",
+      false
+    ],
+    [
+      "UnknownMap35",
       false
     ]
   ],
   "prettified_stats": [
     {
-      "name": "AdaptiveForce",
-      "value": 110
+      "AttackDamage": 30
     },
     {
-      "name": "CriticalStrikeChance",
-      "value": 50
+      "AttackSpeed": 25
+    },
+    {
+      "Lethality": 18
     }
   ],
   "damage_type": "Unknown",
@@ -73,7 +74,7 @@
     },
     "criticalStrikeChance": {
       "flat": 0.0,
-      "percent": 50.0
+      "percent": 0.0
     },
     "criticalStrikeDamage": {
       "flat": 0.0,
@@ -105,9 +106,7 @@
     }
   },
   "builds_from_riot_ids": [],
-  "builds_from_item_ids": [],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

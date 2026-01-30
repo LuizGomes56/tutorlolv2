@@ -1,19 +1,19 @@
 [
   [
-    "Shadowflame",
-    "Morellonomicon",
-    "Stormsurge",
+    "Bandlepipes",
+    "Cryptbloom",
     "HextechRocketbelt",
-    "RabadonsDeathcap"
+    "RabadonsDeathcap",
+    "RylaisCrystalScepter",
+    "Shadowflame"
   ],
   [
-    "NimbusCloak",
     "AbsoluteFocus",
+    "AdaptiveForce",
+    "HealthScaling",
+    "NimbusCloak",
     "Scorch",
-    "BonePlating",
-    "Unflinching",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "TasteOfBlood",
+    "UltimateHunter"
   ]
 ]

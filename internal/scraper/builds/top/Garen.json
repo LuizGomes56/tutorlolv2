@@ -1,20 +1,19 @@
 [
   [
-    "InfinityEdge",
-    "DeadMansPlate",
     "BlackCleaver",
-    "DeathsDance",
     "ForceOfNature",
-    "SerpentsFang"
+    "InfinityEdge",
+    "LordDominiksRegards",
+    "SerpentsFang",
+    "SpearOfShojin"
   ],
   [
-    "Triumph",
-    "LegendHaste",
-    "LastStand",
+    "AdaptiveForce",
     "AxiomArcanist",
     "Celerity",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "HealthScaling",
+    "LastStand",
+    "LegendHaste",
+    "Triumph"
   ]
 ]

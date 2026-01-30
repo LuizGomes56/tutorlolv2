@@ -70,6 +70,60 @@
   "abilities": [
     [
       {
+        "type": "Q",
+        "name": "_1"
+      },
+      {
+        "name": "Dredge Line",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "85 + (0.9 * ctx.ap)",
+          "130 + (0.9 * ctx.ap)",
+          "175 + (0.9 * ctx.ap)",
+          "220 + (0.9 * ctx.ap)",
+          "265 + (0.9 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_1"
+      },
+      {
+        "name": "Titan's Wrath",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "15 + (0.2 * ctx.ap)",
+          "20 + (0.2 * ctx.ap)",
+          "25 + (0.2 * ctx.ap)",
+          "30 + (0.2 * ctx.ap)",
+          "35 + (0.2 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_2"
+      },
+      {
+        "name": "Titan's Wrath",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "30 + (0.4 * ctx.ap)",
+          "40 + (0.4 * ctx.ap)",
+          "50 + (0.4 * ctx.ap)",
+          "60 + (0.4 * ctx.ap)",
+          "70 + (0.4 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
         "type": "E",
         "name": "_1"
       },
@@ -106,22 +160,6 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_1"
-      },
-      {
-        "name": "Depth Charge",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "125 + (0.4 * ctx.ap)",
-          "175 + (0.4 * ctx.ap)",
-          "225 + (0.4 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
         "type": "E",
         "name": "_3"
       },
@@ -140,37 +178,35 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_1"
-      },
-      {
-        "name": "Dredge Line",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "85 + (0.9 * ctx.ap)",
-          "130 + (0.9 * ctx.ap)",
-          "175 + (0.9 * ctx.ap)",
-          "220 + (0.9 * ctx.ap)",
-          "265 + (0.9 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
         "type": "E",
-        "name": "_6"
+        "name": "_4"
       },
       {
         "name": "Riptide",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "41.25 + (0.375 * ctx.ap)",
-          "67.5 + (0.375 * ctx.ap)",
-          "93.75 + (0.375 * ctx.ap)",
-          "120 + (0.375 * ctx.ap)",
-          "146.25 + (0.375 * ctx.ap)"
+          "125 + (0.5 * ctx.ap)",
+          "165 + (0.5 * ctx.ap)",
+          "205 + (0.5 * ctx.ap)",
+          "245 + (0.5 * ctx.ap)",
+          "285 + (0.5 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_1"
+      },
+      {
+        "name": "Depth Charge",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "125 + (0.4 * ctx.ap)",
+          "175 + (0.4 * ctx.ap)",
+          "225 + (0.4 * ctx.ap)"
         ]
       }
     ],
@@ -187,60 +223,6 @@
           "150 + (0.8 * ctx.ap)",
           "275 + (0.8 * ctx.ap)",
           "400 + (0.8 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "E",
-        "name": "_5"
-      },
-      {
-        "name": "Riptide",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "82.5 + (0.75 * ctx.ap)",
-          "135 + (0.75 * ctx.ap)",
-          "187.5 + (0.75 * ctx.ap)",
-          "240 + (0.75 * ctx.ap)",
-          "292.5 + (0.75 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "W",
-        "name": "_1"
-      },
-      {
-        "name": "Titan's Wrath",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "30 + (0.4 * ctx.ap)",
-          "40 + (0.4 * ctx.ap)",
-          "50 + (0.4 * ctx.ap)",
-          "60 + (0.4 * ctx.ap)",
-          "70 + (0.4 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "E",
-        "name": "_4"
-      },
-      {
-        "name": "Riptide",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "165 + (1.5 * ctx.ap)",
-          "270 + (1.5 * ctx.ap)",
-          "375 + (1.5 * ctx.ap)",
-          "480 + (1.5 * ctx.ap)",
-          "585 + (1.5 * ctx.ap)"
         ]
       }
     ]

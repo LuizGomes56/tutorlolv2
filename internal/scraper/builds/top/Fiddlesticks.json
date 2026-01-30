@@ -1,19 +1,19 @@
 [
   [
-    "RylaisCrystalScepter",
     "BansheesVeil",
+    "BloodlettersCurse",
     "Cryptbloom",
-    "RabadonsDeathcap",
-    "Morellonomicon"
+    "Malignance",
+    "RylaisCrystalScepter",
+    "Stormsurge"
   ],
   [
+    "AdaptiveForce",
+    "ApproachVelocity",
+    "HealthScaling",
     "ManaflowBand",
-    "Transcendence",
     "Scorch",
-    "BonePlating",
-    "Revitalize",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "Health"
+    "Transcendence",
+    "TripleTonic"
   ]
 ]

@@ -1,20 +1,20 @@
 [
   [
+    "BladeOfTheRuinedKing",
+    "Bloodthirster",
     "KrakenSlayer",
     "MortalReminder",
-    "RapidFirecannon",
-    "BladeOfTheRuinedKing",
-    "LordDominiksRegards",
-    "Bloodthirster"
+    "NavoriFlickerblade",
+    "RunaansHurricane"
   ],
   [
-    "Triumph",
-    "LegendAlacrity",
+    "AdaptiveForce",
+    "AttackSpeed",
     "CoupDeGrace",
+    "HealthScaling",
+    "LegendAlacrity",
     "TasteOfBlood",
     "TreasureHunter",
-    "AttackSpeed",
-    "AdaptiveForce",
-    "HealthScaling"
+    "Triumph"
   ]
 ]

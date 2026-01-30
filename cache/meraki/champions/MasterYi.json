@@ -4,7 +4,7 @@
   "adaptiveType": "PHYSICAL_DAMAGE",
   "stats": {
     "health": {
-      "flat": 669.0,
+      "flat": 640.0,
       "perLevel": 105.0
     },
     "mana": {
@@ -21,7 +21,7 @@
     },
     "attackDamage": {
       "flat": 65.0,
-      "perLevel": 2.8
+      "perLevel": 2.5
     },
     "attackSpeed": {
       "flat": 0.679,
@@ -120,7 +120,7 @@
             "leveling": []
           },
           {
-            "description": "Alpha Strike's primary and lesser damage can critically strike for[ (175% + 40%) and (43.75% + 10%) damage respectively. ][ 100% + 100% of bonus critical damage damage, reduced to 25% for the lesser damage. ]",
+            "description": "Alpha Strike's primary and lesser damage can critically strike for[ (200% + 30%) damage. ][ 100% + 100% of bonus critical damage. ]",
             "leveling": []
           },
           {
@@ -128,7 +128,7 @@
             "leveling": []
           },
           {
-            "description": "Master Yi then detonates the marks to deal physical damage and apply on-hit effects, with on-hit damage reduced to 75% effectiveness. Marks after the first on the same target instead detonate instantly upon application to deal 25% damage and apply on-hit effects, with on-hit damage reduced to 18.75% effectiveness. Alpha Strike deals bonus physical damage to monsters per hit.",
+            "description": "Master Yi then detonates the marks to deal physical damage and apply on-hit effects, with on-hit damage reduced to 65% effectiveness. Marks after the first on the same target instead detonate instantly upon application to deal 25% damage and apply on-hit effects, with on-hit damage reduced to 16.25% effectiveness. Alpha Strike deals bonus physical damage to monsters per hit.",
             "leveling": [
               {
                 "attribute": "Combined Primary Monster Damage",

@@ -1,20 +1,19 @@
 [
   [
+    "HollowRadiance",
     "IcebornGauntlet",
-    "RanduinsOmen",
-    "KaenicRookern",
     "JakshoTheProtean",
-    "FrozenHeart",
-    "DeadMansPlate"
+    "KaenicRookern",
+    "RanduinsOmen",
+    "SpiritVisage"
   ],
   [
-    "ShieldBash",
-    "BonePlating",
-    "Revitalize",
-    "ManaflowBand",
-    "Scorch",
     "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "Health",
+    "LastStand",
+    "Overgrowth",
+    "PresenceOfMind",
+    "SecondWind",
+    "ShieldBash"
   ]
 ]

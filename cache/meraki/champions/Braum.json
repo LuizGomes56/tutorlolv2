@@ -4,7 +4,7 @@
   "adaptiveType": "MAGIC_DAMAGE",
   "stats": {
     "health": {
-      "flat": 610.0,
+      "flat": 630.0,
       "perLevel": 112.0
     },
     "mana": {
@@ -79,7 +79,7 @@
             "leveling": []
           },
           {
-            "description": "This effect cannot apply to the same target more than once every few seconds. During this immunity period, affected targets take[ bonus magic damage equal to 20% of the trigger damage ][ 5.2 : 39.2 (based on level) bonus magic damage ]from Braum's basic attacks.",
+            "description": "This effect cannot apply to the same target more than once every few seconds. During this immunity period, affected targets take[ bonus magic damage equal to 40% of the trigger damage ][ 10.4 : 78.4 (based on level) bonus magic damage ]from Braum's basic attacks.",
             "leveling": []
           }
         ],

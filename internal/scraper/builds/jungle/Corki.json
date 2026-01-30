@@ -1,19 +1,17 @@
 [
   [
-    "MortalReminder",
-    "SpearOfShojin",
-    "LordDominiksRegards",
-    "SerpentsFang",
-    "ImmortalShieldbow"
+    "Bloodthirster",
+    "ImmortalShieldbow",
+    "MortalReminder"
   ],
   [
-    "Triumph",
-    "LegendAlacrity",
-    "CoupDeGrace",
-    "Transcendence",
-    "GatheringStorm",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "CosmicInsight",
+    "CutDown",
+    "HealthScaling",
+    "LegendAlacrity",
+    "MagicalFootwear",
+    "Triumph"
   ]
 ]

@@ -1,23 +1,11 @@
 {
+  "version": "16.2.1",
   "riot_id": 2010,
-  "item_id": "TotalBiscuitOfEverlastingWill",
   "name": "Total Biscuit of Everlasting Will",
-  "price": 0,
+  "price": 50,
   "sell": 5,
   "tier": 1,
   "maps": [
-    [
-      "Tft",
-      false
-    ],
-    [
-      "Arena",
-      true
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
     [
       "SummonersRift",
       true
@@ -27,11 +15,23 @@
       true
     ],
     [
-      "SummonersRift",
+      "NexusBlitz",
       true
     ],
     [
-      "NexusBlitz",
+      "Tft",
+      false
+    ],
+    [
+      "Arena",
+      true
+    ],
+    [
+      "UnknownMap33",
+      false
+    ],
+    [
+      "UnknownMap35",
       true
     ]
   ],
@@ -96,9 +96,7 @@
     }
   },
   "builds_from_riot_ids": [],
-  "builds_from_item_ids": [],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

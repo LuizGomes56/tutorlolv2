@@ -1,20 +1,20 @@
 [
   [
-    "VoltaicCyclosword",
-    "RavenousHydra",
-    "MawOfMalmortius",
+    "ArchangelsStaff",
+    "EndlessHunger",
     "FrozenHeart",
-    "TheCollector",
-    "BladeOfTheRuinedKing"
+    "MawOfMalmortius",
+    "RavenousHydra",
+    "VoltaicCyclosword"
   ],
   [
-    "PresenceOfMind",
-    "LegendBloodline",
-    "CoupDeGrace",
-    "MagicalFootwear",
-    "BiscuitDelivery",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "BiscuitDelivery",
+    "CoupDeGrace",
+    "HealthScaling",
+    "LegendBloodline",
+    "MagicalFootwear",
+    "PresenceOfMind"
   ]
 ]

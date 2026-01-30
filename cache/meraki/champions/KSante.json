@@ -75,7 +75,7 @@
             "leveling": []
           },
           {
-            "description": "Innate: K'Sante's abilities mark enemies hit for 4 seconds. His basic attacks against marked enemies are empowered to consume the mark on-hit, dealing 12 (+ 1% : 2% (based on level) of target's maximum health) bonus physical damage. The damage based on the target's health has a minimum of 15 : 100 (based on level) against minions and is capped at 20 : 105 (based on level) against monsters.",
+            "description": "Innate: K'Sante's abilities mark enemies hit for 4 seconds. His basic attacks against marked enemies are empowered to consume the mark on-hit, dealing 12 (+ 1% : 2% (based on level) of target's maximum health) bonus physical damage. The damage based on the target's health ratio deals a minimum of 15 : 100 (based on level) against minions and is capped at 20 : 105 (based on level) against monsters.",
             "leveling": []
           }
         ],

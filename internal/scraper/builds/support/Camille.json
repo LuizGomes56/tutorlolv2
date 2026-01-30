@@ -1,20 +1,19 @@
 [
   [
-    "UmbralGlaive",
-    "TitanicHydra",
-    "SerpentsFang",
     "ChempunkChainsword",
+    "EdgeOfNight",
     "MawOfMalmortius",
-    "RavenousHydra"
+    "SerpentsFang",
+    "TitanicHydra",
+    "UmbralGlaive"
   ],
   [
-    "SuddenImpact",
-    "DeepWard",
-    "TreasureHunter",
-    "ShieldBash",
+    "AdaptiveForce",
     "BonePlating",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "Health"
+    "DeepWard",
+    "Health",
+    "ShieldBash",
+    "SuddenImpact",
+    "TreasureHunter"
   ]
 ]

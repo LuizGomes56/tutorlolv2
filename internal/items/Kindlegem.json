@@ -1,29 +1,17 @@
 {
+  "version": "16.2.1",
   "riot_id": 3067,
-  "item_id": "Kindlegem",
   "name": "Kindlegem",
   "price": 800,
   "sell": 560,
   "tier": 2,
   "maps": [
     [
-      "Tft",
-      false
-    ],
-    [
       "SummonersRift",
-      false
-    ],
-    [
-      "Arena",
-      false
-    ],
-    [
-      "Aram",
       true
     ],
     [
-      "SummonersRift",
+      "Aram",
       true
     ],
     [
@@ -31,18 +19,28 @@
       true
     ],
     [
-      "SummonersRift",
+      "Tft",
+      false
+    ],
+    [
+      "Arena",
+      false
+    ],
+    [
+      "UnknownMap33",
+      false
+    ],
+    [
+      "UnknownMap35",
       true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "Health",
-      "value": 200
+      "AbilityHaste": 10
     },
     {
-      "name": "AbilityHaste",
-      "value": 10
+      "Health": 200
     }
   ],
   "damage_type": "Unknown",
@@ -108,24 +106,26 @@
     1028,
     2022
   ],
-  "builds_from_item_ids": [
-    "RubyCrystal",
-    "GlowingMote"
-  ],
   "builds_into_riot_ids": [
     323107,
     323222,
+    6630,
+    124011,
+    323190,
+    323050,
     3119,
     8001,
-    3071,
-    323190,
     3190,
-    6630,
+    2524,
+    3071,
     6620,
+    4403,
+    2502,
+    2510,
+    2525,
     3050,
     323109,
     3065,
-    3107,
     3109,
     326617,
     3165,
@@ -133,28 +133,12 @@
     323119,
     326620,
     328020,
-    4403,
     4629,
     4644,
     6617,
     6632,
     6656,
     8020
-  ],
-  "builds_into_item_ids": [
-    "WintersApproach",
-    "BlackCleaver",
-    "LocketOfTheIronSolari",
-    "EchoesOfHelia",
-    "ZekesConvergence",
-    "SpiritVisage",
-    "Redemption",
-    "KnightsVow",
-    "Morellonomicon",
-    "MikaelsBlessing",
-    "CosmicDrive",
-    "MoonstoneRenewer",
-    "AbyssalMask"
   ],
   "ranged": {
     "minimum_damage": "zero",

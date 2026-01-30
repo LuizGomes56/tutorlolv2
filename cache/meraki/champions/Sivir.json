@@ -104,7 +104,7 @@
         "damageType": "PHYSICAL_DAMAGE",
         "effects": [
           {
-            "description": "Active: Sivir hurls her crossblade in the target direction, dealing physical damage to enemies within its path, increased by 0% : 50% (based on critical strike chance).",
+            "description": "Active: Sivir hurls her crossblade in the target direction, dealing physical damage to enemies within its path, increased by 0% : 40% (+ 0% : 12%) (based on critical strike chance).",
             "leveling": [
               {
                 "attribute": "Physical Damage",
@@ -134,11 +134,11 @@
                       "% bonus AD"
                     ],
                     "values": [
-                      100.0,
-                      100.0,
-                      100.0,
-                      100.0,
-                      100.0
+                      70.0,
+                      70.0,
+                      70.0,
+                      70.0,
+                      70.0
                     ]
                   },
                   {
@@ -192,11 +192,11 @@
                       "% bonus AD"
                     ],
                     "values": [
-                      40.0,
-                      40.0,
-                      40.0,
-                      40.0,
-                      40.0
+                      28.0,
+                      28.0,
+                      28.0,
+                      28.0,
+                      28.0
                     ]
                   },
                   {
@@ -245,11 +245,11 @@
                       "% bonus AD"
                     ],
                     "values": [
-                      200.0,
-                      200.0,
-                      200.0,
-                      200.0,
-                      200.0
+                      140.0,
+                      140.0,
+                      140.0,
+                      140.0,
+                      140.0
                     ]
                   },
                   {
@@ -306,7 +306,7 @@
         "damageType": "PHYSICAL_DAMAGE",
         "effects": [
           {
-            "description": "Active: Sivir empowers her crossblade for the next 4 seconds, gaining bonus attack speed and causing her basic attacks to bounce to additional surrounding enemies, dealing physical damage to them. If the triggering attack critically strikes, the bounces will do so as well for (175% + 40%) damage. Ricochet deals 65% damage against minions and executes them if they would be left below 15 health.",
+            "description": "Active: Sivir empowers her crossblade for the next 4 seconds, gaining bonus attack speed and causing her basic attacks to bounce to additional surrounding enemies, dealing physical damage to them. If the triggering attack critically strikes, the bounces will do so as well for (200% + 30%) damage. Ricochet deals 65% damage against minions and executes them if they would be left below 15 health.",
             "leveling": [
               {
                 "attribute": "Bonus Attack Speed",
@@ -341,11 +341,11 @@
                       "% AD"
                     ],
                     "values": [
-                      70.0,
-                      74.375,
-                      78.75,
-                      83.125,
-                      87.5
+                      80.0,
+                      85.0,
+                      90.0,
+                      95.0,
+                      100.0
                     ]
                   }
                 ]
@@ -383,11 +383,11 @@
                       "% AD"
                     ],
                     "values": [
-                      45.5,
-                      48.34375,
-                      51.1875,
-                      54.03125,
-                      56.875
+                      52.0,
+                      55.25,
+                      58.5,
+                      61.75,
+                      65.0
                     ]
                   }
                 ]
@@ -420,7 +420,7 @@
             "leveling": []
           },
           {
-            "description": "Gaining Ricochet's attack speed buff resets Sivir's basic attack timer. The target does not have to be visible to be bounced to.",
+            "description": "Ricochet resets Sivir's basic attack timer if it was not already active. The target does not have to be visible to be bounced to.",
             "leveling": []
           }
         ],

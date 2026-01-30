@@ -71,18 +71,18 @@
     [
       {
         "type": "Q",
-        "name": "_4"
+        "name": "_1"
       },
       {
         "name": "Void Surge",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "55 + ctx.ad",
-          "70 + ctx.ad",
-          "85 + ctx.ad",
-          "100 + ctx.ad",
-          "115 + ctx.ad"
+          "0 + ctx.ad",
+          "5 + ctx.ad",
+          "10 + ctx.ad",
+          "15 + ctx.ad",
+          "20 + ctx.ad"
         ]
       }
     ],
@@ -106,24 +106,6 @@
     ],
     [
       {
-        "type": "E",
-        "name": "_2"
-      },
-      {
-        "name": "Royal Maelstrom",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "36 + (0.48 * ctx.ad)",
-          "42 + (0.48 * ctx.ad)",
-          "48 + (0.48 * ctx.ad)",
-          "54 + (0.48 * ctx.ad)",
-          "60 + (0.48 * ctx.ad)"
-        ]
-      }
-    ],
-    [
-      {
         "type": "Q",
         "name": "_3"
       },
@@ -137,6 +119,42 @@
           "75",
           "85",
           "95"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_4"
+      },
+      {
+        "name": "Void Surge",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "55 + ctx.ad",
+          "70 + ctx.ad",
+          "85 + ctx.ad",
+          "100 + ctx.ad",
+          "115 + ctx.ad"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_1"
+      },
+      {
+        "name": "Above and Below",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "70 + ctx.bonus_ad + (1.25 * ctx.ap)",
+          "110 + ctx.bonus_ad + (1.25 * ctx.ap)",
+          "150 + ctx.bonus_ad + (1.25 * ctx.ap)",
+          "190 + ctx.bonus_ad + (1.25 * ctx.ap)",
+          "230 + ctx.bonus_ad + (1.25 * ctx.ap)"
         ]
       }
     ],
@@ -160,17 +178,37 @@
     ],
     [
       {
-        "type": "R",
+        "type": "E",
+        "name": "_2"
+      },
+      {
+        "name": "Royal Maelstrom",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "36 + (0.48 * ctx.ad)",
+          "42 + (0.48 * ctx.ad)",
+          "48 + (0.48 * ctx.ad)",
+          "54 + (0.48 * ctx.ad)",
+          "60 + (0.48 * ctx.ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
         "name": "_3"
       },
       {
-        "name": "Endless Banquet",
-        "damage_type": "True",
+        "name": "Royal Maelstrom",
+        "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "30 + (0.6 * ctx.bonus_ad)",
-          "40 + (0.6 * ctx.bonus_ad)",
-          "50 + (0.6 * ctx.bonus_ad)"
+          "9 + (0.12 * ctx.ad)",
+          "10.5 + (0.12 * ctx.ad)",
+          "12 + (0.12 * ctx.ad)",
+          "13.5 + (0.12 * ctx.ad)",
+          "15 + (0.12 * ctx.ad)"
         ]
       }
     ],
@@ -195,42 +233,6 @@
     [
       {
         "type": "E",
-        "name": "_3"
-      },
-      {
-        "name": "Royal Maelstrom",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "9 + (0.12 * ctx.ad)",
-          "10.5 + (0.12 * ctx.ad)",
-          "12 + (0.12 * ctx.ad)",
-          "13.5 + (0.12 * ctx.ad)",
-          "15 + (0.12 * ctx.ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_1"
-      },
-      {
-        "name": "Void Surge",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "0 + ctx.ad",
-          "5 + ctx.ad",
-          "10 + ctx.ad",
-          "15 + ctx.ad",
-          "20 + ctx.ad"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "E",
         "name": "_5"
       },
       {
@@ -243,24 +245,6 @@
           "8 + (0.08 * ctx.ad)",
           "9 + (0.08 * ctx.ad)",
           "10 + (0.08 * ctx.ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "W",
-        "name": "_1"
-      },
-      {
-        "name": "Above and Below",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "70 + ctx.bonus_ad + (1.25 * ctx.ap)",
-          "110 + ctx.bonus_ad + (1.25 * ctx.ap)",
-          "150 + ctx.bonus_ad + (1.25 * ctx.ap)",
-          "190 + ctx.bonus_ad + (1.25 * ctx.ap)",
-          "230 + ctx.bonus_ad + (1.25 * ctx.ap)"
         ]
       }
     ],
@@ -293,6 +277,22 @@
           "6 + (0.12 * ctx.bonus_ad)",
           "8 + (0.12 * ctx.bonus_ad)",
           "10 + (0.12 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_3"
+      },
+      {
+        "name": "Endless Banquet",
+        "damage_type": "True",
+        "attributes": "Undefined",
+        "damage": [
+          "30 + (0.6 * ctx.bonus_ad)",
+          "40 + (0.6 * ctx.bonus_ad)",
+          "50 + (0.6 * ctx.bonus_ad)"
         ]
       }
     ]

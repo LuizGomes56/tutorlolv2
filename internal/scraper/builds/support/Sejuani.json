@@ -1,19 +1,19 @@
 [
   [
-    "KnightsVow",
-    "UnendingDespair",
-    "FrozenHeart",
+    "Heartsteel",
+    "KaenicRookern",
+    "MikaelsBlessing",
     "RanduinsOmen",
-    "MikaelsBlessing"
+    "Thornmail",
+    "ZekesConvergence"
   ],
   [
-    "FontOfLife",
-    "Conditioning",
-    "Overgrowth",
-    "CheapShot",
-    "UltimateHunter",
     "AttackSpeed",
-    "AdaptiveForce",
-    "HealthScaling"
+    "CheapShot",
+    "Conditioning",
+    "FontOfLife",
+    "HealthScaling",
+    "Overgrowth",
+    "UltimateHunter"
   ]
 ]

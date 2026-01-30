@@ -12,7 +12,7 @@
   "tier": 2,
   "passives": [
     {
-      "effects": "Taking or dealing damage activates this passive for 3 seconds. Deal {{as|15 magic damage}} every second to enemies within {{tip|cr|icononly = true}} 325 (+ 100% '''bonus''' [[size]]) units, with the damage being increased by 50% against {{tip|minions}} and {{tip|monsters}}. This executes minions that would be killed by one more tick of damage.",
+      "effects": "Taking or dealing damage activates this passive for 3 seconds. Deal {{as|15 magic damage}} every second to enemies within {{tip|cr|icononly = true}} 325 (+ 100% '''bonus''' [[size]]) units, with the damage being increased to 150% against {{tip|minions}} and 200% against {{tip|monsters}}. This executes minions that would be killed by one more tick of damage.",
       "name": "Immolate",
       "unique": true
     }

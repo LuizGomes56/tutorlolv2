@@ -1,6 +1,6 @@
 {
+  "version": "16.2.1",
   "riot_id": 3119,
-  "item_id": "WintersApproach",
   "name": "Winter's Approach",
   "price": 2400,
   "sell": 1680,
@@ -11,7 +11,7 @@
       true
     ],
     [
-      "SummonersRift",
+      "Aram",
       true
     ],
     [
@@ -23,30 +23,27 @@
       false
     ],
     [
-      "SummonersRift",
-      false
-    ],
-    [
       "Arena",
       false
     ],
     [
-      "Aram",
+      "UnknownMap33",
+      false
+    ],
+    [
+      "UnknownMap35",
       true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "AbilityHaste",
-      "value": 15
+      "AbilityHaste": 15
     },
     {
-      "name": "Mana",
-      "value": 600
+      "Health": 550
     },
     {
-      "name": "Health",
-      "value": 400
+      "Mana": 500
     }
   ],
   "damage_type": "Unknown",
@@ -113,13 +110,7 @@
     1011,
     3067
   ],
-  "builds_from_item_ids": [
-    "TearOfTheGoddess",
-    "GiantsBelt",
-    "Kindlegem"
-  ],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

@@ -1,6 +1,6 @@
 {
+  "version": "16.2.1",
   "riot_id": 6695,
-  "item_id": "SerpentsFang",
   "name": "Serpent's Fang",
   "price": 2500,
   "sell": 1750,
@@ -8,10 +8,14 @@
   "maps": [
     [
       "SummonersRift",
-      false
+      true
     ],
     [
-      "SummonersRift",
+      "Aram",
+      true
+    ],
+    [
+      "NexusBlitz",
       true
     ],
     [
@@ -23,26 +27,20 @@
       false
     ],
     [
-      "Aram",
-      true
+      "UnknownMap33",
+      false
     ],
     [
-      "NexusBlitz",
-      true
-    ],
-    [
-      "SummonersRift",
+      "UnknownMap35",
       true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "Lethality",
-      "value": 15
+      "AttackDamage": 55
     },
     {
-      "name": "AttackDamage",
-      "value": 55
+      "Lethality": 15
     }
   ],
   "damage_type": "Unknown",
@@ -108,12 +106,7 @@
     3134,
     1037
   ],
-  "builds_from_item_ids": [
-    "SerratedDirk",
-    "Pickaxe"
-  ],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

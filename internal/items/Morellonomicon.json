@@ -1,19 +1,11 @@
 {
+  "version": "16.2.1",
   "riot_id": 3165,
-  "item_id": "Morellonomicon",
   "name": "Morellonomicon",
   "price": 2850,
   "sell": 1995,
   "tier": 3,
   "maps": [
-    [
-      "SummonersRift",
-      true
-    ],
-    [
-      "Tft",
-      false
-    ],
     [
       "SummonersRift",
       true
@@ -27,26 +19,31 @@
       true
     ],
     [
-      "SummonersRift",
+      "Tft",
       false
     ],
     [
       "Arena",
       false
+    ],
+    [
+      "UnknownMap33",
+      false
+    ],
+    [
+      "UnknownMap35",
+      true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "AbilityHaste",
-      "value": 15
+      "AbilityHaste": 15
     },
     {
-      "name": "Health",
-      "value": 350
+      "AbilityPower": 75
     },
     {
-      "name": "AbilityPower",
-      "value": 75
+      "Health": 350
     }
   ],
   "damage_type": "Unknown",
@@ -113,13 +110,7 @@
     1026,
     3067
   ],
-  "builds_from_item_ids": [
-    "OblivionOrb",
-    "BlastingWand",
-    "Kindlegem"
-  ],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

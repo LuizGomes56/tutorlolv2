@@ -1,6 +1,6 @@
 {
+  "version": "16.2.1",
   "riot_id": 3364,
-  "item_id": "OracleLens",
   "name": "Oracle Lens",
   "price": 0,
   "sell": 0,
@@ -8,11 +8,7 @@
   "maps": [
     [
       "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
+      true
     ],
     [
       "Aram",
@@ -23,15 +19,19 @@
       true
     ],
     [
-      "SummonersRift",
-      true
+      "Tft",
+      false
     ],
     [
       "Arena",
       false
     ],
     [
-      "Tft",
+      "UnknownMap33",
+      false
+    ],
+    [
+      "UnknownMap35",
       false
     ]
   ],
@@ -96,9 +96,7 @@
     }
   },
   "builds_from_riot_ids": [],
-  "builds_from_item_ids": [],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

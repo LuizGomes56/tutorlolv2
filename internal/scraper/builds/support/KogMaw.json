@@ -1,20 +1,19 @@
 [
   [
-    "LiandrysTorment",
-    "ZhonyasHourglass",
-    "Malignance",
     "ArchangelsStaff",
+    "BlackfireTorch",
     "HorizonFocus",
-    "BansheesVeil"
+    "Morellonomicon",
+    "RylaisCrystalScepter",
+    "ZhonyasHourglass"
   ],
   [
-    "ManaflowBand",
     "AbsoluteFocus",
-    "Scorch",
-    "PresenceOfMind",
+    "AdaptiveForce",
     "CutDown",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "Health"
+    "Health",
+    "ManaflowBand",
+    "PresenceOfMind",
+    "Scorch"
   ]
 ]

@@ -1,19 +1,19 @@
 [
   [
-    "RylaisCrystalScepter",
-    "Shadowflame",
-    "Morellonomicon",
+    "BansheesVeil",
     "BloodlettersCurse",
-    "BansheesVeil"
+    "CosmicDrive",
+    "Morellonomicon",
+    "RylaisCrystalScepter",
+    "Shadowflame"
   ],
   [
-    "PresenceOfMind",
-    "LegendHaste",
-    "CutDown",
     "AbsoluteFocus",
+    "AdaptiveForce",
+    "CutDown",
     "GatheringStorm",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "HealthScaling",
+    "LegendHaste",
+    "PresenceOfMind"
   ]
 ]

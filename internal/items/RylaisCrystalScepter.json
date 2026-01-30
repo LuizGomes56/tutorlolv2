@@ -1,21 +1,17 @@
 {
+  "version": "16.2.1",
   "riot_id": 3116,
-  "item_id": "RylaisCrystalScepter",
   "name": "Rylai's Crystal Scepter",
   "price": 2600,
   "sell": 1820,
   "tier": 3,
   "maps": [
     [
-      "Aram",
+      "SummonersRift",
       true
     ],
     [
-      "Arena",
-      false
-    ],
-    [
-      "SummonersRift",
+      "Aram",
       true
     ],
     [
@@ -27,22 +23,24 @@
       false
     ],
     [
-      "SummonersRift",
+      "Arena",
       false
     ],
     [
-      "SummonersRift",
+      "UnknownMap33",
+      false
+    ],
+    [
+      "UnknownMap35",
       true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "AbilityPower",
-      "value": 65
+      "AbilityPower": 65
     },
     {
-      "name": "Health",
-      "value": 400
+      "Health": 400
     }
   ],
   "damage_type": "Unknown",
@@ -109,13 +107,7 @@
     1011,
     1052
   ],
-  "builds_from_item_ids": [
-    "BlastingWand",
-    "GiantsBelt",
-    "AmplifyingTome"
-  ],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

@@ -1,20 +1,20 @@
 [
   [
     "AxiomArc",
-    "SerpentsFang",
+    "Bandlepipes",
+    "EdgeOfNight",
     "Opportunity",
-    "ProfaneHydra",
-    "TheCollector",
-    "BlackCleaver"
+    "SerpentsFang",
+    "TheCollector"
   ],
   [
-    "SuddenImpact",
-    "DeepWard",
-    "UltimateHunter",
-    "Triumph",
-    "CoupDeGrace",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "CoupDeGrace",
+    "DeepWard",
+    "HealthScaling",
+    "SuddenImpact",
+    "Triumph",
+    "UltimateHunter"
   ]
 ]

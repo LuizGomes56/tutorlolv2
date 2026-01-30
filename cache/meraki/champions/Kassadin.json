@@ -134,11 +134,11 @@
                       "% AP"
                     ],
                     "values": [
-                      60.0,
-                      60.0,
-                      60.0,
-                      60.0,
-                      60.0
+                      70.0,
+                      70.0,
+                      70.0,
+                      70.0,
+                      70.0
                     ]
                   }
                 ]
@@ -217,7 +217,7 @@
         "damageType": "MAGIC_DAMAGE",
         "effects": [
           {
-            "description": "Active: Kassadin empowers his next basic attack within 5 seconds to have an uncancellable windup, gain 50 bonus range, deal increased bonus magic damage, and restore mana, with the restoration amount quintupled against champions.",
+            "description": "Active: Kassadin empowers his next basic attack on-hit within 5 seconds to have an uncancellable windup, gain 50 bonus range, deal increased bonus magic damage, and restore mana, with the restoration amount quintupled against champions.",
             "leveling": [
               {
                 "attribute": "Increased Bonus Magic Damage",
@@ -368,11 +368,11 @@
                       "% AP"
                     ],
                     "values": [
-                      65.0,
-                      65.0,
-                      65.0,
-                      65.0,
-                      65.0
+                      70.0,
+                      70.0,
+                      70.0,
+                      70.0,
+                      70.0
                     ]
                   }
                 ]

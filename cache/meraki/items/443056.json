@@ -6,7 +6,7 @@
   "tier": 3,
   "passives": [
     {
-      "effects": "Increase your '''total''' {{as|attack damage}}, {{as|ability power}}, {{as|attack speed}}, {{as|'''maximum''' health}}, {{as|armor}}, {{as|magic resistance}}, and {{as|ability haste}} by 26%, further increased by 1% for each round you win and reduced by 3% for each round you lose.",
+      "effects": "Increase your '''total''' {{as|attack damage}}, {{as|ability power}}, {{as|attack speed}}, {{as|'''maximum''' health}}, {{as|armor}}, {{as|magic resistance}}, and {{as|ability haste}} by 26%, further increased by {{fd|1.2}}% for each round you win and reduced by 3% for each round you lose.",
       "name": "Supremacy",
       "unique": true
     }

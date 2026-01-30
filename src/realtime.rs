@@ -10,10 +10,9 @@
 //! Check the module [`tutorlolv2::riot`] for more information about the
 //! types extracted from the json file in port 2999
 
-use crate::model::*;
-use crate::{helpers::*, riot::*};
+use crate::{helpers::*, model::*, riot::*};
 use alloc::boxed::Box;
-use core::mem::MaybeUninit;
+use core::{mem::MaybeUninit, str::FromStr};
 use tutorlolv2_gen::*;
 
 /// Contains the metadata of all items that have their stats compared to choose
@@ -25,17 +24,36 @@ pub const SIMULATED_ITEMS_METADATA: [TypeMetadata<ItemId>; L_SIML] = {
     let mut i = 0;
     while i < L_SIML {
         let item_id = SIMULATED_ITEMS_ENUM[i];
-        let item_cache = ITEM_CACHE[item_id as usize];
+        let CachedItem {
+            metadata:
+                TypeMetadata {
+                    damage_type,
+                    attributes,
+                    ..
+                },
+            ..
+        } = *ITEM_CACHE[item_id as usize];
         unsafe {
             core::ptr::addr_of_mut!((*siml_items_ptr)[i]).write(TypeMetadata::<ItemId> {
                 kind: item_id,
-                damage_type: item_cache.damage_type,
-                attributes: item_cache.attributes,
+                damage_type,
+                attributes,
             })
         };
         i += 1;
     }
     unsafe { siml_items.assume_init() }
+};
+
+/// Ensure that all champions have at least one position, so the unchecked
+/// access does not cause a panic or undefined behavior
+const _: () = {
+    let mut i = 0;
+    while i < ChampionId::VARIANTS {
+        let champion_id = ChampionId::ARRAY[i];
+        assert!(!champion_id.get_cache().positions.is_empty());
+        i += 1;
+    }
 };
 
 /// Receives a reference to the current player's game, defined by the struct [`RiotRealtime`]
@@ -72,7 +90,6 @@ pub const SIMULATED_ITEMS_METADATA: [TypeMetadata<ItemId>; L_SIML] = {
 ///
 /// If feature `livegame` or `serde` are not enabled, it is your job to get a
 /// struct [`RiotRealtime`] and call this function
-
 pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
     let RiotRealtime {
         active_player:
@@ -157,12 +174,12 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
         })
         .collect::<ItemsBitSet>();
 
-    let dragons = get_dragons(&events, &all_players);
+    let dragons = get_dragons(events, all_players);
 
     let enemy_earth_dragons = dragons.enemy_earth_dragons;
     let simulated_stats = get_simulated_stats(&current_player_stats, dragons);
     let ability_levels = abilities.get_ability_levels();
-    let current_player_position = Position::from_raw(current_player.position)
+    let current_player_position = Position::from_str(current_player.position)
         .unwrap_or(unsafe { *current_player_cache.positions.get_unchecked(0) });
     let current_player_cache_attack_type = current_player_cache.attack_type;
 
@@ -177,6 +194,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
         adaptative_type,
         ability_levels,
         level: *level,
+        stacks: get_stacks(current_player_champion_id, *game_time),
     };
 
     const LAST_STAND: u32 = RuneId::LastStand.to_riot_id();
@@ -186,31 +204,29 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
 
     let current_player_runes = general_runes
         .as_ref()
-        .and_then(|gr| {
-            Some(
-                gr.into_iter()
-                    .filter_map(|riot_rune| {
-                        let riot_id = riot_rune.id;
+        .map(|gr| {
+            gr.into_iter()
+                .filter_map(|riot_rune| {
+                    let riot_id = riot_rune.id;
 
-                        match riot_id {
-                            AXIOM_ARCANIST => ability_modifiers.r *= AXIOM_ARCANIST_BONUS_DAMAGE,
-                            COUP_DE_GRACE | CUT_DOWN => {
-                                base_modifiers.global_mod *= COUP_DE_GRACE_AND_CUTDOWN_BONUS_DAMAGE
-                            }
-                            LAST_STAND => {
-                                base_modifiers.global_mod *= get_last_stand(
-                                    1.0 - (self_state.current_stats.current_health
-                                        / self_state.current_stats.health.max(1.0)),
-                                )
-                            }
-                            _ => {}
-                        };
+                    match riot_id {
+                        AXIOM_ARCANIST => ability_modifiers.r *= AXIOM_ARCANIST_BONUS_DAMAGE,
+                        COUP_DE_GRACE | CUT_DOWN => {
+                            base_modifiers.global_mod *= COUP_DE_GRACE_AND_CUTDOWN_BONUS_DAMAGE
+                        }
+                        LAST_STAND => {
+                            base_modifiers.global_mod *= get_last_stand(
+                                1.0 - (self_state.current_stats.current_health
+                                    / self_state.current_stats.health.max(1.0)),
+                            )
+                        }
+                        _ => {}
+                    };
 
-                        let rune_id = RuneId::from_riot_id(riot_id)? as _;
-                        DAMAGING_RUNES.contains(rune_id).then_some(rune_id)
-                    })
-                    .collect::<RunesBitSet>(),
-            )
+                    let rune_id = RuneId::from_riot_id(riot_id)? as _;
+                    DAMAGING_RUNES.contains(rune_id).then_some(rune_id)
+                })
+                .collect::<RunesBitSet>()
         })
         .unwrap_or_default();
 
@@ -245,7 +261,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
 
             let e_champion_id = *CHAMPION_NAME_TO_ID.get(e_champion_name)?;
             let e_cache = unsafe { CHAMPION_CACHE.get_unchecked(e_champion_id as usize) };
-            let e_position = Position::from_raw(e_raw_position)
+            let e_position = Position::from_str(e_raw_position)
                 .unwrap_or(unsafe { *e_cache.positions.get_unchecked(0) });
             let team = Team::from(*e_team);
 
@@ -377,9 +393,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
 pub fn get_dragons(events: &[RealtimeEvent], players: &[RiotAllPlayers]) -> Dragons {
     let mut dragons = Dragons::default();
     for event in events {
-        if let (Some(killer), Some(dragon)) =
-            (event.killer_name.as_deref(), event.dragon_type.as_deref())
-        {
+        if let (Some(killer), Some(dragon)) = (event.killer_name, event.dragon_type) {
             match dragon {
                 "Earth" => match players.iter().any(|player| player.riot_id == killer) {
                     true => dragons.ally_earth_dragons += 1,

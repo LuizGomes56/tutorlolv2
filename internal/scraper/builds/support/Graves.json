@@ -1,20 +1,20 @@
 [
   [
-    "LordDominiksRegards",
-    "MortalReminder",
-    "UmbralGlaive",
-    "Bloodthirster",
-    "EdgeOfNight",
-    "SerpentsFang"
+    "BlackfireTorch",
+    "LiandrysTorment",
+    "RabadonsDeathcap",
+    "RylaisCrystalScepter",
+    "Stormsurge",
+    "ZhonyasHourglass"
   ],
   [
-    "SuddenImpact",
-    "GrislyMementos",
-    "TreasureHunter",
-    "Triumph",
-    "LegendAlacrity",
-    "AttackSpeed",
+    "AbilityHaste",
     "AdaptiveForce",
-    "HealthScaling"
+    "CheapShot",
+    "Health",
+    "ManaflowBand",
+    "Scorch",
+    "SixthSense",
+    "Transcendence"
   ]
 ]

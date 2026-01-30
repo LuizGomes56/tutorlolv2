@@ -6,7 +6,7 @@
   "tier": 3,
   "passives": [
     {
-      "effects": "Gain {{as|1% critical strike chance}} for every {{as|100 '''bonus''' health}}, up to a '''maximum''' of {{as|30% critical strike chance}} at {{as|3000 '''bonus''' health}}.",
+      "effects": "Gain {{sti|critical strike chance|{{pp|0 to 30|key=%|0 to 3000 by 100|type='''bonus''' health|color=hp|label=Crit chance}}}} {{as|critical strike chance}}.",
       "name": "Big Hands",
       "unique": true
     }

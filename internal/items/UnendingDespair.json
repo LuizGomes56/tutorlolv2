@@ -1,13 +1,13 @@
 {
+  "version": "16.2.1",
   "riot_id": 2502,
-  "item_id": "UnendingDespair",
   "name": "Unending Despair",
   "price": 2800,
   "sell": 1960,
   "tier": 3,
   "maps": [
     [
-      "NexusBlitz",
+      "SummonersRift",
       true
     ],
     [
@@ -15,8 +15,8 @@
       true
     ],
     [
-      "SummonersRift",
-      false
+      "NexusBlitz",
+      true
     ],
     [
       "Tft",
@@ -27,30 +27,23 @@
       false
     ],
     [
-      "SummonersRift",
-      true
+      "UnknownMap33",
+      false
     ],
     [
-      "SummonersRift",
+      "UnknownMap35",
       true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "MagicResist",
-      "value": 25
+      "AbilityHaste": 15
     },
     {
-      "name": "Armor",
-      "value": 25
+      "Armor": 50
     },
     {
-      "name": "AbilityHaste",
-      "value": 10
-    },
-    {
-      "name": "Health",
-      "value": 350
+      "Health": 400
     }
   ],
   "damage_type": "Unknown",
@@ -60,7 +53,7 @@
       "percent": 0.0
     },
     "armor": {
-      "flat": 25.0,
+      "flat": 50.0,
       "percent": 0.0
     },
     "armorPenetration": {
@@ -96,7 +89,7 @@
       "percent": 0.0
     },
     "magicResistance": {
-      "flat": 25.0,
+      "flat": 0.0,
       "percent": 0.0
     },
     "mana": {
@@ -113,15 +106,11 @@
     }
   },
   "builds_from_riot_ids": [
-    3105,
-    1011
-  ],
-  "builds_from_item_ids": [
-    "AegisOfTheLegion",
-    "GiantsBelt"
+    1031,
+    3067,
+    1028
   ],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

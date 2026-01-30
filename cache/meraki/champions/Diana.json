@@ -71,7 +71,7 @@
         "damageType": "MAGIC_DAMAGE",
         "effects": [
           {
-            "description": "Innate - Moonsilver Blade: Diana's basic attacks generate a stack of Moonsilver Blade for 5 seconds, refreshing on subsequent attacks and stacking up to 2 times. At 2 stacks, Diana empowers her next basic attack to consume the stacks on-hit to additionally cleave nearby enemies, dealing them 20 : 220 (based on level) (+ 50% AP) magic damage. Moonsilver Blade deals 260% damage against monsters.",
+            "description": "Innate - Moonsilver Blade: Diana's basic attacks generate a stack of Moonsilver Blade for 5 seconds, refreshing on subsequent attacks and stacking up to 2 times. At 2 stacks, Diana empowers her next basic attack to consume the stacks on-hit to additionally cleave nearby enemies, dealing them 20 : 220 (based on level) (+ 50% AP) magic damage. Moonsilver Blade deals 280% damage against monsters.",
             "leveling": []
           },
           {

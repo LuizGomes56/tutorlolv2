@@ -1,19 +1,19 @@
 [
   [
-    "RabadonsDeathcap",
+    "BansheesVeil",
+    "BloodlettersCurse",
+    "Cryptbloom",
     "Shadowflame",
-    "Morellonomicon",
-    "VoidStaff",
-    "CosmicDrive"
+    "ZhonyasHourglass"
   ],
   [
-    "ManaflowBand",
-    "Transcendence",
-    "Scorch",
-    "PresenceOfMind",
-    "LegendHaste",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "HealthScaling",
+    "LegendHaste",
+    "ManaflowBand",
+    "PresenceOfMind",
+    "Scorch",
+    "Transcendence"
   ]
 ]

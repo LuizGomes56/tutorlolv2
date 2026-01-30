@@ -1,20 +1,19 @@
 [
   [
-    "LiandrysTorment",
+    "AbyssalMask",
     "HextechRocketbelt",
-    "Riftmaker",
     "JakshoTheProtean",
-    "KaenicRookern",
-    "ZhonyasHourglass"
+    "LiandrysTorment",
+    "ProtoplasmHarness",
+    "Riftmaker"
   ],
   [
-    "Demolish",
-    "SecondWind",
-    "Revitalize",
-    "LegendHaste",
-    "LastStand",
     "AttackSpeed",
+    "Demolish",
     "HealthScaling",
-    "HealthScaling"
+    "LastStand",
+    "LegendHaste",
+    "Revitalize",
+    "SecondWind"
   ]
 ]

@@ -6,7 +6,7 @@
   "tier": 3,
   "passives": [
     {
-      "effects": "You are permanently [[File:On Fire! buff.png|20px|link=]] '''On Fire!''', causing you to {{as|Burn}} nearby enemies every second for {{as|magic damage}} and reduce your cooldowns twice as fast as well as gain {{as|'''bonus''' movement speed}} while facing nearby enemy champions, {{as|'''bonus''' attack speed}}, and {{as|'''bonus''' mana regeneration}}. While '''On Fire!''', however, you also take increased damage and reduce the effectiveness of incoming heals and shields.",
+      "effects": "You are permanently [[File:On Fire! buff.png|20px|link=]] '''On Fire!''', causing you to {{as|Burn}} enemies within 400 units every second for {{as|{{pp|26 to 43}} magic damage}} and reduce your abilities' cooldowns by {{fd|0.2}} seconds every {{fd|0.25}} seconds as well as gain {{as|5% '''bonus''' movement speed}}, increased to {{as|20%|ms}} while facing nearby enemy champions, {{as|20% '''bonus''' attack speed}}, {{as|{{pp|50 to 900}} '''bonus''' health}}, {{as|{{fd|1.5}} '''bonus''' mana regeneration}}, and {{as|4 '''bonus''' energy regeneration}}. While '''On Fire!''', however, you also take {{rd|25%|35%}} increased damage and reduce the effectiveness of incoming heals and shields by 25%.",
       "name": "Doing Something",
       "unique": true
     }
@@ -51,7 +51,7 @@
     },
     "lifesteal": {
       "flat": 0.0,
-      "percent": 15.0
+      "percent": 0.0
     },
     "magicResistance": {
       "flat": 40.0,
@@ -67,7 +67,7 @@
     },
     "omnivamp": {
       "flat": 0.0,
-      "percent": 0.0
+      "percent": 15.0
     }
   },
   "shop": {

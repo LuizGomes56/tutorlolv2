@@ -25,7 +25,7 @@
     },
     "attackSpeed": {
       "flat": 0.625,
-      "perLevel": 1.4
+      "perLevel": 1.0
     },
     "movespeed": {
       "flat": 325.0,
@@ -126,10 +126,10 @@
                       ""
                     ],
                     "values": [
-                      80.0,
-                      110.0,
-                      140.0,
-                      170.0,
+                      100.0,
+                      125.0,
+                      150.0,
+                      175.0,
                       200.0
                     ]
                   }
@@ -142,7 +142,7 @@
             "leveling": []
           },
           {
-            "description": "Pow-Pow: Basic attacks with Pow-Pow generate a stack of Rev'd up for 2.5 seconds, refreshing on subsequent attacks with Pow-Pow and stacking up to 3 times. Each stack of Rev'd up grants bonus attack speed, with all stacks beyond the first one being 50% effective. Stacks expire by one when the duration ends.",
+            "description": "Pow-Pow: Basic attacks with Pow-Pow generate a stack of Rev'd up for 2.5 seconds, refreshing on subsequent attacks with Pow-Pow and stacking up to 3 times. Each stack of Rev'd up grants bonus attack speed, with all stacks beyond the first one being 50% effective. Stacks expire one by one when the duration ends.",
             "leveling": [
               {
                 "attribute": "Attack Speed per Subsequent Stack",
@@ -349,11 +349,11 @@
                       ""
                     ],
                     "values": [
-                      70.0,
-                      120.0,
-                      170.0,
-                      220.0,
-                      270.0
+                      90.0,
+                      140.0,
+                      190.0,
+                      240.0,
+                      290.0
                     ]
                   },
                   {
@@ -422,9 +422,9 @@
                       ""
                     ],
                     "values": [
-                      240.0,
-                      360.0,
-                      480.0
+                      160.0,
+                      280.0,
+                      400.0
                     ]
                   },
                   {
@@ -434,9 +434,9 @@
                       "% bonus AD"
                     ],
                     "values": [
-                      124.0,
-                      124.0,
-                      124.0
+                      96.0,
+                      96.0,
+                      96.0
                     ]
                   },
                   {
@@ -463,9 +463,9 @@
                       ""
                     ],
                     "values": [
-                      24.0,
-                      36.0,
-                      48.0
+                      16.0,
+                      28.0,
+                      40.0
                     ]
                   },
                   {
@@ -475,9 +475,9 @@
                       "% bonus AD"
                     ],
                     "values": [
-                      12.4,
-                      12.4,
-                      12.4
+                      9.6,
+                      9.6,
+                      9.6
                     ]
                   },
                   {
@@ -509,9 +509,9 @@
                       ""
                     ],
                     "values": [
-                      300.0,
-                      450.0,
-                      600.0
+                      200.0,
+                      350.0,
+                      500.0
                     ]
                   },
                   {
@@ -521,9 +521,9 @@
                       "% bonus AD"
                     ],
                     "values": [
-                      155.0,
-                      155.0,
-                      155.0
+                      120.0,
+                      120.0,
+                      120.0
                     ]
                   },
                   {
@@ -550,9 +550,9 @@
                       ""
                     ],
                     "values": [
-                      30.0,
-                      45.0,
-                      60.0
+                      20.0,
+                      35.0,
+                      50.0
                     ]
                   },
                   {
@@ -562,9 +562,9 @@
                       "% bonus AD"
                     ],
                     "values": [
-                      15.5,
-                      15.5,
-                      15.5
+                      12.0,
+                      12.0,
+                      12.0
                     ]
                   },
                   {

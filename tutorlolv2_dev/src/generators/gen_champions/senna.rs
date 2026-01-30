@@ -2,9 +2,9 @@ use super::*;
 
 impl Generator<Champion> for Senna {
     fn generate(mut self: Box<Self>) -> MayFail<Champion> {
-        self.ability(Q, [(0, 1, _1)]);
+        self.ability(Q, [(0, 0, _1)]);
         self.ability(W, [(0, 0, _1)]);
-        self.ability(R, [(0, 0, _1)]);
+        self.ability(R, [(2, 0, _1)]);
         self.end()
     }
 }

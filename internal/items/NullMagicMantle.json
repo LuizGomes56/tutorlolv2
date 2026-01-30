@@ -1,6 +1,6 @@
 {
+  "version": "16.2.1",
   "riot_id": 1033,
-  "item_id": "NullMagicMantle",
   "name": "Null-Magic Mantle",
   "price": 400,
   "sell": 280,
@@ -8,14 +8,6 @@
   "maps": [
     [
       "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
-      "NexusBlitz",
       true
     ],
     [
@@ -23,7 +15,7 @@
       true
     ],
     [
-      "SummonersRift",
+      "NexusBlitz",
       true
     ],
     [
@@ -33,12 +25,19 @@
     [
       "Arena",
       false
+    ],
+    [
+      "UnknownMap33",
+      false
+    ],
+    [
+      "UnknownMap35",
+      true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "MagicResist",
-      "value": 20
+      "MagicResist": 20
     }
   ],
   "damage_type": "Unknown",
@@ -101,31 +100,21 @@
     }
   },
   "builds_from_riot_ids": [],
-  "builds_from_item_ids": [],
   "builds_into_riot_ids": [
     1057,
+    4632,
+    323190,
+    323050,
+    3190,
+    2524,
     3211,
     3001,
     3111,
-    323190,
-    4632,
-    3190,
     3155,
     3193,
     3050,
     3105,
     3140
-  ],
-  "builds_into_item_ids": [
-    "NegatronCloak",
-    "SpectresCowl",
-    "MercurysTreads",
-    "VerdantBarrier",
-    "LocketOfTheIronSolari",
-    "Hexdrinker",
-    "ZekesConvergence",
-    "AegisOfTheLegion",
-    "QuicksilverSash"
   ],
   "ranged": {
     "minimum_damage": "zero",

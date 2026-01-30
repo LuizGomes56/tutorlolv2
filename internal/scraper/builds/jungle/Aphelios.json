@@ -1,4 +1,19 @@
 [
-  [],
-  []
+  [
+    "GuardianAngel",
+    "ImmortalShieldbow",
+    "MortalReminder",
+    "RunaansHurricane",
+    "YoumuusGhostblade"
+  ],
+  [
+    "AbsoluteFocus",
+    "AbsorbLife",
+    "AdaptiveForce",
+    "AttackSpeed",
+    "CutDown",
+    "GatheringStorm",
+    "HealthScaling",
+    "LegendBloodline"
+  ]
 ]

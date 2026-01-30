@@ -1,6 +1,6 @@
 {
+  "version": "16.2.1",
   "riot_id": 3035,
-  "item_id": "LastWhisper",
   "name": "Last Whisper",
   "price": 1450,
   "sell": 1015,
@@ -11,14 +11,6 @@
       true
     ],
     [
-      "SummonersRift",
-      false
-    ],
-    [
-      "Tft",
-      false
-    ],
-    [
       "Aram",
       true
     ],
@@ -27,22 +19,28 @@
       true
     ],
     [
-      "SummonersRift",
-      true
+      "Tft",
+      false
     ],
     [
       "Arena",
       false
+    ],
+    [
+      "UnknownMap33",
+      false
+    ],
+    [
+      "UnknownMap35",
+      true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "ArmorPenetration",
-      "value": 18
+      "ArmorPenetration": 18
     },
     {
-      "name": "AttackDamage",
-      "value": 20
+      "AttackDamage": 20
     }
   ],
   "damage_type": "Unknown",
@@ -108,19 +106,10 @@
     1036,
     1036
   ],
-  "builds_from_item_ids": [
-    "LongSword",
-    "LongSword"
-  ],
   "builds_into_riot_ids": [
     6694,
     3033,
     3036
-  ],
-  "builds_into_item_ids": [
-    "SeryldasGrudge",
-    "MortalReminder",
-    "LordDominiksRegards"
   ],
   "ranged": {
     "minimum_damage": "zero",

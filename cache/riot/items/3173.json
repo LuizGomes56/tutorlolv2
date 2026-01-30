@@ -1,24 +1,24 @@
 {
   "colloq": ";",
   "depth": 3,
-  "description": "<mainText><stats><attention>35</attention> Magic Resist<br><attention>50</attention> Move Speed<br><attention>30%</attention> Tenacity</stats><br><br><passive>Noxian Persistence</passive> (0s)<br>After taking magic damage from a Champion, gain a <shield></shield> <magicDamage>magic</magicDamage> <shield>shield</shield> for 4 seconds.</mainText>",
+  "description": "<mainText><stats><attention>30</attention> Magic Resist<br><attention>45</attention> Move Speed<br><attention>30%</attention> Tenacity</stats><br><br><passive>Noxian Persistence</passive> (0s)<br>After taking magic damage from a Champion, gain a <shield></shield> <magicDamage>magic</magicDamage> <shield>shield</shield> for 5 seconds.</mainText>",
   "from": [
     "3111"
   ],
   "gold": {
-    "base": 500,
+    "base": 0,
     "purchasable": true,
-    "sell": 1225,
-    "total": 1750
+    "sell": 875,
+    "total": 1250
   },
   "image": {
     "full": "3173.png",
     "group": "item",
     "h": 48,
-    "sprite": "item3.png",
+    "sprite": "item4.png",
     "w": 48,
-    "x": 384,
-    "y": 240
+    "x": 144,
+    "y": 48
   },
   "maps": {
     "11": true,
@@ -32,8 +32,8 @@
   "name": "Chainlaced Crushers",
   "plaintext": "Increases Move Speed and Cooldown Reduction",
   "stats": {
-    "FlatMovementSpeedMod": 50,
-    "FlatSpellBlockMod": 35
+    "FlatMovementSpeedMod": 45,
+    "FlatSpellBlockMod": 30
   },
   "tags": [
     "SpellBlock",

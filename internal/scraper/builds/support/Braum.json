@@ -1,20 +1,19 @@
 [
   [
-    "Thornmail",
     "FrozenHeart",
     "KaenicRookern",
     "MikaelsBlessing",
-    "RanduinsOmen",
-    "AbyssalMask"
+    "ProtoplasmHarness",
+    "Redemption",
+    "ZekesConvergence"
   ],
   [
-    "FontOfLife",
-    "BonePlating",
-    "Unflinching",
-    "BiscuitDelivery",
-    "CosmicInsight",
     "AttackSpeed",
+    "BiscuitDelivery",
+    "BonePlating",
+    "CosmicInsight",
+    "FontOfLife",
     "HealthScaling",
-    "HealthScaling"
+    "Unflinching"
   ]
 ]

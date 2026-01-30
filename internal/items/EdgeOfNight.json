@@ -1,15 +1,11 @@
 {
+  "version": "16.2.1",
   "riot_id": 3814,
-  "item_id": "EdgeOfNight",
   "name": "Edge of Night",
   "price": 3000,
   "sell": 2100,
   "tier": 3,
   "maps": [
-    [
-      "Arena",
-      false
-    ],
     [
       "SummonersRift",
       true
@@ -19,34 +15,35 @@
       true
     ],
     [
-      "Tft",
-      false
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
       "NexusBlitz",
       true
     ],
     [
-      "SummonersRift",
+      "Tft",
       false
+    ],
+    [
+      "Arena",
+      false
+    ],
+    [
+      "UnknownMap33",
+      false
+    ],
+    [
+      "UnknownMap35",
+      true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "Lethality",
-      "value": 14
+      "AttackDamage": 50
     },
     {
-      "name": "AttackDamage",
-      "value": 45
+      "Health": 250
     },
     {
-      "name": "Health",
-      "value": 375
+      "Lethality": 15
     }
   ],
   "damage_type": "Unknown",
@@ -112,12 +109,7 @@
     3134,
     2021
   ],
-  "builds_from_item_ids": [
-    "SerratedDirk",
-    "Tunneler"
-  ],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

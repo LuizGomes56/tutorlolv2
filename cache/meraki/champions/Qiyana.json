@@ -5,7 +5,7 @@
   "stats": {
     "health": {
       "flat": 590.0,
-      "perLevel": 124.0
+      "perLevel": 121.0
     },
     "mana": {
       "flat": 375.0,
@@ -13,14 +13,14 @@
     },
     "armor": {
       "flat": 31.0,
-      "perLevel": 4.7
+      "perLevel": 4.5
     },
     "magicResistance": {
       "flat": 32.0,
       "perLevel": 2.05
     },
     "attackDamage": {
-      "flat": 66.0,
+      "flat": 64.0,
       "perLevel": 3.1
     },
     "attackSpeed": {
@@ -75,7 +75,7 @@
             "leveling": []
           },
           {
-            "description": "Innate: Qiyana's basic attacks and basic abilities deal 15 : 83 (based on level) (+ 30% bonus AD) (+ 30% AP) bonus physical damage. This effect cannot occur on the same target more than once every few seconds.",
+            "description": "Innate: Qiyana's basic attacks and basic abilities deal 15 : 83 (based on level) (+ 25% bonus AD) (+ 30% AP) additional physical damage. This effect cannot occur on the same target more than once every few seconds.",
             "leveling": []
           }
         ],
@@ -108,7 +108,7 @@
         "damageType": "PHYSICAL_DAMAGE",
         "effects": [
           {
-            "description": "Active: Qiyana slashes forward in the target direction, dealing physical damage to enemies in a line, reduced to 75% damage against targets beyond the first. Edge of Ixtal deals 175% damage against monsters.",
+            "description": "Active: Qiyana slashes forward in the target direction, dealing physical damage to enemies in a line, reduced to 75% damage against targets beyond the first. Edge of Ixtal deals 155% damage against monsters.",
             "leveling": [
               {
                 "attribute": "Physical Damage",
@@ -122,11 +122,11 @@
                       ""
                     ],
                     "values": [
-                      60.0,
-                      90.0,
-                      120.0,
-                      150.0,
-                      180.0
+                      70.0,
+                      100.0,
+                      130.0,
+                      160.0,
+                      190.0
                     ]
                   },
                   {
@@ -138,11 +138,11 @@
                       "% bonus AD"
                     ],
                     "values": [
-                      90.0,
-                      90.0,
-                      90.0,
-                      90.0,
-                      90.0
+                      85.0,
+                      85.0,
+                      85.0,
+                      85.0,
+                      85.0
                     ]
                   }
                 ]
@@ -159,11 +159,11 @@
                       ""
                     ],
                     "values": [
-                      45.0,
-                      67.5,
-                      90.0,
-                      112.5,
-                      135.0
+                      52.5,
+                      75.0,
+                      97.5,
+                      120.0,
+                      142.5
                     ]
                   },
                   {
@@ -175,11 +175,11 @@
                       "% bonus AD"
                     ],
                     "values": [
-                      67.5,
-                      67.5,
-                      67.5,
-                      67.5,
-                      67.5
+                      63.75,
+                      63.75,
+                      63.75,
+                      63.75,
+                      63.75
                     ]
                   }
                 ]
@@ -210,7 +210,7 @@
             "leveling": []
           },
           {
-            "description": "Enemies hit are dealt Edge of Ixtal's damage, reduced to 75% against subsequent enemies beyond the closest. Elemental Wrath deals 175% damage against monsters.",
+            "description": "Enemies hit are dealt Edge of Ixtal's damage, reduced to 75% against subsequent enemies beyond the closest. Elemental Wrath deals 155% damage against monsters.",
             "leveling": [
               {
                 "attribute": "Physical Damage",
@@ -224,11 +224,11 @@
                       ""
                     ],
                     "values": [
-                      60.0,
-                      90.0,
-                      120.0,
-                      150.0,
-                      180.0
+                      70.0,
+                      100.0,
+                      130.0,
+                      160.0,
+                      190.0
                     ]
                   },
                   {
@@ -240,11 +240,11 @@
                       "% bonus AD"
                     ],
                     "values": [
-                      90.0,
-                      90.0,
-                      90.0,
-                      90.0,
-                      90.0
+                      85.0,
+                      85.0,
+                      85.0,
+                      85.0,
+                      85.0
                     ]
                   }
                 ]
@@ -261,11 +261,11 @@
                       ""
                     ],
                     "values": [
-                      45.0,
                       67.5,
-                      90.0,
-                      112.5,
-                      135.0
+                      86.25,
+                      105.0,
+                      123.75,
+                      142.5
                     ]
                   },
                   {
@@ -277,11 +277,11 @@
                       "% bonus AD"
                     ],
                     "values": [
-                      67.5,
-                      67.5,
-                      67.5,
-                      67.5,
-                      67.5
+                      63.75,
+                      63.75,
+                      63.75,
+                      63.75,
+                      63.75
                     ]
                   }
                 ]
@@ -307,11 +307,11 @@
                       ""
                     ],
                     "values": [
-                      96.0,
-                      144.0,
-                      192.0,
-                      240.0,
-                      288.0
+                      112.0,
+                      160.0,
+                      208.0,
+                      256.0,
+                      304.0
                     ]
                   },
                   {
@@ -323,11 +323,11 @@
                       "% bonus AD"
                     ],
                     "values": [
-                      144.0,
-                      144.0,
-                      144.0,
-                      144.0,
-                      144.0
+                      136.0,
+                      136.0,
+                      136.0,
+                      136.0,
+                      136.0
                     ]
                   }
                 ]
@@ -344,11 +344,11 @@
                       ""
                     ],
                     "values": [
-                      81.0,
-                      121.5,
-                      162.0,
-                      202.5,
-                      243.0
+                      94.5,
+                      135.0,
+                      175.5,
+                      216.0,
+                      256.5
                     ]
                   },
                   {
@@ -360,11 +360,11 @@
                       "% bonus AD"
                     ],
                     "values": [
-                      121.5,
-                      121.5,
-                      121.5,
-                      121.5,
-                      121.5
+                      114.75,
+                      114.75,
+                      114.75,
+                      114.75,
+                      114.75
                     ]
                   }
                 ]
@@ -427,11 +427,11 @@
                       "%"
                     ],
                     "values": [
-                      5.0,
-                      10.0,
                       15.0,
                       20.0,
-                      25.0
+                      25.0,
+                      30.0,
+                      35.0
                     ]
                   }
                 ]

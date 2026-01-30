@@ -1,20 +1,19 @@
 [
   [
-    "JakshoTheProtean",
     "DeadMansPlate",
+    "JakshoTheProtean",
+    "LiandrysTorment",
+    "ProtoplasmHarness",
     "RanduinsOmen",
-    "ForceOfNature",
-    "Trailblazer",
-    "ArchangelsStaff"
+    "ShurelyasBattlesong"
   ],
   [
-    "Triumph",
-    "LegendHaste",
+    "AdaptiveForce",
+    "GatheringStorm",
+    "HealthScaling",
     "LastStand",
-    "MagicalFootwear",
-    "ApproachVelocity",
-    "AbilityHaste",
-    "MoveSpeed",
-    "TenacityAndSlowResist"
+    "LegendHaste",
+    "NimbusCloak",
+    "Triumph"
   ]
 ]

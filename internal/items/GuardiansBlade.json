@@ -1,6 +1,6 @@
 {
+  "version": "16.2.1",
   "riot_id": 3177,
-  "item_id": "GuardiansBlade",
   "name": "Guardian's Blade",
   "price": 950,
   "sell": 665,
@@ -15,7 +15,7 @@
       true
     ],
     [
-      "SummonersRift",
+      "NexusBlitz",
       false
     ],
     [
@@ -23,30 +23,27 @@
       false
     ],
     [
-      "NexusBlitz",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
       "Arena",
       false
+    ],
+    [
+      "UnknownMap33",
+      false
+    ],
+    [
+      "UnknownMap35",
+      true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "AttackDamage",
-      "value": 25
+      "AbilityHaste": 15
     },
     {
-      "name": "Health",
-      "value": 250
+      "AttackDamage": 30
     },
     {
-      "name": "AbilityHaste",
-      "value": 15
+      "Health": 150
     }
   ],
   "damage_type": "Unknown",
@@ -109,9 +106,7 @@
     }
   },
   "builds_from_riot_ids": [],
-  "builds_from_item_ids": [],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

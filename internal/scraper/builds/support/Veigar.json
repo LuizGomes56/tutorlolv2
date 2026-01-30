@@ -1,20 +1,19 @@
 [
   [
-    "Shadowflame",
-    "Stormsurge",
     "ArchangelsStaff",
-    "Morellonomicon",
     "BansheesVeil",
-    "VigilantWardstone"
+    "Morellonomicon",
+    "RylaisCrystalScepter",
+    "VoidStaff",
+    "ZhonyasHourglass"
   ],
   [
+    "AdaptiveForce",
+    "CheapShot",
+    "GatheringStorm",
+    "HealthScaling",
     "ManaflowBand",
     "Transcendence",
-    "GatheringStorm",
-    "CheapShot",
-    "UltimateHunter",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "UltimateHunter"
   ]
 ]

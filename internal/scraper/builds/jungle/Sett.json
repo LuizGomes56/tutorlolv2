@@ -1,20 +1,20 @@
 [
   [
     "BlackCleaver",
-    "Heartsteel",
-    "ForceOfNature",
-    "SpiritVisage",
     "BladeOfTheRuinedKing",
-    "Hullbreaker"
+    "DeadMansPlate",
+    "ForceOfNature",
+    "Heartsteel",
+    "RanduinsOmen"
   ],
   [
-    "Triumph",
-    "LegendAlacrity",
-    "LastStand",
-    "SecondWind",
-    "Unflinching",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "HealthScaling",
+    "LastStand",
+    "LegendAlacrity",
+    "SecondWind",
+    "Triumph",
+    "Unflinching"
   ]
 ]

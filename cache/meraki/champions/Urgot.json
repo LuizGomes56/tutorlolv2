@@ -204,7 +204,7 @@
             "leveling": []
           },
           {
-            "description": "Attacks with Purge deal modified physical damage, with a minimum threshold of 50 against monsters and minions, and cannot critically strike. Each attack applies on-hit effects, with on-hit damage reduced to 50% effectiveness, and triggers on-attack effects. Urgot cannot perform attacks while unable to declare basic attacks.",
+            "description": "Attacks with Purge deal modified physical damage, with a minimum threshold of 50 against monsters and minions, and cannot critically strike. Each attack applies on-hit effects, with on-hit damage reduced to 50% effectiveness, and triggers on-attack effects. Urgot cannot perform attacks while affected by disarming crowd control.",
             "leveling": [
               {
                 "attribute": "Modified Physical Damage",
@@ -458,7 +458,7 @@
             "leveling": []
           },
           {
-            "description": "Fear Beyond Death's recast can be used while affected by cast-inhibiting crowd control.",
+            "description": "Fear Beyond Death's recast can be used while affected by cast-inhibiting crowd control. Urgot can move while channeling Fear Beyond Death's recast.",
             "leveling": []
           },
           {

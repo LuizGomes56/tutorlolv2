@@ -6,7 +6,7 @@
   "tier": 1,
   "passives": [
     {
-      "effects": "Provides extra defensive measures. Attackers are rewarded for destroying portions of the plating. This item disappears after 14 minutes.",
+      "effects": "Provides extra defensive measures. Attackers are rewarded for destroying portions of the plating.",
       "name": null,
       "unique": true
     }

@@ -1,20 +1,20 @@
 [
   [
-    "Trailblazer",
-    "LudensCompanion",
+    "ChempunkChainsword",
+    "ForceOfNature",
+    "LichBane",
     "LocketOfTheIronSolari",
-    "ZhonyasHourglass",
-    "KaenicRookern",
-    "VigilantWardstone"
+    "Trailblazer",
+    "ZhonyasHourglass"
   ],
   [
-    "CashBack",
-    "BiscuitDelivery",
-    "JackOfAllTrades",
-    "BonePlating",
-    "Unflinching",
     "AttackSpeed",
+    "BiscuitDelivery",
+    "CashBack",
+    "Celerity",
+    "Health",
+    "JackOfAllTrades",
     "MoveSpeed",
-    "Health"
+    "NimbusCloak"
   ]
 ]

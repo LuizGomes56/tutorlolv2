@@ -1,31 +1,11 @@
 {
+  "version": "16.2.1",
   "riot_id": 3121,
-  "item_id": "Fimbulwinter",
   "name": "Fimbulwinter",
   "price": 2400,
   "sell": 1680,
   "tier": 4,
   "maps": [
-    [
-      "Tft",
-      false
-    ],
-    [
-      "NexusBlitz",
-      true
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "Arena",
-      false
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
     [
       "SummonersRift",
       true
@@ -33,20 +13,37 @@
     [
       "Aram",
       true
+    ],
+    [
+      "NexusBlitz",
+      true
+    ],
+    [
+      "Tft",
+      false
+    ],
+    [
+      "Arena",
+      false
+    ],
+    [
+      "UnknownMap33",
+      false
+    ],
+    [
+      "UnknownMap35",
+      true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "Health",
-      "value": 400
+      "AbilityHaste": 15
     },
     {
-      "name": "AbilityHaste",
-      "value": 15
+      "Health": 550
     },
     {
-      "name": "Mana",
-      "value": 1000
+      "Mana": 1000
     }
   ],
   "damage_type": "Unknown",
@@ -96,7 +93,7 @@
       "percent": 0.0
     },
     "mana": {
-      "flat": 860.0,
+      "flat": 1000.0,
       "percent": 0.0
     },
     "movespeed": {
@@ -109,9 +106,7 @@
     }
   },
   "builds_from_riot_ids": [],
-  "builds_from_item_ids": [],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

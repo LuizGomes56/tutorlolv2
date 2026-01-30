@@ -1,19 +1,17 @@
 [
   [
-    "Shadowflame",
+    "BansheesVeil",
+    "Cryptbloom",
     "Stormsurge",
-    "HextechRocketbelt",
-    "ZhonyasHourglass",
-    "CosmicDrive"
+    "ZhonyasHourglass"
   ],
   [
-    "SuddenImpact",
-    "GrislyMementos",
-    "RelentlessHunter",
     "AbsoluteFocus",
+    "AdaptiveForce",
     "GatheringStorm",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "GrislyMementos",
+    "HealthScaling",
+    "RelentlessHunter",
+    "SuddenImpact"
   ]
 ]

@@ -1,19 +1,18 @@
 [
   [
-    "Thornmail",
+    "Bandlepipes",
+    "FrozenHeart",
+    "Heartsteel",
     "LiandrysTorment",
-    "RanduinsOmen",
-    "ZekesConvergence",
-    "RabadonsDeathcap"
+    "ProtoplasmHarness"
   ],
   [
+    "AbilityHaste",
+    "BonePlating",
+    "HealthScaling",
+    "LegendHaste",
     "ShieldBash",
-    "SecondWind",
-    "Unflinching",
-    "Transcendence",
-    "GatheringStorm",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "Triumph",
+    "Unflinching"
   ]
 ]

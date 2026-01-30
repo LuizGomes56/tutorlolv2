@@ -1,15 +1,11 @@
 {
-  "riot_id": 446671,
-  "item_id": "Galeforce",
+  "version": "16.2.1",
+  "riot_id": 6671,
   "name": "Galeforce",
-  "price": 0,
-  "sell": 400,
-  "tier": 3,
+  "price": 3500,
+  "sell": 2450,
+  "tier": 0,
   "maps": [
-    [
-      "SummonersRift",
-      false
-    ],
     [
       "SummonersRift",
       false
@@ -19,38 +15,38 @@
       false
     ],
     [
-      "Tft",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
       "NexusBlitz",
       false
     ],
     [
+      "Tft",
+      false
+    ],
+    [
       "Arena",
-      true
+      false
+    ],
+    [
+      "UnknownMap33",
+      false
+    ],
+    [
+      "UnknownMap35",
+      false
     ]
   ],
   "prettified_stats": [
     {
-      "name": "AttackDamage",
-      "value": 65
+      "AttackDamage": 50
     },
     {
-      "name": "AttackSpeed",
-      "value": 30
+      "AttackSpeed": 15
     },
     {
-      "name": "MoveSpeed",
-      "value": 6
+      "CriticalStrikeChance": 20
     },
     {
-      "name": "CriticalStrikeChance",
-      "value": 25
+      "MoveSpeed": 7
     }
   ],
   "damage_type": "Unknown",
@@ -72,16 +68,16 @@
       "percent": 0.0
     },
     "attackDamage": {
-      "flat": 65.0,
+      "flat": 0.0,
       "percent": 0.0
     },
     "attackSpeed": {
-      "flat": 30.0,
+      "flat": 0.0,
       "percent": 0.0
     },
     "criticalStrikeChance": {
       "flat": 0.0,
-      "percent": 25.0
+      "percent": 0.0
     },
     "criticalStrikeDamage": {
       "flat": 0.0,
@@ -105,7 +101,7 @@
     },
     "movespeed": {
       "flat": 0.0,
-      "percent": 12.0
+      "percent": 0.0
     },
     "omnivamp": {
       "flat": 0.0,
@@ -113,9 +109,7 @@
     }
   },
   "builds_from_riot_ids": [],
-  "builds_from_item_ids": [],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"
@@ -125,5 +119,5 @@
     "maximum_damage": "zero"
   },
   "attributes": "Undefined",
-  "purchasable": true
+  "purchasable": false
 }

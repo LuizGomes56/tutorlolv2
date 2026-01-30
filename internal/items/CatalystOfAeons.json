@@ -1,13 +1,13 @@
 {
+  "version": "16.2.1",
   "riot_id": 3803,
-  "item_id": "CatalystOfAeons",
   "name": "Catalyst of Aeons",
   "price": 1300,
   "sell": 910,
   "tier": 2,
   "maps": [
     [
-      "NexusBlitz",
+      "SummonersRift",
       true
     ],
     [
@@ -15,15 +15,7 @@
       true
     ],
     [
-      "SummonersRift",
-      true
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
+      "NexusBlitz",
       true
     ],
     [
@@ -33,16 +25,22 @@
     [
       "Arena",
       false
+    ],
+    [
+      "UnknownMap33",
+      false
+    ],
+    [
+      "UnknownMap35",
+      true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "Mana",
-      "value": 375
+      "Health": 300
     },
     {
-      "name": "Health",
-      "value": 300
+      "Mana": 375
     }
   ],
   "damage_type": "Unknown",
@@ -80,7 +78,7 @@
       "percent": 0.0
     },
     "health": {
-      "flat": 350.0,
+      "flat": 300.0,
       "percent": 0.0
     },
     "lifesteal": {
@@ -109,18 +107,10 @@
     1028,
     1027
   ],
-  "builds_from_item_ids": [
-    "RubyCrystal",
-    "RubyCrystal",
-    "SapphireCrystal"
-  ],
   "builds_into_riot_ids": [
     326657,
     4402,
     6657
-  ],
-  "builds_into_item_ids": [
-    "RodOfAges"
   ],
   "ranged": {
     "minimum_damage": "zero",

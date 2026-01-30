@@ -71,7 +71,7 @@
         "damageType": null,
         "effects": [
           {
-            "description": "Innate: Whenever a nearby enemy dies, Trundle heals himself for 1.8% : 5.5% (based on level) of the target's maximum health.",
+            "description": "Innate: Whenever a nearby enemy dies, Trundle heals himself for 1.8% : 5.5% (based on level) of their maximum health.",
             "leveling": []
           }
         ],
@@ -214,11 +214,11 @@
                 ""
               ],
               "values": [
+                18.0,
+                17.0,
                 16.0,
                 15.0,
-                14.0,
-                13.0,
-                12.0
+                14.0
               ]
             }
           ]
@@ -241,10 +241,10 @@
                     ],
                     "values": [
                       30.0,
-                      50.0,
-                      70.0,
-                      90.0,
-                      110.0
+                      45.0,
+                      60.0,
+                      75.0,
+                      90.0
                     ]
                   }
                 ]
@@ -353,8 +353,37 @@
         "damageType": "MAGIC_DAMAGE",
         "effects": [
           {
-            "description": "Active: Trundle drains the life force out of the target enemy champion, dealing magic damage and healing himself for the same amount. He also steals 40% of their current armor and magic resistance, and increases in size by 18% while reducing the target's size by 9.9%.",
+            "description": "Active: Trundle drains the life force out of the target enemy champion, dealing magic damage and healing himself for the same amount. He also reduces 40% of their current armor and magic resistance, while gaining the same amount reduced as bonus armor and bonus magic resistance, respectively, for himself. Additionally, he increases in size by 18% while reducing the target's size by 9.9%.",
             "leveling": [
+              {
+                "attribute": "Total Healing",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%  of the target's maximum health",
+                      "%  of the target's maximum health",
+                      "%  of the target's maximum health"
+                    ],
+                    "values": [
+                      20.0,
+                      25.0,
+                      30.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% per 100 AP",
+                      "% per 100 AP",
+                      "% per 100 AP"
+                    ],
+                    "values": [
+                      2.0,
+                      2.0,
+                      2.0
+                    ]
+                  }
+                ]
+              },
               {
                 "attribute": "Total Magic Damage",
                 "modifiers": [
@@ -387,8 +416,66 @@
             ]
           },
           {
-            "description": "Half of the total damage and stealing are applied instantly, and the other half, as well as the size modifiers, are applied every second over the next 4 seconds, even if the target has died.",
+            "description": "Half of the drain's total damage, healing, and resistances reduction is applied on-cast, while the other half is applied every second over the next 4 seconds. The size modifiers last for 8 seconds and are applied over the first 2.25 seconds of the duration, both increasing Trundle's size by 2% and reducing the target's size by 1.1% every 0.25 seconds.",
             "leveling": [
+              {
+                "attribute": "Healing Per Second",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%  of the target's maximum health",
+                      "%  of the target's maximum health",
+                      "%  of the target's maximum health"
+                    ],
+                    "values": [
+                      2.5,
+                      3.125,
+                      3.75
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% per 100 AP",
+                      "% per 100 AP",
+                      "% per 100 AP"
+                    ],
+                    "values": [
+                      0.25,
+                      0.25,
+                      0.25
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Initial Healing",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%  of the target's maximum health",
+                      "%  of the target's maximum health",
+                      "%  of the target's maximum health"
+                    ],
+                    "values": [
+                      10.0,
+                      12.5,
+                      15.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% per 100 AP",
+                      "% per 100 AP",
+                      "% per 100 AP"
+                    ],
+                    "values": [
+                      1.0,
+                      1.0,
+                      1.0
+                    ]
+                  }
+                ]
+              },
               {
                 "attribute": "Initial Magic Damage",
                 "modifiers": [
@@ -450,7 +537,7 @@
             ]
           },
           {
-            "description": "The armor and magic resistance will remain stolen for 4 seconds after the drain has ended.",
+            "description": "The resistances reduction on the target will linger for 4 seconds after the drain has ended.",
             "leveling": []
           }
         ],

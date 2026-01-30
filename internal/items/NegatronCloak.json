@@ -1,6 +1,6 @@
 {
+  "version": "16.2.1",
   "riot_id": 1057,
-  "item_id": "NegatronCloak",
   "name": "Negatron Cloak",
   "price": 850,
   "sell": 595,
@@ -11,34 +11,33 @@
       true
     ],
     [
-      "Tft",
-      false
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
       "Aram",
       true
-    ],
-    [
-      "Arena",
-      false
     ],
     [
       "NexusBlitz",
       true
     ],
     [
-      "SummonersRift",
+      "Tft",
       false
+    ],
+    [
+      "Arena",
+      false
+    ],
+    [
+      "UnknownMap33",
+      false
+    ],
+    [
+      "UnknownMap35",
+      true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "MagicResist",
-      "value": 30
+      "MagicResist": 45
     }
   ],
   "damage_type": "Unknown",
@@ -103,9 +102,6 @@
   "builds_from_riot_ids": [
     1033
   ],
-  "builds_from_item_ids": [
-    "NullMagicMantle"
-  ],
   "builds_into_riot_ids": [
     4401,
     2504,
@@ -113,13 +109,6 @@
     328020,
     6665,
     8020
-  ],
-  "builds_into_item_ids": [
-    "ForceOfNature",
-    "KaenicRookern",
-    "WitsEnd",
-    "JakshoTheProtean",
-    "AbyssalMask"
   ],
   "ranged": {
     "minimum_damage": "zero",

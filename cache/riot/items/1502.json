@@ -1,6 +1,6 @@
 {
   "colloq": "",
-  "description": "<mainText><stats></stats><br><br><mainText><unique>Reinforced:</unique> Reduces incoming damage by 80%, including True Damage, when no enemy Lane Minions or Rift Herald are nearby.</mainText></mainText>",
+  "description": "<mainText><stats></stats><br><br><mainText><unique>Reinforced</unique><br>Turrets take 80% reduced damage, including True Damage, when no enemy Lane Minions or Rift Herald are nearby.<br><br><unique>Melee Weakness</unique><br>Turrets take 20% increased damage from melee Champions.</mainText></mainText>",
   "effect": {
     "Effect1Amount": "80"
   },
@@ -16,8 +16,8 @@
     "h": 48,
     "sprite": "item0.png",
     "w": 48,
-    "x": 48,
-    "y": 192
+    "x": 432,
+    "y": 288
   },
   "inStore": false,
   "maps": {

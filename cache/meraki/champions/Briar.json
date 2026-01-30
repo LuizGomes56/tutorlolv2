@@ -48,7 +48,7 @@
       "perLevel": 0.0
     },
     "aramDamageTaken": {
-      "flat": 0.95,
+      "flat": 1.0,
       "perLevel": 0.0
     },
     "aramDamageDealt": {
@@ -75,7 +75,7 @@
             "leveling": []
           },
           {
-            "description": "Innate: Briar's basic attacks and abilities inflict a bleed against enemies for 5 seconds, refreshing on subsequent applications, stacking up to 7 times and dealing 25% damage for stacks beyond the first. The bleed deals[ 10 : 50 (based on level) (+ 50% bonus AD) total physical damage over the duration, increased by 2.5 : 12.5 (based on level) (+ 12.5% bonus AD) for each subsequent stack and up to a maximum of 25 : 125 (based on level) (+ 125% bonus AD). ][ 1 : 5 (based on level) (+ 5% bonus AD) physical damage every 0.5 seconds, increased by 0.25 : 1.25 (based on level) (+ 1.25% bonus AD) for each subsequent stack and up to a maximum of 2.5 : 12.5 (based on level) (+ 12.5% bonus AD) per tick. ]Briar heals herself equal to 25% of the pre-mitigation damage dealt. If a target dies while bleeding, she will heal herself equal to 125% of the remaining bleed damage.",
+            "description": "Innate: Briar's basic attacks on-hit and abilities inflict a bleed against enemies for 5 seconds, refreshing on subsequent applications, stacking up to 5 times and dealing 25% damage for stacks beyond the first. The bleed deals[ 10 : 50 (based on level) (+ 50% bonus AD) total physical damage over the duration, increased by 2.5 : 12.5 (based on level) (+ 12.5% bonus AD) for each subsequent stack and up to a maximum of 20 : 100 (based on level) (+ 100% bonus AD). ][ 1 : 5 (based on level) (+ 5% bonus AD) physical damage every 0.5 seconds, increased by 0.25 : 1.25 (based on level) (+ 1.25% bonus AD) for each subsequent stack and up to a maximum of 2 : 10 (based on level) (+ 10% bonus AD) per tick. ]Briar heals herself equal to 25% of the pre-mitigation damage dealt. If a target dies while bleeding, she will heal herself equal to 125% of the remaining bleed damage.",
             "leveling": []
           }
         ],
@@ -105,13 +105,13 @@
             }
           ]
         },
-        "damageType": "MAGIC_DAMAGE",
+        "damageType": "PHYSICAL_DAMAGE",
         "effects": [
           {
-            "description": "Active: Briar leaps to the target unit. If the target is an enemy, she deals magic damage, applies on-hit effects, triggers on-attack effects, stuns them for 0.85 seconds, and reduces their armor and magic resistance for 5 seconds.",
+            "description": "Active: Briar leaps to the target unit. If the target is an enemy, she deals physical damage, applies on-hit effects, triggers on-attack effects, stuns them for 0.85 seconds, and reduces their armor and magic resistance for 5 seconds.",
             "leveling": [
               {
-                "attribute": "Magic Damage",
+                "attribute": "Physical Damage",
                 "modifiers": [
                   {
                     "units": [
@@ -123,10 +123,10 @@
                     ],
                     "values": [
                       60.0,
-                      90.0,
-                      120.0,
-                      150.0,
-                      180.0
+                      85.0,
+                      110.0,
+                      135.0,
+                      160.0
                     ]
                   },
                   {
@@ -228,7 +228,7 @@
             "leveling": []
           },
           {
-            "description": "Blood Frenzy: Briar breaks free from her pillory, causing her to become forced to basic attack the nearest enemy. She reveals the target and gains ghosting, bonus attack speed and bonus movement speed, as well as empowering her basic attacks to have an uncancelable windup and deal physical damage to enemies surrounding her target. This damage is affected by critical strike modifiers.",
+            "description": "Blood Frenzy: Briar breaks free from her pillory, causing her to become forced to basic attack the nearest enemy. She reveals the target and gains ghosting, bonus attack speed and bonus movement speed, as well as empowering her basic attacks to have an uncancellable windup and deal physical damage to enemies surrounding her target. This damage is affected by critical strike modifiers.",
             "leveling": [
               {
                 "attribute": "Bonus Attack Speed",
@@ -841,26 +841,14 @@
                   },
                   {
                     "units": [
-                      "% bonus AD",
-                      "% bonus AD",
-                      "% bonus AD"
-                    ],
-                    "values": [
-                      50.0,
-                      50.0,
-                      50.0
-                    ]
-                  },
-                  {
-                    "units": [
                       "% AP",
                       "% AP",
                       "% AP"
                     ],
                     "values": [
-                      120.0,
-                      120.0,
-                      120.0
+                      130.0,
+                      130.0,
+                      130.0
                     ]
                   }
                 ]

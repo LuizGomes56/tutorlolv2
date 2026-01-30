@@ -1,20 +1,20 @@
 [
   [
-    "MawOfMalmortius",
-    "TitanicHydra",
-    "SpiritVisage",
-    "RanduinsOmen",
     "ChempunkChainsword",
-    "Eclipse"
+    "EndlessHunger",
+    "MawOfMalmortius",
+    "RanduinsOmen",
+    "SteraksGage",
+    "TitanicHydra"
   ],
   [
-    "Triumph",
-    "LegendAlacrity",
-    "CoupDeGrace",
-    "MagicalFootwear",
-    "CosmicInsight",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "CosmicInsight",
+    "CoupDeGrace",
+    "HealthScaling",
+    "LegendAlacrity",
+    "MagicalFootwear",
+    "Triumph"
   ]
 ]

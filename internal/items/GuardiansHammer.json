@@ -1,17 +1,21 @@
 {
+  "version": "16.2.1",
   "riot_id": 3184,
-  "item_id": "GuardiansHammer",
   "name": "Guardian's Hammer",
   "price": 950,
   "sell": 665,
   "tier": 1,
   "maps": [
     [
-      "NexusBlitz",
-      false
+      "SummonersRift",
+      true
     ],
     [
-      "SummonersRift",
+      "Aram",
+      true
+    ],
+    [
+      "NexusBlitz",
       false
     ],
     [
@@ -23,30 +27,23 @@
       false
     ],
     [
-      "SummonersRift",
+      "UnknownMap33",
       false
     ],
     [
-      "SummonersRift",
-      true
-    ],
-    [
-      "Aram",
+      "UnknownMap35",
       true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "AttackDamage",
-      "value": 25
+      "AttackDamage": 25
     },
     {
-      "name": "LifeSteal",
-      "value": 5
+      "Health": 150
     },
     {
-      "name": "Health",
-      "value": 150
+      "LifeSteal": 5
     }
   ],
   "damage_type": "Unknown",
@@ -109,9 +106,7 @@
     }
   },
   "builds_from_riot_ids": [],
-  "builds_from_item_ids": [],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

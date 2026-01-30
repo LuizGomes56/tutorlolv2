@@ -1,20 +1,19 @@
 [
   [
-    "SteraksGage",
+    "EndlessHunger",
     "GuardianAngel",
-    "ChempunkChainsword",
     "MawOfMalmortius",
-    "Thornmail",
-    "RanduinsOmen"
+    "RanduinsOmen",
+    "SpearOfShojin",
+    "Thornmail"
   ],
   [
-    "Triumph",
-    "LegendHaste",
+    "AdaptiveForce",
+    "AxiomArcanist",
+    "HealthScaling",
     "LastStand",
-    "MagicalFootwear",
-    "CosmicInsight",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "LegendHaste",
+    "Transcendence",
+    "Triumph"
   ]
 ]

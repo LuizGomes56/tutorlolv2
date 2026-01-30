@@ -1,27 +1,11 @@
 {
+  "version": "16.2.1",
   "riot_id": 1026,
-  "item_id": "BlastingWand",
   "name": "Blasting Wand",
   "price": 850,
   "sell": 595,
   "tier": 1,
   "maps": [
-    [
-      "Tft",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
-      "Arena",
-      false
-    ],
     [
       "SummonersRift",
       true
@@ -33,12 +17,27 @@
     [
       "NexusBlitz",
       true
+    ],
+    [
+      "Tft",
+      false
+    ],
+    [
+      "Arena",
+      false
+    ],
+    [
+      "UnknownMap33",
+      false
+    ],
+    [
+      "UnknownMap35",
+      true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "AbilityPower",
-      "value": 45
+      "AbilityPower": 45
     }
   ],
   "damage_type": "Unknown",
@@ -101,31 +100,20 @@
     }
   },
   "builds_from_riot_ids": [],
-  "builds_from_item_ids": [],
   "builds_into_riot_ids": [
     3115,
+    3135,
     326657,
     3100,
     3118,
-    4628,
+    2510,
+    2522,
     3116,
-    3135,
     3165,
     326621,
     4637,
     6621,
     6657
-  ],
-  "builds_into_item_ids": [
-    "NashorsTooth",
-    "LichBane",
-    "Malignance",
-    "HorizonFocus",
-    "RylaisCrystalScepter",
-    "VoidStaff",
-    "Morellonomicon",
-    "Dawncore",
-    "RodOfAges"
   ],
   "ranged": {
     "minimum_damage": "zero",

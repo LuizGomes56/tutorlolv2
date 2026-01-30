@@ -1,6 +1,6 @@
 {
+  "version": "16.2.1",
   "riot_id": 2003,
-  "item_id": "HealthPotion",
   "name": "Health Potion",
   "price": 50,
   "sell": 20,
@@ -11,16 +11,8 @@
       true
     ],
     [
-      "Arena",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
+      "Aram",
+      true
     ],
     [
       "NexusBlitz",
@@ -31,8 +23,16 @@
       false
     ],
     [
-      "Aram",
-      true
+      "Arena",
+      false
+    ],
+    [
+      "UnknownMap33",
+      false
+    ],
+    [
+      "UnknownMap35",
+      false
     ]
   ],
   "prettified_stats": [],
@@ -96,9 +96,7 @@
     }
   },
   "builds_from_riot_ids": [],
-  "builds_from_item_ids": [],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

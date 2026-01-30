@@ -11,7 +11,7 @@
       "unique": true
     },
     {
-      "effects": "Increases the {{as|attack speed}} gained from all sources by 25%.",
+      "effects": "Increases the {{as|attack speed}} gained from all sources by 15%.",
       "name": "Sow",
       "unique": true
     }
@@ -68,7 +68,7 @@
     },
     "movespeed": {
       "flat": 0.0,
-      "percent": 10.0
+      "percent": 5.0
     },
     "omnivamp": {
       "flat": 0.0,

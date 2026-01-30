@@ -104,6 +104,12 @@
       "id": "3028",
       "name": "Mythmaker Galio",
       "num": 28
+    },
+    {
+      "chromas": true,
+      "id": "3040",
+      "name": "Aegis Frame Galio",
+      "num": 40
     }
   ],
   "spells": [

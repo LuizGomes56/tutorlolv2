@@ -1,20 +1,20 @@
 [
   [
-    "MortalReminder",
+    "FiendhunterBolts",
+    "JakshoTheProtean",
     "LordDominiksRegards",
-    "WitsEnd",
     "MercurialScimitar",
-    "RanduinsOmen",
-    "Bloodthirster"
+    "MortalReminder",
+    "WitsEnd"
   ],
   [
     "AbsorbLife",
-    "LegendAlacrity",
-    "LastStand",
-    "SecondWind",
-    "Overgrowth",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "HealthScaling",
+    "LastStand",
+    "LegendAlacrity",
+    "Overgrowth",
+    "SecondWind"
   ]
 ]

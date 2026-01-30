@@ -10,6 +10,11 @@
   "tier": 3,
   "passives": [
     {
+      "effects": "Gain 15 [[Haste#Ultimate haste|ultimate haste]].",
+      "name": "Cryocumbustion",
+      "unique": true
+    },
+    {
       "effects": "Upon casting your ultimate ability, you summon a storm of flame and ice around you for 5 seconds, dealing{{ft|{{as|{{ap|30/4}} magic damage}} every {{fd|0.25}} seconds|{{as|{{ap|30*5}} '''total''' magic damage}} over the duration}}to enemies within {{tip|cr|icononly=true}} 350 units and {{tip|slow|slowing}} them by 30% (45 second cooldown, starts on ultimate cast).",
       "name": "Frostfire Tempest",
       "unique": true

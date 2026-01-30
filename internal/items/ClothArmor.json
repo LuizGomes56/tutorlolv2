@@ -1,44 +1,43 @@
 {
+  "version": "16.2.1",
   "riot_id": 1029,
-  "item_id": "ClothArmor",
   "name": "Cloth Armor",
   "price": 300,
   "sell": 210,
   "tier": 1,
   "maps": [
     [
-      "NexusBlitz",
+      "SummonersRift",
       true
-    ],
-    [
-      "Arena",
-      false
-    ],
-    [
-      "Tft",
-      false
     ],
     [
       "Aram",
       true
     ],
     [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
+      "NexusBlitz",
       true
     ],
     [
-      "SummonersRift",
+      "Tft",
+      false
+    ],
+    [
+      "Arena",
+      false
+    ],
+    [
+      "UnknownMap33",
+      false
+    ],
+    [
+      "UnknownMap35",
       true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "Armor",
-      "value": 15
+      "Armor": 15
     }
   ],
   "damage_type": "Unknown",
@@ -101,35 +100,23 @@
     }
   },
   "builds_from_riot_ids": [],
-  "builds_from_item_ids": [],
   "builds_into_riot_ids": [
     1031,
     3047,
-    2019,
     323190,
+    323050,
+    3190,
+    2019,
+    2524,
     2421,
     3023,
     3082,
-    3190,
     2420,
     3024,
     3193,
     3050,
     3076,
     3105
-  ],
-  "builds_into_item_ids": [
-    "ChainVest",
-    "PlatedSteelcaps",
-    "SteelSigil",
-    "ShatteredArmguard",
-    "WardensMail",
-    "LocketOfTheIronSolari",
-    "SeekersArmguard",
-    "GlacialBuckler",
-    "ZekesConvergence",
-    "BrambleVest",
-    "AegisOfTheLegion"
   ],
   "ranged": {
     "minimum_damage": "zero",

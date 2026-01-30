@@ -1,20 +1,20 @@
 [
   [
     "BlackCleaver",
+    "Bloodthirster",
+    "ImmortalShieldbow",
+    "MawOfMalmortius",
     "MortalReminder",
-    "TheCollector",
-    "RapidFirecannon",
-    "GuardianAngel",
-    "BladeOfTheRuinedKing"
+    "TheCollector"
   ],
   [
-    "PresenceOfMind",
-    "LegendBloodline",
-    "CoupDeGrace",
-    "MagicalFootwear",
-    "BiscuitDelivery",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "BiscuitDelivery",
+    "CoupDeGrace",
+    "HealthScaling",
+    "LegendBloodline",
+    "MagicalFootwear",
+    "PresenceOfMind"
   ]
 ]

@@ -1,48 +1,46 @@
 {
+  "version": "16.2.1",
   "riot_id": 3075,
-  "item_id": "Thornmail",
   "name": "Thornmail",
   "price": 2450,
   "sell": 1715,
   "tier": 3,
   "maps": [
     [
-      "Tft",
-      false
-    ],
-    [
       "SummonersRift",
       true
     ],
     [
-      "Arena",
-      false
+      "Aram",
+      true
     ],
     [
       "NexusBlitz",
       true
     ],
     [
-      "SummonersRift",
-      true
-    ],
-    [
-      "SummonersRift",
+      "Tft",
       false
     ],
     [
-      "Aram",
+      "Arena",
+      false
+    ],
+    [
+      "UnknownMap33",
+      false
+    ],
+    [
+      "UnknownMap35",
       true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "Health",
-      "value": 300
+      "Armor": 75
     },
     {
-      "name": "Armor",
-      "value": 60
+      "Health": 150
     }
   ],
   "damage_type": "Unknown",
@@ -109,13 +107,7 @@
     1031,
     1028
   ],
-  "builds_from_item_ids": [
-    "BrambleVest",
-    "ChainVest",
-    "RubyCrystal"
-  ],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

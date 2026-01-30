@@ -1,20 +1,20 @@
 [
   [
     "BladeOfTheRuinedKing",
-    "TitanicHydra",
-    "GuardianAngel",
-    "Terminus",
+    "Hullbreaker",
+    "MercurialScimitar",
     "RanduinsOmen",
-    "Hullbreaker"
+    "TitanicHydra",
+    "WitsEnd"
   ],
   [
-    "Triumph",
-    "LegendAlacrity",
-    "CoupDeGrace",
-    "MagicalFootwear",
-    "CosmicInsight",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "CosmicInsight",
+    "CoupDeGrace",
+    "HealthScaling",
+    "LegendAlacrity",
+    "MagicalFootwear",
+    "Triumph"
   ]
 ]

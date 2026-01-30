@@ -1,20 +1,20 @@
 [
   [
-    "BloodlettersCurse",
-    "BlackfireTorch",
-    "Morellonomicon",
-    "VoidStaff",
     "BansheesVeil",
-    "Cryptbloom"
+    "BlackfireTorch",
+    "BloodlettersCurse",
+    "Malignance",
+    "Morellonomicon",
+    "VoidStaff"
   ],
   [
-    "CheapShot",
-    "GrislyMementos",
-    "TreasureHunter",
-    "MagicalFootwear",
-    "CosmicInsight",
     "AbilityHaste",
     "AdaptiveForce",
-    "HealthScaling"
+    "CheapShot",
+    "CosmicInsight",
+    "GrislyMementos",
+    "HealthScaling",
+    "MagicalFootwear",
+    "TreasureHunter"
   ]
 ]

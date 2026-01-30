@@ -1,17 +1,25 @@
 {
+  "version": "16.2.1",
   "riot_id": 6631,
-  "item_id": "Stridebreaker",
   "name": "Stridebreaker",
   "price": 3300,
   "sell": 2310,
   "tier": 3,
   "maps": [
     [
-      "Tft",
-      false
+      "SummonersRift",
+      true
     ],
     [
-      "SummonersRift",
+      "Aram",
+      true
+    ],
+    [
+      "NexusBlitz",
+      true
+    ],
+    [
+      "Tft",
       false
     ],
     [
@@ -19,34 +27,23 @@
       false
     ],
     [
-      "Aram",
-      true
+      "UnknownMap33",
+      false
     ],
     [
-      "SummonersRift",
-      true
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
-      "NexusBlitz",
+      "UnknownMap35",
       true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "AttackSpeed",
-      "value": 15
+      "AttackDamage": 40
     },
     {
-      "name": "Health",
-      "value": 375
+      "AttackSpeed": 25
     },
     {
-      "name": "AttackDamage",
-      "value": 40
+      "Health": 450
     }
   ],
   "damage_type": "Unknown",
@@ -113,13 +110,7 @@
     3044,
     1042
   ],
-  "builds_from_item_ids": [
-    "Tiamat",
-    "Phage",
-    "Dagger"
-  ],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

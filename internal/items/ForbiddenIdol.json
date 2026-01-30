@@ -1,29 +1,21 @@
 {
+  "version": "16.2.1",
   "riot_id": 3114,
-  "item_id": "ForbiddenIdol",
   "name": "Forbidden Idol",
   "price": 600,
   "sell": 420,
   "tier": 2,
   "maps": [
     [
+      "SummonersRift",
+      true
+    ],
+    [
       "Aram",
       true
     ],
     [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
       "NexusBlitz",
-      true
-    ],
-    [
-      "SummonersRift",
       true
     ],
     [
@@ -33,16 +25,22 @@
     [
       "Arena",
       false
+    ],
+    [
+      "UnknownMap33",
+      false
+    ],
+    [
+      "UnknownMap35",
+      true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "BaseManaRegen",
-      "value": 50
+      "BaseManaRegen": 50
     },
     {
-      "name": "HealAndShieldPower",
-      "value": 8
+      "HealAndShieldPower": 8
     }
   ],
   "damage_type": "Unknown",
@@ -107,29 +105,22 @@
   "builds_from_riot_ids": [
     1004
   ],
-  "builds_from_item_ids": [
-    "FaerieCharm"
-  ],
   "builds_into_riot_ids": [
     323107,
-    223011,
     323222,
+    124011,
+    223011,
+    2526,
     3504,
     3011,
     3107,
     3222,
+    322526,
     323504,
     326616,
     326621,
     6616,
     6621
-  ],
-  "builds_into_item_ids": [
-    "ArdentCenser",
-    "Redemption",
-    "MikaelsBlessing",
-    "StaffOfFlowingWater",
-    "Dawncore"
   ],
   "ranged": {
     "minimum_damage": "zero",

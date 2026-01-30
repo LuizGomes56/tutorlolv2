@@ -1,6 +1,6 @@
 {
+  "version": "16.2.1",
   "riot_id": 3107,
-  "item_id": "Redemption",
   "name": "Redemption",
   "price": 2300,
   "sell": 1610,
@@ -8,6 +8,10 @@
   "maps": [
     [
       "SummonersRift",
+      true
+    ],
+    [
+      "Aram",
       true
     ],
     [
@@ -19,44 +23,36 @@
       false
     ],
     [
-      "SummonersRift",
-      true
-    ],
-    [
-      "Aram",
-      true
-    ],
-    [
       "Arena",
       false
     ],
     [
-      "SummonersRift",
+      "UnknownMap33",
       false
+    ],
+    [
+      "UnknownMap35",
+      true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "Health",
-      "value": 300
+      "AbilityHaste": 15
     },
     {
-      "name": "AbilityHaste",
-      "value": 15
+      "AbilityPower": 30
     },
     {
-      "name": "BaseManaRegen",
-      "value": 100
+      "BaseManaRegen": 100
     },
     {
-      "name": "HealAndShieldPower",
-      "value": 16
+      "HealAndShieldPower": 10
     }
   ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
-      "flat": 0.0,
+      "flat": 30.0,
       "percent": 0.0
     },
     "armor": {
@@ -88,7 +84,7 @@
       "percent": 0.0
     },
     "health": {
-      "flat": 200.0,
+      "flat": 0.0,
       "percent": 0.0
     },
     "lifesteal": {
@@ -113,15 +109,10 @@
     }
   },
   "builds_from_riot_ids": [
-    3067,
+    3108,
     3114
   ],
-  "builds_from_item_ids": [
-    "Kindlegem",
-    "ForbiddenIdol"
-  ],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

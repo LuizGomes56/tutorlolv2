@@ -1,20 +1,19 @@
 [
   [
-    "UmbralGlaive",
-    "VoltaicCyclosword",
+    "AxiomArc",
+    "Bastionbreaker",
     "Manamune",
-    "Hubris",
-    "ProfaneHydra",
-    "SerpentsFang"
+    "SerpentsFang",
+    "SeryldasGrudge",
+    "TheCollector"
   ],
   [
-    "SuddenImpact",
-    "GrislyMementos",
-    "TreasureHunter",
     "AbsoluteFocus",
+    "AdaptiveForce",
     "GatheringStorm",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "GrislyMementos",
+    "HealthScaling",
+    "SuddenImpact",
+    "TreasureHunter"
   ]
 ]

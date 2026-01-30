@@ -108,7 +108,7 @@
         "damageType": "MAGIC_DAMAGE",
         "effects": [
           {
-            "description": "Active: Viktor throws a draining device at the target enemy that deals magic damage. He also grants himself a shield for 40 : 115 (based on level) (+ 18% AP) for 2.5 seconds and gains Discharge for 3.5 seconds.",
+            "description": "Active: Viktor throws a draining device at the target enemy that deals magic damage. He also grants himself a shield for 40 : 140 (based on level) (+ 25% AP) for 2.5 seconds and gains Discharge for 4 seconds.",
             "leveling": [
               {
                 "attribute": "Magic Damage",
@@ -150,7 +150,7 @@
             ]
           },
           {
-            "description": "Augment: Turbocharge — After the device hits, Viktor gains 30% bonus movement speed for 2.5 seconds and the shield's strength is increased[ by 60%. ][ to 64 : 184 (based on level) (+ 32% AP). ]",
+            "description": "Augment: Turbocharge — After the device hits, Viktor gains 30% bonus movement speed for 2.5 seconds and the shield's strength is increased[ by 60%. ][ to 64 : 224 (based on level) (+ 40% AP). ]",
             "leveling": []
           },
           {
@@ -324,7 +324,7 @@
             "leveling": []
           },
           {
-            "description": "The field applies a stack to enemies within every 0.25 seconds, stacking up to 5 times. The fifth stack consumes them all to knock down and stun the target for 1.5 seconds. The knockdown and stun can be triggered only once per cast per enemy.",
+            "description": "The field applies a stack of Heavy Gravity to enemies within every 0.25 seconds, stacking up to 5 times. The fifth stack consumes them all to knock down and stun the target for 1.5 seconds. The knockdown and stun can be triggered only once per cast per enemy.",
             "leveling": []
           }
         ],
@@ -545,15 +545,15 @@
             "leveling": []
           },
           {
-            "description": "Augment: Perfect Storm — The singularity moves 25% faster. Additionally, whenever an enemy champion is taken down after being damaged by Arcane Storm, the singularity increases in size by 40% and extends its duration by 3 seconds. The singularity radius can be increased up to 6 times and its duration can be extended only up to the original duration.",
+            "description": "Augment: Perfect Storm — The singularity moves 25% faster. Additionally, whenever an enemy champion is taken down after being damaged by Arcane Storm, the singularity increases the storm's size by 40% and extends its duration by 3 seconds. The storm's radius can be increased up to 6 times and the singularity's duration can be extended only up to the original duration.",
             "leveling": []
           },
           {
-            "description": "Recast: Viktor directs the singularity to the target location, or to follow the target enemy champion or himself.",
+            "description": "Recast: Viktor directs the singularity to the target location, or to follow the target enemy champion or himself for its remaining duration.",
             "leveling": []
           },
           {
-            "description": "The singularity then remains active for 6.5 seconds, dealing magic damage to enemies within it every second and granting sight of the area. The singularity targets the nearest champion hit by its initial damage and will follow them. The singularity moves faster based on its proximity to Viktor.",
+            "description": "The singularity then remains active as a moving storm for 6.5 seconds, striking a bolt of electricity onto enemies within it every second to deal magic damage, as well as granting sight of the area within its radius and the surrounding area. The singularity will target the nearest champion hit by its initial damage and will follow them. The singularity moves faster based on its proximity to Viktor.",
             "leveling": [
               {
                 "attribute": "Magic Damage Per Tick",

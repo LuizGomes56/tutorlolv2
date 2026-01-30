@@ -6,7 +6,7 @@
   "tier": 1,
   "passives": [
     {
-      "effects": "Base turrets have health regeneration, but cannot regenerate past their current segment. They are segmented at {{as|33%|health}}, {{as|66%|health}} and {{as|100% health}}.",
+      "effects": "Base turrets have health regeneration, but cannot regenerate past their current segment.",
       "name": null,
       "unique": true
     },

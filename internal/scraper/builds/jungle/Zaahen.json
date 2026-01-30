@@ -1,20 +1,20 @@
 [
   [
-    "OverlordsBloodmail",
+    "EndlessHunger",
     "MawOfMalmortius",
+    "OverlordsBloodmail",
+    "RanduinsOmen",
     "SpiritVisage",
-    "Stridebreaker",
-    "SpearOfShojin",
-    "BlackCleaver"
+    "Stridebreaker"
   ],
   [
-    "Triumph",
-    "LegendHaste",
-    "CoupDeGrace",
-    "MagicalFootwear",
-    "CosmicInsight",
-    "AttackSpeed",
     "AdaptiveForce",
-    "Health"
+    "AttackSpeed",
+    "CosmicInsight",
+    "CoupDeGrace",
+    "Health",
+    "LegendHaste",
+    "MagicalFootwear",
+    "Triumph"
   ]
 ]

@@ -1,7 +1,7 @@
 {
   "colloq": "",
   "depth": 3,
-  "description": "<mainText><stats><attention>100</attention> Ability Power<br><attention>600</attention> Mana<br><attention>10</attention> Ability Haste</stats><br><br><passive>Fire</passive><br>Damaging Abilities fire 6 Shots that deal <magicDamage>bonus magic damage</magicDamage> to the target and nearby enemies. Remaining Shots fire on the primary target, dealing 20% damage.<br></mainText>",
+  "description": "<mainText><stats><attention>100</attention> Ability Power<br><attention>600</attention> Mana<br><attention>10</attention> Ability Haste</stats><br><br><passive>Echo</passive><br>Damaging Abilities fire 6 Echoes that deal <magicDamage>bonus magic damage</magicDamage> to the target and nearby enemies. Remaining Echoes fire on the primary target, dealing 20% damage.<br></mainText>",
   "from": [
     "3802",
     "3145"
@@ -16,10 +16,10 @@
     "full": "6655.png",
     "group": "item",
     "h": 48,
-    "sprite": "item5.png",
+    "sprite": "item6.png",
     "w": 48,
-    "x": 192,
-    "y": 192
+    "x": 48,
+    "y": 0
   },
   "maps": {
     "11": true,
@@ -30,7 +30,7 @@
     "33": false,
     "35": true
   },
-  "name": "Luden's Companion",
+  "name": "Luden's Echo",
   "plaintext": "High burst damage, good against fragile foes",
   "stats": {
     "FlatMPPoolMod": 600,

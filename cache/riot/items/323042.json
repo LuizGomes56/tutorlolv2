@@ -1,6 +1,6 @@
 {
   "colloq": "",
-  "description": "<mainText><stats><attention>35</attention> Attack Damage<br><attention>860</attention> Mana<br><attention>15</attention> Ability Haste</stats><br><br><passive>Awe</passive><br>Gain <scaleAD>2% max Mana as bonus Attack Damage</scaleAD>.<br><br><passive>Shock</passive><br>Attacks against champions deal <physicalDamage>1.2% max Mana as bonus physical damage</physicalDamage> <OnHit>On-Hit</OnHit>. <br>Damaging Abilities against champions deal <physicalDamage>3% - 4% max Mana as bonus physical damage</physicalDamage>.</mainText>",
+  "description": "<mainText><stats><attention>35</attention> Attack Damage<br><attention>1000</attention> Mana<br><attention>15</attention> Ability Haste</stats><br><br><passive>Awe</passive><br>Gain <scaleAD>2% max Mana as bonus Attack Damage</scaleAD>.<br><br><passive>Shock</passive><br>Attacks against champions deal <physicalDamage>1.2% max Mana as bonus physical damage</physicalDamage> <OnHit>On-Hit</OnHit>. <br>Damaging Abilities against champions deal <physicalDamage>3% - 4% max Mana as bonus physical damage</physicalDamage>.</mainText>",
   "gold": {
     "base": 2900,
     "purchasable": false,
@@ -11,10 +11,10 @@
     "full": "323042.png",
     "group": "item",
     "h": 48,
-    "sprite": "item3.png",
+    "sprite": "item4.png",
     "w": 48,
-    "x": 240,
-    "y": 336
+    "x": 96,
+    "y": 144
   },
   "inStore": false,
   "maps": {
@@ -28,9 +28,9 @@
   },
   "name": "Muramana",
   "plaintext": "",
-  "specialRecipe": 3004,
+  "specialRecipe": 323004,
   "stats": {
-    "FlatMPPoolMod": 860,
+    "FlatMPPoolMod": 1000,
     "FlatPhysicalDamageMod": 35
   },
   "tags": [

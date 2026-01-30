@@ -1,20 +1,19 @@
 [
   [
-    "VoidStaff",
+    "BansheesVeil",
+    "HorizonFocus",
     "LiandrysTorment",
-    "Cryptbloom",
     "Morellonomicon",
-    "BloodlettersCurse",
-    "CosmicDrive"
+    "ZhonyasHourglass"
   ],
   [
-    "ManaflowBand",
-    "Transcendence",
-    "Scorch",
-    "PresenceOfMind",
-    "CoupDeGrace",
     "AbilityHaste",
     "AdaptiveForce",
-    "HealthScaling"
+    "CoupDeGrace",
+    "HealthScaling",
+    "ManaflowBand",
+    "PresenceOfMind",
+    "Scorch",
+    "Transcendence"
   ]
 ]

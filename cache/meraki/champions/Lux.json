@@ -71,7 +71,7 @@
         "damageType": "MAGIC_DAMAGE",
         "effects": [
           {
-            "description": "Innate: Lux's abilities apply a mark to enemies hit for 6 seconds, refreshing on subsequent hits. Lux's basic attacks and Final Spark consume the mark to deal 30 : 200 (based on level) (+ 30% AP) bonus magic damage.",
+            "description": "Innate: Lux's abilities apply a mark to enemies hit for 6 seconds, refreshing on subsequent hits. Lux's basic attacks and Final Spark consume the mark to deal 30 : 200 (based on level) (+ 35% AP) bonus magic damage.",
             "leveling": []
           }
         ],
@@ -134,11 +134,11 @@
                       "% AP"
                     ],
                     "values": [
-                      65.0,
-                      65.0,
-                      65.0,
-                      65.0,
-                      65.0
+                      75.0,
+                      75.0,
+                      75.0,
+                      75.0,
+                      75.0
                     ]
                   }
                 ]

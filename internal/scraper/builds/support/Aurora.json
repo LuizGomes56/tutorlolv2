@@ -1,20 +1,20 @@
 [
   [
-    "Stormsurge",
-    "Morellonomicon",
-    "ZhonyasHourglass",
-    "LiandrysTorment",
+    "BansheesVeil",
+    "CosmicDrive",
+    "Cryptbloom",
+    "Malignance",
     "VoidStaff",
-    "Cryptbloom"
+    "ZhonyasHourglass"
   ],
   [
-    "TasteOfBlood",
-    "GrislyMementos",
-    "UltimateHunter",
-    "ManaflowBand",
-    "Transcendence",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "GrislyMementos",
+    "HealthScaling",
+    "ManaflowBand",
+    "TasteOfBlood",
+    "Transcendence",
+    "UltimateHunter"
   ]
 ]

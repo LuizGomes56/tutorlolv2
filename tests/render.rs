@@ -9,7 +9,7 @@ const CSS: &str = r###".punctuation {color: #D4D4D4;}.control {color: #C586C0;}.
 fn render() {
     let source_code = |array: &[Range<usize>]| {
         array
-            .into_iter()
+            .iter()
             .map(|range| RAW_BLOCK[range.clone()].to_string())
             .collect::<String>()
     };

@@ -70,42 +70,6 @@
   "abilities": [
     [
       {
-        "type": "W",
-        "name": "_4"
-      },
-      {
-        "name": "Bellows Breath",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "155",
-          "180",
-          "205",
-          "230",
-          "255"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "E",
-        "name": "_1"
-      },
-      {
-        "name": "Searing Charge",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "80 + (0.4 * ctx.bonus_armor) + (0.4 * ctx.bonus_magic_resist)",
-          "125 + (0.4 * ctx.bonus_armor) + (0.4 * ctx.bonus_magic_resist)",
-          "170 + (0.4 * ctx.bonus_armor) + (0.4 * ctx.bonus_magic_resist)",
-          "215 + (0.4 * ctx.bonus_armor) + (0.4 * ctx.bonus_magic_resist)",
-          "260 + (0.4 * ctx.bonus_armor) + (0.4 * ctx.bonus_magic_resist)"
-        ]
-      }
-    ],
-    [
-      {
         "type": "Q",
         "name": "_1"
       },
@@ -119,42 +83,6 @@
           "70 + (1.1 * ctx.ad)",
           "95 + (1.1 * ctx.ad)",
           "120 + (1.1 * ctx.ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "W",
-        "name": "_2"
-      },
-      {
-        "name": "Bellows Breath",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "31",
-          "36",
-          "41",
-          "46",
-          "51"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "W",
-        "name": "_3"
-      },
-      {
-        "name": "Bellows Breath",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "80",
-          "130",
-          "180",
-          "230",
-          "280"
         ]
       }
     ],
@@ -179,34 +107,54 @@
     [
       {
         "type": "W",
-        "name": "_6"
+        "name": "_2"
       },
       {
         "name": "Bellows Breath",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "(0.12 * ctx.enemy_max_health)",
-          "(0.13 * ctx.enemy_max_health)",
-          "(0.14 * ctx.enemy_max_health)",
-          "(0.15 * ctx.enemy_max_health)",
-          "(0.16 * ctx.enemy_max_health)"
+          "52",
+          "64",
+          "76",
+          "88",
+          "100"
         ]
       }
     ],
     [
       {
-        "type": "R",
-        "name": "_2"
+        "type": "W",
+        "name": "_3"
       },
       {
-        "name": "Call of the Forge God",
+        "name": "Bellows Breath",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "250 + (0.4 * ctx.ap)",
-          "350 + (0.4 * ctx.ap)",
-          "450 + (0.4 * ctx.ap)"
+          "80",
+          "130",
+          "180",
+          "230",
+          "280"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_4"
+      },
+      {
+        "name": "Bellows Breath",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "260",
+          "320",
+          "380",
+          "440",
+          "500"
         ]
       }
     ],
@@ -230,6 +178,42 @@
     ],
     [
       {
+        "type": "W",
+        "name": "_6"
+      },
+      {
+        "name": "Bellows Breath",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "(0.12 * ctx.enemy_max_health)",
+          "(0.13 * ctx.enemy_max_health)",
+          "(0.14 * ctx.enemy_max_health)",
+          "(0.15 * ctx.enemy_max_health)",
+          "(0.16 * ctx.enemy_max_health)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
+        "name": "_1"
+      },
+      {
+        "name": "Searing Charge",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "80 + (0.4 * ctx.bonus_armor) + (0.4 * ctx.bonus_magic_resist)",
+          "125 + (0.4 * ctx.bonus_armor) + (0.4 * ctx.bonus_magic_resist)",
+          "170 + (0.4 * ctx.bonus_armor) + (0.4 * ctx.bonus_magic_resist)",
+          "215 + (0.4 * ctx.bonus_armor) + (0.4 * ctx.bonus_magic_resist)",
+          "260 + (0.4 * ctx.bonus_armor) + (0.4 * ctx.bonus_magic_resist)"
+        ]
+      }
+    ],
+    [
+      {
         "type": "R",
         "name": "_1"
       },
@@ -241,6 +225,22 @@
           "125 + (0.2 * ctx.ap)",
           "175 + (0.2 * ctx.ap)",
           "225 + (0.2 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_2"
+      },
+      {
+        "name": "Call of the Forge God",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "250 + (0.4 * ctx.ap)",
+          "350 + (0.4 * ctx.ap)",
+          "450 + (0.4 * ctx.ap)"
         ]
       }
     ]

@@ -1,20 +1,19 @@
 [
   [
-    "FrozenHeart",
-    "VoidStaff",
-    "BansheesVeil",
     "AbyssalMask",
-    "ForceOfNature",
-    "BloodlettersCurse"
+    "Actualizer",
+    "FrozenHeart",
+    "Manamune",
+    "VoidStaff",
+    "WintersApproach"
   ],
   [
-    "CashBack",
-    "TripleTonic",
-    "CosmicInsight",
-    "SuddenImpact",
-    "UltimateHunter",
     "AdaptiveForce",
+    "CashBack",
+    "CosmicInsight",
     "HealthScaling",
-    "HealthScaling"
+    "SuddenImpact",
+    "TripleTonic",
+    "UltimateHunter"
   ]
 ]

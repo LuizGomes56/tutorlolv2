@@ -7,7 +7,7 @@
   ],
   "stats": {
     "health": {
-      "flat": 640.0,
+      "flat": 620.0,
       "perLevel": 106.0
     },
     "mana": {
@@ -78,11 +78,11 @@
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "20 + (0.4 * ctx.bonus_ad)",
-          "35 + (0.4 * ctx.bonus_ad)",
-          "50 + (0.4 * ctx.bonus_ad)",
-          "65 + (0.4 * ctx.bonus_ad)",
-          "80 + (0.4 * ctx.bonus_ad)"
+          "15 + (0.4 * ctx.bonus_ad)",
+          "30 + (0.4 * ctx.bonus_ad)",
+          "45 + (0.4 * ctx.bonus_ad)",
+          "60 + (0.4 * ctx.bonus_ad)",
+          "75 + (0.4 * ctx.bonus_ad)"
         ]
       }
     ],
@@ -96,11 +96,11 @@
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "60 + (1.2 * ctx.bonus_ad)",
-          "105 + (1.2 * ctx.bonus_ad)",
-          "150 + (1.2 * ctx.bonus_ad)",
-          "195 + (1.2 * ctx.bonus_ad)",
-          "240 + (1.2 * ctx.bonus_ad)"
+          "45 + (1.2 * ctx.bonus_ad)",
+          "90 + (1.2 * ctx.bonus_ad)",
+          "135 + (1.2 * ctx.bonus_ad)",
+          "180 + (1.2 * ctx.bonus_ad)",
+          "225 + (1.2 * ctx.bonus_ad)"
         ]
       }
     ],
@@ -108,6 +108,24 @@
       {
         "type": "W",
         "name": "_1"
+      },
+      {
+        "name": "Wind Becomes Lightning",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "7.5 + (0.075 * ctx.ad)",
+          "10 + (0.075 * ctx.ad)",
+          "12.5 + (0.075 * ctx.ad)",
+          "15 + (0.075 * ctx.ad)",
+          "17.5 + (0.075 * ctx.ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_2"
       },
       {
         "name": "Wind Becomes Lightning",
@@ -125,7 +143,7 @@
     [
       {
         "type": "W",
-        "name": "_2"
+        "name": "_3"
       },
       {
         "name": "Wind Becomes Lightning",
@@ -142,17 +160,19 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_1"
+        "type": "W",
+        "name": "_4"
       },
       {
-        "name": "Crescent Guard",
+        "name": "Wind Becomes Lightning",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "75 + ctx.bonus_ad + (1.1 * ctx.ap) + (0.15 * ctx.current_health)",
-          "175 + ctx.bonus_ad + (1.1 * ctx.ap) + (0.15 * ctx.current_health)",
-          "275 + ctx.bonus_ad + (1.1 * ctx.ap) + (0.15 * ctx.current_health)"
+          "80 + (1.2 * ctx.ad) + (0.65 * ctx.ap)",
+          "125 + (1.2 * ctx.ad) + (0.65 * ctx.ap)",
+          "170 + (1.2 * ctx.ad) + (0.65 * ctx.ap)",
+          "215 + (1.2 * ctx.ad) + (0.65 * ctx.ap)",
+          "260 + (1.2 * ctx.ad) + (0.65 * ctx.ap)"
         ]
       }
     ],
@@ -176,19 +196,17 @@
     ],
     [
       {
-        "type": "W",
-        "name": "_3"
+        "type": "R",
+        "name": "_1"
       },
       {
-        "name": "Wind Becomes Lightning",
+        "name": "Crescent Guard",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "80 + (1.2 * ctx.ad) + (0.65 * ctx.ap)",
-          "125 + (1.2 * ctx.ad) + (0.65 * ctx.ap)",
-          "170 + (1.2 * ctx.ad) + (0.65 * ctx.ap)",
-          "215 + (1.2 * ctx.ad) + (0.65 * ctx.ap)",
-          "260 + (1.2 * ctx.ad) + (0.65 * ctx.ap)"
+          "75 + ctx.bonus_ad + (1.1 * ctx.ap) + (0.15 * ctx.current_health)",
+          "175 + ctx.bonus_ad + (1.1 * ctx.ap) + (0.15 * ctx.current_health)",
+          "275 + ctx.bonus_ad + (1.1 * ctx.ap) + (0.15 * ctx.current_health)"
         ]
       }
     ]

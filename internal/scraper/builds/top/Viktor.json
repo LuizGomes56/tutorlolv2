@@ -1,20 +1,20 @@
 [
   [
-    "Shadowflame",
-    "Cryptbloom",
     "BansheesVeil",
-    "BloodlettersCurse",
+    "Cryptbloom",
     "LichBane",
-    "Morellonomicon"
+    "Morellonomicon",
+    "RylaisCrystalScepter",
+    "Shadowflame"
   ],
   [
+    "AdaptiveForce",
+    "AttackSpeed",
+    "BonePlating",
+    "HealthScaling",
     "ManaflowBand",
-    "Transcendence",
     "Scorch",
     "ShieldBash",
-    "BonePlating",
-    "AttackSpeed",
-    "AdaptiveForce",
-    "HealthScaling"
+    "Transcendence"
   ]
 ]

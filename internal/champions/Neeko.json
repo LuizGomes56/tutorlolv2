@@ -71,24 +71,6 @@
   "abilities": [
     [
       {
-        "type": "W",
-        "name": "Void"
-      },
-      {
-        "name": "Shapesplitter",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "30 + (0.6 * ctx.ap)",
-          "65 + (0.6 * ctx.ap)",
-          "100 + (0.6 * ctx.ap)",
-          "135 + (0.6 * ctx.ap)",
-          "170 + (0.6 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
         "type": "Q",
         "name": "_1"
       },
@@ -125,6 +107,42 @@
     ],
     [
       {
+        "type": "Q",
+        "name": "Max"
+      },
+      {
+        "name": "Blooming Burst",
+        "damage_type": "Magic",
+        "attributes": "Area",
+        "damage": [
+          "130 + (1.1 * ctx.ap)",
+          "230 + (1.1 * ctx.ap)",
+          "330 + (1.1 * ctx.ap)",
+          "430 + (1.1 * ctx.ap)",
+          "530 + (1.1 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "Void"
+      },
+      {
+        "name": "Shapesplitter",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "30 + (0.6 * ctx.ap)",
+          "65 + (0.6 * ctx.ap)",
+          "100 + (0.6 * ctx.ap)",
+          "135 + (0.6 * ctx.ap)",
+          "170 + (0.6 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
         "type": "E",
         "name": "Void"
       },
@@ -154,24 +172,6 @@
           "150 + (1.2 * ctx.ap)",
           "350 + (1.2 * ctx.ap)",
           "550 + (1.2 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "Max"
-      },
-      {
-        "name": "Blooming Burst",
-        "damage_type": "Magic",
-        "attributes": "Area",
-        "damage": [
-          "130 + (1.1 * ctx.ap)",
-          "230 + (1.1 * ctx.ap)",
-          "330 + (1.1 * ctx.ap)",
-          "430 + (1.1 * ctx.ap)",
-          "530 + (1.1 * ctx.ap)"
         ]
       }
     ]

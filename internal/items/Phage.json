@@ -1,6 +1,6 @@
 {
+  "version": "16.2.1",
   "riot_id": 3044,
-  "item_id": "Phage",
   "name": "Phage",
   "price": 1100,
   "sell": 770,
@@ -8,22 +8,14 @@
   "maps": [
     [
       "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
-      "NexusBlitz",
       true
     ],
     [
       "Aram",
+      true
+    ],
+    [
+      "NexusBlitz",
       true
     ],
     [
@@ -33,16 +25,22 @@
     [
       "Arena",
       false
+    ],
+    [
+      "UnknownMap33",
+      false
+    ],
+    [
+      "UnknownMap35",
+      true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "Health",
-      "value": 200
+      "AttackDamage": 15
     },
     {
-      "name": "AttackDamage",
-      "value": 15
+      "Health": 200
     }
   ],
   "damage_type": "Unknown",
@@ -108,22 +106,12 @@
     1028,
     1036
   ],
-  "builds_from_item_ids": [
-    "RubyCrystal",
-    "LongSword"
-  ],
   "builds_into_riot_ids": [
     6631,
-    3071,
     6630,
+    3071,
     3073,
     3078
-  ],
-  "builds_into_item_ids": [
-    "Stridebreaker",
-    "BlackCleaver",
-    "ExperimentalHexplate",
-    "TrinityForce"
   ],
   "ranged": {
     "minimum_damage": "zero",

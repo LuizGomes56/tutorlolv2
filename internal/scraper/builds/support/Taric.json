@@ -1,20 +1,19 @@
 [
   [
-    "KnightsVow",
     "FrozenHeart",
-    "Thornmail",
-    "ArdentCenser",
+    "KaenicRookern",
     "MikaelsBlessing",
-    "ShurelyasBattlesong"
+    "MoonstoneRenewer",
+    "Redemption",
+    "Thornmail"
   ],
   [
-    "MagicalFootwear",
-    "BiscuitDelivery",
-    "CosmicInsight",
-    "Conditioning",
-    "Revitalize",
     "AttackSpeed",
+    "BiscuitDelivery",
+    "Conditioning",
+    "CosmicInsight",
     "HealthScaling",
-    "HealthScaling"
+    "MagicalFootwear",
+    "Revitalize"
   ]
 ]

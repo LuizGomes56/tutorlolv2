@@ -138,11 +138,11 @@
                       "% AP"
                     ],
                     "values": [
-                      80.0,
-                      80.0,
-                      80.0,
-                      80.0,
-                      80.0
+                      90.0,
+                      90.0,
+                      90.0,
+                      90.0,
+                      90.0
                     ]
                   }
                 ]
@@ -185,11 +185,11 @@
                       "%"
                     ],
                     "values": [
+                      5.0,
                       10.0,
                       15.0,
                       20.0,
-                      25.0,
-                      30.0
+                      25.0
                     ]
                   }
                 ]
@@ -277,11 +277,11 @@
                       "% per 100 AP"
                     ],
                     "values": [
-                      1.0,
-                      1.0,
-                      1.0,
-                      1.0,
-                      1.0
+                      1.5,
+                      1.5,
+                      1.5,
+                      1.5,
+                      1.5
                     ]
                   }
                 ]
@@ -318,7 +318,7 @@
         "damageType": "MAGIC_DAMAGE",
         "effects": [
           {
-            "description": "A field of ooze is created in its wake for 3 seconds, slowing enemies every 0.25 seconds.",
+            "description": "A field of ooze is created in its wake for 3 seconds, slowing enemies within the area every 0.25 seconds.",
             "leveling": [
               {
                 "attribute": "Slow",
@@ -448,8 +448,8 @@
                     ],
                     "values": [
                       70.0,
-                      70.0,
-                      70.0
+                      80.0,
+                      90.0
                     ]
                   }
                 ]
@@ -489,8 +489,8 @@
                     ],
                     "values": [
                       35.0,
-                      35.0,
-                      35.0
+                      40.0,
+                      45.0
                     ]
                   }
                 ]

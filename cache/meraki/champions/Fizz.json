@@ -12,7 +12,7 @@
       "perLevel": 52.0
     },
     "armor": {
-      "flat": 22.0,
+      "flat": 26.0,
       "perLevel": 4.6
     },
     "magicResistance": {
@@ -71,7 +71,7 @@
         "damageType": null,
         "effects": [
           {
-            "description": "Innate: Fizz is permanently ghosted and reduces every instance of incoming damage by 4 (+ 1% AP), up to a maximum of 50% reduction.",
+            "description": "Innate: Fizz is permanently ghosted and reduces every instance of incoming damage by 4 (+ 1% AP), up to a maximum of 50% reduction. The damage reduction is increased to 14 (+ 1% AP) against monsters.",
             "leveling": []
           }
         ],
@@ -182,7 +182,7 @@
             "description": "Active: Fizz empowers his next basic attack within 4 seconds to have an uncancellable windup, gain 50 bonus range, and deal bonus magic damage.",
             "leveling": [
               {
-                "attribute": "Bonus Magic Damage",
+                "attribute": "Active Magic Damage",
                 "modifiers": [
                   {
                     "units": [
@@ -194,10 +194,10 @@
                     ],
                     "values": [
                       50.0,
-                      70.0,
-                      90.0,
-                      110.0,
-                      130.0
+                      75.0,
+                      100.0,
+                      125.0,
+                      150.0
                     ]
                   },
                   {
@@ -221,10 +221,10 @@
             ]
           },
           {
-            "description": "If Seastone Trident kills its target, the cooldown is reduced to 1 second and Fizz restores mana. Otherwise, if the target is not killed, Fizz's basic attacks deal bonus magic damage on-hit for the next 5 seconds.",
+            "description": "If Seastone Trident kills its target, the cooldown is reduced to 1 second and the mana cost is refunded. Otherwise, if the target is not killed, Fizz's basic attacks deal bonus magic damage on-hit for the next 5 seconds.",
             "leveling": [
               {
-                "attribute": "Bonus Magic Damage On-Hit",
+                "attribute": "Active On-Hit Magic Damage",
                 "modifiers": [
                   {
                     "units": [
@@ -235,11 +235,11 @@
                       ""
                     ],
                     "values": [
-                      10.0,
-                      15.0,
                       20.0,
                       25.0,
-                      30.0
+                      30.0,
+                      35.0,
+                      40.0
                     ]
                   },
                   {
@@ -251,32 +251,11 @@
                       "% AP"
                     ],
                     "values": [
-                      35.0,
-                      35.0,
-                      35.0,
-                      35.0,
-                      35.0
-                    ]
-                  }
-                ]
-              },
-              {
-                "attribute": "Mana Restored",
-                "modifiers": [
-                  {
-                    "units": [
-                      "",
-                      "",
-                      "",
-                      "",
-                      ""
-                    ],
-                    "values": [
                       30.0,
-                      40.0,
-                      50.0,
-                      60.0,
-                      70.0
+                      30.0,
+                      30.0,
+                      30.0,
+                      30.0
                     ]
                   }
                 ]
@@ -287,7 +266,7 @@
             "description": "Passive: Fizz's basic attacks rend enemies on-hit, dealing magic damage every 0.5 seconds over 3 seconds, refreshing on subsequent hits.",
             "leveling": [
               {
-                "attribute": "Magic Damage per Tick",
+                "attribute": "Passive Magic Damage per Tick",
                 "modifiers": [
                   {
                     "units": [
@@ -298,11 +277,11 @@
                       ""
                     ],
                     "values": [
-                      3.33,
                       5.0,
-                      6.67,
-                      8.33,
-                      10.0
+                      7.5,
+                      10.0,
+                      12.5,
+                      15.0
                     ]
                   },
                   {
@@ -314,17 +293,17 @@
                       "% AP"
                     ],
                     "values": [
-                      5.0,
-                      5.0,
-                      5.0,
-                      5.0,
-                      5.0
+                      4.17,
+                      4.17,
+                      4.17,
+                      4.17,
+                      4.17
                     ]
                   }
                 ]
               },
               {
-                "attribute": "Total Magic Damage",
+                "attribute": "Total Passive Magic Damage",
                 "modifiers": [
                   {
                     "units": [
@@ -335,11 +314,11 @@
                       ""
                     ],
                     "values": [
-                      20.0,
                       30.0,
-                      40.0,
-                      50.0,
-                      60.0
+                      45.0,
+                      60.0,
+                      75.0,
+                      90.0
                     ]
                   },
                   {
@@ -351,11 +330,11 @@
                       "% AP"
                     ],
                     "values": [
-                      30.0,
-                      30.0,
-                      30.0,
-                      30.0,
-                      30.0
+                      25.0,
+                      25.0,
+                      25.0,
+                      25.0,
+                      25.0
                     ]
                   }
                 ]
@@ -363,11 +342,11 @@
             ]
           },
           {
-            "description": "Seastone Trident deals 50% damage to structures.",
+            "description": "Seastone Trident resets Fizz's basic attack timer.",
             "leveling": []
           },
           {
-            "description": "Seastone Trident resets Fizz's basic attack timer.",
+            "description": "Seastone Trident's active damage can be applied against structures at 50% effectiveness. Active and on-hit damage deal an additional 60 bonus magic damage against monsters.",
             "leveling": []
           }
         ],
@@ -535,9 +514,9 @@
                 ""
               ],
               "values": [
+                120.0,
                 100.0,
-                85.0,
-                70.0
+                80.0
               ]
             }
           ]
@@ -549,7 +528,7 @@
             "leveling": []
           },
           {
-            "description": "Chomper (455-910): 60% slow, 325 eruption radius and 250 unit knock back distance.",
+            "description": "Chomper (455-910): 125% damage, 60% slow, 325 eruption radius and 250 unit knock back distance.",
             "leveling": [
               {
                 "attribute": "Chomper Damage",
@@ -562,8 +541,8 @@
                     ],
                     "values": [
                       225.0,
-                      325.0,
-                      425.0
+                      375.0,
+                      525.0
                     ]
                   },
                   {
@@ -573,9 +552,9 @@
                       "% AP"
                     ],
                     "values": [
-                      100.0,
-                      100.0,
-                      100.0
+                      75.0,
+                      75.0,
+                      75.0
                     ]
                   }
                 ]
@@ -587,7 +566,7 @@
             "leveling": []
           },
           {
-            "description": "Gigalodon (>910): 80% slow, 450 eruption radius and 350 unit knock back distance.",
+            "description": "Gigalodon (>910): 150% damage, 80% slow, 450 eruption radius and 350 unit knock back distance.",
             "leveling": [
               {
                 "attribute": "Gigalodon Damage",
@@ -599,9 +578,9 @@
                       ""
                     ],
                     "values": [
-                      300.0,
-                      400.0,
-                      500.0
+                      270.0,
+                      450.0,
+                      630.0
                     ]
                   },
                   {
@@ -611,9 +590,9 @@
                       "% AP"
                     ],
                     "values": [
-                      120.0,
-                      120.0,
-                      120.0
+                      90.0,
+                      90.0,
+                      90.0
                     ]
                   }
                 ]
@@ -633,9 +612,9 @@
                       ""
                     ],
                     "values": [
-                      150.0,
-                      250.0,
-                      350.0
+                      180.0,
+                      300.0,
+                      420.0
                     ]
                   },
                   {
@@ -645,9 +624,9 @@
                       "% AP"
                     ],
                     "values": [
-                      80.0,
-                      80.0,
-                      80.0
+                      60.0,
+                      60.0,
+                      60.0
                     ]
                   }
                 ]

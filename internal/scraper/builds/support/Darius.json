@@ -1,19 +1,20 @@
 [
   [
-    "SteraksGage",
-    "Thornmail",
-    "SpiritVisage",
+    "Bandlepipes",
+    "ForceOfNature",
     "RanduinsOmen",
-    "ChempunkChainsword"
+    "SpearOfShojin",
+    "Thornmail",
+    "YoumuusGhostblade"
   ],
   [
-    "Triumph",
-    "LegendHaste",
-    "LastStand",
-    "BonePlating",
-    "Unflinching",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "AxiomArcanist",
+    "Celerity",
+    "HealthScaling",
+    "LastStand",
+    "LegendAlacrity",
+    "Triumph"
   ]
 ]

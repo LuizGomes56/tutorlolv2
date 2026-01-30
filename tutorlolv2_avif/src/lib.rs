@@ -1,17 +1,21 @@
 use image::ImageReader;
 use ravif::RGBA8;
+use rayon::iter::{ParallelBridge, ParallelIterator};
 use std::{fs, io::Write};
 
 fn convert_to_avif(
     source: &str,
     destination: &str,
 ) -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
+    const QUALITY: f32 = 80.0;
+
     println!("Converting {source} to {destination}");
     let img = ImageReader::open(source)?
         .with_guessed_format()?
         .decode()?
         .to_rgba8();
-    let (width, height) = (img.width(), img.height());
+    let width = img.width();
+    let height = img.height();
     let pixels = img.into_raw();
 
     let pixels_rgba: Vec<RGBA8> = pixels
@@ -20,7 +24,7 @@ fn convert_to_avif(
         .collect();
 
     let res = ravif::Encoder::new()
-        .with_quality(80f32)
+        .with_quality(QUALITY)
         .with_speed(1)
         .encode_rgba(ravif::Img::new(
             &pixels_rgba,
@@ -36,42 +40,29 @@ fn convert_to_avif(
     Ok(())
 }
 
-pub async fn convert_folder_avif(folder: &str) -> Result<(), Box<dyn std::error::Error>> {
+pub fn convert_folder_avif(folder: &str) -> Result<(), Box<dyn std::error::Error>> {
     let entries = fs::read_dir(folder)?;
 
-    let mut handles = Vec::<tokio::task::JoinHandle<()>>::new();
+    entries
+        .into_iter()
+        .filter_map(Result::ok)
+        .par_bridge()
+        .for_each(|entry| {
+            let path = entry.path();
+            if path.is_file() && path.extension().and_then(|e| e.to_str()) != Some("svg") {
+                let file_stem = path.file_stem().unwrap().to_str().unwrap().to_string();
+                let source = format!("{folder}/{}", path.file_name().unwrap().to_string_lossy());
+                let target = folder.split("/").nth(1).unwrap();
+                let destination = format!("img/{target}/{file_stem}.avif");
+                if fs::metadata(&destination).is_ok() {
+                    return;
+                }
 
-    for entry in entries {
-        let entry = entry?;
-        let path = entry.path();
-        if path.is_file() && path.extension().and_then(|e| e.to_str()) != Some("svg") {
-            let file_stem = path.file_stem().unwrap().to_str().unwrap().to_string();
-            let source = format!("{folder}/{}", path.file_name().unwrap().to_string_lossy());
-            let destination =
-                format!("img/{}/{file_stem}.avif", folder.split("/").nth(1).unwrap(),);
-            if fs::metadata(&destination).is_ok() {
-                continue;
-            }
-
-            let handle = tokio::task::spawn_blocking(move || {
                 if let Err(e) = convert_to_avif(&source, &destination) {
-                    eprintln!("Erro ao converter '{source}': {e}");
-                }
-            });
-
-            handles.push(handle);
-
-            if handles.len() >= 8 {
-                for h in handles.drain(..) {
-                    let _ = h.await;
+                    eprintln!("Error while attempting to convert '{source}': {e}");
                 }
             }
-        }
-    }
-
-    for h in handles {
-        let _ = h.await;
-    }
+        });
 
     Ok(())
 }

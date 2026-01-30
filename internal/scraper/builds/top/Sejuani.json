@@ -1,20 +1,19 @@
 [
   [
-    "RanduinsOmen",
-    "FrozenHeart",
-    "KaenicRookern",
     "AbyssalMask",
-    "WintersApproach",
-    "WarmogsArmor"
+    "Bandlepipes",
+    "KaenicRookern",
+    "RanduinsOmen",
+    "UnendingDespair",
+    "WintersApproach"
   ],
   [
+    "AttackSpeed",
+    "Demolish",
+    "HealthScaling",
     "ManaflowBand",
-    "Transcendence",
+    "Overgrowth",
     "Scorch",
-    "PresenceOfMind",
-    "LegendHaste",
-    "AbilityHaste",
-    "AdaptiveForce",
-    "Health"
+    "SecondWind"
   ]
 ]

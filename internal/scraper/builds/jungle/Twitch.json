@@ -1,20 +1,20 @@
 [
   [
+    "Bloodthirster",
+    "GuardianAngel",
+    "HexopticsC44",
+    "MortalReminder",
     "RunaansHurricane",
-    "VoidStaff",
-    "Cryptbloom",
-    "Riftmaker",
-    "BladeOfTheRuinedKing",
-    "Stormsurge"
+    "SerpentsFang"
   ],
   [
-    "Triumph",
-    "LegendAlacrity",
-    "CoupDeGrace",
-    "SuddenImpact",
-    "TreasureHunter",
-    "AttackSpeed",
     "AdaptiveForce",
-    "Health"
+    "AttackSpeed",
+    "AxiomArcanist",
+    "CutDown",
+    "GatheringStorm",
+    "Health",
+    "LegendAlacrity",
+    "Triumph"
   ]
 ]

@@ -21,11 +21,11 @@
     },
     "attackDamage": {
       "flat": 59.0,
-      "perLevel": 3.1
+      "perLevel": 3.0
     },
     "attackSpeed": {
       "flat": 0.679,
-      "perLevel": 3.38
+      "perLevel": 3.0
     },
     "movespeed": {
       "flat": 330.0,
@@ -75,7 +75,7 @@
             "leveling": []
           },
           {
-            "description": "Innate: Twitch's basic attacks on-hit apply a stack of Deadly Venom for 6 seconds, refreshing on subsequent applications and stacking up to 6 times.",
+            "description": "Innate: Twitch's basic attacks apply a stack of Deadly Venom for 6 seconds upon landing, refreshing on subsequent applications and stacking up to 6 times.",
             "leveling": []
           }
         ],
@@ -152,11 +152,11 @@
                       "%"
                     ],
                     "values": [
+                      40.0,
                       45.0,
                       50.0,
                       55.0,
-                      60.0,
-                      65.0
+                      60.0
                     ]
                   }
                 ]
@@ -497,7 +497,7 @@
             ]
           },
           {
-            "description": "The bolts deal 100% : 60% (based on enemies hit) of the triggering attack's damage, apply on-hit effects, and can critically strike for (175% + 40%) damage.",
+            "description": "The bolts deal 100% : 60% (based on enemies hit) of the triggering attack's damage, apply on-hit effects, and can critically strike for (200% + 30%) damage.",
             "leveling": []
           }
         ],

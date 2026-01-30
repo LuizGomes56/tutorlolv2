@@ -1,20 +1,20 @@
 [
   [
-    "MortalReminder",
-    "RunaansHurricane",
     "GuardianAngel",
+    "MercurialScimitar",
+    "MortalReminder",
     "PhantomDancer",
-    "RapidFirecannon",
-    "SerpentsFang"
+    "RunaansHurricane",
+    "Stormrazor"
   ],
   [
-    "AbsorbLife",
-    "LegendBloodline",
-    "CutDown",
-    "AbsoluteFocus",
-    "GatheringStorm",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "CashBack",
+    "CutDown",
+    "Health",
+    "LegendBloodline",
+    "TripleTonic",
+    "Triumph"
   ]
 ]

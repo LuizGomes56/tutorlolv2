@@ -1,21 +1,21 @@
 {
+  "version": "16.2.1",
   "riot_id": 3065,
-  "item_id": "SpiritVisage",
   "name": "Spirit Visage",
   "price": 2700,
   "sell": 1890,
   "tier": 3,
   "maps": [
     [
+      "SummonersRift",
+      true
+    ],
+    [
       "Aram",
       true
     ],
     [
-      "SummonersRift",
-      true
-    ],
-    [
-      "SummonersRift",
+      "NexusBlitz",
       true
     ],
     [
@@ -23,30 +23,30 @@
       false
     ],
     [
-      "NexusBlitz",
-      true
-    ],
-    [
       "Arena",
       false
     ],
     [
-      "SummonersRift",
+      "UnknownMap33",
       false
+    ],
+    [
+      "UnknownMap35",
+      true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "MagicResist",
-      "value": 40
+      "AbilityHaste": 10
     },
     {
-      "name": "AbilityHaste",
-      "value": 10
+      "BaseHealthRegen": 100
     },
     {
-      "name": "Health",
-      "value": 300
+      "Health": 400
+    },
+    {
+      "MagicResist": 50
     }
   ],
   "damage_type": "Unknown",
@@ -112,12 +112,7 @@
     3211,
     3067
   ],
-  "builds_from_item_ids": [
-    "SpectresCowl",
-    "Kindlegem"
-  ],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

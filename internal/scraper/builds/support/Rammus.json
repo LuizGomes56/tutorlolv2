@@ -1,20 +1,19 @@
 [
   [
-    "HollowRadiance",
-    "SunfireAegis",
+    "Bandlepipes",
+    "DeadMansPlate",
     "ForceOfNature",
-    "Trailblazer",
-    "KaenicRookern",
-    "RanduinsOmen"
+    "FrozenHeart",
+    "SunfireAegis",
+    "ZekesConvergence"
   ],
   [
-    "FontOfLife",
-    "Conditioning",
-    "Unflinching",
-    "Celerity",
-    "Waterwalking",
     "AttackSpeed",
+    "Conditioning",
+    "FontOfLife",
     "HealthScaling",
-    "HealthScaling"
+    "LegendAlacrity",
+    "Triumph",
+    "Unflinching"
   ]
 ]

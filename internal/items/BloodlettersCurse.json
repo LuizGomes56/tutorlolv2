@@ -1,52 +1,49 @@
 {
+  "version": "16.2.1",
   "riot_id": 8010,
-  "item_id": "BloodlettersCurse",
   "name": "Bloodletter's Curse",
   "price": 2900,
   "sell": 2030,
   "tier": 3,
   "maps": [
     [
-      "Tft",
-      false
-    ],
-    [
-      "NexusBlitz",
-      true
-    ],
-    [
-      "Arena",
-      false
-    ],
-    [
       "SummonersRift",
       true
-    ],
-    [
-      "SummonersRift",
-      false
     ],
     [
       "Aram",
       true
     ],
     [
-      "SummonersRift",
+      "NexusBlitz",
+      true
+    ],
+    [
+      "Tft",
+      false
+    ],
+    [
+      "Arena",
+      false
+    ],
+    [
+      "UnknownMap33",
+      false
+    ],
+    [
+      "UnknownMap35",
       true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "Health",
-      "value": 400
+      "AbilityHaste": 15
     },
     {
-      "name": "AbilityHaste",
-      "value": 15
+      "AbilityPower": 65
     },
     {
-      "name": "AbilityPower",
-      "value": 65
+      "Health": 400
     }
   ],
   "damage_type": "Unknown",
@@ -112,12 +109,7 @@
     3147,
     3108
   ],
-  "builds_from_item_ids": [
-    "HauntingGuise",
-    "FiendishCodex"
-  ],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

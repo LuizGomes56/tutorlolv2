@@ -1,21 +1,21 @@
 {
+  "version": "16.2.1",
   "riot_id": 3073,
-  "item_id": "ExperimentalHexplate",
   "name": "Experimental Hexplate",
   "price": 3000,
   "sell": 2100,
   "tier": 3,
   "maps": [
     [
-      "Arena",
-      false
-    ],
-    [
       "SummonersRift",
-      false
+      true
     ],
     [
       "Aram",
+      true
+    ],
+    [
+      "NexusBlitz",
       true
     ],
     [
@@ -23,30 +23,27 @@
       false
     ],
     [
-      "NexusBlitz",
-      true
+      "Arena",
+      false
     ],
     [
-      "SummonersRift",
-      true
+      "UnknownMap33",
+      false
     ],
     [
-      "SummonersRift",
+      "UnknownMap35",
       true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "AttackDamage",
-      "value": 40
+      "AttackDamage": 40
     },
     {
-      "name": "AttackSpeed",
-      "value": 20
+      "AttackSpeed": 20
     },
     {
-      "name": "Health",
-      "value": 450
+      "Health": 450
     }
   ],
   "damage_type": "Unknown",
@@ -113,13 +110,7 @@
     3044,
     1042
   ],
-  "builds_from_item_ids": [
-    "Tunneler",
-    "Phage",
-    "Dagger"
-  ],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

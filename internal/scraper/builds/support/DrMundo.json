@@ -1,20 +1,18 @@
 [
   [
-    "TitanicHydra",
+    "Bandlepipes",
+    "ProtoplasmHarness",
     "RanduinsOmen",
-    "JakshoTheProtean",
-    "SteraksGage",
-    "OverlordsBloodmail",
-    "UnendingDespair"
+    "TitanicHydra"
   ],
   [
-    "Demolish",
-    "SecondWind",
-    "Overgrowth",
-    "MagicalFootwear",
-    "ApproachVelocity",
-    "AttackSpeed",
+    "AbilityHaste",
+    "Health",
     "HealthScaling",
-    "HealthScaling"
+    "NimbusCloak",
+    "Overgrowth",
+    "Scorch",
+    "SecondWind",
+    "Transcendence"
   ]
 ]

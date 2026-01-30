@@ -1,6 +1,6 @@
 {
+  "version": "16.2.1",
   "riot_id": 6690,
-  "item_id": "Rectrix",
   "name": "Rectrix",
   "price": 775,
   "sell": 543,
@@ -8,18 +8,14 @@
   "maps": [
     [
       "SummonersRift",
-      false
-    ],
-    [
-      "Arena",
-      false
+      true
     ],
     [
       "Aram",
       true
     ],
     [
-      "SummonersRift",
+      "NexusBlitz",
       true
     ],
     [
@@ -27,22 +23,24 @@
       false
     ],
     [
-      "SummonersRift",
-      true
+      "Arena",
+      false
     ],
     [
-      "NexusBlitz",
+      "UnknownMap33",
+      false
+    ],
+    [
+      "UnknownMap35",
       true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "MoveSpeed",
-      "value": 4
+      "AttackDamage": 15
     },
     {
-      "name": "AttackDamage",
-      "value": 15
+      "MoveSpeed": 4
     }
   ],
   "damage_type": "Unknown",
@@ -107,21 +105,12 @@
   "builds_from_riot_ids": [
     1036
   ],
-  "builds_from_item_ids": [
-    "LongSword"
-  ],
   "builds_into_riot_ids": [
     3087,
     4003,
     3142,
     6672,
     6700
-  ],
-  "builds_into_item_ids": [
-    "StatikkShiv",
-    "Lifeline",
-    "YoumuusGhostblade",
-    "KrakenSlayer"
   ],
   "ranged": {
     "minimum_damage": "zero",

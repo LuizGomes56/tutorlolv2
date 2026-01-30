@@ -1,21 +1,21 @@
 {
+  "version": "16.2.1",
   "riot_id": 6616,
-  "item_id": "StaffOfFlowingWater",
   "name": "Staff of Flowing Water",
   "price": 2250,
   "sell": 1575,
   "tier": 3,
   "maps": [
     [
-      "NexusBlitz",
+      "SummonersRift",
       true
     ],
     [
-      "SummonersRift",
-      false
+      "Aram",
+      true
     ],
     [
-      "SummonersRift",
+      "NexusBlitz",
       true
     ],
     [
@@ -27,30 +27,26 @@
       false
     ],
     [
-      "SummonersRift",
-      true
+      "UnknownMap33",
+      false
     ],
     [
-      "Aram",
+      "UnknownMap35",
       true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "HealAndShieldPower",
-      "value": 10
+      "AbilityHaste": 15
     },
     {
-      "name": "AbilityPower",
-      "value": 35
+      "AbilityPower": 35
     },
     {
-      "name": "AbilityHaste",
-      "value": 15
+      "BaseManaRegen": 125
     },
     {
-      "name": "BaseManaRegen",
-      "value": 125
+      "HealAndShieldPower": 10
     }
   ],
   "damage_type": "Unknown",
@@ -116,12 +112,7 @@
     3108,
     3114
   ],
-  "builds_from_item_ids": [
-    "FiendishCodex",
-    "ForbiddenIdol"
-  ],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

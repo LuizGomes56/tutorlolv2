@@ -1,20 +1,19 @@
 [
   [
-    "SunderedSky",
     "DeathsDance",
+    "EndlessHunger",
     "Hullbreaker",
-    "WintersApproach",
     "RanduinsOmen",
-    "KaenicRookern"
+    "SunderedSky",
+    "WintersApproach"
   ],
   [
-    "Demolish",
+    "AdaptiveForce",
     "BonePlating",
-    "Overgrowth",
-    "PresenceOfMind",
+    "Demolish",
+    "HealthScaling",
     "LastStand",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "Overgrowth",
+    "PresenceOfMind"
   ]
 ]

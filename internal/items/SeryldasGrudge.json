@@ -1,6 +1,6 @@
 {
+  "version": "16.2.1",
   "riot_id": 6694,
-  "item_id": "SeryldasGrudge",
   "name": "Serylda's Grudge",
   "price": 3000,
   "sell": 2100,
@@ -11,8 +11,8 @@
       true
     ],
     [
-      "SummonersRift",
-      false
+      "Aram",
+      true
     ],
     [
       "NexusBlitz",
@@ -23,30 +23,27 @@
       false
     ],
     [
-      "SummonersRift",
-      true
-    ],
-    [
-      "Aram",
-      true
-    ],
-    [
       "Arena",
       false
+    ],
+    [
+      "UnknownMap33",
+      false
+    ],
+    [
+      "UnknownMap35",
+      true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "AttackDamage",
-      "value": 40
+      "AbilityHaste": 15
     },
     {
-      "name": "ArmorPenetration",
-      "value": 40
+      "ArmorPenetration": 35
     },
     {
-      "name": "AbilityHaste",
-      "value": 10
+      "AttackDamage": 45
     }
   ],
   "damage_type": "Unknown",
@@ -112,12 +109,7 @@
     3133,
     3035
   ],
-  "builds_from_item_ids": [
-    "CaulfieldsWarhammer",
-    "LastWhisper"
-  ],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

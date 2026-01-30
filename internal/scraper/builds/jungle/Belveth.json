@@ -1,20 +1,19 @@
 [
   [
-    "BladeOfTheRuinedKing",
-    "Terminus",
     "BlackCleaver",
+    "BladeOfTheRuinedKing",
+    "EndlessHunger",
     "GuardianAngel",
     "RanduinsOmen",
-    "GuinsoosRageblade"
+    "Terminus"
   ],
   [
-    "Triumph",
-    "LegendAlacrity",
-    "CoupDeGrace",
-    "MagicalFootwear",
+    "AdaptiveForce",
     "CosmicInsight",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "CoupDeGrace",
+    "HealthScaling",
+    "LegendAlacrity",
+    "MagicalFootwear",
+    "Triumph"
   ]
 ]

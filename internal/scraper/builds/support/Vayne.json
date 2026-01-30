@@ -1,20 +1,19 @@
 [
   [
-    "KrakenSlayer",
-    "PhantomDancer",
-    "WitsEnd",
-    "RanduinsOmen",
-    "MercurialScimitar",
-    "JakshoTheProtean"
+    "Bastionbreaker",
+    "ExperimentalHexplate",
+    "FiendhunterBolts",
+    "SerpentsFang",
+    "Stormrazor",
+    "YoumuusGhostblade"
   ],
   [
-    "Triumph",
-    "LegendAlacrity",
-    "CoupDeGrace",
-    "Conditioning",
-    "Overgrowth",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "CutDown",
+    "Health",
+    "LegendAlacrity",
+    "SuddenImpact",
+    "TreasureHunter",
+    "Triumph"
   ]
 ]

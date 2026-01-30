@@ -1,20 +1,19 @@
 [
   [
-    "SteraksGage",
-    "MawOfMalmortius",
-    "SpiritVisage",
     "GuardianAngel",
+    "MawOfMalmortius",
     "SerpentsFang",
-    "BlackCleaver"
+    "SeryldasGrudge",
+    "SpearOfShojin",
+    "SpiritVisage"
   ],
   [
-    "Triumph",
-    "LegendHaste",
-    "LastStand",
-    "MagicalFootwear",
+    "AdaptiveForce",
     "CosmicInsight",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "HealthScaling",
+    "LastStand",
+    "LegendHaste",
+    "MagicalFootwear",
+    "Triumph"
   ]
 ]

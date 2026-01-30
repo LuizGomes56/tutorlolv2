@@ -307,45 +307,8 @@
         "damageType": "PHYSICAL_DAMAGE",
         "effects": [
           {
-            "description": "Active: Sett pulls in enemies at his front and back along the target direction, dealing physical damage and slowing them by 70% for 0.5 seconds. Facebreaker deals 100 bonus physical damage to monsters.",
+            "description": "Active: Sett pulls in enemies at his front and back along the target direction, dealing physical damage and slowing them by 70% for 0.5 seconds. Facebreaker deals 125 : 250 (based on level) bonus physical damage to monsters.",
             "leveling": [
-              {
-                "attribute": "Monster Physical Damage",
-                "modifiers": [
-                  {
-                    "units": [
-                      "",
-                      "",
-                      "",
-                      "",
-                      ""
-                    ],
-                    "values": [
-                      150.0,
-                      170.0,
-                      190.0,
-                      210.0,
-                      230.0
-                    ]
-                  },
-                  {
-                    "units": [
-                      "% AD",
-                      "% AD",
-                      "% AD",
-                      "% AD",
-                      "% AD"
-                    ],
-                    "values": [
-                      60.0,
-                      60.0,
-                      60.0,
-                      60.0,
-                      60.0
-                    ]
-                  }
-                ]
-              },
               {
                 "attribute": "Physical Damage",
                 "modifiers": [

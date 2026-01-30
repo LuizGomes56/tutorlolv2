@@ -1,7 +1,7 @@
 {
+  "version": "16.2.1",
   "riot_id": 3430,
-  "item_id": "RiteOfRuin",
-  "name": "Rite of Ruin",
+  "name": "Rite Of Ruin",
   "price": 2500,
   "sell": 1250,
   "tier": 3,
@@ -11,19 +11,15 @@
       false
     ],
     [
+      "Aram",
+      false
+    ],
+    [
       "NexusBlitz",
       false
     ],
     [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "Aram",
+      "Tft",
       false
     ],
     [
@@ -31,22 +27,23 @@
       true
     ],
     [
-      "Tft",
+      "UnknownMap33",
+      false
+    ],
+    [
+      "UnknownMap35",
       false
     ]
   ],
   "prettified_stats": [
     {
-      "name": "CriticalStrikeChance",
-      "value": 25
+      "AbilityHaste": 15
     },
     {
-      "name": "AbilityHaste",
-      "value": 15
+      "AbilityPower": 50
     },
     {
-      "name": "AbilityPower",
-      "value": 50
+      "CriticalStrikeChance": 25
     }
   ],
   "damage_type": "Unknown",
@@ -109,9 +106,7 @@
     }
   },
   "builds_from_riot_ids": [],
-  "builds_from_item_ids": [],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

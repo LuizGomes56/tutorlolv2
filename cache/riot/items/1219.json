@@ -1,0 +1,35 @@
+{
+  "colloq": "",
+  "description": "",
+  "gold": {
+    "base": 0,
+    "purchasable": false,
+    "sell": 0,
+    "total": 0
+  },
+  "image": {
+    "full": "1219.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item0.png",
+    "w": 48,
+    "x": 0,
+    "y": 288
+  },
+  "inStore": false,
+  "maps": {
+    "11": false,
+    "12": false,
+    "21": false,
+    "22": false,
+    "30": false,
+    "33": false,
+    "35": false
+  },
+  "name": "",
+  "plaintext": "",
+  "stats": {},
+  "tags": [
+    "Lane"
+  ]
+}

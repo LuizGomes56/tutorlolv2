@@ -1,20 +1,19 @@
 [
   [
-    "Malignance",
-    "ArchangelsStaff",
-    "Shadowflame",
-    "Cryptbloom",
-    "ZhonyasHourglass",
-    "RabadonsDeathcap"
+    "ArdentCenser",
+    "Bandlepipes",
+    "ImperialMandate",
+    "LocketOfTheIronSolari",
+    "ShurelyasBattlesong",
+    "StaffOfFlowingWater"
   ],
   [
-    "ManaflowBand",
-    "Transcendence",
-    "Scorch",
-    "PresenceOfMind",
-    "CoupDeGrace",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "Conditioning",
+    "GatheringStorm",
+    "Health",
+    "ManaflowBand",
+    "Revitalize",
+    "Transcendence"
   ]
 ]

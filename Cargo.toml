@@ -7,10 +7,14 @@ repository = "https://github.com/LuizGomes56/tutorlolv2"
 description = "League of Legends static library that evaluates damages of abilities, passives, items, and runes"
 
 [dev-dependencies]
+dotenvy = "0.15.7"
 serde_json = "1.0.149"
 bincode = "2.0.1"
 tutorlolv2 = { path = "." }
+tutorlolv2_dev = { path = "tutorlolv2_dev" }
 tutorlolv2_gen = { path = "tutorlolv2_gen", features = ["eval", "glob", "dev"] }
+tutorlolv2_html = { path = "tutorlolv2_html" }
+tokio = { version = "1.49.0", features = ["full"] }
 
 # [workspace]
 # members = [

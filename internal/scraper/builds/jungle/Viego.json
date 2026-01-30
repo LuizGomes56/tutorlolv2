@@ -1,20 +1,20 @@
 [
   [
-    "InfinityEdge",
-    "MortalReminder",
     "DeathsDance",
-    "SunderedSky",
+    "InfinityEdge",
     "MawOfMalmortius",
-    "SerpentsFang"
+    "MortalReminder",
+    "SerpentsFang",
+    "SunderedSky"
   ],
   [
-    "Triumph",
-    "LegendAlacrity",
-    "CoupDeGrace",
-    "MagicalFootwear",
-    "CosmicInsight",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "CosmicInsight",
+    "CoupDeGrace",
+    "HealthScaling",
+    "LegendAlacrity",
+    "MagicalFootwear",
+    "Triumph"
   ]
 ]

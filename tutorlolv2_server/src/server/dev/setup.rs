@@ -1,12 +1,12 @@
-use crate::{
-    dev_response,
-    server::dev::images::{IMG_FOLDERS, img_convert_avif},
-};
-use actix_web::{HttpResponse, Responder, get, rt::spawn};
+use crate::dev_response;
+#[cfg(feature = "avif")]
+use crate::server::dev::images::avif::{IMG_FOLDERS, img_convert_avif};
+use actix_web::{HttpResponse, Responder, get};
+use tokio::spawn;
 use tutorlolv2_dev::{
     HTTP_CLIENT,
     gen_factories::{fac_champions::ChampionFactory, fac_items::ItemFactory},
-    setup::update::*,
+    setup::{client::Tag, update::*},
 };
 
 #[get("/project")]
@@ -16,19 +16,23 @@ pub async fn setup_project() -> impl Responder {
     spawn(async move {
         for future in [
             spawn(async move { HTTP_CLIENT.update_riot_cache().await }),
-            spawn(async move { HTTP_CLIENT.update_meraki_cache("champions").await }),
-            spawn(async move { HTTP_CLIENT.update_meraki_cache("items").await }),
+            spawn(async move { HTTP_CLIENT.update_meraki_cache(Tag::Champions).await }),
+            spawn(async move { HTTP_CLIENT.update_meraki_cache(Tag::Items).await }),
         ] {
             let _ = future.await;
         }
 
-        let _ = setup_runes_json();
-        let _ = setup_internal_items();
-        let _ = prettify_internal_items().await;
-        let _ = setup_damaging_items();
-        let _ = ItemFactory::run_all();
-        let _ = ChampionFactory::create_all().await;
-        let _ = ChampionFactory::run_all().await;
+        for f in [
+            setup_runes_json,
+            setup_internal_items,
+            prettify_internal_items,
+            setup_damaging_items,
+            ItemFactory::run_all,
+            ChampionFactory::create_all,
+            ChampionFactory::run_all,
+        ] {
+            let _ = tokio::task::spawn_blocking(f);
+        }
 
         spawn(async move { HTTP_CLIENT.call_scraper().await });
         spawn(async move { HTTP_CLIENT.combo_scraper().await });
@@ -42,7 +46,8 @@ pub async fn setup_project() -> impl Responder {
             let _ = future.await;
         }
 
-        let _ = spawn(img_convert_avif(IMG_FOLDERS)).await;
+        #[cfg(feature = "avif")]
+        let _ = spawn(img_convert_avif(IMG_FOLDERS));
     })
     .await
     .expect("Could not finish setup tasks");
@@ -63,7 +68,7 @@ pub async fn setup_folders() -> impl Responder {
 
 #[get("/champions")]
 pub async fn setup_champions() -> impl Responder {
-    dev_response!(ChampionFactory::run_all().await)
+    dev_response!(ChampionFactory::run_all())
 }
 
 #[get("/items")]

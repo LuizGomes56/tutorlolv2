@@ -1,5 +1,7 @@
 use super::*;
 
+// #![stable]
+
 impl Generator<ItemData> for NashorsTooth {
     fn generate(mut self: Box<Self>) -> MayFail<ItemData> {
         let damage = self.passive(0)?;

@@ -1,20 +1,20 @@
 [
   [
-    "Malignance",
-    "VoidStaff",
-    "Morellonomicon",
-    "Cryptbloom",
     "BansheesVeil",
-    "BloodlettersCurse"
+    "BloodlettersCurse",
+    "Malignance",
+    "Morellonomicon",
+    "VoidStaff",
+    "WintersApproach"
   ],
   [
-    "CheapShot",
-    "GrislyMementos",
-    "RelentlessHunter",
-    "PresenceOfMind",
-    "CoupDeGrace",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "CheapShot",
+    "CoupDeGrace",
+    "GrislyMementos",
+    "HealthScaling",
+    "PresenceOfMind",
+    "RelentlessHunter"
   ]
 ]

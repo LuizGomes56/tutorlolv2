@@ -1,15 +1,11 @@
 {
+  "version": "16.2.1",
   "riot_id": 3152,
-  "item_id": "HextechRocketbelt",
   "name": "Hextech Rocketbelt",
   "price": 2650,
   "sell": 1855,
   "tier": 3,
   "maps": [
-    [
-      "Arena",
-      false
-    ],
     [
       "SummonersRift",
       true
@@ -19,34 +15,35 @@
       true
     ],
     [
+      "NexusBlitz",
+      true
+    ],
+    [
       "Tft",
       false
     ],
     [
-      "SummonersRift",
+      "Arena",
       false
     ],
     [
-      "SummonersRift",
-      true
+      "UnknownMap33",
+      false
     ],
     [
-      "NexusBlitz",
+      "UnknownMap35",
       true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "AbilityPower",
-      "value": 70
+      "AbilityHaste": 20
     },
     {
-      "name": "AbilityHaste",
-      "value": 20
+      "AbilityPower": 70
     },
     {
-      "name": "Health",
-      "value": 300
+      "Health": 300
     }
   ],
   "damage_type": "Unknown",
@@ -113,13 +110,7 @@
     3108,
     1028
   ],
-  "builds_from_item_ids": [
-    "HextechAlternator",
-    "FiendishCodex",
-    "RubyCrystal"
-  ],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

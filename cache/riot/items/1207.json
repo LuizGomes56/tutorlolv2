@@ -1,0 +1,35 @@
+{
+  "colloq": "",
+  "description": "<mainText><stats></stats><br><br><font color = '#00FF00'>Rewards</font><br>• Lump Sum of Gold<br>• Increased gold from minion kills, champion kills, and assists<br>• Boots move to a 7th slot, freeing up your inventory for 6 items</mainText>",
+  "gold": {
+    "base": 0,
+    "purchasable": false,
+    "sell": 0,
+    "total": 0
+  },
+  "image": {
+    "full": "1207.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item0.png",
+    "w": 48,
+    "x": 384,
+    "y": 192
+  },
+  "inStore": false,
+  "maps": {
+    "11": false,
+    "12": false,
+    "21": false,
+    "22": false,
+    "30": false,
+    "33": false,
+    "35": false
+  },
+  "name": "Bot Lane Quest",
+  "plaintext": "",
+  "stats": {},
+  "tags": [
+    "Lane"
+  ]
+}

@@ -12,7 +12,7 @@
       "perLevel": 70.0
     },
     "armor": {
-      "flat": 31.0,
+      "flat": 35.0,
       "perLevel": 5.2
     },
     "magicResistance": {
@@ -20,7 +20,7 @@
       "perLevel": 2.05
     },
     "attackDamage": {
-      "flat": 60.0,
+      "flat": 65.0,
       "perLevel": 3.5
     },
     "attackSpeed": {
@@ -75,11 +75,11 @@
             "leveling": []
           },
           {
-            "description": "Lightning Claws: Volibear's claws ignite with lightning, empowering his basic attacks on-hit to deal 11 : 60 (based on level) (+ 50% AP) bonus magic damage to the target and the nearest visible enemy within 450 units of the target, chaining up to 4 subsequent targets.",
+            "description": "Lightning Claws: Volibear's claws ignite with lightning, empowering his basic attacks on-hit to deal 11 : 60 (based on level) (+ 45% AP) bonus magic damage to the target and the nearest visible enemy within 450 units of the target, chaining up to 4 subsequent targets.",
             "leveling": []
           },
           {
-            "description": "The Relentless Storm: For each stack, Volibear gains 5% (+ 4% per 100 AP) bonus attack speed, up to 25% (+ 20% per 100 AP).",
+            "description": "The Relentless Storm: For each stack, Volibear gains 5% (+ 3% per 100 AP) bonus attack speed, up to 25% (+ 15% per 100 AP).",
             "leveling": []
           }
         ],
@@ -127,10 +127,10 @@
                     ],
                     "values": [
                       12.0,
-                      16.0,
-                      20.0,
-                      24.0,
-                      28.0
+                      15.5,
+                      19.0,
+                      22.5,
+                      26.0
                     ]
                   }
                 ]
@@ -148,10 +148,10 @@
                     ],
                     "values": [
                       24.0,
-                      32.0,
-                      40.0,
-                      48.0,
-                      56.0
+                      31.0,
+                      38.0,
+                      45.0,
+                      52.0
                     ]
                   }
                 ]
@@ -159,7 +159,7 @@
             ]
           },
           {
-            "description": "During this time, Volibear's next basic attack is empowered to have an uncancellable windup, gain 25 bonus range, and pounce on the target, dealing bonus physical damage and stunning them for 1 second. This damage applies life steal at 100% effectiveness.",
+            "description": "During this time, Volibear's next basic attack is empowered to have an uncancellable windup, gain 25 bonus range, and pounce on the target, dealing bonus physical damage and stunning them for 1 second. This damage applies life steal.",
             "leveling": [
               {
                 "attribute": "Bonus Physical Damage",
@@ -268,11 +268,11 @@
                       "% AD"
                     ],
                     "values": [
-                      100.0,
-                      100.0,
-                      100.0,
-                      100.0,
-                      100.0
+                      110.0,
+                      110.0,
+                      110.0,
+                      110.0,
+                      110.0
                     ]
                   },
                   {
@@ -296,7 +296,7 @@
             ]
           },
           {
-            "description": "Frenzied Maul applies life steal at 100% effectiveness.",
+            "description": "Frenzied Maul applies life steal.",
             "leveling": []
           },
           {
@@ -412,7 +412,7 @@
             "leveling": []
           },
           {
-            "description": "The bolt deals magic damage to enemies hit, capped at 650 against non- champions, and slows them by 40% for 2 seconds.",
+            "description": "The bolt deals magic damage to enemies hit, capped against non- champions, and slows them by 40% for 2 seconds.",
             "leveling": [
               {
                 "attribute": "Magic Damage",
@@ -442,11 +442,11 @@
                       "% AP"
                     ],
                     "values": [
-                      80.0,
-                      80.0,
-                      80.0,
-                      80.0,
-                      80.0
+                      70.0,
+                      70.0,
+                      70.0,
+                      70.0,
+                      70.0
                     ]
                   },
                   {
@@ -463,6 +463,43 @@
                       13.0,
                       14.0,
                       15.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Non-Champion Capped Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      190.0,
+                      305.0,
+                      420.0,
+                      535.0,
+                      650.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      70.0,
+                      70.0,
+                      70.0,
+                      70.0,
+                      70.0
                     ]
                   }
                 ]

@@ -1,20 +1,20 @@
 [
   [
-    "ZhonyasHourglass",
-    "Morellonomicon",
+    "BloodlettersCurse",
     "HorizonFocus",
     "Malignance",
-    "BloodlettersCurse",
-    "CosmicDrive"
+    "Morellonomicon",
+    "Shadowflame",
+    "VoidStaff"
   ],
   [
-    "ManaflowBand",
-    "Transcendence",
-    "GatheringStorm",
-    "LegendHaste",
-    "CutDown",
     "AbilityHaste",
     "AdaptiveForce",
-    "HealthScaling"
+    "CutDown",
+    "GatheringStorm",
+    "HealthScaling",
+    "LegendHaste",
+    "ManaflowBand",
+    "Transcendence"
   ]
 ]

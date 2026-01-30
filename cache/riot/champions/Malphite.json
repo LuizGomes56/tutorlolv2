@@ -436,12 +436,12 @@
       "cooldownBurn": "7",
       "cost": [
         50,
-        50,
-        50,
-        50,
-        50
+        55,
+        60,
+        65,
+        70
       ],
-      "costBurn": "50",
+      "costBurn": "50/55/60/65/70",
       "costType": " {{ abilityresourcename }}",
       "datavalues": {},
       "description": "Malphite slams the ground, sending out a shockwave that deals magic damage based on his Armor and reduces the Attack Speed of enemies for a short duration.",
@@ -544,11 +544,13 @@
       "leveltip": {
         "effect": [
           "{{ basedamage }} -> {{ basedamageNL }}",
-          "{{ asreduction }}% -> {{ asreductionNL }}%"
+          "{{ asreduction }}% -> {{ asreductionNL }}%",
+          "{{ cost }} -> {{ costNL }}"
         ],
         "label": [
           "Damage",
-          "Attack Speed Reduction"
+          "Attack Speed Reduction",
+          "@AbilityResourceName@ Cost"
         ]
       },
       "maxammo": "-1",
@@ -569,10 +571,10 @@
     {
       "cooldown": [
         130,
-        105,
-        80
+        115,
+        100
       ],
-      "cooldownBurn": "130/105/80",
+      "cooldownBurn": "130/115/100",
       "cost": [
         100,
         100,

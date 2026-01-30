@@ -1,14 +1,23 @@
 use crate::{
-    JsonRead, JsonWrite, MayFail,
+    ENV_CONFIG, JsonRead, JsonWrite, MayFail,
+    client::{SaveTo, Tag},
+    gen_factories::fac_items::ItemFactory,
     model::{
         items::{Item, MerakiItem},
         riot::RiotCdnItem,
     },
+    parallel_read,
     riot::RiotCdnRune,
 };
+use once_cell::sync::Lazy;
 use regex::Regex;
-use std::{collections::HashMap, fs, path::Path};
-use tutorlolv2_gen::{Attrs, DamageType, GameMap, ItemId, StatName};
+use std::{
+    collections::{BTreeMap, BTreeSet, HashMap},
+    fs,
+    path::Path,
+};
+use tutorlolv2_fmt::{pascal_case, to_ssnake};
+use tutorlolv2_gen::{GameMap, ItemId, StatName};
 
 /// Creates basic folders necessary to run the program. If one of these folders are not found,
 /// The program is likely to panic when an update is called.
@@ -24,10 +33,6 @@ pub fn setup_project_folders() -> MayFail {
         "html/raw/champions",
         "html/raw/items",
         "html/raw/runes",
-        "sprite",
-        "sprite/abilities",
-        "sprite/champions",
-        "sprite/runes",
         "img",
         "img/champions",
         "img/runes",
@@ -48,11 +53,11 @@ pub fn setup_project_folders() -> MayFail {
         "cache/scraper",
         "cache/scraper/combos",
         "cache/scraper/builds",
-        "cache/scraper/builds/top",
-        "cache/scraper/builds/jungle",
-        "cache/scraper/builds/mid",
-        "cache/scraper/builds/adc",
-        "cache/scraper/builds/support",
+        "cache/scraper/builds/Top",
+        "cache/scraper/builds/Jungle",
+        "cache/scraper/builds/Middle",
+        "cache/scraper/builds/Bottom",
+        "cache/scraper/builds/Support",
         "cache/meraki",
         "cache/meraki/champions",
         "cache/meraki/items",
@@ -67,11 +72,11 @@ pub fn setup_project_folders() -> MayFail {
         "internal/scraper",
         "internal/scraper/combos",
         "internal/scraper/builds",
-        "internal/scraper/builds/top",
-        "internal/scraper/builds/jungle",
-        "internal/scraper/builds/mid",
-        "internal/scraper/builds/adc",
-        "internal/scraper/builds/support",
+        "internal/scraper/builds/Top",
+        "internal/scraper/builds/Jungle",
+        "internal/scraper/builds/Middle",
+        "internal/scraper/builds/Bottom",
+        "internal/scraper/builds/Support",
     ] {
         let path = Path::new(dir);
 
@@ -85,96 +90,77 @@ pub fn setup_project_folders() -> MayFail {
 /// Replaces the content found in the files to a shorter and adapted version,
 /// initializes items as default, and Damaging stats must be added separately.
 pub fn setup_internal_items() -> MayFail {
-    let meraki_items = MerakiItem::from_dir("cache/meraki/items")?;
-    let mut riot_items = RiotCdnItem::from_dir("cache/riot/items")?;
+    parallel_read(
+        SaveTo::RiotItemsDir.path(),
+        move |fname, riot_cdn_item: RiotCdnItem| {
+            let meraki_item =
+                MerakiItem::from_file(SaveTo::MerakiCache(Tag::Items, &fname).path()).ok();
+            let riot_id = fname.parse()?;
 
-    println!("[ok] Found {} riot items", riot_items.len());
-    println!("[ok] Found {} meraki items", meraki_items.len());
+            let (stats, tier, builds_from_riot_ids, builds_into_riot_ids) = meraki_item
+                .and_then(|item| Some((item.stats, item.tier, item.builds_from, item.builds_into)))
+                .unwrap_or_default();
 
-    struct ItemCache {
-        meraki_item: MerakiItem,
-        riot_item: RiotCdnItem,
-    }
+            let name = {
+                let rname = riot_cdn_item.name;
+                match rname.is_empty() || rname.starts_with("<") {
+                    true => format!("Unknown_{riot_id}"),
+                    false => rname,
+                }
+            };
 
-    let common_items = meraki_items
-        .into_iter()
-        .filter_map(|(riot_id, meraki_item)| {
-            riot_items.remove(&riot_id).map(|riot_item| {
-                (
-                    riot_id,
-                    ItemCache {
-                        meraki_item,
-                        riot_item,
-                    },
-                )
-            })
-        })
-        .collect::<HashMap<_, _>>();
+            let mut item = Item {
+                version: ENV_CONFIG.lol_version.clone(),
+                maps: riot_cdn_item
+                    .maps
+                    .into_iter()
+                    .map(|(map_id, is_available)| (GameMap::from_u8(map_id), is_available))
+                    .collect::<BTreeMap<_, _>>()
+                    .into_iter()
+                    .collect(),
+                sell: riot_cdn_item.gold.sell,
+                purchasable: riot_cdn_item.gold.purchasable,
+                price: riot_cdn_item.gold.total,
+                riot_id,
+                name,
+                stats,
+                tier,
+                builds_from_riot_ids,
+                builds_into_riot_ids,
+                ..Default::default()
+            };
 
-    println!("Found {} common items", common_items.len());
-
-    if common_items.is_empty() {
-        panic!("No common items found");
-    }
-
-    for (_, item) in common_items {
-        let id = item.meraki_item.id;
-        let item_id = match ItemId::from_riot_id(id) {
-            Some(id) => id,
-            None => {
-                println!("[fail] ItemId::from_riot_id({id})");
-                continue;
+            match riot_id {
+                220000..230000 => item.name += " [Arena]",
+                320000..330000 => item.name += " [U-32]",
+                440000..450000 => item.name += " [U-44]",
+                660000..670000 => item.name += " [U-66]",
+                990000..1000000 => item.name += " [U-99]",
+                _ => {}
             }
-        };
 
-        let ItemCache {
-            meraki_item,
-            riot_item,
-        } = item;
+            let internal_fname = pascal_case(&item.name);
+            let generator_fname = to_ssnake(&internal_fname).to_lowercase();
 
-        let result = Item {
-            item_id,
-            maps: riot_item
-                .maps
-                .into_iter()
-                .map(|(map_id, is_available)| (GameMap::from_u8(map_id), is_available))
-                .collect(),
-            sell: riot_item.gold.sell,
-            riot_id: item_id.to_riot_id(),
-            builds_from_item_ids: meraki_item
-                .builds_from
-                .iter()
-                .filter_map(|v| ItemId::from_riot_id(*v))
-                .collect(),
-            builds_from_riot_ids: meraki_item.builds_from,
-            builds_into_item_ids: meraki_item
-                .builds_into
-                .iter()
-                .filter_map(|v| ItemId::from_riot_id(*v))
-                .collect(),
-            builds_into_riot_ids: meraki_item.builds_into,
-            prettified_stats: Vec::new(),
-            name: meraki_item.name,
-            price: meraki_item.shop.prices.total,
-            damage_type: DamageType::Unknown,
-            attributes: Attrs::Undefined,
-            stats: meraki_item.stats,
-            tier: meraki_item.tier,
-            ranged: Default::default(),
-            melee: Default::default(),
-            purchasable: meraki_item.shop.purchasable && riot_item.gold.purchasable,
-        };
-        result.into_file(format!("internal/items/{item_id:?}.json"))?;
-    }
+            item.into_file(SaveTo::Internal(Tag::Items, &internal_fname).path())?;
 
-    Ok(())
+            let generator_file = ItemFactory::create_from_raw(&internal_fname)?;
+
+            fs::write(
+                SaveTo::Generator(Tag::Items, &generator_fname).path(),
+                generator_file,
+            )?;
+
+            Ok(())
+        },
+    )
 }
 
 /// Reads the cached runes json extracted from Riot's API and generates a new file containing
 /// only the names of each rune, and their ids
 pub fn setup_runes_json() -> MayFail {
     let map = Vec::<RiotCdnRune>::from_file("cache/riot/runes.json")?;
-    let mut result = HashMap::<String, usize>::new();
+    let mut result = BTreeMap::<String, usize>::new();
 
     for tree in map.into_iter() {
         for slot in tree.slots.into_iter() {
@@ -186,88 +172,84 @@ pub fn setup_runes_json() -> MayFail {
     result.into_file("internal/rune_names.json")
 }
 
+static RE_DMGI_PARENS: Lazy<Regex> = Lazy::new(|| Regex::new(r"\{\{[^}]*\}\}").unwrap());
+
 /// Not meant to be used frequently. Just a quick check for every
 /// patch to identify if a new damaging item was added
 pub fn setup_damaging_items() -> MayFail {
-    let re = Regex::new(r"\{\{[^}]*\}\}")?;
-
-    let contains_damage_outside_template = |text: &str| -> bool {
-        let cleaned = re.replace_all(text, "");
+    let likely_damages = |text: &str| -> bool {
+        let cleaned = RE_DMGI_PARENS.replace_all(text, "");
         cleaned.contains("damage")
     };
 
-    let mut is_damaging = Vec::new();
-    let meraki_items = MerakiItem::from_dir("cache/meraki/items")?;
-
-    for (_, result) in meraki_items {
-        if !result.shop.purchasable {
-            continue;
-        }
-
-        let mut found_match = false;
-
-        for passive in &result.passives {
-            if contains_damage_outside_template(&passive.effects) {
-                found_match = true;
-                break;
+    let is_damaging: Vec<_> = parallel_read("cache/meraki/items", {
+        move |_, meraki_item: MerakiItem| {
+            if !meraki_item.shop.purchasable {
+                return Ok(None);
             }
-        }
 
-        if !found_match {
-            for active in &result.active {
-                if contains_damage_outside_template(&active.effects) {
+            let mut found_match = false;
+
+            for passive in &meraki_item.passives {
+                if likely_damages(&passive.effects) {
                     found_match = true;
                     break;
                 }
             }
-        }
 
-        if found_match {
-            is_damaging.push(result.id);
-        }
-    }
+            if !found_match {
+                for active in &meraki_item.active {
+                    if likely_damages(&active.effects) {
+                        found_match = true;
+                        break;
+                    }
+                }
+            }
 
+            Ok(found_match.then_some(meraki_item.id))
+        }
+    })?;
+
+    let mut is_damaging = is_damaging.into_iter().flatten().collect::<Vec<_>>();
     is_damaging.sort();
     is_damaging.into_file("internal/damaging_items.json")
 }
 
-pub async fn prettify_internal_items() -> MayFail {
-    for (riot_id, riot_item) in RiotCdnItem::from_dir("cache/riot/items")? {
+pub fn prettify_internal_items() -> MayFail {
+    parallel_read("cache/riot/items", |riot_id, riot_item| {
         if let Some(item_id) = ItemId::from_riot_id(riot_id.parse()?) {
-            let internal_path = format!("internal/items/{item_id:?}.json",);
+            let internal_path = SaveTo::Internal(Tag::Items, &format!("{item_id:?}")).path();
             let mut internal_item = Item::from_file(&internal_path)?;
             internal_item.prettified_stats = pretiffy_items(&riot_item)?;
             internal_item.into_file(internal_path)?;
         }
-    }
-    Ok(())
+        Ok(())
+    })
 }
+
+static TAGS: [&str; 4] = ["buffedStat", "nerfedStat", "attention", "ornnBonus"];
+static RE_LINE: Lazy<Regex> = Lazy::new(|| Regex::new(r"(.*?)<br>").unwrap());
+static RE_TAG: Lazy<Regex> = Lazy::new(|| {
+    let tags = TAGS.join("|");
+    Regex::new(&format!(r#"<({tags})>(.*?)<\/({tags})>"#)).unwrap()
+});
+static RE_PERCENT_PREFIX: Lazy<Regex> = Lazy::new(|| Regex::new(r"^\s*\d+\s*%?\s*").unwrap());
+static RE_TAG_STRIP: Lazy<Regex> = Lazy::new(|| Regex::new(r"<\/?[^>]+(>|$)").unwrap());
 
 /// Returns the value that will be added to key `prettified_stats` for each item.
 /// Depends on Riot API `item.json` and requires manual maintainance if a new XML tag is added
 fn pretiffy_items(data: &RiotCdnItem) -> MayFail<Vec<StatName>> {
     let mut result = HashMap::<_, _>::default();
 
-    let tag_regex = Regex::new(
-        r#"<(attention|buffedStat|nerfedStat|ornnBonus)>(.*?)<\/(attention|buffedStat|nerfedStat|ornnBonus)>"#,
-    )?;
-    let line_regex = Regex::new(r"(.*?)<br>")?;
-    let percent_prefix_regex = Regex::new(r"^\s*\d+\s*%?\s*")?;
-    let tag_strip_regex = Regex::new(r"<\/?[^>]+(>|$)")?;
-
-    let tags = ["buffedStat", "nerfedStat", "attention", "ornnBonus"];
-
-    let lines = line_regex
-        .captures_iter(&data.description)
-        .collect::<Vec<_>>();
+    let lines = RE_LINE.captures_iter(&data.description).collect::<Vec<_>>();
     let mut line_index = 0usize;
 
-    for caps in tag_regex.captures_iter(&data.description) {
+    for caps in RE_TAG.captures_iter(&data.description) {
         let t = &caps[1];
         let v = caps[2].replace('%', "");
         let mut n = None;
         if line_index < lines.len() {
-            let cleaned = tag_strip_regex
+            let cleaned = RE_TAG_STRIP
                 .replace_all(&lines[line_index][1], "")
                 .trim()
                 .to_string();
@@ -276,9 +258,9 @@ fn pretiffy_items(data: &RiotCdnItem) -> MayFail<Vec<StatName>> {
             }
             line_index += 1;
         }
-        if tags.contains(&t) {
+        if TAGS.contains(&t) {
             if let Some(n_val) = &n {
-                let j = percent_prefix_regex.replace(n_val, "").trim().to_string();
+                let j = RE_PERCENT_PREFIX.replace(n_val, "").trim().to_string();
                 if !j.is_empty() {
                     match v.parse::<usize>() {
                         Ok(num) => result.insert(j, num),
@@ -293,10 +275,14 @@ fn pretiffy_items(data: &RiotCdnItem) -> MayFail<Vec<StatName>> {
         .into_iter()
         .map(|(key, value)| {
             let name = tutorlolv2_fmt::pascal_case(&key);
-            format!(r#"{{ "name": {name:?}, "value": {value} }}"#)
+            format!("{{{name:?}:{value}}}")
         })
         .collect::<Vec<_>>()
         .join(",");
 
-    Ok(serde_json::from_str::<Vec<StatName>>(&format!("[{json}]"))?)
+    Ok(
+        serde_json::from_str::<BTreeSet<StatName>>(&format!("[{json}]"))?
+            .into_iter()
+            .collect(),
+    )
 }

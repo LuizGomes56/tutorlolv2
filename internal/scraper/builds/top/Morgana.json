@@ -1,20 +1,19 @@
 [
   [
-    "RylaisCrystalScepter",
-    "Morellonomicon",
-    "HorizonFocus",
     "BloodlettersCurse",
-    "VoidStaff",
-    "BansheesVeil"
+    "Cryptbloom",
+    "Malignance",
+    "Morellonomicon",
+    "RabadonsDeathcap",
+    "Shadowflame"
   ],
   [
-    "ManaflowBand",
-    "Transcendence",
-    "Scorch",
+    "AdaptiveForce",
     "CheapShot",
-    "UltimateHunter",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "HealthScaling",
+    "ManaflowBand",
+    "Scorch",
+    "Transcendence",
+    "UltimateHunter"
   ]
 ]

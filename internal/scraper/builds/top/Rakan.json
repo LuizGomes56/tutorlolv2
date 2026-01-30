@@ -1,17 +1,18 @@
 [
   [
-    "HorizonFocus",
+    "LichBane",
     "Morellonomicon",
-    "HextechRocketbelt"
+    "RabadonsDeathcap",
+    "SunfireAegis",
+    "VoidStaff"
   ],
   [
-    "SuddenImpact",
-    "GrislyMementos",
-    "UltimateHunter",
-    "Transcendence",
-    "Scorch",
-    "AttackSpeed",
+    "AbsoluteFocus",
     "AdaptiveForce",
-    "Health"
+    "GrislyMementos",
+    "HealthScaling",
+    "ManaflowBand",
+    "SuddenImpact",
+    "UltimateHunter"
   ]
 ]

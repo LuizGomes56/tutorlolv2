@@ -1,7 +1,9 @@
 use crate::ArrayItem;
 use core::ops::{Deref, DerefMut};
-use std::path::Path;
-use tutorlolv2_gen::{ChampionId, ITEM_ID_TO_RIOT_ID, ItemId, RAW_BLOCK, RUNE_ID_TO_RIOT_ID};
+use std::{ops::Range, path::Path};
+use tutorlolv2_gen::{
+    ChampionId, EvalIdent, ITEM_ID_TO_RIOT_ID, ItemId, RAW_BLOCK, RUNE_ID_TO_RIOT_ID,
+};
 
 pub struct Html {
     inner: String,
@@ -21,7 +23,7 @@ impl Html {
         self.push_str("<footer>Automatically generated content</footer>");
     }
 
-    pub fn add_code(&mut self, offsets: (u32, u32)) {
+    pub fn add_code(&mut self, offsets: Range<usize>) {
         self.push_str(&Self::code_block(offsets));
     }
 
@@ -37,7 +39,7 @@ impl Html {
 
     pub async fn json(enumv: &impl ArrayItem) -> String {
         let file = format!("{enumv:?}");
-        let path = Path::new("../internal")
+        let path = Path::new("internal")
             .join(enumv.folder())
             .join(file)
             .with_extension("json");
@@ -49,7 +51,11 @@ impl Html {
         format!(r#"<div class="column"><h2>{tag}</h2>{code}</div>"#)
     }
 
-    pub fn push_code_block(&mut self, offsets: (u32, u32)) {
+    pub fn push_idents(&mut self, _idents: &[EvalIdent]) {
+        todo!()
+    }
+
+    pub fn push_code_block(&mut self, offsets: Range<usize>) {
         let code = Self::code_block(offsets);
         self.push_str(&format!(
             "<section>
@@ -59,9 +65,8 @@ impl Html {
         ));
     }
 
-    pub fn code_block(offsets: (u32, u32)) -> String {
-        let (i, j) = offsets;
-        let code = &RAW_BLOCK[i as _..j as _];
+    pub fn code_block(offsets: Range<usize>) -> String {
+        let code = &RAW_BLOCK[offsets];
         format!("<pre><code>{code}</code></pre>")
     }
 

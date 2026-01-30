@@ -1,20 +1,20 @@
 [
   [
-    "ImperialMandate",
-    "StaffOfFlowingWater",
-    "KnightsVow",
-    "ShurelyasBattlesong",
     "EchoesOfHelia",
-    "VigilantWardstone"
+    "ImperialMandate",
+    "KnightsVow",
+    "Morellonomicon",
+    "ShurelyasBattlesong",
+    "StaffOfFlowingWater"
   ],
   [
-    "ManaflowBand",
-    "Transcendence",
-    "Scorch",
-    "FontOfLife",
-    "Revitalize",
     "AbilityHaste",
     "AdaptiveForce",
-    "HealthScaling"
+    "FontOfLife",
+    "HealthScaling",
+    "ManaflowBand",
+    "Revitalize",
+    "Scorch",
+    "Transcendence"
   ]
 ]

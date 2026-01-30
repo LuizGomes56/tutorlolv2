@@ -1,20 +1,19 @@
 [
   [
-    "SerpentsFang",
-    "UmbralGlaive",
     "AxiomArc",
-    "TheCollector",
+    "Bastionbreaker",
     "ProfaneHydra",
-    "Hubris"
+    "SerpentsFang",
+    "TheCollector",
+    "UmbralGlaive"
   ],
   [
-    "SuddenImpact",
-    "GrislyMementos",
-    "UltimateHunter",
-    "MagicalFootwear",
+    "AdaptiveForce",
     "CosmicInsight",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "GrislyMementos",
+    "HealthScaling",
+    "MagicalFootwear",
+    "SuddenImpact",
+    "UltimateHunter"
   ]
 ]

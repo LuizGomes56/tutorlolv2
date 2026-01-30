@@ -1,29 +1,21 @@
 {
+  "version": "16.2.1",
   "riot_id": 3156,
-  "item_id": "MawOfMalmortius",
   "name": "Maw of Malmortius",
   "price": 3100,
   "sell": 2170,
   "tier": 3,
   "maps": [
     [
-      "NexusBlitz",
-      true
-    ],
-    [
       "SummonersRift",
-      false
+      true
     ],
     [
       "Aram",
       true
     ],
     [
-      "Arena",
-      false
-    ],
-    [
-      "SummonersRift",
+      "NexusBlitz",
       true
     ],
     [
@@ -31,22 +23,27 @@
       false
     ],
     [
-      "SummonersRift",
+      "Arena",
+      false
+    ],
+    [
+      "UnknownMap33",
+      false
+    ],
+    [
+      "UnknownMap35",
       true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "MagicResist",
-      "value": 40
+      "AbilityHaste": 15
     },
     {
-      "name": "AttackDamage",
-      "value": 60
+      "AttackDamage": 60
     },
     {
-      "name": "AbilityHaste",
-      "value": 15
+      "MagicResist": 40
     }
   ],
   "damage_type": "Unknown",
@@ -112,12 +109,7 @@
     3155,
     3133
   ],
-  "builds_from_item_ids": [
-    "Hexdrinker",
-    "CaulfieldsWarhammer"
-  ],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

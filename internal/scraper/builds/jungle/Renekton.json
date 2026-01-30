@@ -1,20 +1,19 @@
 [
   [
     "BladeOfTheRuinedKing",
+    "EndlessHunger",
+    "RanduinsOmen",
+    "SpiritVisage",
     "Stridebreaker",
-    "DeathsDance",
-    "GuardianAngel",
-    "ProfaneHydra",
-    "RavenousHydra"
+    "SunderedSky"
   ],
   [
-    "Triumph",
-    "LegendAlacrity",
-    "LastStand",
+    "AdaptiveForce",
     "BonePlating",
-    "Unflinching",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "HealthScaling",
+    "LastStand",
+    "LegendAlacrity",
+    "Triumph",
+    "Unflinching"
   ]
 ]

@@ -1,20 +1,19 @@
 [
   [
-    "ProfaneHydra",
-    "UmbralGlaive",
+    "BlackCleaver",
+    "EndlessHunger",
     "MawOfMalmortius",
-    "SpearOfShojin",
-    "Hubris",
-    "AxiomArc"
+    "ProfaneHydra",
+    "SerpentsFang",
+    "UmbralGlaive"
   ],
   [
-    "Triumph",
-    "LegendHaste",
+    "AdaptiveForce",
+    "CashBack",
+    "HealthScaling",
+    "JackOfAllTrades",
     "LastStand",
-    "NimbusCloak",
-    "Transcendence",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "LegendHaste",
+    "Triumph"
   ]
 ]

@@ -1,16 +1,16 @@
 {
-  "active": [],
-  "buildsFrom": [],
-  "buildsInto": [],
-  "name": "Prowler's Claw",
-  "tier": 3,
-  "passives": [
+  "active": [
     {
       "effects": "{{tip|Dash}} to 150 units beyond the {{tt|target enemy champion's location|At the end of the cast time.}}, and upon completing the dash, deal {{as|12% {{as|(+ 5% per 100 '''bonus''' AD)}} of target's '''maximum''' health}} {{as|'''bonus''' physical damage}} to the target. You then deal 20% increased damage to the target for the next 3 seconds.",
       "name": "Sandswipe",
       "unique": true
     }
   ],
+  "buildsFrom": [],
+  "buildsInto": [],
+  "name": "Prowler's Claw",
+  "tier": 3,
+  "passives": [],
   "id": 446693,
   "stats": {
     "abilityPower": {

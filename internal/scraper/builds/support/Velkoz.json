@@ -1,20 +1,19 @@
 [
   [
-    "LiandrysTorment",
-    "ZhonyasHourglass",
-    "Morellonomicon",
     "BansheesVeil",
+    "LiandrysTorment",
     "Malignance",
-    "Stormsurge"
+    "Morellonomicon",
+    "RabadonsDeathcap",
+    "RylaisCrystalScepter"
   ],
   [
-    "ManaflowBand",
-    "Transcendence",
-    "Scorch",
+    "AdaptiveForce",
     "CheapShot",
-    "UltimateHunter",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "HealthScaling",
+    "ManaflowBand",
+    "Scorch",
+    "Transcendence",
+    "UltimateHunter"
   ]
 ]

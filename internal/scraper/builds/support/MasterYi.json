@@ -1,20 +1,20 @@
 [
   [
-    "TheCollector",
-    "WitsEnd",
-    "ExperimentalHexplate",
-    "Terminus",
     "DeathsDance",
-    "LordDominiksRegards"
+    "ExperimentalHexplate",
+    "FiendhunterBolts",
+    "MortalReminder",
+    "Terminus",
+    "WitsEnd"
   ],
   [
-    "SuddenImpact",
-    "GrislyMementos",
-    "TreasureHunter",
-    "Triumph",
-    "LegendAlacrity",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "GrislyMementos",
+    "HealthScaling",
+    "LegendAlacrity",
+    "SuddenImpact",
+    "TreasureHunter",
+    "Triumph"
   ]
 ]

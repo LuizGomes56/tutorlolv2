@@ -1,7 +1,7 @@
 {
   "active": [
     {
-      "effects": "Deal {{as|80% AD}} {{as|physical damage}} to enemies within a {{tip|cr|icononly = true}} 450 radius in front of you.",
+      "effects": "Deal {{as|80% AD}} {{as|physical damage}} to enemies within a {{tip|cr|icononly = true}} 450 radius in front of you. This damage benefits from {{as|{{sti|life steal}}}} at 100% effectiveness.",
       "name": "Ravenous Crescent",
       "unique": true
     }
@@ -16,7 +16,7 @@
   "tier": 3,
   "passives": [
     {
-      "effects": "Basic attacks [[on-hit]] deal {{as|{{rd|40% AD|20% AD}}|ad}} {{as|physical damage}} to other enemies in a {{tip|cr|icononly = true}} 350 radius centered around the target.",
+      "effects": "Basic attacks [[on-hit]] deal {{as|{{rd|40% AD|20% AD}}|ad}} {{as|physical damage}} to other enemies in a {{tip|cr|icononly = true}} 350 radius centered around the target. This damage benefits from {{as|{{sti|life steal}}}} at 100% effectiveness.",
       "name": "Cleave",
       "unique": true
     }

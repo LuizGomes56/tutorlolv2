@@ -70,19 +70,19 @@
   "abilities": [
     [
       {
-        "type": "E",
-        "name": "_3"
+        "type": "Q",
+        "name": "_1"
       },
       {
-        "name": "Mourning Mist",
-        "damage_type": "Magic",
+        "name": "Last Rites",
+        "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "70 + ctx.ap",
-          "105 + ctx.ap",
-          "140 + ctx.ap",
-          "175 + ctx.ap",
-          "210 + ctx.ap"
+          "30 + (0.5 * ctx.ad)",
+          "50 + (0.5 * ctx.ad)",
+          "70 + (0.5 * ctx.ad)",
+          "90 + (0.5 * ctx.ad)",
+          "110 + (0.5 * ctx.ad)"
         ]
       }
     ],
@@ -124,19 +124,19 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_1"
+        "type": "E",
+        "name": "_3"
       },
       {
-        "name": "Last Rites",
-        "damage_type": "Physical",
+        "name": "Mourning Mist",
+        "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "30 + (0.5 * ctx.ad)",
-          "50 + (0.5 * ctx.ad)",
-          "70 + (0.5 * ctx.ad)",
-          "90 + (0.5 * ctx.ad)",
-          "110 + (0.5 * ctx.ad)"
+          "70 + ctx.ap",
+          "105 + ctx.ap",
+          "140 + ctx.ap",
+          "175 + ctx.ap",
+          "210 + ctx.ap"
         ]
       }
     ]

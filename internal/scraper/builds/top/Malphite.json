@@ -1,20 +1,19 @@
 [
   [
-    "KaenicRookern",
-    "Malignance",
-    "RanduinsOmen",
     "AbyssalMask",
     "ForceOfNature",
-    "IcebornGauntlet"
+    "KaenicRookern",
+    "Malignance",
+    "ProtoplasmHarness",
+    "RanduinsOmen"
   ],
   [
-    "ManaflowBand",
-    "Transcendence",
-    "Scorch",
-    "SecondWind",
-    "Overgrowth",
     "AttackSpeed",
     "HealthScaling",
-    "HealthScaling"
+    "ManaflowBand",
+    "Overgrowth",
+    "Scorch",
+    "SecondWind",
+    "Transcendence"
   ]
 ]

@@ -1,6 +1,6 @@
 {
+  "version": "16.2.1",
   "riot_id": 2021,
-  "item_id": "Tunneler",
   "name": "Tunneler",
   "price": 1150,
   "sell": 805,
@@ -11,18 +11,6 @@
       true
     ],
     [
-      "SummonersRift",
-      true
-    ],
-    [
-      "Arena",
-      false
-    ],
-    [
-      "Tft",
-      false
-    ],
-    [
       "Aram",
       true
     ],
@@ -31,18 +19,28 @@
       true
     ],
     [
-      "SummonersRift",
+      "Tft",
       false
+    ],
+    [
+      "Arena",
+      false
+    ],
+    [
+      "UnknownMap33",
+      false
+    ],
+    [
+      "UnknownMap35",
+      true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "AttackDamage",
-      "value": 15
+      "AttackDamage": 15
     },
     {
-      "name": "Health",
-      "value": 250
+      "Health": 250
     }
   ],
   "damage_type": "Unknown",
@@ -108,29 +106,15 @@
     1036,
     1028
   ],
-  "builds_from_item_ids": [
-    "LongSword",
-    "RubyCrystal"
-  ],
   "builds_into_riot_ids": [
+    3181,
     3748,
     3161,
     3814,
-    3181,
     2501,
     3053,
     3073,
     6610
-  ],
-  "builds_into_item_ids": [
-    "TitanicHydra",
-    "SpearOfShojin",
-    "EdgeOfNight",
-    "Hullbreaker",
-    "OverlordsBloodmail",
-    "SteraksGage",
-    "ExperimentalHexplate",
-    "SunderedSky"
   ],
   "ranged": {
     "minimum_damage": "zero",

@@ -11,7 +11,7 @@
       "unique": true
     },
     {
-      "effects": "When fully {{tip|Energized}}, your next basic attack deals {{as|'''bonus''' magic damage}} [[on-hit]] equal to {{as|10% of the target's '''current''' health}}.",
+      "effects": "When fully {{tip|Energized}}, your next basic attack deals {{as|'''bonus''' magic damage}} [[on-hit]] equal to {{as|13% of the target's '''current''' health}}.",
       "name": "Dynamo",
       "unique": true
     },

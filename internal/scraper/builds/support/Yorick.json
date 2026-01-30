@@ -1,20 +1,20 @@
 [
   [
+    "Bandlepipes",
+    "ChempunkChainsword",
+    "Hullbreaker",
     "SeryldasGrudge",
-    "TrinityForce",
-    "Malignance",
-    "Morellonomicon",
-    "Shadowflame",
-    "Hullbreaker"
+    "SpearOfShojin",
+    "TrinityForce"
   ],
   [
-    "ManaflowBand",
-    "Transcendence",
-    "GatheringStorm",
-    "MagicalFootwear",
-    "BiscuitDelivery",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "BiscuitDelivery",
+    "GatheringStorm",
+    "HealthScaling",
+    "MagicalFootwear",
+    "ManaflowBand",
+    "Transcendence"
   ]
 ]

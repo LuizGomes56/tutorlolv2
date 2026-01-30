@@ -15,7 +15,7 @@ incremental = false
 [dependencies]
 tutorlolv2 = { path = "../" }
 pastey = "0.2.1"
-sqlx = { version = "0.8", features = [
+sqlx = { version = "0.8.6", features = [
     "runtime-tokio-rustls",
     "postgres",
     "macros",
@@ -38,5 +38,6 @@ tutorlolv2_dev = { path = "../tutorlolv2_dev", optional = true }
 tutorlolv2_avif = { path = "../tutorlolv2_avif", optional = true }
 
 [features]
-dev = ["tutorlolv2_dev", "tutorlolv2_avif", "tutorlolv2_html"]
-default = []
+dev = ["tutorlolv2_dev", "tutorlolv2_html"]
+avif = ["dev", "tutorlolv2_avif"]
+default = ["dev"]

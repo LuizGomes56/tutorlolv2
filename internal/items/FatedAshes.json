@@ -1,17 +1,17 @@
 {
+  "version": "16.2.1",
   "riot_id": 2508,
-  "item_id": "FatedAshes",
   "name": "Fated Ashes",
   "price": 900,
   "sell": 630,
   "tier": 2,
   "maps": [
     [
-      "Arena",
-      false
+      "SummonersRift",
+      true
     ],
     [
-      "SummonersRift",
+      "Aram",
       true
     ],
     [
@@ -23,22 +23,21 @@
       false
     ],
     [
-      "Aram",
-      true
-    ],
-    [
-      "SummonersRift",
+      "Arena",
       false
     ],
     [
-      "SummonersRift",
+      "UnknownMap33",
+      false
+    ],
+    [
+      "UnknownMap35",
       true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "AbilityPower",
-      "value": 30
+      "AbilityPower": 30
     }
   ],
   "damage_type": "Unknown",
@@ -103,16 +102,9 @@
   "builds_from_riot_ids": [
     1052
   ],
-  "builds_from_item_ids": [
-    "AmplifyingTome"
-  ],
   "builds_into_riot_ids": [
     6653,
     2503
-  ],
-  "builds_into_item_ids": [
-    "LiandrysTorment",
-    "BlackfireTorch"
   ],
   "ranged": {
     "minimum_damage": "zero",

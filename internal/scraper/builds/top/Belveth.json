@@ -1,19 +1,18 @@
 [
   [
+    "BlackCleaver",
+    "Hullbreaker",
     "KrakenSlayer",
-    "Terminus",
-    "NavoriFlickerblade",
-    "Thornmail",
-    "MawOfMalmortius"
+    "SteraksGage",
+    "WitsEnd"
   ],
   [
-    "Triumph",
-    "LegendAlacrity",
-    "LastStand",
+    "AdaptiveForce",
     "BonePlating",
-    "Unflinching",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "Health"
+    "Health",
+    "LastStand",
+    "LegendAlacrity",
+    "Triumph",
+    "Unflinching"
   ]
 ]

@@ -1,13 +1,13 @@
 {
   "active": [
     {
-      "effects": "Call upon a 550-radius beam of light to strike upon the target location after {{fd|2.5}} seconds, granting {{tip|sight}} of the area for the duration. Allies within the area are {{tip|heal|healed}} for {{pp|200 to 400|type=target's level}}, while enemy champions within take {{as|10% of target's '''maximum''' health}} as {{as|true damage}}. '''Can be used while [[death|dead]].'''",
+      "effects": "Call upon a 550-radius beam of light to strike upon the target location after {{fd|2.5}} seconds, granting {{tip|sight}} of the area for the duration. Allies within the area are {{tip|heal|healed}} for {{pp|150 to 350|type=target's level}}, while enemy champions within take {{as|10% of target's '''maximum''' health}} as {{as|true damage}}. '''Can be used while [[death|dead]].'''",
       "name": "Intervention",
       "unique": true
     }
   ],
   "buildsFrom": [
-    3067,
+    3108,
     3114
   ],
   "buildsInto": [],
@@ -17,7 +17,7 @@
   "id": 3107,
   "stats": {
     "abilityPower": {
-      "flat": 0.0,
+      "flat": 30.0,
       "percent": 0.0
     },
     "armor": {
@@ -49,7 +49,7 @@
       "percent": 0.0
     },
     "health": {
-      "flat": 200.0,
+      "flat": 0.0,
       "percent": 0.0
     },
     "lifesteal": {
@@ -76,7 +76,7 @@
   "shop": {
     "purchasable": true,
     "prices": {
-      "total": 2300
+      "total": 2250
     }
   }
 }

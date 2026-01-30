@@ -1,20 +1,19 @@
 [
   [
+    "ChempunkChainsword",
+    "EndlessHunger",
     "Manamune",
-    "SteraksGage",
-    "VoltaicCyclosword",
-    "Thornmail",
     "MawOfMalmortius",
-    "ChempunkChainsword"
+    "SteraksGage",
+    "Thornmail"
   ],
   [
-    "Triumph",
-    "LegendHaste",
-    "LastStand",
+    "AdaptiveForce",
     "AxiomArcanist",
+    "HealthScaling",
+    "LastStand",
+    "LegendHaste",
     "Transcendence",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "Triumph"
   ]
 ]

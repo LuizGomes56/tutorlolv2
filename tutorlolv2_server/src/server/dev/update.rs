@@ -1,6 +1,6 @@
 use crate::dev_response;
 use actix_web::{HttpResponse, Responder, get};
-use tutorlolv2_dev::HTTP_CLIENT;
+use tutorlolv2_dev::{HTTP_CLIENT, setup::client::Tag};
 
 #[get("/riot")]
 pub async fn update_riot() -> impl Responder {
@@ -9,12 +9,12 @@ pub async fn update_riot() -> impl Responder {
 
 #[get("/champions")]
 pub async fn update_champions() -> impl Responder {
-    dev_response!(HTTP_CLIENT.update_meraki_cache("champions").await)
+    dev_response!(HTTP_CLIENT.update_meraki_cache(Tag::Champions).await)
 }
 
 #[get("/items")]
 pub async fn update_items() -> impl Responder {
-    dev_response!(HTTP_CLIENT.update_meraki_cache("items").await)
+    dev_response!(HTTP_CLIENT.update_meraki_cache(Tag::Items).await)
 }
 
 #[get("/combo_scraper")]

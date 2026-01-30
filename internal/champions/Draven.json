@@ -24,7 +24,7 @@
     },
     "attackDamage": {
       "flat": 62.0,
-      "perLevel": 3.6
+      "perLevel": 3.0
     },
     "attackSpeed": {
       "flat": 0.679,
@@ -70,17 +70,55 @@
   "abilities": [
     [
       {
-        "type": "R",
-        "name": "_2"
+        "type": "Q",
+        "name": "_1"
       },
       {
-        "name": "Whirling Death",
+        "name": "Spinning Axe",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "350 + (2.2 * ctx.bonus_ad)",
-          "550 + (2.6 * ctx.bonus_ad)",
-          "750 + (3 * ctx.bonus_ad)"
+          "40 + (0.75 * ctx.bonus_ad)",
+          "45 + (0.85 * ctx.bonus_ad)",
+          "50 + (0.95 * ctx.bonus_ad)",
+          "55 + (1.05 * ctx.bonus_ad)",
+          "60 + (1.15 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_1"
+      },
+      {
+        "name": "Blood Rush",
+        "damage_type": "Unknown",
+        "attributes": "Undefined",
+        "damage": [
+          "0.2",
+          "0.25",
+          "0.3",
+          "0.35",
+          "0.4"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_2"
+      },
+      {
+        "name": "Blood Rush",
+        "damage_type": "Unknown",
+        "attributes": "Undefined",
+        "damage": [
+          "0.5",
+          "0.55",
+          "0.6",
+          "0.65",
+          "0.7"
         ]
       }
     ],
@@ -104,67 +142,19 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_4"
+        "type": "E",
+        "name": "_2"
       },
       {
-        "name": "Whirling Death",
+        "name": "Stand Aside",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "140 + (0.88 * ctx.bonus_ad)",
-          "220 + (1.04 * ctx.bonus_ad)",
-          "300 + (1.2 * ctx.bonus_ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_1"
-      },
-      {
-        "name": "Spinning Axe",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "40 + (0.75 * ctx.bonus_ad)",
-          "45 + (0.85 * ctx.bonus_ad)",
-          "50 + (0.95 * ctx.bonus_ad)",
-          "55 + (1.05 * ctx.bonus_ad)",
-          "60 + (1.15 * ctx.bonus_ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "R",
-        "name": "_3"
-      },
-      {
-        "name": "Whirling Death",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "70 + (0.44 * ctx.bonus_ad)",
-          "110 + (0.52 * ctx.bonus_ad)",
-          "150 + (0.6 * ctx.bonus_ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "R",
-        "name": "_1"
-      },
-      {
-        "name": "Whirling Death",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "175 + (1.1 * ctx.bonus_ad)",
-          "275 + (1.3 * ctx.bonus_ad)",
-          "375 + (1.5 * ctx.bonus_ad)"
+          "0.2",
+          "0.25",
+          "0.3",
+          "0.35",
+          "0.4"
         ]
       }
     ]

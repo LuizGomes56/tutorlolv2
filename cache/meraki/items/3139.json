@@ -1,7 +1,7 @@
 {
   "active": [
     {
-      "effects": "Removes all {{tip|crowd control}} debuffs (except {{tip|Airborne}}) from your champion and grants {{as|50% '''bonus total''' movement speed}} and {{tip|ghosted|ghosting}} for {{fd|1.5}} seconds.",
+      "effects": "Removes all {{tip|crowd control}} debuffs (except {{tip|Airborne}}) from your champion and grants {{as|50% '''bonus total''' movement speed}} and {{tip|ghosted|ghosting}} for 2 seconds.",
       "name": "Quicksilver",
       "unique": true
     }
@@ -34,7 +34,7 @@
       "percent": 0.0
     },
     "attackDamage": {
-      "flat": 40.0,
+      "flat": 50.0,
       "percent": 0.0
     },
     "attackSpeed": {
@@ -58,7 +58,7 @@
       "percent": 10.0
     },
     "magicResistance": {
-      "flat": 40.0,
+      "flat": 35.0,
       "percent": 0.0
     },
     "mana": {

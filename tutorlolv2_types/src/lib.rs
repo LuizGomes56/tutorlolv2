@@ -109,30 +109,29 @@ impl AbilityId {
     serde::Serialize,
     serde::Deserialize,
 )]
-#[serde(tag = "name", content = "value")]
 pub enum StatName {
     AbilityHaste(u16),
     AbilityPower(u16),
+    AdaptiveForce(u16),
     Armor(u16),
-    Lethality(u16),
     ArmorPenetration(u16),
-    MagicPenetration(u16),
     AttackDamage(u16),
     AttackSpeed(u16),
-    GoldPer10Seconds(u16),
-    AdaptiveForce(u16),
+    BaseHealthRegen(u16),
+    BaseManaRegen(u16),
     CriticalStrikeChance(u16),
     CriticalStrikeDamage(u16),
+    GoldPer10Seconds(u16),
+    HealAndShieldPower(u16),
     Health(u16),
+    Lethality(u16),
     LifeSteal(u16),
+    MagicPenetration(u16),
     MagicResist(u16),
     Mana(u16),
     MoveSpeed(u16),
     Omnivamp(u16),
-    BaseHealthRegen(u16),
-    BaseManaRegen(u16),
     Tenacity(u16),
-    HealAndShieldPower(u16),
 }
 
 #[derive(
@@ -152,7 +151,9 @@ pub struct MergeData {
     pub alias: AbilityId,
 }
 
-#[derive(Clone, Copy, Debug, PartialEq, PartialOrd, serde::Serialize, serde::Deserialize)]
+#[derive(
+    Clone, Copy, Debug, Eq, PartialEq, PartialOrd, Ord, serde::Serialize, serde::Deserialize,
+)]
 pub struct DevMergeData {
     pub minimum_damage: AbilityId,
     pub maximum_damage: AbilityId,

@@ -1,11 +1,15 @@
 {
+  "version": "16.2.1",
   "riot_id": 1055,
-  "item_id": "DoransBlade",
   "name": "Doran's Blade",
   "price": 450,
   "sell": 180,
   "tier": 1,
   "maps": [
+    [
+      "SummonersRift",
+      true
+    ],
     [
       "Aram",
       true
@@ -19,30 +23,24 @@
       false
     ],
     [
-      "SummonersRift",
-      true
-    ],
-    [
       "Arena",
       false
     ],
     [
-      "SummonersRift",
+      "UnknownMap33",
       false
     ],
     [
-      "SummonersRift",
+      "UnknownMap35",
       false
     ]
   ],
   "prettified_stats": [
     {
-      "name": "AttackDamage",
-      "value": 10
+      "AttackDamage": 10
     },
     {
-      "name": "Health",
-      "value": 80
+      "Health": 80
     }
   ],
   "damage_type": "Unknown",
@@ -85,7 +83,7 @@
     },
     "lifesteal": {
       "flat": 0.0,
-      "percent": 3.0
+      "percent": 0.0
     },
     "magicResistance": {
       "flat": 0.0,
@@ -101,13 +99,11 @@
     },
     "omnivamp": {
       "flat": 0.0,
-      "percent": 0.0
+      "percent": 2.5
     }
   },
   "builds_from_riot_ids": [],
-  "builds_from_item_ids": [],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

@@ -1,20 +1,20 @@
 [
   [
     "BlackCleaver",
-    "Thornmail",
-    "SpearOfShojin",
-    "KaenicRookern",
-    "UnendingDespair",
-    "RanduinsOmen"
+    "FrozenHeart",
+    "MawOfMalmortius",
+    "SerpentsFang",
+    "SteraksGage",
+    "TitanicHydra"
   ],
   [
-    "ShieldBash",
-    "BonePlating",
-    "Revitalize",
-    "MagicalFootwear",
-    "CosmicInsight",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "HealthScaling",
+    "LegendAlacrity",
+    "Overgrowth",
+    "SecondWind",
+    "ShieldBash",
+    "Triumph"
   ]
 ]

@@ -1,20 +1,19 @@
 [
   [
+    "BladeOfTheRuinedKing",
+    "FiendhunterBolts",
     "LordDominiksRegards",
     "PhantomDancer",
-    "MortalReminder",
     "VoltaicCyclosword",
-    "BladeOfTheRuinedKing",
-    "Bloodthirster"
+    "YoumuusGhostblade"
   ],
   [
-    "SuddenImpact",
+    "AdaptiveForce",
     "GrislyMementos",
-    "TreasureHunter",
-    "LegendAlacrity",
+    "Health",
     "LastStand",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "Health"
+    "LegendAlacrity",
+    "SuddenImpact",
+    "TreasureHunter"
   ]
 ]

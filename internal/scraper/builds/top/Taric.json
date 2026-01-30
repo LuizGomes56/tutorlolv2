@@ -1,19 +1,20 @@
 [
   [
-    "IcebornGauntlet",
-    "Thornmail",
-    "DeadMansPlate",
-    "JakshoTheProtean",
-    "NashorsTooth"
+    "Bandlepipes",
+    "BladeOfTheRuinedKing",
+    "LocketOfTheIronSolari",
+    "SpearOfShojin",
+    "SpiritVisage",
+    "Thornmail"
   ],
   [
-    "PresenceOfMind",
-    "LegendHaste",
-    "LastStand",
-    "CashBack",
-    "JackOfAllTrades",
-    "AttackSpeed",
+    "AbilityHaste",
     "AdaptiveForce",
-    "Health"
+    "Health",
+    "LastStand",
+    "LegendHaste",
+    "ManaflowBand",
+    "PresenceOfMind",
+    "Transcendence"
   ]
 ]

@@ -1,20 +1,19 @@
 [
   [
-    "RylaisCrystalScepter",
-    "BlackfireTorch",
     "BansheesVeil",
-    "Shadowflame",
+    "BloodlettersCurse",
+    "Cryptbloom",
+    "HorizonFocus",
     "Morellonomicon",
-    "CosmicDrive"
+    "Shadowflame"
   ],
   [
+    "AdaptiveForce",
     "CheapShot",
-    "GrislyMementos",
-    "TreasureHunter",
-    "MagicalFootwear",
     "CosmicInsight",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "GrislyMementos",
+    "HealthScaling",
+    "MagicalFootwear",
+    "TreasureHunter"
   ]
 ]

@@ -1,20 +1,19 @@
 [
   [
     "AxiomArc",
-    "SerpentsFang",
     "DeathsDance",
-    "YoumuusGhostblade",
     "MawOfMalmortius",
-    "Eclipse"
+    "Opportunity",
+    "SerpentsFang",
+    "YoumuusGhostblade"
   ],
   [
-    "PresenceOfMind",
-    "LegendAlacrity",
+    "AdaptiveForce",
+    "Health",
     "LastStand",
+    "LegendAlacrity",
+    "PresenceOfMind",
     "SuddenImpact",
-    "UltimateHunter",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "Health"
+    "UltimateHunter"
   ]
 ]

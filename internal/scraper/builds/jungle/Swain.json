@@ -1,19 +1,19 @@
 [
   [
-    "Riftmaker",
     "BlackfireTorch",
-    "RodOfAges",
-    "FrozenHeart",
-    "ForceOfNature"
+    "ForceOfNature",
+    "Malignance",
+    "RanduinsOmen",
+    "SpiritVisage",
+    "UnendingDespair"
   ],
   [
-    "PresenceOfMind",
-    "LegendHaste",
-    "LastStand",
+    "AdaptiveForce",
     "Conditioning",
+    "HealthScaling",
+    "LastStand",
+    "LegendHaste",
     "Overgrowth",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "PresenceOfMind"
   ]
 ]

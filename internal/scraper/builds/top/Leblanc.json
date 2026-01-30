@@ -1,20 +1,17 @@
 [
   [
+    "HextechGunblade",
+    "Morellonomicon",
     "Stormsurge",
-    "BansheesVeil",
-    "HorizonFocus",
-    "Cryptbloom",
-    "LichBane",
-    "Morellonomicon"
+    "VoidStaff"
   ],
   [
-    "SuddenImpact",
-    "GrislyMementos",
-    "RelentlessHunter",
-    "Transcendence",
+    "AdaptiveForce",
     "GatheringStorm",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "GrislyMementos",
+    "HealthScaling",
+    "RelentlessHunter",
+    "SuddenImpact",
+    "Transcendence"
   ]
 ]

@@ -1,6 +1,9 @@
 use crate::{Attrs, DamageType};
 #[cfg(feature = "eval")]
-use crate::{ItemId, RuneId, eval::EvalContext};
+use crate::{ItemId, RuneId, eval::Ctx};
+use bincode::{Decode, Encode};
+use core::str::FromStr;
+use serde::{Deserialize, Serialize};
 #[cfg(feature = "eval")]
 use tutorlolv2_types::*;
 
@@ -8,17 +11,7 @@ use tutorlolv2_types::*;
 /// often have some damage penalty for items and runes, which are considered
 /// by branching over this enum
 #[derive(
-    Clone,
-    Copy,
-    Debug,
-    Eq,
-    Ord,
-    PartialEq,
-    PartialOrd,
-    bincode::Encode,
-    bincode::Decode,
-    serde::Serialize,
-    serde::Deserialize,
+    Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize,
 )]
 #[repr(u8)]
 pub enum AttackType {
@@ -50,17 +43,7 @@ impl<T: AsRef<str>> From<T> for AdaptativeType {
 /// stats to either `Attack Damage` or `Ability Power`. Check the enum [`StatName`]
 /// for more details about all the possibilities
 #[derive(
-    Clone,
-    Copy,
-    Debug,
-    Eq,
-    Ord,
-    PartialEq,
-    PartialOrd,
-    bincode::Encode,
-    bincode::Decode,
-    serde::Serialize,
-    serde::Deserialize,
+    Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize,
 )]
 #[repr(u8)]
 pub enum AdaptativeType {
@@ -78,13 +61,14 @@ pub enum AdaptativeType {
     Debug,
     Default,
     Eq,
+    Hash,
     Ord,
     PartialEq,
     PartialOrd,
-    bincode::Encode,
-    bincode::Decode,
-    serde::Serialize,
-    serde::Deserialize,
+    Encode,
+    Decode,
+    Serialize,
+    Deserialize,
 )]
 #[repr(u8)]
 pub enum Position {
@@ -97,9 +81,18 @@ pub enum Position {
 }
 
 impl Position {
+    pub const VARIANTS: u8 = 5;
+    pub const ARRAY: [Self; Self::VARIANTS as _] = [
+        Position::Top,
+        Position::Jungle,
+        Position::Middle,
+        Position::Bottom,
+        Position::Support,
+    ];
+
     pub const fn from_u8(value: u8) -> Option<Self> {
         match value {
-            0..5 => Some(unsafe { Self::from_u8_unchecked(value) }),
+            0..Self::VARIANTS => Some(unsafe { Self::from_u8_unchecked(value) }),
             _ => None,
         }
     }
@@ -107,16 +100,19 @@ impl Position {
     pub const unsafe fn from_u8_unchecked(value: u8) -> Self {
         unsafe { core::mem::transmute(value) }
     }
+}
 
-    /// Converts a raw string into a [`Position`].
-    pub fn from_raw(raw: &str) -> Option<Self> {
-        match raw {
-            "TOP" => Some(Position::Top),
-            "JUNGLE" => Some(Position::Jungle),
-            "MIDDLE" => Some(Position::Middle),
-            "BOTTOM" => Some(Position::Bottom),
-            "SUPPORT" => Some(Position::Support),
-            _ => None,
+impl FromStr for Position {
+    type Err = &'static str;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "TOP" => Ok(Position::Top),
+            "JUNGLE" => Ok(Position::Jungle),
+            "MIDDLE" => Ok(Position::Middle),
+            "BOTTOM" => Ok(Position::Bottom),
+            "SUPPORT" => Ok(Position::Support),
+            _ => Err("No matches when calling Position::from_str"),
         }
     }
 }
@@ -130,17 +126,17 @@ impl Position {
     Debug,
     Default,
     Eq,
+    Hash,
     Ord,
     PartialEq,
     PartialOrd,
-    bincode::Encode,
-    bincode::Decode,
-    serde::Serialize,
-    serde::Deserialize,
+    Encode,
+    Decode,
+    Serialize,
+    Deserialize,
 )]
 #[repr(u8)]
 pub enum GameMap {
-    #[default]
     SummonersRift,
     Tutorial,
     TwistedTreeline,
@@ -155,6 +151,10 @@ pub enum GameMap {
     Tft,
     Arena,
     Urf,
+    #[default]
+    Unknown,
+    UnknownMap33,
+    UnknownMap35,
 }
 
 #[cfg(feature = "eval")]
@@ -166,6 +166,7 @@ impl GameMap {
             3 => GameMap::Tutorial,
             4 | 10 => GameMap::TwistedTreeline,
             8 => GameMap::Dominion,
+            11 => GameMap::SummonersRift,
             12 | 14 => GameMap::Aram,
             13 => GameMap::Invasion,
             16 => GameMap::DarkStar,
@@ -176,25 +177,17 @@ impl GameMap {
             22 => GameMap::Tft,
             30 => GameMap::Arena,
             // Unknown
+            33 => GameMap::UnknownMap33,
+            35 => GameMap::UnknownMap35,
             0xFF => GameMap::Urf,
-            /* 1 | 2 | 11 | */ _ => GameMap::SummonersRift,
+            _ => GameMap::Unknown,
         }
     }
 }
 
 /// A generic metadata holder for [`AbilityId`], [`ItemId`], or [`RuneId`].
 /// Contains its damage type, attributes, and which instance of the enum the value is.
-#[derive(
-    Clone,
-    Copy,
-    Debug,
-    PartialEq,
-    PartialOrd,
-    bincode::Encode,
-    bincode::Decode,
-    serde::Serialize,
-    serde::Deserialize,
-)]
+#[derive(Clone, Copy, Debug, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize)]
 pub struct TypeMetadata<T> {
     /// Represents a variety of values:
     /// - [`AbilityId`] Which ability key it represents, and its name
@@ -210,12 +203,12 @@ pub struct TypeMetadata<T> {
 
 /// Definition of a closure that lives in the generated static variables of
 /// cache fields, such as [`crate::CHAMPION_CACHE`], [`crate::ITEM_CACHE`], or
-/// [`crate::RUNE_CACHE`]. They all receive a [`EvalContext`], which contains
+/// [`crate::RUNE_CACHE`]. They all receive a [`Ctx`], which contains
 /// more than the necessary information to calculate the damage of some ability,
 /// item, passive, or rune, and they return an [`f32`], which represents the calculated
 /// damage. All of them must be qualified as `const`, capturing no variables
 #[cfg(feature = "eval")]
-pub type ConstClosure = fn(&EvalContext) -> f32;
+pub type ConstClosure = fn(&Ctx) -> f32;
 
 /// Generated data about some champion, held in the static variable [`crate::CHAMPION_CACHE`]
 #[derive(Clone, Copy, Debug, PartialEq, PartialOrd)]
@@ -291,7 +284,7 @@ pub struct CachedChampion {
     /// let closures = [|ctx| { ctx.ap + 50.0 }; 5];
     /// let merge_data = [(0, 2), (4, 3)];
     /// let metadata = [Q::_1Min, Q::_2, Q::_1Max, Q::_4Max, Q::_4Min];
-    /// let eval_ctx = EvalContext::default();
+    /// let eval_ctx = Ctx::default();
     /// for (i, j) in merge_data {
     ///     let min_dmg = closures[i](&eval_ctx);
     ///     let max_dmg = closures[j](&eval_ctx);
@@ -304,14 +297,14 @@ pub struct CachedChampion {
     pub merge_data: &'static [MergeData],
 }
 
-#[derive(Clone, Copy, Debug, PartialEq, PartialOrd, bincode::Encode, serde::Serialize)]
+#[derive(Clone, Copy, Debug, PartialEq, PartialOrd, Encode, Serialize)]
 #[cfg(feature = "eval")]
 pub struct CachedChampionStatsMap {
     pub flat: f32,
     pub per_level: f32,
 }
 
-#[derive(Clone, Copy, Debug, PartialEq, PartialOrd, bincode::Encode, serde::Serialize)]
+#[derive(Clone, Copy, Debug, PartialEq, PartialOrd, Encode, Serialize)]
 #[cfg(feature = "eval")]
 pub struct CachedChampionStats {
     pub health: CachedChampionStatsMap,
@@ -339,15 +332,12 @@ pub struct CachedItem {
     pub tier: u8,
     pub price: u16,
     pub prettified_stats: &'static [StatName],
-    pub damage_type: DamageType,
     pub stats: CachedItemStats,
     pub metadata: TypeMetadata<ItemId>,
     pub ranged_damages: [ConstClosure; 2],
     pub melee_damages: [ConstClosure; 2],
-    pub attributes: Attrs,
     pub deals_damage: bool,
     pub purchasable: bool,
-    pub internal_id: ItemId,
     pub riot_id: u32,
 }
 
@@ -365,7 +355,7 @@ pub struct CachedRune {
     pub undeclared: bool,
 }
 
-#[derive(Clone, Copy, Debug, PartialEq, PartialOrd, bincode::Encode, serde::Serialize)]
+#[derive(Clone, Copy, Debug, PartialEq, PartialOrd, Encode, Serialize)]
 #[cfg(feature = "eval")]
 pub struct CachedItemStats {
     pub ability_power: f32,
@@ -392,6 +382,6 @@ pub struct CachedItemStats {
 /// scenario, this function should never be called, to avoid wasting CPU time with
 /// a compile-time known result
 #[cfg(feature = "eval")]
-pub const fn zero(_: &EvalContext) -> f32 {
+pub const fn zero(_: &Ctx) -> f32 {
     0.0
 }

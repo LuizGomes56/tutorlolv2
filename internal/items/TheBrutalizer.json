@@ -1,27 +1,11 @@
 {
+  "version": "16.2.1",
   "riot_id": 2020,
-  "item_id": "TheBrutalizer",
   "name": "The Brutalizer",
   "price": 1337,
   "sell": 936,
   "tier": 2,
   "maps": [
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "NexusBlitz",
-      true
-    ],
-    [
-      "Arena",
-      false
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
     [
       "SummonersRift",
       true
@@ -31,22 +15,35 @@
       true
     ],
     [
+      "NexusBlitz",
+      true
+    ],
+    [
       "Tft",
       false
+    ],
+    [
+      "Arena",
+      false
+    ],
+    [
+      "UnknownMap33",
+      false
+    ],
+    [
+      "UnknownMap35",
+      true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "Lethality",
-      "value": 5
+      "AbilityHaste": 10
     },
     {
-      "name": "AbilityHaste",
-      "value": 10
+      "AttackDamage": 25
     },
     {
-      "name": "AttackDamage",
-      "value": 25
+      "Lethality": 5
     }
   ],
   "damage_type": "Unknown",
@@ -112,19 +109,11 @@
     2022,
     1037
   ],
-  "builds_from_item_ids": [
-    "GlowingMote",
-    "Pickaxe"
-  ],
   "builds_into_riot_ids": [
-    6698,
     6696,
+    2520,
+    6698,
     6699
-  ],
-  "builds_into_item_ids": [
-    "ProfaneHydra",
-    "AxiomArc",
-    "VoltaicCyclosword"
   ],
   "ranged": {
     "minimum_damage": "zero",

@@ -1,19 +1,20 @@
 [
   [
-    "RanduinsOmen",
-    "JakshoTheProtean",
-    "KnightsVow",
-    "BloodlettersCurse",
-    "NashorsTooth"
+    "ForceOfNature",
+    "KaenicRookern",
+    "ProtoplasmHarness",
+    "Terminus",
+    "TitanicHydra",
+    "WitsEnd"
   ],
   [
-    "MagicalFootwear",
-    "BiscuitDelivery",
-    "ApproachVelocity",
-    "LegendAlacrity",
-    "CutDown",
-    "AttackSpeed",
     "AdaptiveForce",
-    "TenacityAndSlowResist"
+    "AttackSpeed",
+    "BonePlating",
+    "Demolish",
+    "HealthScaling",
+    "LegendAlacrity",
+    "Overgrowth",
+    "PresenceOfMind"
   ]
 ]

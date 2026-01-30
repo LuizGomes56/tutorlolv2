@@ -1,20 +1,19 @@
 [
   [
-    "BlackfireTorch",
     "ArchangelsStaff",
-    "Shadowflame",
-    "RabadonsDeathcap",
-    "ImperialMandate",
-    "BansheesVeil"
+    "BlackfireTorch",
+    "KaenicRookern",
+    "LocketOfTheIronSolari",
+    "Morellonomicon",
+    "Shadowflame"
   ],
   [
-    "ManaflowBand",
     "AbsoluteFocus",
-    "Scorch",
+    "AdaptiveForce",
     "BonePlating",
+    "HealthScaling",
+    "ManaflowBand",
     "Overgrowth",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "Scorch"
   ]
 ]

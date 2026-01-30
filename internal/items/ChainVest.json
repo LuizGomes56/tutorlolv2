@@ -1,31 +1,11 @@
 {
+  "version": "16.2.1",
   "riot_id": 1031,
-  "item_id": "ChainVest",
   "name": "Chain Vest",
   "price": 800,
   "sell": 560,
   "tier": 2,
   "maps": [
-    [
-      "NexusBlitz",
-      true
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
-      "Arena",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "Tft",
-      false
-    ],
     [
       "SummonersRift",
       true
@@ -33,12 +13,31 @@
     [
       "Aram",
       true
+    ],
+    [
+      "NexusBlitz",
+      true
+    ],
+    [
+      "Tft",
+      false
+    ],
+    [
+      "Arena",
+      false
+    ],
+    [
+      "UnknownMap33",
+      false
+    ],
+    [
+      "UnknownMap35",
+      true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "Armor",
-      "value": 40
+      "Armor": 40
     }
   ],
   "damage_type": "Unknown",
@@ -103,13 +102,11 @@
   "builds_from_riot_ids": [
     1029
   ],
-  "builds_from_item_ids": [
-    "ClothArmor"
-  ],
   "builds_into_riot_ids": [
     323075,
     6662,
     3068,
+    2502,
     3002,
     323109,
     3075,
@@ -117,15 +114,6 @@
     323002,
     3742,
     6665
-  ],
-  "builds_into_item_ids": [
-    "IcebornGauntlet",
-    "SunfireAegis",
-    "Trailblazer",
-    "Thornmail",
-    "KnightsVow",
-    "DeadMansPlate",
-    "JakshoTheProtean"
   ],
   "ranged": {
     "minimum_damage": "zero",

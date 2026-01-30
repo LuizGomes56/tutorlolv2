@@ -1,20 +1,20 @@
 [
   [
-    "SteraksGage",
     "DeathsDance",
+    "EndlessHunger",
+    "KrakenSlayer",
     "RanduinsOmen",
-    "WitsEnd",
-    "DeadMansPlate",
-    "FrozenHeart"
+    "SteraksGage",
+    "WitsEnd"
   ],
   [
-    "Triumph",
-    "LegendAlacrity",
-    "LastStand",
-    "Celerity",
-    "Waterwalking",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "Celerity",
+    "HealthScaling",
+    "LastStand",
+    "LegendAlacrity",
+    "Triumph",
+    "Waterwalking"
   ]
 ]

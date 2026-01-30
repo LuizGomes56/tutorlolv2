@@ -1,20 +1,19 @@
 [
   [
+    "Bandlepipes",
     "FrozenHeart",
-    "RanduinsOmen",
-    "AbyssalMask",
     "JakshoTheProtean",
-    "LiandrysTorment",
-    "KnightsVow"
+    "KaenicRookern",
+    "RanduinsOmen",
+    "UnendingDespair"
   ],
   [
-    "Demolish",
-    "SecondWind",
-    "Overgrowth",
-    "ManaflowBand",
-    "Transcendence",
     "AttackSpeed",
+    "Demolish",
     "HealthScaling",
-    "HealthScaling"
+    "ManaflowBand",
+    "Overgrowth",
+    "SecondWind",
+    "Transcendence"
   ]
 ]

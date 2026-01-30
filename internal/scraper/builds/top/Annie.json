@@ -1,19 +1,17 @@
 [
   [
-    "VoidStaff",
-    "LiandrysTorment",
+    "BansheesVeil",
     "RylaisCrystalScepter",
-    "RanduinsOmen",
-    "Morellonomicon"
+    "VoidStaff",
+    "ZhonyasHourglass"
   ],
   [
-    "CheapShot",
-    "GrislyMementos",
-    "RelentlessHunter",
-    "AxiomArcanist",
     "AbsoluteFocus",
     "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "AxiomArcanist",
+    "CheapShot",
+    "GrislyMementos",
+    "HealthScaling",
+    "RelentlessHunter"
   ]
 ]

@@ -1,20 +1,20 @@
 [
   [
-    "UmbralGlaive",
+    "AxiomArc",
     "BlackCleaver",
     "SerpentsFang",
-    "TheCollector",
-    "DeathsDance",
-    "MawOfMalmortius"
+    "SeryldasGrudge",
+    "SunderedSky",
+    "TheCollector"
   ],
   [
-    "SuddenImpact",
-    "GrislyMementos",
-    "UltimateHunter",
-    "Triumph",
-    "CoupDeGrace",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "CoupDeGrace",
+    "GrislyMementos",
+    "HealthScaling",
+    "SuddenImpact",
+    "Triumph",
+    "UltimateHunter"
   ]
 ]

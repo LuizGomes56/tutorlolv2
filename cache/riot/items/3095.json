@@ -19,12 +19,12 @@
     "h": 48,
     "sprite": "item3.png",
     "w": 48,
-    "x": 144,
-    "y": 48
+    "x": 336,
+    "y": 288
   },
   "maps": {
     "11": false,
-    "12": true,
+    "12": false,
     "21": false,
     "22": false,
     "30": false,
@@ -41,6 +41,7 @@
   "tags": [
     "Damage",
     "CriticalStrike",
-    "AttackSpeed"
+    "AttackSpeed",
+    "NonbootsMovement"
   ]
 }

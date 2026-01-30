@@ -1,6 +1,6 @@
 {
+  "version": "16.2.1",
   "riot_id": 2055,
-  "item_id": "ControlWard",
   "name": "Control Ward",
   "price": 75,
   "sell": 30,
@@ -11,15 +11,7 @@
       true
     ],
     [
-      "SummonersRift",
-      false
-    ],
-    [
       "Aram",
-      false
-    ],
-    [
-      "SummonersRift",
       false
     ],
     [
@@ -32,6 +24,14 @@
     ],
     [
       "Arena",
+      false
+    ],
+    [
+      "UnknownMap33",
+      false
+    ],
+    [
+      "UnknownMap35",
       false
     ]
   ],
@@ -96,9 +96,7 @@
     }
   },
   "builds_from_riot_ids": [],
-  "builds_from_item_ids": [],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

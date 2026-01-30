@@ -1,20 +1,20 @@
 [
   [
-    "MortalReminder",
+    "EssenceReaver",
+    "GuardianAngel",
     "ImmortalShieldbow",
     "MercurialScimitar",
-    "GuardianAngel",
-    "MawOfMalmortius",
-    "EdgeOfNight"
+    "MortalReminder",
+    "SerpentsFang"
   ],
   [
-    "PresenceOfMind",
-    "LegendAlacrity",
-    "LastStand",
     "AbsoluteFocus",
-    "GatheringStorm",
-    "AttackSpeed",
     "AdaptiveForce",
-    "Health"
+    "AttackSpeed",
+    "GatheringStorm",
+    "Health",
+    "LastStand",
+    "LegendAlacrity",
+    "PresenceOfMind"
   ]
 ]

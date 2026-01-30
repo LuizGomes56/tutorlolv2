@@ -1,11 +1,19 @@
 {
+  "version": "16.2.1",
   "riot_id": 3222,
-  "item_id": "MikaelsBlessing",
   "name": "Mikael's Blessing",
   "price": 2300,
   "sell": 1610,
   "tier": 3,
   "maps": [
+    [
+      "SummonersRift",
+      true
+    ],
+    [
+      "Aram",
+      true
+    ],
     [
       "NexusBlitz",
       true
@@ -19,38 +27,26 @@
       false
     ],
     [
-      "SummonersRift",
-      true
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
-      "Aram",
-      true
-    ],
-    [
-      "SummonersRift",
+      "UnknownMap33",
       false
+    ],
+    [
+      "UnknownMap35",
+      true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "AbilityHaste",
-      "value": 15
+      "AbilityHaste": 15
     },
     {
-      "name": "Health",
-      "value": 250
+      "BaseManaRegen": 100
     },
     {
-      "name": "BaseManaRegen",
-      "value": 100
+      "HealAndShieldPower": 12
     },
     {
-      "name": "HealAndShieldPower",
-      "value": 12
+      "Health": 250
     }
   ],
   "damage_type": "Unknown",
@@ -116,12 +112,7 @@
     3067,
     3114
   ],
-  "builds_from_item_ids": [
-    "Kindlegem",
-    "ForbiddenIdol"
-  ],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

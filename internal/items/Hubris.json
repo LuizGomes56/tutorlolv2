@@ -1,11 +1,19 @@
 {
+  "version": "16.2.1",
   "riot_id": 6697,
-  "item_id": "Hubris",
   "name": "Hubris",
   "price": 3000,
   "sell": 2100,
   "tier": 3,
   "maps": [
+    [
+      "SummonersRift",
+      true
+    ],
+    [
+      "Aram",
+      false
+    ],
     [
       "NexusBlitz",
       true
@@ -15,38 +23,27 @@
       false
     ],
     [
-      "SummonersRift",
-      false
-    ],
-    [
       "Arena",
       false
     ],
     [
-      "Aram",
+      "UnknownMap33",
       false
     ],
     [
-      "SummonersRift",
+      "UnknownMap35",
       false
-    ],
-    [
-      "SummonersRift",
-      true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "AbilityHaste",
-      "value": 10
+      "AbilityHaste": 10
     },
     {
-      "name": "Lethality",
-      "value": 18
+      "AttackDamage": 60
     },
     {
-      "name": "AttackDamage",
-      "value": 50
+      "Lethality": 18
     }
   ],
   "damage_type": "Unknown",
@@ -112,12 +109,7 @@
     3134,
     3133
   ],
-  "builds_from_item_ids": [
-    "SerratedDirk",
-    "CaulfieldsWarhammer"
-  ],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

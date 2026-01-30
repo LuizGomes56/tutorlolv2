@@ -117,7 +117,7 @@
         "damageType": null,
         "effects": [
           {
-            "description": "Innate: Periodically, Yuumi's next basic attack, which has an uncancelable windup and gains 50 bonus range, ability hit against enemy champions, or Final Chapter hit on ally champions while attached, will heal her for 20 : 110 (based on level) (+ 25% AP). If she is attached to an ally or does so within 4 seconds, they are healed for the same amount.",
+            "description": "Innate: Periodically, Yuumi's next basic attack against an enemy champion is empowered to have an uncancellable windup, gain 50 bonus range and become non-projectile. Upon hitting them with the basic attack or Prowling Projectile, or upon a Final Chapter hit on ally champions while attached, the buff is consumed to heal her for 20 : 110 (based on level) (+ 25% AP). If she is attached to an ally or does so within 4 seconds, they are healed for the same amount.",
             "leveling": []
           },
           {
@@ -202,7 +202,7 @@
             ]
           },
           {
-            "description": "Attached Bonus: Yuumi channels for up to 1.35 seconds to steer the missile at a slower speed. After being in flight for the same duration, the missile accelerates in its current direction to deal increased damage and apply a stronger slow against champions that decays to 20% over 2 seconds.",
+            "description": "Attached Bonus: Yuumi channels for up to 1.35 seconds to steer the missile at a slower speed. After being in flight for the same duration, the missile accelerates in its current direction for 0.5 seconds to deal increased damage and apply a stronger slow against champions that decays to 20% over 2 seconds.",
             "leveling": [
               {
                 "attribute": "Enhanced Slow",
@@ -241,11 +241,11 @@
                     ],
                     "values": [
                       80.0,
-                      140.0,
-                      200.0,
-                      260.0,
-                      320.0,
-                      380.0
+                      135.0,
+                      190.0,
+                      245.0,
+                      300.0,
+                      355.0
                     ]
                   },
                   {
@@ -360,11 +360,11 @@
                       "%"
                     ],
                     "values": [
+                      4.0,
                       5.0,
-                      7.5,
-                      10.0,
-                      12.5,
-                      15.0
+                      6.0,
+                      7.0,
+                      8.0
                     ]
                   }
                 ]
@@ -382,10 +382,10 @@
                     ],
                     "values": [
                       3.0,
+                      4.0,
                       5.0,
-                      7.0,
-                      9.0,
-                      11.0
+                      6.0,
+                      7.0
                     ]
                   },
                   {
@@ -397,11 +397,11 @@
                       "% AP"
                     ],
                     "values": [
-                      4.0,
-                      4.0,
-                      4.0,
-                      4.0,
-                      4.0
+                      3.0,
+                      3.0,
+                      3.0,
+                      3.0,
+                      3.0
                     ]
                   }
                 ]
@@ -829,6 +829,10 @@
                 ]
               }
             ]
+          },
+          {
+            "description": "While not attached, Yuumi can move while channeling Final Chapter.",
+            "leveling": []
           }
         ],
         "name": "Final Chapter"

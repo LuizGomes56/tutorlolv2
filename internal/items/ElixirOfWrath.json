@@ -1,6 +1,6 @@
 {
+  "version": "16.2.1",
   "riot_id": 2140,
-  "item_id": "ElixirOfWrath",
   "name": "Elixir of Wrath",
   "price": 500,
   "sell": 200,
@@ -8,23 +8,7 @@
   "maps": [
     [
       "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
       true
-    ],
-    [
-      "Arena",
-      false
-    ],
-    [
-      "Tft",
-      false
     ],
     [
       "Aram",
@@ -33,6 +17,22 @@
     [
       "NexusBlitz",
       true
+    ],
+    [
+      "Tft",
+      false
+    ],
+    [
+      "Arena",
+      false
+    ],
+    [
+      "UnknownMap33",
+      false
+    ],
+    [
+      "UnknownMap35",
+      false
     ]
   ],
   "prettified_stats": [],
@@ -96,9 +96,7 @@
     }
   },
   "builds_from_riot_ids": [],
-  "builds_from_item_ids": [],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

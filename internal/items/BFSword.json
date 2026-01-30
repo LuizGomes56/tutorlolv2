@@ -1,6 +1,6 @@
 {
+  "version": "16.2.1",
   "riot_id": 1038,
-  "item_id": "BFSword",
   "name": "B. F. Sword",
   "price": 1300,
   "sell": 910,
@@ -8,6 +8,14 @@
   "maps": [
     [
       "SummonersRift",
+      true
+    ],
+    [
+      "Aram",
+      true
+    ],
+    [
+      "NexusBlitz",
       true
     ],
     [
@@ -19,26 +27,17 @@
       false
     ],
     [
-      "SummonersRift",
+      "UnknownMap33",
       false
     ],
     [
-      "Aram",
-      true
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
-      "NexusBlitz",
+      "UnknownMap35",
       true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "AttackDamage",
-      "value": 40
+      "AttackDamage": 40
     }
   ],
   "damage_type": "Unknown",
@@ -101,21 +100,15 @@
     }
   },
   "builds_from_riot_ids": [],
-  "builds_from_item_ids": [],
   "builds_into_riot_ids": [
     3032,
-    3146,
+    3097,
     3072,
-    3026,
-    3031,
+    6671,
+    3095,
     4403,
-    6671
-  ],
-  "builds_into_item_ids": [
-    "YunTalWildarrows",
-    "Bloodthirster",
-    "GuardianAngel",
-    "InfinityEdge"
+    3026,
+    3031
   ],
   "ranged": {
     "minimum_damage": "zero",

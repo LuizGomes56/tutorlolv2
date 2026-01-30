@@ -1,6 +1,6 @@
 {
+  "version": "16.2.1",
   "riot_id": 3084,
-  "item_id": "Heartsteel",
   "name": "Heartsteel",
   "price": 3000,
   "sell": 2100,
@@ -15,34 +15,32 @@
       true
     ],
     [
-      "Tft",
-      false
-    ],
-    [
       "NexusBlitz",
       true
+    ],
+    [
+      "Tft",
+      false
     ],
     [
       "Arena",
       false
     ],
     [
-      "SummonersRift",
+      "UnknownMap33",
       false
     ],
     [
-      "SummonersRift",
+      "UnknownMap35",
       true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "BaseHealthRegen",
-      "value": 100
+      "BaseHealthRegen": 100
     },
     {
-      "name": "Health",
-      "value": 900
+      "Health": 900
     }
   ],
   "damage_type": "Unknown",
@@ -109,13 +107,7 @@
     3801,
     1011
   ],
-  "builds_from_item_ids": [
-    "GiantsBelt",
-    "CrystallineBracer",
-    "GiantsBelt"
-  ],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

@@ -1,20 +1,20 @@
 [
   [
     "BlackCleaver",
-    "Hullbreaker",
-    "Thornmail",
-    "ForceOfNature",
     "ChempunkChainsword",
-    "RanduinsOmen"
+    "ForceOfNature",
+    "Hullbreaker",
+    "RanduinsOmen",
+    "Thornmail"
   ],
   [
-    "Triumph",
-    "LegendAlacrity",
-    "LastStand",
-    "SecondWind",
-    "Unflinching",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "HealthScaling",
+    "LastStand",
+    "LegendAlacrity",
+    "SecondWind",
+    "Triumph",
+    "Unflinching"
   ]
 ]

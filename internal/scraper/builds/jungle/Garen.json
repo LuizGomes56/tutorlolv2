@@ -1,20 +1,19 @@
 [
   [
-    "InfinityEdge",
     "BlackCleaver",
     "ForceOfNature",
-    "SteraksGage",
-    "LordDominiksRegards",
-    "SerpentsFang"
+    "MortalReminder",
+    "RanduinsOmen",
+    "SerpentsFang",
+    "SpearOfShojin"
   ],
   [
-    "Triumph",
-    "LegendHaste",
-    "LastStand",
+    "AdaptiveForce",
     "AxiomArcanist",
     "Celerity",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "HealthScaling",
+    "LastStand",
+    "LegendHaste",
+    "Triumph"
   ]
 ]

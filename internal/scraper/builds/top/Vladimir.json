@@ -1,20 +1,20 @@
 [
   [
-    "Stormsurge",
-    "Shadowflame",
-    "CosmicDrive",
-    "Cryptbloom",
     "HextechRocketbelt",
-    "Morellonomicon"
+    "LiandrysTorment",
+    "Morellonomicon",
+    "Shadowflame",
+    "SpiritVisage",
+    "Stormsurge"
   ],
   [
-    "NimbusCloak",
-    "Transcendence",
-    "GatheringStorm",
-    "LegendHaste",
-    "LastStand",
     "AbilityHaste",
     "AdaptiveForce",
-    "HealthScaling"
+    "GatheringStorm",
+    "HealthScaling",
+    "LastStand",
+    "LegendHaste",
+    "NimbusCloak",
+    "Transcendence"
   ]
 ]

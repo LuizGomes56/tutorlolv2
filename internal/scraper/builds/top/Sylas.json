@@ -1,20 +1,19 @@
 [
   [
-    "CosmicDrive",
     "BloodlettersCurse",
-    "VoidStaff",
-    "LiandrysTorment",
-    "BansheesVeil",
-    "Morellonomicon"
+    "CosmicDrive",
+    "Cryptbloom",
+    "DuskAndDawn",
+    "Morellonomicon",
+    "VoidStaff"
   ],
   [
-    "PresenceOfMind",
-    "LegendHaste",
+    "AdaptiveForce",
+    "HealthScaling",
     "LastStand",
+    "LegendHaste",
+    "PresenceOfMind",
     "SecondWind",
-    "Unflinching",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "Unflinching"
   ]
 ]

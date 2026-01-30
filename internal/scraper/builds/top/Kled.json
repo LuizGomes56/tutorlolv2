@@ -1,20 +1,20 @@
 [
   [
-    "SunderedSky",
+    "LordDominiksRegards",
+    "MawOfMalmortius",
     "MortalReminder",
     "RanduinsOmen",
-    "JakshoTheProtean",
-    "LordDominiksRegards",
-    "ChempunkChainsword"
+    "SunderedSky",
+    "VoltaicCyclosword"
   ],
   [
-    "Triumph",
-    "LegendAlacrity",
-    "LastStand",
-    "Demolish",
-    "BonePlating",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "BonePlating",
+    "Demolish",
+    "HealthScaling",
+    "LastStand",
+    "LegendAlacrity",
+    "Triumph"
   ]
 ]

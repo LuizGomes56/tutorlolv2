@@ -97,7 +97,7 @@ impl CwdPath {
         Self::exists(&path);
 
         let data = std::fs::read_to_string(path)?;
-        Ok(data.rust_fmt().rust_html())
+        Ok(data.rust_html())
     }
 
     /// Returns a `T` that represents a deserialized JSON file, from some `origin` path.
@@ -143,8 +143,14 @@ where
                 .ok_or("Invalid file name")
                 .unwrap();
 
-            let data = std::fs::read(&path).unwrap();
-            let json = serde_json::from_slice(&data).unwrap();
+            let data = std::fs::read(&path)
+                .inspect_err(|e| eprintln!("Failed to read for {path:?}: {e:?}"))
+                .unwrap();
+
+            let json = serde_json::from_slice(&data)
+                .inspect_err(|e| eprintln!("Failed to deserialize for {path:?}: {e:?}"))
+                .unwrap();
+
             let result = f(name, json).unwrap();
 
             (name.to_owned(), result)
@@ -194,7 +200,7 @@ impl<'a> Tracker<'a> {
 /// internal code that will be shown when hovering over some objects in the
 /// frontend application
 pub fn run() -> MayFail {
-    let mut full_block = String::with_capacity(8 * 1024 * 1024);
+    let mut full_block = String::with_capacity(12 * 1024 * 1024);
     let mut full_exports = String::with_capacity(4 * 1024 * 1024);
 
     full_exports.push_str("use crate::*;");
@@ -220,7 +226,7 @@ pub fn run() -> MayFail {
     ] {
         let (start, end) = tracker.record(&value.rust_html().as_const());
         full_exports.push_str(&format!(
-            "{GLOB_FEAT} pub static {name}: (u32, u32) = ({start}, {end});"
+            "{GLOB_FEAT} pub static {name}: Range<usize> = {start}..{end};"
         ));
     }
 
@@ -237,7 +243,7 @@ pub fn run() -> MayFail {
     for task in [
         CwdPath::fwrite("tutorlolv2_gen/src/block.br", compressed_block),
         CwdPath::fwrite("tutorlolv2_gen/src/block.txt", full_block),
-        CwdPath::fwrite("tutorlolv2_gen/src/data.rs", full_exports.rust_fmt()),
+        CwdPath::fwrite("tutorlolv2_gen/src/data.rs", full_exports),
     ] {
         task?
     }

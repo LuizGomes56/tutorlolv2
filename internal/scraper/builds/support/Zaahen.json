@@ -1,20 +1,20 @@
 [
   [
-    "SpearOfShojin",
-    "BlackCleaver",
-    "TitanicHydra",
-    "MawOfMalmortius",
+    "BladeOfTheRuinedKing",
+    "ChempunkChainsword",
     "JakshoTheProtean",
-    "GuardianAngel"
+    "RanduinsOmen",
+    "SteraksGage",
+    "ZekesConvergence"
   ],
   [
-    "Triumph",
-    "LegendHaste",
-    "CoupDeGrace",
-    "BonePlating",
-    "Revitalize",
-    "AttackSpeed",
     "AdaptiveForce",
-    "Health"
+    "AttackSpeed",
+    "BonePlating",
+    "CoupDeGrace",
+    "Health",
+    "LegendHaste",
+    "Revitalize",
+    "Triumph"
   ]
 ]

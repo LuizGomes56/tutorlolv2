@@ -1,15 +1,11 @@
 {
+  "version": "16.2.1",
   "riot_id": 4628,
-  "item_id": "HorizonFocus",
   "name": "Horizon Focus",
-  "price": 2800,
-  "sell": 1925,
+  "price": 2700,
+  "sell": 1890,
   "tier": 3,
   "maps": [
-    [
-      "NexusBlitz",
-      true
-    ],
     [
       "SummonersRift",
       true
@@ -19,8 +15,8 @@
       true
     ],
     [
-      "SummonersRift",
-      false
+      "NexusBlitz",
+      true
     ],
     [
       "Tft",
@@ -31,24 +27,26 @@
       false
     ],
     [
-      "SummonersRift",
+      "UnknownMap33",
+      false
+    ],
+    [
+      "UnknownMap35",
       true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "AbilityHaste",
-      "value": 25
+      "AbilityHaste": 25
     },
     {
-      "name": "AbilityPower",
-      "value": 125
+      "AbilityPower": 75
     }
   ],
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
-      "flat": 115.0,
+      "flat": 75.0,
       "percent": 0.0
     },
     "armor": {
@@ -107,15 +105,9 @@
   "builds_from_riot_ids": [
     3108,
     3108,
-    1026
-  ],
-  "builds_from_item_ids": [
-    "FiendishCodex",
-    "FiendishCodex",
-    "BlastingWand"
+    1052
   ],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

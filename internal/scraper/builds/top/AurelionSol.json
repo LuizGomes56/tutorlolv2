@@ -1,20 +1,19 @@
 [
   [
-    "BloodlettersCurse",
+    "ArchangelsStaff",
     "BansheesVeil",
+    "BloodlettersCurse",
     "Shadowflame",
     "VoidStaff",
-    "ArchangelsStaff",
-    "Morellonomicon"
+    "ZhonyasHourglass"
   ],
   [
-    "ManaflowBand",
     "AbsoluteFocus",
-    "Scorch",
+    "AdaptiveForce",
     "BonePlating",
+    "HealthScaling",
+    "ManaflowBand",
     "Overgrowth",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "Scorch"
   ]
 ]

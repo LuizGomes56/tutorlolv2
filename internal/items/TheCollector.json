@@ -1,17 +1,13 @@
 {
+  "version": "16.2.1",
   "riot_id": 6676,
-  "item_id": "TheCollector",
   "name": "The Collector",
   "price": 3000,
   "sell": 2100,
   "tier": 3,
   "maps": [
     [
-      "Tft",
-      false
-    ],
-    [
-      "NexusBlitz",
+      "SummonersRift",
       true
     ],
     [
@@ -19,34 +15,35 @@
       true
     ],
     [
+      "NexusBlitz",
+      true
+    ],
+    [
+      "Tft",
+      false
+    ],
+    [
       "Arena",
       false
     ],
     [
-      "SummonersRift",
+      "UnknownMap33",
       false
     ],
     [
-      "SummonersRift",
-      true
-    ],
-    [
-      "SummonersRift",
+      "UnknownMap35",
       true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "AttackDamage",
-      "value": 45
+      "AttackDamage": 50
     },
     {
-      "name": "Lethality",
-      "value": 12
+      "CriticalStrikeChance": 25
     },
     {
-      "name": "CriticalStrikeChance",
-      "value": 25
+      "Lethality": 10
     }
   ],
   "damage_type": "Unknown",
@@ -113,13 +110,7 @@
     3134,
     1018
   ],
-  "builds_from_item_ids": [
-    "Pickaxe",
-    "SerratedDirk",
-    "CloakOfAgility"
-  ],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

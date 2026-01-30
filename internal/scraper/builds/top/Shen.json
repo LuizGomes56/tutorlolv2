@@ -1,20 +1,19 @@
 [
   [
-    "KaenicRookern",
+    "Bandlepipes",
+    "DuskAndDawn",
+    "ForceOfNature",
     "HollowRadiance",
-    "RanduinsOmen",
-    "SunfireAegis",
-    "JakshoTheProtean",
-    "SpiritVisage"
+    "SpiritVisage",
+    "UnendingDespair"
   ],
   [
-    "ShieldBash",
-    "SecondWind",
-    "Overgrowth",
-    "BiscuitDelivery",
     "ApproachVelocity",
     "AttackSpeed",
+    "BiscuitDelivery",
     "HealthScaling",
-    "HealthScaling"
+    "Overgrowth",
+    "SecondWind",
+    "ShieldBash"
   ]
 ]

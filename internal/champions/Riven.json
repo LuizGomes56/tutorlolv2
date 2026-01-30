@@ -70,24 +70,6 @@
   "abilities": [
     [
       {
-        "type": "W",
-        "name": "_1"
-      },
-      {
-        "name": "Ki Burst",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "65 + ctx.bonus_ad",
-          "95 + ctx.bonus_ad",
-          "125 + ctx.bonus_ad",
-          "155 + ctx.bonus_ad",
-          "185 + ctx.bonus_ad"
-        ]
-      }
-    ],
-    [
-      {
         "type": "Q",
         "name": "_1"
       },
@@ -119,6 +101,24 @@
           "315 + (2.25 * ctx.bonus_ad)",
           "405 + (2.4 * ctx.bonus_ad)",
           "495 + (2.55 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_1"
+      },
+      {
+        "name": "Ki Burst",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "65 + ctx.bonus_ad",
+          "95 + ctx.bonus_ad",
+          "125 + ctx.bonus_ad",
+          "155 + ctx.bonus_ad",
+          "185 + ctx.bonus_ad"
         ]
       }
     ]

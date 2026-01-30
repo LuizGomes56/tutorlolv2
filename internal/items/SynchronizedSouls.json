@@ -1,11 +1,15 @@
 {
+  "version": "16.2.1",
   "riot_id": 3013,
-  "item_id": "SynchronizedSouls",
   "name": "Synchronized Souls",
   "price": 900,
   "sell": 630,
   "tier": 3,
   "maps": [
+    [
+      "SummonersRift",
+      true
+    ],
     [
       "Aram",
       false
@@ -15,30 +19,25 @@
       true
     ],
     [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
       "Tft",
       false
     ],
     [
-      "SummonersRift",
-      true
+      "Arena",
+      false
     ],
     [
-      "Arena",
+      "UnknownMap33",
+      false
+    ],
+    [
+      "UnknownMap35",
       false
     ]
   ],
   "prettified_stats": [
     {
-      "name": "MoveSpeed",
-      "value": 45
+      "MoveSpeed": 45
     }
   ],
   "damage_type": "Unknown",
@@ -103,14 +102,8 @@
   "builds_from_riot_ids": [
     3010
   ],
-  "builds_from_item_ids": [
-    "SymbioticSoles"
-  ],
   "builds_into_riot_ids": [
     3176
-  ],
-  "builds_into_item_ids": [
-    "ForeverForward"
   ],
   "ranged": {
     "minimum_damage": "zero",

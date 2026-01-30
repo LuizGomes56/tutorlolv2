@@ -5,7 +5,7 @@
   "stats": {
     "health": {
       "flat": 563.0,
-      "perLevel": 104.0
+      "perLevel": 100.0
     },
     "mana": {
       "flat": 480.0,
@@ -13,7 +13,7 @@
     },
     "armor": {
       "flat": 25.0,
-      "perLevel": 4.6
+      "perLevel": 4.0
     },
     "magicResistance": {
       "flat": 30.0,
@@ -67,23 +67,7 @@
   "abilities": {
     "P": [
       {
-        "cooldown": {
-          "attribute": null,
-          "modifiers": [
-            {
-              "units": [
-                "",
-                "",
-                ""
-              ],
-              "values": [
-                8.0,
-                8.0,
-                8.0
-              ]
-            }
-          ]
-        },
+        "cooldown": null,
         "damageType": null,
         "effects": [
           {
@@ -95,7 +79,7 @@
             "leveling": []
           },
           {
-            "description": "Innate: Syndra collects Splinters of Wrath that enhance each of her abilities based on the number of them collected, stacking up to 120 times. She gains Splinters of Wrath from the following:\nPeriodically dealing two instances of ability damage to an enemy champion within 4 seconds grants 1 / 2 / 3 (based on level) Splinters .\nRanking up an ability with any skill points beyond level 1 grants 5 Splinters, up to 85.\nKilling a large minion grants 1 Splinter.",
+            "description": "Innate: Syndra collects Splinters of Wrath that enhance each of her abilities based on the number of them collected, stacking up to 120 times. She gains Splinters of Wrath from the following:\nDealing two instances of ability damage to an enemy champion within 4 seconds grants 1 / 2 / 3 (based on level) Splinters. This cannot occur on the same target more than once every few seconds.\nRanking up an ability with any skill points beyond level 1 grants 5 Splinters, up to 85.\nKilling a large minion grants 1 Splinter.",
             "leveling": []
           },
           {
@@ -146,11 +130,11 @@
                       ""
                     ],
                     "values": [
-                      75.0,
-                      110.0,
-                      145.0,
-                      180.0,
-                      215.0
+                      80.0,
+                      115.0,
+                      150.0,
+                      185.0,
+                      220.0
                     ]
                   },
                   {
@@ -162,11 +146,11 @@
                       "% AP"
                     ],
                     "values": [
-                      60.0,
-                      60.0,
-                      60.0,
-                      60.0,
-                      60.0
+                      65.0,
+                      65.0,
+                      65.0,
+                      65.0,
+                      65.0
                     ]
                   }
                 ]
@@ -207,7 +191,7 @@
         "damageType": "MAGIC_DAMAGE",
         "effects": [
           {
-            "description": "Active: Syndra grabs the nearest Dark Sphere, enemy minion or non-epic monster within 500 units from the target location, and holds the target for 5 seconds. If a Dark Sphere is grabbed, its duration is refreshed; if a minion or monster is grabbed, it is put in stasis. She prioritizes grabbing the nearest unit, then Dark Spheres.",
+            "description": "Active: Syndra telekinetically grabs the nearest Dark Sphere, enemy minion or non-epic monster within 500 units from the target location, and holds the target near her for 5 seconds. If a Dark Sphere is grabbed, its duration is refreshed; if a minion or monster is grabbed, it is put in stasis. She prioritizes grabbing the nearest unit, then Dark Spheres.",
             "leveling": []
           },
           {
@@ -215,7 +199,7 @@
             "leveling": []
           },
           {
-            "description": "Recast: Syndra throws the grabbed target towards the target location, granting sight of their surroundings as they fall and dealing magic damage to them and nearby enemies. All targets hit are slowed by 25% for 1.5 seconds.",
+            "description": "Recast: Syndra throws the grabbed target towards the target location, granting sight of their surroundings as they fall and dealing magic damage to them and nearby enemies once they land. All targets hit are slowed by 25% for 1.5 seconds.",
             "leveling": [
               {
                 "attribute": "Magic Damage",
@@ -353,11 +337,11 @@
                 ""
               ],
               "values": [
-                17.0,
-                17.0,
-                17.0,
-                17.0,
-                17.0
+                15.0,
+                15.0,
+                15.0,
+                15.0,
+                15.0
               ]
             }
           ]

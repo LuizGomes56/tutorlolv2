@@ -11,8 +11,8 @@
       "unique": true
     },
     {
-      "effects": "Restore {{as|{{fd|1.25}} mana}} every second. If you cannot gain mana, {{tip|healing|heal}} {{as|{{fd|0.55}} health}} instead.",
-      "name": "Restoration",
+      "effects": "Restore {{as|1 mana}} every second. Dealing damage to an enemy champion increases the restoration to {{as|2 mana}} for the next 5 seconds. If you cannot gain mana, {{tip|healing|heal}} for{{ft|45% of the value|{{as|{{ap|1*0.45}}|hp}} every second, increased to {{as|{{ap|2*0.45}}|hp}} when dealing damage to an enemy champion}}instead.",
+      "name": "Drain",
       "unique": true
     }
   ],

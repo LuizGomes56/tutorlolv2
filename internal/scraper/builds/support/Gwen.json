@@ -1,20 +1,19 @@
 [
   [
+    "HextechGunblade",
+    "KaenicRookern",
     "RabadonsDeathcap",
-    "ZhonyasHourglass",
-    "Malignance",
-    "CosmicDrive",
-    "Stormsurge",
-    "VoidStaff"
+    "RylaisCrystalScepter",
+    "ZhonyasHourglass"
   ],
   [
-    "PresenceOfMind",
-    "LegendAlacrity",
-    "LastStand",
-    "BonePlating",
-    "Unflinching",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "CosmicInsight",
+    "HealthScaling",
+    "LastStand",
+    "LegendAlacrity",
+    "MagicalFootwear",
+    "Triumph"
   ]
 ]

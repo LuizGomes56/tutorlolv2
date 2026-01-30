@@ -116,11 +116,11 @@
                 ""
               ],
               "values": [
-                12.0,
                 11.0,
                 10.0,
                 9.0,
-                8.0
+                8.0,
+                7.0
               ]
             }
           ]
@@ -435,11 +435,11 @@
                       ""
                     ],
                     "values": [
-                      100.0,
-                      150.0,
-                      200.0,
-                      250.0,
-                      300.0
+                      110.0,
+                      160.0,
+                      210.0,
+                      260.0,
+                      310.0
                     ]
                   },
                   {
@@ -472,11 +472,11 @@
                       ""
                     ],
                     "values": [
-                      50.0,
-                      75.0,
-                      100.0,
-                      125.0,
-                      150.0
+                      55.0,
+                      80.0,
+                      105.0,
+                      130.0,
+                      155.0
                     ]
                   },
                   {
@@ -580,8 +580,30 @@
             ]
           },
           {
-            "description": "Glacial Storm can be recast after 1 second, and does so automatically if Anivia is no longer in range or unable to pay the mana cost, or becomes affected by any form of interrupting crowd control.",
+            "description": "Glacial Storm can be recast after 1 second, and does so automatically if Anivia is no longer in range or unable to pay the mana cost, or becomes affected by any form of cast-inhibiting crowd control.",
             "leveling": []
+          },
+          {
+            "description": "Passive: Flash Frost's slow strength is increased.",
+            "leveling": [
+              {
+                "attribute": "Slow Strength Increase",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      0.0,
+                      10.0,
+                      20.0
+                    ]
+                  }
+                ]
+              }
+            ]
           },
           {
             "description": "Recast: Anivia ends Glacial Storm, dealing one last tick of damage.",

@@ -1,19 +1,20 @@
 [
   [
+    "BansheesVeil",
+    "Cryptbloom",
+    "HorizonFocus",
+    "LiandrysTorment",
     "RabadonsDeathcap",
-    "Morellonomicon",
-    "ShurelyasBattlesong",
-    "VoidStaff",
-    "HorizonFocus"
+    "Shadowflame"
   ],
   [
-    "TasteOfBlood",
-    "GrislyMementos",
-    "UltimateHunter",
-    "ManaflowBand",
-    "Transcendence",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "GrislyMementos",
+    "HealthScaling",
+    "ManaflowBand",
+    "TasteOfBlood",
+    "Transcendence",
+    "UltimateHunter"
   ]
 ]

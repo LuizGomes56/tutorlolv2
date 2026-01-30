@@ -1,19 +1,19 @@
 [
   [
-    "KaenicRookern",
     "ArdentCenser",
-    "NavoriFlickerblade",
-    "UnendingDespair",
-    "Redemption"
+    "KnightsVow",
+    "LocketOfTheIronSolari",
+    "ShurelyasBattlesong",
+    "SpiritVisage"
   ],
   [
-    "MagicalFootwear",
-    "BiscuitDelivery",
-    "CosmicInsight",
-    "Conditioning",
-    "Revitalize",
     "AttackSpeed",
-    "HealthScaling",
-    "HealthScaling"
+    "Conditioning",
+    "CosmicInsight",
+    "MagicalFootwear",
+    "MoveSpeed",
+    "Revitalize",
+    "TenacityAndSlowResist",
+    "TripleTonic"
   ]
 ]

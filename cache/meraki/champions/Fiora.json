@@ -187,7 +187,7 @@
         "damageType": "MAGIC_DAMAGE",
         "effects": [
           {
-            "description": "Active: Fiora enters a defensive stance for 0.75 seconds, during which she is unable to act, prevents all incoming non- turret damage, and gains debuff immunity and crowd control immunity.",
+            "description": "Active: Fiora enters a defensive stance for 0.75 seconds, during which she is unable to act, prevents all incoming non- turret damage, and gains debuff immunity.",
             "leveling": []
           },
           {

@@ -127,13 +127,13 @@
   "spells": [
     {
       "cooldown": [
+        13,
         12,
         11,
         10,
-        9,
-        8
+        9
       ],
-      "cooldownBurn": "12/11/10/9/8",
+      "cooldownBurn": "13/12/11/10/9",
       "cost": [
         60,
         60,
@@ -530,15 +530,15 @@
       "leveltip": {
         "effect": [
           "{{ basedamage }} -> {{ basedamageNL }}",
-          "{{ cost }} -> {{ costNL }}",
           "{{ slowamount*-100.000000 }}% -> {{ slowamountnl*-100.000000 }}%",
-          "{{ cooldown }} -> {{ cooldownNL }}"
+          "{{ cooldown }} -> {{ cooldownNL }}",
+          "{{ cost }} -> {{ costNL }}"
         ],
         "label": [
           "Damage",
-          "Mana Cost",
           "Movement Slow",
-          "Cooldown"
+          "Cooldown",
+          "Mana Cost"
         ]
       },
       "maxammo": "-1",

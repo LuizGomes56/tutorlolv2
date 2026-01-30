@@ -1,17 +1,21 @@
 {
+  "version": "16.2.1",
   "riot_id": 1004,
-  "item_id": "FaerieCharm",
   "name": "Faerie Charm",
   "price": 200,
   "sell": 140,
   "tier": 1,
   "maps": [
     [
-      "NexusBlitz",
+      "SummonersRift",
       true
     ],
     [
-      "SummonersRift",
+      "Aram",
+      true
+    ],
+    [
+      "NexusBlitz",
       true
     ],
     [
@@ -23,22 +27,17 @@
       false
     ],
     [
-      "SummonersRift",
+      "UnknownMap33",
       false
     ],
     [
-      "Aram",
-      true
-    ],
-    [
-      "SummonersRift",
+      "UnknownMap35",
       true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "BaseManaRegen",
-      "value": 50
+      "BaseManaRegen": 50
     }
   ],
   "damage_type": "Unknown",
@@ -101,15 +100,10 @@
     }
   },
   "builds_from_riot_ids": [],
-  "builds_from_item_ids": [],
   "builds_into_riot_ids": [
     3114,
     3012,
     4642
-  ],
-  "builds_into_item_ids": [
-    "ForbiddenIdol",
-    "BandleglassMirror"
   ],
   "ranged": {
     "minimum_damage": "zero",

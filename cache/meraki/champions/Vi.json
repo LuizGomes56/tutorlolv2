@@ -355,7 +355,7 @@
         "damageType": "PHYSICAL_DAMAGE",
         "effects": [
           {
-            "description": "Active: Vi empowers her next basic attack within 6 seconds to have an uncancellable windup, gain 50 bonus range and trigger a blast in the target's direction that deals modified physical damage to enemies hit in a cone.Relentless Force can critically strike for (75% + 40%) AD bonus physical damage against the primary target. Secondary targets take the same damage but do not count as being critically struck.",
+            "description": "Active: Vi empowers her next basic attack within 6 seconds to have an uncancellable windup, gain 50 bonus range and trigger a blast in the target's direction that deals modified physical damage to enemies hit in a cone.Relentless Force can critically strike for (100% + 30%) AD bonus physical damage against the primary target. Secondary targets take the same damage but do not count as being critically struck.",
             "leveling": [
               {
                 "attribute": "Physical Damage",

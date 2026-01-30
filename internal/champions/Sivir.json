@@ -70,6 +70,78 @@
   "abilities": [
     [
       {
+        "type": "Q",
+        "name": "_1"
+      },
+      {
+        "name": "Boomerang Blade",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "60 + (0.7 * ctx.bonus_ad) + (0.6 * ctx.ap)",
+          "85 + (0.7 * ctx.bonus_ad) + (0.6 * ctx.ap)",
+          "110 + (0.7 * ctx.bonus_ad) + (0.6 * ctx.ap)",
+          "135 + (0.7 * ctx.bonus_ad) + (0.6 * ctx.ap)",
+          "160 + (0.7 * ctx.bonus_ad) + (0.6 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_2"
+      },
+      {
+        "name": "Boomerang Blade",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "24 + (0.28 * ctx.bonus_ad) + (0.24 * ctx.ap)",
+          "34 + (0.28 * ctx.bonus_ad) + (0.24 * ctx.ap)",
+          "44 + (0.28 * ctx.bonus_ad) + (0.24 * ctx.ap)",
+          "54 + (0.28 * ctx.bonus_ad) + (0.24 * ctx.ap)",
+          "64 + (0.28 * ctx.bonus_ad) + (0.24 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_3"
+      },
+      {
+        "name": "Boomerang Blade",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "120 + (1.4 * ctx.bonus_ad) + (1.2 * ctx.ap)",
+          "170 + (1.4 * ctx.bonus_ad) + (1.2 * ctx.ap)",
+          "220 + (1.4 * ctx.bonus_ad) + (1.2 * ctx.ap)",
+          "270 + (1.4 * ctx.bonus_ad) + (1.2 * ctx.ap)",
+          "320 + (1.4 * ctx.bonus_ad) + (1.2 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_1"
+      },
+      {
+        "name": "Ricochet",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "(0.8 * ctx.ad)",
+          "(0.85 * ctx.ad)",
+          "(0.9 * ctx.ad)",
+          "(0.95 * ctx.ad)",
+          "ctx.ad"
+        ]
+      }
+    ],
+    [
+      {
         "type": "W",
         "name": "_2"
       },
@@ -88,24 +160,6 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_1"
-      },
-      {
-        "name": "Boomerang Blade",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "60 + ctx.bonus_ad + (0.6 * ctx.ap)",
-          "85 + ctx.bonus_ad + (0.6 * ctx.ap)",
-          "110 + ctx.bonus_ad + (0.6 * ctx.ap)",
-          "135 + ctx.bonus_ad + (0.6 * ctx.ap)",
-          "160 + ctx.bonus_ad + (0.6 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
         "type": "W",
         "name": "_3"
       },
@@ -114,65 +168,11 @@
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "(0.455 * ctx.ad)",
-          "(0.4834375 * ctx.ad)",
-          "(0.511875 * ctx.ad)",
-          "(0.5403125 * ctx.ad)",
-          "(0.56875 * ctx.ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_3"
-      },
-      {
-        "name": "Boomerang Blade",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "120 + (2 * ctx.bonus_ad) + (1.2 * ctx.ap)",
-          "170 + (2 * ctx.bonus_ad) + (1.2 * ctx.ap)",
-          "220 + (2 * ctx.bonus_ad) + (1.2 * ctx.ap)",
-          "270 + (2 * ctx.bonus_ad) + (1.2 * ctx.ap)",
-          "320 + (2 * ctx.bonus_ad) + (1.2 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_2"
-      },
-      {
-        "name": "Boomerang Blade",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "24 + (0.4 * ctx.bonus_ad) + (0.24 * ctx.ap)",
-          "34 + (0.4 * ctx.bonus_ad) + (0.24 * ctx.ap)",
-          "44 + (0.4 * ctx.bonus_ad) + (0.24 * ctx.ap)",
-          "54 + (0.4 * ctx.bonus_ad) + (0.24 * ctx.ap)",
-          "64 + (0.4 * ctx.bonus_ad) + (0.24 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "W",
-        "name": "_1"
-      },
-      {
-        "name": "Ricochet",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "(0.7 * ctx.ad)",
-          "(0.74375 * ctx.ad)",
-          "(0.7875 * ctx.ad)",
-          "(0.83125 * ctx.ad)",
-          "(0.875 * ctx.ad)"
+          "(0.52 * ctx.ad)",
+          "(0.5525 * ctx.ad)",
+          "(0.585 * ctx.ad)",
+          "(0.6175 * ctx.ad)",
+          "(0.65 * ctx.ad)"
         ]
       }
     ],

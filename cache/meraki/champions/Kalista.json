@@ -21,7 +21,7 @@
     },
     "attackDamage": {
       "flat": 57.0,
-      "perLevel": 4.0
+      "perLevel": 4.75
     },
     "attackSpeed": {
       "flat": 0.694,
@@ -75,7 +75,7 @@
             "leveling": []
           },
           {
-            "description": "Innate: Whenever Kalista inputs a movement command during her basic attack windup or the cast time of Pierce, she will dash a short distance in the direction of the inputted location.Kalista cannot dash while immobilized or grounded, and she will be knocked down by any immobilizing or polymorphing crowd control during the dash.",
+            "description": "Innate: Whenever Kalista inputs a movement command during her basic attack windup or the cast time of Pierce, at the end she will dash a short distance in the direction of the inputted location.Kalista cannot dash while immobilized or grounded, and she will be knocked down by any immobilizing or polymorphing crowd control during the dash.",
             "leveling": []
           },
           {
@@ -333,11 +333,11 @@
                       "% AP"
                     ],
                     "values": [
-                      20.0,
-                      20.0,
-                      20.0,
-                      20.0,
-                      20.0
+                      50.0,
+                      50.0,
+                      50.0,
+                      50.0,
+                      50.0
                     ]
                   }
                 ]
@@ -386,11 +386,11 @@
                       "% AP"
                     ],
                     "values": [
-                      20.0,
-                      20.0,
-                      20.0,
-                      20.0,
-                      20.0
+                      65.0,
+                      65.0,
+                      65.0,
+                      65.0,
+                      65.0
                     ]
                   }
                 ]

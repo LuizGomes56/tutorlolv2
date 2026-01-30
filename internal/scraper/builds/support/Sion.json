@@ -1,20 +1,20 @@
 [
   [
-    "EdgeOfNight",
-    "TheCollector",
-    "UnendingDespair",
-    "SerpentsFang",
-    "LordDominiksRegards",
-    "Thornmail"
+    "AbyssalMask",
+    "KnightsVow",
+    "MikaelsBlessing",
+    "ProtoplasmHarness",
+    "Thornmail",
+    "ZekesConvergence"
   ],
   [
-    "ManaflowBand",
     "AbsoluteFocus",
-    "GatheringStorm",
-    "Demolish",
-    "Conditioning",
     "AttackSpeed",
-    "AdaptiveForce",
-    "HealthScaling"
+    "BonePlating",
+    "HealthScaling",
+    "ManaflowBand",
+    "MoveSpeed",
+    "Scorch",
+    "Unflinching"
   ]
 ]

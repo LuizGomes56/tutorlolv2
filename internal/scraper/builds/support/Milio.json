@@ -1,20 +1,20 @@
 [
   [
-    "ArdentCenser",
-    "ShurelyasBattlesong",
     "Dawncore",
+    "LocketOfTheIronSolari",
     "MikaelsBlessing",
-    "StaffOfFlowingWater",
-    "LocketOfTheIronSolari"
+    "Morellonomicon",
+    "ShurelyasBattlesong",
+    "StaffOfFlowingWater"
   ],
   [
-    "ManaflowBand",
-    "Transcendence",
-    "Scorch",
-    "BonePlating",
-    "Revitalize",
     "AbilityHaste",
     "AdaptiveForce",
-    "HealthScaling"
+    "BonePlating",
+    "HealthScaling",
+    "ManaflowBand",
+    "Revitalize",
+    "Scorch",
+    "Transcendence"
   ]
 ]

@@ -1,20 +1,20 @@
 [
   [
-    "Shadowflame",
+    "DuskAndDawn",
+    "LiandrysTorment",
+    "Morellonomicon",
+    "Riftmaker",
     "RunaansHurricane",
-    "TheCollector",
-    "Stormsurge",
-    "VoidStaff",
-    "Morellonomicon"
+    "Shadowflame"
   ],
   [
-    "Triumph",
-    "LegendAlacrity",
-    "CutDown",
-    "AxiomArcanist",
-    "GatheringStorm",
-    "AttackSpeed",
     "AdaptiveForce",
-    "Health"
+    "AttackSpeed",
+    "AxiomArcanist",
+    "CutDown",
+    "GatheringStorm",
+    "Health",
+    "LegendAlacrity",
+    "Triumph"
   ]
 ]

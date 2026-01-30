@@ -5,7 +5,7 @@
   "stats": {
     "health": {
       "flat": 598.0,
-      "perLevel": 111.0
+      "perLevel": 108.0
     },
     "mana": {
       "flat": 400.0,
@@ -13,7 +13,7 @@
     },
     "armor": {
       "flat": 22.0,
-      "perLevel": 4.7
+      "perLevel": 4.2
     },
     "magicResistance": {
       "flat": 30.0,
@@ -275,11 +275,11 @@
                       "% AP"
                     ],
                     "values": [
-                      70.0,
-                      70.0,
-                      70.0,
-                      70.0,
-                      70.0
+                      80.0,
+                      80.0,
+                      80.0,
+                      80.0,
+                      80.0
                     ]
                   }
                 ]
@@ -365,7 +365,7 @@
             "description": "If the tether is not broken by the end of its duration, it fractures to deal magic damage to the target and root them for 1.5 seconds, during which they are revealed.",
             "leveling": [
               {
-                "attribute": "Magic Damage",
+                "attribute": "Fracture Magic Damage",
                 "modifiers": [
                   {
                     "units": [
@@ -494,9 +494,9 @@
                       "% AP"
                     ],
                     "values": [
-                      75.0,
-                      75.0,
-                      75.0
+                      80.0,
+                      80.0,
+                      80.0
                     ]
                   }
                 ]

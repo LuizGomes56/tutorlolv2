@@ -1,15 +1,11 @@
 {
+  "version": "16.2.1",
   "riot_id": 3071,
-  "item_id": "BlackCleaver",
   "name": "Black Cleaver",
   "price": 3000,
   "sell": 2100,
   "tier": 3,
   "maps": [
-    [
-      "Tft",
-      false
-    ],
     [
       "SummonersRift",
       true
@@ -23,30 +19,31 @@
       true
     ],
     [
+      "Tft",
+      false
+    ],
+    [
       "Arena",
       false
     ],
     [
-      "SummonersRift",
+      "UnknownMap33",
       false
     ],
     [
-      "SummonersRift",
+      "UnknownMap35",
       true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "AttackDamage",
-      "value": 40
+      "AbilityHaste": 20
     },
     {
-      "name": "Health",
-      "value": 350
+      "AttackDamage": 40
     },
     {
-      "name": "AbilityHaste",
-      "value": 20
+      "Health": 400
     }
   ],
   "damage_type": "Unknown",
@@ -113,13 +110,7 @@
     3067,
     1037
   ],
-  "builds_from_item_ids": [
-    "Phage",
-    "Kindlegem",
-    "Pickaxe"
-  ],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

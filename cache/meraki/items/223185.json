@@ -6,7 +6,7 @@
   "tier": 1,
   "passives": [
     {
-      "effects": "Increases the effects of [[File:Power Flowers unit icon.png|20px|link=]] ''[[Arena#Power Flowers|Power Flowers]]'' by 20%. Additionally, dealing damage to a ''Power Flower'' grants you {{as|100 '''bonus''' movement speed}} for 3 seconds.",
+      "effects": "Increases the effects of [[File:Power FlowerSquare.png|20px|link=Arena#Power Flowers]] ''[[Arena#Power Flowers|Power Flowers]]'' by 20%. Additionally, dealing damage to a ''Power Flower'' grants you {{as|100 '''bonus''' movement speed}} for 3 seconds.",
       "name": "Agricultural Reaper",
       "unique": true
     }

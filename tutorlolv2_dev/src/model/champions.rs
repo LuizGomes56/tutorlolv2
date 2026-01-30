@@ -1,5 +1,5 @@
 use serde::{Deserialize, Serialize};
-use std::collections::HashMap;
+use std::{collections::HashMap, str::FromStr};
 use tutorlolv2_gen::{
     AbilityId, AdaptativeType, AttackType, Attrs, DamageType, DevMergeData, Position,
 };
@@ -96,7 +96,7 @@ impl MerakiChampion {
             positions: self
                 .positions
                 .into_iter()
-                .map(|pos| Position::from_raw(&pos).unwrap_or_default())
+                .map(|pos| Position::from_str(&pos).unwrap_or_default())
                 .collect(),
             stats: self.stats,
             abilities: abilities.into_iter().collect(),

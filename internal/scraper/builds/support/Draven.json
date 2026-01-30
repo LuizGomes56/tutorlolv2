@@ -1,18 +1,20 @@
 [
   [
-    "Bloodthirster",
+    "ChempunkChainsword",
+    "HexopticsC44",
+    "Hubris",
+    "MortalReminder",
     "RapidFirecannon",
-    "SunderedSky",
-    "Thornmail"
+    "YoumuusGhostblade"
   ],
   [
-    "PresenceOfMind",
-    "LegendAlacrity",
-    "LastStand",
     "AbsoluteFocus",
-    "GatheringStorm",
-    "AttackSpeed",
     "AdaptiveForce",
-    "Health"
+    "AttackSpeed",
+    "GatheringStorm",
+    "Health",
+    "LastStand",
+    "LegendAlacrity",
+    "PresenceOfMind"
   ]
 ]

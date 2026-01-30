@@ -1,17 +1,25 @@
 {
+  "version": "16.2.1",
   "riot_id": 3171,
-  "item_id": "CrimsonLucidity",
   "name": "Crimson Lucidity",
-  "price": 1400,
-  "sell": 980,
+  "price": 900,
+  "sell": 630,
   "tier": 3,
   "maps": [
     [
       "SummonersRift",
-      false
+      true
     ],
     [
       "Aram",
+      false
+    ],
+    [
+      "NexusBlitz",
+      false
+    ],
+    [
+      "Tft",
       false
     ],
     [
@@ -19,30 +27,20 @@
       false
     ],
     [
-      "SummonersRift",
-      true
-    ],
-    [
-      "NexusBlitz",
+      "UnknownMap33",
       false
     ],
     [
-      "SummonersRift",
-      false
-    ],
-    [
-      "Tft",
+      "UnknownMap35",
       false
     ]
   ],
   "prettified_stats": [
     {
-      "name": "AbilityHaste",
-      "value": 25
+      "AbilityHaste": 20
     },
     {
-      "name": "MoveSpeed",
-      "value": 50
+      "MoveSpeed": 45
     }
   ],
   "damage_type": "Unknown",
@@ -96,7 +94,7 @@
       "percent": 0.0
     },
     "movespeed": {
-      "flat": 50.0,
+      "flat": 45.0,
       "percent": 0.0
     },
     "omnivamp": {
@@ -107,11 +105,7 @@
   "builds_from_riot_ids": [
     3158
   ],
-  "builds_from_item_ids": [
-    "IonianBootsOfLucidity"
-  ],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

@@ -12,7 +12,7 @@
       "perLevel": 60.0
     },
     "armor": {
-      "flat": 37.0,
+      "flat": 40.0,
       "perLevel": 4.95
     },
     "magicResistance": {
@@ -87,11 +87,11 @@
         "damageType": null,
         "effects": [
           {
-            "description": "Innate - Shard of the Monolith: Malphite gains increased percentage size equal to 8% of his total armor, capped at 35% increased size at 437.5 armor.",
+            "description": "Innate - Granite Shield: Malphite grants himself a shield equal to 10% of his maximum health. The shield lasts until it is broken, and replenishes to full strength after a few seconds of not taking damage.",
             "leveling": []
           },
           {
-            "description": "Innate: Malphite grants himself a shield equal to 10% of his maximum health. The shield lasts until it is broken, and refreshes after a few seconds of not taking damage.",
+            "description": "Innate - Shard of the Monolith: Malphite gains increased percentage size equal to 8% of his total armor, capped at 35% increased size at 437.5 armor.",
             "leveling": []
           }
         ],
@@ -187,7 +187,7 @@
             ]
           },
           {
-            "description": "Malphite also gains bonus movement speed equal to the raw amount the target lost from the slow for the duration.",
+            "description": "Malphite also gains bonus movement speed equal to the raw amount of movement speed the target lost from the slow for the duration.",
             "leveling": []
           }
         ],
@@ -220,7 +220,7 @@
         "damageType": "PHYSICAL_DAMAGE",
         "effects": [
           {
-            "description": "Active: Malphite empowers his next basic attack within 6 seconds to have an uncancelable windup, gain 50 bonus range, and deal bonus physical damage on-hit.",
+            "description": "Active: Malphite empowers his next basic attack within 6 seconds to have an uncancellable windup, gain 50 bonus range, and deal bonus physical damage on-hit.",
             "leveling": [
               {
                 "attribute": "Bonus Physical Damage",
@@ -383,6 +383,10 @@
             ]
           },
           {
+            "description": "Thunderclap deals 200% damage against monsters.",
+            "leveling": []
+          },
+          {
             "description": "Thunderclap resets Malphite's basic attack timer.",
             "leveling": []
           }
@@ -451,11 +455,11 @@
                       ""
                     ],
                     "values": [
-                      70.0,
-                      110.0,
-                      150.0,
-                      190.0,
-                      230.0
+                      80.0,
+                      120.0,
+                      160.0,
+                      200.0,
+                      240.0
                     ]
                   },
                   {

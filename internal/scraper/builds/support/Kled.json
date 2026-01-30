@@ -1,20 +1,20 @@
 [
   [
+    "Bandlepipes",
+    "Eclipse",
     "Hullbreaker",
-    "OverlordsBloodmail",
-    "JakshoTheProtean",
-    "ChempunkChainsword",
-    "MawOfMalmortius",
-    "RanduinsOmen"
+    "SteraksGage",
+    "Thornmail",
+    "VoltaicCyclosword"
   ],
   [
-    "Triumph",
-    "LegendAlacrity",
-    "LastStand",
-    "SuddenImpact",
-    "DeepWard",
-    "AttackSpeed",
     "AdaptiveForce",
-    "Health"
+    "AttackSpeed",
+    "BonePlating",
+    "Demolish",
+    "HealthScaling",
+    "LastStand",
+    "LegendAlacrity",
+    "Triumph"
   ]
 ]

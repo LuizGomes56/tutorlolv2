@@ -1,27 +1,11 @@
 {
+  "version": "16.2.1",
   "riot_id": 3748,
-  "item_id": "TitanicHydra",
   "name": "Titanic Hydra",
   "price": 3300,
   "sell": 2310,
   "tier": 3,
   "maps": [
-    [
-      "Arena",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
-      "Tft",
-      false
-    ],
     [
       "SummonersRift",
       true
@@ -33,16 +17,30 @@
     [
       "NexusBlitz",
       true
+    ],
+    [
+      "Tft",
+      false
+    ],
+    [
+      "Arena",
+      false
+    ],
+    [
+      "UnknownMap33",
+      false
+    ],
+    [
+      "UnknownMap35",
+      true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "AttackDamage",
-      "value": 40
+      "AttackDamage": 40
     },
     {
-      "name": "Health",
-      "value": 600
+      "Health": 600
     }
   ],
   "damage_type": "Unknown",
@@ -109,13 +107,7 @@
     2021,
     1011
   ],
-  "builds_from_item_ids": [
-    "Tiamat",
-    "Tunneler",
-    "GiantsBelt"
-  ],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

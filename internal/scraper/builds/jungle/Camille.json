@@ -1,18 +1,19 @@
 [
   [
-    "SerpentsFang",
-    "SteraksGage",
-    "GuardianAngel",
-    "KaenicRookern"
+    "AbyssalMask",
+    "ChempunkChainsword",
+    "MawOfMalmortius",
+    "SpearOfShojin",
+    "SunderedSky"
   ],
   [
-    "Triumph",
-    "LegendAlacrity",
+    "AdaptiveForce",
+    "AttackSpeed",
+    "CosmicInsight",
     "CoupDeGrace",
-    "ShieldBash",
-    "BonePlating",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "Health"
+    "HealthScaling",
+    "LegendAlacrity",
+    "MagicalFootwear",
+    "Triumph"
   ]
 ]

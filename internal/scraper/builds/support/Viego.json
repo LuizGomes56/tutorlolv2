@@ -1,20 +1,19 @@
 [
   [
+    "LordDominiksRegards",
     "MortalReminder",
-    "BladeOfTheRuinedKing",
-    "KrakenSlayer",
-    "PhantomDancer",
-    "Opportunity",
-    "SunderedSky"
+    "SerpentsFang",
+    "SunderedSky",
+    "TitanicHydra"
   ],
   [
-    "SuddenImpact",
-    "GrislyMementos",
-    "RelentlessHunter",
-    "Triumph",
-    "LegendAlacrity",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "Celerity",
+    "DeepWard",
+    "HealthScaling",
+    "Scorch",
+    "SuddenImpact",
+    "TreasureHunter"
   ]
 ]

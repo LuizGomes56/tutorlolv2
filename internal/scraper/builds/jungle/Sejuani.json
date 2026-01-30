@@ -1,20 +1,19 @@
 [
   [
-    "JakshoTheProtean",
-    "RanduinsOmen",
-    "SunfireAegis",
+    "Bandlepipes",
+    "FrozenHeart",
     "HollowRadiance",
-    "WarmogsArmor",
-    "ZekesConvergence"
+    "ProtoplasmHarness",
+    "RanduinsOmen",
+    "SunfireAegis"
   ],
   [
-    "FontOfLife",
-    "Conditioning",
-    "Overgrowth",
-    "Triumph",
-    "LegendAlacrity",
     "AttackSpeed",
+    "Conditioning",
+    "FontOfLife",
     "HealthScaling",
-    "HealthScaling"
+    "LegendAlacrity",
+    "Overgrowth",
+    "Triumph"
   ]
 ]

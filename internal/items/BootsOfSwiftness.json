@@ -1,27 +1,11 @@
 {
+  "version": "16.2.1",
   "riot_id": 3009,
-  "item_id": "BootsOfSwiftness",
   "name": "Boots of Swiftness",
   "price": 1000,
   "sell": 700,
   "tier": 2,
   "maps": [
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "Tft",
-      false
-    ],
-    [
-      "Arena",
-      false
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
     [
       "SummonersRift",
       true
@@ -33,12 +17,27 @@
     [
       "NexusBlitz",
       true
+    ],
+    [
+      "Tft",
+      false
+    ],
+    [
+      "Arena",
+      false
+    ],
+    [
+      "UnknownMap33",
+      false
+    ],
+    [
+      "UnknownMap35",
+      true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "MoveSpeed",
-      "value": 70
+      "MoveSpeed": 55
     }
   ],
   "damage_type": "Unknown",
@@ -103,14 +102,8 @@
   "builds_from_riot_ids": [
     1001
   ],
-  "builds_from_item_ids": [
-    "Boots"
-  ],
   "builds_into_riot_ids": [
     3170
-  ],
-  "builds_into_item_ids": [
-    "Swiftmarch"
   ],
   "ranged": {
     "minimum_damage": "zero",

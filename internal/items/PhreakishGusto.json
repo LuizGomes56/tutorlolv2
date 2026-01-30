@@ -1,6 +1,6 @@
 {
+  "version": "16.2.1",
   "riot_id": 1510,
-  "item_id": "PhreakishGusto",
   "name": "Phreakish Gusto",
   "price": 0,
   "sell": 0,
@@ -8,10 +8,10 @@
   "maps": [
     [
       "SummonersRift",
-      false
+      true
     ],
     [
-      "SummonersRift",
+      "Aram",
       true
     ],
     [
@@ -19,19 +19,19 @@
       true
     ],
     [
-      "Arena",
-      true
-    ],
-    [
       "Tft",
       false
     ],
     [
-      "SummonersRift",
+      "Arena",
       true
     ],
     [
-      "Aram",
+      "UnknownMap33",
+      false
+    ],
+    [
+      "UnknownMap35",
       true
     ]
   ],
@@ -96,9 +96,7 @@
     }
   },
   "builds_from_riot_ids": [],
-  "builds_from_item_ids": [],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

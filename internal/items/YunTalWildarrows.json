@@ -1,52 +1,49 @@
 {
+  "version": "16.2.1",
   "riot_id": 3032,
-  "item_id": "YunTalWildarrows",
   "name": "Yun Tal Wildarrows",
-  "price": 3000,
-  "sell": 2100,
+  "price": 3100,
+  "sell": 2170,
   "tier": 3,
   "maps": [
     [
-      "Tft",
-      false
-    ],
-    [
       "SummonersRift",
       true
-    ],
-    [
-      "Arena",
-      false
     ],
     [
       "Aram",
       true
     ],
     [
-      "SummonersRift",
+      "NexusBlitz",
       true
     ],
     [
-      "SummonersRift",
+      "Tft",
       false
     ],
     [
-      "NexusBlitz",
+      "Arena",
+      false
+    ],
+    [
+      "UnknownMap33",
+      false
+    ],
+    [
+      "UnknownMap35",
       true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "AttackDamage",
-      "value": 55
+      "AttackDamage": 50
     },
     {
-      "name": "CriticalStrikeChance",
-      "value": 0
+      "AttackSpeed": 40
     },
     {
-      "name": "AttackSpeed",
-      "value": 35
+      "CriticalStrikeChance": 0
     }
   ],
   "damage_type": "Unknown",
@@ -68,11 +65,11 @@
       "percent": 0.0
     },
     "attackDamage": {
-      "flat": 55.0,
+      "flat": 50.0,
       "percent": 0.0
     },
     "attackSpeed": {
-      "flat": 35.0,
+      "flat": 40.0,
       "percent": 0.0
     },
     "criticalStrikeChance": {
@@ -113,13 +110,7 @@
     3144,
     1036
   ],
-  "builds_from_item_ids": [
-    "BFSword",
-    "ScoutsSlingshot",
-    "LongSword"
-  ],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

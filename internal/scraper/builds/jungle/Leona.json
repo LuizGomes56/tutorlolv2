@@ -1,20 +1,19 @@
 [
   [
-    "SunfireAegis",
-    "BladeOfTheRuinedKing",
-    "Stridebreaker",
+    "Heartsteel",
+    "JakshoTheProtean",
+    "KaenicRookern",
+    "ProtoplasmHarness",
     "UnendingDespair",
-    "FrozenHeart",
-    "StatikkShiv"
+    "WarmogsArmor"
   ],
   [
-    "Triumph",
-    "LegendAlacrity",
-    "CoupDeGrace",
-    "CheapShot",
-    "TreasureHunter",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "AbilityHaste",
+    "FontOfLife",
+    "HealthScaling",
+    "LegendHaste",
+    "Overgrowth",
+    "SecondWind",
+    "Triumph"
   ]
 ]

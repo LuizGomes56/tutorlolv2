@@ -1,20 +1,20 @@
 [
   [
-    "VoidStaff",
-    "ZhonyasHourglass",
-    "Morellonomicon",
     "BansheesVeil",
-    "BlackfireTorch",
-    "BloodlettersCurse"
+    "BloodlettersCurse",
+    "DuskAndDawn",
+    "Morellonomicon",
+    "VoidStaff",
+    "ZhonyasHourglass"
   ],
   [
-    "CheapShot",
-    "GrislyMementos",
-    "UltimateHunter",
     "AbsoluteFocus",
-    "GatheringStorm",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "CheapShot",
+    "GatheringStorm",
+    "GrislyMementos",
+    "HealthScaling",
+    "UltimateHunter"
   ]
 ]

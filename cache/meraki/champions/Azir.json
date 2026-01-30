@@ -25,7 +25,7 @@
     },
     "attackSpeed": {
       "flat": 0.625,
-      "perLevel": 5.5
+      "perLevel": 5.0
     },
     "movespeed": {
       "flat": 330.0,
@@ -87,11 +87,7 @@
         "damageType": "PHYSICAL_DAMAGE",
         "effects": [
           {
-            "description": "Azir cannot construct a Sun Disc with the marker while he is unable to cast abilities.",
-            "leveling": []
-          },
-          {
-            "description": "Innate - Disc of the Sun: Azir can select a marker to construct the Sun Disc above the ruins after a 0.5-second cast time. The Sun Disc will activate after being assembled over 5 seconds.",
+            "description": "Innate - Disc of the Sun: Azir can select a marker to construct the Sun Disc above the ruins after a 0.5-second cast time. The Sun Disc will activate after being assembled over 5 seconds.Azir cannot construct a Sun Disc with the marker while he is affected by cast-inhibiting crowd control or a lockout that disables abilities.",
             "leveling": []
           },
           {
@@ -227,7 +223,7 @@
             "leveling": []
           },
           {
-            "description": "When Azir declares a basic attack against an enemy in a soldier's attack range, the Sand Soldier attacks in his stead, thrusting their spear in the target's direction to deal magic damage to enemies struck in a line, applying on-hit effects to the primary target, with on-hit damage reduced to 50% effectiveness, and triggering on-attack effects once. Targets hit beyond the closest take 25% / 50% / 75% / 100% (based on level) damage. Subsequent Sand Soldiers against the same target deal 25% damage.",
+            "description": "When Azir declares a basic attack against an enemy in a soldier's attack range, the Sand Soldier attacks in his stead, thrusting their spear in the target's direction to deal magic damage to enemies struck in a line, applying on-hit effects to the primary target, with on-hit damage reduced to 50% effectiveness, and triggering on-attack effects once. Targets hit beyond the closest take 20% : 100% (based on level) damage. Subsequent Sand Soldiers against the same target deal 25% damage.",
             "leveling": [
               {
                 "attribute": "Magic Damage",
@@ -299,11 +295,11 @@
                       "% AP"
                     ],
                     "values": [
-                      45.0,
-                      50.0,
+                      32.5,
+                      40.0,
+                      47.5,
                       55.0,
-                      60.0,
-                      65.0
+                      62.5
                     ]
                   }
                 ]
@@ -358,11 +354,11 @@
                       ""
                     ],
                     "values": [
-                      60.0,
-                      100.0,
-                      140.0,
-                      180.0,
-                      220.0
+                      70.0,
+                      110.0,
+                      150.0,
+                      190.0,
+                      230.0
                     ]
                   },
                   {
@@ -374,11 +370,11 @@
                       "% AP"
                     ],
                     "values": [
-                      40.0,
-                      40.0,
-                      40.0,
-                      40.0,
-                      40.0
+                      60.0,
+                      60.0,
+                      60.0,
+                      60.0,
+                      60.0
                     ]
                   }
                 ]

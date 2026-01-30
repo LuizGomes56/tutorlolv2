@@ -1,8 +1,8 @@
 {
   "colloq": "red; lens; trinket",
-  "description": "<mainText><stats></stats><br><br><active>Active</active> (<scaleLevel>160 - 100</scaleLevel>s, max 2 charges)<br>Reveals enemy Stealth Wards and traps around you for 6 seconds.</mainText>",
+  "description": "<mainText><stats></stats><br><br><active>Active</active> (<scaleLevel>160 - 100</scaleLevel>s, max 2 charges)<br>Reveals enemy Stealth Wards and traps around you for 8 seconds.</mainText>",
   "effect": {
-    "Effect1Amount": "6",
+    "Effect1Amount": "8",
     "Effect2Amount": "10",
     "Effect3Amount": "120",
     "Effect4Amount": "60",
@@ -24,8 +24,8 @@
     "h": 48,
     "sprite": "item4.png",
     "w": 48,
-    "x": 0,
-    "y": 0
+    "x": 336,
+    "y": 240
   },
   "maps": {
     "11": true,

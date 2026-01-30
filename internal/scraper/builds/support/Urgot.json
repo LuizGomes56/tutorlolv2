@@ -1,20 +1,19 @@
 [
   [
-    "KaenicRookern",
-    "Hullbreaker",
-    "Thornmail",
+    "ChempunkChainsword",
     "ForceOfNature",
+    "Hullbreaker",
     "OverlordsBloodmail",
-    "UnendingDespair"
+    "RanduinsOmen",
+    "TitanicHydra"
   ],
   [
-    "Triumph",
-    "LegendHaste",
-    "LastStand",
-    "Demolish",
-    "BonePlating",
-    "AttackSpeed",
     "AdaptiveForce",
-    "TenacityAndSlowResist"
+    "BonePlating",
+    "HealthScaling",
+    "LastStand",
+    "LegendHaste",
+    "Overgrowth",
+    "Triumph"
   ]
 ]

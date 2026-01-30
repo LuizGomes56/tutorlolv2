@@ -1,19 +1,11 @@
 {
-  "riot_id": 443193,
-  "item_id": "GargoyleStoneplate",
+  "version": "16.2.1",
+  "riot_id": 3193,
   "name": "Gargoyle Stoneplate",
-  "price": 0,
-  "sell": 400,
-  "tier": 3,
+  "price": 3150,
+  "sell": 2205,
+  "tier": 0,
   "maps": [
-    [
-      "Arena",
-      true
-    ],
-    [
-      "Tft",
-      false
-    ],
     [
       "SummonersRift",
       false
@@ -27,30 +19,31 @@
       false
     ],
     [
-      "SummonersRift",
+      "Tft",
       false
     ],
     [
-      "SummonersRift",
+      "Arena",
+      false
+    ],
+    [
+      "UnknownMap33",
+      false
+    ],
+    [
+      "UnknownMap35",
       false
     ]
   ],
   "prettified_stats": [
     {
-      "name": "MoveSpeed",
-      "value": 10
+      "AbilityHaste": 15
     },
     {
-      "name": "MagicResist",
-      "value": 65
+      "Armor": 60
     },
     {
-      "name": "AbilityHaste",
-      "value": 15
-    },
-    {
-      "name": "Armor",
-      "value": 65
+      "MagicResist": 60
     }
   ],
   "damage_type": "Unknown",
@@ -60,7 +53,7 @@
       "percent": 0.0
     },
     "armor": {
-      "flat": 65.0,
+      "flat": 0.0,
       "percent": 0.0
     },
     "armorPenetration": {
@@ -96,7 +89,7 @@
       "percent": 0.0
     },
     "magicResistance": {
-      "flat": 65.0,
+      "flat": 0.0,
       "percent": 0.0
     },
     "mana": {
@@ -105,7 +98,7 @@
     },
     "movespeed": {
       "flat": 0.0,
-      "percent": 10.0
+      "percent": 0.0
     },
     "omnivamp": {
       "flat": 0.0,
@@ -113,9 +106,7 @@
     }
   },
   "builds_from_riot_ids": [],
-  "builds_from_item_ids": [],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"
@@ -125,5 +116,5 @@
     "maximum_damage": "zero"
   },
   "attributes": "Undefined",
-  "purchasable": true
+  "purchasable": false
 }

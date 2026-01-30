@@ -1,29 +1,21 @@
 {
+  "version": "16.2.1",
   "riot_id": 3190,
-  "item_id": "LocketOfTheIronSolari",
   "name": "Locket of the Iron Solari",
   "price": 2200,
   "sell": 1540,
   "tier": 3,
   "maps": [
     [
+      "SummonersRift",
+      true
+    ],
+    [
+      "Aram",
+      true
+    ],
+    [
       "NexusBlitz",
-      true
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
-      "Arena",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
       true
     ],
     [
@@ -31,26 +23,30 @@
       false
     ],
     [
-      "Aram",
+      "Arena",
+      false
+    ],
+    [
+      "UnknownMap33",
+      false
+    ],
+    [
+      "UnknownMap35",
       true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "Health",
-      "value": 200
+      "AbilityHaste": 10
     },
     {
-      "name": "Armor",
-      "value": 25
+      "Armor": 25
     },
     {
-      "name": "MagicResist",
-      "value": 25
+      "Health": 200
     },
     {
-      "name": "AbilityHaste",
-      "value": 10
+      "MagicResist": 25
     }
   ],
   "damage_type": "Unknown",
@@ -117,13 +113,7 @@
     1029,
     1033
   ],
-  "builds_from_item_ids": [
-    "Kindlegem",
-    "ClothArmor",
-    "NullMagicMantle"
-  ],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

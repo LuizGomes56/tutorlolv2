@@ -1,20 +1,19 @@
 [
   [
     "BlackfireTorch",
-    "RabadonsDeathcap",
-    "VoidStaff",
     "BloodlettersCurse",
     "Cryptbloom",
-    "Stormsurge"
+    "RabadonsDeathcap",
+    "VoidStaff",
+    "ZhonyasHourglass"
   ],
   [
+    "AdaptiveForce",
     "CheapShot",
-    "GrislyMementos",
-    "UltimateHunter",
-    "Transcendence",
     "GatheringStorm",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "GrislyMementos",
+    "HealthScaling",
+    "Transcendence",
+    "UltimateHunter"
   ]
 ]

@@ -1,20 +1,20 @@
 [
   [
-    "RabadonsDeathcap",
+    "CosmicDrive",
+    "HextechGunblade",
+    "HextechRocketbelt",
     "HorizonFocus",
-    "Stormsurge",
-    "VoidStaff",
-    "AbyssalMask",
-    "Cryptbloom"
+    "RabadonsDeathcap",
+    "ZhonyasHourglass"
   ],
   [
-    "SuddenImpact",
-    "GrislyMementos",
-    "RelentlessHunter",
-    "NimbusCloak",
-    "Transcendence",
-    "AttackSpeed",
     "AdaptiveForce",
-    "Health"
+    "AttackSpeed",
+    "GrislyMementos",
+    "Health",
+    "NimbusCloak",
+    "RelentlessHunter",
+    "Scorch",
+    "TasteOfBlood"
   ]
 ]

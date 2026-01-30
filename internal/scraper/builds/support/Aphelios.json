@@ -1,20 +1,19 @@
 [
   [
+    "FiendhunterBolts",
     "ImmortalShieldbow",
     "MortalReminder",
-    "EdgeOfNight",
-    "RapidFirecannon",
-    "SerpentsFang",
-    "SteraksGage"
+    "Stormrazor",
+    "UmbralGlaive"
   ],
   [
-    "AbsorbLife",
-    "LegendBloodline",
-    "CutDown",
     "AbsoluteFocus",
-    "GatheringStorm",
-    "AttackSpeed",
+    "AbsorbLife",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "CutDown",
+    "GatheringStorm",
+    "HealthScaling",
+    "LegendBloodline"
   ]
 ]

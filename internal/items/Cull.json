@@ -1,6 +1,6 @@
 {
+  "version": "16.2.1",
   "riot_id": 1083,
-  "item_id": "Cull",
   "name": "Cull",
   "price": 450,
   "sell": 180,
@@ -8,6 +8,14 @@
   "maps": [
     [
       "SummonersRift",
+      true
+    ],
+    [
+      "Aram",
+      false
+    ],
+    [
+      "NexusBlitz",
       false
     ],
     [
@@ -15,30 +23,21 @@
       false
     ],
     [
-      "Aram",
-      false
-    ],
-    [
       "Arena",
       false
     ],
     [
-      "SummonersRift",
-      true
-    ],
-    [
-      "SummonersRift",
+      "UnknownMap33",
       false
     ],
     [
-      "NexusBlitz",
+      "UnknownMap35",
       false
     ]
   ],
   "prettified_stats": [
     {
-      "name": "AttackDamage",
-      "value": 7
+      "AttackDamage": 7
     }
   ],
   "damage_type": "Unknown",
@@ -101,9 +100,7 @@
     }
   },
   "builds_from_riot_ids": [],
-  "builds_from_item_ids": [],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

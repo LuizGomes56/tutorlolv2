@@ -1,20 +1,20 @@
 [
   [
     "BlackCleaver",
-    "SteraksGage",
-    "Thornmail",
-    "SpiritVisage",
-    "ChempunkChainsword",
-    "ProfaneHydra"
+    "DeathsDance",
+    "Hullbreaker",
+    "JakshoTheProtean",
+    "LiandrysTorment",
+    "SpiritVisage"
   ],
   [
-    "Triumph",
-    "LegendBloodline",
-    "LastStand",
-    "MagicalFootwear",
+    "AdaptiveForce",
     "ApproachVelocity",
     "AttackSpeed",
-    "AdaptiveForce",
-    "HealthScaling"
+    "HealthScaling",
+    "LastStand",
+    "LegendBloodline",
+    "MagicalFootwear",
+    "Triumph"
   ]
 ]

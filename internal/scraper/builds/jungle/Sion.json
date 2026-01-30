@@ -1,20 +1,20 @@
 [
   [
-    "Opportunity",
-    "SerpentsFang",
-    "UmbralGlaive",
-    "MortalReminder",
+    "Bastionbreaker",
+    "DeadMansPlate",
     "EdgeOfNight",
-    "TitanicHydra"
+    "MortalReminder",
+    "Opportunity",
+    "SerpentsFang"
   ],
   [
-    "ManaflowBand",
     "AbsoluteFocus",
-    "GatheringStorm",
-    "Demolish",
-    "Conditioning",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "Conditioning",
+    "Demolish",
+    "GatheringStorm",
+    "HealthScaling",
+    "ManaflowBand"
   ]
 ]

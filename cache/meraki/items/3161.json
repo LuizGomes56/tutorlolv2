@@ -10,7 +10,7 @@
   "tier": 3,
   "passives": [
     {
-      "effects": "Dealing [[ability damage]] with a non-innate [[champion ability|ability]] grants a stack for 6 seconds, stacking up to 4 times and up to once per {{tip|cast instance}} per second and every second for [[damage over time]] abilities. For each stack, your non-{{tip|basic damage}} dealt by non-[[item|items]] gain 3% increased damage, for a total increase of 12% at '''maximum''' stacks.",
+      "effects": "Dealing [[ability damage]] with a non-innate [[champion ability|ability]] generates a stack for 6 seconds, stacking up to 4 times and up to once per {{tip|cast instance}} per second and every second for [[damage over time]] abilities. For each stack, your non-{{tip|basic damage}} dealt by non-[[item|items]] gain 3% increased damage, for a total increase of 12% at '''maximum''' stacks.",
       "name": "Focused Will",
       "unique": true
     },

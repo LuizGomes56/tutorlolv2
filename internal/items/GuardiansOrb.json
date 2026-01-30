@@ -1,6 +1,6 @@
 {
+  "version": "16.2.1",
   "riot_id": 3112,
-  "item_id": "GuardiansOrb",
   "name": "Guardian's Orb",
   "price": 950,
   "sell": 665,
@@ -19,10 +19,6 @@
       false
     ],
     [
-      "SummonersRift",
-      false
-    ],
-    [
       "Tft",
       false
     ],
@@ -31,18 +27,20 @@
       false
     ],
     [
-      "SummonersRift",
+      "UnknownMap33",
       false
+    ],
+    [
+      "UnknownMap35",
+      true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "AbilityHaste",
-      "value": 25
+      "AbilityPower": 50
     },
     {
-      "name": "AbilityPower",
-      "value": 55
+      "Health": 150
     }
   ],
   "damage_type": "Unknown",
@@ -105,9 +103,7 @@
     }
   },
   "builds_from_riot_ids": [],
-  "builds_from_item_ids": [],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

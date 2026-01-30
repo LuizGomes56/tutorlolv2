@@ -1,20 +1,19 @@
 [
   [
-    "UmbralGlaive",
+    "Eclipse",
     "MortalReminder",
+    "Opportunity",
+    "ProfaneHydra",
     "SerpentsFang",
-    "ChempunkChainsword",
-    "EdgeOfNight",
-    "Opportunity"
+    "VoltaicCyclosword"
   ],
   [
-    "SuddenImpact",
-    "GrislyMementos",
-    "UltimateHunter",
-    "Triumph",
-    "CoupDeGrace",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "BonePlating",
+    "DeepWard",
+    "Health",
+    "SuddenImpact",
+    "UltimateHunter",
+    "Unflinching"
   ]
 ]

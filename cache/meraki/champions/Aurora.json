@@ -71,7 +71,7 @@
         "damageType": "MAGIC_DAMAGE",
         "effects": [
           {
-            "description": "Innate: Aurora's damaging basic attacks and abilities apply a stack of Spirit Abjuration to enemies for 4 seconds, refreshing on subsequent applications and stacking up to 3 times. The third stack against a target consumes them all to deal bonus magic damage equal to 2.5% (+ 2% per 100 AP) of the target's maximum health, capped at 100 : 270 (based on level) against monsters.",
+            "description": "Innate: Aurora's damaging basic attacks and abilities apply a stack of Spirit Abjuration to enemies for 4 seconds, refreshing on subsequent applications and stacking up to 3 times. The third stack against a target consumes them all to deal bonus magic damage equal to 1% (+ 2.7% per 100 AP) of the target's maximum health, capped at 100 : 270 (based on level) against monsters.",
             "leveling": []
           },
           {
@@ -488,7 +488,7 @@
         "damageType": "MAGIC_DAMAGE",
         "effects": [
           {
-            "description": "Active: Aurora leaps in the target direction with displacement immunity over 0.4 seconds. She then gains Realm Hopper for 3.5 seconds and unleashes a shockwave from 425 units in front of her, expanding over 0.75 seconds to deal magic damage to enemies hit and slow them by 30% for 2 seconds.",
+            "description": "Active: Aurora leaps in the target direction with displacement immunity over 0.4 seconds. She then gains Realm Hopper for a duration and unleashes a shockwave from 425 units in front of her, expanding over 0.75 seconds to deal magic damage to enemies hit and slow them by 30% for 2 seconds.",
             "leveling": [
               {
                 "attribute": "Magic Damage",
@@ -515,6 +515,23 @@
                       70.0,
                       70.0,
                       70.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Realm Hopper Duration",
+                "modifiers": [
+                  {
+                    "units": [
+                      " seconds",
+                      " seconds",
+                      " seconds"
+                    ],
+                    "values": [
+                      3.5,
+                      4.25,
+                      5.0
                     ]
                   }
                 ]

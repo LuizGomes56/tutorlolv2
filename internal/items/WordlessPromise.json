@@ -1,6 +1,6 @@
 {
+  "version": "16.2.1",
   "riot_id": 4016,
-  "item_id": "WordlessPromise",
   "name": "Wordless Promise",
   "price": 2500,
   "sell": 1250,
@@ -15,15 +15,11 @@
       false
     ],
     [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
       "NexusBlitz",
+      false
+    ],
+    [
+      "Tft",
       false
     ],
     [
@@ -31,22 +27,23 @@
       true
     ],
     [
-      "Tft",
+      "UnknownMap33",
+      false
+    ],
+    [
+      "UnknownMap35",
       false
     ]
   ],
   "prettified_stats": [
     {
-      "name": "HealAndShieldPower",
-      "value": 25
+      "AbilityHaste": 25
     },
     {
-      "name": "AbilityHaste",
-      "value": 25
+      "AbilityPower": 50
     },
     {
-      "name": "AbilityPower",
-      "value": 50
+      "HealAndShieldPower": 25
     }
   ],
   "damage_type": "Unknown",
@@ -109,9 +106,7 @@
     }
   },
   "builds_from_riot_ids": [],
-  "builds_from_item_ids": [],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

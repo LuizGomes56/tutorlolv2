@@ -1,15 +1,11 @@
 {
+  "version": "16.2.1",
   "riot_id": 3036,
-  "item_id": "LordDominiksRegards",
   "name": "Lord Dominik's Regards",
-  "price": 3100,
-  "sell": 2170,
+  "price": 3300,
+  "sell": 2310,
   "tier": 3,
   "maps": [
-    [
-      "SummonersRift",
-      false
-    ],
     [
       "SummonersRift",
       true
@@ -23,30 +19,31 @@
       true
     ],
     [
-      "SummonersRift",
-      true
-    ],
-    [
       "Tft",
       false
     ],
     [
       "Arena",
       false
+    ],
+    [
+      "UnknownMap33",
+      false
+    ],
+    [
+      "UnknownMap35",
+      true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "ArmorPenetration",
-      "value": 40
+      "ArmorPenetration": 35
     },
     {
-      "name": "AttackDamage",
-      "value": 35
+      "AttackDamage": 35
     },
     {
-      "name": "CriticalStrikeChance",
-      "value": 25
+      "CriticalStrikeChance": 25
     }
   ],
   "damage_type": "Unknown",
@@ -61,7 +58,7 @@
     },
     "armorPenetration": {
       "flat": 0.0,
-      "percent": 40.0
+      "percent": 35.0
     },
     "magicPenetration": {
       "flat": 0.0,
@@ -112,12 +109,7 @@
     3035,
     6670
   ],
-  "builds_from_item_ids": [
-    "LastWhisper",
-    "Noonquiver"
-  ],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

@@ -1,23 +1,11 @@
 {
+  "version": "16.2.1",
   "riot_id": 6620,
-  "item_id": "EchoesOfHelia",
   "name": "Echoes of Helia",
   "price": 2200,
   "sell": 1540,
   "tier": 3,
   "maps": [
-    [
-      "Tft",
-      false
-    ],
-    [
-      "Arena",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
     [
       "SummonersRift",
       true
@@ -27,30 +15,38 @@
       true
     ],
     [
-      "SummonersRift",
+      "NexusBlitz",
       true
     ],
     [
-      "NexusBlitz",
+      "Tft",
+      false
+    ],
+    [
+      "Arena",
+      false
+    ],
+    [
+      "UnknownMap33",
+      false
+    ],
+    [
+      "UnknownMap35",
       true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "AbilityPower",
-      "value": 35
+      "AbilityHaste": 20
     },
     {
-      "name": "Health",
-      "value": 200
+      "AbilityPower": 35
     },
     {
-      "name": "AbilityHaste",
-      "value": 20
+      "BaseManaRegen": 125
     },
     {
-      "name": "BaseManaRegen",
-      "value": 125
+      "Health": 200
     }
   ],
   "damage_type": "Unknown",
@@ -116,12 +112,7 @@
     3067,
     4642
   ],
-  "builds_from_item_ids": [
-    "Kindlegem",
-    "BandleglassMirror"
-  ],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

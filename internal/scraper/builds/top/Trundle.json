@@ -1,20 +1,20 @@
 [
   [
-    "TrinityForce",
+    "Bandlepipes",
+    "BladeOfTheRuinedKing",
     "DeathsDance",
-    "WitsEnd",
     "RanduinsOmen",
-    "MortalReminder",
-    "ExperimentalHexplate"
+    "SteraksGage",
+    "WitsEnd"
   ],
   [
-    "Triumph",
-    "LegendAlacrity",
-    "LastStand",
-    "Demolish",
-    "BonePlating",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "BonePlating",
+    "Demolish",
+    "HealthScaling",
+    "LastStand",
+    "LegendAlacrity",
+    "Triumph"
   ]
 ]

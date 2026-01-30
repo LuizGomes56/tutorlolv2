@@ -1,19 +1,20 @@
 [
   [
+    "BlackCleaver",
+    "BladeOfTheRuinedKing",
     "ExperimentalHexplate",
-    "ChempunkChainsword",
-    "RanduinsOmen",
     "JakshoTheProtean",
+    "SerpentsFang",
     "ZekesConvergence"
   ],
   [
-    "Triumph",
-    "LegendAlacrity",
-    "CutDown",
-    "BiscuitDelivery",
-    "JackOfAllTrades",
-    "AttackSpeed",
     "AdaptiveForce",
-    "Health"
+    "AttackSpeed",
+    "BiscuitDelivery",
+    "CutDown",
+    "Health",
+    "JackOfAllTrades",
+    "LegendAlacrity",
+    "PresenceOfMind"
   ]
 ]

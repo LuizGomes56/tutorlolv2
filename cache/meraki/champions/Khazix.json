@@ -241,11 +241,11 @@
                       ""
                     ],
                     "values": [
-                      85.0,
-                      115.0,
-                      145.0,
-                      175.0,
-                      205.0
+                      75.0,
+                      105.0,
+                      135.0,
+                      165.0,
+                      195.0
                     ]
                   },
                   {
@@ -445,7 +445,7 @@
             "leveling": []
           },
           {
-            "description": "Passive: Each rank in Void Assault allows Kha'Zix to evolve one of his abilities, granting it additional effects. Evolving an ability causes him to enter a 2-second cast time. Kha'Zix cannot evolve while he is unable to cast abilities.",
+            "description": "Passive: Each rank in Void Assault allows Kha'Zix to evolve one of his abilities, granting it additional effects. Evolving an ability causes him to enter a 2-second cast time.Kha'Zix cannot evolve while he is affected by cast-inhibiting crowd control or a lockout that disables abilities.",
             "leveling": []
           },
           {

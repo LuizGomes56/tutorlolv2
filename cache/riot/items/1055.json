@@ -1,6 +1,6 @@
 {
   "colloq": ";dblade",
-  "description": "<mainText><stats><attention>10</attention> Attack Damage<br><attention>80</attention> Health</stats><br><br><passive>Life Draining</passive><br>Return 2.5% of damage dealt as <healing>Health</healing>. Reduced to 33.3% effectiveness for area of effect spells and pet damage.</mainText>",
+  "description": "<mainText><stats><attention>10</attention> Attack Damage<br><attention>80</attention> Health<br><attention>2.5%</attention> Omnivamp</stats><br><br></mainText>",
   "gold": {
     "base": 450,
     "purchasable": true,
@@ -34,6 +34,7 @@
   "tags": [
     "Health",
     "Damage",
+    "LifeSteal",
     "SpellVamp",
     "Lane"
   ]

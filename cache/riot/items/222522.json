@@ -1,0 +1,40 @@
+{
+  "colloq": "",
+  "description": "<mainText><stats><attention>90</attention> Ability Power<br><attention>300</attention> Mana<br><attention>10</attention> Ability Haste</stats><br><br><active>Mana Made Real</active> (0s)<br>For 8 seconds, your mana is Empowered. While Empowered, your spells cost 100% more Mana, you gain  increased Ability damage, Shielding, and Healing, and your basic ability cooldowns progress 30% faster.</mainText>",
+  "gold": {
+    "base": 2500,
+    "purchasable": true,
+    "sell": 1750,
+    "total": 2500
+  },
+  "image": {
+    "full": "222522.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item1.png",
+    "w": 48,
+    "x": 240,
+    "y": 240
+  },
+  "maps": {
+    "11": false,
+    "12": false,
+    "21": false,
+    "22": false,
+    "30": true,
+    "33": false,
+    "35": false
+  },
+  "name": "Actualizer",
+  "plaintext": "",
+  "stats": {
+    "FlatMPPoolMod": 300,
+    "FlatMagicDamageMod": 90
+  },
+  "tags": [
+    "SpellDamage",
+    "Mana",
+    "Active",
+    "AbilityHaste"
+  ]
+}

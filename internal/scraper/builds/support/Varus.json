@@ -1,20 +1,20 @@
 [
   [
-    "UmbralGlaive",
-    "NashorsTooth",
+    "ExperimentalHexplate",
     "HorizonFocus",
-    "SerpentsFang",
-    "ZhonyasHourglass",
-    "VigilantWardstone"
+    "Malignance",
+    "RabadonsDeathcap",
+    "Shadowflame",
+    "ZhonyasHourglass"
   ],
   [
-    "ManaflowBand",
-    "Transcendence",
-    "Scorch",
-    "BiscuitDelivery",
-    "CosmicInsight",
-    "AttackSpeed",
     "AdaptiveForce",
-    "Health"
+    "AttackSpeed",
+    "CoupDeGrace",
+    "HealthScaling",
+    "LegendAlacrity",
+    "TasteOfBlood",
+    "TreasureHunter",
+    "Triumph"
   ]
 ]

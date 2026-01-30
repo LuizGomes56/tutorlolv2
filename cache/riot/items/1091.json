@@ -1,0 +1,34 @@
+{
+  "colloq": "",
+  "description": "",
+  "gold": {
+    "base": 0,
+    "purchasable": true,
+    "sell": 0,
+    "total": 0
+  },
+  "image": {
+    "full": "1091.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item0.png",
+    "w": 48,
+    "x": 432,
+    "y": 96
+  },
+  "maps": {
+    "11": false,
+    "12": false,
+    "21": false,
+    "22": false,
+    "30": false,
+    "33": false,
+    "35": false
+  },
+  "name": "Quest: Mid",
+  "plaintext": "",
+  "stats": {},
+  "tags": [
+    "Lane"
+  ]
+}

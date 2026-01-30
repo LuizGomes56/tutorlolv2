@@ -1,11 +1,19 @@
 {
+  "version": "16.2.1",
   "riot_id": 3181,
-  "item_id": "Hullbreaker",
   "name": "Hullbreaker",
   "price": 3000,
   "sell": 2100,
   "tier": 3,
   "maps": [
+    [
+      "SummonersRift",
+      true
+    ],
+    [
+      "Aram",
+      true
+    ],
     [
       "NexusBlitz",
       true
@@ -15,38 +23,27 @@
       false
     ],
     [
-      "SummonersRift",
-      true
-    ],
-    [
       "Arena",
       false
     ],
     [
-      "SummonersRift",
+      "UnknownMap33",
       false
     ],
     [
-      "SummonersRift",
+      "UnknownMap35",
       false
-    ],
-    [
-      "Aram",
-      true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "AttackDamage",
-      "value": 40
+      "AttackDamage": 40
     },
     {
-      "name": "Health",
-      "value": 500
+      "Health": 500
     },
     {
-      "name": "MoveSpeed",
-      "value": 4
+      "MoveSpeed": 4
     }
   ],
   "damage_type": "Unknown",
@@ -113,13 +110,7 @@
     3066,
     1037
   ],
-  "builds_from_item_ids": [
-    "Tunneler",
-    "WingedMoonplate",
-    "Pickaxe"
-  ],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

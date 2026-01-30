@@ -1,11 +1,19 @@
 {
+  "version": "16.2.1",
   "riot_id": 3179,
-  "item_id": "UmbralGlaive",
   "name": "Umbral Glaive",
-  "price": 2500,
-  "sell": 1750,
+  "price": 2800,
+  "sell": 1960,
   "tier": 3,
   "maps": [
+    [
+      "SummonersRift",
+      true
+    ],
+    [
+      "Aram",
+      true
+    ],
     [
       "NexusBlitz",
       true
@@ -15,38 +23,27 @@
       false
     ],
     [
-      "Aram",
-      true
-    ],
-    [
       "Arena",
       false
     ],
     [
-      "SummonersRift",
+      "UnknownMap33",
       false
     ],
     [
-      "SummonersRift",
-      true
-    ],
-    [
-      "SummonersRift",
+      "UnknownMap35",
       true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "AttackDamage",
-      "value": 55
+      "AbilityHaste": 15
     },
     {
-      "name": "Lethality",
-      "value": 15
+      "AttackDamage": 60
     },
     {
-      "name": "AbilityHaste",
-      "value": 10
+      "Lethality": 18
     }
   ],
   "damage_type": "Unknown",
@@ -68,7 +65,7 @@
       "percent": 0.0
     },
     "attackDamage": {
-      "flat": 55.0,
+      "flat": 60.0,
       "percent": 0.0
     },
     "attackSpeed": {
@@ -112,12 +109,7 @@
     3134,
     3133
   ],
-  "builds_from_item_ids": [
-    "SerratedDirk",
-    "CaulfieldsWarhammer"
-  ],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

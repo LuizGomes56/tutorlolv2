@@ -1,19 +1,18 @@
 [
   [
-    "Stormsurge",
-    "VoidStaff",
     "BansheesVeil",
+    "BloodlettersCurse",
     "Cryptbloom",
-    "Morellonomicon"
+    "Stormsurge"
   ],
   [
-    "TasteOfBlood",
-    "GrislyMementos",
-    "UltimateHunter",
-    "ManaflowBand",
-    "Transcendence",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "GrislyMementos",
+    "HealthScaling",
+    "ManaflowBand",
+    "TasteOfBlood",
+    "Transcendence",
+    "UltimateHunter"
   ]
 ]

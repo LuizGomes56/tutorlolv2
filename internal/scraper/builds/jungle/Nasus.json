@@ -1,20 +1,20 @@
 [
   [
-    "SunderedSky",
-    "FrozenHeart",
-    "RanduinsOmen",
-    "SeryldasGrudge",
+    "Bandlepipes",
+    "DeadMansPlate",
     "ForceOfNature",
-    "SteraksGage"
+    "FrozenHeart",
+    "KaenicRookern",
+    "Thornmail"
   ],
   [
-    "Triumph",
-    "LegendHaste",
-    "CutDown",
-    "MagicalFootwear",
-    "ApproachVelocity",
     "AbilityHaste",
+    "ApproachVelocity",
+    "CutDown",
     "HealthScaling",
-    "TenacityAndSlowResist"
+    "LegendHaste",
+    "MagicalFootwear",
+    "TenacityAndSlowResist",
+    "Triumph"
   ]
 ]

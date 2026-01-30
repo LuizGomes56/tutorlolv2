@@ -1,19 +1,20 @@
 [
   [
-    "VoidStaff",
-    "LichBane",
-    "NashorsTooth",
+    "BloodlettersCurse",
+    "JakshoTheProtean",
     "LiandrysTorment",
-    "HextechRocketbelt"
+    "Morellonomicon",
+    "NashorsTooth",
+    "UnendingDespair"
   ],
   [
+    "AdaptiveForce",
+    "AttackSpeed",
+    "CoupDeGrace",
+    "HealthScaling",
+    "LegendAlacrity",
     "SuddenImpact",
-    "GrislyMementos",
     "TreasureHunter",
-    "ManaflowBand",
-    "Scorch",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "Triumph"
   ]
 ]

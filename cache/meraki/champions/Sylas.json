@@ -71,19 +71,19 @@
         "damageType": "MAGIC_DAMAGE",
         "effects": [
           {
-            "description": "Damage to secondary targets executes minions that would be left below 25 health.",
-            "leveling": []
-          },
-          {
             "description": "Innate: Whenever Sylas casts an ability, he generates a stack of Unshackled for 4 seconds, refreshing on subsequent casts and stacking up to 3 times.",
             "leveling": []
           },
           {
-            "description": "Petricite Burst can critically strike for (175% + 40%) damage only against the primary target.",
+            "description": "Petricite Burst can critically strike for (200% + 30%) damage only against the primary target.",
             "leveling": []
           },
           {
-            "description": "Unshackled: Sylas' next basic attack gains 125% bonus attack speed and is empowered to consume a stack to whirl his chains around him, which has an uncancellable windup and deals 130% AD (+ 30% AP) magic damage to the primary target and 40% AD (+ 20% AP) magic damage to nearby enemies.",
+            "description": "Unshackled deals 115% damage to monsters, and executes minions that are secondary targets and would be left below 25 health.",
+            "leveling": []
+          },
+          {
+            "description": "Unshackled: Sylas' next basic attack gains 125% bonus attack speed and is empowered to have an uncancellable windup and consume a stack to whirl his chains around him, dealing 130% AD (+ 30% AP) magic damage to the primary target and 40% AD (+ 20% AP) magic damage to nearby enemies.",
             "leveling": []
           }
         ],
@@ -629,7 +629,7 @@
         "damageType": null,
         "effects": [
           {
-            "description": "Active: Sylas launches his chains at the target enemy champion, gaining a copy of their ultimate ability and revealing them for 0.825 seconds at the start of the cast time. Sylas cannot select the same champion again for a set duration, and can hold the hijacked ultimate for up to 90 seconds, during which he can recast Hijack.",
+            "description": "Active: Sylas launches his chains at the target enemy champion, gaining a copy of their ultimate ability and revealing them for 0.825 seconds. Sylas cannot select the same champion again for a set duration, and can hold the hijacked ultimate for up to 90 seconds, during which he can recast Hijack.",
             "leveling": []
           },
           {

@@ -1,19 +1,20 @@
 [
   [
-    "Shadowflame",
-    "Cryptbloom",
-    "BansheesVeil",
+    "Actualizer",
+    "BloodlettersCurse",
     "Morellonomicon",
-    "BloodlettersCurse"
+    "Shadowflame",
+    "VoidStaff",
+    "ZhonyasHourglass"
   ],
   [
-    "ManaflowBand",
-    "Transcendence",
-    "Scorch",
-    "PresenceOfMind",
-    "LegendHaste",
-    "AttackSpeed",
     "AdaptiveForce",
-    "Health"
+    "AttackSpeed",
+    "BiscuitDelivery",
+    "Celerity",
+    "Health",
+    "MagicalFootwear",
+    "ManaflowBand",
+    "Scorch"
   ]
 ]

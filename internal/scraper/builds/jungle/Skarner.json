@@ -1,20 +1,19 @@
 [
   [
-    "SteraksGage",
-    "RanduinsOmen",
-    "SunfireAegis",
+    "Bandlepipes",
     "FrozenHeart",
     "KaenicRookern",
-    "TitanicHydra"
+    "ProtoplasmHarness",
+    "RanduinsOmen",
+    "SteraksGage"
   ],
   [
-    "ShieldBash",
-    "Conditioning",
-    "Overgrowth",
-    "MagicalFootwear",
-    "ApproachVelocity",
     "AbilityHaste",
+    "ApproachVelocity",
+    "Conditioning",
     "HealthScaling",
-    "HealthScaling"
+    "MagicalFootwear",
+    "Overgrowth",
+    "ShieldBash"
   ]
 ]

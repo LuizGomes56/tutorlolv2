@@ -1,22 +1,14 @@
 {
+  "version": "16.2.1",
   "riot_id": 3031,
-  "item_id": "InfinityEdge",
   "name": "Infinity Edge",
-  "price": 3450,
-  "sell": 2415,
+  "price": 3500,
+  "sell": 2450,
   "tier": 2,
   "maps": [
     [
       "SummonersRift",
       true
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
-      "Tft",
-      false
     ],
     [
       "Aram",
@@ -27,26 +19,31 @@
       true
     ],
     [
+      "Tft",
+      false
+    ],
+    [
       "Arena",
       false
     ],
     [
-      "SummonersRift",
+      "UnknownMap33",
       false
+    ],
+    [
+      "UnknownMap35",
+      true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "CriticalStrikeChance",
-      "value": 25
+      "AttackDamage": 75
     },
     {
-      "name": "AttackDamage",
-      "value": 55
+      "CriticalStrikeChance": 25
     },
     {
-      "name": "CriticalStrikeDamage",
-      "value": 40
+      "CriticalStrikeDamage": 30
     }
   ],
   "damage_type": "Unknown",
@@ -68,7 +65,7 @@
       "percent": 0.0
     },
     "attackDamage": {
-      "flat": 65.0,
+      "flat": 75.0,
       "percent": 0.0
     },
     "attackSpeed": {
@@ -81,7 +78,7 @@
     },
     "criticalStrikeDamage": {
       "flat": 0.0,
-      "percent": 40.0
+      "percent": 30.0
     },
     "health": {
       "flat": 0.0,
@@ -113,13 +110,7 @@
     1037,
     1018
   ],
-  "builds_from_item_ids": [
-    "BFSword",
-    "Pickaxe",
-    "CloakOfAgility"
-  ],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

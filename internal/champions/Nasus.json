@@ -7,7 +7,7 @@
   ],
   "stats": {
     "health": {
-      "flat": 631.0,
+      "flat": 650.0,
       "perLevel": 104.0
     },
     "mana": {
@@ -78,29 +78,11 @@
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "35 + ctx.nasus_stacks",
-          "55 + ctx.nasus_stacks",
-          "75 + ctx.nasus_stacks",
-          "95 + ctx.nasus_stacks",
-          "115 + ctx.nasus_stacks"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "E",
-        "name": "_2"
-      },
-      {
-        "name": "Spirit Fire",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "10 + (0.12 * ctx.ap)",
-          "16 + (0.12 * ctx.ap)",
-          "22 + (0.12 * ctx.ap)",
-          "28 + (0.12 * ctx.ap)",
-          "34 + (0.12 * ctx.ap)"
+          "40 + ctx.nasus_stacks",
+          "60 + ctx.nasus_stacks",
+          "80 + ctx.nasus_stacks",
+          "100 + ctx.nasus_stacks",
+          "120 + ctx.nasus_stacks"
         ]
       }
     ],
@@ -125,6 +107,24 @@
     [
       {
         "type": "E",
+        "name": "_2"
+      },
+      {
+        "name": "Spirit Fire",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "10 + (0.12 * ctx.ap)",
+          "16 + (0.12 * ctx.ap)",
+          "22 + (0.12 * ctx.ap)",
+          "28 + (0.12 * ctx.ap)",
+          "34 + (0.12 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
         "name": "_3"
       },
       {
@@ -143,22 +143,6 @@
     [
       {
         "type": "R",
-        "name": "_2"
-      },
-      {
-        "name": "Fury of the Sands",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "(0.45 * ctx.enemy_max_health) + (0.15 * 0.01 * ctx.ap)",
-          "(0.6 * ctx.enemy_max_health) + (0.15 * 0.01 * ctx.ap)",
-          "(0.75 * ctx.enemy_max_health) + (0.15 * 0.01 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "R",
         "name": "_1"
       },
       {
@@ -169,6 +153,22 @@
           "(0.015 * ctx.enemy_max_health) + (0.005 * 0.01 * ctx.ap)",
           "(0.02 * ctx.enemy_max_health) + (0.005 * 0.01 * ctx.ap)",
           "(0.025 * ctx.enemy_max_health) + (0.005 * 0.01 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_2"
+      },
+      {
+        "name": "Fury of the Sands",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "(0.45 * ctx.enemy_max_health) + (0.15 * 0.01 * ctx.ap)",
+          "(0.6 * ctx.enemy_max_health) + (0.15 * 0.01 * ctx.ap)",
+          "(0.75 * ctx.enemy_max_health) + (0.15 * 0.01 * ctx.ap)"
         ]
       }
     ]

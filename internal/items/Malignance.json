@@ -1,21 +1,17 @@
 {
+  "version": "16.2.1",
   "riot_id": 3118,
-  "item_id": "Malignance",
   "name": "Malignance",
   "price": 2700,
   "sell": 1890,
   "tier": 3,
   "maps": [
     [
+      "SummonersRift",
+      true
+    ],
+    [
       "Aram",
-      true
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
-      "SummonersRift",
       true
     ],
     [
@@ -23,30 +19,31 @@
       true
     ],
     [
+      "Tft",
+      false
+    ],
+    [
       "Arena",
       false
     ],
     [
-      "SummonersRift",
+      "UnknownMap33",
       false
     ],
     [
-      "Tft",
-      false
+      "UnknownMap35",
+      true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "AbilityHaste",
-      "value": 15
+      "AbilityHaste": 15
     },
     {
-      "name": "AbilityPower",
-      "value": 90
+      "AbilityPower": 90
     },
     {
-      "name": "Mana",
-      "value": 600
+      "Mana": 600
     }
   ],
   "damage_type": "Unknown",
@@ -112,12 +109,7 @@
     3802,
     1026
   ],
-  "builds_from_item_ids": [
-    "LostChapter",
-    "BlastingWand"
-  ],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

@@ -20,7 +20,7 @@
       "perLevel": 2.05
     },
     "attackDamage": {
-      "flat": 58.0,
+      "flat": 62.0,
       "perLevel": 3.0
     },
     "attackSpeed": {
@@ -71,11 +71,11 @@
         "damageType": null,
         "effects": [
           {
-            "description": "Innate: Rek'Sai basic attacks and ability hits generate 25 Fury. After 8 seconds of being out of combat, she loses 20 Fury per second. Fury gain is reduced[ by 80% ][ to 5 per hit ]against minions, wards, and plants. Prey Seeker will not generate Fury against non- champions.",
+            "description": "Innate: Rek'Sai basic attacks generate 25 Fury on-hit, reduced to 4 per hit against minions, and to 5 per hit against wards, and plants. Rek'Sai's abilities other than Queen's Wrath generate 25 Fury upon hitting at least one unit. Prey Seeker does not generate Fury against non- champions. After 8 seconds of being out of combat, she loses 20 Fury per second.",
             "leveling": []
           },
           {
-            "description": "When Rek'Sai becomes Burrowed, she consumes her current Fury over 3 seconds to heal for up to 10% : 20% (based on level) maximum health at 100 Fury, stopping once fully consumed or she reaches full health. If she starts generating Fury while Burrowed, the consumption occurs after 5 seconds.",
+            "description": "When Rek'Sai becomes Burrowed, she consumes her current Fury over 3 seconds to heal for up to 9% : 20% (based on level) maximum health at 100 Fury, stopping once fully consumed or she reaches full health. If she starts generating Fury while Burrowed, the consumption occurs after 5 seconds.",
             "leveling": []
           }
         ],
@@ -108,7 +108,7 @@
         "damageType": "PHYSICAL_DAMAGE",
         "effects": [
           {
-            "description": "Active: Rek'Sai gains 35% bonus attack speed for 3 seconds. Her next basic attack within the duration will have an uncancellable windup and deal bonus physical damage to the target and surrounding enemies. Queen's Wrath's damage to the primary target is affected by critical strike modifiers.",
+            "description": "Active: Rek'Sai gains 35% bonus attack speed for 3 seconds. Her next basic attack on-hit within the duration will have an uncancellable windup and deal bonus physical damage to the target and surrounding enemies. Queen's Wrath's damage to the primary target is affected by critical strike modifiers.",
             "leveling": [
               {
                 "attribute": "Bonus Physical Damage",
@@ -127,6 +127,27 @@
                       40.0,
                       45.0,
                       50.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Total Bonus Physical Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "% AD",
+                      "% AD",
+                      "% AD",
+                      "% AD",
+                      "% AD"
+                    ],
+                    "values": [
+                      90.0,
+                      105.0,
+                      120.0,
+                      135.0,
+                      150.0
                     ]
                   }
                 ]
@@ -286,7 +307,7 @@
             "leveling": []
           },
           {
-            "description": "Tremor Sense: Rek'Sai and her allies gain obscured vision of nearby enemy units that are moving at a rate of once every second.",
+            "description": "Tremor Sense: Rek'Sai and her allies gain obscured vision of non-visible, moving enemies within range at a rate of once every second.",
             "leveling": []
           }
         ],
@@ -317,7 +338,7 @@
         "damageType": "MAGIC_DAMAGE",
         "effects": [
           {
-            "description": "Active: Rek'Sai becomes Un-Burrowed, gaining access to her Un-Burrowed abilities and emerging from the ground to deal magic damage to nearby enemies, knocking them up for 1 second. Minions and small monsters are instead knocked back a short distance. Targets hit cannot be displaced by Unburrow again for some time.",
+            "description": "Active: Rek'Sai becomes Un-Burrowed, gaining access to her Un-Burrowed abilities and emerging from the ground to deal magic damage to nearby enemies and knock them up for 1 second. Minions and small monsters are instead knocked back a short distance. Targets hit cannot be displaced by Unburrow again for some time.",
             "leveling": [
               {
                 "attribute": "Magic Damage",
@@ -357,6 +378,10 @@
                 ]
               }
             ]
+          },
+          {
+            "description": "Rek'Sai becomes unable to move or attack for 0.15 seconds after hitting an enemy with Unburrow.",
+            "leveling": []
           },
           {
             "description": "Rek'Sai can also trigger Unburrow by issuing an attack command, casting the ability once she is in attack range of the target and applying the knock up against them.",
@@ -503,11 +528,11 @@
         "damageType": null,
         "effects": [
           {
-            "description": "Active: Rek'Sai dashes in the target direction, leaving behind a Tunnel with two interconnected entrances that lasts up to 10 minutes. The Tunnel can be traversed again when Rek'Sai targets either entrance, shutting down the Tunnel for a few seconds.",
+            "description": "Active: Rek'Sai dashes in the target direction, leaving behind a Tunnel with two interconnected entrances that lasts up to 10 minutes. The Tunnel can be traversed again when Rek'Sai targets either entrance, causing her to dash to the selected entrance before travelling through the Tunnel to the opposite side. Once a Tunnel has been traversed, it is shut down for a few seconds during which Rek'Sai cannot enter it again.",
             "leveling": []
           },
           {
-            "description": "If Rek'Sai attempts to enter a Tunnel while Un-Burrowed, she will automatically Burrow and dash to the Tunnel's selected entrance over 0.6 seconds before entering it, and automatically Unburrow after exiting the Tunnel. This does not place Burrow on cooldown nor trigger Fury of the Xer'Sai, but does trigger other Burrow effects and Unburrow. If Burrow is on cooldown at the time of interacting with the Tunnel, the cooldown will be reset.",
+            "description": "If Rek'Sai attempts to enter a Tunnel while Un-Burrowed, she will automatically Burrow upon interacting with it, and automatically Unburrow after exiting it. This does not place Burrow on cooldown nor trigger Fury of the Xer'Sai, but does trigger other Burrow effects and Unburrow. If Burrow is on cooldown at the time of interacting with the Tunnel, the cooldown will be reset.",
             "leveling": []
           },
           {

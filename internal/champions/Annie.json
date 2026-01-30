@@ -88,6 +88,24 @@
     ],
     [
       {
+        "type": "W",
+        "name": "_1"
+      },
+      {
+        "name": "Incinerate",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "70 + (0.8 * ctx.ap)",
+          "110 + (0.8 * ctx.ap)",
+          "150 + (0.8 * ctx.ap)",
+          "190 + (0.8 * ctx.ap)",
+          "230 + (0.8 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
         "type": "E",
         "name": "_1"
       },
@@ -101,24 +119,6 @@
           "45 + (0.4 * ctx.ap)",
           "55 + (0.4 * ctx.ap)",
           "65 + (0.4 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "W",
-        "name": "_1"
-      },
-      {
-        "name": "Incinerate",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "70 + (0.8 * ctx.ap)",
-          "115 + (0.8 * ctx.ap)",
-          "160 + (0.8 * ctx.ap)",
-          "205 + (0.8 * ctx.ap)",
-          "250 + (0.8 * ctx.ap)"
         ]
       }
     ],

@@ -1,20 +1,19 @@
 [
   [
-    "BladeOfTheRuinedKing",
+    "Bloodthirster",
+    "ImmortalShieldbow",
+    "KnightsVow",
+    "LocketOfTheIronSolari",
     "LordDominiksRegards",
-    "GuinsoosRageblade",
-    "MortalReminder",
-    "WitsEnd",
-    "RapidFirecannon"
+    "SerpentsFang"
   ],
   [
-    "PresenceOfMind",
-    "LegendAlacrity",
-    "CoupDeGrace",
-    "ShieldBash",
-    "BonePlating",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "CoupDeGrace",
+    "RelentlessHunter",
+    "SixthSense",
+    "SuddenImpact",
+    "TenacityAndSlowResist",
+    "Triumph"
   ]
 ]

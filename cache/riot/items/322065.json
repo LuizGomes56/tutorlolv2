@@ -16,10 +16,10 @@
     "full": "322065.png",
     "group": "item",
     "h": 48,
-    "sprite": "item3.png",
+    "sprite": "item4.png",
     "w": 48,
-    "x": 432,
-    "y": 288
+    "x": 192,
+    "y": 96
   },
   "maps": {
     "11": true,

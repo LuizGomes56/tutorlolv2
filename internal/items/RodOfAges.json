@@ -1,19 +1,11 @@
 {
+  "version": "16.2.1",
   "riot_id": 6657,
-  "item_id": "RodOfAges",
   "name": "Rod of Ages",
   "price": 2600,
   "sell": 1820,
   "tier": 3,
   "maps": [
-    [
-      "NexusBlitz",
-      true
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
     [
       "SummonersRift",
       true
@@ -23,30 +15,35 @@
       true
     ],
     [
-      "Arena",
-      false
-    ],
-    [
-      "SummonersRift",
+      "NexusBlitz",
       true
     ],
     [
       "Tft",
       false
+    ],
+    [
+      "Arena",
+      false
+    ],
+    [
+      "UnknownMap33",
+      false
+    ],
+    [
+      "UnknownMap35",
+      true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "Mana",
-      "value": 300
+      "AbilityPower": 45
     },
     {
-      "name": "AbilityPower",
-      "value": 60
+      "Health": 350
     },
     {
-      "name": "Health",
-      "value": 350
+      "Mana": 500
     }
   ],
   "damage_type": "Unknown",
@@ -112,12 +109,7 @@
     1026,
     3803
   ],
-  "builds_from_item_ids": [
-    "BlastingWand",
-    "CatalystOfAeons"
-  ],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

@@ -1,20 +1,20 @@
 [
   [
-    "Redemption",
     "ArdentCenser",
     "MikaelsBlessing",
-    "HorizonFocus",
-    "StaffOfFlowingWater",
-    "RabadonsDeathcap"
+    "Morellonomicon",
+    "RabadonsDeathcap",
+    "ShurelyasBattlesong",
+    "StaffOfFlowingWater"
   ],
   [
-    "ManaflowBand",
-    "Transcendence",
-    "GatheringStorm",
-    "BonePlating",
-    "Revitalize",
     "AbilityHaste",
     "AdaptiveForce",
-    "HealthScaling"
+    "BonePlating",
+    "GatheringStorm",
+    "HealthScaling",
+    "ManaflowBand",
+    "Revitalize",
+    "Transcendence"
   ]
 ]

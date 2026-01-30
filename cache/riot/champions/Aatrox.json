@@ -70,7 +70,7 @@
       "num": 3
     },
     {
-      "chromas": false,
+      "chromas": true,
       "id": "266007",
       "name": "Blood Moon Aatrox",
       "num": 7

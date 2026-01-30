@@ -230,7 +230,7 @@
           "{{ cooldown }} -> {{ cooldownNL }}"
         ],
         "label": [
-          "Bonus Damage",
+          "Bonus Damage:",
           "Healing",
           "Cooldown"
         ]

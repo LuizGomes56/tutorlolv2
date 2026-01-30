@@ -1,18 +1,17 @@
 [
   [
-    "ZhonyasHourglass",
-    "Malignance",
-    "LichBane",
-    "VoidStaff"
+    "BansheesVeil",
+    "Cryptbloom",
+    "Morellonomicon",
+    "RabadonsDeathcap"
   ],
   [
-    "SuddenImpact",
-    "GrislyMementos",
-    "RelentlessHunter",
-    "Transcendence",
+    "AdaptiveForce",
     "GatheringStorm",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "GrislyMementos",
+    "HealthScaling",
+    "RelentlessHunter",
+    "SuddenImpact",
+    "Transcendence"
   ]
 ]

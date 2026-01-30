@@ -1,20 +1,19 @@
 [
   [
-    "Stormsurge",
+    "BansheesVeil",
+    "BloodlettersCurse",
+    "Morellonomicon",
     "RabadonsDeathcap",
-    "LiandrysTorment",
-    "VoidStaff",
-    "RylaisCrystalScepter",
-    "BansheesVeil"
+    "Stormsurge"
   ],
   [
-    "TasteOfBlood",
-    "GrislyMementos",
-    "UltimateHunter",
     "AbsoluteFocus",
-    "Scorch",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "GrislyMementos",
+    "HealthScaling",
+    "Scorch",
+    "TasteOfBlood",
+    "UltimateHunter"
   ]
 ]

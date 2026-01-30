@@ -138,11 +138,11 @@
                       ""
                     ],
                     "values": [
-                      56.0,
-                      74.5,
-                      93.0,
-                      111.5,
-                      130.0
+                      55.0,
+                      72.5,
+                      90.0,
+                      107.5,
+                      125.0
                     ]
                   },
                   {
@@ -175,11 +175,11 @@
                       ""
                     ],
                     "values": [
-                      22.4,
-                      29.8,
-                      37.2,
-                      44.6,
-                      52.0
+                      22.0,
+                      29.0,
+                      36.0,
+                      43.0,
+                      50.0
                     ]
                   },
                   {
@@ -212,11 +212,11 @@
                       ""
                     ],
                     "values": [
-                      145.6,
-                      193.7,
-                      241.8,
-                      289.9,
-                      338.0
+                      143.0,
+                      188.5,
+                      234.0,
+                      279.5,
+                      325.0
                     ]
                   },
                   {
@@ -240,11 +240,11 @@
             ]
           },
           {
-            "description": "Against monsters, Threaded Volley deals 10 bonus magic damage per Stone Shard, and the Boulder deals 18 bonus magic damage against the primary target. This bonus damage is unaffected by the damage modifier from subsequent hits.",
+            "description": "Against monsters, Threaded Volley deals 20 bonus magic damage per Stone Shard, and the Boulder deals 36 bonus magic damage against the primary target. This bonus damage is unaffected by the damage modifier from subsequent hits.",
             "leveling": []
           },
           {
-            "description": "Casting Threaded Volley creates an area of Worked Ground at Taliyah's cast location that has a radius of 400 units and lasts 30 seconds. While on Worked Ground, Threaded Volley's cast consumes the area to become empowered with a new effect, costing 20 mana and having 50% reduced cooldown, though not below 0.75 seconds.",
+            "description": "Casting Threaded Volley creates an area of Worked Ground at Taliyah's cast location that has a radius of 400 units and lasts 30 seconds. While on Worked Ground, Threaded Volley's cast consumes the area to become empowered with a new effect, costing 10 mana and having 50% reduced cooldown, though not below 0.75 seconds.",
             "leveling": []
           },
           {
@@ -262,11 +262,11 @@
                       ""
                     ],
                     "values": [
-                      100.8,
-                      134.1,
-                      167.4,
-                      200.7,
-                      234.0
+                      99.0,
+                      130.5,
+                      162.0,
+                      193.5,
+                      225.0
                     ]
                   },
                   {
@@ -434,10 +434,10 @@
                     ],
                     "values": [
                       62.5,
-                      112.5,
-                      162.5,
-                      212.5,
-                      262.5
+                      100.0,
+                      137.5,
+                      175.0,
+                      212.5
                     ]
                   },
                   {
@@ -476,10 +476,10 @@
                     ],
                     "values": [
                       25.0,
-                      45.0,
-                      65.0,
-                      85.0,
-                      105.0
+                      40.0,
+                      55.0,
+                      70.0,
+                      85.0
                     ]
                   },
                   {
@@ -503,7 +503,7 @@
             ]
           },
           {
-            "description": "Unraveled Earth deals 175% damage against monsters.",
+            "description": "Unraveled Earth deals 190% damage against monsters.",
             "leveling": []
           }
         ],

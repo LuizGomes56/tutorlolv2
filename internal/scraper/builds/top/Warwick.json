@@ -1,20 +1,20 @@
 [
   [
-    "Hullbreaker",
     "DeathsDance",
     "ExperimentalHexplate",
+    "Hullbreaker",
     "KrakenSlayer",
     "RanduinsOmen",
     "Terminus"
   ],
   [
-    "PresenceOfMind",
-    "LegendAlacrity",
-    "LastStand",
-    "SecondWind",
-    "Revitalize",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "HealthScaling",
+    "LastStand",
+    "LegendAlacrity",
+    "PresenceOfMind",
+    "Revitalize",
+    "SecondWind"
   ]
 ]

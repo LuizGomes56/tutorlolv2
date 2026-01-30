@@ -1,11 +1,15 @@
 {
+  "version": "16.2.1",
   "riot_id": 3133,
-  "item_id": "CaulfieldsWarhammer",
   "name": "Caulfield's Warhammer",
   "price": 1050,
   "sell": 735,
   "tier": 2,
   "maps": [
+    [
+      "SummonersRift",
+      true
+    ],
     [
       "Aram",
       true
@@ -15,34 +19,28 @@
       true
     ],
     [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
       "Tft",
       false
     ],
     [
       "Arena",
       false
+    ],
+    [
+      "UnknownMap33",
+      false
+    ],
+    [
+      "UnknownMap35",
+      true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "AbilityHaste",
-      "value": 10
+      "AbilityHaste": 10
     },
     {
-      "name": "AttackDamage",
-      "value": 20
+      "AttackDamage": 20
     }
   ],
   "damage_type": "Unknown",
@@ -109,21 +107,18 @@
     2022,
     1036
   ],
-  "builds_from_item_ids": [
-    "LongSword",
-    "GlowingMote",
-    "LongSword"
-  ],
   "builds_into_riot_ids": [
-    3156,
-    126697,
-    3004,
     6693,
-    6692,
-    323004,
-    6691,
-    3074,
+    3004,
     6694,
+    126697,
+    3156,
+    6696,
+    2517,
+    6692,
+    6691,
+    323004,
+    3074,
     6697,
     4402,
     3508,
@@ -131,22 +126,7 @@
     6333,
     6609,
     6610,
-    6632,
-    6696
-  ],
-  "builds_into_item_ids": [
-    "MawOfMalmortius",
-    "Manamune",
-    "Eclipse",
-    "RavenousHydra",
-    "SeryldasGrudge",
-    "Hubris",
-    "EssenceReaver",
-    "UmbralGlaive",
-    "DeathsDance",
-    "ChempunkChainsword",
-    "SunderedSky",
-    "AxiomArc"
+    6632
   ],
   "ranged": {
     "minimum_damage": "zero",

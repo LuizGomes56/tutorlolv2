@@ -1,29 +1,21 @@
 {
+  "version": "16.2.1",
   "riot_id": 3089,
-  "item_id": "RabadonsDeathcap",
   "name": "Rabadon's Deathcap",
   "price": 3500,
   "sell": 2450,
   "tier": 2,
   "maps": [
     [
+      "SummonersRift",
+      true
+    ],
+    [
       "Aram",
       true
     ],
     [
-      "Arena",
-      false
-    ],
-    [
       "NexusBlitz",
-      true
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
       true
     ],
     [
@@ -31,14 +23,21 @@
       false
     ],
     [
-      "SummonersRift",
+      "Arena",
+      false
+    ],
+    [
+      "UnknownMap33",
+      false
+    ],
+    [
+      "UnknownMap35",
       true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "AbilityPower",
-      "value": 65
+      "AbilityPower": 130
     }
   ],
   "damage_type": "Unknown",
@@ -104,12 +103,7 @@
     1058,
     1058
   ],
-  "builds_from_item_ids": [
-    "NeedlesslyLargeRod",
-    "NeedlesslyLargeRod"
-  ],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

@@ -40,8 +40,11 @@ impl Generator<Champion> for Akshan {
 
         for key in [_1Min, _1Max, _2Min, _2Max] {
             let ability = self.get_mut(AbilityId::R(key))?;
-            for (i, damage) in ability.damage.iter_mut().enumerate() {
-                let base_scalings = damage.capture_numbers_slash()[i];
+            for damage in ability.damage.iter_mut() {
+                let base_scalings = *damage
+                    .capture_numbers()
+                    .get(0)
+                    .ok_or("Can't capture first scaling")?;
                 let norm_scaling = damage.capture_parens(0)?;
                 *damage = format!(
                     "({base_scalings} + {norm_scaling}) * {crit_scaling}",

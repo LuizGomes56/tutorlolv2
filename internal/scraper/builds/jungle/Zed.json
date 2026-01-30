@@ -1,20 +1,19 @@
 [
   [
-    "VoltaicCyclosword",
     "AxiomArc",
-    "DeathsDance",
-    "MawOfMalmortius",
-    "ChempunkChainsword",
-    "GuardianAngel"
+    "GuardianAngel",
+    "LordDominiksRegards",
+    "SerpentsFang",
+    "SpearOfShojin",
+    "YoumuusGhostblade"
   ],
   [
-    "PresenceOfMind",
-    "LegendHaste",
-    "CoupDeGrace",
-    "AxiomArcanist",
-    "Transcendence",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "CashBack",
+    "CosmicInsight",
+    "HealthScaling",
+    "SuddenImpact",
+    "TreasureHunter",
+    "TripleTonic"
   ]
 ]

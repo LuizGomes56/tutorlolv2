@@ -1,15 +1,11 @@
 {
+  "version": "16.2.1",
   "riot_id": 1027,
-  "item_id": "SapphireCrystal",
   "name": "Sapphire Crystal",
   "price": 300,
   "sell": 210,
   "tier": 1,
   "maps": [
-    [
-      "Arena",
-      false
-    ],
     [
       "SummonersRift",
       true
@@ -27,18 +23,21 @@
       false
     ],
     [
-      "SummonersRift",
+      "Arena",
       false
     ],
     [
-      "SummonersRift",
+      "UnknownMap33",
+      false
+    ],
+    [
+      "UnknownMap35",
       true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "Mana",
-      "value": 300
+      "Mana": 300
     }
   ],
   "damage_type": "Unknown",
@@ -101,16 +100,10 @@
     }
   },
   "builds_from_riot_ids": [],
-  "builds_from_item_ids": [],
   "builds_into_riot_ids": [
     3803,
     3024,
     3802
-  ],
-  "builds_into_item_ids": [
-    "CatalystOfAeons",
-    "GlacialBuckler",
-    "LostChapter"
   ],
   "ranged": {
     "minimum_damage": "zero",

@@ -176,7 +176,7 @@
             ]
           },
           {
-            "description": "If the Spirit Blade hit at least one enemy champion during the travel, the empowerment is enhanced to deal increased bonus magic damage and additionally grant Shen 50% bonus attack speed.",
+            "description": "If the Spirit Blade hits at least one enemy champion during the travel, the attacks are further enhanced to deal increased bonus magic damage and additionally grant Shen 50% bonus attack speed.",
             "leveling": [
               {
                 "attribute": "Increased Bonus Damage",

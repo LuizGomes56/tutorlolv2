@@ -1,17 +1,17 @@
 [
   [
-    "BansheesVeil",
-    "Stormsurge",
-    "GuardianAngel"
+    "DuskAndDawn",
+    "KaenicRookern",
+    "RunaansHurricane"
   ],
   [
-    "PresenceOfMind",
-    "LegendAlacrity",
-    "CoupDeGrace",
     "AbsoluteFocus",
-    "GatheringStorm",
-    "AttackSpeed",
     "AdaptiveForce",
-    "Health"
+    "AttackSpeed",
+    "CoupDeGrace",
+    "GatheringStorm",
+    "Health",
+    "LegendAlacrity",
+    "PresenceOfMind"
   ]
 ]

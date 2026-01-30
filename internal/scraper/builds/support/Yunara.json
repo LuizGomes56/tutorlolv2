@@ -1,20 +1,19 @@
 [
   [
-    "PhantomDancer",
     "BladeOfTheRuinedKing",
-    "NashorsTooth",
     "ImmortalShieldbow",
-    "Shadowflame",
-    "Bloodthirster"
+    "MortalReminder",
+    "PhantomDancer",
+    "RunaansHurricane"
   ],
   [
-    "Triumph",
-    "LegendAlacrity",
-    "CutDown",
-    "MagicalFootwear",
-    "BiscuitDelivery",
-    "AttackSpeed",
     "AdaptiveForce",
-    "Health"
+    "AttackSpeed",
+    "BiscuitDelivery",
+    "CutDown",
+    "Health",
+    "LegendAlacrity",
+    "MagicalFootwear",
+    "Triumph"
   ]
 ]

@@ -24,7 +24,7 @@
     },
     "attackDamage": {
       "flat": 60.0,
-      "perLevel": 2.75
+      "perLevel": 3.25
     },
     "attackSpeed": {
       "flat": 0.625,
@@ -106,22 +106,6 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_2"
-      },
-      {
-        "name": "Trueshot Barrage",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "175 + (0.5 * ctx.bonus_ad) + (0.45 * ctx.ap)",
-          "275 + (0.5 * ctx.bonus_ad) + (0.45 * ctx.ap)",
-          "375 + (0.5 * ctx.bonus_ad) + (0.45 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
         "type": "E",
         "name": "_1"
       },
@@ -151,6 +135,22 @@
           "350 + ctx.bonus_ad + (0.9 * ctx.ap)",
           "550 + ctx.bonus_ad + (0.9 * ctx.ap)",
           "750 + ctx.bonus_ad + (0.9 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_2"
+      },
+      {
+        "name": "Trueshot Barrage",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "175 + (0.5 * ctx.bonus_ad) + (0.45 * ctx.ap)",
+          "275 + (0.5 * ctx.bonus_ad) + (0.45 * ctx.ap)",
+          "375 + (0.5 * ctx.bonus_ad) + (0.45 * ctx.ap)"
         ]
       }
     ]

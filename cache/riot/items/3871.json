@@ -1,9 +1,9 @@
 {
   "colloq": "",
   "depth": 2,
-  "description": "<mainText><stats><attention>200</attention> Health<br><attention>75%</attention> Base Health Regen<br><attention>75%</attention> Base Mana Regen<br><attention>5</attention> Gold Per 10 Seconds</stats><br><br><passive>Void Explosion</passive><br>Dealing Ability damage to a champion causes an explosion that deals <magicDamage>magic damage</magicDamage>.<br><br><active>Active</active> (4 charges)<br>Places an <keyword>Invisible</keyword> Stealth Ward that grants vision.</mainText>",
+  "description": "<mainText><stats><attention>200</attention> Health<br><attention>75%</attention> Base Health Regen<br><attention>75%</attention> Base Mana Regen<br><attention>9</attention> Gold Per 10 Seconds</stats><br><br><passive>Void Explosion</passive><br>Dealing Ability damage to a champion causes an explosion that deals <magicDamage>magic damage</magicDamage>.<br><br><active>Active</active> (4 charges)<br>Places an <keyword>Invisible</keyword> Stealth Ward that grants vision.</mainText>",
   "effect": {
-    "Effect1Amount": "5"
+    "Effect1Amount": "9"
   },
   "from": [
     "3867"
@@ -20,8 +20,8 @@
     "h": 48,
     "sprite": "item4.png",
     "w": 48,
-    "x": 144,
-    "y": 144
+    "x": 0,
+    "y": 432
   },
   "maps": {
     "11": true,

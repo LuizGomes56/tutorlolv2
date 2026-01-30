@@ -1,20 +1,19 @@
 [
   [
+    "Morellonomicon",
+    "Riftmaker",
+    "RylaisCrystalScepter",
     "SpearOfShojin",
-    "NashorsTooth",
-    "RabadonsDeathcap",
-    "VoidStaff",
-    "ZhonyasHourglass",
-    "Morellonomicon"
+    "ZhonyasHourglass"
   ],
   [
-    "SuddenImpact",
-    "GrislyMementos",
-    "TreasureHunter",
-    "Transcendence",
-    "GatheringStorm",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "GatheringStorm",
+    "GrislyMementos",
+    "HealthScaling",
+    "SuddenImpact",
+    "Transcendence",
+    "TreasureHunter"
   ]
 ]

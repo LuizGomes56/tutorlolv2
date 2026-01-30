@@ -1,23 +1,11 @@
 {
+  "version": "16.2.1",
   "riot_id": 3010,
-  "item_id": "SymbioticSoles",
   "name": "Symbiotic Soles",
   "price": 900,
   "sell": 630,
   "tier": 2,
   "maps": [
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "NexusBlitz",
-      true
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
     [
       "SummonersRift",
       true
@@ -27,18 +15,29 @@
       false
     ],
     [
+      "NexusBlitz",
+      true
+    ],
+    [
       "Tft",
       false
     ],
     [
       "Arena",
       false
+    ],
+    [
+      "UnknownMap33",
+      false
+    ],
+    [
+      "UnknownMap35",
+      false
     ]
   ],
   "prettified_stats": [
     {
-      "name": "MoveSpeed",
-      "value": 40
+      "MoveSpeed": 40
     }
   ],
   "damage_type": "Unknown",
@@ -103,14 +102,8 @@
   "builds_from_riot_ids": [
     1001
   ],
-  "builds_from_item_ids": [
-    "Boots"
-  ],
   "builds_into_riot_ids": [
     3013
-  ],
-  "builds_into_item_ids": [
-    "SynchronizedSouls"
   ],
   "ranged": {
     "minimum_damage": "zero",
@@ -121,5 +114,5 @@
     "maximum_damage": "zero"
   },
   "attributes": "Undefined",
-  "purchasable": true
+  "purchasable": false
 }

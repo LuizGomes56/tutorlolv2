@@ -22,8 +22,8 @@
     "h": 48,
     "sprite": "item4.png",
     "w": 48,
-    "x": 336,
-    "y": 48
+    "x": 192,
+    "y": 336
   },
   "inStore": false,
   "maps": {

@@ -1,6 +1,6 @@
 {
+  "version": "16.2.1",
   "riot_id": 3004,
-  "item_id": "Manamune",
   "name": "Manamune",
   "price": 2900,
   "sell": 2030,
@@ -8,18 +8,6 @@
   "maps": [
     [
       "SummonersRift",
-      false
-    ],
-    [
-      "Tft",
-      false
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
-      "NexusBlitz",
       true
     ],
     [
@@ -27,26 +15,35 @@
       true
     ],
     [
+      "NexusBlitz",
+      true
+    ],
+    [
+      "Tft",
+      false
+    ],
+    [
       "Arena",
       false
     ],
     [
-      "SummonersRift",
+      "UnknownMap33",
+      false
+    ],
+    [
+      "UnknownMap35",
       true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "AttackDamage",
-      "value": 40
+      "AbilityHaste": 15
     },
     {
-      "name": "AbilityHaste",
-      "value": 15
+      "AttackDamage": 35
     },
     {
-      "name": "Mana",
-      "value": 600
+      "Mana": 500
     }
   ],
   "damage_type": "Unknown",
@@ -113,13 +110,7 @@
     3133,
     1036
   ],
-  "builds_from_item_ids": [
-    "TearOfTheGoddess",
-    "CaulfieldsWarhammer",
-    "LongSword"
-  ],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

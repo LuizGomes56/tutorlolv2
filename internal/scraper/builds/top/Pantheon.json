@@ -1,20 +1,19 @@
 [
   [
-    "SerpentsFang",
     "BladeOfTheRuinedKing",
-    "MawOfMalmortius",
-    "DeathsDance",
     "ChempunkChainsword",
-    "YoumuusGhostblade"
+    "GuardianAngel",
+    "MawOfMalmortius",
+    "SerpentsFang",
+    "SpearOfShojin"
   ],
   [
-    "PresenceOfMind",
-    "LegendHaste",
-    "LastStand",
-    "Conditioning",
-    "Overgrowth",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "HealthScaling",
+    "LastStand",
+    "LegendHaste",
+    "PresenceOfMind",
+    "Scorch",
+    "Transcendence"
   ]
 ]

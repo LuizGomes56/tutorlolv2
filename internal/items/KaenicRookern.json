@@ -1,17 +1,13 @@
 {
+  "version": "16.2.1",
   "riot_id": 2504,
-  "item_id": "KaenicRookern",
   "name": "Kaenic Rookern",
   "price": 2900,
   "sell": 2030,
   "tier": 3,
   "maps": [
     [
-      "Arena",
-      false
-    ],
-    [
-      "NexusBlitz",
+      "SummonersRift",
       true
     ],
     [
@@ -19,34 +15,35 @@
       true
     ],
     [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
-      "SummonersRift",
+      "NexusBlitz",
       true
     ],
     [
       "Tft",
       false
+    ],
+    [
+      "Arena",
+      false
+    ],
+    [
+      "UnknownMap33",
+      false
+    ],
+    [
+      "UnknownMap35",
+      true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "Health",
-      "value": 400
+      "BaseHealthRegen": 100
     },
     {
-      "name": "MagicResist",
-      "value": 80
+      "Health": 400
     },
     {
-      "name": "BaseHealthRegen",
-      "value": 100
+      "MagicResist": 80
     }
   ],
   "damage_type": "Unknown",
@@ -112,12 +109,7 @@
     3211,
     1057
   ],
-  "builds_from_item_ids": [
-    "SpectresCowl",
-    "NegatronCloak"
-  ],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

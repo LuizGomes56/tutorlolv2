@@ -1,29 +1,17 @@
 {
+  "version": "16.2.1",
   "riot_id": 3504,
-  "item_id": "ArdentCenser",
   "name": "Ardent Censer",
   "price": 2200,
   "sell": 1540,
   "tier": 3,
   "maps": [
     [
-      "Tft",
-      false
-    ],
-    [
-      "Aram",
+      "SummonersRift",
       true
     ],
     [
-      "SummonersRift",
-      false
-    ],
-    [
-      "Arena",
-      false
-    ],
-    [
-      "SummonersRift",
+      "Aram",
       true
     ],
     [
@@ -31,26 +19,34 @@
       true
     ],
     [
-      "SummonersRift",
+      "Tft",
+      false
+    ],
+    [
+      "Arena",
+      false
+    ],
+    [
+      "UnknownMap33",
+      false
+    ],
+    [
+      "UnknownMap35",
       true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "AbilityPower",
-      "value": 40
+      "AbilityPower": 45
     },
     {
-      "name": "MoveSpeed",
-      "value": 6
+      "BaseManaRegen": 125
     },
     {
-      "name": "BaseManaRegen",
-      "value": 150
+      "HealAndShieldPower": 10
     },
     {
-      "name": "HealAndShieldPower",
-      "value": 12
+      "MoveSpeed": 4
     }
   ],
   "damage_type": "Unknown",
@@ -116,12 +112,7 @@
     3113,
     3114
   ],
-  "builds_from_item_ids": [
-    "AetherWisp",
-    "ForbiddenIdol"
-  ],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

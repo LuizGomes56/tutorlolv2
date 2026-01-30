@@ -133,7 +133,7 @@ pub const fn get_item_bonus_stats(
 
         match item_id {
             ItemId::RabadonsDeathcap => stats.ability_power *= 1.3,
-            ItemId::WoogletsWitchcap => stats.ability_power *= 1.5,
+            ItemId::WoogletsWitchcapArena => stats.ability_power *= 1.5,
             ItemId::WarmogsArmor => stats.health *= 1.12,
             ItemId::ElixirOfIron => stats.health += 300.0,
             ItemId::JuiceOfVitality => stats.health += 300.0 + 0.1 * stats.health,
@@ -308,10 +308,10 @@ pub const fn assign_rune_exceptions(data: RuneExceptionData, exceptions: &[Value
                     let formula: f32 = (stacks as f32) * (1.8 + 2.2 / 17.0 * (level - 1) as f32);
                     match adaptative_type {
                         AdaptativeType::Physical => {
-                            current_player_stats.attack_damage += (0.6 * formula) as f32;
+                            current_player_stats.attack_damage += 0.6 * formula;
                         }
                         AdaptativeType::Magic => {
-                            current_player_stats.ability_power += formula as f32;
+                            current_player_stats.ability_power += formula;
                         }
                     }
                 }
@@ -388,7 +388,7 @@ pub const fn assign_item_exceptions(data: ItemExceptionData, exceptions: &[Value
         if let Some(item_id) = item_exception.get_item_id() {
             match item_id {
                 ItemId::DarkSeal => current_player_stats.ability_power += (stacks << 2) as f32,
-                ItemId::Dragonheart => {
+                ItemId::DragonheartU44 => {
                     let modifier = 1.0 + 0.04 * stacks as f32;
                     current_player_stats.ability_power *= modifier;
                     current_player_stats.attack_speed *= modifier;
@@ -402,7 +402,7 @@ pub const fn assign_item_exceptions(data: ItemExceptionData, exceptions: &[Value
                     current_player_stats.magic_resist *= modifier;
                     current_player_bonus_stats.magic_resist *= modifier;
                 }
-                ItemId::DemonKingsCrown => {
+                ItemId::DemonKingsCrownU44 | ItemId::DemonKingsCrownU66 => {
                     let modifier = 1.0 + 0.01 * stacks as f32;
                     current_player_stats.ability_power *= modifier;
                     current_player_stats.attack_speed *= modifier;
@@ -429,11 +429,11 @@ pub const fn assign_item_exceptions(data: ItemExceptionData, exceptions: &[Value
                 ItemId::BloodlettersCurse => {
                     current_player_stats.magic_penetration_percent = RiotFormulas::percent_value(&[
                         current_player_stats.magic_penetration_percent,
-                        (7.5 * stacks as f32) as f32,
+                        (7.5 * stacks as f32),
                     ])
                 }
                 ItemId::Hubris => {
-                    let bonus = (15 + stacks << 1) as f32;
+                    let bonus = (15 + (stacks << 1)) as f32;
 
                     current_player_stats.attack_damage += bonus;
                     current_player_bonus_stats.attack_damage += bonus;
@@ -545,6 +545,7 @@ pub fn calculator(game: InputGame) -> OutputGame {
     let current_player_items = get_damaging_items(&current_player_raw_items);
 
     let self_state = SelfState {
+        stacks: stacks as _,
         current_stats: champion_stats,
         bonus_stats: current_player_bonus_stats,
         base_stats: current_player_base_stats,
@@ -595,7 +596,7 @@ pub fn calculator(game: InputGame) -> OutputGame {
 }
 
 pub fn get_calculator_enemies(
-    enemy_players: Box<[InputMinData<SimpleStats<i32>>]>,
+    enemy_players: Box<[InputMinData<EnemyStats<i32>>]>,
     self_state: &SelfState,
     eval_data: &DamageEvalData,
     modifiers: Modifiers,
@@ -609,14 +610,15 @@ pub fn get_calculator_enemies(
                 infer_stats: e_infer_stats,
                 items: e_items,
                 stacks: e_stacks,
-                stats: e_raw_stats_i32,
+                stats: e_stats_i32,
                 level: e_level,
                 champion_id: e_champion_id,
                 is_mega_gnar: e_is_mega_gnar,
                 item_exceptions: e_item_exceptions,
             } = player;
 
-            let e_stats = SimpleStats::from_i32(&e_raw_stats_i32);
+            let e_stats = EnemyStats::from_i32(&e_stats_i32);
+
             let e_base_stats = base_stats_sf32(e_champion_id, e_level, e_is_mega_gnar);
             let mut full_state = get_enemy_state(
                 EnemyState {
@@ -657,7 +659,7 @@ pub fn get_calculator_enemies(
             let damages = get_damages(&eval_ctx, eval_data, modifiers);
 
             OutputEnemy {
-                current_stats: SimpleStats::from_f32(&full_state.current_stats),
+                current_stats: EnemyStats::from_f32(&full_state.current_stats),
                 bonus_stats: SimpleStats::from_f32(&full_state.bonus_stats),
                 base_stats: SimpleStats::from_f32(&e_base_stats),
                 real_magic_resist: full_state.magic_values.real as _,

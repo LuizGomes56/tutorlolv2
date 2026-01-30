@@ -1,20 +1,20 @@
 [
   [
     "BladeOfTheRuinedKing",
-    "SerpentsFang",
-    "MercurialScimitar",
+    "FiendhunterBolts",
+    "MortalReminder",
     "NavoriFlickerblade",
-    "GuardianAngel",
-    "Opportunity"
+    "PhantomDancer",
+    "SeryldasGrudge"
   ],
   [
-    "SuddenImpact",
-    "GrislyMementos",
-    "TreasureHunter",
-    "LegendAlacrity",
-    "LastStand",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "GrislyMementos",
+    "HealthScaling",
+    "LastStand",
+    "LegendAlacrity",
+    "SuddenImpact",
+    "TreasureHunter"
   ]
 ]

@@ -1,0 +1,44 @@
+{
+  "colloq": "",
+  "depth": 3,
+  "description": "<mainText><stats><attention>600</attention> Health<br><attention>15</attention> Ability Haste</stats><br><br><passive>Lifeline</passive> (0s)<br>Taking damage that would reduce your Health below 30% causes you to gain <health> maximum Health</health> for 5 seconds, then heal <health> Health</health> over the duration. While regenerating Health, you gain 15% increased Size, 10% Move Speed, and 25% Tenacity. </mainText>",
+  "from": [
+    "3067",
+    "1011"
+  ],
+  "gold": {
+    "base": 800,
+    "purchasable": true,
+    "sell": 1750,
+    "total": 2500
+  },
+  "image": {
+    "full": "2525.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item3.png",
+    "w": 48,
+    "x": 48,
+    "y": 48
+  },
+  "maps": {
+    "11": true,
+    "12": true,
+    "21": true,
+    "22": false,
+    "30": false,
+    "33": false,
+    "35": false
+  },
+  "name": "Protoplasm Harness",
+  "plaintext": "",
+  "stats": {
+    "FlatHPPoolMod": 600
+  },
+  "tags": [
+    "Health",
+    "NonbootsMovement",
+    "Tenacity",
+    "AbilityHaste"
+  ]
+}

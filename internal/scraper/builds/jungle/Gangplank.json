@@ -1,16 +1,19 @@
 [
   [
+    "Bloodthirster",
+    "GuardianAngel",
+    "ImmortalShieldbow",
+    "Malignance",
     "MortalReminder",
-    "Malignance"
+    "SerpentsFang"
   ],
   [
-    "Demolish",
-    "SecondWind",
-    "Overgrowth",
-    "Transcendence",
-    "Scorch",
-    "AttackSpeed",
     "AdaptiveForce",
-    "Health"
+    "CashBack",
+    "CosmicInsight",
+    "CutDown",
+    "Health",
+    "LegendHaste",
+    "TripleTonic"
   ]
 ]

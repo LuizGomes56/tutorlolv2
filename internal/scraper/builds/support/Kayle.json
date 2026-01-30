@@ -1,20 +1,17 @@
 [
   [
     "ArdentCenser",
-    "MikaelsBlessing",
-    "NashorsTooth",
-    "StaffOfFlowingWater",
     "ShurelyasBattlesong",
-    "Malignance"
+    "ZekesConvergence"
   ],
   [
-    "AxiomArcanist",
-    "Transcendence",
-    "GatheringStorm",
-    "PresenceOfMind",
-    "LegendHaste",
     "AbilityHaste",
-    "AdaptiveForce",
-    "HealthScaling"
+    "BiscuitDelivery",
+    "BonePlating",
+    "Demolish",
+    "Health",
+    "HealthScaling",
+    "MagicalFootwear",
+    "Revitalize"
   ]
 ]

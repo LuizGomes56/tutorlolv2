@@ -1,19 +1,19 @@
 [
   [
+    "ChempunkChainsword",
+    "LiandrysTorment",
     "LordDominiksRegards",
-    "Bloodthirster",
-    "ImmortalShieldbow",
-    "GuardianAngel",
-    "TrinityForce"
+    "Manamune",
+    "MortalReminder",
+    "SeryldasGrudge"
   ],
   [
-    "PresenceOfMind",
-    "LegendBloodline",
-    "CutDown",
-    "MagicalFootwear",
-    "BiscuitDelivery",
-    "AttackSpeed",
+    "AbsoluteFocus",
     "AdaptiveForce",
-    "Health"
+    "BiscuitDelivery",
+    "Health",
+    "MagicalFootwear",
+    "ManaflowBand",
+    "Scorch"
   ]
 ]

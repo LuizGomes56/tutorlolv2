@@ -1,4 +1,4 @@
-use crate::AppState;
+// use crate::AppState;
 use actix_web::{
     HttpResponse, get,
     http::header::HeaderName,
@@ -49,10 +49,11 @@ pub async fn calculator_handler(body: Bytes) -> Response {
     let (decoded, _) = bincode::decode_from_slice(&body, BINCODE_CONFIG)?;
     let start = std::time::Instant::now();
     let data = calculator(decoded);
-    println!("[time] fn realtime took: {end:?}", end = start.elapsed());
+    println!("[time] fn calculator took: {end:?}", end = start.elapsed());
     respond(data)
 }
 
+/*
 const CODE_LENGTH: usize = 6;
 const BODY_LENGTH: usize = 16 + CODE_LENGTH;
 static CODE_CHARS: &[u8; 62] = b"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
@@ -92,11 +93,11 @@ pub async fn create_game_handler(state: Data<AppState>) -> Response {
 pub async fn get_by_code_handler(state: Data<AppState>, body: actix_web::web::Bytes) -> Response {
     let game_code = std::str::from_utf8(body.as_ref())?;
     let (data,) = sqlx::query_as::<_, (String,)>(
-        "SELECT g.game_id, gd.game_data AS game 
+        "SELECT g.game_id, gd.game_data AS game
         FROM games g
-        JOIN game_data gd ON gd.game_id = g.game_id 
+        JOIN game_data gd ON gd.game_id = g.game_id
         WHERE g.game_code = $1
-        ORDER BY gd.game_time DESC 
+        ORDER BY gd.game_time DESC
         LIMIT 1",
     )
     .bind(game_code)
@@ -108,3 +109,4 @@ pub async fn get_by_code_handler(state: Data<AppState>, body: actix_web::web::By
         realtime(&riot_realtime).ok_or("Error calling function `realtime`. Invalid input")?;
     respond(realtime_data)
 }
+*/

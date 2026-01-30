@@ -1,9 +1,9 @@
 {
+  "version": "16.2.1",
   "riot_id": 3170,
-  "item_id": "Swiftmarch",
   "name": "Swiftmarch",
-  "price": 1500,
-  "sell": 1050,
+  "price": 1000,
+  "sell": 700,
   "tier": 3,
   "maps": [
     [
@@ -19,26 +19,25 @@
       false
     ],
     [
-      "Arena",
-      false
-    ],
-    [
       "Tft",
       false
     ],
     [
-      "SummonersRift",
+      "Arena",
       false
     ],
     [
-      "SummonersRift",
+      "UnknownMap33",
+      false
+    ],
+    [
+      "UnknownMap35",
       false
     ]
   ],
   "prettified_stats": [
     {
-      "name": "MoveSpeed",
-      "value": 65
+      "MoveSpeed": 65
     }
   ],
   "damage_type": "Unknown",
@@ -103,11 +102,7 @@
   "builds_from_riot_ids": [
     3009
   ],
-  "builds_from_item_ids": [
-    "BootsOfSwiftness"
-  ],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

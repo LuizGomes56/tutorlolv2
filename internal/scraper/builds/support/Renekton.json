@@ -1,20 +1,19 @@
 [
   [
+    "MawOfMalmortius",
+    "Opportunity",
+    "SerpentsFang",
     "Stridebreaker",
     "SunderedSky",
-    "Thornmail",
-    "MawOfMalmortius",
-    "KaenicRookern",
-    "UmbralGlaive"
+    "YoumuusGhostblade"
   ],
   [
-    "Triumph",
-    "LegendAlacrity",
-    "LastStand",
-    "BonePlating",
-    "Unflinching",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "BonePlating",
+    "HealthScaling",
+    "LastStand",
+    "LegendAlacrity",
+    "Triumph",
+    "Unflinching"
   ]
 ]

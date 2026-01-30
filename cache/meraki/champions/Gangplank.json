@@ -91,7 +91,7 @@
             "leveling": []
           },
           {
-            "description": "Innate: Periodically, Gangplank empowers his next basic attack to set the target on fire, dealing them[ 50 : 250 (based on level) (+ 100% bonus AD) (+ 2 per 1% critical strike chance) bonus true damage over 2.5 seconds. ][ 5 : 25 (based on level) (+ 10% bonus AD) (+ 0.2 per 1% critical strike chance) bonus true damage every 0.25 seconds over 2.5 seconds. ] Turrets are dealt 50% damage.",
+            "description": "Innate: Periodically, Gangplank empowers his next basic attack on-hit to set the target on fire, dealing them[ 50 : 250 (based on level) (+ 100% bonus AD) bonus true damage over 2.5 seconds. ][ 5 : 25 (based on level) (+ 10% bonus AD) bonus true damage every 0.25 seconds over 2.5 seconds. ] Turrets are dealt 50% damage.",
             "leveling": []
           },
           {
@@ -128,7 +128,7 @@
         "damageType": "PHYSICAL_DAMAGE",
         "effects": [
           {
-            "description": "Active: Gangplank fires a shot at the target enemy that deals physical damage, applies on-hit effects as a ranged attack, and triggers on-attack effects. Parrrley can critically strike for (175% + 40%) damage.",
+            "description": "Active: Gangplank fires a shot at the target enemy that deals physical damage, applies on-hit effects as a ranged attack, and triggers on-attack effects. Parrrley can critically strike for (200% + 30%) damage.",
             "leveling": [
               {
                 "attribute": "Physical Damage",
@@ -341,7 +341,7 @@
             "leveling": []
           },
           {
-            "description": "Enemies caught in an explosion are slowed for 2 seconds, and are dealt the triggering attack's damage, dealing bonus physical damage against champions. Each enemy can only be hit once per chain and the damage dealt ignores 40% of the target's armor.",
+            "description": "Enemies caught in an explosion are dealt the triggering attack's damage and slowed for 2 seconds. Against champions, the explosion also deals bonus physical damage. Each enemy can only be hit once per chain and the damage dealt ignores 40% of the target's armor.",
             "leveling": [
               {
                 "attribute": "Bonus Champion Damage",
@@ -356,10 +356,10 @@
                     ],
                     "values": [
                       75.0,
-                      105.0,
+                      95.0,
+                      115.0,
                       135.0,
-                      165.0,
-                      195.0
+                      155.0
                     ]
                   }
                 ]
@@ -414,11 +414,11 @@
             ]
           },
           {
-            "description": "If the triggering attack was a critical strike, the explosions deal 5% more damage on top of the critical damage.",
+            "description": "Kegs can be attacked by enemies or Gangplank (including his Parrrley), dealing 1 damage to it. When an enemy destroys it, it is safely defused. When Gangplank destroys it, it explodes and also triggers a chain reaction that explodes other nearby connected kegs with a 0.33 seconds-delay between explosions. The explosions also grant sight of their radiuses for 2 seconds.",
             "leveling": []
           },
           {
-            "description": "Kegs can be basic attacked by enemies or Gangplank (including his Parrrley), dealing 1 damage to it. When an enemy destroys it, it is safely defused. When Gangplank destroys it, it explodes and also triggers a chain reaction that explodes other nearby connected kegs with a 0.33 seconds-delay between explosions. The explosions also grant sight of their radiuses for 2 seconds.",
+            "description": "The triggering attack on the keg can critically strike, causing the explosion to deal the attack's critical damage.",
             "leveling": []
           }
         ],

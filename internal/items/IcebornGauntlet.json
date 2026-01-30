@@ -1,25 +1,21 @@
 {
+  "version": "16.2.1",
   "riot_id": 6662,
-  "item_id": "IcebornGauntlet",
   "name": "Iceborn Gauntlet",
   "price": 2900,
   "sell": 2030,
   "tier": 3,
   "maps": [
     [
-      "NexusBlitz",
-      true
-    ],
-    [
       "SummonersRift",
-      false
+      true
     ],
     [
       "Aram",
       true
     ],
     [
-      "SummonersRift",
+      "NexusBlitz",
       true
     ],
     [
@@ -31,22 +27,23 @@
       false
     ],
     [
-      "SummonersRift",
+      "UnknownMap33",
+      false
+    ],
+    [
+      "UnknownMap35",
       true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "Health",
-      "value": 300
+      "AbilityHaste": 15
     },
     {
-      "name": "AbilityHaste",
-      "value": 10
+      "Armor": 50
     },
     {
-      "name": "Armor",
-      "value": 45
+      "Health": 300
     }
   ],
   "damage_type": "Unknown",
@@ -113,13 +110,7 @@
     1028,
     1031
   ],
-  "builds_from_item_ids": [
-    "Sheen",
-    "RubyCrystal",
-    "ChainVest"
-  ],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

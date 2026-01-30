@@ -1,20 +1,19 @@
 [
   [
-    "BlackCleaver",
-    "SteraksGage",
-    "VoltaicCyclosword",
-    "SunderedSky",
+    "EdgeOfNight",
+    "MawOfMalmortius",
     "SerpentsFang",
-    "ChempunkChainsword"
+    "SeryldasGrudge",
+    "SpearOfShojin",
+    "SunderedSky"
   ],
   [
-    "Triumph",
-    "LegendHaste",
-    "LastStand",
-    "MagicalFootwear",
+    "AdaptiveForce",
     "CosmicInsight",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "Health"
+    "HealthScaling",
+    "LastStand",
+    "LegendHaste",
+    "MagicalFootwear",
+    "Triumph"
   ]
 ]

@@ -1,6 +1,6 @@
 {
+  "version": "16.2.1",
   "riot_id": 3108,
-  "item_id": "FiendishCodex",
   "name": "Fiendish Codex",
   "price": 850,
   "sell": 595,
@@ -15,34 +15,32 @@
       true
     ],
     [
-      "Arena",
-      false
+      "NexusBlitz",
+      true
     ],
     [
       "Tft",
       false
     ],
     [
-      "NexusBlitz",
-      true
-    ],
-    [
-      "SummonersRift",
+      "Arena",
       false
     ],
     [
-      "SummonersRift",
+      "UnknownMap33",
+      false
+    ],
+    [
+      "UnknownMap35",
       true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "AbilityPower",
-      "value": 25
+      "AbilityHaste": 10
     },
     {
-      "name": "AbilityHaste",
-      "value": 10
+      "AbilityPower": 25
     }
   ],
   "damage_type": "Unknown",
@@ -108,17 +106,15 @@
     1052,
     2022
   ],
-  "builds_from_item_ids": [
-    "AmplifyingTome",
-    "GlowingMote"
-  ],
   "builds_into_riot_ids": [
     323003,
     3128,
     3115,
+    123430,
     3003,
     4628,
     3137,
+    3107,
     324005,
     3152,
     326616,
@@ -128,18 +124,6 @@
     4633,
     6616,
     8010
-  ],
-  "builds_into_item_ids": [
-    "NashorsTooth",
-    "ArchangelsStaff",
-    "HorizonFocus",
-    "Cryptbloom",
-    "HextechRocketbelt",
-    "ImperialMandate",
-    "CosmicDrive",
-    "Riftmaker",
-    "StaffOfFlowingWater",
-    "BloodlettersCurse"
   ],
   "ranged": {
     "minimum_damage": "zero",

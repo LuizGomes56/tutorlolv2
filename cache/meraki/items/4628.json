@@ -3,19 +3,19 @@
   "buildsFrom": [
     3108,
     3108,
-    1026
+    1052
   ],
   "buildsInto": [],
   "name": "Horizon Focus",
   "tier": 3,
   "passives": [
     {
-      "effects": "Dealing [[Ability_effects#Triggering_from_champion_ability_damage|ability damage]] to a champion at {{tip|cr|icononly = true}} 600 or more units away from the cast position {{tip|standard sight|reveals}} them for 6 seconds.",
+      "effects": "Dealing [[ability damage]] to a champion with a [[champion ability]] at {{tip|cr|icononly = true}} 600 or more units away from the cast position marks them for 6 seconds, {{tip|standard sight|revealing}} them and increasing your damage dealt to them by 10%.",
       "name": "Hypershot",
       "unique": true
     },
     {
-      "effects": "Upon triggering ''Hypershot'', grant {{tip|sight}} of the {{tt|area|Grants sight through terrain and brush}} {{tip|cr|icononly=true}} 1400 units around the target for 2 seconds and apply ''Hypershot's'' effects to enemy champions within the area for 3 seconds.",
+      "effects": "Upon triggering ''Hypershot'', grant {{tip|sight}} of the {{tt|area|Grants sight through terrain and brush}} {{tip|cr|icononly=true}} 1400 units around the target for 2 seconds and apply ''Hypershot's'' mark to enemy champions within the area for 3 seconds.",
       "name": "Focus",
       "unique": true
     }
@@ -23,7 +23,7 @@
   "id": 4628,
   "stats": {
     "abilityPower": {
-      "flat": 115.0,
+      "flat": 75.0,
       "percent": 0.0
     },
     "armor": {
@@ -82,7 +82,7 @@
   "shop": {
     "purchasable": true,
     "prices": {
-      "total": 2800
+      "total": 2700
     }
   }
 }

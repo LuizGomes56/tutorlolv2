@@ -1,23 +1,11 @@
 {
+  "version": "16.2.1",
   "riot_id": 6698,
-  "item_id": "ProfaneHydra",
   "name": "Profane Hydra",
-  "price": 3200,
+  "price": 2850,
   "sell": 1995,
   "tier": 3,
   "maps": [
-    [
-      "Tft",
-      false
-    ],
-    [
-      "Arena",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
     [
       "SummonersRift",
       true
@@ -31,22 +19,31 @@
       true
     ],
     [
-      "SummonersRift",
+      "Tft",
+      false
+    ],
+    [
+      "Arena",
+      false
+    ],
+    [
+      "UnknownMap33",
+      false
+    ],
+    [
+      "UnknownMap35",
       true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "AttackDamage",
-      "value": 55
+      "AbilityHaste": 10
     },
     {
-      "name": "Lethality",
-      "value": 18
+      "AttackDamage": 55
     },
     {
-      "name": "AbilityHaste",
-      "value": 10
+      "Lethality": 18
     }
   ],
   "damage_type": "Unknown",
@@ -68,7 +65,7 @@
       "percent": 0.0
     },
     "attackDamage": {
-      "flat": 60.0,
+      "flat": 55.0,
       "percent": 0.0
     },
     "attackSpeed": {
@@ -112,12 +109,7 @@
     3077,
     2020
   ],
-  "builds_from_item_ids": [
-    "Tiamat",
-    "TheBrutalizer"
-  ],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

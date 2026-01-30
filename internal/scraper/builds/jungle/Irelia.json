@@ -1,20 +1,20 @@
 [
   [
+    "GuardianAngel",
+    "Hullbreaker",
     "RavenousHydra",
-    "TrinityForce",
-    "JakshoTheProtean",
-    "Terminus",
+    "SteraksGage",
     "SunderedSky",
-    "BlackCleaver"
+    "TrinityForce"
   ],
   [
-    "Triumph",
-    "LegendAlacrity",
-    "LastStand",
-    "BiscuitDelivery",
-    "JackOfAllTrades",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "BonePlating",
+    "HealthScaling",
+    "LastStand",
+    "LegendAlacrity",
+    "Triumph",
+    "Unflinching"
   ]
 ]

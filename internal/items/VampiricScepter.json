@@ -1,21 +1,13 @@
 {
+  "version": "16.2.1",
   "riot_id": 1053,
-  "item_id": "VampiricScepter",
   "name": "Vampiric Scepter",
   "price": 900,
   "sell": 630,
   "tier": 2,
   "maps": [
     [
-      "Arena",
-      false
-    ],
-    [
       "SummonersRift",
-      true
-    ],
-    [
-      "NexusBlitz",
       true
     ],
     [
@@ -23,26 +15,32 @@
       true
     ],
     [
-      "SummonersRift",
+      "NexusBlitz",
       true
-    ],
-    [
-      "SummonersRift",
-      false
     ],
     [
       "Tft",
       false
+    ],
+    [
+      "Arena",
+      false
+    ],
+    [
+      "UnknownMap33",
+      false
+    ],
+    [
+      "UnknownMap35",
+      true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "LifeSteal",
-      "value": 7
+      "AttackDamage": 15
     },
     {
-      "name": "AttackDamage",
-      "value": 15
+      "LifeSteal": 7
     }
   ],
   "damage_type": "Unknown",
@@ -107,21 +105,13 @@
   "builds_from_riot_ids": [
     1036
   ],
-  "builds_from_item_ids": [
-    "LongSword"
-  ],
   "builds_into_riot_ids": [
     3139,
+    3146,
     3072,
     3074,
-    3153,
-    4403
-  ],
-  "builds_into_item_ids": [
-    "MercurialScimitar",
-    "Bloodthirster",
-    "RavenousHydra",
-    "BladeOfTheRuinedKing"
+    4403,
+    3153
   ],
   "ranged": {
     "minimum_damage": "zero",

@@ -1,10 +1,10 @@
 {
-  "riot_id": 223039,
-  "item_id": "AtmasReckoning",
+  "version": "16.2.1",
+  "riot_id": 3039,
   "name": "Atma's Reckoning",
-  "price": 2500,
-  "sell": 1250,
-  "tier": 3,
+  "price": 2900,
+  "sell": 2030,
+  "tier": 0,
   "maps": [
     [
       "SummonersRift",
@@ -12,37 +12,35 @@
     ],
     [
       "Aram",
-      false
+      true
     ],
     [
       "NexusBlitz",
-      false
+      true
     ],
     [
       "Tft",
       false
     ],
     [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
       "Arena",
-      true
+      false
+    ],
+    [
+      "UnknownMap33",
+      false
+    ],
+    [
+      "UnknownMap35",
+      false
     ]
   ],
   "prettified_stats": [
     {
-      "name": "Health",
-      "value": 700
+      "CriticalStrikeChance": 20
     },
     {
-      "name": "CriticalStrikeChance",
-      "value": 20
+      "Health": 700
     }
   ],
   "damage_type": "Unknown",
@@ -73,14 +71,14 @@
     },
     "criticalStrikeChance": {
       "flat": 0.0,
-      "percent": 20.0
+      "percent": 0.0
     },
     "criticalStrikeDamage": {
       "flat": 0.0,
       "percent": 0.0
     },
     "health": {
-      "flat": 700.0,
+      "flat": 0.0,
       "percent": 0.0
     },
     "lifesteal": {
@@ -105,9 +103,7 @@
     }
   },
   "builds_from_riot_ids": [],
-  "builds_from_item_ids": [],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

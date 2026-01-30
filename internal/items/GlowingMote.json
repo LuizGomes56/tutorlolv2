@@ -1,6 +1,6 @@
 {
+  "version": "16.2.1",
   "riot_id": 2022,
-  "item_id": "GlowingMote",
   "name": "Glowing Mote",
   "price": 250,
   "sell": 175,
@@ -11,34 +11,33 @@
       true
     ],
     [
-      "NexusBlitz",
-      true
-    ],
-    [
       "Aram",
       true
     ],
     [
-      "Arena",
-      false
+      "NexusBlitz",
+      true
     ],
     [
       "Tft",
       false
     ],
     [
-      "SummonersRift",
+      "Arena",
       false
     ],
     [
-      "SummonersRift",
+      "UnknownMap33",
+      false
+    ],
+    [
+      "UnknownMap35",
       true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "AbilityHaste",
-      "value": 5
+      "AbilityHaste": 5
     }
   ],
   "damage_type": "Unknown",
@@ -101,7 +100,6 @@
     }
   },
   "builds_from_riot_ids": [],
-  "builds_from_item_ids": [],
   "builds_into_riot_ids": [
     3158,
     3133,
@@ -113,18 +111,6 @@
     3067,
     3802,
     4642
-  ],
-  "builds_into_item_ids": [
-    "IonianBootsOfLucidity",
-    "CaulfieldsWarhammer",
-    "TheBrutalizer",
-    "FiendishCodex",
-    "BamisCinder",
-    "GlacialBuckler",
-    "Sheen",
-    "Kindlegem",
-    "LostChapter",
-    "BandleglassMirror"
   ],
   "ranged": {
     "minimum_damage": "zero",

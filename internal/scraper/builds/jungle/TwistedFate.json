@@ -1,20 +1,20 @@
 [
   [
-    "DeathsDance",
-    "MercurialScimitar",
-    "Hullbreaker",
-    "GuardianAngel",
-    "DeadMansPlate",
-    "NavoriFlickerblade"
+    "InfinityEdge",
+    "PhantomDancer",
+    "RapidFirecannon",
+    "SerpentsFang",
+    "Terminus",
+    "WitsEnd"
   ],
   [
-    "Triumph",
-    "LegendBloodline",
-    "LastStand",
-    "CheapShot",
-    "UltimateHunter",
     "AttackSpeed",
-    "AdaptiveForce",
-    "HealthScaling"
+    "CheapShot",
+    "CutDown",
+    "LegendAlacrity",
+    "MoveSpeed",
+    "TenacityAndSlowResist",
+    "Triumph",
+    "UltimateHunter"
   ]
 ]

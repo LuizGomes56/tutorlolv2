@@ -1,20 +1,20 @@
 [
   [
-    "Thornmail",
-    "ForceOfNature",
+    "FrozenHeart",
     "KaenicRookern",
     "RanduinsOmen",
-    "ShurelyasBattlesong",
-    "FrozenHeart"
+    "Thornmail",
+    "UnendingDespair",
+    "ZhonyasHourglass"
   ],
   [
-    "CheapShot",
-    "GrislyMementos",
-    "UltimateHunter",
+    "AdaptiveForce",
     "AxiomArcanist",
     "Celerity",
-    "AdaptiveForce",
+    "CheapShot",
+    "GrislyMementos",
+    "HealthScaling",
     "MoveSpeed",
-    "HealthScaling"
+    "UltimateHunter"
   ]
 ]

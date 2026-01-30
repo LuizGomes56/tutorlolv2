@@ -1,20 +1,19 @@
 [
   [
-    "WarmogsArmor",
+    "Bandlepipes",
+    "DuskAndDawn",
     "LocketOfTheIronSolari",
+    "ProtoplasmHarness",
     "RanduinsOmen",
-    "SunfireAegis",
-    "Riftmaker",
-    "FrozenHeart"
+    "WarmogsArmor"
   ],
   [
-    "ShieldBash",
-    "SecondWind",
-    "Unflinching",
-    "Triumph",
-    "LegendAlacrity",
     "AttackSpeed",
     "HealthScaling",
-    "HealthScaling"
+    "LegendAlacrity",
+    "SecondWind",
+    "ShieldBash",
+    "Triumph",
+    "Unflinching"
   ]
 ]

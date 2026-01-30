@@ -1,31 +1,11 @@
 {
+  "version": "16.2.1",
   "riot_id": 2501,
-  "item_id": "OverlordsBloodmail",
   "name": "Overlord's Bloodmail",
   "price": 3300,
   "sell": 2310,
   "tier": 3,
   "maps": [
-    [
-      "NexusBlitz",
-      true
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "Arena",
-      false
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
-      "Tft",
-      false
-    ],
     [
       "SummonersRift",
       true
@@ -33,16 +13,34 @@
     [
       "Aram",
       true
+    ],
+    [
+      "NexusBlitz",
+      true
+    ],
+    [
+      "Tft",
+      false
+    ],
+    [
+      "Arena",
+      false
+    ],
+    [
+      "UnknownMap33",
+      false
+    ],
+    [
+      "UnknownMap35",
+      true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "AttackDamage",
-      "value": 30
+      "AttackDamage": 30
     },
     {
-      "name": "Health",
-      "value": 550
+      "Health": 550
     }
   ],
   "damage_type": "Unknown",
@@ -108,12 +106,7 @@
     2021,
     2021
   ],
-  "builds_from_item_ids": [
-    "Tunneler",
-    "Tunneler"
-  ],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

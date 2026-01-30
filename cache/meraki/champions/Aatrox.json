@@ -117,11 +117,11 @@
         "damageType": "MAGIC_DAMAGE",
         "effects": [
           {
-            "description": "Innate: Periodically, Aatrox empowers his next basic attack to gain 50 bonus range and deal bonus magic damage equal to 4% : 8% (based on level) of the target's maximum health, capped at 100 against monsters. Deathbringer Stance's damage applies life steal at 100% effectiveness.Aatrox heals for 100% of the post-mitigation bonus damage dealt, reduced to 25% against minions.",
+            "description": "Innate: Periodically, Aatrox empowers his next basic attack to gain 50 bonus range and deal bonus magic damage equal to 4% : 8% (based on level) of the target's maximum health, capped at 100 : 320 (based on level) against monsters. Deathbringer Stance's damage applies life steal.Aatrox heals for the post-mitigation bonus damage dealt, reduced to 25% against minions.",
             "leveling": []
           },
           {
-            "description": "Whenever Aatrox hits at least one enemy champion or large monster with a basic attack on-hit or an ability, the cooldown of Deathbringer Stance is reduced by 2 seconds, modified to 4 if he hits with the Sweetspot of The Darkin Blade.",
+            "description": "Whenever Aatrox hits at least one enemy champion or large monster with a basic attack on-hit or an ability, Deathbringer Stance's current cooldown is reduced by 2 seconds, doubled to 4 if he hits with the Sweetspot of The Darkin Blade.",
             "leveling": []
           }
         ],
@@ -158,7 +158,7 @@
             "leveling": []
           },
           {
-            "description": "Active: Aatrox performs a strike with his greatsword for each of the three casts, dealing physical damage to enemies hit within an area. Enemies hit within a Sweetspot of the area take 70% bonus damage and also knocked up for 0.25 seconds. Each subsequent cast gains 25% more damage.",
+            "description": "Active: Aatrox performs a strike with his greatsword for each of the three casts, dealing physical damage to enemies hit within an area. Enemies hit within a Sweetspot of the area take 70% bonus damage and are also knocked up for 0.25 seconds. Each subsequent cast gains 25% more damage.",
             "leveling": []
           },
           {
@@ -320,7 +320,7 @@
             ]
           },
           {
-            "description": "The Darkin Blade deals 55% / 60% / 65% / 70% (based on level) damage against minions, and the knock up duration from hitting the Sweetspot is doubled to 0.5 seconds against monsters.",
+            "description": "The Darkin Blade deals 55% / 60% / 65% / 70% (based on level) damage against minions. Against monsters, the first cast deals 15 bonus physical damage, which is affected by the subsequent cast and Sweetspot damage modifiers; and the knock up duration from hitting the Sweetspot against them is doubled to 0.5 seconds.",
             "leveling": [
               {
                 "attribute": "Maximum Non-Minion Non-Sweetspot Damage",
@@ -718,6 +718,10 @@
         },
         "damageType": null,
         "effects": [
+          {
+            "description": "Aatrox can move during World Ender's cast time.",
+            "leveling": []
+          },
           {
             "description": "Active: Aatrox unleashes his true form for 10 seconds, fearing nearby enemy minions and monsters for 3 seconds, during which they are gradually slowed by up to 99% over the duration. He also gains bonus movement speed that decays by 10% of the current bonus every 0.25 seconds, lasting until World Ender has ended.",
             "leveling": [

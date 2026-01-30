@@ -1,5 +1,5 @@
 use serde::{Deserialize, Serialize};
-use tutorlolv2_gen::{Attrs, DamageType, GameMap, ItemId, StatName};
+use tutorlolv2_gen::{Attrs, DamageType, GameMap, StatName};
 
 #[derive(Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -76,10 +76,10 @@ impl Default for DamageObject {
     }
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Default, Deserialize, Serialize)]
 pub struct Item {
+    pub version: String,
     pub riot_id: u32,
-    pub item_id: ItemId,
     pub name: String,
     pub price: u32,
     pub sell: u32,
@@ -89,9 +89,7 @@ pub struct Item {
     pub damage_type: DamageType,
     pub stats: ItemStats,
     pub builds_from_riot_ids: Vec<u32>,
-    pub builds_from_item_ids: Vec<ItemId>,
     pub builds_into_riot_ids: Vec<u32>,
-    pub builds_into_item_ids: Vec<ItemId>,
     pub ranged: DamageObject,
     pub melee: DamageObject,
     pub attributes: Attrs,

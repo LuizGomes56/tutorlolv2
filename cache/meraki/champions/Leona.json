@@ -104,7 +104,7 @@
         "damageType": "MAGIC_DAMAGE",
         "effects": [
           {
-            "description": "Active: Leona illuminates her shield, empowering her next basic attack within 6 seconds to have a 0.25-second cast time, gain 50 bonus range, deal bonus magic damage and stun the target for 1 second.",
+            "description": "Active: Leona illuminates her shield, empowering her next basic attack within 6 seconds to have an uncancellable windup, gain 50 bonus range, deal bonus magic damage and stun the target for 1 second.",
             "leveling": [
               {
                 "attribute": "Bonus Magic Damage",

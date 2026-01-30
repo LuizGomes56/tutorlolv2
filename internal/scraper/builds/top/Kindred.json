@@ -1,20 +1,20 @@
 [
   [
-    "LordDominiksRegards",
-    "KaenicRookern",
-    "WitsEnd",
-    "RunaansHurricane",
-    "ImmortalShieldbow",
-    "MercurialScimitar"
+    "BladeOfTheRuinedKing",
+    "EssenceReaver",
+    "GuardianAngel",
+    "MortalReminder",
+    "TrinityForce",
+    "WitsEnd"
   ],
   [
-    "Triumph",
-    "LegendAlacrity",
-    "CoupDeGrace",
-    "SuddenImpact",
-    "RelentlessHunter",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "CoupDeGrace",
+    "HealthScaling",
+    "LegendAlacrity",
+    "SuddenImpact",
+    "TreasureHunter",
+    "Triumph"
   ]
 ]

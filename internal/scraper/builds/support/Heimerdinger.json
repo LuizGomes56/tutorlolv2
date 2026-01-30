@@ -1,20 +1,19 @@
 [
   [
     "BlackfireTorch",
-    "Morellonomicon",
-    "Shadowflame",
-    "ImperialMandate",
     "BloodlettersCurse",
-    "RabadonsDeathcap"
+    "LudensEcho",
+    "RabadonsDeathcap",
+    "Shadowflame",
+    "ShurelyasBattlesong"
   ],
   [
-    "ManaflowBand",
     "AbsoluteFocus",
-    "Scorch",
-    "MagicalFootwear",
+    "AdaptiveForce",
     "BiscuitDelivery",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "HealthScaling",
+    "MagicalFootwear",
+    "ManaflowBand",
+    "Scorch"
   ]
 ]

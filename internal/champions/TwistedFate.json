@@ -72,6 +72,24 @@
   "abilities": [
     [
       {
+        "type": "Q",
+        "name": "_1"
+      },
+      {
+        "name": "Wild Cards",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "60 + (0.5 * ctx.bonus_ad) + (0.85 * ctx.ap)",
+          "105 + (0.5 * ctx.bonus_ad) + (0.85 * ctx.ap)",
+          "150 + (0.5 * ctx.bonus_ad) + (0.85 * ctx.ap)",
+          "195 + (0.5 * ctx.bonus_ad) + (0.85 * ctx.ap)",
+          "240 + (0.5 * ctx.bonus_ad) + (0.85 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
         "type": "W",
         "name": "_1"
       },
@@ -85,6 +103,24 @@
           "80 + ctx.ad + ctx.ap",
           "100 + ctx.ad + ctx.ap",
           "120 + ctx.ad + ctx.ap"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_2"
+      },
+      {
+        "name": "Pick a Card",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "15 + ctx.ad + (0.5 * ctx.ap)",
+          "22.5 + ctx.ad + (0.5 * ctx.ap)",
+          "30 + ctx.ad + (0.5 * ctx.ap)",
+          "37.5 + ctx.ad + (0.5 * ctx.ap)",
+          "45 + ctx.ad + (0.5 * ctx.ap)"
         ]
       }
     ],
@@ -121,42 +157,6 @@
           "115 + (0.2 * ctx.bonus_ad) + (0.4 * ctx.ap)",
           "140 + (0.2 * ctx.bonus_ad) + (0.4 * ctx.ap)",
           "165 + (0.2 * ctx.bonus_ad) + (0.4 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_1"
-      },
-      {
-        "name": "Wild Cards",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "60 + (0.5 * ctx.bonus_ad) + (0.85 * ctx.ap)",
-          "105 + (0.5 * ctx.bonus_ad) + (0.85 * ctx.ap)",
-          "150 + (0.5 * ctx.bonus_ad) + (0.85 * ctx.ap)",
-          "195 + (0.5 * ctx.bonus_ad) + (0.85 * ctx.ap)",
-          "240 + (0.5 * ctx.bonus_ad) + (0.85 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "W",
-        "name": "_2"
-      },
-      {
-        "name": "Pick a Card",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "15 + ctx.ad + (0.5 * ctx.ap)",
-          "22.5 + ctx.ad + (0.5 * ctx.ap)",
-          "30 + ctx.ad + (0.5 * ctx.ap)",
-          "37.5 + ctx.ad + (0.5 * ctx.ap)",
-          "45 + ctx.ad + (0.5 * ctx.ap)"
         ]
       }
     ]

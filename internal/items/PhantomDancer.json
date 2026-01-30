@@ -1,11 +1,23 @@
 {
+  "version": "16.2.1",
   "riot_id": 3046,
-  "item_id": "PhantomDancer",
   "name": "Phantom Dancer",
   "price": 2650,
   "sell": 1855,
   "tier": 3,
   "maps": [
+    [
+      "SummonersRift",
+      true
+    ],
+    [
+      "Aram",
+      true
+    ],
+    [
+      "NexusBlitz",
+      true
+    ],
     [
       "Tft",
       false
@@ -15,38 +27,23 @@
       false
     ],
     [
-      "NexusBlitz",
-      true
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
-      "SummonersRift",
+      "UnknownMap33",
       false
     ],
     [
-      "SummonersRift",
-      true
-    ],
-    [
-      "Aram",
+      "UnknownMap35",
       true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "CriticalStrikeChance",
-      "value": 25
+      "AttackSpeed": 65
     },
     {
-      "name": "AttackSpeed",
-      "value": 60
+      "CriticalStrikeChance": 25
     },
     {
-      "name": "MoveSpeed",
-      "value": 8
+      "MoveSpeed": 10
     }
   ],
   "damage_type": "Unknown",
@@ -113,13 +110,7 @@
     3086,
     1042
   ],
-  "builds_from_item_ids": [
-    "Dagger",
-    "Zeal",
-    "Dagger"
-  ],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

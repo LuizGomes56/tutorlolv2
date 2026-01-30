@@ -17,7 +17,7 @@
       "perLevel": 60.0
     },
     "armor": {
-      "flat": 37.0,
+      "flat": 40.0,
       "perLevel": 4.95
     },
     "magicResistance": {
@@ -72,6 +72,24 @@
   "abilities": [
     [
       {
+        "type": "Q",
+        "name": "_1"
+      },
+      {
+        "name": "Seismic Shard",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "70 + (0.6 * ctx.ap)",
+          "120 + (0.6 * ctx.ap)",
+          "170 + (0.6 * ctx.ap)",
+          "220 + (0.6 * ctx.ap)",
+          "270 + (0.6 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
         "type": "W",
         "name": "_1"
       },
@@ -85,40 +103,6 @@
           "50 + (0.2 * ctx.ap) + (0.15 * ctx.armor)",
           "60 + (0.2 * ctx.ap) + (0.15 * ctx.armor)",
           "70 + (0.2 * ctx.ap) + (0.15 * ctx.armor)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "E",
-        "name": "_1"
-      },
-      {
-        "name": "Ground Slam",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "70 + (0.6 * ctx.ap) + (0.4 * ctx.armor)",
-          "110 + (0.6 * ctx.ap) + (0.4 * ctx.armor)",
-          "150 + (0.6 * ctx.ap) + (0.4 * ctx.armor)",
-          "190 + (0.6 * ctx.ap) + (0.4 * ctx.armor)",
-          "230 + (0.6 * ctx.ap) + (0.4 * ctx.armor)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "R",
-        "name": "_1"
-      },
-      {
-        "name": "Unstoppable Force",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "200 + (0.9 * ctx.ap)",
-          "300 + (0.9 * ctx.ap)",
-          "400 + (0.9 * ctx.ap)"
         ]
       }
     ],
@@ -142,19 +126,35 @@
     ],
     [
       {
-        "type": "Q",
+        "type": "E",
         "name": "_1"
       },
       {
-        "name": "Seismic Shard",
+        "name": "Ground Slam",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "70 + (0.6 * ctx.ap)",
-          "120 + (0.6 * ctx.ap)",
-          "170 + (0.6 * ctx.ap)",
-          "220 + (0.6 * ctx.ap)",
-          "270 + (0.6 * ctx.ap)"
+          "80 + (0.6 * ctx.ap) + (0.4 * ctx.armor)",
+          "120 + (0.6 * ctx.ap) + (0.4 * ctx.armor)",
+          "160 + (0.6 * ctx.ap) + (0.4 * ctx.armor)",
+          "200 + (0.6 * ctx.ap) + (0.4 * ctx.armor)",
+          "240 + (0.6 * ctx.ap) + (0.4 * ctx.armor)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_1"
+      },
+      {
+        "name": "Unstoppable Force",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "200 + (0.9 * ctx.ap)",
+          "300 + (0.9 * ctx.ap)",
+          "400 + (0.9 * ctx.ap)"
         ]
       }
     ]

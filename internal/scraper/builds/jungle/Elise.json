@@ -1,20 +1,20 @@
 [
   [
     "BansheesVeil",
-    "LichBane",
-    "LiandrysTorment",
-    "Morellonomicon",
     "Cryptbloom",
-    "RylaisCrystalScepter"
+    "DuskAndDawn",
+    "LiandrysTorment",
+    "LichBane",
+    "Morellonomicon"
   ],
   [
-    "CheapShot",
-    "GrislyMementos",
-    "RelentlessHunter",
-    "Triumph",
-    "CoupDeGrace",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "CheapShot",
+    "CoupDeGrace",
+    "GrislyMementos",
+    "HealthScaling",
+    "RelentlessHunter",
+    "Triumph"
   ]
 ]

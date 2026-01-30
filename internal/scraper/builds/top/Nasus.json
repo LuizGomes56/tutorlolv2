@@ -1,20 +1,19 @@
 [
   [
-    "SunderedSky",
     "DeadMansPlate",
     "ForceOfNature",
+    "ProtoplasmHarness",
     "RanduinsOmen",
     "SteraksGage",
-    "KaenicRookern"
+    "SunderedSky"
   ],
   [
-    "Triumph",
-    "LegendHaste",
-    "LastStand",
-    "SecondWind",
-    "Unflinching",
     "AbilityHaste",
     "HealthScaling",
-    "HealthScaling"
+    "LastStand",
+    "LegendHaste",
+    "SecondWind",
+    "Triumph",
+    "Unflinching"
   ]
 ]

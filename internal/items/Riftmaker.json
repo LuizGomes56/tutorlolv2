@@ -1,6 +1,6 @@
 {
+  "version": "16.2.1",
   "riot_id": 4633,
-  "item_id": "Riftmaker",
   "name": "Riftmaker",
   "price": 3100,
   "sell": 2170,
@@ -27,26 +27,23 @@
       false
     ],
     [
-      "SummonersRift",
+      "UnknownMap33",
       false
     ],
     [
-      "SummonersRift",
+      "UnknownMap35",
       true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "AbilityPower",
-      "value": 60
+      "AbilityHaste": 15
     },
     {
-      "name": "AbilityHaste",
-      "value": 15
+      "AbilityPower": 70
     },
     {
-      "name": "Health",
-      "value": 350
+      "Health": 350
     }
   ],
   "damage_type": "Unknown",
@@ -112,12 +109,7 @@
     3147,
     3108
   ],
-  "builds_from_item_ids": [
-    "HauntingGuise",
-    "FiendishCodex"
-  ],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

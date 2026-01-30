@@ -1,20 +1,20 @@
 [
   [
-    "BladeOfTheRuinedKing",
-    "WitsEnd",
-    "TrinityForce",
+    "DuskAndDawn",
+    "FiendhunterBolts",
+    "GuardianAngel",
+    "KrakenSlayer",
     "RanduinsOmen",
-    "PhantomDancer",
-    "EdgeOfNight"
+    "Terminus"
   ],
   [
-    "Triumph",
-    "LegendAlacrity",
-    "CoupDeGrace",
-    "Conditioning",
-    "Overgrowth",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "Conditioning",
+    "CoupDeGrace",
+    "HealthScaling",
+    "LegendAlacrity",
+    "Overgrowth",
+    "Triumph"
   ]
 ]

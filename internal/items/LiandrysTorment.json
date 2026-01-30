@@ -1,23 +1,11 @@
 {
+  "version": "16.2.1",
   "riot_id": 6653,
-  "item_id": "LiandrysTorment",
   "name": "Liandry's Torment",
   "price": 3000,
   "sell": 2100,
   "tier": 3,
   "maps": [
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "NexusBlitz",
-      true
-    ],
-    [
-      "Arena",
-      false
-    ],
     [
       "SummonersRift",
       true
@@ -27,22 +15,32 @@
       true
     ],
     [
+      "NexusBlitz",
+      true
+    ],
+    [
       "Tft",
       false
     ],
     [
-      "SummonersRift",
+      "Arena",
+      false
+    ],
+    [
+      "UnknownMap33",
+      false
+    ],
+    [
+      "UnknownMap35",
       true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "AbilityPower",
-      "value": 60
+      "AbilityPower": 60
     },
     {
-      "name": "Health",
-      "value": 300
+      "Health": 300
     }
   ],
   "damage_type": "Unknown",
@@ -108,12 +106,7 @@
     3147,
     2508
   ],
-  "builds_from_item_ids": [
-    "HauntingGuise",
-    "FatedAshes"
-  ],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

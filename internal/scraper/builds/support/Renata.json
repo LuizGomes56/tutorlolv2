@@ -1,20 +1,20 @@
 [
   [
+    "ArdentCenser",
+    "FrozenHeart",
     "ImperialMandate",
     "MikaelsBlessing",
-    "KnightsVow",
-    "ArdentCenser",
     "Morellonomicon",
-    "FrozenHeart"
+    "ShurelyasBattlesong"
   ],
   [
-    "ShieldBash",
-    "BonePlating",
-    "Unflinching",
-    "SixthSense",
-    "RelentlessHunter",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "BonePlating",
+    "HealthScaling",
+    "RelentlessHunter",
+    "ShieldBash",
+    "SixthSense",
+    "Unflinching"
   ]
 ]

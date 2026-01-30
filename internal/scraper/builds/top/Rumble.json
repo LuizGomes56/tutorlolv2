@@ -1,20 +1,19 @@
 [
   [
-    "Riftmaker",
-    "Morellonomicon",
-    "RylaisCrystalScepter",
+    "AbyssalMask",
     "BansheesVeil",
     "HextechRocketbelt",
-    "Stormsurge"
+    "Riftmaker",
+    "RylaisCrystalScepter",
+    "Shadowflame"
   ],
   [
-    "NimbusCloak",
     "AbsoluteFocus",
-    "Scorch",
+    "AdaptiveForce",
     "BonePlating",
-    "Unflinching",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "HealthScaling",
+    "NimbusCloak",
+    "Scorch",
+    "Unflinching"
   ]
 ]

@@ -28,7 +28,7 @@ use tutorlolv2_gen::*;
 /// until the compiler doesn't emit any `Index out of bounds` error
 ///
 /// Example of usage, assuming you haven't got the necessary structs such as
-/// [`EvalContext`] [`crate::model::SelfState`], and [`crate::model::EnemyState`]
+/// [`Ctx`] [`crate::model::SelfState`], and [`crate::model::EnemyState`]
 /// from previous constant assignments
 /// ```rs
 /// const NEEKO_ABILITIES: usize = tutorlolv2::NEEKO.closures.len();
@@ -75,7 +75,7 @@ use tutorlolv2_gen::*;
 /// When hovering over the constant `NEEKO_DAMAGES`, you should be able to
 /// see the resolved numbers for the damage of each of her abilities
 pub const fn const_ability_id_eval_damage<const N: usize>(
-    ctx: &EvalContext,
+    ctx: &Ctx,
     onhit: &mut RangeDamage,
     champion_id: ChampionId,
     modifiers: Modifiers,
@@ -100,7 +100,7 @@ pub const fn const_ability_id_eval_damage<const N: usize>(
 
 /// Constant evaluation of items, similar to function [`crate::helpers::item_id_eval_damage`]
 pub const fn const_item_id_eval_damage<const N: usize>(
-    ctx: &EvalContext,
+    ctx: &Ctx,
     onhit: &mut RangeDamage,
     item_ids: [ItemId; N],
     attack_type: AttackType,
@@ -111,8 +111,12 @@ pub const fn const_item_id_eval_damage<const N: usize>(
     while i < N {
         let item_id = item_ids[i];
         let CachedItem {
-            attributes,
-            damage_type,
+            metadata:
+                TypeMetadata {
+                    damage_type,
+                    attributes,
+                    ..
+                },
             ..
         } = ITEM_CACHE[item_id as usize];
         let modifier = modifiers.damages.modifier(*damage_type);
@@ -131,7 +135,7 @@ pub const fn const_item_id_eval_damage<const N: usize>(
 
 /// Constant evaluation of runes, similar to function [`crate::helpers::rune_id_eval_damage`].
 pub const fn const_rune_id_eval_damage<const N: usize>(
-    ctx: &EvalContext,
+    ctx: &Ctx,
     rune_ids: [RuneId; N],
     attack_type: AttackType,
     modifiers: Modifiers,

@@ -1,20 +1,20 @@
 [
   [
-    "DeadMansPlate",
-    "ShurelyasBattlesong",
-    "ForceOfNature",
-    "Heartsteel",
+    "Bandlepipes",
     "FrozenHeart",
+    "JakshoTheProtean",
+    "ProtoplasmHarness",
+    "UnendingDespair",
     "WarmogsArmor"
   ],
   [
-    "CheapShot",
-    "GrislyMementos",
-    "UltimateHunter",
-    "AxiomArcanist",
-    "Celerity",
     "AdaptiveForce",
-    "MoveSpeed",
-    "HealthScaling"
+    "AttackSpeed",
+    "BonePlating",
+    "CheapShot",
+    "Demolish",
+    "HealthScaling",
+    "SixthSense",
+    "UltimateHunter"
   ]
 ]

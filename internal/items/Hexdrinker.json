@@ -1,31 +1,11 @@
 {
+  "version": "16.2.1",
   "riot_id": 3155,
-  "item_id": "Hexdrinker",
   "name": "Hexdrinker",
   "price": 1300,
   "sell": 910,
   "tier": 2,
   "maps": [
-    [
-      "Arena",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "NexusBlitz",
-      true
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
-      "Tft",
-      false
-    ],
     [
       "SummonersRift",
       true
@@ -33,16 +13,34 @@
     [
       "Aram",
       true
+    ],
+    [
+      "NexusBlitz",
+      true
+    ],
+    [
+      "Tft",
+      false
+    ],
+    [
+      "Arena",
+      false
+    ],
+    [
+      "UnknownMap33",
+      false
+    ],
+    [
+      "UnknownMap35",
+      true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "AttackDamage",
-      "value": 25
+      "AttackDamage": 25
     },
     {
-      "name": "MagicResist",
-      "value": 25
+      "MagicResist": 25
     }
   ],
   "damage_type": "Unknown",
@@ -109,16 +107,8 @@
     1033,
     1036
   ],
-  "builds_from_item_ids": [
-    "LongSword",
-    "NullMagicMantle",
-    "LongSword"
-  ],
   "builds_into_riot_ids": [
     3156
-  ],
-  "builds_into_item_ids": [
-    "MawOfMalmortius"
   ],
   "ranged": {
     "minimum_damage": "zero",

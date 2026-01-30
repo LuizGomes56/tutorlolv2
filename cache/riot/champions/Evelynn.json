@@ -273,7 +273,7 @@
         ],
         "label": [
           "Lasher and Spike Damage",
-          "Bonus Damage",
+          "Bonus Damage:",
           "@AbilityResourceName@ Cost"
         ]
       },

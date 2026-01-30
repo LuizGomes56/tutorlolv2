@@ -1,20 +1,20 @@
 [
   [
-    "SteraksGage",
+    "BlackCleaver",
+    "ExperimentalHexplate",
     "MawOfMalmortius",
-    "SpiritVisage",
     "RanduinsOmen",
-    "Thornmail",
-    "DeadMansPlate"
+    "SpiritVisage",
+    "Thornmail"
   ],
   [
-    "Triumph",
-    "LegendAlacrity",
-    "LastStand",
-    "MagicalFootwear",
+    "AdaptiveForce",
     "ApproachVelocity",
     "AttackSpeed",
-    "AdaptiveForce",
-    "HealthScaling"
+    "HealthScaling",
+    "LastStand",
+    "LegendAlacrity",
+    "MagicalFootwear",
+    "Triumph"
   ]
 ]

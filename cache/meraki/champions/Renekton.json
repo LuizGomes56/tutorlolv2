@@ -71,7 +71,7 @@
         "damageType": null,
         "effects": [
           {
-            "description": "Innate: Renekton's basic attacks against any enemy except structures generate 5 Fury on-hit. After 12 seconds of not generating any Fury, he loses 1 Fury every 0.25 seconds.",
+            "description": "Innate: Renekton's basic attacks generate 5 Fury on-hit. After 12 seconds of being out of combat and not basic attacking, he loses 1 Fury every 0.25 seconds.Entering combat or using an attack will stop the Fury loss and refresh the timer. Additionally, while Dominus is active, the timer is continuously refreshed.",
             "leveling": []
           },
           {
@@ -79,7 +79,7 @@
             "leveling": []
           },
           {
-            "description": "While Renekton has at least 50 Fury, his next basic ability consumes 50 Fury to become empowered with an additional effect. Empowered abilities do not generate Fury.",
+            "description": "While Renekton has at least 50 Fury, his next basic ability, excluding Slice, consumes 50 Fury to become empowered with an additional effect. Empowered abilities do not generate Fury.",
             "leveling": []
           }
         ],
@@ -390,7 +390,7 @@
             "leveling": []
           },
           {
-            "description": "Renekton cannot basic attack nor cast Slice, Dice, or Dominus for 0.25 seconds after Cull the Meek's activation.",
+            "description": "Renekton cannot basic attack nor cast Slice and Dice or Dominus for 0.25 seconds after Cull the Meek's activation.",
             "leveling": []
           },
           {
@@ -548,11 +548,11 @@
             ]
           },
           {
-            "description": "Ruthless Predator resets Renekton's basic attack timer. After Ruthless Predator's standard and empowered attack cast time, Renekton cannot move nor cast Cull the Meek, Slice, nor Dice for 0.528 seconds. Casting Dominus ends this lockout prematurely.",
+            "description": "Ruthless Predator resets Renekton's basic attack timer. After Ruthless Predator's standard and empowered attack cast time, Renekton cannot move nor cast Cull the Meek or Slice and Dice for 0.528 seconds. Casting Dominus ends this lockout prematurely.",
             "leveling": []
           },
           {
-            "description": "Ruthless Predator's first strike can critically strike for (75% + 40%) AD bonus physical damage.",
+            "description": "Ruthless Predator's first strike can critically strike for (100% + 30%) AD bonus physical damage.",
             "leveling": []
           }
         ],
@@ -585,7 +585,7 @@
         "damageType": "PHYSICAL_DAMAGE",
         "effects": [
           {
-            "description": "Active: Renekton dashes a fixed distance in the target direction, dealing physical damage to enemies he passes through.",
+            "description": "Active - Slice: Renekton dashes a fixed distance in the target direction, dealing physical damage to enemies he passes through.",
             "leveling": [
               {
                 "attribute": "Physical Damage",
@@ -627,18 +627,15 @@
             ]
           },
           {
-            "description": "If Renekton hits an enemy, he can cast Dice within the next 4 seconds.",
+            "description": "Both casts generate 2 Fury for each non-champion hit and 10 Fury for each champion hit, up to 30 total per cast.",
             "leveling": []
-          }
-        ],
-        "name": "Slice"
-      },
-      {
-        "cooldown": null,
-        "damageType": "PHYSICAL_DAMAGE",
-        "effects": [
+          },
           {
-            "description": "Active: Renekton dashes a fixed distance in the target direction, dealing the same physical damage to enemies he passes through.",
+            "description": "If Renekton hits an enemy, he can recast Slice and Dice within the next 4 seconds.",
+            "leveling": []
+          },
+          {
+            "description": "Recast - Dice: Renekton repeats the first cast's effects.",
             "leveling": [
               {
                 "attribute": "Total Physical Damage",
@@ -680,22 +677,18 @@
             ]
           },
           {
-            "description": "Both Slice and Dice generate 2 Fury for each non-champion hit and 10 Fury for each champion hit, up to 30 total per cast.",
-            "leveling": []
-          },
-          {
-            "description": "Reign of Anger Bonus: Dice deals bonus physical damage and inflicts armor reduction to enemies hit for 4 seconds.",
+            "description": "Reign of Anger Bonus: Dice, the recast, deals bonus physical damage and inflicts armor reduction to enemies hit for 4 seconds.",
             "leveling": [
               {
                 "attribute": "Armor Reduction",
                 "modifiers": [
                   {
                     "units": [
-                      "% of target's armor",
-                      "% of target's armor",
-                      "% of target's armor",
-                      "% of target's armor",
-                      "% of target's armor"
+                      "%",
+                      "%",
+                      "%",
+                      "%",
+                      "%"
                     ],
                     "values": [
                       25.0,
@@ -708,44 +701,7 @@
                 ]
               },
               {
-                "attribute": "Bonus Physical Damage",
-                "modifiers": [
-                  {
-                    "units": [
-                      "",
-                      "",
-                      "",
-                      "",
-                      ""
-                    ],
-                    "values": [
-                      30.0,
-                      45.0,
-                      60.0,
-                      75.0,
-                      90.0
-                    ]
-                  },
-                  {
-                    "units": [
-                      "% bonus AD",
-                      "% bonus AD",
-                      "% bonus AD",
-                      "% bonus AD",
-                      "% bonus AD"
-                    ],
-                    "values": [
-                      45.0,
-                      45.0,
-                      45.0,
-                      45.0,
-                      45.0
-                    ]
-                  }
-                ]
-              },
-              {
-                "attribute": "Total Bonus Damage",
+                "attribute": "Enhanced Physical Damage",
                 "modifiers": [
                   {
                     "units": [
@@ -782,7 +738,7 @@
                 ]
               },
               {
-                "attribute": "Total Physical Damage",
+                "attribute": "Total Enhanced Damage",
                 "modifiers": [
                   {
                     "units": [
@@ -821,7 +777,7 @@
             ]
           }
         ],
-        "name": "Dice"
+        "name": "Slice and Dice"
       }
     ],
     "R": [

@@ -1,6 +1,6 @@
 {
+  "version": "16.2.1",
   "riot_id": 3302,
-  "item_id": "Terminus",
   "name": "Terminus",
   "price": 3000,
   "sell": 2100,
@@ -11,11 +11,7 @@
       true
     ],
     [
-      "Tft",
-      false
-    ],
-    [
-      "SummonersRift",
+      "Aram",
       true
     ],
     [
@@ -23,7 +19,7 @@
       true
     ],
     [
-      "SummonersRift",
+      "Tft",
       false
     ],
     [
@@ -31,18 +27,20 @@
       false
     ],
     [
-      "Aram",
+      "UnknownMap33",
+      false
+    ],
+    [
+      "UnknownMap35",
       true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "AttackSpeed",
-      "value": 25
+      "AttackDamage": 30
     },
     {
-      "name": "AttackDamage",
-      "value": 30
+      "AttackSpeed": 35
     }
   ],
   "damage_type": "Unknown",
@@ -108,12 +106,7 @@
     3051,
     1043
   ],
-  "builds_from_item_ids": [
-    "HearthboundAxe",
-    "RecurveBow"
-  ],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

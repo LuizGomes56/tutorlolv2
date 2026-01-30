@@ -1,19 +1,20 @@
 [
   [
+    "ChempunkChainsword",
+    "ForceOfNature",
     "Heartsteel",
-    "WitsEnd",
-    "FrozenHeart",
-    "BladeOfTheRuinedKing",
-    "ChempunkChainsword"
+    "RanduinsOmen",
+    "SteraksGage",
+    "WitsEnd"
   ],
   [
-    "Triumph",
-    "LegendAlacrity",
-    "LastStand",
-    "BonePlating",
-    "Overgrowth",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "BonePlating",
+    "HealthScaling",
+    "LastStand",
+    "LegendAlacrity",
+    "Overgrowth",
+    "Triumph"
   ]
 ]

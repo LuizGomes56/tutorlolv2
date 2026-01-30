@@ -1,18 +1,18 @@
 [
   [
-    "ZhonyasHourglass",
-    "BansheesVeil",
-    "WitsEnd",
-    "RylaisCrystalScepter"
+    "DuskAndDawn",
+    "GuinsoosRageblade",
+    "LichBane",
+    "Riftmaker"
   ],
   [
-    "Triumph",
-    "LegendAlacrity",
-    "LastStand",
-    "Celerity",
-    "GatheringStorm",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "Celerity",
+    "CoupDeGrace",
+    "GatheringStorm",
+    "HealthScaling",
+    "LegendAlacrity",
+    "Triumph"
   ]
 ]

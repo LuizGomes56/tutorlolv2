@@ -4,7 +4,8 @@
   "buildsInto": [
     3003,
     3004,
-    3119
+    3119,
+    2526
   ],
   "name": "Tear of the Goddess",
   "tier": 1,
@@ -15,7 +16,7 @@
       "unique": true
     },
     {
-      "effects": "Grants a charge every 8 seconds, up to 4 charges. Affecting an enemy or ally with an [[champion ability|ability]] consumes a charge to grant {{as|3 '''bonus''' mana}}, increased to {{as|6|mana}} if they are a champion, up to '''maximum''' of {{as|360 '''bonus''' mana}}.",
+      "effects": "Grants a charge every 8 seconds, up to 4 charges. Affecting an enemy or ally with an [[champion ability|ability]] consumes a charge to grant {{as|3 '''bonus''' mana}}, increased to {{as|6|mana}} if they are a champion, up to '''maximum''' of {{as|360 '''bonus''' mana}}. Can only be triggered if an ability was cast and only once per {{tip|cast instance}}.",
       "name": "Manaflow",
       "unique": true
     }

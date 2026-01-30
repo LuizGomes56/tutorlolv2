@@ -1,21 +1,17 @@
 {
+  "version": "16.2.1",
   "riot_id": 3802,
-  "item_id": "LostChapter",
   "name": "Lost Chapter",
   "price": 1200,
   "sell": 840,
   "tier": 2,
   "maps": [
     [
-      "Arena",
-      false
-    ],
-    [
-      "Aram",
+      "SummonersRift",
       true
     ],
     [
-      "SummonersRift",
+      "Aram",
       true
     ],
     [
@@ -27,26 +23,27 @@
       false
     ],
     [
-      "SummonersRift",
+      "Arena",
       false
     ],
     [
-      "SummonersRift",
+      "UnknownMap33",
+      false
+    ],
+    [
+      "UnknownMap35",
       true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "Mana",
-      "value": 300
+      "AbilityHaste": 10
     },
     {
-      "name": "AbilityHaste",
-      "value": 10
+      "AbilityPower": 40
     },
     {
-      "name": "AbilityPower",
-      "value": 40
+      "Mana": 300
     }
   ],
   "damage_type": "Unknown",
@@ -113,25 +110,15 @@
     1027,
     2022
   ],
-  "builds_from_item_ids": [
-    "AmplifyingTome",
-    "SapphireCrystal",
-    "GlowingMote"
-  ],
   "builds_into_riot_ids": [
     323003,
     3003,
     3118,
     2503,
+    2522,
     4644,
     6655,
     6656
-  ],
-  "builds_into_item_ids": [
-    "ArchangelsStaff",
-    "Malignance",
-    "BlackfireTorch",
-    "LudensCompanion"
   ],
   "ranged": {
     "minimum_damage": "zero",

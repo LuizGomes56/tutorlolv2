@@ -1,20 +1,20 @@
 [
   [
-    "HollowRadiance",
-    "SunfireAegis",
-    "RanduinsOmen",
-    "SpiritVisage",
     "AbyssalMask",
-    "ForceOfNature"
+    "DeadMansPlate",
+    "HollowRadiance",
+    "KaenicRookern",
+    "RanduinsOmen",
+    "UnendingDespair"
   ],
   [
-    "MagicalFootwear",
-    "BiscuitDelivery",
-    "CosmicInsight",
-    "SuddenImpact",
-    "UltimateHunter",
+    "AdaptiveForce",
     "AttackSpeed",
-    "MoveSpeed",
-    "HealthScaling"
+    "CheapShot",
+    "CoupDeGrace",
+    "HealthScaling",
+    "LegendHaste",
+    "Triumph",
+    "UltimateHunter"
   ]
 ]

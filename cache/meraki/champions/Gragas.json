@@ -392,7 +392,7 @@
             ]
           },
           {
-            "description": "Upon completing the channel, Gragas empowers his next basic attack within 5 seconds to have an uncancellable windup, gain 50 bonus range and deal bonus magic damage to the target and nearby enemies, reduced to 50% against structures and capped at 300 against monsters.",
+            "description": "Upon completing the channel, Gragas empowers his next basic attack within 5 seconds to have an uncancellable windup, gain 50 bonus range and deal bonus magic damage to the target and nearby enemies, reduced to 50% against structures. The damage based on the target's health ratio is capped at 300 against monsters.",
             "leveling": [
               {
                 "attribute": "Bonus Magic Damage",
@@ -427,43 +427,6 @@
                       7.0,
                       7.0,
                       7.0
-                    ]
-                  },
-                  {
-                    "units": [
-                      "% AP",
-                      "% AP",
-                      "% AP",
-                      "% AP",
-                      "% AP"
-                    ],
-                    "values": [
-                      70.0,
-                      70.0,
-                      70.0,
-                      70.0,
-                      70.0
-                    ]
-                  }
-                ]
-              },
-              {
-                "attribute": "Capped Monster Damage",
-                "modifiers": [
-                  {
-                    "units": [
-                      "",
-                      "",
-                      "",
-                      "",
-                      ""
-                    ],
-                    "values": [
-                      320.0,
-                      350.0,
-                      380.0,
-                      410.0,
-                      440.0
                     ]
                   },
                   {

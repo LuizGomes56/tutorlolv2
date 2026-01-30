@@ -1,20 +1,19 @@
 [
   [
-    "UnendingDespair",
-    "Thornmail",
     "DeadMansPlate",
-    "Riftmaker",
+    "ForceOfNature",
+    "FrozenHeart",
+    "JakshoTheProtean",
     "RanduinsOmen",
-    "BloodlettersCurse"
+    "Thornmail"
   ],
   [
-    "ShieldBash",
-    "SecondWind",
-    "Revitalize",
+    "AdaptiveForce",
     "AxiomArcanist",
     "Celerity",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "HealthScaling",
+    "Revitalize",
+    "SecondWind",
+    "ShieldBash"
   ]
 ]

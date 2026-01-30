@@ -1,29 +1,13 @@
 {
+  "version": "16.2.1",
   "riot_id": 4646,
-  "item_id": "Stormsurge",
   "name": "Stormsurge",
   "price": 2800,
   "sell": 1960,
   "tier": 3,
   "maps": [
     [
-      "Arena",
-      false
-    ],
-    [
       "SummonersRift",
-      true
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "Tft",
-      false
-    ],
-    [
-      "NexusBlitz",
       true
     ],
     [
@@ -31,22 +15,35 @@
       true
     ],
     [
-      "SummonersRift",
+      "NexusBlitz",
+      true
+    ],
+    [
+      "Tft",
+      false
+    ],
+    [
+      "Arena",
+      false
+    ],
+    [
+      "UnknownMap33",
+      false
+    ],
+    [
+      "UnknownMap35",
       true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "MagicPenetration",
-      "value": 15
+      "AbilityPower": 90
     },
     {
-      "name": "AbilityPower",
-      "value": 90
+      "MagicPenetration": 15
     },
     {
-      "name": "MoveSpeed",
-      "value": 4
+      "MoveSpeed": 6
     }
   ],
   "damage_type": "Unknown",
@@ -112,12 +109,7 @@
     3145,
     3113
   ],
-  "builds_from_item_ids": [
-    "HextechAlternator",
-    "AetherWisp"
-  ],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

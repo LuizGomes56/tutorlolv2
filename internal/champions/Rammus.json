@@ -7,7 +7,7 @@
   ],
   "stats": {
     "health": {
-      "flat": 675.0,
+      "flat": 645.0,
       "perLevel": 100.0
     },
     "mana": {
@@ -70,17 +70,19 @@
   "abilities": [
     [
       {
-        "type": "R",
+        "type": "Q",
         "name": "_1"
       },
       {
-        "name": "Soaring Slam",
+        "name": "Powerball",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "150 + (0.6 * ctx.ap)",
-          "250 + (0.6 * ctx.ap)",
-          "350 + (0.6 * ctx.ap)"
+          "80 + ctx.ap",
+          "120 + ctx.ap",
+          "160 + ctx.ap",
+          "200 + ctx.ap",
+          "240 + ctx.ap"
         ]
       }
     ],
@@ -104,19 +106,17 @@
     ],
     [
       {
-        "type": "Q",
+        "type": "R",
         "name": "_1"
       },
       {
-        "name": "Powerball",
+        "name": "Soaring Slam",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "80 + ctx.ap",
-          "120 + ctx.ap",
-          "160 + ctx.ap",
-          "200 + ctx.ap",
-          "240 + ctx.ap"
+          "150 + (0.6 * ctx.ap)",
+          "250 + (0.6 * ctx.ap)",
+          "350 + (0.6 * ctx.ap)"
         ]
       }
     ]

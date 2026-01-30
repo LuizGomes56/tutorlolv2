@@ -1,20 +1,20 @@
 [
   [
-    "BlackfireTorch",
-    "ZhonyasHourglass",
     "BansheesVeil",
-    "Morellonomicon",
-    "Malignance",
-    "Shadowflame"
+    "BlackfireTorch",
+    "DeadMansPlate",
+    "Riftmaker",
+    "Shadowflame",
+    "ZhonyasHourglass"
   ],
   [
+    "AdaptiveForce",
+    "AttackSpeed",
+    "Celerity",
     "CheapShot",
     "GrislyMementos",
+    "HealthScaling",
     "TreasureHunter",
-    "Celerity",
-    "Waterwalking",
-    "AttackSpeed",
-    "AdaptiveForce",
-    "HealthScaling"
+    "Waterwalking"
   ]
 ]

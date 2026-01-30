@@ -1,20 +1,19 @@
 [
   [
-    "Morellonomicon",
-    "ZhonyasHourglass",
-    "LudensCompanion",
-    "VoidStaff",
     "BloodlettersCurse",
-    "HextechRocketbelt"
+    "LudensEcho",
+    "RabadonsDeathcap",
+    "Shadowflame",
+    "Stormsurge",
+    "VoidStaff"
   ],
   [
+    "AdaptiveForce",
+    "HealthScaling",
     "ManaflowBand",
-    "Transcendence",
+    "RelentlessHunter",
     "Scorch",
     "TasteOfBlood",
-    "RelentlessHunter",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "Transcendence"
   ]
 ]

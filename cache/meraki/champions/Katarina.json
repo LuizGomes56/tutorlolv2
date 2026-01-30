@@ -12,7 +12,7 @@
       "perLevel": 0.0
     },
     "armor": {
-      "flat": 28.0,
+      "flat": 32.0,
       "perLevel": 4.7
     },
     "magicResistance": {
@@ -304,7 +304,7 @@
             "leveling": []
           },
           {
-            "description": "Shunpo resets Katarina's basic attack timer. Upon blinking, Katarina enters a 0.15-second cast time.",
+            "description": "Shunpo resets Katarina's basic attack timer.",
             "leveling": []
           }
         ],

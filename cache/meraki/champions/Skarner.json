@@ -21,7 +21,7 @@
     },
     "attackDamage": {
       "flat": 63.0,
-      "perLevel": 3.0
+      "perLevel": 5.0
     },
     "attackSpeed": {
       "flat": 0.625,
@@ -92,11 +92,11 @@
                 ""
               ],
               "values": [
-                13.0,
-                11.5,
-                10.0,
-                8.5,
-                7.0
+                8.0,
+                6.75,
+                5.5,
+                4.25,
+                3.0
               ]
             }
           ]
@@ -155,11 +155,11 @@
                       "% bonus AD"
                     ],
                     "values": [
-                      80.0,
-                      80.0,
-                      80.0,
-                      80.0,
-                      80.0
+                      90.0,
+                      90.0,
+                      90.0,
+                      90.0,
+                      90.0
                     ]
                   },
                   {
@@ -208,11 +208,11 @@
                       "% bonus AD"
                     ],
                     "values": [
-                      240.0,
-                      240.0,
-                      240.0,
-                      240.0,
-                      240.0
+                      270.0,
+                      270.0,
+                      270.0,
+                      270.0,
+                      270.0
                     ]
                   },
                   {
@@ -240,11 +240,11 @@
             "leveling": []
           },
           {
-            "description": "Shattered Earth's duration is paused during Ixtal's Impact.",
+            "description": "Casting Shattered Earth resets Skarner's basic attack timer. Shattered Earth's duration is paused during Ixtal's Impact.",
             "leveling": []
           },
           {
-            "description": "The final attack slams the boulder, dealing an additional 8% of each target's maximum health physical damage and slowing afflicted enemies by 40% for 1 second. The additional damage is capped against monsters and is not applied against structures.",
+            "description": "The final attack slams the boulder, dealing an additional 9% of each target's maximum health physical damage and slowing afflicted enemies by 40% for 1 second. The additional damage is capped against monsters and is not applied against structures.",
             "leveling": [
               {
                 "attribute": "Monster Percent Health Damage Cap",
@@ -291,11 +291,11 @@
                       ""
                     ],
                     "values": [
-                      160.0,
-                      220.0,
-                      280.0,
-                      340.0,
-                      400.0
+                      150.0,
+                      200.0,
+                      250.0,
+                      300.0,
+                      350.0
                     ]
                   },
                   {
@@ -307,11 +307,11 @@
                       "% bonus AD"
                     ],
                     "values": [
-                      80.0,
-                      80.0,
-                      80.0,
-                      80.0,
-                      80.0
+                      90.0,
+                      90.0,
+                      90.0,
+                      90.0,
+                      90.0
                     ]
                   },
                   {
@@ -360,11 +360,11 @@
                       "% bonus AD"
                     ],
                     "values": [
-                      80.0,
-                      80.0,
-                      80.0,
-                      80.0,
-                      80.0
+                      90.0,
+                      90.0,
+                      90.0,
+                      90.0,
+                      90.0
                     ]
                   },
                   {
@@ -392,11 +392,11 @@
                       "% of target's maximum health"
                     ],
                     "values": [
-                      8.0,
-                      8.0,
-                      8.0,
-                      8.0,
-                      8.0
+                      9.0,
+                      9.0,
+                      9.0,
+                      9.0,
+                      9.0
                     ]
                   }
                 ]
@@ -535,6 +535,22 @@
                   },
                   {
                     "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ],
+                    "values": [
+                      120.0,
+                      120.0,
+                      120.0,
+                      120.0,
+                      120.0
+                    ]
+                  },
+                  {
+                    "units": [
                       "% of his maximum health",
                       "% of his maximum health",
                       "% of his maximum health",
@@ -554,7 +570,7 @@
             ]
           },
           {
-            "description": "Ixtal's Impact ends immediately if Skarner becomes immobilized, grounded, or silenced during the charge, detaching the grabbed target. While the target is grabbed, they are attached to Skarner in a position that is directly in front of him.",
+            "description": "Ixtal's Impact ends immediately if Skarner becomes immobilized or grounded, or is affected by any form of cast-inhibiting crowd control, during the charge. The grabbed target is detached if this occurs. While the target is grabbed, they are attached to Skarner 200 units in front of him.",
             "leveling": []
           },
           {

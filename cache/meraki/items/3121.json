@@ -11,7 +11,7 @@
       "unique": true
     },
     {
-      "effects": "{{tip|immobilize|Immobilizing}}, or {{tip|slow|slowing}} if you are {{tip|melee}}, an enemy champion grants a 100 {{as|(+ {{fd|4.5}}% '''current''' mana)}} {{tip|shield}} for 3 seconds (8 second cooldown). The shield's strength is increased{{ft|by 80%|to 100 {{as|(+ {{ap|4.5*1.8}}% '''current''' mana)}}}}if there is more than one enemy champion within {{tip|cr|icononly=true}} 1200 units.",
+      "effects": "{{tip|immobilize|Immobilizing}}, or {{tip|slow|slowing}} if you are {{tip|melee}}, an enemy champion grants a 100 {{as|(+ {{fd|4.5}}% '''current''' mana)}} {{tip|shield}} for 3 seconds (8 second cooldown). The shield's strength is increased{{ft|by 80%|to 180 {{as|(+ {{ap|4.5*1.8}}% '''current''' mana)}}}}if there is more than one enemy champion within {{tip|cr|icononly=true}} 1200 units.",
       "name": "Everlasting",
       "unique": true
     }
@@ -63,7 +63,7 @@
       "percent": 0.0
     },
     "mana": {
-      "flat": 860.0,
+      "flat": 1000.0,
       "percent": 0.0
     },
     "movespeed": {

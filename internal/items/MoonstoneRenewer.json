@@ -1,6 +1,6 @@
 {
+  "version": "16.2.1",
   "riot_id": 6617,
-  "item_id": "MoonstoneRenewer",
   "name": "Moonstone Renewer",
   "price": 2200,
   "sell": 1540,
@@ -11,19 +11,11 @@
       true
     ],
     [
-      "Arena",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
       "Aram",
       true
     ],
     [
-      "SummonersRift",
+      "NexusBlitz",
       true
     ],
     [
@@ -31,26 +23,30 @@
       false
     ],
     [
-      "NexusBlitz",
+      "Arena",
+      false
+    ],
+    [
+      "UnknownMap33",
+      false
+    ],
+    [
+      "UnknownMap35",
       true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "AbilityPower",
-      "value": 25
+      "AbilityHaste": 20
     },
     {
-      "name": "AbilityHaste",
-      "value": 20
+      "AbilityPower": 25
     },
     {
-      "name": "Health",
-      "value": 200
+      "BaseManaRegen": 125
     },
     {
-      "name": "BaseManaRegen",
-      "value": 125
+      "Health": 200
     }
   ],
   "damage_type": "Unknown",
@@ -116,12 +112,7 @@
     3067,
     4642
   ],
-  "builds_from_item_ids": [
-    "Kindlegem",
-    "BandleglassMirror"
-  ],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

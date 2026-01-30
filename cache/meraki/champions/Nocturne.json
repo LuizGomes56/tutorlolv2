@@ -13,7 +13,7 @@
     },
     "armor": {
       "flat": 38.0,
-      "perLevel": 4.7
+      "perLevel": 4.2
     },
     "magicResistance": {
       "flat": 32.0,
@@ -95,7 +95,7 @@
             "leveling": []
           },
           {
-            "description": "Umbra Blades can critically strike against the primary target, modifying the physical damage dealt to[ (192.5% + 44%) AD. ][ 110% AD × total critical damage. ]",
+            "description": "Umbra Blades can critically strike against the primary target, modifying the physical damage dealt to[ (220% + 33%) AD. ][ 110% AD × total critical damage. ]",
             "leveling": []
           }
         ],
@@ -184,11 +184,11 @@
                       ""
                     ],
                     "values": [
-                      20.0,
-                      30.0,
-                      40.0,
-                      50.0,
-                      60.0
+                      15.0,
+                      25.0,
+                      35.0,
+                      45.0,
+                      55.0
                     ]
                   }
                 ]
@@ -247,7 +247,29 @@
         "effects": [
           {
             "description": "Active: Nocturne gains a spell shield for 1.5 seconds. Upon successfully blocking a hostile effect, Shroud of Darkness' bonus attack speed is doubled for 5 seconds.",
-            "leveling": []
+            "leveling": [
+              {
+                "attribute": "Enhanced Bonus Attack Speed",
+                "modifiers": [
+                  {
+                    "units": [
+                      "%",
+                      "%",
+                      "%",
+                      "%",
+                      "%"
+                    ],
+                    "values": [
+                      60.0,
+                      70.0,
+                      80.0,
+                      90.0,
+                      100.0
+                    ]
+                  }
+                ]
+              }
+            ]
           },
           {
             "description": "Passive: Nocturne gains bonus attack speed.",
@@ -269,27 +291,6 @@
                       40.0,
                       45.0,
                       50.0
-                    ]
-                  }
-                ]
-              },
-              {
-                "attribute": "Enhanced Bonus Attack Speed",
-                "modifiers": [
-                  {
-                    "units": [
-                      "%",
-                      "%",
-                      "%",
-                      "%",
-                      "%"
-                    ],
-                    "values": [
-                      60.0,
-                      70.0,
-                      80.0,
-                      90.0,
-                      100.0
                     ]
                   }
                 ]
@@ -464,7 +465,7 @@
             "leveling": []
           },
           {
-            "description": "Nocturne can cast any of his abilities during the dash.",
+            "description": "Nocturne can cast any of his abilities and item actives during the dash.",
             "leveling": []
           },
           {

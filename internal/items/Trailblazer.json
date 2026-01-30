@@ -1,27 +1,11 @@
 {
+  "version": "16.2.1",
   "riot_id": 3002,
-  "item_id": "Trailblazer",
   "name": "Trailblazer",
   "price": 2400,
   "sell": 1680,
   "tier": 3,
   "maps": [
-    [
-      "Tft",
-      false
-    ],
-    [
-      "NexusBlitz",
-      true
-    ],
-    [
-      "Arena",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
     [
       "SummonersRift",
       true
@@ -31,22 +15,35 @@
       true
     ],
     [
-      "SummonersRift",
+      "NexusBlitz",
+      true
+    ],
+    [
+      "Tft",
+      false
+    ],
+    [
+      "Arena",
+      false
+    ],
+    [
+      "UnknownMap33",
+      false
+    ],
+    [
+      "UnknownMap35",
       true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "Armor",
-      "value": 45
+      "Armor": 40
     },
     {
-      "name": "MoveSpeed",
-      "value": 6
+      "Health": 250
     },
     {
-      "name": "Health",
-      "value": 300
+      "MoveSpeed": 4
     }
   ],
   "damage_type": "Unknown",
@@ -112,12 +109,7 @@
     3066,
     1031
   ],
-  "builds_from_item_ids": [
-    "WingedMoonplate",
-    "ChainVest"
-  ],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

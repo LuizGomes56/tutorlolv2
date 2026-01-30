@@ -1,17 +1,25 @@
 {
+  "version": "16.2.1",
   "riot_id": 3869,
-  "item_id": "CelestialOpposition",
   "name": "Celestial Opposition",
   "price": 400,
   "sell": 160,
   "tier": 3,
   "maps": [
     [
-      "Tft",
-      false
+      "SummonersRift",
+      true
     ],
     [
       "Aram",
+      false
+    ],
+    [
+      "NexusBlitz",
+      false
+    ],
+    [
+      "Tft",
       false
     ],
     [
@@ -19,38 +27,26 @@
       false
     ],
     [
-      "SummonersRift",
+      "UnknownMap33",
       false
     ],
     [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
-      "NexusBlitz",
+      "UnknownMap35",
       false
     ]
   ],
   "prettified_stats": [
     {
-      "name": "BaseHealthRegen",
-      "value": 75
+      "BaseHealthRegen": 75
     },
     {
-      "name": "BaseManaRegen",
-      "value": 75
+      "BaseManaRegen": 75
     },
     {
-      "name": "GoldPer10Seconds",
-      "value": 5
+      "GoldPer10Seconds": 9
     },
     {
-      "name": "Health",
-      "value": 200
+      "Health": 200
     }
   ],
   "damage_type": "Unknown",
@@ -115,11 +111,7 @@
   "builds_from_riot_ids": [
     3867
   ],
-  "builds_from_item_ids": [
-    "BountyOfWorlds"
-  ],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

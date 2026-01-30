@@ -1,19 +1,19 @@
 [
   [
-    "ZhonyasHourglass",
-    "RylaisCrystalScepter",
+    "Actualizer",
     "BlackfireTorch",
-    "VoidStaff",
-    "Morellonomicon"
+    "Malignance",
+    "RylaisCrystalScepter",
+    "VoidStaff"
   ],
   [
+    "AdaptiveForce",
+    "AttackSpeed",
     "CheapShot",
     "GrislyMementos",
-    "RelentlessHunter",
+    "HealthScaling",
     "ManaflowBand",
-    "Scorch",
-    "AttackSpeed",
-    "AdaptiveForce",
-    "HealthScaling"
+    "RelentlessHunter",
+    "Scorch"
   ]
 ]

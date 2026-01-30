@@ -1,20 +1,19 @@
 [
   [
-    "Morellonomicon",
-    "ZhonyasHourglass",
-    "Stormsurge",
     "ArchangelsStaff",
+    "LiandrysTorment",
+    "Morellonomicon",
+    "Stormsurge",
     "VoidStaff",
-    "LiandrysTorment"
+    "ZhonyasHourglass"
   ],
   [
-    "ManaflowBand",
-    "Transcendence",
-    "Scorch",
-    "PresenceOfMind",
+    "AdaptiveForce",
     "CoupDeGrace",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "HealthScaling",
+    "ManaflowBand",
+    "PresenceOfMind",
+    "Scorch",
+    "Transcendence"
   ]
 ]

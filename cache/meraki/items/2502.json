@@ -1,8 +1,9 @@
 {
   "active": [],
   "buildsFrom": [
-    3105,
-    1011
+    1031,
+    3067,
+    1028
   ],
   "buildsInto": [],
   "name": "Unending Despair",
@@ -21,7 +22,7 @@
       "percent": 0.0
     },
     "armor": {
-      "flat": 25.0,
+      "flat": 50.0,
       "percent": 0.0
     },
     "armorPenetration": {
@@ -57,7 +58,7 @@
       "percent": 0.0
     },
     "magicResistance": {
-      "flat": 25.0,
+      "flat": 0.0,
       "percent": 0.0
     },
     "mana": {

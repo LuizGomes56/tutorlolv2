@@ -12,7 +12,7 @@
       "perLevel": 40.0
     },
     "armor": {
-      "flat": 27.0,
+      "flat": 25.0,
       "perLevel": 4.2
     },
     "magicResistance": {
@@ -71,7 +71,7 @@
         "damageType": "MAGIC_DAMAGE",
         "effects": [
           {
-            "description": "Innate - Caustic Wounds: Plasma stacks applied by Kai'Sa's basic attacks or Void Seeker deal 4 : 24 (based on level) (+ 1 : 6 (based on level) per Plasma stack before application) (+ 12% : 24% (based on Plasma stacks before application) AP) bonus magic damage. The fifth stack against a target consumes them all to deal additional bonus magic damage equal to 15% (+ 6% per 100 AP) of the target's missing health, capped at 400 against monsters.",
+            "description": "Innate - Caustic Wounds: Plasma stacks applied by Kai'Sa's basic attacks or Void Seeker deal 4 : 24 (based on level) (+ 12% AP) bonus magic damage plus 1 : 6 (based on level) (+ 3% AP) additional magic damage per Plasma stack before application, up to a total of 8 : 48 (based on level) (+ 24% AP) bonus magic damage at 4 Plasma stacks before application. The fifth stack against a target consumes them all to deal additional bonus magic damage equal to 15% (+ 6% per 100 AP) of the target's missing health, capped at 400 against monsters.",
             "leveling": []
           },
           {
@@ -559,9 +559,9 @@
                 ""
               ],
               "values": [
-                120.0,
-                90.0,
-                60.0
+                130.0,
+                100.0,
+                70.0
               ]
             }
           ]

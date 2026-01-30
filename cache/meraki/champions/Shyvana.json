@@ -108,7 +108,7 @@
         "damageType": "PHYSICAL_DAMAGE",
         "effects": [
           {
-            "description": "Active: Shyvana empowers her next basic attack within 6 seconds to gain 25 bonus range, deal 100% AD (+ 50% AP) physical damage, and cause her to strike again after 0.25 seconds to deal bonus physical damage.The second strike applies on-hit effects, triggers on-attack effects, and can critically strike for (175% + 40%) damage if the triggering attack does.",
+            "description": "Active: Shyvana empowers her next basic attack within 6 seconds to gain 25 bonus range, deal 100% AD (+ 50% AP) physical damage, and cause her to strike again after 0.25 seconds to deal bonus physical damage.The second strike applies on-hit effects, triggers on-attack effects, and will critically strike for (200% + 30%) damage if the triggering attack does.",
             "leveling": [
               {
                 "attribute": "Bonus Physical Damage",
@@ -180,7 +180,7 @@
             "leveling": []
           },
           {
-            "description": "Dragon Form Bonus: Shyvana attacks enemies in a cone in front of her and additionally applies the second strike to enemies surrounding the primary target. Both the attack and the strike occur at the same time and each of them apply Twin Bite's respective effects to all targets hit, with the exception of the second strike not triggering on-attack effects for secondary targets struck. The attack is affected by critical strike modifiers, applies on-hit effects to all enemies hit, and triggers on-attack effects for every target hit. Additionally, Twin Bite's empowered attack has an uncancellable windup.",
+            "description": "Dragon Form Bonus: Twin Bite damages all enemies in a cone in front of Shyvana and additionally applies the second strike after 0.25 seconds to enemies near the primary target, with the same effects to all targets hit, but with the exception of the second strike not triggering on-attack effects for secondary targets struck. Additionally, Twin Bite's empowered attack has an uncancellable windup.",
             "leveling": []
           },
           {

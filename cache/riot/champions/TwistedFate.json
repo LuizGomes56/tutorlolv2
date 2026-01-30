@@ -564,7 +564,7 @@
           "{{ attackspeedbonus }}% -> {{ attackspeedbonusNL }}%"
         ],
         "label": [
-          "Bonus Damage",
+          "Bonus Damage:",
           "Attack Speed"
         ]
       },

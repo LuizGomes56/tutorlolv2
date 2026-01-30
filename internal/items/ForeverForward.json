@@ -1,21 +1,17 @@
 {
+  "version": "16.2.1",
   "riot_id": 3176,
-  "item_id": "ForeverForward",
   "name": "Forever Forward",
-  "price": 1400,
-  "sell": 980,
+  "price": 900,
+  "sell": 630,
   "tier": 3,
   "maps": [
     [
       "SummonersRift",
-      false
+      true
     ],
     [
       "Aram",
-      false
-    ],
-    [
-      "Arena",
       false
     ],
     [
@@ -23,22 +19,25 @@
       false
     ],
     [
-      "SummonersRift",
+      "Tft",
       false
     ],
     [
-      "SummonersRift",
-      true
+      "Arena",
+      false
     ],
     [
-      "Tft",
+      "UnknownMap33",
+      false
+    ],
+    [
+      "UnknownMap35",
       false
     ]
   ],
   "prettified_stats": [
     {
-      "name": "MoveSpeed",
-      "value": 55
+      "MoveSpeed": 55
     }
   ],
   "damage_type": "Unknown",
@@ -103,11 +102,7 @@
   "builds_from_riot_ids": [
     3013
   ],
-  "builds_from_item_ids": [
-    "SynchronizedSouls"
-  ],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"
@@ -117,5 +112,5 @@
     "maximum_damage": "zero"
   },
   "attributes": "Undefined",
-  "purchasable": true
+  "purchasable": false
 }

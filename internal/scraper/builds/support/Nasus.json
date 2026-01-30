@@ -1,19 +1,20 @@
 [
   [
-    "RylaisCrystalScepter",
+    "AbyssalMask",
     "MikaelsBlessing",
+    "ProtoplasmHarness",
     "Redemption",
-    "KaenicRookern",
-    "Trailblazer"
+    "RylaisCrystalScepter",
+    "ZekesConvergence"
   ],
   [
-    "ManaflowBand",
-    "Transcendence",
-    "Scorch",
-    "HextechFlashtraption",
-    "JackOfAllTrades",
     "AbilityHaste",
-    "AdaptiveForce",
-    "HealthScaling"
+    "ApproachVelocity",
+    "Health",
+    "MagicalFootwear",
+    "ManaflowBand",
+    "MoveSpeed",
+    "Scorch",
+    "Transcendence"
   ]
 ]

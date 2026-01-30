@@ -75,7 +75,7 @@
             "leveling": []
           },
           {
-            "description": "Innate: Rell's basic attacks and abilities against non- minions reduce the target's armor and magic resistance by 3% for 5 seconds, refreshing on subsequent hits and stacking up to 5 times for a maximum of 15% reduction.",
+            "description": "Innate: Rell's basic attacks and abilities against non- minions apply a stack of Break The Mold for 5 seconds, refreshing on subsequent hits and stacking up to 5 times. Each stack reduces the target's armor and magic resistance by 3% for a maximum of 15% reduction.",
             "leveling": []
           },
           {
@@ -254,11 +254,11 @@
                       "% maximum health"
                     ],
                     "values": [
-                      13.0,
-                      13.0,
-                      13.0,
-                      13.0,
-                      13.0
+                      11.0,
+                      11.0,
+                      11.0,
+                      11.0,
+                      11.0
                     ]
                   }
                 ]
@@ -292,7 +292,7 @@
             ]
           },
           {
-            "description": "This ability can be cast only while Rell is Mounted. Rell can cast Magnet Storm during the dash, and is not considered to be dismounted until after the leap ends.",
+            "description": "This ability can be cast only while Rell is Mounted. Rell can cast Magnet Storm during the dash, and is considered to be dismounted at the start of the cast time.",
             "leveling": []
           },
           {
@@ -327,7 +327,7 @@
         "damageType": "MAGIC_DAMAGE",
         "effects": [
           {
-            "description": "Active: Rell becomes Mounted, gaining 30% bonus movement speed decaying over 2 seconds and empowering her next basic attack within 3.5 seconds to have a 0.2-second cast time, gain 100 bonus attack range and cause her to charge at the target's location, during which she also gains 40% bonus attack speed. Upon arrival or collision, she deals bonus magic damage, stuns the target for 0.6 seconds, and flings them 150 units over herself, though not through terrain, over 0.4 seconds.",
+            "description": "Active: Rell becomes Mounted, gaining 30% bonus movement speed decaying over 2 seconds and empowering her next basic attack within 3.5 seconds to have a 0.2-second cast time, gain 100 bonus attack range and 40% bonus attack speed, and cause her to charge at the target's location. Upon arrival or collision of the charge, her basic attack deals bonus magic damage, stuns the target for 0.6 seconds, and flings them 150 units over herself, though not through terrain, over 0.4 seconds.",
             "leveling": [
               {
                 "attribute": "Bonus Magic Damage",
@@ -410,11 +410,11 @@
         "damageType": "MAGIC_DAMAGE",
         "effects": [
           {
-            "description": "Active: Rell powers up herself and the target allied champion for 3 seconds, both gaining 10% bonus movement speed which increases to 25% while moving within 1200 units of the empowered ally or an enemy.",
+            "description": "Active: Rell powers up herself and the target allied champion for 3 seconds, both gaining 10% bonus movement speed, increased to 25% while facing the empowered ally or a visible enemy champion.",
             "leveling": []
           },
           {
-            "description": "Additionally, Rell's next basic attack or Shattering Strike within 5 seconds creates an explosion that deals bonus magic damage. The damage based on the target's health ratio is capped at 150 : 300 (based on level) against monsters and structures.",
+            "description": "Additionally, Rell's next basic attack or Shattering Strike within 5 seconds creates an explosion around the target that deals bonus magic damage. The damage based on the target's health is capped at 150 : 300 (based on level) against monsters and structures.",
             "leveling": [
               {
                 "attribute": "Bonus Magic Damage",
@@ -485,7 +485,7 @@
         "damageType": "MAGIC_DAMAGE",
         "effects": [
           {
-            "description": "Active: Rell erupts with magnetic fury, pulling nearby enemies inward. She then creates a gravitational field around her for the next 2 seconds that deals magic damage every 0.25 seconds to nearby enemies and drags them towards her.",
+            "description": "Active: Rell erupts with magnetic fury, pulling nearby enemies inward and creating a gravitational field around her for the next 2 seconds that deals magic damage every 0.25 seconds to nearby enemies and drags them towards her.",
             "leveling": [
               {
                 "attribute": "Magic Damage Per Tick",

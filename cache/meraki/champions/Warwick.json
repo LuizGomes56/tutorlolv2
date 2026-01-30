@@ -20,12 +20,12 @@
       "perLevel": 2.05
     },
     "attackDamage": {
-      "flat": 60.0,
-      "perLevel": 2.75
+      "flat": 65.0,
+      "perLevel": 2.5
     },
     "attackSpeed": {
       "flat": 0.638,
-      "perLevel": 2.3
+      "perLevel": 2.0
     },
     "movespeed": {
       "flat": 335.0,
@@ -71,7 +71,7 @@
         "damageType": "MAGIC_DAMAGE",
         "effects": [
           {
-            "description": "Innate: Warwick deals 12 : 46 (based on level) (+ 15% bonus AD) (+ 10% AP) bonus magic damage on-hit.\nWhile below 50% maximum health, Warwick also heals for 100% of the post-mitigation damage dealt by Eternal Hunger, increased to 250% while below 25% maximum health.",
+            "description": "Innate: Warwick deals 6 : 46 (based on level) (+ 15% bonus AD) (+ 10% AP) bonus magic damage on-hit.\nWhile below 50% maximum health, Warwick also heals for 100% of the post-mitigation damage dealt by Eternal Hunger, increased to 250% while below 25% maximum health.",
             "leveling": []
           }
         ],
@@ -104,7 +104,7 @@
         "damageType": "MAGIC_DAMAGE",
         "effects": [
           {
-            "description": "Active: Warwick lunges at the target enemy over 0.264 seconds and bites them, dealing magic damage, healing himself for a percentage of the post-mitigation damage dealt, applying on-hit effects and life steal at 100% effectiveness, and triggering on-attack effects. The damage based on the target's health ratio is capped against monsters.",
+            "description": "Active: Warwick lunges at the target enemy over 0.264 seconds and bites them, dealing magic damage, healing himself for a percentage of the post-mitigation damage dealt, applying on-hit effects and life steal, and triggering on-attack effects. The damage based on the target's health ratio is capped against monsters.",
             "leveling": [
               {
                 "attribute": "Healing Percentage",
@@ -502,7 +502,7 @@
             ]
           },
           {
-            "description": "Infinite Duress applies on-hit effects and life steal at 100% effectiveness, as well as triggers on-attack effects, 3 times.",
+            "description": "Infinite Duress applies on-hit effects and life steal, as well as triggers on-attack effects, 3 times.",
             "leveling": []
           },
           {

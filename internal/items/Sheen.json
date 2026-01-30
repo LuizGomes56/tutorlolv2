@@ -1,6 +1,6 @@
 {
+  "version": "16.2.1",
   "riot_id": 3057,
-  "item_id": "Sheen",
   "name": "Sheen",
   "price": 900,
   "sell": 630,
@@ -8,6 +8,10 @@
   "maps": [
     [
       "SummonersRift",
+      true
+    ],
+    [
+      "Aram",
       true
     ],
     [
@@ -19,26 +23,21 @@
       false
     ],
     [
-      "SummonersRift",
-      true
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "Aram",
-      true
-    ],
-    [
       "Arena",
       false
+    ],
+    [
+      "UnknownMap33",
+      false
+    ],
+    [
+      "UnknownMap35",
+      true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "AbilityHaste",
-      "value": 10
+      "AbilityHaste": 10
     }
   ],
   "damage_type": "Unknown",
@@ -103,19 +102,13 @@
   "builds_from_riot_ids": [
     2022
   ],
-  "builds_from_item_ids": [
-    "GlowingMote"
-  ],
   "builds_into_riot_ids": [
     3100,
     6662,
+    2510,
+    3508,
     3078,
     6632
-  ],
-  "builds_into_item_ids": [
-    "LichBane",
-    "IcebornGauntlet",
-    "TrinityForce"
   ],
   "ranged": {
     "minimum_damage": "zero",

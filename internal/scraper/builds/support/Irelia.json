@@ -1,20 +1,20 @@
 [
   [
-    "KrakenSlayer",
+    "Bandlepipes",
+    "EndlessHunger",
+    "Hullbreaker",
+    "SerpentsFang",
     "SunderedSky",
-    "MawOfMalmortius",
-    "GuardianAngel",
-    "Stridebreaker",
-    "ChempunkChainsword"
+    "ZekesConvergence"
   ],
   [
-    "Triumph",
-    "LegendAlacrity",
-    "LastStand",
-    "BonePlating",
-    "Unflinching",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "BonePlating",
+    "HealthScaling",
+    "LastStand",
+    "LegendAlacrity",
+    "Triumph",
+    "Unflinching"
   ]
 ]

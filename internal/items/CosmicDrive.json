@@ -1,15 +1,11 @@
 {
+  "version": "16.2.1",
   "riot_id": 4629,
-  "item_id": "CosmicDrive",
   "name": "Cosmic Drive",
   "price": 3000,
   "sell": 2100,
   "tier": 3,
   "maps": [
-    [
-      "Tft",
-      false
-    ],
     [
       "SummonersRift",
       true
@@ -19,38 +15,38 @@
       true
     ],
     [
-      "SummonersRift",
-      true
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
       "NexusBlitz",
       true
     ],
     [
+      "Tft",
+      false
+    ],
+    [
       "Arena",
       false
+    ],
+    [
+      "UnknownMap33",
+      false
+    ],
+    [
+      "UnknownMap35",
+      true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "Health",
-      "value": 350
+      "AbilityHaste": 25
     },
     {
-      "name": "AbilityPower",
-      "value": 70
+      "AbilityPower": 70
     },
     {
-      "name": "MoveSpeed",
-      "value": 4
+      "Health": 350
     },
     {
-      "name": "AbilityHaste",
-      "value": 25
+      "MoveSpeed": 4
     }
   ],
   "damage_type": "Unknown",
@@ -117,13 +113,7 @@
     3113,
     3108
   ],
-  "builds_from_item_ids": [
-    "Kindlegem",
-    "AetherWisp",
-    "FiendishCodex"
-  ],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

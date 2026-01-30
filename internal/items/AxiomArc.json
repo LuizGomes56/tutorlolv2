@@ -1,8 +1,8 @@
 {
+  "version": "16.2.1",
   "riot_id": 6696,
-  "item_id": "AxiomArc",
   "name": "Axiom Arc",
-  "price": 3000,
+  "price": 2750,
   "sell": 1925,
   "tier": 3,
   "maps": [
@@ -11,7 +11,11 @@
       true
     ],
     [
-      "SummonersRift",
+      "Aram",
+      true
+    ],
+    [
+      "NexusBlitz",
       true
     ],
     [
@@ -23,30 +27,23 @@
       false
     ],
     [
-      "Aram",
-      true
-    ],
-    [
-      "NexusBlitz",
-      true
-    ],
-    [
-      "SummonersRift",
+      "UnknownMap33",
       false
+    ],
+    [
+      "UnknownMap35",
+      true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "AbilityHaste",
-      "value": 20
+      "AbilityHaste": 20
     },
     {
-      "name": "AttackDamage",
-      "value": 45
+      "AttackDamage": 55
     },
     {
-      "name": "Lethality",
-      "value": 18
+      "Lethality": 18
     }
   ],
   "damage_type": "Unknown",
@@ -112,12 +109,7 @@
     2020,
     3133
   ],
-  "builds_from_item_ids": [
-    "TheBrutalizer",
-    "CaulfieldsWarhammer"
-  ],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

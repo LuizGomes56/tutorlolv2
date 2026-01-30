@@ -1,20 +1,19 @@
 [
   [
-    "Thornmail",
-    "HextechRocketbelt",
+    "Bandlepipes",
+    "FrozenHeart",
     "JakshoTheProtean",
-    "ForceOfNature",
-    "Redemption",
-    "Shadowflame"
+    "KaenicRookern",
+    "ProtoplasmHarness",
+    "RanduinsOmen"
   ],
   [
-    "ShieldBash",
-    "Conditioning",
-    "Revitalize",
-    "Triumph",
-    "LegendHaste",
     "AttackSpeed",
+    "Conditioning",
     "HealthScaling",
-    "HealthScaling"
+    "LegendHaste",
+    "Revitalize",
+    "ShieldBash",
+    "Triumph"
   ]
 ]

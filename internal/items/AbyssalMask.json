@@ -1,6 +1,6 @@
 {
+  "version": "16.2.1",
   "riot_id": 8020,
-  "item_id": "AbyssalMask",
   "name": "Abyssal Mask",
   "price": 2650,
   "sell": 1855,
@@ -8,22 +8,10 @@
   "maps": [
     [
       "SummonersRift",
-      false
+      true
     ],
     [
       "Aram",
-      true
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
-      "Tft",
-      false
-    ],
-    [
-      "SummonersRift",
       true
     ],
     [
@@ -31,22 +19,31 @@
       true
     ],
     [
+      "Tft",
+      false
+    ],
+    [
       "Arena",
       false
+    ],
+    [
+      "UnknownMap33",
+      false
+    ],
+    [
+      "UnknownMap35",
+      true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "Health",
-      "value": 350
+      "AbilityHaste": 15
     },
     {
-      "name": "AbilityHaste",
-      "value": 15
+      "Health": 350
     },
     {
-      "name": "MagicResist",
-      "value": 50
+      "MagicResist": 45
     }
   ],
   "damage_type": "Unknown",
@@ -112,12 +109,7 @@
     3067,
     1057
   ],
-  "builds_from_item_ids": [
-    "Kindlegem",
-    "NegatronCloak"
-  ],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

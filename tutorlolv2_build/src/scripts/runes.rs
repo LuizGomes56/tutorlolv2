@@ -1,6 +1,6 @@
 use crate::{
     CwdPath, EVAL_FEAT, GLOB_FEAT, Generated, GeneratorFn, Tracker, push_end,
-    scripts::{StringExt, model::Rune},
+    scripts::{StringExt, model::Rune, rustfmt_batch},
 };
 use rayon::iter::{IntoParallelIterator, ParallelIterator};
 use std::collections::HashMap;
@@ -15,6 +15,7 @@ struct RuneResult {
     match_arm: String,
     idents: String,
     html_closure: String,
+    deals_damage: bool,
 }
 
 pub fn generate_runes() -> GeneratorFn {
@@ -55,9 +56,9 @@ pub fn generate_runes() -> GeneratorFn {
                     true => {
                         let fn_name = name_ssnake.to_lowercase();
                         constfn_declaration.push_str(&format!(
-                            "{EVAL_FEAT} pub const fn {fn_name}(ctx: &EvalContext) -> f32 {{
-                            {melee_body}
-                        }}"
+                            "{EVAL_FEAT} pub const fn {fn_name}(ctx: &Ctx) -> f32 {{
+                                {melee_body}
+                            }}"
                         ));
 
                         (fn_name.clone(), fn_name)
@@ -67,13 +68,13 @@ pub fn generate_runes() -> GeneratorFn {
                         let ranged_fn = format!("{name_ssnake}_ranged").to_lowercase();
 
                         constfn_declaration.push_str(&format!(
-                            "{EVAL_FEAT} pub const fn {melee_fn}(ctx: &EvalContext) -> f32 {{
+                            "{EVAL_FEAT} pub const fn {melee_fn}(ctx: &Ctx) -> f32 {{
                                 {melee_body}
                             }}"
                         ));
 
                         constfn_declaration.push_str(&format!(
-                            "{EVAL_FEAT} pub const fn {ranged_fn}(ctx: &EvalContext) -> f32 {{
+                            "{EVAL_FEAT} pub const fn {ranged_fn}(ctx: &Ctx) -> f32 {{
                                 {ranged_body}
                             }}"
                         ));
@@ -104,10 +105,7 @@ pub fn generate_runes() -> GeneratorFn {
                     "{base_declaration}
                     melee_damage: {melee_closure},
                     ranged_damage: {ranged_closure} }};"
-                )
-                .rust_fmt()
-                .rust_html()
-                .as_const();
+                );
 
                 let base_declaration = format!(
                     "{EVAL_FEAT}{base_declaration}
@@ -135,10 +133,10 @@ pub fn generate_runes() -> GeneratorFn {
                     name_ssnake,
                     name_pascal,
                     html_closure: constfn_declaration
-                        .replace(EVAL_FEAT, "")
-                        .rust_fmt()
-                        .drop_f32s()
-                        .rust_html(),
+                        .trim_start_matches(&format!("{EVAL_FEAT} pub const"))
+                        .trim()
+                        .to_string(),
+                    deals_damage: true,
                     idents: format!("&[{idents}]"),
                 }
             })
@@ -201,7 +199,7 @@ pub fn generate_runes() -> GeneratorFn {
                 }};"
             );
 
-            let html_declaration = base_declaration.rust_fmt().rust_html().as_const();
+            let html_declaration = base_declaration.clone() /* .rust_fmt().rust_html().as_const() */;
             let base_declaration = [EVAL_FEAT, &base_declaration].concat();
 
             let match_arm =
@@ -209,6 +207,7 @@ pub fn generate_runes() -> GeneratorFn {
 
             runes.push(RuneResult {
                 name_pascal,
+                deals_damage: false,
                 match_arm,
                 riot_id,
                 html_declaration,
@@ -259,9 +258,11 @@ fn build_runes(data: Vec<RuneResult>) -> GeneratorFn {
     let mut rune_id_enum_match_arms = Vec::with_capacity(len);
     let mut rune_id_enum_fields = Vec::with_capacity(len);
     let mut const_match_arms = String::new();
+    let mut rustfmt_inputs = Vec::with_capacity(len * 2);
 
     for RuneResult {
         riot_id,
+        deals_damage,
         html_declaration,
         base_declaration,
         match_arm,
@@ -272,20 +273,33 @@ fn build_runes(data: Vec<RuneResult>) -> GeneratorFn {
         html_closure,
     } in data
     {
-        let match_arm = format!(
-            "RuneId::{name_pascal} => {{ 
-                match attack_type {{ {match_arm} }} 
-            }}"
-        );
+        if deals_damage {
+            let match_arm = format!(
+                "RuneId::{name_pascal} => {{ 
+                    match attack_type {{ {match_arm} }} 
+                }}"
+            );
+            const_match_arms.push_str(&match_arm);
+        }
 
-        rune_idents.push_str(&(idents + ","));
-        const_match_arms.push_str(&match_arm);
+        rune_idents.push_str(&format!("{idents},"));
         rune_id_to_riot_id.push_str(&format!("{riot_id},"));
         rune_id_enum_match_arms.push(format!("{riot_id} => Some(Self::{name_pascal})"));
         rune_id_enum_fields.push(name_pascal);
         rune_id_to_name.push_str(&format!("{name:?},"));
         rune_cache.push_str(&format!("&{name_ssnake}_{riot_id},"));
         rune_declarations.push_str(&base_declaration);
+        rustfmt_inputs.push(html_declaration);
+        rustfmt_inputs.push(html_closure);
+    }
+
+    let formatted = rustfmt_batch(&rustfmt_inputs);
+
+    for i in 0..len {
+        let decl_fmt = &formatted[i * 2];
+        let clos_fmt = &formatted[i * 2 + 1];
+        let html_declaration = decl_fmt.rust_html().as_const();
+        let html_closure = clos_fmt.drop_f32s().rust_html();
         tracker.record_into(&html_declaration, &mut formula_offsets);
         tracker.record_into(&html_closure, &mut closure_offsets);
     }
@@ -295,7 +309,7 @@ fn build_runes(data: Vec<RuneResult>) -> GeneratorFn {
 
     let rune_id_enum = format!(
         r#"
-        #[derive(Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd)]
+        #[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
         #[derive(bincode::Encode, bincode::Decode)]
         #[derive(serde::Serialize, serde::Deserialize)]
         #[repr(u8)]
@@ -314,10 +328,9 @@ fn build_runes(data: Vec<RuneResult>) -> GeneratorFn {
                 unsafe {{ core::mem::transmute(id) }}
             }}
             pub const fn from_u8(id: u8) -> Option<Self> {{
-                if id < Self::VARIANTS as u8 {{
-                    Some(unsafe {{ Self::from_u8_unchecked(id) }})
-                }} else {{
-                    None
+                match id < Self::VARIANTS as u8 {{
+                    true => Some(unsafe {{ Self::from_u8_unchecked(id) }}),
+                    false => None
                 }}
             }}
         }}"#
@@ -335,11 +348,11 @@ fn build_runes(data: Vec<RuneResult>) -> GeneratorFn {
 
     let const_eval = format!(
         "{EVAL_FEAT} pub const fn rune_const_eval(
-            ctx: &EvalContext, 
+            ctx: &Ctx, 
             rune_id: RuneId, 
             attack_type: AttackType
         ) -> f32 {{
-            match rune_id {{ {const_match_arms} }}
+            match rune_id {{ {const_match_arms}, _ => 0.0 }}
         }}"
     );
 
@@ -367,8 +380,7 @@ fn build_runes(data: Vec<RuneResult>) -> GeneratorFn {
             rune_idents,
             const_eval,
         ]
-        .concat()
-        .rust_fmt();
+        .concat();
 
         let exports = format!("pub mod runes {{ use super::*; {content} }}");
 

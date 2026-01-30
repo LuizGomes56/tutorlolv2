@@ -75,7 +75,7 @@
             "leveling": []
           },
           {
-            "description": "Innate: Teemo gains invisibility after 1.5 seconds without moving, taking damage, performing actions that break stealth, channeling, or being in stasis. Teemo will maintain stealth so long as he remains idle and is not displaced. While in brush, Teemo gains the stealth even while moving and can move without breaking stealth.",
+            "description": "Innate: Teemo gains invisibility after 1.5 seconds without moving, taking damage, performing actions that break stealth, channeling, or being in stasis. Teemo will maintain stealth so long as he remains idle and is not displaced. While in brush, Teemo gains the stealth even while moving and can move without breaking stealth, but will lose the stealth in this case if he is knocked up.",
             "leveling": []
           }
         ],

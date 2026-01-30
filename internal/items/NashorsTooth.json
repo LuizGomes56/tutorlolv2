@@ -1,17 +1,17 @@
 {
+  "version": "16.2.1",
   "riot_id": 3115,
-  "item_id": "NashorsTooth",
   "name": "Nashor's Tooth",
   "price": 2900,
   "sell": 2030,
   "tier": 3,
   "maps": [
     [
-      "Tft",
-      false
+      "SummonersRift",
+      true
     ],
     [
-      "SummonersRift",
+      "Aram",
       true
     ],
     [
@@ -19,34 +19,31 @@
       true
     ],
     [
+      "Tft",
+      false
+    ],
+    [
       "Arena",
       false
     ],
     [
-      "SummonersRift",
-      true
-    ],
-    [
-      "SummonersRift",
+      "UnknownMap33",
       false
     ],
     [
-      "Aram",
+      "UnknownMap35",
       true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "AttackSpeed",
-      "value": 50
+      "AbilityHaste": 15
     },
     {
-      "name": "AbilityHaste",
-      "value": 15
+      "AbilityPower": 80
     },
     {
-      "name": "AbilityPower",
-      "value": 80
+      "AttackSpeed": 50
     }
   ],
   "damage_type": "Magic",
@@ -113,13 +110,7 @@
     1026,
     3108
   ],
-  "builds_from_item_ids": [
-    "RecurveBow",
-    "BlastingWand",
-    "FiendishCodex"
-  ],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "15 + (0.15 * ctx.ap)",
     "maximum_damage": "zero"

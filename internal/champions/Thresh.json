@@ -70,40 +70,6 @@
   "abilities": [
     [
       {
-        "type": "E",
-        "name": "_2"
-      },
-      {
-        "name": "Flay",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "1.7*ctx.thresh_stacks + (0.9 * ctx.ad)",
-          "1.7*ctx.thresh_stacks + (1.2 * ctx.ad)",
-          "1.7*ctx.thresh_stacks + (1.5 * ctx.ad)",
-          "1.7*ctx.thresh_stacks + (1.8 * ctx.ad)",
-          "1.7*ctx.thresh_stacks + (2.1 * ctx.ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "R",
-        "name": "_1"
-      },
-      {
-        "name": "The Box",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "250 + ctx.ap",
-          "400 + ctx.ap",
-          "550 + ctx.ap"
-        ]
-      }
-    ],
-    [
-      {
         "type": "Q",
         "name": "_1"
       },
@@ -141,6 +107,24 @@
     [
       {
         "type": "E",
+        "name": "_2"
+      },
+      {
+        "name": "Flay",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "1.7 * ctx.thresh_stacks + (0.9 * ctx.ad)",
+          "1.7 * ctx.thresh_stacks + (1.2 * ctx.ad)",
+          "1.7 * ctx.thresh_stacks + (1.5 * ctx.ad)",
+          "1.7 * ctx.thresh_stacks + (1.8 * ctx.ad)",
+          "1.7 * ctx.thresh_stacks + (2.1 * ctx.ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
         "name": "_3"
       },
       {
@@ -148,11 +132,27 @@
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "1.7*ctx.thresh_stacks + (0 * ctx.ad)",
-          "1.7*ctx.thresh_stacks + (0 * ctx.ad)",
-          "1.7*ctx.thresh_stacks + (0 * ctx.ad)",
-          "1.7*ctx.thresh_stacks + (0 * ctx.ad)",
-          "1.7*ctx.thresh_stacks + (0 * ctx.ad)"
+          "1.7 * ctx.thresh_stacks + (0 * ctx.ad)",
+          "1.7 * ctx.thresh_stacks + (0 * ctx.ad)",
+          "1.7 * ctx.thresh_stacks + (0 * ctx.ad)",
+          "1.7 * ctx.thresh_stacks + (0 * ctx.ad)",
+          "1.7 * ctx.thresh_stacks + (0 * ctx.ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_1"
+      },
+      {
+        "name": "The Box",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "250 + ctx.ap",
+          "400 + ctx.ap",
+          "550 + ctx.ap"
         ]
       }
     ]

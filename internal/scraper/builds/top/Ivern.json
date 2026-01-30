@@ -1,19 +1,20 @@
 [
   [
-    "BloodlettersCurse",
-    "ZhonyasHourglass",
-    "Redemption",
+    "Bandlepipes",
+    "DuskAndDawn",
+    "MoonstoneRenewer",
+    "Morellonomicon",
     "NashorsTooth",
-    "Hullbreaker"
+    "Redemption"
   ],
   [
-    "Triumph",
-    "LegendHaste",
-    "CutDown",
-    "CheapShot",
-    "UltimateHunter",
     "AbilityHaste",
     "AdaptiveForce",
-    "HealthScaling"
+    "CheapShot",
+    "CutDown",
+    "HealthScaling",
+    "LegendHaste",
+    "Triumph",
+    "UltimateHunter"
   ]
 ]

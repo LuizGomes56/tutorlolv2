@@ -1,18 +1,20 @@
 [
   [
-    "TheCollector",
+    "BlackCleaver",
+    "BladeOfTheRuinedKing",
+    "Bloodthirster",
+    "GuardianAngel",
     "MortalReminder",
-    "KrakenSlayer",
-    "SeryldasGrudge"
+    "TheCollector"
   ],
   [
-    "PresenceOfMind",
-    "LegendBloodline",
-    "CoupDeGrace",
-    "MagicalFootwear",
-    "BiscuitDelivery",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "BiscuitDelivery",
+    "CoupDeGrace",
+    "HealthScaling",
+    "LegendBloodline",
+    "MagicalFootwear",
+    "PresenceOfMind"
   ]
 ]

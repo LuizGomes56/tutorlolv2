@@ -1,20 +1,20 @@
 [
   [
+    "BlackCleaver",
+    "EndlessHunger",
     "ImmortalShieldbow",
+    "MawOfMalmortius",
     "MortalReminder",
-    "SerpentsFang",
-    "KaenicRookern",
-    "ZekesConvergence",
-    "Thornmail"
+    "SerpentsFang"
   ],
   [
-    "Triumph",
-    "LegendBloodline",
+    "AdaptiveForce",
+    "AttackSpeed",
+    "HealthScaling",
     "LastStand",
+    "LegendBloodline",
     "TasteOfBlood",
     "TreasureHunter",
-    "AttackSpeed",
-    "AdaptiveForce",
-    "HealthScaling"
+    "Triumph"
   ]
 ]

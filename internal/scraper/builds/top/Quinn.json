@@ -1,20 +1,20 @@
 [
   [
-    "MortalReminder",
-    "SerpentsFang",
+    "Bastionbreaker",
     "GuardianAngel",
     "ImmortalShieldbow",
-    "MawOfMalmortius",
-    "YoumuusGhostblade"
+    "MortalReminder",
+    "SerpentsFang",
+    "Stormrazor"
   ],
   [
-    "SuddenImpact",
-    "GrislyMementos",
-    "TreasureHunter",
     "AbsoluteFocus",
-    "GatheringStorm",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "GatheringStorm",
+    "GrislyMementos",
+    "HealthScaling",
+    "SuddenImpact",
+    "TreasureHunter"
   ]
 ]

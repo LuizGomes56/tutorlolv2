@@ -1,20 +1,20 @@
 [
   [
-    "ZhonyasHourglass",
-    "RylaisCrystalScepter",
     "ArchangelsStaff",
-    "Shadowflame",
-    "VoidStaff",
-    "Cryptbloom"
+    "BlackfireTorch",
+    "EchoesOfHelia",
+    "HorizonFocus",
+    "Morellonomicon",
+    "VoidStaff"
   ],
   [
-    "ManaflowBand",
-    "Transcendence",
-    "Scorch",
-    "BiscuitDelivery",
-    "CosmicInsight",
     "AbilityHaste",
     "AdaptiveForce",
-    "Health"
+    "BiscuitDelivery",
+    "CosmicInsight",
+    "Health",
+    "ManaflowBand",
+    "Scorch",
+    "Transcendence"
   ]
 ]

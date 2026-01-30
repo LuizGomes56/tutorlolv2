@@ -1,6 +1,6 @@
 {
+  "version": "16.2.1",
   "riot_id": 1515,
-  "item_id": "TurretPlating",
   "name": "Turret Plating",
   "price": 0,
   "sell": 0,
@@ -11,28 +11,28 @@
       true
     ],
     [
+      "Aram",
+      true
+    ],
+    [
       "NexusBlitz",
       true
     ],
     [
-      "Aram",
-      true
+      "Tft",
+      false
     ],
     [
       "Arena",
       true
     ],
     [
-      "SummonersRift",
+      "UnknownMap33",
       false
     ],
     [
-      "SummonersRift",
+      "UnknownMap35",
       true
-    ],
-    [
-      "Tft",
-      false
     ]
   ],
   "prettified_stats": [],
@@ -96,9 +96,7 @@
     }
   },
   "builds_from_riot_ids": [],
-  "builds_from_item_ids": [],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

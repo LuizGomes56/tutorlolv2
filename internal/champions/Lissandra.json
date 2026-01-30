@@ -70,17 +70,19 @@
   "abilities": [
     [
       {
-        "type": "R",
+        "type": "Q",
         "name": "_1"
       },
       {
-        "name": "Frozen Tomb",
+        "name": "Ice Shard",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
+          "80 + (0.75 * ctx.ap)",
+          "115 + (0.75 * ctx.ap)",
           "150 + (0.75 * ctx.ap)",
-          "250 + (0.75 * ctx.ap)",
-          "350 + (0.75 * ctx.ap)"
+          "185 + (0.75 * ctx.ap)",
+          "220 + (0.75 * ctx.ap)"
         ]
       }
     ],
@@ -122,19 +124,17 @@
     ],
     [
       {
-        "type": "Q",
+        "type": "R",
         "name": "_1"
       },
       {
-        "name": "Ice Shard",
+        "name": "Frozen Tomb",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "80 + (0.75 * ctx.ap)",
-          "115 + (0.75 * ctx.ap)",
           "150 + (0.75 * ctx.ap)",
-          "185 + (0.75 * ctx.ap)",
-          "220 + (0.75 * ctx.ap)"
+          "250 + (0.75 * ctx.ap)",
+          "350 + (0.75 * ctx.ap)"
         ]
       }
     ]

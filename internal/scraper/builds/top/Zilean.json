@@ -1,20 +1,20 @@
 [
   [
+    "Bandlepipes",
+    "Cryptbloom",
     "HorizonFocus",
-    "FrozenHeart",
-    "BlackfireTorch",
-    "LudensCompanion",
-    "Morellonomicon",
-    "ArdentCenser"
+    "ImperialMandate",
+    "LudensEcho",
+    "Morellonomicon"
   ],
   [
-    "ManaflowBand",
-    "Transcendence",
-    "Scorch",
-    "TripleTonic",
-    "CosmicInsight",
     "AbilityHaste",
     "AdaptiveForce",
-    "HealthScaling"
+    "CosmicInsight",
+    "HealthScaling",
+    "ManaflowBand",
+    "Scorch",
+    "Transcendence",
+    "TripleTonic"
   ]
 ]

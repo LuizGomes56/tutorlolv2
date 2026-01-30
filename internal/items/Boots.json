@@ -1,6 +1,6 @@
 {
+  "version": "16.2.1",
   "riot_id": 1001,
-  "item_id": "Boots",
   "name": "Boots",
   "price": 300,
   "sell": 210,
@@ -15,7 +15,7 @@
       true
     ],
     [
-      "SummonersRift",
+      "NexusBlitz",
       true
     ],
     [
@@ -23,22 +23,21 @@
       false
     ],
     [
-      "NexusBlitz",
-      true
-    ],
-    [
       "Arena",
       false
     ],
     [
-      "SummonersRift",
+      "UnknownMap33",
       false
+    ],
+    [
+      "UnknownMap35",
+      true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "MoveSpeed",
-      "value": 25
+      "MoveSpeed": 25
     }
   ],
   "damage_type": "Unknown",
@@ -101,7 +100,6 @@
     }
   },
   "builds_from_riot_ids": [],
-  "builds_from_item_ids": [],
   "builds_into_riot_ids": [
     3117,
     3158,
@@ -112,15 +110,6 @@
     3009,
     3010,
     3020
-  ],
-  "builds_into_item_ids": [
-    "IonianBootsOfLucidity",
-    "PlatedSteelcaps",
-    "MercurysTreads",
-    "BerserkersGreaves",
-    "BootsOfSwiftness",
-    "SymbioticSoles",
-    "SorcerersShoes"
   ],
   "ranged": {
     "minimum_damage": "zero",

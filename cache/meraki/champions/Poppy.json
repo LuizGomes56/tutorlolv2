@@ -138,11 +138,11 @@
                       ""
                     ],
                     "values": [
-                      75.0,
-                      105.0,
-                      135.0,
-                      165.0,
-                      195.0
+                      50.0,
+                      80.0,
+                      110.0,
+                      140.0,
+                      170.0
                     ]
                   }
                 ]
@@ -159,11 +159,11 @@
                       ""
                     ],
                     "values": [
-                      105.0,
-                      160.0,
-                      215.0,
-                      270.0,
-                      325.0
+                      80.0,
+                      135.0,
+                      190.0,
+                      245.0,
+                      300.0
                     ]
                   },
                   {
@@ -275,11 +275,11 @@
                       ""
                     ],
                     "values": [
-                      210.0,
-                      320.0,
-                      430.0,
-                      540.0,
-                      650.0
+                      160.0,
+                      270.0,
+                      380.0,
+                      490.0,
+                      600.0
                     ]
                   },
                   {
@@ -632,7 +632,7 @@
             ]
           },
           {
-            "description": "If the charge is interrupted or completes without reactivation, Keeper's Verdict is cancelled and the ability is put on a 15-second cooldown.",
+            "description": "If the charge is interrupted or completes without reactivation, Keeper's Verdict is cancelled and the ability is put on a 30-second cooldown.",
             "leveling": []
           },
           {

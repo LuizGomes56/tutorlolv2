@@ -1,20 +1,20 @@
 [
   [
-    "MawOfMalmortius",
-    "Stridebreaker",
-    "SpiritVisage",
+    "BlackCleaver",
     "GuardianAngel",
-    "TitanicHydra",
-    "RavenousHydra"
+    "MawOfMalmortius",
+    "OverlordsBloodmail",
+    "SpiritVisage",
+    "Stridebreaker"
   ],
   [
-    "Triumph",
-    "LegendHaste",
-    "CoupDeGrace",
-    "BonePlating",
-    "Revitalize",
-    "AttackSpeed",
     "AdaptiveForce",
-    "Health"
+    "AttackSpeed",
+    "BonePlating",
+    "CoupDeGrace",
+    "Health",
+    "LegendHaste",
+    "Revitalize",
+    "Triumph"
   ]
 ]

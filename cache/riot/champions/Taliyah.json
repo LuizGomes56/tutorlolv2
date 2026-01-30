@@ -79,6 +79,12 @@
       "id": "163021",
       "name": "Crystalis Motus Taliyah",
       "num": 21
+    },
+    {
+      "chromas": false,
+      "id": "163024",
+      "name": "Durand's Legacy Taliyah",
+      "num": 24
     }
   ],
   "spells": [
@@ -202,12 +208,14 @@
         "effect": [
           "{{ basedamage }} -> {{ basedamageNL }}",
           "{{ slowpercent*100.000000 }}% -> {{ slowpercentnl*100.000000 }}%",
+          "{{ monsterbonusflatdamage }} -> {{ monsterbonusflatdamageNL }}",
           "{{ cooldown }} -> {{ cooldownNL }}",
           "{{ cost }} -> {{ costNL }}"
         ],
         "label": [
           "Damage",
           "Slow",
+          "Monster Damage",
           "Cooldown",
           "@AbilityResourceName@ Cost"
         ]

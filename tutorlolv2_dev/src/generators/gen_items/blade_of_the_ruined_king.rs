@@ -1,5 +1,7 @@
 use super::*;
 
+// #![stable]
+
 impl Generator<ItemData> for BladeOfTheRuinedKing {
     fn generate(mut self: Box<Self>) -> MayFail<ItemData> {
         let get_scaling = |i| MayFail::Ok(self.passive(0)?.capture_percent(i)? / 100.0);
@@ -9,9 +11,9 @@ impl Generator<ItemData> for BladeOfTheRuinedKing {
 
         let damage = |scaling| {
             format!(
-                "{EnemyCurrentHealth} - ({numerator} / {scaling})",
+                "{EnemyHealth} - ({numerator} / {scaling})",
                 numerator = format_args!(
-                    "({scaling} * {EnemyCurrentHealth} * {modifier} - {Ad} + {Ad} * {modifier})",
+                    "({scaling} * {EnemyHealth} * {modifier} - {Ad} + {Ad} * {modifier})",
                     modifier = format_args!("(1 - {scaling} * {PhysicalMultiplier})"),
                 ),
             )

@@ -1,6 +1,6 @@
 {
+  "version": "16.2.1",
   "riot_id": 1037,
-  "item_id": "Pickaxe",
   "name": "Pickaxe",
   "price": 875,
   "sell": 613,
@@ -11,18 +11,6 @@
       true
     ],
     [
-      "Tft",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "Arena",
-      false
-    ],
-    [
       "Aram",
       true
     ],
@@ -31,14 +19,25 @@
       true
     ],
     [
-      "SummonersRift",
+      "Tft",
+      false
+    ],
+    [
+      "Arena",
+      false
+    ],
+    [
+      "UnknownMap33",
+      false
+    ],
+    [
+      "UnknownMap35",
       true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "AttackDamage",
-      "value": 25
+      "AttackDamage": 25
     }
   ],
   "damage_type": "Unknown",
@@ -101,49 +100,29 @@
     }
   },
   "builds_from_riot_ids": [],
-  "builds_from_item_ids": [],
   "builds_into_riot_ids": [
+    3181,
     6035,
     3139,
     2020,
+    2517,
     6692,
     3071,
     3072,
     6673,
     3161,
-    3181,
-    3039,
     6676,
+    2523,
     3031,
     3053,
-    3508,
     3087,
     3124,
     3153,
     6695,
     6029,
     6333,
+    667666,
     6701
-  ],
-  "builds_into_item_ids": [
-    "MercurialScimitar",
-    "TheBrutalizer",
-    "Eclipse",
-    "BlackCleaver",
-    "Bloodthirster",
-    "ImmortalShieldbow",
-    "SpearOfShojin",
-    "Hullbreaker",
-    "TheCollector",
-    "InfinityEdge",
-    "SteraksGage",
-    "EssenceReaver",
-    "StatikkShiv",
-    "GuinsoosRageblade",
-    "BladeOfTheRuinedKing",
-    "SerpentsFang",
-    "DeathsDance",
-    "Opportunity"
   ],
   "ranged": {
     "minimum_damage": "zero",

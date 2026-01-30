@@ -1,20 +1,19 @@
 [
   [
-    "WintersApproach",
+    "Heartsteel",
+    "JakshoTheProtean",
     "Malignance",
-    "UnendingDespair",
-    "BloodlettersCurse",
+    "RanduinsOmen",
     "Riftmaker",
-    "CosmicDrive"
+    "WintersApproach"
   ],
   [
-    "Triumph",
-    "LegendHaste",
-    "LastStand",
-    "CheapShot",
-    "UltimateHunter",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "CheapShot",
+    "HealthScaling",
+    "LastStand",
+    "LegendHaste",
+    "Triumph",
+    "UltimateHunter"
   ]
 ]

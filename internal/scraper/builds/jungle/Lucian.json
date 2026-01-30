@@ -1,4 +1,20 @@
 [
-  [],
-  []
+  [
+    "GuardianAngel",
+    "ImmortalShieldbow",
+    "KrakenSlayer",
+    "MortalReminder",
+    "SeryldasGrudge",
+    "TheCollector"
+  ],
+  [
+    "AdaptiveForce",
+    "AttackSpeed",
+    "BiscuitDelivery",
+    "CoupDeGrace",
+    "HealthScaling",
+    "LegendBloodline",
+    "MagicalFootwear",
+    "PresenceOfMind"
+  ]
 ]

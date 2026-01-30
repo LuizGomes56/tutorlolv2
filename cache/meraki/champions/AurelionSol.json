@@ -28,7 +28,7 @@
       "perLevel": 1.5
     },
     "movespeed": {
-      "flat": 335.0,
+      "flat": 340.0,
       "perLevel": 0.0
     },
     "criticalStrikeDamage": {
@@ -71,7 +71,7 @@
         "damageType": null,
         "effects": [
           {
-            "description": "Innate: Aurelion Sol's damaging abilities against enemies generate him permanent stacks of Stardust, which gradually augments his abilities.\n Breath of Light: Bursts deal bonus magic damage based on the target's maximum health.\n Astral Flight: Range is increased equal to 62.5% Stardust.\n Singularity: Outer and inner radius increased equal to 15% Stardust, and the execution threshold is increased.\n Falling Star/ The Skies Descend: Impact radius increased equal to 15% Stardust.",
+            "description": "Innate: Aurelion Sol's damaging abilities against enemies generate him permanent stacks of Stardust, which gradually augments his abilities.\n Breath of Light: Bursts deal bonus magic damage based on the target's maximum health.\n Astral Flight: Range is increased by 7.5 units per Stardust.\n Singularity: Outer and inner radius increased equal to 15% Stardust, and the execution threshold is increased.\n Falling Star / The Skies Descend: Impact radius increased equal to 15% Stardust.",
             "leveling": []
           }
         ],
@@ -104,8 +104,45 @@
         "damageType": "MAGIC_DAMAGE",
         "effects": [
           {
-            "description": "Active: Aurelion Sol charges for up to 3.25 seconds to exhale a beam of starfire, during which he can steer the beam in the target direction. The beam collides with the first enemy hit to reveal them and deal magic damage every 0.125 seconds, reduced to 50% for other surrounding enemies hit by the beam.",
+            "description": "Active: Aurelion Sol charges for up to 3.25 seconds to exhale a beam of starfire, during which he can steer the beam in the target direction. The beam collides with the first enemy hit to burn them, revealing them and dealing magic damage to them and surrounding enemies every 0.125 seconds. Secondary targets are dealt 50% damage.",
             "leveling": [
+              {
+                "attribute": "Magic Damage per Second",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      45.0,
+                      60.0,
+                      75.0,
+                      90.0,
+                      105.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      55.0,
+                      55.0,
+                      55.0,
+                      55.0,
+                      55.0
+                    ]
+                  }
+                ]
+              },
               {
                 "attribute": "Magic Damage per Tick",
                 "modifiers": [
@@ -144,7 +181,44 @@
                 ]
               },
               {
-                "attribute": "Reduced Damage per Tick",
+                "attribute": "Secondary Magic Damage per Second",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      22.5,
+                      30.0,
+                      37.5,
+                      45.0,
+                      52.5
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      27.5,
+                      27.5,
+                      27.5,
+                      27.5,
+                      27.5
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Secondary Target Damage per Tick",
                 "modifiers": [
                   {
                     "units": [
@@ -176,6 +250,41 @@
                       3.4375,
                       3.4375,
                       3.4375
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Secondary Target Total Maximum Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      73.125,
+                      97.5,
+                      121.875,
+                      146.25
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      89.375,
+                      89.375,
+                      89.375,
+                      89.375,
+                      89.375
                     ]
                   }
                 ]
@@ -218,23 +327,7 @@
             ]
           },
           {
-            "description": "At rank 5, Breath of Light's channel duration is increased to 160 seconds.",
-            "leveling": []
-          },
-          {
-            "description": "Breath of Light can be recast within the duration, and does so automatically afterwards.",
-            "leveling": []
-          },
-          {
-            "description": "Breath of Light cannot be cast for 1 second if the channel is cancelled within the first 0.25 seconds.",
-            "leveling": []
-          },
-          {
-            "description": "Recast: Aurelion Sol ends Breath of Light early.",
-            "leveling": []
-          },
-          {
-            "description": "The beam will deal a burst of bonus magic damage for each full second that it damages the same enemy, and generates 2 Stardust if the target is a champion. The damage based on the target's health ratio is capped at 300 against monsters.",
+            "description": "Against the primary target, the beam will deal a burst of bonus magic damage for each full second that it burns them, and additionally generates 2 Stardust if they are a champion. The damage based on the target's health ratio is capped at 300 against monsters.",
             "leveling": [
               {
                 "attribute": "Bonus Magic Damage",
@@ -248,11 +341,11 @@
                       "  (+ (3.1% Stardust)% of target's maximum health"
                     ],
                     "values": [
-                      55.0,
-                      65.0,
-                      75.0,
-                      85.0,
-                      95.0
+                      60.0,
+                      70.0,
+                      80.0,
+                      90.0,
+                      100.0
                     ]
                   },
                   {
@@ -274,6 +367,22 @@
                 ]
               }
             ]
+          },
+          {
+            "description": "At rank 5, Breath of Light's channel duration is increased to 160 seconds.",
+            "leveling": []
+          },
+          {
+            "description": "Breath of Light can be recast within the duration, and does so automatically afterwards.",
+            "leveling": []
+          },
+          {
+            "description": "Breath of Light cannot be cast for 1 second if the channel is cancelled within the first 0.25 seconds.",
+            "leveling": []
+          },
+          {
+            "description": "Recast: Aurelion Sol ends Breath of Light early.",
+            "leveling": []
           }
         ],
         "name": "Breath of Light"
@@ -339,7 +448,7 @@
             "leveling": []
           },
           {
-            "description": "Aurelion Sol will not dash if he is immobilized or grounded during the cast time. He can cast any of his abilities during the dash. Breath of Light's channel will be interrupted if Astral Flight ends or Singularity is cast during the flight, but the ability will automatically be cast afterwards.",
+            "description": "Aurelion Sol will not dash if he is immobilized or grounded during the cast time. He can cast any of his abilities during the dash. Breath of Light's channel will be interrupted if Astral Flight ends or Singularity or Falling Star / The Skies Descend is cast during the flight, but the ability will automatically be cast afterwards.",
             "leveling": []
           },
           {

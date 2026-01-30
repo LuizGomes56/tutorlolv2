@@ -1,20 +1,20 @@
 [
   [
-    "MortalReminder",
-    "ImmortalShieldbow",
-    "GuardianAngel",
     "Bloodthirster",
+    "GuardianAngel",
+    "ImmortalShieldbow",
+    "MortalReminder",
     "SerpentsFang",
-    "KrakenSlayer"
+    "Stormrazor"
   ],
   [
-    "PresenceOfMind",
-    "LegendAlacrity",
-    "CoupDeGrace",
-    "BonePlating",
-    "Overgrowth",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "BonePlating",
+    "CoupDeGrace",
+    "HealthScaling",
+    "LegendAlacrity",
+    "Overgrowth",
+    "PresenceOfMind"
   ]
 ]

@@ -1,26 +1,26 @@
 {
   "colloq": ";ie",
   "depth": 2,
-  "description": "<mainText><stats><attention>65</attention> Attack Damage<br><attention>25%</attention> Critical Strike Chance<br><attention>40%</attention> Critical Strike Damage</stats><br><br></mainText>",
+  "description": "<mainText><stats><attention>75</attention> Attack Damage<br><attention>25%</attention> Critical Strike Chance<br><attention>30%</attention> Critical Strike Damage</stats><br><br></mainText>",
   "from": [
     "1038",
     "1037",
     "1018"
   ],
   "gold": {
-    "base": 675,
+    "base": 725,
     "purchasable": true,
-    "sell": 2415,
-    "total": 3450
+    "sell": 2450,
+    "total": 3500
   },
   "image": {
     "full": "3031.png",
     "group": "item",
     "h": 48,
-    "sprite": "item2.png",
+    "sprite": "item3.png",
     "w": 48,
-    "x": 240,
-    "y": 336
+    "x": 432,
+    "y": 96
   },
   "maps": {
     "11": true,
@@ -35,7 +35,7 @@
   "plaintext": "Massively enhances critical strikes",
   "stats": {
     "FlatCritChanceMod": 0.25,
-    "FlatPhysicalDamageMod": 65
+    "FlatPhysicalDamageMod": 75
   },
   "tags": [
     "CriticalStrike",

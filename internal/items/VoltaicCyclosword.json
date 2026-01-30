@@ -1,6 +1,6 @@
 {
+  "version": "16.2.1",
   "riot_id": 6699,
-  "item_id": "VoltaicCyclosword",
   "name": "Voltaic Cyclosword",
   "price": 3000,
   "sell": 2100,
@@ -8,18 +8,6 @@
   "maps": [
     [
       "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
-      "Tft",
-      false
-    ],
-    [
-      "NexusBlitz",
       true
     ],
     [
@@ -27,26 +15,35 @@
       true
     ],
     [
+      "NexusBlitz",
+      true
+    ],
+    [
+      "Tft",
+      false
+    ],
+    [
       "Arena",
       false
     ],
     [
-      "SummonersRift",
+      "UnknownMap33",
+      false
+    ],
+    [
+      "UnknownMap35",
       true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "Lethality",
-      "value": 18
+      "AbilityHaste": 10
     },
     {
-      "name": "AttackDamage",
-      "value": 50
+      "AttackDamage": 55
     },
     {
-      "name": "AbilityHaste",
-      "value": 20
+      "Lethality": 18
     }
   ],
   "damage_type": "Unknown",
@@ -113,13 +110,7 @@
     1036,
     1036
   ],
-  "builds_from_item_ids": [
-    "TheBrutalizer",
-    "LongSword",
-    "LongSword"
-  ],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

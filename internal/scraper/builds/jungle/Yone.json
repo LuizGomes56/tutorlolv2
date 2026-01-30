@@ -1,19 +1,19 @@
 [
   [
-    "MortalReminder",
     "JakshoTheProtean",
     "LordDominiksRegards",
-    "WitsEnd",
-    "KaenicRookern"
+    "MortalReminder",
+    "SpiritVisage",
+    "WitsEnd"
   ],
   [
     "AbsorbLife",
-    "LegendAlacrity",
-    "LastStand",
-    "SecondWind",
-    "Overgrowth",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "HealthScaling",
+    "LastStand",
+    "LegendAlacrity",
+    "Overgrowth",
+    "SecondWind"
   ]
 ]

@@ -1,20 +1,19 @@
 [
   [
     "Bloodthirster",
-    "GuardianAngel",
-    "BladeOfTheRuinedKing",
-    "DeathsDance",
+    "EndlessHunger",
+    "HexopticsC44",
     "MercurialScimitar",
-    "ProfaneHydra"
+    "MortalReminder"
   ],
   [
-    "Triumph",
-    "LegendBloodline",
+    "AdaptiveForce",
+    "AttackSpeed",
+    "HealthScaling",
     "LastStand",
+    "LegendBloodline",
     "TasteOfBlood",
     "TreasureHunter",
-    "AttackSpeed",
-    "AdaptiveForce",
-    "HealthScaling"
+    "Triumph"
   ]
 ]

@@ -161,25 +161,25 @@
       "effect": [
         null,
         [
-          85,
-          115,
-          145,
-          175,
-          205
+          0,
+          0,
+          0,
+          0,
+          0
         ],
         [
-          60,
-          75,
-          90,
-          105,
-          120
+          0,
+          0,
+          0,
+          0,
+          0
         ],
         [
-          1000,
-          1000,
-          1000,
-          1000,
-          1000
+          0,
+          0,
+          0,
+          0,
+          0
         ],
         [
           0.41,
@@ -189,11 +189,11 @@
           0.41
         ],
         [
-          100,
-          100,
-          100,
-          100,
-          100
+          0,
+          0,
+          0,
+          0,
+          0
         ],
         [
           0,
@@ -233,11 +233,11 @@
       ],
       "effectBurn": [
         null,
-        "85/115/145/175/205",
-        "60/75/90/105/120",
-        "1000",
+        "0",
+        "0",
+        "0",
         "0.41",
-        "100",
+        "0",
         "0",
         "0",
         "0",
@@ -256,14 +256,12 @@
       },
       "leveltip": {
         "effect": [
-          "{{ e1 }} -> {{ e1NL }}",
-          "{{ e2 }}% -> {{ e2NL }}%",
+          "{{ basedamage }} -> {{ basedamageNL }}",
           "{{ cooldown }} -> {{ cooldownNL }}",
           "{{ cost }} -> {{ costNL }}"
         ],
         "label": [
           "Damage",
-          "Attack Damage",
           "Cooldown",
           "@AbilityResourceName@ Cost"
         ]
@@ -687,10 +685,10 @@
     "armor": 28,
     "armorperlevel": 4.2,
     "attackdamage": 60,
-    "attackdamageperlevel": 2.9,
+    "attackdamageperlevel": 2.5,
     "attackrange": 500,
     "attackspeed": 0.638,
-    "attackspeedperlevel": 3.3,
+    "attackspeedperlevel": 2.5,
     "crit": 0,
     "critperlevel": 0,
     "hp": 641,

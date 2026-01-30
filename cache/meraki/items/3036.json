@@ -7,7 +7,13 @@
   "buildsInto": [],
   "name": "Lord Dominik's Regards",
   "tier": 3,
-  "passives": [],
+  "passives": [
+    {
+      "effects": "Deal {{pp|0 to 15 for 16|0 to 1500|key=%|type=target's '''bonus''' health|formula=1% per 100 bonus health, up to a maximum of 15% at 1500 bonus health.|color=health}} increased damage against enemy champions.",
+      "name": "Giant Slayer",
+      "unique": true
+    }
+  ],
   "id": 3036,
   "stats": {
     "abilityPower": {
@@ -20,7 +26,7 @@
     },
     "armorPenetration": {
       "flat": 0.0,
-      "percent": 40.0
+      "percent": 35.0
     },
     "magicPenetration": {
       "flat": 0.0,
@@ -70,7 +76,7 @@
   "shop": {
     "purchasable": true,
     "prices": {
-      "total": 3100
+      "total": 3300
     }
   }
 }

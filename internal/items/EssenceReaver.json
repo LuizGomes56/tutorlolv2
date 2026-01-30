@@ -1,9 +1,9 @@
 {
+  "version": "16.2.1",
   "riot_id": 3508,
-  "item_id": "EssenceReaver",
   "name": "Essence Reaver",
-  "price": 2900,
-  "sell": 2030,
+  "price": 3050,
+  "sell": 2135,
   "tier": 3,
   "maps": [
     [
@@ -11,42 +11,39 @@
       true
     ],
     [
-      "Tft",
-      false
-    ],
-    [
       "Aram",
       true
-    ],
-    [
-      "Arena",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
     ],
     [
       "NexusBlitz",
       true
     ],
     [
-      "SummonersRift",
+      "Tft",
+      false
+    ],
+    [
+      "Arena",
+      false
+    ],
+    [
+      "UnknownMap33",
+      false
+    ],
+    [
+      "UnknownMap35",
       true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "AttackDamage",
-      "value": 50
+      "AbilityHaste": 20
     },
     {
-      "name": "CriticalStrikeChance",
-      "value": 25
+      "AttackDamage": 50
     },
     {
-      "name": "AbilityHaste",
-      "value": 20
+      "CriticalStrikeChance": 25
     }
   ],
   "damage_type": "Unknown",
@@ -68,7 +65,7 @@
       "percent": 0.0
     },
     "attackDamage": {
-      "flat": 60.0,
+      "flat": 50.0,
       "percent": 0.0
     },
     "attackSpeed": {
@@ -109,17 +106,11 @@
     }
   },
   "builds_from_riot_ids": [
-    1037,
+    3057,
     3133,
     1018
   ],
-  "builds_from_item_ids": [
-    "Pickaxe",
-    "CaulfieldsWarhammer",
-    "CloakOfAgility"
-  ],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

@@ -1,0 +1,47 @@
+{
+  "colloq": "Celestial Eye;",
+  "depth": 3,
+  "description": "<mainText><stats><attention>50</attention> Attack Damage<br><attention>20%</attention> Attack Speed<br><attention>25%</attention> Critical Strike Chance</stats><br><br><passive>Energized</passive><br>Moving and Attacking generates an <keyword>Energized Attack</keyword>.<br><br><passive>Bolt</passive><br>Your <keyword>Energized Attack</keyword> applies <magicDamage> bonus magic damage</magicDamage> and grants <speed>45% Move Speed</speed> for 1.5s.<br></mainText>",
+  "from": [
+    "1038",
+    "1018",
+    "3144"
+  ],
+  "gold": {
+    "base": 700,
+    "purchasable": true,
+    "sell": 2240,
+    "total": 3200
+  },
+  "image": {
+    "full": "3097.png",
+    "group": "item",
+    "h": 48,
+    "sprite": "item3.png",
+    "w": 48,
+    "x": 384,
+    "y": 288
+  },
+  "maps": {
+    "11": true,
+    "12": true,
+    "21": true,
+    "22": false,
+    "30": false,
+    "33": false,
+    "35": false
+  },
+  "name": "Stormrazor",
+  "plaintext": "Periodically kill enemy minions to heal and grant gold to a nearby ally",
+  "stats": {
+    "FlatCritChanceMod": 0.25,
+    "FlatPhysicalDamageMod": 50,
+    "PercentAttackSpeedMod": 0.2
+  },
+  "tags": [
+    "Damage",
+    "CriticalStrike",
+    "AttackSpeed",
+    "NonbootsMovement"
+  ]
+}

@@ -1,19 +1,20 @@
 [
   [
-    "MortalReminder",
+    "DeathsDance",
+    "EndlessHunger",
     "GuardianAngel",
-    "MercurialScimitar",
     "MawOfMalmortius",
-    "RavenousHydra"
+    "MercurialScimitar",
+    "MortalReminder"
   ],
   [
-    "Triumph",
-    "LegendBloodline",
+    "AdaptiveForce",
+    "AttackSpeed",
+    "HealthScaling",
     "LastStand",
+    "LegendBloodline",
     "TasteOfBlood",
     "TreasureHunter",
-    "AttackSpeed",
-    "AdaptiveForce",
-    "HealthScaling"
+    "Triumph"
   ]
 ]

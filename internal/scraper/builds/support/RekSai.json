@@ -1,20 +1,20 @@
 [
   [
-    "Opportunity",
+    "Bandlepipes",
     "Eclipse",
-    "MawOfMalmortius",
-    "BlackCleaver",
-    "ZekesConvergence",
-    "ChempunkChainsword"
+    "EdgeOfNight",
+    "SpearOfShojin",
+    "TheCollector",
+    "YoumuusGhostblade"
   ],
   [
-    "SuddenImpact",
-    "GrislyMementos",
-    "RelentlessHunter",
-    "MagicalFootwear",
+    "AdaptiveForce",
+    "AttackSpeed",
     "CosmicInsight",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "Health"
+    "GrislyMementos",
+    "HealthScaling",
+    "MagicalFootwear",
+    "RelentlessHunter",
+    "SuddenImpact"
   ]
 ]

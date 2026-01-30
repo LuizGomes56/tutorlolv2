@@ -1,20 +1,20 @@
 [
   [
+    "ExperimentalHexplate",
+    "HexopticsC44",
+    "ImmortalShieldbow",
+    "KaenicRookern",
     "MortalReminder",
-    "Bloodthirster",
-    "PhantomDancer",
-    "MawOfMalmortius",
-    "RanduinsOmen",
-    "ExperimentalHexplate"
+    "RunaansHurricane"
   ],
   [
-    "Triumph",
-    "LegendAlacrity",
-    "LastStand",
-    "Conditioning",
-    "Overgrowth",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "Conditioning",
+    "HealthScaling",
+    "LastStand",
+    "LegendAlacrity",
+    "Overgrowth",
+    "Triumph"
   ]
 ]

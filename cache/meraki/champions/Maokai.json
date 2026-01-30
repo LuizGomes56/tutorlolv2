@@ -415,10 +415,10 @@
         "damageType": "MAGIC_DAMAGE",
         "effects": [
           {
-            "description": "A Sapling placed in brush instead lasts 30 (+ 1.5% bonus health) seconds, deals double damage to struck non- minion targets over 3 bursts, and slows them by 45% (+ 1% per 100 bonus health) (+ 1% per 100 AP), as well as reveals them for 3 seconds. The first instance of damage is dealt instantly and the second and third instances occur each 0.75 seconds thereafter. The total damage is capped at 600 against non-champions.",
+            "description": "A Sapling placed in a brush becomes empowered: lasting 30 (+ 1.5% bonus health) seconds and causing its explosion to deal 66.7% damage to non- minion targets struck and attach two Saplings to them for 1.5 seconds, as well as slow enemies hit by 45% (+ 1% per 100 bonus health) (+ 1% per 100 AP) for 2 seconds and reveal them for 3 seconds. The attached Saplings explode on the afflicted target every 0.75 seconds over the duration, dealing them the same damage each time. Targets can only be attached to two Saplings at a time; subsequent empowered Sapling explosions on a target will refresh the duration and only attach a Sapling if one has exploded on them already. Against minions, the explosion deals 100% damage. The total damage is capped at 600 against non-champions.",
             "leveling": [
               {
-                "attribute": "Enhanced Damage Per Tick",
+                "attribute": "Magic Damage per Instance",
                 "modifiers": [
                   {
                     "units": [
@@ -471,7 +471,113 @@
                 ]
               },
               {
-                "attribute": "Total Enhanced Damage",
+                "attribute": "Minion Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      50.0,
+                      75.0,
+                      100.0,
+                      125.0,
+                      150.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus health",
+                      "% bonus health",
+                      "% bonus health",
+                      "% bonus health",
+                      "% bonus health"
+                    ],
+                    "values": [
+                      5.0,
+                      5.0,
+                      5.0,
+                      5.0,
+                      5.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      25.0,
+                      25.0,
+                      25.0,
+                      25.0,
+                      25.0
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Total Attached Sapling Damage",
+                "modifiers": [
+                  {
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "values": [
+                      66.67,
+                      100.0,
+                      133.33,
+                      166.67,
+                      200.0
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% bonus health",
+                      "% bonus health",
+                      "% bonus health",
+                      "% bonus health",
+                      "% bonus health"
+                    ],
+                    "values": [
+                      6.67,
+                      6.67,
+                      6.67,
+                      6.67,
+                      6.67
+                    ]
+                  },
+                  {
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ],
+                    "values": [
+                      33.33,
+                      33.33,
+                      33.33,
+                      33.33,
+                      33.33
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Total Magic Damage",
                 "modifiers": [
                   {
                     "units": [

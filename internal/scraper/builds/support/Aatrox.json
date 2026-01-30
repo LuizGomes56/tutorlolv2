@@ -1,20 +1,19 @@
 [
   [
-    "Eclipse",
     "BlackCleaver",
-    "SpearOfShojin",
-    "EdgeOfNight",
-    "Opportunity",
-    "DeathsDance"
+    "DeathsDance",
+    "EndlessHunger",
+    "SteraksGage",
+    "UmbralGlaive",
+    "VoltaicCyclosword"
   ],
   [
-    "SuddenImpact",
-    "DeepWard",
-    "UltimateHunter",
-    "BiscuitDelivery",
-    "ApproachVelocity",
     "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "BonePlating",
+    "HealthScaling",
+    "LastStand",
+    "LegendHaste",
+    "Revitalize",
+    "Triumph"
   ]
 ]

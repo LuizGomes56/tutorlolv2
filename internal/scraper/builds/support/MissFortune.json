@@ -1,20 +1,19 @@
 [
   [
+    "BloodlettersCurse",
     "HorizonFocus",
     "ImperialMandate",
+    "LudensEcho",
     "TheCollector",
-    "SerpentsFang",
-    "RabadonsDeathcap",
-    "BloodlettersCurse"
+    "ZhonyasHourglass"
   ],
   [
-    "ManaflowBand",
-    "Transcendence",
-    "Scorch",
+    "AdaptiveForce",
     "CheapShot",
-    "UltimateHunter",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "Health"
+    "Health",
+    "ManaflowBand",
+    "Scorch",
+    "Transcendence",
+    "UltimateHunter"
   ]
 ]

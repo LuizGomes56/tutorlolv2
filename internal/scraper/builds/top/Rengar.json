@@ -1,20 +1,19 @@
 [
   [
+    "ImmortalShieldbow",
     "MortalReminder",
-    "LordDominiksRegards",
-    "DeathsDance",
     "Opportunity",
-    "YoumuusGhostblade",
-    "SpiritVisage"
+    "SerpentsFang",
+    "TheCollector",
+    "YoumuusGhostblade"
   ],
   [
-    "Triumph",
-    "LegendAlacrity",
-    "LastStand",
-    "BonePlating",
-    "Revitalize",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "CutDown",
+    "Health",
+    "LegendAlacrity",
+    "SuddenImpact",
+    "Triumph",
+    "UltimateHunter"
   ]
 ]

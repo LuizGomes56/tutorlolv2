@@ -1,20 +1,19 @@
 [
   [
-    "TitanicHydra",
-    "SunfireAegis",
-    "JakshoTheProtean",
-    "SpiritVisage",
+    "Bandlepipes",
+    "KaenicRookern",
     "RanduinsOmen",
-    "ForceOfNature"
+    "SpiritVisage",
+    "SunfireAegis",
+    "Thornmail"
   ],
   [
-    "ShieldBash",
-    "SecondWind",
-    "Overgrowth",
-    "ManaflowBand",
-    "Transcendence",
     "AbilityHaste",
+    "ApproachVelocity",
+    "Conditioning",
     "HealthScaling",
-    "HealthScaling"
+    "MagicalFootwear",
+    "Overgrowth",
+    "ShieldBash"
   ]
 ]

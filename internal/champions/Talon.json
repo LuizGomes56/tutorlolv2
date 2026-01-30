@@ -70,33 +70,19 @@
   "abilities": [
     [
       {
-        "type": "R",
-        "name": "_2"
-      },
-      {
-        "name": "Shadow Assault",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "180 + (2 * ctx.bonus_ad)",
-          "270 + (2 * ctx.bonus_ad)",
-          "360 + (2 * ctx.bonus_ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "R",
+        "type": "Q",
         "name": "_1"
       },
       {
-        "name": "Shadow Assault",
+        "name": "Noxian Diplomacy",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "90 + ctx.bonus_ad",
-          "135 + ctx.bonus_ad",
-          "180 + ctx.bonus_ad"
+          "97.5 + (1.5 * ctx.bonus_ad)",
+          "127.5 + (1.5 * ctx.bonus_ad)",
+          "157.5 + (1.5 * ctx.bonus_ad)",
+          "187.5 + (1.5 * ctx.bonus_ad)",
+          "217.5 + (1.5 * ctx.bonus_ad)"
         ]
       }
     ],
@@ -138,19 +124,19 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_1"
+        "type": "W",
+        "name": "_2"
       },
       {
-        "name": "Noxian Diplomacy",
+        "name": "Rake",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "97.5 + (1.5 * ctx.bonus_ad)",
-          "127.5 + (1.5 * ctx.bonus_ad)",
-          "157.5 + (1.5 * ctx.bonus_ad)",
-          "187.5 + (1.5 * ctx.bonus_ad)",
-          "217.5 + (1.5 * ctx.bonus_ad)"
+          "60 + (0.9 * ctx.bonus_ad)",
+          "90 + (0.9 * ctx.bonus_ad)",
+          "120 + (0.9 * ctx.bonus_ad)",
+          "150 + (0.9 * ctx.bonus_ad)",
+          "180 + (0.9 * ctx.bonus_ad)"
         ]
       }
     ],
@@ -174,19 +160,33 @@
     ],
     [
       {
-        "type": "W",
-        "name": "_2"
+        "type": "R",
+        "name": "_1"
       },
       {
-        "name": "Rake",
+        "name": "Shadow Assault",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "60 + (0.9 * ctx.bonus_ad)",
-          "90 + (0.9 * ctx.bonus_ad)",
-          "120 + (0.9 * ctx.bonus_ad)",
-          "150 + (0.9 * ctx.bonus_ad)",
-          "180 + (0.9 * ctx.bonus_ad)"
+          "90 + ctx.bonus_ad",
+          "135 + ctx.bonus_ad",
+          "180 + ctx.bonus_ad"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_2"
+      },
+      {
+        "name": "Shadow Assault",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "180 + (2 * ctx.bonus_ad)",
+          "270 + (2 * ctx.bonus_ad)",
+          "360 + (2 * ctx.bonus_ad)"
         ]
       }
     ]

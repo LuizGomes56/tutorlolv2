@@ -1,19 +1,20 @@
 [
   [
+    "BansheesVeil",
     "BloodlettersCurse",
+    "HextechRocketbelt",
     "Morellonomicon",
-    "Stormsurge",
     "RylaisCrystalScepter",
-    "Riftmaker"
+    "Stormsurge"
   ],
   [
-    "CheapShot",
-    "GrislyMementos",
-    "UltimateHunter",
-    "Triumph",
-    "LegendHaste",
     "AbilityHaste",
     "AdaptiveForce",
-    "HealthScaling"
+    "CheapShot",
+    "GatheringStorm",
+    "GrislyMementos",
+    "HealthScaling",
+    "Transcendence",
+    "UltimateHunter"
   ]
 ]

@@ -1,20 +1,20 @@
 [
   [
     "BlackCleaver",
+    "Eclipse",
+    "RanduinsOmen",
+    "SpiritVisage",
     "SteraksGage",
-    "EdgeOfNight",
-    "SerpentsFang",
-    "GuardianAngel",
-    "SpiritVisage"
+    "SunderedSky"
   ],
   [
-    "Triumph",
-    "LegendAlacrity",
-    "CoupDeGrace",
-    "SuddenImpact",
-    "TreasureHunter",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "HealthScaling",
+    "LastStand",
+    "LegendAlacrity",
+    "Revitalize",
+    "ShieldBash",
+    "Triumph"
   ]
 ]

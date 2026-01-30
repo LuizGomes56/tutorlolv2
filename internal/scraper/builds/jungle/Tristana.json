@@ -1,20 +1,20 @@
 [
   [
+    "BladeOfTheRuinedKing",
+    "EdgeOfNight",
+    "HexopticsC44",
     "KrakenSlayer",
-    "Bloodthirster",
-    "YunTalWildarrows",
-    "ImmortalShieldbow",
-    "GuardianAngel",
-    "StatikkShiv"
+    "MortalReminder",
+    "TheCollector"
   ],
   [
-    "Triumph",
-    "LegendAlacrity",
+    "AdaptiveForce",
+    "AttackSpeed",
     "CoupDeGrace",
+    "HealthScaling",
+    "LegendAlacrity",
     "TasteOfBlood",
     "TreasureHunter",
-    "AttackSpeed",
-    "AdaptiveForce",
-    "HealthScaling"
+    "Triumph"
   ]
 ]

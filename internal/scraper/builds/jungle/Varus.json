@@ -1,18 +1,20 @@
 [
   [
-    "ZhonyasHourglass",
-    "Malignance",
+    "BansheesVeil",
     "GuinsoosRageblade",
-    "Riftmaker"
+    "Shadowflame",
+    "Stormsurge",
+    "Terminus",
+    "VoidStaff"
   ],
   [
-    "Triumph",
-    "LegendAlacrity",
-    "CoupDeGrace",
-    "TasteOfBlood",
-    "TreasureHunter",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "BonePlating",
+    "HealthScaling",
+    "LastStand",
+    "LegendAlacrity",
+    "Overgrowth",
+    "Triumph"
   ]
 ]

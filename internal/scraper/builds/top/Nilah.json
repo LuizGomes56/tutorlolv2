@@ -1,18 +1,20 @@
 [
   [
+    "DeathsDance",
+    "FiendhunterBolts",
+    "MawOfMalmortius",
     "MortalReminder",
-    "GuardianAngel",
     "NavoriFlickerblade",
-    "MercurialScimitar"
+    "PhantomDancer"
   ],
   [
-    "Triumph",
-    "LegendBloodline",
+    "AdaptiveForce",
+    "AttackSpeed",
+    "HealthScaling",
     "LastStand",
+    "LegendBloodline",
     "SuddenImpact",
     "TreasureHunter",
-    "AttackSpeed",
-    "AdaptiveForce",
-    "HealthScaling"
+    "Triumph"
   ]
 ]

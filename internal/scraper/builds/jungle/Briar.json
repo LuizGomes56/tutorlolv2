@@ -1,20 +1,19 @@
 [
   [
+    "EndlessHunger",
+    "MawOfMalmortius",
+    "RanduinsOmen",
     "SteraksGage",
-    "TitanicHydra",
     "SunderedSky",
-    "KrakenSlayer",
-    "ChempunkChainsword",
-    "RanduinsOmen"
+    "TitanicHydra"
   ],
   [
-    "Triumph",
-    "LegendAlacrity",
+    "AdaptiveForce",
     "CoupDeGrace",
+    "HealthScaling",
+    "LegendAlacrity",
     "SuddenImpact",
     "TreasureHunter",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "Triumph"
   ]
 ]

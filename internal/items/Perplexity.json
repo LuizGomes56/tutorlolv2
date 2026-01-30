@@ -1,6 +1,6 @@
 {
+  "version": "16.2.1",
   "riot_id": 4015,
-  "item_id": "Perplexity",
   "name": "Perplexity",
   "price": 2500,
   "sell": 1250,
@@ -11,19 +11,7 @@
       false
     ],
     [
-      "Arena",
-      true
-    ],
-    [
       "Aram",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
       false
     ],
     [
@@ -33,24 +21,32 @@
     [
       "Tft",
       false
+    ],
+    [
+      "Arena",
+      true
+    ],
+    [
+      "UnknownMap33",
+      false
+    ],
+    [
+      "UnknownMap35",
+      false
     ]
   ],
   "prettified_stats": [
     {
-      "name": "AbilityPower",
-      "value": 60
+      "AbilityPower": 60
     },
     {
-      "name": "ArmorPenetration",
-      "value": 22
+      "ArmorPenetration": 22
     },
     {
-      "name": "MoveSpeed",
-      "value": 5
+      "MagicPenetration": 30
     },
     {
-      "name": "MagicPenetration",
-      "value": 30
+      "MoveSpeed": 5
     }
   ],
   "damage_type": "Unknown",
@@ -113,9 +109,7 @@
     }
   },
   "builds_from_riot_ids": [],
-  "builds_from_item_ids": [],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

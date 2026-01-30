@@ -1,20 +1,20 @@
 [
   [
-    "DeadMansPlate",
     "ForceOfNature",
-    "RanduinsOmen",
+    "FrozenHeart",
+    "HollowRadiance",
     "KaenicRookern",
-    "RabadonsDeathcap",
-    "Shadowflame"
+    "RanduinsOmen",
+    "UnendingDespair"
   ],
   [
-    "CheapShot",
-    "GrislyMementos",
-    "UltimateHunter",
+    "AdaptiveForce",
     "AxiomArcanist",
     "Celerity",
-    "AdaptiveForce",
+    "CheapShot",
+    "GrislyMementos",
+    "HealthScaling",
     "MoveSpeed",
-    "HealthScaling"
+    "UltimateHunter"
   ]
 ]

@@ -1,17 +1,21 @@
 {
+  "version": "16.2.1",
   "riot_id": 4630,
-  "item_id": "BlightingJewel",
   "name": "Blighting Jewel",
   "price": 1100,
   "sell": 770,
   "tier": 2,
   "maps": [
     [
-      "NexusBlitz",
+      "SummonersRift",
       true
     ],
     [
-      "SummonersRift",
+      "Aram",
+      true
+    ],
+    [
+      "NexusBlitz",
       true
     ],
     [
@@ -19,30 +23,24 @@
       false
     ],
     [
-      "Aram",
-      true
-    ],
-    [
       "Arena",
       false
     ],
     [
-      "SummonersRift",
+      "UnknownMap33",
       false
     ],
     [
-      "SummonersRift",
+      "UnknownMap35",
       true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "AbilityPower",
-      "value": 25
+      "AbilityPower": 25
     },
     {
-      "name": "MagicPenetration",
-      "value": 13
+      "MagicPenetration": 13
     }
   ],
   "damage_type": "Unknown",
@@ -107,16 +105,9 @@
   "builds_from_riot_ids": [
     1052
   ],
-  "builds_from_item_ids": [
-    "AmplifyingTome"
-  ],
   "builds_into_riot_ids": [
-    3137,
-    3135
-  ],
-  "builds_into_item_ids": [
-    "Cryptbloom",
-    "VoidStaff"
+    3135,
+    3137
   ],
   "ranged": {
     "minimum_damage": "zero",

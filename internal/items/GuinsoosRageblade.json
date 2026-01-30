@@ -1,23 +1,11 @@
 {
+  "version": "16.2.1",
   "riot_id": 3124,
-  "item_id": "GuinsoosRageblade",
   "name": "Guinsoo's Rageblade",
   "price": 3000,
   "sell": 2100,
   "tier": 3,
   "maps": [
-    [
-      "Arena",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
     [
       "SummonersRift",
       true
@@ -33,20 +21,29 @@
     [
       "Tft",
       false
+    ],
+    [
+      "Arena",
+      false
+    ],
+    [
+      "UnknownMap33",
+      false
+    ],
+    [
+      "UnknownMap35",
+      true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "AttackDamage",
-      "value": 20
+      "AbilityPower": 30
     },
     {
-      "name": "AbilityPower",
-      "value": 25
+      "AttackDamage": 30
     },
     {
-      "name": "AttackSpeed",
-      "value": 25
+      "AttackSpeed": 25
     }
   ],
   "damage_type": "Unknown",
@@ -113,13 +110,7 @@
     1043,
     1037
   ],
-  "builds_from_item_ids": [
-    "AmplifyingTome",
-    "RecurveBow",
-    "Pickaxe"
-  ],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

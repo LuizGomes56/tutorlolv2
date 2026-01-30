@@ -201,7 +201,7 @@
         "damageType": "MAGIC_DAMAGE",
         "effects": [
           {
-            "description": "Active: Vex emits a shockwave around her before the cast time, dealing magic damage to nearby enemies and granting herself a shield for 2.5 seconds.",
+            "description": "Active: Vex emits a deafening scream around her before the cast time, dealing magic damage to nearby enemies and granting herself a shield for 2.5 seconds.",
             "leveling": [
               {
                 "attribute": "Magic Damage",
@@ -405,7 +405,7 @@
         "damageType": "MAGIC_DAMAGE",
         "effects": [
           {
-            "description": "Active: Vex sends her Shadow in the target direction that grants sight around its trajectory and deals magic damage to enemies hit.",
+            "description": "Active: Vex sends her Shadow in the target direction, which grants sight around its trajectory and deals magic damage to enemies hit.",
             "leveling": [
               {
                 "attribute": "Magic Damage",
@@ -439,7 +439,7 @@
             ]
           },
           {
-            "description": "If Vex scores a takedown against Shadow Surge's marked target within 6 seconds of its application, Vex can cast Shadow Surge again within 12 seconds at no cost after 0.5 seconds.",
+            "description": "If Vex scores a takedown against Shadow Surge's marked target within 6 seconds of its application, Vex can cast Shadow Surge again within 12 seconds at no cost after 0.5 seconds, repeating the effects.",
             "leveling": []
           },
           {

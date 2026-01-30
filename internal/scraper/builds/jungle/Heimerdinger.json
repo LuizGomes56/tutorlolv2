@@ -1,18 +1,18 @@
 [
   [
-    "Shadowflame",
-    "VoidStaff",
-    "Riftmaker",
-    "Morellonomicon"
+    "BlackfireTorch",
+    "BloodlettersCurse",
+    "KaenicRookern",
+    "Morellonomicon",
+    "VoidStaff"
   ],
   [
-    "PresenceOfMind",
-    "LegendHaste",
-    "CutDown",
     "AbsoluteFocus",
+    "AdaptiveForce",
+    "CoupDeGrace",
     "GatheringStorm",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "HealthScaling",
+    "LegendHaste",
+    "Triumph"
   ]
 ]

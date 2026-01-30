@@ -1,20 +1,20 @@
 [
   [
-    "ProfaneHydra",
+    "Hubris",
     "MortalReminder",
-    "InfinityEdge",
-    "Opportunity",
-    "UmbralGlaive",
-    "Hubris"
+    "SerpentsFang",
+    "Stormrazor",
+    "TheCollector",
+    "UmbralGlaive"
   ],
   [
-    "SuddenImpact",
-    "GrislyMementos",
-    "TreasureHunter",
     "AbsoluteFocus",
-    "GatheringStorm",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "GatheringStorm",
+    "GrislyMementos",
+    "HealthScaling",
+    "SuddenImpact",
+    "TreasureHunter"
   ]
 ]

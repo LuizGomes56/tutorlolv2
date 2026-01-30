@@ -20,8 +20,8 @@
     "h": 48,
     "sprite": "item2.png",
     "w": 48,
-    "x": 432,
-    "y": 192
+    "x": 96,
+    "y": 432
   },
   "inStore": false,
   "maps": {

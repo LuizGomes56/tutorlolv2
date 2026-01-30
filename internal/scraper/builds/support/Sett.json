@@ -1,20 +1,20 @@
 [
   [
+    "Bandlepipes",
     "BlackCleaver",
     "DeadMansPlate",
-    "Hullbreaker",
-    "SerpentsFang",
+    "Heartsteel",
     "SpearOfShojin",
-    "ZekesConvergence"
+    "WarmogsArmor"
   ],
   [
-    "Triumph",
-    "LegendAlacrity",
-    "LastStand",
-    "SecondWind",
-    "Unflinching",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "HealthScaling",
+    "LastStand",
+    "LegendAlacrity",
+    "SecondWind",
+    "Triumph",
+    "Unflinching"
   ]
 ]

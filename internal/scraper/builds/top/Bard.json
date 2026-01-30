@@ -1,20 +1,19 @@
 [
   [
-    "LiandrysTorment",
-    "DeadMansPlate",
-    "RabadonsDeathcap",
     "BladeOfTheRuinedKing",
-    "ZhonyasHourglass",
-    "ImperialMandate"
+    "DuskAndDawn",
+    "GuinsoosRageblade",
+    "KaenicRookern",
+    "RapidFirecannon"
   ],
   [
+    "AdaptiveForce",
+    "AttackSpeed",
+    "Celerity",
     "CheapShot",
     "DeepWard",
+    "Health",
     "RelentlessHunter",
-    "Celerity",
-    "Scorch",
-    "AttackSpeed",
-    "AdaptiveForce",
-    "Health"
+    "Scorch"
   ]
 ]

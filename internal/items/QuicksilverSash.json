@@ -1,15 +1,11 @@
 {
+  "version": "16.2.1",
   "riot_id": 3140,
-  "item_id": "QuicksilverSash",
   "name": "Quicksilver Sash",
   "price": 1300,
   "sell": 910,
   "tier": 2,
   "maps": [
-    [
-      "NexusBlitz",
-      true
-    ],
     [
       "SummonersRift",
       true
@@ -19,26 +15,29 @@
       true
     ],
     [
-      "Arena",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
+      "NexusBlitz",
+      true
     ],
     [
       "Tft",
       false
     ],
     [
-      "SummonersRift",
+      "Arena",
+      false
+    ],
+    [
+      "UnknownMap33",
+      false
+    ],
+    [
+      "UnknownMap35",
       true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "MagicResist",
-      "value": 30
+      "MagicResist": 30
     }
   ],
   "damage_type": "Unknown",
@@ -103,15 +102,9 @@
   "builds_from_riot_ids": [
     1033
   ],
-  "builds_from_item_ids": [
-    "NullMagicMantle"
-  ],
   "builds_into_riot_ids": [
     6035,
     3139
-  ],
-  "builds_into_item_ids": [
-    "MercurialScimitar"
   ],
   "ranged": {
     "minimum_damage": "zero",

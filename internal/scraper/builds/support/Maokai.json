@@ -1,20 +1,19 @@
 [
   [
-    "Thornmail",
-    "UnendingDespair",
+    "FrozenHeart",
+    "KaenicRookern",
     "KnightsVow",
+    "ProtoplasmHarness",
     "SpiritVisage",
-    "AbyssalMask",
-    "KaenicRookern"
+    "UnendingDespair"
   ],
   [
-    "FontOfLife",
-    "BonePlating",
-    "Unflinching",
-    "BiscuitDelivery",
-    "CosmicInsight",
     "AdaptiveForce",
+    "BiscuitDelivery",
+    "BonePlating",
+    "CosmicInsight",
+    "FontOfLife",
     "HealthScaling",
-    "HealthScaling"
+    "Unflinching"
   ]
 ]

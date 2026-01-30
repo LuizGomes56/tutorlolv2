@@ -1,21 +1,17 @@
 {
+  "version": "16.2.1",
   "riot_id": 1058,
-  "item_id": "NeedlesslyLargeRod",
   "name": "Needlessly Large Rod",
   "price": 1200,
   "sell": 840,
   "tier": 1,
   "maps": [
     [
-      "Arena",
-      false
+      "SummonersRift",
+      true
     ],
     [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
+      "Aram",
       true
     ],
     [
@@ -27,18 +23,21 @@
       false
     ],
     [
-      "Aram",
-      true
+      "Arena",
+      false
     ],
     [
-      "SummonersRift",
+      "UnknownMap33",
+      false
+    ],
+    [
+      "UnknownMap35",
       true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "AbilityPower",
-      "value": 65
+      "AbilityPower": 65
     }
   ],
   "damage_type": "Unknown",
@@ -101,21 +100,13 @@
     }
   },
   "builds_from_riot_ids": [],
-  "builds_from_item_ids": [],
   "builds_into_riot_ids": [
-    3146,
     3128,
     3102,
     3157,
     4645,
-    3089,
-    4403
-  ],
-  "builds_into_item_ids": [
-    "BansheesVeil",
-    "ZhonyasHourglass",
-    "Shadowflame",
-    "RabadonsDeathcap"
+    4403,
+    3089
   ],
   "ranged": {
     "minimum_damage": "zero",

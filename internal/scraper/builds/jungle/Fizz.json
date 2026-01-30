@@ -1,20 +1,17 @@
 [
   [
-    "Stormsurge",
     "Cryptbloom",
-    "BansheesVeil",
     "HextechRocketbelt",
-    "CosmicDrive",
-    "Morellonomicon"
+    "Stormsurge",
+    "VoidStaff"
   ],
   [
-    "SuddenImpact",
-    "GrislyMementos",
-    "TreasureHunter",
-    "Triumph",
+    "AdaptiveForce",
     "CoupDeGrace",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "GrislyMementos",
+    "HealthScaling",
+    "SuddenImpact",
+    "TreasureHunter",
+    "Triumph"
   ]
 ]

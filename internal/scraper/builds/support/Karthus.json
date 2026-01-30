@@ -1,20 +1,19 @@
 [
   [
-    "RylaisCrystalScepter",
-    "ZhonyasHourglass",
-    "Malignance",
-    "VoidStaff",
+    "LiandrysTorment",
     "Morellonomicon",
-    "Cryptbloom"
+    "RylaisCrystalScepter",
+    "Stormsurge",
+    "VoidStaff",
+    "ZhonyasHourglass"
   ],
   [
+    "AdaptiveForce",
     "CheapShot",
     "GrislyMementos",
-    "UltimateHunter",
-    "AxiomArcanist",
-    "GatheringStorm",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "HealthScaling",
+    "LastStand",
+    "PresenceOfMind",
+    "UltimateHunter"
   ]
 ]

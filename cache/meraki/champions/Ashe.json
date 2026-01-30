@@ -21,22 +21,22 @@
     },
     "attackDamage": {
       "flat": 59.0,
-      "perLevel": 2.95
+      "perLevel": 3.0
     },
     "attackSpeed": {
       "flat": 0.658,
-      "perLevel": 3.33
+      "perLevel": 3.0
     },
     "movespeed": {
       "flat": 325.0,
       "perLevel": 0.0
     },
     "criticalStrikeDamage": {
-      "flat": 100.0,
+      "flat": 175.0,
       "perLevel": 0.0
     },
     "criticalStrikeDamageModifier": {
-      "flat": 1.0,
+      "flat": 0.5,
       "perLevel": 0.0
     },
     "attackSpeedRatio": {
@@ -79,7 +79,7 @@
             "leveling": []
           },
           {
-            "description": "Innate: Ashe's basic attacks deal bonus physical damage equal to (75% + 40%) critical strike chance. Critical strikes do not deal any additional damage.",
+            "description": "Innate: Ashe's basic attacks deal bonus physical damage equal to 0% : 100% (+ 0% : 30%) (based on critical strike chance) of the attack's damage. Critical strikes do not deal any additional damage.",
             "leveling": []
           }
         ],
@@ -106,11 +106,11 @@
                       "%"
                     ],
                     "values": [
-                      25.0,
-                      37.5,
+                      20.0,
+                      30.0,
+                      40.0,
                       50.0,
-                      62.5,
-                      75.0
+                      60.0
                     ]
                   }
                 ]
@@ -160,7 +160,7 @@
             ]
           },
           {
-            "description": "Passive: While Ranger's Focus is inactive, Ashe's basic attacks on-attack generate a stack of Focus for 4 seconds, refreshing on subsequent attacks and stacking up to 4 times. Stacks expire by one every second when the duration ends.",
+            "description": "Passive: While Ranger's Focus is inactive, Ashe's basic attacks on-attack generate a stack of Focus for 4 seconds, refreshing on subsequent attacks and stacking up to 4 times. Stacks expire one by one every second when the duration ends.",
             "leveling": []
           },
           {
@@ -248,11 +248,11 @@
                       "% bonus AD"
                     ],
                     "values": [
-                      110.0,
-                      110.0,
-                      110.0,
-                      110.0,
-                      110.0
+                      100.0,
+                      100.0,
+                      100.0,
+                      100.0,
+                      100.0
                     ]
                   }
                 ]
@@ -326,7 +326,7 @@
         "damageType": "MAGIC_DAMAGE",
         "effects": [
           {
-            "description": "Active: Ashe fires a massive arrow of ice in the target direction, granting sight of the area it flies through each for 1 second. The arrow shatters upon hitting an enemy champion, dealing them magic damage, stunning them for 1 : 3.5 (based on distance traveled) seconds, and granting sight of the area around them for 1 second.",
+            "description": "Active: Ashe fires a massive arrow of ice in the target direction, briefly granting sight of the area it flies through. The arrow shatters upon hitting an enemy champion, dealing them magic damage, stunning them for 1 : 3.5 (based on distance traveled) seconds, and granting sight of the area around them for 1 second.",
             "leveling": [
               {
                 "attribute": "Magic Damage",

@@ -1,20 +1,20 @@
 [
   [
-    "TheCollector",
-    "SerpentsFang",
-    "EdgeOfNight",
-    "Manamune",
-    "PhantomDancer",
-    "EchoesOfHelia"
+    "ArdentCenser",
+    "Bandlepipes",
+    "BlackCleaver",
+    "MikaelsBlessing",
+    "RapidFirecannon",
+    "SerpentsFang"
   ],
   [
-    "PresenceOfMind",
-    "LegendAlacrity",
-    "CutDown",
-    "BonePlating",
-    "Revitalize",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "FontOfLife",
+    "Health",
+    "ManaflowBand",
+    "Revitalize",
+    "Scorch",
+    "Transcendence"
   ]
 ]

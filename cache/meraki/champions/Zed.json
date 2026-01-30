@@ -71,7 +71,7 @@
         "damageType": "MAGIC_DAMAGE",
         "effects": [
           {
-            "description": "Against monsters, Contempt for the Weak deals 200% damage, capped at 300.",
+            "description": "Against monsters, Contempt for the Weak deals 180% damage, capped at 300.",
             "leveling": []
           },
           {
@@ -254,7 +254,7 @@
             ]
           },
           {
-            "description": "Recast: Zed and the Shadow blink to swap places. If Living Shadow was recast while the Shadow is dashing, the recast will instead occur once it has been placed.",
+            "description": "Recast - Shadow Swap: Zed and the Shadow blink to swap places.",
             "leveling": []
           }
         ],
@@ -447,7 +447,7 @@
             ]
           },
           {
-            "description": "Recast: Zed and the Shadow blink to swap places.",
+            "description": "Recast - Shadow Swap: Zed and the Shadow blink to swap places.",
             "leveling": []
           },
           {

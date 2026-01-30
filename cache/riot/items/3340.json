@@ -1,6 +1,6 @@
 {
   "colloq": "yellow; totem; trinket",
-  "description": "<mainText><stats></stats><br><br><active>Active</active> (<scaleLevel>210 - 120</scaleLevel>s, max 2 charges)<br>Places an <keyword>Invisible</keyword> Stealth Ward that grants vision for <scaleLevel>90-120</scaleLevel> seconds.</mainText>",
+  "description": "<mainText><stats></stats><br><br><active>Active</active> (<scaleLevel>170 - 90</scaleLevel>s, max 2 charges)<br>Places an <keyword>Invisible</keyword> Stealth Ward that grants vision for <scaleLevel>90-120</scaleLevel> seconds.</mainText>",
   "effect": {
     "Effect1Amount": "90",
     "Effect2Amount": "0",
@@ -21,10 +21,10 @@
     "full": "3340.png",
     "group": "item",
     "h": 48,
-    "sprite": "item3.png",
+    "sprite": "item4.png",
     "w": 48,
-    "x": 288,
-    "y": 432
+    "x": 144,
+    "y": 240
   },
   "maps": {
     "11": true,

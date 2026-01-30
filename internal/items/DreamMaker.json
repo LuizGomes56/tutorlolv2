@@ -1,25 +1,17 @@
 {
+  "version": "16.2.1",
   "riot_id": 3870,
-  "item_id": "DreamMaker",
   "name": "Dream Maker",
   "price": 400,
   "sell": 160,
   "tier": 3,
   "maps": [
     [
-      "Arena",
-      false
-    ],
-    [
-      "Tft",
-      false
-    ],
-    [
       "SummonersRift",
       true
     ],
     [
-      "SummonersRift",
+      "Aram",
       false
     ],
     [
@@ -27,30 +19,34 @@
       false
     ],
     [
-      "SummonersRift",
+      "Tft",
       false
     ],
     [
-      "Aram",
+      "Arena",
+      false
+    ],
+    [
+      "UnknownMap33",
+      false
+    ],
+    [
+      "UnknownMap35",
       false
     ]
   ],
   "prettified_stats": [
     {
-      "name": "Health",
-      "value": 200
+      "BaseHealthRegen": 75
     },
     {
-      "name": "BaseHealthRegen",
-      "value": 75
+      "BaseManaRegen": 75
     },
     {
-      "name": "BaseManaRegen",
-      "value": 75
+      "GoldPer10Seconds": 9
     },
     {
-      "name": "GoldPer10Seconds",
-      "value": 5
+      "Health": 200
     }
   ],
   "damage_type": "Unknown",
@@ -115,11 +111,7 @@
   "builds_from_riot_ids": [
     3867
   ],
-  "builds_from_item_ids": [
-    "BountyOfWorlds"
-  ],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

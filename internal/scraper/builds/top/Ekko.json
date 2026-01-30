@@ -1,20 +1,19 @@
 [
   [
-    "Shadowflame",
-    "Stormsurge",
-    "HextechRocketbelt",
     "BansheesVeil",
-    "RapidFirecannon",
-    "CosmicDrive"
+    "HextechGunblade",
+    "HextechRocketbelt",
+    "Morellonomicon",
+    "NashorsTooth",
+    "Stormsurge"
   ],
   [
-    "SuddenImpact",
-    "GrislyMementos",
-    "RelentlessHunter",
     "AbsoluteFocus",
+    "AdaptiveForce",
+    "GrislyMementos",
+    "HealthScaling",
+    "RelentlessHunter",
     "Scorch",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "SuddenImpact"
   ]
 ]

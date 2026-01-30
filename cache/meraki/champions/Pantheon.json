@@ -112,7 +112,7 @@
             "leveling": []
           },
           {
-            "description": "Comet Spear's total damage is reduced to 90% against monsters and to 70% against minions.",
+            "description": "Comet Spear's total damage is reduced to 80% against monsters and to 70% against minions.",
             "leveling": []
           },
           {
@@ -449,7 +449,7 @@
         "damageType": "PHYSICAL_DAMAGE",
         "effects": [
           {
-            "description": "Active: Pantheon leaps to the front of the target enemy's location. If the target is within 800 units upon arrival, he deals physical damage and stuns them for 1 second. Against minions and monsters, Shield Vault has a minimum damage of 60 and is capped at 200.",
+            "description": "Active: Pantheon leaps to the front of the target enemy's location. If the target is within 800 units upon arrival, he deals physical damage and stuns them for 1 second. Against minions and monsters, Shield Vault has a minimum damage of 60 and is capped at 150.",
             "leveling": [
               {
                 "attribute": "Physical Damage",
@@ -511,7 +511,7 @@
             "leveling": []
           },
           {
-            "description": "Mortal Will: Pantheon empowers his next basic attack within 4 seconds to have a cast time and strike the target 3 times over a brief period, dealing 40% : 55% (based on level) AD physical damage per hit, up to 120% : 165% (based on level) AD. Each hit is affected by critical strike modifiers and applies on-hit effects.",
+            "description": "Mortal Will: Pantheon empowers his next basic attack within 4 seconds to have a 0.375-second cast time and strike the target 3 times over a brief period, dealing 40% : 55% (based on level) AD physical damage per hit, up to 120% : 165% (based on level) AD. Each hit is affected by critical strike modifiers and applies on-hit effects.",
             "leveling": []
           }
         ],
@@ -553,6 +553,10 @@
           },
           {
             "description": "Mortal Will: After recasting, Pantheon gains 5 : 30 (based on level) (+ 2.5% bonus health) bonus armor and bonus magic resistance for 4 seconds as well as 60% bonus movement speed for 1.5 seconds.",
+            "leveling": []
+          },
+          {
+            "description": "Pantheon can move during the cast time of Aegis Assault's recast.",
             "leveling": []
           },
           {

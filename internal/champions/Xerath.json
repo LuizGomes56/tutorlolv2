@@ -89,33 +89,37 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_3"
+        "type": "W",
+        "name": "_1"
       },
       {
-        "name": "Rite of the Arcane",
+        "name": "Eye of Destruction",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "680 + (1.8 * ctx.ap)",
-          "1100 + (2.25 * ctx.ap)",
-          "1620 + (2.7 * ctx.ap)"
+          "50 + (0.65 * ctx.ap)",
+          "85 + (0.65 * ctx.ap)",
+          "120 + (0.65 * ctx.ap)",
+          "155 + (0.65 * ctx.ap)",
+          "190 + (0.65 * ctx.ap)"
         ]
       }
     ],
     [
       {
-        "type": "R",
-        "name": "_1"
+        "type": "W",
+        "name": "_2"
       },
       {
-        "name": "Rite of the Arcane",
+        "name": "Eye of Destruction",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "20 + (0.05 * ctx.ap)",
-          "25 + (0.05 * ctx.ap)",
-          "30 + (0.05 * ctx.ap)"
+          "83.35 + (1.08355 * ctx.ap)",
+          "141.695 + (1.08355 * ctx.ap)",
+          "200.04 + (1.08355 * ctx.ap)",
+          "258.385 + (1.08355 * ctx.ap)",
+          "316.73 + (1.08355 * ctx.ap)"
         ]
       }
     ],
@@ -140,6 +144,22 @@
     [
       {
         "type": "R",
+        "name": "_1"
+      },
+      {
+        "name": "Rite of the Arcane",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "20 + (0.05 * ctx.ap)",
+          "25 + (0.05 * ctx.ap)",
+          "30 + (0.05 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
         "name": "_2"
       },
       {
@@ -155,37 +175,17 @@
     ],
     [
       {
-        "type": "W",
-        "name": "_2"
+        "type": "R",
+        "name": "_3"
       },
       {
-        "name": "Eye of Destruction",
+        "name": "Rite of the Arcane",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "83.35 + (1.08355 * ctx.ap)",
-          "141.695 + (1.08355 * ctx.ap)",
-          "200.04 + (1.08355 * ctx.ap)",
-          "258.385 + (1.08355 * ctx.ap)",
-          "316.73 + (1.08355 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "W",
-        "name": "_1"
-      },
-      {
-        "name": "Eye of Destruction",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "50 + (0.65 * ctx.ap)",
-          "85 + (0.65 * ctx.ap)",
-          "120 + (0.65 * ctx.ap)",
-          "155 + (0.65 * ctx.ap)",
-          "190 + (0.65 * ctx.ap)"
+          "680 + (1.8 * ctx.ap)",
+          "1100 + (2.25 * ctx.ap)",
+          "1620 + (2.7 * ctx.ap)"
         ]
       }
     ]

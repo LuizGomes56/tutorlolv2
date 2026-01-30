@@ -1,20 +1,19 @@
 [
   [
-    "Stormsurge",
-    "CosmicDrive",
     "BansheesVeil",
+    "CosmicDrive",
     "Cryptbloom",
     "HextechRocketbelt",
-    "Morellonomicon"
+    "Morellonomicon",
+    "Stormsurge"
   ],
   [
-    "SuddenImpact",
+    "AdaptiveForce",
     "GrislyMementos",
-    "TreasureHunter",
+    "HealthScaling",
+    "SuddenImpact",
     "Transcendence",
-    "Waterwalking",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "TreasureHunter",
+    "Waterwalking"
   ]
 ]

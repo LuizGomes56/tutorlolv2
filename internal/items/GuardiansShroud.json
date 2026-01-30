@@ -1,6 +1,6 @@
 {
+  "version": "16.2.1",
   "riot_id": 2050,
-  "item_id": "GuardiansShroud",
   "name": "Guardian's Shroud",
   "price": 500,
   "sell": 250,
@@ -11,7 +11,15 @@
       false
     ],
     [
+      "Aram",
+      false
+    ],
+    [
       "NexusBlitz",
+      false
+    ],
+    [
+      "Tft",
       false
     ],
     [
@@ -19,34 +27,23 @@
       true
     ],
     [
-      "SummonersRift",
+      "UnknownMap33",
       false
     ],
     [
-      "SummonersRift",
-      false
-    ],
-    [
-      "Aram",
-      false
-    ],
-    [
-      "Tft",
+      "UnknownMap35",
       false
     ]
   ],
   "prettified_stats": [
     {
-      "name": "Health",
-      "value": 300
+      "AbilityHaste": 15
     },
     {
-      "name": "AbilityPower",
-      "value": 35
+      "AbilityPower": 35
     },
     {
-      "name": "AbilityHaste",
-      "value": 15
+      "Health": 300
     }
   ],
   "damage_type": "Unknown",
@@ -109,9 +106,7 @@
     }
   },
   "builds_from_riot_ids": [],
-  "builds_from_item_ids": [],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

@@ -341,39 +341,39 @@
           2
         ],
         [
-          35,
-          80,
-          125,
-          170,
-          215
+          0,
+          0,
+          0,
+          0,
+          0
         ],
         [
-          30,
-          35,
-          40,
-          45,
-          50
+          0,
+          0,
+          0,
+          0,
+          0
         ],
         [
-          3,
-          3,
-          4,
-          4,
-          5
+          0,
+          0,
+          0,
+          0,
+          0
         ],
         [
-          3,
-          3,
-          4,
-          4,
-          5
+          0,
+          0,
+          0,
+          0,
+          0
         ],
         [
-          1.5,
-          1.5,
-          1.5,
-          1.5,
-          1.5
+          0,
+          0,
+          0,
+          0,
+          0
         ],
         [
           30,
@@ -407,11 +407,11 @@
       "effectBurn": [
         null,
         "2",
-        "35/80/125/170/215",
-        "30/35/40/45/50",
-        "3/3/4/4/5",
-        "3/3/4/4/5",
-        "1.5",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
         "30",
         "0",
         "0",
@@ -429,10 +429,10 @@
       },
       "leveltip": {
         "effect": [
-          "{{ e2 }} -> {{ e2NL }}",
+          "{{ basedamage }} -> {{ basedamageNL }}",
           "{{ ammorechargetime }} -> {{ ammorechargetimeNL }}",
-          "{{ e4 }} -> {{ e4NL }}",
-          "{{ e3 }} -> {{ e3NL }}"
+          "{{ maximumtraps }} -> {{ maximumtrapsNL }}",
+          "{{ trapduration }} -> {{ trapdurationNL }}"
         ],
         "label": [
           "Bonus Headshot Damage on Trapped Targets",
@@ -453,7 +453,7 @@
       ],
       "rangeBurn": "800",
       "resource": "{{ cost }} {{ abilityresourcename }}",
-      "tooltip": "Caitlyn sets a trap that <status>Roots</status> the first champion that steps on it for {{ e6 }} seconds and granting <keywordStealth>True Sight</keywordStealth> of them for 3 seconds. Traps last for {{ e3 }} seconds, and {{ e5 }} traps may be active at once. This Ability has {{ e5 }} charges ({{ ammorechargetime }} second refresh).{{ spellmodifierdescriptionappend }}",
+      "tooltip": "Caitlyn sets a trap that <status>Roots</status> the first champion that steps on it for {{ rootduration }} seconds and granting <keywordStealth>True Sight</keywordStealth> of them for 3 seconds. Traps last for {{ trapduration }} seconds, and {{ maximumtraps }} traps may be active at once. This Ability has {{ maximumcharges }} charges ({{ ammorechargetime }} second refresh).<br /><br />Targets rooted by this Ability take an additional <physicalDamage>{{ headshotbonusdamage }} physical damage</physicalDamage> from <keywordMajor>Headshot</keywordMajor>.{{ spellmodifierdescriptionappend }}",
       "vars": []
     },
     {
@@ -707,7 +707,7 @@
       ],
       "rangeBurn": "3500",
       "resource": "{{ cost }} {{ abilityresourcename }}",
-      "tooltip": "Caitlyn takes a moment to channel and line up the perfect shot, then she fires, dealing <physicalDamage>{{ rtotaldamage }} physical damage</physicalDamage>, but other enemy champions can intercept it. This Ability grants <keywordStealth>True Sight</keywordStealth> of the target during the channel.<br /><br /><rules>Deals up to an additional {{ critchanceamp*100 }}% based on Caitlyn's Critical Strike chance.</rules>{{ spellmodifierdescriptionappend }}",
+      "tooltip": "Caitlyn takes a moment to channel and line up the perfect shot, then she fires, dealing <physicalDamage>{{ rtotaldamage }} physical damage</physicalDamage>, but other enemy champions can intercept it. This Ability grants <keywordStealth>True Sight</keywordStealth> of the target during the channel.<br /><br /><rules>Damage scales with Caitlyn's Critical Strike chance and Critical Strike Damage.</rules>{{ spellmodifierdescriptionappend }}",
       "vars": []
     }
   ],

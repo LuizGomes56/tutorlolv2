@@ -110,6 +110,12 @@
       "id": "31032",
       "name": "Toy Terror Cho'Gath",
       "num": 32
+    },
+    {
+      "chromas": false,
+      "id": "31041",
+      "name": "Petricite Cho'Gath",
+      "num": 41
     }
   ],
   "spells": [

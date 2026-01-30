@@ -7,7 +7,7 @@
   ],
   "stats": {
     "health": {
-      "flat": 630.0,
+      "flat": 610.0,
       "perLevel": 107.0
     },
     "mana": {
@@ -70,42 +70,6 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "Min"
-      },
-      {
-        "name": "Avengerang",
-        "damage_type": "Physical",
-        "attributes": "Area",
-        "damage": [
-          "5 + (0.8 * ctx.ad)",
-          "25 + (0.8 * ctx.ad)",
-          "45 + (0.8 * ctx.ad)",
-          "65 + (0.8 * ctx.ad)",
-          "85 + (0.8 * ctx.ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "Max"
-      },
-      {
-        "name": "Avengerang",
-        "damage_type": "Physical",
-        "attributes": "Area",
-        "damage": [
-          "10 + (1.6 * ctx.ad)",
-          "50 + (1.6 * ctx.ad)",
-          "90 + (1.6 * ctx.ad)",
-          "130 + (1.6 * ctx.ad)",
-          "170 + (1.6 * ctx.ad)"
-        ]
-      }
-    ],
-    [
-      {
         "type": "P",
         "name": "Void"
       },
@@ -137,17 +101,37 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_1Min"
+        "type": "Q",
+        "name": "Min"
       },
       {
-        "name": "Comeuppance",
+        "name": "Avengerang",
         "damage_type": "Physical",
-        "attributes": "Undefined",
+        "attributes": "Area",
         "damage": [
-          "(25 + (0.15 * ctx.ad)) * (1 + ctx.crit_chance / 200)",
-          "(30 + (0.15 * ctx.ad)) * (1 + ctx.crit_chance / 200)",
-          "(35 + (0.15 * ctx.ad)) * (1 + ctx.crit_chance / 200)"
+          "45 + (0.7 * ctx.bonus_ad)",
+          "75 + (0.7 * ctx.bonus_ad)",
+          "105 + (0.7 * ctx.bonus_ad)",
+          "135 + (0.7 * ctx.bonus_ad)",
+          "165 + (0.7 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "Max"
+      },
+      {
+        "name": "Avengerang",
+        "damage_type": "Physical",
+        "attributes": "Area",
+        "damage": [
+          "90 + (1.4 * ctx.bonus_ad)",
+          "150 + (1.4 * ctx.bonus_ad)",
+          "210 + (1.4 * ctx.bonus_ad)",
+          "270 + (1.4 * ctx.bonus_ad)",
+          "330 + (1.4 * ctx.bonus_ad)"
         ]
       }
     ],
@@ -161,11 +145,27 @@
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "15 + (0.15 * ctx.ad) + (0.01 * ctx.attack_speed)",
-          "30 + (0.15 * ctx.ad) + (0.01 * ctx.attack_speed)",
-          "45 + (0.15 * ctx.ad) + (0.01 * ctx.attack_speed)",
-          "60 + (0.15 * ctx.ad) + (0.01 * ctx.attack_speed)",
-          "75 + (0.15 * ctx.ad) + (0.01 * ctx.attack_speed)"
+          "8 + (0.25 * ctx.ad) + (0.01 * ctx.attack_speed)",
+          "16 + (0.25 * ctx.ad) + (0.01 * ctx.attack_speed)",
+          "24 + (0.25 * ctx.ad) + (0.01 * ctx.attack_speed)",
+          "32 + (0.25 * ctx.ad) + (0.01 * ctx.attack_speed)",
+          "40 + (0.25 * ctx.ad) + (0.01 * ctx.attack_speed)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_1Min"
+      },
+      {
+        "name": "Comeuppance",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "(25 + (0.15 * ctx.ad)) * (1 + ctx.crit_chance / 200)",
+          "(35 + (0.15 * ctx.ad)) * (1 + ctx.crit_chance / 200)",
+          "(45 + (0.15 * ctx.ad)) * (1 + ctx.crit_chance / 200)"
         ]
       }
     ],
@@ -188,6 +188,22 @@
     [
       {
         "type": "R",
+        "name": "_1Max"
+      },
+      {
+        "name": "Comeuppance",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "(75 + (0.45 * ctx.ad)) * (1 + ctx.crit_chance / 200)",
+          "(105 + (0.45 * ctx.ad)) * (1 + ctx.crit_chance / 200)",
+          "(135 + (0.45 * ctx.ad)) * (1 + ctx.crit_chance / 200)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "R",
         "name": "_2Max"
       },
       {
@@ -198,22 +214,6 @@
           "(375 + (2.25 * ctx.ad)) * (1 + ctx.crit_chance / 200)",
           "(630 + (2.7 * ctx.ad)) * (1 + ctx.crit_chance / 200)",
           "(945 + (3.15 * ctx.ad)) * (1 + ctx.crit_chance / 200)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "R",
-        "name": "_1Max"
-      },
-      {
-        "name": "Comeuppance",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "(75 + (0.45 * ctx.ad)) * (1 + ctx.crit_chance / 200)",
-          "(90 + (0.45 * ctx.ad)) * (1 + ctx.crit_chance / 200)",
-          "(105 + (0.45 * ctx.ad)) * (1 + ctx.crit_chance / 200)"
         ]
       }
     ]

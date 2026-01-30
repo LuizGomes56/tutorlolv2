@@ -1,20 +1,20 @@
 [
   [
-    "RylaisCrystalScepter",
-    "ZhonyasHourglass",
     "BansheesVeil",
     "GuinsoosRageblade",
+    "HextechGunblade",
     "Morellonomicon",
-    "Riftmaker"
+    "RylaisCrystalScepter",
+    "ZhonyasHourglass"
   ],
   [
     "AbsorbLife",
-    "LegendAlacrity",
-    "LastStand",
+    "AdaptiveForce",
+    "AttackSpeed",
     "Celerity",
     "GatheringStorm",
-    "AttackSpeed",
-    "AdaptiveForce",
-    "HealthScaling"
+    "HealthScaling",
+    "LastStand",
+    "LegendAlacrity"
   ]
 ]

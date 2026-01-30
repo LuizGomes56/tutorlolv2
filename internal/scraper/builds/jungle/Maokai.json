@@ -1,19 +1,20 @@
 [
   [
-    "SpiritVisage",
-    "AbyssalMask",
-    "ZhonyasHourglass",
-    "SunfireAegis",
-    "Morellonomicon"
+    "DeadMansPlate",
+    "LocketOfTheIronSolari",
+    "Morellonomicon",
+    "RanduinsOmen",
+    "Thornmail",
+    "UnendingDespair"
   ],
   [
-    "NimbusCloak",
-    "Transcendence",
-    "Waterwalking",
-    "MagicalFootwear",
-    "CosmicInsight",
     "AbilityHaste",
     "AdaptiveForce",
-    "HealthScaling"
+    "CosmicInsight",
+    "HealthScaling",
+    "MagicalFootwear",
+    "NimbusCloak",
+    "Transcendence",
+    "Waterwalking"
   ]
 ]

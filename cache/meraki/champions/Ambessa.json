@@ -79,7 +79,7 @@
             "leveling": []
           },
           {
-            "description": "Medarda Maxim: Ambessa's next basic attack on-attack is empowered to have an uncancellable windup, gain 75 bonus range and 50% bonus attack speed, and deal 5 : 30 (based on level) (+ 30% bonus AD) bonus physical damage and restore 40 / 55 / 70 (based on level) energy.",
+            "description": "Medarda Maxim: Ambessa's next basic attack on-attack is empowered to have an uncancellable windup, gain 75 bonus range and 50% bonus attack speed, deal 5 : 30 (based on level) (+ 25% bonus AD) bonus physical damage, and restore 40 / 55 / 70 (based on level) energy.",
             "leveling": []
           }
         ],
@@ -151,11 +151,11 @@
                   },
                   {
                     "units": [
-                      "% (+ 3% per 100 bonus AD) of the target's maximum health",
-                      "% (+ 3% per 100 bonus AD) of the target's maximum health",
-                      "% (+ 3% per 100 bonus AD) of the target's maximum health",
-                      "% (+ 3% per 100 bonus AD) of the target's maximum health",
-                      "% (+ 3% per 100 bonus AD) of the target's maximum health"
+                      "% (+ 3% per 100 bonus AD) of target's maximum health",
+                      "% (+ 3% per 100 bonus AD) of target's maximum health",
+                      "% (+ 3% per 100 bonus AD) of target's maximum health",
+                      "% (+ 3% per 100 bonus AD) of target's maximum health",
+                      "% (+ 3% per 100 bonus AD) of target's maximum health"
                     ],
                     "values": [
                       2.0,
@@ -204,11 +204,11 @@
                   },
                   {
                     "units": [
-                      "% (+ 1.5% per 100 bonus AD) of the target's maximum health",
-                      "% (+ 1.5% per 100 bonus AD) of the target's maximum health",
-                      "% (+ 1.5% per 100 bonus AD) of the target's maximum health",
-                      "% (+ 1.5% per 100 bonus AD) of the target's maximum health",
-                      "% (+ 1.5% per 100 bonus AD) of the target's maximum health"
+                      "% (+ 1.5% per 100 bonus AD) of target's maximum health",
+                      "% (+ 1.5% per 100 bonus AD) of target's maximum health",
+                      "% (+ 1.5% per 100 bonus AD) of target's maximum health",
+                      "% (+ 1.5% per 100 bonus AD) of target's maximum health",
+                      "% (+ 1.5% per 100 bonus AD) of target's maximum health"
                     ],
                     "values": [
                       1.0,
@@ -223,7 +223,7 @@
             ]
           },
           {
-            "description": "Against monsters, Cunning Sweep deals 125 bonus physical damage and the damage based on their health ratio is capped at 100 : 300 (based on level).",
+            "description": "Against monsters, Cunning Sweep deals 150 bonus physical damage and the damage based on their health ratio is capped at 100 : 300 (based on level).",
             "leveling": []
           },
           {
@@ -349,7 +349,7 @@
             ]
           },
           {
-            "description": "Against monsters, Sundering Slam deals 125 bonus physical damage and the damage based on their health ratio is capped at 100 : 300 (based on level).",
+            "description": "Against monsters, Sundering Slam deals 150 bonus physical damage and the damage based on their health ratio is capped at 100 : 300 (based on level).",
             "leveling": []
           }
         ],
@@ -529,11 +529,11 @@
                       "% bonus AD"
                     ],
                     "values": [
-                      40.0,
-                      45.0,
                       50.0,
-                      55.0,
-                      60.0
+                      50.0,
+                      50.0,
+                      50.0,
+                      50.0
                     ]
                   }
                 ]
@@ -566,11 +566,11 @@
                       "% bonus AD"
                     ],
                     "values": [
-                      80.0,
-                      90.0,
                       100.0,
-                      110.0,
-                      120.0
+                      100.0,
+                      100.0,
+                      100.0,
+                      100.0
                     ]
                   }
                 ]

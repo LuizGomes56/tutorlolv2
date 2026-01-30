@@ -1,20 +1,19 @@
 [
   [
-    "CosmicDrive",
-    "BloodlettersCurse",
-    "Morellonomicon",
     "BansheesVeil",
+    "BloodlettersCurse",
+    "CosmicDrive",
     "JakshoTheProtean",
-    "BlackfireTorch"
+    "Morellonomicon",
+    "RanduinsOmen"
   ],
   [
-    "Triumph",
-    "LegendHaste",
-    "CoupDeGrace",
-    "MagicalFootwear",
+    "AdaptiveForce",
     "CosmicInsight",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "CoupDeGrace",
+    "HealthScaling",
+    "LegendHaste",
+    "MagicalFootwear",
+    "Triumph"
   ]
 ]

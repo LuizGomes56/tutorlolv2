@@ -1,20 +1,20 @@
 [
   [
-    "MortalReminder",
-    "Bloodthirster",
-    "YunTalWildarrows",
-    "StatikkShiv",
-    "SeryldasGrudge",
-    "TheCollector"
+    "FiendhunterBolts",
+    "GuardianAngel",
+    "KrakenSlayer",
+    "LordDominiksRegards",
+    "TheCollector",
+    "YunTalWildarrows"
   ],
   [
-    "PresenceOfMind",
-    "LegendAlacrity",
-    "CutDown",
-    "MagicalFootwear",
-    "BiscuitDelivery",
-    "AttackSpeed",
+    "AbsoluteFocus",
     "AdaptiveForce",
-    "Health"
+    "AttackSpeed",
+    "CutDown",
+    "GatheringStorm",
+    "Health",
+    "LegendAlacrity",
+    "PresenceOfMind"
   ]
 ]

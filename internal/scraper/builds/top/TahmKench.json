@@ -1,20 +1,19 @@
 [
   [
-    "Riftmaker",
+    "HollowRadiance",
+    "JakshoTheProtean",
     "RanduinsOmen",
-    "WarmogsArmor",
-    "FrozenHeart",
-    "KaenicRookern",
-    "JakshoTheProtean"
+    "TitanicHydra",
+    "UnendingDespair",
+    "WarmogsArmor"
   ],
   [
-    "ShieldBash",
-    "SecondWind",
-    "Unflinching",
-    "Triumph",
-    "LegendAlacrity",
     "AttackSpeed",
     "HealthScaling",
-    "HealthScaling"
+    "LegendAlacrity",
+    "SecondWind",
+    "ShieldBash",
+    "Triumph",
+    "Unflinching"
   ]
 ]

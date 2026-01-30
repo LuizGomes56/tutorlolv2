@@ -1,23 +1,11 @@
 {
+  "version": "16.2.1",
   "riot_id": 3109,
-  "item_id": "KnightsVow",
   "name": "Knight's Vow",
   "price": 2300,
   "sell": 1610,
   "tier": 3,
   "maps": [
-    [
-      "Arena",
-      false
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
     [
       "SummonersRift",
       true
@@ -27,26 +15,38 @@
       true
     ],
     [
+      "NexusBlitz",
+      true
+    ],
+    [
       "Tft",
       false
     ],
     [
-      "NexusBlitz",
+      "Arena",
+      false
+    ],
+    [
+      "UnknownMap33",
+      false
+    ],
+    [
+      "UnknownMap35",
       true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "Armor",
-      "value": 50
+      "AbilityHaste": 10
     },
     {
-      "name": "AbilityHaste",
-      "value": 15
+      "Armor": 40
     },
     {
-      "name": "Health",
-      "value": 400
+      "BaseHealthRegen": 100
+    },
+    {
+      "Health": 200
     }
   ],
   "damage_type": "Unknown",
@@ -113,13 +113,7 @@
     1031,
     1006
   ],
-  "builds_from_item_ids": [
-    "Kindlegem",
-    "ChainVest",
-    "RejuvenationBead"
-  ],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

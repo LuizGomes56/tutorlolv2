@@ -1,21 +1,21 @@
 {
+  "version": "16.2.1",
   "riot_id": 6660,
-  "item_id": "BamisCinder",
   "name": "Bami's Cinder",
   "price": 900,
   "sell": 630,
   "tier": 2,
   "maps": [
     [
+      "SummonersRift",
+      true
+    ],
+    [
       "Aram",
       true
     ],
     [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
+      "NexusBlitz",
       true
     ],
     [
@@ -27,22 +27,20 @@
       false
     ],
     [
-      "SummonersRift",
-      true
+      "UnknownMap33",
+      false
     ],
     [
-      "NexusBlitz",
+      "UnknownMap35",
       true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "Health",
-      "value": 150
+      "AbilityHaste": 5
     },
     {
-      "name": "AbilityHaste",
-      "value": 5
+      "Health": 150
     }
   ],
   "damage_type": "Unknown",
@@ -108,17 +106,9 @@
     1028,
     2022
   ],
-  "builds_from_item_ids": [
-    "RubyCrystal",
-    "GlowingMote"
-  ],
   "builds_into_riot_ids": [
     3068,
     6664
-  ],
-  "builds_into_item_ids": [
-    "SunfireAegis",
-    "HollowRadiance"
   ],
   "ranged": {
     "minimum_damage": "zero",

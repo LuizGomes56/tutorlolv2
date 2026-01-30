@@ -1,22 +1,14 @@
 {
+  "version": "16.2.1",
   "riot_id": 3866,
-  "item_id": "RunicCompass",
   "name": "Runic Compass",
   "price": 400,
   "sell": 160,
   "tier": 2,
   "maps": [
     [
-      "Arena",
-      false
-    ],
-    [
       "SummonersRift",
-      false
-    ],
-    [
-      "Tft",
-      false
+      true
     ],
     [
       "Aram",
@@ -27,30 +19,34 @@
       false
     ],
     [
-      "SummonersRift",
+      "Tft",
       false
     ],
     [
-      "SummonersRift",
-      true
+      "Arena",
+      false
+    ],
+    [
+      "UnknownMap33",
+      false
+    ],
+    [
+      "UnknownMap35",
+      false
     ]
   ],
   "prettified_stats": [
     {
-      "name": "BaseManaRegen",
-      "value": 50
+      "BaseHealthRegen": 50
     },
     {
-      "name": "BaseHealthRegen",
-      "value": 50
+      "BaseManaRegen": 50
     },
     {
-      "name": "GoldPer10Seconds",
-      "value": 5
+      "GoldPer10Seconds": 5
     },
     {
-      "name": "Health",
-      "value": 100
+      "Health": 100
     }
   ],
   "damage_type": "Unknown",
@@ -113,9 +109,7 @@
     }
   },
   "builds_from_riot_ids": [],
-  "builds_from_item_ids": [],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

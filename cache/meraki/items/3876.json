@@ -19,7 +19,7 @@
       "unique": true
     },
     {
-      "effects": "{{tip|Slow|Slowing}} or {{tip|immobilize|immobilizing}} an enemy champion causes you and the most wounded allied champion within 1500 units to gain {{as|20% '''bonus''' movement speed}} decaying over {{fd|2.5}} seconds and {{as|{{pp|50 to 230 for 13|1;7 to 18|type=your level}}|hp}} {{as|'''bonus''' health}} for {{fd|2.5}} seconds.",
+      "effects": "{{tip|Slow|Slowing}} or {{tip|immobilize|immobilizing}} an enemy champion causes you and the {{tt|most wounded|Lowest health percent}} allied champion within 1500 units to gain {{as|20% '''bonus''' movement speed}} decaying over {{fd|2.5}} seconds and {{as|{{pp|50 to 230 for 13|1;7 to 18|type=your level}}|hp}} {{as|'''bonus''' health}} for {{fd|2.5}} seconds.",
       "name": "Going Sledding",
       "unique": true
     }

@@ -71,7 +71,7 @@
         "damageType": "MAGIC_DAMAGE",
         "effects": [
           {
-            "description": "Ablaze: While afflicted with Ablaze, the target is dealt magic damage equal to[ 2% of their maximum health over 4 seconds. ][ 0.167% of their maximum health every 0.25 seconds over 4 seconds. ]Each stack of Ablaze deals damage to the target individually and applies their damage ticks dependent on the time they were applied, even if the duration of all the stacks are refreshed. Ablaze deals 240% damage per tick to monsters; this damage is capped at[ 10 / 20 / 30 (based on Ablaze stacks) per tick against non-epic monsters and 20 / 40 / 60 (based on Ablaze stacks) per tick against epic monsters. ][ a total of 160 / 320 / 480 (based on Ablaze stacks) against non-epic monsters and 320 / 640 / 960 (based on Ablaze stacks) against epic monsters. ]",
+            "description": "Ablaze: While afflicted with Ablaze, the target is dealt magic damage equal to[ 2% of their maximum health over 4 seconds. ][ 0.167% of their maximum health every 0.25 seconds over 4 seconds. ]Each stack of Ablaze deals damage to the target individually and applies their damage ticks dependent on the time they were applied, even if the duration of all the stacks are refreshed. Ablaze deals 265% damage per tick to monsters; this damage is capped at[ 10 / 20 / 30 (based on Ablaze stacks) per tick against non-epic monsters and 20 / 40 / 60 (based on Ablaze stacks) per tick against epic monsters. ][ a total of 160 / 320 / 480 (based on Ablaze stacks) against non-epic monsters and 320 / 640 / 960 (based on Ablaze stacks) against epic monsters. ]",
             "leveling": []
           },
           {
@@ -120,7 +120,7 @@
         "damageType": "MAGIC_DAMAGE",
         "effects": [
           {
-            "description": "Ablaze Bonus: The target is stunned for 1.5 seconds.",
+            "description": "Ablaze Bonus: The target is stunned for 1.75 seconds.",
             "leveling": []
           },
           {
@@ -225,11 +225,11 @@
                       "% AP"
                     ],
                     "values": [
-                      75.0,
-                      75.0,
-                      75.0,
-                      75.0,
-                      75.0
+                      87.5,
+                      87.5,
+                      87.5,
+                      87.5,
+                      87.5
                     ]
                   }
                 ]
@@ -267,11 +267,11 @@
                       "% AP"
                     ],
                     "values": [
-                      60.0,
-                      60.0,
-                      60.0,
-                      60.0,
-                      60.0
+                      70.0,
+                      70.0,
+                      70.0,
+                      70.0,
+                      70.0
                     ]
                   }
                 ]
@@ -369,9 +369,9 @@
                 ""
               ],
               "values": [
-                110.0,
                 100.0,
-                90.0
+                90.0,
+                80.0
               ]
             }
           ]
@@ -425,9 +425,9 @@
                       "% AP"
                     ],
                     "values": [
-                      25.0,
-                      25.0,
-                      25.0
+                      30.0,
+                      30.0,
+                      30.0
                     ]
                   }
                 ]
@@ -454,9 +454,9 @@
                       "% AP"
                     ],
                     "values": [
-                      75.0,
-                      75.0,
-                      75.0
+                      90.0,
+                      90.0,
+                      90.0
                     ]
                   }
                 ]

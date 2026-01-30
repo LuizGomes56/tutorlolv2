@@ -1,20 +1,20 @@
 [
   [
-    "WitsEnd",
     "BladeOfTheRuinedKing",
     "FrozenHeart",
-    "SpearOfShojin",
+    "GuardianAngel",
+    "HextechGunblade",
     "RanduinsOmen",
-    "TitanicHydra"
+    "WitsEnd"
   ],
   [
-    "Triumph",
-    "LegendAlacrity",
-    "LastStand",
-    "MagicalFootwear",
-    "CosmicInsight",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "CosmicInsight",
+    "HealthScaling",
+    "LastStand",
+    "LegendAlacrity",
+    "MagicalFootwear",
+    "Triumph"
   ]
 ]

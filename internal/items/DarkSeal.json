@@ -1,13 +1,21 @@
 {
+  "version": "16.2.1",
   "riot_id": 1082,
-  "item_id": "DarkSeal",
   "name": "Dark Seal",
   "price": 350,
   "sell": 140,
   "tier": 1,
   "maps": [
     [
+      "SummonersRift",
+      true
+    ],
+    [
       "Aram",
+      false
+    ],
+    [
+      "NexusBlitz",
       false
     ],
     [
@@ -19,30 +27,20 @@
       false
     ],
     [
-      "SummonersRift",
-      true
-    ],
-    [
-      "SummonersRift",
+      "UnknownMap33",
       false
     ],
     [
-      "SummonersRift",
-      false
-    ],
-    [
-      "NexusBlitz",
+      "UnknownMap35",
       false
     ]
   ],
   "prettified_stats": [
     {
-      "name": "Health",
-      "value": 50
+      "AbilityPower": 15
     },
     {
-      "name": "AbilityPower",
-      "value": 15
+      "Health": 50
     }
   ],
   "damage_type": "Unknown",
@@ -105,12 +103,8 @@
     }
   },
   "builds_from_riot_ids": [],
-  "builds_from_item_ids": [],
   "builds_into_riot_ids": [
     3041
-  ],
-  "builds_into_item_ids": [
-    "MejaisSoulstealer"
   ],
   "ranged": {
     "minimum_damage": "zero",

@@ -1,20 +1,20 @@
 [
   [
-    "DeathsDance",
-    "Stridebreaker",
-    "SpearOfShojin",
-    "RanduinsOmen",
     "JakshoTheProtean",
-    "KaenicRookern"
+    "KaenicRookern",
+    "RanduinsOmen",
+    "SpearOfShojin",
+    "SpiritVisage",
+    "Thornmail"
   ],
   [
-    "NimbusCloak",
-    "Celerity",
-    "Waterwalking",
-    "Triumph",
-    "LegendAlacrity",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "Celerity",
+    "HealthScaling",
+    "LegendAlacrity",
+    "NimbusCloak",
+    "Triumph",
+    "Waterwalking"
   ]
 ]

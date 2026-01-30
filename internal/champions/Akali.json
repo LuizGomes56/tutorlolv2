@@ -71,74 +71,6 @@
   "abilities": [
     [
       {
-        "type": "R",
-        "name": "_2Min"
-      },
-      {
-        "name": "Perfect Execution",
-        "damage_type": "Magic",
-        "attributes": "Area",
-        "damage": [
-          "210 + (0.9 * ctx.ap)",
-          "420 + (0.9 * ctx.ap)",
-          "630 + (0.9 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "Void"
-      },
-      {
-        "name": "Five Point Strike",
-        "damage_type": "Magic",
-        "attributes": "Area",
-        "damage": [
-          "45 + (0.65 * ctx.ad) + (0.6 * ctx.ap)",
-          "70 + (0.65 * ctx.ad) + (0.6 * ctx.ap)",
-          "95 + (0.65 * ctx.ad) + (0.6 * ctx.ap)",
-          "120 + (0.65 * ctx.ad) + (0.6 * ctx.ap)",
-          "145 + (0.65 * ctx.ad) + (0.6 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "R",
-        "name": "_2Max"
-      },
-      {
-        "name": "Perfect Execution",
-        "damage_type": "Magic",
-        "attributes": "Area",
-        "damage": [
-          "70 + (0.3 * ctx.ap)",
-          "140 + (0.3 * ctx.ap)",
-          "210 + (0.3 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "E",
-        "name": "Max"
-      },
-      {
-        "name": "Shuriken Flip",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "70 + ctx.ad + (1.1 * ctx.ap)",
-          "140 + ctx.ad + (1.1 * ctx.ap)",
-          "210 + ctx.ad + (1.1 * ctx.ap)",
-          "280 + ctx.ad + (1.1 * ctx.ap)",
-          "350 + ctx.ad + (1.1 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
         "type": "P",
         "name": "Void"
       },
@@ -170,17 +102,19 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_1"
+        "type": "Q",
+        "name": "Void"
       },
       {
-        "name": "Perfect Execution",
+        "name": "Five Point Strike",
         "damage_type": "Magic",
         "attributes": "Area",
         "damage": [
-          "110 + (0.5 * ctx.bonus_ad) + (0.3 * ctx.ap)",
-          "220 + (0.5 * ctx.bonus_ad) + (0.3 * ctx.ap)",
-          "330 + (0.5 * ctx.bonus_ad) + (0.3 * ctx.ap)"
+          "45 + (0.65 * ctx.ad) + (0.6 * ctx.ap)",
+          "70 + (0.65 * ctx.ad) + (0.6 * ctx.ap)",
+          "95 + (0.65 * ctx.ad) + (0.6 * ctx.ap)",
+          "120 + (0.65 * ctx.ad) + (0.6 * ctx.ap)",
+          "145 + (0.65 * ctx.ad) + (0.6 * ctx.ap)"
         ]
       }
     ],
@@ -205,6 +139,24 @@
     [
       {
         "type": "E",
+        "name": "Max"
+      },
+      {
+        "name": "Shuriken Flip",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "70 + ctx.ad + (1.1 * ctx.ap)",
+          "140 + ctx.ad + (1.1 * ctx.ap)",
+          "210 + ctx.ad + (1.1 * ctx.ap)",
+          "280 + ctx.ad + (1.1 * ctx.ap)",
+          "350 + ctx.ad + (1.1 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "E",
         "name": "_1Max"
       },
       {
@@ -219,23 +171,57 @@
           "245 + (0.7 * ctx.ad) + (0.77 * ctx.ap)"
         ]
       }
-    ]
-  ],
-  "merge_data": [
-    {
-      "minimum_damage": {
+    ],
+    [
+      {
+        "type": "R",
+        "name": "_1"
+      },
+      {
+        "name": "Perfect Execution",
+        "damage_type": "Magic",
+        "attributes": "Area",
+        "damage": [
+          "110 + (0.5 * ctx.bonus_ad) + (0.3 * ctx.ap)",
+          "220 + (0.5 * ctx.bonus_ad) + (0.3 * ctx.ap)",
+          "330 + (0.5 * ctx.bonus_ad) + (0.3 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
         "type": "R",
         "name": "_2Min"
       },
-      "maximum_damage": {
+      {
+        "name": "Perfect Execution",
+        "damage_type": "Magic",
+        "attributes": "Area",
+        "damage": [
+          "210 + (0.9 * ctx.ap)",
+          "420 + (0.9 * ctx.ap)",
+          "630 + (0.9 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
         "type": "R",
         "name": "_2Max"
       },
-      "alias": {
-        "type": "R",
-        "name": "_2"
+      {
+        "name": "Perfect Execution",
+        "damage_type": "Magic",
+        "attributes": "Area",
+        "damage": [
+          "70 + (0.3 * ctx.ap)",
+          "140 + (0.3 * ctx.ap)",
+          "210 + (0.3 * ctx.ap)"
+        ]
       }
-    },
+    ]
+  ],
+  "merge_data": [
     {
       "minimum_damage": {
         "type": "E",
@@ -248,6 +234,20 @@
       "alias": {
         "type": "E",
         "name": "_1"
+      }
+    },
+    {
+      "minimum_damage": {
+        "type": "R",
+        "name": "_2Min"
+      },
+      "maximum_damage": {
+        "type": "R",
+        "name": "_2Max"
+      },
+      "alias": {
+        "type": "R",
+        "name": "_2"
       }
     }
   ]

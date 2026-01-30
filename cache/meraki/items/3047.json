@@ -11,7 +11,7 @@
   "tier": 2,
   "passives": [
     {
-      "effects": "Reduces incoming [[damage]] from all [[basic attack]]s by 10% (''excluding [[turret]] attacks'').",
+      "effects": "Reduces all incoming {{tip|basic damage}} by 10% (''excluding from [[turret]] attacks'').",
       "name": "Plating",
       "unique": true
     }

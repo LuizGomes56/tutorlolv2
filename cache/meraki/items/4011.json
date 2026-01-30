@@ -6,7 +6,7 @@
   "tier": 3,
   "passives": [
     {
-      "effects": "Basic attacks [[on-hit]] cause the most wounded and nearest allied champion to be {{tip|heal|healed}} for {{pp|15 to 45}} {{as|(+ 10% '''bonus''' AD)}} {{as|(+ 7% AP)}}.",
+      "effects": "Basic attacks [[on-hit]] cause the {{tt|most wounded|Lowest health percent}} and nearest allied champion to be {{tip|heal|healed}} for {{pp|15 to 45}} {{as|(+ 10% '''bonus''' AD)}} {{as|(+ 7% AP)}}.",
       "name": "Peppermint",
       "unique": true
     },

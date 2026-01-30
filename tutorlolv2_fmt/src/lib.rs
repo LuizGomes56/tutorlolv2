@@ -83,13 +83,77 @@ pub fn pascal_case(input: &str) -> String {
     out
 }
 
+pub fn to_ssnake(value: &str) -> String {
+    fn is_boundary(c: char) -> bool {
+        c.is_ascii_whitespace() || (c.is_ascii_punctuation() && c != '\'')
+    }
+    fn is_ignorable(c: char) -> bool {
+        c == '\''
+    }
+    let mut out = String::with_capacity(value.len() * 2);
+    let mut chars = value.chars().peekable();
+    let mut prev_was_alpha = false;
+    let mut prev_was_upper = false;
+    let mut prev_was_digit = false;
+    while let Some(c) = chars.next() {
+        if is_ignorable(c) {
+            continue;
+        }
+        if is_boundary(c) {
+            if !out.is_empty() && !out.ends_with('_') {
+                out.push('_');
+            }
+            prev_was_alpha = false;
+            prev_was_upper = false;
+            prev_was_digit = false;
+            continue;
+        }
+        let is_upper = c.is_ascii_uppercase();
+        let is_alpha = c.is_ascii_alphabetic();
+        let is_digit = c.is_ascii_digit();
+        let next_is_lower = chars
+            .peek()
+            .map(|n| n.is_ascii_lowercase())
+            .unwrap_or(false);
+        let need_us = if out.is_empty() || out.ends_with('_') {
+            false
+        } else if is_upper {
+            (prev_was_alpha && !prev_was_upper)
+                || prev_was_digit
+                || (prev_was_upper && next_is_lower)
+        } else if is_alpha {
+            prev_was_digit
+        } else if is_digit {
+            prev_was_alpha
+        } else {
+            false
+        };
+        if need_us && !out.ends_with('_') {
+            out.push('_');
+        }
+        out.push(c.to_ascii_uppercase());
+        prev_was_alpha = is_alpha;
+        prev_was_upper = is_upper;
+        prev_was_digit = is_digit;
+    }
+    if out.ends_with('_') {
+        out.pop();
+    }
+    out
+}
+
 /// Invokes `rustfmt` program to the input [`str`], with some defined `width`,
 /// often set to be `80`. Returns the formatted code or an empty [`String`] if
 /// it emits an error or warning
-pub fn rustfmt(src: &str) -> String {
+pub fn rustfmt(src: &str, width: Option<usize>) -> String {
     let try_run = || -> Result<String, Box<dyn std::error::Error>> {
         let mut child = Command::new("rustfmt")
-            .args(&["--emit", "stdout", "--config", "max_width=80"])
+            .args(&[
+                "--emit",
+                "stdout",
+                "--config",
+                &format!("max_width={w}", w = width.unwrap_or(80)),
+            ])
             .stdin(Stdio::piped())
             .stdout(Stdio::piped())
             .spawn()?;
@@ -101,7 +165,12 @@ pub fn rustfmt(src: &str) -> String {
         let output = child.wait_with_output()?;
         Ok(String::from_utf8_lossy(&output.stdout).into_owned())
     };
-    try_run().unwrap_or(src.to_string())
+    try_run().unwrap_or_else(|e| {
+        let prev = src.to_string();
+        println!("Failed to call rustfmt: {e:?}");
+        std::fs::write("rustfmt.txt", &prev).unwrap();
+        prev
+    })
 }
 
 static RUST_HIGHLIGHTER: Lazy<Highlighter> = Lazy::new(|| {

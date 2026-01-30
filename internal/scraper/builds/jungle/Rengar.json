@@ -1,20 +1,20 @@
 [
   [
-    "SerpentsFang",
-    "Opportunity",
+    "Bastionbreaker",
+    "EssenceReaver",
     "MortalReminder",
-    "AxiomArc",
-    "SeryldasGrudge",
-    "GuardianAngel"
+    "Opportunity",
+    "SerpentsFang",
+    "YoumuusGhostblade"
   ],
   [
-    "Triumph",
-    "LegendAlacrity",
-    "CoupDeGrace",
-    "SuddenImpact",
-    "UltimateHunter",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "CoupDeGrace",
+    "HealthScaling",
+    "LegendAlacrity",
+    "SuddenImpact",
+    "Triumph",
+    "UltimateHunter"
   ]
 ]

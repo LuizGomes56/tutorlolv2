@@ -1,20 +1,20 @@
 [
   [
-    "ZhonyasHourglass",
     "BloodlettersCurse",
+    "Cryptbloom",
     "HorizonFocus",
+    "LudensEcho",
     "Morellonomicon",
-    "BansheesVeil",
-    "Malignance"
+    "VoidStaff"
   ],
   [
-    "ManaflowBand",
-    "Transcendence",
-    "Scorch",
-    "LegendHaste",
-    "CutDown",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "CutDown",
+    "HealthScaling",
+    "LegendHaste",
+    "ManaflowBand",
+    "Scorch",
+    "Transcendence"
   ]
 ]

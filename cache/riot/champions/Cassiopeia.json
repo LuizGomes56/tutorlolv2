@@ -29,7 +29,7 @@
   "name": "Cassiopeia",
   "partype": "Mana",
   "passive": {
-    "description": "Cassiopeia gains Move Speed per level, but she cannot purchase Boots items.",
+    "description": "All Move Speed bonuses are more effective on Cassiopeia.",
     "image": {
       "full": "Cassiopeia_Passive.png",
       "group": "passive",
@@ -664,7 +664,7 @@
     "hpperlevel": 104,
     "hpregen": 5.5,
     "hpregenperlevel": 0.5,
-    "movespeed": 328,
+    "movespeed": 335,
     "mp": 450,
     "mpperlevel": 40,
     "mpregen": 8,

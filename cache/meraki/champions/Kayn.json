@@ -79,11 +79,11 @@
             "leveling": []
           },
           {
-            "description": "Shadow Assassin Bonus: Upon entering combat with enemy champions, Kayn becomes empowered for 3 seconds to deal 25% : 45% (based on level) of post-mitigation physical and magic damage dealt against enemy champions as bonus magic damage. This effect cannot trigger again until Kayn has been out of combat with champions for over 8 seconds, with the timer being reset if he recasts Umbral Trespass.",
+            "description": "Shadow Assassin Bonus: Upon entering combat with enemy champions, Kayn becomes empowered for 3 seconds to deal 20% : 40% (based on level) of post-mitigation physical and magic damage dealt against enemy champions as bonus magic damage. This effect cannot trigger again until Kayn has been out of combat with champions for over 8 seconds, with the timer being reset if he recasts Umbral Trespass.",
             "leveling": []
           },
           {
-            "description": "While near his team's summoning platform, Kayn can choose a form to enter transformation over 6 seconds, immediately restoring to full health and mana and becoming invulnerable, untargetable, and unable to act for the duration. Kayn cannot choose a form if he is unable to cast abilities. The transformation will grant a passive bonus and permanently empower some of Kayn's abilities based on the form chosen. He gains a one-time Homeguard once the transformation is complete.",
+            "description": "While near his team's summoning platform, Kayn can choose a form to enter transformation over 6 seconds, becoming invulnerable, untargetable, and unable to act for the duration. At the end of the transformation he is restored to full health and mana. The transformation will grant a passive bonus and permanently empower some of Kayn's abilities based on the form chosen. He gains a one-time Homeguard once the transformation is complete.Kayn cannot activate the transformation while he is affected by cast-inhibiting crowd control or a lockout that disables abilities.",
             "leveling": []
           }
         ],

@@ -1,20 +1,19 @@
 [
   [
+    "ArchangelsStaff",
+    "BansheesVeil",
     "BlackfireTorch",
     "BloodlettersCurse",
-    "Shadowflame",
-    "Thornmail",
-    "Malignance",
-    "BansheesVeil"
+    "RabadonsDeathcap",
+    "VoidStaff"
   ],
   [
-    "ManaflowBand",
-    "Transcendence",
-    "Scorch",
+    "AdaptiveForce",
     "BiscuitDelivery",
     "CosmicInsight",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "HealthScaling",
+    "ManaflowBand",
+    "Scorch",
+    "Transcendence"
   ]
 ]

@@ -1,20 +1,20 @@
 [
   [
-    "SteraksGage",
-    "RanduinsOmen",
+    "ForceOfNature",
+    "MawOfMalmortius",
     "OverlordsBloodmail",
-    "Thornmail",
     "SpiritVisage",
-    "ForceOfNature"
+    "SunderedSky",
+    "Thornmail"
   ],
   [
-    "Triumph",
-    "LegendAlacrity",
-    "LastStand",
-    "BiscuitDelivery",
+    "AdaptiveForce",
     "ApproachVelocity",
     "AttackSpeed",
-    "AdaptiveForce",
-    "HealthScaling"
+    "BiscuitDelivery",
+    "HealthScaling",
+    "LastStand",
+    "LegendAlacrity",
+    "Triumph"
   ]
 ]

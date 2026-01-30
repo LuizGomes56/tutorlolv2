@@ -18,11 +18,11 @@
     "h": 48,
     "sprite": "item5.png",
     "w": 48,
-    "x": 192,
-    "y": 48
+    "x": 48,
+    "y": 336
   },
   "maps": {
-    "11": true,
+    "11": false,
     "12": false,
     "21": false,
     "22": false,

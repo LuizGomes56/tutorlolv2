@@ -1,20 +1,19 @@
 [
   [
-    "Thornmail",
-    "RanduinsOmen",
-    "SunfireAegis",
     "FrozenHeart",
-    "GuardianAngel",
-    "SpiritVisage"
+    "HollowRadiance",
+    "ProtoplasmHarness",
+    "SpiritVisage",
+    "SunfireAegis",
+    "Thornmail"
   ],
   [
-    "ShieldBash",
-    "SecondWind",
-    "Overgrowth",
-    "BiscuitDelivery",
-    "CosmicInsight",
     "AttackSpeed",
     "HealthScaling",
-    "HealthScaling"
+    "LastStand",
+    "Overgrowth",
+    "SecondWind",
+    "ShieldBash",
+    "Triumph"
   ]
 ]

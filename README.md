@@ -254,7 +254,7 @@ pub static NEEKO: CachedChampion = CachedChampion {
 // Example of generated const fn that represents
 // the damage of some ability. Note that it must
 // be present in `.closures` slice
-pub const fn neeko_q_1(ctx: &EvalContext) -> f32 {
+pub const fn neeko_q_1(ctx: &Ctx) -> f32 {
     match ctx.q_level {
         1 => 60f32 + 0.6f32 * ctx.ap,
         2 => 110f32 + 0.6f32 * ctx.ap,
@@ -339,7 +339,7 @@ The expected size of the whole frontend application is 1.3MB (WASM), while the c
 
     // This approach is best
     let damage_fn = |ctx| 180 + 0.8 * ctx.ap;
-    let damage = damage_fn(EvalContext::default());
+    let damage = damage_fn(Ctx::default());
     ```
 
 - Almost all functions have a `const` equivalent

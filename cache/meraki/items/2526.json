@@ -1,0 +1,95 @@
+{
+  "active": [],
+  "buildsFrom": [
+    3114,
+    1028,
+    3070
+  ],
+  "buildsInto": [
+    2530
+  ],
+  "name": "Whispering Circlet",
+  "tier": 3,
+  "passives": [
+    {
+      "effects": "Grants a charge every 8 seconds, up to 5 charges. Affecting an enemy or ally with an ability consumes a charge to grant {{as|4 '''bonus''' mana}}, increased to {{as|8|mana}} if they are a champion, up to a '''maximum''' of {{as|360 '''bonus''' mana}}.",
+      "name": "Manaflow",
+      "unique": true
+    },
+    {
+      "effects": "Grants {{as|heal and shield power}} equal to {{as|{{fd|0.5}}% '''bonus''' mana}}.",
+      "name": "Harmony",
+      "unique": true
+    },
+    {
+      "effects": "Transforms into {{ii|Diadem of Songs}} at {{as|360 '''bonus''' mana}}.",
+      "name": null,
+      "unique": false
+    }
+  ],
+  "id": 2526,
+  "stats": {
+    "abilityPower": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "armor": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "armorPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "attackDamage": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "attackSpeed": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "criticalStrikeChance": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "health": {
+      "flat": 200.0,
+      "percent": 0.0
+    },
+    "lifesteal": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicResistance": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "mana": {
+      "flat": 300.0,
+      "percent": 0.0
+    },
+    "movespeed": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "omnivamp": {
+      "flat": 0.0,
+      "percent": 0.0
+    }
+  },
+  "shop": {
+    "purchasable": true,
+    "prices": {
+      "total": 2250
+    }
+  }
+}

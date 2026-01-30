@@ -1,4 +1,19 @@
 [
-  [],
-  []
+  [
+    "AbyssalMask",
+    "JakshoTheProtean",
+    "KaenicRookern",
+    "ProtoplasmHarness",
+    "WarmogsArmor",
+    "WintersApproach"
+  ],
+  [
+    "AbilityHaste",
+    "FontOfLife",
+    "HealthScaling",
+    "LegendHaste",
+    "Overgrowth",
+    "SecondWind",
+    "Triumph"
+  ]
 ]

@@ -8,7 +8,7 @@
       "perLevel": 104.0
     },
     "mana": {
-      "flat": 400.0,
+      "flat": 450.0,
       "perLevel": 40.0
     },
     "armor": {
@@ -28,7 +28,7 @@
       "perLevel": 1.5
     },
     "movespeed": {
-      "flat": 328.0,
+      "flat": 335.0,
       "perLevel": 0.0
     },
     "criticalStrikeDamage": {
@@ -71,11 +71,7 @@
         "damageType": null,
         "effects": [
           {
-            "description": "Blessing of Noxus Bonus: Serpentine Grace's bonus movement speed is increased by 1 : 18 (based on level), for a total of 5 : 90 (based on level).",
-            "leveling": []
-          },
-          {
-            "description": "Innate: Cassiopeia gains 4 : 72 (based on level) bonus movement speed, but she cannot purchase Boots items.",
+            "description": "Innate: Cassiopeia increases the effectiveness of all movement speed bonuses by 6% : 40% (based on level).",
             "leveling": []
           }
         ],
@@ -394,10 +390,10 @@
                     ],
                     "values": [
                       20.0,
-                      40.0,
-                      60.0,
-                      80.0,
-                      100.0
+                      43.0,
+                      66.0,
+                      89.0,
+                      112.0
                     ]
                   },
                   {
@@ -515,10 +511,10 @@
                     ],
                     "values": [
                       20.0,
-                      40.0,
-                      60.0,
-                      80.0,
-                      100.0
+                      43.0,
+                      66.0,
+                      89.0,
+                      112.0
                     ]
                   },
                   {

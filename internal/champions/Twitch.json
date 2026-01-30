@@ -25,11 +25,11 @@
     },
     "attackDamage": {
       "flat": 59.0,
-      "perLevel": 3.1
+      "perLevel": 3.0
     },
     "attackSpeed": {
       "flat": 0.679,
-      "perLevel": 3.38
+      "perLevel": 3.0
     },
     "movespeed": {
       "flat": 330.0,
@@ -90,18 +90,18 @@
     [
       {
         "type": "E",
-        "name": "_4"
+        "name": "_2"
       },
       {
         "name": "Contaminate",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "15 + (0.35 * ctx.bonus_ad)",
-          "20 + (0.35 * ctx.bonus_ad)",
-          "25 + (0.35 * ctx.bonus_ad)",
-          "30 + (0.35 * ctx.bonus_ad)",
-          "35 + (0.35 * ctx.bonus_ad)"
+          "110 + (2.1 * ctx.bonus_ad) + (2.1 * ctx.ap)",
+          "150 + (2.1 * ctx.bonus_ad) + (2.1 * ctx.ap)",
+          "190 + (2.1 * ctx.bonus_ad) + (2.1 * ctx.ap)",
+          "230 + (2.1 * ctx.bonus_ad) + (2.1 * ctx.ap)",
+          "270 + (2.1 * ctx.bonus_ad) + (2.1 * ctx.ap)"
         ]
       }
     ],
@@ -125,6 +125,24 @@
     ],
     [
       {
+        "type": "E",
+        "name": "_4"
+      },
+      {
+        "name": "Contaminate",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "15 + (0.35 * ctx.bonus_ad)",
+          "20 + (0.35 * ctx.bonus_ad)",
+          "25 + (0.35 * ctx.bonus_ad)",
+          "30 + (0.35 * ctx.bonus_ad)",
+          "35 + (0.35 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
         "type": "R",
         "name": "_1"
       },
@@ -136,24 +154,6 @@
           "30",
           "45",
           "60"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "E",
-        "name": "_2"
-      },
-      {
-        "name": "Contaminate",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "110 + (2.1 * ctx.bonus_ad) + (2.1 * ctx.ap)",
-          "150 + (2.1 * ctx.bonus_ad) + (2.1 * ctx.ap)",
-          "190 + (2.1 * ctx.bonus_ad) + (2.1 * ctx.ap)",
-          "230 + (2.1 * ctx.bonus_ad) + (2.1 * ctx.ap)",
-          "270 + (2.1 * ctx.bonus_ad) + (2.1 * ctx.ap)"
         ]
       }
     ]

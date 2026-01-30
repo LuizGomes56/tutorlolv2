@@ -1,20 +1,20 @@
 [
   [
-    "MawOfMalmortius",
-    "TrinityForce",
     "ChempunkChainsword",
-    "Eclipse",
+    "KaenicRookern",
+    "MawOfMalmortius",
+    "RanduinsOmen",
     "Thornmail",
-    "RanduinsOmen"
+    "TrinityForce"
   ],
   [
-    "Triumph",
-    "LegendHaste",
-    "CoupDeGrace",
-    "MagicalFootwear",
-    "CosmicInsight",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "CosmicInsight",
+    "CoupDeGrace",
+    "HealthScaling",
+    "LegendHaste",
+    "MagicalFootwear",
+    "Triumph"
   ]
 ]

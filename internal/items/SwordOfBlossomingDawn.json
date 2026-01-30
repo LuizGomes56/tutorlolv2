@@ -1,21 +1,17 @@
 {
+  "version": "16.2.1",
   "riot_id": 4011,
-  "item_id": "SwordOfBlossomingDawn",
   "name": "Sword of Blossoming Dawn",
   "price": 2500,
   "sell": 1250,
   "tier": 3,
   "maps": [
     [
-      "Aram",
-      false
-    ],
-    [
-      "Tft",
-      false
-    ],
-    [
       "SummonersRift",
+      false
+    ],
+    [
+      "Aram",
       false
     ],
     [
@@ -23,34 +19,34 @@
       false
     ],
     [
+      "Tft",
+      false
+    ],
+    [
       "Arena",
       true
     ],
     [
-      "SummonersRift",
+      "UnknownMap33",
       false
     ],
     [
-      "SummonersRift",
+      "UnknownMap35",
       false
     ]
   ],
   "prettified_stats": [
     {
-      "name": "Health",
-      "value": 200
+      "AbilityHaste": 15
     },
     {
-      "name": "HealAndShieldPower",
-      "value": 12
+      "AbilityPower": 45
     },
     {
-      "name": "AbilityHaste",
-      "value": 15
+      "HealAndShieldPower": 12
     },
     {
-      "name": "AbilityPower",
-      "value": 45
+      "Health": 200
     }
   ],
   "damage_type": "Unknown",
@@ -113,9 +109,7 @@
     }
   },
   "builds_from_riot_ids": [],
-  "builds_from_item_ids": [],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

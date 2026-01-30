@@ -1,20 +1,20 @@
 [
   [
-    "TitanicHydra",
-    "RanduinsOmen",
-    "FrozenHeart",
-    "WitsEnd",
+    "Bandlepipes",
+    "BladeOfTheRuinedKing",
     "ForceOfNature",
-    "JakshoTheProtean"
+    "FrozenHeart",
+    "TitanicHydra",
+    "WitsEnd"
   ],
   [
-    "Triumph",
-    "LegendAlacrity",
-    "CoupDeGrace",
-    "MagicalFootwear",
+    "AdaptiveForce",
     "ApproachVelocity",
     "AttackSpeed",
-    "AdaptiveForce",
-    "HealthScaling"
+    "CoupDeGrace",
+    "HealthScaling",
+    "LegendAlacrity",
+    "MagicalFootwear",
+    "Triumph"
   ]
 ]

@@ -15,7 +15,7 @@
       "unique": true
     },
     {
-      "effects": "Upon casting your ultimate ability, enter ''Overdrive'' to gain {{as|30% '''bonus''' attack speed}} and {{as|15% '''bonus''' movement speed}} for 8 seconds (30 second cooldown, starts on ultimate cast).",
+      "effects": "Upon casting your ultimate ability, enter ''Overdrive'' to gain {{as|50% '''bonus''' attack speed}} and {{as|20% '''bonus''' movement speed}} for 8 seconds (30 second cooldown, starts on ultimate cast).",
       "name": "Overdrive",
       "unique": true
     }

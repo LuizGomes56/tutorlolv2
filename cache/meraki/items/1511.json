@@ -7,7 +7,7 @@
   "passives": [
     {
       "effects": "{{tip|Turret}} basic attacks are modified to deal {{as|7% of this minion's '''maximum''' health}} as {{tt|pre-mitigation damage|Damage calculated before modifiers}}.",
-      "name": null,
+      "name": "Super Mech Armor",
       "unique": true
     }
   ],

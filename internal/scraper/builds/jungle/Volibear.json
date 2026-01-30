@@ -1,20 +1,20 @@
 [
   [
+    "Bandlepipes",
+    "CosmicDrive",
     "DeadMansPlate",
-    "IcebornGauntlet",
-    "RanduinsOmen",
-    "JakshoTheProtean",
     "FrozenHeart",
-    "NashorsTooth"
+    "RanduinsOmen",
+    "UnendingDespair"
   ],
   [
-    "Triumph",
-    "LegendHaste",
-    "LastStand",
-    "MagicalFootwear",
-    "JackOfAllTrades",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "HealthScaling",
+    "JackOfAllTrades",
+    "LastStand",
+    "LegendHaste",
+    "MagicalFootwear",
+    "Triumph"
   ]
 ]

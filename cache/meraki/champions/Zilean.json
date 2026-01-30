@@ -87,7 +87,7 @@
         "damageType": null,
         "effects": [
           {
-            "description": "A successful channel will grant an equal amount of experience to the ally to-level-up and Zilean, with a combined minimum of 15% his stored experience.",
+            "description": "A successful channel will grant an equal amount of experience to the ally to-level-up and Zilean, with a combined minimum of 15% of the stored experience.",
             "leveling": []
           },
           {
@@ -95,7 +95,11 @@
             "leveling": []
           },
           {
-            "description": "When he has stored enough to level up an allied champion and grant the same amount of experience to himself, he can select them to channel for 1.2 seconds after a 0.5-second cast time. The channel is interrupted and disabled upon entering combat with enemy champions or taking damage from turrets, placing it on a 10-second cooldown. If Zilean interrupts it himself, it is placed on a 1-second cooldown, increased to 2 if he used a basic attack against a turret to do so.",
+            "description": "When he has stored enough to level up an allied champion and grant the same amount of experience to himself, he can select them to channel for 1.2 seconds after a 0.5-second cast time. The channel is interrupted and disabled upon entering combat with enemy champions or taking damage from turrets, placing it on a 10-second cooldown. If Zilean interrupts it himself, it is placed on a 1-second cooldown, increased to 2 if he used a basic attack against a turret to do so. Additionally, if Zilean becomes affected by any form of crowd control, the channel is placed on a 10-second cooldown.",
+            "leveling": []
+          },
+          {
+            "description": "Zilean cannot initiate the channel while he is affected by cast-inhibiting crowd control or a lockout that disables abilities.",
             "leveling": []
           }
         ],
@@ -128,7 +132,7 @@
         "damageType": "MAGIC_DAMAGE",
         "effects": [
           {
-            "description": "Active: Zilean throws a ticking time bomb to the target location that grants sight of its surroundings. The bomb will attach itself to units that move within the epicenter, or those hit directly, revealing them.",
+            "description": "Active: Zilean throws a ticking time bomb to the target location that briefly grants sight of its surroundings as it travels as well as while lingering in the area. The bomb will attach itself to units that move within the epicenter, or those hit directly at the time of the bomb's landing, revealing them and their surroundings.",
             "leveling": []
           },
           {

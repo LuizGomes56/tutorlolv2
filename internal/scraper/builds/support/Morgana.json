@@ -1,20 +1,19 @@
 [
   [
-    "RylaisCrystalScepter",
     "BlackfireTorch",
+    "BloodlettersCurse",
     "HorizonFocus",
     "ImperialMandate",
-    "MikaelsBlessing",
-    "Cryptbloom"
+    "RabadonsDeathcap",
+    "Redemption"
   ],
   [
-    "ManaflowBand",
-    "Transcendence",
-    "Scorch",
+    "AdaptiveForce",
     "CheapShot",
-    "UltimateHunter",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "HealthScaling",
+    "ManaflowBand",
+    "Scorch",
+    "Transcendence",
+    "UltimateHunter"
   ]
 ]

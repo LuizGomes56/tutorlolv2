@@ -1,20 +1,19 @@
 [
   [
-    "KaenicRookern",
-    "RanduinsOmen",
     "FrozenHeart",
-    "AbyssalMask",
-    "LocketOfTheIronSolari",
-    "Redemption"
+    "Heartsteel",
+    "RanduinsOmen",
+    "SpiritVisage",
+    "UnendingDespair",
+    "WarmogsArmor"
   ],
   [
-    "FontOfLife",
-    "Conditioning",
-    "Overgrowth",
-    "MagicalFootwear",
-    "CosmicInsight",
     "AttackSpeed",
+    "Conditioning",
+    "Demolish",
     "HealthScaling",
-    "HealthScaling"
+    "LegendHaste",
+    "Overgrowth",
+    "Triumph"
   ]
 ]

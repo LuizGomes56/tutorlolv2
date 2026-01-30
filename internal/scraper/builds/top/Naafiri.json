@@ -1,20 +1,19 @@
 [
   [
-    "SeryldasGrudge",
-    "SerpentsFang",
-    "VoltaicCyclosword",
+    "AxiomArc",
+    "Bastionbreaker",
+    "DeathsDance",
+    "EndlessHunger",
     "MawOfMalmortius",
-    "ChempunkChainsword",
-    "GuardianAngel"
+    "SerpentsFang"
   ],
   [
-    "Triumph",
-    "LegendAlacrity",
-    "CoupDeGrace",
-    "SuddenImpact",
-    "TreasureHunter",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "HealthScaling",
+    "Scorch",
+    "SixthSense",
+    "SuddenImpact",
+    "Transcendence",
+    "TreasureHunter"
   ]
 ]

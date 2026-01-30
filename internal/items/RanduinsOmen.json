@@ -1,6 +1,6 @@
 {
+  "version": "16.2.1",
   "riot_id": 3143,
-  "item_id": "RanduinsOmen",
   "name": "Randuin's Omen",
   "price": 2700,
   "sell": 1890,
@@ -11,38 +11,36 @@
       true
     ],
     [
-      "SummonersRift",
-      false
-    ],
-    [
       "Aram",
       true
-    ],
-    [
-      "Arena",
-      false
     ],
     [
       "NexusBlitz",
       true
     ],
     [
-      "SummonersRift",
-      true
-    ],
-    [
       "Tft",
       false
+    ],
+    [
+      "Arena",
+      false
+    ],
+    [
+      "UnknownMap33",
+      false
+    ],
+    [
+      "UnknownMap35",
+      true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "Health",
-      "value": 300
+      "Armor": 75
     },
     {
-      "name": "Armor",
-      "value": 75
+      "Health": 350
     }
   ],
   "damage_type": "Unknown",
@@ -108,12 +106,7 @@
     3082,
     1011
   ],
-  "builds_from_item_ids": [
-    "WardensMail",
-    "GiantsBelt"
-  ],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

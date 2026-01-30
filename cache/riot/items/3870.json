@@ -1,9 +1,9 @@
 {
   "colloq": "",
   "depth": 2,
-  "description": "<mainText><stats><attention>200</attention> Health<br><attention>75%</attention> Base Health Regen<br><attention>75%</attention> Base Mana Regen<br><attention>5</attention> Gold Per 10 Seconds</stats><br><br><passive>Dream Maker</passive><br>Healing or Shielding another ally blows Dream Bubbles to them for 3 seconds. Their next Attack deals <magicDamage>bonus magic damage</magicDamage> <OnHit>On-Hit</OnHit> and the next damage they take is reduced.<active>Active</active> (4 charges)<br>Places an <keyword>Invisible</keyword> Stealth Ward that grants vision.</mainText>",
+  "description": "<mainText><stats><attention>200</attention> Health<br><attention>75%</attention> Base Health Regen<br><attention>75%</attention> Base Mana Regen<br><attention>9</attention> Gold Per 10 Seconds</stats><br><br><passive>Dream Maker</passive><br>Healing or Shielding another ally blows Dream Bubbles to them for 3 seconds. Their next Attack deals <magicDamage>bonus magic damage</magicDamage> <OnHit>On-Hit</OnHit> and the next damage they take is reduced.<active>Active</active> (4 charges)<br>Places an <keyword>Invisible</keyword> Stealth Ward that grants vision.</mainText>",
   "effect": {
-    "Effect1Amount": "5"
+    "Effect1Amount": "9"
   },
   "from": [
     "3867"
@@ -20,8 +20,8 @@
     "h": 48,
     "sprite": "item4.png",
     "w": 48,
-    "x": 96,
-    "y": 144
+    "x": 432,
+    "y": 384
   },
   "maps": {
     "11": true,

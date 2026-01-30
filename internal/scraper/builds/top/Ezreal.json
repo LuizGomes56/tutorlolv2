@@ -1,20 +1,20 @@
 [
   [
-    "SerpentsFang",
+    "ArchangelsStaff",
+    "EndlessHunger",
+    "GuardianAngel",
+    "HextechGunblade",
     "MawOfMalmortius",
-    "MortalReminder",
-    "Riftmaker",
-    "FrozenHeart",
-    "RanduinsOmen"
+    "SerpentsFang"
   ],
   [
-    "PresenceOfMind",
-    "LegendBloodline",
-    "CoupDeGrace",
-    "MagicalFootwear",
-    "BiscuitDelivery",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "BiscuitDelivery",
+    "CoupDeGrace",
+    "HealthScaling",
+    "LegendBloodline",
+    "MagicalFootwear",
+    "PresenceOfMind"
   ]
 ]

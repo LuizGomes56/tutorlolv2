@@ -12,6 +12,7 @@ pub struct RiotCdnItemGold {
 
 #[derive(Deserialize)]
 pub struct RiotCdnItem {
+    pub name: String,
     pub description: String,
     pub gold: RiotCdnItemGold,
     pub maps: HashMap<u8, bool>,

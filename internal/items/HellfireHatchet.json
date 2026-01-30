@@ -1,13 +1,21 @@
 {
+  "version": "16.2.1",
   "riot_id": 4017,
-  "item_id": "HellfireHatchet",
   "name": "Hellfire Hatchet",
   "price": 2500,
   "sell": 1250,
   "tier": 3,
   "maps": [
     [
+      "SummonersRift",
+      false
+    ],
+    [
       "Aram",
+      false
+    ],
+    [
+      "NexusBlitz",
       false
     ],
     [
@@ -15,34 +23,24 @@
       false
     ],
     [
-      "SummonersRift",
-      false
-    ],
-    [
       "Arena",
       true
     ],
     [
-      "NexusBlitz",
+      "UnknownMap33",
       false
     ],
     [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
+      "UnknownMap35",
       false
     ]
   ],
   "prettified_stats": [
     {
-      "name": "Lethality",
-      "value": 12
+      "AttackDamage": 35
     },
     {
-      "name": "AttackDamage",
-      "value": 35
+      "Lethality": 12
     }
   ],
   "damage_type": "Unknown",
@@ -105,9 +103,7 @@
     }
   },
   "builds_from_riot_ids": [],
-  "builds_from_item_ids": [],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

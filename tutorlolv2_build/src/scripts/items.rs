@@ -1,13 +1,13 @@
-use std::collections::{HashMap, HashSet};
-
 use crate::{
     CwdPath, EVAL_FEAT, GLOB_FEAT, Generated, GeneratorFn, SrcFolder, Tracker, parallel_task,
     push_end,
     scripts::{
         StringExt,
         model::{Item, ItemStats, MerakiItemStatMap},
+        rustfmt_batch,
     },
 };
+use std::collections::{HashMap, HashSet};
 
 struct DeclaredItem {
     metadata: String,
@@ -104,9 +104,9 @@ fn declare_item(item: &Item) -> DeclaredItem {
         let fn_name = decide_fn_name(group);
 
         constfn_declaration.push_str(&format!(
-            "{EVAL_FEAT} pub const fn {fn_name}(ctx: &EvalContext) -> f32 {{
+            "{EVAL_FEAT} pub const fn {fn_name}(ctx: &Ctx) -> f32 {{
                 {body}
-            }}\n",
+            }}",
             body = key.body
         ));
 
@@ -177,27 +177,31 @@ pub fn get_stats(stats: &ItemStats) -> String {
             $(pen $disc:ident => { $($pfield:ident),+$(,)* }),+
         ) => {
             $(
-                all_stats.push(
-                    format!(
-                        "{field}: {value}f32",
-                        field = stringify!($field),
-                        value = stats.$field.flat
-                    )
-                );
-            )+
-            $(
-                $(
+                let value = stats.$field.flat;
+                if value != 0.0 {
                     all_stats.push(
                         format!(
                             "{field}: {value}f32",
-                            field = concat!(
-                                stringify!($pfield),
-                                "_",
-                                stringify!($disc)
-                            ),
-                            value = stats.$pfield.$disc
+                            field = stringify!($field),
                         )
                     );
+                }
+            )+
+            $(
+                $(
+                    let value = stats.$pfield.$disc;
+                    if value != 0.0 {
+                        all_stats.push(
+                            format!(
+                                "{field}: {value}f32",
+                                field = concat!(
+                                    stringify!($pfield),
+                                    "_",
+                                    stringify!($disc)
+                                )
+                            )
+                        );
+                    }
                 )+
             )+
         };
@@ -227,7 +231,17 @@ pub fn get_stats(stats: &ItemStats) -> String {
             magic_penetration,
         }
     );
-    all_stats.join(",")
+
+    match all_stats.len() {
+        0 => "ZEROED_STATS".into(),
+        len => {
+            if len < NUMBER_OF_STATS {
+                all_stats.push("..ZEROED_STATS".into());
+            }
+            let stats = all_stats.join(",");
+            format!("CachedItemStats {{ {stats} }}")
+        }
+    }
 }
 
 struct ItemResult {
@@ -241,6 +255,7 @@ struct ItemResult {
     match_arm: String,
     idents: String,
     html_closure: String,
+    deals_damage: bool,
 }
 
 pub fn generate_items() -> GeneratorFn {
@@ -262,11 +277,10 @@ pub fn generate_items() -> GeneratorFn {
             tier,
             price,
             purchasable,
-            damage_type,
             stats,
             ranged,
             melee,
-            attributes,
+            ..
         } = item;
 
         let name_ssnake = name.to_ssnake();
@@ -290,11 +304,9 @@ pub fn generate_items() -> GeneratorFn {
         };
 
         let rest = format!(
-            "internal_id: ItemId::{name_pascal},
-                riot_id: {riot_id},
-                deals_damage: {deals_damage},
-                stats: CachedItemStats {{ {stats} }},
-                metadata: {metadata} }};"
+            "riot_id: {riot_id},
+            deals_damage: {deals_damage},
+            stats: {stats}}};"
         );
 
         let base_declaration = format!(
@@ -302,8 +314,7 @@ pub fn generate_items() -> GeneratorFn {
                 name: {name:?},
                 price: {price},
                 prettified_stats: &[{prettified_stats}],
-                damage_type: DamageType::{damage_type},
-                attributes: Attrs::{attributes:?},
+                metadata: {metadata},
                 tier: {tier},
                 purchasable: {purchasable},"
         );
@@ -322,17 +333,12 @@ pub fn generate_items() -> GeneratorFn {
             },
             &rest,
         ]
-        .concat()
-        .rust_fmt()
-        .drop_f32s()
-        .rust_html()
-        .as_const();
+        .concat();
 
         let html_closure = constfn_declaration
-            .replace(EVAL_FEAT, "")
-            .rust_fmt()
-            .drop_f32s()
-            .rust_html();
+            .trim_start_matches(&format!("{EVAL_FEAT} pub const"))
+            .trim()
+            .to_string();
 
         let base_declaration = format!(
             "{EVAL_FEAT}{base_declaration}
@@ -341,7 +347,8 @@ pub fn generate_items() -> GeneratorFn {
                 {constfn_declaration}"
         );
 
-        let generator = CwdPath::get_generator(SrcFolder::Items, name_ssnake.to_lowercase())?;
+        let generator =
+            CwdPath::get_generator(SrcFolder::Items, name_pascal.to_ssnake().to_lowercase())?;
 
         let idents = constfn_declaration
             .get_idents()
@@ -358,6 +365,7 @@ pub fn generate_items() -> GeneratorFn {
             name_pascal,
             html_closure,
             name,
+            deals_damage,
             idents: format!("&[{idents}]"),
         })
     });
@@ -398,15 +406,17 @@ fn build_items(data: Vec<(String, ItemResult)>) -> GeneratorFn {
     let mut closure_offsets = Vec::with_capacity(len);
     let mut generator_offsets = Vec::with_capacity(len);
 
-    let mut item_id_enum_match_arms = Vec::new();
-    let mut item_id_enum_fields = Vec::new();
+    let mut item_id_enum_match_arms = Vec::with_capacity(len);
+    let mut item_id_enum_fields = Vec::with_capacity(len);
     let mut const_match_arms = String::new();
+    let mut rustfmt_inputs = Vec::with_capacity(len * 2);
 
     for (
         _,
         ItemResult {
             riot_id,
             match_arm,
+            deals_damage,
             html_declaration,
             base_declaration,
             name,
@@ -418,32 +428,30 @@ fn build_items(data: Vec<(String, ItemResult)>) -> GeneratorFn {
         },
     ) in data
     {
-        let match_arm = format!(
-            "ItemId::{name_pascal} => {{ 
-                match attack_type {{ {match_arm} }} 
-            }}"
-        );
-
-        item_idents.push_str(&(idents + ","));
-        const_match_arms.push_str(&match_arm);
+        if deals_damage {
+            let match_arm =
+                format!("ItemId::{name_pascal} => {{ match attack_type {{ {match_arm} }} }}");
+            const_match_arms.push_str(&match_arm);
+        }
+        item_idents.push_str(&format!("{idents},"));
         item_id_to_riot_id.push_str(&format!("{riot_id},"));
-        item_id_enum_match_arms.push({
-            let str_id = riot_id.to_string();
-            let mut branches = Vec::with_capacity(3);
-            if !(str_id.starts_with("22") || str_id.starts_with("44")) {
-                branches.push(format!("44{riot_id}"));
-                branches.push(format!("22{riot_id}"));
-            }
-            branches.push(str_id);
-            branches.reverse();
-            let branches = branches.join("|");
-            format!("{branches} => Some(Self::{name_pascal})")
-        });
+        item_id_enum_match_arms.push(format!("{riot_id} => Some(Self::{name_pascal})"));
         item_id_enum_fields.push(name_pascal);
         item_id_to_name.push_str(&format!("{name:?},"));
         item_cache.push_str(&format!("&{name_ssnake}_{riot_id},"));
         item_declarations.push_str(&base_declaration);
         tracker.record_into(&generator, &mut generator_offsets);
+        rustfmt_inputs.push(html_declaration);
+        rustfmt_inputs.push(html_closure);
+    }
+
+    let formatted = rustfmt_batch(&rustfmt_inputs);
+
+    for i in 0..len {
+        let decl_fmt = &formatted[i * 2];
+        let clos_fmt = &formatted[i * 2 + 1];
+        let html_declaration = decl_fmt.drop_f32s().rust_html().as_const();
+        let html_closure = clos_fmt.drop_f32s().rust_html();
         tracker.record_into(&html_declaration, &mut formula_offsets);
         tracker.record_into(&html_closure, &mut closure_offsets);
     }
@@ -453,7 +461,7 @@ fn build_items(data: Vec<(String, ItemResult)>) -> GeneratorFn {
 
     let item_id_enum = format!(
         r#"
-        #[derive(Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd)]
+        #[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
         #[derive(bincode::Encode, bincode::Decode)]
         #[derive(serde::Serialize, serde::Deserialize)]
         #[repr(u16)]
@@ -472,10 +480,9 @@ fn build_items(data: Vec<(String, ItemResult)>) -> GeneratorFn {
                 unsafe {{ core::mem::transmute(id) }}
             }}
             pub const fn from_u16(id: u16) -> Option<Self> {{
-                if id < Self::VARIANTS as u16 {{
-                    Some(unsafe {{ Self::from_u16_unchecked(id) }})
-                }} else {{
-                    None
+                match id < Self::VARIANTS as u16 {{
+                    true => Some(unsafe {{ Self::from_u16_unchecked(id) }}),
+                    false => None
                 }}
             }}
         }}"#
@@ -483,11 +490,11 @@ fn build_items(data: Vec<(String, ItemResult)>) -> GeneratorFn {
 
     let const_eval = format!(
         "{EVAL_FEAT} pub const fn item_const_eval(
-            ctx: &EvalContext, 
+            ctx: &Ctx, 
             item_id: ItemId, 
             attack_type: AttackType
         ) -> [f32; 2] {{
-            match item_id {{ {const_match_arms} }}
+            match item_id {{ {const_match_arms}, _ => [0.0, 0.0] }}
         }}"
     );
 
@@ -531,8 +538,7 @@ fn build_items(data: Vec<(String, ItemResult)>) -> GeneratorFn {
             item_closures,
             const_eval,
         ]
-        .concat()
-        .rust_fmt();
+        .concat();
 
         let exports = format!("pub mod items {{ use super::*; {content} }}");
 

@@ -5,12 +5,12 @@
     3145
   ],
   "buildsInto": [],
-  "name": "Luden's Companion",
+  "name": "Luden's Echo",
   "tier": 3,
   "passives": [
     {
-      "effects": "Gain 6 ''Shot Charge'' stacks to fire. Dealing [[ability damage]] to an enemy consumes all ''Shot Charges'' to deal {{as|75|magic damage}} {{as|(+ 5% AP)}} {{as|'''bonus''' magic damage}} to them and, for each charge consumed beyond the first, an additional enemy within {{tip|cr|icononly=true}} 600 units of them, firing an orb at each secondary target that impacts after {{rutngt|0.5}} to deal the damage. If the number of additional targets fired at is less than the number of charges consumed,{{ft|deal an additional {{as|{{pp|75*0.2 to 75*5*0.2 for 5|1 to 5|changedisplay=true|type=remaining ''Shot Charges''}}|magic damage}} {{as|(+ {{pp|key=%|5*0.2 to 5*5*0.2 for 5|1 to 5|type=remaining ''Shot Charges''|changedisplay=true|showtype=false}} AP)}} {{as|magic damage}} to the primary target, for a total of {{as|{{pp|(75*0.2)+75 to (75*5*0.2)+75 for 5|1 to 5|type=remaining ''Shot Charges''|changedisplay=true|showtype=false}}|magic damage}} {{as|(+ {{pp|key=%|(5*0.2)+5 to (5*5*0.2)+5 for 5|1 to 5|type=remaining ''Shot Charges''|changedisplay=true|showtype=false}} AP)}}.|deal an additional 20% damage to the primary target for each remaining charge.}}",
-      "name": "Fire",
+      "effects": "Gain 6 ''Echo'' stacks. Dealing [[ability damage]] to an enemy consumes all ''Echo'' stacks to deal {{as|75|magic damage}} {{as|(+ 5% AP)}} {{as|'''bonus''' magic damage}} to them and, for each stack consumed beyond the first, an additional enemy within {{tip|cr|icononly=true}} 600 units of them, firing an orb at each secondary target that impacts after {{rutngt|0.5}} to deal the damage. If the number of additional targets fired at is less than the number of stacks consumed,{{ft|deal an additional {{as|{{pp|75*0.2 to 75*5*0.2 for 5|1 to 5|changedisplay=true|type=remaining ''Echo'' stacks}}|magic damage}} {{as|(+ {{pp|key=%|5*0.2 to 5*5*0.2 for 5|1 to 5|type=remaining ''Echo'' stacks|changedisplay=true|showtype=false}} AP)}} {{as|magic damage}} to the primary target, for a total of {{as|{{pp|(75*0.2)+75 to (75*5*0.2)+75 for 5|1 to 5|type=remaining ''Echo'' stacks|changedisplay=true|showtype=false}}|magic damage}} {{as|(+ {{pp|key=%|(5*0.2)+5 to (5*5*0.2)+5 for 5|1 to 5|type=remaining ''Echo'' stacks|changedisplay=true|showtype=false}} AP)}}|deal an additional 20% damage to the primary target for each remaining ''Echo'' stack}}",
+      "name": "Echo",
       "unique": true
     }
   ],

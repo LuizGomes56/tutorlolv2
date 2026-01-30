@@ -1,6 +1,6 @@
 {
+  "version": "16.2.1",
   "riot_id": 2065,
-  "item_id": "ShurelyasBattlesong",
   "name": "Shurelya's Battlesong",
   "price": 2200,
   "sell": 1540,
@@ -15,42 +15,38 @@
       true
     ],
     [
-      "SummonersRift",
+      "NexusBlitz",
       true
-    ],
-    [
-      "Arena",
-      false
     ],
     [
       "Tft",
       false
     ],
     [
-      "SummonersRift",
+      "Arena",
       false
     ],
     [
-      "NexusBlitz",
+      "UnknownMap33",
+      false
+    ],
+    [
+      "UnknownMap35",
       true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "AbilityPower",
-      "value": 50
+      "AbilityHaste": 15
     },
     {
-      "name": "BaseManaRegen",
-      "value": 125
+      "AbilityPower": 50
     },
     {
-      "name": "MoveSpeed",
-      "value": 4
+      "BaseManaRegen": 125
     },
     {
-      "name": "AbilityHaste",
-      "value": 15
+      "MoveSpeed": 4
     }
   ],
   "damage_type": "Unknown",
@@ -116,12 +112,7 @@
     3113,
     4642
   ],
-  "builds_from_item_ids": [
-    "AetherWisp",
-    "BandleglassMirror"
-  ],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

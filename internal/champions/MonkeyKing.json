@@ -71,6 +71,24 @@
   "abilities": [
     [
       {
+        "type": "Q",
+        "name": "_1"
+      },
+      {
+        "name": "Crushing Blow",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "20 + (0.5 * ctx.bonus_ad)",
+          "45 + (0.5 * ctx.bonus_ad)",
+          "70 + (0.5 * ctx.bonus_ad)",
+          "95 + (0.5 * ctx.bonus_ad)",
+          "120 + (0.5 * ctx.bonus_ad)"
+        ]
+      }
+    ],
+    [
+      {
         "type": "W",
         "name": "_1"
       },
@@ -79,11 +97,11 @@
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
+          "0.3",
           "0.35",
           "0.4",
           "0.45",
-          "0.5",
-          "0.55"
+          "0.5"
         ]
       }
     ],
@@ -98,10 +116,10 @@
         "attributes": "Undefined",
         "damage": [
           "80 + ctx.ap",
-          "110 + ctx.ap",
-          "140 + ctx.ap",
-          "170 + ctx.ap",
-          "200 + ctx.ap"
+          "120 + ctx.ap",
+          "160 + ctx.ap",
+          "200 + ctx.ap",
+          "240 + ctx.ap"
         ]
       }
     ],
@@ -150,24 +168,6 @@
           "(0.16 * ctx.enemy_max_health) + (5.5 * ctx.ad)",
           "(0.24 * ctx.enemy_max_health) + (5.5 * ctx.ad)",
           "(0.32 * ctx.enemy_max_health) + (5.5 * ctx.ad)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_1"
-      },
-      {
-        "name": "Crushing Blow",
-        "damage_type": "Physical",
-        "attributes": "Undefined",
-        "damage": [
-          "20 + (0.55 * ctx.bonus_ad)",
-          "45 + (0.55 * ctx.bonus_ad)",
-          "70 + (0.55 * ctx.bonus_ad)",
-          "95 + (0.55 * ctx.bonus_ad)",
-          "120 + (0.55 * ctx.bonus_ad)"
         ]
       }
     ]

@@ -1,18 +1,19 @@
 [
   [
-    "LudensCompanion",
-    "Stormsurge",
+    "BansheesVeil",
     "BlackfireTorch",
-    "CosmicDrive"
+    "HorizonFocus",
+    "VoidStaff",
+    "ZhonyasHourglass"
   ],
   [
-    "TasteOfBlood",
-    "GrislyMementos",
-    "UltimateHunter",
-    "ManaflowBand",
-    "Transcendence",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "GrislyMementos",
+    "HealthScaling",
+    "ManaflowBand",
+    "TasteOfBlood",
+    "Transcendence",
+    "UltimateHunter"
   ]
 ]

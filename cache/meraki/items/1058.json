@@ -2,13 +2,12 @@
   "active": [],
   "buildsFrom": [],
   "buildsInto": [
-    3146,
     3128,
     3102,
     3157,
     4645,
-    3089,
-    4403
+    4403,
+    3089
   ],
   "name": "Needlessly Large Rod",
   "tier": 1,

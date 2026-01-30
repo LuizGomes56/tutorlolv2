@@ -401,11 +401,11 @@
             "leveling": []
           },
           {
-            "description": "The missing health portion of the additional damage will critically strike for (150% + 40%) damage if the target is below 25% : 75% (based on critical strike chance) of their maximum health and cannot critically strike otherwise. The base damage of the pounce can independently critically strike for (175% + 40%) damage.",
+            "description": "The damage based on the missing health ratio is capped at 200 against monsters.",
             "leveling": []
           },
           {
-            "description": "The third stack directs Wolf to pounce on the target, consuming all stacks to deal additional physical damage, capped at 300 against monsters.",
+            "description": "The third stack directs Wolf to pounce on the target, consuming all stacks to deal additional physical damage, increased by 0% : 50% (+ 0% : 15%) (based on critical strike chance).",
             "leveling": [
               {
                 "attribute": "Additional Physical Damage",
@@ -456,59 +456,6 @@
                       5.0,
                       5.0,
                       5.0
-                    ]
-                  }
-                ]
-              },
-              {
-                "attribute": "Enhanced damage below threshold",
-                "modifiers": [
-                  {
-                    "units": [
-                      "",
-                      "",
-                      "",
-                      "",
-                      ""
-                    ],
-                    "values": [
-                      80.0,
-                      110.0,
-                      140.0,
-                      170.0,
-                      200.0
-                    ]
-                  },
-                  {
-                    "units": [
-                      "% bonus AD",
-                      "% bonus AD",
-                      "% bonus AD",
-                      "% bonus AD",
-                      "% bonus AD"
-                    ],
-                    "values": [
-                      100.0,
-                      100.0,
-                      100.0,
-                      100.0,
-                      100.0
-                    ]
-                  },
-                  {
-                    "units": [
-                      "% (+ 2%) (+ 0.75% (+ 0.2%) per Mark) of target's missing health",
-                      "% (+ 2%) (+ 0.75% (+ 0.2%) per Mark) of target's missing health",
-                      "% (+ 2%) (+ 0.75% (+ 0.2%) per Mark) of target's missing health",
-                      "% (+ 2%) (+ 0.75% (+ 0.2%) per Mark) of target's missing health",
-                      "% (+ 2%) (+ 0.75% (+ 0.2%) per Mark) of target's missing health"
-                    ],
-                    "values": [
-                      7.5,
-                      7.5,
-                      7.5,
-                      7.5,
-                      7.5
                     ]
                   }
                 ]

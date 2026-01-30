@@ -1,22 +1,22 @@
 {
-  "riot_id": 223095,
-  "item_id": "Stormrazor",
+  "version": "16.2.1",
+  "riot_id": 3097,
   "name": "Stormrazor",
-  "price": 2500,
-  "sell": 1250,
+  "price": 3200,
+  "sell": 2240,
   "tier": 3,
   "maps": [
     [
       "SummonersRift",
-      false
-    ],
-    [
-      "NexusBlitz",
-      false
+      true
     ],
     [
       "Aram",
-      false
+      true
+    ],
+    [
+      "NexusBlitz",
+      true
     ],
     [
       "Tft",
@@ -24,29 +24,26 @@
     ],
     [
       "Arena",
-      true
-    ],
-    [
-      "SummonersRift",
       false
     ],
     [
-      "SummonersRift",
+      "UnknownMap33",
+      false
+    ],
+    [
+      "UnknownMap35",
       false
     ]
   ],
   "prettified_stats": [
     {
-      "name": "AttackDamage",
-      "value": 45
+      "AttackDamage": 50
     },
     {
-      "name": "AttackSpeed",
-      "value": 25
+      "AttackSpeed": 20
     },
     {
-      "name": "CriticalStrikeChance",
-      "value": 25
+      "CriticalStrikeChance": 25
     }
   ],
   "damage_type": "Unknown",
@@ -68,11 +65,11 @@
       "percent": 0.0
     },
     "attackDamage": {
-      "flat": 45.0,
+      "flat": 50.0,
       "percent": 0.0
     },
     "attackSpeed": {
-      "flat": 25.0,
+      "flat": 20.0,
       "percent": 0.0
     },
     "criticalStrikeChance": {
@@ -108,10 +105,12 @@
       "percent": 0.0
     }
   },
-  "builds_from_riot_ids": [],
-  "builds_from_item_ids": [],
+  "builds_from_riot_ids": [
+    1038,
+    1018,
+    3144
+  ],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

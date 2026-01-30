@@ -2,19 +2,18 @@
   [
     "DeadMansPlate",
     "LocketOfTheIronSolari",
-    "SpiritVisage",
-    "JakshoTheProtean",
-    "HollowRadiance",
-    "RanduinsOmen"
+    "ProtoplasmHarness",
+    "RanduinsOmen",
+    "TitanicHydra",
+    "UnendingDespair"
   ],
   [
-    "ShieldBash",
-    "SecondWind",
-    "Revitalize",
-    "CheapShot",
-    "UltimateHunter",
     "AttackSpeed",
+    "CheapShot",
     "HealthScaling",
-    "HealthScaling"
+    "Revitalize",
+    "SecondWind",
+    "ShieldBash",
+    "UltimateHunter"
   ]
 ]

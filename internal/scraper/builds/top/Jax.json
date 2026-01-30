@@ -1,20 +1,20 @@
 [
   [
-    "FrozenHeart",
-    "DeathsDance",
     "BladeOfTheRuinedKing",
-    "SpearOfShojin",
+    "FrozenHeart",
+    "HextechGunblade",
     "RanduinsOmen",
-    "KaenicRookern"
+    "SpearOfShojin",
+    "WitsEnd"
   ],
   [
-    "Demolish",
-    "SecondWind",
-    "Unflinching",
-    "BiscuitDelivery",
-    "CosmicInsight",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "BonePlating",
+    "HealthScaling",
+    "LastStand",
+    "LegendAlacrity",
+    "Triumph",
+    "Unflinching"
   ]
 ]

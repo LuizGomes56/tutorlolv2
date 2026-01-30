@@ -249,14 +249,12 @@
       },
       "leveltip": {
         "effect": [
-          "{{ flatad }} -> {{ flatadNL }}",
-          "{{ adperonepercentmissinghp }} -> {{ adperonepercentmissinghpNL }}",
+          "{{ maximumbonusad }} -> {{ maximumbonusadNL }}",
           "{{ basehealing }} -> {{ basehealingNL }}",
           "{{ bonushealperfury }} -> {{ bonushealperfuryNL }}"
         ],
         "label": [
-          "Attack Damage",
-          "Attack Damage per Health % Missing",
+          "Maximum Damage",
           "Healing",
           "Heal Per Fury"
         ]
@@ -273,7 +271,7 @@
       ],
       "rangeBurn": "400",
       "resource": "No Cost",
-      "tooltip": "<spellPassive>Passive:</spellPassive> Tryndamere thirsts for blood, gaining <scaleAD>{{ flatad }} Attack Damage</scaleAD> plus <scaleAD>{{ adperonepercentmissinghp }}</scaleAD> per 1% missing Health.<br /><br /><spellActive>Active:</spellActive> Tryndamere consumes his <keywordMajor>Fury</keywordMajor>, restoring <healing>{{ baseheal }} plus {{ healperfury }} Health per Fury</healing>.{{ spellmodifierdescriptionappend }}",
+      "tooltip": "<spellPassive>Passive:</spellPassive> Tryndamere thirsts for blood, gaining up to <scaleAD>{{ maximumbonusad }} Attack Damage</scaleAD> based on his missing Health.<br /><br /><spellActive>Active:</spellActive> Tryndamere consumes his <keywordMajor>Fury</keywordMajor>, restoring <healing>{{ baseheal }} plus {{ healperfury }} Health per Fury (max: {{ maximumheal }})</healing>. {{ spellmodifierdescriptionappend }}",
       "vars": []
     },
     {
@@ -414,7 +412,7 @@
       ],
       "rangeBurn": "850",
       "resource": "No Cost",
-      "tooltip": "Tryndamere hurls insults, reducing champions' Attack Damage by {{ adreduction*-1 }} for {{ reductionduration }} seconds. Enemy champions with their backs towards Tryndamere are <status>Slowed</status> by {{ slowpotency*-100 }}% for the same duration.{{ spellmodifierdescriptionappend }}",
+      "tooltip": "Tryndamere hurls insults, reducing champions' Attack Damage by {{ adreduction*-1 }} for {{ reductionduration }} seconds and <status>Slowing</status> by {{ slowpotency*-100 }}% while cowering from him for {{ slowduration }} seconds.{{ spellmodifierdescriptionappend }}",
       "vars": []
     },
     {
@@ -555,7 +553,7 @@
       ],
       "rangeBurn": "650",
       "resource": "No Cost",
-      "tooltip": "Tryndamere spins through his enemies, dealing <physicalDamage>{{ totaldamage }} physical damage</physicalDamage> and generating <keywordMajor>{{ nonchampfurygain }} Fury</keywordMajor> per enemy hit, increased to <keywordMajor>{{ champfurygain }} Fury</keywordMajor> against enemy champions.<br /><br />This Ability's Cooldown is reduced by {{ nonchampcdrefund }} second when Tryndamere critically strikes, and reduced by {{ champcdrefund }} seconds when critically striking a champion.{{ spellmodifierdescriptionappend }}",
+      "tooltip": "Tryndamere spins through his enemies, dealing <physicalDamage>{{ totaldamage }} physical damage</physicalDamage> and generating <keywordMajor>{{ nonchampfurygain }} Fury</keywordMajor> per enemy hit, increased to <keywordMajor>{{ champfurygain }} Fury</keywordMajor> against enemy champions.<br /><br />This Ability's Cooldown is reduced by {{ nonchampcdrefund }} seconds when Tryndamere critically strikes, and reduced by {{ champcdrefund }} seconds when critically striking a champion.{{ spellmodifierdescriptionappend }}",
       "vars": []
     },
     {

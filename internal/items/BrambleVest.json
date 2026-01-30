@@ -1,13 +1,21 @@
 {
+  "version": "16.2.1",
   "riot_id": 3076,
-  "item_id": "BrambleVest",
   "name": "Bramble Vest",
   "price": 800,
   "sell": 560,
   "tier": 2,
   "maps": [
     [
+      "SummonersRift",
+      true
+    ],
+    [
       "Aram",
+      true
+    ],
+    [
+      "NexusBlitz",
       true
     ],
     [
@@ -15,30 +23,21 @@
       false
     ],
     [
-      "NexusBlitz",
-      true
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
       "Arena",
       false
     ],
     [
-      "SummonersRift",
+      "UnknownMap33",
       false
     ],
     [
-      "SummonersRift",
+      "UnknownMap35",
       true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "Armor",
-      "value": 30
+      "Armor": 30
     }
   ],
   "damage_type": "Unknown",
@@ -104,16 +103,9 @@
     1029,
     1029
   ],
-  "builds_from_item_ids": [
-    "ClothArmor",
-    "ClothArmor"
-  ],
   "builds_into_riot_ids": [
     323075,
     3075
-  ],
-  "builds_into_item_ids": [
-    "Thornmail"
   ],
   "ranged": {
     "minimum_damage": "zero",

@@ -13,7 +13,7 @@
     },
     "armor": {
       "flat": 25.0,
-      "perLevel": 5.0
+      "perLevel": 4.2
     },
     "magicResistance": {
       "flat": 30.0,
@@ -196,7 +196,7 @@
         "damageType": "MAGIC_DAMAGE",
         "effects": [
           {
-            "description": "Active: Morgana torments the soil at the target location, causing the area to become desecrated for 5 seconds. Enemies within take magic damage on-cast and every 0.5 seconds, increased by 0% : 170% (based on target's missing health). Tormented Shadow deals 170% damage against monsters.",
+            "description": "Active: Morgana torments the soil at the target location, causing the area to become desecrated for 5 seconds. Enemies within take magic damage on-cast and every 0.5 seconds thereafter, increased by 0% : 100% (based on target's missing health). Tormented Shadow deals 170% damage against monsters.",
             "leveling": [
               {
                 "attribute": "Maximum Damage Per Tick",
@@ -210,11 +210,11 @@
                       ""
                     ],
                     "values": [
-                      16.2,
-                      31.05,
-                      45.9,
-                      60.75,
-                      75.6
+                      18.0,
+                      31.0,
+                      44.0,
+                      57.0,
+                      70.0
                     ]
                   },
                   {
@@ -226,11 +226,11 @@
                       "% AP"
                     ],
                     "values": [
-                      22.95,
-                      22.95,
-                      22.95,
-                      22.95,
-                      22.95
+                      20.0,
+                      20.0,
+                      20.0,
+                      20.0,
+                      20.0
                     ]
                   }
                 ]
@@ -247,11 +247,11 @@
                       ""
                     ],
                     "values": [
-                      162.0,
-                      310.5,
-                      459.0,
-                      607.5,
-                      756.0
+                      180.0,
+                      310.0,
+                      440.0,
+                      570.0,
+                      700.0
                     ]
                   },
                   {
@@ -263,11 +263,11 @@
                       "% AP"
                     ],
                     "values": [
-                      229.5,
-                      229.5,
-                      229.5,
-                      229.5,
-                      229.5
+                      200.0,
+                      200.0,
+                      200.0,
+                      200.0,
+                      200.0
                     ]
                   }
                 ]
@@ -284,11 +284,11 @@
                       ""
                     ],
                     "values": [
-                      6.0,
-                      11.5,
-                      17.0,
-                      22.5,
-                      28.0
+                      9.0,
+                      15.5,
+                      22.0,
+                      28.5,
+                      35.0
                     ]
                   },
                   {
@@ -300,11 +300,11 @@
                       "% AP"
                     ],
                     "values": [
-                      8.5,
-                      8.5,
-                      8.5,
-                      8.5,
-                      8.5
+                      10.0,
+                      10.0,
+                      10.0,
+                      10.0,
+                      10.0
                     ]
                   }
                 ]
@@ -321,11 +321,11 @@
                       ""
                     ],
                     "values": [
-                      60.0,
-                      115.0,
-                      170.0,
-                      225.0,
-                      280.0
+                      90.0,
+                      155.0,
+                      220.0,
+                      285.0,
+                      350.0
                     ]
                   },
                   {
@@ -337,11 +337,11 @@
                       "% AP"
                     ],
                     "values": [
-                      85.0,
-                      85.0,
-                      85.0,
-                      85.0,
-                      85.0
+                      100.0,
+                      100.0,
+                      100.0,
+                      100.0,
+                      100.0
                     ]
                   }
                 ]
@@ -560,6 +560,7 @@
     ]
   },
   "positions": [
+    "MIDDLE",
     "SUPPORT"
   ]
 }

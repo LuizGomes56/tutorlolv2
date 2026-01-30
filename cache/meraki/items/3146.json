@@ -1,0 +1,83 @@
+{
+  "active": [
+    {
+      "effects": "Shocks the target enemy champion with a bolt of lightning, dealing {{as|{{pp|175 to 253}}|magic damage}} {{as|(+ 30% AP)}} {{as|magic damage}} and {{tip|slow|slowing}} them by 25% for {{fd|1.5}} seconds.",
+      "name": "Lightning Bolt",
+      "unique": true
+    }
+  ],
+  "buildsFrom": [
+    1053,
+    3145,
+    1052
+  ],
+  "buildsInto": [],
+  "name": "Hextech Gunblade",
+  "tier": 3,
+  "passives": [],
+  "id": 3146,
+  "stats": {
+    "abilityPower": {
+      "flat": 80.0,
+      "percent": 0.0
+    },
+    "armor": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "armorPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicPenetration": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "attackDamage": {
+      "flat": 40.0,
+      "percent": 0.0
+    },
+    "attackSpeed": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "criticalStrikeChance": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "criticalStrikeDamage": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "health": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "lifesteal": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "magicResistance": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "mana": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "movespeed": {
+      "flat": 0.0,
+      "percent": 0.0
+    },
+    "omnivamp": {
+      "flat": 0.0,
+      "percent": 10.0
+    }
+  },
+  "shop": {
+    "purchasable": true,
+    "prices": {
+      "total": 3000
+    }
+  }
+}

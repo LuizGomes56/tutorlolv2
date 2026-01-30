@@ -71,19 +71,73 @@
   "abilities": [
     [
       {
-        "type": "E",
-        "name": "_3"
+        "type": "Q",
+        "name": "_1"
       },
       {
-        "name": "Unraveled Earth",
+        "name": "Threaded Volley",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "25 + (0.3 * ctx.ap)",
-          "45 + (0.3 * ctx.ap)",
-          "65 + (0.3 * ctx.ap)",
-          "85 + (0.3 * ctx.ap)",
-          "105 + (0.3 * ctx.ap)"
+          "55 + (0.5 * ctx.ap)",
+          "72.5 + (0.5 * ctx.ap)",
+          "90 + (0.5 * ctx.ap)",
+          "107.5 + (0.5 * ctx.ap)",
+          "125 + (0.5 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_2"
+      },
+      {
+        "name": "Threaded Volley",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "22 + (0.2 * ctx.ap)",
+          "29 + (0.2 * ctx.ap)",
+          "36 + (0.2 * ctx.ap)",
+          "43 + (0.2 * ctx.ap)",
+          "50 + (0.2 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_3"
+      },
+      {
+        "name": "Threaded Volley",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "143 + (1.3 * ctx.ap)",
+          "188.5 + (1.3 * ctx.ap)",
+          "234 + (1.3 * ctx.ap)",
+          "279.5 + (1.3 * ctx.ap)",
+          "325 + (1.3 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "Q",
+        "name": "_4"
+      },
+      {
+        "name": "Threaded Volley",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "99 + (0.9 * ctx.ap)",
+          "130.5 + (0.9 * ctx.ap)",
+          "162 + (0.9 * ctx.ap)",
+          "193.5 + (0.9 * ctx.ap)",
+          "225 + (0.9 * ctx.ap)"
         ]
       }
     ],
@@ -116,82 +170,28 @@
         "attributes": "Undefined",
         "damage": [
           "62.5 + (0.75 * ctx.ap)",
-          "112.5 + (0.75 * ctx.ap)",
-          "162.5 + (0.75 * ctx.ap)",
-          "212.5 + (0.75 * ctx.ap)",
-          "262.5 + (0.75 * ctx.ap)"
+          "100 + (0.75 * ctx.ap)",
+          "137.5 + (0.75 * ctx.ap)",
+          "175 + (0.75 * ctx.ap)",
+          "212.5 + (0.75 * ctx.ap)"
         ]
       }
     ],
     [
       {
-        "type": "Q",
-        "name": "_1"
-      },
-      {
-        "name": "Threaded Volley",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "56 + (0.5 * ctx.ap)",
-          "74.5 + (0.5 * ctx.ap)",
-          "93 + (0.5 * ctx.ap)",
-          "111.5 + (0.5 * ctx.ap)",
-          "130 + (0.5 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_2"
-      },
-      {
-        "name": "Threaded Volley",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "22.4 + (0.2 * ctx.ap)",
-          "29.8 + (0.2 * ctx.ap)",
-          "37.2 + (0.2 * ctx.ap)",
-          "44.6 + (0.2 * ctx.ap)",
-          "52 + (0.2 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
-        "name": "_4"
-      },
-      {
-        "name": "Threaded Volley",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "100.8 + (0.9 * ctx.ap)",
-          "134.1 + (0.9 * ctx.ap)",
-          "167.4 + (0.9 * ctx.ap)",
-          "200.7 + (0.9 * ctx.ap)",
-          "234 + (0.9 * ctx.ap)"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "Q",
+        "type": "E",
         "name": "_3"
       },
       {
-        "name": "Threaded Volley",
+        "name": "Unraveled Earth",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "145.6 + (1.3 * ctx.ap)",
-          "193.7 + (1.3 * ctx.ap)",
-          "241.8 + (1.3 * ctx.ap)",
-          "289.9 + (1.3 * ctx.ap)",
-          "338 + (1.3 * ctx.ap)"
+          "25 + (0.3 * ctx.ap)",
+          "40 + (0.3 * ctx.ap)",
+          "55 + (0.3 * ctx.ap)",
+          "70 + (0.3 * ctx.ap)",
+          "85 + (0.3 * ctx.ap)"
         ]
       }
     ]

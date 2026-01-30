@@ -1,19 +1,20 @@
 [
   [
+    "EndlessHunger",
+    "GuardianAngel",
+    "ImmortalShieldbow",
+    "InfinityEdge",
     "MortalReminder",
-    "Bloodthirster",
-    "TrinityForce",
-    "MawOfMalmortius",
-    "ImmortalShieldbow"
+    "SeryldasGrudge"
   ],
   [
-    "PresenceOfMind",
-    "LegendHaste",
-    "CoupDeGrace",
-    "Transcendence",
-    "GatheringStorm",
-    "AbilityHaste",
     "AdaptiveForce",
-    "Health"
+    "AttackSpeed",
+    "CoupDeGrace",
+    "GatheringStorm",
+    "Health",
+    "LegendHaste",
+    "PresenceOfMind",
+    "Transcendence"
   ]
 ]

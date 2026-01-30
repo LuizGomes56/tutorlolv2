@@ -78,29 +78,11 @@
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "75",
-          "100",
-          "125",
-          "150",
-          "175"
-        ]
-      }
-    ],
-    [
-      {
-        "type": "W",
-        "name": "_1"
-      },
-      {
-        "name": "Volatile Spiderling",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "60 + (0.75 * ctx.ap)",
-          "100 + (0.75 * ctx.ap)",
-          "140 + (0.75 * ctx.ap)",
-          "180 + (0.75 * ctx.ap)",
-          "220 + (0.75 * ctx.ap)"
+          "65 + (0.9 * ctx.ap)",
+          "85 + (0.9 * ctx.ap)",
+          "105 + (0.9 * ctx.ap)",
+          "125 + (0.9 * ctx.ap)",
+          "145 + (0.9 * ctx.ap)"
         ]
       }
     ],
@@ -119,6 +101,24 @@
           "100 + (0.04 * ctx.current_health) + (0.03 * 0.01 * ctx.ap)",
           "130 + (0.04 * ctx.current_health) + (0.03 * 0.01 * ctx.ap)",
           "160 + (0.04 * ctx.current_health) + (0.03 * 0.01 * ctx.ap)"
+        ]
+      }
+    ],
+    [
+      {
+        "type": "W",
+        "name": "_1"
+      },
+      {
+        "name": "Volatile Spiderling",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "60 + (0.75 * ctx.ap)",
+          "100 + (0.75 * ctx.ap)",
+          "140 + (0.75 * ctx.ap)",
+          "180 + (0.75 * ctx.ap)",
+          "220 + (0.75 * ctx.ap)"
         ]
       }
     ]

@@ -1,20 +1,20 @@
 [
   [
+    "ArdentCenser",
+    "Bandlepipes",
+    "KnightsVow",
     "MikaelsBlessing",
-    "Malignance",
     "RylaisCrystalScepter",
-    "StaffOfFlowingWater",
-    "ShurelyasBattlesong",
-    "VigilantWardstone"
+    "StaffOfFlowingWater"
   ],
   [
-    "ManaflowBand",
-    "Transcendence",
-    "GatheringStorm",
-    "FontOfLife",
-    "Revitalize",
     "AbilityHaste",
     "AdaptiveForce",
-    "HealthScaling"
+    "FontOfLife",
+    "GatheringStorm",
+    "HealthScaling",
+    "ManaflowBand",
+    "Revitalize",
+    "Transcendence"
   ]
 ]

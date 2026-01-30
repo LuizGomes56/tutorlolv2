@@ -1,52 +1,49 @@
 {
+  "version": "16.2.1",
   "riot_id": 6609,
-  "item_id": "ChempunkChainsword",
   "name": "Chempunk Chainsword",
   "price": 3100,
   "sell": 2170,
   "tier": 3,
   "maps": [
     [
-      "Tft",
-      false
-    ],
-    [
       "SummonersRift",
       true
     ],
     [
-      "Arena",
-      false
-    ],
-    [
-      "SummonersRift",
+      "Aram",
       true
-    ],
-    [
-      "SummonersRift",
-      false
     ],
     [
       "NexusBlitz",
       true
     ],
     [
-      "Aram",
+      "Tft",
+      false
+    ],
+    [
+      "Arena",
+      false
+    ],
+    [
+      "UnknownMap33",
+      false
+    ],
+    [
+      "UnknownMap35",
       true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "AttackDamage",
-      "value": 45
+      "AbilityHaste": 15
     },
     {
-      "name": "Health",
-      "value": 450
+      "AttackDamage": 45
     },
     {
-      "name": "AbilityHaste",
-      "value": 15
+      "Health": 450
     }
   ],
   "damage_type": "Unknown",
@@ -113,13 +110,7 @@
     1011,
     3133
   ],
-  "builds_from_item_ids": [
-    "ExecutionersCalling",
-    "GiantsBelt",
-    "CaulfieldsWarhammer"
-  ],
   "builds_into_riot_ids": [],
-  "builds_into_item_ids": [],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

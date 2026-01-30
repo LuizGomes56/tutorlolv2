@@ -1,29 +1,17 @@
 {
+  "version": "16.2.1",
   "riot_id": 2420,
-  "item_id": "SeekersArmguard",
   "name": "Seeker's Armguard",
   "price": 1600,
   "sell": 640,
   "tier": 2,
   "maps": [
     [
+      "SummonersRift",
+      true
+    ],
+    [
       "Aram",
-      true
-    ],
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
-      "Tft",
-      false
-    ],
-    [
-      "SummonersRift",
       true
     ],
     [
@@ -31,18 +19,28 @@
       true
     ],
     [
+      "Tft",
+      false
+    ],
+    [
       "Arena",
       false
+    ],
+    [
+      "UnknownMap33",
+      false
+    ],
+    [
+      "UnknownMap35",
+      true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "AbilityPower",
-      "value": 40
+      "AbilityPower": 40
     },
     {
-      "name": "Armor",
-      "value": 25
+      "Armor": 25
     }
   ],
   "damage_type": "Unknown",
@@ -109,16 +107,8 @@
     1029,
     1052
   ],
-  "builds_from_item_ids": [
-    "AmplifyingTome",
-    "ClothArmor",
-    "AmplifyingTome"
-  ],
   "builds_into_riot_ids": [
     3157
-  ],
-  "builds_into_item_ids": [
-    "ZhonyasHourglass"
   ],
   "ranged": {
     "minimum_damage": "zero",

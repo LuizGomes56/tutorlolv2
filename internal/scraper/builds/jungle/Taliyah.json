@@ -1,20 +1,19 @@
 [
   [
-    "VoidStaff",
-    "LiandrysTorment",
-    "RylaisCrystalScepter",
+    "BansheesVeil",
+    "BloodlettersCurse",
     "Cryptbloom",
+    "LiandrysTorment",
     "Morellonomicon",
-    "CosmicDrive"
+    "RylaisCrystalScepter"
   ],
   [
+    "AdaptiveForce",
     "CheapShot",
-    "GrislyMementos",
-    "TreasureHunter",
-    "MagicalFootwear",
     "CosmicInsight",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "GrislyMementos",
+    "HealthScaling",
+    "MagicalFootwear",
+    "TreasureHunter"
   ]
 ]

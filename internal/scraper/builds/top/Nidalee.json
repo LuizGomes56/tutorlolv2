@@ -1,20 +1,20 @@
 [
   [
-    "ZhonyasHourglass",
-    "Hullbreaker",
-    "AbyssalMask",
-    "FrozenHeart",
-    "MawOfMalmortius",
-    "Shadowflame"
+    "BladeOfTheRuinedKing",
+    "ChempunkChainsword",
+    "EndlessHunger",
+    "HextechGunblade",
+    "RanduinsOmen",
+    "SteraksGage"
   ],
   [
-    "Demolish",
-    "Conditioning",
-    "Revitalize",
-    "PresenceOfMind",
-    "LastStand",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "BonePlating",
+    "Demolish",
+    "HealthScaling",
+    "Overgrowth",
+    "SuddenImpact",
+    "TreasureHunter"
   ]
 ]

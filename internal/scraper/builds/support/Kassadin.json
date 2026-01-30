@@ -1,19 +1,19 @@
 [
   [
-    "RodOfAges",
-    "FrozenHeart",
-    "Shadowflame",
-    "RabadonsDeathcap",
-    "BansheesVeil"
+    "BansheesVeil",
+    "LichBane",
+    "LudensEcho",
+    "Morellonomicon",
+    "Stormsurge",
+    "WintersApproach"
   ],
   [
-    "SuddenImpact",
-    "GrislyMementos",
-    "UltimateHunter",
-    "PresenceOfMind",
-    "LastStand",
     "AdaptiveForce",
+    "GrislyMementos",
     "HealthScaling",
-    "HealthScaling"
+    "Overgrowth",
+    "SecondWind",
+    "SuddenImpact",
+    "UltimateHunter"
   ]
 ]

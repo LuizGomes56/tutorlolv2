@@ -1,19 +1,19 @@
 [
   [
+    "ForceOfNature",
+    "FrozenHeart",
+    "KaenicRookern",
     "LocketOfTheIronSolari",
-    "UnendingDespair",
-    "JakshoTheProtean",
-    "RanduinsOmen",
-    "Redemption"
+    "ProtoplasmHarness",
+    "RanduinsOmen"
   ],
   [
+    "AttackSpeed",
+    "BonePlating",
+    "HealthScaling",
     "ShieldBash",
-    "SecondWind",
-    "Unflinching",
     "SuddenImpact",
     "UltimateHunter",
-    "AttackSpeed",
-    "HealthScaling",
-    "HealthScaling"
+    "Unflinching"
   ]
 ]

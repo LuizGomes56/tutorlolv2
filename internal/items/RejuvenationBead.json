@@ -1,29 +1,13 @@
 {
+  "version": "16.2.1",
   "riot_id": 1006,
-  "item_id": "RejuvenationBead",
   "name": "Rejuvenation Bead",
   "price": 300,
   "sell": 120,
   "tier": 1,
   "maps": [
     [
-      "Arena",
-      false
-    ],
-    [
       "SummonersRift",
-      false
-    ],
-    [
-      "SummonersRift",
-      true
-    ],
-    [
-      "Tft",
-      false
-    ],
-    [
-      "NexusBlitz",
       true
     ],
     [
@@ -31,14 +15,29 @@
       true
     ],
     [
-      "SummonersRift",
+      "NexusBlitz",
+      true
+    ],
+    [
+      "Tft",
+      false
+    ],
+    [
+      "Arena",
+      false
+    ],
+    [
+      "UnknownMap33",
+      false
+    ],
+    [
+      "UnknownMap35",
       true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "BaseHealthRegen",
-      "value": 100
+      "BaseHealthRegen": 100
     }
   ],
   "damage_type": "Unknown",
@@ -101,17 +100,11 @@
     }
   },
   "builds_from_riot_ids": [],
-  "builds_from_item_ids": [],
   "builds_into_riot_ids": [
+    3801,
     3211,
     323109,
-    3109,
-    3801
-  ],
-  "builds_into_item_ids": [
-    "SpectresCowl",
-    "KnightsVow",
-    "CrystallineBracer"
+    3109
   ],
   "ranged": {
     "minimum_damage": "zero",

@@ -71,7 +71,7 @@
         "damageType": "MAGIC_DAMAGE",
         "effects": [
           {
-            "description": "Innate: Tahm Kench's basic attacks on-hit and Tongue Lash are empowered to deal 6 : 48 (based on level) (+ 1.5% AP per 100 bonus health) (+ 4% of his bonus health) bonus magic damage and apply a stack of An Acquired Taste against enemy champions for 5 seconds, refreshing on subsequent hits and stacking up to 3 times. Stacks expire by one every 0.67 seconds when the duration ends.",
+            "description": "Innate: Tahm Kench's basic attacks on-hit and Tongue Lash are empowered to deal 6 : 48 (based on level) (+ 1.5% AP per 100 bonus health) (+ 4.5% of his bonus health) bonus magic damage and apply a stack of An Acquired Taste against enemy champions for 5 seconds, refreshing on subsequent hits and stacking up to 3 times. Stacks expire one by one every 0.67 seconds when the duration ends.",
             "leveling": []
           },
           {
@@ -249,11 +249,11 @@
                       "% bonus health"
                     ],
                     "values": [
-                      4.0,
-                      4.0,
-                      4.0,
-                      4.0,
-                      4.0
+                      4.5,
+                      4.5,
+                      4.5,
+                      4.5,
+                      4.5
                     ]
                   }
                 ]

@@ -1,18 +1,19 @@
 [
   [
+    "DeathsDance",
+    "MercurialScimitar",
     "MortalReminder",
-    "Bloodthirster",
-    "SunderedSky",
-    "NavoriFlickerblade"
+    "PhantomDancer",
+    "YunTalWildarrows"
   ],
   [
-    "Triumph",
-    "LegendBloodline",
+    "AdaptiveForce",
+    "AttackSpeed",
+    "HealthScaling",
     "LastStand",
+    "LegendBloodline",
     "SuddenImpact",
     "TreasureHunter",
-    "AttackSpeed",
-    "AdaptiveForce",
-    "HealthScaling"
+    "Triumph"
   ]
 ]

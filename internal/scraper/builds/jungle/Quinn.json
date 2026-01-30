@@ -1,20 +1,20 @@
 [
   [
-    "KrakenSlayer",
-    "GuardianAngel",
-    "MortalReminder",
-    "YoumuusGhostblade",
+    "Bastionbreaker",
     "BladeOfTheRuinedKing",
-    "ImmortalShieldbow"
+    "KrakenSlayer",
+    "MortalReminder",
+    "Stormrazor",
+    "YoumuusGhostblade"
   ],
   [
-    "SuddenImpact",
-    "GrislyMementos",
-    "TreasureHunter",
     "AbsoluteFocus",
-    "GatheringStorm",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "GatheringStorm",
+    "GrislyMementos",
+    "HealthScaling",
+    "SuddenImpact",
+    "TreasureHunter"
   ]
 ]

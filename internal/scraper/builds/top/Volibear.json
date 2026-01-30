@@ -1,20 +1,20 @@
 [
   [
-    "IcebornGauntlet",
-    "Riftmaker",
-    "CosmicDrive",
+    "Bandlepipes",
+    "DeadMansPlate",
+    "FrozenHeart",
     "NashorsTooth",
     "RanduinsOmen",
-    "FrozenHeart"
+    "Riftmaker"
   ],
   [
-    "Triumph",
-    "LegendHaste",
-    "LastStand",
-    "Demolish",
-    "Revitalize",
-    "AttackSpeed",
     "AdaptiveForce",
-    "HealthScaling"
+    "AttackSpeed",
+    "Demolish",
+    "HealthScaling",
+    "LastStand",
+    "LegendHaste",
+    "Revitalize",
+    "Triumph"
   ]
 ]

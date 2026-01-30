@@ -1,21 +1,17 @@
 {
+  "version": "16.2.1",
   "riot_id": 1011,
-  "item_id": "GiantsBelt",
   "name": "Giant's Belt",
   "price": 900,
   "sell": 630,
   "tier": 2,
   "maps": [
     [
-      "Tft",
-      false
-    ],
-    [
       "SummonersRift",
       true
     ],
     [
-      "SummonersRift",
+      "Aram",
       true
     ],
     [
@@ -23,22 +19,25 @@
       true
     ],
     [
+      "Tft",
+      false
+    ],
+    [
       "Arena",
       false
     ],
     [
-      "SummonersRift",
+      "UnknownMap33",
       false
     ],
     [
-      "Aram",
+      "UnknownMap35",
       true
     ]
   ],
   "prettified_stats": [
     {
-      "name": "Health",
-      "value": 350
+      "Health": 350
     }
   ],
   "damage_type": "Unknown",
@@ -103,15 +102,13 @@
   "builds_from_riot_ids": [
     1028
   ],
-  "builds_from_item_ids": [
-    "RubyCrystal"
-  ],
   "builds_into_riot_ids": [
     3119,
     8001,
     3748,
     3083,
-    2502,
+    3039,
+    2525,
     3084,
     3116,
     3143,
@@ -120,17 +117,6 @@
     4637,
     6609,
     6667
-  ],
-  "builds_into_item_ids": [
-    "WintersApproach",
-    "TitanicHydra",
-    "WarmogsArmor",
-    "UnendingDespair",
-    "Heartsteel",
-    "RylaisCrystalScepter",
-    "RanduinsOmen",
-    "JakshoTheProtean",
-    "ChempunkChainsword"
   ],
   "ranged": {
     "minimum_damage": "zero",

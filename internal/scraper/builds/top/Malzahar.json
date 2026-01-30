@@ -1,20 +1,19 @@
 [
   [
-    "Shadowflame",
-    "Morellonomicon",
-    "VoidStaff",
+    "ArchangelsStaff",
     "BloodlettersCurse",
     "Malignance",
-    "ArchangelsStaff"
+    "Shadowflame",
+    "VoidStaff",
+    "ZhonyasHourglass"
   ],
   [
-    "ManaflowBand",
-    "Transcendence",
-    "GatheringStorm",
-    "MagicalFootwear",
+    "AdaptiveForce",
     "CosmicInsight",
-    "AdaptiveForce",
-    "AdaptiveForce",
-    "HealthScaling"
+    "GatheringStorm",
+    "HealthScaling",
+    "MagicalFootwear",
+    "ManaflowBand",
+    "Transcendence"
   ]
 ]

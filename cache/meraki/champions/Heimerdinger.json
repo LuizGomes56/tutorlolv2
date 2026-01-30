@@ -478,6 +478,14 @@
                       180.0,
                       225.0
                     ]
+                  },
+                  {
+                    "units": [
+                      "% AP"
+                    ],
+                    "values": [
+                      45.0
+                    ]
                   }
                 ]
               },
@@ -534,34 +542,18 @@
             ]
           },
           {
-            "description": "Hextech Rocket Swarm scales with UPGRADE!!!'s rank.",
-            "leveling": []
-          },
-          {
             "description": "UPGRADE!!! - Active: Heimerdinger unleashes 4 waves of 5 rockets in quick succession that converge upon the target location. Each rocket deals magic damage to the first enemy hit.",
             "leveling": [
               {
-                "attribute": "Initial Rocket Damage",
+                "attribute": "135 / 180 / 225 (+ 45% AP)",
+                "modifiers": []
+              },
+              {
+                "attribute": "Hextech Rocket Swarm scales with UPGRADE!!!'s rank",
                 "modifiers": [
                   {
-                    "units": [
-                      "",
-                      "",
-                      ""
-                    ],
-                    "values": [
-                      135.0,
-                      180.0,
-                      225.0
-                    ]
-                  },
-                  {
-                    "units": [
-                      "% AP"
-                    ],
-                    "values": [
-                      45.0
-                    ]
+                    "units": [],
+                    "values": []
                   }
                 ]
               }
@@ -646,10 +638,6 @@
         "damageType": "MAGIC_DAMAGE",
         "effects": [
           {
-            "description": "CH-3X Lightning Grenade scales with UPGRADE!!!'s rank.",
-            "leveling": []
-          },
-          {
             "description": "Enemy champions can only be damaged once per cast, but can be slowed and stunned multiple times if circumstances permit.",
             "leveling": []
           },
@@ -657,27 +645,15 @@
             "description": "UPGRADE!!! - Active: Heimerdinger hurls a massive grenade at the target location that bounces a fixed distance 3 times in the cast direction. The grenade explodes upon landing each time to deal magic damage to nearby enemies and slow them by 35% for 2 seconds. Enemies hit at the center of the grenade's impact are additionally stunned for 1.5 seconds.",
             "leveling": [
               {
-                "attribute": "Magic Damage",
+                "attribute": "100 / 200 / 300 (+ 60% AP)",
+                "modifiers": []
+              },
+              {
+                "attribute": "CH-3X Lightning Grenade scales with UPGRADE!!!'s rank",
                 "modifiers": [
                   {
-                    "units": [
-                      "",
-                      "",
-                      ""
-                    ],
-                    "values": [
-                      100.0,
-                      200.0,
-                      300.0
-                    ]
-                  },
-                  {
-                    "units": [
-                      "% AP"
-                    ],
-                    "values": [
-                      60.0
-                    ]
+                    "units": [],
+                    "values": []
                   }
                 ]
               }

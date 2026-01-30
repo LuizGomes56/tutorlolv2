@@ -10,7 +10,7 @@
   "tier": 3,
   "passives": [
     {
-      "effects": "Your next basic attack against a champion is empowered to {{tip|critical strike|critically strike}} for {{tt|175% damage|Affected by critical damage modifiers}} and {{tip|heal}} you for {{as|{{rd|100%|50%}} '''base''' AD}} {{as|(+ 6% of your '''missing''' health)}} (8 second cooldown per target). Excess healing beyond {{as|'''maximum''' health}} is converted to {{as|'''bonus''' health}} for 8 seconds.",
+      "effects": "Your next basic attack against a champion is empowered to {{tip|critical strike|critically strike}} for {{tt|160% damage|Affected by critical damage modifiers}} and {{tip|heal}} you for {{as|{{rd|100%|50%}} '''base''' AD}} {{as|(+ 6% of your '''missing''' health)}} (10 second cooldown per target). Excess healing beyond {{as|'''maximum''' health}} is converted to {{as|'''bonus''' health}} for 8 seconds.",
       "name": "Lightshield Strike",
       "unique": true
     }
@@ -34,7 +34,7 @@
       "percent": 0.0
     },
     "attackDamage": {
-      "flat": 40.0,
+      "flat": 45.0,
       "percent": 0.0
     },
     "attackSpeed": {

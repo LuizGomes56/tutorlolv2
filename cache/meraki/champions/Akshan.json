@@ -4,7 +4,7 @@
   "adaptiveType": "PHYSICAL_DAMAGE",
   "stats": {
     "health": {
-      "flat": 630.0,
+      "flat": 610.0,
       "perLevel": 107.0
     },
     "mana": {
@@ -79,7 +79,7 @@
             "leveling": []
           },
           {
-            "description": "The additional shot applies on-hit effects, triggers on-attack effects, and can critically strike[ for (22.5% + 12%) bonus damage. ][ 100% base damage + 30% bonus critical damage. ]",
+            "description": "The additional shot applies on-hit effects, triggers on-attack effects, and is affected by critical strike modifiers.",
             "leveling": []
           }
         ],
@@ -100,10 +100,10 @@
                 ""
               ],
               "values": [
+                9.0,
                 8.0,
-                7.25,
-                6.5,
-                5.75,
+                7.0,
+                6.0,
                 5.0
               ]
             }
@@ -126,27 +126,27 @@
                       ""
                     ],
                     "values": [
-                      5.0,
-                      25.0,
                       45.0,
-                      65.0,
-                      85.0
+                      75.0,
+                      105.0,
+                      135.0,
+                      165.0
                     ]
                   },
                   {
                     "units": [
-                      "% AD",
-                      "% AD",
-                      "% AD",
-                      "% AD",
-                      "% AD"
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
                     ],
                     "values": [
-                      80.0,
-                      80.0,
-                      80.0,
-                      80.0,
-                      80.0
+                      70.0,
+                      70.0,
+                      70.0,
+                      70.0,
+                      70.0
                     ]
                   }
                 ]
@@ -198,27 +198,27 @@
                       ""
                     ],
                     "values": [
-                      10.0,
-                      50.0,
                       90.0,
-                      130.0,
-                      170.0
+                      150.0,
+                      210.0,
+                      270.0,
+                      330.0
                     ]
                   },
                   {
                     "units": [
-                      "% AD",
-                      "% AD",
-                      "% AD",
-                      "% AD",
-                      "% AD"
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
                     ],
                     "values": [
-                      160.0,
-                      160.0,
-                      160.0,
-                      160.0,
-                      160.0
+                      140.0,
+                      140.0,
+                      140.0,
+                      140.0,
+                      140.0
                     ]
                   }
                 ]
@@ -342,7 +342,7 @@
             "leveling": []
           },
           {
-            "description": "Scoring an enemy champion takedown reduces Heroic Swing's current cooldown to 0.5 seconds. The shots can critically strike for[ (157.5% + 36%) damage ][ 90% total critical damage ]and apply life steal at 100% effectiveness.",
+            "description": "Scoring an enemy champion takedown reduces Heroic Swing's current cooldown to 0.5 seconds. The shots can critically strike for[ (150% + 15%) damage ][ 50% bonus critical damage ]and apply life steal.",
             "leveling": []
           },
           {
@@ -360,11 +360,11 @@
                       "  ×"
                     ],
                     "values": [
-                      15.0,
-                      30.0,
-                      45.0,
-                      60.0,
-                      75.0
+                      8.0,
+                      16.0,
+                      24.0,
+                      32.0,
+                      40.0
                     ]
                   },
                   {
@@ -376,11 +376,11 @@
                       "% AD"
                     ],
                     "values": [
-                      15.0,
-                      15.0,
-                      15.0,
-                      15.0,
-                      15.0
+                      25.0,
+                      25.0,
+                      25.0,
+                      25.0,
+                      25.0
                     ]
                   },
                   {
@@ -476,53 +476,29 @@
             "leveling": []
           },
           {
-            "description": "Comeuppance will recast after the duration, or can be recast early after 0.5 seconds. Comeuppance is placed on a 5-second cooldown if the channel is cancelled.",
+            "description": "Comeuppance can be recast after 0.5 seconds during the channel, and does so automatically afterwards. Comeuppance is placed on a 5-second cooldown if the channel is cancelled.",
             "leveling": []
           },
           {
-            "description": "Each bullet's damage applies life steal at 100% effectiveness and executes minions.",
+            "description": "Each bullet's damage applies life steal and executes minions.",
             "leveling": []
           },
           {
-            "description": "Recast: Akshan fires all stored bullets at the target, each briefly granting sight around their trajectory and dealing physical damage to the first enemy hit, increased by 50% of critical chance and critical damage bonuses as well as by 0% : 200% (based on target's missing health). The shots can hit structures.",
+            "description": "Recast: Akshan fires all stored bullets at the target, each briefly granting sight around their trajectory and dealing physical damage to the first enemy hit, increased by 0% : 30% (+ 0% : 9%) (based on critical strike chance), as well as by 0% : 200% (based on target's missing health). The shots can hit structures.",
             "leveling": [
               {
                 "attribute": "Damage to target on 67% missing hp",
                 "modifiers": [
                   {
                     "units": [
-                      "[375 / 630 / 945 ] × [1",
-                      "[375 / 630 / 945 ] × [1",
-                      "[375 / 630 / 945 ] × [1"
+                      "",
+                      "",
+                      ""
                     ],
                     "values": [
-                      0.0,
-                      0.0,
-                      0.0
-                    ]
-                  },
-                  {
-                    "units": [
-                      "0 : 0.5 ",
-                      "0 : 0.5 ",
-                      "0 : 0.5 "
-                    ],
-                    "values": [
-                      0.0,
-                      0.0,
-                      0.0
-                    ]
-                  },
-                  {
-                    "units": [
-                      "]",
-                      "]",
-                      "]"
-                    ],
-                    "values": [
-                      0.2,
-                      0.2,
-                      0.2
+                      375.0,
+                      630.0,
+                      945.0
                     ]
                   },
                   {
@@ -536,18 +512,6 @@
                       270.0,
                       315.0
                     ]
-                  },
-                  {
-                    "units": [
-                      "based on critical strike chance",
-                      "based on critical strike chance",
-                      "based on critical strike chance"
-                    ],
-                    "values": [
-                      0.0,
-                      0.0,
-                      0.0
-                    ]
                   }
                 ]
               },
@@ -556,38 +520,14 @@
                 "modifiers": [
                   {
                     "units": [
-                      "[75 / 90 / 105 / 120 / 135 ] × [1",
-                      "[75 / 90 / 105 / 120 / 135 ] × [1",
-                      "[75 / 90 / 105 / 120 / 135 ] × [1"
+                      "",
+                      "",
+                      ""
                     ],
                     "values": [
-                      0.0,
-                      0.0,
-                      0.0
-                    ]
-                  },
-                  {
-                    "units": [
-                      "0 : 0.5 ",
-                      "0 : 0.5 ",
-                      "0 : 0.5 "
-                    ],
-                    "values": [
-                      0.0,
-                      0.0,
-                      0.0
-                    ]
-                  },
-                  {
-                    "units": [
-                      "]",
-                      "]",
-                      "]"
-                    ],
-                    "values": [
-                      0.2,
-                      0.2,
-                      0.2
+                      75.0,
+                      105.0,
+                      135.0
                     ]
                   },
                   {
@@ -601,18 +541,6 @@
                       45.0,
                       45.0
                     ]
-                  },
-                  {
-                    "units": [
-                      "based on critical strike chance",
-                      "based on critical strike chance",
-                      "based on critical strike chance"
-                    ],
-                    "values": [
-                      0.0,
-                      0.0,
-                      0.0
-                    ]
                   }
                 ]
               },
@@ -621,38 +549,14 @@
                 "modifiers": [
                   {
                     "units": [
-                      "[125 / 210 / 315 ] × [1",
-                      "[125 / 210 / 315 ] × [1",
-                      "[125 / 210 / 315 ] × [1"
+                      "",
+                      "",
+                      ""
                     ],
                     "values": [
-                      0.0,
-                      0.0,
-                      0.0
-                    ]
-                  },
-                  {
-                    "units": [
-                      "0 : 0.5 ",
-                      "0 : 0.5 ",
-                      "0 : 0.5 "
-                    ],
-                    "values": [
-                      0.0,
-                      0.0,
-                      0.0
-                    ]
-                  },
-                  {
-                    "units": [
-                      "]",
-                      "]",
-                      "]"
-                    ],
-                    "values": [
-                      0.2,
-                      0.2,
-                      0.2
+                      125.0,
+                      210.0,
+                      315.0
                     ]
                   },
                   {
@@ -666,18 +570,6 @@
                       90.0,
                       105.0
                     ]
-                  },
-                  {
-                    "units": [
-                      "based on critical strike chance",
-                      "based on critical strike chance",
-                      "based on critical strike chance"
-                    ],
-                    "values": [
-                      0.0,
-                      0.0,
-                      0.0
-                    ]
                   }
                 ]
               },
@@ -686,38 +578,14 @@
                 "modifiers": [
                   {
                     "units": [
-                      "[25 / 30 / 35 / 40 / 45 ] × [1",
-                      "[25 / 30 / 35 / 40 / 45 ] × [1",
-                      "[25 / 30 / 35 / 40 / 45 ] × [1"
+                      "",
+                      "",
+                      ""
                     ],
                     "values": [
-                      0.0,
-                      0.0,
-                      0.0
-                    ]
-                  },
-                  {
-                    "units": [
-                      "0 : 0.5 ",
-                      "0 : 0.5 ",
-                      "0 : 0.5 "
-                    ],
-                    "values": [
-                      0.0,
-                      0.0,
-                      0.0
-                    ]
-                  },
-                  {
-                    "units": [
-                      "]",
-                      "]",
-                      "]"
-                    ],
-                    "values": [
-                      0.2,
-                      0.2,
-                      0.2
+                      25.0,
+                      35.0,
+                      45.0
                     ]
                   },
                   {
@@ -730,18 +598,6 @@
                       15.0,
                       15.0,
                       15.0
-                    ]
-                  },
-                  {
-                    "units": [
-                      "based on critical strike chance",
-                      "based on critical strike chance",
-                      "based on critical strike chance"
-                    ],
-                    "values": [
-                      0.0,
-                      0.0,
-                      0.0
                     ]
                   }
                 ]

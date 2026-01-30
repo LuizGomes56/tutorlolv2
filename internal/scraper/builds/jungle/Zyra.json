@@ -1,20 +1,20 @@
 [
   [
-    "RylaisCrystalScepter",
-    "VoidStaff",
-    "Cryptbloom",
     "BansheesVeil",
+    "BlackfireTorch",
     "BloodlettersCurse",
-    "BlackfireTorch"
+    "Cryptbloom",
+    "Morellonomicon",
+    "RylaisCrystalScepter"
   ],
   [
-    "CheapShot",
-    "SixthSense",
-    "TreasureHunter",
-    "LegendHaste",
-    "CutDown",
     "AbilityHaste",
     "AdaptiveForce",
-    "HealthScaling"
+    "CheapShot",
+    "CutDown",
+    "HealthScaling",
+    "LegendHaste",
+    "SixthSense",
+    "TreasureHunter"
   ]
 ]

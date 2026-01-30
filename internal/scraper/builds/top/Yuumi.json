@@ -1,17 +1,17 @@
 [
   [
-    "LudensCompanion",
-    "ShurelyasBattlesong",
-    "Dawncore"
+    "BladeOfTheRuinedKing",
+    "MikaelsBlessing",
+    "RabadonsDeathcap"
   ],
   [
-    "ManaflowBand",
-    "Transcendence",
-    "Scorch",
-    "FontOfLife",
-    "Revitalize",
     "AbilityHaste",
     "AdaptiveForce",
-    "HealthScaling"
+    "FontOfLife",
+    "HealthScaling",
+    "ManaflowBand",
+    "Revitalize",
+    "Scorch",
+    "Transcendence"
   ]
 ]
