@@ -2,7 +2,7 @@ use core::ops::Range;
 use tutorlolv2::ChampionId;
 use tutorlolv2_gen::{ABILITY_CLOSURES, ITEM_CLOSURES, RAW_BLOCK, RUNE_CLOSURES};
 
-const CSS: &str = r###"body{{background-color:#1F1F1F;}}.punctuation {color: #D4D4D4;}.control {color: #C586C0;}.lifetime, .keyword, .macro, .boolean {color: #569CD6;}.primitive, .type {color: #4EC8B0;}.comment {color: #959596;}.function {color: #DCDCAA;}.number, .float {color: #B3CDA8;}.constant, .intrinsic {color: #4FC1FF;}.bracket_1 {color: #FFD700;}.bracket_2 {color: #DA70D6;}.bracket_3 {color: #189FFF;}.string {white-space: break-spaces;color: #CE9178;}.variable {color: #9CDCFE;}code, pre {color: #D4D4D4;line-height: 1.5;background: transparent;font-family: Consolas, Monaco, 'AndaleMono', 'UbuntuMono', monospace;}"###;
+const CSS: &str = r###"body{background-color:#1F1F1F;}.punctuation {color: #D4D4D4;}.control {color: #C586C0;}.lifetime, .keyword, .macro, .boolean {color: #569CD6;}.primitive, .type {color: #4EC8B0;}.comment {color: #959596;}.function {color: #DCDCAA;}.number, .float {color: #B3CDA8;}.constant, .intrinsic {color: #4FC1FF;}.bracket_1 {color: #FFD700;}.bracket_2 {color: #DA70D6;}.bracket_3 {color: #189FFF;}.string {white-space: break-spaces;color: #CE9178;}.variable {color: #9CDCFE;}code, pre {color: #D4D4D4;line-height: 1.5;background: transparent;font-family: Consolas, Monaco, 'AndaleMono', 'UbuntuMono', monospace;}"###;
 
 #[test]
 fn render() {

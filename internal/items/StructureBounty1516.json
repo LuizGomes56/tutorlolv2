@@ -1,10 +1,10 @@
 {
   "version": "16.2.1",
-  "riot_id": 1506,
-  "name": "Reinforced Armor",
+  "riot_id": 1516,
+  "name": "Structure Bounty_1516",
   "price": 0,
   "sell": 0,
-  "tier": 1,
+  "tier": 0,
   "maps": [
     [
       "SummonersRift",
@@ -24,7 +24,7 @@
     ],
     [
       "Arena",
-      true
+      false
     ],
     [
       "UnknownMap33",
