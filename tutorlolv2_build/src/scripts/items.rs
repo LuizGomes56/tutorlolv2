@@ -1,6 +1,6 @@
 use crate::{
-    CwdPath, EVAL_FEAT, GLOB_FEAT, Generated, GeneratorFn, SrcFolder, Tracker, parallel_task,
-    push_end,
+    CwdPath, DEFAULT_ITEM_GENERATOR_OFFSET, EVAL_FEAT, GLOB_FEAT, Generated, GeneratorFn,
+    SrcFolder, Tracker, ZERO_FN_OFFSET, parallel_task, push_end,
     scripts::{
         StringExt,
         model::{Item, ItemStats, MerakiItemStatMap},
@@ -19,9 +19,11 @@ struct DeclaredItem {
     match_arm: String,
 }
 
-fn declare_item(item: &Item) -> DeclaredItem {
+const MAX_TUPLE_0: (usize, usize) = (usize::MAX, usize::MAX);
+const MAX_TUPLE_1: (usize, usize) = (usize::MAX - 1, usize::MAX);
+
+fn declare_item(name: &str, item: &Item) -> DeclaredItem {
     let Item {
-        name,
         damage_type,
         ranged,
         melee,
@@ -29,7 +31,6 @@ fn declare_item(item: &Item) -> DeclaredItem {
         ..
     } = item;
 
-    let name = name.pascal_case();
     let name_ssnake = name.to_ssnake();
 
     let metadata = format!(
@@ -138,8 +139,8 @@ fn declare_item(item: &Item) -> DeclaredItem {
         mk_closure(&ranged.maximum_damage),
     ];
 
-    let melee_fn_names = vec![resolve("melee", "min"), resolve("melee", "max")];
-    let ranged_fn_names = vec![resolve("ranged", "min"), resolve("ranged", "max")];
+    let melee_fn_names = [resolve("melee", "min"), resolve("melee", "max")];
+    let ranged_fn_names = [resolve("ranged", "min"), resolve("ranged", "max")];
 
     let get_fn_call = |names: &[String]| {
         names
@@ -149,12 +150,18 @@ fn declare_item(item: &Item) -> DeclaredItem {
             .join(", ")
     };
 
-    let match_arm = format!(
-        "AttackType::Melee => [{}],
-        AttackType::Ranged => [{}]",
-        get_fn_call(&melee_fn_names),
-        get_fn_call(&ranged_fn_names),
-    );
+    let melee_fn_calls = get_fn_call(&melee_fn_names);
+    let ranged_fn_calls = get_fn_call(&ranged_fn_names);
+
+    let match_arm = match melee_fn_calls == ranged_fn_calls {
+        true => format!("[{melee_fn_calls}]"),
+        false => format!(
+            "match attack_type {{
+                AttackType::Melee => [{melee_fn_calls}],
+                AttackType::Ranged => [{ranged_fn_calls}]
+            }}"
+        ),
+    };
 
     DeclaredItem {
         metadata,
@@ -259,7 +266,7 @@ struct ItemResult {
 }
 
 pub fn generate_items() -> GeneratorFn {
-    let mut data = parallel_task("internal/items", |_, item: Item| {
+    let mut data = parallel_task("internal/items", |name_pascal, item: Item| {
         let DeclaredItem {
             metadata,
             match_arm,
@@ -268,7 +275,7 @@ pub fn generate_items() -> GeneratorFn {
             melee_fn_names,
             ranged_fn_names,
             constfn_declaration,
-        } = declare_item(&item);
+        } = declare_item(name_pascal, &item);
 
         let Item {
             riot_id,
@@ -284,10 +291,6 @@ pub fn generate_items() -> GeneratorFn {
         } = item;
 
         let name_ssnake = name.to_ssnake();
-        let name_pascal = name.pascal_case();
-
-        println!("[build] ItemId::{name_pascal}");
-
         let prettified_stats = prettified_stats
             .iter()
             .map(|stat| format!("StatName::{stat:?}"))
@@ -322,14 +325,19 @@ pub fn generate_items() -> GeneratorFn {
         let html_declaration = [
             base_declaration.as_str(),
             &{
-                let [melee_min, melee_max] = &melee_closures;
-                let [ranged_min, ranged_max] = &ranged_closures;
-                format!(
-                    "melee_min_dmg: {melee_min},
-                    melee_max_dmg: {melee_max},
-                    ranged_min_dmg: {ranged_min},
-                    ranged_max_dmg: {ranged_max},"
-                )
+                match deals_damage {
+                    true => {
+                        let [melee_min, melee_max] = &melee_closures;
+                        let [ranged_min, ranged_max] = &ranged_closures;
+                        format!(
+                            "melee_min_dmg: {melee_min},
+                            melee_max_dmg: {melee_max},
+                            ranged_min_dmg: {ranged_min},
+                            ranged_max_dmg: {ranged_max},"
+                        )
+                    }
+                    false => "damage: zero,".into(),
+                }
             },
             &rest,
         ]
@@ -355,6 +363,8 @@ pub fn generate_items() -> GeneratorFn {
             .into_iter()
             .collect::<String>();
 
+        println!("[build] ItemId::{name_pascal}");
+
         Ok(ItemResult {
             riot_id,
             match_arm,
@@ -362,7 +372,7 @@ pub fn generate_items() -> GeneratorFn {
             base_declaration,
             generator,
             name_ssnake,
-            name_pascal,
+            name_pascal: name_pascal.into(),
             html_closure,
             name,
             deals_damage,
@@ -402,6 +412,7 @@ fn build_items(data: Vec<(String, ItemResult)>) -> GeneratorFn {
     let mut block = String::new();
 
     let mut tracker = Tracker::new(&mut block);
+
     let mut formula_offsets = Vec::with_capacity(len);
     let mut closure_offsets = Vec::with_capacity(len);
     let mut generator_offsets = Vec::with_capacity(len);
@@ -429,8 +440,7 @@ fn build_items(data: Vec<(String, ItemResult)>) -> GeneratorFn {
     ) in data
     {
         if deals_damage {
-            let match_arm =
-                format!("ItemId::{name_pascal} => {{ match attack_type {{ {match_arm} }} }}");
+            let match_arm = format!("ItemId::{name_pascal} => {{{match_arm}}}");
             const_match_arms.push_str(&match_arm);
         }
         item_idents.push_str(&format!("{idents},"));
@@ -440,7 +450,11 @@ fn build_items(data: Vec<(String, ItemResult)>) -> GeneratorFn {
         item_id_to_name.push_str(&format!("{name:?},"));
         item_cache.push_str(&format!("&{name_ssnake}_{riot_id},"));
         item_declarations.push_str(&base_declaration);
-        tracker.record_into(&generator, &mut generator_offsets);
+
+        match generator.contains("/* No implementation */") {
+            true => generator_offsets.push(MAX_TUPLE_0),
+            false => tracker.record_into(&generator.rust_html(), &mut generator_offsets),
+        }
         rustfmt_inputs.push(html_declaration);
         rustfmt_inputs.push(html_closure);
     }
@@ -451,9 +465,11 @@ fn build_items(data: Vec<(String, ItemResult)>) -> GeneratorFn {
         let decl_fmt = &formatted[i * 2];
         let clos_fmt = &formatted[i * 2 + 1];
         let html_declaration = decl_fmt.drop_f32s().rust_html().as_const();
-        let html_closure = clos_fmt.drop_f32s().rust_html();
         tracker.record_into(&html_declaration, &mut formula_offsets);
-        tracker.record_into(&html_closure, &mut closure_offsets);
+        match clos_fmt.trim().is_empty() {
+            true => closure_offsets.push(MAX_TUPLE_1),
+            false => tracker.record_into(&clos_fmt.drop_f32s().rust_html(), &mut closure_offsets),
+        }
     }
 
     let fields = item_id_enum_fields.join(",");
@@ -508,12 +524,26 @@ fn build_items(data: Vec<(String, ItemResult)>) -> GeneratorFn {
         "];",
     );
 
+    println!("[ok] Finished building items");
+
     let callback = move |index: usize| {
         let add_offsets = |(list, target): (Vec<_>, &mut String)| {
-            for (start, end) in list {
-                let new_start = start + index;
-                let new_end = end + index;
-                target.push_str(&format!("({new_start}..{new_end}),"));
+            for tuple in list {
+                match tuple {
+                    MAX_TUPLE_0 => {
+                        let (s, e) = unsafe { DEFAULT_ITEM_GENERATOR_OFFSET };
+                        target.push_str(&format!("({s}..{e}),"));
+                    }
+                    MAX_TUPLE_1 => {
+                        let (s, e) = unsafe { ZERO_FN_OFFSET };
+                        target.push_str(&format!("({s}..{e}),"));
+                    }
+                    (start, end) => {
+                        let new_start = start + index;
+                        let new_end = end + index;
+                        target.push_str(&format!("({new_start}..{new_end}),"));
+                    }
+                }
             }
             push_end([target], "];");
         };

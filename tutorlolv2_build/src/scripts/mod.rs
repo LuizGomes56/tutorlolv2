@@ -15,7 +15,20 @@ static RE_DROP_F32_DECIMAL: Lazy<Regex> = Lazy::new(|| Regex::new(r"\d+\.\d+|\d+
 static RE_SIMPLIFY: Lazy<Regex> = Lazy::new(|| Regex::new(r"([-+]?\d*\.?\d+)").unwrap());
 static RE_IDENTS: Lazy<Regex> = Lazy::new(|| Regex::new(r"ctx\.([a-z_][a-z0-9_]*)").unwrap());
 
-pub static TOWER_DAMAGE: &str = r#"const intrinsic TOWER_DAMAGE {
+pub const ZERO_FN: &str = r#"fn zero(_: Ctx) -> f32 {
+    0.0 /* No damage */
+}"#;
+
+pub const DEFAULT_ITEM_GENERATOR: &str = r#"use super::*;
+
+impl Generator<ItemData> for Item {
+    fn generate(self: Box<Self>) -> MayFail<ItemData> {
+        /* No implementation */
+        self.end()
+    }
+}"#;
+
+pub const TOWER_DAMAGE: &str = r#"const intrinsic TOWER_DAMAGE {
     damage_type: RiotFormulas::adaptative_type(
         bonus_stats.attack_damage,
         current_stats.ability_power,
@@ -29,7 +42,7 @@ pub static TOWER_DAMAGE: &str = r#"const intrinsic TOWER_DAMAGE {
     }
 }"#;
 
-pub static ONHIT_EFFECT: &str = r#"const intrinsic ONHIT_EFFECT {
+pub const ONHIT_EFFECT: &str = r#"const intrinsic ONHIT_EFFECT {
     damage_type: DamageType::Mixed,
     definition: |damage, [min, max], attr| match attr {
         Attrs::OnhitMin | Attrs::AreaOnhitMin => *min += damage,
@@ -41,13 +54,13 @@ pub static ONHIT_EFFECT: &str = r#"const intrinsic ONHIT_EFFECT {
     }
 };"#;
 
-pub static CRITICAL_STRIKE: &str = r#"const intrinsic CRITICAL_STRIKE {
+pub const CRITICAL_STRIKE: &str = r#"const intrinsic CRITICAL_STRIKE {
     attributes: Attrs::OnhitMax,
     damage_type: DamageType::Physical,
     damage: |ctx| ctx.ad * ctx.crit_damage / 100.0,
 };"#;
 
-pub static BASIC_ATTACK: &str = r#"const intrinsic BASIC_ATTACK {
+pub const BASIC_ATTACK: &str = r#"const intrinsic BASIC_ATTACK {
     attributes: Attrs::OnhitMin,
     damage_type: DamageType::Physical,
     damage: |ctx| ctx.ad,

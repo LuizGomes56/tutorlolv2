@@ -1,5 +1,5 @@
 use crate::{
-    CwdPath, EVAL_FEAT, GLOB_FEAT, Generated, GeneratorFn, Tracker, push_end,
+    CwdPath, EVAL_FEAT, GLOB_FEAT, Generated, GeneratorFn, Tracker, ZERO_FN_OFFSET, push_end,
     scripts::{StringExt, model::Rune, rustfmt_batch},
 };
 use rayon::iter::{IntoParallelIterator, ParallelIterator};
@@ -18,6 +18,8 @@ struct RuneResult {
     deals_damage: bool,
 }
 
+const MAX_TUPLE: (usize, usize) = (usize::MAX, usize::MAX);
+
 pub fn generate_runes() -> GeneratorFn {
     let data = {
         let json = CwdPath::deserialize::<HashMap<usize, Rune>>("internal/runes.json")?;
@@ -35,8 +37,6 @@ pub fn generate_runes() -> GeneratorFn {
                 let name_pascal = name.pascal_case();
                 let name_ssnake = name.to_ssnake();
 
-                println!("[build] RuneId::{name_pascal}");
-
                 let metadata = format!(
                     "TypeMetadata {{
                         kind: RuneId::{name_pascal},
@@ -51,8 +51,9 @@ pub fn generate_runes() -> GeneratorFn {
                 let ranged_body = normalize(ranged);
 
                 let mut constfn_declaration = String::new();
+                let single_damage = melee_body == ranged_body;
 
-                let (melee_fn, ranged_fn) = match melee_body == ranged_body {
+                let (melee_fn, ranged_fn) = match single_damage {
                     true => {
                         let fn_name = name_ssnake.to_lowercase();
                         constfn_declaration.push_str(&format!(
@@ -101,11 +102,18 @@ pub fn generate_runes() -> GeneratorFn {
                         metadata: {metadata},"
                 );
 
-                let html_declaration = format!(
-                    "{base_declaration}
-                    melee_damage: {melee_closure},
-                    ranged_damage: {ranged_closure} }};"
-                );
+                let html_declaration = [
+                    base_declaration.as_str(),
+                    &match single_damage {
+                        true => format!("damage: {melee_closure}}};"),
+                        false => {
+                            format!(
+                                "melee_damage: {melee_closure}, ranged_damage: {ranged_closure} }};"
+                            )
+                        }
+                    },
+                ]
+                .concat();
 
                 let base_declaration = format!(
                     "{EVAL_FEAT}{base_declaration}
@@ -114,15 +122,22 @@ pub fn generate_runes() -> GeneratorFn {
                     {constfn_declaration}"
                 );
 
-                let match_arm = format!(
-                    "AttackType::Melee => {melee_fn}(ctx),
-                    AttackType::Ranged => {ranged_fn}(ctx)"
-                );
+                let match_arm = match single_damage {
+                    true => format!("{melee_fn}(ctx)"),
+                    false => format!(
+                        "match attack_type {{
+                            AttackType::Melee => {melee_fn}(ctx),
+                            AttackType::Ranged => {ranged_fn}(ctx)
+                        }}"
+                    ),
+                };
 
                 let idents = (melee_closure.clone() + &ranged_closure)
                     .get_idents()
                     .into_iter()
                     .collect::<String>();
+
+                println!("[build] RuneId::{name_pascal}");
 
                 RuneResult {
                     riot_id,
@@ -174,8 +189,6 @@ pub fn generate_runes() -> GeneratorFn {
                 continue;
             }
 
-            println!("[build] RuneId::{name_pascal}");
-
             let name_ssnake = name.to_ssnake();
 
             let metadata = format!(
@@ -202,13 +215,12 @@ pub fn generate_runes() -> GeneratorFn {
             let html_declaration = base_declaration.clone();
             let base_declaration = [EVAL_FEAT, &base_declaration].concat();
 
-            let match_arm =
-                "AttackType::Melee => zero(ctx), AttackType::Ranged => zero(ctx)".into();
+            println!("[build] RuneId::{name_pascal}");
 
             runes.push(RuneResult {
                 name_pascal,
                 deals_damage: false,
-                match_arm,
+                match_arm: "zero(ctx)".into(),
                 riot_id,
                 html_declaration,
                 base_declaration,
@@ -252,6 +264,7 @@ fn build_runes(data: Vec<RuneResult>) -> GeneratorFn {
     let mut block = String::new();
 
     let mut tracker = Tracker::new(&mut block);
+
     let mut formula_offsets = Vec::with_capacity(len);
     let mut closure_offsets = Vec::with_capacity(len);
 
@@ -274,11 +287,7 @@ fn build_runes(data: Vec<RuneResult>) -> GeneratorFn {
     } in data
     {
         if deals_damage {
-            let match_arm = format!(
-                "RuneId::{name_pascal} => {{ 
-                    match attack_type {{ {match_arm} }} 
-                }}"
-            );
+            let match_arm = format!("RuneId::{name_pascal} => {{{match_arm}}}");
             const_match_arms.push_str(&match_arm);
         }
 
@@ -299,9 +308,11 @@ fn build_runes(data: Vec<RuneResult>) -> GeneratorFn {
         let decl_fmt = &formatted[i * 2];
         let clos_fmt = &formatted[i * 2 + 1];
         let html_declaration = decl_fmt.rust_html().as_const();
-        let html_closure = clos_fmt.drop_f32s().rust_html();
         tracker.record_into(&html_declaration, &mut formula_offsets);
-        tracker.record_into(&html_closure, &mut closure_offsets);
+        match clos_fmt.trim().is_empty() {
+            true => closure_offsets.push(MAX_TUPLE),
+            false => tracker.record_into(&clos_fmt.drop_f32s().rust_html(), &mut closure_offsets),
+        }
     }
 
     let fields = rune_id_enum_fields.join(",");
@@ -356,12 +367,22 @@ fn build_runes(data: Vec<RuneResult>) -> GeneratorFn {
         }}"
     );
 
+    println!("[ok] Finished building runes");
+
     let callback = move |index: usize| {
         let add_offsets = |list: Vec<_>, target: &mut String| {
-            for (start, end) in list {
-                let new_start = start + index;
-                let new_end = end + index;
-                target.push_str(&format!("({new_start}..{new_end}),"));
+            for tuple in list {
+                match tuple {
+                    MAX_TUPLE => {
+                        let (s, e) = unsafe { ZERO_FN_OFFSET };
+                        target.push_str(&format!("({s}..{e}),"));
+                    }
+                    (start, end) => {
+                        let new_start = start + index;
+                        let new_end = end + index;
+                        target.push_str(&format!("({new_start}..{new_end}),"));
+                    }
+                }
             }
             push_end([target], "];");
         };
