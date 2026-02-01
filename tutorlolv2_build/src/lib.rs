@@ -4,10 +4,7 @@ use crate::scripts::{
 };
 use rayon::iter::{IntoParallelIterator, ParallelBridge, ParallelIterator};
 use serde::de::DeserializeOwned;
-use std::{
-    fmt::Debug,
-    path::{Path, PathBuf},
-};
+use std::path::{Path, PathBuf};
 use tutorlolv2_fmt::encode_brotli_11;
 
 mod scripts;
@@ -55,28 +52,32 @@ impl SrcFolder {
 }
 
 /// Helper struct that resolves the paths of the data that will be saved to files
-pub struct CwdPath;
+pub struct CwdPath {
+    inner: PathBuf,
+}
 
 impl CwdPath {
     /// Create a new path in the working directory of the main project
-    pub fn new(path: impl AsRef<Path>) -> PathBuf {
-        Path::new("../").join(path)
+    pub fn new(path: impl AsRef<Path>) -> Self {
+        Self {
+            inner: Path::new("../").join(path),
+        }
     }
 
     /// Helper function that spawns a new thread to write some data to a file
-    pub fn fwrite<P, D>(path: P, data: D) -> Result<(), std::io::Error>
+    pub fn fwrite<D>(&self, data: D) -> Result<(), std::io::Error>
     where
-        P: AsRef<Path> + Debug,
         D: AsRef<[u8]>,
     {
+        let path = &self.inner;
         println!("[write] {path:?}");
-        std::fs::write(CwdPath::new(path), data)
+        std::fs::write(path, data)
     }
 
     /// Checks if some path exists, and logs to the console the result
-    pub fn exists(path: impl AsRef<Path> + Debug) -> bool {
-        let result = std::fs::exists(&path);
-        match result {
+    pub fn exists(path: &PathBuf) -> bool {
+        let result = path.try_exists();
+        match path.try_exists() {
             Ok(true) => println!("[ok] {path:?}"),
             Ok(false) => println!("[null] {path:?}"),
             Err(ref e) => println!("[error] {path:?}: {e:?}"),
@@ -89,6 +90,7 @@ impl CwdPath {
     pub fn get_generator(gen_folder: SrcFolder, file: impl AsRef<Path>) -> MayFail<String> {
         let folder = gen_folder.gen_folder();
         let path = Self::new("tutorlolv2_dev/src/generators")
+            .inner
             .join(folder)
             .join(file)
             .with_extension("rs");
@@ -103,7 +105,7 @@ impl CwdPath {
     /// Returns a `T` that represents a deserialized JSON file, from some `origin` path.
     /// The `.json` extension is added if it is missing in the provided path
     pub fn deserialize<T: DeserializeOwned>(origin: impl AsRef<Path>) -> MayFail<T> {
-        let path = Self::new(origin).with_extension("json");
+        let path = Self::new(origin).inner.with_extension("json");
 
         #[cfg(debug_assertions)]
         Self::exists(&path);
@@ -130,7 +132,7 @@ where
     R: Send,
 {
     let folder = CwdPath::new(path);
-    std::fs::read_dir(folder)
+    std::fs::read_dir(folder.inner)
         .unwrap()
         .filter_map(Result::ok)
         .par_bridge()
@@ -241,9 +243,9 @@ pub fn run() -> MayFail {
     full_exports.push_str("pub use champions::*; pub use items::*; pub use runes::*;");
 
     for task in [
-        CwdPath::fwrite("tutorlolv2_gen/src/block.br", compressed_block),
-        CwdPath::fwrite("tutorlolv2_gen/src/block.txt", full_block),
-        CwdPath::fwrite("tutorlolv2_gen/src/data.rs", full_exports),
+        CwdPath::new("tutorlolv2_gen/src/block.br").fwrite(compressed_block),
+        CwdPath::new("tutorlolv2_gen/src/block.txt").fwrite(full_block),
+        CwdPath::new("tutorlolv2_gen/src/data.rs").fwrite(full_exports),
     ] {
         task?
     }

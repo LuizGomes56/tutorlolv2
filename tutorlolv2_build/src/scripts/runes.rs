@@ -3,7 +3,7 @@ use crate::{
     scripts::{StringExt, model::Rune, rustfmt_batch},
 };
 use rayon::iter::{IntoParallelIterator, ParallelIterator};
-use std::collections::HashMap;
+use std::collections::{BTreeMap, HashMap};
 
 struct RuneResult {
     name: String,
@@ -143,18 +143,18 @@ pub fn generate_runes() -> GeneratorFn {
             .collect::<Vec<_>>();
 
         let mut undeclared =
-            CwdPath::deserialize::<HashMap<String, usize>>("internal/rune_names.json")?;
+            CwdPath::deserialize::<BTreeMap<String, usize>>("internal/rune_names.json")?;
 
         for (name, riot_id) in [
-            ("Adaptive Force", 9990),
-            ("Health Scaling", 9991),
-            ("Attack Speed", 9992),
-            ("Health", 9993),
             ("Ability Haste", 9994),
-            ("Tenacity and Slow Resist", 9995),
-            ("Move Speed", 9996),
+            ("Adaptive Force", 9990),
+            ("Attack Speed", 9992),
             ("Eyeball Collection", 8120),
             ("Ghost Poro", 8136),
+            ("Health", 9993),
+            ("Health Scaling", 9991),
+            ("Move Speed", 9996),
+            ("Tenacity and Slow Resist", 9995),
             ("Zombie Ward", 8138),
         ] {
             undeclared.insert(name.to_string(), riot_id);
@@ -199,7 +199,7 @@ pub fn generate_runes() -> GeneratorFn {
                 }};"
             );
 
-            let html_declaration = base_declaration.clone() /* .rust_fmt().rust_html().as_const() */;
+            let html_declaration = base_declaration.clone();
             let base_declaration = [EVAL_FEAT, &base_declaration].concat();
 
             let match_arm =
