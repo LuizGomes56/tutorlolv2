@@ -279,8 +279,6 @@ struct ChampionResult {
 
 pub fn generate_champions() -> GeneratorFn {
     let mut data = parallel_task("internal/champions", |champion_id, champion: Champion| {
-        println!("[build] ChampionId::{champion_id}");
-
         let champion_id_upper = champion_id.to_uppercase();
 
         let Champion {
@@ -386,7 +384,7 @@ pub fn generate_champions() -> GeneratorFn {
         ));
 
         let const_match_kind = match_arm_kind.join(",");
-        let generator = CwdPath::get_generator(SrcFolder::Champions, champion_id)?;
+        let generator = CwdPath::get_generator(SrcFolder::Champions, champion_id)?.rust_html();
 
         /*
         let combos_json = CwdPath::deserialize::<Vec<Vec<String>>>(format!(
@@ -407,6 +405,8 @@ pub fn generate_champions() -> GeneratorFn {
             champion_combos.push(result);
         }
         */
+
+        println!("[build] ChampionId::{champion_id}");
 
         Ok(ChampionResult {
             ability_declarations,
@@ -648,6 +648,8 @@ fn build_champions(data: Vec<(String, ChampionResult)>) -> GeneratorFn {
         "];",
     );
 
+    println!("[ok] Finished building champions");
+
     let callback = move |index: usize| {
         let add_offsets = |(list, target): (Vec<_>, &mut String)| {
             for (start, end) in list {
@@ -741,7 +743,7 @@ pub fn get_recommendations(len: usize) -> MayFail<String> {
         format!("{GLOB_FEAT} pub static {var}: [[&[{enumv}]; 5]; {len}] = [")
     });
 
-    let json = CwdPath::deserialize::<BTreeMap<String, BTreeMap<String, [Vec<String>; 2]>>>(
+    let json = CwdPath::deserialize::<BTreeMap<String, BTreeMap<String, [BTreeSet<String>; 2]>>>(
         "internal/scraper/data.json",
     )?;
 

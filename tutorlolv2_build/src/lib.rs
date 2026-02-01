@@ -1,10 +1,13 @@
 use crate::scripts::{
-    BASIC_ATTACK, CRITICAL_STRIKE, ONHIT_EFFECT, StringExt, TOWER_DAMAGE,
-    champions::generate_champions, items::generate_items, runes::generate_runes,
+    BASIC_ATTACK, CRITICAL_STRIKE, DEFAULT_ITEM_GENERATOR, ONHIT_EFFECT, StringExt, TOWER_DAMAGE,
+    ZERO_FN, champions::generate_champions, items::generate_items, runes::generate_runes,
 };
 use rayon::iter::{IntoParallelIterator, ParallelBridge, ParallelIterator};
 use serde::de::DeserializeOwned;
-use std::path::{Path, PathBuf};
+use std::{
+    path::{Path, PathBuf},
+    process::Command,
+};
 use tutorlolv2_fmt::encode_brotli_11;
 
 mod scripts;
@@ -99,7 +102,7 @@ impl CwdPath {
         Self::exists(&path);
 
         let data = std::fs::read_to_string(path)?;
-        Ok(data.rust_html())
+        Ok(data)
     }
 
     /// Returns a `T` that represents a deserialized JSON file, from some `origin` path.
@@ -197,6 +200,9 @@ impl<'a> Tracker<'a> {
     }
 }
 
+pub static mut ZERO_FN_OFFSET: (usize, usize) = (0, 0);
+pub static mut DEFAULT_ITEM_GENERATOR_OFFSET: (usize, usize) = (0, 0);
+
 /// Entry point of the build library. Generates a new library that will be
 /// used by both frontend and backend, as well as HTML that represents the
 /// internal code that will be shown when hovering over some objects in the
@@ -205,12 +211,21 @@ pub fn run() -> MayFail {
     let mut full_block = String::with_capacity(12 * 1024 * 1024);
     let mut full_exports = String::with_capacity(4 * 1024 * 1024);
 
+    let mut tracker = Tracker::new(&mut full_block);
+
+    unsafe {
+        DEFAULT_ITEM_GENERATOR_OFFSET = tracker.record(&DEFAULT_ITEM_GENERATOR.rust_html());
+        ZERO_FN_OFFSET = tracker.record(&ZERO_FN.rust_html());
+    }
+
     full_exports.push_str("use crate::*;");
 
     let closures = [generate_champions, generate_items, generate_runes]
         .into_par_iter()
         .map(|task| task().unwrap())
         .collect::<Vec<_>>();
+
+    println!("[ok] Generation task finished. Processing results");
 
     for closure in closures {
         let Generated { exports, block } = closure(full_block.len());
@@ -233,7 +248,13 @@ pub fn run() -> MayFail {
     }
 
     let offset = tracker.offset();
+
+    println!("[ok] Compressing full block");
+
     let compressed_block = encode_brotli_11(full_block.as_bytes());
+
+    println!("[ok] Preparing final steps");
+
     let size = compressed_block.len();
 
     full_exports.push_str(&format!(
@@ -242,13 +263,24 @@ pub fn run() -> MayFail {
     full_exports.push_str(&format!("{GLOB_FEAT} pub const BLOCK_LEN: usize = {size};"));
     full_exports.push_str("pub use champions::*; pub use items::*; pub use runes::*;");
 
+    let data_path = CwdPath::new("tutorlolv2_gen/src/data.rs");
+
+    println!("[ok] Saving results");
+
     for task in [
         CwdPath::new("tutorlolv2_gen/src/block.br").fwrite(compressed_block),
         CwdPath::new("tutorlolv2_gen/src/block.txt").fwrite(full_block),
-        CwdPath::new("tutorlolv2_gen/src/data.rs").fwrite(full_exports),
+        data_path.fwrite(full_exports),
     ] {
         task?
     }
+
+    println!("[ok] Formatting generated file");
+
+    Command::new("rustfmt")
+        .arg(data_path.inner)
+        .status()
+        .inspect_err(|e| eprintln!("Failed to run rustfmt: on generated data file {e:?}"))?;
 
     Ok(())
 }

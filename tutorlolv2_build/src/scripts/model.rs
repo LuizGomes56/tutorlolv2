@@ -1,4 +1,5 @@
 use serde::Deserialize;
+use std::collections::BTreeSet;
 use tutorlolv2_types::{AbilityId, DevMergeData, StatName};
 
 #[derive(Deserialize)]
@@ -103,7 +104,7 @@ pub struct Item {
     pub name: String,
     pub price: usize,
     pub tier: u8,
-    pub prettified_stats: Vec<StatName>,
+    pub prettified_stats: BTreeSet<StatName>,
     pub damage_type: String,
     pub stats: ItemStats,
     pub ranged: DamageObject,
