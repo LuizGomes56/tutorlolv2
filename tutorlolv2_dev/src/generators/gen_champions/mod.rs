@@ -26,6 +26,6 @@ offset![P, Q, W, E, R];
 
 tutorlolv2_macros::expand_dir!("../internal/champions", |Name| {
     pastey::paste! {
-        pub mod [<Name:lower>];
+        pub mod _zaahen;
     }
 });
