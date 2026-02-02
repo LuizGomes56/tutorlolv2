@@ -105,7 +105,12 @@ pub fn setup_internal_items() -> MayFail {
                 let rname = riot_cdn_item.name;
                 match rname.is_empty() || rname.starts_with("<") {
                     true => format!("Unknown_{riot_id}"),
-                    false => rname,
+                    false => match rname.as_str() {
+                        "Reinforced Armor" | "Structure Bounty" | "Kalista's Black Spear" => {
+                            format!("{rname}_{riot_id}")
+                        }
+                        _ => rname,
+                    },
                 }
             };
 
