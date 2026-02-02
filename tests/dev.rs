@@ -46,11 +46,6 @@ fn run_setup_items() {
 }
 
 #[test]
-fn run_generate_items() {
-    ItemFactory::create_all_raw().unwrap();
-}
-
-#[test]
 fn run_items_generator() {
     ItemFactory::run_all().unwrap();
 }
@@ -79,5 +74,4 @@ fn run_item_generator() {
 #[test]
 fn update_items() {
     run_setup_items();
-    run_generate_items();
 }

@@ -79,11 +79,11 @@
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
-      "flat": 0.0,
+      "flat": 110.0,
       "percent": 0.0
     },
     "armor": {
-      "flat": 0.0,
+      "flat": 20.0,
       "percent": 0.0
     },
     "armorPenetration": {
@@ -95,15 +95,15 @@
       "percent": 0.0
     },
     "attackDamage": {
-      "flat": 0.0,
+      "flat": 90.0,
       "percent": 0.0
     },
     "attackSpeed": {
-      "flat": 0.0,
+      "flat": 40.0,
       "percent": 0.0
     },
     "criticalStrikeChance": {
-      "flat": 0.0,
+      "flat": 15.0,
       "percent": 0.0
     },
     "criticalStrikeDamage": {
@@ -111,23 +111,23 @@
       "percent": 0.0
     },
     "health": {
-      "flat": 0.0,
+      "flat": 200.0,
       "percent": 0.0
     },
     "lifesteal": {
-      "flat": 0.0,
+      "flat": 10.0,
       "percent": 0.0
     },
     "magicResistance": {
-      "flat": 0.0,
+      "flat": 20.0,
       "percent": 0.0
     },
     "mana": {
-      "flat": 0.0,
+      "flat": 200.0,
       "percent": 0.0
     },
     "movespeed": {
-      "flat": 0.0,
+      "flat": 10.0,
       "percent": 0.0
     },
     "omnivamp": {

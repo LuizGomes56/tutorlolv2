@@ -61,7 +61,7 @@
       "percent": 0.0
     },
     "magicPenetration": {
-      "flat": 0.0,
+      "flat": 30.0,
       "percent": 30.0
     },
     "attackDamage": {

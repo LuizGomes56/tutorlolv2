@@ -1,7 +1,5 @@
 use super::*;
 
-// #![stable]
-
 impl Generator<ItemData> for BladeOfTheRuinedKing {
     fn generate(mut self: Box<Self>) -> MayFail<ItemData> {
         let get_scaling = |i| MayFail::Ok(self.passive(0)?.capture_percent(i)? / 100.0);

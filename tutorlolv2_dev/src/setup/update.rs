@@ -147,16 +147,7 @@ pub fn setup_internal_items() -> MayFail {
             let internal_fname = pascal_case(&item.name);
             let generator_fname = to_ssnake(&internal_fname).to_lowercase();
 
-            item.into_file(SaveTo::Internal(Tag::Items, &internal_fname).path())?;
-
-            let generator_file = ItemFactory::create_from_raw(&internal_fname)?;
-
-            fs::write(
-                SaveTo::Generator(Tag::Items, &generator_fname).path(),
-                generator_file,
-            )?;
-
-            Ok(())
+            item.into_file(SaveTo::Internal(Tag::Items, &internal_fname).path())
         },
     )
 }

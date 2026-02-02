@@ -78,7 +78,7 @@
       "percent": 0.0
     },
     "health": {
-      "flat": 0.0,
+      "flat": 1100.0,
       "percent": 0.0
     },
     "lifesteal": {
@@ -94,7 +94,7 @@
       "percent": 0.0
     },
     "movespeed": {
-      "flat": 0.0,
+      "flat": 4.0,
       "percent": 0.0
     },
     "omnivamp": {

@@ -43,7 +43,7 @@
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
-      "flat": 0.0,
+      "flat": 45.0,
       "percent": 0.0
     },
     "armor": {

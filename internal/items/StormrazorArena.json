@@ -65,15 +65,15 @@
       "percent": 0.0
     },
     "attackDamage": {
-      "flat": 45.0,
+      "flat": 50.0,
       "percent": 0.0
     },
     "attackSpeed": {
-      "flat": 25.0,
+      "flat": 20.0,
       "percent": 0.0
     },
     "criticalStrikeChance": {
-      "flat": 0.0,
+      "flat": 25.0,
       "percent": 25.0
     },
     "criticalStrikeDamage": {

@@ -147,12 +147,401 @@ fn unwrap_outer_group(ts: TokenStream2) -> TokenStream2 {
     ts
 }
 
+// ------------------------------
+// #[skip_if(...)] support
+// ------------------------------
+
+enum SkipIfAttr {
+    Expr {
+        expr: syn::Expr,
+        needs_json: bool,
+    },
+    /// skip_if("<mods file>", |Mod| <bool expr>)
+    ///
+    /// The `<bool expr>` may reference:
+    /// - the directory placeholder ident (ex.: `Name`) → current JSON stem string
+    /// - the closure param ident (ex.: `Mod`) → module ident string from the mods file
+    /// - string literals
+    /// - simple calls: `pascal(...)` / `snake(...)`
+    /// - boolean composition: `==`, `!=`, `&&`, `||`, parentheses
+    /// - JSON fields like `Name.some_field == "x"` (same as directives)
+    ModList {
+        mods_path: LitStr,
+        param_ident: Ident,
+        expr: syn::Expr,
+        needs_json: bool,
+    },
+}
+
+struct SkipIfArgs {
+    kind: SkipIfArgsKind,
+}
+
+enum SkipIfArgsKind {
+    Expr(syn::Expr),
+    ModList {
+        mods_path: LitStr,
+        param_ident: Ident,
+        expr: syn::Expr,
+    },
+}
+
+impl Parse for SkipIfArgs {
+    fn parse(input: syn::parse::ParseStream<'_>) -> syn::Result<Self> {
+        // Try parse: "<path>", |Param| <expr>
+        if input.peek(LitStr) {
+            let fork = input.fork();
+            let _mods_path: LitStr = fork.parse()?;
+            if fork.peek(Token![,]) {
+                let _comma: Token![,] = fork.parse()?;
+                if fork.peek(Token![|]) {
+                    let _bar1: Token![|] = fork.parse()?;
+                    let _param_ident: Ident = fork.parse()?;
+                    let _bar2: Token![|] = fork.parse()?;
+                    let _expr: syn::Expr = fork.parse()?;
+                    if fork.is_empty() {
+                        let mods_path: LitStr = input.parse()?;
+                        let _comma2: Token![,] = input.parse()?;
+                        let _bar1c: Token![|] = input.parse()?;
+                        let param_ident: Ident = input.parse()?;
+                        let _bar2c: Token![|] = input.parse()?;
+                        let expr: syn::Expr = input.parse()?;
+                        return Ok(Self {
+                            kind: SkipIfArgsKind::ModList {
+                                mods_path,
+                                param_ident,
+                                expr,
+                            },
+                        });
+                    }
+                }
+            }
+        }
+
+        // Fallback: a single boolean expression
+        let expr: syn::Expr = input.parse()?;
+        if !input.is_empty() {
+            return Err(syn::Error::new(
+                input.span(),
+                "unexpected tokens in skip_if(...)",
+            ));
+        }
+        Ok(Self {
+            kind: SkipIfArgsKind::Expr(expr),
+        })
+    }
+}
+
+/// Parses the inside of an attribute bracket group.
+///
+/// Supported shapes:
+/// - `skip_if(<bool expr>)`
+/// - `skip_if("<mods file>", |Mod| <bool expr>)`
+fn parse_skip_if_attribute(stream: TokenStream2) -> syn::Result<Option<SkipIfAttr>> {
+    let mut it = stream.into_iter();
+
+    let Some(TokenTree::Ident(id)) = it.next() else {
+        return Ok(None);
+    };
+    if id != "skip_if" {
+        return Ok(None);
+    }
+
+    let Some(TokenTree::Group(g)) = it.next() else {
+        return Err(syn::Error::new(id.span(), "expected skip_if(...)"));
+    };
+    if g.delimiter() != Delimiter::Parenthesis {
+        return Err(syn::Error::new(g.span(), "expected skip_if(...)"));
+    }
+
+    // No extra tokens allowed
+    if it.next().is_some() {
+        return Err(syn::Error::new(
+            g.span(),
+            "unexpected tokens after skip_if(...)",
+        ));
+    }
+
+    let args: SkipIfArgs = syn::parse2(g.stream())?;
+
+    Ok(Some(match args.kind {
+        SkipIfArgsKind::Expr(expr) => {
+            let needs_json = expr_contains_field_access(&expr);
+            SkipIfAttr::Expr { expr, needs_json }
+        }
+        SkipIfArgsKind::ModList {
+            mods_path,
+            param_ident,
+            expr,
+        } => {
+            let needs_json = expr_contains_field_access(&expr);
+            SkipIfAttr::ModList {
+                mods_path,
+                param_ident,
+                expr,
+                needs_json,
+            }
+        }
+    }))
+}
+
+fn eval_bool_expr_two_idents(
+    expr: &syn::Expr,
+    root_ident: &Ident,
+    root_value: &str,
+    param_ident: &Ident,
+    param_value: &str,
+    json: Option<&serde_json::Value>,
+) -> Result<bool, String> {
+    use syn::{BinOp, Expr};
+
+    fn eval_value(
+        e: &syn::Expr,
+        root_ident: &Ident,
+        root_value: &str,
+        param_ident: &Ident,
+        param_value: &str,
+        json: Option<&serde_json::Value>,
+    ) -> Result<String, String> {
+        match e {
+            Expr::Paren(p) => eval_value(
+                &p.expr,
+                root_ident,
+                root_value,
+                param_ident,
+                param_value,
+                json,
+            ),
+
+            Expr::Lit(lit) => {
+                if let syn::Lit::Str(s) = &lit.lit {
+                    Ok(s.value())
+                } else {
+                    Ok(lit.lit.to_token_stream().to_string())
+                }
+            }
+
+            Expr::Path(p) => {
+                if p.path.segments.len() == 1 && p.path.segments[0].ident == *root_ident {
+                    Ok(root_value.to_string())
+                } else if p.path.segments.len() == 1 && p.path.segments[0].ident == *param_ident {
+                    Ok(param_value.to_string())
+                } else {
+                    Err("unsupported path in skip_if; use the placeholder ident(s)".into())
+                }
+            }
+
+            Expr::Call(call) => {
+                let func = match &*call.func {
+                    Expr::Path(p) if p.path.segments.len() == 1 => {
+                        p.path.segments[0].ident.to_string()
+                    }
+                    _ => {
+                        return Err(
+                            "only simple calls like pascal(x) / snake(x) are supported".into(),
+                        )
+                    }
+                };
+
+                if call.args.len() != 1 {
+                    return Err(format!("{func}(...) must have exactly 1 argument"));
+                }
+
+                let arg = eval_value(
+                    &call.args[0],
+                    root_ident,
+                    root_value,
+                    param_ident,
+                    param_value,
+                    json,
+                )?;
+                match func.as_str() {
+                    "snake" => Ok(tutorlolv2_fmt::to_ssnake(&arg).to_lowercase()),
+                    "pascal" => Ok(tutorlolv2_fmt::pascal_case(&arg)),
+                    _ => Err(format!("unknown function in skip_if: {func}")),
+                }
+            }
+
+            Expr::Field(_) => {
+                let json = json.ok_or_else(|| "JSON not loaded".to_string())?;
+                let v = resolve_json_path(e, root_ident, json)?;
+                json_value_to_string(v)
+            }
+
+            _ => Err(
+                "unsupported value in skip_if; use Name/Mod, string literal, pascal(...), snake(...), or Name.<json_field>"
+                    .into(),
+            ),
+        }
+    }
+
+    fn eval_bool(
+        e: &syn::Expr,
+        root_ident: &Ident,
+        root_value: &str,
+        param_ident: &Ident,
+        param_value: &str,
+        json: Option<&serde_json::Value>,
+    ) -> Result<bool, String> {
+        match e {
+            Expr::Paren(p) => eval_bool(
+                &p.expr,
+                root_ident,
+                root_value,
+                param_ident,
+                param_value,
+                json,
+            ),
+
+            Expr::Binary(b) => match &b.op {
+                BinOp::And(_) => Ok(eval_bool(
+                    &b.left,
+                    root_ident,
+                    root_value,
+                    param_ident,
+                    param_value,
+                    json,
+                )? && eval_bool(
+                    &b.right,
+                    root_ident,
+                    root_value,
+                    param_ident,
+                    param_value,
+                    json,
+                )?),
+                BinOp::Or(_) => Ok(eval_bool(
+                    &b.left,
+                    root_ident,
+                    root_value,
+                    param_ident,
+                    param_value,
+                    json,
+                )? || eval_bool(
+                    &b.right,
+                    root_ident,
+                    root_value,
+                    param_ident,
+                    param_value,
+                    json,
+                )?),
+                BinOp::Eq(_) => {
+                    let l = eval_value(
+                        &b.left,
+                        root_ident,
+                        root_value,
+                        param_ident,
+                        param_value,
+                        json,
+                    )?;
+                    let r = eval_value(
+                        &b.right,
+                        root_ident,
+                        root_value,
+                        param_ident,
+                        param_value,
+                        json,
+                    )?;
+                    Ok(l == r)
+                }
+                BinOp::Ne(_) => {
+                    let l = eval_value(
+                        &b.left,
+                        root_ident,
+                        root_value,
+                        param_ident,
+                        param_value,
+                        json,
+                    )?;
+                    let r = eval_value(
+                        &b.right,
+                        root_ident,
+                        root_value,
+                        param_ident,
+                        param_value,
+                        json,
+                    )?;
+                    Ok(l != r)
+                }
+                _ => Err("unsupported operator in skip_if; use ==, !=, &&, ||".into()),
+            },
+
+            _ => Err("skip_if condition must be a boolean expression".into()),
+        }
+    }
+
+    eval_bool(expr, root_ident, root_value, param_ident, param_value, json)
+}
+
+fn eval_skip_if_expr(
+    expr: &syn::Expr,
+    root_ident: &Ident,
+    stem: &str,
+    json: Option<&serde_json::Value>,
+) -> Result<bool, String> {
+    let dummy = Ident::new("__unused", Span::call_site());
+    eval_bool_expr_two_idents(expr, root_ident, stem, &dummy, "", json)
+}
+
+static MODS_CACHE: OnceLock<Mutex<HashMap<PathBuf, (SystemTime, Arc<Vec<String>>)>>> =
+    OnceLock::new();
+
+fn load_mods_cached(path: &PathBuf, span: Span) -> syn::Result<Arc<Vec<String>>> {
+    let meta = fs::metadata(path)
+        .map_err(|e| syn::Error::new(span, format!("failed to stat {}: {e}", path.display())))?;
+
+    let mtime = meta.modified().unwrap_or(SystemTime::UNIX_EPOCH);
+
+    let cache = MODS_CACHE.get_or_init(|| Mutex::new(HashMap::new()));
+
+    {
+        let map = cache.lock().unwrap();
+        if let Some((cached_mtime, v)) = map.get(path) {
+            if *cached_mtime == mtime {
+                return Ok(v.clone());
+            }
+        }
+    }
+
+    let src = fs::read_to_string(path)
+        .map_err(|e| syn::Error::new(span, format!("failed to read {}: {e}", path.display())))?;
+
+    let mut mods: Vec<String> = Vec::new();
+    for line in src.lines() {
+        let line = line.trim();
+        if let Some(rest) = line.strip_prefix("pub mod ") {
+            let rest = rest.trim();
+            // rest expected: <ident>;
+            let ident_part = rest.split(';').next().unwrap_or("").trim();
+            if !ident_part.is_empty() {
+                // strip inline comments
+                let ident_part = ident_part.split("//").next().unwrap_or("").trim();
+                if !ident_part.is_empty() {
+                    mods.push(ident_part.to_string());
+                }
+            }
+        }
+    }
+
+    let mods = Arc::new(mods);
+
+    let mut map = cache.lock().unwrap();
+    map.insert(path.clone(), (mtime, mods.clone()));
+
+    Ok(mods)
+}
+
 enum Node {
     TT(TokenTree),
     Group {
         delim: Delimiter,
         span: Span,
         children: Vec<Node>,
+    },
+    /// Attribute-like directive: `#[skip_if(...)] <impl ... { ... }>`
+    SkipIfImpl {
+        span: Span,
+        cond: SkipIfAttr,
+        item: Vec<Node>,
     },
     Directive {
         span: Span,
@@ -175,6 +564,67 @@ fn compile_template(ts: TokenStream2, root_ident: &Ident) -> syn::Result<Compile
 
         while let Some(tt) = it.next() {
             match tt {
+                // Attribute-like directive: #[skip_if(...)] <impl ... { ... }>
+                TokenTree::Punct(p) if p.as_char() == '#' => {
+                    let Some(TokenTree::Group(attr_g)) = it.peek().cloned() else {
+                        out.push(Node::TT(TokenTree::Punct(p)));
+                        continue;
+                    };
+                    if attr_g.delimiter() != Delimiter::Bracket {
+                        out.push(Node::TT(TokenTree::Punct(p)));
+                        continue;
+                    }
+
+                    // Try parse the attribute as `skip_if(...)`
+                    if let Some(cond) = parse_skip_if_attribute(attr_g.stream())? {
+                        // consume the bracket group
+                        let _ = it.next();
+
+                        // Capture the next `impl ... { ... }` item (best-effort).
+                        let mut item_ts = TokenStream2::new();
+                        let mut saw_impl = false;
+                        let mut saw_body = false;
+
+                        while let Some(nxt) = it.next() {
+                            match &nxt {
+                                TokenTree::Ident(id) if id == "impl" => {
+                                    saw_impl = true;
+                                }
+                                TokenTree::Group(g)
+                                    if saw_impl && g.delimiter() == Delimiter::Brace =>
+                                {
+                                    saw_body = true;
+                                }
+                                _ => {}
+                            }
+
+                            item_ts.extend([nxt]);
+
+                            if saw_body {
+                                break;
+                            }
+                        }
+
+                        if item_ts.is_empty() {
+                            return Err(syn::Error::new(
+                                p.span(),
+                                "#[skip_if(...)] must be followed by an `impl ... { ... }` item",
+                            ));
+                        }
+
+                        let item_nodes = compile_nodes(item_ts, root_ident)?;
+                        out.push(Node::SkipIfImpl {
+                            span: p.span(),
+                            cond,
+                            item: item_nodes,
+                        });
+                        continue;
+                    }
+
+                    // Not our attribute; keep tokens as-is
+                    out.push(Node::TT(TokenTree::Punct(p)));
+                }
+
                 TokenTree::Group(g) => {
                     let children = compile_nodes(g.stream(), root_ident)?;
                     out.push(Node::Group {
@@ -234,6 +684,13 @@ fn nodes_need_json(nodes: &[Node]) -> bool {
     nodes.iter().any(|n| match n {
         Node::Directive { needs_json, .. } => *needs_json,
         Node::Group { children, .. } => nodes_need_json(children),
+        Node::SkipIfImpl { cond, item, .. } => {
+            let needs = match cond {
+                SkipIfAttr::Expr { needs_json, .. } => *needs_json,
+                SkipIfAttr::ModList { needs_json, .. } => *needs_json,
+            };
+            needs || nodes_need_json(item)
+        }
         _ => false,
     })
 }
@@ -304,6 +761,60 @@ fn render_nodes(
                 g.set_span(*span);
                 out.extend([TokenTree::Group(g)]);
             }
+
+            Node::SkipIfImpl { cond, item, .. } => match cond {
+                SkipIfAttr::Expr { expr, needs_json } => {
+                    if *needs_json && json.is_none() {
+                        return Err(syn::Error::new(
+                            expr.span(),
+                            "skip_if condition requires JSON fields (Name.x), but JSON was not loaded",
+                        ));
+                    }
+
+                    let skip = eval_skip_if_expr(expr, root_ident, stem, json)
+                        .map_err(|msg| syn::Error::new(expr.span(), msg))?;
+
+                    if !skip {
+                        let inner = render_nodes(item, root_ident, stem, json)?;
+                        out.extend(inner);
+                    }
+                }
+
+                SkipIfAttr::ModList {
+                    mods_path,
+                    param_ident,
+                    expr,
+                    needs_json,
+                } => {
+                    if *needs_json && json.is_none() {
+                        return Err(syn::Error::new(
+                            expr.span(),
+                            "skip_if(mods, ...) condition requires JSON fields (Name.x), but JSON was not loaded",
+                        ));
+                    }
+
+                    let mods_path_str =
+                        format!("{}/{}", env!("CARGO_MANIFEST_DIR"), mods_path.value());
+                    let mods_path_buf = PathBuf::from(mods_path_str);
+                    let mods = load_mods_cached(&mods_path_buf, mods_path.span())?;
+
+                    let mut skip = false;
+                    for m in mods.iter() {
+                        let ok =
+                            eval_bool_expr_two_idents(expr, root_ident, stem, param_ident, m, json)
+                                .map_err(|msg| syn::Error::new(expr.span(), msg))?;
+                        if ok {
+                            skip = true;
+                            break;
+                        }
+                    }
+
+                    if !skip {
+                        let inner = render_nodes(item, root_ident, stem, json)?;
+                        out.extend(inner);
+                    }
+                }
+            },
 
             Node::Directive {
                 span,

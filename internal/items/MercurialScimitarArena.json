@@ -65,7 +65,7 @@
       "percent": 0.0
     },
     "attackDamage": {
-      "flat": 0.0,
+      "flat": 45.0,
       "percent": 0.0
     },
     "attackSpeed": {
@@ -85,11 +85,11 @@
       "percent": 0.0
     },
     "lifesteal": {
-      "flat": 0.0,
+      "flat": 10.0,
       "percent": 0.0
     },
     "magicResistance": {
-      "flat": 0.0,
+      "flat": 40.0,
       "percent": 0.0
     },
     "mana": {

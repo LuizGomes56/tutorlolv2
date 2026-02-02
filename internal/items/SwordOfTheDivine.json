@@ -57,7 +57,7 @@
       "percent": 0.0
     },
     "armorPenetration": {
-      "flat": 0.0,
+      "flat": 18.0,
       "percent": 0.0
     },
     "magicPenetration": {
@@ -65,11 +65,11 @@
       "percent": 0.0
     },
     "attackDamage": {
-      "flat": 0.0,
+      "flat": 30.0,
       "percent": 0.0
     },
     "attackSpeed": {
-      "flat": 0.0,
+      "flat": 25.0,
       "percent": 0.0
     },
     "criticalStrikeChance": {

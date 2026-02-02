@@ -56,7 +56,7 @@
       "percent": 0.0
     },
     "armor": {
-      "flat": 0.0,
+      "flat": 25.0,
       "percent": 0.0
     },
     "armorPenetration": {
@@ -84,7 +84,7 @@
       "percent": 0.0
     },
     "health": {
-      "flat": 0.0,
+      "flat": 400.0,
       "percent": 0.0
     },
     "lifesteal": {
@@ -92,7 +92,7 @@
       "percent": 0.0
     },
     "magicResistance": {
-      "flat": 0.0,
+      "flat": 35.0,
       "percent": 0.0
     },
     "mana": {

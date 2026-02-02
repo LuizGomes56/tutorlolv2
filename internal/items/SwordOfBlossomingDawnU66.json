@@ -52,7 +52,7 @@
   "damage_type": "Unknown",
   "stats": {
     "abilityPower": {
-      "flat": 0.0,
+      "flat": 35.0,
       "percent": 0.0
     },
     "armor": {
@@ -84,7 +84,7 @@
       "percent": 0.0
     },
     "health": {
-      "flat": 0.0,
+      "flat": 150.0,
       "percent": 0.0
     },
     "lifesteal": {

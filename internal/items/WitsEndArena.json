@@ -69,7 +69,7 @@
       "percent": 0.0
     },
     "attackSpeed": {
-      "flat": 0.0,
+      "flat": 50.0,
       "percent": 0.0
     },
     "criticalStrikeChance": {
@@ -89,7 +89,7 @@
       "percent": 0.0
     },
     "magicResistance": {
-      "flat": 0.0,
+      "flat": 40.0,
       "percent": 0.0
     },
     "mana": {

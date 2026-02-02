@@ -4,12 +4,11 @@ use crate::{
     gen_utils::RegExtractor,
     generators::{Generator, gen_decl::decl_items::*},
     items::{Effect, Item, ItemStats, MerakiItem},
-    parallel_read,
     riot::RiotCdnItem,
 };
 use rayon::iter::{IntoParallelIterator, ParallelIterator};
 use serde_json::Value;
-use tutorlolv2_fmt::{rustfmt, to_ssnake};
+use tutorlolv2_fmt::to_ssnake;
 use tutorlolv2_gen::{Attrs, DamageType, ItemId, StatName};
 
 pub struct ItemData {
@@ -74,6 +73,15 @@ impl ItemData {
                 _ => {}
             }
         }
+    }
+
+    pub fn yield_to(&mut self, item_id: ItemId) -> MayFail {
+        let data = ItemFactory::run(item_id)?;
+        self.current_data.melee = data.current_data.melee;
+        self.current_data.ranged = data.current_data.ranged;
+        self.damage_type(data.current_data.damage_type);
+        self.infer_stats_ifdef();
+        Ok(())
     }
 
     fn meraki_data(&self) -> MayFail<&MerakiItem> {
@@ -226,50 +234,5 @@ impl ItemFactory {
 
     pub fn read_gen(entity_id: &str) -> std::io::Result<String> {
         std::fs::read_to_string(Self::generator_path(entity_id))
-    }
-
-    pub fn create_from_raw(entity_id: &str) -> MayFail<String> {
-        if let Ok(data) = Self::read_gen(entity_id)
-            && Self::is_stable(&data)
-        {
-            return Ok(data);
-        }
-
-        let generated_content = format!(
-            "use super::*;
-
-            impl Generator<ItemData> for {entity_id} {{
-                fn generate(self: Box<Self>) -> MayFail<ItemData> {{
-                    /* No implementation */
-                    self.end()
-                }}
-            }}"
-        );
-
-        let formatted = rustfmt(&generated_content, None);
-        Ok(match formatted.is_empty() {
-            true => generated_content,
-            false => formatted,
-        })
-    }
-
-    pub fn create(item_id: ItemId) -> MayFail<String> {
-        Self::create_from_raw(&format!("{item_id:?}"))
-    }
-
-    pub fn create_all_raw() -> MayFail {
-        parallel_read(SaveTo::InternalDir(Tag::Items).path(), |name, _: Value| {
-            let entity_id = to_ssnake(name).to_lowercase();
-            match Self::create_from_raw(name) {
-                Ok(data) => Ok(std::fs::write(
-                    SaveTo::Generator(Tag::Items, &entity_id).path(),
-                    data,
-                )?),
-                Err(e) => Err(format!(
-                    "Error trying to create generator file for entity ItemId::{name:?}, {e:?}"
-                )
-                .into()),
-            }
-        })
     }
 }

@@ -64,7 +64,7 @@
       "percent": 22.0
     },
     "magicPenetration": {
-      "flat": 0.0,
+      "flat": 30.0,
       "percent": 30.0
     },
     "attackDamage": {
@@ -100,7 +100,7 @@
       "percent": 0.0
     },
     "movespeed": {
-      "flat": 0.0,
+      "flat": 5.0,
       "percent": 5.0
     },
     "omnivamp": {

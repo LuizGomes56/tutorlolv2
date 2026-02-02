@@ -53,7 +53,7 @@
       "percent": 0.0
     },
     "armor": {
-      "flat": 0.0,
+      "flat": 90.0,
       "percent": 0.0
     },
     "armorPenetration": {
@@ -93,7 +93,7 @@
       "percent": 0.0
     },
     "mana": {
-      "flat": 0.0,
+      "flat": 450.0,
       "percent": 0.0
     },
     "movespeed": {

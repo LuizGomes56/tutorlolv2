@@ -258,7 +258,7 @@ struct ItemResult {
     name: String,
     name_ssnake: String,
     name_pascal: String,
-    generator: String,
+    generator: Option<String>,
     match_arm: String,
     idents: String,
     html_closure: String,
@@ -356,7 +356,7 @@ pub fn generate_items() -> GeneratorFn {
         );
 
         let generator =
-            CwdPath::get_generator(SrcFolder::Items, name_pascal.to_ssnake().to_lowercase())?;
+            CwdPath::get_generator(SrcFolder::Items, name_pascal.to_ssnake().to_lowercase()).ok();
 
         let idents = constfn_declaration
             .get_idents()
@@ -451,9 +451,9 @@ fn build_items(data: Vec<(String, ItemResult)>) -> GeneratorFn {
         item_cache.push_str(&format!("&{name_ssnake}_{riot_id},"));
         item_declarations.push_str(&base_declaration);
 
-        match generator.contains("/* No implementation */") {
-            true => generator_offsets.push(MAX_TUPLE_0),
-            false => tracker.record_into(&generator.rust_html(), &mut generator_offsets),
+        match generator {
+            Some(generator) => tracker.record_into(&generator.rust_html(), &mut generator_offsets),
+            None => generator_offsets.push(MAX_TUPLE_0),
         }
         rustfmt_inputs.push(html_declaration);
         rustfmt_inputs.push(html_closure);

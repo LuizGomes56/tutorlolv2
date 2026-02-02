@@ -73,11 +73,11 @@
       "percent": 0.0
     },
     "criticalStrikeChance": {
-      "flat": 0.0,
+      "flat": 25.0,
       "percent": 25.0
     },
     "criticalStrikeDamage": {
-      "flat": 0.0,
+      "flat": 30.0,
       "percent": 30.0
     },
     "health": {

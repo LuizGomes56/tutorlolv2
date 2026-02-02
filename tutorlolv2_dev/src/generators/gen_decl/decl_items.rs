@@ -33,8 +33,10 @@ tutorlolv2_macros::expand_dir!("../internal/items", |Name| {
         }
     }
 
+    #[skip_if("../tutorlolv2_dev/src/generators/gen_items/mod.rs", |Mod| pascal(Mod) == Name)]
     impl Generator<ItemData> for Name {
-        fn generate(self: Box<Self>) -> MayFail<ItemData> {
+        fn generate(mut self: Box<Self>) -> MayFail<ItemData> {
+            self.infer_stats_ifdef();
             self.end()
         }
     }
