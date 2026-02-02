@@ -42,7 +42,7 @@ impl Generator<Champion> for Akshan {
             let ability = self.get_mut(AbilityId::R(key))?;
             for damage in ability.damage.iter_mut() {
                 let base_scalings = *damage
-                    .capture_numbers()
+                    .capture_numbers::<f64>()
                     .get(0)
                     .ok_or("Can't capture first scaling")?;
                 let norm_scaling = damage.capture_parens(0)?;

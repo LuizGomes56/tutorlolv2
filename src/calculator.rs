@@ -426,13 +426,13 @@ pub const fn assign_item_exceptions(data: ItemExceptionData, exceptions: &[Value
                         (6 * stacks) as f32,
                     ])
                 }
-                ItemId::BloodlettersCurse => {
+                ItemId::BloodlettersCurse4010 | ItemId::BloodlettersCurse8010 => {
                     current_player_stats.magic_penetration_percent = RiotFormulas::percent_value(&[
                         current_player_stats.magic_penetration_percent,
                         (7.5 * stacks as f32),
                     ])
                 }
-                ItemId::Hubris => {
+                ItemId::Hubris6697 | ItemId::Hubris126697 | ItemId::HubrisArena => {
                     let bonus = (15 + (stacks << 1)) as f32;
 
                     current_player_stats.attack_damage += bonus;

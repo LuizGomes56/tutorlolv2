@@ -26,6 +26,7 @@ pub struct EnvConfig {
     pub dd_dragon_endpoint: String,
     pub riot_image_endpoint: String,
     pub meta_endpoint: String,
+    pub meta_assets: String,
 }
 
 impl EnvConfig {
@@ -38,6 +39,7 @@ impl EnvConfig {
             dd_dragon_endpoint: env_var!("DD_DRAGON_ENDPOINT"),
             riot_image_endpoint: env_var!("RIOT_IMAGE_ENDPOINT"),
             meta_endpoint: env_var!("META_ENDPOINT"),
+            meta_assets: env_var!("META_ASSETS"),
         }
     }
 }

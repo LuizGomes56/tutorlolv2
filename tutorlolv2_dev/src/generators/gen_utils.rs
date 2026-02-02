@@ -1,6 +1,6 @@
 use crate::MayFail;
 use regex::Regex;
-use std::fmt::Display;
+use std::{fmt::Display, str::FromStr};
 use tutorlolv2_gen::eval::*;
 
 pub trait F64Ext {
@@ -38,7 +38,7 @@ pub trait RegExtractor {
 
     /// Returns a vector of all the numbers that could be extracted
     /// from some string, preserving the order that they were found
-    fn capture_numbers(&self) -> Vec<f64>;
+    fn capture_numbers<T: FromStr>(&self) -> Vec<T>;
 
     /// Captures only the numbers inside a set of parenthesis. Parameter
     /// `number` indicates how many appearences of the regex match to skip
@@ -118,12 +118,12 @@ impl RegExtractor for str {
         nums
     }
 
-    fn capture_numbers(&self) -> Vec<f64> {
+    fn capture_numbers<T: FromStr>(&self) -> Vec<T> {
         Regex::new(r"\d+")
             .unwrap()
             .find_iter(self)
             .filter_map(|m| m.as_str().to_string().parse().ok())
-            .collect::<Vec<f64>>()
+            .collect()
     }
 
     fn replace_keys(&self) -> String {

@@ -8,7 +8,17 @@
   "attributes": "Undefined",
   "purchasable": true,
   "damage_type": "Unknown",
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "AbilityHaste": 15
+    },
+    {
+      "AbilityPower": 65
+    },
+    {
+      "Health": 400
+    }
+  ],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"

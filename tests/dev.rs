@@ -25,8 +25,6 @@ fn update() {
     tutorlolv2_dev::setup::update::setup_project_folders().unwrap();
     ChampionFactory::create_all().unwrap();
     ChampionFactory::run_all().unwrap();
-    tutorlolv2_dev::setup::update::setup_internal_items().unwrap();
-    tutorlolv2_dev::setup::update::prettify_internal_items().unwrap();
     ItemFactory::run_all().unwrap();
     Command::new("./build.bat").spawn().unwrap().wait().unwrap();
 }

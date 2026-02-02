@@ -8,7 +8,17 @@
   "attributes": "Undefined",
   "purchasable": true,
   "damage_type": "Unknown",
-  "prettified_stats": [],
+  "prettified_stats": [
+    {
+      "AttackDamage": 50
+    },
+    {
+      "AttackSpeed": 20
+    },
+    {
+      "CriticalStrikeChance": 25
+    }
+  ],
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"
@@ -43,7 +53,7 @@
       "percent": 0.0
     },
     "criticalStrikeChance": {
-      "flat": 0.0,
+      "flat": 25.0,
       "percent": 25.0
     },
     "criticalStrikeDamage": {
