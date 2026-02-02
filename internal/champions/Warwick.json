@@ -3,8 +3,8 @@
   "adaptative_type": "Physical",
   "attack_type": "Melee",
   "positions": [
-    "Jungle",
-    "Top"
+    "Top",
+    "Jungle"
   ],
   "stats": {
     "health": {
@@ -71,8 +71,7 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "_1"
+        "Q": "_1"
       },
       {
         "name": "Jaws of the Beast",
@@ -89,8 +88,7 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_2"
+        "Q": "_2"
       },
       {
         "name": "Jaws of the Beast",
@@ -107,8 +105,7 @@
     ],
     [
       {
-        "type": "E",
-        "name": "_1"
+        "E": "_1"
       },
       {
         "name": "Primal Howl",
@@ -125,8 +122,7 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_1"
+        "R": "_1"
       },
       {
         "name": "Infinite Duress",

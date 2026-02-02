@@ -70,8 +70,7 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "_2"
+        "Q": "_2"
       },
       {
         "name": "Pierce",
@@ -88,8 +87,7 @@
     ],
     [
       {
-        "type": "W",
-        "name": "_2"
+        "W": "_2"
       },
       {
         "name": "Sentinel",

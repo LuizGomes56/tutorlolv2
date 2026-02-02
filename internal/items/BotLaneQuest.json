@@ -1,42 +1,22 @@
 {
   "version": "16.2.1",
-  "riot_id": 1202,
+  "riot_id": 1207,
   "name": "Bot Lane Quest",
   "price": 0,
   "sell": 0,
   "tier": 0,
-  "maps": [
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "Aram",
-      false
-    ],
-    [
-      "NexusBlitz",
-      false
-    ],
-    [
-      "Tft",
-      false
-    ],
-    [
-      "Arena",
-      false
-    ],
-    [
-      "UnknownMap33",
-      false
-    ],
-    [
-      "UnknownMap35",
-      false
-    ]
-  ],
-  "prettified_stats": [],
+  "attributes": "Undefined",
+  "purchasable": false,
   "damage_type": "Unknown",
+  "prettified_stats": [],
+  "ranged": {
+    "minimum_damage": "zero",
+    "maximum_damage": "zero"
+  },
+  "melee": {
+    "minimum_damage": "zero",
+    "maximum_damage": "zero"
+  },
   "stats": {
     "abilityPower": {
       "flat": 0.0,
@@ -97,14 +77,13 @@
   },
   "builds_from_riot_ids": [],
   "builds_into_riot_ids": [],
-  "ranged": {
-    "minimum_damage": "zero",
-    "maximum_damage": "zero"
-  },
-  "melee": {
-    "minimum_damage": "zero",
-    "maximum_damage": "zero"
-  },
-  "attributes": "Undefined",
-  "purchasable": false
+  "maps": {
+    "Aram": false,
+    "Arena": false,
+    "NexusBlitz": false,
+    "SummonersRift": false,
+    "Tft": false,
+    "UnknownMap33": false,
+    "UnknownMap35": false
+  }
 }

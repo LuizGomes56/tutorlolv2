@@ -70,8 +70,7 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "_1"
+        "Q": "_1"
       },
       {
         "name": "Noxian Diplomacy",
@@ -88,8 +87,7 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_2"
+        "Q": "_2"
       },
       {
         "name": "Noxian Diplomacy",
@@ -106,8 +104,7 @@
     ],
     [
       {
-        "type": "W",
-        "name": "_1"
+        "W": "_1"
       },
       {
         "name": "Rake",
@@ -124,8 +121,7 @@
     ],
     [
       {
-        "type": "W",
-        "name": "_2"
+        "W": "_2"
       },
       {
         "name": "Rake",
@@ -142,8 +138,7 @@
     ],
     [
       {
-        "type": "W",
-        "name": "_3"
+        "W": "_3"
       },
       {
         "name": "Rake",
@@ -160,8 +155,7 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_1"
+        "R": "_1"
       },
       {
         "name": "Shadow Assault",
@@ -176,8 +170,7 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_2"
+        "R": "_2"
       },
       {
         "name": "Shadow Assault",

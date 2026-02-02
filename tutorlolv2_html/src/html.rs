@@ -2,7 +2,8 @@ use crate::ArrayItem;
 use core::ops::{Deref, DerefMut};
 use std::{ops::Range, path::Path};
 use tutorlolv2_gen::{
-    ChampionId, EvalIdent, ITEM_ID_TO_RIOT_ID, ItemId, RAW_BLOCK, RUNE_ID_TO_RIOT_ID,
+    EvalIdent, ITEM_ID_TO_RIOT_ID, RAW_BLOCK, RUNE_ID_TO_RIOT_ID, champions::ChampionId,
+    items::ItemId,
 };
 
 pub struct Html {

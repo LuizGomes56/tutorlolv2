@@ -3,10 +3,10 @@
   "adaptative_type": "Physical",
   "attack_type": "Melee",
   "positions": [
+    "Top",
     "Jungle",
     "Middle",
-    "Support",
-    "Top"
+    "Support"
   ],
   "stats": {
     "health": {
@@ -73,8 +73,7 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "_1"
+        "Q": "_1"
       },
       {
         "name": "Comet Spear",
@@ -91,8 +90,7 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_2"
+        "Q": "_2"
       },
       {
         "name": "Comet Spear",
@@ -109,8 +107,7 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_3"
+        "Q": "_3"
       },
       {
         "name": "Comet Spear",
@@ -127,8 +124,7 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_4"
+        "Q": "_4"
       },
       {
         "name": "Comet Spear",
@@ -145,8 +141,7 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_5"
+        "Q": "_5"
       },
       {
         "name": "Comet Spear",
@@ -163,8 +158,7 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_6"
+        "Q": "_6"
       },
       {
         "name": "Comet Spear",
@@ -181,8 +175,7 @@
     ],
     [
       {
-        "type": "W",
-        "name": "_1"
+        "W": "_1"
       },
       {
         "name": "Shield Vault",
@@ -199,8 +192,7 @@
     ],
     [
       {
-        "type": "E",
-        "name": "_1"
+        "E": "_1"
       },
       {
         "name": "Aegis Assault",
@@ -217,8 +209,7 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_1"
+        "R": "_1"
       },
       {
         "name": "Grand Starfall",
@@ -233,8 +224,7 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_2"
+        "R": "_2"
       },
       {
         "name": "Grand Starfall",

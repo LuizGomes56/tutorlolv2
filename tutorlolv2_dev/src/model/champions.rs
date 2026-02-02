@@ -1,5 +1,8 @@
 use serde::{Deserialize, Serialize};
-use std::{collections::HashMap, str::FromStr};
+use std::{
+    collections::{BTreeMap, BTreeSet},
+    str::FromStr,
+};
 use tutorlolv2_gen::{
     AbilityId, AdaptativeType, AttackType, Attrs, DamageType, DevMergeData, Position,
 };
@@ -86,17 +89,17 @@ impl MerakiChampion {
     /// of the [`Self`] object
     pub fn format(
         self,
-        abilities: HashMap<AbilityId, Ability>,
-        merge_data: Vec<DevMergeData>,
+        abilities: BTreeMap<AbilityId, Ability>,
+        merge_data: BTreeSet<DevMergeData>,
     ) -> Champion {
         Champion {
             name: self.name,
-            adaptative_type: AdaptativeType::from(self.adaptive_type),
-            attack_type: AttackType::from(self.attack_type),
+            adaptative_type: AdaptativeType::from_str(&self.adaptive_type).unwrap_or_default(),
+            attack_type: AttackType::from_str(&self.attack_type).unwrap_or_default(),
             positions: self
                 .positions
-                .into_iter()
-                .map(|pos| Position::from_str(&pos).unwrap_or_default())
+                .iter()
+                .map(|pos| Position::from_str(pos).unwrap_or_default())
                 .collect(),
             stats: self.stats,
             abilities: abilities.into_iter().collect(),
@@ -118,10 +121,10 @@ pub struct Champion {
     pub name: String,
     pub adaptative_type: AdaptativeType,
     pub attack_type: AttackType,
-    pub positions: Vec<Position>,
+    pub positions: BTreeSet<Position>,
     pub stats: MerakiChampionStats,
     pub abilities: Vec<(AbilityId, Ability)>,
-    pub merge_data: Vec<DevMergeData>,
+    pub merge_data: BTreeSet<DevMergeData>,
 }
 
 #[derive(Serialize, Deserialize)]

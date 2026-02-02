@@ -70,8 +70,7 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "Void"
+        "Q": "Void"
       },
       {
         "name": "Mystic Shot",
@@ -88,8 +87,7 @@
     ],
     [
       {
-        "type": "W",
-        "name": "Void"
+        "W": "Void"
       },
       {
         "name": "Essence Flux",
@@ -106,8 +104,7 @@
     ],
     [
       {
-        "type": "E",
-        "name": "Void"
+        "E": "Void"
       },
       {
         "name": "Arcane Shift",
@@ -124,8 +121,7 @@
     ],
     [
       {
-        "type": "R",
-        "name": "Void"
+        "R": "Void"
       },
       {
         "name": "Trueshot Barrage",

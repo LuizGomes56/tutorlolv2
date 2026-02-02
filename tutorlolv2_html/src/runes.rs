@@ -1,5 +1,5 @@
 use crate::{html::Html, parallel_task};
-use tutorlolv2_gen::{RUNE_CLOSURES, RUNE_FORMULAS, RuneId};
+use tutorlolv2_gen::runes::{RUNE_CLOSURES, RUNE_FORMULAS, RuneId};
 
 pub async fn runes_html() {
     parallel_task(4, async |rune_id: RuneId| {

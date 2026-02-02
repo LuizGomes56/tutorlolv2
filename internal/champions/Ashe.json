@@ -71,8 +71,7 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "_1"
+        "Q": "_1"
       },
       {
         "name": "Ranger's Focus",
@@ -89,8 +88,7 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_2"
+        "Q": "_2"
       },
       {
         "name": "Ranger's Focus",
@@ -107,8 +105,7 @@
     ],
     [
       {
-        "type": "W",
-        "name": "_1"
+        "W": "_1"
       },
       {
         "name": "Volley",
@@ -125,8 +122,7 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_1"
+        "R": "_1"
       },
       {
         "name": "Enchanted Crystal Arrow",

@@ -70,8 +70,7 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "_1"
+        "Q": "_1"
       },
       {
         "name": "Bone Skewer",
@@ -88,8 +87,7 @@
     ],
     [
       {
-        "type": "E",
-        "name": "_1"
+        "E": "_1"
       },
       {
         "name": "Phantom Undertow",

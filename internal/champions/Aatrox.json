@@ -70,8 +70,7 @@
   "abilities": [
     [
       {
-        "type": "P",
-        "name": "Void"
+        "P": "Void"
       },
       {
         "name": "Deathbringer Stance",
@@ -101,8 +100,7 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "Min"
+        "Q": "Min"
       },
       {
         "name": "The Darkin Blade",
@@ -119,8 +117,7 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_1Min"
+        "Q": "_1Min"
       },
       {
         "name": "The Darkin Blade",
@@ -137,8 +134,7 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_2Min"
+        "Q": "_2Min"
       },
       {
         "name": "The Darkin Blade",
@@ -155,8 +151,7 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_3Min"
+        "Q": "_3Min"
       },
       {
         "name": "The Darkin Blade",
@@ -173,8 +168,7 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "Max"
+        "Q": "Max"
       },
       {
         "name": "The Darkin Blade",
@@ -191,8 +185,7 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_1Max"
+        "Q": "_1Max"
       },
       {
         "name": "The Darkin Blade",
@@ -209,8 +202,7 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_2Max"
+        "Q": "_2Max"
       },
       {
         "name": "The Darkin Blade",
@@ -227,8 +219,7 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_3Max"
+        "Q": "_3Max"
       },
       {
         "name": "The Darkin Blade",
@@ -245,8 +236,7 @@
     ],
     [
       {
-        "type": "W",
-        "name": "Min"
+        "W": "Min"
       },
       {
         "name": "Infernal Chains",
@@ -263,8 +253,7 @@
     ],
     [
       {
-        "type": "W",
-        "name": "Max"
+        "W": "Max"
       },
       {
         "name": "Infernal Chains",
@@ -283,72 +272,57 @@
   "merge_data": [
     {
       "minimum_damage": {
-        "type": "Q",
-        "name": "Min"
+        "Q": "Min"
       },
       "maximum_damage": {
-        "type": "Q",
-        "name": "Max"
+        "Q": "Max"
       },
       "alias": {
-        "type": "Q",
-        "name": "Void"
+        "Q": "Void"
       }
     },
     {
       "minimum_damage": {
-        "type": "Q",
-        "name": "_1Min"
+        "Q": "_1Min"
       },
       "maximum_damage": {
-        "type": "Q",
-        "name": "_1Max"
+        "Q": "_1Max"
       },
       "alias": {
-        "type": "Q",
-        "name": "_1"
+        "Q": "_1"
       }
     },
     {
       "minimum_damage": {
-        "type": "Q",
-        "name": "_2Min"
+        "Q": "_2Min"
       },
       "maximum_damage": {
-        "type": "Q",
-        "name": "_2Max"
+        "Q": "_2Max"
       },
       "alias": {
-        "type": "Q",
-        "name": "_2"
+        "Q": "_2"
       }
     },
     {
       "minimum_damage": {
-        "type": "Q",
-        "name": "_3Min"
+        "Q": "_3Min"
       },
       "maximum_damage": {
-        "type": "Q",
-        "name": "_3Max"
+        "Q": "_3Max"
       },
       "alias": {
-        "type": "Q",
-        "name": "_3"
+        "Q": "_3"
       }
     },
     {
       "minimum_damage": {
-        "type": "W",
-        "name": "Min"
+        "W": "Min"
       },
       "maximum_damage": {
-        "type": "W",
-        "name": "Max"
+        "W": "Max"
       },
       "alias": {
-        "type": "W",
-        "name": "Void"
+        "W": "Void"
       }
     }
   ]

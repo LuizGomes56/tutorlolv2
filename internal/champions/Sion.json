@@ -70,8 +70,7 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "_1"
+        "Q": "_1"
       },
       {
         "name": "Decimating Smash",
@@ -88,8 +87,7 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_2"
+        "Q": "_2"
       },
       {
         "name": "Decimating Smash",
@@ -106,8 +104,7 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_3"
+        "Q": "_3"
       },
       {
         "name": "Decimating Smash",
@@ -124,8 +121,7 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_4"
+        "Q": "_4"
       },
       {
         "name": "Decimating Smash",
@@ -142,8 +138,7 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_5"
+        "Q": "_5"
       },
       {
         "name": "Decimating Smash",
@@ -160,8 +155,7 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_6"
+        "Q": "_6"
       },
       {
         "name": "Decimating Smash",
@@ -178,8 +172,7 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_7"
+        "Q": "_7"
       },
       {
         "name": "Decimating Smash",
@@ -196,8 +189,7 @@
     ],
     [
       {
-        "type": "W",
-        "name": "_1"
+        "W": "_1"
       },
       {
         "name": "Soul Furnace",
@@ -214,8 +206,7 @@
     ],
     [
       {
-        "type": "E",
-        "name": "_1"
+        "E": "_1"
       },
       {
         "name": "Roar of the Slayer",
@@ -232,8 +223,7 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_1"
+        "R": "_1"
       },
       {
         "name": "Unstoppable Onslaught",
@@ -248,8 +238,7 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_2"
+        "R": "_2"
       },
       {
         "name": "Unstoppable Onslaught",

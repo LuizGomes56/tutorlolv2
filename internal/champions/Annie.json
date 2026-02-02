@@ -70,8 +70,7 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "_1"
+        "Q": "_1"
       },
       {
         "name": "Disintegrate",
@@ -88,8 +87,7 @@
     ],
     [
       {
-        "type": "W",
-        "name": "_1"
+        "W": "_1"
       },
       {
         "name": "Incinerate",
@@ -106,8 +104,7 @@
     ],
     [
       {
-        "type": "E",
-        "name": "_1"
+        "E": "_1"
       },
       {
         "name": "Molten Shield",
@@ -124,8 +121,7 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_1"
+        "R": "_1"
       },
       {
         "name": "Summon: Tibbers",

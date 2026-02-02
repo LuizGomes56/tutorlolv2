@@ -3,8 +3,8 @@
   "adaptative_type": "Physical",
   "attack_type": "Ranged",
   "positions": [
-    "Bottom",
-    "Middle"
+    "Middle",
+    "Bottom"
   ],
   "stats": {
     "health": {
@@ -71,8 +71,7 @@
   "abilities": [
     [
       {
-        "type": "W",
-        "name": "_1"
+        "W": "_1"
       },
       {
         "name": "Rocket Jump",
@@ -89,8 +88,7 @@
     ],
     [
       {
-        "type": "E",
-        "name": "_1"
+        "E": "_1"
       },
       {
         "name": "Explosive Charge",
@@ -107,8 +105,7 @@
     ],
     [
       {
-        "type": "E",
-        "name": "_2"
+        "E": "_2"
       },
       {
         "name": "Explosive Charge",
@@ -125,8 +122,7 @@
     ],
     [
       {
-        "type": "E",
-        "name": "_3"
+        "E": "_3"
       },
       {
         "name": "Explosive Charge",
@@ -143,8 +139,7 @@
     ],
     [
       {
-        "type": "E",
-        "name": "_4"
+        "E": "_4"
       },
       {
         "name": "Explosive Charge",
@@ -161,8 +156,7 @@
     ],
     [
       {
-        "type": "E",
-        "name": "_5"
+        "E": "_5"
       },
       {
         "name": "Explosive Charge",
@@ -179,8 +173,7 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_1"
+        "R": "_1"
       },
       {
         "name": "Buster Shot",

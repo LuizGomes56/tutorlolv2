@@ -71,8 +71,7 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "_1"
+        "Q": "_1"
       },
       {
         "name": "Deceive",
@@ -89,8 +88,7 @@
     ],
     [
       {
-        "type": "W",
-        "name": "_1"
+        "W": "_1"
       },
       {
         "name": "Jack in the Box",
@@ -107,8 +105,7 @@
     ],
     [
       {
-        "type": "W",
-        "name": "_2"
+        "W": "_2"
       },
       {
         "name": "Jack in the Box",
@@ -125,8 +122,7 @@
     ],
     [
       {
-        "type": "W",
-        "name": "_3"
+        "W": "_3"
       },
       {
         "name": "Jack in the Box",
@@ -143,8 +139,7 @@
     ],
     [
       {
-        "type": "W",
-        "name": "_4"
+        "W": "_4"
       },
       {
         "name": "Jack in the Box",
@@ -161,8 +156,7 @@
     ],
     [
       {
-        "type": "W",
-        "name": "_5"
+        "W": "_5"
       },
       {
         "name": "Jack in the Box",
@@ -179,8 +173,7 @@
     ],
     [
       {
-        "type": "E",
-        "name": "_1"
+        "E": "_1"
       },
       {
         "name": "Two-Shiv Poison",
@@ -197,8 +190,7 @@
     ],
     [
       {
-        "type": "E",
-        "name": "_2"
+        "E": "_2"
       },
       {
         "name": "Two-Shiv Poison",
@@ -215,8 +207,7 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_1"
+        "R": "_1"
       },
       {
         "name": "Hallucinate",
@@ -231,8 +222,7 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_2"
+        "R": "_2"
       },
       {
         "name": "Hallucinate",
@@ -247,8 +237,7 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_3"
+        "R": "_3"
       },
       {
         "name": "Hallucinate",

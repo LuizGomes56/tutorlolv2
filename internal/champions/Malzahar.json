@@ -70,8 +70,7 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "_1"
+        "Q": "_1"
       },
       {
         "name": "Call of the Void",
@@ -88,8 +87,7 @@
     ],
     [
       {
-        "type": "W",
-        "name": "_1"
+        "W": "_1"
       },
       {
         "name": "Void Swarm",
@@ -119,8 +117,7 @@
     ],
     [
       {
-        "type": "W",
-        "name": "_2"
+        "W": "_2"
       },
       {
         "name": "Void Swarm",
@@ -150,8 +147,7 @@
     ],
     [
       {
-        "type": "E",
-        "name": "_1"
+        "E": "_1"
       },
       {
         "name": "Malefic Visions",
@@ -168,8 +164,7 @@
     ],
     [
       {
-        "type": "E",
-        "name": "_2"
+        "E": "_2"
       },
       {
         "name": "Malefic Visions",
@@ -186,8 +181,7 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_1"
+        "R": "_1"
       },
       {
         "name": "Nether Grasp",
@@ -202,8 +196,7 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_2"
+        "R": "_2"
       },
       {
         "name": "Nether Grasp",
@@ -218,8 +211,7 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_3"
+        "R": "_3"
       },
       {
         "name": "Nether Grasp",
@@ -234,8 +226,7 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_4"
+        "R": "_4"
       },
       {
         "name": "Nether Grasp",

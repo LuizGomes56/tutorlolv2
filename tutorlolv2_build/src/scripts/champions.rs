@@ -1,6 +1,5 @@
 use crate::{
-    CwdPath, EVAL_FEAT, GLOB_FEAT, Generated, GeneratorFn, MayFail, SrcFolder, Tracker,
-    parallel_task, push_end,
+    CwdPath, Generated, GeneratorFn, MayFail, SrcFolder, Tracker, parallel_task, push_end,
     scripts::{
         Simplified, StringExt,
         model::{Ability, Champion, MerakiChampionStatMap, MerakiChampionStats},
@@ -10,7 +9,7 @@ use crate::{
 use rayon::iter::{IntoParallelIterator, ParallelIterator};
 use std::{
     cmp::Ordering,
-    collections::{BTreeMap, BTreeSet, HashMap},
+    collections::{BTreeMap, BTreeSet},
 };
 use tutorlolv2_types::{AbilityId, DevMergeData};
 
@@ -105,7 +104,7 @@ fn declare_abilities(
             .to_lowercase();
 
             let constfn_declaration = format!(
-                "{EVAL_FEAT} pub const fn {constfn_name}(ctx: &Ctx) -> f32 {body}",
+                "pub const fn {constfn_name}(ctx: &Ctx) -> f32 {body}",
                 body = damage.trim_start_matches("|ctx|")
             );
 
@@ -200,10 +199,10 @@ fn get_stats(stats: &MerakiChampionStats) -> String {
     all_stats.join(",")
 }
 
-fn define_merge_indexes(merge_data: Vec<DevMergeData>, ability_data: &[AbilityId]) -> String {
-    let mut index = HashMap::with_capacity(ability_data.len());
+fn define_merge_indexes(merge_data: BTreeSet<DevMergeData>, ability_data: &[AbilityId]) -> String {
+    let mut index = BTreeMap::new();
     for (i, ability_id) in ability_data.iter().enumerate() {
-        index.entry(ability_id).or_insert(i);
+        index.entry(*ability_id).or_insert(i);
     }
 
     merge_data
@@ -265,8 +264,6 @@ struct ConstFn {
 
 struct ChampionResult {
     champion_id_upper: String,
-    name: String,
-    positions: String,
     base_declaration: String,
     ability_declarations: Vec<(AbilityId, String)>,
     generator: String,
@@ -334,7 +331,7 @@ pub fn generate_champions() -> GeneratorFn {
                 ability_id,
                 constfn
                     .declaration
-                    .trim_start_matches(&format!("{EVAL_FEAT} pub const"))
+                    .trim_start_matches("pub const")
                     .trim()
                     .to_string(),
             ));
@@ -365,8 +362,7 @@ pub fn generate_champions() -> GeneratorFn {
 
         let html_declaration = format!("{base_declaration}{closures}{rest} }};");
 
-        let mut base_declaration =
-            format!("{EVAL_FEAT}{base_declaration}closures: &[{fn_names}], {rest} }};");
+        let mut base_declaration = format!("{base_declaration}closures: &[{fn_names}], {rest} }};");
 
         let mut match_arm_kind = Vec::with_capacity(constfns.len());
         for ConstFn {
@@ -413,11 +409,9 @@ pub fn generate_champions() -> GeneratorFn {
             ability_idents_index: format!("&[{ability_idents_index}]"),
             ability_idents: format!("&[{ability_idents}]"),
             const_match_kind,
-            name,
             champion_id_upper,
             base_declaration,
             html_declaration,
-            positions: format!("&[{positions}]"),
             damage_def,
             generator,
         })
@@ -433,8 +427,6 @@ fn build_champions(data: Vec<(String, ChampionResult)>) -> GeneratorFn {
 
     let [
         mut champion_cache,
-        mut champion_positions,
-        mut champion_id_to_name,
         mut champion_formulas,
         mut champion_generator,
         mut champion_abilities,
@@ -443,19 +435,17 @@ fn build_champions(data: Vec<(String, ChampionResult)>) -> GeneratorFn {
         mut ability_formulas,
         mut ability_closures,
     ] = std::array::from_fn(|i| {
-        let (name, vtype, feature) = [
-            ("CHAMPION_CACHE", "&CachedChampion", EVAL_FEAT),
-            ("CHAMPION_POSITIONS", "&[Position]", GLOB_FEAT),
-            ("CHAMPION_ID_TO_NAME", "&str", GLOB_FEAT),
-            ("CHAMPION_FORMULAS", "Range<usize>", GLOB_FEAT),
-            ("CHAMPION_GENERATOR", "Range<usize>", GLOB_FEAT),
-            ("CHAMPION_ABILITIES", "&[AbilityId]", GLOB_FEAT),
-            ("ABILITY_IDENTS_INDEX", "&[Range<usize>]", GLOB_FEAT),
-            ("ABILITY_IDENTS", "&[EvalIdent]", GLOB_FEAT),
-            ("ABILITY_FORMULAS", "&[Range<usize>]", GLOB_FEAT),
-            ("ABILITY_CLOSURES", "&[Range<usize>]", GLOB_FEAT),
+        let (name, vtype) = [
+            ("CHAMPION_CACHE", "&CachedChampion"),
+            ("CHAMPION_FORMULAS", "Range<usize>"),
+            ("CHAMPION_GENERATOR", "Range<usize>"),
+            ("CHAMPION_ABILITIES", "&[AbilityId]"),
+            ("ABILITY_IDENTS_INDEX", "&[Range<usize>]"),
+            ("ABILITY_IDENTS", "&[EvalIdent]"),
+            ("ABILITY_FORMULAS", "&[Range<usize>]"),
+            ("ABILITY_CLOSURES", "&[Range<usize>]"),
         ][i];
-        format!("{feature} pub static {name}: [{vtype}; ChampionId::VARIANTS] = [")
+        format!("pub static {name}: [{vtype}; ChampionId::VARIANTS] = [")
     });
 
     let mut block = String::new();
@@ -510,8 +500,6 @@ fn build_champions(data: Vec<(String, ChampionResult)>) -> GeneratorFn {
         ChampionResult {
             base_declaration,
             html_declaration,
-            name,
-            positions,
             const_match_kind,
             ability_declarations,
             generator,
@@ -544,9 +532,6 @@ fn build_champions(data: Vec<(String, ChampionResult)>) -> GeneratorFn {
             format!("ChampionId::{champion_id} => {{ match kind {{ {const_match_kind} }} }}");
 
         const_match_arms.push_str(&match_arm);
-
-        champion_id_to_name.push_str(&format!("{name:?},"));
-        champion_positions.push_str(&format!("{positions},"));
         champion_id_enum.push_str(&format!("{champion_id},"));
         champion_cache.push_str(&format!("&{champion_id_upper},"));
 
@@ -620,7 +605,7 @@ fn build_champions(data: Vec<(String, ChampionResult)>) -> GeneratorFn {
     }
 
     let const_eval = format!(
-        "{EVAL_FEAT} pub const fn ability_const_eval(
+        "pub const fn ability_const_eval(
             ctx: &Ctx, 
             champion_id: ChampionId, 
             kind: AbilityId
@@ -630,18 +615,16 @@ fn build_champions(data: Vec<(String, ChampionResult)>) -> GeneratorFn {
     );
 
     let champion_name_to_id = format!(
-        "{EVAL_FEAT} pub static CHAMPION_NAME_TO_ID: phf::Map<&str, ChampionId> = phf::phf_map! {{
+        "pub static CHAMPION_NAME_TO_ID: phf::Map<&str, ChampionId> = phf::phf_map! {{
             {arms}
         }};",
-        arms = language_arms.join(",")
+        arms = language_arms.join(",\n\t\t\t")
     );
 
     push_end([&mut champion_id_enum], "}");
     push_end(
         [
             &mut champion_cache,
-            &mut champion_positions,
-            &mut champion_id_to_name,
             &mut ability_ctx_idents_index,
             &mut ability_ctx_idents,
         ],
@@ -707,8 +690,6 @@ fn build_champions(data: Vec<(String, ChampionResult)>) -> GeneratorFn {
 
         let content = [
             champion_id_enum,
-            champion_id_to_name,
-            champion_positions,
             champion_generator,
             champion_abilities,
             champion_formulas,
@@ -740,7 +721,7 @@ pub fn get_recommendations(len: usize) -> MayFail<String> {
     let mut globals = std::array::from_fn::<_, 2, _>(|i| {
         let enumv = enum_ids[i];
         let var = declaration[i];
-        format!("{GLOB_FEAT} pub static {var}: [[&[{enumv}]; 5]; {len}] = [")
+        format!("pub static {var}: [[&[{enumv}]; 5]; {len}] = [")
     });
 
     let json = CwdPath::deserialize::<BTreeMap<String, BTreeMap<String, [BTreeSet<String>; 2]>>>(

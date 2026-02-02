@@ -70,8 +70,7 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "_1"
+        "Q": "_1"
       },
       {
         "name": "Sigil of Malice",
@@ -88,8 +87,7 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_2"
+        "Q": "_2"
       },
       {
         "name": "Sigil of Malice",
@@ -106,8 +104,7 @@
     ],
     [
       {
-        "type": "W",
-        "name": "_1"
+        "W": "_1"
       },
       {
         "name": "Distortion",
@@ -124,8 +121,7 @@
     ],
     [
       {
-        "type": "E",
-        "name": "_1"
+        "E": "_1"
       },
       {
         "name": "Ethereal Chains",
@@ -142,8 +138,7 @@
     ],
     [
       {
-        "type": "E",
-        "name": "_2"
+        "E": "_2"
       },
       {
         "name": "Ethereal Chains",
@@ -160,8 +155,7 @@
     ],
     [
       {
-        "type": "E",
-        "name": "_3"
+        "E": "_3"
       },
       {
         "name": "Ethereal Chains",
@@ -178,8 +172,7 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_1"
+        "R": "_1"
       },
       {
         "name": "Mimic",
@@ -194,8 +187,7 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_2"
+        "R": "_2"
       },
       {
         "name": "Mimic",
@@ -210,8 +202,7 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_3"
+        "R": "_3"
       },
       {
         "name": "Mimic",
@@ -226,8 +217,7 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_4"
+        "R": "_4"
       },
       {
         "name": "Mimic",
@@ -242,8 +232,7 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_5"
+        "R": "_5"
       },
       {
         "name": "Mimic",
@@ -258,8 +247,7 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_6"
+        "R": "_6"
       },
       {
         "name": "Mimic",
@@ -274,8 +262,7 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_7"
+        "R": "_7"
       },
       {
         "name": "Mimic",

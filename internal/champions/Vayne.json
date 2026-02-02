@@ -3,8 +3,8 @@
   "adaptative_type": "Physical",
   "attack_type": "Ranged",
   "positions": [
-    "Bottom",
-    "Top"
+    "Top",
+    "Bottom"
   ],
   "stats": {
     "health": {
@@ -71,8 +71,7 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "_1"
+        "Q": "_1"
       },
       {
         "name": "Tumble",
@@ -89,8 +88,7 @@
     ],
     [
       {
-        "type": "W",
-        "name": "_1"
+        "W": "_1"
       },
       {
         "name": "Silver Bolts",
@@ -107,8 +105,7 @@
     ],
     [
       {
-        "type": "W",
-        "name": "_2"
+        "W": "_2"
       },
       {
         "name": "Silver Bolts",
@@ -125,8 +122,7 @@
     ],
     [
       {
-        "type": "W",
-        "name": "_3"
+        "W": "_3"
       },
       {
         "name": "Silver Bolts",
@@ -143,8 +139,7 @@
     ],
     [
       {
-        "type": "E",
-        "name": "_1"
+        "E": "_1"
       },
       {
         "name": "Condemn",
@@ -161,8 +156,7 @@
     ],
     [
       {
-        "type": "E",
-        "name": "_2"
+        "E": "_2"
       },
       {
         "name": "Condemn",
@@ -179,8 +173,7 @@
     ],
     [
       {
-        "type": "E",
-        "name": "_3"
+        "E": "_3"
       },
       {
         "name": "Condemn",
@@ -197,8 +190,7 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_1"
+        "R": "_1"
       },
       {
         "name": "Final Hour",

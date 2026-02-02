@@ -70,8 +70,7 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "_1"
+        "Q": "_1"
       },
       {
         "name": "Piercing Arrow",
@@ -88,8 +87,7 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_2"
+        "Q": "_2"
       },
       {
         "name": "Piercing Arrow",
@@ -106,8 +104,7 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_3"
+        "Q": "_3"
       },
       {
         "name": "Piercing Arrow",
@@ -124,8 +121,7 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_4"
+        "Q": "_4"
       },
       {
         "name": "Piercing Arrow",
@@ -142,8 +138,7 @@
     ],
     [
       {
-        "type": "W",
-        "name": "_1"
+        "W": "_1"
       },
       {
         "name": "Blighted Quiver",
@@ -160,8 +155,7 @@
     ],
     [
       {
-        "type": "W",
-        "name": "_2"
+        "W": "_2"
       },
       {
         "name": "Blighted Quiver",
@@ -178,8 +172,7 @@
     ],
     [
       {
-        "type": "W",
-        "name": "_3"
+        "W": "_3"
       },
       {
         "name": "Blighted Quiver",
@@ -196,8 +189,7 @@
     ],
     [
       {
-        "type": "W",
-        "name": "_4"
+        "W": "_4"
       },
       {
         "name": "Blighted Quiver",
@@ -214,8 +206,7 @@
     ],
     [
       {
-        "type": "W",
-        "name": "_5"
+        "W": "_5"
       },
       {
         "name": "Blighted Quiver",
@@ -232,8 +223,7 @@
     ],
     [
       {
-        "type": "W",
-        "name": "_6"
+        "W": "_6"
       },
       {
         "name": "Blighted Quiver",
@@ -250,8 +240,7 @@
     ],
     [
       {
-        "type": "W",
-        "name": "_7"
+        "W": "_7"
       },
       {
         "name": "Blighted Quiver",
@@ -268,8 +257,7 @@
     ],
     [
       {
-        "type": "E",
-        "name": "_1"
+        "E": "_1"
       },
       {
         "name": "Hail of Arrows",
@@ -286,8 +274,7 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_1"
+        "R": "_1"
       },
       {
         "name": "Chain of Corruption",

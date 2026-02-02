@@ -1,6 +1,6 @@
 use crate::{
-    CwdPath, DEFAULT_ITEM_GENERATOR_OFFSET, EVAL_FEAT, GLOB_FEAT, Generated, GeneratorFn,
-    SrcFolder, Tracker, ZERO_FN_OFFSET, parallel_task, push_end,
+    CwdPath, DEFAULT_ITEM_GENERATOR_OFFSET, Generated, GeneratorFn, SrcFolder, Tracker,
+    ZERO_FN_OFFSET, parallel_task, push_end,
     scripts::{
         StringExt,
         model::{Item, ItemStats, MerakiItemStatMap},
@@ -105,7 +105,7 @@ fn declare_item(name: &str, item: &Item) -> DeclaredItem {
         let fn_name = decide_fn_name(group);
 
         constfn_declaration.push_str(&format!(
-            "{EVAL_FEAT} pub const fn {fn_name}(ctx: &Ctx) -> f32 {{
+            "pub const fn {fn_name}(ctx: &Ctx) -> f32 {{
                 {body}
             }}",
             body = key.body
@@ -306,14 +306,24 @@ pub fn generate_items() -> GeneratorFn {
                 || is_zeroed(&melee.maximum_damage)
         };
 
+        let maps = item
+            .maps
+            .into_iter()
+            .map(|(key, val)| {
+                let map_name = key.to_ssnake().to_lowercase();
+                format!("{map_name}: {val},")
+            })
+            .collect::<String>();
+
         let rest = format!(
             "riot_id: {riot_id},
             deals_damage: {deals_damage},
-            stats: {stats}}};"
+            stats: {stats},
+            maps: ItemMaps {{{maps}}}}};"
         );
 
         let base_declaration = format!(
-            "pub static {name_ssnake}_{riot_id}: CachedItem = CachedItem {{
+            "pub static {name_ssnake}: CachedItem = CachedItem {{
                 name: {name:?},
                 price: {price},
                 prettified_stats: &[{prettified_stats}],
@@ -344,15 +354,15 @@ pub fn generate_items() -> GeneratorFn {
         .concat();
 
         let html_closure = constfn_declaration
-            .trim_start_matches(&format!("{EVAL_FEAT} pub const"))
+            .trim_start_matches("pub const")
             .trim()
             .to_string();
 
         let base_declaration = format!(
-            "{EVAL_FEAT}{base_declaration}
-                ranged_damages: [{ranged_fn_names}],
-                melee_damages: [{melee_fn_names}], {rest}
-                {constfn_declaration}"
+            "{base_declaration}
+            ranged_damages: [{ranged_fn_names}],
+            melee_damages: [{melee_fn_names}], {rest}
+            {constfn_declaration}"
         );
 
         let generator =
@@ -390,23 +400,19 @@ fn build_items(data: Vec<(String, ItemResult)>) -> GeneratorFn {
 
     let [
         mut item_cache,
-        mut item_id_to_name,
         mut item_formulas,
         mut item_generator,
-        mut item_id_to_riot_id,
         mut item_idents,
         mut item_closures,
     ] = std::array::from_fn(|i| {
-        let (name, vtype, feature) = [
-            ("ITEM_CACHE", "&CachedItem", EVAL_FEAT),
-            ("ITEM_ID_TO_NAME", "&str", GLOB_FEAT),
-            ("ITEM_FORMULAS", "Range<usize>", GLOB_FEAT),
-            ("ITEM_GENERATOR", "Range<usize>", GLOB_FEAT),
-            ("ITEM_ID_TO_RIOT_ID", "u32", GLOB_FEAT),
-            ("ITEM_IDENTS", "&[EvalIdent]", GLOB_FEAT),
-            ("ITEM_CLOSURES", "Range<usize>", GLOB_FEAT),
+        let (name, vtype) = [
+            ("ITEM_CACHE", "&CachedItem"),
+            ("ITEM_FORMULAS", "Range<usize>"),
+            ("ITEM_GENERATOR", "Range<usize>"),
+            ("ITEM_IDENTS", "&[EvalIdent]"),
+            ("ITEM_CLOSURES", "Range<usize>"),
         ][i];
-        format!("{feature} pub static {name}: [{vtype}; ItemId::VARIANTS] = [")
+        format!("pub static {name}: [{vtype}; ItemId::VARIANTS] = [")
     });
 
     let mut block = String::new();
@@ -430,12 +436,12 @@ fn build_items(data: Vec<(String, ItemResult)>) -> GeneratorFn {
             deals_damage,
             html_declaration,
             base_declaration,
-            name,
             name_ssnake,
             name_pascal,
             generator,
             html_closure,
             idents,
+            ..
         },
     ) in data
     {
@@ -444,11 +450,9 @@ fn build_items(data: Vec<(String, ItemResult)>) -> GeneratorFn {
             const_match_arms.push_str(&match_arm);
         }
         item_idents.push_str(&format!("{idents},"));
-        item_id_to_riot_id.push_str(&format!("{riot_id},"));
         item_id_enum_match_arms.push(format!("{riot_id} => Some(Self::{name_pascal})"));
         item_id_enum_fields.push(name_pascal);
-        item_id_to_name.push_str(&format!("{name:?},"));
-        item_cache.push_str(&format!("&{name_ssnake}_{riot_id},"));
+        item_cache.push_str(&format!("&{name_ssnake},"));
         item_declarations.push_str(&base_declaration);
 
         match generator {
@@ -484,11 +488,9 @@ fn build_items(data: Vec<(String, ItemResult)>) -> GeneratorFn {
         pub enum ItemId {{ {fields} }}
         impl ItemId {{
             pub const VARIANTS: usize = {len};
-            {EVAL_FEAT}
             pub const fn to_riot_id(&self) -> u32 {{
                 ITEM_CACHE[*self as usize].riot_id
             }}
-            {EVAL_FEAT}
             pub const fn from_riot_id(id: u32) -> Option<Self> {{
                 match id {{ {match_arms}, _ => None }}
             }}
@@ -505,7 +507,7 @@ fn build_items(data: Vec<(String, ItemResult)>) -> GeneratorFn {
     );
 
     let const_eval = format!(
-        "{EVAL_FEAT} pub const fn item_const_eval(
+        "pub const fn item_const_eval(
             ctx: &Ctx, 
             item_id: ItemId, 
             attack_type: AttackType
@@ -514,15 +516,7 @@ fn build_items(data: Vec<(String, ItemResult)>) -> GeneratorFn {
         }}"
     );
 
-    push_end(
-        [
-            &mut item_cache,
-            &mut item_id_to_name,
-            &mut item_id_to_riot_id,
-            &mut item_idents,
-        ],
-        "];",
-    );
+    push_end([&mut item_cache, &mut item_idents], "];");
 
     println!("[ok] Finished building items");
 
@@ -558,9 +552,7 @@ fn build_items(data: Vec<(String, ItemResult)>) -> GeneratorFn {
 
         let content = [
             item_id_enum,
-            item_id_to_name,
             item_formulas,
-            item_id_to_riot_id,
             item_generator,
             item_cache,
             item_declarations,

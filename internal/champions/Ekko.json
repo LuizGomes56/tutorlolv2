@@ -71,8 +71,7 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "_1"
+        "Q": "_1"
       },
       {
         "name": "Timewinder",
@@ -89,8 +88,7 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_2"
+        "Q": "_2"
       },
       {
         "name": "Timewinder",
@@ -107,8 +105,7 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_3"
+        "Q": "_3"
       },
       {
         "name": "Timewinder",
@@ -125,8 +122,7 @@
     ],
     [
       {
-        "type": "E",
-        "name": "_1"
+        "E": "_1"
       },
       {
         "name": "Phase Dive",
@@ -143,8 +139,7 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_1"
+        "R": "_1"
       },
       {
         "name": "Chronobreak",

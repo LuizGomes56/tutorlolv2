@@ -1,7 +1,6 @@
 use crate::{
     ENV_CONFIG, JsonRead, JsonWrite, MayFail,
     client::{SaveTo, Tag},
-    gen_factories::fac_items::ItemFactory,
     model::{
         items::{Item, MerakiItem},
         riot::RiotCdnItem,
@@ -16,7 +15,7 @@ use std::{
     fs,
     path::Path,
 };
-use tutorlolv2_fmt::{pascal_case, to_ssnake};
+use tutorlolv2_fmt::pascal_case;
 use tutorlolv2_gen::{GameMap, ItemId, StatName};
 
 /// Creates basic folders necessary to run the program. If one of these folders are not found,
@@ -120,9 +119,7 @@ pub fn setup_internal_items() -> MayFail {
                     .maps
                     .into_iter()
                     .map(|(map_id, is_available)| (GameMap::from_u8(map_id), is_available))
-                    .collect::<BTreeMap<_, _>>()
-                    .into_iter()
-                    .collect(),
+                    .collect::<BTreeMap<_, _>>(),
                 sell: riot_cdn_item.gold.sell,
                 purchasable: riot_cdn_item.gold.purchasable,
                 price: riot_cdn_item.gold.total,
@@ -130,8 +127,8 @@ pub fn setup_internal_items() -> MayFail {
                 name,
                 stats,
                 tier,
-                builds_from_riot_ids,
-                builds_into_riot_ids,
+                builds_from_riot_ids: builds_from_riot_ids.into_iter().collect(),
+                builds_into_riot_ids: builds_into_riot_ids.into_iter().collect(),
                 ..Default::default()
             };
 
@@ -145,7 +142,6 @@ pub fn setup_internal_items() -> MayFail {
             }
 
             let internal_fname = pascal_case(&item.name);
-            let generator_fname = to_ssnake(&internal_fname).to_lowercase();
 
             item.into_file(SaveTo::Internal(Tag::Items, &internal_fname).path())
         },
@@ -234,7 +230,7 @@ static RE_TAG_STRIP: Lazy<Regex> = Lazy::new(|| Regex::new(r"<\/?[^>]+(>|$)").un
 
 /// Returns the value that will be added to key `prettified_stats` for each item.
 /// Depends on Riot API `item.json` and requires manual maintainance if a new XML tag is added
-fn pretiffy_items(data: &RiotCdnItem) -> MayFail<Vec<StatName>> {
+fn pretiffy_items(data: &RiotCdnItem) -> MayFail<BTreeSet<StatName>> {
     let mut result = HashMap::<_, _>::default();
 
     let lines = RE_LINE.captures_iter(&data.description).collect::<Vec<_>>();
@@ -276,9 +272,7 @@ fn pretiffy_items(data: &RiotCdnItem) -> MayFail<Vec<StatName>> {
         .collect::<Vec<_>>()
         .join(",");
 
-    Ok(
-        serde_json::from_str::<BTreeSet<StatName>>(&format!("[{json}]"))?
-            .into_iter()
-            .collect(),
-    )
+    Ok(serde_json::from_str::<BTreeSet<StatName>>(&format!(
+        "[{json}]"
+    ))?)
 }

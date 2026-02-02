@@ -71,8 +71,7 @@
   "abilities": [
     [
       {
-        "type": "E",
-        "name": "_1"
+        "E": "_1"
       },
       {
         "name": "Dazzle",

@@ -5,42 +5,22 @@
   "price": 400,
   "sell": 280,
   "tier": 1,
-  "maps": [
-    [
-      "SummonersRift",
-      true
-    ],
-    [
-      "Aram",
-      true
-    ],
-    [
-      "NexusBlitz",
-      true
-    ],
-    [
-      "Tft",
-      false
-    ],
-    [
-      "Arena",
-      false
-    ],
-    [
-      "UnknownMap33",
-      false
-    ],
-    [
-      "UnknownMap35",
-      true
-    ]
-  ],
+  "attributes": "Undefined",
+  "purchasable": true,
+  "damage_type": "Unknown",
   "prettified_stats": [
     {
       "Health": 150
     }
   ],
-  "damage_type": "Unknown",
+  "ranged": {
+    "minimum_damage": "zero",
+    "maximum_damage": "zero"
+  },
+  "melee": {
+    "minimum_damage": "zero",
+    "maximum_damage": "zero"
+  },
   "stats": {
     "abilityPower": {
       "flat": 0.0,
@@ -101,44 +81,43 @@
   },
   "builds_from_riot_ids": [],
   "builds_into_riot_ids": [
-    323075,
-    323107,
     1011,
-    323222,
-    4635,
-    6035,
-    3801,
-    2526,
     2021,
-    3211,
-    4401,
-    3023,
-    3161,
-    6662,
-    6660,
-    3803,
     2502,
+    2526,
     3012,
+    3023,
     3044,
     3053,
     3066,
     3067,
     3075,
-    326617,
     3147,
     3152,
-    322526,
+    3161,
+    3211,
     3742,
-    6610
+    3801,
+    3803,
+    4401,
+    4635,
+    6035,
+    6610,
+    6660,
+    6662,
+    322526,
+    323075,
+    323107,
+    323222,
+    326617
   ],
-  "ranged": {
-    "minimum_damage": "zero",
-    "maximum_damage": "zero"
-  },
-  "melee": {
-    "minimum_damage": "zero",
-    "maximum_damage": "zero"
-  },
-  "attributes": "Undefined",
-  "purchasable": true
+  "maps": {
+    "Aram": true,
+    "Arena": false,
+    "NexusBlitz": true,
+    "SummonersRift": true,
+    "Tft": false,
+    "UnknownMap33": false,
+    "UnknownMap35": true
+  }
 }

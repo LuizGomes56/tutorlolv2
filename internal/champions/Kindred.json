@@ -70,8 +70,7 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "_5"
+        "Q": "_5"
       },
       {
         "name": "Dance of Arrows",
@@ -88,8 +87,7 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_6"
+        "Q": "_6"
       },
       {
         "name": "Dance of Arrows",
@@ -106,8 +104,7 @@
     ],
     [
       {
-        "type": "E",
-        "name": "_2"
+        "E": "_2"
       },
       {
         "name": "Mounting Dread",
@@ -124,8 +121,7 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_1"
+        "R": "_1"
       },
       {
         "name": "Lamb's Respite",

@@ -70,8 +70,7 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "_1"
+        "Q": "_1"
       },
       {
         "name": "Boomerang Blade",
@@ -88,8 +87,7 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_2"
+        "Q": "_2"
       },
       {
         "name": "Boomerang Blade",
@@ -106,8 +104,7 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_3"
+        "Q": "_3"
       },
       {
         "name": "Boomerang Blade",
@@ -124,8 +121,7 @@
     ],
     [
       {
-        "type": "W",
-        "name": "_1"
+        "W": "_1"
       },
       {
         "name": "Ricochet",
@@ -142,8 +138,7 @@
     ],
     [
       {
-        "type": "W",
-        "name": "_2"
+        "W": "_2"
       },
       {
         "name": "Ricochet",
@@ -160,8 +155,7 @@
     ],
     [
       {
-        "type": "W",
-        "name": "_3"
+        "W": "_3"
       },
       {
         "name": "Ricochet",
@@ -178,8 +172,7 @@
     ],
     [
       {
-        "type": "W",
-        "name": "_4"
+        "W": "_4"
       },
       {
         "name": "Ricochet",

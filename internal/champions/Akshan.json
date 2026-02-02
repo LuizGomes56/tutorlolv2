@@ -70,8 +70,7 @@
   "abilities": [
     [
       {
-        "type": "P",
-        "name": "Void"
+        "P": "Void"
       },
       {
         "name": "Dirty Fighting",
@@ -101,8 +100,7 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "Min"
+        "Q": "Min"
       },
       {
         "name": "Avengerang",
@@ -119,8 +117,7 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "Max"
+        "Q": "Max"
       },
       {
         "name": "Avengerang",
@@ -137,8 +134,7 @@
     ],
     [
       {
-        "type": "E",
-        "name": "Void"
+        "E": "Void"
       },
       {
         "name": "Heroic Swing",
@@ -155,8 +151,7 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_1Min"
+        "R": "_1Min"
       },
       {
         "name": "Comeuppance",
@@ -171,8 +166,7 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_2Min"
+        "R": "_2Min"
       },
       {
         "name": "Comeuppance",
@@ -187,8 +181,7 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_1Max"
+        "R": "_1Max"
       },
       {
         "name": "Comeuppance",
@@ -203,8 +196,7 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_2Max"
+        "R": "_2Max"
       },
       {
         "name": "Comeuppance",
@@ -221,44 +213,35 @@
   "merge_data": [
     {
       "minimum_damage": {
-        "type": "Q",
-        "name": "Min"
+        "Q": "Min"
       },
       "maximum_damage": {
-        "type": "Q",
-        "name": "Max"
+        "Q": "Max"
       },
       "alias": {
-        "type": "Q",
-        "name": "Void"
+        "Q": "Void"
       }
     },
     {
       "minimum_damage": {
-        "type": "R",
-        "name": "_1Min"
+        "R": "_1Min"
       },
       "maximum_damage": {
-        "type": "R",
-        "name": "_1Max"
+        "R": "_1Max"
       },
       "alias": {
-        "type": "R",
-        "name": "_1"
+        "R": "_1"
       }
     },
     {
       "minimum_damage": {
-        "type": "R",
-        "name": "_2Min"
+        "R": "_2Min"
       },
       "maximum_damage": {
-        "type": "R",
-        "name": "_2Max"
+        "R": "_2Max"
       },
       "alias": {
-        "type": "R",
-        "name": "_2"
+        "R": "_2"
       }
     }
   ]

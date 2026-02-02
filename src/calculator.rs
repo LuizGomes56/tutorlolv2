@@ -32,7 +32,7 @@ pub const MONSTER_RESISTS: [(f32, f32); L_MSTR] = [
 pub const NUMBER_OF_ITEMS_WITH_PEN: usize = {
     let mut i = 0;
     let mut j = 0;
-    while i < NUMBER_OF_ITEMS {
+    while i < ItemId::VARIANTS {
         let CachedItem {
             stats,
             prettified_stats,
@@ -63,7 +63,7 @@ pub const ITEMS_WITH_PEN: [ItemId; NUMBER_OF_ITEMS_WITH_PEN] = {
     let mut i = 0;
     let mut j = 0;
     let mut items = [ItemId::AbyssalMask; NUMBER_OF_ITEMS_WITH_PEN];
-    while i < NUMBER_OF_ITEMS {
+    while i < ItemId::VARIANTS {
         let CachedItem {
             stats,
             prettified_stats,

@@ -71,8 +71,7 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "_1"
+        "Q": "_1"
       },
       {
         "name": "Threaded Volley",
@@ -89,8 +88,7 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_2"
+        "Q": "_2"
       },
       {
         "name": "Threaded Volley",
@@ -107,8 +105,7 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_3"
+        "Q": "_3"
       },
       {
         "name": "Threaded Volley",
@@ -125,8 +122,7 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_4"
+        "Q": "_4"
       },
       {
         "name": "Threaded Volley",
@@ -143,8 +139,7 @@
     ],
     [
       {
-        "type": "E",
-        "name": "_1"
+        "E": "_1"
       },
       {
         "name": "Unraveled Earth",
@@ -161,8 +156,7 @@
     ],
     [
       {
-        "type": "E",
-        "name": "_2"
+        "E": "_2"
       },
       {
         "name": "Unraveled Earth",
@@ -179,8 +173,7 @@
     ],
     [
       {
-        "type": "E",
-        "name": "_3"
+        "E": "_3"
       },
       {
         "name": "Unraveled Earth",

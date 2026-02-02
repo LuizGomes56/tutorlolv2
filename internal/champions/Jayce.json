@@ -3,8 +3,8 @@
   "adaptative_type": "Physical",
   "attack_type": "Ranged",
   "positions": [
-    "Middle",
-    "Top"
+    "Top",
+    "Middle"
   ],
   "stats": {
     "health": {
@@ -71,8 +71,7 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "_2"
+        "Q": "_2"
       },
       {
         "name": "To the Skies!",
@@ -90,8 +89,7 @@
     ],
     [
       {
-        "type": "W",
-        "name": "_3"
+        "W": "_3"
       },
       {
         "name": "Lightning Field",
@@ -109,8 +107,7 @@
     ],
     [
       {
-        "type": "W",
-        "name": "_4"
+        "W": "_4"
       },
       {
         "name": "Lightning Field",
@@ -128,8 +125,7 @@
     ],
     [
       {
-        "type": "E",
-        "name": "_1"
+        "E": "_1"
       },
       {
         "name": "Thundering Blow",
@@ -147,8 +143,7 @@
     ],
     [
       {
-        "type": "E",
-        "name": "_2"
+        "E": "_2"
       },
       {
         "name": "Thundering Blow",

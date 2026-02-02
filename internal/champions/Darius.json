@@ -70,8 +70,7 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "_1"
+        "Q": "_1"
       },
       {
         "name": "Decimate",
@@ -88,8 +87,7 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_2"
+        "Q": "_2"
       },
       {
         "name": "Decimate",
@@ -106,8 +104,7 @@
     ],
     [
       {
-        "type": "W",
-        "name": "_1"
+        "W": "_1"
       },
       {
         "name": "Crippling Strike",
@@ -124,8 +121,7 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_1"
+        "R": "_1"
       },
       {
         "name": "Noxian Guillotine",
@@ -140,8 +136,7 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_2"
+        "R": "_2"
       },
       {
         "name": "Noxian Guillotine",
@@ -156,8 +151,7 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_3"
+        "R": "_3"
       },
       {
         "name": "Noxian Guillotine",

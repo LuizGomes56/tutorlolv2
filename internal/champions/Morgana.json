@@ -71,8 +71,7 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "_1"
+        "Q": "_1"
       },
       {
         "name": "Dark Binding",
@@ -89,8 +88,7 @@
     ],
     [
       {
-        "type": "W",
-        "name": "_1"
+        "W": "_1"
       },
       {
         "name": "Tormented Shadow",
@@ -107,8 +105,7 @@
     ],
     [
       {
-        "type": "W",
-        "name": "_2"
+        "W": "_2"
       },
       {
         "name": "Tormented Shadow",
@@ -125,8 +122,7 @@
     ],
     [
       {
-        "type": "W",
-        "name": "_3"
+        "W": "_3"
       },
       {
         "name": "Tormented Shadow",
@@ -143,8 +139,7 @@
     ],
     [
       {
-        "type": "W",
-        "name": "_4"
+        "W": "_4"
       },
       {
         "name": "Tormented Shadow",
@@ -161,8 +156,7 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_1"
+        "R": "_1"
       },
       {
         "name": "Soul Shackles",
@@ -177,8 +171,7 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_2"
+        "R": "_2"
       },
       {
         "name": "Soul Shackles",

@@ -70,8 +70,7 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "_1"
+        "Q": "_1"
       },
       {
         "name": "Parrrley",
@@ -88,8 +87,7 @@
     ],
     [
       {
-        "type": "E",
-        "name": "_1"
+        "E": "_1"
       },
       {
         "name": "Powder Keg",
@@ -106,8 +104,7 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_1"
+        "R": "_1"
       },
       {
         "name": "Cannon Barrage",
@@ -122,8 +119,7 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_2"
+        "R": "_2"
       },
       {
         "name": "Cannon Barrage",
@@ -138,8 +134,7 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_3"
+        "R": "_3"
       },
       {
         "name": "Cannon Barrage",
@@ -154,8 +149,7 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_4"
+        "R": "_4"
       },
       {
         "name": "Cannon Barrage",
@@ -170,8 +164,7 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_5"
+        "R": "_5"
       },
       {
         "name": "Cannon Barrage",
@@ -186,8 +179,7 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_6"
+        "R": "_6"
       },
       {
         "name": "Cannon Barrage",
@@ -202,8 +194,7 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_7"
+        "R": "_7"
       },
       {
         "name": "Cannon Barrage",

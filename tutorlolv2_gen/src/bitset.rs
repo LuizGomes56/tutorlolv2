@@ -1,9 +1,10 @@
-use crate::{ItemId, NUMBER_OF_ITEMS, NUMBER_OF_RUNES, RuneId};
+use crate::{ItemId, RuneId};
+use const_sized_bit_set::BitSetArray;
 
-pub type ItemsBitSet = const_sized_bit_set::BitSetArray<{ NUMBER_OF_ITEMS.div_ceil(64) }>;
-pub type RunesBitSet = const_sized_bit_set::BitSetArray<{ NUMBER_OF_RUNES.div_ceil(64) }>;
+pub type ItemsBitSet = BitSetArray<{ ItemId::VARIANTS.div_ceil(64) }>;
+pub type RunesBitSet = BitSetArray<{ RuneId::VARIANTS.div_ceil(64) }>;
 
-/// Same as method [`const_sized_bit_set::BitSetArray::pop`], but with the `const` qualifier
+/// Same as method [`BitSetArray::pop`], but with the `const` qualifier
 pub const fn bit_array_pop<const S: usize>(array: &mut [u64; S]) -> Option<usize> {
     let mut word_index = 0;
     while word_index <= S - 1 {
@@ -21,7 +22,7 @@ pub const fn bit_array_pop<const S: usize>(array: &mut [u64; S]) -> Option<usize
     None
 }
 
-/// Creates a new [`const_sized_bit_set::BitSetArray`] from a known size array of [`ItemId`]
+/// Creates a new [`BitSetArray`] from a known size array of [`ItemId`]
 pub const fn bitset_items<const N: usize>(values: [ItemId; N]) -> ItemsBitSet {
     let mut array = ItemsBitSet::EMPTY;
     let mut i = 0;
@@ -32,7 +33,7 @@ pub const fn bitset_items<const N: usize>(values: [ItemId; N]) -> ItemsBitSet {
     array
 }
 
-/// Creates a new [`const_sized_bit_set::BitSetArray`] from a known size array of [`RuneId`]
+/// Creates a new [`BitSetArray`] from a known size array of [`RuneId`]
 pub const fn bitset_runes<const N: usize>(values: [RuneId; N]) -> RunesBitSet {
     let mut array = RunesBitSet::EMPTY;
     let mut i = 0;

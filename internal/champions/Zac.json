@@ -3,9 +3,9 @@
   "adaptative_type": "Magic",
   "attack_type": "Melee",
   "positions": [
+    "Top",
     "Jungle",
-    "Support",
-    "Top"
+    "Support"
   ],
   "stats": {
     "health": {
@@ -72,8 +72,7 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "_1"
+        "Q": "_1"
       },
       {
         "name": "Stretching Strikes",
@@ -90,8 +89,7 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_2"
+        "Q": "_2"
       },
       {
         "name": "Stretching Strikes",
@@ -108,8 +106,7 @@
     ],
     [
       {
-        "type": "W",
-        "name": "_1"
+        "W": "_1"
       },
       {
         "name": "Unstable Matter",
@@ -126,8 +123,7 @@
     ],
     [
       {
-        "type": "W",
-        "name": "_2"
+        "W": "_2"
       },
       {
         "name": "Unstable Matter",
@@ -144,8 +140,7 @@
     ],
     [
       {
-        "type": "E",
-        "name": "_1"
+        "E": "_1"
       },
       {
         "name": "Elastic Slingshot",
@@ -162,8 +157,7 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_1"
+        "R": "_1"
       },
       {
         "name": "Let's Bounce!",
@@ -178,8 +172,7 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_2"
+        "R": "_2"
       },
       {
         "name": "Let's Bounce!",
@@ -194,8 +187,7 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_3"
+        "R": "_3"
       },
       {
         "name": "Let's Bounce!",

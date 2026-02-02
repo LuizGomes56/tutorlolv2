@@ -70,8 +70,7 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "_1"
+        "Q": "_1"
       },
       {
         "name": "Cull the Meek",
@@ -88,8 +87,7 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_2"
+        "Q": "_2"
       },
       {
         "name": "Cull the Meek",
@@ -106,8 +104,7 @@
     ],
     [
       {
-        "type": "W",
-        "name": "_1"
+        "W": "_1"
       },
       {
         "name": "Ruthless Predator",
@@ -124,8 +121,7 @@
     ],
     [
       {
-        "type": "W",
-        "name": "_2"
+        "W": "_2"
       },
       {
         "name": "Ruthless Predator",
@@ -142,8 +138,7 @@
     ],
     [
       {
-        "type": "W",
-        "name": "_3"
+        "W": "_3"
       },
       {
         "name": "Ruthless Predator",
@@ -160,8 +155,7 @@
     ],
     [
       {
-        "type": "E",
-        "name": "_1"
+        "E": "_1"
       },
       {
         "name": "Slice and Dice",
@@ -178,8 +172,7 @@
     ],
     [
       {
-        "type": "E",
-        "name": "_2"
+        "E": "_2"
       },
       {
         "name": "Slice and Dice",
@@ -196,8 +189,7 @@
     ],
     [
       {
-        "type": "E",
-        "name": "_3"
+        "E": "_3"
       },
       {
         "name": "Slice and Dice",
@@ -214,8 +206,7 @@
     ],
     [
       {
-        "type": "E",
-        "name": "_4"
+        "E": "_4"
       },
       {
         "name": "Slice and Dice",
@@ -232,8 +223,7 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_1"
+        "R": "_1"
       },
       {
         "name": "Dominus",
@@ -248,8 +238,7 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_2"
+        "R": "_2"
       },
       {
         "name": "Dominus",

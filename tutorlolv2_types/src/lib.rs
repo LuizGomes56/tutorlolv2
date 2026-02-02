@@ -20,7 +20,6 @@ pub use ability_name::AbilityName;
     serde::Serialize,
     serde::Deserialize,
 )]
-#[serde(tag = "type", content = "name")]
 pub enum AbilityId {
     P(AbilityName),
     Q(AbilityName),

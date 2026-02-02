@@ -3,8 +3,8 @@
   "adaptative_type": "Magic",
   "attack_type": "Melee",
   "positions": [
-    "Middle",
-    "Top"
+    "Top",
+    "Middle"
   ],
   "stats": {
     "health": {
@@ -71,8 +71,7 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "_1"
+        "Q": "_1"
       },
       {
         "name": "Chain Lash",
@@ -89,8 +88,7 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_2"
+        "Q": "_2"
       },
       {
         "name": "Chain Lash",
@@ -107,8 +105,7 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_3"
+        "Q": "_3"
       },
       {
         "name": "Chain Lash",
@@ -125,8 +122,7 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_4"
+        "Q": "_4"
       },
       {
         "name": "Chain Lash",
@@ -143,8 +139,7 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_5"
+        "Q": "_5"
       },
       {
         "name": "Chain Lash",
@@ -161,8 +156,7 @@
     ],
     [
       {
-        "type": "W",
-        "name": "_1"
+        "W": "_1"
       },
       {
         "name": "Kingslayer",

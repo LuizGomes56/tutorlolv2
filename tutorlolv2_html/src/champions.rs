@@ -1,8 +1,12 @@
-use crate::{ArrayItem, html::Html, parallel_task};
 use tutorlolv2_gen::{
-    ABILITY_CLOSURES, ABILITY_FORMULAS, CHAMPION_FORMULAS, CHAMPION_GENERATOR, ChampionId,
-    Position, RECOMMENDED_ITEMS, RECOMMENDED_RUNES,
+    Position,
+    champions::{
+        ABILITY_CLOSURES, ABILITY_FORMULAS, CHAMPION_FORMULAS, CHAMPION_GENERATOR, ChampionId,
+        RECOMMENDED_ITEMS, RECOMMENDED_RUNES,
+    },
 };
+
+use crate::{ArrayItem, html::Html, parallel_task};
 
 fn get_recommendations<T: ArrayItem, const N: usize, const M: usize>(
     champion_id: ChampionId,

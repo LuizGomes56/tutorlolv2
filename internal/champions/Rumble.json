@@ -3,8 +3,8 @@
   "adaptative_type": "Magic",
   "attack_type": "Melee",
   "positions": [
-    "Middle",
-    "Top"
+    "Top",
+    "Middle"
   ],
   "stats": {
     "health": {
@@ -71,8 +71,7 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "_1"
+        "Q": "_1"
       },
       {
         "name": "Flamespitter",
@@ -89,8 +88,7 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_2"
+        "Q": "_2"
       },
       {
         "name": "Flamespitter",
@@ -107,8 +105,7 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_3"
+        "Q": "_3"
       },
       {
         "name": "Flamespitter",
@@ -125,8 +122,7 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_4"
+        "Q": "_4"
       },
       {
         "name": "Flamespitter",
@@ -143,8 +139,7 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_5"
+        "Q": "_5"
       },
       {
         "name": "Flamespitter",
@@ -161,8 +156,7 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_6"
+        "Q": "_6"
       },
       {
         "name": "Flamespitter",
@@ -179,8 +173,7 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_7"
+        "Q": "_7"
       },
       {
         "name": "Flamespitter",
@@ -197,8 +190,7 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_8"
+        "Q": "_8"
       },
       {
         "name": "Flamespitter",
@@ -215,8 +207,7 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_1Min"
+        "Q": "_1Min"
       },
       {
         "name": "Flamespitter",
@@ -233,8 +224,7 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_2Min"
+        "Q": "_2Min"
       },
       {
         "name": "Flamespitter",
@@ -251,8 +241,7 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_3Min"
+        "Q": "_3Min"
       },
       {
         "name": "Flamespitter",
@@ -269,8 +258,7 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_4Min"
+        "Q": "_4Min"
       },
       {
         "name": "Flamespitter",
@@ -287,8 +275,7 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_5Min"
+        "Q": "_5Min"
       },
       {
         "name": "Flamespitter",
@@ -305,8 +292,7 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_6Min"
+        "Q": "_6Min"
       },
       {
         "name": "Flamespitter",
@@ -323,8 +309,7 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_7Min"
+        "Q": "_7Min"
       },
       {
         "name": "Flamespitter",
@@ -341,8 +326,7 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_8Min"
+        "Q": "_8Min"
       },
       {
         "name": "Flamespitter",
@@ -359,8 +343,7 @@
     ],
     [
       {
-        "type": "E",
-        "name": "_1"
+        "E": "_1"
       },
       {
         "name": "Electro Harpoon",
@@ -377,8 +360,7 @@
     ],
     [
       {
-        "type": "E",
-        "name": "_2"
+        "E": "_2"
       },
       {
         "name": "Electro Harpoon",
@@ -395,8 +377,7 @@
     ],
     [
       {
-        "type": "E",
-        "name": "_3"
+        "E": "_3"
       },
       {
         "name": "Electro Harpoon",
@@ -413,8 +394,7 @@
     ],
     [
       {
-        "type": "E",
-        "name": "_4"
+        "E": "_4"
       },
       {
         "name": "Electro Harpoon",
@@ -431,8 +411,7 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_1"
+        "R": "_1"
       },
       {
         "name": "The Equalizer",
@@ -447,8 +426,7 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_2"
+        "R": "_2"
       },
       {
         "name": "The Equalizer",
@@ -463,8 +441,7 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_3"
+        "R": "_3"
       },
       {
         "name": "The Equalizer",

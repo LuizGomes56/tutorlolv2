@@ -3,9 +3,9 @@
   "adaptative_type": "Physical",
   "attack_type": "Melee",
   "positions": [
-    "Bottom",
+    "Top",
     "Middle",
-    "Top"
+    "Bottom"
   ],
   "stats": {
     "health": {
@@ -72,8 +72,7 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "_1"
+        "Q": "_1"
       },
       {
         "name": "Steel Tempest",
@@ -90,8 +89,7 @@
     ],
     [
       {
-        "type": "E",
-        "name": "_1"
+        "E": "_1"
       },
       {
         "name": "Sweeping Blade",
@@ -108,8 +106,7 @@
     ],
     [
       {
-        "type": "E",
-        "name": "_2"
+        "E": "_2"
       },
       {
         "name": "Sweeping Blade",
@@ -126,8 +123,7 @@
     ],
     [
       {
-        "type": "E",
-        "name": "_3"
+        "E": "_3"
       },
       {
         "name": "Sweeping Blade",
@@ -144,8 +140,7 @@
     ],
     [
       {
-        "type": "E",
-        "name": "_4"
+        "E": "_4"
       },
       {
         "name": "Sweeping Blade",
@@ -162,8 +157,7 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_1"
+        "R": "_1"
       },
       {
         "name": "Last Breath",

@@ -3,8 +3,8 @@
   "adaptative_type": "Magic",
   "attack_type": "Melee",
   "positions": [
-    "Jungle",
-    "Top"
+    "Top",
+    "Jungle"
   ],
   "stats": {
     "health": {
@@ -71,8 +71,7 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "_1"
+        "Q": "_1"
       },
       {
         "name": "Snip Snip!",
@@ -89,8 +88,7 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_2"
+        "Q": "_2"
       },
       {
         "name": "Snip Snip!",
@@ -107,8 +105,7 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_3"
+        "Q": "_3"
       },
       {
         "name": "Snip Snip!",
@@ -125,8 +122,7 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_4"
+        "Q": "_4"
       },
       {
         "name": "Snip Snip!",
@@ -143,8 +139,7 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_5"
+        "Q": "_5"
       },
       {
         "name": "Snip Snip!",
@@ -161,8 +156,7 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_6"
+        "Q": "_6"
       },
       {
         "name": "Snip Snip!",
@@ -179,8 +173,7 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_7"
+        "Q": "_7"
       },
       {
         "name": "Snip Snip!",
@@ -197,8 +190,7 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_8"
+        "Q": "_8"
       },
       {
         "name": "Snip Snip!",
@@ -215,8 +207,7 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_1"
+        "R": "_1"
       },
       {
         "name": "Needlework",
@@ -231,8 +222,7 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_2"
+        "R": "_2"
       },
       {
         "name": "Needlework",
@@ -247,8 +237,7 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_3"
+        "R": "_3"
       },
       {
         "name": "Needlework",
@@ -263,8 +252,7 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_4"
+        "R": "_4"
       },
       {
         "name": "Needlework",
@@ -279,8 +267,7 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_5"
+        "R": "_5"
       },
       {
         "name": "Needlework",

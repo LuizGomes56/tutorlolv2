@@ -1,5 +1,5 @@
 use crate::{html::Html, parallel_task};
-use tutorlolv2_gen::{ITEM_CLOSURES, ITEM_FORMULAS, ITEM_GENERATOR, ItemId};
+use tutorlolv2_gen::items::{ITEM_CLOSURES, ITEM_FORMULAS, ITEM_GENERATOR, ItemId};
 
 pub async fn items_html() {
     parallel_task(64, async |item_id: ItemId| {

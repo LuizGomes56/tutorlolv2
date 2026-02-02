@@ -71,8 +71,7 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "Void"
+        "Q": "Void"
       },
       {
         "name": "Bandage Toss",
@@ -89,8 +88,7 @@
     ],
     [
       {
-        "type": "W",
-        "name": "Void"
+        "W": "Void"
       },
       {
         "name": "Despair",
@@ -107,8 +105,7 @@
     ],
     [
       {
-        "type": "E",
-        "name": "Void"
+        "E": "Void"
       },
       {
         "name": "Tantrum",
@@ -125,8 +122,7 @@
     ],
     [
       {
-        "type": "R",
-        "name": "Void"
+        "R": "Void"
       },
       {
         "name": "Curse of the Sad Mummy",

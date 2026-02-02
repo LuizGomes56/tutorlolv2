@@ -3,8 +3,8 @@
   "adaptative_type": "Physical",
   "attack_type": "Melee",
   "positions": [
-    "Middle",
-    "Top"
+    "Top",
+    "Middle"
   ],
   "stats": {
     "health": {
@@ -71,8 +71,7 @@
   "abilities": [
     [
       {
-        "type": "P",
-        "name": "Void"
+        "P": "Void"
       },
       {
         "name": "Assassin's Mark",
@@ -102,8 +101,7 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "Void"
+        "Q": "Void"
       },
       {
         "name": "Five Point Strike",
@@ -120,8 +118,7 @@
     ],
     [
       {
-        "type": "E",
-        "name": "_1Min"
+        "E": "_1Min"
       },
       {
         "name": "Shuriken Flip",
@@ -138,8 +135,7 @@
     ],
     [
       {
-        "type": "E",
-        "name": "Max"
+        "E": "Max"
       },
       {
         "name": "Shuriken Flip",
@@ -156,8 +152,7 @@
     ],
     [
       {
-        "type": "E",
-        "name": "_1Max"
+        "E": "_1Max"
       },
       {
         "name": "Shuriken Flip",
@@ -174,8 +169,7 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_1"
+        "R": "_1"
       },
       {
         "name": "Perfect Execution",
@@ -190,8 +184,7 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_2Min"
+        "R": "_2Min"
       },
       {
         "name": "Perfect Execution",
@@ -206,8 +199,7 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_2Max"
+        "R": "_2Max"
       },
       {
         "name": "Perfect Execution",
@@ -224,30 +216,24 @@
   "merge_data": [
     {
       "minimum_damage": {
-        "type": "E",
-        "name": "_1Min"
+        "E": "_1Min"
       },
       "maximum_damage": {
-        "type": "E",
-        "name": "_1Max"
+        "E": "_1Max"
       },
       "alias": {
-        "type": "E",
-        "name": "_1"
+        "E": "_1"
       }
     },
     {
       "minimum_damage": {
-        "type": "R",
-        "name": "_2Min"
+        "R": "_2Min"
       },
       "maximum_damage": {
-        "type": "R",
-        "name": "_2Max"
+        "R": "_2Max"
       },
       "alias": {
-        "type": "R",
-        "name": "_2"
+        "R": "_2"
       }
     }
   ]

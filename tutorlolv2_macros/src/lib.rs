@@ -537,8 +537,8 @@ enum Node {
         span: Span,
         children: Vec<Node>,
     },
-    /// Attribute-like directive: `#[skip_if(...)] <impl ... { ... }>`
     SkipIfImpl {
+        #[allow(dead_code)]
         span: Span,
         cond: SkipIfAttr,
         item: Vec<Node>,

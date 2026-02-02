@@ -16,9 +16,6 @@ pub type MayFail<T = ()> = Result<T, Box<dyn std::error::Error + Send + Sync>>;
 pub type GeneratorClosure = Box<dyn FnOnce(usize) -> Generated + Send + Sync + 'static>;
 pub type GeneratorFn = MayFail<GeneratorClosure>;
 
-const EVAL_FEAT: &str = r#"#[cfg(feature = "eval")]"#;
-const GLOB_FEAT: &str = r#"#[cfg(feature = "glob")]"#;
-
 /// Definition of what each generator function should return
 pub struct Generated {
     /// Refers to what will be written to the `exports` folder,
@@ -243,37 +240,17 @@ pub fn run() -> MayFail {
     ] {
         let (start, end) = tracker.record(&value.rust_html().as_const());
         full_exports.push_str(&format!(
-            "{GLOB_FEAT} pub static {name}: Range<usize> = {start}..{end};"
+            "pub static {name}: Range<usize> = {start}..{end};"
         ));
     }
 
     let offset = tracker.offset();
-
-    println!("[ok] Compressing full block");
-
-    let compressed_block = encode_brotli_11(full_block.as_bytes());
-
-    println!("[ok] Preparing final steps");
-
-    let size = compressed_block.len();
-
-    full_exports.push_str(&format!(
-        "{GLOB_FEAT} pub const BLOCK_SIZE: usize = {offset};"
-    ));
-    full_exports.push_str(&format!("{GLOB_FEAT} pub const BLOCK_LEN: usize = {size};"));
-    full_exports.push_str("pub use champions::*; pub use items::*; pub use runes::*;");
-
     let data_path = CwdPath::new("tutorlolv2_gen/src/data.rs");
 
-    println!("[ok] Saving results");
+    full_exports.push_str(&format!("pub const RAW_BLOCK_LEN: usize = {offset};"));
 
-    for task in [
-        CwdPath::new("tutorlolv2_gen/src/block.br").fwrite(compressed_block),
-        CwdPath::new("tutorlolv2_gen/src/block.txt").fwrite(full_block),
-        data_path.fwrite(full_exports),
-    ] {
-        task?
-    }
+    CwdPath::new("tutorlolv2_gen/src/block.txt").fwrite(&full_block)?;
+    data_path.fwrite(full_exports)?;
 
     println!("[ok] Formatting generated file");
 
@@ -281,6 +258,14 @@ pub fn run() -> MayFail {
         .arg(data_path.inner)
         .status()
         .inspect_err(|e| eprintln!("Failed to run rustfmt: on generated data file {e:?}"))?;
+
+    println!("[ok] Compressing full block");
+
+    let compressed_block = encode_brotli_11(full_block.as_bytes());
+
+    println!("[ok] Saving results");
+
+    CwdPath::new("tutorlolv2_gen/src/block.br").fwrite(compressed_block)?;
 
     Ok(())
 }

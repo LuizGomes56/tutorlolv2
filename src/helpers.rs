@@ -86,10 +86,10 @@ pub const fn get_fire_multiplier(x: u16) -> f32 {
 /// let my_level = 6;
 /// BASE_STATS[my_champion_id as usize][6];
 /// ```
-pub static BASE_STATS: [[BasicStats<f32>; URF_MAX_LEVEL]; NUMBER_OF_CHAMPIONS] = {
-    let mut base_stats = [[BasicStats::<f32>::default(); URF_MAX_LEVEL]; NUMBER_OF_CHAMPIONS];
+pub static BASE_STATS: [[BasicStats<f32>; URF_MAX_LEVEL]; ChampionId::VARIANTS] = {
+    let mut base_stats = [[BasicStats::<f32>::default(); URF_MAX_LEVEL]; ChampionId::VARIANTS];
     let mut champion_index = 0;
-    while champion_index < NUMBER_OF_CHAMPIONS {
+    while champion_index < ChampionId::VARIANTS {
         let mut level = 0;
         while level < URF_MAX_LEVEL {
             let stats = &CHAMPION_CACHE[champion_index].stats;
@@ -870,7 +870,7 @@ pub const fn eval_attacks(ctx: &Ctx, mut onhit_damage: RangeDamage, physical_mod
 /// will panic or cause undefined behavior
 const _: () = {
     let mut i = 0;
-    while i < NUMBER_OF_CHAMPIONS {
+    while i < ChampionId::VARIANTS {
         let CachedChampion {
             metadata, closures, ..
         } = CHAMPION_CACHE[i];
@@ -878,7 +878,7 @@ const _: () = {
         i += 1;
     }
     let mut j = 0;
-    while j < NUMBER_OF_ITEMS {
+    while j < ItemId::VARIANTS {
         let CachedItem {
             melee_damages: melee_closure,
             ranged_damages: range_closure,
