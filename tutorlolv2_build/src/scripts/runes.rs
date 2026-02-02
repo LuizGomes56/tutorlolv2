@@ -93,7 +93,7 @@ pub fn generate_runes() -> GeneratorFn {
                 let ranged_closure = mk_closure(ranged);
 
                 let base_declaration = format!(
-                    "pub static {name_ssnake}_{riot_id}: CachedRune = CachedRune {{
+                    "pub static {name_ssnake}: CachedRune = CachedRune {{
                         name: {name:?},
                         damage_type: DamageType::{damage_type},
                         riot_id: {riot_id},
@@ -200,11 +200,10 @@ pub fn generate_runes() -> GeneratorFn {
             );
 
             let base_declaration = format!(
-                "pub static {name_ssnake}_{riot_id}: CachedRune = CachedRune {{
+                "pub static {name_ssnake}: CachedRune = CachedRune {{
                     name: {name:?},
                     damage_type: DamageType::Unknown,
-                    melee_damage: zero,
-                    ranged_damage: zero,
+                    melee_damage:zero,ranged_damage:zero,
                     riot_id: {riot_id},
                     internal_id: RuneId::{name_pascal},
                     undeclared: true,
@@ -212,7 +211,8 @@ pub fn generate_runes() -> GeneratorFn {
                 }};"
             );
 
-            let html_declaration = base_declaration.clone();
+            let html_declaration =
+                base_declaration.replace("melee_damage:zero,ranged_damage:zero", "damage: zero");
 
             println!("[build] RuneId::{name_pascal}");
 
@@ -289,7 +289,7 @@ fn build_runes(data: Vec<RuneResult>) -> GeneratorFn {
         rune_idents.push_str(&format!("{idents},"));
         rune_id_enum_match_arms.push(format!("{riot_id} => Some(Self::{name_pascal})"));
         rune_id_enum_fields.push(name_pascal);
-        rune_cache.push_str(&format!("&{name_ssnake}_{riot_id},"));
+        rune_cache.push_str(&format!("&{name_ssnake},"));
         rune_declarations.push_str(&base_declaration);
         rustfmt_inputs.push(html_declaration);
         rustfmt_inputs.push(html_closure);

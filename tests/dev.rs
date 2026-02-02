@@ -19,8 +19,8 @@ async fn scraper() {
     }
 }
 
-#[tokio::test]
-async fn update() {
+#[test]
+fn update() {
     dotenvy::dotenv().unwrap();
     tutorlolv2_dev::setup::update::setup_project_folders().unwrap();
     ChampionFactory::create_all().unwrap();
@@ -28,7 +28,6 @@ async fn update() {
     tutorlolv2_dev::setup::update::setup_internal_items().unwrap();
     tutorlolv2_dev::setup::update::prettify_internal_items().unwrap();
     ItemFactory::run_all().unwrap();
-    tutorlolv2_html::run().await;
     Command::new("./build.bat").spawn().unwrap().wait().unwrap();
 }
 

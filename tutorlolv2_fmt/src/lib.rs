@@ -234,6 +234,7 @@ static RUST_HIGHLIGHTER: Lazy<Highlighter> = Lazy::new(|| {
             "AreaOnhitMax",
             "Magic",
             "Void",
+            "ZEROED_STATS",
             "_1",
             "_2",
             "_3",

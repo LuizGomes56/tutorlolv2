@@ -89,6 +89,10 @@ pub fn setup_project_folders() -> MayFail {
 /// Replaces the content found in the files to a shorter and adapted version,
 /// initializes items as default, and Damaging stats must be added separately.
 pub fn setup_internal_items() -> MayFail {
+    let dir = SaveTo::InternalDir(Tag::Items).path();
+    std::fs::remove_dir_all(&dir)?;
+    std::fs::create_dir(dir)?;
+
     let all_names: Vec<(_, _)> = parallel_read(
         SaveTo::RiotItemsDir.path(),
         move |fname, riot_cdn_item: RiotCdnItem| {

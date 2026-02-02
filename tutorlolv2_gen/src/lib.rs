@@ -10,6 +10,7 @@ pub mod eval;
 #[allow(non_upper_case_globals)]
 pub(crate) const unknown: f32 = 0.0;
 pub(crate) use core::ops::Range;
+pub(crate) use tutorlolv2_types::ability_name::*;
 
 pub use bitset::*;
 pub use cache::*;

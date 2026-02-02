@@ -66,7 +66,9 @@ fn declare_abilities(
                     let simplified = simplify(&damage);
 
                     let get_closure = |arm| format!("{match_closure} {arm} {simplified} }}}}");
-                    let html_closure = get_closure(get_arms(&damage)).replace("context_level", "n");
+                    let html_closure = get_closure(get_arms(&damage))
+                        .replace("context_level", "n")
+                        .replace("as u8", "");
 
                     let closure = match simplified {
                         Simplified::Progression(_) | Simplified::Independent(_) => {
@@ -124,7 +126,7 @@ fn declare_abilities(
                 panic!("[{champion_id_upper}] Empty declaration for {ability_id:?}");
             }
 
-            let kind = ability_id.as_literal();
+            let kind = ability_id.as_const_lit();
 
             let metadata = format!(
                 "TypeMetadata {{ 
@@ -141,7 +143,7 @@ fn declare_abilities(
                 declaration,
                 metadata,
                 constfn: ConstFn {
-                    ability_id: kind,
+                    ability_id: ability_id.as_literal(),
                     declaration: constfn_declaration,
                     name: constfn_name,
                 },
@@ -213,7 +215,7 @@ fn define_merge_indexes(merge_data: BTreeSet<DevMergeData>, ability_data: &[Abil
                 maximum_damage,
                 alias,
             } = value;
-            let alias = alias.as_literal();
+            let alias = alias.as_const_lit();
             match (index.get(&minimum_damage), index.get(&maximum_damage)) {
                 (Some(ia), Some(ib)) => Some(format!(
                     "MergeData {{
@@ -321,7 +323,7 @@ pub fn generate_champions() -> GeneratorFn {
             ability_metadata.push_str(&format!("{metadata},"));
             closures.push_str(&format!("{fn_name}: {html_damage},"));
             ability_names.push(ability_id);
-            ability_declarations.push((ability_id, declaration));
+            ability_declarations.push((ability_id, declaration.replace(".cast()", "")));
 
             let start = ability_index;
             ability_index += idents.len();
@@ -360,7 +362,8 @@ pub fn generate_champions() -> GeneratorFn {
                 positions: &[{positions}],"
         );
 
-        let html_declaration = format!("{base_declaration}{closures}{rest} }};");
+        let html_declaration =
+            format!("{base_declaration}{closures}{rest} }};").replace(".cast()", "");
 
         let mut base_declaration = format!("{base_declaration}closures: &[{fn_names}], {rest} }};");
 
@@ -672,7 +675,7 @@ fn build_champions(data: Vec<(String, ChampionResult)>) -> GeneratorFn {
             champion_abilities.push_str(&{
                 let abilities = ability
                     .iter()
-                    .map(|(ability_id, _)| ability_id.as_literal())
+                    .map(|(ability_id, _)| ability_id.as_const_lit())
                     .collect::<Vec<_>>()
                     .join(",");
                 format!("&[{abilities}],")

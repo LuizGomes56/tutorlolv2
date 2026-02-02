@@ -56,10 +56,11 @@ pub async fn champions_html() {
             .into_iter()
             .enumerate()
             .map(|(i, metadata)| {
-                let lit = metadata.kind.as_const_lit();
+                let const_lit = metadata.kind.as_const_lit();
+                let lit = const_lit.trim_end_matches(".cast()");
                 let full_code = Html::code_block(ABILITY_FORMULAS[champion_id as usize][i].clone());
                 let part_code = Html::code_block(ABILITY_CLOSURES[champion_id as usize][i].clone());
-                Html::code_column(&lit, &full_code) + &Html::code_column(&lit, &part_code)
+                Html::code_column(lit, &full_code) + &Html::code_column(lit, &part_code)
             })
             .collect::<String>();
 
