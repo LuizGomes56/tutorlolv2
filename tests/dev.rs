@@ -1,3 +1,5 @@
+use std::process::Command;
+
 use tutorlolv2::{ChampionId, ItemId};
 use tutorlolv2_dev::{
     HTTP_CLIENT,
@@ -17,8 +19,8 @@ async fn scraper() {
     }
 }
 
-#[test]
-fn update() {
+#[tokio::test]
+async fn update() {
     dotenvy::dotenv().unwrap();
     tutorlolv2_dev::setup::update::setup_project_folders().unwrap();
     ChampionFactory::create_all().unwrap();
@@ -26,6 +28,8 @@ fn update() {
     tutorlolv2_dev::setup::update::setup_internal_items().unwrap();
     tutorlolv2_dev::setup::update::prettify_internal_items().unwrap();
     ItemFactory::run_all().unwrap();
+    tutorlolv2_html::run().await;
+    Command::new("./build.bat").spawn().unwrap().wait().unwrap();
 }
 
 #[tokio::test]

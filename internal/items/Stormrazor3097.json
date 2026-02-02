@@ -1,12 +1,12 @@
 {
   "version": "16.2.1",
-  "riot_id": 1518,
-  "name": "Structure Bounty 1518",
-  "price": 0,
-  "sell": 0,
-  "tier": 0,
+  "riot_id": 3097,
+  "name": "Stormrazor 3097",
+  "price": 3200,
+  "sell": 2240,
+  "tier": 3,
   "attributes": "Undefined",
-  "purchasable": false,
+  "purchasable": true,
   "damage_type": "Unknown",
   "prettified_stats": [],
   "ranged": {
@@ -35,16 +35,16 @@
       "percent": 0.0
     },
     "attackDamage": {
-      "flat": 0.0,
+      "flat": 50.0,
       "percent": 0.0
     },
     "attackSpeed": {
-      "flat": 0.0,
+      "flat": 20.0,
       "percent": 0.0
     },
     "criticalStrikeChance": {
       "flat": 0.0,
-      "percent": 0.0
+      "percent": 25.0
     },
     "criticalStrikeDamage": {
       "flat": 0.0,
@@ -75,7 +75,11 @@
       "percent": 0.0
     }
   },
-  "builds_from_riot_ids": [],
+  "builds_from_riot_ids": [
+    1018,
+    1038,
+    3144
+  ],
   "builds_into_riot_ids": [],
   "maps": {
     "Aram": true,
@@ -84,6 +88,6 @@
     "SummonersRift": true,
     "Tft": false,
     "UnknownMap33": false,
-    "UnknownMap35": true
+    "UnknownMap35": false
   }
 }

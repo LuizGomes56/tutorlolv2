@@ -1,12 +1,12 @@
 {
   "version": "16.2.1",
-  "riot_id": 1518,
-  "name": "Structure Bounty 1518",
-  "price": 0,
-  "sell": 0,
-  "tier": 0,
+  "riot_id": 8010,
+  "name": "Bloodletter's Curse 8010",
+  "price": 2900,
+  "sell": 2030,
+  "tier": 3,
   "attributes": "Undefined",
-  "purchasable": false,
+  "purchasable": true,
   "damage_type": "Unknown",
   "prettified_stats": [],
   "ranged": {
@@ -19,7 +19,7 @@
   },
   "stats": {
     "abilityPower": {
-      "flat": 0.0,
+      "flat": 65.0,
       "percent": 0.0
     },
     "armor": {
@@ -51,7 +51,7 @@
       "percent": 0.0
     },
     "health": {
-      "flat": 0.0,
+      "flat": 400.0,
       "percent": 0.0
     },
     "lifesteal": {
@@ -75,7 +75,10 @@
       "percent": 0.0
     }
   },
-  "builds_from_riot_ids": [],
+  "builds_from_riot_ids": [
+    3108,
+    3147
+  ],
   "builds_into_riot_ids": [],
   "maps": {
     "Aram": true,

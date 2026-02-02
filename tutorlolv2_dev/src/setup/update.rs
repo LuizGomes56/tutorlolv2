@@ -89,6 +89,44 @@ pub fn setup_project_folders() -> MayFail {
 /// Replaces the content found in the files to a shorter and adapted version,
 /// initializes items as default, and Damaging stats must be added separately.
 pub fn setup_internal_items() -> MayFail {
+    let all_names: Vec<(_, _)> = parallel_read(
+        SaveTo::RiotItemsDir.path(),
+        move |fname, riot_cdn_item: RiotCdnItem| {
+            let riot_id = fname.parse()?;
+            let mut name = {
+                let rname = riot_cdn_item.name;
+                match rname.is_empty() || rname.starts_with("<") {
+                    true => format!("Unknown_{fname}"),
+                    false => rname,
+                }
+            };
+
+            match riot_id {
+                220000..230000 => name += " [Arena]",
+                320000..330000 => name += " [U-32]",
+                440000..450000 => name += " [U-44]",
+                660000..670000 => name += " [U-66]",
+                990000..1000000 => name += " [U-99]",
+                _ => {}
+            }
+
+            Ok((name, fname.to_string()))
+        },
+    )?;
+
+    let mut names = HashMap::new();
+
+    for (name, fname) in all_names.iter() {
+        let matches = all_names.iter().filter(|(n, _)| n == name);
+        names.insert(
+            fname.to_string(),
+            match matches.count() > 1 {
+                true => format!("{name} {fname}"),
+                false => name.to_string(),
+            },
+        );
+    }
+
     parallel_read(
         SaveTo::RiotItemsDir.path(),
         move |fname, riot_cdn_item: RiotCdnItem| {
@@ -100,20 +138,14 @@ pub fn setup_internal_items() -> MayFail {
                 .and_then(|item| Some((item.stats, item.tier, item.builds_from, item.builds_into)))
                 .unwrap_or_default();
 
-            let name = {
-                let rname = riot_cdn_item.name;
-                match rname.is_empty() || rname.starts_with("<") {
-                    true => format!("Unknown_{riot_id}"),
-                    false => match rname.as_str() {
-                        "Reinforced Armor" | "Structure Bounty" | "Kalista's Black Spear" => {
-                            format!("{rname}_{riot_id}")
-                        }
-                        _ => rname,
-                    },
-                }
-            };
+            let name = names
+                .get(fname)
+                .ok_or(format!("Failed to get name for riot_id: {riot_id}"))?
+                .to_string();
 
-            let mut item = Item {
+            let internal_fname = pascal_case(&name);
+
+            Item {
                 version: ENV_CONFIG.lol_version.clone(),
                 maps: riot_cdn_item
                     .maps
@@ -130,20 +162,8 @@ pub fn setup_internal_items() -> MayFail {
                 builds_from_riot_ids: builds_from_riot_ids.into_iter().collect(),
                 builds_into_riot_ids: builds_into_riot_ids.into_iter().collect(),
                 ..Default::default()
-            };
-
-            match riot_id {
-                220000..230000 => item.name += " [Arena]",
-                320000..330000 => item.name += " [U-32]",
-                440000..450000 => item.name += " [U-44]",
-                660000..670000 => item.name += " [U-66]",
-                990000..1000000 => item.name += " [U-99]",
-                _ => {}
             }
-
-            let internal_fname = pascal_case(&item.name);
-
-            item.into_file(SaveTo::Internal(Tag::Items, &internal_fname).path())
+            .into_file(SaveTo::Internal(Tag::Items, &internal_fname).path())
         },
     )
 }

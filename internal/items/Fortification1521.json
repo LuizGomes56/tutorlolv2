@@ -1,7 +1,7 @@
 {
   "version": "16.2.1",
-  "riot_id": 1518,
-  "name": "Structure Bounty 1518",
+  "riot_id": 1521,
+  "name": "Fortification 1521",
   "price": 0,
   "sell": 0,
   "tier": 0,
@@ -79,7 +79,7 @@
   "builds_into_riot_ids": [],
   "maps": {
     "Aram": true,
-    "Arena": false,
+    "Arena": true,
     "NexusBlitz": true,
     "SummonersRift": true,
     "Tft": false,
