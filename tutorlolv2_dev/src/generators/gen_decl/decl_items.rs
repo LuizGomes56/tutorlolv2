@@ -34,7 +34,7 @@ tutorlolv2_macros::expand_dir!("../internal/items", |Name| {
     }
 
     impl Generator<ItemData> for Name {
-        fn end(self) -> MayFail<ItemData> {
+        fn generate(self: Box<Self>) -> MayFail<ItemData> {
             self.end()
         }
     }

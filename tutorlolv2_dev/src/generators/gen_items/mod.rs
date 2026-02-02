@@ -4,7 +4,7 @@ pub(self) use super::{
 pub(self) use crate::{MayFail, gen_factories::fac_items::ItemFactory};
 pub(self) use tutorlolv2_gen::{ItemId, enums::*, eval::*};
 
-pub mod blade_of_the_ruined_king;
-pub mod blade_of_the_ruined_king_arena;
-pub mod nashors_tooth;
-pub mod nashors_tooth_arena;
+// pub mod blade_of_the_ruined_king;
+// pub mod blade_of_the_ruined_king_arena;
+// pub mod nashors_tooth;
+// pub mod nashors_tooth_arena;
