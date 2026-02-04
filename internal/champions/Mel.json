@@ -71,206 +71,194 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "_1"
+        "Q": "_1"
       },
       {
         "name": "Radiant Volley",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "13 + (0.085 * ctx.ap)",
-          "15.5 + (0.085 * ctx.ap)",
-          "18 + (0.085 * ctx.ap)",
-          "20.5 + (0.085 * ctx.ap)",
-          "23 + (0.085 * ctx.ap)"
+          "13 + (0.085 * ctx.ability_power)",
+          "15.5 + (0.085 * ctx.ability_power)",
+          "18 + (0.085 * ctx.ability_power)",
+          "20.5 + (0.085 * ctx.ability_power)",
+          "23 + (0.085 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "Q",
-        "name": "_2"
+        "Q": "_2"
       },
       {
         "name": "Radiant Volley",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "9.75 + (0.06375 * ctx.ap)",
-          "11.625 + (0.06375 * ctx.ap)",
-          "13.5 + (0.06375 * ctx.ap)",
-          "15.375 + (0.06375 * ctx.ap)",
-          "17.25 + (0.06375 * ctx.ap)"
+          "9.75 + (0.06375 * ctx.ability_power)",
+          "11.625 + (0.06375 * ctx.ability_power)",
+          "13.5 + (0.06375 * ctx.ability_power)",
+          "15.375 + (0.06375 * ctx.ability_power)",
+          "17.25 + (0.06375 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "Q",
-        "name": "_3"
+        "Q": "_3"
       },
       {
         "name": "Radiant Volley",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "78 + (0.51 * ctx.ap)",
-          "108.5 + (0.595 * ctx.ap)",
-          "144 + (0.68 * ctx.ap)",
-          "184.5 + (0.765 * ctx.ap)",
-          "230 + (0.85 * ctx.ap)"
+          "78 + (0.51 * ctx.ability_power)",
+          "108.5 + (0.595 * ctx.ability_power)",
+          "144 + (0.68 * ctx.ability_power)",
+          "184.5 + (0.765 * ctx.ability_power)",
+          "230 + (0.85 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "Q",
-        "name": "_4"
+        "Q": "_4"
       },
       {
         "name": "Radiant Volley",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "58.5 + (0.3825 * ctx.ap)",
-          "81.375 + (0.44625 * ctx.ap)",
-          "108 + (0.51 * ctx.ap)",
-          "138.375 + (0.57375 * ctx.ap)",
-          "172.5 + (0.6375 * ctx.ap)"
+          "58.5 + (0.3825 * ctx.ability_power)",
+          "81.375 + (0.44625 * ctx.ability_power)",
+          "108 + (0.51 * ctx.ability_power)",
+          "138.375 + (0.57375 * ctx.ability_power)",
+          "172.5 + (0.6375 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "W",
-        "name": "_1"
+        "W": "_1"
       },
       {
         "name": "Rebuttal",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "(0.4 * 100.0) + (0.05 * 0.01 * ctx.ap)",
-          "(0.45 * 100.0) + (0.05 * 0.01 * ctx.ap)",
-          "(0.5 * 100.0) + (0.05 * 0.01 * ctx.ap)",
-          "(0.55 * 100.0) + (0.05 * 0.01 * ctx.ap)",
-          "(0.6 * 100.0) + (0.05 * 0.01 * ctx.ap)"
+          "(0.4 * 100.0) + (0.05 * 0.01 * ctx.ability_power)",
+          "(0.45 * 100.0) + (0.05 * 0.01 * ctx.ability_power)",
+          "(0.5 * 100.0) + (0.05 * 0.01 * ctx.ability_power)",
+          "(0.55 * 100.0) + (0.05 * 0.01 * ctx.ability_power)",
+          "(0.6 * 100.0) + (0.05 * 0.01 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "E",
-        "name": "_1"
+        "E": "_1"
       },
       {
         "name": "Solar Snare",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "60 + (0.6 * ctx.ap)",
-          "100 + (0.6 * ctx.ap)",
-          "140 + (0.6 * ctx.ap)",
-          "180 + (0.6 * ctx.ap)",
-          "220 + (0.6 * ctx.ap)"
+          "60 + (0.6 * ctx.ability_power)",
+          "100 + (0.6 * ctx.ability_power)",
+          "140 + (0.6 * ctx.ability_power)",
+          "180 + (0.6 * ctx.ability_power)",
+          "220 + (0.6 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "E",
-        "name": "_2"
+        "E": "_2"
       },
       {
         "name": "Solar Snare",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "8 + (0.04 * ctx.ap)",
-          "14 + (0.04 * ctx.ap)",
-          "20 + (0.04 * ctx.ap)",
-          "26 + (0.04 * ctx.ap)",
-          "32 + (0.04 * ctx.ap)"
+          "8 + (0.04 * ctx.ability_power)",
+          "14 + (0.04 * ctx.ability_power)",
+          "20 + (0.04 * ctx.ability_power)",
+          "26 + (0.04 * ctx.ability_power)",
+          "32 + (0.04 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "E",
-        "name": "_3"
+        "E": "_3"
       },
       {
         "name": "Solar Snare",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "1 + (0.005 * ctx.ap)",
-          "1.75 + (0.005 * ctx.ap)",
-          "2.5 + (0.005 * ctx.ap)",
-          "3.25 + (0.005 * ctx.ap)",
-          "4 + (0.005 * ctx.ap)"
+          "1 + (0.005 * ctx.ability_power)",
+          "1.75 + (0.005 * ctx.ability_power)",
+          "2.5 + (0.005 * ctx.ability_power)",
+          "3.25 + (0.005 * ctx.ability_power)",
+          "4 + (0.005 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "E",
-        "name": "_4"
+        "E": "_4"
       },
       {
         "name": "Solar Snare",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "30 + (0.3 * ctx.ap)",
-          "50 + (0.3 * ctx.ap)",
-          "70 + (0.3 * ctx.ap)",
-          "90 + (0.3 * ctx.ap)",
-          "110 + (0.3 * ctx.ap)"
+          "30 + (0.3 * ctx.ability_power)",
+          "50 + (0.3 * ctx.ability_power)",
+          "70 + (0.3 * ctx.ability_power)",
+          "90 + (0.3 * ctx.ability_power)",
+          "110 + (0.3 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "E",
-        "name": "_5"
+        "E": "_5"
       },
       {
         "name": "Solar Snare",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "16 + (0.08 * ctx.ap)",
-          "28 + (0.08 * ctx.ap)",
-          "40 + (0.08 * ctx.ap)",
-          "52 + (0.08 * ctx.ap)",
-          "64 + (0.08 * ctx.ap)"
+          "16 + (0.08 * ctx.ability_power)",
+          "28 + (0.08 * ctx.ability_power)",
+          "40 + (0.08 * ctx.ability_power)",
+          "52 + (0.08 * ctx.ability_power)",
+          "64 + (0.08 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "E",
-        "name": "_6"
+        "E": "_6"
       },
       {
         "name": "Solar Snare",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "2 + (0.01 * ctx.ap)",
-          "3.5 + (0.01 * ctx.ap)",
-          "5 + (0.01 * ctx.ap)",
-          "6.5 + (0.01 * ctx.ap)",
-          "8 + (0.01 * ctx.ap)"
+          "2 + (0.01 * ctx.ability_power)",
+          "3.5 + (0.01 * ctx.ability_power)",
+          "5 + (0.01 * ctx.ability_power)",
+          "6.5 + (0.01 * ctx.ability_power)",
+          "8 + (0.01 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "R",
-        "name": "_2"
+        "R": "_2"
       },
       {
         "name": "Golden Eclipse",
@@ -285,8 +273,7 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_3"
+        "R": "_3"
       },
       {
         "name": "Golden Eclipse",

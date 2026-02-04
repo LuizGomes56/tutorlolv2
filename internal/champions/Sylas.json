@@ -3,8 +3,8 @@
   "adaptative_type": "Magic",
   "attack_type": "Melee",
   "positions": [
-    "Middle",
-    "Top"
+    "Top",
+    "Middle"
   ],
   "stats": {
     "health": {
@@ -71,109 +71,103 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "_1"
+        "Q": "_1"
       },
       {
         "name": "Chain Lash",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "40 + (0.4 * ctx.ap)",
-          "60 + (0.4 * ctx.ap)",
-          "80 + (0.4 * ctx.ap)",
-          "100 + (0.4 * ctx.ap)",
-          "120 + (0.4 * ctx.ap)"
+          "40 + (0.4 * ctx.ability_power)",
+          "60 + (0.4 * ctx.ability_power)",
+          "80 + (0.4 * ctx.ability_power)",
+          "100 + (0.4 * ctx.ability_power)",
+          "120 + (0.4 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "Q",
-        "name": "_2"
+        "Q": "_2"
       },
       {
         "name": "Chain Lash",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "60 + (0.8 * ctx.ap)",
-          "115 + (0.8 * ctx.ap)",
-          "170 + (0.8 * ctx.ap)",
-          "225 + (0.8 * ctx.ap)",
-          "280 + (0.8 * ctx.ap)"
+          "60 + (0.8 * ctx.ability_power)",
+          "115 + (0.8 * ctx.ability_power)",
+          "170 + (0.8 * ctx.ability_power)",
+          "225 + (0.8 * ctx.ability_power)",
+          "280 + (0.8 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "Q",
-        "name": "_3"
+        "Q": "_3"
       },
       {
         "name": "Chain Lash",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "24 + (0.32 * ctx.ap)",
-          "46 + (0.32 * ctx.ap)",
-          "68 + (0.32 * ctx.ap)",
-          "90 + (0.32 * ctx.ap)",
-          "112 + (0.32 * ctx.ap)"
+          "24 + (0.32 * ctx.ability_power)",
+          "46 + (0.32 * ctx.ability_power)",
+          "68 + (0.32 * ctx.ability_power)",
+          "90 + (0.32 * ctx.ability_power)",
+          "112 + (0.32 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "Q",
-        "name": "_4"
+        "Q": "_4"
       },
       {
         "name": "Chain Lash",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "100 + (1.2 * ctx.ap)",
-          "175 + (1.2 * ctx.ap)",
-          "250 + (1.2 * ctx.ap)",
-          "325 + (1.2 * ctx.ap)",
-          "400 + (1.2 * ctx.ap)"
+          "100 + (1.2 * ctx.ability_power)",
+          "175 + (1.2 * ctx.ability_power)",
+          "250 + (1.2 * ctx.ability_power)",
+          "325 + (1.2 * ctx.ability_power)",
+          "400 + (1.2 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "Q",
-        "name": "_5"
+        "Q": "_5"
       },
       {
         "name": "Chain Lash",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "64 + (0.72 * ctx.ap)",
-          "106 + (0.72 * ctx.ap)",
-          "148 + (0.72 * ctx.ap)",
-          "190 + (0.72 * ctx.ap)",
-          "232 + (0.72 * ctx.ap)"
+          "64 + (0.72 * ctx.ability_power)",
+          "106 + (0.72 * ctx.ability_power)",
+          "148 + (0.72 * ctx.ability_power)",
+          "190 + (0.72 * ctx.ability_power)",
+          "232 + (0.72 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "W",
-        "name": "_1"
+        "W": "_1"
       },
       {
         "name": "Kingslayer",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "75 + (0.6 * ctx.ap)",
-          "110 + (0.6 * ctx.ap)",
-          "145 + (0.6 * ctx.ap)",
-          "180 + (0.6 * ctx.ap)",
-          "215 + (0.6 * ctx.ap)"
+          "75 + (0.6 * ctx.ability_power)",
+          "110 + (0.6 * ctx.ability_power)",
+          "145 + (0.6 * ctx.ability_power)",
+          "180 + (0.6 * ctx.ability_power)",
+          "215 + (0.6 * ctx.ability_power)"
         ]
       }
     ]

@@ -70,19 +70,18 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "_1"
+        "Q": "_1"
       },
       {
         "name": "Paddle Star!",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "5 + 125 + (1.5 * ctx.ap)",
-          "12.058823529411764 + 200 + (1.5 * ctx.ap)",
-          "19.11764705882353 + 275 + (1.5 * ctx.ap)",
-          "26.176470588235293 + 350 + (1.5 * ctx.ap)",
-          "33.23529411764706 + 425 + (1.5 * ctx.ap)",
+          "5 + 125 + (1.5 * ctx.ability_power)",
+          "12.058823529411764 + 200 + (1.5 * ctx.ability_power)",
+          "19.11764705882353 + 275 + (1.5 * ctx.ability_power)",
+          "26.176470588235293 + 350 + (1.5 * ctx.ability_power)",
+          "33.23529411764706 + 425 + (1.5 * ctx.ability_power)",
           "40.294117647058826",
           "47.35294117647059",
           "54.41176470588235",
@@ -101,19 +100,18 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_2"
+        "Q": "_2"
       },
       {
         "name": "Paddle Star!",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "2 + 50 + (0.6 * ctx.ap)",
-          "4.8235294117647065 + 80 + (0.6 * ctx.ap)",
-          "7.647058823529412 + 110 + (0.6 * ctx.ap)",
-          "10.470588235294118 + 140 + (0.6 * ctx.ap)",
-          "13.294117647058824 + 170 + (0.6 * ctx.ap)",
+          "2 + 50 + (0.6 * ctx.ability_power)",
+          "4.8235294117647065 + 80 + (0.6 * ctx.ability_power)",
+          "7.647058823529412 + 110 + (0.6 * ctx.ability_power)",
+          "10.470588235294118 + 140 + (0.6 * ctx.ability_power)",
+          "13.294117647058824 + 170 + (0.6 * ctx.ability_power)",
           "16.11764705882353",
           "18.941176470588236",
           "21.764705882352946",
@@ -132,91 +130,86 @@
     ],
     [
       {
-        "type": "W",
-        "name": "_1"
+        "W": "_1"
       },
       {
         "name": "Spell Thief",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "20 + (0.15 * ctx.ap)",
-          "30 + (0.15 * ctx.ap)",
-          "40 + (0.15 * ctx.ap)",
-          "50 + (0.15 * ctx.ap)",
-          "60 + (0.15 * ctx.ap)"
+          "20 + (0.15 * ctx.ability_power)",
+          "30 + (0.15 * ctx.ability_power)",
+          "40 + (0.15 * ctx.ability_power)",
+          "50 + (0.15 * ctx.ability_power)",
+          "60 + (0.15 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "W",
-        "name": "_2"
+        "W": "_2"
       },
       {
         "name": "Spell Thief",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "60 + (0.45 * ctx.ap)",
-          "90 + (0.45 * ctx.ap)",
-          "120 + (0.45 * ctx.ap)",
-          "150 + (0.45 * ctx.ap)",
-          "180 + (0.45 * ctx.ap)"
+          "60 + (0.45 * ctx.ability_power)",
+          "90 + (0.45 * ctx.ability_power)",
+          "120 + (0.45 * ctx.ability_power)",
+          "150 + (0.45 * ctx.ability_power)",
+          "180 + (0.45 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "E",
-        "name": "_1"
+        "E": "_1"
       },
       {
         "name": "Sleepy Trouble Bubble",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "70 + (0.45 * ctx.ap)",
-          "110 + (0.45 * ctx.ap)",
-          "150 + (0.45 * ctx.ap)",
-          "190 + (0.45 * ctx.ap)",
-          "230 + (0.45 * ctx.ap)"
+          "70 + (0.45 * ctx.ability_power)",
+          "110 + (0.45 * ctx.ability_power)",
+          "150 + (0.45 * ctx.ability_power)",
+          "190 + (0.45 * ctx.ability_power)",
+          "230 + (0.45 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "E",
-        "name": "_2"
+        "E": "_2"
       },
       {
         "name": "Sleepy Trouble Bubble",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "70 + (0.45 * ctx.ap)",
-          "110 + (0.45 * ctx.ap)",
-          "150 + (0.45 * ctx.ap)",
-          "190 + (0.45 * ctx.ap)",
-          "230 + (0.45 * ctx.ap)"
+          "70 + (0.45 * ctx.ability_power)",
+          "110 + (0.45 * ctx.ability_power)",
+          "150 + (0.45 * ctx.ability_power)",
+          "190 + (0.45 * ctx.ability_power)",
+          "230 + (0.45 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "E",
-        "name": "_3"
+        "E": "_3"
       },
       {
         "name": "Sleepy Trouble Bubble",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "140 + (0.9 * ctx.ap)",
-          "220 + (0.9 * ctx.ap)",
-          "300 + (0.9 * ctx.ap)",
-          "380 + (0.9 * ctx.ap)",
-          "460 + (0.9 * ctx.ap)"
+          "140 + (0.9 * ctx.ability_power)",
+          "220 + (0.9 * ctx.ability_power)",
+          "300 + (0.9 * ctx.ability_power)",
+          "380 + (0.9 * ctx.ability_power)",
+          "460 + (0.9 * ctx.ability_power)"
         ]
       }
     ]

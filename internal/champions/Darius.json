@@ -70,62 +70,58 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "_1"
+        "Q": "_1"
       },
       {
         "name": "Decimate",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "50 + ctx.ad",
-          "80 + (1.1 * ctx.ad)",
-          "110 + (1.2 * ctx.ad)",
-          "140 + (1.3 * ctx.ad)",
-          "170 + (1.4 * ctx.ad)"
+          "50 + ctx.attack_damage",
+          "80 + (1.1 * ctx.attack_damage)",
+          "110 + (1.2 * ctx.attack_damage)",
+          "140 + (1.3 * ctx.attack_damage)",
+          "170 + (1.4 * ctx.attack_damage)"
         ]
       }
     ],
     [
       {
-        "type": "Q",
-        "name": "_2"
+        "Q": "_2"
       },
       {
         "name": "Decimate",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "17.5 + (0.35 * ctx.ad)",
-          "28 + (0.385 * ctx.ad)",
-          "38.5 + (0.42 * ctx.ad)",
-          "49 + (0.455 * ctx.ad)",
-          "59.5 + (0.49 * ctx.ad)"
+          "17.5 + (0.35 * ctx.attack_damage)",
+          "28 + (0.385 * ctx.attack_damage)",
+          "38.5 + (0.42 * ctx.attack_damage)",
+          "49 + (0.455 * ctx.attack_damage)",
+          "59.5 + (0.49 * ctx.attack_damage)"
         ]
       }
     ],
     [
       {
-        "type": "W",
-        "name": "_1"
+        "W": "_1"
       },
       {
         "name": "Crippling Strike",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "(0.4 * ctx.ad)",
-          "(0.45 * ctx.ad)",
-          "(0.5 * ctx.ad)",
-          "(0.55 * ctx.ad)",
-          "(0.6 * ctx.ad)"
+          "(0.4 * ctx.attack_damage)",
+          "(0.45 * ctx.attack_damage)",
+          "(0.5 * ctx.attack_damage)",
+          "(0.55 * ctx.attack_damage)",
+          "(0.6 * ctx.attack_damage)"
         ]
       }
     ],
     [
       {
-        "type": "R",
-        "name": "_1"
+        "R": "_1"
       },
       {
         "name": "Noxian Guillotine",
@@ -140,8 +136,7 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_2"
+        "R": "_2"
       },
       {
         "name": "Noxian Guillotine",
@@ -156,8 +151,7 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_3"
+        "R": "_3"
       },
       {
         "name": "Noxian Guillotine",

@@ -70,8 +70,7 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "_1"
+        "Q": "_1"
       },
       {
         "name": "Dragon Strike",
@@ -88,26 +87,24 @@
     ],
     [
       {
-        "type": "E",
-        "name": "_1"
+        "E": "_1"
       },
       {
         "name": "Demacian Standard",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "80 + (0.8 * ctx.ap)",
-          "120 + (0.8 * ctx.ap)",
-          "160 + (0.8 * ctx.ap)",
-          "200 + (0.8 * ctx.ap)",
-          "240 + (0.8 * ctx.ap)"
+          "80 + (0.8 * ctx.ability_power)",
+          "120 + (0.8 * ctx.ability_power)",
+          "160 + (0.8 * ctx.ability_power)",
+          "200 + (0.8 * ctx.ability_power)",
+          "240 + (0.8 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "R",
-        "name": "_1"
+        "R": "_1"
       },
       {
         "name": "Cataclysm",

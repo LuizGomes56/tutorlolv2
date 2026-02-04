@@ -70,191 +70,180 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "_1"
+        "Q": "_1"
       },
       {
         "name": "Dancing Grenade",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "44 + (0.44 * ctx.ad) + (0.6 * ctx.ap)",
-          "69 + (0.515 * ctx.ad) + (0.6 * ctx.ap)",
-          "94 + (0.59 * ctx.ad) + (0.6 * ctx.ap)",
-          "119 + (0.665 * ctx.ad) + (0.6 * ctx.ap)",
-          "144 + (0.74 * ctx.ad) + (0.6 * ctx.ap)"
+          "44 + (0.44 * ctx.attack_damage) + (0.6 * ctx.ability_power)",
+          "69 + (0.515 * ctx.attack_damage) + (0.6 * ctx.ability_power)",
+          "94 + (0.59 * ctx.attack_damage) + (0.6 * ctx.ability_power)",
+          "119 + (0.665 * ctx.attack_damage) + (0.6 * ctx.ability_power)",
+          "144 + (0.74 * ctx.attack_damage) + (0.6 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "Q",
-        "name": "_2"
+        "Q": "_2"
       },
       {
         "name": "Dancing Grenade",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "15.4 + (0.154 * ctx.ad) + (0.21 * ctx.ap)",
-          "24.15 + (0.18025 * ctx.ad) + (0.21 * ctx.ap)",
-          "32.9 + (0.2065 * ctx.ad) + (0.21 * ctx.ap)",
-          "41.65 + (0.23274999999999998 * ctx.ad) + (0.21 * ctx.ap)",
-          "50.4 + (0.259 * ctx.ad) + (0.21 * ctx.ap)"
+          "15.4 + (0.154 * ctx.attack_damage) + (0.21 * ctx.ability_power)",
+          "24.15 + (0.18025 * ctx.attack_damage) + (0.21 * ctx.ability_power)",
+          "32.9 + (0.2065 * ctx.attack_damage) + (0.21 * ctx.ability_power)",
+          "41.65 + (0.23274999999999998 * ctx.attack_damage) + (0.21 * ctx.ability_power)",
+          "50.4 + (0.259 * ctx.attack_damage) + (0.21 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "Q",
-        "name": "_3"
+        "Q": "_3"
       },
       {
         "name": "Dancing Grenade",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "90.2 + (0.902 * ctx.ad) + (1.23 * ctx.ap)",
-          "141.45 + (1.05575 * ctx.ad) + (1.23 * ctx.ap)",
-          "192.7 + (1.2095 * ctx.ad) + (1.23 * ctx.ap)",
-          "243.95 + (1.3632499999999999 * ctx.ad) + (1.23 * ctx.ap)",
-          "295.2 + (1.517 * ctx.ad) + (1.23 * ctx.ap)"
+          "90.2 + (0.902 * ctx.attack_damage) + (1.23 * ctx.ability_power)",
+          "141.45 + (1.05575 * ctx.attack_damage) + (1.23 * ctx.ability_power)",
+          "192.7 + (1.2095 * ctx.attack_damage) + (1.23 * ctx.ability_power)",
+          "243.95 + (1.3632499999999999 * ctx.attack_damage) + (1.23 * ctx.ability_power)",
+          "295.2 + (1.517 * ctx.attack_damage) + (1.23 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "W",
-        "name": "_1"
+        "W": "_1"
       },
       {
         "name": "Deadly Flourish",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "52.5 + (0.375 * ctx.ad)",
-          "78.75 + (0.375 * ctx.ad)",
-          "105 + (0.375 * ctx.ad)",
-          "131.25 + (0.375 * ctx.ad)",
-          "157.5 + (0.375 * ctx.ad)"
+          "52.5 + (0.375 * ctx.attack_damage)",
+          "78.75 + (0.375 * ctx.attack_damage)",
+          "105 + (0.375 * ctx.attack_damage)",
+          "131.25 + (0.375 * ctx.attack_damage)",
+          "157.5 + (0.375 * ctx.attack_damage)"
         ]
       }
     ],
     [
       {
-        "type": "W",
-        "name": "_2"
+        "W": "_2"
       },
       {
         "name": "Deadly Flourish",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "70 + (0.5 * ctx.ad)",
-          "105 + (0.5 * ctx.ad)",
-          "140 + (0.5 * ctx.ad)",
-          "175 + (0.5 * ctx.ad)",
-          "210 + (0.5 * ctx.ad)"
+          "70 + (0.5 * ctx.attack_damage)",
+          "105 + (0.5 * ctx.attack_damage)",
+          "140 + (0.5 * ctx.attack_damage)",
+          "175 + (0.5 * ctx.attack_damage)",
+          "210 + (0.5 * ctx.attack_damage)"
         ]
       }
     ],
     [
       {
-        "type": "E",
-        "name": "_1"
+        "E": "_1"
       },
       {
         "name": "Captive Audience",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "20 + (1.2 * ctx.ad) + ctx.ap",
-          "80 + (1.2 * ctx.ad) + ctx.ap",
-          "140 + (1.2 * ctx.ad) + ctx.ap",
-          "200 + (1.2 * ctx.ad) + ctx.ap",
-          "260 + (1.2 * ctx.ad) + ctx.ap"
+          "20 + (1.2 * ctx.attack_damage) + ctx.ability_power",
+          "80 + (1.2 * ctx.attack_damage) + ctx.ability_power",
+          "140 + (1.2 * ctx.attack_damage) + ctx.ability_power",
+          "200 + (1.2 * ctx.attack_damage) + ctx.ability_power",
+          "260 + (1.2 * ctx.attack_damage) + ctx.ability_power"
         ]
       }
     ],
     [
       {
-        "type": "E",
-        "name": "_2"
+        "E": "_2"
       },
       {
         "name": "Captive Audience",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "13 + (0.78 * ctx.ad) + (0.65 * ctx.ap)",
-          "52 + (0.78 * ctx.ad) + (0.65 * ctx.ap)",
-          "91 + (0.78 * ctx.ad) + (0.65 * ctx.ap)",
-          "130 + (0.78 * ctx.ad) + (0.65 * ctx.ap)",
-          "169 + (0.78 * ctx.ad) + (0.65 * ctx.ap)"
+          "13 + (0.78 * ctx.attack_damage) + (0.65 * ctx.ability_power)",
+          "52 + (0.78 * ctx.attack_damage) + (0.65 * ctx.ability_power)",
+          "91 + (0.78 * ctx.attack_damage) + (0.65 * ctx.ability_power)",
+          "130 + (0.78 * ctx.attack_damage) + (0.65 * ctx.ability_power)",
+          "169 + (0.78 * ctx.attack_damage) + (0.65 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "R",
-        "name": "_1"
+        "R": "_1"
       },
       {
         "name": "Curtain Call",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "256 + ctx.ad",
-          "512 + ctx.ad",
-          "768 + ctx.ad"
+          "256 + ctx.attack_damage",
+          "512 + ctx.attack_damage",
+          "768 + ctx.attack_damage"
         ]
       }
     ],
     [
       {
-        "type": "R",
-        "name": "_2"
+        "R": "_2"
       },
       {
         "name": "Curtain Call",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "64 + (0.25 * ctx.ad)",
-          "128 + (0.25 * ctx.ad)",
-          "192 + (0.25 * ctx.ad)"
+          "64 + (0.25 * ctx.attack_damage)",
+          "128 + (0.25 * ctx.attack_damage)",
+          "192 + (0.25 * ctx.attack_damage)"
         ]
       }
     ],
     [
       {
-        "type": "R",
-        "name": "_3"
+        "R": "_3"
       },
       {
         "name": "Curtain Call",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "512 + (2 * ctx.ad)",
-          "1024 + (2 * ctx.ad)",
-          "1536 + (2 * ctx.ad)"
+          "512 + (2 * ctx.attack_damage)",
+          "1024 + (2 * ctx.attack_damage)",
+          "1536 + (2 * ctx.attack_damage)"
         ]
       }
     ],
     [
       {
-        "type": "R",
-        "name": "_4"
+        "R": "_4"
       },
       {
         "name": "Curtain Call",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "128 + (0.5 * ctx.ad)",
-          "256 + (0.5 * ctx.ad)",
-          "384 + (0.5 * ctx.ad)"
+          "128 + (0.5 * ctx.attack_damage)",
+          "256 + (0.5 * ctx.attack_damage)",
+          "384 + (0.5 * ctx.attack_damage)"
         ]
       }
     ]

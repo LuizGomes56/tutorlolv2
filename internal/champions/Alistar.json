@@ -70,73 +70,69 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "Void"
+        "Q": "Void"
       },
       {
         "name": "Pulverize",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "60 + (0.8 * ctx.ap)",
-          "100 + (0.8 * ctx.ap)",
-          "140 + (0.8 * ctx.ap)",
-          "180 + (0.8 * ctx.ap)",
-          "220 + (0.8 * ctx.ap)"
+          "60 + (0.8 * ctx.ability_power)",
+          "100 + (0.8 * ctx.ability_power)",
+          "140 + (0.8 * ctx.ability_power)",
+          "180 + (0.8 * ctx.ability_power)",
+          "220 + (0.8 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "W",
-        "name": "Void"
+        "W": "Void"
       },
       {
         "name": "Headbutt",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "55 + ctx.ap",
-          "110 + ctx.ap",
-          "165 + ctx.ap",
-          "220 + ctx.ap",
-          "275 + ctx.ap"
+          "55 + ctx.ability_power",
+          "110 + ctx.ability_power",
+          "165 + ctx.ability_power",
+          "220 + ctx.ability_power",
+          "275 + ctx.ability_power"
         ]
       }
     ],
     [
       {
-        "type": "E",
-        "name": "Min"
+        "E": "Min"
       },
       {
         "name": "Trample",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "8 + (0.07 * ctx.ap)",
-          "11 + (0.07 * ctx.ap)",
-          "14 + (0.07 * ctx.ap)",
-          "17 + (0.07 * ctx.ap)",
-          "20 + (0.07 * ctx.ap)"
+          "8 + (0.07 * ctx.ability_power)",
+          "11 + (0.07 * ctx.ability_power)",
+          "14 + (0.07 * ctx.ability_power)",
+          "17 + (0.07 * ctx.ability_power)",
+          "20 + (0.07 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "E",
-        "name": "Max"
+        "E": "Max"
       },
       {
         "name": "Trample",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "80 + (0.7 * ctx.ap)",
-          "110 + (0.7 * ctx.ap)",
-          "140 + (0.7 * ctx.ap)",
-          "170 + (0.7 * ctx.ap)",
-          "200 + (0.7 * ctx.ap)"
+          "80 + (0.7 * ctx.ability_power)",
+          "110 + (0.7 * ctx.ability_power)",
+          "140 + (0.7 * ctx.ability_power)",
+          "170 + (0.7 * ctx.ability_power)",
+          "200 + (0.7 * ctx.ability_power)"
         ]
       }
     ]
@@ -144,16 +140,13 @@
   "merge_data": [
     {
       "minimum_damage": {
-        "type": "E",
-        "name": "Min"
+        "E": "Min"
       },
       "maximum_damage": {
-        "type": "E",
-        "name": "Max"
+        "E": "Max"
       },
       "alias": {
-        "type": "E",
-        "name": "Void"
+        "E": "Void"
       }
     }
   ]

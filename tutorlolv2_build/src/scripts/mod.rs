@@ -15,7 +15,7 @@ static RE_DROP_F32_DECIMAL: Lazy<Regex> = Lazy::new(|| Regex::new(r"\d+\.\d+|\d+
 static RE_SIMPLIFY: Lazy<Regex> = Lazy::new(|| Regex::new(r"([-+]?\d*\.?\d+)").unwrap());
 static RE_IDENTS: Lazy<Regex> = Lazy::new(|| Regex::new(r"ctx\.([a-z_][a-z0-9_]*)").unwrap());
 
-pub const ZERO_FN: &str = r#"fn zero(_: Ctx) -> f32 {
+pub const ZERO_FN: &str = r#"fn zero(_: &Ctx) -> f32 {
     0.0 /* No damage */
 }"#;
 
@@ -24,6 +24,7 @@ pub const DEFAULT_ITEM_GENERATOR: &str = r#"use super::*;
 impl Generator<ItemData> for Item {
     fn generate(self: Box<Self>) -> MayFail<ItemData> {
         /* No implementation */
+        self.infer_stats_ifdef();
         self.end()
     }
 }"#;
@@ -406,7 +407,7 @@ pub fn simplify(values: &[String]) -> Simplified {
     let values = values.iter().map(normalize_expr).collect::<Vec<_>>();
 
     if values.is_empty() {
-        return Simplified::Unknown;
+        return Simplified::Impossible;
     }
     if values.len() == 1 {
         return Simplified::Unrecognized;
@@ -433,7 +434,7 @@ pub fn simplify(values: &[String]) -> Simplified {
     let num_constants = value_matrix[0].len();
     for row in &value_matrix {
         if row.len() != num_constants {
-            return Simplified::Impossible;
+            return Simplified::Unknown;
         }
     }
 

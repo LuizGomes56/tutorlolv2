@@ -70,8 +70,7 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "_1"
+        "Q": "_1"
       },
       {
         "name": "Piercing Arrow",
@@ -88,8 +87,7 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_2"
+        "Q": "_2"
       },
       {
         "name": "Piercing Arrow",
@@ -106,8 +104,7 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_3"
+        "Q": "_3"
       },
       {
         "name": "Piercing Arrow",
@@ -124,8 +121,7 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_4"
+        "Q": "_4"
       },
       {
         "name": "Piercing Arrow",
@@ -142,8 +138,7 @@
     ],
     [
       {
-        "type": "W",
-        "name": "_1"
+        "W": "_1"
       },
       {
         "name": "Blighted Quiver",
@@ -160,8 +155,7 @@
     ],
     [
       {
-        "type": "W",
-        "name": "_2"
+        "W": "_2"
       },
       {
         "name": "Blighted Quiver",
@@ -178,98 +172,92 @@
     ],
     [
       {
-        "type": "W",
-        "name": "_3"
+        "W": "_3"
       },
       {
         "name": "Blighted Quiver",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "(0.09 * ctx.enemy_max_health) + (0.045 * 0.01 * ctx.ap)",
-          "(0.105 * ctx.enemy_max_health) + (0.045 * 0.01 * ctx.ap)",
-          "(0.12 * ctx.enemy_max_health) + (0.045 * 0.01 * ctx.ap)",
-          "(0.135 * ctx.enemy_max_health) + (0.045 * 0.01 * ctx.ap)",
-          "(0.15 * ctx.enemy_max_health) + (0.045 * 0.01 * ctx.ap)"
+          "(0.09 * ctx.enemy_max_health) + (0.045 * 0.01 * ctx.ability_power)",
+          "(0.105 * ctx.enemy_max_health) + (0.045 * 0.01 * ctx.ability_power)",
+          "(0.12 * ctx.enemy_max_health) + (0.045 * 0.01 * ctx.ability_power)",
+          "(0.135 * ctx.enemy_max_health) + (0.045 * 0.01 * ctx.ability_power)",
+          "(0.15 * ctx.enemy_max_health) + (0.045 * 0.01 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "W",
-        "name": "_4"
+        "W": "_4"
       },
       {
         "name": "Blighted Quiver",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "(0.03 * ctx.enemy_max_health) + (0.015 * 0.01 * ctx.ap)",
-          "(0.035 * ctx.enemy_max_health) + (0.015 * 0.01 * ctx.ap)",
-          "(0.04 * ctx.enemy_max_health) + (0.015 * 0.01 * ctx.ap)",
-          "(0.045 * ctx.enemy_max_health) + (0.015 * 0.01 * ctx.ap)",
-          "(0.05 * ctx.enemy_max_health) + (0.015 * 0.01 * ctx.ap)"
+          "(0.03 * ctx.enemy_max_health) + (0.015 * 0.01 * ctx.ability_power)",
+          "(0.035 * ctx.enemy_max_health) + (0.015 * 0.01 * ctx.ability_power)",
+          "(0.04 * ctx.enemy_max_health) + (0.015 * 0.01 * ctx.ability_power)",
+          "(0.045 * ctx.enemy_max_health) + (0.015 * 0.01 * ctx.ability_power)",
+          "(0.05 * ctx.enemy_max_health) + (0.015 * 0.01 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "W",
-        "name": "_5"
+        "W": "_5"
       },
       {
         "name": "Blighted Quiver",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "(0.135 * ctx.enemy_max_health) + (0.0675 * 0.01 * ctx.ap)",
-          "(0.1575 * ctx.enemy_max_health) + (0.0675 * 0.01 * ctx.ap)",
-          "(0.18 * ctx.enemy_max_health) + (0.0675 * 0.01 * ctx.ap)",
-          "(0.2025 * ctx.enemy_max_health) + (0.0675 * 0.01 * ctx.ap)",
-          "(0.225 * ctx.enemy_max_health) + (0.0675 * 0.01 * ctx.ap)"
+          "(0.135 * ctx.enemy_max_health) + (0.0675 * 0.01 * ctx.ability_power)",
+          "(0.1575 * ctx.enemy_max_health) + (0.0675 * 0.01 * ctx.ability_power)",
+          "(0.18 * ctx.enemy_max_health) + (0.0675 * 0.01 * ctx.ability_power)",
+          "(0.2025 * ctx.enemy_max_health) + (0.0675 * 0.01 * ctx.ability_power)",
+          "(0.225 * ctx.enemy_max_health) + (0.0675 * 0.01 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "W",
-        "name": "_6"
+        "W": "_6"
       },
       {
         "name": "Blighted Quiver",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "(0.045 * ctx.enemy_max_health) + (0.0225 * 0.01 * ctx.ap)",
-          "(0.0525 * ctx.enemy_max_health) + (0.0225 * 0.01 * ctx.ap)",
-          "(0.06 * ctx.enemy_max_health) + (0.0225 * 0.01 * ctx.ap)",
-          "(0.0675 * ctx.enemy_max_health) + (0.0225 * 0.01 * ctx.ap)",
-          "(0.075 * ctx.enemy_max_health) + (0.0225 * 0.01 * ctx.ap)"
+          "(0.045 * ctx.enemy_max_health) + (0.0225 * 0.01 * ctx.ability_power)",
+          "(0.0525 * ctx.enemy_max_health) + (0.0225 * 0.01 * ctx.ability_power)",
+          "(0.06 * ctx.enemy_max_health) + (0.0225 * 0.01 * ctx.ability_power)",
+          "(0.0675 * ctx.enemy_max_health) + (0.0225 * 0.01 * ctx.ability_power)",
+          "(0.075 * ctx.enemy_max_health) + (0.0225 * 0.01 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "W",
-        "name": "_7"
+        "W": "_7"
       },
       {
         "name": "Blighted Quiver",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "6 + (0.35 * ctx.ap)",
-          "14 + (0.35 * ctx.ap)",
-          "22 + (0.35 * ctx.ap)",
-          "30 + (0.35 * ctx.ap)",
-          "38 + (0.35 * ctx.ap)"
+          "6 + (0.35 * ctx.ability_power)",
+          "14 + (0.35 * ctx.ability_power)",
+          "22 + (0.35 * ctx.ability_power)",
+          "30 + (0.35 * ctx.ability_power)",
+          "38 + (0.35 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "E",
-        "name": "_1"
+        "E": "_1"
       },
       {
         "name": "Hail of Arrows",
@@ -286,17 +274,16 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_1"
+        "R": "_1"
       },
       {
         "name": "Chain of Corruption",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "150 + ctx.ap",
-          "250 + ctx.ap",
-          "350 + ctx.ap"
+          "150 + ctx.ability_power",
+          "250 + ctx.ability_power",
+          "350 + ctx.ability_power"
         ]
       }
     ]

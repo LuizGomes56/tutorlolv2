@@ -70,37 +70,35 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "_1"
+        "Q": "_1"
       },
       {
         "name": "Bouncing Blade",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "80 + (0.4 * ctx.ap)",
-          "115 + (0.4 * ctx.ap)",
-          "150 + (0.4 * ctx.ap)",
-          "185 + (0.4 * ctx.ap)",
-          "220 + (0.4 * ctx.ap)"
+          "80 + (0.4 * ctx.ability_power)",
+          "115 + (0.4 * ctx.ability_power)",
+          "150 + (0.4 * ctx.ability_power)",
+          "185 + (0.4 * ctx.ability_power)",
+          "220 + (0.4 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "E",
-        "name": "_1"
+        "E": "_1"
       },
       {
         "name": "Shunpo",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "20 + (0.4 * ctx.ad) + (0.25 * ctx.ap)",
-          "30 + (0.4 * ctx.ad) + (0.25 * ctx.ap)",
-          "40 + (0.4 * ctx.ad) + (0.25 * ctx.ap)",
-          "50 + (0.4 * ctx.ad) + (0.25 * ctx.ap)",
-          "60 + (0.4 * ctx.ad) + (0.25 * ctx.ap)"
+          "20 + (0.4 * ctx.attack_damage) + (0.25 * ctx.ability_power)",
+          "30 + (0.4 * ctx.attack_damage) + (0.25 * ctx.ability_power)",
+          "40 + (0.4 * ctx.attack_damage) + (0.25 * ctx.ability_power)",
+          "50 + (0.4 * ctx.attack_damage) + (0.25 * ctx.ability_power)",
+          "60 + (0.4 * ctx.attack_damage) + (0.25 * ctx.ability_power)"
         ]
       }
     ]

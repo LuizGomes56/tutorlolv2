@@ -3,8 +3,8 @@
   "adaptative_type": "Physical",
   "attack_type": "Melee",
   "positions": [
-    "Jungle",
-    "Top"
+    "Top",
+    "Jungle"
   ],
   "stats": {
     "health": {
@@ -71,8 +71,7 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "_1"
+        "Q": "_1"
       },
       {
         "name": "Leap Strike",
@@ -89,87 +88,82 @@
     ],
     [
       {
-        "type": "W",
-        "name": "_1"
+        "W": "_1"
       },
       {
         "name": "Empower",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "50 + (0.6 * ctx.ap)",
-          "85 + (0.6 * ctx.ap)",
-          "120 + (0.6 * ctx.ap)",
-          "155 + (0.6 * ctx.ap)",
-          "190 + (0.6 * ctx.ap)"
+          "50 + (0.6 * ctx.ability_power)",
+          "85 + (0.6 * ctx.ability_power)",
+          "120 + (0.6 * ctx.ability_power)",
+          "155 + (0.6 * ctx.ability_power)",
+          "190 + (0.6 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "E",
-        "name": "_1"
+        "E": "_1"
       },
       {
         "name": "Counter Strike",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "80 + (1.4 * ctx.ap) + (0.07 * ctx.enemy_max_health)",
-          "140 + (1.4 * ctx.ap) + (0.07 * ctx.enemy_max_health)",
-          "200 + (1.4 * ctx.ap) + (0.07 * ctx.enemy_max_health)",
-          "260 + (1.4 * ctx.ap) + (0.07 * ctx.enemy_max_health)",
-          "320 + (1.4 * ctx.ap) + (0.07 * ctx.enemy_max_health)"
+          "80 + (1.4 * ctx.ability_power) + (0.07 * ctx.enemy_max_health)",
+          "140 + (1.4 * ctx.ability_power) + (0.07 * ctx.enemy_max_health)",
+          "200 + (1.4 * ctx.ability_power) + (0.07 * ctx.enemy_max_health)",
+          "260 + (1.4 * ctx.ability_power) + (0.07 * ctx.enemy_max_health)",
+          "320 + (1.4 * ctx.ability_power) + (0.07 * ctx.enemy_max_health)"
         ]
       }
     ],
     [
       {
-        "type": "E",
-        "name": "_2"
+        "E": "_2"
       },
       {
         "name": "Counter Strike",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "40 + (0.7 * ctx.ap) + (0.035 * ctx.enemy_max_health)",
-          "70 + (0.7 * ctx.ap) + (0.035 * ctx.enemy_max_health)",
-          "100 + (0.7 * ctx.ap) + (0.035 * ctx.enemy_max_health)",
-          "130 + (0.7 * ctx.ap) + (0.035 * ctx.enemy_max_health)",
-          "160 + (0.7 * ctx.ap) + (0.035 * ctx.enemy_max_health)"
+          "40 + (0.7 * ctx.ability_power) + (0.035 * ctx.enemy_max_health)",
+          "70 + (0.7 * ctx.ability_power) + (0.035 * ctx.enemy_max_health)",
+          "100 + (0.7 * ctx.ability_power) + (0.035 * ctx.enemy_max_health)",
+          "130 + (0.7 * ctx.ability_power) + (0.035 * ctx.enemy_max_health)",
+          "160 + (0.7 * ctx.ability_power) + (0.035 * ctx.enemy_max_health)"
         ]
       }
     ],
     [
       {
-        "type": "R",
-        "name": "_1"
+        "R": "_1"
       },
       {
         "name": "Grandmaster-at-Arms",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "100 + ctx.ap",
-          "175 + ctx.ap",
-          "250 + ctx.ap"
+          "100 + ctx.ability_power",
+          "175 + ctx.ability_power",
+          "250 + ctx.ability_power"
         ]
       }
     ],
     [
       {
-        "type": "R",
-        "name": "_2"
+        "R": "_2"
       },
       {
         "name": "Grandmaster-at-Arms",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "75 + (0.6 * ctx.ap)",
-          "130 + (0.6 * ctx.ap)",
-          "185 + (0.6 * ctx.ap)"
+          "75 + (0.6 * ctx.ability_power)",
+          "130 + (0.6 * ctx.ability_power)",
+          "185 + (0.6 * ctx.ability_power)"
         ]
       }
     ]

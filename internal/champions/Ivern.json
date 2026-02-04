@@ -70,73 +70,69 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "_1"
+        "Q": "_1"
       },
       {
         "name": "Rootcaller",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "80 + (0.7 * ctx.ap)",
-          "125 + (0.7 * ctx.ap)",
-          "170 + (0.7 * ctx.ap)",
-          "215 + (0.7 * ctx.ap)",
-          "260 + (0.7 * ctx.ap)"
+          "80 + (0.7 * ctx.ability_power)",
+          "125 + (0.7 * ctx.ability_power)",
+          "170 + (0.7 * ctx.ability_power)",
+          "215 + (0.7 * ctx.ability_power)",
+          "260 + (0.7 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "W",
-        "name": "_1"
+        "W": "_1"
       },
       {
         "name": "Brushmaker",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "20 + (0.2 * ctx.ap)",
-          "27.5 + (0.2 * ctx.ap)",
-          "35 + (0.2 * ctx.ap)",
-          "42.5 + (0.2 * ctx.ap)",
-          "50 + (0.2 * ctx.ap)"
+          "20 + (0.2 * ctx.ability_power)",
+          "27.5 + (0.2 * ctx.ability_power)",
+          "35 + (0.2 * ctx.ability_power)",
+          "42.5 + (0.2 * ctx.ability_power)",
+          "50 + (0.2 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "W",
-        "name": "_2"
+        "W": "_2"
       },
       {
         "name": "Brushmaker",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "10 + (0.1 * ctx.ap)",
-          "15 + (0.1 * ctx.ap)",
-          "20 + (0.1 * ctx.ap)",
-          "25 + (0.1 * ctx.ap)",
-          "30 + (0.1 * ctx.ap)"
+          "10 + (0.1 * ctx.ability_power)",
+          "15 + (0.1 * ctx.ability_power)",
+          "20 + (0.1 * ctx.ability_power)",
+          "25 + (0.1 * ctx.ability_power)",
+          "30 + (0.1 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "E",
-        "name": "_1"
+        "E": "_1"
       },
       {
         "name": "Triggerseed",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "70 + (0.8 * ctx.ap)",
-          "90 + (0.8 * ctx.ap)",
-          "110 + (0.8 * ctx.ap)",
-          "130 + (0.8 * ctx.ap)",
-          "150 + (0.8 * ctx.ap)"
+          "70 + (0.8 * ctx.ability_power)",
+          "90 + (0.8 * ctx.ability_power)",
+          "110 + (0.8 * ctx.ability_power)",
+          "130 + (0.8 * ctx.ability_power)",
+          "150 + (0.8 * ctx.ability_power)"
         ]
       }
     ]

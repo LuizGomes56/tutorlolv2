@@ -1,3 +1,5 @@
+use std::collections::{BTreeMap, BTreeSet};
+
 use serde::{Deserialize, Serialize};
 use tutorlolv2_gen::{Attrs, DamageType, GameMap, StatName};
 
@@ -84,14 +86,14 @@ pub struct Item {
     pub price: u32,
     pub sell: u32,
     pub tier: u8,
-    pub maps: Vec<(GameMap, bool)>,
-    pub prettified_stats: Vec<StatName>,
-    pub damage_type: DamageType,
-    pub stats: ItemStats,
-    pub builds_from_riot_ids: Vec<u32>,
-    pub builds_into_riot_ids: Vec<u32>,
-    pub ranged: DamageObject,
-    pub melee: DamageObject,
     pub attributes: Attrs,
     pub purchasable: bool,
+    pub damage_type: DamageType,
+    pub prettified_stats: BTreeSet<StatName>,
+    pub ranged: DamageObject,
+    pub melee: DamageObject,
+    pub stats: ItemStats,
+    pub builds_from_riot_ids: BTreeSet<u32>,
+    pub builds_into_riot_ids: BTreeSet<u32>,
+    pub maps: BTreeMap<GameMap, bool>,
 }

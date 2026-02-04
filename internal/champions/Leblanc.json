@@ -70,221 +70,208 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "_1"
+        "Q": "_1"
       },
       {
         "name": "Sigil of Malice",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "65 + (0.4 * ctx.ap)",
-          "90 + (0.4 * ctx.ap)",
-          "115 + (0.4 * ctx.ap)",
-          "140 + (0.4 * ctx.ap)",
-          "165 + (0.4 * ctx.ap)"
+          "65 + (0.4 * ctx.ability_power)",
+          "90 + (0.4 * ctx.ability_power)",
+          "115 + (0.4 * ctx.ability_power)",
+          "140 + (0.4 * ctx.ability_power)",
+          "165 + (0.4 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "Q",
-        "name": "_2"
+        "Q": "_2"
       },
       {
         "name": "Sigil of Malice",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "130 + (0.8 * ctx.ap)",
-          "180 + (0.8 * ctx.ap)",
-          "230 + (0.8 * ctx.ap)",
-          "280 + (0.8 * ctx.ap)",
-          "330 + (0.8 * ctx.ap)"
+          "130 + (0.8 * ctx.ability_power)",
+          "180 + (0.8 * ctx.ability_power)",
+          "230 + (0.8 * ctx.ability_power)",
+          "280 + (0.8 * ctx.ability_power)",
+          "330 + (0.8 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "W",
-        "name": "_1"
+        "W": "_1"
       },
       {
         "name": "Distortion",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "75 + (0.8 * ctx.ap)",
-          "115 + (0.8 * ctx.ap)",
-          "155 + (0.8 * ctx.ap)",
-          "195 + (0.8 * ctx.ap)",
-          "235 + (0.8 * ctx.ap)"
+          "75 + (0.8 * ctx.ability_power)",
+          "115 + (0.8 * ctx.ability_power)",
+          "155 + (0.8 * ctx.ability_power)",
+          "195 + (0.8 * ctx.ability_power)",
+          "235 + (0.8 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "E",
-        "name": "_1"
+        "E": "_1"
       },
       {
         "name": "Ethereal Chains",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "50 + (0.4 * ctx.ap)",
-          "70 + (0.4 * ctx.ap)",
-          "90 + (0.4 * ctx.ap)",
-          "110 + (0.4 * ctx.ap)",
-          "130 + (0.4 * ctx.ap)"
+          "50 + (0.4 * ctx.ability_power)",
+          "70 + (0.4 * ctx.ability_power)",
+          "90 + (0.4 * ctx.ability_power)",
+          "110 + (0.4 * ctx.ability_power)",
+          "130 + (0.4 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "E",
-        "name": "_2"
+        "E": "_2"
       },
       {
         "name": "Ethereal Chains",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "80 + (0.85 * ctx.ap)",
-          "120 + (0.85 * ctx.ap)",
-          "160 + (0.85 * ctx.ap)",
-          "200 + (0.85 * ctx.ap)",
-          "240 + (0.85 * ctx.ap)"
+          "80 + (0.85 * ctx.ability_power)",
+          "120 + (0.85 * ctx.ability_power)",
+          "160 + (0.85 * ctx.ability_power)",
+          "200 + (0.85 * ctx.ability_power)",
+          "240 + (0.85 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "E",
-        "name": "_3"
+        "E": "_3"
       },
       {
         "name": "Ethereal Chains",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "130 + (1.25 * ctx.ap)",
-          "190 + (1.25 * ctx.ap)",
-          "250 + (1.25 * ctx.ap)",
-          "310 + (1.25 * ctx.ap)",
-          "370 + (1.25 * ctx.ap)"
+          "130 + (1.25 * ctx.ability_power)",
+          "190 + (1.25 * ctx.ability_power)",
+          "250 + (1.25 * ctx.ability_power)",
+          "310 + (1.25 * ctx.ability_power)",
+          "370 + (1.25 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "R",
-        "name": "_1"
+        "R": "_1"
       },
       {
         "name": "Mimic",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "150 + (0.8 * ctx.ap)",
-          "300 + (0.8 * ctx.ap)",
-          "450 + (0.8 * ctx.ap)"
+          "150 + (0.8 * ctx.ability_power)",
+          "300 + (0.8 * ctx.ability_power)",
+          "450 + (0.8 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "R",
-        "name": "_2"
+        "R": "_2"
       },
       {
         "name": "Mimic",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "70 + (0.4 * ctx.ap)",
-          "140 + (0.4 * ctx.ap)",
-          "210 + (0.4 * ctx.ap)"
+          "70 + (0.4 * ctx.ability_power)",
+          "140 + (0.4 * ctx.ability_power)",
+          "210 + (0.4 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "R",
-        "name": "_3"
+        "R": "_3"
       },
       {
         "name": "Mimic",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "140 + (0.85 * ctx.ap)",
-          "280 + (0.85 * ctx.ap)",
-          "420 + (0.85 * ctx.ap)"
+          "140 + (0.85 * ctx.ability_power)",
+          "280 + (0.85 * ctx.ability_power)",
+          "420 + (0.85 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "R",
-        "name": "_4"
+        "R": "_4"
       },
       {
         "name": "Mimic",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "210 + (1.25 * ctx.ap)",
-          "420 + (1.25 * ctx.ap)",
-          "630 + (1.25 * ctx.ap)"
+          "210 + (1.25 * ctx.ability_power)",
+          "420 + (1.25 * ctx.ability_power)",
+          "630 + (1.25 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "R",
-        "name": "_5"
+        "R": "_5"
       },
       {
         "name": "Mimic",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "140 + (0.8 * ctx.ap)",
-          "280 + (0.8 * ctx.ap)",
-          "420 + (0.8 * ctx.ap)"
+          "140 + (0.8 * ctx.ability_power)",
+          "280 + (0.8 * ctx.ability_power)",
+          "420 + (0.8 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "R",
-        "name": "_6"
+        "R": "_6"
       },
       {
         "name": "Mimic",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "70 + (0.4 * ctx.ap)",
-          "140 + (0.4 * ctx.ap)",
-          "210 + (0.4 * ctx.ap)"
+          "70 + (0.4 * ctx.ability_power)",
+          "140 + (0.4 * ctx.ability_power)",
+          "210 + (0.4 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "R",
-        "name": "_7"
+        "R": "_7"
       },
       {
         "name": "Mimic",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "210 + (1.2 * ctx.ap)",
-          "420 + (1.2 * ctx.ap)",
-          "630 + (1.2 * ctx.ap)"
+          "210 + (1.2 * ctx.ability_power)",
+          "420 + (1.2 * ctx.ability_power)",
+          "630 + (1.2 * ctx.ability_power)"
         ]
       }
     ]

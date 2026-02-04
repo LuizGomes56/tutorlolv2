@@ -70,8 +70,7 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "_1"
+        "Q": "_1"
       },
       {
         "name": "Piercing Light",
@@ -88,51 +87,48 @@
     ],
     [
       {
-        "type": "W",
-        "name": "_1"
+        "W": "_1"
       },
       {
         "name": "Ardent Blaze",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "75 + (0.9 * ctx.ap)",
-          "110 + (0.9 * ctx.ap)",
-          "145 + (0.9 * ctx.ap)",
-          "180 + (0.9 * ctx.ap)",
-          "215 + (0.9 * ctx.ap)"
+          "75 + (0.9 * ctx.ability_power)",
+          "110 + (0.9 * ctx.ability_power)",
+          "145 + (0.9 * ctx.ability_power)",
+          "180 + (0.9 * ctx.ability_power)",
+          "215 + (0.9 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "R",
-        "name": "_1"
+        "R": "_1"
       },
       {
         "name": "The Culling",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "30 + (0.5 * ctx.ad) + (0.3 * ctx.ap)",
-          "60 + (0.5 * ctx.ad) + (0.3 * ctx.ap)",
-          "90 + (0.5 * ctx.ad) + (0.3 * ctx.ap)"
+          "30 + (0.5 * ctx.attack_damage) + (0.3 * ctx.ability_power)",
+          "60 + (0.5 * ctx.attack_damage) + (0.3 * ctx.ability_power)",
+          "90 + (0.5 * ctx.attack_damage) + (0.3 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "R",
-        "name": "_2"
+        "R": "_2"
       },
       {
         "name": "The Culling",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "15 + (0.25 * ctx.ad) + (0.15 * ctx.ap)",
-          "30 + (0.25 * ctx.ad) + (0.15 * ctx.ap)",
-          "45 + (0.25 * ctx.ad) + (0.15 * ctx.ap)"
+          "15 + (0.25 * ctx.attack_damage) + (0.15 * ctx.ability_power)",
+          "30 + (0.25 * ctx.attack_damage) + (0.15 * ctx.ability_power)",
+          "45 + (0.25 * ctx.attack_damage) + (0.15 * ctx.ability_power)"
         ]
       }
     ]

@@ -70,62 +70,58 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "_1"
+        "Q": "_1"
       },
       {
         "name": "Phosphorus Bomb",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "60 + (1.25 * ctx.bonus_ad) + ctx.ap",
-          "105 + (1.25 * ctx.bonus_ad) + ctx.ap",
-          "150 + (1.25 * ctx.bonus_ad) + ctx.ap",
-          "195 + (1.25 * ctx.bonus_ad) + ctx.ap",
-          "240 + (1.25 * ctx.bonus_ad) + ctx.ap"
+          "60 + (1.25 * ctx.bonus_ad) + ctx.ability_power",
+          "105 + (1.25 * ctx.bonus_ad) + ctx.ability_power",
+          "150 + (1.25 * ctx.bonus_ad) + ctx.ability_power",
+          "195 + (1.25 * ctx.bonus_ad) + ctx.ability_power",
+          "240 + (1.25 * ctx.bonus_ad) + ctx.ability_power"
         ]
       }
     ],
     [
       {
-        "type": "W",
-        "name": "_1"
+        "W": "_1"
       },
       {
         "name": "Valkyrie",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "30 + (0.4 * ctx.bonus_ad) + (0.3 * ctx.ap)",
-          "45 + (0.4 * ctx.bonus_ad) + (0.3 * ctx.ap)",
-          "60 + (0.4 * ctx.bonus_ad) + (0.3 * ctx.ap)",
-          "75 + (0.4 * ctx.bonus_ad) + (0.3 * ctx.ap)",
-          "90 + (0.4 * ctx.bonus_ad) + (0.3 * ctx.ap)"
+          "30 + (0.4 * ctx.bonus_ad) + (0.3 * ctx.ability_power)",
+          "45 + (0.4 * ctx.bonus_ad) + (0.3 * ctx.ability_power)",
+          "60 + (0.4 * ctx.bonus_ad) + (0.3 * ctx.ability_power)",
+          "75 + (0.4 * ctx.bonus_ad) + (0.3 * ctx.ability_power)",
+          "90 + (0.4 * ctx.bonus_ad) + (0.3 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "W",
-        "name": "_2"
+        "W": "_2"
       },
       {
         "name": "Valkyrie",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "150 + (2 * ctx.bonus_ad) + (1.5 * ctx.ap)",
-          "225 + (2 * ctx.bonus_ad) + (1.5 * ctx.ap)",
-          "300 + (2 * ctx.bonus_ad) + (1.5 * ctx.ap)",
-          "375 + (2 * ctx.bonus_ad) + (1.5 * ctx.ap)",
-          "450 + (2 * ctx.bonus_ad) + (1.5 * ctx.ap)"
+          "150 + (2 * ctx.bonus_ad) + (1.5 * ctx.ability_power)",
+          "225 + (2 * ctx.bonus_ad) + (1.5 * ctx.ability_power)",
+          "300 + (2 * ctx.bonus_ad) + (1.5 * ctx.ability_power)",
+          "375 + (2 * ctx.bonus_ad) + (1.5 * ctx.ability_power)",
+          "450 + (2 * ctx.bonus_ad) + (1.5 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "E",
-        "name": "_1"
+        "E": "_1"
       },
       {
         "name": "Gatling Gun",
@@ -142,8 +138,7 @@
     ],
     [
       {
-        "type": "E",
-        "name": "_2"
+        "E": "_2"
       },
       {
         "name": "Gatling Gun",
@@ -160,8 +155,7 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_1"
+        "R": "_1"
       },
       {
         "name": "Missile Barrage",
@@ -176,8 +170,7 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_2"
+        "R": "_2"
       },
       {
         "name": "Missile Barrage",

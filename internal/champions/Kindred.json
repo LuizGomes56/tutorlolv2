@@ -70,8 +70,7 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "_5"
+        "Q": "_5"
       },
       {
         "name": "Dance of Arrows",
@@ -88,8 +87,7 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_6"
+        "Q": "_6"
       },
       {
         "name": "Dance of Arrows",
@@ -106,26 +104,24 @@
     ],
     [
       {
-        "type": "E",
-        "name": "_2"
+        "E": "_2"
       },
       {
         "name": "Mounting Dread",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "80 + ctx.bonus_ad + (0.05 * ctx.missing_health) + (0.005 * ctx.kindred_stacks)",
-          "110 + ctx.bonus_ad + (0.05 * ctx.missing_health) + (0.005 * ctx.kindred_stacks)",
-          "140 + ctx.bonus_ad + (0.05 * ctx.missing_health) + (0.005 * ctx.kindred_stacks)",
-          "170 + ctx.bonus_ad + (0.05 * ctx.missing_health) + (0.005 * ctx.kindred_stacks)",
-          "200 + ctx.bonus_ad + (0.05 * ctx.missing_health) + (0.005 * ctx.kindred_stacks)"
+          "80 + ctx.bonus_ad + (0.05 * ctx.missing_health) + (0.005 * ctx.stacks)",
+          "110 + ctx.bonus_ad + (0.05 * ctx.missing_health) + (0.005 * ctx.stacks)",
+          "140 + ctx.bonus_ad + (0.05 * ctx.missing_health) + (0.005 * ctx.stacks)",
+          "170 + ctx.bonus_ad + (0.05 * ctx.missing_health) + (0.005 * ctx.stacks)",
+          "200 + ctx.bonus_ad + (0.05 * ctx.missing_health) + (0.005 * ctx.stacks)"
         ]
       }
     ],
     [
       {
-        "type": "R",
-        "name": "_1"
+        "R": "_1"
       },
       {
         "name": "Lamb's Respite",

@@ -70,44 +70,41 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "_1"
+        "Q": "_1"
       },
       {
         "name": "Piltover Peacemaker",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "50 + (1.25 * ctx.ad)",
-          "90 + (1.45 * ctx.ad)",
-          "130 + (1.65 * ctx.ad)",
-          "170 + (1.85 * ctx.ad)",
-          "210 + (2.05 * ctx.ad)"
+          "50 + (1.25 * ctx.attack_damage)",
+          "90 + (1.45 * ctx.attack_damage)",
+          "130 + (1.65 * ctx.attack_damage)",
+          "170 + (1.85 * ctx.attack_damage)",
+          "210 + (2.05 * ctx.attack_damage)"
         ]
       }
     ],
     [
       {
-        "type": "Q",
-        "name": "_2"
+        "Q": "_2"
       },
       {
         "name": "Piltover Peacemaker",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "30 + (0.75 * ctx.ad)",
-          "54 + (0.87 * ctx.ad)",
-          "78 + (0.99 * ctx.ad)",
-          "102 + (1.11 * ctx.ad)",
-          "126 + (1.23 * ctx.ad)"
+          "30 + (0.75 * ctx.attack_damage)",
+          "54 + (0.87 * ctx.attack_damage)",
+          "78 + (0.99 * ctx.attack_damage)",
+          "102 + (1.11 * ctx.attack_damage)",
+          "126 + (1.23 * ctx.attack_damage)"
         ]
       }
     ],
     [
       {
-        "type": "W",
-        "name": "_1"
+        "W": "_1"
       },
       {
         "name": "Yordle Snap Trap",
@@ -124,26 +121,24 @@
     ],
     [
       {
-        "type": "E",
-        "name": "_1"
+        "E": "_1"
       },
       {
         "name": "90 Caliber Net",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "80 + (0.8 * ctx.ap)",
-          "130 + (0.8 * ctx.ap)",
-          "180 + (0.8 * ctx.ap)",
-          "230 + (0.8 * ctx.ap)",
-          "280 + (0.8 * ctx.ap)"
+          "80 + (0.8 * ctx.ability_power)",
+          "130 + (0.8 * ctx.ability_power)",
+          "180 + (0.8 * ctx.ability_power)",
+          "230 + (0.8 * ctx.ability_power)",
+          "280 + (0.8 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "R",
-        "name": "_1"
+        "R": "_1"
       },
       {
         "name": "Ace in the Hole",

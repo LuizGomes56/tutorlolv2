@@ -71,69 +71,65 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "_1"
+        "Q": "_1"
       },
       {
         "name": "Baleful Strike",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "80 + (0.5 * ctx.ap)",
-          "120 + (0.55 * ctx.ap)",
-          "160 + (0.6 * ctx.ap)",
-          "200 + (0.65 * ctx.ap)",
-          "240 + (0.7 * ctx.ap)"
+          "80 + (0.5 * ctx.ability_power)",
+          "120 + (0.55 * ctx.ability_power)",
+          "160 + (0.6 * ctx.ability_power)",
+          "200 + (0.65 * ctx.ability_power)",
+          "240 + (0.7 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "W",
-        "name": "_1"
+        "W": "_1"
       },
       {
         "name": "Dark Matter",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "85 + (0.7 * ctx.ap)",
-          "140 + (0.8 * ctx.ap)",
-          "195 + (0.9 * ctx.ap)",
-          "250 + ctx.ap",
-          "305 + (1.1 * ctx.ap)"
+          "85 + (0.7 * ctx.ability_power)",
+          "140 + (0.8 * ctx.ability_power)",
+          "195 + (0.9 * ctx.ability_power)",
+          "250 + ctx.ability_power",
+          "305 + (1.1 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "R",
-        "name": "_1"
+        "R": "_1"
       },
       {
         "name": "Primordial Burst",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "350 + (1.3 * ctx.ap)",
-          "500 + (1.4 * ctx.ap)",
-          "650 + (1.5 * ctx.ap)"
+          "350 + (1.3 * ctx.ability_power)",
+          "500 + (1.4 * ctx.ability_power)",
+          "650 + (1.5 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "R",
-        "name": "_2"
+        "R": "_2"
       },
       {
         "name": "Primordial Burst",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "175 + (0.65 * ctx.ap)",
-          "250 + (0.7 * ctx.ap)",
-          "325 + (0.75 * ctx.ap)"
+          "175 + (0.65 * ctx.ability_power)",
+          "250 + (0.7 * ctx.ability_power)",
+          "325 + (0.75 * ctx.ability_power)"
         ]
       }
     ]

@@ -70,26 +70,24 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "_1"
+        "Q": "_1"
       },
       {
         "name": "Lay Waste",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "80 + (0.7 * ctx.ap)",
-          "118 + (0.7 * ctx.ap)",
-          "156 + (0.7 * ctx.ap)",
-          "194 + (0.7 * ctx.ap)",
-          "232 + (0.7 * ctx.ap)"
+          "80 + (0.7 * ctx.ability_power)",
+          "118 + (0.7 * ctx.ability_power)",
+          "156 + (0.7 * ctx.ability_power)",
+          "194 + (0.7 * ctx.ability_power)",
+          "232 + (0.7 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "W",
-        "name": "_1"
+        "W": "_1"
       },
       {
         "name": "Wall of Pain",
@@ -106,17 +104,16 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_1"
+        "R": "_1"
       },
       {
         "name": "Requiem",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "200 + (0.7 * ctx.ap)",
-          "350 + (0.7 * ctx.ap)",
-          "500 + (0.7 * ctx.ap)"
+          "200 + (0.7 * ctx.ability_power)",
+          "350 + (0.7 * ctx.ability_power)",
+          "500 + (0.7 * ctx.ability_power)"
         ]
       }
     ]

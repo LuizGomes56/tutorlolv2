@@ -70,87 +70,82 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "_1"
+        "Q": "_1"
       },
       {
         "name": "Shattering Strike",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "60 + (0.6 * ctx.ap)",
-          "100 + (0.6 * ctx.ap)",
-          "140 + (0.6 * ctx.ap)",
-          "180 + (0.6 * ctx.ap)",
-          "220 + (0.6 * ctx.ap)"
+          "60 + (0.6 * ctx.ability_power)",
+          "100 + (0.6 * ctx.ability_power)",
+          "140 + (0.6 * ctx.ability_power)",
+          "180 + (0.6 * ctx.ability_power)",
+          "220 + (0.6 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "W",
-        "name": "_2"
+        "W": "_2"
       },
       {
         "name": "Ferromancy: Crash Down",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "60 + (0.6 * ctx.ap)",
-          "90 + (0.6 * ctx.ap)",
-          "120 + (0.6 * ctx.ap)",
-          "150 + (0.6 * ctx.ap)",
-          "180 + (0.6 * ctx.ap)"
+          "60 + (0.6 * ctx.ability_power)",
+          "90 + (0.6 * ctx.ability_power)",
+          "120 + (0.6 * ctx.ability_power)",
+          "150 + (0.6 * ctx.ability_power)",
+          "180 + (0.6 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "E",
-        "name": "_1"
+        "E": "_1"
       },
       {
         "name": "Full Tilt",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "(0.05 * ctx.enemy_max_health) + (0.03 * 0.01 * ctx.ap)",
-          "(0.055 * ctx.enemy_max_health) + (0.03 * 0.01 * ctx.ap)",
-          "(0.06 * ctx.enemy_max_health) + (0.03 * 0.01 * ctx.ap)",
-          "(0.065 * ctx.enemy_max_health) + (0.03 * 0.01 * ctx.ap)",
-          "(0.07 * ctx.enemy_max_health) + (0.03 * 0.01 * ctx.ap)"
+          "(0.05 * ctx.enemy_max_health) + (0.03 * 0.01 * ctx.ability_power)",
+          "(0.055 * ctx.enemy_max_health) + (0.03 * 0.01 * ctx.ability_power)",
+          "(0.06 * ctx.enemy_max_health) + (0.03 * 0.01 * ctx.ability_power)",
+          "(0.065 * ctx.enemy_max_health) + (0.03 * 0.01 * ctx.ability_power)",
+          "(0.07 * ctx.enemy_max_health) + (0.03 * 0.01 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "R",
-        "name": "_1"
+        "R": "_1"
       },
       {
         "name": "Magnet Storm",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "15 + (0.1375 * ctx.ap)",
-          "25 + (0.1375 * ctx.ap)",
-          "35 + (0.1375 * ctx.ap)"
+          "15 + (0.1375 * ctx.ability_power)",
+          "25 + (0.1375 * ctx.ability_power)",
+          "35 + (0.1375 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "R",
-        "name": "_2"
+        "R": "_2"
       },
       {
         "name": "Magnet Storm",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "120 + (1.1 * ctx.ap)",
-          "200 + (1.1 * ctx.ap)",
-          "280 + (1.1 * ctx.ap)"
+          "120 + (1.1 * ctx.ability_power)",
+          "200 + (1.1 * ctx.ability_power)",
+          "280 + (1.1 * ctx.ability_power)"
         ]
       }
     ]

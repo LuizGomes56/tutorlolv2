@@ -70,26 +70,24 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "_1"
+        "Q": "_1"
       },
       {
         "name": "Void Surge",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "0 + ctx.ad",
-          "5 + ctx.ad",
-          "10 + ctx.ad",
-          "15 + ctx.ad",
-          "20 + ctx.ad"
+          "0 + ctx.attack_damage",
+          "5 + ctx.attack_damage",
+          "10 + ctx.attack_damage",
+          "15 + ctx.attack_damage",
+          "20 + ctx.attack_damage"
         ]
       }
     ],
     [
       {
-        "type": "Q",
-        "name": "_2"
+        "Q": "_2"
       },
       {
         "name": "Void Surge",
@@ -106,8 +104,7 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_3"
+        "Q": "_3"
       },
       {
         "name": "Void Surge",
@@ -124,44 +121,41 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_4"
+        "Q": "_4"
       },
       {
         "name": "Void Surge",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "55 + ctx.ad",
-          "70 + ctx.ad",
-          "85 + ctx.ad",
-          "100 + ctx.ad",
-          "115 + ctx.ad"
+          "55 + ctx.attack_damage",
+          "70 + ctx.attack_damage",
+          "85 + ctx.attack_damage",
+          "100 + ctx.attack_damage",
+          "115 + ctx.attack_damage"
         ]
       }
     ],
     [
       {
-        "type": "W",
-        "name": "_1"
+        "W": "_1"
       },
       {
         "name": "Above and Below",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "70 + ctx.bonus_ad + (1.25 * ctx.ap)",
-          "110 + ctx.bonus_ad + (1.25 * ctx.ap)",
-          "150 + ctx.bonus_ad + (1.25 * ctx.ap)",
-          "190 + ctx.bonus_ad + (1.25 * ctx.ap)",
-          "230 + ctx.bonus_ad + (1.25 * ctx.ap)"
+          "70 + ctx.bonus_ad + (1.25 * ctx.ability_power)",
+          "110 + ctx.bonus_ad + (1.25 * ctx.ability_power)",
+          "150 + ctx.bonus_ad + (1.25 * ctx.ability_power)",
+          "190 + ctx.bonus_ad + (1.25 * ctx.ability_power)",
+          "230 + ctx.bonus_ad + (1.25 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "E",
-        "name": "_1"
+        "E": "_1"
       },
       {
         "name": "Royal Maelstrom",
@@ -178,96 +172,90 @@
     ],
     [
       {
-        "type": "E",
-        "name": "_2"
+        "E": "_2"
       },
       {
         "name": "Royal Maelstrom",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "36 + (0.48 * ctx.ad)",
-          "42 + (0.48 * ctx.ad)",
-          "48 + (0.48 * ctx.ad)",
-          "54 + (0.48 * ctx.ad)",
-          "60 + (0.48 * ctx.ad)"
+          "36 + (0.48 * ctx.attack_damage)",
+          "42 + (0.48 * ctx.attack_damage)",
+          "48 + (0.48 * ctx.attack_damage)",
+          "54 + (0.48 * ctx.attack_damage)",
+          "60 + (0.48 * ctx.attack_damage)"
         ]
       }
     ],
     [
       {
-        "type": "E",
-        "name": "_3"
+        "E": "_3"
       },
       {
         "name": "Royal Maelstrom",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "9 + (0.12 * ctx.ad)",
-          "10.5 + (0.12 * ctx.ad)",
-          "12 + (0.12 * ctx.ad)",
-          "13.5 + (0.12 * ctx.ad)",
-          "15 + (0.12 * ctx.ad)"
+          "9 + (0.12 * ctx.attack_damage)",
+          "10.5 + (0.12 * ctx.attack_damage)",
+          "12 + (0.12 * ctx.attack_damage)",
+          "13.5 + (0.12 * ctx.attack_damage)",
+          "15 + (0.12 * ctx.attack_damage)"
         ]
       }
     ],
     [
       {
-        "type": "E",
-        "name": "_4"
+        "E": "_4"
       },
       {
         "name": "Royal Maelstrom",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "24 + (0.32 * ctx.ad)",
-          "28 + (0.32 * ctx.ad)",
-          "32 + (0.32 * ctx.ad)",
-          "36 + (0.32 * ctx.ad)",
-          "40 + (0.32 * ctx.ad)"
+          "24 + (0.32 * ctx.attack_damage)",
+          "28 + (0.32 * ctx.attack_damage)",
+          "32 + (0.32 * ctx.attack_damage)",
+          "36 + (0.32 * ctx.attack_damage)",
+          "40 + (0.32 * ctx.attack_damage)"
         ]
       }
     ],
     [
       {
-        "type": "E",
-        "name": "_5"
+        "E": "_5"
       },
       {
         "name": "Royal Maelstrom",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "6 + (0.08 * ctx.ad)",
-          "7 + (0.08 * ctx.ad)",
-          "8 + (0.08 * ctx.ad)",
-          "9 + (0.08 * ctx.ad)",
-          "10 + (0.08 * ctx.ad)"
+          "6 + (0.08 * ctx.attack_damage)",
+          "7 + (0.08 * ctx.attack_damage)",
+          "8 + (0.08 * ctx.attack_damage)",
+          "9 + (0.08 * ctx.attack_damage)",
+          "10 + (0.08 * ctx.attack_damage)"
         ]
       }
     ],
     [
       {
-        "type": "R",
-        "name": "_1"
+        "R": "_1"
       },
       {
         "name": "Endless Banquet",
         "damage_type": "True",
         "attributes": "Undefined",
         "damage": [
-          "150 + ctx.ap + (0.25 * ctx.missing_health)",
-          "200 + ctx.ap + (0.25 * ctx.missing_health)",
-          "250 + ctx.ap + (0.25 * ctx.missing_health)"
+          "150 + ctx.ability_power + (0.25 * ctx.missing_health)",
+          "200 + ctx.ability_power + (0.25 * ctx.missing_health)",
+          "250 + ctx.ability_power + (0.25 * ctx.missing_health)"
         ]
       }
     ],
     [
       {
-        "type": "R",
-        "name": "_2"
+        "R": "_2"
       },
       {
         "name": "Endless Banquet",
@@ -282,8 +270,7 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_3"
+        "R": "_3"
       },
       {
         "name": "Endless Banquet",

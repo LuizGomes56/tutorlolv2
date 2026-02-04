@@ -70,44 +70,41 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "_1"
+        "Q": "_1"
       },
       {
         "name": "The Darkin Glaive",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "7.5 + (0.5 * ctx.ad) + (0.1 * ctx.bonus_ad)",
-          "15 + (0.5 * ctx.ad) + (0.125 * ctx.bonus_ad)",
-          "22.5 + (0.5 * ctx.ad) + (0.15 * ctx.bonus_ad)",
-          "30 + (0.5 * ctx.ad) + (0.175 * ctx.bonus_ad)",
-          "37.5 + (0.5 * ctx.ad) + (0.2 * ctx.bonus_ad)"
+          "7.5 + (0.5 * ctx.attack_damage) + (0.1 * ctx.bonus_ad)",
+          "15 + (0.5 * ctx.attack_damage) + (0.125 * ctx.bonus_ad)",
+          "22.5 + (0.5 * ctx.attack_damage) + (0.15 * ctx.bonus_ad)",
+          "30 + (0.5 * ctx.attack_damage) + (0.175 * ctx.bonus_ad)",
+          "37.5 + (0.5 * ctx.attack_damage) + (0.2 * ctx.bonus_ad)"
         ]
       }
     ],
     [
       {
-        "type": "Q",
-        "name": "_2"
+        "Q": "_2"
       },
       {
         "name": "The Darkin Glaive",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "15 + ctx.ad + (0.2 * ctx.bonus_ad)",
-          "30 + ctx.ad + (0.25 * ctx.bonus_ad)",
-          "45 + ctx.ad + (0.3 * ctx.bonus_ad)",
-          "60 + ctx.ad + (0.35 * ctx.bonus_ad)",
-          "75 + ctx.ad + (0.4 * ctx.bonus_ad)"
+          "15 + ctx.attack_damage + (0.2 * ctx.bonus_ad)",
+          "30 + ctx.attack_damage + (0.25 * ctx.bonus_ad)",
+          "45 + ctx.attack_damage + (0.3 * ctx.bonus_ad)",
+          "60 + ctx.attack_damage + (0.35 * ctx.bonus_ad)",
+          "75 + ctx.attack_damage + (0.4 * ctx.bonus_ad)"
         ]
       }
     ],
     [
       {
-        "type": "Q",
-        "name": "_3"
+        "Q": "_3"
       },
       {
         "name": "The Darkin Glaive",
@@ -124,8 +121,7 @@
     ],
     [
       {
-        "type": "W",
-        "name": "_1"
+        "W": "_1"
       },
       {
         "name": "Dreaded Return",
@@ -142,8 +138,7 @@
     ],
     [
       {
-        "type": "W",
-        "name": "_2"
+        "W": "_2"
       },
       {
         "name": "Dreaded Return",
@@ -160,8 +155,7 @@
     ],
     [
       {
-        "type": "E",
-        "name": "_1"
+        "E": "_1"
       },
       {
         "name": "Aureate Rush",
@@ -178,8 +172,7 @@
     ],
     [
       {
-        "type": "E",
-        "name": "_2"
+        "E": "_2"
       },
       {
         "name": "Aureate Rush",
@@ -196,8 +189,7 @@
     ],
     [
       {
-        "type": "E",
-        "name": "_3"
+        "E": "_3"
       },
       {
         "name": "Aureate Rush",
@@ -214,8 +206,7 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_1"
+        "R": "_1"
       },
       {
         "name": "Grim Deliverance",

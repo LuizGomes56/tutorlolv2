@@ -71,121 +71,114 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "_1"
+        "Q": "_1"
       },
       {
         "name": "Arcanopulse",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "75 + (0.9 * ctx.ap)",
-          "115 + (0.9 * ctx.ap)",
-          "155 + (0.9 * ctx.ap)",
-          "195 + (0.9 * ctx.ap)",
-          "235 + (0.9 * ctx.ap)"
+          "75 + (0.9 * ctx.ability_power)",
+          "115 + (0.9 * ctx.ability_power)",
+          "155 + (0.9 * ctx.ability_power)",
+          "195 + (0.9 * ctx.ability_power)",
+          "235 + (0.9 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "W",
-        "name": "_1"
+        "W": "_1"
       },
       {
         "name": "Eye of Destruction",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "50 + (0.65 * ctx.ap)",
-          "85 + (0.65 * ctx.ap)",
-          "120 + (0.65 * ctx.ap)",
-          "155 + (0.65 * ctx.ap)",
-          "190 + (0.65 * ctx.ap)"
+          "50 + (0.65 * ctx.ability_power)",
+          "85 + (0.65 * ctx.ability_power)",
+          "120 + (0.65 * ctx.ability_power)",
+          "155 + (0.65 * ctx.ability_power)",
+          "190 + (0.65 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "W",
-        "name": "_2"
+        "W": "_2"
       },
       {
         "name": "Eye of Destruction",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "83.35 + (1.08355 * ctx.ap)",
-          "141.695 + (1.08355 * ctx.ap)",
-          "200.04 + (1.08355 * ctx.ap)",
-          "258.385 + (1.08355 * ctx.ap)",
-          "316.73 + (1.08355 * ctx.ap)"
+          "83.35 + (1.08355 * ctx.ability_power)",
+          "141.695 + (1.08355 * ctx.ability_power)",
+          "200.04 + (1.08355 * ctx.ability_power)",
+          "258.385 + (1.08355 * ctx.ability_power)",
+          "316.73 + (1.08355 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "E",
-        "name": "_1"
+        "E": "_1"
       },
       {
         "name": "Shocking Orb",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "70 + (0.45 * ctx.ap)",
-          "100 + (0.45 * ctx.ap)",
-          "130 + (0.45 * ctx.ap)",
-          "160 + (0.45 * ctx.ap)",
-          "190 + (0.45 * ctx.ap)"
+          "70 + (0.45 * ctx.ability_power)",
+          "100 + (0.45 * ctx.ability_power)",
+          "130 + (0.45 * ctx.ability_power)",
+          "160 + (0.45 * ctx.ability_power)",
+          "190 + (0.45 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "R",
-        "name": "_1"
+        "R": "_1"
       },
       {
         "name": "Rite of the Arcane",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "20 + (0.05 * ctx.ap)",
-          "25 + (0.05 * ctx.ap)",
-          "30 + (0.05 * ctx.ap)"
+          "20 + (0.05 * ctx.ability_power)",
+          "25 + (0.05 * ctx.ability_power)",
+          "30 + (0.05 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "R",
-        "name": "_2"
+        "R": "_2"
       },
       {
         "name": "Rite of the Arcane",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "170 + (0.45 * ctx.ap)",
-          "220 + (0.45 * ctx.ap)",
-          "270 + (0.45 * ctx.ap)"
+          "170 + (0.45 * ctx.ability_power)",
+          "220 + (0.45 * ctx.ability_power)",
+          "270 + (0.45 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "R",
-        "name": "_3"
+        "R": "_3"
       },
       {
         "name": "Rite of the Arcane",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "680 + (1.8 * ctx.ap)",
-          "1100 + (2.25 * ctx.ap)",
-          "1620 + (2.7 * ctx.ap)"
+          "680 + (1.8 * ctx.ability_power)",
+          "1100 + (2.25 * ctx.ability_power)",
+          "1620 + (2.7 * ctx.ability_power)"
         ]
       }
     ]

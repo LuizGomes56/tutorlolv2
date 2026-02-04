@@ -70,8 +70,7 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "_1"
+        "Q": "_1"
       },
       {
         "name": "Rampage",
@@ -88,8 +87,7 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_2"
+        "Q": "_2"
       },
       {
         "name": "Rampage",
@@ -106,44 +104,41 @@
     ],
     [
       {
-        "type": "W",
-        "name": "_1"
+        "W": "_1"
       },
       {
         "name": "Spirit of Dread",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "20 + (0.2 * ctx.ap)",
-          "30 + (0.2 * ctx.ap)",
-          "40 + (0.2 * ctx.ap)",
-          "50 + (0.2 * ctx.ap)",
-          "60 + (0.2 * ctx.ap)"
+          "20 + (0.2 * ctx.ability_power)",
+          "30 + (0.2 * ctx.ability_power)",
+          "40 + (0.2 * ctx.ability_power)",
+          "50 + (0.2 * ctx.ability_power)",
+          "60 + (0.2 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "W",
-        "name": "_2"
+        "W": "_2"
       },
       {
         "name": "Spirit of Dread",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "100 + ctx.ap",
-          "150 + ctx.ap",
-          "200 + ctx.ap",
-          "250 + ctx.ap",
-          "300 + ctx.ap"
+          "100 + ctx.ability_power",
+          "150 + ctx.ability_power",
+          "200 + ctx.ability_power",
+          "250 + ctx.ability_power",
+          "300 + ctx.ability_power"
         ]
       }
     ],
     [
       {
-        "type": "E",
-        "name": "_1"
+        "E": "_1"
       },
       {
         "name": "Devastating Charge",
@@ -160,8 +155,7 @@
     ],
     [
       {
-        "type": "E",
-        "name": "_2"
+        "E": "_2"
       },
       {
         "name": "Devastating Charge",
@@ -178,17 +172,16 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_1"
+        "R": "_1"
       },
       {
         "name": "Onslaught of Shadows",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "150 + ctx.ap",
-          "250 + ctx.ap",
-          "350 + ctx.ap"
+          "150 + ctx.ability_power",
+          "250 + ctx.ability_power",
+          "350 + ctx.ability_power"
         ]
       }
     ]

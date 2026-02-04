@@ -20,7 +20,6 @@ pub use ability_name::AbilityName;
     serde::Serialize,
     serde::Deserialize,
 )]
-#[serde(tag = "type", content = "name")]
 pub enum AbilityId {
     P(AbilityName),
     Q(AbilityName),
@@ -79,7 +78,7 @@ impl AbilityId {
     }
 
     pub fn as_const_lit(&self) -> String {
-        format!("{}::{:?}", self.as_char(), self.ability_name()).replace("_", "")
+        format!("{}::{:?}.cast()", self.as_char(), self.ability_name())
     }
 
     pub fn as_literal(&self) -> String {

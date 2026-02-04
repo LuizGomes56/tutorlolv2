@@ -3,9 +3,9 @@
   "adaptative_type": "Physical",
   "attack_type": "Ranged",
   "positions": [
-    "Bottom",
+    "Top",
     "Middle",
-    "Top"
+    "Bottom"
   ],
   "stats": {
     "health": {
@@ -72,8 +72,7 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "_1"
+        "Q": "_1"
       },
       {
         "name": "Super Scorcher Breath",
@@ -90,8 +89,7 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_2"
+        "Q": "_2"
       },
       {
         "name": "Super Scorcher Breath",
@@ -108,26 +106,24 @@
     ],
     [
       {
-        "type": "W",
-        "name": "_1"
+        "W": "_1"
       },
       {
         "name": "Achooo!",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "10 + (0.65 * ctx.bonus_ad) + (0.8 * ctx.ap)",
-          "35 + (0.65 * ctx.bonus_ad) + (0.8 * ctx.ap)",
-          "60 + (0.65 * ctx.bonus_ad) + (0.8 * ctx.ap)",
-          "85 + (0.65 * ctx.bonus_ad) + (0.8 * ctx.ap)",
-          "110 + (0.65 * ctx.bonus_ad) + (0.8 * ctx.ap)"
+          "10 + (0.65 * ctx.bonus_ad) + (0.8 * ctx.ability_power)",
+          "35 + (0.65 * ctx.bonus_ad) + (0.8 * ctx.ability_power)",
+          "60 + (0.65 * ctx.bonus_ad) + (0.8 * ctx.ability_power)",
+          "85 + (0.65 * ctx.bonus_ad) + (0.8 * ctx.ability_power)",
+          "110 + (0.65 * ctx.bonus_ad) + (0.8 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "W",
-        "name": "_2"
+        "W": "_2"
       },
       {
         "name": "Achooo!",
@@ -144,87 +140,82 @@
     ],
     [
       {
-        "type": "W",
-        "name": "_3"
+        "W": "_3"
       },
       {
         "name": "Achooo!",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "70 + (1.25 * ctx.bonus_ad) + (0.8 * ctx.ap)",
-          "105 + (1.25 * ctx.bonus_ad) + (0.8 * ctx.ap)",
-          "140 + (1.25 * ctx.bonus_ad) + (0.8 * ctx.ap)",
-          "175 + (1.25 * ctx.bonus_ad) + (0.8 * ctx.ap)",
-          "210 + (1.25 * ctx.bonus_ad) + (0.8 * ctx.ap)"
+          "70 + (1.25 * ctx.bonus_ad) + (0.8 * ctx.ability_power)",
+          "105 + (1.25 * ctx.bonus_ad) + (0.8 * ctx.ability_power)",
+          "140 + (1.25 * ctx.bonus_ad) + (0.8 * ctx.ability_power)",
+          "175 + (1.25 * ctx.bonus_ad) + (0.8 * ctx.ability_power)",
+          "210 + (1.25 * ctx.bonus_ad) + (0.8 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "E",
-        "name": "_1"
+        "E": "_1"
       },
       {
         "name": "Flap, Flap, Flap",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "50 + (1.5 * ctx.ad)",
-          "75 + (1.5 * ctx.ad)",
-          "100 + (1.5 * ctx.ad)",
-          "125 + (1.5 * ctx.ad)",
-          "150 + (1.5 * ctx.ad)"
+          "50 + (1.5 * ctx.attack_damage)",
+          "75 + (1.5 * ctx.attack_damage)",
+          "100 + (1.5 * ctx.attack_damage)",
+          "125 + (1.5 * ctx.attack_damage)",
+          "150 + (1.5 * ctx.attack_damage)"
         ]
       }
     ],
     [
       {
-        "type": "E",
-        "name": "_2"
+        "E": "_2"
       },
       {
         "name": "Flap, Flap, Flap",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "10 + (0.3 * ctx.ad)",
-          "15 + (0.3 * ctx.ad)",
-          "20 + (0.3 * ctx.ad)",
-          "25 + (0.3 * ctx.ad)",
-          "30 + (0.3 * ctx.ad)"
+          "10 + (0.3 * ctx.attack_damage)",
+          "15 + (0.3 * ctx.attack_damage)",
+          "20 + (0.3 * ctx.attack_damage)",
+          "25 + (0.3 * ctx.attack_damage)",
+          "30 + (0.3 * ctx.attack_damage)"
         ]
       }
     ],
     [
       {
-        "type": "R",
-        "name": "_1"
+        "R": "_1"
       },
       {
         "name": "MMOOOMMMM!",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "300 + (1.65 * ctx.bonus_ad) + (1.5 * ctx.ap)",
-          "450 + (1.65 * ctx.bonus_ad) + (1.5 * ctx.ap)",
-          "600 + (1.65 * ctx.bonus_ad) + (1.5 * ctx.ap)"
+          "300 + (1.65 * ctx.bonus_ad) + (1.5 * ctx.ability_power)",
+          "450 + (1.65 * ctx.bonus_ad) + (1.5 * ctx.ability_power)",
+          "600 + (1.65 * ctx.bonus_ad) + (1.5 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "R",
-        "name": "_2"
+        "R": "_2"
       },
       {
         "name": "MMOOOMMMM!",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "200 + (1.1 * ctx.bonus_ad) + ctx.ap",
-          "300 + (1.1 * ctx.bonus_ad) + ctx.ap",
-          "400 + (1.1 * ctx.bonus_ad) + ctx.ap"
+          "200 + (1.1 * ctx.bonus_ad) + ctx.ability_power",
+          "300 + (1.1 * ctx.bonus_ad) + ctx.ability_power",
+          "400 + (1.1 * ctx.bonus_ad) + ctx.ability_power"
         ]
       }
     ]

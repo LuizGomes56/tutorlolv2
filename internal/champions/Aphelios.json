@@ -70,8 +70,7 @@
   "abilities": [
     [
       {
-        "type": "P",
-        "name": "_1"
+        "P": "_1"
       },
       {
         "name": "The Hitman and the Seer",

@@ -1,5 +1,5 @@
 use serde::Deserialize;
-use std::collections::BTreeSet;
+use std::collections::{BTreeMap, BTreeSet};
 use tutorlolv2_types::{AbilityId, DevMergeData, StatName};
 
 #[derive(Deserialize)]
@@ -57,10 +57,10 @@ pub struct Champion {
     pub name: String,
     pub adaptative_type: String,
     pub attack_type: String,
-    pub positions: Vec<String>,
+    pub positions: BTreeSet<String>,
     pub stats: MerakiChampionStats,
     pub abilities: Vec<(AbilityId, Ability)>,
-    pub merge_data: Vec<DevMergeData>,
+    pub merge_data: BTreeSet<DevMergeData>,
 }
 
 #[derive(Deserialize)]
@@ -111,6 +111,7 @@ pub struct Item {
     pub melee: DamageObject,
     pub attributes: Attrs,
     pub purchasable: bool,
+    pub maps: BTreeMap<String, bool>,
 }
 
 #[derive(Deserialize)]

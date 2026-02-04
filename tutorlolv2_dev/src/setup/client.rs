@@ -1,6 +1,7 @@
 use crate::{
     EnvConfig, FileWrite, JsonRead, JsonWrite, MayFail,
     champions::{Abilities, MerakiChampion},
+    gen_utils::RegExtractor,
     get_file_names,
     init::ENV_CONFIG,
     items::MerakiItem,
@@ -15,14 +16,14 @@ use serde::{Deserialize, Serialize, de::DeserializeOwned};
 use serde_json::Value;
 use std::{
     collections::{BTreeMap, BTreeSet, HashMap},
-    fmt::Display,
+    fmt::{Debug, Display},
     io::{BufRead, BufReader, Write},
     path::Path,
     sync::Arc,
 };
 use tokio::{sync::Semaphore, task::JoinHandle};
 use tutorlolv2_fmt::pascal_case;
-use tutorlolv2_gen::{ChampionId, Position};
+use tutorlolv2_gen::{ChampionId, ItemId, Position, RuneId};
 
 pub enum SaveTo<'a> {
     GeneratorDir(Tag),
@@ -754,22 +755,51 @@ impl HttpClient {
                             let rune_selector = Selector::parse("img.m-1nx2cdb").unwrap();
                             let legend_selector = Selector::parse("img.m-1u3ui07").unwrap();
                             let mut runes = BTreeSet::<String>::new();
-
-                            let push_alt_attr =
-                                |array: &mut BTreeSet<String>, selector: &Selector| {
-                                    for img in document.select(selector) {
-                                        if let Some(alt) = img.value().attr("alt") {
-                                            array.insert(pascal_case(alt));
-                                        }
+                            fn push_alt_attr<T: Debug>(
+                                document: &Html,
+                                array: &mut BTreeSet<String>,
+                                selector: &Selector,
+                                f: impl Fn(u32) -> Option<T>,
+                            ) {
+                                for img in document.select(selector) {
+                                    if let Some(src) = img.value().attr("src")
+                                        && let Some(number) =
+                                            src.capture_numbers::<u32>().get(0).copied().or(src
+                                                .trim_start_matches(&ENV_CONFIG.meta_assets)
+                                                .split(".")
+                                                .next()
+                                                .map(|a| a.parse().ok())
+                                                .flatten())
+                                        && let Some(value_id) = f(number)
+                                    {
+                                        array.insert(format!("{value_id:?}"));
+                                    } else if let Some(alt) = img.value().attr("alt") {
+                                        array.insert(pascal_case(alt));
                                     }
-                                };
+                                }
+                            }
 
                             let mut items = BTreeSet::<String>::new();
 
-                            push_alt_attr(&mut runes, &rune_selector);
-                            push_alt_attr(&mut runes, &legend_selector);
-                            push_alt_attr(&mut items, &full_build);
-                            push_alt_attr(&mut items, &situational_build);
+                            push_alt_attr(
+                                &document,
+                                &mut runes,
+                                &rune_selector,
+                                RuneId::from_riot_id,
+                            );
+                            push_alt_attr(
+                                &document,
+                                &mut runes,
+                                &legend_selector,
+                                RuneId::from_riot_id,
+                            );
+                            push_alt_attr(&document, &mut items, &full_build, ItemId::from_riot_id);
+                            push_alt_attr(
+                                &document,
+                                &mut items,
+                                &situational_build,
+                                ItemId::from_riot_id,
+                            );
 
                             [items, runes].into_file(internal_path)
                         };

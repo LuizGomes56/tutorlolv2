@@ -1,7 +1,6 @@
 use crate::{
     ENV_CONFIG, JsonRead, JsonWrite, MayFail,
     client::{SaveTo, Tag},
-    gen_factories::fac_items::ItemFactory,
     model::{
         items::{Item, MerakiItem},
         riot::RiotCdnItem,
@@ -16,7 +15,7 @@ use std::{
     fs,
     path::Path,
 };
-use tutorlolv2_fmt::{pascal_case, to_ssnake};
+use tutorlolv2_fmt::pascal_case;
 use tutorlolv2_gen::{GameMap, ItemId, StatName};
 
 /// Creates basic folders necessary to run the program. If one of these folders are not found,
@@ -90,6 +89,48 @@ pub fn setup_project_folders() -> MayFail {
 /// Replaces the content found in the files to a shorter and adapted version,
 /// initializes items as default, and Damaging stats must be added separately.
 pub fn setup_internal_items() -> MayFail {
+    let dir = SaveTo::InternalDir(Tag::Items).path();
+    std::fs::remove_dir_all(&dir)?;
+    std::fs::create_dir(dir)?;
+
+    let all_names: Vec<(_, _)> = parallel_read(
+        SaveTo::RiotItemsDir.path(),
+        move |fname, riot_cdn_item: RiotCdnItem| {
+            let riot_id = fname.parse()?;
+            let mut name = {
+                let rname = riot_cdn_item.name;
+                match rname.is_empty() || rname.starts_with("<") {
+                    true => format!("Unknown_{fname}"),
+                    false => rname,
+                }
+            };
+
+            match riot_id {
+                220000..230000 => name += " [Arena]",
+                320000..330000 => name += " [U-32]",
+                440000..450000 => name += " [U-44]",
+                660000..670000 => name += " [U-66]",
+                990000..1000000 => name += " [U-99]",
+                _ => {}
+            }
+
+            Ok((name, fname.to_string()))
+        },
+    )?;
+
+    let mut names = HashMap::new();
+
+    for (name, fname) in all_names.iter() {
+        let matches = all_names.iter().filter(|(n, _)| n == name);
+        names.insert(
+            fname.to_string(),
+            match matches.count() > 1 {
+                true => format!("{name} {fname}"),
+                false => name.to_string(),
+            },
+        );
+    }
+
     parallel_read(
         SaveTo::RiotItemsDir.path(),
         move |fname, riot_cdn_item: RiotCdnItem| {
@@ -101,28 +142,20 @@ pub fn setup_internal_items() -> MayFail {
                 .and_then(|item| Some((item.stats, item.tier, item.builds_from, item.builds_into)))
                 .unwrap_or_default();
 
-            let name = {
-                let rname = riot_cdn_item.name;
-                match rname.is_empty() || rname.starts_with("<") {
-                    true => format!("Unknown_{riot_id}"),
-                    false => match rname.as_str() {
-                        "Reinforced Armor" | "Structure Bounty" | "Kalista's Black Spear" => {
-                            format!("{rname}_{riot_id}")
-                        }
-                        _ => rname,
-                    },
-                }
-            };
+            let name = names
+                .get(fname)
+                .ok_or(format!("Failed to get name for riot_id: {riot_id}"))?
+                .to_string();
 
-            let mut item = Item {
+            let internal_fname = pascal_case(&name);
+
+            Item {
                 version: ENV_CONFIG.lol_version.clone(),
                 maps: riot_cdn_item
                     .maps
                     .into_iter()
                     .map(|(map_id, is_available)| (GameMap::from_u8(map_id), is_available))
-                    .collect::<BTreeMap<_, _>>()
-                    .into_iter()
-                    .collect(),
+                    .collect::<BTreeMap<_, _>>(),
                 sell: riot_cdn_item.gold.sell,
                 purchasable: riot_cdn_item.gold.purchasable,
                 price: riot_cdn_item.gold.total,
@@ -130,33 +163,11 @@ pub fn setup_internal_items() -> MayFail {
                 name,
                 stats,
                 tier,
-                builds_from_riot_ids,
-                builds_into_riot_ids,
+                builds_from_riot_ids: builds_from_riot_ids.into_iter().collect(),
+                builds_into_riot_ids: builds_into_riot_ids.into_iter().collect(),
                 ..Default::default()
-            };
-
-            match riot_id {
-                220000..230000 => item.name += " [Arena]",
-                320000..330000 => item.name += " [U-32]",
-                440000..450000 => item.name += " [U-44]",
-                660000..670000 => item.name += " [U-66]",
-                990000..1000000 => item.name += " [U-99]",
-                _ => {}
             }
-
-            let internal_fname = pascal_case(&item.name);
-            let generator_fname = to_ssnake(&internal_fname).to_lowercase();
-
-            item.into_file(SaveTo::Internal(Tag::Items, &internal_fname).path())?;
-
-            let generator_file = ItemFactory::create_from_raw(&internal_fname)?;
-
-            fs::write(
-                SaveTo::Generator(Tag::Items, &generator_fname).path(),
-                generator_file,
-            )?;
-
-            Ok(())
+            .into_file(SaveTo::Internal(Tag::Items, &internal_fname).path())
         },
     )
 }
@@ -243,7 +254,7 @@ static RE_TAG_STRIP: Lazy<Regex> = Lazy::new(|| Regex::new(r"<\/?[^>]+(>|$)").un
 
 /// Returns the value that will be added to key `prettified_stats` for each item.
 /// Depends on Riot API `item.json` and requires manual maintainance if a new XML tag is added
-fn pretiffy_items(data: &RiotCdnItem) -> MayFail<Vec<StatName>> {
+fn pretiffy_items(data: &RiotCdnItem) -> MayFail<BTreeSet<StatName>> {
     let mut result = HashMap::<_, _>::default();
 
     let lines = RE_LINE.captures_iter(&data.description).collect::<Vec<_>>();
@@ -285,9 +296,7 @@ fn pretiffy_items(data: &RiotCdnItem) -> MayFail<Vec<StatName>> {
         .collect::<Vec<_>>()
         .join(",");
 
-    Ok(
-        serde_json::from_str::<BTreeSet<StatName>>(&format!("[{json}]"))?
-            .into_iter()
-            .collect(),
-    )
+    Ok(serde_json::from_str::<BTreeSet<StatName>>(&format!(
+        "[{json}]"
+    ))?)
 }

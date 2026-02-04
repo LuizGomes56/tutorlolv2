@@ -1,6 +1,6 @@
 use crate::MayFail;
 use regex::Regex;
-use std::fmt::Display;
+use std::{fmt::Display, str::FromStr};
 use tutorlolv2_gen::eval::*;
 
 pub trait F64Ext {
@@ -38,7 +38,7 @@ pub trait RegExtractor {
 
     /// Returns a vector of all the numbers that could be extracted
     /// from some string, preserving the order that they were found
-    fn capture_numbers(&self) -> Vec<f64>;
+    fn capture_numbers<T: FromStr>(&self) -> Vec<T>;
 
     /// Captures only the numbers inside a set of parenthesis. Parameter
     /// `number` indicates how many appearences of the regex match to skip
@@ -118,12 +118,12 @@ impl RegExtractor for str {
         nums
     }
 
-    fn capture_numbers(&self) -> Vec<f64> {
+    fn capture_numbers<T: FromStr>(&self) -> Vec<T> {
         Regex::new(r"\d+")
             .unwrap()
             .find_iter(self)
             .filter_map(|m| m.as_str().to_string().parse().ok())
-            .collect::<Vec<f64>>()
+            .collect()
     }
 
     fn replace_keys(&self) -> String {
@@ -155,13 +155,13 @@ impl RegExtractor for str {
             "bonus attack speed" => AttackSpeed,
             "based on critical strike chance" => CritChance,
             "critical strike chance" => CritChance,
-            "of Ivern's AP" => Ap,
-            "of Sona's AP" => Ap,
-            "per Feast stack" => ChogathStacks,
-            "of Siphoning Strike stacks" => NasusStacks,
-            "Stardust" => AurelionSolStacks,
-            "per Mark" => KindredStacks,
-            "per mark" => KindredStacks,
+            "of Ivern's AP" => AbilityPower,
+            "of Sona's AP" => AbilityPower,
+            "per Feast stack" => Stacks,
+            "of Siphoning Strike stacks" => Stacks,
+            "Stardust" => Stacks,
+            "per Mark" => Stacks,
+            "per mark" => Stacks,
             "bonus movement speed" => BonusMoveSpeed,
             "bonus mana" => BonusMana,
             "bonus AD" => BonusAd,
@@ -184,8 +184,8 @@ impl RegExtractor for str {
             "maximum health" => MaxHealth,
             "maximum mana" => MaxMana,
             "armor" => Armor,
-            "AP" => Ap,
-            "AD" => Ad,
+            "AP" => AbilityPower,
+            "AD" => AttackDamage,
             "\u{00D7}" => "*"
         };
 
@@ -195,7 +195,7 @@ impl RegExtractor for str {
                 let pattern = format!(r"\b{}\b", regex::escape(old));
                 let re = regex::Regex::new(&pattern).unwrap();
                 re.replace_all(&acc, &new.to_string())
-                    .replace("per Soul collected", &format!(" * {ThreshStacks}"))
+                    .replace("per Soul collected", &format!(" * {Stacks}"))
             })
     }
 

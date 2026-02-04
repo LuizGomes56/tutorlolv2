@@ -70,15 +70,14 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "_1"
+        "Q": "_1"
       },
       {
         "name": "Hymn of Valor",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "50 + (0.4 * ctx.ap)",
+          "50 + (0.4 * ctx.ability_power)",
           "85",
           "120",
           "155",
@@ -88,15 +87,14 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_2"
+        "Q": "_2"
       },
       {
         "name": "Hymn of Valor",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "10 + (0.1 * ctx.ap)",
+          "10 + (0.1 * ctx.ability_power)",
           "15",
           "20",
           "25",
@@ -106,8 +104,7 @@
     ],
     [
       {
-        "type": "W",
-        "name": "_1"
+        "W": "_1"
       },
       {
         "name": "Aria of Perseverance",
@@ -124,17 +121,16 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_1"
+        "R": "_1"
       },
       {
         "name": "Crescendo",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "150 + (0.5 * ctx.ap)",
-          "250 + (0.5 * ctx.ap)",
-          "350 + (0.5 * ctx.ap)"
+          "150 + (0.5 * ctx.ability_power)",
+          "250 + (0.5 * ctx.ability_power)",
+          "350 + (0.5 * ctx.ability_power)"
         ]
       }
     ]

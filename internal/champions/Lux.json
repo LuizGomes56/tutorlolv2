@@ -71,53 +71,50 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "_1"
+        "Q": "_1"
       },
       {
         "name": "Light Binding",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "80 + (0.75 * ctx.ap)",
-          "120 + (0.75 * ctx.ap)",
-          "160 + (0.75 * ctx.ap)",
-          "200 + (0.75 * ctx.ap)",
-          "240 + (0.75 * ctx.ap)"
+          "80 + (0.75 * ctx.ability_power)",
+          "120 + (0.75 * ctx.ability_power)",
+          "160 + (0.75 * ctx.ability_power)",
+          "200 + (0.75 * ctx.ability_power)",
+          "240 + (0.75 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "E",
-        "name": "_1"
+        "E": "_1"
       },
       {
         "name": "Lucent Singularity",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "65 + (0.8 * ctx.ap)",
-          "115 + (0.8 * ctx.ap)",
-          "165 + (0.8 * ctx.ap)",
-          "215 + (0.8 * ctx.ap)",
-          "265 + (0.8 * ctx.ap)"
+          "65 + (0.8 * ctx.ability_power)",
+          "115 + (0.8 * ctx.ability_power)",
+          "165 + (0.8 * ctx.ability_power)",
+          "215 + (0.8 * ctx.ability_power)",
+          "265 + (0.8 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "R",
-        "name": "_1"
+        "R": "_1"
       },
       {
         "name": "Final Spark",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "300 + (1.2 * ctx.ap)",
-          "400 + (1.2 * ctx.ap)",
-          "500 + (1.2 * ctx.ap)"
+          "300 + (1.2 * ctx.ability_power)",
+          "400 + (1.2 * ctx.ability_power)",
+          "500 + (1.2 * ctx.ability_power)"
         ]
       }
     ]

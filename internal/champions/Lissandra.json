@@ -70,71 +70,67 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "_1"
+        "Q": "_1"
       },
       {
         "name": "Ice Shard",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "80 + (0.75 * ctx.ap)",
-          "115 + (0.75 * ctx.ap)",
-          "150 + (0.75 * ctx.ap)",
-          "185 + (0.75 * ctx.ap)",
-          "220 + (0.75 * ctx.ap)"
+          "80 + (0.75 * ctx.ability_power)",
+          "115 + (0.75 * ctx.ability_power)",
+          "150 + (0.75 * ctx.ability_power)",
+          "185 + (0.75 * ctx.ability_power)",
+          "220 + (0.75 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "W",
-        "name": "_1"
+        "W": "_1"
       },
       {
         "name": "Ring of Frost",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "70 + (0.7 * ctx.ap)",
-          "105 + (0.7 * ctx.ap)",
-          "140 + (0.7 * ctx.ap)",
-          "175 + (0.7 * ctx.ap)",
-          "210 + (0.7 * ctx.ap)"
+          "70 + (0.7 * ctx.ability_power)",
+          "105 + (0.7 * ctx.ability_power)",
+          "140 + (0.7 * ctx.ability_power)",
+          "175 + (0.7 * ctx.ability_power)",
+          "210 + (0.7 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "E",
-        "name": "_1"
+        "E": "_1"
       },
       {
         "name": "Glacial Path",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "70 + (0.6 * ctx.ap)",
-          "105 + (0.6 * ctx.ap)",
-          "140 + (0.6 * ctx.ap)",
-          "175 + (0.6 * ctx.ap)",
-          "210 + (0.6 * ctx.ap)"
+          "70 + (0.6 * ctx.ability_power)",
+          "105 + (0.6 * ctx.ability_power)",
+          "140 + (0.6 * ctx.ability_power)",
+          "175 + (0.6 * ctx.ability_power)",
+          "210 + (0.6 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "R",
-        "name": "_1"
+        "R": "_1"
       },
       {
         "name": "Frozen Tomb",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "150 + (0.75 * ctx.ap)",
-          "250 + (0.75 * ctx.ap)",
-          "350 + (0.75 * ctx.ap)"
+          "150 + (0.75 * ctx.ability_power)",
+          "250 + (0.75 * ctx.ability_power)",
+          "350 + (0.75 * ctx.ability_power)"
         ]
       }
     ]

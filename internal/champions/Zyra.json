@@ -70,53 +70,50 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "_1"
+        "Q": "_1"
       },
       {
         "name": "Deadly Spines",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "60 + (0.65 * ctx.ap)",
-          "100 + (0.65 * ctx.ap)",
-          "140 + (0.65 * ctx.ap)",
-          "180 + (0.65 * ctx.ap)",
-          "220 + (0.65 * ctx.ap)"
+          "60 + (0.65 * ctx.ability_power)",
+          "100 + (0.65 * ctx.ability_power)",
+          "140 + (0.65 * ctx.ability_power)",
+          "180 + (0.65 * ctx.ability_power)",
+          "220 + (0.65 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "E",
-        "name": "_1"
+        "E": "_1"
       },
       {
         "name": "Grasping Roots",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "60 + (0.6 * ctx.ap)",
-          "95 + (0.6 * ctx.ap)",
-          "130 + (0.6 * ctx.ap)",
-          "165 + (0.6 * ctx.ap)",
-          "200 + (0.6 * ctx.ap)"
+          "60 + (0.6 * ctx.ability_power)",
+          "95 + (0.6 * ctx.ability_power)",
+          "130 + (0.6 * ctx.ability_power)",
+          "165 + (0.6 * ctx.ability_power)",
+          "200 + (0.6 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "R",
-        "name": "_1"
+        "R": "_1"
       },
       {
         "name": "Stranglethorns",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "200 + (0.7 * ctx.ap)",
-          "300 + (0.7 * ctx.ap)",
-          "400 + (0.7 * ctx.ap)"
+          "200 + (0.7 * ctx.ability_power)",
+          "300 + (0.7 * ctx.ability_power)",
+          "400 + (0.7 * ctx.ability_power)"
         ]
       }
     ]

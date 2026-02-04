@@ -70,71 +70,67 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "Void"
+        "Q": "Void"
       },
       {
         "name": "Mystic Shot",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "20 + (1.3 * ctx.ad) + (0.15 * ctx.ap)",
-          "45 + (1.3 * ctx.ad) + (0.15 * ctx.ap)",
-          "70 + (1.3 * ctx.ad) + (0.15 * ctx.ap)",
-          "95 + (1.3 * ctx.ad) + (0.15 * ctx.ap)",
-          "120 + (1.3 * ctx.ad) + (0.15 * ctx.ap)"
+          "20 + (1.3 * ctx.attack_damage) + (0.15 * ctx.ability_power)",
+          "45 + (1.3 * ctx.attack_damage) + (0.15 * ctx.ability_power)",
+          "70 + (1.3 * ctx.attack_damage) + (0.15 * ctx.ability_power)",
+          "95 + (1.3 * ctx.attack_damage) + (0.15 * ctx.ability_power)",
+          "120 + (1.3 * ctx.attack_damage) + (0.15 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "W",
-        "name": "Void"
+        "W": "Void"
       },
       {
         "name": "Essence Flux",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "80 + ctx.bonus_ad + (0.7 * ctx.ap)",
-          "135 + ctx.bonus_ad + (0.75 * ctx.ap)",
-          "190 + ctx.bonus_ad + (0.8 * ctx.ap)",
-          "245 + ctx.bonus_ad + (0.85 * ctx.ap)",
-          "300 + ctx.bonus_ad + (0.9 * ctx.ap)"
+          "80 + ctx.bonus_ad + (0.7 * ctx.ability_power)",
+          "135 + ctx.bonus_ad + (0.75 * ctx.ability_power)",
+          "190 + ctx.bonus_ad + (0.8 * ctx.ability_power)",
+          "245 + ctx.bonus_ad + (0.85 * ctx.ability_power)",
+          "300 + ctx.bonus_ad + (0.9 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "E",
-        "name": "Void"
+        "E": "Void"
       },
       {
         "name": "Arcane Shift",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "80 + (0.5 * ctx.bonus_ad) + (0.75 * ctx.ap)",
-          "130 + (0.5 * ctx.bonus_ad) + (0.75 * ctx.ap)",
-          "180 + (0.5 * ctx.bonus_ad) + (0.75 * ctx.ap)",
-          "230 + (0.5 * ctx.bonus_ad) + (0.75 * ctx.ap)",
-          "280 + (0.5 * ctx.bonus_ad) + (0.75 * ctx.ap)"
+          "80 + (0.5 * ctx.bonus_ad) + (0.75 * ctx.ability_power)",
+          "130 + (0.5 * ctx.bonus_ad) + (0.75 * ctx.ability_power)",
+          "180 + (0.5 * ctx.bonus_ad) + (0.75 * ctx.ability_power)",
+          "230 + (0.5 * ctx.bonus_ad) + (0.75 * ctx.ability_power)",
+          "280 + (0.5 * ctx.bonus_ad) + (0.75 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "R",
-        "name": "Void"
+        "R": "Void"
       },
       {
         "name": "Trueshot Barrage",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "350 + ctx.bonus_ad + (0.9 * ctx.ap)",
-          "550 + ctx.bonus_ad + (0.9 * ctx.ap)",
-          "750 + ctx.bonus_ad + (0.9 * ctx.ap)"
+          "350 + ctx.bonus_ad + (0.9 * ctx.ability_power)",
+          "550 + ctx.bonus_ad + (0.9 * ctx.ability_power)",
+          "750 + ctx.bonus_ad + (0.9 * ctx.ability_power)"
         ]
       }
     ]

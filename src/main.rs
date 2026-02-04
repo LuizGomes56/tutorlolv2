@@ -1,3 +1,4 @@
+#![allow(clippy::missing_transmute_annotations)]
 #![no_std]
 use tutorlolv2::model::InputGame;
 

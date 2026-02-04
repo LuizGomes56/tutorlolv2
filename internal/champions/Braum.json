@@ -70,8 +70,7 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "_1"
+        "Q": "_1"
       },
       {
         "name": "Winter's Bite",
@@ -88,8 +87,7 @@
     ],
     [
       {
-        "type": "E",
-        "name": "_1"
+        "E": "_1"
       },
       {
         "name": "Unbreakable",
@@ -106,17 +104,16 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_1"
+        "R": "_1"
       },
       {
         "name": "Glacial Fissure",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "150 + (0.6 * ctx.ap)",
-          "300 + (0.6 * ctx.ap)",
-          "450 + (0.6 * ctx.ap)"
+          "150 + (0.6 * ctx.ability_power)",
+          "300 + (0.6 * ctx.ability_power)",
+          "450 + (0.6 * ctx.ability_power)"
         ]
       }
     ]

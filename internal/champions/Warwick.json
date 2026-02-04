@@ -3,8 +3,8 @@
   "adaptative_type": "Physical",
   "attack_type": "Melee",
   "positions": [
-    "Jungle",
-    "Top"
+    "Top",
+    "Jungle"
   ],
   "stats": {
     "health": {
@@ -71,44 +71,41 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "_1"
+        "Q": "_1"
       },
       {
         "name": "Jaws of the Beast",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "(0.06 * ctx.enemy_max_health) + (1.2 * ctx.ad) + ctx.ap",
-          "(0.07 * ctx.enemy_max_health) + (1.2 * ctx.ad) + ctx.ap",
-          "(0.08 * ctx.enemy_max_health) + (1.2 * ctx.ad) + ctx.ap",
-          "(0.09 * ctx.enemy_max_health) + (1.2 * ctx.ad) + ctx.ap",
-          "(0.1 * ctx.enemy_max_health) + (1.2 * ctx.ad) + ctx.ap"
+          "(0.06 * ctx.enemy_max_health) + (1.2 * ctx.attack_damage) + ctx.ability_power",
+          "(0.07 * ctx.enemy_max_health) + (1.2 * ctx.attack_damage) + ctx.ability_power",
+          "(0.08 * ctx.enemy_max_health) + (1.2 * ctx.attack_damage) + ctx.ability_power",
+          "(0.09 * ctx.enemy_max_health) + (1.2 * ctx.attack_damage) + ctx.ability_power",
+          "(0.1 * ctx.enemy_max_health) + (1.2 * ctx.attack_damage) + ctx.ability_power"
         ]
       }
     ],
     [
       {
-        "type": "Q",
-        "name": "_2"
+        "Q": "_2"
       },
       {
         "name": "Jaws of the Beast",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "150 + (1.2 * ctx.ad) + ctx.ap",
-          "165 + (1.2 * ctx.ad) + ctx.ap",
-          "180 + (1.2 * ctx.ad) + ctx.ap",
-          "195 + (1.2 * ctx.ad) + ctx.ap",
-          "210 + (1.2 * ctx.ad) + ctx.ap"
+          "150 + (1.2 * ctx.attack_damage) + ctx.ability_power",
+          "165 + (1.2 * ctx.attack_damage) + ctx.ability_power",
+          "180 + (1.2 * ctx.attack_damage) + ctx.ability_power",
+          "195 + (1.2 * ctx.attack_damage) + ctx.ability_power",
+          "210 + (1.2 * ctx.attack_damage) + ctx.ability_power"
         ]
       }
     ],
     [
       {
-        "type": "E",
-        "name": "_1"
+        "E": "_1"
       },
       {
         "name": "Primal Howl",
@@ -125,8 +122,7 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_1"
+        "R": "_1"
       },
       {
         "name": "Infinite Duress",

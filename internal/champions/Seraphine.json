@@ -71,89 +71,84 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "_1"
+        "Q": "_1"
       },
       {
         "name": "High Note",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "60 + (0.5 * ctx.ap)",
-          "85 + (0.5 * ctx.ap)",
-          "110 + (0.5 * ctx.ap)",
-          "135 + (0.5 * ctx.ap)",
-          "160 + (0.5 * ctx.ap)"
+          "60 + (0.5 * ctx.ability_power)",
+          "85 + (0.5 * ctx.ability_power)",
+          "110 + (0.5 * ctx.ability_power)",
+          "135 + (0.5 * ctx.ability_power)",
+          "160 + (0.5 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "Q",
-        "name": "_2"
+        "Q": "_2"
       },
       {
         "name": "High Note",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "105 + (0.875 * ctx.ap)",
-          "148.75 + (0.875 * ctx.ap)",
-          "192.5 + (0.875 * ctx.ap)",
-          "236.25 + (0.875 * ctx.ap)",
-          "280 + (0.875 * ctx.ap)"
+          "105 + (0.875 * ctx.ability_power)",
+          "148.75 + (0.875 * ctx.ability_power)",
+          "192.5 + (0.875 * ctx.ability_power)",
+          "236.25 + (0.875 * ctx.ability_power)",
+          "280 + (0.875 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "E",
-        "name": "_1"
+        "E": "_1"
       },
       {
         "name": "Beat Drop",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "70 + (0.5 * ctx.ap)",
-          "100 + (0.5 * ctx.ap)",
-          "130 + (0.5 * ctx.ap)",
-          "160 + (0.5 * ctx.ap)",
-          "190 + (0.5 * ctx.ap)"
+          "70 + (0.5 * ctx.ability_power)",
+          "100 + (0.5 * ctx.ability_power)",
+          "130 + (0.5 * ctx.ability_power)",
+          "160 + (0.5 * ctx.ability_power)",
+          "190 + (0.5 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "E",
-        "name": "_2"
+        "E": "_2"
       },
       {
         "name": "Beat Drop",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "49 + (0.35 * ctx.ap)",
-          "70 + (0.35 * ctx.ap)",
-          "91 + (0.35 * ctx.ap)",
-          "112 + (0.35 * ctx.ap)",
-          "133 + (0.35 * ctx.ap)"
+          "49 + (0.35 * ctx.ability_power)",
+          "70 + (0.35 * ctx.ability_power)",
+          "91 + (0.35 * ctx.ability_power)",
+          "112 + (0.35 * ctx.ability_power)",
+          "133 + (0.35 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "R",
-        "name": "_1"
+        "R": "_1"
       },
       {
         "name": "Encore",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "150 + (0.4 * ctx.ap)",
-          "200 + (0.4 * ctx.ap)",
-          "250 + (0.4 * ctx.ap)"
+          "150 + (0.4 * ctx.ability_power)",
+          "200 + (0.4 * ctx.ability_power)",
+          "250 + (0.4 * ctx.ability_power)"
         ]
       }
     ]

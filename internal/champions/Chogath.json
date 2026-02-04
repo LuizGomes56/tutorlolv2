@@ -70,141 +70,133 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "_1"
+        "Q": "_1"
       },
       {
         "name": "Rupture",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "80 + ctx.ap",
-          "135 + ctx.ap",
-          "190 + ctx.ap",
-          "245 + ctx.ap",
-          "300 + ctx.ap"
+          "80 + ctx.ability_power",
+          "135 + ctx.ability_power",
+          "190 + ctx.ability_power",
+          "245 + ctx.ability_power",
+          "300 + ctx.ability_power"
         ]
       }
     ],
     [
       {
-        "type": "W",
-        "name": "_1"
+        "W": "_1"
       },
       {
         "name": "Feral Scream",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "80 + (0.7 * ctx.ap)",
-          "130 + (0.7 * ctx.ap)",
-          "180 + (0.7 * ctx.ap)",
-          "230 + (0.7 * ctx.ap)",
-          "280 + (0.7 * ctx.ap)"
+          "80 + (0.7 * ctx.ability_power)",
+          "130 + (0.7 * ctx.ability_power)",
+          "180 + (0.7 * ctx.ability_power)",
+          "230 + (0.7 * ctx.ability_power)",
+          "280 + (0.7 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "E",
-        "name": "_1"
+        "E": "_1"
       },
       {
         "name": "Vorpal Spikes",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "20 + (0.3 * ctx.ap) + (0.025 * ctx.enemy_max_health) + (0.005 * ctx.chogath_stacks)",
-          "40 + (0.3 * ctx.ap) + (0.0285 * ctx.enemy_max_health) + (0.005 * ctx.chogath_stacks)",
-          "60 + (0.3 * ctx.ap) + (0.032 * ctx.enemy_max_health) + (0.005 * ctx.chogath_stacks)",
-          "80 + (0.3 * ctx.ap) + (0.0355 * ctx.enemy_max_health) + (0.005 * ctx.chogath_stacks)",
-          "100 + (0.3 * ctx.ap) + (0.039 * ctx.enemy_max_health) + (0.005 * ctx.chogath_stacks)"
+          "20 + (0.3 * ctx.ability_power) + (0.025 * ctx.enemy_max_health) + (0.005 * ctx.stacks)",
+          "40 + (0.3 * ctx.ability_power) + (0.0285 * ctx.enemy_max_health) + (0.005 * ctx.stacks)",
+          "60 + (0.3 * ctx.ability_power) + (0.032 * ctx.enemy_max_health) + (0.005 * ctx.stacks)",
+          "80 + (0.3 * ctx.ability_power) + (0.0355 * ctx.enemy_max_health) + (0.005 * ctx.stacks)",
+          "100 + (0.3 * ctx.ability_power) + (0.039 * ctx.enemy_max_health) + (0.005 * ctx.stacks)"
         ]
       }
     ],
     [
       {
-        "type": "E",
-        "name": "_2"
+        "E": "_2"
       },
       {
         "name": "Vorpal Spikes",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "100 + (0.3 * ctx.ap)",
-          "150 + (0.3 * ctx.ap)",
-          "200 + (0.3 * ctx.ap)",
-          "250 + (0.3 * ctx.ap)",
-          "300 + (0.3 * ctx.ap)"
+          "100 + (0.3 * ctx.ability_power)",
+          "150 + (0.3 * ctx.ability_power)",
+          "200 + (0.3 * ctx.ability_power)",
+          "250 + (0.3 * ctx.ability_power)",
+          "300 + (0.3 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "E",
-        "name": "_3"
+        "E": "_3"
       },
       {
         "name": "Vorpal Spikes",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "60 + (0.9 * ctx.ap) + (0.075 * ctx.enemy_max_health) + (0.015 * ctx.chogath_stacks)",
-          "120 + (0.9 * ctx.ap) + (0.0855 * ctx.enemy_max_health) + (0.015 * ctx.chogath_stacks)",
-          "180 + (0.9 * ctx.ap) + (0.096 * ctx.enemy_max_health) + (0.015 * ctx.chogath_stacks)",
-          "240 + (0.9 * ctx.ap) + (0.1065 * ctx.enemy_max_health) + (0.015 * ctx.chogath_stacks)",
-          "300 + (0.9 * ctx.ap) + (0.11699999999999999 * ctx.enemy_max_health) + (0.015 * ctx.chogath_stacks)"
+          "60 + (0.9 * ctx.ability_power) + (0.075 * ctx.enemy_max_health) + (0.015 * ctx.stacks)",
+          "120 + (0.9 * ctx.ability_power) + (0.0855 * ctx.enemy_max_health) + (0.015 * ctx.stacks)",
+          "180 + (0.9 * ctx.ability_power) + (0.096 * ctx.enemy_max_health) + (0.015 * ctx.stacks)",
+          "240 + (0.9 * ctx.ability_power) + (0.1065 * ctx.enemy_max_health) + (0.015 * ctx.stacks)",
+          "300 + (0.9 * ctx.ability_power) + (0.11699999999999999 * ctx.enemy_max_health) + (0.015 * ctx.stacks)"
         ]
       }
     ],
     [
       {
-        "type": "E",
-        "name": "_4"
+        "E": "_4"
       },
       {
         "name": "Vorpal Spikes",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "300 + (0.9 * ctx.ap)",
-          "450 + (0.9 * ctx.ap)",
-          "600 + (0.9 * ctx.ap)",
-          "750 + (0.9 * ctx.ap)",
-          "900 + (0.9 * ctx.ap)"
+          "300 + (0.9 * ctx.ability_power)",
+          "450 + (0.9 * ctx.ability_power)",
+          "600 + (0.9 * ctx.ability_power)",
+          "750 + (0.9 * ctx.ability_power)",
+          "900 + (0.9 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "R",
-        "name": "_1"
+        "R": "_1"
       },
       {
         "name": "Feast",
         "damage_type": "True",
         "attributes": "Undefined",
         "damage": [
-          "300 + (0.5 * ctx.ap) + (0.1 * ctx.bonus_health)",
-          "475 + (0.5 * ctx.ap) + (0.1 * ctx.bonus_health)",
-          "650 + (0.5 * ctx.ap) + (0.1 * ctx.bonus_health)"
+          "300 + (0.5 * ctx.ability_power) + (0.1 * ctx.bonus_health)",
+          "475 + (0.5 * ctx.ability_power) + (0.1 * ctx.bonus_health)",
+          "650 + (0.5 * ctx.ability_power) + (0.1 * ctx.bonus_health)"
         ]
       }
     ],
     [
       {
-        "type": "R",
-        "name": "_2"
+        "R": "_2"
       },
       {
         "name": "Feast",
         "damage_type": "True",
         "attributes": "Undefined",
         "damage": [
-          "1200 + (0.5 * ctx.ap) + (0.1 * ctx.bonus_health)",
-          "1200 + (0.5 * ctx.ap) + (0.1 * ctx.bonus_health)",
-          "1200 + (0.5 * ctx.ap) + (0.1 * ctx.bonus_health)"
+          "1200 + (0.5 * ctx.ability_power) + (0.1 * ctx.bonus_health)",
+          "1200 + (0.5 * ctx.ability_power) + (0.1 * ctx.bonus_health)",
+          "1200 + (0.5 * ctx.ability_power) + (0.1 * ctx.bonus_health)"
         ]
       }
     ]

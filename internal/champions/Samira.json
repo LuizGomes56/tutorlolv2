@@ -70,26 +70,24 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "_1"
+        "Q": "_1"
       },
       {
         "name": "Flair",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "0 + (1.1 * ctx.ad)",
-          "5 + (1.1 * ctx.ad)",
-          "10 + (1.1 * ctx.ad)",
-          "15 + (1.1 * ctx.ad)",
-          "20 + (1.1 * ctx.ad)"
+          "0 + (1.1 * ctx.attack_damage)",
+          "5 + (1.1 * ctx.attack_damage)",
+          "10 + (1.1 * ctx.attack_damage)",
+          "15 + (1.1 * ctx.attack_damage)",
+          "20 + (1.1 * ctx.attack_damage)"
         ]
       }
     ],
     [
       {
-        "type": "W",
-        "name": "_1"
+        "W": "_1"
       },
       {
         "name": "Blade Whirl",
@@ -106,8 +104,7 @@
     ],
     [
       {
-        "type": "W",
-        "name": "_2"
+        "W": "_2"
       },
       {
         "name": "Blade Whirl",
@@ -124,8 +121,7 @@
     ],
     [
       {
-        "type": "E",
-        "name": "_1"
+        "E": "_1"
       },
       {
         "name": "Wild Rush",
@@ -142,65 +138,61 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_1"
+        "R": "_1"
       },
       {
         "name": "Inferno Trigger",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "5 + (0.075 * ctx.ad)",
-          "10 + (0.075 * ctx.ad)",
-          "15 + (0.075 * ctx.ad)"
+          "5 + (0.075 * ctx.attack_damage)",
+          "10 + (0.075 * ctx.attack_damage)",
+          "15 + (0.075 * ctx.attack_damage)"
         ]
       }
     ],
     [
       {
-        "type": "R",
-        "name": "_2"
+        "R": "_2"
       },
       {
         "name": "Inferno Trigger",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "20 + (0.3 * ctx.ad)",
-          "40 + (0.3 * ctx.ad)",
-          "60 + (0.3 * ctx.ad)"
+          "20 + (0.3 * ctx.attack_damage)",
+          "40 + (0.3 * ctx.attack_damage)",
+          "60 + (0.3 * ctx.attack_damage)"
         ]
       }
     ],
     [
       {
-        "type": "R",
-        "name": "_3"
+        "R": "_3"
       },
       {
         "name": "Inferno Trigger",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "50 + (0.75 * ctx.ad)",
-          "100 + (0.75 * ctx.ad)",
-          "150 + (0.75 * ctx.ad)"
+          "50 + (0.75 * ctx.attack_damage)",
+          "100 + (0.75 * ctx.attack_damage)",
+          "150 + (0.75 * ctx.attack_damage)"
         ]
       }
     ],
     [
       {
-        "type": "R",
-        "name": "_4"
+        "R": "_4"
       },
       {
         "name": "Inferno Trigger",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "200 + (3 * ctx.ad)",
-          "400 + (3 * ctx.ad)",
-          "600 + (3 * ctx.ad)"
+          "200 + (3 * ctx.attack_damage)",
+          "400 + (3 * ctx.attack_damage)",
+          "600 + (3 * ctx.attack_damage)"
         ]
       }
     ]

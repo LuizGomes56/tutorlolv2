@@ -71,107 +71,101 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "_1"
+        "Q": "_1"
       },
       {
         "name": "Blooming Burst",
         "damage_type": "Magic",
         "attributes": "Area",
         "damage": [
-          "60 + (0.6 * ctx.ap)",
-          "110 + (0.6 * ctx.ap)",
-          "160 + (0.6 * ctx.ap)",
-          "210 + (0.6 * ctx.ap)",
-          "260 + (0.6 * ctx.ap)"
+          "60 + (0.6 * ctx.ability_power)",
+          "110 + (0.6 * ctx.ability_power)",
+          "160 + (0.6 * ctx.ability_power)",
+          "210 + (0.6 * ctx.ability_power)",
+          "260 + (0.6 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "Q",
-        "name": "Min"
+        "Q": "Min"
       },
       {
         "name": "Blooming Burst",
         "damage_type": "Magic",
         "attributes": "Area",
         "damage": [
-          "35 + (0.25 * ctx.ap)",
-          "60 + (0.25 * ctx.ap)",
-          "85 + (0.25 * ctx.ap)",
-          "110 + (0.25 * ctx.ap)",
-          "135 + (0.25 * ctx.ap)"
+          "35 + (0.25 * ctx.ability_power)",
+          "60 + (0.25 * ctx.ability_power)",
+          "85 + (0.25 * ctx.ability_power)",
+          "110 + (0.25 * ctx.ability_power)",
+          "135 + (0.25 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "Q",
-        "name": "Max"
+        "Q": "Max"
       },
       {
         "name": "Blooming Burst",
         "damage_type": "Magic",
         "attributes": "Area",
         "damage": [
-          "130 + (1.1 * ctx.ap)",
-          "230 + (1.1 * ctx.ap)",
-          "330 + (1.1 * ctx.ap)",
-          "430 + (1.1 * ctx.ap)",
-          "530 + (1.1 * ctx.ap)"
+          "130 + (1.1 * ctx.ability_power)",
+          "230 + (1.1 * ctx.ability_power)",
+          "330 + (1.1 * ctx.ability_power)",
+          "430 + (1.1 * ctx.ability_power)",
+          "530 + (1.1 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "W",
-        "name": "Void"
+        "W": "Void"
       },
       {
         "name": "Shapesplitter",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "30 + (0.6 * ctx.ap)",
-          "65 + (0.6 * ctx.ap)",
-          "100 + (0.6 * ctx.ap)",
-          "135 + (0.6 * ctx.ap)",
-          "170 + (0.6 * ctx.ap)"
+          "30 + (0.6 * ctx.ability_power)",
+          "65 + (0.6 * ctx.ability_power)",
+          "100 + (0.6 * ctx.ability_power)",
+          "135 + (0.6 * ctx.ability_power)",
+          "170 + (0.6 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "E",
-        "name": "Void"
+        "E": "Void"
       },
       {
         "name": "Tangle-Barbs",
         "damage_type": "Magic",
         "attributes": "Area",
         "damage": [
-          "70 + (0.65 * ctx.ap)",
-          "105 + (0.65 * ctx.ap)",
-          "140 + (0.65 * ctx.ap)",
-          "175 + (0.65 * ctx.ap)",
-          "210 + (0.65 * ctx.ap)"
+          "70 + (0.65 * ctx.ability_power)",
+          "105 + (0.65 * ctx.ability_power)",
+          "140 + (0.65 * ctx.ability_power)",
+          "175 + (0.65 * ctx.ability_power)",
+          "210 + (0.65 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "R",
-        "name": "Void"
+        "R": "Void"
       },
       {
         "name": "Pop Blossom",
         "damage_type": "Magic",
         "attributes": "Area",
         "damage": [
-          "150 + (1.2 * ctx.ap)",
-          "350 + (1.2 * ctx.ap)",
-          "550 + (1.2 * ctx.ap)"
+          "150 + (1.2 * ctx.ability_power)",
+          "350 + (1.2 * ctx.ability_power)",
+          "550 + (1.2 * ctx.ability_power)"
         ]
       }
     ]
@@ -179,16 +173,13 @@
   "merge_data": [
     {
       "minimum_damage": {
-        "type": "Q",
-        "name": "Min"
+        "Q": "Min"
       },
       "maximum_damage": {
-        "type": "Q",
-        "name": "Max"
+        "Q": "Max"
       },
       "alias": {
-        "type": "Q",
-        "name": "Void"
+        "Q": "Void"
       }
     }
   ]

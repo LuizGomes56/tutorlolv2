@@ -17,7 +17,8 @@ use std::{
 };
 use tutorlolv2_fmt::rustfmt;
 use tutorlolv2_gen::{
-    AbilityId, AbilityName, Attrs, ChampionId, DamageType, DevMergeData, Position,
+    AbilityId, AbilityName, AdaptativeType, AttackType, Attrs, ChampionId, DamageType,
+    DevMergeData, Position,
 };
 
 pub struct ChampionData {
@@ -367,8 +368,8 @@ impl ChampionData {
     pub fn finish(self) -> Champion {
         Champion {
             name: self.data.name,
-            adaptative_type: self.data.adaptive_type.into(),
-            attack_type: self.data.attack_type.into(),
+            adaptative_type: AdaptativeType::from_str(&self.data.adaptive_type).unwrap_or_default(),
+            attack_type: AttackType::from_str(&self.data.attack_type).unwrap_or_default(),
             positions: self
                 .data
                 .positions
@@ -377,7 +378,7 @@ impl ChampionData {
                 .collect(),
             stats: self.data.stats,
             abilities: self.map.into_iter().collect(),
-            merge_data: self.mergevec.into_iter().collect(),
+            merge_data: self.mergevec,
         }
     }
 

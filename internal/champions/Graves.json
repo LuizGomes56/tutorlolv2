@@ -70,8 +70,7 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "_1"
+        "Q": "_1"
       },
       {
         "name": "End of the Line",
@@ -88,8 +87,7 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_2"
+        "Q": "_2"
       },
       {
         "name": "End of the Line",
@@ -106,8 +104,7 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_3"
+        "Q": "_3"
       },
       {
         "name": "End of the Line",
@@ -124,26 +121,24 @@
     ],
     [
       {
-        "type": "W",
-        "name": "_1"
+        "W": "_1"
       },
       {
         "name": "Smoke Screen",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "60 + (0.6 * ctx.ap)",
-          "110 + (0.6 * ctx.ap)",
-          "160 + (0.6 * ctx.ap)",
-          "210 + (0.6 * ctx.ap)",
-          "260 + (0.6 * ctx.ap)"
+          "60 + (0.6 * ctx.ability_power)",
+          "110 + (0.6 * ctx.ability_power)",
+          "160 + (0.6 * ctx.ability_power)",
+          "210 + (0.6 * ctx.ability_power)",
+          "260 + (0.6 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "R",
-        "name": "_1"
+        "R": "_1"
       },
       {
         "name": "Collateral Damage",
@@ -158,8 +153,7 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_2"
+        "R": "_2"
       },
       {
         "name": "Collateral Damage",

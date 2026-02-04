@@ -3,9 +3,9 @@
   "adaptative_type": "Magic",
   "attack_type": "Ranged",
   "positions": [
+    "Top",
     "Middle",
-    "Support",
-    "Top"
+    "Support"
   ],
   "stats": {
     "health": {
@@ -72,15 +72,14 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "_1"
+        "Q": "_1"
       },
       {
         "name": "Inner Flame",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "60 + (0.7 * ctx.ap)",
+          "60 + (0.7 * ctx.ability_power)",
           "110",
           "160",
           "210",

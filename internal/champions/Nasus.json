@@ -70,105 +70,99 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "_1"
+        "Q": "_1"
       },
       {
         "name": "Siphoning Strike",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "40 + ctx.nasus_stacks",
-          "60 + ctx.nasus_stacks",
-          "80 + ctx.nasus_stacks",
-          "100 + ctx.nasus_stacks",
-          "120 + ctx.nasus_stacks"
+          "40 + ctx.stacks",
+          "60 + ctx.stacks",
+          "80 + ctx.stacks",
+          "100 + ctx.stacks",
+          "120 + ctx.stacks"
         ]
       }
     ],
     [
       {
-        "type": "E",
-        "name": "_1"
+        "E": "_1"
       },
       {
         "name": "Spirit Fire",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "50 + (0.6 * ctx.ap)",
-          "80 + (0.6 * ctx.ap)",
-          "110 + (0.6 * ctx.ap)",
-          "140 + (0.6 * ctx.ap)",
-          "170 + (0.6 * ctx.ap)"
+          "50 + (0.6 * ctx.ability_power)",
+          "80 + (0.6 * ctx.ability_power)",
+          "110 + (0.6 * ctx.ability_power)",
+          "140 + (0.6 * ctx.ability_power)",
+          "170 + (0.6 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "E",
-        "name": "_2"
+        "E": "_2"
       },
       {
         "name": "Spirit Fire",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "10 + (0.12 * ctx.ap)",
-          "16 + (0.12 * ctx.ap)",
-          "22 + (0.12 * ctx.ap)",
-          "28 + (0.12 * ctx.ap)",
-          "34 + (0.12 * ctx.ap)"
+          "10 + (0.12 * ctx.ability_power)",
+          "16 + (0.12 * ctx.ability_power)",
+          "22 + (0.12 * ctx.ability_power)",
+          "28 + (0.12 * ctx.ability_power)",
+          "34 + (0.12 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "E",
-        "name": "_3"
+        "E": "_3"
       },
       {
         "name": "Spirit Fire",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "100 + (1.2 * ctx.ap)",
-          "160 + (1.2 * ctx.ap)",
-          "220 + (1.2 * ctx.ap)",
-          "280 + (1.2 * ctx.ap)",
-          "340 + (1.2 * ctx.ap)"
+          "100 + (1.2 * ctx.ability_power)",
+          "160 + (1.2 * ctx.ability_power)",
+          "220 + (1.2 * ctx.ability_power)",
+          "280 + (1.2 * ctx.ability_power)",
+          "340 + (1.2 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "R",
-        "name": "_1"
+        "R": "_1"
       },
       {
         "name": "Fury of the Sands",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "(0.015 * ctx.enemy_max_health) + (0.005 * 0.01 * ctx.ap)",
-          "(0.02 * ctx.enemy_max_health) + (0.005 * 0.01 * ctx.ap)",
-          "(0.025 * ctx.enemy_max_health) + (0.005 * 0.01 * ctx.ap)"
+          "(0.015 * ctx.enemy_max_health) + (0.005 * 0.01 * ctx.ability_power)",
+          "(0.02 * ctx.enemy_max_health) + (0.005 * 0.01 * ctx.ability_power)",
+          "(0.025 * ctx.enemy_max_health) + (0.005 * 0.01 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "R",
-        "name": "_2"
+        "R": "_2"
       },
       {
         "name": "Fury of the Sands",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "(0.45 * ctx.enemy_max_health) + (0.15 * 0.01 * ctx.ap)",
-          "(0.6 * ctx.enemy_max_health) + (0.15 * 0.01 * ctx.ap)",
-          "(0.75 * ctx.enemy_max_health) + (0.15 * 0.01 * ctx.ap)"
+          "(0.45 * ctx.enemy_max_health) + (0.15 * 0.01 * ctx.ability_power)",
+          "(0.6 * ctx.enemy_max_health) + (0.15 * 0.01 * ctx.ability_power)",
+          "(0.75 * ctx.enemy_max_health) + (0.15 * 0.01 * ctx.ability_power)"
         ]
       }
     ]

@@ -3,8 +3,8 @@
   "adaptative_type": "Physical",
   "attack_type": "Melee",
   "positions": [
-    "Middle",
-    "Top"
+    "Top",
+    "Middle"
   ],
   "stats": {
     "health": {
@@ -71,26 +71,24 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "_1"
+        "Q": "_1"
       },
       {
         "name": "Mortal Steel",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "25 + (1.05 * ctx.ad)",
-          "50 + (1.05 * ctx.ad)",
-          "75 + (1.05 * ctx.ad)",
-          "100 + (1.05 * ctx.ad)",
-          "125 + (1.05 * ctx.ad)"
+          "25 + (1.05 * ctx.attack_damage)",
+          "50 + (1.05 * ctx.attack_damage)",
+          "75 + (1.05 * ctx.attack_damage)",
+          "100 + (1.05 * ctx.attack_damage)",
+          "125 + (1.05 * ctx.attack_damage)"
         ]
       }
     ],
     [
       {
-        "type": "W",
-        "name": "_1"
+        "W": "_1"
       },
       {
         "name": "Spirit Cleave",
@@ -107,8 +105,7 @@
     ],
     [
       {
-        "type": "W",
-        "name": "_2"
+        "W": "_2"
       },
       {
         "name": "Spirit Cleave",
@@ -125,8 +122,7 @@
     ],
     [
       {
-        "type": "W",
-        "name": "_3"
+        "W": "_3"
       },
       {
         "name": "Spirit Cleave",
@@ -143,8 +139,7 @@
     ],
     [
       {
-        "type": "E",
-        "name": "_1"
+        "E": "_1"
       },
       {
         "name": "Soul Unbound",
@@ -161,8 +156,7 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_1"
+        "R": "_1"
       },
       {
         "name": "Fate Sealed",
@@ -177,8 +171,7 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_2"
+        "R": "_2"
       },
       {
         "name": "Fate Sealed",
@@ -193,8 +186,7 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_3"
+        "R": "_3"
       },
       {
         "name": "Fate Sealed",

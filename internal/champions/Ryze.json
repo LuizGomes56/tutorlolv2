@@ -70,62 +70,58 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "_1"
+        "Q": "_1"
       },
       {
         "name": "Overload",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "75 + (0.55 * ctx.ap) + (0.02 * ctx.bonus_mana)",
-          "95 + (0.55 * ctx.ap) + (0.02 * ctx.bonus_mana)",
-          "115 + (0.55 * ctx.ap) + (0.02 * ctx.bonus_mana)",
-          "135 + (0.55 * ctx.ap) + (0.02 * ctx.bonus_mana)",
-          "155 + (0.55 * ctx.ap) + (0.02 * ctx.bonus_mana)"
+          "75 + (0.55 * ctx.ability_power) + (0.02 * ctx.bonus_mana)",
+          "95 + (0.55 * ctx.ability_power) + (0.02 * ctx.bonus_mana)",
+          "115 + (0.55 * ctx.ability_power) + (0.02 * ctx.bonus_mana)",
+          "135 + (0.55 * ctx.ability_power) + (0.02 * ctx.bonus_mana)",
+          "155 + (0.55 * ctx.ability_power) + (0.02 * ctx.bonus_mana)"
         ]
       }
     ],
     [
       {
-        "type": "W",
-        "name": "_1"
+        "W": "_1"
       },
       {
         "name": "Rune Prison",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "60 + (0.7 * ctx.ap) + (0.04 * ctx.bonus_mana)",
-          "90 + (0.7 * ctx.ap) + (0.04 * ctx.bonus_mana)",
-          "120 + (0.7 * ctx.ap) + (0.04 * ctx.bonus_mana)",
-          "150 + (0.7 * ctx.ap) + (0.04 * ctx.bonus_mana)",
-          "180 + (0.7 * ctx.ap) + (0.04 * ctx.bonus_mana)"
+          "60 + (0.7 * ctx.ability_power) + (0.04 * ctx.bonus_mana)",
+          "90 + (0.7 * ctx.ability_power) + (0.04 * ctx.bonus_mana)",
+          "120 + (0.7 * ctx.ability_power) + (0.04 * ctx.bonus_mana)",
+          "150 + (0.7 * ctx.ability_power) + (0.04 * ctx.bonus_mana)",
+          "180 + (0.7 * ctx.ability_power) + (0.04 * ctx.bonus_mana)"
         ]
       }
     ],
     [
       {
-        "type": "E",
-        "name": "_1"
+        "E": "_1"
       },
       {
         "name": "Spell Flux",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "60 + (0.5 * ctx.ap) + (0.02 * ctx.bonus_mana)",
-          "90 + (0.5 * ctx.ap) + (0.02 * ctx.bonus_mana)",
-          "120 + (0.5 * ctx.ap) + (0.02 * ctx.bonus_mana)",
-          "150 + (0.5 * ctx.ap) + (0.02 * ctx.bonus_mana)",
-          "180 + (0.5 * ctx.ap) + (0.02 * ctx.bonus_mana)"
+          "60 + (0.5 * ctx.ability_power) + (0.02 * ctx.bonus_mana)",
+          "90 + (0.5 * ctx.ability_power) + (0.02 * ctx.bonus_mana)",
+          "120 + (0.5 * ctx.ability_power) + (0.02 * ctx.bonus_mana)",
+          "150 + (0.5 * ctx.ability_power) + (0.02 * ctx.bonus_mana)",
+          "180 + (0.5 * ctx.ability_power) + (0.02 * ctx.bonus_mana)"
         ]
       }
     ],
     [
       {
-        "type": "R",
-        "name": "_1"
+        "R": "_1"
       },
       {
         "name": "Realm Warp",

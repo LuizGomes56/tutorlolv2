@@ -3,8 +3,8 @@
   "adaptative_type": "Physical",
   "attack_type": "Melee",
   "positions": [
-    "Jungle",
-    "Top"
+    "Top",
+    "Jungle"
   ],
   "stats": {
     "health": {
@@ -71,8 +71,7 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "_1"
+        "Q": "_1"
       },
       {
         "name": "Thundering Smash",
@@ -89,71 +88,67 @@
     ],
     [
       {
-        "type": "W",
-        "name": "_1"
+        "W": "_1"
       },
       {
         "name": "Frenzied Maul",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "5 + (1.1 * ctx.ad) + (0.06 * ctx.bonus_health)",
-          "30 + (1.1 * ctx.ad) + (0.06 * ctx.bonus_health)",
-          "55 + (1.1 * ctx.ad) + (0.06 * ctx.bonus_health)",
-          "80 + (1.1 * ctx.ad) + (0.06 * ctx.bonus_health)",
-          "105 + (1.1 * ctx.ad) + (0.06 * ctx.bonus_health)"
+          "5 + (1.1 * ctx.attack_damage) + (0.06 * ctx.bonus_health)",
+          "30 + (1.1 * ctx.attack_damage) + (0.06 * ctx.bonus_health)",
+          "55 + (1.1 * ctx.attack_damage) + (0.06 * ctx.bonus_health)",
+          "80 + (1.1 * ctx.attack_damage) + (0.06 * ctx.bonus_health)",
+          "105 + (1.1 * ctx.attack_damage) + (0.06 * ctx.bonus_health)"
         ]
       }
     ],
     [
       {
-        "type": "E",
-        "name": "_1"
+        "E": "_1"
       },
       {
         "name": "Sky Splitter",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "80 + (0.7 * ctx.ap) + (0.11 * ctx.enemy_max_health)",
-          "110 + (0.7 * ctx.ap) + (0.12 * ctx.enemy_max_health)",
-          "140 + (0.7 * ctx.ap) + (0.13 * ctx.enemy_max_health)",
-          "170 + (0.7 * ctx.ap) + (0.14 * ctx.enemy_max_health)",
-          "200 + (0.7 * ctx.ap) + (0.15 * ctx.enemy_max_health)"
+          "80 + (0.7 * ctx.ability_power) + (0.11 * ctx.enemy_max_health)",
+          "110 + (0.7 * ctx.ability_power) + (0.12 * ctx.enemy_max_health)",
+          "140 + (0.7 * ctx.ability_power) + (0.13 * ctx.enemy_max_health)",
+          "170 + (0.7 * ctx.ability_power) + (0.14 * ctx.enemy_max_health)",
+          "200 + (0.7 * ctx.ability_power) + (0.15 * ctx.enemy_max_health)"
         ]
       }
     ],
     [
       {
-        "type": "E",
-        "name": "_2"
+        "E": "_2"
       },
       {
         "name": "Sky Splitter",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "190 + (0.7 * ctx.ap)",
-          "305 + (0.7 * ctx.ap)",
-          "420 + (0.7 * ctx.ap)",
-          "535 + (0.7 * ctx.ap)",
-          "650 + (0.7 * ctx.ap)"
+          "190 + (0.7 * ctx.ability_power)",
+          "305 + (0.7 * ctx.ability_power)",
+          "420 + (0.7 * ctx.ability_power)",
+          "535 + (0.7 * ctx.ability_power)",
+          "650 + (0.7 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "R",
-        "name": "_1"
+        "R": "_1"
       },
       {
         "name": "Stormbringer",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "300 + (2.5 * ctx.bonus_ad) + (1.25 * ctx.ap)",
-          "500 + (2.5 * ctx.bonus_ad) + (1.25 * ctx.ap)",
-          "700 + (2.5 * ctx.bonus_ad) + (1.25 * ctx.ap)"
+          "300 + (2.5 * ctx.bonus_ad) + (1.25 * ctx.ability_power)",
+          "500 + (2.5 * ctx.bonus_ad) + (1.25 * ctx.ability_power)",
+          "700 + (2.5 * ctx.bonus_ad) + (1.25 * ctx.ability_power)"
         ]
       }
     ]

@@ -3,9 +3,9 @@
   "adaptative_type": "Magic",
   "attack_type": "Melee",
   "positions": [
+    "Top",
     "Jungle",
-    "Middle",
-    "Top"
+    "Middle"
   ],
   "stats": {
     "health": {
@@ -72,143 +72,135 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "_1"
+        "Q": "_1"
       },
       {
         "name": "Barrel Roll",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "120 + (1.2 * ctx.ap)",
-          "180 + (1.2 * ctx.ap)",
-          "240 + (1.2 * ctx.ap)",
-          "300 + (1.2 * ctx.ap)",
-          "360 + (1.2 * ctx.ap)"
+          "120 + (1.2 * ctx.ability_power)",
+          "180 + (1.2 * ctx.ability_power)",
+          "240 + (1.2 * ctx.ability_power)",
+          "300 + (1.2 * ctx.ability_power)",
+          "360 + (1.2 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "Q",
-        "name": "_2"
+        "Q": "_2"
       },
       {
         "name": "Barrel Roll",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "84 + (0.84 * ctx.ap)",
-          "126 + (0.84 * ctx.ap)",
-          "168 + (0.84 * ctx.ap)",
-          "210 + (0.84 * ctx.ap)",
-          "252 + (0.84 * ctx.ap)"
+          "84 + (0.84 * ctx.ability_power)",
+          "126 + (0.84 * ctx.ability_power)",
+          "168 + (0.84 * ctx.ability_power)",
+          "210 + (0.84 * ctx.ability_power)",
+          "252 + (0.84 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "Q",
-        "name": "_3"
+        "Q": "_3"
       },
       {
         "name": "Barrel Roll",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "80 + (0.8 * ctx.ap)",
-          "120 + (0.8 * ctx.ap)",
-          "160 + (0.8 * ctx.ap)",
-          "200 + (0.8 * ctx.ap)",
-          "240 + (0.8 * ctx.ap)"
+          "80 + (0.8 * ctx.ability_power)",
+          "120 + (0.8 * ctx.ability_power)",
+          "160 + (0.8 * ctx.ability_power)",
+          "200 + (0.8 * ctx.ability_power)",
+          "240 + (0.8 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "Q",
-        "name": "_4"
+        "Q": "_4"
       },
       {
         "name": "Barrel Roll",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "56 + (0.56 * ctx.ap)",
-          "84 + (0.56 * ctx.ap)",
-          "112 + (0.56 * ctx.ap)",
-          "140 + (0.56 * ctx.ap)",
-          "168 + (0.56 * ctx.ap)"
+          "56 + (0.56 * ctx.ability_power)",
+          "84 + (0.56 * ctx.ability_power)",
+          "112 + (0.56 * ctx.ability_power)",
+          "140 + (0.56 * ctx.ability_power)",
+          "168 + (0.56 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "W",
-        "name": "_1"
+        "W": "_1"
       },
       {
         "name": "Drunken Rage",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "0.1 + (0.04 * 0.01 * ctx.ap)",
-          "0.12 + (0.04 * 0.01 * ctx.ap)",
-          "0.14 + (0.04 * 0.01 * ctx.ap)",
-          "0.16 + (0.04 * 0.01 * ctx.ap)",
-          "0.18 + (0.04 * 0.01 * ctx.ap)"
+          "0.1 + (0.04 * 0.01 * ctx.ability_power)",
+          "0.12 + (0.04 * 0.01 * ctx.ability_power)",
+          "0.14 + (0.04 * 0.01 * ctx.ability_power)",
+          "0.16 + (0.04 * 0.01 * ctx.ability_power)",
+          "0.18 + (0.04 * 0.01 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "W",
-        "name": "_2"
+        "W": "_2"
       },
       {
         "name": "Drunken Rage",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "20 + (0.07 * ctx.enemy_max_health) + (0.7 * ctx.ap)",
-          "50 + (0.07 * ctx.enemy_max_health) + (0.7 * ctx.ap)",
-          "80 + (0.07 * ctx.enemy_max_health) + (0.7 * ctx.ap)",
-          "110 + (0.07 * ctx.enemy_max_health) + (0.7 * ctx.ap)",
-          "140 + (0.07 * ctx.enemy_max_health) + (0.7 * ctx.ap)"
+          "20 + (0.07 * ctx.enemy_max_health) + (0.7 * ctx.ability_power)",
+          "50 + (0.07 * ctx.enemy_max_health) + (0.7 * ctx.ability_power)",
+          "80 + (0.07 * ctx.enemy_max_health) + (0.7 * ctx.ability_power)",
+          "110 + (0.07 * ctx.enemy_max_health) + (0.7 * ctx.ability_power)",
+          "140 + (0.07 * ctx.enemy_max_health) + (0.7 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "E",
-        "name": "_1"
+        "E": "_1"
       },
       {
         "name": "Body Slam",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "80 + (0.6 * ctx.ap)",
-          "125 + (0.6 * ctx.ap)",
-          "170 + (0.6 * ctx.ap)",
-          "215 + (0.6 * ctx.ap)",
-          "260 + (0.6 * ctx.ap)"
+          "80 + (0.6 * ctx.ability_power)",
+          "125 + (0.6 * ctx.ability_power)",
+          "170 + (0.6 * ctx.ability_power)",
+          "215 + (0.6 * ctx.ability_power)",
+          "260 + (0.6 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "R",
-        "name": "_1"
+        "R": "_1"
       },
       {
         "name": "Explosive Cask",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "200 + (0.8 * ctx.ap)",
-          "300 + (0.8 * ctx.ap)",
-          "400 + (0.8 * ctx.ap)"
+          "200 + (0.8 * ctx.ability_power)",
+          "300 + (0.8 * ctx.ability_power)",
+          "400 + (0.8 * ctx.ability_power)"
         ]
       }
     ]

@@ -1,7 +1,6 @@
 #![no_std]
 #![allow(unused_imports)]
 
-#[cfg(feature = "eval")]
 pub mod bitset;
 pub mod cache;
 pub mod data;
@@ -9,38 +8,46 @@ pub mod enums;
 pub mod eval;
 
 #[allow(non_upper_case_globals)]
-pub(crate) const impossible: f32 = 0.0;
+pub(crate) const unknown: f32 = 0.0;
 pub(crate) use core::ops::Range;
+pub(crate) use tutorlolv2_types::ability_name::*;
 
-#[cfg(feature = "eval")]
 pub use bitset::*;
 pub use cache::*;
-pub use data::*;
+pub use data::{
+    champions::{
+        ABILITY_IDENTS, CHAMPION_CACHE, CHAMPION_NAME_TO_ID, ChampionId, RECOMMENDED_ITEMS,
+        RECOMMENDED_RUNES,
+    },
+    items::{ITEM_CACHE, ItemId},
+    runes::{RUNE_CACHE, RuneId},
+    *,
+};
 pub use enums::{Attrs, DamageType};
 pub use eval::*;
 pub use tutorlolv2_types::*;
 
-#[cfg(feature = "glob")]
 pub static RAW_BLOCK: &str = include_str!("block.txt");
-#[cfg(feature = "glob")]
-pub static mut BLOCK: &[u8] = include_bytes!("block.br");
+pub const BLOCK: &[u8] = include_bytes!("block.br");
+
+pub const BLOCK_LEN: usize = BLOCK.len();
 
 /// Verifies the following conditions
 /// - `tier >= 3`
 /// - `price > 0`
 /// - `len(stats)` > 0
 /// - `purchasable`
-#[cfg(feature = "eval")]
 pub const fn is_simulated_item(item: &CachedItem) -> bool {
     let CachedItem {
         purchasable,
         tier,
         price,
         prettified_stats,
+        maps,
         ..
     } = *item;
 
-    tier >= 3 && price > 0 && purchasable && prettified_stats.len() > 0
+    tier >= 3 && price > 0 && purchasable && !prettified_stats.is_empty() && maps.summoners_rift
 }
 
 /// Number of items that are compared and obey the rule:
@@ -48,11 +55,11 @@ pub const fn is_simulated_item(item: &CachedItem) -> bool {
 /// - `price > 0`
 /// - `len(stats)` > 0
 /// - `purchasable`
-#[cfg(feature = "eval")]
-pub const NUMBER_OF_SIMULATED_ITEMS: usize = {
+/// - `maps.summoners_rift`
+pub const L_SIML: usize = {
     let mut sum = 0;
     let mut i = 0;
-    while i < NUMBER_OF_ITEMS {
+    while i < ItemId::VARIANTS {
         if is_simulated_item(ITEM_CACHE[i]) {
             sum += 1;
         }
@@ -61,28 +68,15 @@ pub const NUMBER_OF_SIMULATED_ITEMS: usize = {
     sum
 };
 
-pub const L_SIML: usize = {
-    const N: usize = 118;
-    #[cfg(feature = "eval")]
-    match NUMBER_OF_SIMULATED_ITEMS == N {
-        true => N,
-        false => NUMBER_OF_SIMULATED_ITEMS,
-        // false => panic!("Number of simulated items is outdated"),
-    }
-    #[cfg(not(feature = "eval"))]
-    N
-};
-
 /// Stores the simulated items as [`ItemId`], and only those that follow the rules:
 /// - `tier >= 3`
 /// - `price > 0`
 /// - `purchasable`
-#[cfg(feature = "eval")]
-pub const SIMULATED_ITEMS_ENUM: [ItemId; NUMBER_OF_SIMULATED_ITEMS] = {
-    let mut result = [ItemId::AbyssalMask; NUMBER_OF_SIMULATED_ITEMS];
+pub const SIMULATED_ITEMS_ENUM: [ItemId; L_SIML] = {
+    let mut result = [ItemId::AbyssalMask; _];
     let mut i = 0;
     let mut j = 0;
-    while i < NUMBER_OF_ITEMS {
+    while i < ItemId::VARIANTS {
         if is_simulated_item(ITEM_CACHE[i]) {
             result[j] = unsafe { ItemId::from_u16_unchecked(i as _) };
             j += 1;
@@ -95,11 +89,10 @@ pub const SIMULATED_ITEMS_ENUM: [ItemId; NUMBER_OF_SIMULATED_ITEMS] = {
 /// Number of runes that can damage enemies. Currently they're generated manually and
 /// might be outdated. Also, they're stored in a single `.json` file, instead of containing
 /// a dedicated file for each rune
-#[cfg(feature = "eval")]
 pub const NUMBER_OF_DAMAGING_RUNES: usize = {
     let mut sum = 0;
     let mut i = 0;
-    while i < NUMBER_OF_RUNES {
+    while i < RuneId::VARIANTS {
         let rune = RUNE_CACHE[i];
         if !rune.undeclared {
             sum += 1;
@@ -112,11 +105,10 @@ pub const NUMBER_OF_DAMAGING_RUNES: usize = {
 /// Number of items that can damage enemies. All items have their own files
 /// and access to the `MerakiCdn` collected data, which can be used to create
 /// their damage closures and insert in a static variable, replacing the [`zero`] constant
-#[cfg(feature = "eval")]
 pub const NUMBER_OF_DAMAGING_ITEMS: usize = {
     let mut sum = 0;
     let mut i = 0;
-    while i < NUMBER_OF_ITEMS {
+    while i < ItemId::VARIANTS {
         let item = ITEM_CACHE[i];
         if !item.deals_damage {
             sum += 1;
@@ -128,12 +120,11 @@ pub const NUMBER_OF_DAMAGING_ITEMS: usize = {
 
 /// A constant array of all items that can damage enemies, holding their internal ids,
 /// defined by the enum [`ItemId`]
-#[cfg(feature = "eval")]
 pub const DAMAGING_ITEMS_ARRAY: [ItemId; NUMBER_OF_DAMAGING_ITEMS] = {
-    let mut result = [ItemId::AbyssalMask; NUMBER_OF_DAMAGING_ITEMS];
+    let mut result = [ItemId::AbyssalMask; _];
     let mut i = 0;
     let mut j = 0;
-    while i < NUMBER_OF_ITEMS {
+    while i < ItemId::VARIANTS {
         let item = ITEM_CACHE[i];
         if item.deals_damage {
             result[j] = unsafe { ItemId::from_u16_unchecked(i as _) };
@@ -146,12 +137,11 @@ pub const DAMAGING_ITEMS_ARRAY: [ItemId; NUMBER_OF_DAMAGING_ITEMS] = {
 
 /// A constant array of all runes that can damage enemies, holding their internal ids,
 /// defined by the enum [`RuneId`]
-#[cfg(feature = "eval")]
 pub const DAMAGING_RUNES_ARRAY: [RuneId; NUMBER_OF_DAMAGING_RUNES] = {
-    let mut result = [RuneId::AbilityHaste; NUMBER_OF_DAMAGING_RUNES];
+    let mut result = [RuneId::AbilityHaste; _];
     let mut i = 0;
     let mut j = 0;
-    while i < NUMBER_OF_RUNES {
+    while i < RuneId::VARIANTS {
         let rune = RUNE_CACHE[i];
         if !rune.undeclared {
             result[j] = unsafe { RuneId::from_u8_unchecked(i as _) };
@@ -162,47 +152,105 @@ pub const DAMAGING_RUNES_ARRAY: [RuneId; NUMBER_OF_DAMAGING_RUNES] = {
     result
 };
 
-/// Stores a bit set of all simulated items, very fast for lookup. Damaging items
-/// always have at least one of the following:
-/// - `ranged.minimum_damage != "zero"`
-/// - `ranged.maximum_damage != "zero"`
-/// - `melee.minimum_damage != "zero"`
-/// - `melee.maximum_damage != "zero"`
-/// Note that comparing the name of two functions and checking if they're equal to each
-/// other is still unstable, so the comparison `lhs == zero` does not work
-#[cfg(feature = "eval")]
 pub const DAMAGING_ITEMS: ItemsBitSet = bitset_items(DAMAGING_ITEMS_ARRAY);
-
-#[cfg(feature = "eval")]
 pub const DAMAGING_RUNES: RunesBitSet = bitset_runes(DAMAGING_RUNES_ARRAY);
-
-#[cfg(feature = "eval")]
-/// How many champions we have in the game in the current patch
-pub const NUMBER_OF_CHAMPIONS: usize = ChampionId::VARIANTS;
-
-/// How many items are there in the current patch for the map `SummonersRift`, defined
-/// by [`GameMap::SummonersRift`]
-#[cfg(feature = "eval")]
-pub const NUMBER_OF_ITEMS: usize = ItemId::VARIANTS;
-
-/// How many runes we have currently available in the standard gamemode `SummonersRift`,
-/// defined by [`GameMap::SummonersRift`]
-#[cfg(feature = "eval")]
-pub const NUMBER_OF_RUNES: usize = RuneId::VARIANTS;
 
 /// Counts how many damaging abilities ewe have across all champions. This is used to
 /// determine a proper size of how many abilities we should allow to live in the stack
 /// before leaking it to the heap to avoid stack overflows
-#[cfg(feature = "eval")]
 pub const NUMBER_OF_ABILITIES: usize = {
     let mut i = 0;
     let mut sum = 0;
-    while i < NUMBER_OF_CHAMPIONS {
+    while i < ChampionId::VARIANTS {
         let data = CHAMPION_CACHE[i];
         sum += data.closures.len();
         i += 1;
     }
     sum
+};
+
+pub static CHAMPION_ID_TO_NAME: [&str; ChampionId::VARIANTS] = {
+    let mut i = 0;
+    let mut result = [""; _];
+    while i < ChampionId::VARIANTS {
+        let champion = CHAMPION_CACHE[i];
+        result[i] = champion.name;
+        i += 1;
+    }
+    result
+};
+
+pub static CHAMPION_POSITIONS: [&[Position]; ChampionId::VARIANTS] = {
+    let mut i = 0;
+    let mut result = [unsafe { core::mem::transmute("") }; _];
+    while i < ChampionId::VARIANTS {
+        let champion = CHAMPION_CACHE[i];
+        result[i] = champion.positions;
+        i += 1;
+    }
+    result
+};
+
+/// Assert there were no undefined behavior while creating [`CHAMPION_POSITIONS`]
+const _: () = {
+    let mut i = 0;
+    while i < ChampionId::VARIANTS {
+        let champion = CHAMPION_CACHE[i].positions;
+        let position = CHAMPION_POSITIONS[i];
+        assert!(champion.len() == position.len());
+        let mut j = 0;
+        while j < champion.len() {
+            let pos_a = champion[j];
+            let pos_b = position[j];
+            assert!(pos_a as u8 == pos_b as u8);
+            j += 1;
+        }
+        i += 1;
+    }
+};
+
+pub static ITEM_ID_TO_NAME: [&str; ItemId::VARIANTS] = {
+    let mut i = 0;
+    let mut result = [""; _];
+    while i < ItemId::VARIANTS {
+        let item = ITEM_CACHE[i];
+        result[i] = item.name;
+        i += 1;
+    }
+    result
+};
+
+pub static ITEM_ID_TO_RIOT_ID: [u32; ItemId::VARIANTS] = {
+    let mut i = 0;
+    let mut result = [0; _];
+    while i < ItemId::VARIANTS {
+        let item = ITEM_CACHE[i];
+        result[i] = item.riot_id;
+        i += 1;
+    }
+    result
+};
+
+pub static RUNE_ID_TO_NAME: [&str; RuneId::VARIANTS] = {
+    let mut i = 0;
+    let mut result = [""; _];
+    while i < RuneId::VARIANTS {
+        let rune = RUNE_CACHE[i];
+        result[i] = rune.name;
+        i += 1;
+    }
+    result
+};
+
+pub static RUNE_ID_TO_RIOT_ID: [u32; RuneId::VARIANTS] = {
+    let mut i = 0;
+    let mut result = [0; _];
+    while i < RuneId::VARIANTS {
+        let rune = RUNE_CACHE[i];
+        result[i] = rune.riot_id;
+        i += 1;
+    }
+    result
 };
 
 macro_rules! const_methods {
@@ -251,19 +299,12 @@ macro_rules! const_methods {
                     result
                 };
 
-                #[cfg(feature = "eval")]
                 pub const fn get_cache(&self) -> &'static [<Cached $name:replace("Id", "")>] {
                     [<$name:replace("Id", ""):upper _CACHE>][self.index()]
                 }
 
-                #[cfg(feature = "eval")]
                 pub const fn name(&self) -> &'static str {
                     self.get_cache().name
-                }
-
-                #[cfg(all(not(feature = "eval"), feature = "glob"))]
-                pub const fn name(&self) -> &'static str {
-                    [<$name:replace("Id", ""):upper _ID_TO_NAME>][self.index()]
                 }
 
                 pub const fn index(&self) -> usize {
@@ -287,14 +328,12 @@ macro_rules! const_methods {
                 }
             }
 
-            #[cfg(any(feature = "eval", feature = "glob"))]
             impl Into<&'static str> for $name {
                 fn into(self) -> &'static str {
                     self.name()
                 }
             }
 
-            #[cfg(feature = "eval")]
             impl Into<&'static [<Cached $name:replace("Id", "")>]> for $name {
                 fn into(self) -> &'static [<Cached $name:replace("Id", "")>] {
                     self.get_cache()
@@ -314,7 +353,6 @@ const_methods!(ChampionId, u8);
 const_methods!(ItemId, u16);
 const_methods!(RuneId, u8);
 
-#[cfg(feature = "eval")]
 impl TryFrom<&str> for ChampionId {
     type Error = &'static str;
     fn try_from(value: &str) -> Result<Self, Self::Error> {
@@ -327,22 +365,18 @@ impl TryFrom<&str> for ChampionId {
 
 impl ChampionId {
     /// Counts how many damaging abilities a champion has
-    #[cfg(feature = "eval")]
     pub const fn number_of_abilities(&self) -> usize {
         self.get_cache().closures.len()
     }
 
-    #[cfg(feature = "glob")]
     pub const fn recommended_items(&self, position: Position) -> &'static [ItemId] {
         RECOMMENDED_ITEMS[self.index()][position as usize]
     }
 
-    #[cfg(feature = "glob")]
     pub const fn recommended_runes(&self, position: Position) -> &'static [RuneId] {
         RECOMMENDED_RUNES[self.index()][position as usize]
     }
 
-    #[cfg(feature = "glob")]
     pub const fn idents(&self) -> &'static [EvalIdent] {
         ABILITY_IDENTS[self.index()]
     }
@@ -352,7 +386,6 @@ macro_rules! riot_id_array {
     ($($enum:ty),*) => {
         $(
             impl $enum {
-                #[cfg(feature = "eval")]
                 pub const RIOT_ID_ARRAY: [u32; Self::VARIANTS] = {
                     let mut result = [0; _];
                     let mut i = 0;
@@ -370,7 +403,6 @@ macro_rules! riot_id_array {
 
 riot_id_array!(ItemId, RuneId);
 
-#[cfg(feature = "eval")]
 pub const ZEROED_STATS: CachedItemStats = CachedItemStats {
     ability_power: 0.0,
     armor: 0.0,

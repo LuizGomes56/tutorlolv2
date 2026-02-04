@@ -70,53 +70,50 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "_1"
+        "Q": "_1"
       },
       {
         "name": "Gleaming Quill",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "70 + (0.7 * ctx.ap)",
-          "115 + (0.7 * ctx.ap)",
-          "160 + (0.7 * ctx.ap)",
-          "205 + (0.7 * ctx.ap)",
-          "250 + (0.7 * ctx.ap)"
+          "70 + (0.7 * ctx.ability_power)",
+          "115 + (0.7 * ctx.ability_power)",
+          "160 + (0.7 * ctx.ability_power)",
+          "205 + (0.7 * ctx.ability_power)",
+          "250 + (0.7 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "W",
-        "name": "_1"
+        "W": "_1"
       },
       {
         "name": "Grand Entrance",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "70 + (0.8 * ctx.ap)",
-          "120 + (0.8 * ctx.ap)",
-          "170 + (0.8 * ctx.ap)",
-          "220 + (0.8 * ctx.ap)",
-          "270 + (0.8 * ctx.ap)"
+          "70 + (0.8 * ctx.ability_power)",
+          "120 + (0.8 * ctx.ability_power)",
+          "170 + (0.8 * ctx.ability_power)",
+          "220 + (0.8 * ctx.ability_power)",
+          "270 + (0.8 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "R",
-        "name": "_1"
+        "R": "_1"
       },
       {
         "name": "The Quickness",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "100 + (0.5 * ctx.ap)",
-          "200 + (0.5 * ctx.ap)",
-          "300 + (0.5 * ctx.ap)"
+          "100 + (0.5 * ctx.ability_power)",
+          "200 + (0.5 * ctx.ability_power)",
+          "300 + (0.5 * ctx.ability_power)"
         ]
       }
     ]

@@ -70,152 +70,143 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "_1"
+        "Q": "_1"
       },
       {
         "name": "Cultivation of Spirit",
         "damage_type": "Unknown",
         "attributes": "Undefined",
         "damage": [
-          "5 + (0.2 * ctx.ap)",
-          "10 + (0.2 * ctx.ap)",
-          "15 + (0.2 * ctx.ap)",
-          "20 + (0.2 * ctx.ap)",
-          "25 + (0.2 * ctx.ap)"
+          "5 + (0.2 * ctx.ability_power)",
+          "10 + (0.2 * ctx.ability_power)",
+          "15 + (0.2 * ctx.ability_power)",
+          "20 + (0.2 * ctx.ability_power)",
+          "25 + (0.2 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "Q",
-        "name": "_2"
+        "Q": "_2"
       },
       {
         "name": "Cultivation of Spirit",
         "damage_type": "Unknown",
         "attributes": "Undefined",
         "damage": [
-          "12.5 + (0.5 * ctx.ap)",
-          "25 + (0.5 * ctx.ap)",
-          "37.5 + (0.5 * ctx.ap)",
-          "50 + (0.5 * ctx.ap)",
-          "62.5 + (0.5 * ctx.ap)"
+          "12.5 + (0.5 * ctx.ability_power)",
+          "25 + (0.5 * ctx.ability_power)",
+          "37.5 + (0.5 * ctx.ability_power)",
+          "50 + (0.5 * ctx.ability_power)",
+          "62.5 + (0.5 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "Q",
-        "name": "_3"
+        "Q": "_3"
       },
       {
         "name": "Cultivation of Spirit",
         "damage_type": "Unknown",
         "attributes": "Undefined",
         "damage": [
-          "10 + (0.4 * ctx.ap)",
-          "20 + (0.4 * ctx.ap)",
-          "30 + (0.4 * ctx.ap)",
-          "40 + (0.4 * ctx.ap)",
-          "50 + (0.4 * ctx.ap)"
+          "10 + (0.4 * ctx.ability_power)",
+          "20 + (0.4 * ctx.ability_power)",
+          "30 + (0.4 * ctx.ability_power)",
+          "40 + (0.4 * ctx.ability_power)",
+          "50 + (0.4 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "Q",
-        "name": "_4"
+        "Q": "_4"
       },
       {
         "name": "Cultivation of Spirit",
         "damage_type": "Unknown",
         "attributes": "Undefined",
         "damage": [
-          "25 + ctx.ap",
-          "50 + ctx.ap",
-          "75 + ctx.ap",
-          "100 + ctx.ap",
-          "125 + ctx.ap"
+          "25 + ctx.ability_power",
+          "50 + ctx.ability_power",
+          "75 + ctx.ability_power",
+          "100 + ctx.ability_power",
+          "125 + ctx.ability_power"
         ]
       }
     ],
     [
       {
-        "type": "Q",
-        "name": "_5"
+        "Q": "_5"
       },
       {
         "name": "Cultivation of Spirit",
         "damage_type": "Unknown",
         "attributes": "Undefined",
         "damage": [
-          "5 + (0.2 * ctx.ap)",
-          "10 + (0.2 * ctx.ap)",
-          "15 + (0.2 * ctx.ap)",
-          "20 + (0.2 * ctx.ap)",
-          "25 + (0.2 * ctx.ap)"
+          "5 + (0.2 * ctx.ability_power)",
+          "10 + (0.2 * ctx.ability_power)",
+          "15 + (0.2 * ctx.ability_power)",
+          "20 + (0.2 * ctx.ability_power)",
+          "25 + (0.2 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "W",
-        "name": "_1"
+        "W": "_1"
       },
       {
         "name": "Arc of Judgment",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "55 + (0.85 * ctx.bonus_ad) + (0.5 * ctx.ap)",
-          "95 + (0.85 * ctx.bonus_ad) + (0.5 * ctx.ap)",
-          "135 + (0.85 * ctx.bonus_ad) + (0.5 * ctx.ap)",
-          "175 + (0.85 * ctx.bonus_ad) + (0.5 * ctx.ap)",
-          "215 + (0.85 * ctx.bonus_ad) + (0.5 * ctx.ap)"
+          "55 + (0.85 * ctx.bonus_ad) + (0.5 * ctx.ability_power)",
+          "95 + (0.85 * ctx.bonus_ad) + (0.5 * ctx.ability_power)",
+          "135 + (0.85 * ctx.bonus_ad) + (0.5 * ctx.ability_power)",
+          "175 + (0.85 * ctx.bonus_ad) + (0.5 * ctx.ability_power)",
+          "215 + (0.85 * ctx.bonus_ad) + (0.5 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "W",
-        "name": "_2"
+        "W": "_2"
       },
       {
         "name": "Arc of Judgment",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "8.25 + (0.1275 * ctx.bonus_ad) + (0.075 * ctx.ap)",
-          "14.25 + (0.1275 * ctx.bonus_ad) + (0.075 * ctx.ap)",
-          "20.25 + (0.1275 * ctx.bonus_ad) + (0.075 * ctx.ap)",
-          "26.25 + (0.1275 * ctx.bonus_ad) + (0.075 * ctx.ap)",
-          "32.25 + (0.1275 * ctx.bonus_ad) + (0.075 * ctx.ap)"
+          "8.25 + (0.1275 * ctx.bonus_ad) + (0.075 * ctx.ability_power)",
+          "14.25 + (0.1275 * ctx.bonus_ad) + (0.075 * ctx.ability_power)",
+          "20.25 + (0.1275 * ctx.bonus_ad) + (0.075 * ctx.ability_power)",
+          "26.25 + (0.1275 * ctx.bonus_ad) + (0.075 * ctx.ability_power)",
+          "32.25 + (0.1275 * ctx.bonus_ad) + (0.075 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "W",
-        "name": "_3"
+        "W": "_3"
       },
       {
         "name": "Arc of Judgment",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "33 + (0.51 * ctx.bonus_ad) + (0.3 * ctx.ap)",
-          "57 + (0.51 * ctx.bonus_ad) + (0.3 * ctx.ap)",
-          "81 + (0.51 * ctx.bonus_ad) + (0.3 * ctx.ap)",
-          "105 + (0.51 * ctx.bonus_ad) + (0.3 * ctx.ap)",
-          "129 + (0.51 * ctx.bonus_ad) + (0.3 * ctx.ap)"
+          "33 + (0.51 * ctx.bonus_ad) + (0.3 * ctx.ability_power)",
+          "57 + (0.51 * ctx.bonus_ad) + (0.3 * ctx.ability_power)",
+          "81 + (0.51 * ctx.bonus_ad) + (0.3 * ctx.ability_power)",
+          "105 + (0.51 * ctx.bonus_ad) + (0.3 * ctx.ability_power)",
+          "129 + (0.51 * ctx.bonus_ad) + (0.3 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "R",
-        "name": "_1"
+        "R": "_1"
       },
       {
         "name": "Transcend One's Self",

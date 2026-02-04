@@ -5,36 +5,9 @@
   "price": 2500,
   "sell": 1750,
   "tier": 0,
-  "maps": [
-    [
-      "SummonersRift",
-      true
-    ],
-    [
-      "Aram",
-      false
-    ],
-    [
-      "NexusBlitz",
-      false
-    ],
-    [
-      "Tft",
-      false
-    ],
-    [
-      "Arena",
-      false
-    ],
-    [
-      "UnknownMap33",
-      false
-    ],
-    [
-      "UnknownMap35",
-      false
-    ]
-  ],
+  "attributes": "Undefined",
+  "purchasable": false,
+  "damage_type": "Unknown",
   "prettified_stats": [
     {
       "AbilityHaste": 20
@@ -73,14 +46,21 @@
       "Mana": 250
     }
   ],
-  "damage_type": "Unknown",
+  "ranged": {
+    "minimum_damage": "zero",
+    "maximum_damage": "zero"
+  },
+  "melee": {
+    "minimum_damage": "zero",
+    "maximum_damage": "zero"
+  },
   "stats": {
     "abilityPower": {
-      "flat": 0.0,
+      "flat": 125.0,
       "percent": 0.0
     },
     "armor": {
-      "flat": 0.0,
+      "flat": 10.0,
       "percent": 0.0
     },
     "armorPenetration": {
@@ -92,15 +72,15 @@
       "percent": 0.0
     },
     "attackDamage": {
-      "flat": 0.0,
+      "flat": 90.0,
       "percent": 0.0
     },
     "attackSpeed": {
-      "flat": 0.0,
+      "flat": 30.0,
       "percent": 0.0
     },
     "criticalStrikeChance": {
-      "flat": 0.0,
+      "flat": 25.0,
       "percent": 0.0
     },
     "criticalStrikeDamage": {
@@ -108,19 +88,19 @@
       "percent": 0.0
     },
     "health": {
-      "flat": 0.0,
+      "flat": 250.0,
       "percent": 0.0
     },
     "lifesteal": {
-      "flat": 0.0,
+      "flat": 10.0,
       "percent": 0.0
     },
     "magicResistance": {
-      "flat": 0.0,
+      "flat": 10.0,
       "percent": 0.0
     },
     "mana": {
-      "flat": 0.0,
+      "flat": 250.0,
       "percent": 0.0
     },
     "movespeed": {
@@ -134,14 +114,13 @@
   },
   "builds_from_riot_ids": [],
   "builds_into_riot_ids": [],
-  "ranged": {
-    "minimum_damage": "zero",
-    "maximum_damage": "zero"
-  },
-  "melee": {
-    "minimum_damage": "zero",
-    "maximum_damage": "zero"
-  },
-  "attributes": "Undefined",
-  "purchasable": false
+  "maps": {
+    "Aram": false,
+    "Arena": false,
+    "NexusBlitz": false,
+    "SummonersRift": true,
+    "Tft": false,
+    "UnknownMap33": false,
+    "UnknownMap35": false
+  }
 }

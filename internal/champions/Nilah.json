@@ -70,44 +70,41 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "_1"
+        "Q": "_1"
       },
       {
         "name": "Formless Blade",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "0 + (2 * ctx.ad)",
-          "20 + (2 * ctx.ad)",
-          "40 + (2 * ctx.ad)",
-          "60 + (2 * ctx.ad)",
-          "80 + (2 * ctx.ad)"
+          "0 + (2 * ctx.attack_damage)",
+          "20 + (2 * ctx.attack_damage)",
+          "40 + (2 * ctx.attack_damage)",
+          "60 + (2 * ctx.attack_damage)",
+          "80 + (2 * ctx.attack_damage)"
         ]
       }
     ],
     [
       {
-        "type": "Q",
-        "name": "_2"
+        "Q": "_2"
       },
       {
         "name": "Formless Blade",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "0 + ctx.ad",
-          "10 + ctx.ad",
-          "20 + ctx.ad",
-          "30 + ctx.ad",
-          "40 + ctx.ad"
+          "0 + ctx.attack_damage",
+          "10 + ctx.attack_damage",
+          "20 + ctx.attack_damage",
+          "30 + ctx.attack_damage",
+          "40 + ctx.attack_damage"
         ]
       }
     ],
     [
       {
-        "type": "E",
-        "name": "_1"
+        "E": "_1"
       },
       {
         "name": "Slipstream",
@@ -124,8 +121,7 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_1"
+        "R": "_1"
       },
       {
         "name": "Apotheosis",
@@ -140,8 +136,7 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_2"
+        "R": "_2"
       },
       {
         "name": "Apotheosis",
@@ -156,8 +151,7 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_3"
+        "R": "_3"
       },
       {
         "name": "Apotheosis",
@@ -172,8 +166,7 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_4"
+        "R": "_4"
       },
       {
         "name": "Apotheosis",

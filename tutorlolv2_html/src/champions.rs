@@ -1,8 +1,12 @@
-use crate::{ArrayItem, html::Html, parallel_task};
 use tutorlolv2_gen::{
-    ABILITY_CLOSURES, ABILITY_FORMULAS, CHAMPION_FORMULAS, CHAMPION_GENERATOR, ChampionId,
-    Position, RECOMMENDED_ITEMS, RECOMMENDED_RUNES,
+    Position,
+    champions::{
+        ABILITY_CLOSURES, ABILITY_FORMULAS, CHAMPION_FORMULAS, CHAMPION_GENERATOR, ChampionId,
+        RECOMMENDED_ITEMS, RECOMMENDED_RUNES,
+    },
 };
+
+use crate::{ArrayItem, html::Html, parallel_task};
 
 fn get_recommendations<T: ArrayItem, const N: usize, const M: usize>(
     champion_id: ChampionId,
@@ -52,10 +56,11 @@ pub async fn champions_html() {
             .into_iter()
             .enumerate()
             .map(|(i, metadata)| {
-                let lit = metadata.kind.as_const_lit();
+                let const_lit = metadata.kind.as_const_lit();
+                let lit = const_lit.trim_end_matches(".cast()");
                 let full_code = Html::code_block(ABILITY_FORMULAS[champion_id as usize][i].clone());
                 let part_code = Html::code_block(ABILITY_CLOSURES[champion_id as usize][i].clone());
-                Html::code_column(&lit, &full_code) + &Html::code_column(&lit, &part_code)
+                Html::code_column(lit, &full_code) + &Html::code_column(lit, &part_code)
             })
             .collect::<String>();
 

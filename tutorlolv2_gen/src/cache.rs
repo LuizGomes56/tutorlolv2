@@ -1,38 +1,52 @@
-use crate::{Attrs, DamageType};
-#[cfg(feature = "eval")]
-use crate::{ItemId, RuneId, eval::Ctx};
+use crate::{Attrs, Ctx, DamageType, ItemId, RuneId};
 use bincode::{Decode, Encode};
 use core::str::FromStr;
 use serde::{Deserialize, Serialize};
-#[cfg(feature = "eval")]
 use tutorlolv2_types::*;
 
 /// A champion can have either melee or ranged damage. Ranged champions
 /// often have some damage penalty for items and runes, which are considered
 /// by branching over this enum
 #[derive(
-    Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize,
+    Clone,
+    Copy,
+    Debug,
+    Default,
+    Eq,
+    Hash,
+    Ord,
+    PartialEq,
+    PartialOrd,
+    Encode,
+    Decode,
+    Serialize,
+    Deserialize,
 )]
 #[repr(u8)]
 pub enum AttackType {
+    #[default]
     Melee,
     Ranged,
 }
 
-impl<T: AsRef<str>> From<T> for AttackType {
-    fn from(s: T) -> Self {
-        match s.as_ref() {
-            "RANGED" => AttackType::Ranged,
-            _ => AttackType::Melee,
+impl FromStr for AttackType {
+    type Err = &'static str;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "RANGED" => Ok(AttackType::Ranged),
+            "MELEE" => Ok(AttackType::Melee),
+            _ => Err("No matches when calling AttackType::from_str"),
         }
     }
 }
 
-impl<T: AsRef<str>> From<T> for AdaptativeType {
-    fn from(s: T) -> Self {
-        match s.as_ref() {
-            "MAGIC_DAMAGE" => AdaptativeType::Magic,
-            _ => AdaptativeType::Physical,
+impl FromStr for AdaptativeType {
+    type Err = &'static str;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "MAGIC_DAMAGE" => Ok(AdaptativeType::Magic),
+            "PHYSICAL_DAMAGE" => Ok(AdaptativeType::Physical),
+            _ => Err("No matches when calling AdaptativeType::from_str"),
         }
     }
 }
@@ -43,10 +57,23 @@ impl<T: AsRef<str>> From<T> for AdaptativeType {
 /// stats to either `Attack Damage` or `Ability Power`. Check the enum [`StatName`]
 /// for more details about all the possibilities
 #[derive(
-    Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize,
+    Clone,
+    Copy,
+    Debug,
+    Default,
+    Eq,
+    Hash,
+    Ord,
+    PartialEq,
+    PartialOrd,
+    Encode,
+    Decode,
+    Serialize,
+    Deserialize,
 )]
 #[repr(u8)]
 pub enum AdaptativeType {
+    #[default]
     Physical,
     Magic,
 }
@@ -137,19 +164,19 @@ impl FromStr for Position {
 )]
 #[repr(u8)]
 pub enum GameMap {
-    SummonersRift,
-    Tutorial,
-    TwistedTreeline,
-    Dominion,
     Aram,
+    Arena,
     DarkStar,
+    Dominion,
     Invasion,
+    NexusBlitz,
+    Odyssey,
     Project,
     StarGuardian,
-    Odyssey,
-    NexusBlitz,
+    SummonersRift,
     Tft,
-    Arena,
+    Tutorial,
+    TwistedTreeline,
     Urf,
     #[default]
     Unknown,
@@ -157,7 +184,6 @@ pub enum GameMap {
     UnknownMap35,
 }
 
-#[cfg(feature = "eval")]
 impl GameMap {
     /// Constant conversion of a [`u8`] into a [`GameMap`] enum,
     /// where the byte represents the code of the current map
@@ -207,12 +233,10 @@ pub struct TypeMetadata<T> {
 /// more than the necessary information to calculate the damage of some ability,
 /// item, passive, or rune, and they return an [`f32`], which represents the calculated
 /// damage. All of them must be qualified as `const`, capturing no variables
-#[cfg(feature = "eval")]
 pub type ConstClosure = fn(&Ctx) -> f32;
 
 /// Generated data about some champion, held in the static variable [`crate::CHAMPION_CACHE`]
 #[derive(Clone, Copy, Debug, PartialEq, PartialOrd)]
-#[cfg(feature = "eval")]
 pub struct CachedChampion {
     /// A champion's in-game display name in `English`. This application converts
     /// names from other languages to English, but does not do the opposite, nor
@@ -298,14 +322,12 @@ pub struct CachedChampion {
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, PartialOrd, Encode, Serialize)]
-#[cfg(feature = "eval")]
 pub struct CachedChampionStatsMap {
     pub flat: f32,
     pub per_level: f32,
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, PartialOrd, Encode, Serialize)]
-#[cfg(feature = "eval")]
 pub struct CachedChampionStats {
     pub health: CachedChampionStatsMap,
     pub mana: CachedChampionStatsMap,
@@ -326,12 +348,12 @@ pub struct CachedChampionStats {
 
 /// Generated data about some item, held in the static variable [`crate::ITEM_CACHE`]
 #[derive(Clone, Copy, Debug, PartialEq, PartialOrd)]
-#[cfg(feature = "eval")]
 pub struct CachedItem {
     pub name: &'static str,
     pub tier: u8,
     pub price: u16,
     pub prettified_stats: &'static [StatName],
+    pub maps: ItemMaps,
     pub stats: CachedItemStats,
     pub metadata: TypeMetadata<ItemId>,
     pub ranged_damages: [ConstClosure; 2],
@@ -343,7 +365,6 @@ pub struct CachedItem {
 
 /// Generated data about some rune, held in the static variable [`crate::RUNE_CACHE`]
 #[derive(Clone, Copy, Debug)]
-#[cfg(feature = "eval")]
 pub struct CachedRune {
     pub name: &'static str,
     pub damage_type: DamageType,
@@ -356,7 +377,6 @@ pub struct CachedRune {
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, PartialOrd, Encode, Serialize)]
-#[cfg(feature = "eval")]
 pub struct CachedItemStats {
     pub ability_power: f32,
     pub armor: f32,
@@ -381,7 +401,17 @@ pub struct CachedItemStats {
 /// in the static variable to meet the requirements of the compiler. In the best-case
 /// scenario, this function should never be called, to avoid wasting CPU time with
 /// a compile-time known result
-#[cfg(feature = "eval")]
 pub const fn zero(_: &Ctx) -> f32 {
     0.0
+}
+
+#[derive(Clone, Copy, Debug, PartialEq, PartialOrd, Encode, Serialize)]
+pub struct ItemMaps {
+    pub aram: bool,
+    pub arena: bool,
+    pub nexus_blitz: bool,
+    pub summoners_rift: bool,
+    pub tft: bool,
+    pub unknown_map_33: bool,
+    pub unknown_map_35: bool,
 }

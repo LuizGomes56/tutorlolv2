@@ -9,9 +9,15 @@
 //! a generic parameter to the function. See its documentation
 //! for more details
 
-use crate::helpers::ability_id_mod;
-use crate::model::{Modifiers, RangeDamage};
-use tutorlolv2_gen::*;
+use crate::{
+    helpers::ability_id_mod,
+    model::{Modifiers, RangeDamage},
+};
+use tutorlolv2_gen::{
+    AttackType, CHAMPION_CACHE, CachedChampion, CachedItem, CachedRune, ChampionId, Ctx,
+    ITEM_CACHE, ItemId, RUNE_CACHE, RuneId, TypeMetadata, champions::ability_const_eval,
+    items::item_const_eval, runes::rune_const_eval,
+};
 
 /// Constant evaluation of abilities, similar to function [`crate::helpers::ability_id_eval_damage`]
 /// Let's say you're trying to evaluate the damage of Neeko, which means you'll provide

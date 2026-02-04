@@ -70,26 +70,24 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "_1"
+        "Q": "_1"
       },
       {
         "name": "Blade of the Ruined King",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "25 + (0.7 * ctx.ad)",
-          "40 + (0.7 * ctx.ad)",
-          "55 + (0.7 * ctx.ad)",
-          "70 + (0.7 * ctx.ad)",
-          "85 + (0.7 * ctx.ad)"
+          "25 + (0.7 * ctx.attack_damage)",
+          "40 + (0.7 * ctx.attack_damage)",
+          "55 + (0.7 * ctx.attack_damage)",
+          "70 + (0.7 * ctx.attack_damage)",
+          "85 + (0.7 * ctx.attack_damage)"
         ]
       }
     ],
     [
       {
-        "type": "Q",
-        "name": "_2"
+        "Q": "_2"
       },
       {
         "name": "Blade of the Ruined King",
@@ -106,8 +104,7 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_3"
+        "Q": "_3"
       },
       {
         "name": "Blade of the Ruined King",
@@ -124,26 +121,24 @@
     ],
     [
       {
-        "type": "W",
-        "name": "_1"
+        "W": "_1"
       },
       {
         "name": "Spectral Maw",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "80 + ctx.ap",
-          "135 + ctx.ap",
-          "190 + ctx.ap",
-          "245 + ctx.ap",
-          "300 + ctx.ap"
+          "80 + ctx.ability_power",
+          "135 + ctx.ability_power",
+          "190 + ctx.ability_power",
+          "245 + ctx.ability_power",
+          "300 + ctx.ability_power"
         ]
       }
     ],
     [
       {
-        "type": "R",
-        "name": "_1"
+        "R": "_1"
       },
       {
         "name": "Heartbreaker",

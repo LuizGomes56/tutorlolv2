@@ -70,15 +70,14 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "_3"
+        "Q": "_3"
       },
       {
         "name": "Javelin Toss",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "227.5 + (1.625 * ctx.ap)",
+          "227.5 + (1.625 * ctx.ability_power)",
           "292.5",
           "357.5",
           "422.5",
@@ -88,15 +87,14 @@
     ],
     [
       {
-        "type": "Q",
-        "name": "_4"
+        "Q": "_4"
       },
       {
         "name": "Javelin Toss",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "70 + (0.5 * ctx.ap)",
+          "70 + (0.5 * ctx.ability_power)",
           "90",
           "110",
           "130",
@@ -106,15 +104,14 @@
     ],
     [
       {
-        "type": "W",
-        "name": "_2"
+        "W": "_2"
       },
       {
         "name": "Bushwhack",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "40 + (0.2 * ctx.ap)",
+          "40 + (0.2 * ctx.ability_power)",
           "80",
           "120",
           "160",
@@ -124,15 +121,14 @@
     ],
     [
       {
-        "type": "W",
-        "name": "_3"
+        "W": "_3"
       },
       {
         "name": "Bushwhack",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "10 + (0.05 * ctx.ap)",
+          "10 + (0.05 * ctx.ability_power)",
           "20",
           "30",
           "40",
@@ -142,8 +138,7 @@
     ],
     [
       {
-        "type": "E",
-        "name": "_1"
+        "E": "_1"
       },
       {
         "name": "Primal Surge",

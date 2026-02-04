@@ -70,71 +70,67 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "_1"
+        "Q": "_1"
       },
       {
         "name": "Disintegrate",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "80 + (0.8 * ctx.ap)",
-          "120 + (0.8 * ctx.ap)",
-          "160 + (0.8 * ctx.ap)",
-          "200 + (0.8 * ctx.ap)",
-          "240 + (0.8 * ctx.ap)"
+          "80 + (0.8 * ctx.ability_power)",
+          "120 + (0.8 * ctx.ability_power)",
+          "160 + (0.8 * ctx.ability_power)",
+          "200 + (0.8 * ctx.ability_power)",
+          "240 + (0.8 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "W",
-        "name": "_1"
+        "W": "_1"
       },
       {
         "name": "Incinerate",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "70 + (0.8 * ctx.ap)",
-          "110 + (0.8 * ctx.ap)",
-          "150 + (0.8 * ctx.ap)",
-          "190 + (0.8 * ctx.ap)",
-          "230 + (0.8 * ctx.ap)"
+          "70 + (0.8 * ctx.ability_power)",
+          "110 + (0.8 * ctx.ability_power)",
+          "150 + (0.8 * ctx.ability_power)",
+          "190 + (0.8 * ctx.ability_power)",
+          "230 + (0.8 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "E",
-        "name": "_1"
+        "E": "_1"
       },
       {
         "name": "Molten Shield",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "25 + (0.4 * ctx.ap)",
-          "35 + (0.4 * ctx.ap)",
-          "45 + (0.4 * ctx.ap)",
-          "55 + (0.4 * ctx.ap)",
-          "65 + (0.4 * ctx.ap)"
+          "25 + (0.4 * ctx.ability_power)",
+          "35 + (0.4 * ctx.ability_power)",
+          "45 + (0.4 * ctx.ability_power)",
+          "55 + (0.4 * ctx.ability_power)",
+          "65 + (0.4 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "R",
-        "name": "_1"
+        "R": "_1"
       },
       {
         "name": "Summon: Tibbers",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "150 + (0.75 * ctx.ap)",
-          "275 + (0.75 * ctx.ap)",
-          "400 + (0.75 * ctx.ap)"
+          "150 + (0.75 * ctx.ability_power)",
+          "275 + (0.75 * ctx.ability_power)",
+          "400 + (0.75 * ctx.ability_power)"
         ]
       }
     ]

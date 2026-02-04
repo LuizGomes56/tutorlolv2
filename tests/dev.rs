@@ -1,3 +1,5 @@
+use std::process::Command;
+
 use tutorlolv2::{ChampionId, ItemId};
 use tutorlolv2_dev::{
     HTTP_CLIENT,
@@ -23,9 +25,8 @@ fn update() {
     tutorlolv2_dev::setup::update::setup_project_folders().unwrap();
     ChampionFactory::create_all().unwrap();
     ChampionFactory::run_all().unwrap();
-    tutorlolv2_dev::setup::update::setup_internal_items().unwrap();
-    tutorlolv2_dev::setup::update::prettify_internal_items().unwrap();
     ItemFactory::run_all().unwrap();
+    Command::new("./build.bat").spawn().unwrap().wait().unwrap();
 }
 
 #[tokio::test]
@@ -43,11 +44,6 @@ fn run_setup_items() {
     dotenvy::dotenv().unwrap();
     tutorlolv2_dev::setup::update::setup_internal_items().unwrap();
     prettify_items();
-}
-
-#[test]
-fn run_generate_items() {
-    ItemFactory::create_all_raw().unwrap();
 }
 
 #[test]
@@ -79,5 +75,4 @@ fn run_item_generator() {
 #[test]
 fn update_items() {
     run_setup_items();
-    run_generate_items();
 }

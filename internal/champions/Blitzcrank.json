@@ -70,51 +70,48 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "_1"
+        "Q": "_1"
       },
       {
         "name": "Rocket Grab",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "110 + (1.2 * ctx.ap)",
-          "160 + (1.2 * ctx.ap)",
-          "210 + (1.2 * ctx.ap)",
-          "260 + (1.2 * ctx.ap)",
-          "310 + (1.2 * ctx.ap)"
+          "110 + (1.2 * ctx.ability_power)",
+          "160 + (1.2 * ctx.ability_power)",
+          "210 + (1.2 * ctx.ability_power)",
+          "260 + (1.2 * ctx.ability_power)",
+          "310 + (1.2 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "type": "R",
-        "name": "_1"
+        "R": "_1"
       },
       {
         "name": "Static Field",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "275 + ctx.ap",
-          "400 + ctx.ap",
-          "525 + ctx.ap"
+          "275 + ctx.ability_power",
+          "400 + ctx.ability_power",
+          "525 + ctx.ability_power"
         ]
       }
     ],
     [
       {
-        "type": "R",
-        "name": "_2"
+        "R": "_2"
       },
       {
         "name": "Static Field",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "50 + (0.3 * ctx.ap) + (0.02 * ctx.max_mana)",
-          "100 + (0.4 * ctx.ap) + (0.02 * ctx.max_mana)",
-          "150 + (0.5 * ctx.ap) + (0.02 * ctx.max_mana)"
+          "50 + (0.3 * ctx.ability_power) + (0.02 * ctx.max_mana)",
+          "100 + (0.4 * ctx.ability_power) + (0.02 * ctx.max_mana)",
+          "150 + (0.5 * ctx.ability_power) + (0.02 * ctx.max_mana)"
         ]
       }
     ]

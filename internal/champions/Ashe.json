@@ -71,44 +71,41 @@
   "abilities": [
     [
       {
-        "type": "Q",
-        "name": "_1"
+        "Q": "_1"
       },
       {
         "name": "Ranger's Focus",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "(0.22 * ctx.ad)",
-          "(0.235 * ctx.ad)",
-          "(0.25 * ctx.ad)",
-          "(0.265 * ctx.ad)",
-          "(0.28 * ctx.ad)"
+          "(0.22 * ctx.attack_damage)",
+          "(0.235 * ctx.attack_damage)",
+          "(0.25 * ctx.attack_damage)",
+          "(0.265 * ctx.attack_damage)",
+          "(0.28 * ctx.attack_damage)"
         ]
       }
     ],
     [
       {
-        "type": "Q",
-        "name": "_2"
+        "Q": "_2"
       },
       {
         "name": "Ranger's Focus",
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "(1.1 * ctx.ad)",
-          "(1.175 * ctx.ad)",
-          "(1.25 * ctx.ad)",
-          "(1.325 * ctx.ad)",
-          "(1.4 * ctx.ad)"
+          "(1.1 * ctx.attack_damage)",
+          "(1.175 * ctx.attack_damage)",
+          "(1.25 * ctx.attack_damage)",
+          "(1.325 * ctx.attack_damage)",
+          "(1.4 * ctx.attack_damage)"
         ]
       }
     ],
     [
       {
-        "type": "W",
-        "name": "_1"
+        "W": "_1"
       },
       {
         "name": "Volley",
@@ -125,17 +122,16 @@
     ],
     [
       {
-        "type": "R",
-        "name": "_1"
+        "R": "_1"
       },
       {
         "name": "Enchanted Crystal Arrow",
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "200 + (1.2 * ctx.ap)",
-          "400 + (1.2 * ctx.ap)",
-          "600 + (1.2 * ctx.ap)"
+          "200 + (1.2 * ctx.ability_power)",
+          "400 + (1.2 * ctx.ability_power)",
+          "600 + (1.2 * ctx.ability_power)"
         ]
       }
     ]

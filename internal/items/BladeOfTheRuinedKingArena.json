@@ -5,36 +5,9 @@
   "price": 2500,
   "sell": 1250,
   "tier": 0,
-  "maps": [
-    [
-      "SummonersRift",
-      false
-    ],
-    [
-      "Aram",
-      false
-    ],
-    [
-      "NexusBlitz",
-      false
-    ],
-    [
-      "Tft",
-      false
-    ],
-    [
-      "Arena",
-      true
-    ],
-    [
-      "UnknownMap33",
-      false
-    ],
-    [
-      "UnknownMap35",
-      false
-    ]
-  ],
+  "attributes": "Undefined",
+  "purchasable": true,
+  "damage_type": "Physical",
   "prettified_stats": [
     {
       "AttackDamage": 30
@@ -46,7 +19,14 @@
       "LifeSteal": 10
     }
   ],
-  "damage_type": "Physical",
+  "ranged": {
+    "minimum_damage": "ctx.enemy_health - ((0.06 * ctx.enemy_health * (1 - 0.06 * ctx.physical_multiplier) - ctx.attack_damage + ctx.attack_damage * (1 - 0.06 * ctx.physical_multiplier)) / 0.06)",
+    "maximum_damage": "zero"
+  },
+  "melee": {
+    "minimum_damage": "ctx.enemy_health - ((0.09 * ctx.enemy_health * (1 - 0.09 * ctx.physical_multiplier) - ctx.attack_damage + ctx.attack_damage * (1 - 0.09 * ctx.physical_multiplier)) / 0.09)",
+    "maximum_damage": "zero"
+  },
   "stats": {
     "abilityPower": {
       "flat": 0.0,
@@ -107,14 +87,13 @@
   },
   "builds_from_riot_ids": [],
   "builds_into_riot_ids": [],
-  "ranged": {
-    "minimum_damage": "ctx.enemy_health - ((0.06 * ctx.enemy_health * (1 - 0.06 * ctx.physical_multiplier) - ctx.ad + ctx.ad * (1 - 0.06 * ctx.physical_multiplier)) / 0.06)",
-    "maximum_damage": "zero"
-  },
-  "melee": {
-    "minimum_damage": "ctx.enemy_health - ((0.09 * ctx.enemy_health * (1 - 0.09 * ctx.physical_multiplier) - ctx.ad + ctx.ad * (1 - 0.09 * ctx.physical_multiplier)) / 0.09)",
-    "maximum_damage": "zero"
-  },
-  "attributes": "Undefined",
-  "purchasable": true
+  "maps": {
+    "Aram": false,
+    "Arena": true,
+    "NexusBlitz": false,
+    "SummonersRift": false,
+    "Tft": false,
+    "UnknownMap33": false,
+    "UnknownMap35": false
+  }
 }

@@ -15,33 +15,43 @@ macro_rules! ability_name {
 
         #[derive(Clone, Copy)]
         pub enum P { $($field),+ }
-        impl Into<AbilityId> for P { fn into(self) -> AbilityId { match self {
+        impl P {
+            pub const fn cast(self) -> AbilityId { match self {
             $(P::$field => AbilityId::P(AbilityName::$field)),+ } }
         }
+        impl Into<AbilityId> for P { fn into(self) -> AbilityId { self.cast() } }
 
         #[derive(Clone, Copy)]
         pub enum Q { $($field),+ }
-        impl Into<AbilityId> for Q { fn into(self) -> AbilityId { match self {
+        impl Q {
+            pub const fn cast(self) -> AbilityId { match self {
             $(Q::$field => AbilityId::Q(AbilityName::$field)),+ } }
         }
+        impl Into<AbilityId> for Q { fn into(self) -> AbilityId { self.cast() } }
 
         #[derive(Clone, Copy)]
         pub enum W { $($field),+ }
-        impl Into<AbilityId> for W { fn into(self) -> AbilityId { match self {
+        impl W {
+            pub const fn cast(self) -> AbilityId { match self {
             $(W::$field => AbilityId::W(AbilityName::$field)),+ } }
         }
+        impl Into<AbilityId> for W { fn into(self) -> AbilityId { self.cast() } }
 
         #[derive(Clone, Copy)]
         pub enum E { $($field),+ }
-        impl Into<AbilityId> for E { fn into(self) -> AbilityId { match self {
+        impl E {
+            pub const fn cast(self) -> AbilityId { match self {
             $(E::$field => AbilityId::E(AbilityName::$field)),+ } }
         }
+        impl Into<AbilityId> for E { fn into(self) -> AbilityId { self.cast() } }
 
         #[derive(Clone, Copy)]
         pub enum R { $($field),+ }
-        impl Into<AbilityId> for R { fn into(self) -> AbilityId { match self {
+        impl R {
+            pub const fn cast(self) -> AbilityId { match self {
             $(R::$field => AbilityId::R(AbilityName::$field)),+ } }
         }
+        impl Into<AbilityId> for R { fn into(self) -> AbilityId { self.cast() } }
     };
 }
 
