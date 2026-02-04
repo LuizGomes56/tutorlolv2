@@ -128,11 +128,11 @@
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "80 + ctx.bonus_ad + (0.8 * ctx.ap)",
-          "120 + ctx.bonus_ad + (0.8 * ctx.ap)",
-          "160 + ctx.bonus_ad + (0.8 * ctx.ap)",
-          "200 + ctx.bonus_ad + (0.8 * ctx.ap)",
-          "240 + ctx.bonus_ad + (0.8 * ctx.ap)"
+          "80 + ctx.bonus_ad + (0.8 * ctx.ability_power)",
+          "120 + ctx.bonus_ad + (0.8 * ctx.ability_power)",
+          "160 + ctx.bonus_ad + (0.8 * ctx.ability_power)",
+          "200 + ctx.bonus_ad + (0.8 * ctx.ability_power)",
+          "240 + ctx.bonus_ad + (0.8 * ctx.ability_power)"
         ]
       }
     ]

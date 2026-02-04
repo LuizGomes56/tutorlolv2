@@ -11,7 +11,7 @@ impl Generator<ItemData> for BladeOfTheRuinedKing {
             format!(
                 "{EnemyHealth} - ({numerator} / {scaling})",
                 numerator = format_args!(
-                    "({scaling} * {EnemyHealth} * {modifier} - {Ad} + {Ad} * {modifier})",
+                    "({scaling} * {EnemyHealth} * {modifier} - {AttackDamage} + {AttackDamage} * {modifier})",
                     modifier = format_args!("(1 - {scaling} * {PhysicalMultiplier})"),
                 ),
             )

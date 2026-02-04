@@ -78,11 +78,11 @@
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "20 + (0.3333 * ctx.ap) + (0.02 * ctx.enemy_max_health)",
-          "28.33 + (0.3333 * ctx.ap) + (0.02167 * ctx.enemy_max_health)",
-          "36.67 + (0.3333 * ctx.ap) + (0.023330000000000004 * ctx.enemy_max_health)",
-          "45 + (0.3333 * ctx.ap) + (0.025 * ctx.enemy_max_health)",
-          "53.33 + (0.3333 * ctx.ap) + (0.02667 * ctx.enemy_max_health)"
+          "20 + (0.3333 * ctx.ability_power) + (0.02 * ctx.enemy_max_health)",
+          "28.33 + (0.3333 * ctx.ability_power) + (0.02167 * ctx.enemy_max_health)",
+          "36.67 + (0.3333 * ctx.ability_power) + (0.023330000000000004 * ctx.enemy_max_health)",
+          "45 + (0.3333 * ctx.ability_power) + (0.025 * ctx.enemy_max_health)",
+          "53.33 + (0.3333 * ctx.ability_power) + (0.02667 * ctx.enemy_max_health)"
         ]
       }
     ],
@@ -95,11 +95,11 @@
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "5 + (0.08333 * ctx.ap) + (0.005 * ctx.enemy_max_health)",
-          "7.083 + (0.08333 * ctx.ap) + (0.00542 * ctx.enemy_max_health)",
-          "9.167 + (0.08333 * ctx.ap) + (0.005829999999999999 * ctx.enemy_max_health)",
-          "11.25 + (0.08333 * ctx.ap) + (0.00625 * ctx.enemy_max_health)",
-          "13.333 + (0.08333 * ctx.ap) + (0.006670000000000001 * ctx.enemy_max_health)"
+          "5 + (0.08333 * ctx.ability_power) + (0.005 * ctx.enemy_max_health)",
+          "7.083 + (0.08333 * ctx.ability_power) + (0.00542 * ctx.enemy_max_health)",
+          "9.167 + (0.08333 * ctx.ability_power) + (0.005829999999999999 * ctx.enemy_max_health)",
+          "11.25 + (0.08333 * ctx.ability_power) + (0.00625 * ctx.enemy_max_health)",
+          "13.333 + (0.08333 * ctx.ability_power) + (0.006670000000000001 * ctx.enemy_max_health)"
         ]
       }
     ],
@@ -112,11 +112,11 @@
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "75 + (1.25 * ctx.ap) + (0.075 * ctx.enemy_max_health)",
-          "106.25 + (1.25 * ctx.ap) + (0.08130000000000001 * ctx.enemy_max_health)",
-          "137.5 + (1.25 * ctx.ap) + (0.0875 * ctx.enemy_max_health)",
-          "168.75 + (1.25 * ctx.ap) + (0.09380000000000001 * ctx.enemy_max_health)",
-          "200 + (1.25 * ctx.ap) + (0.1 * ctx.enemy_max_health)"
+          "75 + (1.25 * ctx.ability_power) + (0.075 * ctx.enemy_max_health)",
+          "106.25 + (1.25 * ctx.ability_power) + (0.08130000000000001 * ctx.enemy_max_health)",
+          "137.5 + (1.25 * ctx.ability_power) + (0.0875 * ctx.enemy_max_health)",
+          "168.75 + (1.25 * ctx.ability_power) + (0.09380000000000001 * ctx.enemy_max_health)",
+          "200 + (1.25 * ctx.ability_power) + (0.1 * ctx.enemy_max_health)"
         ]
       }
     ],
@@ -129,11 +129,11 @@
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "52.5 + (0.875 * ctx.ap) + (0.0525 * ctx.enemy_max_health)",
-          "74.38 + (0.875 * ctx.ap) + (0.056900000000000006 * ctx.enemy_max_health)",
-          "96.25 + (0.875 * ctx.ap) + (0.0613 * ctx.enemy_max_health)",
-          "118.13 + (0.875 * ctx.ap) + (0.06559999999999999 * ctx.enemy_max_health)",
-          "140 + (0.875 * ctx.ap) + (0.07 * ctx.enemy_max_health)"
+          "52.5 + (0.875 * ctx.ability_power) + (0.0525 * ctx.enemy_max_health)",
+          "74.38 + (0.875 * ctx.ability_power) + (0.056900000000000006 * ctx.enemy_max_health)",
+          "96.25 + (0.875 * ctx.ability_power) + (0.0613 * ctx.enemy_max_health)",
+          "118.13 + (0.875 * ctx.ability_power) + (0.06559999999999999 * ctx.enemy_max_health)",
+          "140 + (0.875 * ctx.ability_power) + (0.07 * ctx.enemy_max_health)"
         ]
       }
     ],
@@ -146,11 +146,11 @@
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "15 + (0.25 * ctx.ap) + (0.015 * ctx.enemy_max_health)",
-          "21.25 + (0.25 * ctx.ap) + (0.01625 * ctx.enemy_max_health)",
-          "27.5 + (0.25 * ctx.ap) + (0.0175 * ctx.enemy_max_health)",
-          "33.75 + (0.25 * ctx.ap) + (0.01875 * ctx.enemy_max_health)",
-          "40 + (0.25 * ctx.ap) + (0.02 * ctx.enemy_max_health)"
+          "15 + (0.25 * ctx.ability_power) + (0.015 * ctx.enemy_max_health)",
+          "21.25 + (0.25 * ctx.ability_power) + (0.01625 * ctx.enemy_max_health)",
+          "27.5 + (0.25 * ctx.ability_power) + (0.0175 * ctx.enemy_max_health)",
+          "33.75 + (0.25 * ctx.ability_power) + (0.01875 * ctx.enemy_max_health)",
+          "40 + (0.25 * ctx.ability_power) + (0.02 * ctx.enemy_max_health)"
         ]
       }
     ],
@@ -163,11 +163,11 @@
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "10.5 + (0.175 * ctx.ap) + (0.0105 * ctx.enemy_max_health)",
-          "14.88 + (0.175 * ctx.ap) + (0.011399999999999999 * ctx.enemy_max_health)",
-          "19.25 + (0.175 * ctx.ap) + (0.0123 * ctx.enemy_max_health)",
-          "23.63 + (0.175 * ctx.ap) + (0.0131 * ctx.enemy_max_health)",
-          "28 + (0.175 * ctx.ap) + (0.013999999999999999 * ctx.enemy_max_health)"
+          "10.5 + (0.175 * ctx.ability_power) + (0.0105 * ctx.enemy_max_health)",
+          "14.88 + (0.175 * ctx.ability_power) + (0.011399999999999999 * ctx.enemy_max_health)",
+          "19.25 + (0.175 * ctx.ability_power) + (0.0123 * ctx.enemy_max_health)",
+          "23.63 + (0.175 * ctx.ability_power) + (0.0131 * ctx.enemy_max_health)",
+          "28 + (0.175 * ctx.ability_power) + (0.013999999999999999 * ctx.enemy_max_health)"
         ]
       }
     ],
@@ -180,11 +180,11 @@
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "14 + (0.23329999999999998 * ctx.ap) + (0.013999999999999999 * ctx.enemy_max_health)",
-          "19.83 + (0.23329999999999998 * ctx.ap) + (0.0152 * ctx.enemy_max_health)",
-          "25.67 + (0.23329999999999998 * ctx.ap) + (0.0163 * ctx.enemy_max_health)",
-          "31.5 + (0.23329999999999998 * ctx.ap) + (0.0175 * ctx.enemy_max_health)",
-          "37.33 + (0.23329999999999998 * ctx.ap) + (0.0187 * ctx.enemy_max_health)"
+          "14 + (0.23329999999999998 * ctx.ability_power) + (0.013999999999999999 * ctx.enemy_max_health)",
+          "19.83 + (0.23329999999999998 * ctx.ability_power) + (0.0152 * ctx.enemy_max_health)",
+          "25.67 + (0.23329999999999998 * ctx.ability_power) + (0.0163 * ctx.enemy_max_health)",
+          "31.5 + (0.23329999999999998 * ctx.ability_power) + (0.0175 * ctx.enemy_max_health)",
+          "37.33 + (0.23329999999999998 * ctx.ability_power) + (0.0187 * ctx.enemy_max_health)"
         ]
       }
     ],
@@ -197,11 +197,11 @@
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "3.5 + (0.05833 * ctx.ap) + (0.0034999999999999996 * ctx.enemy_max_health)",
-          "4.958 + (0.05833 * ctx.ap) + (0.00379 * ctx.enemy_max_health)",
-          "6.417 + (0.05833 * ctx.ap) + (0.004079999999999999 * ctx.enemy_max_health)",
-          "7.875 + (0.05833 * ctx.ap) + (0.00438 * ctx.enemy_max_health)",
-          "9.333 + (0.05833 * ctx.ap) + (0.0046700000000000005 * ctx.enemy_max_health)"
+          "3.5 + (0.05833 * ctx.ability_power) + (0.0034999999999999996 * ctx.enemy_max_health)",
+          "4.958 + (0.05833 * ctx.ability_power) + (0.00379 * ctx.enemy_max_health)",
+          "6.417 + (0.05833 * ctx.ability_power) + (0.004079999999999999 * ctx.enemy_max_health)",
+          "7.875 + (0.05833 * ctx.ability_power) + (0.00438 * ctx.enemy_max_health)",
+          "9.333 + (0.05833 * ctx.ability_power) + (0.0046700000000000005 * ctx.enemy_max_health)"
         ]
       }
     ],
@@ -214,11 +214,11 @@
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "30 + (0.5 * ctx.ap) + (0.03 * ctx.enemy_max_health)",
-          "42.5 + (0.5 * ctx.ap) + (0.0325 * ctx.enemy_max_health)",
-          "55 + (0.5 * ctx.ap) + (0.035 * ctx.enemy_max_health)",
-          "67.5 + (0.5 * ctx.ap) + (0.0375 * ctx.enemy_max_health)",
-          "80 + (0.5 * ctx.ap) + (0.04 * ctx.enemy_max_health)"
+          "30 + (0.5 * ctx.ability_power) + (0.03 * ctx.enemy_max_health)",
+          "42.5 + (0.5 * ctx.ability_power) + (0.0325 * ctx.enemy_max_health)",
+          "55 + (0.5 * ctx.ability_power) + (0.035 * ctx.enemy_max_health)",
+          "67.5 + (0.5 * ctx.ability_power) + (0.0375 * ctx.enemy_max_health)",
+          "80 + (0.5 * ctx.ability_power) + (0.04 * ctx.enemy_max_health)"
         ]
       }
     ],
@@ -231,11 +231,11 @@
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "7.5 + (0.125 * ctx.ap) + (0.0075 * ctx.enemy_max_health)",
-          "10.625 + (0.125 * ctx.ap) + (0.00813 * ctx.enemy_max_health)",
-          "13.75 + (0.125 * ctx.ap) + (0.00875 * ctx.enemy_max_health)",
-          "16.875 + (0.125 * ctx.ap) + (0.00938 * ctx.enemy_max_health)",
-          "20 + (0.125 * ctx.ap) + (0.01 * ctx.enemy_max_health)"
+          "7.5 + (0.125 * ctx.ability_power) + (0.0075 * ctx.enemy_max_health)",
+          "10.625 + (0.125 * ctx.ability_power) + (0.00813 * ctx.enemy_max_health)",
+          "13.75 + (0.125 * ctx.ability_power) + (0.00875 * ctx.enemy_max_health)",
+          "16.875 + (0.125 * ctx.ability_power) + (0.00938 * ctx.enemy_max_health)",
+          "20 + (0.125 * ctx.ability_power) + (0.01 * ctx.enemy_max_health)"
         ]
       }
     ],
@@ -248,11 +248,11 @@
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "21 + (0.35 * ctx.ap) + (0.021 * ctx.enemy_max_health)",
-          "29.75 + (0.35 * ctx.ap) + (0.02275 * ctx.enemy_max_health)",
-          "38.5 + (0.35 * ctx.ap) + (0.0245 * ctx.enemy_max_health)",
-          "47.25 + (0.35 * ctx.ap) + (0.02625 * ctx.enemy_max_health)",
-          "56 + (0.35 * ctx.ap) + (0.027999999999999997 * ctx.enemy_max_health)"
+          "21 + (0.35 * ctx.ability_power) + (0.021 * ctx.enemy_max_health)",
+          "29.75 + (0.35 * ctx.ability_power) + (0.02275 * ctx.enemy_max_health)",
+          "38.5 + (0.35 * ctx.ability_power) + (0.0245 * ctx.enemy_max_health)",
+          "47.25 + (0.35 * ctx.ability_power) + (0.02625 * ctx.enemy_max_health)",
+          "56 + (0.35 * ctx.ability_power) + (0.027999999999999997 * ctx.enemy_max_health)"
         ]
       }
     ],
@@ -265,11 +265,11 @@
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "5.25 + (0.0875 * ctx.ap) + (0.00525 * ctx.enemy_max_health)",
-          "7.438 + (0.0875 * ctx.ap) + (0.00569 * ctx.enemy_max_health)",
-          "9.625 + (0.0875 * ctx.ap) + (0.00613 * ctx.enemy_max_health)",
-          "11.813 + (0.0875 * ctx.ap) + (0.00656 * ctx.enemy_max_health)",
-          "14 + (0.0875 * ctx.ap) + (0.006999999999999999 * ctx.enemy_max_health)"
+          "5.25 + (0.0875 * ctx.ability_power) + (0.00525 * ctx.enemy_max_health)",
+          "7.438 + (0.0875 * ctx.ability_power) + (0.00569 * ctx.enemy_max_health)",
+          "9.625 + (0.0875 * ctx.ability_power) + (0.00613 * ctx.enemy_max_health)",
+          "11.813 + (0.0875 * ctx.ability_power) + (0.00656 * ctx.enemy_max_health)",
+          "14 + (0.0875 * ctx.ability_power) + (0.006999999999999999 * ctx.enemy_max_health)"
         ]
       }
     ],
@@ -282,11 +282,11 @@
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "112.5 + (1.875 * ctx.ap) + (0.1125 * ctx.enemy_max_health)",
-          "159.38 + (1.875 * ctx.ap) + (0.1219 * ctx.enemy_max_health)",
-          "206.25 + (1.875 * ctx.ap) + (0.1313 * ctx.enemy_max_health)",
-          "253.13 + (1.875 * ctx.ap) + (0.1406 * ctx.enemy_max_health)",
-          "300 + (1.875 * ctx.ap) + (0.15 * ctx.enemy_max_health)"
+          "112.5 + (1.875 * ctx.ability_power) + (0.1125 * ctx.enemy_max_health)",
+          "159.38 + (1.875 * ctx.ability_power) + (0.1219 * ctx.enemy_max_health)",
+          "206.25 + (1.875 * ctx.ability_power) + (0.1313 * ctx.enemy_max_health)",
+          "253.13 + (1.875 * ctx.ability_power) + (0.1406 * ctx.enemy_max_health)",
+          "300 + (1.875 * ctx.ability_power) + (0.15 * ctx.enemy_max_health)"
         ]
       }
     ],
@@ -299,11 +299,11 @@
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "78.75 + (1.3125 * ctx.ap) + (0.0788 * ctx.enemy_max_health)",
-          "124.69 + (1.3125 * ctx.ap) + (0.08529999999999999 * ctx.enemy_max_health)",
-          "170.63 + (1.3125 * ctx.ap) + (0.0919 * ctx.enemy_max_health)",
-          "216.56 + (1.3125 * ctx.ap) + (0.0984 * ctx.enemy_max_health)",
-          "262.5 + (1.3125 * ctx.ap) + (0.105 * ctx.enemy_max_health)"
+          "78.75 + (1.3125 * ctx.ability_power) + (0.0788 * ctx.enemy_max_health)",
+          "124.69 + (1.3125 * ctx.ability_power) + (0.08529999999999999 * ctx.enemy_max_health)",
+          "170.63 + (1.3125 * ctx.ability_power) + (0.0919 * ctx.enemy_max_health)",
+          "216.56 + (1.3125 * ctx.ability_power) + (0.0984 * ctx.enemy_max_health)",
+          "262.5 + (1.3125 * ctx.ability_power) + (0.105 * ctx.enemy_max_health)"
         ]
       }
     ],
@@ -316,11 +316,11 @@
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "22.5 + (0.375 * ctx.ap) + (0.0225 * ctx.enemy_max_health)",
-          "31.875 + (0.375 * ctx.ap) + (0.024380000000000002 * ctx.enemy_max_health)",
-          "41.25 + (0.375 * ctx.ap) + (0.02625 * ctx.enemy_max_health)",
-          "50.625 + (0.375 * ctx.ap) + (0.028130000000000002 * ctx.enemy_max_health)",
-          "60 + (0.375 * ctx.ap) + (0.03 * ctx.enemy_max_health)"
+          "22.5 + (0.375 * ctx.ability_power) + (0.0225 * ctx.enemy_max_health)",
+          "31.875 + (0.375 * ctx.ability_power) + (0.024380000000000002 * ctx.enemy_max_health)",
+          "41.25 + (0.375 * ctx.ability_power) + (0.02625 * ctx.enemy_max_health)",
+          "50.625 + (0.375 * ctx.ability_power) + (0.028130000000000002 * ctx.enemy_max_health)",
+          "60 + (0.375 * ctx.ability_power) + (0.03 * ctx.enemy_max_health)"
         ]
       }
     ],
@@ -333,11 +333,11 @@
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "15.75 + (0.2625 * ctx.ap) + (0.01575 * ctx.enemy_max_health)",
-          "22.313 + (0.2625 * ctx.ap) + (0.01706 * ctx.enemy_max_health)",
-          "28.875 + (0.2625 * ctx.ap) + (0.01838 * ctx.enemy_max_health)",
-          "35.438 + (0.2625 * ctx.ap) + (0.01969 * ctx.enemy_max_health)",
-          "42 + (0.2625 * ctx.ap) + (0.021 * ctx.enemy_max_health)"
+          "15.75 + (0.2625 * ctx.ability_power) + (0.01575 * ctx.enemy_max_health)",
+          "22.313 + (0.2625 * ctx.ability_power) + (0.01706 * ctx.enemy_max_health)",
+          "28.875 + (0.2625 * ctx.ability_power) + (0.01838 * ctx.enemy_max_health)",
+          "35.438 + (0.2625 * ctx.ability_power) + (0.01969 * ctx.enemy_max_health)",
+          "42 + (0.2625 * ctx.ability_power) + (0.021 * ctx.enemy_max_health)"
         ]
       }
     ],
@@ -350,11 +350,11 @@
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "55 + (0.5 * ctx.ap)",
-          "80 + (0.5 * ctx.ap)",
-          "105 + (0.5 * ctx.ap)",
-          "130 + (0.5 * ctx.ap)",
-          "155 + (0.5 * ctx.ap)"
+          "55 + (0.5 * ctx.ability_power)",
+          "80 + (0.5 * ctx.ability_power)",
+          "105 + (0.5 * ctx.ability_power)",
+          "130 + (0.5 * ctx.ability_power)",
+          "155 + (0.5 * ctx.ability_power)"
         ]
       }
     ],
@@ -367,11 +367,11 @@
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "110 + ctx.ap",
-          "160 + ctx.ap",
-          "210 + ctx.ap",
-          "260 + ctx.ap",
-          "310 + ctx.ap"
+          "110 + ctx.ability_power",
+          "160 + ctx.ability_power",
+          "210 + ctx.ability_power",
+          "260 + ctx.ability_power",
+          "310 + ctx.ability_power"
         ]
       }
     ],
@@ -384,11 +384,11 @@
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "82.5 + (0.75 * ctx.ap)",
-          "120 + (0.75 * ctx.ap)",
-          "157.5 + (0.75 * ctx.ap)",
-          "195 + (0.75 * ctx.ap)",
-          "232.5 + (0.75 * ctx.ap)"
+          "82.5 + (0.75 * ctx.ability_power)",
+          "120 + (0.75 * ctx.ability_power)",
+          "157.5 + (0.75 * ctx.ability_power)",
+          "195 + (0.75 * ctx.ability_power)",
+          "232.5 + (0.75 * ctx.ability_power)"
         ]
       }
     ],
@@ -401,11 +401,11 @@
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "165 + (1.5 * ctx.ap)",
-          "240 + (1.5 * ctx.ap)",
-          "315 + (1.5 * ctx.ap)",
-          "390 + (1.5 * ctx.ap)",
-          "465 + (1.5 * ctx.ap)"
+          "165 + (1.5 * ctx.ability_power)",
+          "240 + (1.5 * ctx.ability_power)",
+          "315 + (1.5 * ctx.ability_power)",
+          "390 + (1.5 * ctx.ability_power)",
+          "465 + (1.5 * ctx.ability_power)"
         ]
       }
     ],
@@ -418,9 +418,9 @@
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "140 + (0.35 * ctx.ap)",
-          "210 + (0.35 * ctx.ap)",
-          "280 + (0.35 * ctx.ap)"
+          "140 + (0.35 * ctx.ability_power)",
+          "210 + (0.35 * ctx.ability_power)",
+          "280 + (0.35 * ctx.ability_power)"
         ]
       }
     ],
@@ -433,9 +433,9 @@
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "35 + (0.0875 * ctx.ap)",
-          "52.5 + (0.0875 * ctx.ap)",
-          "70 + (0.0875 * ctx.ap)"
+          "35 + (0.0875 * ctx.ability_power)",
+          "52.5 + (0.0875 * ctx.ability_power)",
+          "70 + (0.0875 * ctx.ability_power)"
         ]
       }
     ],
@@ -448,9 +448,9 @@
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "700 + (1.75 * ctx.ap)",
-          "1050 + (1.75 * ctx.ap)",
-          "1400 + (1.75 * ctx.ap)"
+          "700 + (1.75 * ctx.ability_power)",
+          "1050 + (1.75 * ctx.ability_power)",
+          "1400 + (1.75 * ctx.ability_power)"
         ]
       }
     ]

@@ -129,9 +129,9 @@
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "ctx.ad + (0.25 * 100.0)",
-          "ctx.ad + (0.4 * 100.0)",
-          "ctx.ad + (0.55 * 100.0)"
+          "ctx.attack_damage + (0.25 * 100.0)",
+          "ctx.attack_damage + (0.4 * 100.0)",
+          "ctx.attack_damage + (0.55 * 100.0)"
         ]
       }
     ]

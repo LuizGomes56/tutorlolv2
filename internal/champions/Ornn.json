@@ -77,11 +77,11 @@
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "20 + (1.1 * ctx.ad)",
-          "45 + (1.1 * ctx.ad)",
-          "70 + (1.1 * ctx.ad)",
-          "95 + (1.1 * ctx.ad)",
-          "120 + (1.1 * ctx.ad)"
+          "20 + (1.1 * ctx.attack_damage)",
+          "45 + (1.1 * ctx.attack_damage)",
+          "70 + (1.1 * ctx.attack_damage)",
+          "95 + (1.1 * ctx.attack_damage)",
+          "120 + (1.1 * ctx.attack_damage)"
         ]
       }
     ],
@@ -213,9 +213,9 @@
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "125 + (0.2 * ctx.ap)",
-          "175 + (0.2 * ctx.ap)",
-          "225 + (0.2 * ctx.ap)"
+          "125 + (0.2 * ctx.ability_power)",
+          "175 + (0.2 * ctx.ability_power)",
+          "225 + (0.2 * ctx.ability_power)"
         ]
       }
     ],
@@ -228,9 +228,9 @@
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "250 + (0.4 * ctx.ap)",
-          "350 + (0.4 * ctx.ap)",
-          "450 + (0.4 * ctx.ap)"
+          "250 + (0.4 * ctx.ability_power)",
+          "350 + (0.4 * ctx.ability_power)",
+          "450 + (0.4 * ctx.ability_power)"
         ]
       }
     ]

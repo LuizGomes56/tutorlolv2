@@ -77,11 +77,11 @@
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "10 + (1.05 * ctx.ad)",
-          "75 + (1.05 * ctx.ad)",
-          "140 + (1.05 * ctx.ad)",
-          "205 + (1.05 * ctx.ad)",
-          "270 + (1.05 * ctx.ad)"
+          "10 + (1.05 * ctx.attack_damage)",
+          "75 + (1.05 * ctx.attack_damage)",
+          "140 + (1.05 * ctx.attack_damage)",
+          "205 + (1.05 * ctx.attack_damage)",
+          "270 + (1.05 * ctx.attack_damage)"
         ]
       }
     ],

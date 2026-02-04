@@ -41,7 +41,8 @@ impl MerakiAbility {
     pub fn format(&self, damage: Vec<String>) -> Ability {
         Ability {
             name: self.name.clone(),
-            damage_type: DamageType::from(self.damage_type.clone().unwrap_or_default()),
+            damage_type: DamageType::from_str(self.damage_type.as_deref().unwrap_or_default())
+                .unwrap_or_default(),
             attributes: Attrs::Undefined,
             damage,
         }

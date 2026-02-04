@@ -78,11 +78,11 @@
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "(0.06 * ctx.enemy_max_health) + (1.2 * ctx.ad) + ctx.ap",
-          "(0.07 * ctx.enemy_max_health) + (1.2 * ctx.ad) + ctx.ap",
-          "(0.08 * ctx.enemy_max_health) + (1.2 * ctx.ad) + ctx.ap",
-          "(0.09 * ctx.enemy_max_health) + (1.2 * ctx.ad) + ctx.ap",
-          "(0.1 * ctx.enemy_max_health) + (1.2 * ctx.ad) + ctx.ap"
+          "(0.06 * ctx.enemy_max_health) + (1.2 * ctx.attack_damage) + ctx.ability_power",
+          "(0.07 * ctx.enemy_max_health) + (1.2 * ctx.attack_damage) + ctx.ability_power",
+          "(0.08 * ctx.enemy_max_health) + (1.2 * ctx.attack_damage) + ctx.ability_power",
+          "(0.09 * ctx.enemy_max_health) + (1.2 * ctx.attack_damage) + ctx.ability_power",
+          "(0.1 * ctx.enemy_max_health) + (1.2 * ctx.attack_damage) + ctx.ability_power"
         ]
       }
     ],
@@ -95,11 +95,11 @@
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "150 + (1.2 * ctx.ad) + ctx.ap",
-          "165 + (1.2 * ctx.ad) + ctx.ap",
-          "180 + (1.2 * ctx.ad) + ctx.ap",
-          "195 + (1.2 * ctx.ad) + ctx.ap",
-          "210 + (1.2 * ctx.ad) + ctx.ap"
+          "150 + (1.2 * ctx.attack_damage) + ctx.ability_power",
+          "165 + (1.2 * ctx.attack_damage) + ctx.ability_power",
+          "180 + (1.2 * ctx.attack_damage) + ctx.ability_power",
+          "195 + (1.2 * ctx.attack_damage) + ctx.ability_power",
+          "210 + (1.2 * ctx.attack_damage) + ctx.ability_power"
         ]
       }
     ],

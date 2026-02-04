@@ -77,7 +77,7 @@
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "50 + (0.4 * ctx.ap)",
+          "50 + (0.4 * ctx.ability_power)",
           "85",
           "120",
           "155",
@@ -94,7 +94,7 @@
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "10 + (0.1 * ctx.ap)",
+          "10 + (0.1 * ctx.ability_power)",
           "15",
           "20",
           "25",
@@ -128,9 +128,9 @@
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "150 + (0.5 * ctx.ap)",
-          "250 + (0.5 * ctx.ap)",
-          "350 + (0.5 * ctx.ap)"
+          "150 + (0.5 * ctx.ability_power)",
+          "250 + (0.5 * ctx.ability_power)",
+          "350 + (0.5 * ctx.ability_power)"
         ]
       }
     ]

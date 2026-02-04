@@ -77,11 +77,11 @@
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "60 + (0.35 * ctx.ap)",
-          "80 + (0.35 * ctx.ap)",
-          "100 + (0.35 * ctx.ap)",
-          "120 + (0.35 * ctx.ap)",
-          "140 + (0.35 * ctx.ap)"
+          "60 + (0.35 * ctx.ability_power)",
+          "80 + (0.35 * ctx.ability_power)",
+          "100 + (0.35 * ctx.ability_power)",
+          "120 + (0.35 * ctx.ability_power)",
+          "140 + (0.35 * ctx.ability_power)"
         ]
       }
     ],
@@ -94,11 +94,11 @@
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "0 + 50 + (0.325 * ctx.ap)",
-          "2.6470588235294117 + 65 + (0.4 * ctx.ap)",
-          "5.294117647058823 + 80 + (0.475 * ctx.ap)",
-          "7.9411764705882355 + 95 + (0.55 * ctx.ap)",
-          "10.588235294117649 + 110 + (0.625 * ctx.ap)",
+          "0 + 50 + (0.325 * ctx.ability_power)",
+          "2.6470588235294117 + 65 + (0.4 * ctx.ability_power)",
+          "5.294117647058823 + 80 + (0.475 * ctx.ability_power)",
+          "7.9411764705882355 + 95 + (0.55 * ctx.ability_power)",
+          "10.588235294117649 + 110 + (0.625 * ctx.ability_power)",
           "13.235294117647058",
           "15.882352941176473",
           "18.52941176470588",
@@ -124,11 +124,11 @@
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "70 + (0.6 * ctx.ap)",
-          "110 + (0.6 * ctx.ap)",
-          "150 + (0.6 * ctx.ap)",
-          "190 + (0.6 * ctx.ap)",
-          "230 + (0.6 * ctx.ap)"
+          "70 + (0.6 * ctx.ability_power)",
+          "110 + (0.6 * ctx.ability_power)",
+          "150 + (0.6 * ctx.ability_power)",
+          "190 + (0.6 * ctx.ability_power)",
+          "230 + (0.6 * ctx.ability_power)"
         ]
       }
     ],
@@ -141,9 +141,9 @@
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "200 + (0.75 * ctx.ap)",
-          "400 + (0.75 * ctx.ap)",
-          "600 + (0.75 * ctx.ap)"
+          "200 + (0.75 * ctx.ability_power)",
+          "400 + (0.75 * ctx.ability_power)",
+          "600 + (0.75 * ctx.ability_power)"
         ]
       }
     ]

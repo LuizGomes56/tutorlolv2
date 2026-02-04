@@ -28,7 +28,7 @@ pub use eval::*;
 pub use tutorlolv2_types::*;
 
 pub static RAW_BLOCK: &str = include_str!("block.txt");
-pub static BLOCK: &[u8] = include_bytes!("block.br");
+pub const BLOCK: &[u8] = include_bytes!("block.br");
 
 pub const BLOCK_LEN: usize = BLOCK.len();
 
@@ -43,10 +43,11 @@ pub const fn is_simulated_item(item: &CachedItem) -> bool {
         tier,
         price,
         prettified_stats,
+        maps,
         ..
     } = *item;
 
-    tier >= 3 && price > 0 && purchasable && !prettified_stats.is_empty()
+    tier >= 3 && price > 0 && purchasable && !prettified_stats.is_empty() && maps.summoners_rift
 }
 
 /// Number of items that are compared and obey the rule:
@@ -54,6 +55,7 @@ pub const fn is_simulated_item(item: &CachedItem) -> bool {
 /// - `price > 0`
 /// - `len(stats)` > 0
 /// - `purchasable`
+/// - `maps.summoners_rift`
 pub const L_SIML: usize = {
     let mut sum = 0;
     let mut i = 0;

@@ -91,9 +91,3 @@ impl FromStr for DamageType {
         }
     }
 }
-
-impl<T: AsRef<str>> From<T> for DamageType {
-    fn from(s: T) -> Self {
-        unsafe { Self::from_str(s.as_ref()).unwrap_unchecked() }
-    }
-}

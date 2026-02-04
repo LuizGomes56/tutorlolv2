@@ -155,13 +155,13 @@ impl RegExtractor for str {
             "bonus attack speed" => AttackSpeed,
             "based on critical strike chance" => CritChance,
             "critical strike chance" => CritChance,
-            "of Ivern's AP" => Ap,
-            "of Sona's AP" => Ap,
-            "per Feast stack" => ChogathStacks,
-            "of Siphoning Strike stacks" => NasusStacks,
-            "Stardust" => AurelionSolStacks,
-            "per Mark" => KindredStacks,
-            "per mark" => KindredStacks,
+            "of Ivern's AP" => AbilityPower,
+            "of Sona's AP" => AbilityPower,
+            "per Feast stack" => Stacks,
+            "of Siphoning Strike stacks" => Stacks,
+            "Stardust" => Stacks,
+            "per Mark" => Stacks,
+            "per mark" => Stacks,
             "bonus movement speed" => BonusMoveSpeed,
             "bonus mana" => BonusMana,
             "bonus AD" => BonusAd,
@@ -184,8 +184,8 @@ impl RegExtractor for str {
             "maximum health" => MaxHealth,
             "maximum mana" => MaxMana,
             "armor" => Armor,
-            "AP" => Ap,
-            "AD" => Ad,
+            "AP" => AbilityPower,
+            "AD" => AttackDamage,
             "\u{00D7}" => "*"
         };
 
@@ -195,7 +195,7 @@ impl RegExtractor for str {
                 let pattern = format!(r"\b{}\b", regex::escape(old));
                 let re = regex::Regex::new(&pattern).unwrap();
                 re.replace_all(&acc, &new.to_string())
-                    .replace("per Soul collected", &format!(" * {ThreshStacks}"))
+                    .replace("per Soul collected", &format!(" * {Stacks}"))
             })
     }
 

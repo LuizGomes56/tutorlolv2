@@ -112,11 +112,11 @@
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "80 + ctx.ap",
-          "120 + ctx.ap",
-          "160 + ctx.ap",
-          "200 + ctx.ap",
-          "240 + ctx.ap"
+          "80 + ctx.ability_power",
+          "120 + ctx.ability_power",
+          "160 + ctx.ability_power",
+          "200 + ctx.ability_power",
+          "240 + ctx.ability_power"
         ]
       }
     ],
@@ -129,9 +129,9 @@
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "(0.01 * ctx.enemy_max_health) + (0.34375 * ctx.ad)",
-          "(0.015 * ctx.enemy_max_health) + (0.34375 * ctx.ad)",
-          "(0.02 * ctx.enemy_max_health) + (0.34375 * ctx.ad)"
+          "(0.01 * ctx.enemy_max_health) + (0.34375 * ctx.attack_damage)",
+          "(0.015 * ctx.enemy_max_health) + (0.34375 * ctx.attack_damage)",
+          "(0.02 * ctx.enemy_max_health) + (0.34375 * ctx.attack_damage)"
         ]
       }
     ],
@@ -144,9 +144,9 @@
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "(0.08 * ctx.enemy_max_health) + (2.75 * ctx.ad)",
-          "(0.12 * ctx.enemy_max_health) + (2.75 * ctx.ad)",
-          "(0.16 * ctx.enemy_max_health) + (2.75 * ctx.ad)"
+          "(0.08 * ctx.enemy_max_health) + (2.75 * ctx.attack_damage)",
+          "(0.12 * ctx.enemy_max_health) + (2.75 * ctx.attack_damage)",
+          "(0.16 * ctx.enemy_max_health) + (2.75 * ctx.attack_damage)"
         ]
       }
     ],
@@ -159,9 +159,9 @@
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "(0.16 * ctx.enemy_max_health) + (5.5 * ctx.ad)",
-          "(0.24 * ctx.enemy_max_health) + (5.5 * ctx.ad)",
-          "(0.32 * ctx.enemy_max_health) + (5.5 * ctx.ad)"
+          "(0.16 * ctx.enemy_max_health) + (5.5 * ctx.attack_damage)",
+          "(0.24 * ctx.enemy_max_health) + (5.5 * ctx.attack_damage)",
+          "(0.32 * ctx.enemy_max_health) + (5.5 * ctx.attack_damage)"
         ]
       }
     ]

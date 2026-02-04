@@ -112,9 +112,9 @@
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "250 + (1.15 * ctx.bonus_ad) + (0.7 * ctx.ap)",
-          "400 + (1.15 * ctx.bonus_ad) + (0.7 * ctx.ap)",
-          "550 + (1.15 * ctx.bonus_ad) + (0.7 * ctx.ap)"
+          "250 + (1.15 * ctx.bonus_ad) + (0.7 * ctx.ability_power)",
+          "400 + (1.15 * ctx.bonus_ad) + (0.7 * ctx.ability_power)",
+          "550 + (1.15 * ctx.bonus_ad) + (0.7 * ctx.ability_power)"
         ]
       }
     ]

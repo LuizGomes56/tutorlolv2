@@ -77,11 +77,11 @@
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "100 + (0.9 * ctx.ap)",
-          "150 + (0.9 * ctx.ap)",
-          "200 + (0.9 * ctx.ap)",
-          "250 + (0.9 * ctx.ap)",
-          "300 + (0.9 * ctx.ap)"
+          "100 + (0.9 * ctx.ability_power)",
+          "150 + (0.9 * ctx.ability_power)",
+          "200 + (0.9 * ctx.ability_power)",
+          "250 + (0.9 * ctx.ability_power)",
+          "300 + (0.9 * ctx.ability_power)"
         ]
       }
     ],
@@ -94,11 +94,11 @@
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "75 + (0.7 * ctx.ap)",
-          "120 + (0.7 * ctx.ap)",
-          "165 + (0.7 * ctx.ap)",
-          "210 + (0.7 * ctx.ap)",
-          "255 + (0.7 * ctx.ap)"
+          "75 + (0.7 * ctx.ability_power)",
+          "120 + (0.7 * ctx.ability_power)",
+          "165 + (0.7 * ctx.ability_power)",
+          "210 + (0.7 * ctx.ability_power)",
+          "255 + (0.7 * ctx.ability_power)"
         ]
       }
     ],
@@ -111,11 +111,11 @@
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "1.7 * ctx.thresh_stacks + (0.9 * ctx.ad)",
-          "1.7 * ctx.thresh_stacks + (1.2 * ctx.ad)",
-          "1.7 * ctx.thresh_stacks + (1.5 * ctx.ad)",
-          "1.7 * ctx.thresh_stacks + (1.8 * ctx.ad)",
-          "1.7 * ctx.thresh_stacks + (2.1 * ctx.ad)"
+          "1.7 * ctx.stacks + (0.9 * ctx.attack_damage)",
+          "1.7 * ctx.stacks + (1.2 * ctx.attack_damage)",
+          "1.7 * ctx.stacks + (1.5 * ctx.attack_damage)",
+          "1.7 * ctx.stacks + (1.8 * ctx.attack_damage)",
+          "1.7 * ctx.stacks + (2.1 * ctx.attack_damage)"
         ]
       }
     ],
@@ -128,11 +128,11 @@
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "1.7 * ctx.thresh_stacks + (0 * ctx.ad)",
-          "1.7 * ctx.thresh_stacks + (0 * ctx.ad)",
-          "1.7 * ctx.thresh_stacks + (0 * ctx.ad)",
-          "1.7 * ctx.thresh_stacks + (0 * ctx.ad)",
-          "1.7 * ctx.thresh_stacks + (0 * ctx.ad)"
+          "1.7 * ctx.stacks + (0 * ctx.attack_damage)",
+          "1.7 * ctx.stacks + (0 * ctx.attack_damage)",
+          "1.7 * ctx.stacks + (0 * ctx.attack_damage)",
+          "1.7 * ctx.stacks + (0 * ctx.attack_damage)",
+          "1.7 * ctx.stacks + (0 * ctx.attack_damage)"
         ]
       }
     ],
@@ -145,9 +145,9 @@
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "250 + ctx.ap",
-          "400 + ctx.ap",
-          "550 + ctx.ap"
+          "250 + ctx.ability_power",
+          "400 + ctx.ability_power",
+          "550 + ctx.ability_power"
         ]
       }
     ]

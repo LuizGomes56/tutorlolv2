@@ -78,11 +78,11 @@
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "55 + (0.5 * ctx.ap)",
-          "72.5 + (0.5 * ctx.ap)",
-          "90 + (0.5 * ctx.ap)",
-          "107.5 + (0.5 * ctx.ap)",
-          "125 + (0.5 * ctx.ap)"
+          "55 + (0.5 * ctx.ability_power)",
+          "72.5 + (0.5 * ctx.ability_power)",
+          "90 + (0.5 * ctx.ability_power)",
+          "107.5 + (0.5 * ctx.ability_power)",
+          "125 + (0.5 * ctx.ability_power)"
         ]
       }
     ],
@@ -95,11 +95,11 @@
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "22 + (0.2 * ctx.ap)",
-          "29 + (0.2 * ctx.ap)",
-          "36 + (0.2 * ctx.ap)",
-          "43 + (0.2 * ctx.ap)",
-          "50 + (0.2 * ctx.ap)"
+          "22 + (0.2 * ctx.ability_power)",
+          "29 + (0.2 * ctx.ability_power)",
+          "36 + (0.2 * ctx.ability_power)",
+          "43 + (0.2 * ctx.ability_power)",
+          "50 + (0.2 * ctx.ability_power)"
         ]
       }
     ],
@@ -112,11 +112,11 @@
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "143 + (1.3 * ctx.ap)",
-          "188.5 + (1.3 * ctx.ap)",
-          "234 + (1.3 * ctx.ap)",
-          "279.5 + (1.3 * ctx.ap)",
-          "325 + (1.3 * ctx.ap)"
+          "143 + (1.3 * ctx.ability_power)",
+          "188.5 + (1.3 * ctx.ability_power)",
+          "234 + (1.3 * ctx.ability_power)",
+          "279.5 + (1.3 * ctx.ability_power)",
+          "325 + (1.3 * ctx.ability_power)"
         ]
       }
     ],
@@ -129,11 +129,11 @@
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "99 + (0.9 * ctx.ap)",
-          "130.5 + (0.9 * ctx.ap)",
-          "162 + (0.9 * ctx.ap)",
-          "193.5 + (0.9 * ctx.ap)",
-          "225 + (0.9 * ctx.ap)"
+          "99 + (0.9 * ctx.ability_power)",
+          "130.5 + (0.9 * ctx.ability_power)",
+          "162 + (0.9 * ctx.ability_power)",
+          "193.5 + (0.9 * ctx.ability_power)",
+          "225 + (0.9 * ctx.ability_power)"
         ]
       }
     ],
@@ -146,11 +146,11 @@
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "60 + (0.6 * ctx.ap)",
-          "105 + (0.6 * ctx.ap)",
-          "150 + (0.6 * ctx.ap)",
-          "195 + (0.6 * ctx.ap)",
-          "240 + (0.6 * ctx.ap)"
+          "60 + (0.6 * ctx.ability_power)",
+          "105 + (0.6 * ctx.ability_power)",
+          "150 + (0.6 * ctx.ability_power)",
+          "195 + (0.6 * ctx.ability_power)",
+          "240 + (0.6 * ctx.ability_power)"
         ]
       }
     ],
@@ -163,11 +163,11 @@
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "62.5 + (0.75 * ctx.ap)",
-          "100 + (0.75 * ctx.ap)",
-          "137.5 + (0.75 * ctx.ap)",
-          "175 + (0.75 * ctx.ap)",
-          "212.5 + (0.75 * ctx.ap)"
+          "62.5 + (0.75 * ctx.ability_power)",
+          "100 + (0.75 * ctx.ability_power)",
+          "137.5 + (0.75 * ctx.ability_power)",
+          "175 + (0.75 * ctx.ability_power)",
+          "212.5 + (0.75 * ctx.ability_power)"
         ]
       }
     ],
@@ -180,11 +180,11 @@
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "25 + (0.3 * ctx.ap)",
-          "40 + (0.3 * ctx.ap)",
-          "55 + (0.3 * ctx.ap)",
-          "70 + (0.3 * ctx.ap)",
-          "85 + (0.3 * ctx.ap)"
+          "25 + (0.3 * ctx.ability_power)",
+          "40 + (0.3 * ctx.ability_power)",
+          "55 + (0.3 * ctx.ability_power)",
+          "70 + (0.3 * ctx.ability_power)",
+          "85 + (0.3 * ctx.ability_power)"
         ]
       }
     ]

@@ -77,11 +77,11 @@
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "80 + (0.7 * ctx.ad)",
-          "125 + (0.7 * ctx.ad)",
-          "170 + (0.7 * ctx.ad)",
-          "215 + (0.7 * ctx.ad)",
-          "260 + (0.7 * ctx.ad)"
+          "80 + (0.7 * ctx.attack_damage)",
+          "125 + (0.7 * ctx.attack_damage)",
+          "170 + (0.7 * ctx.attack_damage)",
+          "215 + (0.7 * ctx.attack_damage)",
+          "260 + (0.7 * ctx.attack_damage)"
         ]
       }
     ],
@@ -94,11 +94,11 @@
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "140 + (1.225 * ctx.ad)",
-          "218.75 + (1.225 * ctx.ad)",
-          "297.5 + (1.225 * ctx.ad)",
-          "376.25 + (1.225 * ctx.ad)",
-          "455 + (1.225 * ctx.ad)"
+          "140 + (1.225 * ctx.attack_damage)",
+          "218.75 + (1.225 * ctx.attack_damage)",
+          "297.5 + (1.225 * ctx.attack_damage)",
+          "376.25 + (1.225 * ctx.attack_damage)",
+          "455 + (1.225 * ctx.attack_damage)"
         ]
       }
     ],
@@ -111,11 +111,11 @@
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "35 + (1.225 * ctx.ad)",
-          "70 + (1.225 * ctx.ad)",
-          "105 + (1.225 * ctx.ad)",
-          "140 + (1.225 * ctx.ad)",
-          "175 + (1.225 * ctx.ad)"
+          "35 + (1.225 * ctx.attack_damage)",
+          "70 + (1.225 * ctx.attack_damage)",
+          "105 + (1.225 * ctx.attack_damage)",
+          "140 + (1.225 * ctx.attack_damage)",
+          "175 + (1.225 * ctx.attack_damage)"
         ]
       }
     ],
@@ -145,11 +145,11 @@
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "20 + (0.7 * ctx.ad)",
-          "40 + (0.7 * ctx.ad)",
-          "60 + (0.7 * ctx.ad)",
-          "80 + (0.7 * ctx.ad)",
-          "100 + (0.7 * ctx.ad)"
+          "20 + (0.7 * ctx.attack_damage)",
+          "40 + (0.7 * ctx.attack_damage)",
+          "60 + (0.7 * ctx.attack_damage)",
+          "80 + (0.7 * ctx.attack_damage)",
+          "100 + (0.7 * ctx.attack_damage)"
         ]
       }
     ],
@@ -162,11 +162,11 @@
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "5 + (0.175 * ctx.ad)",
-          "10 + (0.175 * ctx.ad)",
-          "15 + (0.175 * ctx.ad)",
-          "20 + (0.175 * ctx.ad)",
-          "25 + (0.175 * ctx.ad)"
+          "5 + (0.175 * ctx.attack_damage)",
+          "10 + (0.175 * ctx.attack_damage)",
+          "15 + (0.175 * ctx.attack_damage)",
+          "20 + (0.175 * ctx.attack_damage)",
+          "25 + (0.175 * ctx.attack_damage)"
         ]
       }
     ],
@@ -179,11 +179,11 @@
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "20 + (0.175 * ctx.ad)",
-          "31.25 + (0.175 * ctx.ad)",
-          "42.5 + (0.175 * ctx.ad)",
-          "53.75 + (0.175 * ctx.ad)",
-          "65 + (0.175 * ctx.ad)"
+          "20 + (0.175 * ctx.attack_damage)",
+          "31.25 + (0.175 * ctx.attack_damage)",
+          "42.5 + (0.175 * ctx.attack_damage)",
+          "53.75 + (0.175 * ctx.attack_damage)",
+          "65 + (0.175 * ctx.attack_damage)"
         ]
       }
     ],

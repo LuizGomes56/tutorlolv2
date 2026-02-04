@@ -608,9 +608,23 @@ pub const fn get_eval_ctx(self_state: &SelfState, e_state: &EnemyFullState) -> C
                 current_mana,
                 ..
             },
-        bonus_stats: s_bonus_stats,
-        base_stats: s_base_stats,
-        level: s_level,
+        bonus_stats:
+            BasicStats {
+                attack_damage: bonus_ad,
+                armor: bonus_armor,
+                magic_resist: bonus_magic_resist,
+                health: bonus_health,
+                mana: bonus_mana,
+            },
+        base_stats:
+            BasicStats {
+                armor: base_armor,
+                health: base_health,
+                attack_damage: base_ad,
+                magic_resist: base_magic_resist,
+                mana: base_mana,
+            },
+        level,
         adaptative_type,
     } = *self_state;
     let EnemyFullState {
@@ -640,7 +654,7 @@ pub const fn get_eval_ctx(self_state: &SelfState, e_state: &EnemyFullState) -> C
         w_level: ability_levels.w as _,
         e_level: ability_levels.e as _,
         r_level: ability_levels.r as _,
-        level: s_level as _,
+        level: level as _,
         physical_multiplier: armor_values.modifier,
         magic_multiplier: magic_values.modifier,
         enemy_bonus_health,
@@ -651,17 +665,16 @@ pub const fn get_eval_ctx(self_state: &SelfState, e_state: &EnemyFullState) -> C
         enemy_max_health,
         enemy_missing_health,
         enemy_magic_resist,
-        base_health: s_base_stats.health,
-        base_ad: s_base_stats.attack_damage,
-        base_armor: s_base_stats.armor,
-        base_magic_resist: s_base_stats.magic_resist,
-        base_mana: s_base_stats.mana,
-        bonus_ad: s_bonus_stats.attack_damage,
-        bonus_armor: s_bonus_stats.armor,
-        bonus_magic_resist: s_bonus_stats.magic_resist,
-        bonus_health: s_bonus_stats.health,
-        bonus_mana: s_bonus_stats.mana,
-        // #![unsupported]
+        base_health,
+        base_ad,
+        base_armor,
+        base_magic_resist,
+        base_mana,
+        bonus_ad,
+        bonus_armor,
+        bonus_magic_resist,
+        bonus_health,
+        bonus_mana,
         bonus_move_speed: 1.0,
         armor_penetration_flat,
         armor_penetration_percent,
@@ -677,8 +690,8 @@ pub const fn get_eval_ctx(self_state: &SelfState, e_state: &EnemyFullState) -> C
         crit_damage,
         attack_speed,
         missing_health: 1.0 - (current_health / max_health.max(1.0)),
-        ap: ability_power,
-        ad: attack_damage,
+        ability_power,
+        attack_damage,
         adaptative_damage: match adaptative_type {
             AdaptativeType::Physical => armor_values.modifier,
             AdaptativeType::Magic => magic_values.modifier,
@@ -695,12 +708,7 @@ pub const fn get_eval_ctx(self_state: &SelfState, e_state: &EnemyFullState) -> C
             true => ROCKSOLID_PROTECTION,
             false => 1.0,
         },
-        chogath_stacks: stacks,
-        nasus_stacks: stacks,
-        smolder_stacks: stacks,
-        aurelion_sol_stacks: stacks,
-        thresh_stacks: stacks,
-        kindred_stacks: stacks,
+        stacks,
     }
 }
 
@@ -850,7 +858,7 @@ pub fn rune_id_eval_damage(
 
 /// Evaluates the damage of basic attacks, onhit damages and critical strikes
 pub const fn eval_attacks(ctx: &Ctx, mut onhit_damage: RangeDamage, physical_mod: f32) -> Attacks {
-    let basic_attack = ctx.ad * physical_mod;
+    let basic_attack = ctx.attack_damage * physical_mod;
     let critical_strike = (basic_attack * ctx.crit_damage / 100.0) as i32;
     let basic_attack = basic_attack as i32;
 

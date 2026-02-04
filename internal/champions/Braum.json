@@ -111,9 +111,9 @@
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "150 + (0.6 * ctx.ap)",
-          "300 + (0.6 * ctx.ap)",
-          "450 + (0.6 * ctx.ap)"
+          "150 + (0.6 * ctx.ability_power)",
+          "300 + (0.6 * ctx.ability_power)",
+          "450 + (0.6 * ctx.ability_power)"
         ]
       }
     ]

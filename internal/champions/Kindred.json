@@ -111,11 +111,11 @@
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "80 + ctx.bonus_ad + (0.05 * ctx.missing_health) + (0.005 * ctx.kindred_stacks)",
-          "110 + ctx.bonus_ad + (0.05 * ctx.missing_health) + (0.005 * ctx.kindred_stacks)",
-          "140 + ctx.bonus_ad + (0.05 * ctx.missing_health) + (0.005 * ctx.kindred_stacks)",
-          "170 + ctx.bonus_ad + (0.05 * ctx.missing_health) + (0.005 * ctx.kindred_stacks)",
-          "200 + ctx.bonus_ad + (0.05 * ctx.missing_health) + (0.005 * ctx.kindred_stacks)"
+          "80 + ctx.bonus_ad + (0.05 * ctx.missing_health) + (0.005 * ctx.stacks)",
+          "110 + ctx.bonus_ad + (0.05 * ctx.missing_health) + (0.005 * ctx.stacks)",
+          "140 + ctx.bonus_ad + (0.05 * ctx.missing_health) + (0.005 * ctx.stacks)",
+          "170 + ctx.bonus_ad + (0.05 * ctx.missing_health) + (0.005 * ctx.stacks)",
+          "200 + ctx.bonus_ad + (0.05 * ctx.missing_health) + (0.005 * ctx.stacks)"
         ]
       }
     ],

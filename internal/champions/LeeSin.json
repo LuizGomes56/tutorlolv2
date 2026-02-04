@@ -94,11 +94,11 @@
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "35 + ctx.ad",
-          "60 + ctx.ad",
-          "85 + ctx.ad",
-          "110 + ctx.ad",
-          "135 + ctx.ad"
+          "35 + ctx.attack_damage",
+          "60 + ctx.attack_damage",
+          "85 + ctx.attack_damage",
+          "110 + ctx.attack_damage",
+          "135 + ctx.attack_damage"
         ]
       }
     ],
