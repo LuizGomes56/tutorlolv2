@@ -115,7 +115,7 @@ impl ChampionFactory {
             std::fs::create_dir(dir)?;
         }
 
-        ChampionId::ARRAY.into_par_iter().for_each(|champion_id| {
+        ChampionId::VALUES.into_par_iter().for_each(|champion_id| {
             let Ok(data) = Self::create(champion_id) else {
                 return println!("Unable to create generator file for {champion_id:?}");
             };
@@ -133,7 +133,7 @@ impl ChampionFactory {
     /// Runs all generator files. It means that several `.json` files will be created
     /// in the internal cache folder
     pub fn run_all() -> MayFail {
-        ChampionId::ARRAY.into_par_iter().for_each(|champion_id| {
+        ChampionId::VALUES.into_par_iter().for_each(|champion_id| {
             if let Err(e) = Self::run(champion_id) {
                 println!("Failed to run generator file for {champion_id:?}: {e:?}");
             }
@@ -303,7 +303,7 @@ impl ChampionFactory {
     /// inside all generators are likely to be correct, printing to the console the
     /// collected results
     pub fn check_all_offsets() {
-        for champion_id in ChampionId::ARRAY {
+        for champion_id in ChampionId::VALUES {
             match Self::check_offsets(champion_id) {
                 Err(e) => println!("Error checking {champion_id:?} offsets: {e:?}"),
                 Ok(false) => println!("{champion_id:?} has incorrect offsets"),

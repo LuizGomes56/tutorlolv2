@@ -1,6 +1,5 @@
-use std::collections::{BTreeMap, BTreeSet};
-
 use serde::{Deserialize, Serialize};
+use std::collections::{BTreeMap, BTreeSet};
 use tutorlolv2_gen::{Attrs, DamageType, GameMap, StatName};
 
 #[derive(Serialize, Deserialize)]

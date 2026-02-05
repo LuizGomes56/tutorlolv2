@@ -13,6 +13,12 @@ macro_rules! ability_name {
             pub const $field: AbilityName = AbilityName::$field;
         )+
 
+        pub const P: AbilityId = AbilityId::P(AbilityName::Void);
+        pub const Q: AbilityId = AbilityId::Q(AbilityName::Void);
+        pub const W: AbilityId = AbilityId::W(AbilityName::Void);
+        pub const E: AbilityId = AbilityId::E(AbilityName::Void);
+        pub const R: AbilityId = AbilityId::R(AbilityName::Void);
+
         #[derive(Clone, Copy)]
         pub enum P { $($field),+ }
         impl P {

@@ -1,6 +1,6 @@
 use crate::{Attrs, Ctx, DamageType, ItemId, RuneId};
 use bincode::{Decode, Encode};
-use core::str::FromStr;
+use core::{ops::Index, str::FromStr};
 use serde::{Deserialize, Serialize};
 use tutorlolv2_types::*;
 
@@ -182,6 +182,23 @@ pub enum GameMap {
     Unknown,
     UnknownMap33,
     UnknownMap35,
+}
+
+impl Index<GameMap> for ItemMaps {
+    type Output = bool;
+
+    fn index(&self, index: GameMap) -> &Self::Output {
+        match index {
+            GameMap::Aram => &self.aram,
+            GameMap::Arena => &self.arena,
+            GameMap::NexusBlitz => &self.nexus_blitz,
+            GameMap::SummonersRift => &self.summoners_rift,
+            GameMap::Tft => &self.tft,
+            GameMap::UnknownMap33 => &self.unknown_map_33,
+            GameMap::UnknownMap35 => &self.unknown_map_35,
+            _ => &false,
+        }
+    }
 }
 
 impl GameMap {
@@ -405,7 +422,7 @@ pub const fn zero(_: &Ctx) -> f32 {
     0.0
 }
 
-#[derive(Clone, Copy, Debug, PartialEq, PartialOrd, Encode, Serialize)]
+#[derive(Clone, Copy, Debug, Default, PartialEq, PartialOrd, Encode, Serialize)]
 pub struct ItemMaps {
     pub aram: bool,
     pub arena: bool,

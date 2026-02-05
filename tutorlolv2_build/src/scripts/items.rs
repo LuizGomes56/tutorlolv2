@@ -409,7 +409,7 @@ fn build_items(data: Vec<(String, ItemResult)>) -> GeneratorFn {
             ("ITEM_CACHE", "&CachedItem"),
             ("ITEM_FORMULAS", "Range<usize>"),
             ("ITEM_GENERATOR", "Range<usize>"),
-            ("ITEM_IDENTS", "&[EvalIdent]"),
+            ("ITEM_IDENTS", "&[CtxVar]"),
             ("ITEM_CLOSURES", "Range<usize>"),
         ][i];
         format!("pub static {name}: [{vtype}; ItemId::VARIANTS] = [")
@@ -488,20 +488,8 @@ fn build_items(data: Vec<(String, ItemResult)>) -> GeneratorFn {
         pub enum ItemId {{ {fields} }}
         impl ItemId {{
             pub const VARIANTS: usize = {len};
-            pub const fn to_riot_id(&self) -> u32 {{
-                ITEM_CACHE[*self as usize].riot_id
-            }}
             pub const fn from_riot_id(id: u32) -> Option<Self> {{
                 match id {{ {match_arms}, _ => None }}
-            }}
-            pub const unsafe fn from_u16_unchecked(id: u16) -> Self {{
-                unsafe {{ core::mem::transmute(id) }}
-            }}
-            pub const fn from_u16(id: u16) -> Option<Self> {{
-                match id < Self::VARIANTS as u16 {{
-                    true => Some(unsafe {{ Self::from_u16_unchecked(id) }}),
-                    false => None
-                }}
             }}
         }}"#
     );

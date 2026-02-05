@@ -50,8 +50,8 @@ pub const SIMULATED_ITEMS_METADATA: [TypeMetadata<ItemId>; L_SIML] = {
 const _: () = {
     let mut i = 0;
     while i < ChampionId::VARIANTS {
-        let champion_id = ChampionId::ARRAY[i];
-        assert!(!champion_id.get_cache().positions.is_empty());
+        let champion_id = ChampionId::VALUES[i];
+        assert!(!champion_id.cache().positions.is_empty());
         i += 1;
     }
 };

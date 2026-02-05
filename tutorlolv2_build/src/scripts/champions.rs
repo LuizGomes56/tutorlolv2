@@ -444,7 +444,7 @@ fn build_champions(data: Vec<(String, ChampionResult)>) -> GeneratorFn {
             ("CHAMPION_GENERATOR", "Range<usize>"),
             ("CHAMPION_ABILITIES", "&[AbilityId]"),
             ("ABILITY_IDENTS_INDEX", "&[Range<usize>]"),
-            ("ABILITY_IDENTS", "&[EvalIdent]"),
+            ("ABILITY_IDENTS", "&[CtxVar]"),
             ("ABILITY_FORMULAS", "&[Range<usize>]"),
             ("ABILITY_CLOSURES", "&[Range<usize>]"),
         ][i];
@@ -475,15 +475,6 @@ fn build_champions(data: Vec<(String, ChampionResult)>) -> GeneratorFn {
     let mut champion_id_enum = format!(
         r#"impl ChampionId {{
             pub const VARIANTS: usize = {len};
-            pub const unsafe fn from_u8_unchecked(id: u8) -> Self {{
-                unsafe {{ core::mem::transmute(id) }}
-            }}
-            pub const fn from_u8(id: u8) -> Option<Self> {{
-                match id < Self::VARIANTS as u8 {{
-                    true => Some(unsafe {{ Self::from_u8_unchecked(id) }}),
-                    false => None
-                }}
-            }}
         }}
         #[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
         #[derive(bincode::Encode, bincode::Decode)]
@@ -519,15 +510,13 @@ fn build_champions(data: Vec<(String, ChampionResult)>) -> GeneratorFn {
                 "Failed to recover {champion_id:?} from languages map"
             ))?
             .iter()
-            .map(|alias| format!("{alias:?} => ChampionId::{champion_id}"))
-            .chain(std::iter::once(format!(
-                "{champion_id:?} => ChampionId::{champion_id}"
-            )))
+            .map(|alias| format!("{alias:?}"))
+            .chain(std::iter::once(format!("{champion_id:?}")))
             .collect::<BTreeSet<_>>()
             .into_iter()
             .collect::<Vec<_>>()
-            .join(",");
-        language_arms.push(name_alias);
+            .join(" | ");
+        language_arms.push(format!("{name_alias} => ChampionId::{champion_id}"));
 
         champion_declarations.push_str(&base_declaration);
 

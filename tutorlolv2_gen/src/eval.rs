@@ -1,7 +1,8 @@
 use bincode::{Decode, Encode};
+use core::ops::Index;
 use serde::{Deserialize, Serialize};
 
-/// Creates the `EvalIdent` and `Ctx` structs, associating
+/// Creates the `CtxVar` and `Ctx` structs, associating
 /// the appropriate names and numeric types that it will hold. This struct
 /// is essential to the application since it is used to evaluate all the
 /// generated closures contained in cache static variables
@@ -11,17 +12,26 @@ macro_rules! create_eval_struct {
             /// Defines a standard type that implements trait [`core::fmt::Display`]
             /// and is used to create constant closures in the static variables of
             /// this module. For example:
-            /// [`EvalIdent::QLevel`] is converted to: `ctx.q_level`
+            /// [`CtxVar::QLevel`] is converted to: `ctx.q_level`
             #[derive(Copy, Clone, Debug, Eq, Hash, PartialEq, Ord, PartialOrd, Encode, Decode, Serialize, Deserialize)]
             #[repr(u8)]
-            pub enum EvalIdent {
+            pub enum CtxVar {
                 $([<$value:camel>],)*
             }
 
             $(
                 #[allow(non_upper_case_globals)]
-                pub const [<$value:camel>]: EvalIdent = EvalIdent::[<$value:camel>];
+                pub const [<$value:camel>]: CtxVar = CtxVar::[<$value:camel>];
             )*
+
+            impl Index<CtxVar> for Ctx {
+                type Output = f32;
+                fn index(&self, index: CtxVar) -> &Self::Output {
+                    match index {
+                        $(CtxVar::[<$value:camel>] => &self.$value),*
+                    }
+                }
+            }
 
             #[derive(Clone, Copy, Debug, Decode, Default, Deserialize, Encode, PartialEq, PartialOrd, Serialize)]
             #[repr(C)]
@@ -29,7 +39,7 @@ macro_rules! create_eval_struct {
                 $(pub $value: f32,)*
             }
 
-            impl ::core::fmt::Display for EvalIdent {
+            impl ::core::fmt::Display for CtxVar {
                 fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
                     match self {
                         $(

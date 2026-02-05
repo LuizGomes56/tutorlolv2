@@ -71,7 +71,7 @@ pub trait StringExt: AsRef<str> {
     fn get_idents(&self) -> BTreeSet<String> {
         RE_IDENTS
             .captures_iter(self.as_ref())
-            .map(|cap| format!("EvalIdent::{},", cap[1].pascal_case()))
+            .map(|cap| format!("CtxVar::{},", cap[1].pascal_case()))
             .collect()
     }
 

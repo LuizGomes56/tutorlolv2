@@ -557,7 +557,7 @@
     "Top": [
       [
         "Heartsteel",
-        "JakshoTheProtean",
+        "JakShoTheProtean",
         "Malignance",
         "RanduinsOmen",
         "Riftmaker",
@@ -2229,7 +2229,7 @@
       [
         "Bandlepipes",
         "FrozenHeart",
-        "JakshoTheProtean",
+        "JakShoTheProtean",
         "ProtoplasmHarness",
         "UnendingDespair",
         "WarmogsArmor"
@@ -2332,7 +2332,7 @@
   "Darius": {
     "Top": [
       [
-        "JakshoTheProtean",
+        "JakShoTheProtean",
         "KaenicRookern",
         "RanduinsOmen",
         "SpearOfShojin",
@@ -2352,7 +2352,7 @@
     ],
     "Jungle": [
       [
-        "JakshoTheProtean",
+        "JakShoTheProtean",
         "KaenicRookern",
         "RanduinsOmen",
         "SpearOfShojin",
@@ -2374,7 +2374,7 @@
       [
         "ForceOfNature",
         "Hullbreaker",
-        "JakshoTheProtean",
+        "JakShoTheProtean",
         "RanduinsOmen",
         "SpearOfShojin",
         "Thornmail"
@@ -2435,7 +2435,7 @@
     "Top": [
       [
         "BloodlettersCurse8010",
-        "JakshoTheProtean",
+        "JakShoTheProtean",
         "LiandrysTorment",
         "Morellonomicon",
         "NashorsTooth",
@@ -2548,7 +2548,7 @@
     ],
     "Jungle": [
       [
-        "JakshoTheProtean",
+        "JakShoTheProtean",
         "ProtoplasmHarness",
         "RanduinsOmen",
         "TitanicHydra",
@@ -2568,7 +2568,7 @@
     "Middle": [
       [
         "DeadMansPlate",
-        "JakshoTheProtean",
+        "JakShoTheProtean",
         "ProtoplasmHarness",
         "RanduinsOmen",
         "Thornmail",
@@ -2587,7 +2587,7 @@
     "Bottom": [
       [
         "DeadMansPlate",
-        "JakshoTheProtean",
+        "JakShoTheProtean",
         "RanduinsOmen",
         "Thornmail"
       ],
@@ -3391,7 +3391,7 @@
     ],
     "Jungle": [
       [
-        "JakshoTheProtean",
+        "JakShoTheProtean",
         "KaenicRookern",
         "Stormsurge",
         "UnendingDespair",
@@ -3663,7 +3663,7 @@
         "ForceOfNature",
         "GuardianAngel",
         "Hullbreaker",
-        "JakshoTheProtean",
+        "JakShoTheProtean",
         "KaenicRookern",
         "WitsEnd"
       ],
@@ -3702,7 +3702,7 @@
       [
         "DeadMansPlate",
         "ForceOfNature",
-        "JakshoTheProtean",
+        "JakShoTheProtean",
         "RanduinsOmen",
         "Thornmail",
         "TitanicHydra"
@@ -4311,7 +4311,7 @@
     ],
     "Jungle": [
       [
-        "JakshoTheProtean",
+        "JakShoTheProtean",
         "KaenicRookern",
         "SpearOfShojin",
         "SteraksGage",
@@ -4330,7 +4330,7 @@
     ],
     "Middle": [
       [
-        "JakshoTheProtean",
+        "JakShoTheProtean",
         "Manamune",
         "MawOfMalmortius",
         "RanduinsOmen",
@@ -4351,7 +4351,7 @@
       [
         "EndlessHunger",
         "Heartsteel",
-        "JakshoTheProtean",
+        "JakShoTheProtean",
         "KaenicRookern",
         "OverlordsBloodmail",
         "RanduinsOmen"
@@ -4451,7 +4451,7 @@
       [
         "GuardianAngel",
         "Hullbreaker",
-        "JakshoTheProtean",
+        "JakShoTheProtean",
         "RanduinsOmen",
         "SunderedSky",
         "Terminus"
@@ -5365,7 +5365,7 @@
       [
         "Bloodthirster",
         "GuardianAngel",
-        "JakshoTheProtean",
+        "JakShoTheProtean",
         "KaenicRookern",
         "MercurialScimitar",
         "WitsEnd"
@@ -6641,7 +6641,7 @@
     "Top": [
       [
         "AbyssalMask",
-        "JakshoTheProtean",
+        "JakShoTheProtean",
         "KaenicRookern",
         "ProtoplasmHarness",
         "WarmogsArmor",
@@ -6660,7 +6660,7 @@
     "Jungle": [
       [
         "Heartsteel",
-        "JakshoTheProtean",
+        "JakShoTheProtean",
         "KaenicRookern",
         "ProtoplasmHarness",
         "UnendingDespair",
@@ -6741,7 +6741,7 @@
         "BansheesVeil",
         "BloodlettersCurse8010",
         "CosmicDrive",
-        "JakshoTheProtean",
+        "JakShoTheProtean",
         "Morellonomicon",
         "RanduinsOmen"
       ],
@@ -7387,7 +7387,7 @@
       [
         "Bandlepipes",
         "FrozenHeart",
-        "JakshoTheProtean",
+        "JakShoTheProtean",
         "KaenicRookern",
         "RanduinsOmen",
         "UnendingDespair"
@@ -7426,7 +7426,7 @@
       [
         "DeadMansPlate",
         "FrozenHeart",
-        "JakshoTheProtean",
+        "JakShoTheProtean",
         "LiandrysTorment",
         "RanduinsOmen",
         "SpiritVisage"
@@ -7925,7 +7925,7 @@
         "DuskAndDawn",
         "ExperimentalHexplate",
         "HextechGunblade",
-        "JakshoTheProtean",
+        "JakShoTheProtean",
         "RanduinsOmen",
         "ZhonyasHourglass"
       ],
@@ -7945,7 +7945,7 @@
         "DuskAndDawn",
         "ExperimentalHexplate",
         "HextechGunblade",
-        "JakshoTheProtean",
+        "JakShoTheProtean",
         "RanduinsOmen",
         "ZhonyasHourglass"
       ],
@@ -7965,7 +7965,7 @@
         "DuskAndDawn",
         "ExperimentalHexplate",
         "HextechGunblade",
-        "JakshoTheProtean",
+        "JakShoTheProtean",
         "RanduinsOmen",
         "ZhonyasHourglass"
       ],
@@ -7984,7 +7984,7 @@
       [
         "DuskAndDawn",
         "HextechGunblade",
-        "JakshoTheProtean",
+        "JakShoTheProtean",
         "NashorsTooth",
         "RanduinsOmen",
         "ZhonyasHourglass"
@@ -8005,7 +8005,7 @@
         "DuskAndDawn",
         "ExperimentalHexplate",
         "HollowRadiance",
-        "JakshoTheProtean",
+        "JakShoTheProtean",
         "SpiritVisage",
         "Thornmail"
       ],
@@ -8342,7 +8342,7 @@
       [
         "DeathsDance",
         "ForceOfNature",
-        "JakshoTheProtean",
+        "JakShoTheProtean",
         "ProtoplasmHarness",
         "RanduinsOmen",
         "SteraksGage"
@@ -8382,7 +8382,7 @@
     "Top": [
       [
         "AbyssalMask",
-        "JakshoTheProtean",
+        "JakShoTheProtean",
         "KaenicRookern",
         "SpiritVisage",
         "SunfireAegis",
@@ -8403,7 +8403,7 @@
       [
         "Bandlepipes",
         "FrozenHeart",
-        "JakshoTheProtean",
+        "JakShoTheProtean",
         "KaenicRookern",
         "ProtoplasmHarness",
         "RanduinsOmen"
@@ -8422,7 +8422,7 @@
       [
         "Bandlepipes",
         "BloodlettersCurse8010",
-        "JakshoTheProtean",
+        "JakShoTheProtean",
         "KaenicRookern",
         "RanduinsOmen",
         "UnendingDespair"
@@ -8441,7 +8441,7 @@
       [
         "BlackfireTorch",
         "Heartsteel",
-        "JakshoTheProtean",
+        "JakShoTheProtean",
         "KnightsVow",
         "ProtoplasmHarness",
         "SunfireAegis"
@@ -8778,7 +8778,7 @@
         "BlackCleaver",
         "BladeOfTheRuinedKing",
         "ExperimentalHexplate",
-        "JakshoTheProtean",
+        "JakShoTheProtean",
         "SerpentsFang",
         "ZekesConvergence"
       ],
@@ -8868,7 +8868,7 @@
         "AbyssalMask",
         "Bandlepipes",
         "DeadMansPlate",
-        "JakshoTheProtean",
+        "JakShoTheProtean",
         "ProtoplasmHarness",
         "SpiritVisage"
       ],
@@ -8916,7 +8916,7 @@
     ],
     "Support": [
       [
-        "JakshoTheProtean",
+        "JakShoTheProtean",
         "KaenicRookern",
         "Morellonomicon",
         "Stormsurge",
@@ -9320,7 +9320,7 @@
       [
         "HollowRadiance",
         "IcebornGauntlet",
-        "JakshoTheProtean",
+        "JakShoTheProtean",
         "KaenicRookern",
         "RanduinsOmen",
         "SpiritVisage"
@@ -9339,7 +9339,7 @@
       [
         "FrozenHeart",
         "IcebornGauntlet",
-        "JakshoTheProtean",
+        "JakShoTheProtean",
         "KaenicRookern",
         "RanduinsOmen",
         "UnendingDespair"
@@ -9862,7 +9862,7 @@
         "BlackCleaver",
         "DeathsDance",
         "Hullbreaker",
-        "JakshoTheProtean",
+        "JakShoTheProtean",
         "OverlordsBloodmail",
         "Thornmail"
       ],
@@ -9962,7 +9962,7 @@
     ],
     "Jungle": [
       [
-        "JakshoTheProtean",
+        "JakShoTheProtean",
         "KaenicRookern",
         "KnightsVow",
         "ProtoplasmHarness",
@@ -11199,7 +11199,7 @@
         "BloodlettersCurse8010",
         "DuskAndDawn",
         "HorizonFocus",
-        "JakshoTheProtean",
+        "JakShoTheProtean",
         "Morellonomicon",
         "TitanicHydra"
       ],
@@ -11276,7 +11276,7 @@
       [
         "Bandlepipes",
         "BloodlettersCurse8010",
-        "JakshoTheProtean",
+        "JakShoTheProtean",
         "ProtoplasmHarness",
         "Riftmaker"
       ],
@@ -11333,7 +11333,7 @@
     "Support": [
       [
         "DeadMansPlate",
-        "JakshoTheProtean",
+        "JakShoTheProtean",
         "LiandrysTorment",
         "ProtoplasmHarness",
         "RanduinsOmen",
@@ -11924,7 +11924,7 @@
         "BlackfireTorch",
         "BloodlettersCurse8010",
         "FrozenHeart",
-        "JakshoTheProtean",
+        "JakShoTheProtean",
         "Morellonomicon",
         "RanduinsOmen"
       ],
@@ -12143,7 +12143,7 @@
     "Top": [
       [
         "HollowRadiance",
-        "JakshoTheProtean",
+        "JakShoTheProtean",
         "RanduinsOmen",
         "TitanicHydra",
         "UnendingDespair",
@@ -13219,7 +13219,7 @@
         "DeadMansPlate",
         "ForceOfNature",
         "FrozenHeart",
-        "JakshoTheProtean",
+        "JakShoTheProtean",
         "RanduinsOmen",
         "Thornmail"
       ],
@@ -13405,7 +13405,7 @@
       [
         "BansheesVeil",
         "ExperimentalHexplate",
-        "JakshoTheProtean",
+        "JakShoTheProtean",
         "Shadowflame",
         "Stormsurge",
         "VoidStaff"
@@ -14271,7 +14271,7 @@
     "Bottom": [
       [
         "DeadMansPlate",
-        "JakshoTheProtean",
+        "JakShoTheProtean",
         "NashorsTooth",
         "RanduinsOmen",
         "UnendingDespair",
@@ -14681,7 +14681,7 @@
     "Top": [
       [
         "FiendhunterBolts",
-        "JakshoTheProtean",
+        "JakShoTheProtean",
         "LordDominiksRegards",
         "MercurialScimitar",
         "MortalReminder",
@@ -14722,7 +14722,7 @@
       [
         "Bloodthirster",
         "FiendhunterBolts",
-        "JakshoTheProtean",
+        "JakShoTheProtean",
         "LordDominiksRegards",
         "MortalReminder",
         "WitsEnd"
@@ -14742,7 +14742,7 @@
       [
         "Bloodthirster",
         "FiendhunterBolts",
-        "JakshoTheProtean",
+        "JakShoTheProtean",
         "LordDominiksRegards",
         "MercurialScimitar",
         "WitsEnd"
@@ -14783,7 +14783,7 @@
     "Top": [
       [
         "Bloodthirster",
-        "JakshoTheProtean",
+        "JakShoTheProtean",
         "LordDominiksRegards",
         "MortalReminder",
         "RanduinsOmen",
@@ -14802,7 +14802,7 @@
     ],
     "Jungle": [
       [
-        "JakshoTheProtean",
+        "JakShoTheProtean",
         "LordDominiksRegards",
         "MortalReminder",
         "SpiritVisage",
@@ -14822,7 +14822,7 @@
     "Middle": [
       [
         "Bloodthirster",
-        "JakshoTheProtean",
+        "JakShoTheProtean",
         "LordDominiksRegards",
         "MortalReminder",
         "RanduinsOmen",
@@ -14842,7 +14842,7 @@
     "Bottom": [
       [
         "Bloodthirster",
-        "JakshoTheProtean",
+        "JakShoTheProtean",
         "KrakenSlayer",
         "MortalReminder",
         "RanduinsOmen",
@@ -14886,7 +14886,7 @@
         "BlackCleaver",
         "ChempunkChainsword",
         "Hullbreaker",
-        "JakshoTheProtean",
+        "JakShoTheProtean",
         "RanduinsOmen",
         "SpiritVisage"
       ],
@@ -14906,7 +14906,7 @@
         "BlackCleaver",
         "DeathsDance",
         "Hullbreaker",
-        "JakshoTheProtean",
+        "JakShoTheProtean",
         "LiandrysTorment",
         "SpiritVisage"
       ],
@@ -14944,7 +14944,7 @@
     "Bottom": [
       [
         "Bastionbreaker",
-        "JakshoTheProtean",
+        "JakShoTheProtean",
         "LiandrysTorment",
         "ProfaneHydra",
         "RavenousHydra",
@@ -15232,7 +15232,7 @@
       [
         "BladeOfTheRuinedKing",
         "ChempunkChainsword",
-        "JakshoTheProtean",
+        "JakShoTheProtean",
         "RanduinsOmen",
         "SteraksGage",
         "ZekesConvergence"
@@ -15254,7 +15254,7 @@
       [
         "AbyssalMask",
         "HextechRocketbelt",
-        "JakshoTheProtean",
+        "JakShoTheProtean",
         "LiandrysTorment",
         "ProtoplasmHarness",
         "Riftmaker"
@@ -15271,7 +15271,7 @@
     ],
     "Jungle": [
       [
-        "JakshoTheProtean",
+        "JakShoTheProtean",
         "LiandrysTorment",
         "ProtoplasmHarness",
         "Riftmaker",
@@ -15293,7 +15293,7 @@
       [
         "FrozenHeart",
         "HextechRocketbelt",
-        "JakshoTheProtean",
+        "JakShoTheProtean",
         "LiandrysTorment",
         "ProtoplasmHarness",
         "UnendingDespair"
@@ -15312,7 +15312,7 @@
     "Bottom": [
       [
         "AbyssalMask",
-        "JakshoTheProtean",
+        "JakShoTheProtean",
         "KnightsVow",
         "LocketOfTheIronSolari",
         "ProtoplasmHarness",

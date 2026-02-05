@@ -31,7 +31,7 @@ fn update() {
 
 #[tokio::test]
 async fn generate_html() {
-    tutorlolv2_html::run().await;
+    // tutorlolv2_html::run().await;
 }
 
 #[test]
