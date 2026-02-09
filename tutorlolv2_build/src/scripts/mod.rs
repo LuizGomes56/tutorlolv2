@@ -34,38 +34,70 @@ pub const TOWER_DAMAGE: &str = r#"const intrinsic TOWER_DAMAGE {
         bonus_stats.attack_damage,
         current_stats.ability_power,
     ),
-    damage: intrinsic |plates, percent, flat| {
-        base_stats.attack_damage
-            + bonus_stats.attack_damage
-            + current_stats.ability_power
-                * 0.6
-                * (100 / (140 + (-25 + 50 * plates) * percent - flat))
-    }
+    definition: intrinsic @ fn get_tower_damages,
+    prototype: fn(
+        AdaptativeType, 
+        f32, f32, f32, 
+        ResistShred
+    ) -> [i32; L_TWRD]
+}"#;
+
+pub const TOWER_DAMAGE_FN: &str = r#"fn tower_damage(
+    plates: f32,
+    base_attack_damage: f32,
+    bonus_attack_damage: f32,
+    ability_power: f32,
+    pen_percent: f32,
+    pen_flat: f32,
+) -> i32 {
+    (base_attack_damage
+        + bonus_attack_damage
+        + ability_power
+            * 0.6
+            * (100.0
+                / (140.0
+                    + (-25.0 + 50.0 * plates)
+                        * pen_percent
+                    - pen_flat))) as i32
 }"#;
 
 pub const ONHIT_EFFECT: &str = r#"const intrinsic ONHIT_EFFECT {
     damage_type: DamageType::Mixed,
-    definition: |damage, [min, max], attr| match attr {
-        Attrs::OnhitMin | Attrs::AreaOnhitMin => *min += damage,
-        Attrs::OnhitMax | Attrs::AreaOnhitMax => *max += damage,
-        Attrs::Onhit | Attrs::AreaOnhit => {
-            *min += damage;
-            *max += damage;
-        }
+    definition: intrinsic @ fn eval_attacks,
+    prototype: pub const fn eval_attacks(
+        &Ctx, mut RangeDamage, f32
+    ) -> Attacks
+};"#;
+
+pub const ONHIT_EFFECT_FN: &str = r#"fn eval_attacks(
+    ctx: &Ctx, 
+    mut onhit_damage: RangeDamage, 
+    physical_mod: f32
+) -> Attacks {
+    intrinsic
+}"#;
+
+pub const CRITICAL_STRIKE: &str = r#"intrinsic CRITICAL_STRIKE {
+    attributes: Attrs::OnhitMax,
+    damage_type: DamageType::Physical,
+    damage: |ctx| {
+        ctx.ad * ctx.crit_damage / 100.0
     }
 };"#;
 
-pub const CRITICAL_STRIKE: &str = r#"const intrinsic CRITICAL_STRIKE {
-    attributes: Attrs::OnhitMax,
-    damage_type: DamageType::Physical,
-    damage: |ctx| ctx.ad * ctx.crit_damage / 100.0,
-};"#;
+pub const CRITICAL_STRIKE_FN: &str = r#"fn critical_strike(ctx: &Ctx) -> f32 {
+    ctx.ad * ctx.crit_damage / 100.0
+}"#;
 
-pub const BASIC_ATTACK: &str = r#"const intrinsic BASIC_ATTACK {
+pub const BASIC_ATTACK: &str = r#"intrinsic BASIC_ATTACK {
     attributes: Attrs::OnhitMin,
     damage_type: DamageType::Physical,
     damage: |ctx| ctx.ad,
 };"#;
+
+pub const BASIC_ATTACK_FN: &str = r#"fn basic_attack(ctx: &Ctx) -> f32 {
+    ctx.ad /* mul ctx.physical_mod */
+}"#;
 
 pub trait StringExt: AsRef<str> {
     fn get_idents(&self) -> BTreeSet<String> {

@@ -19,6 +19,10 @@ macro_rules! create_eval_struct {
                 $([<$value:camel>],)*
             }
 
+            impl CtxVar {
+                pub const ARRAY: [Self; Self::VARIANTS] = [$(Self::[<$value:camel>],)*];
+            }
+
             $(
                 #[allow(non_upper_case_globals)]
                 pub const [<$value:camel>]: CtxVar = CtxVar::[<$value:camel>];
@@ -75,14 +79,6 @@ create_eval_struct!(
     crit_damage,
     current_health,
     current_mana,
-    enemy_armor,
-    enemy_bonus_armor,
-    enemy_bonus_health,
-    enemy_bonus_magic_resist,
-    enemy_health,
-    enemy_magic_resist,
-    enemy_max_health,
-    enemy_missing_health,
     level,
     q_level,
     w_level,
@@ -100,4 +96,17 @@ create_eval_struct!(
     rocksolid_effect,
     stacks,
     steelcaps_effect,
+    enemy_armor,
+    enemy_bonus_armor,
+    enemy_bonus_health,
+    enemy_bonus_magic_resist,
+    enemy_health,
+    enemy_magic_resist,
+    enemy_max_health,
+    enemy_missing_health,
 );
+
+impl CtxVar {
+    pub const VARIANTS: usize = size_of::<Ctx>() / size_of::<f32>();
+    pub const SKIP: usize = Self::SteelcapsEffect as usize + 1;
+}

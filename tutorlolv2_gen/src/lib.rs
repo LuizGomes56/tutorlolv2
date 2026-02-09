@@ -17,8 +17,8 @@ pub use bitset::*;
 pub use cache::*;
 pub use data::{
     champions::{
-        ABILITY_CLOSURES, ABILITY_FORMULAS, ABILITY_IDENTS, CHAMPION_CACHE, CHAMPION_FORMULAS,
-        CHAMPION_NAME_TO_ID, ChampionId, RECOMMENDED_ITEMS, RECOMMENDED_RUNES,
+        ABILITY_CLOSURES, ABILITY_FORMULAS, ABILITY_IDENTS, ABILITY_IDENTS_INDEX, CHAMPION_CACHE,
+        CHAMPION_FORMULAS, CHAMPION_NAME_TO_ID, ChampionId, RECOMMENDED_ITEMS, RECOMMENDED_RUNES,
     },
     items::{ITEM_CACHE, ITEM_CLOSURES, ITEM_FORMULAS, ITEM_IDENTS, ItemId},
     runes::{RUNE_CACHE, RUNE_CLOSURES, RUNE_FORMULAS, RUNE_IDENTS, RuneId},
@@ -218,6 +218,35 @@ pub static CHAMPION_POSITIONS: [&[Position]; ChampionId::VARIANTS] = {
     result
 };
 
+const _: () = {
+    let mut i = 0;
+    while i < ChampionId::VARIANTS {
+        let champion_id = ChampionId::VALUES[i];
+        let cache = champion_id.cache();
+
+        let merge_data = cache.merge_data;
+        let len = cache.metadata.len();
+
+        assert!(len == champion_id.closures().len());
+        assert!(len == champion_id.ident_indexes().len());
+
+        let mut j = 0;
+        while j < merge_data.len() {
+            let m = &merge_data[j];
+            assert!((m.minimum_damage as usize) < len);
+            assert!((m.maximum_damage as usize) < len);
+            assert!(m.minimum_damage < m.maximum_damage);
+            if j + 1 < merge_data.len() {
+                let a = &merge_data[j];
+                let b = &merge_data[j + 1];
+                assert!(a.maximum_damage < b.maximum_damage);
+            }
+            j += 1;
+        }
+        i += 1;
+    }
+};
+
 /// Assert there were no undefined behavior while creating [`CHAMPION_POSITIONS`]
 const _: () = {
     let mut i = 0;
@@ -274,6 +303,22 @@ impl ChampionId {
     pub const fn main_position(&self) -> Position {
         self.positions()[0]
     }
+
+    pub const fn closures(&self) -> &'static [Range<usize>] {
+        Self::CLOSURES[self.index()]
+    }
+
+    pub const fn ident_indexes(&self) -> &'static [Range<usize>] {
+        ABILITY_IDENTS_INDEX[self.index()]
+    }
+
+    pub const fn ability_formulas(&self) -> &'static [Range<usize>] {
+        ABILITY_FORMULAS[self.index()]
+    }
+
+    pub const fn get_ability_formula(&self, index: usize) -> &'static Range<usize> {
+        &self.ability_formulas()[index]
+    }
 }
 
 impl ItemId {
@@ -300,6 +345,10 @@ impl ItemId {
     pub const fn to_riot_id(&self) -> u32 {
         self.cache().riot_id
     }
+
+    pub const fn closure(&self) -> &'static Range<usize> {
+        &Self::CLOSURES[self.index()]
+    }
 }
 
 impl RuneId {
@@ -321,6 +370,10 @@ impl RuneId {
 
     const fn filter(&self) -> bool {
         true
+    }
+
+    pub const fn closure(&self) -> &'static Range<usize> {
+        &Self::CLOSURES[self.index()]
     }
 }
 
@@ -523,6 +576,9 @@ where
     fn name(&self) -> &'static str;
     fn index(&self) -> usize;
     fn idents(&self) -> &'static [CtxVar];
+    fn formula(&self) -> &'static Range<usize> {
+        &Self::FORMULAS[self.index()]
+    }
     fn is(value: &TypeId) -> bool {
         *value == TypeId::of::<Self>()
     }

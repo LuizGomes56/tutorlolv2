@@ -46141,17 +46141,17 @@ pub mod items {
             unknown_map_35: true,
         },
     };
-    pub const fn blade_of_the_ruined_king_ranged_min(ctx: &Ctx) -> f32 {
-        ctx.enemy_health
-            - (0.06 * ctx.enemy_health * (1.0 - 0.06 * ctx.physical_multiplier) - ctx.attack_damage
-                + ctx.attack_damage * (1.0 - 0.06 * ctx.physical_multiplier))
-                / 0.06
-    }
     pub const fn blade_of_the_ruined_king_melee_min(ctx: &Ctx) -> f32 {
         ctx.enemy_health
             - (0.09 * ctx.enemy_health * (1.0 - 0.09 * ctx.physical_multiplier) - ctx.attack_damage
                 + ctx.attack_damage * (1.0 - 0.09 * ctx.physical_multiplier))
                 / 0.09
+    }
+    pub const fn blade_of_the_ruined_king_ranged_min(ctx: &Ctx) -> f32 {
+        ctx.enemy_health
+            - (0.06 * ctx.enemy_health * (1.0 - 0.06 * ctx.physical_multiplier) - ctx.attack_damage
+                + ctx.attack_damage * (1.0 - 0.06 * ctx.physical_multiplier))
+                / 0.06
     }
     pub static BLADE_OF_THE_RUINED_KING_ARENA: CachedItem = CachedItem {
         name: "Blade of The Ruined King [Arena]",
@@ -69106,8 +69106,12 @@ pub mod runes {
         }
     }
 }
-pub static ONHIT_EFFECT_OFFSET: Range<usize> = 8933675..8935266;
-pub static BASIC_ATTACK_OFFSET: Range<usize> = 8935266..8935851;
-pub static TOWER_DAMAGE_OFFSET: Range<usize> = 8935851..8937509;
-pub static CRITICAL_STRIKE_OFFSET: Range<usize> = 8937509..8938211;
-pub const RAW_BLOCK_LEN: usize = 8938211;
+pub static ONHIT_EFFECT_OFFSET: Range<usize> = 8933675..8934596;
+pub static BASIC_ATTACK_OFFSET: Range<usize> = 8934596..8935146;
+pub static TOWER_DAMAGE_OFFSET: Range<usize> = 8935146..8936399;
+pub static CRITICAL_STRIKE_OFFSET: Range<usize> = 8936399..8937143;
+pub static ONHIT_EFFECT_FN_OFFSET: Range<usize> = 8937143..8937720;
+pub static TOWER_DAMAGE_FN_OFFSET: Range<usize> = 8937720..8939377;
+pub static BASIC_ATTACK_FN_OFFSET: Range<usize> = 8939377..8939827;
+pub static CRITICAL_STRIKE_FN_OFFSET: Range<usize> = 8939827..8940338;
+pub const RAW_BLOCK_LEN: usize = 8940338;
