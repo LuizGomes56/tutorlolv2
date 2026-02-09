@@ -40,8 +40,8 @@ fn declare_abilities(
 
             let match_src = format!("{letter}_level", letter = letter.to_lowercase());
 
-            let (damage, html_damage) = match damage.is_empty() {
-                true => ("zero".into(), "zero".into()),
+            let damage = match damage.is_empty() {
+                true => "zero".into(),
                 false => {
                     let comparator = format!(
                         "ctx.{op}",
@@ -66,11 +66,7 @@ fn declare_abilities(
                     let simplified = simplify(&damage);
 
                     let get_closure = |arm| format!("{match_closure} {arm} {simplified} }}}}");
-                    let html_closure = get_closure(get_arms(&damage))
-                        .replace("context_level", "n")
-                        .replace("as u8", "");
-
-                    let closure = match simplified {
+                    match simplified {
                         Simplified::Progression(_) | Simplified::Independent(_) => {
                             let body = simplified
                                 .expr()
@@ -87,9 +83,7 @@ fn declare_abilities(
 
                             get_closure(get_arms(&damage_f32))
                         }
-                    };
-
-                    (closure, html_closure)
+                    }
                 }
             };
 
@@ -110,6 +104,8 @@ fn declare_abilities(
                 body = damage.trim_start_matches("|ctx|")
             );
 
+            let idents = damage.get_idents(&damage_type);
+
             let damage_type = format_args!("DamageType::{damage_type}");
             let attributes = format_args!("Attrs::{attributes:?}");
 
@@ -118,7 +114,7 @@ fn declare_abilities(
                     name: {name:?},
                     damage_type: {damage_type},
                     attributes: {attributes},
-                    damage: {html_damage},
+                    damage: {damage},
                 }};"
             );
 
@@ -136,8 +132,6 @@ fn declare_abilities(
                 }}"
             );
 
-            let idents = damage.get_idents();
-
             DeclaredAbility {
                 ability_id,
                 declaration,
@@ -147,7 +141,7 @@ fn declare_abilities(
                     declaration: constfn_declaration,
                     name: constfn_name,
                 },
-                html_damage,
+                html_damage: damage.replace(" as u8", ""),
                 idents,
             }
         })

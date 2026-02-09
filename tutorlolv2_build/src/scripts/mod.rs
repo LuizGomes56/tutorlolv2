@@ -34,8 +34,7 @@ pub const TOWER_DAMAGE: &str = r#"const intrinsic TOWER_DAMAGE {
         bonus_stats.attack_damage,
         current_stats.ability_power,
     ),
-    definition: intrinsic @ fn get_tower_damages,
-    prototype: fn(
+    definition: const fn get_tower_damages(
         AdaptativeType, 
         f32, f32, f32, 
         ResistShred
@@ -63,9 +62,8 @@ pub const TOWER_DAMAGE_FN: &str = r#"fn tower_damage(
 
 pub const ONHIT_EFFECT: &str = r#"const intrinsic ONHIT_EFFECT {
     damage_type: DamageType::Mixed,
-    definition: intrinsic @ fn eval_attacks,
-    prototype: pub const fn eval_attacks(
-        &Ctx, mut RangeDamage, f32
+    definition: const fn eval_attacks(
+        &Ctx, RangeDamage, f32
     ) -> Attacks
 };"#;
 
@@ -100,10 +98,18 @@ pub const BASIC_ATTACK_FN: &str = r#"fn basic_attack(ctx: &Ctx) -> f32 {
 }"#;
 
 pub trait StringExt: AsRef<str> {
-    fn get_idents(&self) -> BTreeSet<String> {
+    fn get_idents(&self, damage_type: &str) -> BTreeSet<String> {
         RE_IDENTS
             .captures_iter(self.as_ref())
             .map(|cap| format!("CtxVar::{},", cap[1].pascal_case()))
+            .chain(
+                match damage_type {
+                    "Physical" => Some("CtxVar::PhysicalMultiplier,"),
+                    "Magic" => Some("CtxVar::MagicMultiplier,"),
+                    _ => None,
+                }
+                .map(str::to_string),
+            )
             .collect()
     }
 
@@ -473,6 +479,31 @@ pub fn simplify(values: &[String]) -> Simplified {
     let mut depends_on_n = false;
     let mut formulas = Vec::new();
 
+    fn trim_f64(value: f64) -> String {
+        let s = format!("{value:.6}");
+        match s.split_once('.') {
+            Some((int, frac)) => {
+                let frac = frac.trim_end_matches('0');
+                if frac.is_empty() {
+                    return int.to_string();
+                }
+                let bytes = frac.as_bytes();
+                if bytes.len() >= 3 && bytes.iter().all(|&b| b == bytes[0]) {
+                    return format!("{int}.{}", &frac[..1]);
+                }
+                let unique_prefix = frac
+                    .chars()
+                    .take_while(|c| *c != frac.chars().last().unwrap())
+                    .collect::<String>();
+                if unique_prefix.len() >= 3 {
+                    return format!("{int}.{unique_prefix}");
+                }
+                format!("{int}.{frac}")
+            }
+            None => s,
+        }
+    }
+
     for col in 0..num_constants {
         let v1 = value_matrix[0][col];
         let v2 = value_matrix[1][col];
@@ -485,10 +516,14 @@ pub fn simplify(values: &[String]) -> Simplified {
             false => {
                 depends_on_n = true;
                 let start_offset = v1 - diff;
+                let display_diff = trim_f64(diff);
 
                 let pa = match start_offset.abs() < 0.0001 {
-                    true => format!("({diff} * context_level)"),
-                    false => format!("({start_offset} + {diff} * context_level)"),
+                    true => format!("({display_diff} * context_level)"),
+                    false => format!(
+                        "({start} + {display_diff} * context_level)",
+                        start = trim_f64(start_offset)
+                    ),
                 };
                 formulas.push(pa);
             }

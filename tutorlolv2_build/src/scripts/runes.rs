@@ -133,7 +133,7 @@ pub fn generate_runes() -> GeneratorFn {
                 };
 
                 let idents = (melee_closure.clone() + &ranged_closure)
-                    .get_idents()
+                    .get_idents(&damage_type)
                     .into_iter()
                     .collect::<String>();
 
@@ -148,7 +148,7 @@ pub fn generate_runes() -> GeneratorFn {
                     name_ssnake,
                     name_pascal,
                     html_closure: constfn_declaration
-                        .trim_start_matches("pub const")
+                        .replace("pub const ", "")
                         .trim()
                         .to_string(),
                     deals_damage: true,

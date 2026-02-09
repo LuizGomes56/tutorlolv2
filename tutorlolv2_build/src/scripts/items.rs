@@ -369,7 +369,7 @@ pub fn generate_items() -> GeneratorFn {
             CwdPath::get_generator(SrcFolder::Items, name_pascal.to_ssnake().to_lowercase()).ok();
 
         let idents = constfn_declaration
-            .get_idents()
+            .get_idents(&item.damage_type)
             .into_iter()
             .collect::<String>();
 
