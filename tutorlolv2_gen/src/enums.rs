@@ -56,6 +56,19 @@ const_enum! {
     }
 }
 
+impl DamageType {
+    pub const fn class(&self) -> &'static str {
+        match self {
+            DamageType::Physical => "text-orange-500",
+            DamageType::Magic => "text-sky-500",
+            DamageType::Mixed => "text-indigo-500",
+            DamageType::True => "text-white",
+            DamageType::Adaptative => "text-purple-500",
+            DamageType::Unknown => "text-emerald-500",
+        }
+    }
+}
+
 const_enum! {
     /// An enum with several variants that can be used to add up to `255` attributes
     /// to some ability, item or rune. It is mostly used to determine if the current

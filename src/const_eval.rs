@@ -14,9 +14,8 @@ use crate::{
     model::{Modifiers, RangeDamage},
 };
 use tutorlolv2_gen::{
-    AttackType, CHAMPION_CACHE, CachedChampion, CachedItem, CachedRune, ChampionId, Ctx,
-    ITEM_CACHE, ItemId, RUNE_CACHE, RuneId, TypeMetadata, champions::ability_const_eval,
-    items::item_const_eval, runes::rune_const_eval,
+    AttackType, CachedChampion, CachedItem, CachedRune, ChampionId, Ctx, ItemId, RuneId,
+    TypeMetadata, champions::ability_const_eval, items::item_const_eval, runes::rune_const_eval,
 };
 
 /// Constant evaluation of abilities, similar to function [`crate::helpers::ability_id_eval_damage`]
@@ -89,7 +88,7 @@ pub const fn const_ability_id_eval_damage<const N: usize>(
     let mut result = [0; N];
     let mut i = 0;
     while i < N {
-        let CachedChampion { metadata, .. } = CHAMPION_CACHE[champion_id as usize];
+        let CachedChampion { metadata, .. } = champion_id.cache();
         let TypeMetadata {
             kind,
             damage_type,
@@ -124,12 +123,12 @@ pub const fn const_item_id_eval_damage<const N: usize>(
                     ..
                 },
             ..
-        } = ITEM_CACHE[item_id as usize];
+        } = item_id.cache();
         let modifier = modifiers.damages.modifier(*damage_type);
         let damages = item_const_eval(ctx, item_id, attack_type);
         let mut j = 0;
         while j < 2 {
-            let damage = (modifier * damages[j]) as i32;
+            let damage = (modifier * damages[j]) as _;
             onhit.inc_attr(*attributes, damage);
             result[i + j] = damage;
             j += 1;
@@ -150,7 +149,7 @@ pub const fn const_rune_id_eval_damage<const N: usize>(
     let mut i = 0;
     while i < N {
         let rune_id = rune_ids[i];
-        let CachedRune { damage_type, .. } = RUNE_CACHE[rune_id as usize];
+        let CachedRune { damage_type, .. } = rune_id.cache();
         let modifier = modifiers.damages.modifier(*damage_type);
         result[i] = (modifier * rune_const_eval(ctx, rune_id, attack_type)) as i32;
         i += 1;

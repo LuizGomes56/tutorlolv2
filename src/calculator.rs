@@ -8,8 +8,7 @@
 //! so all the function inputs have to be obtained through your
 //! own mechanism
 
-use crate::helpers::*;
-use crate::model::*;
+use crate::{helpers::*, model::*};
 use alloc::boxed::Box;
 use tutorlolv2_gen::*;
 
@@ -62,7 +61,7 @@ pub const NUMBER_OF_ITEMS_WITH_PEN: usize = {
 pub const ITEMS_WITH_PEN: [ItemId; NUMBER_OF_ITEMS_WITH_PEN] = {
     let mut i = 0;
     let mut j = 0;
-    let mut items = [ItemId::AbyssalMask; NUMBER_OF_ITEMS_WITH_PEN];
+    let mut items = [ItemId::default(); NUMBER_OF_ITEMS_WITH_PEN];
     while i < ItemId::VARIANTS {
         let CachedItem {
             stats,
@@ -107,7 +106,7 @@ pub const fn get_item_bonus_stats(
     let mut i = 0;
     while i < items.len() {
         let item_id = items[i];
-        let item = ITEM_CACHE[item_id as usize];
+        let item = item_id.cache();
         let item_stats = &item.stats;
 
         let fire = get_fire_multiplier(dragons.ally_fire_dragons);
@@ -138,18 +137,14 @@ pub const fn get_item_bonus_stats(
             ItemId::ElixirOfIron => stats.health += 300.0,
             ItemId::JuiceOfVitality => stats.health += 300.0 + 0.1 * stats.health,
             ItemId::Shadowflame => {
-                let bonus = 1.2;
-
-                modifiers.damages.magic_mod *= bonus;
-                modifiers.damages.true_mod *= bonus;
+                modifiers.damages.magic_mod *= SHADOWFLAME_BONUS_DAMAGE;
+                modifiers.damages.true_mod *= SHADOWFLAME_BONUS_DAMAGE;
             }
             ItemId::SpearOfShojin => {
-                let bonus = 1.12;
-
-                modifiers.abilities.q *= bonus;
-                modifiers.abilities.w *= bonus;
-                modifiers.abilities.e *= bonus;
-                modifiers.abilities.r *= bonus;
+                modifiers.abilities.q *= SHOJIN_BONUS_DAMAGE;
+                modifiers.abilities.w *= SHOJIN_BONUS_DAMAGE;
+                modifiers.abilities.e *= SHOJIN_BONUS_DAMAGE;
+                modifiers.abilities.r *= SHOJIN_BONUS_DAMAGE;
             }
             ItemId::JuiceOfPower => {
                 stats.attack_damage += 18.0 + 0.1 * stats.attack_damage;
@@ -585,8 +580,6 @@ pub fn calculator(game: InputGame) -> OutputGame {
             adaptative_type,
             level,
         },
-        abilities_to_merge: current_player_cache.merge_data,
-        abilities_meta: eval_data.abilities.metadata,
         items_meta: eval_data.items.metadata,
         runes_meta: eval_data.runes.metadata,
         monster_damages,

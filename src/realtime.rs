@@ -12,38 +12,8 @@
 
 use crate::{helpers::*, model::*, riot::*};
 use alloc::boxed::Box;
-use core::{mem::MaybeUninit, str::FromStr};
+use core::str::FromStr;
 use tutorlolv2_gen::*;
-
-/// Contains the metadata of all items that have their stats compared to choose
-/// which one is best to buy considering the current game state. See [`TypeMetadata`]
-/// for more details
-pub const SIMULATED_ITEMS_METADATA: [TypeMetadata<ItemId>; L_SIML] = {
-    let mut siml_items = MaybeUninit::<[TypeMetadata<ItemId>; L_SIML]>::uninit();
-    let siml_items_ptr = siml_items.as_mut_ptr();
-    let mut i = 0;
-    while i < L_SIML {
-        let item_id = SIMULATED_ITEMS_ENUM[i];
-        let CachedItem {
-            metadata:
-                TypeMetadata {
-                    damage_type,
-                    attributes,
-                    ..
-                },
-            ..
-        } = *ITEM_CACHE[item_id as usize];
-        unsafe {
-            core::ptr::addr_of_mut!((*siml_items_ptr)[i]).write(TypeMetadata::<ItemId> {
-                kind: item_id,
-                damage_type,
-                attributes,
-            })
-        };
-        i += 1;
-    }
-    unsafe { siml_items.assume_init() }
-};
 
 /// Ensure that all champions have at least one position, so the unchecked
 /// access does not cause a panic or undefined behavior
@@ -155,16 +125,16 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
             let riot_id = riot_item.item_id;
 
             match riot_id {
-                RIFTMAKER => base_modifiers.global_mod *= 1.08,
+                RIFTMAKER => base_modifiers.global_mod *= RIFTMAKER_BONUS_DAMAGE,
                 SHADOWFLAME => {
-                    base_modifiers.magic_mod *= 1.2;
-                    base_modifiers.true_mod *= 1.2;
+                    base_modifiers.magic_mod *= SHADOWFLAME_BONUS_DAMAGE;
+                    base_modifiers.true_mod *= SHADOWFLAME_BONUS_DAMAGE;
                 }
                 SPEAR_OF_SHOJIN => {
-                    ability_modifiers.q *= 1.12;
-                    ability_modifiers.w *= 1.12;
-                    ability_modifiers.e *= 1.12;
-                    ability_modifiers.r *= 1.12;
+                    ability_modifiers.q *= SHOJIN_BONUS_DAMAGE;
+                    ability_modifiers.w *= SHOJIN_BONUS_DAMAGE;
+                    ability_modifiers.e *= SHOJIN_BONUS_DAMAGE;
+                    ability_modifiers.r *= SHOJIN_BONUS_DAMAGE;
                 }
                 _ => {}
             };
@@ -183,7 +153,8 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
         .unwrap_or(unsafe { *current_player_cache.positions.get_unchecked(0) });
     let current_player_cache_attack_type = current_player_cache.attack_type;
 
-    let current_player_team = Team::from(current_player.team);
+    let current_player_team = Team::from_str(current_player.team).unwrap_or_default();
+
     let shred = ResistShred::new(&current_player_stats);
 
     let mut scoreboard = Box::new_uninit_slice(all_players.len());
@@ -263,7 +234,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
             let e_cache = unsafe { CHAMPION_CACHE.get_unchecked(e_champion_id as usize) };
             let e_position = Position::from_str(e_raw_position)
                 .unwrap_or(unsafe { *e_cache.positions.get_unchecked(0) });
-            let team = Team::from(*e_team);
+            let team = Team::from_str(e_team).unwrap_or_default();
 
             unsafe {
                 scoreboard.get_unchecked_mut(i).write(Scoreboard {
@@ -351,8 +322,8 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
                 base_stats: e_base_stats.into(),
                 bonus_stats: full_state.bonus_stats.into(),
                 current_stats: full_state.current_stats.into(),
-                real_armor: full_state.armor_values.real as i32,
-                real_magic_resist: full_state.magic_values.real as i32,
+                real_armor: full_state.armor_values.real as _,
+                real_magic_resist: full_state.magic_values.real as _,
                 level: *e_level,
                 eval_ctx,
             })
@@ -374,11 +345,8 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
         },
         enemies,
         scoreboard: unsafe { scoreboard.assume_init() },
-        abilities_meta: eval_data.abilities.metadata,
         items_meta: eval_data.items.metadata,
         runes_meta: eval_data.runes.metadata,
-        siml_meta: SIMULATED_ITEMS_METADATA,
-        abilities_to_merge: current_player_cache.merge_data,
         game_time: *game_time as _,
         ability_levels,
         dragons,

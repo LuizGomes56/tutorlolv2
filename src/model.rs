@@ -10,6 +10,7 @@
 
 use alloc::boxed::Box;
 use bincode::{BorrowDecode, Decode, Encode};
+use core::str::FromStr;
 use serde::{Deserialize, Serialize};
 use tutorlolv2_gen::*;
 
@@ -61,32 +62,11 @@ pub struct Realtime<'a> {
     /// to be ordered based on team. Sorting this vector has to be done by the caller
     pub scoreboard: Box<[Scoreboard<'a>]>,
 
-    /// Constant array of the [`TypeMetadata<AbilityId>`] of all abilities of the
-    /// current champion. Note that this value lives at the static variable
-    /// [`CHAMPION_CACHE`] at the index [`ChampionId`] when casting
-    /// this enum to type [`usize`]
-    pub abilities_meta: &'static [TypeMetadata<AbilityId>],
-
     /// Vector of the [`TypeMetadata<ItemId>`] of all damaging items the player had
     pub items_meta: Box<[TypeMetadata<ItemId>]>,
 
     /// Vector of the [`TypeMetadata<RuneId>`] of all damaging runes the player had
     pub runes_meta: Box<[TypeMetadata<RuneId>]>,
-
-    /// Constant array containing the [`TypeMetadata<ItemId>`] of all items that
-    /// were chosen to have their damages compared among each other, to determine
-    /// which one is mathematically besst to buy next. Note that this value lives
-    /// at the constant [`crate::realtime::SIMULATED_ITEMS_METADATA`]
-    #[serde(with = "serde_arrays")]
-    pub siml_meta: [TypeMetadata<ItemId>; L_SIML],
-
-    /// Constant array of tuples that determines which abilities should
-    /// be displayed in a single cell, in the format `{min} - {max}`. Doing it
-    /// this way allow that when summing up the damage of each ability, the user
-    /// has more flexibility in which it can choose to insert only the minimum damage
-    /// of some ability, the maximum damage, or both, while maintaining the table
-    /// display in a very deterministic format
-    pub abilities_to_merge: &'static [MergeData],
 
     /// Game time in seconds
     pub game_time: u32,
@@ -200,12 +180,6 @@ pub struct Enemy<'a> {
     pub eval_ctx: Ctx,
 }
 
-/// Exact number of resistence variations for jungle monsters
-pub const L_MSTR: usize = 7;
-
-/// Number of different plates a tower can have. Each tower can have `0..=5` plates
-pub const L_TWRD: usize = 6;
-
 impl Stats<f32> {
     /// Returns a new struct [`Stats`] with the same original values except the ones
     /// that involve percent penetration, which are resolved and converted to the
@@ -225,18 +199,33 @@ impl Stats<f32> {
 /// - `CHAOS` is converted to [`Team::Red`],
 /// - `ORDER` and any other variant matches [`Team::Blue`]
 #[derive(
-    Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize,
+    Clone,
+    Copy,
+    Debug,
+    Default,
+    Eq,
+    Hash,
+    Ord,
+    PartialEq,
+    PartialOrd,
+    Encode,
+    Decode,
+    Serialize,
+    Deserialize,
 )]
 pub enum Team {
+    #[default]
     Blue,
     Red,
 }
 
-impl From<&str> for Team {
-    fn from(value: &str) -> Self {
-        match value {
-            "ORDER" => Team::Blue,
-            _ => Team::Red,
+impl FromStr for Team {
+    type Err = &'static str;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "ORDER" => Ok(Team::Blue),
+            "CHAOS" => Ok(Team::Red),
+            _ => Err("No matches when calling Team::from_str"),
         }
     }
 }
@@ -507,8 +496,6 @@ pub struct OutputGame {
     pub current_player: OutputCurrentPlayer,
     pub enemies: Box<[OutputEnemy]>,
     pub tower_damages: [i32; L_TWRD],
-    pub abilities_meta: &'static [TypeMetadata<AbilityId>],
-    pub abilities_to_merge: &'static [MergeData],
     pub items_meta: Box<[TypeMetadata<ItemId>]>,
     pub runes_meta: Box<[TypeMetadata<RuneId>]>,
 }

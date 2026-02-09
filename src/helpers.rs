@@ -39,6 +39,9 @@ pub const STEEL_CAPS_PROTECTION: f32 = 0.88;
 pub const RANDUIN_CRIT_PROTECTION: f32 = 0.7;
 /// Items with Rocksolid passive give 20% damage reduction in some cases
 pub const ROCKSOLID_PROTECTION: f32 = 0.8;
+pub const SHOJIN_BONUS_DAMAGE: f32 = 1.12;
+pub const SHADOWFLAME_BONUS_DAMAGE: f32 = 1.2;
+pub const RIFTMAKER_BONUS_DAMAGE: f32 = 1.08;
 
 /// Formula to get the bonus damage of the rune [`RuneId::LastStand`], where
 /// missing health is a ratio of the current health and the maximum health.

@@ -7,8 +7,7 @@ pub mod data;
 pub mod enums;
 pub mod eval;
 
-use core::{any::TypeId, ops::Range};
-use core::{ops::Index, str::FromStr};
+use core::{any::TypeId, mem::MaybeUninit, ops::Index, ops::Range, str::FromStr};
 
 #[allow(non_upper_case_globals)]
 pub(crate) const unknown: f32 = 0.0;
@@ -71,6 +70,12 @@ pub const L_SIML: usize = {
     sum
 };
 
+/// Exact number of resistence variations for jungle monsters
+pub const L_MSTR: usize = 7;
+
+/// Number of different plates a tower can have. Each tower can have `0..=5` plates
+pub const L_TWRD: usize = 6;
+
 /// Stores the simulated items as [`ItemId`], and only those that follow the rules:
 /// - `tier >= 3`
 /// - `price > 0`
@@ -87,6 +92,36 @@ pub const SIMULATED_ITEMS_ENUM: [ItemId; L_SIML] = {
         i += 1;
     }
     result
+};
+
+/// Contains the metadata of all items that have their stats compared to choose
+/// which one is best to buy considering the current game state. See [`TypeMetadata`]
+/// for more details
+pub const SIMULATED_ITEMS_METADATA: [TypeMetadata<ItemId>; L_SIML] = {
+    let mut siml_items = MaybeUninit::<[TypeMetadata<ItemId>; L_SIML]>::uninit();
+    let siml_items_ptr = siml_items.as_mut_ptr();
+    let mut i = 0;
+    while i < L_SIML {
+        let item_id = SIMULATED_ITEMS_ENUM[i];
+        let CachedItem {
+            metadata:
+                TypeMetadata {
+                    damage_type,
+                    attributes,
+                    ..
+                },
+            ..
+        } = *ITEM_CACHE[item_id as usize];
+        unsafe {
+            core::ptr::addr_of_mut!((*siml_items_ptr)[i]).write(TypeMetadata::<ItemId> {
+                kind: item_id,
+                damage_type,
+                attributes,
+            })
+        };
+        i += 1;
+    }
+    unsafe { siml_items.assume_init() }
 };
 
 /// Number of runes that can damage enemies. Currently they're generated manually and
