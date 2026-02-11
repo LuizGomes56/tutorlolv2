@@ -903,37 +903,38 @@ const _: () = {
 /// Constructs a new [`Damages`] struct that holds all the damage values against some entity
 /// that could be calculated. This function will cause undefined behavior if any
 /// metadata of closures vectors do not have the same length
-pub fn get_damages(eval_ctx: &Ctx, data: &DamageEvalData, modifiers: Modifiers) -> Damages {
+pub fn get_damages(ctx: Ctx, data: &DamageEvalData, modifiers: Modifiers) -> Damages {
     let mut onhit = RangeDamage::default();
 
     let abilities = ability_id_eval_damage(
-        eval_ctx,
+        &ctx,
         &mut onhit,
         data.abilities.metadata,
         data.abilities.closures,
         modifiers,
     );
     let items = item_id_eval_damage(
-        eval_ctx,
+        &ctx,
         &mut onhit,
         &data.items.metadata,
         &data.items.closures,
         modifiers,
     );
     let runes = rune_id_eval_damage(
-        eval_ctx,
+        &ctx,
         &mut onhit,
         &data.runes.metadata,
         &data.runes.closures,
         modifiers,
     );
-    let attacks = eval_attacks(eval_ctx, onhit, modifiers.damages.physical_mod);
+    let attacks = eval_attacks(&ctx, onhit, modifiers.damages.physical_mod);
 
     Damages {
         abilities,
         items,
         runes,
         attacks,
+        ctx,
     }
 }
 
@@ -944,7 +945,7 @@ pub fn get_monster_damages(
     self_state: &SelfState,
     eval_data: &DamageEvalData,
     shred: ResistShred,
-) -> [MonsterDamage; L_MSTR] {
+) -> [Damages; L_MSTR] {
     core::array::from_fn(|i| {
         let (armor, magic_resist) = MONSTER_RESISTS[i];
         let full_state = get_enemy_state(
@@ -964,13 +965,8 @@ pub fn get_monster_damages(
             shred,
             true,
         );
-        let eval_ctx = get_eval_ctx(self_state, &full_state);
-        let damages = get_damages(&eval_ctx, eval_data, Modifiers::default());
-        MonsterDamage {
-            attacks: damages.attacks,
-            abilities: damages.abilities,
-            items: damages.items,
-        }
+        let ctx = get_eval_ctx(self_state, &full_state);
+        get_damages(ctx, eval_data, Modifiers::default())
     })
 }
 

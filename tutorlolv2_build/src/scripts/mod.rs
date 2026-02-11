@@ -41,23 +41,16 @@ pub const TOWER_DAMAGE: &str = r#"const intrinsic TOWER_DAMAGE {
     ) -> [i32; L_TWRD]
 }"#;
 
-pub const TOWER_DAMAGE_FN: &str = r#"fn tower_damage(
-    plates: f32,
-    base_attack_damage: f32,
-    bonus_attack_damage: f32,
-    ability_power: f32,
-    pen_percent: f32,
-    pen_flat: f32,
-) -> i32 {
-    (base_attack_damage
-        + bonus_attack_damage
-        + ability_power
-            * 0.6
-            * (100.0
-                / (140.0
-                    + (-25.0 + 50.0 * plates)
-                        * pen_percent
-                    - pen_flat))) as i32
+pub const TOWER_DAMAGE_FN: &str = r#"fn tower_damage(_: f32, ...) -> i32 {
+    let base = base_attack_damage 
+        + bonus_attack_damage 
+        + ability_power * 0.6;
+    let resist = 140.0 
+        + (-25.0 + 50.0 * plates) 
+        * pen_percent 
+        - pen_flat;
+    let mult = 100.0 / resist;
+    (base * mult) as _
 }"#;
 
 pub const ONHIT_EFFECT: &str = r#"const intrinsic ONHIT_EFFECT {

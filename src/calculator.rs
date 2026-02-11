@@ -631,7 +631,7 @@ pub fn get_calculator_enemies(
                 full_state.current_stats = e_stats;
             }
 
-            let eval_ctx = get_eval_ctx(self_state, &full_state);
+            let ctx = get_eval_ctx(self_state, &full_state);
 
             let modifiers = Modifiers {
                 damages: DamageModifiers {
@@ -647,9 +647,8 @@ pub fn get_calculator_enemies(
                 ..modifiers
             };
 
-            // Everything const up to this point
-
-            let damages = get_damages(&eval_ctx, eval_data, modifiers);
+            // The only non-const method
+            let damages = get_damages(ctx, eval_data, modifiers);
 
             OutputEnemy {
                 current_stats: EnemyStats::from_f32(&full_state.current_stats),
@@ -660,7 +659,6 @@ pub fn get_calculator_enemies(
                 champion_id: e_champion_id,
                 level: e_level,
                 damages,
-                eval_ctx,
             }
         })
         .collect::<Box<[OutputEnemy]>>()

@@ -272,7 +272,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
                 shred,
                 false,
             );
-            let eval_ctx = get_eval_ctx(&self_state, &full_state);
+            let ctx = get_eval_ctx(&self_state, &full_state);
             let modifiers = Modifiers {
                 abilities: ability_modifiers,
                 damages: DamageModifiers {
@@ -298,18 +298,18 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
                         * full_state.modifiers.global_mod,
                 },
             };
-            let damages = get_damages(&eval_ctx, &eval_data, modifiers);
+            let damages = get_damages(ctx, &eval_data, modifiers);
 
             let siml_items = core::array::from_fn(|i| {
                 let siml_stat = simulated_stats[i];
-                let siml_eval_ctx = get_eval_ctx(
+                let siml_ctx = get_eval_ctx(
                     &SelfState {
                         current_stats: siml_stat,
                         ..self_state
                     },
                     &full_state,
                 );
-                get_damages(&siml_eval_ctx, &eval_data, modifiers)
+                get_damages(siml_ctx, &eval_data, modifiers)
             });
 
             Some(Enemy {
@@ -325,7 +325,6 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
                 real_armor: full_state.armor_values.real as _,
                 real_magic_resist: full_state.magic_values.real as _,
                 level: *e_level,
-                eval_ctx,
             })
         })
         .collect::<Box<[Enemy<'_>]>>();

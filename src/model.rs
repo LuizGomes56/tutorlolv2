@@ -177,7 +177,6 @@ pub struct Enemy<'a> {
     pub champion_id: ChampionId,
     pub team: Team,
     pub position: Position,
-    pub eval_ctx: Ctx,
 }
 
 impl Stats<f32> {
@@ -302,12 +301,13 @@ impl ResistShred {
     }
 }
 
-#[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize)]
 pub struct Damages {
     pub attacks: Attacks,
     pub abilities: Box<[i32]>,
     pub items: Box<[i32]>,
     pub runes: Box<[i32]>,
+    pub ctx: Ctx,
 }
 
 /// Wrapper around the type [`u32`], whose first [`Self::DISC_BITS`] are used to
@@ -429,7 +429,6 @@ pub struct OutputEnemy {
     pub real_magic_resist: i32,
     pub level: u8,
     pub champion_id: ChampionId,
-    pub eval_ctx: Ctx,
 }
 
 /// Holds values that will be multiplied by all damages, depending on their
@@ -483,16 +482,9 @@ pub struct OutputCurrentPlayer {
     pub champion_id: ChampionId,
 }
 
-#[derive(Clone, Debug, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize)]
-pub struct MonsterDamage {
-    pub attacks: Attacks,
-    pub abilities: Box<[i32]>,
-    pub items: Box<[i32]>,
-}
-
 #[derive(Clone, Debug, PartialEq, PartialOrd, Encode, Serialize)]
 pub struct OutputGame {
-    pub monster_damages: [MonsterDamage; L_MSTR],
+    pub monster_damages: [Damages; L_MSTR],
     pub current_player: OutputCurrentPlayer,
     pub enemies: Box<[OutputEnemy]>,
     pub tower_damages: [i32; L_TWRD],
@@ -589,12 +581,10 @@ impl RiotFormulas {
         pen_percent: f32,
         pen_flat: f32,
     ) -> i32 {
-        (base_attack_damage
-            + bonus_attack_damage
-            + ability_power
-                * 0.6
-                * (100.0 / (140.0 + (-25.0 + 50.0 * plates) * pen_percent - pen_flat)))
-            as i32
+        let base = base_attack_damage + bonus_attack_damage + ability_power * 0.6;
+        let resist = 140.0 + (-25.0 + 50.0 * plates) * pen_percent - pen_flat;
+        let mult = 100.0 / resist;
+        (base * mult) as _
     }
 
     /// Returns the adaptative type of the current player, given its bonus attack_damage
