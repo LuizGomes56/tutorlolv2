@@ -173,7 +173,7 @@ impl ItemFactory {
 
     /// Runs all item generators, stopping the execution if one of them fails
     pub fn run_all() -> MayFail {
-        ItemId::ARRAY
+        ItemId::VALUES
             .into_par_iter()
             .for_each(|item_id| match Self::run(item_id) {
                 Ok(data) => data
@@ -186,7 +186,7 @@ impl ItemFactory {
     }
 
     pub fn clean() -> MayFail {
-        for item_id in ItemId::ARRAY {
+        for item_id in ItemId::VALUES {
             let fname = format!("{item_id:?}");
             let generator_path = Self::generator_path(&fname);
             let path = SaveTo::Internal(Tag::Items, &fname).path();

@@ -667,7 +667,7 @@ impl HttpClient {
     /// Fetches the `meta_endpoint` and scrapes the information from some champion's
     /// common ability combos and saves to a cache file
     pub async fn combo_scraper(&self) -> MayFail {
-        for champion_id in ChampionId::ARRAY {
+        for champion_id in ChampionId::VALUES {
             let path = SaveTo::ScraperCombos(champion_id).path();
             self.download(
                 format!("{}/{champion_id:?}/combos", ENV_CONFIG.meta_endpoint),
@@ -711,7 +711,7 @@ impl HttpClient {
     /// json file is generated, aggregating all the collected information in a single
     /// location
     pub async fn call_scraper(&self) -> MayFail {
-        for champion_id in ChampionId::ARRAY {
+        for champion_id in ChampionId::VALUES {
             let mut futures_vec = Vec::new();
 
             for position in Position::ARRAY {
@@ -825,7 +825,7 @@ impl HttpClient {
 
         let mut results = FinalData::new();
 
-        for champion_id in ChampionId::ARRAY {
+        for champion_id in ChampionId::VALUES {
             let mut positions = BTreeMap::new();
             for position in Position::ARRAY {
                 let path = SaveTo::InternalScraperBuilds(position, champion_id).path();

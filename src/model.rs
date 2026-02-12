@@ -10,6 +10,7 @@
 
 use alloc::boxed::Box;
 use bincode::{BorrowDecode, Decode, Encode};
+use core::str::FromStr;
 use serde::{Deserialize, Serialize};
 use tutorlolv2_gen::*;
 
@@ -22,6 +23,12 @@ use tutorlolv2_gen::*;
 pub struct StaticDamageKind<T: 'static> {
     pub metadata: &'static [TypeMetadata<T>],
     pub closures: &'static [ConstClosure],
+}
+
+#[derive(Clone, Copy, Debug, PartialEq, PartialOrd)]
+pub struct ConstDamageKind<T: 'static, const N: usize, const L: usize> {
+    pub metadata: [TypeMetadata<T>; N],
+    pub closures: [ConstClosure; L],
 }
 
 /// Runtime-known values that depend on how many damaging items or runes the
@@ -61,32 +68,11 @@ pub struct Realtime<'a> {
     /// to be ordered based on team. Sorting this vector has to be done by the caller
     pub scoreboard: Box<[Scoreboard<'a>]>,
 
-    /// Constant array of the [`TypeMetadata<AbilityId>`] of all abilities of the
-    /// current champion. Note that this value lives at the static variable
-    /// [`CHAMPION_CACHE`] at the index [`ChampionId`] when casting
-    /// this enum to type [`usize`]
-    pub abilities_meta: &'static [TypeMetadata<AbilityId>],
-
     /// Vector of the [`TypeMetadata<ItemId>`] of all damaging items the player had
     pub items_meta: Box<[TypeMetadata<ItemId>]>,
 
     /// Vector of the [`TypeMetadata<RuneId>`] of all damaging runes the player had
     pub runes_meta: Box<[TypeMetadata<RuneId>]>,
-
-    /// Constant array containing the [`TypeMetadata<ItemId>`] of all items that
-    /// were chosen to have their damages compared among each other, to determine
-    /// which one is mathematically besst to buy next. Note that this value lives
-    /// at the constant [`crate::realtime::SIMULATED_ITEMS_METADATA`]
-    #[serde(with = "serde_arrays")]
-    pub siml_meta: [TypeMetadata<ItemId>; L_SIML],
-
-    /// Constant array of tuples that determines which abilities should
-    /// be displayed in a single cell, in the format `{min} - {max}`. Doing it
-    /// this way allow that when summing up the damage of each ability, the user
-    /// has more flexibility in which it can choose to insert only the minimum damage
-    /// of some ability, the maximum damage, or both, while maintaining the table
-    /// display in a very deterministic format
-    pub abilities_to_merge: &'static [MergeData],
 
     /// Game time in seconds
     pub game_time: u32,
@@ -131,7 +117,7 @@ pub struct CurrentPlayer<'a> {
     // pub _padding: u16,
 }
 
-#[derive(Clone, Copy, Debug, PartialEq, PartialOrd, Encode, Serialize)]
+#[derive(Clone, Copy, Debug, Default, PartialEq, PartialOrd, Encode, Serialize)]
 pub struct EnemyState<'a> {
     pub base_stats: SimpleStats<f32>,
     pub items: &'a [ItemId],
@@ -197,14 +183,7 @@ pub struct Enemy<'a> {
     pub champion_id: ChampionId,
     pub team: Team,
     pub position: Position,
-    pub eval_ctx: Ctx,
 }
-
-/// Exact number of resistence variations for jungle monsters
-pub const L_MSTR: usize = 7;
-
-/// Number of different plates a tower can have. Each tower can have `0..=5` plates
-pub const L_TWRD: usize = 6;
 
 impl Stats<f32> {
     /// Returns a new struct [`Stats`] with the same original values except the ones
@@ -225,18 +204,33 @@ impl Stats<f32> {
 /// - `CHAOS` is converted to [`Team::Red`],
 /// - `ORDER` and any other variant matches [`Team::Blue`]
 #[derive(
-    Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize,
+    Clone,
+    Copy,
+    Debug,
+    Default,
+    Eq,
+    Hash,
+    Ord,
+    PartialEq,
+    PartialOrd,
+    Encode,
+    Decode,
+    Serialize,
+    Deserialize,
 )]
 pub enum Team {
+    #[default]
     Blue,
     Red,
 }
 
-impl From<&str> for Team {
-    fn from(value: &str) -> Self {
-        match value {
-            "ORDER" => Team::Blue,
-            _ => Team::Red,
+impl FromStr for Team {
+    type Err = &'static str;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "ORDER" => Ok(Team::Blue),
+            "CHAOS" => Ok(Team::Red),
+            _ => Err("No matches when calling Team::from_str"),
         }
     }
 }
@@ -313,12 +307,13 @@ impl ResistShred {
     }
 }
 
-#[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize)]
 pub struct Damages {
     pub attacks: Attacks,
     pub abilities: Box<[i32]>,
     pub items: Box<[i32]>,
     pub runes: Box<[i32]>,
+    pub ctx: Ctx,
 }
 
 /// Wrapper around the type [`u32`], whose first [`Self::DISC_BITS`] are used to
@@ -440,7 +435,6 @@ pub struct OutputEnemy {
     pub real_magic_resist: i32,
     pub level: u8,
     pub champion_id: ChampionId,
-    pub eval_ctx: Ctx,
 }
 
 /// Holds values that will be multiplied by all damages, depending on their
@@ -473,6 +467,20 @@ pub struct Modifiers {
     pub abilities: AbilityModifiers,
 }
 
+impl Modifiers {
+    pub const fn new(ctx: &Ctx) -> Self {
+        Self {
+            damages: DamageModifiers {
+                physical_mod: ctx.physical_multiplier,
+                magic_mod: ctx.magic_multiplier,
+                true_mod: 1.0,
+                global_mod: 1.0,
+            },
+            ..Self::default()
+        }
+    }
+}
+
 /// Holds float values that will be multiplied by the damages of each ability
 /// depending on their letters, which can be obtained through the method
 /// [`AbilityId::as_char`] with simple branching. Values of `1.0` mean no modifiers
@@ -494,21 +502,12 @@ pub struct OutputCurrentPlayer {
     pub champion_id: ChampionId,
 }
 
-#[derive(Clone, Debug, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize)]
-pub struct MonsterDamage {
-    pub attacks: Attacks,
-    pub abilities: Box<[i32]>,
-    pub items: Box<[i32]>,
-}
-
 #[derive(Clone, Debug, PartialEq, PartialOrd, Encode, Serialize)]
 pub struct OutputGame {
-    pub monster_damages: [MonsterDamage; L_MSTR],
+    pub monster_damages: [Damages; L_MSTR],
     pub current_player: OutputCurrentPlayer,
     pub enemies: Box<[OutputEnemy]>,
     pub tower_damages: [i32; L_TWRD],
-    pub abilities_meta: &'static [TypeMetadata<AbilityId>],
-    pub abilities_to_merge: &'static [MergeData],
     pub items_meta: Box<[TypeMetadata<ItemId>]>,
     pub runes_meta: Box<[TypeMetadata<RuneId>]>,
 }
@@ -595,19 +594,22 @@ impl RiotFormulas {
 
     /// Returns an [`i32`] that represents the damage against some turret
     pub const fn tower_damage(
-        plates: f32,
+        plates: u32,
         base_attack_damage: f32,
         bonus_attack_damage: f32,
         ability_power: f32,
         pen_percent: f32,
         pen_flat: f32,
     ) -> i32 {
-        (base_attack_damage
-            + bonus_attack_damage
-            + ability_power
-                * 0.6
-                * (100.0 / (140.0 + (-25.0 + 50.0 * plates) * pen_percent - pen_flat)))
-            as i32
+        let base = base_attack_damage + bonus_attack_damage + ability_power * 0.6;
+        let bonus_resist = match plates == 0 {
+            true => 0.0,
+            false => -25.0 + 50.0 * (plates as f32 - 1.0),
+        };
+        let raw_resist = 40.0 + bonus_resist;
+        let resist = raw_resist * (1.0 - pen_percent / 100.0) - pen_flat;
+        let mult = 100.0 / (100.0 + resist);
+        (base * mult) as _
     }
 
     /// Returns the adaptative type of the current player, given its bonus attack_damage

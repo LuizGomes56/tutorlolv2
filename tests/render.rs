@@ -15,7 +15,7 @@ fn render() {
             .collect::<String>()
     };
 
-    let abilities = ChampionId::ARRAY
+    let abilities = ChampionId::VALUES
         .into_iter()
         .map(|champion_id| source_code(ABILITY_CLOSURES[champion_id.index()]))
         .collect::<String>();

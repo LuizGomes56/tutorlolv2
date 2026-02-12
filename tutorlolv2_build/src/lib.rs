@@ -1,6 +1,7 @@
 use crate::scripts::{
-    BASIC_ATTACK, CRITICAL_STRIKE, DEFAULT_ITEM_GENERATOR, ONHIT_EFFECT, StringExt, TOWER_DAMAGE,
-    ZERO_FN, champions::generate_champions, items::generate_items, runes::generate_runes,
+    BASIC_ATTACK, BASIC_ATTACK_FN, CRITICAL_STRIKE, CRITICAL_STRIKE_FN, DEFAULT_ITEM_GENERATOR,
+    ONHIT_EFFECT, ONHIT_EFFECT_FN, StringExt, TOWER_DAMAGE, TOWER_DAMAGE_FN, ZERO_FN,
+    champions::generate_champions, items::generate_items, runes::generate_runes,
 };
 use rayon::iter::{IntoParallelIterator, ParallelBridge, ParallelIterator};
 use serde::de::DeserializeOwned;
@@ -237,6 +238,10 @@ pub fn run() -> MayFail {
         ("BASIC_ATTACK_OFFSET", BASIC_ATTACK),
         ("TOWER_DAMAGE_OFFSET", TOWER_DAMAGE),
         ("CRITICAL_STRIKE_OFFSET", CRITICAL_STRIKE),
+        ("ONHIT_EFFECT_FN_OFFSET", ONHIT_EFFECT_FN),
+        ("TOWER_DAMAGE_FN_OFFSET", TOWER_DAMAGE_FN),
+        ("BASIC_ATTACK_FN_OFFSET", BASIC_ATTACK_FN),
+        ("CRITICAL_STRIKE_FN_OFFSET", CRITICAL_STRIKE_FN),
     ] {
         let (start, end) = tracker.record(&value.rust_html().as_const());
         full_exports.push_str(&format!(

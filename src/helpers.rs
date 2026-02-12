@@ -39,6 +39,9 @@ pub const STEEL_CAPS_PROTECTION: f32 = 0.88;
 pub const RANDUIN_CRIT_PROTECTION: f32 = 0.7;
 /// Items with Rocksolid passive give 20% damage reduction in some cases
 pub const ROCKSOLID_PROTECTION: f32 = 0.8;
+pub const SHOJIN_BONUS_DAMAGE: f32 = 1.12;
+pub const SHADOWFLAME_BONUS_DAMAGE: f32 = 1.2;
+pub const RIFTMAKER_BONUS_DAMAGE: f32 = 1.08;
 
 /// Formula to get the bonus damage of the rune [`RuneId::LastStand`], where
 /// missing health is a ratio of the current health and the maximum health.
@@ -311,19 +314,19 @@ pub fn get_runes_data(runes: &RunesBitSet, attack_type: AttackType) -> DamageKin
     let count = runes.count() as usize;
     let mut metadata = Box::new_uninit_slice(count);
     let mut closures = Box::new_uninit_slice(count);
-    for (i, rune_offset) in runes.into_iter().enumerate() {
-        let rune = unsafe { RUNE_CACHE.get_unchecked(rune_offset) };
-        unsafe {
+    unsafe {
+        for (i, rune_offset) in runes.into_iter().enumerate() {
+            let rune = RUNE_CACHE.get_unchecked(rune_offset);
             metadata.get_unchecked_mut(i).write(rune.metadata);
             closures.get_unchecked_mut(i).write(match attack_type {
                 AttackType::Ranged => rune.ranged_damage,
                 AttackType::Melee => rune.melee_damage,
             });
         }
-    }
-    DamageKind {
-        metadata: unsafe { metadata.assume_init() },
-        closures: unsafe { closures.assume_init() },
+        DamageKind {
+            metadata: metadata.assume_init(),
+            closures: closures.assume_init(),
+        }
     }
 }
 
@@ -336,24 +339,28 @@ pub fn get_runes_data(runes: &RunesBitSet, attack_type: AttackType) -> DamageKin
 /// ```
 pub fn get_items_data(items: &ItemsBitSet, attack_type: AttackType) -> DamageKind<ItemId> {
     let count = items.count() as usize;
+
     let mut metadata = Box::new_uninit_slice(count);
     let mut closures = Box::new_uninit_slice(count << 1);
-    for (i, item_offset) in items.into_iter().enumerate() {
-        let item = unsafe { ITEM_CACHE.get_unchecked(item_offset) };
-        let slice = match attack_type {
-            AttackType::Ranged => item.ranged_damages,
-            AttackType::Melee => item.melee_damages,
-        };
 
-        unsafe {
+    unsafe {
+        for (i, item_offset) in items.into_iter().enumerate() {
+            let item = ITEM_CACHE.get_unchecked(item_offset);
+            let slice = match attack_type {
+                AttackType::Ranged => item.ranged_damages,
+                AttackType::Melee => item.melee_damages,
+            };
+
             metadata.get_unchecked_mut(i).write(item.metadata);
-            closures.get_unchecked_mut(i).write(slice[0]);
-            closures.get_unchecked_mut(i + 1).write(slice[1]);
+            let base = i << 1;
+            closures.get_unchecked_mut(base).write(slice[0]);
+            closures.get_unchecked_mut(base + 1).write(slice[1]);
         }
-    }
-    DamageKind {
-        metadata: unsafe { metadata.assume_init() },
-        closures: unsafe { closures.assume_init() },
+
+        DamageKind {
+            metadata: metadata.assume_init(),
+            closures: closures.assume_init(),
+        }
     }
 }
 
@@ -810,7 +817,7 @@ pub fn item_id_eval_damage(
         let modifier = modifiers.damages.modifier(*damage_type);
         let mut j = 0;
         while j < 2 {
-            let closure = unsafe { closures.get_unchecked(meta_index + j) };
+            let closure = unsafe { closures.get_unchecked((meta_index << 1) + j) };
             let damage = (modifier * closure(ctx)) as i32;
             onhit.inc_attr(*attributes, damage);
             unsafe {
@@ -900,37 +907,38 @@ const _: () = {
 /// Constructs a new [`Damages`] struct that holds all the damage values against some entity
 /// that could be calculated. This function will cause undefined behavior if any
 /// metadata of closures vectors do not have the same length
-pub fn get_damages(eval_ctx: &Ctx, data: &DamageEvalData, modifiers: Modifiers) -> Damages {
+pub fn get_damages(ctx: Ctx, data: &DamageEvalData, modifiers: Modifiers) -> Damages {
     let mut onhit = RangeDamage::default();
 
     let abilities = ability_id_eval_damage(
-        eval_ctx,
+        &ctx,
         &mut onhit,
         data.abilities.metadata,
         data.abilities.closures,
         modifiers,
     );
     let items = item_id_eval_damage(
-        eval_ctx,
+        &ctx,
         &mut onhit,
         &data.items.metadata,
         &data.items.closures,
         modifiers,
     );
     let runes = rune_id_eval_damage(
-        eval_ctx,
+        &ctx,
         &mut onhit,
         &data.runes.metadata,
         &data.runes.closures,
         modifiers,
     );
-    let attacks = eval_attacks(eval_ctx, onhit, modifiers.damages.physical_mod);
+    let attacks = eval_attacks(&ctx, onhit, modifiers.damages.physical_mod);
 
     Damages {
         abilities,
         items,
         runes,
         attacks,
+        ctx,
     }
 }
 
@@ -941,33 +949,24 @@ pub fn get_monster_damages(
     self_state: &SelfState,
     eval_data: &DamageEvalData,
     shred: ResistShred,
-) -> [MonsterDamage; L_MSTR] {
+) -> [Damages; L_MSTR] {
     core::array::from_fn(|i| {
         let (armor, magic_resist) = MONSTER_RESISTS[i];
         let full_state = get_enemy_state(
             EnemyState {
-                base_stats: SimpleStats::<f32> {
+                base_stats: SimpleStats {
                     armor,
-                    health: 1.0,
+                    health: 1000.0,
                     magic_resist,
                 },
-                items: &[],
-                stacks: 0,
-                champion_id: ChampionId::Aatrox,
-                level: 0,
-                earth_dragons: 0,
-                item_exceptions: &[],
+                ..Default::default()
             },
             shred,
             true,
         );
-        let eval_ctx = get_eval_ctx(self_state, &full_state);
-        let damages = get_damages(&eval_ctx, eval_data, Modifiers::default());
-        MonsterDamage {
-            attacks: damages.attacks,
-            abilities: damages.abilities,
-            items: damages.items,
-        }
+        let ctx = get_eval_ctx(self_state, &full_state);
+        let modifiers = Modifiers::new(&ctx);
+        get_damages(ctx, eval_data, modifiers)
     })
 }
 
@@ -998,7 +997,7 @@ pub const fn get_tower_damages(
 
     while i < L_TWRD {
         let damage = RiotFormulas::tower_damage(
-            i as f32,
+            i as _,
             base_attack_damage,
             bonus_attack_damage,
             ability_power,

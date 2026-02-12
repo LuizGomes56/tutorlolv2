@@ -40,8 +40,8 @@ fn declare_abilities(
 
             let match_src = format!("{letter}_level", letter = letter.to_lowercase());
 
-            let (damage, html_damage) = match damage.is_empty() {
-                true => ("zero".into(), "zero".into()),
+            let damage = match damage.is_empty() {
+                true => "zero".into(),
                 false => {
                     let comparator = format!(
                         "ctx.{op}",
@@ -66,11 +66,7 @@ fn declare_abilities(
                     let simplified = simplify(&damage);
 
                     let get_closure = |arm| format!("{match_closure} {arm} {simplified} }}}}");
-                    let html_closure = get_closure(get_arms(&damage))
-                        .replace("context_level", "n")
-                        .replace("as u8", "");
-
-                    let closure = match simplified {
+                    match simplified {
                         Simplified::Progression(_) | Simplified::Independent(_) => {
                             let body = simplified
                                 .expr()
@@ -87,9 +83,7 @@ fn declare_abilities(
 
                             get_closure(get_arms(&damage_f32))
                         }
-                    };
-
-                    (closure, html_closure)
+                    }
                 }
             };
 
@@ -110,6 +104,8 @@ fn declare_abilities(
                 body = damage.trim_start_matches("|ctx|")
             );
 
+            let idents = damage.get_idents(&damage_type);
+
             let damage_type = format_args!("DamageType::{damage_type}");
             let attributes = format_args!("Attrs::{attributes:?}");
 
@@ -118,7 +114,7 @@ fn declare_abilities(
                     name: {name:?},
                     damage_type: {damage_type},
                     attributes: {attributes},
-                    damage: {html_damage},
+                    damage: {damage},
                 }};"
             );
 
@@ -136,8 +132,6 @@ fn declare_abilities(
                 }}"
             );
 
-            let idents = damage.get_idents();
-
             DeclaredAbility {
                 ability_id,
                 declaration,
@@ -147,7 +141,7 @@ fn declare_abilities(
                     declaration: constfn_declaration,
                     name: constfn_name,
                 },
-                html_damage,
+                html_damage: damage.replace(" as u8", ""),
                 idents,
             }
         })
@@ -444,7 +438,7 @@ fn build_champions(data: Vec<(String, ChampionResult)>) -> GeneratorFn {
             ("CHAMPION_GENERATOR", "Range<usize>"),
             ("CHAMPION_ABILITIES", "&[AbilityId]"),
             ("ABILITY_IDENTS_INDEX", "&[Range<usize>]"),
-            ("ABILITY_IDENTS", "&[EvalIdent]"),
+            ("ABILITY_IDENTS", "&[CtxVar]"),
             ("ABILITY_FORMULAS", "&[Range<usize>]"),
             ("ABILITY_CLOSURES", "&[Range<usize>]"),
         ][i];
@@ -475,15 +469,6 @@ fn build_champions(data: Vec<(String, ChampionResult)>) -> GeneratorFn {
     let mut champion_id_enum = format!(
         r#"impl ChampionId {{
             pub const VARIANTS: usize = {len};
-            pub const unsafe fn from_u8_unchecked(id: u8) -> Self {{
-                unsafe {{ core::mem::transmute(id) }}
-            }}
-            pub const fn from_u8(id: u8) -> Option<Self> {{
-                match id < Self::VARIANTS as u8 {{
-                    true => Some(unsafe {{ Self::from_u8_unchecked(id) }}),
-                    false => None
-                }}
-            }}
         }}
         #[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
         #[derive(bincode::Encode, bincode::Decode)]
@@ -519,15 +504,13 @@ fn build_champions(data: Vec<(String, ChampionResult)>) -> GeneratorFn {
                 "Failed to recover {champion_id:?} from languages map"
             ))?
             .iter()
-            .map(|alias| format!("{alias:?} => ChampionId::{champion_id}"))
-            .chain(std::iter::once(format!(
-                "{champion_id:?} => ChampionId::{champion_id}"
-            )))
+            .map(|alias| format!("{alias:?}"))
+            .chain(std::iter::once(format!("{champion_id:?}")))
             .collect::<BTreeSet<_>>()
             .into_iter()
             .collect::<Vec<_>>()
-            .join(",");
-        language_arms.push(name_alias);
+            .join(" | ");
+        language_arms.push(format!("{name_alias} => ChampionId::{champion_id}"));
 
         champion_declarations.push_str(&base_declaration);
 

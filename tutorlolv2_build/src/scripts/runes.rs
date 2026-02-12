@@ -133,7 +133,7 @@ pub fn generate_runes() -> GeneratorFn {
                 };
 
                 let idents = (melee_closure.clone() + &ranged_closure)
-                    .get_idents()
+                    .get_idents(&damage_type)
                     .into_iter()
                     .collect::<String>();
 
@@ -148,7 +148,7 @@ pub fn generate_runes() -> GeneratorFn {
                     name_ssnake,
                     name_pascal,
                     html_closure: constfn_declaration
-                        .trim_start_matches("pub const")
+                        .replace("pub const ", "")
                         .trim()
                         .to_string(),
                     deals_damage: true,
@@ -250,7 +250,7 @@ fn build_runes(data: Vec<RuneResult>) -> GeneratorFn {
         let (name, vtype) = [
             ("RUNE_CACHE", "&CachedRune"),
             ("RUNE_FORMULAS", "Range<usize>"),
-            ("RUNE_IDENTS", "&[EvalIdent]"),
+            ("RUNE_IDENTS", "&[CtxVar]"),
             ("RUNE_CLOSURES", "Range<usize>"),
         ][i];
         format!("pub static {name}: [{vtype}; RuneId::VARIANTS] = [")
@@ -320,20 +320,8 @@ fn build_runes(data: Vec<RuneResult>) -> GeneratorFn {
         pub enum RuneId {{ {fields} }}
         impl RuneId {{
             pub const VARIANTS: usize = {len};
-            pub const fn to_riot_id(&self) -> u32 {{
-                RUNE_CACHE[*self as usize].riot_id
-            }}
             pub const fn from_riot_id(id: u32) -> Option<Self> {{
                 match id {{ {match_arms}, _ => None }}
-            }}
-            pub const unsafe fn from_u8_unchecked(id: u8) -> Self {{
-                unsafe {{ core::mem::transmute(id) }}
-            }}
-            pub const fn from_u8(id: u8) -> Option<Self> {{
-                match id < Self::VARIANTS as u8 {{
-                    true => Some(unsafe {{ Self::from_u8_unchecked(id) }}),
-                    false => None
-                }}
             }}
         }}"#
     );

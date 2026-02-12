@@ -34,44 +34,79 @@ pub const TOWER_DAMAGE: &str = r#"const intrinsic TOWER_DAMAGE {
         bonus_stats.attack_damage,
         current_stats.ability_power,
     ),
-    damage: intrinsic |plates, percent, flat| {
-        base_stats.attack_damage
-            + bonus_stats.attack_damage
-            + current_stats.ability_power
-                * 0.6
-                * (100 / (140 + (-25 + 50 * plates) * percent - flat))
-    }
+    definition: const fn get_tower_damages(
+        AdaptativeType, 
+        f32, f32, f32, 
+        ResistShred
+    ) -> [i32; L_TWRD]
+}"#;
+
+pub const TOWER_DAMAGE_FN: &str = r#"fn tower_damage(_: f32, ...) -> i32 {
+    let base = base_attack_damage 
+        + bonus_attack_damage 
+        + ability_power * 0.6;
+    let bonus_resist = match plates == 0 {
+        true => 0.0,
+        false => -25 + 50 * (plates - 1),
+    };
+    let raw_resist = 40 + bonus_resist;
+    let resist = raw_resist 
+        * (1 - pen_percent / 100) 
+        - pen_flat;
+    let mult = 100 / (100 + resist);
+    base * mult
 }"#;
 
 pub const ONHIT_EFFECT: &str = r#"const intrinsic ONHIT_EFFECT {
     damage_type: DamageType::Mixed,
-    definition: |damage, [min, max], attr| match attr {
-        Attrs::OnhitMin | Attrs::AreaOnhitMin => *min += damage,
-        Attrs::OnhitMax | Attrs::AreaOnhitMax => *max += damage,
-        Attrs::Onhit | Attrs::AreaOnhit => {
-            *min += damage;
-            *max += damage;
-        }
+    definition: const fn eval_attacks(
+        &Ctx, RangeDamage, f32
+    ) -> Attacks
+};"#;
+
+pub const ONHIT_EFFECT_FN: &str = r#"fn eval_attacks(
+    ctx: &Ctx, 
+    mut onhit_damage: RangeDamage, 
+    physical_mod: f32
+) -> Attacks {
+    intrinsic
+}"#;
+
+pub const CRITICAL_STRIKE: &str = r#"intrinsic CRITICAL_STRIKE {
+    attributes: Attrs::OnhitMax,
+    damage_type: DamageType::Physical,
+    damage: |ctx| {
+        ctx.ad * ctx.crit_damage / 100.0
     }
 };"#;
 
-pub const CRITICAL_STRIKE: &str = r#"const intrinsic CRITICAL_STRIKE {
-    attributes: Attrs::OnhitMax,
-    damage_type: DamageType::Physical,
-    damage: |ctx| ctx.ad * ctx.crit_damage / 100.0,
-};"#;
+pub const CRITICAL_STRIKE_FN: &str = r#"fn critical_strike(ctx: &Ctx) -> f32 {
+    ctx.ad * ctx.crit_damage / 100.0
+}"#;
 
-pub const BASIC_ATTACK: &str = r#"const intrinsic BASIC_ATTACK {
+pub const BASIC_ATTACK: &str = r#"intrinsic BASIC_ATTACK {
     attributes: Attrs::OnhitMin,
     damage_type: DamageType::Physical,
     damage: |ctx| ctx.ad,
 };"#;
 
+pub const BASIC_ATTACK_FN: &str = r#"fn basic_attack(ctx: &Ctx) -> f32 {
+    ctx.ad /* mul ctx.physical_mod */
+}"#;
+
 pub trait StringExt: AsRef<str> {
-    fn get_idents(&self) -> BTreeSet<String> {
+    fn get_idents(&self, damage_type: &str) -> BTreeSet<String> {
         RE_IDENTS
             .captures_iter(self.as_ref())
-            .map(|cap| format!("EvalIdent::{},", cap[1].pascal_case()))
+            .map(|cap| format!("CtxVar::{},", cap[1].pascal_case()))
+            .chain(
+                match damage_type {
+                    "Physical" => Some("CtxVar::PhysicalMultiplier,"),
+                    "Magic" => Some("CtxVar::MagicMultiplier,"),
+                    _ => None,
+                }
+                .map(str::to_string),
+            )
             .collect()
     }
 
@@ -441,6 +476,31 @@ pub fn simplify(values: &[String]) -> Simplified {
     let mut depends_on_n = false;
     let mut formulas = Vec::new();
 
+    fn trim_f64(value: f64) -> String {
+        let s = format!("{value:.6}");
+        match s.split_once('.') {
+            Some((int, frac)) => {
+                let frac = frac.trim_end_matches('0');
+                if frac.is_empty() {
+                    return int.to_string();
+                }
+                let bytes = frac.as_bytes();
+                if bytes.len() >= 3 && bytes.iter().all(|&b| b == bytes[0]) {
+                    return format!("{int}.{}", &frac[..1]);
+                }
+                let unique_prefix = frac
+                    .chars()
+                    .take_while(|c| *c != frac.chars().last().unwrap())
+                    .collect::<String>();
+                if unique_prefix.len() >= 3 {
+                    return format!("{int}.{unique_prefix}");
+                }
+                format!("{int}.{frac}")
+            }
+            None => s,
+        }
+    }
+
     for col in 0..num_constants {
         let v1 = value_matrix[0][col];
         let v2 = value_matrix[1][col];
@@ -453,10 +513,14 @@ pub fn simplify(values: &[String]) -> Simplified {
             false => {
                 depends_on_n = true;
                 let start_offset = v1 - diff;
+                let display_diff = trim_f64(diff);
 
                 let pa = match start_offset.abs() < 0.0001 {
-                    true => format!("({diff} * context_level)"),
-                    false => format!("({start_offset} + {diff} * context_level)"),
+                    true => format!("({display_diff} * context_level)"),
+                    false => format!(
+                        "({start} + {display_diff} * context_level)",
+                        start = trim_f64(start_offset)
+                    ),
                 };
                 formulas.push(pa);
             }

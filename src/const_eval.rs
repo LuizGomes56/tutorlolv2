@@ -11,13 +11,50 @@
 
 use crate::{
     helpers::ability_id_mod,
-    model::{Modifiers, RangeDamage},
+    model::{ConstDamageKind, Modifiers, RangeDamage},
 };
+use core::mem::MaybeUninit;
 use tutorlolv2_gen::{
-    AttackType, CHAMPION_CACHE, CachedChampion, CachedItem, CachedRune, ChampionId, Ctx,
-    ITEM_CACHE, ItemId, RUNE_CACHE, RuneId, TypeMetadata, champions::ability_const_eval,
+    AttackType, CachedChampion, CachedItem, CachedRune, ChampionId, ConstClosure, Ctx, ITEM_CACHE,
+    ItemId, ItemsBitSet, RuneId, TypeMetadata, bit_array_pop, champions::ability_const_eval,
     items::item_const_eval, runes::rune_const_eval,
 };
+
+pub const fn get_items_data_const<const N: usize, const L: usize>(
+    items: &ItemsBitSet,
+    attack_type: AttackType,
+) -> ConstDamageKind<ItemId, N, L> {
+    assert!(L == N << 1);
+    unsafe {
+        let mut metadata: [TypeMetadata<ItemId>; N] = MaybeUninit::zeroed().assume_init();
+        let mut closures: [ConstClosure; L] = MaybeUninit::zeroed().assume_init();
+
+        let mut i = 0;
+        let mut j = 0;
+
+        let mut inner = items.into_inner();
+
+        while let Some(item_offset) = bit_array_pop(&mut inner) {
+            let item = ITEM_CACHE[item_offset];
+            let slice = match attack_type {
+                AttackType::Ranged => item.ranged_damages,
+                AttackType::Melee => item.melee_damages,
+            };
+
+            metadata[i] = item.metadata;
+            closures[j] = slice[0];
+            closures[j + 1] = slice[1];
+
+            i += 1;
+            j += 2;
+        }
+
+        assert!(i == N);
+        assert!(j == L);
+
+        ConstDamageKind { metadata, closures }
+    }
+}
 
 /// Constant evaluation of abilities, similar to function [`crate::helpers::ability_id_eval_damage`]
 /// Let's say you're trying to evaluate the damage of Neeko, which means you'll provide
@@ -89,7 +126,7 @@ pub const fn const_ability_id_eval_damage<const N: usize>(
     let mut result = [0; N];
     let mut i = 0;
     while i < N {
-        let CachedChampion { metadata, .. } = CHAMPION_CACHE[champion_id as usize];
+        let CachedChampion { metadata, .. } = champion_id.cache();
         let TypeMetadata {
             kind,
             damage_type,
@@ -105,17 +142,20 @@ pub const fn const_ability_id_eval_damage<const N: usize>(
 }
 
 /// Constant evaluation of items, similar to function [`crate::helpers::item_id_eval_damage`]
-pub const fn const_item_id_eval_damage<const N: usize>(
+pub const fn const_item_id_eval_damage<const N: usize, const L: usize>(
     ctx: &Ctx,
     onhit: &mut RangeDamage,
     item_ids: [ItemId; N],
     attack_type: AttackType,
     modifiers: Modifiers,
-) -> [i32; N] {
-    let mut result = [0; N];
-    let mut i = 0;
+) -> [i32; L] {
+    assert!(L == N << 1);
+    let mut result = [0i32; L];
+    let mut i = 0usize;
+    let mut j = 0usize;
     while i < N {
         let item_id = item_ids[i];
+
         let CachedItem {
             metadata:
                 TypeMetadata {
@@ -124,18 +164,23 @@ pub const fn const_item_id_eval_damage<const N: usize>(
                     ..
                 },
             ..
-        } = ITEM_CACHE[item_id as usize];
+        } = item_id.cache();
+
         let modifier = modifiers.damages.modifier(*damage_type);
         let damages = item_const_eval(ctx, item_id, attack_type);
-        let mut j = 0;
-        while j < 2 {
-            let damage = (modifier * damages[j]) as i32;
+
+        let mut k = 0usize;
+        while k < 2 {
+            let damage = (modifier * damages[k]) as i32;
             onhit.inc_attr(*attributes, damage);
-            result[i + j] = damage;
-            j += 1;
+            result[j + k] = damage;
+            k += 1;
         }
-        i += 2;
+
+        i += 1;
+        j += 2;
     }
+
     result
 }
 
@@ -150,7 +195,7 @@ pub const fn const_rune_id_eval_damage<const N: usize>(
     let mut i = 0;
     while i < N {
         let rune_id = rune_ids[i];
-        let CachedRune { damage_type, .. } = RUNE_CACHE[rune_id as usize];
+        let CachedRune { damage_type, .. } = rune_id.cache();
         let modifier = modifiers.damages.modifier(*damage_type);
         result[i] = (modifier * rune_const_eval(ctx, rune_id, attack_type)) as i32;
         i += 1;

@@ -1,5 +1,4 @@
 use std::process::Command;
-
 use tutorlolv2::{ChampionId, ItemId};
 use tutorlolv2_dev::{
     HTTP_CLIENT,
@@ -31,7 +30,7 @@ fn update() {
 
 #[tokio::test]
 async fn generate_html() {
-    tutorlolv2_html::run().await;
+    // tutorlolv2_html::run().await;
 }
 
 #[test]

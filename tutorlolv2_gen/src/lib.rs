@@ -7,20 +7,21 @@ pub mod data;
 pub mod enums;
 pub mod eval;
 
+use core::{any::TypeId, mem::MaybeUninit, ops::Index, ops::Range, str::FromStr};
+
 #[allow(non_upper_case_globals)]
 pub(crate) const unknown: f32 = 0.0;
-pub(crate) use core::ops::Range;
 pub(crate) use tutorlolv2_types::ability_name::*;
 
 pub use bitset::*;
 pub use cache::*;
 pub use data::{
     champions::{
-        ABILITY_IDENTS, CHAMPION_CACHE, CHAMPION_NAME_TO_ID, ChampionId, RECOMMENDED_ITEMS,
-        RECOMMENDED_RUNES,
+        ABILITY_CLOSURES, ABILITY_FORMULAS, ABILITY_IDENTS, ABILITY_IDENTS_INDEX, CHAMPION_CACHE,
+        CHAMPION_FORMULAS, CHAMPION_NAME_TO_ID, ChampionId, RECOMMENDED_ITEMS, RECOMMENDED_RUNES,
     },
-    items::{ITEM_CACHE, ItemId},
-    runes::{RUNE_CACHE, RuneId},
+    items::{ITEM_CACHE, ITEM_CLOSURES, ITEM_FORMULAS, ITEM_IDENTS, ItemId},
+    runes::{RUNE_CACHE, RUNE_CLOSURES, RUNE_FORMULAS, RUNE_IDENTS, RuneId},
     *,
 };
 pub use enums::{Attrs, DamageType};
@@ -28,9 +29,10 @@ pub use eval::*;
 pub use tutorlolv2_types::*;
 
 pub static RAW_BLOCK: &str = include_str!("block.txt");
-pub const BLOCK: &[u8] = include_bytes!("block.br");
+const BR_BLOCK: &[u8] = include_bytes!("block.br");
+pub static mut BLOCK: &[u8] = BR_BLOCK;
 
-pub const BLOCK_LEN: usize = BLOCK.len();
+pub const BLOCK_LEN: usize = BR_BLOCK.len();
 
 /// Verifies the following conditions
 /// - `tier >= 3`
@@ -68,6 +70,12 @@ pub const L_SIML: usize = {
     sum
 };
 
+/// Exact number of resistence variations for jungle monsters
+pub const L_MSTR: usize = 7;
+
+/// Number of different plates a tower can have. Each tower can have `0..=5` plates
+pub const L_TWRD: usize = 6;
+
 /// Stores the simulated items as [`ItemId`], and only those that follow the rules:
 /// - `tier >= 3`
 /// - `price > 0`
@@ -78,12 +86,42 @@ pub const SIMULATED_ITEMS_ENUM: [ItemId; L_SIML] = {
     let mut j = 0;
     while i < ItemId::VARIANTS {
         if is_simulated_item(ITEM_CACHE[i]) {
-            result[j] = unsafe { ItemId::from_u16_unchecked(i as _) };
+            result[j] = ItemId::from_repr(i as _).unwrap();
             j += 1;
         }
         i += 1;
     }
     result
+};
+
+/// Contains the metadata of all items that have their stats compared to choose
+/// which one is best to buy considering the current game state. See [`TypeMetadata`]
+/// for more details
+pub const SIMULATED_ITEMS_METADATA: [TypeMetadata<ItemId>; L_SIML] = {
+    let mut siml_items = MaybeUninit::<[TypeMetadata<ItemId>; L_SIML]>::uninit();
+    let siml_items_ptr = siml_items.as_mut_ptr();
+    let mut i = 0;
+    while i < L_SIML {
+        let item_id = SIMULATED_ITEMS_ENUM[i];
+        let CachedItem {
+            metadata:
+                TypeMetadata {
+                    damage_type,
+                    attributes,
+                    ..
+                },
+            ..
+        } = *ITEM_CACHE[item_id as usize];
+        unsafe {
+            core::ptr::addr_of_mut!((*siml_items_ptr)[i]).write(TypeMetadata::<ItemId> {
+                kind: item_id,
+                damage_type,
+                attributes,
+            })
+        };
+        i += 1;
+    }
+    unsafe { siml_items.assume_init() }
 };
 
 /// Number of runes that can damage enemies. Currently they're generated manually and
@@ -127,7 +165,7 @@ pub const DAMAGING_ITEMS_ARRAY: [ItemId; NUMBER_OF_DAMAGING_ITEMS] = {
     while i < ItemId::VARIANTS {
         let item = ITEM_CACHE[i];
         if item.deals_damage {
-            result[j] = unsafe { ItemId::from_u16_unchecked(i as _) };
+            result[j] = ItemId::from_repr(i as _).unwrap();
             j += 1;
         }
         i += 1;
@@ -144,7 +182,7 @@ pub const DAMAGING_RUNES_ARRAY: [RuneId; NUMBER_OF_DAMAGING_RUNES] = {
     while i < RuneId::VARIANTS {
         let rune = RUNE_CACHE[i];
         if !rune.undeclared {
-            result[j] = unsafe { RuneId::from_u8_unchecked(i as _) };
+            result[j] = RuneId::from_repr(i as _).unwrap();
             j += 1;
         }
         i += 1;
@@ -169,20 +207,9 @@ pub const NUMBER_OF_ABILITIES: usize = {
     sum
 };
 
-pub static CHAMPION_ID_TO_NAME: [&str; ChampionId::VARIANTS] = {
-    let mut i = 0;
-    let mut result = [""; _];
-    while i < ChampionId::VARIANTS {
-        let champion = CHAMPION_CACHE[i];
-        result[i] = champion.name;
-        i += 1;
-    }
-    result
-};
-
 pub static CHAMPION_POSITIONS: [&[Position]; ChampionId::VARIANTS] = {
     let mut i = 0;
-    let mut result = [unsafe { core::mem::transmute("") }; _];
+    let mut result = [&[] as &[_]; _];
     while i < ChampionId::VARIANTS {
         let champion = CHAMPION_CACHE[i];
         result[i] = champion.positions;
@@ -191,12 +218,42 @@ pub static CHAMPION_POSITIONS: [&[Position]; ChampionId::VARIANTS] = {
     result
 };
 
+const _: () = {
+    let mut i = 0;
+    while i < ChampionId::VARIANTS {
+        let champion_id = ChampionId::VALUES[i];
+        let cache = champion_id.cache();
+
+        let merge_data = cache.merge_data;
+        let len = cache.metadata.len();
+
+        assert!(len == champion_id.closures().len());
+        assert!(len == champion_id.ident_indexes().len());
+
+        let mut j = 0;
+        while j < merge_data.len() {
+            let m = &merge_data[j];
+            assert!((m.minimum_damage as usize) < len);
+            assert!((m.maximum_damage as usize) < len);
+            assert!(m.minimum_damage < m.maximum_damage);
+            if j + 1 < merge_data.len() {
+                let a = &merge_data[j];
+                let b = &merge_data[j + 1];
+                assert!(a.maximum_damage < b.maximum_damage);
+            }
+            j += 1;
+        }
+        i += 1;
+    }
+};
+
 /// Assert there were no undefined behavior while creating [`CHAMPION_POSITIONS`]
 const _: () = {
     let mut i = 0;
     while i < ChampionId::VARIANTS {
         let champion = CHAMPION_CACHE[i].positions;
         let position = CHAMPION_POSITIONS[i];
+        assert!(!position.is_empty());
         assert!(champion.len() == position.len());
         let mut j = 0;
         while j < champion.len() {
@@ -209,164 +266,22 @@ const _: () = {
     }
 };
 
-pub static ITEM_ID_TO_NAME: [&str; ItemId::VARIANTS] = {
-    let mut i = 0;
-    let mut result = [""; _];
-    while i < ItemId::VARIANTS {
-        let item = ITEM_CACHE[i];
-        result[i] = item.name;
-        i += 1;
-    }
-    result
-};
-
-pub static ITEM_ID_TO_RIOT_ID: [u32; ItemId::VARIANTS] = {
-    let mut i = 0;
-    let mut result = [0; _];
-    while i < ItemId::VARIANTS {
-        let item = ITEM_CACHE[i];
-        result[i] = item.riot_id;
-        i += 1;
-    }
-    result
-};
-
-pub static RUNE_ID_TO_NAME: [&str; RuneId::VARIANTS] = {
-    let mut i = 0;
-    let mut result = [""; _];
-    while i < RuneId::VARIANTS {
-        let rune = RUNE_CACHE[i];
-        result[i] = rune.name;
-        i += 1;
-    }
-    result
-};
-
-pub static RUNE_ID_TO_RIOT_ID: [u32; RuneId::VARIANTS] = {
-    let mut i = 0;
-    let mut result = [0; _];
-    while i < RuneId::VARIANTS {
-        let rune = RUNE_CACHE[i];
-        result[i] = rune.riot_id;
-        i += 1;
-    }
-    result
-};
-
-macro_rules! const_methods {
-    (inner $name:ident, $repr:ident, $($cast:ident),+) => {
-        pastey::paste! {
-            $(
-                impl From<&$name> for $cast {
-                    fn from(value: &$name) -> Self {
-                        value.index() as _
-                    }
-                }
-
-                impl From<$name> for $cast {
-                    fn from(value: $name) -> Self {
-                        value.index() as _
-                    }
-                }
-
-                impl TryFrom<$cast> for $name {
-                    type Error = &'static str;
-                    fn try_from(value: $cast) -> Result<Self, Self::Error> {
-                        Self::[<from_ $repr>](value as _)
-                            .ok_or(concat!(
-                                "Index out of bounds when casting ",
-                                stringify!($cast),
-                                " to ",
-                                stringify!($name)
-                            ))
-                    }
-                }
-            )+
-        }
-    };
-    ($name:ident, $repr:ident) => {
-        pastey::paste! {
-            const_methods!(inner $name, $repr, u16, u32, u64, u128, usize);
-
-            impl $name {
-                pub const ARRAY: [Self; Self::VARIANTS] = {
-                    let mut i = 0;
-                    let mut result = [unsafe { Self::[<from_ $repr _unchecked>](0) }; _];
-                    while i < Self::VARIANTS {
-                        result[i] = unsafe { Self::[<from_ $repr _unchecked>](i as _) };
-                        i += 1;
-                    }
-                    result
-                };
-
-                pub const fn get_cache(&self) -> &'static [<Cached $name:replace("Id", "")>] {
-                    [<$name:replace("Id", ""):upper _CACHE>][self.index()]
-                }
-
-                pub const fn name(&self) -> &'static str {
-                    self.get_cache().name
-                }
-
-                pub const fn index(&self) -> usize {
-                    *self as _
-                }
-
-                pub fn [<is_ $name:snake>](value: &core::any::TypeId) -> bool {
-                    *value == core::any::TypeId::of::<$name>()
-                }
-            }
-
-            impl $name {
-                pub const fn default() -> Self {
-                    unsafe { Self::[<from_ $repr _unchecked>](0) }
-                }
-            }
-
-            impl Default for $name {
-                fn default() -> Self {
-                    Self::default()
-                }
-            }
-
-            impl Into<&'static str> for $name {
-                fn into(self) -> &'static str {
-                    self.name()
-                }
-            }
-
-            impl Into<&'static [<Cached $name:replace("Id", "")>]> for $name {
-                fn into(self) -> &'static [<Cached $name:replace("Id", "")>] {
-                    self.get_cache()
-                }
-            }
-
-            impl Into<&'static [Self]> for $name {
-                fn into(self) -> &'static [Self] {
-                    &Self::ARRAY
-                }
-            }
-        }
-    };
-}
-
-const_methods!(ChampionId, u8);
-const_methods!(ItemId, u16);
-const_methods!(RuneId, u8);
-
 impl TryFrom<&str> for ChampionId {
     type Error = &'static str;
     fn try_from(value: &str) -> Result<Self, Self::Error> {
         CHAMPION_NAME_TO_ID
             .get(value)
-            .ok_or("Failed to convert value to ChampionId enum")
             .copied()
+            .ok_or("Failed to convert &str to ChampionId on TryFrom trait")
     }
 }
 
 impl ChampionId {
-    /// Counts how many damaging abilities a champion has
+    pub const CLOSURES: &[&[Range<usize>]; Self::VARIANTS] = &ABILITY_CLOSURES;
+    pub const ABILITIES: &[&[Range<usize>]; Self::VARIANTS] = &ABILITY_FORMULAS;
+
     pub const fn number_of_abilities(&self) -> usize {
-        self.get_cache().closures.len()
+        self.cache().closures.len()
     }
 
     pub const fn recommended_items(&self, position: Position) -> &'static [ItemId] {
@@ -377,31 +292,257 @@ impl ChampionId {
         RECOMMENDED_RUNES[self.index()][position as usize]
     }
 
-    pub const fn idents(&self) -> &'static [EvalIdent] {
-        ABILITY_IDENTS[self.index()]
+    const fn filter(&self) -> bool {
+        true
+    }
+
+    pub const fn positions(&self) -> &'static [Position] {
+        self.cache().positions
+    }
+
+    pub const fn main_position(&self) -> Position {
+        self.positions()[0]
+    }
+
+    pub const fn closures(&self) -> &'static [Range<usize>] {
+        Self::CLOSURES[self.index()]
+    }
+
+    pub const fn ident_indexes(&self) -> &'static [Range<usize>] {
+        ABILITY_IDENTS_INDEX[self.index()]
+    }
+
+    pub const fn ability_formulas(&self) -> &'static [Range<usize>] {
+        ABILITY_FORMULAS[self.index()]
+    }
+
+    pub const fn get_ability_formula(&self, index: usize) -> &'static Range<usize> {
+        &self.ability_formulas()[index]
     }
 }
 
-macro_rules! riot_id_array {
-    ($($enum:ty),*) => {
-        $(
-            impl $enum {
-                pub const RIOT_ID_ARRAY: [u32; Self::VARIANTS] = {
-                    let mut result = [0; _];
-                    let mut i = 0;
-                    while i < Self::VARIANTS {
-                        let value = Self::ARRAY[i];
-                        result[i] = value.to_riot_id();
-                        i += 1;
+impl ItemId {
+    pub const CLOSURES: &[Range<usize>; Self::VARIANTS] = &ITEM_CLOSURES;
+    pub const RIOT_IDS: [u32; Self::VARIANTS] = {
+        let mut result = [0; _];
+        let mut i = 0;
+        while i < Self::VARIANTS {
+            let value = Self::VALUES[i];
+            result[i] = value.to_riot_id();
+            i += 1;
+        }
+        result
+    };
+
+    const fn filter(&self) -> bool {
+        let cache = self.cache();
+        cache.maps.summoners_rift
+            && cache.purchasable
+            && !cache.prettified_stats.is_empty()
+            && cache.riot_id < 100000
+    }
+
+    pub const fn to_riot_id(&self) -> u32 {
+        self.cache().riot_id
+    }
+
+    pub const fn closure(&self) -> &'static Range<usize> {
+        &Self::CLOSURES[self.index()]
+    }
+}
+
+impl RuneId {
+    pub const CLOSURES: &[Range<usize>; Self::VARIANTS] = &RUNE_CLOSURES;
+    pub const RIOT_IDS: [u32; Self::VARIANTS] = {
+        let mut result = [0; _];
+        let mut i = 0;
+        while i < Self::VARIANTS {
+            let value = Self::VALUES[i];
+            result[i] = value.to_riot_id();
+            i += 1;
+        }
+        result
+    };
+
+    pub const fn to_riot_id(&self) -> u32 {
+        self.cache().riot_id
+    }
+
+    const fn filter(&self) -> bool {
+        true
+    }
+
+    pub const fn closure(&self) -> &'static Range<usize> {
+        &Self::CLOSURES[self.index()]
+    }
+}
+
+macro_rules! impl_methods {
+    (inner $stru:ident, $($repr:ty),*) => {
+        pastey::paste! {
+            $(
+                impl TryFrom<$repr> for $stru {
+                    type Error = &'static str;
+                    fn try_from(value: $repr) -> Result<Self, Self::Error> {
+                        Self::from_repr(value as _).ok_or(concat!(
+                            "Index out of bounds when converting ",
+                            stringify!($repr),
+                            " to ",
+                            stringify!($stru)
+                        ))
                     }
-                    result
-                };
-            }
-        )*
+                }
+
+                impl TryFrom<&$repr> for $stru {
+                    type Error = &'static str;
+                    fn try_from(value: &$repr) -> Result<Self, Self::Error> {
+                        Self::from_repr(*value as _).ok_or(concat!(
+                            "Index out of bounds when converting ",
+                            stringify!($repr),
+                            " to ",
+                            stringify!($stru)
+                        ))
+                    }
+                }
+
+                impl $stru {
+                    pub const unsafe fn [<from_ $repr _unchecked>](id: $repr) -> Self {
+                        unsafe { Self::from_repr_unchecked(id as _) }
+                    }
+
+                    pub const fn [<from_ $repr>](id: $repr) -> Option<Self> {
+                        match id < Self::VARIANTS as _ {
+                            true => unsafe { Some(Self::from_repr_unchecked(id as _)) },
+                            false => None
+                        }
+                    }
+                }
+            )*
+        }
+    };
+    ($($stru:ident => $repr:ty),+$(,)*) => {
+        pastey::paste! {
+            $(
+                impl Default for $stru {
+                    fn default() -> Self {
+                        Self::default()
+                    }
+                }
+
+                impl_methods!(inner $stru, u8, u16, u32, u64, u128, usize, i8, i16, i32, i64, i128, isize);
+
+                impl $stru {
+                    pub const VALUES: [Self; Self::VARIANTS] = {
+                        let mut i = 0;
+                        let mut result = [Self::default(); _];
+                        while i < Self::VARIANTS {
+                            result[i] = Self::from_repr(i as _).unwrap();
+                            i += 1;
+                        }
+                        result
+                    };
+
+                    pub const NAMES: [&str; Self::VARIANTS] = {
+                        let mut i = 0;
+                        let mut result = [""; _];
+                        while i < Self::VARIANTS {
+                            result[i] = Self::VALUES[i].name();
+                            i += 1;
+                        }
+                        result
+                    };
+
+                    pub const DISPLAY_LEN: usize = {
+                        let mut i = 0;
+                        let mut len = 0;
+                        while i < Self::VARIANTS {
+                            let value = Self::VALUES[i];
+                            if value.filter() {
+                                len += 1;
+                            }
+                            i += 1;
+                        }
+                        len
+                    };
+
+                    pub const DISPLAY_ARRAY: [Self; Self::DISPLAY_LEN] = {
+                        let mut i = 0;
+                        let mut j = 0;
+                        let mut result = [Self::default(); _];
+                        while i < Self::VARIANTS {
+                            let value = Self::VALUES[i];
+                            if value.filter() {
+                                result[j] = value;
+                                j += 1;
+                            }
+                            i += 1;
+                        }
+                        result
+                    };
+
+                    pub const FORMULAS: &[Range<usize>; Self::VARIANTS] = &[<$stru:replace("Id", ""):upper _FORMULAS>];
+
+                    pub const unsafe fn from_repr_unchecked(id: $repr) -> Self {
+                        unsafe { core::mem::transmute(id) }
+                    }
+
+                    pub const fn from_repr(id: $repr) -> Option<Self> {
+                        match id < Self::VARIANTS as _ {
+                            true => unsafe { Some(Self::from_repr_unchecked(id as _)) },
+                            false => None
+                        }
+                    }
+
+                    pub const fn default() -> Self {
+                        unsafe { Self::from_repr_unchecked(0) }
+                    }
+
+                    pub const fn cache(&self) -> &'static [<Cached $stru:replace("Id", "")>] {
+                        [<$stru:replace("Id", ""):upper _CACHE>][self.index()]
+                    }
+
+                    pub const fn name(&self) -> &'static str {
+                        self.cache().name
+                    }
+
+                    pub const fn index(&self) -> usize {
+                        *self as _
+                    }
+
+                    pub const fn idents(&self) -> &'static [CtxVar] {
+                        [<$stru:replace("Id", ""):replace("Champion", "Ability"):upper _IDENTS>][self.index()]
+                    }
+                }
+
+                impl CastId for $stru {
+                    const VARIANTS: usize = Self::VARIANTS;
+                    const NAMES: &'static [&'static str] = &Self::NAMES;
+                    const VALUES: &'static [Self] = &Self::VALUES;
+                    const FORMULAS: &'static [Range<usize>] = Self::FORMULAS;
+                    const DISPLAY: &[Self] = &Self::DISPLAY_ARRAY;
+
+                    fn name(&self) -> &'static str {
+                        self.name()
+                    }
+
+                    fn index(&self) -> usize {
+                        self.index()
+                    }
+
+                    fn idents(&self) -> &'static [CtxVar] {
+                        self.idents()
+                    }
+                }
+            )+
+        }
     };
 }
 
-riot_id_array!(ItemId, RuneId);
+impl_methods!(
+    ChampionId => u8,
+    ItemId => u16,
+    RuneId => u8
+);
 
 pub const ZEROED_STATS: CachedItemStats = CachedItemStats {
     ability_power: 0.0,
@@ -421,3 +562,24 @@ pub const ZEROED_STATS: CachedItemStats = CachedItemStats {
     movespeed: 0.0,
     omnivamp: 0.0,
 };
+
+pub trait CastId
+where
+    Self: Sized + 'static,
+{
+    const VARIANTS: usize;
+    const NAMES: &'static [&'static str];
+    const VALUES: &'static [Self];
+    const FORMULAS: &'static [Range<usize>];
+    const DISPLAY: &'static [Self];
+
+    fn name(&self) -> &'static str;
+    fn index(&self) -> usize;
+    fn idents(&self) -> &'static [CtxVar];
+    fn formula(&self) -> &'static Range<usize> {
+        &Self::FORMULAS[self.index()]
+    }
+    fn is(value: &TypeId) -> bool {
+        *value == TypeId::of::<Self>()
+    }
+}

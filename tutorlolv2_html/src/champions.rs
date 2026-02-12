@@ -41,7 +41,7 @@ pub async fn champions_html() {
         let mut html = Html::new(champion_id);
 
         let positions = champion_id
-            .get_cache()
+            .cache()
             .positions
             .into_iter()
             .map(|position| format!("<li>{position:?}</li>"))
@@ -51,7 +51,7 @@ pub async fn champions_html() {
         let rune_recommendations = get_recommendations(champion_id, &RECOMMENDED_RUNES);
 
         let abilities = champion_id
-            .get_cache()
+            .cache()
             .metadata
             .into_iter()
             .enumerate()
