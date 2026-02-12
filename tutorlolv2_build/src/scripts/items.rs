@@ -354,7 +354,7 @@ pub fn generate_items() -> GeneratorFn {
         .concat();
 
         let html_closure = constfn_declaration
-            .trim_start_matches("pub const")
+            .replace("pub const ", "")
             .trim()
             .to_string();
 

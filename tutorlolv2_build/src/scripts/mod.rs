@@ -45,12 +45,16 @@ pub const TOWER_DAMAGE_FN: &str = r#"fn tower_damage(_: f32, ...) -> i32 {
     let base = base_attack_damage 
         + bonus_attack_damage 
         + ability_power * 0.6;
-    let resist = 140.0 
-        + (-25.0 + 50.0 * plates) 
-        * pen_percent 
+    let bonus_resist = match plates == 0 {
+        true => 0.0,
+        false => -25 + 50 * (plates - 1),
+    };
+    let raw_resist = 40 + bonus_resist;
+    let resist = raw_resist 
+        * (1 - pen_percent / 100) 
         - pen_flat;
-    let mult = 100.0 / resist;
-    (base * mult) as _
+    let mult = 100 / (100 + resist);
+    base * mult
 }"#;
 
 pub const ONHIT_EFFECT: &str = r#"const intrinsic ONHIT_EFFECT {

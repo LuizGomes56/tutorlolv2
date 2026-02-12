@@ -18,11 +18,11 @@ use tutorlolv2_gen::*;
 pub const MONSTER_RESISTS: [(f32, f32); L_MSTR] = [
     (0f32, 0f32),
     (21f32, 30f32),
+    (42f32, 42f32),
+    (20f32, 20f32),
     (120f32, 70f32),
     (90f32, 75f32),
     (100f32, -30f32),
-    (42f32, 42f32),
-    (20f32, 20f32),
 ];
 
 /// Counts how many items have either armor or magic resistence
@@ -490,13 +490,11 @@ pub fn calculator(game: InputGame) -> OutputGame {
         }
     );
 
-    let adaptative_type = match RiotFormulas::adaptative_type(
+    let adaptative_type = RiotFormulas::adaptative_type(
         current_player_bonus_stats.attack_damage,
         champion_stats.ability_power,
-    ) {
-        Some(data) => data,
-        None => current_player_cache.adaptative_type,
-    };
+    )
+    .unwrap_or(current_player_cache.adaptative_type);
 
     let attack_type = current_player_cache.attack_type;
 

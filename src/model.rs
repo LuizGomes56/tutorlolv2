@@ -25,6 +25,12 @@ pub struct StaticDamageKind<T: 'static> {
     pub closures: &'static [ConstClosure],
 }
 
+#[derive(Clone, Copy, Debug, PartialEq, PartialOrd)]
+pub struct ConstDamageKind<T: 'static, const N: usize, const L: usize> {
+    pub metadata: [TypeMetadata<T>; N],
+    pub closures: [ConstClosure; L],
+}
+
 /// Runtime-known values that depend on how many damaging items or runes the
 /// current player has. Holds the metadata and closures of the given `T` parameter.
 /// See [`TypeMetadata`] and [`ConstClosure`] for more details
@@ -111,7 +117,7 @@ pub struct CurrentPlayer<'a> {
     // pub _padding: u16,
 }
 
-#[derive(Clone, Copy, Debug, PartialEq, PartialOrd, Encode, Serialize)]
+#[derive(Clone, Copy, Debug, Default, PartialEq, PartialOrd, Encode, Serialize)]
 pub struct EnemyState<'a> {
     pub base_stats: SimpleStats<f32>,
     pub items: &'a [ItemId],
@@ -461,6 +467,20 @@ pub struct Modifiers {
     pub abilities: AbilityModifiers,
 }
 
+impl Modifiers {
+    pub const fn new(ctx: &Ctx) -> Self {
+        Self {
+            damages: DamageModifiers {
+                physical_mod: ctx.physical_multiplier,
+                magic_mod: ctx.magic_multiplier,
+                true_mod: 1.0,
+                global_mod: 1.0,
+            },
+            ..Self::default()
+        }
+    }
+}
+
 /// Holds float values that will be multiplied by the damages of each ability
 /// depending on their letters, which can be obtained through the method
 /// [`AbilityId::as_char`] with simple branching. Values of `1.0` mean no modifiers
@@ -574,7 +594,7 @@ impl RiotFormulas {
 
     /// Returns an [`i32`] that represents the damage against some turret
     pub const fn tower_damage(
-        plates: f32,
+        plates: u32,
         base_attack_damage: f32,
         bonus_attack_damage: f32,
         ability_power: f32,
@@ -582,8 +602,13 @@ impl RiotFormulas {
         pen_flat: f32,
     ) -> i32 {
         let base = base_attack_damage + bonus_attack_damage + ability_power * 0.6;
-        let resist = 140.0 + (-25.0 + 50.0 * plates) * pen_percent - pen_flat;
-        let mult = 100.0 / resist;
+        let bonus_resist = match plates == 0 {
+            true => 0.0,
+            false => -25.0 + 50.0 * (plates as f32 - 1.0),
+        };
+        let raw_resist = 40.0 + bonus_resist;
+        let resist = raw_resist * (1.0 - pen_percent / 100.0) - pen_flat;
+        let mult = 100.0 / (100.0 + resist);
         (base * mult) as _
     }
 
