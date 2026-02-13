@@ -93,18 +93,17 @@ pub static BASE_STATS: [[BasicStats<f32>; URF_MAX_LEVEL]; ChampionId::VARIANTS] 
     let mut base_stats = [[BasicStats::<f32>::default(); URF_MAX_LEVEL]; ChampionId::VARIANTS];
     let mut champion_index = 0;
     while champion_index < ChampionId::VARIANTS {
+        let champion_id = ChampionId::from_usize(champion_index).unwrap();
         let mut level = 0;
         while level < URF_MAX_LEVEL {
-            let stats = &CHAMPION_CACHE[champion_index].stats;
-            let growth_factor = RiotFormulas::growth(level as u8 + 1);
+            let stats = &champion_id.cache().stats;
             macro_rules! mount_basic_stats {
                 ($($field:ident),*) => {
                     BasicStats {
                         $(
-                            $field: RiotFormulas::stat_growth(
-                                stats.$field.flat,
-                                stats.$field.per_level,
-                                growth_factor,
+                            $field: RiotFormulas::stat(
+                                &stats.$field,
+                                level as u8 + 1,
                             ),
                         )*
                     }
@@ -127,13 +126,11 @@ pub static BASE_STATS: [[BasicStats<f32>; URF_MAX_LEVEL]; ChampionId::VARIANTS] 
 /// Constant sorted array containing a struct [`BasicStats<f32>`] of Mega Gnar.
 /// Each index represents the base stats at each level. The maximum level is
 /// defined by the constant [`URF_MAX_LEVEL`], which is over the usual maximum
-/// level of 18
+/// level of 18 (or 20 by season 2026)
 pub static MEGA_GNAR_BASE_STATS: [BasicStats<f32>; URF_MAX_LEVEL] = {
     let mut base_stats = BASE_STATS[ChampionId::Gnar as usize];
     let mut level = 0;
     while level < URF_MAX_LEVEL {
-        let growth_factor = RiotFormulas::growth(level as u8 + 1);
-
         type S = CachedChampionStatsMap;
 
         const MEGA_GNAR_HEALTH: S = S {
@@ -155,7 +152,7 @@ pub static MEGA_GNAR_BASE_STATS: [BasicStats<f32>; URF_MAX_LEVEL] = {
 
         macro_rules! get_stat {
             ($field:ident) => {
-                RiotFormulas::stat_growth($field.flat, $field.per_level, growth_factor)
+                RiotFormulas::stat(&$field, level as u8 + 1)
             };
         }
 
@@ -233,14 +230,16 @@ pub const fn base_stats_sf32(
     level: u8,
     is_mega_gnar: bool,
 ) -> SimpleStats<f32> {
-    let stats = match is_mega_gnar {
-        true => MEGA_GNAR_BASE_STATS[const_clamp(level, 1..=URF_MAX_LEVEL as u8) - 1],
-        false => get_base_stats(champion_id, level),
-    };
+    let BasicStats {
+        health,
+        armor,
+        magic_resist,
+        ..
+    } = base_stats_bf32(champion_id, level, is_mega_gnar);
     SimpleStats {
-        health: stats.health,
-        armor: stats.armor,
-        magic_resist: stats.magic_resist,
+        health,
+        armor,
+        magic_resist,
     }
 }
 
@@ -249,9 +248,11 @@ pub const fn base_stats_bf32(
     level: u8,
     is_mega_gnar: bool,
 ) -> BasicStats<f32> {
-    match is_mega_gnar {
-        true => MEGA_GNAR_BASE_STATS[const_clamp(level, 1..=URF_MAX_LEVEL as u8) - 1],
-        false => get_base_stats(champion_id, level),
+    match champion_id {
+        ChampionId::Gnar if is_mega_gnar => {
+            MEGA_GNAR_BASE_STATS[const_clamp(level, 1..=URF_MAX_LEVEL as u8) - 1]
+        }
+        _ => get_base_stats(champion_id, level),
     }
 }
 
@@ -265,28 +266,27 @@ pub const fn get_simulated_stats(stats: &Stats<f32>, dragons: Dragons) -> [Stats
 
     let mut i = 0;
     while i < SIMULATED_ITEMS_ENUM.len() {
-        let item_offset = SIMULATED_ITEMS_ENUM[i];
-        let item_cache = ITEM_CACHE[item_offset as usize];
         let mut new_stat = *stats;
+        let cache = SIMULATED_ITEMS_ENUM[i].cache().stats;
 
-        new_stat.armor_penetration_flat += item_cache.stats.armor_penetration_flat;
-        new_stat.magic_penetration_flat += item_cache.stats.magic_penetration_flat;
-        new_stat.ability_power += item_cache.stats.ability_power;
-        new_stat.attack_damage += item_cache.stats.attack_damage;
-        new_stat.magic_resist += item_cache.stats.magic_resist;
-        new_stat.attack_speed += item_cache.stats.attack_speed;
-        new_stat.crit_chance += item_cache.stats.crit_chance;
-        new_stat.crit_damage += item_cache.stats.crit_damage;
-        new_stat.health += item_cache.stats.health;
-        new_stat.armor += item_cache.stats.armor;
-        new_stat.mana += item_cache.stats.mana;
+        new_stat.armor_penetration_flat += cache.armor_penetration_flat;
+        new_stat.magic_penetration_flat += cache.magic_penetration_flat;
+        new_stat.ability_power += cache.ability_power;
+        new_stat.attack_damage += cache.attack_damage;
+        new_stat.magic_resist += cache.magic_resist;
+        new_stat.attack_speed += cache.attack_speed;
+        new_stat.crit_chance += cache.crit_chance;
+        new_stat.crit_damage += cache.crit_damage;
+        new_stat.health += cache.health;
+        new_stat.armor += cache.armor;
+        new_stat.mana += cache.mana;
         new_stat.armor_penetration_percent = RiotFormulas::percent_value(&[
             new_stat.armor_penetration_percent,
-            stats.armor_penetration_percent,
+            cache.armor_penetration_percent,
         ]);
         new_stat.magic_penetration_percent = RiotFormulas::percent_value(&[
             new_stat.magic_penetration_percent,
-            stats.magic_penetration_percent,
+            cache.magic_penetration_percent,
         ]);
 
         let earth_mod = get_earth_multiplier(dragons.ally_earth_dragons);
@@ -407,7 +407,7 @@ pub const fn get_enemy_current_stats(
 
     let mut i = 0;
     while i < items.len() {
-        let item = ITEM_CACHE[items[i] as usize];
+        let item = items[i].cache();
         stats.magic_resist += item.stats.magic_resist;
         stats.health += item.stats.health;
         stats.armor += item.stats.armor;
@@ -431,6 +431,7 @@ pub const fn get_enemy_state(
     accept_negatives: bool,
 ) -> EnemyFullState {
     let EnemyState {
+        current_stats,
         base_stats,
         items,
         stacks,
@@ -446,8 +447,8 @@ pub const fn get_enemy_state(
         magic_penetration_percent,
     } = shred;
 
-    let mut e_current_stats = base_stats;
-    let bonus_mana = get_enemy_current_stats(&mut e_current_stats, items, earth_dragons);
+    let mut e_default_stats = base_stats;
+    let bonus_mana = get_enemy_current_stats(&mut e_default_stats, items, earth_dragons);
     let mut e_modifiers = DamageModifiers::default();
 
     let mut i = 0;
@@ -458,21 +459,21 @@ pub const fn get_enemy_state(
         if let Some(item_id) = item_exception.get_item_id() {
             match item_id {
                 ItemId::WintersApproach | ItemId::Fimbulwinter => {
-                    e_current_stats.health += 0.15 * bonus_mana
+                    e_default_stats.health += 0.15 * bonus_mana
                 }
                 ItemId::DragonheartU44 => {
                     let modifier = 1.0 + 0.04 * stacks as f32;
-                    e_current_stats.health *= modifier;
-                    e_current_stats.armor *= modifier;
-                    e_current_stats.magic_resist *= modifier
+                    e_default_stats.health *= modifier;
+                    e_default_stats.armor *= modifier;
+                    e_default_stats.magic_resist *= modifier
                 }
                 ItemId::DemonKingsCrownU44 | ItemId::DemonKingsCrownU66 => {
                     let modifier = 1.0 + 0.01 * stacks as f32;
-                    e_current_stats.health *= modifier;
-                    e_current_stats.armor *= modifier;
-                    e_current_stats.magic_resist *= modifier
+                    e_default_stats.health *= modifier;
+                    e_default_stats.armor *= modifier;
+                    e_default_stats.magic_resist *= modifier
                 }
-                ItemId::WarmogsArmor => e_current_stats.health *= 1.12,
+                ItemId::WarmogsArmor => e_default_stats.health *= 1.12,
                 _ => {}
             }
         }
@@ -482,7 +483,7 @@ pub const fn get_enemy_state(
     match champion_id {
         ChampionId::Swain => {
             let stack_hp = 12 * stacks;
-            e_current_stats.health += stack_hp as f32;
+            e_default_stats.health += stack_hp as f32;
         }
         ChampionId::Chogath => {
             let stack_hp = stacks * 80
@@ -492,10 +493,10 @@ pub const fn get_enemy_state(
                     11..16 => 2,
                     16.. => 3,
                 };
-            e_current_stats.health += stack_hp as f32;
+            e_default_stats.health += stack_hp as f32;
         }
         ChampionId::Sion => {
-            e_current_stats.health += stacks as f32;
+            e_default_stats.health += stacks as f32;
         }
         ChampionId::Kassadin => {
             // #![manual_impl]
@@ -512,9 +513,9 @@ pub const fn get_enemy_state(
                 13..18 => (level - 12) as f32 * 0.04,
                 18.. => 1.3,
             };
-            e_current_stats.armor *= ornn_resist_multiplier;
-            e_current_stats.magic_resist *= ornn_resist_multiplier;
-            e_current_stats.health *= ornn_resist_multiplier;
+            e_default_stats.armor *= ornn_resist_multiplier;
+            e_default_stats.magic_resist *= ornn_resist_multiplier;
+            e_default_stats.health *= ornn_resist_multiplier;
         }
         ChampionId::Malphite => {
             // W upgrade pattern for malphite by 06/07/2025
@@ -527,10 +528,21 @@ pub const fn get_enemy_state(
                 17 => 1.25,
                 18.. => 1.3,
             };
-            e_current_stats.armor *= malphite_resist_multiplier;
+            e_default_stats.armor *= malphite_resist_multiplier;
         }
         _ => {}
     }
+
+    let e_current_stats = match current_stats {
+        Some(s) => s,
+        None => EnemyStats {
+            armor: e_default_stats.armor,
+            health: e_default_stats.health,
+            magic_resist: e_default_stats.magic_resist,
+            max_health: e_default_stats.health,
+            missing_health: 1.0,
+        },
+    };
 
     let armor_values = RiotFormulas::real_resist(
         armor_penetration_percent,
@@ -561,13 +573,7 @@ pub const fn get_enemy_state(
     }
 
     EnemyFullState {
-        current_stats: EnemyStats {
-            enemy_armor: e_current_stats.armor,
-            enemy_health: e_current_stats.health,
-            enemy_magic_resist: e_current_stats.magic_resist,
-            enemy_max_health: e_current_stats.health,
-            enemy_missing_health: 1.0,
-        },
+        current_stats: e_current_stats,
         bonus_stats: e_bonus_stats,
         modifiers: e_modifiers,
         armor_values,
@@ -637,11 +643,11 @@ pub const fn get_eval_ctx(self_state: &SelfState, e_state: &EnemyFullState) -> C
     let EnemyFullState {
         current_stats:
             EnemyStats {
-                enemy_armor,
-                enemy_health,
-                enemy_magic_resist,
-                enemy_max_health,
-                enemy_missing_health,
+                armor: enemy_armor,
+                health: enemy_health,
+                magic_resist: enemy_magic_resist,
+                max_health: enemy_max_health,
+                missing_health: enemy_missing_health,
             },
         bonus_stats:
             SimpleStats {
@@ -886,19 +892,21 @@ pub const fn eval_attacks(ctx: &Ctx, mut onhit_damage: RangeDamage, physical_mod
 const _: () = {
     let mut i = 0;
     while i < ChampionId::VARIANTS {
+        let champion_id = ChampionId::from_usize(i).unwrap();
         let CachedChampion {
             metadata, closures, ..
-        } = CHAMPION_CACHE[i];
+        } = champion_id.cache();
         assert!(metadata.len() == closures.len());
         i += 1;
     }
     let mut j = 0;
     while j < ItemId::VARIANTS {
+        let item_id = ItemId::from_usize(j).unwrap();
         let CachedItem {
             melee_damages: melee_closure,
             ranged_damages: range_closure,
             ..
-        } = ITEM_CACHE[j];
+        } = item_id.cache();
         assert!(melee_closure.len() == range_closure.len());
         j += 1;
     }

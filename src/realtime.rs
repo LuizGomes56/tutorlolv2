@@ -261,6 +261,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
             let e_base_stats = base_stats_sf32(e_champion_id, *e_level, false);
             let full_state = get_enemy_state(
                 EnemyState {
+                    current_stats: None,
                     base_stats: e_base_stats,
                     items: &e_items,
                     stacks: 0,

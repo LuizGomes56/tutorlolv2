@@ -119,6 +119,7 @@ pub struct CurrentPlayer<'a> {
 
 #[derive(Clone, Copy, Debug, Default, PartialEq, PartialOrd, Encode, Serialize)]
 pub struct EnemyState<'a> {
+    pub current_stats: Option<EnemyStats<f32>>,
     pub base_stats: SimpleStats<f32>,
     pub items: &'a [ItemId],
     pub stacks: u32,
@@ -546,6 +547,11 @@ impl RiotFormulas {
         factor * (0.7025 + 0.0175 * factor)
     }
 
+    pub const fn stat(stat_map: &CachedChampionStatsMap, level: u8) -> f32 {
+        let growth_factor = Self::growth(level);
+        Self::stat_growth(stat_map.flat, stat_map.per_level, growth_factor)
+    }
+
     /// Given the base stats and growth factors, return a number after applying the formula
     pub const fn stat_growth(base: f32, per_level: f32, growth_factor: f32) -> f32 {
         base + per_level * growth_factor
@@ -696,14 +702,14 @@ macro_rules! impl_cast_from {
 
 impl_cast_from!(
     #[derive(
-        Clone, Copy, Debug, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize,
+        Clone, Copy, Debug, Default, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize,
     )]
     EnemyStats,
-    enemy_armor,
-    enemy_health,
-    enemy_magic_resist,
-    enemy_max_health,
-    enemy_missing_health
+    armor,
+    health,
+    magic_resist,
+    max_health,
+    missing_health
 );
 impl_cast_from!(
     /// Holds the most simple stats that need to be used to calculate

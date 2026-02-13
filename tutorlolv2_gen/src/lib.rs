@@ -292,10 +292,6 @@ impl ChampionId {
         RECOMMENDED_RUNES[self.index()][position as usize]
     }
 
-    const fn filter(&self) -> bool {
-        true
-    }
-
     pub const fn positions(&self) -> &'static [Position] {
         self.cache().positions
     }
@@ -334,14 +330,6 @@ impl ItemId {
         result
     };
 
-    const fn filter(&self) -> bool {
-        let cache = self.cache();
-        cache.maps.summoners_rift
-            && cache.purchasable
-            && !cache.prettified_stats.is_empty()
-            && cache.riot_id < 100000
-    }
-
     pub const fn to_riot_id(&self) -> u32 {
         self.cache().riot_id
     }
@@ -366,10 +354,6 @@ impl RuneId {
 
     pub const fn to_riot_id(&self) -> u32 {
         self.cache().riot_id
-    }
-
-    const fn filter(&self) -> bool {
-        true
     }
 
     pub const fn closure(&self) -> &'static Range<usize> {
@@ -452,34 +436,6 @@ macro_rules! impl_methods {
                         result
                     };
 
-                    pub const DISPLAY_LEN: usize = {
-                        let mut i = 0;
-                        let mut len = 0;
-                        while i < Self::VARIANTS {
-                            let value = Self::VALUES[i];
-                            if value.filter() {
-                                len += 1;
-                            }
-                            i += 1;
-                        }
-                        len
-                    };
-
-                    pub const DISPLAY_ARRAY: [Self; Self::DISPLAY_LEN] = {
-                        let mut i = 0;
-                        let mut j = 0;
-                        let mut result = [Self::default(); _];
-                        while i < Self::VARIANTS {
-                            let value = Self::VALUES[i];
-                            if value.filter() {
-                                result[j] = value;
-                                j += 1;
-                            }
-                            i += 1;
-                        }
-                        result
-                    };
-
                     pub const FORMULAS: &[Range<usize>; Self::VARIANTS] = &[<$stru:replace("Id", ""):upper _FORMULAS>];
 
                     pub const unsafe fn from_repr_unchecked(id: $repr) -> Self {
@@ -519,7 +475,6 @@ macro_rules! impl_methods {
                     const NAMES: &'static [&'static str] = &Self::NAMES;
                     const VALUES: &'static [Self] = &Self::VALUES;
                     const FORMULAS: &'static [Range<usize>] = Self::FORMULAS;
-                    const DISPLAY: &[Self] = &Self::DISPLAY_ARRAY;
 
                     fn name(&self) -> &'static str {
                         self.name()
@@ -571,7 +526,6 @@ where
     const NAMES: &'static [&'static str];
     const VALUES: &'static [Self];
     const FORMULAS: &'static [Range<usize>];
-    const DISPLAY: &'static [Self];
 
     fn name(&self) -> &'static str;
     fn index(&self) -> usize;
