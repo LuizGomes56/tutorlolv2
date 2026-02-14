@@ -1,2 +1,5 @@
-* text=auto
-*.json text
+* text=auto eol=lf
+*.json text eol=lf
+*.png binary
+*.jpg binary
+*.wasm binary
