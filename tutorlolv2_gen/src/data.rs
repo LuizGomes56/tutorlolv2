@@ -47027,14 +47027,14 @@ pub mod items {
         },
     };
     pub const fn blade_of_the_ruined_king_melee_min(ctx: &Ctx) -> f32 {
-        ctx.enemy_health
-            - (0.09 * ctx.enemy_health * (1.0 - 0.09 * ctx.physical_multiplier) - ctx.attack_damage
+        ctx.enemy_current_health
+            - (0.09 * ctx.enemy_current_health * (1.0 - 0.09 * ctx.physical_multiplier) - ctx.attack_damage
                 + ctx.attack_damage * (1.0 - 0.09 * ctx.physical_multiplier))
                 / 0.09
     }
     pub const fn blade_of_the_ruined_king_ranged_min(ctx: &Ctx) -> f32 {
-        ctx.enemy_health
-            - (0.06 * ctx.enemy_health * (1.0 - 0.06 * ctx.physical_multiplier) - ctx.attack_damage
+        ctx.enemy_current_health
+            - (0.06 * ctx.enemy_current_health * (1.0 - 0.06 * ctx.physical_multiplier) - ctx.attack_damage
                 + ctx.attack_damage * (1.0 - 0.06 * ctx.physical_multiplier))
                 / 0.06
     }
@@ -47074,14 +47074,14 @@ pub mod items {
         },
     };
     pub const fn blade_of_the_ruined_king_arena_melee_min(ctx: &Ctx) -> f32 {
-        ctx.enemy_health
-            - (0.09 * ctx.enemy_health * (1.0 - 0.09 * ctx.physical_multiplier) - ctx.attack_damage
+        ctx.enemy_current_health
+            - (0.09 * ctx.enemy_current_health * (1.0 - 0.09 * ctx.physical_multiplier) - ctx.attack_damage
                 + ctx.attack_damage * (1.0 - 0.09 * ctx.physical_multiplier))
                 / 0.09
     }
     pub const fn blade_of_the_ruined_king_arena_ranged_min(ctx: &Ctx) -> f32 {
-        ctx.enemy_health
-            - (0.06 * ctx.enemy_health * (1.0 - 0.06 * ctx.physical_multiplier) - ctx.attack_damage
+        ctx.enemy_current_health
+            - (0.06 * ctx.enemy_current_health * (1.0 - 0.06 * ctx.physical_multiplier) - ctx.attack_damage
                 + ctx.attack_damage * (1.0 - 0.06 * ctx.physical_multiplier))
                 / 0.06
     }
@@ -67067,12 +67067,12 @@ pub mod items {
         &[],
         &[
             CtxVar::AttackDamage,
-            CtxVar::EnemyHealth,
+            CtxVar::EnemyCurrentHealth,
             CtxVar::PhysicalMultiplier,
         ],
         &[
             CtxVar::AttackDamage,
-            CtxVar::EnemyHealth,
+            CtxVar::EnemyCurrentHealth,
             CtxVar::PhysicalMultiplier,
         ],
         &[],

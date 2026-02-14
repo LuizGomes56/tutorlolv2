@@ -116,10 +116,10 @@ pub const fn get_item_bonus_stats(
         stats.crit_chance += item_stats.crit_chance;
         stats.crit_damage += item_stats.crit_damage;
         stats.armor += item_stats.armor;
-        stats.current_health = stats.health;
-        stats.health += item_stats.health;
-        stats.current_mana = stats.mana;
-        stats.mana += item_stats.mana;
+        stats.current_health = stats.max_health;
+        stats.max_health += item_stats.health;
+        stats.current_mana = stats.max_mana;
+        stats.max_mana += item_stats.mana;
 
         armor_penetration[armor_pen_count] = item_stats.armor_penetration_percent;
         magic_penetration[magic_pen_count] = item_stats.magic_penetration_percent;
@@ -130,9 +130,9 @@ pub const fn get_item_bonus_stats(
         match item_id {
             ItemId::RabadonsDeathcap => stats.ability_power *= 1.3,
             ItemId::WoogletsWitchcapArena => stats.ability_power *= 1.5,
-            ItemId::WarmogsArmor => stats.health *= 1.12,
-            ItemId::ElixirOfIron => stats.health += 300.0,
-            ItemId::JuiceOfVitality => stats.health += 300.0 + 0.1 * stats.health,
+            ItemId::WarmogsArmor => stats.max_health *= 1.12,
+            ItemId::ElixirOfIron => stats.max_health += 300.0,
+            ItemId::JuiceOfVitality => stats.max_health += 300.0 + 0.1 * stats.max_health,
             ItemId::Shadowflame => {
                 modifiers.damages.magic_mod *= RiotFormulas::SHADOWFLAME_BONUS_DAMAGE;
                 modifiers.damages.true_mod *= RiotFormulas::SHADOWFLAME_BONUS_DAMAGE;
@@ -186,7 +186,7 @@ pub const fn get_rune_bonus_stats(
             }
             RuneId::LastStand => {
                 modifiers.damages.global_mod *= RiotFormulas::get_last_stand(
-                    1.0 - (stats.current_health / stats.health.max(1.0)),
+                    1.0 - (stats.current_health / stats.max_health.max(1.0)),
                 )
             }
             RuneId::AxiomArcanist => modifiers.abilities.r *= 1.12,
@@ -249,11 +249,11 @@ pub const fn infer_champion_stats(data: InferStats<'_>) -> Stats<f32> {
         attack_speed: RiotFormulas::stat(&cached_stats.attack_speed, level),
         crit_damage: cached_stats.critical_strike_damage
             * cached_stats.critical_strike_damage_modifier,
-        current_health: base_stats.health,
+        current_health: base_stats.max_health,
         magic_resist: base_stats.magic_resist,
-        health: base_stats.health,
-        mana: base_stats.mana,
-        current_mana: base_stats.mana,
+        max_health: base_stats.max_health,
+        max_mana: base_stats.max_mana,
+        current_mana: base_stats.max_mana,
         ability_power: 0.0,
         crit_chance: 0.0,
         armor_penetration_flat: 0.0,
@@ -275,8 +275,8 @@ pub const fn infer_champion_stats(data: InferStats<'_>) -> Stats<f32> {
     stats.magic_penetration_flat += bonus_stats.magic_penetration_flat;
     stats.magic_penetration_percent += bonus_stats.magic_penetration_percent;
     stats.magic_resist += bonus_stats.magic_resist;
-    stats.health += bonus_stats.health;
-    stats.mana += bonus_stats.mana;
+    stats.max_health += bonus_stats.max_health;
+    stats.max_mana += bonus_stats.max_mana;
     stats.current_mana += bonus_stats.current_mana;
 
     assign_champion_exceptions(
@@ -305,22 +305,22 @@ pub const fn infer_champion_stats(data: InferStats<'_>) -> Stats<f32> {
         let item_id = items[i];
         match item_id {
             ItemId::OverlordsBloodmail => {
-                stats.attack_damage += 0.025 * bonus_stats.health;
+                stats.attack_damage += 0.025 * bonus_stats.max_health;
             }
             ItemId::Riftmaker => {
                 modifiers.damages.global_mod *= 1.08;
-                stats.ability_power += 0.02 * (bonus_stats.health + stats.health);
+                stats.ability_power += 0.02 * (bonus_stats.max_health + stats.max_health);
             }
-            ItemId::ArchangelsStaff => stats.ability_power += 0.01 * bonus_stats.mana,
-            ItemId::SeraphsEmbrace => stats.ability_power += 0.02 * bonus_stats.mana,
+            ItemId::ArchangelsStaff => stats.ability_power += 0.01 * bonus_stats.max_mana,
+            ItemId::SeraphsEmbrace => stats.ability_power += 0.02 * bonus_stats.max_mana,
             ItemId::DemonicEmbrace => {
-                stats.ability_power += 0.02 * (bonus_stats.health + stats.health)
+                stats.ability_power += 0.02 * (bonus_stats.max_health + stats.max_health)
             }
             ItemId::Manamune | ItemId::Muramana => {
-                stats.attack_damage += 0.025 * bonus_stats.mana;
+                stats.attack_damage += 0.025 * bonus_stats.max_mana;
             }
             ItemId::WintersApproach | ItemId::Fimbulwinter => {
-                stats.health += 0.15 * bonus_stats.mana;
+                stats.max_health += 0.15 * bonus_stats.max_mana;
             }
             _ => {}
         }
@@ -356,11 +356,12 @@ pub const fn assign_champion_exceptions(data: ChampionExceptionData, champion_id
 
     match champion_id {
         ChampionId::Veigar => stats.ability_power += stacks as f32,
-        ChampionId::Swain => stats.health += (12 * stacks) as f32,
+        ChampionId::Swain => stats.max_health += (12 * stacks) as f32,
         ChampionId::Chogath => {
-            stats.health += (stacks * 80 + 40 * const_clamp(ability_levels.r, 0..=3) as u32) as f32
+            stats.max_health +=
+                (stacks * 80 + 40 * const_clamp(ability_levels.r, 0..=3) as u32) as f32
         }
-        ChampionId::Sion => stats.health += stacks as f32,
+        ChampionId::Sion => stats.max_health += stacks as f32,
         ChampionId::Darius => {
             stats.armor_penetration_percent = RiotFormulas::percent_value(&[
                 stats.armor_penetration_percent,
@@ -472,8 +473,8 @@ pub const fn assign_rune_exceptions(data: RuneExceptionData, exceptions: &[Value
                         stats.ability_power += 9.0 * stacks as f32;
                     }
                 },
-                RuneId::Health => stats.health += 65.0 * (stacks as f32),
-                RuneId::HealthScaling => stats.health += 10.0 * level as f32 * (stacks as f32),
+                RuneId::Health => stats.max_health += 65.0 * (stacks as f32),
+                RuneId::HealthScaling => stats.max_health += 10.0 * level as f32 * (stacks as f32),
                 RuneId::AttackSpeed => stats.attack_speed += 10.0 * (stacks as f32),
                 _ => {}
             }
@@ -503,7 +504,7 @@ pub const fn assign_item_exceptions(stats: &mut Stats<f32>, exceptions: &[ValueE
                     stats.ability_power *= modifier;
                     stats.attack_speed *= modifier;
                     stats.attack_damage *= modifier;
-                    stats.health *= modifier;
+                    stats.max_health *= modifier;
                     stats.armor *= modifier;
                     stats.magic_resist *= modifier;
                 }
@@ -512,7 +513,7 @@ pub const fn assign_item_exceptions(stats: &mut Stats<f32>, exceptions: &[ValueE
                     stats.ability_power *= modifier;
                     stats.attack_speed *= modifier;
                     stats.attack_damage *= modifier;
-                    stats.health *= modifier;
+                    stats.max_health *= modifier;
                     stats.armor *= modifier;
                     stats.magic_resist *= modifier;
                 }
@@ -595,10 +596,10 @@ pub fn calculator(game: InputGame) -> OutputGame {
     let current_player_bonus_stats = bonus_stats!(
         BasicStats::<f32>(champion_stats, current_player_base_stats) {
             armor,
-            health,
+            max_health,
             attack_damage,
             magic_resist,
-            mana
+            max_mana
         }
     );
 

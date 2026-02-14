@@ -76,11 +76,11 @@ pub const fn const_clamp(value: u8, range: RangeInclusive<u8>) -> usize {
 pub const fn get_base_stats(champion_id: ChampionId, level: u8) -> BasicStats<f32> {
     let stats = &champion_id.cache().stats;
     BasicStats {
-        health: RiotFormulas::stat(&stats.health, level),
+        max_health: RiotFormulas::stat(&stats.health, level),
         armor: RiotFormulas::stat(&stats.armor, level),
         magic_resist: RiotFormulas::stat(&stats.magic_resist, level),
         attack_damage: RiotFormulas::stat(&stats.attack_damage, level),
-        mana: RiotFormulas::stat(&stats.mana, level),
+        max_mana: RiotFormulas::stat(&stats.mana, level),
     }
 }
 
@@ -90,13 +90,13 @@ pub const fn base_stats_sf32(
     is_mega_gnar: bool,
 ) -> SimpleStats<f32> {
     let BasicStats {
-        health,
+        max_health: health,
         armor,
         magic_resist,
         ..
     } = base_stats_bf32(champion_id, level, is_mega_gnar);
     SimpleStats {
-        health,
+        max_health: health,
         armor,
         magic_resist,
     }
@@ -131,11 +131,11 @@ pub const fn base_stats_bf32(
             };
 
             BasicStats {
-                health: RiotFormulas::stat(&MEGA_GNAR_HEALTH, level),
+                max_health: RiotFormulas::stat(&MEGA_GNAR_HEALTH, level),
                 armor: RiotFormulas::stat(&MEGA_GNAR_ARMOR, level),
                 magic_resist: RiotFormulas::stat(&MEGA_GNAR_MAGIC_RESIST, level),
                 attack_damage: RiotFormulas::stat(&MEGA_GNAR_ATTACK_DAMAGE, level),
-                mana: 0.0,
+                max_mana: 0.0,
             }
         }
         _ => get_base_stats(champion_id, level),
@@ -163,9 +163,9 @@ pub const fn get_simulated_stats(stats: &Stats<f32>, dragons: Dragons) -> [Stats
         new_stat.attack_speed += cache.attack_speed;
         new_stat.crit_chance += cache.crit_chance;
         new_stat.crit_damage += cache.crit_damage;
-        new_stat.health += cache.health;
+        new_stat.max_health += cache.health;
         new_stat.armor += cache.armor;
-        new_stat.mana += cache.mana;
+        new_stat.max_mana += cache.mana;
         new_stat.armor_penetration_percent = RiotFormulas::percent_value(&[
             new_stat.armor_penetration_percent,
             cache.armor_penetration_percent,
@@ -295,7 +295,7 @@ pub const fn get_enemy_current_stats(
     while i < items.len() {
         let item = items[i].cache();
         stats.magic_resist += item.stats.magic_resist;
-        stats.health += item.stats.health;
+        stats.max_health += item.stats.health;
         stats.armor += item.stats.armor;
         bonus_mana += item.stats.mana;
         i += 1;
@@ -345,21 +345,21 @@ pub const fn get_enemy_state(
         if let Some(item_id) = item_exception.get_item_id() {
             match item_id {
                 ItemId::WintersApproach | ItemId::Fimbulwinter => {
-                    e_default_stats.health += 0.15 * bonus_mana
+                    e_default_stats.max_health += 0.15 * bonus_mana
                 }
                 ItemId::DragonheartU44 => {
                     let modifier = 1.0 + 0.04 * stacks as f32;
-                    e_default_stats.health *= modifier;
+                    e_default_stats.max_health *= modifier;
                     e_default_stats.armor *= modifier;
                     e_default_stats.magic_resist *= modifier
                 }
                 ItemId::DemonKingsCrownU44 | ItemId::DemonKingsCrownU66 => {
                     let modifier = 1.0 + 0.01 * stacks as f32;
-                    e_default_stats.health *= modifier;
+                    e_default_stats.max_health *= modifier;
                     e_default_stats.armor *= modifier;
                     e_default_stats.magic_resist *= modifier
                 }
-                ItemId::WarmogsArmor => e_default_stats.health *= 1.12,
+                ItemId::WarmogsArmor => e_default_stats.max_health *= 1.12,
                 _ => {}
             }
         }
@@ -369,7 +369,7 @@ pub const fn get_enemy_state(
     match champion_id {
         ChampionId::Swain => {
             let stack_hp = 12 * stacks;
-            e_default_stats.health += stack_hp as f32;
+            e_default_stats.max_health += stack_hp as f32;
         }
         ChampionId::Chogath => {
             let stack_hp = stacks * 80
@@ -379,10 +379,10 @@ pub const fn get_enemy_state(
                     11..16 => 2,
                     16.. => 3,
                 };
-            e_default_stats.health += stack_hp as f32;
+            e_default_stats.max_health += stack_hp as f32;
         }
         ChampionId::Sion => {
-            e_default_stats.health += stacks as f32;
+            e_default_stats.max_health += stacks as f32;
         }
         ChampionId::Kassadin => {
             // #![manual_impl]
@@ -401,7 +401,7 @@ pub const fn get_enemy_state(
             };
             e_default_stats.armor *= ornn_resist_multiplier;
             e_default_stats.magic_resist *= ornn_resist_multiplier;
-            e_default_stats.health *= ornn_resist_multiplier;
+            e_default_stats.max_health *= ornn_resist_multiplier;
         }
         ChampionId::Malphite => {
             // W upgrade pattern for malphite by 06/07/2025
@@ -423,9 +423,9 @@ pub const fn get_enemy_state(
         Some(s) => s,
         None => EnemyStats {
             armor: e_default_stats.armor,
-            health: e_default_stats.health,
+            current_health: e_default_stats.max_health,
             magic_resist: e_default_stats.magic_resist,
-            max_health: e_default_stats.health,
+            max_health: e_default_stats.max_health,
             missing_health: 1.0,
         },
     };
@@ -446,7 +446,7 @@ pub const fn get_enemy_state(
     let e_bonus_stats = bonus_stats!(
         SimpleStats::<f32>(e_current_stats, base_stats) {
             armor,
-            health,
+            max_health,
             magic_resist
         }
     );
@@ -502,8 +502,8 @@ pub const fn get_eval_ctx(self_state: &SelfState, e_state: &EnemyFullState) -> C
                 magic_penetration_flat,
                 magic_penetration_percent,
                 magic_resist,
-                health: max_health,
-                mana: max_mana,
+                max_health,
+                max_mana,
                 current_mana,
                 ..
             },
@@ -512,16 +512,16 @@ pub const fn get_eval_ctx(self_state: &SelfState, e_state: &EnemyFullState) -> C
                 attack_damage: bonus_ad,
                 armor: bonus_armor,
                 magic_resist: bonus_magic_resist,
-                health: bonus_health,
-                mana: bonus_mana,
+                max_health: bonus_health,
+                max_mana: bonus_mana,
             },
         base_stats:
             BasicStats {
                 armor: base_armor,
-                health: base_health,
+                max_health: base_health,
                 attack_damage: base_ad,
                 magic_resist: base_magic_resist,
-                mana: base_mana,
+                max_mana: base_mana,
             },
         level,
         adaptative_type,
@@ -530,14 +530,14 @@ pub const fn get_eval_ctx(self_state: &SelfState, e_state: &EnemyFullState) -> C
         current_stats:
             EnemyStats {
                 armor: enemy_armor,
-                health: enemy_health,
+                current_health: enemy_current_health,
                 magic_resist: enemy_magic_resist,
                 max_health: enemy_max_health,
                 missing_health: enemy_missing_health,
             },
         bonus_stats:
             SimpleStats {
-                health: enemy_bonus_health,
+                max_health: enemy_bonus_health,
                 armor: enemy_bonus_armor,
                 magic_resist: enemy_bonus_magic_resist,
             },
@@ -560,7 +560,7 @@ pub const fn get_eval_ctx(self_state: &SelfState, e_state: &EnemyFullState) -> C
         enemy_bonus_armor,
         enemy_bonus_magic_resist,
         enemy_armor,
-        enemy_health,
+        enemy_current_health,
         enemy_max_health,
         enemy_missing_health,
         enemy_magic_resist,
@@ -850,7 +850,7 @@ pub fn get_monster_damages(
             EnemyState {
                 base_stats: SimpleStats {
                     armor,
-                    health: 1000.0,
+                    max_health: 1000.0,
                     magic_resist,
                 },
                 ..Default::default()

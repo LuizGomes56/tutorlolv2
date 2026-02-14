@@ -101,10 +101,10 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
     let current_player_bonus_stats = bonus_stats!(
         BasicStats::<f32>(current_player_stats, current_player_base_stats) {
             armor,
-            health,
+            max_health,
             attack_damage,
             magic_resist,
-            mana
+            max_mana
         }
     );
 
@@ -191,7 +191,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
                         LAST_STAND => {
                             base_modifiers.global_mod *= RiotFormulas::get_last_stand(
                                 1.0 - (self_state.current_stats.current_health
-                                    / self_state.current_stats.health.max(1.0)),
+                                    / self_state.current_stats.max_health.max(1.0)),
                             )
                         }
                         _ => {}

@@ -762,7 +762,7 @@ impl_cast_from!(
     )]
     EnemyStats,
     armor,
-    health,
+    current_health,
     magic_resist,
     max_health,
     missing_health
@@ -777,7 +777,7 @@ impl_cast_from!(
         Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize,
     )]
     SimpleStats,
-    health, armor, magic_resist
+    max_health, armor, magic_resist
 );
 impl_cast_from!(
     /// Struct holding the core champion stats of a player, where `T` is a
@@ -787,10 +787,10 @@ impl_cast_from!(
     )]
     BasicStats,
     armor,
-    health,
+    max_health,
     attack_damage,
     magic_resist,
-    mana
+    max_mana
 );
 impl_cast_from!(
     /// Holds all champion stats provided by Riot's API.
@@ -816,9 +816,9 @@ impl_cast_from!(
     magic_penetration_percent,
     magic_resist,
     #[serde(rename = "maxHealth")]
-    health,
+    max_health,
     #[serde(rename = "resourceMax")]
-    mana,
+    max_mana,
     #[serde(rename = "resourceValue")]
     current_mana
 );

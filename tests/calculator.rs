@@ -24,18 +24,18 @@ pub fn test_calculator() {
         magic_penetration_flat: 0.0,
         magic_penetration_percent: 0.0,
         magic_resist: 100.0,
-        health: 100.0,
-        mana: 100.0,
+        max_health: 100.0,
+        max_mana: 100.0,
         current_mana: 100.0,
     };
 
     const BASE_STATS: BasicStats<f32> = base_stats_bf32(CHAMPION_ID, LEVEL, false);
     const BONUS_STATS: BasicStats<f32> = bonus_stats!(BasicStats::<f32>(CURRENT_STATS, BASE_STATS) {
         armor,
-        health,
+        max_health,
         attack_damage,
         magic_resist,
-        mana
+        max_mana
     });
 
     const ADAPTATIVE_TYPE: AdaptativeType = {
@@ -70,7 +70,7 @@ pub fn test_calculator() {
     const ENEMY_STATE: EnemyState<'_> = EnemyState {
         current_stats: Some(EnemyStats {
             armor: 599251.0,
-            health: 599251.0,
+            current_health: 599251.0,
             magic_resist: 599251.0,
             max_health: 599251.0,
             missing_health: 599251.0,
