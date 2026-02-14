@@ -134,14 +134,14 @@ pub const fn get_item_bonus_stats(
             ItemId::ElixirOfIron => stats.health += 300.0,
             ItemId::JuiceOfVitality => stats.health += 300.0 + 0.1 * stats.health,
             ItemId::Shadowflame => {
-                modifiers.damages.magic_mod *= SHADOWFLAME_BONUS_DAMAGE;
-                modifiers.damages.true_mod *= SHADOWFLAME_BONUS_DAMAGE;
+                modifiers.damages.magic_mod *= RiotFormulas::SHADOWFLAME_BONUS_DAMAGE;
+                modifiers.damages.true_mod *= RiotFormulas::SHADOWFLAME_BONUS_DAMAGE;
             }
             ItemId::SpearOfShojin => {
-                modifiers.abilities.q *= SHOJIN_BONUS_DAMAGE;
-                modifiers.abilities.w *= SHOJIN_BONUS_DAMAGE;
-                modifiers.abilities.e *= SHOJIN_BONUS_DAMAGE;
-                modifiers.abilities.r *= SHOJIN_BONUS_DAMAGE;
+                modifiers.abilities.q *= RiotFormulas::SHOJIN_BONUS_DAMAGE;
+                modifiers.abilities.w *= RiotFormulas::SHOJIN_BONUS_DAMAGE;
+                modifiers.abilities.e *= RiotFormulas::SHOJIN_BONUS_DAMAGE;
+                modifiers.abilities.r *= RiotFormulas::SHOJIN_BONUS_DAMAGE;
             }
             ItemId::JuiceOfPower => {
                 stats.attack_damage += 18.0 + 0.1 * stats.attack_damage;
@@ -182,11 +182,12 @@ pub const fn get_rune_bonus_stats(
                 }
             },
             RuneId::CoupDeGrace | RuneId::CutDown => {
-                modifiers.damages.global_mod *= COUP_DE_GRACE_AND_CUTDOWN_BONUS_DAMAGE
+                modifiers.damages.global_mod *= RiotFormulas::COUP_DE_GRACE_AND_CUTDOWN_BONUS_DAMAGE
             }
             RuneId::LastStand => {
-                modifiers.damages.global_mod *=
-                    get_last_stand(1.0 - (stats.current_health / stats.health.max(1.0)))
+                modifiers.damages.global_mod *= RiotFormulas::get_last_stand(
+                    1.0 - (stats.current_health / stats.health.max(1.0)),
+                )
             }
             RuneId::AxiomArcanist => modifiers.abilities.r *= 1.12,
             _ => {}
@@ -326,8 +327,8 @@ pub const fn infer_champion_stats(data: InferStats<'_>) -> Stats<f32> {
         i += 1;
     }
 
-    let fire = get_fire_multiplier(dragons.ally_fire_dragons);
-    let earth = get_earth_multiplier(dragons.ally_earth_dragons);
+    let fire = RiotFormulas::get_fire_multiplier(dragons.ally_fire_dragons);
+    let earth = RiotFormulas::get_earth_multiplier(dragons.ally_earth_dragons);
 
     stats.ability_power *= fire;
     stats.attack_damage *= fire;

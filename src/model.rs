@@ -540,6 +540,62 @@ pub struct ResistValue {
 pub struct RiotFormulas;
 
 impl RiotFormulas {
+    /// Rune [`RuneId::AxiomArcanist`] gives +12% bonus damage to `R`
+    /// if it deals single target damage. The -3% penalty is not yet
+    /// supported for area-damaging ultimates
+    pub const AXIOM_ARCANIST_BONUS_DAMAGE: f32 = 1.12;
+    pub const COUP_DE_GRACE_AND_CUTDOWN_BONUS_DAMAGE: f32 = 1.08;
+    /// By 06/07/2025 Earth dragons give +5% resists
+    pub const EARTH_DRAGON_MULTIPLIER: f32 = 0.05;
+    /// By 06/07/2025 Fire dragons give +3% bonus attack stats
+    pub const FIRE_DRAGON_MULTIPLIER: f32 = 0.03;
+    /// Item [`ItemId::PlatedSteelcaps`] gives 12% damage reduction for basic attacks
+    pub const STEEL_CAPS_PROTECTION: f32 = 0.88;
+    /// Item [`ItemId::RanduinsOmen`] gives 30% damage reduction against critical hits
+    pub const RANDUIN_CRIT_PROTECTION: f32 = 0.7;
+    /// Items with Rocksolid passive give 20% damage reduction in some cases
+    pub const ROCKSOLID_PROTECTION: f32 = 0.8;
+    pub const SHOJIN_BONUS_DAMAGE: f32 = 1.12;
+    pub const SHADOWFLAME_BONUS_DAMAGE: f32 = 1.2;
+    pub const RIFTMAKER_BONUS_DAMAGE: f32 = 1.08;
+
+    /// Formula to get the bonus damage of the rune [`RuneId::LastStand`], where
+    /// missing health is a ratio of the current health and the maximum health.
+    /// ```rs
+    /// let missing_health = 1.0 - (
+    ///     current_player_stats.current_health /
+    ///         current_player_stats.health.max(1.0)
+    /// );
+    /// ```
+    /// Note that it uses [`f32::max`] to avoid division by zero.
+    ///
+    /// - Current Health = 800
+    /// - Maximum Health = 1000
+    ///
+    /// Then you're missing 200 health, which represents 20% of the total HP,
+    /// which should translate to 0.2.
+    /// Check the formula
+    /// `1.0 - (800.0 / 1000.0) = 0.2`
+    ///
+    /// Also, this formula has a range from 1.0 to 1.11, since in game the
+    /// maximum damage increase is of `11%`
+    pub const fn get_last_stand(missing_health: f32) -> f32 {
+        1.0 + (0.05 + 0.2 * (missing_health - 0.4)).clamp(0.0, 0.11)
+    }
+
+    /// Receives the number of Mountain dragons and returns a multiplier that will
+    /// be applied to increase some target's armor and magic resistences
+    pub const fn get_earth_multiplier(x: u16) -> f32 {
+        1.0 + x as f32 * Self::EARTH_DRAGON_MULTIPLIER
+    }
+
+    /// Receives the number of fire dragons and returns a number that can be multiplied
+    /// by the current ability power and attack damage to obtain the expected current
+    /// player's numeric value for those fields
+    pub const fn get_fire_multiplier(x: u16) -> f32 {
+        1.0 + x as f32 * Self::FIRE_DRAGON_MULTIPLIER
+    }
+
     /// Constant growth formula used to calculate base-stats and other scaling
     /// related fields
     pub const fn growth(level: u8) -> f32 {

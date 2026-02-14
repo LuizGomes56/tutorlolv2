@@ -15,155 +15,10 @@
 //! want to do it, you can use the [`crate::const_eval`] module to
 //! do it
 
-use crate::calculator::MONSTER_RESISTS;
-use crate::model::*;
+use crate::{calculator::MONSTER_RESISTS, model::*};
 use alloc::boxed::Box;
-use core::mem::MaybeUninit;
+use core::{mem::MaybeUninit, ops::RangeInclusive};
 use tutorlolv2_gen::*;
-
-/// Rune [`RuneId::AxiomArcanist`] gives +12% bonus damage to `R`
-/// if it deals single target damage. The -3% penalty is not yet
-/// supported for area-damaging ultimates
-pub const AXIOM_ARCANIST_BONUS_DAMAGE: f32 = 1.12;
-pub const COUP_DE_GRACE_AND_CUTDOWN_BONUS_DAMAGE: f32 = 1.08;
-/// By 06/07/2025 Earth dragons give +5% resists
-pub const EARTH_DRAGON_MULTIPLIER: f32 = 0.05;
-/// By 06/07/2025 Fire dragons give +3% bonus attack stats
-pub const FIRE_DRAGON_MULTIPLIER: f32 = 0.03;
-/// Despite the usual maximum level being 18, in
-/// URF you can reach up to this constant's value
-pub const URF_MAX_LEVEL: usize = 30;
-/// Item [`ItemId::PlatedSteelcaps`] gives 12% damage reduction for basic attacks
-pub const STEEL_CAPS_PROTECTION: f32 = 0.88;
-/// Item [`ItemId::RanduinsOmen`] gives 30% damage reduction against critical hits
-pub const RANDUIN_CRIT_PROTECTION: f32 = 0.7;
-/// Items with Rocksolid passive give 20% damage reduction in some cases
-pub const ROCKSOLID_PROTECTION: f32 = 0.8;
-pub const SHOJIN_BONUS_DAMAGE: f32 = 1.12;
-pub const SHADOWFLAME_BONUS_DAMAGE: f32 = 1.2;
-pub const RIFTMAKER_BONUS_DAMAGE: f32 = 1.08;
-
-/// Formula to get the bonus damage of the rune [`RuneId::LastStand`], where
-/// missing health is a ratio of the current health and the maximum health.
-/// ```rs
-/// let missing_health = 1.0 - (
-///     current_player_stats.current_health /
-///         current_player_stats.health.max(1.0)
-/// );
-/// ```
-/// Note that it uses [`f32::max`] to avoid division by zero.
-///
-/// - Current Health = 800
-/// - Maximum Health = 1000
-///
-/// Then you're missing 200 health, which represents 20% of the total HP,
-/// which should translate to 0.2.
-/// Check the formula
-/// `1.0 - (800.0 / 1000.0) = 0.2`
-///
-/// Also, this formula has a range from 1.0 to 1.11, since in game the
-/// maximum damage increase is of `11%`
-pub const fn get_last_stand(missing_health: f32) -> f32 {
-    1.0 + (0.05 + 0.2 * (missing_health - 0.4)).clamp(0.0, 0.11)
-}
-
-/// Receives the number of Mountain dragons and returns a multiplier that will
-/// be applied to increase some target's armor and magic resistences
-pub const fn get_earth_multiplier(x: u16) -> f32 {
-    1.0 + x as f32 * EARTH_DRAGON_MULTIPLIER
-}
-
-/// Receives the number of fire dragons and returns a number that can be multiplied
-/// by the current ability power and attack damage to obtain the expected current
-/// player's numeric value for those fields
-pub const fn get_fire_multiplier(x: u16) -> f32 {
-    1.0 + x as f32 * FIRE_DRAGON_MULTIPLIER
-}
-
-/// Constant array ordered based on the [`ChampionId`] when casted to a [`usize`]
-/// index. The second inner array represents the base stats of that champion at
-/// a given level that goes from 0 to [`URF_MAX_LEVEL`], where 0 represents the
-/// level 1.
-/// ```rs
-/// let my_champion = ChampionId::Aatrox;
-/// let my_level = 6;
-/// BASE_STATS[my_champion_id as usize][6];
-/// ```
-pub static BASE_STATS: [[BasicStats<f32>; URF_MAX_LEVEL]; ChampionId::VARIANTS] = {
-    let mut base_stats = [[BasicStats::<f32>::default(); URF_MAX_LEVEL]; ChampionId::VARIANTS];
-    let mut champion_index = 0;
-    while champion_index < ChampionId::VARIANTS {
-        let champion_id = ChampionId::from_usize(champion_index).unwrap();
-        let mut level = 0;
-        while level < URF_MAX_LEVEL {
-            let stats = &champion_id.cache().stats;
-            macro_rules! mount_basic_stats {
-                ($($field:ident),*) => {
-                    BasicStats {
-                        $(
-                            $field: RiotFormulas::stat(
-                                &stats.$field,
-                                level as u8 + 1,
-                            ),
-                        )*
-                    }
-                };
-            }
-            base_stats[champion_index][level] = mount_basic_stats! {
-                health,
-                armor,
-                magic_resist,
-                attack_damage,
-                mana
-            };
-            level += 1;
-        }
-        champion_index += 1;
-    }
-    base_stats
-};
-
-/// Constant sorted array containing a struct [`BasicStats<f32>`] of Mega Gnar.
-/// Each index represents the base stats at each level. The maximum level is
-/// defined by the constant [`URF_MAX_LEVEL`], which is over the usual maximum
-/// level of 18 (or 20 by season 2026)
-pub static MEGA_GNAR_BASE_STATS: [BasicStats<f32>; URF_MAX_LEVEL] = {
-    let mut base_stats = BASE_STATS[ChampionId::Gnar as usize];
-    let mut level = 0;
-    while level < URF_MAX_LEVEL {
-        type S = CachedChampionStatsMap;
-
-        const MEGA_GNAR_HEALTH: S = S {
-            flat: 100.0,
-            per_level: 43.0,
-        };
-        const MEGA_GNAR_ARMOR: S = S {
-            flat: 3.5,
-            per_level: 3.0,
-        };
-        const MEGA_GNAR_MAGIC_RESIST: S = S {
-            flat: 3.5,
-            per_level: 3.5,
-        };
-        const MEGA_GNAR_ATTACK_DAMAGE: S = S {
-            flat: 6.0,
-            per_level: 2.5,
-        };
-
-        macro_rules! get_stat {
-            ($field:ident) => {
-                RiotFormulas::stat(&$field, level as u8 + 1)
-            };
-        }
-
-        base_stats[level].health += get_stat!(MEGA_GNAR_HEALTH);
-        base_stats[level].armor += get_stat!(MEGA_GNAR_ARMOR);
-        base_stats[level].magic_resist += get_stat!(MEGA_GNAR_MAGIC_RESIST);
-        base_stats[level].attack_damage += get_stat!(MEGA_GNAR_ATTACK_DAMAGE);
-        level += 1;
-    }
-    base_stats
-};
 
 /// Simplified way to construct a new struct from the provided base stats and
 /// current stats. Only structs with generic arguments `T` are accepted in this
@@ -206,7 +61,7 @@ pub const fn has_item<const N: usize>(origin: &ItemsBitSet, check_for: [ItemId; 
 }
 
 /// Same as the method [`u8::clamp`] but with the `const` qualifier,
-pub const fn const_clamp(value: u8, range: core::ops::RangeInclusive<u8>) -> usize {
+pub const fn const_clamp(value: u8, range: RangeInclusive<u8>) -> usize {
     let min = *range.start();
     let max = *range.end();
     (if value < min {
@@ -218,11 +73,15 @@ pub const fn const_clamp(value: u8, range: core::ops::RangeInclusive<u8>) -> usi
     }) as usize
 }
 
-/// Takes as parameters the enum [`ChampionId`] and the desired level of the current
-/// champion and returns its base stats. If the level is higher than [`URF_MAX_LEVEL`],
-/// the value is clamped to avoid panics
 pub const fn get_base_stats(champion_id: ChampionId, level: u8) -> BasicStats<f32> {
-    BASE_STATS[champion_id as usize][const_clamp(level, 1..=URF_MAX_LEVEL as u8) - 1]
+    let stats = &champion_id.cache().stats;
+    BasicStats {
+        health: RiotFormulas::stat(&stats.health, level),
+        armor: RiotFormulas::stat(&stats.armor, level),
+        magic_resist: RiotFormulas::stat(&stats.magic_resist, level),
+        attack_damage: RiotFormulas::stat(&stats.attack_damage, level),
+        mana: RiotFormulas::stat(&stats.mana, level),
+    }
 }
 
 pub const fn base_stats_sf32(
@@ -250,7 +109,34 @@ pub const fn base_stats_bf32(
 ) -> BasicStats<f32> {
     match champion_id {
         ChampionId::Gnar if is_mega_gnar => {
-            MEGA_GNAR_BASE_STATS[const_clamp(level, 1..=URF_MAX_LEVEL as u8) - 1]
+            type S = CachedChampionStatsMap;
+
+            const GNAR_STATS: CachedChampionStats = ChampionId::Gnar.cache().stats;
+
+            const MEGA_GNAR_HEALTH: S = S {
+                flat: GNAR_STATS.health.flat + 100.0,
+                per_level: GNAR_STATS.health.per_level + 43.0,
+            };
+            const MEGA_GNAR_ARMOR: S = S {
+                flat: GNAR_STATS.armor.flat + 3.5,
+                per_level: GNAR_STATS.armor.per_level + 3.0,
+            };
+            const MEGA_GNAR_MAGIC_RESIST: S = S {
+                flat: GNAR_STATS.magic_resist.flat + 3.5,
+                per_level: GNAR_STATS.magic_resist.per_level + 3.5,
+            };
+            const MEGA_GNAR_ATTACK_DAMAGE: S = S {
+                flat: GNAR_STATS.attack_damage.flat + 6.0,
+                per_level: GNAR_STATS.attack_damage.per_level + 2.5,
+            };
+
+            BasicStats {
+                health: RiotFormulas::stat(&MEGA_GNAR_HEALTH, level),
+                armor: RiotFormulas::stat(&MEGA_GNAR_ARMOR, level),
+                magic_resist: RiotFormulas::stat(&MEGA_GNAR_MAGIC_RESIST, level),
+                attack_damage: RiotFormulas::stat(&MEGA_GNAR_ATTACK_DAMAGE, level),
+                mana: 0.0,
+            }
         }
         _ => get_base_stats(champion_id, level),
     }
@@ -289,8 +175,8 @@ pub const fn get_simulated_stats(stats: &Stats<f32>, dragons: Dragons) -> [Stats
             cache.magic_penetration_percent,
         ]);
 
-        let earth_mod = get_earth_multiplier(dragons.ally_earth_dragons);
-        let fire_mod = get_fire_multiplier(dragons.ally_fire_dragons);
+        let earth_mod = RiotFormulas::get_earth_multiplier(dragons.ally_earth_dragons);
+        let fire_mod = RiotFormulas::get_fire_multiplier(dragons.ally_fire_dragons);
 
         new_stat.ability_power *= fire_mod;
         new_stat.attack_damage *= fire_mod;
@@ -414,7 +300,7 @@ pub const fn get_enemy_current_stats(
         bonus_mana += item.stats.mana;
         i += 1;
     }
-    let dragon_mod = get_earth_multiplier(earth_dragons);
+    let dragon_mod = RiotFormulas::get_earth_multiplier(earth_dragons);
     stats.magic_resist *= dragon_mod;
     stats.armor *= dragon_mod;
     bonus_mana
@@ -710,15 +596,15 @@ pub const fn get_eval_ctx(self_state: &SelfState, e_state: &EnemyFullState) -> C
             AdaptativeType::Magic => magic_values.modifier,
         },
         steelcaps_effect: match steelcaps {
-            true => STEEL_CAPS_PROTECTION,
+            true => RiotFormulas::STEEL_CAPS_PROTECTION,
             false => 1.0,
         },
         randuin_effect: match randuin {
-            true => RANDUIN_CRIT_PROTECTION,
+            true => RiotFormulas::RANDUIN_CRIT_PROTECTION,
             false => 1.0,
         },
         rocksolid_effect: match rocksolid {
-            true => ROCKSOLID_PROTECTION,
+            true => RiotFormulas::ROCKSOLID_PROTECTION,
             false => 1.0,
         },
         stacks,
@@ -727,8 +613,8 @@ pub const fn get_eval_ctx(self_state: &SelfState, e_state: &EnemyFullState) -> C
 
 pub const fn get_stacks(champion_id: ChampionId, game_time: f32) -> f32 {
     const AVERAGE_GAME_TIME: u32 = 60 * 30;
-    pub const fn time(game_time: f32, stacks_at_30m: u32) -> f32 {
-        (AVERAGE_GAME_TIME / stacks_at_30m) as f32 / game_time
+    pub const fn time(game_time: f32, stacks_at_avg_time: u32) -> f32 {
+        (AVERAGE_GAME_TIME / stacks_at_avg_time) as f32 / game_time
     }
     match champion_id {
         ChampionId::Chogath => time(game_time, 12),
