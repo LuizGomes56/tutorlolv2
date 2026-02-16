@@ -34,6 +34,12 @@ pub static mut BLOCK: &[u8] = BR_BLOCK;
 
 pub const BLOCK_LEN: usize = BR_BLOCK.len();
 
+pub const fn ignite(level: u8) -> i32 {
+    let n = level as i32;
+    let nth = if n > 4 { n - 4 } else { 0 };
+    70 + 20 * n + 5 * nth
+}
+
 /// Verifies the following conditions
 /// - `tier >= 3`
 /// - `price > 0`
