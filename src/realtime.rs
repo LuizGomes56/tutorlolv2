@@ -101,10 +101,10 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
     let current_player_bonus_stats = bonus_stats!(
         BasicStats::<f32>(current_player_stats, current_player_base_stats) {
             armor,
-            health,
+            max_health,
             attack_damage,
             magic_resist,
-            mana
+            max_mana
         }
     );
 
@@ -125,16 +125,16 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
             let riot_id = riot_item.item_id;
 
             match riot_id {
-                RIFTMAKER => base_modifiers.global_mod *= RIFTMAKER_BONUS_DAMAGE,
+                RIFTMAKER => base_modifiers.global_mod *= RiotFormulas::RIFTMAKER_BONUS_DAMAGE,
                 SHADOWFLAME => {
-                    base_modifiers.magic_mod *= SHADOWFLAME_BONUS_DAMAGE;
-                    base_modifiers.true_mod *= SHADOWFLAME_BONUS_DAMAGE;
+                    base_modifiers.magic_mod *= RiotFormulas::SHADOWFLAME_BONUS_DAMAGE;
+                    base_modifiers.true_mod *= RiotFormulas::SHADOWFLAME_BONUS_DAMAGE;
                 }
                 SPEAR_OF_SHOJIN => {
-                    ability_modifiers.q *= SHOJIN_BONUS_DAMAGE;
-                    ability_modifiers.w *= SHOJIN_BONUS_DAMAGE;
-                    ability_modifiers.e *= SHOJIN_BONUS_DAMAGE;
-                    ability_modifiers.r *= SHOJIN_BONUS_DAMAGE;
+                    ability_modifiers.q *= RiotFormulas::SHOJIN_BONUS_DAMAGE;
+                    ability_modifiers.w *= RiotFormulas::SHOJIN_BONUS_DAMAGE;
+                    ability_modifiers.e *= RiotFormulas::SHOJIN_BONUS_DAMAGE;
+                    ability_modifiers.r *= RiotFormulas::SHOJIN_BONUS_DAMAGE;
                 }
                 _ => {}
             };
@@ -181,14 +181,17 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
                     let riot_id = riot_rune.id;
 
                     match riot_id {
-                        AXIOM_ARCANIST => ability_modifiers.r *= AXIOM_ARCANIST_BONUS_DAMAGE,
+                        AXIOM_ARCANIST => {
+                            ability_modifiers.r *= RiotFormulas::AXIOM_ARCANIST_BONUS_DAMAGE
+                        }
                         COUP_DE_GRACE | CUT_DOWN => {
-                            base_modifiers.global_mod *= COUP_DE_GRACE_AND_CUTDOWN_BONUS_DAMAGE
+                            base_modifiers.global_mod *=
+                                RiotFormulas::COUP_DE_GRACE_AND_CUTDOWN_BONUS_DAMAGE
                         }
                         LAST_STAND => {
-                            base_modifiers.global_mod *= get_last_stand(
+                            base_modifiers.global_mod *= RiotFormulas::get_last_stand(
                                 1.0 - (self_state.current_stats.current_health
-                                    / self_state.current_stats.health.max(1.0)),
+                                    / self_state.current_stats.max_health.max(1.0)),
                             )
                         }
                         _ => {}
@@ -261,6 +264,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
             let e_base_stats = base_stats_sf32(e_champion_id, *e_level, false);
             let full_state = get_enemy_state(
                 EnemyState {
+                    current_stats: None,
                     base_stats: e_base_stats,
                     items: &e_items,
                     stacks: 0,

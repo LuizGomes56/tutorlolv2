@@ -100,7 +100,7 @@ create_eval_struct!(
     enemy_bonus_armor,
     enemy_bonus_health,
     enemy_bonus_magic_resist,
-    enemy_health,
+    enemy_current_health,
     enemy_magic_resist,
     enemy_max_health,
     enemy_missing_health,

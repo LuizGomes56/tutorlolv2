@@ -119,6 +119,7 @@ pub struct CurrentPlayer<'a> {
 
 #[derive(Clone, Copy, Debug, Default, PartialEq, PartialOrd, Encode, Serialize)]
 pub struct EnemyState<'a> {
+    pub current_stats: Option<EnemyStats<f32>>,
     pub base_stats: SimpleStats<f32>,
     pub items: &'a [ItemId],
     pub stacks: u32,
@@ -539,11 +540,76 @@ pub struct ResistValue {
 pub struct RiotFormulas;
 
 impl RiotFormulas {
+    /// Rune [`RuneId::AxiomArcanist`] gives +12% bonus damage to `R`
+    /// if it deals single target damage. The -3% penalty is not yet
+    /// supported for area-damaging ultimates
+    pub const AXIOM_ARCANIST_BONUS_DAMAGE: f32 = 1.12;
+    pub const COUP_DE_GRACE_AND_CUTDOWN_BONUS_DAMAGE: f32 = 1.08;
+    /// By 06/07/2025 Earth dragons give +5% resists
+    pub const EARTH_DRAGON_MULTIPLIER: f32 = 0.05;
+    /// By 06/07/2025 Fire dragons give +3% bonus attack stats
+    pub const FIRE_DRAGON_MULTIPLIER: f32 = 0.03;
+    /// Item [`ItemId::PlatedSteelcaps`] gives 12% damage reduction for basic attacks
+    pub const STEEL_CAPS_PROTECTION: f32 = 0.88;
+    /// Item [`ItemId::RanduinsOmen`] gives 30% damage reduction against critical hits
+    pub const RANDUIN_CRIT_PROTECTION: f32 = 0.7;
+    /// Items with Rocksolid passive give 20% damage reduction in some cases
+    pub const ROCKSOLID_PROTECTION: f32 = 0.8;
+    pub const SHOJIN_BONUS_DAMAGE: f32 = 1.12;
+    pub const SHADOWFLAME_BONUS_DAMAGE: f32 = 1.2;
+    pub const RIFTMAKER_BONUS_DAMAGE: f32 = 1.08;
+
+    pub const fn missing_health(current_health: f32, max_health: f32) -> f32 {
+        1.0 - (current_health / max_health.max(1.0))
+    }
+
+    /// Formula to get the bonus damage of the rune [`RuneId::LastStand`], where
+    /// missing health is a ratio of the current health and the maximum health.
+    /// ```rs
+    /// let missing_health = 1.0 - (
+    ///     current_player_stats.current_health /
+    ///         current_player_stats.health.max(1.0)
+    /// );
+    /// ```
+    /// Note that it uses [`f32::max`] to avoid division by zero.
+    ///
+    /// - Current Health = 800
+    /// - Maximum Health = 1000
+    ///
+    /// Then you're missing 200 health, which represents 20% of the total HP,
+    /// which should translate to 0.2.
+    /// Check the formula
+    /// `1.0 - (800.0 / 1000.0) = 0.2`
+    ///
+    /// Also, this formula has a range from 1.0 to 1.11, since in game the
+    /// maximum damage increase is of `11%`
+    pub const fn get_last_stand(missing_health: f32) -> f32 {
+        1.0 + (0.05 + 0.2 * (missing_health - 0.4)).clamp(0.0, 0.11)
+    }
+
+    /// Receives the number of Mountain dragons and returns a multiplier that will
+    /// be applied to increase some target's armor and magic resistences
+    pub const fn get_earth_multiplier(x: u16) -> f32 {
+        1.0 + x as f32 * Self::EARTH_DRAGON_MULTIPLIER
+    }
+
+    /// Receives the number of fire dragons and returns a number that can be multiplied
+    /// by the current ability power and attack damage to obtain the expected current
+    /// player's numeric value for those fields
+    pub const fn get_fire_multiplier(x: u16) -> f32 {
+        1.0 + x as f32 * Self::FIRE_DRAGON_MULTIPLIER
+    }
+
     /// Constant growth formula used to calculate base-stats and other scaling
     /// related fields
     pub const fn growth(level: u8) -> f32 {
         let factor = level as f32 - 1.0;
         factor * (0.7025 + 0.0175 * factor)
+    }
+
+    pub const fn stat(stat_map: &CachedChampionStatsMap, level: u8) -> f32 {
+        let growth_factor = Self::growth(level);
+        Self::stat_growth(stat_map.flat, stat_map.per_level, growth_factor)
     }
 
     /// Given the base stats and growth factors, return a number after applying the formula
@@ -555,18 +621,24 @@ impl RiotFormulas {
     /// armor or magic penetration, returning a number that represents the final penetration
     /// value of the current player. This happens because two `30%` penetrations do not sum
     /// up to `60%` directly, instead they return `51%` penetration.
-    pub const fn percent_value(from_vec: &[f32]) -> f32 {
+    pub const fn percent_value(values: &[f32]) -> f32 {
         let mut i = 0;
-        let mut prod = 1f32;
-        let mut div = 1f32;
+        let mut result = 1.0_f32;
 
-        while i < from_vec.len() {
-            div *= 10f32;
-            prod *= 100f32 - from_vec[i];
+        while i < values.len() {
+            let value = values[i];
+            let mult = if value < 0.0 {
+                0.0
+            } else if value > 100.0 {
+                100.0
+            } else {
+                value
+            };
+            result *= 1.0 - (mult * 0.01);
             i += 1;
         }
 
-        100f32 - prod / div
+        (1.0 - result) * 100.0
     }
 
     /// Returns the real resistence value in a struct [`ResistValue`], taking into account
@@ -580,16 +652,13 @@ impl RiotFormulas {
         resist: f32,
         accept_negatives: bool,
     ) -> ResistValue {
-        let real_val = ((1.0 - percent_pen / 100.0) * resist - flat_pen).max(if accept_negatives {
+        let real = ((1.0 - percent_pen / 100.0) * resist - flat_pen).max(if accept_negatives {
             f32::NEG_INFINITY
         } else {
             0.0
         });
-        let modf_val = 100.0 / (100.0 + real_val);
-        ResistValue {
-            real: real_val,
-            modifier: modf_val,
-        }
+        let modifier = 100.0 / (100.0 + real);
+        ResistValue { real, modifier }
     }
 
     /// Returns an [`i32`] that represents the damage against some turret
@@ -663,7 +732,7 @@ macro_rules! impl_cast_from {
         impl $stru<i32> {
             pub const fn from_f32(value: &$stru<f32>) -> Self {
                 $stru {
-                    $($fields: value.$fields as i32),*
+                    $($fields: value.$fields.round() as i32),*
                 }
             }
         }
@@ -696,14 +765,14 @@ macro_rules! impl_cast_from {
 
 impl_cast_from!(
     #[derive(
-        Clone, Copy, Debug, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize,
+        Clone, Copy, Debug, Default, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize,
     )]
     EnemyStats,
-    enemy_armor,
-    enemy_health,
-    enemy_magic_resist,
-    enemy_max_health,
-    enemy_missing_health
+    armor,
+    current_health,
+    magic_resist,
+    max_health,
+    missing_health
 );
 impl_cast_from!(
     /// Holds the most simple stats that need to be used to calculate
@@ -715,7 +784,7 @@ impl_cast_from!(
         Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize,
     )]
     SimpleStats,
-    health, armor, magic_resist
+    max_health, armor, magic_resist
 );
 impl_cast_from!(
     /// Struct holding the core champion stats of a player, where `T` is a
@@ -725,10 +794,10 @@ impl_cast_from!(
     )]
     BasicStats,
     armor,
-    health,
+    max_health,
     attack_damage,
     magic_resist,
-    mana
+    max_mana
 );
 impl_cast_from!(
     /// Holds all champion stats provided by Riot's API.
@@ -754,9 +823,9 @@ impl_cast_from!(
     magic_penetration_percent,
     magic_resist,
     #[serde(rename = "maxHealth")]
-    health,
+    max_health,
     #[serde(rename = "resourceMax")]
-    mana,
+    max_mana,
     #[serde(rename = "resourceValue")]
     current_mana
 );

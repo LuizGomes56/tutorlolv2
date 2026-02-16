@@ -1,77 +1,137 @@
 use serde_json::json;
-use tutorlolv2::{helpers::*, model::*, *};
+use tutorlolv2::{
+    calculator::{InferStats, get_item_bonus_stats, infer_champion_stats},
+    helpers::*,
+    model::*,
+    *,
+};
 use tutorlolv2_gen::bitset_items;
 
 #[test]
 pub fn test_calculator() {
-    let champion_id = ChampionId::Neeko;
-    let level = 18;
+    const CHAMPION_ID: ChampionId = ChampionId::Neeko;
+    const LEVEL: u8 = 18;
 
-    let items = [ItemId::BladeOfTheRuinedKing, ItemId::NashorsTooth];
-    let items_meta = get_items_data(&bitset_items(items), AttackType::Melee);
+    const ITEMS: [ItemId; 3] = [
+        ItemId::BladeOfTheRuinedKing,
+        ItemId::NashorsTooth,
+        ItemId::LordDominiksRegards,
+    ];
+    let items_meta = get_items_data(&bitset_items(ITEMS), AttackType::Melee);
+    let mut modifiers = Modifiers::default();
 
-    let mut current_stats = unsafe { core::mem::transmute::<_, Stats<f32>>([100f32; 16]) };
-    current_stats.armor_penetration_flat = 0.0;
-    current_stats.armor_penetration_percent = 0.0;
-    current_stats.magic_penetration_flat = 0.0;
-    current_stats.magic_penetration_percent = 0.0;
+    let mut stats: Stats<f32> = Stats::default();
+    get_item_bonus_stats(&mut stats, &ITEMS, &mut modifiers);
 
-    let base_stats = base_stats_bf32(champion_id, level, false);
-    let bonus_stats = bonus_stats!(BasicStats::<f32>(current_stats, base_stats) {
+    const INFER: bool = true;
+
+    const ABILITY_LEVELS: AbilityLevels = AbilityLevels {
+        q: 5,
+        w: 5,
+        e: 5,
+        r: 3,
+    };
+    const CURRENT_STATS: Stats<f32> = match INFER {
+        true => infer_champion_stats(InferStats {
+            item_exceptions: &[],
+            rune_exceptions: &[],
+            items: &ITEMS,
+            runes: &[],
+            modifiers: &mut Modifiers::default(),
+            dragons: Dragons::default(),
+            ability_levels: ABILITY_LEVELS,
+            stacks: 0,
+            level: LEVEL,
+            champion_id: CHAMPION_ID,
+            is_mega_gnar: false,
+        }),
+        false => Stats {
+            ability_power: 400.0,
+            armor: 120.0,
+            armor_penetration_flat: 0.0,
+            armor_penetration_percent: 0.0,
+            attack_damage: 110.0,
+            attack_range: 350.0,
+            attack_speed: 1.0,
+            crit_chance: 20.0,
+            crit_damage: 200.0,
+            current_health: 1743.0,
+            magic_penetration_flat: 0.0,
+            magic_penetration_percent: 0.0,
+            magic_resist: 65.0,
+            max_health: 2689.0,
+            max_mana: 960.0,
+            current_mana: 127.0,
+        },
+    };
+
+    const BASE_STATS: BasicStats<f32> = base_stats_bf32(CHAMPION_ID, LEVEL, false);
+    const BONUS_STATS: BasicStats<f32> = bonus_stats!(BasicStats::<f32>(CURRENT_STATS, BASE_STATS) {
         armor,
-        health,
+        max_health,
         attack_damage,
         magic_resist,
-        mana
+        max_mana
     });
 
-    let adaptative_type =
-        RiotFormulas::adaptative_type(bonus_stats.attack_damage, current_stats.ability_power)
-            .unwrap_or(champion_id.cache().adaptative_type);
-
-    let self_state = SelfState {
-        stacks: 0.0,
-        ability_levels: AbilityLevels {
-            q: 5,
-            w: 5,
-            e: 5,
-            r: 3,
-        },
-        current_stats,
-        bonus_stats,
-        base_stats,
-        level,
-        adaptative_type,
+    const ADAPTATIVE_TYPE: AdaptativeType = {
+        let this =
+            RiotFormulas::adaptative_type(BONUS_STATS.attack_damage, CURRENT_STATS.ability_power);
+        let default = CHAMPION_ID.cache().adaptative_type;
+        match this {
+            Some(x) => x,
+            None => default,
+        }
     };
 
-    let shred = ResistShred::new(&current_stats);
+    const SELF_STATE: SelfState = SelfState {
+        stacks: 0.0,
+        ability_levels: ABILITY_LEVELS,
+        current_stats: CURRENT_STATS,
+        bonus_stats: BONUS_STATS,
+        base_stats: BASE_STATS,
+        level: LEVEL,
+        adaptative_type: ADAPTATIVE_TYPE,
+    };
 
-    let e_champion_id = ChampionId::Aatrox;
+    const SHRED: ResistShred = ResistShred::new(&CURRENT_STATS);
 
-    let enemy_state = EnemyState {
-        base_stats: base_stats_sf32(e_champion_id, level, false),
+    const E_CHAMPION_ID: ChampionId = ChampionId::Aatrox;
+
+    const ENEMY_STATE: EnemyState<'_> = EnemyState {
+        current_stats: Some(EnemyStats {
+            armor: 214.0,
+            current_health: 4124.0,
+            magic_resist: 125.0,
+            max_health: 5215.0,
+            missing_health: 1.0,
+        }),
+        base_stats: base_stats_sf32(E_CHAMPION_ID, LEVEL, false),
         items: &[],
         stacks: 0,
-        champion_id: e_champion_id,
+        champion_id: E_CHAMPION_ID,
         earth_dragons: 0,
-        level,
+        level: LEVEL,
         item_exceptions: &[],
     };
-    let full_state = get_enemy_state(enemy_state, shred, false);
+    const FULL_STATE: EnemyFullState = get_enemy_state(ENEMY_STATE, SHRED, false);
 
-    let ctx = get_eval_ctx(&self_state, &full_state);
+    const CTX: Ctx = get_eval_ctx(&SELF_STATE, &FULL_STATE);
     let damages = item_id_eval_damage(
-        &ctx,
+        &CTX,
         &mut Default::default(),
         &items_meta.metadata,
         &items_meta.closures,
-        Modifiers::new(&ctx),
+        Modifiers::new(&CTX),
     );
 
     std::fs::write(
         "test_calc.txt",
         serde_json::to_string_pretty(&json!({
-            "ctx": ctx,
+            "stats": stats,
+            "enemy_state": ENEMY_STATE,
+            "full_state": FULL_STATE,
+            "ctx": CTX,
             "damages": damages,
             "metadata": items_meta.metadata,
             "closures": format!("{:?}", items_meta.closures)
