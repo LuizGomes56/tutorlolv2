@@ -90,13 +90,13 @@ pub const fn base_stats_sf32(
     is_mega_gnar: bool,
 ) -> SimpleStats<f32> {
     let BasicStats {
-        max_health: health,
+        max_health,
         armor,
         magic_resist,
         ..
     } = base_stats_bf32(champion_id, level, is_mega_gnar);
     SimpleStats {
-        max_health: health,
+        max_health,
         armor,
         magic_resist,
     }
@@ -420,7 +420,10 @@ pub const fn get_enemy_state(
     }
 
     let e_current_stats = match current_stats {
-        Some(s) => s,
+        Some(s) => EnemyStats {
+            missing_health: RiotFormulas::missing_health(s.current_health, s.max_health),
+            ..s
+        },
         None => EnemyStats {
             armor: e_default_stats.armor,
             current_health: e_default_stats.max_health,
@@ -588,7 +591,7 @@ pub const fn get_eval_ctx(self_state: &SelfState, e_state: &EnemyFullState) -> C
         crit_chance,
         crit_damage,
         attack_speed,
-        missing_health: 1.0 - (current_health / max_health.max(1.0)),
+        missing_health: RiotFormulas::missing_health(current_health, max_health),
         ability_power,
         attack_damage,
         adaptative_damage: match adaptative_type {

@@ -559,6 +559,10 @@ impl RiotFormulas {
     pub const SHADOWFLAME_BONUS_DAMAGE: f32 = 1.2;
     pub const RIFTMAKER_BONUS_DAMAGE: f32 = 1.08;
 
+    pub const fn missing_health(current_health: f32, max_health: f32) -> f32 {
+        1.0 - (current_health / max_health.max(1.0))
+    }
+
     /// Formula to get the bonus damage of the rune [`RuneId::LastStand`], where
     /// missing health is a ratio of the current health and the maximum health.
     /// ```rs
