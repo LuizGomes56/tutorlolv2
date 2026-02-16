@@ -732,7 +732,7 @@ macro_rules! impl_cast_from {
         impl $stru<i32> {
             pub const fn from_f32(value: &$stru<f32>) -> Self {
                 $stru {
-                    $($fields: value.$fields as i32),*
+                    $($fields: value.$fields.round() as i32),*
                 }
             }
         }
