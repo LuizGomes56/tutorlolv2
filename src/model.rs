@@ -621,18 +621,24 @@ impl RiotFormulas {
     /// armor or magic penetration, returning a number that represents the final penetration
     /// value of the current player. This happens because two `30%` penetrations do not sum
     /// up to `60%` directly, instead they return `51%` penetration.
-    pub const fn percent_value(from_vec: &[f32]) -> f32 {
+    pub const fn percent_value(values: &[f32]) -> f32 {
         let mut i = 0;
-        let mut prod = 1f32;
-        let mut div = 1f32;
+        let mut result = 1.0_f32;
 
-        while i < from_vec.len() {
-            div *= 10f32;
-            prod *= 100f32 - from_vec[i];
+        while i < values.len() {
+            let value = values[i];
+            let mult = if value < 0.0 {
+                0.0
+            } else if value > 100.0 {
+                100.0
+            } else {
+                value
+            };
+            result *= 1.0 - (mult * 0.01);
             i += 1;
         }
 
-        100f32 - prod / div
+        (1.0 - result) * 100.0
     }
 
     /// Returns the real resistence value in a struct [`ResistValue`], taking into account
@@ -646,16 +652,13 @@ impl RiotFormulas {
         resist: f32,
         accept_negatives: bool,
     ) -> ResistValue {
-        let real_val = ((1.0 - percent_pen / 100.0) * resist - flat_pen).max(if accept_negatives {
+        let real = ((1.0 - percent_pen / 100.0) * resist - flat_pen).max(if accept_negatives {
             f32::NEG_INFINITY
         } else {
             0.0
         });
-        let modf_val = 100.0 / (100.0 + real_val);
-        ResistValue {
-            real: real_val,
-            modifier: modf_val,
-        }
+        let modifier = 100.0 / (100.0 + real);
+        ResistValue { real, modifier }
     }
 
     /// Returns an [`i32`] that represents the damage against some turret
