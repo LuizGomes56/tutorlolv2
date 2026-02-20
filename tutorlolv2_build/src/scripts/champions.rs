@@ -122,11 +122,9 @@ fn declare_abilities(
                 panic!("[{champion_id_upper}] Empty declaration for {ability_id:?}");
             }
 
-            let kind = ability_id.as_const_lit();
-
             let metadata = format!(
                 "TypeMetadata {{ 
-                    kind: {kind}, 
+                    kind: {ability_id:?}, 
                     damage_type: {damage_type}, 
                     attributes: {attributes} 
                 }}"
@@ -209,13 +207,12 @@ fn define_merge_indexes(merge_data: BTreeSet<DevMergeData>, ability_data: &[Abil
                 maximum_damage,
                 alias,
             } = value;
-            let alias = alias.as_const_lit();
             match (index.get(&minimum_damage), index.get(&maximum_damage)) {
                 (Some(ia), Some(ib)) => Some(format!(
                     "MergeData {{
                         minimum_damage: {ia},
                         maximum_damage: {ib},
-                        alias: {alias}
+                        alias: {alias:?}
                     }}"
                 )),
                 _ => None,
@@ -317,7 +314,7 @@ pub fn generate_champions() -> GeneratorFn {
             ability_metadata.push_str(&format!("{metadata},"));
             closures.push_str(&format!("{fn_name}: {html_damage},"));
             ability_names.push(ability_id);
-            ability_declarations.push((ability_id, declaration.replace(".cast()", "")));
+            ability_declarations.push((ability_id, declaration));
 
             let start = ability_index;
             ability_index += idents.len();
@@ -356,8 +353,7 @@ pub fn generate_champions() -> GeneratorFn {
                 positions: &[{positions}],"
         );
 
-        let html_declaration =
-            format!("{base_declaration}{closures}{rest} }};").replace(".cast()", "");
+        let html_declaration = format!("{base_declaration}{closures}{rest} }};");
 
         let mut base_declaration = format!("{base_declaration}closures: &[{fn_names}], {rest} }};");
 
@@ -658,7 +654,7 @@ fn build_champions(data: Vec<(String, ChampionResult)>) -> GeneratorFn {
             champion_abilities.push_str(&{
                 let abilities = ability
                     .iter()
-                    .map(|(ability_id, _)| ability_id.as_const_lit())
+                    .map(|(ability_id, _)| format!("{ability_id:?}"))
                     .collect::<Vec<_>>()
                     .join(",");
                 format!("&[{abilities}],")

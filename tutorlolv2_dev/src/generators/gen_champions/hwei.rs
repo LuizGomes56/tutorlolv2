@@ -2,8 +2,8 @@ use super::*;
 
 impl Generator<Champion> for Hwei {
     fn generate(mut self: Box<Self>) -> MayFail<Champion> {
-        self.ability(Key::
-            Q,
+        self.ability(
+            Key::Q,
             [
                 (0, 0, _1),
                 (0, 0, _2),

@@ -57,10 +57,6 @@ use alloc::{format, string::String};
 
 #[cfg(feature = "dev")]
 impl AbilityId {
-    pub fn as_const_lit(&self) -> String {
-        format!("{}({:?})", self.as_char(), self.ability_name())
-    }
-
     pub fn as_literal(&self) -> String {
         format!(
             "AbilityId::{}(AbilityName::{:?})",

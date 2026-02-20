@@ -3,8 +3,8 @@ use super::*;
 impl Generator<Champion> for Teemo {
     fn generate(mut self: Box<Self>) -> MayFail<Champion> {
         self.ability(Key::Q, [(0, 1, _1)]);
-        self.ability(Key::
-            E,
+        self.ability(
+            Key::E,
             [
                 (0, 0, _1),
                 (0, 1, _2),

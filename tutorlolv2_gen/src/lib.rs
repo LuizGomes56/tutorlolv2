@@ -28,6 +28,8 @@ pub use enums::{Attrs, DamageType};
 pub use eval::*;
 pub use tutorlolv2_types::*;
 
+use crate::data::{champions::CHAMPION_GENERATOR, items::ITEM_GENERATOR};
+
 pub static RAW_BLOCK: &str = include_str!("block.txt");
 const BR_BLOCK: &[u8] = include_bytes!("block.br");
 pub static mut BLOCK: &[u8] = BR_BLOCK;
@@ -321,6 +323,10 @@ impl ChampionId {
     pub const fn get_ability_formula(&self, index: usize) -> &'static Range<usize> {
         &self.ability_formulas()[index]
     }
+
+    pub const fn generator(&self) -> &'static Range<usize> {
+        &CHAMPION_GENERATOR[self.index()]
+    }
 }
 
 impl ItemId {
@@ -342,6 +348,10 @@ impl ItemId {
 
     pub const fn closure(&self) -> &'static Range<usize> {
         &Self::CLOSURES[self.index()]
+    }
+
+    pub const fn generator(&self) -> &'static Range<usize> {
+        &ITEM_GENERATOR[self.index()]
     }
 }
 

@@ -1,10 +1,6 @@
-use crate::ArrayItem;
 use core::ops::{Deref, DerefMut};
-use std::{ops::Range, path::Path};
-use tutorlolv2_gen::{
-    EvalIdent, ITEM_ID_TO_RIOT_ID, RAW_BLOCK, RUNE_ID_TO_RIOT_ID, champions::ChampionId,
-    items::ItemId,
-};
+use std::{fmt::Debug, ops::Range, path::Path};
+use tutorlolv2_gen::{CastId, RAW_BLOCK, champions::ChampionId, items::ItemId};
 
 pub struct Html {
     inner: String,
@@ -28,7 +24,7 @@ impl Html {
         self.push_str(&Self::code_block(offsets));
     }
 
-    pub async fn push_json(&mut self, enumv: impl ArrayItem) {
+    pub async fn push_json(&mut self, enumv: impl CastId + Debug) {
         let json = Self::json(&enumv).await;
         self.push_str(&format!(
             "<section>
@@ -38,7 +34,7 @@ impl Html {
         ));
     }
 
-    pub async fn json(enumv: &impl ArrayItem) -> String {
+    pub async fn json(enumv: &(impl CastId + Debug)) -> String {
         let file = format!("{enumv:?}");
         let path = Path::new("internal")
             .join(enumv.folder())
@@ -71,19 +67,19 @@ impl Html {
         format!("<pre><code>{code}</code></pre>")
     }
 
-    pub fn redirect(value: impl ArrayItem) -> String {
+    pub fn redirect(value: impl CastId) -> String {
         let folder = value.folder();
         let file = value.file();
         let url = Self::URL;
         format!("{url}/{folder}/{file}.html")
     }
 
-    pub fn src(value: impl ArrayItem) -> String {
+    pub fn src(value: impl CastId) -> String {
         let folder = value.folder();
         let type_id = value.type_id();
-        let tag = match ChampionId::is_champion_id(&type_id) {
+        let tag = match ChampionId::is(&type_id) {
             true => value.file(),
-            false => match ItemId::is_item_id(&type_id) {
+            false => match ItemId::is(&type_id) {
                 true => ITEM_ID_TO_RIOT_ID[value.offset()],
                 false => RUNE_ID_TO_RIOT_ID[value.offset()],
             }
@@ -94,7 +90,7 @@ impl Html {
         format!("{url}/img/{folder}/{tag}.avif")
     }
 
-    pub fn new(value: impl ArrayItem) -> Self {
+    pub fn new(value: impl CastId) -> Self {
         let name = value.name();
         let src = Self::src(value);
         let css = Html::CSS;

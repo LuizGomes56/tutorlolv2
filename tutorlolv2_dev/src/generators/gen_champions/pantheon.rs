@@ -2,8 +2,8 @@ use super::*;
 
 impl Generator<Champion> for Pantheon {
     fn generate(mut self: Box<Self>) -> MayFail<Champion> {
-        self.ability(Key::
-            Q,
+        self.ability(
+            Key::Q,
             [
                 (4, 0, _1),
                 (4, 1, _2),

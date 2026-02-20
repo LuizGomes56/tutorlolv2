@@ -1,6 +1,6 @@
 use core::ops::Range;
 use tutorlolv2::{
-    ChampionId, champions::ABILITY_CLOSURES, items::ITEM_CLOSURES, runes::RUNE_CLOSURES,
+    ChampionId, ItemId, champions::ABILITY_CLOSURES, items::ITEM_CLOSURES, runes::RUNE_CLOSURES,
 };
 use tutorlolv2_gen::RAW_BLOCK;
 
@@ -15,6 +15,16 @@ fn render() {
             .collect::<String>()
     };
 
+    let champion_gen = ChampionId::VALUES
+        .into_iter()
+        .map(|champion_id| source_code(&[champion_id.generator().clone()]))
+        .collect::<String>();
+
+    let item_gen = ItemId::VALUES
+        .into_iter()
+        .map(|item_id| source_code(&[item_id.generator().clone()]))
+        .collect::<String>();
+
     let abilities = ChampionId::VALUES
         .into_iter()
         .map(|champion_id| source_code(ABILITY_CLOSURES[champion_id.index()]))
@@ -22,7 +32,7 @@ fn render() {
     let items = source_code(&ITEM_CLOSURES);
     let runes = source_code(&RUNE_CLOSURES);
 
-    let data = [abilities, items, runes].concat();
+    let data = [champion_gen, item_gen, abilities, items, runes].concat();
 
     std::fs::write(
         "temp.html",
