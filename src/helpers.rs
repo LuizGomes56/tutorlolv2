@@ -15,7 +15,7 @@
 //! want to do it, you can use the [`crate::const_eval`] module to
 //! do it
 
-use crate::{calculator::MONSTER_RESISTS, model::*};
+use crate::model::*;
 use alloc::boxed::Box;
 use core::{mem::MaybeUninit, ops::RangeInclusive};
 use tutorlolv2_gen::*;
@@ -788,17 +788,6 @@ const _: () = {
         assert!(metadata.len() == closures.len());
         i += 1;
     }
-    let mut j = 0;
-    while j < ItemId::VARIANTS {
-        let item_id = ItemId::from_usize(j).unwrap();
-        let CachedItem {
-            melee_damages: melee_closure,
-            ranged_damages: range_closure,
-            ..
-        } = item_id.cache();
-        assert!(melee_closure.len() == range_closure.len());
-        j += 1;
-    }
 };
 
 /// Constructs a new [`Damages`] struct that holds all the damage values against some entity
@@ -848,7 +837,7 @@ pub fn get_monster_damages(
     shred: ResistShred,
 ) -> [Damages; L_MSTR] {
     core::array::from_fn(|i| {
-        let (armor, magic_resist) = MONSTER_RESISTS[i];
+        let (armor, magic_resist) = RiotFormulas::MONSTER_RESISTS[i];
         let full_state = get_enemy_state(
             EnemyState {
                 base_stats: SimpleStats {

@@ -32,7 +32,7 @@ impl RiotAbilities {
     /// library doesn't panic if the input level is invalid, it
     /// will keep with calculations while the input satisfies the
     /// bounds of type [`u8`]
-    pub const fn get_ability_levels(&self) -> AbilityLevels {
+    pub const fn ability_levels(&self) -> AbilityLevels {
         AbilityLevels {
             q: self.q.ability_level,
             w: self.w.ability_level,

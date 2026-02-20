@@ -102,6 +102,85 @@ pub const SIMULATED_ITEMS_ENUM: [ItemId; L_SIML] = {
     result
 };
 
+/// Counts how many items have either armor or magic resistence
+/// in its stats. Items that give those attributes conditionally
+/// such as [`ItemId::BlackCleaver`] are also included.
+pub const NUMBER_OF_ITEMS_WITH_PEN: usize = {
+    let mut i = 0;
+    let mut j = 0;
+    while i < ItemId::VARIANTS {
+        let item_id = ItemId::from_usize(i).unwrap();
+        let CachedItem {
+            stats,
+            prettified_stats,
+            ..
+        } = item_id.cache();
+
+        if stats.armor_penetration_percent > 0.0 || stats.magic_penetration_percent > 0.0 {
+            j += 1;
+        } else {
+            let mut k = 0;
+            while k < prettified_stats.len() {
+                match prettified_stats[k] {
+                    StatName::ArmorPenetration(_) | StatName::MagicPenetration(_) => j += 1,
+                    _ => {}
+                }
+                k += 1;
+            }
+        }
+        i += 1;
+    }
+    j
+};
+
+/// Array with [`ItemId`] definition of all items that have some
+/// kind of armor or magic penetration, including those that give
+/// these attributes conditionally such as [`ItemId::BlackCleaver`]
+pub const ITEMS_WITH_PEN: [ItemId; NUMBER_OF_ITEMS_WITH_PEN] = {
+    let mut i = 0;
+    let mut j = 0;
+    let mut items = [ItemId::default(); NUMBER_OF_ITEMS_WITH_PEN];
+    while i < ItemId::VARIANTS {
+        let item_id = ItemId::from_usize(i).unwrap();
+        let CachedItem {
+            stats,
+            prettified_stats,
+            metadata,
+            ..
+        } = item_id.cache();
+
+        if stats.armor_penetration_percent > 0.0 || stats.magic_penetration_percent > 0.0 {
+            items[j] = metadata.kind;
+            j += 1;
+        } else {
+            let mut k = 0;
+            while k < prettified_stats.len() {
+                match prettified_stats[k] {
+                    StatName::ArmorPenetration(_) | StatName::MagicPenetration(_) => {
+                        items[j] = metadata.kind;
+                        j += 1
+                    }
+                    _ => {}
+                }
+                k += 1;
+            }
+        }
+        i += 1;
+    }
+    items
+};
+
+impl FromStr for ChampionId {
+    type Err = &'static str;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        CHAMPION_NAME_TO_ID
+            .get(s)
+            .copied()
+            .ok_or("No matches when calling ChampionId::from_str")
+    }
+}
+
 /// Contains the metadata of all items that have their stats compared to choose
 /// which one is best to buy considering the current game state. See [`TypeMetadata`]
 /// for more details

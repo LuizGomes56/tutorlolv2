@@ -544,20 +544,46 @@ impl RiotFormulas {
     /// if it deals single target damage. The -3% penalty is not yet
     /// supported for area-damaging ultimates
     pub const AXIOM_ARCANIST_BONUS_DAMAGE: f32 = 1.12;
-    pub const COUP_DE_GRACE_AND_CUTDOWN_BONUS_DAMAGE: f32 = 1.08;
+
     /// By 06/07/2025 Earth dragons give +5% resists
     pub const EARTH_DRAGON_MULTIPLIER: f32 = 0.05;
+
     /// By 06/07/2025 Fire dragons give +3% bonus attack stats
     pub const FIRE_DRAGON_MULTIPLIER: f32 = 0.03;
+
     /// Item [`ItemId::PlatedSteelcaps`] gives 12% damage reduction for basic attacks
     pub const STEEL_CAPS_PROTECTION: f32 = 0.88;
+
     /// Item [`ItemId::RanduinsOmen`] gives 30% damage reduction against critical hits
     pub const RANDUIN_CRIT_PROTECTION: f32 = 0.7;
+
     /// Items with Rocksolid passive give 20% damage reduction in some cases
     pub const ROCKSOLID_PROTECTION: f32 = 0.8;
+
     pub const SHOJIN_BONUS_DAMAGE: f32 = 1.12;
     pub const SHADOWFLAME_BONUS_DAMAGE: f32 = 1.2;
     pub const RIFTMAKER_BONUS_DAMAGE: f32 = 1.08;
+    pub const COUP_DE_GRACE_AND_CUTDOWN_BONUS_DAMAGE: f32 = 1.08;
+
+    /// Constant array containing the armor and magic resistences of jungle monsters.
+    /// Note that there's no specific name to each monster since the damage against
+    /// most of them repeats since their armor and magic resistence values are the same
+    pub const MONSTER_RESISTS: [(f32, f32); L_MSTR] = [
+        // Minions
+        (0f32, 0f32),
+        // Dragons
+        (21f32, 30f32),
+        // Red, Blue, Gromp, Wolves
+        (42f32, 42f32),
+        // Krug, Raptor
+        (20f32, 20f32),
+        // Baron Nashor
+        (120f32, 70f32),
+        // Atakhan
+        (90f32, 75f32),
+        // Super Minion
+        (100f32, -30f32),
+    ];
 
     pub const fn missing_health(current_health: f32, max_health: f32) -> f32 {
         1.0 - (current_health / max_health.max(1.0))
