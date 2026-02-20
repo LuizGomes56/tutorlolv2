@@ -2,7 +2,7 @@ use super::*;
 
 impl Generator<Champion> for Heimerdinger {
     fn generate(mut self: Box<Self>) -> MayFail<Champion> {
-        self.ability(
+        self.ability(Key::
             W,
             [
                 (0, 0, _1),
@@ -19,7 +19,7 @@ impl Generator<Champion> for Heimerdinger {
                 (0, 4, _4Min),
             ],
         );
-        self.ability(E, [(0, 0, _1)]);
+        self.ability(Key::E, [(0, 0, _1)]);
         self.end()
     }
 }

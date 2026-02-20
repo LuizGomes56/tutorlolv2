@@ -1,7 +1,7 @@
 use crate::MayFail;
 use regex::Regex;
 use std::{fmt::Display, str::FromStr};
-use tutorlolv2_gen::eval::*;
+use tutorlolv2_gen::eval::CtxVar::*;
 
 pub trait F64Ext {
     /// Removes the `.0` or any other fractional part

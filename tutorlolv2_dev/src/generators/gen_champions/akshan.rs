@@ -28,13 +28,13 @@ impl Generator<Champion> for Akshan {
                 });
 
             let ability = passive.format(passive_damages);
-            self.insert(P::Void, ability);
+            self.insert(P(Void), ability);
         }
 
-        self.ability(Q, [(0, 0, Min), (3, 0, Max)]);
-        self.ability(E, [(4, 0, Void)]);
+        self.ability(Key::Q, [(0, 0, Min), (3, 0, Max)]);
+        self.ability(Key::E, [(4, 0, Void)]);
         self.ability(
-            R,
+            Key::R,
             [(4, 0, _2Max), (4, 1, _1Max), (4, 2, _2Min), (4, 3, _1Min)],
         );
 
@@ -53,8 +53,8 @@ impl Generator<Champion> for Akshan {
             }
         }
 
-        self.attr(Area, [Q::Min, Q::Max])?;
-        self.damage_type(P::Void, Magic)?;
+        self.attr(Area, [Q(Min), Q(Max)])?;
+        self.damage_type(P(Void), Magic)?;
 
         self.end()
     }

@@ -2,7 +2,7 @@ use super::*;
 
 impl Generator<Champion> for Kayn {
     fn generate(mut self: Box<Self>) -> MayFail<Champion> {
-        self.ability(
+        self.ability(Key::
             Q,
             [
                 (0, 0, _1),
@@ -13,8 +13,8 @@ impl Generator<Champion> for Kayn {
                 (2, 1, _6),
             ],
         );
-        self.ability(W, [(0, 0, _1)]);
-        self.ability(R, [(3, 0, _1)]);
+        self.ability(Key::W, [(0, 0, _1)]);
+        self.ability(Key::R, [(3, 0, _1)]);
         self.end()
     }
 }

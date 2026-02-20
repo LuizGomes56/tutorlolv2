@@ -19,10 +19,6 @@ macro_rules! const_enum {
                 $Variant,
             )+
         }
-        $(
-            #[allow(non_upper_case_globals)]
-            pub const $Variant: $name = $name::$Variant;
-        )+
     };
 }
 

@@ -1,11 +1,14 @@
 use serde::{Deserialize, Serialize};
 use std::{
     collections::{BTreeMap, BTreeSet},
+    ops::Index,
     str::FromStr,
 };
 use tutorlolv2_gen::{
     AbilityId, AdaptativeType, AttackType, Attrs, DamageType, DevMergeData, Position,
 };
+
+use crate::gen_factories::fac_champions::Key;
 
 #[derive(Deserialize, Serialize)]
 pub struct Modifiers {
@@ -57,6 +60,20 @@ pub struct Abilities {
     pub w: Vec<MerakiAbility>,
     pub e: Vec<MerakiAbility>,
     pub r: Vec<MerakiAbility>,
+}
+
+impl Index<Key> for Abilities {
+    type Output = Vec<MerakiAbility>;
+
+    fn index(&self, index: Key) -> &Self::Output {
+        match index {
+            Key::P => &self.p,
+            Key::Q => &self.q,
+            Key::W => &self.w,
+            Key::E => &self.e,
+            Key::R => &self.r,
+        }
+    }
 }
 
 impl Abilities {

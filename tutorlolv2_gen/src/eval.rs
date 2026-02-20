@@ -23,11 +23,6 @@ macro_rules! create_eval_struct {
                 pub const ARRAY: [Self; Self::VARIANTS] = [$(Self::[<$value:camel>],)*];
             }
 
-            $(
-                #[allow(non_upper_case_globals)]
-                pub const [<$value:camel>]: CtxVar = CtxVar::[<$value:camel>];
-            )*
-
             impl Index<CtxVar> for Ctx {
                 type Output = f32;
                 fn index(&self, index: CtxVar) -> &Self::Output {

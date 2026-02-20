@@ -1,66 +1,3 @@
-use crate::AbilityId;
-
-macro_rules! ability_name {
-    ($($field:ident),+$(,)?) => {
-        #[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
-        #[derive(bincode::Encode, bincode::Decode)]
-        #[derive(serde::Serialize, serde::Deserialize)]
-        #[repr(u8)]
-        pub enum AbilityName { $($field),+ }
-
-        $(
-            #[allow(non_upper_case_globals)]
-            pub const $field: AbilityName = AbilityName::$field;
-        )+
-
-        pub const P: AbilityId = AbilityId::P(AbilityName::Void);
-        pub const Q: AbilityId = AbilityId::Q(AbilityName::Void);
-        pub const W: AbilityId = AbilityId::W(AbilityName::Void);
-        pub const E: AbilityId = AbilityId::E(AbilityName::Void);
-        pub const R: AbilityId = AbilityId::R(AbilityName::Void);
-
-        #[derive(Clone, Copy)]
-        pub enum P { $($field),+ }
-        impl P {
-            pub const fn cast(self) -> AbilityId { match self {
-            $(P::$field => AbilityId::P(AbilityName::$field)),+ } }
-        }
-        impl Into<AbilityId> for P { fn into(self) -> AbilityId { self.cast() } }
-
-        #[derive(Clone, Copy)]
-        pub enum Q { $($field),+ }
-        impl Q {
-            pub const fn cast(self) -> AbilityId { match self {
-            $(Q::$field => AbilityId::Q(AbilityName::$field)),+ } }
-        }
-        impl Into<AbilityId> for Q { fn into(self) -> AbilityId { self.cast() } }
-
-        #[derive(Clone, Copy)]
-        pub enum W { $($field),+ }
-        impl W {
-            pub const fn cast(self) -> AbilityId { match self {
-            $(W::$field => AbilityId::W(AbilityName::$field)),+ } }
-        }
-        impl Into<AbilityId> for W { fn into(self) -> AbilityId { self.cast() } }
-
-        #[derive(Clone, Copy)]
-        pub enum E { $($field),+ }
-        impl E {
-            pub const fn cast(self) -> AbilityId { match self {
-            $(E::$field => AbilityId::E(AbilityName::$field)),+ } }
-        }
-        impl Into<AbilityId> for E { fn into(self) -> AbilityId { self.cast() } }
-
-        #[derive(Clone, Copy)]
-        pub enum R { $($field),+ }
-        impl R {
-            pub const fn cast(self) -> AbilityId { match self {
-            $(R::$field => AbilityId::R(AbilityName::$field)),+ } }
-        }
-        impl Into<AbilityId> for R { fn into(self) -> AbilityId { self.cast() } }
-    };
-}
-
 impl AbilityName {
     pub const fn display(&self) -> Option<&'static str> {
         match self {
@@ -96,7 +33,22 @@ impl AbilityName {
     }
 }
 
-ability_name! {
+#[derive(
+    Clone,
+    Copy,
+    Debug,
+    Eq,
+    Hash,
+    Ord,
+    PartialEq,
+    PartialOrd,
+    bincode::Encode,
+    bincode::Decode,
+    serde::Serialize,
+    serde::Deserialize,
+)]
+#[repr(u8)]
+pub enum AbilityName {
     Void,
     _1,
     _2,

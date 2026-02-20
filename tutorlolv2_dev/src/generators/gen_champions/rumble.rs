@@ -2,7 +2,7 @@ use super::*;
 
 impl Generator<Champion> for Rumble {
     fn generate(mut self: Box<Self>) -> MayFail<Champion> {
-        self.ability(
+        self.ability(Key::
             Q,
             [
                 (0, 0, _1),
@@ -23,8 +23,8 @@ impl Generator<Champion> for Rumble {
                 (1, 7, _8Min),
             ],
         );
-        self.ability(E, [(0, 0, _1), (0, 4, _2), (1, 0, _3), (1, 3, _4)]);
-        self.ability(R, [(1, 0, _1), (1, 1, _2), (1, 2, _3)]);
+        self.ability(Key::E, [(0, 0, _1), (0, 4, _2), (1, 0, _3), (1, 3, _4)]);
+        self.ability(Key::R, [(1, 0, _1), (1, 1, _2), (1, 2, _3)]);
         self.end()
     }
 }

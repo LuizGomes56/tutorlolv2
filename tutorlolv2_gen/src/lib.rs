@@ -11,7 +11,7 @@ use core::{any::TypeId, mem::MaybeUninit, ops::Index, ops::Range, str::FromStr};
 
 #[allow(non_upper_case_globals)]
 pub(crate) const unknown: f32 = 0.0;
-pub(crate) use tutorlolv2_types::ability_name::*;
+pub(crate) use tutorlolv2_types::{AbilityId::*, AbilityName::*};
 
 pub use bitset::*;
 pub use cache::*;

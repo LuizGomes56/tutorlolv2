@@ -1,5 +1,5 @@
 #![no_std]
-pub mod ability_name;
+mod ability_name;
 
 pub use ability_name::AbilityName;
 
@@ -57,28 +57,8 @@ use alloc::{format, string::String};
 
 #[cfg(feature = "dev")]
 impl AbilityId {
-    pub const fn from_fn(&self) -> fn(AbilityName) -> Self {
-        match self {
-            AbilityId::P(_) => AbilityId::P,
-            AbilityId::Q(_) => AbilityId::Q,
-            AbilityId::W(_) => AbilityId::W,
-            AbilityId::E(_) => AbilityId::E,
-            AbilityId::R(_) => AbilityId::R,
-        }
-    }
-
-    pub const fn from_ability_name(&self, ability_name: AbilityName) -> Self {
-        match self {
-            AbilityId::P(_) => AbilityId::P(ability_name),
-            AbilityId::Q(_) => AbilityId::Q(ability_name),
-            AbilityId::W(_) => AbilityId::W(ability_name),
-            AbilityId::E(_) => AbilityId::E(ability_name),
-            AbilityId::R(_) => AbilityId::R(ability_name),
-        }
-    }
-
     pub fn as_const_lit(&self) -> String {
-        format!("{}::{:?}.cast()", self.as_char(), self.ability_name())
+        format!("{}({:?})", self.as_char(), self.ability_name())
     }
 
     pub fn as_literal(&self) -> String {
