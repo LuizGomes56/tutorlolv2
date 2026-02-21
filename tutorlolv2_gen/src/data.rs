@@ -46483,19 +46483,19 @@ pub mod items {
             unknown_map_35: false,
         },
     };
-    pub const fn blade_of_the_ruined_king_arena_melee_min(ctx: &Ctx) -> f32 {
-        ctx.enemy_current_health
-            - (0.09 * ctx.enemy_current_health * (1.0 - 0.09 * ctx.physical_multiplier)
-                - ctx.attack_damage
-                + ctx.attack_damage * (1.0 - 0.09 * ctx.physical_multiplier))
-                / 0.09
-    }
     pub const fn blade_of_the_ruined_king_arena_ranged_min(ctx: &Ctx) -> f32 {
         ctx.enemy_current_health
             - (0.06 * ctx.enemy_current_health * (1.0 - 0.06 * ctx.physical_multiplier)
                 - ctx.attack_damage
                 + ctx.attack_damage * (1.0 - 0.06 * ctx.physical_multiplier))
                 / 0.06
+    }
+    pub const fn blade_of_the_ruined_king_arena_melee_min(ctx: &Ctx) -> f32 {
+        ctx.enemy_current_health
+            - (0.09 * ctx.enemy_current_health * (1.0 - 0.09 * ctx.physical_multiplier)
+                - ctx.attack_damage
+                + ctx.attack_damage * (1.0 - 0.09 * ctx.physical_multiplier))
+                / 0.09
     }
     pub static BLADE_O_RANG: CachedItem = CachedItem {
         name: "Blade-o-rang",

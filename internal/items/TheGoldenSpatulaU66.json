@@ -32,60 +32,60 @@
   },
   "stats": {
     "abilityPower": {
-      "flat": 125,
-      "percent": 0
+      "flat": 125.0,
+      "percent": 0.0
     },
     "armor": {
-      "flat": 10,
-      "percent": 0
+      "flat": 10.0,
+      "percent": 0.0
     },
     "armorPenetration": {
-      "flat": 0,
-      "percent": 0
+      "flat": 0.0,
+      "percent": 0.0
     },
     "magicPenetration": {
-      "flat": 0,
-      "percent": 0
+      "flat": 0.0,
+      "percent": 0.0
     },
     "attackDamage": {
-      "flat": 90,
-      "percent": 0
+      "flat": 90.0,
+      "percent": 0.0
     },
     "attackSpeed": {
-      "flat": 30,
-      "percent": 0
+      "flat": 30.0,
+      "percent": 0.0
     },
     "criticalStrikeChance": {
-      "flat": 25,
-      "percent": 0
+      "flat": 25.0,
+      "percent": 0.0
     },
     "criticalStrikeDamage": {
-      "flat": 0,
-      "percent": 0
+      "flat": 0.0,
+      "percent": 0.0
     },
     "health": {
-      "flat": 250,
-      "percent": 0
+      "flat": 250.0,
+      "percent": 0.0
     },
     "lifesteal": {
-      "flat": 10,
-      "percent": 0
+      "flat": 10.0,
+      "percent": 0.0
     },
     "magicResistance": {
-      "flat": 10,
-      "percent": 0
+      "flat": 10.0,
+      "percent": 0.0
     },
     "mana": {
-      "flat": 250,
-      "percent": 0
+      "flat": 250.0,
+      "percent": 0.0
     },
     "movespeed": {
-      "flat": 0,
-      "percent": 0
+      "flat": 0.0,
+      "percent": 0.0
     },
     "omnivamp": {
-      "flat": 0,
-      "percent": 0
+      "flat": 0.0,
+      "percent": 0.0
     }
   },
   "builds_from_riot_ids": [],
