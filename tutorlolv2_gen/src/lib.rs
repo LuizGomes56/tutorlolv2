@@ -121,8 +121,8 @@ pub const NUMBER_OF_ITEMS_WITH_PEN: usize = {
         } else {
             let mut k = 0;
             while k < prettified_stats.len() {
-                match prettified_stats[k] {
-                    StatName::ArmorPenetration(_) | StatName::MagicPenetration(_) => j += 1,
+                match prettified_stats[k].0 {
+                    StatName::ArmorPenetration | StatName::MagicPenetration => j += 1,
                     _ => {}
                 }
                 k += 1;
@@ -155,8 +155,8 @@ pub const ITEMS_WITH_PEN: [ItemId; NUMBER_OF_ITEMS_WITH_PEN] = {
         } else {
             let mut k = 0;
             while k < prettified_stats.len() {
-                match prettified_stats[k] {
-                    StatName::ArmorPenetration(_) | StatName::MagicPenetration(_) => {
+                match prettified_stats[k].0 {
+                    StatName::ArmorPenetration | StatName::MagicPenetration => {
                         items[j] = metadata.kind;
                         j += 1
                     }
@@ -421,6 +421,114 @@ impl ItemId {
         result
     };
 
+    pub const fn has_stat(&self, stat_name: StatName) -> bool {
+        let mut i = 0;
+        let stats = self.cache().prettified_stats;
+        while i < stats.len() {
+            if stats[i].0 as u8 == stat_name as u8 {
+                return true;
+            }
+            i += 1;
+        }
+        false
+    }
+
+    pub const fn find_variants<const N: usize>(stat_name: StatName) -> [ItemId; N] {
+        let mut i = 0;
+        let mut j = 0;
+        let mut result = [Self::default(); N];
+        while i < Self::VARIANTS {
+            let item = Self::VALUES[i];
+            if item.has_stat(stat_name) {
+                result[j] = item;
+                j += 1;
+            }
+            i += 1;
+        }
+        result
+    }
+
+    pub const FILTERS: [&[Self]; StatName::VARIANTS] = [
+        &Self::ITEMS_WITH_ABILITY_HASTE,
+        &Self::ITEMS_WITH_ABILITY_POWER,
+        &Self::ITEMS_WITH_ADAPTIVE_FORCE,
+        &Self::ITEMS_WITH_ARMOR,
+        &Self::ITEMS_WITH_ARMOR_PENETRATION,
+        &Self::ITEMS_WITH_ATTACK_DAMAGE,
+        &Self::ITEMS_WITH_ATTACK_SPEED,
+        &Self::ITEMS_WITH_BASE_HEALTH_REGEN,
+        &Self::ITEMS_WITH_BASE_MANA_REGEN,
+        &Self::ITEMS_WITH_CRITICAL_STRIKE_CHANCE,
+        &Self::ITEMS_WITH_CRITICAL_STRIKE_DAMAGE,
+        &Self::ITEMS_WITH_GOLD_PER10_SECONDS,
+        &Self::ITEMS_WITH_HEAL_AND_SHIELD_POWER,
+        &Self::ITEMS_WITH_HEALTH,
+        &Self::ITEMS_WITH_LETHALITY,
+        &Self::ITEMS_WITH_LIFE_STEAL,
+        &Self::ITEMS_WITH_MAGIC_PENETRATION,
+        &Self::ITEMS_WITH_MAGIC_RESIST,
+        &Self::ITEMS_WITH_MANA,
+        &Self::ITEMS_WITH_MOVE_SPEED,
+        &Self::ITEMS_WITH_OMNIVAMP,
+        &Self::ITEMS_WITH_TENACITY,
+    ];
+
+    pub const ITEMS_WITH_ABILITY_HASTE: [Self; Self::count_variants(StatName::AbilityHaste)] =
+        Self::find_variants(StatName::AbilityHaste);
+    pub const ITEMS_WITH_ABILITY_POWER: [Self; Self::count_variants(StatName::AbilityPower)] =
+        Self::find_variants(StatName::AbilityPower);
+    pub const ITEMS_WITH_ADAPTIVE_FORCE: [Self; Self::count_variants(StatName::AdaptiveForce)] =
+        Self::find_variants(StatName::AdaptiveForce);
+    pub const ITEMS_WITH_ARMOR: [Self; Self::count_variants(StatName::Armor)] =
+        Self::find_variants(StatName::Armor);
+    pub const ITEMS_WITH_ARMOR_PENETRATION: [Self;
+        Self::count_variants(StatName::ArmorPenetration)] =
+        Self::find_variants(StatName::ArmorPenetration);
+    pub const ITEMS_WITH_ATTACK_DAMAGE: [Self; Self::count_variants(StatName::AttackDamage)] =
+        Self::find_variants(StatName::AttackDamage);
+    pub const ITEMS_WITH_ATTACK_SPEED: [Self; Self::count_variants(StatName::AttackSpeed)] =
+        Self::find_variants(StatName::AttackSpeed);
+    pub const ITEMS_WITH_BASE_HEALTH_REGEN: [Self;
+        Self::count_variants(StatName::BaseHealthRegen)] =
+        Self::find_variants(StatName::BaseHealthRegen);
+    pub const ITEMS_WITH_BASE_MANA_REGEN: [Self; Self::count_variants(StatName::BaseManaRegen)] =
+        Self::find_variants(StatName::BaseManaRegen);
+    pub const ITEMS_WITH_CRITICAL_STRIKE_CHANCE: [Self;
+        Self::count_variants(StatName::CriticalStrikeChance)] =
+        Self::find_variants(StatName::CriticalStrikeChance);
+    pub const ITEMS_WITH_CRITICAL_STRIKE_DAMAGE: [Self;
+        Self::count_variants(StatName::CriticalStrikeDamage)] =
+        Self::find_variants(StatName::CriticalStrikeDamage);
+    pub const ITEMS_WITH_GOLD_PER10_SECONDS: [Self;
+        Self::count_variants(StatName::GoldPer10Seconds)] =
+        Self::find_variants(StatName::GoldPer10Seconds);
+    pub const ITEMS_WITH_HEAL_AND_SHIELD_POWER: [Self;
+        Self::count_variants(StatName::HealAndShieldPower)] =
+        Self::find_variants(StatName::HealAndShieldPower);
+    pub const ITEMS_WITH_HEALTH: [Self; Self::count_variants(StatName::Health)] =
+        Self::find_variants(StatName::Health);
+    pub const ITEMS_WITH_LETHALITY: [Self; Self::count_variants(StatName::Lethality)] =
+        Self::find_variants(StatName::Lethality);
+    pub const ITEMS_WITH_LIFE_STEAL: [Self; Self::count_variants(StatName::LifeSteal)] =
+        Self::find_variants(StatName::LifeSteal);
+    pub const ITEMS_WITH_MAGIC_PENETRATION: [Self;
+        Self::count_variants(StatName::MagicPenetration)] =
+        Self::find_variants(StatName::MagicPenetration);
+    pub const ITEMS_WITH_MAGIC_RESIST: [Self; Self::count_variants(StatName::MagicResist)] =
+        Self::find_variants(StatName::MagicResist);
+    pub const ITEMS_WITH_MANA: [Self; Self::count_variants(StatName::Mana)] =
+        Self::find_variants(StatName::Mana);
+    pub const ITEMS_WITH_MOVE_SPEED: [Self; Self::count_variants(StatName::MoveSpeed)] =
+        Self::find_variants(StatName::MoveSpeed);
+    pub const ITEMS_WITH_OMNIVAMP: [Self; Self::count_variants(StatName::Omnivamp)] =
+        Self::find_variants(StatName::Omnivamp);
+    pub const ITEMS_WITH_TENACITY: [Self; Self::count_variants(StatName::Tenacity)] =
+        Self::find_variants(StatName::Tenacity);
+
+    pub const fn filter(stat_name: StatName) -> &'static [Self] {
+        Self::FILTERS[stat_name as usize]
+    }
+
     pub const fn to_riot_id(&self) -> u32 {
         self.cache().riot_id
     }
@@ -431,6 +539,18 @@ impl ItemId {
 
     pub const fn generator(&self) -> &'static Range<usize> {
         &ITEM_GENERATOR[self.index()]
+    }
+
+    pub const fn count_variants(stat_name: StatName) -> usize {
+        let mut result = 0;
+        let mut i = 0;
+        while i < Self::VARIANTS {
+            if Self::VALUES[i].has_stat(stat_name) {
+                result += 1;
+            }
+            i += 1;
+        }
+        result
     }
 }
 

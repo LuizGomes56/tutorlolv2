@@ -104,7 +104,7 @@ pub struct Item {
     pub name: String,
     pub price: usize,
     pub tier: u8,
-    pub prettified_stats: BTreeSet<StatName>,
+    pub prettified_stats: BTreeMap<StatName, u16>,
     pub damage_type: String,
     pub stats: ItemStats,
     pub ranged: DamageObject,

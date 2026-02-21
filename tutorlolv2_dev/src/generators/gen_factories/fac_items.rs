@@ -52,24 +52,25 @@ impl ItemData {
         const fn assign(stat: &mut f64, value: u16) {
             *stat = value as _;
         }
-        for s in &data.prettified_stats {
-            match *s {
-                StatName::AdaptiveForce(_) => { /* Unknown */ }
-                StatName::AbilityPower(v) => assign(&mut ability_power.flat, v),
-                StatName::Armor(v) => assign(&mut armor.flat, v),
-                StatName::ArmorPenetration(v) => assign(&mut armor_penetration.percent, v),
-                StatName::AttackDamage(v) => assign(&mut attack_damage.flat, v),
-                StatName::AttackSpeed(v) => assign(&mut attack_speed.flat, v),
-                StatName::CriticalStrikeChance(v) => assign(&mut critical_strike_chance.flat, v),
-                StatName::CriticalStrikeDamage(v) => assign(&mut critical_strike_damage.flat, v),
-                StatName::Health(v) => assign(&mut health.flat, v),
-                StatName::Lethality(v) => assign(&mut armor_penetration.flat, v),
-                StatName::LifeSteal(v) => assign(&mut lifesteal.flat, v),
-                StatName::MagicPenetration(v) => assign(&mut magic_penetration.flat, v),
-                StatName::MagicResist(v) => assign(&mut magic_resistance.flat, v),
-                StatName::Mana(v) => assign(&mut mana.flat, v),
-                StatName::MoveSpeed(v) => assign(&mut movespeed.flat, v),
-                StatName::Omnivamp(v) => assign(&mut omnivamp.flat, v),
+        for (s, value) in &data.prettified_stats {
+            let v = *value;
+            match s {
+                StatName::AdaptiveForce => { /* Unknown */ }
+                StatName::AbilityPower => assign(&mut ability_power.flat, v),
+                StatName::Armor => assign(&mut armor.flat, v),
+                StatName::ArmorPenetration => assign(&mut armor_penetration.percent, v),
+                StatName::AttackDamage => assign(&mut attack_damage.flat, v),
+                StatName::AttackSpeed => assign(&mut attack_speed.flat, v),
+                StatName::CriticalStrikeChance => assign(&mut critical_strike_chance.flat, v),
+                StatName::CriticalStrikeDamage => assign(&mut critical_strike_damage.flat, v),
+                StatName::Health => assign(&mut health.flat, v),
+                StatName::Lethality => assign(&mut armor_penetration.flat, v),
+                StatName::LifeSteal => assign(&mut lifesteal.flat, v),
+                StatName::MagicPenetration => assign(&mut magic_penetration.flat, v),
+                StatName::MagicResist => assign(&mut magic_resistance.flat, v),
+                StatName::Mana => assign(&mut mana.flat, v),
+                StatName::MoveSpeed => assign(&mut movespeed.flat, v),
+                StatName::Omnivamp => assign(&mut omnivamp.flat, v),
                 _ => {}
             }
         }

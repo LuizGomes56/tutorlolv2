@@ -11,7 +11,7 @@ use crate::{
 use once_cell::sync::Lazy;
 use regex::Regex;
 use std::{
-    collections::{BTreeMap, BTreeSet, HashMap},
+    collections::{BTreeMap, HashMap},
     fs,
     path::Path,
 };
@@ -254,8 +254,8 @@ static RE_TAG_STRIP: Lazy<Regex> = Lazy::new(|| Regex::new(r"<\/?[^>]+(>|$)").un
 
 /// Returns the value that will be added to key `prettified_stats` for each item.
 /// Depends on Riot API `item.json` and requires manual maintainance if a new XML tag is added
-fn pretiffy_items(data: &RiotCdnItem) -> MayFail<BTreeSet<StatName>> {
-    let mut result = HashMap::<_, _>::default();
+fn pretiffy_items(data: &RiotCdnItem) -> MayFail<BTreeMap<StatName, u16>> {
+    let mut result = BTreeMap::<_, _>::default();
 
     let lines = RE_LINE.captures_iter(&data.description).collect::<Vec<_>>();
     let mut line_index = 0usize;
@@ -278,8 +278,8 @@ fn pretiffy_items(data: &RiotCdnItem) -> MayFail<BTreeSet<StatName>> {
             if let Some(n_val) = &n {
                 let j = RE_PERCENT_PREFIX.replace(n_val, "").trim().to_string();
                 if !j.is_empty() {
-                    match v.parse::<usize>() {
-                        Ok(num) => result.insert(j, num),
+                    match v.parse::<u16>() {
+                        Ok(num) => result.insert(tutorlolv2_fmt::pascal_case(&j), num),
                         Err(_) => continue,
                     };
                 }
@@ -289,14 +289,11 @@ fn pretiffy_items(data: &RiotCdnItem) -> MayFail<BTreeSet<StatName>> {
 
     let json = result
         .into_iter()
-        .map(|(key, value)| {
-            let name = tutorlolv2_fmt::pascal_case(&key);
-            format!("{{{name:?}:{value}}}")
+        .map(|(stat, value)| {
+            let key = serde_json::from_str(&format!("{stat:?}")).unwrap();
+            (key, value)
         })
-        .collect::<Vec<_>>()
-        .join(",");
+        .collect();
 
-    Ok(serde_json::from_str::<BTreeSet<StatName>>(&format!(
-        "[{json}]"
-    ))?)
+    Ok(json)
 }

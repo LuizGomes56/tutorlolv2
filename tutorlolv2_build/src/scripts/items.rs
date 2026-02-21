@@ -293,7 +293,7 @@ pub fn generate_items() -> GeneratorFn {
         let name_ssnake = name.to_ssnake();
         let prettified_stats = prettified_stats
             .iter()
-            .map(|stat| format!("StatName::{stat:?}"))
+            .map(|(stat, value)| format!("(StatName::{stat:?}, {value})"))
             .collect::<Vec<_>>()
             .join(",");
 

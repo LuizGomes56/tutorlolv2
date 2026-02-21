@@ -8,17 +8,11 @@
   "attributes": "Undefined",
   "purchasable": true,
   "damage_type": "Unknown",
-  "prettified_stats": [
-    {
-      "AbilityPower": 45
-    },
-    {
-      "Health": 350
-    },
-    {
-      "Mana": 500
-    }
-  ],
+  "prettified_stats": {
+    "AbilityPower": 45,
+    "Health": 350,
+    "Mana": 500
+  },
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"
@@ -29,60 +23,60 @@
   },
   "stats": {
     "abilityPower": {
-      "flat": 45.0,
-      "percent": 0.0
+      "flat": 45,
+      "percent": 0
     },
     "armor": {
-      "flat": 0.0,
-      "percent": 0.0
+      "flat": 0,
+      "percent": 0
     },
     "armorPenetration": {
-      "flat": 0.0,
-      "percent": 0.0
+      "flat": 0,
+      "percent": 0
     },
     "magicPenetration": {
-      "flat": 0.0,
-      "percent": 0.0
+      "flat": 0,
+      "percent": 0
     },
     "attackDamage": {
-      "flat": 0.0,
-      "percent": 0.0
+      "flat": 0,
+      "percent": 0
     },
     "attackSpeed": {
-      "flat": 0.0,
-      "percent": 0.0
+      "flat": 0,
+      "percent": 0
     },
     "criticalStrikeChance": {
-      "flat": 0.0,
-      "percent": 0.0
+      "flat": 0,
+      "percent": 0
     },
     "criticalStrikeDamage": {
-      "flat": 0.0,
-      "percent": 0.0
+      "flat": 0,
+      "percent": 0
     },
     "health": {
-      "flat": 350.0,
-      "percent": 0.0
+      "flat": 350,
+      "percent": 0
     },
     "lifesteal": {
-      "flat": 0.0,
-      "percent": 0.0
+      "flat": 0,
+      "percent": 0
     },
     "magicResistance": {
-      "flat": 0.0,
-      "percent": 0.0
+      "flat": 0,
+      "percent": 0
     },
     "mana": {
-      "flat": 500.0,
-      "percent": 0.0
+      "flat": 500,
+      "percent": 0
     },
     "movespeed": {
-      "flat": 0.0,
-      "percent": 0.0
+      "flat": 0,
+      "percent": 0
     },
     "omnivamp": {
-      "flat": 0.0,
-      "percent": 0.0
+      "flat": 0,
+      "percent": 0
     }
   },
   "builds_from_riot_ids": [],

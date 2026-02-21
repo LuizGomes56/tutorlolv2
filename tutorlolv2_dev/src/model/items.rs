@@ -88,7 +88,7 @@ pub struct Item {
     pub attributes: Attrs,
     pub purchasable: bool,
     pub damage_type: DamageType,
-    pub prettified_stats: BTreeSet<StatName>,
+    pub prettified_stats: BTreeMap<StatName, u16>,
     pub ranged: DamageObject,
     pub melee: DamageObject,
     pub stats: ItemStats,

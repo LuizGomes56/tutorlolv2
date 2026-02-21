@@ -369,7 +369,7 @@ pub struct CachedItem {
     pub name: &'static str,
     pub tier: u8,
     pub price: u16,
-    pub prettified_stats: &'static [StatName],
+    pub prettified_stats: &'static [(StatName, u16)],
     pub maps: ItemMaps,
     pub stats: CachedItemStats,
     pub metadata: TypeMetadata<ItemId>,
