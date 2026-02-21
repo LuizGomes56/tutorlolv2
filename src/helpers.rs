@@ -166,14 +166,14 @@ pub const fn get_simulated_stats(stats: &Stats<f32>, dragons: Dragons) -> [Stats
         new_stat.max_health += cache.health;
         new_stat.armor += cache.armor;
         new_stat.max_mana += cache.mana;
-        new_stat.armor_penetration_percent = RiotFormulas::percent_value(&[
+        new_stat.armor_penetration_percent = RiotFormulas::combine_percentage(
             new_stat.armor_penetration_percent,
             cache.armor_penetration_percent,
-        ]);
-        new_stat.magic_penetration_percent = RiotFormulas::percent_value(&[
+        );
+        new_stat.magic_penetration_percent = RiotFormulas::combine_percentage(
             new_stat.magic_penetration_percent,
             cache.magic_penetration_percent,
-        ]);
+        );
 
         let earth_mod = RiotFormulas::get_earth_multiplier(dragons.ally_earth_dragons);
         let fire_mod = RiotFormulas::get_fire_multiplier(dragons.ally_fire_dragons);

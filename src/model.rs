@@ -649,22 +649,21 @@ impl RiotFormulas {
     /// up to `60%` directly, instead they return `51%` penetration.
     pub const fn percent_value(values: &[f32]) -> f32 {
         let mut i = 0;
-        let mut result = 1.0_f32;
+        let mut result = 1.0;
 
         while i < values.len() {
-            let value = values[i];
-            let mult = if value < 0.0 {
-                0.0
-            } else if value > 100.0 {
-                100.0
-            } else {
-                value
-            };
-            result *= 1.0 - (mult * 0.01);
+            let value = values[i].clamp(0.0, 100.0);
+            result *= 1.0 - (value * 0.01);
             i += 1;
         }
 
         (1.0 - result) * 100.0
+    }
+
+    pub const fn combine_percentage(a: f32, b: f32) -> f32 {
+        let a = a.clamp(0.0, 100.0);
+        let b = b.clamp(0.0, 100.0);
+        a + b - (a * b * 0.01)
     }
 
     /// Returns the real resistence value in a struct [`ResistValue`], taking into account

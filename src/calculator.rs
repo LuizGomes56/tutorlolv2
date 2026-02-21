@@ -17,10 +17,8 @@ pub const fn get_item_bonus_stats(
     items: &[ItemId],
     modifiers: &mut Modifiers,
 ) {
-    let mut armor_pen_count = 0;
-    let mut magic_pen_count = 0;
-    let mut armor_penetration = [0.0; NUMBER_OF_ITEMS_WITH_PEN];
-    let mut magic_penetration = [0.0; NUMBER_OF_ITEMS_WITH_PEN];
+    let mut armor_pen_mult = 1.0;
+    let mut magic_pen_mult = 1.0;
 
     let mut i = 0;
     while i < items.len() {
@@ -40,11 +38,11 @@ pub const fn get_item_bonus_stats(
         stats.current_mana = stats.max_mana;
         stats.max_mana += item_stats.mana;
 
-        armor_penetration[armor_pen_count] = item_stats.armor_penetration_percent;
-        magic_penetration[magic_pen_count] = item_stats.magic_penetration_percent;
+        let armor_pen = item_stats.armor_penetration_percent.clamp(0.0, 100.0);
+        let magic_pen = item_stats.magic_penetration_percent.clamp(0.0, 100.0);
 
-        armor_pen_count += 1;
-        magic_pen_count += 1;
+        armor_pen_mult *= 1.0 - (armor_pen * 0.01);
+        magic_pen_mult *= 1.0 - (magic_pen * 0.01);
 
         match item_id {
             ItemId::RabadonsDeathcap => stats.ability_power *= 1.3,
@@ -73,8 +71,8 @@ pub const fn get_item_bonus_stats(
     }
 
     stats.crit_chance = stats.crit_chance.clamp(0.0, 100.0);
-    stats.armor_penetration_percent = RiotFormulas::percent_value(&armor_penetration);
-    stats.magic_penetration_percent = RiotFormulas::percent_value(&magic_penetration);
+    stats.armor_penetration_percent = (1.0 - armor_pen_mult) * 100.0;
+    stats.magic_penetration_percent = (1.0 - magic_pen_mult) * 100.0;
 }
 
 pub const fn get_rune_bonus_stats(
@@ -282,28 +280,28 @@ pub const fn assign_champion_exceptions(data: ChampionExceptionData, champion_id
         }
         ChampionId::Sion => stats.max_health += stacks as f32,
         ChampionId::Darius => {
-            stats.armor_penetration_percent = RiotFormulas::percent_value(&[
+            stats.armor_penetration_percent = RiotFormulas::combine_percentage(
                 stats.armor_penetration_percent,
                 (15 + 5 * ability_levels.e) as f32,
-            ])
+            )
         }
         ChampionId::Pantheon => {
-            stats.armor_penetration_percent = RiotFormulas::percent_value(&[
+            stats.armor_penetration_percent = RiotFormulas::combine_percentage(
                 stats.armor_penetration_percent,
                 (10 * ability_levels.r) as f32,
-            ])
+            )
         }
         ChampionId::Nilah => {
-            stats.armor_penetration_percent = RiotFormulas::percent_value(&[
+            stats.armor_penetration_percent = RiotFormulas::combine_percentage(
                 stats.armor_penetration_percent,
                 stats.crit_chance / 3.0,
-            ])
+            )
         }
         ChampionId::Mordekaiser => {
-            stats.magic_penetration_percent = RiotFormulas::percent_value(&[
+            stats.magic_penetration_percent = RiotFormulas::combine_percentage(
                 stats.magic_penetration_percent,
                 2.5 + 2.5 * ability_levels.e as f32,
-            ])
+            )
         }
         _ => {}
     };
@@ -439,16 +437,16 @@ pub const fn assign_item_exceptions(stats: &mut Stats<f32>, exceptions: &[ValueE
                 ItemId::RiteOfRuin => stats.crit_chance += stacks as f32 * 2.5,
                 ItemId::MejaisSoulstealer => stats.ability_power += (5 * stacks) as f32,
                 ItemId::BlackCleaver => {
-                    stats.armor_penetration_percent = RiotFormulas::percent_value(&[
+                    stats.armor_penetration_percent = RiotFormulas::combine_percentage(
                         stats.armor_penetration_percent,
                         (6 * stacks) as f32,
-                    ])
+                    )
                 }
                 ItemId::BloodlettersCurse4010 | ItemId::BloodlettersCurse8010 => {
-                    stats.magic_penetration_percent = RiotFormulas::percent_value(&[
+                    stats.magic_penetration_percent = RiotFormulas::combine_percentage(
                         stats.magic_penetration_percent,
-                        (7.5 * stacks as f32),
-                    ])
+                        7.5 * stacks as f32,
+                    )
                 }
                 ItemId::Hubris6697 | ItemId::Hubris126697 | ItemId::HubrisArena => {
                     stats.attack_damage += (15 + (stacks << 1)) as f32;
