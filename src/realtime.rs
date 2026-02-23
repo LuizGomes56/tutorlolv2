@@ -107,11 +107,11 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
         }
     );
 
-    let adaptative_type = RiotFormulas::adaptative_type(
+    let adaptive_type = RiotFormulas::adaptive_type(
         current_player_bonus_stats.attack_damage,
         current_player_stats.ability_power,
     )
-    .unwrap_or(current_player_cache.adaptative_type);
+    .unwrap_or(current_player_cache.adaptive_type);
 
     const SHADOWFLAME: u32 = ItemId::Shadowflame.to_riot_id();
     const RIFTMAKER: u32 = ItemId::Riftmaker.to_riot_id();
@@ -161,7 +161,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
         current_stats: current_player_stats,
         bonus_stats: current_player_bonus_stats,
         base_stats: current_player_base_stats,
-        adaptative_type,
+        adaptive_type,
         ability_levels,
         level,
         stacks: get_stacks(current_player_champion_id, game_time),
@@ -338,7 +338,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
             current_stats: Stats::from_f32(&current_player_stats),
             level,
             team: current_player_team,
-            adaptative_type,
+            adaptive_type,
             position: current_player_position,
             champion_id: current_player_champion_id,
             game_map,

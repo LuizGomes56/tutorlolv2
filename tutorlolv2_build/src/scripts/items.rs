@@ -239,6 +239,13 @@ pub fn get_stats(stats: &ItemStats) -> String {
         }
     );
 
+    if stats.adaptive_force != 0.0 {
+        all_stats.push(format!(
+            "adaptive_force: {force}f32",
+            force = stats.adaptive_force
+        ));
+    }
+
     match all_stats.len() {
         0 => "ZEROED_STATS".into(),
         len => {

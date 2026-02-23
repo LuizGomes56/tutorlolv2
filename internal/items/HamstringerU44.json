@@ -11,7 +11,7 @@
   "prettified_stats": {
     "AttackDamage": 45,
     "AttackSpeed": 40,
-    "CriticalStrikeChance": 25
+    "CritChance": 25
   },
   "ranged": {
     "minimum_damage": "zero",
@@ -77,7 +77,8 @@
     "omnivamp": {
       "flat": 0.0,
       "percent": 0.0
-    }
+    },
+    "adaptiveForce": 0.0
   },
   "builds_from_riot_ids": [],
   "builds_into_riot_ids": [],

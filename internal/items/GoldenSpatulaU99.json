@@ -16,7 +16,7 @@
     "AttackSpeed": 40,
     "BaseHealthRegen": 50,
     "BaseManaRegen": 100,
-    "CriticalStrikeChance": 15,
+    "CritChance": 15,
     "Health": 200,
     "LifeSteal": 10,
     "MagicResist": 20,
@@ -87,7 +87,8 @@
     "omnivamp": {
       "flat": 0.0,
       "percent": 0.0
-    }
+    },
+    "adaptiveForce": 0.0
   },
   "builds_from_riot_ids": [],
   "builds_into_riot_ids": [],

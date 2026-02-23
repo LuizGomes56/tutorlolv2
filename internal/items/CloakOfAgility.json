@@ -9,7 +9,7 @@
   "purchasable": true,
   "damage_type": "Unknown",
   "prettified_stats": {
-    "CriticalStrikeChance": 15
+    "CritChance": 15
   },
   "ranged": {
     "minimum_damage": "zero",
@@ -75,7 +75,8 @@
     "omnivamp": {
       "flat": 0.0,
       "percent": 0.0
-    }
+    },
+    "adaptiveForce": 0.0
   },
   "builds_from_riot_ids": [],
   "builds_into_riot_ids": [

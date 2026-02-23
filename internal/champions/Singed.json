@@ -1,6 +1,6 @@
 {
   "name": "Singed",
-  "adaptative_type": "Magic",
+  "adaptive_type": "Magic",
   "attack_type": "Melee",
   "positions": [
     "Top"

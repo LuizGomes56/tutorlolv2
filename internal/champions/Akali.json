@@ -1,6 +1,6 @@
 {
   "name": "Akali",
-  "adaptative_type": "Physical",
+  "adaptive_type": "Physical",
   "attack_type": "Melee",
   "positions": [
     "Top",

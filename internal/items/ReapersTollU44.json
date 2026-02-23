@@ -77,7 +77,8 @@
     "omnivamp": {
       "flat": 0.0,
       "percent": 0.0
-    }
+    },
+    "adaptiveForce": 40.0
   },
   "builds_from_riot_ids": [],
   "builds_into_riot_ids": [],

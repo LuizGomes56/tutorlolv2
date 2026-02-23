@@ -426,11 +426,9 @@ impl ItemId {
     pub const ITEMS_WITH_BASE_MANA_REGEN: [Self; Self::count_variants(StatName::BaseManaRegen)] =
         Self::find_variants(StatName::BaseManaRegen);
     pub const ITEMS_WITH_CRITICAL_STRIKE_CHANCE: [Self;
-        Self::count_variants(StatName::CriticalStrikeChance)] =
-        Self::find_variants(StatName::CriticalStrikeChance);
+        Self::count_variants(StatName::CritChance)] = Self::find_variants(StatName::CritChance);
     pub const ITEMS_WITH_CRITICAL_STRIKE_DAMAGE: [Self;
-        Self::count_variants(StatName::CriticalStrikeDamage)] =
-        Self::find_variants(StatName::CriticalStrikeDamage);
+        Self::count_variants(StatName::CritDamage)] = Self::find_variants(StatName::CritDamage);
     pub const ITEMS_WITH_GOLD_PER10_SECONDS: [Self;
         Self::count_variants(StatName::GoldPer10Seconds)] =
         Self::find_variants(StatName::GoldPer10Seconds);
@@ -648,17 +646,18 @@ impl_methods!(
 
 pub const ZEROED_STATS: CachedItemStats = CachedItemStats {
     ability_power: 0.0,
+    adaptive_force: 0.0,
     armor: 0.0,
-    armor_penetration_percent: 0.0,
     armor_penetration_flat: 0.0,
-    magic_penetration_percent: 0.0,
-    magic_penetration_flat: 0.0,
+    armor_penetration_percent: 0.0,
     attack_damage: 0.0,
     attack_speed: 0.0,
     crit_chance: 0.0,
     crit_damage: 0.0,
     health: 0.0,
     lifesteal: 0.0,
+    magic_penetration_flat: 0.0,
+    magic_penetration_percent: 0.0,
     magic_resist: 0.0,
     mana: 0.0,
     movespeed: 0.0,

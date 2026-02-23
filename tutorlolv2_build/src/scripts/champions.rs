@@ -237,7 +237,7 @@ pub fn generate_champions() -> GeneratorFn {
         let champion_id_upper = champion_id.to_uppercase();
 
         let Champion {
-            adaptative_type,
+            adaptive_type,
             attack_type,
             merge_data,
             abilities,
@@ -312,7 +312,7 @@ pub fn generate_champions() -> GeneratorFn {
         let base_declaration = format!(
             "pub static {champion_id_upper}: CachedChampion = CachedChampion {{
                 name: {name:?},
-                adaptative_type: AdaptativeType::{adaptative_type},
+                adaptive_type: AdaptiveType::{adaptive_type},
                 attack_type: AttackType::{attack_type},
                 positions: &[{positions}],"
         );

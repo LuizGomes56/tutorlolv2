@@ -290,7 +290,10 @@ fn pretiffy_items(data: &RiotCdnItem) -> MayFail<BTreeMap<StatName, u16>> {
     let json = result
         .into_iter()
         .map(|(stat, value)| {
-            let key = serde_json::from_str(&format!("{stat:?}")).unwrap();
+            let variant = format!("{stat:?}")
+                .replace("CriticalStrikeChance", "CritChance")
+                .replace("CriticalStrikeDamage", "CritDamage");
+            let key = serde_json::from_str(&variant).unwrap();
             (key, value)
         })
         .collect();

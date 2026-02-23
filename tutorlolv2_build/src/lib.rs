@@ -151,7 +151,7 @@ where
                 .unwrap();
 
             let json = serde_json::from_slice(&data)
-                .inspect_err(|e| eprintln!("Failed to deserialize for {path:?}: {e:?}"))
+                .inspect_err(|e| eprintln!("Failed to deserialize for T::{name:?} {path:?}: {e:?}"))
                 .unwrap();
 
             let result = f(name, json).unwrap();

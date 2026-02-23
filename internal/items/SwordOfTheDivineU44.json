@@ -10,7 +10,7 @@
   "damage_type": "Unknown",
   "prettified_stats": {
     "AdaptiveForce": 110,
-    "CriticalStrikeChance": 50
+    "CritChance": 50
   },
   "ranged": {
     "minimum_damage": "zero",
@@ -76,7 +76,8 @@
     "omnivamp": {
       "flat": 0.0,
       "percent": 0.0
-    }
+    },
+    "adaptiveForce": 110.0
   },
   "builds_from_riot_ids": [],
   "builds_into_riot_ids": [],

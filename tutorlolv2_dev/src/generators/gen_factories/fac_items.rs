@@ -34,6 +34,7 @@ impl ItemData {
     pub fn infer_stats_ifdef(&mut self) {
         let data = &mut self.current_data;
         let ItemStats {
+            adaptive_force,
             ability_power,
             armor,
             armor_penetration,
@@ -55,14 +56,14 @@ impl ItemData {
         for (s, value) in &data.prettified_stats {
             let v = *value;
             match s {
-                StatName::AdaptiveForce => { /* Unknown */ }
+                StatName::AdaptiveForce => *adaptive_force = v as _,
                 StatName::AbilityPower => assign(&mut ability_power.flat, v),
                 StatName::Armor => assign(&mut armor.flat, v),
                 StatName::ArmorPenetration => assign(&mut armor_penetration.percent, v),
                 StatName::AttackDamage => assign(&mut attack_damage.flat, v),
                 StatName::AttackSpeed => assign(&mut attack_speed.flat, v),
-                StatName::CriticalStrikeChance => assign(&mut critical_strike_chance.flat, v),
-                StatName::CriticalStrikeDamage => assign(&mut critical_strike_damage.flat, v),
+                StatName::CritChance => assign(&mut critical_strike_chance.flat, v),
+                StatName::CritDamage => assign(&mut critical_strike_damage.flat, v),
                 StatName::Health => assign(&mut health.flat, v),
                 StatName::Lethality => assign(&mut armor_penetration.flat, v),
                 StatName::LifeSteal => assign(&mut lifesteal.flat, v),

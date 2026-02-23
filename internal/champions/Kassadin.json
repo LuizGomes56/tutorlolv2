@@ -1,6 +1,6 @@
 {
   "name": "Kassadin",
-  "adaptative_type": "Magic",
+  "adaptive_type": "Magic",
   "attack_type": "Melee",
   "positions": [
     "Middle"

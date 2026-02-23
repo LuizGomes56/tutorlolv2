@@ -53,7 +53,7 @@ macro_rules! create_eval_struct {
 
 create_eval_struct!(
     ability_power,
-    adaptative_damage,
+    adaptive_damage,
     armor,
     armor_penetration_flat,
     armor_penetration_percent,

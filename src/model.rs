@@ -110,7 +110,7 @@ pub struct CurrentPlayer<'a> {
     pub current_stats: Stats<i32>,
     pub level: u8,
     pub team: Team,
-    pub adaptative_type: AdaptativeType,
+    pub adaptive_type: AdaptiveType,
     pub position: Position,
     pub champion_id: ChampionId,
     pub game_map: GameMap,
@@ -141,7 +141,7 @@ pub struct SelfState {
     pub bonus_stats: BasicStats<f32>,
     pub base_stats: BasicStats<f32>,
     pub level: u8,
-    pub adaptative_type: AdaptativeType,
+    pub adaptive_type: AdaptiveType,
     // _padding: u16
 }
 
@@ -499,7 +499,7 @@ pub struct OutputCurrentPlayer {
     pub base_stats: BasicStats<i32>,
     pub bonus_stats: BasicStats<i32>,
     pub level: u8,
-    pub adaptative_type: AdaptativeType,
+    pub adaptive_type: AdaptiveType,
     pub champion_id: ChampionId,
 }
 
@@ -706,29 +706,29 @@ impl RiotFormulas {
         (base * mult) as _
     }
 
-    /// Returns the adaptative type of the current player, given its bonus attack_damage
+    /// Returns the adaptive type of the current player, given its bonus attack_damage
     /// and ability_power. If they tie, it will return `None`, wich should be unwraped to
-    /// the default adaptative type of the current champion.
+    /// the default adaptive type of the current champion.
     /// ```rs
-    /// let adaptative_type = RiotFormulas::adaptative_type(
+    /// let adaptive_type = RiotFormulas::adaptive_type(
     ///     current_player_bonus_stats.attack_damage,
     ///     champion_stats.ability_power,
     /// )
-    /// .unwrap_or(current_player_cache.adaptative_type);
+    /// .unwrap_or(current_player_cache.adaptive_type);
     /// ```
-    pub const fn adaptative_type(
+    pub const fn adaptive_type(
         bonus_attack_damage: f32,
         ability_power: f32,
-    ) -> Option<AdaptativeType> {
+    ) -> Option<AdaptiveType> {
         let lhs = 0.35 * bonus_attack_damage;
         let rhs = 0.2 * ability_power;
 
         if lhs == rhs {
             None
         } else if lhs > rhs {
-            Some(AdaptativeType::Physical)
+            Some(AdaptiveType::Physical)
         } else {
-            Some(AdaptativeType::Magic)
+            Some(AdaptiveType::Magic)
         }
     }
 }

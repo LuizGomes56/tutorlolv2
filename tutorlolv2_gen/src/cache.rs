@@ -40,20 +40,20 @@ impl FromStr for AttackType {
     }
 }
 
-impl FromStr for AdaptativeType {
+impl FromStr for AdaptiveType {
     type Err = &'static str;
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match s {
-            "MAGIC_DAMAGE" => Ok(AdaptativeType::Magic),
-            "PHYSICAL_DAMAGE" => Ok(AdaptativeType::Physical),
-            _ => Err("No matches when calling AdaptativeType::from_str"),
+            "MAGIC_DAMAGE" => Ok(AdaptiveType::Magic),
+            "PHYSICAL_DAMAGE" => Ok(AdaptiveType::Physical),
+            _ => Err("No matches when calling AdaptiveType::from_str"),
         }
     }
 }
 
-/// Enum that holds the current adaptative type of some champion, which
+/// Enum that holds the current adaptive type of some champion, which
 /// can be either physical or magic. It is mainly used to determine if runes
-/// should deal physical or magic damage, or to convert `Adaptative Force`
+/// should deal physical or magic damage, or to convert `Adaptive Force`
 /// stats to either `Attack Damage` or `Ability Power`. Check the enum [`StatName`]
 /// for more details about all the possibilities
 #[derive(
@@ -72,7 +72,7 @@ impl FromStr for AdaptativeType {
     Deserialize,
 )]
 #[repr(u8)]
-pub enum AdaptativeType {
+pub enum AdaptiveType {
     #[default]
     Physical,
     Magic,
@@ -263,12 +263,12 @@ pub struct CachedChampion {
     /// of the current champion by using the `phf map` [`crate::CHAMPION_NAME_TO_ID`].
     pub name: &'static str,
 
-    /// The adaptative force is determined by the current ability power and
+    /// The adaptive force is determined by the current ability power and
     /// bonus damage. However, when they tie (`ability_power == bonus_damage`),
-    /// the adaptative force is determined by this pre-assigned value. This is
+    /// the adaptive force is determined by this pre-assigned value. This is
     /// very common to happen with tanks, who often do not build any items that
     /// give any ability power or bonus damage
-    pub adaptative_type: AdaptativeType,
+    pub adaptive_type: AdaptiveType,
 
     /// Determines if this champion attacks are considered melee or ranged
     pub attack_type: AttackType,
@@ -396,17 +396,18 @@ pub struct CachedRune {
 #[derive(Clone, Copy, Debug, PartialEq, PartialOrd, Encode, Serialize)]
 pub struct CachedItemStats {
     pub ability_power: f32,
+    pub adaptive_force: f32,
     pub armor: f32,
-    pub armor_penetration_percent: f32,
     pub armor_penetration_flat: f32,
-    pub magic_penetration_percent: f32,
-    pub magic_penetration_flat: f32,
+    pub armor_penetration_percent: f32,
     pub attack_damage: f32,
     pub attack_speed: f32,
     pub crit_chance: f32,
     pub crit_damage: f32,
     pub health: f32,
     pub lifesteal: f32,
+    pub magic_penetration_flat: f32,
+    pub magic_penetration_percent: f32,
     pub magic_resist: f32,
     pub mana: f32,
     pub movespeed: f32,

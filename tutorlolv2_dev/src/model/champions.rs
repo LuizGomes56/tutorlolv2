@@ -5,7 +5,7 @@ use std::{
     str::FromStr,
 };
 use tutorlolv2_gen::{
-    AbilityId, AdaptativeType, AttackType, Attrs, DamageType, DevMergeData, Position,
+    AbilityId, AdaptiveType, AttackType, Attrs, DamageType, DevMergeData, Position,
 };
 
 use crate::gen_factories::fac_champions::Key;
@@ -112,7 +112,7 @@ impl MerakiChampion {
     ) -> Champion {
         Champion {
             name: self.name,
-            adaptative_type: AdaptativeType::from_str(&self.adaptive_type).unwrap_or_default(),
+            adaptive_type: AdaptiveType::from_str(&self.adaptive_type).unwrap_or_default(),
             attack_type: AttackType::from_str(&self.attack_type).unwrap_or_default(),
             positions: self
                 .positions
@@ -137,7 +137,7 @@ pub struct Ability {
 #[derive(Serialize, Deserialize)]
 pub struct Champion {
     pub name: String,
-    pub adaptative_type: AdaptativeType,
+    pub adaptive_type: AdaptiveType,
     pub attack_type: AttackType,
     pub positions: BTreeSet<Position>,
     pub stats: MerakiChampionStats,

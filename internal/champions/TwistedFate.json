@@ -1,6 +1,6 @@
 {
   "name": "Twisted Fate",
-  "adaptative_type": "Magic",
+  "adaptive_type": "Magic",
   "attack_type": "Ranged",
   "positions": [
     "Top",

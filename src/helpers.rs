@@ -527,7 +527,7 @@ pub const fn get_eval_ctx(self_state: &SelfState, e_state: &EnemyFullState) -> C
                 max_mana: base_mana,
             },
         level,
-        adaptative_type,
+        adaptive_type,
     } = *self_state;
     let EnemyFullState {
         current_stats:
@@ -594,9 +594,9 @@ pub const fn get_eval_ctx(self_state: &SelfState, e_state: &EnemyFullState) -> C
         missing_health: RiotFormulas::missing_health(current_health, max_health),
         ability_power,
         attack_damage,
-        adaptative_damage: match adaptative_type {
-            AdaptativeType::Physical => armor_values.modifier,
-            AdaptativeType::Magic => magic_values.modifier,
+        adaptive_damage: match adaptive_type {
+            AdaptiveType::Physical => armor_values.modifier,
+            AdaptiveType::Magic => magic_values.modifier,
         },
         steelcaps_effect: match steelcaps {
             true => RiotFormulas::STEEL_CAPS_PROTECTION,
@@ -860,7 +860,7 @@ pub fn get_monster_damages(
 /// The array has 6 ([`L_TWRD`]) elements because a tower can have zero,
 /// or up to 5 plates
 pub const fn get_tower_damages(
-    adaptative_type: AdaptativeType,
+    adaptive_type: AdaptiveType,
     base_attack_damage: f32,
     bonus_attack_damage: f32,
     ability_power: f32,
@@ -870,12 +870,12 @@ pub const fn get_tower_damages(
     let tower_ptr = tower_damages.as_mut_ptr();
     let mut i = 0;
 
-    let (pen_percent, pen_flat) = match adaptative_type {
-        AdaptativeType::Physical => (
+    let (pen_percent, pen_flat) = match adaptive_type {
+        AdaptiveType::Physical => (
             shred.armor_penetration_percent,
             shred.armor_penetration_flat,
         ),
-        AdaptativeType::Magic => (
+        AdaptiveType::Magic => (
             shred.magic_penetration_percent,
             shred.magic_penetration_flat,
         ),

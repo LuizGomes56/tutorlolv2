@@ -1,6 +1,6 @@
 {
   "name": "Taric",
-  "adaptative_type": "Physical",
+  "adaptive_type": "Physical",
   "attack_type": "Melee",
   "positions": [
     "Middle",

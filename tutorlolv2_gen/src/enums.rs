@@ -34,7 +34,7 @@ const_enum! {
     /// same hit.
     /// - [`DamageType::True`] Damages of this type are not affected by armor or magic resistence,
     /// their values are in general irreducible.
-    /// - [`DamageType::Adaptative`] Damages of this type will vary into the [`DamageType::Physical`]
+    /// - [`DamageType::Adaptive`] Damages of this type will vary into the [`DamageType::Physical`]
     /// or [`DamageType::Magic`] depending on how much bonus armor or ability power the current player
     /// has.
     /// - [`DamageType::Unknown`] is the default value when no damage type is set
@@ -46,7 +46,7 @@ const_enum! {
         Magic,
         Mixed,
         True,
-        Adaptative,
+        Adaptive,
         #[default]
         Unknown,
     }
@@ -82,7 +82,7 @@ impl FromStr for DamageType {
             "MAGIC_DAMAGE" => Ok(DamageType::Magic),
             "MIXED_DAMAGE" => Ok(DamageType::Mixed),
             "TRUE_DAMAGE" => Ok(DamageType::True),
-            "ADAPTATIVE_DAMAGE" => Ok(DamageType::Adaptative),
+            "ADAPTIVE_DAMAGE" => Ok(DamageType::Adaptive),
             _ => Ok(DamageType::Unknown),
         }
     }

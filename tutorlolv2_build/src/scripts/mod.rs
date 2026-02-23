@@ -30,14 +30,14 @@ impl Generator<ItemData> for Item {
 }"#;
 
 pub const TOWER_DAMAGE: &str = r#"const intrinsic TOWER_DAMAGE {
-    damage_type: RiotFormulas::adaptative_type(
+    damage_type: RiotFormulas::adaptive_type(
         bonus_stats.attack_damage,
         current_stats.ability_power,
     ),
     definition: const fn get_tower_damages(
-        AdaptativeType, 
-        f32, f32, f32, 
-        ResistShred
+        AdaptiveType, 
+        ResistShred, 
+        ...f32
     ) -> [i32; L_TWRD]
 }"#;
 

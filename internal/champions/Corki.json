@@ -1,6 +1,6 @@
 {
   "name": "Corki",
-  "adaptative_type": "Physical",
+  "adaptive_type": "Physical",
   "attack_type": "Ranged",
   "positions": [
     "Middle"

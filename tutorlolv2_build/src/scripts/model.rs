@@ -55,7 +55,7 @@ pub struct Ability {
 #[derive(Deserialize)]
 pub struct Champion {
     pub name: String,
-    pub adaptative_type: String,
+    pub adaptive_type: String,
     pub attack_type: String,
     pub positions: BTreeSet<String>,
     pub stats: MerakiChampionStats,
@@ -90,6 +90,7 @@ pub struct ItemStats {
     pub mana: MerakiItemStatMap,
     pub movespeed: MerakiItemStatMap,
     pub omnivamp: MerakiItemStatMap,
+    pub adaptive_force: f64,
 }
 
 #[derive(Deserialize)]

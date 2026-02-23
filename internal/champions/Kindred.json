@@ -1,6 +1,6 @@
 {
   "name": "Kindred",
-  "adaptative_type": "Physical",
+  "adaptive_type": "Physical",
   "attack_type": "Ranged",
   "positions": [
     "Jungle"

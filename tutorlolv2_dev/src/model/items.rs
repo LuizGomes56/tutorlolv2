@@ -34,6 +34,8 @@ pub struct ItemStats {
     pub mana: MerakiItemStatsMap,
     pub movespeed: MerakiItemStatsMap,
     pub omnivamp: MerakiItemStatsMap,
+    #[serde(default)]
+    pub adaptive_force: f64,
 }
 
 #[derive(Serialize, Deserialize)]
