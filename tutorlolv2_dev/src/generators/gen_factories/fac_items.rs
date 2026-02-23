@@ -170,8 +170,8 @@ pub struct ItemFactory;
 
 impl ItemFactory {
     pub const GENERATOR_FOLDER: &str = "tutorlolv2_dev/src/generators/gen_items";
-    pub const GENERATOR_FUNCTIONS: [fn(ItemData) -> Box<dyn Generator<ItemData>>; 694] =
-        tutorlolv2_macros::expand_dir!("../internal/items", |[Name]| Name::new);
+    pub const GENERATOR_FUNCTIONS: [fn(ItemData) -> Box<dyn Generator<ItemData>>;
+        ItemId::VARIANTS] = tutorlolv2_macros::expand_dir!("../internal/items", |[Name]| Name::new);
 
     /// Runs all item generators, stopping the execution if one of them fails
     pub fn run_all() -> MayFail {
