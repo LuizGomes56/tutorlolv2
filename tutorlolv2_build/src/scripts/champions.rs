@@ -7,25 +7,20 @@ use crate::{
     },
 };
 use rayon::iter::{IntoParallelIterator, ParallelIterator};
-use std::{
-    cmp::Ordering,
-    collections::{BTreeMap, BTreeSet},
-};
+use std::collections::{BTreeMap, BTreeSet};
 use tutorlolv2_types::{AbilityId, DevMergeData};
 
 struct DeclaredAbility {
-    ability_id: AbilityId,
-    declaration: String,
+    data: AbilityData,
     metadata: String,
     constfn: ConstFn,
-    html_damage: String,
     idents: BTreeSet<String>,
 }
 
 fn declare_abilities(
     champion_id_upper: &str,
     abilities: Vec<(AbilityId, Ability)>,
-) -> Vec<DeclaredAbility> {
+) -> BTreeMap<AbilityId, DeclaredAbility> {
     abilities
         .into_par_iter()
         .map(|(ability_id, ability)| {
@@ -87,11 +82,7 @@ fn declare_abilities(
                 }
             };
 
-            let discriminant = format!(
-                "{letter}_{ability_name}",
-                ability_name = format!("{:?}", ability_id.ability_name()).trim_start_matches('_')
-            )
-            .to_uppercase();
+            let discriminant = ability_id.discriminant().to_uppercase();
 
             let constfn_name = format!(
                 "{champion_id}_{discriminant}",
@@ -106,21 +97,8 @@ fn declare_abilities(
 
             let idents = damage.get_idents(&damage_type);
 
-            let damage_type = format_args!("DamageType::{damage_type}");
-            let attributes = format_args!("Attrs::{attributes:?}");
-
-            let declaration = format!(
-                "static {champion_id_upper}_{discriminant}: Ability = Ability {{
-                    name: {name:?},
-                    damage_type: {damage_type},
-                    attributes: {attributes},
-                    damage: {damage},
-                }};"
-            );
-
-            if declaration.is_empty() {
-                panic!("[{champion_id_upper}] Empty declaration for {ability_id:?}");
-            }
+            let damage_type = format!("DamageType::{damage_type}");
+            let attributes = format!("Attrs::{attributes:?}");
 
             let metadata = format!(
                 "TypeMetadata {{ 
@@ -130,18 +108,24 @@ fn declare_abilities(
                 }}"
             );
 
-            DeclaredAbility {
+            (
                 ability_id,
-                declaration,
-                metadata,
-                constfn: ConstFn {
-                    ability_id: ability_id.as_literal(),
-                    declaration: constfn_declaration,
-                    name: constfn_name,
+                DeclaredAbility {
+                    data: AbilityData {
+                        name,
+                        damage_type,
+                        attributes,
+                        damage: damage.replace(" as u8", ""),
+                    },
+                    metadata,
+                    constfn: ConstFn {
+                        ability_id: ability_id.as_literal(),
+                        declaration: constfn_declaration,
+                        name: constfn_name,
+                    },
+                    idents,
                 },
-                html_damage: damage.replace(" as u8", ""),
-                idents,
-            }
+            )
         })
         .collect()
 }
@@ -193,10 +177,10 @@ fn get_stats(stats: &MerakiChampionStats) -> String {
     all_stats.join(",")
 }
 
-fn define_merge_indexes(merge_data: BTreeSet<DevMergeData>, ability_data: &[AbilityId]) -> String {
+fn define_merge_indexes(merge_data: &BTreeSet<DevMergeData>, ability_data: &[AbilityId]) -> String {
     let mut index = BTreeMap::new();
-    for (i, ability_id) in ability_data.iter().enumerate() {
-        index.entry(*ability_id).or_insert(i);
+    for (i, &ability_id) in ability_data.iter().enumerate() {
+        index.entry(ability_id).or_insert(i);
     }
 
     merge_data
@@ -222,49 +206,30 @@ fn define_merge_indexes(merge_data: BTreeSet<DevMergeData>, ability_data: &[Abil
         .join(",")
 }
 
-fn sort_abilities(data: &mut [DeclaredAbility]) {
-    let priority = |ability_id: AbilityId| match ability_id.as_char() {
-        'P' => 0,
-        'Q' => 1,
-        'W' => 2,
-        'E' => 3,
-        'R' => 4,
-        _ => 5,
-    };
-
-    data.sort_by(|a, b| {
-        let a_id = a.ability_id;
-        let b_id = b.ability_id;
-        let a_priority = priority(a_id);
-        let b_priority = priority(b_id);
-        let a_ord = a_priority.cmp(&b_priority);
-        if a_ord != Ordering::Equal {
-            return a_ord;
-        }
-        let b_ord = a_id.cmp(&b_id);
-        if b_ord != Ordering::Equal {
-            return b_ord;
-        }
-        a.metadata.cmp(&b.metadata)
-    });
-}
-
 struct ConstFn {
     ability_id: String,
     declaration: String,
     name: String,
 }
 
+struct AbilityData {
+    name: String,
+    damage_type: String,
+    attributes: String,
+    damage: String,
+}
+
 struct ChampionResult {
     champion_id_upper: String,
     base_declaration: String,
-    ability_declarations: Vec<(AbilityId, String)>,
+    ability_declarations: BTreeMap<AbilityId, AbilityData>,
     generator: String,
     html_declaration: String,
     const_match_kind: String,
     ability_idents_index: String,
     ability_idents: String,
     damage_def: Vec<(AbilityId, String)>,
+    merge_data: BTreeSet<DevMergeData>,
 }
 
 pub fn generate_champions() -> GeneratorFn {
@@ -281,9 +246,7 @@ pub fn generate_champions() -> GeneratorFn {
             name,
         } = champion;
 
-        let mut abilities = declare_abilities(&champion_id_upper, abilities);
-
-        sort_abilities(&mut abilities);
+        let abilities = declare_abilities(&champion_id_upper, abilities);
 
         let len = abilities.len();
 
@@ -292,7 +255,7 @@ pub fn generate_champions() -> GeneratorFn {
         let mut closures = String::new();
         let mut ability_metadata = String::new();
         let mut ability_names = Vec::with_capacity(len);
-        let mut ability_declarations = Vec::with_capacity(len);
+        let mut ability_declarations = BTreeMap::new();
 
         let mut ability_idents_index = String::new();
         let mut ability_idents = String::new();
@@ -300,21 +263,22 @@ pub fn generate_champions() -> GeneratorFn {
 
         let mut damage_def = Vec::with_capacity(len);
 
-        for DeclaredAbility {
+        for (
             ability_id,
-            declaration,
-            metadata,
-            constfn,
-            html_damage,
-            idents,
-        } in abilities
+            DeclaredAbility {
+                data,
+                metadata,
+                constfn,
+                idents,
+            },
+        ) in abilities
         {
             let fn_name = &constfn.name;
             fn_names.push_str(&format!("{fn_name},"));
             ability_metadata.push_str(&format!("{metadata},"));
-            closures.push_str(&format!("{fn_name}: {html_damage},"));
+            closures.push_str(&format!("{fn_name}: {damage},", damage = data.damage));
             ability_names.push(ability_id);
-            ability_declarations.push((ability_id, declaration));
+            ability_declarations.insert(ability_id, data);
 
             let start = ability_index;
             ability_index += idents.len();
@@ -342,7 +306,7 @@ pub fn generate_champions() -> GeneratorFn {
             stats: CachedChampionStats {{{stats}}},
             merge_data: &[{merge_data}]",
             stats = get_stats(&stats),
-            merge_data = define_merge_indexes(merge_data, &ability_names),
+            merge_data = define_merge_indexes(&merge_data, &ability_names),
         );
 
         let base_declaration = format!(
@@ -405,6 +369,7 @@ pub fn generate_champions() -> GeneratorFn {
             champion_id_upper,
             base_declaration,
             html_declaration,
+            merge_data,
             damage_def,
             generator,
         })
@@ -490,6 +455,7 @@ fn build_champions(data: Vec<(String, ChampionResult)>) -> GeneratorFn {
             champion_id_upper,
             ability_idents,
             ability_idents_index,
+            merge_data,
             damage_def,
         },
     ) in data
@@ -534,9 +500,49 @@ fn build_champions(data: Vec<(String, ChampionResult)>) -> GeneratorFn {
 
         let ability_start = rustfmt_inputs.len();
         let mut ability_ids = Vec::with_capacity(ability_declarations.len());
-        for (ability_id, value) in ability_declarations {
+
+        let adecl = ability_declarations.into_iter().collect::<Vec<_>>();
+
+        for (ability_id, value) in adecl.iter() {
+            let ability_id = *ability_id;
             ability_ids.push(ability_id);
-            rustfmt_inputs.push(value);
+
+            let AbilityData {
+                name,
+                damage_type,
+                attributes,
+                damage,
+            } = value;
+
+            let (discriminant, damage) = match merge_data.iter().find(|merge| {
+                merge.maximum_damage == ability_id || merge.minimum_damage == ability_id
+            }) {
+                Some(merge) => {
+                    let find_damage = |id| &adecl.iter().find(|(a, _)| *a == id).unwrap().1.damage;
+                    let (min, max) = match merge.maximum_damage == ability_id {
+                        true => (find_damage(merge.minimum_damage), damage),
+                        false => (damage, find_damage(merge.maximum_damage)),
+                    };
+                    (
+                        merge.alias.discriminant(),
+                        format!("minimum_damage: {min}, maximum_damage: {max}"),
+                    )
+                }
+                None => (ability_id.discriminant(), format!("damage: {damage}")),
+            };
+
+            let discriminant_upper = discriminant.to_uppercase();
+
+            rustfmt_inputs.push(format!(
+                "static {champion_id_upper}_{discriminant_upper}: Ability = Ability {{
+                    name: {name:?},
+                    damage_type: {damage_type},
+                    attributes: {attributes},
+                    {damage},
+                }};"
+            ))
+
+            // rustfmt_inputs.push(value);
         }
 
         fmt_args.push(FmtArgs {

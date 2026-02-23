@@ -41,12 +41,17 @@ fn render() {
         .map(|item_id| source_code(&[item_id.generator().clone()]))
         .collect::<String>();
 
-    let abilities = ChampionId::VALUES
+    let ability_closures = ChampionId::VALUES
         .into_iter()
         .map(|champion_id| source_code(ABILITY_CLOSURES[champion_id.index()]))
         .collect::<String>();
     let items_closures = source_code(&ITEM_CLOSURES);
     let runes_closures = source_code(&RUNE_CLOSURES);
+
+    let abilities = ChampionId::VALUES
+        .into_iter()
+        .map(|champion_id| source_code(champion_id.ability_formulas()))
+        .collect::<String>();
 
     let data = [
         champions,
@@ -54,9 +59,10 @@ fn render() {
         runes,
         champion_gen,
         item_gen,
-        abilities,
+        ability_closures,
         items_closures,
         runes_closures,
+        abilities,
     ]
     .concat();
 

@@ -1,6 +1,8 @@
 #![no_std]
 mod ability_name;
 
+use core::fmt::Display;
+
 pub use ability_name::AbilityName;
 
 /// Enum that represents one ability of a champion, with a custom display name.
@@ -64,6 +66,21 @@ impl AbilityId {
             self.ability_name()
         )
     }
+
+    pub fn discriminant(&self) -> String {
+        let letter = self.as_char();
+        let ability_name = self.ability_name();
+        let mut result = String::from(letter);
+        match ability_name {
+            AbilityName::Void => {}
+            _ => result.push_str(&format!("{ability_name:?}").trim_start_matches('_')),
+        }
+        result
+        //  format!(
+        //         "{letter}_{ability_name}",
+        //         ability_name = format!("{:?}", ability_id.ability_name()).trim_start_matches('_')
+        //     )
+    }
 }
 
 /// A generic metadata holder that determines what buffs one item give
@@ -111,6 +128,36 @@ pub enum StatName {
 
 impl StatName {
     pub const VARIANTS: usize = 22;
+}
+
+impl Display for StatName {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+        let value = match self {
+            StatName::AbilityHaste => "Ability Haste",
+            StatName::AbilityPower => "Ability Power",
+            StatName::AdaptiveForce => "Adaptive Force",
+            StatName::Armor => "Armor",
+            StatName::ArmorPenetration => "Armor Penetration",
+            StatName::AttackDamage => "Attack Damage",
+            StatName::AttackSpeed => "Attack Speed",
+            StatName::BaseHealthRegen => "Base Health Regen",
+            StatName::BaseManaRegen => "Base Mana Regen",
+            StatName::CriticalStrikeChance => "Crit Chance",
+            StatName::CriticalStrikeDamage => "Crit Damage",
+            StatName::GoldPer10Seconds => "Gold / 10s",
+            StatName::HealAndShieldPower => "Heal & Shield Power",
+            StatName::Health => "Health",
+            StatName::Lethality => "Lethality",
+            StatName::LifeSteal => "Life Steal",
+            StatName::MagicPenetration => "Magic Penetration",
+            StatName::MagicResist => "Magic Resist",
+            StatName::Mana => "Mana",
+            StatName::MoveSpeed => "Move Speed",
+            StatName::Omnivamp => "Omnivamp",
+            StatName::Tenacity => "Tenacity",
+        };
+        write!(f, "{value}")
+    }
 }
 
 #[derive(

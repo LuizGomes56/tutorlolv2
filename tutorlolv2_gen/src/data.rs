@@ -928,178 +928,178 @@ pub mod champions {
         &[Q(_1), E(_1), R(_1)],
     ];
     pub static CHAMPION_FORMULAS: [Range<usize>; ChampionId::VARIANTS] = [
-        (515792..537870),
-        (562220..576746),
-        (590311..604469),
-        (618051..634064),
-        (649937..658765),
-        (664928..677474),
-        (690233..699050),
-        (705789..717227),
-        (728146..736512),
-        (742742..747785),
-        (748960..757554),
-        (763846..778348),
-        (793835..805356),
-        (816261..827305),
-        (839039..844314),
-        (845876..863505),
-        (883334..891016),
-        (896279..906875),
-        (916218..923440),
-        (927721..939884),
-        (952100..962000),
-        (970606..982807),
-        (994719..1008793),
-        (1024929..1038399),
-        (1052795..1064686),
-        (1076295..1087089),
-        (1096996..1108546),
-        (1119479..1127753),
-        (1133598..1142936),
-        (1150119..1159595),
-        (1167360..1174915),
-        (1179912..1194585),
-        (1210389..1219528),
-        (1227152..1243640),
-        (1262322..1269798),
-        (1274495..1287982),
-        (1302010..1315504),
-        (1329491..1342993),
-        (1356873..1366781),
-        (1375301..1387393),
-        (1399156..1412035),
-        (1424876..1435797),
-        (1445907..1466410),
-        (1491437..1502965),
-        (1513871..1530459),
-        (1550755..1559158),
-        (1565271..1574824),
-        (1582445..1592243),
-        (1600426..1608799),
-        (1615014..1624542),
-        (1632568..1639990),
-        (1644669..1655475),
-        (1665302..1674870),
-        (1682646..1699568),
-        (1718943..1730756),
-        (1742626..1746925),
-        (1746925..1752088),
-        (1753319..1759600),
-        (1762411..1768253),
-        (1770766..1778020),
-        (1782374..1789868),
-        (1794788..1801272),
-        (1804642..1812116),
-        (1816782..1825027),
-        (1830906..1838266),
-        (1842955..1848279),
-        (1849862..1858330),
-        (1864411..1869690),
-        (1871246..1877950),
-        (1881705..1899025),
-        (1918795..1927609),
-        (1934493..1943771),
-        (1951238..1963764),
-        (1976308..1984697),
-        (1990956..1999619),
-        (2006212..2017657),
-        (2028593..2036057),
-        (2040745..2050781),
-        (2059322..2079806),
-        (2107549..2123421),
-        (2141332..2155616),
-        (2170114..2187858),
-        (2208366..2213630),
-        (2215194..2225487),
-        (2234823..2245874),
-        (2255909..2266519),
-        (2277716..2289295),
-        (2300275..2318061),
-        (2338262..2348668),
-        (2358009..2368931),
-        (2379037..2392533),
-        (2406574..2417557),
-        (2426930..2437988),
-        (2449296..2460881),
-        (2471778..2481128),
-        (2488615..2504241),
-        (2521465..2530775),
-        (2538123..2547552),
-        (2555407..2569627),
-        (2584327..2600304),
-        (2617623..2632514),
-        (2648241..2654631),
-        (2657728..2668456),
-        (2678186..2685814),
-        (2690771..2698095),
-        (2702702..2710088),
-        (2714764..2725465),
-        (2735155..2744764),
-        (2752943..2759281),
-        (2762399..2778467),
-        (2796233..2803918),
-        (2808896..2816689),
-        (2822078..2855693),
-        (2902231..2910867),
-        (2917488..2929949),
-        (2942122..2954068),
-        (2965829..2973466),
-        (2978306..2987859),
-        (2995717..3008024),
-        (3020758..3036452),
-        (3053588..3078759),
-        (3116473..3130322),
-        (3146465..3155163),
-        (3162036..3178861),
-        (3198064..3210177),
-        (3222071..3233770),
-        (3244578..3258993),
-        (3274059..3283082),
-        (3290887..3298235),
-        (3302897..3314518),
-        (3325433..3335949),
-        (3345273..3358146),
-        (3371441..3378723),
-        (3382769..3394318),
-        (3405273..3416823),
-        (3427650..3433168),
-        (3434962..3448538),
-        (3462313..3471854),
-        (3479861..3492311),
-        (3504732..3516034),
-        (3526298..3534522),
-        (3540055..3550318),
-        (3559367..3568994),
-        (3576615..3586573),
-        (3595105..3603663),
-        (3610055..3629504),
-        (3652971..3665459),
-        (3677281..3686567),
-        (3694348..3705976),
-        (3716981..3727556),
-        (3737254..3747089),
-        (3755487..3765070),
-        (3773008..3786776),
-        (3801335..3813176),
-        (3824639..3834854),
-        (3843854..3852661),
-        (3859341..3870916),
-        (3881789..3893578),
-        (3904979..3918080),
-        (3931457..3942655),
-        (3953003..3966042),
-        (3979038..3987672),
-        (3994298..4007859),
-        (4021904..4032304),
-        (4041675..4056097),
-        (4071604..4084763),
-        (4098093..4106780),
-        (4113168..4124294),
-        (4134805..4147167),
-        (4159666..4164943),
-        (4166498..4183346),
-        (4205344..4212703),
+        (515792..537855),
+        (570145..584659),
+        (601406..615548),
+        (630965..646962),
+        (667203..676019),
+        (683033..695572),
+        (708317..717114),
+        (723813..735244),
+        (746149..754511),
+        (760733..765775),
+        (766948..775538),
+        (781822..796314),
+        (811781..823295),
+        (834186..845226),
+        (856886..862156),
+        (863708..881324),
+        (901127..908806),
+        (914063..924653),
+        (933984..941203),
+        (945478..957634),
+        (969836..979731),
+        (988327..1000521),
+        (1012419..1026478),
+        (1042534..1055996),
+        (1070376..1082260),
+        (1093855..1104643),
+        (1114538..1126081),
+        (1137000..1145270),
+        (1151107..1160440),
+        (1167613..1177084),
+        (1184839..1192391),
+        (1197382..1212045),
+        (1227829..1236948),
+        (1244532..1261009),
+        (1279669..1287056),
+        (1291747..1305225),
+        (1319235..1332721),
+        (1346692..1360185),
+        (1374047..1383950),
+        (1392460..1404545),
+        (1416294..1429165),
+        (1441990..1452905),
+        (1463003..1483493),
+        (1508494..1520015),
+        (1530907..1547383),
+        (1567135..1575534),
+        (1581639..1591187),
+        (1598798..1608591),
+        (1616764..1625133),
+        (1631340..1640863),
+        (1648879..1656298),
+        (1660971..1671771),
+        (1681586..1691149),
+        (1698915..1715826),
+        (1735179..1746986),
+        (1758844..1763143),
+        (1763143..1768219),
+        (1769448..1775727),
+        (1778534..1784375),
+        (1786820..1794071),
+        (1798419..1805910),
+        (1810824..1817306),
+        (1820672..1828143),
+        (1832803..1841044),
+        (1846915..1854272),
+        (1858955..1864278),
+        (1865859..1874323),
+        (1880396..1885674),
+        (1887228..1893930),
+        (1897681..1914988),
+        (1934732..1943542),
+        (1950418..1959605),
+        (1967062..1979580),
+        (1992108..2000493),
+        (2006744..2015403),
+        (2021988..2033426),
+        (2044348..2051809),
+        (2056491..2066522),
+        (2075053..2095528),
+        (2123121..2138983),
+        (2156874..2171148),
+        (2185626..2203357),
+        (2223839..2229102),
+        (2230664..2240952),
+        (2250278..2261323),
+        (2271346..2281953),
+        (2293078..2304650),
+        (2315616..2333389),
+        (2353564..2363964),
+        (2373293..2384209),
+        (2394303..2407790),
+        (2421813..2432778),
+        (2442993..2454046),
+        (2465080..2476658),
+        (2487541..2496886),
+        (2504363..2519978),
+        (2537180..2546485),
+        (2553823..2563247),
+        (2571092..2585216),
+        (2599896..2615863),
+        (2633162..2648043),
+        (2663750..2670138),
+        (2673231..2683953),
+        (2693671..2701210),
+        (2706161..2713482),
+        (2718083..2725466),
+        (2730136..2740831),
+        (2750509..2760113),
+        (2768282..2774618),
+        (2777732..2793789),
+        (2811533..2819215),
+        (2824187..2831977),
+        (2837360..2870952),
+        (2917444..2926076),
+        (2932689..2945142),
+        (2957299..2969238),
+        (2980985..2988619),
+        (2993453..3003001),
+        (3010849..3023150),
+        (3035872..3051555),
+        (3068669..3093834),
+        (3131272..3145115),
+        (3161180..3169874),
+        (3176739..3193553),
+        (3212734..3224840),
+        (3236720..3248412),
+        (3259206..3273612),
+        (3288660..3297593),
+        (3305258..3312603),
+        (3317259..3328873),
+        (3339774..3350284),
+        (3359596..3372461),
+        (3385740..3393019),
+        (3397059..3408601),
+        (3419542..3431085),
+        (3441898..3447415),
+        (3449207..3462774),
+        (3476531..3486067),
+        (3494064..3506507),
+        (3518914..3530210),
+        (3540462..3548682),
+        (3554207..3564465),
+        (3573504..3583126),
+        (3590737..3600690),
+        (3609212..3617766),
+        (3624150..3643586),
+        (3667027..3679507),
+        (3691313..3700595),
+        (3708368..3719989),
+        (3730980..3741549),
+        (3751235..3761065),
+        (3769453..3778945),
+        (3786873..3800632),
+        (3815173..3827007),
+        (3838456..3848666),
+        (3857656..3866459),
+        (3873131..3884699),
+        (3895558..3907340),
+        (3918727..3931820),
+        (3945181..3956373),
+        (3966709..3979740),
+        (3992720..4001350),
+        (4007968..4021520),
+        (4035547..4045941),
+        (4055300..4069713),
+        (4085202..4098353),
+        (4111667..4120350),
+        (4126730..4137850),
+        (4148349..4160704),
+        (4173189..4178465),
+        (4180018..4196859),
+        (4218711..4226067),
     ];
     pub static AATROX: CachedChampion = CachedChampion {
         name: "Aatrox",
@@ -1107,17 +1107,17 @@ pub mod champions {
         attack_type: AttackType::Melee,
         positions: &[Position::Top],
         closures: &[
-            aatrox_p_void,
-            aatrox_q_min,
-            aatrox_q_1min,
-            aatrox_q_2min,
-            aatrox_q_3min,
-            aatrox_q_max,
-            aatrox_q_1max,
-            aatrox_q_2max,
-            aatrox_q_3max,
-            aatrox_w_min,
-            aatrox_w_max,
+            aatrox_p,
+            aatrox_qmin,
+            aatrox_q1min,
+            aatrox_q2min,
+            aatrox_q3min,
+            aatrox_qmax,
+            aatrox_q1max,
+            aatrox_q2max,
+            aatrox_q3max,
+            aatrox_wmin,
+            aatrox_wmax,
         ],
         metadata: &[
             TypeMetadata {
@@ -1239,10 +1239,10 @@ pub mod champions {
             },
         ],
     };
-    pub const fn aatrox_p_void(ctx: &Ctx) -> f32 {
+    pub const fn aatrox_p(ctx: &Ctx) -> f32 {
         (0.037647 + 0.002 * ctx.level) * ctx.enemy_bonus_health
     }
-    pub const fn aatrox_q_min(ctx: &Ctx) -> f32 {
+    pub const fn aatrox_qmin(ctx: &Ctx) -> f32 {
         -5.0 + 15.0 * ctx.q_level
             + (0.525 + 0.075 * ctx.q_level) * ctx.attack_damage
             + -6.25
@@ -1252,16 +1252,16 @@ pub mod champions {
             + 22.5 * ctx.q_level
             + (0.787 + 0.112 * ctx.q_level) * ctx.attack_damage
     }
-    pub const fn aatrox_q_1min(ctx: &Ctx) -> f32 {
+    pub const fn aatrox_q1min(ctx: &Ctx) -> f32 {
         -5.0 + 15.0 * ctx.q_level + (0.525 + 0.075 * ctx.q_level) * ctx.attack_damage
     }
-    pub const fn aatrox_q_2min(ctx: &Ctx) -> f32 {
+    pub const fn aatrox_q2min(ctx: &Ctx) -> f32 {
         -6.25 + 18.75 * ctx.q_level + (0.65625 + 0.0937 * ctx.q_level) * ctx.attack_damage
     }
-    pub const fn aatrox_q_3min(ctx: &Ctx) -> f32 {
+    pub const fn aatrox_q3min(ctx: &Ctx) -> f32 {
         -7.5 + 22.5 * ctx.q_level + (0.787 + 0.112 * ctx.q_level) * ctx.attack_damage
     }
-    pub const fn aatrox_q_max(ctx: &Ctx) -> f32 {
+    pub const fn aatrox_qmax(ctx: &Ctx) -> f32 {
         -8.5 + 25.5 * ctx.q_level
             + (0.892 + 0.127 * ctx.q_level) * ctx.attack_damage
             + -10.625
@@ -1271,19 +1271,19 @@ pub mod champions {
             + 38.25 * ctx.q_level
             + (1.3387 + 0.1912 * ctx.q_level) * ctx.attack_damage
     }
-    pub const fn aatrox_q_1max(ctx: &Ctx) -> f32 {
+    pub const fn aatrox_q1max(ctx: &Ctx) -> f32 {
         -8.5 + 25.5 * ctx.q_level + (0.892 + 0.127 * ctx.q_level) * ctx.attack_damage
     }
-    pub const fn aatrox_q_2max(ctx: &Ctx) -> f32 {
+    pub const fn aatrox_q2max(ctx: &Ctx) -> f32 {
         -10.625 + 31.875 * ctx.q_level + (1.115625 + 0.159375 * ctx.q_level) * ctx.attack_damage
     }
-    pub const fn aatrox_q_3max(ctx: &Ctx) -> f32 {
+    pub const fn aatrox_q3max(ctx: &Ctx) -> f32 {
         -12.75 + 38.25 * ctx.q_level + (1.3387 + 0.1912 * ctx.q_level) * ctx.attack_damage
     }
-    pub const fn aatrox_w_min(ctx: &Ctx) -> f32 {
+    pub const fn aatrox_wmin(ctx: &Ctx) -> f32 {
         20.0 + 10.0 * ctx.w_level + 0.4 * ctx.attack_damage
     }
-    pub const fn aatrox_w_max(ctx: &Ctx) -> f32 {
+    pub const fn aatrox_wmax(ctx: &Ctx) -> f32 {
         40.0 + 20.0 * ctx.w_level + 0.8 * ctx.attack_damage
     }
     pub static AHRI: CachedChampion = CachedChampion {
@@ -1292,14 +1292,7 @@ pub mod champions {
         attack_type: AttackType::Ranged,
         positions: &[Position::Middle],
         closures: &[
-            ahri_q_min,
-            ahri_q_max,
-            ahri_w_1,
-            ahri_w_min,
-            ahri_w_max,
-            ahri_e_void,
-            ahri_r_min,
-            ahri_r_max,
+            ahri_qmin, ahri_qmax, ahri_w1, ahri_wmin, ahri_wmax, ahri_e, ahri_rmin, ahri_rmax,
         ],
         metadata: &[
             TypeMetadata {
@@ -1396,31 +1389,31 @@ pub mod champions {
             },
         ],
     };
-    pub const fn ahri_q_min(ctx: &Ctx) -> f32 {
+    pub const fn ahri_qmin(ctx: &Ctx) -> f32 {
         15.0 + 25.0 * ctx.q_level + 0.5 * ctx.ability_power
     }
-    pub const fn ahri_q_max(ctx: &Ctx) -> f32 {
+    pub const fn ahri_qmax(ctx: &Ctx) -> f32 {
         (15.0 + 25.0 * ctx.q_level + 0.5 * ctx.ability_power) * ctx.magic_multiplier
             + 15.0
             + 25.0 * ctx.q_level
             + 0.5 * ctx.ability_power
     }
-    pub const fn ahri_w_1(ctx: &Ctx) -> f32 {
+    pub const fn ahri_w1(ctx: &Ctx) -> f32 {
         8.0 + 8.0 * ctx.w_level + 0.16 * ctx.ability_power
     }
-    pub const fn ahri_w_min(ctx: &Ctx) -> f32 {
+    pub const fn ahri_wmin(ctx: &Ctx) -> f32 {
         20.0 + 20.0 * ctx.w_level + 0.4 * ctx.ability_power
     }
-    pub const fn ahri_w_max(ctx: &Ctx) -> f32 {
+    pub const fn ahri_wmax(ctx: &Ctx) -> f32 {
         36.0 + 36.0 * ctx.w_level + 0.72 * ctx.ability_power
     }
-    pub const fn ahri_e_void(ctx: &Ctx) -> f32 {
+    pub const fn ahri_e(ctx: &Ctx) -> f32 {
         40.0 + 40.0 * ctx.e_level + 0.85 * ctx.ability_power
     }
-    pub const fn ahri_r_min(ctx: &Ctx) -> f32 {
+    pub const fn ahri_rmin(ctx: &Ctx) -> f32 {
         25.0 + 50.0 * ctx.r_level + 0.35 * ctx.ability_power
     }
-    pub const fn ahri_r_max(ctx: &Ctx) -> f32 {
+    pub const fn ahri_rmax(ctx: &Ctx) -> f32 {
         3.0 * (25.0 + 50.0 * ctx.r_level + 0.35 * ctx.ability_power)
     }
     pub static AKALI: CachedChampion = CachedChampion {
@@ -1429,14 +1422,14 @@ pub mod champions {
         attack_type: AttackType::Melee,
         positions: &[Position::Middle, Position::Top],
         closures: &[
-            akali_p_void,
-            akali_q_void,
-            akali_e_1min,
-            akali_e_max,
-            akali_e_1max,
-            akali_r_1,
-            akali_r_2min,
-            akali_r_2max,
+            akali_p,
+            akali_q,
+            akali_e1min,
+            akali_emax,
+            akali_e1max,
+            akali_r1,
+            akali_r2min,
+            akali_r2max,
         ],
         metadata: &[
             TypeMetadata {
@@ -1528,28 +1521,28 @@ pub mod champions {
             },
         ],
     };
-    pub const fn akali_p_void(ctx: &Ctx) -> f32 {
+    pub const fn akali_p(ctx: &Ctx) -> f32 {
         26.35294 + 8.64705 * ctx.level + 0.6 * ctx.bonus_ad + 0.55 * ctx.ability_power
     }
-    pub const fn akali_q_void(ctx: &Ctx) -> f32 {
+    pub const fn akali_q(ctx: &Ctx) -> f32 {
         20.0 + 25.0 * ctx.q_level + 0.65 * ctx.attack_damage + 0.6 * ctx.ability_power
     }
-    pub const fn akali_e_1min(ctx: &Ctx) -> f32 {
+    pub const fn akali_e1min(ctx: &Ctx) -> f32 {
         21.0 * ctx.e_level + 0.3 * ctx.attack_damage + 0.33 * ctx.ability_power
     }
-    pub const fn akali_e_max(ctx: &Ctx) -> f32 {
+    pub const fn akali_emax(ctx: &Ctx) -> f32 {
         70.0 * ctx.e_level + 1.0 * ctx.attack_damage + 1.1 * ctx.ability_power
     }
-    pub const fn akali_e_1max(ctx: &Ctx) -> f32 {
+    pub const fn akali_e1max(ctx: &Ctx) -> f32 {
         49.0 * ctx.e_level + 0.7 * ctx.attack_damage + 0.77 * ctx.ability_power
     }
-    pub const fn akali_r_1(ctx: &Ctx) -> f32 {
+    pub const fn akali_r1(ctx: &Ctx) -> f32 {
         110.0 * ctx.r_level + 0.5 * ctx.bonus_ad + 0.3 * ctx.ability_power
     }
-    pub const fn akali_r_2min(ctx: &Ctx) -> f32 {
+    pub const fn akali_r2min(ctx: &Ctx) -> f32 {
         210.0 * ctx.r_level + 0.9 * ctx.ability_power
     }
-    pub const fn akali_r_2max(ctx: &Ctx) -> f32 {
+    pub const fn akali_r2max(ctx: &Ctx) -> f32 {
         70.0 * ctx.r_level + 0.3 * ctx.ability_power
     }
     pub static AKSHAN: CachedChampion = CachedChampion {
@@ -1558,14 +1551,14 @@ pub mod champions {
         attack_type: AttackType::Ranged,
         positions: &[Position::Middle],
         closures: &[
-            akshan_p_void,
-            akshan_q_min,
-            akshan_q_max,
-            akshan_e_void,
-            akshan_r_1min,
-            akshan_r_2min,
-            akshan_r_1max,
-            akshan_r_2max,
+            akshan_p,
+            akshan_qmin,
+            akshan_qmax,
+            akshan_e,
+            akshan_r1min,
+            akshan_r2min,
+            akshan_r1max,
+            akshan_r2max,
         ],
         metadata: &[
             TypeMetadata {
@@ -1662,31 +1655,31 @@ pub mod champions {
             },
         ],
     };
-    pub const fn akshan_p_void(ctx: &Ctx) -> f32 {
+    pub const fn akshan_p(ctx: &Ctx) -> f32 {
         15.0 + 0.6 * ctx.ability_power
     }
-    pub const fn akshan_q_min(ctx: &Ctx) -> f32 {
+    pub const fn akshan_qmin(ctx: &Ctx) -> f32 {
         15.0 + 30.0 * ctx.q_level + 0.7 * ctx.bonus_ad
     }
-    pub const fn akshan_q_max(ctx: &Ctx) -> f32 {
+    pub const fn akshan_qmax(ctx: &Ctx) -> f32 {
         30.0 + 60.0 * ctx.q_level + 1.4 * ctx.bonus_ad
     }
-    pub const fn akshan_e_void(ctx: &Ctx) -> f32 {
+    pub const fn akshan_e(ctx: &Ctx) -> f32 {
         8.0 * ctx.e_level + 0.25 * ctx.attack_damage + 0.01 * ctx.attack_speed
     }
-    pub const fn akshan_r_1min(ctx: &Ctx) -> f32 {
+    pub const fn akshan_r1min(ctx: &Ctx) -> f32 {
         (15.0 + 10.0 * ctx.r_level + 0.15 * ctx.attack_damage)
             * (1.0 + 1.0 * ctx.crit_chance / 200.0)
     }
-    pub const fn akshan_r_2min(ctx: &Ctx) -> f32 {
+    pub const fn akshan_r2min(ctx: &Ctx) -> f32 {
         (40.0 + 85.0 * ctx.r_level + (0.6 + 0.15 * ctx.r_level) * ctx.attack_damage)
             * (1.0 + 1.0 * ctx.crit_chance / 200.0)
     }
-    pub const fn akshan_r_1max(ctx: &Ctx) -> f32 {
+    pub const fn akshan_r1max(ctx: &Ctx) -> f32 {
         (45.0 + 30.0 * ctx.r_level + 0.45 * ctx.attack_damage)
             * (1.0 + 1.0 * ctx.crit_chance / 200.0)
     }
-    pub const fn akshan_r_2max(ctx: &Ctx) -> f32 {
+    pub const fn akshan_r2max(ctx: &Ctx) -> f32 {
         (120.0 + 255.0 * ctx.r_level + (1.8 + 0.45 * ctx.r_level) * ctx.attack_damage)
             * (1.0 + 1.0 * ctx.crit_chance / 200.0)
     }
@@ -1695,7 +1688,7 @@ pub mod champions {
         adaptative_type: AdaptativeType::Magic,
         attack_type: AttackType::Melee,
         positions: &[Position::Support],
-        closures: &[alistar_q_void, alistar_w_void, alistar_e_min, alistar_e_max],
+        closures: &[alistar_q, alistar_w, alistar_emin, alistar_emax],
         metadata: &[
             TypeMetadata {
                 kind: Q(Void),
@@ -1759,16 +1752,16 @@ pub mod champions {
             alias: E(Void),
         }],
     };
-    pub const fn alistar_q_void(ctx: &Ctx) -> f32 {
+    pub const fn alistar_q(ctx: &Ctx) -> f32 {
         20.0 + 40.0 * ctx.q_level + 0.8 * ctx.ability_power
     }
-    pub const fn alistar_w_void(ctx: &Ctx) -> f32 {
+    pub const fn alistar_w(ctx: &Ctx) -> f32 {
         55.0 * ctx.w_level + 1.0 * ctx.ability_power
     }
-    pub const fn alistar_e_min(ctx: &Ctx) -> f32 {
+    pub const fn alistar_emin(ctx: &Ctx) -> f32 {
         5.0 + 3.0 * ctx.e_level + 0.07 * ctx.ability_power
     }
-    pub const fn alistar_e_max(ctx: &Ctx) -> f32 {
+    pub const fn alistar_emax(ctx: &Ctx) -> f32 {
         50.0 + 30.0 * ctx.e_level + 0.7 * ctx.ability_power
     }
     pub static AMBESSA: CachedChampion = CachedChampion {
@@ -1777,13 +1770,7 @@ pub mod champions {
         attack_type: AttackType::Melee,
         positions: &[Position::Top],
         closures: &[
-            ambessa_q_3,
-            ambessa_q_4,
-            ambessa_w_1,
-            ambessa_w_2,
-            ambessa_e_1,
-            ambessa_e_2,
-            ambessa_r_1,
+            ambessa_q3, ambessa_q4, ambessa_w1, ambessa_w2, ambessa_e1, ambessa_e2, ambessa_r1,
         ],
         metadata: &[
             TypeMetadata {
@@ -1859,31 +1846,31 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn ambessa_q_3(ctx: &Ctx) -> f32 {
+    pub const fn ambessa_q3(ctx: &Ctx) -> f32 {
         20.0 + 20.0 * ctx.q_level
             + 0.6 * ctx.bonus_ad
             + (0.01 + 0.01 * ctx.q_level) * ctx.enemy_max_health
             + 0.03 * 0.01 * ctx.bonus_ad
     }
-    pub const fn ambessa_q_4(ctx: &Ctx) -> f32 {
+    pub const fn ambessa_q4(ctx: &Ctx) -> f32 {
         10.0 + 10.0 * ctx.q_level
             + 0.3 * ctx.bonus_ad
             + (0.005 + 0.005 * ctx.q_level) * ctx.enemy_max_health
             + 0.015 * 0.01 * ctx.bonus_ad
     }
-    pub const fn ambessa_w_1(ctx: &Ctx) -> f32 {
+    pub const fn ambessa_w1(ctx: &Ctx) -> f32 {
         25.0 + 25.0 * ctx.w_level + 0.5 * ctx.bonus_ad
     }
-    pub const fn ambessa_w_2(ctx: &Ctx) -> f32 {
+    pub const fn ambessa_w2(ctx: &Ctx) -> f32 {
         37.5 + 37.5 * ctx.w_level + 0.75 * ctx.bonus_ad
     }
-    pub const fn ambessa_e_1(ctx: &Ctx) -> f32 {
+    pub const fn ambessa_e1(ctx: &Ctx) -> f32 {
         20.0 + 20.0 * ctx.e_level + 0.5 * ctx.bonus_ad
     }
-    pub const fn ambessa_e_2(ctx: &Ctx) -> f32 {
+    pub const fn ambessa_e2(ctx: &Ctx) -> f32 {
         40.0 + 40.0 * ctx.e_level + 1.0 * ctx.bonus_ad
     }
-    pub const fn ambessa_r_1(ctx: &Ctx) -> f32 {
+    pub const fn ambessa_r1(ctx: &Ctx) -> f32 {
         50.0 + 100.0 * ctx.r_level + 0.8 * ctx.bonus_ad
     }
     pub static AMUMU: CachedChampion = CachedChampion {
@@ -1891,7 +1878,7 @@ pub mod champions {
         adaptative_type: AdaptativeType::Magic,
         attack_type: AttackType::Melee,
         positions: &[Position::Jungle, Position::Support],
-        closures: &[amumu_q_void, amumu_w_void, amumu_e_void, amumu_r_void],
+        closures: &[amumu_q, amumu_w, amumu_e, amumu_r],
         metadata: &[
             TypeMetadata {
                 kind: Q(Void),
@@ -1951,17 +1938,17 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn amumu_q_void(ctx: &Ctx) -> f32 {
+    pub const fn amumu_q(ctx: &Ctx) -> f32 {
         45.0 + 25.0 * ctx.q_level + 0.85 * ctx.ability_power
     }
-    pub const fn amumu_w_void(ctx: &Ctx) -> f32 {
+    pub const fn amumu_w(ctx: &Ctx) -> f32 {
         5.0 + (0.0037 + 0.0012 * ctx.w_level) * ctx.enemy_max_health
             + 0.0025 * 0.01 * ctx.ability_power
     }
-    pub const fn amumu_e_void(ctx: &Ctx) -> f32 {
+    pub const fn amumu_e(ctx: &Ctx) -> f32 {
         35.0 + 30.0 * ctx.e_level + 0.5 * ctx.ability_power
     }
-    pub const fn amumu_r_void(ctx: &Ctx) -> f32 {
+    pub const fn amumu_r(ctx: &Ctx) -> f32 {
         100.0 + 100.0 * ctx.r_level + 0.8 * ctx.ability_power
     }
     pub static ANIVIA: CachedChampion = CachedChampion {
@@ -1970,7 +1957,7 @@ pub mod champions {
         attack_type: AttackType::Ranged,
         positions: &[Position::Middle],
         closures: &[
-            anivia_q_1, anivia_q_2, anivia_q_3, anivia_e_1, anivia_e_2, anivia_r_1, anivia_r_2,
+            anivia_q1, anivia_q2, anivia_q3, anivia_e1, anivia_e2, anivia_r1, anivia_r2,
         ],
         metadata: &[
             TypeMetadata {
@@ -2046,25 +2033,25 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn anivia_q_1(ctx: &Ctx) -> f32 {
+    pub const fn anivia_q1(ctx: &Ctx) -> f32 {
         30.0 + 20.0 * ctx.q_level + 0.25 * ctx.ability_power
     }
-    pub const fn anivia_q_2(ctx: &Ctx) -> f32 {
+    pub const fn anivia_q2(ctx: &Ctx) -> f32 {
         25.0 + 35.0 * ctx.q_level + 0.45 * ctx.ability_power
     }
-    pub const fn anivia_q_3(ctx: &Ctx) -> f32 {
+    pub const fn anivia_q3(ctx: &Ctx) -> f32 {
         55.0 + 55.0 * ctx.q_level + 0.7 * ctx.ability_power
     }
-    pub const fn anivia_e_1(ctx: &Ctx) -> f32 {
+    pub const fn anivia_e1(ctx: &Ctx) -> f32 {
         60.0 + 50.0 * ctx.e_level + 1.1 * ctx.ability_power
     }
-    pub const fn anivia_e_2(ctx: &Ctx) -> f32 {
+    pub const fn anivia_e2(ctx: &Ctx) -> f32 {
         30.0 + 25.0 * ctx.e_level + 0.55 * ctx.ability_power
     }
-    pub const fn anivia_r_1(ctx: &Ctx) -> f32 {
+    pub const fn anivia_r1(ctx: &Ctx) -> f32 {
         7.5 + 7.5 * ctx.r_level + 0.0625 * ctx.ability_power
     }
-    pub const fn anivia_r_2(ctx: &Ctx) -> f32 {
+    pub const fn anivia_r2(ctx: &Ctx) -> f32 {
         22.5 + 22.5 * ctx.r_level + 0.1875 * ctx.ability_power
     }
     pub static ANNIE: CachedChampion = CachedChampion {
@@ -2072,7 +2059,7 @@ pub mod champions {
         adaptative_type: AdaptativeType::Magic,
         attack_type: AttackType::Ranged,
         positions: &[Position::Middle],
-        closures: &[annie_q_1, annie_w_1, annie_e_1, annie_r_1],
+        closures: &[annie_q1, annie_w1, annie_e1, annie_r1],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -2132,16 +2119,16 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn annie_q_1(ctx: &Ctx) -> f32 {
+    pub const fn annie_q1(ctx: &Ctx) -> f32 {
         40.0 + 40.0 * ctx.q_level + 0.8 * ctx.ability_power
     }
-    pub const fn annie_w_1(ctx: &Ctx) -> f32 {
+    pub const fn annie_w1(ctx: &Ctx) -> f32 {
         30.0 + 40.0 * ctx.w_level + 0.8 * ctx.ability_power
     }
-    pub const fn annie_e_1(ctx: &Ctx) -> f32 {
+    pub const fn annie_e1(ctx: &Ctx) -> f32 {
         15.0 + 10.0 * ctx.e_level + 0.4 * ctx.ability_power
     }
-    pub const fn annie_r_1(ctx: &Ctx) -> f32 {
+    pub const fn annie_r1(ctx: &Ctx) -> f32 {
         25.0 + 125.0 * ctx.r_level + 0.75 * ctx.ability_power
     }
     pub static APHELIOS: CachedChampion = CachedChampion {
@@ -2149,7 +2136,7 @@ pub mod champions {
         adaptative_type: AdaptativeType::Physical,
         attack_type: AttackType::Ranged,
         positions: &[Position::Bottom],
-        closures: &[aphelios_p_1],
+        closures: &[aphelios_p1],
         metadata: &[TypeMetadata {
             kind: P(_1),
             damage_type: DamageType::Unknown,
@@ -2192,7 +2179,7 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn aphelios_p_1(ctx: &Ctx) -> f32 {
+    pub const fn aphelios_p1(ctx: &Ctx) -> f32 {
         5.0 * ctx.level
     }
     pub static ASHE: CachedChampion = CachedChampion {
@@ -2200,7 +2187,7 @@ pub mod champions {
         adaptative_type: AdaptativeType::Physical,
         attack_type: AttackType::Ranged,
         positions: &[Position::Bottom, Position::Support],
-        closures: &[ashe_q_1, ashe_q_2, ashe_w_1, ashe_r_1],
+        closures: &[ashe_q1, ashe_q2, ashe_w1, ashe_r1],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -2260,16 +2247,16 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn ashe_q_1(ctx: &Ctx) -> f32 {
+    pub const fn ashe_q1(ctx: &Ctx) -> f32 {
         (0.205 + 0.015 * ctx.q_level) * ctx.attack_damage
     }
-    pub const fn ashe_q_2(ctx: &Ctx) -> f32 {
+    pub const fn ashe_q2(ctx: &Ctx) -> f32 {
         (1.025 + 0.075 * ctx.q_level) * ctx.attack_damage
     }
-    pub const fn ashe_w_1(ctx: &Ctx) -> f32 {
+    pub const fn ashe_w1(ctx: &Ctx) -> f32 {
         25.0 + 35.0 * ctx.w_level + 1.0 * ctx.bonus_ad
     }
-    pub const fn ashe_r_1(ctx: &Ctx) -> f32 {
+    pub const fn ashe_r1(ctx: &Ctx) -> f32 {
         200.0 * ctx.r_level + 1.2 * ctx.ability_power
     }
     pub static AURELIONSOL: CachedChampion = CachedChampion {
@@ -2278,16 +2265,16 @@ pub mod champions {
         attack_type: AttackType::Ranged,
         positions: &[Position::Middle],
         closures: &[
-            aurelionsol_q_1,
-            aurelionsol_q_2,
-            aurelionsol_q_3,
-            aurelionsol_q_4,
-            aurelionsol_q_5,
-            aurelionsol_q_6,
-            aurelionsol_w_1,
-            aurelionsol_e_1,
-            aurelionsol_e_2,
-            aurelionsol_r_2,
+            aurelionsol_q1,
+            aurelionsol_q2,
+            aurelionsol_q3,
+            aurelionsol_q4,
+            aurelionsol_q5,
+            aurelionsol_q6,
+            aurelionsol_w1,
+            aurelionsol_e1,
+            aurelionsol_e2,
+            aurelionsol_r2,
         ],
         metadata: &[
             TypeMetadata {
@@ -2378,34 +2365,34 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn aurelionsol_q_1(ctx: &Ctx) -> f32 {
+    pub const fn aurelionsol_q1(ctx: &Ctx) -> f32 {
         30.0 + 15.0 * ctx.q_level + 0.55 * ctx.ability_power
     }
-    pub const fn aurelionsol_q_2(ctx: &Ctx) -> f32 {
+    pub const fn aurelionsol_q2(ctx: &Ctx) -> f32 {
         3.75 + 1.875 * ctx.q_level + 0.06875 * ctx.ability_power
     }
-    pub const fn aurelionsol_q_3(ctx: &Ctx) -> f32 {
+    pub const fn aurelionsol_q3(ctx: &Ctx) -> f32 {
         15.0 + 7.5 * ctx.q_level + 0.275 * ctx.ability_power
     }
-    pub const fn aurelionsol_q_4(ctx: &Ctx) -> f32 {
+    pub const fn aurelionsol_q4(ctx: &Ctx) -> f32 {
         1.875 + 0.937 * ctx.q_level + 0.034375 * ctx.ability_power
     }
-    pub const fn aurelionsol_q_5(ctx: &Ctx) -> f32 {
+    pub const fn aurelionsol_q5(ctx: &Ctx) -> f32 {
         48.75 + 24.375 * ctx.q_level + 0.89375 * ctx.ability_power
     }
-    pub const fn aurelionsol_q_6(ctx: &Ctx) -> f32 {
+    pub const fn aurelionsol_q6(ctx: &Ctx) -> f32 {
         97.5 + 48.75 * ctx.q_level + 1.7875 * ctx.ability_power
     }
-    pub const fn aurelionsol_w_1(ctx: &Ctx) -> f32 {
+    pub const fn aurelionsol_w1(ctx: &Ctx) -> f32 {
         1.07 + 0.01 * ctx.w_level
     }
-    pub const fn aurelionsol_e_1(ctx: &Ctx) -> f32 {
+    pub const fn aurelionsol_e1(ctx: &Ctx) -> f32 {
         1.25 + 1.25 * ctx.e_level + 0.03 * ctx.ability_power
     }
-    pub const fn aurelionsol_e_2(ctx: &Ctx) -> f32 {
+    pub const fn aurelionsol_e2(ctx: &Ctx) -> f32 {
         25.0 + 25.0 * ctx.e_level + 0.6 * ctx.ability_power
     }
-    pub const fn aurelionsol_r_2(ctx: &Ctx) -> f32 {
+    pub const fn aurelionsol_r2(ctx: &Ctx) -> f32 {
         50.0 + 100.0 * ctx.r_level + 0.75 * ctx.ability_power
     }
     pub static AURORA: CachedChampion = CachedChampion {
@@ -2414,7 +2401,7 @@ pub mod champions {
         attack_type: AttackType::Ranged,
         positions: &[Position::Middle, Position::Top],
         closures: &[
-            aurora_q_1, aurora_q_2, aurora_q_3, aurora_q_4, aurora_q_5, aurora_e_1, aurora_r_1,
+            aurora_q1, aurora_q2, aurora_q3, aurora_q4, aurora_q5, aurora_e1, aurora_r1,
         ],
         metadata: &[
             TypeMetadata {
@@ -2490,25 +2477,25 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn aurora_q_1(ctx: &Ctx) -> f32 {
+    pub const fn aurora_q1(ctx: &Ctx) -> f32 {
         20.0 + 25.0 * ctx.q_level + 0.4 * ctx.ability_power
     }
-    pub const fn aurora_q_2(ctx: &Ctx) -> f32 {
+    pub const fn aurora_q2(ctx: &Ctx) -> f32 {
         30.0 + 37.5 * ctx.q_level + 0.6 * ctx.ability_power
     }
-    pub const fn aurora_q_3(ctx: &Ctx) -> f32 {
+    pub const fn aurora_q3(ctx: &Ctx) -> f32 {
         20.0 + 25.0 * ctx.q_level + 0.4 * ctx.ability_power
     }
-    pub const fn aurora_q_4(ctx: &Ctx) -> f32 {
+    pub const fn aurora_q4(ctx: &Ctx) -> f32 {
         6.0 + 7.5 * ctx.q_level + 0.12 * ctx.ability_power
     }
-    pub const fn aurora_q_5(ctx: &Ctx) -> f32 {
+    pub const fn aurora_q5(ctx: &Ctx) -> f32 {
         4.0 + 5.0 * ctx.q_level + 0.08 * ctx.ability_power
     }
-    pub const fn aurora_e_1(ctx: &Ctx) -> f32 {
+    pub const fn aurora_e1(ctx: &Ctx) -> f32 {
         30.0 + 40.0 * ctx.e_level + 0.7 * ctx.ability_power
     }
-    pub const fn aurora_r_1(ctx: &Ctx) -> f32 {
+    pub const fn aurora_r1(ctx: &Ctx) -> f32 {
         75.0 + 100.0 * ctx.r_level + 0.7 * ctx.ability_power
     }
     pub static AZIR: CachedChampion = CachedChampion {
@@ -2516,7 +2503,7 @@ pub mod champions {
         adaptative_type: AdaptativeType::Magic,
         attack_type: AttackType::Ranged,
         positions: &[Position::Middle],
-        closures: &[azir_q_1, azir_w_1, azir_e_1, azir_r_1],
+        closures: &[azir_q1, azir_w1, azir_e1, azir_r1],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -2576,10 +2563,10 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn azir_q_1(ctx: &Ctx) -> f32 {
+    pub const fn azir_q1(ctx: &Ctx) -> f32 {
         40.0 + 20.0 * ctx.q_level + 0.35 * ctx.ability_power
     }
-    pub const fn azir_w_1(ctx: &Ctx) -> f32 {
+    pub const fn azir_w1(ctx: &Ctx) -> f32 {
         match ctx.w_level as u8 {
             1 => 0.0 + 50.0 + 0.325 * ctx.ability_power,
             2 => 2.6470588235294117 + 65.0 + 0.4 * ctx.ability_power,
@@ -2602,10 +2589,10 @@ pub mod champions {
             _ => unknown,
         }
     }
-    pub const fn azir_e_1(ctx: &Ctx) -> f32 {
+    pub const fn azir_e1(ctx: &Ctx) -> f32 {
         30.0 + 40.0 * ctx.e_level + 0.6 * ctx.ability_power
     }
-    pub const fn azir_r_1(ctx: &Ctx) -> f32 {
+    pub const fn azir_r1(ctx: &Ctx) -> f32 {
         200.0 * ctx.r_level + 0.75 * ctx.ability_power
     }
     pub static BARD: CachedChampion = CachedChampion {
@@ -2613,7 +2600,7 @@ pub mod champions {
         adaptative_type: AdaptativeType::Magic,
         attack_type: AttackType::Ranged,
         positions: &[Position::Support],
-        closures: &[bard_q_void],
+        closures: &[bard_q],
         metadata: &[TypeMetadata {
             kind: Q(Void),
             damage_type: DamageType::Magic,
@@ -2656,7 +2643,7 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn bard_q_void(ctx: &Ctx) -> f32 {
+    pub const fn bard_q(ctx: &Ctx) -> f32 {
         40.0 + 40.0 * ctx.q_level + 0.8 * ctx.ability_power
     }
     pub static BELVETH: CachedChampion = CachedChampion {
@@ -2665,19 +2652,8 @@ pub mod champions {
         attack_type: AttackType::Melee,
         positions: &[Position::Jungle],
         closures: &[
-            belveth_q_1,
-            belveth_q_2,
-            belveth_q_3,
-            belveth_q_4,
-            belveth_w_1,
-            belveth_e_1,
-            belveth_e_2,
-            belveth_e_3,
-            belveth_e_4,
-            belveth_e_5,
-            belveth_r_1,
-            belveth_r_2,
-            belveth_r_3,
+            belveth_q1, belveth_q2, belveth_q3, belveth_q4, belveth_w1, belveth_e1, belveth_e2,
+            belveth_e3, belveth_e4, belveth_e5, belveth_r1, belveth_r2, belveth_r3,
         ],
         metadata: &[
             TypeMetadata {
@@ -2783,43 +2759,43 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn belveth_q_1(ctx: &Ctx) -> f32 {
+    pub const fn belveth_q1(ctx: &Ctx) -> f32 {
         -5.0 + 5.0 * ctx.q_level + 1.0 * ctx.attack_damage
     }
-    pub const fn belveth_q_2(ctx: &Ctx) -> f32 {
+    pub const fn belveth_q2(ctx: &Ctx) -> f32 {
         0.5 + 0.1 * ctx.q_level
     }
-    pub const fn belveth_q_3(ctx: &Ctx) -> f32 {
+    pub const fn belveth_q3(ctx: &Ctx) -> f32 {
         45.0 + 10.0 * ctx.q_level
     }
-    pub const fn belveth_q_4(ctx: &Ctx) -> f32 {
+    pub const fn belveth_q4(ctx: &Ctx) -> f32 {
         40.0 + 15.0 * ctx.q_level + 1.0 * ctx.attack_damage
     }
-    pub const fn belveth_w_1(ctx: &Ctx) -> f32 {
+    pub const fn belveth_w1(ctx: &Ctx) -> f32 {
         30.0 + 40.0 * ctx.w_level + 1.0 * ctx.bonus_ad + 1.25 * ctx.ability_power
     }
-    pub const fn belveth_e_1(ctx: &Ctx) -> f32 {
+    pub const fn belveth_e1(ctx: &Ctx) -> f32 {
         0.3 + 0.05 * ctx.e_level
     }
-    pub const fn belveth_e_2(ctx: &Ctx) -> f32 {
+    pub const fn belveth_e2(ctx: &Ctx) -> f32 {
         30.0 + 6.0 * ctx.e_level + 0.48 * ctx.attack_damage
     }
-    pub const fn belveth_e_3(ctx: &Ctx) -> f32 {
+    pub const fn belveth_e3(ctx: &Ctx) -> f32 {
         7.5 + 1.5 * ctx.e_level + 0.12 * ctx.attack_damage
     }
-    pub const fn belveth_e_4(ctx: &Ctx) -> f32 {
+    pub const fn belveth_e4(ctx: &Ctx) -> f32 {
         20.0 + 4.0 * ctx.e_level + 0.32 * ctx.attack_damage
     }
-    pub const fn belveth_e_5(ctx: &Ctx) -> f32 {
+    pub const fn belveth_e5(ctx: &Ctx) -> f32 {
         5.0 + 1.0 * ctx.e_level + 0.08 * ctx.attack_damage
     }
-    pub const fn belveth_r_1(ctx: &Ctx) -> f32 {
+    pub const fn belveth_r1(ctx: &Ctx) -> f32 {
         100.0 + 50.0 * ctx.r_level + 1.0 * ctx.ability_power + 0.25 * ctx.missing_health
     }
-    pub const fn belveth_r_2(ctx: &Ctx) -> f32 {
+    pub const fn belveth_r2(ctx: &Ctx) -> f32 {
         4.0 + 2.0 * ctx.r_level + 0.12 * ctx.bonus_ad
     }
-    pub const fn belveth_r_3(ctx: &Ctx) -> f32 {
+    pub const fn belveth_r3(ctx: &Ctx) -> f32 {
         20.0 + 10.0 * ctx.r_level + 0.6 * ctx.bonus_ad
     }
     pub static BLITZCRANK: CachedChampion = CachedChampion {
@@ -2827,7 +2803,7 @@ pub mod champions {
         adaptative_type: AdaptativeType::Physical,
         attack_type: AttackType::Melee,
         positions: &[Position::Support],
-        closures: &[blitzcrank_q_1, blitzcrank_r_1, blitzcrank_r_2],
+        closures: &[blitzcrank_q1, blitzcrank_r1, blitzcrank_r2],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -2882,13 +2858,13 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn blitzcrank_q_1(ctx: &Ctx) -> f32 {
+    pub const fn blitzcrank_q1(ctx: &Ctx) -> f32 {
         60.0 + 50.0 * ctx.q_level + 1.2 * ctx.ability_power
     }
-    pub const fn blitzcrank_r_1(ctx: &Ctx) -> f32 {
+    pub const fn blitzcrank_r1(ctx: &Ctx) -> f32 {
         150.0 + 125.0 * ctx.r_level + 1.0 * ctx.ability_power
     }
-    pub const fn blitzcrank_r_2(ctx: &Ctx) -> f32 {
+    pub const fn blitzcrank_r2(ctx: &Ctx) -> f32 {
         50.0 * ctx.r_level + (0.2 + 0.1 * ctx.r_level) * ctx.ability_power + 0.02 * ctx.max_mana
     }
     pub static BRAND: CachedChampion = CachedChampion {
@@ -2896,9 +2872,7 @@ pub mod champions {
         adaptative_type: AdaptativeType::Magic,
         attack_type: AttackType::Ranged,
         positions: &[Position::Jungle, Position::Middle, Position::Support],
-        closures: &[
-            brand_q_1, brand_w_1, brand_w_2, brand_e_1, brand_r_1, brand_r_2,
-        ],
+        closures: &[brand_q1, brand_w1, brand_w2, brand_e1, brand_r1, brand_r2],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -2968,22 +2942,22 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn brand_q_1(ctx: &Ctx) -> f32 {
+    pub const fn brand_q1(ctx: &Ctx) -> f32 {
         40.0 + 30.0 * ctx.q_level + 0.65 * ctx.ability_power
     }
-    pub const fn brand_w_1(ctx: &Ctx) -> f32 {
+    pub const fn brand_w1(ctx: &Ctx) -> f32 {
         37.5 + 56.25 * ctx.w_level + 0.875 * ctx.ability_power
     }
-    pub const fn brand_w_2(ctx: &Ctx) -> f32 {
+    pub const fn brand_w2(ctx: &Ctx) -> f32 {
         30.0 + 45.0 * ctx.w_level + 0.7 * ctx.ability_power
     }
-    pub const fn brand_e_1(ctx: &Ctx) -> f32 {
+    pub const fn brand_e1(ctx: &Ctx) -> f32 {
         30.0 + 25.0 * ctx.e_level + 0.6 * ctx.ability_power
     }
-    pub const fn brand_r_1(ctx: &Ctx) -> f32 {
+    pub const fn brand_r1(ctx: &Ctx) -> f32 {
         25.0 + 75.0 * ctx.r_level + 0.3 * ctx.ability_power
     }
-    pub const fn brand_r_2(ctx: &Ctx) -> f32 {
+    pub const fn brand_r2(ctx: &Ctx) -> f32 {
         75.0 + 225.0 * ctx.r_level + 0.9 * ctx.ability_power
     }
     pub static BRAUM: CachedChampion = CachedChampion {
@@ -2991,7 +2965,7 @@ pub mod champions {
         adaptative_type: AdaptativeType::Magic,
         attack_type: AttackType::Melee,
         positions: &[Position::Support],
-        closures: &[braum_q_1, braum_e_1, braum_r_1],
+        closures: &[braum_q1, braum_e1, braum_r1],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -3046,13 +3020,13 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn braum_q_1(ctx: &Ctx) -> f32 {
+    pub const fn braum_q1(ctx: &Ctx) -> f32 {
         25.0 + 50.0 * ctx.q_level + 0.025 * ctx.max_health
     }
-    pub const fn braum_e_1(ctx: &Ctx) -> f32 {
+    pub const fn braum_e1(ctx: &Ctx) -> f32 {
         0.3 + 0.05 * ctx.e_level
     }
-    pub const fn braum_r_1(ctx: &Ctx) -> f32 {
+    pub const fn braum_r1(ctx: &Ctx) -> f32 {
         150.0 * ctx.r_level + 0.6 * ctx.ability_power
     }
     pub static BRIAR: CachedChampion = CachedChampion {
@@ -3061,7 +3035,7 @@ pub mod champions {
         attack_type: AttackType::Melee,
         positions: &[Position::Jungle],
         closures: &[
-            briar_q_1, briar_w_1, briar_e_1, briar_e_2, briar_e_3, briar_e_4, briar_r_1,
+            briar_q1, briar_w1, briar_e1, briar_e2, briar_e3, briar_e4, briar_r1,
         ],
         metadata: &[
             TypeMetadata {
@@ -3137,25 +3111,25 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn briar_q_1(ctx: &Ctx) -> f32 {
+    pub const fn briar_q1(ctx: &Ctx) -> f32 {
         35.0 + 25.0 * ctx.q_level + 0.8 * ctx.bonus_ad + 0.6 * ctx.ability_power
     }
-    pub const fn briar_w_1(ctx: &Ctx) -> f32 {
+    pub const fn briar_w1(ctx: &Ctx) -> f32 {
         (0.5 + 0.1 * ctx.w_level) * ctx.attack_damage
     }
-    pub const fn briar_e_1(ctx: &Ctx) -> f32 {
+    pub const fn briar_e1(ctx: &Ctx) -> f32 {
         65.0 + 75.0 * ctx.e_level + 2.4 * ctx.bonus_ad + 2.4 * ctx.ability_power
     }
-    pub const fn briar_e_2(ctx: &Ctx) -> f32 {
+    pub const fn briar_e2(ctx: &Ctx) -> f32 {
         110.0 + 110.0 * ctx.e_level + 3.4 * ctx.bonus_ad + 3.4 * ctx.ability_power
     }
-    pub const fn briar_e_3(ctx: &Ctx) -> f32 {
+    pub const fn briar_e3(ctx: &Ctx) -> f32 {
         45.0 + 35.0 * ctx.e_level + 1.0 * ctx.bonus_ad + 1.0 * ctx.ability_power
     }
-    pub const fn briar_e_4(ctx: &Ctx) -> f32 {
+    pub const fn briar_e4(ctx: &Ctx) -> f32 {
         1.125 + 0.875 * ctx.e_level + 0.025 * ctx.bonus_ad + 0.025 * ctx.ability_power
     }
-    pub const fn briar_r_1(ctx: &Ctx) -> f32 {
+    pub const fn briar_r1(ctx: &Ctx) -> f32 {
         50.0 + 100.0 * ctx.r_level + 1.3 * ctx.ability_power
     }
     pub static CAITLYN: CachedChampion = CachedChampion {
@@ -3163,13 +3137,7 @@ pub mod champions {
         adaptative_type: AdaptativeType::Physical,
         attack_type: AttackType::Ranged,
         positions: &[Position::Bottom],
-        closures: &[
-            caitlyn_q_1,
-            caitlyn_q_2,
-            caitlyn_w_1,
-            caitlyn_e_1,
-            caitlyn_r_1,
-        ],
+        closures: &[caitlyn_q1, caitlyn_q2, caitlyn_w1, caitlyn_e1, caitlyn_r1],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -3234,19 +3202,19 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn caitlyn_q_1(ctx: &Ctx) -> f32 {
+    pub const fn caitlyn_q1(ctx: &Ctx) -> f32 {
         10.0 + 40.0 * ctx.q_level + (1.05 + 0.2 * ctx.q_level) * ctx.attack_damage
     }
-    pub const fn caitlyn_q_2(ctx: &Ctx) -> f32 {
+    pub const fn caitlyn_q2(ctx: &Ctx) -> f32 {
         6.0 + 24.0 * ctx.q_level + (0.63 + 0.12 * ctx.q_level) * ctx.attack_damage
     }
-    pub const fn caitlyn_w_1(ctx: &Ctx) -> f32 {
+    pub const fn caitlyn_w1(ctx: &Ctx) -> f32 {
         -10.0 + 45.0 * ctx.w_level + 0.3 * ctx.bonus_ad
     }
-    pub const fn caitlyn_e_1(ctx: &Ctx) -> f32 {
+    pub const fn caitlyn_e1(ctx: &Ctx) -> f32 {
         30.0 + 50.0 * ctx.e_level + 0.8 * ctx.ability_power
     }
-    pub const fn caitlyn_r_1(ctx: &Ctx) -> f32 {
+    pub const fn caitlyn_r1(ctx: &Ctx) -> f32 {
         125.0 + 175.0 * ctx.r_level + 1.0 * ctx.bonus_ad
     }
     pub static CAMILLE: CachedChampion = CachedChampion {
@@ -3255,13 +3223,7 @@ pub mod champions {
         attack_type: AttackType::Melee,
         positions: &[Position::Support, Position::Top],
         closures: &[
-            camille_q_1,
-            camille_q_2,
-            camille_w_1,
-            camille_w_2,
-            camille_w_3,
-            camille_w_4,
-            camille_r_1,
+            camille_q1, camille_q2, camille_w1, camille_w2, camille_w3, camille_w4, camille_r1,
         ],
         metadata: &[
             TypeMetadata {
@@ -3337,25 +3299,25 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn camille_q_1(ctx: &Ctx) -> f32 {
+    pub const fn camille_q1(ctx: &Ctx) -> f32 {
         (0.15 + 0.05 * ctx.q_level) * ctx.attack_damage
     }
-    pub const fn camille_q_2(ctx: &Ctx) -> f32 {
+    pub const fn camille_q2(ctx: &Ctx) -> f32 {
         (0.3 + 0.1 * ctx.q_level) * ctx.attack_damage
     }
-    pub const fn camille_w_1(ctx: &Ctx) -> f32 {
+    pub const fn camille_w1(ctx: &Ctx) -> f32 {
         35.0 + 25.0 * ctx.w_level + 0.6 * ctx.bonus_ad
     }
-    pub const fn camille_w_2(ctx: &Ctx) -> f32 {
+    pub const fn camille_w2(ctx: &Ctx) -> f32 {
         (0.055 + 0.005 * ctx.w_level) * ctx.enemy_max_health + 0.025 * 0.01 * ctx.bonus_ad
     }
-    pub const fn camille_w_3(ctx: &Ctx) -> f32 {
+    pub const fn camille_w3(ctx: &Ctx) -> f32 {
         (0.027 + 0.002 * ctx.w_level) * ctx.enemy_max_health + 0.0125 * 0.01 * ctx.bonus_ad
     }
-    pub const fn camille_w_4(ctx: &Ctx) -> f32 {
+    pub const fn camille_w4(ctx: &Ctx) -> f32 {
         17.5 + 12.5 * ctx.w_level + 0.3 * ctx.bonus_ad
     }
-    pub const fn camille_r_1(ctx: &Ctx) -> f32 {
+    pub const fn camille_r1(ctx: &Ctx) -> f32 {
         (0.02 + 0.02 * ctx.r_level) * ctx.current_health
     }
     pub static CASSIOPEIA: CachedChampion = CachedChampion {
@@ -3364,13 +3326,13 @@ pub mod champions {
         attack_type: AttackType::Ranged,
         positions: &[Position::Middle],
         closures: &[
-            cassiopeia_q_1,
-            cassiopeia_q_2,
-            cassiopeia_w_1,
-            cassiopeia_w_2,
-            cassiopeia_e_1,
-            cassiopeia_e_2,
-            cassiopeia_r_1,
+            cassiopeia_q1,
+            cassiopeia_q2,
+            cassiopeia_w1,
+            cassiopeia_w2,
+            cassiopeia_e1,
+            cassiopeia_e2,
+            cassiopeia_r1,
         ],
         metadata: &[
             TypeMetadata {
@@ -3446,22 +3408,22 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn cassiopeia_q_1(ctx: &Ctx) -> f32 {
+    pub const fn cassiopeia_q1(ctx: &Ctx) -> f32 {
         5.71 + 5.0 * ctx.q_level + 0.0929 * ctx.ability_power
     }
-    pub const fn cassiopeia_q_2(ctx: &Ctx) -> f32 {
+    pub const fn cassiopeia_q2(ctx: &Ctx) -> f32 {
         40.0 + 35.0 * ctx.q_level + 0.65 * ctx.ability_power
     }
-    pub const fn cassiopeia_w_1(ctx: &Ctx) -> f32 {
+    pub const fn cassiopeia_w1(ctx: &Ctx) -> f32 {
         15.0 + 5.0 * ctx.w_level + 0.1 * ctx.ability_power
     }
-    pub const fn cassiopeia_w_2(ctx: &Ctx) -> f32 {
+    pub const fn cassiopeia_w2(ctx: &Ctx) -> f32 {
         75.0 + 25.0 * ctx.w_level + 0.5 * ctx.ability_power
     }
-    pub const fn cassiopeia_e_1(ctx: &Ctx) -> f32 {
+    pub const fn cassiopeia_e1(ctx: &Ctx) -> f32 {
         -3.0 + 23.0 * ctx.e_level + 0.55 * ctx.ability_power
     }
-    pub const fn cassiopeia_e_2(ctx: &Ctx) -> f32 {
+    pub const fn cassiopeia_e2(ctx: &Ctx) -> f32 {
         match ctx.e_level as u8 {
             1 => 52.0 + 20.0 + 0.65 * ctx.ability_power,
             2 => 56.0 + 43.0 + 0.65 * ctx.ability_power,
@@ -3484,7 +3446,7 @@ pub mod champions {
             _ => unknown,
         }
     }
-    pub const fn cassiopeia_r_1(ctx: &Ctx) -> f32 {
+    pub const fn cassiopeia_r1(ctx: &Ctx) -> f32 {
         50.0 + 100.0 * ctx.r_level + 0.5 * ctx.ability_power
     }
     pub static CHOGATH: CachedChampion = CachedChampion {
@@ -3493,14 +3455,8 @@ pub mod champions {
         attack_type: AttackType::Melee,
         positions: &[Position::Top],
         closures: &[
-            chogath_q_1,
-            chogath_w_1,
-            chogath_e_1,
-            chogath_e_2,
-            chogath_e_3,
-            chogath_e_4,
-            chogath_r_1,
-            chogath_r_2,
+            chogath_q1, chogath_w1, chogath_e1, chogath_e2, chogath_e3, chogath_e4, chogath_r1,
+            chogath_r2,
         ],
         metadata: &[
             TypeMetadata {
@@ -3581,34 +3537,34 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn chogath_q_1(ctx: &Ctx) -> f32 {
+    pub const fn chogath_q1(ctx: &Ctx) -> f32 {
         25.0 + 55.0 * ctx.q_level + 1.0 * ctx.ability_power
     }
-    pub const fn chogath_w_1(ctx: &Ctx) -> f32 {
+    pub const fn chogath_w1(ctx: &Ctx) -> f32 {
         30.0 + 50.0 * ctx.w_level + 0.7 * ctx.ability_power
     }
-    pub const fn chogath_e_1(ctx: &Ctx) -> f32 {
+    pub const fn chogath_e1(ctx: &Ctx) -> f32 {
         20.0 * ctx.e_level
             + 0.3 * ctx.ability_power
             + (0.021 + 0.003 * ctx.e_level) * ctx.enemy_max_health
             + 0.005 * ctx.stacks
     }
-    pub const fn chogath_e_2(ctx: &Ctx) -> f32 {
+    pub const fn chogath_e2(ctx: &Ctx) -> f32 {
         50.0 + 50.0 * ctx.e_level + 0.3 * ctx.ability_power
     }
-    pub const fn chogath_e_3(ctx: &Ctx) -> f32 {
+    pub const fn chogath_e3(ctx: &Ctx) -> f32 {
         60.0 * ctx.e_level
             + 0.9 * ctx.ability_power
             + (0.064 + 0.010 * ctx.e_level) * ctx.enemy_max_health
             + 0.015 * ctx.stacks
     }
-    pub const fn chogath_e_4(ctx: &Ctx) -> f32 {
+    pub const fn chogath_e4(ctx: &Ctx) -> f32 {
         150.0 + 150.0 * ctx.e_level + 0.9 * ctx.ability_power
     }
-    pub const fn chogath_r_1(ctx: &Ctx) -> f32 {
+    pub const fn chogath_r1(ctx: &Ctx) -> f32 {
         125.0 + 175.0 * ctx.r_level + 0.5 * ctx.ability_power + 0.1 * ctx.bonus_health
     }
-    pub const fn chogath_r_2(ctx: &Ctx) -> f32 {
+    pub const fn chogath_r2(ctx: &Ctx) -> f32 {
         1200.0 + 0.5 * ctx.ability_power + 0.1 * ctx.bonus_health
     }
     pub static CORKI: CachedChampion = CachedChampion {
@@ -3617,7 +3573,7 @@ pub mod champions {
         attack_type: AttackType::Ranged,
         positions: &[Position::Middle],
         closures: &[
-            corki_q_1, corki_w_1, corki_w_2, corki_e_1, corki_e_2, corki_r_1, corki_r_2,
+            corki_q1, corki_w1, corki_w2, corki_e1, corki_e2, corki_r1, corki_r2,
         ],
         metadata: &[
             TypeMetadata {
@@ -3693,25 +3649,25 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn corki_q_1(ctx: &Ctx) -> f32 {
+    pub const fn corki_q1(ctx: &Ctx) -> f32 {
         15.0 + 45.0 * ctx.q_level + 1.25 * ctx.bonus_ad + 1.0 * ctx.ability_power
     }
-    pub const fn corki_w_1(ctx: &Ctx) -> f32 {
+    pub const fn corki_w1(ctx: &Ctx) -> f32 {
         15.0 + 15.0 * ctx.w_level + 0.4 * ctx.bonus_ad + 0.3 * ctx.ability_power
     }
-    pub const fn corki_w_2(ctx: &Ctx) -> f32 {
+    pub const fn corki_w2(ctx: &Ctx) -> f32 {
         75.0 + 75.0 * ctx.w_level + 2.0 * ctx.bonus_ad + 1.5 * ctx.ability_power
     }
-    pub const fn corki_e_1(ctx: &Ctx) -> f32 {
+    pub const fn corki_e1(ctx: &Ctx) -> f32 {
         1.875 + 3.125 * ctx.e_level + 0.15 * ctx.bonus_ad
     }
-    pub const fn corki_e_2(ctx: &Ctx) -> f32 {
+    pub const fn corki_e2(ctx: &Ctx) -> f32 {
         30.0 + 50.0 * ctx.e_level + 2.4 * ctx.bonus_ad
     }
-    pub const fn corki_r_1(ctx: &Ctx) -> f32 {
+    pub const fn corki_r1(ctx: &Ctx) -> f32 {
         10.0 + 80.0 * ctx.r_level + 0.85 * ctx.bonus_ad
     }
-    pub const fn corki_r_2(ctx: &Ctx) -> f32 {
+    pub const fn corki_r2(ctx: &Ctx) -> f32 {
         20.0 + 160.0 * ctx.r_level + 1.7 * ctx.bonus_ad
     }
     pub static DARIUS: CachedChampion = CachedChampion {
@@ -3720,7 +3676,7 @@ pub mod champions {
         attack_type: AttackType::Melee,
         positions: &[Position::Top],
         closures: &[
-            darius_q_1, darius_q_2, darius_w_1, darius_r_1, darius_r_2, darius_r_3,
+            darius_q1, darius_q2, darius_w1, darius_r1, darius_r2, darius_r3,
         ],
         metadata: &[
             TypeMetadata {
@@ -3791,22 +3747,22 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn darius_q_1(ctx: &Ctx) -> f32 {
+    pub const fn darius_q1(ctx: &Ctx) -> f32 {
         20.0 + 30.0 * ctx.q_level + (0.9 + 0.1 * ctx.q_level) * ctx.attack_damage
     }
-    pub const fn darius_q_2(ctx: &Ctx) -> f32 {
+    pub const fn darius_q2(ctx: &Ctx) -> f32 {
         7.0 + 10.5 * ctx.q_level + (0.315 + 0.035 * ctx.q_level) * ctx.attack_damage
     }
-    pub const fn darius_w_1(ctx: &Ctx) -> f32 {
+    pub const fn darius_w1(ctx: &Ctx) -> f32 {
         (0.35 + 0.05 * ctx.w_level) * ctx.attack_damage
     }
-    pub const fn darius_r_1(ctx: &Ctx) -> f32 {
+    pub const fn darius_r1(ctx: &Ctx) -> f32 {
         25.0 * ctx.r_level + 0.15 * ctx.bonus_ad
     }
-    pub const fn darius_r_2(ctx: &Ctx) -> f32 {
+    pub const fn darius_r2(ctx: &Ctx) -> f32 {
         250.0 * ctx.r_level + 1.5 * ctx.bonus_ad
     }
-    pub const fn darius_r_3(ctx: &Ctx) -> f32 {
+    pub const fn darius_r3(ctx: &Ctx) -> f32 {
         125.0 * ctx.r_level + 0.75 * ctx.bonus_ad
     }
     pub static DIANA: CachedChampion = CachedChampion {
@@ -3815,7 +3771,7 @@ pub mod champions {
         attack_type: AttackType::Melee,
         positions: &[Position::Jungle, Position::Middle],
         closures: &[
-            diana_q_1, diana_w_1, diana_w_2, diana_e_1, diana_r_1, diana_r_2, diana_r_3,
+            diana_q1, diana_w1, diana_w2, diana_e1, diana_r1, diana_r2, diana_r3,
         ],
         metadata: &[
             TypeMetadata {
@@ -3891,25 +3847,25 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn diana_q_1(ctx: &Ctx) -> f32 {
+    pub const fn diana_q1(ctx: &Ctx) -> f32 {
         35.0 + 35.0 * ctx.q_level + 0.7 * ctx.ability_power
     }
-    pub const fn diana_w_1(ctx: &Ctx) -> f32 {
+    pub const fn diana_w1(ctx: &Ctx) -> f32 {
         8.0 + 12.0 * ctx.w_level + 0.18 * ctx.ability_power
     }
-    pub const fn diana_w_2(ctx: &Ctx) -> f32 {
+    pub const fn diana_w2(ctx: &Ctx) -> f32 {
         24.0 + 36.0 * ctx.w_level + 0.54 * ctx.ability_power
     }
-    pub const fn diana_e_1(ctx: &Ctx) -> f32 {
+    pub const fn diana_e1(ctx: &Ctx) -> f32 {
         30.0 + 20.0 * ctx.e_level + 0.6 * ctx.ability_power
     }
-    pub const fn diana_r_1(ctx: &Ctx) -> f32 {
+    pub const fn diana_r1(ctx: &Ctx) -> f32 {
         10.0 + 25.0 * ctx.r_level + 0.15 * ctx.ability_power
     }
-    pub const fn diana_r_2(ctx: &Ctx) -> f32 {
+    pub const fn diana_r2(ctx: &Ctx) -> f32 {
         100.0 + 100.0 * ctx.r_level + 0.6 * ctx.ability_power
     }
-    pub const fn diana_r_3(ctx: &Ctx) -> f32 {
+    pub const fn diana_r3(ctx: &Ctx) -> f32 {
         140.0 + 200.0 * ctx.r_level + 1.2 * ctx.ability_power
     }
     pub static DRMUNDO: CachedChampion = CachedChampion {
@@ -3917,7 +3873,7 @@ pub mod champions {
         adaptative_type: AdaptativeType::Physical,
         attack_type: AttackType::Melee,
         positions: &[Position::Top],
-        closures: &[drmundo_q_1, drmundo_e_1, drmundo_r_1, drmundo_r_2],
+        closures: &[drmundo_q1, drmundo_e1, drmundo_r1, drmundo_r2],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -3977,16 +3933,16 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn drmundo_q_1(ctx: &Ctx) -> f32 {
+    pub const fn drmundo_q1(ctx: &Ctx) -> f32 {
         (0.175 + 0.025 * ctx.q_level) * ctx.current_health
     }
-    pub const fn drmundo_e_1(ctx: &Ctx) -> f32 {
+    pub const fn drmundo_e1(ctx: &Ctx) -> f32 {
         -7.0 + 14.0 * ctx.e_level + 0.07 * ctx.bonus_health
     }
-    pub const fn drmundo_r_1(ctx: &Ctx) -> f32 {
+    pub const fn drmundo_r1(ctx: &Ctx) -> f32 {
         0.1 * ctx.r_level * ctx.max_health
     }
-    pub const fn drmundo_r_2(ctx: &Ctx) -> f32 {
+    pub const fn drmundo_r2(ctx: &Ctx) -> f32 {
         0.05 + 0.1 * ctx.r_level
     }
     pub static DRAVEN: CachedChampion = CachedChampion {
@@ -3994,7 +3950,7 @@ pub mod champions {
         adaptative_type: AdaptativeType::Physical,
         attack_type: AttackType::Ranged,
         positions: &[Position::Bottom],
-        closures: &[draven_q_1, draven_w_1, draven_w_2, draven_e_1, draven_e_2],
+        closures: &[draven_q1, draven_w1, draven_w2, draven_e1, draven_e2],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -4059,19 +4015,19 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn draven_q_1(ctx: &Ctx) -> f32 {
+    pub const fn draven_q1(ctx: &Ctx) -> f32 {
         35.0 + 5.0 * ctx.q_level + (0.65 + 0.1 * ctx.q_level) * ctx.bonus_ad
     }
-    pub const fn draven_w_1(ctx: &Ctx) -> f32 {
+    pub const fn draven_w1(ctx: &Ctx) -> f32 {
         0.15 + 0.05 * ctx.w_level
     }
-    pub const fn draven_w_2(ctx: &Ctx) -> f32 {
+    pub const fn draven_w2(ctx: &Ctx) -> f32 {
         0.45 + 0.05 * ctx.w_level
     }
-    pub const fn draven_e_1(ctx: &Ctx) -> f32 {
+    pub const fn draven_e1(ctx: &Ctx) -> f32 {
         40.0 + 35.0 * ctx.e_level + 0.5 * ctx.bonus_ad
     }
-    pub const fn draven_e_2(ctx: &Ctx) -> f32 {
+    pub const fn draven_e2(ctx: &Ctx) -> f32 {
         0.15 + 0.05 * ctx.e_level
     }
     pub static EKKO: CachedChampion = CachedChampion {
@@ -4079,7 +4035,7 @@ pub mod champions {
         adaptative_type: AdaptativeType::Magic,
         attack_type: AttackType::Melee,
         positions: &[Position::Jungle, Position::Middle],
-        closures: &[ekko_q_1, ekko_q_2, ekko_q_3, ekko_e_1, ekko_r_1],
+        closures: &[ekko_q1, ekko_q2, ekko_q3, ekko_e1, ekko_r1],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -4144,19 +4100,19 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn ekko_q_1(ctx: &Ctx) -> f32 {
+    pub const fn ekko_q1(ctx: &Ctx) -> f32 {
         65.0 + 15.0 * ctx.q_level + 0.3 * ctx.ability_power
     }
-    pub const fn ekko_q_2(ctx: &Ctx) -> f32 {
+    pub const fn ekko_q2(ctx: &Ctx) -> f32 {
         15.0 + 25.0 * ctx.q_level + 0.6 * ctx.ability_power
     }
-    pub const fn ekko_q_3(ctx: &Ctx) -> f32 {
+    pub const fn ekko_q3(ctx: &Ctx) -> f32 {
         80.0 + 40.0 * ctx.q_level + 0.9 * ctx.ability_power
     }
-    pub const fn ekko_e_1(ctx: &Ctx) -> f32 {
+    pub const fn ekko_e1(ctx: &Ctx) -> f32 {
         25.0 + 25.0 * ctx.e_level + 0.4 * ctx.ability_power
     }
-    pub const fn ekko_r_1(ctx: &Ctx) -> f32 {
+    pub const fn ekko_r1(ctx: &Ctx) -> f32 {
         50.0 + 150.0 * ctx.r_level + 1.75 * ctx.ability_power
     }
     pub static ELISE: CachedChampion = CachedChampion {
@@ -4164,7 +4120,7 @@ pub mod champions {
         adaptative_type: AdaptativeType::Magic,
         attack_type: AttackType::Ranged,
         positions: &[Position::Jungle],
-        closures: &[elise_q_3, elise_q_4, elise_w_1],
+        closures: &[elise_q3, elise_q4, elise_w1],
         metadata: &[
             TypeMetadata {
                 kind: Q(_3),
@@ -4219,13 +4175,13 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn elise_q_3(ctx: &Ctx) -> f32 {
+    pub const fn elise_q3(ctx: &Ctx) -> f32 {
         45.0 + 20.0 * ctx.q_level + 0.9 * ctx.ability_power
     }
-    pub const fn elise_q_4(ctx: &Ctx) -> f32 {
+    pub const fn elise_q4(ctx: &Ctx) -> f32 {
         10.0 + 30.0 * ctx.q_level + 0.04 * ctx.current_health + 0.03 * 0.01 * ctx.ability_power
     }
-    pub const fn elise_w_1(ctx: &Ctx) -> f32 {
+    pub const fn elise_w1(ctx: &Ctx) -> f32 {
         20.0 + 40.0 * ctx.w_level + 0.75 * ctx.ability_power
     }
     pub static EVELYNN: CachedChampion = CachedChampion {
@@ -4234,16 +4190,8 @@ pub mod champions {
         attack_type: AttackType::Melee,
         positions: &[Position::Jungle],
         closures: &[
-            evelynn_q_1,
-            evelynn_q_2,
-            evelynn_q_3,
-            evelynn_q_4,
-            evelynn_q_5,
-            evelynn_q_6,
-            evelynn_w_1,
-            evelynn_e_2,
-            evelynn_r_1,
-            evelynn_r_2,
+            evelynn_q1, evelynn_q2, evelynn_q3, evelynn_q4, evelynn_q5, evelynn_q6, evelynn_w1,
+            evelynn_e2, evelynn_r1, evelynn_r2,
         ],
         metadata: &[
             TypeMetadata {
@@ -4334,34 +4282,34 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn evelynn_q_1(ctx: &Ctx) -> f32 {
+    pub const fn evelynn_q1(ctx: &Ctx) -> f32 {
         20.0 + 5.0 * ctx.q_level + 0.25 * ctx.ability_power
     }
-    pub const fn evelynn_q_2(ctx: &Ctx) -> f32 {
+    pub const fn evelynn_q2(ctx: &Ctx) -> f32 {
         5.0 + 10.0 * ctx.q_level + 0.25 * ctx.ability_power
     }
-    pub const fn evelynn_q_3(ctx: &Ctx) -> f32 {
+    pub const fn evelynn_q3(ctx: &Ctx) -> f32 {
         15.0 + 30.0 * ctx.q_level + 0.75 * ctx.ability_power
     }
-    pub const fn evelynn_q_4(ctx: &Ctx) -> f32 {
+    pub const fn evelynn_q4(ctx: &Ctx) -> f32 {
         20.0 + 5.0 * ctx.q_level + 0.25 * ctx.ability_power
     }
-    pub const fn evelynn_q_5(ctx: &Ctx) -> f32 {
+    pub const fn evelynn_q5(ctx: &Ctx) -> f32 {
         60.0 + 15.0 * ctx.q_level + 0.75 * ctx.ability_power
     }
-    pub const fn evelynn_q_6(ctx: &Ctx) -> f32 {
+    pub const fn evelynn_q6(ctx: &Ctx) -> f32 {
         95.0 + 50.0 * ctx.q_level + 1.75 * ctx.ability_power
     }
-    pub const fn evelynn_w_1(ctx: &Ctx) -> f32 {
+    pub const fn evelynn_w1(ctx: &Ctx) -> f32 {
         200.0 + 50.0 * ctx.w_level + 0.6 * ctx.ability_power
     }
-    pub const fn evelynn_e_2(ctx: &Ctx) -> f32 {
+    pub const fn evelynn_e2(ctx: &Ctx) -> f32 {
         30.0 + 30.0 * ctx.e_level + 0.03 * ctx.enemy_max_health + 0.015 * 0.01 * ctx.ability_power
     }
-    pub const fn evelynn_r_1(ctx: &Ctx) -> f32 {
+    pub const fn evelynn_r1(ctx: &Ctx) -> f32 {
         125.0 * ctx.r_level + 0.75 * ctx.ability_power
     }
-    pub const fn evelynn_r_2(ctx: &Ctx) -> f32 {
+    pub const fn evelynn_r2(ctx: &Ctx) -> f32 {
         300.0 * ctx.r_level + 1.8 * ctx.ability_power
     }
     pub static EZREAL: CachedChampion = CachedChampion {
@@ -4369,7 +4317,7 @@ pub mod champions {
         adaptative_type: AdaptativeType::Physical,
         attack_type: AttackType::Ranged,
         positions: &[Position::Bottom],
-        closures: &[ezreal_q_void, ezreal_w_void, ezreal_e_void, ezreal_r_void],
+        closures: &[ezreal_q, ezreal_w, ezreal_e, ezreal_r],
         metadata: &[
             TypeMetadata {
                 kind: Q(Void),
@@ -4429,18 +4377,18 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn ezreal_q_void(ctx: &Ctx) -> f32 {
+    pub const fn ezreal_q(ctx: &Ctx) -> f32 {
         -5.0 + 25.0 * ctx.q_level + 1.3 * ctx.attack_damage + 0.15 * ctx.ability_power
     }
-    pub const fn ezreal_w_void(ctx: &Ctx) -> f32 {
+    pub const fn ezreal_w(ctx: &Ctx) -> f32 {
         25.0 + 55.0 * ctx.w_level
             + 1.0 * ctx.bonus_ad
             + (0.65 + 0.05 * ctx.w_level) * ctx.ability_power
     }
-    pub const fn ezreal_e_void(ctx: &Ctx) -> f32 {
+    pub const fn ezreal_e(ctx: &Ctx) -> f32 {
         30.0 + 50.0 * ctx.e_level + 0.5 * ctx.bonus_ad + 0.75 * ctx.ability_power
     }
-    pub const fn ezreal_r_void(ctx: &Ctx) -> f32 {
+    pub const fn ezreal_r(ctx: &Ctx) -> f32 {
         150.0 + 200.0 * ctx.r_level + 1.0 * ctx.bonus_ad + 0.9 * ctx.ability_power
     }
     pub static FIDDLESTICKS: CachedChampion = CachedChampion {
@@ -4449,17 +4397,17 @@ pub mod champions {
         attack_type: AttackType::Ranged,
         positions: &[Position::Jungle],
         closures: &[
-            fiddlesticks_q_1,
-            fiddlesticks_q_2,
-            fiddlesticks_q_3,
-            fiddlesticks_q_4,
-            fiddlesticks_w_1,
-            fiddlesticks_w_2,
-            fiddlesticks_w_3,
-            fiddlesticks_w_4,
-            fiddlesticks_e_1,
-            fiddlesticks_r_1,
-            fiddlesticks_r_2,
+            fiddlesticks_q1,
+            fiddlesticks_q2,
+            fiddlesticks_q3,
+            fiddlesticks_q4,
+            fiddlesticks_w1,
+            fiddlesticks_w2,
+            fiddlesticks_w3,
+            fiddlesticks_w4,
+            fiddlesticks_e1,
+            fiddlesticks_r1,
+            fiddlesticks_r2,
         ],
         metadata: &[
             TypeMetadata {
@@ -4555,41 +4503,41 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn fiddlesticks_q_1(ctx: &Ctx) -> f32 {
+    pub const fn fiddlesticks_q1(ctx: &Ctx) -> f32 {
         (0.035 + 0.005 * ctx.q_level) * ctx.current_health + 0.03 * 0.01 * ctx.ability_power
     }
-    pub const fn fiddlesticks_q_2(ctx: &Ctx) -> f32 {
+    pub const fn fiddlesticks_q2(ctx: &Ctx) -> f32 {
         20.0 + 20.0 * ctx.q_level
     }
-    pub const fn fiddlesticks_q_3(ctx: &Ctx) -> f32 {
+    pub const fn fiddlesticks_q3(ctx: &Ctx) -> f32 {
         (0.07 + 0.01 * ctx.q_level) * ctx.current_health + 0.06 * 0.01 * ctx.ability_power
     }
-    pub const fn fiddlesticks_q_4(ctx: &Ctx) -> f32 {
+    pub const fn fiddlesticks_q4(ctx: &Ctx) -> f32 {
         40.0 + 40.0 * ctx.q_level
     }
-    pub const fn fiddlesticks_w_1(ctx: &Ctx) -> f32 {
+    pub const fn fiddlesticks_w1(ctx: &Ctx) -> f32 {
         7.5 + 7.5 * ctx.w_level + 0.1125 * ctx.ability_power
     }
-    pub const fn fiddlesticks_w_2(ctx: &Ctx) -> f32 {
+    pub const fn fiddlesticks_w2(ctx: &Ctx) -> f32 {
         30.0 + 30.0 * ctx.w_level + 0.45 * ctx.ability_power
     }
-    pub const fn fiddlesticks_w_3(ctx: &Ctx) -> f32 {
+    pub const fn fiddlesticks_w3(ctx: &Ctx) -> f32 {
         7.5 + 7.5 * ctx.w_level
             + 0.1125 * ctx.ability_power
             + (0.095 + 0.025 * ctx.w_level) * ctx.missing_health
     }
-    pub const fn fiddlesticks_w_4(ctx: &Ctx) -> f32 {
+    pub const fn fiddlesticks_w4(ctx: &Ctx) -> f32 {
         60.0 + 60.0 * ctx.w_level
             + 0.9 * ctx.ability_power
             + (0.095 + 0.025 * ctx.w_level) * ctx.missing_health
     }
-    pub const fn fiddlesticks_e_1(ctx: &Ctx) -> f32 {
+    pub const fn fiddlesticks_e1(ctx: &Ctx) -> f32 {
         35.0 + 35.0 * ctx.e_level + 0.5 * ctx.ability_power
     }
-    pub const fn fiddlesticks_r_1(ctx: &Ctx) -> f32 {
+    pub const fn fiddlesticks_r1(ctx: &Ctx) -> f32 {
         12.5 + 25.0 * ctx.r_level + 0.125 * ctx.ability_power
     }
-    pub const fn fiddlesticks_r_2(ctx: &Ctx) -> f32 {
+    pub const fn fiddlesticks_r2(ctx: &Ctx) -> f32 {
         250.0 + 500.0 * ctx.r_level + 2.5 * ctx.ability_power
     }
     pub static FIORA: CachedChampion = CachedChampion {
@@ -4597,7 +4545,7 @@ pub mod champions {
         adaptative_type: AdaptativeType::Physical,
         attack_type: AttackType::Melee,
         positions: &[Position::Top],
-        closures: &[fiora_q_1, fiora_w_1, fiora_e_1],
+        closures: &[fiora_q1, fiora_w1, fiora_e1],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -4652,13 +4600,13 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn fiora_q_1(ctx: &Ctx) -> f32 {
+    pub const fn fiora_q1(ctx: &Ctx) -> f32 {
         60.0 + 10.0 * ctx.q_level + (0.85 + 0.05 * ctx.q_level) * ctx.bonus_ad
     }
-    pub const fn fiora_w_1(ctx: &Ctx) -> f32 {
+    pub const fn fiora_w1(ctx: &Ctx) -> f32 {
         70.0 + 40.0 * ctx.w_level + 1.0 * ctx.ability_power
     }
-    pub const fn fiora_e_1(ctx: &Ctx) -> f32 {
+    pub const fn fiora_e1(ctx: &Ctx) -> f32 {
         1.5 + 0.1 * ctx.e_level
     }
     pub static FIZZ: CachedChampion = CachedChampion {
@@ -4667,8 +4615,7 @@ pub mod champions {
         attack_type: AttackType::Melee,
         positions: &[Position::Middle],
         closures: &[
-            fizz_q_1, fizz_w_1, fizz_w_2, fizz_w_3, fizz_w_4, fizz_e_1, fizz_r_1, fizz_r_2,
-            fizz_r_3,
+            fizz_q1, fizz_w1, fizz_w2, fizz_w3, fizz_w4, fizz_e1, fizz_r1, fizz_r2, fizz_r3,
         ],
         metadata: &[
             TypeMetadata {
@@ -4754,31 +4701,31 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn fizz_q_1(ctx: &Ctx) -> f32 {
+    pub const fn fizz_q1(ctx: &Ctx) -> f32 {
         -5.0 + 15.0 * ctx.q_level + 0.55 * ctx.ability_power
     }
-    pub const fn fizz_w_1(ctx: &Ctx) -> f32 {
+    pub const fn fizz_w1(ctx: &Ctx) -> f32 {
         25.0 + 25.0 * ctx.w_level + 0.45 * ctx.ability_power
     }
-    pub const fn fizz_w_2(ctx: &Ctx) -> f32 {
+    pub const fn fizz_w2(ctx: &Ctx) -> f32 {
         15.0 + 5.0 * ctx.w_level + 0.3 * ctx.ability_power
     }
-    pub const fn fizz_w_3(ctx: &Ctx) -> f32 {
+    pub const fn fizz_w3(ctx: &Ctx) -> f32 {
         2.5 + 2.5 * ctx.w_level + 0.0417 * ctx.ability_power
     }
-    pub const fn fizz_w_4(ctx: &Ctx) -> f32 {
+    pub const fn fizz_w4(ctx: &Ctx) -> f32 {
         15.0 + 15.0 * ctx.w_level + 0.25 * ctx.ability_power
     }
-    pub const fn fizz_e_1(ctx: &Ctx) -> f32 {
+    pub const fn fizz_e1(ctx: &Ctx) -> f32 {
         30.0 + 50.0 * ctx.e_level + 0.95 * ctx.ability_power
     }
-    pub const fn fizz_r_1(ctx: &Ctx) -> f32 {
+    pub const fn fizz_r1(ctx: &Ctx) -> f32 {
         75.0 + 150.0 * ctx.r_level + 0.75 * ctx.ability_power
     }
-    pub const fn fizz_r_2(ctx: &Ctx) -> f32 {
+    pub const fn fizz_r2(ctx: &Ctx) -> f32 {
         90.0 + 180.0 * ctx.r_level + 0.9 * ctx.ability_power
     }
-    pub const fn fizz_r_3(ctx: &Ctx) -> f32 {
+    pub const fn fizz_r3(ctx: &Ctx) -> f32 {
         60.0 + 120.0 * ctx.r_level + 0.6 * ctx.ability_power
     }
     pub static GALIO: CachedChampion = CachedChampion {
@@ -4787,7 +4734,7 @@ pub mod champions {
         attack_type: AttackType::Melee,
         positions: &[Position::Middle, Position::Support],
         closures: &[
-            galio_q_1, galio_w_1, galio_w_2, galio_w_3, galio_w_4, galio_e_1, galio_e_2, galio_r_1,
+            galio_q1, galio_w1, galio_w2, galio_w3, galio_w4, galio_e1, galio_e2, galio_r1,
         ],
         metadata: &[
             TypeMetadata {
@@ -4868,34 +4815,34 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn galio_q_1(ctx: &Ctx) -> f32 {
+    pub const fn galio_q1(ctx: &Ctx) -> f32 {
         35.0 + 35.0 * ctx.q_level + 0.7 * ctx.ability_power
     }
-    pub const fn galio_w_1(ctx: &Ctx) -> f32 {
+    pub const fn galio_w1(ctx: &Ctx) -> f32 {
         0.2 + 0.05 * ctx.w_level
             + 0.04 * 0.01 * ctx.ability_power
             + 0.08 * 0.01 * ctx.bonus_magic_resist
             + 0.01 * 0.01 * ctx.bonus_health
     }
-    pub const fn galio_w_2(ctx: &Ctx) -> f32 {
+    pub const fn galio_w2(ctx: &Ctx) -> f32 {
         0.1 + 0.025 * ctx.w_level
             + 0.015 * 0.01 * ctx.ability_power
             + 0.04 * 0.01 * ctx.bonus_magic_resist
             + 0.005 * 0.01 * ctx.bonus_health
     }
-    pub const fn galio_w_3(ctx: &Ctx) -> f32 {
+    pub const fn galio_w3(ctx: &Ctx) -> f32 {
         30.0 + 30.0 * ctx.w_level + 0.9 * ctx.ability_power
     }
-    pub const fn galio_w_4(ctx: &Ctx) -> f32 {
+    pub const fn galio_w4(ctx: &Ctx) -> f32 {
         10.0 + 10.0 * ctx.w_level + 0.3 * ctx.ability_power
     }
-    pub const fn galio_e_1(ctx: &Ctx) -> f32 {
+    pub const fn galio_e1(ctx: &Ctx) -> f32 {
         50.0 + 40.0 * ctx.e_level + 0.9 * ctx.ability_power
     }
-    pub const fn galio_e_2(ctx: &Ctx) -> f32 {
+    pub const fn galio_e2(ctx: &Ctx) -> f32 {
         40.0 + 32.0 * ctx.e_level + 0.72 * ctx.ability_power
     }
-    pub const fn galio_r_1(ctx: &Ctx) -> f32 {
+    pub const fn galio_r1(ctx: &Ctx) -> f32 {
         50.0 + 100.0 * ctx.r_level + 0.7 * ctx.ability_power
     }
     pub static GANGPLANK: CachedChampion = CachedChampion {
@@ -4904,15 +4851,15 @@ pub mod champions {
         attack_type: AttackType::Melee,
         positions: &[Position::Top],
         closures: &[
-            gangplank_q_1,
-            gangplank_e_1,
-            gangplank_r_1,
-            gangplank_r_2,
-            gangplank_r_3,
-            gangplank_r_4,
-            gangplank_r_5,
-            gangplank_r_6,
-            gangplank_r_7,
+            gangplank_q1,
+            gangplank_e1,
+            gangplank_r1,
+            gangplank_r2,
+            gangplank_r3,
+            gangplank_r4,
+            gangplank_r5,
+            gangplank_r6,
+            gangplank_r7,
         ],
         metadata: &[
             TypeMetadata {
@@ -4998,31 +4945,31 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn gangplank_q_1(ctx: &Ctx) -> f32 {
+    pub const fn gangplank_q1(ctx: &Ctx) -> f32 {
         -20.0 + 30.0 * ctx.q_level + 1.0 * ctx.attack_damage
     }
-    pub const fn gangplank_e_1(ctx: &Ctx) -> f32 {
+    pub const fn gangplank_e1(ctx: &Ctx) -> f32 {
         55.0 + 20.0 * ctx.e_level
     }
-    pub const fn gangplank_r_1(ctx: &Ctx) -> f32 {
+    pub const fn gangplank_r1(ctx: &Ctx) -> f32 {
         30.0 + 90.0 * ctx.r_level + 0.3 * ctx.ability_power
     }
-    pub const fn gangplank_r_2(ctx: &Ctx) -> f32 {
+    pub const fn gangplank_r2(ctx: &Ctx) -> f32 {
         10.0 + 30.0 * ctx.r_level + 0.1 * ctx.ability_power
     }
-    pub const fn gangplank_r_3(ctx: &Ctx) -> f32 {
+    pub const fn gangplank_r3(ctx: &Ctx) -> f32 {
         120.0 + 360.0 * ctx.r_level + 1.2 * ctx.ability_power
     }
-    pub const fn gangplank_r_4(ctx: &Ctx) -> f32 {
+    pub const fn gangplank_r4(ctx: &Ctx) -> f32 {
         150.0 + 450.0 * ctx.r_level + 1.5 * ctx.ability_power
     }
-    pub const fn gangplank_r_5(ctx: &Ctx) -> f32 {
+    pub const fn gangplank_r5(ctx: &Ctx) -> f32 {
         30.0 + 90.0 * ctx.r_level + 0.3 * ctx.ability_power
     }
-    pub const fn gangplank_r_6(ctx: &Ctx) -> f32 {
+    pub const fn gangplank_r6(ctx: &Ctx) -> f32 {
         210.0 + 630.0 * ctx.r_level + 2.1 * ctx.ability_power
     }
-    pub const fn gangplank_r_7(ctx: &Ctx) -> f32 {
+    pub const fn gangplank_r7(ctx: &Ctx) -> f32 {
         180.0 + 540.0 * ctx.r_level + 1.8 * ctx.ability_power
     }
     pub static GAREN: CachedChampion = CachedChampion {
@@ -5030,7 +4977,7 @@ pub mod champions {
         adaptative_type: AdaptativeType::Physical,
         attack_type: AttackType::Melee,
         positions: &[Position::Top],
-        closures: &[garen_q_1, garen_w_1, garen_e_1, garen_e_2, garen_r_1],
+        closures: &[garen_q1, garen_w1, garen_e1, garen_e2, garen_r1],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -5095,19 +5042,19 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn garen_q_1(ctx: &Ctx) -> f32 {
+    pub const fn garen_q1(ctx: &Ctx) -> f32 {
         30.0 * ctx.q_level + 0.5 * ctx.attack_damage
     }
-    pub const fn garen_w_1(ctx: &Ctx) -> f32 {
+    pub const fn garen_w1(ctx: &Ctx) -> f32 {
         0.21 + 0.04 * ctx.w_level
     }
-    pub const fn garen_e_1(ctx: &Ctx) -> f32 {
+    pub const fn garen_e1(ctx: &Ctx) -> f32 {
         1.0 + 3.0 * ctx.e_level + (0.35 + 0.03 * ctx.e_level) * ctx.attack_damage
     }
-    pub const fn garen_e_2(ctx: &Ctx) -> f32 {
+    pub const fn garen_e2(ctx: &Ctx) -> f32 {
         1.25 + 3.75 * ctx.e_level + (0.437 + 0.037 * ctx.e_level) * ctx.attack_damage
     }
-    pub const fn garen_r_1(ctx: &Ctx) -> f32 {
+    pub const fn garen_r1(ctx: &Ctx) -> f32 {
         50.0 + 100.0 * ctx.r_level + (0.2 + 0.05 * ctx.r_level) * ctx.missing_health
     }
     pub static GNAR: CachedChampion = CachedChampion {
@@ -5116,7 +5063,7 @@ pub mod champions {
         attack_type: AttackType::Ranged,
         positions: &[Position::Top],
         closures: &[
-            gnar_q_2, gnar_q_3, gnar_w_1, gnar_e_1, gnar_e_2, gnar_r_1, gnar_r_2,
+            gnar_q2, gnar_q3, gnar_w1, gnar_e1, gnar_e2, gnar_r1, gnar_r2,
         ],
         metadata: &[
             TypeMetadata {
@@ -5192,28 +5139,28 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn gnar_q_2(ctx: &Ctx) -> f32 {
+    pub const fn gnar_q2(ctx: &Ctx) -> f32 {
         -17.5 + 20.0 * ctx.q_level + 0.625 * ctx.attack_damage
     }
-    pub const fn gnar_q_3(ctx: &Ctx) -> f32 {
+    pub const fn gnar_q3(ctx: &Ctx) -> f32 {
         -35.0 + 40.0 * ctx.q_level + 1.25 * ctx.attack_damage
     }
-    pub const fn gnar_w_1(ctx: &Ctx) -> f32 {
+    pub const fn gnar_w1(ctx: &Ctx) -> f32 {
         -10.0
             + 10.0 * ctx.w_level
             + (0.04 + 0.02 * ctx.w_level) * ctx.enemy_max_health
             + 1.0 * ctx.ability_power
     }
-    pub const fn gnar_e_1(ctx: &Ctx) -> f32 {
+    pub const fn gnar_e1(ctx: &Ctx) -> f32 {
         15.0 + 35.0 * ctx.e_level + 0.06 * ctx.max_health
     }
-    pub const fn gnar_e_2(ctx: &Ctx) -> f32 {
+    pub const fn gnar_e2(ctx: &Ctx) -> f32 {
         0.35 + 0.05 * ctx.e_level
     }
-    pub const fn gnar_r_1(ctx: &Ctx) -> f32 {
+    pub const fn gnar_r1(ctx: &Ctx) -> f32 {
         150.0 + 150.0 * ctx.r_level + 0.75 * ctx.bonus_ad + 1.5 * ctx.ability_power
     }
-    pub const fn gnar_r_2(ctx: &Ctx) -> f32 {
+    pub const fn gnar_r2(ctx: &Ctx) -> f32 {
         100.0 + 100.0 * ctx.r_level + 0.5 * ctx.bonus_ad + 1.0 * ctx.ability_power
     }
     pub static GRAGAS: CachedChampion = CachedChampion {
@@ -5222,8 +5169,7 @@ pub mod champions {
         attack_type: AttackType::Melee,
         positions: &[Position::Jungle, Position::Middle, Position::Top],
         closures: &[
-            gragas_q_1, gragas_q_2, gragas_q_3, gragas_q_4, gragas_w_1, gragas_w_2, gragas_e_1,
-            gragas_r_1,
+            gragas_q1, gragas_q2, gragas_q3, gragas_q4, gragas_w1, gragas_w2, gragas_e1, gragas_r1,
         ],
         metadata: &[
             TypeMetadata {
@@ -5304,28 +5250,28 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn gragas_q_1(ctx: &Ctx) -> f32 {
+    pub const fn gragas_q1(ctx: &Ctx) -> f32 {
         60.0 + 60.0 * ctx.q_level + 1.2 * ctx.ability_power
     }
-    pub const fn gragas_q_2(ctx: &Ctx) -> f32 {
+    pub const fn gragas_q2(ctx: &Ctx) -> f32 {
         42.0 + 42.0 * ctx.q_level + 0.84 * ctx.ability_power
     }
-    pub const fn gragas_q_3(ctx: &Ctx) -> f32 {
+    pub const fn gragas_q3(ctx: &Ctx) -> f32 {
         40.0 + 40.0 * ctx.q_level + 0.8 * ctx.ability_power
     }
-    pub const fn gragas_q_4(ctx: &Ctx) -> f32 {
+    pub const fn gragas_q4(ctx: &Ctx) -> f32 {
         28.0 + 28.0 * ctx.q_level + 0.56 * ctx.ability_power
     }
-    pub const fn gragas_w_1(ctx: &Ctx) -> f32 {
+    pub const fn gragas_w1(ctx: &Ctx) -> f32 {
         0.08 + 0.02 * ctx.w_level + 0.04 * 0.01 * ctx.ability_power
     }
-    pub const fn gragas_w_2(ctx: &Ctx) -> f32 {
+    pub const fn gragas_w2(ctx: &Ctx) -> f32 {
         -10.0 + 30.0 * ctx.w_level + 0.07 * ctx.enemy_max_health + 0.7 * ctx.ability_power
     }
-    pub const fn gragas_e_1(ctx: &Ctx) -> f32 {
+    pub const fn gragas_e1(ctx: &Ctx) -> f32 {
         35.0 + 45.0 * ctx.e_level + 0.6 * ctx.ability_power
     }
-    pub const fn gragas_r_1(ctx: &Ctx) -> f32 {
+    pub const fn gragas_r1(ctx: &Ctx) -> f32 {
         100.0 + 100.0 * ctx.r_level + 0.8 * ctx.ability_power
     }
     pub static GRAVES: CachedChampion = CachedChampion {
@@ -5334,7 +5280,7 @@ pub mod champions {
         attack_type: AttackType::Ranged,
         positions: &[Position::Jungle],
         closures: &[
-            graves_q_1, graves_q_2, graves_q_3, graves_w_1, graves_r_1, graves_r_2,
+            graves_q1, graves_q2, graves_q3, graves_w1, graves_r1, graves_r2,
         ],
         metadata: &[
             TypeMetadata {
@@ -5405,22 +5351,22 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn graves_q_1(ctx: &Ctx) -> f32 {
+    pub const fn graves_q1(ctx: &Ctx) -> f32 {
         25.0 + 25.0 * ctx.q_level + 0.65 * ctx.bonus_ad
     }
-    pub const fn graves_q_2(ctx: &Ctx) -> f32 {
+    pub const fn graves_q2(ctx: &Ctx) -> f32 {
         35.0 + 45.0 * ctx.q_level + (0.4 + 0.15 * ctx.q_level) * ctx.bonus_ad
     }
-    pub const fn graves_q_3(ctx: &Ctx) -> f32 {
+    pub const fn graves_q3(ctx: &Ctx) -> f32 {
         60.0 + 70.0 * ctx.q_level + (1.05 + 0.15 * ctx.q_level) * ctx.bonus_ad
     }
-    pub const fn graves_w_1(ctx: &Ctx) -> f32 {
+    pub const fn graves_w1(ctx: &Ctx) -> f32 {
         10.0 + 50.0 * ctx.w_level + 0.6 * ctx.ability_power
     }
-    pub const fn graves_r_1(ctx: &Ctx) -> f32 {
+    pub const fn graves_r1(ctx: &Ctx) -> f32 {
         125.0 + 150.0 * ctx.r_level + 1.5 * ctx.bonus_ad
     }
-    pub const fn graves_r_2(ctx: &Ctx) -> f32 {
+    pub const fn graves_r2(ctx: &Ctx) -> f32 {
         80.0 + 120.0 * ctx.r_level + 1.2 * ctx.bonus_ad
     }
     pub static GWEN: CachedChampion = CachedChampion {
@@ -5429,8 +5375,8 @@ pub mod champions {
         attack_type: AttackType::Melee,
         positions: &[Position::Jungle, Position::Top],
         closures: &[
-            gwen_q_1, gwen_q_2, gwen_q_3, gwen_q_4, gwen_q_5, gwen_q_6, gwen_q_7, gwen_q_8,
-            gwen_r_1, gwen_r_2, gwen_r_3, gwen_r_4, gwen_r_5,
+            gwen_q1, gwen_q2, gwen_q3, gwen_q4, gwen_q5, gwen_q6, gwen_q7, gwen_q8, gwen_r1,
+            gwen_r2, gwen_r3, gwen_r4, gwen_r5,
         ],
         metadata: &[
             TypeMetadata {
@@ -5536,64 +5482,64 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn gwen_q_1(ctx: &Ctx) -> f32 {
+    pub const fn gwen_q1(ctx: &Ctx) -> f32 {
         5.0 + 5.0 * ctx.q_level
             + 0.05 * ctx.ability_power
             + 0.01 * ctx.enemy_max_health
             + 0.006 * 0.01 * ctx.ability_power
     }
-    pub const fn gwen_q_2(ctx: &Ctx) -> f32 {
+    pub const fn gwen_q2(ctx: &Ctx) -> f32 {
         5.0 + 5.0 * ctx.q_level + 0.05 * ctx.ability_power
     }
-    pub const fn gwen_q_3(ctx: &Ctx) -> f32 {
+    pub const fn gwen_q3(ctx: &Ctx) -> f32 {
         35.0 + 25.0 * ctx.q_level
             + 0.35 * ctx.ability_power
             + 0.01 * ctx.enemy_max_health
             + 0.006 * 0.01 * ctx.ability_power
     }
-    pub const fn gwen_q_4(ctx: &Ctx) -> f32 {
+    pub const fn gwen_q4(ctx: &Ctx) -> f32 {
         35.0 + 25.0 * ctx.q_level + 0.35 * ctx.ability_power
     }
-    pub const fn gwen_q_5(ctx: &Ctx) -> f32 {
+    pub const fn gwen_q5(ctx: &Ctx) -> f32 {
         60.0 + 50.0 * ctx.q_level
             + 0.6 * ctx.ability_power
             + 0.06 * ctx.enemy_max_health
             + 0.036000000000000004 * 0.01 * ctx.ability_power
     }
-    pub const fn gwen_q_6(ctx: &Ctx) -> f32 {
+    pub const fn gwen_q6(ctx: &Ctx) -> f32 {
         60.0 + 50.0 * ctx.q_level + 0.6 * ctx.ability_power
     }
-    pub const fn gwen_q_7(ctx: &Ctx) -> f32 {
+    pub const fn gwen_q7(ctx: &Ctx) -> f32 {
         40.0 + 30.0 * ctx.q_level
             + 0.4 * ctx.ability_power
             + 0.02 * ctx.enemy_max_health
             + 0.012 * 0.01 * ctx.ability_power
     }
-    pub const fn gwen_q_8(ctx: &Ctx) -> f32 {
+    pub const fn gwen_q8(ctx: &Ctx) -> f32 {
         40.0 + 30.0 * ctx.q_level + 0.4 * ctx.ability_power
     }
-    pub const fn gwen_r_1(ctx: &Ctx) -> f32 {
+    pub const fn gwen_r1(ctx: &Ctx) -> f32 {
         5.0 + 30.0 * ctx.r_level
             + 0.1 * ctx.ability_power
             + 0.01 * ctx.enemy_max_health
             + 0.006 * 0.01 * ctx.ability_power
     }
-    pub const fn gwen_r_2(ctx: &Ctx) -> f32 {
+    pub const fn gwen_r2(ctx: &Ctx) -> f32 {
         5.0 + 30.0 * ctx.r_level + 0.1 * ctx.ability_power
     }
-    pub const fn gwen_r_3(ctx: &Ctx) -> f32 {
+    pub const fn gwen_r3(ctx: &Ctx) -> f32 {
         45.0 + 270.0 * ctx.r_level
             + 0.9 * ctx.ability_power
             + 0.09 * ctx.enemy_max_health
             + 0.054000000000000006 * 0.01 * ctx.ability_power
     }
-    pub const fn gwen_r_4(ctx: &Ctx) -> f32 {
+    pub const fn gwen_r4(ctx: &Ctx) -> f32 {
         15.0 + 90.0 * ctx.r_level
             + 0.3 * ctx.ability_power
             + 0.03 * ctx.enemy_max_health
             + 0.018000000000000002 * 0.01 * ctx.ability_power
     }
-    pub const fn gwen_r_5(ctx: &Ctx) -> f32 {
+    pub const fn gwen_r5(ctx: &Ctx) -> f32 {
         25.0 + 150.0 * ctx.r_level
             + 0.5 * ctx.ability_power
             + 0.05 * ctx.enemy_max_health
@@ -5605,13 +5551,7 @@ pub mod champions {
         attack_type: AttackType::Melee,
         positions: &[Position::Jungle],
         closures: &[
-            hecarim_q_1,
-            hecarim_q_2,
-            hecarim_w_1,
-            hecarim_w_2,
-            hecarim_e_1,
-            hecarim_e_2,
-            hecarim_r_1,
+            hecarim_q1, hecarim_q2, hecarim_w1, hecarim_w2, hecarim_e1, hecarim_e2, hecarim_r1,
         ],
         metadata: &[
             TypeMetadata {
@@ -5687,25 +5627,25 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn hecarim_q_1(ctx: &Ctx) -> f32 {
+    pub const fn hecarim_q1(ctx: &Ctx) -> f32 {
         21.0 + 15.0 * ctx.q_level + 0.54 * ctx.bonus_ad
     }
-    pub const fn hecarim_q_2(ctx: &Ctx) -> f32 {
+    pub const fn hecarim_q2(ctx: &Ctx) -> f32 {
         35.0 + 25.0 * ctx.q_level + 0.9 * ctx.bonus_ad
     }
-    pub const fn hecarim_w_1(ctx: &Ctx) -> f32 {
+    pub const fn hecarim_w1(ctx: &Ctx) -> f32 {
         10.0 + 10.0 * ctx.w_level + 0.2 * ctx.ability_power
     }
-    pub const fn hecarim_w_2(ctx: &Ctx) -> f32 {
+    pub const fn hecarim_w2(ctx: &Ctx) -> f32 {
         50.0 + 50.0 * ctx.w_level + 1.0 * ctx.ability_power
     }
-    pub const fn hecarim_e_1(ctx: &Ctx) -> f32 {
+    pub const fn hecarim_e1(ctx: &Ctx) -> f32 {
         30.0 + 30.0 * ctx.e_level + 1.0 * ctx.bonus_ad
     }
-    pub const fn hecarim_e_2(ctx: &Ctx) -> f32 {
+    pub const fn hecarim_e2(ctx: &Ctx) -> f32 {
         15.0 + 15.0 * ctx.e_level + 0.5 * ctx.bonus_ad
     }
-    pub const fn hecarim_r_1(ctx: &Ctx) -> f32 {
+    pub const fn hecarim_r1(ctx: &Ctx) -> f32 {
         50.0 + 100.0 * ctx.r_level + 1.0 * ctx.ability_power
     }
     pub static HEIMERDINGER: CachedChampion = CachedChampion {
@@ -5714,14 +5654,14 @@ pub mod champions {
         attack_type: AttackType::Ranged,
         positions: &[Position::Middle, Position::Support, Position::Top],
         closures: &[
-            heimerdinger_w_2,
-            heimerdinger_w_3,
-            heimerdinger_w_4,
-            heimerdinger_w_5,
-            heimerdinger_w_6,
-            heimerdinger_w_7,
-            heimerdinger_w_8,
-            heimerdinger_e_1,
+            heimerdinger_w2,
+            heimerdinger_w3,
+            heimerdinger_w4,
+            heimerdinger_w5,
+            heimerdinger_w6,
+            heimerdinger_w7,
+            heimerdinger_w8,
+            heimerdinger_e1,
         ],
         metadata: &[
             TypeMetadata {
@@ -5802,7 +5742,7 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn heimerdinger_w_2(ctx: &Ctx) -> f32 {
+    pub const fn heimerdinger_w2(ctx: &Ctx) -> f32 {
         match ctx.w_level as u8 {
             1 => 160.0 + 1.99 * ctx.ability_power,
             2 => 245.0,
@@ -5812,7 +5752,7 @@ pub mod champions {
             _ => unknown,
         }
     }
-    pub const fn heimerdinger_w_3(ctx: &Ctx) -> f32 {
+    pub const fn heimerdinger_w3(ctx: &Ctx) -> f32 {
         match ctx.w_level as u8 {
             1 => 80.0 + 1.03 * ctx.ability_power,
             2 => 125.0,
@@ -5822,7 +5762,7 @@ pub mod champions {
             _ => unknown,
         }
     }
-    pub const fn heimerdinger_w_4(ctx: &Ctx) -> f32 {
+    pub const fn heimerdinger_w4(ctx: &Ctx) -> f32 {
         match ctx.w_level as u8 {
             1 => 10.0 + 0.12 * ctx.ability_power,
             2 => 15.0,
@@ -5832,7 +5772,7 @@ pub mod champions {
             _ => unknown,
         }
     }
-    pub const fn heimerdinger_w_5(ctx: &Ctx) -> f32 {
+    pub const fn heimerdinger_w5(ctx: &Ctx) -> f32 {
         match ctx.w_level as u8 {
             1 => 30.0 + 0.36 * ctx.ability_power,
             2 => 45.0,
@@ -5842,7 +5782,7 @@ pub mod champions {
             _ => unknown,
         }
     }
-    pub const fn heimerdinger_w_6(ctx: &Ctx) -> f32 {
+    pub const fn heimerdinger_w6(ctx: &Ctx) -> f32 {
         match ctx.w_level as u8 {
             1 => 120.0 + 1.44 * ctx.ability_power,
             2 => 180.0,
@@ -5852,7 +5792,7 @@ pub mod champions {
             _ => unknown,
         }
     }
-    pub const fn heimerdinger_w_7(ctx: &Ctx) -> f32 {
+    pub const fn heimerdinger_w7(ctx: &Ctx) -> f32 {
         match ctx.w_level as u8 {
             1 => 40.0 + 0.48 * ctx.ability_power,
             2 => 60.0,
@@ -5862,7 +5802,7 @@ pub mod champions {
             _ => unknown,
         }
     }
-    pub const fn heimerdinger_w_8(ctx: &Ctx) -> f32 {
+    pub const fn heimerdinger_w8(ctx: &Ctx) -> f32 {
         match ctx.w_level as u8 {
             1 => 40.0 + 0.55 * ctx.ability_power,
             2 => 65.0,
@@ -5872,7 +5812,7 @@ pub mod champions {
             _ => unknown,
         }
     }
-    pub const fn heimerdinger_e_1(ctx: &Ctx) -> f32 {
+    pub const fn heimerdinger_e1(ctx: &Ctx) -> f32 {
         match ctx.e_level as u8 {
             1 => 60.0 + 0.6 * ctx.ability_power,
             2 => 100.0,
@@ -5887,7 +5827,7 @@ pub mod champions {
         adaptative_type: AdaptativeType::Magic,
         attack_type: AttackType::Ranged,
         positions: &[Position::Middle, Position::Support],
-        closures: &[hwei_r_1, hwei_r_2, hwei_r_3, hwei_r_4],
+        closures: &[hwei_r1, hwei_r2, hwei_r3, hwei_r4],
         metadata: &[
             TypeMetadata {
                 kind: R(_1),
@@ -5947,16 +5887,16 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn hwei_r_1(ctx: &Ctx) -> f32 {
+    pub const fn hwei_r1(ctx: &Ctx) -> f32 {
         2.5 * ctx.r_level + 0.0125 * ctx.ability_power
     }
-    pub const fn hwei_r_2(ctx: &Ctx) -> f32 {
+    pub const fn hwei_r2(ctx: &Ctx) -> f32 {
         30.0 * ctx.r_level + 0.15 * ctx.ability_power
     }
-    pub const fn hwei_r_3(ctx: &Ctx) -> f32 {
+    pub const fn hwei_r3(ctx: &Ctx) -> f32 {
         75.0 + 125.0 * ctx.r_level + 0.8 * ctx.ability_power
     }
-    pub const fn hwei_r_4(ctx: &Ctx) -> f32 {
+    pub const fn hwei_r4(ctx: &Ctx) -> f32 {
         75.0 + 155.0 * ctx.r_level + 0.95 * ctx.ability_power
     }
     pub static ILLAOI: CachedChampion = CachedChampion {
@@ -5964,7 +5904,7 @@ pub mod champions {
         adaptative_type: AdaptativeType::Physical,
         attack_type: AttackType::Melee,
         positions: &[Position::Top],
-        closures: &[illaoi_q_1, illaoi_w_1, illaoi_w_2, illaoi_e_1, illaoi_r_1],
+        closures: &[illaoi_q1, illaoi_w1, illaoi_w2, illaoi_e1, illaoi_r1],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -6029,19 +5969,19 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn illaoi_q_1(ctx: &Ctx) -> f32 {
+    pub const fn illaoi_q1(ctx: &Ctx) -> f32 {
         0.05 + 0.05 * ctx.q_level
     }
-    pub const fn illaoi_w_1(ctx: &Ctx) -> f32 {
+    pub const fn illaoi_w1(ctx: &Ctx) -> f32 {
         (0.025 + 0.005 * ctx.w_level) * ctx.enemy_max_health + 0.035 * 0.01 * ctx.attack_damage
     }
-    pub const fn illaoi_w_2(ctx: &Ctx) -> f32 {
+    pub const fn illaoi_w2(ctx: &Ctx) -> f32 {
         10.0 + 10.0 * ctx.w_level
     }
-    pub const fn illaoi_e_1(ctx: &Ctx) -> f32 {
+    pub const fn illaoi_e1(ctx: &Ctx) -> f32 {
         0.2 + 0.05 * ctx.e_level + 0.08 * 0.01 * ctx.attack_damage
     }
-    pub const fn illaoi_r_1(ctx: &Ctx) -> f32 {
+    pub const fn illaoi_r1(ctx: &Ctx) -> f32 {
         50.0 + 100.0 * ctx.r_level + 0.5 * ctx.bonus_ad
     }
     pub static IRELIA: CachedChampion = CachedChampion {
@@ -6049,7 +5989,7 @@ pub mod champions {
         adaptative_type: AdaptativeType::Physical,
         attack_type: AttackType::Melee,
         positions: &[Position::Middle, Position::Top],
-        closures: &[irelia_q_1, irelia_w_1, irelia_w_2, irelia_e_1, irelia_r_1],
+        closures: &[irelia_q1, irelia_w1, irelia_w2, irelia_e1, irelia_r1],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -6114,19 +6054,19 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn irelia_q_1(ctx: &Ctx) -> f32 {
+    pub const fn irelia_q1(ctx: &Ctx) -> f32 {
         -15.0 + 20.0 * ctx.q_level + 0.7 * ctx.attack_damage
     }
-    pub const fn irelia_w_1(ctx: &Ctx) -> f32 {
+    pub const fn irelia_w1(ctx: &Ctx) -> f32 {
         30.0 * ctx.w_level + 1.2 * ctx.attack_damage + 1.5 * ctx.ability_power
     }
-    pub const fn irelia_w_2(ctx: &Ctx) -> f32 {
+    pub const fn irelia_w2(ctx: &Ctx) -> f32 {
         10.0 * ctx.w_level + 0.4 * ctx.attack_damage + 0.5 * ctx.ability_power
     }
-    pub const fn irelia_e_1(ctx: &Ctx) -> f32 {
+    pub const fn irelia_e1(ctx: &Ctx) -> f32 {
         30.0 + 40.0 * ctx.e_level + 1.0 * ctx.ability_power
     }
-    pub const fn irelia_r_1(ctx: &Ctx) -> f32 {
+    pub const fn irelia_r1(ctx: &Ctx) -> f32 {
         50.0 + 75.0 * ctx.r_level + 0.7 * ctx.ability_power
     }
     pub static IVERN: CachedChampion = CachedChampion {
@@ -6134,7 +6074,7 @@ pub mod champions {
         adaptative_type: AdaptativeType::Magic,
         attack_type: AttackType::Ranged,
         positions: &[Position::Jungle],
-        closures: &[ivern_q_1, ivern_w_1, ivern_w_2, ivern_e_1],
+        closures: &[ivern_q1, ivern_w1, ivern_w2, ivern_e1],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -6194,16 +6134,16 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn ivern_q_1(ctx: &Ctx) -> f32 {
+    pub const fn ivern_q1(ctx: &Ctx) -> f32 {
         35.0 + 45.0 * ctx.q_level + 0.7 * ctx.ability_power
     }
-    pub const fn ivern_w_1(ctx: &Ctx) -> f32 {
+    pub const fn ivern_w1(ctx: &Ctx) -> f32 {
         12.5 + 7.5 * ctx.w_level + 0.2 * ctx.ability_power
     }
-    pub const fn ivern_w_2(ctx: &Ctx) -> f32 {
+    pub const fn ivern_w2(ctx: &Ctx) -> f32 {
         5.0 + 5.0 * ctx.w_level + 0.1 * ctx.ability_power
     }
-    pub const fn ivern_e_1(ctx: &Ctx) -> f32 {
+    pub const fn ivern_e1(ctx: &Ctx) -> f32 {
         50.0 + 20.0 * ctx.e_level + 0.8 * ctx.ability_power
     }
     pub static JANNA: CachedChampion = CachedChampion {
@@ -6211,7 +6151,7 @@ pub mod champions {
         adaptative_type: AdaptativeType::Magic,
         attack_type: AttackType::Ranged,
         positions: &[Position::Support],
-        closures: &[janna_q_1, janna_q_2, janna_q_3, janna_w_1, janna_e_1],
+        closures: &[janna_q1, janna_q2, janna_q3, janna_w1, janna_e1],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -6276,19 +6216,19 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn janna_q_1(ctx: &Ctx) -> f32 {
+    pub const fn janna_q1(ctx: &Ctx) -> f32 {
         5.0 + 5.0 * ctx.q_level + 0.1 * ctx.ability_power
     }
-    pub const fn janna_q_2(ctx: &Ctx) -> f32 {
+    pub const fn janna_q2(ctx: &Ctx) -> f32 {
         35.0 + 50.0 * ctx.q_level + 0.8 * ctx.ability_power
     }
-    pub const fn janna_q_3(ctx: &Ctx) -> f32 {
+    pub const fn janna_q3(ctx: &Ctx) -> f32 {
         20.0 + 35.0 * ctx.q_level + 0.5 * ctx.ability_power
     }
-    pub const fn janna_w_1(ctx: &Ctx) -> f32 {
+    pub const fn janna_w1(ctx: &Ctx) -> f32 {
         25.0 + 30.0 * ctx.w_level + 0.5 * ctx.ability_power + 0.3 * ctx.bonus_move_speed
     }
-    pub const fn janna_e_1(ctx: &Ctx) -> f32 {
+    pub const fn janna_e1(ctx: &Ctx) -> f32 {
         5.0 + 5.0 * ctx.e_level + 0.1 * ctx.ability_power
     }
     pub static JARVANIV: CachedChampion = CachedChampion {
@@ -6296,7 +6236,7 @@ pub mod champions {
         adaptative_type: AdaptativeType::Physical,
         attack_type: AttackType::Melee,
         positions: &[Position::Jungle],
-        closures: &[jarvaniv_q_1, jarvaniv_e_1, jarvaniv_r_1],
+        closures: &[jarvaniv_q1, jarvaniv_e1, jarvaniv_r1],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -6351,13 +6291,13 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn jarvaniv_q_1(ctx: &Ctx) -> f32 {
+    pub const fn jarvaniv_q1(ctx: &Ctx) -> f32 {
         50.0 + 40.0 * ctx.q_level + 1.45 * ctx.bonus_ad
     }
-    pub const fn jarvaniv_e_1(ctx: &Ctx) -> f32 {
+    pub const fn jarvaniv_e1(ctx: &Ctx) -> f32 {
         40.0 + 40.0 * ctx.e_level + 0.8 * ctx.ability_power
     }
-    pub const fn jarvaniv_r_1(ctx: &Ctx) -> f32 {
+    pub const fn jarvaniv_r1(ctx: &Ctx) -> f32 {
         75.0 + 125.0 * ctx.r_level + 1.8 * ctx.bonus_ad
     }
     pub static JAX: CachedChampion = CachedChampion {
@@ -6365,7 +6305,7 @@ pub mod champions {
         adaptative_type: AdaptativeType::Physical,
         attack_type: AttackType::Melee,
         positions: &[Position::Jungle, Position::Top],
-        closures: &[jax_q_1, jax_w_1, jax_e_1, jax_e_2, jax_r_1, jax_r_2],
+        closures: &[jax_q1, jax_w1, jax_e1, jax_e2, jax_r1, jax_r2],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -6435,22 +6375,22 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn jax_q_1(ctx: &Ctx) -> f32 {
+    pub const fn jax_q1(ctx: &Ctx) -> f32 {
         25.0 + 40.0 * ctx.q_level + 1.0 * ctx.bonus_ad
     }
-    pub const fn jax_w_1(ctx: &Ctx) -> f32 {
+    pub const fn jax_w1(ctx: &Ctx) -> f32 {
         15.0 + 35.0 * ctx.w_level + 0.6 * ctx.ability_power
     }
-    pub const fn jax_e_1(ctx: &Ctx) -> f32 {
+    pub const fn jax_e1(ctx: &Ctx) -> f32 {
         20.0 + 60.0 * ctx.e_level + 1.4 * ctx.ability_power + 0.07 * ctx.enemy_max_health
     }
-    pub const fn jax_e_2(ctx: &Ctx) -> f32 {
+    pub const fn jax_e2(ctx: &Ctx) -> f32 {
         10.0 + 30.0 * ctx.e_level + 0.7 * ctx.ability_power + 0.035 * ctx.enemy_max_health
     }
-    pub const fn jax_r_1(ctx: &Ctx) -> f32 {
+    pub const fn jax_r1(ctx: &Ctx) -> f32 {
         25.0 + 75.0 * ctx.r_level + 1.0 * ctx.ability_power
     }
-    pub const fn jax_r_2(ctx: &Ctx) -> f32 {
+    pub const fn jax_r2(ctx: &Ctx) -> f32 {
         20.0 + 55.0 * ctx.r_level + 0.6 * ctx.ability_power
     }
     pub static JAYCE: CachedChampion = CachedChampion {
@@ -6458,7 +6398,7 @@ pub mod champions {
         adaptative_type: AdaptativeType::Physical,
         attack_type: AttackType::Ranged,
         positions: &[Position::Middle, Position::Top],
-        closures: &[jayce_q_2, jayce_w_3, jayce_w_4, jayce_e_1, jayce_e_2],
+        closures: &[jayce_q2, jayce_w3, jayce_w4, jayce_e1, jayce_e2],
         metadata: &[
             TypeMetadata {
                 kind: Q(_2),
@@ -6523,19 +6463,19 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn jayce_q_2(ctx: &Ctx) -> f32 {
+    pub const fn jayce_q2(ctx: &Ctx) -> f32 {
         15.0 + 45.0 * ctx.q_level + 1.35 * ctx.bonus_ad
     }
-    pub const fn jayce_w_3(ctx: &Ctx) -> f32 {
+    pub const fn jayce_w3(ctx: &Ctx) -> f32 {
         20.0 + 15.0 * ctx.w_level + 0.25 * ctx.ability_power
     }
-    pub const fn jayce_w_4(ctx: &Ctx) -> f32 {
+    pub const fn jayce_w4(ctx: &Ctx) -> f32 {
         80.0 + 60.0 * ctx.w_level + 1.0 * ctx.ability_power
     }
-    pub const fn jayce_e_1(ctx: &Ctx) -> f32 {
+    pub const fn jayce_e1(ctx: &Ctx) -> f32 {
         100.0 + 100.0 * ctx.e_level
     }
-    pub const fn jayce_e_2(ctx: &Ctx) -> f32 {
+    pub const fn jayce_e2(ctx: &Ctx) -> f32 {
         (0.052 + 0.028 * ctx.e_level) * ctx.enemy_max_health + 1.0 * ctx.bonus_ad
     }
     pub static JHIN: CachedChampion = CachedChampion {
@@ -6544,8 +6484,8 @@ pub mod champions {
         attack_type: AttackType::Ranged,
         positions: &[Position::Bottom],
         closures: &[
-            jhin_q_1, jhin_q_2, jhin_q_3, jhin_w_1, jhin_w_2, jhin_e_1, jhin_e_2, jhin_r_1,
-            jhin_r_2, jhin_r_3, jhin_r_4,
+            jhin_q1, jhin_q2, jhin_q3, jhin_w1, jhin_w2, jhin_e1, jhin_e2, jhin_r1, jhin_r2,
+            jhin_r3, jhin_r4,
         ],
         metadata: &[
             TypeMetadata {
@@ -6641,44 +6581,44 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn jhin_q_1(ctx: &Ctx) -> f32 {
+    pub const fn jhin_q1(ctx: &Ctx) -> f32 {
         19.0 + 25.0 * ctx.q_level
             + (0.365 + 0.075 * ctx.q_level) * ctx.attack_damage
             + 0.6 * ctx.ability_power
     }
-    pub const fn jhin_q_2(ctx: &Ctx) -> f32 {
+    pub const fn jhin_q2(ctx: &Ctx) -> f32 {
         6.65 + 8.75 * ctx.q_level
             + (0.1277 + 0.0262 * ctx.q_level) * ctx.attack_damage
             + 0.21 * ctx.ability_power
     }
-    pub const fn jhin_q_3(ctx: &Ctx) -> f32 {
+    pub const fn jhin_q3(ctx: &Ctx) -> f32 {
         38.95
             + 51.25 * ctx.q_level
             + (0.7482 + 0.15375 * ctx.q_level) * ctx.attack_damage
             + 1.23 * ctx.ability_power
     }
-    pub const fn jhin_w_1(ctx: &Ctx) -> f32 {
+    pub const fn jhin_w1(ctx: &Ctx) -> f32 {
         26.25 + 26.25 * ctx.w_level + 0.375 * ctx.attack_damage
     }
-    pub const fn jhin_w_2(ctx: &Ctx) -> f32 {
+    pub const fn jhin_w2(ctx: &Ctx) -> f32 {
         35.0 + 35.0 * ctx.w_level + 0.5 * ctx.attack_damage
     }
-    pub const fn jhin_e_1(ctx: &Ctx) -> f32 {
+    pub const fn jhin_e1(ctx: &Ctx) -> f32 {
         -40.0 + 60.0 * ctx.e_level + 1.2 * ctx.attack_damage + 1.0 * ctx.ability_power
     }
-    pub const fn jhin_e_2(ctx: &Ctx) -> f32 {
+    pub const fn jhin_e2(ctx: &Ctx) -> f32 {
         -26.0 + 39.0 * ctx.e_level + 0.78 * ctx.attack_damage + 0.65 * ctx.ability_power
     }
-    pub const fn jhin_r_1(ctx: &Ctx) -> f32 {
+    pub const fn jhin_r1(ctx: &Ctx) -> f32 {
         256.0 * ctx.r_level + 1.0 * ctx.attack_damage
     }
-    pub const fn jhin_r_2(ctx: &Ctx) -> f32 {
+    pub const fn jhin_r2(ctx: &Ctx) -> f32 {
         64.0 * ctx.r_level + 0.25 * ctx.attack_damage
     }
-    pub const fn jhin_r_3(ctx: &Ctx) -> f32 {
+    pub const fn jhin_r3(ctx: &Ctx) -> f32 {
         512.0 * ctx.r_level + 2.0 * ctx.attack_damage
     }
-    pub const fn jhin_r_4(ctx: &Ctx) -> f32 {
+    pub const fn jhin_r4(ctx: &Ctx) -> f32 {
         128.0 * ctx.r_level + 0.5 * ctx.attack_damage
     }
     pub static JINX: CachedChampion = CachedChampion {
@@ -6686,7 +6626,7 @@ pub mod champions {
         adaptative_type: AdaptativeType::Physical,
         attack_type: AttackType::Ranged,
         positions: &[Position::Bottom],
-        closures: &[jinx_w_1, jinx_e_1, jinx_r_1, jinx_r_2, jinx_r_3, jinx_r_4],
+        closures: &[jinx_w1, jinx_e1, jinx_r1, jinx_r2, jinx_r3, jinx_r4],
         metadata: &[
             TypeMetadata {
                 kind: W(_1),
@@ -6756,28 +6696,28 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn jinx_w_1(ctx: &Ctx) -> f32 {
+    pub const fn jinx_w1(ctx: &Ctx) -> f32 {
         -40.0 + 50.0 * ctx.w_level + 1.4 * ctx.attack_damage
     }
-    pub const fn jinx_e_1(ctx: &Ctx) -> f32 {
+    pub const fn jinx_e1(ctx: &Ctx) -> f32 {
         40.0 + 50.0 * ctx.e_level + 1.0 * ctx.ability_power
     }
-    pub const fn jinx_r_1(ctx: &Ctx) -> f32 {
+    pub const fn jinx_r1(ctx: &Ctx) -> f32 {
         40.0 + 120.0 * ctx.r_level
             + 0.96 * ctx.bonus_ad
             + (0.16 + 0.04 * ctx.r_level) * ctx.missing_health
     }
-    pub const fn jinx_r_2(ctx: &Ctx) -> f32 {
+    pub const fn jinx_r2(ctx: &Ctx) -> f32 {
         4.0 + 12.0 * ctx.r_level
             + 0.096 * ctx.bonus_ad
             + (0.16 + 0.04 * ctx.r_level) * ctx.missing_health
     }
-    pub const fn jinx_r_3(ctx: &Ctx) -> f32 {
+    pub const fn jinx_r3(ctx: &Ctx) -> f32 {
         50.0 + 150.0 * ctx.r_level
             + 1.2 * ctx.bonus_ad
             + (0.2 + 0.05 * ctx.r_level) * ctx.missing_health
     }
-    pub const fn jinx_r_4(ctx: &Ctx) -> f32 {
+    pub const fn jinx_r4(ctx: &Ctx) -> f32 {
         5.0 + 15.0 * ctx.r_level
             + 0.12 * ctx.bonus_ad
             + (0.2 + 0.05 * ctx.r_level) * ctx.missing_health
@@ -6831,7 +6771,7 @@ pub mod champions {
         adaptative_type: AdaptativeType::Magic,
         attack_type: AttackType::Ranged,
         positions: &[Position::Bottom],
-        closures: &[kaisa_e_1],
+        closures: &[kaisa_e1],
         metadata: &[TypeMetadata {
             kind: E(_1),
             damage_type: DamageType::Unknown,
@@ -6874,7 +6814,7 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn kaisa_e_1(ctx: &Ctx) -> f32 {
+    pub const fn kaisa_e1(ctx: &Ctx) -> f32 {
         0.3 + 0.1 * ctx.e_level
     }
     pub static KALISTA: CachedChampion = CachedChampion {
@@ -6882,7 +6822,7 @@ pub mod champions {
         adaptative_type: AdaptativeType::Physical,
         attack_type: AttackType::Ranged,
         positions: &[Position::Bottom],
-        closures: &[kalista_q_2, kalista_w_2],
+        closures: &[kalista_q2, kalista_w2],
         metadata: &[
             TypeMetadata {
                 kind: Q(_2),
@@ -6932,10 +6872,10 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn kalista_q_2(ctx: &Ctx) -> f32 {
+    pub const fn kalista_q2(ctx: &Ctx) -> f32 {
         -55.0 + 65.0 * ctx.q_level + 1.05 * ctx.attack_damage
     }
-    pub const fn kalista_w_2(ctx: &Ctx) -> f32 {
+    pub const fn kalista_w2(ctx: &Ctx) -> f32 {
         75.0 + 25.0 * ctx.w_level
     }
     pub static KARMA: CachedChampion = CachedChampion {
@@ -6943,7 +6883,7 @@ pub mod champions {
         adaptative_type: AdaptativeType::Magic,
         attack_type: AttackType::Ranged,
         positions: &[Position::Middle, Position::Support, Position::Top],
-        closures: &[karma_q_1],
+        closures: &[karma_q1],
         metadata: &[TypeMetadata {
             kind: Q(_1),
             damage_type: DamageType::Magic,
@@ -6986,7 +6926,7 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn karma_q_1(ctx: &Ctx) -> f32 {
+    pub const fn karma_q1(ctx: &Ctx) -> f32 {
         match ctx.q_level as u8 {
             1 => 60.0 + 0.7 * ctx.ability_power,
             2 => 110.0,
@@ -7001,7 +6941,7 @@ pub mod champions {
         adaptative_type: AdaptativeType::Magic,
         attack_type: AttackType::Ranged,
         positions: &[Position::Jungle],
-        closures: &[karthus_q_1, karthus_w_1, karthus_r_1],
+        closures: &[karthus_q1, karthus_w1, karthus_r1],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -7056,13 +6996,13 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn karthus_q_1(ctx: &Ctx) -> f32 {
+    pub const fn karthus_q1(ctx: &Ctx) -> f32 {
         42.0 + 38.0 * ctx.q_level + 0.7 * ctx.ability_power
     }
-    pub const fn karthus_w_1(ctx: &Ctx) -> f32 {
+    pub const fn karthus_w1(ctx: &Ctx) -> f32 {
         700.0 + 100.0 * ctx.w_level
     }
-    pub const fn karthus_r_1(ctx: &Ctx) -> f32 {
+    pub const fn karthus_r1(ctx: &Ctx) -> f32 {
         50.0 + 150.0 * ctx.r_level + 0.7 * ctx.ability_power
     }
     pub static KASSADIN: CachedChampion = CachedChampion {
@@ -7070,7 +7010,7 @@ pub mod champions {
         adaptative_type: AdaptativeType::Magic,
         attack_type: AttackType::Melee,
         positions: &[Position::Middle],
-        closures: &[kassadin_q_1, kassadin_e_1, kassadin_r_1],
+        closures: &[kassadin_q1, kassadin_e1, kassadin_r1],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -7125,13 +7065,13 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn kassadin_q_1(ctx: &Ctx) -> f32 {
+    pub const fn kassadin_q1(ctx: &Ctx) -> f32 {
         35.0 + 30.0 * ctx.q_level + 0.7 * ctx.ability_power
     }
-    pub const fn kassadin_e_1(ctx: &Ctx) -> f32 {
+    pub const fn kassadin_e1(ctx: &Ctx) -> f32 {
         40.0 + 30.0 * ctx.e_level + 0.7 * ctx.ability_power
     }
-    pub const fn kassadin_r_1(ctx: &Ctx) -> f32 {
+    pub const fn kassadin_r1(ctx: &Ctx) -> f32 {
         50.0 + 20.0 * ctx.r_level + 0.5 * ctx.ability_power + 0.02 * ctx.max_mana
     }
     pub static KATARINA: CachedChampion = CachedChampion {
@@ -7139,7 +7079,7 @@ pub mod champions {
         adaptative_type: AdaptativeType::Magic,
         attack_type: AttackType::Melee,
         positions: &[Position::Middle],
-        closures: &[katarina_q_1, katarina_e_1],
+        closures: &[katarina_q1, katarina_e1],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -7189,10 +7129,10 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn katarina_q_1(ctx: &Ctx) -> f32 {
+    pub const fn katarina_q1(ctx: &Ctx) -> f32 {
         45.0 + 35.0 * ctx.q_level + 0.4 * ctx.ability_power
     }
-    pub const fn katarina_e_1(ctx: &Ctx) -> f32 {
+    pub const fn katarina_e1(ctx: &Ctx) -> f32 {
         10.0 + 10.0 * ctx.e_level + 0.4 * ctx.attack_damage + 0.25 * ctx.ability_power
     }
     pub static KAYLE: CachedChampion = CachedChampion {
@@ -7200,7 +7140,7 @@ pub mod champions {
         adaptative_type: AdaptativeType::Physical,
         attack_type: AttackType::Melee,
         positions: &[Position::Top],
-        closures: &[kayle_q_1, kayle_q_2, kayle_w_1],
+        closures: &[kayle_q1, kayle_q2, kayle_w1],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -7255,13 +7195,13 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn kayle_q_1(ctx: &Ctx) -> f32 {
+    pub const fn kayle_q1(ctx: &Ctx) -> f32 {
         20.0 + 40.0 * ctx.q_level + 0.6 * ctx.bonus_ad + 0.5 * ctx.ability_power
     }
-    pub const fn kayle_q_2(ctx: &Ctx) -> f32 {
+    pub const fn kayle_q2(ctx: &Ctx) -> f32 {
         0.2 + 0.05 * ctx.q_level
     }
-    pub const fn kayle_w_1(ctx: &Ctx) -> f32 {
+    pub const fn kayle_w1(ctx: &Ctx) -> f32 {
         0.2 + 0.04 * ctx.w_level + 0.08 * 0.01 * ctx.ability_power
     }
     pub static KAYN: CachedChampion = CachedChampion {
@@ -7269,7 +7209,7 @@ pub mod champions {
         adaptative_type: AdaptativeType::Physical,
         attack_type: AttackType::Melee,
         positions: &[Position::Jungle],
-        closures: &[kayn_q_1, kayn_w_1, kayn_e_1, kayn_r_2],
+        closures: &[kayn_q1, kayn_w1, kayn_e1, kayn_r2],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -7329,16 +7269,16 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn kayn_q_1(ctx: &Ctx) -> f32 {
+    pub const fn kayn_q1(ctx: &Ctx) -> f32 {
         50.0 + 25.0 * ctx.q_level + 0.85 * ctx.bonus_ad
     }
-    pub const fn kayn_w_1(ctx: &Ctx) -> f32 {
+    pub const fn kayn_w1(ctx: &Ctx) -> f32 {
         40.0 + 45.0 * ctx.w_level + 1.1 * ctx.bonus_ad
     }
-    pub const fn kayn_e_1(ctx: &Ctx) -> f32 {
+    pub const fn kayn_e1(ctx: &Ctx) -> f32 {
         6.5 + 0.5 * ctx.e_level
     }
-    pub const fn kayn_r_2(ctx: &Ctx) -> f32 {
+    pub const fn kayn_r2(ctx: &Ctx) -> f32 {
         50.0 + 100.0 * ctx.r_level + 1.5 * ctx.bonus_ad
     }
     pub static KENNEN: CachedChampion = CachedChampion {
@@ -7346,7 +7286,7 @@ pub mod champions {
         adaptative_type: AdaptativeType::Magic,
         attack_type: AttackType::Ranged,
         positions: &[Position::Top],
-        closures: &[kennen_q_1, kennen_w_1, kennen_e_1],
+        closures: &[kennen_q1, kennen_w1, kennen_e1],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -7401,13 +7341,13 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn kennen_q_1(ctx: &Ctx) -> f32 {
+    pub const fn kennen_q1(ctx: &Ctx) -> f32 {
         25.0 + 50.0 * ctx.q_level + 0.75 * ctx.ability_power
     }
-    pub const fn kennen_w_1(ctx: &Ctx) -> f32 {
+    pub const fn kennen_w1(ctx: &Ctx) -> f32 {
         45.0 + 25.0 * ctx.w_level + 0.8 * ctx.ability_power
     }
-    pub const fn kennen_e_1(ctx: &Ctx) -> f32 {
+    pub const fn kennen_e1(ctx: &Ctx) -> f32 {
         40.0 + 40.0 * ctx.e_level + 0.8 * ctx.ability_power
     }
     pub static KHAZIX: CachedChampion = CachedChampion {
@@ -7415,7 +7355,7 @@ pub mod champions {
         adaptative_type: AdaptativeType::Physical,
         attack_type: AttackType::Melee,
         positions: &[Position::Jungle],
-        closures: &[khazix_q_1],
+        closures: &[khazix_q1],
         metadata: &[TypeMetadata {
             kind: Q(_1),
             damage_type: DamageType::Physical,
@@ -7458,7 +7398,7 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn khazix_q_1(ctx: &Ctx) -> f32 {
+    pub const fn khazix_q1(ctx: &Ctx) -> f32 {
         115.5 + 52.5 * ctx.q_level + 2.31 * ctx.bonus_ad
     }
     pub static KINDRED: CachedChampion = CachedChampion {
@@ -7466,7 +7406,7 @@ pub mod champions {
         adaptative_type: AdaptativeType::Physical,
         attack_type: AttackType::Ranged,
         positions: &[Position::Jungle],
-        closures: &[kindred_q_5, kindred_q_6, kindred_e_2, kindred_r_1],
+        closures: &[kindred_q5, kindred_q6, kindred_e2, kindred_r1],
         metadata: &[
             TypeMetadata {
                 kind: Q(_5),
@@ -7526,19 +7466,19 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn kindred_q_5(ctx: &Ctx) -> f32 {
+    pub const fn kindred_q5(ctx: &Ctx) -> f32 {
         15.0 + 25.0 * ctx.q_level + 0.75 * ctx.bonus_ad
     }
-    pub const fn kindred_q_6(ctx: &Ctx) -> f32 {
+    pub const fn kindred_q6(ctx: &Ctx) -> f32 {
         4.5 - 0.5 * ctx.q_level
     }
-    pub const fn kindred_e_2(ctx: &Ctx) -> f32 {
+    pub const fn kindred_e2(ctx: &Ctx) -> f32 {
         50.0 + 30.0 * ctx.e_level
             + 1.0 * ctx.bonus_ad
             + 0.05 * ctx.missing_health
             + 0.005 * ctx.stacks
     }
-    pub const fn kindred_r_1(ctx: &Ctx) -> f32 {
+    pub const fn kindred_r1(ctx: &Ctx) -> f32 {
         150.0 + 75.0 * ctx.r_level
     }
     pub static KLED: CachedChampion = CachedChampion {
@@ -7546,7 +7486,7 @@ pub mod champions {
         adaptative_type: AdaptativeType::Physical,
         attack_type: AttackType::Melee,
         positions: &[Position::Top],
-        closures: &[kled_q_1],
+        closures: &[kled_q1],
         metadata: &[TypeMetadata {
             kind: Q(_1),
             damage_type: DamageType::Physical,
@@ -7589,7 +7529,7 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn kled_q_1(ctx: &Ctx) -> f32 {
+    pub const fn kled_q1(ctx: &Ctx) -> f32 {
         7.5 + 37.5 * ctx.q_level + 0.9 * ctx.bonus_ad
     }
     pub static KOGMAW: CachedChampion = CachedChampion {
@@ -7597,7 +7537,7 @@ pub mod champions {
         adaptative_type: AdaptativeType::Physical,
         attack_type: AttackType::Ranged,
         positions: &[Position::Bottom],
-        closures: &[kogmaw_q_1, kogmaw_r_1],
+        closures: &[kogmaw_q1, kogmaw_r1],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -7647,10 +7587,10 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn kogmaw_q_1(ctx: &Ctx) -> f32 {
+    pub const fn kogmaw_q1(ctx: &Ctx) -> f32 {
         35.0 + 45.0 * ctx.q_level + 0.9 * ctx.ability_power
     }
-    pub const fn kogmaw_r_1(ctx: &Ctx) -> f32 {
+    pub const fn kogmaw_r1(ctx: &Ctx) -> f32 {
         120.0
             + 80.0 * ctx.r_level
             + 1.5 * ctx.bonus_ad
@@ -7662,19 +7602,8 @@ pub mod champions {
         attack_type: AttackType::Ranged,
         positions: &[Position::Middle],
         closures: &[
-            leblanc_q_1,
-            leblanc_q_2,
-            leblanc_w_1,
-            leblanc_e_1,
-            leblanc_e_2,
-            leblanc_e_3,
-            leblanc_r_1,
-            leblanc_r_2,
-            leblanc_r_3,
-            leblanc_r_4,
-            leblanc_r_5,
-            leblanc_r_6,
-            leblanc_r_7,
+            leblanc_q1, leblanc_q2, leblanc_w1, leblanc_e1, leblanc_e2, leblanc_e3, leblanc_r1,
+            leblanc_r2, leblanc_r3, leblanc_r4, leblanc_r5, leblanc_r6, leblanc_r7,
         ],
         metadata: &[
             TypeMetadata {
@@ -7780,43 +7709,43 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn leblanc_q_1(ctx: &Ctx) -> f32 {
+    pub const fn leblanc_q1(ctx: &Ctx) -> f32 {
         40.0 + 25.0 * ctx.q_level + 0.4 * ctx.ability_power
     }
-    pub const fn leblanc_q_2(ctx: &Ctx) -> f32 {
+    pub const fn leblanc_q2(ctx: &Ctx) -> f32 {
         80.0 + 50.0 * ctx.q_level + 0.8 * ctx.ability_power
     }
-    pub const fn leblanc_w_1(ctx: &Ctx) -> f32 {
+    pub const fn leblanc_w1(ctx: &Ctx) -> f32 {
         35.0 + 40.0 * ctx.w_level + 0.8 * ctx.ability_power
     }
-    pub const fn leblanc_e_1(ctx: &Ctx) -> f32 {
+    pub const fn leblanc_e1(ctx: &Ctx) -> f32 {
         30.0 + 20.0 * ctx.e_level + 0.4 * ctx.ability_power
     }
-    pub const fn leblanc_e_2(ctx: &Ctx) -> f32 {
+    pub const fn leblanc_e2(ctx: &Ctx) -> f32 {
         40.0 + 40.0 * ctx.e_level + 0.85 * ctx.ability_power
     }
-    pub const fn leblanc_e_3(ctx: &Ctx) -> f32 {
+    pub const fn leblanc_e3(ctx: &Ctx) -> f32 {
         70.0 + 60.0 * ctx.e_level + 1.25 * ctx.ability_power
     }
-    pub const fn leblanc_r_1(ctx: &Ctx) -> f32 {
+    pub const fn leblanc_r1(ctx: &Ctx) -> f32 {
         150.0 * ctx.r_level + 0.8 * ctx.ability_power
     }
-    pub const fn leblanc_r_2(ctx: &Ctx) -> f32 {
+    pub const fn leblanc_r2(ctx: &Ctx) -> f32 {
         70.0 * ctx.r_level + 0.4 * ctx.ability_power
     }
-    pub const fn leblanc_r_3(ctx: &Ctx) -> f32 {
+    pub const fn leblanc_r3(ctx: &Ctx) -> f32 {
         140.0 * ctx.r_level + 0.85 * ctx.ability_power
     }
-    pub const fn leblanc_r_4(ctx: &Ctx) -> f32 {
+    pub const fn leblanc_r4(ctx: &Ctx) -> f32 {
         210.0 * ctx.r_level + 1.25 * ctx.ability_power
     }
-    pub const fn leblanc_r_5(ctx: &Ctx) -> f32 {
+    pub const fn leblanc_r5(ctx: &Ctx) -> f32 {
         140.0 * ctx.r_level + 0.8 * ctx.ability_power
     }
-    pub const fn leblanc_r_6(ctx: &Ctx) -> f32 {
+    pub const fn leblanc_r6(ctx: &Ctx) -> f32 {
         70.0 * ctx.r_level + 0.4 * ctx.ability_power
     }
-    pub const fn leblanc_r_7(ctx: &Ctx) -> f32 {
+    pub const fn leblanc_r7(ctx: &Ctx) -> f32 {
         210.0 * ctx.r_level + 1.2 * ctx.ability_power
     }
     pub static LEESIN: CachedChampion = CachedChampion {
@@ -7824,7 +7753,7 @@ pub mod champions {
         adaptative_type: AdaptativeType::Physical,
         attack_type: AttackType::Melee,
         positions: &[Position::Jungle],
-        closures: &[leesin_q_2, leesin_e_1, leesin_r_1, leesin_r_2],
+        closures: &[leesin_q2, leesin_e1, leesin_r1, leesin_r2],
         metadata: &[
             TypeMetadata {
                 kind: Q(_2),
@@ -7884,16 +7813,16 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn leesin_q_2(ctx: &Ctx) -> f32 {
+    pub const fn leesin_q2(ctx: &Ctx) -> f32 {
         30.0 + 30.0 * ctx.q_level + 0.95 * ctx.bonus_ad
     }
-    pub const fn leesin_e_1(ctx: &Ctx) -> f32 {
+    pub const fn leesin_e1(ctx: &Ctx) -> f32 {
         10.0 + 25.0 * ctx.e_level + 1.0 * ctx.attack_damage
     }
-    pub const fn leesin_r_1(ctx: &Ctx) -> f32 {
+    pub const fn leesin_r1(ctx: &Ctx) -> f32 {
         -50.0 + 225.0 * ctx.r_level + 2.0 * ctx.bonus_ad
     }
-    pub const fn leesin_r_2(ctx: &Ctx) -> f32 {
+    pub const fn leesin_r2(ctx: &Ctx) -> f32 {
         -50.0
             + 225.0 * ctx.r_level
             + 2.0 * ctx.bonus_ad
@@ -7904,7 +7833,7 @@ pub mod champions {
         adaptative_type: AdaptativeType::Physical,
         attack_type: AttackType::Melee,
         positions: &[Position::Support],
-        closures: &[leona_q_1, leona_w_1, leona_w_2, leona_e_1, leona_r_1],
+        closures: &[leona_q1, leona_w1, leona_w2, leona_e1, leona_r1],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -7969,19 +7898,19 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn leona_q_1(ctx: &Ctx) -> f32 {
+    pub const fn leona_q1(ctx: &Ctx) -> f32 {
         -15.0 + 25.0 * ctx.q_level + 0.3 * ctx.ability_power
     }
-    pub const fn leona_w_1(ctx: &Ctx) -> f32 {
+    pub const fn leona_w1(ctx: &Ctx) -> f32 {
         4.0 + 4.0 * ctx.w_level
     }
-    pub const fn leona_w_2(ctx: &Ctx) -> f32 {
+    pub const fn leona_w2(ctx: &Ctx) -> f32 {
         25.0 + 30.0 * ctx.w_level + 0.4 * ctx.ability_power
     }
-    pub const fn leona_e_1(ctx: &Ctx) -> f32 {
+    pub const fn leona_e1(ctx: &Ctx) -> f32 {
         10.0 + 40.0 * ctx.e_level + 0.4 * ctx.ability_power
     }
-    pub const fn leona_r_1(ctx: &Ctx) -> f32 {
+    pub const fn leona_r1(ctx: &Ctx) -> f32 {
         75.0 + 75.0 * ctx.r_level + 0.8 * ctx.ability_power
     }
     pub static LILLIA: CachedChampion = CachedChampion {
@@ -7990,8 +7919,7 @@ pub mod champions {
         attack_type: AttackType::Melee,
         positions: &[Position::Jungle],
         closures: &[
-            lillia_q_1, lillia_q_2, lillia_w_1, lillia_w_2, lillia_w_3, lillia_w_4, lillia_e_1,
-            lillia_r_1,
+            lillia_q1, lillia_q2, lillia_w1, lillia_w2, lillia_w3, lillia_w4, lillia_e1, lillia_r1,
         ],
         metadata: &[
             TypeMetadata {
@@ -8072,28 +8000,28 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn lillia_q_1(ctx: &Ctx) -> f32 {
+    pub const fn lillia_q1(ctx: &Ctx) -> f32 {
         25.0 + 10.0 * ctx.q_level + 0.35 * ctx.ability_power
     }
-    pub const fn lillia_q_2(ctx: &Ctx) -> f32 {
+    pub const fn lillia_q2(ctx: &Ctx) -> f32 {
         50.0 + 20.0 * ctx.q_level + 0.7 * ctx.ability_power
     }
-    pub const fn lillia_w_1(ctx: &Ctx) -> f32 {
+    pub const fn lillia_w1(ctx: &Ctx) -> f32 {
         180.0 + 60.0 * ctx.w_level + 1.05 * ctx.ability_power
     }
-    pub const fn lillia_w_2(ctx: &Ctx) -> f32 {
+    pub const fn lillia_w2(ctx: &Ctx) -> f32 {
         60.0 + 20.0 * ctx.w_level + 0.35 * ctx.ability_power
     }
-    pub const fn lillia_w_3(ctx: &Ctx) -> f32 {
+    pub const fn lillia_w3(ctx: &Ctx) -> f32 {
         90.0 + 30.0 * ctx.w_level + 0.525 * ctx.ability_power
     }
-    pub const fn lillia_w_4(ctx: &Ctx) -> f32 {
+    pub const fn lillia_w4(ctx: &Ctx) -> f32 {
         30.0 + 10.0 * ctx.w_level + 0.175 * ctx.ability_power
     }
-    pub const fn lillia_e_1(ctx: &Ctx) -> f32 {
+    pub const fn lillia_e1(ctx: &Ctx) -> f32 {
         35.0 + 25.0 * ctx.e_level + 0.5 * ctx.ability_power
     }
-    pub const fn lillia_r_1(ctx: &Ctx) -> f32 {
+    pub const fn lillia_r1(ctx: &Ctx) -> f32 {
         100.0 + 50.0 * ctx.r_level + 0.45 * ctx.ability_power
     }
     pub static LISSANDRA: CachedChampion = CachedChampion {
@@ -8101,7 +8029,7 @@ pub mod champions {
         adaptative_type: AdaptativeType::Magic,
         attack_type: AttackType::Ranged,
         positions: &[Position::Middle],
-        closures: &[lissandra_q_1, lissandra_w_1, lissandra_e_1, lissandra_r_1],
+        closures: &[lissandra_q1, lissandra_w1, lissandra_e1, lissandra_r1],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -8161,16 +8089,16 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn lissandra_q_1(ctx: &Ctx) -> f32 {
+    pub const fn lissandra_q1(ctx: &Ctx) -> f32 {
         45.0 + 35.0 * ctx.q_level + 0.75 * ctx.ability_power
     }
-    pub const fn lissandra_w_1(ctx: &Ctx) -> f32 {
+    pub const fn lissandra_w1(ctx: &Ctx) -> f32 {
         35.0 + 35.0 * ctx.w_level + 0.7 * ctx.ability_power
     }
-    pub const fn lissandra_e_1(ctx: &Ctx) -> f32 {
+    pub const fn lissandra_e1(ctx: &Ctx) -> f32 {
         35.0 + 35.0 * ctx.e_level + 0.6 * ctx.ability_power
     }
-    pub const fn lissandra_r_1(ctx: &Ctx) -> f32 {
+    pub const fn lissandra_r1(ctx: &Ctx) -> f32 {
         50.0 + 100.0 * ctx.r_level + 0.75 * ctx.ability_power
     }
     pub static LUCIAN: CachedChampion = CachedChampion {
@@ -8178,7 +8106,7 @@ pub mod champions {
         adaptative_type: AdaptativeType::Physical,
         attack_type: AttackType::Ranged,
         positions: &[Position::Bottom],
-        closures: &[lucian_q_1, lucian_w_1, lucian_r_1, lucian_r_2],
+        closures: &[lucian_q1, lucian_w1, lucian_r1, lucian_r2],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -8238,16 +8166,16 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn lucian_q_1(ctx: &Ctx) -> f32 {
+    pub const fn lucian_q1(ctx: &Ctx) -> f32 {
         45.0 + 35.0 * ctx.q_level + 1.0 * ctx.bonus_ad
     }
-    pub const fn lucian_w_1(ctx: &Ctx) -> f32 {
+    pub const fn lucian_w1(ctx: &Ctx) -> f32 {
         40.0 + 35.0 * ctx.w_level + 0.9 * ctx.ability_power
     }
-    pub const fn lucian_r_1(ctx: &Ctx) -> f32 {
+    pub const fn lucian_r1(ctx: &Ctx) -> f32 {
         30.0 * ctx.r_level + 0.5 * ctx.attack_damage + 0.3 * ctx.ability_power
     }
-    pub const fn lucian_r_2(ctx: &Ctx) -> f32 {
+    pub const fn lucian_r2(ctx: &Ctx) -> f32 {
         15.0 * ctx.r_level + 0.25 * ctx.attack_damage + 0.15 * ctx.ability_power
     }
     pub static LULU: CachedChampion = CachedChampion {
@@ -8256,7 +8184,7 @@ pub mod champions {
         attack_type: AttackType::Ranged,
         positions: &[Position::Support],
         closures: &[
-            lulu_q_1, lulu_q_2, lulu_q_3, lulu_q_4, lulu_q_5, lulu_q_6, lulu_e_1,
+            lulu_q1, lulu_q2, lulu_q3, lulu_q4, lulu_q5, lulu_q6, lulu_e1,
         ],
         metadata: &[
             TypeMetadata {
@@ -8332,25 +8260,25 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn lulu_q_1(ctx: &Ctx) -> f32 {
+    pub const fn lulu_q1(ctx: &Ctx) -> f32 {
         25.0 + 35.0 * ctx.q_level + 0.5 * ctx.ability_power
     }
-    pub const fn lulu_q_2(ctx: &Ctx) -> f32 {
+    pub const fn lulu_q2(ctx: &Ctx) -> f32 {
         17.5 + 24.5 * ctx.q_level + 0.35 * ctx.ability_power
     }
-    pub const fn lulu_q_3(ctx: &Ctx) -> f32 {
+    pub const fn lulu_q3(ctx: &Ctx) -> f32 {
         12.5 + 17.5 * ctx.q_level + 0.25 * ctx.ability_power
     }
-    pub const fn lulu_q_4(ctx: &Ctx) -> f32 {
+    pub const fn lulu_q4(ctx: &Ctx) -> f32 {
         8.75 + 12.25 * ctx.q_level + 0.175 * ctx.ability_power
     }
-    pub const fn lulu_q_5(ctx: &Ctx) -> f32 {
+    pub const fn lulu_q5(ctx: &Ctx) -> f32 {
         37.5 + 52.5 * ctx.q_level + 0.75 * ctx.ability_power
     }
-    pub const fn lulu_q_6(ctx: &Ctx) -> f32 {
+    pub const fn lulu_q6(ctx: &Ctx) -> f32 {
         26.25 + 36.75 * ctx.q_level + 0.525 * ctx.ability_power
     }
-    pub const fn lulu_e_1(ctx: &Ctx) -> f32 {
+    pub const fn lulu_e1(ctx: &Ctx) -> f32 {
         30.0 + 40.0 * ctx.e_level + 0.5 * ctx.ability_power
     }
     pub static LUX: CachedChampion = CachedChampion {
@@ -8358,7 +8286,7 @@ pub mod champions {
         adaptative_type: AdaptativeType::Magic,
         attack_type: AttackType::Ranged,
         positions: &[Position::Middle, Position::Support],
-        closures: &[lux_q_1, lux_e_1, lux_r_1],
+        closures: &[lux_q1, lux_e1, lux_r1],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -8413,13 +8341,13 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn lux_q_1(ctx: &Ctx) -> f32 {
+    pub const fn lux_q1(ctx: &Ctx) -> f32 {
         40.0 + 40.0 * ctx.q_level + 0.75 * ctx.ability_power
     }
-    pub const fn lux_e_1(ctx: &Ctx) -> f32 {
+    pub const fn lux_e1(ctx: &Ctx) -> f32 {
         15.0 + 50.0 * ctx.e_level + 0.8 * ctx.ability_power
     }
-    pub const fn lux_r_1(ctx: &Ctx) -> f32 {
+    pub const fn lux_r1(ctx: &Ctx) -> f32 {
         200.0 + 100.0 * ctx.r_level + 1.2 * ctx.ability_power
     }
     pub static MALPHITE: CachedChampion = CachedChampion {
@@ -8428,11 +8356,11 @@ pub mod champions {
         attack_type: AttackType::Melee,
         positions: &[Position::Middle, Position::Support, Position::Top],
         closures: &[
-            malphite_q_1,
-            malphite_w_1,
-            malphite_w_2,
-            malphite_e_1,
-            malphite_r_1,
+            malphite_q1,
+            malphite_w1,
+            malphite_w2,
+            malphite_e1,
+            malphite_r1,
         ],
         metadata: &[
             TypeMetadata {
@@ -8498,19 +8426,19 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn malphite_q_1(ctx: &Ctx) -> f32 {
+    pub const fn malphite_q1(ctx: &Ctx) -> f32 {
         20.0 + 50.0 * ctx.q_level + 0.6 * ctx.ability_power
     }
-    pub const fn malphite_w_1(ctx: &Ctx) -> f32 {
+    pub const fn malphite_w1(ctx: &Ctx) -> f32 {
         20.0 + 10.0 * ctx.w_level + 0.2 * ctx.ability_power + 0.15 * ctx.armor
     }
-    pub const fn malphite_w_2(ctx: &Ctx) -> f32 {
+    pub const fn malphite_w2(ctx: &Ctx) -> f32 {
         5.0 + 10.0 * ctx.w_level + 0.3 * ctx.ability_power + 0.15 * ctx.armor
     }
-    pub const fn malphite_e_1(ctx: &Ctx) -> f32 {
+    pub const fn malphite_e1(ctx: &Ctx) -> f32 {
         40.0 + 40.0 * ctx.e_level + 0.6 * ctx.ability_power + 0.4 * ctx.armor
     }
-    pub const fn malphite_r_1(ctx: &Ctx) -> f32 {
+    pub const fn malphite_r1(ctx: &Ctx) -> f32 {
         100.0 + 100.0 * ctx.r_level + 0.9 * ctx.ability_power
     }
     pub static MALZAHAR: CachedChampion = CachedChampion {
@@ -8519,15 +8447,15 @@ pub mod champions {
         attack_type: AttackType::Ranged,
         positions: &[Position::Middle],
         closures: &[
-            malzahar_q_1,
-            malzahar_w_1,
-            malzahar_w_2,
-            malzahar_e_1,
-            malzahar_e_2,
-            malzahar_r_1,
-            malzahar_r_2,
-            malzahar_r_3,
-            malzahar_r_4,
+            malzahar_q1,
+            malzahar_w1,
+            malzahar_w2,
+            malzahar_e1,
+            malzahar_e2,
+            malzahar_r1,
+            malzahar_r2,
+            malzahar_r3,
+            malzahar_r4,
         ],
         metadata: &[
             TypeMetadata {
@@ -8613,10 +8541,10 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn malzahar_q_1(ctx: &Ctx) -> f32 {
+    pub const fn malzahar_q1(ctx: &Ctx) -> f32 {
         35.0 + 35.0 * ctx.q_level + 0.55 * ctx.ability_power
     }
-    pub const fn malzahar_w_1(ctx: &Ctx) -> f32 {
+    pub const fn malzahar_w1(ctx: &Ctx) -> f32 {
         match ctx.w_level as u8 {
             1 => 5.0 + 12.0 + 0.4 * ctx.bonus_ad + 0.2 * ctx.ability_power,
             2 => 8.5 + 14.0 + 0.4 * ctx.bonus_ad + 0.2 * ctx.ability_power,
@@ -8639,7 +8567,7 @@ pub mod champions {
             _ => unknown,
         }
     }
-    pub const fn malzahar_w_2(ctx: &Ctx) -> f32 {
+    pub const fn malzahar_w2(ctx: &Ctx) -> f32 {
         match ctx.w_level as u8 {
             1 => 15.0 + 36.0 + 1.2 * ctx.bonus_ad + 0.6 * ctx.ability_power,
             2 => 25.5 + 42.0 + 1.2 * ctx.bonus_ad + 0.6 * ctx.ability_power,
@@ -8662,22 +8590,22 @@ pub mod champions {
             _ => unknown,
         }
     }
-    pub const fn malzahar_e_1(ctx: &Ctx) -> f32 {
+    pub const fn malzahar_e1(ctx: &Ctx) -> f32 {
         2.812 + 2.187 * ctx.e_level + 0.05 * ctx.ability_power
     }
-    pub const fn malzahar_e_2(ctx: &Ctx) -> f32 {
+    pub const fn malzahar_e2(ctx: &Ctx) -> f32 {
         45.0 + 35.0 * ctx.e_level + 0.8 * ctx.ability_power
     }
-    pub const fn malzahar_r_1(ctx: &Ctx) -> f32 {
+    pub const fn malzahar_r1(ctx: &Ctx) -> f32 {
         5.0 + 7.5 * ctx.r_level + 0.08 * ctx.ability_power
     }
-    pub const fn malzahar_r_2(ctx: &Ctx) -> f32 {
+    pub const fn malzahar_r2(ctx: &Ctx) -> f32 {
         50.0 + 75.0 * ctx.r_level + 0.8 * ctx.ability_power
     }
-    pub const fn malzahar_r_3(ctx: &Ctx) -> f32 {
+    pub const fn malzahar_r3(ctx: &Ctx) -> f32 {
         (0.005 + 0.005 * ctx.r_level) * ctx.enemy_max_health + 0.0025 * 0.01 * ctx.ability_power
     }
-    pub const fn malzahar_r_4(ctx: &Ctx) -> f32 {
+    pub const fn malzahar_r4(ctx: &Ctx) -> f32 {
         (0.05 + 0.05 * ctx.r_level) * ctx.enemy_max_health + 0.025 * 0.01 * ctx.ability_power
     }
     pub static MAOKAI: CachedChampion = CachedChampion {
@@ -8686,8 +8614,8 @@ pub mod champions {
         attack_type: AttackType::Melee,
         positions: &[Position::Jungle, Position::Support],
         closures: &[
-            maokai_q_1, maokai_q_2, maokai_q_3, maokai_w_1, maokai_e_1, maokai_e_2, maokai_e_3,
-            maokai_e_4, maokai_e_5, maokai_r_1,
+            maokai_q1, maokai_q2, maokai_q3, maokai_w1, maokai_e1, maokai_e2, maokai_e3, maokai_e4,
+            maokai_e5, maokai_r1,
         ],
         metadata: &[
             TypeMetadata {
@@ -8778,42 +8706,42 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn maokai_q_1(ctx: &Ctx) -> f32 {
+    pub const fn maokai_q1(ctx: &Ctx) -> f32 {
         110.0 + 10.0 * ctx.q_level
     }
-    pub const fn maokai_q_2(ctx: &Ctx) -> f32 {
+    pub const fn maokai_q2(ctx: &Ctx) -> f32 {
         20.0 + 45.0 * ctx.q_level
             + (0.015 + 0.005 * ctx.q_level) * ctx.enemy_max_health
             + 0.4 * ctx.ability_power
     }
-    pub const fn maokai_q_3(ctx: &Ctx) -> f32 {
+    pub const fn maokai_q3(ctx: &Ctx) -> f32 {
         130.0
             + 55.0 * ctx.q_level
             + (0.015 + 0.005 * ctx.q_level) * ctx.enemy_max_health
             + 0.4 * ctx.ability_power
     }
-    pub const fn maokai_w_1(ctx: &Ctx) -> f32 {
+    pub const fn maokai_w1(ctx: &Ctx) -> f32 {
         35.0 + 25.0 * ctx.w_level + 0.4 * ctx.ability_power
     }
-    pub const fn maokai_e_1(ctx: &Ctx) -> f32 {
+    pub const fn maokai_e1(ctx: &Ctx) -> f32 {
         16.66
             + 16.67 * ctx.e_level
             + 0.0333 * ctx.bonus_health
             + 0.16670000000000001 * ctx.ability_power
     }
-    pub const fn maokai_e_2(ctx: &Ctx) -> f32 {
+    pub const fn maokai_e2(ctx: &Ctx) -> f32 {
         25.0 + 25.0 * ctx.e_level + 0.05 * ctx.bonus_health + 0.25 * ctx.ability_power
     }
-    pub const fn maokai_e_3(ctx: &Ctx) -> f32 {
+    pub const fn maokai_e3(ctx: &Ctx) -> f32 {
         33.34 + 33.33 * ctx.e_level + 0.0667 * ctx.bonus_health + 0.3333 * ctx.ability_power
     }
-    pub const fn maokai_e_4(ctx: &Ctx) -> f32 {
+    pub const fn maokai_e4(ctx: &Ctx) -> f32 {
         50.0 + 50.0 * ctx.e_level + 0.1 * ctx.bonus_health + 0.5 * ctx.ability_power
     }
-    pub const fn maokai_e_5(ctx: &Ctx) -> f32 {
+    pub const fn maokai_e5(ctx: &Ctx) -> f32 {
         25.0 + 25.0 * ctx.e_level + 0.05 * ctx.bonus_health + 0.25 * ctx.ability_power
     }
-    pub const fn maokai_r_1(ctx: &Ctx) -> f32 {
+    pub const fn maokai_r1(ctx: &Ctx) -> f32 {
         75.0 + 75.0 * ctx.r_level + 0.75 * ctx.ability_power
     }
     pub static MASTERYI: CachedChampion = CachedChampion {
@@ -8822,16 +8750,16 @@ pub mod champions {
         attack_type: AttackType::Melee,
         positions: &[Position::Jungle],
         closures: &[
-            masteryi_q_1,
-            masteryi_q_2,
-            masteryi_q_3,
-            masteryi_q_4,
-            masteryi_q_5,
-            masteryi_q_6,
-            masteryi_q_7,
-            masteryi_w_1,
-            masteryi_w_2,
-            masteryi_e_1,
+            masteryi_q1,
+            masteryi_q2,
+            masteryi_q3,
+            masteryi_q4,
+            masteryi_q5,
+            masteryi_q6,
+            masteryi_q7,
+            masteryi_w1,
+            masteryi_w2,
+            masteryi_e1,
         ],
         metadata: &[
             TypeMetadata {
@@ -8922,34 +8850,34 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn masteryi_q_1(ctx: &Ctx) -> f32 {
+    pub const fn masteryi_q1(ctx: &Ctx) -> f32 {
         35.0 + 45.0 * ctx.q_level + 0.7 * ctx.attack_damage
     }
-    pub const fn masteryi_q_2(ctx: &Ctx) -> f32 {
+    pub const fn masteryi_q2(ctx: &Ctx) -> f32 {
         61.25 + 78.75 * ctx.q_level + 1.225 * ctx.attack_damage
     }
-    pub const fn masteryi_q_3(ctx: &Ctx) -> f32 {
+    pub const fn masteryi_q3(ctx: &Ctx) -> f32 {
         35.0 * ctx.q_level + 1.225 * ctx.attack_damage
     }
-    pub const fn masteryi_q_4(ctx: &Ctx) -> f32 {
+    pub const fn masteryi_q4(ctx: &Ctx) -> f32 {
         35.0 + 25.0 * ctx.q_level
     }
-    pub const fn masteryi_q_5(ctx: &Ctx) -> f32 {
+    pub const fn masteryi_q5(ctx: &Ctx) -> f32 {
         20.0 * ctx.q_level + 0.7 * ctx.attack_damage
     }
-    pub const fn masteryi_q_6(ctx: &Ctx) -> f32 {
+    pub const fn masteryi_q6(ctx: &Ctx) -> f32 {
         5.0 * ctx.q_level + 0.175 * ctx.attack_damage
     }
-    pub const fn masteryi_q_7(ctx: &Ctx) -> f32 {
+    pub const fn masteryi_q7(ctx: &Ctx) -> f32 {
         8.75 + 11.25 * ctx.q_level + 0.175 * ctx.attack_damage
     }
-    pub const fn masteryi_w_1(ctx: &Ctx) -> f32 {
+    pub const fn masteryi_w1(ctx: &Ctx) -> f32 {
         0.425 + 0.025 * ctx.w_level
     }
-    pub const fn masteryi_w_2(ctx: &Ctx) -> f32 {
+    pub const fn masteryi_w2(ctx: &Ctx) -> f32 {
         0.212 + 0.012 * ctx.w_level
     }
-    pub const fn masteryi_e_1(ctx: &Ctx) -> f32 {
+    pub const fn masteryi_e1(ctx: &Ctx) -> f32 {
         15.0 + 5.0 * ctx.e_level + 0.35 * ctx.bonus_ad
     }
     pub static MEL: CachedChampion = CachedChampion {
@@ -8958,8 +8886,8 @@ pub mod champions {
         attack_type: AttackType::Ranged,
         positions: &[Position::Middle, Position::Support],
         closures: &[
-            mel_q_1, mel_q_2, mel_q_3, mel_q_4, mel_w_1, mel_e_1, mel_e_2, mel_e_3, mel_e_4,
-            mel_e_5, mel_e_6, mel_r_2, mel_r_3,
+            mel_q1, mel_q2, mel_q3, mel_q4, mel_w1, mel_e1, mel_e2, mel_e3, mel_e4, mel_e5, mel_e6,
+            mel_r2, mel_r3,
         ],
         metadata: &[
             TypeMetadata {
@@ -9065,43 +8993,43 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn mel_q_1(ctx: &Ctx) -> f32 {
+    pub const fn mel_q1(ctx: &Ctx) -> f32 {
         10.5 + 2.5 * ctx.q_level + 0.085 * ctx.ability_power
     }
-    pub const fn mel_q_2(ctx: &Ctx) -> f32 {
+    pub const fn mel_q2(ctx: &Ctx) -> f32 {
         7.875 + 1.875 * ctx.q_level + 0.06375 * ctx.ability_power
     }
-    pub const fn mel_q_3(ctx: &Ctx) -> f32 {
+    pub const fn mel_q3(ctx: &Ctx) -> f32 {
         47.5 + 30.5 * ctx.q_level + (0.425 + 0.085 * ctx.q_level) * ctx.ability_power
     }
-    pub const fn mel_q_4(ctx: &Ctx) -> f32 {
+    pub const fn mel_q4(ctx: &Ctx) -> f32 {
         35.625 + 22.875 * ctx.q_level + (0.3187 + 0.0637 * ctx.q_level) * ctx.ability_power
     }
-    pub const fn mel_w_1(ctx: &Ctx) -> f32 {
+    pub const fn mel_w1(ctx: &Ctx) -> f32 {
         (0.35 + 0.05 * ctx.w_level) * 100.0 + 0.05 * 0.01 * ctx.ability_power
     }
-    pub const fn mel_e_1(ctx: &Ctx) -> f32 {
+    pub const fn mel_e1(ctx: &Ctx) -> f32 {
         20.0 + 40.0 * ctx.e_level + 0.6 * ctx.ability_power
     }
-    pub const fn mel_e_2(ctx: &Ctx) -> f32 {
+    pub const fn mel_e2(ctx: &Ctx) -> f32 {
         2.0 + 6.0 * ctx.e_level + 0.04 * ctx.ability_power
     }
-    pub const fn mel_e_3(ctx: &Ctx) -> f32 {
+    pub const fn mel_e3(ctx: &Ctx) -> f32 {
         0.25 + 0.75 * ctx.e_level + 0.005 * ctx.ability_power
     }
-    pub const fn mel_e_4(ctx: &Ctx) -> f32 {
+    pub const fn mel_e4(ctx: &Ctx) -> f32 {
         10.0 + 20.0 * ctx.e_level + 0.3 * ctx.ability_power
     }
-    pub const fn mel_e_5(ctx: &Ctx) -> f32 {
+    pub const fn mel_e5(ctx: &Ctx) -> f32 {
         4.0 + 12.0 * ctx.e_level + 0.08 * ctx.ability_power
     }
-    pub const fn mel_e_6(ctx: &Ctx) -> f32 {
+    pub const fn mel_e6(ctx: &Ctx) -> f32 {
         0.5 + 1.5 * ctx.e_level + 0.01 * ctx.ability_power
     }
-    pub const fn mel_r_2(ctx: &Ctx) -> f32 {
+    pub const fn mel_r2(ctx: &Ctx) -> f32 {
         10.0 * ctx.r_level
     }
-    pub const fn mel_r_3(ctx: &Ctx) -> f32 {
+    pub const fn mel_r3(ctx: &Ctx) -> f32 {
         1.0 * ctx.r_level
     }
     pub static MILIO: CachedChampion = CachedChampion {
@@ -9109,7 +9037,7 @@ pub mod champions {
         adaptative_type: AdaptativeType::Magic,
         attack_type: AttackType::Ranged,
         positions: &[Position::Support],
-        closures: &[milio_q_1],
+        closures: &[milio_q1],
         metadata: &[TypeMetadata {
             kind: Q(_1),
             damage_type: DamageType::Magic,
@@ -9152,7 +9080,7 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn milio_q_1(ctx: &Ctx) -> f32 {
+    pub const fn milio_q1(ctx: &Ctx) -> f32 {
         20.0 + 60.0 * ctx.q_level + 1.2 * ctx.ability_power
     }
     pub static MISSFORTUNE: CachedChampion = CachedChampion {
@@ -9161,11 +9089,11 @@ pub mod champions {
         attack_type: AttackType::Ranged,
         positions: &[Position::Bottom],
         closures: &[
-            missfortune_q_1,
-            missfortune_e_1,
-            missfortune_e_2,
-            missfortune_r_1,
-            missfortune_r_2,
+            missfortune_q1,
+            missfortune_e1,
+            missfortune_e2,
+            missfortune_r1,
+            missfortune_r2,
         ],
         metadata: &[
             TypeMetadata {
@@ -9231,21 +9159,21 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn missfortune_q_1(ctx: &Ctx) -> f32 {
+    pub const fn missfortune_q1(ctx: &Ctx) -> f32 {
         -5.0 + 25.0 * ctx.q_level + 1.0 * ctx.attack_damage + 0.35 * ctx.ability_power
     }
-    pub const fn missfortune_e_1(ctx: &Ctx) -> f32 {
+    pub const fn missfortune_e1(ctx: &Ctx) -> f32 {
         5.0 + 3.75 * ctx.e_level + 0.15 * ctx.ability_power
     }
-    pub const fn missfortune_e_2(ctx: &Ctx) -> f32 {
+    pub const fn missfortune_e2(ctx: &Ctx) -> f32 {
         40.0 + 30.0 * ctx.e_level + 1.2 * ctx.ability_power
     }
-    pub const fn missfortune_r_1(ctx: &Ctx) -> f32 {
+    pub const fn missfortune_r1(ctx: &Ctx) -> f32 {
         60.0 + 220.0 * ctx.r_level
             + (7.2 + 1.2 * ctx.r_level) * ctx.attack_damage
             + (3.0 + 0.5 * ctx.r_level) * ctx.ability_power
     }
-    pub const fn missfortune_r_2(ctx: &Ctx) -> f32 {
+    pub const fn missfortune_r2(ctx: &Ctx) -> f32 {
         10.0 + 10.0 * ctx.r_level + 0.6 * ctx.attack_damage + 0.25 * ctx.ability_power
     }
     pub static MONKEYKING: CachedChampion = CachedChampion {
@@ -9254,12 +9182,12 @@ pub mod champions {
         attack_type: AttackType::Melee,
         positions: &[Position::Jungle, Position::Top],
         closures: &[
-            monkeyking_q_1,
-            monkeyking_w_1,
-            monkeyking_e_1,
-            monkeyking_r_1,
-            monkeyking_r_2,
-            monkeyking_r_3,
+            monkeyking_q1,
+            monkeyking_w1,
+            monkeyking_e1,
+            monkeyking_r1,
+            monkeyking_r2,
+            monkeyking_r3,
         ],
         metadata: &[
             TypeMetadata {
@@ -9330,22 +9258,22 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn monkeyking_q_1(ctx: &Ctx) -> f32 {
+    pub const fn monkeyking_q1(ctx: &Ctx) -> f32 {
         -5.0 + 25.0 * ctx.q_level + 0.5 * ctx.bonus_ad
     }
-    pub const fn monkeyking_w_1(ctx: &Ctx) -> f32 {
+    pub const fn monkeyking_w1(ctx: &Ctx) -> f32 {
         0.25 + 0.05 * ctx.w_level
     }
-    pub const fn monkeyking_e_1(ctx: &Ctx) -> f32 {
+    pub const fn monkeyking_e1(ctx: &Ctx) -> f32 {
         40.0 + 40.0 * ctx.e_level + 1.0 * ctx.ability_power
     }
-    pub const fn monkeyking_r_1(ctx: &Ctx) -> f32 {
+    pub const fn monkeyking_r1(ctx: &Ctx) -> f32 {
         (0.005 + 0.005 * ctx.r_level) * ctx.enemy_max_health + 0.34375 * ctx.attack_damage
     }
-    pub const fn monkeyking_r_2(ctx: &Ctx) -> f32 {
+    pub const fn monkeyking_r2(ctx: &Ctx) -> f32 {
         (0.04 + 0.04 * ctx.r_level) * ctx.enemy_max_health + 2.75 * ctx.attack_damage
     }
-    pub const fn monkeyking_r_3(ctx: &Ctx) -> f32 {
+    pub const fn monkeyking_r3(ctx: &Ctx) -> f32 {
         (0.08 + 0.08 * ctx.r_level) * ctx.enemy_max_health + 5.5 * ctx.attack_damage
     }
     pub static MORDEKAISER: CachedChampion = CachedChampion {
@@ -9353,7 +9281,7 @@ pub mod champions {
         adaptative_type: AdaptativeType::Magic,
         attack_type: AttackType::Melee,
         positions: &[Position::Top],
-        closures: &[mordekaiser_q_1, mordekaiser_q_2, mordekaiser_e_1],
+        closures: &[mordekaiser_q1, mordekaiser_q2, mordekaiser_e1],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -9408,10 +9336,10 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn mordekaiser_q_1(ctx: &Ctx) -> f32 {
+    pub const fn mordekaiser_q1(ctx: &Ctx) -> f32 {
         0.25 + 0.05 * ctx.q_level
     }
-    pub const fn mordekaiser_q_2(ctx: &Ctx) -> f32 {
+    pub const fn mordekaiser_q2(ctx: &Ctx) -> f32 {
         match ctx.q_level as u8 {
             1 => 0.0 + 80.0 + 1.2 * ctx.bonus_ad + 0.7 * ctx.ability_power,
             2 => 2.6470588235294117 + 115.0 + 1.2 * ctx.bonus_ad + 0.7 * ctx.ability_power,
@@ -9434,7 +9362,7 @@ pub mod champions {
             _ => unknown,
         }
     }
-    pub const fn mordekaiser_e_1(ctx: &Ctx) -> f32 {
+    pub const fn mordekaiser_e1(ctx: &Ctx) -> f32 {
         45.0 + 15.0 * ctx.e_level + 0.4 * ctx.ability_power
     }
     pub static MORGANA: CachedChampion = CachedChampion {
@@ -9443,13 +9371,7 @@ pub mod champions {
         attack_type: AttackType::Ranged,
         positions: &[Position::Middle, Position::Support],
         closures: &[
-            morgana_q_1,
-            morgana_w_1,
-            morgana_w_2,
-            morgana_w_3,
-            morgana_w_4,
-            morgana_r_1,
-            morgana_r_2,
+            morgana_q1, morgana_w1, morgana_w2, morgana_w3, morgana_w4, morgana_r1, morgana_r2,
         ],
         metadata: &[
             TypeMetadata {
@@ -9525,25 +9447,25 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn morgana_q_1(ctx: &Ctx) -> f32 {
+    pub const fn morgana_q1(ctx: &Ctx) -> f32 {
         25.0 + 55.0 * ctx.q_level + 0.9 * ctx.ability_power
     }
-    pub const fn morgana_w_1(ctx: &Ctx) -> f32 {
+    pub const fn morgana_w1(ctx: &Ctx) -> f32 {
         5.0 + 13.0 * ctx.w_level + 0.2 * ctx.ability_power
     }
-    pub const fn morgana_w_2(ctx: &Ctx) -> f32 {
+    pub const fn morgana_w2(ctx: &Ctx) -> f32 {
         50.0 + 130.0 * ctx.w_level + 2.0 * ctx.ability_power
     }
-    pub const fn morgana_w_3(ctx: &Ctx) -> f32 {
+    pub const fn morgana_w3(ctx: &Ctx) -> f32 {
         2.5 + 6.5 * ctx.w_level + 0.1 * ctx.ability_power
     }
-    pub const fn morgana_w_4(ctx: &Ctx) -> f32 {
+    pub const fn morgana_w4(ctx: &Ctx) -> f32 {
         25.0 + 65.0 * ctx.w_level + 1.0 * ctx.ability_power
     }
-    pub const fn morgana_r_1(ctx: &Ctx) -> f32 {
+    pub const fn morgana_r1(ctx: &Ctx) -> f32 {
         125.0 + 75.0 * ctx.r_level + 0.8 * ctx.ability_power
     }
-    pub const fn morgana_r_2(ctx: &Ctx) -> f32 {
+    pub const fn morgana_r2(ctx: &Ctx) -> f32 {
         250.0 + 150.0 * ctx.r_level + 1.6 * ctx.ability_power
     }
     pub static NAAFIRI: CachedChampion = CachedChampion {
@@ -9552,19 +9474,8 @@ pub mod champions {
         attack_type: AttackType::Melee,
         positions: &[Position::Middle],
         closures: &[
-            naafiri_q_1,
-            naafiri_q_2,
-            naafiri_q_3,
-            naafiri_q_4,
-            naafiri_q_5,
-            naafiri_q_6,
-            naafiri_q_7,
-            naafiri_q_8,
-            naafiri_e_1,
-            naafiri_e_2,
-            naafiri_e_3,
-            naafiri_r_1,
-            naafiri_r_2,
+            naafiri_q1, naafiri_q2, naafiri_q3, naafiri_q4, naafiri_q5, naafiri_q6, naafiri_q7,
+            naafiri_q8, naafiri_e1, naafiri_e2, naafiri_e3, naafiri_r1, naafiri_r2,
         ],
         metadata: &[
             TypeMetadata {
@@ -9670,43 +9581,43 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn naafiri_q_1(ctx: &Ctx) -> f32 {
+    pub const fn naafiri_q1(ctx: &Ctx) -> f32 {
         1.0 + 2.5 * ctx.q_level + 0.08 * ctx.bonus_ad
     }
-    pub const fn naafiri_q_2(ctx: &Ctx) -> f32 {
+    pub const fn naafiri_q2(ctx: &Ctx) -> f32 {
         30.0 + 5.0 * ctx.q_level + 0.2 * ctx.bonus_ad
     }
-    pub const fn naafiri_q_3(ctx: &Ctx) -> f32 {
+    pub const fn naafiri_q3(ctx: &Ctx) -> f32 {
         10.0 + 25.0 * ctx.q_level + 0.8 * ctx.bonus_ad
     }
-    pub const fn naafiri_q_4(ctx: &Ctx) -> f32 {
+    pub const fn naafiri_q4(ctx: &Ctx) -> f32 {
         40.0 + 30.0 * ctx.q_level + 1.0 * ctx.bonus_ad
     }
-    pub const fn naafiri_q_5(ctx: &Ctx) -> f32 {
+    pub const fn naafiri_q5(ctx: &Ctx) -> f32 {
         30.0 + 30.0 * ctx.q_level + 1.4 * ctx.bonus_ad
     }
-    pub const fn naafiri_q_6(ctx: &Ctx) -> f32 {
+    pub const fn naafiri_q6(ctx: &Ctx) -> f32 {
         70.0 + 60.0 * ctx.q_level + 2.4 * ctx.bonus_ad
     }
-    pub const fn naafiri_q_7(ctx: &Ctx) -> f32 {
+    pub const fn naafiri_q7(ctx: &Ctx) -> f32 {
         15.0 + 15.0 * ctx.q_level + 0.4 * ctx.bonus_ad
     }
-    pub const fn naafiri_q_8(ctx: &Ctx) -> f32 {
+    pub const fn naafiri_q8(ctx: &Ctx) -> f32 {
         55.0 + 45.0 * ctx.q_level + 1.4 * ctx.bonus_ad
     }
-    pub const fn naafiri_e_1(ctx: &Ctx) -> f32 {
+    pub const fn naafiri_e1(ctx: &Ctx) -> f32 {
         5.0 + 10.0 * ctx.e_level + 0.4 * ctx.bonus_ad
     }
-    pub const fn naafiri_e_2(ctx: &Ctx) -> f32 {
+    pub const fn naafiri_e2(ctx: &Ctx) -> f32 {
         35.0 + 25.0 * ctx.e_level + 0.8 * ctx.bonus_ad
     }
-    pub const fn naafiri_e_3(ctx: &Ctx) -> f32 {
+    pub const fn naafiri_e3(ctx: &Ctx) -> f32 {
         40.0 + 35.0 * ctx.e_level + 1.2 * ctx.bonus_ad
     }
-    pub const fn naafiri_r_1(ctx: &Ctx) -> f32 {
+    pub const fn naafiri_r1(ctx: &Ctx) -> f32 {
         50.0 + 100.0 * ctx.r_level + 1.2 * ctx.bonus_ad
     }
-    pub const fn naafiri_r_2(ctx: &Ctx) -> f32 {
+    pub const fn naafiri_r2(ctx: &Ctx) -> f32 {
         5.0 + 10.0 * ctx.r_level + 0.12 * ctx.bonus_ad
     }
     pub static NAMI: CachedChampion = CachedChampion {
@@ -9714,7 +9625,7 @@ pub mod champions {
         adaptative_type: AdaptativeType::Magic,
         attack_type: AttackType::Ranged,
         positions: &[Position::Support],
-        closures: &[nami_q_1, nami_w_1, nami_w_2, nami_e_1, nami_e_2, nami_r_1],
+        closures: &[nami_q1, nami_w1, nami_w2, nami_e1, nami_e2, nami_r1],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -9784,22 +9695,22 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn nami_q_1(ctx: &Ctx) -> f32 {
+    pub const fn nami_q1(ctx: &Ctx) -> f32 {
         35.0 + 55.0 * ctx.q_level + 0.5 * ctx.ability_power
     }
-    pub const fn nami_w_1(ctx: &Ctx) -> f32 {
+    pub const fn nami_w1(ctx: &Ctx) -> f32 {
         25.0 + 35.0 * ctx.w_level + 0.5 * ctx.ability_power
     }
-    pub const fn nami_w_2(ctx: &Ctx) -> f32 {
+    pub const fn nami_w2(ctx: &Ctx) -> f32 {
         20.0 + 28.0 * ctx.w_level + 0.4 * ctx.ability_power
     }
-    pub const fn nami_e_1(ctx: &Ctx) -> f32 {
+    pub const fn nami_e1(ctx: &Ctx) -> f32 {
         10.0 + 10.0 * ctx.e_level + 0.2 * ctx.ability_power
     }
-    pub const fn nami_e_2(ctx: &Ctx) -> f32 {
+    pub const fn nami_e2(ctx: &Ctx) -> f32 {
         30.0 + 30.0 * ctx.e_level + 0.6 * ctx.ability_power
     }
-    pub const fn nami_r_1(ctx: &Ctx) -> f32 {
+    pub const fn nami_r1(ctx: &Ctx) -> f32 {
         50.0 + 100.0 * ctx.r_level + 0.6 * ctx.ability_power
     }
     pub static NASUS: CachedChampion = CachedChampion {
@@ -9807,9 +9718,7 @@ pub mod champions {
         adaptative_type: AdaptativeType::Physical,
         attack_type: AttackType::Melee,
         positions: &[Position::Top],
-        closures: &[
-            nasus_q_1, nasus_e_1, nasus_e_2, nasus_e_3, nasus_r_1, nasus_r_2,
-        ],
+        closures: &[nasus_q1, nasus_e1, nasus_e2, nasus_e3, nasus_r1, nasus_r2],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -9879,22 +9788,22 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn nasus_q_1(ctx: &Ctx) -> f32 {
+    pub const fn nasus_q1(ctx: &Ctx) -> f32 {
         20.0 + 20.0 * ctx.q_level + 1.0 * ctx.stacks
     }
-    pub const fn nasus_e_1(ctx: &Ctx) -> f32 {
+    pub const fn nasus_e1(ctx: &Ctx) -> f32 {
         20.0 + 30.0 * ctx.e_level + 0.6 * ctx.ability_power
     }
-    pub const fn nasus_e_2(ctx: &Ctx) -> f32 {
+    pub const fn nasus_e2(ctx: &Ctx) -> f32 {
         4.0 + 6.0 * ctx.e_level + 0.12 * ctx.ability_power
     }
-    pub const fn nasus_e_3(ctx: &Ctx) -> f32 {
+    pub const fn nasus_e3(ctx: &Ctx) -> f32 {
         40.0 + 60.0 * ctx.e_level + 1.2 * ctx.ability_power
     }
-    pub const fn nasus_r_1(ctx: &Ctx) -> f32 {
+    pub const fn nasus_r1(ctx: &Ctx) -> f32 {
         (0.01 + 0.005 * ctx.r_level) * ctx.enemy_max_health + 0.005 * 0.01 * ctx.ability_power
     }
-    pub const fn nasus_r_2(ctx: &Ctx) -> f32 {
+    pub const fn nasus_r2(ctx: &Ctx) -> f32 {
         (0.3 + 0.15 * ctx.r_level) * ctx.enemy_max_health + 0.15 * 0.01 * ctx.ability_power
     }
     pub static NAUTILUS: CachedChampion = CachedChampion {
@@ -9903,15 +9812,15 @@ pub mod champions {
         attack_type: AttackType::Melee,
         positions: &[Position::Support],
         closures: &[
-            nautilus_q_1,
-            nautilus_w_1,
-            nautilus_w_2,
-            nautilus_e_1,
-            nautilus_e_2,
-            nautilus_e_3,
-            nautilus_e_4,
-            nautilus_r_1,
-            nautilus_r_2,
+            nautilus_q1,
+            nautilus_w1,
+            nautilus_w2,
+            nautilus_e1,
+            nautilus_e2,
+            nautilus_e3,
+            nautilus_e4,
+            nautilus_r1,
+            nautilus_r2,
         ],
         metadata: &[
             TypeMetadata {
@@ -9997,31 +9906,31 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn nautilus_q_1(ctx: &Ctx) -> f32 {
+    pub const fn nautilus_q1(ctx: &Ctx) -> f32 {
         40.0 + 45.0 * ctx.q_level + 0.9 * ctx.ability_power
     }
-    pub const fn nautilus_w_1(ctx: &Ctx) -> f32 {
+    pub const fn nautilus_w1(ctx: &Ctx) -> f32 {
         10.0 + 5.0 * ctx.w_level + 0.2 * ctx.ability_power
     }
-    pub const fn nautilus_w_2(ctx: &Ctx) -> f32 {
+    pub const fn nautilus_w2(ctx: &Ctx) -> f32 {
         20.0 + 10.0 * ctx.w_level + 0.4 * ctx.ability_power
     }
-    pub const fn nautilus_e_1(ctx: &Ctx) -> f32 {
+    pub const fn nautilus_e1(ctx: &Ctx) -> f32 {
         20.0 + 35.0 * ctx.e_level + 0.5 * ctx.ability_power
     }
-    pub const fn nautilus_e_2(ctx: &Ctx) -> f32 {
+    pub const fn nautilus_e2(ctx: &Ctx) -> f32 {
         40.0 + 70.0 * ctx.e_level + 1.0 * ctx.ability_power
     }
-    pub const fn nautilus_e_3(ctx: &Ctx) -> f32 {
+    pub const fn nautilus_e3(ctx: &Ctx) -> f32 {
         10.0 + 17.5 * ctx.e_level + 0.25 * ctx.ability_power
     }
-    pub const fn nautilus_e_4(ctx: &Ctx) -> f32 {
+    pub const fn nautilus_e4(ctx: &Ctx) -> f32 {
         85.0 + 40.0 * ctx.e_level + 0.5 * ctx.ability_power
     }
-    pub const fn nautilus_r_1(ctx: &Ctx) -> f32 {
+    pub const fn nautilus_r1(ctx: &Ctx) -> f32 {
         75.0 + 50.0 * ctx.r_level + 0.4 * ctx.ability_power
     }
-    pub const fn nautilus_r_2(ctx: &Ctx) -> f32 {
+    pub const fn nautilus_r2(ctx: &Ctx) -> f32 {
         25.0 + 125.0 * ctx.r_level + 0.8 * ctx.ability_power
     }
     pub static NEEKO: CachedChampion = CachedChampion {
@@ -10029,14 +9938,7 @@ pub mod champions {
         adaptative_type: AdaptativeType::Magic,
         attack_type: AttackType::Ranged,
         positions: &[Position::Middle, Position::Support],
-        closures: &[
-            neeko_q_1,
-            neeko_q_min,
-            neeko_q_max,
-            neeko_w_void,
-            neeko_e_void,
-            neeko_r_void,
-        ],
+        closures: &[neeko_q1, neeko_qmin, neeko_qmax, neeko_w, neeko_e, neeko_r],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -10110,22 +10012,22 @@ pub mod champions {
             alias: Q(Void),
         }],
     };
-    pub const fn neeko_q_1(ctx: &Ctx) -> f32 {
+    pub const fn neeko_q1(ctx: &Ctx) -> f32 {
         10.0 + 50.0 * ctx.q_level + 0.6 * ctx.ability_power
     }
-    pub const fn neeko_q_min(ctx: &Ctx) -> f32 {
+    pub const fn neeko_qmin(ctx: &Ctx) -> f32 {
         10.0 + 25.0 * ctx.q_level + 0.25 * ctx.ability_power
     }
-    pub const fn neeko_q_max(ctx: &Ctx) -> f32 {
+    pub const fn neeko_qmax(ctx: &Ctx) -> f32 {
         30.0 + 100.0 * ctx.q_level + 1.1 * ctx.ability_power
     }
-    pub const fn neeko_w_void(ctx: &Ctx) -> f32 {
+    pub const fn neeko_w(ctx: &Ctx) -> f32 {
         -5.0 + 35.0 * ctx.w_level + 0.6 * ctx.ability_power
     }
-    pub const fn neeko_e_void(ctx: &Ctx) -> f32 {
+    pub const fn neeko_e(ctx: &Ctx) -> f32 {
         35.0 + 35.0 * ctx.e_level + 0.65 * ctx.ability_power
     }
-    pub const fn neeko_r_void(ctx: &Ctx) -> f32 {
+    pub const fn neeko_r(ctx: &Ctx) -> f32 {
         -50.0 + 200.0 * ctx.r_level + 1.2 * ctx.ability_power
     }
     pub static NIDALEE: CachedChampion = CachedChampion {
@@ -10133,13 +10035,7 @@ pub mod champions {
         adaptative_type: AdaptativeType::Magic,
         attack_type: AttackType::Ranged,
         positions: &[Position::Jungle],
-        closures: &[
-            nidalee_q_3,
-            nidalee_q_4,
-            nidalee_w_2,
-            nidalee_w_3,
-            nidalee_e_1,
-        ],
+        closures: &[nidalee_q3, nidalee_q4, nidalee_w2, nidalee_w3, nidalee_e1],
         metadata: &[
             TypeMetadata {
                 kind: Q(_3),
@@ -10204,7 +10100,7 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn nidalee_q_3(ctx: &Ctx) -> f32 {
+    pub const fn nidalee_q3(ctx: &Ctx) -> f32 {
         match ctx.q_level as u8 {
             1 => 227.5 + 1.625 * ctx.ability_power,
             2 => 292.5,
@@ -10214,7 +10110,7 @@ pub mod champions {
             _ => unknown,
         }
     }
-    pub const fn nidalee_q_4(ctx: &Ctx) -> f32 {
+    pub const fn nidalee_q4(ctx: &Ctx) -> f32 {
         match ctx.q_level as u8 {
             1 => 70.0 + 0.5 * ctx.ability_power,
             2 => 90.0,
@@ -10224,7 +10120,7 @@ pub mod champions {
             _ => unknown,
         }
     }
-    pub const fn nidalee_w_2(ctx: &Ctx) -> f32 {
+    pub const fn nidalee_w2(ctx: &Ctx) -> f32 {
         match ctx.w_level as u8 {
             1 => 40.0 + 0.2 * ctx.ability_power,
             2 => 80.0,
@@ -10234,7 +10130,7 @@ pub mod champions {
             _ => unknown,
         }
     }
-    pub const fn nidalee_w_3(ctx: &Ctx) -> f32 {
+    pub const fn nidalee_w3(ctx: &Ctx) -> f32 {
         match ctx.w_level as u8 {
             1 => 10.0 + 0.05 * ctx.ability_power,
             2 => 20.0,
@@ -10244,7 +10140,7 @@ pub mod champions {
             _ => unknown,
         }
     }
-    pub const fn nidalee_e_1(ctx: &Ctx) -> f32 {
+    pub const fn nidalee_e1(ctx: &Ctx) -> f32 {
         0.2 + 0.1 * ctx.e_level
     }
     pub static NILAH: CachedChampion = CachedChampion {
@@ -10253,7 +10149,7 @@ pub mod champions {
         attack_type: AttackType::Melee,
         positions: &[Position::Bottom],
         closures: &[
-            nilah_q_1, nilah_q_2, nilah_e_1, nilah_r_1, nilah_r_2, nilah_r_3, nilah_r_4,
+            nilah_q1, nilah_q2, nilah_e1, nilah_r1, nilah_r2, nilah_r3, nilah_r4,
         ],
         metadata: &[
             TypeMetadata {
@@ -10329,25 +10225,25 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn nilah_q_1(ctx: &Ctx) -> f32 {
+    pub const fn nilah_q1(ctx: &Ctx) -> f32 {
         -20.0 + 20.0 * ctx.q_level + 2.0 * ctx.attack_damage
     }
-    pub const fn nilah_q_2(ctx: &Ctx) -> f32 {
+    pub const fn nilah_q2(ctx: &Ctx) -> f32 {
         -10.0 + 10.0 * ctx.q_level + 1.0 * ctx.attack_damage
     }
-    pub const fn nilah_e_1(ctx: &Ctx) -> f32 {
+    pub const fn nilah_e1(ctx: &Ctx) -> f32 {
         50.0 + 10.0 * ctx.e_level + 0.2 * ctx.bonus_ad
     }
-    pub const fn nilah_r_1(ctx: &Ctx) -> f32 {
+    pub const fn nilah_r1(ctx: &Ctx) -> f32 {
         25.0 + 100.0 * ctx.r_level + 1.0 * ctx.bonus_ad
     }
-    pub const fn nilah_r_2(ctx: &Ctx) -> f32 {
+    pub const fn nilah_r2(ctx: &Ctx) -> f32 {
         45.0 + 140.0 * ctx.r_level + 1.4 * ctx.bonus_ad
     }
-    pub const fn nilah_r_3(ctx: &Ctx) -> f32 {
+    pub const fn nilah_r3(ctx: &Ctx) -> f32 {
         5.0 + 10.0 * ctx.r_level + 0.1 * ctx.bonus_ad
     }
-    pub const fn nilah_r_4(ctx: &Ctx) -> f32 {
+    pub const fn nilah_r4(ctx: &Ctx) -> f32 {
         20.0 + 40.0 * ctx.r_level + 0.4 * ctx.bonus_ad
     }
     pub static NOCTURNE: CachedChampion = CachedChampion {
@@ -10356,11 +10252,11 @@ pub mod champions {
         attack_type: AttackType::Melee,
         positions: &[Position::Jungle],
         closures: &[
-            nocturne_q_1,
-            nocturne_q_2,
-            nocturne_e_1,
-            nocturne_e_2,
-            nocturne_r_1,
+            nocturne_q1,
+            nocturne_q2,
+            nocturne_e1,
+            nocturne_e2,
+            nocturne_r1,
         ],
         metadata: &[
             TypeMetadata {
@@ -10426,19 +10322,19 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn nocturne_q_1(ctx: &Ctx) -> f32 {
+    pub const fn nocturne_q1(ctx: &Ctx) -> f32 {
         20.0 + 45.0 * ctx.q_level + 0.85 * ctx.bonus_ad
     }
-    pub const fn nocturne_q_2(ctx: &Ctx) -> f32 {
+    pub const fn nocturne_q2(ctx: &Ctx) -> f32 {
         5.0 + 10.0 * ctx.q_level
     }
-    pub const fn nocturne_e_1(ctx: &Ctx) -> f32 {
+    pub const fn nocturne_e1(ctx: &Ctx) -> f32 {
         8.75 + 11.25 * ctx.e_level + 0.25 * ctx.ability_power
     }
-    pub const fn nocturne_e_2(ctx: &Ctx) -> f32 {
+    pub const fn nocturne_e2(ctx: &Ctx) -> f32 {
         35.0 + 45.0 * ctx.e_level + 1.0 * ctx.ability_power
     }
-    pub const fn nocturne_r_1(ctx: &Ctx) -> f32 {
+    pub const fn nocturne_r1(ctx: &Ctx) -> f32 {
         25.0 + 125.0 * ctx.r_level + 1.2 * ctx.bonus_ad
     }
     pub static NUNU: CachedChampion = CachedChampion {
@@ -10447,8 +10343,8 @@ pub mod champions {
         attack_type: AttackType::Melee,
         positions: &[Position::Jungle],
         closures: &[
-            nunu_q_1, nunu_q_2, nunu_w_1, nunu_w_2, nunu_w_3, nunu_w_4, nunu_e_1, nunu_e_2,
-            nunu_e_3, nunu_e_4, nunu_r_1,
+            nunu_q1, nunu_q2, nunu_w1, nunu_w2, nunu_w3, nunu_w4, nunu_e1, nunu_e2, nunu_e3,
+            nunu_e4, nunu_r1,
         ],
         metadata: &[
             TypeMetadata {
@@ -10544,37 +10440,37 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn nunu_q_1(ctx: &Ctx) -> f32 {
+    pub const fn nunu_q1(ctx: &Ctx) -> f32 {
         20.0 + 40.0 * ctx.q_level + 0.65 * ctx.ability_power + 0.05 * ctx.bonus_health
     }
-    pub const fn nunu_q_2(ctx: &Ctx) -> f32 {
+    pub const fn nunu_q2(ctx: &Ctx) -> f32 {
         200.0 + 200.0 * ctx.q_level
     }
-    pub const fn nunu_w_1(ctx: &Ctx) -> f32 {
+    pub const fn nunu_w1(ctx: &Ctx) -> f32 {
         135.0 + 45.0 * ctx.w_level + 1.5 * ctx.ability_power
     }
-    pub const fn nunu_w_2(ctx: &Ctx) -> f32 {
+    pub const fn nunu_w2(ctx: &Ctx) -> f32 {
         27.0 + 9.0 * ctx.w_level + 0.3 * ctx.ability_power
     }
-    pub const fn nunu_w_3(ctx: &Ctx) -> f32 {
+    pub const fn nunu_w3(ctx: &Ctx) -> f32 {
         44.955 + 14.985 * ctx.w_level + 0.49950000000000006 * ctx.ability_power
     }
-    pub const fn nunu_w_4(ctx: &Ctx) -> f32 {
+    pub const fn nunu_w4(ctx: &Ctx) -> f32 {
         8.991 + 2.997 * ctx.w_level + 0.0999 * ctx.ability_power
     }
-    pub const fn nunu_e_1(ctx: &Ctx) -> f32 {
+    pub const fn nunu_e1(ctx: &Ctx) -> f32 {
         8.0 + 8.0 * ctx.e_level + 0.15 * ctx.ability_power
     }
-    pub const fn nunu_e_2(ctx: &Ctx) -> f32 {
+    pub const fn nunu_e2(ctx: &Ctx) -> f32 {
         24.0 + 24.0 * ctx.e_level + 0.45 * ctx.ability_power
     }
-    pub const fn nunu_e_3(ctx: &Ctx) -> f32 {
+    pub const fn nunu_e3(ctx: &Ctx) -> f32 {
         10.0 + 10.0 * ctx.e_level + 0.8 * ctx.ability_power
     }
-    pub const fn nunu_e_4(ctx: &Ctx) -> f32 {
+    pub const fn nunu_e4(ctx: &Ctx) -> f32 {
         72.0 + 72.0 * ctx.e_level + 1.35 * ctx.ability_power
     }
-    pub const fn nunu_r_1(ctx: &Ctx) -> f32 {
+    pub const fn nunu_r1(ctx: &Ctx) -> f32 {
         300.0 + 325.0 * ctx.r_level + 3.0 * ctx.ability_power
     }
     pub static OLAF: CachedChampion = CachedChampion {
@@ -10582,7 +10478,7 @@ pub mod champions {
         adaptative_type: AdaptativeType::Physical,
         attack_type: AttackType::Melee,
         positions: &[Position::Top],
-        closures: &[olaf_q_1, olaf_q_2, olaf_q_3, olaf_e_1, olaf_r_1],
+        closures: &[olaf_q1, olaf_q2, olaf_q3, olaf_e1, olaf_r1],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -10647,19 +10543,19 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn olaf_q_1(ctx: &Ctx) -> f32 {
+    pub const fn olaf_q1(ctx: &Ctx) -> f32 {
         10.0 + 50.0 * ctx.q_level + 1.0 * ctx.bonus_ad
     }
-    pub const fn olaf_q_2(ctx: &Ctx) -> f32 {
+    pub const fn olaf_q2(ctx: &Ctx) -> f32 {
         -5.0 + 15.0 * ctx.q_level
     }
-    pub const fn olaf_q_3(ctx: &Ctx) -> f32 {
+    pub const fn olaf_q3(ctx: &Ctx) -> f32 {
         5.0 + 65.0 * ctx.q_level + 1.0 * ctx.bonus_ad
     }
-    pub const fn olaf_e_1(ctx: &Ctx) -> f32 {
+    pub const fn olaf_e1(ctx: &Ctx) -> f32 {
         25.0 + 45.0 * ctx.e_level + 0.5 * ctx.attack_damage
     }
-    pub const fn olaf_r_1(ctx: &Ctx) -> f32 {
+    pub const fn olaf_r1(ctx: &Ctx) -> f32 {
         10.0 * ctx.r_level + 0.25 * ctx.attack_damage
     }
     pub static ORIANNA: CachedChampion = CachedChampion {
@@ -10667,13 +10563,7 @@ pub mod champions {
         adaptative_type: AdaptativeType::Magic,
         attack_type: AttackType::Ranged,
         positions: &[Position::Middle],
-        closures: &[
-            orianna_q_1,
-            orianna_q_2,
-            orianna_w_1,
-            orianna_e_1,
-            orianna_r_1,
-        ],
+        closures: &[orianna_q1, orianna_q2, orianna_w1, orianna_e1, orianna_r1],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -10738,19 +10628,19 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn orianna_q_1(ctx: &Ctx) -> f32 {
+    pub const fn orianna_q1(ctx: &Ctx) -> f32 {
         30.0 + 30.0 * ctx.q_level + 0.55 * ctx.ability_power
     }
-    pub const fn orianna_q_2(ctx: &Ctx) -> f32 {
+    pub const fn orianna_q2(ctx: &Ctx) -> f32 {
         21.0 + 21.0 * ctx.q_level + 0.385 * ctx.ability_power
     }
-    pub const fn orianna_w_1(ctx: &Ctx) -> f32 {
+    pub const fn orianna_w1(ctx: &Ctx) -> f32 {
         30.0 + 40.0 * ctx.w_level + 0.8 * ctx.ability_power
     }
-    pub const fn orianna_e_1(ctx: &Ctx) -> f32 {
+    pub const fn orianna_e1(ctx: &Ctx) -> f32 {
         30.0 + 30.0 * ctx.e_level + 0.3 * ctx.ability_power
     }
-    pub const fn orianna_r_1(ctx: &Ctx) -> f32 {
+    pub const fn orianna_r1(ctx: &Ctx) -> f32 {
         100.0 + 150.0 * ctx.r_level + 0.95 * ctx.ability_power
     }
     pub static ORNN: CachedChampion = CachedChampion {
@@ -10759,8 +10649,8 @@ pub mod champions {
         attack_type: AttackType::Melee,
         positions: &[Position::Top],
         closures: &[
-            ornn_q_1, ornn_w_1, ornn_w_2, ornn_w_3, ornn_w_4, ornn_w_5, ornn_w_6, ornn_e_1,
-            ornn_r_1, ornn_r_2,
+            ornn_q1, ornn_w1, ornn_w2, ornn_w3, ornn_w4, ornn_w5, ornn_w6, ornn_e1, ornn_r1,
+            ornn_r2,
         ],
         metadata: &[
             TypeMetadata {
@@ -10851,34 +10741,34 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn ornn_q_1(ctx: &Ctx) -> f32 {
+    pub const fn ornn_q1(ctx: &Ctx) -> f32 {
         -5.0 + 25.0 * ctx.q_level + 1.1 * ctx.attack_damage
     }
-    pub const fn ornn_w_1(ctx: &Ctx) -> f32 {
+    pub const fn ornn_w1(ctx: &Ctx) -> f32 {
         6.0 + 10.0 * ctx.w_level
     }
-    pub const fn ornn_w_2(ctx: &Ctx) -> f32 {
+    pub const fn ornn_w2(ctx: &Ctx) -> f32 {
         40.0 + 12.0 * ctx.w_level
     }
-    pub const fn ornn_w_3(ctx: &Ctx) -> f32 {
+    pub const fn ornn_w3(ctx: &Ctx) -> f32 {
         30.0 + 50.0 * ctx.w_level
     }
-    pub const fn ornn_w_4(ctx: &Ctx) -> f32 {
+    pub const fn ornn_w4(ctx: &Ctx) -> f32 {
         200.0 + 60.0 * ctx.w_level
     }
-    pub const fn ornn_w_5(ctx: &Ctx) -> f32 {
+    pub const fn ornn_w5(ctx: &Ctx) -> f32 {
         (0.022 + 0.002 * ctx.w_level) * ctx.enemy_max_health
     }
-    pub const fn ornn_w_6(ctx: &Ctx) -> f32 {
+    pub const fn ornn_w6(ctx: &Ctx) -> f32 {
         (0.11 + 0.01 * ctx.w_level) * ctx.enemy_max_health
     }
-    pub const fn ornn_e_1(ctx: &Ctx) -> f32 {
+    pub const fn ornn_e1(ctx: &Ctx) -> f32 {
         35.0 + 45.0 * ctx.e_level + 0.4 * ctx.bonus_armor + 0.4 * ctx.bonus_magic_resist
     }
-    pub const fn ornn_r_1(ctx: &Ctx) -> f32 {
+    pub const fn ornn_r1(ctx: &Ctx) -> f32 {
         75.0 + 50.0 * ctx.r_level + 0.2 * ctx.ability_power
     }
-    pub const fn ornn_r_2(ctx: &Ctx) -> f32 {
+    pub const fn ornn_r2(ctx: &Ctx) -> f32 {
         150.0 + 100.0 * ctx.r_level + 0.4 * ctx.ability_power
     }
     pub static PANTHEON: CachedChampion = CachedChampion {
@@ -10892,16 +10782,16 @@ pub mod champions {
             Position::Top,
         ],
         closures: &[
-            pantheon_q_1,
-            pantheon_q_2,
-            pantheon_q_3,
-            pantheon_q_4,
-            pantheon_q_5,
-            pantheon_q_6,
-            pantheon_w_1,
-            pantheon_e_1,
-            pantheon_r_1,
-            pantheon_r_2,
+            pantheon_q1,
+            pantheon_q2,
+            pantheon_q3,
+            pantheon_q4,
+            pantheon_q5,
+            pantheon_q6,
+            pantheon_w1,
+            pantheon_e1,
+            pantheon_r1,
+            pantheon_r2,
         ],
         metadata: &[
             TypeMetadata {
@@ -10992,36 +10882,36 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn pantheon_q_1(ctx: &Ctx) -> f32 {
+    pub const fn pantheon_q1(ctx: &Ctx) -> f32 {
         40.0 + 30.0 * ctx.q_level + 1.15 * ctx.bonus_ad + 0.5 * ctx.ability_power
     }
-    pub const fn pantheon_q_2(ctx: &Ctx) -> f32 {
+    pub const fn pantheon_q2(ctx: &Ctx) -> f32 {
         20.0 + 15.0 * ctx.q_level + 0.575 * ctx.bonus_ad + 0.25 * ctx.ability_power
     }
-    pub const fn pantheon_q_3(ctx: &Ctx) -> f32 {
+    pub const fn pantheon_q3(ctx: &Ctx) -> f32 {
         80.0 + 75.0 * ctx.q_level + 2.3 * ctx.bonus_ad + 1.0 * ctx.ability_power
     }
-    pub const fn pantheon_q_4(ctx: &Ctx) -> f32 {
+    pub const fn pantheon_q4(ctx: &Ctx) -> f32 {
         40.0 + 37.5 * ctx.q_level + 1.15 * ctx.bonus_ad + 0.5 * ctx.ability_power
     }
-    pub const fn pantheon_q_5(ctx: &Ctx) -> f32 {
+    pub const fn pantheon_q5(ctx: &Ctx) -> f32 {
         80.0 + 75.0 * ctx.q_level + 2.3 * ctx.bonus_ad
     }
-    pub const fn pantheon_q_6(ctx: &Ctx) -> f32 {
+    pub const fn pantheon_q6(ctx: &Ctx) -> f32 {
         40.0 + 30.0 * ctx.q_level + 1.15 * ctx.bonus_ad
     }
-    pub const fn pantheon_w_1(ctx: &Ctx) -> f32 {
+    pub const fn pantheon_w1(ctx: &Ctx) -> f32 {
         (0.055 + 0.005 * ctx.w_level) * ctx.enemy_max_health
             + 0.015 * 0.01 * ctx.ability_power
             + 0.004 * 0.01 * ctx.bonus_health
     }
-    pub const fn pantheon_e_1(ctx: &Ctx) -> f32 {
+    pub const fn pantheon_e1(ctx: &Ctx) -> f32 {
         5.0 + 50.0 * ctx.e_level + 1.5 * ctx.bonus_ad
     }
-    pub const fn pantheon_r_1(ctx: &Ctx) -> f32 {
+    pub const fn pantheon_r1(ctx: &Ctx) -> f32 {
         100.0 + 200.0 * ctx.r_level + 1.0 * ctx.ability_power
     }
-    pub const fn pantheon_r_2(ctx: &Ctx) -> f32 {
+    pub const fn pantheon_r2(ctx: &Ctx) -> f32 {
         50.0 + 100.0 * ctx.r_level + 0.5 * ctx.ability_power
     }
     pub static POPPY: CachedChampion = CachedChampion {
@@ -11030,8 +10920,8 @@ pub mod champions {
         attack_type: AttackType::Melee,
         positions: &[Position::Jungle, Position::Top],
         closures: &[
-            poppy_q_1, poppy_q_2, poppy_q_3, poppy_q_4, poppy_q_5, poppy_w_1, poppy_e_1, poppy_e_2,
-            poppy_r_1, poppy_r_2,
+            poppy_q1, poppy_q2, poppy_q3, poppy_q4, poppy_q5, poppy_w1, poppy_e1, poppy_e2,
+            poppy_r1, poppy_r2,
         ],
         metadata: &[
             TypeMetadata {
@@ -11122,34 +11012,34 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn poppy_q_1(ctx: &Ctx) -> f32 {
+    pub const fn poppy_q1(ctx: &Ctx) -> f32 {
         20.0 + 30.0 * ctx.q_level
     }
-    pub const fn poppy_q_2(ctx: &Ctx) -> f32 {
+    pub const fn poppy_q2(ctx: &Ctx) -> f32 {
         25.0 + 55.0 * ctx.q_level + 1.0 * ctx.bonus_ad
     }
-    pub const fn poppy_q_3(ctx: &Ctx) -> f32 {
+    pub const fn poppy_q3(ctx: &Ctx) -> f32 {
         5.0 + 25.0 * ctx.q_level + 1.0 * ctx.bonus_ad + 0.09 * ctx.enemy_max_health
     }
-    pub const fn poppy_q_4(ctx: &Ctx) -> f32 {
+    pub const fn poppy_q4(ctx: &Ctx) -> f32 {
         50.0 + 110.0 * ctx.q_level + 2.0 * ctx.bonus_ad
     }
-    pub const fn poppy_q_5(ctx: &Ctx) -> f32 {
+    pub const fn poppy_q5(ctx: &Ctx) -> f32 {
         10.0 + 50.0 * ctx.q_level + 2.0 * ctx.bonus_ad + 0.18 * ctx.enemy_max_health
     }
-    pub const fn poppy_w_1(ctx: &Ctx) -> f32 {
+    pub const fn poppy_w1(ctx: &Ctx) -> f32 {
         30.0 + 40.0 * ctx.w_level + 0.7 * ctx.ability_power
     }
-    pub const fn poppy_e_1(ctx: &Ctx) -> f32 {
+    pub const fn poppy_e1(ctx: &Ctx) -> f32 {
         20.0 + 20.0 * ctx.e_level + 0.6 * ctx.bonus_ad
     }
-    pub const fn poppy_e_2(ctx: &Ctx) -> f32 {
+    pub const fn poppy_e2(ctx: &Ctx) -> f32 {
         40.0 + 40.0 * ctx.e_level + 1.2 * ctx.bonus_ad
     }
-    pub const fn poppy_r_1(ctx: &Ctx) -> f32 {
+    pub const fn poppy_r1(ctx: &Ctx) -> f32 {
         100.0 + 100.0 * ctx.r_level + 0.9 * ctx.bonus_ad
     }
-    pub const fn poppy_r_2(ctx: &Ctx) -> f32 {
+    pub const fn poppy_r2(ctx: &Ctx) -> f32 {
         50.0 + 50.0 * ctx.r_level + 0.45 * ctx.bonus_ad
     }
     pub static PYKE: CachedChampion = CachedChampion {
@@ -11157,7 +11047,7 @@ pub mod champions {
         adaptative_type: AdaptativeType::Physical,
         attack_type: AttackType::Melee,
         positions: &[Position::Support],
-        closures: &[pyke_q_1, pyke_e_1],
+        closures: &[pyke_q1, pyke_e1],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -11207,10 +11097,10 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn pyke_q_1(ctx: &Ctx) -> f32 {
+    pub const fn pyke_q1(ctx: &Ctx) -> f32 {
         50.0 + 50.0 * ctx.q_level + 0.75 * ctx.bonus_ad
     }
-    pub const fn pyke_e_1(ctx: &Ctx) -> f32 {
+    pub const fn pyke_e1(ctx: &Ctx) -> f32 {
         50.0 + 50.0 * ctx.e_level + 1.0 * ctx.bonus_ad
     }
     pub static QIYANA: CachedChampion = CachedChampion {
@@ -11219,7 +11109,7 @@ pub mod champions {
         attack_type: AttackType::Melee,
         positions: &[Position::Middle],
         closures: &[
-            qiyana_q_1, qiyana_q_2, qiyana_w_1, qiyana_e_1, qiyana_r_1, qiyana_r_2,
+            qiyana_q1, qiyana_q2, qiyana_w1, qiyana_e1, qiyana_r1, qiyana_r2,
         ],
         metadata: &[
             TypeMetadata {
@@ -11290,22 +11180,22 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn qiyana_q_1(ctx: &Ctx) -> f32 {
+    pub const fn qiyana_q1(ctx: &Ctx) -> f32 {
         40.0 + 30.0 * ctx.q_level + 0.85 * ctx.bonus_ad
     }
-    pub const fn qiyana_q_2(ctx: &Ctx) -> f32 {
+    pub const fn qiyana_q2(ctx: &Ctx) -> f32 {
         30.0 + 22.5 * ctx.q_level + 0.6375 * ctx.bonus_ad
     }
-    pub const fn qiyana_w_1(ctx: &Ctx) -> f32 {
+    pub const fn qiyana_w1(ctx: &Ctx) -> f32 {
         8.0 * ctx.w_level + 0.2 * ctx.bonus_ad + 0.45 * ctx.ability_power
     }
-    pub const fn qiyana_e_1(ctx: &Ctx) -> f32 {
+    pub const fn qiyana_e1(ctx: &Ctx) -> f32 {
         10.0 + 40.0 * ctx.e_level + 0.5 * ctx.bonus_ad
     }
-    pub const fn qiyana_r_1(ctx: &Ctx) -> f32 {
+    pub const fn qiyana_r1(ctx: &Ctx) -> f32 {
         250.0 + 250.0 * ctx.r_level + 1.25 * ctx.bonus_ad
     }
-    pub const fn qiyana_r_2(ctx: &Ctx) -> f32 {
+    pub const fn qiyana_r2(ctx: &Ctx) -> f32 {
         100.0 * ctx.r_level + 1.25 * ctx.bonus_ad + 0.1 * ctx.enemy_max_health
     }
     pub static QUINN: CachedChampion = CachedChampion {
@@ -11313,7 +11203,7 @@ pub mod champions {
         adaptative_type: AdaptativeType::Physical,
         attack_type: AttackType::Ranged,
         positions: &[Position::Top],
-        closures: &[quinn_q_1, quinn_e_1, quinn_r_1],
+        closures: &[quinn_q1, quinn_e1, quinn_r1],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -11368,15 +11258,15 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn quinn_q_1(ctx: &Ctx) -> f32 {
+    pub const fn quinn_q1(ctx: &Ctx) -> f32 {
         30.0 + 35.0 * ctx.q_level
             + (0.75 + 0.05 * ctx.q_level) * ctx.bonus_ad
             + 0.5 * ctx.ability_power
     }
-    pub const fn quinn_e_1(ctx: &Ctx) -> f32 {
+    pub const fn quinn_e1(ctx: &Ctx) -> f32 {
         15.0 + 25.0 * ctx.e_level + 0.2 * ctx.bonus_ad
     }
-    pub const fn quinn_r_1(ctx: &Ctx) -> f32 {
+    pub const fn quinn_r1(ctx: &Ctx) -> f32 {
         0.4 + 0.3 * ctx.r_level
     }
     pub static RAKAN: CachedChampion = CachedChampion {
@@ -11384,7 +11274,7 @@ pub mod champions {
         adaptative_type: AdaptativeType::Magic,
         attack_type: AttackType::Melee,
         positions: &[Position::Support],
-        closures: &[rakan_q_1, rakan_w_1, rakan_r_1],
+        closures: &[rakan_q1, rakan_w1, rakan_r1],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -11439,13 +11329,13 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn rakan_q_1(ctx: &Ctx) -> f32 {
+    pub const fn rakan_q1(ctx: &Ctx) -> f32 {
         25.0 + 45.0 * ctx.q_level + 0.7 * ctx.ability_power
     }
-    pub const fn rakan_w_1(ctx: &Ctx) -> f32 {
+    pub const fn rakan_w1(ctx: &Ctx) -> f32 {
         20.0 + 50.0 * ctx.w_level + 0.8 * ctx.ability_power
     }
-    pub const fn rakan_r_1(ctx: &Ctx) -> f32 {
+    pub const fn rakan_r1(ctx: &Ctx) -> f32 {
         100.0 * ctx.r_level + 0.5 * ctx.ability_power
     }
     pub static RAMMUS: CachedChampion = CachedChampion {
@@ -11453,7 +11343,7 @@ pub mod champions {
         adaptative_type: AdaptativeType::Physical,
         attack_type: AttackType::Melee,
         positions: &[Position::Jungle],
-        closures: &[rammus_q_1, rammus_e_1, rammus_r_1],
+        closures: &[rammus_q1, rammus_e1, rammus_r1],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -11508,13 +11398,13 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn rammus_q_1(ctx: &Ctx) -> f32 {
+    pub const fn rammus_q1(ctx: &Ctx) -> f32 {
         40.0 + 40.0 * ctx.q_level + 1.0 * ctx.ability_power
     }
-    pub const fn rammus_e_1(ctx: &Ctx) -> f32 {
+    pub const fn rammus_e1(ctx: &Ctx) -> f32 {
         60.0 + 20.0 * ctx.e_level + 0.7 * ctx.ability_power
     }
-    pub const fn rammus_r_1(ctx: &Ctx) -> f32 {
+    pub const fn rammus_r1(ctx: &Ctx) -> f32 {
         50.0 + 100.0 * ctx.r_level + 0.6 * ctx.ability_power
     }
     pub static REKSAI: CachedChampion = CachedChampion {
@@ -11523,7 +11413,7 @@ pub mod champions {
         attack_type: AttackType::Melee,
         positions: &[Position::Jungle],
         closures: &[
-            reksai_q_2, reksai_q_3, reksai_w_1, reksai_e_1, reksai_e_2, reksai_r_1,
+            reksai_q2, reksai_q3, reksai_w1, reksai_e1, reksai_e2, reksai_r1,
         ],
         metadata: &[
             TypeMetadata {
@@ -11594,22 +11484,22 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn reksai_q_2(ctx: &Ctx) -> f32 {
+    pub const fn reksai_q2(ctx: &Ctx) -> f32 {
         (0.75 + 0.15 * ctx.q_level) * ctx.attack_damage
     }
-    pub const fn reksai_q_3(ctx: &Ctx) -> f32 {
+    pub const fn reksai_q3(ctx: &Ctx) -> f32 {
         (0.25 + 0.05 * ctx.q_level) * ctx.attack_damage
     }
-    pub const fn reksai_w_1(ctx: &Ctx) -> f32 {
+    pub const fn reksai_w1(ctx: &Ctx) -> f32 {
         5.0 * ctx.w_level
     }
-    pub const fn reksai_e_1(ctx: &Ctx) -> f32 {
+    pub const fn reksai_e1(ctx: &Ctx) -> f32 {
         52.0 + 28.0 * ctx.e_level + 0.64 * ctx.bonus_ad
     }
-    pub const fn reksai_e_2(ctx: &Ctx) -> f32 {
+    pub const fn reksai_e2(ctx: &Ctx) -> f32 {
         65.0 + 35.0 * ctx.e_level + 0.8 * ctx.bonus_ad
     }
-    pub const fn reksai_r_1(ctx: &Ctx) -> f32 {
+    pub const fn reksai_r1(ctx: &Ctx) -> f32 {
         50.0 + 100.0 * ctx.r_level
             + 1.0 * ctx.bonus_ad
             + (0.1 + 0.05 * ctx.r_level) * ctx.enemy_max_health
@@ -11619,7 +11509,7 @@ pub mod champions {
         adaptative_type: AdaptativeType::Magic,
         attack_type: AttackType::Melee,
         positions: &[Position::Support],
-        closures: &[rell_q_1, rell_w_2, rell_e_1, rell_r_1, rell_r_2],
+        closures: &[rell_q1, rell_w2, rell_e1, rell_r1, rell_r2],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -11684,19 +11574,19 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn rell_q_1(ctx: &Ctx) -> f32 {
+    pub const fn rell_q1(ctx: &Ctx) -> f32 {
         20.0 + 40.0 * ctx.q_level + 0.6 * ctx.ability_power
     }
-    pub const fn rell_w_2(ctx: &Ctx) -> f32 {
+    pub const fn rell_w2(ctx: &Ctx) -> f32 {
         30.0 + 30.0 * ctx.w_level + 0.6 * ctx.ability_power
     }
-    pub const fn rell_e_1(ctx: &Ctx) -> f32 {
+    pub const fn rell_e1(ctx: &Ctx) -> f32 {
         (0.045 + 0.005 * ctx.e_level) * ctx.enemy_max_health + 0.03 * 0.01 * ctx.ability_power
     }
-    pub const fn rell_r_1(ctx: &Ctx) -> f32 {
+    pub const fn rell_r1(ctx: &Ctx) -> f32 {
         5.0 + 10.0 * ctx.r_level + 0.1375 * ctx.ability_power
     }
-    pub const fn rell_r_2(ctx: &Ctx) -> f32 {
+    pub const fn rell_r2(ctx: &Ctx) -> f32 {
         40.0 + 80.0 * ctx.r_level + 1.1 * ctx.ability_power
     }
     pub static RENATA: CachedChampion = CachedChampion {
@@ -11704,7 +11594,7 @@ pub mod champions {
         adaptative_type: AdaptativeType::Magic,
         attack_type: AttackType::Ranged,
         positions: &[Position::Support],
-        closures: &[renata_q_1, renata_e_1],
+        closures: &[renata_q1, renata_e1],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -11754,10 +11644,10 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn renata_q_1(ctx: &Ctx) -> f32 {
+    pub const fn renata_q1(ctx: &Ctx) -> f32 {
         35.0 + 45.0 * ctx.q_level + 0.8 * ctx.ability_power
     }
-    pub const fn renata_e_1(ctx: &Ctx) -> f32 {
+    pub const fn renata_e1(ctx: &Ctx) -> f32 {
         35.0 + 30.0 * ctx.e_level + 0.55 * ctx.ability_power
     }
     pub static RENEKTON: CachedChampion = CachedChampion {
@@ -11766,17 +11656,17 @@ pub mod champions {
         attack_type: AttackType::Melee,
         positions: &[Position::Top],
         closures: &[
-            renekton_q_1,
-            renekton_q_2,
-            renekton_w_1,
-            renekton_w_2,
-            renekton_w_3,
-            renekton_e_1,
-            renekton_e_2,
-            renekton_e_3,
-            renekton_e_4,
-            renekton_r_1,
-            renekton_r_2,
+            renekton_q1,
+            renekton_q2,
+            renekton_w1,
+            renekton_w2,
+            renekton_w3,
+            renekton_e1,
+            renekton_e2,
+            renekton_e3,
+            renekton_e4,
+            renekton_r1,
+            renekton_r2,
         ],
         metadata: &[
             TypeMetadata {
@@ -11872,37 +11762,37 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn renekton_q_1(ctx: &Ctx) -> f32 {
+    pub const fn renekton_q1(ctx: &Ctx) -> f32 {
         45.0 + 45.0 * ctx.q_level + 1.4 * ctx.bonus_ad
     }
-    pub const fn renekton_q_2(ctx: &Ctx) -> f32 {
+    pub const fn renekton_q2(ctx: &Ctx) -> f32 {
         30.0 + 30.0 * ctx.q_level + 1.0 * ctx.bonus_ad
     }
-    pub const fn renekton_w_1(ctx: &Ctx) -> f32 {
+    pub const fn renekton_w1(ctx: &Ctx) -> f32 {
         -10.0 + 15.0 * ctx.w_level + 0.75 * ctx.attack_damage
     }
-    pub const fn renekton_w_2(ctx: &Ctx) -> f32 {
+    pub const fn renekton_w2(ctx: &Ctx) -> f32 {
         -20.0 + 30.0 * ctx.w_level + 1.5 * ctx.attack_damage
     }
-    pub const fn renekton_w_3(ctx: &Ctx) -> f32 {
+    pub const fn renekton_w3(ctx: &Ctx) -> f32 {
         -30.0 + 45.0 * ctx.w_level + 2.25 * ctx.attack_damage
     }
-    pub const fn renekton_e_1(ctx: &Ctx) -> f32 {
+    pub const fn renekton_e1(ctx: &Ctx) -> f32 {
         10.0 + 30.0 * ctx.e_level + 0.9 * ctx.bonus_ad
     }
-    pub const fn renekton_e_2(ctx: &Ctx) -> f32 {
+    pub const fn renekton_e2(ctx: &Ctx) -> f32 {
         20.0 + 60.0 * ctx.e_level + 1.8 * ctx.bonus_ad
     }
-    pub const fn renekton_e_3(ctx: &Ctx) -> f32 {
+    pub const fn renekton_e3(ctx: &Ctx) -> f32 {
         25.0 + 45.0 * ctx.e_level + 1.35 * ctx.bonus_ad
     }
-    pub const fn renekton_e_4(ctx: &Ctx) -> f32 {
+    pub const fn renekton_e4(ctx: &Ctx) -> f32 {
         35.0 + 75.0 * ctx.e_level + 2.25 * ctx.bonus_ad
     }
-    pub const fn renekton_r_1(ctx: &Ctx) -> f32 {
+    pub const fn renekton_r1(ctx: &Ctx) -> f32 {
         -15.0 + 45.0 * ctx.r_level + 0.05 * ctx.bonus_ad + 0.05 * ctx.ability_power
     }
-    pub const fn renekton_r_2(ctx: &Ctx) -> f32 {
+    pub const fn renekton_r2(ctx: &Ctx) -> f32 {
         -450.0 + 1350.0 * ctx.r_level + 1.5 * ctx.bonus_ad + 1.5 * ctx.ability_power
     }
     pub static RENGAR: CachedChampion = CachedChampion {
@@ -11910,7 +11800,7 @@ pub mod champions {
         adaptative_type: AdaptativeType::Physical,
         attack_type: AttackType::Melee,
         positions: &[Position::Jungle, Position::Top],
-        closures: &[rengar_q_1, rengar_w_1, rengar_e_1],
+        closures: &[rengar_q1, rengar_w1, rengar_e1],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -11965,13 +11855,13 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn rengar_q_1(ctx: &Ctx) -> f32 {
+    pub const fn rengar_q1(ctx: &Ctx) -> f32 {
         30.0 * ctx.q_level + (-0.037 + 0.037 * ctx.q_level) * ctx.attack_damage
     }
-    pub const fn rengar_w_1(ctx: &Ctx) -> f32 {
+    pub const fn rengar_w1(ctx: &Ctx) -> f32 {
         20.0 + 30.0 * ctx.w_level + 0.8 * ctx.ability_power
     }
-    pub const fn rengar_e_1(ctx: &Ctx) -> f32 {
+    pub const fn rengar_e1(ctx: &Ctx) -> f32 {
         10.0 + 45.0 * ctx.e_level + 0.8 * ctx.bonus_ad
     }
     pub static RIVEN: CachedChampion = CachedChampion {
@@ -11979,7 +11869,7 @@ pub mod champions {
         adaptative_type: AdaptativeType::Physical,
         attack_type: AttackType::Melee,
         positions: &[Position::Top],
-        closures: &[riven_q_1, riven_q_2, riven_w_1],
+        closures: &[riven_q1, riven_q2, riven_w1],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -12034,13 +11924,13 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn riven_q_1(ctx: &Ctx) -> f32 {
+    pub const fn riven_q1(ctx: &Ctx) -> f32 {
         15.0 + 30.0 * ctx.q_level + (0.6 + 0.05 * ctx.q_level) * ctx.bonus_ad
     }
-    pub const fn riven_q_2(ctx: &Ctx) -> f32 {
+    pub const fn riven_q2(ctx: &Ctx) -> f32 {
         45.0 + 90.0 * ctx.q_level + (1.8 + 0.15 * ctx.q_level) * ctx.bonus_ad
     }
-    pub const fn riven_w_1(ctx: &Ctx) -> f32 {
+    pub const fn riven_w1(ctx: &Ctx) -> f32 {
         35.0 + 30.0 * ctx.w_level + 1.0 * ctx.bonus_ad
     }
     pub static RUMBLE: CachedChampion = CachedChampion {
@@ -12049,29 +11939,29 @@ pub mod champions {
         attack_type: AttackType::Melee,
         positions: &[Position::Middle, Position::Top],
         closures: &[
-            rumble_q_1,
-            rumble_q_2,
-            rumble_q_3,
-            rumble_q_4,
-            rumble_q_5,
-            rumble_q_6,
-            rumble_q_7,
-            rumble_q_8,
-            rumble_q_1min,
-            rumble_q_2min,
-            rumble_q_3min,
-            rumble_q_4min,
-            rumble_q_5min,
-            rumble_q_6min,
-            rumble_q_7min,
-            rumble_q_8min,
-            rumble_e_1,
-            rumble_e_2,
-            rumble_e_3,
-            rumble_e_4,
-            rumble_r_1,
-            rumble_r_2,
-            rumble_r_3,
+            rumble_q1,
+            rumble_q2,
+            rumble_q3,
+            rumble_q4,
+            rumble_q5,
+            rumble_q6,
+            rumble_q7,
+            rumble_q8,
+            rumble_q1min,
+            rumble_q2min,
+            rumble_q3min,
+            rumble_q4min,
+            rumble_q5min,
+            rumble_q6min,
+            rumble_q7min,
+            rumble_q8min,
+            rumble_e1,
+            rumble_e2,
+            rumble_e3,
+            rumble_e4,
+            rumble_r1,
+            rumble_r2,
+            rumble_r3,
         ],
         metadata: &[
             TypeMetadata {
@@ -12227,117 +12117,117 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn rumble_q_1(ctx: &Ctx) -> f32 {
+    pub const fn rumble_q1(ctx: &Ctx) -> f32 {
         11.67
             + 8.33 * ctx.q_level
             + 0.3333 * ctx.ability_power
             + (0.018 + 0.0016 * ctx.q_level) * ctx.enemy_max_health
     }
-    pub const fn rumble_q_2(ctx: &Ctx) -> f32 {
+    pub const fn rumble_q2(ctx: &Ctx) -> f32 {
         2.917
             + 2.083 * ctx.q_level
             + 0.08333 * ctx.ability_power
             + (0.0045 + 0.0004 * ctx.q_level) * ctx.enemy_max_health
     }
-    pub const fn rumble_q_3(ctx: &Ctx) -> f32 {
+    pub const fn rumble_q3(ctx: &Ctx) -> f32 {
         43.75
             + 31.25 * ctx.q_level
             + 1.25 * ctx.ability_power
             + (0.068 + 0.006 * ctx.q_level) * ctx.enemy_max_health
     }
-    pub const fn rumble_q_4(ctx: &Ctx) -> f32 {
+    pub const fn rumble_q4(ctx: &Ctx) -> f32 {
         30.62
             + 21.88 * ctx.q_level
             + 0.875 * ctx.ability_power
             + (0.048 + 0.0044 * ctx.q_level) * ctx.enemy_max_health
     }
-    pub const fn rumble_q_5(ctx: &Ctx) -> f32 {
+    pub const fn rumble_q5(ctx: &Ctx) -> f32 {
         8.75 + 6.25 * ctx.q_level
             + 0.25 * ctx.ability_power
             + (0.0137 + 0.0012 * ctx.q_level) * ctx.enemy_max_health
     }
-    pub const fn rumble_q_6(ctx: &Ctx) -> f32 {
+    pub const fn rumble_q6(ctx: &Ctx) -> f32 {
         6.12 + 4.38 * ctx.q_level
             + 0.175 * ctx.ability_power
             + (0.009 + 0.000 * ctx.q_level) * ctx.enemy_max_health
     }
-    pub const fn rumble_q_7(ctx: &Ctx) -> f32 {
+    pub const fn rumble_q7(ctx: &Ctx) -> f32 {
         8.17 + 5.83 * ctx.q_level
             + 0.23329999999999998 * ctx.ability_power
             + (0.012 + 0.001 * ctx.q_level) * ctx.enemy_max_health
     }
-    pub const fn rumble_q_8(ctx: &Ctx) -> f32 {
+    pub const fn rumble_q8(ctx: &Ctx) -> f32 {
         2.042
             + 1.458 * ctx.q_level
             + 0.05833 * ctx.ability_power
             + (0.0032 + 0.0002 * ctx.q_level) * ctx.enemy_max_health
     }
-    pub const fn rumble_q_1min(ctx: &Ctx) -> f32 {
+    pub const fn rumble_q1min(ctx: &Ctx) -> f32 {
         17.5 + 12.5 * ctx.q_level
             + 0.5 * ctx.ability_power
             + (0.027 + 0.002 * ctx.q_level) * ctx.enemy_max_health
     }
-    pub const fn rumble_q_2min(ctx: &Ctx) -> f32 {
+    pub const fn rumble_q2min(ctx: &Ctx) -> f32 {
         4.375
             + 3.125 * ctx.q_level
             + 0.125 * ctx.ability_power
             + (0.0068 + 0.0006 * ctx.q_level) * ctx.enemy_max_health
     }
-    pub const fn rumble_q_3min(ctx: &Ctx) -> f32 {
+    pub const fn rumble_q3min(ctx: &Ctx) -> f32 {
         12.25
             + 8.75 * ctx.q_level
             + 0.35 * ctx.ability_power
             + (0.0192 + 0.0017 * ctx.q_level) * ctx.enemy_max_health
     }
-    pub const fn rumble_q_4min(ctx: &Ctx) -> f32 {
+    pub const fn rumble_q4min(ctx: &Ctx) -> f32 {
         3.062
             + 2.188 * ctx.q_level
             + 0.0875 * ctx.ability_power
             + (0.0048 + 0.000 * ctx.q_level) * ctx.enemy_max_health
     }
-    pub const fn rumble_q_5min(ctx: &Ctx) -> f32 {
+    pub const fn rumble_q5min(ctx: &Ctx) -> f32 {
         65.62
             + 46.88 * ctx.q_level
             + 1.875 * ctx.ability_power
             + (0.1031 + 0.009 * ctx.q_level) * ctx.enemy_max_health
     }
-    pub const fn rumble_q_6min(ctx: &Ctx) -> f32 {
+    pub const fn rumble_q6min(ctx: &Ctx) -> f32 {
         32.81
             + 45.94 * ctx.q_level
             + 1.3125 * ctx.ability_power
             + (0.072 + 0.006 * ctx.q_level) * ctx.enemy_max_health
     }
-    pub const fn rumble_q_7min(ctx: &Ctx) -> f32 {
+    pub const fn rumble_q7min(ctx: &Ctx) -> f32 {
         13.125
             + 9.375 * ctx.q_level
             + 0.375 * ctx.ability_power
             + (0.02062 + 0.001 * ctx.q_level) * ctx.enemy_max_health
     }
-    pub const fn rumble_q_8min(ctx: &Ctx) -> f32 {
+    pub const fn rumble_q8min(ctx: &Ctx) -> f32 {
         9.187
             + 6.563 * ctx.q_level
             + 0.2625 * ctx.ability_power
             + (0.01444 + 0.00131 * ctx.q_level) * ctx.enemy_max_health
     }
-    pub const fn rumble_e_1(ctx: &Ctx) -> f32 {
+    pub const fn rumble_e1(ctx: &Ctx) -> f32 {
         30.0 + 25.0 * ctx.e_level + 0.5 * ctx.ability_power
     }
-    pub const fn rumble_e_2(ctx: &Ctx) -> f32 {
+    pub const fn rumble_e2(ctx: &Ctx) -> f32 {
         60.0 + 50.0 * ctx.e_level + 1.0 * ctx.ability_power
     }
-    pub const fn rumble_e_3(ctx: &Ctx) -> f32 {
+    pub const fn rumble_e3(ctx: &Ctx) -> f32 {
         45.0 + 37.5 * ctx.e_level + 0.75 * ctx.ability_power
     }
-    pub const fn rumble_e_4(ctx: &Ctx) -> f32 {
+    pub const fn rumble_e4(ctx: &Ctx) -> f32 {
         90.0 + 75.0 * ctx.e_level + 1.5 * ctx.ability_power
     }
-    pub const fn rumble_r_1(ctx: &Ctx) -> f32 {
+    pub const fn rumble_r1(ctx: &Ctx) -> f32 {
         70.0 + 70.0 * ctx.r_level + 0.35 * ctx.ability_power
     }
-    pub const fn rumble_r_2(ctx: &Ctx) -> f32 {
+    pub const fn rumble_r2(ctx: &Ctx) -> f32 {
         17.5 + 17.5 * ctx.r_level + 0.0875 * ctx.ability_power
     }
-    pub const fn rumble_r_3(ctx: &Ctx) -> f32 {
+    pub const fn rumble_r3(ctx: &Ctx) -> f32 {
         350.0 + 350.0 * ctx.r_level + 1.75 * ctx.ability_power
     }
     pub static RYZE: CachedChampion = CachedChampion {
@@ -12345,7 +12235,7 @@ pub mod champions {
         adaptative_type: AdaptativeType::Magic,
         attack_type: AttackType::Ranged,
         positions: &[Position::Middle],
-        closures: &[ryze_q_1, ryze_w_1, ryze_e_1, ryze_r_1],
+        closures: &[ryze_q1, ryze_w1, ryze_e1, ryze_r1],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -12405,16 +12295,16 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn ryze_q_1(ctx: &Ctx) -> f32 {
+    pub const fn ryze_q1(ctx: &Ctx) -> f32 {
         55.0 + 20.0 * ctx.q_level + 0.55 * ctx.ability_power + 0.02 * ctx.bonus_mana
     }
-    pub const fn ryze_w_1(ctx: &Ctx) -> f32 {
+    pub const fn ryze_w1(ctx: &Ctx) -> f32 {
         30.0 + 30.0 * ctx.w_level + 0.7 * ctx.ability_power + 0.04 * ctx.bonus_mana
     }
-    pub const fn ryze_e_1(ctx: &Ctx) -> f32 {
+    pub const fn ryze_e1(ctx: &Ctx) -> f32 {
         30.0 + 30.0 * ctx.e_level + 0.5 * ctx.ability_power + 0.02 * ctx.bonus_mana
     }
-    pub const fn ryze_r_1(ctx: &Ctx) -> f32 {
+    pub const fn ryze_r1(ctx: &Ctx) -> f32 {
         0.25 + 0.25 * ctx.r_level
     }
     pub static SAMIRA: CachedChampion = CachedChampion {
@@ -12423,8 +12313,7 @@ pub mod champions {
         attack_type: AttackType::Ranged,
         positions: &[Position::Bottom],
         closures: &[
-            samira_q_1, samira_w_1, samira_w_2, samira_e_1, samira_r_1, samira_r_2, samira_r_3,
-            samira_r_4,
+            samira_q1, samira_w1, samira_w2, samira_e1, samira_r1, samira_r2, samira_r3, samira_r4,
         ],
         metadata: &[
             TypeMetadata {
@@ -12505,28 +12394,28 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn samira_q_1(ctx: &Ctx) -> f32 {
+    pub const fn samira_q1(ctx: &Ctx) -> f32 {
         -5.0 + 5.0 * ctx.q_level + 1.1 * ctx.attack_damage
     }
-    pub const fn samira_w_1(ctx: &Ctx) -> f32 {
+    pub const fn samira_w1(ctx: &Ctx) -> f32 {
         5.0 + 15.0 * ctx.w_level + 0.5 * ctx.bonus_ad
     }
-    pub const fn samira_w_2(ctx: &Ctx) -> f32 {
+    pub const fn samira_w2(ctx: &Ctx) -> f32 {
         10.0 + 30.0 * ctx.w_level + 1.0 * ctx.bonus_ad
     }
-    pub const fn samira_e_1(ctx: &Ctx) -> f32 {
+    pub const fn samira_e1(ctx: &Ctx) -> f32 {
         40.0 + 10.0 * ctx.e_level + 0.2 * ctx.bonus_ad
     }
-    pub const fn samira_r_1(ctx: &Ctx) -> f32 {
+    pub const fn samira_r1(ctx: &Ctx) -> f32 {
         5.0 * ctx.r_level + 0.075 * ctx.attack_damage
     }
-    pub const fn samira_r_2(ctx: &Ctx) -> f32 {
+    pub const fn samira_r2(ctx: &Ctx) -> f32 {
         20.0 * ctx.r_level + 0.3 * ctx.attack_damage
     }
-    pub const fn samira_r_3(ctx: &Ctx) -> f32 {
+    pub const fn samira_r3(ctx: &Ctx) -> f32 {
         50.0 * ctx.r_level + 0.75 * ctx.attack_damage
     }
-    pub const fn samira_r_4(ctx: &Ctx) -> f32 {
+    pub const fn samira_r4(ctx: &Ctx) -> f32 {
         200.0 * ctx.r_level + 3.0 * ctx.attack_damage
     }
     pub static SEJUANI: CachedChampion = CachedChampion {
@@ -12535,13 +12424,7 @@ pub mod champions {
         attack_type: AttackType::Melee,
         positions: &[Position::Jungle],
         closures: &[
-            sejuani_q_1,
-            sejuani_w_1,
-            sejuani_w_2,
-            sejuani_w_3,
-            sejuani_e_1,
-            sejuani_r_1,
-            sejuani_r_2,
+            sejuani_q1, sejuani_w1, sejuani_w2, sejuani_w3, sejuani_e1, sejuani_r1, sejuani_r2,
         ],
         metadata: &[
             TypeMetadata {
@@ -12617,25 +12500,25 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn sejuani_q_1(ctx: &Ctx) -> f32 {
+    pub const fn sejuani_q1(ctx: &Ctx) -> f32 {
         40.0 + 50.0 * ctx.q_level + 0.75 * ctx.ability_power
     }
-    pub const fn sejuani_w_1(ctx: &Ctx) -> f32 {
+    pub const fn sejuani_w1(ctx: &Ctx) -> f32 {
         -5.0 + 10.0 * ctx.w_level + 0.3 * ctx.ability_power + 0.04 * ctx.max_health
     }
-    pub const fn sejuani_w_2(ctx: &Ctx) -> f32 {
+    pub const fn sejuani_w2(ctx: &Ctx) -> f32 {
         -15.0 + 20.0 * ctx.w_level + 0.6 * ctx.ability_power + 0.08 * ctx.max_health
     }
-    pub const fn sejuani_w_3(ctx: &Ctx) -> f32 {
+    pub const fn sejuani_w3(ctx: &Ctx) -> f32 {
         -20.0 + 30.0 * ctx.w_level + 0.9 * ctx.ability_power + 0.12 * ctx.max_health
     }
-    pub const fn sejuani_e_1(ctx: &Ctx) -> f32 {
+    pub const fn sejuani_e1(ctx: &Ctx) -> f32 {
         5.0 + 50.0 * ctx.e_level + 0.7 * ctx.ability_power
     }
-    pub const fn sejuani_r_1(ctx: &Ctx) -> f32 {
+    pub const fn sejuani_r1(ctx: &Ctx) -> f32 {
         100.0 + 25.0 * ctx.r_level + 0.4 * ctx.ability_power
     }
-    pub const fn sejuani_r_2(ctx: &Ctx) -> f32 {
+    pub const fn sejuani_r2(ctx: &Ctx) -> f32 {
         100.0 + 100.0 * ctx.r_level + 0.8 * ctx.ability_power
     }
     pub static SENNA: CachedChampion = CachedChampion {
@@ -12643,7 +12526,7 @@ pub mod champions {
         adaptative_type: AdaptativeType::Physical,
         attack_type: AttackType::Ranged,
         positions: &[Position::Bottom, Position::Support],
-        closures: &[senna_q_1, senna_w_1, senna_r_1],
+        closures: &[senna_q1, senna_w1, senna_r1],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -12698,13 +12581,13 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn senna_q_1(ctx: &Ctx) -> f32 {
+    pub const fn senna_q1(ctx: &Ctx) -> f32 {
         30.0 * ctx.q_level + 0.4 * ctx.bonus_ad
     }
-    pub const fn senna_w_1(ctx: &Ctx) -> f32 {
+    pub const fn senna_w1(ctx: &Ctx) -> f32 {
         25.0 + 45.0 * ctx.w_level + 0.7 * ctx.bonus_ad
     }
-    pub const fn senna_r_1(ctx: &Ctx) -> f32 {
+    pub const fn senna_r1(ctx: &Ctx) -> f32 {
         100.0 + 150.0 * ctx.r_level + 1.15 * ctx.bonus_ad + 0.7 * ctx.ability_power
     }
     pub static SERAPHINE: CachedChampion = CachedChampion {
@@ -12713,11 +12596,11 @@ pub mod champions {
         attack_type: AttackType::Ranged,
         positions: &[Position::Bottom, Position::Support],
         closures: &[
-            seraphine_q_1,
-            seraphine_q_2,
-            seraphine_e_1,
-            seraphine_e_2,
-            seraphine_r_1,
+            seraphine_q1,
+            seraphine_q2,
+            seraphine_e1,
+            seraphine_e2,
+            seraphine_r1,
         ],
         metadata: &[
             TypeMetadata {
@@ -12783,19 +12666,19 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn seraphine_q_1(ctx: &Ctx) -> f32 {
+    pub const fn seraphine_q1(ctx: &Ctx) -> f32 {
         35.0 + 25.0 * ctx.q_level + 0.5 * ctx.ability_power
     }
-    pub const fn seraphine_q_2(ctx: &Ctx) -> f32 {
+    pub const fn seraphine_q2(ctx: &Ctx) -> f32 {
         61.25 + 43.75 * ctx.q_level + 0.875 * ctx.ability_power
     }
-    pub const fn seraphine_e_1(ctx: &Ctx) -> f32 {
+    pub const fn seraphine_e1(ctx: &Ctx) -> f32 {
         40.0 + 30.0 * ctx.e_level + 0.5 * ctx.ability_power
     }
-    pub const fn seraphine_e_2(ctx: &Ctx) -> f32 {
+    pub const fn seraphine_e2(ctx: &Ctx) -> f32 {
         28.0 + 21.0 * ctx.e_level + 0.35 * ctx.ability_power
     }
-    pub const fn seraphine_r_1(ctx: &Ctx) -> f32 {
+    pub const fn seraphine_r1(ctx: &Ctx) -> f32 {
         100.0 + 50.0 * ctx.r_level + 0.4 * ctx.ability_power
     }
     pub static SETT: CachedChampion = CachedChampion {
@@ -12803,7 +12686,7 @@ pub mod champions {
         adaptative_type: AdaptativeType::Physical,
         attack_type: AttackType::Melee,
         positions: &[Position::Top],
-        closures: &[sett_q_1, sett_q_2, sett_w_1, sett_e_1, sett_r_1, sett_r_2],
+        closures: &[sett_q1, sett_q2, sett_w1, sett_e1, sett_r1, sett_r2],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -12873,29 +12756,29 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn sett_q_1(ctx: &Ctx) -> f32 {
+    pub const fn sett_q1(ctx: &Ctx) -> f32 {
         (10.0 * ctx.q_level)
             + (0.01 * ctx.enemy_max_health)
             + (1.0 / 1.5 / 2.0 / 2.5 / 3.0 % 0.01 * ctx.attack_damage)
     }
-    pub const fn sett_q_2(ctx: &Ctx) -> f32 {
+    pub const fn sett_q2(ctx: &Ctx) -> f32 {
         (20.0 * ctx.q_level)
             + (0.02 * ctx.enemy_max_health)
             + (2.0 / 3.0 / 4.0 / 5.0 / 6.0 % 0.01 * ctx.attack_damage)
     }
-    pub const fn sett_w_1(ctx: &Ctx) -> f32 {
+    pub const fn sett_w1(ctx: &Ctx) -> f32 {
         60.0 + 20.0 * ctx.w_level + 0.25 * 0.0 + 0.25 * 0.01 * ctx.bonus_ad
     }
-    pub const fn sett_e_1(ctx: &Ctx) -> f32 {
+    pub const fn sett_e1(ctx: &Ctx) -> f32 {
         30.0 + 20.0 * ctx.e_level + 0.6 * ctx.attack_damage
     }
-    pub const fn sett_r_1(ctx: &Ctx) -> f32 {
+    pub const fn sett_r1(ctx: &Ctx) -> f32 {
         100.0
             + 100.0 * ctx.r_level
             + 1.2 * ctx.bonus_ad
             + (0.3 + 0.1 * ctx.r_level) * ctx.enemy_bonus_health
     }
-    pub const fn sett_r_2(ctx: &Ctx) -> f32 {
+    pub const fn sett_r2(ctx: &Ctx) -> f32 {
         25.0 + 25.0 * ctx.r_level
             + 0.3 * ctx.bonus_ad
             + (0.075 + 0.025 * ctx.r_level) * ctx.enemy_bonus_health
@@ -12906,8 +12789,8 @@ pub mod champions {
         attack_type: AttackType::Melee,
         positions: &[Position::Jungle, Position::Support],
         closures: &[
-            shaco_q_1, shaco_w_1, shaco_w_2, shaco_w_3, shaco_w_4, shaco_w_5, shaco_e_1, shaco_e_2,
-            shaco_r_1, shaco_r_2, shaco_r_3,
+            shaco_q1, shaco_w1, shaco_w2, shaco_w3, shaco_w4, shaco_w5, shaco_e1, shaco_e2,
+            shaco_r1, shaco_r2, shaco_r3,
         ],
         metadata: &[
             TypeMetadata {
@@ -13003,37 +12886,37 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn shaco_q_1(ctx: &Ctx) -> f32 {
+    pub const fn shaco_q1(ctx: &Ctx) -> f32 {
         15.0 + 10.0 * ctx.q_level + 0.6 * ctx.bonus_ad
     }
-    pub const fn shaco_w_1(ctx: &Ctx) -> f32 {
+    pub const fn shaco_w1(ctx: &Ctx) -> f32 {
         5.0 + 15.0 * ctx.w_level
     }
-    pub const fn shaco_w_2(ctx: &Ctx) -> f32 {
+    pub const fn shaco_w2(ctx: &Ctx) -> f32 {
         10.0 + 15.0 * ctx.w_level + 0.18 * ctx.ability_power
     }
-    pub const fn shaco_w_3(ctx: &Ctx) -> f32 {
+    pub const fn shaco_w3(ctx: &Ctx) -> f32 {
         15.0 + 30.0 * ctx.w_level + 0.18 * ctx.ability_power
     }
-    pub const fn shaco_w_4(ctx: &Ctx) -> f32 {
+    pub const fn shaco_w4(ctx: &Ctx) -> f32 {
         5.0 + 5.0 * ctx.w_level + 0.12 * ctx.ability_power
     }
-    pub const fn shaco_w_5(ctx: &Ctx) -> f32 {
+    pub const fn shaco_w5(ctx: &Ctx) -> f32 {
         10.0 + 20.0 * ctx.w_level + 0.12 * ctx.ability_power
     }
-    pub const fn shaco_e_1(ctx: &Ctx) -> f32 {
+    pub const fn shaco_e1(ctx: &Ctx) -> f32 {
         67.5 + 37.5 * ctx.e_level + 1.2 * ctx.bonus_ad + 0.9 * ctx.ability_power
     }
-    pub const fn shaco_e_2(ctx: &Ctx) -> f32 {
+    pub const fn shaco_e2(ctx: &Ctx) -> f32 {
         45.0 + 25.0 * ctx.e_level + 0.8 * ctx.bonus_ad + 0.6 * ctx.ability_power
     }
-    pub const fn shaco_r_1(ctx: &Ctx) -> f32 {
+    pub const fn shaco_r1(ctx: &Ctx) -> f32 {
         25.0 * ctx.r_level + 0.15 * ctx.ability_power
     }
-    pub const fn shaco_r_2(ctx: &Ctx) -> f32 {
+    pub const fn shaco_r2(ctx: &Ctx) -> f32 {
         10.0 * ctx.r_level + 0.1 * ctx.ability_power
     }
-    pub const fn shaco_r_3(ctx: &Ctx) -> f32 {
+    pub const fn shaco_r3(ctx: &Ctx) -> f32 {
         75.0 + 75.0 * ctx.r_level + 0.7 * ctx.ability_power
     }
     pub static SHEN: CachedChampion = CachedChampion {
@@ -13041,7 +12924,7 @@ pub mod champions {
         adaptative_type: AdaptativeType::Physical,
         attack_type: AttackType::Melee,
         positions: &[Position::Support, Position::Top],
-        closures: &[shen_q_1, shen_q_2, shen_q_3, shen_q_4, shen_q_5, shen_e_1],
+        closures: &[shen_q1, shen_q2, shen_q3, shen_q4, shen_q5, shen_e1],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -13111,10 +12994,10 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn shen_q_1(ctx: &Ctx) -> f32 {
+    pub const fn shen_q1(ctx: &Ctx) -> f32 {
         100.0 + 20.0 * ctx.q_level
     }
-    pub const fn shen_q_2(ctx: &Ctx) -> f32 {
+    pub const fn shen_q2(ctx: &Ctx) -> f32 {
         match ctx.q_level as u8 {
             1 => 10.0 + 0.05 * ctx.enemy_max_health + 0.02 * 0.01 * ctx.ability_power,
             2 => {
@@ -13141,7 +13024,7 @@ pub mod champions {
             _ => unknown,
         }
     }
-    pub const fn shen_q_3(ctx: &Ctx) -> f32 {
+    pub const fn shen_q3(ctx: &Ctx) -> f32 {
         match ctx.q_level as u8 {
             1 => 30.0 + 0.15 * ctx.enemy_max_health + 0.06 * 0.01 * ctx.ability_power,
             2 => {
@@ -13166,7 +13049,7 @@ pub mod champions {
             _ => unknown,
         }
     }
-    pub const fn shen_q_4(ctx: &Ctx) -> f32 {
+    pub const fn shen_q4(ctx: &Ctx) -> f32 {
         match ctx.q_level as u8 {
             1 => 10.0 + 0.02 * ctx.enemy_max_health + 0.015 * 0.01 * ctx.ability_power,
             2 => {
@@ -13197,7 +13080,7 @@ pub mod champions {
             _ => unknown,
         }
     }
-    pub const fn shen_q_5(ctx: &Ctx) -> f32 {
+    pub const fn shen_q5(ctx: &Ctx) -> f32 {
         match ctx.q_level as u8 {
             1 => 30.0 + 0.06 * ctx.enemy_max_health + 0.045 * 0.01 * ctx.ability_power,
             2 => {
@@ -13226,7 +13109,7 @@ pub mod champions {
             _ => unknown,
         }
     }
-    pub const fn shen_e_1(ctx: &Ctx) -> f32 {
+    pub const fn shen_e1(ctx: &Ctx) -> f32 {
         35.0 + 25.0 * ctx.e_level + 0.11 * ctx.bonus_health
     }
     pub static SHYVANA: CachedChampion = CachedChampion {
@@ -13235,12 +13118,7 @@ pub mod champions {
         attack_type: AttackType::Melee,
         positions: &[Position::Jungle],
         closures: &[
-            shyvana_q_1,
-            shyvana_w_1,
-            shyvana_w_2,
-            shyvana_e_1,
-            shyvana_e_2,
-            shyvana_r_1,
+            shyvana_q1, shyvana_w1, shyvana_w2, shyvana_e1, shyvana_e2, shyvana_r1,
         ],
         metadata: &[
             TypeMetadata {
@@ -13311,19 +13189,19 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn shyvana_q_1(ctx: &Ctx) -> f32 {
+    pub const fn shyvana_q1(ctx: &Ctx) -> f32 {
         0.2 * ctx.q_level * ctx.attack_damage + 0.25 * ctx.ability_power
     }
-    pub const fn shyvana_w_1(ctx: &Ctx) -> f32 {
+    pub const fn shyvana_w1(ctx: &Ctx) -> f32 {
         5.0 + 5.0 * ctx.w_level + 0.1 * ctx.bonus_ad
     }
-    pub const fn shyvana_w_2(ctx: &Ctx) -> f32 {
+    pub const fn shyvana_w2(ctx: &Ctx) -> f32 {
         3.0 + 2.0 * ctx.w_level + 0.05 * ctx.bonus_ad
     }
-    pub const fn shyvana_e_1(ctx: &Ctx) -> f32 {
+    pub const fn shyvana_e1(ctx: &Ctx) -> f32 {
         45.0 + 40.0 * ctx.e_level + 0.5 * ctx.bonus_ad + 0.7 * ctx.ability_power
     }
-    pub const fn shyvana_e_2(ctx: &Ctx) -> f32 {
+    pub const fn shyvana_e2(ctx: &Ctx) -> f32 {
         match ctx.e_level as u8 {
             1 => 75.0 + 85.0 + ctx.bonus_ad + 0.9 * ctx.ability_power,
             2 => 78.52941176470588 + 125.0 + ctx.bonus_ad + 0.9 * ctx.ability_power,
@@ -13346,7 +13224,7 @@ pub mod champions {
             _ => unknown,
         }
     }
-    pub const fn shyvana_r_1(ctx: &Ctx) -> f32 {
+    pub const fn shyvana_r1(ctx: &Ctx) -> f32 {
         50.0 + 100.0 * ctx.r_level + 1.0 * ctx.ability_power
     }
     pub static SINGED: CachedChampion = CachedChampion {
@@ -13354,7 +13232,7 @@ pub mod champions {
         adaptative_type: AdaptativeType::Magic,
         attack_type: AttackType::Melee,
         positions: &[Position::Top],
-        closures: &[singed_q_1, singed_q_2, singed_q_3, singed_e_1],
+        closures: &[singed_q1, singed_q2, singed_q3, singed_e1],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -13414,16 +13292,16 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn singed_q_1(ctx: &Ctx) -> f32 {
+    pub const fn singed_q1(ctx: &Ctx) -> f32 {
         10.0 + 10.0 * ctx.q_level + 0.425 * ctx.ability_power
     }
-    pub const fn singed_q_2(ctx: &Ctx) -> f32 {
+    pub const fn singed_q2(ctx: &Ctx) -> f32 {
         2.5 + 2.5 * ctx.q_level + 0.10625 * ctx.ability_power
     }
-    pub const fn singed_q_3(ctx: &Ctx) -> f32 {
+    pub const fn singed_q3(ctx: &Ctx) -> f32 {
         20.0 + 20.0 * ctx.q_level + 0.85 * ctx.ability_power
     }
-    pub const fn singed_e_1(ctx: &Ctx) -> f32 {
+    pub const fn singed_e1(ctx: &Ctx) -> f32 {
         40.0 + 10.0 * ctx.e_level
             + (0.055 + 0.005 * ctx.e_level) * ctx.enemy_max_health
             + 0.55 * ctx.ability_power
@@ -13434,8 +13312,8 @@ pub mod champions {
         attack_type: AttackType::Melee,
         positions: &[Position::Top],
         closures: &[
-            sion_q_1, sion_q_2, sion_q_3, sion_q_4, sion_q_5, sion_q_6, sion_q_7, sion_w_1,
-            sion_e_1, sion_r_1, sion_r_2,
+            sion_q1, sion_q2, sion_q3, sion_q4, sion_q5, sion_q6, sion_q7, sion_w1, sion_e1,
+            sion_r1, sion_r2,
         ],
         metadata: &[
             TypeMetadata {
@@ -13531,37 +13409,37 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn sion_q_1(ctx: &Ctx) -> f32 {
+    pub const fn sion_q1(ctx: &Ctx) -> f32 {
         0.916 + 0.3 * ctx.q_level
     }
-    pub const fn sion_q_2(ctx: &Ctx) -> f32 {
+    pub const fn sion_q2(ctx: &Ctx) -> f32 {
         25.0 + 65.0 * ctx.q_level + (0.9 + 0.3 * ctx.q_level) * ctx.attack_damage
     }
-    pub const fn sion_q_3(ctx: &Ctx) -> f32 {
+    pub const fn sion_q3(ctx: &Ctx) -> f32 {
         20.0 + 20.0 * ctx.q_level + (0.3 + 0.1 * ctx.q_level) * ctx.attack_damage
     }
-    pub const fn sion_q_4(ctx: &Ctx) -> f32 {
+    pub const fn sion_q4(ctx: &Ctx) -> f32 {
         15.0 + 39.0 * ctx.q_level + (0.54 + 0.18 * ctx.q_level) * ctx.attack_damage
     }
-    pub const fn sion_q_5(ctx: &Ctx) -> f32 {
+    pub const fn sion_q5(ctx: &Ctx) -> f32 {
         41.25 + 107.25 * ctx.q_level + (1.485 + 0.495 * ctx.q_level) * ctx.attack_damage
     }
-    pub const fn sion_q_6(ctx: &Ctx) -> f32 {
+    pub const fn sion_q6(ctx: &Ctx) -> f32 {
         12.0 + 12.0 * ctx.q_level + (0.18 + 0.06 * ctx.q_level) * ctx.attack_damage
     }
-    pub const fn sion_q_7(ctx: &Ctx) -> f32 {
+    pub const fn sion_q7(ctx: &Ctx) -> f32 {
         33.0 + 33.0 * ctx.q_level + (0.495 + 0.165 * ctx.q_level) * ctx.attack_damage
     }
-    pub const fn sion_w_1(ctx: &Ctx) -> f32 {
+    pub const fn sion_w1(ctx: &Ctx) -> f32 {
         15.0 + 25.0 * ctx.w_level + 0.4 * ctx.ability_power + 0.14 * ctx.enemy_max_health
     }
-    pub const fn sion_e_1(ctx: &Ctx) -> f32 {
+    pub const fn sion_e1(ctx: &Ctx) -> f32 {
         30.0 + 35.0 * ctx.e_level + 0.55 * ctx.ability_power
     }
-    pub const fn sion_r_1(ctx: &Ctx) -> f32 {
+    pub const fn sion_r1(ctx: &Ctx) -> f32 {
         400.0 * ctx.r_level + 1.2 * ctx.bonus_ad
     }
-    pub const fn sion_r_2(ctx: &Ctx) -> f32 {
+    pub const fn sion_r2(ctx: &Ctx) -> f32 {
         150.0 * ctx.r_level + 0.6 * ctx.bonus_ad
     }
     pub static SIVIR: CachedChampion = CachedChampion {
@@ -13570,7 +13448,7 @@ pub mod champions {
         attack_type: AttackType::Ranged,
         positions: &[Position::Bottom],
         closures: &[
-            sivir_q_1, sivir_q_2, sivir_q_3, sivir_w_1, sivir_w_2, sivir_w_3, sivir_w_4,
+            sivir_q1, sivir_q2, sivir_q3, sivir_w1, sivir_w2, sivir_w3, sivir_w4,
         ],
         metadata: &[
             TypeMetadata {
@@ -13646,25 +13524,25 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn sivir_q_1(ctx: &Ctx) -> f32 {
+    pub const fn sivir_q1(ctx: &Ctx) -> f32 {
         35.0 + 25.0 * ctx.q_level + 0.7 * ctx.bonus_ad + 0.6 * ctx.ability_power
     }
-    pub const fn sivir_q_2(ctx: &Ctx) -> f32 {
+    pub const fn sivir_q2(ctx: &Ctx) -> f32 {
         14.0 + 10.0 * ctx.q_level + 0.28 * ctx.bonus_ad + 0.24 * ctx.ability_power
     }
-    pub const fn sivir_q_3(ctx: &Ctx) -> f32 {
+    pub const fn sivir_q3(ctx: &Ctx) -> f32 {
         70.0 + 50.0 * ctx.q_level + 1.4 * ctx.bonus_ad + 1.2 * ctx.ability_power
     }
-    pub const fn sivir_w_1(ctx: &Ctx) -> f32 {
+    pub const fn sivir_w1(ctx: &Ctx) -> f32 {
         (0.75 + 0.05 * ctx.w_level) * ctx.attack_damage
     }
-    pub const fn sivir_w_2(ctx: &Ctx) -> f32 {
+    pub const fn sivir_w2(ctx: &Ctx) -> f32 {
         (0.375 + 0.025 * ctx.w_level) * ctx.attack_damage
     }
-    pub const fn sivir_w_3(ctx: &Ctx) -> f32 {
+    pub const fn sivir_w3(ctx: &Ctx) -> f32 {
         (0.487 + 0.032 * ctx.w_level) * ctx.attack_damage
     }
-    pub const fn sivir_w_4(ctx: &Ctx) -> f32 {
+    pub const fn sivir_w4(ctx: &Ctx) -> f32 {
         (0.2437 + 0.0162 * ctx.w_level) * ctx.attack_damage
     }
     pub static SKARNER: CachedChampion = CachedChampion {
@@ -13673,13 +13551,7 @@ pub mod champions {
         attack_type: AttackType::Melee,
         positions: &[Position::Jungle, Position::Top],
         closures: &[
-            skarner_q_2,
-            skarner_q_3,
-            skarner_q_4,
-            skarner_q_5,
-            skarner_w_1,
-            skarner_e_1,
-            skarner_r_1,
+            skarner_q2, skarner_q3, skarner_q4, skarner_q5, skarner_w1, skarner_e1, skarner_r1,
         ],
         metadata: &[
             TypeMetadata {
@@ -13755,25 +13627,25 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn skarner_q_2(ctx: &Ctx) -> f32 {
+    pub const fn skarner_q2(ctx: &Ctx) -> f32 {
         30.0 * ctx.q_level + 2.7 * ctx.bonus_ad + 0.09 * ctx.bonus_health
     }
-    pub const fn skarner_q_3(ctx: &Ctx) -> f32 {
+    pub const fn skarner_q3(ctx: &Ctx) -> f32 {
         100.0 + 50.0 * ctx.q_level
     }
-    pub const fn skarner_q_4(ctx: &Ctx) -> f32 {
+    pub const fn skarner_q4(ctx: &Ctx) -> f32 {
         0.15 + 0.05 * ctx.q_level
     }
-    pub const fn skarner_q_5(ctx: &Ctx) -> f32 {
+    pub const fn skarner_q5(ctx: &Ctx) -> f32 {
         10.0 * ctx.q_level + 0.9 * ctx.bonus_ad + 0.03 * ctx.bonus_health
     }
-    pub const fn skarner_w_1(ctx: &Ctx) -> f32 {
+    pub const fn skarner_w1(ctx: &Ctx) -> f32 {
         30.0 + 20.0 * ctx.w_level + 0.8 * ctx.ability_power
     }
-    pub const fn skarner_e_1(ctx: &Ctx) -> f32 {
+    pub const fn skarner_e1(ctx: &Ctx) -> f32 {
         30.0 * ctx.e_level + 1.2 * ctx.bonus_ad + 0.06 * ctx.max_health
     }
-    pub const fn skarner_r_1(ctx: &Ctx) -> f32 {
+    pub const fn skarner_r1(ctx: &Ctx) -> f32 {
         50.0 + 100.0 * ctx.r_level + 1.0 * ctx.ability_power
     }
     pub static SMOLDER: CachedChampion = CachedChampion {
@@ -13782,15 +13654,8 @@ pub mod champions {
         attack_type: AttackType::Ranged,
         positions: &[Position::Bottom, Position::Middle, Position::Top],
         closures: &[
-            smolder_q_1,
-            smolder_q_2,
-            smolder_w_1,
-            smolder_w_2,
-            smolder_w_3,
-            smolder_e_1,
-            smolder_e_2,
-            smolder_r_1,
-            smolder_r_2,
+            smolder_q1, smolder_q2, smolder_w1, smolder_w2, smolder_w3, smolder_e1, smolder_e2,
+            smolder_r1, smolder_r2,
         ],
         metadata: &[
             TypeMetadata {
@@ -13876,31 +13741,31 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn smolder_q_1(ctx: &Ctx) -> f32 {
+    pub const fn smolder_q1(ctx: &Ctx) -> f32 {
         50.0 + 15.0 * ctx.q_level + 1.3 * ctx.bonus_ad
     }
-    pub const fn smolder_q_2(ctx: &Ctx) -> f32 {
+    pub const fn smolder_q2(ctx: &Ctx) -> f32 {
         25.0 + 7.5 * ctx.q_level + 0.65 * ctx.bonus_ad
     }
-    pub const fn smolder_w_1(ctx: &Ctx) -> f32 {
+    pub const fn smolder_w1(ctx: &Ctx) -> f32 {
         -15.0 + 25.0 * ctx.w_level + 0.65 * ctx.bonus_ad + 0.8 * ctx.ability_power
     }
-    pub const fn smolder_w_2(ctx: &Ctx) -> f32 {
+    pub const fn smolder_w2(ctx: &Ctx) -> f32 {
         50.0 + 10.0 * ctx.w_level + 0.6 * ctx.bonus_ad
     }
-    pub const fn smolder_w_3(ctx: &Ctx) -> f32 {
+    pub const fn smolder_w3(ctx: &Ctx) -> f32 {
         35.0 + 35.0 * ctx.w_level + 1.25 * ctx.bonus_ad + 0.8 * ctx.ability_power
     }
-    pub const fn smolder_e_1(ctx: &Ctx) -> f32 {
+    pub const fn smolder_e1(ctx: &Ctx) -> f32 {
         25.0 + 25.0 * ctx.e_level + 1.5 * ctx.attack_damage
     }
-    pub const fn smolder_e_2(ctx: &Ctx) -> f32 {
+    pub const fn smolder_e2(ctx: &Ctx) -> f32 {
         5.0 + 5.0 * ctx.e_level + 0.3 * ctx.attack_damage
     }
-    pub const fn smolder_r_1(ctx: &Ctx) -> f32 {
+    pub const fn smolder_r1(ctx: &Ctx) -> f32 {
         150.0 + 150.0 * ctx.r_level + 1.65 * ctx.bonus_ad + 1.5 * ctx.ability_power
     }
-    pub const fn smolder_r_2(ctx: &Ctx) -> f32 {
+    pub const fn smolder_r2(ctx: &Ctx) -> f32 {
         100.0 + 100.0 * ctx.r_level + 1.1 * ctx.bonus_ad + 1.0 * ctx.ability_power
     }
     pub static SONA: CachedChampion = CachedChampion {
@@ -13908,7 +13773,7 @@ pub mod champions {
         adaptative_type: AdaptativeType::Magic,
         attack_type: AttackType::Ranged,
         positions: &[Position::Support],
-        closures: &[sona_q_1, sona_q_2, sona_w_1, sona_r_1],
+        closures: &[sona_q1, sona_q2, sona_w1, sona_r1],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -13968,7 +13833,7 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn sona_q_1(ctx: &Ctx) -> f32 {
+    pub const fn sona_q1(ctx: &Ctx) -> f32 {
         match ctx.q_level as u8 {
             1 => 50.0 + 0.4 * ctx.ability_power,
             2 => 85.0,
@@ -13978,7 +13843,7 @@ pub mod champions {
             _ => unknown,
         }
     }
-    pub const fn sona_q_2(ctx: &Ctx) -> f32 {
+    pub const fn sona_q2(ctx: &Ctx) -> f32 {
         match ctx.q_level as u8 {
             1 => 10.0 + 0.1 * ctx.ability_power,
             2 => 15.0,
@@ -13988,10 +13853,10 @@ pub mod champions {
             _ => unknown,
         }
     }
-    pub const fn sona_w_1(ctx: &Ctx) -> f32 {
+    pub const fn sona_w1(ctx: &Ctx) -> f32 {
         5.0 + 20.0 * ctx.w_level
     }
-    pub const fn sona_r_1(ctx: &Ctx) -> f32 {
+    pub const fn sona_r1(ctx: &Ctx) -> f32 {
         50.0 + 100.0 * ctx.r_level + 0.5 * ctx.ability_power
     }
     pub static SORAKA: CachedChampion = CachedChampion {
@@ -13999,7 +13864,7 @@ pub mod champions {
         adaptative_type: AdaptativeType::Magic,
         attack_type: AttackType::Ranged,
         positions: &[Position::Support],
-        closures: &[soraka_q_1, soraka_e_1, soraka_e_2],
+        closures: &[soraka_q1, soraka_e1, soraka_e2],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -14054,13 +13919,13 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn soraka_q_1(ctx: &Ctx) -> f32 {
+    pub const fn soraka_q1(ctx: &Ctx) -> f32 {
         50.0 + 35.0 * ctx.q_level + 0.35 * ctx.ability_power
     }
-    pub const fn soraka_e_1(ctx: &Ctx) -> f32 {
+    pub const fn soraka_e1(ctx: &Ctx) -> f32 {
         45.0 + 25.0 * ctx.e_level + 0.4 * ctx.ability_power
     }
-    pub const fn soraka_e_2(ctx: &Ctx) -> f32 {
+    pub const fn soraka_e2(ctx: &Ctx) -> f32 {
         90.0 + 50.0 * ctx.e_level + 0.8 * ctx.ability_power
     }
     pub static SWAIN: CachedChampion = CachedChampion {
@@ -14069,7 +13934,7 @@ pub mod champions {
         attack_type: AttackType::Ranged,
         positions: &[Position::Bottom, Position::Middle, Position::Support],
         closures: &[
-            swain_q_1, swain_q_2, swain_q_3, swain_w_1, swain_w_2, swain_e_1, swain_r_1,
+            swain_q1, swain_q2, swain_q3, swain_w1, swain_w2, swain_e1, swain_r1,
         ],
         metadata: &[
             TypeMetadata {
@@ -14145,25 +14010,25 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn swain_q_1(ctx: &Ctx) -> f32 {
+    pub const fn swain_q1(ctx: &Ctx) -> f32 {
         7.5 + 7.5 * ctx.q_level + 0.1125 * ctx.ability_power
     }
-    pub const fn swain_q_2(ctx: &Ctx) -> f32 {
+    pub const fn swain_q2(ctx: &Ctx) -> f32 {
         30.0 + 30.0 * ctx.q_level + 0.45 * ctx.ability_power
     }
-    pub const fn swain_q_3(ctx: &Ctx) -> f32 {
+    pub const fn swain_q3(ctx: &Ctx) -> f32 {
         60.0 + 60.0 * ctx.q_level + 0.9 * ctx.ability_power
     }
-    pub const fn swain_w_1(ctx: &Ctx) -> f32 {
+    pub const fn swain_w1(ctx: &Ctx) -> f32 {
         35.0 + 35.0 * ctx.w_level + 0.6 * ctx.ability_power
     }
-    pub const fn swain_w_2(ctx: &Ctx) -> f32 {
+    pub const fn swain_w2(ctx: &Ctx) -> f32 {
         17.5 + 17.5 * ctx.w_level + 0.3 * ctx.ability_power
     }
-    pub const fn swain_e_1(ctx: &Ctx) -> f32 {
+    pub const fn swain_e1(ctx: &Ctx) -> f32 {
         50.0 + 40.0 * ctx.e_level + 0.7 * ctx.ability_power
     }
-    pub const fn swain_r_1(ctx: &Ctx) -> f32 {
+    pub const fn swain_r1(ctx: &Ctx) -> f32 {
         2.5 + 5.0 * ctx.r_level + 0.025 * ctx.ability_power
     }
     pub static SYLAS: CachedChampion = CachedChampion {
@@ -14171,9 +14036,7 @@ pub mod champions {
         adaptative_type: AdaptativeType::Magic,
         attack_type: AttackType::Melee,
         positions: &[Position::Middle, Position::Top],
-        closures: &[
-            sylas_q_1, sylas_q_2, sylas_q_3, sylas_q_4, sylas_q_5, sylas_w_1,
-        ],
+        closures: &[sylas_q1, sylas_q2, sylas_q3, sylas_q4, sylas_q5, sylas_w1],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -14243,22 +14106,22 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn sylas_q_1(ctx: &Ctx) -> f32 {
+    pub const fn sylas_q1(ctx: &Ctx) -> f32 {
         20.0 + 20.0 * ctx.q_level + 0.4 * ctx.ability_power
     }
-    pub const fn sylas_q_2(ctx: &Ctx) -> f32 {
+    pub const fn sylas_q2(ctx: &Ctx) -> f32 {
         5.0 + 55.0 * ctx.q_level + 0.8 * ctx.ability_power
     }
-    pub const fn sylas_q_3(ctx: &Ctx) -> f32 {
+    pub const fn sylas_q3(ctx: &Ctx) -> f32 {
         2.0 + 22.0 * ctx.q_level + 0.32 * ctx.ability_power
     }
-    pub const fn sylas_q_4(ctx: &Ctx) -> f32 {
+    pub const fn sylas_q4(ctx: &Ctx) -> f32 {
         25.0 + 75.0 * ctx.q_level + 1.2 * ctx.ability_power
     }
-    pub const fn sylas_q_5(ctx: &Ctx) -> f32 {
+    pub const fn sylas_q5(ctx: &Ctx) -> f32 {
         22.0 + 42.0 * ctx.q_level + 0.72 * ctx.ability_power
     }
-    pub const fn sylas_w_1(ctx: &Ctx) -> f32 {
+    pub const fn sylas_w1(ctx: &Ctx) -> f32 {
         40.0 + 35.0 * ctx.w_level + 0.6 * ctx.ability_power
     }
     pub static SYNDRA: CachedChampion = CachedChampion {
@@ -14267,8 +14130,7 @@ pub mod champions {
         attack_type: AttackType::Ranged,
         positions: &[Position::Middle],
         closures: &[
-            syndra_q_1, syndra_w_1, syndra_w_2, syndra_w_3, syndra_e_1, syndra_r_1, syndra_r_2,
-            syndra_r_3,
+            syndra_q1, syndra_w1, syndra_w2, syndra_w3, syndra_e1, syndra_r1, syndra_r2, syndra_r3,
         ],
         metadata: &[
             TypeMetadata {
@@ -14349,28 +14211,28 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn syndra_q_1(ctx: &Ctx) -> f32 {
+    pub const fn syndra_q1(ctx: &Ctx) -> f32 {
         45.0 + 35.0 * ctx.q_level + 0.65 * ctx.ability_power
     }
-    pub const fn syndra_w_1(ctx: &Ctx) -> f32 {
+    pub const fn syndra_w1(ctx: &Ctx) -> f32 {
         35.0 + 35.0 * ctx.w_level + 0.65 * ctx.ability_power
     }
-    pub const fn syndra_w_2(ctx: &Ctx) -> f32 {
+    pub const fn syndra_w2(ctx: &Ctx) -> f32 {
         4.2 + 4.2 * ctx.w_level + (0.085 + 0.007 * ctx.w_level) * ctx.ability_power
     }
-    pub const fn syndra_w_3(ctx: &Ctx) -> f32 {
+    pub const fn syndra_w3(ctx: &Ctx) -> f32 {
         39.2 + 39.2 * ctx.w_level + (0.735 + 0.007 * ctx.w_level) * ctx.ability_power
     }
-    pub const fn syndra_e_1(ctx: &Ctx) -> f32 {
+    pub const fn syndra_e1(ctx: &Ctx) -> f32 {
         25.0 + 35.0 * ctx.e_level + 0.6 * ctx.ability_power
     }
-    pub const fn syndra_r_1(ctx: &Ctx) -> f32 {
+    pub const fn syndra_r1(ctx: &Ctx) -> f32 {
         50.0 + 40.0 * ctx.r_level + 0.2 * ctx.ability_power
     }
-    pub const fn syndra_r_2(ctx: &Ctx) -> f32 {
+    pub const fn syndra_r2(ctx: &Ctx) -> f32 {
         350.0 + 280.0 * ctx.r_level + 1.4 * ctx.ability_power
     }
-    pub const fn syndra_r_3(ctx: &Ctx) -> f32 {
+    pub const fn syndra_r3(ctx: &Ctx) -> f32 {
         150.0 + 120.0 * ctx.r_level + 0.6 * ctx.ability_power
     }
     pub static TAHMKENCH: CachedChampion = CachedChampion {
@@ -14378,7 +14240,7 @@ pub mod champions {
         adaptative_type: AdaptativeType::Magic,
         attack_type: AttackType::Melee,
         positions: &[Position::Support, Position::Top],
-        closures: &[tahmkench_w_1, tahmkench_e_1, tahmkench_e_2],
+        closures: &[tahmkench_w1, tahmkench_e1, tahmkench_e2],
         metadata: &[
             TypeMetadata {
                 kind: W(_1),
@@ -14433,13 +14295,13 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn tahmkench_w_1(ctx: &Ctx) -> f32 {
+    pub const fn tahmkench_w1(ctx: &Ctx) -> f32 {
         65.0 + 35.0 * ctx.w_level + 1.5 * ctx.ability_power
     }
-    pub const fn tahmkench_e_1(ctx: &Ctx) -> f32 {
+    pub const fn tahmkench_e1(ctx: &Ctx) -> f32 {
         0.07 + 0.08 * ctx.e_level
     }
-    pub const fn tahmkench_e_2(ctx: &Ctx) -> f32 {
+    pub const fn tahmkench_e2(ctx: &Ctx) -> f32 {
         0.4 + 0.02 * ctx.e_level
     }
     pub static TALIYAH: CachedChampion = CachedChampion {
@@ -14448,13 +14310,7 @@ pub mod champions {
         attack_type: AttackType::Ranged,
         positions: &[Position::Jungle, Position::Middle],
         closures: &[
-            taliyah_q_1,
-            taliyah_q_2,
-            taliyah_q_3,
-            taliyah_q_4,
-            taliyah_e_1,
-            taliyah_e_2,
-            taliyah_e_3,
+            taliyah_q1, taliyah_q2, taliyah_q3, taliyah_q4, taliyah_e1, taliyah_e2, taliyah_e3,
         ],
         metadata: &[
             TypeMetadata {
@@ -14530,25 +14386,25 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn taliyah_q_1(ctx: &Ctx) -> f32 {
+    pub const fn taliyah_q1(ctx: &Ctx) -> f32 {
         37.5 + 17.5 * ctx.q_level + 0.5 * ctx.ability_power
     }
-    pub const fn taliyah_q_2(ctx: &Ctx) -> f32 {
+    pub const fn taliyah_q2(ctx: &Ctx) -> f32 {
         15.0 + 7.0 * ctx.q_level + 0.2 * ctx.ability_power
     }
-    pub const fn taliyah_q_3(ctx: &Ctx) -> f32 {
+    pub const fn taliyah_q3(ctx: &Ctx) -> f32 {
         97.5 + 45.5 * ctx.q_level + 1.3 * ctx.ability_power
     }
-    pub const fn taliyah_q_4(ctx: &Ctx) -> f32 {
+    pub const fn taliyah_q4(ctx: &Ctx) -> f32 {
         67.5 + 31.5 * ctx.q_level + 0.9 * ctx.ability_power
     }
-    pub const fn taliyah_e_1(ctx: &Ctx) -> f32 {
+    pub const fn taliyah_e1(ctx: &Ctx) -> f32 {
         15.0 + 45.0 * ctx.e_level + 0.6 * ctx.ability_power
     }
-    pub const fn taliyah_e_2(ctx: &Ctx) -> f32 {
+    pub const fn taliyah_e2(ctx: &Ctx) -> f32 {
         25.0 + 37.5 * ctx.e_level + 0.75 * ctx.ability_power
     }
-    pub const fn taliyah_e_3(ctx: &Ctx) -> f32 {
+    pub const fn taliyah_e3(ctx: &Ctx) -> f32 {
         10.0 + 15.0 * ctx.e_level + 0.3 * ctx.ability_power
     }
     pub static TALON: CachedChampion = CachedChampion {
@@ -14557,7 +14413,7 @@ pub mod champions {
         attack_type: AttackType::Melee,
         positions: &[Position::Jungle],
         closures: &[
-            talon_q_1, talon_q_2, talon_w_1, talon_w_2, talon_w_3, talon_r_1, talon_r_2,
+            talon_q1, talon_q2, talon_w1, talon_w2, talon_w3, talon_r1, talon_r2,
         ],
         metadata: &[
             TypeMetadata {
@@ -14633,25 +14489,25 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn talon_q_1(ctx: &Ctx) -> f32 {
+    pub const fn talon_q1(ctx: &Ctx) -> f32 {
         67.5 + 30.0 * ctx.q_level + 1.5 * ctx.bonus_ad
     }
-    pub const fn talon_q_2(ctx: &Ctx) -> f32 {
+    pub const fn talon_q2(ctx: &Ctx) -> f32 {
         45.0 + 20.0 * ctx.q_level + 1.0 * ctx.bonus_ad
     }
-    pub const fn talon_w_1(ctx: &Ctx) -> f32 {
+    pub const fn talon_w1(ctx: &Ctx) -> f32 {
         40.0 + 10.0 * ctx.w_level + 0.4 * ctx.bonus_ad
     }
-    pub const fn talon_w_2(ctx: &Ctx) -> f32 {
+    pub const fn talon_w2(ctx: &Ctx) -> f32 {
         30.0 + 30.0 * ctx.w_level + 0.9 * ctx.bonus_ad
     }
-    pub const fn talon_w_3(ctx: &Ctx) -> f32 {
+    pub const fn talon_w3(ctx: &Ctx) -> f32 {
         70.0 + 40.0 * ctx.w_level + 1.3 * ctx.bonus_ad
     }
-    pub const fn talon_r_1(ctx: &Ctx) -> f32 {
+    pub const fn talon_r1(ctx: &Ctx) -> f32 {
         45.0 + 45.0 * ctx.r_level + 1.0 * ctx.bonus_ad
     }
-    pub const fn talon_r_2(ctx: &Ctx) -> f32 {
+    pub const fn talon_r2(ctx: &Ctx) -> f32 {
         90.0 + 90.0 * ctx.r_level + 2.0 * ctx.bonus_ad
     }
     pub static TARIC: CachedChampion = CachedChampion {
@@ -14659,7 +14515,7 @@ pub mod champions {
         adaptative_type: AdaptativeType::Physical,
         attack_type: AttackType::Melee,
         positions: &[Position::Middle, Position::Support],
-        closures: &[taric_e_1],
+        closures: &[taric_e1],
         metadata: &[TypeMetadata {
             kind: E(_1),
             damage_type: DamageType::Magic,
@@ -14702,7 +14558,7 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn taric_e_1(ctx: &Ctx) -> f32 {
+    pub const fn taric_e1(ctx: &Ctx) -> f32 {
         50.0 + 40.0 * ctx.e_level + 0.5 * ctx.ability_power + 0.5 * ctx.bonus_armor
     }
     pub static TEEMO: CachedChampion = CachedChampion {
@@ -14711,8 +14567,8 @@ pub mod champions {
         attack_type: AttackType::Ranged,
         positions: &[Position::Jungle, Position::Support, Position::Top],
         closures: &[
-            teemo_q_1, teemo_e_1, teemo_e_2, teemo_e_3, teemo_e_4, teemo_e_5, teemo_e_6, teemo_r_1,
-            teemo_r_2,
+            teemo_q1, teemo_e1, teemo_e2, teemo_e3, teemo_e4, teemo_e5, teemo_e6, teemo_r1,
+            teemo_r2,
         ],
         metadata: &[
             TypeMetadata {
@@ -14798,31 +14654,31 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn teemo_q_1(ctx: &Ctx) -> f32 {
+    pub const fn teemo_q1(ctx: &Ctx) -> f32 {
         35.0 + 45.0 * ctx.q_level + 0.7 * ctx.ability_power
     }
-    pub const fn teemo_e_1(ctx: &Ctx) -> f32 {
+    pub const fn teemo_e1(ctx: &Ctx) -> f32 {
         -5.0 + 14.0 * ctx.e_level + 0.3 * ctx.ability_power
     }
-    pub const fn teemo_e_2(ctx: &Ctx) -> f32 {
+    pub const fn teemo_e2(ctx: &Ctx) -> f32 {
         6.0 * ctx.e_level + 0.1 * ctx.ability_power
     }
-    pub const fn teemo_e_3(ctx: &Ctx) -> f32 {
+    pub const fn teemo_e3(ctx: &Ctx) -> f32 {
         24.0 * ctx.e_level + 0.4 * ctx.ability_power
     }
-    pub const fn teemo_e_4(ctx: &Ctx) -> f32 {
+    pub const fn teemo_e4(ctx: &Ctx) -> f32 {
         -7.25 + 20.3 * ctx.e_level + 0.435 * ctx.ability_power
     }
-    pub const fn teemo_e_5(ctx: &Ctx) -> f32 {
+    pub const fn teemo_e5(ctx: &Ctx) -> f32 {
         8.7 * ctx.e_level + 0.145 * ctx.ability_power
     }
-    pub const fn teemo_e_6(ctx: &Ctx) -> f32 {
+    pub const fn teemo_e6(ctx: &Ctx) -> f32 {
         34.8 * ctx.e_level + 0.58 * ctx.ability_power
     }
-    pub const fn teemo_r_1(ctx: &Ctx) -> f32 {
+    pub const fn teemo_r1(ctx: &Ctx) -> f32 {
         18.75 + 31.25 * ctx.r_level + 0.125 * ctx.ability_power
     }
-    pub const fn teemo_r_2(ctx: &Ctx) -> f32 {
+    pub const fn teemo_r2(ctx: &Ctx) -> f32 {
         75.0 + 125.0 * ctx.r_level + 0.5 * ctx.ability_power
     }
     pub static THRESH: CachedChampion = CachedChampion {
@@ -14830,7 +14686,7 @@ pub mod champions {
         adaptative_type: AdaptativeType::Physical,
         attack_type: AttackType::Ranged,
         positions: &[Position::Support],
-        closures: &[thresh_q_1, thresh_e_1, thresh_e_2, thresh_e_3, thresh_r_1],
+        closures: &[thresh_q1, thresh_e1, thresh_e2, thresh_e3, thresh_r1],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -14895,19 +14751,19 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn thresh_q_1(ctx: &Ctx) -> f32 {
+    pub const fn thresh_q1(ctx: &Ctx) -> f32 {
         50.0 + 50.0 * ctx.q_level + 0.9 * ctx.ability_power
     }
-    pub const fn thresh_e_1(ctx: &Ctx) -> f32 {
+    pub const fn thresh_e1(ctx: &Ctx) -> f32 {
         30.0 + 45.0 * ctx.e_level + 0.7 * ctx.ability_power
     }
-    pub const fn thresh_e_2(ctx: &Ctx) -> f32 {
+    pub const fn thresh_e2(ctx: &Ctx) -> f32 {
         1.7 * ctx.stacks + (0.6 + 0.3 * ctx.e_level) * ctx.attack_damage
     }
-    pub const fn thresh_e_3(ctx: &Ctx) -> f32 {
+    pub const fn thresh_e3(ctx: &Ctx) -> f32 {
         1.7 * ctx.stacks + 0.0 * ctx.attack_damage
     }
-    pub const fn thresh_r_1(ctx: &Ctx) -> f32 {
+    pub const fn thresh_r1(ctx: &Ctx) -> f32 {
         100.0 + 150.0 * ctx.r_level + 1.0 * ctx.ability_power
     }
     pub static TRISTANA: CachedChampion = CachedChampion {
@@ -14916,13 +14772,13 @@ pub mod champions {
         attack_type: AttackType::Ranged,
         positions: &[Position::Bottom, Position::Middle],
         closures: &[
-            tristana_w_1,
-            tristana_e_1,
-            tristana_e_2,
-            tristana_e_3,
-            tristana_e_4,
-            tristana_e_5,
-            tristana_r_1,
+            tristana_w1,
+            tristana_e1,
+            tristana_e2,
+            tristana_e3,
+            tristana_e4,
+            tristana_e5,
+            tristana_r1,
         ],
         metadata: &[
             TypeMetadata {
@@ -14998,25 +14854,25 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn tristana_w_1(ctx: &Ctx) -> f32 {
+    pub const fn tristana_w1(ctx: &Ctx) -> f32 {
         35.0 + 35.0 * ctx.w_level + 1.0 * ctx.bonus_ad + 0.5 * ctx.ability_power
     }
-    pub const fn tristana_e_1(ctx: &Ctx) -> f32 {
+    pub const fn tristana_e1(ctx: &Ctx) -> f32 {
         35.0 + 25.0 * ctx.e_level + 0.8 * ctx.bonus_ad + 0.5 * ctx.ability_power
     }
-    pub const fn tristana_e_2(ctx: &Ctx) -> f32 {
+    pub const fn tristana_e2(ctx: &Ctx) -> f32 {
         30.0 + 15.0 * ctx.e_level + 0.25 * ctx.ability_power
     }
-    pub const fn tristana_e_3(ctx: &Ctx) -> f32 {
+    pub const fn tristana_e3(ctx: &Ctx) -> f32 {
         8.75 + 6.25 * ctx.e_level + 0.2 * ctx.bonus_ad + 0.125 * ctx.ability_power
     }
-    pub const fn tristana_e_4(ctx: &Ctx) -> f32 {
+    pub const fn tristana_e4(ctx: &Ctx) -> f32 {
         35.0 + 25.0 * ctx.e_level + 0.8 * ctx.bonus_ad + 0.5 * ctx.ability_power
     }
-    pub const fn tristana_e_5(ctx: &Ctx) -> f32 {
+    pub const fn tristana_e5(ctx: &Ctx) -> f32 {
         70.0 + 50.0 * ctx.e_level + 1.6 * ctx.bonus_ad + 1.0 * ctx.ability_power
     }
-    pub const fn tristana_r_1(ctx: &Ctx) -> f32 {
+    pub const fn tristana_r1(ctx: &Ctx) -> f32 {
         175.0 + 50.0 * ctx.r_level + 0.7 * ctx.bonus_ad + 1.0 * ctx.ability_power
     }
     pub static TRUNDLE: CachedChampion = CachedChampion {
@@ -15025,12 +14881,7 @@ pub mod champions {
         attack_type: AttackType::Melee,
         positions: &[Position::Jungle, Position::Top],
         closures: &[
-            trundle_q_1,
-            trundle_q_2,
-            trundle_q_3,
-            trundle_r_1,
-            trundle_r_2,
-            trundle_r_3,
+            trundle_q1, trundle_q2, trundle_q3, trundle_r1, trundle_r2, trundle_r3,
         ],
         metadata: &[
             TypeMetadata {
@@ -15101,22 +14952,22 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn trundle_q_1(ctx: &Ctx) -> f32 {
+    pub const fn trundle_q1(ctx: &Ctx) -> f32 {
         -10.0 + 20.0 * ctx.q_level + (0.05 + 0.1 * ctx.q_level) * ctx.attack_damage
     }
-    pub const fn trundle_q_2(ctx: &Ctx) -> f32 {
+    pub const fn trundle_q2(ctx: &Ctx) -> f32 {
         7.5 + 2.5 * ctx.q_level
     }
-    pub const fn trundle_q_3(ctx: &Ctx) -> f32 {
+    pub const fn trundle_q3(ctx: &Ctx) -> f32 {
         15.0 + 5.0 * ctx.q_level
     }
-    pub const fn trundle_r_1(ctx: &Ctx) -> f32 {
+    pub const fn trundle_r1(ctx: &Ctx) -> f32 {
         (0.15 + 0.05 * ctx.r_level) * ctx.enemy_max_health + 0.02 * 0.01 * ctx.ability_power
     }
-    pub const fn trundle_r_2(ctx: &Ctx) -> f32 {
+    pub const fn trundle_r2(ctx: &Ctx) -> f32 {
         (0.075 + 0.025 * ctx.r_level) * ctx.enemy_max_health + 0.01 * 0.01 * ctx.ability_power
     }
-    pub const fn trundle_r_3(ctx: &Ctx) -> f32 {
+    pub const fn trundle_r3(ctx: &Ctx) -> f32 {
         (0.0187 + 0.0062 * ctx.r_level) * ctx.enemy_max_health + 0.0025 * 0.01 * ctx.ability_power
     }
     pub static TRYNDAMERE: CachedChampion = CachedChampion {
@@ -15124,12 +14975,7 @@ pub mod champions {
         adaptative_type: AdaptativeType::Physical,
         attack_type: AttackType::Melee,
         positions: &[Position::Top],
-        closures: &[
-            tryndamere_q_1,
-            tryndamere_q_2,
-            tryndamere_w_1,
-            tryndamere_e_1,
-        ],
+        closures: &[tryndamere_q1, tryndamere_q2, tryndamere_w1, tryndamere_e1],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -15189,16 +15035,16 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn tryndamere_q_1(ctx: &Ctx) -> f32 {
+    pub const fn tryndamere_q1(ctx: &Ctx) -> f32 {
         0.0525 + 0.167 * ctx.q_level
     }
-    pub const fn tryndamere_q_2(ctx: &Ctx) -> f32 {
+    pub const fn tryndamere_q2(ctx: &Ctx) -> f32 {
         5.0 + 15.0 * ctx.q_level
     }
-    pub const fn tryndamere_w_1(ctx: &Ctx) -> f32 {
+    pub const fn tryndamere_w1(ctx: &Ctx) -> f32 {
         5.0 + 15.0 * ctx.w_level
     }
-    pub const fn tryndamere_e_1(ctx: &Ctx) -> f32 {
+    pub const fn tryndamere_e1(ctx: &Ctx) -> f32 {
         40.0 + 40.0 * ctx.e_level + 1.0 * ctx.bonus_ad + 0.8 * ctx.ability_power
     }
     pub static TWISTEDFATE: CachedChampion = CachedChampion {
@@ -15207,11 +15053,11 @@ pub mod champions {
         attack_type: AttackType::Ranged,
         positions: &[Position::Bottom, Position::Middle, Position::Top],
         closures: &[
-            twistedfate_q_1,
-            twistedfate_w_1,
-            twistedfate_w_2,
-            twistedfate_w_3,
-            twistedfate_e_1,
+            twistedfate_q1,
+            twistedfate_w1,
+            twistedfate_w2,
+            twistedfate_w3,
+            twistedfate_e1,
         ],
         metadata: &[
             TypeMetadata {
@@ -15277,19 +15123,19 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn twistedfate_q_1(ctx: &Ctx) -> f32 {
+    pub const fn twistedfate_q1(ctx: &Ctx) -> f32 {
         15.0 + 45.0 * ctx.q_level + 0.5 * ctx.bonus_ad + 0.85 * ctx.ability_power
     }
-    pub const fn twistedfate_w_1(ctx: &Ctx) -> f32 {
+    pub const fn twistedfate_w1(ctx: &Ctx) -> f32 {
         20.0 + 20.0 * ctx.w_level + 1.0 * ctx.attack_damage + 1.0 * ctx.ability_power
     }
-    pub const fn twistedfate_w_2(ctx: &Ctx) -> f32 {
+    pub const fn twistedfate_w2(ctx: &Ctx) -> f32 {
         7.5 + 7.5 * ctx.w_level + 1.0 * ctx.attack_damage + 0.5 * ctx.ability_power
     }
-    pub const fn twistedfate_w_3(ctx: &Ctx) -> f32 {
+    pub const fn twistedfate_w3(ctx: &Ctx) -> f32 {
         15.0 + 15.0 * ctx.w_level + 1.0 * ctx.attack_damage + 0.7 * ctx.ability_power
     }
-    pub const fn twistedfate_e_1(ctx: &Ctx) -> f32 {
+    pub const fn twistedfate_e1(ctx: &Ctx) -> f32 {
         40.0 + 25.0 * ctx.e_level + 0.2 * ctx.bonus_ad + 0.4 * ctx.ability_power
     }
     pub static TWITCH: CachedChampion = CachedChampion {
@@ -15297,7 +15143,7 @@ pub mod champions {
         adaptative_type: AdaptativeType::Physical,
         attack_type: AttackType::Ranged,
         positions: &[Position::Bottom, Position::Support],
-        closures: &[twitch_e_1, twitch_e_2, twitch_e_3, twitch_e_4, twitch_r_1],
+        closures: &[twitch_e1, twitch_e2, twitch_e3, twitch_e4, twitch_r1],
         metadata: &[
             TypeMetadata {
                 kind: E(_1),
@@ -15362,19 +15208,19 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn twitch_e_1(ctx: &Ctx) -> f32 {
+    pub const fn twitch_e1(ctx: &Ctx) -> f32 {
         10.0 + 10.0 * ctx.e_level
     }
-    pub const fn twitch_e_2(ctx: &Ctx) -> f32 {
+    pub const fn twitch_e2(ctx: &Ctx) -> f32 {
         70.0 + 40.0 * ctx.e_level + 2.1 * ctx.bonus_ad + 2.1 * ctx.ability_power
     }
-    pub const fn twitch_e_3(ctx: &Ctx) -> f32 {
+    pub const fn twitch_e3(ctx: &Ctx) -> f32 {
         20.0 + 15.0 * ctx.e_level + 0.35 * ctx.bonus_ad + 0.35 * ctx.ability_power
     }
-    pub const fn twitch_e_4(ctx: &Ctx) -> f32 {
+    pub const fn twitch_e4(ctx: &Ctx) -> f32 {
         10.0 + 5.0 * ctx.e_level + 0.35 * ctx.bonus_ad
     }
-    pub const fn twitch_r_1(ctx: &Ctx) -> f32 {
+    pub const fn twitch_r1(ctx: &Ctx) -> f32 {
         15.0 + 15.0 * ctx.r_level
     }
     pub static UDYR: CachedChampion = CachedChampion {
@@ -15382,7 +15228,7 @@ pub mod champions {
         adaptative_type: AdaptativeType::Physical,
         attack_type: AttackType::Melee,
         positions: &[Position::Jungle, Position::Top],
-        closures: &[udyr_q_1, udyr_q_2, udyr_q_3, udyr_r_1, udyr_r_2],
+        closures: &[udyr_q1, udyr_q2, udyr_q3, udyr_r1, udyr_r2],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -15447,19 +15293,19 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn udyr_q_1(ctx: &Ctx) -> f32 {
+    pub const fn udyr_q1(ctx: &Ctx) -> f32 {
         (0.02 + 0.01 * ctx.q_level) * ctx.enemy_max_health + 0.04 * 0.01 * ctx.bonus_ad
     }
-    pub const fn udyr_q_2(ctx: &Ctx) -> f32 {
+    pub const fn udyr_q2(ctx: &Ctx) -> f32 {
         (0.04 + 0.02 * ctx.q_level) * ctx.enemy_max_health + 0.08 * 0.01 * ctx.bonus_ad
     }
-    pub const fn udyr_q_3(ctx: &Ctx) -> f32 {
+    pub const fn udyr_q3(ctx: &Ctx) -> f32 {
         -1.0 + 6.0 * ctx.q_level + 0.25 * ctx.bonus_ad
     }
-    pub const fn udyr_r_1(ctx: &Ctx) -> f32 {
+    pub const fn udyr_r1(ctx: &Ctx) -> f32 {
         2.0 + 8.0 * ctx.r_level + 0.175 * ctx.ability_power
     }
-    pub const fn udyr_r_2(ctx: &Ctx) -> f32 {
+    pub const fn udyr_r2(ctx: &Ctx) -> f32 {
         16.0 + 64.0 * ctx.r_level + 1.4 * ctx.ability_power
     }
     pub static URGOT: CachedChampion = CachedChampion {
@@ -15467,7 +15313,7 @@ pub mod champions {
         adaptative_type: AdaptativeType::Physical,
         attack_type: AttackType::Ranged,
         positions: &[Position::Top],
-        closures: &[urgot_q_1, urgot_w_1, urgot_e_1, urgot_r_1],
+        closures: &[urgot_q1, urgot_w1, urgot_e1, urgot_r1],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -15527,16 +15373,16 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn urgot_q_1(ctx: &Ctx) -> f32 {
+    pub const fn urgot_q1(ctx: &Ctx) -> f32 {
         -20.0 + 45.0 * ctx.q_level + 0.7 * ctx.attack_damage
     }
-    pub const fn urgot_w_1(ctx: &Ctx) -> f32 {
+    pub const fn urgot_w1(ctx: &Ctx) -> f32 {
         12.0 + (0.165 + 0.035 * ctx.w_level) * ctx.attack_damage
     }
-    pub const fn urgot_e_1(ctx: &Ctx) -> f32 {
+    pub const fn urgot_e1(ctx: &Ctx) -> f32 {
         60.0 + 30.0 * ctx.e_level + 1.0 * ctx.bonus_ad
     }
-    pub const fn urgot_r_1(ctx: &Ctx) -> f32 {
+    pub const fn urgot_r1(ctx: &Ctx) -> f32 {
         -25.0 + 125.0 * ctx.r_level + 0.5 * ctx.bonus_ad
     }
     pub static VARUS: CachedChampion = CachedChampion {
@@ -15545,8 +15391,8 @@ pub mod champions {
         attack_type: AttackType::Ranged,
         positions: &[Position::Bottom],
         closures: &[
-            varus_q_1, varus_q_2, varus_q_3, varus_q_4, varus_w_1, varus_w_2, varus_w_3, varus_w_4,
-            varus_w_5, varus_w_6, varus_w_7, varus_e_1, varus_r_1,
+            varus_q1, varus_q2, varus_q3, varus_q4, varus_w1, varus_w2, varus_w3, varus_w4,
+            varus_w5, varus_w6, varus_w7, varus_e1, varus_r1,
         ],
         metadata: &[
             TypeMetadata {
@@ -15652,43 +15498,43 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn varus_q_1(ctx: &Ctx) -> f32 {
+    pub const fn varus_q1(ctx: &Ctx) -> f32 {
         10.0 + 70.0 * ctx.q_level + (1.2 + 0.1 * ctx.q_level) * ctx.bonus_ad
     }
-    pub const fn varus_q_2(ctx: &Ctx) -> f32 {
+    pub const fn varus_q2(ctx: &Ctx) -> f32 {
         3.3 + 23.1 * ctx.q_level + (0.396 + 0.033 * ctx.q_level) * ctx.bonus_ad
     }
-    pub const fn varus_q_3(ctx: &Ctx) -> f32 {
+    pub const fn varus_q3(ctx: &Ctx) -> f32 {
         6.66 + 46.67 * ctx.q_level + (0.800 + 0.0666 * ctx.q_level) * ctx.bonus_ad
     }
-    pub const fn varus_q_4(ctx: &Ctx) -> f32 {
+    pub const fn varus_q4(ctx: &Ctx) -> f32 {
         2.2 + 15.4 * ctx.q_level + (0.264 + 0.022 * ctx.q_level) * ctx.bonus_ad
     }
-    pub const fn varus_w_1(ctx: &Ctx) -> f32 {
+    pub const fn varus_w1(ctx: &Ctx) -> f32 {
         (0.06 + 0.03 * ctx.w_level) * ctx.missing_health
     }
-    pub const fn varus_w_2(ctx: &Ctx) -> f32 {
+    pub const fn varus_w2(ctx: &Ctx) -> f32 {
         (0.04 + 0.02 * ctx.w_level) * ctx.missing_health
     }
-    pub const fn varus_w_3(ctx: &Ctx) -> f32 {
+    pub const fn varus_w3(ctx: &Ctx) -> f32 {
         (0.075 + 0.015 * ctx.w_level) * ctx.enemy_max_health + 0.045 * 0.01 * ctx.ability_power
     }
-    pub const fn varus_w_4(ctx: &Ctx) -> f32 {
+    pub const fn varus_w4(ctx: &Ctx) -> f32 {
         (0.025 + 0.005 * ctx.w_level) * ctx.enemy_max_health + 0.015 * 0.01 * ctx.ability_power
     }
-    pub const fn varus_w_5(ctx: &Ctx) -> f32 {
+    pub const fn varus_w5(ctx: &Ctx) -> f32 {
         (0.112 + 0.022 * ctx.w_level) * ctx.enemy_max_health + 0.0675 * 0.01 * ctx.ability_power
     }
-    pub const fn varus_w_6(ctx: &Ctx) -> f32 {
+    pub const fn varus_w6(ctx: &Ctx) -> f32 {
         (0.037 + 0.007 * ctx.w_level) * ctx.enemy_max_health + 0.0225 * 0.01 * ctx.ability_power
     }
-    pub const fn varus_w_7(ctx: &Ctx) -> f32 {
+    pub const fn varus_w7(ctx: &Ctx) -> f32 {
         -2.0 + 8.0 * ctx.w_level + 0.35 * ctx.ability_power
     }
-    pub const fn varus_e_1(ctx: &Ctx) -> f32 {
+    pub const fn varus_e1(ctx: &Ctx) -> f32 {
         30.0 + 30.0 * ctx.e_level + 0.9 * ctx.bonus_ad
     }
-    pub const fn varus_r_1(ctx: &Ctx) -> f32 {
+    pub const fn varus_r1(ctx: &Ctx) -> f32 {
         50.0 + 100.0 * ctx.r_level + 1.0 * ctx.ability_power
     }
     pub static VAYNE: CachedChampion = CachedChampion {
@@ -15697,7 +15543,7 @@ pub mod champions {
         attack_type: AttackType::Ranged,
         positions: &[Position::Bottom, Position::Top],
         closures: &[
-            vayne_q_1, vayne_w_1, vayne_w_2, vayne_w_3, vayne_e_1, vayne_e_2, vayne_e_3, vayne_r_1,
+            vayne_q1, vayne_w1, vayne_w2, vayne_w3, vayne_e1, vayne_e2, vayne_e3, vayne_r1,
         ],
         metadata: &[
             TypeMetadata {
@@ -15778,28 +15624,28 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn vayne_q_1(ctx: &Ctx) -> f32 {
+    pub const fn vayne_q1(ctx: &Ctx) -> f32 {
         (0.65 + 0.1 * ctx.q_level) * ctx.attack_damage + 0.5 * ctx.ability_power
     }
-    pub const fn vayne_w_1(ctx: &Ctx) -> f32 {
+    pub const fn vayne_w1(ctx: &Ctx) -> f32 {
         125.0 + 15.0 * ctx.w_level
     }
-    pub const fn vayne_w_2(ctx: &Ctx) -> f32 {
+    pub const fn vayne_w2(ctx: &Ctx) -> f32 {
         (0.05 + 0.01 * ctx.w_level) * ctx.enemy_max_health
     }
-    pub const fn vayne_w_3(ctx: &Ctx) -> f32 {
+    pub const fn vayne_w3(ctx: &Ctx) -> f32 {
         35.0 + 15.0 * ctx.w_level
     }
-    pub const fn vayne_e_1(ctx: &Ctx) -> f32 {
+    pub const fn vayne_e1(ctx: &Ctx) -> f32 {
         15.0 + 35.0 * ctx.e_level + 0.5 * ctx.bonus_ad
     }
-    pub const fn vayne_e_2(ctx: &Ctx) -> f32 {
+    pub const fn vayne_e2(ctx: &Ctx) -> f32 {
         22.5 + 52.5 * ctx.e_level + 0.75 * ctx.bonus_ad
     }
-    pub const fn vayne_e_3(ctx: &Ctx) -> f32 {
+    pub const fn vayne_e3(ctx: &Ctx) -> f32 {
         37.5 + 87.5 * ctx.e_level + 1.25 * ctx.bonus_ad
     }
-    pub const fn vayne_r_1(ctx: &Ctx) -> f32 {
+    pub const fn vayne_r1(ctx: &Ctx) -> f32 {
         20.0 + 15.0 * ctx.r_level
     }
     pub static VEIGAR: CachedChampion = CachedChampion {
@@ -15807,7 +15653,7 @@ pub mod champions {
         adaptative_type: AdaptativeType::Magic,
         attack_type: AttackType::Ranged,
         positions: &[Position::Middle, Position::Support],
-        closures: &[veigar_q_1, veigar_w_1, veigar_r_1, veigar_r_2],
+        closures: &[veigar_q1, veigar_w1, veigar_r1, veigar_r2],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -15867,16 +15713,16 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn veigar_q_1(ctx: &Ctx) -> f32 {
+    pub const fn veigar_q1(ctx: &Ctx) -> f32 {
         40.0 + 40.0 * ctx.q_level + (0.45 + 0.05 * ctx.q_level) * ctx.ability_power
     }
-    pub const fn veigar_w_1(ctx: &Ctx) -> f32 {
+    pub const fn veigar_w1(ctx: &Ctx) -> f32 {
         30.0 + 55.0 * ctx.w_level + (0.6 + 0.1 * ctx.w_level) * ctx.ability_power
     }
-    pub const fn veigar_r_1(ctx: &Ctx) -> f32 {
+    pub const fn veigar_r1(ctx: &Ctx) -> f32 {
         200.0 + 150.0 * ctx.r_level + (1.2 + 0.1 * ctx.r_level) * ctx.ability_power
     }
-    pub const fn veigar_r_2(ctx: &Ctx) -> f32 {
+    pub const fn veigar_r2(ctx: &Ctx) -> f32 {
         100.0 + 75.0 * ctx.r_level + (0.6 + 0.05 * ctx.r_level) * ctx.ability_power
     }
     pub static VELKOZ: CachedChampion = CachedChampion {
@@ -15885,7 +15731,7 @@ pub mod champions {
         attack_type: AttackType::Ranged,
         positions: &[Position::Middle, Position::Support],
         closures: &[
-            velkoz_q_1, velkoz_w_1, velkoz_w_2, velkoz_w_3, velkoz_e_1, velkoz_r_1, velkoz_r_2,
+            velkoz_q1, velkoz_w1, velkoz_w2, velkoz_w3, velkoz_e1, velkoz_r1, velkoz_r2,
         ],
         metadata: &[
             TypeMetadata {
@@ -15961,25 +15807,25 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn velkoz_q_1(ctx: &Ctx) -> f32 {
+    pub const fn velkoz_q1(ctx: &Ctx) -> f32 {
         40.0 + 40.0 * ctx.q_level + 0.9 * ctx.ability_power
     }
-    pub const fn velkoz_w_1(ctx: &Ctx) -> f32 {
+    pub const fn velkoz_w1(ctx: &Ctx) -> f32 {
         10.0 + 20.0 * ctx.w_level + 0.2 * ctx.ability_power
     }
-    pub const fn velkoz_w_2(ctx: &Ctx) -> f32 {
+    pub const fn velkoz_w2(ctx: &Ctx) -> f32 {
         15.0 + 30.0 * ctx.w_level + 0.25 * ctx.ability_power
     }
-    pub const fn velkoz_w_3(ctx: &Ctx) -> f32 {
+    pub const fn velkoz_w3(ctx: &Ctx) -> f32 {
         25.0 + 50.0 * ctx.w_level + 0.45 * ctx.ability_power
     }
-    pub const fn velkoz_e_1(ctx: &Ctx) -> f32 {
+    pub const fn velkoz_e1(ctx: &Ctx) -> f32 {
         40.0 + 30.0 * ctx.e_level + 0.3 * ctx.ability_power
     }
-    pub const fn velkoz_r_1(ctx: &Ctx) -> f32 {
+    pub const fn velkoz_r1(ctx: &Ctx) -> f32 {
         15.39 + 19.23 * ctx.r_level + 0.0962 * ctx.ability_power
     }
-    pub const fn velkoz_r_2(ctx: &Ctx) -> f32 {
+    pub const fn velkoz_r2(ctx: &Ctx) -> f32 {
         200.0 + 250.0 * ctx.r_level + 1.25 * ctx.ability_power
     }
     pub static VEX: CachedChampion = CachedChampion {
@@ -15987,7 +15833,7 @@ pub mod champions {
         adaptative_type: AdaptativeType::Magic,
         attack_type: AttackType::Ranged,
         positions: &[Position::Middle],
-        closures: &[vex_q_1, vex_w_1, vex_e_1, vex_r_1, vex_r_2, vex_r_3],
+        closures: &[vex_q1, vex_w1, vex_e1, vex_r1, vex_r2, vex_r3],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -16057,22 +15903,22 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn vex_q_1(ctx: &Ctx) -> f32 {
+    pub const fn vex_q1(ctx: &Ctx) -> f32 {
         25.0 + 45.0 * ctx.q_level + 0.7 * ctx.ability_power
     }
-    pub const fn vex_w_1(ctx: &Ctx) -> f32 {
+    pub const fn vex_w1(ctx: &Ctx) -> f32 {
         40.0 + 40.0 * ctx.w_level + 0.3 * ctx.ability_power
     }
-    pub const fn vex_e_1(ctx: &Ctx) -> f32 {
+    pub const fn vex_e1(ctx: &Ctx) -> f32 {
         30.0 + 20.0 * ctx.e_level + (0.35 + 0.05 * ctx.e_level) * ctx.ability_power
     }
-    pub const fn vex_r_1(ctx: &Ctx) -> f32 {
+    pub const fn vex_r1(ctx: &Ctx) -> f32 {
         25.0 + 50.0 * ctx.r_level + 0.2 * ctx.ability_power
     }
-    pub const fn vex_r_2(ctx: &Ctx) -> f32 {
+    pub const fn vex_r2(ctx: &Ctx) -> f32 {
         50.0 + 100.0 * ctx.r_level + 0.5 * ctx.ability_power
     }
-    pub const fn vex_r_3(ctx: &Ctx) -> f32 {
+    pub const fn vex_r3(ctx: &Ctx) -> f32 {
         75.0 + 150.0 * ctx.r_level + 0.7 * ctx.ability_power
     }
     pub static VI: CachedChampion = CachedChampion {
@@ -16080,7 +15926,7 @@ pub mod champions {
         adaptative_type: AdaptativeType::Physical,
         attack_type: AttackType::Melee,
         positions: &[Position::Jungle],
-        closures: &[vi_q_1, vi_q_2, vi_w_1, vi_e_1, vi_r_1],
+        closures: &[vi_q1, vi_q2, vi_w1, vi_e1, vi_r1],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -16145,19 +15991,19 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn vi_q_1(ctx: &Ctx) -> f32 {
+    pub const fn vi_q1(ctx: &Ctx) -> f32 {
         50.0 + 50.0 * ctx.q_level + 1.5 * ctx.bonus_ad
     }
-    pub const fn vi_q_2(ctx: &Ctx) -> f32 {
+    pub const fn vi_q2(ctx: &Ctx) -> f32 {
         20.0 + 20.0 * ctx.q_level + 0.6 * ctx.bonus_ad
     }
-    pub const fn vi_w_1(ctx: &Ctx) -> f32 {
+    pub const fn vi_w1(ctx: &Ctx) -> f32 {
         (0.03 + 0.01 * ctx.w_level) * ctx.enemy_max_health + 0.035 * 0.01 * ctx.bonus_ad
     }
-    pub const fn vi_e_1(ctx: &Ctx) -> f32 {
+    pub const fn vi_e1(ctx: &Ctx) -> f32 {
         -10.0 + 20.0 * ctx.e_level + 1.1 * ctx.attack_damage + 1.0 * ctx.ability_power
     }
-    pub const fn vi_r_1(ctx: &Ctx) -> f32 {
+    pub const fn vi_r1(ctx: &Ctx) -> f32 {
         50.0 + 100.0 * ctx.r_level + 0.9 * ctx.bonus_ad
     }
     pub static VIEGO: CachedChampion = CachedChampion {
@@ -16165,7 +16011,7 @@ pub mod champions {
         adaptative_type: AdaptativeType::Physical,
         attack_type: AttackType::Melee,
         positions: &[Position::Jungle],
-        closures: &[viego_q_1, viego_q_2, viego_q_3, viego_w_1, viego_r_1],
+        closures: &[viego_q1, viego_q2, viego_q3, viego_w1, viego_r1],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -16230,19 +16076,19 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn viego_q_1(ctx: &Ctx) -> f32 {
+    pub const fn viego_q1(ctx: &Ctx) -> f32 {
         10.0 + 15.0 * ctx.q_level + 0.7 * ctx.attack_damage
     }
-    pub const fn viego_q_2(ctx: &Ctx) -> f32 {
+    pub const fn viego_q2(ctx: &Ctx) -> f32 {
         (0.01 + 0.01 * ctx.q_level) * ctx.current_health
     }
-    pub const fn viego_q_3(ctx: &Ctx) -> f32 {
+    pub const fn viego_q3(ctx: &Ctx) -> f32 {
         5.0 + 5.0 * ctx.q_level
     }
-    pub const fn viego_w_1(ctx: &Ctx) -> f32 {
+    pub const fn viego_w1(ctx: &Ctx) -> f32 {
         25.0 + 55.0 * ctx.w_level + 1.0 * ctx.ability_power
     }
-    pub const fn viego_r_1(ctx: &Ctx) -> f32 {
+    pub const fn viego_r1(ctx: &Ctx) -> f32 {
         (0.08 + 0.04 * ctx.r_level) * ctx.missing_health + 0.05 * 0.01 * ctx.bonus_ad
     }
     pub static VIKTOR: CachedChampion = CachedChampion {
@@ -16251,8 +16097,8 @@ pub mod champions {
         attack_type: AttackType::Ranged,
         positions: &[Position::Middle],
         closures: &[
-            viktor_q_1, viktor_q_2, viktor_q_3, viktor_e_1, viktor_e_2, viktor_e_3, viktor_r_1,
-            viktor_r_2, viktor_r_3,
+            viktor_q1, viktor_q2, viktor_q3, viktor_e1, viktor_e2, viktor_e3, viktor_r1, viktor_r2,
+            viktor_r3,
         ],
         metadata: &[
             TypeMetadata {
@@ -16338,31 +16184,31 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn viktor_q_1(ctx: &Ctx) -> f32 {
+    pub const fn viktor_q1(ctx: &Ctx) -> f32 {
         45.0 + 15.0 * ctx.q_level + 0.4 * ctx.ability_power
     }
-    pub const fn viktor_q_2(ctx: &Ctx) -> f32 {
+    pub const fn viktor_q2(ctx: &Ctx) -> f32 {
         -5.0 + 25.0 * ctx.q_level + 1.0 * ctx.attack_damage + 0.5 * ctx.ability_power
     }
-    pub const fn viktor_q_3(ctx: &Ctx) -> f32 {
+    pub const fn viktor_q3(ctx: &Ctx) -> f32 {
         40.0 + 40.0 * ctx.q_level + 1.0 * ctx.attack_damage + 0.9 * ctx.ability_power
     }
-    pub const fn viktor_e_1(ctx: &Ctx) -> f32 {
+    pub const fn viktor_e1(ctx: &Ctx) -> f32 {
         30.0 + 40.0 * ctx.e_level + 0.5 * ctx.ability_power
     }
-    pub const fn viktor_e_2(ctx: &Ctx) -> f32 {
+    pub const fn viktor_e2(ctx: &Ctx) -> f32 {
         -10.0 + 30.0 * ctx.e_level + 0.8 * ctx.ability_power
     }
-    pub const fn viktor_e_3(ctx: &Ctx) -> f32 {
+    pub const fn viktor_e3(ctx: &Ctx) -> f32 {
         20.0 + 70.0 * ctx.e_level + 1.3 * ctx.ability_power
     }
-    pub const fn viktor_r_1(ctx: &Ctx) -> f32 {
+    pub const fn viktor_r1(ctx: &Ctx) -> f32 {
         25.0 + 75.0 * ctx.r_level + 0.5 * ctx.ability_power
     }
-    pub const fn viktor_r_2(ctx: &Ctx) -> f32 {
+    pub const fn viktor_r2(ctx: &Ctx) -> f32 {
         25.0 + 40.0 * ctx.r_level + 0.35 * ctx.ability_power
     }
-    pub const fn viktor_r_3(ctx: &Ctx) -> f32 {
+    pub const fn viktor_r3(ctx: &Ctx) -> f32 {
         175.0 + 315.0 * ctx.r_level + 2.6 * ctx.ability_power
     }
     pub static VLADIMIR: CachedChampion = CachedChampion {
@@ -16371,13 +16217,13 @@ pub mod champions {
         attack_type: AttackType::Ranged,
         positions: &[Position::Middle, Position::Top],
         closures: &[
-            vladimir_q_1,
-            vladimir_q_2,
-            vladimir_w_1,
-            vladimir_w_2,
-            vladimir_e_1,
-            vladimir_e_2,
-            vladimir_r_1,
+            vladimir_q1,
+            vladimir_q2,
+            vladimir_w1,
+            vladimir_w2,
+            vladimir_e1,
+            vladimir_e2,
+            vladimir_r1,
         ],
         metadata: &[
             TypeMetadata {
@@ -16453,25 +16299,25 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn vladimir_q_1(ctx: &Ctx) -> f32 {
+    pub const fn vladimir_q1(ctx: &Ctx) -> f32 {
         60.0 + 20.0 * ctx.q_level + 0.6 * ctx.ability_power
     }
-    pub const fn vladimir_q_2(ctx: &Ctx) -> f32 {
+    pub const fn vladimir_q2(ctx: &Ctx) -> f32 {
         111.0 + 37.0 * ctx.q_level + 1.11 * ctx.ability_power
     }
-    pub const fn vladimir_w_1(ctx: &Ctx) -> f32 {
+    pub const fn vladimir_w1(ctx: &Ctx) -> f32 {
         6.25 + 13.75 * ctx.w_level + 0.0375 * ctx.bonus_health
     }
-    pub const fn vladimir_w_2(ctx: &Ctx) -> f32 {
+    pub const fn vladimir_w2(ctx: &Ctx) -> f32 {
         25.0 + 55.0 * ctx.w_level + 0.15 * ctx.bonus_health
     }
-    pub const fn vladimir_e_1(ctx: &Ctx) -> f32 {
+    pub const fn vladimir_e1(ctx: &Ctx) -> f32 {
         30.0 + 30.0 * ctx.e_level + 0.06 * ctx.max_health + 0.8 * ctx.ability_power
     }
-    pub const fn vladimir_e_2(ctx: &Ctx) -> f32 {
+    pub const fn vladimir_e2(ctx: &Ctx) -> f32 {
         15.0 + 15.0 * ctx.e_level + 0.015 * ctx.max_health + 0.35 * ctx.ability_power
     }
-    pub const fn vladimir_r_1(ctx: &Ctx) -> f32 {
+    pub const fn vladimir_r1(ctx: &Ctx) -> f32 {
         50.0 + 100.0 * ctx.r_level + 0.7 * ctx.ability_power
     }
     pub static VOLIBEAR: CachedChampion = CachedChampion {
@@ -16480,11 +16326,11 @@ pub mod champions {
         attack_type: AttackType::Melee,
         positions: &[Position::Jungle, Position::Top],
         closures: &[
-            volibear_q_1,
-            volibear_w_1,
-            volibear_e_1,
-            volibear_e_2,
-            volibear_r_1,
+            volibear_q1,
+            volibear_w1,
+            volibear_e1,
+            volibear_e2,
+            volibear_r1,
         ],
         metadata: &[
             TypeMetadata {
@@ -16550,21 +16396,21 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn volibear_q_1(ctx: &Ctx) -> f32 {
+    pub const fn volibear_q1(ctx: &Ctx) -> f32 {
         -10.0 + 20.0 * ctx.q_level + 1.2 * ctx.bonus_ad
     }
-    pub const fn volibear_w_1(ctx: &Ctx) -> f32 {
+    pub const fn volibear_w1(ctx: &Ctx) -> f32 {
         -20.0 + 25.0 * ctx.w_level + 1.1 * ctx.attack_damage + 0.06 * ctx.bonus_health
     }
-    pub const fn volibear_e_1(ctx: &Ctx) -> f32 {
+    pub const fn volibear_e1(ctx: &Ctx) -> f32 {
         50.0 + 30.0 * ctx.e_level
             + 0.7 * ctx.ability_power
             + (0.1 + 0.01 * ctx.e_level) * ctx.enemy_max_health
     }
-    pub const fn volibear_e_2(ctx: &Ctx) -> f32 {
+    pub const fn volibear_e2(ctx: &Ctx) -> f32 {
         75.0 + 115.0 * ctx.e_level + 0.7 * ctx.ability_power
     }
-    pub const fn volibear_r_1(ctx: &Ctx) -> f32 {
+    pub const fn volibear_r1(ctx: &Ctx) -> f32 {
         100.0 + 200.0 * ctx.r_level + 2.5 * ctx.bonus_ad + 1.25 * ctx.ability_power
     }
     pub static WARWICK: CachedChampion = CachedChampion {
@@ -16572,7 +16418,7 @@ pub mod champions {
         adaptative_type: AdaptativeType::Physical,
         attack_type: AttackType::Melee,
         positions: &[Position::Jungle, Position::Top],
-        closures: &[warwick_q_1, warwick_q_2, warwick_e_1, warwick_r_1],
+        closures: &[warwick_q1, warwick_q2, warwick_e1, warwick_r1],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -16632,18 +16478,18 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn warwick_q_1(ctx: &Ctx) -> f32 {
+    pub const fn warwick_q1(ctx: &Ctx) -> f32 {
         (0.05 + 0.01 * ctx.q_level) * ctx.enemy_max_health
             + 1.2 * ctx.attack_damage
             + 1.0 * ctx.ability_power
     }
-    pub const fn warwick_q_2(ctx: &Ctx) -> f32 {
+    pub const fn warwick_q2(ctx: &Ctx) -> f32 {
         135.0 + 15.0 * ctx.q_level + 1.2 * ctx.attack_damage + 1.0 * ctx.ability_power
     }
-    pub const fn warwick_e_1(ctx: &Ctx) -> f32 {
+    pub const fn warwick_e1(ctx: &Ctx) -> f32 {
         0.3 + 0.05 * ctx.e_level
     }
-    pub const fn warwick_r_1(ctx: &Ctx) -> f32 {
+    pub const fn warwick_r1(ctx: &Ctx) -> f32 {
         175.0 * ctx.r_level + 1.67 * ctx.bonus_ad
     }
     pub static XAYAH: CachedChampion = CachedChampion {
@@ -16652,7 +16498,7 @@ pub mod champions {
         attack_type: AttackType::Ranged,
         positions: &[Position::Bottom],
         closures: &[
-            xayah_q_1, xayah_q_2, xayah_q_3, xayah_q_4, xayah_e_1, xayah_e_2, xayah_r_1,
+            xayah_q1, xayah_q2, xayah_q3, xayah_q4, xayah_e1, xayah_e2, xayah_r1,
         ],
         metadata: &[
             TypeMetadata {
@@ -16728,25 +16574,25 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn xayah_q_1(ctx: &Ctx) -> f32 {
+    pub const fn xayah_q1(ctx: &Ctx) -> f32 {
         30.0 + 15.0 * ctx.q_level + 0.5 * ctx.bonus_ad
     }
-    pub const fn xayah_q_2(ctx: &Ctx) -> f32 {
+    pub const fn xayah_q2(ctx: &Ctx) -> f32 {
         60.0 + 30.0 * ctx.q_level + 1.0 * ctx.bonus_ad
     }
-    pub const fn xayah_q_3(ctx: &Ctx) -> f32 {
+    pub const fn xayah_q3(ctx: &Ctx) -> f32 {
         15.0 + 7.5 * ctx.q_level + 0.25 * ctx.bonus_ad
     }
-    pub const fn xayah_q_4(ctx: &Ctx) -> f32 {
+    pub const fn xayah_q4(ctx: &Ctx) -> f32 {
         30.0 + 15.0 * ctx.q_level + 0.5 * ctx.bonus_ad
     }
-    pub const fn xayah_e_1(ctx: &Ctx) -> f32 {
+    pub const fn xayah_e1(ctx: &Ctx) -> f32 {
         17.5 + 7.5 * ctx.e_level + 0.2 * ctx.bonus_ad
     }
-    pub const fn xayah_e_2(ctx: &Ctx) -> f32 {
+    pub const fn xayah_e2(ctx: &Ctx) -> f32 {
         35.0 + 15.0 * ctx.e_level + 0.4 * ctx.bonus_ad
     }
-    pub const fn xayah_r_1(ctx: &Ctx) -> f32 {
+    pub const fn xayah_r1(ctx: &Ctx) -> f32 {
         100.0 + 100.0 * ctx.r_level + 1.0 * ctx.bonus_ad
     }
     pub static XERATH: CachedChampion = CachedChampion {
@@ -16755,7 +16601,7 @@ pub mod champions {
         attack_type: AttackType::Ranged,
         positions: &[Position::Middle, Position::Support],
         closures: &[
-            xerath_q_1, xerath_w_1, xerath_w_2, xerath_e_1, xerath_r_1, xerath_r_2, xerath_r_3,
+            xerath_q1, xerath_w1, xerath_w2, xerath_e1, xerath_r1, xerath_r2, xerath_r3,
         ],
         metadata: &[
             TypeMetadata {
@@ -16831,25 +16677,25 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn xerath_q_1(ctx: &Ctx) -> f32 {
+    pub const fn xerath_q1(ctx: &Ctx) -> f32 {
         35.0 + 40.0 * ctx.q_level + 0.9 * ctx.ability_power
     }
-    pub const fn xerath_w_1(ctx: &Ctx) -> f32 {
+    pub const fn xerath_w1(ctx: &Ctx) -> f32 {
         15.0 + 35.0 * ctx.w_level + 0.65 * ctx.ability_power
     }
-    pub const fn xerath_w_2(ctx: &Ctx) -> f32 {
+    pub const fn xerath_w2(ctx: &Ctx) -> f32 {
         25.005 + 58.345 * ctx.w_level + 1.08355 * ctx.ability_power
     }
-    pub const fn xerath_e_1(ctx: &Ctx) -> f32 {
+    pub const fn xerath_e1(ctx: &Ctx) -> f32 {
         40.0 + 30.0 * ctx.e_level + 0.45 * ctx.ability_power
     }
-    pub const fn xerath_r_1(ctx: &Ctx) -> f32 {
+    pub const fn xerath_r1(ctx: &Ctx) -> f32 {
         15.0 + 5.0 * ctx.r_level + 0.05 * ctx.ability_power
     }
-    pub const fn xerath_r_2(ctx: &Ctx) -> f32 {
+    pub const fn xerath_r2(ctx: &Ctx) -> f32 {
         120.0 + 50.0 * ctx.r_level + 0.45 * ctx.ability_power
     }
-    pub const fn xerath_r_3(ctx: &Ctx) -> f32 {
+    pub const fn xerath_r3(ctx: &Ctx) -> f32 {
         260.0 + 420.0 * ctx.r_level + (1.35 + 0.45 * ctx.r_level) * ctx.ability_power
     }
     pub static XINZHAO: CachedChampion = CachedChampion {
@@ -16858,14 +16704,8 @@ pub mod champions {
         attack_type: AttackType::Melee,
         positions: &[Position::Jungle],
         closures: &[
-            xinzhao_q_1,
-            xinzhao_q_2,
-            xinzhao_w_1,
-            xinzhao_w_2,
-            xinzhao_w_3,
-            xinzhao_w_4,
-            xinzhao_e_1,
-            xinzhao_r_1,
+            xinzhao_q1, xinzhao_q2, xinzhao_w1, xinzhao_w2, xinzhao_w3, xinzhao_w4, xinzhao_e1,
+            xinzhao_r1,
         ],
         metadata: &[
             TypeMetadata {
@@ -16946,28 +16786,28 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn xinzhao_q_1(ctx: &Ctx) -> f32 {
+    pub const fn xinzhao_q1(ctx: &Ctx) -> f32 {
         15.0 * ctx.q_level + 0.4 * ctx.bonus_ad
     }
-    pub const fn xinzhao_q_2(ctx: &Ctx) -> f32 {
+    pub const fn xinzhao_q2(ctx: &Ctx) -> f32 {
         45.0 * ctx.q_level + 1.2 * ctx.bonus_ad
     }
-    pub const fn xinzhao_w_1(ctx: &Ctx) -> f32 {
+    pub const fn xinzhao_w1(ctx: &Ctx) -> f32 {
         5.0 + 2.5 * ctx.w_level + 0.075 * ctx.attack_damage
     }
-    pub const fn xinzhao_w_2(ctx: &Ctx) -> f32 {
+    pub const fn xinzhao_w2(ctx: &Ctx) -> f32 {
         20.0 + 10.0 * ctx.w_level + 0.3 * ctx.attack_damage
     }
-    pub const fn xinzhao_w_3(ctx: &Ctx) -> f32 {
+    pub const fn xinzhao_w3(ctx: &Ctx) -> f32 {
         15.0 + 35.0 * ctx.w_level + 0.9 * ctx.attack_damage + 0.65 * ctx.ability_power
     }
-    pub const fn xinzhao_w_4(ctx: &Ctx) -> f32 {
+    pub const fn xinzhao_w4(ctx: &Ctx) -> f32 {
         35.0 + 45.0 * ctx.w_level + 1.2 * ctx.attack_damage + 0.65 * ctx.ability_power
     }
-    pub const fn xinzhao_e_1(ctx: &Ctx) -> f32 {
+    pub const fn xinzhao_e1(ctx: &Ctx) -> f32 {
         25.0 + 25.0 * ctx.e_level + 0.6 * ctx.ability_power
     }
-    pub const fn xinzhao_r_1(ctx: &Ctx) -> f32 {
+    pub const fn xinzhao_r1(ctx: &Ctx) -> f32 {
         -25.0
             + 100.0 * ctx.r_level
             + 1.0 * ctx.bonus_ad
@@ -16979,9 +16819,7 @@ pub mod champions {
         adaptative_type: AdaptativeType::Physical,
         attack_type: AttackType::Melee,
         positions: &[Position::Bottom, Position::Middle, Position::Top],
-        closures: &[
-            yasuo_q_1, yasuo_e_1, yasuo_e_2, yasuo_e_3, yasuo_e_4, yasuo_r_1,
-        ],
+        closures: &[yasuo_q1, yasuo_e1, yasuo_e2, yasuo_e3, yasuo_e4, yasuo_r1],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -17051,22 +16889,22 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn yasuo_q_1(ctx: &Ctx) -> f32 {
+    pub const fn yasuo_q1(ctx: &Ctx) -> f32 {
         -5.0 + 25.0 * ctx.q_level + 1.05 * ctx.attack_damage
     }
-    pub const fn yasuo_e_1(ctx: &Ctx) -> f32 {
+    pub const fn yasuo_e1(ctx: &Ctx) -> f32 {
         55.0 + 15.0 * ctx.e_level + 0.2 * ctx.bonus_ad + 0.6 * ctx.ability_power
     }
-    pub const fn yasuo_e_2(ctx: &Ctx) -> f32 {
+    pub const fn yasuo_e2(ctx: &Ctx) -> f32 {
         13.75 + 3.75 * ctx.e_level + 0.05 * ctx.bonus_ad + 0.15 * ctx.ability_power
     }
-    pub const fn yasuo_e_3(ctx: &Ctx) -> f32 {
+    pub const fn yasuo_e3(ctx: &Ctx) -> f32 {
         55.0 + 15.0 * ctx.e_level + 0.2 * ctx.bonus_ad + 0.6 * ctx.ability_power
     }
-    pub const fn yasuo_e_4(ctx: &Ctx) -> f32 {
+    pub const fn yasuo_e4(ctx: &Ctx) -> f32 {
         110.0 + 30.0 * ctx.e_level + 0.4 * ctx.bonus_ad + 1.2 * ctx.ability_power
     }
-    pub const fn yasuo_r_1(ctx: &Ctx) -> f32 {
+    pub const fn yasuo_r1(ctx: &Ctx) -> f32 {
         50.0 + 150.0 * ctx.r_level + 1.5 * ctx.bonus_ad
     }
     pub static YONE: CachedChampion = CachedChampion {
@@ -17075,7 +16913,7 @@ pub mod champions {
         attack_type: AttackType::Melee,
         positions: &[Position::Middle, Position::Top],
         closures: &[
-            yone_q_1, yone_w_1, yone_w_2, yone_w_3, yone_e_1, yone_r_1, yone_r_2, yone_r_3,
+            yone_q1, yone_w1, yone_w2, yone_w3, yone_e1, yone_r1, yone_r2, yone_r3,
         ],
         metadata: &[
             TypeMetadata {
@@ -17156,28 +16994,28 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn yone_q_1(ctx: &Ctx) -> f32 {
+    pub const fn yone_q1(ctx: &Ctx) -> f32 {
         25.0 * ctx.q_level + 1.05 * ctx.attack_damage
     }
-    pub const fn yone_w_1(ctx: &Ctx) -> f32 {
+    pub const fn yone_w1(ctx: &Ctx) -> f32 {
         5.0 * ctx.w_level + (0.035 + 0.005 * ctx.w_level) * ctx.enemy_max_health
     }
-    pub const fn yone_w_2(ctx: &Ctx) -> f32 {
+    pub const fn yone_w2(ctx: &Ctx) -> f32 {
         5.0 * ctx.w_level + (0.035 + 0.005 * ctx.w_level) * ctx.enemy_max_health
     }
-    pub const fn yone_w_3(ctx: &Ctx) -> f32 {
+    pub const fn yone_w3(ctx: &Ctx) -> f32 {
         10.0 * ctx.w_level + (0.07 + 0.01 * ctx.w_level) * ctx.enemy_max_health
     }
-    pub const fn yone_e_1(ctx: &Ctx) -> f32 {
+    pub const fn yone_e1(ctx: &Ctx) -> f32 {
         (0.225 + 0.025 * ctx.e_level) * 100.0
     }
-    pub const fn yone_r_1(ctx: &Ctx) -> f32 {
+    pub const fn yone_r1(ctx: &Ctx) -> f32 {
         100.0 * ctx.r_level + 0.4 * ctx.bonus_ad
     }
-    pub const fn yone_r_2(ctx: &Ctx) -> f32 {
+    pub const fn yone_r2(ctx: &Ctx) -> f32 {
         100.0 * ctx.r_level + 0.4 * ctx.bonus_ad
     }
-    pub const fn yone_r_3(ctx: &Ctx) -> f32 {
+    pub const fn yone_r3(ctx: &Ctx) -> f32 {
         200.0 * ctx.r_level + 0.8 * ctx.bonus_ad
     }
     pub static YORICK: CachedChampion = CachedChampion {
@@ -17185,7 +17023,7 @@ pub mod champions {
         adaptative_type: AdaptativeType::Physical,
         attack_type: AttackType::Melee,
         positions: &[Position::Top],
-        closures: &[yorick_q_1, yorick_e_1, yorick_e_2, yorick_e_3],
+        closures: &[yorick_q1, yorick_e1, yorick_e2, yorick_e3],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -17245,16 +17083,16 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn yorick_q_1(ctx: &Ctx) -> f32 {
+    pub const fn yorick_q1(ctx: &Ctx) -> f32 {
         10.0 + 20.0 * ctx.q_level + 0.5 * ctx.attack_damage
     }
-    pub const fn yorick_e_1(ctx: &Ctx) -> f32 {
+    pub const fn yorick_e1(ctx: &Ctx) -> f32 {
         25.0 + 25.0 * ctx.e_level + 1.0 * ctx.ability_power
     }
-    pub const fn yorick_e_2(ctx: &Ctx) -> f32 {
+    pub const fn yorick_e2(ctx: &Ctx) -> f32 {
         (0.055 + 0.005 * ctx.e_level) * ctx.enemy_max_health + 0.03 * 0.01 * ctx.ability_power
     }
-    pub const fn yorick_e_3(ctx: &Ctx) -> f32 {
+    pub const fn yorick_e3(ctx: &Ctx) -> f32 {
         35.0 + 35.0 * ctx.e_level + 1.0 * ctx.ability_power
     }
     pub static YUNARA: CachedChampion = CachedChampion {
@@ -17263,8 +17101,8 @@ pub mod champions {
         attack_type: AttackType::Ranged,
         positions: &[Position::Bottom],
         closures: &[
-            yunara_q_1, yunara_q_2, yunara_q_3, yunara_q_4, yunara_q_5, yunara_w_1, yunara_w_2,
-            yunara_w_3, yunara_r_1,
+            yunara_q1, yunara_q2, yunara_q3, yunara_q4, yunara_q5, yunara_w1, yunara_w2, yunara_w3,
+            yunara_r1,
         ],
         metadata: &[
             TypeMetadata {
@@ -17350,31 +17188,31 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn yunara_q_1(ctx: &Ctx) -> f32 {
+    pub const fn yunara_q1(ctx: &Ctx) -> f32 {
         5.0 * ctx.q_level + 0.2 * ctx.ability_power
     }
-    pub const fn yunara_q_2(ctx: &Ctx) -> f32 {
+    pub const fn yunara_q2(ctx: &Ctx) -> f32 {
         12.5 * ctx.q_level + 0.5 * ctx.ability_power
     }
-    pub const fn yunara_q_3(ctx: &Ctx) -> f32 {
+    pub const fn yunara_q3(ctx: &Ctx) -> f32 {
         10.0 * ctx.q_level + 0.4 * ctx.ability_power
     }
-    pub const fn yunara_q_4(ctx: &Ctx) -> f32 {
+    pub const fn yunara_q4(ctx: &Ctx) -> f32 {
         25.0 * ctx.q_level + 1.0 * ctx.ability_power
     }
-    pub const fn yunara_q_5(ctx: &Ctx) -> f32 {
+    pub const fn yunara_q5(ctx: &Ctx) -> f32 {
         5.0 * ctx.q_level + 0.2 * ctx.ability_power
     }
-    pub const fn yunara_w_1(ctx: &Ctx) -> f32 {
+    pub const fn yunara_w1(ctx: &Ctx) -> f32 {
         15.0 + 40.0 * ctx.w_level + 0.85 * ctx.bonus_ad + 0.5 * ctx.ability_power
     }
-    pub const fn yunara_w_2(ctx: &Ctx) -> f32 {
+    pub const fn yunara_w2(ctx: &Ctx) -> f32 {
         2.25 + 6.0 * ctx.w_level + 0.1275 * ctx.bonus_ad + 0.075 * ctx.ability_power
     }
-    pub const fn yunara_w_3(ctx: &Ctx) -> f32 {
+    pub const fn yunara_w3(ctx: &Ctx) -> f32 {
         9.0 + 24.0 * ctx.w_level + 0.51 * ctx.bonus_ad + 0.3 * ctx.ability_power
     }
-    pub const fn yunara_r_1(ctx: &Ctx) -> f32 {
+    pub const fn yunara_r1(ctx: &Ctx) -> f32 {
         160.0 * ctx.r_level
     }
     pub static YUUMI: CachedChampion = CachedChampion {
@@ -17382,9 +17220,7 @@ pub mod champions {
         adaptative_type: AdaptativeType::Magic,
         attack_type: AttackType::Ranged,
         positions: &[Position::Support],
-        closures: &[
-            yuumi_q_1, yuumi_q_2, yuumi_q_3, yuumi_r_1, yuumi_r_2, yuumi_r_3,
-        ],
+        closures: &[yuumi_q1, yuumi_q2, yuumi_q3, yuumi_r1, yuumi_r2, yuumi_r3],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -17454,22 +17290,22 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn yuumi_q_1(ctx: &Ctx) -> f32 {
+    pub const fn yuumi_q1(ctx: &Ctx) -> f32 {
         25.0 + 35.0 * ctx.q_level + 0.2 * ctx.ability_power
     }
-    pub const fn yuumi_q_2(ctx: &Ctx) -> f32 {
+    pub const fn yuumi_q2(ctx: &Ctx) -> f32 {
         25.0 + 55.0 * ctx.q_level + 0.3 * ctx.ability_power
     }
-    pub const fn yuumi_q_3(ctx: &Ctx) -> f32 {
+    pub const fn yuumi_q3(ctx: &Ctx) -> f32 {
         8.0 + 2.0 * ctx.q_level + 0.05 * ctx.ability_power
     }
-    pub const fn yuumi_r_1(ctx: &Ctx) -> f32 {
+    pub const fn yuumi_r1(ctx: &Ctx) -> f32 {
         25.0 + 50.0 * ctx.r_level + 0.25 * ctx.ability_power
     }
-    pub const fn yuumi_r_2(ctx: &Ctx) -> f32 {
+    pub const fn yuumi_r2(ctx: &Ctx) -> f32 {
         6.25 + 12.5 * ctx.r_level + 0.0625 * ctx.ability_power
     }
-    pub const fn yuumi_r_3(ctx: &Ctx) -> f32 {
+    pub const fn yuumi_r3(ctx: &Ctx) -> f32 {
         50.0 + 100.0 * ctx.r_level + 0.5 * ctx.ability_power
     }
     pub static ZAAHEN: CachedChampion = CachedChampion {
@@ -17478,8 +17314,8 @@ pub mod champions {
         attack_type: AttackType::Melee,
         positions: &[Position::Top],
         closures: &[
-            zaahen_q_1, zaahen_q_2, zaahen_q_3, zaahen_w_1, zaahen_w_2, zaahen_e_1, zaahen_e_2,
-            zaahen_e_3, zaahen_r_1,
+            zaahen_q1, zaahen_q2, zaahen_q3, zaahen_w1, zaahen_w2, zaahen_e1, zaahen_e2, zaahen_e3,
+            zaahen_r1,
         ],
         metadata: &[
             TypeMetadata {
@@ -17565,31 +17401,31 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn zaahen_q_1(ctx: &Ctx) -> f32 {
+    pub const fn zaahen_q1(ctx: &Ctx) -> f32 {
         7.5 * ctx.q_level + 0.5 * ctx.attack_damage + (0.075 + 0.025 * ctx.q_level) * ctx.bonus_ad
     }
-    pub const fn zaahen_q_2(ctx: &Ctx) -> f32 {
+    pub const fn zaahen_q2(ctx: &Ctx) -> f32 {
         15.0 * ctx.q_level + 1.0 * ctx.attack_damage + (0.15 + 0.05 * ctx.q_level) * ctx.bonus_ad
     }
-    pub const fn zaahen_q_3(ctx: &Ctx) -> f32 {
+    pub const fn zaahen_q3(ctx: &Ctx) -> f32 {
         25.0 * ctx.q_level + (0.15 + 0.05 * ctx.q_level) * ctx.bonus_ad
     }
-    pub const fn zaahen_w_1(ctx: &Ctx) -> f32 {
+    pub const fn zaahen_w1(ctx: &Ctx) -> f32 {
         20.0 + 20.0 * ctx.w_level + 0.5 * ctx.bonus_ad
     }
-    pub const fn zaahen_w_2(ctx: &Ctx) -> f32 {
+    pub const fn zaahen_w2(ctx: &Ctx) -> f32 {
         40.0 + 40.0 * ctx.w_level + 1.0 * ctx.bonus_ad
     }
-    pub const fn zaahen_e_1(ctx: &Ctx) -> f32 {
+    pub const fn zaahen_e1(ctx: &Ctx) -> f32 {
         20.0 + 20.0 * ctx.e_level + 0.5 * ctx.bonus_ad
     }
-    pub const fn zaahen_e_2(ctx: &Ctx) -> f32 {
+    pub const fn zaahen_e2(ctx: &Ctx) -> f32 {
         (0.035 + 0.005 * ctx.e_level) * ctx.enemy_max_health
     }
-    pub const fn zaahen_e_3(ctx: &Ctx) -> f32 {
+    pub const fn zaahen_e3(ctx: &Ctx) -> f32 {
         30.0 + 30.0 * ctx.e_level + 0.75 * ctx.bonus_ad
     }
-    pub const fn zaahen_r_1(ctx: &Ctx) -> f32 {
+    pub const fn zaahen_r1(ctx: &Ctx) -> f32 {
         100.0 + 150.0 * ctx.r_level + 2.0 * ctx.bonus_ad
     }
     pub static ZAC: CachedChampion = CachedChampion {
@@ -17598,7 +17434,7 @@ pub mod champions {
         attack_type: AttackType::Melee,
         positions: &[Position::Jungle, Position::Support, Position::Top],
         closures: &[
-            zac_q_1, zac_q_2, zac_w_1, zac_w_2, zac_e_1, zac_r_1, zac_r_2, zac_r_3,
+            zac_q1, zac_q2, zac_w1, zac_w2, zac_e1, zac_r1, zac_r2, zac_r3,
         ],
         metadata: &[
             TypeMetadata {
@@ -17679,30 +17515,30 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn zac_q_1(ctx: &Ctx) -> f32 {
+    pub const fn zac_q1(ctx: &Ctx) -> f32 {
         25.0 + 15.0 * ctx.q_level + 0.3 * ctx.ability_power + 0.03 * ctx.max_health
     }
-    pub const fn zac_q_2(ctx: &Ctx) -> f32 {
+    pub const fn zac_q2(ctx: &Ctx) -> f32 {
         50.0 + 30.0 * ctx.q_level + 0.6 * ctx.ability_power + 0.06 * ctx.max_health
     }
-    pub const fn zac_w_1(ctx: &Ctx) -> f32 {
+    pub const fn zac_w1(ctx: &Ctx) -> f32 {
         230.0 + 10.0 * ctx.w_level
     }
-    pub const fn zac_w_2(ctx: &Ctx) -> f32 {
+    pub const fn zac_w2(ctx: &Ctx) -> f32 {
         30.0 + 10.0 * ctx.w_level
             + (0.03 + 0.01 * ctx.w_level) * ctx.enemy_max_health
             + 0.03 * 0.01 * ctx.ability_power
     }
-    pub const fn zac_e_1(ctx: &Ctx) -> f32 {
+    pub const fn zac_e1(ctx: &Ctx) -> f32 {
         15.0 + 45.0 * ctx.e_level + 0.8 * ctx.ability_power
     }
-    pub const fn zac_r_1(ctx: &Ctx) -> f32 {
+    pub const fn zac_r1(ctx: &Ctx) -> f32 {
         70.0 + 70.0 * ctx.r_level + 0.4 * ctx.ability_power
     }
-    pub const fn zac_r_2(ctx: &Ctx) -> f32 {
+    pub const fn zac_r2(ctx: &Ctx) -> f32 {
         35.0 + 35.0 * ctx.r_level + 0.2 * ctx.ability_power
     }
-    pub const fn zac_r_3(ctx: &Ctx) -> f32 {
+    pub const fn zac_r3(ctx: &Ctx) -> f32 {
         175.0 + 175.0 * ctx.r_level + 1.0 * ctx.ability_power
     }
     pub static ZED: CachedChampion = CachedChampion {
@@ -17710,7 +17546,7 @@ pub mod champions {
         adaptative_type: AdaptativeType::Physical,
         attack_type: AttackType::Melee,
         positions: &[Position::Jungle, Position::Middle],
-        closures: &[zed_q_1, zed_q_2, zed_e_1, zed_r_1],
+        closures: &[zed_q1, zed_q2, zed_e1, zed_r1],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -17770,16 +17606,16 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn zed_q_1(ctx: &Ctx) -> f32 {
+    pub const fn zed_q1(ctx: &Ctx) -> f32 {
         40.0 + 40.0 * ctx.q_level + 1.0 * ctx.bonus_ad
     }
-    pub const fn zed_q_2(ctx: &Ctx) -> f32 {
+    pub const fn zed_q2(ctx: &Ctx) -> f32 {
         24.0 + 24.0 * ctx.q_level + 0.6 * ctx.bonus_ad
     }
-    pub const fn zed_e_1(ctx: &Ctx) -> f32 {
+    pub const fn zed_e1(ctx: &Ctx) -> f32 {
         45.0 + 25.0 * ctx.e_level + 0.8 * ctx.bonus_ad
     }
-    pub const fn zed_r_1(ctx: &Ctx) -> f32 {
+    pub const fn zed_r1(ctx: &Ctx) -> f32 {
         1.0 * ctx.attack_damage + (0.1 + 0.15 * ctx.r_level) * 100.0
     }
     pub static ZERI: CachedChampion = CachedChampion {
@@ -17787,7 +17623,7 @@ pub mod champions {
         adaptative_type: AdaptativeType::Physical,
         attack_type: AttackType::Ranged,
         positions: &[Position::Bottom],
-        closures: &[zeri_q_1, zeri_q_2, zeri_w_1, zeri_e_1, zeri_e_2, zeri_r_1],
+        closures: &[zeri_q1, zeri_q2, zeri_w1, zeri_e1, zeri_e2, zeri_r1],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -17857,22 +17693,22 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn zeri_q_1(ctx: &Ctx) -> f32 {
+    pub const fn zeri_q1(ctx: &Ctx) -> f32 {
         1.85 + 0.29 * ctx.q_level + (0.142 + 0.005 * ctx.q_level) * ctx.attack_damage
     }
-    pub const fn zeri_q_2(ctx: &Ctx) -> f32 {
+    pub const fn zeri_q2(ctx: &Ctx) -> f32 {
         13.0 + 2.0 * ctx.q_level + (1.0 + 0.04 * ctx.q_level) * ctx.attack_damage
     }
-    pub const fn zeri_w_1(ctx: &Ctx) -> f32 {
+    pub const fn zeri_w1(ctx: &Ctx) -> f32 {
         -10.0 + 40.0 * ctx.w_level + 1.2 * ctx.attack_damage + 0.25 * ctx.ability_power
     }
-    pub const fn zeri_e_1(ctx: &Ctx) -> f32 {
+    pub const fn zeri_e1(ctx: &Ctx) -> f32 {
         15.0 + 2.0 * ctx.e_level + 0.1 * ctx.bonus_ad + 0.2 * ctx.ability_power
     }
-    pub const fn zeri_e_2(ctx: &Ctx) -> f32 {
+    pub const fn zeri_e2(ctx: &Ctx) -> f32 {
         0.75 + 0.05 * ctx.e_level
     }
-    pub const fn zeri_r_1(ctx: &Ctx) -> f32 {
+    pub const fn zeri_r1(ctx: &Ctx) -> f32 {
         50.0 + 100.0 * ctx.r_level + 1.0 * ctx.bonus_ad + 1.1 * ctx.ability_power
     }
     pub static ZIGGS: CachedChampion = CachedChampion {
@@ -17881,7 +17717,7 @@ pub mod champions {
         attack_type: AttackType::Ranged,
         positions: &[Position::Bottom, Position::Middle],
         closures: &[
-            ziggs_q_1, ziggs_w_1, ziggs_e_1, ziggs_e_2, ziggs_e_3, ziggs_r_1, ziggs_r_2,
+            ziggs_q1, ziggs_w1, ziggs_e1, ziggs_e2, ziggs_e3, ziggs_r1, ziggs_r2,
         ],
         metadata: &[
             TypeMetadata {
@@ -17957,25 +17793,25 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn ziggs_q_1(ctx: &Ctx) -> f32 {
+    pub const fn ziggs_q1(ctx: &Ctx) -> f32 {
         30.0 + 50.0 * ctx.q_level + (0.55 + 0.05 * ctx.q_level) * ctx.ability_power
     }
-    pub const fn ziggs_w_1(ctx: &Ctx) -> f32 {
+    pub const fn ziggs_w1(ctx: &Ctx) -> f32 {
         35.0 + 35.0 * ctx.w_level + 0.5 * ctx.ability_power
     }
-    pub const fn ziggs_e_1(ctx: &Ctx) -> f32 {
+    pub const fn ziggs_e1(ctx: &Ctx) -> f32 {
         -10.0 + 40.0 * ctx.e_level + (0.2 + 0.05 * ctx.e_level) * ctx.ability_power
     }
-    pub const fn ziggs_e_2(ctx: &Ctx) -> f32 {
+    pub const fn ziggs_e2(ctx: &Ctx) -> f32 {
         -50.0 + 200.0 * ctx.e_level + (1.0 + 0.25 * ctx.e_level) * ctx.ability_power
     }
-    pub const fn ziggs_e_3(ctx: &Ctx) -> f32 {
+    pub const fn ziggs_e3(ctx: &Ctx) -> f32 {
         -4.0 + 16.0 * ctx.e_level + (0.08 + 0.02 * ctx.e_level) * ctx.ability_power
     }
-    pub const fn ziggs_r_1(ctx: &Ctx) -> f32 {
+    pub const fn ziggs_r1(ctx: &Ctx) -> f32 {
         100.0 + 200.0 * ctx.r_level + 1.0 * ctx.ability_power
     }
-    pub const fn ziggs_r_2(ctx: &Ctx) -> f32 {
+    pub const fn ziggs_r2(ctx: &Ctx) -> f32 {
         65.0 + 130.0 * ctx.r_level + 0.65 * ctx.ability_power
     }
     pub static ZILEAN: CachedChampion = CachedChampion {
@@ -17983,7 +17819,7 @@ pub mod champions {
         adaptative_type: AdaptativeType::Magic,
         attack_type: AttackType::Ranged,
         positions: &[Position::Support],
-        closures: &[zilean_q_1],
+        closures: &[zilean_q1],
         metadata: &[TypeMetadata {
             kind: Q(_1),
             damage_type: DamageType::Magic,
@@ -18026,7 +17862,7 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn zilean_q_1(ctx: &Ctx) -> f32 {
+    pub const fn zilean_q1(ctx: &Ctx) -> f32 {
         35.0 + 40.0 * ctx.q_level + 0.9 * ctx.ability_power
     }
     pub static ZOE: CachedChampion = CachedChampion {
@@ -18034,9 +17870,7 @@ pub mod champions {
         adaptative_type: AdaptativeType::Magic,
         attack_type: AttackType::Ranged,
         positions: &[Position::Middle],
-        closures: &[
-            zoe_q_1, zoe_q_2, zoe_w_1, zoe_w_2, zoe_e_1, zoe_e_2, zoe_e_3,
-        ],
+        closures: &[zoe_q1, zoe_q2, zoe_w1, zoe_w2, zoe_e1, zoe_e2, zoe_e3],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -18111,7 +17945,7 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn zoe_q_1(ctx: &Ctx) -> f32 {
+    pub const fn zoe_q1(ctx: &Ctx) -> f32 {
         match ctx.q_level as u8 {
             1 => 5.0 + 125.0 + 1.5 * ctx.ability_power,
             2 => 12.058823529411764 + 200.0 + 1.5 * ctx.ability_power,
@@ -18134,7 +17968,7 @@ pub mod champions {
             _ => unknown,
         }
     }
-    pub const fn zoe_q_2(ctx: &Ctx) -> f32 {
+    pub const fn zoe_q2(ctx: &Ctx) -> f32 {
         match ctx.q_level as u8 {
             1 => 2.0 + 50.0 + 0.6 * ctx.ability_power,
             2 => 4.8235294117647065 + 80.0 + 0.6 * ctx.ability_power,
@@ -18157,19 +17991,19 @@ pub mod champions {
             _ => unknown,
         }
     }
-    pub const fn zoe_w_1(ctx: &Ctx) -> f32 {
+    pub const fn zoe_w1(ctx: &Ctx) -> f32 {
         10.0 + 10.0 * ctx.w_level + 0.15 * ctx.ability_power
     }
-    pub const fn zoe_w_2(ctx: &Ctx) -> f32 {
+    pub const fn zoe_w2(ctx: &Ctx) -> f32 {
         30.0 + 30.0 * ctx.w_level + 0.45 * ctx.ability_power
     }
-    pub const fn zoe_e_1(ctx: &Ctx) -> f32 {
+    pub const fn zoe_e1(ctx: &Ctx) -> f32 {
         30.0 + 40.0 * ctx.e_level + 0.45 * ctx.ability_power
     }
-    pub const fn zoe_e_2(ctx: &Ctx) -> f32 {
+    pub const fn zoe_e2(ctx: &Ctx) -> f32 {
         30.0 + 40.0 * ctx.e_level + 0.45 * ctx.ability_power
     }
-    pub const fn zoe_e_3(ctx: &Ctx) -> f32 {
+    pub const fn zoe_e3(ctx: &Ctx) -> f32 {
         60.0 + 80.0 * ctx.e_level + 0.9 * ctx.ability_power
     }
     pub static ZYRA: CachedChampion = CachedChampion {
@@ -18177,7 +18011,7 @@ pub mod champions {
         adaptative_type: AdaptativeType::Magic,
         attack_type: AttackType::Ranged,
         positions: &[Position::Support],
-        closures: &[zyra_q_1, zyra_e_1, zyra_r_1],
+        closures: &[zyra_q1, zyra_e1, zyra_r1],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -18232,13 +18066,13 @@ pub mod champions {
         },
         merge_data: &[],
     };
-    pub const fn zyra_q_1(ctx: &Ctx) -> f32 {
+    pub const fn zyra_q1(ctx: &Ctx) -> f32 {
         20.0 + 40.0 * ctx.q_level + 0.65 * ctx.ability_power
     }
-    pub const fn zyra_e_1(ctx: &Ctx) -> f32 {
+    pub const fn zyra_e1(ctx: &Ctx) -> f32 {
         25.0 + 35.0 * ctx.e_level + 0.6 * ctx.ability_power
     }
-    pub const fn zyra_r_1(ctx: &Ctx) -> f32 {
+    pub const fn zyra_r1(ctx: &Ctx) -> f32 {
         100.0 + 100.0 * ctx.r_level + 0.7 * ctx.ability_power
     }
     pub static CHAMPION_NAME_TO_ID: phf::Map<&str, ChampionId> = phf::phf_map! {
@@ -18591,2535 +18425,2535 @@ pub mod champions {
     ];
     pub static ABILITY_FORMULAS: [&[Range<usize>]; ChampionId::VARIANTS] = [
         &[
-            (547781..548806),
-            (548806..550956),
-            (550956..552130),
-            (552130..553321),
-            (553321..554495),
-            (554495..556672),
-            (556672..557846),
-            (557846..559059),
-            (559059..560250),
-            (560250..561235),
-            (561235..562220),
+            (547751..548771),
+            (548771..552554),
+            (552554..554357),
+            (554357..556216),
+            (556216..558036),
+            (558036..561819),
+            (561819..563622),
+            (563622..565481),
+            (565481..567301),
+            (567301..568723),
+            (568723..570145),
         ],
         &[
-            (581941..582917),
-            (582917..584358),
-            (584358..585328),
-            (585328..586301),
-            (586301..587275),
-            (587275..588247),
-            (588247..589224),
-            (589224..590311),
+            (589842..591720),
+            (591720..593598),
+            (593598..594567),
+            (594567..595978),
+            (595978..597389),
+            (597389..598356),
+            (598356..599881),
+            (599881..601406),
         ],
         &[
-            (609662..610779),
-            (610779..611885),
-            (611885..612957),
-            (612957..614027),
-            (614027..615099),
-            (615099..616162),
-            (616162..617107),
-            (617107..618051),
+            (620725..621837),
+            (621837..622938),
+            (622938..624539),
+            (624539..625608),
+            (625608..627209),
+            (627209..628271),
+            (628271..629618),
+            (629618..630965),
         ],
         &[
-            (640352..641213),
-            (641213..642183),
-            (642183..643153),
-            (643153..644227),
-            (644227..645560),
-            (645560..647081),
-            (647081..648414),
-            (648414..649937),
+            (653234..654090),
+            (654090..655492),
+            (655492..656894),
+            (656894..657963),
+            (657963..660084),
+            (660084..662583),
+            (662583..664704),
+            (664704..667203),
         ],
         &[
-            (661059..662037),
-            (662037..662979),
-            (662979..663953),
-            (663953..664928),
+            (678301..679274),
+            (679274..680211),
+            (680211..681622),
+            (681622..683033),
         ],
         &[
-            (682448..683901),
-            (683901..685357),
-            (685357..686332),
-            (686332..687308),
-            (687308..688280),
-            (688280..689252),
-            (689252..690233),
+            (700539..701991),
+            (701991..703446),
+            (703446..704420),
+            (704420..705395),
+            (705395..706366),
+            (706366..707337),
+            (707337..708317),
         ],
         &[
-            (701623..702603),
-            (702603..703812),
-            (703812..704786),
-            (704786..705789),
+            (719667..720642),
+            (720642..721846),
+            (721846..722815),
+            (722815..723813),
         ],
         &[
-            (721307..722284),
-            (722284..723261),
-            (723261..724237),
-            (724237..725211),
-            (725211..726186),
-            (726186..727165),
-            (727165..728146),
+            (739317..740293),
+            (740293..741269),
+            (741269..742244),
+            (742244..743217),
+            (743217..744191),
+            (744191..745169),
+            (745169..746149),
         ],
         &[
-            (738834..739810),
-            (739810..740784),
-            (740784..741761),
-            (741761..742742),
+            (756829..757804),
+            (757804..758777),
+            (758777..759753),
+            (759753..760733),
         ],
-        &[(748210..748960)],
+        &[(766199..766948)],
         &[
-            (759903..760915),
-            (760915..761927),
-            (761927..762894),
-            (762894..763846),
-        ],
-        &[
-            (784148..785134),
-            (785134..786124),
-            (786124..787110),
-            (787110..788114),
-            (788114..789118),
-            (789118..790107),
-            (790107..790888),
-            (790888..791870),
-            (791870..792851),
-            (792851..793835),
+            (777883..778894),
+            (778894..779905),
+            (779905..780871),
+            (780871..781822),
         ],
         &[
-            (809426..810402),
-            (810402..811378),
-            (811378..812354),
-            (812354..813329),
-            (813329..814304),
-            (814304..815281),
-            (815281..816261),
+            (802104..803089),
+            (803089..804078),
+            (804078..805063),
+            (805063..806066),
+            (806066..807069),
+            (807069..808057),
+            (808057..808837),
+            (808837..809818),
+            (809818..810798),
+            (810798..811781),
         ],
         &[
-            (832320..833300),
-            (833300..837116),
-            (837116..838093),
-            (838093..839039),
-        ],
-        &[(844896..845876)],
-        &[
-            (870943..871921),
-            (871921..872694),
-            (872694..873469),
-            (873469..874448),
-            (874448..875551),
-            (875551..876330),
-            (876330..877314),
-            (877314..878297),
-            (878297..879281),
-            (879281..880264),
-            (880264..881385),
-            (881385..882359),
-            (882359..883334),
-        ],
-        &[(893048..894028), (894028..895023), (895023..896279)],
-        &[
-            (910364..911333),
-            (911333..912315),
-            (912315..913294),
-            (913294..914271),
-            (914271..915244),
-            (915244..916218),
-        ],
-        &[(925028..926004), (926004..926776), (926776..927721)],
-        &[
-            (944586..945683),
-            (945683..946690),
-            (946690..947790),
-            (947790..948904),
-            (948904..950004),
-            (950004..951122),
-            (951122..952100),
+            (827358..828333),
+            (828333..829308),
+            (829308..830283),
+            (830283..831257),
+            (831257..832231),
+            (832231..833207),
+            (833207..834186),
         ],
         &[
-            (965287..966464),
-            (966464..967641),
-            (967641..968633),
-            (968633..969613),
-            (969613..970606),
+            (850237..851216),
+            (851216..854965),
+            (854965..855941),
+            (855941..856886),
+        ],
+        &[(862733..863708)],
+        &[
+            (888749..889726),
+            (889726..890498),
+            (890498..891272),
+            (891272..892250),
+            (892250..893352),
+            (893352..894130),
+            (894130..895113),
+            (895113..896095),
+            (896095..897078),
+            (897078..898060),
+            (898060..899180),
+            (899180..900153),
+            (900153..901127),
+        ],
+        &[(910835..911814), (911814..912808), (912808..914063)],
+        &[
+            (928136..929104),
+            (929104..930085),
+            (930085..931063),
+            (931063..932039),
+            (932039..933011),
+            (933011..933984),
+        ],
+        &[(942788..943763), (943763..944534), (944534..945478)],
+        &[
+            (962329..963425),
+            (963425..964431),
+            (964431..965530),
+            (965530..966643),
+            (966643..967742),
+            (967742..968859),
+            (968859..969836),
         ],
         &[
-            (987362..988378),
-            (988378..989392),
-            (989392..990370),
-            (990370..991546),
-            (991546..992723),
-            (992723..993701),
-            (993701..994719),
+            (983013..984189),
+            (984189..985365),
+            (985365..986356),
+            (986356..987335),
+            (987335..988327),
         ],
         &[
-            (1015502..1016486),
-            (1016486..1017469),
-            (1017469..1018443),
-            (1018443..1019418),
-            (1019418..1020397),
-            (1020397..1023944),
-            (1023944..1024929),
+            (1005069..1006084),
+            (1006084..1007097),
+            (1007097..1008074),
+            (1008074..1009249),
+            (1009249..1010425),
+            (1010425..1011402),
+            (1011402..1012419),
         ],
         &[
-            (1044003..1044976),
-            (1044976..1045954),
-            (1045954..1047340),
-            (1047340..1048319),
-            (1048319..1049705),
-            (1049705..1050698),
-            (1050698..1051807),
-            (1051807..1052795),
+            (1033180..1034163),
+            (1034163..1035145),
+            (1035145..1036118),
+            (1036118..1037092),
+            (1037092..1038070),
+            (1038070..1041550),
+            (1041550..1042534),
         ],
         &[
-            (1069091..1070192),
-            (1070192..1071285),
-            (1071285..1072378),
-            (1072378..1073366),
-            (1073366..1074339),
-            (1074339..1075317),
-            (1075317..1076295),
+            (1061592..1062564),
+            (1062564..1063541),
+            (1063541..1064926),
+            (1064926..1065904),
+            (1065904..1067289),
+            (1067289..1068281),
+            (1068281..1069389),
+            (1069389..1070376),
         ],
         &[
-            (1090848..1092012),
-            (1092012..1093179),
-            (1093179..1094193),
-            (1094193..1095123),
-            (1095123..1096053),
-            (1096053..1096996),
+            (1086658..1087758),
+            (1087758..1088850),
+            (1088850..1089942),
+            (1089942..1090929),
+            (1090929..1091901),
+            (1091901..1092878),
+            (1092878..1093855),
         ],
         &[
-            (1112628..1113607),
-            (1113607..1114583),
-            (1114583..1115560),
-            (1115560..1116534),
-            (1116534..1117507),
-            (1117507..1118493),
-            (1118493..1119479),
+            (1108396..1109559),
+            (1109559..1110725),
+            (1110725..1111738),
+            (1111738..1112667),
+            (1112667..1113596),
+            (1113596..1114538),
         ],
         &[
-            (1129922..1130937),
-            (1130937..1131924),
-            (1131924..1132821),
-            (1132821..1133598),
+            (1130156..1131134),
+            (1131134..1132109),
+            (1132109..1133085),
+            (1133085..1134058),
+            (1134058..1135030),
+            (1135030..1136015),
+            (1136015..1137000),
         ],
         &[
-            (1145661..1146824),
-            (1146824..1147597),
-            (1147597..1148370),
-            (1148370..1149344),
-            (1149344..1150119),
+            (1147435..1148449),
+            (1148449..1149435),
+            (1149435..1150331),
+            (1150331..1151107),
         ],
         &[
-            (1162492..1163465),
-            (1163465..1164438),
-            (1164438..1165411),
-            (1165411..1166384),
-            (1166384..1167360),
-        ],
-        &[(1176816..1177790), (1177790..1178928), (1178928..1179912)],
-        &[
-            (1200517..1201493),
-            (1201493..1202469),
-            (1202469..1203446),
-            (1203446..1204422),
-            (1204422..1205399),
-            (1205399..1206376),
-            (1206376..1207361),
-            (1207361..1208502),
-            (1208502..1209446),
-            (1209446..1210389),
+            (1163160..1164322),
+            (1164322..1165094),
+            (1165094..1165866),
+            (1165866..1166839),
+            (1166839..1167613),
         ],
         &[
-            (1222531..1223640),
-            (1223640..1224931),
-            (1224931..1226033),
-            (1226033..1227152),
+            (1179976..1180948),
+            (1180948..1181920),
+            (1181920..1182892),
+            (1182892..1183864),
+            (1183864..1184839),
+        ],
+        &[(1194289..1195262), (1195262..1196399), (1196399..1197382)],
+        &[
+            (1217967..1218942),
+            (1218942..1219917),
+            (1219917..1220893),
+            (1220893..1221868),
+            (1221868..1222844),
+            (1222844..1223820),
+            (1223820..1224804),
+            (1224804..1225944),
+            (1225944..1226887),
+            (1226887..1227829),
         ],
         &[
-            (1250886..1252059),
-            (1252059..1252833),
-            (1252833..1254004),
-            (1254004..1254778),
-            (1254778..1255767),
-            (1255767..1256756),
-            (1256756..1258064),
-            (1258064..1259371),
-            (1259371..1260346),
-            (1260346..1261328),
-            (1261328..1262322),
-        ],
-        &[(1271597..1272754), (1272754..1273725), (1273725..1274495)],
-        &[
-            (1293204..1294183),
-            (1294183..1295163),
-            (1295163..1296141),
-            (1296141..1297121),
-            (1297121..1298101),
-            (1298101..1299072),
-            (1299072..1300052),
-            (1300052..1301031),
-            (1301031..1302010),
+            (1239931..1241035),
+            (1241035..1242321),
+            (1242321..1243418),
+            (1243418..1244532),
         ],
         &[
-            (1320867..1321843),
-            (1321843..1323218),
-            (1323218..1324596),
-            (1324596..1325576),
-            (1325576..1326556),
-            (1326556..1327533),
-            (1327533..1328511),
-            (1328511..1329491),
+            (1268244..1269416),
+            (1269416..1270189),
+            (1270189..1271359),
+            (1271359..1272132),
+            (1272132..1273120),
+            (1273120..1274108),
+            (1274108..1275415),
+            (1275415..1276721),
+            (1276721..1277695),
+            (1277695..1278676),
+            (1278676..1279669),
+        ],
+        &[(1288852..1290008), (1290008..1290978), (1290978..1291747)],
+        &[
+            (1310438..1311416),
+            (1311416..1312395),
+            (1312395..1313372),
+            (1313372..1314351),
+            (1314351..1315330),
+            (1315330..1316300),
+            (1316300..1317279),
+            (1317279..1318257),
+            (1318257..1319235),
         ],
         &[
-            (1348174..1349166),
-            (1349166..1349943),
-            (1349943..1350925),
-            (1350925..1351907),
-            (1351907..1352903),
-            (1352903..1353899),
-            (1353899..1354881),
-            (1354881..1355877),
-            (1355877..1356873),
+            (1338076..1339051),
+            (1339051..1340425),
+            (1340425..1341802),
+            (1341802..1342781),
+            (1342781..1343760),
+            (1343760..1344736),
+            (1344736..1345713),
+            (1345713..1346692),
         ],
         &[
-            (1370085..1371032),
-            (1371032..1371801),
-            (1371801..1372964),
-            (1372964..1374131),
-            (1374131..1375301),
+            (1365357..1366348),
+            (1366348..1367124),
+            (1367124..1368105),
+            (1368105..1369086),
+            (1369086..1370081),
+            (1370081..1371076),
+            (1371076..1372057),
+            (1372057..1373052),
+            (1373052..1374047),
         ],
         &[
-            (1391920..1392916),
-            (1392916..1393911),
-            (1393911..1395211),
-            (1395211..1396178),
-            (1396178..1396943),
-            (1396943..1398050),
-            (1398050..1399156),
+            (1387249..1388195),
+            (1388195..1388963),
+            (1388963..1390125),
+            (1390125..1391291),
+            (1391291..1392460),
         ],
         &[
-            (1416870..1417846),
-            (1417846..1418823),
-            (1418823..1419799),
-            (1419799..1420776),
-            (1420776..1421789),
-            (1421789..1422909),
-            (1422909..1423883),
-            (1423883..1424876),
+            (1409065..1410060),
+            (1410060..1411054),
+            (1411054..1412353),
+            (1412353..1413319),
+            (1413319..1414083),
+            (1414083..1415189),
+            (1415189..1416294),
         ],
         &[
-            (1439641..1440620),
-            (1440620..1441787),
-            (1441787..1442955),
-            (1442955..1443932),
-            (1443932..1444926),
-            (1444926..1445907),
+            (1433992..1434967),
+            (1434967..1435943),
+            (1435943..1436918),
+            (1436918..1437894),
+            (1437894..1438906),
+            (1438906..1440025),
+            (1440025..1440998),
+            (1440998..1441990),
         ],
         &[
-            (1476288..1477555),
-            (1477555..1478529),
-            (1478529..1479798),
-            (1479798..1480774),
-            (1480774..1482089),
-            (1482089..1483064),
-            (1483064..1484332),
-            (1484332..1485307),
-            (1485307..1486572),
-            (1486572..1487544),
-            (1487544..1488858),
-            (1488858..1490171),
-            (1490171..1491437),
+            (1456743..1457721),
+            (1457721..1458887),
+            (1458887..1460054),
+            (1460054..1461030),
+            (1461030..1462023),
+            (1462023..1463003),
         ],
         &[
-            (1507015..1507987),
-            (1507987..1508958),
-            (1508958..1509939),
-            (1509939..1510920),
-            (1510920..1511902),
-            (1511902..1512884),
-            (1512884..1513871),
+            (1493358..1494624),
+            (1494624..1495597),
+            (1495597..1496865),
+            (1496865..1497840),
+            (1497840..1499154),
+            (1499154..1500128),
+            (1500128..1501395),
+            (1501395..1502369),
+            (1502369..1503633),
+            (1503633..1504604),
+            (1504604..1505917),
+            (1505917..1507229),
+            (1507229..1508494),
         ],
         &[
-            (1539288..1540723),
-            (1540723..1542157),
-            (1542157..1543587),
-            (1543587..1545017),
-            (1545017..1546452),
-            (1546452..1547884),
-            (1547884..1549316),
-            (1549316..1550755),
+            (1524058..1525029),
+            (1525029..1525999),
+            (1525999..1526979),
+            (1526979..1527959),
+            (1527959..1528940),
+            (1528940..1529921),
+            (1529921..1530907),
         ],
         &[
-            (1561415..1562362),
-            (1562362..1563308),
-            (1563308..1564289),
-            (1564289..1565271),
+            (1556204..1557572),
+            (1557572..1558939),
+            (1558939..1560302),
+            (1560302..1561665),
+            (1561665..1563033),
+            (1563033..1564398),
+            (1564398..1565763),
+            (1565763..1567135),
         ],
         &[
-            (1577722..1578500),
-            (1578500..1579678),
-            (1579678..1580454),
-            (1580454..1581468),
-            (1581468..1582445),
+            (1577787..1578733),
+            (1578733..1579678),
+            (1579678..1580658),
+            (1580658..1581639),
         ],
         &[
-            (1595333..1596324),
-            (1596324..1597396),
-            (1597396..1598468),
-            (1598468..1599446),
-            (1599446..1600426),
+            (1594080..1594857),
+            (1594857..1596034),
+            (1596034..1596809),
+            (1596809..1597822),
+            (1597822..1598798),
         ],
         &[
-            (1611120..1612094),
-            (1612094..1613067),
-            (1613067..1614039),
-            (1614039..1615014),
+            (1611676..1612666),
+            (1612666..1613737),
+            (1613737..1614808),
+            (1614808..1615785),
+            (1615785..1616764),
         ],
         &[
-            (1627563..1628537),
-            (1628537..1629513),
-            (1629513..1630489),
-            (1630489..1631588),
-            (1631588..1632568),
-        ],
-        &[(1641731..1642710), (1642710..1643694), (1643694..1644669)],
-        &[
-            (1659187..1660158),
-            (1660158..1661127),
-            (1661127..1662233),
-            (1662233..1663340),
-            (1663340..1664321),
-            (1664321..1665302),
+            (1627450..1628423),
+            (1628423..1629395),
+            (1629395..1630366),
+            (1630366..1631340),
         ],
         &[
-            (1677799..1678775),
-            (1678775..1679755),
-            (1679755..1680734),
-            (1680734..1681511),
-            (1681511..1682646),
+            (1643879..1644852),
+            (1644852..1645827),
+            (1645827..1646802),
+            (1646802..1647900),
+            (1647900..1648879),
+        ],
+        &[(1658036..1659014), (1659014..1659997), (1659997..1660971)],
+        &[
+            (1675477..1676447),
+            (1676447..1677415),
+            (1677415..1678520),
+            (1678520..1679626),
+            (1679626..1680606),
+            (1680606..1681586),
         ],
         &[
-            (1707033..1708332),
-            (1708332..1709634),
-            (1709634..1710951),
-            (1710951..1711948),
-            (1711948..1712929),
-            (1712929..1714047),
-            (1714047..1715167),
-            (1715167..1716111),
-            (1716111..1717055),
-            (1717055..1717999),
-            (1717999..1718943),
+            (1694073..1695048),
+            (1695048..1696027),
+            (1696027..1697005),
+            (1697005..1697781),
+            (1697781..1698915),
         ],
         &[
-            (1735455..1736438),
-            (1736438..1737416),
-            (1737416..1738720),
-            (1738720..1740023),
-            (1740023..1741325),
-            (1741325..1742626),
+            (1723280..1724578),
+            (1724578..1725879),
+            (1725879..1727195),
+            (1727195..1728191),
+            (1728191..1729171),
+            (1729171..1730288),
+            (1730288..1731407),
+            (1731407..1732350),
+            (1732350..1733293),
+            (1733293..1734236),
+            (1734236..1735179),
+        ],
+        &[
+            (1751679..1752661),
+            (1752661..1753638),
+            (1753638..1754941),
+            (1754941..1756243),
+            (1756243..1757544),
+            (1757544..1758844),
         ],
         &[],
-        &[(1752548..1753319)],
-        &[(1760652..1761641), (1761641..1762411)],
-        &[(1769350..1770766)],
-        &[(1779647..1780622), (1780622..1781400), (1781400..1782374)],
-        &[(1791735..1792713), (1792713..1793691), (1793691..1794788)],
-        &[(1802561..1803542), (1803542..1804642)],
-        &[(1813893..1814991), (1814991..1815763), (1815763..1816782)],
-        &[
-            (1827210..1828185),
-            (1828185..1829159),
-            (1829159..1829929),
-            (1829929..1830906),
-        ],
-        &[(1840010..1840995), (1840995..1841976), (1841976..1842955)],
-        &[(1848869..1849862)],
-        &[
-            (1860647..1861627),
-            (1861627..1862405),
-            (1862405..1863632),
-            (1863632..1864411),
-        ],
-        &[(1870267..1871246)],
-        &[(1879422..1880402), (1880402..1881705)],
-        &[
-            (1906353..1907334),
-            (1907334..1908315),
-            (1908315..1909291),
-            (1909291..1910272),
-            (1910272..1911254),
-            (1911254..1912236),
-            (1912236..1913173),
-            (1913173..1914109),
-            (1914109..1915047),
-            (1915047..1915985),
-            (1915985..1916922),
-            (1916922..1917858),
-            (1917858..1918795),
-        ],
-        &[
-            (1930246..1931220),
-            (1931220..1932192),
-            (1932192..1933182),
-            (1933182..1934493),
-        ],
-        &[
-            (1946556..1947551),
-            (1947551..1948316),
-            (1948316..1949287),
-            (1949287..1950263),
-            (1950263..1951238),
-        ],
-        &[
-            (1968438..1969420),
-            (1969420..1970401),
-            (1970401..1971395),
-            (1971395..1972376),
-            (1972376..1973358),
-            (1973358..1974340),
-            (1974340..1975314),
-            (1975314..1976308),
-        ],
-        &[
-            (1987036..1988014),
-            (1988014..1988995),
-            (1988995..1989975),
-            (1989975..1990956),
-        ],
-        &[
-            (2002116..2003093),
-            (2003093..2004070),
-            (2004070..2005140),
-            (2005140..2006212),
-        ],
-        &[
-            (2021748..2022723),
-            (2022723..2023699),
-            (2023699..2024675),
-            (2024675..2025653),
-            (2025653..2026629),
-            (2026629..2027620),
-            (2027620..2028593),
-        ],
-        &[(2037802..2038778), (2038778..2039758), (2039758..2040745)],
-        &[
-            (2054049..2055029),
-            (2055029..2056129),
-            (2056129..2057228),
-            (2057228..2058324),
-            (2058324..2059322),
-        ],
-        &[
-            (2091951..2092935),
-            (2092935..2097092),
-            (2097092..2101260),
-            (2101260..2102257),
-            (2102257..2103239),
-            (2103239..2104217),
-            (2104217..2105196),
-            (2105196..2106374),
-            (2106374..2107549),
-        ],
+        &[(1768678..1769448)],
+        &[(1776777..1777765), (1777765..1778534)],
+        &[(1785471..1786820)],
+        &[(1795695..1796669), (1796669..1797446), (1797446..1798419)],
+        &[(1807774..1808751), (1808751..1809728), (1809728..1810824)],
+        &[(1818593..1819573), (1819573..1820672)],
+        &[(1829917..1831014), (1831014..1831785), (1831785..1832803)],
+        &[
+            (1843223..1844197),
+            (1844197..1845170),
+            (1845170..1845939),
+            (1845939..1846915),
+        ],
+        &[(1856013..1856997), (1856997..1857977), (1857977..1858955)],
+        &[(1864867..1865859)],
+        &[
+            (1876636..1877615),
+            (1877615..1878392),
+            (1878392..1879618),
+            (1879618..1880396),
+        ],
+        &[(1886250..1887228)],
+        &[(1895400..1896379), (1896379..1897681)],
+        &[
+            (1922303..1923283),
+            (1923283..1924263),
+            (1924263..1925238),
+            (1925238..1926218),
+            (1926218..1927199),
+            (1927199..1928180),
+            (1928180..1929116),
+            (1929116..1930051),
+            (1930051..1930988),
+            (1930988..1931925),
+            (1931925..1932861),
+            (1932861..1933796),
+            (1933796..1934732),
+        ],
+        &[
+            (1946175..1947148),
+            (1947148..1948119),
+            (1948119..1949108),
+            (1949108..1950418),
+        ],
+        &[
+            (1962385..1963379),
+            (1963379..1964143),
+            (1964143..1965113),
+            (1965113..1966088),
+            (1966088..1967062),
+        ],
+        &[
+            (1984246..1985227),
+            (1985227..1986207),
+            (1986207..1987200),
+            (1987200..1988180),
+            (1988180..1989161),
+            (1989161..1990142),
+            (1990142..1991115),
+            (1991115..1992108),
+        ],
+        &[
+            (2002828..2003805),
+            (2003805..2004785),
+            (2004785..2005764),
+            (2005764..2006744),
+        ],
+        &[
+            (2017896..2018872),
+            (2018872..2019848),
+            (2019848..2020917),
+            (2020917..2021988),
+        ],
+        &[
+            (2037510..2038484),
+            (2038484..2039459),
+            (2039459..2040434),
+            (2040434..2041411),
+            (2041411..2042386),
+            (2042386..2043376),
+            (2043376..2044348),
+        ],
+        &[(2053551..2054526), (2054526..2055505), (2055505..2056491)],
+        &[
+            (2069785..2070764),
+            (2070764..2071863),
+            (2071863..2072961),
+            (2072961..2074056),
+            (2074056..2075053),
+        ],
+        &[
+            (2107664..2108647),
+            (2108647..2112737),
+            (2112737..2116838),
+            (2116838..2117834),
+            (2117834..2118815),
+            (2118815..2119792),
+            (2119792..2120770),
+            (2120770..2121947),
+            (2121947..2123121),
+        ],
         &[
-            (2130403..2131178),
-            (2131178..2132477),
-            (2132477..2133789),
-            (2133789..2134769),
-            (2134769..2135920),
-            (2135920..2137024),
-            (2137024..2138146),
-            (2138146..2139248),
-            (2139248..2140352),
-            (2140352..2141332),
-        ],
-        &[
-            (2161006..2161988),
-            (2161988..2162986),
-            (2162986..2163935),
-            (2163935..2164713),
-            (2164713..2165660),
-            (2165660..2166608),
-            (2166608..2167593),
-            (2167593..2168368),
-            (2168368..2169143),
-            (2169143..2170114),
-        ],
-        &[
-            (2195624..2196601),
-            (2196601..2197595),
-            (2197595..2198763),
-            (2198763..2199949),
-            (2199949..2201055),
-            (2201055..2202028),
-            (2202028..2203000),
-            (2203000..2203975),
-            (2203975..2204948),
-            (2204948..2205921),
-            (2205921..2206893),
-            (2206893..2207630),
-            (2207630..2208366),
-        ],
-        &[(2214210..2215194)],
-        &[
-            (2229152..2230261),
-            (2230261..2231243),
-            (2231243..2232225),
-            (2232225..2233712),
-            (2233712..2234823),
-        ],
-        &[
-            (2249741..2250721),
-            (2250721..2251506),
-            (2251506..2252488),
-            (2252488..2253632),
-            (2253632..2254771),
-            (2254771..2255909),
-        ],
-        &[(2271509..2272285), (2272285..2276733), (2276733..2277716)],
-        &[
-            (2293386..2294364),
-            (2294364..2295345),
-            (2295345..2296328),
-            (2296328..2297308),
-            (2297308..2298290),
-            (2298290..2299282),
-            (2299282..2300275),
-        ],
-        &[
-            (2325560..2326537),
-            (2326537..2327514),
-            (2327514..2328492),
-            (2328492..2329470),
-            (2329470..2330448),
-            (2330448..2331426),
-            (2331426..2332404),
-            (2332404..2333382),
-            (2333382..2334355),
-            (2334355..2335329),
-            (2335329..2336303),
-            (2336303..2337283),
-            (2337283..2338262),
-        ],
-        &[
-            (2352143..2353117),
-            (2353117..2354092),
-            (2354092..2355067),
-            (2355067..2356051),
-            (2356051..2357035),
-            (2357035..2358009),
-        ],
-        &[
-            (2372784..2373760),
-            (2373760..2374735),
-            (2374735..2375709),
-            (2375709..2376684),
-            (2376684..2377862),
-            (2377862..2379037),
-        ],
-        &[
-            (2397781..2398759),
-            (2398759..2399738),
-            (2399738..2400718),
-            (2400718..2401692),
-            (2401692..2402666),
-            (2402666..2403641),
-            (2403641..2404615),
-            (2404615..2405594),
-            (2405594..2406574),
-        ],
-        &[
-            (2421063..2422036),
-            (2422036..2423012),
-            (2423012..2423988),
-            (2423988..2424968),
-            (2424968..2425943),
-            (2425943..2426930),
-        ],
-        &[
-            (2442854..2444276),
-            (2444276..2445694),
-            (2445694..2447109),
-            (2447109..2448522),
-            (2448522..2449296),
-        ],
-        &[
-            (2464929..2465923),
-            (2465923..2466917),
-            (2466917..2467889),
-            (2467889..2468862),
-            (2468862..2469835),
-            (2469835..2470806),
-            (2470806..2471778),
-        ],
-        &[
-            (2483916..2484893),
-            (2484893..2485669),
-            (2485669..2486656),
-            (2486656..2487641),
-            (2487641..2488615),
-        ],
-        &[
-            (2510672..2511771),
-            (2511771..2512541),
-            (2512541..2513539),
-            (2513539..2514523),
-            (2514523..2515556),
-            (2515556..2516558),
-            (2516558..2517536),
-            (2517536..2518516),
-            (2518516..2519495),
-            (2519495..2520475),
-            (2520475..2521465),
-        ],
-        &[
-            (2533501..2534470),
-            (2534470..2535240),
-            (2535240..2536208),
-            (2536208..2537184),
-            (2537184..2538123),
-        ],
-        &[
-            (2550476..2551458),
-            (2551458..2552441),
-            (2552441..2553426),
-            (2553426..2554408),
-            (2554408..2555407),
-        ],
-        &[
-            (2575140..2576122),
-            (2576122..2576894),
-            (2576894..2577667),
-            (2577667..2578440),
-            (2578440..2579214),
-            (2579214..2580226),
-            (2580226..2581236),
-            (2581236..2582345),
-            (2582345..2583329),
-            (2583329..2584327),
-        ],
-        &[
-            (2606957..2608060),
-            (2608060..2609165),
-            (2609165..2610267),
-            (2610267..2611370),
-            (2611370..2612346),
-            (2612346..2613323),
-            (2613323..2614665),
-            (2614665..2615642),
-            (2615642..2616639),
-            (2616639..2617623),
-        ],
-        &[
-            (2638407..2639182),
-            (2639182..2640156),
-            (2640156..2641259),
-            (2641259..2642234),
-            (2642234..2643338),
-            (2643338..2644320),
-            (2644320..2645295),
-            (2645295..2646270),
-            (2646270..2647262),
-            (2647262..2648241),
-        ],
-        &[(2655778..2656751), (2656751..2657728)],
-        &[
-            (2672111..2673088),
-            (2673088..2674067),
-            (2674067..2675128),
-            (2675128..2676099),
-            (2676099..2677102),
-            (2677102..2678186),
-        ],
-        &[(2687732..2689026), (2689026..2689993), (2689993..2690771)],
-        &[(2699803..2700781), (2700781..2701759), (2701759..2702702)],
-        &[(2711830..2712804), (2712804..2713786), (2713786..2714764)],
-        &[
-            (2729158..2730169),
-            (2730169..2731180),
-            (2731180..2731913),
-            (2731913..2732889),
-            (2732889..2733864),
-            (2733864..2735155),
-        ],
-        &[
-            (2747857..2748837),
-            (2748837..2749822),
-            (2749822..2750991),
-            (2750991..2751968),
-            (2751968..2752943),
-        ],
-        &[(2760444..2761418), (2761418..2762399)],
-        &[
-            (2785136..2786114),
-            (2786114..2787092),
-            (2787092..2788093),
-            (2788093..2789093),
-            (2789093..2790094),
-            (2790094..2791073),
-            (2791073..2792052),
-            (2792052..2793032),
-            (2793032..2794012),
-            (2794012..2795122),
-            (2795122..2796233),
-        ],
-        &[(2805812..2806946), (2806946..2807922), (2807922..2808896)],
-        &[(2818782..2819945), (2819945..2821108), (2821108..2822078)],
-        &[
-            (2874313..2875628),
-            (2875628..2876946),
-            (2876946..2878259),
-            (2878259..2879574),
-            (2879574..2880875),
-            (2880875..2882175),
-            (2882175..2883505),
-            (2883505..2884823),
-            (2884823..2886124),
-            (2886124..2887443),
-            (2887443..2888760),
-            (2888760..2890079),
-            (2890079..2891397),
-            (2891397..2892715),
-            (2892715..2894035),
-            (2894035..2895357),
-            (2895357..2896337),
-            (2896337..2897317),
-            (2897317..2898298),
-            (2898298..2899278),
-            (2899278..2900257),
-            (2900257..2901238),
-            (2901238..2902231),
-        ],
-        &[
-            (2913426..2914522),
-            (2914522..2915620),
-            (2915620..2916717),
-            (2916717..2917488),
-        ],
-        &[
-            (2934439..2935411),
-            (2935411..2936384),
-            (2936384..2937358),
-            (2937358..2938327),
-            (2938327..2939276),
-            (2939276..2940224),
-            (2940224..2941173),
-            (2941173..2942122),
-        ],
-        &[
-            (2958539..2959520),
-            (2959520..2960627),
-            (2960627..2961747),
-            (2961747..2962867),
-            (2962867..2963842),
-            (2963842..2964835),
-            (2964835..2965829),
-        ],
-        &[(2975283..2976215), (2976215..2977189), (2977189..2978306)],
-        &[
-            (2990805..2991782),
-            (2991782..2992775),
-            (2992775..2993752),
-            (2993752..2994730),
-            (2994730..2995717),
-        ],
-        &[
-            (3013150..3014618),
-            (3014618..3016086),
-            (3016086..3017171),
-            (3017171..3018148),
-            (3018148..3019458),
-            (3019458..3020758),
-        ],
-        &[
-            (3042871..3043840),
-            (3043840..3044614),
-            (3044614..3045594),
-            (3045594..3046574),
-            (3046574..3047552),
-            (3047552..3048532),
-            (3048532..3049632),
-            (3049632..3050732),
-            (3050732..3051673),
-            (3051673..3052613),
-            (3052613..3053588),
-        ],
-        &[
-            (3096258..3097034),
-            (3097034..3101649),
-            (3101649..3106260),
-            (3106260..3110880),
-            (3110880..3115496),
-            (3115496..3116473),
-        ],
-        &[
-            (3137152..3138175),
-            (3138175..3139141),
-            (3139141..3140108),
-            (3140108..3141207),
-            (3141207..3145482),
-            (3145482..3146465),
-        ],
-        &[
-            (3157808..3158787),
-            (3158787..3159766),
-            (3159766..3160744),
-            (3160744..3162036),
-        ],
-        &[
-            (3186280..3187058),
-            (3187058..3188228),
-            (3188228..3189398),
-            (3189398..3190570),
-            (3190570..3191759),
-            (3191759..3192931),
-            (3192931..3194105),
-            (3194105..3195210),
-            (3195210..3196192),
-            (3196192..3197128),
-            (3197128..3198064),
-        ],
-        &[
-            (3214732..3215835),
-            (3215835..3216940),
-            (3216940..3218043),
-            (3218043..3219048),
-            (3219048..3220055),
-            (3220055..3221062),
-            (3221062..3222071),
-        ],
-        &[
-            (3237854..3238924),
-            (3238924..3239705),
-            (3239705..3240485),
-            (3240485..3241555),
-            (3241555..3242538),
-            (3242538..3243605),
-            (3243605..3244578),
-        ],
-        &[
-            (3264714..3265698),
-            (3265698..3266682),
-            (3266682..3267793),
-            (3267793..3268764),
-            (3268764..3269862),
-            (3269862..3270847),
-            (3270847..3271830),
-            (3271830..3272945),
-            (3272945..3274059),
-        ],
-        &[
-            (3286305..3287721),
-            (3287721..3289134),
-            (3289134..3289914),
-            (3289914..3290887),
-        ],
-        &[(3299979..3300953), (3300953..3301925), (3301925..3302897)],
-        &[
-            (3318589..3319566),
-            (3319566..3320543),
-            (3320543..3321519),
-            (3321519..3322499),
-            (3322499..3323479),
-            (3323479..3324452),
-            (3324452..3325433),
-        ],
-        &[
-            (3339429..3340403),
-            (3340403..3341376),
-            (3341376..3342350),
-            (3342350..3343324),
-            (3343324..3344299),
-            (3344299..3345273),
-        ],
-        &[
-            (3363198..3364175),
-            (3364175..3365154),
-            (3365154..3366322),
-            (3366322..3367492),
-            (3367492..3368473),
-            (3368473..3369453),
-            (3369453..3370447),
-            (3370447..3371441),
-        ],
-        &[(3380238..3381218), (3381218..3381994), (3381994..3382769)],
-        &[
-            (3398406..3399387),
-            (3399387..3400367),
-            (3400367..3401348),
-            (3401348..3402329),
-            (3402329..3403310),
-            (3403310..3404292),
-            (3404292..3405273),
-        ],
-        &[
-            (3420844..3421822),
-            (3421822..3422800),
-            (3422800..3423766),
-            (3423766..3424732),
-            (3424732..3425698),
-            (3425698..3426674),
-            (3426674..3427650),
-        ],
-        &[(3433868..3434962)],
-        &[
-            (3453647..3454624),
-            (3454624..3455598),
-            (3455598..3456536),
-            (3456536..3457475),
-            (3457475..3458464),
-            (3458464..3459404),
-            (3459404..3460344),
-            (3460344..3461336),
-            (3461336..3462313),
-        ],
-        &[
-            (3474875..3475854),
-            (3475854..3476823),
-            (3476823..3477943),
-            (3477943..3478875),
-            (3478875..3479861),
-        ],
-        &[
-            (3497104..3498203),
-            (3498203..3499310),
-            (3499310..3500297),
-            (3500297..3501406),
-            (3501406..3502513),
-            (3502513..3503620),
-            (3503620..3504732),
-        ],
-        &[
-            (3520067..3521243),
-            (3521243..3522011),
-            (3522011..3522780),
-            (3522780..3523950),
-            (3523950..3525122),
-            (3525122..3526298),
-        ],
-        &[
-            (3536615..3537394),
-            (3537394..3538169),
-            (3538169..3538948),
-            (3538948..3540055),
-        ],
-        &[
-            (3553843..3554945),
-            (3554945..3556052),
-            (3556052..3557157),
-            (3557157..3558264),
-            (3558264..3559367),
-        ],
-        &[
-            (3571886..3572661),
-            (3572661..3573761),
-            (3573761..3574863),
-            (3574863..3575837),
-            (3575837..3576615),
-        ],
-        &[
-            (3589843..3591010),
-            (3591010..3592177),
-            (3592177..3593149),
-            (3593149..3594127),
-            (3594127..3595105),
-        ],
-        &[
-            (3606059..3607055),
-            (3607055..3608094),
-            (3608094..3609063),
-            (3609063..3610055),
-        ],
-        &[
-            (3638637..3639801),
-            (3639801..3640968),
-            (3640968..3642138),
-            (3642138..3643305),
-            (3643305..3644315),
-            (3644315..3645325),
-            (3645325..3646502),
-            (3646502..3647679),
-            (3647679..3648857),
-            (3648857..3650035),
-            (3650035..3651014),
-            (3651014..3651987),
-            (3651987..3652971),
-        ],
-        &[
-            (3669921..3671049),
-            (3671049..3671821),
-            (3671821..3672829),
-            (3672829..3673600),
-            (3673600..3674569),
-            (3674569..3675539),
-            (3675539..3676509),
-            (3676509..3677281),
-        ],
-        &[
-            (3689649..3690818),
-            (3690818..3691982),
-            (3691982..3693165),
-            (3693165..3694348),
-        ],
-        &[
-            (3710072..3711051),
-            (3711051..3712025),
-            (3712025..3713000),
-            (3713000..3713975),
-            (3713975..3714959),
-            (3714959..3715971),
-            (3715971..3716981),
-        ],
-        &[
-            (3731212..3732186),
-            (3732186..3733162),
-            (3733162..3734330),
-            (3734330..3735304),
-            (3735304..3736279),
-            (3736279..3737254),
-        ],
-        &[
-            (3750280..3751252),
-            (3751252..3752224),
-            (3752224..3753392),
-            (3753392..3754511),
-            (3754511..3755487),
-        ],
-        &[
-            (3768067..3769058),
-            (3769058..3770080),
-            (3770080..3770865),
-            (3770865..3771841),
-            (3771841..3773008),
-        ],
-        &[
-            (3792265..3793242),
-            (3793242..3794345),
-            (3794345..3795448),
-            (3795448..3796424),
-            (3796424..3797413),
-            (3797413..3798389),
-            (3798389..3799366),
-            (3799366..3800344),
-            (3800344..3801335),
-        ],
-        &[
-            (3817516..3818494),
-            (3818494..3819486),
-            (3819486..3820469),
-            (3820469..3821449),
-            (3821449..3822554),
-            (3822554..3823661),
-            (3823661..3824639),
-        ],
-        &[
-            (3838343..3839337),
-            (3839337..3840459),
-            (3840459..3841756),
-            (3841756..3842736),
-            (3842736..3843854),
-        ],
-        &[
-            (3855234..3856502),
-            (3856502..3857624),
-            (3857624..3858398),
-            (3858398..3859341),
-        ],
-        &[
-            (3874952..3875928),
-            (3875928..3876904),
-            (3876904..3877880),
-            (3877880..3878856),
-            (3878856..3879828),
-            (3879828..3880801),
-            (3880801..3881789),
-        ],
-        &[
-            (3897871..3898847),
-            (3898847..3899831),
-            (3899831..3900834),
-            (3900834..3901812),
-            (3901812..3902795),
-            (3902795..3903792),
-            (3903792..3904979),
-        ],
-        &[
-            (3923141..3924076),
-            (3924076..3925011),
-            (3925011..3926002),
-            (3926002..3926993),
-            (3926993..3928111),
-            (3928111..3929229),
-            (3929229..3930211),
-            (3930211..3931457),
-        ],
-        &[
-            (3946624..3947605),
-            (3947605..3948704),
-            (3948704..3949818),
-            (3949818..3950917),
-            (3950917..3952029),
-            (3952029..3953003),
-        ],
-        &[
-            (3970959..3971903),
-            (3971903..3973040),
-            (3973040..3974177),
-            (3974177..3975313),
-            (3975313..3976263),
-            (3976263..3977188),
-            (3977188..3978113),
-            (3978113..3979038),
-        ],
-        &[
-            (3990189..3991167),
-            (3991167..3992145),
-            (3992145..3993320),
-            (3993320..3994298),
-        ],
-        &[
-            (4013084..4014036),
-            (4014036..4014989),
-            (4014989..4015942),
-            (4015942..4016895),
-            (4016895..4017847),
-            (4017847..4018949),
-            (4018949..4020054),
-            (4020054..4021155),
-            (4021155..4021904),
-        ],
-        &[
-            (4035791..4036774),
-            (4036774..4037757),
-            (4037757..4038739),
-            (4038739..4039717),
-            (4039717..4040697),
-            (4040697..4041675),
-        ],
-        &[
-            (4062036..4063298),
-            (4063298..4064559),
-            (4064559..4065694),
-            (4065694..4066671),
-            (4066671..4067648),
-            (4067648..4068622),
-            (4068622..4069636),
-            (4069636..4070611),
-            (4070611..4071604),
-        ],
-        &[
-            (4089861..4090965),
-            (4090965..4092069),
-            (4092069..4092843),
-            (4092843..4094175),
-            (4094175..4095154),
-            (4095154..4096129),
-            (4096129..4097104),
-            (4097104..4098093),
-        ],
-        &[
-            (4109174..4110148),
-            (4110148..4111122),
-            (4111122..4112094),
-            (4112094..4113168),
-        ],
-        &[
-            (4128388..4129556),
-            (4129556..4130720),
-            (4130720..4131839),
-            (4131839..4132933),
-            (4132933..4133703),
-            (4133703..4134805),
-        ],
-        &[
-            (4151996..4153163),
-            (4153163..4154141),
-            (4154141..4155327),
-            (4155327..4156514),
-            (4156514..4157688),
-            (4157688..4158683),
-            (4158683..4159666),
-        ],
-        &[(4165524..4166498)],
-        &[
-            (4192838..4196650),
-            (4196650..4200445),
-            (4200445..4201419),
-            (4201419..4202393),
-            (4202393..4203377),
-            (4203377..4204361),
-            (4204361..4205344),
-        ],
-        &[(4214451..4215428), (4215428..4216405), (4216405..4217396)],
+            (2145955..2146729),
+            (2146729..2148027),
+            (2148027..2149338),
+            (2149338..2150317),
+            (2150317..2151467),
+            (2151467..2152570),
+            (2152570..2153691),
+            (2153691..2154792),
+            (2154792..2155895),
+            (2155895..2156874),
+        ],
+        &[
+            (2176528..2177509),
+            (2177509..2178506),
+            (2178506..2179454),
+            (2179454..2180231),
+            (2180231..2181177),
+            (2181177..2182124),
+            (2182124..2183108),
+            (2183108..2183882),
+            (2183882..2184656),
+            (2184656..2185626),
+        ],
+        &[
+            (2211110..2212086),
+            (2212086..2213079),
+            (2213079..2214246),
+            (2214246..2215431),
+            (2215431..2216536),
+            (2216536..2217508),
+            (2217508..2218479),
+            (2218479..2219453),
+            (2219453..2220425),
+            (2220425..2221397),
+            (2221397..2222368),
+            (2222368..2223104),
+            (2223104..2223839),
+        ],
+        &[(2229681..2230664)],
+        &[
+            (2244612..2245720),
+            (2245720..2246701),
+            (2246701..2247682),
+            (2247682..2249168),
+            (2249168..2250278),
+        ],
+        &[
+            (2265184..2266163),
+            (2266163..2266947),
+            (2266947..2267928),
+            (2267928..2269071),
+            (2269071..2270209),
+            (2270209..2271346),
+        ],
+        &[(2286940..2287715), (2287715..2292096), (2292096..2293078)],
+        &[
+            (2308734..2309711),
+            (2309711..2310691),
+            (2310691..2311673),
+            (2311673..2312652),
+            (2312652..2313633),
+            (2313633..2314624),
+            (2314624..2315616),
+        ],
+        &[
+            (2340875..2341851),
+            (2341851..2342827),
+            (2342827..2343804),
+            (2343804..2344781),
+            (2344781..2345758),
+            (2345758..2346735),
+            (2346735..2347712),
+            (2347712..2348689),
+            (2348689..2349661),
+            (2349661..2350634),
+            (2350634..2351607),
+            (2351607..2352586),
+            (2352586..2353564),
+        ],
+        &[
+            (2367433..2368406),
+            (2368406..2369380),
+            (2369380..2370354),
+            (2370354..2371337),
+            (2371337..2372320),
+            (2372320..2373293),
+        ],
+        &[
+            (2388056..2389031),
+            (2389031..2390005),
+            (2390005..2390978),
+            (2390978..2391952),
+            (2391952..2393129),
+            (2393129..2394303),
+        ],
+        &[
+            (2413029..2414006),
+            (2414006..2414984),
+            (2414984..2415963),
+            (2415963..2416936),
+            (2416936..2417909),
+            (2417909..2418883),
+            (2418883..2419856),
+            (2419856..2420834),
+            (2420834..2421813),
+        ],
+        &[
+            (2436266..2437238),
+            (2437238..2438652),
+            (2438652..2440066),
+            (2440066..2441041),
+            (2441041..2442011),
+            (2442011..2442993),
+        ],
+        &[
+            (2458907..2460262),
+            (2460262..2461613),
+            (2461613..2462961),
+            (2462961..2464307),
+            (2464307..2465080),
+        ],
+        &[
+            (2480699..2481692),
+            (2481692..2482685),
+            (2482685..2483656),
+            (2483656..2484628),
+            (2484628..2485600),
+            (2485600..2486570),
+            (2486570..2487541),
+        ],
+        &[
+            (2499669..2500645),
+            (2500645..2501420),
+            (2501420..2502406),
+            (2502406..2503390),
+            (2503390..2504363),
+        ],
+        &[
+            (2526398..2527496),
+            (2527496..2528265),
+            (2528265..2529262),
+            (2529262..2530245),
+            (2530245..2531277),
+            (2531277..2532278),
+            (2532278..2533255),
+            (2533255..2534234),
+            (2534234..2535212),
+            (2535212..2536191),
+            (2536191..2537180),
+        ],
+        &[
+            (2549206..2550174),
+            (2550174..2550943),
+            (2550943..2551910),
+            (2551910..2552885),
+            (2552885..2553823),
+        ],
+        &[
+            (2566166..2567147),
+            (2567147..2568129),
+            (2568129..2569113),
+            (2569113..2570094),
+            (2570094..2571092),
+        ],
+        &[
+            (2590719..2591700),
+            (2591700..2592471),
+            (2592471..2593243),
+            (2593243..2594015),
+            (2594015..2594788),
+            (2594788..2595799),
+            (2595799..2596808),
+            (2596808..2597916),
+            (2597916..2598899),
+            (2598899..2599896),
+        ],
+        &[
+            (2622506..2623608),
+            (2623608..2624712),
+            (2624712..2625813),
+            (2625813..2626915),
+            (2626915..2627890),
+            (2627890..2628866),
+            (2628866..2630207),
+            (2630207..2631183),
+            (2631183..2632179),
+            (2632179..2633162),
+        ],
+        &[
+            (2653926..2654700),
+            (2654700..2655673),
+            (2655673..2656775),
+            (2656775..2657749),
+            (2657749..2658852),
+            (2658852..2659833),
+            (2659833..2660807),
+            (2660807..2661781),
+            (2661781..2662772),
+            (2662772..2663750),
+        ],
+        &[(2671283..2672255), (2672255..2673231)],
+        &[
+            (2687602..2688578),
+            (2688578..2689556),
+            (2689556..2690616),
+            (2690616..2691586),
+            (2691586..2692588),
+            (2692588..2693671),
+        ],
+        &[(2703125..2704418), (2704418..2705384), (2705384..2706161)],
+        &[(2715187..2716164), (2716164..2717141), (2717141..2718083)],
+        &[(2727205..2728178), (2728178..2729159), (2729159..2730136)],
+        &[
+            (2744518..2745528),
+            (2745528..2746538),
+            (2746538..2747270),
+            (2747270..2748245),
+            (2748245..2749219),
+            (2749219..2750509),
+        ],
+        &[
+            (2763201..2764180),
+            (2764180..2765164),
+            (2765164..2766332),
+            (2766332..2767308),
+            (2767308..2768282),
+        ],
+        &[(2775779..2776752), (2776752..2777732)],
+        &[
+            (2800447..2801424),
+            (2801424..2802401),
+            (2802401..2803401),
+            (2803401..2804400),
+            (2804400..2805400),
+            (2805400..2806378),
+            (2806378..2807356),
+            (2807356..2808335),
+            (2808335..2809314),
+            (2809314..2810423),
+            (2810423..2811533),
+        ],
+        &[(2821106..2822239), (2822239..2823214), (2823214..2824187)],
+        &[(2834067..2835229), (2835229..2836391), (2836391..2837360)],
+        &[
+            (2889549..2890863),
+            (2890863..2892180),
+            (2892180..2893492),
+            (2893492..2894806),
+            (2894806..2896106),
+            (2896106..2897405),
+            (2897405..2898734),
+            (2898734..2900051),
+            (2900051..2901351),
+            (2901351..2902669),
+            (2902669..2903985),
+            (2903985..2905303),
+            (2905303..2906620),
+            (2906620..2907937),
+            (2907937..2909256),
+            (2909256..2910577),
+            (2910577..2911556),
+            (2911556..2912535),
+            (2912535..2913515),
+            (2913515..2914494),
+            (2914494..2915472),
+            (2915472..2916452),
+            (2916452..2917444),
+        ],
+        &[
+            (2928631..2929726),
+            (2929726..2930823),
+            (2930823..2931919),
+            (2931919..2932689),
+        ],
+        &[
+            (2949624..2950595),
+            (2950595..2951567),
+            (2951567..2952540),
+            (2952540..2953508),
+            (2953508..2954456),
+            (2954456..2955403),
+            (2955403..2956351),
+            (2956351..2957299),
+        ],
+        &[
+            (2973702..2974682),
+            (2974682..2975788),
+            (2975788..2976907),
+            (2976907..2978026),
+            (2978026..2979000),
+            (2979000..2979992),
+            (2979992..2980985),
+        ],
+        &[(2990433..2991364), (2991364..2992337), (2992337..2993453)],
+        &[
+            (3005942..3006918),
+            (3006918..3007910),
+            (3007910..3008886),
+            (3008886..3009863),
+            (3009863..3010849),
+        ],
+        &[
+            (3028270..3029737),
+            (3029737..3031204),
+            (3031204..3032288),
+            (3032288..3033264),
+            (3033264..3034573),
+            (3034573..3035872),
+        ],
+        &[
+            (3057963..3058931),
+            (3058931..3059704),
+            (3059704..3060683),
+            (3060683..3061662),
+            (3061662..3062639),
+            (3062639..3063618),
+            (3063618..3064717),
+            (3064717..3065816),
+            (3065816..3066756),
+            (3066756..3067695),
+            (3067695..3068669),
+        ],
+        &[
+            (3111327..3112102),
+            (3112102..3116650),
+            (3116650..3121194),
+            (3121194..3125747),
+            (3125747..3130296),
+            (3130296..3131272),
+        ],
+        &[
+            (3151939..3152961),
+            (3152961..3153926),
+            (3153926..3154892),
+            (3154892..3155990),
+            (3155990..3160198),
+            (3160198..3161180),
+        ],
+        &[
+            (3172515..3173493),
+            (3173493..3174471),
+            (3174471..3175448),
+            (3175448..3176739),
+        ],
+        &[
+            (3200961..3201738),
+            (3201738..3202907),
+            (3202907..3204076),
+            (3204076..3205247),
+            (3205247..3206435),
+            (3206435..3207606),
+            (3207606..3208779),
+            (3208779..3209883),
+            (3209883..3210864),
+            (3210864..3211799),
+            (3211799..3212734),
+        ],
+        &[
+            (3229388..3230490),
+            (3230490..3231594),
+            (3231594..3232696),
+            (3232696..3233700),
+            (3233700..3234706),
+            (3234706..3235712),
+            (3235712..3236720),
+        ],
+        &[
+            (3252489..3253558),
+            (3253558..3254338),
+            (3254338..3255117),
+            (3255117..3256186),
+            (3256186..3257168),
+            (3257168..3258234),
+            (3258234..3259206),
+        ],
+        &[
+            (3279324..3280307),
+            (3280307..3281290),
+            (3281290..3282400),
+            (3282400..3283370),
+            (3283370..3284467),
+            (3284467..3285451),
+            (3285451..3286433),
+            (3286433..3287547),
+            (3287547..3288660),
+        ],
+        &[
+            (3300812..3302161),
+            (3302161..3303507),
+            (3303507..3304286),
+            (3304286..3305258),
+        ],
+        &[(3314344..3315317), (3315317..3316288), (3316288..3317259)],
+        &[
+            (3332937..3333913),
+            (3333913..3334889),
+            (3334889..3335864),
+            (3335864..3336843),
+            (3336843..3337822),
+            (3337822..3338794),
+            (3338794..3339774),
+        ],
+        &[
+            (3353758..3354731),
+            (3354731..3355703),
+            (3355703..3356676),
+            (3356676..3357649),
+            (3357649..3358623),
+            (3358623..3359596),
+        ],
+        &[
+            (3377505..3378481),
+            (3378481..3379459),
+            (3379459..3380626),
+            (3380626..3381795),
+            (3381795..3382775),
+            (3382775..3383754),
+            (3383754..3384747),
+            (3384747..3385740),
+        ],
+        &[(3394531..3395510), (3395510..3396285), (3396285..3397059)],
+        &[
+            (3412682..3413662),
+            (3413662..3414641),
+            (3414641..3415621),
+            (3415621..3416601),
+            (3416601..3417581),
+            (3417581..3418562),
+            (3418562..3419542),
+        ],
+        &[
+            (3435099..3436076),
+            (3436076..3437053),
+            (3437053..3438018),
+            (3438018..3438983),
+            (3438983..3439948),
+            (3439948..3440923),
+            (3440923..3441898),
+        ],
+        &[(3448114..3449207)],
+        &[
+            (3467874..3468850),
+            (3468850..3469823),
+            (3469823..3470760),
+            (3470760..3471698),
+            (3471698..3472686),
+            (3472686..3473625),
+            (3473625..3474564),
+            (3474564..3475555),
+            (3475555..3476531),
+        ],
+        &[
+            (3489083..3490061),
+            (3490061..3491029),
+            (3491029..3492148),
+            (3492148..3493079),
+            (3493079..3494064),
+        ],
+        &[
+            (3511293..3512391),
+            (3512391..3513497),
+            (3513497..3514483),
+            (3514483..3515591),
+            (3515591..3516697),
+            (3516697..3517803),
+            (3517803..3518914),
+        ],
+        &[
+            (3534237..3535412),
+            (3535412..3536179),
+            (3536179..3536947),
+            (3536947..3538116),
+            (3538116..3539287),
+            (3539287..3540462),
+        ],
+        &[
+            (3550771..3551549),
+            (3551549..3552323),
+            (3552323..3553101),
+            (3553101..3554207),
+        ],
+        &[
+            (3567985..3569086),
+            (3569086..3570192),
+            (3570192..3571296),
+            (3571296..3572402),
+            (3572402..3573504),
+        ],
+        &[
+            (3586013..3586787),
+            (3586787..3587886),
+            (3587886..3588987),
+            (3588987..3589960),
+            (3589960..3590737),
+        ],
+        &[
+            (3603955..3605121),
+            (3605121..3606287),
+            (3606287..3607258),
+            (3607258..3608235),
+            (3608235..3609212),
+        ],
+        &[
+            (3620158..3621153),
+            (3621153..3622191),
+            (3622191..3623159),
+            (3623159..3624150),
+        ],
+        &[
+            (3652706..3653869),
+            (3653869..3655035),
+            (3655035..3656204),
+            (3656204..3657370),
+            (3657370..3658379),
+            (3658379..3659388),
+            (3659388..3660564),
+            (3660564..3661740),
+            (3661740..3662917),
+            (3662917..3664094),
+            (3664094..3665072),
+            (3665072..3666044),
+            (3666044..3667027),
+        ],
+        &[
+            (3683961..3685088),
+            (3685088..3685859),
+            (3685859..3686866),
+            (3686866..3687636),
+            (3687636..3688604),
+            (3688604..3689573),
+            (3689573..3690542),
+            (3690542..3691313),
+        ],
+        &[
+            (3703673..3704841),
+            (3704841..3706004),
+            (3706004..3707186),
+            (3707186..3708368),
+        ],
+        &[
+            (3724078..3725056),
+            (3725056..3726029),
+            (3726029..3727003),
+            (3727003..3727977),
+            (3727977..3728960),
+            (3728960..3729971),
+            (3729971..3730980),
+        ],
+        &[
+            (3745199..3746172),
+            (3746172..3747147),
+            (3747147..3748314),
+            (3748314..3749287),
+            (3749287..3750261),
+            (3750261..3751235),
+        ],
+        &[
+            (3764251..3765222),
+            (3765222..3766193),
+            (3766193..3767360),
+            (3767360..3768478),
+            (3768478..3769453),
+        ],
+        &[
+            (3781937..3782927),
+            (3782927..3783948),
+            (3783948..3784732),
+            (3784732..3785707),
+            (3785707..3786873),
+        ],
+        &[
+            (3806112..3807088),
+            (3807088..3808190),
+            (3808190..3809292),
+            (3809292..3810267),
+            (3810267..3811255),
+            (3811255..3812230),
+            (3812230..3813206),
+            (3813206..3814183),
+            (3814183..3815173),
+        ],
+        &[
+            (3831340..3832317),
+            (3832317..3833308),
+            (3833308..3834290),
+            (3834290..3835269),
+            (3835269..3836373),
+            (3836373..3837479),
+            (3837479..3838456),
+        ],
+        &[
+            (3852150..3853143),
+            (3853143..3854264),
+            (3854264..3855560),
+            (3855560..3856539),
+            (3856539..3857656),
+        ],
+        &[
+            (3869028..3870295),
+            (3870295..3871416),
+            (3871416..3872189),
+            (3872189..3873131),
+        ],
+        &[
+            (3888728..3889703),
+            (3889703..3890678),
+            (3890678..3891653),
+            (3891653..3892628),
+            (3892628..3893599),
+            (3893599..3894571),
+            (3894571..3895558),
+        ],
+        &[
+            (3911626..3912601),
+            (3912601..3913584),
+            (3913584..3914586),
+            (3914586..3915563),
+            (3915563..3916545),
+            (3916545..3917541),
+            (3917541..3918727),
+        ],
+        &[
+            (3936873..3937807),
+            (3937807..3938741),
+            (3938741..3939731),
+            (3939731..3940721),
+            (3940721..3941838),
+            (3941838..3942955),
+            (3942955..3943936),
+            (3943936..3945181),
+        ],
+        &[
+            (3960336..3961316),
+            (3961316..3962414),
+            (3962414..3963527),
+            (3963527..3964625),
+            (3964625..3965736),
+            (3965736..3966709),
+        ],
+        &[
+            (3984649..3985592),
+            (3985592..3986728),
+            (3986728..3987864),
+            (3987864..3988999),
+            (3988999..3989948),
+            (3989948..3990872),
+            (3990872..3991796),
+            (3991796..3992720),
+        ],
+        &[
+            (4003863..4004840),
+            (4004840..4005817),
+            (4005817..4006991),
+            (4006991..4007968),
+        ],
+        &[
+            (4026736..4027687),
+            (4027687..4028639),
+            (4028639..4029591),
+            (4029591..4030543),
+            (4030543..4031494),
+            (4031494..4032595),
+            (4032595..4033699),
+            (4033699..4034799),
+            (4034799..4035547),
+        ],
+        &[
+            (4049422..4050404),
+            (4050404..4051386),
+            (4051386..4052367),
+            (4052367..4053344),
+            (4053344..4054323),
+            (4054323..4055300),
+        ],
+        &[
+            (4075643..4076904),
+            (4076904..4078164),
+            (4078164..4079298),
+            (4079298..4080274),
+            (4080274..4081250),
+            (4081250..4082223),
+            (4082223..4083236),
+            (4083236..4084210),
+            (4084210..4085202),
+        ],
+        &[
+            (4103443..4104546),
+            (4104546..4105649),
+            (4105649..4106422),
+            (4106422..4107753),
+            (4107753..4108731),
+            (4108731..4109705),
+            (4109705..4110679),
+            (4110679..4111667),
+        ],
+        &[
+            (4122740..4123713),
+            (4123713..4124686),
+            (4124686..4125657),
+            (4125657..4126730),
+        ],
+        &[
+            (4141938..4143105),
+            (4143105..4144268),
+            (4144268..4145386),
+            (4145386..4146479),
+            (4146479..4147248),
+            (4147248..4148349),
+        ],
+        &[
+            (4165526..4166692),
+            (4166692..4167669),
+            (4167669..4168854),
+            (4168854..4170040),
+            (4170040..4171213),
+            (4171213..4172207),
+            (4172207..4173189),
+        ],
+        &[(4179045..4180018)],
+        &[
+            (4206344..4210089),
+            (4210089..4213817),
+            (4213817..4214790),
+            (4214790..4215763),
+            (4215763..4216746),
+            (4216746..4217729),
+            (4217729..4218711),
+        ],
+        &[(4227812..4228788), (4228788..4229764), (4229764..4230754)],
     ];
     pub static ABILITY_CLOSURES: [&[Range<usize>]; ChampionId::VARIANTS] = [
         &[
-            (537870..538493),
-            (538493..540206),
-            (540206..540978),
-            (540978..541764),
-            (541764..542540),
-            (542540..544263),
-            (544263..545039),
-            (545039..545828),
-            (545828..546615),
-            (546615..547198),
-            (547198..547781),
+            (537855..538473),
+            (538473..540185),
+            (540185..540956),
+            (540956..541741),
+            (541741..542516),
+            (542516..544238),
+            (544238..545013),
+            (545013..545801),
+            (545801..546587),
+            (546587..547169),
+            (547169..547751),
         ],
         &[
-            (576746..577327),
-            (577327..578349),
-            (578349..578927),
-            (578927..579508),
-            (579508..580090),
-            (580090..580673),
-            (580673..581255),
-            (581255..581941),
+            (584659..585239),
+            (585239..586260),
+            (586260..586837),
+            (586837..587417),
+            (587417..587998),
+            (587998..588576),
+            (588576..589157),
+            (589157..589842),
         ],
         &[
-            (604469..605183),
-            (605183..605889),
-            (605889..606562),
-            (606562..607231),
-            (607231..607904),
-            (607904..608569),
-            (608569..609120),
-            (609120..609662),
+            (615548..616257),
+            (616257..616958),
+            (616958..617630),
+            (617630..618298),
+            (618298..618970),
+            (618970..619634),
+            (619634..620184),
+            (620184..620725),
         ],
         &[
-            (634064..634533),
-            (634533..635111),
-            (635111..635689),
-            (635689..636362),
-            (636362..637267),
-            (637267..638356),
-            (638356..639261),
-            (639261..640352),
+            (646962..647426),
+            (647426..648003),
+            (648003..648580),
+            (648580..649248),
+            (649248..650152),
+            (650152..651240),
+            (651240..652144),
+            (652144..653234),
         ],
         &[
-            (658765..659350),
-            (659350..659892),
-            (659892..660475),
-            (660475..661059),
+            (676019..676599),
+            (676599..677136),
+            (677136..677718),
+            (677718..678301),
         ],
         &[
-            (677474..678515),
-            (678515..679559),
-            (679559..680136),
-            (680136..680718),
-            (680718..681295),
-            (681295..681870),
-            (681870..682448),
+            (695572..696612),
+            (696612..697655),
+            (697655..698231),
+            (698231..698812),
+            (698812..699388),
+            (699388..699962),
+            (699962..700539),
         ],
         &[
-            (699050..699634),
-            (699634..700447),
-            (700447..701030),
-            (701030..701623),
+            (717114..717693),
+            (717693..718501),
+            (718501..719079),
+            (719079..719667),
         ],
         &[
-            (717227..717809),
-            (717809..718391),
-            (718391..718972),
-            (718972..719553),
-            (719553..720135),
-            (720135..720720),
-            (720720..721307),
+            (735244..735825),
+            (735825..736406),
+            (736406..736986),
+            (736986..737566),
+            (737566..738147),
+            (738147..738731),
+            (738731..739317),
         ],
         &[
-            (736512..737092),
-            (737092..737672),
-            (737672..738252),
-            (738252..738834),
+            (754511..755090),
+            (755090..755669),
+            (755669..756248),
+            (756248..756829),
         ],
-        &[(747785..748210)],
+        &[(765775..766199)],
         &[
-            (757554..758169),
-            (758169..758784),
-            (758784..759356),
-            (759356..759903),
-        ],
-        &[
-            (778348..778935),
-            (778935..779528),
-            (779528..780117),
-            (780117..780719),
-            (780719..781322),
-            (781322..781915),
-            (781915..782383),
-            (782383..782974),
-            (782974..783560),
-            (783560..784148),
+            (775538..776152),
+            (776152..776766),
+            (776766..777337),
+            (777337..777883),
         ],
         &[
-            (805356..805937),
-            (805937..806520),
-            (806520..807101),
-            (807101..807683),
-            (807683..808263),
-            (808263..808844),
-            (808844..809426),
+            (796314..796900),
+            (796900..797492),
+            (797492..798080),
+            (798080..798681),
+            (798681..799283),
+            (799283..799875),
+            (799875..800342),
+            (800342..800932),
+            (800932..801517),
+            (801517..802104),
         ],
         &[
-            (827305..827885),
-            (827885..831193),
-            (831193..831772),
-            (831772..832320),
-        ],
-        &[(844314..844896)],
-        &[
-            (863505..864084),
-            (864084..864546),
-            (864546..865006),
-            (865006..865586),
-            (865586..866284),
-            (866284..866747),
-            (866747..867329),
-            (867329..867914),
-            (867914..868496),
-            (868496..869077),
-            (869077..869790),
-            (869790..870366),
-            (870366..870943),
-        ],
-        &[(891016..891601), (891601..892194), (892194..893048)],
-        &[
-            (906875..907456),
-            (907456..908043),
-            (908043..908623),
-            (908623..909203),
-            (909203..909783),
-            (909783..910364),
-        ],
-        &[(923440..924019), (924019..924480), (924480..925028)],
-        &[
-            (939884..940581),
-            (940581..941193),
-            (941193..941890),
-            (941890..942597),
-            (942597..943290),
-            (943290..944005),
-            (944005..944586),
+            (823295..823875),
+            (823875..824457),
+            (824457..825037),
+            (825037..825618),
+            (825618..826197),
+            (826197..826777),
+            (826777..827358),
         ],
         &[
-            (962000..962767),
-            (962767..963534),
-            (963534..964120),
-            (964120..964702),
-            (964702..965287),
+            (845226..845805),
+            (845805..849112),
+            (849112..849690),
+            (849690..850237),
+        ],
+        &[(862156..862733)],
+        &[
+            (881324..881902),
+            (881902..882363),
+            (882363..882822),
+            (882822..883401),
+            (883401..884098),
+            (884098..884560),
+            (884560..885141),
+            (885141..885725),
+            (885725..886306),
+            (886306..886886),
+            (886886..887598),
+            (887598..888173),
+            (888173..888749),
+        ],
+        &[(908806..909390), (909390..909982), (909982..910835)],
+        &[
+            (924653..925233),
+            (925233..925819),
+            (925819..926398),
+            (926398..926977),
+            (926977..927556),
+            (927556..928136),
+        ],
+        &[(941203..941781), (941781..942241), (942241..942788)],
+        &[
+            (957634..958330),
+            (958330..958941),
+            (958941..959637),
+            (959637..960343),
+            (960343..961035),
+            (961035..961749),
+            (961749..962329),
         ],
         &[
-            (982807..983423),
-            (983423..984037),
-            (984037..984614),
-            (984614..985389),
-            (985389..986164),
-            (986164..986745),
-            (986745..987362),
+            (979731..980497),
+            (980497..981263),
+            (981263..981848),
+            (981848..982429),
+            (982429..983013),
         ],
         &[
-            (1008793..1009381),
-            (1009381..1009967),
-            (1009967..1010551),
-            (1010551..1011136),
-            (1011136..1011722),
-            (1011722..1014916),
-            (1014916..1015502),
+            (1000521..1001136),
+            (1001136..1001749),
+            (1001749..1002325),
+            (1002325..1003099),
+            (1003099..1003873),
+            (1003873..1004453),
+            (1004453..1005069),
         ],
         &[
-            (1038399..1038979),
-            (1038979..1039561),
-            (1039561..1040540),
-            (1040540..1041122),
-            (1041122..1042100),
-            (1042100..1042692),
-            (1042692..1043405),
-            (1043405..1044003),
+            (1026478..1027065),
+            (1027065..1027650),
+            (1027650..1028233),
+            (1028233..1028817),
+            (1028817..1029402),
+            (1029402..1032595),
+            (1032595..1033180),
         ],
         &[
-            (1064686..1065382),
-            (1065382..1066079),
-            (1066079..1066774),
-            (1066774..1067364),
-            (1067364..1067939),
-            (1067939..1068515),
-            (1068515..1069091),
+            (1055996..1056575),
+            (1056575..1057156),
+            (1057156..1058134),
+            (1058134..1058715),
+            (1058715..1059692),
+            (1059692..1060283),
+            (1060283..1060995),
+            (1060995..1061592),
         ],
         &[
-            (1087089..1087854),
-            (1087854..1088624),
-            (1088624..1089239),
-            (1089239..1089775),
-            (1089775..1090311),
-            (1090311..1090848),
+            (1082260..1082955),
+            (1082955..1083651),
+            (1083651..1084345),
+            (1084345..1084934),
+            (1084934..1085508),
+            (1085508..1086083),
+            (1086083..1086658),
         ],
         &[
-            (1108546..1109126),
-            (1109126..1109706),
-            (1109706..1110287),
-            (1110287..1110867),
-            (1110867..1111448),
-            (1111448..1112038),
-            (1112038..1112628),
+            (1104643..1105407),
+            (1105407..1106176),
+            (1106176..1106790),
+            (1106790..1107325),
+            (1107325..1107860),
+            (1107860..1108396),
         ],
         &[
-            (1127753..1128372),
-            (1128372..1128954),
-            (1128954..1129459),
-            (1129459..1129922),
+            (1126081..1126660),
+            (1126660..1127239),
+            (1127239..1127819),
+            (1127819..1128398),
+            (1128398..1128978),
+            (1128978..1129567),
+            (1129567..1130156),
         ],
         &[
-            (1142936..1143696),
-            (1143696..1144159),
-            (1144159..1144622),
-            (1144622..1145198),
-            (1145198..1145661),
+            (1145270..1145888),
+            (1145888..1146469),
+            (1146469..1146973),
+            (1146973..1147435),
         ],
         &[
-            (1159595..1160174),
-            (1160174..1160753),
-            (1160753..1161332),
-            (1161332..1161911),
-            (1161911..1162492),
-        ],
-        &[(1174915..1175495), (1175495..1176235), (1176235..1176816)],
-        &[
-            (1194585..1195167),
-            (1195167..1195749),
-            (1195749..1196332),
-            (1196332..1196914),
-            (1196914..1197497),
-            (1197497..1198080),
-            (1198080..1198671),
-            (1198671..1199416),
-            (1199416..1199967),
-            (1199967..1200517),
+            (1160440..1161199),
+            (1161199..1161661),
+            (1161661..1162123),
+            (1162123..1162698),
+            (1162698..1163160),
         ],
         &[
-            (1219528..1220235),
-            (1220235..1221120),
-            (1221120..1221822),
-            (1221822..1222531),
+            (1177084..1177662),
+            (1177662..1178240),
+            (1178240..1178818),
+            (1178818..1179396),
+            (1179396..1179976),
+        ],
+        &[(1192391..1192970), (1192970..1193709), (1193709..1194289)],
+        &[
+            (1212045..1212626),
+            (1212626..1213207),
+            (1213207..1213789),
+            (1213789..1214370),
+            (1214370..1214952),
+            (1214952..1215534),
+            (1215534..1216124),
+            (1216124..1216868),
+            (1216868..1217418),
+            (1217418..1217967),
         ],
         &[
-            (1243640..1244422),
-            (1244422..1244887),
-            (1244887..1245667),
-            (1245667..1246132),
-            (1246132..1246723),
-            (1246723..1247311),
-            (1247311..1248213),
-            (1248213..1249111),
-            (1249111..1249698),
-            (1249698..1250289),
-            (1250289..1250886),
-        ],
-        &[(1269798..1270559), (1270559..1271137), (1271137..1271597)],
-        &[
-            (1287982..1288562),
-            (1288562..1289142),
-            (1289142..1289720),
-            (1289720..1290303),
-            (1290303..1290883),
-            (1290883..1291463),
-            (1291463..1292044),
-            (1292044..1292624),
-            (1292624..1293204),
+            (1236948..1237650),
+            (1237650..1238530),
+            (1238530..1239227),
+            (1239227..1239931),
         ],
         &[
-            (1315504..1316084),
-            (1316084..1317023),
-            (1317023..1317965),
-            (1317965..1318545),
-            (1318545..1319125),
-            (1319125..1319705),
-            (1319705..1320286),
-            (1320286..1320867),
+            (1261009..1261790),
+            (1261790..1262254),
+            (1262254..1263033),
+            (1263033..1263497),
+            (1263497..1264087),
+            (1264087..1264674),
+            (1264674..1265575),
+            (1265575..1266472),
+            (1266472..1267058),
+            (1267058..1267648),
+            (1267648..1268244),
+        ],
+        &[(1287056..1287816), (1287816..1288393), (1288393..1288852)],
+        &[
+            (1305225..1305804),
+            (1305804..1306383),
+            (1306383..1306960),
+            (1306960..1307542),
+            (1307542..1308121),
+            (1308121..1308700),
+            (1308700..1309280),
+            (1309280..1309859),
+            (1309859..1310438),
         ],
         &[
-            (1342993..1343584),
-            (1343584..1344046),
-            (1344046..1344630),
-            (1344630..1345214),
-            (1345214..1345808),
-            (1345808..1346402),
-            (1346402..1346986),
-            (1346986..1347580),
-            (1347580..1348174),
+            (1332721..1333300),
+            (1333300..1334238),
+            (1334238..1335179),
+            (1335179..1335758),
+            (1335758..1336337),
+            (1336337..1336916),
+            (1336916..1337496),
+            (1337496..1338076),
         ],
         &[
-            (1366781..1367320),
-            (1367320..1367782),
-            (1367782..1368546),
-            (1368546..1369318),
-            (1369318..1370085),
+            (1360185..1360775),
+            (1360775..1361236),
+            (1361236..1361819),
+            (1361819..1362402),
+            (1362402..1362995),
+            (1362995..1363588),
+            (1363588..1364171),
+            (1364171..1364764),
+            (1364764..1365357),
         ],
         &[
-            (1387393..1387985),
-            (1387985..1388574),
-            (1388574..1389471),
-            (1389471..1390048),
-            (1390048..1390509),
-            (1390509..1391216),
-            (1391216..1391920),
+            (1383950..1384488),
+            (1384488..1384949),
+            (1384949..1385712),
+            (1385712..1386483),
+            (1386483..1387249),
         ],
         &[
-            (1412035..1412616),
-            (1412616..1413198),
-            (1413198..1413779),
-            (1413779..1414361),
-            (1414361..1414982),
-            (1414982..1415698),
-            (1415698..1416279),
-            (1416279..1416870),
+            (1404545..1405136),
+            (1405136..1405724),
+            (1405724..1406620),
+            (1406620..1407196),
+            (1407196..1407656),
+            (1407656..1408362),
+            (1408362..1409065),
         ],
         &[
-            (1435797..1436374),
-            (1436374..1437135),
-            (1437135..1437897),
-            (1437897..1438478),
-            (1438478..1439064),
-            (1439064..1439641),
+            (1429165..1429745),
+            (1429745..1430326),
+            (1430326..1430906),
+            (1430906..1431487),
+            (1431487..1432107),
+            (1432107..1432822),
+            (1432822..1433402),
+            (1433402..1433992),
         ],
         &[
-            (1466410..1467273),
-            (1467273..1467851),
-            (1467851..1468716),
-            (1468716..1469296),
-            (1469296..1470184),
-            (1470184..1470763),
-            (1470763..1471627),
-            (1471627..1472206),
-            (1472206..1473069),
-            (1473069..1473647),
-            (1473647..1474536),
-            (1474536..1475424),
-            (1475424..1476288),
+            (1452905..1453481),
+            (1453481..1454241),
+            (1454241..1455002),
+            (1455002..1455582),
+            (1455582..1456167),
+            (1456167..1456743),
         ],
         &[
-            (1502965..1503543),
-            (1503543..1504120),
-            (1504120..1504702),
-            (1504702..1505282),
-            (1505282..1505857),
-            (1505857..1506434),
-            (1506434..1507015),
+            (1483493..1484355),
+            (1484355..1484932),
+            (1484932..1485796),
+            (1485796..1486375),
+            (1486375..1487262),
+            (1487262..1487840),
+            (1487840..1488703),
+            (1488703..1489281),
+            (1489281..1490143),
+            (1490143..1490720),
+            (1490720..1491608),
+            (1491608..1492495),
+            (1492495..1493358),
         ],
         &[
-            (1530459..1531565),
-            (1531565..1532670),
-            (1532670..1533771),
-            (1533771..1534872),
-            (1534872..1535978),
-            (1535978..1537081),
-            (1537081..1538184),
-            (1538184..1539288),
+            (1520015..1520592),
+            (1520592..1521168),
+            (1521168..1521749),
+            (1521749..1522328),
+            (1522328..1522902),
+            (1522902..1523478),
+            (1523478..1524058),
         ],
         &[
-            (1559158..1559707),
-            (1559707..1560254),
-            (1560254..1560834),
-            (1560834..1561415),
+            (1547383..1548488),
+            (1548488..1549592),
+            (1549592..1550692),
+            (1550692..1551792),
+            (1551792..1552897),
+            (1552897..1553999),
+            (1553999..1555101),
+            (1555101..1556204),
         ],
         &[
-            (1574824..1575287),
-            (1575287..1576066),
-            (1576066..1576525),
-            (1576525..1577145),
-            (1577145..1577722),
+            (1575534..1576082),
+            (1576082..1576628),
+            (1576628..1577207),
+            (1577207..1577787),
         ],
         &[
-            (1592243..1592833),
-            (1592833..1593503),
-            (1593503..1594173),
-            (1594173..1594752),
-            (1594752..1595333),
+            (1591187..1591649),
+            (1591649..1592427),
+            (1592427..1592885),
+            (1592885..1593504),
+            (1593504..1594080),
         ],
         &[
-            (1608799..1609379),
-            (1609379..1609962),
-            (1609962..1610540),
-            (1610540..1611120),
+            (1608591..1609180),
+            (1609180..1609849),
+            (1609849..1610518),
+            (1610518..1611096),
+            (1611096..1611676),
         ],
         &[
-            (1624542..1625120),
-            (1625120..1625700),
-            (1625700..1626280),
-            (1626280..1626985),
-            (1626985..1627563),
-        ],
-        &[(1639990..1640569), (1640569..1641152), (1641152..1641731)],
-        &[
-            (1655475..1656046),
-            (1656046..1656624),
-            (1656624..1657328),
-            (1657328..1658033),
-            (1658033..1658609),
-            (1658609..1659187),
+            (1625133..1625712),
+            (1625712..1626294),
+            (1626294..1626871),
+            (1626871..1627450),
         ],
         &[
-            (1674870..1675446),
-            (1675446..1676027),
-            (1676027..1676605),
-            (1676605..1677065),
-            (1677065..1677799),
+            (1640863..1641440),
+            (1641440..1642019),
+            (1642019..1642598),
+            (1642598..1643302),
+            (1643302..1643879),
+        ],
+        &[(1656298..1656876), (1656876..1657458), (1657458..1658036)],
+        &[
+            (1671771..1672341),
+            (1672341..1672918),
+            (1672918..1673621),
+            (1673621..1674325),
+            (1674325..1674900),
+            (1674900..1675477),
         ],
         &[
-            (1699568..1700457),
-            (1700457..1701351),
-            (1701351..1702255),
-            (1702255..1702850),
-            (1702850..1703429),
-            (1703429..1704137),
-            (1704137..1704849),
-            (1704849..1705394),
-            (1705394..1705941),
-            (1705941..1706486),
-            (1706486..1707033),
+            (1691149..1691724),
+            (1691724..1692304),
+            (1692304..1692881),
+            (1692881..1693340),
+            (1693340..1694073),
         ],
         &[
-            (1730756..1731344),
-            (1731344..1731921),
-            (1731921..1732806),
-            (1732806..1733690),
-            (1733690..1734573),
-            (1734573..1735455),
+            (1715826..1716714),
+            (1716714..1717607),
+            (1717607..1718510),
+            (1718510..1719104),
+            (1719104..1719682),
+            (1719682..1720389),
+            (1720389..1721100),
+            (1721100..1721644),
+            (1721644..1722190),
+            (1722190..1722734),
+            (1722734..1723280),
+        ],
+        &[
+            (1746986..1747573),
+            (1747573..1748149),
+            (1748149..1749033),
+            (1749033..1749916),
+            (1749916..1750798),
+            (1750798..1751679),
         ],
         &[],
-        &[(1752088..1752548)],
-        &[(1759600..1760192), (1760192..1760652)],
-        &[(1768253..1769350)],
-        &[(1778020..1778602), (1778602..1779064), (1779064..1779647)],
-        &[(1789868..1790451), (1790451..1791034), (1791034..1791735)],
-        &[(1801272..1801855), (1801855..1802561)],
-        &[(1812116..1812813), (1812813..1813274), (1813274..1813893)],
-        &[
-            (1825027..1825602),
-            (1825602..1826176),
-            (1826176..1826635),
-            (1826635..1827210),
-        ],
-        &[(1838266..1838848), (1838848..1839429), (1839429..1840010)],
-        &[(1848279..1848869)],
-        &[
-            (1858330..1858908),
-            (1858908..1859370),
-            (1859370..1860186),
-            (1860186..1860647),
-        ],
-        &[(1869690..1870267)],
-        &[(1877950..1878531), (1878531..1879422)],
-        &[
-            (1899025..1899607),
-            (1899607..1900189),
-            (1900189..1900771),
-            (1900771..1901353),
-            (1901353..1901936),
-            (1901936..1902519),
-            (1902519..1903069),
-            (1903069..1903610),
-            (1903610..1904161),
-            (1904161..1904712),
-            (1904712..1905262),
-            (1905262..1905803),
-            (1905803..1906353),
-        ],
-        &[
-            (1927609..1928186),
-            (1928186..1928765),
-            (1928765..1929349),
-            (1929349..1930246),
-        ],
-        &[
-            (1943771..1944360),
-            (1944360..1944816),
-            (1944816..1945396),
-            (1945396..1945976),
-            (1945976..1946556),
-        ],
-        &[
-            (1963764..1964346),
-            (1964346..1964927),
-            (1964927..1965518),
-            (1965518..1966100),
-            (1966100..1966683),
-            (1966683..1967266),
-            (1967266..1967847),
-            (1967847..1968438),
-        ],
-        &[
-            (1984697..1985282),
-            (1985282..1985866),
-            (1985866..1986450),
-            (1986450..1987036),
-        ],
-        &[
-            (1999619..2000193),
-            (2000193..2000774),
-            (2000774..2001444),
-            (2001444..2002116),
-        ],
-        &[
-            (2017657..2018236),
-            (2018236..2018820),
-            (2018820..2019404),
-            (2019404..2019990),
-            (2019990..2020574),
-            (2020574..2021169),
-            (2021169..2021748),
-        ],
-        &[(2036057..2036636), (2036636..2037214), (2037214..2037802)],
-        &[
-            (2050781..2051364),
-            (2051364..2052062),
-            (2052062..2052759),
-            (2052759..2053456),
-            (2053456..2054049),
-        ],
-        &[
-            (2079806..2080390),
-            (2080390..2084211),
-            (2084211..2088043),
-            (2088043..2088641),
-            (2088641..2089224),
-            (2089224..2089808),
-            (2089808..2090391),
-            (2090391..2091172),
-            (2091172..2091951),
-        ],
+        &[(1768219..1768678)],
+        &[(1775727..1776318), (1776318..1776777)],
+        &[(1784375..1785471)],
+        &[(1794071..1794652), (1794652..1795113), (1795113..1795695)],
+        &[(1805910..1806492), (1806492..1807074), (1807074..1807774)],
+        &[(1817306..1817888), (1817888..1818593)],
+        &[(1828143..1828839), (1828839..1829299), (1829299..1829917)],
+        &[
+            (1841044..1841618),
+            (1841618..1842191),
+            (1842191..1842649),
+            (1842649..1843223),
+        ],
+        &[(1854272..1854853), (1854853..1855433), (1855433..1856013)],
+        &[(1864278..1864867)],
+        &[
+            (1874323..1874900),
+            (1874900..1875361),
+            (1875361..1876176),
+            (1876176..1876636),
+        ],
+        &[(1885674..1886250)],
+        &[(1893930..1894510), (1894510..1895400)],
+        &[
+            (1914988..1915569),
+            (1915569..1916150),
+            (1916150..1916731),
+            (1916731..1917312),
+            (1917312..1917894),
+            (1917894..1918476),
+            (1918476..1919025),
+            (1919025..1919565),
+            (1919565..1920115),
+            (1920115..1920665),
+            (1920665..1921214),
+            (1921214..1921754),
+            (1921754..1922303),
+        ],
+        &[
+            (1943542..1944118),
+            (1944118..1944696),
+            (1944696..1945279),
+            (1945279..1946175),
+        ],
+        &[
+            (1959605..1960193),
+            (1960193..1960648),
+            (1960648..1961227),
+            (1961227..1961806),
+            (1961806..1962385),
+        ],
+        &[
+            (1979580..1980161),
+            (1980161..1980741),
+            (1980741..1981331),
+            (1981331..1981912),
+            (1981912..1982494),
+            (1982494..1983076),
+            (1983076..1983656),
+            (1983656..1984246),
+        ],
+        &[
+            (2000493..2001077),
+            (2001077..2001660),
+            (2001660..2002243),
+            (2002243..2002828),
+        ],
+        &[
+            (2015403..2015976),
+            (2015976..2016556),
+            (2016556..2017225),
+            (2017225..2017896),
+        ],
+        &[
+            (2033426..2034004),
+            (2034004..2034587),
+            (2034587..2035170),
+            (2035170..2035755),
+            (2035755..2036338),
+            (2036338..2036932),
+            (2036932..2037510),
+        ],
+        &[(2051809..2052387), (2052387..2052964), (2052964..2053551)],
+        &[
+            (2066522..2067104),
+            (2067104..2067801),
+            (2067801..2068497),
+            (2068497..2069193),
+            (2069193..2069785),
+        ],
+        &[
+            (2095528..2096111),
+            (2096111..2099931),
+            (2099931..2103762),
+            (2103762..2104359),
+            (2104359..2104941),
+            (2104941..2105524),
+            (2105524..2106106),
+            (2106106..2106886),
+            (2106886..2107664),
+        ],
         &[
-            (2123421..2123881),
-            (2123881..2124775),
-            (2124775..2125678),
-            (2125678..2126259),
-            (2126259..2126991),
-            (2126991..2127695),
-            (2127695..2128415),
-            (2128415..2129117),
-            (2129117..2129821),
-            (2129821..2130403),
-        ],
-        &[
-            (2155616..2156199),
-            (2156199..2156798),
-            (2156798..2157350),
-            (2157350..2157811),
-            (2157811..2158353),
-            (2158353..2158904),
-            (2158904..2159494),
-            (2159494..2159961),
-            (2159961..2160428),
-            (2160428..2161006),
-        ],
-        &[
-            (2187858..2188441),
-            (2188441..2189035),
-            (2189035..2189805),
-            (2189805..2190587),
-            (2190587..2191303),
-            (2191303..2191881),
-            (2191881..2192458),
-            (2192458..2193042),
-            (2193042..2193620),
-            (2193620..2194198),
-            (2194198..2194779),
-            (2194779..2195202),
-            (2195202..2195624),
-        ],
-        &[(2213630..2214210)],
-        &[
-            (2225487..2226194),
-            (2226194..2226782),
-            (2226782..2227368),
-            (2227368..2228443),
-            (2228443..2229152),
-        ],
-        &[
-            (2245874..2246454),
-            (2246454..2246921),
-            (2246921..2247504),
-            (2247504..2248252),
-            (2248252..2248997),
-            (2248997..2249741),
-        ],
-        &[(2266519..2266987), (2266987..2270923), (2270923..2271509)],
-        &[
-            (2289295..2289877),
-            (2289877..2290458),
-            (2290458..2291039),
-            (2291039..2291623),
-            (2291623..2292203),
-            (2292203..2292794),
-            (2292794..2293386),
-        ],
-        &[
-            (2318061..2318639),
-            (2318639..2319215),
-            (2319215..2319792),
-            (2319792..2320367),
-            (2320367..2320944),
-            (2320944..2321521),
-            (2321521..2322098),
-            (2322098..2322675),
-            (2322675..2323251),
-            (2323251..2323828),
-            (2323828..2324405),
-            (2324405..2324983),
-            (2324983..2325560),
-        ],
-        &[
-            (2348668..2349247),
-            (2349247..2349826),
-            (2349826..2350405),
-            (2350405..2350984),
-            (2350984..2351563),
-            (2351563..2352143),
-        ],
-        &[
-            (2368931..2369494),
-            (2369494..2370074),
-            (2370074..2370653),
-            (2370653..2371233),
-            (2371233..2372010),
-            (2372010..2372784),
-        ],
-        &[
-            (2392533..2393116),
-            (2393116..2393698),
-            (2393698..2394281),
-            (2394281..2394864),
-            (2394864..2395445),
-            (2395445..2396031),
-            (2396031..2396614),
-            (2396614..2397197),
-            (2397197..2397781),
-        ],
-        &[
-            (2417557..2418137),
-            (2418137..2418720),
-            (2418720..2419303),
-            (2419303..2419886),
-            (2419886..2420470),
-            (2420470..2421063),
-        ],
-        &[
-            (2437988..2439100),
-            (2439100..2440198),
-            (2440198..2441296),
-            (2441296..2442392),
-            (2442392..2442854),
-        ],
-        &[
-            (2460881..2461468),
-            (2461468..2462055),
-            (2462055..2462630),
-            (2462630..2463204),
-            (2463204..2463780),
-            (2463780..2464354),
-            (2464354..2464929),
-        ],
-        &[
-            (2481128..2481707),
-            (2481707..2482167),
-            (2482167..2482756),
-            (2482756..2483337),
-            (2483337..2483916),
-        ],
-        &[
-            (2504241..2504943),
-            (2504943..2505402),
-            (2505402..2505990),
-            (2505990..2506568),
-            (2506568..2507175),
-            (2507175..2507768),
-            (2507768..2508346),
-            (2508346..2508926),
-            (2508926..2509505),
-            (2509505..2510085),
-            (2510085..2510672),
-        ],
-        &[
-            (2530775..2531347),
-            (2531347..2531804),
-            (2531804..2532375),
-            (2532375..2532954),
-            (2532954..2533501),
-        ],
-        &[
-            (2547552..2548135),
-            (2548135..2548719),
-            (2548719..2549301),
-            (2549301..2549883),
-            (2549883..2550476),
-        ],
-        &[
-            (2569627..2570206),
-            (2570206..2570662),
-            (2570662..2571119),
-            (2571119..2571576),
-            (2571576..2572034),
-            (2572034..2572652),
-            (2572652..2573268),
-            (2573268..2573972),
-            (2573972..2574551),
-            (2574551..2575140),
-        ],
-        &[
-            (2600304..2601005),
-            (2601005..2601708),
-            (2601708..2602406),
-            (2602406..2603109),
-            (2603109..2603687),
-            (2603687..2604266),
-            (2604266..2605205),
-            (2605205..2605782),
-            (2605782..2606373),
-            (2606373..2606957),
-        ],
-        &[
-            (2632514..2632972),
-            (2632972..2633545),
-            (2633545..2634243),
-            (2634243..2634817),
-            (2634817..2635516),
-            (2635516..2636096),
-            (2636096..2636671),
-            (2636671..2637246),
-            (2637246..2637831),
-            (2637831..2638407),
-        ],
-        &[(2654631..2655206), (2655206..2655778)],
-        &[
-            (2668456..2669033),
-            (2669033..2669613),
-            (2669613..2670278),
-            (2670278..2670854),
-            (2670854..2671441),
-            (2671441..2672111),
-        ],
-        &[(2685814..2686697), (2686697..2687272), (2687272..2687732)],
-        &[(2698095..2698675), (2698675..2699255), (2699255..2699803)],
-        &[(2710088..2710667), (2710667..2711248), (2711248..2711830)],
-        &[
-            (2725465..2726080),
-            (2726080..2726695),
-            (2726695..2727120),
-            (2727120..2727697),
-            (2727697..2728273),
-            (2728273..2729158),
-        ],
-        &[
-            (2744764..2745343),
-            (2745343..2745922),
-            (2745922..2746698),
-            (2746698..2747278),
-            (2747278..2747857),
-        ],
-        &[(2759281..2759862), (2759862..2760444)],
-        &[
-            (2778467..2779045),
-            (2779045..2779621),
-            (2779621..2780214),
-            (2780214..2780806),
-            (2780806..2781399),
-            (2781399..2781977),
-            (2781977..2782555),
-            (2782555..2783134),
-            (2783134..2783713),
-            (2783713..2784424),
-            (2784424..2785136),
-        ],
-        &[(2803918..2804655), (2804655..2805236), (2805236..2805812)],
-        &[(2816689..2817449), (2817449..2818209), (2818209..2818782)],
-        &[
-            (2855693..2856602),
-            (2856602..2857508),
-            (2857508..2858417),
-            (2858417..2859327),
-            (2859327..2860226),
-            (2860226..2861122),
-            (2861122..2862034),
-            (2862034..2862940),
-            (2862940..2863841),
-            (2863841..2864754),
-            (2864754..2865665),
-            (2865665..2866574),
-            (2866574..2867487),
-            (2867487..2868400),
-            (2868400..2869314),
-            (2869314..2870227),
-            (2870227..2870808),
-            (2870808..2871387),
-            (2871387..2871971),
-            (2871971..2872552),
-            (2872552..2873134),
-            (2873134..2873721),
-            (2873721..2874313),
-        ],
-        &[
-            (2910867..2911567),
-            (2911567..2912266),
-            (2912266..2912965),
-            (2912965..2913426),
-        ],
-        &[
-            (2929949..2930529),
-            (2930529..2931104),
-            (2931104..2931678),
-            (2931678..2932254),
-            (2932254..2932803),
-            (2932803..2933343),
-            (2933343..2933892),
-            (2933892..2934439),
-        ],
-        &[
-            (2954068..2954651),
-            (2954651..2955353),
-            (2955353..2956064),
-            (2956064..2956775),
-            (2956775..2957356),
-            (2957356..2957947),
-            (2957947..2958539),
-        ],
-        &[(2973466..2974000), (2974000..2974575), (2974575..2975283)],
-        &[
-            (2987859..2988443),
-            (2988443..2989043),
-            (2989043..2989627),
-            (2989627..2990212),
-            (2990212..2990805),
-        ],
-        &[
-            (3008024..3009065),
-            (3009065..3010102),
-            (3010102..3010787),
-            (3010787..3011366),
-            (3011366..3012261),
-            (3012261..3013150),
-        ],
-        &[
-            (3036452..3037027),
-            (3037027..3037484),
-            (3037484..3038065),
-            (3038065..3038646),
-            (3038646..3039225),
-            (3039225..3039806),
-            (3039806..3040507),
-            (3040507..3041204),
-            (3041204..3041752),
-            (3041752..3042291),
-            (3042291..3042871),
-        ],
-        &[
-            (3078759..3079217),
-            (3079217..3083328),
-            (3083328..3087443),
-            (3087443..3091559),
-            (3091559..3095679),
-            (3095679..3096258),
-        ],
-        &[
-            (3130322..3130953),
-            (3130953..3131520),
-            (3131520..3132096),
-            (3132096..3132795),
-            (3132795..3136571),
-            (3136571..3137152),
-        ],
-        &[
-            (3155163..3155746),
-            (3155746..3156331),
-            (3156331..3156913),
-            (3156913..3157808),
-        ],
-        &[
-            (3178861..3179322),
-            (3179322..3180085),
-            (3180085..3180848),
-            (3180848..3181613),
-            (3181613..3182395),
-            (3182395..3183160),
-            (3183160..3183927),
-            (3183927..3184632),
-            (3184632..3185212),
-            (3185212..3185746),
-            (3185746..3186280),
-        ],
-        &[
-            (3210177..3210874),
-            (3210874..3211573),
-            (3211573..3212270),
-            (3212270..3212884),
-            (3212884..3213500),
-            (3213500..3214116),
-            (3214116..3214732),
-        ],
-        &[
-            (3233770..3234436),
-            (3234436..3234897),
-            (3234897..3235361),
-            (3235361..3236027),
-            (3236027..3236609),
-            (3236609..3237273),
-            (3237273..3237854),
-        ],
-        &[
-            (3258993..3259570),
-            (3259570..3260149),
-            (3260149..3260858),
-            (3260858..3261435),
-            (3261435..3262135),
-            (3262135..3262717),
-            (3262717..3263297),
-            (3263297..3264007),
-            (3264007..3264714),
-        ],
-        &[
-            (3283082..3284177),
-            (3284177..3285269),
-            (3285269..3285725),
-            (3285725..3286305),
-        ],
-        &[(3298235..3298817), (3298817..3299398), (3299398..3299979)],
-        &[
-            (3314518..3315102),
-            (3315102..3315683),
-            (3315683..3316263),
-            (3316263..3316843),
-            (3316843..3317427),
-            (3317427..3318007),
-            (3318007..3318589),
-        ],
-        &[
-            (3335949..3336529),
-            (3336529..3337108),
-            (3337108..3337688),
-            (3337688..3338268),
-            (3338268..3338849),
-            (3338849..3339429),
-        ],
-        &[
-            (3358146..3358728),
-            (3358728..3359310),
-            (3359310..3360081),
-            (3360081..3360854),
-            (3360854..3361435),
-            (3361435..3362016),
-            (3362016..3362607),
-            (3362607..3363198),
-        ],
-        &[(3378723..3379307), (3379307..3379773), (3379773..3380238)],
-        &[
-            (3394318..3394904),
-            (3394904..3395485),
-            (3395485..3396071),
-            (3396071..3396657),
-            (3396657..3397239),
-            (3397239..3397824),
-            (3397824..3398406),
-        ],
-        &[
-            (3416823..3417400),
-            (3417400..3417973),
-            (3417973..3418548),
-            (3418548..3419123),
-            (3419123..3419698),
-            (3419698..3420271),
-            (3420271..3420844),
-        ],
-        &[(3433168..3433868)],
-        &[
-            (3448538..3449118),
-            (3449118..3449698),
-            (3449698..3450236),
-            (3450236..3450775),
-            (3450775..3451370),
-            (3451370..3451920),
-            (3451920..3452470),
-            (3452470..3453066),
-            (3453066..3453647),
-        ],
-        &[
-            (3471854..3472435),
-            (3472435..3473016),
-            (3473016..3473748),
-            (3473748..3474286),
-            (3474286..3474875),
-        ],
-        &[
-            (3492311..3493009),
-            (3493009..3493709),
-            (3493709..3494293),
-            (3494293..3494999),
-            (3494999..3495699),
-            (3495699..3496397),
-            (3496397..3497104),
-        ],
-        &[
-            (3516034..3516810),
-            (3516810..3517272),
-            (3517272..3517731),
-            (3517731..3518508),
-            (3518508..3519287),
-            (3519287..3520067),
-        ],
-        &[
-            (3534522..3534991),
-            (3534991..3535453),
-            (3535453..3535915),
-            (3535915..3536615),
-        ],
-        &[
-            (3550318..3551022),
-            (3551022..3551726),
-            (3551726..3552434),
-            (3552434..3553140),
-            (3553140..3553843),
-        ],
-        &[
-            (3568994..3569453),
-            (3569453..3570151),
-            (3570151..3570851),
-            (3570851..3571427),
-            (3571427..3571886),
-        ],
-        &[
-            (3586573..3587342),
-            (3587342..3588111),
-            (3588111..3588685),
-            (3588685..3589264),
-            (3589264..3589843),
-        ],
-        &[
-            (3603663..3604252),
-            (3604252..3604901),
-            (3604901..3605474),
-            (3605474..3606059),
-        ],
-        &[
-            (3629504..3630263),
-            (3630263..3631029),
-            (3631029..3631795),
-            (3631795..3632561),
-            (3632561..3633176),
-            (3633176..3633791),
-            (3633791..3634569),
-            (3634569..3635347),
-            (3635347..3636125),
-            (3636125..3636903),
-            (3636903..3637483),
-            (3637483..3638058),
-            (3638058..3638637),
-        ],
-        &[
-            (3665459..3666194),
-            (3666194..3666653),
-            (3666653..3667270),
-            (3667270..3667728),
-            (3667728..3668303),
-            (3668303..3668883),
-            (3668883..3669463),
-            (3669463..3669921),
-        ],
-        &[
-            (3686567..3687334),
-            (3687334..3688099),
-            (3688099..3688874),
-            (3688874..3689649),
-        ],
-        &[
-            (3705976..3706557),
-            (3706557..3707138),
-            (3707138..3707720),
-            (3707720..3708302),
-            (3708302..3708883),
-            (3708883..3709480),
-            (3709480..3710072),
-        ],
-        &[
-            (3727556..3728134),
-            (3728134..3728712),
-            (3728712..3729476),
-            (3729476..3730054),
-            (3730054..3730633),
-            (3730633..3731212),
-        ],
-        &[
-            (3747089..3747661),
-            (3747661..3748233),
-            (3748233..3749001),
-            (3749001..3749707),
-            (3749707..3750280),
-        ],
-        &[
-            (3765070..3765650),
-            (3765650..3766265),
-            (3766265..3766721),
-            (3766721..3767299),
-            (3767299..3768067),
-        ],
-        &[
-            (3786776..3787357),
-            (3787357..3788058),
-            (3788058..3788759),
-            (3788759..3789340),
-            (3789340..3789930),
-            (3789930..3790511),
-            (3790511..3791092),
-            (3791092..3791674),
-            (3791674..3792265),
-        ],
-        &[
-            (3813176..3813759),
-            (3813759..3814352),
-            (3814352..3814941),
-            (3814941..3815524),
-            (3815524..3816227),
-            (3816227..3816932),
-            (3816932..3817516),
-        ],
-        &[
-            (3834854..3835441),
-            (3835441..3836155),
-            (3836155..3837048),
-            (3837048..3837632),
-            (3837632..3838343),
-        ],
-        &[
-            (3852661..3853522),
-            (3853522..3854233),
-            (3854233..3854696),
-            (3854696..3855234),
-        ],
-        &[
-            (3870916..3871491),
-            (3871491..3872064),
-            (3872064..3872641),
-            (3872641..3873216),
-            (3873216..3873794),
-            (3873794..3874369),
-            (3874369..3874952),
-        ],
-        &[
-            (3893578..3894159),
-            (3894159..3894741),
-            (3894741..3895340),
-            (3895340..3895922),
-            (3895922..3896503),
-            (3896503..3897094),
-            (3897094..3897871),
-        ],
-        &[
-            (3918080..3918616),
-            (3918616..3919152),
-            (3919152..3919736),
-            (3919736..3920318),
-            (3920318..3921023),
-            (3921023..3921728),
-            (3921728..3922310),
-            (3922310..3923141),
-        ],
-        &[
-            (3942655..3943236),
-            (3943236..3943933),
-            (3943933..3944645),
-            (3944645..3945342),
-            (3945342..3946048),
-            (3946048..3946624),
-        ],
-        &[
-            (3966042..3966589),
-            (3966589..3967325),
-            (3967325..3968061),
-            (3968061..3968796),
-            (3968796..3969357),
-            (3969357..3969891),
-            (3969891..3970425),
-            (3970425..3970959),
-        ],
-        &[
-            (3987672..3988253),
-            (3988253..3988832),
-            (3988832..3989610),
-            (3989610..3990189),
-        ],
-        &[
-            (4007859..4008398),
-            (4008398..4008940),
-            (4008940..4009480),
-            (4009480..4010018),
-            (4010018..4010557),
-            (4010557..4011256),
-            (4011256..4011959),
-            (4011959..4012657),
-            (4012657..4013084),
-        ],
-        &[
-            (4032304..4032884),
-            (4032884..4033464),
-            (4033464..4034043),
-            (4034043..4034624),
-            (4034624..4035210),
-            (4035210..4035791),
-        ],
-        &[
-            (4056097..4056951),
-            (4056951..4057800),
-            (4057800..4058529),
-            (4058529..4059105),
-            (4059105..4059679),
-            (4059679..4060255),
-            (4060255..4060875),
-            (4060875..4061452),
-            (4061452..4062036),
-        ],
-        &[
-            (4084763..4085461),
-            (4085461..4086159),
-            (4086159..4086616),
-            (4086616..4087541),
-            (4087541..4088119),
-            (4088119..4088697),
-            (4088697..4089275),
-            (4089275..4089861),
-        ],
-        &[
-            (4106780..4107351),
-            (4107351..4107924),
-            (4107924..4108497),
-            (4108497..4109174),
-        ],
-        &[
-            (4124294..4125065),
-            (4125065..4125826),
-            (4125826..4126537),
-            (4126537..4127232),
-            (4127232..4127693),
-            (4127693..4128388),
-        ],
-        &[
-            (4147167..4147933),
-            (4147933..4148513),
-            (4148513..4149287),
-            (4149287..4150060),
-            (4150060..4150826),
-            (4150826..4151414),
-            (4151414..4151996),
-        ],
-        &[(4164943..4165524)],
-        &[
-            (4183346..4186657),
-            (4186657..4189944),
-            (4189944..4190523),
-            (4190523..4191102),
-            (4191102..4191681),
-            (4191681..4192260),
-            (4192260..4192838),
-        ],
-        &[(4212703..4213283), (4213283..4213862), (4213862..4214451)],
+            (2138983..2139442),
+            (2139442..2140335),
+            (2140335..2141237),
+            (2141237..2141817),
+            (2141817..2142548),
+            (2142548..2143251),
+            (2143251..2143970),
+            (2143970..2144671),
+            (2144671..2145374),
+            (2145374..2145955),
+        ],
+        &[
+            (2171148..2171730),
+            (2171730..2172328),
+            (2172328..2172879),
+            (2172879..2173339),
+            (2173339..2173880),
+            (2173880..2174430),
+            (2174430..2175019),
+            (2175019..2175485),
+            (2175485..2175951),
+            (2175951..2176528),
+        ],
+        &[
+            (2203357..2203939),
+            (2203939..2204532),
+            (2204532..2205301),
+            (2205301..2206082),
+            (2206082..2206797),
+            (2206797..2207374),
+            (2207374..2207950),
+            (2207950..2208533),
+            (2208533..2209110),
+            (2209110..2209687),
+            (2209687..2210267),
+            (2210267..2210689),
+            (2210689..2211110),
+        ],
+        &[(2229102..2229681)],
+        &[
+            (2240952..2241658),
+            (2241658..2242245),
+            (2242245..2242830),
+            (2242830..2243904),
+            (2243904..2244612),
+        ],
+        &[
+            (2261323..2261902),
+            (2261902..2262368),
+            (2262368..2262950),
+            (2262950..2263697),
+            (2263697..2264441),
+            (2264441..2265184),
+        ],
+        &[(2281953..2282420), (2282420..2286355), (2286355..2286940)],
+        &[
+            (2304650..2305231),
+            (2305231..2305811),
+            (2305811..2306391),
+            (2306391..2306974),
+            (2306974..2307553),
+            (2307553..2308143),
+            (2308143..2308734),
+        ],
+        &[
+            (2333389..2333966),
+            (2333966..2334541),
+            (2334541..2335117),
+            (2335117..2335691),
+            (2335691..2336267),
+            (2336267..2336843),
+            (2336843..2337419),
+            (2337419..2337995),
+            (2337995..2338570),
+            (2338570..2339146),
+            (2339146..2339722),
+            (2339722..2340299),
+            (2340299..2340875),
+        ],
+        &[
+            (2363964..2364542),
+            (2364542..2365120),
+            (2365120..2365698),
+            (2365698..2366276),
+            (2366276..2366854),
+            (2366854..2367433),
+        ],
+        &[
+            (2384209..2384771),
+            (2384771..2385350),
+            (2385350..2385928),
+            (2385928..2386507),
+            (2386507..2387283),
+            (2387283..2388056),
+        ],
+        &[
+            (2407790..2408372),
+            (2408372..2408953),
+            (2408953..2409535),
+            (2409535..2410117),
+            (2410117..2410697),
+            (2410697..2411282),
+            (2411282..2411864),
+            (2411864..2412446),
+            (2412446..2413029),
+        ],
+        &[
+            (2432778..2433357),
+            (2433357..2433939),
+            (2433939..2434521),
+            (2434521..2435099),
+            (2435099..2435678),
+            (2435678..2436266),
+        ],
+        &[
+            (2454046..2455157),
+            (2455157..2456254),
+            (2456254..2457351),
+            (2457351..2458446),
+            (2458446..2458907),
+        ],
+        &[
+            (2476658..2477244),
+            (2477244..2477830),
+            (2477830..2478404),
+            (2478404..2478977),
+            (2478977..2479552),
+            (2479552..2480125),
+            (2480125..2480699),
+        ],
+        &[
+            (2496886..2497464),
+            (2497464..2497923),
+            (2497923..2498511),
+            (2498511..2499091),
+            (2499091..2499669),
+        ],
+        &[
+            (2519978..2520679),
+            (2520679..2521137),
+            (2521137..2521724),
+            (2521724..2522301),
+            (2522301..2522907),
+            (2522907..2523499),
+            (2523499..2524076),
+            (2524076..2524655),
+            (2524655..2525233),
+            (2525233..2525812),
+            (2525812..2526398),
+        ],
+        &[
+            (2546485..2547056),
+            (2547056..2547512),
+            (2547512..2548082),
+            (2548082..2548660),
+            (2548660..2549206),
+        ],
+        &[
+            (2563247..2563829),
+            (2563829..2564412),
+            (2564412..2564993),
+            (2564993..2565574),
+            (2565574..2566166),
+        ],
+        &[
+            (2585216..2585794),
+            (2585794..2586249),
+            (2586249..2586705),
+            (2586705..2587161),
+            (2587161..2587618),
+            (2587618..2588235),
+            (2588235..2588850),
+            (2588850..2589553),
+            (2589553..2590131),
+            (2590131..2590719),
+        ],
+        &[
+            (2615863..2616563),
+            (2616563..2617265),
+            (2617265..2617962),
+            (2617962..2618664),
+            (2618664..2619241),
+            (2619241..2619819),
+            (2619819..2620757),
+            (2620757..2621333),
+            (2621333..2621923),
+            (2621923..2622506),
+        ],
+        &[
+            (2648043..2648500),
+            (2648500..2649072),
+            (2649072..2649769),
+            (2649769..2650342),
+            (2650342..2651040),
+            (2651040..2651619),
+            (2651619..2652193),
+            (2652193..2652767),
+            (2652767..2653351),
+            (2653351..2653926),
+        ],
+        &[(2670138..2670712), (2670712..2671283)],
+        &[
+            (2683953..2684529),
+            (2684529..2685108),
+            (2685108..2685772),
+            (2685772..2686347),
+            (2686347..2686933),
+            (2686933..2687602),
+        ],
+        &[(2701210..2702092), (2702092..2702666), (2702666..2703125)],
+        &[(2713482..2714061), (2714061..2714640), (2714640..2715187)],
+        &[(2725466..2726044), (2726044..2726624), (2726624..2727205)],
+        &[
+            (2740831..2741445),
+            (2741445..2742059),
+            (2742059..2742483),
+            (2742483..2743059),
+            (2743059..2743634),
+            (2743634..2744518),
+        ],
+        &[
+            (2760113..2760691),
+            (2760691..2761269),
+            (2761269..2762044),
+            (2762044..2762623),
+            (2762623..2763201),
+        ],
+        &[(2774618..2775198), (2775198..2775779)],
+        &[
+            (2793789..2794366),
+            (2794366..2794941),
+            (2794941..2795533),
+            (2795533..2796124),
+            (2796124..2796716),
+            (2796716..2797293),
+            (2797293..2797870),
+            (2797870..2798448),
+            (2798448..2799026),
+            (2799026..2799736),
+            (2799736..2800447),
+        ],
+        &[(2819215..2819951), (2819951..2820531), (2820531..2821106)],
+        &[(2831977..2832736), (2832736..2833495), (2833495..2834067)],
+        &[
+            (2870952..2871860),
+            (2871860..2872765),
+            (2872765..2873673),
+            (2873673..2874582),
+            (2874582..2875480),
+            (2875480..2876375),
+            (2876375..2877286),
+            (2877286..2878191),
+            (2878191..2879091),
+            (2879091..2880003),
+            (2880003..2880913),
+            (2880913..2881821),
+            (2881821..2882733),
+            (2882733..2883645),
+            (2883645..2884558),
+            (2884558..2885470),
+            (2885470..2886050),
+            (2886050..2886628),
+            (2886628..2887211),
+            (2887211..2887791),
+            (2887791..2888372),
+            (2888372..2888958),
+            (2888958..2889549),
+        ],
+        &[
+            (2926076..2926775),
+            (2926775..2927473),
+            (2927473..2928171),
+            (2928171..2928631),
+        ],
+        &[
+            (2945142..2945721),
+            (2945721..2946295),
+            (2946295..2946868),
+            (2946868..2947443),
+            (2947443..2947991),
+            (2947991..2948530),
+            (2948530..2949078),
+            (2949078..2949624),
+        ],
+        &[
+            (2969238..2969820),
+            (2969820..2970521),
+            (2970521..2971231),
+            (2971231..2971941),
+            (2971941..2972521),
+            (2972521..2973111),
+            (2973111..2973702),
+        ],
+        &[(2988619..2989152), (2989152..2989726), (2989726..2990433)],
+        &[
+            (3003001..3003584),
+            (3003584..3004183),
+            (3004183..3004766),
+            (3004766..3005350),
+            (3005350..3005942),
+        ],
+        &[
+            (3023150..3024190),
+            (3024190..3025226),
+            (3025226..3025910),
+            (3025910..3026488),
+            (3026488..3027382),
+            (3027382..3028270),
+        ],
+        &[
+            (3051555..3052129),
+            (3052129..3052585),
+            (3052585..3053165),
+            (3053165..3053745),
+            (3053745..3054323),
+            (3054323..3054903),
+            (3054903..3055603),
+            (3055603..3056299),
+            (3056299..3056846),
+            (3056846..3057384),
+            (3057384..3057963),
+        ],
+        &[
+            (3093834..3094291),
+            (3094291..3098401),
+            (3098401..3102515),
+            (3102515..3106630),
+            (3106630..3110749),
+            (3110749..3111327),
+        ],
+        &[
+            (3145115..3145745),
+            (3145745..3146311),
+            (3146311..3146886),
+            (3146886..3147584),
+            (3147584..3151359),
+            (3151359..3151939),
+        ],
+        &[
+            (3169874..3170456),
+            (3170456..3171040),
+            (3171040..3171621),
+            (3171621..3172515),
+        ],
+        &[
+            (3193553..3194013),
+            (3194013..3194775),
+            (3194775..3195537),
+            (3195537..3196301),
+            (3196301..3197082),
+            (3197082..3197846),
+            (3197846..3198612),
+            (3198612..3199316),
+            (3199316..3199895),
+            (3199895..3200428),
+            (3200428..3200961),
+        ],
+        &[
+            (3224840..3225536),
+            (3225536..3226234),
+            (3226234..3226930),
+            (3226930..3227543),
+            (3227543..3228158),
+            (3228158..3228773),
+            (3228773..3229388),
+        ],
+        &[
+            (3248412..3249077),
+            (3249077..3249537),
+            (3249537..3250000),
+            (3250000..3250665),
+            (3250665..3251246),
+            (3251246..3251909),
+            (3251909..3252489),
+        ],
+        &[
+            (3273612..3274188),
+            (3274188..3274766),
+            (3274766..3275474),
+            (3275474..3276050),
+            (3276050..3276749),
+            (3276749..3277330),
+            (3277330..3277909),
+            (3277909..3278618),
+            (3278618..3279324),
+        ],
+        &[
+            (3297593..3298687),
+            (3298687..3299778),
+            (3299778..3300233),
+            (3300233..3300812),
+        ],
+        &[(3312603..3313184), (3313184..3313764), (3313764..3314344)],
+        &[
+            (3328873..3329456),
+            (3329456..3330036),
+            (3330036..3330615),
+            (3330615..3331194),
+            (3331194..3331777),
+            (3331777..3332356),
+            (3332356..3332937),
+        ],
+        &[
+            (3350284..3350863),
+            (3350863..3351441),
+            (3351441..3352020),
+            (3352020..3352599),
+            (3352599..3353179),
+            (3353179..3353758),
+        ],
+        &[
+            (3372461..3373042),
+            (3373042..3373623),
+            (3373623..3374393),
+            (3374393..3375165),
+            (3375165..3375745),
+            (3375745..3376325),
+            (3376325..3376915),
+            (3376915..3377505),
+        ],
+        &[(3393019..3393602), (3393602..3394067), (3394067..3394531)],
+        &[
+            (3408601..3409186),
+            (3409186..3409766),
+            (3409766..3410351),
+            (3410351..3410936),
+            (3410936..3411517),
+            (3411517..3412101),
+            (3412101..3412682),
+        ],
+        &[
+            (3431085..3431661),
+            (3431661..3432233),
+            (3432233..3432807),
+            (3432807..3433381),
+            (3433381..3433955),
+            (3433955..3434527),
+            (3434527..3435099),
+        ],
+        &[(3447415..3448114)],
+        &[
+            (3462774..3463353),
+            (3463353..3463932),
+            (3463932..3464469),
+            (3464469..3465007),
+            (3465007..3465601),
+            (3465601..3466150),
+            (3466150..3466699),
+            (3466699..3467294),
+            (3467294..3467874),
+        ],
+        &[
+            (3486067..3486647),
+            (3486647..3487227),
+            (3487227..3487958),
+            (3487958..3488495),
+            (3488495..3489083),
+        ],
+        &[
+            (3506507..3507204),
+            (3507204..3507903),
+            (3507903..3508486),
+            (3508486..3509191),
+            (3509191..3509890),
+            (3509890..3510587),
+            (3510587..3511293),
+        ],
+        &[
+            (3530210..3530985),
+            (3530985..3531446),
+            (3531446..3531904),
+            (3531904..3532680),
+            (3532680..3533458),
+            (3533458..3534237),
+        ],
+        &[
+            (3548682..3549150),
+            (3549150..3549611),
+            (3549611..3550072),
+            (3550072..3550771),
+        ],
+        &[
+            (3564465..3565168),
+            (3565168..3565871),
+            (3565871..3566578),
+            (3566578..3567283),
+            (3567283..3567985),
+        ],
+        &[
+            (3583126..3583584),
+            (3583584..3584281),
+            (3584281..3584980),
+            (3584980..3585555),
+            (3585555..3586013),
+        ],
+        &[
+            (3600690..3601458),
+            (3601458..3602226),
+            (3602226..3602799),
+            (3602799..3603377),
+            (3603377..3603955),
+        ],
+        &[
+            (3617766..3618354),
+            (3618354..3619002),
+            (3619002..3619574),
+            (3619574..3620158),
+        ],
+        &[
+            (3643586..3644344),
+            (3644344..3645109),
+            (3645109..3645874),
+            (3645874..3646639),
+            (3646639..3647253),
+            (3647253..3647867),
+            (3647867..3648644),
+            (3648644..3649421),
+            (3649421..3650198),
+            (3650198..3650975),
+            (3650975..3651554),
+            (3651554..3652128),
+            (3652128..3652706),
+        ],
+        &[
+            (3679507..3680241),
+            (3680241..3680699),
+            (3680699..3681315),
+            (3681315..3681772),
+            (3681772..3682346),
+            (3682346..3682925),
+            (3682925..3683504),
+            (3683504..3683961),
+        ],
+        &[
+            (3700595..3701361),
+            (3701361..3702125),
+            (3702125..3702899),
+            (3702899..3703673),
+        ],
+        &[
+            (3719989..3720569),
+            (3720569..3721149),
+            (3721149..3721730),
+            (3721730..3722311),
+            (3722311..3722891),
+            (3722891..3723487),
+            (3723487..3724078),
+        ],
+        &[
+            (3741549..3742126),
+            (3742126..3742703),
+            (3742703..3743466),
+            (3743466..3744043),
+            (3744043..3744621),
+            (3744621..3745199),
+        ],
+        &[
+            (3761065..3761636),
+            (3761636..3762207),
+            (3762207..3762974),
+            (3762974..3763679),
+            (3763679..3764251),
+        ],
+        &[
+            (3778945..3779524),
+            (3779524..3780138),
+            (3780138..3780593),
+            (3780593..3781170),
+            (3781170..3781937),
+        ],
+        &[
+            (3800632..3801212),
+            (3801212..3801912),
+            (3801912..3802612),
+            (3802612..3803192),
+            (3803192..3803781),
+            (3803781..3804361),
+            (3804361..3804941),
+            (3804941..3805522),
+            (3805522..3806112),
+        ],
+        &[
+            (3827007..3827589),
+            (3827589..3828181),
+            (3828181..3828769),
+            (3828769..3829351),
+            (3829351..3830053),
+            (3830053..3830757),
+            (3830757..3831340),
+        ],
+        &[
+            (3848666..3849252),
+            (3849252..3849965),
+            (3849965..3850857),
+            (3850857..3851440),
+            (3851440..3852150),
+        ],
+        &[
+            (3866459..3867319),
+            (3867319..3868029),
+            (3868029..3868491),
+            (3868491..3869028),
+        ],
+        &[
+            (3884699..3885273),
+            (3885273..3885845),
+            (3885845..3886421),
+            (3886421..3886995),
+            (3886995..3887572),
+            (3887572..3888146),
+            (3888146..3888728),
+        ],
+        &[
+            (3907340..3907920),
+            (3907920..3908501),
+            (3908501..3909099),
+            (3909099..3909680),
+            (3909680..3910260),
+            (3910260..3910850),
+            (3910850..3911626),
+        ],
+        &[
+            (3931820..3932355),
+            (3932355..3932890),
+            (3932890..3933473),
+            (3933473..3934054),
+            (3934054..3934758),
+            (3934758..3935462),
+            (3935462..3936043),
+            (3936043..3936873),
+        ],
+        &[
+            (3956373..3956953),
+            (3956953..3957649),
+            (3957649..3958360),
+            (3958360..3959056),
+            (3959056..3959761),
+            (3959761..3960336),
+        ],
+        &[
+            (3979740..3980286),
+            (3980286..3981021),
+            (3981021..3981756),
+            (3981756..3982490),
+            (3982490..3983050),
+            (3983050..3983583),
+            (3983583..3984116),
+            (3984116..3984649),
+        ],
+        &[
+            (4001350..4001930),
+            (4001930..4002508),
+            (4002508..4003285),
+            (4003285..4003863),
+        ],
+        &[
+            (4021520..4022058),
+            (4022058..4022599),
+            (4022599..4023138),
+            (4023138..4023675),
+            (4023675..4024213),
+            (4024213..4024911),
+            (4024911..4025613),
+            (4025613..4026310),
+            (4026310..4026736),
+        ],
+        &[
+            (4045941..4046520),
+            (4046520..4047099),
+            (4047099..4047677),
+            (4047677..4048257),
+            (4048257..4048842),
+            (4048842..4049422),
+        ],
+        &[
+            (4069713..4070566),
+            (4070566..4071414),
+            (4071414..4072142),
+            (4072142..4072717),
+            (4072717..4073290),
+            (4073290..4073865),
+            (4073865..4074484),
+            (4074484..4075060),
+            (4075060..4075643),
+        ],
+        &[
+            (4098353..4099050),
+            (4099050..4099747),
+            (4099747..4100203),
+            (4100203..4101127),
+            (4101127..4101704),
+            (4101704..4102281),
+            (4102281..4102858),
+            (4102858..4103443),
+        ],
+        &[
+            (4120350..4120920),
+            (4120920..4121492),
+            (4121492..4122064),
+            (4122064..4122740),
+        ],
+        &[
+            (4137850..4138620),
+            (4138620..4139380),
+            (4139380..4140090),
+            (4140090..4140784),
+            (4140784..4141244),
+            (4141244..4141938),
+        ],
+        &[
+            (4160704..4161469),
+            (4161469..4162048),
+            (4162048..4162821),
+            (4162821..4163593),
+            (4163593..4164358),
+            (4164358..4164945),
+            (4164945..4165526),
+        ],
+        &[(4178465..4179045)],
+        &[
+            (4196859..4200169),
+            (4200169..4203455),
+            (4203455..4204033),
+            (4204033..4204611),
+            (4204611..4205189),
+            (4205189..4205767),
+            (4205767..4206344),
+        ],
+        &[(4226067..4226646), (4226646..4227224), (4227224..4227812)],
     ];
     pub static ABILITY_IDENTS_INDEX: [&[Range<usize>]; ChampionId::VARIANTS] = [
         &[
@@ -39657,1553 +39491,1553 @@ pub mod champions {
     pub const fn ability_const_eval(ctx: &Ctx, champion_id: ChampionId, kind: AbilityId) -> f32 {
         match champion_id {
             ChampionId::Aatrox => match kind {
-                AbilityId::P(AbilityName::Void) => aatrox_p_void(ctx),
-                AbilityId::Q(AbilityName::Min) => aatrox_q_min(ctx),
-                AbilityId::Q(AbilityName::_1Min) => aatrox_q_1min(ctx),
-                AbilityId::Q(AbilityName::_2Min) => aatrox_q_2min(ctx),
-                AbilityId::Q(AbilityName::_3Min) => aatrox_q_3min(ctx),
-                AbilityId::Q(AbilityName::Max) => aatrox_q_max(ctx),
-                AbilityId::Q(AbilityName::_1Max) => aatrox_q_1max(ctx),
-                AbilityId::Q(AbilityName::_2Max) => aatrox_q_2max(ctx),
-                AbilityId::Q(AbilityName::_3Max) => aatrox_q_3max(ctx),
-                AbilityId::W(AbilityName::Min) => aatrox_w_min(ctx),
-                AbilityId::W(AbilityName::Max) => aatrox_w_max(ctx),
+                AbilityId::P(AbilityName::Void) => aatrox_p(ctx),
+                AbilityId::Q(AbilityName::Min) => aatrox_qmin(ctx),
+                AbilityId::Q(AbilityName::_1Min) => aatrox_q1min(ctx),
+                AbilityId::Q(AbilityName::_2Min) => aatrox_q2min(ctx),
+                AbilityId::Q(AbilityName::_3Min) => aatrox_q3min(ctx),
+                AbilityId::Q(AbilityName::Max) => aatrox_qmax(ctx),
+                AbilityId::Q(AbilityName::_1Max) => aatrox_q1max(ctx),
+                AbilityId::Q(AbilityName::_2Max) => aatrox_q2max(ctx),
+                AbilityId::Q(AbilityName::_3Max) => aatrox_q3max(ctx),
+                AbilityId::W(AbilityName::Min) => aatrox_wmin(ctx),
+                AbilityId::W(AbilityName::Max) => aatrox_wmax(ctx),
                 _ => panic!("Invalid AbilityId for 'Aatrox'"),
             },
             ChampionId::Ahri => match kind {
-                AbilityId::Q(AbilityName::Min) => ahri_q_min(ctx),
-                AbilityId::Q(AbilityName::Max) => ahri_q_max(ctx),
-                AbilityId::W(AbilityName::_1) => ahri_w_1(ctx),
-                AbilityId::W(AbilityName::Min) => ahri_w_min(ctx),
-                AbilityId::W(AbilityName::Max) => ahri_w_max(ctx),
-                AbilityId::E(AbilityName::Void) => ahri_e_void(ctx),
-                AbilityId::R(AbilityName::Min) => ahri_r_min(ctx),
-                AbilityId::R(AbilityName::Max) => ahri_r_max(ctx),
+                AbilityId::Q(AbilityName::Min) => ahri_qmin(ctx),
+                AbilityId::Q(AbilityName::Max) => ahri_qmax(ctx),
+                AbilityId::W(AbilityName::_1) => ahri_w1(ctx),
+                AbilityId::W(AbilityName::Min) => ahri_wmin(ctx),
+                AbilityId::W(AbilityName::Max) => ahri_wmax(ctx),
+                AbilityId::E(AbilityName::Void) => ahri_e(ctx),
+                AbilityId::R(AbilityName::Min) => ahri_rmin(ctx),
+                AbilityId::R(AbilityName::Max) => ahri_rmax(ctx),
                 _ => panic!("Invalid AbilityId for 'Ahri'"),
             },
             ChampionId::Akali => match kind {
-                AbilityId::P(AbilityName::Void) => akali_p_void(ctx),
-                AbilityId::Q(AbilityName::Void) => akali_q_void(ctx),
-                AbilityId::E(AbilityName::_1Min) => akali_e_1min(ctx),
-                AbilityId::E(AbilityName::Max) => akali_e_max(ctx),
-                AbilityId::E(AbilityName::_1Max) => akali_e_1max(ctx),
-                AbilityId::R(AbilityName::_1) => akali_r_1(ctx),
-                AbilityId::R(AbilityName::_2Min) => akali_r_2min(ctx),
-                AbilityId::R(AbilityName::_2Max) => akali_r_2max(ctx),
+                AbilityId::P(AbilityName::Void) => akali_p(ctx),
+                AbilityId::Q(AbilityName::Void) => akali_q(ctx),
+                AbilityId::E(AbilityName::_1Min) => akali_e1min(ctx),
+                AbilityId::E(AbilityName::Max) => akali_emax(ctx),
+                AbilityId::E(AbilityName::_1Max) => akali_e1max(ctx),
+                AbilityId::R(AbilityName::_1) => akali_r1(ctx),
+                AbilityId::R(AbilityName::_2Min) => akali_r2min(ctx),
+                AbilityId::R(AbilityName::_2Max) => akali_r2max(ctx),
                 _ => panic!("Invalid AbilityId for 'Akali'"),
             },
             ChampionId::Akshan => match kind {
-                AbilityId::P(AbilityName::Void) => akshan_p_void(ctx),
-                AbilityId::Q(AbilityName::Min) => akshan_q_min(ctx),
-                AbilityId::Q(AbilityName::Max) => akshan_q_max(ctx),
-                AbilityId::E(AbilityName::Void) => akshan_e_void(ctx),
-                AbilityId::R(AbilityName::_1Min) => akshan_r_1min(ctx),
-                AbilityId::R(AbilityName::_2Min) => akshan_r_2min(ctx),
-                AbilityId::R(AbilityName::_1Max) => akshan_r_1max(ctx),
-                AbilityId::R(AbilityName::_2Max) => akshan_r_2max(ctx),
+                AbilityId::P(AbilityName::Void) => akshan_p(ctx),
+                AbilityId::Q(AbilityName::Min) => akshan_qmin(ctx),
+                AbilityId::Q(AbilityName::Max) => akshan_qmax(ctx),
+                AbilityId::E(AbilityName::Void) => akshan_e(ctx),
+                AbilityId::R(AbilityName::_1Min) => akshan_r1min(ctx),
+                AbilityId::R(AbilityName::_2Min) => akshan_r2min(ctx),
+                AbilityId::R(AbilityName::_1Max) => akshan_r1max(ctx),
+                AbilityId::R(AbilityName::_2Max) => akshan_r2max(ctx),
                 _ => panic!("Invalid AbilityId for 'Akshan'"),
             },
             ChampionId::Alistar => match kind {
-                AbilityId::Q(AbilityName::Void) => alistar_q_void(ctx),
-                AbilityId::W(AbilityName::Void) => alistar_w_void(ctx),
-                AbilityId::E(AbilityName::Min) => alistar_e_min(ctx),
-                AbilityId::E(AbilityName::Max) => alistar_e_max(ctx),
+                AbilityId::Q(AbilityName::Void) => alistar_q(ctx),
+                AbilityId::W(AbilityName::Void) => alistar_w(ctx),
+                AbilityId::E(AbilityName::Min) => alistar_emin(ctx),
+                AbilityId::E(AbilityName::Max) => alistar_emax(ctx),
                 _ => panic!("Invalid AbilityId for 'Alistar'"),
             },
             ChampionId::Ambessa => match kind {
-                AbilityId::Q(AbilityName::_3) => ambessa_q_3(ctx),
-                AbilityId::Q(AbilityName::_4) => ambessa_q_4(ctx),
-                AbilityId::W(AbilityName::_1) => ambessa_w_1(ctx),
-                AbilityId::W(AbilityName::_2) => ambessa_w_2(ctx),
-                AbilityId::E(AbilityName::_1) => ambessa_e_1(ctx),
-                AbilityId::E(AbilityName::_2) => ambessa_e_2(ctx),
-                AbilityId::R(AbilityName::_1) => ambessa_r_1(ctx),
+                AbilityId::Q(AbilityName::_3) => ambessa_q3(ctx),
+                AbilityId::Q(AbilityName::_4) => ambessa_q4(ctx),
+                AbilityId::W(AbilityName::_1) => ambessa_w1(ctx),
+                AbilityId::W(AbilityName::_2) => ambessa_w2(ctx),
+                AbilityId::E(AbilityName::_1) => ambessa_e1(ctx),
+                AbilityId::E(AbilityName::_2) => ambessa_e2(ctx),
+                AbilityId::R(AbilityName::_1) => ambessa_r1(ctx),
                 _ => panic!("Invalid AbilityId for 'Ambessa'"),
             },
             ChampionId::Amumu => match kind {
-                AbilityId::Q(AbilityName::Void) => amumu_q_void(ctx),
-                AbilityId::W(AbilityName::Void) => amumu_w_void(ctx),
-                AbilityId::E(AbilityName::Void) => amumu_e_void(ctx),
-                AbilityId::R(AbilityName::Void) => amumu_r_void(ctx),
+                AbilityId::Q(AbilityName::Void) => amumu_q(ctx),
+                AbilityId::W(AbilityName::Void) => amumu_w(ctx),
+                AbilityId::E(AbilityName::Void) => amumu_e(ctx),
+                AbilityId::R(AbilityName::Void) => amumu_r(ctx),
                 _ => panic!("Invalid AbilityId for 'Amumu'"),
             },
             ChampionId::Anivia => match kind {
-                AbilityId::Q(AbilityName::_1) => anivia_q_1(ctx),
-                AbilityId::Q(AbilityName::_2) => anivia_q_2(ctx),
-                AbilityId::Q(AbilityName::_3) => anivia_q_3(ctx),
-                AbilityId::E(AbilityName::_1) => anivia_e_1(ctx),
-                AbilityId::E(AbilityName::_2) => anivia_e_2(ctx),
-                AbilityId::R(AbilityName::_1) => anivia_r_1(ctx),
-                AbilityId::R(AbilityName::_2) => anivia_r_2(ctx),
+                AbilityId::Q(AbilityName::_1) => anivia_q1(ctx),
+                AbilityId::Q(AbilityName::_2) => anivia_q2(ctx),
+                AbilityId::Q(AbilityName::_3) => anivia_q3(ctx),
+                AbilityId::E(AbilityName::_1) => anivia_e1(ctx),
+                AbilityId::E(AbilityName::_2) => anivia_e2(ctx),
+                AbilityId::R(AbilityName::_1) => anivia_r1(ctx),
+                AbilityId::R(AbilityName::_2) => anivia_r2(ctx),
                 _ => panic!("Invalid AbilityId for 'Anivia'"),
             },
             ChampionId::Annie => match kind {
-                AbilityId::Q(AbilityName::_1) => annie_q_1(ctx),
-                AbilityId::W(AbilityName::_1) => annie_w_1(ctx),
-                AbilityId::E(AbilityName::_1) => annie_e_1(ctx),
-                AbilityId::R(AbilityName::_1) => annie_r_1(ctx),
+                AbilityId::Q(AbilityName::_1) => annie_q1(ctx),
+                AbilityId::W(AbilityName::_1) => annie_w1(ctx),
+                AbilityId::E(AbilityName::_1) => annie_e1(ctx),
+                AbilityId::R(AbilityName::_1) => annie_r1(ctx),
                 _ => panic!("Invalid AbilityId for 'Annie'"),
             },
             ChampionId::Aphelios => match kind {
-                AbilityId::P(AbilityName::_1) => aphelios_p_1(ctx),
+                AbilityId::P(AbilityName::_1) => aphelios_p1(ctx),
                 _ => panic!("Invalid AbilityId for 'Aphelios'"),
             },
             ChampionId::Ashe => match kind {
-                AbilityId::Q(AbilityName::_1) => ashe_q_1(ctx),
-                AbilityId::Q(AbilityName::_2) => ashe_q_2(ctx),
-                AbilityId::W(AbilityName::_1) => ashe_w_1(ctx),
-                AbilityId::R(AbilityName::_1) => ashe_r_1(ctx),
+                AbilityId::Q(AbilityName::_1) => ashe_q1(ctx),
+                AbilityId::Q(AbilityName::_2) => ashe_q2(ctx),
+                AbilityId::W(AbilityName::_1) => ashe_w1(ctx),
+                AbilityId::R(AbilityName::_1) => ashe_r1(ctx),
                 _ => panic!("Invalid AbilityId for 'Ashe'"),
             },
             ChampionId::AurelionSol => match kind {
-                AbilityId::Q(AbilityName::_1) => aurelionsol_q_1(ctx),
-                AbilityId::Q(AbilityName::_2) => aurelionsol_q_2(ctx),
-                AbilityId::Q(AbilityName::_3) => aurelionsol_q_3(ctx),
-                AbilityId::Q(AbilityName::_4) => aurelionsol_q_4(ctx),
-                AbilityId::Q(AbilityName::_5) => aurelionsol_q_5(ctx),
-                AbilityId::Q(AbilityName::_6) => aurelionsol_q_6(ctx),
-                AbilityId::W(AbilityName::_1) => aurelionsol_w_1(ctx),
-                AbilityId::E(AbilityName::_1) => aurelionsol_e_1(ctx),
-                AbilityId::E(AbilityName::_2) => aurelionsol_e_2(ctx),
-                AbilityId::R(AbilityName::_2) => aurelionsol_r_2(ctx),
+                AbilityId::Q(AbilityName::_1) => aurelionsol_q1(ctx),
+                AbilityId::Q(AbilityName::_2) => aurelionsol_q2(ctx),
+                AbilityId::Q(AbilityName::_3) => aurelionsol_q3(ctx),
+                AbilityId::Q(AbilityName::_4) => aurelionsol_q4(ctx),
+                AbilityId::Q(AbilityName::_5) => aurelionsol_q5(ctx),
+                AbilityId::Q(AbilityName::_6) => aurelionsol_q6(ctx),
+                AbilityId::W(AbilityName::_1) => aurelionsol_w1(ctx),
+                AbilityId::E(AbilityName::_1) => aurelionsol_e1(ctx),
+                AbilityId::E(AbilityName::_2) => aurelionsol_e2(ctx),
+                AbilityId::R(AbilityName::_2) => aurelionsol_r2(ctx),
                 _ => panic!("Invalid AbilityId for 'AurelionSol'"),
             },
             ChampionId::Aurora => match kind {
-                AbilityId::Q(AbilityName::_1) => aurora_q_1(ctx),
-                AbilityId::Q(AbilityName::_2) => aurora_q_2(ctx),
-                AbilityId::Q(AbilityName::_3) => aurora_q_3(ctx),
-                AbilityId::Q(AbilityName::_4) => aurora_q_4(ctx),
-                AbilityId::Q(AbilityName::_5) => aurora_q_5(ctx),
-                AbilityId::E(AbilityName::_1) => aurora_e_1(ctx),
-                AbilityId::R(AbilityName::_1) => aurora_r_1(ctx),
+                AbilityId::Q(AbilityName::_1) => aurora_q1(ctx),
+                AbilityId::Q(AbilityName::_2) => aurora_q2(ctx),
+                AbilityId::Q(AbilityName::_3) => aurora_q3(ctx),
+                AbilityId::Q(AbilityName::_4) => aurora_q4(ctx),
+                AbilityId::Q(AbilityName::_5) => aurora_q5(ctx),
+                AbilityId::E(AbilityName::_1) => aurora_e1(ctx),
+                AbilityId::R(AbilityName::_1) => aurora_r1(ctx),
                 _ => panic!("Invalid AbilityId for 'Aurora'"),
             },
             ChampionId::Azir => match kind {
-                AbilityId::Q(AbilityName::_1) => azir_q_1(ctx),
-                AbilityId::W(AbilityName::_1) => azir_w_1(ctx),
-                AbilityId::E(AbilityName::_1) => azir_e_1(ctx),
-                AbilityId::R(AbilityName::_1) => azir_r_1(ctx),
+                AbilityId::Q(AbilityName::_1) => azir_q1(ctx),
+                AbilityId::W(AbilityName::_1) => azir_w1(ctx),
+                AbilityId::E(AbilityName::_1) => azir_e1(ctx),
+                AbilityId::R(AbilityName::_1) => azir_r1(ctx),
                 _ => panic!("Invalid AbilityId for 'Azir'"),
             },
             ChampionId::Bard => match kind {
-                AbilityId::Q(AbilityName::Void) => bard_q_void(ctx),
+                AbilityId::Q(AbilityName::Void) => bard_q(ctx),
                 _ => panic!("Invalid AbilityId for 'Bard'"),
             },
             ChampionId::Belveth => match kind {
-                AbilityId::Q(AbilityName::_1) => belveth_q_1(ctx),
-                AbilityId::Q(AbilityName::_2) => belveth_q_2(ctx),
-                AbilityId::Q(AbilityName::_3) => belveth_q_3(ctx),
-                AbilityId::Q(AbilityName::_4) => belveth_q_4(ctx),
-                AbilityId::W(AbilityName::_1) => belveth_w_1(ctx),
-                AbilityId::E(AbilityName::_1) => belveth_e_1(ctx),
-                AbilityId::E(AbilityName::_2) => belveth_e_2(ctx),
-                AbilityId::E(AbilityName::_3) => belveth_e_3(ctx),
-                AbilityId::E(AbilityName::_4) => belveth_e_4(ctx),
-                AbilityId::E(AbilityName::_5) => belveth_e_5(ctx),
-                AbilityId::R(AbilityName::_1) => belveth_r_1(ctx),
-                AbilityId::R(AbilityName::_2) => belveth_r_2(ctx),
-                AbilityId::R(AbilityName::_3) => belveth_r_3(ctx),
+                AbilityId::Q(AbilityName::_1) => belveth_q1(ctx),
+                AbilityId::Q(AbilityName::_2) => belveth_q2(ctx),
+                AbilityId::Q(AbilityName::_3) => belveth_q3(ctx),
+                AbilityId::Q(AbilityName::_4) => belveth_q4(ctx),
+                AbilityId::W(AbilityName::_1) => belveth_w1(ctx),
+                AbilityId::E(AbilityName::_1) => belveth_e1(ctx),
+                AbilityId::E(AbilityName::_2) => belveth_e2(ctx),
+                AbilityId::E(AbilityName::_3) => belveth_e3(ctx),
+                AbilityId::E(AbilityName::_4) => belveth_e4(ctx),
+                AbilityId::E(AbilityName::_5) => belveth_e5(ctx),
+                AbilityId::R(AbilityName::_1) => belveth_r1(ctx),
+                AbilityId::R(AbilityName::_2) => belveth_r2(ctx),
+                AbilityId::R(AbilityName::_3) => belveth_r3(ctx),
                 _ => panic!("Invalid AbilityId for 'Belveth'"),
             },
             ChampionId::Blitzcrank => match kind {
-                AbilityId::Q(AbilityName::_1) => blitzcrank_q_1(ctx),
-                AbilityId::R(AbilityName::_1) => blitzcrank_r_1(ctx),
-                AbilityId::R(AbilityName::_2) => blitzcrank_r_2(ctx),
+                AbilityId::Q(AbilityName::_1) => blitzcrank_q1(ctx),
+                AbilityId::R(AbilityName::_1) => blitzcrank_r1(ctx),
+                AbilityId::R(AbilityName::_2) => blitzcrank_r2(ctx),
                 _ => panic!("Invalid AbilityId for 'Blitzcrank'"),
             },
             ChampionId::Brand => match kind {
-                AbilityId::Q(AbilityName::_1) => brand_q_1(ctx),
-                AbilityId::W(AbilityName::_1) => brand_w_1(ctx),
-                AbilityId::W(AbilityName::_2) => brand_w_2(ctx),
-                AbilityId::E(AbilityName::_1) => brand_e_1(ctx),
-                AbilityId::R(AbilityName::_1) => brand_r_1(ctx),
-                AbilityId::R(AbilityName::_2) => brand_r_2(ctx),
+                AbilityId::Q(AbilityName::_1) => brand_q1(ctx),
+                AbilityId::W(AbilityName::_1) => brand_w1(ctx),
+                AbilityId::W(AbilityName::_2) => brand_w2(ctx),
+                AbilityId::E(AbilityName::_1) => brand_e1(ctx),
+                AbilityId::R(AbilityName::_1) => brand_r1(ctx),
+                AbilityId::R(AbilityName::_2) => brand_r2(ctx),
                 _ => panic!("Invalid AbilityId for 'Brand'"),
             },
             ChampionId::Braum => match kind {
-                AbilityId::Q(AbilityName::_1) => braum_q_1(ctx),
-                AbilityId::E(AbilityName::_1) => braum_e_1(ctx),
-                AbilityId::R(AbilityName::_1) => braum_r_1(ctx),
+                AbilityId::Q(AbilityName::_1) => braum_q1(ctx),
+                AbilityId::E(AbilityName::_1) => braum_e1(ctx),
+                AbilityId::R(AbilityName::_1) => braum_r1(ctx),
                 _ => panic!("Invalid AbilityId for 'Braum'"),
             },
             ChampionId::Briar => match kind {
-                AbilityId::Q(AbilityName::_1) => briar_q_1(ctx),
-                AbilityId::W(AbilityName::_1) => briar_w_1(ctx),
-                AbilityId::E(AbilityName::_1) => briar_e_1(ctx),
-                AbilityId::E(AbilityName::_2) => briar_e_2(ctx),
-                AbilityId::E(AbilityName::_3) => briar_e_3(ctx),
-                AbilityId::E(AbilityName::_4) => briar_e_4(ctx),
-                AbilityId::R(AbilityName::_1) => briar_r_1(ctx),
+                AbilityId::Q(AbilityName::_1) => briar_q1(ctx),
+                AbilityId::W(AbilityName::_1) => briar_w1(ctx),
+                AbilityId::E(AbilityName::_1) => briar_e1(ctx),
+                AbilityId::E(AbilityName::_2) => briar_e2(ctx),
+                AbilityId::E(AbilityName::_3) => briar_e3(ctx),
+                AbilityId::E(AbilityName::_4) => briar_e4(ctx),
+                AbilityId::R(AbilityName::_1) => briar_r1(ctx),
                 _ => panic!("Invalid AbilityId for 'Briar'"),
             },
             ChampionId::Caitlyn => match kind {
-                AbilityId::Q(AbilityName::_1) => caitlyn_q_1(ctx),
-                AbilityId::Q(AbilityName::_2) => caitlyn_q_2(ctx),
-                AbilityId::W(AbilityName::_1) => caitlyn_w_1(ctx),
-                AbilityId::E(AbilityName::_1) => caitlyn_e_1(ctx),
-                AbilityId::R(AbilityName::_1) => caitlyn_r_1(ctx),
+                AbilityId::Q(AbilityName::_1) => caitlyn_q1(ctx),
+                AbilityId::Q(AbilityName::_2) => caitlyn_q2(ctx),
+                AbilityId::W(AbilityName::_1) => caitlyn_w1(ctx),
+                AbilityId::E(AbilityName::_1) => caitlyn_e1(ctx),
+                AbilityId::R(AbilityName::_1) => caitlyn_r1(ctx),
                 _ => panic!("Invalid AbilityId for 'Caitlyn'"),
             },
             ChampionId::Camille => match kind {
-                AbilityId::Q(AbilityName::_1) => camille_q_1(ctx),
-                AbilityId::Q(AbilityName::_2) => camille_q_2(ctx),
-                AbilityId::W(AbilityName::_1) => camille_w_1(ctx),
-                AbilityId::W(AbilityName::_2) => camille_w_2(ctx),
-                AbilityId::W(AbilityName::_3) => camille_w_3(ctx),
-                AbilityId::W(AbilityName::_4) => camille_w_4(ctx),
-                AbilityId::R(AbilityName::_1) => camille_r_1(ctx),
+                AbilityId::Q(AbilityName::_1) => camille_q1(ctx),
+                AbilityId::Q(AbilityName::_2) => camille_q2(ctx),
+                AbilityId::W(AbilityName::_1) => camille_w1(ctx),
+                AbilityId::W(AbilityName::_2) => camille_w2(ctx),
+                AbilityId::W(AbilityName::_3) => camille_w3(ctx),
+                AbilityId::W(AbilityName::_4) => camille_w4(ctx),
+                AbilityId::R(AbilityName::_1) => camille_r1(ctx),
                 _ => panic!("Invalid AbilityId for 'Camille'"),
             },
             ChampionId::Cassiopeia => match kind {
-                AbilityId::Q(AbilityName::_1) => cassiopeia_q_1(ctx),
-                AbilityId::Q(AbilityName::_2) => cassiopeia_q_2(ctx),
-                AbilityId::W(AbilityName::_1) => cassiopeia_w_1(ctx),
-                AbilityId::W(AbilityName::_2) => cassiopeia_w_2(ctx),
-                AbilityId::E(AbilityName::_1) => cassiopeia_e_1(ctx),
-                AbilityId::E(AbilityName::_2) => cassiopeia_e_2(ctx),
-                AbilityId::R(AbilityName::_1) => cassiopeia_r_1(ctx),
+                AbilityId::Q(AbilityName::_1) => cassiopeia_q1(ctx),
+                AbilityId::Q(AbilityName::_2) => cassiopeia_q2(ctx),
+                AbilityId::W(AbilityName::_1) => cassiopeia_w1(ctx),
+                AbilityId::W(AbilityName::_2) => cassiopeia_w2(ctx),
+                AbilityId::E(AbilityName::_1) => cassiopeia_e1(ctx),
+                AbilityId::E(AbilityName::_2) => cassiopeia_e2(ctx),
+                AbilityId::R(AbilityName::_1) => cassiopeia_r1(ctx),
                 _ => panic!("Invalid AbilityId for 'Cassiopeia'"),
             },
             ChampionId::Chogath => match kind {
-                AbilityId::Q(AbilityName::_1) => chogath_q_1(ctx),
-                AbilityId::W(AbilityName::_1) => chogath_w_1(ctx),
-                AbilityId::E(AbilityName::_1) => chogath_e_1(ctx),
-                AbilityId::E(AbilityName::_2) => chogath_e_2(ctx),
-                AbilityId::E(AbilityName::_3) => chogath_e_3(ctx),
-                AbilityId::E(AbilityName::_4) => chogath_e_4(ctx),
-                AbilityId::R(AbilityName::_1) => chogath_r_1(ctx),
-                AbilityId::R(AbilityName::_2) => chogath_r_2(ctx),
+                AbilityId::Q(AbilityName::_1) => chogath_q1(ctx),
+                AbilityId::W(AbilityName::_1) => chogath_w1(ctx),
+                AbilityId::E(AbilityName::_1) => chogath_e1(ctx),
+                AbilityId::E(AbilityName::_2) => chogath_e2(ctx),
+                AbilityId::E(AbilityName::_3) => chogath_e3(ctx),
+                AbilityId::E(AbilityName::_4) => chogath_e4(ctx),
+                AbilityId::R(AbilityName::_1) => chogath_r1(ctx),
+                AbilityId::R(AbilityName::_2) => chogath_r2(ctx),
                 _ => panic!("Invalid AbilityId for 'Chogath'"),
             },
             ChampionId::Corki => match kind {
-                AbilityId::Q(AbilityName::_1) => corki_q_1(ctx),
-                AbilityId::W(AbilityName::_1) => corki_w_1(ctx),
-                AbilityId::W(AbilityName::_2) => corki_w_2(ctx),
-                AbilityId::E(AbilityName::_1) => corki_e_1(ctx),
-                AbilityId::E(AbilityName::_2) => corki_e_2(ctx),
-                AbilityId::R(AbilityName::_1) => corki_r_1(ctx),
-                AbilityId::R(AbilityName::_2) => corki_r_2(ctx),
+                AbilityId::Q(AbilityName::_1) => corki_q1(ctx),
+                AbilityId::W(AbilityName::_1) => corki_w1(ctx),
+                AbilityId::W(AbilityName::_2) => corki_w2(ctx),
+                AbilityId::E(AbilityName::_1) => corki_e1(ctx),
+                AbilityId::E(AbilityName::_2) => corki_e2(ctx),
+                AbilityId::R(AbilityName::_1) => corki_r1(ctx),
+                AbilityId::R(AbilityName::_2) => corki_r2(ctx),
                 _ => panic!("Invalid AbilityId for 'Corki'"),
             },
             ChampionId::Darius => match kind {
-                AbilityId::Q(AbilityName::_1) => darius_q_1(ctx),
-                AbilityId::Q(AbilityName::_2) => darius_q_2(ctx),
-                AbilityId::W(AbilityName::_1) => darius_w_1(ctx),
-                AbilityId::R(AbilityName::_1) => darius_r_1(ctx),
-                AbilityId::R(AbilityName::_2) => darius_r_2(ctx),
-                AbilityId::R(AbilityName::_3) => darius_r_3(ctx),
+                AbilityId::Q(AbilityName::_1) => darius_q1(ctx),
+                AbilityId::Q(AbilityName::_2) => darius_q2(ctx),
+                AbilityId::W(AbilityName::_1) => darius_w1(ctx),
+                AbilityId::R(AbilityName::_1) => darius_r1(ctx),
+                AbilityId::R(AbilityName::_2) => darius_r2(ctx),
+                AbilityId::R(AbilityName::_3) => darius_r3(ctx),
                 _ => panic!("Invalid AbilityId for 'Darius'"),
             },
             ChampionId::Diana => match kind {
-                AbilityId::Q(AbilityName::_1) => diana_q_1(ctx),
-                AbilityId::W(AbilityName::_1) => diana_w_1(ctx),
-                AbilityId::W(AbilityName::_2) => diana_w_2(ctx),
-                AbilityId::E(AbilityName::_1) => diana_e_1(ctx),
-                AbilityId::R(AbilityName::_1) => diana_r_1(ctx),
-                AbilityId::R(AbilityName::_2) => diana_r_2(ctx),
-                AbilityId::R(AbilityName::_3) => diana_r_3(ctx),
+                AbilityId::Q(AbilityName::_1) => diana_q1(ctx),
+                AbilityId::W(AbilityName::_1) => diana_w1(ctx),
+                AbilityId::W(AbilityName::_2) => diana_w2(ctx),
+                AbilityId::E(AbilityName::_1) => diana_e1(ctx),
+                AbilityId::R(AbilityName::_1) => diana_r1(ctx),
+                AbilityId::R(AbilityName::_2) => diana_r2(ctx),
+                AbilityId::R(AbilityName::_3) => diana_r3(ctx),
                 _ => panic!("Invalid AbilityId for 'Diana'"),
             },
             ChampionId::DrMundo => match kind {
-                AbilityId::Q(AbilityName::_1) => drmundo_q_1(ctx),
-                AbilityId::E(AbilityName::_1) => drmundo_e_1(ctx),
-                AbilityId::R(AbilityName::_1) => drmundo_r_1(ctx),
-                AbilityId::R(AbilityName::_2) => drmundo_r_2(ctx),
+                AbilityId::Q(AbilityName::_1) => drmundo_q1(ctx),
+                AbilityId::E(AbilityName::_1) => drmundo_e1(ctx),
+                AbilityId::R(AbilityName::_1) => drmundo_r1(ctx),
+                AbilityId::R(AbilityName::_2) => drmundo_r2(ctx),
                 _ => panic!("Invalid AbilityId for 'DrMundo'"),
             },
             ChampionId::Draven => match kind {
-                AbilityId::Q(AbilityName::_1) => draven_q_1(ctx),
-                AbilityId::W(AbilityName::_1) => draven_w_1(ctx),
-                AbilityId::W(AbilityName::_2) => draven_w_2(ctx),
-                AbilityId::E(AbilityName::_1) => draven_e_1(ctx),
-                AbilityId::E(AbilityName::_2) => draven_e_2(ctx),
+                AbilityId::Q(AbilityName::_1) => draven_q1(ctx),
+                AbilityId::W(AbilityName::_1) => draven_w1(ctx),
+                AbilityId::W(AbilityName::_2) => draven_w2(ctx),
+                AbilityId::E(AbilityName::_1) => draven_e1(ctx),
+                AbilityId::E(AbilityName::_2) => draven_e2(ctx),
                 _ => panic!("Invalid AbilityId for 'Draven'"),
             },
             ChampionId::Ekko => match kind {
-                AbilityId::Q(AbilityName::_1) => ekko_q_1(ctx),
-                AbilityId::Q(AbilityName::_2) => ekko_q_2(ctx),
-                AbilityId::Q(AbilityName::_3) => ekko_q_3(ctx),
-                AbilityId::E(AbilityName::_1) => ekko_e_1(ctx),
-                AbilityId::R(AbilityName::_1) => ekko_r_1(ctx),
+                AbilityId::Q(AbilityName::_1) => ekko_q1(ctx),
+                AbilityId::Q(AbilityName::_2) => ekko_q2(ctx),
+                AbilityId::Q(AbilityName::_3) => ekko_q3(ctx),
+                AbilityId::E(AbilityName::_1) => ekko_e1(ctx),
+                AbilityId::R(AbilityName::_1) => ekko_r1(ctx),
                 _ => panic!("Invalid AbilityId for 'Ekko'"),
             },
             ChampionId::Elise => match kind {
-                AbilityId::Q(AbilityName::_3) => elise_q_3(ctx),
-                AbilityId::Q(AbilityName::_4) => elise_q_4(ctx),
-                AbilityId::W(AbilityName::_1) => elise_w_1(ctx),
+                AbilityId::Q(AbilityName::_3) => elise_q3(ctx),
+                AbilityId::Q(AbilityName::_4) => elise_q4(ctx),
+                AbilityId::W(AbilityName::_1) => elise_w1(ctx),
                 _ => panic!("Invalid AbilityId for 'Elise'"),
             },
             ChampionId::Evelynn => match kind {
-                AbilityId::Q(AbilityName::_1) => evelynn_q_1(ctx),
-                AbilityId::Q(AbilityName::_2) => evelynn_q_2(ctx),
-                AbilityId::Q(AbilityName::_3) => evelynn_q_3(ctx),
-                AbilityId::Q(AbilityName::_4) => evelynn_q_4(ctx),
-                AbilityId::Q(AbilityName::_5) => evelynn_q_5(ctx),
-                AbilityId::Q(AbilityName::_6) => evelynn_q_6(ctx),
-                AbilityId::W(AbilityName::_1) => evelynn_w_1(ctx),
-                AbilityId::E(AbilityName::_2) => evelynn_e_2(ctx),
-                AbilityId::R(AbilityName::_1) => evelynn_r_1(ctx),
-                AbilityId::R(AbilityName::_2) => evelynn_r_2(ctx),
+                AbilityId::Q(AbilityName::_1) => evelynn_q1(ctx),
+                AbilityId::Q(AbilityName::_2) => evelynn_q2(ctx),
+                AbilityId::Q(AbilityName::_3) => evelynn_q3(ctx),
+                AbilityId::Q(AbilityName::_4) => evelynn_q4(ctx),
+                AbilityId::Q(AbilityName::_5) => evelynn_q5(ctx),
+                AbilityId::Q(AbilityName::_6) => evelynn_q6(ctx),
+                AbilityId::W(AbilityName::_1) => evelynn_w1(ctx),
+                AbilityId::E(AbilityName::_2) => evelynn_e2(ctx),
+                AbilityId::R(AbilityName::_1) => evelynn_r1(ctx),
+                AbilityId::R(AbilityName::_2) => evelynn_r2(ctx),
                 _ => panic!("Invalid AbilityId for 'Evelynn'"),
             },
             ChampionId::Ezreal => match kind {
-                AbilityId::Q(AbilityName::Void) => ezreal_q_void(ctx),
-                AbilityId::W(AbilityName::Void) => ezreal_w_void(ctx),
-                AbilityId::E(AbilityName::Void) => ezreal_e_void(ctx),
-                AbilityId::R(AbilityName::Void) => ezreal_r_void(ctx),
+                AbilityId::Q(AbilityName::Void) => ezreal_q(ctx),
+                AbilityId::W(AbilityName::Void) => ezreal_w(ctx),
+                AbilityId::E(AbilityName::Void) => ezreal_e(ctx),
+                AbilityId::R(AbilityName::Void) => ezreal_r(ctx),
                 _ => panic!("Invalid AbilityId for 'Ezreal'"),
             },
             ChampionId::Fiddlesticks => match kind {
-                AbilityId::Q(AbilityName::_1) => fiddlesticks_q_1(ctx),
-                AbilityId::Q(AbilityName::_2) => fiddlesticks_q_2(ctx),
-                AbilityId::Q(AbilityName::_3) => fiddlesticks_q_3(ctx),
-                AbilityId::Q(AbilityName::_4) => fiddlesticks_q_4(ctx),
-                AbilityId::W(AbilityName::_1) => fiddlesticks_w_1(ctx),
-                AbilityId::W(AbilityName::_2) => fiddlesticks_w_2(ctx),
-                AbilityId::W(AbilityName::_3) => fiddlesticks_w_3(ctx),
-                AbilityId::W(AbilityName::_4) => fiddlesticks_w_4(ctx),
-                AbilityId::E(AbilityName::_1) => fiddlesticks_e_1(ctx),
-                AbilityId::R(AbilityName::_1) => fiddlesticks_r_1(ctx),
-                AbilityId::R(AbilityName::_2) => fiddlesticks_r_2(ctx),
+                AbilityId::Q(AbilityName::_1) => fiddlesticks_q1(ctx),
+                AbilityId::Q(AbilityName::_2) => fiddlesticks_q2(ctx),
+                AbilityId::Q(AbilityName::_3) => fiddlesticks_q3(ctx),
+                AbilityId::Q(AbilityName::_4) => fiddlesticks_q4(ctx),
+                AbilityId::W(AbilityName::_1) => fiddlesticks_w1(ctx),
+                AbilityId::W(AbilityName::_2) => fiddlesticks_w2(ctx),
+                AbilityId::W(AbilityName::_3) => fiddlesticks_w3(ctx),
+                AbilityId::W(AbilityName::_4) => fiddlesticks_w4(ctx),
+                AbilityId::E(AbilityName::_1) => fiddlesticks_e1(ctx),
+                AbilityId::R(AbilityName::_1) => fiddlesticks_r1(ctx),
+                AbilityId::R(AbilityName::_2) => fiddlesticks_r2(ctx),
                 _ => panic!("Invalid AbilityId for 'Fiddlesticks'"),
             },
             ChampionId::Fiora => match kind {
-                AbilityId::Q(AbilityName::_1) => fiora_q_1(ctx),
-                AbilityId::W(AbilityName::_1) => fiora_w_1(ctx),
-                AbilityId::E(AbilityName::_1) => fiora_e_1(ctx),
+                AbilityId::Q(AbilityName::_1) => fiora_q1(ctx),
+                AbilityId::W(AbilityName::_1) => fiora_w1(ctx),
+                AbilityId::E(AbilityName::_1) => fiora_e1(ctx),
                 _ => panic!("Invalid AbilityId for 'Fiora'"),
             },
             ChampionId::Fizz => match kind {
-                AbilityId::Q(AbilityName::_1) => fizz_q_1(ctx),
-                AbilityId::W(AbilityName::_1) => fizz_w_1(ctx),
-                AbilityId::W(AbilityName::_2) => fizz_w_2(ctx),
-                AbilityId::W(AbilityName::_3) => fizz_w_3(ctx),
-                AbilityId::W(AbilityName::_4) => fizz_w_4(ctx),
-                AbilityId::E(AbilityName::_1) => fizz_e_1(ctx),
-                AbilityId::R(AbilityName::_1) => fizz_r_1(ctx),
-                AbilityId::R(AbilityName::_2) => fizz_r_2(ctx),
-                AbilityId::R(AbilityName::_3) => fizz_r_3(ctx),
+                AbilityId::Q(AbilityName::_1) => fizz_q1(ctx),
+                AbilityId::W(AbilityName::_1) => fizz_w1(ctx),
+                AbilityId::W(AbilityName::_2) => fizz_w2(ctx),
+                AbilityId::W(AbilityName::_3) => fizz_w3(ctx),
+                AbilityId::W(AbilityName::_4) => fizz_w4(ctx),
+                AbilityId::E(AbilityName::_1) => fizz_e1(ctx),
+                AbilityId::R(AbilityName::_1) => fizz_r1(ctx),
+                AbilityId::R(AbilityName::_2) => fizz_r2(ctx),
+                AbilityId::R(AbilityName::_3) => fizz_r3(ctx),
                 _ => panic!("Invalid AbilityId for 'Fizz'"),
             },
             ChampionId::Galio => match kind {
-                AbilityId::Q(AbilityName::_1) => galio_q_1(ctx),
-                AbilityId::W(AbilityName::_1) => galio_w_1(ctx),
-                AbilityId::W(AbilityName::_2) => galio_w_2(ctx),
-                AbilityId::W(AbilityName::_3) => galio_w_3(ctx),
-                AbilityId::W(AbilityName::_4) => galio_w_4(ctx),
-                AbilityId::E(AbilityName::_1) => galio_e_1(ctx),
-                AbilityId::E(AbilityName::_2) => galio_e_2(ctx),
-                AbilityId::R(AbilityName::_1) => galio_r_1(ctx),
+                AbilityId::Q(AbilityName::_1) => galio_q1(ctx),
+                AbilityId::W(AbilityName::_1) => galio_w1(ctx),
+                AbilityId::W(AbilityName::_2) => galio_w2(ctx),
+                AbilityId::W(AbilityName::_3) => galio_w3(ctx),
+                AbilityId::W(AbilityName::_4) => galio_w4(ctx),
+                AbilityId::E(AbilityName::_1) => galio_e1(ctx),
+                AbilityId::E(AbilityName::_2) => galio_e2(ctx),
+                AbilityId::R(AbilityName::_1) => galio_r1(ctx),
                 _ => panic!("Invalid AbilityId for 'Galio'"),
             },
             ChampionId::Gangplank => match kind {
-                AbilityId::Q(AbilityName::_1) => gangplank_q_1(ctx),
-                AbilityId::E(AbilityName::_1) => gangplank_e_1(ctx),
-                AbilityId::R(AbilityName::_1) => gangplank_r_1(ctx),
-                AbilityId::R(AbilityName::_2) => gangplank_r_2(ctx),
-                AbilityId::R(AbilityName::_3) => gangplank_r_3(ctx),
-                AbilityId::R(AbilityName::_4) => gangplank_r_4(ctx),
-                AbilityId::R(AbilityName::_5) => gangplank_r_5(ctx),
-                AbilityId::R(AbilityName::_6) => gangplank_r_6(ctx),
-                AbilityId::R(AbilityName::_7) => gangplank_r_7(ctx),
+                AbilityId::Q(AbilityName::_1) => gangplank_q1(ctx),
+                AbilityId::E(AbilityName::_1) => gangplank_e1(ctx),
+                AbilityId::R(AbilityName::_1) => gangplank_r1(ctx),
+                AbilityId::R(AbilityName::_2) => gangplank_r2(ctx),
+                AbilityId::R(AbilityName::_3) => gangplank_r3(ctx),
+                AbilityId::R(AbilityName::_4) => gangplank_r4(ctx),
+                AbilityId::R(AbilityName::_5) => gangplank_r5(ctx),
+                AbilityId::R(AbilityName::_6) => gangplank_r6(ctx),
+                AbilityId::R(AbilityName::_7) => gangplank_r7(ctx),
                 _ => panic!("Invalid AbilityId for 'Gangplank'"),
             },
             ChampionId::Garen => match kind {
-                AbilityId::Q(AbilityName::_1) => garen_q_1(ctx),
-                AbilityId::W(AbilityName::_1) => garen_w_1(ctx),
-                AbilityId::E(AbilityName::_1) => garen_e_1(ctx),
-                AbilityId::E(AbilityName::_2) => garen_e_2(ctx),
-                AbilityId::R(AbilityName::_1) => garen_r_1(ctx),
+                AbilityId::Q(AbilityName::_1) => garen_q1(ctx),
+                AbilityId::W(AbilityName::_1) => garen_w1(ctx),
+                AbilityId::E(AbilityName::_1) => garen_e1(ctx),
+                AbilityId::E(AbilityName::_2) => garen_e2(ctx),
+                AbilityId::R(AbilityName::_1) => garen_r1(ctx),
                 _ => panic!("Invalid AbilityId for 'Garen'"),
             },
             ChampionId::Gnar => match kind {
-                AbilityId::Q(AbilityName::_2) => gnar_q_2(ctx),
-                AbilityId::Q(AbilityName::_3) => gnar_q_3(ctx),
-                AbilityId::W(AbilityName::_1) => gnar_w_1(ctx),
-                AbilityId::E(AbilityName::_1) => gnar_e_1(ctx),
-                AbilityId::E(AbilityName::_2) => gnar_e_2(ctx),
-                AbilityId::R(AbilityName::_1) => gnar_r_1(ctx),
-                AbilityId::R(AbilityName::_2) => gnar_r_2(ctx),
+                AbilityId::Q(AbilityName::_2) => gnar_q2(ctx),
+                AbilityId::Q(AbilityName::_3) => gnar_q3(ctx),
+                AbilityId::W(AbilityName::_1) => gnar_w1(ctx),
+                AbilityId::E(AbilityName::_1) => gnar_e1(ctx),
+                AbilityId::E(AbilityName::_2) => gnar_e2(ctx),
+                AbilityId::R(AbilityName::_1) => gnar_r1(ctx),
+                AbilityId::R(AbilityName::_2) => gnar_r2(ctx),
                 _ => panic!("Invalid AbilityId for 'Gnar'"),
             },
             ChampionId::Gragas => match kind {
-                AbilityId::Q(AbilityName::_1) => gragas_q_1(ctx),
-                AbilityId::Q(AbilityName::_2) => gragas_q_2(ctx),
-                AbilityId::Q(AbilityName::_3) => gragas_q_3(ctx),
-                AbilityId::Q(AbilityName::_4) => gragas_q_4(ctx),
-                AbilityId::W(AbilityName::_1) => gragas_w_1(ctx),
-                AbilityId::W(AbilityName::_2) => gragas_w_2(ctx),
-                AbilityId::E(AbilityName::_1) => gragas_e_1(ctx),
-                AbilityId::R(AbilityName::_1) => gragas_r_1(ctx),
+                AbilityId::Q(AbilityName::_1) => gragas_q1(ctx),
+                AbilityId::Q(AbilityName::_2) => gragas_q2(ctx),
+                AbilityId::Q(AbilityName::_3) => gragas_q3(ctx),
+                AbilityId::Q(AbilityName::_4) => gragas_q4(ctx),
+                AbilityId::W(AbilityName::_1) => gragas_w1(ctx),
+                AbilityId::W(AbilityName::_2) => gragas_w2(ctx),
+                AbilityId::E(AbilityName::_1) => gragas_e1(ctx),
+                AbilityId::R(AbilityName::_1) => gragas_r1(ctx),
                 _ => panic!("Invalid AbilityId for 'Gragas'"),
             },
             ChampionId::Graves => match kind {
-                AbilityId::Q(AbilityName::_1) => graves_q_1(ctx),
-                AbilityId::Q(AbilityName::_2) => graves_q_2(ctx),
-                AbilityId::Q(AbilityName::_3) => graves_q_3(ctx),
-                AbilityId::W(AbilityName::_1) => graves_w_1(ctx),
-                AbilityId::R(AbilityName::_1) => graves_r_1(ctx),
-                AbilityId::R(AbilityName::_2) => graves_r_2(ctx),
+                AbilityId::Q(AbilityName::_1) => graves_q1(ctx),
+                AbilityId::Q(AbilityName::_2) => graves_q2(ctx),
+                AbilityId::Q(AbilityName::_3) => graves_q3(ctx),
+                AbilityId::W(AbilityName::_1) => graves_w1(ctx),
+                AbilityId::R(AbilityName::_1) => graves_r1(ctx),
+                AbilityId::R(AbilityName::_2) => graves_r2(ctx),
                 _ => panic!("Invalid AbilityId for 'Graves'"),
             },
             ChampionId::Gwen => match kind {
-                AbilityId::Q(AbilityName::_1) => gwen_q_1(ctx),
-                AbilityId::Q(AbilityName::_2) => gwen_q_2(ctx),
-                AbilityId::Q(AbilityName::_3) => gwen_q_3(ctx),
-                AbilityId::Q(AbilityName::_4) => gwen_q_4(ctx),
-                AbilityId::Q(AbilityName::_5) => gwen_q_5(ctx),
-                AbilityId::Q(AbilityName::_6) => gwen_q_6(ctx),
-                AbilityId::Q(AbilityName::_7) => gwen_q_7(ctx),
-                AbilityId::Q(AbilityName::_8) => gwen_q_8(ctx),
-                AbilityId::R(AbilityName::_1) => gwen_r_1(ctx),
-                AbilityId::R(AbilityName::_2) => gwen_r_2(ctx),
-                AbilityId::R(AbilityName::_3) => gwen_r_3(ctx),
-                AbilityId::R(AbilityName::_4) => gwen_r_4(ctx),
-                AbilityId::R(AbilityName::_5) => gwen_r_5(ctx),
+                AbilityId::Q(AbilityName::_1) => gwen_q1(ctx),
+                AbilityId::Q(AbilityName::_2) => gwen_q2(ctx),
+                AbilityId::Q(AbilityName::_3) => gwen_q3(ctx),
+                AbilityId::Q(AbilityName::_4) => gwen_q4(ctx),
+                AbilityId::Q(AbilityName::_5) => gwen_q5(ctx),
+                AbilityId::Q(AbilityName::_6) => gwen_q6(ctx),
+                AbilityId::Q(AbilityName::_7) => gwen_q7(ctx),
+                AbilityId::Q(AbilityName::_8) => gwen_q8(ctx),
+                AbilityId::R(AbilityName::_1) => gwen_r1(ctx),
+                AbilityId::R(AbilityName::_2) => gwen_r2(ctx),
+                AbilityId::R(AbilityName::_3) => gwen_r3(ctx),
+                AbilityId::R(AbilityName::_4) => gwen_r4(ctx),
+                AbilityId::R(AbilityName::_5) => gwen_r5(ctx),
                 _ => panic!("Invalid AbilityId for 'Gwen'"),
             },
             ChampionId::Hecarim => match kind {
-                AbilityId::Q(AbilityName::_1) => hecarim_q_1(ctx),
-                AbilityId::Q(AbilityName::_2) => hecarim_q_2(ctx),
-                AbilityId::W(AbilityName::_1) => hecarim_w_1(ctx),
-                AbilityId::W(AbilityName::_2) => hecarim_w_2(ctx),
-                AbilityId::E(AbilityName::_1) => hecarim_e_1(ctx),
-                AbilityId::E(AbilityName::_2) => hecarim_e_2(ctx),
-                AbilityId::R(AbilityName::_1) => hecarim_r_1(ctx),
+                AbilityId::Q(AbilityName::_1) => hecarim_q1(ctx),
+                AbilityId::Q(AbilityName::_2) => hecarim_q2(ctx),
+                AbilityId::W(AbilityName::_1) => hecarim_w1(ctx),
+                AbilityId::W(AbilityName::_2) => hecarim_w2(ctx),
+                AbilityId::E(AbilityName::_1) => hecarim_e1(ctx),
+                AbilityId::E(AbilityName::_2) => hecarim_e2(ctx),
+                AbilityId::R(AbilityName::_1) => hecarim_r1(ctx),
                 _ => panic!("Invalid AbilityId for 'Hecarim'"),
             },
             ChampionId::Heimerdinger => match kind {
-                AbilityId::W(AbilityName::_2) => heimerdinger_w_2(ctx),
-                AbilityId::W(AbilityName::_3) => heimerdinger_w_3(ctx),
-                AbilityId::W(AbilityName::_4) => heimerdinger_w_4(ctx),
-                AbilityId::W(AbilityName::_5) => heimerdinger_w_5(ctx),
-                AbilityId::W(AbilityName::_6) => heimerdinger_w_6(ctx),
-                AbilityId::W(AbilityName::_7) => heimerdinger_w_7(ctx),
-                AbilityId::W(AbilityName::_8) => heimerdinger_w_8(ctx),
-                AbilityId::E(AbilityName::_1) => heimerdinger_e_1(ctx),
+                AbilityId::W(AbilityName::_2) => heimerdinger_w2(ctx),
+                AbilityId::W(AbilityName::_3) => heimerdinger_w3(ctx),
+                AbilityId::W(AbilityName::_4) => heimerdinger_w4(ctx),
+                AbilityId::W(AbilityName::_5) => heimerdinger_w5(ctx),
+                AbilityId::W(AbilityName::_6) => heimerdinger_w6(ctx),
+                AbilityId::W(AbilityName::_7) => heimerdinger_w7(ctx),
+                AbilityId::W(AbilityName::_8) => heimerdinger_w8(ctx),
+                AbilityId::E(AbilityName::_1) => heimerdinger_e1(ctx),
                 _ => panic!("Invalid AbilityId for 'Heimerdinger'"),
             },
             ChampionId::Hwei => match kind {
-                AbilityId::R(AbilityName::_1) => hwei_r_1(ctx),
-                AbilityId::R(AbilityName::_2) => hwei_r_2(ctx),
-                AbilityId::R(AbilityName::_3) => hwei_r_3(ctx),
-                AbilityId::R(AbilityName::_4) => hwei_r_4(ctx),
+                AbilityId::R(AbilityName::_1) => hwei_r1(ctx),
+                AbilityId::R(AbilityName::_2) => hwei_r2(ctx),
+                AbilityId::R(AbilityName::_3) => hwei_r3(ctx),
+                AbilityId::R(AbilityName::_4) => hwei_r4(ctx),
                 _ => panic!("Invalid AbilityId for 'Hwei'"),
             },
             ChampionId::Illaoi => match kind {
-                AbilityId::Q(AbilityName::_1) => illaoi_q_1(ctx),
-                AbilityId::W(AbilityName::_1) => illaoi_w_1(ctx),
-                AbilityId::W(AbilityName::_2) => illaoi_w_2(ctx),
-                AbilityId::E(AbilityName::_1) => illaoi_e_1(ctx),
-                AbilityId::R(AbilityName::_1) => illaoi_r_1(ctx),
+                AbilityId::Q(AbilityName::_1) => illaoi_q1(ctx),
+                AbilityId::W(AbilityName::_1) => illaoi_w1(ctx),
+                AbilityId::W(AbilityName::_2) => illaoi_w2(ctx),
+                AbilityId::E(AbilityName::_1) => illaoi_e1(ctx),
+                AbilityId::R(AbilityName::_1) => illaoi_r1(ctx),
                 _ => panic!("Invalid AbilityId for 'Illaoi'"),
             },
             ChampionId::Irelia => match kind {
-                AbilityId::Q(AbilityName::_1) => irelia_q_1(ctx),
-                AbilityId::W(AbilityName::_1) => irelia_w_1(ctx),
-                AbilityId::W(AbilityName::_2) => irelia_w_2(ctx),
-                AbilityId::E(AbilityName::_1) => irelia_e_1(ctx),
-                AbilityId::R(AbilityName::_1) => irelia_r_1(ctx),
+                AbilityId::Q(AbilityName::_1) => irelia_q1(ctx),
+                AbilityId::W(AbilityName::_1) => irelia_w1(ctx),
+                AbilityId::W(AbilityName::_2) => irelia_w2(ctx),
+                AbilityId::E(AbilityName::_1) => irelia_e1(ctx),
+                AbilityId::R(AbilityName::_1) => irelia_r1(ctx),
                 _ => panic!("Invalid AbilityId for 'Irelia'"),
             },
             ChampionId::Ivern => match kind {
-                AbilityId::Q(AbilityName::_1) => ivern_q_1(ctx),
-                AbilityId::W(AbilityName::_1) => ivern_w_1(ctx),
-                AbilityId::W(AbilityName::_2) => ivern_w_2(ctx),
-                AbilityId::E(AbilityName::_1) => ivern_e_1(ctx),
+                AbilityId::Q(AbilityName::_1) => ivern_q1(ctx),
+                AbilityId::W(AbilityName::_1) => ivern_w1(ctx),
+                AbilityId::W(AbilityName::_2) => ivern_w2(ctx),
+                AbilityId::E(AbilityName::_1) => ivern_e1(ctx),
                 _ => panic!("Invalid AbilityId for 'Ivern'"),
             },
             ChampionId::Janna => match kind {
-                AbilityId::Q(AbilityName::_1) => janna_q_1(ctx),
-                AbilityId::Q(AbilityName::_2) => janna_q_2(ctx),
-                AbilityId::Q(AbilityName::_3) => janna_q_3(ctx),
-                AbilityId::W(AbilityName::_1) => janna_w_1(ctx),
-                AbilityId::E(AbilityName::_1) => janna_e_1(ctx),
+                AbilityId::Q(AbilityName::_1) => janna_q1(ctx),
+                AbilityId::Q(AbilityName::_2) => janna_q2(ctx),
+                AbilityId::Q(AbilityName::_3) => janna_q3(ctx),
+                AbilityId::W(AbilityName::_1) => janna_w1(ctx),
+                AbilityId::E(AbilityName::_1) => janna_e1(ctx),
                 _ => panic!("Invalid AbilityId for 'Janna'"),
             },
             ChampionId::JarvanIV => match kind {
-                AbilityId::Q(AbilityName::_1) => jarvaniv_q_1(ctx),
-                AbilityId::E(AbilityName::_1) => jarvaniv_e_1(ctx),
-                AbilityId::R(AbilityName::_1) => jarvaniv_r_1(ctx),
+                AbilityId::Q(AbilityName::_1) => jarvaniv_q1(ctx),
+                AbilityId::E(AbilityName::_1) => jarvaniv_e1(ctx),
+                AbilityId::R(AbilityName::_1) => jarvaniv_r1(ctx),
                 _ => panic!("Invalid AbilityId for 'JarvanIV'"),
             },
             ChampionId::Jax => match kind {
-                AbilityId::Q(AbilityName::_1) => jax_q_1(ctx),
-                AbilityId::W(AbilityName::_1) => jax_w_1(ctx),
-                AbilityId::E(AbilityName::_1) => jax_e_1(ctx),
-                AbilityId::E(AbilityName::_2) => jax_e_2(ctx),
-                AbilityId::R(AbilityName::_1) => jax_r_1(ctx),
-                AbilityId::R(AbilityName::_2) => jax_r_2(ctx),
+                AbilityId::Q(AbilityName::_1) => jax_q1(ctx),
+                AbilityId::W(AbilityName::_1) => jax_w1(ctx),
+                AbilityId::E(AbilityName::_1) => jax_e1(ctx),
+                AbilityId::E(AbilityName::_2) => jax_e2(ctx),
+                AbilityId::R(AbilityName::_1) => jax_r1(ctx),
+                AbilityId::R(AbilityName::_2) => jax_r2(ctx),
                 _ => panic!("Invalid AbilityId for 'Jax'"),
             },
             ChampionId::Jayce => match kind {
-                AbilityId::Q(AbilityName::_2) => jayce_q_2(ctx),
-                AbilityId::W(AbilityName::_3) => jayce_w_3(ctx),
-                AbilityId::W(AbilityName::_4) => jayce_w_4(ctx),
-                AbilityId::E(AbilityName::_1) => jayce_e_1(ctx),
-                AbilityId::E(AbilityName::_2) => jayce_e_2(ctx),
+                AbilityId::Q(AbilityName::_2) => jayce_q2(ctx),
+                AbilityId::W(AbilityName::_3) => jayce_w3(ctx),
+                AbilityId::W(AbilityName::_4) => jayce_w4(ctx),
+                AbilityId::E(AbilityName::_1) => jayce_e1(ctx),
+                AbilityId::E(AbilityName::_2) => jayce_e2(ctx),
                 _ => panic!("Invalid AbilityId for 'Jayce'"),
             },
             ChampionId::Jhin => match kind {
-                AbilityId::Q(AbilityName::_1) => jhin_q_1(ctx),
-                AbilityId::Q(AbilityName::_2) => jhin_q_2(ctx),
-                AbilityId::Q(AbilityName::_3) => jhin_q_3(ctx),
-                AbilityId::W(AbilityName::_1) => jhin_w_1(ctx),
-                AbilityId::W(AbilityName::_2) => jhin_w_2(ctx),
-                AbilityId::E(AbilityName::_1) => jhin_e_1(ctx),
-                AbilityId::E(AbilityName::_2) => jhin_e_2(ctx),
-                AbilityId::R(AbilityName::_1) => jhin_r_1(ctx),
-                AbilityId::R(AbilityName::_2) => jhin_r_2(ctx),
-                AbilityId::R(AbilityName::_3) => jhin_r_3(ctx),
-                AbilityId::R(AbilityName::_4) => jhin_r_4(ctx),
+                AbilityId::Q(AbilityName::_1) => jhin_q1(ctx),
+                AbilityId::Q(AbilityName::_2) => jhin_q2(ctx),
+                AbilityId::Q(AbilityName::_3) => jhin_q3(ctx),
+                AbilityId::W(AbilityName::_1) => jhin_w1(ctx),
+                AbilityId::W(AbilityName::_2) => jhin_w2(ctx),
+                AbilityId::E(AbilityName::_1) => jhin_e1(ctx),
+                AbilityId::E(AbilityName::_2) => jhin_e2(ctx),
+                AbilityId::R(AbilityName::_1) => jhin_r1(ctx),
+                AbilityId::R(AbilityName::_2) => jhin_r2(ctx),
+                AbilityId::R(AbilityName::_3) => jhin_r3(ctx),
+                AbilityId::R(AbilityName::_4) => jhin_r4(ctx),
                 _ => panic!("Invalid AbilityId for 'Jhin'"),
             },
             ChampionId::Jinx => match kind {
-                AbilityId::W(AbilityName::_1) => jinx_w_1(ctx),
-                AbilityId::E(AbilityName::_1) => jinx_e_1(ctx),
-                AbilityId::R(AbilityName::_1) => jinx_r_1(ctx),
-                AbilityId::R(AbilityName::_2) => jinx_r_2(ctx),
-                AbilityId::R(AbilityName::_3) => jinx_r_3(ctx),
-                AbilityId::R(AbilityName::_4) => jinx_r_4(ctx),
+                AbilityId::W(AbilityName::_1) => jinx_w1(ctx),
+                AbilityId::E(AbilityName::_1) => jinx_e1(ctx),
+                AbilityId::R(AbilityName::_1) => jinx_r1(ctx),
+                AbilityId::R(AbilityName::_2) => jinx_r2(ctx),
+                AbilityId::R(AbilityName::_3) => jinx_r3(ctx),
+                AbilityId::R(AbilityName::_4) => jinx_r4(ctx),
                 _ => panic!("Invalid AbilityId for 'Jinx'"),
             },
             ChampionId::KSante => match kind {
                 _ => panic!("Invalid AbilityId for 'KSante'"),
             },
             ChampionId::Kaisa => match kind {
-                AbilityId::E(AbilityName::_1) => kaisa_e_1(ctx),
+                AbilityId::E(AbilityName::_1) => kaisa_e1(ctx),
                 _ => panic!("Invalid AbilityId for 'Kaisa'"),
             },
             ChampionId::Kalista => match kind {
-                AbilityId::Q(AbilityName::_2) => kalista_q_2(ctx),
-                AbilityId::W(AbilityName::_2) => kalista_w_2(ctx),
+                AbilityId::Q(AbilityName::_2) => kalista_q2(ctx),
+                AbilityId::W(AbilityName::_2) => kalista_w2(ctx),
                 _ => panic!("Invalid AbilityId for 'Kalista'"),
             },
             ChampionId::Karma => match kind {
-                AbilityId::Q(AbilityName::_1) => karma_q_1(ctx),
+                AbilityId::Q(AbilityName::_1) => karma_q1(ctx),
                 _ => panic!("Invalid AbilityId for 'Karma'"),
             },
             ChampionId::Karthus => match kind {
-                AbilityId::Q(AbilityName::_1) => karthus_q_1(ctx),
-                AbilityId::W(AbilityName::_1) => karthus_w_1(ctx),
-                AbilityId::R(AbilityName::_1) => karthus_r_1(ctx),
+                AbilityId::Q(AbilityName::_1) => karthus_q1(ctx),
+                AbilityId::W(AbilityName::_1) => karthus_w1(ctx),
+                AbilityId::R(AbilityName::_1) => karthus_r1(ctx),
                 _ => panic!("Invalid AbilityId for 'Karthus'"),
             },
             ChampionId::Kassadin => match kind {
-                AbilityId::Q(AbilityName::_1) => kassadin_q_1(ctx),
-                AbilityId::E(AbilityName::_1) => kassadin_e_1(ctx),
-                AbilityId::R(AbilityName::_1) => kassadin_r_1(ctx),
+                AbilityId::Q(AbilityName::_1) => kassadin_q1(ctx),
+                AbilityId::E(AbilityName::_1) => kassadin_e1(ctx),
+                AbilityId::R(AbilityName::_1) => kassadin_r1(ctx),
                 _ => panic!("Invalid AbilityId for 'Kassadin'"),
             },
             ChampionId::Katarina => match kind {
-                AbilityId::Q(AbilityName::_1) => katarina_q_1(ctx),
-                AbilityId::E(AbilityName::_1) => katarina_e_1(ctx),
+                AbilityId::Q(AbilityName::_1) => katarina_q1(ctx),
+                AbilityId::E(AbilityName::_1) => katarina_e1(ctx),
                 _ => panic!("Invalid AbilityId for 'Katarina'"),
             },
             ChampionId::Kayle => match kind {
-                AbilityId::Q(AbilityName::_1) => kayle_q_1(ctx),
-                AbilityId::Q(AbilityName::_2) => kayle_q_2(ctx),
-                AbilityId::W(AbilityName::_1) => kayle_w_1(ctx),
+                AbilityId::Q(AbilityName::_1) => kayle_q1(ctx),
+                AbilityId::Q(AbilityName::_2) => kayle_q2(ctx),
+                AbilityId::W(AbilityName::_1) => kayle_w1(ctx),
                 _ => panic!("Invalid AbilityId for 'Kayle'"),
             },
             ChampionId::Kayn => match kind {
-                AbilityId::Q(AbilityName::_1) => kayn_q_1(ctx),
-                AbilityId::W(AbilityName::_1) => kayn_w_1(ctx),
-                AbilityId::E(AbilityName::_1) => kayn_e_1(ctx),
-                AbilityId::R(AbilityName::_2) => kayn_r_2(ctx),
+                AbilityId::Q(AbilityName::_1) => kayn_q1(ctx),
+                AbilityId::W(AbilityName::_1) => kayn_w1(ctx),
+                AbilityId::E(AbilityName::_1) => kayn_e1(ctx),
+                AbilityId::R(AbilityName::_2) => kayn_r2(ctx),
                 _ => panic!("Invalid AbilityId for 'Kayn'"),
             },
             ChampionId::Kennen => match kind {
-                AbilityId::Q(AbilityName::_1) => kennen_q_1(ctx),
-                AbilityId::W(AbilityName::_1) => kennen_w_1(ctx),
-                AbilityId::E(AbilityName::_1) => kennen_e_1(ctx),
+                AbilityId::Q(AbilityName::_1) => kennen_q1(ctx),
+                AbilityId::W(AbilityName::_1) => kennen_w1(ctx),
+                AbilityId::E(AbilityName::_1) => kennen_e1(ctx),
                 _ => panic!("Invalid AbilityId for 'Kennen'"),
             },
             ChampionId::Khazix => match kind {
-                AbilityId::Q(AbilityName::_1) => khazix_q_1(ctx),
+                AbilityId::Q(AbilityName::_1) => khazix_q1(ctx),
                 _ => panic!("Invalid AbilityId for 'Khazix'"),
             },
             ChampionId::Kindred => match kind {
-                AbilityId::Q(AbilityName::_5) => kindred_q_5(ctx),
-                AbilityId::Q(AbilityName::_6) => kindred_q_6(ctx),
-                AbilityId::E(AbilityName::_2) => kindred_e_2(ctx),
-                AbilityId::R(AbilityName::_1) => kindred_r_1(ctx),
+                AbilityId::Q(AbilityName::_5) => kindred_q5(ctx),
+                AbilityId::Q(AbilityName::_6) => kindred_q6(ctx),
+                AbilityId::E(AbilityName::_2) => kindred_e2(ctx),
+                AbilityId::R(AbilityName::_1) => kindred_r1(ctx),
                 _ => panic!("Invalid AbilityId for 'Kindred'"),
             },
             ChampionId::Kled => match kind {
-                AbilityId::Q(AbilityName::_1) => kled_q_1(ctx),
+                AbilityId::Q(AbilityName::_1) => kled_q1(ctx),
                 _ => panic!("Invalid AbilityId for 'Kled'"),
             },
             ChampionId::KogMaw => match kind {
-                AbilityId::Q(AbilityName::_1) => kogmaw_q_1(ctx),
-                AbilityId::R(AbilityName::_1) => kogmaw_r_1(ctx),
+                AbilityId::Q(AbilityName::_1) => kogmaw_q1(ctx),
+                AbilityId::R(AbilityName::_1) => kogmaw_r1(ctx),
                 _ => panic!("Invalid AbilityId for 'KogMaw'"),
             },
             ChampionId::Leblanc => match kind {
-                AbilityId::Q(AbilityName::_1) => leblanc_q_1(ctx),
-                AbilityId::Q(AbilityName::_2) => leblanc_q_2(ctx),
-                AbilityId::W(AbilityName::_1) => leblanc_w_1(ctx),
-                AbilityId::E(AbilityName::_1) => leblanc_e_1(ctx),
-                AbilityId::E(AbilityName::_2) => leblanc_e_2(ctx),
-                AbilityId::E(AbilityName::_3) => leblanc_e_3(ctx),
-                AbilityId::R(AbilityName::_1) => leblanc_r_1(ctx),
-                AbilityId::R(AbilityName::_2) => leblanc_r_2(ctx),
-                AbilityId::R(AbilityName::_3) => leblanc_r_3(ctx),
-                AbilityId::R(AbilityName::_4) => leblanc_r_4(ctx),
-                AbilityId::R(AbilityName::_5) => leblanc_r_5(ctx),
-                AbilityId::R(AbilityName::_6) => leblanc_r_6(ctx),
-                AbilityId::R(AbilityName::_7) => leblanc_r_7(ctx),
+                AbilityId::Q(AbilityName::_1) => leblanc_q1(ctx),
+                AbilityId::Q(AbilityName::_2) => leblanc_q2(ctx),
+                AbilityId::W(AbilityName::_1) => leblanc_w1(ctx),
+                AbilityId::E(AbilityName::_1) => leblanc_e1(ctx),
+                AbilityId::E(AbilityName::_2) => leblanc_e2(ctx),
+                AbilityId::E(AbilityName::_3) => leblanc_e3(ctx),
+                AbilityId::R(AbilityName::_1) => leblanc_r1(ctx),
+                AbilityId::R(AbilityName::_2) => leblanc_r2(ctx),
+                AbilityId::R(AbilityName::_3) => leblanc_r3(ctx),
+                AbilityId::R(AbilityName::_4) => leblanc_r4(ctx),
+                AbilityId::R(AbilityName::_5) => leblanc_r5(ctx),
+                AbilityId::R(AbilityName::_6) => leblanc_r6(ctx),
+                AbilityId::R(AbilityName::_7) => leblanc_r7(ctx),
                 _ => panic!("Invalid AbilityId for 'Leblanc'"),
             },
             ChampionId::LeeSin => match kind {
-                AbilityId::Q(AbilityName::_2) => leesin_q_2(ctx),
-                AbilityId::E(AbilityName::_1) => leesin_e_1(ctx),
-                AbilityId::R(AbilityName::_1) => leesin_r_1(ctx),
-                AbilityId::R(AbilityName::_2) => leesin_r_2(ctx),
+                AbilityId::Q(AbilityName::_2) => leesin_q2(ctx),
+                AbilityId::E(AbilityName::_1) => leesin_e1(ctx),
+                AbilityId::R(AbilityName::_1) => leesin_r1(ctx),
+                AbilityId::R(AbilityName::_2) => leesin_r2(ctx),
                 _ => panic!("Invalid AbilityId for 'LeeSin'"),
             },
             ChampionId::Leona => match kind {
-                AbilityId::Q(AbilityName::_1) => leona_q_1(ctx),
-                AbilityId::W(AbilityName::_1) => leona_w_1(ctx),
-                AbilityId::W(AbilityName::_2) => leona_w_2(ctx),
-                AbilityId::E(AbilityName::_1) => leona_e_1(ctx),
-                AbilityId::R(AbilityName::_1) => leona_r_1(ctx),
+                AbilityId::Q(AbilityName::_1) => leona_q1(ctx),
+                AbilityId::W(AbilityName::_1) => leona_w1(ctx),
+                AbilityId::W(AbilityName::_2) => leona_w2(ctx),
+                AbilityId::E(AbilityName::_1) => leona_e1(ctx),
+                AbilityId::R(AbilityName::_1) => leona_r1(ctx),
                 _ => panic!("Invalid AbilityId for 'Leona'"),
             },
             ChampionId::Lillia => match kind {
-                AbilityId::Q(AbilityName::_1) => lillia_q_1(ctx),
-                AbilityId::Q(AbilityName::_2) => lillia_q_2(ctx),
-                AbilityId::W(AbilityName::_1) => lillia_w_1(ctx),
-                AbilityId::W(AbilityName::_2) => lillia_w_2(ctx),
-                AbilityId::W(AbilityName::_3) => lillia_w_3(ctx),
-                AbilityId::W(AbilityName::_4) => lillia_w_4(ctx),
-                AbilityId::E(AbilityName::_1) => lillia_e_1(ctx),
-                AbilityId::R(AbilityName::_1) => lillia_r_1(ctx),
+                AbilityId::Q(AbilityName::_1) => lillia_q1(ctx),
+                AbilityId::Q(AbilityName::_2) => lillia_q2(ctx),
+                AbilityId::W(AbilityName::_1) => lillia_w1(ctx),
+                AbilityId::W(AbilityName::_2) => lillia_w2(ctx),
+                AbilityId::W(AbilityName::_3) => lillia_w3(ctx),
+                AbilityId::W(AbilityName::_4) => lillia_w4(ctx),
+                AbilityId::E(AbilityName::_1) => lillia_e1(ctx),
+                AbilityId::R(AbilityName::_1) => lillia_r1(ctx),
                 _ => panic!("Invalid AbilityId for 'Lillia'"),
             },
             ChampionId::Lissandra => match kind {
-                AbilityId::Q(AbilityName::_1) => lissandra_q_1(ctx),
-                AbilityId::W(AbilityName::_1) => lissandra_w_1(ctx),
-                AbilityId::E(AbilityName::_1) => lissandra_e_1(ctx),
-                AbilityId::R(AbilityName::_1) => lissandra_r_1(ctx),
+                AbilityId::Q(AbilityName::_1) => lissandra_q1(ctx),
+                AbilityId::W(AbilityName::_1) => lissandra_w1(ctx),
+                AbilityId::E(AbilityName::_1) => lissandra_e1(ctx),
+                AbilityId::R(AbilityName::_1) => lissandra_r1(ctx),
                 _ => panic!("Invalid AbilityId for 'Lissandra'"),
             },
             ChampionId::Lucian => match kind {
-                AbilityId::Q(AbilityName::_1) => lucian_q_1(ctx),
-                AbilityId::W(AbilityName::_1) => lucian_w_1(ctx),
-                AbilityId::R(AbilityName::_1) => lucian_r_1(ctx),
-                AbilityId::R(AbilityName::_2) => lucian_r_2(ctx),
+                AbilityId::Q(AbilityName::_1) => lucian_q1(ctx),
+                AbilityId::W(AbilityName::_1) => lucian_w1(ctx),
+                AbilityId::R(AbilityName::_1) => lucian_r1(ctx),
+                AbilityId::R(AbilityName::_2) => lucian_r2(ctx),
                 _ => panic!("Invalid AbilityId for 'Lucian'"),
             },
             ChampionId::Lulu => match kind {
-                AbilityId::Q(AbilityName::_1) => lulu_q_1(ctx),
-                AbilityId::Q(AbilityName::_2) => lulu_q_2(ctx),
-                AbilityId::Q(AbilityName::_3) => lulu_q_3(ctx),
-                AbilityId::Q(AbilityName::_4) => lulu_q_4(ctx),
-                AbilityId::Q(AbilityName::_5) => lulu_q_5(ctx),
-                AbilityId::Q(AbilityName::_6) => lulu_q_6(ctx),
-                AbilityId::E(AbilityName::_1) => lulu_e_1(ctx),
+                AbilityId::Q(AbilityName::_1) => lulu_q1(ctx),
+                AbilityId::Q(AbilityName::_2) => lulu_q2(ctx),
+                AbilityId::Q(AbilityName::_3) => lulu_q3(ctx),
+                AbilityId::Q(AbilityName::_4) => lulu_q4(ctx),
+                AbilityId::Q(AbilityName::_5) => lulu_q5(ctx),
+                AbilityId::Q(AbilityName::_6) => lulu_q6(ctx),
+                AbilityId::E(AbilityName::_1) => lulu_e1(ctx),
                 _ => panic!("Invalid AbilityId for 'Lulu'"),
             },
             ChampionId::Lux => match kind {
-                AbilityId::Q(AbilityName::_1) => lux_q_1(ctx),
-                AbilityId::E(AbilityName::_1) => lux_e_1(ctx),
-                AbilityId::R(AbilityName::_1) => lux_r_1(ctx),
+                AbilityId::Q(AbilityName::_1) => lux_q1(ctx),
+                AbilityId::E(AbilityName::_1) => lux_e1(ctx),
+                AbilityId::R(AbilityName::_1) => lux_r1(ctx),
                 _ => panic!("Invalid AbilityId for 'Lux'"),
             },
             ChampionId::Malphite => match kind {
-                AbilityId::Q(AbilityName::_1) => malphite_q_1(ctx),
-                AbilityId::W(AbilityName::_1) => malphite_w_1(ctx),
-                AbilityId::W(AbilityName::_2) => malphite_w_2(ctx),
-                AbilityId::E(AbilityName::_1) => malphite_e_1(ctx),
-                AbilityId::R(AbilityName::_1) => malphite_r_1(ctx),
+                AbilityId::Q(AbilityName::_1) => malphite_q1(ctx),
+                AbilityId::W(AbilityName::_1) => malphite_w1(ctx),
+                AbilityId::W(AbilityName::_2) => malphite_w2(ctx),
+                AbilityId::E(AbilityName::_1) => malphite_e1(ctx),
+                AbilityId::R(AbilityName::_1) => malphite_r1(ctx),
                 _ => panic!("Invalid AbilityId for 'Malphite'"),
             },
             ChampionId::Malzahar => match kind {
-                AbilityId::Q(AbilityName::_1) => malzahar_q_1(ctx),
-                AbilityId::W(AbilityName::_1) => malzahar_w_1(ctx),
-                AbilityId::W(AbilityName::_2) => malzahar_w_2(ctx),
-                AbilityId::E(AbilityName::_1) => malzahar_e_1(ctx),
-                AbilityId::E(AbilityName::_2) => malzahar_e_2(ctx),
-                AbilityId::R(AbilityName::_1) => malzahar_r_1(ctx),
-                AbilityId::R(AbilityName::_2) => malzahar_r_2(ctx),
-                AbilityId::R(AbilityName::_3) => malzahar_r_3(ctx),
-                AbilityId::R(AbilityName::_4) => malzahar_r_4(ctx),
+                AbilityId::Q(AbilityName::_1) => malzahar_q1(ctx),
+                AbilityId::W(AbilityName::_1) => malzahar_w1(ctx),
+                AbilityId::W(AbilityName::_2) => malzahar_w2(ctx),
+                AbilityId::E(AbilityName::_1) => malzahar_e1(ctx),
+                AbilityId::E(AbilityName::_2) => malzahar_e2(ctx),
+                AbilityId::R(AbilityName::_1) => malzahar_r1(ctx),
+                AbilityId::R(AbilityName::_2) => malzahar_r2(ctx),
+                AbilityId::R(AbilityName::_3) => malzahar_r3(ctx),
+                AbilityId::R(AbilityName::_4) => malzahar_r4(ctx),
                 _ => panic!("Invalid AbilityId for 'Malzahar'"),
             },
             ChampionId::Maokai => match kind {
-                AbilityId::Q(AbilityName::_1) => maokai_q_1(ctx),
-                AbilityId::Q(AbilityName::_2) => maokai_q_2(ctx),
-                AbilityId::Q(AbilityName::_3) => maokai_q_3(ctx),
-                AbilityId::W(AbilityName::_1) => maokai_w_1(ctx),
-                AbilityId::E(AbilityName::_1) => maokai_e_1(ctx),
-                AbilityId::E(AbilityName::_2) => maokai_e_2(ctx),
-                AbilityId::E(AbilityName::_3) => maokai_e_3(ctx),
-                AbilityId::E(AbilityName::_4) => maokai_e_4(ctx),
-                AbilityId::E(AbilityName::_5) => maokai_e_5(ctx),
-                AbilityId::R(AbilityName::_1) => maokai_r_1(ctx),
+                AbilityId::Q(AbilityName::_1) => maokai_q1(ctx),
+                AbilityId::Q(AbilityName::_2) => maokai_q2(ctx),
+                AbilityId::Q(AbilityName::_3) => maokai_q3(ctx),
+                AbilityId::W(AbilityName::_1) => maokai_w1(ctx),
+                AbilityId::E(AbilityName::_1) => maokai_e1(ctx),
+                AbilityId::E(AbilityName::_2) => maokai_e2(ctx),
+                AbilityId::E(AbilityName::_3) => maokai_e3(ctx),
+                AbilityId::E(AbilityName::_4) => maokai_e4(ctx),
+                AbilityId::E(AbilityName::_5) => maokai_e5(ctx),
+                AbilityId::R(AbilityName::_1) => maokai_r1(ctx),
                 _ => panic!("Invalid AbilityId for 'Maokai'"),
             },
             ChampionId::MasterYi => match kind {
-                AbilityId::Q(AbilityName::_1) => masteryi_q_1(ctx),
-                AbilityId::Q(AbilityName::_2) => masteryi_q_2(ctx),
-                AbilityId::Q(AbilityName::_3) => masteryi_q_3(ctx),
-                AbilityId::Q(AbilityName::_4) => masteryi_q_4(ctx),
-                AbilityId::Q(AbilityName::_5) => masteryi_q_5(ctx),
-                AbilityId::Q(AbilityName::_6) => masteryi_q_6(ctx),
-                AbilityId::Q(AbilityName::_7) => masteryi_q_7(ctx),
-                AbilityId::W(AbilityName::_1) => masteryi_w_1(ctx),
-                AbilityId::W(AbilityName::_2) => masteryi_w_2(ctx),
-                AbilityId::E(AbilityName::_1) => masteryi_e_1(ctx),
+                AbilityId::Q(AbilityName::_1) => masteryi_q1(ctx),
+                AbilityId::Q(AbilityName::_2) => masteryi_q2(ctx),
+                AbilityId::Q(AbilityName::_3) => masteryi_q3(ctx),
+                AbilityId::Q(AbilityName::_4) => masteryi_q4(ctx),
+                AbilityId::Q(AbilityName::_5) => masteryi_q5(ctx),
+                AbilityId::Q(AbilityName::_6) => masteryi_q6(ctx),
+                AbilityId::Q(AbilityName::_7) => masteryi_q7(ctx),
+                AbilityId::W(AbilityName::_1) => masteryi_w1(ctx),
+                AbilityId::W(AbilityName::_2) => masteryi_w2(ctx),
+                AbilityId::E(AbilityName::_1) => masteryi_e1(ctx),
                 _ => panic!("Invalid AbilityId for 'MasterYi'"),
             },
             ChampionId::Mel => match kind {
-                AbilityId::Q(AbilityName::_1) => mel_q_1(ctx),
-                AbilityId::Q(AbilityName::_2) => mel_q_2(ctx),
-                AbilityId::Q(AbilityName::_3) => mel_q_3(ctx),
-                AbilityId::Q(AbilityName::_4) => mel_q_4(ctx),
-                AbilityId::W(AbilityName::_1) => mel_w_1(ctx),
-                AbilityId::E(AbilityName::_1) => mel_e_1(ctx),
-                AbilityId::E(AbilityName::_2) => mel_e_2(ctx),
-                AbilityId::E(AbilityName::_3) => mel_e_3(ctx),
-                AbilityId::E(AbilityName::_4) => mel_e_4(ctx),
-                AbilityId::E(AbilityName::_5) => mel_e_5(ctx),
-                AbilityId::E(AbilityName::_6) => mel_e_6(ctx),
-                AbilityId::R(AbilityName::_2) => mel_r_2(ctx),
-                AbilityId::R(AbilityName::_3) => mel_r_3(ctx),
+                AbilityId::Q(AbilityName::_1) => mel_q1(ctx),
+                AbilityId::Q(AbilityName::_2) => mel_q2(ctx),
+                AbilityId::Q(AbilityName::_3) => mel_q3(ctx),
+                AbilityId::Q(AbilityName::_4) => mel_q4(ctx),
+                AbilityId::W(AbilityName::_1) => mel_w1(ctx),
+                AbilityId::E(AbilityName::_1) => mel_e1(ctx),
+                AbilityId::E(AbilityName::_2) => mel_e2(ctx),
+                AbilityId::E(AbilityName::_3) => mel_e3(ctx),
+                AbilityId::E(AbilityName::_4) => mel_e4(ctx),
+                AbilityId::E(AbilityName::_5) => mel_e5(ctx),
+                AbilityId::E(AbilityName::_6) => mel_e6(ctx),
+                AbilityId::R(AbilityName::_2) => mel_r2(ctx),
+                AbilityId::R(AbilityName::_3) => mel_r3(ctx),
                 _ => panic!("Invalid AbilityId for 'Mel'"),
             },
             ChampionId::Milio => match kind {
-                AbilityId::Q(AbilityName::_1) => milio_q_1(ctx),
+                AbilityId::Q(AbilityName::_1) => milio_q1(ctx),
                 _ => panic!("Invalid AbilityId for 'Milio'"),
             },
             ChampionId::MissFortune => match kind {
-                AbilityId::Q(AbilityName::_1) => missfortune_q_1(ctx),
-                AbilityId::E(AbilityName::_1) => missfortune_e_1(ctx),
-                AbilityId::E(AbilityName::_2) => missfortune_e_2(ctx),
-                AbilityId::R(AbilityName::_1) => missfortune_r_1(ctx),
-                AbilityId::R(AbilityName::_2) => missfortune_r_2(ctx),
+                AbilityId::Q(AbilityName::_1) => missfortune_q1(ctx),
+                AbilityId::E(AbilityName::_1) => missfortune_e1(ctx),
+                AbilityId::E(AbilityName::_2) => missfortune_e2(ctx),
+                AbilityId::R(AbilityName::_1) => missfortune_r1(ctx),
+                AbilityId::R(AbilityName::_2) => missfortune_r2(ctx),
                 _ => panic!("Invalid AbilityId for 'MissFortune'"),
             },
             ChampionId::MonkeyKing => match kind {
-                AbilityId::Q(AbilityName::_1) => monkeyking_q_1(ctx),
-                AbilityId::W(AbilityName::_1) => monkeyking_w_1(ctx),
-                AbilityId::E(AbilityName::_1) => monkeyking_e_1(ctx),
-                AbilityId::R(AbilityName::_1) => monkeyking_r_1(ctx),
-                AbilityId::R(AbilityName::_2) => monkeyking_r_2(ctx),
-                AbilityId::R(AbilityName::_3) => monkeyking_r_3(ctx),
+                AbilityId::Q(AbilityName::_1) => monkeyking_q1(ctx),
+                AbilityId::W(AbilityName::_1) => monkeyking_w1(ctx),
+                AbilityId::E(AbilityName::_1) => monkeyking_e1(ctx),
+                AbilityId::R(AbilityName::_1) => monkeyking_r1(ctx),
+                AbilityId::R(AbilityName::_2) => monkeyking_r2(ctx),
+                AbilityId::R(AbilityName::_3) => monkeyking_r3(ctx),
                 _ => panic!("Invalid AbilityId for 'MonkeyKing'"),
             },
             ChampionId::Mordekaiser => match kind {
-                AbilityId::Q(AbilityName::_1) => mordekaiser_q_1(ctx),
-                AbilityId::Q(AbilityName::_2) => mordekaiser_q_2(ctx),
-                AbilityId::E(AbilityName::_1) => mordekaiser_e_1(ctx),
+                AbilityId::Q(AbilityName::_1) => mordekaiser_q1(ctx),
+                AbilityId::Q(AbilityName::_2) => mordekaiser_q2(ctx),
+                AbilityId::E(AbilityName::_1) => mordekaiser_e1(ctx),
                 _ => panic!("Invalid AbilityId for 'Mordekaiser'"),
             },
             ChampionId::Morgana => match kind {
-                AbilityId::Q(AbilityName::_1) => morgana_q_1(ctx),
-                AbilityId::W(AbilityName::_1) => morgana_w_1(ctx),
-                AbilityId::W(AbilityName::_2) => morgana_w_2(ctx),
-                AbilityId::W(AbilityName::_3) => morgana_w_3(ctx),
-                AbilityId::W(AbilityName::_4) => morgana_w_4(ctx),
-                AbilityId::R(AbilityName::_1) => morgana_r_1(ctx),
-                AbilityId::R(AbilityName::_2) => morgana_r_2(ctx),
+                AbilityId::Q(AbilityName::_1) => morgana_q1(ctx),
+                AbilityId::W(AbilityName::_1) => morgana_w1(ctx),
+                AbilityId::W(AbilityName::_2) => morgana_w2(ctx),
+                AbilityId::W(AbilityName::_3) => morgana_w3(ctx),
+                AbilityId::W(AbilityName::_4) => morgana_w4(ctx),
+                AbilityId::R(AbilityName::_1) => morgana_r1(ctx),
+                AbilityId::R(AbilityName::_2) => morgana_r2(ctx),
                 _ => panic!("Invalid AbilityId for 'Morgana'"),
             },
             ChampionId::Naafiri => match kind {
-                AbilityId::Q(AbilityName::_1) => naafiri_q_1(ctx),
-                AbilityId::Q(AbilityName::_2) => naafiri_q_2(ctx),
-                AbilityId::Q(AbilityName::_3) => naafiri_q_3(ctx),
-                AbilityId::Q(AbilityName::_4) => naafiri_q_4(ctx),
-                AbilityId::Q(AbilityName::_5) => naafiri_q_5(ctx),
-                AbilityId::Q(AbilityName::_6) => naafiri_q_6(ctx),
-                AbilityId::Q(AbilityName::_7) => naafiri_q_7(ctx),
-                AbilityId::Q(AbilityName::_8) => naafiri_q_8(ctx),
-                AbilityId::E(AbilityName::_1) => naafiri_e_1(ctx),
-                AbilityId::E(AbilityName::_2) => naafiri_e_2(ctx),
-                AbilityId::E(AbilityName::_3) => naafiri_e_3(ctx),
-                AbilityId::R(AbilityName::_1) => naafiri_r_1(ctx),
-                AbilityId::R(AbilityName::_2) => naafiri_r_2(ctx),
+                AbilityId::Q(AbilityName::_1) => naafiri_q1(ctx),
+                AbilityId::Q(AbilityName::_2) => naafiri_q2(ctx),
+                AbilityId::Q(AbilityName::_3) => naafiri_q3(ctx),
+                AbilityId::Q(AbilityName::_4) => naafiri_q4(ctx),
+                AbilityId::Q(AbilityName::_5) => naafiri_q5(ctx),
+                AbilityId::Q(AbilityName::_6) => naafiri_q6(ctx),
+                AbilityId::Q(AbilityName::_7) => naafiri_q7(ctx),
+                AbilityId::Q(AbilityName::_8) => naafiri_q8(ctx),
+                AbilityId::E(AbilityName::_1) => naafiri_e1(ctx),
+                AbilityId::E(AbilityName::_2) => naafiri_e2(ctx),
+                AbilityId::E(AbilityName::_3) => naafiri_e3(ctx),
+                AbilityId::R(AbilityName::_1) => naafiri_r1(ctx),
+                AbilityId::R(AbilityName::_2) => naafiri_r2(ctx),
                 _ => panic!("Invalid AbilityId for 'Naafiri'"),
             },
             ChampionId::Nami => match kind {
-                AbilityId::Q(AbilityName::_1) => nami_q_1(ctx),
-                AbilityId::W(AbilityName::_1) => nami_w_1(ctx),
-                AbilityId::W(AbilityName::_2) => nami_w_2(ctx),
-                AbilityId::E(AbilityName::_1) => nami_e_1(ctx),
-                AbilityId::E(AbilityName::_2) => nami_e_2(ctx),
-                AbilityId::R(AbilityName::_1) => nami_r_1(ctx),
+                AbilityId::Q(AbilityName::_1) => nami_q1(ctx),
+                AbilityId::W(AbilityName::_1) => nami_w1(ctx),
+                AbilityId::W(AbilityName::_2) => nami_w2(ctx),
+                AbilityId::E(AbilityName::_1) => nami_e1(ctx),
+                AbilityId::E(AbilityName::_2) => nami_e2(ctx),
+                AbilityId::R(AbilityName::_1) => nami_r1(ctx),
                 _ => panic!("Invalid AbilityId for 'Nami'"),
             },
             ChampionId::Nasus => match kind {
-                AbilityId::Q(AbilityName::_1) => nasus_q_1(ctx),
-                AbilityId::E(AbilityName::_1) => nasus_e_1(ctx),
-                AbilityId::E(AbilityName::_2) => nasus_e_2(ctx),
-                AbilityId::E(AbilityName::_3) => nasus_e_3(ctx),
-                AbilityId::R(AbilityName::_1) => nasus_r_1(ctx),
-                AbilityId::R(AbilityName::_2) => nasus_r_2(ctx),
+                AbilityId::Q(AbilityName::_1) => nasus_q1(ctx),
+                AbilityId::E(AbilityName::_1) => nasus_e1(ctx),
+                AbilityId::E(AbilityName::_2) => nasus_e2(ctx),
+                AbilityId::E(AbilityName::_3) => nasus_e3(ctx),
+                AbilityId::R(AbilityName::_1) => nasus_r1(ctx),
+                AbilityId::R(AbilityName::_2) => nasus_r2(ctx),
                 _ => panic!("Invalid AbilityId for 'Nasus'"),
             },
             ChampionId::Nautilus => match kind {
-                AbilityId::Q(AbilityName::_1) => nautilus_q_1(ctx),
-                AbilityId::W(AbilityName::_1) => nautilus_w_1(ctx),
-                AbilityId::W(AbilityName::_2) => nautilus_w_2(ctx),
-                AbilityId::E(AbilityName::_1) => nautilus_e_1(ctx),
-                AbilityId::E(AbilityName::_2) => nautilus_e_2(ctx),
-                AbilityId::E(AbilityName::_3) => nautilus_e_3(ctx),
-                AbilityId::E(AbilityName::_4) => nautilus_e_4(ctx),
-                AbilityId::R(AbilityName::_1) => nautilus_r_1(ctx),
-                AbilityId::R(AbilityName::_2) => nautilus_r_2(ctx),
+                AbilityId::Q(AbilityName::_1) => nautilus_q1(ctx),
+                AbilityId::W(AbilityName::_1) => nautilus_w1(ctx),
+                AbilityId::W(AbilityName::_2) => nautilus_w2(ctx),
+                AbilityId::E(AbilityName::_1) => nautilus_e1(ctx),
+                AbilityId::E(AbilityName::_2) => nautilus_e2(ctx),
+                AbilityId::E(AbilityName::_3) => nautilus_e3(ctx),
+                AbilityId::E(AbilityName::_4) => nautilus_e4(ctx),
+                AbilityId::R(AbilityName::_1) => nautilus_r1(ctx),
+                AbilityId::R(AbilityName::_2) => nautilus_r2(ctx),
                 _ => panic!("Invalid AbilityId for 'Nautilus'"),
             },
             ChampionId::Neeko => match kind {
-                AbilityId::Q(AbilityName::_1) => neeko_q_1(ctx),
-                AbilityId::Q(AbilityName::Min) => neeko_q_min(ctx),
-                AbilityId::Q(AbilityName::Max) => neeko_q_max(ctx),
-                AbilityId::W(AbilityName::Void) => neeko_w_void(ctx),
-                AbilityId::E(AbilityName::Void) => neeko_e_void(ctx),
-                AbilityId::R(AbilityName::Void) => neeko_r_void(ctx),
+                AbilityId::Q(AbilityName::_1) => neeko_q1(ctx),
+                AbilityId::Q(AbilityName::Min) => neeko_qmin(ctx),
+                AbilityId::Q(AbilityName::Max) => neeko_qmax(ctx),
+                AbilityId::W(AbilityName::Void) => neeko_w(ctx),
+                AbilityId::E(AbilityName::Void) => neeko_e(ctx),
+                AbilityId::R(AbilityName::Void) => neeko_r(ctx),
                 _ => panic!("Invalid AbilityId for 'Neeko'"),
             },
             ChampionId::Nidalee => match kind {
-                AbilityId::Q(AbilityName::_3) => nidalee_q_3(ctx),
-                AbilityId::Q(AbilityName::_4) => nidalee_q_4(ctx),
-                AbilityId::W(AbilityName::_2) => nidalee_w_2(ctx),
-                AbilityId::W(AbilityName::_3) => nidalee_w_3(ctx),
-                AbilityId::E(AbilityName::_1) => nidalee_e_1(ctx),
+                AbilityId::Q(AbilityName::_3) => nidalee_q3(ctx),
+                AbilityId::Q(AbilityName::_4) => nidalee_q4(ctx),
+                AbilityId::W(AbilityName::_2) => nidalee_w2(ctx),
+                AbilityId::W(AbilityName::_3) => nidalee_w3(ctx),
+                AbilityId::E(AbilityName::_1) => nidalee_e1(ctx),
                 _ => panic!("Invalid AbilityId for 'Nidalee'"),
             },
             ChampionId::Nilah => match kind {
-                AbilityId::Q(AbilityName::_1) => nilah_q_1(ctx),
-                AbilityId::Q(AbilityName::_2) => nilah_q_2(ctx),
-                AbilityId::E(AbilityName::_1) => nilah_e_1(ctx),
-                AbilityId::R(AbilityName::_1) => nilah_r_1(ctx),
-                AbilityId::R(AbilityName::_2) => nilah_r_2(ctx),
-                AbilityId::R(AbilityName::_3) => nilah_r_3(ctx),
-                AbilityId::R(AbilityName::_4) => nilah_r_4(ctx),
+                AbilityId::Q(AbilityName::_1) => nilah_q1(ctx),
+                AbilityId::Q(AbilityName::_2) => nilah_q2(ctx),
+                AbilityId::E(AbilityName::_1) => nilah_e1(ctx),
+                AbilityId::R(AbilityName::_1) => nilah_r1(ctx),
+                AbilityId::R(AbilityName::_2) => nilah_r2(ctx),
+                AbilityId::R(AbilityName::_3) => nilah_r3(ctx),
+                AbilityId::R(AbilityName::_4) => nilah_r4(ctx),
                 _ => panic!("Invalid AbilityId for 'Nilah'"),
             },
             ChampionId::Nocturne => match kind {
-                AbilityId::Q(AbilityName::_1) => nocturne_q_1(ctx),
-                AbilityId::Q(AbilityName::_2) => nocturne_q_2(ctx),
-                AbilityId::E(AbilityName::_1) => nocturne_e_1(ctx),
-                AbilityId::E(AbilityName::_2) => nocturne_e_2(ctx),
-                AbilityId::R(AbilityName::_1) => nocturne_r_1(ctx),
+                AbilityId::Q(AbilityName::_1) => nocturne_q1(ctx),
+                AbilityId::Q(AbilityName::_2) => nocturne_q2(ctx),
+                AbilityId::E(AbilityName::_1) => nocturne_e1(ctx),
+                AbilityId::E(AbilityName::_2) => nocturne_e2(ctx),
+                AbilityId::R(AbilityName::_1) => nocturne_r1(ctx),
                 _ => panic!("Invalid AbilityId for 'Nocturne'"),
             },
             ChampionId::Nunu => match kind {
-                AbilityId::Q(AbilityName::_1) => nunu_q_1(ctx),
-                AbilityId::Q(AbilityName::_2) => nunu_q_2(ctx),
-                AbilityId::W(AbilityName::_1) => nunu_w_1(ctx),
-                AbilityId::W(AbilityName::_2) => nunu_w_2(ctx),
-                AbilityId::W(AbilityName::_3) => nunu_w_3(ctx),
-                AbilityId::W(AbilityName::_4) => nunu_w_4(ctx),
-                AbilityId::E(AbilityName::_1) => nunu_e_1(ctx),
-                AbilityId::E(AbilityName::_2) => nunu_e_2(ctx),
-                AbilityId::E(AbilityName::_3) => nunu_e_3(ctx),
-                AbilityId::E(AbilityName::_4) => nunu_e_4(ctx),
-                AbilityId::R(AbilityName::_1) => nunu_r_1(ctx),
+                AbilityId::Q(AbilityName::_1) => nunu_q1(ctx),
+                AbilityId::Q(AbilityName::_2) => nunu_q2(ctx),
+                AbilityId::W(AbilityName::_1) => nunu_w1(ctx),
+                AbilityId::W(AbilityName::_2) => nunu_w2(ctx),
+                AbilityId::W(AbilityName::_3) => nunu_w3(ctx),
+                AbilityId::W(AbilityName::_4) => nunu_w4(ctx),
+                AbilityId::E(AbilityName::_1) => nunu_e1(ctx),
+                AbilityId::E(AbilityName::_2) => nunu_e2(ctx),
+                AbilityId::E(AbilityName::_3) => nunu_e3(ctx),
+                AbilityId::E(AbilityName::_4) => nunu_e4(ctx),
+                AbilityId::R(AbilityName::_1) => nunu_r1(ctx),
                 _ => panic!("Invalid AbilityId for 'Nunu'"),
             },
             ChampionId::Olaf => match kind {
-                AbilityId::Q(AbilityName::_1) => olaf_q_1(ctx),
-                AbilityId::Q(AbilityName::_2) => olaf_q_2(ctx),
-                AbilityId::Q(AbilityName::_3) => olaf_q_3(ctx),
-                AbilityId::E(AbilityName::_1) => olaf_e_1(ctx),
-                AbilityId::R(AbilityName::_1) => olaf_r_1(ctx),
+                AbilityId::Q(AbilityName::_1) => olaf_q1(ctx),
+                AbilityId::Q(AbilityName::_2) => olaf_q2(ctx),
+                AbilityId::Q(AbilityName::_3) => olaf_q3(ctx),
+                AbilityId::E(AbilityName::_1) => olaf_e1(ctx),
+                AbilityId::R(AbilityName::_1) => olaf_r1(ctx),
                 _ => panic!("Invalid AbilityId for 'Olaf'"),
             },
             ChampionId::Orianna => match kind {
-                AbilityId::Q(AbilityName::_1) => orianna_q_1(ctx),
-                AbilityId::Q(AbilityName::_2) => orianna_q_2(ctx),
-                AbilityId::W(AbilityName::_1) => orianna_w_1(ctx),
-                AbilityId::E(AbilityName::_1) => orianna_e_1(ctx),
-                AbilityId::R(AbilityName::_1) => orianna_r_1(ctx),
+                AbilityId::Q(AbilityName::_1) => orianna_q1(ctx),
+                AbilityId::Q(AbilityName::_2) => orianna_q2(ctx),
+                AbilityId::W(AbilityName::_1) => orianna_w1(ctx),
+                AbilityId::E(AbilityName::_1) => orianna_e1(ctx),
+                AbilityId::R(AbilityName::_1) => orianna_r1(ctx),
                 _ => panic!("Invalid AbilityId for 'Orianna'"),
             },
             ChampionId::Ornn => match kind {
-                AbilityId::Q(AbilityName::_1) => ornn_q_1(ctx),
-                AbilityId::W(AbilityName::_1) => ornn_w_1(ctx),
-                AbilityId::W(AbilityName::_2) => ornn_w_2(ctx),
-                AbilityId::W(AbilityName::_3) => ornn_w_3(ctx),
-                AbilityId::W(AbilityName::_4) => ornn_w_4(ctx),
-                AbilityId::W(AbilityName::_5) => ornn_w_5(ctx),
-                AbilityId::W(AbilityName::_6) => ornn_w_6(ctx),
-                AbilityId::E(AbilityName::_1) => ornn_e_1(ctx),
-                AbilityId::R(AbilityName::_1) => ornn_r_1(ctx),
-                AbilityId::R(AbilityName::_2) => ornn_r_2(ctx),
+                AbilityId::Q(AbilityName::_1) => ornn_q1(ctx),
+                AbilityId::W(AbilityName::_1) => ornn_w1(ctx),
+                AbilityId::W(AbilityName::_2) => ornn_w2(ctx),
+                AbilityId::W(AbilityName::_3) => ornn_w3(ctx),
+                AbilityId::W(AbilityName::_4) => ornn_w4(ctx),
+                AbilityId::W(AbilityName::_5) => ornn_w5(ctx),
+                AbilityId::W(AbilityName::_6) => ornn_w6(ctx),
+                AbilityId::E(AbilityName::_1) => ornn_e1(ctx),
+                AbilityId::R(AbilityName::_1) => ornn_r1(ctx),
+                AbilityId::R(AbilityName::_2) => ornn_r2(ctx),
                 _ => panic!("Invalid AbilityId for 'Ornn'"),
             },
             ChampionId::Pantheon => match kind {
-                AbilityId::Q(AbilityName::_1) => pantheon_q_1(ctx),
-                AbilityId::Q(AbilityName::_2) => pantheon_q_2(ctx),
-                AbilityId::Q(AbilityName::_3) => pantheon_q_3(ctx),
-                AbilityId::Q(AbilityName::_4) => pantheon_q_4(ctx),
-                AbilityId::Q(AbilityName::_5) => pantheon_q_5(ctx),
-                AbilityId::Q(AbilityName::_6) => pantheon_q_6(ctx),
-                AbilityId::W(AbilityName::_1) => pantheon_w_1(ctx),
-                AbilityId::E(AbilityName::_1) => pantheon_e_1(ctx),
-                AbilityId::R(AbilityName::_1) => pantheon_r_1(ctx),
-                AbilityId::R(AbilityName::_2) => pantheon_r_2(ctx),
+                AbilityId::Q(AbilityName::_1) => pantheon_q1(ctx),
+                AbilityId::Q(AbilityName::_2) => pantheon_q2(ctx),
+                AbilityId::Q(AbilityName::_3) => pantheon_q3(ctx),
+                AbilityId::Q(AbilityName::_4) => pantheon_q4(ctx),
+                AbilityId::Q(AbilityName::_5) => pantheon_q5(ctx),
+                AbilityId::Q(AbilityName::_6) => pantheon_q6(ctx),
+                AbilityId::W(AbilityName::_1) => pantheon_w1(ctx),
+                AbilityId::E(AbilityName::_1) => pantheon_e1(ctx),
+                AbilityId::R(AbilityName::_1) => pantheon_r1(ctx),
+                AbilityId::R(AbilityName::_2) => pantheon_r2(ctx),
                 _ => panic!("Invalid AbilityId for 'Pantheon'"),
             },
             ChampionId::Poppy => match kind {
-                AbilityId::Q(AbilityName::_1) => poppy_q_1(ctx),
-                AbilityId::Q(AbilityName::_2) => poppy_q_2(ctx),
-                AbilityId::Q(AbilityName::_3) => poppy_q_3(ctx),
-                AbilityId::Q(AbilityName::_4) => poppy_q_4(ctx),
-                AbilityId::Q(AbilityName::_5) => poppy_q_5(ctx),
-                AbilityId::W(AbilityName::_1) => poppy_w_1(ctx),
-                AbilityId::E(AbilityName::_1) => poppy_e_1(ctx),
-                AbilityId::E(AbilityName::_2) => poppy_e_2(ctx),
-                AbilityId::R(AbilityName::_1) => poppy_r_1(ctx),
-                AbilityId::R(AbilityName::_2) => poppy_r_2(ctx),
+                AbilityId::Q(AbilityName::_1) => poppy_q1(ctx),
+                AbilityId::Q(AbilityName::_2) => poppy_q2(ctx),
+                AbilityId::Q(AbilityName::_3) => poppy_q3(ctx),
+                AbilityId::Q(AbilityName::_4) => poppy_q4(ctx),
+                AbilityId::Q(AbilityName::_5) => poppy_q5(ctx),
+                AbilityId::W(AbilityName::_1) => poppy_w1(ctx),
+                AbilityId::E(AbilityName::_1) => poppy_e1(ctx),
+                AbilityId::E(AbilityName::_2) => poppy_e2(ctx),
+                AbilityId::R(AbilityName::_1) => poppy_r1(ctx),
+                AbilityId::R(AbilityName::_2) => poppy_r2(ctx),
                 _ => panic!("Invalid AbilityId for 'Poppy'"),
             },
             ChampionId::Pyke => match kind {
-                AbilityId::Q(AbilityName::_1) => pyke_q_1(ctx),
-                AbilityId::E(AbilityName::_1) => pyke_e_1(ctx),
+                AbilityId::Q(AbilityName::_1) => pyke_q1(ctx),
+                AbilityId::E(AbilityName::_1) => pyke_e1(ctx),
                 _ => panic!("Invalid AbilityId for 'Pyke'"),
             },
             ChampionId::Qiyana => match kind {
-                AbilityId::Q(AbilityName::_1) => qiyana_q_1(ctx),
-                AbilityId::Q(AbilityName::_2) => qiyana_q_2(ctx),
-                AbilityId::W(AbilityName::_1) => qiyana_w_1(ctx),
-                AbilityId::E(AbilityName::_1) => qiyana_e_1(ctx),
-                AbilityId::R(AbilityName::_1) => qiyana_r_1(ctx),
-                AbilityId::R(AbilityName::_2) => qiyana_r_2(ctx),
+                AbilityId::Q(AbilityName::_1) => qiyana_q1(ctx),
+                AbilityId::Q(AbilityName::_2) => qiyana_q2(ctx),
+                AbilityId::W(AbilityName::_1) => qiyana_w1(ctx),
+                AbilityId::E(AbilityName::_1) => qiyana_e1(ctx),
+                AbilityId::R(AbilityName::_1) => qiyana_r1(ctx),
+                AbilityId::R(AbilityName::_2) => qiyana_r2(ctx),
                 _ => panic!("Invalid AbilityId for 'Qiyana'"),
             },
             ChampionId::Quinn => match kind {
-                AbilityId::Q(AbilityName::_1) => quinn_q_1(ctx),
-                AbilityId::E(AbilityName::_1) => quinn_e_1(ctx),
-                AbilityId::R(AbilityName::_1) => quinn_r_1(ctx),
+                AbilityId::Q(AbilityName::_1) => quinn_q1(ctx),
+                AbilityId::E(AbilityName::_1) => quinn_e1(ctx),
+                AbilityId::R(AbilityName::_1) => quinn_r1(ctx),
                 _ => panic!("Invalid AbilityId for 'Quinn'"),
             },
             ChampionId::Rakan => match kind {
-                AbilityId::Q(AbilityName::_1) => rakan_q_1(ctx),
-                AbilityId::W(AbilityName::_1) => rakan_w_1(ctx),
-                AbilityId::R(AbilityName::_1) => rakan_r_1(ctx),
+                AbilityId::Q(AbilityName::_1) => rakan_q1(ctx),
+                AbilityId::W(AbilityName::_1) => rakan_w1(ctx),
+                AbilityId::R(AbilityName::_1) => rakan_r1(ctx),
                 _ => panic!("Invalid AbilityId for 'Rakan'"),
             },
             ChampionId::Rammus => match kind {
-                AbilityId::Q(AbilityName::_1) => rammus_q_1(ctx),
-                AbilityId::E(AbilityName::_1) => rammus_e_1(ctx),
-                AbilityId::R(AbilityName::_1) => rammus_r_1(ctx),
+                AbilityId::Q(AbilityName::_1) => rammus_q1(ctx),
+                AbilityId::E(AbilityName::_1) => rammus_e1(ctx),
+                AbilityId::R(AbilityName::_1) => rammus_r1(ctx),
                 _ => panic!("Invalid AbilityId for 'Rammus'"),
             },
             ChampionId::RekSai => match kind {
-                AbilityId::Q(AbilityName::_2) => reksai_q_2(ctx),
-                AbilityId::Q(AbilityName::_3) => reksai_q_3(ctx),
-                AbilityId::W(AbilityName::_1) => reksai_w_1(ctx),
-                AbilityId::E(AbilityName::_1) => reksai_e_1(ctx),
-                AbilityId::E(AbilityName::_2) => reksai_e_2(ctx),
-                AbilityId::R(AbilityName::_1) => reksai_r_1(ctx),
+                AbilityId::Q(AbilityName::_2) => reksai_q2(ctx),
+                AbilityId::Q(AbilityName::_3) => reksai_q3(ctx),
+                AbilityId::W(AbilityName::_1) => reksai_w1(ctx),
+                AbilityId::E(AbilityName::_1) => reksai_e1(ctx),
+                AbilityId::E(AbilityName::_2) => reksai_e2(ctx),
+                AbilityId::R(AbilityName::_1) => reksai_r1(ctx),
                 _ => panic!("Invalid AbilityId for 'RekSai'"),
             },
             ChampionId::Rell => match kind {
-                AbilityId::Q(AbilityName::_1) => rell_q_1(ctx),
-                AbilityId::W(AbilityName::_2) => rell_w_2(ctx),
-                AbilityId::E(AbilityName::_1) => rell_e_1(ctx),
-                AbilityId::R(AbilityName::_1) => rell_r_1(ctx),
-                AbilityId::R(AbilityName::_2) => rell_r_2(ctx),
+                AbilityId::Q(AbilityName::_1) => rell_q1(ctx),
+                AbilityId::W(AbilityName::_2) => rell_w2(ctx),
+                AbilityId::E(AbilityName::_1) => rell_e1(ctx),
+                AbilityId::R(AbilityName::_1) => rell_r1(ctx),
+                AbilityId::R(AbilityName::_2) => rell_r2(ctx),
                 _ => panic!("Invalid AbilityId for 'Rell'"),
             },
             ChampionId::Renata => match kind {
-                AbilityId::Q(AbilityName::_1) => renata_q_1(ctx),
-                AbilityId::E(AbilityName::_1) => renata_e_1(ctx),
+                AbilityId::Q(AbilityName::_1) => renata_q1(ctx),
+                AbilityId::E(AbilityName::_1) => renata_e1(ctx),
                 _ => panic!("Invalid AbilityId for 'Renata'"),
             },
             ChampionId::Renekton => match kind {
-                AbilityId::Q(AbilityName::_1) => renekton_q_1(ctx),
-                AbilityId::Q(AbilityName::_2) => renekton_q_2(ctx),
-                AbilityId::W(AbilityName::_1) => renekton_w_1(ctx),
-                AbilityId::W(AbilityName::_2) => renekton_w_2(ctx),
-                AbilityId::W(AbilityName::_3) => renekton_w_3(ctx),
-                AbilityId::E(AbilityName::_1) => renekton_e_1(ctx),
-                AbilityId::E(AbilityName::_2) => renekton_e_2(ctx),
-                AbilityId::E(AbilityName::_3) => renekton_e_3(ctx),
-                AbilityId::E(AbilityName::_4) => renekton_e_4(ctx),
-                AbilityId::R(AbilityName::_1) => renekton_r_1(ctx),
-                AbilityId::R(AbilityName::_2) => renekton_r_2(ctx),
+                AbilityId::Q(AbilityName::_1) => renekton_q1(ctx),
+                AbilityId::Q(AbilityName::_2) => renekton_q2(ctx),
+                AbilityId::W(AbilityName::_1) => renekton_w1(ctx),
+                AbilityId::W(AbilityName::_2) => renekton_w2(ctx),
+                AbilityId::W(AbilityName::_3) => renekton_w3(ctx),
+                AbilityId::E(AbilityName::_1) => renekton_e1(ctx),
+                AbilityId::E(AbilityName::_2) => renekton_e2(ctx),
+                AbilityId::E(AbilityName::_3) => renekton_e3(ctx),
+                AbilityId::E(AbilityName::_4) => renekton_e4(ctx),
+                AbilityId::R(AbilityName::_1) => renekton_r1(ctx),
+                AbilityId::R(AbilityName::_2) => renekton_r2(ctx),
                 _ => panic!("Invalid AbilityId for 'Renekton'"),
             },
             ChampionId::Rengar => match kind {
-                AbilityId::Q(AbilityName::_1) => rengar_q_1(ctx),
-                AbilityId::W(AbilityName::_1) => rengar_w_1(ctx),
-                AbilityId::E(AbilityName::_1) => rengar_e_1(ctx),
+                AbilityId::Q(AbilityName::_1) => rengar_q1(ctx),
+                AbilityId::W(AbilityName::_1) => rengar_w1(ctx),
+                AbilityId::E(AbilityName::_1) => rengar_e1(ctx),
                 _ => panic!("Invalid AbilityId for 'Rengar'"),
             },
             ChampionId::Riven => match kind {
-                AbilityId::Q(AbilityName::_1) => riven_q_1(ctx),
-                AbilityId::Q(AbilityName::_2) => riven_q_2(ctx),
-                AbilityId::W(AbilityName::_1) => riven_w_1(ctx),
+                AbilityId::Q(AbilityName::_1) => riven_q1(ctx),
+                AbilityId::Q(AbilityName::_2) => riven_q2(ctx),
+                AbilityId::W(AbilityName::_1) => riven_w1(ctx),
                 _ => panic!("Invalid AbilityId for 'Riven'"),
             },
             ChampionId::Rumble => match kind {
-                AbilityId::Q(AbilityName::_1) => rumble_q_1(ctx),
-                AbilityId::Q(AbilityName::_2) => rumble_q_2(ctx),
-                AbilityId::Q(AbilityName::_3) => rumble_q_3(ctx),
-                AbilityId::Q(AbilityName::_4) => rumble_q_4(ctx),
-                AbilityId::Q(AbilityName::_5) => rumble_q_5(ctx),
-                AbilityId::Q(AbilityName::_6) => rumble_q_6(ctx),
-                AbilityId::Q(AbilityName::_7) => rumble_q_7(ctx),
-                AbilityId::Q(AbilityName::_8) => rumble_q_8(ctx),
-                AbilityId::Q(AbilityName::_1Min) => rumble_q_1min(ctx),
-                AbilityId::Q(AbilityName::_2Min) => rumble_q_2min(ctx),
-                AbilityId::Q(AbilityName::_3Min) => rumble_q_3min(ctx),
-                AbilityId::Q(AbilityName::_4Min) => rumble_q_4min(ctx),
-                AbilityId::Q(AbilityName::_5Min) => rumble_q_5min(ctx),
-                AbilityId::Q(AbilityName::_6Min) => rumble_q_6min(ctx),
-                AbilityId::Q(AbilityName::_7Min) => rumble_q_7min(ctx),
-                AbilityId::Q(AbilityName::_8Min) => rumble_q_8min(ctx),
-                AbilityId::E(AbilityName::_1) => rumble_e_1(ctx),
-                AbilityId::E(AbilityName::_2) => rumble_e_2(ctx),
-                AbilityId::E(AbilityName::_3) => rumble_e_3(ctx),
-                AbilityId::E(AbilityName::_4) => rumble_e_4(ctx),
-                AbilityId::R(AbilityName::_1) => rumble_r_1(ctx),
-                AbilityId::R(AbilityName::_2) => rumble_r_2(ctx),
-                AbilityId::R(AbilityName::_3) => rumble_r_3(ctx),
+                AbilityId::Q(AbilityName::_1) => rumble_q1(ctx),
+                AbilityId::Q(AbilityName::_2) => rumble_q2(ctx),
+                AbilityId::Q(AbilityName::_3) => rumble_q3(ctx),
+                AbilityId::Q(AbilityName::_4) => rumble_q4(ctx),
+                AbilityId::Q(AbilityName::_5) => rumble_q5(ctx),
+                AbilityId::Q(AbilityName::_6) => rumble_q6(ctx),
+                AbilityId::Q(AbilityName::_7) => rumble_q7(ctx),
+                AbilityId::Q(AbilityName::_8) => rumble_q8(ctx),
+                AbilityId::Q(AbilityName::_1Min) => rumble_q1min(ctx),
+                AbilityId::Q(AbilityName::_2Min) => rumble_q2min(ctx),
+                AbilityId::Q(AbilityName::_3Min) => rumble_q3min(ctx),
+                AbilityId::Q(AbilityName::_4Min) => rumble_q4min(ctx),
+                AbilityId::Q(AbilityName::_5Min) => rumble_q5min(ctx),
+                AbilityId::Q(AbilityName::_6Min) => rumble_q6min(ctx),
+                AbilityId::Q(AbilityName::_7Min) => rumble_q7min(ctx),
+                AbilityId::Q(AbilityName::_8Min) => rumble_q8min(ctx),
+                AbilityId::E(AbilityName::_1) => rumble_e1(ctx),
+                AbilityId::E(AbilityName::_2) => rumble_e2(ctx),
+                AbilityId::E(AbilityName::_3) => rumble_e3(ctx),
+                AbilityId::E(AbilityName::_4) => rumble_e4(ctx),
+                AbilityId::R(AbilityName::_1) => rumble_r1(ctx),
+                AbilityId::R(AbilityName::_2) => rumble_r2(ctx),
+                AbilityId::R(AbilityName::_3) => rumble_r3(ctx),
                 _ => panic!("Invalid AbilityId for 'Rumble'"),
             },
             ChampionId::Ryze => match kind {
-                AbilityId::Q(AbilityName::_1) => ryze_q_1(ctx),
-                AbilityId::W(AbilityName::_1) => ryze_w_1(ctx),
-                AbilityId::E(AbilityName::_1) => ryze_e_1(ctx),
-                AbilityId::R(AbilityName::_1) => ryze_r_1(ctx),
+                AbilityId::Q(AbilityName::_1) => ryze_q1(ctx),
+                AbilityId::W(AbilityName::_1) => ryze_w1(ctx),
+                AbilityId::E(AbilityName::_1) => ryze_e1(ctx),
+                AbilityId::R(AbilityName::_1) => ryze_r1(ctx),
                 _ => panic!("Invalid AbilityId for 'Ryze'"),
             },
             ChampionId::Samira => match kind {
-                AbilityId::Q(AbilityName::_1) => samira_q_1(ctx),
-                AbilityId::W(AbilityName::_1) => samira_w_1(ctx),
-                AbilityId::W(AbilityName::_2) => samira_w_2(ctx),
-                AbilityId::E(AbilityName::_1) => samira_e_1(ctx),
-                AbilityId::R(AbilityName::_1) => samira_r_1(ctx),
-                AbilityId::R(AbilityName::_2) => samira_r_2(ctx),
-                AbilityId::R(AbilityName::_3) => samira_r_3(ctx),
-                AbilityId::R(AbilityName::_4) => samira_r_4(ctx),
+                AbilityId::Q(AbilityName::_1) => samira_q1(ctx),
+                AbilityId::W(AbilityName::_1) => samira_w1(ctx),
+                AbilityId::W(AbilityName::_2) => samira_w2(ctx),
+                AbilityId::E(AbilityName::_1) => samira_e1(ctx),
+                AbilityId::R(AbilityName::_1) => samira_r1(ctx),
+                AbilityId::R(AbilityName::_2) => samira_r2(ctx),
+                AbilityId::R(AbilityName::_3) => samira_r3(ctx),
+                AbilityId::R(AbilityName::_4) => samira_r4(ctx),
                 _ => panic!("Invalid AbilityId for 'Samira'"),
             },
             ChampionId::Sejuani => match kind {
-                AbilityId::Q(AbilityName::_1) => sejuani_q_1(ctx),
-                AbilityId::W(AbilityName::_1) => sejuani_w_1(ctx),
-                AbilityId::W(AbilityName::_2) => sejuani_w_2(ctx),
-                AbilityId::W(AbilityName::_3) => sejuani_w_3(ctx),
-                AbilityId::E(AbilityName::_1) => sejuani_e_1(ctx),
-                AbilityId::R(AbilityName::_1) => sejuani_r_1(ctx),
-                AbilityId::R(AbilityName::_2) => sejuani_r_2(ctx),
+                AbilityId::Q(AbilityName::_1) => sejuani_q1(ctx),
+                AbilityId::W(AbilityName::_1) => sejuani_w1(ctx),
+                AbilityId::W(AbilityName::_2) => sejuani_w2(ctx),
+                AbilityId::W(AbilityName::_3) => sejuani_w3(ctx),
+                AbilityId::E(AbilityName::_1) => sejuani_e1(ctx),
+                AbilityId::R(AbilityName::_1) => sejuani_r1(ctx),
+                AbilityId::R(AbilityName::_2) => sejuani_r2(ctx),
                 _ => panic!("Invalid AbilityId for 'Sejuani'"),
             },
             ChampionId::Senna => match kind {
-                AbilityId::Q(AbilityName::_1) => senna_q_1(ctx),
-                AbilityId::W(AbilityName::_1) => senna_w_1(ctx),
-                AbilityId::R(AbilityName::_1) => senna_r_1(ctx),
+                AbilityId::Q(AbilityName::_1) => senna_q1(ctx),
+                AbilityId::W(AbilityName::_1) => senna_w1(ctx),
+                AbilityId::R(AbilityName::_1) => senna_r1(ctx),
                 _ => panic!("Invalid AbilityId for 'Senna'"),
             },
             ChampionId::Seraphine => match kind {
-                AbilityId::Q(AbilityName::_1) => seraphine_q_1(ctx),
-                AbilityId::Q(AbilityName::_2) => seraphine_q_2(ctx),
-                AbilityId::E(AbilityName::_1) => seraphine_e_1(ctx),
-                AbilityId::E(AbilityName::_2) => seraphine_e_2(ctx),
-                AbilityId::R(AbilityName::_1) => seraphine_r_1(ctx),
+                AbilityId::Q(AbilityName::_1) => seraphine_q1(ctx),
+                AbilityId::Q(AbilityName::_2) => seraphine_q2(ctx),
+                AbilityId::E(AbilityName::_1) => seraphine_e1(ctx),
+                AbilityId::E(AbilityName::_2) => seraphine_e2(ctx),
+                AbilityId::R(AbilityName::_1) => seraphine_r1(ctx),
                 _ => panic!("Invalid AbilityId for 'Seraphine'"),
             },
             ChampionId::Sett => match kind {
-                AbilityId::Q(AbilityName::_1) => sett_q_1(ctx),
-                AbilityId::Q(AbilityName::_2) => sett_q_2(ctx),
-                AbilityId::W(AbilityName::_1) => sett_w_1(ctx),
-                AbilityId::E(AbilityName::_1) => sett_e_1(ctx),
-                AbilityId::R(AbilityName::_1) => sett_r_1(ctx),
-                AbilityId::R(AbilityName::_2) => sett_r_2(ctx),
+                AbilityId::Q(AbilityName::_1) => sett_q1(ctx),
+                AbilityId::Q(AbilityName::_2) => sett_q2(ctx),
+                AbilityId::W(AbilityName::_1) => sett_w1(ctx),
+                AbilityId::E(AbilityName::_1) => sett_e1(ctx),
+                AbilityId::R(AbilityName::_1) => sett_r1(ctx),
+                AbilityId::R(AbilityName::_2) => sett_r2(ctx),
                 _ => panic!("Invalid AbilityId for 'Sett'"),
             },
             ChampionId::Shaco => match kind {
-                AbilityId::Q(AbilityName::_1) => shaco_q_1(ctx),
-                AbilityId::W(AbilityName::_1) => shaco_w_1(ctx),
-                AbilityId::W(AbilityName::_2) => shaco_w_2(ctx),
-                AbilityId::W(AbilityName::_3) => shaco_w_3(ctx),
-                AbilityId::W(AbilityName::_4) => shaco_w_4(ctx),
-                AbilityId::W(AbilityName::_5) => shaco_w_5(ctx),
-                AbilityId::E(AbilityName::_1) => shaco_e_1(ctx),
-                AbilityId::E(AbilityName::_2) => shaco_e_2(ctx),
-                AbilityId::R(AbilityName::_1) => shaco_r_1(ctx),
-                AbilityId::R(AbilityName::_2) => shaco_r_2(ctx),
-                AbilityId::R(AbilityName::_3) => shaco_r_3(ctx),
+                AbilityId::Q(AbilityName::_1) => shaco_q1(ctx),
+                AbilityId::W(AbilityName::_1) => shaco_w1(ctx),
+                AbilityId::W(AbilityName::_2) => shaco_w2(ctx),
+                AbilityId::W(AbilityName::_3) => shaco_w3(ctx),
+                AbilityId::W(AbilityName::_4) => shaco_w4(ctx),
+                AbilityId::W(AbilityName::_5) => shaco_w5(ctx),
+                AbilityId::E(AbilityName::_1) => shaco_e1(ctx),
+                AbilityId::E(AbilityName::_2) => shaco_e2(ctx),
+                AbilityId::R(AbilityName::_1) => shaco_r1(ctx),
+                AbilityId::R(AbilityName::_2) => shaco_r2(ctx),
+                AbilityId::R(AbilityName::_3) => shaco_r3(ctx),
                 _ => panic!("Invalid AbilityId for 'Shaco'"),
             },
             ChampionId::Shen => match kind {
-                AbilityId::Q(AbilityName::_1) => shen_q_1(ctx),
-                AbilityId::Q(AbilityName::_2) => shen_q_2(ctx),
-                AbilityId::Q(AbilityName::_3) => shen_q_3(ctx),
-                AbilityId::Q(AbilityName::_4) => shen_q_4(ctx),
-                AbilityId::Q(AbilityName::_5) => shen_q_5(ctx),
-                AbilityId::E(AbilityName::_1) => shen_e_1(ctx),
+                AbilityId::Q(AbilityName::_1) => shen_q1(ctx),
+                AbilityId::Q(AbilityName::_2) => shen_q2(ctx),
+                AbilityId::Q(AbilityName::_3) => shen_q3(ctx),
+                AbilityId::Q(AbilityName::_4) => shen_q4(ctx),
+                AbilityId::Q(AbilityName::_5) => shen_q5(ctx),
+                AbilityId::E(AbilityName::_1) => shen_e1(ctx),
                 _ => panic!("Invalid AbilityId for 'Shen'"),
             },
             ChampionId::Shyvana => match kind {
-                AbilityId::Q(AbilityName::_1) => shyvana_q_1(ctx),
-                AbilityId::W(AbilityName::_1) => shyvana_w_1(ctx),
-                AbilityId::W(AbilityName::_2) => shyvana_w_2(ctx),
-                AbilityId::E(AbilityName::_1) => shyvana_e_1(ctx),
-                AbilityId::E(AbilityName::_2) => shyvana_e_2(ctx),
-                AbilityId::R(AbilityName::_1) => shyvana_r_1(ctx),
+                AbilityId::Q(AbilityName::_1) => shyvana_q1(ctx),
+                AbilityId::W(AbilityName::_1) => shyvana_w1(ctx),
+                AbilityId::W(AbilityName::_2) => shyvana_w2(ctx),
+                AbilityId::E(AbilityName::_1) => shyvana_e1(ctx),
+                AbilityId::E(AbilityName::_2) => shyvana_e2(ctx),
+                AbilityId::R(AbilityName::_1) => shyvana_r1(ctx),
                 _ => panic!("Invalid AbilityId for 'Shyvana'"),
             },
             ChampionId::Singed => match kind {
-                AbilityId::Q(AbilityName::_1) => singed_q_1(ctx),
-                AbilityId::Q(AbilityName::_2) => singed_q_2(ctx),
-                AbilityId::Q(AbilityName::_3) => singed_q_3(ctx),
-                AbilityId::E(AbilityName::_1) => singed_e_1(ctx),
+                AbilityId::Q(AbilityName::_1) => singed_q1(ctx),
+                AbilityId::Q(AbilityName::_2) => singed_q2(ctx),
+                AbilityId::Q(AbilityName::_3) => singed_q3(ctx),
+                AbilityId::E(AbilityName::_1) => singed_e1(ctx),
                 _ => panic!("Invalid AbilityId for 'Singed'"),
             },
             ChampionId::Sion => match kind {
-                AbilityId::Q(AbilityName::_1) => sion_q_1(ctx),
-                AbilityId::Q(AbilityName::_2) => sion_q_2(ctx),
-                AbilityId::Q(AbilityName::_3) => sion_q_3(ctx),
-                AbilityId::Q(AbilityName::_4) => sion_q_4(ctx),
-                AbilityId::Q(AbilityName::_5) => sion_q_5(ctx),
-                AbilityId::Q(AbilityName::_6) => sion_q_6(ctx),
-                AbilityId::Q(AbilityName::_7) => sion_q_7(ctx),
-                AbilityId::W(AbilityName::_1) => sion_w_1(ctx),
-                AbilityId::E(AbilityName::_1) => sion_e_1(ctx),
-                AbilityId::R(AbilityName::_1) => sion_r_1(ctx),
-                AbilityId::R(AbilityName::_2) => sion_r_2(ctx),
+                AbilityId::Q(AbilityName::_1) => sion_q1(ctx),
+                AbilityId::Q(AbilityName::_2) => sion_q2(ctx),
+                AbilityId::Q(AbilityName::_3) => sion_q3(ctx),
+                AbilityId::Q(AbilityName::_4) => sion_q4(ctx),
+                AbilityId::Q(AbilityName::_5) => sion_q5(ctx),
+                AbilityId::Q(AbilityName::_6) => sion_q6(ctx),
+                AbilityId::Q(AbilityName::_7) => sion_q7(ctx),
+                AbilityId::W(AbilityName::_1) => sion_w1(ctx),
+                AbilityId::E(AbilityName::_1) => sion_e1(ctx),
+                AbilityId::R(AbilityName::_1) => sion_r1(ctx),
+                AbilityId::R(AbilityName::_2) => sion_r2(ctx),
                 _ => panic!("Invalid AbilityId for 'Sion'"),
             },
             ChampionId::Sivir => match kind {
-                AbilityId::Q(AbilityName::_1) => sivir_q_1(ctx),
-                AbilityId::Q(AbilityName::_2) => sivir_q_2(ctx),
-                AbilityId::Q(AbilityName::_3) => sivir_q_3(ctx),
-                AbilityId::W(AbilityName::_1) => sivir_w_1(ctx),
-                AbilityId::W(AbilityName::_2) => sivir_w_2(ctx),
-                AbilityId::W(AbilityName::_3) => sivir_w_3(ctx),
-                AbilityId::W(AbilityName::_4) => sivir_w_4(ctx),
+                AbilityId::Q(AbilityName::_1) => sivir_q1(ctx),
+                AbilityId::Q(AbilityName::_2) => sivir_q2(ctx),
+                AbilityId::Q(AbilityName::_3) => sivir_q3(ctx),
+                AbilityId::W(AbilityName::_1) => sivir_w1(ctx),
+                AbilityId::W(AbilityName::_2) => sivir_w2(ctx),
+                AbilityId::W(AbilityName::_3) => sivir_w3(ctx),
+                AbilityId::W(AbilityName::_4) => sivir_w4(ctx),
                 _ => panic!("Invalid AbilityId for 'Sivir'"),
             },
             ChampionId::Skarner => match kind {
-                AbilityId::Q(AbilityName::_2) => skarner_q_2(ctx),
-                AbilityId::Q(AbilityName::_3) => skarner_q_3(ctx),
-                AbilityId::Q(AbilityName::_4) => skarner_q_4(ctx),
-                AbilityId::Q(AbilityName::_5) => skarner_q_5(ctx),
-                AbilityId::W(AbilityName::_1) => skarner_w_1(ctx),
-                AbilityId::E(AbilityName::_1) => skarner_e_1(ctx),
-                AbilityId::R(AbilityName::_1) => skarner_r_1(ctx),
+                AbilityId::Q(AbilityName::_2) => skarner_q2(ctx),
+                AbilityId::Q(AbilityName::_3) => skarner_q3(ctx),
+                AbilityId::Q(AbilityName::_4) => skarner_q4(ctx),
+                AbilityId::Q(AbilityName::_5) => skarner_q5(ctx),
+                AbilityId::W(AbilityName::_1) => skarner_w1(ctx),
+                AbilityId::E(AbilityName::_1) => skarner_e1(ctx),
+                AbilityId::R(AbilityName::_1) => skarner_r1(ctx),
                 _ => panic!("Invalid AbilityId for 'Skarner'"),
             },
             ChampionId::Smolder => match kind {
-                AbilityId::Q(AbilityName::_1) => smolder_q_1(ctx),
-                AbilityId::Q(AbilityName::_2) => smolder_q_2(ctx),
-                AbilityId::W(AbilityName::_1) => smolder_w_1(ctx),
-                AbilityId::W(AbilityName::_2) => smolder_w_2(ctx),
-                AbilityId::W(AbilityName::_3) => smolder_w_3(ctx),
-                AbilityId::E(AbilityName::_1) => smolder_e_1(ctx),
-                AbilityId::E(AbilityName::_2) => smolder_e_2(ctx),
-                AbilityId::R(AbilityName::_1) => smolder_r_1(ctx),
-                AbilityId::R(AbilityName::_2) => smolder_r_2(ctx),
+                AbilityId::Q(AbilityName::_1) => smolder_q1(ctx),
+                AbilityId::Q(AbilityName::_2) => smolder_q2(ctx),
+                AbilityId::W(AbilityName::_1) => smolder_w1(ctx),
+                AbilityId::W(AbilityName::_2) => smolder_w2(ctx),
+                AbilityId::W(AbilityName::_3) => smolder_w3(ctx),
+                AbilityId::E(AbilityName::_1) => smolder_e1(ctx),
+                AbilityId::E(AbilityName::_2) => smolder_e2(ctx),
+                AbilityId::R(AbilityName::_1) => smolder_r1(ctx),
+                AbilityId::R(AbilityName::_2) => smolder_r2(ctx),
                 _ => panic!("Invalid AbilityId for 'Smolder'"),
             },
             ChampionId::Sona => match kind {
-                AbilityId::Q(AbilityName::_1) => sona_q_1(ctx),
-                AbilityId::Q(AbilityName::_2) => sona_q_2(ctx),
-                AbilityId::W(AbilityName::_1) => sona_w_1(ctx),
-                AbilityId::R(AbilityName::_1) => sona_r_1(ctx),
+                AbilityId::Q(AbilityName::_1) => sona_q1(ctx),
+                AbilityId::Q(AbilityName::_2) => sona_q2(ctx),
+                AbilityId::W(AbilityName::_1) => sona_w1(ctx),
+                AbilityId::R(AbilityName::_1) => sona_r1(ctx),
                 _ => panic!("Invalid AbilityId for 'Sona'"),
             },
             ChampionId::Soraka => match kind {
-                AbilityId::Q(AbilityName::_1) => soraka_q_1(ctx),
-                AbilityId::E(AbilityName::_1) => soraka_e_1(ctx),
-                AbilityId::E(AbilityName::_2) => soraka_e_2(ctx),
+                AbilityId::Q(AbilityName::_1) => soraka_q1(ctx),
+                AbilityId::E(AbilityName::_1) => soraka_e1(ctx),
+                AbilityId::E(AbilityName::_2) => soraka_e2(ctx),
                 _ => panic!("Invalid AbilityId for 'Soraka'"),
             },
             ChampionId::Swain => match kind {
-                AbilityId::Q(AbilityName::_1) => swain_q_1(ctx),
-                AbilityId::Q(AbilityName::_2) => swain_q_2(ctx),
-                AbilityId::Q(AbilityName::_3) => swain_q_3(ctx),
-                AbilityId::W(AbilityName::_1) => swain_w_1(ctx),
-                AbilityId::W(AbilityName::_2) => swain_w_2(ctx),
-                AbilityId::E(AbilityName::_1) => swain_e_1(ctx),
-                AbilityId::R(AbilityName::_1) => swain_r_1(ctx),
+                AbilityId::Q(AbilityName::_1) => swain_q1(ctx),
+                AbilityId::Q(AbilityName::_2) => swain_q2(ctx),
+                AbilityId::Q(AbilityName::_3) => swain_q3(ctx),
+                AbilityId::W(AbilityName::_1) => swain_w1(ctx),
+                AbilityId::W(AbilityName::_2) => swain_w2(ctx),
+                AbilityId::E(AbilityName::_1) => swain_e1(ctx),
+                AbilityId::R(AbilityName::_1) => swain_r1(ctx),
                 _ => panic!("Invalid AbilityId for 'Swain'"),
             },
             ChampionId::Sylas => match kind {
-                AbilityId::Q(AbilityName::_1) => sylas_q_1(ctx),
-                AbilityId::Q(AbilityName::_2) => sylas_q_2(ctx),
-                AbilityId::Q(AbilityName::_3) => sylas_q_3(ctx),
-                AbilityId::Q(AbilityName::_4) => sylas_q_4(ctx),
-                AbilityId::Q(AbilityName::_5) => sylas_q_5(ctx),
-                AbilityId::W(AbilityName::_1) => sylas_w_1(ctx),
+                AbilityId::Q(AbilityName::_1) => sylas_q1(ctx),
+                AbilityId::Q(AbilityName::_2) => sylas_q2(ctx),
+                AbilityId::Q(AbilityName::_3) => sylas_q3(ctx),
+                AbilityId::Q(AbilityName::_4) => sylas_q4(ctx),
+                AbilityId::Q(AbilityName::_5) => sylas_q5(ctx),
+                AbilityId::W(AbilityName::_1) => sylas_w1(ctx),
                 _ => panic!("Invalid AbilityId for 'Sylas'"),
             },
             ChampionId::Syndra => match kind {
-                AbilityId::Q(AbilityName::_1) => syndra_q_1(ctx),
-                AbilityId::W(AbilityName::_1) => syndra_w_1(ctx),
-                AbilityId::W(AbilityName::_2) => syndra_w_2(ctx),
-                AbilityId::W(AbilityName::_3) => syndra_w_3(ctx),
-                AbilityId::E(AbilityName::_1) => syndra_e_1(ctx),
-                AbilityId::R(AbilityName::_1) => syndra_r_1(ctx),
-                AbilityId::R(AbilityName::_2) => syndra_r_2(ctx),
-                AbilityId::R(AbilityName::_3) => syndra_r_3(ctx),
+                AbilityId::Q(AbilityName::_1) => syndra_q1(ctx),
+                AbilityId::W(AbilityName::_1) => syndra_w1(ctx),
+                AbilityId::W(AbilityName::_2) => syndra_w2(ctx),
+                AbilityId::W(AbilityName::_3) => syndra_w3(ctx),
+                AbilityId::E(AbilityName::_1) => syndra_e1(ctx),
+                AbilityId::R(AbilityName::_1) => syndra_r1(ctx),
+                AbilityId::R(AbilityName::_2) => syndra_r2(ctx),
+                AbilityId::R(AbilityName::_3) => syndra_r3(ctx),
                 _ => panic!("Invalid AbilityId for 'Syndra'"),
             },
             ChampionId::TahmKench => match kind {
-                AbilityId::W(AbilityName::_1) => tahmkench_w_1(ctx),
-                AbilityId::E(AbilityName::_1) => tahmkench_e_1(ctx),
-                AbilityId::E(AbilityName::_2) => tahmkench_e_2(ctx),
+                AbilityId::W(AbilityName::_1) => tahmkench_w1(ctx),
+                AbilityId::E(AbilityName::_1) => tahmkench_e1(ctx),
+                AbilityId::E(AbilityName::_2) => tahmkench_e2(ctx),
                 _ => panic!("Invalid AbilityId for 'TahmKench'"),
             },
             ChampionId::Taliyah => match kind {
-                AbilityId::Q(AbilityName::_1) => taliyah_q_1(ctx),
-                AbilityId::Q(AbilityName::_2) => taliyah_q_2(ctx),
-                AbilityId::Q(AbilityName::_3) => taliyah_q_3(ctx),
-                AbilityId::Q(AbilityName::_4) => taliyah_q_4(ctx),
-                AbilityId::E(AbilityName::_1) => taliyah_e_1(ctx),
-                AbilityId::E(AbilityName::_2) => taliyah_e_2(ctx),
-                AbilityId::E(AbilityName::_3) => taliyah_e_3(ctx),
+                AbilityId::Q(AbilityName::_1) => taliyah_q1(ctx),
+                AbilityId::Q(AbilityName::_2) => taliyah_q2(ctx),
+                AbilityId::Q(AbilityName::_3) => taliyah_q3(ctx),
+                AbilityId::Q(AbilityName::_4) => taliyah_q4(ctx),
+                AbilityId::E(AbilityName::_1) => taliyah_e1(ctx),
+                AbilityId::E(AbilityName::_2) => taliyah_e2(ctx),
+                AbilityId::E(AbilityName::_3) => taliyah_e3(ctx),
                 _ => panic!("Invalid AbilityId for 'Taliyah'"),
             },
             ChampionId::Talon => match kind {
-                AbilityId::Q(AbilityName::_1) => talon_q_1(ctx),
-                AbilityId::Q(AbilityName::_2) => talon_q_2(ctx),
-                AbilityId::W(AbilityName::_1) => talon_w_1(ctx),
-                AbilityId::W(AbilityName::_2) => talon_w_2(ctx),
-                AbilityId::W(AbilityName::_3) => talon_w_3(ctx),
-                AbilityId::R(AbilityName::_1) => talon_r_1(ctx),
-                AbilityId::R(AbilityName::_2) => talon_r_2(ctx),
+                AbilityId::Q(AbilityName::_1) => talon_q1(ctx),
+                AbilityId::Q(AbilityName::_2) => talon_q2(ctx),
+                AbilityId::W(AbilityName::_1) => talon_w1(ctx),
+                AbilityId::W(AbilityName::_2) => talon_w2(ctx),
+                AbilityId::W(AbilityName::_3) => talon_w3(ctx),
+                AbilityId::R(AbilityName::_1) => talon_r1(ctx),
+                AbilityId::R(AbilityName::_2) => talon_r2(ctx),
                 _ => panic!("Invalid AbilityId for 'Talon'"),
             },
             ChampionId::Taric => match kind {
-                AbilityId::E(AbilityName::_1) => taric_e_1(ctx),
+                AbilityId::E(AbilityName::_1) => taric_e1(ctx),
                 _ => panic!("Invalid AbilityId for 'Taric'"),
             },
             ChampionId::Teemo => match kind {
-                AbilityId::Q(AbilityName::_1) => teemo_q_1(ctx),
-                AbilityId::E(AbilityName::_1) => teemo_e_1(ctx),
-                AbilityId::E(AbilityName::_2) => teemo_e_2(ctx),
-                AbilityId::E(AbilityName::_3) => teemo_e_3(ctx),
-                AbilityId::E(AbilityName::_4) => teemo_e_4(ctx),
-                AbilityId::E(AbilityName::_5) => teemo_e_5(ctx),
-                AbilityId::E(AbilityName::_6) => teemo_e_6(ctx),
-                AbilityId::R(AbilityName::_1) => teemo_r_1(ctx),
-                AbilityId::R(AbilityName::_2) => teemo_r_2(ctx),
+                AbilityId::Q(AbilityName::_1) => teemo_q1(ctx),
+                AbilityId::E(AbilityName::_1) => teemo_e1(ctx),
+                AbilityId::E(AbilityName::_2) => teemo_e2(ctx),
+                AbilityId::E(AbilityName::_3) => teemo_e3(ctx),
+                AbilityId::E(AbilityName::_4) => teemo_e4(ctx),
+                AbilityId::E(AbilityName::_5) => teemo_e5(ctx),
+                AbilityId::E(AbilityName::_6) => teemo_e6(ctx),
+                AbilityId::R(AbilityName::_1) => teemo_r1(ctx),
+                AbilityId::R(AbilityName::_2) => teemo_r2(ctx),
                 _ => panic!("Invalid AbilityId for 'Teemo'"),
             },
             ChampionId::Thresh => match kind {
-                AbilityId::Q(AbilityName::_1) => thresh_q_1(ctx),
-                AbilityId::E(AbilityName::_1) => thresh_e_1(ctx),
-                AbilityId::E(AbilityName::_2) => thresh_e_2(ctx),
-                AbilityId::E(AbilityName::_3) => thresh_e_3(ctx),
-                AbilityId::R(AbilityName::_1) => thresh_r_1(ctx),
+                AbilityId::Q(AbilityName::_1) => thresh_q1(ctx),
+                AbilityId::E(AbilityName::_1) => thresh_e1(ctx),
+                AbilityId::E(AbilityName::_2) => thresh_e2(ctx),
+                AbilityId::E(AbilityName::_3) => thresh_e3(ctx),
+                AbilityId::R(AbilityName::_1) => thresh_r1(ctx),
                 _ => panic!("Invalid AbilityId for 'Thresh'"),
             },
             ChampionId::Tristana => match kind {
-                AbilityId::W(AbilityName::_1) => tristana_w_1(ctx),
-                AbilityId::E(AbilityName::_1) => tristana_e_1(ctx),
-                AbilityId::E(AbilityName::_2) => tristana_e_2(ctx),
-                AbilityId::E(AbilityName::_3) => tristana_e_3(ctx),
-                AbilityId::E(AbilityName::_4) => tristana_e_4(ctx),
-                AbilityId::E(AbilityName::_5) => tristana_e_5(ctx),
-                AbilityId::R(AbilityName::_1) => tristana_r_1(ctx),
+                AbilityId::W(AbilityName::_1) => tristana_w1(ctx),
+                AbilityId::E(AbilityName::_1) => tristana_e1(ctx),
+                AbilityId::E(AbilityName::_2) => tristana_e2(ctx),
+                AbilityId::E(AbilityName::_3) => tristana_e3(ctx),
+                AbilityId::E(AbilityName::_4) => tristana_e4(ctx),
+                AbilityId::E(AbilityName::_5) => tristana_e5(ctx),
+                AbilityId::R(AbilityName::_1) => tristana_r1(ctx),
                 _ => panic!("Invalid AbilityId for 'Tristana'"),
             },
             ChampionId::Trundle => match kind {
-                AbilityId::Q(AbilityName::_1) => trundle_q_1(ctx),
-                AbilityId::Q(AbilityName::_2) => trundle_q_2(ctx),
-                AbilityId::Q(AbilityName::_3) => trundle_q_3(ctx),
-                AbilityId::R(AbilityName::_1) => trundle_r_1(ctx),
-                AbilityId::R(AbilityName::_2) => trundle_r_2(ctx),
-                AbilityId::R(AbilityName::_3) => trundle_r_3(ctx),
+                AbilityId::Q(AbilityName::_1) => trundle_q1(ctx),
+                AbilityId::Q(AbilityName::_2) => trundle_q2(ctx),
+                AbilityId::Q(AbilityName::_3) => trundle_q3(ctx),
+                AbilityId::R(AbilityName::_1) => trundle_r1(ctx),
+                AbilityId::R(AbilityName::_2) => trundle_r2(ctx),
+                AbilityId::R(AbilityName::_3) => trundle_r3(ctx),
                 _ => panic!("Invalid AbilityId for 'Trundle'"),
             },
             ChampionId::Tryndamere => match kind {
-                AbilityId::Q(AbilityName::_1) => tryndamere_q_1(ctx),
-                AbilityId::Q(AbilityName::_2) => tryndamere_q_2(ctx),
-                AbilityId::W(AbilityName::_1) => tryndamere_w_1(ctx),
-                AbilityId::E(AbilityName::_1) => tryndamere_e_1(ctx),
+                AbilityId::Q(AbilityName::_1) => tryndamere_q1(ctx),
+                AbilityId::Q(AbilityName::_2) => tryndamere_q2(ctx),
+                AbilityId::W(AbilityName::_1) => tryndamere_w1(ctx),
+                AbilityId::E(AbilityName::_1) => tryndamere_e1(ctx),
                 _ => panic!("Invalid AbilityId for 'Tryndamere'"),
             },
             ChampionId::TwistedFate => match kind {
-                AbilityId::Q(AbilityName::_1) => twistedfate_q_1(ctx),
-                AbilityId::W(AbilityName::_1) => twistedfate_w_1(ctx),
-                AbilityId::W(AbilityName::_2) => twistedfate_w_2(ctx),
-                AbilityId::W(AbilityName::_3) => twistedfate_w_3(ctx),
-                AbilityId::E(AbilityName::_1) => twistedfate_e_1(ctx),
+                AbilityId::Q(AbilityName::_1) => twistedfate_q1(ctx),
+                AbilityId::W(AbilityName::_1) => twistedfate_w1(ctx),
+                AbilityId::W(AbilityName::_2) => twistedfate_w2(ctx),
+                AbilityId::W(AbilityName::_3) => twistedfate_w3(ctx),
+                AbilityId::E(AbilityName::_1) => twistedfate_e1(ctx),
                 _ => panic!("Invalid AbilityId for 'TwistedFate'"),
             },
             ChampionId::Twitch => match kind {
-                AbilityId::E(AbilityName::_1) => twitch_e_1(ctx),
-                AbilityId::E(AbilityName::_2) => twitch_e_2(ctx),
-                AbilityId::E(AbilityName::_3) => twitch_e_3(ctx),
-                AbilityId::E(AbilityName::_4) => twitch_e_4(ctx),
-                AbilityId::R(AbilityName::_1) => twitch_r_1(ctx),
+                AbilityId::E(AbilityName::_1) => twitch_e1(ctx),
+                AbilityId::E(AbilityName::_2) => twitch_e2(ctx),
+                AbilityId::E(AbilityName::_3) => twitch_e3(ctx),
+                AbilityId::E(AbilityName::_4) => twitch_e4(ctx),
+                AbilityId::R(AbilityName::_1) => twitch_r1(ctx),
                 _ => panic!("Invalid AbilityId for 'Twitch'"),
             },
             ChampionId::Udyr => match kind {
-                AbilityId::Q(AbilityName::_1) => udyr_q_1(ctx),
-                AbilityId::Q(AbilityName::_2) => udyr_q_2(ctx),
-                AbilityId::Q(AbilityName::_3) => udyr_q_3(ctx),
-                AbilityId::R(AbilityName::_1) => udyr_r_1(ctx),
-                AbilityId::R(AbilityName::_2) => udyr_r_2(ctx),
+                AbilityId::Q(AbilityName::_1) => udyr_q1(ctx),
+                AbilityId::Q(AbilityName::_2) => udyr_q2(ctx),
+                AbilityId::Q(AbilityName::_3) => udyr_q3(ctx),
+                AbilityId::R(AbilityName::_1) => udyr_r1(ctx),
+                AbilityId::R(AbilityName::_2) => udyr_r2(ctx),
                 _ => panic!("Invalid AbilityId for 'Udyr'"),
             },
             ChampionId::Urgot => match kind {
-                AbilityId::Q(AbilityName::_1) => urgot_q_1(ctx),
-                AbilityId::W(AbilityName::_1) => urgot_w_1(ctx),
-                AbilityId::E(AbilityName::_1) => urgot_e_1(ctx),
-                AbilityId::R(AbilityName::_1) => urgot_r_1(ctx),
+                AbilityId::Q(AbilityName::_1) => urgot_q1(ctx),
+                AbilityId::W(AbilityName::_1) => urgot_w1(ctx),
+                AbilityId::E(AbilityName::_1) => urgot_e1(ctx),
+                AbilityId::R(AbilityName::_1) => urgot_r1(ctx),
                 _ => panic!("Invalid AbilityId for 'Urgot'"),
             },
             ChampionId::Varus => match kind {
-                AbilityId::Q(AbilityName::_1) => varus_q_1(ctx),
-                AbilityId::Q(AbilityName::_2) => varus_q_2(ctx),
-                AbilityId::Q(AbilityName::_3) => varus_q_3(ctx),
-                AbilityId::Q(AbilityName::_4) => varus_q_4(ctx),
-                AbilityId::W(AbilityName::_1) => varus_w_1(ctx),
-                AbilityId::W(AbilityName::_2) => varus_w_2(ctx),
-                AbilityId::W(AbilityName::_3) => varus_w_3(ctx),
-                AbilityId::W(AbilityName::_4) => varus_w_4(ctx),
-                AbilityId::W(AbilityName::_5) => varus_w_5(ctx),
-                AbilityId::W(AbilityName::_6) => varus_w_6(ctx),
-                AbilityId::W(AbilityName::_7) => varus_w_7(ctx),
-                AbilityId::E(AbilityName::_1) => varus_e_1(ctx),
-                AbilityId::R(AbilityName::_1) => varus_r_1(ctx),
+                AbilityId::Q(AbilityName::_1) => varus_q1(ctx),
+                AbilityId::Q(AbilityName::_2) => varus_q2(ctx),
+                AbilityId::Q(AbilityName::_3) => varus_q3(ctx),
+                AbilityId::Q(AbilityName::_4) => varus_q4(ctx),
+                AbilityId::W(AbilityName::_1) => varus_w1(ctx),
+                AbilityId::W(AbilityName::_2) => varus_w2(ctx),
+                AbilityId::W(AbilityName::_3) => varus_w3(ctx),
+                AbilityId::W(AbilityName::_4) => varus_w4(ctx),
+                AbilityId::W(AbilityName::_5) => varus_w5(ctx),
+                AbilityId::W(AbilityName::_6) => varus_w6(ctx),
+                AbilityId::W(AbilityName::_7) => varus_w7(ctx),
+                AbilityId::E(AbilityName::_1) => varus_e1(ctx),
+                AbilityId::R(AbilityName::_1) => varus_r1(ctx),
                 _ => panic!("Invalid AbilityId for 'Varus'"),
             },
             ChampionId::Vayne => match kind {
-                AbilityId::Q(AbilityName::_1) => vayne_q_1(ctx),
-                AbilityId::W(AbilityName::_1) => vayne_w_1(ctx),
-                AbilityId::W(AbilityName::_2) => vayne_w_2(ctx),
-                AbilityId::W(AbilityName::_3) => vayne_w_3(ctx),
-                AbilityId::E(AbilityName::_1) => vayne_e_1(ctx),
-                AbilityId::E(AbilityName::_2) => vayne_e_2(ctx),
-                AbilityId::E(AbilityName::_3) => vayne_e_3(ctx),
-                AbilityId::R(AbilityName::_1) => vayne_r_1(ctx),
+                AbilityId::Q(AbilityName::_1) => vayne_q1(ctx),
+                AbilityId::W(AbilityName::_1) => vayne_w1(ctx),
+                AbilityId::W(AbilityName::_2) => vayne_w2(ctx),
+                AbilityId::W(AbilityName::_3) => vayne_w3(ctx),
+                AbilityId::E(AbilityName::_1) => vayne_e1(ctx),
+                AbilityId::E(AbilityName::_2) => vayne_e2(ctx),
+                AbilityId::E(AbilityName::_3) => vayne_e3(ctx),
+                AbilityId::R(AbilityName::_1) => vayne_r1(ctx),
                 _ => panic!("Invalid AbilityId for 'Vayne'"),
             },
             ChampionId::Veigar => match kind {
-                AbilityId::Q(AbilityName::_1) => veigar_q_1(ctx),
-                AbilityId::W(AbilityName::_1) => veigar_w_1(ctx),
-                AbilityId::R(AbilityName::_1) => veigar_r_1(ctx),
-                AbilityId::R(AbilityName::_2) => veigar_r_2(ctx),
+                AbilityId::Q(AbilityName::_1) => veigar_q1(ctx),
+                AbilityId::W(AbilityName::_1) => veigar_w1(ctx),
+                AbilityId::R(AbilityName::_1) => veigar_r1(ctx),
+                AbilityId::R(AbilityName::_2) => veigar_r2(ctx),
                 _ => panic!("Invalid AbilityId for 'Veigar'"),
             },
             ChampionId::Velkoz => match kind {
-                AbilityId::Q(AbilityName::_1) => velkoz_q_1(ctx),
-                AbilityId::W(AbilityName::_1) => velkoz_w_1(ctx),
-                AbilityId::W(AbilityName::_2) => velkoz_w_2(ctx),
-                AbilityId::W(AbilityName::_3) => velkoz_w_3(ctx),
-                AbilityId::E(AbilityName::_1) => velkoz_e_1(ctx),
-                AbilityId::R(AbilityName::_1) => velkoz_r_1(ctx),
-                AbilityId::R(AbilityName::_2) => velkoz_r_2(ctx),
+                AbilityId::Q(AbilityName::_1) => velkoz_q1(ctx),
+                AbilityId::W(AbilityName::_1) => velkoz_w1(ctx),
+                AbilityId::W(AbilityName::_2) => velkoz_w2(ctx),
+                AbilityId::W(AbilityName::_3) => velkoz_w3(ctx),
+                AbilityId::E(AbilityName::_1) => velkoz_e1(ctx),
+                AbilityId::R(AbilityName::_1) => velkoz_r1(ctx),
+                AbilityId::R(AbilityName::_2) => velkoz_r2(ctx),
                 _ => panic!("Invalid AbilityId for 'Velkoz'"),
             },
             ChampionId::Vex => match kind {
-                AbilityId::Q(AbilityName::_1) => vex_q_1(ctx),
-                AbilityId::W(AbilityName::_1) => vex_w_1(ctx),
-                AbilityId::E(AbilityName::_1) => vex_e_1(ctx),
-                AbilityId::R(AbilityName::_1) => vex_r_1(ctx),
-                AbilityId::R(AbilityName::_2) => vex_r_2(ctx),
-                AbilityId::R(AbilityName::_3) => vex_r_3(ctx),
+                AbilityId::Q(AbilityName::_1) => vex_q1(ctx),
+                AbilityId::W(AbilityName::_1) => vex_w1(ctx),
+                AbilityId::E(AbilityName::_1) => vex_e1(ctx),
+                AbilityId::R(AbilityName::_1) => vex_r1(ctx),
+                AbilityId::R(AbilityName::_2) => vex_r2(ctx),
+                AbilityId::R(AbilityName::_3) => vex_r3(ctx),
                 _ => panic!("Invalid AbilityId for 'Vex'"),
             },
             ChampionId::Vi => match kind {
-                AbilityId::Q(AbilityName::_1) => vi_q_1(ctx),
-                AbilityId::Q(AbilityName::_2) => vi_q_2(ctx),
-                AbilityId::W(AbilityName::_1) => vi_w_1(ctx),
-                AbilityId::E(AbilityName::_1) => vi_e_1(ctx),
-                AbilityId::R(AbilityName::_1) => vi_r_1(ctx),
+                AbilityId::Q(AbilityName::_1) => vi_q1(ctx),
+                AbilityId::Q(AbilityName::_2) => vi_q2(ctx),
+                AbilityId::W(AbilityName::_1) => vi_w1(ctx),
+                AbilityId::E(AbilityName::_1) => vi_e1(ctx),
+                AbilityId::R(AbilityName::_1) => vi_r1(ctx),
                 _ => panic!("Invalid AbilityId for 'Vi'"),
             },
             ChampionId::Viego => match kind {
-                AbilityId::Q(AbilityName::_1) => viego_q_1(ctx),
-                AbilityId::Q(AbilityName::_2) => viego_q_2(ctx),
-                AbilityId::Q(AbilityName::_3) => viego_q_3(ctx),
-                AbilityId::W(AbilityName::_1) => viego_w_1(ctx),
-                AbilityId::R(AbilityName::_1) => viego_r_1(ctx),
+                AbilityId::Q(AbilityName::_1) => viego_q1(ctx),
+                AbilityId::Q(AbilityName::_2) => viego_q2(ctx),
+                AbilityId::Q(AbilityName::_3) => viego_q3(ctx),
+                AbilityId::W(AbilityName::_1) => viego_w1(ctx),
+                AbilityId::R(AbilityName::_1) => viego_r1(ctx),
                 _ => panic!("Invalid AbilityId for 'Viego'"),
             },
             ChampionId::Viktor => match kind {
-                AbilityId::Q(AbilityName::_1) => viktor_q_1(ctx),
-                AbilityId::Q(AbilityName::_2) => viktor_q_2(ctx),
-                AbilityId::Q(AbilityName::_3) => viktor_q_3(ctx),
-                AbilityId::E(AbilityName::_1) => viktor_e_1(ctx),
-                AbilityId::E(AbilityName::_2) => viktor_e_2(ctx),
-                AbilityId::E(AbilityName::_3) => viktor_e_3(ctx),
-                AbilityId::R(AbilityName::_1) => viktor_r_1(ctx),
-                AbilityId::R(AbilityName::_2) => viktor_r_2(ctx),
-                AbilityId::R(AbilityName::_3) => viktor_r_3(ctx),
+                AbilityId::Q(AbilityName::_1) => viktor_q1(ctx),
+                AbilityId::Q(AbilityName::_2) => viktor_q2(ctx),
+                AbilityId::Q(AbilityName::_3) => viktor_q3(ctx),
+                AbilityId::E(AbilityName::_1) => viktor_e1(ctx),
+                AbilityId::E(AbilityName::_2) => viktor_e2(ctx),
+                AbilityId::E(AbilityName::_3) => viktor_e3(ctx),
+                AbilityId::R(AbilityName::_1) => viktor_r1(ctx),
+                AbilityId::R(AbilityName::_2) => viktor_r2(ctx),
+                AbilityId::R(AbilityName::_3) => viktor_r3(ctx),
                 _ => panic!("Invalid AbilityId for 'Viktor'"),
             },
             ChampionId::Vladimir => match kind {
-                AbilityId::Q(AbilityName::_1) => vladimir_q_1(ctx),
-                AbilityId::Q(AbilityName::_2) => vladimir_q_2(ctx),
-                AbilityId::W(AbilityName::_1) => vladimir_w_1(ctx),
-                AbilityId::W(AbilityName::_2) => vladimir_w_2(ctx),
-                AbilityId::E(AbilityName::_1) => vladimir_e_1(ctx),
-                AbilityId::E(AbilityName::_2) => vladimir_e_2(ctx),
-                AbilityId::R(AbilityName::_1) => vladimir_r_1(ctx),
+                AbilityId::Q(AbilityName::_1) => vladimir_q1(ctx),
+                AbilityId::Q(AbilityName::_2) => vladimir_q2(ctx),
+                AbilityId::W(AbilityName::_1) => vladimir_w1(ctx),
+                AbilityId::W(AbilityName::_2) => vladimir_w2(ctx),
+                AbilityId::E(AbilityName::_1) => vladimir_e1(ctx),
+                AbilityId::E(AbilityName::_2) => vladimir_e2(ctx),
+                AbilityId::R(AbilityName::_1) => vladimir_r1(ctx),
                 _ => panic!("Invalid AbilityId for 'Vladimir'"),
             },
             ChampionId::Volibear => match kind {
-                AbilityId::Q(AbilityName::_1) => volibear_q_1(ctx),
-                AbilityId::W(AbilityName::_1) => volibear_w_1(ctx),
-                AbilityId::E(AbilityName::_1) => volibear_e_1(ctx),
-                AbilityId::E(AbilityName::_2) => volibear_e_2(ctx),
-                AbilityId::R(AbilityName::_1) => volibear_r_1(ctx),
+                AbilityId::Q(AbilityName::_1) => volibear_q1(ctx),
+                AbilityId::W(AbilityName::_1) => volibear_w1(ctx),
+                AbilityId::E(AbilityName::_1) => volibear_e1(ctx),
+                AbilityId::E(AbilityName::_2) => volibear_e2(ctx),
+                AbilityId::R(AbilityName::_1) => volibear_r1(ctx),
                 _ => panic!("Invalid AbilityId for 'Volibear'"),
             },
             ChampionId::Warwick => match kind {
-                AbilityId::Q(AbilityName::_1) => warwick_q_1(ctx),
-                AbilityId::Q(AbilityName::_2) => warwick_q_2(ctx),
-                AbilityId::E(AbilityName::_1) => warwick_e_1(ctx),
-                AbilityId::R(AbilityName::_1) => warwick_r_1(ctx),
+                AbilityId::Q(AbilityName::_1) => warwick_q1(ctx),
+                AbilityId::Q(AbilityName::_2) => warwick_q2(ctx),
+                AbilityId::E(AbilityName::_1) => warwick_e1(ctx),
+                AbilityId::R(AbilityName::_1) => warwick_r1(ctx),
                 _ => panic!("Invalid AbilityId for 'Warwick'"),
             },
             ChampionId::Xayah => match kind {
-                AbilityId::Q(AbilityName::_1) => xayah_q_1(ctx),
-                AbilityId::Q(AbilityName::_2) => xayah_q_2(ctx),
-                AbilityId::Q(AbilityName::_3) => xayah_q_3(ctx),
-                AbilityId::Q(AbilityName::_4) => xayah_q_4(ctx),
-                AbilityId::E(AbilityName::_1) => xayah_e_1(ctx),
-                AbilityId::E(AbilityName::_2) => xayah_e_2(ctx),
-                AbilityId::R(AbilityName::_1) => xayah_r_1(ctx),
+                AbilityId::Q(AbilityName::_1) => xayah_q1(ctx),
+                AbilityId::Q(AbilityName::_2) => xayah_q2(ctx),
+                AbilityId::Q(AbilityName::_3) => xayah_q3(ctx),
+                AbilityId::Q(AbilityName::_4) => xayah_q4(ctx),
+                AbilityId::E(AbilityName::_1) => xayah_e1(ctx),
+                AbilityId::E(AbilityName::_2) => xayah_e2(ctx),
+                AbilityId::R(AbilityName::_1) => xayah_r1(ctx),
                 _ => panic!("Invalid AbilityId for 'Xayah'"),
             },
             ChampionId::Xerath => match kind {
-                AbilityId::Q(AbilityName::_1) => xerath_q_1(ctx),
-                AbilityId::W(AbilityName::_1) => xerath_w_1(ctx),
-                AbilityId::W(AbilityName::_2) => xerath_w_2(ctx),
-                AbilityId::E(AbilityName::_1) => xerath_e_1(ctx),
-                AbilityId::R(AbilityName::_1) => xerath_r_1(ctx),
-                AbilityId::R(AbilityName::_2) => xerath_r_2(ctx),
-                AbilityId::R(AbilityName::_3) => xerath_r_3(ctx),
+                AbilityId::Q(AbilityName::_1) => xerath_q1(ctx),
+                AbilityId::W(AbilityName::_1) => xerath_w1(ctx),
+                AbilityId::W(AbilityName::_2) => xerath_w2(ctx),
+                AbilityId::E(AbilityName::_1) => xerath_e1(ctx),
+                AbilityId::R(AbilityName::_1) => xerath_r1(ctx),
+                AbilityId::R(AbilityName::_2) => xerath_r2(ctx),
+                AbilityId::R(AbilityName::_3) => xerath_r3(ctx),
                 _ => panic!("Invalid AbilityId for 'Xerath'"),
             },
             ChampionId::XinZhao => match kind {
-                AbilityId::Q(AbilityName::_1) => xinzhao_q_1(ctx),
-                AbilityId::Q(AbilityName::_2) => xinzhao_q_2(ctx),
-                AbilityId::W(AbilityName::_1) => xinzhao_w_1(ctx),
-                AbilityId::W(AbilityName::_2) => xinzhao_w_2(ctx),
-                AbilityId::W(AbilityName::_3) => xinzhao_w_3(ctx),
-                AbilityId::W(AbilityName::_4) => xinzhao_w_4(ctx),
-                AbilityId::E(AbilityName::_1) => xinzhao_e_1(ctx),
-                AbilityId::R(AbilityName::_1) => xinzhao_r_1(ctx),
+                AbilityId::Q(AbilityName::_1) => xinzhao_q1(ctx),
+                AbilityId::Q(AbilityName::_2) => xinzhao_q2(ctx),
+                AbilityId::W(AbilityName::_1) => xinzhao_w1(ctx),
+                AbilityId::W(AbilityName::_2) => xinzhao_w2(ctx),
+                AbilityId::W(AbilityName::_3) => xinzhao_w3(ctx),
+                AbilityId::W(AbilityName::_4) => xinzhao_w4(ctx),
+                AbilityId::E(AbilityName::_1) => xinzhao_e1(ctx),
+                AbilityId::R(AbilityName::_1) => xinzhao_r1(ctx),
                 _ => panic!("Invalid AbilityId for 'XinZhao'"),
             },
             ChampionId::Yasuo => match kind {
-                AbilityId::Q(AbilityName::_1) => yasuo_q_1(ctx),
-                AbilityId::E(AbilityName::_1) => yasuo_e_1(ctx),
-                AbilityId::E(AbilityName::_2) => yasuo_e_2(ctx),
-                AbilityId::E(AbilityName::_3) => yasuo_e_3(ctx),
-                AbilityId::E(AbilityName::_4) => yasuo_e_4(ctx),
-                AbilityId::R(AbilityName::_1) => yasuo_r_1(ctx),
+                AbilityId::Q(AbilityName::_1) => yasuo_q1(ctx),
+                AbilityId::E(AbilityName::_1) => yasuo_e1(ctx),
+                AbilityId::E(AbilityName::_2) => yasuo_e2(ctx),
+                AbilityId::E(AbilityName::_3) => yasuo_e3(ctx),
+                AbilityId::E(AbilityName::_4) => yasuo_e4(ctx),
+                AbilityId::R(AbilityName::_1) => yasuo_r1(ctx),
                 _ => panic!("Invalid AbilityId for 'Yasuo'"),
             },
             ChampionId::Yone => match kind {
-                AbilityId::Q(AbilityName::_1) => yone_q_1(ctx),
-                AbilityId::W(AbilityName::_1) => yone_w_1(ctx),
-                AbilityId::W(AbilityName::_2) => yone_w_2(ctx),
-                AbilityId::W(AbilityName::_3) => yone_w_3(ctx),
-                AbilityId::E(AbilityName::_1) => yone_e_1(ctx),
-                AbilityId::R(AbilityName::_1) => yone_r_1(ctx),
-                AbilityId::R(AbilityName::_2) => yone_r_2(ctx),
-                AbilityId::R(AbilityName::_3) => yone_r_3(ctx),
+                AbilityId::Q(AbilityName::_1) => yone_q1(ctx),
+                AbilityId::W(AbilityName::_1) => yone_w1(ctx),
+                AbilityId::W(AbilityName::_2) => yone_w2(ctx),
+                AbilityId::W(AbilityName::_3) => yone_w3(ctx),
+                AbilityId::E(AbilityName::_1) => yone_e1(ctx),
+                AbilityId::R(AbilityName::_1) => yone_r1(ctx),
+                AbilityId::R(AbilityName::_2) => yone_r2(ctx),
+                AbilityId::R(AbilityName::_3) => yone_r3(ctx),
                 _ => panic!("Invalid AbilityId for 'Yone'"),
             },
             ChampionId::Yorick => match kind {
-                AbilityId::Q(AbilityName::_1) => yorick_q_1(ctx),
-                AbilityId::E(AbilityName::_1) => yorick_e_1(ctx),
-                AbilityId::E(AbilityName::_2) => yorick_e_2(ctx),
-                AbilityId::E(AbilityName::_3) => yorick_e_3(ctx),
+                AbilityId::Q(AbilityName::_1) => yorick_q1(ctx),
+                AbilityId::E(AbilityName::_1) => yorick_e1(ctx),
+                AbilityId::E(AbilityName::_2) => yorick_e2(ctx),
+                AbilityId::E(AbilityName::_3) => yorick_e3(ctx),
                 _ => panic!("Invalid AbilityId for 'Yorick'"),
             },
             ChampionId::Yunara => match kind {
-                AbilityId::Q(AbilityName::_1) => yunara_q_1(ctx),
-                AbilityId::Q(AbilityName::_2) => yunara_q_2(ctx),
-                AbilityId::Q(AbilityName::_3) => yunara_q_3(ctx),
-                AbilityId::Q(AbilityName::_4) => yunara_q_4(ctx),
-                AbilityId::Q(AbilityName::_5) => yunara_q_5(ctx),
-                AbilityId::W(AbilityName::_1) => yunara_w_1(ctx),
-                AbilityId::W(AbilityName::_2) => yunara_w_2(ctx),
-                AbilityId::W(AbilityName::_3) => yunara_w_3(ctx),
-                AbilityId::R(AbilityName::_1) => yunara_r_1(ctx),
+                AbilityId::Q(AbilityName::_1) => yunara_q1(ctx),
+                AbilityId::Q(AbilityName::_2) => yunara_q2(ctx),
+                AbilityId::Q(AbilityName::_3) => yunara_q3(ctx),
+                AbilityId::Q(AbilityName::_4) => yunara_q4(ctx),
+                AbilityId::Q(AbilityName::_5) => yunara_q5(ctx),
+                AbilityId::W(AbilityName::_1) => yunara_w1(ctx),
+                AbilityId::W(AbilityName::_2) => yunara_w2(ctx),
+                AbilityId::W(AbilityName::_3) => yunara_w3(ctx),
+                AbilityId::R(AbilityName::_1) => yunara_r1(ctx),
                 _ => panic!("Invalid AbilityId for 'Yunara'"),
             },
             ChampionId::Yuumi => match kind {
-                AbilityId::Q(AbilityName::_1) => yuumi_q_1(ctx),
-                AbilityId::Q(AbilityName::_2) => yuumi_q_2(ctx),
-                AbilityId::Q(AbilityName::_3) => yuumi_q_3(ctx),
-                AbilityId::R(AbilityName::_1) => yuumi_r_1(ctx),
-                AbilityId::R(AbilityName::_2) => yuumi_r_2(ctx),
-                AbilityId::R(AbilityName::_3) => yuumi_r_3(ctx),
+                AbilityId::Q(AbilityName::_1) => yuumi_q1(ctx),
+                AbilityId::Q(AbilityName::_2) => yuumi_q2(ctx),
+                AbilityId::Q(AbilityName::_3) => yuumi_q3(ctx),
+                AbilityId::R(AbilityName::_1) => yuumi_r1(ctx),
+                AbilityId::R(AbilityName::_2) => yuumi_r2(ctx),
+                AbilityId::R(AbilityName::_3) => yuumi_r3(ctx),
                 _ => panic!("Invalid AbilityId for 'Yuumi'"),
             },
             ChampionId::Zaahen => match kind {
-                AbilityId::Q(AbilityName::_1) => zaahen_q_1(ctx),
-                AbilityId::Q(AbilityName::_2) => zaahen_q_2(ctx),
-                AbilityId::Q(AbilityName::_3) => zaahen_q_3(ctx),
-                AbilityId::W(AbilityName::_1) => zaahen_w_1(ctx),
-                AbilityId::W(AbilityName::_2) => zaahen_w_2(ctx),
-                AbilityId::E(AbilityName::_1) => zaahen_e_1(ctx),
-                AbilityId::E(AbilityName::_2) => zaahen_e_2(ctx),
-                AbilityId::E(AbilityName::_3) => zaahen_e_3(ctx),
-                AbilityId::R(AbilityName::_1) => zaahen_r_1(ctx),
+                AbilityId::Q(AbilityName::_1) => zaahen_q1(ctx),
+                AbilityId::Q(AbilityName::_2) => zaahen_q2(ctx),
+                AbilityId::Q(AbilityName::_3) => zaahen_q3(ctx),
+                AbilityId::W(AbilityName::_1) => zaahen_w1(ctx),
+                AbilityId::W(AbilityName::_2) => zaahen_w2(ctx),
+                AbilityId::E(AbilityName::_1) => zaahen_e1(ctx),
+                AbilityId::E(AbilityName::_2) => zaahen_e2(ctx),
+                AbilityId::E(AbilityName::_3) => zaahen_e3(ctx),
+                AbilityId::R(AbilityName::_1) => zaahen_r1(ctx),
                 _ => panic!("Invalid AbilityId for 'Zaahen'"),
             },
             ChampionId::Zac => match kind {
-                AbilityId::Q(AbilityName::_1) => zac_q_1(ctx),
-                AbilityId::Q(AbilityName::_2) => zac_q_2(ctx),
-                AbilityId::W(AbilityName::_1) => zac_w_1(ctx),
-                AbilityId::W(AbilityName::_2) => zac_w_2(ctx),
-                AbilityId::E(AbilityName::_1) => zac_e_1(ctx),
-                AbilityId::R(AbilityName::_1) => zac_r_1(ctx),
-                AbilityId::R(AbilityName::_2) => zac_r_2(ctx),
-                AbilityId::R(AbilityName::_3) => zac_r_3(ctx),
+                AbilityId::Q(AbilityName::_1) => zac_q1(ctx),
+                AbilityId::Q(AbilityName::_2) => zac_q2(ctx),
+                AbilityId::W(AbilityName::_1) => zac_w1(ctx),
+                AbilityId::W(AbilityName::_2) => zac_w2(ctx),
+                AbilityId::E(AbilityName::_1) => zac_e1(ctx),
+                AbilityId::R(AbilityName::_1) => zac_r1(ctx),
+                AbilityId::R(AbilityName::_2) => zac_r2(ctx),
+                AbilityId::R(AbilityName::_3) => zac_r3(ctx),
                 _ => panic!("Invalid AbilityId for 'Zac'"),
             },
             ChampionId::Zed => match kind {
-                AbilityId::Q(AbilityName::_1) => zed_q_1(ctx),
-                AbilityId::Q(AbilityName::_2) => zed_q_2(ctx),
-                AbilityId::E(AbilityName::_1) => zed_e_1(ctx),
-                AbilityId::R(AbilityName::_1) => zed_r_1(ctx),
+                AbilityId::Q(AbilityName::_1) => zed_q1(ctx),
+                AbilityId::Q(AbilityName::_2) => zed_q2(ctx),
+                AbilityId::E(AbilityName::_1) => zed_e1(ctx),
+                AbilityId::R(AbilityName::_1) => zed_r1(ctx),
                 _ => panic!("Invalid AbilityId for 'Zed'"),
             },
             ChampionId::Zeri => match kind {
-                AbilityId::Q(AbilityName::_1) => zeri_q_1(ctx),
-                AbilityId::Q(AbilityName::_2) => zeri_q_2(ctx),
-                AbilityId::W(AbilityName::_1) => zeri_w_1(ctx),
-                AbilityId::E(AbilityName::_1) => zeri_e_1(ctx),
-                AbilityId::E(AbilityName::_2) => zeri_e_2(ctx),
-                AbilityId::R(AbilityName::_1) => zeri_r_1(ctx),
+                AbilityId::Q(AbilityName::_1) => zeri_q1(ctx),
+                AbilityId::Q(AbilityName::_2) => zeri_q2(ctx),
+                AbilityId::W(AbilityName::_1) => zeri_w1(ctx),
+                AbilityId::E(AbilityName::_1) => zeri_e1(ctx),
+                AbilityId::E(AbilityName::_2) => zeri_e2(ctx),
+                AbilityId::R(AbilityName::_1) => zeri_r1(ctx),
                 _ => panic!("Invalid AbilityId for 'Zeri'"),
             },
             ChampionId::Ziggs => match kind {
-                AbilityId::Q(AbilityName::_1) => ziggs_q_1(ctx),
-                AbilityId::W(AbilityName::_1) => ziggs_w_1(ctx),
-                AbilityId::E(AbilityName::_1) => ziggs_e_1(ctx),
-                AbilityId::E(AbilityName::_2) => ziggs_e_2(ctx),
-                AbilityId::E(AbilityName::_3) => ziggs_e_3(ctx),
-                AbilityId::R(AbilityName::_1) => ziggs_r_1(ctx),
-                AbilityId::R(AbilityName::_2) => ziggs_r_2(ctx),
+                AbilityId::Q(AbilityName::_1) => ziggs_q1(ctx),
+                AbilityId::W(AbilityName::_1) => ziggs_w1(ctx),
+                AbilityId::E(AbilityName::_1) => ziggs_e1(ctx),
+                AbilityId::E(AbilityName::_2) => ziggs_e2(ctx),
+                AbilityId::E(AbilityName::_3) => ziggs_e3(ctx),
+                AbilityId::R(AbilityName::_1) => ziggs_r1(ctx),
+                AbilityId::R(AbilityName::_2) => ziggs_r2(ctx),
                 _ => panic!("Invalid AbilityId for 'Ziggs'"),
             },
             ChampionId::Zilean => match kind {
-                AbilityId::Q(AbilityName::_1) => zilean_q_1(ctx),
+                AbilityId::Q(AbilityName::_1) => zilean_q1(ctx),
                 _ => panic!("Invalid AbilityId for 'Zilean'"),
             },
             ChampionId::Zoe => match kind {
-                AbilityId::Q(AbilityName::_1) => zoe_q_1(ctx),
-                AbilityId::Q(AbilityName::_2) => zoe_q_2(ctx),
-                AbilityId::W(AbilityName::_1) => zoe_w_1(ctx),
-                AbilityId::W(AbilityName::_2) => zoe_w_2(ctx),
-                AbilityId::E(AbilityName::_1) => zoe_e_1(ctx),
-                AbilityId::E(AbilityName::_2) => zoe_e_2(ctx),
-                AbilityId::E(AbilityName::_3) => zoe_e_3(ctx),
+                AbilityId::Q(AbilityName::_1) => zoe_q1(ctx),
+                AbilityId::Q(AbilityName::_2) => zoe_q2(ctx),
+                AbilityId::W(AbilityName::_1) => zoe_w1(ctx),
+                AbilityId::W(AbilityName::_2) => zoe_w2(ctx),
+                AbilityId::E(AbilityName::_1) => zoe_e1(ctx),
+                AbilityId::E(AbilityName::_2) => zoe_e2(ctx),
+                AbilityId::E(AbilityName::_3) => zoe_e3(ctx),
                 _ => panic!("Invalid AbilityId for 'Zoe'"),
             },
             ChampionId::Zyra => match kind {
-                AbilityId::Q(AbilityName::_1) => zyra_q_1(ctx),
-                AbilityId::E(AbilityName::_1) => zyra_e_1(ctx),
-                AbilityId::R(AbilityName::_1) => zyra_r_1(ctx),
+                AbilityId::Q(AbilityName::_1) => zyra_q1(ctx),
+                AbilityId::E(AbilityName::_1) => zyra_e1(ctx),
+                AbilityId::R(AbilityName::_1) => zyra_r1(ctx),
                 _ => panic!("Invalid AbilityId for 'Zyra'"),
             },
         }
@@ -42629,702 +42463,702 @@ pub mod items {
         }
     }
     pub static ITEM_FORMULAS: [Range<usize>; ItemId::VARIANTS] = [
-        (4226254..4229510),
-        (4229510..4232790),
-        (4232790..4236066),
-        (4236066..4239320),
-        (4239320..4242593),
-        (4242593..4245953),
-        (4245953..4249227),
-        (4249227..4252395),
-        (4252395..4255463),
-        (4255463..4258287),
-        (4258287..4261282),
-        (4261282..4264300),
-        (4264300..4266579),
-        (4266579..4268961),
-        (4268961..4271360),
-        (4271360..4273767),
-        (4273767..4276163),
-        (4276163..4278578),
-        (4278578..4280973),
-        (4280973..4284240),
-        (4284240..4287531),
-        (4287531..4290818),
-        (4290818..4294277),
-        (4294277..4297760),
-        (4297760..4301239),
-        (4301239..4304310),
-        (4304310..4307445),
-        (4307445..4310602),
-        (4310602..4313755),
-        (4313755..4316889),
-        (4316889..4320179),
-        (4320179..4322863),
-        (4322863..4325696),
-        (4325696..4328676),
-        (4328676..4331092),
-        (4331092..4333508),
-        (4333508..4335837),
-        (4335837..4339036),
-        (4339036..4342557),
-        (4342557..4346097),
-        (4346097..4349182),
-        (4349182..4352289),
-        (4352289..4355577),
-        (4355577..4357991),
-        (4357991..4360396),
-        (4360396..4362816),
-        (4362816..4365907),
-        (4365907..4368897),
-        (4368897..4372158),
-        (4372158..4375443),
-        (4375443..4378344),
-        (4378344..4381811),
-        (4381811..4385074),
-        (4385074..4388361),
-        (4388361..4394202),
-        (4397026..4402972),
-        (4405808..4408195),
-        (4408195..4411013),
-        (4411013..4413856),
-        (4413856..4417060),
-        (4417060..4420354),
-        (4420354..4423645),
-        (4423645..4426875),
-        (4426875..4429957),
-        (4429957..4433059),
-        (4433059..4435727),
-        (4435727..4438553),
-        (4438553..4441282),
-        (4441282..4443691),
-        (4443691..4446100),
-        (4446100..4449478),
-        (4449478..4452278),
-        (4452278..4454699),
-        (4454699..4458187),
-        (4458187..4460466),
-        (4460466..4462865),
-        (4462865..4465276),
-        (4465276..4467662),
-        (4467662..4470070),
-        (4470070..4472458),
-        (4472458..4475527),
-        (4475527..4478544),
-        (4478544..4481934),
-        (4481934..4484728),
-        (4484728..4487548),
-        (4487548..4490828),
-        (4490828..4493834),
-        (4493834..4497113),
-        (4497113..4500288),
-        (4500288..4503682),
-        (4503682..4506972),
-        (4506972..4509804),
-        (4509804..4512795),
-        (4512795..4515784),
-        (4515784..4518581),
-        (4518581..4520970),
-        (4520970..4523375),
-        (4523375..4526901),
-        (4526901..4530451),
-        (4530451..4533450),
-        (4533450..4536884),
-        (4536884..4540285),
-        (4540285..4543746),
-        (4543746..4547207),
-        (4547207..4550554),
-        (4550554..4553901),
-        (4553901..4557283),
-        (4557283..4560584),
-        (4560584..4563586),
-        (4563586..4566259),
-        (4566259..4568659),
-        (4568659..4571335),
-        (4571335..4574268),
-        (4574268..4577632),
-        (4577632..4580685),
-        (4580685..4583886),
-        (4583886..4587083),
-        (4587083..4590415),
-        (4590415..4593771),
-        (4593771..4597026),
-        (4597026..4600305),
-        (4600305..4604074),
-        (4604074..4607080),
-        (4607080..4610357),
-        (4610357..4612742),
-        (4612742..4615165),
-        (4615165..4617588),
-        (4617588..4620668),
-        (4620668..4623773),
-        (4623773..4626872),
-        (4626872..4630442),
-        (4630442..4633892),
-        (4633892..4637365),
-        (4637365..4640834),
-        (4640834..4643748),
-        (4643748..4646143),
-        (4646143..4649415),
-        (4649415..4652708),
-        (4652708..4655995),
-        (4655995..4659064),
-        (4659064..4662130),
-        (4662130..4664939),
-        (4664939..4667355),
-        (4667355..4669761),
-        (4669761..4673124),
-        (4673124..4676660),
-        (4676660..4680219),
-        (4680219..4683528),
-        (4683528..4686730),
-        (4686730..4689926),
-        (4689926..4693382),
-        (4693382..4696862),
-        (4696862..4700338),
-        (4700338..4702741),
-        (4702741..4705599),
-        (4705599..4708601),
-        (4708601..4711956),
-        (4711956..4715335),
-        (4715335..4718617),
-        (4718617..4721018),
-        (4721018..4723413),
-        (4723413..4725806),
-        (4725806..4728200),
-        (4728200..4730602),
-        (4730602..4732998),
-        (4732998..4735389),
-        (4735389..4738797),
-        (4738797..4742058),
-        (4742058..4745342),
-        (4745342..4747751),
-        (4747751..4750151),
-        (4750151..4752551),
-        (4752551..4755879),
-        (4755879..4759231),
-        (4759231..4762753),
-        (4762753..4766292),
-        (4766292..4769673),
-        (4769673..4773211),
-        (4773211..4776745),
-        (4776745..4779148),
-        (4779148..4781988),
-        (4781988..4785360),
-        (4785360..4788624),
-        (4788624..4791027),
-        (4791027..4793444),
-        (4793444..4795861),
-        (4795861..4798266),
-        (4798266..4800863),
-        (4800863..4803270),
-        (4803270..4806082),
-        (4806082..4809498),
-        (4809498..4812937),
-        (4812937..4815934),
-        (4815934..4819185),
-        (4819185..4822456),
-        (4822456..4825723),
-        (4825723..4828128),
-        (4828128..4831313),
-        (4831313..4834310),
-        (4834310..4837094),
-        (4837094..4840436),
-        (4840436..4843780),
-        (4843780..4847148),
-        (4847148..4849969),
-        (4849969..4852372),
-        (4852372..4854775),
-        (4854775..4858087),
-        (4858087..4861326),
-        (4861326..4864589),
-        (4864589..4867848),
-        (4867848..4870924),
-        (4870924..4874291),
-        (4874291..4877778),
-        (4877778..4881473),
-        (4881473..4885162),
-        (4885162..4888447),
-        (4888447..4892221),
-        (4892221..4894633),
-        (4894633..4897911),
-        (4897911..4901082),
-        (4901082..4904509),
-        (4904509..4907934),
-        (4907934..4910339),
-        (4910339..4913159),
-        (4913159..4915995),
-        (4915995..4918797),
-        (4918797..4921625),
-        (4921625..4924872),
-        (4924872..4927467),
-        (4927467..4930088),
-        (4930088..4932435),
-        (4932435..4938323),
-        (4938323..4941854),
-        (4941854..4945402),
-        (4945402..4947793),
-        (4947793..4950868),
-        (4950868..4953964),
-        (4953964..4957165),
-        (4957165..4960433),
-        (4960433..4963724),
-        (4963724..4967029),
-        (4967029..4970380),
-        (4970380..4973763),
-        (4973763..4976575),
-        (4976575..4979410),
-        (4979410..4982484),
-        (4982484..4985503),
-        (4985503..4988776),
-        (4988776..4991161),
-        (4991161..4994536),
-        (4994536..4997803),
-        (4997803..5001156),
-        (5001156..5003425),
-        (5003425..5005756),
-        (5005756..5008088),
-        (5008088..5010376),
-        (5010376..5013803),
-        (5013803..5017273),
-        (5017273..5020349),
-        (5020349..5022739),
-        (5022739..5025827),
-        (5025827..5028811),
-        (5028811..5031635),
-        (5031635..5034737),
-        (5034737..5038030),
-        (5038030..5041133),
-        (5041133..5044211),
-        (5044211..5047350),
-        (5047350..5050512),
-        (5050512..5053346),
-        (5053346..5056708),
-        (5056708..5060093),
-        (5060093..5063474),
-        (5063474..5066750),
-        (5066750..5069922),
-        (5069922..5073379),
-        (5073379..5076668),
-        (5076668..5079058),
-        (5079058..5082053),
-        (5082053..5085072),
-        (5085072..5088354),
-        (5088354..5091628),
-        (5091628..5094910),
-        (5094910..5098251),
-        (5098251..5101611),
-        (5101611..5104005),
-        (5104005..5107260),
-        (5107260..5110539),
-        (5110539..5113691),
-        (5113691..5116696),
-        (5116696..5119890),
-        (5119890..5123108),
-        (5123108..5126322),
-        (5126322..5129789),
-        (5129789..5133280),
-        (5133280..5136821),
-        (5136821..5140117),
-        (5140117..5143015),
-        (5143015..5145949),
-        (5145949..5148776),
-        (5148776..5152126),
-        (5152126..5155368),
-        (5155368..5159476),
-        (5159476..5161876),
-        (5161876..5164271),
-        (5164271..5166666),
-        (5166666..5169070),
-        (5169070..5171474),
-        (5171474..5173878),
-        (5173878..5177144),
-        (5177144..5180242),
-        (5180242..5182568),
-        (5182568..5184894),
-        (5184894..5187746),
-        (5187746..5190744),
-        (5190744..5193934),
-        (5193934..5196760),
-        (5196760..5200193),
-        (5200193..5203458),
-        (5203458..5206911),
-        (5206911..5210261),
-        (5210261..5213635),
-        (5213635..5216732),
-        (5216732..5220072),
-        (5220072..5222432),
-        (5222432..5224777),
-        (5224777..5227113),
-        (5227113..5229473),
-        (5229473..5231818),
-        (5231818..5234154),
-        (5234154..5237261),
-        (5237261..5240344),
-        (5240344..5243465),
-        (5243465..5246742),
-        (5246742..5249953),
-        (5249953..5253212),
-        (5253212..5255613),
-        (5255613..5259151),
-        (5259151..5262772),
-        (5262772..5265170),
-        (5265170..5267575),
-        (5267575..5270993),
-        (5270993..5274447),
-        (5274447..5277885),
-        (5277885..5280694),
-        (5280694..5284148),
-        (5284148..5287447),
-        (5287447..5290701),
-        (5290701..5293099),
-        (5293099..5295507),
-        (5295507..5297890),
-        (5297890..5301144),
-        (5301144..5304420),
-        (5304420..5307673),
-        (5307673..5310946),
-        (5310946..5314061),
-        (5314061..5317328),
-        (5317328..5320591),
-        (5320591..5323872),
-        (5323872..5327177),
-        (5327177..5330269),
-        (5330269..5332548),
-        (5332548..5335915),
-        (5335915..5339174),
-        (5339174..5342440),
-        (5342440..5345729),
-        (5345729..5348138),
-        (5348138..5350547),
-        (5350547..5353925),
-        (5353925..5357139),
-        (5357139..5360537),
-        (5360537..5362950),
-        (5362950..5366229),
-        (5366229..5368624),
-        (5368624..5371794),
-        (5371794..5375257),
-        (5375257..5378744),
-        (5378744..5382227),
-        (5382227..5385496),
-        (5385496..5388785),
-        (5388785..5392215),
-        (5392215..5395675),
-        (5395675..5398003),
-        (5398003..5400332),
-        (5400332..5402736),
-        (5402736..5405854),
-        (5405854..5409124),
-        (5409124..5412390),
-        (5412390..5416532),
-        (5417006..5421176),
-        (5421656..5425077),
-        (5425077..5428346),
-        (5428346..5431185),
-        (5431185..5433930),
-        (5433930..5436749),
-        (5436749..5439594),
-        (5439594..5442012),
-        (5442012..5445280),
-        (5445280..5448573),
-        (5448573..5451860),
-        (5451860..5454993),
-        (5454993..5457820),
-        (5457820..5460635),
-        (5460635..5463930),
-        (5463930..5466324),
-        (5466324..5469413),
-        (5469413..5472522),
-        (5472522..5474906),
-        (5474906..5477303),
-        (5477303..5479702),
-        (5479702..5482098),
-        (5482098..5484484),
-        (5484484..5487576),
-        (5487576..5490564),
-        (5490564..5492950),
-        (5492950..5495337),
-        (5495337..5498823),
-        (5498823..5501228),
-        (5501228..5503865),
-        (5503865..5507623),
-        (5507623..5510549),
-        (5510549..5513957),
-        (5513957..5517387),
-        (5517387..5519781),
-        (5519781..5522462),
-        (5522462..5524853),
-        (5524853..5527924),
-        (5527924..5531018),
-        (5531018..5533294),
-        (5533294..5535712),
-        (5535712..5538057),
-        (5538057..5541335),
-        (5541335..5544637),
-        (5544637..5547637),
-        (5547637..5550540),
-        (5550540..5553820),
-        (5553820..5557123),
-        (5557123..5560423),
-        (5560423..5562842),
-        (5562842..5566228),
-        (5566228..5569434),
-        (5569434..5571818),
-        (5571818..5574099),
-        (5574099..5576489),
-        (5576489..5578770),
-        (5578770..5581163),
-        (5581163..5583444),
-        (5583444..5586270),
-        (5586270..5589104),
-        (5589104..5591960),
-        (5591960..5594351),
-        (5594351..5597880),
-        (5597880..5601430),
-        (5601430..5604980),
-        (5604980..5607671),
-        (5607671..5610730),
-        (5610730..5613813),
-        (5613813..5617225),
-        (5617225..5620661),
-        (5620661..5623075),
-        (5623075..5626343),
-        (5626343..5629635),
-        (5629635..5633012),
-        (5633012..5636292),
-        (5636292..5638565),
-        (5638565..5641498),
-        (5641498..5644308),
-        (5644308..5647144),
-        (5647144..5650519),
-        (5650519..5653688),
-        (5653688..5657079),
-        (5657079..5659482),
-        (5659482..5662846),
-        (5662846..5665257),
-        (5665257..5667670),
-        (5667670..5670081),
-        (5670081..5672696),
-        (5672696..5676148),
-        (5676148..5679511),
-        (5679511..5682633),
-        (5682633..5685907),
-        (5685907..5689231),
-        (5689231..5692559),
-        (5692559..5695911),
-        (5695911..5699259),
-        (5699259..5702063),
-        (5702063..5705479),
-        (5705479..5708919),
-        (5708919..5712194),
-        (5712194..5716886),
-        (5716886..5720361),
-        (5720361..5723731),
-        (5723731..5726831),
-        (5726831..5729831),
-        (5729831..5733401),
-        (5733401..5736610),
-        (5736610..5739422),
-        (5739422..5741810),
-        (5741810..5744206),
-        (5744206..5746615),
-        (5746615..5749025),
-        (5749025..5751851),
-        (5751851..5754246),
-        (5754246..5756646),
-        (5756646..5759725),
-        (5759725..5762992),
-        (5762992..5766283),
-        (5766283..5769570),
-        (5769570..5772661),
-        (5772661..5775776),
-        (5775776..5778866),
-        (5778866..5782161),
-        (5782161..5785480),
-        (5785480..5788578),
-        (5788578..5791694),
-        (5791694..5795160),
-        (5795160..5798244),
-        (5798244..5800712),
-        (5800712..5803315),
-        (5803315..5805700),
-        (5805700..5808681),
-        (5808681..5811660),
-        (5811660..5815021),
-        (5815021..5818496),
-        (5818496..5821863),
-        (5821863..5825226),
-        (5825226..5828585),
-        (5828585..5831965),
-        (5831965..5835334),
-        (5835334..5838061),
-        (5838061..5840465),
-        (5840465..5843840),
-        (5843840..5846937),
-        (5846937..5850057),
-        (5850057..5852439),
-        (5852439..5855517),
-        (5855517..5858619),
-        (5858619..5861987),
-        (5861987..5865110),
-        (5865110..5868569),
-        (5868569..5871833),
-        (5871833..5875043),
-        (5875043..5878508),
-        (5878508..5881959),
-        (5881959..5885242),
-        (5885242..5888646),
-        (5888646..5891946),
-        (5891946..5895242),
-        (5895242..5897626),
-        (5897626..5900031),
-        (5900031..5903378),
-        (5903378..5906749),
-        (5906749..5909140),
-        (5909140..5911545),
-        (5911545..5913946),
-        (5913946..5917422),
-        (5917422..5920485),
-        (5920485..5922876),
-        (5922876..5925854),
-        (5925854..5928856),
-        (5928856..5931857),
-        (5931857..5935279),
-        (5935279..5938698),
-        (5938698..5942126),
-        (5942126..5945487),
-        (5945487..5948868),
-        (5948868..5952221),
-        (5952221..5955594),
-        (5955594..5958006),
-        (5958006..5960418),
-        (5960418..5962830),
-        (5962830..5965242),
-        (5965242..5968500),
-        (5968500..5971782),
-        (5971782..5975028),
-        (5975028..5978298),
-        (5978298..5980694),
-        (5980694..5983107),
-        (5983107..5985514),
-        (5985514..5987921),
-        (5987921..5990732),
-        (5990732..5994123),
-        (5994123..5997494),
-        (5997494..6000868),
-        (6000868..6004252),
-        (6004252..6007171),
-        (6007171..6010089),
-        (6010089..6012909),
-        (6012909..6015738),
-        (6015738..6018124),
-        (6018124..6020459),
-        (6020459..6022797),
-        (6022797..6026263),
-        (6026263..6029082),
-        (6029082..6031778),
-        (6031778..6034182),
-        (6034182..6036573),
-        (6036573..6039517),
-        (6039517..6042609),
-        (6042609..6045006),
-        (6045006..6048285),
-        (6048285..6051705),
-        (6051705..6055149),
-        (6055149..6058589),
-        (6058589..6064472),
-        (6064472..6070127),
-        (6070127..6075758),
-        (6075758..6078681),
-        (6078681..6081752),
-        (6081752..6084819),
-        (6084819..6087498),
-        (6087498..6090571),
-        (6090571..6093668),
-        (6093668..6096077),
-        (6096077..6098486),
-        (6098486..6100895),
-        (6100895..6103272),
-        (6103272..6105662),
-        (6105662..6108987),
-        (6108987..6112333),
-        (6112333..6115674),
-        (6115674..6119210),
-        (6119210..6122770),
-        (6122770..6125705),
-        (6125705..6128713),
-        (6128713..6131104),
-        (6131104..6134214),
-        (6134214..6136613),
-        (6136613..6139891),
-        (6139891..6142294),
-        (6142294..6145549),
-        (6145549..6148828),
-        (6148828..6151218),
-        (6151218..6153608),
-        (6153608..6155998),
-        (6155998..6158388),
-        (6158388..6160778),
-        (6160778..6163168),
-        (6163168..6165558),
-        (6165558..6167948),
-        (6167948..6170338),
-        (6170338..6172728),
-        (6172728..6175118),
-        (6175118..6177509),
-        (6177509..6179894),
-        (6179894..6182279),
-        (6182279..6184664),
-        (6184664..6187072),
-        (6187072..6189458),
-        (6189458..6192541),
-        (6192541..6195650),
-        (6195650..6197933),
-        (6197933..6200343),
-        (6200343..6202731),
-        (6202731..6205819),
-        (6205819..6209359),
-        (6209359..6212548),
-        (6212548..6215660),
-        (6215660..6218953),
-        (6218953..6222142),
-        (6222142..6224530),
-        (6224530..6226930),
-        (6226930..6229313),
-        (6229313..6232115),
-        (6232115..6235106),
-        (6235106..6238193),
-        (6238193..6241733),
-        (6241733..6245189),
-        (6245189..6248536),
-        (6248536..6252011),
-        (6252011..6254402),
-        (6254402..6257474),
-        (6257474..6260730),
-        (6260730..6264010),
-        (6264010..6267286),
-        (6267286..6270404),
-        (6270404..6273678),
-        (6273678..6276973),
-        (6276973..6280174),
-        (6280174..6282773),
-        (6282773..6286147),
-        (6286147..6289413),
-        (6289413..6291686),
-        (6291686..6294977),
-        (6294977..6298164),
-        (6298164..6300442),
-        (6300442..6302854),
-        (6302854..6306241),
-        (6306241..6309439),
-        (6309439..6312973),
-        (6312973..6316531),
-        (6316531..6320085),
-        (6320085..6323536),
-        (6323536..6326981),
-        (6326981..6330065),
-        (6330065..6333171),
+        (4239612..4242868),
+        (4242868..4246148),
+        (4246148..4249424),
+        (4249424..4252678),
+        (4252678..4255951),
+        (4255951..4259311),
+        (4259311..4262585),
+        (4262585..4265753),
+        (4265753..4268821),
+        (4268821..4271645),
+        (4271645..4274640),
+        (4274640..4277658),
+        (4277658..4279937),
+        (4279937..4282319),
+        (4282319..4284718),
+        (4284718..4287125),
+        (4287125..4289521),
+        (4289521..4291936),
+        (4291936..4294331),
+        (4294331..4297598),
+        (4297598..4300889),
+        (4300889..4304176),
+        (4304176..4307635),
+        (4307635..4311118),
+        (4311118..4314597),
+        (4314597..4317668),
+        (4317668..4320803),
+        (4320803..4323960),
+        (4323960..4327113),
+        (4327113..4330247),
+        (4330247..4333537),
+        (4333537..4336221),
+        (4336221..4339054),
+        (4339054..4342034),
+        (4342034..4344450),
+        (4344450..4346866),
+        (4346866..4349195),
+        (4349195..4352394),
+        (4352394..4355915),
+        (4355915..4359455),
+        (4359455..4362540),
+        (4362540..4365647),
+        (4365647..4368935),
+        (4368935..4371349),
+        (4371349..4373754),
+        (4373754..4376174),
+        (4376174..4379265),
+        (4379265..4382255),
+        (4382255..4385516),
+        (4385516..4388801),
+        (4388801..4391702),
+        (4391702..4395169),
+        (4395169..4398432),
+        (4398432..4401719),
+        (4401719..4407560),
+        (4410384..4416330),
+        (4419166..4421553),
+        (4421553..4424371),
+        (4424371..4427214),
+        (4427214..4430418),
+        (4430418..4433712),
+        (4433712..4437003),
+        (4437003..4440233),
+        (4440233..4443315),
+        (4443315..4446417),
+        (4446417..4449085),
+        (4449085..4451911),
+        (4451911..4454640),
+        (4454640..4457049),
+        (4457049..4459458),
+        (4459458..4462836),
+        (4462836..4465636),
+        (4465636..4468057),
+        (4468057..4471545),
+        (4471545..4473824),
+        (4473824..4476223),
+        (4476223..4478634),
+        (4478634..4481020),
+        (4481020..4483428),
+        (4483428..4485816),
+        (4485816..4488885),
+        (4488885..4491902),
+        (4491902..4495292),
+        (4495292..4498086),
+        (4498086..4500906),
+        (4500906..4504186),
+        (4504186..4507192),
+        (4507192..4510471),
+        (4510471..4513646),
+        (4513646..4517040),
+        (4517040..4520330),
+        (4520330..4523162),
+        (4523162..4526153),
+        (4526153..4529142),
+        (4529142..4531939),
+        (4531939..4534328),
+        (4534328..4536733),
+        (4536733..4540259),
+        (4540259..4543809),
+        (4543809..4546808),
+        (4546808..4550242),
+        (4550242..4553643),
+        (4553643..4557104),
+        (4557104..4560565),
+        (4560565..4563912),
+        (4563912..4567259),
+        (4567259..4570641),
+        (4570641..4573942),
+        (4573942..4576944),
+        (4576944..4579617),
+        (4579617..4582017),
+        (4582017..4584693),
+        (4584693..4587626),
+        (4587626..4590990),
+        (4590990..4594043),
+        (4594043..4597244),
+        (4597244..4600441),
+        (4600441..4603773),
+        (4603773..4607129),
+        (4607129..4610384),
+        (4610384..4613663),
+        (4613663..4617432),
+        (4617432..4620438),
+        (4620438..4623715),
+        (4623715..4626100),
+        (4626100..4628523),
+        (4628523..4630946),
+        (4630946..4634026),
+        (4634026..4637131),
+        (4637131..4640230),
+        (4640230..4643800),
+        (4643800..4647250),
+        (4647250..4650723),
+        (4650723..4654192),
+        (4654192..4657106),
+        (4657106..4659501),
+        (4659501..4662773),
+        (4662773..4666066),
+        (4666066..4669353),
+        (4669353..4672422),
+        (4672422..4675488),
+        (4675488..4678297),
+        (4678297..4680713),
+        (4680713..4683119),
+        (4683119..4686482),
+        (4686482..4690018),
+        (4690018..4693577),
+        (4693577..4696886),
+        (4696886..4700088),
+        (4700088..4703284),
+        (4703284..4706740),
+        (4706740..4710220),
+        (4710220..4713696),
+        (4713696..4716099),
+        (4716099..4718957),
+        (4718957..4721959),
+        (4721959..4725314),
+        (4725314..4728693),
+        (4728693..4731975),
+        (4731975..4734376),
+        (4734376..4736771),
+        (4736771..4739164),
+        (4739164..4741558),
+        (4741558..4743960),
+        (4743960..4746356),
+        (4746356..4748747),
+        (4748747..4752155),
+        (4752155..4755416),
+        (4755416..4758700),
+        (4758700..4761109),
+        (4761109..4763509),
+        (4763509..4765909),
+        (4765909..4769237),
+        (4769237..4772589),
+        (4772589..4776111),
+        (4776111..4779650),
+        (4779650..4783031),
+        (4783031..4786569),
+        (4786569..4790103),
+        (4790103..4792506),
+        (4792506..4795346),
+        (4795346..4798718),
+        (4798718..4801982),
+        (4801982..4804385),
+        (4804385..4806802),
+        (4806802..4809219),
+        (4809219..4811624),
+        (4811624..4814221),
+        (4814221..4816628),
+        (4816628..4819440),
+        (4819440..4822856),
+        (4822856..4826295),
+        (4826295..4829292),
+        (4829292..4832543),
+        (4832543..4835814),
+        (4835814..4839081),
+        (4839081..4841486),
+        (4841486..4844671),
+        (4844671..4847668),
+        (4847668..4850452),
+        (4850452..4853794),
+        (4853794..4857138),
+        (4857138..4860506),
+        (4860506..4863327),
+        (4863327..4865730),
+        (4865730..4868133),
+        (4868133..4871445),
+        (4871445..4874684),
+        (4874684..4877947),
+        (4877947..4881206),
+        (4881206..4884282),
+        (4884282..4887649),
+        (4887649..4891136),
+        (4891136..4894831),
+        (4894831..4898520),
+        (4898520..4901805),
+        (4901805..4905579),
+        (4905579..4907991),
+        (4907991..4911269),
+        (4911269..4914440),
+        (4914440..4917867),
+        (4917867..4921292),
+        (4921292..4923697),
+        (4923697..4926517),
+        (4926517..4929353),
+        (4929353..4932155),
+        (4932155..4934983),
+        (4934983..4938230),
+        (4938230..4940825),
+        (4940825..4943446),
+        (4943446..4945793),
+        (4945793..4951681),
+        (4951681..4955212),
+        (4955212..4958760),
+        (4958760..4961151),
+        (4961151..4964226),
+        (4964226..4967322),
+        (4967322..4970523),
+        (4970523..4973791),
+        (4973791..4977082),
+        (4977082..4980387),
+        (4980387..4983738),
+        (4983738..4987121),
+        (4987121..4989933),
+        (4989933..4992768),
+        (4992768..4995842),
+        (4995842..4998861),
+        (4998861..5002134),
+        (5002134..5004519),
+        (5004519..5007894),
+        (5007894..5011161),
+        (5011161..5014514),
+        (5014514..5016783),
+        (5016783..5019114),
+        (5019114..5021446),
+        (5021446..5023734),
+        (5023734..5027161),
+        (5027161..5030631),
+        (5030631..5033707),
+        (5033707..5036097),
+        (5036097..5039185),
+        (5039185..5042169),
+        (5042169..5044993),
+        (5044993..5048095),
+        (5048095..5051388),
+        (5051388..5054491),
+        (5054491..5057569),
+        (5057569..5060708),
+        (5060708..5063870),
+        (5063870..5066704),
+        (5066704..5070066),
+        (5070066..5073451),
+        (5073451..5076832),
+        (5076832..5080108),
+        (5080108..5083280),
+        (5083280..5086737),
+        (5086737..5090026),
+        (5090026..5092416),
+        (5092416..5095411),
+        (5095411..5098430),
+        (5098430..5101712),
+        (5101712..5104986),
+        (5104986..5108268),
+        (5108268..5111609),
+        (5111609..5114969),
+        (5114969..5117363),
+        (5117363..5120618),
+        (5120618..5123897),
+        (5123897..5127049),
+        (5127049..5130054),
+        (5130054..5133248),
+        (5133248..5136466),
+        (5136466..5139680),
+        (5139680..5143147),
+        (5143147..5146638),
+        (5146638..5150179),
+        (5150179..5153475),
+        (5153475..5156373),
+        (5156373..5159307),
+        (5159307..5162134),
+        (5162134..5165484),
+        (5165484..5168726),
+        (5168726..5172834),
+        (5172834..5175234),
+        (5175234..5177629),
+        (5177629..5180024),
+        (5180024..5182428),
+        (5182428..5184832),
+        (5184832..5187236),
+        (5187236..5190502),
+        (5190502..5193600),
+        (5193600..5195926),
+        (5195926..5198252),
+        (5198252..5201104),
+        (5201104..5204102),
+        (5204102..5207292),
+        (5207292..5210118),
+        (5210118..5213551),
+        (5213551..5216816),
+        (5216816..5220269),
+        (5220269..5223619),
+        (5223619..5226993),
+        (5226993..5230090),
+        (5230090..5233430),
+        (5233430..5235790),
+        (5235790..5238135),
+        (5238135..5240471),
+        (5240471..5242831),
+        (5242831..5245176),
+        (5245176..5247512),
+        (5247512..5250619),
+        (5250619..5253702),
+        (5253702..5256823),
+        (5256823..5260100),
+        (5260100..5263311),
+        (5263311..5266570),
+        (5266570..5268971),
+        (5268971..5272509),
+        (5272509..5276130),
+        (5276130..5278528),
+        (5278528..5280933),
+        (5280933..5284351),
+        (5284351..5287805),
+        (5287805..5291243),
+        (5291243..5294052),
+        (5294052..5297506),
+        (5297506..5300805),
+        (5300805..5304059),
+        (5304059..5306457),
+        (5306457..5308865),
+        (5308865..5311248),
+        (5311248..5314502),
+        (5314502..5317778),
+        (5317778..5321031),
+        (5321031..5324304),
+        (5324304..5327419),
+        (5327419..5330686),
+        (5330686..5333949),
+        (5333949..5337230),
+        (5337230..5340535),
+        (5340535..5343627),
+        (5343627..5345906),
+        (5345906..5349273),
+        (5349273..5352532),
+        (5352532..5355798),
+        (5355798..5359087),
+        (5359087..5361496),
+        (5361496..5363905),
+        (5363905..5367283),
+        (5367283..5370497),
+        (5370497..5373895),
+        (5373895..5376308),
+        (5376308..5379587),
+        (5379587..5381982),
+        (5381982..5385152),
+        (5385152..5388615),
+        (5388615..5392102),
+        (5392102..5395585),
+        (5395585..5398854),
+        (5398854..5402143),
+        (5402143..5405573),
+        (5405573..5409033),
+        (5409033..5411361),
+        (5411361..5413690),
+        (5413690..5416094),
+        (5416094..5419212),
+        (5419212..5422482),
+        (5422482..5425748),
+        (5425748..5429890),
+        (5430364..5434534),
+        (5435014..5438435),
+        (5438435..5441704),
+        (5441704..5444543),
+        (5444543..5447288),
+        (5447288..5450107),
+        (5450107..5452952),
+        (5452952..5455370),
+        (5455370..5458638),
+        (5458638..5461931),
+        (5461931..5465218),
+        (5465218..5468351),
+        (5468351..5471178),
+        (5471178..5473993),
+        (5473993..5477288),
+        (5477288..5479682),
+        (5479682..5482771),
+        (5482771..5485880),
+        (5485880..5488264),
+        (5488264..5490661),
+        (5490661..5493060),
+        (5493060..5495456),
+        (5495456..5497842),
+        (5497842..5500934),
+        (5500934..5503922),
+        (5503922..5506308),
+        (5506308..5508695),
+        (5508695..5512181),
+        (5512181..5514586),
+        (5514586..5517223),
+        (5517223..5520981),
+        (5520981..5523907),
+        (5523907..5527315),
+        (5527315..5530745),
+        (5530745..5533139),
+        (5533139..5535820),
+        (5535820..5538211),
+        (5538211..5541282),
+        (5541282..5544376),
+        (5544376..5546652),
+        (5546652..5549070),
+        (5549070..5551415),
+        (5551415..5554693),
+        (5554693..5557995),
+        (5557995..5560995),
+        (5560995..5563898),
+        (5563898..5567178),
+        (5567178..5570481),
+        (5570481..5573781),
+        (5573781..5576200),
+        (5576200..5579586),
+        (5579586..5582792),
+        (5582792..5585176),
+        (5585176..5587457),
+        (5587457..5589847),
+        (5589847..5592128),
+        (5592128..5594521),
+        (5594521..5596802),
+        (5596802..5599628),
+        (5599628..5602462),
+        (5602462..5605318),
+        (5605318..5607709),
+        (5607709..5611238),
+        (5611238..5614788),
+        (5614788..5618338),
+        (5618338..5621029),
+        (5621029..5624088),
+        (5624088..5627171),
+        (5627171..5630583),
+        (5630583..5634019),
+        (5634019..5636433),
+        (5636433..5639701),
+        (5639701..5642993),
+        (5642993..5646370),
+        (5646370..5649650),
+        (5649650..5651923),
+        (5651923..5654856),
+        (5654856..5657666),
+        (5657666..5660502),
+        (5660502..5663877),
+        (5663877..5667046),
+        (5667046..5670437),
+        (5670437..5672840),
+        (5672840..5676204),
+        (5676204..5678615),
+        (5678615..5681028),
+        (5681028..5683439),
+        (5683439..5686054),
+        (5686054..5689506),
+        (5689506..5692869),
+        (5692869..5695991),
+        (5695991..5699265),
+        (5699265..5702589),
+        (5702589..5705917),
+        (5705917..5709269),
+        (5709269..5712617),
+        (5712617..5715421),
+        (5715421..5718837),
+        (5718837..5722277),
+        (5722277..5725552),
+        (5725552..5730244),
+        (5730244..5733719),
+        (5733719..5737089),
+        (5737089..5740189),
+        (5740189..5743189),
+        (5743189..5746759),
+        (5746759..5749968),
+        (5749968..5752780),
+        (5752780..5755168),
+        (5755168..5757564),
+        (5757564..5759973),
+        (5759973..5762383),
+        (5762383..5765209),
+        (5765209..5767604),
+        (5767604..5770004),
+        (5770004..5773083),
+        (5773083..5776350),
+        (5776350..5779641),
+        (5779641..5782928),
+        (5782928..5786019),
+        (5786019..5789134),
+        (5789134..5792224),
+        (5792224..5795519),
+        (5795519..5798838),
+        (5798838..5801936),
+        (5801936..5805052),
+        (5805052..5808518),
+        (5808518..5811602),
+        (5811602..5814070),
+        (5814070..5816673),
+        (5816673..5819058),
+        (5819058..5822039),
+        (5822039..5825018),
+        (5825018..5828379),
+        (5828379..5831854),
+        (5831854..5835221),
+        (5835221..5838584),
+        (5838584..5841943),
+        (5841943..5845323),
+        (5845323..5848692),
+        (5848692..5851419),
+        (5851419..5853823),
+        (5853823..5857198),
+        (5857198..5860295),
+        (5860295..5863415),
+        (5863415..5865797),
+        (5865797..5868875),
+        (5868875..5871977),
+        (5871977..5875345),
+        (5875345..5878468),
+        (5878468..5881927),
+        (5881927..5885191),
+        (5885191..5888401),
+        (5888401..5891866),
+        (5891866..5895317),
+        (5895317..5898600),
+        (5898600..5902004),
+        (5902004..5905304),
+        (5905304..5908600),
+        (5908600..5910984),
+        (5910984..5913389),
+        (5913389..5916736),
+        (5916736..5920107),
+        (5920107..5922498),
+        (5922498..5924903),
+        (5924903..5927304),
+        (5927304..5930780),
+        (5930780..5933843),
+        (5933843..5936234),
+        (5936234..5939212),
+        (5939212..5942214),
+        (5942214..5945215),
+        (5945215..5948637),
+        (5948637..5952056),
+        (5952056..5955484),
+        (5955484..5958845),
+        (5958845..5962226),
+        (5962226..5965579),
+        (5965579..5968952),
+        (5968952..5971364),
+        (5971364..5973776),
+        (5973776..5976188),
+        (5976188..5978600),
+        (5978600..5981858),
+        (5981858..5985140),
+        (5985140..5988386),
+        (5988386..5991656),
+        (5991656..5994052),
+        (5994052..5996465),
+        (5996465..5998872),
+        (5998872..6001279),
+        (6001279..6004090),
+        (6004090..6007481),
+        (6007481..6010852),
+        (6010852..6014226),
+        (6014226..6017610),
+        (6017610..6020529),
+        (6020529..6023447),
+        (6023447..6026267),
+        (6026267..6029096),
+        (6029096..6031482),
+        (6031482..6033817),
+        (6033817..6036155),
+        (6036155..6039621),
+        (6039621..6042440),
+        (6042440..6045136),
+        (6045136..6047540),
+        (6047540..6049931),
+        (6049931..6052875),
+        (6052875..6055967),
+        (6055967..6058364),
+        (6058364..6061643),
+        (6061643..6065063),
+        (6065063..6068507),
+        (6068507..6071947),
+        (6071947..6077830),
+        (6077830..6083485),
+        (6083485..6089116),
+        (6089116..6092039),
+        (6092039..6095110),
+        (6095110..6098177),
+        (6098177..6100856),
+        (6100856..6103929),
+        (6103929..6107026),
+        (6107026..6109435),
+        (6109435..6111844),
+        (6111844..6114253),
+        (6114253..6116630),
+        (6116630..6119020),
+        (6119020..6122345),
+        (6122345..6125691),
+        (6125691..6129032),
+        (6129032..6132568),
+        (6132568..6136128),
+        (6136128..6139063),
+        (6139063..6142071),
+        (6142071..6144462),
+        (6144462..6147572),
+        (6147572..6149971),
+        (6149971..6153249),
+        (6153249..6155652),
+        (6155652..6158907),
+        (6158907..6162186),
+        (6162186..6164576),
+        (6164576..6166966),
+        (6166966..6169356),
+        (6169356..6171746),
+        (6171746..6174136),
+        (6174136..6176526),
+        (6176526..6178916),
+        (6178916..6181306),
+        (6181306..6183696),
+        (6183696..6186086),
+        (6186086..6188476),
+        (6188476..6190867),
+        (6190867..6193252),
+        (6193252..6195637),
+        (6195637..6198022),
+        (6198022..6200430),
+        (6200430..6202816),
+        (6202816..6205899),
+        (6205899..6209008),
+        (6209008..6211291),
+        (6211291..6213701),
+        (6213701..6216089),
+        (6216089..6219177),
+        (6219177..6222717),
+        (6222717..6225906),
+        (6225906..6229018),
+        (6229018..6232311),
+        (6232311..6235500),
+        (6235500..6237888),
+        (6237888..6240288),
+        (6240288..6242671),
+        (6242671..6245473),
+        (6245473..6248464),
+        (6248464..6251551),
+        (6251551..6255091),
+        (6255091..6258547),
+        (6258547..6261894),
+        (6261894..6265369),
+        (6265369..6267760),
+        (6267760..6270832),
+        (6270832..6274088),
+        (6274088..6277368),
+        (6277368..6280644),
+        (6280644..6283762),
+        (6283762..6287036),
+        (6287036..6290331),
+        (6290331..6293532),
+        (6293532..6296131),
+        (6296131..6299505),
+        (6299505..6302771),
+        (6302771..6305044),
+        (6305044..6308335),
+        (6308335..6311522),
+        (6311522..6313800),
+        (6313800..6316212),
+        (6316212..6319599),
+        (6319599..6322797),
+        (6322797..6326331),
+        (6326331..6329889),
+        (6329889..6333443),
+        (6333443..6336894),
+        (6336894..6340339),
+        (6340339..6343423),
+        (6343423..6346529),
     ];
     pub static ITEM_GENERATOR: [Range<usize>; ItemId::VARIANTS] = [
         (0..1057),
@@ -43381,8 +43215,8 @@ pub mod items {
         (0..1057),
         (0..1057),
         (0..1057),
-        (4217396..4222341),
-        (4222341..4223467),
+        (4230754..4235699),
+        (4235699..4236825),
         (0..1057),
         (0..1057),
         (0..1057),
@@ -43715,8 +43549,8 @@ pub mod items {
         (0..1057),
         (0..1057),
         (0..1057),
-        (4223467..4225144),
-        (4225144..4226254),
+        (4236825..4238502),
+        (4238502..4239612),
         (0..1057),
         (0..1057),
         (0..1057),
@@ -46434,19 +46268,19 @@ pub mod items {
             unknown_map_35: true,
         },
     };
-    pub const fn blade_of_the_ruined_king_melee_min(ctx: &Ctx) -> f32 {
-        ctx.enemy_current_health
-            - (0.09 * ctx.enemy_current_health * (1.0 - 0.09 * ctx.physical_multiplier)
-                - ctx.attack_damage
-                + ctx.attack_damage * (1.0 - 0.09 * ctx.physical_multiplier))
-                / 0.09
-    }
     pub const fn blade_of_the_ruined_king_ranged_min(ctx: &Ctx) -> f32 {
         ctx.enemy_current_health
             - (0.06 * ctx.enemy_current_health * (1.0 - 0.06 * ctx.physical_multiplier)
                 - ctx.attack_damage
                 + ctx.attack_damage * (1.0 - 0.06 * ctx.physical_multiplier))
                 / 0.06
+    }
+    pub const fn blade_of_the_ruined_king_melee_min(ctx: &Ctx) -> f32 {
+        ctx.enemy_current_health
+            - (0.09 * ctx.enemy_current_health * (1.0 - 0.09 * ctx.physical_multiplier)
+                - ctx.attack_damage
+                + ctx.attack_damage * (1.0 - 0.09 * ctx.physical_multiplier))
+                / 0.09
     }
     pub static BLADE_OF_THE_RUINED_KING_ARENA: CachedItem = CachedItem {
         name: "Blade of The Ruined King [Arena]",
@@ -46483,19 +46317,19 @@ pub mod items {
             unknown_map_35: false,
         },
     };
-    pub const fn blade_of_the_ruined_king_arena_ranged_min(ctx: &Ctx) -> f32 {
-        ctx.enemy_current_health
-            - (0.06 * ctx.enemy_current_health * (1.0 - 0.06 * ctx.physical_multiplier)
-                - ctx.attack_damage
-                + ctx.attack_damage * (1.0 - 0.06 * ctx.physical_multiplier))
-                / 0.06
-    }
     pub const fn blade_of_the_ruined_king_arena_melee_min(ctx: &Ctx) -> f32 {
         ctx.enemy_current_health
             - (0.09 * ctx.enemy_current_health * (1.0 - 0.09 * ctx.physical_multiplier)
                 - ctx.attack_damage
                 + ctx.attack_damage * (1.0 - 0.09 * ctx.physical_multiplier))
                 / 0.09
+    }
+    pub const fn blade_of_the_ruined_king_arena_ranged_min(ctx: &Ctx) -> f32 {
+        ctx.enemy_current_health
+            - (0.06 * ctx.enemy_current_health * (1.0 - 0.06 * ctx.physical_multiplier)
+                - ctx.attack_damage
+                + ctx.attack_damage * (1.0 - 0.06 * ctx.physical_multiplier))
+                / 0.06
     }
     pub static BLADE_O_RANG: CachedItem = CachedItem {
         name: "Blade-o-rang",
@@ -67204,8 +67038,8 @@ pub mod items {
         (1057..1417),
         (1057..1417),
         (1057..1417),
-        (4394202..4397026),
-        (4402972..4405808),
+        (4407560..4410384),
+        (4416330..4419166),
         (1057..1417),
         (1057..1417),
         (1057..1417),
@@ -67538,8 +67372,8 @@ pub mod items {
         (1057..1417),
         (1057..1417),
         (1057..1417),
-        (5416532..5417006),
-        (5421176..5421656),
+        (5429890..5430364),
+        (5434534..5435014),
         (1057..1417),
         (1057..1417),
         (1057..1417),
@@ -69158,113 +68992,111 @@ pub mod runes {
         }
     }
     pub static RUNE_FORMULAS: [Range<usize>; RuneId::VARIANTS] = [
-        (6333171..6334589),
-        (6334589..6336011),
-        (6336011..6337421),
-        (6337421..6338843),
-        (6338843..6341099),
-        (6341970..6343404),
-        (6343404..6345962),
-        (6346955..6348369),
-        (6348369..6349791),
-        (6349791..6351221),
-        (6351221..6352635),
-        (6352635..6353985),
-        (6353985..6355337),
-        (6355337..6357218),
-        (6357804..6359224),
-        (6359224..6360580),
-        (6360580..6362002),
-        (6362002..6363418),
-        (6363418..6364764),
-        (6364764..6367213),
-        (6368205..6369555),
-        (6369555..6370907),
-        (6370907..6373375),
-        (6374367..6375805),
-        (6375805..6377219),
-        (6377219..6378641),
-        (6378641..6380053),
-        (6380053..6381479),
-        (6381479..6382885),
-        (6382885..6384311),
-        (6384311..6386567),
-        (6387665..6389091),
-        (6389091..6390443),
-        (6390443..6391863),
-        (6391863..6393207),
-        (6393207..6394629),
-        (6394629..6396091),
-        (6396091..6397525),
-        (6397525..6398931),
-        (6398931..6400358),
-        (6400358..6401789),
-        (6401789..6403204),
-        (6403204..6404618),
-        (6404618..6406048),
-        (6406048..6407466),
-        (6407466..6408872),
-        (6408872..6410286),
-        (6410286..6411698),
-        (6411698..6413104),
-        (6413104..6415413),
-        (6416403..6417831),
-        (6417831..6419927),
-        (6420676..6422110),
-        (6422110..6423522),
-        (6423522..6425494),
-        (6426231..6427641),
-        (6427641..6429051),
-        (6429051..6430461),
-        (6430461..6432290),
-        (6432879..6435324),
-        (6436315..6437735),
-        (6437735..6439145),
-        (6439145..6440569),
-        (6440569..6441993),
-        (6441993..6443419),
-        (6443419..6444833),
-        (6444833..6446181),
-        (6446181..6447607),
-        (6447607..6449023),
-        (6449023..6450461),
-        (6450461..6451881),
-        (6451881..6453291),
+        (6346529..6347947),
+        (6347947..6349369),
+        (6349369..6350779),
+        (6350779..6352201),
+        (6352201..6354457),
+        (6355328..6356762),
+        (6356762..6359320),
+        (6360313..6361727),
+        (6361727..6363149),
+        (6363149..6364579),
+        (6364579..6365993),
+        (6365993..6367343),
+        (6367343..6368695),
+        (6368695..6370576),
+        (6371162..6372582),
+        (6372582..6373938),
+        (6373938..6375360),
+        (6375360..6376776),
+        (6376776..6378122),
+        (6378122..6380571),
+        (6381563..6382913),
+        (6382913..6384265),
+        (6384265..6386733),
+        (6387725..6389163),
+        (6389163..6390577),
+        (6390577..6391999),
+        (6391999..6393411),
+        (6393411..6394837),
+        (6394837..6396243),
+        (6396243..6397669),
+        (6397669..6399925),
+        (6401023..6402449),
+        (6402449..6403801),
+        (6403801..6405221),
+        (6405221..6406565),
+        (6406565..6407987),
+        (6407987..6409449),
+        (6409449..6410883),
+        (6410883..6412289),
+        (6412289..6413716),
+        (6413716..6415147),
+        (6415147..6416562),
+        (6416562..6417976),
+        (6417976..6419406),
+        (6419406..6420824),
+        (6420824..6422230),
+        (6422230..6423644),
+        (6423644..6425056),
+        (6425056..6426462),
+        (6426462..6428771),
+        (6429761..6431189),
+        (6431189..6433285),
+        (6434034..6435468),
+        (6435468..6436880),
+        (6436880..6438852),
+        (6439589..6440999),
+        (6440999..6442409),
+        (6442409..6443819),
+        (6443819..6445648),
+        (6446237..6448682),
+        (6449673..6451093),
+        (6451093..6452503),
+        (6452503..6453927),
+        (6453927..6455351),
+        (6455351..6456777),
+        (6456777..6458191),
+        (6458191..6459539),
+        (6459539..6460965),
+        (6460965..6462381),
+        (6462381..6463819),
+        (6463819..6465239),
+        (6465239..6466649),
     ];
     pub static RUNE_CLOSURES: [Range<usize>; RuneId::VARIANTS] = [
         (1057..1417),
         (1057..1417),
         (1057..1417),
         (1057..1417),
-        (6341099..6341970),
+        (6354457..6355328),
         (1057..1417),
-        (6345962..6346955),
-        (1057..1417),
-        (1057..1417),
-        (1057..1417),
-        (1057..1417),
-        (1057..1417),
-        (1057..1417),
-        (6357218..6357804),
-        (1057..1417),
-        (1057..1417),
-        (1057..1417),
-        (1057..1417),
-        (1057..1417),
-        (6367213..6368205),
-        (1057..1417),
-        (1057..1417),
-        (6373375..6374367),
+        (6359320..6360313),
         (1057..1417),
         (1057..1417),
         (1057..1417),
         (1057..1417),
         (1057..1417),
         (1057..1417),
+        (6370576..6371162),
         (1057..1417),
-        (6386567..6387665),
         (1057..1417),
         (1057..1417),
+        (1057..1417),
+        (1057..1417),
+        (6380571..6381563),
+        (1057..1417),
+        (1057..1417),
+        (6386733..6387725),
+        (1057..1417),
+        (1057..1417),
+        (1057..1417),
+        (1057..1417),
+        (1057..1417),
+        (1057..1417),
+        (1057..1417),
+        (6399925..6401023),
         (1057..1417),
         (1057..1417),
         (1057..1417),
@@ -69281,17 +69113,19 @@ pub mod runes {
         (1057..1417),
         (1057..1417),
         (1057..1417),
-        (6415413..6416403),
-        (1057..1417),
-        (6419927..6420676),
         (1057..1417),
         (1057..1417),
-        (6425494..6426231),
+        (6428771..6429761),
+        (1057..1417),
+        (6433285..6434034),
+        (1057..1417),
+        (1057..1417),
+        (6438852..6439589),
         (1057..1417),
         (1057..1417),
         (1057..1417),
-        (6432290..6432879),
-        (6435324..6436315),
+        (6445648..6446237),
+        (6448682..6449673),
         (1057..1417),
         (1057..1417),
         (1057..1417),
@@ -69424,12 +69258,12 @@ pub mod runes {
         }
     }
 }
-pub static ONHIT_EFFECT_OFFSET: Range<usize> = 6453291..6453984;
-pub static BASIC_ATTACK_OFFSET: Range<usize> = 6453984..6454534;
-pub static TOWER_DAMAGE_OFFSET: Range<usize> = 6454534..6455703;
-pub static CRITICAL_STRIKE_OFFSET: Range<usize> = 6455703..6456447;
-pub static ONHIT_EFFECT_FN_OFFSET: Range<usize> = 6456447..6457024;
-pub static TOWER_DAMAGE_FN_OFFSET: Range<usize> = 6457024..6459005;
-pub static BASIC_ATTACK_FN_OFFSET: Range<usize> = 6459005..6459455;
-pub static CRITICAL_STRIKE_FN_OFFSET: Range<usize> = 6459455..6459966;
-pub const RAW_BLOCK_LEN: usize = 6459966;
+pub static ONHIT_EFFECT_OFFSET: Range<usize> = 6466649..6467342;
+pub static BASIC_ATTACK_OFFSET: Range<usize> = 6467342..6467892;
+pub static TOWER_DAMAGE_OFFSET: Range<usize> = 6467892..6469061;
+pub static CRITICAL_STRIKE_OFFSET: Range<usize> = 6469061..6469805;
+pub static ONHIT_EFFECT_FN_OFFSET: Range<usize> = 6469805..6470382;
+pub static TOWER_DAMAGE_FN_OFFSET: Range<usize> = 6470382..6472363;
+pub static BASIC_ATTACK_FN_OFFSET: Range<usize> = 6472363..6472813;
+pub static CRITICAL_STRIKE_FN_OFFSET: Range<usize> = 6472813..6473324;
+pub const RAW_BLOCK_LEN: usize = 6473324;
