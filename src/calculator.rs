@@ -149,7 +149,6 @@ pub const fn infer_champion_stats(data: InferStats<'_>) -> Stats<f32> {
         armor: base_stats.armor,
         attack_damage: base_stats.attack_damage,
         attack_range: cached_stats.attack_range,
-        attack_speed: RiotFormulas::stat(&cached_stats.attack_speed, level),
         crit_damage: cached_stats.critical_strike_damage
             * cached_stats.critical_strike_damage_modifier,
         current_health: base_stats.max_health,
@@ -158,11 +157,12 @@ pub const fn infer_champion_stats(data: InferStats<'_>) -> Stats<f32> {
         max_mana: base_stats.max_mana,
         current_mana: base_stats.max_mana,
         ability_power: 0.0,
-        crit_chance: 0.0,
+        attack_speed: 0.0,
         armor_penetration_flat: 0.0,
         armor_penetration_percent: 0.0,
         magic_penetration_flat: 0.0,
         magic_penetration_percent: 0.0,
+        crit_chance: 0.0,
     };
 
     stats.ability_power += bonus_stats.ability_power;
@@ -213,6 +213,9 @@ pub const fn infer_champion_stats(data: InferStats<'_>) -> Stats<f32> {
         },
         champion_id,
     );
+
+    stats.attack_speed *= cached_stats.attack_speed_ratio * stats.attack_speed
+        + RiotFormulas::stat(&cached_stats.attack_speed, level);
 
     let mut i = 0;
     while i < items.len() {
