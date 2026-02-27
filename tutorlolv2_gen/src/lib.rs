@@ -7,7 +7,13 @@ pub mod data;
 pub mod enums;
 pub mod eval;
 
-use core::{any::TypeId, mem::MaybeUninit, ops::Index, ops::Range, str::FromStr};
+use core::{
+    any::{Any, TypeId},
+    fmt::Debug,
+    mem::MaybeUninit,
+    ops::{Index, Range},
+    str::FromStr,
+};
 
 #[allow(non_upper_case_globals)]
 pub(crate) const unknown: f32 = 0.0;
@@ -304,11 +310,11 @@ impl ChampionId {
     }
 
     pub const fn recommended_items(&self, position: Position) -> &'static [ItemId] {
-        RECOMMENDED_ITEMS[self.index()][position as usize]
+        RECOMMENDED_ITEMS[self.index()][position.index()]
     }
 
     pub const fn recommended_runes(&self, position: Position) -> &'static [RuneId] {
-        RECOMMENDED_RUNES[self.index()][position as usize]
+        RECOMMENDED_RUNES[self.index()][position.index()]
     }
 
     pub const fn positions(&self) -> &'static [Position] {
@@ -338,6 +344,50 @@ impl ChampionId {
     pub const fn generator(&self) -> &'static Range<usize> {
         &CHAMPION_GENERATOR[self.index()]
     }
+}
+
+macro_rules! impl_item_filters {
+    ($($name:ident),+$(,)?) => {
+        impl ItemId {
+            pastey::paste! {
+                pub const FILTERS: [&[Self]; StatName::VARIANTS] = [
+                    $(
+                        &Self::[<ITEMS_WITH_ $name:snake:upper>],
+                    )+
+                ];
+
+                $(
+                    pub const [<ITEMS_WITH_ $name:snake:upper>]: [Self; Self::count_variants(StatName::$name)] =
+                        Self::find_variants(StatName::$name);
+                )+
+            }
+        }
+    };
+}
+
+impl_item_filters! {
+    AbilityHaste,
+    AbilityPower,
+    AdaptiveForce,
+    Armor,
+    ArmorPenetration,
+    AttackDamage,
+    AttackSpeed,
+    BaseHealthRegen,
+    BaseManaRegen,
+    CritChance,
+    CritDamage,
+    GoldPer10Seconds,
+    HealAndShieldPower,
+    Health,
+    Lethality,
+    LifeSteal,
+    MagicPenetration,
+    MagicResist,
+    Mana,
+    MoveSpeed,
+    Omnivamp,
+    Tenacity,
 }
 
 impl ItemId {
@@ -379,81 +429,6 @@ impl ItemId {
         }
         result
     }
-
-    pub const FILTERS: [&[Self]; StatName::VARIANTS] = [
-        &Self::ITEMS_WITH_ABILITY_HASTE,
-        &Self::ITEMS_WITH_ABILITY_POWER,
-        &Self::ITEMS_WITH_ADAPTIVE_FORCE,
-        &Self::ITEMS_WITH_ARMOR,
-        &Self::ITEMS_WITH_ARMOR_PENETRATION,
-        &Self::ITEMS_WITH_ATTACK_DAMAGE,
-        &Self::ITEMS_WITH_ATTACK_SPEED,
-        &Self::ITEMS_WITH_BASE_HEALTH_REGEN,
-        &Self::ITEMS_WITH_BASE_MANA_REGEN,
-        &Self::ITEMS_WITH_CRITICAL_STRIKE_CHANCE,
-        &Self::ITEMS_WITH_CRITICAL_STRIKE_DAMAGE,
-        &Self::ITEMS_WITH_GOLD_PER10_SECONDS,
-        &Self::ITEMS_WITH_HEAL_AND_SHIELD_POWER,
-        &Self::ITEMS_WITH_HEALTH,
-        &Self::ITEMS_WITH_LETHALITY,
-        &Self::ITEMS_WITH_LIFE_STEAL,
-        &Self::ITEMS_WITH_MAGIC_PENETRATION,
-        &Self::ITEMS_WITH_MAGIC_RESIST,
-        &Self::ITEMS_WITH_MANA,
-        &Self::ITEMS_WITH_MOVE_SPEED,
-        &Self::ITEMS_WITH_OMNIVAMP,
-        &Self::ITEMS_WITH_TENACITY,
-    ];
-
-    pub const ITEMS_WITH_ABILITY_HASTE: [Self; Self::count_variants(StatName::AbilityHaste)] =
-        Self::find_variants(StatName::AbilityHaste);
-    pub const ITEMS_WITH_ABILITY_POWER: [Self; Self::count_variants(StatName::AbilityPower)] =
-        Self::find_variants(StatName::AbilityPower);
-    pub const ITEMS_WITH_ADAPTIVE_FORCE: [Self; Self::count_variants(StatName::AdaptiveForce)] =
-        Self::find_variants(StatName::AdaptiveForce);
-    pub const ITEMS_WITH_ARMOR: [Self; Self::count_variants(StatName::Armor)] =
-        Self::find_variants(StatName::Armor);
-    pub const ITEMS_WITH_ARMOR_PENETRATION: [Self;
-        Self::count_variants(StatName::ArmorPenetration)] =
-        Self::find_variants(StatName::ArmorPenetration);
-    pub const ITEMS_WITH_ATTACK_DAMAGE: [Self; Self::count_variants(StatName::AttackDamage)] =
-        Self::find_variants(StatName::AttackDamage);
-    pub const ITEMS_WITH_ATTACK_SPEED: [Self; Self::count_variants(StatName::AttackSpeed)] =
-        Self::find_variants(StatName::AttackSpeed);
-    pub const ITEMS_WITH_BASE_HEALTH_REGEN: [Self;
-        Self::count_variants(StatName::BaseHealthRegen)] =
-        Self::find_variants(StatName::BaseHealthRegen);
-    pub const ITEMS_WITH_BASE_MANA_REGEN: [Self; Self::count_variants(StatName::BaseManaRegen)] =
-        Self::find_variants(StatName::BaseManaRegen);
-    pub const ITEMS_WITH_CRITICAL_STRIKE_CHANCE: [Self;
-        Self::count_variants(StatName::CritChance)] = Self::find_variants(StatName::CritChance);
-    pub const ITEMS_WITH_CRITICAL_STRIKE_DAMAGE: [Self;
-        Self::count_variants(StatName::CritDamage)] = Self::find_variants(StatName::CritDamage);
-    pub const ITEMS_WITH_GOLD_PER10_SECONDS: [Self;
-        Self::count_variants(StatName::GoldPer10Seconds)] =
-        Self::find_variants(StatName::GoldPer10Seconds);
-    pub const ITEMS_WITH_HEAL_AND_SHIELD_POWER: [Self;
-        Self::count_variants(StatName::HealAndShieldPower)] =
-        Self::find_variants(StatName::HealAndShieldPower);
-    pub const ITEMS_WITH_HEALTH: [Self; Self::count_variants(StatName::Health)] =
-        Self::find_variants(StatName::Health);
-    pub const ITEMS_WITH_LETHALITY: [Self; Self::count_variants(StatName::Lethality)] =
-        Self::find_variants(StatName::Lethality);
-    pub const ITEMS_WITH_LIFE_STEAL: [Self; Self::count_variants(StatName::LifeSteal)] =
-        Self::find_variants(StatName::LifeSteal);
-    pub const ITEMS_WITH_MAGIC_PENETRATION: [Self;
-        Self::count_variants(StatName::MagicPenetration)] =
-        Self::find_variants(StatName::MagicPenetration);
-    pub const ITEMS_WITH_MAGIC_RESIST: [Self; Self::count_variants(StatName::MagicResist)] =
-        Self::find_variants(StatName::MagicResist);
-    pub const ITEMS_WITH_MANA: [Self; Self::count_variants(StatName::Mana)] =
-        Self::find_variants(StatName::Mana);
-    pub const ITEMS_WITH_MOVE_SPEED: [Self; Self::count_variants(StatName::MoveSpeed)] =
-        Self::find_variants(StatName::MoveSpeed);
-    pub const ITEMS_WITH_OMNIVAMP: [Self; Self::count_variants(StatName::Omnivamp)] =
-        Self::find_variants(StatName::Omnivamp);
-    pub const ITEMS_WITH_TENACITY: [Self; Self::count_variants(StatName::Tenacity)] =
-        Self::find_variants(StatName::Tenacity);
 
     pub const fn filter(stat_name: StatName) -> &'static [Self] {
         Self::FILTERS[stat_name as usize]
@@ -615,11 +590,17 @@ macro_rules! impl_methods {
                     }
                 }
 
+                impl Sealed for $stru {}
+
                 impl CastId for $stru {
                     const VARIANTS: usize = Self::VARIANTS;
                     const NAMES: &'static [&'static str] = &Self::NAMES;
                     const VALUES: &'static [Self] = &Self::VALUES;
                     const FORMULAS: &'static [Range<usize>] = Self::FORMULAS;
+
+                    fn entity(&self) -> EntityId {
+                        EntityId::[<$stru:replace("Id", "")>](*self)
+                    }
 
                     fn name(&self) -> &'static str {
                         self.name()
@@ -664,15 +645,32 @@ pub const ZEROED_STATS: CachedItemStats = CachedItemStats {
     omnivamp: 0.0,
 };
 
+#[derive(Copy, Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+pub enum EntityId {
+    Champion(ChampionId),
+    Item(ItemId),
+    Rune(RuneId),
+}
+
+impl<T: CastId> From<T> for EntityId {
+    fn from(value: T) -> Self {
+        value.entity()
+    }
+}
+
+trait Sealed {}
+
+#[allow(private_bounds)]
 pub trait CastId
 where
-    Self: Sized + 'static,
+    Self: Any + Copy + Debug + Sealed + Sized + 'static,
 {
     const VARIANTS: usize;
     const NAMES: &'static [&'static str];
     const VALUES: &'static [Self];
     const FORMULAS: &'static [Range<usize>];
 
+    fn entity(&self) -> EntityId;
     fn name(&self) -> &'static str;
     fn index(&self) -> usize;
     fn idents(&self) -> &'static [CtxVar];

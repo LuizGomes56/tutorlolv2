@@ -117,6 +117,10 @@ impl Position {
         Position::Support,
     ];
 
+    pub const fn index(&self) -> usize {
+        *self as _
+    }
+
     pub const fn from_u8(value: u8) -> Option<Self> {
         match value {
             0..Self::VARIANTS => Some(unsafe { Self::from_u8_unchecked(value) }),

@@ -28,9 +28,9 @@ fn update() {
     Command::new("./build.bat").spawn().unwrap().wait().unwrap();
 }
 
-#[tokio::test]
-async fn generate_html() {
-    // tutorlolv2_html::run().await;
+#[test]
+fn generate_html() {
+    tutorlolv2_html::run();
 }
 
 #[test]

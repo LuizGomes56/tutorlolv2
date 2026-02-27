@@ -1,6 +1,6 @@
 use core::ops::{Deref, DerefMut};
-use std::{fmt::Debug, ops::Range, path::Path};
-use tutorlolv2_gen::{CastId, RAW_BLOCK, champions::ChampionId, items::ItemId};
+use std::{ops::Range, path::Path};
+use tutorlolv2_gen::{CastId, CtxVar, EntityId, RAW_BLOCK};
 
 pub struct Html {
     inner: String,
@@ -24,8 +24,8 @@ impl Html {
         self.push_str(&Self::code_block(offsets));
     }
 
-    pub async fn push_json(&mut self, enumv: impl CastId + Debug) {
-        let json = Self::json(&enumv).await;
+    pub fn push_json(&mut self, enumv: impl CastId) {
+        let json = Self::json(enumv);
         self.push_str(&format!(
             "<section>
                 <h3>JSON-IR generated for {enumv:?}</h3>
@@ -34,13 +34,13 @@ impl Html {
         ));
     }
 
-    pub async fn json(enumv: &(impl CastId + Debug)) -> String {
+    pub fn json(enumv: impl CastId) -> String {
         let file = format!("{enumv:?}");
         let path = Path::new("internal")
-            .join(enumv.folder())
+            .join(Self::folder(enumv))
             .join(file)
             .with_extension("json");
-        let json = tokio::fs::read_to_string(path).await.unwrap();
+        let json = std::fs::read_to_string(path).unwrap();
         tutorlolv2_fmt::json_html(&json)
     }
 
@@ -48,7 +48,7 @@ impl Html {
         format!(r#"<div class="column"><h2>{tag}</h2>{code}</div>"#)
     }
 
-    pub fn push_idents(&mut self, _idents: &[EvalIdent]) {
+    pub fn push_idents(&mut self, _idents: &[CtxVar]) {
         todo!()
     }
 
@@ -68,22 +68,30 @@ impl Html {
     }
 
     pub fn redirect(value: impl CastId) -> String {
-        let folder = value.folder();
-        let file = value.file();
+        let folder = Self::folder(value);
         let url = Self::URL;
+        let file = Self::file(value);
         format!("{url}/{folder}/{file}.html")
     }
 
+    pub fn folder(value: impl CastId) -> &'static str {
+        match value.entity() {
+            EntityId::Champion(_) => "champions",
+            EntityId::Item(_) => "items",
+            EntityId::Rune(_) => "runes",
+        }
+    }
+
+    pub fn file(value: impl CastId) -> String {
+        format!("{value:?}")
+    }
+
     pub fn src(value: impl CastId) -> String {
-        let folder = value.folder();
-        let type_id = value.type_id();
-        let tag = match ChampionId::is(&type_id) {
-            true => value.file(),
-            false => match ItemId::is(&type_id) {
-                true => ITEM_ID_TO_RIOT_ID[value.offset()],
-                false => RUNE_ID_TO_RIOT_ID[value.offset()],
-            }
-            .to_string(),
+        let folder = Self::folder(value);
+        let tag = match value.entity() {
+            EntityId::Champion(champion_id) => format!("{champion_id:?}"),
+            EntityId::Item(item_id) => item_id.to_riot_id().to_string(),
+            EntityId::Rune(rune_id) => rune_id.to_riot_id().to_string(),
         };
 
         let url = Self::URL;

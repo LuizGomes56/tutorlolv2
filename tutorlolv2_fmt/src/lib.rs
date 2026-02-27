@@ -10,7 +10,7 @@ use synoptic::{Highlighter, TokOpt};
 
 /// Takes an HTML string as input and minifies it, returning a sequence
 /// of bytes. Text defined inside tags `<pre>` and `<code>` are ignored
-pub fn minify_html(html: &mut str) -> Vec<u8> {
+pub fn minify_html(html: &str) -> Vec<u8> {
     let mut result = Vec::new();
     let mut html_cursor = Cursor::new(html.as_bytes());
     minify(&mut html_cursor, &mut result).unwrap();

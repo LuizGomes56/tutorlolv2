@@ -34,8 +34,8 @@ fn get_recommendations<T: CastId, const N: usize, const M: usize>(
         .collect::<String>()
 }
 
-pub async fn champions_html() {
-    parallel_task(64, async |champion_id: ChampionId| {
+pub fn champions_html() {
+    parallel_task(|champion_id: ChampionId| {
         let number_of_abilities = champion_id.number_of_abilities();
         let mut html = Html::new(champion_id);
 
@@ -73,12 +73,11 @@ pub async fn champions_html() {
         html.push_code_block(CHAMPION_FORMULAS[champion_id as usize].clone());
         html.push_str(&abilities);
         html.push_code_block(CHAMPION_GENERATOR[champion_id as usize].clone());
-        html.push_json(champion_id).await;
-
+        html.push_json(champion_id);
         html.push_str(&format!(
             "This champion has {number_of_abilities} different damaging abilities"
         ));
+
         html
-    })
-    .await;
+    });
 }
