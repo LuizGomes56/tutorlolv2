@@ -19,8 +19,8 @@ struct DeclaredItem {
     match_arm: String,
 }
 
-const MAX_TUPLE_0: (usize, usize) = (usize::MAX, usize::MAX);
-const MAX_TUPLE_1: (usize, usize) = (usize::MAX - 1, usize::MAX);
+const GENERATOR_TUPLE: (usize, usize) = (usize::MAX, usize::MAX);
+const CLOSURE_TUPLE: (usize, usize) = (usize::MAX - 1, usize::MAX);
 
 fn declare_item(name: &str, item: &Item) -> DeclaredItem {
     let Item {
@@ -464,7 +464,7 @@ fn build_items(data: Vec<(String, ItemResult)>) -> GeneratorFn {
 
         match generator {
             Some(generator) => tracker.record_into(&generator.rust_html(), &mut generator_offsets),
-            None => generator_offsets.push(MAX_TUPLE_0),
+            None => generator_offsets.push(GENERATOR_TUPLE),
         }
         rustfmt_inputs.push(html_declaration);
         rustfmt_inputs.push(html_closure);
@@ -478,7 +478,7 @@ fn build_items(data: Vec<(String, ItemResult)>) -> GeneratorFn {
         let html_declaration = decl_fmt.drop_f32s().rust_html().as_const();
         tracker.record_into(&html_declaration, &mut formula_offsets);
         match clos_fmt.trim().is_empty() {
-            true => closure_offsets.push(MAX_TUPLE_1),
+            true => closure_offsets.push(CLOSURE_TUPLE),
             false => tracker.record_into(&clos_fmt.drop_f32s().rust_html(), &mut closure_offsets),
         }
     }
@@ -519,11 +519,11 @@ fn build_items(data: Vec<(String, ItemResult)>) -> GeneratorFn {
         let add_offsets = |(list, target): (Vec<_>, &mut String)| {
             for tuple in list {
                 match tuple {
-                    MAX_TUPLE_0 => {
+                    GENERATOR_TUPLE => {
                         let (s, e) = unsafe { DEFAULT_ITEM_GENERATOR_OFFSET };
                         target.push_str(&format!("({s}..{e}),"));
                     }
-                    MAX_TUPLE_1 => {
+                    CLOSURE_TUPLE => {
                         let (s, e) = unsafe { ZERO_FN_OFFSET };
                         target.push_str(&format!("({s}..{e}),"));
                     }

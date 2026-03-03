@@ -14,3 +14,4 @@ target
 html
 raw_img
 cache_*
+**/conv

@@ -276,7 +276,11 @@ pub fn generate_champions() -> GeneratorFn {
             let fn_name = &constfn.name;
             fn_names.push_str(&format!("{fn_name},"));
             ability_metadata.push_str(&format!("{metadata},"));
-            closures.push_str(&format!("{fn_name}: {damage},", damage = data.damage));
+            closures.push_str(&format!(
+                "{key}: {damage},",
+                key = ability_id.discriminant().to_lowercase(),
+                damage = data.damage
+            ));
             ability_names.push(ability_id);
             ability_declarations.insert(ability_id, data);
 
@@ -303,8 +307,8 @@ pub fn generate_champions() -> GeneratorFn {
 
         let rest = format!(
             "metadata: &[{ability_metadata}],
-            stats: CachedChampionStats {{{stats}}},
-            merge_data: &[{merge_data}]",
+            merge_data: &[{merge_data}],
+            stats: CachedChampionStats {{{stats}}}",
             stats = get_stats(&stats),
             merge_data = define_merge_indexes(&merge_data, &ability_names),
         );
@@ -574,7 +578,13 @@ fn build_champions(data: Vec<(String, ChampionResult)>) -> GeneratorFn {
             .enumerate()
             .map(|(j, ability_id)| {
                 let index = plan.damage_start + j;
-                (*ability_id, formatted[index].drop_f32s().rust_html())
+                (
+                    *ability_id,
+                    formatted[index]
+                        .drop_f32s()
+                        .replace(" as u8", "")
+                        .rust_html(),
+                )
             })
             .collect::<Vec<_>>();
 

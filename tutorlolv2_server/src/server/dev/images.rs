@@ -51,11 +51,8 @@ pub async fn download_all() -> impl Responder {
 pub mod avif {
     use super::*;
 
-    pub async fn convert_folder(
-        source: &str,
-        folder: &str,
-    ) -> Result<(), Box<dyn std::error::Error>> {
-        match tutorlolv2_avif::convert_folder_avif(&format!("{source}/{folder}")) {
+    pub fn convert_folder(source: &str, folder: &str) -> Result<(), Box<dyn std::error::Error>> {
+        match tutorlolv2_avif::convert_folder_avif(&format!("../{source}/{folder}")) {
             Ok(_) => println!("Convertion of '{folder}' finished"),
             Err(e) => eprintln!("Error converting '{folder}': {e:#?}"),
         }
@@ -76,13 +73,14 @@ pub mod avif {
     pub async fn img_convert_avif<const N: usize>(folders: [&'static str; N]) {
         for folder in folders {
             println!("Converting folder: {folder}");
-            let _ = convert_folder("raw_img", folder).await;
+            let _ = convert_folder("raw_img", folder);
         }
     }
+}
 
-    #[get("/compress")]
-    pub async fn compress_images() -> impl Responder {
-        img_convert_avif(IMG_FOLDERS);
-        HttpResponse::Ok().body("Executed fn[compress_images]")
-    }
+#[get("/compress")]
+pub async fn compress_images() -> impl Responder {
+    #[cfg(feature = "avif")]
+    avif::img_convert_avif(avif::IMG_FOLDERS);
+    HttpResponse::Ok().body("Executed fn[compress_images]")
 }

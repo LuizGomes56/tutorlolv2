@@ -57,7 +57,7 @@ pub async fn setup_project() -> impl Responder {
 
 #[get("/docs")]
 pub async fn setup_docs() -> impl Responder {
-    tutorlolv2_html::run().await;
+    tutorlolv2_html::run();
     HttpResponse::Ok().body("Html docs setup finished")
 }
 
