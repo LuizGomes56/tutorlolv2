@@ -128,6 +128,16 @@ impl Position {
         }
     }
 
+    pub const fn name(&self) -> &'static str {
+        match self {
+            Position::Top => "Top",
+            Position::Jungle => "Jungle",
+            Position::Middle => "Mid",
+            Position::Bottom => "Adc / Bottom",
+            Position::Support => "Support",
+        }
+    }
+
     pub const unsafe fn from_u8_unchecked(value: u8) -> Self {
         unsafe { core::mem::transmute(value) }
     }

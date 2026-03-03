@@ -76,10 +76,6 @@ impl AbilityId {
             _ => result.push_str(&format!("{ability_name:?}").trim_start_matches('_')),
         }
         result
-        //  format!(
-        //         "{letter}_{ability_name}",
-        //         ability_name = format!("{:?}", ability_id.ability_name()).trim_start_matches('_')
-        //     )
     }
 }
 
@@ -101,6 +97,7 @@ impl AbilityId {
     serde::Serialize,
     serde::Deserialize,
 )]
+#[repr(u8)]
 pub enum StatName {
     AbilityHaste,
     AbilityPower,
@@ -128,11 +125,9 @@ pub enum StatName {
 
 impl StatName {
     pub const VARIANTS: usize = 22;
-}
 
-impl Display for StatName {
-    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
-        let value = match self {
+    pub const fn name(&self) -> &'static str {
+        match self {
             StatName::AbilityHaste => "Ability Haste",
             StatName::AbilityPower => "Ability Power",
             StatName::AdaptiveForce => "Adaptive Force",
@@ -155,7 +150,13 @@ impl Display for StatName {
             StatName::MoveSpeed => "Move Speed",
             StatName::Omnivamp => "Omnivamp",
             StatName::Tenacity => "Tenacity",
-        };
+        }
+    }
+}
+
+impl Display for StatName {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+        let value = self.name();
         write!(f, "{value}")
     }
 }
