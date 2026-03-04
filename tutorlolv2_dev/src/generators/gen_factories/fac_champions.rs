@@ -18,22 +18,13 @@ use std::{
 use tutorlolv2_fmt::rustfmt;
 use tutorlolv2_gen::{
     AbilityId, AbilityName, AdaptiveType, AttackType, Attrs, ChampionId, DamageType, DevMergeData,
-    Position,
+    Key, Position,
 };
 
 pub struct ChampionData {
     pub data: MerakiChampion,
     pub map: BTreeMap<AbilityId, Ability>,
     pub mergevec: BTreeSet<DevMergeData>,
-}
-
-#[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
-pub enum Key {
-    P,
-    Q,
-    W,
-    E,
-    R,
 }
 
 /// Struct that creates and runs files that implement the trait [`Generator`].

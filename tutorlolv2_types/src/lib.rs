@@ -5,6 +5,15 @@ use core::fmt::Display;
 
 pub use ability_name::AbilityName;
 
+#[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+pub enum Key {
+    P,
+    Q,
+    W,
+    E,
+    R,
+}
+
 /// Enum that represents one ability of a champion, with a custom display name.
 /// - [`AbilityId::P`] represents the passive of a champion
 /// - Other variants correspond to the abilities `Q`, `W`, `E`, and `R` (ultimate)
@@ -30,7 +39,35 @@ pub enum AbilityId {
     R(AbilityName),
 }
 
+impl From<Key> for AbilityId {
+    fn from(value: Key) -> Self {
+        AbilityId::from_key_fn(value)(AbilityName::Void)
+    }
+}
+
+impl From<AbilityId> for Key {
+    fn from(value: AbilityId) -> Self {
+        match value {
+            AbilityId::P(_) => Key::P,
+            AbilityId::Q(_) => Key::Q,
+            AbilityId::W(_) => Key::W,
+            AbilityId::E(_) => Key::E,
+            AbilityId::R(_) => Key::R,
+        }
+    }
+}
+
 impl AbilityId {
+    pub const fn from_key_fn(key: Key) -> fn(AbilityName) -> Self {
+        match key {
+            Key::P => AbilityId::P,
+            Key::Q => AbilityId::Q,
+            Key::W => AbilityId::W,
+            Key::E => AbilityId::E,
+            Key::R => AbilityId::R,
+        }
+    }
+
     pub const fn as_char(&self) -> char {
         match self {
             AbilityId::P(_) => 'P',

@@ -5,10 +5,8 @@ use std::{
     str::FromStr,
 };
 use tutorlolv2_gen::{
-    AbilityId, AdaptiveType, AttackType, Attrs, DamageType, DevMergeData, Position,
+    AbilityId, AdaptiveType, AttackType, Attrs, DamageType, DevMergeData, Key, Position,
 };
-
-use crate::gen_factories::fac_champions::Key;
 
 #[derive(Deserialize, Serialize)]
 pub struct Modifiers {

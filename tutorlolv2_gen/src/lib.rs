@@ -305,6 +305,36 @@ impl ChampionId {
     pub const CLOSURES: &[&[Range<usize>]; Self::VARIANTS] = &ABILITY_CLOSURES;
     pub const ABILITIES: &[&[Range<usize>]; Self::VARIANTS] = &ABILITY_FORMULAS;
 
+    pub const fn exceptions(&self, ally: bool) -> Option<Key> {
+        match ally {
+            true => match self {
+                ChampionId::AurelionSol
+                | ChampionId::Bard
+                | ChampionId::Belveth
+                | ChampionId::Graves
+                | ChampionId::Hecarim
+                | ChampionId::Kalista
+                | ChampionId::Kindred
+                | ChampionId::Senna
+                | ChampionId::Shyvana
+                | ChampionId::Sion
+                | ChampionId::Smolder
+                | ChampionId::Swain
+                | ChampionId::Thresh
+                | ChampionId::Veigar => Some(Key::P),
+                ChampionId::Nasus => Some(Key::Q),
+                ChampionId::Darius => Some(Key::E),
+                ChampionId::Chogath => Some(Key::R),
+                _ => None,
+            },
+            false => match self {
+                Self::Graves | Self::Sion | Self::Swain | Self::Thresh => Some(Key::P),
+                Self::Chogath => Some(Key::R),
+                _ => None,
+            },
+        }
+    }
+
     pub const fn number_of_abilities(&self) -> usize {
         self.cache().closures.len()
     }
@@ -403,6 +433,31 @@ impl ItemId {
         result
     };
 
+    pub const fn exceptions(ally: bool) -> &'static [Self] {
+        match ally {
+            true => &[
+                Self::DarkSeal,
+                Self::DragonheartU44,
+                Self::DemonKingsCrownU44,
+                Self::DemonKingsCrownU66,
+                Self::RiteOfRuin,
+                Self::MejaisSoulstealer,
+                Self::Hubris6697,
+                Self::Hubris126697,
+                Self::HubrisArena,
+                Self::BloodlettersCurse4010,
+                Self::BloodlettersCurse8010,
+                Self::BlackCleaver,
+                Self::BlackCleaverArena,
+            ],
+            false => &[
+                Self::DragonheartU44,
+                Self::DemonKingsCrownU44,
+                Self::DemonKingsCrownU66,
+            ],
+        }
+    }
+
     pub const fn has_stat(&self, stat_name: StatName) -> bool {
         let mut i = 0;
         let stats = self.cache().prettified_stats;
@@ -471,6 +526,25 @@ impl RuneId {
         }
         result
     };
+
+    pub const fn exceptions() -> &'static [Self] {
+        &[
+            Self::AbsorbLife,
+            Self::Conqueror,
+            Self::DeepWard,
+            Self::EyeballCollection,
+            Self::GhostPoro,
+            Self::GrislyMementos,
+            Self::GatheringStorm,
+            Self::GraspOfTheUndying,
+            Self::LethalTempo,
+            Self::LegendAlacrity,
+            Self::LegendBloodline,
+            Self::LegendHaste,
+            Self::ManaflowBand,
+            Self::ZombieWard,
+        ]
+    }
 
     pub const fn to_riot_id(&self) -> u32 {
         self.cache().riot_id
