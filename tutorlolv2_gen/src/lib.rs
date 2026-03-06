@@ -247,10 +247,9 @@ const _: () = {
     let mut i = 0;
     while i < ChampionId::VARIANTS {
         let champion_id = ChampionId::VALUES[i];
-        let cache = champion_id.cache();
+        let merge_data = champion_id.merge_data();
 
-        let merge_data = cache.merge_data;
-        let len = cache.metadata.len();
+        let len = champion_id.number_of_abilities();
 
         assert!(len == champion_id.closures().len());
         assert!(len == champion_id.ident_indexes().len());
@@ -333,6 +332,14 @@ impl ChampionId {
                 _ => None,
             },
         }
+    }
+
+    pub const fn abilities(&self) -> &'static [TypeMetadata<AbilityId>] {
+        self.cache().metadata
+    }
+
+    pub const fn merge_data(&self) -> &'static [MergeData] {
+        self.cache().merge_data
     }
 
     pub const fn number_of_abilities(&self) -> usize {

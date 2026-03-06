@@ -1,13 +1,13 @@
 use crate::{
-    CwdPath, DEFAULT_ITEM_GENERATOR_OFFSET, Generated, GeneratorFn, SrcFolder, Tracker,
-    ZERO_FN_OFFSET, parallel_task, push_end,
+    parallel_task, push_end,
     scripts::{
-        StringExt,
         model::{Item, ItemStats, MerakiItemStatMap},
-        rustfmt_batch,
+        rustfmt_batch, StringExt,
     },
+    CwdPath, Generated, GeneratorFn, SrcFolder, Tracker, DEFAULT_ITEM_GENERATOR_OFFSET,
+    ZERO_FN_OFFSET,
 };
-use std::collections::{HashMap, HashSet};
+use std::collections::{BTreeMap, HashMap, HashSet};
 
 struct DeclaredItem {
     metadata: String,
@@ -41,7 +41,7 @@ fn declare_item(name: &str, item: &Item) -> DeclaredItem {
         }}"
     );
 
-    #[derive(Clone, Hash, PartialEq, Eq)]
+    #[derive(Clone, Hash, PartialEq, Eq, PartialOrd, Ord)]
     struct ExprKey {
         body: String,
     }
@@ -74,7 +74,7 @@ fn declare_item(name: &str, item: &Item) -> DeclaredItem {
     push_expr("ranged", "min", &ranged.minimum_damage, &mut exprs);
     push_expr("ranged", "max", &ranged.maximum_damage, &mut exprs);
 
-    let mut groups: HashMap<ExprKey, Vec<ExprInfo>> = HashMap::new();
+    let mut groups = BTreeMap::<ExprKey, Vec<ExprInfo>>::new();
 
     for e in exprs {
         groups.entry(e.key.clone()).or_default().push(e);
@@ -405,22 +405,17 @@ fn build_items(data: Vec<(String, ItemResult)>) -> GeneratorFn {
     let len = data.len();
     let mut item_declarations = String::new();
 
-    let [
-        mut item_cache,
-        mut item_formulas,
-        mut item_generator,
-        mut item_idents,
-        mut item_closures,
-    ] = std::array::from_fn(|i| {
-        let (name, vtype) = [
-            ("ITEM_CACHE", "&CachedItem"),
-            ("ITEM_FORMULAS", "Range<usize>"),
-            ("ITEM_GENERATOR", "Range<usize>"),
-            ("ITEM_IDENTS", "&[CtxVar]"),
-            ("ITEM_CLOSURES", "Range<usize>"),
-        ][i];
-        format!("pub static {name}: [{vtype}; ItemId::VARIANTS] = [")
-    });
+    let [mut item_cache, mut item_formulas, mut item_generator, mut item_idents, mut item_closures] =
+        std::array::from_fn(|i| {
+            let (name, vtype) = [
+                ("ITEM_CACHE", "&CachedItem"),
+                ("ITEM_FORMULAS", "Range<usize>"),
+                ("ITEM_GENERATOR", "Range<usize>"),
+                ("ITEM_IDENTS", "&[CtxVar]"),
+                ("ITEM_CLOSURES", "Range<usize>"),
+            ][i];
+            format!("pub static {name}: [{vtype}; ItemId::VARIANTS] = [")
+        });
 
     let mut block = String::new();
 

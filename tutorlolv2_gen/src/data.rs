@@ -46308,19 +46308,19 @@ pub mod items {
             unknown_map_35: false,
         },
     };
-    pub const fn blade_of_the_ruined_king_arena_melee_min(ctx: &Ctx) -> f32 {
-        ctx.enemy_current_health
-            - (0.09 * ctx.enemy_current_health * (1.0 - 0.09 * ctx.physical_multiplier)
-                - ctx.attack_damage
-                + ctx.attack_damage * (1.0 - 0.09 * ctx.physical_multiplier))
-                / 0.09
-    }
     pub const fn blade_of_the_ruined_king_arena_ranged_min(ctx: &Ctx) -> f32 {
         ctx.enemy_current_health
             - (0.06 * ctx.enemy_current_health * (1.0 - 0.06 * ctx.physical_multiplier)
                 - ctx.attack_damage
                 + ctx.attack_damage * (1.0 - 0.06 * ctx.physical_multiplier))
                 / 0.06
+    }
+    pub const fn blade_of_the_ruined_king_arena_melee_min(ctx: &Ctx) -> f32 {
+        ctx.enemy_current_health
+            - (0.09 * ctx.enemy_current_health * (1.0 - 0.09 * ctx.physical_multiplier)
+                - ctx.attack_damage
+                + ctx.attack_damage * (1.0 - 0.09 * ctx.physical_multiplier))
+                / 0.09
     }
     pub static BLADE_O_RANG: CachedItem = CachedItem {
         name: "Blade-o-rang",
@@ -69240,12 +69240,13 @@ pub mod runes {
         }
     }
 }
-pub static ONHIT_EFFECT_OFFSET: Range<usize> = 6449315..6450008;
-pub static BASIC_ATTACK_OFFSET: Range<usize> = 6450008..6450558;
-pub static TOWER_DAMAGE_OFFSET: Range<usize> = 6450558..6451654;
-pub static CRITICAL_STRIKE_OFFSET: Range<usize> = 6451654..6452398;
-pub static ONHIT_EFFECT_FN_OFFSET: Range<usize> = 6452398..6452975;
-pub static TOWER_DAMAGE_FN_OFFSET: Range<usize> = 6452975..6454956;
-pub static BASIC_ATTACK_FN_OFFSET: Range<usize> = 6454956..6455406;
-pub static CRITICAL_STRIKE_FN_OFFSET: Range<usize> = 6455406..6455917;
-pub const RAW_BLOCK_LEN: usize = 6455917;
+pub static IGNITE_OFFSET: Range<usize> = 6449315..6450154;
+pub static ONHIT_EFFECT_OFFSET: Range<usize> = 6450154..6450830;
+pub static BASIC_ATTACK_OFFSET: Range<usize> = 6450830..6451380;
+pub static TOWER_DAMAGE_OFFSET: Range<usize> = 6451380..6452441;
+pub static CRITICAL_STRIKE_OFFSET: Range<usize> = 6452441..6453183;
+pub static ONHIT_EFFECT_FN_OFFSET: Range<usize> = 6453183..6453760;
+pub static TOWER_DAMAGE_FN_OFFSET: Range<usize> = 6453760..6455741;
+pub static BASIC_ATTACK_FN_OFFSET: Range<usize> = 6455741..6456191;
+pub static CRITICAL_STRIKE_FN_OFFSET: Range<usize> = 6456191..6456700;
+pub const RAW_BLOCK_LEN: usize = 6456700;
