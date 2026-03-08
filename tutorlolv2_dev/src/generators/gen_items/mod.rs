@@ -13,5 +13,7 @@ pub(self) use tutorlolv2_gen::{
 
 pub mod blade_of_the_ruined_king;
 pub mod blade_of_the_ruined_king_arena;
+pub mod malignance;
+pub mod malignance_arena;
 pub mod nashors_tooth;
 pub mod nashors_tooth_arena;

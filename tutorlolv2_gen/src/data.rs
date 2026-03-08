@@ -1106,6 +1106,19 @@ pub mod champions {
         adaptive_type: AdaptiveType::Physical,
         attack_type: AttackType::Melee,
         positions: &[Position::Top],
+        closures: &[
+            aatrox_p,
+            aatrox_qmin,
+            aatrox_q1min,
+            aatrox_q2min,
+            aatrox_q3min,
+            aatrox_qmax,
+            aatrox_q1max,
+            aatrox_q2max,
+            aatrox_q3max,
+            aatrox_wmin,
+            aatrox_wmax,
+        ],
         combos: &[
             &[
                 Ability(Q(_1Min)),
@@ -1129,19 +1142,6 @@ pub mod champions {
                 Ability(Q(_3Max)),
                 Attack,
             ],
-        ],
-        closures: &[
-            aatrox_p,
-            aatrox_qmin,
-            aatrox_q1min,
-            aatrox_q2min,
-            aatrox_q3min,
-            aatrox_qmax,
-            aatrox_q1max,
-            aatrox_q2max,
-            aatrox_q3max,
-            aatrox_wmin,
-            aatrox_wmax,
         ],
         metadata: &[
             TypeMetadata {
@@ -1315,10 +1315,10 @@ pub mod champions {
         adaptive_type: AdaptiveType::Magic,
         attack_type: AttackType::Ranged,
         positions: &[Position::Middle],
-        combos: &[],
         closures: &[
             ahri_qmin, ahri_qmax, ahri_w1, ahri_wmin, ahri_wmax, ahri_e, ahri_rmin, ahri_rmax,
         ],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(Min),
@@ -1446,7 +1446,6 @@ pub mod champions {
         adaptive_type: AdaptiveType::Physical,
         attack_type: AttackType::Melee,
         positions: &[Position::Middle, Position::Top],
-        combos: &[],
         closures: &[
             akali_p,
             akali_q,
@@ -1457,6 +1456,7 @@ pub mod champions {
             akali_r2min,
             akali_r2max,
         ],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: P(Void),
@@ -1576,7 +1576,6 @@ pub mod champions {
         adaptive_type: AdaptiveType::Physical,
         attack_type: AttackType::Ranged,
         positions: &[Position::Middle],
-        combos: &[],
         closures: &[
             akshan_p,
             akshan_qmin,
@@ -1587,6 +1586,7 @@ pub mod champions {
             akshan_r1max,
             akshan_r2max,
         ],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: P(Void),
@@ -1715,8 +1715,8 @@ pub mod champions {
         adaptive_type: AdaptiveType::Magic,
         attack_type: AttackType::Melee,
         positions: &[Position::Support],
-        combos: &[],
         closures: &[alistar_q, alistar_w, alistar_emin, alistar_emax],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(Void),
@@ -1797,10 +1797,10 @@ pub mod champions {
         adaptive_type: AdaptiveType::Physical,
         attack_type: AttackType::Melee,
         positions: &[Position::Top],
-        combos: &[],
         closures: &[
             ambessa_q3, ambessa_q4, ambessa_w1, ambessa_w2, ambessa_e1, ambessa_e2, ambessa_r1,
         ],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_3),
@@ -1907,8 +1907,8 @@ pub mod champions {
         adaptive_type: AdaptiveType::Magic,
         attack_type: AttackType::Melee,
         positions: &[Position::Jungle, Position::Support],
-        combos: &[],
         closures: &[amumu_q, amumu_w, amumu_e, amumu_r],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(Void),
@@ -1986,10 +1986,10 @@ pub mod champions {
         adaptive_type: AdaptiveType::Magic,
         attack_type: AttackType::Ranged,
         positions: &[Position::Middle],
-        combos: &[],
         closures: &[
             anivia_q1, anivia_q2, anivia_q3, anivia_e1, anivia_e2, anivia_r1, anivia_r2,
         ],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -2090,8 +2090,8 @@ pub mod champions {
         adaptive_type: AdaptiveType::Magic,
         attack_type: AttackType::Ranged,
         positions: &[Position::Middle],
-        combos: &[],
         closures: &[annie_q1, annie_w1, annie_e1, annie_r1],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -2168,8 +2168,8 @@ pub mod champions {
         adaptive_type: AdaptiveType::Physical,
         attack_type: AttackType::Ranged,
         positions: &[Position::Bottom],
-        combos: &[],
         closures: &[aphelios_p1],
+        combos: &[],
         metadata: &[TypeMetadata {
             kind: P(_1),
             damage_type: DamageType::Unknown,
@@ -2220,8 +2220,8 @@ pub mod champions {
         adaptive_type: AdaptiveType::Physical,
         attack_type: AttackType::Ranged,
         positions: &[Position::Bottom, Position::Support],
-        combos: &[],
         closures: &[ashe_q1, ashe_q2, ashe_w1, ashe_r1],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -2298,7 +2298,6 @@ pub mod champions {
         adaptive_type: AdaptiveType::Magic,
         attack_type: AttackType::Ranged,
         positions: &[Position::Middle],
-        combos: &[],
         closures: &[
             aurelionsol_q1,
             aurelionsol_q2,
@@ -2311,6 +2310,7 @@ pub mod champions {
             aurelionsol_e2,
             aurelionsol_r2,
         ],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -2435,10 +2435,10 @@ pub mod champions {
         adaptive_type: AdaptiveType::Magic,
         attack_type: AttackType::Ranged,
         positions: &[Position::Middle, Position::Top],
-        combos: &[],
         closures: &[
             aurora_q1, aurora_q2, aurora_q3, aurora_q4, aurora_q5, aurora_e1, aurora_r1,
         ],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -2539,8 +2539,8 @@ pub mod champions {
         adaptive_type: AdaptiveType::Magic,
         attack_type: AttackType::Ranged,
         positions: &[Position::Middle],
-        combos: &[],
         closures: &[azir_q1, azir_w1, azir_e1, azir_r1],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -2637,8 +2637,8 @@ pub mod champions {
         adaptive_type: AdaptiveType::Magic,
         attack_type: AttackType::Ranged,
         positions: &[Position::Support],
-        combos: &[],
         closures: &[bard_q],
+        combos: &[],
         metadata: &[TypeMetadata {
             kind: Q(Void),
             damage_type: DamageType::Magic,
@@ -2689,11 +2689,11 @@ pub mod champions {
         adaptive_type: AdaptiveType::Physical,
         attack_type: AttackType::Melee,
         positions: &[Position::Jungle],
-        combos: &[],
         closures: &[
             belveth_q1, belveth_q2, belveth_q3, belveth_q4, belveth_w1, belveth_e1, belveth_e2,
             belveth_e3, belveth_e4, belveth_e5, belveth_r1, belveth_r2, belveth_r3,
         ],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -2842,8 +2842,8 @@ pub mod champions {
         adaptive_type: AdaptiveType::Physical,
         attack_type: AttackType::Melee,
         positions: &[Position::Support],
-        combos: &[],
         closures: &[blitzcrank_q1, blitzcrank_r1, blitzcrank_r2],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -2912,8 +2912,8 @@ pub mod champions {
         adaptive_type: AdaptiveType::Magic,
         attack_type: AttackType::Ranged,
         positions: &[Position::Jungle, Position::Middle, Position::Support],
-        combos: &[],
         closures: &[brand_q1, brand_w1, brand_w2, brand_e1, brand_r1, brand_r2],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -3006,8 +3006,8 @@ pub mod champions {
         adaptive_type: AdaptiveType::Magic,
         attack_type: AttackType::Melee,
         positions: &[Position::Support],
-        combos: &[],
         closures: &[braum_q1, braum_e1, braum_r1],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -3076,10 +3076,10 @@ pub mod champions {
         adaptive_type: AdaptiveType::Physical,
         attack_type: AttackType::Melee,
         positions: &[Position::Jungle],
-        combos: &[],
         closures: &[
             briar_q1, briar_w1, briar_e1, briar_e2, briar_e3, briar_e4, briar_r1,
         ],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -3180,8 +3180,8 @@ pub mod champions {
         adaptive_type: AdaptiveType::Physical,
         attack_type: AttackType::Ranged,
         positions: &[Position::Bottom],
-        combos: &[],
         closures: &[caitlyn_q1, caitlyn_q2, caitlyn_w1, caitlyn_e1, caitlyn_r1],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -3266,10 +3266,10 @@ pub mod champions {
         adaptive_type: AdaptiveType::Physical,
         attack_type: AttackType::Melee,
         positions: &[Position::Support, Position::Top],
-        combos: &[],
         closures: &[
             camille_q1, camille_q2, camille_w1, camille_w2, camille_w3, camille_w4, camille_r1,
         ],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -3370,7 +3370,6 @@ pub mod champions {
         adaptive_type: AdaptiveType::Magic,
         attack_type: AttackType::Ranged,
         positions: &[Position::Middle],
-        combos: &[],
         closures: &[
             cassiopeia_q1,
             cassiopeia_q2,
@@ -3380,6 +3379,7 @@ pub mod champions {
             cassiopeia_e2,
             cassiopeia_r1,
         ],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -3500,11 +3500,11 @@ pub mod champions {
         adaptive_type: AdaptiveType::Magic,
         attack_type: AttackType::Melee,
         positions: &[Position::Top],
-        combos: &[],
         closures: &[
             chogath_q1, chogath_w1, chogath_e1, chogath_e2, chogath_e3, chogath_e4, chogath_r1,
             chogath_r2,
         ],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -3619,10 +3619,10 @@ pub mod champions {
         adaptive_type: AdaptiveType::Physical,
         attack_type: AttackType::Ranged,
         positions: &[Position::Middle],
-        combos: &[],
         closures: &[
             corki_q1, corki_w1, corki_w2, corki_e1, corki_e2, corki_r1, corki_r2,
         ],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -3723,10 +3723,10 @@ pub mod champions {
         adaptive_type: AdaptiveType::Physical,
         attack_type: AttackType::Melee,
         positions: &[Position::Top],
-        combos: &[],
         closures: &[
             darius_q1, darius_q2, darius_w1, darius_r1, darius_r2, darius_r3,
         ],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -3819,10 +3819,10 @@ pub mod champions {
         adaptive_type: AdaptiveType::Magic,
         attack_type: AttackType::Melee,
         positions: &[Position::Jungle, Position::Middle],
-        combos: &[],
         closures: &[
             diana_q1, diana_w1, diana_w2, diana_e1, diana_r1, diana_r2, diana_r3,
         ],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -3923,8 +3923,8 @@ pub mod champions {
         adaptive_type: AdaptiveType::Physical,
         attack_type: AttackType::Melee,
         positions: &[Position::Top],
-        combos: &[],
         closures: &[drmundo_q1, drmundo_e1, drmundo_r1, drmundo_r2],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -4001,8 +4001,8 @@ pub mod champions {
         adaptive_type: AdaptiveType::Physical,
         attack_type: AttackType::Ranged,
         positions: &[Position::Bottom],
-        combos: &[],
         closures: &[draven_q1, draven_w1, draven_w2, draven_e1, draven_e2],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -4087,8 +4087,8 @@ pub mod champions {
         adaptive_type: AdaptiveType::Magic,
         attack_type: AttackType::Melee,
         positions: &[Position::Jungle, Position::Middle],
-        combos: &[],
         closures: &[ekko_q1, ekko_q2, ekko_q3, ekko_e1, ekko_r1],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -4173,8 +4173,8 @@ pub mod champions {
         adaptive_type: AdaptiveType::Magic,
         attack_type: AttackType::Ranged,
         positions: &[Position::Jungle],
-        combos: &[],
         closures: &[elise_q3, elise_q4, elise_w1],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_3),
@@ -4243,11 +4243,11 @@ pub mod champions {
         adaptive_type: AdaptiveType::Magic,
         attack_type: AttackType::Melee,
         positions: &[Position::Jungle],
-        combos: &[],
         closures: &[
             evelynn_q1, evelynn_q2, evelynn_q3, evelynn_q4, evelynn_q5, evelynn_q6, evelynn_w1,
             evelynn_e2, evelynn_r1, evelynn_r2,
         ],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -4372,8 +4372,8 @@ pub mod champions {
         adaptive_type: AdaptiveType::Physical,
         attack_type: AttackType::Ranged,
         positions: &[Position::Bottom],
-        combos: &[],
         closures: &[ezreal_q, ezreal_w, ezreal_e, ezreal_r],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(Void),
@@ -4452,7 +4452,6 @@ pub mod champions {
         adaptive_type: AdaptiveType::Magic,
         attack_type: AttackType::Ranged,
         positions: &[Position::Jungle],
-        combos: &[],
         closures: &[
             fiddlesticks_q1,
             fiddlesticks_q2,
@@ -4466,6 +4465,7 @@ pub mod champions {
             fiddlesticks_r1,
             fiddlesticks_r2,
         ],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -4602,8 +4602,8 @@ pub mod champions {
         adaptive_type: AdaptiveType::Physical,
         attack_type: AttackType::Melee,
         positions: &[Position::Top],
-        combos: &[],
         closures: &[fiora_q1, fiora_w1, fiora_e1],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -4672,10 +4672,10 @@ pub mod champions {
         adaptive_type: AdaptiveType::Magic,
         attack_type: AttackType::Melee,
         positions: &[Position::Middle],
-        combos: &[],
         closures: &[
             fizz_q1, fizz_w1, fizz_w2, fizz_w3, fizz_w4, fizz_e1, fizz_r1, fizz_r2, fizz_r3,
         ],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -4792,10 +4792,10 @@ pub mod champions {
         adaptive_type: AdaptiveType::Magic,
         attack_type: AttackType::Melee,
         positions: &[Position::Middle, Position::Support],
-        combos: &[],
         closures: &[
             galio_q1, galio_w1, galio_w2, galio_w3, galio_w4, galio_e1, galio_e2, galio_r1,
         ],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -4910,7 +4910,6 @@ pub mod champions {
         adaptive_type: AdaptiveType::Physical,
         attack_type: AttackType::Melee,
         positions: &[Position::Top],
-        combos: &[],
         closures: &[
             gangplank_q1,
             gangplank_e1,
@@ -4922,6 +4921,7 @@ pub mod champions {
             gangplank_r6,
             gangplank_r7,
         ],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -5038,8 +5038,8 @@ pub mod champions {
         adaptive_type: AdaptiveType::Physical,
         attack_type: AttackType::Melee,
         positions: &[Position::Top],
-        combos: &[],
         closures: &[garen_q1, garen_w1, garen_e1, garen_e2, garen_r1],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -5124,10 +5124,10 @@ pub mod champions {
         adaptive_type: AdaptiveType::Physical,
         attack_type: AttackType::Ranged,
         positions: &[Position::Top],
-        combos: &[],
         closures: &[
             gnar_q2, gnar_q3, gnar_w1, gnar_e1, gnar_e2, gnar_r1, gnar_r2,
         ],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_2),
@@ -5231,10 +5231,10 @@ pub mod champions {
         adaptive_type: AdaptiveType::Magic,
         attack_type: AttackType::Melee,
         positions: &[Position::Jungle, Position::Middle, Position::Top],
-        combos: &[],
         closures: &[
             gragas_q1, gragas_q2, gragas_q3, gragas_q4, gragas_w1, gragas_w2, gragas_e1, gragas_r1,
         ],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -5343,10 +5343,10 @@ pub mod champions {
         adaptive_type: AdaptiveType::Physical,
         attack_type: AttackType::Ranged,
         positions: &[Position::Jungle],
-        combos: &[],
         closures: &[
             graves_q1, graves_q2, graves_q3, graves_w1, graves_r1, graves_r2,
         ],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -5439,11 +5439,11 @@ pub mod champions {
         adaptive_type: AdaptiveType::Magic,
         attack_type: AttackType::Melee,
         positions: &[Position::Jungle, Position::Top],
-        combos: &[],
         closures: &[
             gwen_q1, gwen_q2, gwen_q3, gwen_q4, gwen_q5, gwen_q6, gwen_q7, gwen_q8, gwen_r1,
             gwen_r2, gwen_r3, gwen_r4, gwen_r5,
         ],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -5616,10 +5616,10 @@ pub mod champions {
         adaptive_type: AdaptiveType::Physical,
         attack_type: AttackType::Melee,
         positions: &[Position::Jungle],
-        combos: &[],
         closures: &[
             hecarim_q1, hecarim_q2, hecarim_w1, hecarim_w2, hecarim_e1, hecarim_e2, hecarim_r1,
         ],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -5720,7 +5720,6 @@ pub mod champions {
         adaptive_type: AdaptiveType::Magic,
         attack_type: AttackType::Ranged,
         positions: &[Position::Middle, Position::Support, Position::Top],
-        combos: &[],
         closures: &[
             heimerdinger_w2,
             heimerdinger_w3,
@@ -5731,6 +5730,7 @@ pub mod champions {
             heimerdinger_w8,
             heimerdinger_e1,
         ],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: W(_2),
@@ -5895,8 +5895,8 @@ pub mod champions {
         adaptive_type: AdaptiveType::Magic,
         attack_type: AttackType::Ranged,
         positions: &[Position::Middle, Position::Support],
-        combos: &[],
         closures: &[hwei_r1, hwei_r2, hwei_r3, hwei_r4],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: R(_1),
@@ -5973,8 +5973,8 @@ pub mod champions {
         adaptive_type: AdaptiveType::Physical,
         attack_type: AttackType::Melee,
         positions: &[Position::Top],
-        combos: &[],
         closures: &[illaoi_q1, illaoi_w1, illaoi_w2, illaoi_e1, illaoi_r1],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -6059,8 +6059,8 @@ pub mod champions {
         adaptive_type: AdaptiveType::Physical,
         attack_type: AttackType::Melee,
         positions: &[Position::Middle, Position::Top],
-        combos: &[],
         closures: &[irelia_q1, irelia_w1, irelia_w2, irelia_e1, irelia_r1],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -6145,8 +6145,8 @@ pub mod champions {
         adaptive_type: AdaptiveType::Magic,
         attack_type: AttackType::Ranged,
         positions: &[Position::Jungle],
-        combos: &[],
         closures: &[ivern_q1, ivern_w1, ivern_w2, ivern_e1],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -6223,8 +6223,8 @@ pub mod champions {
         adaptive_type: AdaptiveType::Magic,
         attack_type: AttackType::Ranged,
         positions: &[Position::Support],
-        combos: &[],
         closures: &[janna_q1, janna_q2, janna_q3, janna_w1, janna_e1],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -6309,8 +6309,8 @@ pub mod champions {
         adaptive_type: AdaptiveType::Physical,
         attack_type: AttackType::Melee,
         positions: &[Position::Jungle],
-        combos: &[],
         closures: &[jarvaniv_q1, jarvaniv_e1, jarvaniv_r1],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -6379,8 +6379,8 @@ pub mod champions {
         adaptive_type: AdaptiveType::Physical,
         attack_type: AttackType::Melee,
         positions: &[Position::Jungle, Position::Top],
-        combos: &[],
         closures: &[jax_q1, jax_w1, jax_e1, jax_e2, jax_r1, jax_r2],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -6473,8 +6473,8 @@ pub mod champions {
         adaptive_type: AdaptiveType::Physical,
         attack_type: AttackType::Ranged,
         positions: &[Position::Middle, Position::Top],
-        combos: &[],
         closures: &[jayce_q2, jayce_w3, jayce_w4, jayce_e1, jayce_e2],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_2),
@@ -6559,11 +6559,11 @@ pub mod champions {
         adaptive_type: AdaptiveType::Physical,
         attack_type: AttackType::Ranged,
         positions: &[Position::Bottom],
-        combos: &[],
         closures: &[
             jhin_q1, jhin_q2, jhin_q3, jhin_w1, jhin_w2, jhin_e1, jhin_e2, jhin_r1, jhin_r2,
             jhin_r3, jhin_r4,
         ],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -6703,8 +6703,8 @@ pub mod champions {
         adaptive_type: AdaptiveType::Physical,
         attack_type: AttackType::Ranged,
         positions: &[Position::Bottom],
-        combos: &[],
         closures: &[jinx_w1, jinx_e1, jinx_r1, jinx_r2, jinx_r3, jinx_r4],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: W(_1),
@@ -6805,8 +6805,8 @@ pub mod champions {
         adaptive_type: AdaptiveType::Physical,
         attack_type: AttackType::Melee,
         positions: &[Position::Top],
-        combos: &[],
         closures: &[],
+        combos: &[],
         metadata: &[],
         merge_data: &[],
         stats: CachedChampionStats {
@@ -6850,8 +6850,8 @@ pub mod champions {
         adaptive_type: AdaptiveType::Magic,
         attack_type: AttackType::Ranged,
         positions: &[Position::Bottom],
-        combos: &[],
         closures: &[kaisa_e1],
+        combos: &[],
         metadata: &[TypeMetadata {
             kind: E(_1),
             damage_type: DamageType::Unknown,
@@ -6902,8 +6902,8 @@ pub mod champions {
         adaptive_type: AdaptiveType::Physical,
         attack_type: AttackType::Ranged,
         positions: &[Position::Bottom],
-        combos: &[],
         closures: &[kalista_q2, kalista_w2],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_2),
@@ -6964,8 +6964,8 @@ pub mod champions {
         adaptive_type: AdaptiveType::Magic,
         attack_type: AttackType::Ranged,
         positions: &[Position::Middle, Position::Support, Position::Top],
-        combos: &[],
         closures: &[karma_q1],
+        combos: &[],
         metadata: &[TypeMetadata {
             kind: Q(_1),
             damage_type: DamageType::Magic,
@@ -7023,8 +7023,8 @@ pub mod champions {
         adaptive_type: AdaptiveType::Magic,
         attack_type: AttackType::Ranged,
         positions: &[Position::Jungle],
-        combos: &[],
         closures: &[karthus_q1, karthus_w1, karthus_r1],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -7093,8 +7093,8 @@ pub mod champions {
         adaptive_type: AdaptiveType::Magic,
         attack_type: AttackType::Melee,
         positions: &[Position::Middle],
-        combos: &[],
         closures: &[kassadin_q1, kassadin_e1, kassadin_r1],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -7163,8 +7163,8 @@ pub mod champions {
         adaptive_type: AdaptiveType::Magic,
         attack_type: AttackType::Melee,
         positions: &[Position::Middle],
-        combos: &[],
         closures: &[katarina_q1, katarina_e1],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -7225,8 +7225,8 @@ pub mod champions {
         adaptive_type: AdaptiveType::Physical,
         attack_type: AttackType::Melee,
         positions: &[Position::Top],
-        combos: &[],
         closures: &[kayle_q1, kayle_q2, kayle_w1],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -7295,8 +7295,8 @@ pub mod champions {
         adaptive_type: AdaptiveType::Physical,
         attack_type: AttackType::Melee,
         positions: &[Position::Jungle],
-        combos: &[],
         closures: &[kayn_q1, kayn_w1, kayn_e1, kayn_r2],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -7373,8 +7373,8 @@ pub mod champions {
         adaptive_type: AdaptiveType::Magic,
         attack_type: AttackType::Ranged,
         positions: &[Position::Top],
-        combos: &[],
         closures: &[kennen_q1, kennen_w1, kennen_e1],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -7443,8 +7443,8 @@ pub mod champions {
         adaptive_type: AdaptiveType::Physical,
         attack_type: AttackType::Melee,
         positions: &[Position::Jungle],
-        combos: &[],
         closures: &[khazix_q1],
+        combos: &[],
         metadata: &[TypeMetadata {
             kind: Q(_1),
             damage_type: DamageType::Physical,
@@ -7495,8 +7495,8 @@ pub mod champions {
         adaptive_type: AdaptiveType::Physical,
         attack_type: AttackType::Ranged,
         positions: &[Position::Jungle],
-        combos: &[],
         closures: &[kindred_q5, kindred_q6, kindred_e2, kindred_r1],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_5),
@@ -7576,8 +7576,8 @@ pub mod champions {
         adaptive_type: AdaptiveType::Physical,
         attack_type: AttackType::Melee,
         positions: &[Position::Top],
-        combos: &[],
         closures: &[kled_q1],
+        combos: &[],
         metadata: &[TypeMetadata {
             kind: Q(_1),
             damage_type: DamageType::Physical,
@@ -7628,8 +7628,8 @@ pub mod champions {
         adaptive_type: AdaptiveType::Physical,
         attack_type: AttackType::Ranged,
         positions: &[Position::Bottom],
-        combos: &[],
         closures: &[kogmaw_q1, kogmaw_r1],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -7693,11 +7693,11 @@ pub mod champions {
         adaptive_type: AdaptiveType::Magic,
         attack_type: AttackType::Ranged,
         positions: &[Position::Middle],
-        combos: &[],
         closures: &[
             leblanc_q1, leblanc_q2, leblanc_w1, leblanc_e1, leblanc_e2, leblanc_e3, leblanc_r1,
             leblanc_r2, leblanc_r3, leblanc_r4, leblanc_r5, leblanc_r6, leblanc_r7,
         ],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -7846,8 +7846,8 @@ pub mod champions {
         adaptive_type: AdaptiveType::Physical,
         attack_type: AttackType::Melee,
         positions: &[Position::Jungle],
-        combos: &[],
         closures: &[leesin_q2, leesin_e1, leesin_r1, leesin_r2],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_2),
@@ -7927,8 +7927,8 @@ pub mod champions {
         adaptive_type: AdaptiveType::Physical,
         attack_type: AttackType::Melee,
         positions: &[Position::Support],
-        combos: &[],
         closures: &[leona_q1, leona_w1, leona_w2, leona_e1, leona_r1],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -8013,10 +8013,10 @@ pub mod champions {
         adaptive_type: AdaptiveType::Magic,
         attack_type: AttackType::Melee,
         positions: &[Position::Jungle],
-        combos: &[],
         closures: &[
             lillia_q1, lillia_q2, lillia_w1, lillia_w2, lillia_w3, lillia_w4, lillia_e1, lillia_r1,
         ],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -8125,8 +8125,8 @@ pub mod champions {
         adaptive_type: AdaptiveType::Magic,
         attack_type: AttackType::Ranged,
         positions: &[Position::Middle],
-        combos: &[],
         closures: &[lissandra_q1, lissandra_w1, lissandra_e1, lissandra_r1],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -8203,8 +8203,8 @@ pub mod champions {
         adaptive_type: AdaptiveType::Physical,
         attack_type: AttackType::Ranged,
         positions: &[Position::Bottom],
-        combos: &[],
         closures: &[lucian_q1, lucian_w1, lucian_r1, lucian_r2],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -8281,10 +8281,10 @@ pub mod champions {
         adaptive_type: AdaptiveType::Magic,
         attack_type: AttackType::Ranged,
         positions: &[Position::Support],
-        combos: &[],
         closures: &[
             lulu_q1, lulu_q2, lulu_q3, lulu_q4, lulu_q5, lulu_q6, lulu_e1,
         ],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -8385,8 +8385,8 @@ pub mod champions {
         adaptive_type: AdaptiveType::Magic,
         attack_type: AttackType::Ranged,
         positions: &[Position::Middle, Position::Support],
-        combos: &[],
         closures: &[lux_q1, lux_e1, lux_r1],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -8455,7 +8455,6 @@ pub mod champions {
         adaptive_type: AdaptiveType::Magic,
         attack_type: AttackType::Melee,
         positions: &[Position::Middle, Position::Support, Position::Top],
-        combos: &[],
         closures: &[
             malphite_q1,
             malphite_w1,
@@ -8463,6 +8462,7 @@ pub mod champions {
             malphite_e1,
             malphite_r1,
         ],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -8547,7 +8547,6 @@ pub mod champions {
         adaptive_type: AdaptiveType::Magic,
         attack_type: AttackType::Ranged,
         positions: &[Position::Middle],
-        combos: &[],
         closures: &[
             malzahar_q1,
             malzahar_w1,
@@ -8559,6 +8558,7 @@ pub mod champions {
             malzahar_r3,
             malzahar_r4,
         ],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -8715,11 +8715,11 @@ pub mod champions {
         adaptive_type: AdaptiveType::Magic,
         attack_type: AttackType::Melee,
         positions: &[Position::Jungle, Position::Support],
-        combos: &[],
         closures: &[
             maokai_q1, maokai_q2, maokai_q3, maokai_w1, maokai_e1, maokai_e2, maokai_e3, maokai_e4,
             maokai_e5, maokai_r1,
         ],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -8852,7 +8852,6 @@ pub mod champions {
         adaptive_type: AdaptiveType::Physical,
         attack_type: AttackType::Melee,
         positions: &[Position::Jungle],
-        combos: &[],
         closures: &[
             masteryi_q1,
             masteryi_q2,
@@ -8865,6 +8864,7 @@ pub mod champions {
             masteryi_w2,
             masteryi_e1,
         ],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -8989,11 +8989,11 @@ pub mod champions {
         adaptive_type: AdaptiveType::Magic,
         attack_type: AttackType::Ranged,
         positions: &[Position::Middle, Position::Support],
-        combos: &[],
         closures: &[
             mel_q1, mel_q2, mel_q3, mel_q4, mel_w1, mel_e1, mel_e2, mel_e3, mel_e4, mel_e5, mel_e6,
             mel_r2, mel_r3,
         ],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -9142,8 +9142,8 @@ pub mod champions {
         adaptive_type: AdaptiveType::Magic,
         attack_type: AttackType::Ranged,
         positions: &[Position::Support],
-        combos: &[],
         closures: &[milio_q1],
+        combos: &[],
         metadata: &[TypeMetadata {
             kind: Q(_1),
             damage_type: DamageType::Magic,
@@ -9194,7 +9194,6 @@ pub mod champions {
         adaptive_type: AdaptiveType::Physical,
         attack_type: AttackType::Ranged,
         positions: &[Position::Bottom],
-        combos: &[],
         closures: &[
             missfortune_q1,
             missfortune_e1,
@@ -9202,6 +9201,7 @@ pub mod champions {
             missfortune_r1,
             missfortune_r2,
         ],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -9288,7 +9288,6 @@ pub mod champions {
         adaptive_type: AdaptiveType::Physical,
         attack_type: AttackType::Melee,
         positions: &[Position::Jungle, Position::Top],
-        combos: &[],
         closures: &[
             monkeyking_q1,
             monkeyking_w1,
@@ -9297,6 +9296,7 @@ pub mod champions {
             monkeyking_r2,
             monkeyking_r3,
         ],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -9389,8 +9389,8 @@ pub mod champions {
         adaptive_type: AdaptiveType::Magic,
         attack_type: AttackType::Melee,
         positions: &[Position::Top],
-        combos: &[],
         closures: &[mordekaiser_q1, mordekaiser_q2, mordekaiser_e1],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -9479,10 +9479,10 @@ pub mod champions {
         adaptive_type: AdaptiveType::Magic,
         attack_type: AttackType::Ranged,
         positions: &[Position::Middle, Position::Support],
-        combos: &[],
         closures: &[
             morgana_q1, morgana_w1, morgana_w2, morgana_w3, morgana_w4, morgana_r1, morgana_r2,
         ],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -9583,11 +9583,11 @@ pub mod champions {
         adaptive_type: AdaptiveType::Physical,
         attack_type: AttackType::Melee,
         positions: &[Position::Middle],
-        combos: &[],
         closures: &[
             naafiri_q1, naafiri_q2, naafiri_q3, naafiri_q4, naafiri_q5, naafiri_q6, naafiri_q7,
             naafiri_q8, naafiri_e1, naafiri_e2, naafiri_e3, naafiri_r1, naafiri_r2,
         ],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -9736,8 +9736,8 @@ pub mod champions {
         adaptive_type: AdaptiveType::Magic,
         attack_type: AttackType::Ranged,
         positions: &[Position::Support],
-        combos: &[],
         closures: &[nami_q1, nami_w1, nami_w2, nami_e1, nami_e2, nami_r1],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -9830,8 +9830,8 @@ pub mod champions {
         adaptive_type: AdaptiveType::Physical,
         attack_type: AttackType::Melee,
         positions: &[Position::Top],
-        combos: &[],
         closures: &[nasus_q1, nasus_e1, nasus_e2, nasus_e3, nasus_r1, nasus_r2],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -9924,7 +9924,6 @@ pub mod champions {
         adaptive_type: AdaptiveType::Magic,
         attack_type: AttackType::Melee,
         positions: &[Position::Support],
-        combos: &[],
         closures: &[
             nautilus_q1,
             nautilus_w1,
@@ -9936,6 +9935,7 @@ pub mod champions {
             nautilus_r1,
             nautilus_r2,
         ],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -10052,6 +10052,7 @@ pub mod champions {
         adaptive_type: AdaptiveType::Magic,
         attack_type: AttackType::Ranged,
         positions: &[Position::Middle, Position::Support],
+        closures: &[neeko_q1, neeko_qmin, neeko_qmax, neeko_w, neeko_e, neeko_r],
         combos: &[
             &[
                 Ability(E(Void)),
@@ -10062,7 +10063,6 @@ pub mod champions {
             ],
             &[Ability(Q(_1)), Attack, Ability(W(Void))],
         ],
-        closures: &[neeko_q1, neeko_qmin, neeko_qmax, neeko_w, neeko_e, neeko_r],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -10159,8 +10159,8 @@ pub mod champions {
         adaptive_type: AdaptiveType::Magic,
         attack_type: AttackType::Ranged,
         positions: &[Position::Jungle],
-        combos: &[],
         closures: &[nidalee_q3, nidalee_q4, nidalee_w2, nidalee_w3, nidalee_e1],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_3),
@@ -10273,10 +10273,10 @@ pub mod champions {
         adaptive_type: AdaptiveType::Physical,
         attack_type: AttackType::Melee,
         positions: &[Position::Bottom],
-        combos: &[],
         closures: &[
             nilah_q1, nilah_q2, nilah_e1, nilah_r1, nilah_r2, nilah_r3, nilah_r4,
         ],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -10377,7 +10377,6 @@ pub mod champions {
         adaptive_type: AdaptiveType::Physical,
         attack_type: AttackType::Melee,
         positions: &[Position::Jungle],
-        combos: &[],
         closures: &[
             nocturne_q1,
             nocturne_q2,
@@ -10385,6 +10384,7 @@ pub mod champions {
             nocturne_e2,
             nocturne_r1,
         ],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -10469,11 +10469,11 @@ pub mod champions {
         adaptive_type: AdaptiveType::Magic,
         attack_type: AttackType::Melee,
         positions: &[Position::Jungle],
-        combos: &[],
         closures: &[
             nunu_q1, nunu_q2, nunu_w1, nunu_w2, nunu_w3, nunu_w4, nunu_e1, nunu_e2, nunu_e3,
             nunu_e4, nunu_r1,
         ],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -10606,8 +10606,8 @@ pub mod champions {
         adaptive_type: AdaptiveType::Physical,
         attack_type: AttackType::Melee,
         positions: &[Position::Top],
-        combos: &[],
         closures: &[olaf_q1, olaf_q2, olaf_q3, olaf_e1, olaf_r1],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -10692,8 +10692,8 @@ pub mod champions {
         adaptive_type: AdaptiveType::Magic,
         attack_type: AttackType::Ranged,
         positions: &[Position::Middle],
-        combos: &[],
         closures: &[orianna_q1, orianna_q2, orianna_w1, orianna_e1, orianna_r1],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -10778,11 +10778,11 @@ pub mod champions {
         adaptive_type: AdaptiveType::Physical,
         attack_type: AttackType::Melee,
         positions: &[Position::Top],
-        combos: &[],
         closures: &[
             ornn_q1, ornn_w1, ornn_w2, ornn_w3, ornn_w4, ornn_w5, ornn_w6, ornn_e1, ornn_r1,
             ornn_r2,
         ],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -10912,7 +10912,6 @@ pub mod champions {
             Position::Support,
             Position::Top,
         ],
-        combos: &[],
         closures: &[
             pantheon_q1,
             pantheon_q2,
@@ -10925,6 +10924,7 @@ pub mod champions {
             pantheon_r1,
             pantheon_r2,
         ],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -11051,11 +11051,11 @@ pub mod champions {
         adaptive_type: AdaptiveType::Physical,
         attack_type: AttackType::Melee,
         positions: &[Position::Jungle, Position::Top],
-        combos: &[],
         closures: &[
             poppy_q1, poppy_q2, poppy_q3, poppy_q4, poppy_q5, poppy_w1, poppy_e1, poppy_e2,
             poppy_r1, poppy_r2,
         ],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -11180,8 +11180,8 @@ pub mod champions {
         adaptive_type: AdaptiveType::Physical,
         attack_type: AttackType::Melee,
         positions: &[Position::Support],
-        combos: &[],
         closures: &[pyke_q1, pyke_e1],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -11242,10 +11242,10 @@ pub mod champions {
         adaptive_type: AdaptiveType::Physical,
         attack_type: AttackType::Melee,
         positions: &[Position::Middle],
-        combos: &[],
         closures: &[
             qiyana_q1, qiyana_q2, qiyana_w1, qiyana_e1, qiyana_r1, qiyana_r2,
         ],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -11338,8 +11338,8 @@ pub mod champions {
         adaptive_type: AdaptiveType::Physical,
         attack_type: AttackType::Ranged,
         positions: &[Position::Top],
-        combos: &[],
         closures: &[quinn_q1, quinn_e1, quinn_r1],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -11410,8 +11410,8 @@ pub mod champions {
         adaptive_type: AdaptiveType::Magic,
         attack_type: AttackType::Melee,
         positions: &[Position::Support],
-        combos: &[],
         closures: &[rakan_q1, rakan_w1, rakan_r1],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -11480,8 +11480,8 @@ pub mod champions {
         adaptive_type: AdaptiveType::Physical,
         attack_type: AttackType::Melee,
         positions: &[Position::Jungle],
-        combos: &[],
         closures: &[rammus_q1, rammus_e1, rammus_r1],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -11550,10 +11550,10 @@ pub mod champions {
         adaptive_type: AdaptiveType::Physical,
         attack_type: AttackType::Melee,
         positions: &[Position::Jungle],
-        combos: &[],
         closures: &[
             reksai_q2, reksai_q3, reksai_w1, reksai_e1, reksai_e2, reksai_r1,
         ],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_2),
@@ -11648,8 +11648,8 @@ pub mod champions {
         adaptive_type: AdaptiveType::Magic,
         attack_type: AttackType::Melee,
         positions: &[Position::Support],
-        combos: &[],
         closures: &[rell_q1, rell_w2, rell_e1, rell_r1, rell_r2],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -11734,8 +11734,8 @@ pub mod champions {
         adaptive_type: AdaptiveType::Magic,
         attack_type: AttackType::Ranged,
         positions: &[Position::Support],
-        combos: &[],
         closures: &[renata_q1, renata_e1],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -11796,7 +11796,6 @@ pub mod champions {
         adaptive_type: AdaptiveType::Physical,
         attack_type: AttackType::Melee,
         positions: &[Position::Top],
-        combos: &[],
         closures: &[
             renekton_q1,
             renekton_q2,
@@ -11810,6 +11809,7 @@ pub mod champions {
             renekton_r1,
             renekton_r2,
         ],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -11942,8 +11942,8 @@ pub mod champions {
         adaptive_type: AdaptiveType::Physical,
         attack_type: AttackType::Melee,
         positions: &[Position::Jungle, Position::Top],
-        combos: &[],
         closures: &[rengar_q1, rengar_w1, rengar_e1],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -12012,8 +12012,8 @@ pub mod champions {
         adaptive_type: AdaptiveType::Physical,
         attack_type: AttackType::Melee,
         positions: &[Position::Top],
-        combos: &[],
         closures: &[riven_q1, riven_q2, riven_w1],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -12082,7 +12082,6 @@ pub mod champions {
         adaptive_type: AdaptiveType::Magic,
         attack_type: AttackType::Melee,
         positions: &[Position::Middle, Position::Top],
-        combos: &[],
         closures: &[
             rumble_q1,
             rumble_q2,
@@ -12108,6 +12107,7 @@ pub mod champions {
             rumble_r2,
             rumble_r3,
         ],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -12380,8 +12380,8 @@ pub mod champions {
         adaptive_type: AdaptiveType::Magic,
         attack_type: AttackType::Ranged,
         positions: &[Position::Middle],
-        combos: &[],
         closures: &[ryze_q1, ryze_w1, ryze_e1, ryze_r1],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -12458,10 +12458,10 @@ pub mod champions {
         adaptive_type: AdaptiveType::Physical,
         attack_type: AttackType::Ranged,
         positions: &[Position::Bottom],
-        combos: &[],
         closures: &[
             samira_q1, samira_w1, samira_w2, samira_e1, samira_r1, samira_r2, samira_r3, samira_r4,
         ],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -12570,10 +12570,10 @@ pub mod champions {
         adaptive_type: AdaptiveType::Magic,
         attack_type: AttackType::Melee,
         positions: &[Position::Jungle],
-        combos: &[],
         closures: &[
             sejuani_q1, sejuani_w1, sejuani_w2, sejuani_w3, sejuani_e1, sejuani_r1, sejuani_r2,
         ],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -12674,8 +12674,8 @@ pub mod champions {
         adaptive_type: AdaptiveType::Physical,
         attack_type: AttackType::Ranged,
         positions: &[Position::Bottom, Position::Support],
-        combos: &[],
         closures: &[senna_q1, senna_w1, senna_r1],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -12744,7 +12744,6 @@ pub mod champions {
         adaptive_type: AdaptiveType::Magic,
         attack_type: AttackType::Ranged,
         positions: &[Position::Bottom, Position::Support],
-        combos: &[],
         closures: &[
             seraphine_q1,
             seraphine_q2,
@@ -12752,6 +12751,7 @@ pub mod champions {
             seraphine_e2,
             seraphine_r1,
         ],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -12836,8 +12836,8 @@ pub mod champions {
         adaptive_type: AdaptiveType::Physical,
         attack_type: AttackType::Melee,
         positions: &[Position::Top],
-        combos: &[],
         closures: &[sett_q1, sett_q2, sett_w1, sett_e1, sett_r1, sett_r2],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -12939,11 +12939,11 @@ pub mod champions {
         adaptive_type: AdaptiveType::Physical,
         attack_type: AttackType::Melee,
         positions: &[Position::Jungle, Position::Support],
-        combos: &[],
         closures: &[
             shaco_q1, shaco_w1, shaco_w2, shaco_w3, shaco_w4, shaco_w5, shaco_e1, shaco_e2,
             shaco_r1, shaco_r2, shaco_r3,
         ],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -13076,8 +13076,8 @@ pub mod champions {
         adaptive_type: AdaptiveType::Physical,
         attack_type: AttackType::Melee,
         positions: &[Position::Support, Position::Top],
-        combos: &[],
         closures: &[shen_q1, shen_q2, shen_q3, shen_q4, shen_q5, shen_e1],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -13270,10 +13270,10 @@ pub mod champions {
         adaptive_type: AdaptiveType::Physical,
         attack_type: AttackType::Melee,
         positions: &[Position::Jungle],
-        combos: &[],
         closures: &[
             shyvana_q1, shyvana_w1, shyvana_w2, shyvana_e1, shyvana_e2, shyvana_r1,
         ],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -13386,8 +13386,8 @@ pub mod champions {
         adaptive_type: AdaptiveType::Magic,
         attack_type: AttackType::Melee,
         positions: &[Position::Top],
-        combos: &[],
         closures: &[singed_q1, singed_q2, singed_q3, singed_e1],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -13466,11 +13466,11 @@ pub mod champions {
         adaptive_type: AdaptiveType::Physical,
         attack_type: AttackType::Melee,
         positions: &[Position::Top],
-        combos: &[],
         closures: &[
             sion_q1, sion_q2, sion_q3, sion_q4, sion_q5, sion_q6, sion_q7, sion_w1, sion_e1,
             sion_r1, sion_r2,
         ],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -13603,10 +13603,10 @@ pub mod champions {
         adaptive_type: AdaptiveType::Physical,
         attack_type: AttackType::Ranged,
         positions: &[Position::Bottom],
-        combos: &[],
         closures: &[
             sivir_q1, sivir_q2, sivir_q3, sivir_w1, sivir_w2, sivir_w3, sivir_w4,
         ],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -13707,10 +13707,10 @@ pub mod champions {
         adaptive_type: AdaptiveType::Physical,
         attack_type: AttackType::Melee,
         positions: &[Position::Jungle, Position::Top],
-        combos: &[],
         closures: &[
             skarner_q2, skarner_q3, skarner_q4, skarner_q5, skarner_w1, skarner_e1, skarner_r1,
         ],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_2),
@@ -13811,11 +13811,11 @@ pub mod champions {
         adaptive_type: AdaptiveType::Physical,
         attack_type: AttackType::Ranged,
         positions: &[Position::Bottom, Position::Middle, Position::Top],
-        combos: &[],
         closures: &[
             smolder_q1, smolder_q2, smolder_w1, smolder_w2, smolder_w3, smolder_e1, smolder_e2,
             smolder_r1, smolder_r2,
         ],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -13932,8 +13932,8 @@ pub mod champions {
         adaptive_type: AdaptiveType::Magic,
         attack_type: AttackType::Ranged,
         positions: &[Position::Support],
-        combos: &[],
         closures: &[sona_q1, sona_q2, sona_w1, sona_r1],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -14024,8 +14024,8 @@ pub mod champions {
         adaptive_type: AdaptiveType::Magic,
         attack_type: AttackType::Ranged,
         positions: &[Position::Support],
-        combos: &[],
         closures: &[soraka_q1, soraka_e1, soraka_e2],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -14094,10 +14094,10 @@ pub mod champions {
         adaptive_type: AdaptiveType::Magic,
         attack_type: AttackType::Ranged,
         positions: &[Position::Bottom, Position::Middle, Position::Support],
-        combos: &[],
         closures: &[
             swain_q1, swain_q2, swain_q3, swain_w1, swain_w2, swain_e1, swain_r1,
         ],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -14198,8 +14198,8 @@ pub mod champions {
         adaptive_type: AdaptiveType::Magic,
         attack_type: AttackType::Melee,
         positions: &[Position::Middle, Position::Top],
-        combos: &[],
         closures: &[sylas_q1, sylas_q2, sylas_q3, sylas_q4, sylas_q5, sylas_w1],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -14292,10 +14292,10 @@ pub mod champions {
         adaptive_type: AdaptiveType::Magic,
         attack_type: AttackType::Ranged,
         positions: &[Position::Middle],
-        combos: &[],
         closures: &[
             syndra_q1, syndra_w1, syndra_w2, syndra_w3, syndra_e1, syndra_r1, syndra_r2, syndra_r3,
         ],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -14404,8 +14404,8 @@ pub mod champions {
         adaptive_type: AdaptiveType::Magic,
         attack_type: AttackType::Melee,
         positions: &[Position::Support, Position::Top],
-        combos: &[],
         closures: &[tahmkench_w1, tahmkench_e1, tahmkench_e2],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: W(_1),
@@ -14474,10 +14474,10 @@ pub mod champions {
         adaptive_type: AdaptiveType::Magic,
         attack_type: AttackType::Ranged,
         positions: &[Position::Jungle, Position::Middle],
-        combos: &[],
         closures: &[
             taliyah_q1, taliyah_q2, taliyah_q3, taliyah_q4, taliyah_e1, taliyah_e2, taliyah_e3,
         ],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -14578,10 +14578,10 @@ pub mod champions {
         adaptive_type: AdaptiveType::Physical,
         attack_type: AttackType::Melee,
         positions: &[Position::Jungle],
-        combos: &[],
         closures: &[
             talon_q1, talon_q2, talon_w1, talon_w2, talon_w3, talon_r1, talon_r2,
         ],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -14682,8 +14682,8 @@ pub mod champions {
         adaptive_type: AdaptiveType::Physical,
         attack_type: AttackType::Melee,
         positions: &[Position::Middle, Position::Support],
-        combos: &[],
         closures: &[taric_e1],
+        combos: &[],
         metadata: &[TypeMetadata {
             kind: E(_1),
             damage_type: DamageType::Magic,
@@ -14734,11 +14734,11 @@ pub mod champions {
         adaptive_type: AdaptiveType::Magic,
         attack_type: AttackType::Ranged,
         positions: &[Position::Jungle, Position::Support, Position::Top],
-        combos: &[],
         closures: &[
             teemo_q1, teemo_e1, teemo_e2, teemo_e3, teemo_e4, teemo_e5, teemo_e6, teemo_r1,
             teemo_r2,
         ],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -14855,8 +14855,8 @@ pub mod champions {
         adaptive_type: AdaptiveType::Physical,
         attack_type: AttackType::Ranged,
         positions: &[Position::Support],
-        combos: &[],
         closures: &[thresh_q1, thresh_e1, thresh_e2, thresh_e3, thresh_r1],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -14941,7 +14941,6 @@ pub mod champions {
         adaptive_type: AdaptiveType::Physical,
         attack_type: AttackType::Ranged,
         positions: &[Position::Bottom, Position::Middle],
-        combos: &[],
         closures: &[
             tristana_w1,
             tristana_e1,
@@ -14951,6 +14950,7 @@ pub mod champions {
             tristana_e5,
             tristana_r1,
         ],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: W(_1),
@@ -15051,10 +15051,10 @@ pub mod champions {
         adaptive_type: AdaptiveType::Physical,
         attack_type: AttackType::Melee,
         positions: &[Position::Jungle, Position::Top],
-        combos: &[],
         closures: &[
             trundle_q1, trundle_q2, trundle_q3, trundle_r1, trundle_r2, trundle_r3,
         ],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -15147,8 +15147,8 @@ pub mod champions {
         adaptive_type: AdaptiveType::Physical,
         attack_type: AttackType::Melee,
         positions: &[Position::Top],
-        combos: &[],
         closures: &[tryndamere_q1, tryndamere_q2, tryndamere_w1, tryndamere_e1],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -15225,7 +15225,6 @@ pub mod champions {
         adaptive_type: AdaptiveType::Magic,
         attack_type: AttackType::Ranged,
         positions: &[Position::Bottom, Position::Middle, Position::Top],
-        combos: &[],
         closures: &[
             twistedfate_q1,
             twistedfate_w1,
@@ -15233,6 +15232,7 @@ pub mod champions {
             twistedfate_w3,
             twistedfate_e1,
         ],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -15317,8 +15317,8 @@ pub mod champions {
         adaptive_type: AdaptiveType::Physical,
         attack_type: AttackType::Ranged,
         positions: &[Position::Bottom, Position::Support],
-        combos: &[],
         closures: &[twitch_e1, twitch_e2, twitch_e3, twitch_e4, twitch_r1],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: E(_1),
@@ -15403,8 +15403,8 @@ pub mod champions {
         adaptive_type: AdaptiveType::Physical,
         attack_type: AttackType::Melee,
         positions: &[Position::Jungle, Position::Top],
-        combos: &[],
         closures: &[udyr_q1, udyr_q2, udyr_q3, udyr_r1, udyr_r2],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -15489,8 +15489,8 @@ pub mod champions {
         adaptive_type: AdaptiveType::Physical,
         attack_type: AttackType::Ranged,
         positions: &[Position::Top],
-        combos: &[],
         closures: &[urgot_q1, urgot_w1, urgot_e1, urgot_r1],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -15567,11 +15567,11 @@ pub mod champions {
         adaptive_type: AdaptiveType::Physical,
         attack_type: AttackType::Ranged,
         positions: &[Position::Bottom],
-        combos: &[],
         closures: &[
             varus_q1, varus_q2, varus_q3, varus_q4, varus_w1, varus_w2, varus_w3, varus_w4,
             varus_w5, varus_w6, varus_w7, varus_e1, varus_r1,
         ],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -15720,10 +15720,10 @@ pub mod champions {
         adaptive_type: AdaptiveType::Physical,
         attack_type: AttackType::Ranged,
         positions: &[Position::Bottom, Position::Top],
-        combos: &[],
         closures: &[
             vayne_q1, vayne_w1, vayne_w2, vayne_w3, vayne_e1, vayne_e2, vayne_e3, vayne_r1,
         ],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -15832,8 +15832,8 @@ pub mod champions {
         adaptive_type: AdaptiveType::Magic,
         attack_type: AttackType::Ranged,
         positions: &[Position::Middle, Position::Support],
-        combos: &[],
         closures: &[veigar_q1, veigar_w1, veigar_r1, veigar_r2],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -15910,10 +15910,10 @@ pub mod champions {
         adaptive_type: AdaptiveType::Magic,
         attack_type: AttackType::Ranged,
         positions: &[Position::Middle, Position::Support],
-        combos: &[],
         closures: &[
             velkoz_q1, velkoz_w1, velkoz_w2, velkoz_w3, velkoz_e1, velkoz_r1, velkoz_r2,
         ],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -16014,8 +16014,8 @@ pub mod champions {
         adaptive_type: AdaptiveType::Magic,
         attack_type: AttackType::Ranged,
         positions: &[Position::Middle],
-        combos: &[],
         closures: &[vex_q1, vex_w1, vex_e1, vex_r1, vex_r2, vex_r3],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -16108,8 +16108,8 @@ pub mod champions {
         adaptive_type: AdaptiveType::Physical,
         attack_type: AttackType::Melee,
         positions: &[Position::Jungle],
-        combos: &[],
         closures: &[vi_q1, vi_q2, vi_w1, vi_e1, vi_r1],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -16194,8 +16194,8 @@ pub mod champions {
         adaptive_type: AdaptiveType::Physical,
         attack_type: AttackType::Melee,
         positions: &[Position::Jungle],
-        combos: &[],
         closures: &[viego_q1, viego_q2, viego_q3, viego_w1, viego_r1],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -16280,11 +16280,11 @@ pub mod champions {
         adaptive_type: AdaptiveType::Magic,
         attack_type: AttackType::Ranged,
         positions: &[Position::Middle],
-        combos: &[],
         closures: &[
             viktor_q1, viktor_q2, viktor_q3, viktor_e1, viktor_e2, viktor_e3, viktor_r1, viktor_r2,
             viktor_r3,
         ],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -16401,7 +16401,6 @@ pub mod champions {
         adaptive_type: AdaptiveType::Magic,
         attack_type: AttackType::Ranged,
         positions: &[Position::Middle, Position::Top],
-        combos: &[],
         closures: &[
             vladimir_q1,
             vladimir_q2,
@@ -16411,6 +16410,7 @@ pub mod champions {
             vladimir_e2,
             vladimir_r1,
         ],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -16511,7 +16511,6 @@ pub mod champions {
         adaptive_type: AdaptiveType::Physical,
         attack_type: AttackType::Melee,
         positions: &[Position::Jungle, Position::Top],
-        combos: &[],
         closures: &[
             volibear_q1,
             volibear_w1,
@@ -16519,6 +16518,7 @@ pub mod champions {
             volibear_e2,
             volibear_r1,
         ],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -16605,8 +16605,8 @@ pub mod champions {
         adaptive_type: AdaptiveType::Physical,
         attack_type: AttackType::Melee,
         positions: &[Position::Jungle, Position::Top],
-        combos: &[],
         closures: &[warwick_q1, warwick_q2, warwick_e1, warwick_r1],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -16685,10 +16685,10 @@ pub mod champions {
         adaptive_type: AdaptiveType::Physical,
         attack_type: AttackType::Ranged,
         positions: &[Position::Bottom],
-        combos: &[],
         closures: &[
             xayah_q1, xayah_q2, xayah_q3, xayah_q4, xayah_e1, xayah_e2, xayah_r1,
         ],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -16789,10 +16789,10 @@ pub mod champions {
         adaptive_type: AdaptiveType::Magic,
         attack_type: AttackType::Ranged,
         positions: &[Position::Middle, Position::Support],
-        combos: &[],
         closures: &[
             xerath_q1, xerath_w1, xerath_w2, xerath_e1, xerath_r1, xerath_r2, xerath_r3,
         ],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -16893,11 +16893,11 @@ pub mod champions {
         adaptive_type: AdaptiveType::Physical,
         attack_type: AttackType::Melee,
         positions: &[Position::Jungle],
-        combos: &[],
         closures: &[
             xinzhao_q1, xinzhao_q2, xinzhao_w1, xinzhao_w2, xinzhao_w3, xinzhao_w4, xinzhao_e1,
             xinzhao_r1,
         ],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -17010,8 +17010,8 @@ pub mod champions {
         adaptive_type: AdaptiveType::Physical,
         attack_type: AttackType::Melee,
         positions: &[Position::Bottom, Position::Middle, Position::Top],
-        combos: &[],
         closures: &[yasuo_q1, yasuo_e1, yasuo_e2, yasuo_e3, yasuo_e4, yasuo_r1],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -17104,10 +17104,10 @@ pub mod champions {
         adaptive_type: AdaptiveType::Physical,
         attack_type: AttackType::Melee,
         positions: &[Position::Middle, Position::Top],
-        combos: &[],
         closures: &[
             yone_q1, yone_w1, yone_w2, yone_w3, yone_e1, yone_r1, yone_r2, yone_r3,
         ],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -17216,8 +17216,8 @@ pub mod champions {
         adaptive_type: AdaptiveType::Physical,
         attack_type: AttackType::Melee,
         positions: &[Position::Top],
-        combos: &[],
         closures: &[yorick_q1, yorick_e1, yorick_e2, yorick_e3],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -17294,11 +17294,11 @@ pub mod champions {
         adaptive_type: AdaptiveType::Physical,
         attack_type: AttackType::Ranged,
         positions: &[Position::Bottom],
-        combos: &[],
         closures: &[
             yunara_q1, yunara_q2, yunara_q3, yunara_q4, yunara_q5, yunara_w1, yunara_w2, yunara_w3,
             yunara_r1,
         ],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -17415,8 +17415,8 @@ pub mod champions {
         adaptive_type: AdaptiveType::Magic,
         attack_type: AttackType::Ranged,
         positions: &[Position::Support],
-        combos: &[],
         closures: &[yuumi_q1, yuumi_q2, yuumi_q3, yuumi_r1, yuumi_r2, yuumi_r3],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -17509,11 +17509,11 @@ pub mod champions {
         adaptive_type: AdaptiveType::Physical,
         attack_type: AttackType::Melee,
         positions: &[Position::Top],
-        combos: &[],
         closures: &[
             zaahen_q1, zaahen_q2, zaahen_q3, zaahen_w1, zaahen_w2, zaahen_e1, zaahen_e2, zaahen_e3,
             zaahen_r1,
         ],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -17630,10 +17630,10 @@ pub mod champions {
         adaptive_type: AdaptiveType::Magic,
         attack_type: AttackType::Melee,
         positions: &[Position::Jungle, Position::Support, Position::Top],
-        combos: &[],
         closures: &[
             zac_q1, zac_q2, zac_w1, zac_w2, zac_e1, zac_r1, zac_r2, zac_r3,
         ],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -17744,8 +17744,8 @@ pub mod champions {
         adaptive_type: AdaptiveType::Physical,
         attack_type: AttackType::Melee,
         positions: &[Position::Jungle, Position::Middle],
-        combos: &[],
         closures: &[zed_q1, zed_q2, zed_e1, zed_r1],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -17822,8 +17822,8 @@ pub mod champions {
         adaptive_type: AdaptiveType::Physical,
         attack_type: AttackType::Ranged,
         positions: &[Position::Bottom],
-        combos: &[],
         closures: &[zeri_q1, zeri_q2, zeri_w1, zeri_e1, zeri_e2, zeri_r1],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -17916,10 +17916,10 @@ pub mod champions {
         adaptive_type: AdaptiveType::Magic,
         attack_type: AttackType::Ranged,
         positions: &[Position::Bottom, Position::Middle],
-        combos: &[],
         closures: &[
             ziggs_q1, ziggs_w1, ziggs_e1, ziggs_e2, ziggs_e3, ziggs_r1, ziggs_r2,
         ],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -18020,8 +18020,8 @@ pub mod champions {
         adaptive_type: AdaptiveType::Magic,
         attack_type: AttackType::Ranged,
         positions: &[Position::Support],
-        combos: &[],
         closures: &[zilean_q1],
+        combos: &[],
         metadata: &[TypeMetadata {
             kind: Q(_1),
             damage_type: DamageType::Magic,
@@ -18072,8 +18072,8 @@ pub mod champions {
         adaptive_type: AdaptiveType::Magic,
         attack_type: AttackType::Ranged,
         positions: &[Position::Middle],
-        combos: &[],
         closures: &[zoe_q1, zoe_q2, zoe_w1, zoe_w2, zoe_e1, zoe_e2, zoe_e3],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -18214,8 +18214,8 @@ pub mod champions {
         adaptive_type: AdaptiveType::Magic,
         attack_type: AttackType::Ranged,
         positions: &[Position::Support],
-        combos: &[],
         closures: &[zyra_q1, zyra_e1, zyra_r1],
+        combos: &[],
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
@@ -43236,702 +43236,702 @@ pub mod items {
         }
     }
     pub static ITEM_FORMULAS: [Range<usize>; ItemId::VARIANTS] = [
-        (4253882..4257138),
-        (4257138..4260418),
-        (4260418..4263694),
-        (4263694..4266948),
-        (4266948..4270221),
-        (4270221..4273581),
-        (4273581..4276855),
-        (4276855..4280023),
-        (4280023..4283091),
-        (4283091..4285915),
-        (4285915..4288910),
-        (4288910..4291928),
-        (4291928..4294207),
-        (4294207..4296589),
-        (4296589..4298988),
-        (4298988..4301395),
-        (4301395..4303791),
-        (4303791..4306206),
-        (4306206..4308601),
-        (4308601..4311868),
-        (4311868..4315159),
-        (4315159..4318446),
-        (4318446..4321905),
-        (4321905..4325388),
-        (4325388..4328867),
-        (4328867..4331938),
-        (4331938..4335016),
-        (4335016..4338116),
-        (4338116..4341212),
-        (4341212..4344346),
-        (4344346..4347636),
-        (4347636..4350320),
-        (4350320..4353153),
-        (4353153..4356133),
-        (4356133..4358549),
-        (4358549..4360965),
-        (4360965..4363294),
-        (4363294..4366493),
-        (4366493..4370014),
-        (4370014..4373554),
-        (4373554..4376639),
-        (4376639..4379746),
-        (4379746..4383034),
-        (4383034..4385448),
-        (4385448..4387853),
-        (4387853..4390273),
-        (4390273..4393364),
-        (4393364..4396354),
-        (4396354..4399615),
-        (4399615..4402900),
-        (4402900..4405801),
-        (4405801..4409268),
-        (4409268..4412531),
-        (4412531..4415818),
-        (4415818..4421659),
-        (4424483..4430429),
-        (4433265..4435652),
-        (4435652..4438470),
-        (4438470..4441313),
-        (4441313..4444517),
-        (4444517..4447811),
-        (4447811..4451102),
-        (4451102..4454332),
-        (4454332..4457414),
-        (4457414..4460516),
-        (4460516..4463184),
-        (4463184..4466010),
-        (4466010..4468739),
-        (4468739..4471148),
-        (4471148..4473557),
-        (4473557..4476935),
-        (4476935..4479735),
-        (4479735..4482156),
-        (4482156..4485644),
-        (4485644..4487923),
-        (4487923..4490322),
-        (4490322..4492733),
-        (4492733..4495119),
-        (4495119..4497527),
-        (4497527..4499915),
-        (4499915..4502984),
-        (4502984..4506001),
-        (4506001..4509391),
-        (4509391..4512185),
-        (4512185..4515005),
-        (4515005..4518285),
-        (4518285..4521291),
-        (4521291..4524570),
-        (4524570..4527745),
-        (4527745..4531139),
-        (4531139..4534429),
-        (4534429..4537251),
-        (4537251..4540242),
-        (4540242..4543231),
-        (4543231..4546028),
-        (4546028..4548417),
-        (4548417..4550822),
-        (4550822..4554348),
-        (4554348..4557898),
-        (4557898..4560897),
-        (4560897..4564331),
-        (4564331..4567732),
-        (4567732..4571193),
-        (4571193..4574654),
-        (4574654..4578001),
-        (4578001..4581348),
-        (4581348..4584730),
-        (4584730..4588031),
-        (4588031..4591033),
-        (4591033..4593706),
-        (4593706..4596106),
-        (4596106..4598782),
-        (4598782..4601715),
-        (4601715..4605079),
-        (4605079..4608132),
-        (4608132..4611333),
-        (4611333..4614530),
-        (4614530..4617862),
-        (4617862..4621218),
-        (4621218..4624473),
-        (4624473..4627752),
-        (4627752..4631407),
-        (4631407..4634413),
-        (4634413..4637780),
-        (4637780..4640165),
-        (4640165..4642588),
-        (4642588..4645011),
-        (4645011..4648091),
-        (4648091..4651196),
-        (4651196..4654295),
-        (4654295..4657865),
-        (4657865..4661315),
-        (4661315..4664788),
-        (4664788..4668257),
-        (4668257..4671257),
-        (4671257..4673652),
-        (4673652..4676924),
-        (4676924..4680217),
-        (4680217..4683504),
-        (4683504..4686573),
-        (4686573..4689639),
-        (4689639..4692448),
-        (4692448..4694864),
-        (4694864..4697270),
-        (4697270..4700633),
-        (4700633..4704169),
-        (4704169..4707728),
-        (4707728..4711037),
-        (4711037..4714239),
-        (4714239..4717435),
-        (4717435..4720891),
-        (4720891..4724371),
-        (4724371..4727847),
-        (4727847..4730250),
-        (4730250..4733108),
-        (4733108..4736110),
-        (4736110..4739465),
-        (4739465..4742844),
-        (4742844..4746126),
-        (4746126..4748527),
-        (4748527..4750922),
-        (4750922..4753315),
-        (4753315..4755709),
-        (4755709..4758111),
-        (4758111..4760507),
-        (4760507..4762898),
-        (4762898..4766306),
-        (4766306..4769567),
-        (4769567..4772851),
-        (4772851..4775260),
-        (4775260..4777660),
-        (4777660..4780060),
-        (4780060..4783331),
-        (4783331..4786626),
-        (4786626..4790148),
-        (4790148..4793687),
-        (4793687..4797068),
-        (4797068..4800606),
-        (4800606..4804140),
-        (4804140..4806543),
-        (4806543..4809383),
-        (4809383..4812755),
-        (4812755..4816019),
-        (4816019..4818422),
-        (4818422..4820839),
-        (4820839..4823256),
-        (4823256..4825661),
-        (4825661..4828258),
-        (4828258..4830665),
-        (4830665..4833477),
-        (4833477..4836836),
-        (4836836..4840218),
-        (4840218..4843215),
-        (4843215..4846466),
-        (4846466..4849737),
-        (4849737..4853004),
-        (4853004..4855409),
-        (4855409..4858684),
-        (4858684..4861771),
-        (4861771..4864555),
-        (4864555..4867840),
-        (4867840..4871184),
-        (4871184..4874552),
-        (4874552..4877373),
-        (4877373..4879776),
-        (4879776..4882179),
-        (4882179..4885491),
-        (4885491..4888730),
-        (4888730..4891993),
-        (4891993..4895252),
-        (4895252..4898328),
-        (4898328..4901695),
-        (4901695..4905172),
-        (4905172..4908810),
-        (4908810..4912442),
-        (4912442..4915727),
-        (4915727..4919591),
-        (4919591..4922003),
-        (4922003..4925281),
-        (4925281..4928452),
-        (4928452..4931879),
-        (4931879..4935304),
-        (4935304..4937709),
-        (4937709..4940529),
-        (4940529..4943365),
-        (4943365..4946167),
-        (4946167..4948995),
-        (4948995..4952242),
-        (4952242..4954837),
-        (4954837..4957458),
-        (4957458..4959805),
-        (4959805..4965636),
-        (4965636..4969167),
-        (4969167..4972715),
-        (4972715..4975106),
-        (4975106..4978181),
-        (4978181..4981277),
-        (4981277..4984478),
-        (4984478..4987746),
-        (4987746..4991037),
-        (4991037..4994342),
-        (4994342..4997693),
-        (4997693..5001076),
-        (5001076..5003888),
-        (5003888..5006723),
-        (5006723..5009797),
-        (5009797..5012816),
-        (5012816..5016089),
-        (5016089..5018474),
-        (5018474..5021849),
-        (5021849..5025116),
-        (5025116..5028469),
-        (5028469..5030738),
-        (5030738..5033069),
-        (5033069..5035401),
-        (5035401..5037689),
-        (5037689..5041059),
-        (5041059..5044529),
-        (5044529..5047605),
-        (5047605..5049995),
-        (5049995..5053083),
-        (5053083..5056067),
-        (5056067..5058891),
-        (5058891..5061993),
-        (5061993..5065286),
-        (5065286..5068389),
-        (5068389..5071467),
-        (5071467..5074549),
-        (5074549..5077654),
-        (5077654..5080488),
-        (5080488..5083850),
-        (5083850..5087235),
-        (5087235..5090616),
-        (5090616..5093892),
-        (5093892..5097064),
-        (5097064..5100521),
-        (5100521..5103810),
-        (5103810..5106200),
-        (5106200..5109195),
-        (5109195..5112214),
-        (5112214..5115496),
-        (5115496..5118770),
-        (5118770..5122052),
-        (5122052..5125393),
-        (5125393..5128753),
-        (5128753..5131147),
-        (5131147..5134402),
-        (5134402..5137681),
-        (5137681..5140776),
-        (5140776..5143771),
-        (5143771..5146965),
-        (5146965..5150183),
-        (5150183..5153397),
-        (5153397..5156750),
-        (5156750..5160127),
-        (5160127..5163668),
-        (5163668..5166964),
-        (5166964..5169862),
-        (5169862..5172796),
-        (5172796..5175623),
-        (5175623..5178973),
-        (5178973..5182215),
-        (5182215..5186323),
-        (5186323..5188723),
-        (5188723..5191118),
-        (5191118..5193513),
-        (5193513..5195917),
-        (5195917..5198321),
-        (5198321..5200725),
-        (5200725..5203991),
-        (5203991..5207089),
-        (5207089..5209415),
-        (5209415..5211741),
-        (5211741..5214593),
-        (5214593..5217591),
-        (5217591..5220871),
-        (5220871..5223697),
-        (5223697..5227130),
-        (5227130..5230395),
-        (5230395..5233848),
-        (5233848..5237198),
-        (5237198..5240572),
-        (5240572..5243669),
-        (5243669..5247009),
-        (5247009..5249369),
-        (5249369..5251714),
-        (5251714..5254050),
-        (5254050..5256410),
-        (5256410..5258755),
-        (5258755..5261091),
-        (5261091..5264198),
-        (5264198..5267281),
-        (5267281..5270402),
-        (5270402..5273679),
-        (5273679..5276890),
-        (5276890..5280149),
-        (5280149..5282550),
-        (5282550..5286088),
-        (5286088..5289709),
-        (5289709..5292107),
-        (5292107..5294512),
-        (5294512..5297930),
-        (5297930..5301384),
-        (5301384..5304822),
-        (5304822..5307631),
-        (5307631..5311028),
-        (5311028..5314317),
-        (5314317..5317571),
-        (5317571..5319969),
-        (5319969..5322377),
-        (5322377..5324760),
-        (5324760..5328014),
-        (5328014..5331290),
-        (5331290..5334543),
-        (5334543..5337816),
-        (5337816..5340931),
-        (5340931..5344198),
-        (5344198..5347461),
-        (5347461..5350742),
-        (5350742..5354047),
-        (5354047..5357139),
-        (5357139..5359418),
-        (5359418..5362785),
-        (5362785..5366044),
-        (5366044..5369310),
-        (5369310..5372599),
-        (5372599..5375008),
-        (5375008..5377417),
-        (5377417..5380795),
-        (5380795..5384009),
-        (5384009..5387407),
-        (5387407..5389820),
-        (5389820..5393189),
-        (5393189..5395584),
-        (5395584..5398754),
-        (5398754..5402217),
-        (5402217..5405704),
-        (5405704..5409187),
-        (5409187..5412456),
-        (5412456..5415745),
-        (5415745..5419124),
-        (5419124..5422527),
-        (5422527..5424855),
-        (5424855..5427184),
-        (5427184..5429588),
-        (5429588..5432706),
-        (5432706..5435976),
-        (5435976..5439242),
-        (5439242..5443384),
-        (5443858..5448028),
-        (5448508..5451872),
-        (5451872..5455131),
-        (5455131..5457970),
-        (5457970..5460715),
-        (5460715..5463534),
-        (5463534..5466379),
-        (5466379..5468797),
-        (5468797..5472065),
-        (5472065..5475358),
-        (5475358..5478645),
-        (5478645..5481721),
-        (5481721..5484548),
-        (5484548..5487363),
-        (5487363..5490658),
-        (5490658..5493052),
-        (5493052..5496141),
-        (5496141..5499250),
-        (5499250..5501634),
-        (5501634..5504031),
-        (5504031..5506430),
-        (5506430..5508826),
-        (5508826..5511212),
-        (5511212..5514304),
-        (5514304..5517292),
-        (5517292..5519678),
-        (5519678..5522065),
-        (5522065..5525551),
-        (5525551..5527956),
-        (5527956..5530593),
-        (5530593..5534351),
-        (5534351..5537277),
-        (5537277..5540628),
-        (5540628..5544001),
-        (5544001..5546395),
-        (5546395..5549076),
-        (5549076..5551467),
-        (5551467..5554538),
-        (5554538..5557632),
-        (5557632..5559908),
-        (5559908..5562326),
-        (5562326..5564671),
-        (5564671..5567949),
-        (5567949..5571251),
-        (5571251..5574251),
-        (5574251..5577154),
-        (5577154..5580434),
-        (5580434..5583737),
-        (5583737..5587037),
-        (5587037..5589456),
-        (5589456..5592842),
-        (5592842..5596138),
-        (5596138..5598522),
-        (5598522..5600803),
-        (5600803..5603193),
-        (5603193..5605474),
-        (5605474..5607867),
-        (5607867..5610148),
-        (5610148..5612974),
-        (5612974..5615808),
-        (5615808..5618664),
-        (5618664..5621055),
-        (5621055..5624584),
-        (5624584..5628134),
-        (5628134..5631684),
-        (5631684..5634375),
-        (5634375..5637434),
-        (5637434..5640517),
-        (5640517..5643872),
-        (5643872..5647251),
-        (5647251..5649665),
-        (5649665..5652933),
-        (5652933..5656225),
-        (5656225..5659602),
-        (5659602..5662972),
-        (5662972..5665245),
-        (5665245..5668178),
-        (5668178..5670988),
-        (5670988..5673824),
-        (5673824..5677199),
-        (5677199..5680368),
-        (5680368..5683759),
-        (5683759..5686162),
-        (5686162..5689526),
-        (5689526..5691937),
-        (5691937..5694350),
-        (5694350..5696761),
-        (5696761..5699376),
-        (5699376..5702828),
-        (5702828..5706191),
-        (5706191..5709313),
-        (5709313..5712587),
-        (5712587..5715854),
-        (5715854..5719182),
-        (5719182..5722534),
-        (5722534..5725882),
-        (5725882..5728686),
-        (5728686..5732045),
-        (5732045..5735428),
-        (5735428..5738703),
-        (5738703..5743338),
-        (5743338..5746813),
-        (5746813..5750183),
-        (5750183..5753283),
-        (5753283..5756283),
-        (5756283..5759853),
-        (5759853..5763062),
-        (5763062..5765874),
-        (5765874..5768262),
-        (5768262..5770658),
-        (5770658..5773067),
-        (5773067..5775477),
-        (5775477..5778303),
-        (5778303..5780698),
-        (5780698..5783098),
-        (5783098..5786177),
-        (5786177..5789444),
-        (5789444..5792735),
-        (5792735..5796022),
-        (5796022..5799113),
-        (5799113..5802228),
-        (5802228..5805318),
-        (5805318..5808613),
-        (5808613..5811932),
-        (5811932..5815030),
-        (5815030..5818146),
-        (5818146..5821612),
-        (5821612..5824696),
-        (5824696..5827164),
-        (5827164..5829767),
-        (5829767..5832152),
-        (5832152..5835133),
-        (5835133..5838112),
-        (5838112..5841473),
-        (5841473..5844948),
-        (5844948..5848315),
-        (5848315..5851678),
-        (5851678..5855037),
-        (5855037..5858417),
-        (5858417..5861786),
-        (5861786..5864513),
-        (5864513..5866917),
-        (5866917..5870292),
-        (5870292..5873389),
-        (5873389..5876509),
-        (5876509..5878891),
-        (5878891..5881969),
-        (5881969..5885071),
-        (5885071..5888439),
-        (5888439..5891562),
-        (5891562..5895021),
-        (5895021..5898285),
-        (5898285..5901495),
-        (5901495..5904960),
-        (5904960..5908411),
-        (5908411..5911694),
-        (5911694..5915098),
-        (5915098..5918398),
-        (5918398..5921694),
-        (5921694..5924078),
-        (5924078..5926483),
-        (5926483..5929830),
-        (5929830..5933201),
-        (5933201..5935592),
-        (5935592..5937997),
-        (5937997..5940398),
-        (5940398..5943874),
-        (5943874..5946937),
-        (5946937..5949328),
-        (5949328..5952306),
-        (5952306..5955308),
-        (5955308..5958309),
-        (5958309..5961674),
-        (5961674..5965036),
-        (5965036..5968407),
-        (5968407..5971768),
-        (5971768..5975149),
-        (5975149..5978502),
-        (5978502..5981875),
-        (5981875..5984287),
-        (5984287..5986699),
-        (5986699..5989111),
-        (5989111..5991523),
-        (5991523..5994781),
-        (5994781..5998063),
-        (5998063..6001309),
-        (6001309..6004579),
-        (6004579..6006975),
-        (6006975..6009388),
-        (6009388..6011795),
-        (6011795..6014202),
-        (6014202..6017013),
-        (6017013..6020404),
-        (6020404..6023775),
-        (6023775..6027149),
-        (6027149..6030533),
-        (6030533..6033529),
-        (6033529..6036523),
-        (6036523..6039343),
-        (6039343..6042172),
-        (6042172..6044558),
-        (6044558..6046893),
-        (6046893..6049231),
-        (6049231..6052697),
-        (6052697..6055516),
-        (6055516..6058212),
-        (6058212..6060616),
-        (6060616..6063007),
-        (6063007..6065951),
-        (6065951..6069043),
-        (6069043..6071440),
-        (6071440..6074719),
-        (6074719..6078082),
-        (6078082..6081469),
-        (6081469..6084852),
-        (6084852..6090678),
-        (6090678..6096323),
-        (6096323..6101897),
-        (6101897..6104820),
-        (6104820..6107891),
-        (6107891..6110958),
-        (6110958..6113637),
-        (6113637..6116710),
-        (6116710..6119807),
-        (6119807..6122216),
-        (6122216..6124625),
-        (6124625..6127034),
-        (6127034..6129411),
-        (6129411..6131801),
-        (6131801..6135126),
-        (6135126..6138472),
-        (6138472..6141813),
-        (6141813..6145349),
-        (6145349..6148909),
-        (6148909..6151844),
-        (6151844..6154942),
-        (6154942..6157333),
-        (6157333..6160443),
-        (6160443..6162842),
-        (6162842..6166120),
-        (6166120..6168523),
-        (6168523..6171778),
-        (6171778..6175057),
-        (6175057..6177447),
-        (6177447..6179837),
-        (6179837..6182227),
-        (6182227..6184617),
-        (6184617..6187007),
-        (6187007..6189397),
-        (6189397..6191787),
-        (6191787..6194177),
-        (6194177..6196567),
-        (6196567..6198957),
-        (6198957..6201347),
-        (6201347..6203738),
-        (6203738..6206123),
-        (6206123..6208508),
-        (6208508..6210893),
-        (6210893..6213301),
-        (6213301..6215687),
-        (6215687..6218770),
-        (6218770..6221879),
-        (6221879..6224162),
-        (6224162..6226572),
-        (6226572..6228960),
-        (6228960..6232048),
-        (6232048..6235588),
-        (6235588..6238777),
-        (6238777..6241889),
-        (6241889..6245182),
-        (6245182..6248371),
-        (6248371..6250759),
-        (6250759..6253159),
-        (6253159..6255542),
-        (6255542..6258344),
-        (6258344..6261335),
-        (6261335..6264422),
-        (6264422..6267962),
-        (6267962..6271418),
-        (6271418..6274765),
-        (6274765..6278240),
-        (6278240..6280631),
-        (6280631..6283703),
-        (6283703..6286959),
-        (6286959..6290239),
-        (6290239..6293515),
-        (6293515..6296633),
-        (6296633..6299907),
-        (6299907..6303202),
-        (6303202..6306403),
-        (6306403..6309002),
-        (6309002..6312376),
-        (6312376..6315642),
-        (6315642..6317915),
-        (6317915..6321196),
-        (6321196..6324373),
-        (6324373..6326651),
-        (6326651..6329063),
-        (6329063..6332450),
-        (6332450..6335638),
-        (6335638..6339172),
-        (6339172..6342730),
-        (6342730..6346284),
-        (6346284..6349735),
-        (6349735..6353180),
-        (6353180..6356264),
-        (6356264..6359370),
+        (4257933..4261289),
+        (4261289..4264669),
+        (4264669..4268045),
+        (4268045..4271399),
+        (4271399..4274772),
+        (4274772..4278232),
+        (4278232..4281606),
+        (4281606..4284874),
+        (4284874..4288042),
+        (4288042..4290966),
+        (4290966..4294061),
+        (4294061..4297179),
+        (4297179..4299558),
+        (4299558..4302040),
+        (4302040..4304539),
+        (4304539..4307046),
+        (4307046..4309542),
+        (4309542..4312057),
+        (4312057..4314552),
+        (4314552..4317919),
+        (4317919..4321310),
+        (4321310..4324697),
+        (4324697..4328256),
+        (4328256..4331839),
+        (4331839..4335418),
+        (4335418..4338589),
+        (4338589..4341767),
+        (4341767..4344967),
+        (4344967..4348163),
+        (4348163..4351397),
+        (4351397..4354787),
+        (4354787..4357571),
+        (4357571..4360504),
+        (4360504..4363584),
+        (4363584..4366100),
+        (4366100..4368616),
+        (4368616..4371045),
+        (4371045..4374344),
+        (4374344..4377965),
+        (4377965..4381605),
+        (4381605..4384790),
+        (4384790..4387997),
+        (4387997..4391385),
+        (4391385..4393899),
+        (4393899..4396404),
+        (4396404..4398924),
+        (4398924..4402115),
+        (4402115..4405205),
+        (4405205..4408566),
+        (4408566..4411951),
+        (4411951..4414952),
+        (4414952..4418519),
+        (4418519..4421882),
+        (4421882..4425269),
+        (4425269..4431210),
+        (4434034..4440080),
+        (4442916..4445403),
+        (4445403..4448321),
+        (4448321..4451264),
+        (4451264..4454568),
+        (4454568..4457962),
+        (4457962..4461353),
+        (4461353..4464683),
+        (4464683..4467865),
+        (4467865..4471067),
+        (4471067..4473835),
+        (4473835..4476761),
+        (4476761..4479590),
+        (4479590..4482099),
+        (4482099..4484608),
+        (4484608..4488086),
+        (4488086..4490986),
+        (4490986..4493507),
+        (4493507..4497095),
+        (4497095..4499474),
+        (4499474..4501973),
+        (4501973..4504484),
+        (4504484..4506970),
+        (4506970..4509478),
+        (4509478..4511966),
+        (4511966..4515135),
+        (4515135..4518252),
+        (4518252..4521742),
+        (4521742..4524636),
+        (4524636..4527556),
+        (4527556..4530936),
+        (4530936..4534042),
+        (4534042..4537421),
+        (4537421..4540696),
+        (4540696..4544190),
+        (4544190..4547580),
+        (4547580..4550502),
+        (4550502..4553593),
+        (4553593..4556682),
+        (4556682..4559579),
+        (4559579..4562068),
+        (4562068..4564573),
+        (4564573..4568199),
+        (4568199..4571849),
+        (4571849..4574948),
+        (4574948..4578482),
+        (4578482..4581983),
+        (4581983..4585544),
+        (4585544..4589105),
+        (4589105..4592552),
+        (4592552..4595999),
+        (4595999..4599481),
+        (4599481..4602882),
+        (4602882..4605984),
+        (4605984..4608757),
+        (4608757..4611257),
+        (4611257..4614033),
+        (4614033..4617066),
+        (4617066..4620530),
+        (4620530..4623683),
+        (4623683..4626984),
+        (4626984..4630281),
+        (4630281..4633713),
+        (4633713..4637169),
+        (4637169..4640524),
+        (4640524..4643903),
+        (4643903..4647658),
+        (4647658..4650764),
+        (4650764..4654231),
+        (4654231..4656716),
+        (4656716..4659239),
+        (4659239..4661762),
+        (4661762..4664942),
+        (4664942..4668147),
+        (4668147..4671346),
+        (4671346..4675016),
+        (4675016..4678566),
+        (4678566..4682139),
+        (4682139..4685708),
+        (4685708..4688808),
+        (4688808..4691303),
+        (4691303..4694675),
+        (4694675..4698068),
+        (4698068..4701455),
+        (4701455..4704624),
+        (4704624..4707790),
+        (4707790..4710699),
+        (4710699..4713215),
+        (4713215..4715721),
+        (4715721..4719184),
+        (4719184..4722820),
+        (4722820..4726479),
+        (4726479..4729888),
+        (4729888..4733190),
+        (4733190..4736486),
+        (4736486..4740042),
+        (4740042..4743622),
+        (4743622..4747198),
+        (4747198..4749701),
+        (4749701..4752659),
+        (4752659..4755761),
+        (4755761..4759216),
+        (4759216..4762695),
+        (4762695..4766077),
+        (4766077..4768578),
+        (4768578..4771073),
+        (4771073..4773566),
+        (4773566..4776060),
+        (4776060..4778562),
+        (4778562..4781058),
+        (4781058..4783549),
+        (4783549..4787057),
+        (4787057..4790418),
+        (4790418..4793802),
+        (4793802..4796311),
+        (4796311..4798811),
+        (4798811..4801311),
+        (4801311..4804682),
+        (4804682..4808077),
+        (4808077..4811699),
+        (4811699..4815338),
+        (4815338..4818819),
+        (4818819..4822457),
+        (4822457..4826091),
+        (4826091..4828594),
+        (4828594..4831534),
+        (4831534..4835006),
+        (4835006..4838370),
+        (4838370..4840873),
+        (4840873..4843390),
+        (4843390..4845907),
+        (4845907..4848412),
+        (4848412..4851109),
+        (4851109..4853616),
+        (4853616..4856528),
+        (4856528..4859987),
+        (4859987..4863469),
+        (4863469..4866566),
+        (4866566..4869917),
+        (4869917..4873288),
+        (4873288..4876655),
+        (4876655..4879160),
+        (4879160..4882535),
+        (4882535..4885722),
+        (4885722..4888606),
+        (4888606..4891991),
+        (4891991..4895435),
+        (4895435..4898903),
+        (4898903..4901824),
+        (4901824..4904327),
+        (4904327..4906830),
+        (4906830..4910242),
+        (4910242..4913581),
+        (4913581..4916944),
+        (4916944..4920303),
+        (4920303..4923479),
+        (4923479..4926946),
+        (4926946..4930523),
+        (4930523..4934261),
+        (4934261..4937993),
+        (4937993..4941378),
+        (4941378..4945342),
+        (4945342..4947854),
+        (4947854..4951232),
+        (4951232..4954503),
+        (4954503..4958030),
+        (4958030..4961555),
+        (4961555..4964060),
+        (4964060..4966980),
+        (4966980..4969916),
+        (4969916..4972818),
+        (4972818..4975746),
+        (4975746..4979093),
+        (4979093..4981788),
+        (4981788..4984509),
+        (4984509..4986956),
+        (4986956..4992887),
+        (4992887..4996518),
+        (4996518..5000166),
+        (5000166..5002657),
+        (5002657..5005832),
+        (5005832..5009028),
+        (5009028..5012329),
+        (5012329..5015697),
+        (5015697..5019088),
+        (5019088..5022493),
+        (5022493..5025944),
+        (5025944..5029427),
+        (5029427..5032339),
+        (5032339..5035274),
+        (5035274..5038448),
+        (5038448..5041567),
+        (5041567..5044940),
+        (5044940..5047425),
+        (5047425..5050900),
+        (5050900..5054267),
+        (5054267..5057720),
+        (5057720..5060089),
+        (5060089..5062520),
+        (5062520..5064952),
+        (5064952..5067340),
+        (5067340..5070810),
+        (5070810..5074380),
+        (5074380..5077556),
+        (5077556..5080046),
+        (5080046..5083234),
+        (5083234..5086318),
+        (5086318..5089242),
+        (5089242..5092444),
+        (5092444..5095837),
+        (5095837..5099040),
+        (5099040..5102218),
+        (5102218..5105400),
+        (5105400..5108605),
+        (5108605..5111539),
+        (5111539..5115001),
+        (5115001..5118486),
+        (5118486..5121967),
+        (5121967..5125343),
+        (5125343..5128615),
+        (5128615..5132172),
+        (5132172..5135561),
+        (5135561..5138051),
+        (5138051..5141146),
+        (5141146..5144265),
+        (5144265..5147647),
+        (5147647..5151021),
+        (5151021..5154403),
+        (5154403..5157844),
+        (5157844..5161304),
+        (5161304..5163798),
+        (5163798..5167153),
+        (5167153..5170532),
+        (5170532..5173727),
+        (5173727..5176822),
+        (5176822..5180116),
+        (5180116..5183434),
+        (5183434..5186748),
+        (5186748..5190201),
+        (5190201..5193678),
+        (5193678..5197319),
+        (5197319..5200715),
+        (5200715..5203713),
+        (5203713..5206747),
+        (5206747..5209674),
+        (5209674..5213124),
+        (5213124..5216466),
+        (5216466..5220674),
+        (5220674..5223174),
+        (5223174..5225669),
+        (5225669..5228164),
+        (5228164..5230668),
+        (5230668..5233172),
+        (5233172..5235676),
+        (5235676..5239042),
+        (5239042..5242240),
+        (5242240..5244666),
+        (5244666..5247092),
+        (5247092..5250044),
+        (5250044..5253142),
+        (5253142..5256522),
+        (5256522..5259448),
+        (5259448..5262981),
+        (5262981..5266346),
+        (5266346..5269899),
+        (5269899..5273349),
+        (5273349..5276823),
+        (5276823..5280020),
+        (5280020..5283460),
+        (5283460..5285920),
+        (5285920..5288365),
+        (5288365..5290801),
+        (5290801..5293261),
+        (5293261..5295706),
+        (5295706..5298142),
+        (5298142..5301349),
+        (5301349..5304532),
+        (5304532..5307753),
+        (5307753..5311130),
+        (5311130..5314441),
+        (5314441..5317800),
+        (5317800..5320301),
+        (5320301..5323939),
+        (5323939..5327660),
+        (5327660..5330158),
+        (5330158..5332663),
+        (5332663..5336181),
+        (5336181..5339735),
+        (5339735..5343273),
+        (5343273..5346182),
+        (5346182..5349679),
+        (5349679..5353068),
+        (5353068..5356422),
+        (5356422..5358920),
+        (5358920..5361428),
+        (5361428..5363911),
+        (5363911..5367265),
+        (5367265..5370641),
+        (5370641..5375423),
+        (5376453..5381260),
+        (5382302..5385517),
+        (5385517..5388884),
+        (5388884..5392247),
+        (5392247..5395628),
+        (5395628..5399033),
+        (5399033..5402225),
+        (5402225..5404604),
+        (5404604..5408071),
+        (5408071..5411430),
+        (5411430..5414796),
+        (5414796..5418185),
+        (5418185..5420694),
+        (5420694..5423203),
+        (5423203..5426681),
+        (5426681..5429995),
+        (5429995..5433493),
+        (5433493..5436006),
+        (5436006..5439475),
+        (5439475..5441970),
+        (5441970..5445240),
+        (5445240..5448803),
+        (5448803..5452390),
+        (5452390..5455973),
+        (5455973..5459342),
+        (5459342..5462731),
+        (5462731..5466210),
+        (5466210..5469713),
+        (5469713..5472141),
+        (5472141..5474570),
+        (5474570..5477074),
+        (5477074..5480292),
+        (5480292..5483662),
+        (5483662..5487028),
+        (5487028..5491270),
+        (5491744..5496014),
+        (5496494..5499958),
+        (5499958..5503317),
+        (5503317..5506256),
+        (5506256..5509101),
+        (5509101..5512020),
+        (5512020..5514965),
+        (5514965..5517483),
+        (5517483..5520851),
+        (5520851..5524244),
+        (5524244..5527631),
+        (5527631..5530807),
+        (5530807..5533734),
+        (5533734..5536649),
+        (5536649..5540044),
+        (5540044..5542538),
+        (5542538..5545727),
+        (5545727..5548936),
+        (5548936..5551420),
+        (5551420..5553917),
+        (5553917..5556416),
+        (5556416..5558912),
+        (5558912..5561398),
+        (5561398..5564590),
+        (5564590..5567678),
+        (5567678..5570164),
+        (5570164..5572651),
+        (5572651..5576237),
+        (5576237..5578742),
+        (5578742..5581479),
+        (5581479..5585337),
+        (5585337..5588363),
+        (5588363..5591814),
+        (5591814..5595287),
+        (5595287..5597781),
+        (5597781..5600562),
+        (5600562..5603053),
+        (5603053..5606224),
+        (5606224..5609418),
+        (5609418..5611794),
+        (5611794..5614312),
+        (5614312..5616757),
+        (5616757..5620135),
+        (5620135..5623537),
+        (5623537..5626637),
+        (5626637..5629640),
+        (5629640..5633020),
+        (5633020..5636423),
+        (5636423..5639823),
+        (5639823..5642342),
+        (5642342..5645828),
+        (5645828..5649224),
+        (5649224..5651708),
+        (5651708..5654089),
+        (5654089..5656579),
+        (5656579..5658960),
+        (5658960..5661453),
+        (5661453..5663834),
+        (5663834..5666760),
+        (5666760..5669694),
+        (5669694..5672650),
+        (5672650..5675141),
+        (5675141..5678770),
+        (5678770..5682420),
+        (5682420..5686070),
+        (5686070..5688861),
+        (5688861..5692020),
+        (5692020..5695203),
+        (5695203..5698658),
+        (5698658..5702137),
+        (5702137..5704651),
+        (5704651..5708019),
+        (5708019..5711411),
+        (5711411..5714888),
+        (5714888..5718358),
+        (5718358..5720731),
+        (5720731..5723764),
+        (5723764..5726674),
+        (5726674..5729610),
+        (5729610..5733085),
+        (5733085..5736354),
+        (5736354..5739845),
+        (5739845..5742348),
+        (5742348..5745812),
+        (5745812..5748323),
+        (5748323..5750836),
+        (5750836..5753347),
+        (5753347..5756062),
+        (5756062..5759614),
+        (5759614..5763077),
+        (5763077..5766299),
+        (5766299..5769673),
+        (5769673..5773040),
+        (5773040..5776468),
+        (5776468..5779920),
+        (5779920..5783368),
+        (5783368..5786272),
+        (5786272..5789731),
+        (5789731..5793214),
+        (5793214..5796589),
+        (5796589..5801324),
+        (5801324..5804899),
+        (5804899..5808369),
+        (5808369..5811569),
+        (5811569..5814669),
+        (5814669..5818339),
+        (5818339..5821648),
+        (5821648..5824560),
+        (5824560..5827048),
+        (5827048..5829544),
+        (5829544..5832053),
+        (5832053..5834563),
+        (5834563..5837489),
+        (5837489..5839984),
+        (5839984..5842484),
+        (5842484..5845663),
+        (5845663..5849030),
+        (5849030..5852421),
+        (5852421..5855808),
+        (5855808..5858999),
+        (5858999..5862214),
+        (5862214..5865404),
+        (5865404..5868799),
+        (5868799..5872218),
+        (5872218..5875416),
+        (5875416..5878632),
+        (5878632..5882198),
+        (5882198..5885382),
+        (5885382..5887950),
+        (5887950..5890653),
+        (5890653..5893138),
+        (5893138..5896219),
+        (5896219..5899298),
+        (5899298..5902759),
+        (5902759..5906334),
+        (5906334..5909801),
+        (5909801..5913264),
+        (5913264..5916723),
+        (5916723..5920203),
+        (5920203..5923672),
+        (5923672..5926499),
+        (5926499..5929003),
+        (5929003..5932478),
+        (5932478..5935675),
+        (5935675..5938895),
+        (5938895..5941377),
+        (5941377..5944555),
+        (5944555..5947757),
+        (5947757..5951225),
+        (5951225..5954448),
+        (5954448..5958007),
+        (5958007..5961371),
+        (5961371..5964681),
+        (5964681..5968246),
+        (5968246..5971797),
+        (5971797..5975180),
+        (5975180..5978684),
+        (5978684..5982084),
+        (5982084..5985480),
+        (5985480..5987964),
+        (5987964..5990469),
+        (5990469..5993916),
+        (5993916..5997387),
+        (5997387..5999878),
+        (5999878..6002383),
+        (6002383..6004884),
+        (6004884..6008460),
+        (6008460..6011623),
+        (6011623..6014114),
+        (6014114..6017192),
+        (6017192..6020294),
+        (6020294..6023395),
+        (6023395..6026860),
+        (6026860..6030322),
+        (6030322..6033793),
+        (6033793..6037254),
+        (6037254..6040735),
+        (6040735..6044188),
+        (6044188..6047661),
+        (6047661..6050173),
+        (6050173..6052685),
+        (6052685..6055197),
+        (6055197..6057709),
+        (6057709..6061067),
+        (6061067..6064449),
+        (6064449..6067795),
+        (6067795..6071165),
+        (6071165..6073661),
+        (6073661..6076174),
+        (6076174..6078681),
+        (6078681..6081188),
+        (6081188..6084099),
+        (6084099..6087590),
+        (6087590..6091061),
+        (6091061..6094535),
+        (6094535..6098019),
+        (6098019..6101115),
+        (6101115..6104209),
+        (6104209..6107129),
+        (6107129..6110058),
+        (6110058..6112544),
+        (6112544..6114979),
+        (6114979..6117417),
+        (6117417..6120983),
+        (6120983..6123902),
+        (6123902..6126698),
+        (6126698..6129202),
+        (6129202..6131693),
+        (6131693..6134737),
+        (6134737..6137929),
+        (6137929..6140426),
+        (6140426..6143805),
+        (6143805..6147268),
+        (6147268..6150755),
+        (6150755..6154238),
+        (6154238..6160164),
+        (6160164..6165909),
+        (6165909..6171583),
+        (6171583..6174606),
+        (6174606..6177777),
+        (6177777..6180944),
+        (6180944..6183723),
+        (6183723..6186896),
+        (6186896..6190093),
+        (6190093..6192602),
+        (6192602..6195111),
+        (6195111..6197620),
+        (6197620..6200097),
+        (6200097..6202587),
+        (6202587..6206012),
+        (6206012..6209458),
+        (6209458..6212899),
+        (6212899..6216535),
+        (6216535..6220195),
+        (6220195..6223230),
+        (6223230..6226428),
+        (6226428..6228919),
+        (6228919..6232129),
+        (6232129..6234628),
+        (6234628..6238006),
+        (6238006..6240509),
+        (6240509..6243864),
+        (6243864..6247243),
+        (6247243..6249733),
+        (6249733..6252223),
+        (6252223..6254713),
+        (6254713..6257203),
+        (6257203..6259693),
+        (6259693..6262183),
+        (6262183..6264673),
+        (6264673..6267163),
+        (6267163..6269653),
+        (6269653..6272143),
+        (6272143..6274633),
+        (6274633..6277124),
+        (6277124..6279609),
+        (6279609..6282094),
+        (6282094..6284579),
+        (6284579..6287087),
+        (6287087..6289573),
+        (6289573..6292756),
+        (6292756..6295965),
+        (6295965..6298348),
+        (6298348..6300858),
+        (6300858..6303346),
+        (6303346..6306534),
+        (6306534..6310174),
+        (6310174..6313463),
+        (6313463..6316675),
+        (6316675..6320068),
+        (6320068..6323357),
+        (6323357..6325845),
+        (6325845..6328345),
+        (6328345..6330828),
+        (6330828..6333730),
+        (6333730..6336821),
+        (6336821..6340008),
+        (6340008..6343648),
+        (6343648..6347204),
+        (6347204..6350651),
+        (6350651..6354226),
+        (6354226..6356717),
+        (6356717..6359889),
+        (6359889..6363245),
+        (6363245..6366625),
+        (6366625..6370001),
+        (6370001..6373219),
+        (6373219..6376593),
+        (6376593..6379988),
+        (6379988..6383289),
+        (6383289..6385988),
+        (6385988..6389462),
+        (6389462..6392828),
+        (6392828..6395201),
+        (6395201..6398582),
+        (6398582..6401859),
+        (6401859..6404237),
+        (6404237..6406749),
+        (6406749..6410236),
+        (6410236..6413524),
+        (6413524..6417158),
+        (6417158..6420816),
+        (6420816..6424470),
+        (6424470..6428021),
+        (6428021..6431566),
+        (6431566..6434750),
+        (6434750..6437956),
     ];
     pub static ITEM_GENERATOR: [Range<usize>; ItemId::VARIANTS] = [
         (0..1057),
@@ -44287,6 +44287,8 @@ pub mod items {
         (0..1057),
         (0..1057),
         (0..1057),
+        (4251095..4254040),
+        (4254040..4255146),
         (0..1057),
         (0..1057),
         (0..1057),
@@ -44320,10 +44322,8 @@ pub mod items {
         (0..1057),
         (0..1057),
         (0..1057),
-        (0..1057),
-        (0..1057),
-        (4251095..4252772),
-        (4252772..4253882),
+        (4255146..4256823),
+        (4256823..4257933),
         (0..1057),
         (0..1057),
         (0..1057),
@@ -45347,7 +45347,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 8020,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             health: 350f32,
             magic_resist: 45f32,
@@ -45381,7 +45381,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 228020,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             health: 350f32,
             magic_resist: 50f32,
@@ -45415,7 +45415,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 328020,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             health: 350f32,
             magic_resist: 50f32,
@@ -45449,7 +45449,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 2522,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 90f32,
             mana: 300f32,
@@ -45483,7 +45483,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 222522,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 90f32,
             mana: 300f32,
@@ -45517,7 +45517,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 228004,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             armor: 50f32,
             health: 800f32,
@@ -45552,7 +45552,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3105,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             armor: 25f32,
             magic_resist: 25f32,
@@ -45586,7 +45586,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 223105,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             armor: 30f32,
             magic_resist: 30f32,
@@ -45616,7 +45616,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3113,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 30f32,
             movespeed: 4f32,
@@ -45646,7 +45646,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 1052,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 20f32,
             ..ZEROED_STATS
@@ -45675,7 +45675,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 8001,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             health: 650f32,
             ..ZEROED_STATS
@@ -45704,7 +45704,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 228001,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             health: 650f32,
             ..ZEROED_STATS
@@ -45733,7 +45733,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 9188,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -45759,7 +45759,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 9402,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -45785,7 +45785,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 9278,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -45811,7 +45811,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 9185,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -45837,7 +45837,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 1508,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: true,
@@ -45863,7 +45863,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 220008,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -45889,7 +45889,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3348,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -45919,7 +45919,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3003,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 70f32,
             mana: 600f32,
@@ -45953,7 +45953,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 223003,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 55f32,
             mana: 600f32,
@@ -45987,7 +45987,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 323003,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 70f32,
             mana: 600f32,
@@ -46022,7 +46022,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3504,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 45f32,
             movespeed: 4f32,
@@ -46057,7 +46057,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 223504,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 40f32,
             movespeed: 6f32,
@@ -46092,7 +46092,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 323504,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 55f32,
             movespeed: 6f32,
@@ -46122,7 +46122,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3174,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             armor: 35f32,
             movespeed: 45f32,
@@ -46152,7 +46152,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3039,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             crit_chance: 20f32,
             health: 700f32,
@@ -46182,7 +46182,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 223039,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             crit_chance: 20f32,
             health: 700f32,
@@ -46212,7 +46212,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 663039,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             crit_chance: 20f32,
             health: 500f32,
@@ -46246,7 +46246,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 6696,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 55f32,
             armor_penetration_flat: 18f32,
@@ -46280,7 +46280,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 226696,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 45f32,
             armor_penetration_flat: 18f32,
@@ -46310,7 +46310,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 1038,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 40f32,
             ..ZEROED_STATS
@@ -46339,7 +46339,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 221038,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 40f32,
             ..ZEROED_STATS
@@ -46368,7 +46368,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 6660,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             health: 150f32,
             ..ZEROED_STATS
@@ -46397,7 +46397,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 2163,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -46423,7 +46423,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 2161,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -46449,7 +46449,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 2162,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -46479,7 +46479,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 4642,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 20f32,
             ..ZEROED_STATS
@@ -46513,7 +46513,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 2524,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             armor: 20f32,
             health: 200f32,
@@ -46549,7 +46549,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 222524,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             armor: 25f32,
             health: 200f32,
@@ -46580,7 +46580,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3102,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 105f32,
             magic_resist: 40f32,
@@ -46610,7 +46610,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 223102,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 80f32,
             magic_resist: 40f32,
@@ -46644,7 +46644,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 2520,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 55f32,
             armor_penetration_flat: 22f32,
@@ -46674,7 +46674,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 9179,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -46700,7 +46700,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 9400,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -46726,7 +46726,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 9292,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -46752,7 +46752,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3006,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_speed: 25f32,
             movespeed: 45f32,
@@ -46782,7 +46782,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 223006,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_speed: 35f32,
             movespeed: 55f32,
@@ -46816,7 +46816,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3071,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 40f32,
             health: 400f32,
@@ -46850,7 +46850,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 223071,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 40f32,
             health: 350f32,
@@ -46880,7 +46880,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 447122,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             health: 900f32,
             ..ZEROED_STATS
@@ -46914,7 +46914,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3864,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 20f32,
             health: 75f32,
@@ -46948,7 +46948,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 2503,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 80f32,
             mana: 600f32,
@@ -46982,7 +46982,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 222503,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 60f32,
             mana: 600f32,
@@ -47016,7 +47016,7 @@ pub mod items {
         ranged_damages: [blade_of_the_ruined_king_ranged_min, zero],
         melee_damages: [blade_of_the_ruined_king_melee_min, zero],
         riot_id: 3153,
-        deals_damage: true,
+        deals_damage: (true, false),
         stats: CachedItemStats {
             attack_damage: 40f32,
             attack_speed: 25f32,
@@ -47064,7 +47064,7 @@ pub mod items {
         ranged_damages: [blade_of_the_ruined_king_arena_ranged_min, zero],
         melee_damages: [blade_of_the_ruined_king_arena_melee_min, zero],
         riot_id: 223153,
-        deals_damage: true,
+        deals_damage: (true, false),
         stats: CachedItemStats {
             attack_damage: 30f32,
             attack_speed: 20f32,
@@ -47109,7 +47109,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 9183,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -47135,7 +47135,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 1026,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 45f32,
             ..ZEROED_STATS
@@ -47164,7 +47164,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 221026,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 45f32,
             ..ZEROED_STATS
@@ -47196,7 +47196,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 4630,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 25f32,
             magic_penetration_flat: 13f32,
@@ -47231,7 +47231,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 4010,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 60f32,
             health: 350f32,
@@ -47265,7 +47265,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 8010,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 65f32,
             health: 400f32,
@@ -47300,7 +47300,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3877,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             health: 200f32,
             ..ZEROED_STATS
@@ -47329,7 +47329,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3072,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 80f32,
             lifesteal: 15f32,
@@ -47359,7 +47359,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 223072,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 70f32,
             lifesteal: 18f32,
@@ -47389,7 +47389,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 1001,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             movespeed: 25f32,
             ..ZEROED_STATS
@@ -47418,7 +47418,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3009,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             movespeed: 55f32,
             ..ZEROED_STATS
@@ -47447,7 +47447,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 223009,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             movespeed: 70f32,
             ..ZEROED_STATS
@@ -47476,7 +47476,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 1202,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -47502,7 +47502,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 1207,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -47533,7 +47533,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3867,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             health: 200f32,
             ..ZEROED_STATS
@@ -47562,7 +47562,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3076,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             armor: 30f32,
             ..ZEROED_STATS
@@ -47591,7 +47591,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 220011,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -47622,7 +47622,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3860,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 20f32,
             health: 250f32,
@@ -47652,7 +47652,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 9308,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -47678,7 +47678,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 9184,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -47704,7 +47704,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 9279,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -47730,7 +47730,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 2141,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: true,
@@ -47756,7 +47756,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 222141,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -47782,7 +47782,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 9408,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -47808,7 +47808,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3803,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             health: 300f32,
             mana: 375f32,
@@ -47838,7 +47838,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3133,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 20f32,
             ..ZEROED_STATS
@@ -47872,7 +47872,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3869,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             health: 200f32,
             ..ZEROED_STATS
@@ -47901,7 +47901,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 1031,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             armor: 40f32,
             ..ZEROED_STATS
@@ -47930,7 +47930,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 221031,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             armor: 40f32,
             ..ZEROED_STATS
@@ -47963,7 +47963,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3173,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             magic_resist: 30f32,
             movespeed: 45f32,
@@ -47993,7 +47993,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3012,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             health: 200f32,
             ..ZEROED_STATS
@@ -48026,7 +48026,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 6609,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 45f32,
             health: 450f32,
@@ -48060,7 +48060,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 226609,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 45f32,
             health: 450f32,
@@ -48095,7 +48095,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3011,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 35f32,
             ..ZEROED_STATS
@@ -48129,7 +48129,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 223011,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 35f32,
             ..ZEROED_STATS
@@ -48158,7 +48158,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 1018,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             crit_chance: 15f32,
             ..ZEROED_STATS
@@ -48187,7 +48187,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 443059,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             health: 300f32,
             magic_resist: 100f32,
@@ -48217,7 +48217,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 663059,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             health: 250f32,
             magic_resist: 60f32,
@@ -48247,7 +48247,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 1029,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             armor: 15f32,
             ..ZEROED_STATS
@@ -48276,7 +48276,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 2055,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -48302,7 +48302,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 2033,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -48333,7 +48333,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 4629,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 70f32,
             health: 350f32,
@@ -48369,7 +48369,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 224629,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 65f32,
             health: 350f32,
@@ -48400,7 +48400,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3171,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             movespeed: 45f32,
             ..ZEROED_STATS
@@ -48434,7 +48434,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 4644,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 85f32,
             health: 250f32,
@@ -48470,7 +48470,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 224644,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 85f32,
             health: 250f32,
@@ -48506,7 +48506,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 444644,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 85f32,
             health: 350f32,
@@ -48542,7 +48542,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 664644,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 65f32,
             health: 250f32,
@@ -48577,7 +48577,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 447109,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 80f32,
             armor: 30f32,
@@ -48612,7 +48612,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 667109,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 60f32,
             armor: 25f32,
@@ -48647,7 +48647,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3137,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 75f32,
             magic_penetration_flat: 30f32,
@@ -48682,7 +48682,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 223137,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 60f32,
             magic_penetration_flat: 30f32,
@@ -48712,7 +48712,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3801,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             health: 200f32,
             ..ZEROED_STATS
@@ -48741,7 +48741,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 1083,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 7f32,
             ..ZEROED_STATS
@@ -48770,7 +48770,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 9171,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -48796,7 +48796,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 1042,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_speed: 10f32,
             ..ZEROED_STATS
@@ -48825,7 +48825,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 1082,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 15f32,
             health: 50f32,
@@ -48859,7 +48859,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 443054,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             armor: 55f32,
             attack_speed: 50f32,
@@ -48894,7 +48894,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 6621,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 45f32,
             ..ZEROED_STATS
@@ -48927,7 +48927,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 226621,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 45f32,
             ..ZEROED_STATS
@@ -48960,7 +48960,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 326621,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 50f32,
             ..ZEROED_STATS
@@ -48993,7 +48993,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3742,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             armor: 55f32,
             health: 350f32,
@@ -49028,7 +49028,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 223742,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             armor: 40f32,
             health: 300f32,
@@ -49063,7 +49063,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 6333,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             armor: 50f32,
             attack_damage: 60f32,
@@ -49097,7 +49097,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 226333,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             armor: 45f32,
             attack_damage: 60f32,
@@ -49132,7 +49132,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 228003,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 150f32,
             crit_chance: 20f32,
@@ -49164,7 +49164,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3128,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 120f32,
             ..ZEROED_STATS
@@ -49197,7 +49197,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 447107,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_speed: 50f32,
             movespeed: 8f32,
@@ -49228,7 +49228,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 9293,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -49254,7 +49254,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 443056,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -49280,7 +49280,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 663056,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -49306,7 +49306,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 4637,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 75f32,
             health: 350f32,
@@ -49336,7 +49336,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 224637,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 75f32,
             health: 350f32,
@@ -49366,7 +49366,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 444637,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 80f32,
             health: 700f32,
@@ -49401,7 +49401,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 447113,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 90f32,
             mana: 600f32,
@@ -49437,7 +49437,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 2530,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             health: 200f32,
             mana: 1000f32,
@@ -49472,7 +49472,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 222530,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             health: 200f32,
             mana: 1000f32,
@@ -49507,7 +49507,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 322530,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             health: 200f32,
             mana: 1000f32,
@@ -49537,7 +49537,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 447120,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_speed: 30f32,
             adaptive_force: 75f32,
@@ -49567,7 +49567,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 2007,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: true,
@@ -49597,7 +49597,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 6632,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 40f32,
             health: 300f32,
@@ -49631,7 +49631,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 226632,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 40f32,
             health: 300f32,
@@ -49665,7 +49665,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 446632,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 55f32,
             health: 350f32,
@@ -49695,7 +49695,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 1055,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 10f32,
             health: 80f32,
@@ -49725,7 +49725,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 1056,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 18f32,
             health: 90f32,
@@ -49755,7 +49755,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 1054,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             health: 110f32,
             ..ZEROED_STATS
@@ -49784,7 +49784,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 9276,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -49810,7 +49810,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 447106,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -49841,7 +49841,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3870,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             health: 200f32,
             ..ZEROED_STATS
@@ -49875,7 +49875,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 2510,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 70f32,
             attack_speed: 25f32,
@@ -49911,7 +49911,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 222510,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 70f32,
             attack_speed: 25f32,
@@ -49946,7 +49946,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 6691,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 60f32,
             armor_penetration_flat: 18f32,
@@ -49980,7 +49980,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 226691,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 60f32,
             armor_penetration_flat: 18f32,
@@ -50014,7 +50014,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 446691,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 50f32,
             armor_penetration_flat: 20f32,
@@ -50049,7 +50049,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 6620,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 35f32,
             health: 200f32,
@@ -50084,7 +50084,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 226620,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 40f32,
             health: 300f32,
@@ -50119,7 +50119,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 326620,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 35f32,
             health: 250f32,
@@ -50149,7 +50149,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 9190,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -50175,7 +50175,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 6692,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 60f32,
             ..ZEROED_STATS
@@ -50204,7 +50204,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 226692,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 50f32,
             ..ZEROED_STATS
@@ -50237,7 +50237,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3814,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 50f32,
             health: 250f32,
@@ -50272,7 +50272,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 223814,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 45f32,
             health: 375f32,
@@ -50307,7 +50307,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 443063,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             armor: 50f32,
             magic_resist: 50f32,
@@ -50337,7 +50337,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 2151,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: true,
@@ -50363,7 +50363,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 2152,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: true,
@@ -50389,7 +50389,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 2138,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: true,
@@ -50415,7 +50415,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 2150,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: true,
@@ -50441,7 +50441,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 2139,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: true,
@@ -50467,7 +50467,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 2140,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: true,
@@ -50493,7 +50493,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 1035,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -50524,7 +50524,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 447105,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 70f32,
             ..ZEROED_STATS
@@ -50557,7 +50557,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 2517,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 60f32,
             omnivamp: 5f32,
@@ -50591,7 +50591,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 222517,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 60f32,
             omnivamp: 5f32,
@@ -50621,7 +50621,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 2146,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -50647,7 +50647,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 2002,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -50673,7 +50673,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 9275,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -50703,7 +50703,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3508,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 50f32,
             crit_chance: 25f32,
@@ -50737,7 +50737,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 223508,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 50f32,
             crit_chance: 25f32,
@@ -50772,7 +50772,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3001,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             armor: 30f32,
             health: 200f32,
@@ -50808,7 +50808,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 223001,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             armor: 30f32,
             health: 200f32,
@@ -50844,7 +50844,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 6656,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 70f32,
             health: 250f32,
@@ -50880,7 +50880,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 226656,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 70f32,
             health: 250f32,
@@ -50916,7 +50916,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 446656,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 100f32,
             health: 250f32,
@@ -50947,7 +50947,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 9277,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -50973,7 +50973,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3123,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 15f32,
             ..ZEROED_STATS
@@ -51006,7 +51006,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3073,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 40f32,
             attack_speed: 20f32,
@@ -51041,7 +51041,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 223073,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 40f32,
             attack_speed: 30f32,
@@ -51072,7 +51072,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 9273,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -51098,7 +51098,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 1104,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -51124,7 +51124,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3513,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -51150,7 +51150,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 9289,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -51176,7 +51176,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 1004,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: true,
@@ -51202,7 +51202,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3363,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: true,
@@ -51228,7 +51228,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 2508,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 30f32,
             ..ZEROED_STATS
@@ -51261,7 +51261,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 2512,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_speed: 45f32,
             crit_chance: 25f32,
@@ -51296,7 +51296,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 222512,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_speed: 40f32,
             crit_chance: 25f32,
@@ -51327,7 +51327,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3108,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 25f32,
             ..ZEROED_STATS
@@ -51360,7 +51360,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3121,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             health: 550f32,
             mana: 1000f32,
@@ -51394,7 +51394,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 223121,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             health: 400f32,
             mana: 1000f32,
@@ -51428,7 +51428,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 323121,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             health: 550f32,
             mana: 1000f32,
@@ -51458,7 +51458,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 9189,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -51488,7 +51488,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 447112,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             health: 500f32,
             adaptive_force: 70f32,
@@ -51518,7 +51518,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 667112,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             health: 500f32,
             adaptive_force: 55f32,
@@ -51551,7 +51551,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3114,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: true,
@@ -51581,7 +51581,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 443061,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             crit_chance: 25f32,
             health: 900f32,
@@ -51615,7 +51615,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 4401,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             health: 400f32,
             magic_resist: 55f32,
@@ -51650,7 +51650,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 224401,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             health: 400f32,
             magic_resist: 50f32,
@@ -51681,7 +51681,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3176,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             movespeed: 55f32,
             ..ZEROED_STATS
@@ -51710,7 +51710,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 1501,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: true,
@@ -51736,7 +51736,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 1521,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: true,
@@ -51767,7 +51767,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3851,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 15f32,
             health: 70f32,
@@ -51801,7 +51801,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3110,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             armor: 75f32,
             mana: 400f32,
@@ -51835,7 +51835,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 223110,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             armor: 90f32,
             mana: 450f32,
@@ -51869,7 +51869,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 323110,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             armor: 75f32,
             mana: 500f32,
@@ -51899,7 +51899,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 4014,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_speed: 60f32,
             health: 600f32,
@@ -51933,7 +51933,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 443055,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 55f32,
             attack_speed: 45f32,
@@ -51969,7 +51969,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 6671,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 50f32,
             attack_speed: 15f32,
@@ -52006,7 +52006,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 226671,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 50f32,
             attack_speed: 15f32,
@@ -52043,7 +52043,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 446671,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 65f32,
             attack_speed: 30f32,
@@ -52079,7 +52079,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 447101,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_speed: 70f32,
             movespeed: 8f32,
@@ -52115,7 +52115,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 667101,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             movespeed: 15f32,
             armor_penetration_flat: 15f32,
@@ -52147,7 +52147,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 7050,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: true,
@@ -52177,7 +52177,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3193,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             armor: 60f32,
             magic_resist: 60f32,
@@ -52211,7 +52211,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 223193,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             armor: 60f32,
             magic_resist: 60f32,
@@ -52246,7 +52246,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 443193,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             armor: 65f32,
             magic_resist: 65f32,
@@ -52282,7 +52282,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 663193,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             armor: 55f32,
             magic_resist: 55f32,
@@ -52313,7 +52313,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 9176,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -52339,7 +52339,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3005,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             movespeed: 45f32,
             ..ZEROED_STATS
@@ -52368,7 +52368,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 223005,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             movespeed: 70f32,
             ..ZEROED_STATS
@@ -52397,7 +52397,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 1011,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             health: 350f32,
             ..ZEROED_STATS
@@ -52426,7 +52426,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 221011,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             health: 300f32,
             ..ZEROED_STATS
@@ -52459,7 +52459,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3024,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             armor: 25f32,
             mana: 300f32,
@@ -52489,7 +52489,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 2022,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: true,
@@ -52515,7 +52515,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 222022,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -52541,7 +52541,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 220009,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -52581,7 +52581,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 994403,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 110f32,
             armor: 20f32,
@@ -52624,7 +52624,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 6630,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 55f32,
             health: 400f32,
@@ -52660,7 +52660,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 226630,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 55f32,
             health: 400f32,
@@ -52691,7 +52691,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 9405,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -52717,7 +52717,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3026,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             armor: 45f32,
             attack_damage: 55f32,
@@ -52747,7 +52747,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 223026,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             armor: 45f32,
             attack_damage: 55f32,
@@ -52781,7 +52781,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 2049,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 20f32,
             ..ZEROED_STATS
@@ -52814,7 +52814,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3177,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 30f32,
             health: 150f32,
@@ -52848,7 +52848,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 223177,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 25f32,
             health: 250f32,
@@ -52882,7 +52882,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 223185,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 25f32,
             armor_penetration_flat: 11f32,
@@ -52916,7 +52916,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3184,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 25f32,
             health: 150f32,
@@ -52951,7 +52951,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 223184,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 25f32,
             attack_speed: 35f32,
@@ -52982,7 +52982,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 2051,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             health: 150f32,
             ..ZEROED_STATS
@@ -53011,7 +53011,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 222051,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             health: 300f32,
             ..ZEROED_STATS
@@ -53040,7 +53040,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3112,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 50f32,
             health: 150f32,
@@ -53070,7 +53070,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 223112,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 55f32,
             ..ZEROED_STATS
@@ -53103,7 +53103,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 2050,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 35f32,
             health: 300f32,
@@ -53133,7 +53133,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 9307,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -53163,7 +53163,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3124,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 30f32,
             attack_damage: 30f32,
@@ -53198,7 +53198,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 223124,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 25f32,
             attack_damage: 20f32,
@@ -53233,7 +53233,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3172,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_speed: 40f32,
             lifesteal: 5f32,
@@ -53264,7 +53264,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 1509,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: true,
@@ -53290,7 +53290,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 1102,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -53316,7 +53316,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 1106,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -53342,7 +53342,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 1039,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -53372,7 +53372,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 443069,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 45f32,
             attack_speed: 40f32,
@@ -53408,7 +53408,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3863,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 10f32,
             health: 60f32,
@@ -53438,7 +53438,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3147,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 30f32,
             health: 200f32,
@@ -53468,7 +53468,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 2003,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: true,
@@ -53494,7 +53494,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3051,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 20f32,
             attack_speed: 20f32,
@@ -53524,7 +53524,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3084,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             health: 900f32,
             ..ZEROED_STATS
@@ -53553,7 +53553,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 223084,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             health: 700f32,
             ..ZEROED_STATS
@@ -53582,7 +53582,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 4017,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 35f32,
             armor_penetration_flat: 12f32,
@@ -53616,7 +53616,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 447103,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 70f32,
             omnivamp: 15f32,
@@ -53646,7 +53646,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 443081,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_speed: 75f32,
             health: 500f32,
@@ -53676,7 +53676,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3155,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 25f32,
             magic_resist: 25f32,
@@ -53706,7 +53706,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 2523,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 55f32,
             crit_chance: 25f32,
@@ -53736,7 +53736,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 222523,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 50f32,
             crit_chance: 25f32,
@@ -53766,7 +53766,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3145,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 45f32,
             ..ZEROED_STATS
@@ -53799,7 +53799,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3146,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 80f32,
             attack_damage: 40f32,
@@ -53834,7 +53834,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 223146,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 90f32,
             attack_damage: 45f32,
@@ -53869,7 +53869,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 663146,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 90f32,
             attack_damage: 45f32,
@@ -53904,7 +53904,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3152,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 70f32,
             health: 300f32,
@@ -53938,7 +53938,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 223152,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 95f32,
             health: 400f32,
@@ -53973,7 +53973,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 6664,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             health: 400f32,
             magic_resist: 40f32,
@@ -54007,7 +54007,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 226664,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             health: 450f32,
             magic_resist: 40f32,
@@ -54037,7 +54037,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 9407,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -54063,7 +54063,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 4628,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 75f32,
             ..ZEROED_STATS
@@ -54092,7 +54092,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 224628,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 90f32,
             ..ZEROED_STATS
@@ -54125,7 +54125,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 126697,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 60f32,
             armor_penetration_flat: 18f32,
@@ -54159,7 +54159,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 6697,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 60f32,
             armor_penetration_flat: 18f32,
@@ -54193,7 +54193,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 226697,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 50f32,
             armor_penetration_flat: 18f32,
@@ -54227,7 +54227,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3181,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 40f32,
             health: 500f32,
@@ -54262,7 +54262,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 223181,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 40f32,
             health: 500f32,
@@ -54293,7 +54293,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 9193,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -54323,7 +54323,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 6662,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             armor: 50f32,
             health: 300f32,
@@ -54357,7 +54357,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 226662,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             armor: 45f32,
             health: 300f32,
@@ -54387,7 +54387,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 6673,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 55f32,
             crit_chance: 25f32,
@@ -54417,7 +54417,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 226673,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 55f32,
             crit_chance: 25f32,
@@ -54451,7 +54451,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 4005,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 60f32,
             ..ZEROED_STATS
@@ -54484,7 +54484,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 224005,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 60f32,
             ..ZEROED_STATS
@@ -54517,7 +54517,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 324005,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 65f32,
             ..ZEROED_STATS
@@ -54550,7 +54550,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3031,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 75f32,
             crit_chance: 25f32,
@@ -54585,7 +54585,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 223031,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 55f32,
             crit_chance: 25f32,
@@ -54621,7 +54621,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 4402,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 30f32,
             health: 400f32,
@@ -54656,7 +54656,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 447104,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 70f32,
             health: 200f32,
@@ -54686,7 +54686,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3158,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             movespeed: 45f32,
             ..ZEROED_STATS
@@ -54715,7 +54715,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 223158,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             movespeed: 45f32,
             ..ZEROED_STATS
@@ -54744,7 +54744,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 6029,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 30f32,
             ..ZEROED_STATS
@@ -54777,7 +54777,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 6665,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             armor: 45f32,
             health: 350f32,
@@ -54812,7 +54812,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 226665,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             armor: 35f32,
             health: 350f32,
@@ -54851,7 +54851,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 1111,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             armor: 25f32,
             attack_speed: 25f32,
@@ -54884,7 +54884,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 9288,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -54910,7 +54910,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 2144,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -54936,7 +54936,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 2142,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -54962,7 +54962,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 2143,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -54988,7 +54988,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 1204,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -55014,7 +55014,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 1209,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -55044,7 +55044,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 2504,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             health: 400f32,
             magic_resist: 80f32,
@@ -55074,7 +55074,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 222504,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             health: 350f32,
             magic_resist: 80f32,
@@ -55104,7 +55104,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3599,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: true,
@@ -55130,7 +55130,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3600,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: true,
@@ -55156,7 +55156,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3067,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             health: 200f32,
             ..ZEROED_STATS
@@ -55185,7 +55185,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 223067,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             health: 200f32,
             ..ZEROED_STATS
@@ -55218,7 +55218,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 447116,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             health: 400f32,
             adaptive_force: 85f32,
@@ -55248,7 +55248,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 2015,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 15f32,
             ..ZEROED_STATS
@@ -55282,7 +55282,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3109,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             armor: 40f32,
             health: 200f32,
@@ -55316,7 +55316,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 223109,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             armor: 50f32,
             health: 400f32,
@@ -55351,7 +55351,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 323109,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             armor: 50f32,
             health: 300f32,
@@ -55385,7 +55385,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 6672,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 45f32,
             attack_speed: 40f32,
@@ -55420,7 +55420,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 226672,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 40f32,
             attack_speed: 35f32,
@@ -55454,7 +55454,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3035,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 20f32,
             armor_penetration_percent: 18f32,
@@ -55488,7 +55488,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 4635,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 20f32,
             health: 250f32,
@@ -55519,7 +55519,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 220003,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -55545,7 +55545,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 220001,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -55571,7 +55571,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 220004,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -55597,7 +55597,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 220002,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -55623,7 +55623,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 220006,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -55649,7 +55649,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 220005,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -55675,7 +55675,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 226653,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 50f32,
             health: 250f32,
@@ -55705,7 +55705,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 6653,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 60f32,
             health: 300f32,
@@ -55739,7 +55739,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3100,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 100f32,
             movespeed: 4f32,
@@ -55773,7 +55773,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 223100,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 80f32,
             movespeed: 10f32,
@@ -55807,7 +55807,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 4003,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 25f32,
             movespeed: 4f32,
@@ -55842,7 +55842,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3023,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             armor: 25f32,
             health: 150f32,
@@ -55872,7 +55872,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 9401,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -55903,7 +55903,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 4013,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 70f32,
             armor: 30f32,
@@ -55939,7 +55939,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 447119,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             armor: 30f32,
             health: 500f32,
@@ -55971,7 +55971,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 9175,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -55997,7 +55997,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 9168,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -56028,7 +56028,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3190,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             armor: 25f32,
             health: 200f32,
@@ -56064,7 +56064,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 223190,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             armor: 25f32,
             health: 400f32,
@@ -56100,7 +56100,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 323190,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             armor: 30f32,
             health: 250f32,
@@ -56131,7 +56131,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 1036,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 10f32,
             ..ZEROED_STATS
@@ -56164,7 +56164,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3036,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 35f32,
             crit_chance: 25f32,
@@ -56199,7 +56199,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 223036,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 30f32,
             crit_chance: 25f32,
@@ -56234,7 +56234,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3802,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 40f32,
             mana: 300f32,
@@ -56264,7 +56264,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 9406,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -56290,7 +56290,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3349,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -56316,7 +56316,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 2145,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -56346,7 +56346,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 6655,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 100f32,
             mana: 600f32,
@@ -56380,7 +56380,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 226655,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 85f32,
             mana: 600f32,
@@ -56406,15 +56406,15 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::Malignance,
-            damage_type: DamageType::Unknown,
-            attributes: Attrs::Undefined,
+            damage_type: DamageType::Magic,
+            attributes: Attrs::Area,
         },
         tier: 3,
         purchasable: true,
-        ranged_damages: [zero, zero],
-        melee_damages: [zero, zero],
+        ranged_damages: [malignance_min, malignance_max],
+        melee_damages: [malignance_min, malignance_max],
         riot_id: 3118,
-        deals_damage: false,
+        deals_damage: (true, true),
         stats: CachedItemStats {
             ability_power: 90f32,
             mana: 600f32,
@@ -56430,6 +56430,12 @@ pub mod items {
             unknown_map_35: true,
         },
     };
+    pub const fn malignance_max(ctx: &Ctx) -> f32 {
+        12.0 * (15.0 + 0.0125 * ctx.ability_power)
+    }
+    pub const fn malignance_min(ctx: &Ctx) -> f32 {
+        15.0 + 0.0125 * ctx.ability_power
+    }
     pub static MALIGNANCE_ARENA: CachedItem = CachedItem {
         name: "Malignance [Arena]",
         price: 2500,
@@ -56440,15 +56446,15 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::MalignanceArena,
-            damage_type: DamageType::Unknown,
+            damage_type: DamageType::Magic,
             attributes: Attrs::Undefined,
         },
         tier: 0,
         purchasable: true,
-        ranged_damages: [zero, zero],
-        melee_damages: [zero, zero],
+        ranged_damages: [malignance_arena_min, malignance_arena_max],
+        melee_damages: [malignance_arena_min, malignance_arena_max],
         riot_id: 223118,
-        deals_damage: false,
+        deals_damage: (true, true),
         stats: CachedItemStats {
             ability_power: 70f32,
             mana: 600f32,
@@ -56464,6 +56470,12 @@ pub mod items {
             unknown_map_35: false,
         },
     };
+    pub const fn malignance_arena_max(ctx: &Ctx) -> f32 {
+        12.0 * (15.0 + 0.0125 * ctx.ability_power)
+    }
+    pub const fn malignance_arena_min(ctx: &Ctx) -> f32 {
+        15.0 + 0.0125 * ctx.ability_power
+    }
     pub static MANAMUNE: CachedItem = CachedItem {
         name: "Manamune",
         price: 2900,
@@ -56482,7 +56494,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3004,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 35f32,
             mana: 500f32,
@@ -56516,7 +56528,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 223004,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 40f32,
             mana: 600f32,
@@ -56550,7 +56562,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 323004,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 35f32,
             mana: 500f32,
@@ -56584,7 +56596,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3156,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 60f32,
             magic_resist: 40f32,
@@ -56618,7 +56630,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 223156,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 50f32,
             magic_resist: 40f32,
@@ -56648,7 +56660,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3041,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 20f32,
             health: 100f32,
@@ -56678,7 +56690,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 9300,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -56708,7 +56720,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3139,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 50f32,
             lifesteal: 10f32,
@@ -56743,7 +56755,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 223139,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 45f32,
             lifesteal: 10f32,
@@ -56778,7 +56790,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3111,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             magic_resist: 20f32,
             movespeed: 45f32,
@@ -56812,7 +56824,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 223111,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             magic_resist: 30f32,
             movespeed: 30f32,
@@ -56842,7 +56854,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 1201,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -56868,7 +56880,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 1206,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -56899,7 +56911,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3222,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             health: 250f32,
             ..ZEROED_STATS
@@ -56932,7 +56944,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 223222,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             health: 400f32,
             ..ZEROED_STATS
@@ -56966,7 +56978,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 323222,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             health: 400f32,
             ..ZEROED_STATS
@@ -56995,7 +57007,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 2403,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: true,
@@ -57025,7 +57037,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 447100,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_speed: 60f32,
             movespeed: 6f32,
@@ -57056,7 +57068,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3117,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: true,
@@ -57086,7 +57098,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 447110,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 85f32,
             health: 400f32,
@@ -57121,7 +57133,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 6617,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 25f32,
             health: 200f32,
@@ -57156,7 +57168,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 226617,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 35f32,
             health: 200f32,
@@ -57191,7 +57203,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 326617,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 35f32,
             health: 400f32,
@@ -57225,7 +57237,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3165,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 75f32,
             health: 350f32,
@@ -57259,7 +57271,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 223165,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 90f32,
             health: 250f32,
@@ -57293,7 +57305,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3033,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 35f32,
             crit_chance: 25f32,
@@ -57328,7 +57340,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 223033,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 30f32,
             crit_chance: 25f32,
@@ -57359,7 +57371,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 1103,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -57385,7 +57397,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 1105,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -57411,7 +57423,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 228009,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -57441,7 +57453,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3042,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 35f32,
             mana: 1000f32,
@@ -57475,7 +57487,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 223042,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 40f32,
             mana: 1000f32,
@@ -57509,7 +57521,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 323042,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 35f32,
             mana: 1000f32,
@@ -57543,7 +57555,7 @@ pub mod items {
         ranged_damages: [nashors_tooth_min, zero],
         melee_damages: [nashors_tooth_min, zero],
         riot_id: 3115,
-        deals_damage: true,
+        deals_damage: (true, false),
         stats: CachedItemStats {
             ability_power: 80f32,
             attack_speed: 50f32,
@@ -57580,7 +57592,7 @@ pub mod items {
         ranged_damages: [nashors_tooth_arena_min, zero],
         melee_damages: [nashors_tooth_arena_min, zero],
         riot_id: 223115,
-        deals_damage: true,
+        deals_damage: (true, false),
         stats: CachedItemStats {
             ability_power: 70f32,
             attack_speed: 45f32,
@@ -57617,7 +57629,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 6675,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_speed: 40f32,
             crit_chance: 25f32,
@@ -57652,7 +57664,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 226675,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_speed: 35f32,
             crit_chance: 25f32,
@@ -57683,7 +57695,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 1058,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 65f32,
             ..ZEROED_STATS
@@ -57712,7 +57724,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 221058,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 120f32,
             ..ZEROED_STATS
@@ -57741,7 +57753,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 1057,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             magic_resist: 45f32,
             ..ZEROED_STATS
@@ -57770,7 +57782,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 221057,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             magic_resist: 30f32,
             ..ZEROED_STATS
@@ -57799,7 +57811,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 9285,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -57829,7 +57841,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 4636,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 90f32,
             health: 300f32,
@@ -57863,7 +57875,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 224636,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 90f32,
             health: 300f32,
@@ -57897,7 +57909,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 444636,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 90f32,
             health: 300f32,
@@ -57927,7 +57939,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 6670,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 15f32,
             crit_chance: 20f32,
@@ -57957,7 +57969,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 1033,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             magic_resist: 20f32,
             ..ZEROED_STATS
@@ -57986,7 +57998,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3916,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 25f32,
             ..ZEROED_STATS
@@ -58019,7 +58031,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 228005,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 70f32,
             health: 700f32,
@@ -58049,7 +58061,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 1040,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -58075,7 +58087,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 6701,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 55f32,
             armor_penetration_flat: 18f32,
@@ -58105,7 +58117,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 226701,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 50f32,
             armor_penetration_flat: 15f32,
@@ -58135,7 +58147,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3364,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -58161,7 +58173,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 1507,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: true,
@@ -58187,7 +58199,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 1523,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: true,
@@ -58213,7 +58225,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 1520,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: true,
@@ -58239,7 +58251,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 1524,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: true,
@@ -58265,7 +58277,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 2501,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 30f32,
             health: 550f32,
@@ -58295,7 +58307,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 447111,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 40f32,
             health: 400f32,
@@ -58325,7 +58337,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 9280,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -58351,7 +58363,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3399,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -58382,7 +58394,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3857,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 15f32,
             health: 250f32,
@@ -58412,7 +58424,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 9192,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -58438,7 +58450,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 1500,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             armor_penetration_percent: 30f32,
             ..ZEROED_STATS
@@ -58472,7 +58484,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 4015,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 60f32,
             movespeed: 5f32,
@@ -58505,7 +58517,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3044,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 15f32,
             health: 200f32,
@@ -58539,7 +58551,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3046,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_speed: 65f32,
             crit_chance: 25f32,
@@ -58574,7 +58586,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 223046,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_speed: 60f32,
             crit_chance: 25f32,
@@ -58605,7 +58617,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 1510,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: true,
@@ -58631,7 +58643,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 1037,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 25f32,
             ..ZEROED_STATS
@@ -58660,7 +58672,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 9303,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -58686,7 +58698,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3047,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             armor: 25f32,
             movespeed: 45f32,
@@ -58716,7 +58728,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 223047,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             armor: 25f32,
             movespeed: 30f32,
@@ -58746,7 +58758,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 2052,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: true,
@@ -58772,7 +58784,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 220007,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -58798,7 +58810,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 220010,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -58828,7 +58840,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 6698,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 55f32,
             armor_penetration_flat: 18f32,
@@ -58862,7 +58874,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 226698,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 50f32,
             armor_penetration_flat: 18f32,
@@ -58892,7 +58904,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 2525,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             health: 600f32,
             ..ZEROED_STATS
@@ -58921,7 +58933,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 222525,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             health: 600f32,
             ..ZEROED_STATS
@@ -58954,7 +58966,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 6693,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 55f32,
             armor_penetration_flat: 22f32,
@@ -58988,7 +59000,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 226693,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 55f32,
             armor_penetration_flat: 22f32,
@@ -59022,7 +59034,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 446693,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 60f32,
             armor_penetration_flat: 20f32,
@@ -59052,7 +59064,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 9274,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -59083,7 +59095,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 447123,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_speed: 30f32,
             ..ZEROED_STATS
@@ -59116,7 +59128,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 447118,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             health: 400f32,
             adaptive_force: 85f32,
@@ -59146,7 +59158,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 9283,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -59172,7 +59184,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 1092,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -59198,7 +59210,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 1094,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -59224,7 +59236,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 1091,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -59250,7 +59262,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 1093,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -59276,7 +59288,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 1090,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -59302,7 +59314,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3140,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             magic_resist: 30f32,
             ..ZEROED_STATS
@@ -59331,7 +59343,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3089,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 130f32,
             ..ZEROED_STATS
@@ -59360,7 +59372,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 223089,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 65f32,
             ..ZEROED_STATS
@@ -59389,7 +59401,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 9173,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -59420,7 +59432,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 6667,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             armor: 30f32,
             health: 350f32,
@@ -59456,7 +59468,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 226667,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             armor: 30f32,
             health: 350f32,
@@ -59492,7 +59504,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 446667,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             armor: 35f32,
             health: 400f32,
@@ -59523,7 +59535,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 6677,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_speed: 25f32,
             ..ZEROED_STATS
@@ -59552,7 +59564,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3143,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             armor: 75f32,
             health: 350f32,
@@ -59582,7 +59594,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 223143,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             armor: 75f32,
             health: 300f32,
@@ -59616,7 +59628,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3094,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_speed: 35f32,
             crit_chance: 25f32,
@@ -59651,7 +59663,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 223094,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_speed: 30f32,
             crit_chance: 25f32,
@@ -59682,7 +59694,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 9284,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -59712,7 +59724,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3074,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 65f32,
             lifesteal: 12f32,
@@ -59746,7 +59758,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 223074,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 70f32,
             lifesteal: 15f32,
@@ -59780,7 +59792,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 447102,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 80f32,
             attack_speed: 40f32,
@@ -59815,7 +59827,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 443090,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_speed: 50f32,
             movespeed: 5f32,
@@ -59846,7 +59858,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 2001,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: true,
@@ -59872,7 +59884,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 6690,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 15f32,
             movespeed: 4f32,
@@ -59902,7 +59914,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 1043,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_speed: 15f32,
             ..ZEROED_STATS
@@ -59931,7 +59943,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 221043,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_speed: 15f32,
             ..ZEROED_STATS
@@ -59965,7 +59977,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3107,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 30f32,
             ..ZEROED_STATS
@@ -59999,7 +60011,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 223107,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -60030,7 +60042,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 323107,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 30f32,
             ..ZEROED_STATS
@@ -60059,7 +60071,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 2031,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: true,
@@ -60089,7 +60101,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 447115,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 60f32,
             movespeed: 8f32,
@@ -60120,7 +60132,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 1502,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: true,
@@ -60146,7 +60158,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 1505,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: true,
@@ -60172,7 +60184,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 1506,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: true,
@@ -60198,7 +60210,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 1006,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: true,
@@ -60229,7 +60241,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3858,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 7f32,
             health: 50f32,
@@ -60263,7 +60275,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 447114,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             armor: 35f32,
             attack_speed: 40f32,
@@ -60298,7 +60310,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 4633,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 70f32,
             health: 350f32,
@@ -60332,7 +60344,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 224633,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 60f32,
             health: 350f32,
@@ -60366,7 +60378,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3430,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 50f32,
             crit_chance: 25f32,
@@ -60400,7 +60412,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 6657,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 45f32,
             health: 350f32,
@@ -60435,7 +60447,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 226657,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 60f32,
             health: 350f32,
@@ -60470,7 +60482,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 326657,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 45f32,
             health: 350f32,
@@ -60501,7 +60513,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 1028,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             health: 150f32,
             ..ZEROED_STATS
@@ -60534,7 +60546,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3085,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_speed: 40f32,
             crit_chance: 25f32,
@@ -60569,7 +60581,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 223085,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_speed: 45f32,
             crit_chance: 25f32,
@@ -60604,7 +60616,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 447108,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 80f32,
             movespeed: 4f32,
@@ -60643,7 +60655,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 228008,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 85f32,
             armor: 50f32,
@@ -60683,7 +60695,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3855,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 6f32,
             health: 100f32,
@@ -60718,7 +60730,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3866,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             health: 100f32,
             ..ZEROED_STATS
@@ -60747,7 +60759,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3116,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 65f32,
             health: 400f32,
@@ -60777,7 +60789,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 223116,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 60f32,
             health: 350f32,
@@ -60812,7 +60824,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 228006,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 130f32,
             attack_speed: 40f32,
@@ -60847,7 +60859,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 443062,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 80f32,
             ..ZEROED_STATS
@@ -60876,7 +60888,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 1027,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             mana: 300f32,
             ..ZEROED_STATS
@@ -60905,7 +60917,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 9403,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -60931,7 +60943,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3330,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: true,
@@ -60957,7 +60969,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 1101,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -60983,7 +60995,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 1107,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -61009,7 +61021,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3144,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_speed: 20f32,
             ..ZEROED_STATS
@@ -61038,7 +61050,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 6702,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -61064,7 +61076,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 9177,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -61090,7 +61102,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 2420,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 40f32,
             armor: 25f32,
@@ -61124,7 +61136,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3040,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 70f32,
             mana: 1000f32,
@@ -61158,7 +61170,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 223040,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 60f32,
             mana: 1200f32,
@@ -61192,7 +61204,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 323040,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 70f32,
             mana: 1000f32,
@@ -61222,7 +61234,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 6695,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 55f32,
             armor_penetration_flat: 15f32,
@@ -61252,7 +61264,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 226695,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 55f32,
             armor_penetration_flat: 19f32,
@@ -61282,7 +61294,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3134,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 20f32,
             armor_penetration_flat: 10f32,
@@ -61316,7 +61328,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 6694,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 45f32,
             armor_penetration_percent: 35f32,
@@ -61350,7 +61362,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 226694,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 40f32,
             armor_penetration_percent: 40f32,
@@ -61383,7 +61395,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 4645,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 110f32,
             magic_penetration_flat: 15f32,
@@ -61416,7 +61428,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 224645,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 90f32,
             magic_penetration_flat: 10f32,
@@ -61451,7 +61463,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3853,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 40f32,
             health: 75f32,
@@ -61481,7 +61493,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 2421,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 40f32,
             armor: 25f32,
@@ -61511,7 +61523,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3057,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: true,
@@ -61537,7 +61549,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 223057,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -61563,7 +61575,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 9301,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -61589,7 +61601,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 443058,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             armor: 100f32,
             health: 300f32,
@@ -61619,7 +61631,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 663058,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             armor: 80f32,
             health: 250f32,
@@ -61653,7 +61665,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 6700,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             armor: 30f32,
             attack_damage: 50f32,
@@ -61689,7 +61701,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 2065,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 50f32,
             movespeed: 4f32,
@@ -61724,7 +61736,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 222065,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 55f32,
             movespeed: 6f32,
@@ -61759,7 +61771,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 322065,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 65f32,
             movespeed: 6f32,
@@ -61793,7 +61805,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 6035,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 40f32,
             health: 300f32,
@@ -61828,7 +61840,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 226035,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 40f32,
             health: 300f32,
@@ -61864,7 +61876,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 4012,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             armor: 45f32,
             health: 300f32,
@@ -61895,7 +61907,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 2422,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             movespeed: 25f32,
             ..ZEROED_STATS
@@ -61924,7 +61936,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3398,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -61955,7 +61967,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3876,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             health: 200f32,
             ..ZEROED_STATS
@@ -61984,7 +61996,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3020,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             movespeed: 45f32,
             magic_penetration_flat: 12f32,
@@ -62014,7 +62026,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 223020,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             movespeed: 55f32,
             magic_penetration_flat: 20f32,
@@ -62044,7 +62056,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 9302,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -62070,7 +62082,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3161,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 45f32,
             health: 450f32,
@@ -62100,7 +62112,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 223161,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 40f32,
             health: 350f32,
@@ -62134,7 +62146,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 4004,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 50f32,
             movespeed: 4f32,
@@ -62165,7 +62177,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 224004,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 55f32,
             armor_penetration_flat: 21f32,
@@ -62200,7 +62212,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3862,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 6f32,
             health: 25f32,
@@ -62234,7 +62246,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3211,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             health: 200f32,
             magic_resist: 35f32,
@@ -62264,7 +62276,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3175,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             movespeed: 45f32,
             magic_penetration_flat: 8f32,
@@ -62300,7 +62312,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3850,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 10f32,
             health: 25f32,
@@ -62335,7 +62347,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3065,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             health: 400f32,
             magic_resist: 50f32,
@@ -62369,7 +62381,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 223065,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             health: 300f32,
             magic_resist: 40f32,
@@ -62404,7 +62416,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 6616,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 35f32,
             ..ZEROED_STATS
@@ -62438,7 +62450,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 226616,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 65f32,
             ..ZEROED_STATS
@@ -62472,7 +62484,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 326616,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 45f32,
             ..ZEROED_STATS
@@ -62501,7 +62513,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 6032,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: true,
@@ -62527,7 +62539,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 220000,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -62557,7 +62569,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3087,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 45f32,
             attack_speed: 30f32,
@@ -62592,7 +62604,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 223087,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 45f32,
             attack_speed: 40f32,
@@ -62623,7 +62635,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 9174,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -62649,7 +62661,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 2056,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -62675,7 +62687,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3340,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -62706,7 +62718,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3854,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 4f32,
             health: 50f32,
@@ -62736,7 +62748,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 2019,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             armor: 30f32,
             attack_damage: 15f32,
@@ -62766,7 +62778,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 9304,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -62792,7 +62804,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3053,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             health: 400f32,
             ..ZEROED_STATS
@@ -62821,7 +62833,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 223053,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             health: 300f32,
             ..ZEROED_STATS
@@ -62850,7 +62862,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 4641,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             health: 80f32,
             ..ZEROED_STATS
@@ -62883,7 +62895,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3095,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 50f32,
             attack_speed: 20f32,
@@ -62918,7 +62930,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3097,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 50f32,
             attack_speed: 20f32,
@@ -62953,7 +62965,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 223095,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 50f32,
             attack_speed: 20f32,
@@ -62988,7 +63000,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 4646,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 90f32,
             movespeed: 6f32,
@@ -63023,7 +63035,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 224646,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 90f32,
             movespeed: 4f32,
@@ -63058,7 +63070,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 6631,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 40f32,
             attack_speed: 25f32,
@@ -63093,7 +63105,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 226631,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 40f32,
             attack_speed: 15f32,
@@ -63124,7 +63136,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 1516,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: true,
@@ -63150,7 +63162,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 1517,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: true,
@@ -63176,7 +63188,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 1518,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: true,
@@ -63202,7 +63214,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 1519,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: true,
@@ -63232,7 +63244,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 6610,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 45f32,
             health: 400f32,
@@ -63266,7 +63278,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 226610,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 40f32,
             health: 350f32,
@@ -63300,7 +63312,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3068,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             armor: 50f32,
             health: 350f32,
@@ -63334,7 +63346,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 223068,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             armor: 40f32,
             health: 350f32,
@@ -63364,7 +63376,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 1511,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: true,
@@ -63390,7 +63402,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 1512,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: true,
@@ -63416,7 +63428,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 1203,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -63442,7 +63454,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 1208,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -63468,7 +63480,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3170,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             movespeed: 65f32,
             ..ZEROED_STATS
@@ -63502,7 +63514,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 124011,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 45f32,
             health: 200f32,
@@ -63537,7 +63549,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 4011,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 45f32,
             health: 200f32,
@@ -63572,7 +63584,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 664011,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 35f32,
             health: 150f32,
@@ -63606,7 +63618,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3131,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 30f32,
             attack_speed: 25f32,
@@ -63637,7 +63649,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 443060,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             crit_chance: 50f32,
             adaptive_force: 110f32,
@@ -63667,7 +63679,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 663060,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             crit_chance: 50f32,
             adaptive_force: 90f32,
@@ -63697,7 +63709,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3010,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             movespeed: 40f32,
             ..ZEROED_STATS
@@ -63726,7 +63738,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3013,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             movespeed: 45f32,
             ..ZEROED_STATS
@@ -63755,7 +63767,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 9187,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -63781,7 +63793,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 9287,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -63807,7 +63819,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 443064,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -63838,7 +63850,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3859,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 10f32,
             health: 100f32,
@@ -63868,7 +63880,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3070,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             mana: 240f32,
             ..ZEROED_STATS
@@ -63897,7 +63909,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 323070,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             mana: 240f32,
             ..ZEROED_STATS
@@ -63926,7 +63938,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 9281,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -63952,7 +63964,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 9305,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -63978,7 +63990,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3302,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 30f32,
             attack_speed: 35f32,
@@ -64008,7 +64020,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 223302,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 30f32,
             attack_speed: 25f32,
@@ -64038,7 +64050,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 9178,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -64068,7 +64080,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 2020,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 25f32,
             armor_penetration_flat: 5f32,
@@ -64102,7 +64114,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 6676,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 50f32,
             crit_chance: 25f32,
@@ -64137,7 +64149,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 226676,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 45f32,
             crit_chance: 25f32,
@@ -64172,7 +64184,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 667666,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 50f32,
             crit_chance: 25f32,
@@ -64217,7 +64229,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 4403,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 120f32,
             armor: 30f32,
@@ -64269,7 +64281,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 224403,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 125f32,
             armor: 30f32,
@@ -64320,7 +64332,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 664403,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 125f32,
             armor: 10f32,
@@ -64357,7 +64369,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3075,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             armor: 75f32,
             health: 150f32,
@@ -64387,7 +64399,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 223075,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             armor: 60f32,
             health: 300f32,
@@ -64417,7 +64429,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 323075,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             armor: 85f32,
             health: 200f32,
@@ -64447,7 +64459,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3077,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 20f32,
             ..ZEROED_STATS
@@ -64476,7 +64488,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3748,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 40f32,
             health: 600f32,
@@ -64506,7 +64518,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 223748,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 40f32,
             health: 400f32,
@@ -64536,7 +64548,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 1200,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -64562,7 +64574,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 1221,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -64588,7 +64600,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 1222,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -64614,7 +64626,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 2010,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: true,
@@ -64640,7 +64652,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 1522,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: true,
@@ -64670,7 +64682,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3002,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             armor: 40f32,
             health: 250f32,
@@ -64705,7 +64717,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 223002,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             armor: 45f32,
             health: 300f32,
@@ -64740,7 +64752,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 323002,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             armor: 45f32,
             health: 300f32,
@@ -64776,7 +64788,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3078,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 36f32,
             attack_speed: 30f32,
@@ -64812,7 +64824,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 223078,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 35f32,
             attack_speed: 25f32,
@@ -64843,7 +64855,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 2021,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 15f32,
             health: 250f32,
@@ -64873,7 +64885,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 443079,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             health: 600f32,
             adaptive_force: 80f32,
@@ -64903,7 +64915,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 1515,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: true,
@@ -64929,7 +64941,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 447121,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 100f32,
             attack_damage: 70f32,
@@ -64959,7 +64971,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 443080,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -64989,7 +65001,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3179,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 60f32,
             armor_penetration_flat: 18f32,
@@ -65019,7 +65031,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 9271,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -65049,7 +65061,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 2502,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             armor: 50f32,
             health: 400f32,
@@ -65083,7 +65095,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 222502,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             armor: 50f32,
             health: 350f32,
@@ -65113,7 +65125,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 1205,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -65139,7 +65151,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 1210,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -65165,7 +65177,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 1211,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -65191,7 +65203,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 1212,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -65217,7 +65229,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 1213,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -65243,7 +65255,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 1214,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -65269,7 +65281,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 1215,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -65295,7 +65307,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 1216,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -65321,7 +65333,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 1217,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -65347,7 +65359,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 1218,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -65373,7 +65385,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 1219,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -65399,7 +65411,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 2008,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -65425,7 +65437,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3901,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: true,
@@ -65451,7 +65463,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3902,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: true,
@@ -65477,7 +65489,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3903,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: true,
@@ -65503,7 +65515,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 1220,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -65529,7 +65541,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 9180,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -65555,7 +65567,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 1053,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 15f32,
             lifesteal: 7f32,
@@ -65585,7 +65597,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 221053,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 15f32,
             lifesteal: 7f32,
@@ -65615,7 +65627,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 1504,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -65641,7 +65653,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 9290,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -65667,7 +65679,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 663064,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -65693,7 +65705,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 4632,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 40f32,
             magic_resist: 25f32,
@@ -65728,7 +65740,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 4643,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             armor: 25f32,
             health: 250f32,
@@ -65762,7 +65774,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3135,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 95f32,
             magic_penetration_flat: 40f32,
@@ -65796,7 +65808,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 223135,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 65f32,
             magic_penetration_flat: 40f32,
@@ -65830,7 +65842,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 6699,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 55f32,
             armor_penetration_flat: 18f32,
@@ -65864,7 +65876,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 226699,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 50f32,
             armor_penetration_flat: 18f32,
@@ -65894,7 +65906,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 9181,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -65920,7 +65932,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 9404,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -65946,7 +65958,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 1503,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: true,
@@ -65972,7 +65984,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3082,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             armor: 40f32,
             ..ZEROED_STATS
@@ -66001,7 +66013,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3083,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             health: 1000f32,
             ..ZEROED_STATS
@@ -66030,7 +66042,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 443083,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             health: 1100f32,
             movespeed: 4f32,
@@ -66065,7 +66077,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 4638,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             armor: 10f32,
             health: 150f32,
@@ -66101,7 +66113,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 2526,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             health: 200f32,
             mana: 300f32,
@@ -66136,7 +66148,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 222526,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             health: 200f32,
             mana: 300f32,
@@ -66171,7 +66183,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 322526,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             health: 200f32,
             mana: 300f32,
@@ -66201,7 +66213,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 9306,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -66227,7 +66239,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3066,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             health: 200f32,
             movespeed: 4f32,
@@ -66261,7 +66273,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3119,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             health: 550f32,
             mana: 500f32,
@@ -66295,7 +66307,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 223119,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             health: 400f32,
             mana: 600f32,
@@ -66329,7 +66341,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 323119,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             health: 550f32,
             mana: 500f32,
@@ -66363,7 +66375,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3091,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_speed: 50f32,
             magic_resist: 45f32,
@@ -66397,7 +66409,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 223091,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_speed: 50f32,
             magic_resist: 40f32,
@@ -66431,7 +66443,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 228002,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 300f32,
             armor: 50f32,
@@ -66465,7 +66477,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 4016,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 50f32,
             ..ZEROED_STATS
@@ -66494,7 +66506,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3865,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             health: 30f32,
             ..ZEROED_STATS
@@ -66527,7 +66539,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3142,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 55f32,
             movespeed: 4f32,
@@ -66562,7 +66574,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 223142,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 55f32,
             movespeed: 4f32,
@@ -66593,7 +66605,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3400,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: true,
@@ -66623,7 +66635,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3032,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 50f32,
             attack_speed: 40f32,
@@ -66657,7 +66669,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 223032,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_damage: 45f32,
             attack_speed: 40f32,
@@ -66687,7 +66699,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 9172,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -66713,7 +66725,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 9272,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: ZEROED_STATS,
         maps: ItemMaps {
             aram: false,
@@ -66744,7 +66756,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3871,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             health: 200f32,
             ..ZEROED_STATS
@@ -66777,7 +66789,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3086,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_speed: 15f32,
             crit_chance: 15f32,
@@ -66813,7 +66825,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3050,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             armor: 25f32,
             health: 300f32,
@@ -66849,7 +66861,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 223050,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             armor: 25f32,
             health: 300f32,
@@ -66885,7 +66897,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 323050,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             armor: 30f32,
             health: 350f32,
@@ -66921,7 +66933,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 223172,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_speed: 50f32,
             movespeed: 10f32,
@@ -66956,7 +66968,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 663172,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             attack_speed: 40f32,
             movespeed: 8f32,
@@ -66986,7 +66998,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 3157,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 105f32,
             armor: 50f32,
@@ -67016,7 +67028,7 @@ pub mod items {
         ranged_damages: [zero, zero],
         melee_damages: [zero, zero],
         riot_id: 223157,
-        deals_damage: false,
+        deals_damage: (false, false),
         stats: CachedItemStats {
             ability_power: 80f32,
             armor: 50f32,
@@ -67394,8 +67406,8 @@ pub mod items {
         &[],
         &[],
         &[],
-        &[],
-        &[],
+        &[CtxVar::AbilityPower, CtxVar::MagicMultiplier],
+        &[CtxVar::AbilityPower, CtxVar::MagicMultiplier],
         &[],
         &[],
         &[],
@@ -67793,8 +67805,8 @@ pub mod items {
         (1057..1417),
         (1057..1417),
         (1057..1417),
-        (4421659..4424483),
-        (4430429..4433265),
+        (4431210..4434034),
+        (4440080..4442916),
         (1057..1417),
         (1057..1417),
         (1057..1417),
@@ -68092,6 +68104,8 @@ pub mod items {
         (1057..1417),
         (1057..1417),
         (1057..1417),
+        (5375423..5376453),
+        (5381260..5382302),
         (1057..1417),
         (1057..1417),
         (1057..1417),
@@ -68125,10 +68139,8 @@ pub mod items {
         (1057..1417),
         (1057..1417),
         (1057..1417),
-        (1057..1417),
-        (1057..1417),
-        (5443384..5443858),
-        (5448028..5448508),
+        (5491270..5491744),
+        (5496014..5496494),
         (1057..1417),
         (1057..1417),
         (1057..1417),
@@ -68446,6 +68458,8 @@ pub mod items {
                 AttackType::Melee => [blade_of_the_ruined_king_arena_melee_min(ctx), zero(ctx)],
                 AttackType::Ranged => [blade_of_the_ruined_king_arena_ranged_min(ctx), zero(ctx)],
             },
+            ItemId::Malignance => [malignance_min(ctx), malignance_max(ctx)],
+            ItemId::MalignanceArena => [malignance_arena_min(ctx), malignance_arena_max(ctx)],
             ItemId::NashorsTooth => [nashors_tooth_min(ctx), zero(ctx)],
             ItemId::NashorsToothArena => [nashors_tooth_arena_min(ctx), zero(ctx)],
             _ => [0.0, 0.0],
@@ -69747,113 +69761,111 @@ pub mod runes {
         }
     }
     pub static RUNE_FORMULAS: [Range<usize>; RuneId::VARIANTS] = [
-        (6359370..6360788),
-        (6360788..6362210),
-        (6362210..6363620),
-        (6363620..6365042),
-        (6365042..6367294),
-        (6368165..6369599),
-        (6369599..6372151),
-        (6373142..6374556),
-        (6374556..6375978),
-        (6375978..6377408),
-        (6377408..6378822),
-        (6378822..6380172),
-        (6380172..6381524),
-        (6381524..6383405),
-        (6383991..6385411),
-        (6385411..6386767),
-        (6386767..6388189),
-        (6388189..6389605),
-        (6389605..6390951),
-        (6390951..6393394),
-        (6394384..6395734),
-        (6395734..6397086),
-        (6397086..6399548),
-        (6400538..6401976),
-        (6401976..6403390),
-        (6403390..6404812),
-        (6404812..6406224),
-        (6406224..6407650),
-        (6407650..6409056),
-        (6409056..6410482),
-        (6410482..6412738),
-        (6413836..6415262),
-        (6415262..6416614),
-        (6416614..6418034),
-        (6418034..6419378),
-        (6419378..6420800),
-        (6420800..6422262),
-        (6422262..6423696),
-        (6423696..6425102),
-        (6425102..6426529),
-        (6426529..6427960),
-        (6427960..6429375),
-        (6429375..6430789),
-        (6430789..6432219),
-        (6432219..6433637),
-        (6433637..6435043),
-        (6435043..6436457),
-        (6436457..6437869),
-        (6437869..6439275),
-        (6439275..6441578),
-        (6442566..6443994),
-        (6443994..6446084),
-        (6446831..6448265),
-        (6448265..6449677),
-        (6449677..6451649),
-        (6452386..6453796),
-        (6453796..6455206),
-        (6455206..6456616),
-        (6456616..6458445),
-        (6459034..6461473),
-        (6462462..6463882),
-        (6463882..6465292),
-        (6465292..6466716),
-        (6466716..6468140),
-        (6468140..6469566),
-        (6469566..6470980),
-        (6470980..6472328),
-        (6472328..6473754),
-        (6473754..6475170),
-        (6475170..6476608),
-        (6476608..6478028),
-        (6478028..6479438),
+        (6437956..6439374),
+        (6439374..6440796),
+        (6440796..6442206),
+        (6442206..6443628),
+        (6443628..6445880),
+        (6446751..6448185),
+        (6448185..6450737),
+        (6451728..6453142),
+        (6453142..6454564),
+        (6454564..6455994),
+        (6455994..6457408),
+        (6457408..6458758),
+        (6458758..6460110),
+        (6460110..6461991),
+        (6462577..6463997),
+        (6463997..6465353),
+        (6465353..6466775),
+        (6466775..6468191),
+        (6468191..6469537),
+        (6469537..6471980),
+        (6472970..6474320),
+        (6474320..6475672),
+        (6475672..6478134),
+        (6479124..6480562),
+        (6480562..6481976),
+        (6481976..6483398),
+        (6483398..6484810),
+        (6484810..6486236),
+        (6486236..6487642),
+        (6487642..6489068),
+        (6489068..6491324),
+        (6492422..6493848),
+        (6493848..6495200),
+        (6495200..6496620),
+        (6496620..6497964),
+        (6497964..6499386),
+        (6499386..6500848),
+        (6500848..6502282),
+        (6502282..6503688),
+        (6503688..6505115),
+        (6505115..6506546),
+        (6506546..6507961),
+        (6507961..6509375),
+        (6509375..6510805),
+        (6510805..6512223),
+        (6512223..6513629),
+        (6513629..6515043),
+        (6515043..6516455),
+        (6516455..6517861),
+        (6517861..6520164),
+        (6521152..6522580),
+        (6522580..6524670),
+        (6525417..6526851),
+        (6526851..6528263),
+        (6528263..6530235),
+        (6530972..6532382),
+        (6532382..6533792),
+        (6533792..6535202),
+        (6535202..6537031),
+        (6537620..6540059),
+        (6541048..6542468),
+        (6542468..6543878),
+        (6543878..6545302),
+        (6545302..6546726),
+        (6546726..6548152),
+        (6548152..6549566),
+        (6549566..6550914),
+        (6550914..6552340),
+        (6552340..6553756),
+        (6553756..6555194),
+        (6555194..6556614),
+        (6556614..6558024),
     ];
     pub static RUNE_CLOSURES: [Range<usize>; RuneId::VARIANTS] = [
         (1057..1417),
         (1057..1417),
         (1057..1417),
         (1057..1417),
-        (6367294..6368165),
+        (6445880..6446751),
         (1057..1417),
-        (6372151..6373142),
-        (1057..1417),
-        (1057..1417),
-        (1057..1417),
-        (1057..1417),
-        (1057..1417),
-        (1057..1417),
-        (6383405..6383991),
-        (1057..1417),
-        (1057..1417),
-        (1057..1417),
-        (1057..1417),
-        (1057..1417),
-        (6393394..6394384),
-        (1057..1417),
-        (1057..1417),
-        (6399548..6400538),
+        (6450737..6451728),
         (1057..1417),
         (1057..1417),
         (1057..1417),
         (1057..1417),
         (1057..1417),
         (1057..1417),
+        (6461991..6462577),
         (1057..1417),
-        (6412738..6413836),
         (1057..1417),
         (1057..1417),
+        (1057..1417),
+        (1057..1417),
+        (6471980..6472970),
+        (1057..1417),
+        (1057..1417),
+        (6478134..6479124),
+        (1057..1417),
+        (1057..1417),
+        (1057..1417),
+        (1057..1417),
+        (1057..1417),
+        (1057..1417),
+        (1057..1417),
+        (6491324..6492422),
         (1057..1417),
         (1057..1417),
         (1057..1417),
@@ -69870,17 +69882,19 @@ pub mod runes {
         (1057..1417),
         (1057..1417),
         (1057..1417),
-        (6441578..6442566),
-        (1057..1417),
-        (6446084..6446831),
         (1057..1417),
         (1057..1417),
-        (6451649..6452386),
+        (6520164..6521152),
+        (1057..1417),
+        (6524670..6525417),
+        (1057..1417),
+        (1057..1417),
+        (6530235..6530972),
         (1057..1417),
         (1057..1417),
         (1057..1417),
-        (6458445..6459034),
-        (6461473..6462462),
+        (6537031..6537620),
+        (6540059..6541048),
         (1057..1417),
         (1057..1417),
         (1057..1417),
@@ -70013,13 +70027,13 @@ pub mod runes {
         }
     }
 }
-pub static IGNITE_OFFSET: Range<usize> = 6479438..6480277;
-pub static ONHIT_EFFECT_OFFSET: Range<usize> = 6480277..6480953;
-pub static BASIC_ATTACK_OFFSET: Range<usize> = 6480953..6481503;
-pub static TOWER_DAMAGE_OFFSET: Range<usize> = 6481503..6482564;
-pub static CRITICAL_STRIKE_OFFSET: Range<usize> = 6482564..6483306;
-pub static ONHIT_EFFECT_FN_OFFSET: Range<usize> = 6483306..6483883;
-pub static TOWER_DAMAGE_FN_OFFSET: Range<usize> = 6483883..6485864;
-pub static BASIC_ATTACK_FN_OFFSET: Range<usize> = 6485864..6486314;
-pub static CRITICAL_STRIKE_FN_OFFSET: Range<usize> = 6486314..6486823;
-pub const RAW_BLOCK_LEN: usize = 6486823;
+pub static IGNITE_OFFSET: Range<usize> = 6558024..6558863;
+pub static ONHIT_EFFECT_OFFSET: Range<usize> = 6558863..6559539;
+pub static BASIC_ATTACK_OFFSET: Range<usize> = 6559539..6560089;
+pub static TOWER_DAMAGE_OFFSET: Range<usize> = 6560089..6561150;
+pub static CRITICAL_STRIKE_OFFSET: Range<usize> = 6561150..6561892;
+pub static ONHIT_EFFECT_FN_OFFSET: Range<usize> = 6561892..6562469;
+pub static TOWER_DAMAGE_FN_OFFSET: Range<usize> = 6562469..6564450;
+pub static BASIC_ATTACK_FN_OFFSET: Range<usize> = 6564450..6564900;
+pub static CRITICAL_STRIKE_FN_OFFSET: Range<usize> = 6564900..6565409;
+pub const RAW_BLOCK_LEN: usize = 6565409;

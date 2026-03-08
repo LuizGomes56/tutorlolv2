@@ -1,11 +1,11 @@
 use crate::{
-    parallel_task, push_end,
+    CwdPath, DEFAULT_ITEM_GENERATOR_OFFSET, Generated, GeneratorFn, SrcFolder, Tracker,
+    ZERO_FN_OFFSET, parallel_task, push_end,
     scripts::{
+        StringExt,
         model::{Item, ItemStats, MerakiItemStatMap},
-        rustfmt_batch, StringExt,
+        rustfmt_batch,
     },
-    CwdPath, Generated, GeneratorFn, SrcFolder, Tracker, DEFAULT_ITEM_GENERATOR_OFFSET,
-    ZERO_FN_OFFSET,
 };
 use std::collections::{BTreeMap, HashMap, HashSet};
 
@@ -305,13 +305,15 @@ pub fn generate_items() -> GeneratorFn {
             .join(",");
 
         let stats = get_stats(&stats);
-        let deals_damage = {
-            let is_zeroed = |expr: &str| expr != "zero" && !expr.is_empty();
-            is_zeroed(&ranged.minimum_damage)
-                || is_zeroed(&ranged.maximum_damage)
-                || is_zeroed(&melee.minimum_damage)
-                || is_zeroed(&melee.maximum_damage)
-        };
+
+        let is_zeroed = |expr: &str| expr != "zero" && !expr.is_empty();
+
+        let deals_max_damage =
+            is_zeroed(&ranged.maximum_damage) || is_zeroed(&melee.maximum_damage);
+
+        let deals_damage = is_zeroed(&ranged.minimum_damage)
+            || is_zeroed(&melee.minimum_damage)
+            || deals_max_damage;
 
         let maps = item
             .maps
@@ -324,7 +326,7 @@ pub fn generate_items() -> GeneratorFn {
 
         let rest = format!(
             "riot_id: {riot_id},
-            deals_damage: {deals_damage},
+            deals_damage: ({deals_damage}, {deals_max_damage}),
             stats: {stats},
             maps: ItemMaps {{{maps}}}}};"
         );
@@ -405,17 +407,22 @@ fn build_items(data: Vec<(String, ItemResult)>) -> GeneratorFn {
     let len = data.len();
     let mut item_declarations = String::new();
 
-    let [mut item_cache, mut item_formulas, mut item_generator, mut item_idents, mut item_closures] =
-        std::array::from_fn(|i| {
-            let (name, vtype) = [
-                ("ITEM_CACHE", "&CachedItem"),
-                ("ITEM_FORMULAS", "Range<usize>"),
-                ("ITEM_GENERATOR", "Range<usize>"),
-                ("ITEM_IDENTS", "&[CtxVar]"),
-                ("ITEM_CLOSURES", "Range<usize>"),
-            ][i];
-            format!("pub static {name}: [{vtype}; ItemId::VARIANTS] = [")
-        });
+    let [
+        mut item_cache,
+        mut item_formulas,
+        mut item_generator,
+        mut item_idents,
+        mut item_closures,
+    ] = std::array::from_fn(|i| {
+        let (name, vtype) = [
+            ("ITEM_CACHE", "&CachedItem"),
+            ("ITEM_FORMULAS", "Range<usize>"),
+            ("ITEM_GENERATOR", "Range<usize>"),
+            ("ITEM_IDENTS", "&[CtxVar]"),
+            ("ITEM_CLOSURES", "Range<usize>"),
+        ][i];
+        format!("pub static {name}: [{vtype}; ItemId::VARIANTS] = [")
+    });
 
     let mut block = String::new();
 

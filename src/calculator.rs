@@ -92,6 +92,8 @@ pub const fn get_rune_bonus_stats(
                 )
             }
             RuneId::AxiomArcanist => modifiers.abilities.r *= 1.12,
+            RuneId::Health => stats.max_health += 65.0,
+            RuneId::HealthScaling => stats.max_health += 10.0 * level as f32,
             _ => {}
         }
         i += 1;
@@ -366,8 +368,6 @@ pub const fn assign_rune_exceptions(data: RuneExceptionData, exceptions: &[Value
                 }
                 RuneId::GatheringStorm => *adaptive_force += ((stacks * (stacks + 1)) << 2) as f32,
                 RuneId::AdaptiveForce => *adaptive_force += 9.0 * stacks as f32,
-                RuneId::Health => stats.max_health += 65.0 * (stacks as f32),
-                RuneId::HealthScaling => stats.max_health += 10.0 * level as f32 * (stacks as f32),
                 RuneId::AttackSpeed => stats.attack_speed += 10.0 * (stacks as f32),
                 _ => {}
             }

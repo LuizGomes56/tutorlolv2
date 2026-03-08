@@ -173,7 +173,8 @@ pub const NUMBER_OF_DAMAGING_ITEMS: usize = {
     let mut i = 0;
     while i < ItemId::VARIANTS {
         let item = ITEM_CACHE[i];
-        if item.deals_damage {
+        let (min, max) = item.deals_damage;
+        if min || max {
             sum += 1;
         }
         i += 1;
@@ -189,7 +190,8 @@ pub const DAMAGING_ITEMS_ARRAY: [ItemId; NUMBER_OF_DAMAGING_ITEMS] = {
     let mut j = 0;
     while i < ItemId::VARIANTS {
         let item = ITEM_CACHE[i];
-        if item.deals_damage {
+        let (min, max) = item.deals_damage;
+        if min || max {
             result[j] = ItemId::from_repr(i as _).unwrap();
             j += 1;
         }
@@ -460,6 +462,17 @@ impl_item_filters! {
     Tenacity,
 }
 
+const _: () = {
+    let mut i = 0;
+    while i < ItemId::VARIANTS {
+        let item = ItemId::VALUES[i];
+        if item.deals_max_damage() {
+            assert!(item.deals_damage());
+        }
+        i += 1;
+    }
+};
+
 impl ItemId {
     pub const CLOSURES: &[Range<usize>; Self::VARIANTS] = &ITEM_CLOSURES;
     pub const RIOT_IDS: [u32; Self::VARIANTS] = {
@@ -564,6 +577,14 @@ impl ItemId {
 
     pub const fn idents(&self) -> &'static [CtxVar] {
         ITEM_IDENTS[self.index()]
+    }
+
+    pub const fn deals_damage(&self) -> bool {
+        self.cache().deals_damage.0
+    }
+
+    pub const fn deals_max_damage(&self) -> bool {
+        self.cache().deals_damage.1
     }
 }
 

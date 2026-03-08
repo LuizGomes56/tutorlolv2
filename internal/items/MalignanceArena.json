@@ -7,19 +7,19 @@
   "tier": 0,
   "attributes": "Undefined",
   "purchasable": true,
-  "damage_type": "Unknown",
+  "damage_type": "Magic",
   "prettified_stats": {
     "AbilityHaste": 20,
     "AbilityPower": 70,
     "Mana": 600
   },
   "ranged": {
-    "minimum_damage": "zero",
-    "maximum_damage": "zero"
+    "minimum_damage": "15 + 0.0125 * ctx.ability_power",
+    "maximum_damage": "12 * (15 + 0.0125 * ctx.ability_power)"
   },
   "melee": {
-    "minimum_damage": "zero",
-    "maximum_damage": "zero"
+    "minimum_damage": "15 + 0.0125 * ctx.ability_power",
+    "maximum_damage": "12 * (15 + 0.0125 * ctx.ability_power)"
   },
   "stats": {
     "abilityPower": {

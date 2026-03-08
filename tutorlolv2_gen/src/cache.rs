@@ -392,7 +392,7 @@ pub struct CachedItem {
     pub metadata: TypeMetadata<ItemId>,
     pub ranged_damages: [ConstClosure; 2],
     pub melee_damages: [ConstClosure; 2],
-    pub deals_damage: bool,
+    pub deals_damage: (bool, bool),
     pub purchasable: bool,
     pub riot_id: u32,
 }

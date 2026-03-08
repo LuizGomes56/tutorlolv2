@@ -184,14 +184,14 @@ fn define_merge_indexes(merge_data: &BTreeSet<DevMergeData>, ability_data: &[Abi
     }
 
     merge_data
-        .into_iter()
+        .iter()
         .filter_map(|value| {
             let DevMergeData {
                 minimum_damage,
                 maximum_damage,
                 alias,
             } = value;
-            match (index.get(&minimum_damage), index.get(&maximum_damage)) {
+            match (index.get(minimum_damage), index.get(maximum_damage)) {
                 (Some(ia), Some(ib)) => Some(format!(
                     "MergeData {{
                         minimum_damage: {ia},
@@ -302,14 +302,6 @@ pub fn generate_champions() -> GeneratorFn {
             .collect::<Vec<_>>()
             .join(",");
 
-        let rest = format!(
-            "metadata: &[{ability_metadata}],
-            merge_data: &[{merge_data}],
-            stats: CachedChampionStats {{{stats}}}",
-            stats = get_stats(&stats),
-            merge_data = define_merge_indexes(&merge_data, &ability_names),
-        );
-
         let combos = combo
             .into_iter()
             .map(|array| {
@@ -321,13 +313,21 @@ pub fn generate_champions() -> GeneratorFn {
             })
             .collect::<String>();
 
+        let rest = format!(
+            "combos: &[{combos}],
+            metadata: &[{ability_metadata}],
+            merge_data: &[{merge_data}],
+            stats: CachedChampionStats {{{stats}}}",
+            stats = get_stats(&stats),
+            merge_data = define_merge_indexes(&merge_data, &ability_names),
+        );
+
         let base_declaration = format!(
             "pub static {champion_id_upper}: CachedChampion = CachedChampion {{
                 name: {name:?},
                 adaptive_type: AdaptiveType::{adaptive_type},
                 attack_type: AttackType::{attack_type},
-                positions: &[{positions}],
-                combos: &[{combos}],"
+                positions: &[{positions}],"
         );
 
         let html_declaration = format!("{base_declaration}{closures}{rest} }};");
