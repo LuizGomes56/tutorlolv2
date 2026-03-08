@@ -215,8 +215,8 @@ pub const DAMAGING_RUNES_ARRAY: [RuneId; NUMBER_OF_DAMAGING_RUNES] = {
     result
 };
 
-pub const DAMAGING_ITEMS: ItemsBitSet = bitset_items(DAMAGING_ITEMS_ARRAY);
-pub const DAMAGING_RUNES: RunesBitSet = bitset_runes(DAMAGING_RUNES_ARRAY);
+pub const DAMAGING_ITEMS: ItemsBitSet = bitset!(DAMAGING_ITEMS_ARRAY);
+pub const DAMAGING_RUNES: RunesBitSet = bitset!(DAMAGING_RUNES_ARRAY);
 
 /// Counts how many damaging abilities ewe have across all champions. This is used to
 /// determine a proper size of how many abilities we should allow to live in the stack
@@ -440,28 +440,37 @@ impl ItemId {
         result
     };
 
-    pub const fn exceptions(ally: bool) -> &'static [Self] {
+    pub const ALLY_EXCEPTIONS: [Self; 13] = [
+        Self::DarkSeal,
+        Self::DragonheartU44,
+        Self::DemonKingsCrownU44,
+        Self::DemonKingsCrownU66,
+        Self::RiteOfRuin,
+        Self::MejaisSoulstealer,
+        Self::Hubris6697,
+        Self::Hubris126697,
+        Self::HubrisArena,
+        Self::BloodlettersCurse4010,
+        Self::BloodlettersCurse8010,
+        Self::BlackCleaver,
+        Self::BlackCleaverArena,
+    ];
+
+    pub const ENEMY_EXCEPTIONS: [Self; 3] = [
+        Self::DragonheartU44,
+        Self::DemonKingsCrownU44,
+        Self::DemonKingsCrownU66,
+    ];
+
+    pub const SIZE_OF_EXCEPTIONS: usize = max_usize(
+        bitset_size(bitset!(ItemId::ALLY_EXCEPTIONS => [usize])),
+        bitset_size(bitset!(ItemId::ENEMY_EXCEPTIONS => [usize])),
+    );
+
+    pub const fn exceptions(ally: bool) -> ItemsExcSet {
         match ally {
-            true => &[
-                Self::DarkSeal,
-                Self::DragonheartU44,
-                Self::DemonKingsCrownU44,
-                Self::DemonKingsCrownU66,
-                Self::RiteOfRuin,
-                Self::MejaisSoulstealer,
-                Self::Hubris6697,
-                Self::Hubris126697,
-                Self::HubrisArena,
-                Self::BloodlettersCurse4010,
-                Self::BloodlettersCurse8010,
-                Self::BlackCleaver,
-                Self::BlackCleaverArena,
-            ],
-            false => &[
-                Self::DragonheartU44,
-                Self::DemonKingsCrownU44,
-                Self::DemonKingsCrownU66,
-            ],
+            true => bitset!(ItemId::ALLY_EXCEPTIONS),
+            false => bitset!(ItemId::ENEMY_EXCEPTIONS),
         }
     }
 
@@ -534,23 +543,27 @@ impl RuneId {
         result
     };
 
-    pub const fn exceptions() -> &'static [Self] {
-        &[
-            Self::AbsorbLife,
-            Self::Conqueror,
-            Self::DeepWard,
-            Self::EyeballCollection,
-            Self::GhostPoro,
-            Self::GrislyMementos,
-            Self::GatheringStorm,
-            Self::GraspOfTheUndying,
-            Self::LethalTempo,
-            Self::LegendAlacrity,
-            Self::LegendBloodline,
-            Self::LegendHaste,
-            Self::ManaflowBand,
-            Self::ZombieWard,
-        ]
+    pub const EXCEPTIONS: [Self; 14] = [
+        Self::AbsorbLife,
+        Self::Conqueror,
+        Self::DeepWard,
+        Self::EyeballCollection,
+        Self::GhostPoro,
+        Self::GrislyMementos,
+        Self::GatheringStorm,
+        Self::GraspOfTheUndying,
+        Self::LethalTempo,
+        Self::LegendAlacrity,
+        Self::LegendBloodline,
+        Self::LegendHaste,
+        Self::ManaflowBand,
+        Self::ZombieWard,
+    ];
+
+    pub const SIZE_OF_EXCEPTIONS: usize = bitset_size(bitset!(RuneId::EXCEPTIONS => [usize]));
+
+    pub const fn exceptions() -> RunesExcSet {
+        bitset!(RuneId::EXCEPTIONS)
     }
 
     pub const fn to_riot_id(&self) -> u32 {
