@@ -325,5 +325,77 @@
         "W": "Void"
       }
     }
+  ],
+  "combo": [
+    [
+      {
+        "Ability": {
+          "Q": "_1Min"
+        }
+      },
+      {
+        "Ability": {
+          "P": "Void"
+        }
+      },
+      "Attack",
+      {
+        "Ability": {
+          "W": "Min"
+        }
+      },
+      {
+        "Ability": {
+          "Q": "_2Min"
+        }
+      },
+      "Attack",
+      {
+        "Ability": {
+          "W": "Min"
+        }
+      },
+      {
+        "Ability": {
+          "Q": "_3Min"
+        }
+      },
+      "Attack"
+    ],
+    [
+      {
+        "Ability": {
+          "Q": "_1Max"
+        }
+      },
+      {
+        "Ability": {
+          "P": "Void"
+        }
+      },
+      "Attack",
+      {
+        "Ability": {
+          "W": "Min"
+        }
+      },
+      {
+        "Ability": {
+          "Q": "_2Max"
+        }
+      },
+      "Attack",
+      {
+        "Ability": {
+          "W": "Min"
+        }
+      },
+      {
+        "Ability": {
+          "Q": "_3Max"
+        }
+      },
+      "Attack"
+    ]
   ]
 }

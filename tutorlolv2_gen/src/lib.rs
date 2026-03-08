@@ -17,7 +17,7 @@ use core::{
 
 #[allow(non_upper_case_globals)]
 pub(crate) const unknown: f32 = 0.0;
-pub(crate) use tutorlolv2_types::{AbilityId::*, AbilityName::*};
+pub(crate) use tutorlolv2_types::{AbilityId::*, AbilityName::*, ComboElement::*};
 
 pub use bitset::*;
 pub use cache::*;
@@ -95,7 +95,7 @@ pub const L_TWRD: usize = 6;
 /// - `price > 0`
 /// - `purchasable`
 pub const SIMULATED_ITEMS_ENUM: [ItemId; L_SIML] = {
-    let mut result = [ItemId::AbyssalMask; _];
+    let mut result: [ItemId; _] = unsafe { core::mem::zeroed() };
     let mut i = 0;
     let mut j = 0;
     while i < ItemId::VARIANTS {
@@ -173,7 +173,7 @@ pub const NUMBER_OF_DAMAGING_ITEMS: usize = {
     let mut i = 0;
     while i < ItemId::VARIANTS {
         let item = ITEM_CACHE[i];
-        if !item.deals_damage {
+        if item.deals_damage {
             sum += 1;
         }
         i += 1;
@@ -184,7 +184,7 @@ pub const NUMBER_OF_DAMAGING_ITEMS: usize = {
 /// A constant array of all items that can damage enemies, holding their internal ids,
 /// defined by the enum [`ItemId`]
 pub const DAMAGING_ITEMS_ARRAY: [ItemId; NUMBER_OF_DAMAGING_ITEMS] = {
-    let mut result = [ItemId::AbyssalMask; _];
+    let mut result: [ItemId; _] = unsafe { core::mem::zeroed() };
     let mut i = 0;
     let mut j = 0;
     while i < ItemId::VARIANTS {
@@ -201,7 +201,7 @@ pub const DAMAGING_ITEMS_ARRAY: [ItemId; NUMBER_OF_DAMAGING_ITEMS] = {
 /// A constant array of all runes that can damage enemies, holding their internal ids,
 /// defined by the enum [`RuneId`]
 pub const DAMAGING_RUNES_ARRAY: [RuneId; NUMBER_OF_DAMAGING_RUNES] = {
-    let mut result = [RuneId::AbilityHaste; _];
+    let mut result: [RuneId; _] = unsafe { core::mem::zeroed() };
     let mut i = 0;
     let mut j = 0;
     while i < RuneId::VARIANTS {
@@ -267,6 +267,24 @@ const _: () = {
             }
             j += 1;
         }
+
+        let mut k = 0;
+
+        let combos = champion_id.combos();
+        while k < combos.len() {
+            let combo = combos[k];
+            let mut l = 0;
+            while l < combo.len() {
+                let element = combo[l];
+
+                if let Ability(ability_id) = element {
+                    assert!(champion_id.index_of_ability(ability_id).is_some());
+                }
+                l += 1;
+            }
+            k += 1;
+        }
+
         i += 1;
     }
 };
@@ -504,7 +522,7 @@ impl ItemId {
     pub const fn find_variants<const N: usize>(stat_name: StatName) -> [ItemId; N] {
         let mut i = 0;
         let mut j = 0;
-        let mut result = [Self::default(); N];
+        let mut result: [ItemId; _] = unsafe { core::mem::zeroed() };
         while i < Self::VARIANTS {
             let item = Self::VALUES[i];
             if item.has_stat(stat_name) {
@@ -655,7 +673,7 @@ macro_rules! impl_methods {
                 impl $stru {
                     pub const VALUES: [Self; Self::VARIANTS] = {
                         let mut i = 0;
-                        let mut result = [Self::default(); _];
+                        let mut result: [Self; _] = unsafe { core::mem::zeroed() };
                         while i < Self::VARIANTS {
                             result[i] = Self::from_repr(i as _).unwrap();
                             i += 1;
@@ -665,12 +683,12 @@ macro_rules! impl_methods {
 
                     pub const NAMES: [&str; Self::VARIANTS] = {
                         let mut i = 0;
-                        let mut result = [""; _];
+                        let mut result: [*const str; Self::VARIANTS] = unsafe { core::mem::zeroed() };
                         while i < Self::VARIANTS {
-                            result[i] = Self::VALUES[i].name();
+                            result[i] = Self::VALUES[i].name() as *const _;
                             i += 1;
                         }
-                        result
+                        unsafe { core::mem::transmute(result) }
                     };
 
                     pub const FORMULAS: &[Range<usize>; Self::VARIANTS] = &[<$stru:replace("Id", ""):upper _FORMULAS>];

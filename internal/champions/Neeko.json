@@ -182,5 +182,43 @@
         "Q": "Void"
       }
     }
+  ],
+  "combo": [
+    [
+      {
+        "Ability": {
+          "E": "Void"
+        }
+      },
+      {
+        "Ability": {
+          "Q": "Max"
+        }
+      },
+      "Attack",
+      {
+        "Ability": {
+          "W": "Void"
+        }
+      },
+      {
+        "Ability": {
+          "R": "Void"
+        }
+      }
+    ],
+    [
+      {
+        "Ability": {
+          "Q": "_1"
+        }
+      },
+      "Attack",
+      {
+        "Ability": {
+          "W": "Void"
+        }
+      }
+    ]
   ]
 }
