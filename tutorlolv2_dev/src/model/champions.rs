@@ -5,7 +5,8 @@ use std::{
     str::FromStr,
 };
 use tutorlolv2_gen::{
-    AbilityId, AdaptiveType, AttackType, Attrs, DamageType, DevMergeData, Key, Position,
+    AbilityId, AdaptiveType, AttackType, Attrs, ComboElement, DamageType, DevMergeData, Key,
+    Position,
 };
 
 #[derive(Deserialize, Serialize)]
@@ -107,6 +108,7 @@ impl MerakiChampion {
         self,
         abilities: BTreeMap<AbilityId, Ability>,
         merge_data: BTreeSet<DevMergeData>,
+        combo: Vec<Vec<ComboElement>>,
     ) -> Champion {
         Champion {
             name: self.name,
@@ -120,6 +122,7 @@ impl MerakiChampion {
             stats: self.stats,
             abilities: abilities.into_iter().collect(),
             merge_data,
+            combo,
         }
     }
 }
@@ -141,6 +144,7 @@ pub struct Champion {
     pub stats: MerakiChampionStats,
     pub abilities: Vec<(AbilityId, Ability)>,
     pub merge_data: BTreeSet<DevMergeData>,
+    pub combo: Vec<Vec<ComboElement>>,
 }
 
 #[derive(Serialize, Deserialize)]

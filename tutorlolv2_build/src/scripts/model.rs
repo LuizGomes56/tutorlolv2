@@ -1,6 +1,6 @@
 use serde::Deserialize;
 use std::collections::{BTreeMap, BTreeSet};
-use tutorlolv2_types::{AbilityId, DevMergeData, StatName};
+use tutorlolv2_types::{AbilityId, ComboElement, DevMergeData, StatName};
 
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -61,6 +61,8 @@ pub struct Champion {
     pub stats: MerakiChampionStats,
     pub abilities: Vec<(AbilityId, Ability)>,
     pub merge_data: BTreeSet<DevMergeData>,
+    #[serde(default)]
+    pub combo: Vec<Vec<ComboElement>>,
 }
 
 #[derive(Deserialize)]

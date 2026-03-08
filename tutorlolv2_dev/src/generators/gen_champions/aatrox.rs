@@ -41,6 +41,31 @@ impl Generator<Champion> for Aatrox {
 
         self.insert(Q(Min), q_min);
         self.insert(Q(Max), q_max);
+
+        self.combo([
+            Ability(Q(_1Min)),
+            Ability(P(Void)),
+            Attack,
+            Ability(W(Min)),
+            Ability(Q(_2Min)),
+            Attack,
+            Ability(W(Min)),
+            Ability(Q(_3Min)),
+            Attack,
+        ]);
+
+        self.combo([
+            Ability(Q(_1Max)),
+            Ability(P(Void)),
+            Attack,
+            Ability(W(Min)),
+            Ability(Q(_2Max)),
+            Attack,
+            Ability(W(Min)),
+            Ability(Q(_3Max)),
+            Attack,
+        ]);
+
         self.end()
     }
 }

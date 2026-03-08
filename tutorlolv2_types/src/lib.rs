@@ -1,10 +1,6 @@
 #![no_std]
 mod ability_name;
 
-use core::fmt::Display;
-
-pub use ability_name::AbilityName;
-
 #[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub enum Key {
     P,
@@ -18,18 +14,7 @@ pub enum Key {
 /// - [`AbilityId::P`] represents the passive of a champion
 /// - Other variants correspond to the abilities `Q`, `W`, `E`, and `R` (ultimate)
 #[derive(
-    Clone,
-    Copy,
-    Debug,
-    Eq,
-    Hash,
-    Ord,
-    PartialEq,
-    PartialOrd,
-    bincode::Encode,
-    bincode::Decode,
-    serde::Serialize,
-    serde::Deserialize,
+    Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize,
 )]
 pub enum AbilityId {
     P(AbilityName),
@@ -58,6 +43,14 @@ impl From<AbilityId> for Key {
 }
 
 impl AbilityId {
+    pub const fn const_eq(self, other: AbilityId) -> bool {
+        unsafe {
+            let a: [u8; 2] = core::mem::transmute(self);
+            let b: [u8; 2] = core::mem::transmute(other);
+            a[0] == b[0] && a[1] == b[1]
+        }
+    }
+
     pub const fn from_key_fn(key: Key) -> fn(AbilityName) -> Self {
         match key {
             Key::P => AbilityId::P,
@@ -93,6 +86,11 @@ impl AbilityId {
 extern crate alloc;
 #[cfg(feature = "dev")]
 use alloc::{format, string::String};
+use bincode::{Decode, Encode};
+use core::fmt::Display;
+use serde::{Deserialize, Serialize};
+
+pub use ability_name::AbilityName;
 
 #[cfg(feature = "dev")]
 impl AbilityId {
@@ -121,18 +119,7 @@ impl AbilityId {
 /// means that when bought, the player gets extra 80 ability power. This struct
 /// weighs 4 bytes and the maximum stat buff for one item is [`u16::MAX`]
 #[derive(
-    Clone,
-    Copy,
-    Debug,
-    Eq,
-    Hash,
-    Ord,
-    PartialEq,
-    PartialOrd,
-    bincode::Encode,
-    bincode::Decode,
-    serde::Serialize,
-    serde::Deserialize,
+    Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize,
 )]
 #[repr(u8)]
 pub enum StatName {
@@ -198,28 +185,22 @@ impl Display for StatName {
     }
 }
 
-#[derive(
-    Clone,
-    Copy,
-    Debug,
-    PartialEq,
-    PartialOrd,
-    bincode::Encode,
-    bincode::Decode,
-    serde::Serialize,
-    serde::Deserialize,
-)]
+#[derive(Clone, Copy, Debug, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize)]
 pub struct MergeData {
     pub minimum_damage: u8,
     pub maximum_damage: u8,
     pub alias: AbilityId,
 }
 
-#[derive(
-    Clone, Copy, Debug, Eq, PartialEq, PartialOrd, Ord, serde::Serialize, serde::Deserialize,
-)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq, PartialOrd, Ord, Serialize, Deserialize)]
 pub struct DevMergeData {
     pub minimum_damage: AbilityId,
     pub maximum_damage: AbilityId,
     pub alias: AbilityId,
+}
+
+#[derive(Clone, Copy, Debug, Deserialize, Encode, Hash, PartialEq, PartialOrd, Serialize)]
+pub enum ComboElement {
+    Ability(AbilityId),
+    Attack,
 }

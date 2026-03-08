@@ -23,8 +23,8 @@ pub use bitset::*;
 pub use cache::*;
 pub use data::{
     champions::{
-        ABILITY_CLOSURES, ABILITY_FORMULAS, ABILITY_IDENTS, ABILITY_IDENTS_INDEX, CHAMPION_CACHE,
-        CHAMPION_FORMULAS, CHAMPION_NAME_TO_ID, ChampionId, RECOMMENDED_ITEMS, RECOMMENDED_RUNES,
+        ABILITY_CLOSURES, ABILITY_FORMULAS, ABILITY_IDENTS, CHAMPION_CACHE, CHAMPION_FORMULAS,
+        CHAMPION_NAME_TO_ID, ChampionId, RECOMMENDED_ITEMS, RECOMMENDED_RUNES,
     },
     items::{ITEM_CACHE, ITEM_CLOSURES, ITEM_FORMULAS, ITEM_IDENTS, ItemId},
     runes::{RUNE_CACHE, RUNE_CLOSURES, RUNE_FORMULAS, RUNE_IDENTS, RuneId},
@@ -252,7 +252,7 @@ const _: () = {
         let len = champion_id.number_of_abilities();
 
         assert!(len == champion_id.closures().len());
-        assert!(len == champion_id.ident_indexes().len());
+        assert!(len == champion_id.idents().len());
 
         let mut j = 0;
         while j < merge_data.len() {
@@ -366,10 +366,6 @@ impl ChampionId {
         Self::CLOSURES[self.index()]
     }
 
-    pub const fn ident_indexes(&self) -> &'static [Range<usize>] {
-        ABILITY_IDENTS_INDEX[self.index()]
-    }
-
     pub const fn ability_formulas(&self) -> &'static [Range<usize>] {
         ABILITY_FORMULAS[self.index()]
     }
@@ -380,6 +376,25 @@ impl ChampionId {
 
     pub const fn generator(&self) -> &'static Range<usize> {
         &CHAMPION_GENERATOR[self.index()]
+    }
+
+    pub const fn idents(&self) -> &'static [&'static [CtxVar]] {
+        ABILITY_IDENTS[self.index()]
+    }
+
+    pub const fn combos(&self) -> &'static [&'static [ComboElement]] {
+        self.cache().combos
+    }
+
+    pub const fn index_of_ability(&self, ability_id: AbilityId) -> Option<usize> {
+        let mut i = 0;
+        while i < self.number_of_abilities() {
+            if self.abilities()[i].kind.const_eq(ability_id) {
+                return Some(i);
+            }
+            i += 1;
+        }
+        return None;
     }
 }
 
@@ -528,6 +543,10 @@ impl ItemId {
         }
         result
     }
+
+    pub const fn idents(&self) -> &'static [CtxVar] {
+        ITEM_IDENTS[self.index()]
+    }
 }
 
 impl RuneId {
@@ -572,6 +591,10 @@ impl RuneId {
 
     pub const fn closure(&self) -> &'static Range<usize> {
         &Self::CLOSURES[self.index()]
+    }
+
+    pub const fn idents(&self) -> &'static [CtxVar] {
+        RUNE_IDENTS[self.index()]
     }
 }
 
@@ -678,10 +701,6 @@ macro_rules! impl_methods {
                     pub const fn index(&self) -> usize {
                         *self as _
                     }
-
-                    pub const fn idents(&self) -> &'static [CtxVar] {
-                        [<$stru:replace("Id", ""):replace("Champion", "Ability"):upper _IDENTS>][self.index()]
-                    }
                 }
 
                 impl Sealed for $stru {}
@@ -702,10 +721,6 @@ macro_rules! impl_methods {
 
                     fn index(&self) -> usize {
                         self.index()
-                    }
-
-                    fn idents(&self) -> &'static [CtxVar] {
-                        self.idents()
                     }
                 }
             )+
@@ -767,7 +782,6 @@ where
     fn entity(&self) -> EntityId;
     fn name(&self) -> &'static str;
     fn index(&self) -> usize;
-    fn idents(&self) -> &'static [CtxVar];
     fn formula(&self) -> &'static Range<usize> {
         &Self::FORMULAS[self.index()]
     }

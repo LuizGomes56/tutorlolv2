@@ -9,6 +9,17 @@ impl Generator<Champion> for Neeko {
         self.ability(Key::E, [(0, 0, Void)]);
         self.ability(Key::R, [(2, 0, Void)]);
         self.attr(Area, [Q(_1), Q(Min), Q(Max), E(Void), R(Void)])?;
+
+        self.combo([
+            Ability(E(Void)),
+            Ability(Q(Max)),
+            Attack,
+            Ability(W(Void)),
+            Ability(R(Void)),
+        ]);
+
+        self.combo([Ability(Q(_1)), Attack, Ability(W(Void))]);
+
         self.end()
     }
 }

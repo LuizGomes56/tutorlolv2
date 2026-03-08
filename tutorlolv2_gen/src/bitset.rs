@@ -56,7 +56,7 @@ pub const fn make_bitset<const N: usize, const L: usize>(values: [usize; L]) -> 
 #[macro_export]
 macro_rules! bitset {
     ([$($value:expr),*$(,)*]) => {
-        const { make_bitset::<_, L>([$($value.index()),*]) }
+        const { $crate::make_bitset::<_, L>([$($value.index()),*]) }
     };
     ($array:expr => [$ty:ty]) => {
         const {
@@ -73,7 +73,7 @@ macro_rules! bitset {
     ($array:expr) => {
         const {
             let cast = $crate::bitset!($array => [usize]);
-            make_bitset(cast)
+            $crate::make_bitset(cast)
         }
     };
 }

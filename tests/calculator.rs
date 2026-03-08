@@ -5,7 +5,7 @@ use tutorlolv2::{
     model::*,
     *,
 };
-use tutorlolv2_gen::bitset_items;
+use tutorlolv2_gen::bitset;
 
 #[test]
 pub fn test_calculator() {
@@ -17,7 +17,8 @@ pub fn test_calculator() {
         ItemId::NashorsTooth,
         ItemId::LordDominiksRegards,
     ];
-    let items_meta = get_items_data(&bitset_items(ITEMS), AttackType::Melee);
+
+    let items_meta = get_items_data(&bitset!(ITEMS), AttackType::Melee);
     let mut modifiers = Modifiers::default();
 
     let mut stats: Stats<f32> = Stats::default();

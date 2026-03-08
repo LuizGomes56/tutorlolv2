@@ -17,14 +17,15 @@ use std::{
 };
 use tutorlolv2_fmt::rustfmt;
 use tutorlolv2_gen::{
-    AbilityId, AbilityName, AdaptiveType, AttackType, Attrs, ChampionId, DamageType, DevMergeData,
-    Key, Position,
+    AbilityId, AbilityName, AdaptiveType, AttackType, Attrs, ChampionId, ComboElement, DamageType,
+    DevMergeData, Key, Position,
 };
 
 pub struct ChampionData {
     pub data: MerakiChampion,
     pub map: BTreeMap<AbilityId, Ability>,
     pub mergevec: BTreeSet<DevMergeData>,
+    pub combo: Vec<Vec<ComboElement>>,
 }
 
 /// Struct that creates and runs files that implement the trait [`Generator`].
@@ -358,8 +359,9 @@ impl ChampionData {
     pub fn new(data: MerakiChampion) -> Self {
         Self {
             data,
-            map: BTreeMap::new(),
-            mergevec: BTreeSet::new(),
+            map: Default::default(),
+            mergevec: Default::default(),
+            combo: Default::default(),
         }
     }
 
@@ -379,6 +381,7 @@ impl ChampionData {
             stats: self.data.stats,
             abilities: self.map.into_iter().collect(),
             merge_data: self.mergevec,
+            combo: self.combo,
         }
     }
 
@@ -523,6 +526,10 @@ impl ChampionData {
             .map
             .get(&key)
             .ok_or(format!("[get] Failed to find key: {key:?}"))?)
+    }
+
+    pub fn combo<const N: usize>(&mut self, combo: [ComboElement; N]) {
+        self.combo.push(combo.to_vec());
     }
 
     /// Receives some ability key and a pattern of that helps locate where

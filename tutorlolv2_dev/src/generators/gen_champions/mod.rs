@@ -7,6 +7,7 @@ pub(self) use tutorlolv2_gen::{
     AbilityId,
     AbilityId::*,
     AbilityName::*,
+    ComboElement::*,
     Key,
     enums::{Attrs::*, DamageType::*},
     eval::CtxVar::*,

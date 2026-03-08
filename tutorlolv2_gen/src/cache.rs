@@ -294,6 +294,9 @@ pub struct CachedChampion {
 
     /// Holds basic information about the champion's base stats and growth rate
     pub stats: CachedChampionStats,
+
+    pub combos: &'static [&'static [ComboElement]],
+
     /// Sorted array that holds basic information about the abilities
     /// of some cached champion, such as their internal id, damage type,
     /// and special attributes, taking up at most 4 bytes of space. The order
