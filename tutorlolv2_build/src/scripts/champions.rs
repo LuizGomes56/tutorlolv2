@@ -97,7 +97,6 @@ fn declare_abilities(
 
             let idents = damage.get_idents(&damage_type);
 
-            let damage_type = format!("DamageType::{damage_type}");
             let attributes = format!("Attrs::{attributes:?}");
 
             let metadata = format!(
@@ -296,11 +295,7 @@ pub fn generate_champions() -> GeneratorFn {
             constfns.push(constfn);
         }
 
-        let positions = positions
-            .into_iter()
-            .map(|pos| format!("Position::{pos}"))
-            .collect::<Vec<_>>()
-            .join(",");
+        let positions = positions.join(",");
 
         let combos = combo
             .into_iter()
@@ -326,7 +321,7 @@ pub fn generate_champions() -> GeneratorFn {
             "pub static {champion_id_upper}: CachedChampion = CachedChampion {{
                 name: {name:?},
                 adaptive_type: AdaptiveType::{adaptive_type},
-                attack_type: AttackType::{attack_type},
+                attack_type: {attack_type},
                 positions: &[{positions}],"
         );
 

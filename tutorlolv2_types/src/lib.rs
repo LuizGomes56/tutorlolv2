@@ -10,6 +10,18 @@ pub enum Key {
     R,
 }
 
+impl Key {
+    pub const fn as_char(&self) -> char {
+        match self {
+            Key::P => 'P',
+            Key::Q => 'Q',
+            Key::W => 'W',
+            Key::E => 'E',
+            Key::R => 'R',
+        }
+    }
+}
+
 /// Enum that represents one ability of a champion, with a custom display name.
 /// - [`AbilityId::P`] represents the passive of a champion
 /// - Other variants correspond to the abilities `Q`, `W`, `E`, and `R` (ultimate)
@@ -61,14 +73,18 @@ impl AbilityId {
         }
     }
 
-    pub const fn as_char(&self) -> char {
+    pub const fn as_key(&self) -> Key {
         match self {
-            AbilityId::P(_) => 'P',
-            AbilityId::Q(_) => 'Q',
-            AbilityId::W(_) => 'W',
-            AbilityId::E(_) => 'E',
-            AbilityId::R(_) => 'R',
+            AbilityId::P(_) => Key::P,
+            AbilityId::Q(_) => Key::Q,
+            AbilityId::W(_) => Key::W,
+            AbilityId::E(_) => Key::E,
+            AbilityId::R(_) => Key::R,
         }
+    }
+
+    pub const fn as_char(&self) -> char {
+        self.as_key().as_char()
     }
 
     pub const fn ability_name(&self) -> AbilityName {

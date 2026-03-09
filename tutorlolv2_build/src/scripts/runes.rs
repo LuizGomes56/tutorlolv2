@@ -40,7 +40,7 @@ pub fn generate_runes() -> GeneratorFn {
                 let metadata = format!(
                     "TypeMetadata {{
                         kind: RuneId::{name_pascal},
-                        damage_type: DamageType::{damage_type},
+                        damage_type: {damage_type},
                         attributes: Attrs::Undefined
                     }}"
                 );
@@ -95,7 +95,7 @@ pub fn generate_runes() -> GeneratorFn {
                 let base_declaration = format!(
                     "pub static {name_ssnake}: CachedRune = CachedRune {{
                         name: {name:?},
-                        damage_type: DamageType::{damage_type},
+                        damage_type: {damage_type},
                         riot_id: {riot_id},
                         internal_id: RuneId::{name_pascal},
                         undeclared: false,
@@ -124,8 +124,8 @@ pub fn generate_runes() -> GeneratorFn {
                     true => format!("{melee_fn}(ctx)"),
                     false => format!(
                         "match attack_type {{
-                            AttackType::Melee => {melee_fn}(ctx),
-                            AttackType::Ranged => {ranged_fn}(ctx)
+                            Melee => {melee_fn}(ctx),
+                            Ranged => {ranged_fn}(ctx)
                         }}"
                     ),
                 };
@@ -192,7 +192,7 @@ pub fn generate_runes() -> GeneratorFn {
             let metadata = format!(
                 "TypeMetadata {{
                     kind: RuneId::{name_pascal},
-                    damage_type: DamageType::Unknown,
+                    damage_type: Unknown,
                     attributes: Attrs::Undefined
                 }}"
             );
@@ -200,7 +200,7 @@ pub fn generate_runes() -> GeneratorFn {
             let base_declaration = format!(
                 "pub static {name_ssnake}: CachedRune = CachedRune {{
                     name: {name:?},
-                    damage_type: DamageType::Unknown,
+                    damage_type: Unknown,
                     melee_damage:zero,ranged_damage:zero,
                     riot_id: {riot_id},
                     internal_id: RuneId::{name_pascal},

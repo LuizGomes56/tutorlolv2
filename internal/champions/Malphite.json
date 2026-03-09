@@ -3,9 +3,9 @@
   "adaptive_type": "Magic",
   "attack_type": "Melee",
   "positions": [
-    "Top",
     "Middle",
-    "Support"
+    "Support",
+    "Top"
   ],
   "stats": {
     "health": {

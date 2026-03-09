@@ -140,7 +140,7 @@ pub struct Champion {
     pub name: String,
     pub adaptive_type: AdaptiveType,
     pub attack_type: AttackType,
-    pub positions: BTreeSet<Position>,
+    pub positions: Vec<Position>,
     pub stats: MerakiChampionStats,
     pub abilities: Vec<(AbilityId, Ability)>,
     pub merge_data: BTreeSet<DevMergeData>,

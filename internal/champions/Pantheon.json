@@ -3,10 +3,10 @@
   "adaptive_type": "Physical",
   "attack_type": "Melee",
   "positions": [
-    "Top",
     "Jungle",
     "Middle",
-    "Support"
+    "Support",
+    "Top"
   ],
   "stats": {
     "health": {

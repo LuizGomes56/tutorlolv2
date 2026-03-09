@@ -3,8 +3,8 @@
   "adaptive_type": "Magic",
   "attack_type": "Ranged",
   "positions": [
-    "Middle",
     "Bottom",
+    "Middle",
     "Support"
   ],
   "stats": {

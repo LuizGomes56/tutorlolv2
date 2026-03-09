@@ -64,7 +64,7 @@ pub const TOWER_DAMAGE_FN: &str = r#"fn tower_damage(_: f32, ...) -> i32 {
 }"#;
 
 pub const ONHIT_EFFECT: &str = r#"intrinsic ONHIT_EFFECT {
-    damage_type: DamageType::Mixed,
+    damage_type: Mixed,
     definition: const fn eval_attacks(
         &Ctx, 
         RangeDamage, 
@@ -82,7 +82,7 @@ pub const ONHIT_EFFECT_FN: &str = r#"fn eval_attacks(
 
 pub const CRITICAL_STRIKE: &str = r#"intrinsic CRITICAL_STRIKE {
     attributes: Attrs::OnhitMax,
-    damage_type: DamageType::Physical,
+    damage_type: Physical,
     damage: |ctx| {
         ctx.ad * ctx.crit_damage / 100
     }
@@ -94,7 +94,7 @@ pub const CRITICAL_STRIKE_FN: &str = r#"fn critical_strike(ctx: &Ctx) -> f32 {
 
 pub const BASIC_ATTACK: &str = r#"intrinsic BASIC_ATTACK {
     attributes: Attrs::OnhitMin,
-    damage_type: DamageType::Physical,
+    damage_type: Physical,
     damage: |ctx| ctx.ad,
 };"#;
 

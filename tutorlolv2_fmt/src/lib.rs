@@ -273,6 +273,11 @@ static RUST_HIGHLIGHTER: Lazy<Highlighter> = Lazy::new(|| {
             "Monster3",
             "Monster4",
             "MonsterMax",
+            "Top",
+            "Jungle",
+            "Middle",
+            "Bottom",
+            "Support",
         ]),
     );
     h.keyword("type", r"\b[A-Z][a-zA-Z0-9_]*\b");

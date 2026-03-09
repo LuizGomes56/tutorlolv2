@@ -3,8 +3,8 @@
   "adaptive_type": "Physical",
   "attack_type": "Ranged",
   "positions": [
-    "Top",
-    "Middle"
+    "Middle",
+    "Top"
   ],
   "stats": {
     "health": {

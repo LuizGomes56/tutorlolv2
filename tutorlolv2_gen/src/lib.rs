@@ -17,8 +17,10 @@ use core::{
 
 #[allow(non_upper_case_globals)]
 pub(crate) const unknown: f32 = 0.0;
-pub(crate) use tutorlolv2_types::{AbilityId::*, AbilityName::*, ComboElement::*};
-
+pub(crate) use crate::{
+    cache::{AttackType::*, Position::*},
+    enums::DamageType::*,
+};
 pub use bitset::*;
 pub use cache::*;
 pub use data::{
@@ -33,6 +35,7 @@ pub use data::{
 pub use enums::{Attrs, DamageType};
 pub use eval::*;
 pub use tutorlolv2_types::*;
+pub(crate) use tutorlolv2_types::{AbilityId::*, AbilityName::*, ComboElement::*};
 
 use crate::data::{champions::CHAMPION_GENERATOR, items::ITEM_GENERATOR};
 

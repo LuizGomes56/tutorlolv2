@@ -36,7 +36,7 @@ fn declare_item(name: &str, item: &Item) -> DeclaredItem {
     let metadata = format!(
         "TypeMetadata {{
             kind: ItemId::{name},
-            damage_type: DamageType::{damage_type},
+            damage_type: {damage_type},
             attributes: Attrs::{attributes:?}
         }}"
     );
@@ -157,8 +157,8 @@ fn declare_item(name: &str, item: &Item) -> DeclaredItem {
         true => format!("[{melee_fn_calls}]"),
         false => format!(
             "match attack_type {{
-                AttackType::Melee => [{melee_fn_calls}],
-                AttackType::Ranged => [{ranged_fn_calls}]
+                Melee => [{melee_fn_calls}],
+                Ranged => [{ranged_fn_calls}]
             }}"
         ),
     };
