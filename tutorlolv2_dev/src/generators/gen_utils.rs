@@ -127,67 +127,52 @@ impl RegExtractor for str {
     }
 
     fn replace_keys(&self) -> String {
-        let mut replacements = Vec::<(&'static str, Box<dyn Display>)>::new();
-
-        fn push_tuple(
-            vector: &mut Vec<(&'static str, Box<dyn Display>)>,
-            from: &'static str,
-            to: impl Display + 'static,
-        ) {
-            vector.push((from, Box::new(to)));
-        }
-
-        macro_rules! tuple_rep {
-            ($($from:literal => $to:expr),*$(,)?) => {
-                $(push_tuple(&mut replacements, $from, $to);)*
-            };
-        }
-        tuple_rep! {
-            "per 100" => "0.01 *",
-            "of damage dealt" => "100.0",
-            "of damage stored" => "100.0",
-            "of expended Grit" => "0.0",
-            "of the original damage" => "100.0",
-            "per Overwhelm stack on the target" => "1.0",
-            "of primary target's bonus health" => EnemyBonusHealth,
-            "of his bonus health" => BonusHealth,
-            "Pantheon's bonus health" => BonusHealth,
-            "bonus attack speed" => AttackSpeed,
-            "based on critical strike chance" => CritChance,
-            "critical strike chance" => CritChance,
-            "of Ivern's AP" => AbilityPower,
-            "of Sona's AP" => AbilityPower,
-            "per Feast stack" => Stacks,
-            "of Siphoning Strike stacks" => Stacks,
-            "Stardust" => Stacks,
-            "per Mark" => Stacks,
-            "per mark" => Stacks,
-            "bonus movement speed" => BonusMoveSpeed,
-            "bonus mana" => BonusMana,
-            "bonus AD" => BonusAd,
-            "bonus armor" => BonusArmor,
-            "bonus magic resistance" => BonusMagicResist,
-            "bonus health" => BonusHealth,
-            "of the target's maximum health" => EnemyMaxHealth,
-            "of target's maximum health" => EnemyMaxHealth,
-            "of the target's current health" => CurrentHealth,
-            "of target's current health" => CurrentHealth,
-            "target's current health" => CurrentHealth,
-            "of the target's missing health" => MissingHealth,
-            "of target's missing health" => MissingHealth,
-            "target's missing health" => MissingHealth,
-            "of Zac's maximum health" => MaxHealth,
-            "of Braum's maximum health" => MaxHealth,
-            "of her maximum health" => MaxHealth,
-            "of his maximum health" => MaxHealth,
-            "of maximum health" => MaxHealth,
-            "maximum health" => MaxHealth,
-            "maximum mana" => MaxMana,
-            "armor" => Armor,
-            "AP" => AbilityPower,
-            "AD" => AttackDamage,
-            "\u{00D7}" => "*"
-        };
+        let replacements: [(&str, &dyn Display); _] = [
+            ("per 100", &"0.01 *"),
+            ("of damage dealt", &"100.0"),
+            ("of damage stored", &"100.0"),
+            ("of expended Grit", &"0.0"),
+            ("of the original damage", &"100.0"),
+            ("per Overwhelm stack on the target", &"1.0"),
+            ("of primary target's bonus health", &EnemyBonusHealth),
+            ("of his bonus health", &BonusHealth),
+            ("Pantheon's bonus health", &BonusHealth),
+            ("bonus attack speed", &AttackSpeed),
+            ("based on critical strike chance", &CritChance),
+            ("critical strike chance", &CritChance),
+            ("of Ivern's AP", &AbilityPower),
+            ("of Sona's AP", &AbilityPower),
+            ("per Feast stack", &Stacks),
+            ("of Siphoning Strike stacks", &Stacks),
+            ("Stardust", &Stacks),
+            ("per Mark", &Stacks),
+            ("per mark", &Stacks),
+            ("bonus movement speed", &BonusMoveSpeed),
+            ("bonus mana", &BonusMana),
+            ("bonus AD", &BonusAd),
+            ("bonus armor", &BonusArmor),
+            ("bonus magic resistance", &BonusMagicResist),
+            ("bonus health", &BonusHealth),
+            ("of the target's maximum health", &EnemyMaxHealth),
+            ("of target's maximum health", &EnemyMaxHealth),
+            ("of the target's current health", &CurrentHealth),
+            ("of target's current health", &CurrentHealth),
+            ("target's current health", &CurrentHealth),
+            ("of the target's missing health", &MissingHealth),
+            ("of target's missing health", &MissingHealth),
+            ("target's missing health", &MissingHealth),
+            ("of Zac's maximum health", &MaxHealth),
+            ("of Braum's maximum health", &MaxHealth),
+            ("of her maximum health", &MaxHealth),
+            ("of his maximum health", &MaxHealth),
+            ("of maximum health", &MaxHealth),
+            ("maximum health", &MaxHealth),
+            ("maximum mana", &MaxMana),
+            ("armor", &Armor),
+            ("AP", &AbilityPower),
+            ("AD", &AttackDamage),
+            ("\u{00D7}", &"*"),
+        ];
 
         replacements
             .into_iter()

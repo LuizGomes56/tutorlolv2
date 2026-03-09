@@ -89,3 +89,30 @@ pub enum AbilityName {
     Monster4,
     MonsterMax,
 }
+
+impl AbilityName {
+    pub const JMP: u8 = Self::Min as u8;
+
+    pub const fn cast_max(&self) -> Self {
+        let byte = *self as u8;
+        assert!(byte < Self::Mega as u8 - 1);
+        match byte >= Self::Max as u8 {
+            true => *self,
+            false if byte < Self::Min as u8 => unsafe {
+                core::mem::transmute(byte + (Self::JMP << 1))
+            },
+            false => unsafe { core::mem::transmute(byte + Self::JMP) },
+        }
+    }
+
+    pub const fn cast_min(&self) -> Self {
+        Self::from_u8(self.cast_max() as u8 - Self::JMP).unwrap()
+    }
+
+    pub const fn from_u8(value: u8) -> Option<Self> {
+        match value {
+            x if x < Self::MonsterMax as u8 => Some(unsafe { core::mem::transmute(x) }),
+            _ => None,
+        }
+    }
+}

@@ -86,7 +86,7 @@ pub fn generate_runes() -> GeneratorFn {
 
                 let mk_closure = |expr: &str| {
                     let arg = expr.ctx_param();
-                    format!("|{arg}| {}", expr.to_lowercase())
+                    format!("|{arg}| {}", expr.clean().to_lowercase())
                 };
 
                 let melee_closure = mk_closure(melee);
@@ -106,11 +106,9 @@ pub fn generate_runes() -> GeneratorFn {
                     base_declaration.as_str(),
                     &match single_damage {
                         true => format!("damage: {melee_closure}}};"),
-                        false => {
-                            format!(
-                                "melee_damage: {melee_closure}, ranged_damage: {ranged_closure} }};"
-                            )
-                        }
+                        false => format!(
+                            "melee_damage: {melee_closure}, ranged_damage: {ranged_closure} }};"
+                        ),
                     },
                 ]
                 .concat();

@@ -412,15 +412,17 @@ impl ChampionData {
                         effect: effect_index,
                         leveling: leveling_index,
                         binding: {
+                            const MIN_BOUNDS: u8 = AbilityName::JMP << 1;
                             let enum_match = match bindings {
-                                ..9 => format!("\"_{bindings}\""),
-                                _ => format!("\"_{}Min\"", bindings - 8),
+                                ..AbilityName::JMP => format!("\"_{bindings}\""),
+                                AbilityName::JMP..MIN_BOUNDS => format!("\"_{}Min\"", bindings - 8),
+                                _ => format!("\"_{}Max\"", bindings - MIN_BOUNDS),
                             };
                             serde_json::from_str::<AbilityName>(&enum_match).unwrap()
                         },
                     };
                     fn_args.push(offset);
-                    bindings += 1;
+                    bindings += 1u8;
                 }
             }
         }
@@ -651,14 +653,6 @@ impl ChampionData {
         for key in keys {
             let index = key.ability_name() as u8;
 
-            const MIN_I: u8 = AbilityName::Min as u8;
-            const MIN_J: u8 = AbilityName::_8Min as u8;
-            const MAX_I: u8 = AbilityName::Max as u8;
-            const MAX_J: u8 = AbilityName::_8Max as u8;
-
-            let min_range = MIN_I..=MIN_J;
-            const MAX_MATCH: u8 = 1 + MAX_J - MAX_I;
-
             let make = match key {
                 AbilityId::P(_) => AbilityId::P,
                 AbilityId::Q(_) => AbilityId::Q,
@@ -667,13 +661,21 @@ impl ChampionData {
                 AbilityId::R(_) => AbilityId::R,
             };
 
-            if min_range.contains(&index) {
+            if (AbilityName::JMP..=((AbilityName::JMP << 1) - 1)).contains(&index) {
                 let mut found = false;
-                let ability_name =
-                    unsafe { std::mem::transmute::<_, AbilityName>(index + MAX_MATCH) };
+
+                let name_byte = index + AbilityName::JMP;
+                let alias_byte = index - AbilityName::JMP;
+
+                let ability_name = AbilityName::from_u8(name_byte).ok_or(format!(
+                    "ability_name: AbilityName::from_u8({name_byte}) failed",
+                ))?;
+
                 let ability_id = make(ability_name);
-                let name_alias =
-                    unsafe { std::mem::transmute::<_, AbilityName>(index - MAX_MATCH) };
+                let name_alias = AbilityName::from_u8(alias_byte).ok_or(format!(
+                    "name_alias: AbilityName::from_u8({alias_byte}) failed",
+                ))?;
+
                 let alias = make(name_alias);
                 if self.map.contains_key(&ability_id) {
                     self.mergevec.insert(DevMergeData {
