@@ -192,6 +192,10 @@ impl StatName {
             StatName::Tenacity => "Tenacity",
         }
     }
+
+    pub const fn from_u8_unchecked(value: u8) -> Self {
+        unsafe { core::mem::transmute(value) }
+    }
 }
 
 impl Display for StatName {

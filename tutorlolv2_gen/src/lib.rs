@@ -589,6 +589,10 @@ impl ItemId {
     pub const fn deals_max_damage(&self) -> bool {
         self.cache().deals_damage.1
     }
+
+    pub const fn price(&self) -> u16 {
+        self.cache().price
+    }
 }
 
 impl RuneId {
