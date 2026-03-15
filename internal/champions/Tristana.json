@@ -1,10 +1,10 @@
 {
   "name": "Tristana",
-  "adaptative_type": "Physical",
+  "adaptive_type": "Physical",
   "attack_type": "Ranged",
   "positions": [
-    "Middle",
-    "Bottom"
+    "Bottom",
+    "Middle"
   ],
   "stats": {
     "health": {
@@ -187,5 +187,6 @@
       }
     ]
   ],
-  "merge_data": []
+  "merge_data": [],
+  "combo": []
 }

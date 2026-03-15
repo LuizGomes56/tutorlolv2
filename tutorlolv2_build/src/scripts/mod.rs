@@ -29,16 +29,22 @@ impl Generator<ItemData> for Item {
     }
 }"#;
 
-pub const TOWER_DAMAGE: &str = r#"const intrinsic TOWER_DAMAGE {
-    damage_type: RiotFormulas::adaptative_type(
+pub const TOWER_DAMAGE: &str = r#"intrinsic TOWER_DAMAGE {
+    damage_type: RiotFormulas::adaptive_type(
         bonus_stats.attack_damage,
         current_stats.ability_power,
     ),
     definition: const fn get_tower_damages(
-        AdaptativeType, 
-        f32, f32, f32, 
-        ResistShred
+        AdaptiveType, 
+        ResistShred, 
+        ...f32
     ) -> [i32; L_TWRD]
+}"#;
+
+pub const IGNITE_FN: &str = r#"fn ignite(level: i32) -> i32 {
+    70 + 20 * level + 5 
+      * if level > 4 { level - 4 } 
+        else { 0 }
 }"#;
 
 pub const TOWER_DAMAGE_FN: &str = r#"fn tower_damage(_: f32, ...) -> i32 {
@@ -57,10 +63,12 @@ pub const TOWER_DAMAGE_FN: &str = r#"fn tower_damage(_: f32, ...) -> i32 {
     base * mult
 }"#;
 
-pub const ONHIT_EFFECT: &str = r#"const intrinsic ONHIT_EFFECT {
-    damage_type: DamageType::Mixed,
+pub const ONHIT_EFFECT: &str = r#"intrinsic ONHIT_EFFECT {
+    damage_type: Mixed,
     definition: const fn eval_attacks(
-        &Ctx, RangeDamage, f32
+        &Ctx, 
+        RangeDamage, 
+        f32
     ) -> Attacks
 };"#;
 
@@ -74,19 +82,19 @@ pub const ONHIT_EFFECT_FN: &str = r#"fn eval_attacks(
 
 pub const CRITICAL_STRIKE: &str = r#"intrinsic CRITICAL_STRIKE {
     attributes: Attrs::OnhitMax,
-    damage_type: DamageType::Physical,
+    damage_type: Physical,
     damage: |ctx| {
-        ctx.ad * ctx.crit_damage / 100.0
+        ctx.ad * ctx.crit_damage / 100
     }
 };"#;
 
 pub const CRITICAL_STRIKE_FN: &str = r#"fn critical_strike(ctx: &Ctx) -> f32 {
-    ctx.ad * ctx.crit_damage / 100.0
+    ctx.ad * ctx.crit_damage / 100
 }"#;
 
 pub const BASIC_ATTACK: &str = r#"intrinsic BASIC_ATTACK {
     attributes: Attrs::OnhitMin,
-    damage_type: DamageType::Physical,
+    damage_type: Physical,
     damage: |ctx| ctx.ad,
 };"#;
 

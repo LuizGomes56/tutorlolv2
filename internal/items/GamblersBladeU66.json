@@ -8,23 +8,13 @@
   "attributes": "Undefined",
   "purchasable": true,
   "damage_type": "Unknown",
-  "prettified_stats": [
-    {
-      "AbilityHaste": 10
-    },
-    {
-      "AdaptiveForce": 55
-    },
-    {
-      "Lethality": 15
-    },
-    {
-      "MagicPenetration": 15
-    },
-    {
-      "MoveSpeed": 15
-    }
-  ],
+  "prettified_stats": {
+    "AbilityHaste": 10,
+    "AdaptiveForce": 55,
+    "Lethality": 15,
+    "MagicPenetration": 15,
+    "MoveSpeed": 15
+  },
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"
@@ -89,7 +79,8 @@
     "omnivamp": {
       "flat": 0.0,
       "percent": 0.0
-    }
+    },
+    "adaptiveForce": 55.0
   },
   "builds_from_riot_ids": [],
   "builds_into_riot_ids": [],

@@ -1,6 +1,6 @@
 {
   "name": "Quinn",
-  "adaptative_type": "Physical",
+  "adaptive_type": "Physical",
   "attack_type": "Ranged",
   "positions": [
     "Top"
@@ -118,5 +118,6 @@
       }
     ]
   ],
-  "merge_data": []
+  "merge_data": [],
+  "combo": []
 }

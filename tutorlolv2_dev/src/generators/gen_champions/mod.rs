@@ -3,13 +3,15 @@ pub(self) use crate::{
     generators::{Generator, gen_decl::decl_champions::*, gen_utils::RegExtractor},
     model::champions::{Ability, Champion},
 };
-pub(self) use tutorlolv2_gen::{AbilityId, ability_name::*, enums::*, eval::*};
-
-macro_rules! dynarr {
-    ($($field:expr),+) => {
-        [$($field.cast()),+]
-    };
-}
+pub(self) use tutorlolv2_gen::{
+    AbilityId,
+    AbilityId::*,
+    AbilityName::*,
+    ComboElement::*,
+    Key,
+    enums::{Attrs::*, DamageType::*},
+    eval::CtxVar::*,
+};
 
 tutorlolv2_macros::expand_dir!("../internal/champions", |Name| {
     pastey::paste! {

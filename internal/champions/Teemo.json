@@ -1,11 +1,11 @@
 {
   "name": "Teemo",
-  "adaptative_type": "Magic",
+  "adaptive_type": "Magic",
   "attack_type": "Ranged",
   "positions": [
-    "Top",
     "Jungle",
-    "Support"
+    "Support",
+    "Top"
   ],
   "stats": {
     "health": {
@@ -220,5 +220,6 @@
       }
     ]
   ],
-  "merge_data": []
+  "merge_data": [],
+  "combo": []
 }

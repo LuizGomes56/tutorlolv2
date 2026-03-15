@@ -5,7 +5,7 @@ use tutorlolv2::{
     model::*,
     *,
 };
-use tutorlolv2_gen::bitset_items;
+use tutorlolv2_gen::bitset;
 
 #[test]
 pub fn test_calculator() {
@@ -17,11 +17,12 @@ pub fn test_calculator() {
         ItemId::NashorsTooth,
         ItemId::LordDominiksRegards,
     ];
-    let items_meta = get_items_data(&bitset_items(ITEMS), AttackType::Melee);
+
+    let items_meta = get_items_data(&bitset!(ITEMS), AttackType::Melee);
     let mut modifiers = Modifiers::default();
 
     let mut stats: Stats<f32> = Stats::default();
-    get_item_bonus_stats(&mut stats, &ITEMS, &mut modifiers);
+    get_item_bonus_stats(&mut 0.0, &mut stats, &ITEMS, &mut modifiers);
 
     const INFER: bool = true;
 
@@ -74,10 +75,10 @@ pub fn test_calculator() {
         max_mana
     });
 
-    const ADAPTATIVE_TYPE: AdaptativeType = {
+    const ADAPTIVE_TYPE: AdaptiveType = {
         let this =
-            RiotFormulas::adaptative_type(BONUS_STATS.attack_damage, CURRENT_STATS.ability_power);
-        let default = CHAMPION_ID.cache().adaptative_type;
+            RiotFormulas::adaptive_type(BONUS_STATS.attack_damage, CURRENT_STATS.ability_power);
+        let default = CHAMPION_ID.cache().adaptive_type;
         match this {
             Some(x) => x,
             None => default,
@@ -91,7 +92,7 @@ pub fn test_calculator() {
         bonus_stats: BONUS_STATS,
         base_stats: BASE_STATS,
         level: LEVEL,
-        adaptative_type: ADAPTATIVE_TYPE,
+        adaptive_type: ADAPTIVE_TYPE,
     };
 
     const SHRED: ResistShred = ResistShred::new(&CURRENT_STATS);

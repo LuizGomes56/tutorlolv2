@@ -1,6 +1,6 @@
 {
   "name": "Nami",
-  "adaptative_type": "Magic",
+  "adaptive_type": "Magic",
   "attack_type": "Ranged",
   "positions": [
     "Support"
@@ -169,5 +169,6 @@
       }
     ]
   ],
-  "merge_data": []
+  "merge_data": [],
+  "combo": []
 }

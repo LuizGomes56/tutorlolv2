@@ -1,10 +1,10 @@
 {
   "name": "Tahm Kench",
-  "adaptative_type": "Magic",
+  "adaptive_type": "Magic",
   "attack_type": "Melee",
   "positions": [
-    "Top",
-    "Support"
+    "Support",
+    "Top"
   ],
   "stats": {
     "health": {
@@ -121,5 +121,6 @@
       }
     ]
   ],
-  "merge_data": []
+  "merge_data": [],
+  "combo": []
 }

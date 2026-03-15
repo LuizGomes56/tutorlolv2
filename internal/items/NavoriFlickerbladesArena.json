@@ -8,17 +8,11 @@
   "attributes": "Undefined",
   "purchasable": true,
   "damage_type": "Unknown",
-  "prettified_stats": [
-    {
-      "AttackSpeed": 35
-    },
-    {
-      "CriticalStrikeChance": 25
-    },
-    {
-      "MoveSpeed": 4
-    }
-  ],
+  "prettified_stats": {
+    "AttackSpeed": 35,
+    "CritChance": 25,
+    "MoveSpeed": 4
+  },
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"
@@ -83,7 +77,8 @@
     "omnivamp": {
       "flat": 0.0,
       "percent": 0.0
-    }
+    },
+    "adaptiveForce": 0.0
   },
   "builds_from_riot_ids": [],
   "builds_into_riot_ids": [],

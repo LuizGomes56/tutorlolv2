@@ -1,11 +1,11 @@
 {
   "name": "Smolder",
-  "adaptative_type": "Physical",
+  "adaptive_type": "Physical",
   "attack_type": "Ranged",
   "positions": [
-    "Top",
+    "Bottom",
     "Middle",
-    "Bottom"
+    "Top"
   ],
   "stats": {
     "health": {
@@ -220,5 +220,6 @@
       }
     ]
   ],
-  "merge_data": []
+  "merge_data": [],
+  "combo": []
 }

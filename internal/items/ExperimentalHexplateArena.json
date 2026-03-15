@@ -8,17 +8,11 @@
   "attributes": "Undefined",
   "purchasable": true,
   "damage_type": "Unknown",
-  "prettified_stats": [
-    {
-      "AttackDamage": 40
-    },
-    {
-      "AttackSpeed": 30
-    },
-    {
-      "Health": 450
-    }
-  ],
+  "prettified_stats": {
+    "AttackDamage": 40,
+    "AttackSpeed": 30,
+    "Health": 450
+  },
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"
@@ -83,7 +77,8 @@
     "omnivamp": {
       "flat": 0.0,
       "percent": 0.0
-    }
+    },
+    "adaptiveForce": 0.0
   },
   "builds_from_riot_ids": [],
   "builds_into_riot_ids": [],

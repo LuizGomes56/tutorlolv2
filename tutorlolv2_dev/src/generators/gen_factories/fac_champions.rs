@@ -17,14 +17,15 @@ use std::{
 };
 use tutorlolv2_fmt::rustfmt;
 use tutorlolv2_gen::{
-    AbilityId, AbilityName, AdaptativeType, AttackType, Attrs, ChampionId, DamageType,
-    DevMergeData, Position,
+    AbilityId, AbilityName, AdaptiveType, AttackType, Attrs, ChampionId, ComboElement, DamageType,
+    DevMergeData, Key, Position,
 };
 
 pub struct ChampionData {
     pub data: MerakiChampion,
     pub map: BTreeMap<AbilityId, Ability>,
     pub mergevec: BTreeSet<DevMergeData>,
+    pub combo: Vec<Vec<ComboElement>>,
 }
 
 /// Struct that creates and runs files that implement the trait [`Generator`].
@@ -75,7 +76,7 @@ impl ChampionFactory {
                 })
                 .collect::<Vec<String>>();
             format!(
-                "self.ability({ability_char}, [{offsets}]);",
+                "self.ability(Key::{ability_char}, [{offsets}]);",
                 offsets = offsets.join(","),
             )
         };
@@ -358,8 +359,9 @@ impl ChampionData {
     pub fn new(data: MerakiChampion) -> Self {
         Self {
             data,
-            map: BTreeMap::new(),
-            mergevec: BTreeSet::new(),
+            map: Default::default(),
+            mergevec: Default::default(),
+            combo: Default::default(),
         }
     }
 
@@ -368,7 +370,7 @@ impl ChampionData {
     pub fn finish(self) -> Champion {
         Champion {
             name: self.data.name,
-            adaptative_type: AdaptativeType::from_str(&self.data.adaptive_type).unwrap_or_default(),
+            adaptive_type: AdaptiveType::from_str(&self.data.adaptive_type).unwrap_or_default(),
             attack_type: AttackType::from_str(&self.data.attack_type).unwrap_or_default(),
             positions: self
                 .data
@@ -379,26 +381,14 @@ impl ChampionData {
             stats: self.data.stats,
             abilities: self.map.into_iter().collect(),
             merge_data: self.mergevec,
+            combo: self.combo,
         }
     }
 
     /// Returns the [`MerakiAbility`] for some [`AbilityId`] and its offset
-    pub fn get_meraki_ability<'a>(
-        &'a self,
-        ability: AbilityId,
-        ability_offset: usize,
-    ) -> &'a MerakiAbility {
-        let abilities = &self.data.abilities;
-        let meraki_abilities = match ability {
-            AbilityId::P(_) => &abilities.p,
-            AbilityId::Q(_) => &abilities.q,
-            AbilityId::W(_) => &abilities.w,
-            AbilityId::E(_) => &abilities.e,
-            AbilityId::R(_) => &abilities.r,
-        };
-        &meraki_abilities[ability_offset]
+    pub fn get_meraki_ability<'a>(&'a self, key: Key, ability_offset: usize) -> &'a MerakiAbility {
+        &self.data.abilities[key][ability_offset]
     }
-
     /// Searchs through the whole [`MerakiAbility`] struct and returns metadata
     /// about the offsets in such vector that likely contain a damaging ability
     pub fn get_ability_offsets(abilities: Vec<MerakiAbility>) -> Vec<MerakiOffset> {
@@ -422,15 +412,17 @@ impl ChampionData {
                         effect: effect_index,
                         leveling: leveling_index,
                         binding: {
+                            const MIN_BOUNDS: u8 = AbilityName::JMP << 1;
                             let enum_match = match bindings {
-                                ..9 => format!("\"_{bindings}\""),
-                                _ => format!("\"_{}Min\"", bindings - 8),
+                                ..AbilityName::JMP => format!("\"_{bindings}\""),
+                                AbilityName::JMP..MIN_BOUNDS => format!("\"_{}Min\"", bindings - 8),
+                                _ => format!("\"_{}Max\"", bindings - MIN_BOUNDS),
                             };
                             serde_json::from_str::<AbilityName>(&enum_match).unwrap()
                         },
                     };
                     fn_args.push(offset);
-                    bindings += 1;
+                    bindings += 1u8;
                 }
             }
         }
@@ -492,7 +484,7 @@ impl ChampionData {
     }
 
     const fn modify_pattern<const N: usize>(
-        ability: AbilityId,
+        key: Key,
         pattern: [(usize, usize, AbilityName); N],
     ) -> [(usize, usize, AbilityId); N] {
         let mut offsets = [(0, 0, AbilityId::P(AbilityName::Void)); N];
@@ -500,34 +492,46 @@ impl ChampionData {
         while i < N {
             let offset = pattern[i];
             let (a, b, c) = offset;
-            offsets[i] = (a, b, ability.from_ability_name(c));
+            offsets[i] = (
+                a,
+                b,
+                match key {
+                    Key::P => AbilityId::P(c),
+                    Key::Q => AbilityId::Q(c),
+                    Key::W => AbilityId::W(c),
+                    Key::E => AbilityId::E(c),
+                    Key::R => AbilityId::R(c),
+                },
+            );
             i += 1;
         }
         offsets
     }
 
     /// Inserts a new ability into [`Self::map`].
-    pub fn insert(&mut self, key: impl Into<AbilityId>, ability: Ability) {
-        self.map.insert(key.into(), ability);
+    pub fn insert(&mut self, key: AbilityId, ability: Ability) {
+        self.map.insert(key, ability);
     }
 
     /// Returns a mutable reference to some key in [`Self::map`],
     /// with custom error message
-    pub fn get_mut(&mut self, key: impl Into<AbilityId>) -> MayFail<&mut Ability> {
-        let field = key.into();
+    pub fn get_mut(&mut self, key: AbilityId) -> MayFail<&mut Ability> {
         Ok(self
             .map
-            .get_mut(&field)
-            .ok_or("[get_mut] Failed to find field: {key:?}".to_string())?)
+            .get_mut(&key)
+            .ok_or(format!("[get_mut] Failed to find key: {key:?}"))?)
     }
 
     /// Returns a reference to some key in [`Self::map`], with custom error message
-    pub fn get(&self, key: impl Into<AbilityId>) -> MayFail<&Ability> {
-        let field = key.into();
+    pub fn get(&self, key: AbilityId) -> MayFail<&Ability> {
         Ok(self
             .map
-            .get(&field)
-            .ok_or(format!("[get] Failed to find field: {field:?}"))?)
+            .get(&key)
+            .ok_or(format!("[get] Failed to find key: {key:?}"))?)
+    }
+
+    pub fn combo<const N: usize>(&mut self, combo: [ComboElement; N]) {
+        self.combo.push(combo.to_vec());
     }
 
     /// Receives some ability key and a pattern of that helps locate where
@@ -536,26 +540,22 @@ impl ChampionData {
     ///
     /// ```rs
     /// self.ability(
-    ///     Q,
+    ///     Key::Q,
     ///     [(0, 0, _1), (0, 1, _1Max), (2, 1, _2)]
     /// )
     /// ```
-    pub fn ability<const N: usize>(
-        &mut self,
-        key: AbilityId,
-        pattern: [(usize, usize, AbilityName); N],
-    ) {
+    pub fn ability<const N: usize>(&mut self, key: Key, pattern: [(usize, usize, AbilityName); N]) {
         let offsets = Self::modify_pattern(key, pattern);
-        self.extract_ability_damage(key.into(), 0, &offsets);
+        self.extract_ability_damage(key, 0, &offsets);
     }
 
     /// Adds the attribute to all abilities in the provided array. If any ability in that
     /// array does not exist in [`Self::map`], this function will fail.
     /// If there's an ability with a different [`AbilityId`] kind, you may want to use the
     /// macro [`dynarr`]
-    pub fn attr<const N: usize>(&mut self, attr: Attrs, set: [impl Into<AbilityId>; N]) -> MayFail {
+    pub fn attr<const N: usize>(&mut self, attr: Attrs, set: [AbilityId; N]) -> MayFail {
         for key in set {
-            self.get_mut(key.into())?.attributes = attr;
+            self.get_mut(key)?.attributes = attr;
         }
         Ok(())
     }
@@ -564,7 +564,7 @@ impl ChampionData {
     /// in the third value of the pattern tuples instead of a full [`AbilityId`] enum
     pub fn extract_ability_damage(
         &mut self,
-        ability: AbilityId,
+        ability: Key,
         ability_offset: usize,
         pattern: &[(usize, usize, AbilityId)],
     ) {
@@ -653,23 +653,29 @@ impl ChampionData {
         for key in keys {
             let index = key.ability_name() as u8;
 
-            const MIN_I: u8 = AbilityName::Min as u8;
-            const MIN_J: u8 = AbilityName::_8Min as u8;
-            const MAX_I: u8 = AbilityName::Max as u8;
-            const MAX_J: u8 = AbilityName::_8Max as u8;
+            let make = match key {
+                AbilityId::P(_) => AbilityId::P,
+                AbilityId::Q(_) => AbilityId::Q,
+                AbilityId::W(_) => AbilityId::W,
+                AbilityId::E(_) => AbilityId::E,
+                AbilityId::R(_) => AbilityId::R,
+            };
 
-            let min_range = MIN_I..=MIN_J;
-            const MAX_MATCH: u8 = 1 + MAX_J - MAX_I;
-
-            let make = key.from_fn();
-
-            if min_range.contains(&index) {
+            if (AbilityName::JMP..=((AbilityName::JMP << 1) - 1)).contains(&index) {
                 let mut found = false;
-                let ability_name =
-                    unsafe { std::mem::transmute::<_, AbilityName>(index + MAX_MATCH) };
+
+                let name_byte = index + AbilityName::JMP;
+                let alias_byte = index - AbilityName::JMP;
+
+                let ability_name = AbilityName::from_u8(name_byte).ok_or(format!(
+                    "ability_name: AbilityName::from_u8({name_byte}) failed",
+                ))?;
+
                 let ability_id = make(ability_name);
-                let name_alias =
-                    unsafe { std::mem::transmute::<_, AbilityName>(index - MAX_MATCH) };
+                let name_alias = AbilityName::from_u8(alias_byte).ok_or(format!(
+                    "name_alias: AbilityName::from_u8({alias_byte}) failed",
+                ))?;
+
                 let alias = make(name_alias);
                 if self.map.contains_key(&ability_id) {
                     self.mergevec.insert(DevMergeData {
@@ -756,21 +762,17 @@ impl ChampionData {
     /// Takes in two fields and returns a mutable reference to a new cloned value, that was
     /// already inserted to [`Self::map`]. The first enum is from where it is being cloned,
     /// and the second one is the new name it will have, and will be identical.
-    pub fn clone_to(
-        &mut self,
-        from: impl Into<AbilityId>,
-        into: impl Into<AbilityId>,
-    ) -> MayFail<&mut Ability> {
-        let clone_from = self.get(from.into())?.clone();
-        let into_key = into.into();
+    pub fn clone_to(&mut self, from: AbilityId, into: AbilityId) -> MayFail<&mut Ability> {
+        let clone_from = self.get(from)?.clone();
+        let into_key = into;
         self.insert(into_key, clone_from);
         self.get_mut(into_key)
     }
 
     /// Associates some damage type to a key in [`Self::map`]. If that key is missing,
     /// this function will fail
-    pub fn damage_type(&mut self, key: impl Into<AbilityId>, damage_type: DamageType) -> MayFail {
-        self.get_mut(key.into())?.damage_type = damage_type;
+    pub fn damage_type(&mut self, key: AbilityId, damage_type: DamageType) -> MayFail {
+        self.get_mut(key)?.damage_type = damage_type;
         Ok(())
     }
 
@@ -794,11 +796,11 @@ impl ChampionData {
     pub fn merge_damage<const N: usize>(
         &self,
         closure: fn([String; N]) -> String,
-        args: [impl Into<AbilityId> + Copy; N],
+        args: [AbilityId; N],
     ) -> MayFail<Vec<String>> {
         let mut sizes = Vec::<usize>::new();
         for arg in args {
-            let result = self.get(arg.into())?;
+            let result = self.get(arg)?;
             sizes.push(result.damage.len());
         }
         assert!(!sizes.is_empty(), "Closure must take at least one argument");
@@ -811,7 +813,7 @@ impl ChampionData {
         for i in 0..len {
             let mut closure_args = std::array::from_fn(|_| String::new());
             for (j, &arg) in args.iter().enumerate() {
-                closure_args[j] = self.get(arg.into())?.damage[i].clone();
+                closure_args[j] = self.get(arg)?.damage[i].clone();
             }
             result.push(closure(closure_args));
         }

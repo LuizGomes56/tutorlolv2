@@ -5,27 +5,21 @@
   "price": 2700,
   "sell": 1890,
   "tier": 3,
-  "attributes": "Undefined",
+  "attributes": "Area",
   "purchasable": true,
-  "damage_type": "Unknown",
-  "prettified_stats": [
-    {
-      "AbilityHaste": 15
-    },
-    {
-      "AbilityPower": 90
-    },
-    {
-      "Mana": 600
-    }
-  ],
+  "damage_type": "Magic",
+  "prettified_stats": {
+    "AbilityHaste": 15,
+    "AbilityPower": 90,
+    "Mana": 600
+  },
   "ranged": {
-    "minimum_damage": "zero",
-    "maximum_damage": "zero"
+    "minimum_damage": "15 + 0.0125 * ctx.ability_power",
+    "maximum_damage": "12 * (15 + 0.0125 * ctx.ability_power)"
   },
   "melee": {
-    "minimum_damage": "zero",
-    "maximum_damage": "zero"
+    "minimum_damage": "15 + 0.0125 * ctx.ability_power",
+    "maximum_damage": "12 * (15 + 0.0125 * ctx.ability_power)"
   },
   "stats": {
     "abilityPower": {
@@ -83,7 +77,8 @@
     "omnivamp": {
       "flat": 0.0,
       "percent": 0.0
-    }
+    },
+    "adaptiveForce": 0.0
   },
   "builds_from_riot_ids": [
     1026,

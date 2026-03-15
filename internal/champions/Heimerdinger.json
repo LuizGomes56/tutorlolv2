@@ -1,11 +1,11 @@
 {
   "name": "Heimerdinger",
-  "adaptative_type": "Magic",
+  "adaptive_type": "Magic",
   "attack_type": "Ranged",
   "positions": [
-    "Top",
     "Middle",
-    "Support"
+    "Support",
+    "Top"
   ],
   "stats": {
     "health": {
@@ -207,5 +207,6 @@
       }
     ]
   ],
-  "merge_data": []
+  "merge_data": [],
+  "combo": []
 }

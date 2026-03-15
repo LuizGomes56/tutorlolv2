@@ -1,6 +1,6 @@
 {
   "name": "Twitch",
-  "adaptative_type": "Physical",
+  "adaptive_type": "Physical",
   "attack_type": "Ranged",
   "positions": [
     "Bottom",
@@ -153,5 +153,6 @@
       }
     ]
   ],
-  "merge_data": []
+  "merge_data": [],
+  "combo": []
 }

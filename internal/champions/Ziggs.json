@@ -1,10 +1,10 @@
 {
   "name": "Ziggs",
-  "adaptative_type": "Magic",
+  "adaptive_type": "Magic",
   "attack_type": "Ranged",
   "positions": [
-    "Middle",
-    "Bottom"
+    "Bottom",
+    "Middle"
   ],
   "stats": {
     "health": {
@@ -185,5 +185,6 @@
       }
     ]
   ],
-  "merge_data": []
+  "merge_data": [],
+  "combo": []
 }

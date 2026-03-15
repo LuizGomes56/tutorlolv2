@@ -7,18 +7,26 @@ pub mod data;
 pub mod enums;
 pub mod eval;
 
-use core::{any::TypeId, mem::MaybeUninit, ops::Index, ops::Range, str::FromStr};
+use core::{
+    any::{Any, TypeId},
+    fmt::Debug,
+    mem::MaybeUninit,
+    ops::{Index, Range},
+    str::FromStr,
+};
 
 #[allow(non_upper_case_globals)]
 pub(crate) const unknown: f32 = 0.0;
-pub(crate) use tutorlolv2_types::ability_name::*;
-
+pub(crate) use crate::{
+    cache::{AttackType::*, Position::*},
+    enums::DamageType::*,
+};
 pub use bitset::*;
 pub use cache::*;
 pub use data::{
     champions::{
-        ABILITY_CLOSURES, ABILITY_FORMULAS, ABILITY_IDENTS, ABILITY_IDENTS_INDEX, CHAMPION_CACHE,
-        CHAMPION_FORMULAS, CHAMPION_NAME_TO_ID, ChampionId, RECOMMENDED_ITEMS, RECOMMENDED_RUNES,
+        ABILITY_CLOSURES, ABILITY_FORMULAS, ABILITY_IDENTS, CHAMPION_CACHE, CHAMPION_FORMULAS,
+        CHAMPION_NAME_TO_ID, ChampionId, RECOMMENDED_ITEMS, RECOMMENDED_RUNES,
     },
     items::{ITEM_CACHE, ITEM_CLOSURES, ITEM_FORMULAS, ITEM_IDENTS, ItemId},
     runes::{RUNE_CACHE, RUNE_CLOSURES, RUNE_FORMULAS, RUNE_IDENTS, RuneId},
@@ -27,6 +35,9 @@ pub use data::{
 pub use enums::{Attrs, DamageType};
 pub use eval::*;
 pub use tutorlolv2_types::*;
+pub(crate) use tutorlolv2_types::{AbilityId::*, AbilityName::*, ComboElement::*};
+
+use crate::data::{champions::CHAMPION_GENERATOR, items::ITEM_GENERATOR};
 
 pub static RAW_BLOCK: &str = include_str!("block.txt");
 const BR_BLOCK: &[u8] = include_bytes!("block.br");
@@ -87,7 +98,7 @@ pub const L_TWRD: usize = 6;
 /// - `price > 0`
 /// - `purchasable`
 pub const SIMULATED_ITEMS_ENUM: [ItemId; L_SIML] = {
-    let mut result = [ItemId::AbyssalMask; _];
+    let mut result: [ItemId; _] = unsafe { core::mem::zeroed() };
     let mut i = 0;
     let mut j = 0;
     while i < ItemId::VARIANTS {
@@ -99,6 +110,17 @@ pub const SIMULATED_ITEMS_ENUM: [ItemId; L_SIML] = {
     }
     result
 };
+
+impl FromStr for ChampionId {
+    type Err = &'static str;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        CHAMPION_NAME_TO_ID
+            .get(s)
+            .copied()
+            .ok_or("No matches when calling ChampionId::from_str")
+    }
+}
 
 /// Contains the metadata of all items that have their stats compared to choose
 /// which one is best to buy considering the current game state. See [`TypeMetadata`]
@@ -154,7 +176,8 @@ pub const NUMBER_OF_DAMAGING_ITEMS: usize = {
     let mut i = 0;
     while i < ItemId::VARIANTS {
         let item = ITEM_CACHE[i];
-        if !item.deals_damage {
+        let (min, max) = item.deals_damage;
+        if min || max {
             sum += 1;
         }
         i += 1;
@@ -165,12 +188,13 @@ pub const NUMBER_OF_DAMAGING_ITEMS: usize = {
 /// A constant array of all items that can damage enemies, holding their internal ids,
 /// defined by the enum [`ItemId`]
 pub const DAMAGING_ITEMS_ARRAY: [ItemId; NUMBER_OF_DAMAGING_ITEMS] = {
-    let mut result = [ItemId::AbyssalMask; _];
+    let mut result: [ItemId; _] = unsafe { core::mem::zeroed() };
     let mut i = 0;
     let mut j = 0;
     while i < ItemId::VARIANTS {
         let item = ITEM_CACHE[i];
-        if item.deals_damage {
+        let (min, max) = item.deals_damage;
+        if min || max {
             result[j] = ItemId::from_repr(i as _).unwrap();
             j += 1;
         }
@@ -182,7 +206,7 @@ pub const DAMAGING_ITEMS_ARRAY: [ItemId; NUMBER_OF_DAMAGING_ITEMS] = {
 /// A constant array of all runes that can damage enemies, holding their internal ids,
 /// defined by the enum [`RuneId`]
 pub const DAMAGING_RUNES_ARRAY: [RuneId; NUMBER_OF_DAMAGING_RUNES] = {
-    let mut result = [RuneId::AbilityHaste; _];
+    let mut result: [RuneId; _] = unsafe { core::mem::zeroed() };
     let mut i = 0;
     let mut j = 0;
     while i < RuneId::VARIANTS {
@@ -196,8 +220,8 @@ pub const DAMAGING_RUNES_ARRAY: [RuneId; NUMBER_OF_DAMAGING_RUNES] = {
     result
 };
 
-pub const DAMAGING_ITEMS: ItemsBitSet = bitset_items(DAMAGING_ITEMS_ARRAY);
-pub const DAMAGING_RUNES: RunesBitSet = bitset_runes(DAMAGING_RUNES_ARRAY);
+pub const DAMAGING_ITEMS: ItemsBitSet = bitset!(DAMAGING_ITEMS_ARRAY);
+pub const DAMAGING_RUNES: RunesBitSet = bitset!(DAMAGING_RUNES_ARRAY);
 
 /// Counts how many damaging abilities ewe have across all champions. This is used to
 /// determine a proper size of how many abilities we should allow to live in the stack
@@ -228,13 +252,12 @@ const _: () = {
     let mut i = 0;
     while i < ChampionId::VARIANTS {
         let champion_id = ChampionId::VALUES[i];
-        let cache = champion_id.cache();
+        let merge_data = champion_id.merge_data();
 
-        let merge_data = cache.merge_data;
-        let len = cache.metadata.len();
+        let len = champion_id.number_of_abilities();
 
         assert!(len == champion_id.closures().len());
-        assert!(len == champion_id.ident_indexes().len());
+        assert!(len == champion_id.idents().len());
 
         let mut j = 0;
         while j < merge_data.len() {
@@ -249,6 +272,24 @@ const _: () = {
             }
             j += 1;
         }
+
+        let mut k = 0;
+
+        let combos = champion_id.combos();
+        while k < combos.len() {
+            let combo = combos[k];
+            let mut l = 0;
+            while l < combo.len() {
+                let element = combo[l];
+
+                if let Ability(ability_id) = element {
+                    assert!(champion_id.index_of_ability(ability_id).is_some());
+                }
+                l += 1;
+            }
+            k += 1;
+        }
+
         i += 1;
     }
 };
@@ -286,16 +327,73 @@ impl ChampionId {
     pub const CLOSURES: &[&[Range<usize>]; Self::VARIANTS] = &ABILITY_CLOSURES;
     pub const ABILITIES: &[&[Range<usize>]; Self::VARIANTS] = &ABILITY_FORMULAS;
 
+    pub const IRML: usize = {
+        let mut i = 0;
+        let mut max = 0;
+        while i < Self::VARIANTS {
+            let mut j = 0;
+            let champion_id = Self::VALUES[i];
+            while j < Position::VARIANTS as usize {
+                let position = Position::ARRAY[j];
+                let data = champion_id.recommended_items(position);
+                if data.len() > max {
+                    max = data.len();
+                }
+                j += 1;
+            }
+            i += 1;
+        }
+        max
+    };
+
+    pub const fn exceptions(&self, ally: bool) -> Option<Key> {
+        match ally {
+            true => match self {
+                ChampionId::AurelionSol
+                | ChampionId::Bard
+                | ChampionId::Belveth
+                | ChampionId::Graves
+                | ChampionId::Hecarim
+                | ChampionId::Kalista
+                | ChampionId::Kindred
+                | ChampionId::Senna
+                | ChampionId::Shyvana
+                | ChampionId::Sion
+                | ChampionId::Smolder
+                | ChampionId::Swain
+                | ChampionId::Thresh
+                | ChampionId::Veigar => Some(Key::P),
+                ChampionId::Nasus => Some(Key::Q),
+                ChampionId::Darius => Some(Key::E),
+                ChampionId::Chogath => Some(Key::R),
+                _ => None,
+            },
+            false => match self {
+                Self::Graves | Self::Sion | Self::Swain | Self::Thresh => Some(Key::P),
+                Self::Chogath => Some(Key::R),
+                _ => None,
+            },
+        }
+    }
+
+    pub const fn abilities(&self) -> &'static [TypeMetadata<AbilityId>] {
+        self.cache().metadata
+    }
+
+    pub const fn merge_data(&self) -> &'static [MergeData] {
+        self.cache().merge_data
+    }
+
     pub const fn number_of_abilities(&self) -> usize {
         self.cache().closures.len()
     }
 
     pub const fn recommended_items(&self, position: Position) -> &'static [ItemId] {
-        RECOMMENDED_ITEMS[self.index()][position as usize]
+        RECOMMENDED_ITEMS[self.index()][position.index()]
     }
 
     pub const fn recommended_runes(&self, position: Position) -> &'static [RuneId] {
-        RECOMMENDED_RUNES[self.index()][position as usize]
+        RECOMMENDED_RUNES[self.index()][position.index()]
     }
 
     pub const fn positions(&self) -> &'static [Position] {
@@ -310,10 +408,6 @@ impl ChampionId {
         Self::CLOSURES[self.index()]
     }
 
-    pub const fn ident_indexes(&self) -> &'static [Range<usize>] {
-        ABILITY_IDENTS_INDEX[self.index()]
-    }
-
     pub const fn ability_formulas(&self) -> &'static [Range<usize>] {
         ABILITY_FORMULAS[self.index()]
     }
@@ -321,7 +415,85 @@ impl ChampionId {
     pub const fn get_ability_formula(&self, index: usize) -> &'static Range<usize> {
         &self.ability_formulas()[index]
     }
+
+    pub const fn generator(&self) -> &'static Range<usize> {
+        &CHAMPION_GENERATOR[self.index()]
+    }
+
+    pub const fn idents(&self) -> &'static [&'static [CtxVar]] {
+        ABILITY_IDENTS[self.index()]
+    }
+
+    pub const fn combos(&self) -> &'static [&'static [ComboElement]] {
+        self.cache().combos
+    }
+
+    pub const fn index_of_ability(&self, ability_id: AbilityId) -> Option<usize> {
+        let mut i = 0;
+        while i < self.number_of_abilities() {
+            if self.abilities()[i].kind.const_eq(ability_id) {
+                return Some(i);
+            }
+            i += 1;
+        }
+        return None;
+    }
 }
+
+macro_rules! impl_item_filters {
+    ($($name:ident),+$(,)?) => {
+        impl ItemId {
+            pastey::paste! {
+                pub const FILTERS: [&[Self]; StatName::VARIANTS] = [
+                    $(
+                        &Self::[<ITEMS_WITH_ $name:snake:upper>],
+                    )+
+                ];
+
+                $(
+                    pub const [<ITEMS_WITH_ $name:snake:upper>]: [Self; Self::count_variants(StatName::$name)] =
+                        Self::find_variants(StatName::$name);
+                )+
+            }
+        }
+    };
+}
+
+impl_item_filters! {
+    AbilityHaste,
+    AbilityPower,
+    AdaptiveForce,
+    Armor,
+    ArmorPenetration,
+    AttackDamage,
+    AttackSpeed,
+    BaseHealthRegen,
+    BaseManaRegen,
+    CritChance,
+    CritDamage,
+    GoldPer10Seconds,
+    HealAndShieldPower,
+    Health,
+    Lethality,
+    LifeSteal,
+    MagicPenetration,
+    MagicResist,
+    Mana,
+    MoveSpeed,
+    Omnivamp,
+    Tenacity,
+}
+
+const _: () = {
+    let mut i = 0;
+    while i < ItemId::VARIANTS {
+        let item = ItemId::VALUES[i];
+        if item.deals_max_damage() {
+            assert!(item.deals_damage());
+        }
+        i += 1;
+    }
+};
 
 impl ItemId {
     pub const CLOSURES: &[Range<usize>; Self::VARIANTS] = &ITEM_CLOSURES;
@@ -336,12 +508,113 @@ impl ItemId {
         result
     };
 
+    pub const ALLY_EXCEPTIONS: [Self; 13] = [
+        Self::DarkSeal,
+        Self::DragonheartU44,
+        Self::DemonKingsCrownU44,
+        Self::DemonKingsCrownU66,
+        Self::RiteOfRuin,
+        Self::MejaisSoulstealer,
+        Self::Hubris6697,
+        Self::Hubris126697,
+        Self::HubrisArena,
+        Self::BloodlettersCurse4010,
+        Self::BloodlettersCurse8010,
+        Self::BlackCleaver,
+        Self::BlackCleaverArena,
+    ];
+
+    pub const ENEMY_EXCEPTIONS: [Self; 3] = [
+        Self::DragonheartU44,
+        Self::DemonKingsCrownU44,
+        Self::DemonKingsCrownU66,
+    ];
+
+    pub const SIZE_OF_EXCEPTIONS: usize = max_usize(
+        bitset_size(bitset!(ItemId::ALLY_EXCEPTIONS => [usize])),
+        bitset_size(bitset!(ItemId::ENEMY_EXCEPTIONS => [usize])),
+    );
+
+    pub const fn damage_type(&self) -> DamageType {
+        self.cache().metadata.damage_type
+    }
+
+    pub const fn exceptions(ally: bool) -> ItemsExcSet {
+        match ally {
+            true => bitset!(ItemId::ALLY_EXCEPTIONS),
+            false => bitset!(ItemId::ENEMY_EXCEPTIONS),
+        }
+    }
+
+    pub const fn has_stat(&self, stat_name: StatName) -> bool {
+        let mut i = 0;
+        let stats = self.cache().prettified_stats;
+        while i < stats.len() {
+            if stats[i].0 as u8 == stat_name as u8 {
+                return true;
+            }
+            i += 1;
+        }
+        false
+    }
+
+    pub const fn find_variants<const N: usize>(stat_name: StatName) -> [ItemId; N] {
+        let mut i = 0;
+        let mut j = 0;
+        let mut result: [ItemId; _] = unsafe { core::mem::zeroed() };
+        while i < Self::VARIANTS {
+            let item = Self::VALUES[i];
+            if item.has_stat(stat_name) {
+                result[j] = item;
+                j += 1;
+            }
+            i += 1;
+        }
+        result
+    }
+
+    pub const fn filter(stat_name: StatName) -> &'static [Self] {
+        Self::FILTERS[stat_name as usize]
+    }
+
     pub const fn to_riot_id(&self) -> u32 {
         self.cache().riot_id
     }
 
     pub const fn closure(&self) -> &'static Range<usize> {
         &Self::CLOSURES[self.index()]
+    }
+
+    pub const fn generator(&self) -> &'static Range<usize> {
+        &ITEM_GENERATOR[self.index()]
+    }
+
+    pub const fn count_variants(stat_name: StatName) -> usize {
+        let mut result = 0;
+        let mut i = 0;
+        while i < Self::VARIANTS {
+            if Self::VALUES[i].has_stat(stat_name) {
+                result += 1;
+            }
+            i += 1;
+        }
+        result
+    }
+
+    pub const fn idents(&self) -> &'static [CtxVar] {
+        ITEM_IDENTS[self.index()]
+    }
+
+    pub const fn deals_damage(&self) -> bool {
+        self.cache().deals_damage.0
+    }
+
+    pub const fn deals_max_damage(&self) -> bool {
+        self.cache().deals_damage.1
+    }
+
+    pub const fn price(&self) -> u16 {
+        self.cache().price
     }
 }
 
@@ -358,12 +631,39 @@ impl RuneId {
         result
     };
 
+    pub const EXCEPTIONS: [Self; 14] = [
+        Self::AbsorbLife,
+        Self::Conqueror,
+        Self::DeepWard,
+        Self::EyeballCollection,
+        Self::GhostPoro,
+        Self::GrislyMementos,
+        Self::GatheringStorm,
+        Self::GraspOfTheUndying,
+        Self::LethalTempo,
+        Self::LegendAlacrity,
+        Self::LegendBloodline,
+        Self::LegendHaste,
+        Self::ManaflowBand,
+        Self::ZombieWard,
+    ];
+
+    pub const SIZE_OF_EXCEPTIONS: usize = bitset_size(bitset!(RuneId::EXCEPTIONS => [usize]));
+
+    pub const fn exceptions() -> RunesExcSet {
+        bitset!(RuneId::EXCEPTIONS)
+    }
+
     pub const fn to_riot_id(&self) -> u32 {
         self.cache().riot_id
     }
 
     pub const fn closure(&self) -> &'static Range<usize> {
         &Self::CLOSURES[self.index()]
+    }
+
+    pub const fn idents(&self) -> &'static [CtxVar] {
+        RUNE_IDENTS[self.index()]
     }
 }
 
@@ -424,7 +724,7 @@ macro_rules! impl_methods {
                 impl $stru {
                     pub const VALUES: [Self; Self::VARIANTS] = {
                         let mut i = 0;
-                        let mut result = [Self::default(); _];
+                        let mut result: [Self; _] = unsafe { core::mem::zeroed() };
                         while i < Self::VARIANTS {
                             result[i] = Self::from_repr(i as _).unwrap();
                             i += 1;
@@ -434,12 +734,12 @@ macro_rules! impl_methods {
 
                     pub const NAMES: [&str; Self::VARIANTS] = {
                         let mut i = 0;
-                        let mut result = [""; _];
+                        let mut result: [*const str; Self::VARIANTS] = unsafe { core::mem::zeroed() };
                         while i < Self::VARIANTS {
-                            result[i] = Self::VALUES[i].name();
+                            result[i] = Self::VALUES[i].name() as *const _;
                             i += 1;
                         }
-                        result
+                        unsafe { core::mem::transmute(result) }
                     };
 
                     pub const FORMULAS: &[Range<usize>; Self::VARIANTS] = &[<$stru:replace("Id", ""):upper _FORMULAS>];
@@ -470,11 +770,9 @@ macro_rules! impl_methods {
                     pub const fn index(&self) -> usize {
                         *self as _
                     }
-
-                    pub const fn idents(&self) -> &'static [CtxVar] {
-                        [<$stru:replace("Id", ""):replace("Champion", "Ability"):upper _IDENTS>][self.index()]
-                    }
                 }
+
+                impl Sealed for $stru {}
 
                 impl CastId for $stru {
                     const VARIANTS: usize = Self::VARIANTS;
@@ -482,16 +780,16 @@ macro_rules! impl_methods {
                     const VALUES: &'static [Self] = &Self::VALUES;
                     const FORMULAS: &'static [Range<usize>] = Self::FORMULAS;
 
+                    fn entity(&self) -> EntityId {
+                        EntityId::[<$stru:replace("Id", "")>](*self)
+                    }
+
                     fn name(&self) -> &'static str {
                         self.name()
                     }
 
                     fn index(&self) -> usize {
                         self.index()
-                    }
-
-                    fn idents(&self) -> &'static [CtxVar] {
-                        self.idents()
                     }
                 }
             )+
@@ -507,35 +805,52 @@ impl_methods!(
 
 pub const ZEROED_STATS: CachedItemStats = CachedItemStats {
     ability_power: 0.0,
+    adaptive_force: 0.0,
     armor: 0.0,
-    armor_penetration_percent: 0.0,
     armor_penetration_flat: 0.0,
-    magic_penetration_percent: 0.0,
-    magic_penetration_flat: 0.0,
+    armor_penetration_percent: 0.0,
     attack_damage: 0.0,
     attack_speed: 0.0,
     crit_chance: 0.0,
     crit_damage: 0.0,
     health: 0.0,
     lifesteal: 0.0,
+    magic_penetration_flat: 0.0,
+    magic_penetration_percent: 0.0,
     magic_resist: 0.0,
     mana: 0.0,
     movespeed: 0.0,
     omnivamp: 0.0,
 };
 
+#[derive(Copy, Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+pub enum EntityId {
+    Champion(ChampionId),
+    Item(ItemId),
+    Rune(RuneId),
+}
+
+impl<T: CastId> From<T> for EntityId {
+    fn from(value: T) -> Self {
+        value.entity()
+    }
+}
+
+trait Sealed {}
+
+#[allow(private_bounds)]
 pub trait CastId
 where
-    Self: Sized + 'static,
+    Self: Any + Copy + Debug + Sealed + Sized + 'static,
 {
     const VARIANTS: usize;
     const NAMES: &'static [&'static str];
     const VALUES: &'static [Self];
     const FORMULAS: &'static [Range<usize>];
 
+    fn entity(&self) -> EntityId;
     fn name(&self) -> &'static str;
     fn index(&self) -> usize;
-    fn idents(&self) -> &'static [CtxVar];
     fn formula(&self) -> &'static Range<usize> {
         &Self::FORMULAS[self.index()]
     }

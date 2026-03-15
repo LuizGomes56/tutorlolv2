@@ -8,17 +8,11 @@
   "attributes": "Undefined",
   "purchasable": true,
   "damage_type": "Unknown",
-  "prettified_stats": [
-    {
-      "AbilityPower": 45
-    },
-    {
-      "Health": 350
-    },
-    {
-      "Mana": 500
-    }
-  ],
+  "prettified_stats": {
+    "AbilityPower": 45,
+    "Health": 350,
+    "Mana": 500
+  },
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"
@@ -83,7 +77,8 @@
     "omnivamp": {
       "flat": 0.0,
       "percent": 0.0
-    }
+    },
+    "adaptiveForce": 0.0
   },
   "builds_from_riot_ids": [
     1026,

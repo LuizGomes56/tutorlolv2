@@ -88,7 +88,7 @@ pub const fn get_items_data_const<const N: usize, const L: usize>(
 ///             bonus_stats: BasicStats::default(),
 ///             base_stats: BasicStats::default(),
 ///             level: 18,
-///             adaptative_type: AdaptativeType::Magic,
+///             adaptive_type: AdaptiveType::Magic,
 ///         },
 ///         &tutorlolv2::helpers::get_enemy_state(
 ///             EnemyState {

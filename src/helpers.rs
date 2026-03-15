@@ -15,7 +15,7 @@
 //! want to do it, you can use the [`crate::const_eval`] module to
 //! do it
 
-use crate::{calculator::MONSTER_RESISTS, model::*};
+use crate::model::*;
 use alloc::boxed::Box;
 use core::{mem::MaybeUninit, ops::RangeInclusive};
 use tutorlolv2_gen::*;
@@ -166,14 +166,14 @@ pub const fn get_simulated_stats(stats: &Stats<f32>, dragons: Dragons) -> [Stats
         new_stat.max_health += cache.health;
         new_stat.armor += cache.armor;
         new_stat.max_mana += cache.mana;
-        new_stat.armor_penetration_percent = RiotFormulas::percent_value(&[
+        new_stat.armor_penetration_percent = RiotFormulas::combine_percentage(
             new_stat.armor_penetration_percent,
             cache.armor_penetration_percent,
-        ]);
-        new_stat.magic_penetration_percent = RiotFormulas::percent_value(&[
+        );
+        new_stat.magic_penetration_percent = RiotFormulas::combine_percentage(
             new_stat.magic_penetration_percent,
             cache.magic_penetration_percent,
-        ]);
+        );
 
         let earth_mod = RiotFormulas::get_earth_multiplier(dragons.ally_earth_dragons);
         let fire_mod = RiotFormulas::get_fire_multiplier(dragons.ally_fire_dragons);
@@ -527,7 +527,7 @@ pub const fn get_eval_ctx(self_state: &SelfState, e_state: &EnemyFullState) -> C
                 max_mana: base_mana,
             },
         level,
-        adaptative_type,
+        adaptive_type,
     } = *self_state;
     let EnemyFullState {
         current_stats:
@@ -594,9 +594,9 @@ pub const fn get_eval_ctx(self_state: &SelfState, e_state: &EnemyFullState) -> C
         missing_health: RiotFormulas::missing_health(current_health, max_health),
         ability_power,
         attack_damage,
-        adaptative_damage: match adaptative_type {
-            AdaptativeType::Physical => armor_values.modifier,
-            AdaptativeType::Magic => magic_values.modifier,
+        adaptive_damage: match adaptive_type {
+            AdaptiveType::Physical => armor_values.modifier,
+            AdaptiveType::Magic => magic_values.modifier,
         },
         steelcaps_effect: match steelcaps {
             true => RiotFormulas::STEEL_CAPS_PROTECTION,
@@ -788,17 +788,6 @@ const _: () = {
         assert!(metadata.len() == closures.len());
         i += 1;
     }
-    let mut j = 0;
-    while j < ItemId::VARIANTS {
-        let item_id = ItemId::from_usize(j).unwrap();
-        let CachedItem {
-            melee_damages: melee_closure,
-            ranged_damages: range_closure,
-            ..
-        } = item_id.cache();
-        assert!(melee_closure.len() == range_closure.len());
-        j += 1;
-    }
 };
 
 /// Constructs a new [`Damages`] struct that holds all the damage values against some entity
@@ -848,7 +837,7 @@ pub fn get_monster_damages(
     shred: ResistShred,
 ) -> [Damages; L_MSTR] {
     core::array::from_fn(|i| {
-        let (armor, magic_resist) = MONSTER_RESISTS[i];
+        let (armor, magic_resist) = RiotFormulas::MONSTER_RESISTS[i];
         let full_state = get_enemy_state(
             EnemyState {
                 base_stats: SimpleStats {
@@ -871,7 +860,7 @@ pub fn get_monster_damages(
 /// The array has 6 ([`L_TWRD`]) elements because a tower can have zero,
 /// or up to 5 plates
 pub const fn get_tower_damages(
-    adaptative_type: AdaptativeType,
+    adaptive_type: AdaptiveType,
     base_attack_damage: f32,
     bonus_attack_damage: f32,
     ability_power: f32,
@@ -881,12 +870,12 @@ pub const fn get_tower_damages(
     let tower_ptr = tower_damages.as_mut_ptr();
     let mut i = 0;
 
-    let (pen_percent, pen_flat) = match adaptative_type {
-        AdaptativeType::Physical => (
+    let (pen_percent, pen_flat) = match adaptive_type {
+        AdaptiveType::Physical => (
             shred.armor_penetration_percent,
             shred.armor_penetration_flat,
         ),
-        AdaptativeType::Magic => (
+        AdaptiveType::Magic => (
             shred.magic_penetration_percent,
             shred.magic_penetration_flat,
         ),

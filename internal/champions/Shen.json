@@ -1,10 +1,10 @@
 {
   "name": "Shen",
-  "adaptative_type": "Physical",
+  "adaptive_type": "Physical",
   "attack_type": "Melee",
   "positions": [
-    "Top",
-    "Support"
+    "Support",
+    "Top"
   ],
   "stats": {
     "health": {
@@ -224,5 +224,6 @@
       }
     ]
   ],
-  "merge_data": []
+  "merge_data": [],
+  "combo": []
 }

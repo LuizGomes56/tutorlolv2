@@ -8,44 +8,20 @@
   "attributes": "Undefined",
   "purchasable": false,
   "damage_type": "Unknown",
-  "prettified_stats": [
-    {
-      "AbilityHaste": 20
-    },
-    {
-      "AbilityPower": 125
-    },
-    {
-      "Armor": 10
-    },
-    {
-      "AttackDamage": 90
-    },
-    {
-      "AttackSpeed": 30
-    },
-    {
-      "BaseHealthRegen": 100
-    },
-    {
-      "BaseManaRegen": 100
-    },
-    {
-      "CriticalStrikeChance": 25
-    },
-    {
-      "Health": 250
-    },
-    {
-      "LifeSteal": 10
-    },
-    {
-      "MagicResist": 10
-    },
-    {
-      "Mana": 250
-    }
-  ],
+  "prettified_stats": {
+    "AbilityHaste": 20,
+    "AbilityPower": 125,
+    "Armor": 10,
+    "AttackDamage": 90,
+    "AttackSpeed": 30,
+    "BaseHealthRegen": 100,
+    "BaseManaRegen": 100,
+    "CritChance": 25,
+    "Health": 250,
+    "LifeSteal": 10,
+    "MagicResist": 10,
+    "Mana": 250
+  },
   "ranged": {
     "minimum_damage": "zero",
     "maximum_damage": "zero"
@@ -110,7 +86,8 @@
     "omnivamp": {
       "flat": 0.0,
       "percent": 0.0
-    }
+    },
+    "adaptiveForce": 0.0
   },
   "builds_from_riot_ids": [],
   "builds_into_riot_ids": [],

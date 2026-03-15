@@ -1,10 +1,10 @@
 {
   "name": "Vayne",
-  "adaptative_type": "Physical",
+  "adaptive_type": "Physical",
   "attack_type": "Ranged",
   "positions": [
-    "Top",
-    "Bottom"
+    "Bottom",
+    "Top"
   ],
   "stats": {
     "health": {
@@ -204,5 +204,6 @@
       }
     ]
   ],
-  "merge_data": []
+  "merge_data": [],
+  "combo": []
 }

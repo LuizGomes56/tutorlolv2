@@ -1,6 +1,6 @@
 {
   "name": "Kha'Zix",
-  "adaptative_type": "Physical",
+  "adaptive_type": "Physical",
   "attack_type": "Melee",
   "positions": [
     "Jungle"
@@ -86,5 +86,6 @@
       }
     ]
   ],
-  "merge_data": []
+  "merge_data": [],
+  "combo": []
 }

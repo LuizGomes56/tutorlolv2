@@ -1,10 +1,10 @@
 {
   "name": "Udyr",
-  "adaptative_type": "Physical",
+  "adaptive_type": "Physical",
   "attack_type": "Melee",
   "positions": [
-    "Top",
-    "Jungle"
+    "Jungle",
+    "Top"
   ],
   "stats": {
     "health": {
@@ -160,5 +160,6 @@
       }
     ]
   ],
-  "merge_data": []
+  "merge_data": [],
+  "combo": []
 }

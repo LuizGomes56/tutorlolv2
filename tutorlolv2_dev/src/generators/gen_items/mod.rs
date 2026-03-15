@@ -5,9 +5,15 @@ pub(self) use crate::{
         gen_utils::RegExtractor,
     },
 };
-pub(self) use tutorlolv2_gen::{ItemId, enums::*, eval::*};
+pub(self) use tutorlolv2_gen::{
+    ItemId,
+    enums::{Attrs::*, DamageType::*},
+    eval::CtxVar::*,
+};
 
 pub mod blade_of_the_ruined_king;
 pub mod blade_of_the_ruined_king_arena;
+pub mod malignance;
+pub mod malignance_arena;
 pub mod nashors_tooth;
 pub mod nashors_tooth_arena;

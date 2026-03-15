@@ -14,7 +14,7 @@ tutorlolv2 = { path = "." }
 tutorlolv2_dev = { path = "tutorlolv2_dev" }
 tutorlolv2_build = { path = "tutorlolv2_build" }
 tutorlolv2_gen = { path = "tutorlolv2_gen" }
-# tutorlolv2_html = { path = "tutorlolv2_html" }
+tutorlolv2_html = { path = "tutorlolv2_html" }
 tokio = { version = "1.49.0", features = ["full"] }
 
 # [workspace]

@@ -1,6 +1,6 @@
 use serde::Deserialize;
 use std::collections::{BTreeMap, BTreeSet};
-use tutorlolv2_types::{AbilityId, DevMergeData, StatName};
+use tutorlolv2_types::{AbilityId, ComboElement, DevMergeData, StatName};
 
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -55,12 +55,14 @@ pub struct Ability {
 #[derive(Deserialize)]
 pub struct Champion {
     pub name: String,
-    pub adaptative_type: String,
+    pub adaptive_type: String,
     pub attack_type: String,
-    pub positions: BTreeSet<String>,
+    pub positions: Vec<String>,
     pub stats: MerakiChampionStats,
     pub abilities: Vec<(AbilityId, Ability)>,
     pub merge_data: BTreeSet<DevMergeData>,
+    #[serde(default)]
+    pub combo: Vec<Vec<ComboElement>>,
 }
 
 #[derive(Deserialize)]
@@ -90,6 +92,7 @@ pub struct ItemStats {
     pub mana: MerakiItemStatMap,
     pub movespeed: MerakiItemStatMap,
     pub omnivamp: MerakiItemStatMap,
+    pub adaptive_force: f64,
 }
 
 #[derive(Deserialize)]
@@ -104,7 +107,7 @@ pub struct Item {
     pub name: String,
     pub price: usize,
     pub tier: u8,
-    pub prettified_stats: BTreeSet<StatName>,
+    pub prettified_stats: BTreeMap<StatName, u16>,
     pub damage_type: String,
     pub stats: ItemStats,
     pub ranged: DamageObject,

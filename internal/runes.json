@@ -1,21 +1,21 @@
 {
     "8005": {
         "name": "Press The Attack",
-        "damage_type": "Adaptative",
-        "melee": "(40 + ((120 / 17) * (ctx.level - 1))) * ctx.adaptative_damage",
-        "ranged": "(40 + ((120 / 17) * (ctx.level - 1))) * ctx.adaptative_damage"
+        "damage_type": "Adaptive",
+        "melee": "(40 + ((120 / 17) * (ctx.level - 1))) * ctx.adaptive_damage",
+        "ranged": "(40 + ((120 / 17) * (ctx.level - 1))) * ctx.adaptive_damage"
     },
     "8112": {
         "name": "Electrocute",
-        "damage_type": "Adaptative",
-        "melee": "(30 + ((190 / 17) * (ctx.level - 1)) + (0.1 * ctx.bonus_ad) + (0.05 * ctx.ability_power)) * ctx.adaptative_damage",
-        "ranged": "(30 + ((190 / 17) * (ctx.level - 1)) + (0.1 * ctx.bonus_ad) + (0.05 * ctx.ability_power)) * ctx.adaptative_damage"
+        "damage_type": "Adaptive",
+        "melee": "(30 + ((190 / 17) * (ctx.level - 1)) + (0.1 * ctx.bonus_ad) + (0.05 * ctx.ability_power)) * ctx.adaptive_damage",
+        "ranged": "(30 + ((190 / 17) * (ctx.level - 1)) + (0.1 * ctx.bonus_ad) + (0.05 * ctx.ability_power)) * ctx.adaptive_damage"
     },
     "8124": {
         "name": "Predator",
-        "damage_type": "Adaptative",
-        "melee": "(20 + ((160 / 17) * (ctx.level - 1)) + ((0.25 * ctx.bonus_ad + 0.15 * ctx.ability_power))) * ctx.adaptative_damage",
-        "ranged": "(20 + ((160 / 17) * (ctx.level - 1)) + ((0.25 * ctx.bonus_ad + 0.15 * ctx.ability_power))) * ctx.adaptative_damage"
+        "damage_type": "Adaptive",
+        "melee": "(20 + ((160 / 17) * (ctx.level - 1)) + ((0.25 * ctx.bonus_ad + 0.15 * ctx.ability_power))) * ctx.adaptive_damage",
+        "ranged": "(20 + ((160 / 17) * (ctx.level - 1)) + ((0.25 * ctx.bonus_ad + 0.15 * ctx.ability_power))) * ctx.adaptive_damage"
     },
     "8126": {
         "name": "Cheap Shot",
@@ -25,9 +25,9 @@
     },
     "8128": {
         "name": "Dark Harvest",
-        "damage_type": "Adaptative",
-        "melee": "(20 + ((60 / 17) * (ctx.level - 1)) + (0.1 * ctx.bonus_ad) + (0.05 * ctx.ability_power)) * ctx.adaptative_damage",
-        "ranged": "(20 + ((60 / 17) * (ctx.level - 1)) + (0.1 * ctx.bonus_ad) + (0.05 * ctx.ability_power)) * ctx.adaptative_damage"
+        "damage_type": "Adaptive",
+        "melee": "(20 + ((60 / 17) * (ctx.level - 1)) + (0.1 * ctx.bonus_ad) + (0.05 * ctx.ability_power)) * ctx.adaptive_damage",
+        "ranged": "(20 + ((60 / 17) * (ctx.level - 1)) + (0.1 * ctx.bonus_ad) + (0.05 * ctx.ability_power)) * ctx.adaptive_damage"
     },
     "8143": {
         "name": "Sudden Impact",
@@ -37,15 +37,15 @@
     },
     "8214": {
         "name": "Summon Aery",
-        "damage_type": "Adaptative",
-        "melee": "(10 + ((40 / 17) * (ctx.level - 1)) + (0.1 * ctx.bonus_ad) + (0.05 * ctx.ability_power)) * ctx.adaptative_damage",
-        "ranged": "(10 + ((40 / 17) * (ctx.level - 1)) + (0.1 * ctx.bonus_ad) + (0.05 * ctx.ability_power)) * ctx.adaptative_damage"
+        "damage_type": "Adaptive",
+        "melee": "(10 + ((40 / 17) * (ctx.level - 1)) + (0.1 * ctx.bonus_ad) + (0.05 * ctx.ability_power)) * ctx.adaptive_damage",
+        "ranged": "(10 + ((40 / 17) * (ctx.level - 1)) + (0.1 * ctx.bonus_ad) + (0.05 * ctx.ability_power)) * ctx.adaptive_damage"
     },
     "8229": {
         "name": "Arcane Comet",
-        "damage_type": "Adaptative",
-        "melee": "(30 + ((100 / 17) * (ctx.level - 1)) + ((0.1 * ctx.bonus_ad) + (0.05 * ctx.ability_power))) * ctx.adaptative_damage",
-        "ranged": "(30 + ((100 / 17) * (ctx.level - 1)) + ((0.1 * ctx.bonus_ad) + (0.05 * ctx.ability_power))) * ctx.adaptative_damage"
+        "damage_type": "Adaptive",
+        "melee": "(30 + ((100 / 17) * (ctx.level - 1)) + ((0.1 * ctx.bonus_ad) + (0.05 * ctx.ability_power))) * ctx.adaptive_damage",
+        "ranged": "(30 + ((100 / 17) * (ctx.level - 1)) + ((0.1 * ctx.bonus_ad) + (0.05 * ctx.ability_power))) * ctx.adaptive_damage"
     },
     "8237": {
         "name": "Scorch",
@@ -61,7 +61,7 @@
     },
     "8439": {
         "name": "Aftershock",
-        "damage_type": "Adaptative",
+        "damage_type": "Adaptive",
         "melee": "(25 + ((95 / 17) * (ctx.level - 1)) + (0.08 * ctx.bonus_health)) * ctx.magic_multiplier",
         "ranged": "(25 + ((95 / 17) * (ctx.level - 1)) + (0.08 * ctx.bonus_health)) * ctx.magic_multiplier"
     }

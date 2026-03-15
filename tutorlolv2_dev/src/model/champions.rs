@@ -1,10 +1,12 @@
 use serde::{Deserialize, Serialize};
 use std::{
     collections::{BTreeMap, BTreeSet},
+    ops::Index,
     str::FromStr,
 };
 use tutorlolv2_gen::{
-    AbilityId, AdaptativeType, AttackType, Attrs, DamageType, DevMergeData, Position,
+    AbilityId, AdaptiveType, AttackType, Attrs, ComboElement, DamageType, DevMergeData, Key,
+    Position,
 };
 
 #[derive(Deserialize, Serialize)]
@@ -59,6 +61,20 @@ pub struct Abilities {
     pub r: Vec<MerakiAbility>,
 }
 
+impl Index<Key> for Abilities {
+    type Output = Vec<MerakiAbility>;
+
+    fn index(&self, index: Key) -> &Self::Output {
+        match index {
+            Key::P => &self.p,
+            Key::Q => &self.q,
+            Key::W => &self.w,
+            Key::E => &self.e,
+            Key::R => &self.r,
+        }
+    }
+}
+
 impl Abilities {
     pub fn into_iter(self) -> impl Iterator<Item = (char, Vec<MerakiAbility>)> {
         [
@@ -92,10 +108,11 @@ impl MerakiChampion {
         self,
         abilities: BTreeMap<AbilityId, Ability>,
         merge_data: BTreeSet<DevMergeData>,
+        combo: Vec<Vec<ComboElement>>,
     ) -> Champion {
         Champion {
             name: self.name,
-            adaptative_type: AdaptativeType::from_str(&self.adaptive_type).unwrap_or_default(),
+            adaptive_type: AdaptiveType::from_str(&self.adaptive_type).unwrap_or_default(),
             attack_type: AttackType::from_str(&self.attack_type).unwrap_or_default(),
             positions: self
                 .positions
@@ -105,6 +122,7 @@ impl MerakiChampion {
             stats: self.stats,
             abilities: abilities.into_iter().collect(),
             merge_data,
+            combo,
         }
     }
 }
@@ -120,12 +138,13 @@ pub struct Ability {
 #[derive(Serialize, Deserialize)]
 pub struct Champion {
     pub name: String,
-    pub adaptative_type: AdaptativeType,
+    pub adaptive_type: AdaptiveType,
     pub attack_type: AttackType,
-    pub positions: BTreeSet<Position>,
+    pub positions: Vec<Position>,
     pub stats: MerakiChampionStats,
     pub abilities: Vec<(AbilityId, Ability)>,
     pub merge_data: BTreeSet<DevMergeData>,
+    pub combo: Vec<Vec<ComboElement>>,
 }
 
 #[derive(Serialize, Deserialize)]

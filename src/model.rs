@@ -110,7 +110,7 @@ pub struct CurrentPlayer<'a> {
     pub current_stats: Stats<i32>,
     pub level: u8,
     pub team: Team,
-    pub adaptative_type: AdaptativeType,
+    pub adaptive_type: AdaptiveType,
     pub position: Position,
     pub champion_id: ChampionId,
     pub game_map: GameMap,
@@ -141,7 +141,7 @@ pub struct SelfState {
     pub bonus_stats: BasicStats<f32>,
     pub base_stats: BasicStats<f32>,
     pub level: u8,
-    pub adaptative_type: AdaptativeType,
+    pub adaptive_type: AdaptiveType,
     // _padding: u16
 }
 
@@ -499,7 +499,7 @@ pub struct OutputCurrentPlayer {
     pub base_stats: BasicStats<i32>,
     pub bonus_stats: BasicStats<i32>,
     pub level: u8,
-    pub adaptative_type: AdaptativeType,
+    pub adaptive_type: AdaptiveType,
     pub champion_id: ChampionId,
 }
 
@@ -544,20 +544,46 @@ impl RiotFormulas {
     /// if it deals single target damage. The -3% penalty is not yet
     /// supported for area-damaging ultimates
     pub const AXIOM_ARCANIST_BONUS_DAMAGE: f32 = 1.12;
-    pub const COUP_DE_GRACE_AND_CUTDOWN_BONUS_DAMAGE: f32 = 1.08;
+
     /// By 06/07/2025 Earth dragons give +5% resists
     pub const EARTH_DRAGON_MULTIPLIER: f32 = 0.05;
+
     /// By 06/07/2025 Fire dragons give +3% bonus attack stats
     pub const FIRE_DRAGON_MULTIPLIER: f32 = 0.03;
+
     /// Item [`ItemId::PlatedSteelcaps`] gives 12% damage reduction for basic attacks
     pub const STEEL_CAPS_PROTECTION: f32 = 0.88;
+
     /// Item [`ItemId::RanduinsOmen`] gives 30% damage reduction against critical hits
     pub const RANDUIN_CRIT_PROTECTION: f32 = 0.7;
+
     /// Items with Rocksolid passive give 20% damage reduction in some cases
     pub const ROCKSOLID_PROTECTION: f32 = 0.8;
+
     pub const SHOJIN_BONUS_DAMAGE: f32 = 1.12;
     pub const SHADOWFLAME_BONUS_DAMAGE: f32 = 1.2;
     pub const RIFTMAKER_BONUS_DAMAGE: f32 = 1.08;
+    pub const COUP_DE_GRACE_AND_CUTDOWN_BONUS_DAMAGE: f32 = 1.08;
+
+    /// Constant array containing the armor and magic resistences of jungle monsters.
+    /// Note that there's no specific name to each monster since the damage against
+    /// most of them repeats since their armor and magic resistence values are the same
+    pub const MONSTER_RESISTS: [(f32, f32); L_MSTR] = [
+        // Minions
+        (0f32, 0f32),
+        // Dragons
+        (21f32, 30f32),
+        // Red, Blue, Gromp, Wolves
+        (42f32, 42f32),
+        // Krug, Raptor
+        (20f32, 20f32),
+        // Baron Nashor
+        (120f32, 70f32),
+        // Atakhan
+        (90f32, 75f32),
+        // Super Minion
+        (100f32, -30f32),
+    ];
 
     pub const fn missing_health(current_health: f32, max_health: f32) -> f32 {
         1.0 - (current_health / max_health.max(1.0))
@@ -623,22 +649,21 @@ impl RiotFormulas {
     /// up to `60%` directly, instead they return `51%` penetration.
     pub const fn percent_value(values: &[f32]) -> f32 {
         let mut i = 0;
-        let mut result = 1.0_f32;
+        let mut result = 1.0;
 
         while i < values.len() {
-            let value = values[i];
-            let mult = if value < 0.0 {
-                0.0
-            } else if value > 100.0 {
-                100.0
-            } else {
-                value
-            };
-            result *= 1.0 - (mult * 0.01);
+            let value = values[i].clamp(0.0, 100.0);
+            result *= 1.0 - (value * 0.01);
             i += 1;
         }
 
         (1.0 - result) * 100.0
+    }
+
+    pub const fn combine_percentage(a: f32, b: f32) -> f32 {
+        let a = a.clamp(0.0, 100.0);
+        let b = b.clamp(0.0, 100.0);
+        a + b - (a * b * 0.01)
     }
 
     /// Returns the real resistence value in a struct [`ResistValue`], taking into account
@@ -681,29 +706,29 @@ impl RiotFormulas {
         (base * mult) as _
     }
 
-    /// Returns the adaptative type of the current player, given its bonus attack_damage
+    /// Returns the adaptive type of the current player, given its bonus attack_damage
     /// and ability_power. If they tie, it will return `None`, wich should be unwraped to
-    /// the default adaptative type of the current champion.
+    /// the default adaptive type of the current champion.
     /// ```rs
-    /// let adaptative_type = RiotFormulas::adaptative_type(
+    /// let adaptive_type = RiotFormulas::adaptive_type(
     ///     current_player_bonus_stats.attack_damage,
     ///     champion_stats.ability_power,
     /// )
-    /// .unwrap_or(current_player_cache.adaptative_type);
+    /// .unwrap_or(current_player_cache.adaptive_type);
     /// ```
-    pub const fn adaptative_type(
+    pub const fn adaptive_type(
         bonus_attack_damage: f32,
         ability_power: f32,
-    ) -> Option<AdaptativeType> {
+    ) -> Option<AdaptiveType> {
         let lhs = 0.35 * bonus_attack_damage;
         let rhs = 0.2 * ability_power;
 
         if lhs == rhs {
             None
         } else if lhs > rhs {
-            Some(AdaptativeType::Physical)
+            Some(AdaptiveType::Physical)
         } else {
-            Some(AdaptativeType::Magic)
+            Some(AdaptiveType::Magic)
         }
     }
 }

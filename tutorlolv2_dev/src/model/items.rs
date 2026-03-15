@@ -34,6 +34,8 @@ pub struct ItemStats {
     pub mana: MerakiItemStatsMap,
     pub movespeed: MerakiItemStatsMap,
     pub omnivamp: MerakiItemStatsMap,
+    #[serde(default)]
+    pub adaptive_force: f64,
 }
 
 #[derive(Serialize, Deserialize)]
@@ -88,7 +90,7 @@ pub struct Item {
     pub attributes: Attrs,
     pub purchasable: bool,
     pub damage_type: DamageType,
-    pub prettified_stats: BTreeSet<StatName>,
+    pub prettified_stats: BTreeMap<StatName, u16>,
     pub ranged: DamageObject,
     pub melee: DamageObject,
     pub stats: ItemStats,

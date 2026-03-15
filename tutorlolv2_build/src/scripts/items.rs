@@ -7,7 +7,7 @@ use crate::{
         rustfmt_batch,
     },
 };
-use std::collections::{HashMap, HashSet};
+use std::collections::{BTreeMap, HashMap, HashSet};
 
 struct DeclaredItem {
     metadata: String,
@@ -19,8 +19,8 @@ struct DeclaredItem {
     match_arm: String,
 }
 
-const MAX_TUPLE_0: (usize, usize) = (usize::MAX, usize::MAX);
-const MAX_TUPLE_1: (usize, usize) = (usize::MAX - 1, usize::MAX);
+const GENERATOR_TUPLE: (usize, usize) = (usize::MAX, usize::MAX);
+const CLOSURE_TUPLE: (usize, usize) = (usize::MAX - 1, usize::MAX);
 
 fn declare_item(name: &str, item: &Item) -> DeclaredItem {
     let Item {
@@ -36,12 +36,12 @@ fn declare_item(name: &str, item: &Item) -> DeclaredItem {
     let metadata = format!(
         "TypeMetadata {{
             kind: ItemId::{name},
-            damage_type: DamageType::{damage_type},
+            damage_type: {damage_type},
             attributes: Attrs::{attributes:?}
         }}"
     );
 
-    #[derive(Clone, Hash, PartialEq, Eq)]
+    #[derive(Clone, Hash, PartialEq, Eq, PartialOrd, Ord)]
     struct ExprKey {
         body: String,
     }
@@ -74,7 +74,7 @@ fn declare_item(name: &str, item: &Item) -> DeclaredItem {
     push_expr("ranged", "min", &ranged.minimum_damage, &mut exprs);
     push_expr("ranged", "max", &ranged.maximum_damage, &mut exprs);
 
-    let mut groups: HashMap<ExprKey, Vec<ExprInfo>> = HashMap::new();
+    let mut groups = BTreeMap::<ExprKey, Vec<ExprInfo>>::new();
 
     for e in exprs {
         groups.entry(e.key.clone()).or_default().push(e);
@@ -157,8 +157,8 @@ fn declare_item(name: &str, item: &Item) -> DeclaredItem {
         true => format!("[{melee_fn_calls}]"),
         false => format!(
             "match attack_type {{
-                AttackType::Melee => [{melee_fn_calls}],
-                AttackType::Ranged => [{ranged_fn_calls}]
+                Melee => [{melee_fn_calls}],
+                Ranged => [{ranged_fn_calls}]
             }}"
         ),
     };
@@ -239,6 +239,13 @@ pub fn get_stats(stats: &ItemStats) -> String {
         }
     );
 
+    if stats.adaptive_force != 0.0 {
+        all_stats.push(format!(
+            "adaptive_force: {force}f32",
+            force = stats.adaptive_force
+        ));
+    }
+
     match all_stats.len() {
         0 => "ZEROED_STATS".into(),
         len => {
@@ -293,18 +300,20 @@ pub fn generate_items() -> GeneratorFn {
         let name_ssnake = name.to_ssnake();
         let prettified_stats = prettified_stats
             .iter()
-            .map(|stat| format!("StatName::{stat:?}"))
+            .map(|(stat, value)| format!("(StatName::{stat:?}, {value})"))
             .collect::<Vec<_>>()
             .join(",");
 
         let stats = get_stats(&stats);
-        let deals_damage = {
-            let is_zeroed = |expr: &str| expr != "zero" && !expr.is_empty();
-            is_zeroed(&ranged.minimum_damage)
-                || is_zeroed(&ranged.maximum_damage)
-                || is_zeroed(&melee.minimum_damage)
-                || is_zeroed(&melee.maximum_damage)
-        };
+
+        let is_zeroed = |expr: &str| expr != "zero" && !expr.is_empty();
+
+        let deals_max_damage =
+            is_zeroed(&ranged.maximum_damage) || is_zeroed(&melee.maximum_damage);
+
+        let deals_damage = is_zeroed(&ranged.minimum_damage)
+            || is_zeroed(&melee.minimum_damage)
+            || deals_max_damage;
 
         let maps = item
             .maps
@@ -317,7 +326,7 @@ pub fn generate_items() -> GeneratorFn {
 
         let rest = format!(
             "riot_id: {riot_id},
-            deals_damage: {deals_damage},
+            deals_damage: ({deals_damage}, {deals_max_damage}),
             stats: {stats},
             maps: ItemMaps {{{maps}}}}};"
         );
@@ -457,7 +466,7 @@ fn build_items(data: Vec<(String, ItemResult)>) -> GeneratorFn {
 
         match generator {
             Some(generator) => tracker.record_into(&generator.rust_html(), &mut generator_offsets),
-            None => generator_offsets.push(MAX_TUPLE_0),
+            None => generator_offsets.push(GENERATOR_TUPLE),
         }
         rustfmt_inputs.push(html_declaration);
         rustfmt_inputs.push(html_closure);
@@ -471,7 +480,7 @@ fn build_items(data: Vec<(String, ItemResult)>) -> GeneratorFn {
         let html_declaration = decl_fmt.drop_f32s().rust_html().as_const();
         tracker.record_into(&html_declaration, &mut formula_offsets);
         match clos_fmt.trim().is_empty() {
-            true => closure_offsets.push(MAX_TUPLE_1),
+            true => closure_offsets.push(CLOSURE_TUPLE),
             false => tracker.record_into(&clos_fmt.drop_f32s().rust_html(), &mut closure_offsets),
         }
     }
@@ -512,11 +521,11 @@ fn build_items(data: Vec<(String, ItemResult)>) -> GeneratorFn {
         let add_offsets = |(list, target): (Vec<_>, &mut String)| {
             for tuple in list {
                 match tuple {
-                    MAX_TUPLE_0 => {
+                    GENERATOR_TUPLE => {
                         let (s, e) = unsafe { DEFAULT_ITEM_GENERATOR_OFFSET };
                         target.push_str(&format!("({s}..{e}),"));
                     }
-                    MAX_TUPLE_1 => {
+                    CLOSURE_TUPLE => {
                         let (s, e) = unsafe { ZERO_FN_OFFSET };
                         target.push_str(&format!("({s}..{e}),"));
                     }

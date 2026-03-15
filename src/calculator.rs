@@ -12,96 +12,14 @@ use crate::{helpers::*, model::*};
 use alloc::boxed::Box;
 use tutorlolv2_gen::*;
 
-/// Constant array containing the armor and magic resistences of jungle monsters.
-/// Note that there's no specific name to each monster since the damage against
-/// most of them repeats since their armor and magic resistence values are the same
-pub const MONSTER_RESISTS: [(f32, f32); L_MSTR] = [
-    (0f32, 0f32),
-    (21f32, 30f32),
-    (42f32, 42f32),
-    (20f32, 20f32),
-    (120f32, 70f32),
-    (90f32, 75f32),
-    (100f32, -30f32),
-];
-
-/// Counts how many items have either armor or magic resistence
-/// in its stats. Items that give those attributes conditionally
-/// such as [`ItemId::BlackCleaver`] are also included.
-pub const NUMBER_OF_ITEMS_WITH_PEN: usize = {
-    let mut i = 0;
-    let mut j = 0;
-    while i < ItemId::VARIANTS {
-        let item_id = ItemId::from_usize(i).unwrap();
-        let CachedItem {
-            stats,
-            prettified_stats,
-            ..
-        } = item_id.cache();
-
-        if stats.armor_penetration_percent > 0.0 || stats.magic_penetration_percent > 0.0 {
-            j += 1;
-        } else {
-            let mut k = 0;
-            while k < prettified_stats.len() {
-                match prettified_stats[k] {
-                    StatName::ArmorPenetration(_) | StatName::MagicPenetration(_) => j += 1,
-                    _ => {}
-                }
-                k += 1;
-            }
-        }
-        i += 1;
-    }
-    j
-};
-
-/// Array with [`ItemId`] definition of all items that have some
-/// kind of armor or magic penetration, including those that give
-/// these attributes conditionally such as [`ItemId::BlackCleaver`]
-pub const ITEMS_WITH_PEN: [ItemId; NUMBER_OF_ITEMS_WITH_PEN] = {
-    let mut i = 0;
-    let mut j = 0;
-    let mut items = [ItemId::default(); NUMBER_OF_ITEMS_WITH_PEN];
-    while i < ItemId::VARIANTS {
-        let item_id = ItemId::from_usize(i).unwrap();
-        let CachedItem {
-            stats,
-            prettified_stats,
-            metadata,
-            ..
-        } = item_id.cache();
-
-        if stats.armor_penetration_percent > 0.0 || stats.magic_penetration_percent > 0.0 {
-            items[j] = metadata.kind;
-            j += 1;
-        } else {
-            let mut k = 0;
-            while k < prettified_stats.len() {
-                match prettified_stats[k] {
-                    StatName::ArmorPenetration(_) | StatName::MagicPenetration(_) => {
-                        items[j] = metadata.kind;
-                        j += 1
-                    }
-                    _ => {}
-                }
-                k += 1;
-            }
-        }
-        i += 1;
-    }
-    items
-};
-
 pub const fn get_item_bonus_stats(
+    adaptive_force: &mut f32,
     stats: &mut Stats<f32>,
     items: &[ItemId],
     modifiers: &mut Modifiers,
 ) {
-    let mut armor_pen_count = 0;
-    let mut magic_pen_count = 0;
-    let mut armor_penetration = [0.0; NUMBER_OF_ITEMS_WITH_PEN];
-    let mut magic_penetration = [0.0; NUMBER_OF_ITEMS_WITH_PEN];
+    let mut armor_pen_mult = 1.0;
+    let mut magic_pen_mult = 1.0;
 
     let mut i = 0;
     while i < items.len() {
@@ -109,6 +27,7 @@ pub const fn get_item_bonus_stats(
         let item = item_id.cache();
         let item_stats = &item.stats;
 
+        *adaptive_force += item_stats.adaptive_force;
         stats.ability_power += item_stats.ability_power;
         stats.attack_damage += item_stats.attack_damage;
         stats.magic_resist += item_stats.magic_resist;
@@ -121,18 +40,14 @@ pub const fn get_item_bonus_stats(
         stats.current_mana = stats.max_mana;
         stats.max_mana += item_stats.mana;
 
-        armor_penetration[armor_pen_count] = item_stats.armor_penetration_percent;
-        magic_penetration[magic_pen_count] = item_stats.magic_penetration_percent;
+        let armor_pen = item_stats.armor_penetration_percent.clamp(0.0, 100.0);
+        let magic_pen = item_stats.magic_penetration_percent.clamp(0.0, 100.0);
 
-        armor_pen_count += 1;
-        magic_pen_count += 1;
+        armor_pen_mult *= 1.0 - (armor_pen * 0.01);
+        magic_pen_mult *= 1.0 - (magic_pen * 0.01);
 
         match item_id {
-            ItemId::RabadonsDeathcap => stats.ability_power *= 1.3,
-            ItemId::WoogletsWitchcapArena => stats.ability_power *= 1.5,
-            ItemId::WarmogsArmor => stats.max_health *= 1.12,
             ItemId::ElixirOfIron => stats.max_health += 300.0,
-            ItemId::JuiceOfVitality => stats.max_health += 300.0 + 0.1 * stats.max_health,
             ItemId::Shadowflame => {
                 modifiers.damages.magic_mod *= RiotFormulas::SHADOWFLAME_BONUS_DAMAGE;
                 modifiers.damages.true_mod *= RiotFormulas::SHADOWFLAME_BONUS_DAMAGE;
@@ -143,44 +58,31 @@ pub const fn get_item_bonus_stats(
                 modifiers.abilities.e *= RiotFormulas::SHOJIN_BONUS_DAMAGE;
                 modifiers.abilities.r *= RiotFormulas::SHOJIN_BONUS_DAMAGE;
             }
-            ItemId::JuiceOfPower => {
-                stats.attack_damage += 18.0 + 0.1 * stats.attack_damage;
-                stats.ability_power += 30.0 + 0.1 * stats.ability_power;
-            }
             _ => {}
         }
 
         i += 1;
     }
 
-    stats.crit_chance = stats.crit_chance.clamp(0.0, 100.0);
-    stats.armor_penetration_percent = RiotFormulas::percent_value(&armor_penetration);
-    stats.magic_penetration_percent = RiotFormulas::percent_value(&magic_penetration);
+    stats.armor_penetration_percent = (1.0 - armor_pen_mult) * 100.0;
+    stats.magic_penetration_percent = (1.0 - magic_pen_mult) * 100.0;
 }
 
 pub const fn get_rune_bonus_stats(
+    adaptive_force: &mut f32,
     stats: &mut Stats<f32>,
     runes: &[RuneId],
     modifiers: &mut Modifiers,
     level: u8,
-    adaptative_type: AdaptativeType,
 ) {
     let mut i = 0;
     while i < runes.len() {
         let rune_id = runes[i];
         match rune_id {
             RuneId::Waterwalking => {
-                stats.ability_power += (12 + level) as f32;
-                stats.attack_damage += 7.2 + 0.6 * level as f32
+                *adaptive_force += (12 + level) as f32;
             }
-            RuneId::AbsoluteFocus => match adaptative_type {
-                AdaptativeType::Physical => {
-                    stats.attack_damage += 1.8 + 16.2 / 17.0 * (level - 1) as f32;
-                }
-                AdaptativeType::Magic => {
-                    stats.ability_power += 3.0 + 27.0 / 17.0 * (level - 1) as f32;
-                }
-            },
+            RuneId::AbsoluteFocus => *adaptive_force += 1.8 + 16.2 / 17.0 * (level - 1) as f32,
             RuneId::CoupDeGrace | RuneId::CutDown => {
                 modifiers.damages.global_mod *= RiotFormulas::COUP_DE_GRACE_AND_CUTDOWN_BONUS_DAMAGE
             }
@@ -190,6 +92,8 @@ pub const fn get_rune_bonus_stats(
                 )
             }
             RuneId::AxiomArcanist => modifiers.abilities.r *= 1.12,
+            RuneId::Health => stats.max_health += 65.0,
+            RuneId::HealthScaling => stats.max_health += 10.0 * level as f32,
             _ => {}
         }
         i += 1;
@@ -230,14 +134,15 @@ pub const fn infer_champion_stats(data: InferStats<'_>) -> Stats<f32> {
 
     let cache = champion_id.cache();
 
-    let adaptative_type =
-        match RiotFormulas::adaptative_type(bonus_stats.attack_damage, bonus_stats.ability_power) {
-            Some(x) => x,
-            None => cache.adaptative_type,
-        };
-
-    get_item_bonus_stats(&mut bonus_stats, items, modifiers);
-    get_rune_bonus_stats(&mut bonus_stats, runes, modifiers, level, adaptative_type);
+    let mut adaptive_force = 0.0;
+    get_item_bonus_stats(&mut adaptive_force, &mut bonus_stats, items, modifiers);
+    get_rune_bonus_stats(
+        &mut adaptive_force,
+        &mut bonus_stats,
+        runes,
+        modifiers,
+        level,
+    );
 
     let cached_stats = cache.stats;
     let base_stats = base_stats_bf32(champion_id, level, is_mega_gnar);
@@ -246,7 +151,6 @@ pub const fn infer_champion_stats(data: InferStats<'_>) -> Stats<f32> {
         armor: base_stats.armor,
         attack_damage: base_stats.attack_damage,
         attack_range: cached_stats.attack_range,
-        attack_speed: RiotFormulas::stat(&cached_stats.attack_speed, level),
         crit_damage: cached_stats.critical_strike_damage
             * cached_stats.critical_strike_damage_modifier,
         current_health: base_stats.max_health,
@@ -255,11 +159,12 @@ pub const fn infer_champion_stats(data: InferStats<'_>) -> Stats<f32> {
         max_mana: base_stats.max_mana,
         current_mana: base_stats.max_mana,
         ability_power: 0.0,
-        crit_chance: 0.0,
+        attack_speed: 0.0,
         armor_penetration_flat: 0.0,
         armor_penetration_percent: 0.0,
         magic_penetration_flat: 0.0,
         magic_penetration_percent: 0.0,
+        crit_chance: 0.0,
     };
 
     stats.ability_power += bonus_stats.ability_power;
@@ -279,6 +184,29 @@ pub const fn infer_champion_stats(data: InferStats<'_>) -> Stats<f32> {
     stats.max_mana += bonus_stats.max_mana;
     stats.current_mana += bonus_stats.current_mana;
 
+    assign_rune_exceptions(
+        RuneExceptionData {
+            stats: &mut stats,
+            adaptive_force: &mut adaptive_force,
+            attack_type: cache.attack_type,
+            level,
+        },
+        rune_exceptions,
+    );
+
+    let adaptive_type =
+        match RiotFormulas::adaptive_type(bonus_stats.attack_damage, bonus_stats.ability_power) {
+            Some(x) => x,
+            None => cache.adaptive_type,
+        };
+
+    match adaptive_type {
+        AdaptiveType::Magic => stats.ability_power += adaptive_force,
+        AdaptiveType::Physical => stats.attack_damage += 0.6 * adaptive_force,
+    }
+
+    assign_item_exceptions(&mut stats, item_exceptions);
+
     assign_champion_exceptions(
         ChampionExceptionData {
             ability_levels,
@@ -288,17 +216,8 @@ pub const fn infer_champion_stats(data: InferStats<'_>) -> Stats<f32> {
         champion_id,
     );
 
-    assign_rune_exceptions(
-        RuneExceptionData {
-            stats: &mut stats,
-            adaptative_type,
-            attack_type: cache.attack_type,
-            level,
-        },
-        rune_exceptions,
-    );
-
-    assign_item_exceptions(&mut stats, item_exceptions);
+    stats.attack_speed *= cached_stats.attack_speed_ratio * stats.attack_speed
+        + RiotFormulas::stat(&cached_stats.attack_speed, level);
 
     let mut i = 0;
     while i < items.len() {
@@ -322,6 +241,14 @@ pub const fn infer_champion_stats(data: InferStats<'_>) -> Stats<f32> {
             ItemId::WintersApproach | ItemId::Fimbulwinter => {
                 stats.max_health += 0.15 * bonus_stats.max_mana;
             }
+            ItemId::JuiceOfVitality => stats.max_health += 300.0 + 0.1 * stats.max_health,
+            ItemId::RabadonsDeathcap => stats.ability_power *= 1.3,
+            ItemId::WoogletsWitchcapArena => stats.ability_power *= 1.5,
+            ItemId::WarmogsArmor => stats.max_health *= 1.12,
+            ItemId::JuiceOfPower => {
+                stats.attack_damage += 18.0 + 0.1 * stats.attack_damage;
+                stats.ability_power += 30.0 + 0.1 * stats.ability_power;
+            }
             _ => {}
         }
         i += 1;
@@ -334,6 +261,8 @@ pub const fn infer_champion_stats(data: InferStats<'_>) -> Stats<f32> {
     stats.attack_damage *= fire;
     stats.magic_resist *= earth;
     stats.armor *= earth;
+
+    stats.crit_chance = stats.crit_chance.clamp(0.0, 100.0);
 
     stats
 }
@@ -355,6 +284,7 @@ pub const fn assign_champion_exceptions(data: ChampionExceptionData, champion_id
     } = data;
 
     match champion_id {
+        ChampionId::Yasuo => stats.attack_damage += 0.5 * (stats.crit_chance - 100.0).max(0.0),
         ChampionId::Veigar => stats.ability_power += stacks as f32,
         ChampionId::Swain => stats.max_health += (12 * stacks) as f32,
         ChampionId::Chogath => {
@@ -363,37 +293,37 @@ pub const fn assign_champion_exceptions(data: ChampionExceptionData, champion_id
         }
         ChampionId::Sion => stats.max_health += stacks as f32,
         ChampionId::Darius => {
-            stats.armor_penetration_percent = RiotFormulas::percent_value(&[
+            stats.armor_penetration_percent = RiotFormulas::combine_percentage(
                 stats.armor_penetration_percent,
                 (15 + 5 * ability_levels.e) as f32,
-            ])
+            )
         }
         ChampionId::Pantheon => {
-            stats.armor_penetration_percent = RiotFormulas::percent_value(&[
+            stats.armor_penetration_percent = RiotFormulas::combine_percentage(
                 stats.armor_penetration_percent,
                 (10 * ability_levels.r) as f32,
-            ])
+            )
         }
         ChampionId::Nilah => {
-            stats.armor_penetration_percent = RiotFormulas::percent_value(&[
+            stats.armor_penetration_percent = RiotFormulas::combine_percentage(
                 stats.armor_penetration_percent,
                 stats.crit_chance / 3.0,
-            ])
+            )
         }
         ChampionId::Mordekaiser => {
-            stats.magic_penetration_percent = RiotFormulas::percent_value(&[
+            stats.magic_penetration_percent = RiotFormulas::combine_percentage(
                 stats.magic_penetration_percent,
                 2.5 + 2.5 * ability_levels.e as f32,
-            ])
+            )
         }
         _ => {}
     };
 }
 
 pub struct RuneExceptionData<'a> {
+    pub adaptive_force: &'a mut f32,
     pub stats: &'a mut Stats<f32>,
     pub attack_type: AttackType,
-    pub adaptative_type: AdaptativeType,
     pub level: u8,
 }
 
@@ -405,9 +335,9 @@ pub const fn assign_rune_exceptions(data: RuneExceptionData, exceptions: &[Value
     }
 
     let RuneExceptionData {
+        adaptive_force,
         stats,
         attack_type,
-        adaptative_type,
         level,
     } = data;
 
@@ -428,53 +358,16 @@ pub const fn assign_rune_exceptions(data: RuneExceptionData, exceptions: &[Value
                     }
                 },
                 RuneId::Conqueror => {
-                    let formula: f32 = (stacks as f32) * (1.8 + 2.2 / 17.0 * (level - 1) as f32);
-                    match adaptative_type {
-                        AdaptativeType::Physical => {
-                            stats.attack_damage += 0.6 * formula;
-                        }
-                        AdaptativeType::Magic => {
-                            stats.ability_power += formula;
-                        }
-                    }
+                    *adaptive_force += (stacks as f32) * (1.8 + 2.2 / 17.0 * (level - 1) as f32)
                 }
                 RuneId::EyeballCollection | RuneId::GhostPoro | RuneId::ZombieWard => {
-                    match adaptative_type {
-                        AdaptativeType::Physical => {
-                            stats.attack_damage += match stacks {
-                                ..10 => 1.2 * (stacks as f32),
-                                10.. => 18.0,
-                            };
-                        }
-                        AdaptativeType::Magic => {
-                            stats.ability_power += match stacks {
-                                ..10 => (stacks << 1) as f32,
-                                10.. => 30.0,
-                            };
-                        }
+                    *adaptive_force += match stacks {
+                        ..10 => (stacks << 1) as f32,
+                        10.. => 30.0,
                     }
                 }
-                RuneId::GatheringStorm => {
-                    let formula = ((stacks * (stacks + 1)) << 2) as f32;
-                    match adaptative_type {
-                        AdaptativeType::Physical => {
-                            stats.attack_damage += 0.6 * formula;
-                        }
-                        AdaptativeType::Magic => {
-                            stats.ability_power += formula;
-                        }
-                    }
-                }
-                RuneId::AdaptiveForce => match adaptative_type {
-                    AdaptativeType::Physical => {
-                        stats.attack_damage += 5.4 * (stacks as f32);
-                    }
-                    AdaptativeType::Magic => {
-                        stats.ability_power += 9.0 * stacks as f32;
-                    }
-                },
-                RuneId::Health => stats.max_health += 65.0 * (stacks as f32),
-                RuneId::HealthScaling => stats.max_health += 10.0 * level as f32 * (stacks as f32),
+                RuneId::GatheringStorm => *adaptive_force += ((stacks * (stacks + 1)) << 2) as f32,
+                RuneId::AdaptiveForce => *adaptive_force += 9.0 * stacks as f32,
                 RuneId::AttackSpeed => stats.attack_speed += 10.0 * (stacks as f32),
                 _ => {}
             }
@@ -520,16 +413,16 @@ pub const fn assign_item_exceptions(stats: &mut Stats<f32>, exceptions: &[ValueE
                 ItemId::RiteOfRuin => stats.crit_chance += stacks as f32 * 2.5,
                 ItemId::MejaisSoulstealer => stats.ability_power += (5 * stacks) as f32,
                 ItemId::BlackCleaver => {
-                    stats.armor_penetration_percent = RiotFormulas::percent_value(&[
+                    stats.armor_penetration_percent = RiotFormulas::combine_percentage(
                         stats.armor_penetration_percent,
                         (6 * stacks) as f32,
-                    ])
+                    )
                 }
                 ItemId::BloodlettersCurse4010 | ItemId::BloodlettersCurse8010 => {
-                    stats.magic_penetration_percent = RiotFormulas::percent_value(&[
+                    stats.magic_penetration_percent = RiotFormulas::combine_percentage(
                         stats.magic_penetration_percent,
-                        (7.5 * stacks as f32),
-                    ])
+                        7.5 * stacks as f32,
+                    )
                 }
                 ItemId::Hubris6697 | ItemId::Hubris126697 | ItemId::HubrisArena => {
                     stats.attack_damage += (15 + (stacks << 1)) as f32;
@@ -603,17 +496,17 @@ pub fn calculator(game: InputGame) -> OutputGame {
         }
     );
 
-    let adaptative_type = match RiotFormulas::adaptative_type(
+    let adaptive_type = match RiotFormulas::adaptive_type(
         current_player_bonus_stats.attack_damage,
         champion_stats.ability_power,
     ) {
         Some(x) => x,
-        None => current_player_cache.adaptative_type,
+        None => current_player_cache.adaptive_type,
     };
 
     let shred = ResistShred::new(&champion_stats);
     let tower_damages = get_tower_damages(
-        adaptative_type,
+        adaptive_type,
         current_player_base_stats.attack_damage,
         current_player_bonus_stats.attack_damage,
         champion_stats.ability_power,
@@ -628,7 +521,7 @@ pub fn calculator(game: InputGame) -> OutputGame {
         current_stats: champion_stats,
         bonus_stats: current_player_bonus_stats,
         base_stats: current_player_base_stats,
-        adaptative_type,
+        adaptive_type,
         ability_levels,
         level,
     };
@@ -663,7 +556,7 @@ pub fn calculator(game: InputGame) -> OutputGame {
             bonus_stats: BasicStats::from_f32(&current_player_bonus_stats),
             current_stats: Stats::from_f32(&champion_stats),
             champion_id: current_player_champion_id,
-            adaptative_type,
+            adaptive_type,
             level,
         },
         items_meta: eval_data.items.metadata,
