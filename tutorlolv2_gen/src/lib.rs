@@ -327,6 +327,25 @@ impl ChampionId {
     pub const CLOSURES: &[&[Range<usize>]; Self::VARIANTS] = &ABILITY_CLOSURES;
     pub const ABILITIES: &[&[Range<usize>]; Self::VARIANTS] = &ABILITY_FORMULAS;
 
+    pub const IRML: usize = {
+        let mut i = 0;
+        let mut max = 0;
+        while i < Self::VARIANTS {
+            let mut j = 0;
+            let champion_id = Self::VALUES[i];
+            while j < Position::VARIANTS as usize {
+                let position = Position::ARRAY[j];
+                let data = champion_id.recommended_items(position);
+                if data.len() > max {
+                    max = data.len();
+                }
+                j += 1;
+            }
+            i += 1;
+        }
+        max
+    };
+
     pub const fn exceptions(&self, ally: bool) -> Option<Key> {
         match ally {
             true => match self {
@@ -515,6 +534,10 @@ impl ItemId {
         bitset_size(bitset!(ItemId::ALLY_EXCEPTIONS => [usize])),
         bitset_size(bitset!(ItemId::ENEMY_EXCEPTIONS => [usize])),
     );
+
+    pub const fn damage_type(&self) -> DamageType {
+        self.cache().metadata.damage_type
+    }
 
     pub const fn exceptions(ally: bool) -> ItemsExcSet {
         match ally {
