@@ -61,12 +61,32 @@ pub const fn is_simulated_item(item: &CachedItem) -> bool {
         purchasable,
         tier,
         price,
-        prettified_stats,
         maps,
+        metadata: TypeMetadata { kind, .. },
         ..
     } = *item;
 
-    tier >= 3 && price > 0 && purchasable && !prettified_stats.is_empty() && maps.summoners_rift
+    let check = [
+        StatName::AbilityPower,
+        StatName::AttackDamage,
+        StatName::AdaptiveForce,
+        StatName::Lethality,
+        StatName::ArmorPenetration,
+        StatName::MagicPenetration,
+    ];
+
+    let mut allow = false;
+    let mut i = 0;
+
+    while i < check.len() {
+        if kind.has_stat(check[i]) {
+            allow = true;
+        }
+
+        i += 1;
+    }
+
+    tier >= 3 && price > 0 && purchasable && allow && maps.summoners_rift
 }
 
 /// Number of items that are compared and obey the rule:

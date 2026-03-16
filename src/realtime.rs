@@ -88,11 +88,12 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
         .iter()
         .find(|player| player.riot_id == riot_id)?;
 
-    let current_player_champion_id = *CHAMPION_NAME_TO_ID.get(current_player.champion_name)?;
+    let current_player_champion_id = *CHAMPION_NAME_TO_ID
+        .get(current_player.champion_name)
+        .unwrap_or(&ChampionId::Neeko);
     let current_player_cache = current_player_champion_id.cache();
 
-    let is_mega_gnar = current_player_champion_id == ChampionId::Gnar
-        && current_player_stats.attack_range >= 400.0;
+    let is_mega_gnar = current_player.champion_name == "Mega Gnar";
 
     let current_player_base_stats =
         base_stats_bf32(current_player_champion_id, level, is_mega_gnar);

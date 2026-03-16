@@ -62,7 +62,7 @@ fn run_champions_generator() {
 
 #[test]
 fn run_ch_generator() {
-    ChampionFactory::run(ChampionId::Akshan).unwrap();
+    ChampionFactory::run(ChampionId::Gnar).unwrap();
 }
 
 #[test]

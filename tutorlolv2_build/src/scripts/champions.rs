@@ -472,6 +472,11 @@ fn build_champions(data: Vec<(String, ChampionResult)>) -> GeneratorFn {
             .iter()
             .map(|alias| format!("{alias:?}"))
             .chain(std::iter::once(format!("{champion_id:?}")))
+            .chain(
+                (champion_id == "Gnar")
+                    .then_some(r#""Mega Gnar""#.into())
+                    .into_iter(),
+            )
             .collect::<BTreeSet<_>>()
             .into_iter()
             .collect::<Vec<_>>()

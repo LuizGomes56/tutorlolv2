@@ -549,6 +549,16 @@ impl ChampionData {
         self.extract_ability_damage(key, 0, &offsets);
     }
 
+    pub fn ability_nth<const N: usize>(
+        &mut self,
+        key: Key,
+        offset: usize,
+        pattern: [(usize, usize, AbilityName); N],
+    ) {
+        let offsets = Self::modify_pattern(key, pattern);
+        self.extract_ability_damage(key, offset, &offsets);
+    }
+
     /// Adds the attribute to all abilities in the provided array. If any ability in that
     /// array does not exist in [`Self::map`], this function will fail.
     /// If there's an ability with a different [`AbilityId`] kind, you may want to use the

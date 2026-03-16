@@ -150,7 +150,6 @@ pub const fn infer_champion_stats(data: InferStats<'_>) -> Stats<f32> {
     let mut stats = Stats {
         armor: base_stats.armor,
         attack_damage: base_stats.attack_damage,
-        attack_range: cached_stats.attack_range,
         crit_damage: cached_stats.critical_strike_damage
             * cached_stats.critical_strike_damage_modifier,
         current_health: base_stats.max_health,
@@ -172,7 +171,6 @@ pub const fn infer_champion_stats(data: InferStats<'_>) -> Stats<f32> {
     stats.armor_penetration_flat += bonus_stats.armor_penetration_flat;
     stats.armor_penetration_percent += bonus_stats.armor_penetration_percent;
     stats.attack_damage += bonus_stats.attack_damage;
-    stats.attack_range += bonus_stats.attack_range;
     stats.attack_speed += bonus_stats.attack_speed;
     stats.crit_chance += bonus_stats.crit_chance;
     stats.crit_damage += bonus_stats.crit_damage;
