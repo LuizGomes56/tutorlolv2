@@ -88,9 +88,8 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
         .iter()
         .find(|player| player.riot_id == riot_id)?;
 
-    let current_player_champion_id = *CHAMPION_NAME_TO_ID
-        .get(current_player.champion_name)
-        .unwrap_or(&ChampionId::Neeko);
+    let current_player_champion_id =
+        ChampionId::from_str(current_player.champion_name).unwrap_or(ChampionId::Neeko);
     let current_player_cache = current_player_champion_id.cache();
 
     let is_mega_gnar = current_player.champion_name == "Mega Gnar";
@@ -114,23 +113,22 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
     )
     .unwrap_or(current_player_cache.adaptive_type);
 
-    const SHADOWFLAME: u32 = ItemId::Shadowflame.to_riot_id();
-    const RIFTMAKER: u32 = ItemId::Riftmaker.to_riot_id();
-    const SPEAR_OF_SHOJIN: u32 = ItemId::SpearOfShojin.to_riot_id();
-
     let current_player_items = current_player
         .items
         .iter()
         .filter_map(|riot_item| {
             let riot_id = riot_item.item_id;
+            let item_id = ItemId::from_riot_id(riot_id)?;
 
-            match riot_id {
-                RIFTMAKER => base_modifiers.global_mod *= RiotFormulas::RIFTMAKER_BONUS_DAMAGE,
-                SHADOWFLAME => {
+            match item_id {
+                ItemId::Riftmaker | ItemId::RiftmakerArena => {
+                    base_modifiers.global_mod *= RiotFormulas::RIFTMAKER_BONUS_DAMAGE
+                }
+                ItemId::Shadowflame | ItemId::ShadowflameArena => {
                     base_modifiers.magic_mod *= RiotFormulas::SHADOWFLAME_BONUS_DAMAGE;
                     base_modifiers.true_mod *= RiotFormulas::SHADOWFLAME_BONUS_DAMAGE;
                 }
-                SPEAR_OF_SHOJIN => {
+                ItemId::SpearOfShojin | ItemId::SpearOfShojinArena => {
                     ability_modifiers.q *= RiotFormulas::SHOJIN_BONUS_DAMAGE;
                     ability_modifiers.w *= RiotFormulas::SHOJIN_BONUS_DAMAGE;
                     ability_modifiers.e *= RiotFormulas::SHOJIN_BONUS_DAMAGE;
@@ -139,8 +137,8 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
                 _ => {}
             };
 
-            let item_id = ItemId::from_riot_id(riot_id)? as _;
-            DAMAGING_ITEMS.contains(item_id).then_some(item_id)
+            let item_index = item_id as _;
+            DAMAGING_ITEMS.contains(item_index).then_some(item_index)
         })
         .collect::<ItemsBitSet>();
 
@@ -168,27 +166,23 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
         stacks: get_stacks(current_player_champion_id, game_time),
     };
 
-    const LAST_STAND: u32 = RuneId::LastStand.to_riot_id();
-    const COUP_DE_GRACE: u32 = RuneId::CoupDeGrace.to_riot_id();
-    const CUT_DOWN: u32 = RuneId::CutDown.to_riot_id();
-    const AXIOM_ARCANIST: u32 = RuneId::AxiomArcanist.to_riot_id();
-
     let current_player_runes = general_runes
         .as_ref()
         .map(|gr| {
             gr.into_iter()
                 .filter_map(|riot_rune| {
                     let riot_id = riot_rune.id;
+                    let rune_id = RuneId::from_riot_id(riot_id)?;
 
-                    match riot_id {
-                        AXIOM_ARCANIST => {
+                    match rune_id {
+                        RuneId::AxiomArcanist => {
                             ability_modifiers.r *= RiotFormulas::AXIOM_ARCANIST_BONUS_DAMAGE
                         }
-                        COUP_DE_GRACE | CUT_DOWN => {
+                        RuneId::CoupDeGrace | RuneId::CutDown => {
                             base_modifiers.global_mod *=
                                 RiotFormulas::COUP_DE_GRACE_AND_CUTDOWN_BONUS_DAMAGE
                         }
-                        LAST_STAND => {
+                        RuneId::LastStand => {
                             base_modifiers.global_mod *= RiotFormulas::get_last_stand(
                                 1.0 - (self_state.current_stats.current_health
                                     / self_state.current_stats.max_health.max(1.0)),
@@ -197,8 +191,8 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
                         _ => {}
                     };
 
-                    let rune_id = RuneId::from_riot_id(riot_id)? as _;
-                    DAMAGING_RUNES.contains(rune_id).then_some(rune_id)
+                    let rune_index = rune_id as _;
+                    DAMAGING_RUNES.contains(rune_index).then_some(rune_index)
                 })
                 .collect::<RunesBitSet>()
         })
@@ -233,7 +227,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
                 team: e_team,
             } = *player;
 
-            let e_champion_id = ChampionId::from_str(e_champion_name).ok()?;
+            let e_champion_id = ChampionId::from_str(e_champion_name).unwrap_or(ChampionId::Neeko);
             let e_cache = e_champion_id.cache();
             let e_position =
                 Position::from_str(e_raw_position).unwrap_or(e_champion_id.main_position());

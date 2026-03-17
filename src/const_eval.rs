@@ -13,7 +13,6 @@ use crate::{
     helpers::ability_id_mod,
     model::{ConstDamageKind, Modifiers, RangeDamage},
 };
-use core::mem::MaybeUninit;
 use tutorlolv2_gen::{
     AttackType, CachedChampion, CachedItem, CachedRune, ChampionId, ConstClosure, Ctx, ITEM_CACHE,
     ItemId, ItemsBitSet, RuneId, TypeMetadata, bit_array_pop, champions::ability_const_eval,
@@ -26,8 +25,8 @@ pub const fn get_items_data_const<const N: usize, const L: usize>(
 ) -> ConstDamageKind<ItemId, N, L> {
     assert!(L == N << 1);
     unsafe {
-        let mut metadata: [TypeMetadata<ItemId>; N] = MaybeUninit::zeroed().assume_init();
-        let mut closures: [ConstClosure; L] = MaybeUninit::zeroed().assume_init();
+        let mut metadata: [TypeMetadata<ItemId>; N] = core::mem::zeroed();
+        let mut closures: [ConstClosure; L] = core::mem::zeroed();
 
         let mut i = 0;
         let mut j = 0;

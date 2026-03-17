@@ -37,6 +37,14 @@ fn respond(data: impl Encode) -> Response {
 pub async fn realtime_handler(body: Bytes) -> Response {
     println!("[call] realtime_handler");
     let game_data = serde_json::from_slice(&body)?;
+
+    // {
+    //     let epoch = std::time::SystemTime::UNIX_EPOCH;
+    //     let systime = std::time::SystemTime::now();
+    //     let since = systime.duration_since(epoch)?;
+    //     std::fs::write(format!("archives/archive_{since:?}.json"), &body)?;
+    // }
+
     let start = std::time::Instant::now();
     let data = realtime(&game_data).ok_or("Error executing fn `realtime`")?;
     println!("[time] fn realtime took: {end:?}", end = start.elapsed());

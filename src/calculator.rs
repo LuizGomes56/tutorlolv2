@@ -624,7 +624,7 @@ pub fn get_calculator_enemies(
                 ..modifiers
             };
 
-            // The only non-const method
+            // The only non-const function
             let damages = get_damages(ctx, eval_data, modifiers);
 
             OutputEnemy {
