@@ -4,7 +4,7 @@ use super::*;
 
 impl Generator<Champion> for Gnar {
     fn generate(mut self: Box<Self>) -> MayFail<Champion> {
-        self.ability(Key::Q, [(0, 0, Min), (0, 1, Max)]);
+        self.ability(Key::Q, [(0, 0, Max), (0, 1, Min)]);
         self.ability_nth(Key::Q, 1, [(0, 0, Mega)]);
         self.ability(Key::W, [(2, 0, Void)]);
         self.ability_nth(Key::W, 1, [(0, 0, Mega)]);
