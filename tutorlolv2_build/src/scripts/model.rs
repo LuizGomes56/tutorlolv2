@@ -20,9 +20,12 @@ pub struct MerakiChampionStats {
     pub attack_damage: MerakiChampionStatMap,
     pub attack_speed: MerakiChampionStatMap,
     pub movespeed: MerakiChampionStatMap,
-    pub critical_strike_damage: MerakiChampionStatMap,
-    pub critical_strike_damage_modifier: MerakiChampionStatMap,
-    pub attack_speed_ratio: MerakiChampionStatMap,
+    #[serde(rename = "criticalStrikeDamage")]
+    pub crit_damage: MerakiChampionStatMap,
+    #[serde(rename = "criticalStrikeDamageModifier")]
+    pub crit_damage_mod: MerakiChampionStatMap,
+    #[serde(rename = "attackSpeedRatio")]
+    pub attack_speed_mod: MerakiChampionStatMap,
     pub attack_range: MerakiChampionStatMap,
     pub aram_damage_taken: MerakiChampionStatMap,
     pub aram_damage_dealt: MerakiChampionStatMap,

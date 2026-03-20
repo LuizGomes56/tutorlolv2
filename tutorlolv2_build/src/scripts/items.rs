@@ -35,10 +35,10 @@ fn declare_item(name: &str, item: &Item) -> DeclaredItem {
 
     let metadata = format!(
         "TypeMetadata {{
-            kind: ItemId::{name},
-            damage_type: {damage_type},
-            attributes: Attrs::{attributes:?}
-        }}"
+        kind: ItemId::{name},
+        damage_type: {damage_type},
+        attributes: {attributes:?},
+    }}"
     );
 
     #[derive(Clone, Hash, PartialEq, Eq, PartialOrd, Ord)]
@@ -125,8 +125,10 @@ fn declare_item(name: &str, item: &Item) -> DeclaredItem {
 
     let mk_closure = |expr: &str| {
         let ctx = expr.ctx_param();
-        let body = expr.to_lowercase();
-        format!("|{ctx}| {body}")
+        match expr.to_lowercase() {
+            body if body == "zero" => "zero".into(),
+            body => format!("|{ctx}| {body}"),
+        }
     };
 
     let melee_closures = [
@@ -252,8 +254,12 @@ pub fn get_stats(stats: &ItemStats) -> String {
             if len < NUMBER_OF_STATS {
                 all_stats.push("..ZEROED_STATS".into());
             }
-            let stats = all_stats.join(",");
-            format!("CachedItemStats {{ {stats} }}")
+            let stats = all_stats.join(",\n\t\t");
+            format!(
+                "S_ {{
+        {stats}
+    }}"
+            )
         }
     }
 }
@@ -298,11 +304,17 @@ pub fn generate_items() -> GeneratorFn {
         } = item;
 
         let name_ssnake = name.to_ssnake();
-        let prettified_stats = prettified_stats
-            .iter()
-            .map(|(stat, value)| format!("(StatName::{stat:?}, {value})"))
-            .collect::<Vec<_>>()
-            .join(",");
+        let prettified_stats = {
+            let result = prettified_stats
+                .iter()
+                .map(|(stat, value)| format!("({stat:?}, {value})"))
+                .collect::<Vec<_>>();
+
+            match result.is_empty() {
+                true => "".into(),
+                false => format!("\n\t\t{join}\n\t", join = result.join(",\n\t\t")),
+            }
+        };
 
         let stats = get_stats(&stats);
 
@@ -322,23 +334,28 @@ pub fn generate_items() -> GeneratorFn {
                 let map_name = key.to_ssnake().to_lowercase();
                 format!("{map_name}: {val},")
             })
-            .collect::<String>();
+            .collect::<Vec<_>>()
+            .join("\n\t\t");
 
         let rest = format!(
-            "riot_id: {riot_id},
-            deals_damage: ({deals_damage}, {deals_max_damage}),
-            stats: {stats},
-            maps: ItemMaps {{{maps}}}}};"
+            "
+    riot_id: {riot_id},
+    deals_damage: ({deals_damage}, {deals_max_damage}),
+    stats: {stats},
+    maps: I_ {{
+        {maps}
+    }}
+}};"
         );
 
         let base_declaration = format!(
-            "pub static {name_ssnake}: CachedItem = CachedItem {{
-                name: {name:?},
-                price: {price},
-                prettified_stats: &[{prettified_stats}],
-                metadata: {metadata},
-                tier: {tier},
-                purchasable: {purchasable},"
+            "static {name_ssnake}: X = X {{
+    name: {name:?},
+    price: {price},
+    prettified_stats: &[{prettified_stats}],
+    metadata: {metadata},
+    tier: {tier},
+    purchasable: {purchasable},"
         );
 
         let html_declaration = [
@@ -349,13 +366,14 @@ pub fn generate_items() -> GeneratorFn {
                         let [melee_min, melee_max] = &melee_closures;
                         let [ranged_min, ranged_max] = &ranged_closures;
                         format!(
-                            "melee_min_dmg: {melee_min},
-                            melee_max_dmg: {melee_max},
-                            ranged_min_dmg: {ranged_min},
-                            ranged_max_dmg: {ranged_max},"
+                            "
+    melee_min_dmg: {melee_min},
+    melee_max_dmg: {melee_max},
+    ranged_min_dmg: {ranged_min},
+    ranged_max_dmg: {ranged_max},"
                         )
                     }
-                    false => "damage: zero,".into(),
+                    false => "\n\tdamage: zero,".into(),
                 }
             },
             &rest,
@@ -368,10 +386,10 @@ pub fn generate_items() -> GeneratorFn {
             .to_string();
 
         let base_declaration = format!(
-            "{base_declaration}
-            ranged_damages: [{ranged_fn_names}],
-            melee_damages: [{melee_fn_names}], {rest}
-            {constfn_declaration}"
+            "pub {base_declaration}
+    ranged_damages: [{ranged_fn_names}],
+    melee_damages: [{melee_fn_names}],{rest}
+    {constfn_declaration}"
         );
 
         let generator =
@@ -477,7 +495,19 @@ fn build_items(data: Vec<(String, ItemResult)>) -> GeneratorFn {
     for i in 0..len {
         let decl_fmt = &formatted[i * 2];
         let clos_fmt = &formatted[i * 2 + 1];
-        let html_declaration = decl_fmt.drop_f32s().rust_html().as_const();
+        let html_declaration = decl_fmt
+            .drop_f32s()
+            .replace("TypeMetadata ", "")
+            .replace(": X = X ", " = ")
+            .replace(
+                "X =
+    X",
+                " = ",
+            )
+            .replace("S_ ", "")
+            .replace("I_ ", "")
+            .rust_html()
+            .as_const();
         tracker.record_into(&html_declaration, &mut formula_offsets);
         match clos_fmt.trim().is_empty() {
             true => closure_offsets.push(CLOSURE_TUPLE),
@@ -559,7 +589,16 @@ fn build_items(data: Vec<(String, ItemResult)>) -> GeneratorFn {
         ]
         .concat();
 
-        let exports = format!("pub mod items {{ use super::*; {content} }}");
+        let exports = format!(
+            "pub mod items {{ 
+                use super::*;
+                use StatName::*;
+                type S_ = CachedItemStats;
+                type I_ = ItemMaps;
+                type X = CachedItem;
+                {content} 
+            }}"
+        );
 
         Generated { exports, block }
     };

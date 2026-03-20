@@ -97,13 +97,13 @@ fn declare_abilities(
 
             let idents = damage.get_idents(&damage_type);
 
-            let attributes = format!("Attrs::{attributes:?}");
+            let attributes = format!("{attributes:?}");
 
             let metadata = format!(
                 "TypeMetadata {{ 
-                    kind: {ability_id:?}, 
-                    damage_type: {damage_type}, 
-                    attributes: {attributes} 
+                    kind: {ability_id:?},
+                    damage_type: {damage_type},
+                    attributes: {attributes}
                 }}"
             );
 
@@ -141,7 +141,7 @@ fn get_stats(stats: &MerakiChampionStats) -> String {
         ) => {
             $(
                 all_stats.push(format!(
-                    "{}: CachedChampionStatsMap {{ flat: {}f32, per_level: {}f32 }}",
+                    "{}: CCSM {{ flat: {}f32, per_level: {}f32 }}",
                     stringify!($field),
                     stats.$field.flat,
                     stats.$field.per_level
@@ -163,9 +163,9 @@ fn get_stats(stats: &MerakiChampionStats) -> String {
         ],
         lone => [
             movespeed,
-            critical_strike_damage,
-            critical_strike_damage_modifier,
-            attack_speed_ratio,
+            crit_damage,
+            crit_damage_mod,
+            attack_speed_mod,
             attack_range,
             aram_damage_taken,
             aram_damage_dealt,
@@ -312,13 +312,13 @@ pub fn generate_champions() -> GeneratorFn {
             "combos: &[{combos}],
             metadata: &[{ability_metadata}],
             merge_data: &[{merge_data}],
-            stats: CachedChampionStats {{{stats}}}",
+            stats: CCS {{{stats}}}",
             stats = get_stats(&stats),
             merge_data = define_merge_indexes(&merge_data, &ability_names),
         );
 
         let base_declaration = format!(
-            "pub static {champion_id_upper}: CachedChampion = CachedChampion {{
+            "static {champion_id_upper}: CC = CC {{
                 name: {name:?},
                 adaptive_type: AdaptiveType::{adaptive_type},
                 attack_type: {attack_type},
@@ -327,7 +327,8 @@ pub fn generate_champions() -> GeneratorFn {
 
         let html_declaration = format!("{base_declaration}{closures}{rest} }};");
 
-        let mut base_declaration = format!("{base_declaration}closures: &[{fn_names}], {rest} }};");
+        let mut base_declaration =
+            format!("pub {base_declaration}closures: &[{fn_names}], {rest} }};");
 
         let mut match_arm_kind = Vec::with_capacity(constfns.len());
         for ConstFn {
@@ -565,7 +566,14 @@ fn build_champions(data: Vec<(String, ChampionResult)>) -> GeneratorFn {
     let formatted = rustfmt_batch(&rustfmt_inputs);
 
     for plan in fmt_args {
-        let html_declaration = formatted[plan.html_index].drop_f32s().rust_html();
+        let html_declaration = formatted[plan.html_index]
+            .drop_f32s()
+            .replace(": CC = CC ", " = ")
+            .replace("CCS ", "")
+            .replace("CCSM ", "")
+            .replace("TypeMetadata ", "")
+            .replace("MergeData ", "")
+            .rust_html();
         tracker.record_into(&html_declaration, &mut formula_offsets);
 
         let mut declare_offsets = |list: Vec<(AbilityId, String)>, into: &mut Vec<_>| {
@@ -598,7 +606,13 @@ fn build_champions(data: Vec<(String, ChampionResult)>) -> GeneratorFn {
             .enumerate()
             .map(|(j, ability_id)| {
                 let index = plan.ability_start + j;
-                (*ability_id, formatted[index].rust_html().as_const())
+                (
+                    *ability_id,
+                    formatted[index]
+                        .replace(": Ability = Ability ", " = ")
+                        .rust_html()
+                        .as_const(),
+                )
             })
             .collect::<Vec<_>>();
 
@@ -699,7 +713,15 @@ fn build_champions(data: Vec<(String, ChampionResult)>) -> GeneratorFn {
         ]
         .concat();
 
-        let exports = format!("pub mod champions {{ use super::*; {content} }}");
+        let exports = format!(
+            "pub mod champions {{ 
+                use super::*; 
+                type CCSM = CachedChampionStatsMap;
+                type CCS = CachedChampionStats;
+                type CC = CachedChampion;
+                {content} 
+            }}"
+        );
         Generated { exports, block }
     };
 

@@ -19,7 +19,7 @@ use core::{
 pub(crate) const unknown: f32 = 0.0;
 pub(crate) use crate::{
     cache::{AttackType::*, Position::*},
-    enums::DamageType::*,
+    enums::{Attrs::*, DamageType::*},
 };
 pub use bitset::*;
 pub use cache::*;

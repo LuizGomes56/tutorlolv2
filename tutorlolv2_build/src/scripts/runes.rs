@@ -41,7 +41,7 @@ pub fn generate_runes() -> GeneratorFn {
                     "TypeMetadata {{
                         kind: RuneId::{name_pascal},
                         damage_type: {damage_type},
-                        attributes: Attrs::Undefined
+                        attributes: Undefined
                     }}"
                 );
 
@@ -93,7 +93,7 @@ pub fn generate_runes() -> GeneratorFn {
                 let ranged_closure = mk_closure(ranged);
 
                 let base_declaration = format!(
-                    "pub static {name_ssnake}: CachedRune = CachedRune {{
+                    "static {name_ssnake}: C_ = C_ {{
                         name: {name:?},
                         damage_type: {damage_type},
                         riot_id: {riot_id},
@@ -114,7 +114,7 @@ pub fn generate_runes() -> GeneratorFn {
                 .concat();
 
                 let base_declaration = format!(
-                    "{base_declaration}
+                    "pub {base_declaration}
                     melee_damage: {melee_fn},
                     ranged_damage: {ranged_fn} }};
                     {constfn_declaration}"
@@ -193,12 +193,12 @@ pub fn generate_runes() -> GeneratorFn {
                 "TypeMetadata {{
                     kind: RuneId::{name_pascal},
                     damage_type: Unknown,
-                    attributes: Attrs::Undefined
+                    attributes: Undefined
                 }}"
             );
 
             let base_declaration = format!(
-                "pub static {name_ssnake}: CachedRune = CachedRune {{
+                "pub static {name_ssnake}: C_ = C_ {{
                     name: {name:?},
                     damage_type: Unknown,
                     melee_damage:zero,ranged_damage:zero,
@@ -370,7 +370,13 @@ fn build_runes(data: Vec<RuneResult>) -> GeneratorFn {
         ]
         .concat();
 
-        let exports = format!("pub mod runes {{ use super::*; {content} }}");
+        let exports = format!(
+            "pub mod runes {{ 
+                use super::*; 
+                type C_ = CachedRune;
+                {content} 
+            }}"
+        );
 
         Generated { exports, block }
     };
