@@ -194,8 +194,8 @@ pub const fn const_rune_id_eval_damage<const N: usize>(
     let mut i = 0;
     while i < N {
         let rune_id = rune_ids[i];
-        let CachedRune { damage_type, .. } = rune_id.cache();
-        let modifier = modifiers.damages.modifier(*damage_type);
+        let CachedRune { metadata, .. } = rune_id.cache();
+        let modifier = modifiers.damages.modifier(metadata.damage_type);
         result[i] = (modifier * rune_const_eval(ctx, rune_id, attack_type)) as i32;
         i += 1;
     }

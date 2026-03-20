@@ -401,12 +401,10 @@ pub struct CachedItem {
 #[derive(Clone, Copy, Debug)]
 pub struct CachedRune {
     pub name: &'static str,
-    pub damage_type: DamageType,
     pub metadata: TypeMetadata<RuneId>,
     pub melee_damage: ConstClosure,
     pub ranged_damage: ConstClosure,
     pub riot_id: u32,
-    pub internal_id: RuneId,
     pub undeclared: bool,
 }
 

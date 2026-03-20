@@ -67747,104 +67747,90 @@ pub mod runes {
         &WATERWALKING,
         &ZOMBIE_WARD,
     ];
-    pub static ABILITY_HASTE: C_ = C_ {
+    static ABILITY_HASTE: C_ = C_ {
         name: "Ability Haste",
-        damage_type: Unknown,
         melee_damage: zero,
         ranged_damage: zero,
         riot_id: 9994,
-        internal_id: RuneId::AbilityHaste,
-        undeclared: true,
         metadata: TypeMetadata {
             kind: RuneId::AbilityHaste,
             damage_type: Unknown,
             attributes: Undefined,
         },
+        undeclared: true,
     };
-    pub static ABSOLUTE_FOCUS: C_ = C_ {
+    static ABSOLUTE_FOCUS: C_ = C_ {
         name: "Absolute Focus",
-        damage_type: Unknown,
         melee_damage: zero,
         ranged_damage: zero,
         riot_id: 8233,
-        internal_id: RuneId::AbsoluteFocus,
-        undeclared: true,
         metadata: TypeMetadata {
             kind: RuneId::AbsoluteFocus,
             damage_type: Unknown,
             attributes: Undefined,
         },
+        undeclared: true,
     };
-    pub static ABSORB_LIFE: C_ = C_ {
+    static ABSORB_LIFE: C_ = C_ {
         name: "Absorb Life",
-        damage_type: Unknown,
         melee_damage: zero,
         ranged_damage: zero,
         riot_id: 9101,
-        internal_id: RuneId::AbsorbLife,
-        undeclared: true,
         metadata: TypeMetadata {
             kind: RuneId::AbsorbLife,
             damage_type: Unknown,
             attributes: Undefined,
         },
+        undeclared: true,
     };
-    pub static ADAPTIVE_FORCE: C_ = C_ {
+    static ADAPTIVE_FORCE: C_ = C_ {
         name: "Adaptive Force",
-        damage_type: Unknown,
         melee_damage: zero,
         ranged_damage: zero,
         riot_id: 9990,
-        internal_id: RuneId::AdaptiveForce,
-        undeclared: true,
         metadata: TypeMetadata {
             kind: RuneId::AdaptiveForce,
             damage_type: Unknown,
             attributes: Undefined,
         },
+        undeclared: true,
     };
     pub static AFTERSHOCK: C_ = C_ {
         name: "Aftershock",
-        damage_type: Adaptive,
         riot_id: 8439,
-        internal_id: RuneId::Aftershock,
-        undeclared: false,
         metadata: TypeMetadata {
             kind: RuneId::Aftershock,
             damage_type: Adaptive,
             attributes: Undefined,
         },
+        undeclared: false,
         melee_damage: aftershock,
         ranged_damage: aftershock,
     };
     pub const fn aftershock(ctx: &Ctx) -> f32 {
         (25.0 + 95.0 / 17.0 * (ctx.level - 1.0) + 0.08 * ctx.bonus_health) * ctx.magic_multiplier
     }
-    pub static APPROACH_VELOCITY: C_ = C_ {
+    static APPROACH_VELOCITY: C_ = C_ {
         name: "Approach Velocity",
-        damage_type: Unknown,
         melee_damage: zero,
         ranged_damage: zero,
         riot_id: 8410,
-        internal_id: RuneId::ApproachVelocity,
-        undeclared: true,
         metadata: TypeMetadata {
             kind: RuneId::ApproachVelocity,
             damage_type: Unknown,
             attributes: Undefined,
         },
+        undeclared: true,
     };
     pub static ARCANE_COMET: C_ = C_ {
         name: "Arcane Comet",
-        damage_type: Adaptive,
         riot_id: 8229,
-        internal_id: RuneId::ArcaneComet,
-        undeclared: false,
         metadata: TypeMetadata {
             kind: RuneId::ArcaneComet,
             damage_type: Adaptive,
             attributes: Undefined,
         },
+        undeclared: false,
         melee_damage: arcane_comet,
         ranged_damage: arcane_comet,
     };
@@ -67852,188 +67838,162 @@ pub mod runes {
         (30.0 + 100.0 / 17.0 * (ctx.level - 1.0) + 0.1 * ctx.bonus_ad + 0.05 * ctx.ability_power)
             * ctx.adaptive_damage
     }
-    pub static ATTACK_SPEED: C_ = C_ {
+    static ATTACK_SPEED: C_ = C_ {
         name: "Attack Speed",
-        damage_type: Unknown,
         melee_damage: zero,
         ranged_damage: zero,
         riot_id: 9992,
-        internal_id: RuneId::AttackSpeed,
-        undeclared: true,
         metadata: TypeMetadata {
             kind: RuneId::AttackSpeed,
             damage_type: Unknown,
             attributes: Undefined,
         },
+        undeclared: true,
     };
-    pub static AXIOM_ARCANIST: C_ = C_ {
+    static AXIOM_ARCANIST: C_ = C_ {
         name: "Axiom Arcanist",
-        damage_type: Unknown,
         melee_damage: zero,
         ranged_damage: zero,
         riot_id: 8224,
-        internal_id: RuneId::AxiomArcanist,
-        undeclared: true,
         metadata: TypeMetadata {
             kind: RuneId::AxiomArcanist,
             damage_type: Unknown,
             attributes: Undefined,
         },
+        undeclared: true,
     };
-    pub static BISCUIT_DELIVERY: C_ = C_ {
+    static BISCUIT_DELIVERY: C_ = C_ {
         name: "Biscuit Delivery",
-        damage_type: Unknown,
         melee_damage: zero,
         ranged_damage: zero,
         riot_id: 8345,
-        internal_id: RuneId::BiscuitDelivery,
-        undeclared: true,
         metadata: TypeMetadata {
             kind: RuneId::BiscuitDelivery,
             damage_type: Unknown,
             attributes: Undefined,
         },
+        undeclared: true,
     };
-    pub static BONE_PLATING: C_ = C_ {
+    static BONE_PLATING: C_ = C_ {
         name: "Bone Plating",
-        damage_type: Unknown,
         melee_damage: zero,
         ranged_damage: zero,
         riot_id: 8473,
-        internal_id: RuneId::BonePlating,
-        undeclared: true,
         metadata: TypeMetadata {
             kind: RuneId::BonePlating,
             damage_type: Unknown,
             attributes: Undefined,
         },
+        undeclared: true,
     };
-    pub static CASH_BACK: C_ = C_ {
+    static CASH_BACK: C_ = C_ {
         name: "Cash Back",
-        damage_type: Unknown,
         melee_damage: zero,
         ranged_damage: zero,
         riot_id: 8321,
-        internal_id: RuneId::CashBack,
-        undeclared: true,
         metadata: TypeMetadata {
             kind: RuneId::CashBack,
             damage_type: Unknown,
             attributes: Undefined,
         },
+        undeclared: true,
     };
-    pub static CELERITY: C_ = C_ {
+    static CELERITY: C_ = C_ {
         name: "Celerity",
-        damage_type: Unknown,
         melee_damage: zero,
         ranged_damage: zero,
         riot_id: 8234,
-        internal_id: RuneId::Celerity,
-        undeclared: true,
         metadata: TypeMetadata {
             kind: RuneId::Celerity,
             damage_type: Unknown,
             attributes: Undefined,
         },
+        undeclared: true,
     };
     pub static CHEAP_SHOT: C_ = C_ {
         name: "Cheap Shot",
-        damage_type: True,
         riot_id: 8126,
-        internal_id: RuneId::CheapShot,
-        undeclared: false,
         metadata: TypeMetadata {
             kind: RuneId::CheapShot,
             damage_type: True,
             attributes: Undefined,
         },
+        undeclared: false,
         melee_damage: cheap_shot,
         ranged_damage: cheap_shot,
     };
     pub const fn cheap_shot(ctx: &Ctx) -> f32 {
         10.0 + 35.0 / 17.0 * (ctx.level - 1.0)
     }
-    pub static CONDITIONING: C_ = C_ {
+    static CONDITIONING: C_ = C_ {
         name: "Conditioning",
-        damage_type: Unknown,
         melee_damage: zero,
         ranged_damage: zero,
         riot_id: 8429,
-        internal_id: RuneId::Conditioning,
-        undeclared: true,
         metadata: TypeMetadata {
             kind: RuneId::Conditioning,
             damage_type: Unknown,
             attributes: Undefined,
         },
+        undeclared: true,
     };
-    pub static CONQUEROR: C_ = C_ {
+    static CONQUEROR: C_ = C_ {
         name: "Conqueror",
-        damage_type: Unknown,
         melee_damage: zero,
         ranged_damage: zero,
         riot_id: 8010,
-        internal_id: RuneId::Conqueror,
-        undeclared: true,
         metadata: TypeMetadata {
             kind: RuneId::Conqueror,
             damage_type: Unknown,
             attributes: Undefined,
         },
+        undeclared: true,
     };
-    pub static COSMIC_INSIGHT: C_ = C_ {
+    static COSMIC_INSIGHT: C_ = C_ {
         name: "Cosmic Insight",
-        damage_type: Unknown,
         melee_damage: zero,
         ranged_damage: zero,
         riot_id: 8347,
-        internal_id: RuneId::CosmicInsight,
-        undeclared: true,
         metadata: TypeMetadata {
             kind: RuneId::CosmicInsight,
             damage_type: Unknown,
             attributes: Undefined,
         },
+        undeclared: true,
     };
-    pub static COUP_DE_GRACE: C_ = C_ {
+    static COUP_DE_GRACE: C_ = C_ {
         name: "Coup de Grace",
-        damage_type: Unknown,
         melee_damage: zero,
         ranged_damage: zero,
         riot_id: 8014,
-        internal_id: RuneId::CoupDeGrace,
-        undeclared: true,
         metadata: TypeMetadata {
             kind: RuneId::CoupDeGrace,
             damage_type: Unknown,
             attributes: Undefined,
         },
+        undeclared: true,
     };
-    pub static CUT_DOWN: C_ = C_ {
+    static CUT_DOWN: C_ = C_ {
         name: "Cut Down",
-        damage_type: Unknown,
         melee_damage: zero,
         ranged_damage: zero,
         riot_id: 8017,
-        internal_id: RuneId::CutDown,
-        undeclared: true,
         metadata: TypeMetadata {
             kind: RuneId::CutDown,
             damage_type: Unknown,
             attributes: Undefined,
         },
+        undeclared: true,
     };
     pub static DARK_HARVEST: C_ = C_ {
         name: "Dark Harvest",
-        damage_type: Adaptive,
         riot_id: 8128,
-        internal_id: RuneId::DarkHarvest,
-        undeclared: false,
         metadata: TypeMetadata {
             kind: RuneId::DarkHarvest,
             damage_type: Adaptive,
             attributes: Undefined,
         },
+        undeclared: false,
         melee_damage: dark_harvest,
         ranged_damage: dark_harvest,
     };
@@ -68041,45 +68001,39 @@ pub mod runes {
         (20.0 + 60.0 / 17.0 * (ctx.level - 1.0) + 0.1 * ctx.bonus_ad + 0.05 * ctx.ability_power)
             * ctx.adaptive_damage
     }
-    pub static DEEP_WARD: C_ = C_ {
+    static DEEP_WARD: C_ = C_ {
         name: "Deep Ward",
-        damage_type: Unknown,
         melee_damage: zero,
         ranged_damage: zero,
         riot_id: 8141,
-        internal_id: RuneId::DeepWard,
-        undeclared: true,
         metadata: TypeMetadata {
             kind: RuneId::DeepWard,
             damage_type: Unknown,
             attributes: Undefined,
         },
+        undeclared: true,
     };
-    pub static DEMOLISH: C_ = C_ {
+    static DEMOLISH: C_ = C_ {
         name: "Demolish",
-        damage_type: Unknown,
         melee_damage: zero,
         ranged_damage: zero,
         riot_id: 8446,
-        internal_id: RuneId::Demolish,
-        undeclared: true,
         metadata: TypeMetadata {
             kind: RuneId::Demolish,
             damage_type: Unknown,
             attributes: Undefined,
         },
+        undeclared: true,
     };
     pub static ELECTROCUTE: C_ = C_ {
         name: "Electrocute",
-        damage_type: Adaptive,
         riot_id: 8112,
-        internal_id: RuneId::Electrocute,
-        undeclared: false,
         metadata: TypeMetadata {
             kind: RuneId::Electrocute,
             damage_type: Adaptive,
             attributes: Undefined,
         },
+        undeclared: false,
         melee_damage: electrocute,
         ranged_damage: electrocute,
     };
@@ -68087,115 +68041,99 @@ pub mod runes {
         (30.0 + 190.0 / 17.0 * (ctx.level - 1.0) + 0.1 * ctx.bonus_ad + 0.05 * ctx.ability_power)
             * ctx.adaptive_damage
     }
-    pub static EYEBALL_COLLECTION: C_ = C_ {
+    static EYEBALL_COLLECTION: C_ = C_ {
         name: "Eyeball Collection",
-        damage_type: Unknown,
         melee_damage: zero,
         ranged_damage: zero,
         riot_id: 8120,
-        internal_id: RuneId::EyeballCollection,
-        undeclared: true,
         metadata: TypeMetadata {
             kind: RuneId::EyeballCollection,
             damage_type: Unknown,
             attributes: Undefined,
         },
+        undeclared: true,
     };
-    pub static FIRST_STRIKE: C_ = C_ {
+    static FIRST_STRIKE: C_ = C_ {
         name: "First Strike",
-        damage_type: Unknown,
         melee_damage: zero,
         ranged_damage: zero,
         riot_id: 8369,
-        internal_id: RuneId::FirstStrike,
-        undeclared: true,
         metadata: TypeMetadata {
             kind: RuneId::FirstStrike,
             damage_type: Unknown,
             attributes: Undefined,
         },
+        undeclared: true,
     };
-    pub static FLEET_FOOTWORK: C_ = C_ {
+    static FLEET_FOOTWORK: C_ = C_ {
         name: "Fleet Footwork",
-        damage_type: Unknown,
         melee_damage: zero,
         ranged_damage: zero,
         riot_id: 8021,
-        internal_id: RuneId::FleetFootwork,
-        undeclared: true,
         metadata: TypeMetadata {
             kind: RuneId::FleetFootwork,
             damage_type: Unknown,
             attributes: Undefined,
         },
+        undeclared: true,
     };
-    pub static FONT_OF_LIFE: C_ = C_ {
+    static FONT_OF_LIFE: C_ = C_ {
         name: "Font of Life",
-        damage_type: Unknown,
         melee_damage: zero,
         ranged_damage: zero,
         riot_id: 8463,
-        internal_id: RuneId::FontOfLife,
-        undeclared: true,
         metadata: TypeMetadata {
             kind: RuneId::FontOfLife,
             damage_type: Unknown,
             attributes: Undefined,
         },
+        undeclared: true,
     };
-    pub static GATHERING_STORM: C_ = C_ {
+    static GATHERING_STORM: C_ = C_ {
         name: "Gathering Storm",
-        damage_type: Unknown,
         melee_damage: zero,
         ranged_damage: zero,
         riot_id: 8236,
-        internal_id: RuneId::GatheringStorm,
-        undeclared: true,
         metadata: TypeMetadata {
             kind: RuneId::GatheringStorm,
             damage_type: Unknown,
             attributes: Undefined,
         },
+        undeclared: true,
     };
-    pub static GHOST_PORO: C_ = C_ {
+    static GHOST_PORO: C_ = C_ {
         name: "Ghost Poro",
-        damage_type: Unknown,
         melee_damage: zero,
         ranged_damage: zero,
         riot_id: 8136,
-        internal_id: RuneId::GhostPoro,
-        undeclared: true,
         metadata: TypeMetadata {
             kind: RuneId::GhostPoro,
             damage_type: Unknown,
             attributes: Undefined,
         },
+        undeclared: true,
     };
-    pub static GLACIAL_AUGMENT: C_ = C_ {
+    static GLACIAL_AUGMENT: C_ = C_ {
         name: "Glacial Augment",
-        damage_type: Unknown,
         melee_damage: zero,
         ranged_damage: zero,
         riot_id: 8351,
-        internal_id: RuneId::GlacialAugment,
-        undeclared: true,
         metadata: TypeMetadata {
             kind: RuneId::GlacialAugment,
             damage_type: Unknown,
             attributes: Undefined,
         },
+        undeclared: true,
     };
     pub static GRASP_OF_THE_UNDYING: C_ = C_ {
         name: "Grasp of the Undying",
-        damage_type: Magic,
         riot_id: 8437,
-        internal_id: RuneId::GraspOfTheUndying,
-        undeclared: false,
         metadata: TypeMetadata {
             kind: RuneId::GraspOfTheUndying,
             damage_type: Magic,
             attributes: Undefined,
         },
+        undeclared: false,
         melee_damage: grasp_of_the_undying_melee,
         ranged_damage: grasp_of_the_undying_ranged,
     };
@@ -68205,269 +68143,231 @@ pub mod runes {
     pub const fn grasp_of_the_undying_ranged(ctx: &Ctx) -> f32 {
         0.021 * ctx.max_health * ctx.magic_multiplier
     }
-    pub static GRISLY_MEMENTOS: C_ = C_ {
+    static GRISLY_MEMENTOS: C_ = C_ {
         name: "Grisly Mementos",
-        damage_type: Unknown,
         melee_damage: zero,
         ranged_damage: zero,
         riot_id: 8140,
-        internal_id: RuneId::GrislyMementos,
-        undeclared: true,
         metadata: TypeMetadata {
             kind: RuneId::GrislyMementos,
             damage_type: Unknown,
             attributes: Undefined,
         },
+        undeclared: true,
     };
-    pub static GUARDIAN: C_ = C_ {
+    static GUARDIAN: C_ = C_ {
         name: "Guardian",
-        damage_type: Unknown,
         melee_damage: zero,
         ranged_damage: zero,
         riot_id: 8465,
-        internal_id: RuneId::Guardian,
-        undeclared: true,
         metadata: TypeMetadata {
             kind: RuneId::Guardian,
             damage_type: Unknown,
             attributes: Undefined,
         },
+        undeclared: true,
     };
-    pub static HAIL_OF_BLADES: C_ = C_ {
+    static HAIL_OF_BLADES: C_ = C_ {
         name: "Hail of Blades",
-        damage_type: Unknown,
         melee_damage: zero,
         ranged_damage: zero,
         riot_id: 9923,
-        internal_id: RuneId::HailOfBlades,
-        undeclared: true,
         metadata: TypeMetadata {
             kind: RuneId::HailOfBlades,
             damage_type: Unknown,
             attributes: Undefined,
         },
+        undeclared: true,
     };
-    pub static HEALTH: C_ = C_ {
+    static HEALTH: C_ = C_ {
         name: "Health",
-        damage_type: Unknown,
         melee_damage: zero,
         ranged_damage: zero,
         riot_id: 9993,
-        internal_id: RuneId::Health,
-        undeclared: true,
         metadata: TypeMetadata {
             kind: RuneId::Health,
             damage_type: Unknown,
             attributes: Undefined,
         },
+        undeclared: true,
     };
-    pub static HEALTH_SCALING: C_ = C_ {
+    static HEALTH_SCALING: C_ = C_ {
         name: "Health Scaling",
-        damage_type: Unknown,
         melee_damage: zero,
         ranged_damage: zero,
         riot_id: 9991,
-        internal_id: RuneId::HealthScaling,
-        undeclared: true,
         metadata: TypeMetadata {
             kind: RuneId::HealthScaling,
             damage_type: Unknown,
             attributes: Undefined,
         },
+        undeclared: true,
     };
-    pub static HEXTECH_FLASHTRAPTION: C_ = C_ {
+    static HEXTECH_FLASHTRAPTION: C_ = C_ {
         name: "Hextech Flashtraption",
-        damage_type: Unknown,
         melee_damage: zero,
         ranged_damage: zero,
         riot_id: 8306,
-        internal_id: RuneId::HextechFlashtraption,
-        undeclared: true,
         metadata: TypeMetadata {
             kind: RuneId::HextechFlashtraption,
             damage_type: Unknown,
             attributes: Undefined,
         },
+        undeclared: true,
     };
-    pub static JACK_OF_ALL_TRADES: C_ = C_ {
+    static JACK_OF_ALL_TRADES: C_ = C_ {
         name: "Jack Of All Trades",
-        damage_type: Unknown,
         melee_damage: zero,
         ranged_damage: zero,
         riot_id: 8316,
-        internal_id: RuneId::JackOfAllTrades,
-        undeclared: true,
         metadata: TypeMetadata {
             kind: RuneId::JackOfAllTrades,
             damage_type: Unknown,
             attributes: Undefined,
         },
+        undeclared: true,
     };
-    pub static LAST_STAND: C_ = C_ {
+    static LAST_STAND: C_ = C_ {
         name: "Last Stand",
-        damage_type: Unknown,
         melee_damage: zero,
         ranged_damage: zero,
         riot_id: 8299,
-        internal_id: RuneId::LastStand,
-        undeclared: true,
         metadata: TypeMetadata {
             kind: RuneId::LastStand,
             damage_type: Unknown,
             attributes: Undefined,
         },
+        undeclared: true,
     };
-    pub static LEGEND_ALACRITY: C_ = C_ {
+    static LEGEND_ALACRITY: C_ = C_ {
         name: "Legend: Alacrity",
-        damage_type: Unknown,
         melee_damage: zero,
         ranged_damage: zero,
         riot_id: 9104,
-        internal_id: RuneId::LegendAlacrity,
-        undeclared: true,
         metadata: TypeMetadata {
             kind: RuneId::LegendAlacrity,
             damage_type: Unknown,
             attributes: Undefined,
         },
+        undeclared: true,
     };
-    pub static LEGEND_BLOODLINE: C_ = C_ {
+    static LEGEND_BLOODLINE: C_ = C_ {
         name: "Legend: Bloodline",
-        damage_type: Unknown,
         melee_damage: zero,
         ranged_damage: zero,
         riot_id: 9103,
-        internal_id: RuneId::LegendBloodline,
-        undeclared: true,
         metadata: TypeMetadata {
             kind: RuneId::LegendBloodline,
             damage_type: Unknown,
             attributes: Undefined,
         },
+        undeclared: true,
     };
-    pub static LEGEND_HASTE: C_ = C_ {
+    static LEGEND_HASTE: C_ = C_ {
         name: "Legend: Haste",
-        damage_type: Unknown,
         melee_damage: zero,
         ranged_damage: zero,
         riot_id: 9105,
-        internal_id: RuneId::LegendHaste,
-        undeclared: true,
         metadata: TypeMetadata {
             kind: RuneId::LegendHaste,
             damage_type: Unknown,
             attributes: Undefined,
         },
+        undeclared: true,
     };
-    pub static LETHAL_TEMPO: C_ = C_ {
+    static LETHAL_TEMPO: C_ = C_ {
         name: "Lethal Tempo",
-        damage_type: Unknown,
         melee_damage: zero,
         ranged_damage: zero,
         riot_id: 8008,
-        internal_id: RuneId::LethalTempo,
-        undeclared: true,
         metadata: TypeMetadata {
             kind: RuneId::LethalTempo,
             damage_type: Unknown,
             attributes: Undefined,
         },
+        undeclared: true,
     };
-    pub static MAGICAL_FOOTWEAR: C_ = C_ {
+    static MAGICAL_FOOTWEAR: C_ = C_ {
         name: "Magical Footwear",
-        damage_type: Unknown,
         melee_damage: zero,
         ranged_damage: zero,
         riot_id: 8304,
-        internal_id: RuneId::MagicalFootwear,
-        undeclared: true,
         metadata: TypeMetadata {
             kind: RuneId::MagicalFootwear,
             damage_type: Unknown,
             attributes: Undefined,
         },
+        undeclared: true,
     };
-    pub static MANAFLOW_BAND: C_ = C_ {
+    static MANAFLOW_BAND: C_ = C_ {
         name: "Manaflow Band",
-        damage_type: Unknown,
         melee_damage: zero,
         ranged_damage: zero,
         riot_id: 8226,
-        internal_id: RuneId::ManaflowBand,
-        undeclared: true,
         metadata: TypeMetadata {
             kind: RuneId::ManaflowBand,
             damage_type: Unknown,
             attributes: Undefined,
         },
+        undeclared: true,
     };
-    pub static MOVE_SPEED: C_ = C_ {
+    static MOVE_SPEED: C_ = C_ {
         name: "Move Speed",
-        damage_type: Unknown,
         melee_damage: zero,
         ranged_damage: zero,
         riot_id: 9996,
-        internal_id: RuneId::MoveSpeed,
-        undeclared: true,
         metadata: TypeMetadata {
             kind: RuneId::MoveSpeed,
             damage_type: Unknown,
             attributes: Undefined,
         },
+        undeclared: true,
     };
-    pub static NIMBUS_CLOAK: C_ = C_ {
+    static NIMBUS_CLOAK: C_ = C_ {
         name: "Nimbus Cloak",
-        damage_type: Unknown,
         melee_damage: zero,
         ranged_damage: zero,
         riot_id: 8275,
-        internal_id: RuneId::NimbusCloak,
-        undeclared: true,
         metadata: TypeMetadata {
             kind: RuneId::NimbusCloak,
             damage_type: Unknown,
             attributes: Undefined,
         },
+        undeclared: true,
     };
-    pub static OVERGROWTH: C_ = C_ {
+    static OVERGROWTH: C_ = C_ {
         name: "Overgrowth",
-        damage_type: Unknown,
         melee_damage: zero,
         ranged_damage: zero,
         riot_id: 8451,
-        internal_id: RuneId::Overgrowth,
-        undeclared: true,
         metadata: TypeMetadata {
             kind: RuneId::Overgrowth,
             damage_type: Unknown,
             attributes: Undefined,
         },
+        undeclared: true,
     };
-    pub static PHASE_RUSH: C_ = C_ {
+    static PHASE_RUSH: C_ = C_ {
         name: "Phase Rush",
-        damage_type: Unknown,
         melee_damage: zero,
         ranged_damage: zero,
         riot_id: 8230,
-        internal_id: RuneId::PhaseRush,
-        undeclared: true,
         metadata: TypeMetadata {
             kind: RuneId::PhaseRush,
             damage_type: Unknown,
             attributes: Undefined,
         },
+        undeclared: true,
     };
     pub static PREDATOR: C_ = C_ {
         name: "Predator",
-        damage_type: Adaptive,
         riot_id: 8124,
-        internal_id: RuneId::Predator,
-        undeclared: false,
         metadata: TypeMetadata {
             kind: RuneId::Predator,
             damage_type: Adaptive,
             attributes: Undefined,
         },
+        undeclared: false,
         melee_damage: predator,
         ranged_damage: predator,
     };
@@ -68475,135 +68375,117 @@ pub mod runes {
         (20.0 + 160.0 / 17.0 * (ctx.level - 1.0) + 0.25 * ctx.bonus_ad + 0.15 * ctx.ability_power)
             * ctx.adaptive_damage
     }
-    pub static PRESENCE_OF_MIND: C_ = C_ {
+    static PRESENCE_OF_MIND: C_ = C_ {
         name: "Presence of Mind",
-        damage_type: Unknown,
         melee_damage: zero,
         ranged_damage: zero,
         riot_id: 8009,
-        internal_id: RuneId::PresenceOfMind,
-        undeclared: true,
         metadata: TypeMetadata {
             kind: RuneId::PresenceOfMind,
             damage_type: Unknown,
             attributes: Undefined,
         },
+        undeclared: true,
     };
     pub static PRESS_THE_ATTACK: C_ = C_ {
         name: "Press The Attack",
-        damage_type: Adaptive,
         riot_id: 8005,
-        internal_id: RuneId::PressTheAttack,
-        undeclared: false,
         metadata: TypeMetadata {
             kind: RuneId::PressTheAttack,
             damage_type: Adaptive,
             attributes: Undefined,
         },
+        undeclared: false,
         melee_damage: press_the_attack,
         ranged_damage: press_the_attack,
     };
     pub const fn press_the_attack(ctx: &Ctx) -> f32 {
         (40.0 + 120.0 / 17.0 * (ctx.level - 1.0)) * ctx.adaptive_damage
     }
-    pub static RELENTLESS_HUNTER: C_ = C_ {
+    static RELENTLESS_HUNTER: C_ = C_ {
         name: "Relentless Hunter",
-        damage_type: Unknown,
         melee_damage: zero,
         ranged_damage: zero,
         riot_id: 8105,
-        internal_id: RuneId::RelentlessHunter,
-        undeclared: true,
         metadata: TypeMetadata {
             kind: RuneId::RelentlessHunter,
             damage_type: Unknown,
             attributes: Undefined,
         },
+        undeclared: true,
     };
-    pub static REVITALIZE: C_ = C_ {
+    static REVITALIZE: C_ = C_ {
         name: "Revitalize",
-        damage_type: Unknown,
         melee_damage: zero,
         ranged_damage: zero,
         riot_id: 8453,
-        internal_id: RuneId::Revitalize,
-        undeclared: true,
         metadata: TypeMetadata {
             kind: RuneId::Revitalize,
             damage_type: Unknown,
             attributes: Undefined,
         },
+        undeclared: true,
     };
     pub static SCORCH: C_ = C_ {
         name: "Scorch",
-        damage_type: Magic,
         riot_id: 8237,
-        internal_id: RuneId::Scorch,
-        undeclared: false,
         metadata: TypeMetadata {
             kind: RuneId::Scorch,
             damage_type: Magic,
             attributes: Undefined,
         },
+        undeclared: false,
         melee_damage: scorch,
         ranged_damage: scorch,
     };
     pub const fn scorch(ctx: &Ctx) -> f32 {
         (20.0 + 20.0 / 17.0 * (ctx.level - 1.0)) * ctx.magic_multiplier
     }
-    pub static SECOND_WIND: C_ = C_ {
+    static SECOND_WIND: C_ = C_ {
         name: "Second Wind",
-        damage_type: Unknown,
         melee_damage: zero,
         ranged_damage: zero,
         riot_id: 8444,
-        internal_id: RuneId::SecondWind,
-        undeclared: true,
         metadata: TypeMetadata {
             kind: RuneId::SecondWind,
             damage_type: Unknown,
             attributes: Undefined,
         },
+        undeclared: true,
     };
-    pub static SHIELD_BASH: C_ = C_ {
+    static SHIELD_BASH: C_ = C_ {
         name: "Shield Bash",
-        damage_type: Unknown,
         melee_damage: zero,
         ranged_damage: zero,
         riot_id: 8401,
-        internal_id: RuneId::ShieldBash,
-        undeclared: true,
         metadata: TypeMetadata {
             kind: RuneId::ShieldBash,
             damage_type: Unknown,
             attributes: Undefined,
         },
+        undeclared: true,
     };
-    pub static SIXTH_SENSE: C_ = C_ {
+    static SIXTH_SENSE: C_ = C_ {
         name: "Sixth Sense",
-        damage_type: Unknown,
         melee_damage: zero,
         ranged_damage: zero,
         riot_id: 8137,
-        internal_id: RuneId::SixthSense,
-        undeclared: true,
         metadata: TypeMetadata {
             kind: RuneId::SixthSense,
             damage_type: Unknown,
             attributes: Undefined,
         },
+        undeclared: true,
     };
     pub static SUDDEN_IMPACT: C_ = C_ {
         name: "Sudden Impact",
-        damage_type: True,
         riot_id: 8143,
-        internal_id: RuneId::SuddenImpact,
-        undeclared: false,
         metadata: TypeMetadata {
             kind: RuneId::SuddenImpact,
             damage_type: True,
             attributes: Undefined,
         },
+        undeclared: false,
         melee_damage: sudden_impact,
         ranged_damage: sudden_impact,
     };
@@ -68612,15 +68494,13 @@ pub mod runes {
     }
     pub static SUMMON_AERY: C_ = C_ {
         name: "Summon Aery",
-        damage_type: Adaptive,
         riot_id: 8214,
-        internal_id: RuneId::SummonAery,
-        undeclared: false,
         metadata: TypeMetadata {
             kind: RuneId::SummonAery,
             damage_type: Adaptive,
             attributes: Undefined,
         },
+        undeclared: false,
         melee_damage: summon_aery,
         ranged_damage: summon_aery,
     };
@@ -68628,173 +68508,149 @@ pub mod runes {
         (10.0 + 40.0 / 17.0 * (ctx.level - 1.0) + 0.1 * ctx.bonus_ad + 0.05 * ctx.ability_power)
             * ctx.adaptive_damage
     }
-    pub static TASTE_OF_BLOOD: C_ = C_ {
+    static TASTE_OF_BLOOD: C_ = C_ {
         name: "Taste of Blood",
-        damage_type: Unknown,
         melee_damage: zero,
         ranged_damage: zero,
         riot_id: 8139,
-        internal_id: RuneId::TasteOfBlood,
-        undeclared: true,
         metadata: TypeMetadata {
             kind: RuneId::TasteOfBlood,
             damage_type: Unknown,
             attributes: Undefined,
         },
+        undeclared: true,
     };
-    pub static TENACITY_AND_SLOW_RESIST: C_ = C_ {
+    static TENACITY_AND_SLOW_RESIST: C_ = C_ {
         name: "Tenacity and Slow Resist",
-        damage_type: Unknown,
         melee_damage: zero,
         ranged_damage: zero,
         riot_id: 9995,
-        internal_id: RuneId::TenacityAndSlowResist,
-        undeclared: true,
         metadata: TypeMetadata {
             kind: RuneId::TenacityAndSlowResist,
             damage_type: Unknown,
             attributes: Undefined,
         },
+        undeclared: true,
     };
-    pub static TIME_WARP_TONIC: C_ = C_ {
+    static TIME_WARP_TONIC: C_ = C_ {
         name: "Time Warp Tonic",
-        damage_type: Unknown,
         melee_damage: zero,
         ranged_damage: zero,
         riot_id: 8352,
-        internal_id: RuneId::TimeWarpTonic,
-        undeclared: true,
         metadata: TypeMetadata {
             kind: RuneId::TimeWarpTonic,
             damage_type: Unknown,
             attributes: Undefined,
         },
+        undeclared: true,
     };
-    pub static TRANSCENDENCE: C_ = C_ {
+    static TRANSCENDENCE: C_ = C_ {
         name: "Transcendence",
-        damage_type: Unknown,
         melee_damage: zero,
         ranged_damage: zero,
         riot_id: 8210,
-        internal_id: RuneId::Transcendence,
-        undeclared: true,
         metadata: TypeMetadata {
             kind: RuneId::Transcendence,
             damage_type: Unknown,
             attributes: Undefined,
         },
+        undeclared: true,
     };
-    pub static TREASURE_HUNTER: C_ = C_ {
+    static TREASURE_HUNTER: C_ = C_ {
         name: "Treasure Hunter",
-        damage_type: Unknown,
         melee_damage: zero,
         ranged_damage: zero,
         riot_id: 8135,
-        internal_id: RuneId::TreasureHunter,
-        undeclared: true,
         metadata: TypeMetadata {
             kind: RuneId::TreasureHunter,
             damage_type: Unknown,
             attributes: Undefined,
         },
+        undeclared: true,
     };
-    pub static TRIPLE_TONIC: C_ = C_ {
+    static TRIPLE_TONIC: C_ = C_ {
         name: "Triple Tonic",
-        damage_type: Unknown,
         melee_damage: zero,
         ranged_damage: zero,
         riot_id: 8313,
-        internal_id: RuneId::TripleTonic,
-        undeclared: true,
         metadata: TypeMetadata {
             kind: RuneId::TripleTonic,
             damage_type: Unknown,
             attributes: Undefined,
         },
+        undeclared: true,
     };
-    pub static TRIUMPH: C_ = C_ {
+    static TRIUMPH: C_ = C_ {
         name: "Triumph",
-        damage_type: Unknown,
         melee_damage: zero,
         ranged_damage: zero,
         riot_id: 9111,
-        internal_id: RuneId::Triumph,
-        undeclared: true,
         metadata: TypeMetadata {
             kind: RuneId::Triumph,
             damage_type: Unknown,
             attributes: Undefined,
         },
+        undeclared: true,
     };
-    pub static ULTIMATE_HUNTER: C_ = C_ {
+    static ULTIMATE_HUNTER: C_ = C_ {
         name: "Ultimate Hunter",
-        damage_type: Unknown,
         melee_damage: zero,
         ranged_damage: zero,
         riot_id: 8106,
-        internal_id: RuneId::UltimateHunter,
-        undeclared: true,
         metadata: TypeMetadata {
             kind: RuneId::UltimateHunter,
             damage_type: Unknown,
             attributes: Undefined,
         },
+        undeclared: true,
     };
-    pub static UNFLINCHING: C_ = C_ {
+    static UNFLINCHING: C_ = C_ {
         name: "Unflinching",
-        damage_type: Unknown,
         melee_damage: zero,
         ranged_damage: zero,
         riot_id: 8242,
-        internal_id: RuneId::Unflinching,
-        undeclared: true,
         metadata: TypeMetadata {
             kind: RuneId::Unflinching,
             damage_type: Unknown,
             attributes: Undefined,
         },
+        undeclared: true,
     };
-    pub static UNSEALED_SPELLBOOK: C_ = C_ {
+    static UNSEALED_SPELLBOOK: C_ = C_ {
         name: "Unsealed Spellbook",
-        damage_type: Unknown,
         melee_damage: zero,
         ranged_damage: zero,
         riot_id: 8360,
-        internal_id: RuneId::UnsealedSpellbook,
-        undeclared: true,
         metadata: TypeMetadata {
             kind: RuneId::UnsealedSpellbook,
             damage_type: Unknown,
             attributes: Undefined,
         },
+        undeclared: true,
     };
-    pub static WATERWALKING: C_ = C_ {
+    static WATERWALKING: C_ = C_ {
         name: "Waterwalking",
-        damage_type: Unknown,
         melee_damage: zero,
         ranged_damage: zero,
         riot_id: 8232,
-        internal_id: RuneId::Waterwalking,
-        undeclared: true,
         metadata: TypeMetadata {
             kind: RuneId::Waterwalking,
             damage_type: Unknown,
             attributes: Undefined,
         },
+        undeclared: true,
     };
-    pub static ZOMBIE_WARD: C_ = C_ {
+    static ZOMBIE_WARD: C_ = C_ {
         name: "Zombie Ward",
-        damage_type: Unknown,
         melee_damage: zero,
         ranged_damage: zero,
         riot_id: 8138,
-        internal_id: RuneId::ZombieWard,
-        undeclared: true,
         metadata: TypeMetadata {
             kind: RuneId::ZombieWard,
             damage_type: Unknown,
             attributes: Undefined,
         },
+        undeclared: true,
     };
     #[derive(
         Clone,
@@ -68966,113 +68822,111 @@ pub mod runes {
         }
     }
     pub static RUNE_FORMULAS: [Range<usize>; RuneId::VARIANTS] = [
-        (5668380..5669621),
-        (5669621..5670866),
-        (5670866..5672099),
-        (5672099..5673344),
-        (5673344..5675178),
-        (5676049..5677306),
-        (5677306..5679264),
-        (5680255..5681492),
-        (5681492..5682737),
-        (5682737..5683990),
-        (5683990..5685227),
-        (5685227..5686452),
-        (5686452..5687679),
-        (5687679..5689214),
-        (5689800..5691043),
-        (5691043..5692274),
-        (5692274..5693519),
-        (5693519..5694758),
-        (5694758..5695979),
-        (5695979..5697936),
-        (5698926..5700151),
-        (5700151..5701378),
-        (5701378..5703338),
-        (5704328..5705589),
-        (5705589..5706826),
-        (5706826..5708071),
-        (5708071..5709306),
-        (5709306..5710555),
-        (5710555..5711784),
-        (5711784..5713033),
-        (5713033..5714947),
-        (5716045..5717294),
-        (5717294..5718521),
-        (5718521..5719764),
-        (5719764..5720983),
-        (5720983..5722228),
-        (5722228..5723501),
-        (5723501..5724758),
-        (5724758..5725987),
-        (5725987..5727237),
-        (5727237..5728491),
-        (5728491..5729729),
-        (5729729..5730966),
-        (5730966..5732219),
-        (5732219..5733460),
-        (5733460..5734689),
-        (5734689..5735926),
-        (5735926..5737161),
-        (5737161..5738390),
-        (5738390..5740339),
-        (5741327..5742578),
-        (5742578..5744302),
-        (5745049..5746306),
-        (5746306..5747541),
-        (5747541..5749227),
-        (5749964..5751197),
-        (5751197..5752430),
-        (5752430..5753663),
-        (5753663..5755210),
-        (5755799..5757752),
-        (5758741..5759984),
-        (5759984..5761265),
-        (5761265..5762512),
-        (5762512..5763759),
-        (5763759..5765008),
-        (5765008..5766245),
-        (5766245..5767468),
-        (5767468..5768717),
-        (5768717..5769956),
-        (5769956..5771217),
-        (5771217..5772460),
-        (5772460..5773693),
+        (5668380..5669279),
+        (5669279..5670181),
+        (5670181..5671074),
+        (5671074..5671976),
+        (5671976..5673502),
+        (5674373..5675284),
+        (5675284..5676933),
+        (5677924..5678820),
+        (5678820..5679722),
+        (5679722..5680630),
+        (5680630..5681526),
+        (5681526..5682413),
+        (5682413..5683302),
+        (5683302..5684534),
+        (5685120..5686021),
+        (5686021..5686913),
+        (5686913..5687815),
+        (5687815..5688713),
+        (5688713..5689597),
+        (5689597..5691245),
+        (5692235..5693122),
+        (5693122..5694011),
+        (5694011..5695662),
+        (5696652..5697566),
+        (5697566..5698462),
+        (5698462..5699364),
+        (5699364..5700259),
+        (5700259..5701164),
+        (5701164..5702054),
+        (5702054..5702959),
+        (5702959..5704561),
+        (5705659..5706564),
+        (5706564..5707453),
+        (5707453..5708354),
+        (5708354..5709237),
+        (5709237..5710139),
+        (5710139..5711062),
+        (5711062..5711974),
+        (5711974..5712864),
+        (5712864..5713770),
+        (5713770..5714679),
+        (5714679..5715576),
+        (5715576..5716472),
+        (5716472..5717380),
+        (5717380..5718279),
+        (5718279..5719169),
+        (5719169..5720065),
+        (5720065..5720960),
+        (5720960..5721850),
+        (5721850..5723493),
+        (5724481..5725388),
+        (5725388..5726800),
+        (5727547..5728458),
+        (5728458..5729353),
+        (5729353..5730738),
+        (5731475..5732368),
+        (5732368..5733261),
+        (5733261..5734154),
+        (5734154..5735395),
+        (5735984..5737629),
+        (5738618..5739519),
+        (5739519..5740449),
+        (5740449..5741353),
+        (5741353..5742257),
+        (5742257..5743162),
+        (5743162..5744058),
+        (5744058..5744944),
+        (5744944..5745849),
+        (5745849..5746747),
+        (5746747..5747661),
+        (5747661..5748562),
+        (5748562..5749455),
     ];
     pub static RUNE_CLOSURES: [Range<usize>; RuneId::VARIANTS] = [
         (1057..1417),
         (1057..1417),
         (1057..1417),
         (1057..1417),
-        (5675178..5676049),
+        (5673502..5674373),
         (1057..1417),
-        (5679264..5680255),
-        (1057..1417),
-        (1057..1417),
-        (1057..1417),
-        (1057..1417),
-        (1057..1417),
-        (1057..1417),
-        (5689214..5689800),
-        (1057..1417),
-        (1057..1417),
-        (1057..1417),
-        (1057..1417),
-        (1057..1417),
-        (5697936..5698926),
-        (1057..1417),
-        (1057..1417),
-        (5703338..5704328),
+        (5676933..5677924),
         (1057..1417),
         (1057..1417),
         (1057..1417),
         (1057..1417),
         (1057..1417),
         (1057..1417),
+        (5684534..5685120),
         (1057..1417),
-        (5714947..5716045),
         (1057..1417),
         (1057..1417),
+        (1057..1417),
+        (1057..1417),
+        (5691245..5692235),
+        (1057..1417),
+        (1057..1417),
+        (5695662..5696652),
+        (1057..1417),
+        (1057..1417),
+        (1057..1417),
+        (1057..1417),
+        (1057..1417),
+        (1057..1417),
+        (1057..1417),
+        (5704561..5705659),
         (1057..1417),
         (1057..1417),
         (1057..1417),
@@ -69089,17 +68943,19 @@ pub mod runes {
         (1057..1417),
         (1057..1417),
         (1057..1417),
-        (5740339..5741327),
-        (1057..1417),
-        (5744302..5745049),
         (1057..1417),
         (1057..1417),
-        (5749227..5749964),
+        (5723493..5724481),
+        (1057..1417),
+        (5726800..5727547),
+        (1057..1417),
+        (1057..1417),
+        (5730738..5731475),
         (1057..1417),
         (1057..1417),
         (1057..1417),
-        (5755210..5755799),
-        (5757752..5758741),
+        (5735395..5735984),
+        (5737629..5738618),
         (1057..1417),
         (1057..1417),
         (1057..1417),
@@ -69232,13 +69088,13 @@ pub mod runes {
         }
     }
 }
-pub static IGNITE_OFFSET: Range<usize> = 5773693..5774532;
-pub static ONHIT_EFFECT_OFFSET: Range<usize> = 5774532..5775170;
-pub static BASIC_ATTACK_OFFSET: Range<usize> = 5775170..5775682;
-pub static TOWER_DAMAGE_OFFSET: Range<usize> = 5775682..5776743;
-pub static CRITICAL_STRIKE_OFFSET: Range<usize> = 5776743..5777447;
-pub static ONHIT_EFFECT_FN_OFFSET: Range<usize> = 5777447..5778024;
-pub static TOWER_DAMAGE_FN_OFFSET: Range<usize> = 5778024..5780005;
-pub static BASIC_ATTACK_FN_OFFSET: Range<usize> = 5780005..5780455;
-pub static CRITICAL_STRIKE_FN_OFFSET: Range<usize> = 5780455..5780964;
-pub const RAW_BLOCK_LEN: usize = 5780964;
+pub static IGNITE_OFFSET: Range<usize> = 5749455..5750294;
+pub static ONHIT_EFFECT_OFFSET: Range<usize> = 5750294..5750932;
+pub static BASIC_ATTACK_OFFSET: Range<usize> = 5750932..5751444;
+pub static TOWER_DAMAGE_OFFSET: Range<usize> = 5751444..5752505;
+pub static CRITICAL_STRIKE_OFFSET: Range<usize> = 5752505..5753209;
+pub static ONHIT_EFFECT_FN_OFFSET: Range<usize> = 5753209..5753786;
+pub static TOWER_DAMAGE_FN_OFFSET: Range<usize> = 5753786..5755767;
+pub static BASIC_ATTACK_FN_OFFSET: Range<usize> = 5755767..5756217;
+pub static CRITICAL_STRIKE_FN_OFFSET: Range<usize> = 5756217..5756726;
+pub const RAW_BLOCK_LEN: usize = 5756726;
