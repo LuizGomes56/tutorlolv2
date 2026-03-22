@@ -6,6 +6,7 @@
 *.bat
 *.js
 *.br
+*.zst
 *.txt
 *.pdf
 *.html
@@ -14,4 +15,5 @@ target
 html
 raw_img
 cache_*
+archives
 **/conv

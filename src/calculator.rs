@@ -150,9 +150,7 @@ pub const fn infer_champion_stats(data: InferStats<'_>) -> Stats<f32> {
     let mut stats = Stats {
         armor: base_stats.armor,
         attack_damage: base_stats.attack_damage,
-        attack_range: cached_stats.attack_range,
-        crit_damage: cached_stats.critical_strike_damage
-            * cached_stats.critical_strike_damage_modifier,
+        crit_damage: cached_stats.crit_damage * cached_stats.crit_damage_mod,
         current_health: base_stats.max_health,
         magic_resist: base_stats.magic_resist,
         max_health: base_stats.max_health,
@@ -172,7 +170,6 @@ pub const fn infer_champion_stats(data: InferStats<'_>) -> Stats<f32> {
     stats.armor_penetration_flat += bonus_stats.armor_penetration_flat;
     stats.armor_penetration_percent += bonus_stats.armor_penetration_percent;
     stats.attack_damage += bonus_stats.attack_damage;
-    stats.attack_range += bonus_stats.attack_range;
     stats.attack_speed += bonus_stats.attack_speed;
     stats.crit_chance += bonus_stats.crit_chance;
     stats.crit_damage += bonus_stats.crit_damage;
@@ -216,7 +213,7 @@ pub const fn infer_champion_stats(data: InferStats<'_>) -> Stats<f32> {
         champion_id,
     );
 
-    stats.attack_speed *= cached_stats.attack_speed_ratio * stats.attack_speed
+    stats.attack_speed *= cached_stats.attack_speed_mod * stats.attack_speed
         + RiotFormulas::stat(&cached_stats.attack_speed, level);
 
     let mut i = 0;
@@ -626,7 +623,7 @@ pub fn get_calculator_enemies(
                 ..modifiers
             };
 
-            // The only non-const method
+            // The only non-const function
             let damages = get_damages(ctx, eval_data, modifiers);
 
             OutputEnemy {

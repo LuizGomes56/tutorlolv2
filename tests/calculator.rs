@@ -52,7 +52,6 @@ pub fn test_calculator() {
             armor_penetration_flat: 0.0,
             armor_penetration_percent: 0.0,
             attack_damage: 110.0,
-            attack_range: 350.0,
             attack_speed: 1.0,
             crit_chance: 20.0,
             crit_damage: 200.0,

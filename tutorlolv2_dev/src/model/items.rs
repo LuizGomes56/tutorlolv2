@@ -26,8 +26,10 @@ pub struct ItemStats {
     pub magic_penetration: MerakiItemStatsMap,
     pub attack_damage: MerakiItemStatsMap,
     pub attack_speed: MerakiItemStatsMap,
-    pub critical_strike_chance: MerakiItemStatsMap,
-    pub critical_strike_damage: MerakiItemStatsMap,
+    #[serde(rename = "criticalStrikeChance")]
+    pub crit_chance: MerakiItemStatsMap,
+    #[serde(rename = "criticalStrikeDamage")]
+    pub crit_damage: MerakiItemStatsMap,
     pub health: MerakiItemStatsMap,
     pub lifesteal: MerakiItemStatsMap,
     pub magic_resistance: MerakiItemStatsMap,

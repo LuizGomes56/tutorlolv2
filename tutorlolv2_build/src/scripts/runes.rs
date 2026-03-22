@@ -41,7 +41,7 @@ pub fn generate_runes() -> GeneratorFn {
                     "TypeMetadata {{
                         kind: RuneId::{name_pascal},
                         damage_type: {damage_type},
-                        attributes: Attrs::Undefined
+                        attributes: Undefined
                     }}"
                 );
 
@@ -93,13 +93,11 @@ pub fn generate_runes() -> GeneratorFn {
                 let ranged_closure = mk_closure(ranged);
 
                 let base_declaration = format!(
-                    "pub static {name_ssnake}: CachedRune = CachedRune {{
+                    "static {name_ssnake}: C_ = C_ {{
                         name: {name:?},
-                        damage_type: {damage_type},
                         riot_id: {riot_id},
-                        internal_id: RuneId::{name_pascal},
-                        undeclared: false,
-                        metadata: {metadata},"
+                        metadata: {metadata},
+                        undeclared: false,"
                 );
 
                 let html_declaration = [
@@ -114,7 +112,7 @@ pub fn generate_runes() -> GeneratorFn {
                 .concat();
 
                 let base_declaration = format!(
-                    "{base_declaration}
+                    "pub {base_declaration}
                     melee_damage: {melee_fn},
                     ranged_damage: {ranged_fn} }};
                     {constfn_declaration}"
@@ -193,19 +191,17 @@ pub fn generate_runes() -> GeneratorFn {
                 "TypeMetadata {{
                     kind: RuneId::{name_pascal},
                     damage_type: Unknown,
-                    attributes: Attrs::Undefined
+                    attributes: Undefined
                 }}"
             );
 
             let base_declaration = format!(
-                "pub static {name_ssnake}: CachedRune = CachedRune {{
+                "static {name_ssnake}: C_ = C_ {{
                     name: {name:?},
-                    damage_type: Unknown,
                     melee_damage:zero,ranged_damage:zero,
                     riot_id: {riot_id},
-                    internal_id: RuneId::{name_pascal},
-                    undeclared: true,
                     metadata: {metadata},
+                    undeclared: true,
                 }};"
             );
 
@@ -298,7 +294,11 @@ fn build_runes(data: Vec<RuneResult>) -> GeneratorFn {
     for i in 0..len {
         let decl_fmt = &formatted[i * 2];
         let clos_fmt = &formatted[i * 2 + 1];
-        let html_declaration = decl_fmt.rust_html().as_const();
+        let html_declaration = decl_fmt
+            .replace("TypeMetadata ", "")
+            .replace(": C_ = C_ ", " = ")
+            .rust_html()
+            .as_const();
         tracker.record_into(&html_declaration, &mut formula_offsets);
         match clos_fmt.trim().is_empty() {
             true => closure_offsets.push(MAX_TUPLE),
@@ -370,7 +370,13 @@ fn build_runes(data: Vec<RuneResult>) -> GeneratorFn {
         ]
         .concat();
 
-        let exports = format!("pub mod runes {{ use super::*; {content} }}");
+        let exports = format!(
+            "pub mod runes {{ 
+                use super::*; 
+                type C_ = CachedRune;
+                {content} 
+            }}"
+        );
 
         Generated { exports, block }
     };

@@ -7,6 +7,7 @@ pub mod data;
 pub mod enums;
 pub mod eval;
 
+use crate::data::{champions::CHAMPION_GENERATOR, items::ITEM_GENERATOR};
 use core::{
     any::{Any, TypeId},
     fmt::Debug,
@@ -19,8 +20,10 @@ use core::{
 pub(crate) const unknown: f32 = 0.0;
 pub(crate) use crate::{
     cache::{AttackType::*, Position::*},
-    enums::DamageType::*,
+    enums::{Attrs::*, DamageType::*},
 };
+pub use tutorlolv2_types::*;
+
 pub use bitset::*;
 pub use cache::*;
 pub use data::{
@@ -34,10 +37,7 @@ pub use data::{
 };
 pub use enums::{Attrs, DamageType};
 pub use eval::*;
-pub use tutorlolv2_types::*;
 pub(crate) use tutorlolv2_types::{AbilityId::*, AbilityName::*, ComboElement::*};
-
-use crate::data::{champions::CHAMPION_GENERATOR, items::ITEM_GENERATOR};
 
 pub static RAW_BLOCK: &str = include_str!("block.txt");
 const BR_BLOCK: &[u8] = include_bytes!("block.br");
@@ -61,12 +61,32 @@ pub const fn is_simulated_item(item: &CachedItem) -> bool {
         purchasable,
         tier,
         price,
-        prettified_stats,
         maps,
+        metadata: TypeMetadata { kind, .. },
         ..
     } = *item;
 
-    tier >= 3 && price > 0 && purchasable && !prettified_stats.is_empty() && maps.summoners_rift
+    let check = [
+        StatName::AbilityPower,
+        StatName::AttackDamage,
+        StatName::AdaptiveForce,
+        StatName::Lethality,
+        StatName::ArmorPenetration,
+        StatName::MagicPenetration,
+    ];
+
+    let mut allow = false;
+    let mut i = 0;
+
+    while i < check.len() {
+        if kind.has_stat(check[i]) {
+            allow = true;
+        }
+
+        i += 1;
+    }
+
+    tier >= 3 && price > 0 && purchasable && allow && maps.summoners_rift
 }
 
 /// Number of items that are compared and obey the rule:
@@ -306,7 +326,7 @@ const _: () = {
         while j < champion.len() {
             let pos_a = champion[j];
             let pos_b = position[j];
-            assert!(pos_a as u8 == pos_b as u8);
+            assert!(pos_a.index() == pos_b.index());
             j += 1;
         }
         i += 1;
@@ -414,6 +434,14 @@ impl ChampionId {
 
     pub const fn get_ability_formula(&self, index: usize) -> &'static Range<usize> {
         &self.ability_formulas()[index]
+    }
+
+    pub const fn get_ability_closure(&self, index: usize) -> &'static Range<usize> {
+        &self.closures()[index]
+    }
+
+    pub const fn get_ability_idents(&self, index: usize) -> &'static [CtxVar] {
+        &self.idents()[index]
     }
 
     pub const fn generator(&self) -> &'static Range<usize> {
@@ -833,6 +861,20 @@ pub enum EntityId {
 impl<T: CastId> From<T> for EntityId {
     fn from(value: T) -> Self {
         value.entity()
+    }
+}
+
+impl EntityId {
+    pub const fn is_champion(&self) -> bool {
+        matches!(self, EntityId::Champion(_))
+    }
+
+    pub const fn is_item(&self) -> bool {
+        matches!(self, EntityId::Item(_))
+    }
+
+    pub const fn is_rune(&self) -> bool {
+        matches!(self, EntityId::Rune(_))
     }
 }
 

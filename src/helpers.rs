@@ -237,10 +237,10 @@ pub fn get_items_data(items: &ItemsBitSet, attack_type: AttackType) -> DamageKin
                 AttackType::Melee => item.melee_damages,
             };
 
-            metadata.get_unchecked_mut(i).write(item.metadata);
             let base = i << 1;
             closures.get_unchecked_mut(base).write(slice[0]);
             closures.get_unchecked_mut(base + 1).write(slice[1]);
+            metadata.get_unchecked_mut(i).write(item.metadata);
         }
 
         DamageKind {

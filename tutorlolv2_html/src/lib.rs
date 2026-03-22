@@ -19,21 +19,38 @@ where
         std::fs::create_dir_all(path).unwrap();
     }
 
-    T::VALUES.into_par_iter().for_each(|&value| {
-        let html = f(value);
-        let folder = path.join(Html::folder(value));
+    T::VALUES
+        .into_par_iter()
+        .try_for_each(|&value| {
+            let html = f(value).into_inner();
+            let folder = path.join(Html::folder(value));
+            let target = folder.join(Html::file(value));
 
-        if !folder.exists() {
-            std::fs::create_dir_all(&folder).unwrap();
-        }
+            std::fs::create_dir_all(&target)?;
 
-        let target = folder.join(Html::file(value)).with_extension("html");
+            println!("[write] {target:?}");
 
-        println!("[write] {target:?}");
+            let result = tutorlolv2_fmt::minify_html(&html);
 
-        let result = tutorlolv2_fmt::minify_html(&html.into_inner());
-        std::fs::write(target, result).unwrap();
-    });
+            let outputs = [
+                (
+                    target.join("index.zst"),
+                    tutorlolv2_fmt::encode_zstd_9(&result),
+                ),
+                (
+                    target.join("index.br"),
+                    tutorlolv2_fmt::encode_brotli_11(&result),
+                ),
+                (target.join("index.html"), result),
+            ];
+
+            for (path, bytes) in outputs {
+                std::fs::write(path, bytes)?;
+            }
+
+            std::io::Result::Ok(())
+        })
+        .unwrap();
 }
 
 pub fn run() {

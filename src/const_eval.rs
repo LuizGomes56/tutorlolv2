@@ -13,7 +13,6 @@ use crate::{
     helpers::ability_id_mod,
     model::{ConstDamageKind, Modifiers, RangeDamage},
 };
-use core::mem::MaybeUninit;
 use tutorlolv2_gen::{
     AttackType, CachedChampion, CachedItem, CachedRune, ChampionId, ConstClosure, Ctx, ITEM_CACHE,
     ItemId, ItemsBitSet, RuneId, TypeMetadata, bit_array_pop, champions::ability_const_eval,
@@ -26,8 +25,8 @@ pub const fn get_items_data_const<const N: usize, const L: usize>(
 ) -> ConstDamageKind<ItemId, N, L> {
     assert!(L == N << 1);
     unsafe {
-        let mut metadata: [TypeMetadata<ItemId>; N] = MaybeUninit::zeroed().assume_init();
-        let mut closures: [ConstClosure; L] = MaybeUninit::zeroed().assume_init();
+        let mut metadata: [TypeMetadata<ItemId>; N] = core::mem::zeroed();
+        let mut closures: [ConstClosure; L] = core::mem::zeroed();
 
         let mut i = 0;
         let mut j = 0;
@@ -195,8 +194,8 @@ pub const fn const_rune_id_eval_damage<const N: usize>(
     let mut i = 0;
     while i < N {
         let rune_id = rune_ids[i];
-        let CachedRune { damage_type, .. } = rune_id.cache();
-        let modifier = modifiers.damages.modifier(*damage_type);
+        let CachedRune { metadata, .. } = rune_id.cache();
+        let modifier = modifiers.damages.modifier(metadata.damage_type);
         result[i] = (modifier * rune_const_eval(ctx, rune_id, attack_type)) as i32;
         i += 1;
     }

@@ -1,6 +1,6 @@
 use once_cell::sync::Lazy;
 use regex::{Captures, Regex};
-use std::{collections::BTreeSet, fmt::Display};
+use std::{collections::BTreeSet, fmt::Display, time::SystemTime};
 use tutorlolv2_fmt::rust_html;
 
 pub mod champions;
@@ -594,6 +594,23 @@ pub fn rustfmt_batch(snips: &[String]) -> Vec<String> {
         while s.ends_with("\n\n") {
             s.pop();
         }
+    }
+
+    #[cfg(debug_assertions)]
+    {
+        let systime = SystemTime::now();
+        let now = systime
+            .duration_since(SystemTime::UNIX_EPOCH)
+            .unwrap()
+            .as_nanos();
+        let _ = std::fs::write(
+            format!("batch_{now}.rs"),
+            out.iter()
+                .map(|v| v.as_bytes())
+                .flatten()
+                .copied()
+                .collect::<Vec<_>>(),
+        );
     }
 
     out

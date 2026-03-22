@@ -16,55 +16,95 @@ impl Html {
         format!("{inner}</body></html>")
     }
 
+    pub fn section(&mut self, text: &str) -> &mut Self {
+        self.push_str(&format!(
+            r#"
+            <h2 class="text-2xl text-std-200 font-medium">
+                {text}
+            </h2>
+            "#
+        ));
+        self
+    }
+
+    pub fn describe(&mut self) -> &mut Self {
+        self.push_str(&format!(
+            r#"<p class="text-std-400">Requires knowledge of the following identifiers</p>"#
+        ));
+        self
+    }
+
     pub fn add_footer(&mut self) {
         self.push_str("<footer>Automatically generated content</footer>");
     }
 
-    pub fn add_code(&mut self, offsets: Range<usize>) {
-        self.push_str(&Self::code_block(offsets));
-    }
-
-    pub fn push_json(&mut self, enumv: impl CastId) {
-        let json = Self::json(enumv);
-        self.push_str(&format!(
-            "<section>
-                <h3>JSON-IR generated for {enumv:?}</h3>
-                {json}
-            </section>"
-        ));
-    }
-
-    pub fn json(enumv: impl CastId) -> String {
+    pub fn get_json(enumv: impl CastId) -> Option<String> {
         let file = format!("{enumv:?}");
         let path = Path::new("internal")
             .join(Self::folder(enumv))
             .join(file)
             .with_extension("json");
-        let json = std::fs::read_to_string(path).unwrap();
-        tutorlolv2_fmt::json_html(&json)
+        std::fs::read_to_string(&path)
+            .ok()
+            .as_ref()
+            .map(String::as_str)
+            .map(tutorlolv2_fmt::json_html)
+    }
+
+    pub fn json(&mut self, enumv: impl CastId) -> &mut Self {
+        if let Some(json) = Self::get_json(enumv) {
+            self.section(&format!("Json representation for {enumv:?}"))
+                .code_block(&json)
+                .push_str("</section>");
+        }
+        self
     }
 
     pub fn code_column(tag: &str, code: &str) -> String {
         format!(r#"<div class="column"><h2>{tag}</h2>{code}</div>"#)
     }
 
-    pub fn push_idents(&mut self, _idents: &[CtxVar]) {
-        todo!()
+    pub fn idents(&mut self, array: &[CtxVar]) -> &mut Self {
+        let conv = |ty: &str, text: &str| format!(r#"<span class="{ty}">{text}</span>"#);
+
+        let idents = array
+            .into_iter()
+            .map(ToString::to_string)
+            .map(|ctxvar| {
+                let var = conv("variable", &ctxvar["ctx.".len()..]);
+                format!("\t{var}")
+            })
+            .collect::<Vec<_>>()
+            .join(",\n");
+
+        let space = (!array.is_empty()).then_some("\n").unwrap_or_default();
+
+        let code = format!(
+            "<pre>{letkw} {ctxty} {lbracket}{space}{idents}{space}{rbracket} = {ctx};</pre>",
+            letkw = conv("keyword", "let"),
+            ctxty = conv("type", "Ctx"),
+            lbracket = conv("bracket_1", "{"),
+            rbracket = conv("bracket_1", "}"),
+            ctx = conv("variable", "ctx")
+        );
+
+        self.code_block(&code)
     }
 
-    pub fn push_code_block(&mut self, offsets: Range<usize>) {
-        let code = Self::code_block(offsets);
+    pub fn code_block(&mut self, code: &str) -> &mut Self {
         self.push_str(&format!(
-            "<section>
-                <h3>Source code representation</h3>
+            r#"
+            <code class="px-4 py-3 border border-std-800">
                 {code}
-            </section>"
+            </code>
+            "#
         ));
+        self
     }
 
-    pub fn code_block(offsets: Range<usize>) -> String {
-        let code = &RAW_BLOCK[offsets];
-        format!("<pre><code>{code}</code></pre>")
+    pub fn code(&mut self, offsets: &Range<usize>) -> &mut Self {
+        let code = &RAW_BLOCK[offsets.clone()];
+        self.code_block(code)
     }
 
     pub fn redirect(value: impl CastId) -> String {
@@ -86,6 +126,10 @@ impl Html {
         format!("{value:?}")
     }
 
+    pub fn img_src(rest: &str) -> String {
+        format!("{url}/img/{rest}", url = Self::URL)
+    }
+
     pub fn src(value: impl CastId) -> String {
         let folder = Self::folder(value);
         let tag = match value.entity() {
@@ -94,8 +138,7 @@ impl Html {
             EntityId::Rune(rune_id) => rune_id.to_riot_id().to_string(),
         };
 
-        let url = Self::URL;
-        format!("{url}/img/{folder}/{tag}.avif")
+        Self::img_src(&format!("{folder}/{tag}.avif"))
     }
 
     pub fn new(value: impl CastId) -> Self {
@@ -114,10 +157,13 @@ impl Html {
             </head>
             <style>{css}</style>
             <body>
-            <header>
-                <img src="{src}" alt="{name}">
-                <h1>{name}</h1>
-            </header>
+            <div class="flex flex-col gap-6 py-4 px-6 box max-w-6xl place-self-center w-full">
+                <div class="flex items-center gap-4">
+                    <img class="w-12 h-12" src="{src}" alt="{name}">
+                    <span class="text-3xl font-medium">
+                        {name}
+                    </span>
+                </div>
             "#
         );
         Self { inner }

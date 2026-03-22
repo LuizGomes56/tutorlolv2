@@ -370,9 +370,9 @@ pub struct CachedChampionStats {
     pub attack_damage: CachedChampionStatsMap,
     pub attack_speed: CachedChampionStatsMap,
     pub movespeed: f32,
-    pub critical_strike_damage: f32,
-    pub critical_strike_damage_modifier: f32,
-    pub attack_speed_ratio: f32,
+    pub crit_damage: f32,
+    pub crit_damage_mod: f32,
+    pub attack_speed_mod: f32,
     pub attack_range: f32,
     pub aram_damage_taken: f32,
     pub aram_damage_dealt: f32,
@@ -401,12 +401,10 @@ pub struct CachedItem {
 #[derive(Clone, Copy, Debug)]
 pub struct CachedRune {
     pub name: &'static str,
-    pub damage_type: DamageType,
     pub metadata: TypeMetadata<RuneId>,
     pub melee_damage: ConstClosure,
     pub ranged_damage: ConstClosure,
     pub riot_id: u32,
-    pub internal_id: RuneId,
     pub undeclared: bool,
 }
 
