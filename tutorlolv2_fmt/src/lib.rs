@@ -1,9 +1,9 @@
-use html5minify::minify;
+use minify_html::Cfg;
 use once_cell::sync::Lazy;
 use serde::Serialize;
 use serde_json::{Serializer, Value, ser::PrettyFormatter};
 use std::{
-    io::{Cursor, Write},
+    io::Write,
     process::{Command, Stdio},
 };
 use synoptic::{Highlighter, TokOpt};
@@ -11,10 +11,26 @@ use synoptic::{Highlighter, TokOpt};
 /// Takes an HTML string as input and minifies it, returning a sequence
 /// of bytes. Text defined inside tags `<pre>` and `<code>` are ignored
 pub fn minify_html(html: &str) -> Vec<u8> {
-    let mut result = Vec::new();
-    let mut html_cursor = Cursor::new(html.as_bytes());
-    minify(&mut html_cursor, &mut result).unwrap();
-    result
+    minify_html::minify(
+        html.as_bytes(),
+        &Cfg {
+            allow_noncompliant_unquoted_attribute_values: false,
+            allow_optimal_entities: false,
+            allow_removing_spaces_between_attributes: false,
+            keep_closing_tags: false,
+            keep_comments: false,
+            keep_html_and_head_opening_tags: false,
+            keep_input_type_text_attr: false,
+            keep_ssi_comments: false,
+            minify_css: true,
+            minify_doctype: true,
+            minify_js: true,
+            preserve_brace_template_syntax: false,
+            preserve_chevron_percent_template_syntax: false,
+            remove_bangs: true,
+            remove_processing_instructions: true,
+        },
+    )
 }
 
 /// Encodes some data using `zstd` at the maximum level, which is 9
@@ -426,7 +442,8 @@ static JSON_HIGHLIGHTER: Lazy<Highlighter> = Lazy::new(|| {
 });
 
 /// Converts JSON code contained in the input [`str`] to an HTML [`String`]
-pub fn json_html(input: &str) -> String {
+pub fn json_html(data: &str) -> String {
+    let input = json_pretty(data);
     let lines = input.lines().map(str::to_string).collect::<Vec<String>>();
 
     let mut h = JSON_HIGHLIGHTER.clone();

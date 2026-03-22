@@ -1,83 +1,114 @@
 use crate::{html::Html, parallel_task};
-use tutorlolv2_gen::{
-    CastId, Position,
-    champions::{
-        ABILITY_CLOSURES, ABILITY_FORMULAS, CHAMPION_FORMULAS, CHAMPION_GENERATOR, ChampionId,
-        RECOMMENDED_ITEMS, RECOMMENDED_RUNES,
-    },
-};
-
-fn get_recommendations<T: CastId, const N: usize, const M: usize>(
-    champion_id: ChampionId,
-    array: &'static [[&[T]; N]; M],
-) -> String {
-    array[champion_id as usize]
-        .into_iter()
-        .enumerate()
-        .map(|(i, values)| unsafe {
-            let position = Position::from_u8_unchecked(i as _);
-            let items = values
-                .into_iter()
-                .map(|value| {
-                    let src = Html::src(*value);
-                    let name = value.name();
-                    format!(
-                        r#"<li>
-                            <img src="{src}" alt="{name}">
-                            <span>[{position:?}] {value:?}</span>
-                        </li>"#
-                    )
-                })
-                .collect::<String>();
-            format!("<ul>{items}</ul>")
-        })
-        .collect::<String>()
-}
+use tutorlolv2_gen::{CastId, ChampionId, Position};
 
 pub fn champions_html() {
     parallel_task(|champion_id: ChampionId| {
-        let number_of_abilities = champion_id.number_of_abilities();
         let mut html = Html::new(champion_id);
 
-        let positions = champion_id
-            .cache()
-            .positions
-            .into_iter()
-            .map(|position| format!("<li>{position:?}</li>"))
-            .collect::<String>();
+        html.push_str(&{
+            let recommendation_cells: [[String; 2]; Position::VARIANTS as usize] =
+                core::array::from_fn(|i| {
+                    let position = Position::ARRAY[i];
 
-        let item_recommendations = get_recommendations(champion_id, &RECOMMENDED_ITEMS);
-        let rune_recommendations = get_recommendations(champion_id, &RECOMMENDED_RUNES);
+                    fn cell<'a, T: CastId + 'a>(array: impl IntoIterator<Item = &'a T>) -> String {
+                        let cells = array
+                            .into_iter()
+                            .map(|&value| {
+                                let src = Html::src(value);
+                                let name = value.name();
+                                format!(
+                                    r#"
+                                    <div class="flex items-center gap-2">
+                                        <img src={src:?} alt={value:?} title={name:?}>
+                                        <span>{name}</span>
+                                    </div>
+                                    "#
+                                )
+                            })
+                            .collect::<String>();
 
-        let abilities = champion_id
-            .cache()
-            .metadata
+                        format!(
+                            r#"
+                            <td class="content-baseline">
+                                <div class="flex flex-col gap-2 py-2">
+                                    {cells}
+                                </div>
+                            </td>
+                            "#
+                        )
+                    }
+
+                    [
+                        cell(champion_id.recommended_items(position)),
+                        cell(champion_id.recommended_runes(position)),
+                    ]
+                });
+
+            let headers = Position::ARRAY
+                .iter()
+                .map(|&position| {
+                    let src = Html::img_src(&format!("other/{position:?}.svg"));
+
+                    format!(
+                        r#"
+                        <th>
+                            <div class="flex items-center gap-2">
+                                <img src={src:?} alt="{position:?}">
+                                <span>{position:?}</span>
+                            </div>
+                        </th>
+                        "#
+                    )
+                })
+                .collect::<String>();
+
+            let mut result = format!(
+                "<table>
+                    <thead>{headers}</thead>
+                    <tbody>
+                        <tr>"
+            );
+
+            recommendation_cells
+                .iter()
+                .for_each(|[items, _]| result.push_str(items));
+
+            result.push_str("</tr><tr>");
+
+            recommendation_cells
+                .iter()
+                .for_each(|[_, runes]| result.push_str(runes));
+
+            result.push_str("</tr></tbody></table>");
+            result
+        });
+
+        html.section("Source Code Representation")
+            .code(champion_id.formula())
+            .section(&format!(
+                "This champion has {x} abilit{postfix}",
+                x = champion_id.number_of_abilities(),
+                postfix = if champion_id.number_of_abilities() == 1 {
+                    "y"
+                } else {
+                    "ies"
+                }
+            ));
+
+        champion_id
+            .abilities()
             .into_iter()
             .enumerate()
-            .map(|(i, metadata)| {
-                let lit = format!("{kind:?}", kind = metadata.kind);
-                let full_code = Html::code_block(ABILITY_FORMULAS[champion_id as usize][i].clone());
-                let part_code = Html::code_block(ABILITY_CLOSURES[champion_id as usize][i].clone());
-                Html::code_column(&lit, &full_code) + &Html::code_column(&lit, &part_code)
-            })
-            .collect::<String>();
+            .for_each(|(i, meta)| {
+                let lit = format!("{kind:?}", kind = meta.kind);
+                html.section(&lit)
+                    .code(champion_id.get_ability_formula(i))
+                    .describe()
+                    .idents(champion_id.get_ability_idents(i))
+                    .code(champion_id.get_ability_closure(i));
+            });
 
-        html.push_str(&format!(
-            "<div>
-                <h3>This champion commonly plays in the following positions</h3>
-                <ul>{positions}</ul>
-            </div>"
-        ));
-        html.push_str(&item_recommendations);
-        html.push_str(&rune_recommendations);
-        html.push_code_block(CHAMPION_FORMULAS[champion_id as usize].clone());
-        html.push_str(&abilities);
-        html.push_code_block(CHAMPION_GENERATOR[champion_id as usize].clone());
-        html.push_json(champion_id);
-        html.push_str(&format!(
-            "This champion has {number_of_abilities} different damaging abilities"
-        ));
-
+        html.code(champion_id.generator()).json(champion_id);
         html
     });
 }
