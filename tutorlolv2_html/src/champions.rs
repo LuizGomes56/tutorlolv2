@@ -15,13 +15,23 @@ pub fn champions_html() {
                             .into_iter()
                             .map(|&value| {
                                 let src = Html::src(value);
+                                let entity_id = value.entity();
                                 let name = value.name();
+                                let folder = match entity_id {
+                                    x if entity_id.is_item() => "items",
+                                    x if entity_id.is_rune() => "runes",
+                                    x if entity_id.is_champion() => "champions",
+                                    _ => unreachable!(),
+                                };
                                 format!(
                                     r#"
-                                    <div class="flex items-center gap-2">
+                                    <a 
+                                        href="../../{folder}/{value:?}/index.html" 
+                                        class="flex items-center gap-2"
+                                    >
                                         <img src={src:?} alt={value:?} title={name:?}>
                                         <span>{name}</span>
-                                    </div>
+                                    </a>
                                     "#
                                 )
                             })
@@ -108,7 +118,9 @@ pub fn champions_html() {
                     .code(champion_id.get_ability_closure(i));
             });
 
-        html.code(champion_id.generator()).json(champion_id);
+        html.section("Generator definition")
+            .code(champion_id.generator())
+            .json(champion_id);
         html
     });
 }
