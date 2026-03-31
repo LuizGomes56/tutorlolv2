@@ -530,8 +530,15 @@ impl ChampionData {
             .ok_or(format!("[get] Failed to find key: {key:?}"))?)
     }
 
-    pub fn combo<const N: usize>(&mut self, combo: [ComboElement; N]) {
-        self.combo.push(combo.to_vec());
+    pub fn combo<const N: usize>(&mut self, combo: [ComboElement; N]) -> MayFail {
+        for &c in combo.iter() {
+            if let ComboElement::Ability(id) = c
+                && self.get(id).is_err()
+            {
+                return Err(format!("[combo] Failed to find key: {id:?}").into());
+            }
+        }
+        Ok(self.combo.push(combo.to_vec()))
     }
 
     /// Receives some ability key and a pattern of that helps locate where

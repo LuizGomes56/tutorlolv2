@@ -52,7 +52,7 @@ impl Generator<Champion> for Aatrox {
             Ability(W(Min)),
             Ability(Q(_3Min)),
             Attack,
-        ]);
+        ])?;
 
         self.combo([
             Ability(Q(_1Max)),
@@ -64,7 +64,7 @@ impl Generator<Champion> for Aatrox {
             Ability(W(Min)),
             Ability(Q(_3Max)),
             Attack,
-        ]);
+        ])?;
 
         self.end()
     }

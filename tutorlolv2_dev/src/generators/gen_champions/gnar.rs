@@ -17,7 +17,7 @@ impl Generator<Champion> for Gnar {
             [Q(Min), Q(Max), Q(Mega), W(Mega), E(Mega), R(Min), R(Max)],
         )?;
 
-        self.combo([Ability(Q(Min)), Attack, Attack, Ability(W(Void))]);
+        self.combo([Ability(Q(Min)), Attack, Attack, Ability(W(Void))])?;
 
         self.combo([
             Ability(W(Mega)),
@@ -28,7 +28,7 @@ impl Generator<Champion> for Gnar {
             Attack,
             Ability(Q(Mega)),
             Attack,
-        ]);
+        ])?;
 
         self.end()
     }
