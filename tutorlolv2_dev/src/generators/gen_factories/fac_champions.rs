@@ -17,8 +17,8 @@ use std::{
 };
 use tutorlolv2_fmt::rustfmt;
 use tutorlolv2_gen::{
-    AbilityId, AbilityName, AdaptiveType, AttackType, Attrs, ChampionId, ComboElement, DamageType,
-    DevMergeData, Key, Position,
+    AbilityId, AbilityName, AdaptiveType, AttackType, Attrs, CastId, ChampionId, ComboElement,
+    DamageType, DevMergeData, Key, Position,
 };
 
 pub struct ChampionData {
@@ -219,14 +219,30 @@ impl ChampionFactory {
         }
     }
 
+    pub fn progress() {
+        let stables = ChampionId::VALUES
+            .map(|c| {
+                if let Ok(data) = std::fs::read_to_string(SaveTo::Generator(c.entity()).path())
+                    && (data.contains("Stable") || data.contains("Preserve"))
+                {
+                    return 1;
+                }
+                0
+            })
+            .into_iter()
+            .sum::<u32>();
+
+        let total = ChampionId::VARIANTS;
+
+        println!("[Champion Generators]: {stables} / {total} stable generators");
+    }
+
     /// Creates a new generator file, given a [`ChampionId`]
     pub fn create(champion_id: ChampionId) -> MayFail<String> {
-        let entity_id = &format!("{champion_id:?}");
-
-        if let Ok(data) = std::fs::read_to_string(
-            SaveTo::Generator(Tag::Champions, &entity_id.to_lowercase()).path(),
-        ) && (data.contains("Stable") || data.contains("Preserve"))
+        if let Ok(data) = std::fs::read_to_string(SaveTo::Generator(champion_id.entity()).path())
+            && (data.contains("Stable") || data.contains("Preserve"))
         {
+            println!("[stable] Skipping generator for {champion_id:?}");
             return Ok(data);
         }
 
@@ -234,12 +250,13 @@ impl ChampionFactory {
             let offsets = meraki_offsets
                 .into_iter()
                 .map(|meraki_offset| {
-                    format!(
-                        "({effect_index}, {leveling_index}, {enum_binding:?})",
-                        effect_index = meraki_offset.effect,
-                        leveling_index = meraki_offset.leveling,
-                        enum_binding = meraki_offset.binding
-                    )
+                    let MerakiOffset {
+                        effect,
+                        leveling,
+                        binding,
+                    } = meraki_offset;
+
+                    format!("({effect}, {leveling}, {binding:?})")
                 })
                 .collect::<Vec<String>>();
             format!(
@@ -247,6 +264,8 @@ impl ChampionFactory {
                 offsets = offsets.join(","),
             )
         };
+
+        let entity_id = &format!("{champion_id:?}");
 
         let mut generated_content = format!(
             "use super::*;
@@ -288,9 +307,8 @@ impl ChampionFactory {
             let Ok(data) = Self::create(champion_id) else {
                 return println!("Unable to create generator file for {champion_id:?}");
             };
-            let file_name = format!("{champion_id:?}").to_lowercase();
             std::fs::write(
-                SaveTo::Generator(Tag::Champions, &file_name).path(),
+                SaveTo::Generator(champion_id.entity()).path(),
                 data.as_bytes(),
             )
             .unwrap();
@@ -318,10 +336,10 @@ impl ChampionFactory {
         let function = Self::function(champion_id);
         let generator = function(data);
         match generator.generate() {
-            Ok(champion) => champion.into_file(SaveTo::Internal(Tag::Champions, entity_id).path()),
+            Ok(champion) => champion.into_file(SaveTo::Internal(champion_id.entity()).path()),
             Err(e) => {
                 println!("Error generating {entity_id:?}: {e:?}. Performing offset check.");
-                match Self::check_offsets_raw(entity_id)? {
+                match Self::check_offsets(champion_id)? {
                     true => println!("{entity_id:?} have an issue unrelated to offsets"),
                     false => println!("{entity_id:?} likely has incorrect offsets"),
                 }
@@ -479,11 +497,7 @@ impl ChampionFactory {
     /// Verifies the offsets used in the [`ChampionData::ability`] and [`ChampionData::passive`]
     /// methods for some [`ChampionId`]
     pub fn check_offsets(champion_id: ChampionId) -> MayFail<bool> {
-        Self::check_offsets_raw(&format!("{champion_id:?}"))
-    }
-
-    /// Verifies the correctness of offsets for some champion, search by its normalized name
-    pub fn check_offsets_raw(name: &str) -> MayFail<bool> {
+        let name = &format!("{champion_id:?}");
         let meraki_champion =
             MerakiChampion::from_file(SaveTo::MerakiCache(Tag::Champions, name).path())?;
 
@@ -500,7 +514,7 @@ impl ChampionFactory {
             );
         }
 
-        let old_content = std::fs::read_to_string(SaveTo::Generator(Tag::Champions, name).path())?;
+        let old_content = std::fs::read_to_string(SaveTo::Generator(champion_id.entity()).path())?;
 
         if !Self::compare_offsets(&old_content, &new_offsets)? {
             return Ok(false);

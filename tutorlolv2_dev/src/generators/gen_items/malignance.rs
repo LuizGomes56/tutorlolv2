@@ -14,4 +14,8 @@ impl Generator<ItemData> for Malignance {
         self.attr(Area);
         self.end()
     }
+
+    fn progress(&self) -> Progress {
+        Stable
+    }
 }

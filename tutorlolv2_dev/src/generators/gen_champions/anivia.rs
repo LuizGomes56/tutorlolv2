@@ -25,7 +25,7 @@ impl Generator<Champion> for Anivia {
         self.end()
     }
 
-    fn step(&self) -> Step {
+    fn progress(&self) -> Progress {
         Stable
     }
 }

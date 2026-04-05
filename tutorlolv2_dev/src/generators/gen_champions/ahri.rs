@@ -20,7 +20,7 @@ impl Generator<Champion> for Ahri {
         self.end()
     }
 
-    fn step(&self) -> Step {
+    fn progress(&self) -> Progress {
         Stable
     }
 }

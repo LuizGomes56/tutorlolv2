@@ -21,7 +21,7 @@ impl Generator<Champion> for Neeko {
         self.end()
     }
 
-    fn step(&self) -> Step {
+    fn progress(&self) -> Progress {
         Stable
     }
 }

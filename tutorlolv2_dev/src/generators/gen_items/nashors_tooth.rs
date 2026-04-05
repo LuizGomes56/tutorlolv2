@@ -8,4 +8,8 @@ impl Generator<ItemData> for NashorsTooth {
         self.damage_type(Magic);
         self.end()
     }
+
+    fn progress(&self) -> Progress {
+        Stable
+    }
 }

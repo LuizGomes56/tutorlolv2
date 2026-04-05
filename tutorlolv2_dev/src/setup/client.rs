@@ -22,12 +22,12 @@ use std::{
     sync::Arc,
 };
 use tokio::{sync::Semaphore, task::JoinHandle};
-use tutorlolv2_fmt::pascal_case;
-use tutorlolv2_gen::{ChampionId, ItemId, Position, RuneId};
+use tutorlolv2_fmt::{pascal_case, to_ssnake};
+use tutorlolv2_gen::{ChampionId, EntityId, ItemId, Position, RuneId};
 
 pub enum SaveTo<'a> {
     GeneratorDir(Tag),
-    Generator(Tag, &'a str),
+    Generator(EntityId),
     ImgChampion(ChampionId),
     ImgAbility(ChampionId, char),
     ImgItem(&'a str),
@@ -48,7 +48,8 @@ pub enum SaveTo<'a> {
     RiotCache(Tag, &'a str),
     ScraperBuilds(Position, ChampionId),
     ScraperCombos(ChampionId),
-    Internal(Tag, &'a str),
+    Internal(EntityId),
+    InternalRaw(Tag, &'a str),
     InternalDir(Tag),
     InternalScraperBuilds(Position, ChampionId),
     InternalScraperCombos(ChampionId),
@@ -83,9 +84,15 @@ impl<'a> SaveTo<'a> {
         let img = "raw_img";
         match self {
             SaveTo::GeneratorDir(tag) => format!("tutorlolv2_dev/src/generators/gen_{tag}"),
-            SaveTo::Generator(tag, s) => {
-                let path = Self::GeneratorDir(*tag).path();
-                format!("{path}/{s}.rs")
+            SaveTo::Generator(entity_id) => {
+                let (tag, name) = match entity_id {
+                    EntityId::Champion(champion_id) => (Tag::Champions, format!("{champion_id:?}")),
+                    EntityId::Item(item_id) => (Tag::Items, to_ssnake(&format!("{item_id:?}"))),
+                    EntityId::Rune(rune_id) => (Tag::Runes, to_ssnake(&format!("{rune_id:?}"))),
+                };
+                let file = name.to_lowercase();
+                let path = Self::GeneratorDir(tag).path();
+                format!("{path}/{file}.rs")
             }
             SaveTo::ImgChampion(s) => format!("{img}/champions/{s:?}.png"),
             SaveTo::ImgAbility(s, c) => format!("{img}/abilities/{s:?}{c}.png"),
@@ -109,7 +116,16 @@ impl<'a> SaveTo<'a> {
                 format!("cache/scraper/builds/{position:?}/{s:?}.html")
             }
             SaveTo::ScraperCombos(s) => format!("cache/scraper/combos/{s:?}.html"),
-            SaveTo::Internal(tag, s) => format!("internal/{tag}/{s}.json"),
+            SaveTo::InternalRaw(tag, s) => format!("internal/{tag}/{s}.json"),
+            SaveTo::Internal(entity_id) => {
+                let (tag, dbg_trait) = match entity_id {
+                    EntityId::Champion(champion_id) => (Tag::Champions, champion_id as &dyn Debug),
+                    EntityId::Item(item_id) => (Tag::Items, item_id as &dyn Debug),
+                    EntityId::Rune(rune_id) => (Tag::Runes, rune_id as &dyn Debug),
+                };
+                let file = format!("{dbg_trait:?}");
+                format!("internal/{tag}/{file}.json")
+            }
             SaveTo::InternalDir(tag) => format!("internal/{tag}"),
             SaveTo::InternalScraperBuilds(position, s) => {
                 format!("internal/scraper/builds/{position:?}/{s:?}.json")

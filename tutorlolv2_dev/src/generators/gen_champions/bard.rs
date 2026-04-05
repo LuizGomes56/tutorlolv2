@@ -6,7 +6,7 @@ impl Generator<Champion> for Bard {
         self.end()
     }
 
-    fn step(&self) -> Step {
+    fn progress(&self) -> Progress {
         Stable
     }
 }

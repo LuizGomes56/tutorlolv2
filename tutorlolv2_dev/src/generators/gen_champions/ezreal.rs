@@ -9,7 +9,7 @@ impl Generator<Champion> for Ezreal {
         self.end()
     }
 
-    fn step(&self) -> Step {
+    fn progress(&self) -> Progress {
         Stable
     }
 }

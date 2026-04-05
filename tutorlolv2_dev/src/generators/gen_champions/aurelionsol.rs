@@ -11,12 +11,16 @@ impl Generator<Champion> for AurelionSol {
                 (0, 3, _4),
                 (0, 4, _5),
                 (0, 5, _6),
-                (1, 0, _7),
+                // (1, 0, _7),
             ],
         );
         self.ability(Key::W, [(0, 0, _1)]);
         self.ability(Key::E, [(0, 0, _1), (0, 1, _2)]);
         self.ability(Key::R, [(0, 0, _1), (0, 0, _2), (1, 0, _3)]);
         self.end()
+    }
+
+    fn progress(&self) -> Progress {
+        Preserve
     }
 }

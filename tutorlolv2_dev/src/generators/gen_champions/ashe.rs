@@ -12,7 +12,7 @@ impl Generator<Champion> for Ashe {
         self.end()
     }
 
-    fn step(&self) -> Step {
+    fn progress(&self) -> Progress {
         Stable
     }
 }

@@ -5,4 +5,8 @@ impl Generator<ItemData> for MalignanceArena {
         self.yield_to(ItemId::Malignance)?;
         self.end()
     }
+
+    fn progress(&self) -> Progress {
+        Stable
+    }
 }

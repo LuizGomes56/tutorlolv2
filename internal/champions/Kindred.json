@@ -118,6 +118,23 @@
           "67.5 + (0.3 * ctx.bonus_ad) + (0.3 * ctx.ability_power) + (0.0225 * ctx.current_health) + (0.015 * ctx.stacks)"
         ]
       }
+    ],
+    [
+      {
+        "E": "_1"
+      },
+      {
+        "name": "Mounting Dread",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "80 + ctx.bonus_ad + (0.05 * ctx.missing_health) + (0.005 * ctx.stacks)",
+          "110 + ctx.bonus_ad + (0.05 * ctx.missing_health) + (0.005 * ctx.stacks)",
+          "140 + ctx.bonus_ad + (0.05 * ctx.missing_health) + (0.005 * ctx.stacks)",
+          "170 + ctx.bonus_ad + (0.05 * ctx.missing_health) + (0.005 * ctx.stacks)",
+          "200 + ctx.bonus_ad + (0.05 * ctx.missing_health) + (0.005 * ctx.stacks)"
+        ]
+      }
     ]
   ],
   "merge_data": [],

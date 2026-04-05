@@ -24,7 +24,7 @@ impl Generator<Champion> for KogMaw {
         self.end()
     }
 
-    fn step(&self) -> Step {
+    fn progress(&self) -> Progress {
         Stable
     }
 }

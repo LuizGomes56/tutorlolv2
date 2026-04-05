@@ -71,6 +71,20 @@ fn cgen() {
 }
 
 #[test]
+fn cmkgen() {
+    let champion = std::env::args().nth(2).unwrap();
+    println!("Champion: {champion}");
+    let champion_id = ChampionId::from_str(&champion).unwrap();
+    println!("Parsed to ChampionId::{champion_id:?}");
+    ChampionFactory::create(champion_id).unwrap();
+}
+
+#[test]
+fn cgen_progress() {
+    ChampionFactory::progress();
+}
+
+#[test]
 fn run_item_generator() {
     let data = ItemFactory::run(ItemId::BladeOfTheRuinedKingArena).unwrap();
     println!("Data: {}", data.current_data.ranged.minimum_damage);

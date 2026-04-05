@@ -9,7 +9,7 @@ impl Generator<Champion> for Amumu {
         self.end()
     }
 
-    fn step(&self) -> Step {
+    fn progress(&self) -> Progress {
         Stable
     }
 }

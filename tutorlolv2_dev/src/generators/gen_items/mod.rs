@@ -1,5 +1,6 @@
 pub(self) use crate::{
-    MayFail,
+    MayFail, Progress,
+    Progress::*,
     generators::{
         Generator, gen_decl::decl_items::*, gen_factories::fac_items::ItemData,
         gen_utils::RegExtractor,

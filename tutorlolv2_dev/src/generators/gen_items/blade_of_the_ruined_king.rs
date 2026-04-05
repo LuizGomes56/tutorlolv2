@@ -22,4 +22,8 @@ impl Generator<ItemData> for BladeOfTheRuinedKing {
         self.ranged_min_dmg(damage(ranged_scaling));
         self.end()
     }
+
+    fn progress(&self) -> Progress {
+        Stable
+    }
 }

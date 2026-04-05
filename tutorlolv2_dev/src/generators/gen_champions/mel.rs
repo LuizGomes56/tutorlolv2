@@ -15,7 +15,18 @@ impl Generator<Champion> for Mel {
                 (2, 1, _6),
             ],
         );
-        self.ability(Key::R, [(0, 0, _1), (2, 0, _2), (2, 1, _3)]);
+        self.ability(
+            Key::R,
+            [
+                // (0, 0, _1),
+                (2, 0, _2),
+                (2, 1, _3),
+            ],
+        );
         self.end()
+    }
+
+    fn progress(&self) -> Progress {
+        Preserve
     }
 }

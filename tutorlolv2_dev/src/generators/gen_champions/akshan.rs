@@ -57,7 +57,7 @@ impl Generator<Champion> for Akshan {
         self.end()
     }
 
-    fn step(&self) -> Step {
+    fn progress(&self) -> Progress {
         Stable
     }
 }

@@ -40,7 +40,7 @@ impl Generator<Champion> for Jinx {
         self.end()
     }
 
-    fn step(&self) -> Step {
+    fn progress(&self) -> Progress {
         Stable
     }
 }

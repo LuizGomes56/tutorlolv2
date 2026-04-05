@@ -11,7 +11,7 @@ impl Generator<Champion> for Akali {
         self.end()
     }
 
-    fn step(&self) -> Step {
+    fn progress(&self) -> Progress {
         Stable
     }
 }

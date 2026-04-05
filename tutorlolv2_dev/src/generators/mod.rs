@@ -7,14 +7,14 @@ pub mod gen_items;
 pub mod gen_runes;
 pub mod gen_utils;
 
-pub enum Step {
+pub enum Progress {
     Stable,
     Unstable,
     Preserve,
 }
 
 pub struct Metadata {
-    pub step: Step,
+    pub step: Progress,
     pub version: String,
 }
 
@@ -33,13 +33,13 @@ pub struct Metadata {
 pub trait Generator<T> {
     fn generate(self: Box<Self>) -> crate::MayFail<T>;
 
-    fn step(&self) -> Step {
-        Step::Unstable
+    fn progress(&self) -> Progress {
+        Progress::Unstable
     }
 
     fn metadata(&self) -> Metadata {
         Metadata {
-            step: self.step(),
+            step: self.progress(),
             version: ENV_CONFIG.lol_version.clone(),
         }
     }

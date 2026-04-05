@@ -31,7 +31,7 @@ impl Generator<Champion> for Gnar {
         self.end()
     }
 
-    fn step(&self) -> Step {
+    fn progress(&self) -> Progress {
         Stable
     }
 }

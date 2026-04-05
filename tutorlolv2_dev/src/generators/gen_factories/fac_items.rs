@@ -8,8 +8,7 @@ use crate::{
 };
 use rayon::iter::{IntoParallelIterator, ParallelIterator};
 use serde_json::Value;
-use tutorlolv2_fmt::to_ssnake;
-use tutorlolv2_gen::{Attrs, DamageType, ItemId, StatName};
+use tutorlolv2_gen::{Attrs, CastId, DamageType, ItemId, StatName};
 
 pub struct ItemData {
     pub meraki_data: Option<MerakiItem>,
@@ -180,7 +179,7 @@ impl ItemFactory {
             .for_each(|item_id| match Self::run(item_id) {
                 Ok(data) => data
                     .current_data
-                    .into_file(SaveTo::Internal(Tag::Items, &format!("{item_id:?}")).path())
+                    .into_file(SaveTo::Internal(item_id.entity()).path())
                     .unwrap(),
                 Err(e) => panic!("Unable to run generator for {item_id:?}, Error: {e}"),
             });
@@ -189,16 +188,15 @@ impl ItemFactory {
 
     pub fn clean() -> MayFail {
         for item_id in ItemId::VALUES {
-            let fname = format!("{item_id:?}");
-            let generator_path = Self::generator_path(&fname);
-            let path = SaveTo::Internal(Tag::Items, &fname).path();
+            let generator_path = SaveTo::Generator(item_id.entity()).path();
+            let path = SaveTo::Internal(item_id.entity()).path();
             let json = Value::from_file(&path)?;
 
             if let Some(version) = json.get("version")
                 && let Some(version) = version.as_str()
                 && version != ENV_CONFIG.lol_version
             {
-                if let Ok(data) = Self::read_gen(&fname)
+                if let Ok(data) = std::fs::read_to_string(&generator_path)
                     && Self::is_stable(&data)
                 {
                     println!("ItemId::{item_id:?} is stable but no longer available");
@@ -218,8 +216,7 @@ impl ItemFactory {
         let meraki_data =
             MerakiItem::from_file(SaveTo::MerakiCache(Tag::Items, riot_id).path()).ok();
         let riot_data = RiotCdnItem::from_file(SaveTo::RiotCache(Tag::Items, riot_id).path())?;
-        let current_data =
-            Item::from_file(SaveTo::Internal(Tag::Items, &format!("{item_id:?}")).path())?;
+        let current_data = Item::from_file(SaveTo::Internal(item_id.entity()).path())?;
 
         let function = Self::GENERATOR_FUNCTIONS[item_id as usize];
         let generator = function(ItemData::new(meraki_data, riot_data, current_data));
@@ -227,14 +224,6 @@ impl ItemFactory {
     }
 
     pub fn is_stable(data: &str) -> bool {
-        data.contains("#![stable]") || data.contains("#![preserve]")
-    }
-
-    pub fn generator_path(entity_id: &str) -> String {
-        SaveTo::Generator(Tag::Items, &to_ssnake(entity_id).to_lowercase()).path()
-    }
-
-    pub fn read_gen(entity_id: &str) -> std::io::Result<String> {
-        std::fs::read_to_string(Self::generator_path(entity_id))
+        data.contains("Stable") || data.contains("Unstable")
     }
 }
