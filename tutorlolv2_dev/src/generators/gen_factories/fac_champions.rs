@@ -42,23 +42,190 @@ static RE_TUPLE: Lazy<Regex> =
     Lazy::new(|| Regex::new(r"\(\s*(\d+)\s*,\s*(\d+)\s*,").expect("TUPLE_RE"));
 
 impl ChampionFactory {
-    /// Array containing all the `::new` functions of every champion generator struct
-    pub const GENERATOR_FUNCTIONS: [fn(MerakiChampion) -> Box<dyn Generator<Champion>>;
-        ChampionId::VARIANTS] =
-        tutorlolv2_macros::expand_dir!("../internal/champions", |[Name]| Name::new);
+    fn function(champion_id: ChampionId) -> fn(MerakiChampion) -> Box<dyn Generator<Champion>> {
+        match champion_id {
+            ChampionId::Aatrox => Aatrox::new,
+            ChampionId::Ahri => Ahri::new,
+            ChampionId::Akali => Akali::new,
+            ChampionId::Akshan => Akshan::new,
+            ChampionId::Alistar => Alistar::new,
+            ChampionId::Ambessa => Ambessa::new,
+            ChampionId::Amumu => Amumu::new,
+            ChampionId::Anivia => Anivia::new,
+            ChampionId::Annie => Annie::new,
+            ChampionId::Aphelios => Aphelios::new,
+            ChampionId::Ashe => Ashe::new,
+            ChampionId::AurelionSol => AurelionSol::new,
+            ChampionId::Aurora => Aurora::new,
+            ChampionId::Azir => Azir::new,
+            ChampionId::Bard => Bard::new,
+            ChampionId::Belveth => Belveth::new,
+            ChampionId::Blitzcrank => Blitzcrank::new,
+            ChampionId::Brand => Brand::new,
+            ChampionId::Braum => Braum::new,
+            ChampionId::Briar => Briar::new,
+            ChampionId::Caitlyn => Caitlyn::new,
+            ChampionId::Camille => Camille::new,
+            ChampionId::Cassiopeia => Cassiopeia::new,
+            ChampionId::Chogath => Chogath::new,
+            ChampionId::Corki => Corki::new,
+            ChampionId::Darius => Darius::new,
+            ChampionId::Diana => Diana::new,
+            ChampionId::Draven => Draven::new,
+            ChampionId::DrMundo => DrMundo::new,
+            ChampionId::Ekko => Ekko::new,
+            ChampionId::Elise => Elise::new,
+            ChampionId::Evelynn => Evelynn::new,
+            ChampionId::Ezreal => Ezreal::new,
+            ChampionId::Fiddlesticks => Fiddlesticks::new,
+            ChampionId::Fiora => Fiora::new,
+            ChampionId::Fizz => Fizz::new,
+            ChampionId::Galio => Galio::new,
+            ChampionId::Gangplank => Gangplank::new,
+            ChampionId::Garen => Garen::new,
+            ChampionId::Gnar => Gnar::new,
+            ChampionId::Gragas => Gragas::new,
+            ChampionId::Graves => Graves::new,
+            ChampionId::Gwen => Gwen::new,
+            ChampionId::Hecarim => Hecarim::new,
+            ChampionId::Heimerdinger => Heimerdinger::new,
+            ChampionId::Hwei => Hwei::new,
+            ChampionId::Illaoi => Illaoi::new,
+            ChampionId::Irelia => Irelia::new,
+            ChampionId::Ivern => Ivern::new,
+            ChampionId::Janna => Janna::new,
+            ChampionId::JarvanIV => JarvanIV::new,
+            ChampionId::Jax => Jax::new,
+            ChampionId::Jayce => Jayce::new,
+            ChampionId::Jhin => Jhin::new,
+            ChampionId::Jinx => Jinx::new,
+            ChampionId::Kaisa => Kaisa::new,
+            ChampionId::Kalista => Kalista::new,
+            ChampionId::Karma => Karma::new,
+            ChampionId::Karthus => Karthus::new,
+            ChampionId::Kassadin => Kassadin::new,
+            ChampionId::Katarina => Katarina::new,
+            ChampionId::Kayle => Kayle::new,
+            ChampionId::Kayn => Kayn::new,
+            ChampionId::Kennen => Kennen::new,
+            ChampionId::Khazix => Khazix::new,
+            ChampionId::Kindred => Kindred::new,
+            ChampionId::Kled => Kled::new,
+            ChampionId::KogMaw => KogMaw::new,
+            ChampionId::KSante => KSante::new,
+            ChampionId::Leblanc => Leblanc::new,
+            ChampionId::LeeSin => LeeSin::new,
+            ChampionId::Leona => Leona::new,
+            ChampionId::Lillia => Lillia::new,
+            ChampionId::Lissandra => Lissandra::new,
+            ChampionId::Lucian => Lucian::new,
+            ChampionId::Lulu => Lulu::new,
+            ChampionId::Lux => Lux::new,
+            ChampionId::Malphite => Malphite::new,
+            ChampionId::Malzahar => Malzahar::new,
+            ChampionId::Maokai => Maokai::new,
+            ChampionId::MasterYi => MasterYi::new,
+            ChampionId::Mel => Mel::new,
+            ChampionId::Milio => Milio::new,
+            ChampionId::MissFortune => MissFortune::new,
+            ChampionId::MonkeyKing => MonkeyKing::new,
+            ChampionId::Mordekaiser => Mordekaiser::new,
+            ChampionId::Morgana => Morgana::new,
+            ChampionId::Naafiri => Naafiri::new,
+            ChampionId::Nami => Nami::new,
+            ChampionId::Nasus => Nasus::new,
+            ChampionId::Nautilus => Nautilus::new,
+            ChampionId::Neeko => Neeko::new,
+            ChampionId::Nidalee => Nidalee::new,
+            ChampionId::Nilah => Nilah::new,
+            ChampionId::Nocturne => Nocturne::new,
+            ChampionId::Nunu => Nunu::new,
+            ChampionId::Olaf => Olaf::new,
+            ChampionId::Orianna => Orianna::new,
+            ChampionId::Ornn => Ornn::new,
+            ChampionId::Pantheon => Pantheon::new,
+            ChampionId::Poppy => Poppy::new,
+            ChampionId::Pyke => Pyke::new,
+            ChampionId::Qiyana => Qiyana::new,
+            ChampionId::Quinn => Quinn::new,
+            ChampionId::Rakan => Rakan::new,
+            ChampionId::Rammus => Rammus::new,
+            ChampionId::RekSai => RekSai::new,
+            ChampionId::Rell => Rell::new,
+            ChampionId::Renata => Renata::new,
+            ChampionId::Renekton => Renekton::new,
+            ChampionId::Rengar => Rengar::new,
+            ChampionId::Riven => Riven::new,
+            ChampionId::Rumble => Rumble::new,
+            ChampionId::Ryze => Ryze::new,
+            ChampionId::Samira => Samira::new,
+            ChampionId::Sejuani => Sejuani::new,
+            ChampionId::Senna => Senna::new,
+            ChampionId::Seraphine => Seraphine::new,
+            ChampionId::Sett => Sett::new,
+            ChampionId::Shaco => Shaco::new,
+            ChampionId::Shen => Shen::new,
+            ChampionId::Shyvana => Shyvana::new,
+            ChampionId::Singed => Singed::new,
+            ChampionId::Sion => Sion::new,
+            ChampionId::Sivir => Sivir::new,
+            ChampionId::Skarner => Skarner::new,
+            ChampionId::Smolder => Smolder::new,
+            ChampionId::Sona => Sona::new,
+            ChampionId::Soraka => Soraka::new,
+            ChampionId::Swain => Swain::new,
+            ChampionId::Sylas => Sylas::new,
+            ChampionId::Syndra => Syndra::new,
+            ChampionId::TahmKench => TahmKench::new,
+            ChampionId::Taliyah => Taliyah::new,
+            ChampionId::Talon => Talon::new,
+            ChampionId::Taric => Taric::new,
+            ChampionId::Teemo => Teemo::new,
+            ChampionId::Thresh => Thresh::new,
+            ChampionId::Tristana => Tristana::new,
+            ChampionId::Trundle => Trundle::new,
+            ChampionId::Tryndamere => Tryndamere::new,
+            ChampionId::TwistedFate => TwistedFate::new,
+            ChampionId::Twitch => Twitch::new,
+            ChampionId::Udyr => Udyr::new,
+            ChampionId::Urgot => Urgot::new,
+            ChampionId::Varus => Varus::new,
+            ChampionId::Vayne => Vayne::new,
+            ChampionId::Veigar => Veigar::new,
+            ChampionId::Velkoz => Velkoz::new,
+            ChampionId::Vex => Vex::new,
+            ChampionId::Vi => Vi::new,
+            ChampionId::Viego => Viego::new,
+            ChampionId::Viktor => Viktor::new,
+            ChampionId::Vladimir => Vladimir::new,
+            ChampionId::Volibear => Volibear::new,
+            ChampionId::Warwick => Warwick::new,
+            ChampionId::Xayah => Xayah::new,
+            ChampionId::Xerath => Xerath::new,
+            ChampionId::XinZhao => XinZhao::new,
+            ChampionId::Yasuo => Yasuo::new,
+            ChampionId::Yone => Yone::new,
+            ChampionId::Yorick => Yorick::new,
+            ChampionId::Yunara => Yunara::new,
+            ChampionId::Yuumi => Yuumi::new,
+            ChampionId::Zaahen => Zaahen::new,
+            ChampionId::Zac => Zac::new,
+            ChampionId::Zed => Zed::new,
+            ChampionId::Zeri => Zeri::new,
+            ChampionId::Ziggs => Ziggs::new,
+            ChampionId::Zilean => Zilean::new,
+            ChampionId::Zoe => Zoe::new,
+            ChampionId::Zyra => Zyra::new,
+        }
+    }
 
     /// Creates a new generator file, given a [`ChampionId`]
     pub fn create(champion_id: ChampionId) -> MayFail<String> {
-        Self::create_from_raw(&format!("{champion_id:?}"))
-    }
+        let entity_id = &format!("{champion_id:?}");
 
-    /// Creates a new generator file in the [`GENERATOR_FOLDER`] directory. The
-    /// cache file is read to generate the new file with fairly accurate offsets
-    /// and good function bindings
-    pub fn create_from_raw(entity_id: &str) -> MayFail<String> {
         if let Ok(data) = std::fs::read_to_string(
             SaveTo::Generator(Tag::Champions, &entity_id.to_lowercase()).path(),
-        ) && (data.contains("#![stable]") || data.contains("#![preserve]"))
+        ) && (data.contains("Stable") || data.contains("Preserve"))
         {
             return Ok(data);
         }
@@ -88,10 +255,11 @@ impl ChampionFactory {
                 fn generate(mut self: Box<Self>) -> MayFail<Champion> {{"
         );
 
-        let meraki_champion = MerakiChampion::from_file(format!(
-            "cache/meraki/champions/{entity_id}.json"
-        ))
-        .map_err(|e| format!("Error calling MerakiChampion::from_file for {entity_id:?}: {e:?}"))?;
+        let meraki_champion =
+            MerakiChampion::from_file(SaveTo::MerakiCache(Tag::Champions, entity_id).path())
+                .map_err(|e| {
+                    format!("Error calling MerakiChampion::from_file for {entity_id:?}: {e:?}")
+                })?;
         for (ability_char, ability_vec) in meraki_champion.abilities.into_iter() {
             let meraki_offsets = ChampionData::get_ability_offsets(ability_vec);
             if meraki_offsets.len() > 0 {
@@ -143,14 +311,14 @@ impl ChampionFactory {
         Ok(())
     }
 
-    /// Runs a generator file, given the entity name and its offset in the
-    /// [`Self::GENERATOR_FUNCTIONS`] array
-    pub fn run_from_raw(entity_id: &str, offset: usize) -> MayFail {
-        let data = MerakiChampion::from_file(format!("cache/meraki/champions/{entity_id}.json"))?;
-        let function = Self::GENERATOR_FUNCTIONS[offset];
+    pub fn run(champion_id: ChampionId) -> MayFail {
+        let entity_id = &format!("{champion_id:?}");
+        let data =
+            MerakiChampion::from_file(SaveTo::MerakiCache(Tag::Champions, entity_id).path())?;
+        let function = Self::function(champion_id);
         let generator = function(data);
         match generator.generate() {
-            Ok(champion) => champion.into_file(format!("internal/champions/{entity_id}.json")),
+            Ok(champion) => champion.into_file(SaveTo::Internal(Tag::Champions, entity_id).path()),
             Err(e) => {
                 println!("Error generating {entity_id:?}: {e:?}. Performing offset check.");
                 match Self::check_offsets_raw(entity_id)? {
@@ -160,11 +328,6 @@ impl ChampionFactory {
                 Ok(())
             }
         }
-    }
-
-    /// Runs a generator file, given the [`ChampionId`]
-    pub fn run(champion_id: ChampionId) -> MayFail {
-        Self::run_from_raw(&format!("{champion_id:?}"), champion_id as usize)
     }
 
     /// Receives the raw string of some generator file generates a HashMap with
@@ -322,7 +485,7 @@ impl ChampionFactory {
     /// Verifies the correctness of offsets for some champion, search by its normalized name
     pub fn check_offsets_raw(name: &str) -> MayFail<bool> {
         let meraki_champion =
-            MerakiChampion::from_file(format!("cache/meraki/champions/{name}.json"))?;
+            MerakiChampion::from_file(SaveTo::MerakiCache(Tag::Champions, name).path())?;
 
         let mut new_offsets = HashMap::<char, Vec<(usize, usize)>>::new();
 

@@ -70,18 +70,86 @@
   "abilities": [
     [
       {
-        "E": "_1"
+        "Q": "_1"
       },
       {
-        "name": "Supercharge",
-        "damage_type": "Unknown",
+        "name": "Icathian Rain",
+        "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "0.4",
-          "0.5",
-          "0.6",
-          "0.7",
-          "0.8"
+          "40 + (0.55 * ctx.bonus_ad) + (0.2 * ctx.ability_power)",
+          "55 + (0.55 * ctx.bonus_ad) + (0.2 * ctx.ability_power)",
+          "70 + (0.55 * ctx.bonus_ad) + (0.2 * ctx.ability_power)",
+          "85 + (0.55 * ctx.bonus_ad) + (0.2 * ctx.ability_power)",
+          "100 + (0.55 * ctx.bonus_ad) + (0.2 * ctx.ability_power)"
+        ]
+      }
+    ],
+    [
+      {
+        "Q": "_2"
+      },
+      {
+        "name": "Icathian Rain",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "150 + (2.0625 * ctx.bonus_ad) + (0.75 * ctx.ability_power)",
+          "206.25 + (2.0625 * ctx.bonus_ad) + (0.75 * ctx.ability_power)",
+          "262.5 + (2.0625 * ctx.bonus_ad) + (0.75 * ctx.ability_power)",
+          "318.75 + (2.0625 * ctx.bonus_ad) + (0.75 * ctx.ability_power)",
+          "375 + (2.0625 * ctx.bonus_ad) + (0.75 * ctx.ability_power)"
+        ]
+      }
+    ],
+    [
+      {
+        "Q": "_3"
+      },
+      {
+        "name": "Icathian Rain",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "10 + (0.1375 * ctx.bonus_ad) + (0.05 * ctx.ability_power)",
+          "13.75 + (0.1375 * ctx.bonus_ad) + (0.05 * ctx.ability_power)",
+          "17.5 + (0.1375 * ctx.bonus_ad) + (0.05 * ctx.ability_power)",
+          "21.25 + (0.1375 * ctx.bonus_ad) + (0.05 * ctx.ability_power)",
+          "25 + (0.1375 * ctx.bonus_ad) + (0.05 * ctx.ability_power)"
+        ]
+      }
+    ],
+    [
+      {
+        "Q": "_4"
+      },
+      {
+        "name": "Icathian Rain",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "90 + (1.2375 * ctx.bonus_ad) + (0.45 * ctx.ability_power)",
+          "123.75 + (1.2375 * ctx.bonus_ad) + (0.45 * ctx.ability_power)",
+          "157.5 + (1.2375 * ctx.bonus_ad) + (0.45 * ctx.ability_power)",
+          "191.25 + (1.2375 * ctx.bonus_ad) + (0.45 * ctx.ability_power)",
+          "225 + (1.2375 * ctx.bonus_ad) + (0.45 * ctx.ability_power)"
+        ]
+      }
+    ],
+    [
+      {
+        "W": "_1"
+      },
+      {
+        "name": "Void Seeker",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "30 + (1.3 * ctx.attack_damage) + (0.45 * ctx.ability_power)",
+          "55 + (1.3 * ctx.attack_damage) + (0.45 * ctx.ability_power)",
+          "80 + (1.3 * ctx.attack_damage) + (0.45 * ctx.ability_power)",
+          "105 + (1.3 * ctx.attack_damage) + (0.45 * ctx.ability_power)",
+          "130 + (1.3 * ctx.attack_damage) + (0.45 * ctx.ability_power)"
         ]
       }
     ]

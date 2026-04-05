@@ -1,4 +1,4 @@
-use std::process::Command;
+use std::{process::Command, str::FromStr};
 use tutorlolv2::{ChampionId, ItemId};
 use tutorlolv2_dev::{
     HTTP_CLIENT,
@@ -61,8 +61,13 @@ fn run_champions_generator() {
 }
 
 #[test]
-fn run_ch_generator() {
-    ChampionFactory::run(ChampionId::Gnar).unwrap();
+/// cargo test --package tutorlolv2 --test dev -- cgen <champion> --exact --nocapture
+fn cgen() {
+    let champion = std::env::args().nth(2).unwrap();
+    println!("Champion: {champion}");
+    let champion_id = ChampionId::from_str(&champion).unwrap();
+    println!("Parsed to ChampionId::{champion_id:?}");
+    ChampionFactory::run(champion_id).unwrap();
 }
 
 #[test]

@@ -1,8 +1,5 @@
 use super::*;
 
-// #![stable]
-// #![allow_missing_offsets]
-
 impl Generator<Champion> for Aatrox {
     fn generate(mut self: Box<Self>) -> MayFail<Champion> {
         self.passive(Void, (0, 0), Some(format!(" * {EnemyBonusHealth}")), None);
@@ -67,5 +64,9 @@ impl Generator<Champion> for Aatrox {
         ])?;
 
         self.end()
+    }
+
+    fn step(&self) -> Step {
+        Stable
     }
 }

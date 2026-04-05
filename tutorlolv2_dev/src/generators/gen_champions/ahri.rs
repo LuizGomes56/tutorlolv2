@@ -1,8 +1,5 @@
 use super::*;
 
-// #![stable]
-// #![allow_missing_offsets]
-
 impl Generator<Champion> for Ahri {
     fn generate(mut self: Box<Self>) -> MayFail<Champion> {
         self.ability(Key::Q, [(0, 0, Min)]);
@@ -21,5 +18,9 @@ impl Generator<Champion> for Ahri {
 
         self.attr(Area, [Q(Min), Q(Max)])?;
         self.end()
+    }
+
+    fn step(&self) -> Step {
+        Stable
     }
 }

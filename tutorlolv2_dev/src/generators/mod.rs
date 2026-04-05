@@ -1,9 +1,22 @@
+use crate::ENV_CONFIG;
+
 pub mod gen_champions;
 pub mod gen_decl;
 pub mod gen_factories;
 pub mod gen_items;
 pub mod gen_runes;
 pub mod gen_utils;
+
+pub enum Step {
+    Stable,
+    Unstable,
+    Preserve,
+}
+
+pub struct Metadata {
+    pub step: Step,
+    pub version: String,
+}
 
 /// Base generator trait, that returns a type that will be serialized into a
 /// JSON file to be read by the `tutorlolv2_build` script and generate Rust code,
@@ -19,4 +32,15 @@ pub mod gen_utils;
 /// easier to fix their generators in case some breaking change occur.
 pub trait Generator<T> {
     fn generate(self: Box<Self>) -> crate::MayFail<T>;
+
+    fn step(&self) -> Step {
+        Step::Unstable
+    }
+
+    fn metadata(&self) -> Metadata {
+        Metadata {
+            step: self.step(),
+            version: ENV_CONFIG.lol_version.clone(),
+        }
+    }
 }

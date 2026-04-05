@@ -1,11 +1,9 @@
 use super::*;
 
-// #![preserve]
-
 impl Generator<Champion> for AurelionSol {
     fn generate(mut self: Box<Self>) -> MayFail<Champion> {
-        self.ability(Key::
-            Q,
+        self.ability(
+            Key::Q,
             [
                 (0, 0, _1),
                 (0, 1, _2),
@@ -13,7 +11,7 @@ impl Generator<Champion> for AurelionSol {
                 (0, 3, _4),
                 (0, 4, _5),
                 (0, 5, _6),
-                // (1, 0, _7),
+                (1, 0, _7),
             ],
         );
         self.ability(Key::W, [(0, 0, _1)]);

@@ -1,7 +1,5 @@
 use super::*;
 
-// #![stable]
-
 impl Generator<Champion> for Anivia {
     fn generate(mut self: Box<Self>) -> MayFail<Champion> {
         self.ability(
@@ -25,5 +23,9 @@ impl Generator<Champion> for Anivia {
         ])?;
 
         self.end()
+    }
+
+    fn step(&self) -> Step {
+        Stable
     }
 }

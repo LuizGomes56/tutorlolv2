@@ -101,6 +101,51 @@
           "60 + (0.4 * ctx.attack_damage) + (0.25 * ctx.ability_power)"
         ]
       }
+    ],
+    [
+      {
+        "R": "_1"
+      },
+      {
+        "name": "Death Lotus",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "25 + (0.19 * ctx.ability_power)",
+          "37.5 + (0.19 * ctx.ability_power)",
+          "50 + (0.19 * ctx.ability_power)"
+        ]
+      }
+    ],
+    [
+      {
+        "R": "_2"
+      },
+      {
+        "name": "Death Lotus",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "375 + (2.85 * ctx.ability_power)",
+          "562.5 + (2.85 * ctx.ability_power)",
+          "750 + (2.85 * ctx.ability_power)"
+        ]
+      }
+    ],
+    [
+      {
+        "R": "_4"
+      },
+      {
+        "name": "Death Lotus",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "0.25",
+          "0.3",
+          "0.35"
+        ]
+      }
     ]
   ],
   "merge_data": [],

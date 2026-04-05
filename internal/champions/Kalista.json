@@ -70,7 +70,7 @@
   "abilities": [
     [
       {
-        "Q": "_2"
+        "Q": "_1"
       },
       {
         "name": "Pierce",
@@ -82,6 +82,23 @@
           "140 + (1.05 * ctx.attack_damage)",
           "205 + (1.05 * ctx.attack_damage)",
           "270 + (1.05 * ctx.attack_damage)"
+        ]
+      }
+    ],
+    [
+      {
+        "W": "_1"
+      },
+      {
+        "name": "Sentinel",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "(0.1 * ctx.enemy_max_health)",
+          "(0.12 * ctx.enemy_max_health)",
+          "(0.14 * ctx.enemy_max_health)",
+          "(0.16 * ctx.enemy_max_health)",
+          "(0.18 * ctx.enemy_max_health)"
         ]
       }
     ],
@@ -99,6 +116,40 @@
           "150",
           "175",
           "200"
+        ]
+      }
+    ],
+    [
+      {
+        "E": "_1"
+      },
+      {
+        "name": "Rend",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "7 + (0.2 * ctx.attack_damage) + (0.5 * ctx.ability_power)",
+          "14 + (0.25 * ctx.attack_damage) + (0.5 * ctx.ability_power)",
+          "21 + (0.3 * ctx.attack_damage) + (0.5 * ctx.ability_power)",
+          "28 + (0.35 * ctx.attack_damage) + (0.5 * ctx.ability_power)",
+          "35 + (0.4 * ctx.attack_damage) + (0.5 * ctx.ability_power)"
+        ]
+      }
+    ],
+    [
+      {
+        "E": "_2"
+      },
+      {
+        "name": "Rend",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "5 + (0.7 * ctx.attack_damage) + (0.65 * ctx.ability_power)",
+          "15 + (0.7 * ctx.attack_damage) + (0.65 * ctx.ability_power)",
+          "25 + (0.7 * ctx.attack_damage) + (0.65 * ctx.ability_power)",
+          "35 + (0.7 * ctx.attack_damage) + (0.65 * ctx.ability_power)",
+          "45 + (0.7 * ctx.attack_damage) + (0.65 * ctx.ability_power)"
         ]
       }
     ]

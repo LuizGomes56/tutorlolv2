@@ -1,7 +1,5 @@
 use super::*;
 
-// #![stable]
-
 impl Generator<Champion> for Akali {
     fn generate(mut self: Box<Self>) -> MayFail<Champion> {
         self.passive(Void, (0, 1), None, None);
@@ -11,5 +9,9 @@ impl Generator<Champion> for Akali {
         self.attr(Area, [Q(Void), R(_1), R(_2Min), R(_2Max)])?;
         self.attr(Onhit, [P(Void)])?;
         self.end()
+    }
+
+    fn step(&self) -> Step {
+        Stable
     }
 }

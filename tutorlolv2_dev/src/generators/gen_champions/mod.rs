@@ -1,5 +1,6 @@
 pub(self) use crate::{
-    MayFail,
+    MayFail, Step,
+    Step::*,
     generators::{Generator, gen_decl::decl_champions::*, gen_utils::RegExtractor},
     model::champions::{Ability, Champion},
 };
