@@ -70,12 +70,12 @@
   "abilities": [
     [
       {
-        "Q": "_1"
+        "Q": "_1Min"
       },
       {
         "name": "Flash Frost",
         "damage_type": "Magic",
-        "attributes": "Undefined",
+        "attributes": "Area",
         "damage": [
           "50 + (0.25 * ctx.ability_power)",
           "70 + (0.25 * ctx.ability_power)",
@@ -87,29 +87,12 @@
     ],
     [
       {
-        "Q": "_2"
+        "Q": "Max"
       },
       {
         "name": "Flash Frost",
         "damage_type": "Magic",
-        "attributes": "Undefined",
-        "damage": [
-          "60 + (0.45 * ctx.ability_power)",
-          "95 + (0.45 * ctx.ability_power)",
-          "130 + (0.45 * ctx.ability_power)",
-          "165 + (0.45 * ctx.ability_power)",
-          "200 + (0.45 * ctx.ability_power)"
-        ]
-      }
-    ],
-    [
-      {
-        "Q": "_3"
-      },
-      {
-        "name": "Flash Frost",
-        "damage_type": "Magic",
-        "attributes": "Undefined",
+        "attributes": "Area",
         "damage": [
           "110 + (0.7 * ctx.ability_power)",
           "165 + (0.7 * ctx.ability_power)",
@@ -121,24 +104,24 @@
     ],
     [
       {
-        "E": "_1"
+        "Q": "_1Max"
       },
       {
-        "name": "Frostbite",
+        "name": "Flash Frost",
         "damage_type": "Magic",
-        "attributes": "Undefined",
+        "attributes": "Area",
         "damage": [
-          "110 + (1.1 * ctx.ability_power)",
-          "160 + (1.1 * ctx.ability_power)",
-          "210 + (1.1 * ctx.ability_power)",
-          "260 + (1.1 * ctx.ability_power)",
-          "310 + (1.1 * ctx.ability_power)"
+          "60 + (0.45 * ctx.ability_power)",
+          "95 + (0.45 * ctx.ability_power)",
+          "130 + (0.45 * ctx.ability_power)",
+          "165 + (0.45 * ctx.ability_power)",
+          "200 + (0.45 * ctx.ability_power)"
         ]
       }
     ],
     [
       {
-        "E": "_2"
+        "E": "Min"
       },
       {
         "name": "Frostbite",
@@ -155,12 +138,29 @@
     ],
     [
       {
-        "R": "_1"
+        "E": "Max"
+      },
+      {
+        "name": "Frostbite",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "110 + (1.1 * ctx.ability_power)",
+          "160 + (1.1 * ctx.ability_power)",
+          "210 + (1.1 * ctx.ability_power)",
+          "260 + (1.1 * ctx.ability_power)",
+          "310 + (1.1 * ctx.ability_power)"
+        ]
+      }
+    ],
+    [
+      {
+        "R": "Min"
       },
       {
         "name": "Glacial Storm",
         "damage_type": "Magic",
-        "attributes": "Undefined",
+        "attributes": "Area",
         "damage": [
           "15 + (0.0625 * ctx.ability_power)",
           "22.5 + (0.0625 * ctx.ability_power)",
@@ -170,12 +170,12 @@
     ],
     [
       {
-        "R": "_2"
+        "R": "Max"
       },
       {
         "name": "Glacial Storm",
         "damage_type": "Magic",
-        "attributes": "Undefined",
+        "attributes": "Area",
         "damage": [
           "45 + (0.1875 * ctx.ability_power)",
           "67.5 + (0.1875 * ctx.ability_power)",
@@ -184,6 +184,59 @@
       }
     ]
   ],
-  "merge_data": [],
-  "combo": []
+  "merge_data": [
+    {
+      "minimum_damage": {
+        "Q": "_1Min"
+      },
+      "maximum_damage": {
+        "Q": "_1Max"
+      },
+      "alias": {
+        "Q": "_1"
+      }
+    },
+    {
+      "minimum_damage": {
+        "E": "Min"
+      },
+      "maximum_damage": {
+        "E": "Max"
+      },
+      "alias": {
+        "E": "Void"
+      }
+    },
+    {
+      "minimum_damage": {
+        "R": "Min"
+      },
+      "maximum_damage": {
+        "R": "Max"
+      },
+      "alias": {
+        "R": "Void"
+      }
+    }
+  ],
+  "combo": [
+    [
+      {
+        "Ability": {
+          "Q": "_1Min"
+        }
+      },
+      "Attack",
+      {
+        "Ability": {
+          "Q": "_1Max"
+        }
+      },
+      {
+        "Ability": {
+          "E": "Max"
+        }
+      }
+    ]
+  ]
 }

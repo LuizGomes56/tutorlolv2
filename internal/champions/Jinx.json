@@ -70,7 +70,24 @@
   "abilities": [
     [
       {
-        "W": "_1"
+        "Q": "Void"
+      },
+      {
+        "name": "Switcheroo!",
+        "damage_type": "Physical",
+        "attributes": "Area",
+        "damage": [
+          "1.1 * ctx.attack_damage",
+          "1.1 * ctx.attack_damage",
+          "1.1 * ctx.attack_damage",
+          "1.1 * ctx.attack_damage",
+          "1.1 * ctx.attack_damage"
+        ]
+      }
+    ],
+    [
+      {
+        "W": "Void"
       },
       {
         "name": "Zap!",
@@ -87,12 +104,12 @@
     ],
     [
       {
-        "E": "_1"
+        "E": "Void"
       },
       {
         "name": "Flame Chompers!",
         "damage_type": "Magic",
-        "attributes": "Undefined",
+        "attributes": "Area",
         "damage": [
           "90 + ctx.ability_power",
           "140 + ctx.ability_power",
@@ -104,27 +121,27 @@
     ],
     [
       {
-        "R": "_1"
+        "R": "Min"
       },
       {
         "name": "Super Mega Death Rocket!",
         "damage_type": "Physical",
-        "attributes": "Undefined",
+        "attributes": "Area",
         "damage": [
-          "160 + (0.96 * ctx.bonus_ad) + (0.2 * ctx.missing_health)",
-          "280 + (0.96 * ctx.bonus_ad) + (0.24 * ctx.missing_health)",
-          "400 + (0.96 * ctx.bonus_ad) + (0.28 * ctx.missing_health)"
+          "20 + (0.12 * ctx.bonus_ad) + (0.25 * ctx.missing_health)",
+          "35 + (0.12 * ctx.bonus_ad) + (0.3 * ctx.missing_health)",
+          "50 + (0.12 * ctx.bonus_ad) + (0.35 * ctx.missing_health)"
         ]
       }
     ],
     [
       {
-        "R": "_2"
+        "R": "_1Min"
       },
       {
         "name": "Super Mega Death Rocket!",
         "damage_type": "Physical",
-        "attributes": "Undefined",
+        "attributes": "Area",
         "damage": [
           "16 + (0.096 * ctx.bonus_ad) + (0.2 * ctx.missing_health)",
           "28 + (0.096 * ctx.bonus_ad) + (0.24 * ctx.missing_health)",
@@ -134,12 +151,12 @@
     ],
     [
       {
-        "R": "_3"
+        "R": "Max"
       },
       {
         "name": "Super Mega Death Rocket!",
         "damage_type": "Physical",
-        "attributes": "Undefined",
+        "attributes": "Area",
         "damage": [
           "200 + (1.2 * ctx.bonus_ad) + (0.25 * ctx.missing_health)",
           "350 + (1.2 * ctx.bonus_ad) + (0.3 * ctx.missing_health)",
@@ -149,20 +166,63 @@
     ],
     [
       {
-        "R": "_4"
+        "R": "_1Max"
       },
       {
         "name": "Super Mega Death Rocket!",
         "damage_type": "Physical",
-        "attributes": "Undefined",
+        "attributes": "Area",
         "damage": [
-          "20 + (0.12 * ctx.bonus_ad) + (0.25 * ctx.missing_health)",
-          "35 + (0.12 * ctx.bonus_ad) + (0.3 * ctx.missing_health)",
-          "50 + (0.12 * ctx.bonus_ad) + (0.35 * ctx.missing_health)"
+          "160 + (0.96 * ctx.bonus_ad) + (0.2 * ctx.missing_health)",
+          "280 + (0.96 * ctx.bonus_ad) + (0.24 * ctx.missing_health)",
+          "400 + (0.96 * ctx.bonus_ad) + (0.28 * ctx.missing_health)"
         ]
       }
     ]
   ],
-  "merge_data": [],
-  "combo": []
+  "merge_data": [
+    {
+      "minimum_damage": {
+        "R": "Min"
+      },
+      "maximum_damage": {
+        "R": "Max"
+      },
+      "alias": {
+        "R": "Void"
+      }
+    },
+    {
+      "minimum_damage": {
+        "R": "_1Min"
+      },
+      "maximum_damage": {
+        "R": "_1Max"
+      },
+      "alias": {
+        "R": "_1"
+      }
+    }
+  ],
+  "combo": [
+    [
+      {
+        "Ability": {
+          "E": "Void"
+        }
+      },
+      "Attack",
+      {
+        "Ability": {
+          "R": "Min"
+        }
+      },
+      "Attack",
+      {
+        "Ability": {
+          "W": "Void"
+        }
+      }
+    ]
+  ]
 }

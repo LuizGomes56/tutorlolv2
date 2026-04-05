@@ -71,7 +71,7 @@
   "abilities": [
     [
       {
-        "Q": "_1"
+        "Q": "Min"
       },
       {
         "name": "Ranger's Focus",
@@ -88,7 +88,7 @@
     ],
     [
       {
-        "Q": "_2"
+        "Q": "Max"
       },
       {
         "name": "Ranger's Focus",
@@ -105,12 +105,12 @@
     ],
     [
       {
-        "W": "_1"
+        "W": "Void"
       },
       {
         "name": "Volley",
         "damage_type": "Physical",
-        "attributes": "Undefined",
+        "attributes": "Area",
         "damage": [
           "60 + ctx.bonus_ad",
           "95 + ctx.bonus_ad",
@@ -122,12 +122,12 @@
     ],
     [
       {
-        "R": "_1"
+        "R": "Void"
       },
       {
         "name": "Enchanted Crystal Arrow",
         "damage_type": "Magic",
-        "attributes": "Undefined",
+        "attributes": "Area",
         "damage": [
           "200 + (1.2 * ctx.ability_power)",
           "400 + (1.2 * ctx.ability_power)",
@@ -136,6 +136,33 @@
       }
     ]
   ],
-  "merge_data": [],
-  "combo": []
+  "merge_data": [
+    {
+      "minimum_damage": {
+        "Q": "Min"
+      },
+      "maximum_damage": {
+        "Q": "Max"
+      },
+      "alias": {
+        "Q": "Void"
+      }
+    }
+  ],
+  "combo": [
+    [
+      "Attack",
+      {
+        "Ability": {
+          "W": "Void"
+        }
+      },
+      {
+        "Ability": {
+          "R": "Void"
+        }
+      },
+      "Attack"
+    ]
+  ]
 }
