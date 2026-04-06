@@ -42,7 +42,9 @@ static RE_TUPLE: Lazy<Regex> =
     Lazy::new(|| Regex::new(r"\(\s*(\d+)\s*,\s*(\d+)\s*,").expect("TUPLE_RE"));
 
 impl ChampionFactory {
-    fn function(champion_id: ChampionId) -> fn(MerakiChampion) -> Box<dyn Generator<Champion>> {
+    const fn function(
+        champion_id: ChampionId,
+    ) -> fn(MerakiChampion) -> Box<dyn Generator<Champion>> {
         match champion_id {
             ChampionId::Aatrox => Aatrox::new,
             ChampionId::Ahri => Ahri::new,
