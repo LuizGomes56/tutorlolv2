@@ -28,6 +28,7 @@ use tutorlolv2_gen::{ChampionId, EntityId, ItemId, Position, RuneId};
 pub enum SaveTo<'a> {
     GeneratorDir(Tag),
     Generator(EntityId),
+    GeneratorRaw(Tag, &'a str),
     ImgChampion(ChampionId),
     ImgAbility(ChampionId, char),
     ImgItem(&'a str),
@@ -92,6 +93,11 @@ impl<'a> SaveTo<'a> {
                 };
                 let file = name.to_lowercase();
                 let path = Self::GeneratorDir(tag).path();
+                format!("{path}/{file}.rs")
+            }
+            SaveTo::GeneratorRaw(tag, s) => {
+                let path = Self::GeneratorDir(*tag).path();
+                let file = s.to_lowercase();
                 format!("{path}/{file}.rs")
             }
             SaveTo::ImgChampion(s) => format!("{img}/champions/{s:?}.png"),

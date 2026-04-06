@@ -3,22 +3,19 @@ use crate::{
     champions::{Ability, Champion, MerakiAbility, MerakiChampion, Modifiers},
     client::{SaveTo, Tag},
     generators::{
-        Generator,
-        gen_decl::decl_champions::*,
+        gen_champions::*,
         gen_utils::{F64Ext, RegExtractor},
     },
 };
-use once_cell::sync::Lazy;
 use rayon::iter::{IntoParallelIterator, ParallelIterator};
-use regex::Regex;
 use std::{
     collections::{BTreeMap, BTreeSet, HashMap},
     str::FromStr,
 };
 use tutorlolv2_fmt::rustfmt;
 use tutorlolv2_gen::{
-    AbilityId, AbilityName, AdaptiveType, AttackType, Attrs, CastId, ChampionId, ComboElement,
-    DamageType, DevMergeData, Key, Position,
+    AbilityId, AbilityName, AdaptiveType, AttackType, Attrs, ComboElement, DamageType,
+    DevMergeData, Key, Position,
 };
 
 pub struct ChampionData {
@@ -35,216 +32,48 @@ pub struct ChampionData {
 /// final json file containing only the useful information we could extract from it
 pub struct ChampionFactory;
 
-static RE_MACRO: Lazy<Regex> =
-    Lazy::new(|| Regex::new(r"(?s)ability(\s*\[\s*([A-Za-z])\s*,(.*?)\])").expect("MACRO_RE"));
-
-static RE_TUPLE: Lazy<Regex> =
-    Lazy::new(|| Regex::new(r"\(\s*(\d+)\s*,\s*(\d+)\s*,").expect("TUPLE_RE"));
-
 impl ChampionFactory {
-    const fn function(
-        champion_id: ChampionId,
-    ) -> fn(MerakiChampion) -> Box<dyn Generator<Champion>> {
-        match champion_id {
-            ChampionId::Aatrox => Aatrox::new,
-            ChampionId::Ahri => Ahri::new,
-            ChampionId::Akali => Akali::new,
-            ChampionId::Akshan => Akshan::new,
-            ChampionId::Alistar => Alistar::new,
-            ChampionId::Ambessa => Ambessa::new,
-            ChampionId::Amumu => Amumu::new,
-            ChampionId::Anivia => Anivia::new,
-            ChampionId::Annie => Annie::new,
-            ChampionId::Aphelios => Aphelios::new,
-            ChampionId::Ashe => Ashe::new,
-            ChampionId::AurelionSol => AurelionSol::new,
-            ChampionId::Aurora => Aurora::new,
-            ChampionId::Azir => Azir::new,
-            ChampionId::Bard => Bard::new,
-            ChampionId::Belveth => Belveth::new,
-            ChampionId::Blitzcrank => Blitzcrank::new,
-            ChampionId::Brand => Brand::new,
-            ChampionId::Braum => Braum::new,
-            ChampionId::Briar => Briar::new,
-            ChampionId::Caitlyn => Caitlyn::new,
-            ChampionId::Camille => Camille::new,
-            ChampionId::Cassiopeia => Cassiopeia::new,
-            ChampionId::Chogath => Chogath::new,
-            ChampionId::Corki => Corki::new,
-            ChampionId::Darius => Darius::new,
-            ChampionId::Diana => Diana::new,
-            ChampionId::Draven => Draven::new,
-            ChampionId::DrMundo => DrMundo::new,
-            ChampionId::Ekko => Ekko::new,
-            ChampionId::Elise => Elise::new,
-            ChampionId::Evelynn => Evelynn::new,
-            ChampionId::Ezreal => Ezreal::new,
-            ChampionId::Fiddlesticks => Fiddlesticks::new,
-            ChampionId::Fiora => Fiora::new,
-            ChampionId::Fizz => Fizz::new,
-            ChampionId::Galio => Galio::new,
-            ChampionId::Gangplank => Gangplank::new,
-            ChampionId::Garen => Garen::new,
-            ChampionId::Gnar => Gnar::new,
-            ChampionId::Gragas => Gragas::new,
-            ChampionId::Graves => Graves::new,
-            ChampionId::Gwen => Gwen::new,
-            ChampionId::Hecarim => Hecarim::new,
-            ChampionId::Heimerdinger => Heimerdinger::new,
-            ChampionId::Hwei => Hwei::new,
-            ChampionId::Illaoi => Illaoi::new,
-            ChampionId::Irelia => Irelia::new,
-            ChampionId::Ivern => Ivern::new,
-            ChampionId::Janna => Janna::new,
-            ChampionId::JarvanIV => JarvanIV::new,
-            ChampionId::Jax => Jax::new,
-            ChampionId::Jayce => Jayce::new,
-            ChampionId::Jhin => Jhin::new,
-            ChampionId::Jinx => Jinx::new,
-            ChampionId::Kaisa => Kaisa::new,
-            ChampionId::Kalista => Kalista::new,
-            ChampionId::Karma => Karma::new,
-            ChampionId::Karthus => Karthus::new,
-            ChampionId::Kassadin => Kassadin::new,
-            ChampionId::Katarina => Katarina::new,
-            ChampionId::Kayle => Kayle::new,
-            ChampionId::Kayn => Kayn::new,
-            ChampionId::Kennen => Kennen::new,
-            ChampionId::Khazix => Khazix::new,
-            ChampionId::Kindred => Kindred::new,
-            ChampionId::Kled => Kled::new,
-            ChampionId::KogMaw => KogMaw::new,
-            ChampionId::KSante => KSante::new,
-            ChampionId::Leblanc => Leblanc::new,
-            ChampionId::LeeSin => LeeSin::new,
-            ChampionId::Leona => Leona::new,
-            ChampionId::Lillia => Lillia::new,
-            ChampionId::Lissandra => Lissandra::new,
-            ChampionId::Lucian => Lucian::new,
-            ChampionId::Lulu => Lulu::new,
-            ChampionId::Lux => Lux::new,
-            ChampionId::Malphite => Malphite::new,
-            ChampionId::Malzahar => Malzahar::new,
-            ChampionId::Maokai => Maokai::new,
-            ChampionId::MasterYi => MasterYi::new,
-            ChampionId::Mel => Mel::new,
-            ChampionId::Milio => Milio::new,
-            ChampionId::MissFortune => MissFortune::new,
-            ChampionId::MonkeyKing => MonkeyKing::new,
-            ChampionId::Mordekaiser => Mordekaiser::new,
-            ChampionId::Morgana => Morgana::new,
-            ChampionId::Naafiri => Naafiri::new,
-            ChampionId::Nami => Nami::new,
-            ChampionId::Nasus => Nasus::new,
-            ChampionId::Nautilus => Nautilus::new,
-            ChampionId::Neeko => Neeko::new,
-            ChampionId::Nidalee => Nidalee::new,
-            ChampionId::Nilah => Nilah::new,
-            ChampionId::Nocturne => Nocturne::new,
-            ChampionId::Nunu => Nunu::new,
-            ChampionId::Olaf => Olaf::new,
-            ChampionId::Orianna => Orianna::new,
-            ChampionId::Ornn => Ornn::new,
-            ChampionId::Pantheon => Pantheon::new,
-            ChampionId::Poppy => Poppy::new,
-            ChampionId::Pyke => Pyke::new,
-            ChampionId::Qiyana => Qiyana::new,
-            ChampionId::Quinn => Quinn::new,
-            ChampionId::Rakan => Rakan::new,
-            ChampionId::Rammus => Rammus::new,
-            ChampionId::RekSai => RekSai::new,
-            ChampionId::Rell => Rell::new,
-            ChampionId::Renata => Renata::new,
-            ChampionId::Renekton => Renekton::new,
-            ChampionId::Rengar => Rengar::new,
-            ChampionId::Riven => Riven::new,
-            ChampionId::Rumble => Rumble::new,
-            ChampionId::Ryze => Ryze::new,
-            ChampionId::Samira => Samira::new,
-            ChampionId::Sejuani => Sejuani::new,
-            ChampionId::Senna => Senna::new,
-            ChampionId::Seraphine => Seraphine::new,
-            ChampionId::Sett => Sett::new,
-            ChampionId::Shaco => Shaco::new,
-            ChampionId::Shen => Shen::new,
-            ChampionId::Shyvana => Shyvana::new,
-            ChampionId::Singed => Singed::new,
-            ChampionId::Sion => Sion::new,
-            ChampionId::Sivir => Sivir::new,
-            ChampionId::Skarner => Skarner::new,
-            ChampionId::Smolder => Smolder::new,
-            ChampionId::Sona => Sona::new,
-            ChampionId::Soraka => Soraka::new,
-            ChampionId::Swain => Swain::new,
-            ChampionId::Sylas => Sylas::new,
-            ChampionId::Syndra => Syndra::new,
-            ChampionId::TahmKench => TahmKench::new,
-            ChampionId::Taliyah => Taliyah::new,
-            ChampionId::Talon => Talon::new,
-            ChampionId::Taric => Taric::new,
-            ChampionId::Teemo => Teemo::new,
-            ChampionId::Thresh => Thresh::new,
-            ChampionId::Tristana => Tristana::new,
-            ChampionId::Trundle => Trundle::new,
-            ChampionId::Tryndamere => Tryndamere::new,
-            ChampionId::TwistedFate => TwistedFate::new,
-            ChampionId::Twitch => Twitch::new,
-            ChampionId::Udyr => Udyr::new,
-            ChampionId::Urgot => Urgot::new,
-            ChampionId::Varus => Varus::new,
-            ChampionId::Vayne => Vayne::new,
-            ChampionId::Veigar => Veigar::new,
-            ChampionId::Velkoz => Velkoz::new,
-            ChampionId::Vex => Vex::new,
-            ChampionId::Vi => Vi::new,
-            ChampionId::Viego => Viego::new,
-            ChampionId::Viktor => Viktor::new,
-            ChampionId::Vladimir => Vladimir::new,
-            ChampionId::Volibear => Volibear::new,
-            ChampionId::Warwick => Warwick::new,
-            ChampionId::Xayah => Xayah::new,
-            ChampionId::Xerath => Xerath::new,
-            ChampionId::XinZhao => XinZhao::new,
-            ChampionId::Yasuo => Yasuo::new,
-            ChampionId::Yone => Yone::new,
-            ChampionId::Yorick => Yorick::new,
-            ChampionId::Yunara => Yunara::new,
-            ChampionId::Yuumi => Yuumi::new,
-            ChampionId::Zaahen => Zaahen::new,
-            ChampionId::Zac => Zac::new,
-            ChampionId::Zed => Zed::new,
-            ChampionId::Zeri => Zeri::new,
-            ChampionId::Ziggs => Ziggs::new,
-            ChampionId::Zilean => Zilean::new,
-            ChampionId::Zoe => Zoe::new,
-            ChampionId::Zyra => Zyra::new,
-        }
-    }
+    pub const GENERATOR_NAMES: &[&str] = champion_gen_names();
 
     pub fn progress() {
-        let stables = ChampionId::VALUES
-            .map(|c| {
-                if let Ok(data) = std::fs::read_to_string(SaveTo::Generator(c.entity()).path())
-                    && (data.contains("Stable") || data.contains("Preserve"))
-                {
-                    return 1;
+        let mut stables = 0;
+        let mut preserve = 0;
+        let mut unstables = 0;
+        let mut total = 0;
+        for name in Self::GENERATOR_NAMES {
+            if let Ok(data) =
+                std::fs::read_to_string(SaveTo::GeneratorRaw(Tag::Champions, name).path())
+            {
+                if data.contains("Stable") {
+                    stables += 1;
+                } else if data.contains("Preserve") {
+                    preserve += 1;
+                } else {
+                    unstables += 1;
                 }
-                0
-            })
-            .into_iter()
-            .sum::<u32>();
+                total += 1;
+            }
+        }
 
-        let total = ChampionId::VARIANTS;
-
-        println!("[Champion Generators]: {stables} / {total} stable generators");
+        println!(
+            concat!(
+                "{stables:>3} / {total} stable\n",
+                "{preserve:>3} / {total} preserved\n",
+                "{unstables:>3} / {total} unstable\n",
+            ),
+            stables = stables,
+            preserve = preserve,
+            unstables = unstables,
+            total = total
+        );
     }
 
     /// Creates a new generator file, given a [`ChampionId`]
-    pub fn create(champion_id: ChampionId) -> MayFail<String> {
-        if let Ok(data) = std::fs::read_to_string(SaveTo::Generator(champion_id.entity()).path())
+    pub fn create(name: &str) -> MayFail<String> {
+        if let Ok(data) = std::fs::read_to_string(SaveTo::GeneratorRaw(Tag::Champions, name).path())
             && (data.contains("Stable") || data.contains("Preserve"))
         {
-            println!("[stable] Skipping generator for {champion_id:?}");
+            println!("[stable] Skipping generator for {name:?}");
             return Ok(data);
         }
 
@@ -267,20 +96,17 @@ impl ChampionFactory {
             )
         };
 
-        let entity_id = &format!("{champion_id:?}");
-
         let mut generated_content = format!(
             "use super::*;
 
-            impl Generator<Champion> for {entity_id} {{
+            impl Generator<Champion> for {name} {{
                 fn generate(mut self: Box<Self>) -> MayFail<Champion> {{"
         );
 
-        let meraki_champion =
-            MerakiChampion::from_file(SaveTo::MerakiCache(Tag::Champions, entity_id).path())
-                .map_err(|e| {
-                    format!("Error calling MerakiChampion::from_file for {entity_id:?}: {e:?}")
-                })?;
+        let meraki_champion = MerakiChampion::from_file(
+            SaveTo::MerakiCache(Tag::Champions, name).path(),
+        )
+        .map_err(|e| format!("Error calling MerakiChampion::from_file for {name:?}: {e:?}"))?;
         for (ability_char, ability_vec) in meraki_champion.abilities.into_iter() {
             let meraki_offsets = ChampionData::get_ability_offsets(ability_vec);
             if meraki_offsets.len() > 0 {
@@ -305,12 +131,12 @@ impl ChampionFactory {
             std::fs::create_dir(dir)?;
         }
 
-        ChampionId::VALUES.into_par_iter().for_each(|champion_id| {
-            let Ok(data) = Self::create(champion_id) else {
-                return println!("Unable to create generator file for {champion_id:?}");
+        Self::GENERATOR_NAMES.into_par_iter().for_each(|name| {
+            let Ok(data) = Self::create(name) else {
+                return println!("Unable to create generator file for {name:?}");
             };
             std::fs::write(
-                SaveTo::Generator(champion_id.entity()).path(),
+                SaveTo::GeneratorRaw(Tag::Champions, name).path(),
                 data.as_bytes(),
             )
             .unwrap();
@@ -322,207 +148,24 @@ impl ChampionFactory {
     /// Runs all generator files. It means that several `.json` files will be created
     /// in the internal cache folder
     pub fn run_all() -> MayFail {
-        ChampionId::VALUES.into_par_iter().for_each(|champion_id| {
-            if let Err(e) = Self::run(champion_id) {
-                println!("Failed to run generator file for {champion_id:?}: {e:?}");
+        Self::GENERATOR_NAMES.into_par_iter().for_each(|name| {
+            if let Err(e) = Self::run(name) {
+                println!("Failed to run generator file for {name:?}: {e:?}");
             }
         });
 
         Ok(())
     }
 
-    pub fn run(champion_id: ChampionId) -> MayFail {
-        let entity_id = &format!("{champion_id:?}");
-        let data =
-            MerakiChampion::from_file(SaveTo::MerakiCache(Tag::Champions, entity_id).path())?;
-        let function = Self::function(champion_id);
+    pub fn run(name: &str) -> MayFail {
+        let data = MerakiChampion::from_file(SaveTo::MerakiCache(Tag::Champions, name).path())?;
+        let function =
+            champion_gen_fn(name).ok_or(format!("Unable to find generator function for {name}"))?;
         let generator = function(data);
         match generator.generate() {
-            Ok(champion) => champion.into_file(SaveTo::Internal(champion_id.entity()).path()),
-            Err(e) => {
-                println!("Error generating {entity_id:?}: {e:?}. Performing offset check.");
-                match Self::check_offsets(champion_id)? {
-                    true => println!("{entity_id:?} have an issue unrelated to offsets"),
-                    false => println!("{entity_id:?} likely has incorrect offsets"),
-                }
-                Ok(())
-            }
+            Ok(champion) => champion.into_file(SaveTo::InternalRaw(Tag::Champions, name).path()),
+            Err(e) => Ok(println!("Error generating {name:?}: {e:?}")),
         }
-    }
-
-    /// Receives the raw string of some generator file generates a HashMap with
-    /// the extracted offsets being used in that file
-    pub fn parse_offsets(src: &str) -> MayFail<HashMap<char, Vec<(usize, usize)>>> {
-        let mut out = HashMap::<char, Vec<(usize, usize)>>::new();
-
-        for caps in RE_MACRO.captures_iter(src) {
-            let ability = caps[1].chars().next().ok_or("First capture has no chars")?;
-
-            if !matches!(ability, 'Q' | 'W' | 'E' | 'R') {
-                continue;
-            }
-
-            let body = &caps[2];
-
-            let mut tuples = Vec::new();
-            for t in RE_TUPLE.captures_iter(body) {
-                let e = t[1].parse::<usize>()?;
-                let l = t[2].parse::<usize>()?;
-                tuples.push((e, l));
-            }
-            if !tuples.is_empty() {
-                out.entry(ability).or_default().extend(tuples);
-            }
-        }
-
-        Ok(out)
-    }
-
-    /// Creates a BtreeMap whose values are sorted vectors by offset tuple
-    fn to_sorted_btree(
-        m: &HashMap<char, Vec<(usize, usize)>>,
-    ) -> BTreeMap<char, Vec<(usize, usize)>> {
-        let mut norm = BTreeMap::new();
-        for (&k, v) in m {
-            if v.is_empty() {
-                continue;
-            }
-            let mut vv = v.clone();
-            vv.sort_unstable();
-            norm.insert(k, vv);
-        }
-        norm
-    }
-
-    /// Prints the differences of old and new offsets to the console. It is used
-    /// to warn if there might have been some changes in the current patch that could
-    /// potentially cause the generator file to fail or produce invalid outputs
-    fn print_diffs(
-        old: &BTreeMap<char, Vec<(usize, usize)>>,
-        new: &BTreeMap<char, Vec<(usize, usize)>>,
-    ) {
-        let keys = old
-            .keys()
-            .chain(new.keys())
-            .copied()
-            .collect::<BTreeSet<char>>();
-
-        println!("Offsets are not equal (diff by ability):");
-        for k in keys {
-            let old_values = old.get(&k).cloned().unwrap_or_default();
-            let new_values = new.get(&k).cloned().unwrap_or_default();
-            if old_values == new_values {
-                continue;
-            }
-
-            let counts = |v: &[(usize, usize)]| -> BTreeMap<(usize, usize), usize> {
-                let mut c = BTreeMap::new();
-                for &p in v {
-                    *c.entry(p).or_insert(0) += 1;
-                }
-                c
-            };
-
-            let old_count = counts(&old_values);
-            let new_count = counts(&new_values);
-
-            let mut missing = Vec::new();
-            let mut extra = Vec::new();
-
-            for (p, &oq) in &old_count {
-                let nq = *new_count.get(p).unwrap_or(&0);
-                if nq < oq {
-                    for _ in 0..(oq - nq) {
-                        missing.push(*p);
-                    }
-                }
-            }
-            for (p, &nq) in &new_count {
-                let oq = *old_count.get(p).unwrap_or(&0);
-                if nq > oq {
-                    for _ in 0..(nq - oq) {
-                        extra.push(*p);
-                    }
-                }
-            }
-
-            #[derive(Debug)]
-            #[allow(non_snake_case, unused)]
-            struct OffsetCheck {
-                Ability: char,
-                Found: Vec<(usize, usize)>,
-                Expected: Vec<(usize, usize)>,
-                Missing_In_New: Vec<(usize, usize)>,
-                Extra_In_New: Vec<(usize, usize)>,
-            }
-
-            println!(
-                "{:#?}",
-                OffsetCheck {
-                    Ability: k,
-                    Found: old_values,
-                    Expected: new_values,
-                    Missing_In_New: missing,
-                    Extra_In_New: extra,
-                }
-            );
-        }
-    }
-
-    /// Compares old and new offsets, and returns if they're absolutely equal or not.
-    /// If they're not equal, likely the generator file will fail
-    pub fn compare_offsets(src: &str, new: &HashMap<char, Vec<(usize, usize)>>) -> MayFail<bool> {
-        let old_raw = Self::parse_offsets(src)?;
-        let old = Self::to_sorted_btree(&old_raw);
-        let new = Self::to_sorted_btree(new);
-        if old == new {
-            Ok(true)
-        } else {
-            Self::print_diffs(&old, &new);
-            Ok(false)
-        }
-    }
-
-    /// Verifies if the offsets used in the `.ability()` or `.passive()` functions
-    /// inside all generators are likely to be correct, printing to the console the
-    /// collected results
-    pub fn check_all_offsets() {
-        for champion_id in ChampionId::VALUES {
-            match Self::check_offsets(champion_id) {
-                Err(e) => println!("Error checking {champion_id:?} offsets: {e:?}"),
-                Ok(false) => println!("{champion_id:?} has incorrect offsets"),
-                Ok(true) => println!("{champion_id:?} passed offsets check"),
-            };
-        }
-    }
-
-    /// Verifies the offsets used in the [`ChampionData::ability`] and [`ChampionData::passive`]
-    /// methods for some [`ChampionId`]
-    pub fn check_offsets(champion_id: ChampionId) -> MayFail<bool> {
-        let name = &format!("{champion_id:?}");
-        let meraki_champion =
-            MerakiChampion::from_file(SaveTo::MerakiCache(Tag::Champions, name).path())?;
-
-        let mut new_offsets = HashMap::<char, Vec<(usize, usize)>>::new();
-
-        for (ability_char, ability_vec) in meraki_champion.abilities.into_iter() {
-            let meraki_offsets = ChampionData::get_ability_offsets(ability_vec);
-            new_offsets.insert(
-                ability_char,
-                meraki_offsets
-                    .iter()
-                    .map(|o| (o.effect, o.leveling))
-                    .collect(),
-            );
-        }
-
-        let old_content = std::fs::read_to_string(SaveTo::Generator(champion_id.entity()).path())?;
-
-        if !Self::compare_offsets(&old_content, &new_offsets)? {
-            return Ok(false);
-        }
-
-        Ok(true)
     }
 }
 

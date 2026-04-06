@@ -10,6 +10,6 @@ impl Generator<Champion> for Amumu {
     }
 
     fn progress(&self) -> Progress {
-        Stable
+        Preserve
     }
 }

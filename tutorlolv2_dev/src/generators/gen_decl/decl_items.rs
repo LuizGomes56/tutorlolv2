@@ -2,6 +2,7 @@ use crate::{
     MayFail,
     generators::{Generator, gen_factories::fac_items::ItemData},
 };
+use tutorlolv2_gen::ItemId;
 
 macro_rules! decl_items {
     (inner $Name:ident) => {
@@ -55,6 +56,30 @@ macro_rules! decl_items {
         $(
             decl_items!(inner $Stable);
         )*
+
+        pub fn item_gen_fn(item_id: &str) -> Option<
+            fn(ItemData) -> Box<dyn Generator<ItemData>>
+        > {
+            match item_id {
+                $(stringify!($Name) => Some($Name::new),)*
+                $(stringify!($Stable) => Some($Stable::new),)*
+                _ => None,
+            }
+        }
+
+        pub const fn item_gen_names() -> &'static [&'static str] {
+            &[
+                $(stringify!($Name),)*
+                $(stringify!($Stable),)*
+            ]
+        }
+
+        pub const fn item_gen_riot_ids() -> [u32; item_gen_names().len()] {
+            [
+                $(ItemId::$Name.to_riot_id(),)*
+                $(ItemId::$Stable.to_riot_id(),)*
+            ]
+        }
     };
 }
 

@@ -1,8 +1,8 @@
 pub(self) use crate::{
     MayFail, Progress,
     Progress::*,
-    generators::{Generator, gen_decl::decl_champions::*, gen_utils::RegExtractor},
-    model::champions::{Ability, Champion},
+    champions::{Ability, Champion, MerakiChampion},
+    generators::{Generator, gen_factories::fac_champions::ChampionData, gen_utils::RegExtractor},
 };
 pub(self) use tutorlolv2_gen::{
     AbilityId,
@@ -15,11 +15,57 @@ pub(self) use tutorlolv2_gen::{
 };
 
 macro_rules! decl_mod {
-    ($($Name:ident),*$(,)*) => {
+    (inner $Name:ident) => {
         pastey::paste! {
-            $(
-                pub mod [<$Name:lower>];
-            )*
+            pub mod [<$Name:lower>];
+        }
+    };
+    ($($Name:ident),*$(,)*) => {
+        $(
+            decl_mod!(inner $Name);
+
+            pub struct $Name(pub ChampionData);
+
+            impl $Name {
+                pub fn name() -> &'static str {
+                    stringify!($Name)
+                }
+
+                pub fn new(data: MerakiChampion) -> Box<dyn Generator<Champion>> {
+                    Box::new(Self(ChampionData::new(data)))
+                }
+
+                pub fn end(self) -> MayFail<Champion> {
+                    println!("Ending generator for {}", Self::name());
+                    self.0.end()
+                }
+            }
+
+            impl ::core::ops::Deref for $Name {
+                type Target = ChampionData;
+                fn deref(&self) -> &Self::Target {
+                    &self.0
+                }
+            }
+
+            impl ::core::ops::DerefMut for $Name {
+                fn deref_mut(&mut self) -> &mut Self::Target {
+                    &mut self.0
+                }
+            }
+        )*
+
+        pub fn champion_gen_fn(champion_id: &str) -> Option<
+            fn(MerakiChampion) -> Box<dyn Generator<Champion>>
+        > {
+            match champion_id {
+                $(stringify!($Name) => Some($Name::new),)*
+                _ => None,
+            }
+        }
+
+        pub const fn champion_gen_names() -> &'static [&'static str] {
+            &[$(stringify!($Name),)*]
         }
     };
 }

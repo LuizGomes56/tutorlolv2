@@ -1,5 +1,5 @@
-use std::{process::Command, str::FromStr};
-use tutorlolv2::{ChampionId, ItemId};
+use std::process::Command;
+use tutorlolv2::ItemId;
 use tutorlolv2_dev::{
     HTTP_CLIENT,
     gen_factories::{fac_champions::ChampionFactory, fac_items::ItemFactory},
@@ -63,31 +63,20 @@ fn run_champions_generator() {
 #[test]
 /// cargo test --package tutorlolv2 --test dev -- cgen <champion> --exact --nocapture
 fn cgen() {
-    let champion = std::env::args().nth(2).unwrap();
-    println!("Champion: {champion}");
-    let champion_id = ChampionId::from_str(&champion).unwrap();
-    println!("Parsed to ChampionId::{champion_id:?}");
-    ChampionFactory::run(champion_id).unwrap();
+    let name = std::env::args().nth(2).unwrap();
+    ChampionFactory::run(&name).unwrap();
 }
 
 #[test]
 fn cmkgen() {
-    let champion = std::env::args().nth(2).unwrap();
-    println!("Champion: {champion}");
-    let champion_id = ChampionId::from_str(&champion).unwrap();
-    println!("Parsed to ChampionId::{champion_id:?}");
-    ChampionFactory::create(champion_id).unwrap();
+    let name = std::env::args().nth(2).unwrap();
+    println!("Champion: {name}");
+    ChampionFactory::create(&name).unwrap();
 }
 
 #[test]
 fn cgen_progress() {
     ChampionFactory::progress();
-}
-
-#[test]
-fn run_item_generator() {
-    let data = ItemFactory::run(ItemId::BladeOfTheRuinedKingArena).unwrap();
-    println!("Data: {}", data.current_data.ranged.minimum_damage);
 }
 
 #[test]
