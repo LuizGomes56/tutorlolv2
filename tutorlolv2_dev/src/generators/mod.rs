@@ -1,7 +1,6 @@
 use crate::ENV_CONFIG;
 
 pub mod gen_champions;
-pub mod gen_decl;
 pub mod gen_factories;
 pub mod gen_items;
 pub mod gen_runes;

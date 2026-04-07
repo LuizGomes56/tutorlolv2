@@ -2,7 +2,7 @@ use crate::{
     ENV_CONFIG, JsonRead, JsonWrite, MayFail,
     client::{SaveTo, Tag},
     gen_utils::RegExtractor,
-    generators::{gen_decl::decl_items::*},
+    generators::gen_items::*,
     items::{Effect, Item, ItemStats, MerakiItem},
     riot::RiotCdnItem,
 };
@@ -173,6 +173,7 @@ impl ItemFactory {
         let names = item_gen_names();
         let riot_ids = item_gen_riot_ids();
 
+        #[allow(invalid_value)]
         let mut result: [(&str, u32); Self::VARIANTS] = unsafe { core::mem::zeroed() };
 
         assert!(
