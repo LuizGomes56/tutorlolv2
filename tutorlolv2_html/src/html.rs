@@ -8,7 +8,7 @@ pub struct Html {
 
 impl Html {
     const URL: &str = "http://localhost:8082";
-    const CSS: &str = include_str!("style.css");
+    pub const CSS: &str = include_str!("style.css");
 
     pub fn into_inner(mut self) -> String {
         self.add_footer();

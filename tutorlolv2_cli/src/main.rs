@@ -1,3 +1,3 @@
 fn main() {
-    tutorlolv2_cli::run();
+    tutorlolv2_cli::run().unwrap();
 }
