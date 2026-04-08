@@ -32,11 +32,7 @@ impl FromStr for RunTarget {
                     return Ok(Self::Champion(champion_id));
                 }
 
-                if let Some(item) = ItemId::from_str(s).ok().or(ItemId::VALUES
-                    .iter()
-                    .find(|item_id| format!("{item_id:?}") == s)
-                    .copied())
-                {
+                if let Ok(item) = ItemId::from_str(s) {
                     return Ok(Self::Item(item));
                 }
 

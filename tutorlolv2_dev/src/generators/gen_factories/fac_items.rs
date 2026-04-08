@@ -78,10 +78,14 @@ impl ItemData {
         }
     }
 
-    pub fn try_yield_to(&mut self, name: &str) -> MayFail {
-        println!("Attempting to yield generator of ItemId::{name}");
-        let item_id = ItemId::from_str(name)?;
-        println!("Yielding generator of ItemId::{name} to ItemId::{item_id:?}");
+    pub fn try_yield(&mut self, name: &str) -> MayFail {
+        println!("[try] Attempting to yield generator of ItemId::{name}");
+        let base = name.trim_end_matches("Arena");
+        let Ok(item_id) = ItemId::from_str(base) else {
+            println!("[warn] Failed to yield generator of ItemId::{name}");
+            return Ok(());
+        };
+        println!("[ok] Yielding generator of ItemId::{name} to ItemId::{item_id:?}");
         self.yield_to(item_id)
     }
 
@@ -112,14 +116,6 @@ impl ItemData {
             ))?
             .effects
             .get_damage())
-    }
-
-    pub fn is_arena(&self) -> bool {
-        self.name().contains("Arena") && self.has_map(GameMap::Arena)
-    }
-
-    pub fn name(&self) -> &str {
-        &self.current_data.name
     }
 
     pub fn has_map(&self, game_map: GameMap) -> bool {

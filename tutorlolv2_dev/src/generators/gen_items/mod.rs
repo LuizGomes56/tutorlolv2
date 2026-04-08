@@ -3,7 +3,7 @@ pub(self) use crate::{
     generators::{Generator, gen_factories::fac_items::ItemData, gen_utils::RegExtractor},
 };
 pub(self) use tutorlolv2_gen::{
-    ItemId,
+    GameMap, ItemId,
     enums::{Attrs::*, DamageType::*},
     eval::CtxVar::*,
 };
@@ -52,11 +52,9 @@ macro_rules! decl_items {
 
             impl Generator<ItemData> for $Name {
                 fn generate(mut self: Box<Self>) -> MayFail<ItemData> {
-                    if self.is_arena() {
-                        pastey::paste! {
-                            const PREV: &str = stringify!([<$Name:replace("Arena", "")>]);
-                            self.try_yield_to(PREV)?;
-                        }
+                    const NAME: &str = stringify!($Name);
+                    if self.has_map(GameMap::Arena) && NAME.contains("Arena") {
+                        self.try_yield(NAME)?;
                     }
                     self.infer_stats_ifdef();
                     self.end()
