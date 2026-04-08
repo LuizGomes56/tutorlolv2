@@ -7,7 +7,10 @@ pub mod data;
 pub mod enums;
 pub mod eval;
 
-use crate::data::{champions::CHAMPION_GENERATOR, items::ITEM_GENERATOR};
+use crate::data::{
+    champions::CHAMPION_GENERATOR,
+    items::{ITEM_GENERATOR, ITEM_NAME_TO_ID},
+};
 use core::{
     any::{Any, TypeId},
     fmt::Debug,
@@ -146,10 +149,10 @@ impl FromStr for ItemId {
     type Err = &'static str;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-        ITEM_CACHE
-            .iter()
-            .find_map(|i| (i.name == s).then_some(i.metadata.kind))
-            .ok_or("Failed to find matches when calling ItemId::from_str")
+        ITEM_NAME_TO_ID
+            .get(s)
+            .copied()
+            .ok_or("No matches when calling ItemId::from_str")
     }
 }
 
