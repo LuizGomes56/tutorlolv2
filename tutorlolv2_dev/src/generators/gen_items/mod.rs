@@ -95,6 +95,8 @@ decl_items!(
     impl {
         BladeOfTheRuinedKing,
         BladeOfTheRuinedKingArena,
+        LichBane,
+        LichBaneArena,
         Malignance,
         MalignanceArena,
         NashorsTooth,
@@ -431,8 +433,6 @@ decl_items!(
         LegendaryTankItemArena,
         LiandrysAnguishArena,
         LiandrysTorment,
-        LichBane,
-        LichBaneArena,
         Lifeline,
         LifewellPendant,
         LightningBraid,

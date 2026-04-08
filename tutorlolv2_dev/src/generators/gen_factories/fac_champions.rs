@@ -151,24 +151,25 @@ impl ChampionFactory {
     /// Runs all generator files. It means that several `.json` files will be created
     /// in the internal cache folder
     pub fn run_all() -> MayFail {
-        Self::GENERATOR_NAMES.into_par_iter().for_each(|name| {
-            if let Err(e) = Self::run(name) {
-                println!("Failed to run generator file for {name:?}: {e:?}");
-            }
-        });
-
-        Ok(())
+        Self::GENERATOR_NAMES
+            .into_par_iter()
+            .copied()
+            .try_for_each(Self::run)
     }
 
     pub fn run(name: &str) -> MayFail {
+        match Self::run_fn(name) {
+            Ok(champion) => champion.into_file(SaveTo::InternalRaw(Tag::Champions, name).path()),
+            Err(e) => Ok(println!("Error generating {name:?}: {e:?}")),
+        }
+    }
+
+    pub fn run_fn(name: &str) -> MayFail<Champion> {
         let data = MerakiChampion::from_file(SaveTo::MerakiCache(Tag::Champions, name).path())?;
         let function =
             champion_gen_fn(name).ok_or(format!("Unable to find generator function for {name}"))?;
         let generator = function(data);
-        match generator.generate() {
-            Ok(champion) => champion.into_file(SaveTo::InternalRaw(Tag::Champions, name).path()),
-            Err(e) => Ok(println!("Error generating {name:?}: {e:?}")),
-        }
+        generator.generate()
     }
 }
 

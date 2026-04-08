@@ -77,7 +77,7 @@ impl ItemData {
     }
 
     pub fn yield_to(&mut self, item_id: ItemId) -> MayFail {
-        let data = ItemFactory::run(&format!("{item_id:?}"), item_id.to_riot_id())?;
+        let data = ItemFactory::run_fn(&format!("{item_id:?}"), item_id.to_riot_id())?;
         self.current_data.melee = data.current_data.melee;
         self.current_data.ranged = data.current_data.ranged;
         self.damage_type(data.current_data.damage_type);
@@ -196,14 +196,16 @@ impl ItemFactory {
     pub fn run_all() -> MayFail {
         Self::GENERATOR_DATA
             .into_par_iter()
-            .for_each(|(name, riot_id)| match Self::run(name, riot_id) {
-                Ok(data) => data
-                    .current_data
-                    .into_file(SaveTo::InternalRaw(Tag::Items, name).path())
-                    .unwrap(),
-                Err(e) => panic!("Unable to run generator for {name:?}, Error: {e}"),
-            });
-        Ok(())
+            .try_for_each(|(name, riot_id)| Self::run(name, riot_id))
+    }
+
+    pub fn run(name: &str, riot_id: u32) -> MayFail {
+        match Self::run_fn(name, riot_id) {
+            Ok(data) => data
+                .current_data
+                .into_file(SaveTo::InternalRaw(Tag::Items, name).path()),
+            Err(e) => panic!("Unable to run generator for {name:?}, Error: {e}"),
+        }
     }
 
     pub fn clean() -> MayFail {
@@ -229,7 +231,7 @@ impl ItemFactory {
     }
 
     /// Runs some item generator, taking its generated data and saving to an internal folder
-    pub fn run(name: &str, riot_id: u32) -> MayFail<ItemData> {
+    pub fn run_fn(name: &str, riot_id: u32) -> MayFail<ItemData> {
         let riot_id = riot_id.to_string();
         let meraki_data =
             MerakiItem::from_file(SaveTo::MerakiCache(Tag::Items, &riot_id).path()).ok();
