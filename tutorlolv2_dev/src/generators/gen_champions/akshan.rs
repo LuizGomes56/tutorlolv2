@@ -53,11 +53,7 @@ impl Generator<Champion> for Akshan {
 
         self.attr(Area, [Q(Min), Q(Max)])?;
         self.damage_type(P(Void), Magic)?;
-
+        self.progress(Preserve);
         self.end()
-    }
-
-    fn progress(&self) -> Progress {
-        Stable
     }
 }

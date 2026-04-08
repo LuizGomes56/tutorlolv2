@@ -63,10 +63,7 @@ impl Generator<Champion> for Aatrox {
             Attack,
         ])?;
 
+        self.progress(Stable);
         self.end()
-    }
-
-    fn progress(&self) -> Progress {
-        Stable
     }
 }

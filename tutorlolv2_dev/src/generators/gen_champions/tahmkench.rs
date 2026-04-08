@@ -6,10 +6,7 @@ impl Generator<Champion> for TahmKench {
         self.ability(Key::W, [(2, 1, _1)]);
         self.ability(Key::E, [(1, 0, _1), (1, 1, _2)]);
         self.ability(Key::R, [(0, 0, _1)]);
+        self.progress(Preserve);
         self.end()
-    }
-
-    fn progress(&self) -> Progress {
-        Preserve
     }
 }

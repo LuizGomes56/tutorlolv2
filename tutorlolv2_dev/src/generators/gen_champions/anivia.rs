@@ -22,10 +22,7 @@ impl Generator<Champion> for Anivia {
             Ability(E(Max)),
         ])?;
 
+        self.progress(Stable);
         self.end()
-    }
-
-    fn progress(&self) -> Progress {
-        Stable
     }
 }

@@ -5,8 +5,4 @@ impl Generator<ItemData> for BladeOfTheRuinedKingArena {
         self.yield_to(ItemId::BladeOfTheRuinedKing)?;
         self.end()
     }
-
-    fn progress(&self) -> Progress {
-        Stable
-    }
 }

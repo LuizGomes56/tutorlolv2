@@ -1,20 +1,16 @@
-use crate::ENV_CONFIG;
+use serde::{Deserialize, Serialize};
 
 pub mod gen_champions;
 pub mod gen_factories;
 pub mod gen_items;
-pub mod gen_runes;
 pub mod gen_utils;
 
+#[derive(Clone, Copy, Debug, Default, Deserialize, Serialize)]
 pub enum Progress {
-    Stable,
-    Unstable,
     Preserve,
-}
-
-pub struct Metadata {
-    pub step: Progress,
-    pub version: String,
+    Stable,
+    #[default]
+    Unstable,
 }
 
 /// Base generator trait, that returns a type that will be serialized into a
@@ -31,15 +27,4 @@ pub struct Metadata {
 /// easier to fix their generators in case some breaking change occur.
 pub trait Generator<T> {
     fn generate(self: Box<Self>) -> crate::MayFail<T>;
-
-    fn progress(&self) -> Progress {
-        Progress::Unstable
-    }
-
-    fn metadata(&self) -> Metadata {
-        Metadata {
-            step: self.progress(),
-            version: ENV_CONFIG.lol_version.clone(),
-        }
-    }
 }

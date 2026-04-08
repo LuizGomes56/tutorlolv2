@@ -23,10 +23,7 @@ impl Generator<Champion> for Mel {
                 (2, 1, _3),
             ],
         );
+        self.progress(Preserve);
         self.end()
-    }
-
-    fn progress(&self) -> Progress {
-        Preserve
     }
 }

@@ -1,5 +1,5 @@
 pub(self) use crate::{
-    MayFail, Progress,
+    MayFail,
     Progress::*,
     champions::{Ability, Champion, MerakiChampion},
     generators::{Generator, gen_factories::fac_champions::ChampionData, gen_utils::RegExtractor},
@@ -24,33 +24,37 @@ macro_rules! decl_mod {
         $(
             decl_mod!(inner $Name);
 
-            pub struct $Name(pub ChampionData);
+            pub struct $Name {
+                pub inner: ChampionData
+            }
 
             impl $Name {
-                pub fn name() -> &'static str {
+                pub const fn name() -> &'static str {
                     stringify!($Name)
                 }
 
                 pub fn new(data: MerakiChampion) -> Box<dyn Generator<Champion>> {
-                    Box::new(Self(ChampionData::new(data)))
+                    Box::new(Self {
+                        inner: ChampionData::new(data)
+                    })
                 }
 
                 pub fn end(self) -> MayFail<Champion> {
                     println!("Ending generator for {}", Self::name());
-                    self.0.end()
+                    self.inner.end()
                 }
             }
 
             impl ::core::ops::Deref for $Name {
                 type Target = ChampionData;
                 fn deref(&self) -> &Self::Target {
-                    &self.0
+                    &self.inner
                 }
             }
 
             impl ::core::ops::DerefMut for $Name {
                 fn deref_mut(&mut self) -> &mut Self::Target {
-                    &mut self.0
+                    &mut self.inner
                 }
             }
         )*

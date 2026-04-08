@@ -8,11 +8,7 @@ impl Generator<Champion> for Ashe {
 
         self.attr(Area, [R(Void), W(Void)])?;
         self.combo([Attack, Ability(W(Void)), Ability(R(Void)), Attack])?;
-
+        self.progress(Stable);
         self.end()
-    }
-
-    fn progress(&self) -> Progress {
-        Stable
     }
 }

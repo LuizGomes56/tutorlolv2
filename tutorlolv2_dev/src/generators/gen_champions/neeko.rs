@@ -17,11 +17,7 @@ impl Generator<Champion> for Neeko {
         ])?;
 
         self.combo([Ability(Q(_1)), Attack, Ability(W(Void))])?;
-
+        self.progress(Stable);
         self.end()
-    }
-
-    fn progress(&self) -> Progress {
-        Stable
     }
 }

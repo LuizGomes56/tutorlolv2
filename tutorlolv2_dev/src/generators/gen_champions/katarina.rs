@@ -14,10 +14,7 @@ impl Generator<Champion> for Katarina {
                 // (0, 4, _5),
             ],
         );
+        self.progress(Preserve);
         self.end()
-    }
-
-    fn progress(&self) -> Progress {
-        Preserve
     }
 }

@@ -5,10 +5,7 @@ impl Generator<Champion> for Alistar {
         self.ability(Key::Q, [(0, 0, Void)]);
         self.ability(Key::W, [(0, 0, Void)]);
         self.ability(Key::E, [(0, 0, Min), (0, 1, Max)]);
+        self.progress(Preserve);
         self.end()
-    }
-
-    fn progress(&self) -> Progress {
-        Stable
     }
 }

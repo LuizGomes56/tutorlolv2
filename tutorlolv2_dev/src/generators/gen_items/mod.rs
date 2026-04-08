@@ -1,6 +1,5 @@
 pub(self) use crate::{
-    MayFail, Progress,
-    Progress::*,
+    MayFail,
     generators::{Generator, gen_factories::fac_items::ItemData, gen_utils::RegExtractor},
 };
 pub(self) use tutorlolv2_gen::{

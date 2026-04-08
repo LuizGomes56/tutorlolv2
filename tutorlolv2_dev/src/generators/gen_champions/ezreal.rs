@@ -6,10 +6,7 @@ impl Generator<Champion> for Ezreal {
         self.ability(Key::W, [(1, 0, Void)]);
         self.ability(Key::E, [(0, 0, Void)]);
         self.ability(Key::R, [(0, 0, Void) /* (1, 0, Minion) */]);
+        self.progress(Preserve);
         self.end()
-    }
-
-    fn progress(&self) -> Progress {
-        Stable
     }
 }

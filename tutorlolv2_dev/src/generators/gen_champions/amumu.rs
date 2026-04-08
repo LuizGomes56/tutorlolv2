@@ -6,10 +6,7 @@ impl Generator<Champion> for Amumu {
         self.ability(Key::W, [(0, 0, Void)]);
         self.ability(Key::E, [(0, 0, Void)]);
         self.ability(Key::R, [(0, 0, Void)]);
+        self.progress(Preserve);
         self.end()
-    }
-
-    fn progress(&self) -> Progress {
-        Preserve
     }
 }

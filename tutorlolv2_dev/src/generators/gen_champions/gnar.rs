@@ -28,10 +28,7 @@ impl Generator<Champion> for Gnar {
             Attack,
         ])?;
 
+        self.progress(Stable);
         self.end()
-    }
-
-    fn progress(&self) -> Progress {
-        Stable
     }
 }

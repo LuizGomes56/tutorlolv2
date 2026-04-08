@@ -17,10 +17,7 @@ impl Generator<Champion> for Ahri {
         self.damage_type(Q(Max), Mixed)?;
 
         self.attr(Area, [Q(Min), Q(Max)])?;
+        self.progress(Stable);
         self.end()
-    }
-
-    fn progress(&self) -> Progress {
-        Stable
     }
 }

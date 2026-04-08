@@ -3,7 +3,7 @@ use std::{process::Command, str::FromStr};
 use tutorlolv2_dev::{
     MayFail,
     gen_factories::{fac_champions::ChampionFactory, fac_items::ItemFactory},
-    update::{self, prettify_internal_items},
+    update,
 };
 use tutorlolv2_gen::{ChampionId, ItemId};
 
@@ -98,10 +98,7 @@ pub fn run() -> MayFail {
             }
             RunTarget::Factory(f) => f()?,
         },
-        GenArgs::Progress => {
-            ChampionFactory::progress();
-            ItemFactory::progress();
-        }
+        GenArgs::Progress => ChampionFactory::progress(),
         GenArgs::Update => {
             update::setup_project_folders()?;
             ChampionFactory::create_all()?;
@@ -113,9 +110,9 @@ pub fn run() -> MayFail {
         GenArgs::Setup { setup } => match setup {
             Setup::Items => {
                 update::setup_internal_items()?;
-                prettify_internal_items()?;
+                update::prettify_internal_items()?;
             }
-            Setup::Prettify => prettify_internal_items()?,
+            Setup::Prettify => update::prettify_internal_items()?,
             Setup::Folders => update::setup_project_folders()?,
         },
     }

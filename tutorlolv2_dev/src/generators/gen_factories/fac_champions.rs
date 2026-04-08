@@ -1,5 +1,5 @@
 use crate::{
-    JsonRead, JsonWrite, MayFail,
+    ENV_CONFIG, JsonRead, JsonWrite, MayFail, Progress,
     champions::{Ability, Champion, MerakiAbility, MerakiChampion, Modifiers},
     client::{SaveTo, Tag},
     generators::{
@@ -23,6 +23,8 @@ pub struct ChampionData {
     pub map: BTreeMap<AbilityId, Ability>,
     pub mergevec: BTreeSet<DevMergeData>,
     pub combo: Vec<Vec<ComboElement>>,
+    progress: Progress,
+    version: String,
 }
 
 /// Struct that creates and runs files that implement the trait [`Generator`].
@@ -72,7 +74,7 @@ impl ChampionFactory {
     /// Creates a new generator file, given a [`ChampionId`]
     pub fn create(name: &str) -> MayFail<String> {
         if let Ok(data) = std::fs::read_to_string(SaveTo::GeneratorRaw(Tag::Champions, name).path())
-            && (data.contains("Stable") || data.contains("Preserve"))
+            && (data.contains("self.progress(Stable)") || data.contains("self.progress(Preserve)"))
         {
             println!("[stable] Skipping generator for {name:?}");
             return Ok(data);
@@ -185,7 +187,17 @@ impl ChampionData {
             map: Default::default(),
             mergevec: Default::default(),
             combo: Default::default(),
+            progress: Default::default(),
+            version: ENV_CONFIG.lol_version.clone(),
         }
+    }
+
+    pub fn is_outdated(&self) -> bool {
+        self.version != ENV_CONFIG.lol_version
+    }
+
+    pub const fn progress(&mut self, progress: Progress) {
+        self.progress = progress;
     }
 
     /// Converts the [`ChampionData`] into a [`Champion`], ending

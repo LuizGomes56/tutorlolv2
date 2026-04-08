@@ -5,8 +5,4 @@ impl Generator<ItemData> for NashorsToothArena {
         self.yield_to(ItemId::NashorsTooth)?;
         self.end()
     }
-
-    fn progress(&self) -> Progress {
-        Stable
-    }
 }

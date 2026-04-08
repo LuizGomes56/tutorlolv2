@@ -8,10 +8,7 @@ impl Generator<Champion> for Janna {
         self.attr(Area, [Q(Min), Q(Max)])?;
         self.combo([Ability(W(Void)), Attack, Ability(Q(Max)), Attack])?;
 
+        self.progress(Stable);
         self.end()
-    }
-
-    fn progress(&self) -> Progress {
-        Stable
     }
 }

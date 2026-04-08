@@ -21,10 +21,7 @@ impl Generator<Champion> for KogMaw {
             Ability(W(Void)),
         ])?;
 
+        self.progress(Stable);
         self.end()
-    }
-
-    fn progress(&self) -> Progress {
-        Stable
     }
 }

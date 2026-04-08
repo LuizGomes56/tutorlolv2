@@ -228,39 +228,6 @@ impl ItemFactory {
         Ok(())
     }
 
-    pub fn progress() {
-        let mut stables = 0;
-        let mut preserve = 0;
-        let mut unstables = 0;
-        let mut total = 0;
-        for (name, _) in Self::GENERATOR_DATA {
-            if let Ok(data) = std::fs::read_to_string(SaveTo::GeneratorRaw(Tag::Items, name).path())
-            {
-                if data.contains("Stable") {
-                    stables += 1;
-                } else if data.contains("Preserve") {
-                    preserve += 1;
-                } else {
-                    unstables += 1;
-                }
-                total += 1;
-            }
-        }
-
-        println!(
-            concat!(
-                "ItemFactory::progress\n",
-                "{stables:>3} / {total} stable\n",
-                "{preserve:>3} / {total} preserved\n",
-                "{unstables:>3} / {total} unstable\n",
-            ),
-            stables = stables,
-            preserve = preserve,
-            unstables = unstables,
-            total = total
-        );
-    }
-
     /// Runs some item generator, taking its generated data and saving to an internal folder
     pub fn run(name: &str, riot_id: u32) -> MayFail<ItemData> {
         let riot_id = riot_id.to_string();
