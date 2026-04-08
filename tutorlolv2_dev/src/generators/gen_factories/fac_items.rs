@@ -1,3 +1,5 @@
+use std::str::FromStr;
+
 use crate::{
     ENV_CONFIG, JsonRead, JsonWrite, MayFail,
     client::{SaveTo, Tag},
@@ -8,7 +10,7 @@ use crate::{
 };
 use rayon::iter::{IntoParallelIterator, ParallelIterator};
 use serde_json::Value;
-use tutorlolv2_gen::{Attrs, DamageType, ItemId, StatName};
+use tutorlolv2_gen::{Attrs, DamageType, GameMap, ItemId, StatName};
 
 pub struct ItemData {
     pub meraki_data: Option<MerakiItem>,
@@ -76,6 +78,13 @@ impl ItemData {
         }
     }
 
+    pub fn try_yield_to(&mut self, name: &str) -> MayFail {
+        println!("Attempting to yield generator of ItemId::{name}");
+        let item_id = ItemId::from_str(name)?;
+        println!("Yielding generator of ItemId::{name} to ItemId::{item_id:?}");
+        self.yield_to(item_id)
+    }
+
     pub fn yield_to(&mut self, item_id: ItemId) -> MayFail {
         let data = ItemFactory::run_fn(&format!("{item_id:?}"), item_id.to_riot_id())?;
         self.current_data.melee = data.current_data.melee;
@@ -103,6 +112,22 @@ impl ItemData {
             ))?
             .effects
             .get_damage())
+    }
+
+    pub fn is_arena(&self) -> bool {
+        self.name().contains("Arena") && self.has_map(GameMap::Arena)
+    }
+
+    pub fn name(&self) -> &str {
+        &self.current_data.name
+    }
+
+    pub fn has_map(&self, game_map: GameMap) -> bool {
+        self.current_data
+            .maps
+            .iter()
+            .find_map(|(map, v)| (*map == game_map).then_some(*v))
+            .unwrap_or(false)
     }
 
     /// Returns the damage of the `passive` effect in the field `passives`

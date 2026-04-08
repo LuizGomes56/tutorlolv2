@@ -1,5 +1,7 @@
 use crate::{ItemId, RuneId};
-pub use const_sized_bit_set::bit_set_array::BitSetArray;
+use const_sized_bit_set::prelude::BitSetArray;
+
+pub use const_sized_bit_set::*;
 
 pub const fn max_usize(a: usize, b: usize) -> usize {
     if a > b { a } else { b }

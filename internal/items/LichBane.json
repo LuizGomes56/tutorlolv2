@@ -7,7 +7,7 @@
   "tier": 3,
   "attributes": "OnhitMax",
   "purchasable": true,
-  "damage_type": "Unknown",
+  "damage_type": "Magic",
   "prettified_stats": {
     "AbilityHaste": 10,
     "AbilityPower": 100,

@@ -52,6 +52,12 @@ macro_rules! decl_items {
 
             impl Generator<ItemData> for $Name {
                 fn generate(mut self: Box<Self>) -> MayFail<ItemData> {
+                    if self.is_arena() {
+                        pastey::paste! {
+                            const PREV: &str = stringify!([<$Name:replace("Arena", "")>]);
+                            self.try_yield_to(PREV)?;
+                        }
+                    }
                     self.infer_stats_ifdef();
                     self.end()
                 }
@@ -94,13 +100,9 @@ macro_rules! decl_items {
 decl_items!(
     impl {
         BladeOfTheRuinedKing,
-        BladeOfTheRuinedKingArena,
         LichBane,
-        LichBaneArena,
         Malignance,
-        MalignanceArena,
         NashorsTooth,
-        NashorsToothArena
     },
     default {
         AbyssalMask,
@@ -157,6 +159,7 @@ decl_items!(
         BlackfireTorchArena,
         BlackHoleGauntletU44,
         BlackMistScythe,
+        BladeOfTheRuinedKingArena,
         BladeORang,
         BlastingWand,
         BlastingWandArena,
@@ -433,6 +436,7 @@ decl_items!(
         LegendaryTankItemArena,
         LiandrysAnguishArena,
         LiandrysTorment,
+        LichBaneArena,
         Lifeline,
         LifewellPendant,
         LightningBraid,
@@ -452,6 +456,7 @@ decl_items!(
         LuckyDice,
         LudensEcho,
         LudensEchoArena,
+        MalignanceArena,
         Manamune,
         ManamuneArena,
         ManamuneU32,
@@ -485,6 +490,7 @@ decl_items!(
         Muramana,
         MuramanaArena,
         MuramanaU32,
+        NashorsToothArena,
         NavoriFlickerblade,
         NavoriFlickerbladesArena,
         NeedlesslyLargeRod,
