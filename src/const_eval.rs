@@ -15,7 +15,7 @@ use crate::{
 };
 use tutorlolv2_gen::{
     AttackType, CachedChampion, CachedItem, CachedRune, ChampionId, ConstClosure, Ctx, ITEM_CACHE,
-    ItemId, ItemsBitSet, RuneId, TypeMetadata, bit_array_pop, champions::ability_const_eval,
+    ItemId, ItemsBitSet, RuneId, TypeMetadata, champions::ability_const_eval,
     items::item_const_eval, runes::rune_const_eval,
 };
 
@@ -31,10 +31,8 @@ pub const fn get_items_data_const<const N: usize, const L: usize>(
         let mut i = 0;
         let mut j = 0;
 
-        let mut inner = items.into_inner();
-
-        while let Some(item_offset) = bit_array_pop(&mut inner) {
-            let item = ITEM_CACHE[item_offset];
+        while let Some(item_offset) = items.iter_const().next_const() {
+            let item = ITEM_CACHE[item_offset as usize];
             let slice = match attack_type {
                 AttackType::Ranged => item.ranged_damages,
                 AttackType::Melee => item.melee_damages,

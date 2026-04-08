@@ -271,7 +271,6 @@ impl ItemFactory {
 
         let function =
             item_gen_fn(name).ok_or(format!("Unable to find generator function for {name}"))?;
-        let generator = function(ItemData::new(meraki_data, riot_data, current_data));
-        Ok(generator.generate()?)
+        function(ItemData::new(meraki_data, riot_data, current_data)).generate()
     }
 }

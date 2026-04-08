@@ -5,5 +5,5 @@ edition = "2024"
 
 [dependencies]
 clap = { version = "4.6.0", features = ["derive"] }
-tutorlolv2 = { path = "../" }
+tutorlolv2_gen = { path = "../tutorlolv2_gen" }
 tutorlolv2_dev = { path = "../tutorlolv2_dev" }

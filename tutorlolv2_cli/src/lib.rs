@@ -1,7 +1,7 @@
 use clap::{Parser, Subcommand};
 use std::str::FromStr;
-use tutorlolv2::{ChampionId, ItemId};
 use tutorlolv2_dev::gen_factories::{fac_champions::ChampionFactory, fac_items::ItemFactory};
+use tutorlolv2_gen::{ChampionId, ItemId};
 
 #[derive(Parser, Debug)]
 pub struct Cli {
