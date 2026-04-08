@@ -107,7 +107,7 @@ impl ChampionFactory {
         );
 
         let meraki_champion = MerakiChampion::from_file(
-            SaveTo::MerakiCache(Tag::Champions, name).path(),
+            SaveTo::MerakiCache(Tag::Champions, &name).path(),
         )
         .map_err(|e| format!("Error calling MerakiChampion::from_file for {name:?}: {e:?}"))?;
         for (ability_char, ability_vec) in meraki_champion.abilities.into_iter() {
@@ -165,7 +165,7 @@ impl ChampionFactory {
     }
 
     pub fn run_fn(name: &str) -> MayFail<Champion> {
-        let data = MerakiChampion::from_file(SaveTo::MerakiCache(Tag::Champions, name).path())?;
+        let data = MerakiChampion::from_file(SaveTo::MerakiCache(Tag::Champions, &name).path())?;
         let function =
             champion_gen_fn(name).ok_or(format!("Unable to find generator function for {name}"))?;
         let generator = function(data);
@@ -291,7 +291,8 @@ impl ChampionData {
                         let parts = unit.split('%').collect::<Vec<&str>>();
                         let suffix = parts
                             .get(1)
-                            .map_or("".to_string(), |s| s.trim().to_string());
+                            .map_or(Default::default(), |s| s.trim())
+                            .to_string();
                         let coef = value / 100.0;
                         if coef == 1.0 && !suffix.is_empty() {
                             suffix

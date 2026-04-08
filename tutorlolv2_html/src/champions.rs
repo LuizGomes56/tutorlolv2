@@ -18,9 +18,9 @@ pub fn champions_html() {
                                 let entity_id = value.entity();
                                 let name = value.name();
                                 let folder = match entity_id {
-                                    x if entity_id.is_item() => "items",
-                                    x if entity_id.is_rune() => "runes",
-                                    x if entity_id.is_champion() => "champions",
+                                    x if x.is_item() => "items",
+                                    x if x.is_rune() => "runes",
+                                    x if x.is_champion() => "champions",
                                     _ => unreachable!(),
                                 };
                                 format!(

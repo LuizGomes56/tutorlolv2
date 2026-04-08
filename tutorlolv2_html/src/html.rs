@@ -1,5 +1,8 @@
-use core::ops::{Deref, DerefMut};
-use std::{ops::Range, path::Path};
+use core::{
+    fmt::Display,
+    ops::{Deref, DerefMut, Range},
+};
+use std::path::Path;
 use tutorlolv2_gen::{CastId, CtxVar, EntityId, RAW_BLOCK};
 
 pub struct Html {
@@ -133,7 +136,7 @@ impl Html {
     pub fn src(value: impl CastId) -> String {
         let folder = Self::folder(value);
         let tag = match value.entity() {
-            EntityId::Champion(champion_id) => &champion_id.debug() as &dyn core::fmt::Display,
+            EntityId::Champion(champion_id) => &champion_id.debug() as &dyn Display,
             EntityId::Item(item_id) => &item_id.to_riot_id(),
             EntityId::Rune(rune_id) => &rune_id.to_riot_id(),
         };

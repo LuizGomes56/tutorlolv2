@@ -23,9 +23,8 @@ pub trait JsonRead: DeserializeOwned {
     /// Receives a file path and deserializes the target JSON file into the
     /// struct that called this function as method.
     fn from_file(path: impl AsRef<Path>) -> MayFail<Self> {
-        let resolved_path = resolve_path(path)?;
-        println!("[read] {:?}", resolved_path.as_ref());
-        let data = std::fs::read(resolved_path)?;
+        println!("[read] {:?}", path.as_ref());
+        let data = std::fs::read(path)?;
         Ok(serde_json::from_slice(&data)?)
     }
 
@@ -51,8 +50,7 @@ pub trait JsonRead: DeserializeOwned {
 /// without their extensions
 pub fn get_file_names(path: impl AsRef<Path>) -> MayFail<Vec<String>> {
     let mut result = Vec::new();
-    let resolved_path = resolve_path(path)?;
-    for entry in std::fs::read_dir(resolved_path)? {
+    for entry in std::fs::read_dir(path)? {
         let entry = entry?;
         let path = entry.path();
         let name = path
@@ -66,26 +64,15 @@ pub fn get_file_names(path: impl AsRef<Path>) -> MayFail<Vec<String>> {
     Ok(result)
 }
 
-/// Resolves the path to the current working directory, which should be the parent
-/// of this crate
-pub fn resolve_path(path: impl AsRef<Path>) -> MayFail<impl AsRef<Path>> {
-    let cwd = std::env::current_dir()?
-        .to_str()
-        .ok_or("Failed to get current cwd as string")?
-        .to_string();
-    Ok(Path::new(&cwd).join(path))
-}
-
 /// Provides a method to convert any type that implements trait [`Serialize`]
 /// to a json file, and save to the provided path as a pretty-printed json
 pub trait JsonWrite: Serialize {
     /// Saves a struct that implements [`Serialize`] into the provided file path
     /// as a pretty-printed json
     fn into_file(&self, path: impl AsRef<Path>) -> MayFail {
-        let resolved_path = resolve_path(path)?;
-        println!("[write] {:?}", resolved_path.as_ref());
+        println!("[write] {:?}", path.as_ref());
         let data = serde_json::to_string_pretty(self)?;
-        Ok(std::fs::write(resolved_path, data.as_bytes())?)
+        Ok(std::fs::write(path, data.as_bytes())?)
     }
 }
 
@@ -98,7 +85,7 @@ pub trait FileWrite: AsRef<[u8]> {
     /// Resolves the provided path and save the contents into the provided
     /// file path
     fn write_file(&self, path: impl AsRef<Path>) -> MayFail {
-        Ok(std::fs::write(resolve_path(path)?, self)?)
+        Ok(std::fs::write(path, self)?)
     }
 }
 
@@ -107,7 +94,7 @@ impl<T> FileWrite for T where T: AsRef<[u8]> {}
 /// Resolves the file path and returns a vector with the bytes found in the provided
 /// file path. Wrapper around the standard library [`std::fs::read`]
 pub fn read_file(path: impl AsRef<Path>) -> MayFail<Vec<u8>> {
-    Ok(std::fs::read(resolve_path(path)?)?)
+    Ok(std::fs::read(path)?)
 }
 
 #[track_caller]

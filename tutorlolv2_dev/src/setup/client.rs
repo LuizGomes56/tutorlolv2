@@ -35,7 +35,7 @@ pub enum SaveTo<'a> {
     ImgCentered(ChampionId, usize),
     ImgSplash(ChampionId, usize),
     ImgRunes(usize),
-    MerakiCache(Tag, &'a str),
+    MerakiCache(Tag, &'a (dyn Display + Send + Sync)),
     MerakiChampions,
     MerakiItems,
     MerakiDir(Tag),
@@ -46,7 +46,7 @@ pub enum SaveTo<'a> {
     RiotRunes,
     RiotLangDir(&'a str),
     RiotRawChampions(&'a str),
-    RiotCache(Tag, &'a str),
+    RiotCache(Tag, &'a (dyn Display + Send + Sync)),
     ScraperBuilds(Position, ChampionId),
     ScraperCombos(ChampionId),
     Internal(EntityId),
@@ -133,8 +133,8 @@ impl<'a> SaveTo<'a> {
             SaveTo::Internal(entity_id) => {
                 let (tag, dbg_trait) = match entity_id {
                     EntityId::Champion(champion_id) => (Tag::Champions, champion_id as &dyn Debug),
-                    EntityId::Item(item_id) => (Tag::Items, item_id as &dyn Debug),
-                    EntityId::Rune(rune_id) => (Tag::Runes, rune_id as &dyn Debug),
+                    EntityId::Item(item_id) => (Tag::Items, item_id as _),
+                    EntityId::Rune(rune_id) => (Tag::Runes, rune_id as _),
                 };
                 let file = format!("{dbg_trait:?}");
                 format!("internal/{tag}/{file}.json")
@@ -239,13 +239,13 @@ impl HttpClient {
                     }
                     Err(e) => {
                         println!("[error] {e}");
-                        Err(e.to_string().into())
+                        Err(e.into())
                     }
                 }
             }
             Err(e) => {
                 println!("[error] Unknown error on method Path::try_exists() for {save_to:?}: {e}");
-                Err(e.to_string().into())
+                Err(e.into())
             }
         }
     }

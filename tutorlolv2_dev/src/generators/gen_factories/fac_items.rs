@@ -94,6 +94,7 @@ impl ItemData {
         self.current_data.melee = data.current_data.melee;
         self.current_data.ranged = data.current_data.ranged;
         self.damage_type(data.current_data.damage_type);
+        self.attr(data.current_data.attributes);
         self.infer_stats_ifdef();
         Ok(())
     }
@@ -189,35 +190,11 @@ impl ItemData {
 pub struct ItemFactory;
 
 impl ItemFactory {
-    const VARIANTS: usize = item_gen_names().len();
-    pub const GENERATOR_DATA: [(&str, u32); Self::VARIANTS] = {
-        let names = item_gen_names();
-        let riot_ids = item_gen_riot_ids();
-
-        #[allow(invalid_value)]
-        let mut result: [(&str, u32); Self::VARIANTS] = unsafe { core::mem::zeroed() };
-
-        assert!(
-            names.len() == riot_ids.len(),
-            "Length of names and riot_ids arrays should be the same"
-        );
-
-        let mut i = 0;
-        while i < names.len() {
-            let name = names[i];
-            let riot_id = riot_ids[i];
-            result[i] = (name, riot_id);
-            i += 1;
-        }
-
-        result
-    };
-
     /// Runs all item generators, stopping the execution if one of them fails
     pub fn run_all() -> MayFail {
-        Self::GENERATOR_DATA
+        ItemId::VALUES
             .into_par_iter()
-            .try_for_each(|(name, riot_id)| Self::run(name, riot_id))
+            .try_for_each(|item_id| Self::run(item_id.debug(), item_id.to_riot_id()))
     }
 
     pub fn run(name: &str, riot_id: u32) -> MayFail {
@@ -230,7 +207,8 @@ impl ItemFactory {
     }
 
     pub fn clean() -> MayFail {
-        for (name, _) in Self::GENERATOR_DATA {
+        for item_id in ItemId::VALUES {
+            let name = item_id.debug();
             let generator_path = SaveTo::GeneratorRaw(Tag::Items, name).path();
             let path = SaveTo::InternalRaw(Tag::Items, name).path();
             let json = Value::from_file(&path)?;
@@ -240,7 +218,7 @@ impl ItemFactory {
                 && version != ENV_CONFIG.lol_version
             {
                 if let Ok(true) = std::fs::exists(&generator_path) {
-                    println!("ItemId::{name:?} is stable but no longer available");
+                    println!("ItemId::{name} is stable but no longer available");
                     continue;
                 }
             }
@@ -253,14 +231,26 @@ impl ItemFactory {
 
     /// Runs some item generator, taking its generated data and saving to an internal folder
     pub fn run_fn(name: &str, riot_id: u32) -> MayFail<ItemData> {
-        let riot_id = riot_id.to_string();
         let meraki_data =
             MerakiItem::from_file(SaveTo::MerakiCache(Tag::Items, &riot_id).path()).ok();
         let riot_data = RiotCdnItem::from_file(SaveTo::RiotCache(Tag::Items, &riot_id).path())?;
         let current_data = Item::from_file(SaveTo::InternalRaw(Tag::Items, name).path())?;
 
-        let function =
-            item_gen_fn(name).ok_or(format!("Unable to find generator function for {name}"))?;
-        function(ItemData::new(meraki_data, riot_data, current_data)).generate()
+        let mut args = ItemData::new(meraki_data, riot_data, current_data);
+
+        match item_gen_fn(name) {
+            Some(f) => f(args).generate(),
+            None => {
+                if args.has_map(GameMap::Arena) && name.contains("Arena") {
+                    args.try_yield(name)?;
+                }
+                args.infer_stats_ifdef();
+                Ok(args)
+            }
+        }
+        .map(|mut r| {
+            r.current_data.version = ENV_CONFIG.lol_version.clone();
+            r
+        })
     }
 }
