@@ -11,6 +11,7 @@ dotenvy = "0.15.7"
 serde_json = "1.0.149"
 bincode = "2.0.1"
 tutorlolv2 = { path = "." }
+tutorlolv2_cli = { path = "tutorlolv2_cli" }
 tutorlolv2_dev = { path = "tutorlolv2_dev" }
 tutorlolv2_build = { path = "tutorlolv2_build" }
 tutorlolv2_gen = { path = "tutorlolv2_gen" }

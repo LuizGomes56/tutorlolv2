@@ -142,6 +142,17 @@ impl FromStr for ChampionId {
     }
 }
 
+impl FromStr for ItemId {
+    type Err = &'static str;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        ITEM_CACHE
+            .iter()
+            .find_map(|i| (i.name == s).then_some(i.metadata.kind))
+            .ok_or("Failed to find matches when calling ItemId::from_str")
+    }
+}
+
 /// Contains the metadata of all items that have their stats compared to choose
 /// which one is best to buy considering the current game state. See [`TypeMetadata`]
 /// for more details

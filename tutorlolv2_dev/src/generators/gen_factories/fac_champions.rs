@@ -57,6 +57,7 @@ impl ChampionFactory {
 
         println!(
             concat!(
+                "ChampionFactory::progress\n",
                 "{stables:>3} / {total} stable\n",
                 "{preserve:>3} / {total} preserved\n",
                 "{unstables:>3} / {total} unstable\n",
@@ -309,7 +310,7 @@ impl ChampionData {
         key: Key,
         pattern: [(usize, usize, AbilityName); N],
     ) -> [(usize, usize, AbilityId); N] {
-        let mut offsets = [(0, 0, AbilityId::P(AbilityName::Void)); N];
+        let mut offsets: [(usize, usize, AbilityId); N] = unsafe { core::mem::zeroed() };
         let mut i = 0;
         while i < N {
             let offset = pattern[i];
@@ -492,13 +493,7 @@ impl ChampionData {
         for key in keys {
             let index = key.ability_name() as u8;
 
-            let make = match key {
-                AbilityId::P(_) => AbilityId::P,
-                AbilityId::Q(_) => AbilityId::Q,
-                AbilityId::W(_) => AbilityId::W,
-                AbilityId::E(_) => AbilityId::E,
-                AbilityId::R(_) => AbilityId::R,
-            };
+            let make = key.setter();
 
             if (AbilityName::JMP..=((AbilityName::JMP << 1) - 1)).contains(&index) {
                 let mut found = false;

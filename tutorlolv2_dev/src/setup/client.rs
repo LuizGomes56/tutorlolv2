@@ -89,7 +89,7 @@ impl<'a> SaveTo<'a> {
                 let (tag, name) = match entity_id {
                     EntityId::Champion(champion_id) => (Tag::Champions, format!("{champion_id:?}")),
                     EntityId::Item(item_id) => (Tag::Items, to_ssnake(&format!("{item_id:?}"))),
-                    EntityId::Rune(rune_id) => (Tag::Runes, to_ssnake(&format!("{rune_id:?}"))),
+                    _ => panic!("Rune generators are not supported"),
                 };
                 let file = name.to_lowercase();
                 let path = Self::GeneratorDir(tag).path();
@@ -97,7 +97,12 @@ impl<'a> SaveTo<'a> {
             }
             SaveTo::GeneratorRaw(tag, s) => {
                 let path = Self::GeneratorDir(*tag).path();
-                let file = s.to_lowercase();
+                let file = match tag {
+                    Tag::Items => to_ssnake(s),
+                    Tag::Champions => s.to_string(),
+                    _ => panic!("Rune generators are not supported"),
+                }
+                .to_lowercase();
                 format!("{path}/{file}.rs")
             }
             SaveTo::ImgChampion(s) => format!("{img}/champions/{s:?}.png"),
