@@ -433,15 +433,26 @@ fn build_champions(data: Vec<(String, ChampionResult)>) -> GeneratorFn {
 
     let mut champion_declarations = String::new();
 
-    let mut champion_id_enum = format!(
+    let champion_id_enum = format!(
         r#"impl ChampionId {{
             pub const VARIANTS: usize = {len};
+            pub const fn debug(&self) -> &'static str {{
+                match self {{{arms}}}
+            }}
         }}
         #[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
         #[derive(bincode::Encode, bincode::Decode)]
         #[derive(serde::Serialize, serde::Deserialize)]
         #[repr(u8)]
-        pub enum ChampionId {{"#,
+        pub enum ChampionId {{{variants}}}"#,
+        variants = data
+            .iter()
+            .map(|(name, _)| name.clone() + ",")
+            .collect::<String>(),
+        arms = data
+            .iter()
+            .map(|(name, _)| format!("Self::{name} => {name:?},"))
+            .collect::<String>()
     );
 
     let languages_map = CwdPath::deserialize::<BTreeMap<String, BTreeSet<String>>>(
@@ -490,7 +501,6 @@ fn build_champions(data: Vec<(String, ChampionResult)>) -> GeneratorFn {
             format!("ChampionId::{champion_id} => {{ match kind {{ {const_match_kind} }} }}");
 
         const_match_arms.push_str(&match_arm);
-        champion_id_enum.push_str(&format!("{champion_id},"));
         champion_cache.push_str(&format!("&{champion_id_upper},"));
 
         ability_ctx_idents.push_str(&format!("{ability_idents},"));
@@ -637,7 +647,6 @@ fn build_champions(data: Vec<(String, ChampionResult)>) -> GeneratorFn {
         arms = language_arms.join(",\n\t\t\t")
     );
 
-    push_end([&mut champion_id_enum], "}");
     push_end([&mut champion_cache, &mut ability_ctx_idents], "];");
 
     println!("[ok] Finished building champions");

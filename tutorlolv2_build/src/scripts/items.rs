@@ -538,7 +538,14 @@ fn build_items(data: Vec<(String, ItemResult)>) -> GeneratorFn {
             pub const fn from_riot_id(id: u32) -> Option<Self> {{
                 match id {{ {match_arms}, _ => None }}
             }}
-        }}"#
+            pub const fn debug(&self) -> &'static str {{
+                match self {{{arms}}}
+            }}
+        }}"#,
+        arms = item_id_enum_fields
+            .iter()
+            .map(|v| format!("ItemId::{v} => {v:?},"))
+            .collect::<String>()
     );
 
     let const_eval = format!(

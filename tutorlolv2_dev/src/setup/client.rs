@@ -87,8 +87,10 @@ impl<'a> SaveTo<'a> {
             SaveTo::GeneratorDir(tag) => format!("tutorlolv2_dev/src/generators/gen_{tag}"),
             SaveTo::Generator(entity_id) => {
                 let (tag, name) = match entity_id {
-                    EntityId::Champion(champion_id) => (Tag::Champions, format!("{champion_id:?}")),
-                    EntityId::Item(item_id) => (Tag::Items, to_ssnake(&format!("{item_id:?}"))),
+                    EntityId::Champion(champion_id) => {
+                        (Tag::Champions, champion_id.debug().to_string())
+                    }
+                    EntityId::Item(item_id) => (Tag::Items, to_ssnake(&item_id.debug())),
                     _ => panic!("Rune generators are not supported"),
                 };
                 let file = name.to_lowercase();
@@ -299,7 +301,10 @@ impl HttpClient {
             async move |client, fname, champion: RiotCdnChampion| {
                 let name = fname.as_str();
                 let champion_id = ChampionId::try_from(name)
-                    .or(serde_json::from_str(&format!("{name:?}")))
+                    .or_else(
+                        #[cold]
+                        |_| serde_json::from_str(&format!("{name:?}")),
+                    )
                     .map_err(|e| {
                         format!("Failed to convert {name} to ChampionId enum, error: {e:?}")
                     })?;
@@ -745,7 +750,7 @@ impl HttpClient {
                 let client = self.clone();
 
                 futures_vec.push(tokio::spawn(async move {
-                    let name = format!("{champion_id:?}").to_lowercase();
+                    let name = champion_id.debug().to_lowercase();
 
                     let cache_path = SaveTo::ScraperBuilds(position, champion_id).path();
                     let internal_path = SaveTo::InternalScraperBuilds(position, champion_id).path();

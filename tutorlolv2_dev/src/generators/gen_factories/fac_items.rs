@@ -90,7 +90,7 @@ impl ItemData {
     }
 
     pub fn yield_to(&mut self, item_id: ItemId) -> MayFail {
-        let data = ItemFactory::run_fn(&format!("{item_id:?}"), item_id.to_riot_id())?;
+        let data = ItemFactory::run_fn(item_id.debug(), item_id.to_riot_id())?;
         self.current_data.melee = data.current_data.melee;
         self.current_data.ranged = data.current_data.ranged;
         self.damage_type(data.current_data.damage_type);

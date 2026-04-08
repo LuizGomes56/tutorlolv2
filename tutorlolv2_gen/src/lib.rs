@@ -13,7 +13,7 @@ use crate::data::{
 };
 use core::{
     any::{Any, TypeId},
-    fmt::Debug,
+    fmt::{Debug, Display},
     mem::MaybeUninit,
     ops::{Index, Range},
     str::FromStr,
@@ -761,6 +761,12 @@ macro_rules! impl_methods {
                     }
                 }
 
+                impl Display for $stru {
+                    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+                        write!(f, "{}", self.name())
+                    }
+                }
+
                 impl_methods!(inner $stru, u8, u16, u32, u64, u128, usize, i8, i16, i32, i64, i128, isize);
 
                 impl $stru {
@@ -828,6 +834,10 @@ macro_rules! impl_methods {
 
                     fn name(&self) -> &'static str {
                         self.name()
+                    }
+
+                    fn debug(&self) -> &'static str {
+                        self.debug()
                     }
 
                     fn index(&self) -> usize {
@@ -907,6 +917,7 @@ where
     fn entity(&self) -> EntityId;
     fn name(&self) -> &'static str;
     fn index(&self) -> usize;
+    fn debug(&self) -> &'static str;
     fn formula(&self) -> &'static Range<usize> {
         &Self::FORMULAS[self.index()]
     }

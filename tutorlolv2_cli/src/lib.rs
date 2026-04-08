@@ -83,14 +83,14 @@ pub fn run() -> MayFail {
 
     match args {
         GenArgs::Create { champ } => {
-            ChampionFactory::create(&format!("{champ:?}"))?;
+            ChampionFactory::create(champ.debug())?;
         }
         GenArgs::Run { target } => match target {
             RunTarget::Champion(champ) => {
-                ChampionFactory::run(&format!("{champ:?}"))?;
+                ChampionFactory::run(champ.debug())?;
             }
             RunTarget::Item(item) => {
-                ItemFactory::run(&format!("{item:?}"), item.to_riot_id())?;
+                ItemFactory::run(item.debug(), item.to_riot_id())?;
             }
             RunTarget::Factory(f) => f()?,
         },
