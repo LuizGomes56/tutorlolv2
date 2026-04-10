@@ -87,18 +87,52 @@
     ],
     [
       {
-        "W": "_1"
+        "Q": "_2"
       },
       {
-        "name": "Wall of Pain",
-        "damage_type": "Unknown",
+        "name": "Lay Waste",
+        "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "800",
-          "900",
-          "1000",
-          "1100",
-          "1200"
+          "40 + (0.35 * ctx.ability_power)",
+          "59 + (0.35 * ctx.ability_power)",
+          "78 + (0.35 * ctx.ability_power)",
+          "97 + (0.35 * ctx.ability_power)",
+          "116 + (0.35 * ctx.ability_power)"
+        ]
+      }
+    ],
+    [
+      {
+        "E": "_1"
+      },
+      {
+        "name": "Defile",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "30 + (0.2 * ctx.ability_power)",
+          "50 + (0.2 * ctx.ability_power)",
+          "70 + (0.2 * ctx.ability_power)",
+          "90 + (0.2 * ctx.ability_power)",
+          "110 + (0.2 * ctx.ability_power)"
+        ]
+      }
+    ],
+    [
+      {
+        "E": "_2"
+      },
+      {
+        "name": "Defile",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "7.5 + (0.05 * ctx.ability_power)",
+          "12.5 + (0.05 * ctx.ability_power)",
+          "17.5 + (0.05 * ctx.ability_power)",
+          "22.5 + (0.05 * ctx.ability_power)",
+          "27.5 + (0.05 * ctx.ability_power)"
         ]
       }
     ],

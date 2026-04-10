@@ -1,15 +1,16 @@
+use std::str::FromStr;
+
 use crate::{
     ENV_CONFIG, JsonRead, JsonWrite, MayFail,
     client::{SaveTo, Tag},
     gen_utils::RegExtractor,
-    generators::{Generator, gen_decl::decl_items::*},
+    generators::gen_items::*,
     items::{Effect, Item, ItemStats, MerakiItem},
     riot::RiotCdnItem,
 };
 use rayon::iter::{IntoParallelIterator, ParallelIterator};
 use serde_json::Value;
-use tutorlolv2_fmt::to_ssnake;
-use tutorlolv2_gen::{Attrs, DamageType, ItemId, StatName};
+use tutorlolv2_gen::{Attrs, DamageType, GameMap, ItemId, StatName};
 
 pub struct ItemData {
     pub meraki_data: Option<MerakiItem>,
@@ -77,11 +78,23 @@ impl ItemData {
         }
     }
 
+    pub fn try_yield(&mut self, name: &str) -> MayFail {
+        println!("[try] Attempting to yield generator of ItemId::{name}");
+        let base = name.trim_end_matches("Arena");
+        let Ok(item_id) = ItemId::from_str(base) else {
+            println!("[warn] Failed to yield generator of ItemId::{name}");
+            return Ok(());
+        };
+        println!("[ok] Yielding generator of ItemId::{name} to ItemId::{item_id:?}");
+        self.yield_to(item_id)
+    }
+
     pub fn yield_to(&mut self, item_id: ItemId) -> MayFail {
-        let data = ItemFactory::run(item_id)?;
+        let data = ItemFactory::run_fn(item_id.debug(), item_id.to_riot_id())?;
         self.current_data.melee = data.current_data.melee;
         self.current_data.ranged = data.current_data.ranged;
         self.damage_type(data.current_data.damage_type);
+        self.attr(data.current_data.attributes);
         self.infer_stats_ifdef();
         Ok(())
     }
@@ -104,6 +117,14 @@ impl ItemData {
             ))?
             .effects
             .get_damage())
+    }
+
+    pub fn has_map(&self, game_map: GameMap) -> bool {
+        self.current_data
+            .maps
+            .iter()
+            .find_map(|(map, v)| (*map == game_map).then_some(*v))
+            .unwrap_or(false)
     }
 
     /// Returns the damage of the `passive` effect in the field `passives`
@@ -169,39 +190,35 @@ impl ItemData {
 pub struct ItemFactory;
 
 impl ItemFactory {
-    pub const GENERATOR_FOLDER: &str = "tutorlolv2_dev/src/generators/gen_items";
-    pub const GENERATOR_FUNCTIONS: [fn(ItemData) -> Box<dyn Generator<ItemData>>;
-        ItemId::VARIANTS] = tutorlolv2_macros::expand_dir!("../internal/items", |[Name]| Name::new);
-
     /// Runs all item generators, stopping the execution if one of them fails
     pub fn run_all() -> MayFail {
         ItemId::VALUES
             .into_par_iter()
-            .for_each(|item_id| match Self::run(item_id) {
-                Ok(data) => data
-                    .current_data
-                    .into_file(SaveTo::Internal(Tag::Items, &format!("{item_id:?}")).path())
-                    .unwrap(),
-                Err(e) => panic!("Unable to run generator for {item_id:?}, Error: {e}"),
-            });
-        Ok(())
+            .try_for_each(|item_id| Self::run(item_id.debug(), item_id.to_riot_id()))
+    }
+
+    pub fn run(name: &str, riot_id: u32) -> MayFail {
+        match Self::run_fn(name, riot_id) {
+            Ok(data) => data
+                .current_data
+                .into_file(SaveTo::InternalRaw(Tag::Items, name).path()),
+            Err(e) => panic!("Unable to run generator for {name:?}, Error: {e}"),
+        }
     }
 
     pub fn clean() -> MayFail {
         for item_id in ItemId::VALUES {
-            let fname = format!("{item_id:?}");
-            let generator_path = Self::generator_path(&fname);
-            let path = SaveTo::Internal(Tag::Items, &fname).path();
+            let name = item_id.debug();
+            let generator_path = SaveTo::GeneratorRaw(Tag::Items, name).path();
+            let path = SaveTo::InternalRaw(Tag::Items, name).path();
             let json = Value::from_file(&path)?;
 
             if let Some(version) = json.get("version")
                 && let Some(version) = version.as_str()
                 && version != ENV_CONFIG.lol_version
             {
-                if let Ok(data) = Self::read_gen(&fname)
-                    && Self::is_stable(&data)
-                {
-                    println!("ItemId::{item_id:?} is stable but no longer available");
+                if let Ok(true) = std::fs::exists(&generator_path) {
+                    println!("ItemId::{name} is stable but no longer available");
                     continue;
                 }
             }
@@ -213,28 +230,27 @@ impl ItemFactory {
     }
 
     /// Runs some item generator, taking its generated data and saving to an internal folder
-    pub fn run(item_id: ItemId) -> MayFail<ItemData> {
-        let riot_id = &item_id.to_riot_id().to_string();
+    pub fn run_fn(name: &str, riot_id: u32) -> MayFail<ItemData> {
         let meraki_data =
-            MerakiItem::from_file(SaveTo::MerakiCache(Tag::Items, riot_id).path()).ok();
-        let riot_data = RiotCdnItem::from_file(SaveTo::RiotCache(Tag::Items, riot_id).path())?;
-        let current_data =
-            Item::from_file(SaveTo::Internal(Tag::Items, &format!("{item_id:?}")).path())?;
+            MerakiItem::from_file(SaveTo::MerakiCache(Tag::Items, &riot_id).path()).ok();
+        let riot_data = RiotCdnItem::from_file(SaveTo::RiotCache(Tag::Items, &riot_id).path())?;
+        let current_data = Item::from_file(SaveTo::InternalRaw(Tag::Items, name).path())?;
 
-        let function = Self::GENERATOR_FUNCTIONS[item_id as usize];
-        let generator = function(ItemData::new(meraki_data, riot_data, current_data));
-        Ok(generator.generate()?)
-    }
+        let mut args = ItemData::new(meraki_data, riot_data, current_data);
 
-    pub fn is_stable(data: &str) -> bool {
-        data.contains("#![stable]") || data.contains("#![preserve]")
-    }
-
-    pub fn generator_path(entity_id: &str) -> String {
-        SaveTo::Generator(Tag::Items, &to_ssnake(entity_id).to_lowercase()).path()
-    }
-
-    pub fn read_gen(entity_id: &str) -> std::io::Result<String> {
-        std::fs::read_to_string(Self::generator_path(entity_id))
+        match item_gen_fn(name) {
+            Some(f) => f(args).generate(),
+            None => {
+                if args.has_map(GameMap::Arena) && name.contains("Arena") {
+                    args.try_yield(name)?;
+                }
+                args.infer_stats_ifdef();
+                Ok(args)
+            }
+        }
+        .map(|mut r| {
+            r.current_data.version = ENV_CONFIG.lol_version.clone();
+            r
+        })
     }
 }

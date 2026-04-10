@@ -1,9 +1,17 @@
+use serde::{Deserialize, Serialize};
+
 pub mod gen_champions;
-pub mod gen_decl;
 pub mod gen_factories;
 pub mod gen_items;
-pub mod gen_runes;
 pub mod gen_utils;
+
+#[derive(Clone, Copy, Debug, Default, Deserialize, Serialize)]
+pub enum Progress {
+    Preserve,
+    Stable,
+    #[default]
+    Unstable,
+}
 
 /// Base generator trait, that returns a type that will be serialized into a
 /// JSON file to be read by the `tutorlolv2_build` script and generate Rust code,

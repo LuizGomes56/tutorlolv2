@@ -70,7 +70,37 @@
   "abilities": [
     [
       {
-        "Q": "_1"
+        "P": "Void"
+      },
+      {
+        "name": "Icathian Surprise",
+        "damage_type": "True",
+        "attributes": "Area",
+        "damage": [
+          "140",
+          "170",
+          "200",
+          "230",
+          "260",
+          "290",
+          "320",
+          "350",
+          "380",
+          "410",
+          "440",
+          "470",
+          "500",
+          "530",
+          "560",
+          "590",
+          "620",
+          "650"
+        ]
+      }
+    ],
+    [
+      {
+        "Q": "Void"
       },
       {
         "name": "Caustic Spittle",
@@ -87,12 +117,61 @@
     ],
     [
       {
-        "R": "_1"
+        "W": "Void"
+      },
+      {
+        "name": "Bio-Arcane Barrage",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "(0.03 * ctx.enemy_max_health) + (0.015 * 0.01 * ctx.ability_power)",
+          "(0.0375 * ctx.enemy_max_health) + (0.015 * 0.01 * ctx.ability_power)",
+          "(0.045 * ctx.enemy_max_health) + (0.015 * 0.01 * ctx.ability_power)",
+          "(0.0525 * ctx.enemy_max_health) + (0.015 * 0.01 * ctx.ability_power)",
+          "(0.06 * ctx.enemy_max_health) + (0.015 * 0.01 * ctx.ability_power)"
+        ]
+      }
+    ],
+    [
+      {
+        "E": "Void"
+      },
+      {
+        "name": "Void Ooze",
+        "damage_type": "Magic",
+        "attributes": "Area",
+        "damage": [
+          "70 + (0.65 * ctx.ability_power)",
+          "110 + (0.65 * ctx.ability_power)",
+          "150 + (0.65 * ctx.ability_power)",
+          "190 + (0.65 * ctx.ability_power)",
+          "230 + (0.65 * ctx.ability_power)"
+        ]
+      }
+    ],
+    [
+      {
+        "R": "Min"
       },
       {
         "name": "Living Artillery",
         "damage_type": "Magic",
-        "attributes": "Undefined",
+        "attributes": "Area",
+        "damage": [
+          "100 + (0.75 * ctx.bonus_ad) + (0.35 * ctx.ability_power)",
+          "140 + (0.75 * ctx.bonus_ad) + (0.4 * ctx.ability_power)",
+          "180 + (0.75 * ctx.bonus_ad) + (0.45 * ctx.ability_power)"
+        ]
+      }
+    ],
+    [
+      {
+        "R": "Max"
+      },
+      {
+        "name": "Living Artillery",
+        "damage_type": "Magic",
+        "attributes": "Area",
         "damage": [
           "200 + (1.5 * ctx.bonus_ad) + (0.7 * ctx.ability_power)",
           "280 + (1.5 * ctx.bonus_ad) + (0.8 * ctx.ability_power)",
@@ -101,6 +180,54 @@
       }
     ]
   ],
-  "merge_data": [],
-  "combo": []
+  "merge_data": [
+    {
+      "minimum_damage": {
+        "R": "Min"
+      },
+      "maximum_damage": {
+        "R": "Max"
+      },
+      "alias": {
+        "R": "Void"
+      }
+    }
+  ],
+  "combo": [
+    [
+      {
+        "Ability": {
+          "E": "Void"
+        }
+      },
+      "Attack",
+      {
+        "Ability": {
+          "W": "Void"
+        }
+      },
+      {
+        "Ability": {
+          "Q": "Void"
+        }
+      },
+      "Attack",
+      {
+        "Ability": {
+          "W": "Void"
+        }
+      },
+      {
+        "Ability": {
+          "R": "Min"
+        }
+      },
+      "Attack",
+      {
+        "Ability": {
+          "W": "Void"
+        }
+      }
+    ]
+  ]
 }

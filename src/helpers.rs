@@ -52,7 +52,7 @@ pub use bonus_stats;
 pub const fn has_item<const N: usize>(origin: &ItemsBitSet, check_for: [ItemId; N]) -> bool {
     let mut i = 0;
     while i < N {
-        if origin.contains(check_for[i] as usize) {
+        if origin.contains_const(check_for[i] as _) {
             return true;
         }
         i += 1;
@@ -197,12 +197,12 @@ pub const fn get_simulated_stats(stats: &Stats<f32>, dragons: Dragons) -> [Stats
 /// Since the number of runes is unknown at compile time, those values are dynamically
 /// allocated. This function does not evaluate any closures
 pub fn get_runes_data(runes: &RunesBitSet, attack_type: AttackType) -> DamageKind<RuneId> {
-    let count = runes.count() as usize;
+    let count = runes.count_const() as usize;
     let mut metadata = Box::new_uninit_slice(count);
     let mut closures = Box::new_uninit_slice(count);
     unsafe {
-        for (i, rune_offset) in runes.into_iter().enumerate() {
-            let rune = RUNE_CACHE.get_unchecked(rune_offset);
+        for (i, rune_offset) in runes.iter_const().enumerate() {
+            let rune = RUNE_CACHE.get_unchecked(rune_offset as usize);
             metadata.get_unchecked_mut(i).write(rune.metadata);
             closures.get_unchecked_mut(i).write(match attack_type {
                 AttackType::Ranged => rune.ranged_damage,
@@ -224,14 +224,14 @@ pub fn get_runes_data(runes: &RunesBitSet, attack_type: AttackType) -> DamageKin
 /// assert!(metadata.len() == closures.len() / 2)
 /// ```
 pub fn get_items_data(items: &ItemsBitSet, attack_type: AttackType) -> DamageKind<ItemId> {
-    let count = items.count() as usize;
+    let count = items.count_const() as usize;
 
     let mut metadata = Box::new_uninit_slice(count);
     let mut closures = Box::new_uninit_slice(count << 1);
 
     unsafe {
-        for (i, item_offset) in items.into_iter().enumerate() {
-            let item = ITEM_CACHE.get_unchecked(item_offset);
+        for (i, item_offset) in items.iter_const().enumerate() {
+            let item = ITEM_CACHE.get_unchecked(item_offset as usize);
             let slice = match attack_type {
                 AttackType::Ranged => item.ranged_damages,
                 AttackType::Melee => item.melee_damages,
@@ -256,9 +256,9 @@ pub const fn get_damaging_runes(input: &[RuneId]) -> RunesBitSet {
     let mut out = RunesBitSet::EMPTY;
     let mut i = 0;
     while i < input.len() {
-        let rune = input[i] as usize;
-        if DAMAGING_RUNES.contains(rune) {
-            out.insert(rune);
+        let rune = input[i] as _;
+        if DAMAGING_RUNES.contains_const(rune) {
+            out.insert_const(rune);
         }
         i += 1;
     }
@@ -271,9 +271,9 @@ pub const fn get_damaging_items(input: &[ItemId]) -> ItemsBitSet {
     let mut out = ItemsBitSet::EMPTY;
     let mut i = 0;
     while i < input.len() {
-        let item = input[i] as usize;
-        if DAMAGING_ITEMS.contains(item) {
-            out.insert(item);
+        let item = input[i] as _;
+        if DAMAGING_ITEMS.contains_const(item) {
+            out.insert_const(item);
         }
         i += 1;
     }
@@ -457,7 +457,7 @@ pub const fn get_enemy_state(
     let mut origin = ItemsBitSet::EMPTY;
     let mut i = 0;
     while i < items.len() {
-        origin.insert(items[i] as usize);
+        origin.insert_const(items[i] as _);
         i += 1;
     }
 

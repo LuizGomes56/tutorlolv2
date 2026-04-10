@@ -1,14 +1,16 @@
-use crate::{champions::champions_html, html::Html, items::items_html, runes::runes_html};
+use crate::{champions::champions_html, items::items_html, runes::runes_html};
 use rayon::iter::{IntoParallelIterator, ParallelIterator};
 use std::path::Path;
 use tutorlolv2_gen::CastId;
 
-pub mod champions;
-pub mod html;
-pub mod items;
-pub mod runes;
+mod champions;
+mod html;
+mod items;
+mod runes;
 
-pub fn parallel_task<F, T>(f: F)
+pub use html::Html;
+
+pub(crate) fn parallel_task<F, T>(f: F)
 where
     F: Fn(T) -> Html + Sync,
     T: CastId + Sync,

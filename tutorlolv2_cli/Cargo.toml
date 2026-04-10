@@ -1,0 +1,11 @@
+[package]
+name = "tutorlolv2_cli"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+clap = { version = "4.6.0", features = ["derive"] }
+tutorlolv2_gen = { path = "../tutorlolv2_gen" }
+tutorlolv2_dev = { path = "../tutorlolv2_dev" }
+dotenvy = "0.15.7"
+tutorlolv2_html = { version = "0.1.0", path = "../tutorlolv2_html" }

@@ -7,10 +7,13 @@ pub mod data;
 pub mod enums;
 pub mod eval;
 
-use crate::data::{champions::CHAMPION_GENERATOR, items::ITEM_GENERATOR};
+use crate::data::{
+    champions::CHAMPION_GENERATOR,
+    items::{ITEM_GENERATOR, ITEM_NAME_TO_ID},
+};
 use core::{
     any::{Any, TypeId},
-    fmt::Debug,
+    fmt::{Debug, Display},
     mem::MaybeUninit,
     ops::{Index, Range},
     str::FromStr,
@@ -139,6 +142,17 @@ impl FromStr for ChampionId {
             .get(s)
             .copied()
             .ok_or("No matches when calling ChampionId::from_str")
+    }
+}
+
+impl FromStr for ItemId {
+    type Err = &'static str;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        ITEM_NAME_TO_ID
+            .get(s)
+            .copied()
+            .ok_or("No matches when calling ItemId::from_str")
     }
 }
 
@@ -747,6 +761,12 @@ macro_rules! impl_methods {
                     }
                 }
 
+                impl Display for $stru {
+                    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+                        write!(f, "{}", self.name())
+                    }
+                }
+
                 impl_methods!(inner $stru, u8, u16, u32, u64, u128, usize, i8, i16, i32, i64, i128, isize);
 
                 impl $stru {
@@ -814,6 +834,10 @@ macro_rules! impl_methods {
 
                     fn name(&self) -> &'static str {
                         self.name()
+                    }
+
+                    fn debug(&self) -> &'static str {
+                        self.debug()
                     }
 
                     fn index(&self) -> usize {
@@ -893,6 +917,7 @@ where
     fn entity(&self) -> EntityId;
     fn name(&self) -> &'static str;
     fn index(&self) -> usize;
+    fn debug(&self) -> &'static str;
     fn formula(&self) -> &'static Range<usize> {
         &Self::FORMULAS[self.index()]
     }

@@ -87,6 +87,91 @@
     ],
     [
       {
+        "Q": "_2"
+      },
+      {
+        "name": "Infected Bonesaw",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "300",
+          "375",
+          "450",
+          "525",
+          "600"
+        ]
+      }
+    ],
+    [
+      {
+        "Q": "_3"
+      },
+      {
+        "name": "Infected Bonesaw",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "80",
+          "130",
+          "180",
+          "230",
+          "280"
+        ]
+      }
+    ],
+    [
+      {
+        "W": "_1"
+      },
+      {
+        "name": "Heart Zapper",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "5",
+          "8.75",
+          "12.5",
+          "16.25",
+          "20"
+        ]
+      }
+    ],
+    [
+      {
+        "W": "_2"
+      },
+      {
+        "name": "Heart Zapper",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "80",
+          "140",
+          "200",
+          "260",
+          "320"
+        ]
+      }
+    ],
+    [
+      {
+        "W": "_3"
+      },
+      {
+        "name": "Heart Zapper",
+        "damage_type": "Magic",
+        "attributes": "Undefined",
+        "damage": [
+          "20 + (0.07 * ctx.bonus_health)",
+          "35 + (0.07 * ctx.bonus_health)",
+          "50 + (0.07 * ctx.bonus_health)",
+          "65 + (0.07 * ctx.bonus_health)",
+          "80 + (0.07 * ctx.bonus_health)"
+        ]
+      }
+    ],
+    [
+      {
         "E": "_1"
       },
       {
@@ -104,31 +189,103 @@
     ],
     [
       {
-        "R": "_1"
+        "E": "_2"
       },
       {
-        "name": "Maximum Dosage",
-        "damage_type": "Unknown",
+        "name": "Blunt Force Trauma",
+        "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "(0.1 * ctx.max_health)",
-          "(0.2 * ctx.max_health)",
-          "(0.3 * ctx.max_health)"
+          "5 + (0.05 * ctx.bonus_health)",
+          "15 + (0.05 * ctx.bonus_health)",
+          "25 + (0.05 * ctx.bonus_health)",
+          "35 + (0.05 * ctx.bonus_health)",
+          "45 + (0.05 * ctx.bonus_health)"
         ]
       }
     ],
     [
       {
-        "R": "_2"
+        "E": "_3"
       },
       {
-        "name": "Maximum Dosage",
-        "damage_type": "Unknown",
+        "name": "Blunt Force Trauma",
+        "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "0.15",
-          "0.25",
-          "0.35"
+          "9.8 + (0.098 * ctx.bonus_health)",
+          "29.4 + (0.098 * ctx.bonus_health)",
+          "49 + (0.098 * ctx.bonus_health)",
+          "68.6 + (0.098 * ctx.bonus_health)",
+          "88.2 + (0.098 * ctx.bonus_health)"
+        ]
+      }
+    ],
+    [
+      {
+        "E": "_4"
+      },
+      {
+        "name": "Blunt Force Trauma",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "14 + (0.14 * ctx.bonus_health)",
+          "42 + (0.14 * ctx.bonus_health)",
+          "70 + (0.14 * ctx.bonus_health)",
+          "98 + (0.14 * ctx.bonus_health)",
+          "126 + (0.14 * ctx.bonus_health)"
+        ]
+      }
+    ],
+    [
+      {
+        "E": "_5"
+      },
+      {
+        "name": "Blunt Force Trauma",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "7 + (0.07 * ctx.bonus_health)",
+          "21 + (0.07 * ctx.bonus_health)",
+          "35 + (0.07 * ctx.bonus_health)",
+          "49 + (0.07 * ctx.bonus_health)",
+          "63 + (0.07 * ctx.bonus_health)"
+        ]
+      }
+    ],
+    [
+      {
+        "E": "_6"
+      },
+      {
+        "name": "Blunt Force Trauma",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "10 + (0.1 * ctx.bonus_health)",
+          "30 + (0.1 * ctx.bonus_health)",
+          "50 + (0.1 * ctx.bonus_health)",
+          "70 + (0.1 * ctx.bonus_health)",
+          "90 + (0.1 * ctx.bonus_health)"
+        ]
+      }
+    ],
+    [
+      {
+        "E": "_7"
+      },
+      {
+        "name": "Blunt Force Trauma",
+        "damage_type": "Physical",
+        "attributes": "Undefined",
+        "damage": [
+          "(0.02 * ctx.max_health)",
+          "(0.023 * ctx.max_health)",
+          "(0.026000000000000002 * ctx.max_health)",
+          "(0.028999999999999998 * ctx.max_health)",
+          "(0.032 * ctx.max_health)"
         ]
       }
     ]

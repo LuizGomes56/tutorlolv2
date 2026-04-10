@@ -4,8 +4,7 @@ use tutorlolv2::{
     runes::RUNE_CLOSURES,
 };
 use tutorlolv2_gen::{CastId, RAW_BLOCK};
-
-const CSS: &str = r###"body{background-color:#1F1F1F;}.punctuation {color: #D4D4D4;}.control {color: #C586C0;}.lifetime, .keyword, .macro, .boolean {color: #569CD6;}.primitive, .type {color: #4EC8B0;}.comment {color: #959596;}.function {color: #DCDCAA;}.number, .float {color: #B3CDA8;}.constant, .intrinsic {color: #4FC1FF;}.bracket_1 {color: #FFD700;}.bracket_2 {color: #DA70D6;}.bracket_3 {color: #189FFF;}.string {white-space: break-spaces;color: #CE9178;}.variable {color: #9CDCFE;}code, pre {color: #D4D4D4;line-height: 1.5;background: transparent;font-family: Consolas, Monaco, 'AndaleMono', 'UbuntuMono', monospace;}"###;
+use tutorlolv2_html::Html;
 
 #[test]
 fn render() {
@@ -66,9 +65,11 @@ fn render() {
     ]
     .concat();
 
+    let css = Html::CSS;
+
     std::fs::write(
         "temp.html",
-        format!("<html><head><style>{CSS}</style></head><body>{data}</body></html>"),
+        format!("<html><head><style>{css}</style></head><body>{data}</body></html>"),
     )
     .unwrap();
 }

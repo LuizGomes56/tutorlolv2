@@ -1,23 +1,20 @@
 use crate::{
-    JsonRead, JsonWrite, MayFail,
+    ENV_CONFIG, JsonRead, JsonWrite, MayFail, Progress,
     champions::{Ability, Champion, MerakiAbility, MerakiChampion, Modifiers},
     client::{SaveTo, Tag},
     generators::{
-        Generator,
-        gen_decl::decl_champions::*,
+        gen_champions::*,
         gen_utils::{F64Ext, RegExtractor},
     },
 };
-use once_cell::sync::Lazy;
 use rayon::iter::{IntoParallelIterator, ParallelIterator};
-use regex::Regex;
 use std::{
     collections::{BTreeMap, BTreeSet, HashMap},
     str::FromStr,
 };
 use tutorlolv2_fmt::rustfmt;
 use tutorlolv2_gen::{
-    AbilityId, AbilityName, AdaptiveType, AttackType, Attrs, ChampionId, ComboElement, DamageType,
+    AbilityId, AbilityName, AdaptiveType, AttackType, Attrs, ComboElement, DamageType,
     DevMergeData, Key, Position,
 };
 
@@ -26,6 +23,8 @@ pub struct ChampionData {
     pub map: BTreeMap<AbilityId, Ability>,
     pub mergevec: BTreeSet<DevMergeData>,
     pub combo: Vec<Vec<ComboElement>>,
+    progress: Progress,
+    version: String,
 }
 
 /// Struct that creates and runs files that implement the trait [`Generator`].
@@ -35,31 +34,49 @@ pub struct ChampionData {
 /// final json file containing only the useful information we could extract from it
 pub struct ChampionFactory;
 
-static RE_MACRO: Lazy<Regex> =
-    Lazy::new(|| Regex::new(r"(?s)ability(\s*\[\s*([A-Za-z])\s*,(.*?)\])").expect("MACRO_RE"));
-
-static RE_TUPLE: Lazy<Regex> =
-    Lazy::new(|| Regex::new(r"\(\s*(\d+)\s*,\s*(\d+)\s*,").expect("TUPLE_RE"));
-
 impl ChampionFactory {
-    /// Array containing all the `::new` functions of every champion generator struct
-    pub const GENERATOR_FUNCTIONS: [fn(MerakiChampion) -> Box<dyn Generator<Champion>>;
-        ChampionId::VARIANTS] =
-        tutorlolv2_macros::expand_dir!("../internal/champions", |[Name]| Name::new);
+    pub const GENERATOR_NAMES: &[&str] = champion_gen_names();
 
-    /// Creates a new generator file, given a [`ChampionId`]
-    pub fn create(champion_id: ChampionId) -> MayFail<String> {
-        Self::create_from_raw(&format!("{champion_id:?}"))
+    pub fn progress() {
+        let mut stables = 0;
+        let mut preserve = 0;
+        let mut unstables = 0;
+        let mut total = 0;
+        for name in Self::GENERATOR_NAMES {
+            if let Ok(data) =
+                std::fs::read_to_string(SaveTo::GeneratorRaw(Tag::Champions, name).path())
+            {
+                if data.contains("Stable") {
+                    stables += 1;
+                } else if data.contains("Preserve") {
+                    preserve += 1;
+                } else {
+                    unstables += 1;
+                }
+                total += 1;
+            }
+        }
+
+        println!(
+            concat!(
+                "ChampionFactory::progress\n",
+                "{stables:>3} / {total} stable\n",
+                "{preserve:>3} / {total} preserved\n",
+                "{unstables:>3} / {total} unstable\n",
+            ),
+            stables = stables,
+            preserve = preserve,
+            unstables = unstables,
+            total = total
+        );
     }
 
-    /// Creates a new generator file in the [`GENERATOR_FOLDER`] directory. The
-    /// cache file is read to generate the new file with fairly accurate offsets
-    /// and good function bindings
-    pub fn create_from_raw(entity_id: &str) -> MayFail<String> {
-        if let Ok(data) = std::fs::read_to_string(
-            SaveTo::Generator(Tag::Champions, &entity_id.to_lowercase()).path(),
-        ) && (data.contains("#![stable]") || data.contains("#![preserve]"))
+    /// Creates a new generator file, given a [`ChampionId`]
+    pub fn create(name: &str) -> MayFail<String> {
+        if let Ok(data) = std::fs::read_to_string(SaveTo::GeneratorRaw(Tag::Champions, name).path())
+            && (data.contains("self.progress(Stable)") || data.contains("self.progress(Preserve)"))
         {
+            println!("[stable] Skipping generator for {name:?}");
             return Ok(data);
         }
 
@@ -67,12 +84,13 @@ impl ChampionFactory {
             let offsets = meraki_offsets
                 .into_iter()
                 .map(|meraki_offset| {
-                    format!(
-                        "({effect_index}, {leveling_index}, {enum_binding:?})",
-                        effect_index = meraki_offset.effect,
-                        leveling_index = meraki_offset.leveling,
-                        enum_binding = meraki_offset.binding
-                    )
+                    let MerakiOffset {
+                        effect,
+                        leveling,
+                        binding,
+                    } = meraki_offset;
+
+                    format!("({effect}, {leveling}, {binding:?})")
                 })
                 .collect::<Vec<String>>();
             format!(
@@ -84,14 +102,14 @@ impl ChampionFactory {
         let mut generated_content = format!(
             "use super::*;
 
-            impl Generator<Champion> for {entity_id} {{
+            impl Generator<Champion> for {name} {{
                 fn generate(mut self: Box<Self>) -> MayFail<Champion> {{"
         );
 
-        let meraki_champion = MerakiChampion::from_file(format!(
-            "cache/meraki/champions/{entity_id}.json"
-        ))
-        .map_err(|e| format!("Error calling MerakiChampion::from_file for {entity_id:?}: {e:?}"))?;
+        let meraki_champion = MerakiChampion::from_file(
+            SaveTo::MerakiCache(Tag::Champions, &name).path(),
+        )
+        .map_err(|e| format!("Error calling MerakiChampion::from_file for {name:?}: {e:?}"))?;
         for (ability_char, ability_vec) in meraki_champion.abilities.into_iter() {
             let meraki_offsets = ChampionData::get_ability_offsets(ability_vec);
             if meraki_offsets.len() > 0 {
@@ -116,13 +134,12 @@ impl ChampionFactory {
             std::fs::create_dir(dir)?;
         }
 
-        ChampionId::VALUES.into_par_iter().for_each(|champion_id| {
-            let Ok(data) = Self::create(champion_id) else {
-                return println!("Unable to create generator file for {champion_id:?}");
+        Self::GENERATOR_NAMES.into_par_iter().for_each(|name| {
+            let Ok(data) = Self::create(name) else {
+                return println!("Unable to create generator file for {name:?}");
             };
-            let file_name = format!("{champion_id:?}").to_lowercase();
             std::fs::write(
-                SaveTo::Generator(Tag::Champions, &file_name).path(),
+                SaveTo::GeneratorRaw(Tag::Champions, name).path(),
                 data.as_bytes(),
             )
             .unwrap();
@@ -134,216 +151,25 @@ impl ChampionFactory {
     /// Runs all generator files. It means that several `.json` files will be created
     /// in the internal cache folder
     pub fn run_all() -> MayFail {
-        ChampionId::VALUES.into_par_iter().for_each(|champion_id| {
-            if let Err(e) = Self::run(champion_id) {
-                println!("Failed to run generator file for {champion_id:?}: {e:?}");
-            }
-        });
-
-        Ok(())
-    }
-
-    /// Runs a generator file, given the entity name and its offset in the
-    /// [`Self::GENERATOR_FUNCTIONS`] array
-    pub fn run_from_raw(entity_id: &str, offset: usize) -> MayFail {
-        let data = MerakiChampion::from_file(format!("cache/meraki/champions/{entity_id}.json"))?;
-        let function = Self::GENERATOR_FUNCTIONS[offset];
-        let generator = function(data);
-        match generator.generate() {
-            Ok(champion) => champion.into_file(format!("internal/champions/{entity_id}.json")),
-            Err(e) => {
-                println!("Error generating {entity_id:?}: {e:?}. Performing offset check.");
-                match Self::check_offsets_raw(entity_id)? {
-                    true => println!("{entity_id:?} have an issue unrelated to offsets"),
-                    false => println!("{entity_id:?} likely has incorrect offsets"),
-                }
-                Ok(())
-            }
-        }
-    }
-
-    /// Runs a generator file, given the [`ChampionId`]
-    pub fn run(champion_id: ChampionId) -> MayFail {
-        Self::run_from_raw(&format!("{champion_id:?}"), champion_id as usize)
-    }
-
-    /// Receives the raw string of some generator file generates a HashMap with
-    /// the extracted offsets being used in that file
-    pub fn parse_offsets(src: &str) -> MayFail<HashMap<char, Vec<(usize, usize)>>> {
-        let mut out = HashMap::<char, Vec<(usize, usize)>>::new();
-
-        for caps in RE_MACRO.captures_iter(src) {
-            let ability = caps[1].chars().next().ok_or("First capture has no chars")?;
-
-            if !matches!(ability, 'Q' | 'W' | 'E' | 'R') {
-                continue;
-            }
-
-            let body = &caps[2];
-
-            let mut tuples = Vec::new();
-            for t in RE_TUPLE.captures_iter(body) {
-                let e = t[1].parse::<usize>()?;
-                let l = t[2].parse::<usize>()?;
-                tuples.push((e, l));
-            }
-            if !tuples.is_empty() {
-                out.entry(ability).or_default().extend(tuples);
-            }
-        }
-
-        Ok(out)
-    }
-
-    /// Creates a BtreeMap whose values are sorted vectors by offset tuple
-    fn to_sorted_btree(
-        m: &HashMap<char, Vec<(usize, usize)>>,
-    ) -> BTreeMap<char, Vec<(usize, usize)>> {
-        let mut norm = BTreeMap::new();
-        for (&k, v) in m {
-            if v.is_empty() {
-                continue;
-            }
-            let mut vv = v.clone();
-            vv.sort_unstable();
-            norm.insert(k, vv);
-        }
-        norm
-    }
-
-    /// Prints the differences of old and new offsets to the console. It is used
-    /// to warn if there might have been some changes in the current patch that could
-    /// potentially cause the generator file to fail or produce invalid outputs
-    fn print_diffs(
-        old: &BTreeMap<char, Vec<(usize, usize)>>,
-        new: &BTreeMap<char, Vec<(usize, usize)>>,
-    ) {
-        let keys = old
-            .keys()
-            .chain(new.keys())
+        Self::GENERATOR_NAMES
+            .into_par_iter()
             .copied()
-            .collect::<BTreeSet<char>>();
+            .try_for_each(Self::run)
+    }
 
-        println!("Offsets are not equal (diff by ability):");
-        for k in keys {
-            let old_values = old.get(&k).cloned().unwrap_or_default();
-            let new_values = new.get(&k).cloned().unwrap_or_default();
-            if old_values == new_values {
-                continue;
-            }
-
-            let counts = |v: &[(usize, usize)]| -> BTreeMap<(usize, usize), usize> {
-                let mut c = BTreeMap::new();
-                for &p in v {
-                    *c.entry(p).or_insert(0) += 1;
-                }
-                c
-            };
-
-            let old_count = counts(&old_values);
-            let new_count = counts(&new_values);
-
-            let mut missing = Vec::new();
-            let mut extra = Vec::new();
-
-            for (p, &oq) in &old_count {
-                let nq = *new_count.get(p).unwrap_or(&0);
-                if nq < oq {
-                    for _ in 0..(oq - nq) {
-                        missing.push(*p);
-                    }
-                }
-            }
-            for (p, &nq) in &new_count {
-                let oq = *old_count.get(p).unwrap_or(&0);
-                if nq > oq {
-                    for _ in 0..(nq - oq) {
-                        extra.push(*p);
-                    }
-                }
-            }
-
-            #[derive(Debug)]
-            #[allow(non_snake_case, unused)]
-            struct OffsetCheck {
-                Ability: char,
-                Found: Vec<(usize, usize)>,
-                Expected: Vec<(usize, usize)>,
-                Missing_In_New: Vec<(usize, usize)>,
-                Extra_In_New: Vec<(usize, usize)>,
-            }
-
-            println!(
-                "{:#?}",
-                OffsetCheck {
-                    Ability: k,
-                    Found: old_values,
-                    Expected: new_values,
-                    Missing_In_New: missing,
-                    Extra_In_New: extra,
-                }
-            );
+    pub fn run(name: &str) -> MayFail {
+        match Self::run_fn(name) {
+            Ok(champion) => champion.into_file(SaveTo::InternalRaw(Tag::Champions, name).path()),
+            Err(e) => Ok(println!("Error generating {name:?}: {e:?}")),
         }
     }
 
-    /// Compares old and new offsets, and returns if they're absolutely equal or not.
-    /// If they're not equal, likely the generator file will fail
-    pub fn compare_offsets(src: &str, new: &HashMap<char, Vec<(usize, usize)>>) -> MayFail<bool> {
-        let old_raw = Self::parse_offsets(src)?;
-        let old = Self::to_sorted_btree(&old_raw);
-        let new = Self::to_sorted_btree(new);
-        if old == new {
-            Ok(true)
-        } else {
-            Self::print_diffs(&old, &new);
-            Ok(false)
-        }
-    }
-
-    /// Verifies if the offsets used in the `.ability()` or `.passive()` functions
-    /// inside all generators are likely to be correct, printing to the console the
-    /// collected results
-    pub fn check_all_offsets() {
-        for champion_id in ChampionId::VALUES {
-            match Self::check_offsets(champion_id) {
-                Err(e) => println!("Error checking {champion_id:?} offsets: {e:?}"),
-                Ok(false) => println!("{champion_id:?} has incorrect offsets"),
-                Ok(true) => println!("{champion_id:?} passed offsets check"),
-            };
-        }
-    }
-
-    /// Verifies the offsets used in the [`ChampionData::ability`] and [`ChampionData::passive`]
-    /// methods for some [`ChampionId`]
-    pub fn check_offsets(champion_id: ChampionId) -> MayFail<bool> {
-        Self::check_offsets_raw(&format!("{champion_id:?}"))
-    }
-
-    /// Verifies the correctness of offsets for some champion, search by its normalized name
-    pub fn check_offsets_raw(name: &str) -> MayFail<bool> {
-        let meraki_champion =
-            MerakiChampion::from_file(format!("cache/meraki/champions/{name}.json"))?;
-
-        let mut new_offsets = HashMap::<char, Vec<(usize, usize)>>::new();
-
-        for (ability_char, ability_vec) in meraki_champion.abilities.into_iter() {
-            let meraki_offsets = ChampionData::get_ability_offsets(ability_vec);
-            new_offsets.insert(
-                ability_char,
-                meraki_offsets
-                    .iter()
-                    .map(|o| (o.effect, o.leveling))
-                    .collect(),
-            );
-        }
-
-        let old_content = std::fs::read_to_string(SaveTo::Generator(Tag::Champions, name).path())?;
-
-        if !Self::compare_offsets(&old_content, &new_offsets)? {
-            return Ok(false);
-        }
-
-        Ok(true)
+    pub fn run_fn(name: &str) -> MayFail<Champion> {
+        let data = MerakiChampion::from_file(SaveTo::MerakiCache(Tag::Champions, &name).path())?;
+        let function =
+            champion_gen_fn(name).ok_or(format!("Unable to find generator function for {name}"))?;
+        let generator = function(data);
+        generator.generate()
     }
 }
 
@@ -362,7 +188,17 @@ impl ChampionData {
             map: Default::default(),
             mergevec: Default::default(),
             combo: Default::default(),
+            progress: Default::default(),
+            version: ENV_CONFIG.lol_version.clone(),
         }
+    }
+
+    pub fn is_outdated(&self) -> bool {
+        self.version != ENV_CONFIG.lol_version
+    }
+
+    pub const fn progress(&mut self, progress: Progress) {
+        self.progress = progress;
     }
 
     /// Converts the [`ChampionData`] into a [`Champion`], ending
@@ -455,7 +291,8 @@ impl ChampionData {
                         let parts = unit.split('%').collect::<Vec<&str>>();
                         let suffix = parts
                             .get(1)
-                            .map_or("".to_string(), |s| s.trim().to_string());
+                            .map_or(Default::default(), |s| s.trim())
+                            .to_string();
                         let coef = value / 100.0;
                         if coef == 1.0 && !suffix.is_empty() {
                             suffix
@@ -487,7 +324,7 @@ impl ChampionData {
         key: Key,
         pattern: [(usize, usize, AbilityName); N],
     ) -> [(usize, usize, AbilityId); N] {
-        let mut offsets = [(0, 0, AbilityId::P(AbilityName::Void)); N];
+        let mut offsets: [(usize, usize, AbilityId); N] = unsafe { core::mem::zeroed() };
         let mut i = 0;
         while i < N {
             let offset = pattern[i];
@@ -670,13 +507,7 @@ impl ChampionData {
         for key in keys {
             let index = key.ability_name() as u8;
 
-            let make = match key {
-                AbilityId::P(_) => AbilityId::P,
-                AbilityId::Q(_) => AbilityId::Q,
-                AbilityId::W(_) => AbilityId::W,
-                AbilityId::E(_) => AbilityId::E,
-                AbilityId::R(_) => AbilityId::R,
-            };
+            let make = key.setter();
 
             if (AbilityName::JMP..=((AbilityName::JMP << 1) - 1)).contains(&index) {
                 let mut found = false;

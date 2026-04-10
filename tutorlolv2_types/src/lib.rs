@@ -63,6 +63,16 @@ impl AbilityId {
         }
     }
 
+    pub const fn setter(&self) -> fn(AbilityName) -> Self {
+        match self {
+            AbilityId::P(_) => AbilityId::P,
+            AbilityId::Q(_) => AbilityId::Q,
+            AbilityId::W(_) => AbilityId::W,
+            AbilityId::E(_) => AbilityId::E,
+            AbilityId::R(_) => AbilityId::R,
+        }
+    }
+
     pub const fn from_key_fn(key: Key) -> fn(AbilityName) -> Self {
         match key {
             Key::P => AbilityId::P,

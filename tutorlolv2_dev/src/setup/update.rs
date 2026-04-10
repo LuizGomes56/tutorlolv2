@@ -16,7 +16,7 @@ use std::{
     path::Path,
 };
 use tutorlolv2_fmt::pascal_case;
-use tutorlolv2_gen::{GameMap, ItemId, StatName};
+use tutorlolv2_gen::{CastId, GameMap, ItemId, StatName};
 
 /// Creates basic folders necessary to run the program. If one of these folders are not found,
 /// The program is likely to panic when an update is called.
@@ -167,7 +167,7 @@ pub fn setup_internal_items() -> MayFail {
                 builds_into_riot_ids: builds_into_riot_ids.into_iter().collect(),
                 ..Default::default()
             }
-            .into_file(SaveTo::Internal(Tag::Items, &internal_fname).path())
+            .into_file(SaveTo::InternalRaw(Tag::Items, &internal_fname).path())
         },
     )
 }
@@ -234,7 +234,7 @@ pub fn setup_damaging_items() -> MayFail {
 pub fn prettify_internal_items() -> MayFail {
     parallel_read("cache/riot/items", |riot_id, riot_item| {
         if let Some(item_id) = ItemId::from_riot_id(riot_id.parse()?) {
-            let internal_path = SaveTo::Internal(Tag::Items, &format!("{item_id:?}")).path();
+            let internal_path = SaveTo::Internal(item_id.entity()).path();
             let mut internal_item = Item::from_file(&internal_path)?;
             internal_item.prettified_stats = pretiffy_items(&riot_item)?;
             internal_item.into_file(internal_path)?;

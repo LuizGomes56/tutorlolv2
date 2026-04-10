@@ -138,7 +138,9 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
             };
 
             let item_index = item_id as _;
-            DAMAGING_ITEMS.contains(item_index).then_some(item_index)
+            DAMAGING_ITEMS
+                .contains_const(item_index)
+                .then_some(item_index)
         })
         .collect::<ItemsBitSet>();
 
@@ -192,7 +194,9 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
                     };
 
                     let rune_index = rune_id as _;
-                    DAMAGING_RUNES.contains(rune_index).then_some(rune_index)
+                    DAMAGING_RUNES
+                        .contains_const(rune_index)
+                        .then_some(rune_index)
                 })
                 .collect::<RunesBitSet>()
         })

@@ -22,19 +22,20 @@ use std::{
     sync::Arc,
 };
 use tokio::{sync::Semaphore, task::JoinHandle};
-use tutorlolv2_fmt::pascal_case;
-use tutorlolv2_gen::{ChampionId, ItemId, Position, RuneId};
+use tutorlolv2_fmt::{pascal_case, to_ssnake};
+use tutorlolv2_gen::{ChampionId, EntityId, ItemId, Position, RuneId};
 
 pub enum SaveTo<'a> {
     GeneratorDir(Tag),
-    Generator(Tag, &'a str),
+    Generator(EntityId),
+    GeneratorRaw(Tag, &'a str),
     ImgChampion(ChampionId),
     ImgAbility(ChampionId, char),
     ImgItem(&'a str),
     ImgCentered(ChampionId, usize),
     ImgSplash(ChampionId, usize),
     ImgRunes(usize),
-    MerakiCache(Tag, &'a str),
+    MerakiCache(Tag, &'a (dyn Display + Send + Sync)),
     MerakiChampions,
     MerakiItems,
     MerakiDir(Tag),
@@ -45,10 +46,11 @@ pub enum SaveTo<'a> {
     RiotRunes,
     RiotLangDir(&'a str),
     RiotRawChampions(&'a str),
-    RiotCache(Tag, &'a str),
+    RiotCache(Tag, &'a (dyn Display + Send + Sync)),
     ScraperBuilds(Position, ChampionId),
     ScraperCombos(ChampionId),
-    Internal(Tag, &'a str),
+    Internal(EntityId),
+    InternalRaw(Tag, &'a str),
     InternalDir(Tag),
     InternalScraperBuilds(Position, ChampionId),
     InternalScraperCombos(ChampionId),
@@ -83,9 +85,27 @@ impl<'a> SaveTo<'a> {
         let img = "raw_img";
         match self {
             SaveTo::GeneratorDir(tag) => format!("tutorlolv2_dev/src/generators/gen_{tag}"),
-            SaveTo::Generator(tag, s) => {
+            SaveTo::Generator(entity_id) => {
+                let (tag, name) = match entity_id {
+                    EntityId::Champion(champion_id) => {
+                        (Tag::Champions, champion_id.debug().to_string())
+                    }
+                    EntityId::Item(item_id) => (Tag::Items, to_ssnake(&item_id.debug())),
+                    _ => panic!("Rune generators are not supported"),
+                };
+                let file = name.to_lowercase();
+                let path = Self::GeneratorDir(tag).path();
+                format!("{path}/{file}.rs")
+            }
+            SaveTo::GeneratorRaw(tag, s) => {
                 let path = Self::GeneratorDir(*tag).path();
-                format!("{path}/{s}.rs")
+                let file = match tag {
+                    Tag::Items => to_ssnake(s),
+                    Tag::Champions => s.to_string(),
+                    _ => panic!("Rune generators are not supported"),
+                }
+                .to_lowercase();
+                format!("{path}/{file}.rs")
             }
             SaveTo::ImgChampion(s) => format!("{img}/champions/{s:?}.png"),
             SaveTo::ImgAbility(s, c) => format!("{img}/abilities/{s:?}{c}.png"),
@@ -109,7 +129,16 @@ impl<'a> SaveTo<'a> {
                 format!("cache/scraper/builds/{position:?}/{s:?}.html")
             }
             SaveTo::ScraperCombos(s) => format!("cache/scraper/combos/{s:?}.html"),
-            SaveTo::Internal(tag, s) => format!("internal/{tag}/{s}.json"),
+            SaveTo::InternalRaw(tag, s) => format!("internal/{tag}/{s}.json"),
+            SaveTo::Internal(entity_id) => {
+                let (tag, dbg_trait) = match entity_id {
+                    EntityId::Champion(champion_id) => (Tag::Champions, champion_id as &dyn Debug),
+                    EntityId::Item(item_id) => (Tag::Items, item_id as _),
+                    EntityId::Rune(rune_id) => (Tag::Runes, rune_id as _),
+                };
+                let file = format!("{dbg_trait:?}");
+                format!("internal/{tag}/{file}.json")
+            }
             SaveTo::InternalDir(tag) => format!("internal/{tag}"),
             SaveTo::InternalScraperBuilds(position, s) => {
                 format!("internal/scraper/builds/{position:?}/{s:?}.json")
@@ -210,13 +239,13 @@ impl HttpClient {
                     }
                     Err(e) => {
                         println!("[error] {e}");
-                        Err(e.to_string().into())
+                        Err(e.into())
                     }
                 }
             }
             Err(e) => {
                 println!("[error] Unknown error on method Path::try_exists() for {save_to:?}: {e}");
-                Err(e.to_string().into())
+                Err(e.into())
             }
         }
     }
@@ -272,7 +301,10 @@ impl HttpClient {
             async move |client, fname, champion: RiotCdnChampion| {
                 let name = fname.as_str();
                 let champion_id = ChampionId::try_from(name)
-                    .or(serde_json::from_str(&format!("{name:?}")))
+                    .or_else(
+                        #[cold]
+                        |_| serde_json::from_str(&format!("{name:?}")),
+                    )
                     .map_err(|e| {
                         format!("Failed to convert {name} to ChampionId enum, error: {e:?}")
                     })?;
@@ -718,7 +750,7 @@ impl HttpClient {
                 let client = self.clone();
 
                 futures_vec.push(tokio::spawn(async move {
-                    let name = format!("{champion_id:?}").to_lowercase();
+                    let name = champion_id.debug().to_lowercase();
 
                     let cache_path = SaveTo::ScraperBuilds(position, champion_id).path();
                     let internal_path = SaveTo::InternalScraperBuilds(position, champion_id).path();

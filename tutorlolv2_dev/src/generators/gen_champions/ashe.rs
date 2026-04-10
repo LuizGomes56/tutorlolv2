@@ -1,7 +1,5 @@
 use super::*;
 
-// #![stable]
-
 impl Generator<Champion> for Ashe {
     fn generate(mut self: Box<Self>) -> MayFail<Champion> {
         self.ability(Key::Q, [(0, 1, Min), (0, 2, Max)]);
@@ -10,7 +8,7 @@ impl Generator<Champion> for Ashe {
 
         self.attr(Area, [R(Void), W(Void)])?;
         self.combo([Attack, Ability(W(Void)), Ability(R(Void)), Attack])?;
-
+        self.progress(Stable);
         self.end()
     }
 }

@@ -7,7 +7,7 @@ use crate::{
         rustfmt_batch,
     },
 };
-use std::collections::{BTreeMap, HashMap, HashSet};
+use std::collections::{BTreeMap, BTreeSet, HashMap, HashSet};
 
 struct DeclaredItem {
     metadata: String,
@@ -454,6 +454,7 @@ fn build_items(data: Vec<(String, ItemResult)>) -> GeneratorFn {
     let mut item_id_enum_fields = Vec::with_capacity(len);
     let mut const_match_arms = String::new();
     let mut rustfmt_inputs = Vec::with_capacity(len * 2);
+    let mut name_to_id_arms = Vec::with_capacity(len * 2);
 
     for (
         _,
@@ -468,10 +469,17 @@ fn build_items(data: Vec<(String, ItemResult)>) -> GeneratorFn {
             generator,
             html_closure,
             idents,
-            ..
+            name,
         },
     ) in data
     {
+        let name_alias = BTreeSet::from_iter([&name, &name_pascal, &name_ssnake])
+            .into_iter()
+            .map(|v| format!("{v:?}"))
+            .collect::<Vec<_>>()
+            .join(" | ");
+        name_to_id_arms.push(format!("{name_alias} => ItemId::{name_pascal}"));
+
         if deals_damage {
             let match_arm = format!("ItemId::{name_pascal} => {{{match_arm}}}");
             const_match_arms.push_str(&match_arm);
@@ -530,7 +538,14 @@ fn build_items(data: Vec<(String, ItemResult)>) -> GeneratorFn {
             pub const fn from_riot_id(id: u32) -> Option<Self> {{
                 match id {{ {match_arms}, _ => None }}
             }}
-        }}"#
+            pub const fn debug(&self) -> &'static str {{
+                match self {{{arms}}}
+            }}
+        }}"#,
+        arms = item_id_enum_fields
+            .iter()
+            .map(|v| format!("ItemId::{v} => {v:?},"))
+            .collect::<String>()
     );
 
     let const_eval = format!(
@@ -544,6 +559,13 @@ fn build_items(data: Vec<(String, ItemResult)>) -> GeneratorFn {
     );
 
     push_end([&mut item_cache, &mut item_idents], "];");
+
+    let item_name_to_id = format!(
+        "pub static ITEM_NAME_TO_ID: phf::Map<&str, ItemId> = phf::phf_map! {{
+            {arms}
+        }};",
+        arms = name_to_id_arms.join(",\n\t\t\t")
+    );
 
     println!("[ok] Finished building items");
 
@@ -586,6 +608,7 @@ fn build_items(data: Vec<(String, ItemResult)>) -> GeneratorFn {
             item_idents,
             item_closures,
             const_eval,
+            item_name_to_id,
         ]
         .concat();
 

@@ -1,5 +1,8 @@
-use core::ops::{Deref, DerefMut};
-use std::{ops::Range, path::Path};
+use core::{
+    fmt::Display,
+    ops::{Deref, DerefMut, Range},
+};
+use std::path::Path;
 use tutorlolv2_gen::{CastId, CtxVar, EntityId, RAW_BLOCK};
 
 pub struct Html {
@@ -8,7 +11,7 @@ pub struct Html {
 
 impl Html {
     const URL: &str = "http://localhost:8082";
-    const CSS: &str = include_str!("style.css");
+    pub const CSS: &str = include_str!("style.css");
 
     pub fn into_inner(mut self) -> String {
         self.add_footer();
@@ -133,9 +136,9 @@ impl Html {
     pub fn src(value: impl CastId) -> String {
         let folder = Self::folder(value);
         let tag = match value.entity() {
-            EntityId::Champion(champion_id) => format!("{champion_id:?}"),
-            EntityId::Item(item_id) => item_id.to_riot_id().to_string(),
-            EntityId::Rune(rune_id) => rune_id.to_riot_id().to_string(),
+            EntityId::Champion(champion_id) => &champion_id.debug() as &dyn Display,
+            EntityId::Item(item_id) => &item_id.to_riot_id(),
+            EntityId::Rune(rune_id) => &rune_id.to_riot_id(),
         };
 
         Self::img_src(&format!("{folder}/{tag}.avif"))

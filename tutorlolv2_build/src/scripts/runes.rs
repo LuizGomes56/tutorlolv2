@@ -321,7 +321,14 @@ fn build_runes(data: Vec<RuneResult>) -> GeneratorFn {
             pub const fn from_riot_id(id: u32) -> Option<Self> {{
                 match id {{ {match_arms}, _ => None }}
             }}
-        }}"#
+            pub const fn debug(&self) -> &'static str {{
+                match self {{{arms}}}
+            }}
+        }}"#,
+        arms = rune_id_enum_fields
+            .iter()
+            .map(|v| format!("RuneId::{v} => {v:?},"))
+            .collect::<String>()
     );
 
     push_end([&mut rune_cache, &mut rune_idents], "];");

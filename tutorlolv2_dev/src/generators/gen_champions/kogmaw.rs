@@ -2,10 +2,26 @@ use super::*;
 
 impl Generator<Champion> for KogMaw {
     fn generate(mut self: Box<Self>) -> MayFail<Champion> {
-        self.ability(Key::Q, [(0, 0, _1)]);
-        self.ability(Key::W, [(0, 1, _1)]);
-        self.ability(Key::E, [(1, 0, _1)]);
-        self.ability(Key::R, [(0, 0, _1), (0, 1, _2)]);
+        self.passive(Void, (0, 0), None, None);
+        self.ability(Key::Q, [(0, 0, Void)]);
+        self.ability(Key::W, [(0, 1, Void)]);
+        self.ability(Key::E, [(1, 0, Void)]);
+        self.ability(Key::R, [(0, 0, Max), (0, 1, Min)]);
+
+        self.attr(Area, [P(Void), E(Void), R(Min), R(Max)])?;
+        self.combo([
+            Ability(E(Void)),
+            Attack,
+            Ability(W(Void)),
+            Ability(Q(Void)),
+            Attack,
+            Ability(W(Void)),
+            Ability(R(Min)),
+            Attack,
+            Ability(W(Void)),
+        ])?;
+
+        self.progress(Stable);
         self.end()
     }
 }
