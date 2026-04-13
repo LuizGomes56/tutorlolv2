@@ -336,50 +336,6 @@ impl HttpClient {
             },
         )
         .await
-
-        // let riot_champions = RiotCdnChampion::from_dir("cache/riot/champions")?;
-
-        // for (champion_id, champion) in riot_champions {
-        //     let champion_id = ChampionId::try_from(champion_id.as_str()).map_err(|e| {
-        //         println!("Failed to convert {champion_id} to ChampionId enum, e: {e:?}");
-        //         e
-        //     })?;
-        //     let mut futures = Vec::new();
-
-        //     let _ = self
-        //         .download(
-        //             DDragon::Champion(&champion.image.full).url(),
-        //             SaveTo::ImgChampion(champion_id).path(),
-        //         )
-        //         .await;
-
-        //     let _ = self
-        //         .download(
-        //             DDragon::Passive(&champion.passive.image.full).url(),
-        //             SaveTo::ImgAbility(champion_id, 'P').path(),
-        //         )
-        //         .await;
-
-        //     for (index, spell) in champion.spells.into_iter().enumerate() {
-        //         let champion_id = champion_id.clone();
-        //         let client = self.clone();
-        //         futures.push(tokio::spawn(async move {
-        //             let _ = client
-        //                 .download(
-        //                     DDragon::Spell(&spell.image.full).url(),
-        //                     SaveTo::ImgAbility(champion_id, ['Q', 'W', 'E', 'R'][index]).path(),
-        //                 )
-        //                 .await;
-        //         }));
-        //     }
-
-        //     for future in futures {
-        //         if let Err(e) = future.await {
-        //             println!("[error] requesting {champion_id:?} images: {e}");
-        //         };
-        //     }
-        // }
-        // Ok(())
     }
 
     /// Downloads the images of all items in the cached data. Skips the ones
@@ -416,17 +372,18 @@ impl HttpClient {
             for skin in champion.skins.into_iter() {
                 let champion_id_str = champion_id_str.clone();
                 let champion_id = champion_id_str.as_str().try_into()?;
+                let num = skin.num;
                 let client = self.clone();
                 futures.push(tokio::spawn(async move {
                     for i in [false, true] {
                         let (url, save_to) = match i {
                             false => (
-                                DDragon::Splash(&champion_id_str, skin.num).url(),
-                                SaveTo::ImgSplash(champion_id, skin.num).path(),
+                                DDragon::Splash(&champion_id_str, num).url(),
+                                SaveTo::ImgSplash(champion_id, num).path(),
                             ),
                             true => (
-                                DDragon::Centered(&champion_id_str, skin.num).url(),
-                                SaveTo::ImgCentered(champion_id, skin.num).path(),
+                                DDragon::Centered(&champion_id_str, num).url(),
+                                SaveTo::ImgCentered(champion_id, num).path(),
                             ),
                         };
                         let _ = client.download(url, save_to).await;
@@ -755,13 +712,7 @@ impl HttpClient {
                     let cache_path = SaveTo::ScraperBuilds(position, champion_id).path();
                     let internal_path = SaveTo::InternalScraperBuilds(position, champion_id).path();
 
-                    let pos = match position {
-                        Position::Top => "top",
-                        Position::Jungle => "jungle",
-                        Position::Middle => "mid",
-                        Position::Bottom => "adc",
-                        Position::Support => "support",
-                    };
+                    let pos = position.role();
 
                     if let Err(e) = client
                         .download(
@@ -910,7 +861,7 @@ impl OrderJson<MerakiChampion> for HashMap<String, MerakiChampion> {
         let mut vec_self = self.into_iter().collect::<Vec<_>>();
         for (_, champion) in vec_self.iter_mut() {
             let Abilities { p, q, w, e, r } = &mut champion.abilities;
-            for ability_list in [q, w, e, r, p] {
+            for ability_list in [p, q, w, e, r] {
                 for ability in ability_list {
                     ability
                         .effects
@@ -944,8 +895,7 @@ impl OrderJson<MerakiItem> for HashMap<String, MerakiItem> {
 /// Reads every key in something that implements trait [`OrderJson`], orders the data
 /// and saves to the cache folder
 pub fn save_cache<T: Serialize>(result: impl OrderJson<T>, tag: Tag) -> MayFail {
-    for (key, value) in result.into_iter_ord() {
-        value.into_file(SaveTo::MerakiCache(tag, &key).path())?;
-    }
-    Ok(())
+    result
+        .into_iter_ord()
+        .try_for_each(|(key, value)| value.into_file(SaveTo::MerakiCache(tag, &key).path()))
 }

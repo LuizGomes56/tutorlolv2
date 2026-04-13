@@ -40,7 +40,7 @@ macro_rules! decl_mod {
                 }
 
                 pub fn end(self) -> MayFail<Champion> {
-                    println!("Ending generator for {}", Self::name());
+                    println!("[ok] ending generator for {}", Self::name());
                     self.inner.end()
                 }
             }

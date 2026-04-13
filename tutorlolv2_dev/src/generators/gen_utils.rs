@@ -178,8 +178,9 @@ impl RegExtractor for str {
             .into_iter()
             .fold(self.to_string(), |acc, (old, new)| {
                 let pattern = format!(r"\b{}\b", regex::escape(old));
-                let re = regex::Regex::new(&pattern).unwrap();
-                re.replace_all(&acc, &new.to_string())
+                regex::Regex::new(&pattern)
+                    .unwrap()
+                    .replace_all(&acc, &new.to_string())
                     .replace("per Soul collected", &format!(" * {Stacks}"))
             })
     }

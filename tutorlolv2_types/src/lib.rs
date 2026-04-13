@@ -1,6 +1,4 @@
 #![no_std]
-mod ability_name;
-
 #[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub enum Key {
     P,
@@ -115,8 +113,6 @@ use alloc::{format, string::String};
 use bincode::{Decode, Encode};
 use core::fmt::Display;
 use serde::{Deserialize, Serialize};
-
-pub use ability_name::AbilityName;
 
 #[cfg(feature = "dev")]
 impl AbilityId {
@@ -233,4 +229,123 @@ pub struct DevMergeData {
 pub enum ComboElement {
     Ability(AbilityId),
     Attack,
+}
+
+impl AbilityName {
+    pub const fn display(&self) -> Option<&'static str> {
+        match self {
+            AbilityName::_1 => Some("1"),
+            AbilityName::_2 => Some("2"),
+            AbilityName::_3 => Some("3"),
+            AbilityName::_4 => Some("4"),
+            AbilityName::_5 => Some("5"),
+            AbilityName::_6 => Some("6"),
+            AbilityName::_7 => Some("7"),
+            AbilityName::_8 => Some("8"),
+            AbilityName::Min => Some("MIN"),
+            AbilityName::Max => Some("MAX"),
+            AbilityName::Mega => Some("MEGA"),
+            AbilityName::_1Min => Some("1-MIN"),
+            AbilityName::_2Min => Some("2-MIN"),
+            AbilityName::_3Min => Some("3-MIN"),
+            AbilityName::_4Min => Some("4-MIN"),
+            AbilityName::_5Min => Some("5-MIN"),
+            AbilityName::_6Min => Some("6-MIN"),
+            AbilityName::_7Min => Some("7-MIN"),
+            AbilityName::_8Min => Some("8-MIN"),
+            AbilityName::_1Max => Some("1-MAX"),
+            AbilityName::_2Max => Some("2-MAX"),
+            AbilityName::_3Max => Some("3-MAX"),
+            AbilityName::_4Max => Some("4-MAX"),
+            AbilityName::_5Max => Some("5-MAX"),
+            AbilityName::_6Max => Some("6-MAX"),
+            AbilityName::_7Max => Some("7-MAX"),
+            AbilityName::_8Max => Some("8-MAX"),
+            _ => None,
+        }
+    }
+}
+
+#[derive(
+    Clone,
+    Copy,
+    Debug,
+    Eq,
+    Hash,
+    Ord,
+    PartialEq,
+    PartialOrd,
+    bincode::Encode,
+    bincode::Decode,
+    serde::Serialize,
+    serde::Deserialize,
+)]
+#[repr(u8)]
+pub enum AbilityName {
+    Void,
+    _1,
+    _2,
+    _3,
+    _4,
+    _5,
+    _6,
+    _7,
+    _8,
+    Min,
+    _1Min,
+    _2Min,
+    _3Min,
+    _4Min,
+    _5Min,
+    _6Min,
+    _7Min,
+    _8Min,
+    Max,
+    _1Max,
+    _2Max,
+    _3Max,
+    _4Max,
+    _5Max,
+    _6Max,
+    _7Max,
+    _8Max,
+    Mega,
+    Minion,
+    Minion1,
+    Minion2,
+    Minion3,
+    MinionMax,
+    Monster,
+    Monster1,
+    Monster2,
+    Monster3,
+    Monster4,
+    MonsterMax,
+}
+
+impl AbilityName {
+    pub const JMP: u8 = Self::Min as u8;
+
+    pub const fn cast_max(&self) -> Self {
+        let byte = *self as u8;
+        assert!(byte < Self::Mega as u8 - 1);
+        match byte >= Self::Max as u8 {
+            true => *self,
+            false if byte < Self::Min as u8 => unsafe {
+                core::mem::transmute(byte + (Self::JMP << 1))
+            },
+            false => unsafe { core::mem::transmute(byte + Self::JMP) },
+        }
+    }
+
+    pub const fn cast_min(&self) -> Self {
+        Self::from_u8(self.cast_max() as u8 - Self::JMP).unwrap()
+    }
+
+    pub const fn from_u8(value: u8) -> Option<Self> {
+        match value {
+            x if x < Self::MonsterMax as u8 => Some(unsafe { core::mem::transmute(x) }),
+            _ => None,
+        }
+    }
 }
