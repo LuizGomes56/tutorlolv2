@@ -149,22 +149,22 @@ impl ItemData {
 
     /// Sets the damage only for the `melee` and `minimum_damage` fields
     pub fn melee_min_dmg<S: AsRef<str>>(&mut self, dmg: S) {
-        self.current_data.melee.minimum_damage = dmg.as_ref().to_string();
+        self.current_data.melee.minimum_damage = dmg.as_ref().trim().to_string();
     }
 
     /// Sets the damage only for the `melee` and `maximum_damage` fields
     pub fn melee_max_dmg<S: AsRef<str>>(&mut self, dmg: S) {
-        self.current_data.melee.maximum_damage = dmg.as_ref().to_string();
+        self.current_data.melee.maximum_damage = dmg.as_ref().trim().to_string();
     }
 
     /// Sets the damage only for the `ranged` and `minimum_damage` fields
     pub fn ranged_min_dmg<S: AsRef<str>>(&mut self, dmg: S) {
-        self.current_data.ranged.minimum_damage = dmg.as_ref().to_string();
+        self.current_data.ranged.minimum_damage = dmg.as_ref().trim().to_string();
     }
 
     /// Sets the damage only for the `ranged` and `maximum_damage` fields
     pub fn ranged_max_dmg<S: AsRef<str>>(&mut self, dmg: S) {
-        self.current_data.ranged.maximum_damage = dmg.as_ref().to_string();
+        self.current_data.ranged.maximum_damage = dmg.as_ref().trim().to_string();
     }
 
     /// Sets only the `minimum_damage` field for both `melee` and `ranged` fields

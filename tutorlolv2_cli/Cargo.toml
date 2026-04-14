@@ -9,3 +9,4 @@ tutorlolv2_gen = { path = "../tutorlolv2_gen" }
 tutorlolv2_dev = { path = "../tutorlolv2_dev" }
 dotenvy = "0.15.7"
 tutorlolv2_html = { version = "0.1.0", path = "../tutorlolv2_html" }
+tutorlolv2_build = { path = "../tutorlolv2_build" }

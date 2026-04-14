@@ -245,7 +245,11 @@ impl RegExtractor for str {
             results.push(content);
         }
         let scaled_input = results.join(" ").replace("{{as|", "");
-        Self::from_scaled_string(&scaled_input).replace("'''", "")
+        Self::from_scaled_string(&scaled_input)
+            .replace("'''", "")
+            .replace("bonus ", "")
+            .replace("magic ", "")
+            .replace("damage", "")
     }
 
     fn from_scaled_string(&self) -> String {
