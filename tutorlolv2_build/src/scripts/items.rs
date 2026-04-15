@@ -474,11 +474,18 @@ fn build_items(data: Vec<(String, ItemResult)>) -> GeneratorFn {
         },
     ) in data
     {
-        let name_alias = BTreeSet::from_iter([&name, &name_pascal, &name_ssnake])
-            .into_iter()
-            .map(|v| format!("{v:?}"))
-            .collect::<Vec<_>>()
-            .join(" | ");
+        let name_alias = BTreeSet::from_iter([
+            &name,
+            &name_pascal,
+            &name_ssnake,
+            &name.to_lowercase(),
+            &name_pascal.to_lowercase(),
+            &name_ssnake.to_lowercase(),
+        ])
+        .into_iter()
+        .map(|v| format!("{v:?}"))
+        .collect::<Vec<_>>()
+        .join(" | ");
         name_to_id_arms.push(format!("{name_alias} => ItemId::{name_pascal}"));
 
         if deals_damage {

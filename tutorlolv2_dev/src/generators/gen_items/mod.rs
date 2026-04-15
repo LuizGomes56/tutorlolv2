@@ -71,6 +71,7 @@ decl_items!(
     Sheen,
     RavenousHydra,
     RunaansHurricane,
+    RecurveBow,
     Tiamat,
-    IronspikeWhip
+    IronspikeWhip,
 );
