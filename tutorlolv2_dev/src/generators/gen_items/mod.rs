@@ -68,4 +68,6 @@ decl_items!(
     LudensEcho,
     HextechRocketbelt,
     GuinsoosRageblade,
+    Sheen,
+    RavenousHydra
 );

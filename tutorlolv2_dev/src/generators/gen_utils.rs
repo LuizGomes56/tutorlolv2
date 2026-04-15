@@ -47,6 +47,7 @@ pub trait RegExtractor {
     /// (+ 84 * ATTACK_DAMAGE) -> 84.0
     /// ```
     fn capture_parens(&self, number: usize) -> MayFail<String>;
+    fn half(&self) -> String;
 
     /// Replaces several string matches to values that are mathematically
     /// evaluable.
@@ -116,6 +117,10 @@ impl RegExtractor for str {
         }
 
         nums
+    }
+
+    fn half(&self) -> String {
+        format!("({self}) / 2")
     }
 
     fn capture_numbers<T: FromStr>(&self) -> Vec<T> {
