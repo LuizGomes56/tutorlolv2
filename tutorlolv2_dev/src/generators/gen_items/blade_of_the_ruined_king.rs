@@ -6,7 +6,7 @@ impl Generator<ItemData> for BladeOfTheRuinedKing {
             .passive(0)?
             .capture_numbers::<f64>()
             .try_into()
-            .map_err(|v| format!("Expected vec with len = 2, found Vec::{v:?}"))?;
+            .map_err(vec_err::<2, _>)?;
 
         let damage = |scaling| {
             format!(
