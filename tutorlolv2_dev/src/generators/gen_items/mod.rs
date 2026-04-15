@@ -3,6 +3,7 @@ pub(self) use crate::{
     generators::{Generator, gen_factories::fac_items::ItemData, gen_utils::RegExtractor},
 };
 pub(self) use tutorlolv2_gen::{
+    ItemId,
     enums::{Attrs::*, DamageType::*},
     eval::CtxVar::*,
 };
@@ -50,6 +51,7 @@ macro_rules! decl_items {
         pub fn item_gen_fn(item_id: &str) -> Option<
             fn(ItemData) -> Box<dyn Generator<ItemData>>
         > {
+            $(const _: ItemId = ItemId::$Name;)*
             match item_id {
                 $(stringify!($Name) => Some($Name::new),)*
                 _ => None,
@@ -58,4 +60,18 @@ macro_rules! decl_items {
     };
 }
 
-decl_items!(BladeOfTheRuinedKing, LichBane, Malignance, NashorsTooth,);
+decl_items!(
+    BladeOfTheRuinedKing,
+    LichBane,
+    Malignance,
+    NashorsTooth,
+    LudensEcho,
+    HextechRocketbelt,
+    GuinsoosRageblade,
+    Sheen,
+    RavenousHydra,
+    RunaansHurricane,
+    RecurveBow,
+    Tiamat,
+    IronspikeWhip,
+);

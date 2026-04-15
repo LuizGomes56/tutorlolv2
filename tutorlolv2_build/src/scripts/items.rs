@@ -103,12 +103,13 @@ fn declare_item(name: &str, item: &Item) -> DeclaredItem {
 
     for (key, group) in &groups {
         let fn_name = decide_fn_name(group);
+        let body = &key.body;
+        let arg = body.ctx_param();
 
         constfn_declaration.push_str(&format!(
-            "pub const fn {fn_name}(ctx: &Ctx) -> f32 {{
+            "pub const fn {fn_name}({arg}: &Ctx) -> f32 {{
                 {body}
-            }}",
-            body = key.body
+            }}"
         ));
 
         for e in group {
@@ -473,11 +474,18 @@ fn build_items(data: Vec<(String, ItemResult)>) -> GeneratorFn {
         },
     ) in data
     {
-        let name_alias = BTreeSet::from_iter([&name, &name_pascal, &name_ssnake])
-            .into_iter()
-            .map(|v| format!("{v:?}"))
-            .collect::<Vec<_>>()
-            .join(" | ");
+        let name_alias = BTreeSet::from_iter([
+            &name,
+            &name_pascal,
+            &name_ssnake,
+            &name.to_lowercase(),
+            &name_pascal.to_lowercase(),
+            &name_ssnake.to_lowercase(),
+        ])
+        .into_iter()
+        .map(|v| format!("{v:?}"))
+        .collect::<Vec<_>>()
+        .join(" | ");
         name_to_id_arms.push(format!("{name_alias} => ItemId::{name_pascal}"));
 
         if deals_damage {

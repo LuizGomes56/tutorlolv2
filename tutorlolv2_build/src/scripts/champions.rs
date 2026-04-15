@@ -8,6 +8,7 @@ use crate::{
 };
 use rayon::iter::{IntoParallelIterator, ParallelIterator};
 use std::collections::{BTreeMap, BTreeSet};
+use tutorlolv2_fmt::to_ssnake;
 use tutorlolv2_types::{AbilityId, DevMergeData};
 
 struct DeclaredAbility {
@@ -481,14 +482,17 @@ fn build_champions(data: Vec<(String, ChampionResult)>) -> GeneratorFn {
             .ok_or(format!(
                 "Failed to recover {champion_id:?} from languages map"
             ))?
-            .iter()
-            .map(|alias| format!("{alias:?}"))
-            .chain(std::iter::once(format!("{champion_id:?}")))
+            .into_iter()
+            .chain(std::iter::once(&champion_id.clone()))
+            .chain(std::iter::once(&champion_id.to_lowercase()))
+            .chain(std::iter::once(&to_ssnake(&champion_id)))
+            .chain(std::iter::once(&to_ssnake(&champion_id).to_lowercase()))
             .chain(
                 (champion_id == "Gnar")
-                    .then_some(r#""Mega Gnar""#.into())
+                    .then_some(&"Mega Gnar".into())
                     .into_iter(),
             )
+            .map(|alias| format!("{alias:?}"))
             .collect::<BTreeSet<_>>()
             .into_iter()
             .collect::<Vec<_>>()

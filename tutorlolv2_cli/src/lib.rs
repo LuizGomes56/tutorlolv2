@@ -18,6 +18,7 @@ pub enum RunTarget {
     Champion(ChampionId),
     Item(ItemId),
     Factory(fn() -> MayFail),
+    All,
 }
 
 impl FromStr for RunTarget {
@@ -25,6 +26,7 @@ impl FromStr for RunTarget {
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match s {
+            "all" | "a" => Ok(Self::All),
             "items" | "i" => Ok(Self::Factory(ItemFactory::run_all)),
             "champions" | "c" => Ok(Self::Factory(ChampionFactory::run_all)),
             _ => {
@@ -63,6 +65,8 @@ pub enum GenArgs {
     Setup {
         setup: Setup,
     },
+    #[command(alias = "b")]
+    Build,
 }
 
 #[derive(Clone, Copy, Debug, clap::ValueEnum)]
@@ -93,6 +97,10 @@ pub fn run() -> MayFail {
                 ItemFactory::run(item.debug(), item.to_riot_id())?;
             }
             RunTarget::Factory(f) => f()?,
+            RunTarget::All => {
+                ChampionFactory::run_all()?;
+                ItemFactory::run_all()?;
+            }
         },
         GenArgs::Progress => ChampionFactory::progress(),
         GenArgs::Update => {
@@ -111,6 +119,10 @@ pub fn run() -> MayFail {
             Setup::Prettify => update::prettify_internal_items()?,
             Setup::Folders => update::setup_project_folders()?,
         },
+        GenArgs::Build => {
+            std::env::set_current_dir("./tutorlolv2_build")?;
+            tutorlolv2_build::run()?
+        }
     }
 
     Ok(())

@@ -10,8 +10,7 @@ impl Generator<Champion> for Ahri {
         self.clone_to(Q(Min), Q(Max))?.damage =
             self.merge_damage(|[q]| format!("({q}) * {MagicMultiplier} + ({q})"), [Q(Min)])?;
 
-        self.clone_to(R(Min), R(Max))?.damage =
-            self.merge_damage(|[r]| format!("3 * ({r})"), [R(Min)])?;
+        self.clone_to(R(Min), R(Max))?.damage = self.merge_damage(|[r]| r.mul(3.0), [R(Min)])?;
 
         self.damage_type(Q(Min), Magic)?;
         self.damage_type(Q(Max), Mixed)?;

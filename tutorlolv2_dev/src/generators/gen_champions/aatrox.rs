@@ -21,18 +21,15 @@ impl Generator<Champion> for Aatrox {
             [Q(_1Min), Q(_1Max), Q(_2Min), Q(_2Max), Q(_3Min), Q(_3Max)],
         )?;
 
-        let default_ability = self.get(Q(_1Min))?;
-
-        let merge =
-            |args| self.merge_damage(|[q1, q2, q3]| format!("({q1}) + ({q2}) + ({q3})"), args);
+        let default_ability = &self[Q(_1Min)];
 
         let q_min = Ability {
-            damage: merge([Q(_1Min), Q(_2Min), Q(_3Min)])?,
+            damage: self.sum([Q(_1Min), Q(_2Min), Q(_3Min)])?,
             ..default_ability.clone()
         };
 
         let q_max = Ability {
-            damage: merge([Q(_1Max), Q(_2Max), Q(_3Max)])?,
+            damage: self.sum([Q(_1Max), Q(_2Max), Q(_3Max)])?,
             ..default_ability.clone()
         };
 
