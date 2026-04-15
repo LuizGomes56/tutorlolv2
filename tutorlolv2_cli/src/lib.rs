@@ -18,6 +18,7 @@ pub enum RunTarget {
     Champion(ChampionId),
     Item(ItemId),
     Factory(fn() -> MayFail),
+    All,
 }
 
 impl FromStr for RunTarget {
@@ -25,6 +26,7 @@ impl FromStr for RunTarget {
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match s {
+            "all" | "a" => Ok(Self::All),
             "items" | "i" => Ok(Self::Factory(ItemFactory::run_all)),
             "champions" | "c" => Ok(Self::Factory(ChampionFactory::run_all)),
             _ => {
@@ -95,6 +97,10 @@ pub fn run() -> MayFail {
                 ItemFactory::run(item.debug(), item.to_riot_id())?;
             }
             RunTarget::Factory(f) => f()?,
+            RunTarget::All => {
+                ChampionFactory::run_all()?;
+                ItemFactory::run_all()?;
+            }
         },
         GenArgs::Progress => ChampionFactory::progress(),
         GenArgs::Update => {

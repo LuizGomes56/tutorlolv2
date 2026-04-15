@@ -7,6 +7,7 @@ impl Generator<Champion> for Akshan {
             let passive_numbers = passive_description.capture_numbers_slash();
             let passive_scaling = passive_description
                 .get_scalings()
+                /* Remove captured shield scaling */
                 .split("+")
                 .next()
                 .ok_or("Failed to get first passive scalling")?

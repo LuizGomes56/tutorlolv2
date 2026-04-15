@@ -1,7 +1,71 @@
 use crate::MayFail;
+use once_cell::sync::Lazy;
 use regex::{Captures, Regex};
 use std::{fmt::Display, str::FromStr};
 use tutorlolv2_gen::eval::CtxVar::*;
+
+static CAPTURE_NUMBERS_SLASH_RE: Lazy<Regex> =
+    Lazy::new(|| Regex::new(r"\d+(?:\s*/\s*\d+)+").unwrap());
+static CAPTURE_NUMBERS_RE: Lazy<Regex> = Lazy::new(|| Regex::new(r"\d+(?:\.\d+)?").unwrap());
+static REPLACE_PERCENTAGES_RE: Lazy<Regex> = Lazy::new(|| Regex::new(r"(\d+(?:\.\d+)?)%").unwrap());
+static REMOVE_PARENTHESIS_RE: Lazy<Regex> = Lazy::new(|| Regex::new(r"\(\+\s*[^)]*\)").unwrap());
+static GET_SCALINGS_RE: Lazy<Regex> = Lazy::new(|| Regex::new(r"\(([^)]+)\)").unwrap());
+static GET_INTERVAL_RE: Lazy<Regex> =
+    Lazy::new(|| Regex::new(r"(\d+(?:\.\d+)?)(%)?\s*[:\-–]\s*(\d+(?:\.\d+)?)(%)?").unwrap());
+static GET_DAMAGE_RE: Lazy<Regex> = Lazy::new(|| Regex::new(r"\{\{as\|([^\}]+)\}\}").unwrap());
+static GET_DAMAGE_NESTED_RE: Lazy<Regex> =
+    Lazy::new(|| Regex::new(r"\{\{[^}]+\|([^}]+)\}\}").unwrap());
+static CLEAN_FORMULA_TOKEN_RE: Lazy<Regex> =
+    Lazy::new(|| Regex::new(r"ctx\.[a-zA-Z_][a-zA-Z0-9_]*|\d+(?:\.\d+)?|[()+\-*/]").unwrap());
+static FROM_SCALED_STRING_RE: Lazy<Regex> = Lazy::new(|| Regex::new(r"\([^\)]*\)").unwrap());
+
+static REPLACEMENTS_MAP: [(&str, &(dyn Display + Send + Sync)); 45] = [
+    ("per 100", &"0.01 *"),
+    ("of damage dealt", &"100.0"),
+    ("of damage stored", &"100.0"),
+    ("of expended Grit", &"0.0"),
+    ("of the original damage", &"100.0"),
+    ("per Overwhelm stack on the target", &"1.0"),
+    ("of primary target's bonus health", &EnemyBonusHealth),
+    ("of his bonus health", &BonusHealth),
+    ("Pantheon's bonus health", &BonusHealth),
+    ("bonus attack speed", &AttackSpeed),
+    ("based on critical strike chance", &CritChance),
+    ("critical strike chance", &CritChance),
+    ("of Ivern's AP", &AbilityPower),
+    ("of Sona's AP", &AbilityPower),
+    ("per Feast stack", &Stacks),
+    ("of Siphoning Strike stacks", &Stacks),
+    ("Stardust", &Stacks),
+    ("per Mark", &Stacks),
+    ("per mark", &Stacks),
+    ("bonus movement speed", &BonusMoveSpeed),
+    ("bonus mana", &BonusMana),
+    ("bonus AD", &BonusAd),
+    ("bonus armor", &BonusArmor),
+    ("bonus magic resistance", &BonusMagicResist),
+    ("bonus health", &BonusHealth),
+    ("of the target's maximum health", &EnemyMaxHealth),
+    ("of target's maximum health", &EnemyMaxHealth),
+    ("of the target's current health", &CurrentHealth),
+    ("of target's current health", &CurrentHealth),
+    ("target's current health", &CurrentHealth),
+    ("of the target's missing health", &MissingHealth),
+    ("of target's missing health", &MissingHealth),
+    ("target's missing health", &MissingHealth),
+    ("of Zac's maximum health", &MaxHealth),
+    ("of Braum's maximum health", &MaxHealth),
+    ("of her maximum health", &MaxHealth),
+    ("of his maximum health", &MaxHealth),
+    ("of maximum health", &MaxHealth),
+    ("maximum health", &MaxHealth),
+    ("maximum mana", &MaxMana),
+    ("armor", &Armor),
+    ("AP", &AbilityPower),
+    ("base AD", &BaseAd),
+    ("AD", &AttackDamage),
+    ("\u{00D7}", &"*"),
+];
 
 pub trait F64Ext {
     /// Removes the `.0` or any other fractional part
@@ -107,10 +171,9 @@ impl RegExtractor for str {
     }
 
     fn capture_numbers_slash(&self) -> Vec<f64> {
-        let re = Regex::new(r"\d+(?:\s*/\s*\d+)+").unwrap();
         let mut nums = Vec::<f64>::new();
 
-        for m in re.find_iter(self) {
+        for m in CAPTURE_NUMBERS_SLASH_RE.find_iter(self) {
             let slice = m.as_str();
             for part in slice.split('/') {
                 if let Ok(n) = part.trim().parse::<f64>() {
@@ -131,63 +194,14 @@ impl RegExtractor for str {
     }
 
     fn capture_numbers<T: FromStr>(&self) -> Vec<T> {
-        Regex::new(r"\d+(?:\.\d+)?")
-            .unwrap()
+        CAPTURE_NUMBERS_RE
             .find_iter(self)
             .filter_map(|m| m.as_str().parse().ok())
             .collect()
     }
 
     fn replace_keys(&self) -> String {
-        let replacements: [(&str, &dyn Display); _] = [
-            ("per 100", &"0.01 *"),
-            ("of damage dealt", &"100.0"),
-            ("of damage stored", &"100.0"),
-            ("of expended Grit", &"0.0"),
-            ("of the original damage", &"100.0"),
-            ("per Overwhelm stack on the target", &"1.0"),
-            ("of primary target's bonus health", &EnemyBonusHealth),
-            ("of his bonus health", &BonusHealth),
-            ("Pantheon's bonus health", &BonusHealth),
-            ("bonus attack speed", &AttackSpeed),
-            ("based on critical strike chance", &CritChance),
-            ("critical strike chance", &CritChance),
-            ("of Ivern's AP", &AbilityPower),
-            ("of Sona's AP", &AbilityPower),
-            ("per Feast stack", &Stacks),
-            ("of Siphoning Strike stacks", &Stacks),
-            ("Stardust", &Stacks),
-            ("per Mark", &Stacks),
-            ("per mark", &Stacks),
-            ("bonus movement speed", &BonusMoveSpeed),
-            ("bonus mana", &BonusMana),
-            ("bonus AD", &BonusAd),
-            ("bonus armor", &BonusArmor),
-            ("bonus magic resistance", &BonusMagicResist),
-            ("bonus health", &BonusHealth),
-            ("of the target's maximum health", &EnemyMaxHealth),
-            ("of target's maximum health", &EnemyMaxHealth),
-            ("of the target's current health", &CurrentHealth),
-            ("of target's current health", &CurrentHealth),
-            ("target's current health", &CurrentHealth),
-            ("of the target's missing health", &MissingHealth),
-            ("of target's missing health", &MissingHealth),
-            ("target's missing health", &MissingHealth),
-            ("of Zac's maximum health", &MaxHealth),
-            ("of Braum's maximum health", &MaxHealth),
-            ("of her maximum health", &MaxHealth),
-            ("of his maximum health", &MaxHealth),
-            ("of maximum health", &MaxHealth),
-            ("maximum health", &MaxHealth),
-            ("maximum mana", &MaxMana),
-            ("armor", &Armor),
-            ("AP", &AbilityPower),
-            ("base AD", &BaseAd),
-            ("AD", &AttackDamage),
-            ("\u{00D7}", &"*"),
-        ];
-
-        replacements
+        REPLACEMENTS_MAP
             .into_iter()
             .fold(self.to_string(), |acc, (old, new)| {
                 let pattern = format!(r"\b{}\b", regex::escape(old));
@@ -200,8 +214,7 @@ impl RegExtractor for str {
     }
 
     fn replace_percentages(&self) -> String {
-        Regex::new(r"(\d+(?:\.\d+)?)%")
-            .unwrap()
+        REPLACE_PERCENTAGES_RE
             .replace_all(self, |caps: &Captures| {
                 let num: f64 = caps[1].parse().unwrap();
                 format!("{} *", num / 100.0)
@@ -210,16 +223,12 @@ impl RegExtractor for str {
     }
 
     fn remove_parenthesis(&self) -> String {
-        Regex::new(r"\(\+\s*[^)]*\)")
-            .unwrap()
-            .replace_all(self, "")
-            .to_string()
+        REMOVE_PARENTHESIS_RE.replace_all(self, "").to_string()
     }
 
     fn get_scalings(&self) -> String {
-        let re = Regex::new(r"\(([^)]+)\)").unwrap();
         let mut result = Vec::<String>::new();
-        for cap in re.captures_iter(self) {
+        for cap in GET_SCALINGS_RE.captures_iter(self) {
             let content = cap[1].trim();
             if content.to_lowercase().contains("based on level") {
                 continue;
@@ -244,8 +253,7 @@ impl RegExtractor for str {
     }
 
     fn get_interval(&self) -> Option<(f64, f64)> {
-        let re = Regex::new(r"(\d+(?:\.\d+)?)(%)?\s*[:\-–]\s*(\d+(?:\.\d+)?)(%)?").ok()?;
-        let caps = re.captures(self)?;
+        let caps = GET_INTERVAL_RE.captures(self)?;
 
         let first = caps.get(1)?.as_str().parse::<f64>().ok()?;
         let second = caps.get(3)?.as_str().parse::<f64>().ok()?;
@@ -260,12 +268,10 @@ impl RegExtractor for str {
     }
 
     fn get_damage(&self) -> String {
-        let re = Regex::new(r"\{\{as\|([^\}]+)\}\}").unwrap();
         let mut results = Vec::<String>::new();
-        for cap in re.captures_iter(self) {
+        for cap in GET_DAMAGE_RE.captures_iter(self) {
             let mut content = cap[1].to_string();
-            let nested = Regex::new(r"\{\{[^}]+\|([^}]+)\}\}").unwrap();
-            content = nested.replace_all(&content, "$1").to_string();
+            content = GET_DAMAGE_NESTED_RE.replace_all(&content, "$1").to_string();
             results.push(content);
         }
         let scaled_input = results.join(" ").replace("{{as|", "");
@@ -276,8 +282,6 @@ impl RegExtractor for str {
     }
 
     fn clean_formula(&self) -> String {
-        let token_re = Regex::new(r"ctx\.[a-zA-Z_][a-zA-Z0-9_]*|\d+(?:\.\d+)?|[()+\-*/]").unwrap();
-
         #[derive(Debug, Clone, PartialEq)]
         enum Token {
             Value(String),
@@ -286,7 +290,7 @@ impl RegExtractor for str {
             RParen,
         }
 
-        let tokens: Vec<Token> = token_re
+        let tokens: Vec<Token> = CLEAN_FORMULA_TOKEN_RE
             .find_iter(self)
             .map(|m| {
                 let s = m.as_str();
@@ -424,8 +428,10 @@ impl RegExtractor for str {
     }
 
     fn from_scaled_string(&self) -> String {
-        let re = Regex::new(r"\([^\)]*\)").unwrap();
-        let paren_part = re.find(self).map(|m| m.as_str()).unwrap_or("");
+        let paren_part = FROM_SCALED_STRING_RE
+            .find(self)
+            .map(|m| m.as_str())
+            .unwrap_or("");
         let base = self.replace(paren_part, "").trim().to_string();
         let scaled = paren_part.get_scalings();
         if !scaled.is_empty() {

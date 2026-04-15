@@ -77,11 +77,11 @@
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "10 + (0.01 * ctx.enemy_max_health) + (1 / 1.5 / 2 / 2.5 / 3% 0.01 * ctx.attack_damage)",
-          "20 + (0.01 * ctx.enemy_max_health) + (1 / 1.5 / 2 / 2.5 / 3% 0.01 * ctx.attack_damage)",
-          "30 + (0.01 * ctx.enemy_max_health) + (1 / 1.5 / 2 / 2.5 / 3% 0.01 * ctx.attack_damage)",
-          "40 + (0.01 * ctx.enemy_max_health) + (1 / 1.5 / 2 / 2.5 / 3% 0.01 * ctx.attack_damage)",
-          "50 + (0.01 * ctx.enemy_max_health) + (1 / 1.5 / 2 / 2.5 / 3% 0.01 * ctx.attack_damage)"
+          "10 + (0.01 * ctx.enemy_max_health) + (1 / 1.5 / 2 / 2.5 / 0.03 * 0.01 * ctx.attack_damage)",
+          "20 + (0.01 * ctx.enemy_max_health) + (1 / 1.5 / 2 / 2.5 / 0.03 * 0.01 * ctx.attack_damage)",
+          "30 + (0.01 * ctx.enemy_max_health) + (1 / 1.5 / 2 / 2.5 / 0.03 * 0.01 * ctx.attack_damage)",
+          "40 + (0.01 * ctx.enemy_max_health) + (1 / 1.5 / 2 / 2.5 / 0.03 * 0.01 * ctx.attack_damage)",
+          "50 + (0.01 * ctx.enemy_max_health) + (1 / 1.5 / 2 / 2.5 / 0.03 * 0.01 * ctx.attack_damage)"
         ]
       }
     ],
@@ -94,11 +94,11 @@
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "20 + (0.02 * ctx.enemy_max_health) + (2 / 3 / 4 / 5 / 6% 0.01 * ctx.attack_damage)",
-          "40 + (0.02 * ctx.enemy_max_health) + (2 / 3 / 4 / 5 / 6% 0.01 * ctx.attack_damage)",
-          "60 + (0.02 * ctx.enemy_max_health) + (2 / 3 / 4 / 5 / 6% 0.01 * ctx.attack_damage)",
-          "80 + (0.02 * ctx.enemy_max_health) + (2 / 3 / 4 / 5 / 6% 0.01 * ctx.attack_damage)",
-          "100 + (0.02 * ctx.enemy_max_health) + (2 / 3 / 4 / 5 / 6% 0.01 * ctx.attack_damage)"
+          "20 + (0.02 * ctx.enemy_max_health) + (2 / 3 / 4 / 5 / 0.06 * 0.01 * ctx.attack_damage)",
+          "40 + (0.02 * ctx.enemy_max_health) + (2 / 3 / 4 / 5 / 0.06 * 0.01 * ctx.attack_damage)",
+          "60 + (0.02 * ctx.enemy_max_health) + (2 / 3 / 4 / 5 / 0.06 * 0.01 * ctx.attack_damage)",
+          "80 + (0.02 * ctx.enemy_max_health) + (2 / 3 / 4 / 5 / 0.06 * 0.01 * ctx.attack_damage)",
+          "100 + (0.02 * ctx.enemy_max_health) + (2 / 3 / 4 / 5 / 0.06 * 0.01 * ctx.attack_damage)"
         ]
       }
     ],

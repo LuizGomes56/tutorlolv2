@@ -1,3 +1,5 @@
+use std::ops::{Index, IndexMut};
+
 pub(self) use crate::{
     MayFail,
     Progress::*,
@@ -42,6 +44,20 @@ macro_rules! decl_mod {
                 pub fn end(self) -> MayFail<Champion> {
                     println!("[ok] ending generator for {}", Self::name());
                     self.inner.end()
+                }
+            }
+
+            impl Index<AbilityId> for $Name {
+                type Output = Ability;
+
+                fn index(&self, index: AbilityId) -> &Self::Output {
+                    self.get(index).unwrap()
+                }
+            }
+
+            impl IndexMut<AbilityId> for $Name {
+                fn index_mut(&mut self, index: AbilityId) -> &mut Self::Output {
+                    self.get_mut(index).unwrap()
                 }
             }
 

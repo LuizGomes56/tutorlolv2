@@ -72,4 +72,5 @@ decl_items!(
     RavenousHydra,
     RunaansHurricane,
     Tiamat,
+    IronspikeWhip
 );

@@ -624,6 +624,19 @@ impl ChampionData {
         Ok(())
     }
 
+    pub fn sum<const N: usize>(&self, args: [AbilityId; N]) -> MayFail<Vec<String>> {
+        self.merge_damage(
+            |array| {
+                array
+                    .iter()
+                    .map(|dmg| format!("({dmg})"))
+                    .collect::<Vec<_>>()
+                    .join(" + ")
+            },
+            args,
+        )
+    }
+
     /// Takes in a closure that receives as argument a constant sized array of strings,
     /// and must return a new string. It will take each damage, for each level, for one
     /// or more abilities and concatenate them into a single vector, generating a new

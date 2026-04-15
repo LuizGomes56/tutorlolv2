@@ -21,6 +21,19 @@ macro_rules! create_eval_struct {
 
             impl CtxVar {
                 pub const ARRAY: [Self; Self::VARIANTS] = [$(Self::[<$value:camel>],)*];
+                pub const fn as_var(&self) -> &'static str {
+                    match self {
+                        $(
+                            Self::[<$value:camel>] => concat!("ctx.", stringify!($value)),
+                        )*
+                    }
+                }
+            }
+
+            impl AsRef<str> for CtxVar {
+                fn as_ref(&self) -> &str {
+                    self.as_var()
+                }
             }
 
             impl Index<CtxVar> for Ctx {
@@ -40,11 +53,7 @@ macro_rules! create_eval_struct {
 
             impl ::core::fmt::Display for CtxVar {
                 fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
-                    match self {
-                        $(
-                            Self::[<$value:camel>] => write!(f, concat!("ctx.", stringify!($value))),
-                        )*
-                    }
+                    write!(f, "{}", self.as_var())
                 }
             }
         }

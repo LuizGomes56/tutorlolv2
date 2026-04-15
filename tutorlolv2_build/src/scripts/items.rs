@@ -103,12 +103,13 @@ fn declare_item(name: &str, item: &Item) -> DeclaredItem {
 
     for (key, group) in &groups {
         let fn_name = decide_fn_name(group);
+        let body = &key.body;
+        let arg = body.ctx_param();
 
         constfn_declaration.push_str(&format!(
-            "pub const fn {fn_name}(ctx: &Ctx) -> f32 {{
+            "pub const fn {fn_name}({arg}: &Ctx) -> f32 {{
                 {body}
-            }}",
-            body = key.body
+            }}"
         ));
 
         for e in group {

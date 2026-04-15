@@ -13,7 +13,7 @@ impl Generator<ItemData> for LudensEcho {
             .trim_end_matches("))");
 
         let min_dmg = format!("{base_dmg} + {scaling}");
-        let max_dmg = format!("2 * ({min_dmg})");
+        let max_dmg = min_dmg.mul(2.0);
 
         self.const_min_dmg(min_dmg);
         self.const_max_dmg(max_dmg);
