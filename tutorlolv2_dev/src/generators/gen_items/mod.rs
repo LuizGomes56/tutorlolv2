@@ -69,5 +69,7 @@ decl_items!(
     HextechRocketbelt,
     GuinsoosRageblade,
     Sheen,
-    RavenousHydra
+    RavenousHydra,
+    RunaansHurricane,
+    Tiamat,
 );

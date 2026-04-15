@@ -2,10 +2,11 @@ use super::*;
 
 impl Generator<ItemData> for BladeOfTheRuinedKing {
     fn generate(mut self: Box<Self>) -> MayFail<ItemData> {
-        let get_scaling = |i| MayFail::Ok(self.passive(0)?.capture_percent(i)? / 100.0);
-
-        let melee_scaling = get_scaling(0)?;
-        let ranged_scaling = get_scaling(1)?;
+        let [melee, ranged] = self
+            .passive(0)?
+            .capture_numbers::<f64>()
+            .try_into()
+            .map_err(|v| format!("Expected vec with len = 2, found Vec::{v:?}"))?;
 
         let damage = |scaling| {
             format!(
@@ -18,8 +19,8 @@ impl Generator<ItemData> for BladeOfTheRuinedKing {
         };
 
         self.damage_type(Physical);
-        self.melee_min_dmg(damage(melee_scaling));
-        self.ranged_min_dmg(damage(ranged_scaling));
+        self.melee_min_dmg(damage(melee));
+        self.ranged_min_dmg(damage(ranged));
         self.end()
     }
 }

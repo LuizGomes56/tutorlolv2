@@ -6,10 +6,11 @@ impl Generator<ItemData> for LudensEcho {
         let numbers = passive.capture_numbers::<f64>();
         let base_dmg = numbers.get(0).ok_or("Unable to extract base damage")?;
         let scaling = passive
-            .split_once(" + ")
+            .split(" + ")
+            .last()
             .ok_or("Unable to extract scaling")?
-            .1
-            .trim();
+            .trim()
+            .trim_end_matches("))");
 
         let min_dmg = format!("{base_dmg} + {scaling}");
         let max_dmg = format!("2 * ({min_dmg})");

@@ -1,5 +1,5 @@
 use crate::MayFail;
-use regex::Regex;
+use regex::{Captures, Regex};
 use std::{fmt::Display, str::FromStr};
 use tutorlolv2_gen::eval::CtxVar::*;
 
@@ -47,12 +47,14 @@ pub trait RegExtractor {
     /// (+ 84 * ATTACK_DAMAGE) -> 84.0
     /// ```
     fn capture_parens(&self, number: usize) -> MayFail<String>;
+    fn mul(&self, value: f64) -> String;
     fn half(&self) -> String;
 
     /// Replaces several string matches to values that are mathematically
     /// evaluable.
     /// For example "per Soul collected" becomes [`ThreshStacks`]
     fn replace_keys(&self) -> String;
+    fn replace_percentages(&self) -> String;
 
     /// Removes all the parentheses from a string
     fn remove_parenthesis(&self) -> String;
@@ -72,6 +74,7 @@ pub trait RegExtractor {
     fn get_interval(&self) -> Option<(f64, f64)>;
 
     fn get_damage(&self) -> String;
+    fn clean_formula(&self) -> String;
     fn from_scaled_string(&self) -> String;
     fn process_linear_scalings(
         bounds: (f64, f64),
@@ -119,15 +122,19 @@ impl RegExtractor for str {
         nums
     }
 
+    fn mul(&self, value: f64) -> String {
+        format!("{value} * ({self})")
+    }
+
     fn half(&self) -> String {
-        format!("({self}) / 2")
+        self.mul(0.5)
     }
 
     fn capture_numbers<T: FromStr>(&self) -> Vec<T> {
-        Regex::new(r"\d+")
+        Regex::new(r"\d+(?:\.\d+)?")
             .unwrap()
             .find_iter(self)
-            .filter_map(|m| m.as_str().to_string().parse().ok())
+            .filter_map(|m| m.as_str().parse().ok())
             .collect()
     }
 
@@ -175,6 +182,7 @@ impl RegExtractor for str {
             ("maximum mana", &MaxMana),
             ("armor", &Armor),
             ("AP", &AbilityPower),
+            ("base AD", &BaseAd),
             ("AD", &AttackDamage),
             ("\u{00D7}", &"*"),
         ];
@@ -187,7 +195,18 @@ impl RegExtractor for str {
                     .unwrap()
                     .replace_all(&acc, &new.to_string())
                     .replace("per Soul collected", &format!(" * {Stacks}"))
+                    .replace_percentages()
             })
+    }
+
+    fn replace_percentages(&self) -> String {
+        Regex::new(r"(\d+(?:\.\d+)?)%")
+            .unwrap()
+            .replace_all(self, |caps: &Captures| {
+                let num: f64 = caps[1].parse().unwrap();
+                format!("{} *", num / 100.0)
+            })
+            .to_string()
     }
 
     fn remove_parenthesis(&self) -> String {
@@ -252,9 +271,156 @@ impl RegExtractor for str {
         let scaled_input = results.join(" ").replace("{{as|", "");
         Self::from_scaled_string(&scaled_input)
             .replace("'''", "")
-            .replace("bonus ", "")
-            .replace("magic ", "")
-            .replace("damage", "")
+            .replace_keys()
+            .clean_formula()
+    }
+
+    fn clean_formula(&self) -> String {
+        let token_re = Regex::new(r"ctx\.[a-zA-Z_][a-zA-Z0-9_]*|\d+(?:\.\d+)?|[()+\-*/]").unwrap();
+
+        #[derive(Debug, Clone, PartialEq)]
+        enum Token {
+            Value(String),
+            Op(String),
+            LParen,
+            RParen,
+        }
+
+        let tokens: Vec<Token> = token_re
+            .find_iter(self)
+            .map(|m| {
+                let s = m.as_str();
+                match s {
+                    "(" => Token::LParen,
+                    ")" => Token::RParen,
+                    "+" | "-" | "*" | "/" => Token::Op(s.to_string()),
+                    _ => Token::Value(s.to_string()),
+                }
+            })
+            .collect();
+
+        let mut out: Vec<Token> = Vec::new();
+        let mut expect_value = true;
+        let mut open_parens = 0usize;
+
+        for token in tokens {
+            match token {
+                Token::Value(v) => {
+                    if !expect_value {
+                        out.push(Token::Op("+".to_string()));
+                    }
+                    out.push(Token::Value(v));
+                    expect_value = false;
+                }
+
+                Token::LParen => {
+                    if !expect_value {
+                        out.push(Token::Op("+".to_string()));
+                    }
+                    out.push(Token::LParen);
+                    open_parens += 1;
+                    expect_value = true;
+                }
+
+                Token::RParen => {
+                    if open_parens > 0 && !expect_value {
+                        out.push(Token::RParen);
+                        open_parens -= 1;
+                        expect_value = false;
+                    }
+                }
+
+                Token::Op(op) => {
+                    if expect_value {
+                        if op == "-" || op == "+" {
+                            out.push(Token::Op(op));
+                        }
+                    } else {
+                        out.push(Token::Op(op));
+                        expect_value = true;
+                    }
+                }
+            }
+        }
+
+        while matches!(out.last(), Some(Token::Op(_))) {
+            out.pop();
+        }
+
+        while open_parens > 0 {
+            out.push(Token::RParen);
+            open_parens -= 1;
+        }
+
+        if out.is_empty() {
+            return "0".to_string();
+        }
+
+        #[derive(Clone, Copy, Debug, PartialEq, Eq)]
+        enum TokenKind {
+            Value,
+            Op,
+            LParen,
+            RParen,
+        }
+
+        trait AsRefToken {
+            fn kind(&self) -> TokenKind;
+            fn text(&self) -> &str;
+        }
+
+        impl AsRefToken for Token {
+            fn kind(&self) -> TokenKind {
+                match self {
+                    Token::Value(_) => TokenKind::Value,
+                    Token::Op(_) => TokenKind::Op,
+                    Token::LParen => TokenKind::LParen,
+                    Token::RParen => TokenKind::RParen,
+                }
+            }
+
+            fn text(&self) -> &str {
+                match self {
+                    Token::Value(v) => v,
+                    Token::Op(op) => op,
+                    Token::LParen => "(",
+                    Token::RParen => ")",
+                }
+            }
+        }
+
+        fn render_tokens(tokens: &[impl AsRefToken]) -> String {
+            let mut result = String::new();
+            let mut prev: Option<TokenKind> = None;
+
+            for token in tokens {
+                let kind = token.kind();
+                let text = token.text();
+
+                let needs_space = matches!(
+                    (prev, kind),
+                    (Some(TokenKind::Value), TokenKind::Value)
+                        | (Some(TokenKind::Value), TokenKind::Op)
+                        | (Some(TokenKind::Value), TokenKind::LParen)
+                        | (Some(TokenKind::Op), TokenKind::Value)
+                        | (Some(TokenKind::Op), TokenKind::LParen)
+                        | (Some(TokenKind::RParen), TokenKind::Value)
+                        | (Some(TokenKind::RParen), TokenKind::Op)
+                        | (Some(TokenKind::RParen), TokenKind::LParen)
+                );
+
+                if needs_space {
+                    result.push(' ');
+                }
+
+                result.push_str(text);
+                prev = Some(kind);
+            }
+
+            result
+        }
+
+        render_tokens(&out)
     }
 
     fn from_scaled_string(&self) -> String {
