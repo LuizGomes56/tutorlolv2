@@ -66,7 +66,6 @@ fn declare_abilities(
                         Simplified::Progression(_) | Simplified::Independent(_) => {
                             let body = simplified
                                 .expr()
-                                .clean()
                                 .cast_f32()
                                 .replace("context_level", &comparator);
                             format!("|ctx| {{ {body} }}")
