@@ -196,9 +196,9 @@
         "damage_type": "Physical",
         "attributes": "Undefined",
         "damage": [
-          "75 + ctx.bonus_ad + (1.1 * ctx.ability_power) + (0.15 * ctx.current_health)",
-          "175 + ctx.bonus_ad + (1.1 * ctx.ability_power) + (0.15 * ctx.current_health)",
-          "275 + ctx.bonus_ad + (1.1 * ctx.ability_power) + (0.15 * ctx.current_health)"
+          "75 + ctx.bonus_ad + (1.1 * ctx.ability_power) + (0.15 * ctx.enemy_current_health)",
+          "175 + ctx.bonus_ad + (1.1 * ctx.ability_power) + (0.15 * ctx.enemy_current_health)",
+          "275 + ctx.bonus_ad + (1.1 * ctx.ability_power) + (0.15 * ctx.enemy_current_health)"
         ]
       }
     ]

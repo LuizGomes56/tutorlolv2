@@ -77,11 +77,11 @@
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "(0.2 * ctx.current_health)",
-          "(0.225 * ctx.current_health)",
-          "(0.25 * ctx.current_health)",
-          "(0.275 * ctx.current_health)",
-          "(0.3 * ctx.current_health)"
+          "(0.2 * ctx.enemy_current_health)",
+          "(0.225 * ctx.enemy_current_health)",
+          "(0.25 * ctx.enemy_current_health)",
+          "(0.275 * ctx.enemy_current_health)",
+          "(0.3 * ctx.enemy_current_health)"
         ]
       }
     ],

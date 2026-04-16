@@ -94,11 +94,11 @@
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "25 + (0.2 * ctx.bonus_ad) + (0.2 * ctx.ability_power) + (0.015 * ctx.current_health) + (0.01 * ctx.stacks)",
-          "30 + (0.2 * ctx.bonus_ad) + (0.2 * ctx.ability_power) + (0.015 * ctx.current_health) + (0.01 * ctx.stacks)",
-          "35 + (0.2 * ctx.bonus_ad) + (0.2 * ctx.ability_power) + (0.015 * ctx.current_health) + (0.01 * ctx.stacks)",
-          "40 + (0.2 * ctx.bonus_ad) + (0.2 * ctx.ability_power) + (0.015 * ctx.current_health) + (0.01 * ctx.stacks)",
-          "45 + (0.2 * ctx.bonus_ad) + (0.2 * ctx.ability_power) + (0.015 * ctx.current_health) + (0.01 * ctx.stacks)"
+          "25 + (0.2 * ctx.bonus_ad) + (0.2 * ctx.ability_power) + (0.015 * ctx.enemy_current_health) + (0.01 * ctx.stacks)",
+          "30 + (0.2 * ctx.bonus_ad) + (0.2 * ctx.ability_power) + (0.015 * ctx.enemy_current_health) + (0.01 * ctx.stacks)",
+          "35 + (0.2 * ctx.bonus_ad) + (0.2 * ctx.ability_power) + (0.015 * ctx.enemy_current_health) + (0.01 * ctx.stacks)",
+          "40 + (0.2 * ctx.bonus_ad) + (0.2 * ctx.ability_power) + (0.015 * ctx.enemy_current_health) + (0.01 * ctx.stacks)",
+          "45 + (0.2 * ctx.bonus_ad) + (0.2 * ctx.ability_power) + (0.015 * ctx.enemy_current_health) + (0.01 * ctx.stacks)"
         ]
       }
     ],
@@ -111,11 +111,11 @@
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "37.5 + (0.3 * ctx.bonus_ad) + (0.3 * ctx.ability_power) + (0.0225 * ctx.current_health) + (0.015 * ctx.stacks)",
-          "45 + (0.3 * ctx.bonus_ad) + (0.3 * ctx.ability_power) + (0.0225 * ctx.current_health) + (0.015 * ctx.stacks)",
-          "52.5 + (0.3 * ctx.bonus_ad) + (0.3 * ctx.ability_power) + (0.0225 * ctx.current_health) + (0.015 * ctx.stacks)",
-          "60 + (0.3 * ctx.bonus_ad) + (0.3 * ctx.ability_power) + (0.0225 * ctx.current_health) + (0.015 * ctx.stacks)",
-          "67.5 + (0.3 * ctx.bonus_ad) + (0.3 * ctx.ability_power) + (0.0225 * ctx.current_health) + (0.015 * ctx.stacks)"
+          "37.5 + (0.3 * ctx.bonus_ad) + (0.3 * ctx.ability_power) + (0.0225 * ctx.enemy_current_health) + (0.015 * ctx.stacks)",
+          "45 + (0.3 * ctx.bonus_ad) + (0.3 * ctx.ability_power) + (0.0225 * ctx.enemy_current_health) + (0.015 * ctx.stacks)",
+          "52.5 + (0.3 * ctx.bonus_ad) + (0.3 * ctx.ability_power) + (0.0225 * ctx.enemy_current_health) + (0.015 * ctx.stacks)",
+          "60 + (0.3 * ctx.bonus_ad) + (0.3 * ctx.ability_power) + (0.0225 * ctx.enemy_current_health) + (0.015 * ctx.stacks)",
+          "67.5 + (0.3 * ctx.bonus_ad) + (0.3 * ctx.ability_power) + (0.0225 * ctx.enemy_current_health) + (0.015 * ctx.stacks)"
         ]
       }
     ],

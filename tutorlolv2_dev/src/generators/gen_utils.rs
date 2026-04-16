@@ -47,9 +47,9 @@ static REPLACEMENTS_MAP: [(&str, &(dyn Display + Send + Sync)); 45] = [
     ("bonus health", &BonusHealth),
     ("of the target's maximum health", &EnemyMaxHealth),
     ("of target's maximum health", &EnemyMaxHealth),
-    ("of the target's current health", &CurrentHealth),
-    ("of target's current health", &CurrentHealth),
-    ("target's current health", &CurrentHealth),
+    ("of the target's current health", &EnemyCurrentHealth),
+    ("of target's current health", &EnemyCurrentHealth),
+    ("target's current health", &EnemyCurrentHealth),
     ("of the target's missing health", &MissingHealth),
     ("of target's missing health", &MissingHealth),
     ("target's missing health", &MissingHealth),
@@ -269,9 +269,8 @@ impl RegExtractor for str {
             content = GET_DAMAGE_NESTED_RE.replace_all(&content, "$1").to_string();
             results.push(content);
         }
-        let scaled_input = results.join(" ").replace("{{as|", "");
+        let scaled_input = results.join(" ").replace("{{as|", "").replace("'''", "");
         Self::from_scaled_string(&scaled_input)
-            .replace("'''", "")
             .replace_keys()
             .clean_formula()
     }

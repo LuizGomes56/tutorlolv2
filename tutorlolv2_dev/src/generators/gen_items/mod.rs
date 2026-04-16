@@ -95,6 +95,13 @@ decl_items!(
     SunfireAegis,
     Eclipse,
     Heartsteel,
+    Stormrazor3097,
+    Bastionbreaker,
+    ImperialMandate,
+    LiandrysTorment,
+    BrambleVest,
+    Everfrost,
+    Thornmail,
     BamisCinder,
     IcebornGauntlet,
     TrinityForce
