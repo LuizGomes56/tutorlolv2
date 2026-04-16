@@ -74,6 +74,8 @@ decl_items!(
     HextechRocketbelt,
     GuinsoosRageblade,
     Sheen,
+    Redemption,
+    KrakenSlayer,
     RavenousHydra,
     RunaansHurricane,
     RecurveBow,
