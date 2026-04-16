@@ -5,20 +5,20 @@
   "price": 2500,
   "sell": 1250,
   "tier": 0,
-  "attributes": "Undefined",
+  "attributes": "AreaOnhit",
   "purchasable": true,
-  "damage_type": "Unknown",
+  "damage_type": "Physical",
   "prettified_stats": {
     "AttackDamage": 40,
     "Health": 400
   },
   "ranged": {
-    "minimum_damage": "zero",
-    "maximum_damage": "zero"
+    "minimum_damage": "0.25 * (0.02 * ctx.max_health)",
+    "maximum_damage": "0.02 * ctx.max_health"
   },
   "melee": {
-    "minimum_damage": "zero",
-    "maximum_damage": "zero"
+    "minimum_damage": "0.25 * (0.04 * ctx.max_health)",
+    "maximum_damage": "0.04 * ctx.max_health"
   },
   "stats": {
     "abilityPower": {

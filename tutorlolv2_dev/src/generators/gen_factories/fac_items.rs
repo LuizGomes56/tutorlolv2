@@ -18,6 +18,11 @@ pub struct ItemData {
     pub current_data: Item,
 }
 
+pub enum Capture {
+    Passive(usize),
+    Active(usize),
+}
+
 impl ItemData {
     /// Creates a new struct that serves as argument for the item generator functions
     pub const fn new(
@@ -130,6 +135,22 @@ impl ItemData {
     /// Returns the damage of the `passive` effect in the field `passives`
     pub fn passive(&self, offset: usize) -> MayFail<String> {
         self.effect_damage(&self.meraki_data()?.passives, offset, "passives")
+    }
+
+    pub fn scalings(&self, from: Capture) -> MayFail<[f64; 2]> {
+        match from {
+            Capture::Passive(i) => self.passive(i),
+            Capture::Active(i) => self.active(i),
+        }?
+        .capture_numbers::<f64>()
+        .get(0..2)
+        .ok_or("Failed to get melee/ranged scaling at Self::capture")?
+        .try_into()
+        .map_err(|v| format!("Self::scalings failed, error: {v:?}").into())
+    }
+
+    pub fn capture(&self, from: Capture, f: impl Fn(f64) -> String) -> MayFail<[String; 2]> {
+        Ok(self.scalings(from)?.map(f))
     }
 
     /// Returns the damage of the `active` effect in the field `active`

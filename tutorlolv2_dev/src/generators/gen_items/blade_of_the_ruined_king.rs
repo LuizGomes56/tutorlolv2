@@ -2,11 +2,7 @@ use super::*;
 
 impl Generator<ItemData> for BladeOfTheRuinedKing {
     fn generate(mut self: Box<Self>) -> MayFail<ItemData> {
-        let [melee, ranged] = self
-            .passive(0)?
-            .capture_numbers::<f64>()
-            .try_into()
-            .map_err(vec_err::<2, _>)?;
+        let [melee, ranged] = self.scalings(Passive(0))?;
 
         let damage = |scaling| {
             format!(

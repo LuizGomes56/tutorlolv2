@@ -1,8 +1,10 @@
-use std::fmt::Debug;
-
 pub(self) use crate::{
     MayFail,
-    generators::{Generator, gen_factories::fac_items::ItemData, gen_utils::RegExtractor},
+    generators::{
+        Generator,
+        gen_factories::fac_items::{Capture::*, ItemData},
+        gen_utils::RegExtractor,
+    },
 };
 pub(self) use tutorlolv2_gen::{
     ItemId,
@@ -77,8 +79,6 @@ decl_items!(
     Tiamat,
     IronspikeWhip,
     TitanicHydra,
+    Eclipse,
+    Heartsteel
 );
-
-pub fn vec_err<const N: usize, T: Debug>(v: Vec<T>) -> String {
-    format!("Expected vec with len = {N}, found Vec::{v:?}")
-}

@@ -2,7 +2,7 @@ use super::*;
 
 impl Generator<ItemData> for Malignance {
     fn generate(mut self: Box<Self>) -> MayFail<ItemData> {
-        const TICKS: usize = (/* Duration */3.0 / 0.25/* Frequency */) as _;
+        const TICKS: usize = 12;
 
         let damage_per_tick = format!("15 + 0.0125 * {AbilityPower}");
 

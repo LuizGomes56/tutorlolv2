@@ -7,17 +7,17 @@
   "tier": 0,
   "attributes": "Undefined",
   "purchasable": true,
-  "damage_type": "Unknown",
+  "damage_type": "Magic",
   "prettified_stats": {
     "AbilityHaste": 10,
     "AttackDamage": 50
   },
   "ranged": {
-    "minimum_damage": "zero",
+    "minimum_damage": "0.04 * ctx.enemy_max_health",
     "maximum_damage": "zero"
   },
   "melee": {
-    "minimum_damage": "zero",
+    "minimum_damage": "0.06 * ctx.enemy_max_health",
     "maximum_damage": "zero"
   },
   "stats": {
