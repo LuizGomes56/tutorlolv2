@@ -1,6 +1,10 @@
 pub(self) use crate::{
     MayFail,
-    generators::{Generator, gen_factories::fac_items::ItemData, gen_utils::RegExtractor},
+    generators::{
+        Generator,
+        gen_factories::fac_items::{Capture::*, ItemData},
+        gen_utils::RegExtractor,
+    },
 };
 pub(self) use tutorlolv2_gen::{
     ItemId,
@@ -61,6 +65,7 @@ macro_rules! decl_items {
 }
 
 decl_items!(
+    ArdentCenser,
     BladeOfTheRuinedKing,
     LichBane,
     Malignance,
@@ -69,9 +74,35 @@ decl_items!(
     HextechRocketbelt,
     GuinsoosRageblade,
     Sheen,
+    Redemption,
+    KrakenSlayer,
+    Rageknife,
+    Stridebreaker,
+    StatikkShiv,
+    DeadMansPlate,
+    EssenceReaver,
+    WitsEnd,
+    HextechAlternator,
     RavenousHydra,
     RunaansHurricane,
     RecurveBow,
     Tiamat,
     IronspikeWhip,
+    TitanicHydra,
+    Muramana,
+    KircheisShard,
+    RapidFirecannon,
+    SunfireAegis,
+    Eclipse,
+    Heartsteel,
+    Stormrazor3097,
+    Bastionbreaker,
+    ImperialMandate,
+    LiandrysTorment,
+    BrambleVest,
+    Everfrost,
+    Thornmail,
+    BamisCinder,
+    IcebornGauntlet,
+    TrinityForce
 );

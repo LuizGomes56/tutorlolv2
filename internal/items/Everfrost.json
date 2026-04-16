@@ -5,9 +5,9 @@
   "price": 2865,
   "sell": 2006,
   "tier": 0,
-  "attributes": "Undefined",
+  "attributes": "Area",
   "purchasable": false,
-  "damage_type": "Unknown",
+  "damage_type": "Magic",
   "prettified_stats": {
     "AbilityHaste": 20,
     "AbilityPower": 70,
@@ -15,11 +15,11 @@
     "Mana": 600
   },
   "ranged": {
-    "minimum_damage": "zero",
+    "minimum_damage": "300 + 0.85 * ctx.ability_power",
     "maximum_damage": "zero"
   },
   "melee": {
-    "minimum_damage": "zero",
+    "minimum_damage": "300 + 0.85 * ctx.ability_power",
     "maximum_damage": "zero"
   },
   "stats": {

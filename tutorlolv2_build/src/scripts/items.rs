@@ -4,7 +4,7 @@ use crate::{
     scripts::{
         StringExt,
         model::{Item, ItemStats, MerakiItemStatMap},
-        rustfmt_batch,
+        rustfmt_batch, simplify_formula,
     },
 };
 use std::collections::{BTreeMap, BTreeSet, HashMap, HashSet};
@@ -54,7 +54,12 @@ fn declare_item(name: &str, item: &Item) -> DeclaredItem {
     }
 
     let normalize = |expr: &str| -> Option<String> {
-        (!expr.is_empty() && expr != "zero").then(|| expr.clean().to_lowercase().cast_f32())
+        (!expr.is_empty() && expr != "zero").then(|| {
+            simplify_formula(expr.to_string())
+                .clean()
+                .to_lowercase()
+                .cast_f32()
+        })
     };
 
     let mut exprs = Vec::<ExprInfo>::new();

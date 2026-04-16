@@ -94,11 +94,11 @@
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "40 + (0.04 * ctx.current_health) + (0.03 * 0.01 * ctx.ability_power)",
-          "70 + (0.04 * ctx.current_health) + (0.03 * 0.01 * ctx.ability_power)",
-          "100 + (0.04 * ctx.current_health) + (0.03 * 0.01 * ctx.ability_power)",
-          "130 + (0.04 * ctx.current_health) + (0.03 * 0.01 * ctx.ability_power)",
-          "160 + (0.04 * ctx.current_health) + (0.03 * 0.01 * ctx.ability_power)"
+          "40 + (0.04 * ctx.enemy_current_health) + (0.03 * 0.01 * ctx.ability_power)",
+          "70 + (0.04 * ctx.enemy_current_health) + (0.03 * 0.01 * ctx.ability_power)",
+          "100 + (0.04 * ctx.enemy_current_health) + (0.03 * 0.01 * ctx.ability_power)",
+          "130 + (0.04 * ctx.enemy_current_health) + (0.03 * 0.01 * ctx.ability_power)",
+          "160 + (0.04 * ctx.enemy_current_health) + (0.03 * 0.01 * ctx.ability_power)"
         ]
       }
     ],

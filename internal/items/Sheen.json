@@ -12,11 +12,11 @@
     "AbilityHaste": 10
   },
   "ranged": {
-    "minimum_damage": "ctx.base_ad",
+    "minimum_damage": "1 * ctx.base_ad",
     "maximum_damage": "zero"
   },
   "melee": {
-    "minimum_damage": "ctx.base_ad",
+    "minimum_damage": "1 * ctx.base_ad",
     "maximum_damage": "zero"
   },
   "stats": {

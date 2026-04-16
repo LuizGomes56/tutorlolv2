@@ -5,20 +5,20 @@
   "price": 2650,
   "sell": 1855,
   "tier": 3,
-  "attributes": "Undefined",
+  "attributes": "OnhitMax",
   "purchasable": true,
-  "damage_type": "Unknown",
+  "damage_type": "Magic",
   "prettified_stats": {
     "AttackSpeed": 35,
     "CritChance": 25,
     "MoveSpeed": 4
   },
   "ranged": {
-    "minimum_damage": "zero",
+    "minimum_damage": "40",
     "maximum_damage": "zero"
   },
   "melee": {
-    "minimum_damage": "zero",
+    "minimum_damage": "40",
     "maximum_damage": "zero"
   },
   "stats": {

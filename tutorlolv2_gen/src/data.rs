@@ -1161,178 +1161,178 @@ pub mod champions {
         &[Q(_1), E(_1), R(_1)],
     ];
     pub static CHAMPION_FORMULAS: [Range<usize>; ChampionId::VARIANTS] = [
-        (538408..560681),
-        (591431..603811),
-        (619438..631407),
-        (645704..659193),
-        (678314..685732),
-        (692186..702741),
-        (714506..721814),
-        (727953..739732),
-        (752299..759323),
-        (764985..769150),
-        (770183..778319),
-        (784977..797057),
-        (811124..820766),
-        (830677..840239),
-        (851273..855670),
-        (857082..871540),
-        (889523..895977),
-        (900814..909643),
-        (918134..924057),
-        (927912..938194),
-        (949416..957703),
-        (965599..975758),
-        (986676..998762),
-        (1013772..1025232),
-        (1038492..1048474),
-        (1059089..1068125),
-        (1077180..1086850),
-        (1096789..1110894),
-        (1128283..1138000),
-        (1148377..1156292),
-        (1163347..1169669),
-        (1174240..1186569),
-        (1200953..1208674),
-        (1215698..1229440),
-        (1246560..1252701),
-        (1256972..1268325),
-        (1281075..1292392),
-        (1305243..1316456),
-        (1329058..1337293),
-        (1345103..1359824),
-        (1375707..1386453),
-        (1398158..1407285),
-        (1416543..1433821),
-        (1457002..1466607),
-        (1476519..1490031),
-        (1508135..1515129),
-        (1520674..1528403),
-        (1535314..1543441),
-        (1550914..1557929),
-        (1563576..1570896),
-        (1576258..1582414),
-        (1586667..1595710),
-        (1604685..1612561),
-        (1619627..1633867),
-        (1651680..1664077),
-        (1679113..1691713),
-        (1706976..1715533),
-        (1723901..1732060),
-        (1739701..1747029),
-        (1753752..1761647),
-        (1768718..1778845),
-        (1789777..1797614),
-        (1804669..1812265),
-        (1819065..1829154),
-        (1839828..1849755),
-        (1860325..1867356),
-        (1873016..1881027),
-        (1888639..1903811),
-        (1923725..1935131),
-        (1946450..1961025),
-        (1978949..1986313),
-        (1992629..2000322),
-        (2007079..2017595),
-        (2029003..2036034),
-        (2041725..2048946),
-        (2054971..2064618),
-        (2074560..2080766),
-        (2085028..2093363),
-        (2101194..2119156),
-        (2145357..2158746),
-        (2175237..2186797),
-        (2199875..2214803),
-        (2233465..2237854),
-        (2239276..2247936),
-        (2256562..2265650),
-        (2274833..2283990),
-        (2294629..2304314),
-        (2314300..2329069),
-        (2347424..2356172),
-        (2364661..2373799),
-        (2383053..2394399),
-        (2407162..2418060),
-        (2427435..2436608),
-        (2446678..2456302),
-        (2466205..2473899),
-        (2480676..2493762),
-        (2509424..2517062),
-        (2523700..2531604),
-        (2538749..2550363),
-        (2563643..2576843),
-        (2592742..2605024),
-        (2619331..2624619),
-        (2627432..2636382),
-        (2645260..2651529),
-        (2656060..2662179),
-        (2666360..2672522),
-        (2676772..2685675),
-        (2694513..2702588),
-        (2710057..2715357),
-        (2718191..2731577),
-        (2747781..2754131),
-        (2758683..2765207),
-        (2770170..2799102),
-        (2842374..2849566),
-        (2855619..2865966),
-        (2877003..2887046),
-        (2897813..2904098),
-        (2908512..2916471),
-        (2923619..2933726),
-        (2944872..2957952),
-        (2973526..2995662),
-        (3031996..3043953),
-        (3059112..3066456),
-        (3072761..3086846),
-        (3104487..3114635),
-        (3125535..3135056),
-        (3144870..3156821),
-        (3170609..3178152),
-        (3185125..3191281),
-        (3195517..3205218),
-        (3215139..3223920),
-        (3232392..3243287),
-        (3255446..3261252),
-        (3264872..3274535),
-        (3284496..3294093),
-        (3303926..3308482),
-        (3310134..3321460),
-        (3333957..3341978),
-        (3349275..3359692),
-        (3371119..3380314),
-        (3389726..3396270),
-        (3401235..3409818),
-        (3418157..3425929),
-        (3432840..3441141),
-        (3448963..3456079),
-        (3461903..3478333),
-        (3499954..3510063),
-        (3520749..3528594),
-        (3535807..3545508),
-        (3555519..3564454),
-        (3573300..3581515),
-        (3589203..3597121),
-        (3604349..3615969),
-        (3629250..3639170),
-        (3649639..3658173),
-        (3666463..3673711),
-        (3679823..3689441),
-        (3699320..3709214),
-        (3719621..3730540),
-        (3742781..3752120),
-        (3761616..3772426),
-        (3784286..3791498),
-        (3797556..3808869),
-        (3821636..3830388),
-        (3838907..3850997),
-        (3865226..3876178),
-        (3888372..3895526),
-        (3901346..3910660),
-        (3920319..3930765),
-        (3942270..3946671),
-        (3948084..3962841),
-        (3983581..3989750),
+        (538408..558835),
+        (584091..596364),
+        (611670..623607),
+        (637838..651327),
+        (670448..677822),
+        (684198..694488),
+        (705724..713032),
+        (719171..730950),
+        (743517..750541),
+        (756203..760368),
+        (761401..769493),
+        (776065..788145),
+        (802212..811854),
+        (821765..831327),
+        (842361..846758),
+        (848170..862468),
+        (880105..886527),
+        (891298..900127),
+        (908618..914541),
+        (918396..928614),
+        (939704..947959),
+        (955773..965938),
+        (976868..988954),
+        (1003964..1015392),
+        (1028586..1038536),
+        (1049085..1058121),
+        (1067176..1076846),
+        (1086785..1100896),
+        (1118297..1128014),
+        (1138391..1146306),
+        (1153361..1159651),
+        (1164163..1176453),
+        (1190765..1198454),
+        (1205412..1219166),
+        (1236310..1242419),
+        (1246624..1257977),
+        (1270727..1281754),
+        (1294117..1305298),
+        (1317834..1326069),
+        (1333879..1348536),
+        (1364253..1374961),
+        (1386595..1395722),
+        (1404980..1420861),
+        (1441286..1450783),
+        (1460477..1473989),
+        (1492093..1499087),
+        (1504632..1512327),
+        (1519171..1527266),
+        (1534673..1541688),
+        (1547335..1554655),
+        (1560017..1566173),
+        (1570426..1579393),
+        (1588216..1596060),
+        (1603060..1617224),
+        (1634885..1647250),
+        (1662220..1674334),
+        (1688743..1697300),
+        (1705668..1713827),
+        (1721468..1728796),
+        (1735519..1743414),
+        (1750485..1760612),
+        (1771544..1779381),
+        (1786436..1794000),
+        (1800734..1810823),
+        (1821497..1831424),
+        (1841994..1848981),
+        (1854555..1862546),
+        (1870116..1885258),
+        (1905115..1916521),
+        (1927840..1942415),
+        (1960339..1967671),
+        (1973921..1981614),
+        (1988371..1998887),
+        (2010295..2017326),
+        (2023017..2030194),
+        (2036133..2045780),
+        (2055722..2061928),
+        (2066190..2074525),
+        (2082356..2100318),
+        (2126519..2139892),
+        (2156342..2167902),
+        (2180980..2195739),
+        (2214064..2218453),
+        (2219875..2228503),
+        (2237063..2246119),
+        (2255236..2264393),
+        (2275032..2284685),
+        (2294605..2309330),
+        (2327599..2336347),
+        (2344836..2353930),
+        (2363106..2374420),
+        (2387117..2398015),
+        (2407390..2416563),
+        (2426633..2436193),
+        (2445956..2453618),
+        (2460329..2473399),
+        (2489020..2496570),
+        (2503036..2510940),
+        (2518085..2529699),
+        (2542979..2556088),
+        (2571805..2584011),
+        (2598166..2603410),
+        (2606137..2615087),
+        (2623965..2630234),
+        (2634765..2640884),
+        (2645065..2651195),
+        (2655379..2664282),
+        (2673120..2681195),
+        (2688664..2693964),
+        (2696798..2710140),
+        (2726258..2732608),
+        (2737160..2743640),
+        (2748517..2777045),
+        (2819507..2826699),
+        (2832752..2843055),
+        (2854006..2864049),
+        (2874816..2881101),
+        (2885515..2893474),
+        (2900622..2910224),
+        (2920373..2933453),
+        (2949027..2971163),
+        (3007497..3019454),
+        (3034579..3041923),
+        (3048228..3062313),
+        (3079954..3090102),
+        (3101002..3110491),
+        (3120239..3132158),
+        (3145880..3153423),
+        (3160396..3166552),
+        (3170788..3180489),
+        (3190410..3199191),
+        (3207663..3218558),
+        (3230717..3236523),
+        (3240143..3249806),
+        (3259767..3269276),
+        (3278937..3283493),
+        (3285145..3296471),
+        (3308968..3316755),
+        (3323670..3333991),
+        (3345220..3354415),
+        (3363827..3370339),
+        (3375238..3383693),
+        (3391768..3399540),
+        (3406451..3414752),
+        (3422574..3429646),
+        (3435384..3451782),
+        (3473337..3483446),
+        (3494132..3501977),
+        (3509190..3518891),
+        (3528902..3537837),
+        (3546683..3554866),
+        (3562488..3570380),
+        (3577554..3589110),
+        (3602259..3612179),
+        (3622648..3631182),
+        (3639472..3646688),
+        (3652734..3662276),
+        (3671987..3681881),
+        (3692288..3703181),
+        (3715368..3724707),
+        (3734203..3744834),
+        (3756412..3763560),
+        (3769486..3780755),
+        (3793444..3802196),
+        (3810715..3822761),
+        (3836904..3847824),
+        (3859952..3866929),
+        (3872397..3881679),
+        (3891272..3901686),
+        (3913125..3917526),
+        (3918939..3933696),
+        (3954436..3960605),
     ];
     pub static AATROX: CC = CC {
         name: "Aatrox",
@@ -1500,14 +1500,10 @@ pub mod champions {
         (0.037647 + 0.002 * ctx.level) * ctx.enemy_bonus_health
     }
     pub const fn aatrox_qmin(ctx: &Ctx) -> f32 {
-        -5.0 + 15.0 * ctx.q_level
-            + (0.525 + 0.075 * ctx.q_level) * ctx.attack_damage
-            + -6.25
-            + 18.75 * ctx.q_level
-            + (0.65625 + 0.0937 * ctx.q_level) * ctx.attack_damage
-            + -7.5
-            + 22.5 * ctx.q_level
-            + (0.787 + 0.112 * ctx.q_level) * ctx.attack_damage
+        -18.75
+            + 56.25 * ctx.q_level
+            + 1.96825 * ctx.attack_damage
+            + 0.2807 * ctx.q_level * ctx.attack_damage
     }
     pub const fn aatrox_q1min(ctx: &Ctx) -> f32 {
         -5.0 + 15.0 * ctx.q_level + (0.525 + 0.075 * ctx.q_level) * ctx.attack_damage
@@ -1519,14 +1515,10 @@ pub mod champions {
         -7.5 + 22.5 * ctx.q_level + (0.787 + 0.112 * ctx.q_level) * ctx.attack_damage
     }
     pub const fn aatrox_qmax(ctx: &Ctx) -> f32 {
-        -8.5 + 25.5 * ctx.q_level
-            + (0.892 + 0.127 * ctx.q_level) * ctx.attack_damage
-            + -10.625
-            + 31.875 * ctx.q_level
-            + (1.115625 + 0.159375 * ctx.q_level) * ctx.attack_damage
-            + -12.75
-            + 38.25 * ctx.q_level
-            + (1.3387 + 0.1912 * ctx.q_level) * ctx.attack_damage
+        -31.875
+            + 95.625 * ctx.q_level
+            + 3.346325 * ctx.attack_damage
+            + 0.477575 * ctx.q_level * ctx.attack_damage
     }
     pub const fn aatrox_q1max(ctx: &Ctx) -> f32 {
         -8.5 + 25.5 * ctx.q_level + (0.892 + 0.127 * ctx.q_level) * ctx.attack_damage
@@ -1672,7 +1664,7 @@ pub mod champions {
         25.0 + 50.0 * ctx.r_level + 0.35 * ctx.ability_power
     }
     pub const fn ahri_rmax(ctx: &Ctx) -> f32 {
-        3.0 * (25.0 + 50.0 * ctx.r_level + 0.35 * ctx.ability_power)
+        75.0 + 150.0 * ctx.r_level + 1.05 * ctx.ability_power
     }
     pub static AKALI: CC = CC {
         name: "Akali",
@@ -1781,22 +1773,22 @@ pub mod champions {
         },
     };
     pub const fn akali_p(ctx: &Ctx) -> f32 {
-        26.35294 + 8.64705 * ctx.level + 0.6 * ctx.bonus_ad + 0.55 * ctx.ability_power
+        26.35294 + 8.64705 * ctx.level + 0.55 * ctx.ability_power + 0.6 * ctx.bonus_ad
     }
     pub const fn akali_q(ctx: &Ctx) -> f32 {
-        20.0 + 25.0 * ctx.q_level + 0.65 * ctx.attack_damage + 0.6 * ctx.ability_power
+        20.0 + 25.0 * ctx.q_level + 0.6 * ctx.ability_power + 0.65 * ctx.attack_damage
     }
     pub const fn akali_e1min(ctx: &Ctx) -> f32 {
-        21.0 * ctx.e_level + 0.3 * ctx.attack_damage + 0.33 * ctx.ability_power
+        21.0 * ctx.e_level + 0.33 * ctx.ability_power + 0.3 * ctx.attack_damage
     }
     pub const fn akali_emax(ctx: &Ctx) -> f32 {
-        70.0 * ctx.e_level + 1.0 * ctx.attack_damage + 1.1 * ctx.ability_power
+        70.0 * ctx.e_level + 1.1 * ctx.ability_power + ctx.attack_damage
     }
     pub const fn akali_e1max(ctx: &Ctx) -> f32 {
-        49.0 * ctx.e_level + 0.7 * ctx.attack_damage + 0.77 * ctx.ability_power
+        49.0 * ctx.e_level + 0.77 * ctx.ability_power + 0.7 * ctx.attack_damage
     }
     pub const fn akali_r1(ctx: &Ctx) -> f32 {
-        110.0 * ctx.r_level + 0.5 * ctx.bonus_ad + 0.3 * ctx.ability_power
+        110.0 * ctx.r_level + 0.3 * ctx.ability_power + 0.5 * ctx.bonus_ad
     }
     pub const fn akali_r2min(ctx: &Ctx) -> f32 {
         210.0 * ctx.r_level + 0.9 * ctx.ability_power
@@ -2017,7 +2009,7 @@ pub mod champions {
         20.0 + 40.0 * ctx.q_level + 0.8 * ctx.ability_power
     }
     pub const fn alistar_w(ctx: &Ctx) -> f32 {
-        55.0 * ctx.w_level + 1.0 * ctx.ability_power
+        55.0 * ctx.w_level + ctx.ability_power
     }
     pub const fn alistar_emin(ctx: &Ctx) -> f32 {
         5.0 + 3.0 * ctx.e_level + 0.07 * ctx.ability_power
@@ -2110,15 +2102,15 @@ pub mod champions {
     };
     pub const fn ambessa_q3(ctx: &Ctx) -> f32 {
         20.0 + 20.0 * ctx.q_level
-            + 0.6 * ctx.bonus_ad
-            + (0.01 + 0.01 * ctx.q_level) * ctx.enemy_max_health
-            + 0.03 * 0.01 * ctx.bonus_ad
+            + 0.6003 * ctx.bonus_ad
+            + 0.01 * ctx.enemy_max_health
+            + 0.01 * ctx.q_level * ctx.enemy_max_health
     }
     pub const fn ambessa_q4(ctx: &Ctx) -> f32 {
         10.0 + 10.0 * ctx.q_level
-            + 0.3 * ctx.bonus_ad
-            + (0.005 + 0.005 * ctx.q_level) * ctx.enemy_max_health
-            + 0.015 * 0.01 * ctx.bonus_ad
+            + 0.30015 * ctx.bonus_ad
+            + 0.005 * ctx.enemy_max_health
+            + 0.005 * ctx.q_level * ctx.enemy_max_health
     }
     pub const fn ambessa_w1(ctx: &Ctx) -> f32 {
         25.0 + 25.0 * ctx.w_level + 0.5 * ctx.bonus_ad
@@ -2130,7 +2122,7 @@ pub mod champions {
         20.0 + 20.0 * ctx.e_level + 0.5 * ctx.bonus_ad
     }
     pub const fn ambessa_e2(ctx: &Ctx) -> f32 {
-        40.0 + 40.0 * ctx.e_level + 1.0 * ctx.bonus_ad
+        40.0 + 40.0 * ctx.e_level + ctx.bonus_ad
     }
     pub const fn ambessa_r1(ctx: &Ctx) -> f32 {
         50.0 + 100.0 * ctx.r_level + 0.8 * ctx.bonus_ad
@@ -2552,7 +2544,7 @@ pub mod champions {
         (1.025 + 0.075 * ctx.q_level) * ctx.attack_damage
     }
     pub const fn ashe_w(ctx: &Ctx) -> f32 {
-        25.0 + 35.0 * ctx.w_level + 1.0 * ctx.bonus_ad
+        25.0 + 35.0 * ctx.w_level + ctx.bonus_ad
     }
     pub const fn ashe_r(ctx: &Ctx) -> f32 {
         200.0 * ctx.r_level + 1.2 * ctx.ability_power
@@ -3063,7 +3055,7 @@ pub mod champions {
         },
     };
     pub const fn belveth_q1(ctx: &Ctx) -> f32 {
-        -5.0 + 5.0 * ctx.q_level + 1.0 * ctx.attack_damage
+        -5.0 + 5.0 * ctx.q_level + ctx.attack_damage
     }
     pub const fn belveth_q2(ctx: &Ctx) -> f32 {
         0.5 + 0.1 * ctx.q_level
@@ -3072,10 +3064,10 @@ pub mod champions {
         45.0 + 10.0 * ctx.q_level
     }
     pub const fn belveth_q4(ctx: &Ctx) -> f32 {
-        40.0 + 15.0 * ctx.q_level + 1.0 * ctx.attack_damage
+        40.0 + 15.0 * ctx.q_level + ctx.attack_damage
     }
     pub const fn belveth_w1(ctx: &Ctx) -> f32 {
-        30.0 + 40.0 * ctx.w_level + 1.0 * ctx.bonus_ad + 1.25 * ctx.ability_power
+        30.0 + 40.0 * ctx.w_level + 1.25 * ctx.ability_power + ctx.bonus_ad
     }
     pub const fn belveth_e1(ctx: &Ctx) -> f32 {
         0.3 + 0.05 * ctx.e_level
@@ -3090,10 +3082,10 @@ pub mod champions {
         20.0 + 4.0 * ctx.e_level + 0.32 * ctx.attack_damage
     }
     pub const fn belveth_e5(ctx: &Ctx) -> f32 {
-        5.0 + 1.0 * ctx.e_level + 0.08 * ctx.attack_damage
+        5.0 + ctx.e_level + 0.08 * ctx.attack_damage
     }
     pub const fn belveth_r1(ctx: &Ctx) -> f32 {
-        100.0 + 50.0 * ctx.r_level + 1.0 * ctx.ability_power + 0.25 * ctx.missing_health
+        100.0 + 50.0 * ctx.r_level + ctx.ability_power + 0.25 * ctx.missing_health
     }
     pub const fn belveth_r2(ctx: &Ctx) -> f32 {
         4.0 + 2.0 * ctx.r_level + 0.12 * ctx.bonus_ad
@@ -3166,7 +3158,7 @@ pub mod champions {
         60.0 + 50.0 * ctx.q_level + 1.2 * ctx.ability_power
     }
     pub const fn blitzcrank_r1(ctx: &Ctx) -> f32 {
-        150.0 + 125.0 * ctx.r_level + 1.0 * ctx.ability_power
+        150.0 + 125.0 * ctx.r_level + ctx.ability_power
     }
     pub const fn blitzcrank_r2(ctx: &Ctx) -> f32 {
         50.0 * ctx.r_level + (0.2 + 0.1 * ctx.r_level) * ctx.ability_power + 0.02 * ctx.max_mana
@@ -3419,22 +3411,22 @@ pub mod champions {
         },
     };
     pub const fn briar_q1(ctx: &Ctx) -> f32 {
-        35.0 + 25.0 * ctx.q_level + 0.8 * ctx.bonus_ad + 0.6 * ctx.ability_power
+        35.0 + 25.0 * ctx.q_level + 0.6 * ctx.ability_power + 0.8 * ctx.bonus_ad
     }
     pub const fn briar_w1(ctx: &Ctx) -> f32 {
         (0.5 + 0.1 * ctx.w_level) * ctx.attack_damage
     }
     pub const fn briar_e1(ctx: &Ctx) -> f32 {
-        65.0 + 75.0 * ctx.e_level + 2.4 * ctx.bonus_ad + 2.4 * ctx.ability_power
+        65.0 + 75.0 * ctx.e_level + 2.4 * ctx.ability_power + 2.4 * ctx.bonus_ad
     }
     pub const fn briar_e2(ctx: &Ctx) -> f32 {
-        110.0 + 110.0 * ctx.e_level + 3.4 * ctx.bonus_ad + 3.4 * ctx.ability_power
+        110.0 + 110.0 * ctx.e_level + 3.4 * ctx.ability_power + 3.4 * ctx.bonus_ad
     }
     pub const fn briar_e3(ctx: &Ctx) -> f32 {
-        45.0 + 35.0 * ctx.e_level + 1.0 * ctx.bonus_ad + 1.0 * ctx.ability_power
+        45.0 + 35.0 * ctx.e_level + ctx.ability_power + ctx.bonus_ad
     }
     pub const fn briar_e4(ctx: &Ctx) -> f32 {
-        1.125 + 0.875 * ctx.e_level + 0.025 * ctx.bonus_ad + 0.025 * ctx.ability_power
+        1.125 + 0.875 * ctx.e_level + 0.025 * ctx.ability_power + 0.025 * ctx.bonus_ad
     }
     pub const fn briar_r1(ctx: &Ctx) -> f32 {
         50.0 + 100.0 * ctx.r_level + 1.3 * ctx.ability_power
@@ -3523,7 +3515,7 @@ pub mod champions {
         30.0 + 50.0 * ctx.e_level + 0.8 * ctx.ability_power
     }
     pub const fn caitlyn_r1(ctx: &Ctx) -> f32 {
-        125.0 + 175.0 * ctx.r_level + 1.0 * ctx.bonus_ad
+        125.0 + 175.0 * ctx.r_level + ctx.bonus_ad
     }
     pub static CAMILLE: CC = CC {
         name: "Camille",
@@ -3627,7 +3619,7 @@ pub mod champions {
         17.5 + 12.5 * ctx.w_level + 0.3 * ctx.bonus_ad
     }
     pub const fn camille_r1(ctx: &Ctx) -> f32 {
-        (0.02 + 0.02 * ctx.r_level) * ctx.current_health
+        (0.02 + 0.02 * ctx.r_level) * ctx.enemy_current_health
     }
     pub static CASSIOPEIA: CC = CC {
         name: "Cassiopeia",
@@ -3849,7 +3841,7 @@ pub mod champions {
         },
     };
     pub const fn chogath_q1(ctx: &Ctx) -> f32 {
-        25.0 + 55.0 * ctx.q_level + 1.0 * ctx.ability_power
+        25.0 + 55.0 * ctx.q_level + ctx.ability_power
     }
     pub const fn chogath_w1(ctx: &Ctx) -> f32 {
         30.0 + 50.0 * ctx.w_level + 0.7 * ctx.ability_power
@@ -3962,13 +3954,13 @@ pub mod champions {
         },
     };
     pub const fn corki_q1(ctx: &Ctx) -> f32 {
-        15.0 + 45.0 * ctx.q_level + 1.25 * ctx.bonus_ad + 1.0 * ctx.ability_power
+        15.0 + 45.0 * ctx.q_level + ctx.ability_power + 1.25 * ctx.bonus_ad
     }
     pub const fn corki_w1(ctx: &Ctx) -> f32 {
-        15.0 + 15.0 * ctx.w_level + 0.4 * ctx.bonus_ad + 0.3 * ctx.ability_power
+        15.0 + 15.0 * ctx.w_level + 0.3 * ctx.ability_power + 0.4 * ctx.bonus_ad
     }
     pub const fn corki_w2(ctx: &Ctx) -> f32 {
-        75.0 + 75.0 * ctx.w_level + 2.0 * ctx.bonus_ad + 1.5 * ctx.ability_power
+        75.0 + 75.0 * ctx.w_level + 1.5 * ctx.ability_power + 2.0 * ctx.bonus_ad
     }
     pub const fn corki_e1(ctx: &Ctx) -> f32 {
         1.875 + 3.125 * ctx.e_level + 0.15 * ctx.bonus_ad
@@ -4297,7 +4289,7 @@ pub mod champions {
         },
     };
     pub const fn drmundo_q1(ctx: &Ctx) -> f32 {
-        (0.175 + 0.025 * ctx.q_level) * ctx.current_health
+        (0.175 + 0.025 * ctx.q_level) * ctx.enemy_current_health
     }
     pub const fn drmundo_q2(ctx: &Ctx) -> f32 {
         225.0 + 75.0 * ctx.q_level
@@ -4582,7 +4574,7 @@ pub mod champions {
         45.0 + 20.0 * ctx.q_level + 0.9 * ctx.ability_power
     }
     pub const fn elise_q4(ctx: &Ctx) -> f32 {
-        10.0 + 30.0 * ctx.q_level + 0.04 * ctx.current_health + 0.03 * 0.01 * ctx.ability_power
+        10.0 + 30.0 * ctx.q_level + 0.0003 * ctx.ability_power + 0.04 * ctx.enemy_current_health
     }
     pub const fn elise_w1(ctx: &Ctx) -> f32 {
         20.0 + 40.0 * ctx.w_level + 0.75 * ctx.ability_power
@@ -4708,7 +4700,7 @@ pub mod champions {
         200.0 + 50.0 * ctx.w_level + 0.6 * ctx.ability_power
     }
     pub const fn evelynn_e2(ctx: &Ctx) -> f32 {
-        30.0 + 30.0 * ctx.e_level + 0.03 * ctx.enemy_max_health + 0.015 * 0.01 * ctx.ability_power
+        30.0 + 30.0 * ctx.e_level + 0.00015 * ctx.ability_power + 0.03 * ctx.enemy_max_health
     }
     pub const fn evelynn_r1(ctx: &Ctx) -> f32 {
         125.0 * ctx.r_level + 0.75 * ctx.ability_power
@@ -4783,7 +4775,7 @@ pub mod champions {
         },
     };
     pub const fn ezreal_q(ctx: &Ctx) -> f32 {
-        -5.0 + 25.0 * ctx.q_level + 1.3 * ctx.attack_damage + 0.15 * ctx.ability_power
+        -5.0 + 25.0 * ctx.q_level + 0.15 * ctx.ability_power + 1.3 * ctx.attack_damage
     }
     pub const fn ezreal_w(ctx: &Ctx) -> f32 {
         25.0 + 55.0 * ctx.w_level
@@ -4791,10 +4783,10 @@ pub mod champions {
             + (0.65 + 0.05 * ctx.w_level) * ctx.ability_power
     }
     pub const fn ezreal_e(ctx: &Ctx) -> f32 {
-        30.0 + 50.0 * ctx.e_level + 0.5 * ctx.bonus_ad + 0.75 * ctx.ability_power
+        30.0 + 50.0 * ctx.e_level + 0.75 * ctx.ability_power + 0.5 * ctx.bonus_ad
     }
     pub const fn ezreal_r(ctx: &Ctx) -> f32 {
-        150.0 + 200.0 * ctx.r_level + 1.0 * ctx.bonus_ad + 0.9 * ctx.ability_power
+        150.0 + 200.0 * ctx.r_level + 0.9 * ctx.ability_power + ctx.bonus_ad
     }
     pub static FIDDLESTICKS: CC = CC {
         name: "Fiddlesticks",
@@ -4910,13 +4902,13 @@ pub mod champions {
         },
     };
     pub const fn fiddlesticks_q1(ctx: &Ctx) -> f32 {
-        (0.035 + 0.005 * ctx.q_level) * ctx.current_health + 0.03 * 0.01 * ctx.ability_power
+        (0.035 + 0.005 * ctx.q_level) * ctx.enemy_current_health + 0.03 * 0.01 * ctx.ability_power
     }
     pub const fn fiddlesticks_q2(ctx: &Ctx) -> f32 {
         20.0 + 20.0 * ctx.q_level
     }
     pub const fn fiddlesticks_q3(ctx: &Ctx) -> f32 {
-        (0.07 + 0.01 * ctx.q_level) * ctx.current_health + 0.06 * 0.01 * ctx.ability_power
+        (0.07 + 0.01 * ctx.q_level) * ctx.enemy_current_health + 0.06 * 0.01 * ctx.ability_power
     }
     pub const fn fiddlesticks_q4(ctx: &Ctx) -> f32 {
         40.0 + 40.0 * ctx.q_level
@@ -5011,7 +5003,7 @@ pub mod champions {
         60.0 + 10.0 * ctx.q_level + (0.85 + 0.05 * ctx.q_level) * ctx.bonus_ad
     }
     pub const fn fiora_w1(ctx: &Ctx) -> f32 {
-        70.0 + 40.0 * ctx.w_level + 1.0 * ctx.ability_power
+        70.0 + 40.0 * ctx.w_level + ctx.ability_power
     }
     pub const fn fiora_e1(ctx: &Ctx) -> f32 {
         1.5 + 0.1 * ctx.e_level
@@ -5229,15 +5221,15 @@ pub mod champions {
     }
     pub const fn galio_w1(ctx: &Ctx) -> f32 {
         0.2 + 0.05 * ctx.w_level
-            + 0.04 * 0.01 * ctx.ability_power
-            + 0.08 * 0.01 * ctx.bonus_magic_resist
-            + 0.01 * 0.01 * ctx.bonus_health
+            + 0.0004 * ctx.ability_power
+            + 0.0001 * ctx.bonus_health
+            + 0.0008 * ctx.bonus_magic_resist
     }
     pub const fn galio_w2(ctx: &Ctx) -> f32 {
         0.1 + 0.025 * ctx.w_level
-            + 0.015 * 0.01 * ctx.ability_power
-            + 0.04 * 0.01 * ctx.bonus_magic_resist
-            + 0.005 * 0.01 * ctx.bonus_health
+            + 0.00015 * ctx.ability_power
+            + 0.00005 * ctx.bonus_health
+            + 0.0004 * ctx.bonus_magic_resist
     }
     pub const fn galio_w3(ctx: &Ctx) -> f32 {
         30.0 + 30.0 * ctx.w_level + 0.9 * ctx.ability_power
@@ -5356,7 +5348,7 @@ pub mod champions {
         },
     };
     pub const fn gangplank_q1(ctx: &Ctx) -> f32 {
-        -20.0 + 30.0 * ctx.q_level + 1.0 * ctx.attack_damage
+        -20.0 + 30.0 * ctx.q_level + ctx.attack_damage
     }
     pub const fn gangplank_e1(ctx: &Ctx) -> f32 {
         55.0 + 20.0 * ctx.e_level
@@ -5601,7 +5593,7 @@ pub mod champions {
             + 1.0 * ctx.ability_power
     }
     pub const fn gnar_wmega(ctx: &Ctx) -> f32 {
-        15.0 + 30.0 * ctx.w_level + 1.0 * ctx.attack_damage
+        15.0 + 30.0 * ctx.w_level + ctx.attack_damage
     }
     pub const fn gnar_e(ctx: &Ctx) -> f32 {
         15.0 + 35.0 * ctx.e_level + 0.06 * ctx.max_health
@@ -5610,10 +5602,10 @@ pub mod champions {
         45.0 + 35.0 * ctx.e_level + 0.06 * ctx.max_health
     }
     pub const fn gnar_rmin(ctx: &Ctx) -> f32 {
-        100.0 + 100.0 * ctx.r_level + 0.5 * ctx.bonus_ad + 1.0 * ctx.ability_power
+        100.0 + 100.0 * ctx.r_level + ctx.ability_power + 0.5 * ctx.bonus_ad
     }
     pub const fn gnar_rmax(ctx: &Ctx) -> f32 {
-        150.0 + 150.0 * ctx.r_level + 0.75 * ctx.bonus_ad + 1.5 * ctx.ability_power
+        150.0 + 150.0 * ctx.r_level + 1.5 * ctx.ability_power + 0.75 * ctx.bonus_ad
     }
     pub static GRAGAS: CC = CC {
         name: "Gragas",
@@ -5716,10 +5708,10 @@ pub mod champions {
         28.0 + 28.0 * ctx.q_level + 0.56 * ctx.ability_power
     }
     pub const fn gragas_w1(ctx: &Ctx) -> f32 {
-        0.08 + 0.02 * ctx.w_level + 0.04 * 0.01 * ctx.ability_power
+        0.08 + 0.02 * ctx.w_level + 0.0004 * ctx.ability_power
     }
     pub const fn gragas_w2(ctx: &Ctx) -> f32 {
-        -10.0 + 30.0 * ctx.w_level + 0.07 * ctx.enemy_max_health + 0.7 * ctx.ability_power
+        -10.0 + 30.0 * ctx.w_level + 0.7 * ctx.ability_power + 0.07 * ctx.enemy_max_health
     }
     pub const fn gragas_e1(ctx: &Ctx) -> f32 {
         35.0 + 45.0 * ctx.e_level + 0.6 * ctx.ability_power
@@ -5938,67 +5930,43 @@ pub mod champions {
         },
     };
     pub const fn gwen_q1(ctx: &Ctx) -> f32 {
-        5.0 + 5.0 * ctx.q_level
-            + 0.05 * ctx.ability_power
-            + 0.01 * ctx.enemy_max_health
-            + 0.006 * 0.01 * ctx.ability_power
+        5.0 + 5.0 * ctx.q_level + 0.05006 * ctx.ability_power + 0.01 * ctx.enemy_max_health
     }
     pub const fn gwen_q2(ctx: &Ctx) -> f32 {
         5.0 + 5.0 * ctx.q_level + 0.05 * ctx.ability_power
     }
     pub const fn gwen_q3(ctx: &Ctx) -> f32 {
-        35.0 + 25.0 * ctx.q_level
-            + 0.35 * ctx.ability_power
-            + 0.01 * ctx.enemy_max_health
-            + 0.006 * 0.01 * ctx.ability_power
+        35.0 + 25.0 * ctx.q_level + 0.35006 * ctx.ability_power + 0.01 * ctx.enemy_max_health
     }
     pub const fn gwen_q4(ctx: &Ctx) -> f32 {
         35.0 + 25.0 * ctx.q_level + 0.35 * ctx.ability_power
     }
     pub const fn gwen_q5(ctx: &Ctx) -> f32 {
-        60.0 + 50.0 * ctx.q_level
-            + 0.6 * ctx.ability_power
-            + 0.06 * ctx.enemy_max_health
-            + 0.036000000000000004 * 0.01 * ctx.ability_power
+        60.0 + 50.0 * ctx.q_level + 0.60036 * ctx.ability_power + 0.06 * ctx.enemy_max_health
     }
     pub const fn gwen_q6(ctx: &Ctx) -> f32 {
         60.0 + 50.0 * ctx.q_level + 0.6 * ctx.ability_power
     }
     pub const fn gwen_q7(ctx: &Ctx) -> f32 {
-        40.0 + 30.0 * ctx.q_level
-            + 0.4 * ctx.ability_power
-            + 0.02 * ctx.enemy_max_health
-            + 0.012 * 0.01 * ctx.ability_power
+        40.0 + 30.0 * ctx.q_level + 0.40012 * ctx.ability_power + 0.02 * ctx.enemy_max_health
     }
     pub const fn gwen_q8(ctx: &Ctx) -> f32 {
         40.0 + 30.0 * ctx.q_level + 0.4 * ctx.ability_power
     }
     pub const fn gwen_r1(ctx: &Ctx) -> f32 {
-        5.0 + 30.0 * ctx.r_level
-            + 0.1 * ctx.ability_power
-            + 0.01 * ctx.enemy_max_health
-            + 0.006 * 0.01 * ctx.ability_power
+        5.0 + 30.0 * ctx.r_level + 0.10006 * ctx.ability_power + 0.01 * ctx.enemy_max_health
     }
     pub const fn gwen_r2(ctx: &Ctx) -> f32 {
         5.0 + 30.0 * ctx.r_level + 0.1 * ctx.ability_power
     }
     pub const fn gwen_r3(ctx: &Ctx) -> f32 {
-        45.0 + 270.0 * ctx.r_level
-            + 0.9 * ctx.ability_power
-            + 0.09 * ctx.enemy_max_health
-            + 0.054000000000000006 * 0.01 * ctx.ability_power
+        45.0 + 270.0 * ctx.r_level + 0.90054 * ctx.ability_power + 0.09 * ctx.enemy_max_health
     }
     pub const fn gwen_r4(ctx: &Ctx) -> f32 {
-        15.0 + 90.0 * ctx.r_level
-            + 0.3 * ctx.ability_power
-            + 0.03 * ctx.enemy_max_health
-            + 0.018000000000000002 * 0.01 * ctx.ability_power
+        15.0 + 90.0 * ctx.r_level + 0.30018 * ctx.ability_power + 0.03 * ctx.enemy_max_health
     }
     pub const fn gwen_r5(ctx: &Ctx) -> f32 {
-        25.0 + 150.0 * ctx.r_level
-            + 0.5 * ctx.ability_power
-            + 0.05 * ctx.enemy_max_health
-            + 0.03 * 0.01 * ctx.ability_power
+        25.0 + 150.0 * ctx.r_level + 0.5003 * ctx.ability_power + 0.05 * ctx.enemy_max_health
     }
     pub static HECARIM: CC = CC {
         name: "Hecarim",
@@ -6093,16 +6061,16 @@ pub mod champions {
         10.0 + 10.0 * ctx.w_level + 0.2 * ctx.ability_power
     }
     pub const fn hecarim_w2(ctx: &Ctx) -> f32 {
-        50.0 + 50.0 * ctx.w_level + 1.0 * ctx.ability_power
+        50.0 + 50.0 * ctx.w_level + ctx.ability_power
     }
     pub const fn hecarim_e1(ctx: &Ctx) -> f32 {
-        30.0 + 30.0 * ctx.e_level + 1.0 * ctx.bonus_ad
+        30.0 + 30.0 * ctx.e_level + ctx.bonus_ad
     }
     pub const fn hecarim_e2(ctx: &Ctx) -> f32 {
         15.0 + 15.0 * ctx.e_level + 0.5 * ctx.bonus_ad
     }
     pub const fn hecarim_r1(ctx: &Ctx) -> f32 {
-        50.0 + 100.0 * ctx.r_level + 1.0 * ctx.ability_power
+        50.0 + 100.0 * ctx.r_level + ctx.ability_power
     }
     pub static HEIMERDINGER: CC = CC {
         name: "Heimerdinger",
@@ -6438,7 +6406,7 @@ pub mod champions {
         10.0 + 10.0 * ctx.w_level
     }
     pub const fn illaoi_e1(ctx: &Ctx) -> f32 {
-        0.2 + 0.05 * ctx.e_level + 0.08 * 0.01 * ctx.attack_damage
+        0.2 + 0.05 * ctx.e_level + 0.0008 * ctx.attack_damage
     }
     pub const fn illaoi_r1(ctx: &Ctx) -> f32 {
         50.0 + 100.0 * ctx.r_level + 0.5 * ctx.bonus_ad
@@ -6518,13 +6486,13 @@ pub mod champions {
         -15.0 + 20.0 * ctx.q_level + 0.7 * ctx.attack_damage
     }
     pub const fn irelia_w1(ctx: &Ctx) -> f32 {
-        30.0 * ctx.w_level + 1.2 * ctx.attack_damage + 1.5 * ctx.ability_power
+        30.0 * ctx.w_level + 1.5 * ctx.ability_power + 1.2 * ctx.attack_damage
     }
     pub const fn irelia_w2(ctx: &Ctx) -> f32 {
-        10.0 * ctx.w_level + 0.4 * ctx.attack_damage + 0.5 * ctx.ability_power
+        10.0 * ctx.w_level + 0.5 * ctx.ability_power + 0.4 * ctx.attack_damage
     }
     pub const fn irelia_e1(ctx: &Ctx) -> f32 {
-        30.0 + 40.0 * ctx.e_level + 1.0 * ctx.ability_power
+        30.0 + 40.0 * ctx.e_level + ctx.ability_power
     }
     pub const fn irelia_r1(ctx: &Ctx) -> f32 {
         50.0 + 75.0 * ctx.r_level + 0.7 * ctx.ability_power
@@ -6828,7 +6796,7 @@ pub mod champions {
         },
     };
     pub const fn jax_q1(ctx: &Ctx) -> f32 {
-        25.0 + 40.0 * ctx.q_level + 1.0 * ctx.bonus_ad
+        25.0 + 40.0 * ctx.q_level + ctx.bonus_ad
     }
     pub const fn jax_w1(ctx: &Ctx) -> f32 {
         15.0 + 35.0 * ctx.w_level + 0.6 * ctx.ability_power
@@ -6840,7 +6808,7 @@ pub mod champions {
         10.0 + 30.0 * ctx.e_level + 0.7 * ctx.ability_power + 0.035 * ctx.enemy_max_health
     }
     pub const fn jax_r1(ctx: &Ctx) -> f32 {
-        25.0 + 75.0 * ctx.r_level + 1.0 * ctx.ability_power
+        25.0 + 75.0 * ctx.r_level + ctx.ability_power
     }
     pub const fn jax_r2(ctx: &Ctx) -> f32 {
         20.0 + 55.0 * ctx.r_level + 0.6 * ctx.ability_power
@@ -6923,7 +6891,7 @@ pub mod champions {
         20.0 + 15.0 * ctx.w_level + 0.25 * ctx.ability_power
     }
     pub const fn jayce_w4(ctx: &Ctx) -> f32 {
-        80.0 + 60.0 * ctx.w_level + 1.0 * ctx.ability_power
+        80.0 + 60.0 * ctx.w_level + ctx.ability_power
     }
     pub const fn jayce_e1(ctx: &Ctx) -> f32 {
         100.0 + 100.0 * ctx.e_level
@@ -7058,13 +7026,13 @@ pub mod champions {
         35.0 + 35.0 * ctx.w_level + 0.5 * ctx.attack_damage
     }
     pub const fn jhin_e1(ctx: &Ctx) -> f32 {
-        -40.0 + 60.0 * ctx.e_level + 1.2 * ctx.attack_damage + 1.0 * ctx.ability_power
+        -40.0 + 60.0 * ctx.e_level + ctx.ability_power + 1.2 * ctx.attack_damage
     }
     pub const fn jhin_e2(ctx: &Ctx) -> f32 {
-        -26.0 + 39.0 * ctx.e_level + 0.78 * ctx.attack_damage + 0.65 * ctx.ability_power
+        -26.0 + 39.0 * ctx.e_level + 0.65 * ctx.ability_power + 0.78 * ctx.attack_damage
     }
     pub const fn jhin_r1(ctx: &Ctx) -> f32 {
-        256.0 * ctx.r_level + 1.0 * ctx.attack_damage
+        256.0 * ctx.r_level + ctx.attack_damage
     }
     pub const fn jhin_r2(ctx: &Ctx) -> f32 {
         64.0 * ctx.r_level + 0.25 * ctx.attack_damage
@@ -7182,7 +7150,7 @@ pub mod champions {
         -40.0 + 50.0 * ctx.w_level + 1.4 * ctx.attack_damage
     }
     pub const fn jinx_e(ctx: &Ctx) -> f32 {
-        40.0 + 50.0 * ctx.e_level + 1.0 * ctx.ability_power
+        40.0 + 50.0 * ctx.e_level + ctx.ability_power
     }
     pub const fn jinx_rmin(ctx: &Ctx) -> f32 {
         5.0 + 15.0 * ctx.r_level
@@ -7303,30 +7271,30 @@ pub mod champions {
     }
     pub const fn ksante_w1(ctx: &Ctx) -> f32 {
         12.0 + 24.0 * ctx.w_level
+            + 0.00016 * ctx.bonus_armor
+            + 0.00016 * ctx.bonus_magic_resist
             + 0.064 * ctx.enemy_max_health
-            + 0.016 * 0.01 * ctx.bonus_armor
-            + 0.016 * 0.01 * ctx.bonus_magic_resist
     }
     pub const fn ksante_w2(ctx: &Ctx) -> f32 {
         1.5 + 3.0 * ctx.w_level
+            + 0.00002 * ctx.bonus_armor
+            + 0.00002 * ctx.bonus_magic_resist
             + 0.008 * ctx.enemy_max_health
-            + 0.002 * 0.01 * ctx.bonus_armor
-            + 0.002 * 0.01 * ctx.bonus_magic_resist
     }
     pub const fn ksante_w3(ctx: &Ctx) -> f32 {
         27.0 + 54.0 * ctx.w_level
-            + 0.14400000000000002 * ctx.enemy_max_health
-            + 0.036000000000000004 * 0.01 * ctx.bonus_armor
-            + 0.036000000000000004 * 0.01 * ctx.bonus_magic_resist
+            + 0.00036 * ctx.bonus_armor
+            + 0.00036 * ctx.bonus_magic_resist
+            + 0.144 * ctx.enemy_max_health
     }
     pub const fn ksante_w4(ctx: &Ctx) -> f32 {
         100.0 + 80.0 * ctx.w_level
     }
     pub const fn ksante_w5(ctx: &Ctx) -> f32 {
         15.0 + 30.0 * ctx.w_level
+            + 0.0002 * ctx.bonus_armor
+            + 0.0002 * ctx.bonus_magic_resist
             + 0.08 * ctx.enemy_max_health
-            + 0.02 * 0.01 * ctx.bonus_armor
-            + 0.02 * 0.01 * ctx.bonus_magic_resist
     }
     pub const fn ksante_r1(ctx: &Ctx) -> f32 {
         45.0 + 35.0 * ctx.r_level
@@ -7409,19 +7377,19 @@ pub mod champions {
         },
     };
     pub const fn kaisa_q1(ctx: &Ctx) -> f32 {
-        25.0 + 15.0 * ctx.q_level + 0.55 * ctx.bonus_ad + 0.2 * ctx.ability_power
+        25.0 + 15.0 * ctx.q_level + 0.2 * ctx.ability_power + 0.55 * ctx.bonus_ad
     }
     pub const fn kaisa_q2(ctx: &Ctx) -> f32 {
-        93.75 + 56.25 * ctx.q_level + 2.0625 * ctx.bonus_ad + 0.75 * ctx.ability_power
+        93.75 + 56.25 * ctx.q_level + 0.75 * ctx.ability_power + 2.0625 * ctx.bonus_ad
     }
     pub const fn kaisa_q3(ctx: &Ctx) -> f32 {
-        6.25 + 3.75 * ctx.q_level + 0.1375 * ctx.bonus_ad + 0.05 * ctx.ability_power
+        6.25 + 3.75 * ctx.q_level + 0.05 * ctx.ability_power + 0.1375 * ctx.bonus_ad
     }
     pub const fn kaisa_q4(ctx: &Ctx) -> f32 {
-        56.25 + 33.75 * ctx.q_level + 1.2375 * ctx.bonus_ad + 0.45 * ctx.ability_power
+        56.25 + 33.75 * ctx.q_level + 0.45 * ctx.ability_power + 1.2375 * ctx.bonus_ad
     }
     pub const fn kaisa_w1(ctx: &Ctx) -> f32 {
-        5.0 + 25.0 * ctx.w_level + 1.3 * ctx.attack_damage + 0.45 * ctx.ability_power
+        5.0 + 25.0 * ctx.w_level + 0.45 * ctx.ability_power + 1.3 * ctx.attack_damage
     }
     pub static KALISTA: CC = CC {
         name: "Kalista",
@@ -7509,7 +7477,7 @@ pub mod champions {
             + 0.5 * ctx.ability_power
     }
     pub const fn kalista_e2(ctx: &Ctx) -> f32 {
-        -5.0 + 10.0 * ctx.e_level + 0.7 * ctx.attack_damage + 0.65 * ctx.ability_power
+        -5.0 + 10.0 * ctx.e_level + 0.65 * ctx.ability_power + 0.7 * ctx.attack_damage
     }
     pub static KARMA: CC = CC {
         name: "Karma",
@@ -7879,7 +7847,7 @@ pub mod champions {
         45.0 + 35.0 * ctx.q_level + 0.4 * ctx.ability_power
     }
     pub const fn katarina_e1(ctx: &Ctx) -> f32 {
-        10.0 + 10.0 * ctx.e_level + 0.4 * ctx.attack_damage + 0.25 * ctx.ability_power
+        10.0 + 10.0 * ctx.e_level + 0.25 * ctx.ability_power + 0.4 * ctx.attack_damage
     }
     pub const fn katarina_r1(ctx: &Ctx) -> f32 {
         12.5 + 12.5 * ctx.r_level + 0.19 * ctx.ability_power
@@ -7957,16 +7925,16 @@ pub mod champions {
         },
     };
     pub const fn kayle_q1(ctx: &Ctx) -> f32 {
-        20.0 + 40.0 * ctx.q_level + 0.6 * ctx.bonus_ad + 0.5 * ctx.ability_power
+        20.0 + 40.0 * ctx.q_level + 0.5 * ctx.ability_power + 0.6 * ctx.bonus_ad
     }
     pub const fn kayle_e1(ctx: &Ctx) -> f32 {
         (0.075 + 0.005 * ctx.e_level) * ctx.missing_health + 0.015 * 0.01 * ctx.ability_power
     }
     pub const fn kayle_e2(ctx: &Ctx) -> f32 {
-        10.0 + 5.0 * ctx.e_level + 0.1 * ctx.bonus_ad + 0.2 * ctx.ability_power
+        10.0 + 5.0 * ctx.e_level + 0.2 * ctx.ability_power + 0.1 * ctx.bonus_ad
     }
     pub const fn kayle_r1(ctx: &Ctx) -> f32 {
-        100.0 + 100.0 * ctx.r_level + 1.0 * ctx.bonus_ad + 0.7 * ctx.ability_power
+        100.0 + 100.0 * ctx.r_level + 0.7 * ctx.ability_power + ctx.bonus_ad
     }
     pub static KAYN: CC = CC {
         name: "Kayn",
@@ -8259,7 +8227,7 @@ pub mod champions {
         55.0 + 25.0 * ctx.q_level + 1.1 * ctx.bonus_ad
     }
     pub const fn khazix_w1(ctx: &Ctx) -> f32 {
-        45.0 + 30.0 * ctx.w_level + 1.0 * ctx.bonus_ad
+        45.0 + 30.0 * ctx.w_level + ctx.bonus_ad
     }
     pub const fn khazix_e1(ctx: &Ctx) -> f32 {
         30.0 + 35.0 * ctx.e_level + 0.4 * ctx.bonus_ad
@@ -8335,23 +8303,20 @@ pub mod champions {
     }
     pub const fn kindred_w1(ctx: &Ctx) -> f32 {
         20.0 + 5.0 * ctx.w_level
-            + 0.2 * ctx.bonus_ad
             + 0.2 * ctx.ability_power
-            + 0.015 * ctx.current_health
+            + 0.2 * ctx.bonus_ad
+            + 0.015 * ctx.enemy_current_health
             + 0.01 * ctx.stacks
     }
     pub const fn kindred_w2(ctx: &Ctx) -> f32 {
         30.0 + 7.5 * ctx.w_level
-            + 0.3 * ctx.bonus_ad
             + 0.3 * ctx.ability_power
-            + 0.0225 * ctx.current_health
+            + 0.3 * ctx.bonus_ad
+            + 0.0225 * ctx.enemy_current_health
             + 0.015 * ctx.stacks
     }
     pub const fn kindred_e1(ctx: &Ctx) -> f32 {
-        50.0 + 30.0 * ctx.e_level
-            + 1.0 * ctx.bonus_ad
-            + 0.05 * ctx.missing_health
-            + 0.005 * ctx.stacks
+        50.0 + 30.0 * ctx.e_level + ctx.bonus_ad + 0.05 * ctx.missing_health + 0.005 * ctx.stacks
     }
     pub static KLED: CC = CC {
         name: "Kled",
@@ -8497,9 +8462,10 @@ pub mod champions {
     }
     pub const fn kled_w2(ctx: &Ctx) -> f32 {
         10.0 + 10.0 * ctx.w_level
-            + (0.04 + 0.005 * ctx.w_level) * ctx.enemy_max_health
-            + 0.02 * 0.01 * ctx.bonus_ad
-            + 0.004 * 0.01 * ctx.bonus_health
+            + 0.0002 * ctx.bonus_ad
+            + 0.00004 * ctx.bonus_health
+            + 0.04 * ctx.enemy_max_health
+            + 0.005 * ctx.w_level * ctx.enemy_max_health
     }
     pub const fn kled_e1(ctx: &Ctx) -> f32 {
         10.0 + 25.0 * ctx.e_level + 0.55 * ctx.bonus_ad
@@ -8856,7 +8822,7 @@ pub mod champions {
         30.0 + 30.0 * ctx.q_level + 0.95 * ctx.bonus_ad
     }
     pub const fn leesin_e1(ctx: &Ctx) -> f32 {
-        10.0 + 25.0 * ctx.e_level + 1.0 * ctx.attack_damage
+        10.0 + 25.0 * ctx.e_level + ctx.attack_damage
     }
     pub const fn leesin_r1(ctx: &Ctx) -> f32 {
         -50.0 + 225.0 * ctx.r_level + 2.0 * ctx.bonus_ad
@@ -9210,16 +9176,16 @@ pub mod champions {
         },
     };
     pub const fn lucian_q1(ctx: &Ctx) -> f32 {
-        45.0 + 35.0 * ctx.q_level + 1.0 * ctx.bonus_ad
+        45.0 + 35.0 * ctx.q_level + ctx.bonus_ad
     }
     pub const fn lucian_w1(ctx: &Ctx) -> f32 {
         40.0 + 35.0 * ctx.w_level + 0.9 * ctx.ability_power
     }
     pub const fn lucian_r1(ctx: &Ctx) -> f32 {
-        30.0 * ctx.r_level + 0.5 * ctx.attack_damage + 0.3 * ctx.ability_power
+        30.0 * ctx.r_level + 0.3 * ctx.ability_power + 0.5 * ctx.attack_damage
     }
     pub const fn lucian_r2(ctx: &Ctx) -> f32 {
-        15.0 * ctx.r_level + 0.25 * ctx.attack_damage + 0.15 * ctx.ability_power
+        15.0 * ctx.r_level + 0.15 * ctx.ability_power + 0.25 * ctx.attack_damage
     }
     pub static LULU: CC = CC {
         name: "Lulu",
@@ -9772,22 +9738,19 @@ pub mod champions {
         35.0 + 25.0 * ctx.w_level + 0.4 * ctx.ability_power
     }
     pub const fn maokai_e1(ctx: &Ctx) -> f32 {
-        16.66
-            + 16.67 * ctx.e_level
-            + 0.0333 * ctx.bonus_health
-            + 0.16670000000000001 * ctx.ability_power
+        16.66 + 16.67 * ctx.e_level + 0.1667 * ctx.ability_power + 0.0333 * ctx.bonus_health
     }
     pub const fn maokai_e2(ctx: &Ctx) -> f32 {
-        25.0 + 25.0 * ctx.e_level + 0.05 * ctx.bonus_health + 0.25 * ctx.ability_power
+        25.0 + 25.0 * ctx.e_level + 0.25 * ctx.ability_power + 0.05 * ctx.bonus_health
     }
     pub const fn maokai_e3(ctx: &Ctx) -> f32 {
-        33.34 + 33.33 * ctx.e_level + 0.0667 * ctx.bonus_health + 0.3333 * ctx.ability_power
+        33.34 + 33.33 * ctx.e_level + 0.3333 * ctx.ability_power + 0.0667 * ctx.bonus_health
     }
     pub const fn maokai_e4(ctx: &Ctx) -> f32 {
-        50.0 + 50.0 * ctx.e_level + 0.1 * ctx.bonus_health + 0.5 * ctx.ability_power
+        50.0 + 50.0 * ctx.e_level + 0.5 * ctx.ability_power + 0.1 * ctx.bonus_health
     }
     pub const fn maokai_e5(ctx: &Ctx) -> f32 {
-        25.0 + 25.0 * ctx.e_level + 0.05 * ctx.bonus_health + 0.25 * ctx.ability_power
+        25.0 + 25.0 * ctx.e_level + 0.25 * ctx.ability_power + 0.05 * ctx.bonus_health
     }
     pub const fn maokai_r1(ctx: &Ctx) -> f32 {
         75.0 + 75.0 * ctx.r_level + 0.75 * ctx.ability_power
@@ -10056,7 +10019,7 @@ pub mod champions {
         35.625 + 22.875 * ctx.q_level + (0.3187 + 0.0637 * ctx.q_level) * ctx.ability_power
     }
     pub const fn mel_w1(ctx: &Ctx) -> f32 {
-        (0.35 + 0.05 * ctx.w_level) * 100.0 + 0.05 * 0.01 * ctx.ability_power
+        35.0 + 5.0 * ctx.w_level + 0.0005 * ctx.ability_power
     }
     pub const fn mel_e1(ctx: &Ctx) -> f32 {
         20.0 + 40.0 * ctx.e_level + 0.6 * ctx.ability_power
@@ -10080,7 +10043,7 @@ pub mod champions {
         10.0 * ctx.r_level
     }
     pub const fn mel_r3(ctx: &Ctx) -> f32 {
-        1.0 * ctx.r_level
+        ctx.r_level
     }
     pub static MILIO: CC = CC {
         name: "Milio",
@@ -10212,7 +10175,7 @@ pub mod champions {
         },
     };
     pub const fn missfortune_q1(ctx: &Ctx) -> f32 {
-        -5.0 + 25.0 * ctx.q_level + 1.0 * ctx.attack_damage + 0.35 * ctx.ability_power
+        -5.0 + 25.0 * ctx.q_level + 0.35 * ctx.ability_power + ctx.attack_damage
     }
     pub const fn missfortune_e1(ctx: &Ctx) -> f32 {
         5.0 + 3.75 * ctx.e_level + 0.15 * ctx.ability_power
@@ -10226,7 +10189,7 @@ pub mod champions {
             + (3.0 + 0.5 * ctx.r_level) * ctx.ability_power
     }
     pub const fn missfortune_r2(ctx: &Ctx) -> f32 {
-        10.0 + 10.0 * ctx.r_level + 0.6 * ctx.attack_damage + 0.25 * ctx.ability_power
+        10.0 + 10.0 * ctx.r_level + 0.25 * ctx.ability_power + 0.6 * ctx.attack_damage
     }
     pub static MONKEYKING: CC = CC {
         name: "Wukong",
@@ -10318,7 +10281,7 @@ pub mod champions {
         0.25 + 0.05 * ctx.w_level
     }
     pub const fn monkeyking_e1(ctx: &Ctx) -> f32 {
-        40.0 + 40.0 * ctx.e_level + 1.0 * ctx.ability_power
+        40.0 + 40.0 * ctx.e_level + ctx.ability_power
     }
     pub const fn monkeyking_r1(ctx: &Ctx) -> f32 {
         (0.005 + 0.005 * ctx.r_level) * ctx.enemy_max_health + 0.34375 * ctx.attack_damage
@@ -10515,7 +10478,7 @@ pub mod champions {
         2.5 + 6.5 * ctx.w_level + 0.1 * ctx.ability_power
     }
     pub const fn morgana_w4(ctx: &Ctx) -> f32 {
-        25.0 + 65.0 * ctx.w_level + 1.0 * ctx.ability_power
+        25.0 + 65.0 * ctx.w_level + ctx.ability_power
     }
     pub const fn morgana_r1(ctx: &Ctx) -> f32 {
         125.0 + 75.0 * ctx.r_level + 0.8 * ctx.ability_power
@@ -10647,7 +10610,7 @@ pub mod champions {
         10.0 + 25.0 * ctx.q_level + 0.8 * ctx.bonus_ad
     }
     pub const fn naafiri_q4(ctx: &Ctx) -> f32 {
-        40.0 + 30.0 * ctx.q_level + 1.0 * ctx.bonus_ad
+        40.0 + 30.0 * ctx.q_level + ctx.bonus_ad
     }
     pub const fn naafiri_q5(ctx: &Ctx) -> f32 {
         30.0 + 30.0 * ctx.q_level + 1.4 * ctx.bonus_ad
@@ -10847,7 +10810,7 @@ pub mod champions {
         },
     };
     pub const fn nasus_q1(ctx: &Ctx) -> f32 {
-        20.0 + 20.0 * ctx.q_level + 1.0 * ctx.stacks
+        20.0 + 20.0 * ctx.q_level + ctx.stacks
     }
     pub const fn nasus_e1(ctx: &Ctx) -> f32 {
         20.0 + 30.0 * ctx.e_level + 0.6 * ctx.ability_power
@@ -10978,7 +10941,7 @@ pub mod champions {
         20.0 + 35.0 * ctx.e_level + 0.5 * ctx.ability_power
     }
     pub const fn nautilus_e2(ctx: &Ctx) -> f32 {
-        40.0 + 70.0 * ctx.e_level + 1.0 * ctx.ability_power
+        40.0 + 70.0 * ctx.e_level + ctx.ability_power
     }
     pub const fn nautilus_e3(ctx: &Ctx) -> f32 {
         10.0 + 17.5 * ctx.e_level + 0.25 * ctx.ability_power
@@ -11300,13 +11263,13 @@ pub mod champions {
         -20.0 + 20.0 * ctx.q_level + 2.0 * ctx.attack_damage
     }
     pub const fn nilah_q2(ctx: &Ctx) -> f32 {
-        -10.0 + 10.0 * ctx.q_level + 1.0 * ctx.attack_damage
+        -10.0 + 10.0 * ctx.q_level + ctx.attack_damage
     }
     pub const fn nilah_e1(ctx: &Ctx) -> f32 {
         50.0 + 10.0 * ctx.e_level + 0.2 * ctx.bonus_ad
     }
     pub const fn nilah_r1(ctx: &Ctx) -> f32 {
-        25.0 + 100.0 * ctx.r_level + 1.0 * ctx.bonus_ad
+        25.0 + 100.0 * ctx.r_level + ctx.bonus_ad
     }
     pub const fn nilah_r2(ctx: &Ctx) -> f32 {
         45.0 + 140.0 * ctx.r_level + 1.4 * ctx.bonus_ad
@@ -11404,7 +11367,7 @@ pub mod champions {
         8.75 + 11.25 * ctx.e_level + 0.25 * ctx.ability_power
     }
     pub const fn nocturne_e2(ctx: &Ctx) -> f32 {
-        35.0 + 45.0 * ctx.e_level + 1.0 * ctx.ability_power
+        35.0 + 45.0 * ctx.e_level + ctx.ability_power
     }
     pub const fn nocturne_r1(ctx: &Ctx) -> f32 {
         25.0 + 125.0 * ctx.r_level + 1.2 * ctx.bonus_ad
@@ -11526,7 +11489,7 @@ pub mod champions {
         27.0 + 9.0 * ctx.w_level + 0.3 * ctx.ability_power
     }
     pub const fn nunu_w3(ctx: &Ctx) -> f32 {
-        44.955 + 14.985 * ctx.w_level + 0.49950000000000006 * ctx.ability_power
+        44.955 + 14.985 * ctx.w_level + 0.4995 * ctx.ability_power
     }
     pub const fn nunu_w4(ctx: &Ctx) -> f32 {
         8.991 + 2.997 * ctx.w_level + 0.0999 * ctx.ability_power
@@ -11618,13 +11581,13 @@ pub mod champions {
         },
     };
     pub const fn olaf_q1(ctx: &Ctx) -> f32 {
-        10.0 + 50.0 * ctx.q_level + 1.0 * ctx.bonus_ad
+        10.0 + 50.0 * ctx.q_level + ctx.bonus_ad
     }
     pub const fn olaf_q2(ctx: &Ctx) -> f32 {
         -5.0 + 15.0 * ctx.q_level
     }
     pub const fn olaf_q3(ctx: &Ctx) -> f32 {
-        5.0 + 65.0 * ctx.q_level + 1.0 * ctx.bonus_ad
+        5.0 + 65.0 * ctx.q_level + ctx.bonus_ad
     }
     pub const fn olaf_e1(ctx: &Ctx) -> f32 {
         25.0 + 45.0 * ctx.e_level + 0.5 * ctx.attack_damage
@@ -11955,16 +11918,16 @@ pub mod champions {
         },
     };
     pub const fn pantheon_q1(ctx: &Ctx) -> f32 {
-        40.0 + 30.0 * ctx.q_level + 1.15 * ctx.bonus_ad + 0.5 * ctx.ability_power
+        40.0 + 30.0 * ctx.q_level + 0.5 * ctx.ability_power + 1.15 * ctx.bonus_ad
     }
     pub const fn pantheon_q2(ctx: &Ctx) -> f32 {
-        20.0 + 15.0 * ctx.q_level + 0.575 * ctx.bonus_ad + 0.25 * ctx.ability_power
+        20.0 + 15.0 * ctx.q_level + 0.25 * ctx.ability_power + 0.575 * ctx.bonus_ad
     }
     pub const fn pantheon_q3(ctx: &Ctx) -> f32 {
-        80.0 + 75.0 * ctx.q_level + 2.3 * ctx.bonus_ad + 1.0 * ctx.ability_power
+        80.0 + 75.0 * ctx.q_level + ctx.ability_power + 2.3 * ctx.bonus_ad
     }
     pub const fn pantheon_q4(ctx: &Ctx) -> f32 {
-        40.0 + 37.5 * ctx.q_level + 1.15 * ctx.bonus_ad + 0.5 * ctx.ability_power
+        40.0 + 37.5 * ctx.q_level + 0.5 * ctx.ability_power + 1.15 * ctx.bonus_ad
     }
     pub const fn pantheon_q5(ctx: &Ctx) -> f32 {
         80.0 + 75.0 * ctx.q_level + 2.3 * ctx.bonus_ad
@@ -11973,15 +11936,16 @@ pub mod champions {
         40.0 + 30.0 * ctx.q_level + 1.15 * ctx.bonus_ad
     }
     pub const fn pantheon_w1(ctx: &Ctx) -> f32 {
-        (0.055 + 0.005 * ctx.w_level) * ctx.enemy_max_health
-            + 0.015 * 0.01 * ctx.ability_power
-            + 0.004 * 0.01 * ctx.bonus_health
+        0.00015 * ctx.ability_power
+            + 0.00004 * ctx.bonus_health
+            + 0.055 * ctx.enemy_max_health
+            + 0.005 * ctx.w_level * ctx.enemy_max_health
     }
     pub const fn pantheon_e1(ctx: &Ctx) -> f32 {
         5.0 + 50.0 * ctx.e_level + 1.5 * ctx.bonus_ad
     }
     pub const fn pantheon_r1(ctx: &Ctx) -> f32 {
-        100.0 + 200.0 * ctx.r_level + 1.0 * ctx.ability_power
+        100.0 + 200.0 * ctx.r_level + ctx.ability_power
     }
     pub const fn pantheon_r2(ctx: &Ctx) -> f32 {
         50.0 + 100.0 * ctx.r_level + 0.5 * ctx.ability_power
@@ -12089,10 +12053,10 @@ pub mod champions {
         20.0 + 30.0 * ctx.q_level
     }
     pub const fn poppy_q2(ctx: &Ctx) -> f32 {
-        25.0 + 55.0 * ctx.q_level + 1.0 * ctx.bonus_ad
+        25.0 + 55.0 * ctx.q_level + ctx.bonus_ad
     }
     pub const fn poppy_q3(ctx: &Ctx) -> f32 {
-        5.0 + 25.0 * ctx.q_level + 1.0 * ctx.bonus_ad + 0.09 * ctx.enemy_max_health
+        5.0 + 25.0 * ctx.q_level + ctx.bonus_ad + 0.09 * ctx.enemy_max_health
     }
     pub const fn poppy_q4(ctx: &Ctx) -> f32 {
         50.0 + 110.0 * ctx.q_level + 2.0 * ctx.bonus_ad
@@ -12175,7 +12139,7 @@ pub mod champions {
         50.0 + 50.0 * ctx.q_level + 0.75 * ctx.bonus_ad
     }
     pub const fn pyke_e1(ctx: &Ctx) -> f32 {
-        50.0 + 50.0 * ctx.e_level + 1.0 * ctx.bonus_ad
+        50.0 + 50.0 * ctx.e_level + ctx.bonus_ad
     }
     pub static QIYANA: CC = CC {
         name: "Qiyana",
@@ -12262,7 +12226,7 @@ pub mod champions {
         30.0 + 22.5 * ctx.q_level + 0.6375 * ctx.bonus_ad
     }
     pub const fn qiyana_w1(ctx: &Ctx) -> f32 {
-        8.0 * ctx.w_level + 0.2 * ctx.bonus_ad + 0.45 * ctx.ability_power
+        8.0 * ctx.w_level + 0.45 * ctx.ability_power + 0.2 * ctx.bonus_ad
     }
     pub const fn qiyana_e1(ctx: &Ctx) -> f32 {
         10.0 + 40.0 * ctx.e_level + 0.5 * ctx.bonus_ad
@@ -12477,7 +12441,7 @@ pub mod champions {
         },
     };
     pub const fn rammus_q1(ctx: &Ctx) -> f32 {
-        40.0 + 40.0 * ctx.q_level + 1.0 * ctx.ability_power
+        40.0 + 40.0 * ctx.q_level + ctx.ability_power
     }
     pub const fn rammus_e1(ctx: &Ctx) -> f32 {
         60.0 + 20.0 * ctx.e_level + 0.7 * ctx.ability_power
@@ -12848,7 +12812,7 @@ pub mod champions {
         45.0 + 45.0 * ctx.q_level + 1.4 * ctx.bonus_ad
     }
     pub const fn renekton_q2(ctx: &Ctx) -> f32 {
-        30.0 + 30.0 * ctx.q_level + 1.0 * ctx.bonus_ad
+        30.0 + 30.0 * ctx.q_level + ctx.bonus_ad
     }
     pub const fn renekton_w1(ctx: &Ctx) -> f32 {
         -10.0 + 15.0 * ctx.w_level + 0.75 * ctx.attack_damage
@@ -12872,10 +12836,10 @@ pub mod champions {
         35.0 + 75.0 * ctx.e_level + 2.25 * ctx.bonus_ad
     }
     pub const fn renekton_r1(ctx: &Ctx) -> f32 {
-        -15.0 + 45.0 * ctx.r_level + 0.05 * ctx.bonus_ad + 0.05 * ctx.ability_power
+        -15.0 + 45.0 * ctx.r_level + 0.05 * ctx.ability_power + 0.05 * ctx.bonus_ad
     }
     pub const fn renekton_r2(ctx: &Ctx) -> f32 {
-        -450.0 + 1350.0 * ctx.r_level + 1.5 * ctx.bonus_ad + 1.5 * ctx.ability_power
+        -450.0 + 1350.0 * ctx.r_level + 1.5 * ctx.ability_power + 1.5 * ctx.bonus_ad
     }
     pub static RENGAR: CC = CC {
         name: "Rengar",
@@ -13015,7 +12979,7 @@ pub mod champions {
         45.0 + 90.0 * ctx.q_level + (1.8 + 0.15 * ctx.q_level) * ctx.bonus_ad
     }
     pub const fn riven_w1(ctx: &Ctx) -> f32 {
-        35.0 + 30.0 * ctx.w_level + 1.0 * ctx.bonus_ad
+        35.0 + 30.0 * ctx.w_level + ctx.bonus_ad
     }
     pub static RUMBLE: CC = CC {
         name: "Rumble",
@@ -13232,9 +13196,7 @@ pub mod champions {
             + (0.0137 + 0.0012 * ctx.q_level) * ctx.enemy_max_health
     }
     pub const fn rumble_q6(ctx: &Ctx) -> f32 {
-        6.12 + 4.38 * ctx.q_level
-            + 0.175 * ctx.ability_power
-            + (0.009 + 0.000 * ctx.q_level) * ctx.enemy_max_health
+        6.12 + 4.38 * ctx.q_level + 0.175 * ctx.ability_power + 0.009 * ctx.enemy_max_health
     }
     pub const fn rumble_q7(ctx: &Ctx) -> f32 {
         8.17 + 5.83 * ctx.q_level
@@ -13265,10 +13227,7 @@ pub mod champions {
             + (0.0192 + 0.0017 * ctx.q_level) * ctx.enemy_max_health
     }
     pub const fn rumble_q4min(ctx: &Ctx) -> f32 {
-        3.062
-            + 2.188 * ctx.q_level
-            + 0.0875 * ctx.ability_power
-            + (0.0048 + 0.000 * ctx.q_level) * ctx.enemy_max_health
+        3.062 + 2.188 * ctx.q_level + 0.0875 * ctx.ability_power + 0.0048 * ctx.enemy_max_health
     }
     pub const fn rumble_q5min(ctx: &Ctx) -> f32 {
         65.62
@@ -13298,7 +13257,7 @@ pub mod champions {
         30.0 + 25.0 * ctx.e_level + 0.5 * ctx.ability_power
     }
     pub const fn rumble_e2(ctx: &Ctx) -> f32 {
-        60.0 + 50.0 * ctx.e_level + 1.0 * ctx.ability_power
+        60.0 + 50.0 * ctx.e_level + ctx.ability_power
     }
     pub const fn rumble_e3(ctx: &Ctx) -> f32 {
         45.0 + 37.5 * ctx.e_level + 0.75 * ctx.ability_power
@@ -13488,7 +13447,7 @@ pub mod champions {
         5.0 + 15.0 * ctx.w_level + 0.5 * ctx.bonus_ad
     }
     pub const fn samira_w2(ctx: &Ctx) -> f32 {
-        10.0 + 30.0 * ctx.w_level + 1.0 * ctx.bonus_ad
+        10.0 + 30.0 * ctx.w_level + ctx.bonus_ad
     }
     pub const fn samira_e1(ctx: &Ctx) -> f32 {
         40.0 + 10.0 * ctx.e_level + 0.2 * ctx.bonus_ad
@@ -13677,7 +13636,7 @@ pub mod champions {
         25.0 + 45.0 * ctx.w_level + 0.7 * ctx.bonus_ad
     }
     pub const fn senna_r1(ctx: &Ctx) -> f32 {
-        100.0 + 150.0 * ctx.r_level + 1.15 * ctx.bonus_ad + 0.7 * ctx.ability_power
+        100.0 + 150.0 * ctx.r_level + 0.7 * ctx.ability_power + 1.15 * ctx.bonus_ad
     }
     pub static SERAPHINE: CC = CC {
         name: "Seraphine",
@@ -13848,17 +13807,13 @@ pub mod champions {
         },
     };
     pub const fn sett_q1(ctx: &Ctx) -> f32 {
-        10.0 * ctx.q_level
-            + 0.01 * ctx.enemy_max_health
-            + 1.0 / 1.5 / 2.0 / 2.5 / 0.03 * 0.01 * ctx.attack_damage
+        10.0 * ctx.q_level + 0.044444 * ctx.attack_damage + 0.01 * ctx.enemy_max_health
     }
     pub const fn sett_q2(ctx: &Ctx) -> f32 {
-        20.0 * ctx.q_level
-            + 0.02 * ctx.enemy_max_health
-            + 2.0 / 3.0 / 4.0 / 5.0 / 0.06 * 0.01 * ctx.attack_damage
+        20.0 * ctx.q_level + 0.005556 * ctx.attack_damage + 0.02 * ctx.enemy_max_health
     }
     pub const fn sett_w1(ctx: &Ctx) -> f32 {
-        60.0 + 20.0 * ctx.w_level + 0.25 * 0.0 + 0.25 * 0.01 * ctx.bonus_ad
+        60.0 + 20.0 * ctx.w_level + 0.0025 * ctx.bonus_ad
     }
     pub const fn sett_e1(ctx: &Ctx) -> f32 {
         30.0 + 20.0 * ctx.e_level + 0.6 * ctx.attack_damage
@@ -13997,10 +13952,10 @@ pub mod champions {
         10.0 + 20.0 * ctx.w_level + 0.12 * ctx.ability_power
     }
     pub const fn shaco_e1(ctx: &Ctx) -> f32 {
-        67.5 + 37.5 * ctx.e_level + 1.2 * ctx.bonus_ad + 0.9 * ctx.ability_power
+        67.5 + 37.5 * ctx.e_level + 0.9 * ctx.ability_power + 1.2 * ctx.bonus_ad
     }
     pub const fn shaco_e2(ctx: &Ctx) -> f32 {
-        45.0 + 25.0 * ctx.e_level + 0.8 * ctx.bonus_ad + 0.6 * ctx.ability_power
+        45.0 + 25.0 * ctx.e_level + 0.6 * ctx.ability_power + 0.8 * ctx.bonus_ad
     }
     pub const fn shaco_r1(ctx: &Ctx) -> f32 {
         25.0 * ctx.r_level + 0.15 * ctx.ability_power
@@ -14284,7 +14239,7 @@ pub mod champions {
         },
     };
     pub const fn shyvana_q1(ctx: &Ctx) -> f32 {
-        0.2 * ctx.q_level * ctx.attack_damage + 0.25 * ctx.ability_power
+        0.25 * ctx.ability_power + 0.2 * ctx.q_level * ctx.attack_damage
     }
     pub const fn shyvana_w1(ctx: &Ctx) -> f32 {
         5.0 + 5.0 * ctx.w_level + 0.1 * ctx.bonus_ad
@@ -14293,7 +14248,7 @@ pub mod champions {
         3.0 + 2.0 * ctx.w_level + 0.05 * ctx.bonus_ad
     }
     pub const fn shyvana_e1(ctx: &Ctx) -> f32 {
-        45.0 + 40.0 * ctx.e_level + 0.5 * ctx.bonus_ad + 0.7 * ctx.ability_power
+        45.0 + 40.0 * ctx.e_level + 0.7 * ctx.ability_power + 0.5 * ctx.bonus_ad
     }
     pub const fn shyvana_e2(ctx: &Ctx) -> f32 {
         match ctx.e_level as u8 {
@@ -14319,7 +14274,7 @@ pub mod champions {
         }
     }
     pub const fn shyvana_r1(ctx: &Ctx) -> f32 {
-        50.0 + 100.0 * ctx.r_level + 1.0 * ctx.ability_power
+        50.0 + 100.0 * ctx.r_level + ctx.ability_power
     }
     pub static SINGED: CC = CC {
         name: "Singed",
@@ -14622,13 +14577,13 @@ pub mod champions {
         },
     };
     pub const fn sivir_q1(ctx: &Ctx) -> f32 {
-        35.0 + 25.0 * ctx.q_level + 0.7 * ctx.bonus_ad + 0.6 * ctx.ability_power
+        35.0 + 25.0 * ctx.q_level + 0.6 * ctx.ability_power + 0.7 * ctx.bonus_ad
     }
     pub const fn sivir_q2(ctx: &Ctx) -> f32 {
-        14.0 + 10.0 * ctx.q_level + 0.28 * ctx.bonus_ad + 0.24 * ctx.ability_power
+        14.0 + 10.0 * ctx.q_level + 0.24 * ctx.ability_power + 0.28 * ctx.bonus_ad
     }
     pub const fn sivir_q3(ctx: &Ctx) -> f32 {
-        70.0 + 50.0 * ctx.q_level + 1.4 * ctx.bonus_ad + 1.2 * ctx.ability_power
+        70.0 + 50.0 * ctx.q_level + 1.2 * ctx.ability_power + 1.4 * ctx.bonus_ad
     }
     pub const fn sivir_w1(ctx: &Ctx) -> f32 {
         (0.75 + 0.05 * ctx.w_level) * ctx.attack_damage
@@ -14744,7 +14699,7 @@ pub mod champions {
         30.0 * ctx.e_level + 1.2 * ctx.bonus_ad + 0.06 * ctx.max_health
     }
     pub const fn skarner_r1(ctx: &Ctx) -> f32 {
-        50.0 + 100.0 * ctx.r_level + 1.0 * ctx.ability_power
+        50.0 + 100.0 * ctx.r_level + ctx.ability_power
     }
     pub static SMOLDER: CC = CC {
         name: "Smolder",
@@ -14847,13 +14802,13 @@ pub mod champions {
         25.0 + 7.5 * ctx.q_level + 0.65 * ctx.bonus_ad
     }
     pub const fn smolder_w1(ctx: &Ctx) -> f32 {
-        -15.0 + 25.0 * ctx.w_level + 0.65 * ctx.bonus_ad + 0.8 * ctx.ability_power
+        -15.0 + 25.0 * ctx.w_level + 0.8 * ctx.ability_power + 0.65 * ctx.bonus_ad
     }
     pub const fn smolder_w2(ctx: &Ctx) -> f32 {
         50.0 + 10.0 * ctx.w_level + 0.6 * ctx.bonus_ad
     }
     pub const fn smolder_w3(ctx: &Ctx) -> f32 {
-        35.0 + 35.0 * ctx.w_level + 1.25 * ctx.bonus_ad + 0.8 * ctx.ability_power
+        35.0 + 35.0 * ctx.w_level + 0.8 * ctx.ability_power + 1.25 * ctx.bonus_ad
     }
     pub const fn smolder_e1(ctx: &Ctx) -> f32 {
         25.0 + 25.0 * ctx.e_level + 1.5 * ctx.attack_damage
@@ -14862,10 +14817,10 @@ pub mod champions {
         5.0 + 5.0 * ctx.e_level + 0.3 * ctx.attack_damage
     }
     pub const fn smolder_r1(ctx: &Ctx) -> f32 {
-        150.0 + 150.0 * ctx.r_level + 1.65 * ctx.bonus_ad + 1.5 * ctx.ability_power
+        150.0 + 150.0 * ctx.r_level + 1.5 * ctx.ability_power + 1.65 * ctx.bonus_ad
     }
     pub const fn smolder_r2(ctx: &Ctx) -> f32 {
-        100.0 + 100.0 * ctx.r_level + 1.1 * ctx.bonus_ad + 1.0 * ctx.ability_power
+        100.0 + 100.0 * ctx.r_level + ctx.ability_power + 1.1 * ctx.bonus_ad
     }
     pub static SONA: CC = CC {
         name: "Sona",
@@ -15600,7 +15555,7 @@ pub mod champions {
         67.5 + 30.0 * ctx.q_level + 1.5 * ctx.bonus_ad
     }
     pub const fn talon_q2(ctx: &Ctx) -> f32 {
-        45.0 + 20.0 * ctx.q_level + 1.0 * ctx.bonus_ad
+        45.0 + 20.0 * ctx.q_level + ctx.bonus_ad
     }
     pub const fn talon_w1(ctx: &Ctx) -> f32 {
         40.0 + 10.0 * ctx.w_level + 0.4 * ctx.bonus_ad
@@ -15612,7 +15567,7 @@ pub mod champions {
         70.0 + 40.0 * ctx.w_level + 1.3 * ctx.bonus_ad
     }
     pub const fn talon_r1(ctx: &Ctx) -> f32 {
-        45.0 + 45.0 * ctx.r_level + 1.0 * ctx.bonus_ad
+        45.0 + 45.0 * ctx.r_level + ctx.bonus_ad
     }
     pub const fn talon_r2(ctx: &Ctx) -> f32 {
         90.0 + 90.0 * ctx.r_level + 2.0 * ctx.bonus_ad
@@ -15871,10 +15826,10 @@ pub mod champions {
         1.7 * ctx.stacks + (0.6 + 0.3 * ctx.e_level) * ctx.attack_damage
     }
     pub const fn thresh_e3(ctx: &Ctx) -> f32 {
-        1.7 * ctx.stacks + 0.0 * ctx.attack_damage
+        1.7 * ctx.stacks
     }
     pub const fn thresh_r1(ctx: &Ctx) -> f32 {
-        100.0 + 150.0 * ctx.r_level + 1.0 * ctx.ability_power
+        100.0 + 150.0 * ctx.r_level + ctx.ability_power
     }
     pub static TRISTANA: CC = CC {
         name: "Tristana",
@@ -15966,25 +15921,25 @@ pub mod champions {
         },
     };
     pub const fn tristana_w1(ctx: &Ctx) -> f32 {
-        35.0 + 35.0 * ctx.w_level + 1.0 * ctx.bonus_ad + 0.5 * ctx.ability_power
+        35.0 + 35.0 * ctx.w_level + 0.5 * ctx.ability_power + ctx.bonus_ad
     }
     pub const fn tristana_e1(ctx: &Ctx) -> f32 {
-        35.0 + 25.0 * ctx.e_level + 0.8 * ctx.bonus_ad + 0.5 * ctx.ability_power
+        35.0 + 25.0 * ctx.e_level + 0.5 * ctx.ability_power + 0.8 * ctx.bonus_ad
     }
     pub const fn tristana_e2(ctx: &Ctx) -> f32 {
         30.0 + 15.0 * ctx.e_level + 0.25 * ctx.ability_power
     }
     pub const fn tristana_e3(ctx: &Ctx) -> f32 {
-        8.75 + 6.25 * ctx.e_level + 0.2 * ctx.bonus_ad + 0.125 * ctx.ability_power
+        8.75 + 6.25 * ctx.e_level + 0.125 * ctx.ability_power + 0.2 * ctx.bonus_ad
     }
     pub const fn tristana_e4(ctx: &Ctx) -> f32 {
-        35.0 + 25.0 * ctx.e_level + 0.8 * ctx.bonus_ad + 0.5 * ctx.ability_power
+        35.0 + 25.0 * ctx.e_level + 0.5 * ctx.ability_power + 0.8 * ctx.bonus_ad
     }
     pub const fn tristana_e5(ctx: &Ctx) -> f32 {
-        70.0 + 50.0 * ctx.e_level + 1.6 * ctx.bonus_ad + 1.0 * ctx.ability_power
+        70.0 + 50.0 * ctx.e_level + ctx.ability_power + 1.6 * ctx.bonus_ad
     }
     pub const fn tristana_r1(ctx: &Ctx) -> f32 {
-        175.0 + 50.0 * ctx.r_level + 0.7 * ctx.bonus_ad + 1.0 * ctx.ability_power
+        175.0 + 50.0 * ctx.r_level + ctx.ability_power + 0.7 * ctx.bonus_ad
     }
     pub static TRUNDLE: CC = CC {
         name: "Trundle",
@@ -16158,7 +16113,7 @@ pub mod champions {
         5.0 + 15.0 * ctx.w_level
     }
     pub const fn tryndamere_e1(ctx: &Ctx) -> f32 {
-        40.0 + 40.0 * ctx.e_level + 1.0 * ctx.bonus_ad + 0.8 * ctx.ability_power
+        40.0 + 40.0 * ctx.e_level + 0.8 * ctx.ability_power + ctx.bonus_ad
     }
     pub static TWISTEDFATE: CC = CC {
         name: "Twisted Fate",
@@ -16238,19 +16193,19 @@ pub mod champions {
         },
     };
     pub const fn twistedfate_q1(ctx: &Ctx) -> f32 {
-        15.0 + 45.0 * ctx.q_level + 0.5 * ctx.bonus_ad + 0.85 * ctx.ability_power
+        15.0 + 45.0 * ctx.q_level + 0.85 * ctx.ability_power + 0.5 * ctx.bonus_ad
     }
     pub const fn twistedfate_w1(ctx: &Ctx) -> f32 {
-        20.0 + 20.0 * ctx.w_level + 1.0 * ctx.attack_damage + 1.0 * ctx.ability_power
+        20.0 + 20.0 * ctx.w_level + ctx.ability_power + ctx.attack_damage
     }
     pub const fn twistedfate_w2(ctx: &Ctx) -> f32 {
-        7.5 + 7.5 * ctx.w_level + 1.0 * ctx.attack_damage + 0.5 * ctx.ability_power
+        7.5 + 7.5 * ctx.w_level + 0.5 * ctx.ability_power + ctx.attack_damage
     }
     pub const fn twistedfate_w3(ctx: &Ctx) -> f32 {
-        15.0 + 15.0 * ctx.w_level + 1.0 * ctx.attack_damage + 0.7 * ctx.ability_power
+        15.0 + 15.0 * ctx.w_level + 0.7 * ctx.ability_power + ctx.attack_damage
     }
     pub const fn twistedfate_e1(ctx: &Ctx) -> f32 {
-        40.0 + 25.0 * ctx.e_level + 0.2 * ctx.bonus_ad + 0.4 * ctx.ability_power
+        40.0 + 25.0 * ctx.e_level + 0.4 * ctx.ability_power + 0.2 * ctx.bonus_ad
     }
     pub static TWITCH: CC = CC {
         name: "Twitch",
@@ -16327,10 +16282,10 @@ pub mod champions {
         10.0 + 10.0 * ctx.e_level
     }
     pub const fn twitch_e2(ctx: &Ctx) -> f32 {
-        70.0 + 40.0 * ctx.e_level + 2.1 * ctx.bonus_ad + 2.1 * ctx.ability_power
+        70.0 + 40.0 * ctx.e_level + 2.1 * ctx.ability_power + 2.1 * ctx.bonus_ad
     }
     pub const fn twitch_e3(ctx: &Ctx) -> f32 {
-        20.0 + 15.0 * ctx.e_level + 0.35 * ctx.bonus_ad + 0.35 * ctx.ability_power
+        20.0 + 15.0 * ctx.e_level + 0.35 * ctx.ability_power + 0.35 * ctx.bonus_ad
     }
     pub const fn twitch_e4(ctx: &Ctx) -> f32 {
         10.0 + 5.0 * ctx.e_level + 0.35 * ctx.bonus_ad
@@ -16497,7 +16452,7 @@ pub mod champions {
         12.0 + (0.165 + 0.035 * ctx.w_level) * ctx.attack_damage
     }
     pub const fn urgot_e1(ctx: &Ctx) -> f32 {
-        60.0 + 30.0 * ctx.e_level + 1.0 * ctx.bonus_ad
+        60.0 + 30.0 * ctx.e_level + ctx.bonus_ad
     }
     pub const fn urgot_r1(ctx: &Ctx) -> f32 {
         -25.0 + 125.0 * ctx.r_level + 0.5 * ctx.bonus_ad
@@ -16653,7 +16608,7 @@ pub mod champions {
         30.0 + 30.0 * ctx.e_level + 0.9 * ctx.bonus_ad
     }
     pub const fn varus_r1(ctx: &Ctx) -> f32 {
-        50.0 + 100.0 * ctx.r_level + 1.0 * ctx.ability_power
+        50.0 + 100.0 * ctx.r_level + ctx.ability_power
     }
     pub static VAYNE: CC = CC {
         name: "Vayne",
@@ -17124,7 +17079,7 @@ pub mod champions {
         (0.03 + 0.01 * ctx.w_level) * ctx.enemy_max_health + 0.035 * 0.01 * ctx.bonus_ad
     }
     pub const fn vi_e1(ctx: &Ctx) -> f32 {
-        -10.0 + 20.0 * ctx.e_level + 1.1 * ctx.attack_damage + 1.0 * ctx.ability_power
+        -10.0 + 20.0 * ctx.e_level + ctx.ability_power + 1.1 * ctx.attack_damage
     }
     pub const fn vi_r1(ctx: &Ctx) -> f32 {
         50.0 + 100.0 * ctx.r_level + 0.9 * ctx.bonus_ad
@@ -17204,13 +17159,13 @@ pub mod champions {
         10.0 + 15.0 * ctx.q_level + 0.7 * ctx.attack_damage
     }
     pub const fn viego_q2(ctx: &Ctx) -> f32 {
-        (0.01 + 0.01 * ctx.q_level) * ctx.current_health
+        (0.01 + 0.01 * ctx.q_level) * ctx.enemy_current_health
     }
     pub const fn viego_q3(ctx: &Ctx) -> f32 {
         5.0 + 5.0 * ctx.q_level
     }
     pub const fn viego_w1(ctx: &Ctx) -> f32 {
-        25.0 + 55.0 * ctx.w_level + 1.0 * ctx.ability_power
+        25.0 + 55.0 * ctx.w_level + ctx.ability_power
     }
     pub const fn viego_r1(ctx: &Ctx) -> f32 {
         (0.08 + 0.04 * ctx.r_level) * ctx.missing_health + 0.05 * 0.01 * ctx.bonus_ad
@@ -17313,10 +17268,10 @@ pub mod champions {
         45.0 + 15.0 * ctx.q_level + 0.4 * ctx.ability_power
     }
     pub const fn viktor_q2(ctx: &Ctx) -> f32 {
-        -5.0 + 25.0 * ctx.q_level + 1.0 * ctx.attack_damage + 0.5 * ctx.ability_power
+        -5.0 + 25.0 * ctx.q_level + 0.5 * ctx.ability_power + ctx.attack_damage
     }
     pub const fn viktor_q3(ctx: &Ctx) -> f32 {
-        40.0 + 40.0 * ctx.q_level + 1.0 * ctx.attack_damage + 0.9 * ctx.ability_power
+        40.0 + 40.0 * ctx.q_level + 0.9 * ctx.ability_power + ctx.attack_damage
     }
     pub const fn viktor_e1(ctx: &Ctx) -> f32 {
         30.0 + 40.0 * ctx.e_level + 0.5 * ctx.ability_power
@@ -17438,10 +17393,10 @@ pub mod champions {
         25.0 + 55.0 * ctx.w_level + 0.15 * ctx.bonus_health
     }
     pub const fn vladimir_e1(ctx: &Ctx) -> f32 {
-        30.0 + 30.0 * ctx.e_level + 0.06 * ctx.max_health + 0.8 * ctx.ability_power
+        30.0 + 30.0 * ctx.e_level + 0.8 * ctx.ability_power + 0.06 * ctx.max_health
     }
     pub const fn vladimir_e2(ctx: &Ctx) -> f32 {
-        15.0 + 15.0 * ctx.e_level + 0.015 * ctx.max_health + 0.35 * ctx.ability_power
+        15.0 + 15.0 * ctx.e_level + 0.35 * ctx.ability_power + 0.015 * ctx.max_health
     }
     pub const fn vladimir_r1(ctx: &Ctx) -> f32 {
         50.0 + 100.0 * ctx.r_level + 0.7 * ctx.ability_power
@@ -17538,7 +17493,7 @@ pub mod champions {
         75.0 + 115.0 * ctx.e_level + 0.7 * ctx.ability_power
     }
     pub const fn volibear_r1(ctx: &Ctx) -> f32 {
-        100.0 + 200.0 * ctx.r_level + 2.5 * ctx.bonus_ad + 1.25 * ctx.ability_power
+        100.0 + 200.0 * ctx.r_level + 1.25 * ctx.ability_power + 2.5 * ctx.bonus_ad
     }
     pub static WARWICK: CC = CC {
         name: "Warwick",
@@ -17612,7 +17567,7 @@ pub mod champions {
             + 1.0 * ctx.ability_power
     }
     pub const fn warwick_q2(ctx: &Ctx) -> f32 {
-        135.0 + 15.0 * ctx.q_level + 1.2 * ctx.attack_damage + 1.0 * ctx.ability_power
+        135.0 + 15.0 * ctx.q_level + ctx.ability_power + 1.2 * ctx.attack_damage
     }
     pub const fn warwick_e1(ctx: &Ctx) -> f32 {
         0.3 + 0.05 * ctx.e_level
@@ -17707,7 +17662,7 @@ pub mod champions {
         30.0 + 15.0 * ctx.q_level + 0.5 * ctx.bonus_ad
     }
     pub const fn xayah_q2(ctx: &Ctx) -> f32 {
-        60.0 + 30.0 * ctx.q_level + 1.0 * ctx.bonus_ad
+        60.0 + 30.0 * ctx.q_level + ctx.bonus_ad
     }
     pub const fn xayah_q3(ctx: &Ctx) -> f32 {
         15.0 + 7.5 * ctx.q_level + 0.25 * ctx.bonus_ad
@@ -17722,7 +17677,7 @@ pub mod champions {
         35.0 + 15.0 * ctx.e_level + 0.4 * ctx.bonus_ad
     }
     pub const fn xayah_r1(ctx: &Ctx) -> f32 {
-        100.0 + 100.0 * ctx.r_level + 1.0 * ctx.bonus_ad
+        100.0 + 100.0 * ctx.r_level + ctx.bonus_ad
     }
     pub static XERATH: CC = CC {
         name: "Xerath",
@@ -17930,10 +17885,10 @@ pub mod champions {
         20.0 + 10.0 * ctx.w_level + 0.3 * ctx.attack_damage
     }
     pub const fn xinzhao_w3(ctx: &Ctx) -> f32 {
-        15.0 + 35.0 * ctx.w_level + 0.9 * ctx.attack_damage + 0.65 * ctx.ability_power
+        15.0 + 35.0 * ctx.w_level + 0.65 * ctx.ability_power + 0.9 * ctx.attack_damage
     }
     pub const fn xinzhao_w4(ctx: &Ctx) -> f32 {
-        35.0 + 45.0 * ctx.w_level + 1.2 * ctx.attack_damage + 0.65 * ctx.ability_power
+        35.0 + 45.0 * ctx.w_level + 0.65 * ctx.ability_power + 1.2 * ctx.attack_damage
     }
     pub const fn xinzhao_e1(ctx: &Ctx) -> f32 {
         25.0 + 25.0 * ctx.e_level + 0.6 * ctx.ability_power
@@ -17941,9 +17896,9 @@ pub mod champions {
     pub const fn xinzhao_r1(ctx: &Ctx) -> f32 {
         -25.0
             + 100.0 * ctx.r_level
-            + 1.0 * ctx.bonus_ad
             + 1.1 * ctx.ability_power
-            + 0.15 * ctx.current_health
+            + ctx.bonus_ad
+            + 0.15 * ctx.enemy_current_health
     }
     pub static YASUO: CC = CC {
         name: "Yasuo",
@@ -18025,16 +17980,16 @@ pub mod champions {
         -5.0 + 25.0 * ctx.q_level + 1.05 * ctx.attack_damage
     }
     pub const fn yasuo_e1(ctx: &Ctx) -> f32 {
-        55.0 + 15.0 * ctx.e_level + 0.2 * ctx.bonus_ad + 0.6 * ctx.ability_power
+        55.0 + 15.0 * ctx.e_level + 0.6 * ctx.ability_power + 0.2 * ctx.bonus_ad
     }
     pub const fn yasuo_e2(ctx: &Ctx) -> f32 {
-        13.75 + 3.75 * ctx.e_level + 0.05 * ctx.bonus_ad + 0.15 * ctx.ability_power
+        13.75 + 3.75 * ctx.e_level + 0.15 * ctx.ability_power + 0.05 * ctx.bonus_ad
     }
     pub const fn yasuo_e3(ctx: &Ctx) -> f32 {
-        55.0 + 15.0 * ctx.e_level + 0.2 * ctx.bonus_ad + 0.6 * ctx.ability_power
+        55.0 + 15.0 * ctx.e_level + 0.6 * ctx.ability_power + 0.2 * ctx.bonus_ad
     }
     pub const fn yasuo_e4(ctx: &Ctx) -> f32 {
-        110.0 + 30.0 * ctx.e_level + 0.4 * ctx.bonus_ad + 1.2 * ctx.ability_power
+        110.0 + 30.0 * ctx.e_level + 1.2 * ctx.ability_power + 0.4 * ctx.bonus_ad
     }
     pub const fn yasuo_r1(ctx: &Ctx) -> f32 {
         50.0 + 150.0 * ctx.r_level + 1.5 * ctx.bonus_ad
@@ -18140,7 +18095,7 @@ pub mod champions {
         10.0 * ctx.w_level + (0.07 + 0.01 * ctx.w_level) * ctx.enemy_max_health
     }
     pub const fn yone_e1(ctx: &Ctx) -> f32 {
-        (0.225 + 0.025 * ctx.e_level) * 100.0
+        22.5 + 2.5 * ctx.e_level
     }
     pub const fn yone_r1(ctx: &Ctx) -> f32 {
         100.0 * ctx.r_level + 0.4 * ctx.bonus_ad
@@ -18221,13 +18176,13 @@ pub mod champions {
         10.0 + 20.0 * ctx.q_level + 0.5 * ctx.attack_damage
     }
     pub const fn yorick_e1(ctx: &Ctx) -> f32 {
-        25.0 + 25.0 * ctx.e_level + 1.0 * ctx.ability_power
+        25.0 + 25.0 * ctx.e_level + ctx.ability_power
     }
     pub const fn yorick_e2(ctx: &Ctx) -> f32 {
         (0.055 + 0.005 * ctx.e_level) * ctx.enemy_max_health + 0.03 * 0.01 * ctx.ability_power
     }
     pub const fn yorick_e3(ctx: &Ctx) -> f32 {
-        35.0 + 35.0 * ctx.e_level + 1.0 * ctx.ability_power
+        35.0 + 35.0 * ctx.e_level + ctx.ability_power
     }
     pub static YUNARA: CC = CC {
         name: "Yunara",
@@ -18333,19 +18288,19 @@ pub mod champions {
         10.0 * ctx.q_level + 0.4 * ctx.ability_power
     }
     pub const fn yunara_q4(ctx: &Ctx) -> f32 {
-        25.0 * ctx.q_level + 1.0 * ctx.ability_power
+        25.0 * ctx.q_level + ctx.ability_power
     }
     pub const fn yunara_q5(ctx: &Ctx) -> f32 {
         5.0 * ctx.q_level + 0.2 * ctx.ability_power
     }
     pub const fn yunara_w1(ctx: &Ctx) -> f32 {
-        15.0 + 40.0 * ctx.w_level + 0.85 * ctx.bonus_ad + 0.5 * ctx.ability_power
+        15.0 + 40.0 * ctx.w_level + 0.5 * ctx.ability_power + 0.85 * ctx.bonus_ad
     }
     pub const fn yunara_w2(ctx: &Ctx) -> f32 {
-        2.25 + 6.0 * ctx.w_level + 0.1275 * ctx.bonus_ad + 0.075 * ctx.ability_power
+        2.25 + 6.0 * ctx.w_level + 0.075 * ctx.ability_power + 0.1275 * ctx.bonus_ad
     }
     pub const fn yunara_w3(ctx: &Ctx) -> f32 {
-        9.0 + 24.0 * ctx.w_level + 0.51 * ctx.bonus_ad + 0.3 * ctx.ability_power
+        9.0 + 24.0 * ctx.w_level + 0.3 * ctx.ability_power + 0.51 * ctx.bonus_ad
     }
     pub const fn yunara_r1(ctx: &Ctx) -> f32 {
         160.0 * ctx.r_level
@@ -18551,7 +18506,7 @@ pub mod champions {
         20.0 + 20.0 * ctx.w_level + 0.5 * ctx.bonus_ad
     }
     pub const fn zaahen_w2(ctx: &Ctx) -> f32 {
-        40.0 + 40.0 * ctx.w_level + 1.0 * ctx.bonus_ad
+        40.0 + 40.0 * ctx.w_level + ctx.bonus_ad
     }
     pub const fn zaahen_e1(ctx: &Ctx) -> f32 {
         20.0 + 20.0 * ctx.e_level + 0.5 * ctx.bonus_ad
@@ -18677,7 +18632,7 @@ pub mod champions {
         35.0 + 35.0 * ctx.r_level + 0.2 * ctx.ability_power
     }
     pub const fn zac_r3(ctx: &Ctx) -> f32 {
-        175.0 + 175.0 * ctx.r_level + 1.0 * ctx.ability_power
+        175.0 + 175.0 * ctx.r_level + ctx.ability_power
     }
     pub static ZED: CC = CC {
         name: "Zed",
@@ -18746,7 +18701,7 @@ pub mod champions {
         },
     };
     pub const fn zed_q1(ctx: &Ctx) -> f32 {
-        40.0 + 40.0 * ctx.q_level + 1.0 * ctx.bonus_ad
+        40.0 + 40.0 * ctx.q_level + ctx.bonus_ad
     }
     pub const fn zed_q2(ctx: &Ctx) -> f32 {
         24.0 + 24.0 * ctx.q_level + 0.6 * ctx.bonus_ad
@@ -18755,7 +18710,7 @@ pub mod champions {
         45.0 + 25.0 * ctx.e_level + 0.8 * ctx.bonus_ad
     }
     pub const fn zed_r1(ctx: &Ctx) -> f32 {
-        1.0 * ctx.attack_damage + (0.1 + 0.15 * ctx.r_level) * 100.0
+        10.0 + 15.0 * ctx.r_level + ctx.attack_damage
     }
     pub static ZERI: CC = CC {
         name: "Zeri",
@@ -18840,16 +18795,16 @@ pub mod champions {
         13.0 + 2.0 * ctx.q_level + (1.0 + 0.04 * ctx.q_level) * ctx.attack_damage
     }
     pub const fn zeri_w1(ctx: &Ctx) -> f32 {
-        -10.0 + 40.0 * ctx.w_level + 1.2 * ctx.attack_damage + 0.25 * ctx.ability_power
+        -10.0 + 40.0 * ctx.w_level + 0.25 * ctx.ability_power + 1.2 * ctx.attack_damage
     }
     pub const fn zeri_e1(ctx: &Ctx) -> f32 {
-        15.0 + 2.0 * ctx.e_level + 0.1 * ctx.bonus_ad + 0.2 * ctx.ability_power
+        15.0 + 2.0 * ctx.e_level + 0.2 * ctx.ability_power + 0.1 * ctx.bonus_ad
     }
     pub const fn zeri_e2(ctx: &Ctx) -> f32 {
         0.75 + 0.05 * ctx.e_level
     }
     pub const fn zeri_r1(ctx: &Ctx) -> f32 {
-        50.0 + 100.0 * ctx.r_level + 1.0 * ctx.bonus_ad + 1.1 * ctx.ability_power
+        50.0 + 100.0 * ctx.r_level + 1.1 * ctx.ability_power + ctx.bonus_ad
     }
     pub static ZIGGS: CC = CC {
         name: "Ziggs",
@@ -18950,7 +18905,7 @@ pub mod champions {
         -4.0 + 16.0 * ctx.e_level + (0.08 + 0.02 * ctx.e_level) * ctx.ability_power
     }
     pub const fn ziggs_r1(ctx: &Ctx) -> f32 {
-        100.0 + 200.0 * ctx.r_level + 1.0 * ctx.ability_power
+        100.0 + 200.0 * ctx.r_level + ctx.ability_power
     }
     pub const fn ziggs_r2(ctx: &Ctx) -> f32 {
         65.0 + 130.0 * ctx.r_level + 0.65 * ctx.ability_power
@@ -19569,2715 +19524,2715 @@ pub mod champions {
     ];
     pub static ABILITY_FORMULAS: [&[Range<usize>]; ChampionId::VARIANTS] = [
         &[
-            (570577..571457),
-            (571457..575100),
-            (575100..576763),
-            (576763..578482),
-            (578482..580162),
-            (580162..583805),
-            (583805..585468),
-            (585468..587187),
-            (587187..588867),
-            (588867..590149),
-            (590149..591431),
-        ],
-        &[
-            (608994..610732),
-            (610732..612470),
-            (612470..613299),
-            (613299..614570),
-            (614570..615841),
-            (615841..616668),
-            (616668..618053),
-            (618053..619438),
-        ],
-        &[
-            (636584..637556),
-            (637556..638517),
-            (638517..639978),
-            (639978..640907),
-            (640907..642368),
-            (642368..643290),
-            (643290..644497),
-            (644497..645704),
-        ],
-        &[
-            (665465..666181),
-            (666181..667443),
-            (667443..668705),
-            (668705..669634),
-            (669634..671615),
-            (671615..673974),
-            (673974..675955),
-            (675955..678314),
-        ],
-        &[
-            (688014..688847),
-            (688847..689644),
-            (689644..690915),
-            (690915..692186),
-        ],
-        &[
-            (707708..709020),
-            (709020..710335),
-            (710335..711169),
-            (711169..712004),
-            (712004..712835),
-            (712835..713666),
-            (713666..714506),
-        ],
-        &[
-            (724367..725202),
-            (725202..726266),
-            (726266..727095),
-            (727095..727953),
-        ],
-        &[
-            (743821..745094),
-            (745094..745926),
-            (745926..747199),
-            (747199..748473),
-            (748473..749747),
-            (749747..751023),
-            (751023..752299),
-        ],
-        &[
-            (761641..762476),
-            (762476..763309),
-            (763309..764145),
-            (764145..764985),
-        ],
-        &[(769574..770183)],
-        &[
-            (780666..782009),
-            (782009..783352),
-            (783352..784172),
-            (784172..784977),
-        ],
-        &[
-            (802847..803692),
-            (803692..804541),
-            (804541..805386),
-            (805386..806249),
-            (806249..807112),
-            (807112..807960),
-            (807960..808600),
-            (808600..809441),
-            (809441..810281),
-            (810281..811124),
-        ],
-        &[
-            (824829..825664),
-            (825664..826499),
-            (826499..827334),
-            (827334..828168),
-            (828168..829002),
-            (829002..829838),
-            (829838..830677),
-        ],
-        &[
-            (845184..846023),
-            (846023..849632),
-            (849632..850468),
-            (850468..851273),
-        ],
-        &[(856247..857082)],
-        &[
-            (878965..879802),
-            (879802..880434),
-            (880434..881068),
-            (881068..881906),
-            (881906..882868),
-            (882868..883506),
-            (883506..884349),
-            (884349..885191),
-            (885191..886034),
-            (886034..886876),
-            (886876..887856),
-            (887856..888689),
-            (888689..889523),
-        ],
-        &[(898006..898845), (898845..899699), (899699..900814)],
-        &[
-            (913126..913954),
-            (913954..914795),
-            (914795..915633),
-            (915633..916469),
-            (916469..917301),
-            (917301..918134),
-        ],
-        &[(925642..926477), (926477..927108), (927108..927912)],
-        &[
-            (942889..943845),
-            (943845..944711),
-            (944711..945670),
-            (945670..946643),
-            (946643..947602),
-            (947602..948579),
-            (948579..949416),
-        ],
-        &[
-            (960985..962021),
-            (962021..963057),
-            (963057..963908),
-            (963908..964747),
-            (964747..965599),
-        ],
-        &[
-            (980306..981181),
-            (981181..982054),
-            (982054..982891),
-            (982891..983926),
-            (983926..984962),
-            (984962..985799),
-            (985799..986676),
-        ],
-        &[
-            (1005398..1006241),
-            (1006241..1007083),
-            (1007083..1007916),
-            (1007916..1008750),
-            (1008750..1009588),
-            (1009588..1012928),
-            (1012928..1013772),
-        ],
-        &[
-            (1030828..1031660),
-            (1031660..1032497),
-            (1032497..1033742),
-            (1033742..1034580),
-            (1034580..1035825),
-            (1035825..1036677),
-            (1036677..1037645),
-            (1037645..1038492),
-        ],
-        &[
-            (1052872..1053832),
-            (1053832..1054784),
-            (1054784..1055736),
-            (1055736..1056583),
-            (1056583..1057415),
-            (1057415..1058252),
-            (1058252..1059089),
-        ],
-        &[
-            (1071878..1072901),
-            (1072901..1073927),
-            (1073927..1074800),
-            (1074800..1075589),
-            (1075589..1076378),
-            (1076378..1077180),
-        ],
-        &[
-            (1090925..1091763),
-            (1091763..1092598),
-            (1092598..1093434),
-            (1093434..1094267),
-            (1094267..1095099),
-            (1095099..1095944),
-            (1095944..1096789),
-        ],
-        &[
-            (1118055..1118929),
-            (1118929..1119567),
-            (1119567..1120204),
-            (1120204..1120837),
-            (1120837..1121470),
-            (1121470..1122306),
-            (1122306..1123152),
-            (1123152..1123998),
-            (1123998..1124845),
-            (1124845..1125704),
-            (1125704..1126550),
-            (1126550..1127408),
-            (1127408..1128283),
-        ],
-        &[
-            (1142394..1143416),
-            (1143416..1144249),
-            (1144249..1145287),
-            (1145287..1146325),
-            (1146325..1147351),
-            (1147351..1148377),
-        ],
-        &[
-            (1159184..1160016),
-            (1160016..1160848),
-            (1160848..1161680),
-            (1161680..1162512),
-            (1162512..1163347),
-        ],
-        &[(1171567..1172400), (1172400..1173397), (1173397..1174240)],
-        &[
-            (1192491..1193326),
-            (1193326..1194161),
-            (1194161..1194997),
-            (1194997..1195832),
-            (1195832..1196668),
-            (1196668..1197504),
-            (1197504..1198348),
-            (1198348..1199348),
-            (1199348..1200151),
-            (1200151..1200953),
-        ],
-        &[
-            (1211657..1212621),
-            (1212621..1213767),
-            (1213767..1214724),
-            (1214724..1215698),
-        ],
-        &[
-            (1236675..1237707),
-            (1237707..1238340),
-            (1238340..1239370),
-            (1239370..1240003),
-            (1240003..1240851),
-            (1240851..1241699),
-            (1241699..1242866),
-            (1242866..1244032),
-            (1244032..1244866),
-            (1244866..1245707),
-            (1245707..1246560),
-        ],
-        &[(1254497..1255513), (1255513..1256343), (1256343..1256972)],
-        &[
-            (1273538..1274376),
-            (1274376..1275215),
-            (1275215..1276052),
-            (1276052..1276891),
-            (1276891..1277730),
-            (1277730..1278560),
-            (1278560..1279399),
-            (1279399..1280237),
-            (1280237..1281075),
-        ],
-        &[
-            (1297747..1298582),
-            (1298582..1299816),
-            (1299816..1301053),
-            (1301053..1301892),
-            (1301892..1302731),
-            (1302731..1303567),
-            (1303567..1304404),
-            (1304404..1305243),
-        ],
-        &[
-            (1321628..1322479),
-            (1322479..1323115),
-            (1323115..1323956),
-            (1323956..1324797),
-            (1324797..1325652),
-            (1325652..1326507),
-            (1326507..1327348),
-            (1327348..1328203),
-            (1328203..1329058),
-        ],
-        &[
-            (1340592..1341398),
-            (1341398..1342026),
-            (1342026..1343048),
-            (1343048..1344074),
-            (1344074..1345103),
-        ],
-        &[
-            (1365588..1366892),
-            (1366892..1368196),
-            (1368196..1368996),
-            (1368996..1370154),
-            (1370154..1370983),
-            (1370983..1371808),
-            (1371808..1372635),
-            (1372635..1374171),
-            (1374171..1375707),
-        ],
-        &[
-            (1391280..1392115),
-            (1392115..1392951),
-            (1392951..1393786),
-            (1393786..1394622),
-            (1394622..1395494),
-            (1395494..1396473),
-            (1396473..1397306),
-            (1397306..1398158),
-        ],
-        &[
-            (1411123..1411961),
-            (1411961..1412987),
-            (1412987..1414014),
-            (1414014..1414850),
-            (1414850..1415703),
-            (1415703..1416543),
-        ],
-        &[
-            (1443686..1444812),
-            (1444812..1445645),
-            (1445645..1446773),
-            (1446773..1447608),
-            (1447608..1448782),
-            (1448782..1449616),
-            (1449616..1450743),
-            (1450743..1451577),
-            (1451577..1452701),
-            (1452701..1453532),
-            (1453532..1454705),
-            (1454705..1455877),
-            (1455877..1457002),
-        ],
-        &[
-            (1470650..1471481),
-            (1471481..1472311),
-            (1472311..1473151),
-            (1473151..1473991),
-            (1473991..1474832),
-            (1474832..1475673),
-            (1475673..1476519),
-        ],
-        &[
-            (1498324..1499552),
-            (1499552..1500779),
-            (1500779..1502002),
-            (1502002..1503225),
-            (1503225..1504453),
-            (1504453..1505678),
-            (1505678..1506903),
-            (1506903..1508135),
-        ],
-        &[
-            (1517382..1518188),
-            (1518188..1518993),
-            (1518993..1519833),
-            (1519833..1520674),
-        ],
-        &[
-            (1531296..1531933),
-            (1531933..1532970),
-            (1532970..1533605),
-            (1533605..1534478),
-            (1534478..1535314),
-        ],
-        &[
-            (1546526..1547376),
-            (1547376..1548307),
-            (1548307..1549238),
-            (1549238..1550075),
-            (1550075..1550914),
-        ],
-        &[
-            (1560246..1561079),
-            (1561079..1561911),
-            (1561911..1562742),
-            (1562742..1563576),
-        ],
-        &[(1572761..1574031), (1574031..1575301), (1575301..1576258)],
-        &[(1584152..1584990), (1584990..1585833), (1585833..1586667)],
-        &[
-            (1599416..1600246),
-            (1600246..1601074),
-            (1601074..1602039),
-            (1602039..1603005),
-            (1603005..1603845),
-            (1603845..1604685),
-        ],
-        &[
-            (1615485..1616320),
-            (1616320..1617159),
-            (1617159..1617997),
-            (1617997..1618633),
-            (1618633..1619627),
-        ],
-        &[
-            (1641321..1642479),
-            (1642479..1643640),
-            (1643640..1644816),
-            (1644816..1645672),
-            (1645672..1646512),
-            (1646512..1647489),
-            (1647489..1648468),
-            (1648468..1649271),
-            (1649271..1650074),
-            (1650074..1650877),
-            (1650877..1651680),
-        ],
-        &[
-            (1669207..1669803),
-            (1669803..1670644),
-            (1670644..1671475),
-            (1671475..1673382),
-            (1673382..1675294),
-            (1675294..1677201),
-            (1677201..1679113),
-        ],
-        &[
-            (1698176..1699145),
-            (1699145..1700348),
-            (1700348..1701549),
-            (1701549..1702844),
-            (1702844..1703478),
-            (1703478..1704678),
-            (1704678..1705308),
-            (1705308..1706142),
-            (1706142..1706976),
-        ],
-        &[
-            (1719060..1720021),
-            (1720021..1720999),
-            (1720999..1721963),
-            (1721963..1722941),
-            (1722941..1723901),
-        ],
-        &[
-            (1735287..1736135),
-            (1736135..1737001),
-            (1737001..1737630),
-            (1737630..1738742),
-            (1738742..1739701),
-        ],
-        &[(1750118..1751327), (1751327..1752539), (1752539..1753752)],
-        &[
-            (1764555..1765389),
-            (1765389..1766224),
-            (1766224..1767055),
-            (1767055..1767885),
-            (1767885..1768718),
-        ],
-        &[
-            (1783412..1784249),
-            (1784249..1785087),
-            (1785087..1785924),
-            (1785924..1786880),
-            (1786880..1787837),
-            (1787837..1788807),
-            (1788807..1789777),
-        ],
-        &[
-            (1800548..1801388),
-            (1801388..1802347),
-            (1802347..1803185),
-            (1803185..1804037),
-            (1804037..1804669),
-        ],
-        &[
-            (1815135..1816092),
-            (1816092..1817130),
-            (1817130..1818092),
-            (1818092..1819065),
-        ],
-        &[
-            (1833528..1834362),
-            (1834362..1835208),
-            (1835208..1836042),
-            (1836042..1836888),
-            (1836888..1837523),
-            (1837523..1838159),
-            (1838159..1838992),
-            (1838992..1839828),
-        ],
-        &[
-            (1854127..1854971),
-            (1854971..1855811),
-            (1855811..1856961),
-            (1856961..1857799),
-            (1857799..1858638),
-            (1858638..1859483),
-            (1859483..1860325),
-        ],
-        &[
-            (1869668..1870520),
-            (1870520..1871358),
-            (1871358..1872190),
-            (1872190..1873016),
-        ],
-        &[
-            (1884298..1885137),
-            (1885137..1886344),
-            (1886344..1887553),
-            (1887553..1888639),
-        ],
-        &[
-            (1912395..1913233),
-            (1913233..1914072),
-            (1914072..1914910),
-            (1914910..1915749),
-            (1915749..1916389),
-            (1916389..1918656),
-            (1918656..1920012),
-            (1920012..1920841),
-            (1920841..1921669),
-            (1921669..1922697),
-            (1922697..1923725),
-        ],
-        &[
-            (1939300..1939929),
-            (1939929..1940767),
-            (1940767..1941806),
-            (1941806..1942634),
-            (1942634..1944542),
-            (1944542..1946450),
-        ],
-        &[
-            (1968340..1969180),
-            (1969180..1970020),
-            (1970020..1970855),
-            (1970855..1971695),
-            (1971695..1972536),
-            (1972536..1973377),
-            (1973377..1974173),
-            (1974173..1974968),
-            (1974968..1975765),
-            (1975765..1976562),
-            (1976562..1977358),
-            (1977358..1978153),
-            (1978153..1978949),
-        ],
-        &[
-            (1988946..1989779),
-            (1989779..1990610),
-            (1990610..1991459),
-            (1991459..1992629),
-        ],
-        &[
-            (2003102..2003956),
-            (2003956..2004580),
-            (2004580..2005410),
-            (2005410..2006245),
-            (2006245..2007079),
-        ],
-        &[
-            (2022261..2023102),
-            (2023102..2023942),
-            (2023942..2024795),
-            (2024795..2025635),
-            (2025635..2026476),
-            (2026476..2027317),
-            (2027317..2028150),
-            (2028150..2029003),
-        ],
-        &[
-            (2038369..2039206),
-            (2039206..2040046),
-            (2040046..2040885),
-            (2040885..2041725),
-        ],
-        &[
-            (2051439..2052275),
-            (2052275..2053111),
-            (2053111..2054040),
-            (2054040..2054971),
-        ],
-        &[
-            (2068702..2069536),
-            (2069536..2070371),
-            (2070371..2071206),
-            (2071206..2072043),
-            (2072043..2072878),
-            (2072878..2073728),
-            (2073728..2074560),
-        ],
-        &[(2082508..2083343), (2083343..2084182), (2084182..2085028)],
-        &[
-            (2096626..2097465),
-            (2097465..2098424),
-            (2098424..2099382),
-            (2099382..2100337),
-            (2100337..2101194),
-        ],
-        &[
-            (2131160..2132003),
-            (2132003..2135953),
-            (2135953..2139914),
-            (2139914..2140770),
-            (2140770..2141611),
-            (2141611..2142448),
-            (2142448..2143286),
-            (2143286..2144323),
-            (2144323..2145357),
-        ],
-        &[
-            (2165718..2166352),
-            (2166352..2167510),
-            (2167510..2168681),
-            (2168681..2169520),
-            (2169520..2170530),
-            (2170530..2171493),
-            (2171493..2172474),
-            (2172474..2173435),
-            (2173435..2174398),
-            (2174398..2175237),
-        ],
-        &[
-            (2192177..2193018),
-            (2193018..2193875),
-            (2193875..2194683),
-            (2194683..2195320),
-            (2195320..2196126),
-            (2196126..2196933),
-            (2196933..2197777),
-            (2197777..2198411),
-            (2198411..2199045),
-            (2199045..2199875),
-        ],
-        &[
-            (2222556..2223392),
-            (2223392..2224245),
-            (2224245..2225272),
-            (2225272..2226317),
-            (2226317..2227282),
-            (2227282..2228114),
-            (2228114..2228945),
-            (2228945..2229779),
-            (2229779..2230611),
-            (2230611..2231443),
-            (2231443..2232274),
-            (2232274..2232870),
-            (2232870..2233465),
-        ],
-        &[(2238433..2239276)],
-        &[
-            (2251596..2252564),
-            (2252564..2253405),
-            (2253405..2254246),
-            (2254246..2255592),
-            (2255592..2256562),
-        ],
-        &[
-            (2269511..2270350),
-            (2270350..2270994),
-            (2270994..2271835),
-            (2271835..2272838),
-            (2272838..2273836),
-            (2273836..2274833),
-        ],
-        &[(2288911..2289546), (2289546..2293787), (2293787..2294629)],
-        &[
-            (2308398..2309235),
-            (2309235..2310075),
-            (2310075..2310917),
-            (2310917..2311756),
-            (2311756..2312597),
-            (2312597..2313448),
-            (2313448..2314300),
-        ],
-        &[
-            (2336555..2337391),
-            (2337391..2338227),
-            (2338227..2339064),
-            (2339064..2339901),
-            (2339901..2340738),
-            (2340738..2341575),
-            (2341575..2342412),
-            (2342412..2343249),
-            (2343249..2344081),
-            (2344081..2344914),
-            (2344914..2345747),
-            (2345747..2346586),
-            (2346586..2347424),
-        ],
-        &[
-            (2359641..2360474),
-            (2360474..2361308),
-            (2361308..2362142),
-            (2362142..2362985),
-            (2362985..2363828),
-            (2363828..2364661),
-        ],
-        &[
-            (2377646..2378481),
-            (2378481..2379315),
-            (2379315..2380148),
-            (2380148..2380982),
-            (2380982..2382019),
-            (2382019..2383053),
-        ],
-        &[
-            (2399638..2400475),
-            (2400475..2401313),
-            (2401313..2402152),
-            (2402152..2402985),
-            (2402985..2403818),
-            (2403818..2404652),
-            (2404652..2405485),
-            (2405485..2406323),
-            (2406323..2407162),
-        ],
-        &[
-            (2421548..2422380),
-            (2422380..2423654),
-            (2423654..2424928),
-            (2424928..2425763),
-            (2425763..2426593),
-            (2426593..2427435),
-        ],
-        &[
-            (2441205..2442420),
-            (2442420..2443631),
-            (2443631..2444839),
-            (2444839..2446045),
-            (2446045..2446678),
-        ],
-        &[
-            (2460343..2461196),
-            (2461196..2462049),
-            (2462049..2462880),
-            (2462880..2463712),
-            (2463712..2464544),
-            (2464544..2465374),
-            (2465374..2466205),
-        ],
-        &[
-            (2476682..2477518),
-            (2477518..2478153),
-            (2478153..2478999),
-            (2478999..2479843),
-            (2479843..2480676),
-        ],
-        &[
-            (2500182..2501140),
-            (2501140..2501769),
-            (2501769..2502626),
-            (2502626..2503469),
-            (2503469..2504361),
-            (2504361..2505222),
-            (2505222..2506059),
-            (2506059..2506898),
-            (2506898..2507736),
-            (2507736..2508575),
-            (2508575..2509424),
-        ],
-        &[
-            (2519783..2520611),
-            (2520611..2521240),
-            (2521240..2522067),
-            (2522067..2522902),
-            (2522902..2523700),
-        ],
-        &[
-            (2534523..2535364),
-            (2535364..2536206),
-            (2536206..2537050),
-            (2537050..2537891),
-            (2537891..2538749),
-        ],
-        &[
-            (2555866..2556707),
-            (2556707..2557338),
-            (2557338..2557970),
-            (2557970..2558602),
-            (2558602..2559235),
-            (2559235..2560106),
-            (2560106..2560975),
-            (2560975..2561943),
-            (2561943..2562786),
-            (2562786..2563643),
-        ],
-        &[
-            (2583486..2584448),
-            (2584448..2585412),
-            (2585412..2586373),
-            (2586373..2587335),
-            (2587335..2588170),
-            (2588170..2589006),
-            (2589006..2590207),
-            (2590207..2591043),
-            (2591043..2591899),
-            (2591899..2592742),
-        ],
-        &[
-            (2610907..2611541),
-            (2611541..2612374),
-            (2612374..2613336),
-            (2613336..2614170),
-            (2614170..2615133),
-            (2615133..2615974),
-            (2615974..2616808),
-            (2616808..2617642),
-            (2617642..2618493),
-            (2618493..2619331),
-        ],
-        &[(2625764..2626596), (2626596..2627432)],
-        &[
-            (2640031..2640867),
-            (2640867..2641705),
-            (2641705..2642625),
-            (2642625..2643455),
-            (2643455..2644317),
-            (2644317..2645260),
-        ],
-        &[(2653444..2654597), (2654597..2655423), (2655423..2656060)],
-        &[(2663884..2664721), (2664721..2665558), (2665558..2666360)],
-        &[(2674261..2675094), (2675094..2675935), (2675935..2676772)],
-        &[
-            (2689362..2690232),
-            (2690232..2691102),
-            (2691102..2691694),
-            (2691694..2692529),
-            (2692529..2693363),
-            (2693363..2694513),
-        ],
-        &[
-            (2705676..2706515),
-            (2706515..2707359),
-            (2707359..2708387),
-            (2708387..2709223),
-            (2709223..2710057),
-        ],
-        &[(2716518..2717351), (2717351..2718191)],
-        &[
-            (2738235..2739072),
-            (2739072..2739909),
-            (2739909..2740769),
-            (2740769..2741628),
-            (2741628..2742488),
-            (2742488..2743326),
-            (2743326..2744164),
-            (2744164..2745003),
-            (2745003..2745842),
-            (2745842..2746811),
-            (2746811..2747781),
-        ],
-        &[(2756022..2757015), (2757015..2757850), (2757850..2758683)],
-        &[(2767297..2768319), (2768319..2769341), (2769341..2770170)],
-        &[
-            (2817699..2818873),
-            (2818873..2820050),
-            (2820050..2821222),
-            (2821222..2822396),
-            (2822396..2823556),
-            (2823556..2824715),
-            (2824715..2825904),
-            (2825904..2827081),
-            (2827081..2828241),
-            (2828241..2829419),
-            (2829419..2830595),
-            (2830595..2831773),
-            (2831773..2832950),
-            (2832950..2834127),
-            (2834127..2835306),
-            (2835306..2836487),
-            (2836487..2837326),
-            (2837326..2838165),
-            (2838165..2839005),
-            (2839005..2839844),
-            (2839844..2840682),
-            (2840682..2841522),
-            (2841522..2842374),
-        ],
-        &[
-            (2852121..2853076),
-            (2853076..2854033),
-            (2854033..2854989),
-            (2854989..2855619),
-        ],
-        &[
-            (2870448..2871279),
-            (2871279..2872111),
-            (2872111..2872944),
-            (2872944..2873772),
-            (2873772..2874580),
-            (2874580..2875387),
-            (2875387..2876195),
-            (2876195..2877003),
-        ],
-        &[
-            (2891510..2892350),
-            (2892350..2893316),
-            (2893316..2894295),
-            (2894295..2895274),
-            (2895274..2896108),
-            (2896108..2896960),
-            (2896960..2897813),
-        ],
-        &[(2905912..2906703), (2906703..2907536), (2907536..2908512)],
-        &[
-            (2919412..2920248),
-            (2920248..2921100),
-            (2921100..2921936),
-            (2921936..2922773),
-            (2922773..2923619),
-        ],
-        &[
-            (2938492..2939628),
-            (2939628..2940764),
-            (2940764..2941708),
-            (2941708..2942544),
-            (2942544..2943713),
-            (2943713..2944872),
-        ],
-        &[
-            (2964360..2965188),
-            (2965188..2965821),
-            (2965821..2966660),
-            (2966660..2967499),
-            (2967499..2968336),
-            (2968336..2969175),
-            (2969175..2970134),
-            (2970134..2971093),
-            (2971093..2971893),
-            (2971893..2972692),
-            (2972692..2973526),
-        ],
-        &[
-            (3012891..3013526),
-            (3013526..3017934),
-            (3017934..3022338),
-            (3022338..3026751),
-            (3026751..3031160),
-            (3031160..3031996),
-        ],
-        &[
-            (3050711..3051593),
-            (3051593..3052418),
-            (3052418..3053244),
-            (3053244..3054202),
-            (3054202..3058270),
-            (3058270..3059112),
-        ],
-        &[
-            (3069097..3069935),
-            (3069935..3070773),
-            (3070773..3071610),
-            (3071610..3072761),
-        ],
-        &[
-            (3094254..3094891),
-            (3094891..3095920),
-            (3095920..3096949),
-            (3096949..3097980),
-            (3097980..3099028),
-            (3099028..3100059),
-            (3100059..3101092),
-            (3101092..3102056),
-            (3102056..3102897),
-            (3102897..3103692),
-            (3103692..3104487),
-        ],
-        &[
-            (3119183..3120145),
-            (3120145..3121109),
-            (3121109..3122071),
-            (3122071..3122935),
-            (3122935..3123801),
-            (3123801..3124667),
-            (3124667..3125535),
-        ],
-        &[
-            (3139133..3140062),
-            (3140062..3140702),
-            (3140702..3141341),
-            (3141341..3142270),
-            (3142270..3143112),
-            (3143112..3144038),
-            (3144038..3144870),
-        ],
-        &[
-            (3162533..3163376),
-            (3163376..3164219),
-            (3164219..3165189),
-            (3165189..3166019),
-            (3166019..3166976),
-            (3166976..3167820),
-            (3167820..3168662),
-            (3168662..3169636),
-            (3169636..3170609),
-        ],
-        &[
-            (3181239..3182448),
-            (3182448..3183654),
-            (3183654..3184293),
-            (3184293..3185125),
-        ],
-        &[(3193022..3193855), (3193855..3194686), (3194686..3195517)],
-        &[
-            (3209282..3210118),
-            (3210118..3210954),
-            (3210954..3211789),
-            (3211789..3212628),
-            (3212628..3213467),
-            (3213467..3214299),
-            (3214299..3215139),
-        ],
-        &[
-            (3227394..3228227),
-            (3228227..3229059),
-            (3229059..3229892),
-            (3229892..3230725),
-            (3230725..3231559),
-            (3231559..3232392),
-        ],
-        &[
-            (3248331..3249167),
-            (3249167..3250005),
-            (3250005..3251032),
-            (3251032..3252061),
-            (3252061..3252901),
-            (3252901..3253740),
-            (3253740..3254593),
-            (3254593..3255446),
-        ],
-        &[(3262764..3263603), (3263603..3264238), (3264238..3264872)],
-        &[
-            (3278616..3279456),
-            (3279456..3280295),
-            (3280295..3281135),
-            (3281135..3281975),
-            (3281975..3282815),
-            (3282815..3283656),
-            (3283656..3284496),
-        ],
-        &[
-            (3298107..3298944),
-            (3298944..3299781),
-            (3299781..3300606),
-            (3300606..3301431),
-            (3301431..3302256),
-            (3302256..3303091),
-            (3303091..3303926),
-        ],
-        &[(3309181..3310134)],
-        &[
-            (3326560..3327396),
-            (3327396..3328229),
-            (3328229..3329026),
-            (3329026..3329824),
-            (3329824..3330672),
-            (3330672..3331471),
-            (3331471..3332270),
-            (3332270..3333121),
-            (3333121..3333957),
-        ],
-        &[
-            (3344994..3345832),
-            (3345832..3346660),
-            (3346660..3347639),
-            (3347639..3348430),
-            (3348430..3349275),
-        ],
-        &[
-            (3364478..3365436),
-            (3365436..3366402),
-            (3366402..3367248),
-            (3367248..3368216),
-            (3368216..3369182),
-            (3369182..3370148),
-            (3370148..3371119),
-        ],
-        &[
-            (3384341..3385376),
-            (3385376..3386003),
-            (3386003..3386631),
-            (3386631..3387660),
-            (3387660..3388691),
-            (3388691..3389726),
-        ],
-        &[
-            (3398359..3398997),
-            (3398997..3399631),
-            (3399631..3400269),
-            (3400269..3401235),
-        ],
-        &[
-            (3413338..3414299),
-            (3414299..3415265),
-            (3415265..3416229),
-            (3416229..3417195),
-            (3417195..3418157),
-        ],
-        &[
-            (3428816..3429450),
-            (3429450..3430409),
-            (3430409..3431370),
-            (3431370..3432203),
-            (3432203..3432840),
-        ],
-        &[
-            (3444406..3445432),
-            (3445432..3446458),
-            (3446458..3447289),
-            (3447289..3448126),
-            (3448126..3448963),
-        ],
-        &[
-            (3458471..3459326),
-            (3459326..3460224),
-            (3460224..3461052),
-            (3461052..3461903),
-        ],
-        &[
-            (3487453..3488476),
-            (3488476..3489502),
-            (3489502..3490531),
-            (3490531..3491557),
-            (3491557..3492426),
-            (3492426..3493295),
-            (3493295..3494331),
-            (3494331..3495367),
-            (3495367..3496404),
-            (3496404..3497441),
-            (3497441..3498279),
-            (3498279..3499111),
-            (3499111..3499954),
-        ],
-        &[
-            (3514517..3515504),
-            (3515504..3516135),
-            (3516135..3517002),
-            (3517002..3517632),
-            (3517632..3518460),
-            (3518460..3519289),
-            (3519289..3520118),
-            (3520118..3520749),
-        ],
-        &[
-            (3531672..3532700),
-            (3532700..3533723),
-            (3533723..3534765),
-            (3534765..3535807),
-        ],
-        &[
-            (3549597..3550435),
-            (3550435..3551268),
-            (3551268..3552102),
-            (3552102..3552936),
-            (3552936..3553779),
-            (3553779..3554650),
-            (3554650..3555519),
-        ],
-        &[
-            (3568104..3568937),
-            (3568937..3569772),
-            (3569772..3570799),
-            (3570799..3571632),
-            (3571632..3572466),
-            (3572466..3573300),
-        ],
-        &[
-            (3584701..3585532),
-            (3585532..3586363),
-            (3586363..3587390),
-            (3587390..3588368),
-            (3588368..3589203),
-        ],
-        &[
-            (3600113..3600963),
-            (3600963..3601844),
-            (3601844..3602488),
-            (3602488..3603323),
-            (3603323..3604349),
-        ],
-        &[
-            (3621449..3622285),
-            (3622285..3623247),
-            (3623247..3624209),
-            (3624209..3625044),
-            (3625044..3625892),
-            (3625892..3626727),
-            (3626727..3627563),
-            (3627563..3628400),
-            (3628400..3629250),
-        ],
-        &[
-            (3643503..3644340),
-            (3644340..3645191),
-            (3645191..3646033),
-            (3646033..3646872),
-            (3646872..3647836),
-            (3647836..3648802),
-            (3648802..3649639),
-        ],
-        &[
-            (3661657..3662510),
-            (3662510..3663491),
-            (3663491..3664647),
-            (3664647..3665486),
-            (3665486..3666463),
-        ],
-        &[
-            (3676280..3677407),
-            (3677407..3678388),
-            (3678388..3679021),
-            (3679021..3679823),
-        ],
-        &[
-            (3693470..3694305),
-            (3694305..3695140),
-            (3695140..3695975),
-            (3695975..3696810),
-            (3696810..3697641),
-            (3697641..3698473),
-            (3698473..3699320),
-        ],
-        &[
-            (3713500..3714335),
-            (3714335..3715178),
-            (3715178..3716040),
-            (3716040..3716877),
-            (3716877..3717719),
-            (3717719..3718575),
-            (3718575..3719621),
-        ],
-        &[
-            (3735593..3736387),
-            (3736387..3737181),
-            (3737181..3738031),
-            (3738031..3738881),
-            (3738881..3739858),
-            (3739858..3740835),
-            (3740835..3741676),
-            (3741676..3742781),
-        ],
-        &[
-            (3756083..3756923),
-            (3756923..3757881),
-            (3757881..3758854),
-            (3758854..3759812),
-            (3759812..3760783),
-            (3760783..3761616),
-        ],
-        &[
-            (3777335..3778138),
-            (3778138..3779134),
-            (3779134..3780130),
-            (3780130..3781125),
-            (3781125..3781934),
-            (3781934..3782718),
-            (3782718..3783502),
-            (3783502..3784286),
-        ],
-        &[
-            (3794011..3794848),
-            (3794848..3795685),
-            (3795685..3796719),
-            (3796719..3797556),
-        ],
-        &[
-            (3814085..3814896),
-            (3814896..3815708),
-            (3815708..3816520),
-            (3816520..3817332),
-            (3817332..3818143),
-            (3818143..3819104),
-            (3819104..3820068),
-            (3820068..3821028),
-            (3821028..3821636),
-        ],
-        &[
-            (3833869..3834711),
-            (3834711..3835553),
-            (3835553..3836394),
-            (3836394..3837231),
-            (3837231..3838070),
-            (3838070..3838907),
-        ],
-        &[
-            (3856927..3858048),
-            (3858048..3859168),
-            (3859168..3860162),
-            (3860162..3860998),
-            (3860998..3861834),
-            (3861834..3862667),
-            (3862667..3863540),
-            (3863540..3864374),
-            (3864374..3865226),
-        ],
-        &[
-            (3881268..3882231),
-            (3882231..3883194),
-            (3883194..3883827),
-            (3883827..3885018),
-            (3885018..3885856),
-            (3885856..3886690),
-            (3886690..3887524),
-            (3887524..3888372),
-        ],
-        &[
-            (3897916..3898749),
-            (3898749..3899582),
-            (3899582..3900413),
-            (3900413..3901346),
-        ],
-        &[
-            (3914748..3915775),
-            (3915775..3916798),
-            (3916798..3917776),
-            (3917776..3918729),
-            (3918729..3919358),
-            (3919358..3920319),
-        ],
-        &[
-            (3935587..3936613),
-            (3936613..3937450),
-            (3937450..3938495),
-            (3938495..3939541),
-            (3939541..3940574),
-            (3940574..3941428),
-            (3941428..3942270),
-        ],
-        &[(3947251..3948084)],
-        &[
-            (3972194..3975799),
-            (3975799..3979387),
-            (3979387..3980220),
-            (3980220..3981053),
-            (3981053..3981896),
-            (3981896..3982739),
-            (3982739..3983581),
-        ],
-        &[(3991495..3992331), (3992331..3993167), (3993167..3994017)],
+            (566941..567821),
+            (567821..569612),
+            (569612..571275),
+            (571275..572994),
+            (572994..574674),
+            (574674..576465),
+            (576465..578128),
+            (578128..579847),
+            (579847..581527),
+            (581527..582809),
+            (582809..584091),
+        ],
+        &[
+            (601444..603182),
+            (603182..604920),
+            (604920..605749),
+            (605749..607020),
+            (607020..608291),
+            (608291..609118),
+            (609118..610394),
+            (610394..611670),
+        ],
+        &[
+            (628752..629724),
+            (629724..630685),
+            (630685..632146),
+            (632146..633041),
+            (633041..634502),
+            (634502..635424),
+            (635424..636631),
+            (636631..637838),
+        ],
+        &[
+            (657599..658315),
+            (658315..659577),
+            (659577..660839),
+            (660839..661768),
+            (661768..663749),
+            (663749..666108),
+            (666108..668089),
+            (668089..670448),
+        ],
+        &[
+            (680072..680905),
+            (680905..681656),
+            (681656..682927),
+            (682927..684198),
+        ],
+        &[
+            (699186..700391),
+            (700391..701599),
+            (701599..702433),
+            (702433..703268),
+            (703268..704099),
+            (704099..704884),
+            (704884..705724),
+        ],
+        &[
+            (715585..716420),
+            (716420..717484),
+            (717484..718313),
+            (718313..719171),
+        ],
+        &[
+            (735039..736312),
+            (736312..737144),
+            (737144..738417),
+            (738417..739691),
+            (739691..740965),
+            (740965..742241),
+            (742241..743517),
+        ],
+        &[
+            (752859..753694),
+            (753694..754527),
+            (754527..755363),
+            (755363..756203),
+        ],
+        &[(760792..761401)],
+        &[
+            (771800..773143),
+            (773143..774486),
+            (774486..775260),
+            (775260..776065),
+        ],
+        &[
+            (793935..794780),
+            (794780..795629),
+            (795629..796474),
+            (796474..797337),
+            (797337..798200),
+            (798200..799048),
+            (799048..799688),
+            (799688..800529),
+            (800529..801369),
+            (801369..802212),
+        ],
+        &[
+            (815917..816752),
+            (816752..817587),
+            (817587..818422),
+            (818422..819256),
+            (819256..820090),
+            (820090..820926),
+            (820926..821765),
+        ],
+        &[
+            (836272..837111),
+            (837111..840720),
+            (840720..841556),
+            (841556..842361),
+        ],
+        &[(847335..848170)],
+        &[
+            (869717..870520),
+            (870520..871152),
+            (871152..871786),
+            (871786..872590),
+            (872590..873518),
+            (873518..874156),
+            (874156..874999),
+            (874999..875841),
+            (875841..876684),
+            (876684..877492),
+            (877492..878438),
+            (878438..879271),
+            (879271..880105),
+        ],
+        &[(888524..889363), (889363..890183), (890183..891298)],
+        &[
+            (903610..904438),
+            (904438..905279),
+            (905279..906117),
+            (906117..906953),
+            (906953..907785),
+            (907785..908618),
+        ],
+        &[(916126..916961), (916961..917592), (917592..918396)],
+        &[
+            (933245..934201),
+            (934201..935067),
+            (935067..936026),
+            (936026..936999),
+            (936999..937890),
+            (937890..938867),
+            (938867..939704),
+        ],
+        &[
+            (951193..952229),
+            (952229..953265),
+            (953265..954116),
+            (954116..954955),
+            (954955..955773),
+        ],
+        &[
+            (970492..971367),
+            (971367..972240),
+            (972240..973077),
+            (973077..974112),
+            (974112..975148),
+            (975148..975985),
+            (975985..976868),
+        ],
+        &[
+            (995590..996433),
+            (996433..997275),
+            (997275..998108),
+            (998108..998942),
+            (998942..999780),
+            (999780..1003120),
+            (1003120..1003964),
+        ],
+        &[
+            (1020956..1021754),
+            (1021754..1022591),
+            (1022591..1023836),
+            (1023836..1024674),
+            (1024674..1025919),
+            (1025919..1026771),
+            (1026771..1027739),
+            (1027739..1028586),
+        ],
+        &[
+            (1042902..1043828),
+            (1043828..1044780),
+            (1044780..1045732),
+            (1045732..1046579),
+            (1046579..1047411),
+            (1047411..1048248),
+            (1048248..1049085),
+        ],
+        &[
+            (1061874..1062897),
+            (1062897..1063923),
+            (1063923..1064796),
+            (1064796..1065585),
+            (1065585..1066374),
+            (1066374..1067176),
+        ],
+        &[
+            (1080921..1081759),
+            (1081759..1082594),
+            (1082594..1083430),
+            (1083430..1084263),
+            (1084263..1085095),
+            (1085095..1085940),
+            (1085940..1086785),
+        ],
+        &[
+            (1108063..1108943),
+            (1108943..1109581),
+            (1109581..1110218),
+            (1110218..1110851),
+            (1110851..1111484),
+            (1111484..1112320),
+            (1112320..1113166),
+            (1113166..1114012),
+            (1114012..1114859),
+            (1114859..1115718),
+            (1115718..1116564),
+            (1116564..1117422),
+            (1117422..1118297),
+        ],
+        &[
+            (1132408..1133430),
+            (1133430..1134263),
+            (1134263..1135301),
+            (1135301..1136339),
+            (1136339..1137365),
+            (1137365..1138391),
+        ],
+        &[
+            (1149198..1150030),
+            (1150030..1150862),
+            (1150862..1151694),
+            (1151694..1152526),
+            (1152526..1153361),
+        ],
+        &[(1161517..1162350), (1162350..1163320), (1163320..1164163)],
+        &[
+            (1182336..1183171),
+            (1183171..1184006),
+            (1184006..1184842),
+            (1184842..1185677),
+            (1185677..1186513),
+            (1186513..1187349),
+            (1187349..1188193),
+            (1188193..1189160),
+            (1189160..1189963),
+            (1189963..1190765),
+        ],
+        &[
+            (1201405..1202369),
+            (1202369..1203515),
+            (1203515..1204472),
+            (1204472..1205412),
+        ],
+        &[
+            (1226413..1227451),
+            (1227451..1228084),
+            (1228084..1229120),
+            (1229120..1229753),
+            (1229753..1230601),
+            (1230601..1231449),
+            (1231449..1232616),
+            (1232616..1233782),
+            (1233782..1234616),
+            (1234616..1235457),
+            (1235457..1236310),
+        ],
+        &[(1244183..1245199), (1245199..1245995), (1245995..1246624)],
+        &[
+            (1263190..1264028),
+            (1264028..1264867),
+            (1264867..1265704),
+            (1265704..1266543),
+            (1266543..1267382),
+            (1267382..1268212),
+            (1268212..1269051),
+            (1269051..1269889),
+            (1269889..1270727),
+        ],
+        &[
+            (1286883..1287718),
+            (1287718..1288821),
+            (1288821..1289927),
+            (1289927..1290766),
+            (1290766..1291605),
+            (1291605..1292441),
+            (1292441..1293278),
+            (1293278..1294117),
+        ],
+        &[
+            (1310438..1311255),
+            (1311255..1311891),
+            (1311891..1312732),
+            (1312732..1313573),
+            (1313573..1314428),
+            (1314428..1315283),
+            (1315283..1316124),
+            (1316124..1316979),
+            (1316979..1317834),
+        ],
+        &[
+            (1329368..1330174),
+            (1330174..1330802),
+            (1330802..1331824),
+            (1331824..1332850),
+            (1332850..1333879),
+        ],
+        &[
+            (1354236..1355540),
+            (1355540..1356844),
+            (1356844..1357644),
+            (1357644..1358802),
+            (1358802..1359597),
+            (1359597..1360422),
+            (1360422..1361249),
+            (1361249..1362751),
+            (1362751..1364253),
+        ],
+        &[
+            (1379750..1380585),
+            (1380585..1381421),
+            (1381421..1382256),
+            (1382256..1383092),
+            (1383092..1383931),
+            (1383931..1384910),
+            (1384910..1385743),
+            (1385743..1386595),
+        ],
+        &[
+            (1399560..1400398),
+            (1400398..1401424),
+            (1401424..1402451),
+            (1402451..1403287),
+            (1403287..1404140),
+            (1404140..1404980),
+        ],
+        &[
+            (1429385..1430351),
+            (1430351..1431184),
+            (1431184..1432152),
+            (1432152..1432987),
+            (1432987..1433955),
+            (1433955..1434789),
+            (1434789..1435757),
+            (1435757..1436591),
+            (1436591..1437556),
+            (1437556..1438387),
+            (1438387..1439354),
+            (1439354..1440320),
+            (1440320..1441286),
+        ],
+        &[
+            (1454722..1455553),
+            (1455553..1456383),
+            (1456383..1457223),
+            (1457223..1458029),
+            (1458029..1458824),
+            (1458824..1459665),
+            (1459665..1460477),
+        ],
+        &[
+            (1482282..1483510),
+            (1483510..1484737),
+            (1484737..1485960),
+            (1485960..1487183),
+            (1487183..1488411),
+            (1488411..1489636),
+            (1489636..1490861),
+            (1490861..1492093),
+        ],
+        &[
+            (1501340..1502146),
+            (1502146..1502951),
+            (1502951..1503791),
+            (1503791..1504632),
+        ],
+        &[
+            (1515186..1515823),
+            (1515823..1516860),
+            (1516860..1517495),
+            (1517495..1518335),
+            (1518335..1519171),
+        ],
+        &[
+            (1530319..1531169),
+            (1531169..1532100),
+            (1532100..1533031),
+            (1533031..1533834),
+            (1533834..1534673),
+        ],
+        &[
+            (1544005..1544838),
+            (1544838..1545670),
+            (1545670..1546501),
+            (1546501..1547335),
+        ],
+        &[(1556520..1557790), (1557790..1559060), (1559060..1560017)],
+        &[(1567911..1568749), (1568749..1569592), (1569592..1570426)],
+        &[
+            (1583027..1583811),
+            (1583811..1584639),
+            (1584639..1585604),
+            (1585604..1586570),
+            (1586570..1587376),
+            (1587376..1588216),
+        ],
+        &[
+            (1598952..1599787),
+            (1599787..1600626),
+            (1600626..1601430),
+            (1601430..1602066),
+            (1602066..1603060),
+        ],
+        &[
+            (1624606..1625764),
+            (1625764..1626925),
+            (1626925..1628101),
+            (1628101..1628957),
+            (1628957..1629797),
+            (1629797..1630740),
+            (1630740..1631719),
+            (1631719..1632476),
+            (1632476..1633279),
+            (1633279..1634082),
+            (1634082..1634885),
+        ],
+        &[
+            (1652348..1652944),
+            (1652944..1653785),
+            (1653785..1654582),
+            (1654582..1656489),
+            (1656489..1658401),
+            (1658401..1660308),
+            (1660308..1662220),
+        ],
+        &[
+            (1680427..1681396),
+            (1681396..1682501),
+            (1682501..1683604),
+            (1683604..1684709),
+            (1684709..1685343),
+            (1685343..1686445),
+            (1686445..1687075),
+            (1687075..1687909),
+            (1687909..1688743),
+        ],
+        &[
+            (1700827..1701788),
+            (1701788..1702766),
+            (1702766..1703730),
+            (1703730..1704708),
+            (1704708..1705668),
+        ],
+        &[
+            (1717054..1717902),
+            (1717902..1718768),
+            (1718768..1719397),
+            (1719397..1720509),
+            (1720509..1721468),
+        ],
+        &[(1731885..1733094), (1733094..1734306), (1734306..1735519)],
+        &[
+            (1746322..1747156),
+            (1747156..1747991),
+            (1747991..1748822),
+            (1748822..1749652),
+            (1749652..1750485),
+        ],
+        &[
+            (1765179..1766016),
+            (1766016..1766854),
+            (1766854..1767691),
+            (1767691..1768647),
+            (1768647..1769604),
+            (1769604..1770574),
+            (1770574..1771544),
+        ],
+        &[
+            (1782315..1783155),
+            (1783155..1784114),
+            (1784114..1784952),
+            (1784952..1785804),
+            (1785804..1786436),
+        ],
+        &[
+            (1796838..1797795),
+            (1797795..1798833),
+            (1798833..1799795),
+            (1799795..1800734),
+        ],
+        &[
+            (1815197..1816031),
+            (1816031..1816877),
+            (1816877..1817711),
+            (1817711..1818557),
+            (1818557..1819192),
+            (1819192..1819828),
+            (1819828..1820661),
+            (1820661..1821497),
+        ],
+        &[
+            (1835796..1836640),
+            (1836640..1837480),
+            (1837480..1838630),
+            (1838630..1839468),
+            (1839468..1840307),
+            (1840307..1841152),
+            (1841152..1841994),
+        ],
+        &[
+            (1851253..1852105),
+            (1852105..1852943),
+            (1852943..1853729),
+            (1853729..1854555),
+        ],
+        &[
+            (1865797..1866636),
+            (1866636..1867849),
+            (1867849..1869064),
+            (1869064..1870116),
+        ],
+        &[
+            (1893804..1894642),
+            (1894642..1895481),
+            (1895481..1896319),
+            (1896319..1897158),
+            (1897158..1897798),
+            (1897798..1900065),
+            (1900065..1901402),
+            (1901402..1902231),
+            (1902231..1903059),
+            (1903059..1904087),
+            (1904087..1905115),
+        ],
+        &[
+            (1920690..1921319),
+            (1921319..1922157),
+            (1922157..1923196),
+            (1923196..1924024),
+            (1924024..1925932),
+            (1925932..1927840),
+        ],
+        &[
+            (1949730..1950570),
+            (1950570..1951410),
+            (1951410..1952245),
+            (1952245..1953085),
+            (1953085..1953926),
+            (1953926..1954767),
+            (1954767..1955563),
+            (1955563..1956358),
+            (1956358..1957155),
+            (1957155..1957952),
+            (1957952..1958748),
+            (1958748..1959543),
+            (1959543..1960339),
+        ],
+        &[
+            (1970272..1971105),
+            (1971105..1971902),
+            (1971902..1972751),
+            (1972751..1973921),
+        ],
+        &[
+            (1984394..1985248),
+            (1985248..1985872),
+            (1985872..1986702),
+            (1986702..1987537),
+            (1987537..1988371),
+        ],
+        &[
+            (2003553..2004394),
+            (2004394..2005234),
+            (2005234..2006087),
+            (2006087..2006927),
+            (2006927..2007768),
+            (2007768..2008609),
+            (2008609..2009442),
+            (2009442..2010295),
+        ],
+        &[
+            (2019661..2020498),
+            (2020498..2021338),
+            (2021338..2022177),
+            (2022177..2023017),
+        ],
+        &[
+            (2032647..2033437),
+            (2033437..2034273),
+            (2034273..2035202),
+            (2035202..2036133),
+        ],
+        &[
+            (2049864..2050698),
+            (2050698..2051533),
+            (2051533..2052368),
+            (2052368..2053205),
+            (2053205..2054040),
+            (2054040..2054890),
+            (2054890..2055722),
+        ],
+        &[(2063670..2064505), (2064505..2065344), (2065344..2066190)],
+        &[
+            (2077788..2078627),
+            (2078627..2079586),
+            (2079586..2080544),
+            (2080544..2081499),
+            (2081499..2082356),
+        ],
+        &[
+            (2112322..2113165),
+            (2113165..2117115),
+            (2117115..2121076),
+            (2121076..2121932),
+            (2121932..2122773),
+            (2122773..2123610),
+            (2123610..2124448),
+            (2124448..2125485),
+            (2125485..2126519),
+        ],
+        &[
+            (2146852..2147486),
+            (2147486..2148644),
+            (2148644..2149815),
+            (2149815..2150654),
+            (2150654..2151635),
+            (2151635..2152598),
+            (2152598..2153579),
+            (2153579..2154540),
+            (2154540..2155503),
+            (2155503..2156342),
+        ],
+        &[
+            (2173282..2174123),
+            (2174123..2174980),
+            (2174980..2175788),
+            (2175788..2176425),
+            (2176425..2177231),
+            (2177231..2178038),
+            (2178038..2178882),
+            (2178882..2179516),
+            (2179516..2180150),
+            (2180150..2180980),
+        ],
+        &[
+            (2203323..2204159),
+            (2204159..2205012),
+            (2205012..2206039),
+            (2206039..2207084),
+            (2207084..2207915),
+            (2207915..2208747),
+            (2208747..2209578),
+            (2209578..2210412),
+            (2210412..2211244),
+            (2211244..2212076),
+            (2212076..2212907),
+            (2212907..2213503),
+            (2213503..2214064),
+        ],
+        &[(2219032..2219875)],
+        &[
+            (2232131..2233065),
+            (2233065..2233906),
+            (2233906..2234747),
+            (2234747..2236093),
+            (2236093..2237063),
+        ],
+        &[
+            (2249948..2250787),
+            (2250787..2251431),
+            (2251431..2252238),
+            (2252238..2253241),
+            (2253241..2254239),
+            (2254239..2255236),
+        ],
+        &[(2269314..2269949), (2269949..2274190), (2274190..2275032)],
+        &[
+            (2288737..2289574),
+            (2289574..2290414),
+            (2290414..2291256),
+            (2291256..2292095),
+            (2292095..2292902),
+            (2292902..2293753),
+            (2293753..2294605),
+        ],
+        &[
+            (2316776..2317612),
+            (2317612..2318448),
+            (2318448..2319285),
+            (2319285..2320076),
+            (2320076..2320913),
+            (2320913..2321750),
+            (2321750..2322587),
+            (2322587..2323424),
+            (2323424..2324256),
+            (2324256..2325089),
+            (2325089..2325922),
+            (2325922..2326761),
+            (2326761..2327599),
+        ],
+        &[
+            (2339816..2340649),
+            (2340649..2341483),
+            (2341483..2342317),
+            (2342317..2343160),
+            (2343160..2344003),
+            (2344003..2344836),
+        ],
+        &[
+            (2357745..2358534),
+            (2358534..2359368),
+            (2359368..2360201),
+            (2360201..2361035),
+            (2361035..2362072),
+            (2362072..2363106),
+        ],
+        &[
+            (2379627..2380464),
+            (2380464..2381302),
+            (2381302..2382141),
+            (2382141..2382974),
+            (2382974..2383773),
+            (2383773..2384607),
+            (2384607..2385440),
+            (2385440..2386278),
+            (2386278..2387117),
+        ],
+        &[
+            (2401503..2402335),
+            (2402335..2403609),
+            (2403609..2404883),
+            (2404883..2405718),
+            (2405718..2406548),
+            (2406548..2407390),
+        ],
+        &[
+            (2421160..2422375),
+            (2422375..2423586),
+            (2423586..2424794),
+            (2424794..2426000),
+            (2426000..2426633),
+        ],
+        &[
+            (2440162..2441015),
+            (2441015..2441834),
+            (2441834..2442665),
+            (2442665..2443463),
+            (2443463..2444295),
+            (2444295..2445125),
+            (2445125..2445956),
+        ],
+        &[
+            (2456369..2457205),
+            (2457205..2457840),
+            (2457840..2458686),
+            (2458686..2459496),
+            (2459496..2460329),
+        ],
+        &[
+            (2479807..2480765),
+            (2480765..2481394),
+            (2481394..2482251),
+            (2482251..2483094),
+            (2483094..2483957),
+            (2483957..2484818),
+            (2484818..2485655),
+            (2485655..2486494),
+            (2486494..2487332),
+            (2487332..2488171),
+            (2488171..2489020),
+        ],
+        &[
+            (2499211..2499993),
+            (2499993..2500622),
+            (2500622..2501403),
+            (2501403..2502238),
+            (2502238..2503036),
+        ],
+        &[
+            (2513859..2514700),
+            (2514700..2515542),
+            (2515542..2516386),
+            (2516386..2517227),
+            (2517227..2518085),
+        ],
+        &[
+            (2535202..2536043),
+            (2536043..2536674),
+            (2536674..2537306),
+            (2537306..2537938),
+            (2537938..2538571),
+            (2538571..2539442),
+            (2539442..2540311),
+            (2540311..2541279),
+            (2541279..2542122),
+            (2542122..2542979),
+        ],
+        &[
+            (2562632..2563594),
+            (2563594..2564558),
+            (2564558..2565485),
+            (2565485..2566447),
+            (2566447..2567282),
+            (2567282..2568118),
+            (2568118..2569304),
+            (2569304..2570140),
+            (2570140..2570962),
+            (2570962..2571805),
+        ],
+        &[
+            (2589822..2590456),
+            (2590456..2591243),
+            (2591243..2592171),
+            (2592171..2593005),
+            (2593005..2593968),
+            (2593968..2594809),
+            (2594809..2595643),
+            (2595643..2596477),
+            (2596477..2597328),
+            (2597328..2598166),
+        ],
+        &[(2604515..2605347), (2605347..2606137)],
+        &[
+            (2618736..2619572),
+            (2619572..2620410),
+            (2620410..2621330),
+            (2621330..2622160),
+            (2622160..2623022),
+            (2623022..2623965),
+        ],
+        &[(2632149..2633302), (2633302..2634128), (2634128..2634765)],
+        &[(2642589..2643426), (2643426..2644263), (2644263..2645065)],
+        &[(2652902..2653701), (2653701..2654542), (2654542..2655379)],
+        &[
+            (2667969..2668839),
+            (2668839..2669709),
+            (2669709..2670301),
+            (2670301..2671136),
+            (2671136..2671970),
+            (2671970..2673120),
+        ],
+        &[
+            (2684283..2685122),
+            (2685122..2685966),
+            (2685966..2686994),
+            (2686994..2687830),
+            (2687830..2688664),
+        ],
+        &[(2695125..2695958), (2695958..2696798)],
+        &[
+            (2716758..2717595),
+            (2717595..2718386),
+            (2718386..2719246),
+            (2719246..2720105),
+            (2720105..2720965),
+            (2720965..2721803),
+            (2721803..2722641),
+            (2722641..2723480),
+            (2723480..2724319),
+            (2724319..2725288),
+            (2725288..2726258),
+        ],
+        &[(2734499..2735492), (2735492..2736327), (2736327..2737160)],
+        &[(2745690..2746712), (2746712..2747734), (2747734..2748517)],
+        &[
+            (2795246..2796420),
+            (2796420..2797597),
+            (2797597..2798769),
+            (2798769..2799943),
+            (2799943..2801103),
+            (2801103..2802072),
+            (2802072..2803261),
+            (2803261..2804438),
+            (2804438..2805598),
+            (2805598..2806776),
+            (2806776..2807952),
+            (2807952..2808940),
+            (2808940..2810117),
+            (2810117..2811294),
+            (2811294..2812473),
+            (2812473..2813654),
+            (2813654..2814493),
+            (2814493..2815298),
+            (2815298..2816138),
+            (2816138..2816977),
+            (2816977..2817815),
+            (2817815..2818655),
+            (2818655..2819507),
+        ],
+        &[
+            (2829254..2830209),
+            (2830209..2831166),
+            (2831166..2832122),
+            (2832122..2832752),
+        ],
+        &[
+            (2847497..2848328),
+            (2848328..2849160),
+            (2849160..2849947),
+            (2849947..2850775),
+            (2850775..2851583),
+            (2851583..2852390),
+            (2852390..2853198),
+            (2853198..2854006),
+        ],
+        &[
+            (2868513..2869353),
+            (2869353..2870319),
+            (2870319..2871298),
+            (2871298..2872277),
+            (2872277..2873111),
+            (2873111..2873963),
+            (2873963..2874816),
+        ],
+        &[(2882915..2883706), (2883706..2884539), (2884539..2885515)],
+        &[
+            (2896415..2897251),
+            (2897251..2898103),
+            (2898103..2898939),
+            (2898939..2899776),
+            (2899776..2900622),
+        ],
+        &[
+            (2914505..2915442),
+            (2915442..2916379),
+            (2916379..2917209),
+            (2917209..2918045),
+            (2918045..2919214),
+            (2919214..2920373),
+        ],
+        &[
+            (2939861..2940689),
+            (2940689..2941322),
+            (2941322..2942161),
+            (2942161..2943000),
+            (2943000..2943837),
+            (2943837..2944676),
+            (2944676..2945635),
+            (2945635..2946594),
+            (2946594..2947394),
+            (2947394..2948193),
+            (2948193..2949027),
+        ],
+        &[
+            (2988392..2989027),
+            (2989027..2993435),
+            (2993435..2997839),
+            (2997839..3002252),
+            (3002252..3006661),
+            (3006661..3007497),
+        ],
+        &[
+            (3026180..3027094),
+            (3027094..3027919),
+            (3027919..3028745),
+            (3028745..3029703),
+            (3029703..3033771),
+            (3033771..3034579),
+        ],
+        &[
+            (3044564..3045402),
+            (3045402..3046240),
+            (3046240..3047077),
+            (3047077..3048228),
+        ],
+        &[
+            (3069721..3070358),
+            (3070358..3071387),
+            (3071387..3072416),
+            (3072416..3073447),
+            (3073447..3074495),
+            (3074495..3075526),
+            (3075526..3076559),
+            (3076559..3077523),
+            (3077523..3078364),
+            (3078364..3079159),
+            (3079159..3079954),
+        ],
+        &[
+            (3094650..3095612),
+            (3095612..3096576),
+            (3096576..3097538),
+            (3097538..3098402),
+            (3098402..3099268),
+            (3099268..3100134),
+            (3100134..3101002),
+        ],
+        &[
+            (3114536..3115465),
+            (3115465..3116105),
+            (3116105..3116744),
+            (3116744..3117673),
+            (3117673..3118515),
+            (3118515..3119441),
+            (3119441..3120239),
+        ],
+        &[
+            (3137838..3138681),
+            (3138681..3139524),
+            (3139524..3140494),
+            (3140494..3141324),
+            (3141324..3142281),
+            (3142281..3143125),
+            (3143125..3143967),
+            (3143967..3144941),
+            (3144941..3145880),
+        ],
+        &[
+            (3156510..3157719),
+            (3157719..3158925),
+            (3158925..3159564),
+            (3159564..3160396),
+        ],
+        &[(3168293..3169126), (3169126..3169957), (3169957..3170788)],
+        &[
+            (3184553..3185389),
+            (3185389..3186225),
+            (3186225..3187060),
+            (3187060..3187899),
+            (3187899..3188738),
+            (3188738..3189570),
+            (3189570..3190410),
+        ],
+        &[
+            (3202665..3203498),
+            (3203498..3204330),
+            (3204330..3205163),
+            (3205163..3205996),
+            (3205996..3206830),
+            (3206830..3207663),
+        ],
+        &[
+            (3223602..3224438),
+            (3224438..3225276),
+            (3225276..3226303),
+            (3226303..3227332),
+            (3227332..3228172),
+            (3228172..3229011),
+            (3229011..3229864),
+            (3229864..3230717),
+        ],
+        &[(3238035..3238874), (3238874..3239509), (3239509..3240143)],
+        &[
+            (3253887..3254727),
+            (3254727..3255566),
+            (3255566..3256406),
+            (3256406..3257246),
+            (3257246..3258086),
+            (3258086..3258927),
+            (3258927..3259767),
+        ],
+        &[
+            (3273210..3274047),
+            (3274047..3274838),
+            (3274838..3275663),
+            (3275663..3276488),
+            (3276488..3277313),
+            (3277313..3278102),
+            (3278102..3278937),
+        ],
+        &[(3284192..3285145)],
+        &[
+            (3301571..3302407),
+            (3302407..3303240),
+            (3303240..3304037),
+            (3304037..3304835),
+            (3304835..3305683),
+            (3305683..3306482),
+            (3306482..3307281),
+            (3307281..3308132),
+            (3308132..3308968),
+        ],
+        &[
+            (3319627..3320465),
+            (3320465..3321293),
+            (3321293..3322272),
+            (3322272..3322859),
+            (3322859..3323670),
+        ],
+        &[
+            (3338681..3339605),
+            (3339605..3340571),
+            (3340571..3341417),
+            (3341417..3342385),
+            (3342385..3343351),
+            (3343351..3344283),
+            (3344283..3345220),
+        ],
+        &[
+            (3358442..3359477),
+            (3359477..3360104),
+            (3360104..3360732),
+            (3360732..3361761),
+            (3361761..3362792),
+            (3362792..3363827),
+        ],
+        &[
+            (3372396..3373034),
+            (3373034..3373668),
+            (3373668..3374306),
+            (3374306..3375238),
+        ],
+        &[
+            (3387085..3388046),
+            (3388046..3388944),
+            (3388944..3389874),
+            (3389874..3390806),
+            (3390806..3391768),
+        ],
+        &[
+            (3402427..3403061),
+            (3403061..3404020),
+            (3404020..3404981),
+            (3404981..3405814),
+            (3405814..3406451),
+        ],
+        &[
+            (3418017..3419043),
+            (3419043..3420069),
+            (3420069..3420900),
+            (3420900..3421737),
+            (3421737..3422574),
+        ],
+        &[
+            (3431998..3432853),
+            (3432853..3433751),
+            (3433751..3434533),
+            (3434533..3435384),
+        ],
+        &[
+            (3460870..3461893),
+            (3461893..3462919),
+            (3462919..3463948),
+            (3463948..3464974),
+            (3464974..3465843),
+            (3465843..3466712),
+            (3466712..3467748),
+            (3467748..3468784),
+            (3468784..3469821),
+            (3469821..3470858),
+            (3470858..3471696),
+            (3471696..3472528),
+            (3472528..3473337),
+        ],
+        &[
+            (3487900..3488887),
+            (3488887..3489518),
+            (3489518..3490385),
+            (3490385..3491015),
+            (3491015..3491843),
+            (3491843..3492672),
+            (3492672..3493501),
+            (3493501..3494132),
+        ],
+        &[
+            (3505055..3506083),
+            (3506083..3507106),
+            (3507106..3508148),
+            (3508148..3509190),
+        ],
+        &[
+            (3522980..3523818),
+            (3523818..3524651),
+            (3524651..3525485),
+            (3525485..3526319),
+            (3526319..3527162),
+            (3527162..3528033),
+            (3528033..3528902),
+        ],
+        &[
+            (3541487..3542320),
+            (3542320..3543155),
+            (3543155..3544182),
+            (3544182..3545015),
+            (3545015..3545849),
+            (3545849..3546683),
+        ],
+        &[
+            (3558020..3558851),
+            (3558851..3559682),
+            (3559682..3560709),
+            (3560709..3561653),
+            (3561653..3562488),
+        ],
+        &[
+            (3573346..3574196),
+            (3574196..3575083),
+            (3575083..3575727),
+            (3575727..3576528),
+            (3576528..3577554),
+        ],
+        &[
+            (3594526..3595362),
+            (3595362..3596290),
+            (3596290..3597218),
+            (3597218..3598053),
+            (3598053..3598901),
+            (3598901..3599736),
+            (3599736..3600572),
+            (3600572..3601409),
+            (3601409..3602259),
+        ],
+        &[
+            (3616512..3617349),
+            (3617349..3618200),
+            (3618200..3619042),
+            (3619042..3619881),
+            (3619881..3620845),
+            (3620845..3621811),
+            (3621811..3622648),
+        ],
+        &[
+            (3634666..3635519),
+            (3635519..3636500),
+            (3636500..3637656),
+            (3637656..3638495),
+            (3638495..3639472),
+        ],
+        &[
+            (3649225..3650352),
+            (3650352..3651299),
+            (3651299..3651932),
+            (3651932..3652734),
+        ],
+        &[
+            (3666217..3667052),
+            (3667052..3667841),
+            (3667841..3668676),
+            (3668676..3669511),
+            (3669511..3670342),
+            (3670342..3671174),
+            (3671174..3671987),
+        ],
+        &[
+            (3686167..3687002),
+            (3687002..3687845),
+            (3687845..3688707),
+            (3688707..3689544),
+            (3689544..3690386),
+            (3690386..3691242),
+            (3691242..3692288),
+        ],
+        &[
+            (3708208..3709002),
+            (3709002..3709796),
+            (3709796..3710646),
+            (3710646..3711496),
+            (3711496..3712473),
+            (3712473..3713450),
+            (3713450..3714291),
+            (3714291..3715368),
+        ],
+        &[
+            (3728670..3729510),
+            (3729510..3730468),
+            (3730468..3731441),
+            (3731441..3732399),
+            (3732399..3733370),
+            (3733370..3734203),
+        ],
+        &[
+            (3749642..3750445),
+            (3750445..3751441),
+            (3751441..3752437),
+            (3752437..3753432),
+            (3753432..3754060),
+            (3754060..3754844),
+            (3754844..3755628),
+            (3755628..3756412),
+        ],
+        &[
+            (3766009..3766846),
+            (3766846..3767649),
+            (3767649..3768683),
+            (3768683..3769486),
+        ],
+        &[
+            (3785939..3786750),
+            (3786750..3787562),
+            (3787562..3788374),
+            (3788374..3789140),
+            (3789140..3789951),
+            (3789951..3790912),
+            (3790912..3791876),
+            (3791876..3792836),
+            (3792836..3793444),
+        ],
+        &[
+            (3805677..3806519),
+            (3806519..3807361),
+            (3807361..3808202),
+            (3808202..3809039),
+            (3809039..3809878),
+            (3809878..3810715),
+        ],
+        &[
+            (3828651..3829772),
+            (3829772..3830892),
+            (3830892..3831886),
+            (3831886..3832722),
+            (3832722..3833512),
+            (3833512..3834345),
+            (3834345..3835218),
+            (3835218..3836052),
+            (3836052..3836904),
+        ],
+        &[
+            (3852882..3853845),
+            (3853845..3854808),
+            (3854808..3855441),
+            (3855441..3856632),
+            (3856632..3857470),
+            (3857470..3858304),
+            (3858304..3859138),
+            (3859138..3859952),
+        ],
+        &[
+            (3869146..3869933),
+            (3869933..3870766),
+            (3870766..3871597),
+            (3871597..3872397),
+        ],
+        &[
+            (3885735..3886762),
+            (3886762..3887785),
+            (3887785..3888763),
+            (3888763..3889716),
+            (3889716..3890345),
+            (3890345..3891272),
+        ],
+        &[
+            (3906476..3907502),
+            (3907502..3908339),
+            (3908339..3909384),
+            (3909384..3910430),
+            (3910430..3911463),
+            (3911463..3912283),
+            (3912283..3913125),
+        ],
+        &[(3918106..3918939)],
+        &[
+            (3943049..3946654),
+            (3946654..3950242),
+            (3950242..3951075),
+            (3951075..3951908),
+            (3951908..3952751),
+            (3952751..3953594),
+            (3953594..3954436),
+        ],
+        &[(3962350..3963186), (3963186..3964022), (3964022..3964872)],
     ];
     pub static ABILITY_CLOSURES: [&[Range<usize>]; ChampionId::VARIANTS] = [
         &[
-            (560681..561299),
-            (561299..563011),
-            (563011..563782),
-            (563782..564567),
-            (564567..565342),
-            (565342..567064),
-            (567064..567839),
-            (567839..568627),
-            (568627..569413),
-            (569413..569995),
-            (569995..570577),
-        ],
-        &[
-            (603811..604391),
-            (604391..605412),
-            (605412..605989),
-            (605989..606569),
-            (606569..607150),
-            (607150..607728),
-            (607728..608309),
-            (608309..608994),
-        ],
-        &[
-            (631407..632116),
-            (632116..632817),
-            (632817..633489),
-            (633489..634157),
-            (634157..634829),
-            (634829..635493),
-            (635493..636043),
-            (636043..636584),
-        ],
-        &[
-            (659193..659657),
-            (659657..660234),
-            (660234..660811),
-            (660811..661479),
-            (661479..662383),
-            (662383..663471),
-            (663471..664375),
-            (664375..665465),
-        ],
-        &[
-            (685732..686312),
-            (686312..686849),
-            (686849..687431),
-            (687431..688014),
-        ],
-        &[
-            (702741..703781),
-            (703781..704824),
-            (704824..705400),
-            (705400..705981),
-            (705981..706557),
-            (706557..707131),
-            (707131..707708),
-        ],
-        &[
-            (721814..722393),
-            (722393..723201),
-            (723201..723779),
-            (723779..724367),
-        ],
-        &[
-            (739732..740316),
-            (740316..740898),
-            (740898..741482),
-            (741482..742065),
-            (742065..742647),
-            (742647..743233),
-            (743233..743821),
-        ],
-        &[
-            (759323..759902),
-            (759902..760481),
-            (760481..761060),
-            (761060..761641),
-        ],
-        &[(769150..769574)],
-        &[
-            (778319..778935),
-            (778935..779551),
-            (779551..780121),
-            (780121..780666),
-        ],
-        &[
-            (797057..797643),
-            (797643..798235),
-            (798235..798823),
-            (798823..799424),
-            (799424..800026),
-            (800026..800618),
-            (800618..801085),
-            (801085..801675),
-            (801675..802260),
-            (802260..802847),
-        ],
-        &[
-            (820766..821346),
-            (821346..821928),
-            (821928..822508),
-            (822508..823089),
-            (823089..823668),
-            (823668..824248),
-            (824248..824829),
-        ],
-        &[
-            (840239..840818),
-            (840818..844059),
-            (844059..844637),
-            (844637..845184),
-        ],
-        &[(855670..856247)],
-        &[
-            (871540..872118),
-            (872118..872579),
-            (872579..873038),
-            (873038..873617),
-            (873617..874314),
-            (874314..874776),
-            (874776..875357),
-            (875357..875941),
-            (875941..876522),
-            (876522..877102),
-            (877102..877814),
-            (877814..878389),
-            (878389..878965),
-        ],
-        &[(895977..896561), (896561..897153), (897153..898006)],
-        &[
-            (909643..910223),
-            (910223..910809),
-            (910809..911388),
-            (911388..911967),
-            (911967..912546),
-            (912546..913126),
-        ],
-        &[(924057..924635), (924635..925095), (925095..925642)],
-        &[
-            (938194..938890),
-            (938890..939501),
-            (939501..940197),
-            (940197..940903),
-            (940903..941595),
-            (941595..942309),
-            (942309..942889),
-        ],
-        &[
-            (957703..958469),
-            (958469..959235),
-            (959235..959820),
-            (959820..960401),
-            (960401..960985),
-        ],
-        &[
-            (975758..976373),
-            (976373..976986),
-            (976986..977562),
-            (977562..978336),
-            (978336..979110),
-            (979110..979690),
-            (979690..980306),
-        ],
-        &[
-            (998762..999349),
-            (999349..999934),
-            (999934..1000517),
-            (1000517..1001101),
-            (1001101..1001686),
-            (1001686..1004813),
-            (1004813..1005398),
-        ],
-        &[
-            (1025232..1025811),
-            (1025811..1026392),
-            (1026392..1027370),
-            (1027370..1027951),
-            (1027951..1028928),
-            (1028928..1029519),
-            (1029519..1030231),
-            (1030231..1030828),
-        ],
-        &[
-            (1048474..1049169),
-            (1049169..1049865),
-            (1049865..1050559),
-            (1050559..1051148),
-            (1051148..1051722),
-            (1051722..1052297),
-            (1052297..1052872),
-        ],
-        &[
-            (1068125..1068889),
-            (1068889..1069658),
-            (1069658..1070272),
-            (1070272..1070807),
-            (1070807..1071342),
-            (1071342..1071878),
-        ],
-        &[
-            (1086850..1087429),
-            (1087429..1088008),
-            (1088008..1088588),
-            (1088588..1089167),
-            (1089167..1089747),
-            (1089747..1090336),
-            (1090336..1090925),
-        ],
-        &[
-            (1110894..1111512),
-            (1111512..1111972),
-            (1111972..1112431),
-            (1112431..1112894),
-            (1112894..1113353),
-            (1113353..1113933),
-            (1113933..1114514),
-            (1114514..1115095),
-            (1115095..1115681),
-            (1115681..1116271),
-            (1116271..1116852),
-            (1116852..1117441),
-            (1117441..1118055),
-        ],
-        &[
-            (1138000..1138759),
-            (1138759..1139334),
-            (1139334..1140103),
-            (1140103..1140872),
-            (1140872..1141633),
-            (1141633..1142394),
-        ],
-        &[
-            (1156292..1156870),
-            (1156870..1157448),
-            (1157448..1158026),
-            (1158026..1158604),
-            (1158604..1159184),
-        ],
-        &[(1169669..1170248), (1170248..1170987), (1170987..1171567)],
-        &[
-            (1186569..1187150),
-            (1187150..1187731),
-            (1187731..1188313),
-            (1188313..1188894),
-            (1188894..1189476),
-            (1189476..1190058),
-            (1190058..1190648),
-            (1190648..1191392),
-            (1191392..1191942),
-            (1191942..1192491),
-        ],
-        &[
-            (1208674..1209376),
-            (1209376..1210256),
-            (1210256..1210953),
-            (1210953..1211657),
-        ],
-        &[
-            (1229440..1230221),
-            (1230221..1230685),
-            (1230685..1231464),
-            (1231464..1231928),
-            (1231928..1232518),
-            (1232518..1233105),
-            (1233105..1234006),
-            (1234006..1234903),
-            (1234903..1235489),
-            (1235489..1236079),
-            (1236079..1236675),
-        ],
-        &[(1252701..1253461), (1253461..1254038), (1254038..1254497)],
-        &[
-            (1268325..1268904),
-            (1268904..1269483),
-            (1269483..1270060),
-            (1270060..1270642),
-            (1270642..1271221),
-            (1271221..1271800),
-            (1271800..1272380),
-            (1272380..1272959),
-            (1272959..1273538),
-        ],
-        &[
-            (1292392..1292971),
-            (1292971..1293909),
-            (1293909..1294850),
-            (1294850..1295429),
-            (1295429..1296008),
-            (1296008..1296587),
-            (1296587..1297167),
-            (1297167..1297747),
-        ],
-        &[
-            (1316456..1317046),
-            (1317046..1317507),
-            (1317507..1318090),
-            (1318090..1318673),
-            (1318673..1319266),
-            (1319266..1319859),
-            (1319859..1320442),
-            (1320442..1321035),
-            (1321035..1321628),
-        ],
-        &[
-            (1337293..1337831),
-            (1337831..1338292),
-            (1338292..1339055),
-            (1339055..1339826),
-            (1339826..1340592),
-        ],
-        &[
-            (1359824..1360417),
-            (1360417..1361007),
-            (1361007..1361547),
-            (1361547..1362442),
-            (1362442..1363021),
-            (1363021..1363596),
-            (1363596..1364175),
-            (1364175..1364880),
-            (1364880..1365588),
-        ],
-        &[
-            (1386453..1387033),
-            (1387033..1387614),
-            (1387614..1388194),
-            (1388194..1388775),
-            (1388775..1389395),
-            (1389395..1390110),
-            (1390110..1390690),
-            (1390690..1391280),
-        ],
-        &[
-            (1407285..1407861),
-            (1407861..1408621),
-            (1408621..1409382),
-            (1409382..1409962),
-            (1409962..1410547),
-            (1410547..1411123),
-        ],
-        &[
-            (1433821..1434683),
-            (1434683..1435260),
-            (1435260..1436124),
-            (1436124..1436703),
-            (1436703..1437590),
-            (1437590..1438168),
-            (1438168..1439031),
-            (1439031..1439609),
-            (1439609..1440471),
-            (1440471..1441048),
-            (1441048..1441936),
-            (1441936..1442823),
-            (1442823..1443686),
-        ],
-        &[
-            (1466607..1467184),
-            (1467184..1467760),
-            (1467760..1468341),
-            (1468341..1468920),
-            (1468920..1469494),
-            (1469494..1470070),
-            (1470070..1470650),
-        ],
-        &[
-            (1490031..1491070),
-            (1491070..1492108),
-            (1492108..1493142),
-            (1493142..1494176),
-            (1494176..1495215),
-            (1495215..1496251),
-            (1496251..1497287),
-            (1497287..1498324),
-        ],
-        &[
-            (1515129..1515677),
-            (1515677..1516223),
-            (1516223..1516802),
-            (1516802..1517382),
-        ],
-        &[
-            (1528403..1528865),
-            (1528865..1529643),
-            (1529643..1530101),
-            (1530101..1530720),
-            (1530720..1531296),
-        ],
-        &[
-            (1543441..1544030),
-            (1544030..1544699),
-            (1544699..1545368),
-            (1545368..1545946),
-            (1545946..1546526),
-        ],
-        &[
-            (1557929..1558508),
-            (1558508..1559090),
-            (1559090..1559667),
-            (1559667..1560246),
-        ],
-        &[(1570896..1571477), (1571477..1572058), (1572058..1572761)],
-        &[(1582414..1582992), (1582992..1583574), (1583574..1584152)],
-        &[
-            (1595710..1596280),
-            (1596280..1596857),
-            (1596857..1597560),
-            (1597560..1598264),
-            (1598264..1598839),
-            (1598839..1599416),
-        ],
-        &[
-            (1612561..1613136),
-            (1613136..1613716),
-            (1613716..1614293),
-            (1614293..1614752),
-            (1614752..1615485),
-        ],
-        &[
-            (1633867..1634755),
-            (1634755..1635648),
-            (1635648..1636551),
-            (1636551..1637145),
-            (1637145..1637723),
-            (1637723..1638430),
-            (1638430..1639141),
-            (1639141..1639685),
-            (1639685..1640231),
-            (1640231..1640775),
-            (1640775..1641321),
-        ],
-        &[
-            (1664077..1664506),
-            (1664506..1665092),
-            (1665092..1665667),
-            (1665667..1666550),
-            (1666550..1667436),
-            (1667436..1668320),
-            (1668320..1669207),
-        ],
-        &[
-            (1691713..1692418),
-            (1692418..1693324),
-            (1693324..1694230),
-            (1694230..1695196),
-            (1695196..1695655),
-            (1695655..1696558),
-            (1696558..1697016),
-            (1697016..1697596),
-            (1697596..1698176),
-        ],
-        &[
-            (1715533..1716230),
-            (1716230..1716943),
-            (1716943..1717646),
-            (1717646..1718359),
-            (1718359..1719060),
-        ],
-        &[
-            (1732060..1732651),
-            (1732651..1733269),
-            (1733269..1733728),
-            (1733728..1734583),
-            (1734583..1735287),
-        ],
-        &[(1747029..1748059), (1748059..1749088), (1749088..1750118)],
-        &[
-            (1761647..1762228),
-            (1762228..1762810),
-            (1762810..1763391),
-            (1763391..1763973),
-            (1763973..1764555),
-        ],
-        &[
-            (1778845..1779427),
-            (1779427..1780009),
-            (1780009..1780591),
-            (1780591..1781291),
-            (1781291..1781992),
-            (1781992..1782702),
-            (1782702..1783412),
-        ],
-        &[
-            (1797614..1798196),
-            (1798196..1798901),
-            (1798901..1799488),
-            (1799488..1800085),
-            (1800085..1800548),
-        ],
-        &[
-            (1812265..1812961),
-            (1812961..1813736),
-            (1813736..1814431),
-            (1814431..1815135),
-        ],
-        &[
-            (1829154..1829728),
-            (1829728..1830310),
-            (1830310..1830884),
-            (1830884..1831466),
-            (1831466..1831923),
-            (1831923..1832381),
-            (1832381..1832954),
-            (1832954..1833528),
-        ],
-        &[
-            (1849755..1850336),
-            (1850336..1850916),
-            (1850916..1851798),
-            (1851798..1852378),
-            (1852378..1852959),
-            (1852959..1853546),
-            (1853546..1854127),
-        ],
-        &[
-            (1867356..1867945),
-            (1867945..1868520),
-            (1868520..1869093),
-            (1869093..1869668),
-        ],
-        &[
-            (1881027..1881604),
-            (1881604..1882542),
-            (1882542..1883483),
-            (1883483..1884298),
-        ],
-        &[
-            (1903811..1904383),
-            (1904383..1904956),
-            (1904956..1905532),
-            (1905532..1906105),
-            (1906105..1906565),
-            (1906565..1908633),
-            (1908633..1909712),
-            (1909712..1910286),
-            (1910286..1910859),
-            (1910859..1911627),
-            (1911627..1912395),
-        ],
-        &[
-            (1935131..1935587),
-            (1935587..1936166),
-            (1936166..1936943),
-            (1936943..1937523),
-            (1937523..1938408),
-            (1938408..1939300),
-        ],
-        &[
-            (1961025..1961606),
-            (1961606..1962187),
-            (1962187..1962768),
-            (1962768..1963349),
-            (1963349..1963931),
-            (1963931..1964513),
-            (1964513..1965062),
-            (1965062..1965602),
-            (1965602..1966152),
-            (1966152..1966702),
-            (1966702..1967251),
-            (1967251..1967791),
-            (1967791..1968340),
-        ],
-        &[
-            (1986313..1986889),
-            (1986889..1987467),
-            (1987467..1988050),
-            (1988050..1988946),
-        ],
-        &[
-            (2000322..2000910),
-            (2000910..2001365),
-            (2001365..2001944),
-            (2001944..2002523),
-            (2002523..2003102),
-        ],
-        &[
-            (2017595..2018176),
-            (2018176..2018756),
-            (2018756..2019346),
-            (2019346..2019927),
-            (2019927..2020509),
-            (2020509..2021091),
-            (2021091..2021671),
-            (2021671..2022261),
-        ],
-        &[
-            (2036034..2036618),
-            (2036618..2037201),
-            (2037201..2037784),
-            (2037784..2038369),
-        ],
-        &[
-            (2048946..2049519),
-            (2049519..2050099),
-            (2050099..2050768),
-            (2050768..2051439),
-        ],
-        &[
-            (2064618..2065196),
-            (2065196..2065779),
-            (2065779..2066362),
-            (2066362..2066947),
-            (2066947..2067530),
-            (2067530..2068124),
-            (2068124..2068702),
-        ],
-        &[(2080766..2081344), (2081344..2081921), (2081921..2082508)],
-        &[
-            (2093363..2093945),
-            (2093945..2094642),
-            (2094642..2095338),
-            (2095338..2096034),
-            (2096034..2096626),
-        ],
-        &[
-            (2119156..2119739),
-            (2119739..2123493),
-            (2123493..2127258),
-            (2127258..2127855),
-            (2127855..2128437),
-            (2128437..2129020),
-            (2129020..2129602),
-            (2129602..2130382),
-            (2130382..2131160),
-        ],
-        &[
-            (2158746..2159205),
-            (2159205..2160098),
-            (2160098..2161000),
-            (2161000..2161580),
-            (2161580..2162311),
-            (2162311..2163014),
-            (2163014..2163733),
-            (2163733..2164434),
-            (2164434..2165137),
-            (2165137..2165718),
-        ],
-        &[
-            (2186797..2187379),
-            (2187379..2187977),
-            (2187977..2188528),
-            (2188528..2188988),
-            (2188988..2189529),
-            (2189529..2190079),
-            (2190079..2190668),
-            (2190668..2191134),
-            (2191134..2191600),
-            (2191600..2192177),
-        ],
-        &[
-            (2214803..2215385),
-            (2215385..2215978),
-            (2215978..2216747),
-            (2216747..2217528),
-            (2217528..2218243),
-            (2218243..2218820),
-            (2218820..2219396),
-            (2219396..2219979),
-            (2219979..2220556),
-            (2220556..2221133),
-            (2221133..2221713),
-            (2221713..2222135),
-            (2222135..2222556),
-        ],
-        &[(2237854..2238433)],
-        &[
-            (2247936..2248642),
-            (2248642..2249229),
-            (2249229..2249814),
-            (2249814..2250888),
-            (2250888..2251596),
-        ],
-        &[
-            (2265650..2266229),
-            (2266229..2266695),
-            (2266695..2267277),
-            (2267277..2268024),
-            (2268024..2268768),
-            (2268768..2269511),
-        ],
-        &[(2283990..2284457), (2284457..2288326), (2288326..2288911)],
-        &[
-            (2304314..2304895),
-            (2304895..2305475),
-            (2305475..2306055),
-            (2306055..2306638),
-            (2306638..2307217),
-            (2307217..2307807),
-            (2307807..2308398),
-        ],
-        &[
-            (2329069..2329646),
-            (2329646..2330221),
-            (2330221..2330797),
-            (2330797..2331371),
-            (2331371..2331947),
-            (2331947..2332523),
-            (2332523..2333099),
-            (2333099..2333675),
-            (2333675..2334250),
-            (2334250..2334826),
-            (2334826..2335402),
-            (2335402..2335979),
-            (2335979..2336555),
-        ],
-        &[
-            (2356172..2356750),
-            (2356750..2357328),
-            (2357328..2357906),
-            (2357906..2358484),
-            (2358484..2359062),
-            (2359062..2359641),
-        ],
-        &[
-            (2373799..2374361),
-            (2374361..2374940),
-            (2374940..2375518),
-            (2375518..2376097),
-            (2376097..2376873),
-            (2376873..2377646),
-        ],
-        &[
-            (2394399..2394981),
-            (2394981..2395562),
-            (2395562..2396144),
-            (2396144..2396726),
-            (2396726..2397306),
-            (2397306..2397891),
-            (2397891..2398473),
-            (2398473..2399055),
-            (2399055..2399638),
-        ],
-        &[
-            (2418060..2418639),
-            (2418639..2419221),
-            (2419221..2419803),
-            (2419803..2420381),
-            (2420381..2420960),
-            (2420960..2421548),
-        ],
-        &[
-            (2436608..2437653),
-            (2437653..2438684),
-            (2438684..2439715),
-            (2439715..2440744),
-            (2440744..2441205),
-        ],
-        &[
-            (2456302..2456888),
-            (2456888..2457474),
-            (2457474..2458048),
-            (2458048..2458621),
-            (2458621..2459196),
-            (2459196..2459769),
-            (2459769..2460343),
-        ],
-        &[
-            (2473899..2474477),
-            (2474477..2474936),
-            (2474936..2475524),
-            (2475524..2476104),
-            (2476104..2476682),
-        ],
-        &[
-            (2493762..2494463),
-            (2494463..2494921),
-            (2494921..2495508),
-            (2495508..2496085),
-            (2496085..2496691),
-            (2496691..2497283),
-            (2497283..2497860),
-            (2497860..2498439),
-            (2498439..2499017),
-            (2499017..2499596),
-            (2499596..2500182),
-        ],
-        &[
-            (2517062..2517633),
-            (2517633..2518089),
-            (2518089..2518659),
-            (2518659..2519237),
-            (2519237..2519783),
-        ],
-        &[
-            (2531604..2532186),
-            (2532186..2532769),
-            (2532769..2533350),
-            (2533350..2533931),
-            (2533931..2534523),
-        ],
-        &[
-            (2550363..2550941),
-            (2550941..2551396),
-            (2551396..2551852),
-            (2551852..2552308),
-            (2552308..2552765),
-            (2552765..2553382),
-            (2553382..2553997),
-            (2553997..2554700),
-            (2554700..2555278),
-            (2555278..2555866),
-        ],
-        &[
-            (2576843..2577543),
-            (2577543..2578245),
-            (2578245..2578942),
-            (2578942..2579644),
-            (2579644..2580221),
-            (2580221..2580799),
-            (2580799..2581737),
-            (2581737..2582313),
-            (2582313..2582903),
-            (2582903..2583486),
-        ],
-        &[
-            (2605024..2605481),
-            (2605481..2606053),
-            (2606053..2606750),
-            (2606750..2607323),
-            (2607323..2608021),
-            (2608021..2608600),
-            (2608600..2609174),
-            (2609174..2609748),
-            (2609748..2610332),
-            (2610332..2610907),
-        ],
-        &[(2624619..2625193), (2625193..2625764)],
-        &[
-            (2636382..2636958),
-            (2636958..2637537),
-            (2637537..2638201),
-            (2638201..2638776),
-            (2638776..2639362),
-            (2639362..2640031),
-        ],
-        &[(2651529..2652411), (2652411..2652985), (2652985..2653444)],
-        &[(2662179..2662758), (2662758..2663337), (2663337..2663884)],
-        &[(2672522..2673100), (2673100..2673680), (2673680..2674261)],
-        &[
-            (2685675..2686289),
-            (2686289..2686903),
-            (2686903..2687327),
-            (2687327..2687903),
-            (2687903..2688478),
-            (2688478..2689362),
-        ],
-        &[
-            (2702588..2703166),
-            (2703166..2703744),
-            (2703744..2704519),
-            (2704519..2705098),
-            (2705098..2705676),
-        ],
-        &[(2715357..2715937), (2715937..2716518)],
-        &[
-            (2731577..2732154),
-            (2732154..2732729),
-            (2732729..2733321),
-            (2733321..2733912),
-            (2733912..2734504),
-            (2734504..2735081),
-            (2735081..2735658),
-            (2735658..2736236),
-            (2736236..2736814),
-            (2736814..2737524),
-            (2737524..2738235),
-        ],
-        &[(2754131..2754867), (2754867..2755447), (2755447..2756022)],
-        &[(2765207..2765966), (2765966..2766725), (2766725..2767297)],
-        &[
-            (2799102..2800010),
-            (2800010..2800915),
-            (2800915..2801823),
-            (2801823..2802732),
-            (2802732..2803630),
-            (2803630..2804525),
-            (2804525..2805436),
-            (2805436..2806341),
-            (2806341..2807241),
-            (2807241..2808153),
-            (2808153..2809063),
-            (2809063..2809971),
-            (2809971..2810883),
-            (2810883..2811795),
-            (2811795..2812708),
-            (2812708..2813620),
-            (2813620..2814200),
-            (2814200..2814778),
-            (2814778..2815361),
-            (2815361..2815941),
-            (2815941..2816522),
-            (2816522..2817108),
-            (2817108..2817699),
-        ],
-        &[
-            (2849566..2850265),
-            (2850265..2850963),
-            (2850963..2851661),
-            (2851661..2852121),
-        ],
-        &[
-            (2865966..2866545),
-            (2866545..2867119),
-            (2867119..2867692),
-            (2867692..2868267),
-            (2868267..2868815),
-            (2868815..2869354),
-            (2869354..2869902),
-            (2869902..2870448),
-        ],
-        &[
-            (2887046..2887628),
-            (2887628..2888329),
-            (2888329..2889039),
-            (2889039..2889749),
-            (2889749..2890329),
-            (2890329..2890919),
-            (2890919..2891510),
-        ],
-        &[(2904098..2904631), (2904631..2905205), (2905205..2905912)],
-        &[
-            (2916471..2917054),
-            (2917054..2917653),
-            (2917653..2918236),
-            (2918236..2918820),
-            (2918820..2919412),
-        ],
-        &[
-            (2933726..2934589),
-            (2934589..2935448),
-            (2935448..2936132),
-            (2936132..2936710),
-            (2936710..2937604),
-            (2937604..2938492),
-        ],
-        &[
-            (2957952..2958526),
-            (2958526..2958982),
-            (2958982..2959562),
-            (2959562..2960142),
-            (2960142..2960720),
-            (2960720..2961300),
-            (2961300..2962000),
-            (2962000..2962696),
-            (2962696..2963243),
-            (2963243..2963781),
-            (2963781..2964360),
-        ],
-        &[
-            (2995662..2996119),
-            (2996119..3000163),
-            (3000163..3004211),
-            (3004211..3008260),
-            (3008260..3012313),
-            (3012313..3012891),
-        ],
-        &[
-            (3043953..3044583),
-            (3044583..3045149),
-            (3045149..3045724),
-            (3045724..3046422),
-            (3046422..3050131),
-            (3050131..3050711),
-        ],
-        &[
-            (3066456..3067038),
-            (3067038..3067622),
-            (3067622..3068203),
-            (3068203..3069097),
-        ],
-        &[
-            (3086846..3087306),
-            (3087306..3088068),
-            (3088068..3088830),
-            (3088830..3089594),
-            (3089594..3090375),
-            (3090375..3091139),
-            (3091139..3091905),
-            (3091905..3092609),
-            (3092609..3093188),
-            (3093188..3093721),
-            (3093721..3094254),
-        ],
-        &[
-            (3114635..3115331),
-            (3115331..3116029),
-            (3116029..3116725),
-            (3116725..3117338),
-            (3117338..3117953),
-            (3117953..3118568),
-            (3118568..3119183),
-        ],
-        &[
-            (3135056..3135721),
-            (3135721..3136181),
-            (3136181..3136644),
-            (3136644..3137309),
-            (3137309..3137890),
-            (3137890..3138553),
-            (3138553..3139133),
-        ],
-        &[
-            (3156821..3157397),
-            (3157397..3157975),
-            (3157975..3158683),
-            (3158683..3159259),
-            (3159259..3159958),
-            (3159958..3160539),
-            (3160539..3161118),
-            (3161118..3161827),
-            (3161827..3162533),
-        ],
-        &[
-            (3178152..3179180),
-            (3179180..3180205),
-            (3180205..3180660),
-            (3180660..3181239),
-        ],
-        &[(3191281..3191862), (3191862..3192442), (3192442..3193022)],
-        &[
-            (3205218..3205801),
-            (3205801..3206381),
-            (3206381..3206960),
-            (3206960..3207539),
-            (3207539..3208122),
-            (3208122..3208701),
-            (3208701..3209282),
-        ],
-        &[
-            (3223920..3224499),
-            (3224499..3225077),
-            (3225077..3225656),
-            (3225656..3226235),
-            (3226235..3226815),
-            (3226815..3227394),
-        ],
-        &[
-            (3243287..3243868),
-            (3243868..3244449),
-            (3244449..3245219),
-            (3245219..3245991),
-            (3245991..3246571),
-            (3246571..3247151),
-            (3247151..3247741),
-            (3247741..3248331),
-        ],
-        &[(3261252..3261835), (3261835..3262300), (3262300..3262764)],
-        &[
-            (3274535..3275120),
-            (3275120..3275700),
-            (3275700..3276285),
-            (3276285..3276870),
-            (3276870..3277451),
-            (3277451..3278035),
-            (3278035..3278616),
-        ],
-        &[
-            (3294093..3294669),
-            (3294669..3295241),
-            (3295241..3295815),
-            (3295815..3296389),
-            (3296389..3296963),
-            (3296963..3297535),
-            (3297535..3298107),
-        ],
-        &[(3308482..3309181)],
-        &[
-            (3321460..3322039),
-            (3322039..3322618),
-            (3322618..3323155),
-            (3323155..3323693),
-            (3323693..3324287),
-            (3324287..3324836),
-            (3324836..3325385),
-            (3325385..3325980),
-            (3325980..3326560),
-        ],
-        &[
-            (3341978..3342558),
-            (3342558..3343138),
-            (3343138..3343869),
-            (3343869..3344406),
-            (3344406..3344994),
-        ],
-        &[
-            (3359692..3360389),
-            (3360389..3361088),
-            (3361088..3361671),
-            (3361671..3362376),
-            (3362376..3363075),
-            (3363075..3363772),
-            (3363772..3364478),
-        ],
-        &[
-            (3380314..3381089),
-            (3381089..3381550),
-            (3381550..3382008),
-            (3382008..3382784),
-            (3382784..3383562),
-            (3383562..3384341),
-        ],
-        &[
-            (3396270..3396738),
-            (3396738..3397199),
-            (3397199..3397660),
-            (3397660..3398359),
-        ],
-        &[
-            (3409818..3410521),
-            (3410521..3411224),
-            (3411224..3411931),
-            (3411931..3412636),
-            (3412636..3413338),
-        ],
-        &[
-            (3425929..3426387),
-            (3426387..3427084),
-            (3427084..3427783),
-            (3427783..3428358),
-            (3428358..3428816),
-        ],
-        &[
-            (3441141..3441909),
-            (3441909..3442677),
-            (3442677..3443250),
-            (3443250..3443828),
-            (3443828..3444406),
-        ],
-        &[
-            (3456079..3456667),
-            (3456667..3457315),
-            (3457315..3457887),
-            (3457887..3458471),
-        ],
-        &[
-            (3478333..3479091),
-            (3479091..3479856),
-            (3479856..3480621),
-            (3480621..3481386),
-            (3481386..3482000),
-            (3482000..3482614),
-            (3482614..3483391),
-            (3483391..3484168),
-            (3484168..3484945),
-            (3484945..3485722),
-            (3485722..3486301),
-            (3486301..3486875),
-            (3486875..3487453),
-        ],
-        &[
-            (3510063..3510797),
-            (3510797..3511255),
-            (3511255..3511871),
-            (3511871..3512328),
-            (3512328..3512902),
-            (3512902..3513481),
-            (3513481..3514060),
-            (3514060..3514517),
-        ],
-        &[
-            (3528594..3529360),
-            (3529360..3530124),
-            (3530124..3530898),
-            (3530898..3531672),
-        ],
-        &[
-            (3545508..3546088),
-            (3546088..3546668),
-            (3546668..3547249),
-            (3547249..3547830),
-            (3547830..3548410),
-            (3548410..3549006),
-            (3549006..3549597),
-        ],
-        &[
-            (3564454..3565031),
-            (3565031..3565608),
-            (3565608..3566371),
-            (3566371..3566948),
-            (3566948..3567526),
-            (3567526..3568104),
-        ],
-        &[
-            (3581515..3582086),
-            (3582086..3582657),
-            (3582657..3583424),
-            (3583424..3584129),
-            (3584129..3584701),
-        ],
-        &[
-            (3597121..3597700),
-            (3597700..3598314),
-            (3598314..3598769),
-            (3598769..3599346),
-            (3599346..3600113),
-        ],
-        &[
-            (3615969..3616549),
-            (3616549..3617249),
-            (3617249..3617949),
-            (3617949..3618529),
-            (3618529..3619118),
-            (3619118..3619698),
-            (3619698..3620278),
-            (3620278..3620859),
-            (3620859..3621449),
-        ],
-        &[
-            (3639170..3639752),
-            (3639752..3640344),
-            (3640344..3640932),
-            (3640932..3641514),
-            (3641514..3642216),
-            (3642216..3642920),
-            (3642920..3643503),
-        ],
-        &[
-            (3658173..3658759),
-            (3658759..3659472),
-            (3659472..3660364),
-            (3660364..3660947),
-            (3660947..3661657),
-        ],
-        &[
-            (3673711..3674571),
-            (3674571..3675281),
-            (3675281..3675743),
-            (3675743..3676280),
-        ],
-        &[
-            (3689441..3690015),
-            (3690015..3690587),
-            (3690587..3691163),
-            (3691163..3691737),
-            (3691737..3692314),
-            (3692314..3692888),
-            (3692888..3693470),
-        ],
-        &[
-            (3709214..3709794),
-            (3709794..3710375),
-            (3710375..3710973),
-            (3710973..3711554),
-            (3711554..3712134),
-            (3712134..3712724),
-            (3712724..3713500),
-        ],
-        &[
-            (3730540..3731075),
-            (3731075..3731610),
-            (3731610..3732193),
-            (3732193..3732774),
-            (3732774..3733478),
-            (3733478..3734182),
-            (3734182..3734763),
-            (3734763..3735593),
-        ],
-        &[
-            (3752120..3752700),
-            (3752700..3753396),
-            (3753396..3754107),
-            (3754107..3754803),
-            (3754803..3755508),
-            (3755508..3756083),
-        ],
-        &[
-            (3772426..3772972),
-            (3772972..3773707),
-            (3773707..3774442),
-            (3774442..3775176),
-            (3775176..3775736),
-            (3775736..3776269),
-            (3776269..3776802),
-            (3776802..3777335),
-        ],
-        &[
-            (3791498..3792078),
-            (3792078..3792656),
-            (3792656..3793433),
-            (3793433..3794011),
-        ],
-        &[
-            (3808869..3809407),
-            (3809407..3809948),
-            (3809948..3810487),
-            (3810487..3811024),
-            (3811024..3811562),
-            (3811562..3812260),
-            (3812260..3812962),
-            (3812962..3813659),
-            (3813659..3814085),
-        ],
-        &[
-            (3830388..3830967),
-            (3830967..3831546),
-            (3831546..3832124),
-            (3832124..3832704),
-            (3832704..3833289),
-            (3833289..3833869),
-        ],
-        &[
-            (3850997..3851850),
-            (3851850..3852698),
-            (3852698..3853426),
-            (3853426..3854001),
-            (3854001..3854574),
-            (3854574..3855149),
-            (3855149..3855768),
-            (3855768..3856344),
-            (3856344..3856927),
-        ],
-        &[
-            (3876178..3876875),
-            (3876875..3877572),
-            (3877572..3878028),
-            (3878028..3878952),
-            (3878952..3879529),
-            (3879529..3880106),
-            (3880106..3880683),
-            (3880683..3881268),
-        ],
-        &[
-            (3895526..3896096),
-            (3896096..3896668),
-            (3896668..3897240),
-            (3897240..3897916),
-        ],
-        &[
-            (3910660..3911430),
-            (3911430..3912190),
-            (3912190..3912900),
-            (3912900..3913594),
-            (3913594..3914054),
-            (3914054..3914748),
-        ],
-        &[
-            (3930765..3931530),
-            (3931530..3932109),
-            (3932109..3932882),
-            (3932882..3933654),
-            (3933654..3934419),
-            (3934419..3935006),
-            (3935006..3935587),
-        ],
-        &[(3946671..3947251)],
-        &[
-            (3962841..3966085),
-            (3966085..3969305),
-            (3969305..3969883),
-            (3969883..3970461),
-            (3970461..3971039),
-            (3971039..3971617),
-            (3971617..3972194),
-        ],
-        &[(3989750..3990329), (3990329..3990907), (3990907..3991495)],
+            (558835..559453),
+            (559453..560274),
+            (560274..561045),
+            (561045..561830),
+            (561830..562605),
+            (562605..563428),
+            (563428..564203),
+            (564203..564991),
+            (564991..565777),
+            (565777..566359),
+            (566359..566941),
+        ],
+        &[
+            (596364..596944),
+            (596944..597965),
+            (597965..598542),
+            (598542..599122),
+            (599122..599703),
+            (599703..600281),
+            (600281..600862),
+            (600862..601444),
+        ],
+        &[
+            (623607..624316),
+            (624316..625017),
+            (625017..625689),
+            (625689..626325),
+            (626325..626997),
+            (626997..627661),
+            (627661..628211),
+            (628211..628752),
+        ],
+        &[
+            (651327..651791),
+            (651791..652368),
+            (652368..652945),
+            (652945..653613),
+            (653613..654517),
+            (654517..655605),
+            (655605..656509),
+            (656509..657599),
+        ],
+        &[
+            (677822..678402),
+            (678402..678907),
+            (678907..679489),
+            (679489..680072),
+        ],
+        &[
+            (694488..695414),
+            (695414..696342),
+            (696342..696918),
+            (696918..697499),
+            (697499..698075),
+            (698075..698609),
+            (698609..699186),
+        ],
+        &[
+            (713032..713611),
+            (713611..714419),
+            (714419..714997),
+            (714997..715585),
+        ],
+        &[
+            (730950..731534),
+            (731534..732116),
+            (732116..732700),
+            (732700..733283),
+            (733283..733865),
+            (733865..734451),
+            (734451..735039),
+        ],
+        &[
+            (750541..751120),
+            (751120..751699),
+            (751699..752278),
+            (752278..752859),
+        ],
+        &[(760368..760792)],
+        &[
+            (769493..770109),
+            (770109..770725),
+            (770725..771255),
+            (771255..771800),
+        ],
+        &[
+            (788145..788731),
+            (788731..789323),
+            (789323..789911),
+            (789911..790512),
+            (790512..791114),
+            (791114..791706),
+            (791706..792173),
+            (792173..792763),
+            (792763..793348),
+            (793348..793935),
+        ],
+        &[
+            (811854..812434),
+            (812434..813016),
+            (813016..813596),
+            (813596..814177),
+            (814177..814756),
+            (814756..815336),
+            (815336..815917),
+        ],
+        &[
+            (831327..831906),
+            (831906..835147),
+            (835147..835725),
+            (835725..836272),
+        ],
+        &[(846758..847335)],
+        &[
+            (862468..863006),
+            (863006..863467),
+            (863467..863926),
+            (863926..864473),
+            (864473..865138),
+            (865138..865600),
+            (865600..866181),
+            (866181..866765),
+            (866765..867346),
+            (867346..867886),
+            (867886..868566),
+            (868566..869141),
+            (869141..869717),
+        ],
+        &[(886527..887111), (887111..887671), (887671..888524)],
+        &[
+            (900127..900707),
+            (900707..901293),
+            (901293..901872),
+            (901872..902451),
+            (902451..903030),
+            (903030..903610),
+        ],
+        &[(914541..915119), (915119..915579), (915579..916126)],
+        &[
+            (928614..929310),
+            (929310..929921),
+            (929921..930617),
+            (930617..931323),
+            (931323..931951),
+            (931951..932665),
+            (932665..933245),
+        ],
+        &[
+            (947959..948725),
+            (948725..949491),
+            (949491..950076),
+            (950076..950657),
+            (950657..951193),
+        ],
+        &[
+            (965938..966553),
+            (966553..967166),
+            (967166..967742),
+            (967742..968516),
+            (968516..969290),
+            (969290..969870),
+            (969870..970492),
+        ],
+        &[
+            (988954..989541),
+            (989541..990126),
+            (990126..990709),
+            (990709..991293),
+            (991293..991878),
+            (991878..995005),
+            (995005..995590),
+        ],
+        &[
+            (1015392..1015939),
+            (1015939..1016520),
+            (1016520..1017498),
+            (1017498..1018079),
+            (1018079..1019056),
+            (1019056..1019647),
+            (1019647..1020359),
+            (1020359..1020956),
+        ],
+        &[
+            (1038536..1039199),
+            (1039199..1039895),
+            (1039895..1040589),
+            (1040589..1041178),
+            (1041178..1041752),
+            (1041752..1042327),
+            (1042327..1042902),
+        ],
+        &[
+            (1058121..1058885),
+            (1058885..1059654),
+            (1059654..1060268),
+            (1060268..1060803),
+            (1060803..1061338),
+            (1061338..1061874),
+        ],
+        &[
+            (1076846..1077425),
+            (1077425..1078004),
+            (1078004..1078584),
+            (1078584..1079163),
+            (1079163..1079743),
+            (1079743..1080332),
+            (1080332..1080921),
+        ],
+        &[
+            (1100896..1101520),
+            (1101520..1101980),
+            (1101980..1102439),
+            (1102439..1102902),
+            (1102902..1103361),
+            (1103361..1103941),
+            (1103941..1104522),
+            (1104522..1105103),
+            (1105103..1105689),
+            (1105689..1106279),
+            (1106279..1106860),
+            (1106860..1107449),
+            (1107449..1108063),
+        ],
+        &[
+            (1128014..1128773),
+            (1128773..1129348),
+            (1129348..1130117),
+            (1130117..1130886),
+            (1130886..1131647),
+            (1131647..1132408),
+        ],
+        &[
+            (1146306..1146884),
+            (1146884..1147462),
+            (1147462..1148040),
+            (1148040..1148618),
+            (1148618..1149198),
+        ],
+        &[(1159651..1160230), (1160230..1160937), (1160937..1161517)],
+        &[
+            (1176453..1177034),
+            (1177034..1177615),
+            (1177615..1178197),
+            (1178197..1178778),
+            (1178778..1179360),
+            (1179360..1179942),
+            (1179942..1180532),
+            (1180532..1181237),
+            (1181237..1181787),
+            (1181787..1182336),
+        ],
+        &[
+            (1198454..1199156),
+            (1199156..1200036),
+            (1200036..1200733),
+            (1200733..1201405),
+        ],
+        &[
+            (1219166..1219953),
+            (1219953..1220417),
+            (1220417..1221202),
+            (1221202..1221666),
+            (1221666..1222256),
+            (1222256..1222843),
+            (1222843..1223744),
+            (1223744..1224641),
+            (1224641..1225227),
+            (1225227..1225817),
+            (1225817..1226413),
+        ],
+        &[(1242419..1243179), (1243179..1243724), (1243724..1244183)],
+        &[
+            (1257977..1258556),
+            (1258556..1259135),
+            (1259135..1259712),
+            (1259712..1260294),
+            (1260294..1260873),
+            (1260873..1261452),
+            (1261452..1262032),
+            (1262032..1262611),
+            (1262611..1263190),
+        ],
+        &[
+            (1281754..1282333),
+            (1282333..1283161),
+            (1283161..1283986),
+            (1283986..1284565),
+            (1284565..1285144),
+            (1285144..1285723),
+            (1285723..1286303),
+            (1286303..1286883),
+        ],
+        &[
+            (1305298..1305856),
+            (1305856..1306317),
+            (1306317..1306900),
+            (1306900..1307483),
+            (1307483..1308076),
+            (1308076..1308669),
+            (1308669..1309252),
+            (1309252..1309845),
+            (1309845..1310438),
+        ],
+        &[
+            (1326069..1326607),
+            (1326607..1327068),
+            (1327068..1327831),
+            (1327831..1328602),
+            (1328602..1329368),
+        ],
+        &[
+            (1348536..1349129),
+            (1349129..1349719),
+            (1349719..1350259),
+            (1350259..1351154),
+            (1351154..1351701),
+            (1351701..1352276),
+            (1352276..1352855),
+            (1352855..1353528),
+            (1353528..1354236),
+        ],
+        &[
+            (1374961..1375541),
+            (1375541..1376122),
+            (1376122..1376702),
+            (1376702..1377283),
+            (1377283..1377865),
+            (1377865..1378580),
+            (1378580..1379160),
+            (1379160..1379750),
+        ],
+        &[
+            (1395722..1396298),
+            (1396298..1397058),
+            (1397058..1397819),
+            (1397819..1398399),
+            (1398399..1398984),
+            (1398984..1399560),
+        ],
+        &[
+            (1420861..1421564),
+            (1421564..1422141),
+            (1422141..1422846),
+            (1422846..1423425),
+            (1423425..1424129),
+            (1424129..1424707),
+            (1424707..1425411),
+            (1425411..1425989),
+            (1425989..1426692),
+            (1426692..1427269),
+            (1427269..1427976),
+            (1427976..1428680),
+            (1428680..1429385),
+        ],
+        &[
+            (1450783..1451360),
+            (1451360..1451936),
+            (1451936..1452517),
+            (1452517..1453064),
+            (1453064..1453598),
+            (1453598..1454174),
+            (1454174..1454722),
+        ],
+        &[
+            (1473989..1475028),
+            (1475028..1476066),
+            (1476066..1477100),
+            (1477100..1478134),
+            (1478134..1479173),
+            (1479173..1480209),
+            (1480209..1481245),
+            (1481245..1482282),
+        ],
+        &[
+            (1499087..1499635),
+            (1499635..1500181),
+            (1500181..1500760),
+            (1500760..1501340),
+        ],
+        &[
+            (1512327..1512789),
+            (1512789..1513567),
+            (1513567..1514025),
+            (1514025..1514610),
+            (1514610..1515186),
+        ],
+        &[
+            (1527266..1527855),
+            (1527855..1528524),
+            (1528524..1529193),
+            (1529193..1529739),
+            (1529739..1530319),
+        ],
+        &[
+            (1541688..1542267),
+            (1542267..1542849),
+            (1542849..1543426),
+            (1543426..1544005),
+        ],
+        &[(1554655..1555236), (1555236..1555817), (1555817..1556520)],
+        &[(1566173..1566751), (1566751..1567333), (1567333..1567911)],
+        &[
+            (1579393..1579923),
+            (1579923..1580500),
+            (1580500..1581203),
+            (1581203..1581907),
+            (1581907..1582450),
+            (1582450..1583027),
+        ],
+        &[
+            (1596060..1596635),
+            (1596635..1597215),
+            (1597215..1597760),
+            (1597760..1598219),
+            (1598219..1598952),
+        ],
+        &[
+            (1617224..1618112),
+            (1618112..1619005),
+            (1619005..1619908),
+            (1619908..1620502),
+            (1620502..1621080),
+            (1621080..1621755),
+            (1621755..1622466),
+            (1622466..1622970),
+            (1622970..1623516),
+            (1623516..1624060),
+            (1624060..1624606),
+        ],
+        &[
+            (1647250..1647679),
+            (1647679..1648265),
+            (1648265..1648808),
+            (1648808..1649691),
+            (1649691..1650577),
+            (1650577..1651461),
+            (1651461..1652348),
+        ],
+        &[
+            (1674334..1675039),
+            (1675039..1675867),
+            (1675867..1676695),
+            (1676695..1677523),
+            (1677523..1677982),
+            (1677982..1678809),
+            (1678809..1679267),
+            (1679267..1679847),
+            (1679847..1680427),
+        ],
+        &[
+            (1697300..1697997),
+            (1697997..1698710),
+            (1698710..1699413),
+            (1699413..1700126),
+            (1700126..1700827),
+        ],
+        &[
+            (1713827..1714418),
+            (1714418..1715036),
+            (1715036..1715495),
+            (1715495..1716350),
+            (1716350..1717054),
+        ],
+        &[(1728796..1729826), (1729826..1730855), (1730855..1731885)],
+        &[
+            (1743414..1743995),
+            (1743995..1744577),
+            (1744577..1745158),
+            (1745158..1745740),
+            (1745740..1746322),
+        ],
+        &[
+            (1760612..1761194),
+            (1761194..1761776),
+            (1761776..1762358),
+            (1762358..1763058),
+            (1763058..1763759),
+            (1763759..1764469),
+            (1764469..1765179),
+        ],
+        &[
+            (1779381..1779963),
+            (1779963..1780668),
+            (1780668..1781255),
+            (1781255..1781852),
+            (1781852..1782315),
+        ],
+        &[
+            (1794000..1794696),
+            (1794696..1795471),
+            (1795471..1796166),
+            (1796166..1796838),
+        ],
+        &[
+            (1810823..1811397),
+            (1811397..1811979),
+            (1811979..1812553),
+            (1812553..1813135),
+            (1813135..1813592),
+            (1813592..1814050),
+            (1814050..1814623),
+            (1814623..1815197),
+        ],
+        &[
+            (1831424..1832005),
+            (1832005..1832585),
+            (1832585..1833467),
+            (1833467..1834047),
+            (1834047..1834628),
+            (1834628..1835215),
+            (1835215..1835796),
+        ],
+        &[
+            (1848981..1849570),
+            (1849570..1850145),
+            (1850145..1850678),
+            (1850678..1851253),
+        ],
+        &[
+            (1862546..1863123),
+            (1863123..1864067),
+            (1864067..1865014),
+            (1865014..1865797),
+        ],
+        &[
+            (1885258..1885830),
+            (1885830..1886403),
+            (1886403..1886979),
+            (1886979..1887552),
+            (1887552..1888012),
+            (1888012..1890080),
+            (1890080..1891121),
+            (1891121..1891695),
+            (1891695..1892268),
+            (1892268..1893036),
+            (1893036..1893804),
+        ],
+        &[
+            (1916521..1916977),
+            (1916977..1917556),
+            (1917556..1918333),
+            (1918333..1918913),
+            (1918913..1919798),
+            (1919798..1920690),
+        ],
+        &[
+            (1942415..1942996),
+            (1942996..1943577),
+            (1943577..1944158),
+            (1944158..1944739),
+            (1944739..1945321),
+            (1945321..1945903),
+            (1945903..1946452),
+            (1946452..1946992),
+            (1946992..1947542),
+            (1947542..1948092),
+            (1948092..1948641),
+            (1948641..1949181),
+            (1949181..1949730),
+        ],
+        &[
+            (1967671..1968247),
+            (1968247..1968793),
+            (1968793..1969376),
+            (1969376..1970272),
+        ],
+        &[
+            (1981614..1982202),
+            (1982202..1982657),
+            (1982657..1983236),
+            (1983236..1983815),
+            (1983815..1984394),
+        ],
+        &[
+            (1998887..1999468),
+            (1999468..2000048),
+            (2000048..2000638),
+            (2000638..2001219),
+            (2001219..2001801),
+            (2001801..2002383),
+            (2002383..2002963),
+            (2002963..2003553),
+        ],
+        &[
+            (2017326..2017910),
+            (2017910..2018493),
+            (2018493..2019076),
+            (2019076..2019661),
+        ],
+        &[
+            (2030194..2030727),
+            (2030727..2031307),
+            (2031307..2031976),
+            (2031976..2032647),
+        ],
+        &[
+            (2045780..2046358),
+            (2046358..2046941),
+            (2046941..2047524),
+            (2047524..2048109),
+            (2048109..2048692),
+            (2048692..2049286),
+            (2049286..2049864),
+        ],
+        &[(2061928..2062506), (2062506..2063083), (2063083..2063670)],
+        &[
+            (2074525..2075107),
+            (2075107..2075804),
+            (2075804..2076500),
+            (2076500..2077196),
+            (2077196..2077788),
+        ],
+        &[
+            (2100318..2100901),
+            (2100901..2104655),
+            (2104655..2108420),
+            (2108420..2109017),
+            (2109017..2109599),
+            (2109599..2110182),
+            (2110182..2110764),
+            (2110764..2111544),
+            (2111544..2112322),
+        ],
+        &[
+            (2139892..2140351),
+            (2140351..2141244),
+            (2141244..2142146),
+            (2142146..2142726),
+            (2142726..2143445),
+            (2143445..2144148),
+            (2144148..2144867),
+            (2144867..2145568),
+            (2145568..2146271),
+            (2146271..2146852),
+        ],
+        &[
+            (2167902..2168484),
+            (2168484..2169082),
+            (2169082..2169633),
+            (2169633..2170093),
+            (2170093..2170634),
+            (2170634..2171184),
+            (2171184..2171773),
+            (2171773..2172239),
+            (2172239..2172705),
+            (2172705..2173282),
+        ],
+        &[
+            (2195739..2196321),
+            (2196321..2196914),
+            (2196914..2197683),
+            (2197683..2198464),
+            (2198464..2199042),
+            (2199042..2199619),
+            (2199619..2200195),
+            (2200195..2200778),
+            (2200778..2201355),
+            (2201355..2201932),
+            (2201932..2202512),
+            (2202512..2202934),
+            (2202934..2203323),
+        ],
+        &[(2218453..2219032)],
+        &[
+            (2228503..2229177),
+            (2229177..2229764),
+            (2229764..2230349),
+            (2230349..2231423),
+            (2231423..2232131),
+        ],
+        &[
+            (2246119..2246698),
+            (2246698..2247164),
+            (2247164..2247714),
+            (2247714..2248461),
+            (2248461..2249205),
+            (2249205..2249948),
+        ],
+        &[(2264393..2264860), (2264860..2268729), (2268729..2269314)],
+        &[
+            (2284685..2285266),
+            (2285266..2285846),
+            (2285846..2286426),
+            (2286426..2287009),
+            (2287009..2287556),
+            (2287556..2288146),
+            (2288146..2288737),
+        ],
+        &[
+            (2309330..2309907),
+            (2309907..2310482),
+            (2310482..2311058),
+            (2311058..2311592),
+            (2311592..2312168),
+            (2312168..2312744),
+            (2312744..2313320),
+            (2313320..2313896),
+            (2313896..2314471),
+            (2314471..2315047),
+            (2315047..2315623),
+            (2315623..2316200),
+            (2316200..2316776),
+        ],
+        &[
+            (2336347..2336925),
+            (2336925..2337503),
+            (2337503..2338081),
+            (2338081..2338659),
+            (2338659..2339237),
+            (2339237..2339816),
+        ],
+        &[
+            (2353930..2354460),
+            (2354460..2355039),
+            (2355039..2355617),
+            (2355617..2356196),
+            (2356196..2356972),
+            (2356972..2357745),
+        ],
+        &[
+            (2374420..2375002),
+            (2375002..2375583),
+            (2375583..2376165),
+            (2376165..2376747),
+            (2376747..2377295),
+            (2377295..2377880),
+            (2377880..2378462),
+            (2378462..2379044),
+            (2379044..2379627),
+        ],
+        &[
+            (2398015..2398594),
+            (2398594..2399176),
+            (2399176..2399758),
+            (2399758..2400336),
+            (2400336..2400915),
+            (2400915..2401503),
+        ],
+        &[
+            (2416563..2417608),
+            (2417608..2418639),
+            (2418639..2419670),
+            (2419670..2420699),
+            (2420699..2421160),
+        ],
+        &[
+            (2436193..2436779),
+            (2436779..2437333),
+            (2437333..2437907),
+            (2437907..2438440),
+            (2438440..2439015),
+            (2439015..2439588),
+            (2439588..2440162),
+        ],
+        &[
+            (2453618..2454196),
+            (2454196..2454655),
+            (2454655..2455243),
+            (2455243..2455791),
+            (2455791..2456369),
+        ],
+        &[
+            (2473399..2474100),
+            (2474100..2474558),
+            (2474558..2475145),
+            (2475145..2475722),
+            (2475722..2476316),
+            (2476316..2476908),
+            (2476908..2477485),
+            (2477485..2478064),
+            (2478064..2478642),
+            (2478642..2479221),
+            (2479221..2479807),
+        ],
+        &[
+            (2496570..2497101),
+            (2497101..2497557),
+            (2497557..2498087),
+            (2498087..2498665),
+            (2498665..2499211),
+        ],
+        &[
+            (2510940..2511522),
+            (2511522..2512105),
+            (2512105..2512686),
+            (2512686..2513267),
+            (2513267..2513859),
+        ],
+        &[
+            (2529699..2530277),
+            (2530277..2530732),
+            (2530732..2531188),
+            (2531188..2531644),
+            (2531644..2532101),
+            (2532101..2532718),
+            (2532718..2533333),
+            (2533333..2534036),
+            (2534036..2534614),
+            (2534614..2535202),
+        ],
+        &[
+            (2556088..2556788),
+            (2556788..2557490),
+            (2557490..2558155),
+            (2558155..2558857),
+            (2558857..2559434),
+            (2559434..2560012),
+            (2560012..2560915),
+            (2560915..2561491),
+            (2561491..2562049),
+            (2562049..2562632),
+        ],
+        &[
+            (2584011..2584468),
+            (2584468..2585000),
+            (2585000..2585665),
+            (2585665..2586238),
+            (2586238..2586936),
+            (2586936..2587515),
+            (2587515..2588089),
+            (2588089..2588663),
+            (2588663..2589247),
+            (2589247..2589822),
+        ],
+        &[(2603410..2603984), (2603984..2604515)],
+        &[
+            (2615087..2615663),
+            (2615663..2616242),
+            (2616242..2616906),
+            (2616906..2617481),
+            (2617481..2618067),
+            (2618067..2618736),
+        ],
+        &[(2630234..2631116), (2631116..2631690), (2631690..2632149)],
+        &[(2640884..2641463), (2641463..2642042), (2642042..2642589)],
+        &[(2651195..2651741), (2651741..2652321), (2652321..2652902)],
+        &[
+            (2664282..2664896),
+            (2664896..2665510),
+            (2665510..2665934),
+            (2665934..2666510),
+            (2666510..2667085),
+            (2667085..2667969),
+        ],
+        &[
+            (2681195..2681773),
+            (2681773..2682351),
+            (2682351..2683126),
+            (2683126..2683705),
+            (2683705..2684283),
+        ],
+        &[(2693964..2694544), (2694544..2695125)],
+        &[
+            (2710140..2710717),
+            (2710717..2711252),
+            (2711252..2711844),
+            (2711844..2712435),
+            (2712435..2713027),
+            (2713027..2713604),
+            (2713604..2714181),
+            (2714181..2714759),
+            (2714759..2715337),
+            (2715337..2716047),
+            (2716047..2716758),
+        ],
+        &[(2732608..2733344), (2733344..2733924), (2733924..2734499)],
+        &[(2743640..2744399), (2744399..2745158), (2745158..2745690)],
+        &[
+            (2777045..2777953),
+            (2777953..2778858),
+            (2778858..2779766),
+            (2779766..2780675),
+            (2780675..2781573),
+            (2781573..2782286),
+            (2782286..2783197),
+            (2783197..2784102),
+            (2784102..2785002),
+            (2785002..2785914),
+            (2785914..2786824),
+            (2786824..2787550),
+            (2787550..2788462),
+            (2788462..2789374),
+            (2789374..2790287),
+            (2790287..2791199),
+            (2791199..2791779),
+            (2791779..2792325),
+            (2792325..2792908),
+            (2792908..2793488),
+            (2793488..2794069),
+            (2794069..2794655),
+            (2794655..2795246),
+        ],
+        &[
+            (2826699..2827398),
+            (2827398..2828096),
+            (2828096..2828794),
+            (2828794..2829254),
+        ],
+        &[
+            (2843055..2843634),
+            (2843634..2844208),
+            (2844208..2844741),
+            (2844741..2845316),
+            (2845316..2845864),
+            (2845864..2846403),
+            (2846403..2846951),
+            (2846951..2847497),
+        ],
+        &[
+            (2864049..2864631),
+            (2864631..2865332),
+            (2865332..2866042),
+            (2866042..2866752),
+            (2866752..2867332),
+            (2867332..2867922),
+            (2867922..2868513),
+        ],
+        &[(2881101..2881634), (2881634..2882208), (2882208..2882915)],
+        &[
+            (2893474..2894057),
+            (2894057..2894656),
+            (2894656..2895239),
+            (2895239..2895823),
+            (2895823..2896415),
+        ],
+        &[
+            (2910224..2910897),
+            (2910897..2911570),
+            (2911570..2912145),
+            (2912145..2912723),
+            (2912723..2913617),
+            (2913617..2914505),
+        ],
+        &[
+            (2933453..2934027),
+            (2934027..2934483),
+            (2934483..2935063),
+            (2935063..2935643),
+            (2935643..2936221),
+            (2936221..2936801),
+            (2936801..2937501),
+            (2937501..2938197),
+            (2938197..2938744),
+            (2938744..2939282),
+            (2939282..2939861),
+        ],
+        &[
+            (2971163..2971620),
+            (2971620..2975664),
+            (2975664..2979712),
+            (2979712..2983761),
+            (2983761..2987814),
+            (2987814..2988392),
+        ],
+        &[
+            (3019454..3020084),
+            (3020084..3020650),
+            (3020650..3021225),
+            (3021225..3021923),
+            (3021923..3025632),
+            (3025632..3026180),
+        ],
+        &[
+            (3041923..3042505),
+            (3042505..3043089),
+            (3043089..3043670),
+            (3043670..3044564),
+        ],
+        &[
+            (3062313..3062773),
+            (3062773..3063535),
+            (3063535..3064297),
+            (3064297..3065061),
+            (3065061..3065842),
+            (3065842..3066606),
+            (3066606..3067372),
+            (3067372..3068076),
+            (3068076..3068655),
+            (3068655..3069188),
+            (3069188..3069721),
+        ],
+        &[
+            (3090102..3090798),
+            (3090798..3091496),
+            (3091496..3092192),
+            (3092192..3092805),
+            (3092805..3093420),
+            (3093420..3094035),
+            (3094035..3094650),
+        ],
+        &[
+            (3110491..3111156),
+            (3111156..3111616),
+            (3111616..3112079),
+            (3112079..3112744),
+            (3112744..3113325),
+            (3113325..3113988),
+            (3113988..3114536),
+        ],
+        &[
+            (3132158..3132734),
+            (3132734..3133312),
+            (3133312..3134020),
+            (3134020..3134596),
+            (3134596..3135295),
+            (3135295..3135876),
+            (3135876..3136455),
+            (3136455..3137164),
+            (3137164..3137838),
+        ],
+        &[
+            (3153423..3154451),
+            (3154451..3155476),
+            (3155476..3155931),
+            (3155931..3156510),
+        ],
+        &[(3166552..3167133), (3167133..3167713), (3167713..3168293)],
+        &[
+            (3180489..3181072),
+            (3181072..3181652),
+            (3181652..3182231),
+            (3182231..3182810),
+            (3182810..3183393),
+            (3183393..3183972),
+            (3183972..3184553),
+        ],
+        &[
+            (3199191..3199770),
+            (3199770..3200348),
+            (3200348..3200927),
+            (3200927..3201506),
+            (3201506..3202086),
+            (3202086..3202665),
+        ],
+        &[
+            (3218558..3219139),
+            (3219139..3219720),
+            (3219720..3220490),
+            (3220490..3221262),
+            (3221262..3221842),
+            (3221842..3222422),
+            (3222422..3223012),
+            (3223012..3223602),
+        ],
+        &[(3236523..3237106), (3237106..3237571), (3237571..3238035)],
+        &[
+            (3249806..3250391),
+            (3250391..3250971),
+            (3250971..3251556),
+            (3251556..3252141),
+            (3252141..3252722),
+            (3252722..3253306),
+            (3253306..3253887),
+        ],
+        &[
+            (3269276..3269852),
+            (3269852..3270384),
+            (3270384..3270958),
+            (3270958..3271532),
+            (3271532..3272106),
+            (3272106..3272638),
+            (3272638..3273210),
+        ],
+        &[(3283493..3284192)],
+        &[
+            (3296471..3297050),
+            (3297050..3297629),
+            (3297629..3298166),
+            (3298166..3298704),
+            (3298704..3299298),
+            (3299298..3299847),
+            (3299847..3300396),
+            (3300396..3300991),
+            (3300991..3301571),
+        ],
+        &[
+            (3316755..3317335),
+            (3317335..3317915),
+            (3317915..3318646),
+            (3318646..3319071),
+            (3319071..3319627),
+        ],
+        &[
+            (3333991..3334656),
+            (3334656..3335355),
+            (3335355..3335938),
+            (3335938..3336643),
+            (3336643..3337342),
+            (3337342..3338007),
+            (3338007..3338681),
+        ],
+        &[
+            (3354415..3355190),
+            (3355190..3355651),
+            (3355651..3356109),
+            (3356109..3356885),
+            (3356885..3357663),
+            (3357663..3358442),
+        ],
+        &[
+            (3370339..3370807),
+            (3370807..3371268),
+            (3371268..3371729),
+            (3371729..3372396),
+        ],
+        &[
+            (3383693..3384396),
+            (3384396..3385035),
+            (3385035..3385710),
+            (3385710..3386383),
+            (3386383..3387085),
+        ],
+        &[
+            (3399540..3399998),
+            (3399998..3400695),
+            (3400695..3401394),
+            (3401394..3401969),
+            (3401969..3402427),
+        ],
+        &[
+            (3414752..3415520),
+            (3415520..3416288),
+            (3416288..3416861),
+            (3416861..3417439),
+            (3417439..3418017),
+        ],
+        &[
+            (3429646..3430234),
+            (3430234..3430882),
+            (3430882..3431414),
+            (3431414..3431998),
+        ],
+        &[
+            (3451782..3452540),
+            (3452540..3453305),
+            (3453305..3454070),
+            (3454070..3454835),
+            (3454835..3455449),
+            (3455449..3456063),
+            (3456063..3456840),
+            (3456840..3457617),
+            (3457617..3458394),
+            (3458394..3459171),
+            (3459171..3459750),
+            (3459750..3460324),
+            (3460324..3460870),
+        ],
+        &[
+            (3483446..3484180),
+            (3484180..3484638),
+            (3484638..3485254),
+            (3485254..3485711),
+            (3485711..3486285),
+            (3486285..3486864),
+            (3486864..3487443),
+            (3487443..3487900),
+        ],
+        &[
+            (3501977..3502743),
+            (3502743..3503507),
+            (3503507..3504281),
+            (3504281..3505055),
+        ],
+        &[
+            (3518891..3519471),
+            (3519471..3520051),
+            (3520051..3520632),
+            (3520632..3521213),
+            (3521213..3521793),
+            (3521793..3522389),
+            (3522389..3522980),
+        ],
+        &[
+            (3537837..3538414),
+            (3538414..3538991),
+            (3538991..3539754),
+            (3539754..3540331),
+            (3540331..3540909),
+            (3540909..3541487),
+        ],
+        &[
+            (3554866..3555437),
+            (3555437..3556008),
+            (3556008..3556775),
+            (3556775..3557448),
+            (3557448..3558020),
+        ],
+        &[
+            (3570380..3570959),
+            (3570959..3571579),
+            (3571579..3572034),
+            (3572034..3572579),
+            (3572579..3573346),
+        ],
+        &[
+            (3589110..3589690),
+            (3589690..3590358),
+            (3590358..3591026),
+            (3591026..3591606),
+            (3591606..3592195),
+            (3592195..3592775),
+            (3592775..3593355),
+            (3593355..3593936),
+            (3593936..3594526),
+        ],
+        &[
+            (3612179..3612761),
+            (3612761..3613353),
+            (3613353..3613941),
+            (3613941..3614523),
+            (3614523..3615225),
+            (3615225..3615929),
+            (3615929..3616512),
+        ],
+        &[
+            (3631182..3631768),
+            (3631768..3632481),
+            (3632481..3633373),
+            (3633373..3633956),
+            (3633956..3634666),
+        ],
+        &[
+            (3646688..3647548),
+            (3647548..3648226),
+            (3648226..3648688),
+            (3648688..3649225),
+        ],
+        &[
+            (3662276..3662850),
+            (3662850..3663382),
+            (3663382..3663958),
+            (3663958..3664532),
+            (3664532..3665109),
+            (3665109..3665683),
+            (3665683..3666217),
+        ],
+        &[
+            (3681881..3682461),
+            (3682461..3683042),
+            (3683042..3683640),
+            (3683640..3684221),
+            (3684221..3684801),
+            (3684801..3685391),
+            (3685391..3686167),
+        ],
+        &[
+            (3703181..3703716),
+            (3703716..3704251),
+            (3704251..3704834),
+            (3704834..3705415),
+            (3705415..3706119),
+            (3706119..3706823),
+            (3706823..3707404),
+            (3707404..3708208),
+        ],
+        &[
+            (3724707..3725287),
+            (3725287..3725983),
+            (3725983..3726694),
+            (3726694..3727390),
+            (3727390..3728095),
+            (3728095..3728670),
+        ],
+        &[
+            (3744834..3745380),
+            (3745380..3746115),
+            (3746115..3746850),
+            (3746850..3747584),
+            (3747584..3748043),
+            (3748043..3748576),
+            (3748576..3749109),
+            (3749109..3749642),
+        ],
+        &[
+            (3763560..3764140),
+            (3764140..3764686),
+            (3764686..3765463),
+            (3765463..3766009),
+        ],
+        &[
+            (3780755..3781293),
+            (3781293..3781834),
+            (3781834..3782373),
+            (3782373..3782878),
+            (3782878..3783416),
+            (3783416..3784114),
+            (3784114..3784816),
+            (3784816..3785513),
+            (3785513..3785939),
+        ],
+        &[
+            (3802196..3802775),
+            (3802775..3803354),
+            (3803354..3803932),
+            (3803932..3804512),
+            (3804512..3805097),
+            (3805097..3805677),
+        ],
+        &[
+            (3822761..3823614),
+            (3823614..3824462),
+            (3824462..3825190),
+            (3825190..3825765),
+            (3825765..3826298),
+            (3826298..3826873),
+            (3826873..3827492),
+            (3827492..3828068),
+            (3828068..3828651),
+        ],
+        &[
+            (3847824..3848521),
+            (3848521..3849218),
+            (3849218..3849674),
+            (3849674..3850598),
+            (3850598..3851175),
+            (3851175..3851752),
+            (3851752..3852329),
+            (3852329..3852882),
+        ],
+        &[
+            (3866929..3867459),
+            (3867459..3868031),
+            (3868031..3868603),
+            (3868603..3869146),
+        ],
+        &[
+            (3881679..3882449),
+            (3882449..3883209),
+            (3883209..3883919),
+            (3883919..3884613),
+            (3884613..3885073),
+            (3885073..3885735),
+        ],
+        &[
+            (3901686..3902451),
+            (3902451..3903030),
+            (3903030..3903803),
+            (3903803..3904575),
+            (3904575..3905340),
+            (3905340..3905895),
+            (3905895..3906476),
+        ],
+        &[(3917526..3918106)],
+        &[
+            (3933696..3936940),
+            (3936940..3940160),
+            (3940160..3940738),
+            (3940738..3941316),
+            (3941316..3941894),
+            (3941894..3942472),
+            (3942472..3943049),
+        ],
+        &[(3960605..3961184), (3961184..3961762), (3961762..3962350)],
     ];
     pub static ABILITY_IDENTS: [&[&[CtxVar]]; ChampionId::VARIANTS] = [
         &[
@@ -22898,7 +22853,7 @@ pub mod champions {
             ],
             &[CtxVar::BonusAd, CtxVar::PhysicalMultiplier, CtxVar::WLevel],
             &[
-                CtxVar::CurrentHealth,
+                CtxVar::EnemyCurrentHealth,
                 CtxVar::MagicMultiplier,
                 CtxVar::RLevel,
             ],
@@ -23061,7 +23016,7 @@ pub mod champions {
         ],
         &[
             &[
-                CtxVar::CurrentHealth,
+                CtxVar::EnemyCurrentHealth,
                 CtxVar::MagicMultiplier,
                 CtxVar::QLevel,
             ],
@@ -23149,7 +23104,7 @@ pub mod champions {
             ],
             &[
                 CtxVar::AbilityPower,
-                CtxVar::CurrentHealth,
+                CtxVar::EnemyCurrentHealth,
                 CtxVar::MagicMultiplier,
                 CtxVar::QLevel,
             ],
@@ -23241,14 +23196,14 @@ pub mod champions {
         &[
             &[
                 CtxVar::AbilityPower,
-                CtxVar::CurrentHealth,
+                CtxVar::EnemyCurrentHealth,
                 CtxVar::MagicMultiplier,
                 CtxVar::QLevel,
             ],
             &[CtxVar::MagicMultiplier, CtxVar::QLevel],
             &[
                 CtxVar::AbilityPower,
-                CtxVar::CurrentHealth,
+                CtxVar::EnemyCurrentHealth,
                 CtxVar::MagicMultiplier,
                 CtxVar::QLevel,
             ],
@@ -24218,7 +24173,7 @@ pub mod champions {
             &[
                 CtxVar::AbilityPower,
                 CtxVar::BonusAd,
-                CtxVar::CurrentHealth,
+                CtxVar::EnemyCurrentHealth,
                 CtxVar::MagicMultiplier,
                 CtxVar::Stacks,
                 CtxVar::WLevel,
@@ -24226,7 +24181,7 @@ pub mod champions {
             &[
                 CtxVar::AbilityPower,
                 CtxVar::BonusAd,
-                CtxVar::CurrentHealth,
+                CtxVar::EnemyCurrentHealth,
                 CtxVar::MagicMultiplier,
                 CtxVar::Stacks,
                 CtxVar::WLevel,
@@ -26299,11 +26254,7 @@ pub mod champions {
                 CtxVar::MagicMultiplier,
                 CtxVar::Stacks,
             ],
-            &[
-                CtxVar::AttackDamage,
-                CtxVar::MagicMultiplier,
-                CtxVar::Stacks,
-            ],
+            &[CtxVar::MagicMultiplier, CtxVar::Stacks],
             &[
                 CtxVar::AbilityPower,
                 CtxVar::MagicMultiplier,
@@ -26642,7 +26593,7 @@ pub mod champions {
                 CtxVar::QLevel,
             ],
             &[
-                CtxVar::CurrentHealth,
+                CtxVar::EnemyCurrentHealth,
                 CtxVar::PhysicalMultiplier,
                 CtxVar::QLevel,
             ],
@@ -26861,7 +26812,7 @@ pub mod champions {
             &[
                 CtxVar::AbilityPower,
                 CtxVar::BonusAd,
-                CtxVar::CurrentHealth,
+                CtxVar::EnemyCurrentHealth,
                 CtxVar::PhysicalMultiplier,
                 CtxVar::RLevel,
             ],
@@ -45429,702 +45380,702 @@ pub mod items {
         }
     }
     pub static ITEM_FORMULAS: [Range<usize>; ItemId::VARIANTS] = [
-        (4024343..4027164),
-        (4027164..4030009),
-        (4030009..4032850),
-        (4032850..4035669),
-        (4035669..4038507),
-        (4038507..4041428),
-        (4041428..4044267),
-        (4044267..4047128),
-        (4047128..4049801),
-        (4049801..4052247),
-        (4052247..4054851),
-        (4054851..4057478),
-        (4057478..4059604),
-        (4059604..4061733),
-        (4061733..4063879),
-        (4063879..4066033),
-        (4066033..4068176),
-        (4068176..4070338),
-        (4070338..4072480),
-        (4072480..4075312),
-        (4075312..4078168),
-        (4078168..4081020),
-        (4081020..4084004),
-        (4084004..4087012),
-        (4087012..4090016),
-        (4090016..4092692),
-        (4092692..4095375),
-        (4095375..4098080),
-        (4098080..4100781),
-        (4100781..4103612),
-        (4103612..4106467),
-        (4106467..4108897),
-        (4108897..4111352),
-        (4111352..4113941),
-        (4113941..4116104),
-        (4116104..4118267),
-        (4118267..4120439),
-        (4120439..4123207),
-        (4123207..4126249),
-        (4126249..4129310),
-        (4129310..4132000),
-        (4132000..4134712),
-        (4134712..4137565),
-        (4137565..4139726),
-        (4139726..4141878),
-        (4141878..4144045),
-        (4144045..4146741),
-        (4146741..4149460),
-        (4149460..4152286),
-        (4152286..4155136),
-        (4155136..4157766),
-        (4157766..4160758),
-        (4160758..4163586),
-        (4163586..4166438),
-        (4166438..4171964),
-        (4174788..4180419),
-        (4183255..4185389),
-        (4185389..4187829),
-        (4187829..4190294),
-        (4190294..4193099),
-        (4193099..4195958),
-        (4195958..4198814),
-        (4198814..4201705),
-        (4201705..4204392),
-        (4204392..4207099),
-        (4207099..4209513),
-        (4209513..4211961),
-        (4211961..4214432),
-        (4214432..4216588),
-        (4216588..4218744),
-        (4218744..4221651),
-        (4221651..4224073),
-        (4224073..4226241),
-        (4226241..4229254),
-        (4229254..4231380),
-        (4231380..4233526),
-        (4233526..4235684),
-        (4235684..4237817),
-        (4237817..4239972),
-        (4239972..4242107),
-        (4242107..4244781),
-        (4244781..4247407),
-        (4247407..4250326),
-        (4250326..4252742),
-        (4252742..4255184),
-        (4255184..4258029),
-        (4258029..4260644),
-        (4260644..4263488),
-        (4263488..4266356),
-        (4266356..4269279),
-        (4269279..4272226),
-        (4272226..4274670),
-        (4274670..4277390),
-        (4277390..4280108),
-        (4280108..4282527),
-        (4282527..4284663),
-        (4284663..4286815),
-        (4286815..4289862),
-        (4289862..4292933),
-        (4292933..4295541),
-        (4295541..4298632),
-        (4298632..4301742),
-        (4301742..4304846),
-        (4304846..4307950),
-        (4307950..4310858),
-        (4310858..4313766),
-        (4313766..4316709),
-        (4316709..4319575),
-        (4319575..4322186),
-        (4322186..4324605),
-        (4324605..4326752),
-        (4326752..4329174),
-        (4329174..4331840),
-        (4331840..4334765),
-        (4334765..4337515),
-        (4337515..4340285),
-        (4340285..4343051),
-        (4343051..4345944),
-        (4345944..4348861),
-        (4348861..4351681),
-        (4351681..4354525),
-        (4354525..4357697),
-        (4357697..4360312),
-        (4360312..4363240),
-        (4363240..4365372),
-        (4365372..4367542),
-        (4367542..4369712),
-        (4369712..4372397),
-        (4372397..4375107),
-        (4375107..4377811),
-        (4377811..4380902),
-        (4380902..4383877),
-        (4383877..4386875),
-        (4386875..4389869),
-        (4389869..4392598),
-        (4392598..4394740),
-        (4394740..4397577),
-        (4397577..4400435),
-        (4400435..4403287),
-        (4403287..4405961),
-        (4405961..4408632),
-        (4408632..4411063),
-        (4411063..4413226),
-        (4413226..4415379),
-        (4415379..4418271),
-        (4418271..4421328),
-        (4421328..4424408),
-        (4424408..4427282),
-        (4427282..4430177),
-        (4430177..4433066),
-        (4433066..4436047),
-        (4436047..4439052),
-        (4439052..4442053),
-        (4442053..4444203),
-        (4444203..4446794),
-        (4446794..4449405),
-        (4449405..4452321),
-        (4452321..4455261),
-        (4455261..4458108),
-        (4458108..4460256),
-        (4460256..4462398),
-        (4462398..4464538),
-        (4464538..4466679),
-        (4466679..4468828),
-        (4468828..4470971),
-        (4470971..4473109),
-        (4473109..4476046),
-        (4476046..4478872),
-        (4478872..4481721),
-        (4481721..4483877),
-        (4483877..4486024),
-        (4486024..4488171),
-        (4488171..4491007),
-        (4491007..4493867),
-        (4493867..4496910),
-        (4496910..4499970),
-        (4499970..4503012),
-        (4503012..4506071),
-        (4506071..4509126),
-        (4509126..4511276),
-        (4511276..4513738),
-        (4513738..4516671),
-        (4516671..4519628),
-        (4519628..4521778),
-        (4521778..4523942),
-        (4523942..4526106),
-        (4526106..4528258),
-        (4528258..4530531),
-        (4530531..4532685),
-        (4532685..4535119),
-        (4535119..4538039),
-        (4538039..4540982),
-        (4540982..4543588),
-        (4543588..4546404),
-        (4546404..4549240),
-        (4549240..4552072),
-        (4552072..4554224),
-        (4554224..4557064),
-        (4557064..4559756),
-        (4559756..4562203),
-        (4562203..4565053),
-        (4565053..4567958),
-        (4567958..4570887),
-        (4570887..4573330),
-        (4573330..4575480),
-        (4575480..4577630),
-        (4577630..4580603),
-        (4580603..4583407),
-        (4583407..4586235),
-        (4586235..4589059),
-        (4589059..4591740),
-        (4591740..4594668),
-        (4594668..4597806),
-        (4597806..4600961),
-        (4600961..4604110),
-        (4604110..4606960),
-        (4606960..4610301),
-        (4610301..4612460),
-        (4612460..4615303),
-        (4615303..4618167),
-        (4618167..4621251),
-        (4621251..4624333),
-        (4624333..4626485),
-        (4626485..4628927),
-        (4628927..4631385),
-        (4631385..4633809),
-        (4633809..4636259),
-        (4636259..4639071),
-        (4639071..4641342),
-        (4641342..4643639),
-        (4643639..4645829),
-        (4645829..4650793),
-        (4650793..4653845),
-        (4653845..4656914),
-        (4656914..4659052),
-        (4659052..4661732),
-        (4661732..4664433),
-        (4664433..4667203),
-        (4667203..4670036),
-        (4670036..4672892),
-        (4672892..4675762),
-        (4675762..4678674),
-        (4678674..4681618),
-        (4681618..4684052),
-        (4684052..4686509),
-        (4686509..4689188),
-        (4689188..4691816),
-        (4691816..4694654),
-        (4694654..4696786),
-        (4696786..4699979),
-        (4700311..4703528),
-        (4703873..4706787),
-        (4706787..4708903),
-        (4708903..4711077),
-        (4711077..4713252),
-        (4713252..4715387),
-        (4715387..4718318),
-        (4718318..4721313),
-        (4721313..4723994),
-        (4723994..4726131),
-        (4726131..4728824),
-        (4728824..4731417),
-        (4731417..4733863),
-        (4733863..4736570),
-        (4736570..4739428),
-        (4739428..4742136),
-        (4742136..4744819),
-        (4744819..4747506),
-        (4747506..4750216),
-        (4750216..4752672),
-        (4752672..4755595),
-        (4755595..4758541),
-        (4758541..4761483),
-        (4761483..4765158),
-        (4765637..4769336),
-        (4769828..4772810),
-        (4772810..4775664),
-        (4775664..4777801),
-        (4777801..4780405),
-        (4780405..4783033),
-        (4783033..4785880),
-        (4785880..4788719),
-        (4788719..4791566),
-        (4791566..4794468),
-        (4794468..4797389),
-        (4797389..4799530),
-        (4799530..4802350),
-        (4802350..4805194),
-        (4805194..4807894),
-        (4807894..4810618),
-        (4810618..4813381),
-        (4813381..4816168),
-        (4816168..4818951),
-        (4818951..4821865),
-        (4821865..4824803),
-        (4824803..4827865),
-        (4827865..4830726),
-        (4830726..4833353),
-        (4833353..4836016),
-        (4836016..4838870),
-        (4839271..4842182),
-        (4842182..4845117),
-        (4845117..4848778),
-        (4848778..4850925),
-        (4850925..4853067),
-        (4853067..4855209),
-        (4855209..4857360),
-        (4857360..4859511),
-        (4859511..4861662),
-        (4861662..4864493),
-        (4864493..4867196),
-        (4867196..4869365),
-        (4869365..4871534),
-        (4871534..4874119),
-        (4874119..4876726),
-        (4876726..4879571),
-        (4879571..4882019),
-        (4882019..4884977),
-        (4884977..4887807),
-        (4887807..4890785),
-        (4890785..4893696),
-        (4893696..4896631),
-        (4896631..4899333),
-        (4899333..4902234),
-        (4902234..4904437),
-        (4904437..4906625),
-        (4906625..4908804),
-        (4908804..4911007),
-        (4911007..4913195),
-        (4913195..4915374),
-        (4915374..4918086),
-        (4918086..4920774),
-        (4920774..4924604),
-        (4925149..4929003),
-        (4929554..4932462),
-        (4932462..4935286),
-        (4935286..4937434),
-        (4937434..4940493),
-        (4940493..4943631),
-        (4943631..4945776),
-        (4945776..4947928),
-        (4947928..4951003),
-        (4951003..4954114),
-        (4954114..4957209),
-        (4957209..4959640),
-        (4959640..4962598),
-        (4962598..4965580),
-        (4965580..4968399),
-        (4968399..4970544),
-        (4970544..4972699),
-        (4972699..4974829),
-        (4974829..4979251),
-        (4980280..4984724),
-        (4985765..4989936),
-        (4990966..4995157),
-        (4996199..4999011),
-        (4999011..5001843),
-        (5001843..5004671),
-        (5004671..5007517),
-        (5007517..5010387),
-        (5010387..5013084),
-        (5013084..5015210),
-        (5015210..5018138),
-        (5018138..5021090),
-        (5021090..5023921),
-        (5023921..5026775),
-        (5026775..5028931),
-        (5028931..5031087),
-        (5031087..5033994),
-        (5033994..5036777),
-        (5036777..5039704),
-        (5039704..5041864),
-        (5041864..5044794),
-        (5044794..5046936),
-        (5046936..5049799),
-        (5049799..5052787),
-        (5052787..5055799),
-        (5055799..5058807),
-        (5058807..5061641),
-        (5061641..5064495),
-        (5064495..5067435),
-        (5067435..5070399),
-        (5070399..5072570),
-        (5072570..5074742),
-        (5074742..5076893),
-        (5076893..5079708),
-        (5079708..5082543),
-        (5082543..5085374),
-        (5085374..5089045),
-        (5089519..5093214),
-        (5093694..5096619),
-        (5096619..5099571),
-        (5099571..5102032),
-        (5102032..5104519),
-        (5104519..5106960),
-        (5106960..5109427),
-        (5109427..5111592),
-        (5111592..5114425),
-        (5114425..5117283),
-        (5117283..5120135),
-        (5120135..5122816),
-        (5122816..5125265),
-        (5125265..5127702),
-        (5127702..5130562),
-        (5130562..5132703),
-        (5132703..5135397),
-        (5135397..5138111),
-        (5138111..5140242),
-        (5140242..5142386),
-        (5142386..5144532),
-        (5144532..5146675),
-        (5146675..5148808),
-        (5148808..5151505),
-        (5151505..5154222),
-        (5154222..5156355),
-        (5156355..5158489),
-        (5158489..5161500),
-        (5161500..5163652),
-        (5163652..5165982),
-        (5165982..5169253),
-        (5169253..5171912),
-        (5171912..5174824),
-        (5174824..5177758),
-        (5177758..5179899),
-        (5179899..5182326),
-        (5182326..5184464),
-        (5184464..5187140),
-        (5187140..5189839),
-        (5189839..5191962),
-        (5191962..5194127),
-        (5194127..5196315),
-        (5196315..5199158),
-        (5199158..5202025),
-        (5202025..5204634),
-        (5204634..5207266),
-        (5207266..5210111),
-        (5210111..5212979),
-        (5212979..5215844),
-        (5215844..5218010),
-        (5218010..5220925),
-        (5220925..5223786),
-        (5223786..5225917),
-        (5225917..5228045),
-        (5228045..5230182),
-        (5230182..5232310),
-        (5232310..5234450),
-        (5234450..5236578),
-        (5236578..5239026),
-        (5239026..5241482),
-        (5241482..5243960),
-        (5243960..5246098),
-        (5246098..5249148),
-        (5249148..5252219),
-        (5252219..5255290),
-        (5255290..5257727),
-        (5257727..5260391),
-        (5260391..5263079),
-        (5263079..5265995),
-        (5265995..5268935),
-        (5268935..5271096),
-        (5271096..5275148),
-        (5276531..5280607),
-        (5282022..5284960),
-        (5284960..5287891),
-        (5287891..5290011),
-        (5290011..5292677),
-        (5292677..5295369),
-        (5295694..5298152),
-        (5298152..5301056),
-        (5301056..5303808),
-        (5303808..5306728),
-        (5306728..5308878),
-        (5308878..5311803),
-        (5311803..5313961),
-        (5313961..5316121),
-        (5316121..5318279),
-        (5318279..5320570),
-        (5320570..5323547),
-        (5323547..5326471),
-        (5326471..5329290),
-        (5329290..5332129),
-        (5332129..5334961),
-        (5334961..5337850),
-        (5337850..5340763),
-        (5340763..5343672),
-        (5343672..5346098),
-        (5346098..5349469),
-        (5349928..5353323),
-        (5353788..5356628),
-        (5356628..5360608),
-        (5360608..5363608),
-        (5363608..5366507),
-        (5366507..5369212),
-        (5369212..5371941),
-        (5371941..5375032),
-        (5375032..5377810),
-        (5377810..5380244),
-        (5380244..5382379),
-        (5382379..5384522),
-        (5384522..5386678),
-        (5386678..5388835),
-        (5388835..5391283),
-        (5391283..5393425),
-        (5393425..5395572),
-        (5395572..5398256),
-        (5398256..5401088),
-        (5401088..5403944),
-        (5403944..5406796),
-        (5406796..5409492),
-        (5409492..5412212),
-        (5412212..5414907),
-        (5414907..5417767),
-        (5417767..5420651),
-        (5420651..5423354),
-        (5423354..5426075),
-        (5426075..5429066),
-        (5429066..5431755),
-        (5431755..5434420),
-        (5434812..5437091),
-        (5437091..5439223),
-        (5439223..5441933),
-        (5441933..5444641),
-        (5444641..5447563),
-        (5447563..5450563),
-        (5450563..5453587),
-        (5453587..5456607),
-        (5456607..5459527),
-        (5459527..5462468),
-        (5462468..5465498),
-        (5465498..5467967),
-        (5467967..5470118),
-        (5470118..5473022),
-        (5473022..5475724),
-        (5475724..5478449),
-        (5478449..5480578),
-        (5480578..5483261),
-        (5483261..5485968),
-        (5485968..5488897),
-        (5488897..5491625),
-        (5491625..5494609),
-        (5494609..5497438),
-        (5497438..5500249),
-        (5500249..5503239),
-        (5503239..5506215),
-        (5506215..5509063),
-        (5509063..5511996),
-        (5511996..5514953),
-        (5514953..5517906),
-        (5517906..5520037),
-        (5520037..5522189),
-        (5522189..5525097),
-        (5525097..5528029),
-        (5528029..5530167),
-        (5530167..5532319),
-        (5532319..5534467),
-        (5534467..5537468),
-        (5537468..5540136),
-        (5540136..5542274),
-        (5542274..5544861),
-        (5544861..5547472),
-        (5547472..5550082),
-        (5550082..5553008),
-        (5553008..5555931),
-        (5555931..5558863),
-        (5558863..5561785),
-        (5561785..5564727),
-        (5564727..5567641),
-        (5567641..5570575),
-        (5570575..5572734),
-        (5572734..5574893),
-        (5574893..5577052),
-        (5577052..5579211),
-        (5579211..5582034),
-        (5582034..5584881),
-        (5584881..5587692),
-        (5587692..5590527),
-        (5590527..5592670),
-        (5592670..5594830),
-        (5594830..5596984),
-        (5596984..5599138),
-        (5599138..5601571),
-        (5601571..5604619),
-        (5604619..5607647),
-        (5607647..5610678),
-        (5610678..5613623),
-        (5613623..5616348),
-        (5616348..5619071),
-        (5619071..5621513),
-        (5621513..5623964),
-        (5623964..5626097),
-        (5626097..5628275),
-        (5628275..5630456),
-        (5630456..5633447),
-        (5633447..5635888),
-        (5635888..5638349),
-        (5638349..5640500),
-        (5640500..5642638),
-        (5642638..5645315),
-        (5645315..5648012),
-        (5648012..5650156),
-        (5650156..5653000),
-        (5653000..5655924),
-        (5655924..5658872),
-        (5658872..5661816),
-        (5661816..5666775),
-        (5666775..5671753),
-        (5671753..5676504),
-        (5676504..5679160),
-        (5679160..5681836),
-        (5681836..5684508),
-        (5684508..5687957),
-        (5689248..5691926),
-        (5691926..5694628),
-        (5694628..5696784),
-        (5696784..5698940),
-        (5698940..5701096),
-        (5701096..5703288),
-        (5703288..5705425),
-        (5705425..5708311),
-        (5708311..5711218),
-        (5711218..5714120),
-        (5714120..5717177),
-        (5717177..5720258),
-        (5720258..5722926),
-        (5722926..5725629),
-        (5725629..5727767),
-        (5727767..5730482),
-        (5730482..5732628),
-        (5732628..5735471),
-        (5735471..5737621),
-        (5737621..5740441),
-        (5740441..5743285),
-        (5743285..5745422),
-        (5745422..5747559),
-        (5747559..5749696),
-        (5749696..5751833),
-        (5751833..5753970),
-        (5753970..5756107),
-        (5756107..5758244),
-        (5758244..5760381),
-        (5760381..5762518),
-        (5762518..5764655),
-        (5764655..5766792),
-        (5766792..5768930),
-        (5768930..5771062),
-        (5771062..5773194),
-        (5773194..5775326),
-        (5775326..5777481),
-        (5777481..5779614),
-        (5779614..5782302),
-        (5782302..5785016),
-        (5785016..5787146),
-        (5787146..5789303),
-        (5789303..5791506),
-        (5791506..5794199),
-        (5794199..5797260),
-        (5797260..5800050),
-        (5800050..5802767),
-        (5802767..5805625),
-        (5805625..5808507),
-        (5808507..5810642),
-        (5810642..5812789),
-        (5812789..5814919),
-        (5814919..5817343),
-        (5817343..5819943),
-        (5819943..5822635),
-        (5822635..5825696),
-        (5825696..5828677),
-        (5828677..5831681),
-        (5831681..5834681),
-        (5834681..5836819),
-        (5836819..5839496),
-        (5839496..5842317),
-        (5842317..5845162),
-        (5845162..5848003),
-        (5848003..5850818),
-        (5850818..5853657),
-        (5853657..5856517),
-        (5856517..5859287),
-        (5859287..5861579),
-        (5861579..5864514),
-        (5864514..5867473),
-        (5867473..5869593),
-        (5869593..5872439),
-        (5872439..5875309),
-        (5875309..5877434),
-        (5877434..5879593),
-        (5879593..5882509),
-        (5882509..5885394),
-        (5885394..5888449),
-        (5888449..5891528),
-        (5891528..5894603),
-        (5894603..5897579),
-        (5897579..5900549),
-        (5900549..5903238),
-        (5903238..5905949),
+        (4049520..4052341),
+        (4052341..4055186),
+        (4055186..4058027),
+        (4058027..4060846),
+        (4060846..4063684),
+        (4063684..4066605),
+        (4066605..4069444),
+        (4069444..4072305),
+        (4072305..4074978),
+        (4074978..4077424),
+        (4077424..4080028),
+        (4080028..4082655),
+        (4082655..4084781),
+        (4084781..4086910),
+        (4086910..4089056),
+        (4089056..4091210),
+        (4091210..4093353),
+        (4093353..4095515),
+        (4095515..4097657),
+        (4097657..4100489),
+        (4100489..4103345),
+        (4103345..4106197),
+        (4106197..4109441),
+        (4109768..4113036),
+        (4113369..4116373),
+        (4116373..4119049),
+        (4119049..4121732),
+        (4121732..4124437),
+        (4124437..4127138),
+        (4127138..4129969),
+        (4129969..4132824),
+        (4132824..4135254),
+        (4135254..4137709),
+        (4137709..4140554),
+        (4140880..4143043),
+        (4143043..4145206),
+        (4145206..4147378),
+        (4147378..4150146),
+        (4150146..4153188),
+        (4153188..4156249),
+        (4156249..4158939),
+        (4158939..4161651),
+        (4161651..4165340),
+        (4166309..4168470),
+        (4168470..4170622),
+        (4170622..4172789),
+        (4172789..4175485),
+        (4175485..4178204),
+        (4178204..4181030),
+        (4181030..4183880),
+        (4183880..4186510),
+        (4186510..4189502),
+        (4189502..4192330),
+        (4192330..4195182),
+        (4195182..4200708),
+        (4202210..4207841),
+        (4209355..4211489),
+        (4211489..4213929),
+        (4213929..4216394),
+        (4216394..4219199),
+        (4219199..4222058),
+        (4222058..4224914),
+        (4224914..4227805),
+        (4227805..4230492),
+        (4230492..4233199),
+        (4233199..4235613),
+        (4235613..4238061),
+        (4238061..4240532),
+        (4240532..4242688),
+        (4242688..4244844),
+        (4244844..4247751),
+        (4247751..4250433),
+        (4250759..4252927),
+        (4252927..4255940),
+        (4255940..4258066),
+        (4258066..4260212),
+        (4260212..4262370),
+        (4262370..4264503),
+        (4264503..4266658),
+        (4266658..4268793),
+        (4268793..4271467),
+        (4271467..4274093),
+        (4274093..4277012),
+        (4277012..4279428),
+        (4279428..4281870),
+        (4281870..4284715),
+        (4284715..4287330),
+        (4287330..4290174),
+        (4290174..4293042),
+        (4293042..4295965),
+        (4295965..4298912),
+        (4298912..4301356),
+        (4301356..4304076),
+        (4304076..4306794),
+        (4306794..4309213),
+        (4309213..4311349),
+        (4311349..4313501),
+        (4313501..4316548),
+        (4316548..4319619),
+        (4319619..4322227),
+        (4322227..4325318),
+        (4325318..4328428),
+        (4328428..4331532),
+        (4331532..4334636),
+        (4334636..4337544),
+        (4337544..4340452),
+        (4340452..4343395),
+        (4343395..4346261),
+        (4346261..4348872),
+        (4348872..4351291),
+        (4351291..4353438),
+        (4353438..4355860),
+        (4355860..4358526),
+        (4358526..4361451),
+        (4361451..4364201),
+        (4364201..4366971),
+        (4366971..4369737),
+        (4369737..4373039),
+        (4373441..4376767),
+        (4377175..4379995),
+        (4379995..4382839),
+        (4382839..4386011),
+        (4386011..4388626),
+        (4388626..4391554),
+        (4391554..4393686),
+        (4393686..4395856),
+        (4395856..4398026),
+        (4398026..4400711),
+        (4400711..4403421),
+        (4403421..4406125),
+        (4406125..4409216),
+        (4409216..4412191),
+        (4412191..4415189),
+        (4415189..4418183),
+        (4418183..4420912),
+        (4420912..4423054),
+        (4423054..4425891),
+        (4425891..4428749),
+        (4428749..4431601),
+        (4431601..4434275),
+        (4434275..4436946),
+        (4436946..4439377),
+        (4439377..4441540),
+        (4441540..4443693),
+        (4443693..4446585),
+        (4446585..4449642),
+        (4449642..4452722),
+        (4452722..4455596),
+        (4455596..4458491),
+        (4458491..4461380),
+        (4461380..4464361),
+        (4464361..4467366),
+        (4467366..4470367),
+        (4470367..4472517),
+        (4472517..4475759),
+        (4476637..4479899),
+        (4480789..4483705),
+        (4483705..4486645),
+        (4486645..4489492),
+        (4489492..4491640),
+        (4491640..4493782),
+        (4493782..4495922),
+        (4495922..4498063),
+        (4498063..4500212),
+        (4500212..4502355),
+        (4502355..4504493),
+        (4504493..4507430),
+        (4507430..4510256),
+        (4510256..4513105),
+        (4513105..4515261),
+        (4515261..4517408),
+        (4517408..4519555),
+        (4519555..4523402),
+        (4523950..4527821),
+        (4528375..4531418),
+        (4531418..4534478),
+        (4534478..4538228),
+        (4538699..4541758),
+        (4541758..4544813),
+        (4544813..4546963),
+        (4546963..4549425),
+        (4549425..4552358),
+        (4552358..4555315),
+        (4555315..4557465),
+        (4557465..4559629),
+        (4559629..4561793),
+        (4561793..4563945),
+        (4563945..4566218),
+        (4566218..4568372),
+        (4568372..4570806),
+        (4570806..4573726),
+        (4573726..4576669),
+        (4576669..4579275),
+        (4579275..4582091),
+        (4582091..4584927),
+        (4584927..4587759),
+        (4587759..4589911),
+        (4589911..4592751),
+        (4592751..4595443),
+        (4595443..4597890),
+        (4597890..4600740),
+        (4600740..4603645),
+        (4603645..4606574),
+        (4606574..4609017),
+        (4609017..4611167),
+        (4611167..4613317),
+        (4613317..4616290),
+        (4616290..4619094),
+        (4619094..4621922),
+        (4621922..4624746),
+        (4624746..4627427),
+        (4627427..4630355),
+        (4630355..4633493),
+        (4633493..4636648),
+        (4636648..4639797),
+        (4639797..4642647),
+        (4642647..4645988),
+        (4645988..4648147),
+        (4648147..4650990),
+        (4650990..4653854),
+        (4653854..4656938),
+        (4656938..4660020),
+        (4660020..4662172),
+        (4662172..4664614),
+        (4664614..4667072),
+        (4667072..4669496),
+        (4669496..4671946),
+        (4671946..4674758),
+        (4674758..4677029),
+        (4677029..4679326),
+        (4679326..4681516),
+        (4681516..4686480),
+        (4686480..4689532),
+        (4689532..4692601),
+        (4692601..4694739),
+        (4694739..4697419),
+        (4697419..4700120),
+        (4700120..4702890),
+        (4702890..4705723),
+        (4705723..4708579),
+        (4708579..4711449),
+        (4711449..4714361),
+        (4714361..4717305),
+        (4717305..4719739),
+        (4719739..4722196),
+        (4722196..4724875),
+        (4724875..4727503),
+        (4727503..4730341),
+        (4730341..4732473),
+        (4732473..4735666),
+        (4735998..4739215),
+        (4739560..4742474),
+        (4742474..4744590),
+        (4744590..4746764),
+        (4746764..4748939),
+        (4748939..4751074),
+        (4751074..4754005),
+        (4754005..4757000),
+        (4757000..4759681),
+        (4759681..4761818),
+        (4761818..4764511),
+        (4764511..4767940),
+        (4768408..4771690),
+        (4772164..4774871),
+        (4774871..4777729),
+        (4777729..4780437),
+        (4780437..4783120),
+        (4783120..4785807),
+        (4785807..4788517),
+        (4788517..4791233),
+        (4791565..4794488),
+        (4794488..4797434),
+        (4797434..4800376),
+        (4800376..4804051),
+        (4804530..4808229),
+        (4808721..4811703),
+        (4811703..4814557),
+        (4814557..4816694),
+        (4816694..4819298),
+        (4819298..4821926),
+        (4821926..4824773),
+        (4824773..4827612),
+        (4827612..4830459),
+        (4830459..4833361),
+        (4833361..4836282),
+        (4836282..4838423),
+        (4838423..4841720),
+        (4842157..4845478),
+        (4845928..4848628),
+        (4848628..4851352),
+        (4851352..4854767),
+        (4855217..4858656),
+        (4859119..4861902),
+        (4861902..4864816),
+        (4864816..4867754),
+        (4867754..4870816),
+        (4870816..4873677),
+        (4873677..4876304),
+        (4876304..4878967),
+        (4878967..4881821),
+        (4882222..4885133),
+        (4885133..4888068),
+        (4888068..4891729),
+        (4891729..4893876),
+        (4893876..4896018),
+        (4896018..4898160),
+        (4898160..4900311),
+        (4900311..4902462),
+        (4902462..4904613),
+        (4904613..4907444),
+        (4907444..4910147),
+        (4910147..4912316),
+        (4912316..4914485),
+        (4914485..4917070),
+        (4917070..4919677),
+        (4919677..4922522),
+        (4922522..4925230),
+        (4925558..4928516),
+        (4928516..4931346),
+        (4931346..4934324),
+        (4934324..4939959),
+        (4943050..4948709),
+        (4951852..4954554),
+        (4954554..4957455),
+        (4957455..4959658),
+        (4959658..4961846),
+        (4961846..4964025),
+        (4964025..4966228),
+        (4966228..4968416),
+        (4968416..4970595),
+        (4970595..4973307),
+        (4973307..4977030),
+        (4977913..4981743),
+        (4982288..4986142),
+        (4986693..4989601),
+        (4989601..4992425),
+        (4992425..4994573),
+        (4994573..4997632),
+        (4997632..5000770),
+        (5000770..5002915),
+        (5002915..5005067),
+        (5005067..5008142),
+        (5008142..5011253),
+        (5011253..5014348),
+        (5014348..5016779),
+        (5016779..5019737),
+        (5019737..5022719),
+        (5022719..5025538),
+        (5025538..5027683),
+        (5027683..5029838),
+        (5029838..5031968),
+        (5031968..5036390),
+        (5037323..5041767),
+        (5042712..5046883),
+        (5047816..5052007),
+        (5052952..5055764),
+        (5055764..5058596),
+        (5058596..5061424),
+        (5061424..5064270),
+        (5064270..5067140),
+        (5067140..5069837),
+        (5069837..5071963),
+        (5071963..5074891),
+        (5074891..5077843),
+        (5077843..5080674),
+        (5080674..5083528),
+        (5083528..5085684),
+        (5085684..5087840),
+        (5087840..5090747),
+        (5090747..5093530),
+        (5093530..5096457),
+        (5096457..5098617),
+        (5098617..5101547),
+        (5101547..5103689),
+        (5103689..5106552),
+        (5106552..5109540),
+        (5109540..5112552),
+        (5112552..5115560),
+        (5115560..5118394),
+        (5118394..5121248),
+        (5121248..5124188),
+        (5124188..5127152),
+        (5127152..5129323),
+        (5129323..5131495),
+        (5131495..5133646),
+        (5133646..5137492),
+        (5138777..5142643),
+        (5143946..5146777),
+        (5146777..5150448),
+        (5150922..5154617),
+        (5155097..5158022),
+        (5158022..5160974),
+        (5160974..5163435),
+        (5163435..5165922),
+        (5165922..5168363),
+        (5168363..5170830),
+        (5170830..5172995),
+        (5172995..5175828),
+        (5175828..5178686),
+        (5178686..5181538),
+        (5181538..5184219),
+        (5184219..5186668),
+        (5186668..5189105),
+        (5189105..5191965),
+        (5191965..5194106),
+        (5194106..5196800),
+        (5196800..5199514),
+        (5199514..5201645),
+        (5201645..5203789),
+        (5203789..5205935),
+        (5205935..5208078),
+        (5208078..5210211),
+        (5210211..5212908),
+        (5212908..5215625),
+        (5215625..5217758),
+        (5217758..5219892),
+        (5219892..5222903),
+        (5222903..5225055),
+        (5225055..5227385),
+        (5227385..5230656),
+        (5230656..5233315),
+        (5233315..5236227),
+        (5236227..5239161),
+        (5239161..5241302),
+        (5241302..5243729),
+        (5243729..5245867),
+        (5245867..5248543),
+        (5248543..5251242),
+        (5251242..5253365),
+        (5253365..5255530),
+        (5255530..5257718),
+        (5257718..5260561),
+        (5260561..5263428),
+        (5263428..5266037),
+        (5266037..5268669),
+        (5268669..5271514),
+        (5271514..5274382),
+        (5274382..5277247),
+        (5277247..5279413),
+        (5279413..5282328),
+        (5282328..5285189),
+        (5285189..5287320),
+        (5287320..5289448),
+        (5289448..5291585),
+        (5291585..5293713),
+        (5293713..5295853),
+        (5295853..5297981),
+        (5297981..5300429),
+        (5300429..5302885),
+        (5302885..5305363),
+        (5305363..5307501),
+        (5307501..5310551),
+        (5310551..5313622),
+        (5313622..5316693),
+        (5316693..5319387),
+        (5319710..5322374),
+        (5322374..5325062),
+        (5325062..5328238),
+        (5328568..5331768),
+        (5332104..5334265),
+        (5334265..5338317),
+        (5339631..5343707),
+        (5345053..5347991),
+        (5347991..5350922),
+        (5350922..5353042),
+        (5353042..5355708),
+        (5355708..5358400),
+        (5358725..5361183),
+        (5361183..5364730),
+        (5365170..5368565),
+        (5369011..5371931),
+        (5371931..5374081),
+        (5374081..5377006),
+        (5377006..5379164),
+        (5379164..5381324),
+        (5381324..5383482),
+        (5383482..5385773),
+        (5385773..5388750),
+        (5388750..5391674),
+        (5391674..5394493),
+        (5394493..5397332),
+        (5397332..5400164),
+        (5400164..5403053),
+        (5403053..5405966),
+        (5405966..5408875),
+        (5408875..5411301),
+        (5411301..5414672),
+        (5415131..5418526),
+        (5418991..5421831),
+        (5421831..5425811),
+        (5425811..5428811),
+        (5428811..5431710),
+        (5431710..5434415),
+        (5434415..5437144),
+        (5437144..5440235),
+        (5440235..5443013),
+        (5443013..5445447),
+        (5445447..5447582),
+        (5447582..5449725),
+        (5449725..5451881),
+        (5451881..5454038),
+        (5454038..5456486),
+        (5456486..5458628),
+        (5458628..5460775),
+        (5460775..5463459),
+        (5463459..5466291),
+        (5466291..5469147),
+        (5469147..5471999),
+        (5471999..5474695),
+        (5474695..5477415),
+        (5477415..5480110),
+        (5480110..5482970),
+        (5482970..5485854),
+        (5485854..5488557),
+        (5488557..5491278),
+        (5491278..5494269),
+        (5494269..5496958),
+        (5496958..5499687),
+        (5500079..5502358),
+        (5502358..5504490),
+        (5504490..5507200),
+        (5507200..5509908),
+        (5509908..5512830),
+        (5512830..5515830),
+        (5515830..5518854),
+        (5518854..5521874),
+        (5521874..5524794),
+        (5524794..5527735),
+        (5527735..5530765),
+        (5530765..5533234),
+        (5533234..5535385),
+        (5535385..5538289),
+        (5538289..5540991),
+        (5540991..5543716),
+        (5543716..5545845),
+        (5545845..5548528),
+        (5548528..5551235),
+        (5551235..5554164),
+        (5554164..5556892),
+        (5556892..5559876),
+        (5559876..5562705),
+        (5562705..5565516),
+        (5565516..5568506),
+        (5568506..5571482),
+        (5571482..5574330),
+        (5574330..5577263),
+        (5577263..5580220),
+        (5580220..5583173),
+        (5583173..5585304),
+        (5585304..5587456),
+        (5587456..5590628),
+        (5590954..5594150),
+        (5594482..5596620),
+        (5596620..5598772),
+        (5598772..5600920),
+        (5600920..5603921),
+        (5603921..5606589),
+        (5606589..5608727),
+        (5608727..5611314),
+        (5611314..5613925),
+        (5613925..5616535),
+        (5616535..5619461),
+        (5619461..5622646),
+        (5622976..5625908),
+        (5625908..5628830),
+        (5628830..5631772),
+        (5631772..5635713),
+        (5637024..5640985),
+        (5642328..5644487),
+        (5644487..5646646),
+        (5646646..5648805),
+        (5648805..5650964),
+        (5650964..5653787),
+        (5653787..5656634),
+        (5656634..5660277),
+        (5660750..5664417),
+        (5664896..5667039),
+        (5667039..5669199),
+        (5669199..5671353),
+        (5671353..5673507),
+        (5673507..5675940),
+        (5675940..5678988),
+        (5678988..5682016),
+        (5682016..5685047),
+        (5685047..5687992),
+        (5687992..5690717),
+        (5690717..5693440),
+        (5693440..5695882),
+        (5695882..5698333),
+        (5698333..5700466),
+        (5700466..5702644),
+        (5702644..5704825),
+        (5704825..5707816),
+        (5707816..5710257),
+        (5710257..5712718),
+        (5712718..5714869),
+        (5714869..5717007),
+        (5717007..5719684),
+        (5719684..5722381),
+        (5722381..5724525),
+        (5724525..5727369),
+        (5727369..5730293),
+        (5730293..5733241),
+        (5733241..5736185),
+        (5736185..5741144),
+        (5741144..5746122),
+        (5746122..5750873),
+        (5750873..5754362),
+        (5754829..5758338),
+        (5758811..5761483),
+        (5761483..5764932),
+        (5766223..5769962),
+        (5771708..5775471),
+        (5777269..5779425),
+        (5779425..5781581),
+        (5781581..5783737),
+        (5783737..5785929),
+        (5785929..5788066),
+        (5788066..5790952),
+        (5790952..5793859),
+        (5793859..5796761),
+        (5796761..5800291),
+        (5800723..5804277),
+        (5804715..5807383),
+        (5807383..5810086),
+        (5810086..5812224),
+        (5812224..5814939),
+        (5814939..5817085),
+        (5817085..5819928),
+        (5819928..5822078),
+        (5822078..5824898),
+        (5824898..5827742),
+        (5827742..5829879),
+        (5829879..5832016),
+        (5832016..5834153),
+        (5834153..5836290),
+        (5836290..5838427),
+        (5838427..5840564),
+        (5840564..5842701),
+        (5842701..5844838),
+        (5844838..5846975),
+        (5846975..5849112),
+        (5849112..5851249),
+        (5851249..5853387),
+        (5853387..5855519),
+        (5855519..5857651),
+        (5857651..5859783),
+        (5859783..5861938),
+        (5861938..5864071),
+        (5864071..5866759),
+        (5866759..5869473),
+        (5869473..5871603),
+        (5871603..5873760),
+        (5873760..5875963),
+        (5875963..5878656),
+        (5878656..5881717),
+        (5881717..5884507),
+        (5884507..5887224),
+        (5887224..5890082),
+        (5890082..5892964),
+        (5892964..5895099),
+        (5895099..5897246),
+        (5897246..5899376),
+        (5899376..5901800),
+        (5901800..5904400),
+        (5904400..5907092),
+        (5907092..5910153),
+        (5910153..5913134),
+        (5913134..5916138),
+        (5916138..5919138),
+        (5919138..5921276),
+        (5921276..5923953),
+        (5923953..5926774),
+        (5926774..5929619),
+        (5929619..5932460),
+        (5932460..5935532),
+        (5935854..5938950),
+        (5939278..5942138),
+        (5942138..5944908),
+        (5944908..5947200),
+        (5947200..5950135),
+        (5950135..5953094),
+        (5953094..5955214),
+        (5955214..5958060),
+        (5958060..5960930),
+        (5960930..5963055),
+        (5963055..5965214),
+        (5965214..5968130),
+        (5968130..5971015),
+        (5971015..5974070),
+        (5974070..5977149),
+        (5977149..5980224),
+        (5980224..5983200),
+        (5983200..5986170),
+        (5986170..5988859),
+        (5988859..5991570),
     ];
     pub static ITEM_GENERATOR: [Range<usize>; ItemId::VARIANTS] = [
         (0..1090),
@@ -46149,6 +46100,7 @@ pub mod items {
         (0..1090),
         (0..1090),
         (0..1090),
+        (3964872..3967048),
         (0..1090),
         (0..1090),
         (0..1090),
@@ -46159,6 +46111,7 @@ pub mod items {
         (0..1090),
         (0..1090),
         (0..1090),
+        (3967048..3968723),
         (0..1090),
         (0..1090),
         (0..1090),
@@ -46167,6 +46120,7 @@ pub mod items {
         (0..1090),
         (0..1090),
         (0..1090),
+        (3968723..3972671),
         (0..1090),
         (0..1090),
         (0..1090),
@@ -46178,10 +46132,10 @@ pub mod items {
         (0..1090),
         (0..1090),
         (0..1090),
+        (3972671..3977009),
         (0..1090),
         (0..1090),
         (0..1090),
-        (3994017..3998984),
         (0..1090),
         (0..1090),
         (0..1090),
@@ -46195,6 +46149,7 @@ pub mod items {
         (0..1090),
         (0..1090),
         (0..1090),
+        (3977009..3978508),
         (0..1090),
         (0..1090),
         (0..1090),
@@ -46240,6 +46195,7 @@ pub mod items {
         (0..1090),
         (0..1090),
         (0..1090),
+        (3978508..3979941),
         (0..1090),
         (0..1090),
         (0..1090),
@@ -46276,6 +46232,7 @@ pub mod items {
         (0..1090),
         (0..1090),
         (0..1090),
+        (3979941..3982236),
         (0..1090),
         (0..1090),
         (0..1090),
@@ -46293,9 +46250,11 @@ pub mod items {
         (0..1090),
         (0..1090),
         (0..1090),
+        (3982236..3985275),
         (0..1090),
         (0..1090),
         (0..1090),
+        (3985275..3987054),
         (0..1090),
         (0..1090),
         (0..1090),
@@ -46368,6 +46327,7 @@ pub mod items {
         (0..1090),
         (0..1090),
         (0..1090),
+        (3987054..3988736),
         (0..1090),
         (0..1090),
         (0..1090),
@@ -46376,10 +46336,10 @@ pub mod items {
         (0..1090),
         (0..1090),
         (0..1090),
-        (3998984..4000666),
         (0..1090),
         (0..1090),
         (0..1090),
+        (3988736..3991175),
         (0..1090),
         (0..1090),
         (0..1090),
@@ -46387,9 +46347,11 @@ pub mod items {
         (0..1090),
         (0..1090),
         (0..1090),
+        (3991175..3992680),
         (0..1090),
         (0..1090),
         (0..1090),
+        (3992680..3994360),
         (0..1090),
         (0..1090),
         (0..1090),
@@ -46400,12 +46362,13 @@ pub mod items {
         (0..1090),
         (0..1090),
         (0..1090),
-        (4000666..4002346),
         (0..1090),
         (0..1090),
+        (3994360..3996046),
         (0..1090),
         (0..1090),
         (0..1090),
+        (3996046..3997549),
         (0..1090),
         (0..1090),
         (0..1090),
@@ -46414,6 +46377,7 @@ pub mod items {
         (0..1090),
         (0..1090),
         (0..1090),
+        (3997549..3998978),
         (0..1090),
         (0..1090),
         (0..1090),
@@ -46426,14 +46390,15 @@ pub mod items {
         (0..1090),
         (0..1090),
         (0..1090),
-        (4002346..4003775),
         (0..1090),
         (0..1090),
         (0..1090),
         (0..1090),
+        (3998978..4000408),
         (0..1090),
         (0..1090),
         (0..1090),
+        (4000408..4003861),
         (0..1090),
         (0..1090),
         (0..1090),
@@ -46444,6 +46409,8 @@ pub mod items {
         (0..1090),
         (0..1090),
         (0..1090),
+        (4003861..4006085),
+        (4006085..4008257),
         (0..1090),
         (0..1090),
         (0..1090),
@@ -46459,11 +46426,12 @@ pub mod items {
         (0..1090),
         (0..1090),
         (0..1090),
-        (4003775..4005947),
         (0..1090),
         (0..1090),
         (0..1090),
+        (4008257..4012328),
         (0..1090),
+        (4012328..4014821),
         (0..1090),
         (0..1090),
         (0..1090),
@@ -46478,9 +46446,7 @@ pub mod items {
         (0..1090),
         (0..1090),
         (0..1090),
-        (4005947..4010018),
         (0..1090),
-        (4010018..4012732),
         (0..1090),
         (0..1090),
         (0..1090),
@@ -46497,8 +46463,10 @@ pub mod items {
         (0..1090),
         (0..1090),
         (0..1090),
+        (4014821..4017965),
         (0..1090),
         (0..1090),
+        (4017965..4019642),
         (0..1090),
         (0..1090),
         (0..1090),
@@ -46515,7 +46483,6 @@ pub mod items {
         (0..1090),
         (0..1090),
         (0..1090),
-        (4012732..4014409),
         (0..1090),
         (0..1090),
         (0..1090),
@@ -46565,16 +46532,21 @@ pub mod items {
         (0..1090),
         (0..1090),
         (0..1090),
+        (4019642..4021065),
         (0..1090),
         (0..1090),
+        (4021065..4022748),
         (0..1090),
         (0..1090),
+        (4022748..4025037),
         (0..1090),
         (0..1090),
         (0..1090),
         (0..1090),
         (0..1090),
+        (4025037..4026715),
         (0..1090),
+        (4026715..4028387),
         (0..1090),
         (0..1090),
         (0..1090),
@@ -46587,13 +46559,12 @@ pub mod items {
         (0..1090),
         (0..1090),
         (0..1090),
-        (4014409..4016698),
         (0..1090),
         (0..1090),
         (0..1090),
         (0..1090),
         (0..1090),
-        (4016698..4018376),
+        (4028387..4030071),
         (0..1090),
         (0..1090),
         (0..1090),
@@ -46613,7 +46584,6 @@ pub mod items {
         (0..1090),
         (0..1090),
         (0..1090),
-        (4018376..4020060),
         (0..1090),
         (0..1090),
         (0..1090),
@@ -46625,6 +46595,7 @@ pub mod items {
         (0..1090),
         (0..1090),
         (0..1090),
+        (4030071..4031747),
         (0..1090),
         (0..1090),
         (0..1090),
@@ -46644,7 +46615,6 @@ pub mod items {
         (0..1090),
         (0..1090),
         (0..1090),
-        (4020060..4021485),
         (0..1090),
         (0..1090),
         (0..1090),
@@ -46658,6 +46628,7 @@ pub mod items {
         (0..1090),
         (0..1090),
         (0..1090),
+        (4031747..4033670),
         (0..1090),
         (0..1090),
         (0..1090),
@@ -46673,6 +46644,7 @@ pub mod items {
         (0..1090),
         (0..1090),
         (0..1090),
+        (4033670..4037020),
         (0..1090),
         (0..1090),
         (0..1090),
@@ -46680,6 +46652,7 @@ pub mod items {
         (0..1090),
         (0..1090),
         (0..1090),
+        (4037020..4038696),
         (0..1090),
         (0..1090),
         (0..1090),
@@ -46712,8 +46685,11 @@ pub mod items {
         (0..1090),
         (0..1090),
         (0..1090),
+        (4038696..4040193),
         (0..1090),
         (0..1090),
+        (4040193..4043051),
+        (4043051..4046165),
         (0..1090),
         (0..1090),
         (0..1090),
@@ -46723,6 +46699,7 @@ pub mod items {
         (0..1090),
         (0..1090),
         (0..1090),
+        (4046165..4047848),
         (0..1090),
         (0..1090),
         (0..1090),
@@ -46737,7 +46714,6 @@ pub mod items {
         (0..1090),
         (0..1090),
         (0..1090),
-        (4021485..4024343),
         (0..1090),
         (0..1090),
         (0..1090),
@@ -46777,32 +46753,7 @@ pub mod items {
         (0..1090),
         (0..1090),
         (0..1090),
-        (0..1090),
-        (0..1090),
-        (0..1090),
-        (0..1090),
-        (0..1090),
-        (0..1090),
-        (0..1090),
-        (0..1090),
-        (0..1090),
-        (0..1090),
-        (0..1090),
-        (0..1090),
-        (0..1090),
-        (0..1090),
-        (0..1090),
-        (0..1090),
-        (0..1090),
-        (0..1090),
-        (0..1090),
-        (0..1090),
-        (0..1090),
-        (0..1090),
-        (0..1090),
-        (0..1090),
-        (0..1090),
-        (0..1090),
+        (4047848..4049520),
         (0..1090),
         (0..1090),
         (0..1090),
@@ -48163,15 +48114,15 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::ArdentCenser,
-            damage_type: Unknown,
-            attributes: Undefined,
+            damage_type: Magic,
+            attributes: OnhitMax,
         },
         tier: 3,
         purchasable: true,
-        ranged_damages: [zero, zero],
-        melee_damages: [zero, zero],
+        ranged_damages: [ardent_censer_min, zero],
+        melee_damages: [ardent_censer_min, zero],
         riot_id: 3504,
-        deals_damage: (false, false),
+        deals_damage: (true, false),
         stats: S_ {
             ability_power: 45f32,
             movespeed: 4f32,
@@ -48187,6 +48138,9 @@ pub mod items {
             unknown_map_35: true,
         },
     };
+    pub const fn ardent_censer_min(_: &Ctx) -> f32 {
+        20.0
+    }
     pub static ARDENT_CENSER_ARENA: X = X {
         name: "Ardent Censer [Arena]",
         price: 2500,
@@ -48198,15 +48152,15 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::ArdentCenserArena,
-            damage_type: Unknown,
-            attributes: Undefined,
+            damage_type: Magic,
+            attributes: OnhitMax,
         },
         tier: 0,
         purchasable: true,
-        ranged_damages: [zero, zero],
-        melee_damages: [zero, zero],
+        ranged_damages: [ardent_censer_arena_min, zero],
+        melee_damages: [ardent_censer_arena_min, zero],
         riot_id: 223504,
-        deals_damage: (false, false),
+        deals_damage: (true, false),
         stats: S_ {
             ability_power: 40f32,
             movespeed: 6f32,
@@ -48222,6 +48176,9 @@ pub mod items {
             unknown_map_35: false,
         },
     };
+    pub const fn ardent_censer_arena_min(_: &Ctx) -> f32 {
+        20.0
+    }
     pub static ARDENT_CENSER_U_32: X = X {
         name: "Ardent Censer [U-32]",
         price: 2600,
@@ -48501,15 +48458,15 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 5), (Health, 150)],
         metadata: TypeMetadata {
             kind: ItemId::BamisCinder,
-            damage_type: Unknown,
-            attributes: Undefined,
+            damage_type: Magic,
+            attributes: Area,
         },
         tier: 2,
         purchasable: true,
-        ranged_damages: [zero, zero],
-        melee_damages: [zero, zero],
+        ranged_damages: [bamis_cinder_min, zero],
+        melee_damages: [bamis_cinder_min, zero],
         riot_id: 6660,
-        deals_damage: (false, false),
+        deals_damage: (true, false),
         stats: S_ {
             health: 150f32,
             ..ZEROED_STATS
@@ -48524,6 +48481,9 @@ pub mod items {
             unknown_map_35: true,
         },
     };
+    pub const fn bamis_cinder_min(_: &Ctx) -> f32 {
+        15.0
+    }
     pub static BANDLE_JUICE_OF_HASTE: X = X {
         name: "Bandle Juice of Haste",
         price: 1000,
@@ -48769,15 +48729,15 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 15), (AttackDamage, 55), (Lethality, 22)],
         metadata: TypeMetadata {
             kind: ItemId::Bastionbreaker,
-            damage_type: Unknown,
+            damage_type: True,
             attributes: Undefined,
         },
         tier: 3,
         purchasable: true,
-        ranged_damages: [zero, zero],
-        melee_damages: [zero, zero],
+        ranged_damages: [bastionbreaker_ranged_min, zero],
+        melee_damages: [bastionbreaker_melee_min, zero],
         riot_id: 2520,
-        deals_damage: (false, false),
+        deals_damage: (true, false),
         stats: S_ {
             attack_damage: 55f32,
             armor_penetration_flat: 22f32,
@@ -48793,6 +48753,12 @@ pub mod items {
             unknown_map_35: false,
         },
     };
+    pub const fn bastionbreaker_ranged_min(ctx: &Ctx) -> f32 {
+        15.0 + 0.75 * ctx.armor_penetration_flat
+    }
+    pub const fn bastionbreaker_melee_min(ctx: &Ctx) -> f32 {
+        30.0 + 1.5 * ctx.armor_penetration_flat
+    }
     pub static BATTLE_BUNNY_CROSSBOW: X = X {
         name: "Battle Bunny Crossbow",
         price: 0,
@@ -49146,18 +49112,12 @@ pub mod items {
         },
     };
     pub const fn blade_of_the_ruined_king_ranged_min(ctx: &Ctx) -> f32 {
-        ctx.enemy_current_health
-            - (0.06 * ctx.enemy_current_health * (1.0 - 0.06 * ctx.physical_multiplier)
-                - ctx.attack_damage
-                + ctx.attack_damage * (1.0 - 0.06 * ctx.physical_multiplier))
-                / 0.06
+        ctx.attack_damage * ctx.physical_multiplier
+            + 0.06 * ctx.enemy_current_health * ctx.physical_multiplier
     }
     pub const fn blade_of_the_ruined_king_melee_min(ctx: &Ctx) -> f32 {
-        ctx.enemy_current_health
-            - (0.09 * ctx.enemy_current_health * (1.0 - 0.09 * ctx.physical_multiplier)
-                - ctx.attack_damage
-                + ctx.attack_damage * (1.0 - 0.09 * ctx.physical_multiplier))
-                / 0.09
+        ctx.attack_damage * ctx.physical_multiplier
+            + 0.09 * ctx.enemy_current_health * ctx.physical_multiplier
     }
     pub static BLADE_OF_THE_RUINED_KING_ARENA: X = X {
         name: "Blade of The Ruined King [Arena]",
@@ -49191,18 +49151,12 @@ pub mod items {
         },
     };
     pub const fn blade_of_the_ruined_king_arena_ranged_min(ctx: &Ctx) -> f32 {
-        ctx.enemy_current_health
-            - (0.06 * ctx.enemy_current_health * (1.0 - 0.06 * ctx.physical_multiplier)
-                - ctx.attack_damage
-                + ctx.attack_damage * (1.0 - 0.06 * ctx.physical_multiplier))
-                / 0.06
+        ctx.attack_damage * ctx.physical_multiplier
+            + 0.06 * ctx.enemy_current_health * ctx.physical_multiplier
     }
     pub const fn blade_of_the_ruined_king_arena_melee_min(ctx: &Ctx) -> f32 {
-        ctx.enemy_current_health
-            - (0.09 * ctx.enemy_current_health * (1.0 - 0.09 * ctx.physical_multiplier)
-                - ctx.attack_damage
-                + ctx.attack_damage * (1.0 - 0.09 * ctx.physical_multiplier))
-                / 0.09
+        ctx.attack_damage * ctx.physical_multiplier
+            + 0.09 * ctx.enemy_current_health * ctx.physical_multiplier
     }
     pub static BLADE_O_RANG: X = X {
         name: "Blade-o-rang",
@@ -49652,15 +49606,15 @@ pub mod items {
         prettified_stats: &[(Armor, 30)],
         metadata: TypeMetadata {
             kind: ItemId::BrambleVest,
-            damage_type: Unknown,
-            attributes: Undefined,
+            damage_type: Magic,
+            attributes: OnhitMax,
         },
         tier: 2,
         purchasable: true,
-        ranged_damages: [zero, zero],
-        melee_damages: [zero, zero],
+        ranged_damages: [bramble_vest_min, zero],
+        melee_damages: [bramble_vest_min, zero],
         riot_id: 3076,
-        deals_damage: (false, false),
+        deals_damage: (true, false),
         stats: S_ {
             armor: 30f32,
             ..ZEROED_STATS
@@ -49675,6 +49629,9 @@ pub mod items {
             unknown_map_35: true,
         },
     };
+    pub const fn bramble_vest_min(_: &Ctx) -> f32 {
+        10.0
+    }
     pub static BRAVERY_VOUCHER_ARENA: X = X {
         name: "Bravery Voucher [Arena]",
         price: 750,
@@ -51055,15 +51012,15 @@ pub mod items {
         prettified_stats: &[(Armor, 55), (Health, 350), (MoveSpeed, 4)],
         metadata: TypeMetadata {
             kind: ItemId::DeadMansPlate,
-            damage_type: Unknown,
-            attributes: Undefined,
+            damage_type: Physical,
+            attributes: OnhitMax,
         },
         tier: 3,
         purchasable: true,
-        ranged_damages: [zero, zero],
-        melee_damages: [zero, zero],
+        ranged_damages: [dead_mans_plate_min, zero],
+        melee_damages: [dead_mans_plate_min, zero],
         riot_id: 3742,
-        deals_damage: (false, false),
+        deals_damage: (true, false),
         stats: S_ {
             armor: 55f32,
             health: 350f32,
@@ -51080,21 +51037,24 @@ pub mod items {
             unknown_map_35: true,
         },
     };
+    pub const fn dead_mans_plate_min(ctx: &Ctx) -> f32 {
+        ctx.base_ad
+    }
     pub static DEAD_MANS_PLATE_ARENA: X = X {
         name: "Dead Man's Plate [Arena]",
         price: 2500,
         prettified_stats: &[(Armor, 40), (Health, 300), (MoveSpeed, 7)],
         metadata: TypeMetadata {
             kind: ItemId::DeadMansPlateArena,
-            damage_type: Unknown,
-            attributes: Undefined,
+            damage_type: Physical,
+            attributes: OnhitMax,
         },
         tier: 0,
         purchasable: true,
-        ranged_damages: [zero, zero],
-        melee_damages: [zero, zero],
+        ranged_damages: [dead_mans_plate_arena_min, zero],
+        melee_damages: [dead_mans_plate_arena_min, zero],
         riot_id: 223742,
-        deals_damage: (false, false),
+        deals_damage: (true, false),
         stats: S_ {
             armor: 40f32,
             health: 300f32,
@@ -51111,6 +51071,9 @@ pub mod items {
             unknown_map_35: false,
         },
     };
+    pub const fn dead_mans_plate_arena_min(ctx: &Ctx) -> f32 {
+        ctx.base_ad
+    }
     pub static DEATHS_DANCE: X = X {
         name: "Death's Dance",
         price: 3300,
@@ -52197,15 +52160,15 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 15), (AttackDamage, 60)],
         metadata: TypeMetadata {
             kind: ItemId::Eclipse,
-            damage_type: Unknown,
+            damage_type: Magic,
             attributes: Undefined,
         },
         tier: 3,
         purchasable: true,
-        ranged_damages: [zero, zero],
-        melee_damages: [zero, zero],
+        ranged_damages: [eclipse_ranged_min, zero],
+        melee_damages: [eclipse_melee_min, zero],
         riot_id: 6692,
-        deals_damage: (false, false),
+        deals_damage: (true, false),
         stats: S_ {
             attack_damage: 60f32,
             ..ZEROED_STATS
@@ -52220,21 +52183,27 @@ pub mod items {
             unknown_map_35: true,
         },
     };
+    pub const fn eclipse_ranged_min(ctx: &Ctx) -> f32 {
+        0.04 * ctx.enemy_max_health
+    }
+    pub const fn eclipse_melee_min(ctx: &Ctx) -> f32 {
+        0.06 * ctx.enemy_max_health
+    }
     pub static ECLIPSE_ARENA: X = X {
         name: "Eclipse [Arena]",
         price: 2500,
         prettified_stats: &[(AbilityHaste, 10), (AttackDamage, 50)],
         metadata: TypeMetadata {
             kind: ItemId::EclipseArena,
-            damage_type: Unknown,
+            damage_type: Magic,
             attributes: Undefined,
         },
         tier: 0,
         purchasable: true,
-        ranged_damages: [zero, zero],
-        melee_damages: [zero, zero],
+        ranged_damages: [eclipse_arena_ranged_min, zero],
+        melee_damages: [eclipse_arena_melee_min, zero],
         riot_id: 226692,
-        deals_damage: (false, false),
+        deals_damage: (true, false),
         stats: S_ {
             attack_damage: 50f32,
             ..ZEROED_STATS
@@ -52249,6 +52218,12 @@ pub mod items {
             unknown_map_35: false,
         },
     };
+    pub const fn eclipse_arena_ranged_min(ctx: &Ctx) -> f32 {
+        0.04 * ctx.enemy_max_health
+    }
+    pub const fn eclipse_arena_melee_min(ctx: &Ctx) -> f32 {
+        0.06 * ctx.enemy_max_health
+    }
     pub static EDGE_OF_NIGHT: X = X {
         name: "Edge of Night",
         price: 3000,
@@ -52701,15 +52676,15 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 20), (AttackDamage, 50), (CritChance, 25)],
         metadata: TypeMetadata {
             kind: ItemId::EssenceReaver,
-            damage_type: Unknown,
-            attributes: Undefined,
+            damage_type: Physical,
+            attributes: OnhitMax,
         },
         tier: 3,
         purchasable: true,
-        ranged_damages: [zero, zero],
-        melee_damages: [zero, zero],
+        ranged_damages: [essence_reaver_min, zero],
+        melee_damages: [essence_reaver_min, zero],
         riot_id: 3508,
-        deals_damage: (false, false),
+        deals_damage: (true, false),
         stats: S_ {
             attack_damage: 50f32,
             crit_chance: 25f32,
@@ -52725,21 +52700,24 @@ pub mod items {
             unknown_map_35: true,
         },
     };
+    pub const fn essence_reaver_min(ctx: &Ctx) -> f32 {
+        1.25 * ctx.base_ad + 0.5 * ctx.crit_chance
+    }
     pub static ESSENCE_REAVER_ARENA: X = X {
         name: "Essence Reaver [Arena]",
         price: 2500,
         prettified_stats: &[(AbilityHaste, 20), (AttackDamage, 50), (CritChance, 25)],
         metadata: TypeMetadata {
             kind: ItemId::EssenceReaverArena,
-            damage_type: Unknown,
-            attributes: Undefined,
+            damage_type: Physical,
+            attributes: OnhitMax,
         },
         tier: 0,
         purchasable: true,
-        ranged_damages: [zero, zero],
-        melee_damages: [zero, zero],
+        ranged_damages: [essence_reaver_arena_min, zero],
+        melee_damages: [essence_reaver_arena_min, zero],
         riot_id: 223508,
-        deals_damage: (false, false),
+        deals_damage: (true, false),
         stats: S_ {
             attack_damage: 50f32,
             crit_chance: 25f32,
@@ -52755,6 +52733,9 @@ pub mod items {
             unknown_map_35: false,
         },
     };
+    pub const fn essence_reaver_arena_min(ctx: &Ctx) -> f32 {
+        1.25 * ctx.base_ad + 0.5 * ctx.crit_chance
+    }
     pub static EVENSHROUD: X = X {
         name: "Evenshroud",
         price: 2300,
@@ -52838,15 +52819,15 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::Everfrost,
-            damage_type: Unknown,
-            attributes: Undefined,
+            damage_type: Magic,
+            attributes: Area,
         },
         tier: 0,
         purchasable: false,
-        ranged_damages: [zero, zero],
-        melee_damages: [zero, zero],
+        ranged_damages: [everfrost_min, zero],
+        melee_damages: [everfrost_min, zero],
         riot_id: 6656,
-        deals_damage: (false, false),
+        deals_damage: (true, false),
         stats: S_ {
             ability_power: 70f32,
             health: 250f32,
@@ -52863,6 +52844,9 @@ pub mod items {
             unknown_map_35: false,
         },
     };
+    pub const fn everfrost_min(ctx: &Ctx) -> f32 {
+        300.0 + 0.85 * ctx.ability_power
+    }
     pub static EVERFROST_ARENA: X = X {
         name: "Everfrost [Arena]",
         price: 2500,
@@ -55405,15 +55389,15 @@ pub mod items {
         prettified_stats: &[(BaseHealthRegen, 100), (Health, 900)],
         metadata: TypeMetadata {
             kind: ItemId::Heartsteel,
-            damage_type: Unknown,
+            damage_type: Physical,
             attributes: Undefined,
         },
         tier: 3,
         purchasable: true,
-        ranged_damages: [zero, zero],
-        melee_damages: [zero, zero],
+        ranged_damages: [heartsteel_min, zero],
+        melee_damages: [heartsteel_min, zero],
         riot_id: 3084,
-        deals_damage: (false, false),
+        deals_damage: (true, false),
         stats: S_ {
             health: 900f32,
             ..ZEROED_STATS
@@ -55428,21 +55412,24 @@ pub mod items {
             unknown_map_35: true,
         },
     };
+    pub const fn heartsteel_min(ctx: &Ctx) -> f32 {
+        70.0 + 0.06 * ctx.max_health
+    }
     pub static HEARTSTEEL_ARENA: X = X {
         name: "Heartsteel [Arena]",
         price: 2500,
         prettified_stats: &[(Health, 700)],
         metadata: TypeMetadata {
             kind: ItemId::HeartsteelArena,
-            damage_type: Unknown,
+            damage_type: Physical,
             attributes: Undefined,
         },
         tier: 0,
         purchasable: true,
-        ranged_damages: [zero, zero],
-        melee_damages: [zero, zero],
+        ranged_damages: [heartsteel_arena_min, zero],
+        melee_damages: [heartsteel_arena_min, zero],
         riot_id: 223084,
-        deals_damage: (false, false),
+        deals_damage: (true, false),
         stats: S_ {
             health: 700f32,
             ..ZEROED_STATS
@@ -55457,6 +55444,9 @@ pub mod items {
             unknown_map_35: false,
         },
     };
+    pub const fn heartsteel_arena_min(ctx: &Ctx) -> f32 {
+        70.0 + 0.06 * ctx.max_health
+    }
     pub static HELLFIRE_HATCHET: X = X {
         name: "Hellfire Hatchet",
         price: 2500,
@@ -55643,15 +55633,15 @@ pub mod items {
         prettified_stats: &[(AbilityPower, 45)],
         metadata: TypeMetadata {
             kind: ItemId::HextechAlternator,
-            damage_type: Unknown,
-            attributes: Undefined,
+            damage_type: Magic,
+            attributes: OnhitMax,
         },
         tier: 2,
         purchasable: true,
-        ranged_damages: [zero, zero],
-        melee_damages: [zero, zero],
+        ranged_damages: [hextech_alternator_min, zero],
+        melee_damages: [hextech_alternator_min, zero],
         riot_id: 3145,
-        deals_damage: (false, false),
+        deals_damage: (true, false),
         stats: S_ {
             ability_power: 45f32,
             ..ZEROED_STATS
@@ -55666,6 +55656,9 @@ pub mod items {
             unknown_map_35: true,
         },
     };
+    pub const fn hextech_alternator_min(_: &Ctx) -> f32 {
+        65.0
+    }
     pub static HEXTECH_GUNBLADE: X = X {
         name: "Hextech Gunblade",
         price: 3000,
@@ -56158,15 +56151,15 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 15), (Armor, 50), (Health, 300)],
         metadata: TypeMetadata {
             kind: ItemId::IcebornGauntlet,
-            damage_type: Unknown,
-            attributes: Undefined,
+            damage_type: Physical,
+            attributes: OnhitMax,
         },
         tier: 3,
         purchasable: true,
-        ranged_damages: [zero, zero],
-        melee_damages: [zero, zero],
+        ranged_damages: [iceborn_gauntlet_min, zero],
+        melee_damages: [iceborn_gauntlet_min, zero],
         riot_id: 6662,
-        deals_damage: (false, false),
+        deals_damage: (true, false),
         stats: S_ {
             armor: 50f32,
             health: 300f32,
@@ -56182,21 +56175,24 @@ pub mod items {
             unknown_map_35: true,
         },
     };
+    pub const fn iceborn_gauntlet_min(ctx: &Ctx) -> f32 {
+        1.5 * ctx.base_ad
+    }
     pub static ICEBORN_GAUNTLET_ARENA: X = X {
         name: "Iceborn Gauntlet [Arena]",
         price: 2500,
         prettified_stats: &[(AbilityHaste, 10), (Armor, 45), (Health, 300)],
         metadata: TypeMetadata {
             kind: ItemId::IcebornGauntletArena,
-            damage_type: Unknown,
-            attributes: Undefined,
+            damage_type: Physical,
+            attributes: OnhitMax,
         },
         tier: 0,
         purchasable: true,
-        ranged_damages: [zero, zero],
-        melee_damages: [zero, zero],
+        ranged_damages: [iceborn_gauntlet_arena_min, zero],
+        melee_damages: [iceborn_gauntlet_arena_min, zero],
         riot_id: 226662,
-        deals_damage: (false, false),
+        deals_damage: (true, false),
         stats: S_ {
             armor: 45f32,
             health: 300f32,
@@ -56212,6 +56208,9 @@ pub mod items {
             unknown_map_35: false,
         },
     };
+    pub const fn iceborn_gauntlet_arena_min(ctx: &Ctx) -> f32 {
+        1.5 * ctx.base_ad
+    }
     pub static IMMORTAL_SHIELDBOW: X = X {
         name: "Immortal Shieldbow",
         price: 3000,
@@ -56278,15 +56277,15 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 20), (AbilityPower, 60), (BaseManaRegen, 125)],
         metadata: TypeMetadata {
             kind: ItemId::ImperialMandate,
-            damage_type: Unknown,
-            attributes: Undefined,
+            damage_type: Magic,
+            attributes: Area,
         },
         tier: 3,
         purchasable: true,
-        ranged_damages: [zero, zero],
-        melee_damages: [zero, zero],
+        ranged_damages: [imperial_mandate_min, zero],
+        melee_damages: [imperial_mandate_min, zero],
         riot_id: 4005,
-        deals_damage: (false, false),
+        deals_damage: (true, false),
         stats: S_ {
             ability_power: 60f32,
             ..ZEROED_STATS
@@ -56301,21 +56300,24 @@ pub mod items {
             unknown_map_35: true,
         },
     };
+    pub const fn imperial_mandate_min(ctx: &Ctx) -> f32 {
+        0.1 * ctx.enemy_current_health
+    }
     pub static IMPERIAL_MANDATE_ARENA: X = X {
         name: "Imperial Mandate [Arena]",
         price: 2500,
         prettified_stats: &[(AbilityHaste, 35), (AbilityPower, 60), (BaseManaRegen, 150)],
         metadata: TypeMetadata {
             kind: ItemId::ImperialMandateArena,
-            damage_type: Unknown,
-            attributes: Undefined,
+            damage_type: Magic,
+            attributes: Area,
         },
         tier: 0,
         purchasable: true,
-        ranged_damages: [zero, zero],
-        melee_damages: [zero, zero],
+        ranged_damages: [imperial_mandate_arena_min, zero],
+        melee_damages: [imperial_mandate_arena_min, zero],
         riot_id: 224005,
-        deals_damage: (false, false),
+        deals_damage: (true, false),
         stats: S_ {
             ability_power: 60f32,
             ..ZEROED_STATS
@@ -56330,6 +56332,9 @@ pub mod items {
             unknown_map_35: false,
         },
     };
+    pub const fn imperial_mandate_arena_min(ctx: &Ctx) -> f32 {
+        0.1 * ctx.enemy_current_health
+    }
     pub static IMPERIAL_MANDATE_U_32: X = X {
         name: "Imperial Mandate [U-32]",
         price: 2750,
@@ -57042,15 +57047,15 @@ pub mod items {
         prettified_stats: &[(AttackDamage, 15)],
         metadata: TypeMetadata {
             kind: ItemId::KircheisShard,
-            damage_type: Unknown,
-            attributes: Undefined,
+            damage_type: Magic,
+            attributes: OnhitMax,
         },
         tier: 0,
         purchasable: false,
-        ranged_damages: [zero, zero],
-        melee_damages: [zero, zero],
+        ranged_damages: [kircheis_shard_min, zero],
+        melee_damages: [kircheis_shard_min, zero],
         riot_id: 2015,
-        deals_damage: (false, false),
+        deals_damage: (true, false),
         stats: S_ {
             attack_damage: 15f32,
             ..ZEROED_STATS
@@ -57065,6 +57070,9 @@ pub mod items {
             unknown_map_35: false,
         },
     };
+    pub const fn kircheis_shard_min(_: &Ctx) -> f32 {
+        50.0
+    }
     pub static KNIGHTS_VOW: X = X {
         name: "Knight's Vow",
         price: 2300,
@@ -57171,15 +57179,15 @@ pub mod items {
         prettified_stats: &[(AttackDamage, 45), (AttackSpeed, 40), (MoveSpeed, 4)],
         metadata: TypeMetadata {
             kind: ItemId::KrakenSlayer,
-            damage_type: Unknown,
-            attributes: Undefined,
+            damage_type: Physical,
+            attributes: OnhitMax,
         },
         tier: 3,
         purchasable: true,
-        ranged_damages: [zero, zero],
-        melee_damages: [zero, zero],
+        ranged_damages: [kraken_slayer_ranged_min, kraken_slayer_ranged_max],
+        melee_damages: [kraken_slayer_melee_min, kraken_slayer_melee_max],
         riot_id: 6672,
-        deals_damage: (false, false),
+        deals_damage: (true, true),
         stats: S_ {
             attack_damage: 45f32,
             attack_speed: 40f32,
@@ -57196,21 +57204,36 @@ pub mod items {
             unknown_map_35: true,
         },
     };
+    pub const fn kraken_slayer_ranged_max(ctx: &Ctx) -> f32 {
+        (1.0 + 0.75 * ctx.enemy_missing_health) * (120.0 + 4.0 * (ctx.level - 8.0).max(0.0))
+    }
+    pub const fn kraken_slayer_melee_max(ctx: &Ctx) -> f32 {
+        (1.0 + 0.75 * ctx.enemy_missing_health) * (150.0 + 5.0 * (ctx.level - 8.0).max(0.0))
+    }
+    pub const fn kraken_slayer_ranged_min(ctx: &Ctx) -> f32 {
+        120.0 + 4.0 * (ctx.level - 8.0)
+    }
+    pub const fn kraken_slayer_melee_min(ctx: &Ctx) -> f32 {
+        150.0 + 5.0 * (ctx.level - 8.0)
+    }
     pub static KRAKEN_SLAYER_ARENA: X = X {
         name: "Kraken Slayer [Arena]",
         price: 2500,
         prettified_stats: &[(AttackDamage, 40), (AttackSpeed, 35), (MoveSpeed, 7)],
         metadata: TypeMetadata {
             kind: ItemId::KrakenSlayerArena,
-            damage_type: Unknown,
-            attributes: Undefined,
+            damage_type: Physical,
+            attributes: OnhitMax,
         },
         tier: 0,
         purchasable: true,
-        ranged_damages: [zero, zero],
-        melee_damages: [zero, zero],
+        ranged_damages: [
+            kraken_slayer_arena_ranged_min,
+            kraken_slayer_arena_ranged_max,
+        ],
+        melee_damages: [kraken_slayer_arena_melee_min, kraken_slayer_arena_melee_max],
         riot_id: 226672,
-        deals_damage: (false, false),
+        deals_damage: (true, true),
         stats: S_ {
             attack_damage: 40f32,
             attack_speed: 35f32,
@@ -57227,6 +57250,18 @@ pub mod items {
             unknown_map_35: false,
         },
     };
+    pub const fn kraken_slayer_arena_ranged_max(ctx: &Ctx) -> f32 {
+        (1.0 + 0.75 * ctx.enemy_missing_health) * (120.0 + 4.0 * (ctx.level - 8.0).max(0.0))
+    }
+    pub const fn kraken_slayer_arena_melee_max(ctx: &Ctx) -> f32 {
+        (1.0 + 0.75 * ctx.enemy_missing_health) * (150.0 + 5.0 * (ctx.level - 8.0).max(0.0))
+    }
+    pub const fn kraken_slayer_arena_ranged_min(ctx: &Ctx) -> f32 {
+        120.0 + 4.0 * (ctx.level - 8.0)
+    }
+    pub const fn kraken_slayer_arena_melee_min(ctx: &Ctx) -> f32 {
+        150.0 + 5.0 * (ctx.level - 8.0)
+    }
     pub static LAST_WHISPER: X = X {
         name: "Last Whisper",
         price: 1450,
@@ -57480,15 +57515,15 @@ pub mod items {
         prettified_stats: &[(AbilityPower, 60), (Health, 300)],
         metadata: TypeMetadata {
             kind: ItemId::LiandrysTorment,
-            damage_type: Unknown,
-            attributes: Undefined,
+            damage_type: Magic,
+            attributes: Area,
         },
         tier: 3,
         purchasable: true,
-        ranged_damages: [zero, zero],
-        melee_damages: [zero, zero],
+        ranged_damages: [liandrys_torment_min, liandrys_torment_max],
+        melee_damages: [liandrys_torment_min, liandrys_torment_max],
         riot_id: 6653,
-        deals_damage: (false, false),
+        deals_damage: (true, true),
         stats: S_ {
             ability_power: 60f32,
             health: 300f32,
@@ -57504,6 +57539,12 @@ pub mod items {
             unknown_map_35: true,
         },
     };
+    pub const fn liandrys_torment_min(ctx: &Ctx) -> f32 {
+        0.01 * ctx.enemy_max_health
+    }
+    pub const fn liandrys_torment_max(ctx: &Ctx) -> f32 {
+        0.06 * ctx.enemy_max_health
+    }
     pub static LICH_BANE: X = X {
         name: "Lich Bane",
         price: 2900,
@@ -57535,7 +57576,7 @@ pub mod items {
         },
     };
     pub const fn lich_bane_min(ctx: &Ctx) -> f32 {
-        0.75 * ctx.base_ad + 0.4 * ctx.ability_power
+        0.4 * ctx.ability_power + 0.75 * ctx.base_ad
     }
     pub static LICH_BANE_ARENA: X = X {
         name: "Lich Bane [Arena]",
@@ -57568,7 +57609,7 @@ pub mod items {
         },
     };
     pub const fn lich_bane_arena_min(ctx: &Ctx) -> f32 {
-        0.75 * ctx.base_ad + 0.4 * ctx.ability_power
+        0.4 * ctx.ability_power + 0.75 * ctx.base_ad
     }
     pub static LIFELINE: X = X {
         name: "Lifeline",
@@ -58120,7 +58161,7 @@ pub mod items {
         },
     };
     pub const fn ludens_echo_max(ctx: &Ctx) -> f32 {
-        2.0 * (75.0 + 0.05 * ctx.ability_power)
+        150.0 + 0.1 * ctx.ability_power
     }
     pub const fn ludens_echo_min(ctx: &Ctx) -> f32 {
         75.0 + 0.05 * ctx.ability_power
@@ -58156,7 +58197,7 @@ pub mod items {
         },
     };
     pub const fn ludens_echo_arena_max(ctx: &Ctx) -> f32 {
-        2.0 * (75.0 + 0.05 * ctx.ability_power)
+        150.0 + 0.1 * ctx.ability_power
     }
     pub const fn ludens_echo_arena_min(ctx: &Ctx) -> f32 {
         75.0 + 0.05 * ctx.ability_power
@@ -58191,11 +58232,11 @@ pub mod items {
             unknown_map_35: true,
         },
     };
-    pub const fn malignance_max(ctx: &Ctx) -> f32 {
-        12.0 * (15.0 + 0.0125 * ctx.ability_power)
-    }
     pub const fn malignance_min(ctx: &Ctx) -> f32 {
         15.0 + 0.0125 * ctx.ability_power
+    }
+    pub const fn malignance_max(ctx: &Ctx) -> f32 {
+        180.0 + 0.15 * ctx.ability_power
     }
     pub static MALIGNANCE_ARENA: X = X {
         name: "Malignance [Arena]",
@@ -58227,11 +58268,11 @@ pub mod items {
             unknown_map_35: false,
         },
     };
-    pub const fn malignance_arena_max(ctx: &Ctx) -> f32 {
-        12.0 * (15.0 + 0.0125 * ctx.ability_power)
-    }
     pub const fn malignance_arena_min(ctx: &Ctx) -> f32 {
         15.0 + 0.0125 * ctx.ability_power
+    }
+    pub const fn malignance_arena_max(ctx: &Ctx) -> f32 {
+        180.0 + 0.15 * ctx.ability_power
     }
     pub static MANAMUNE: X = X {
         name: "Manamune",
@@ -59138,15 +59179,15 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 15), (AttackDamage, 35), (Mana, 1000)],
         metadata: TypeMetadata {
             kind: ItemId::Muramana,
-            damage_type: Unknown,
-            attributes: Undefined,
+            damage_type: Physical,
+            attributes: Onhit,
         },
         tier: 4,
         purchasable: false,
-        ranged_damages: [zero, zero],
-        melee_damages: [zero, zero],
+        ranged_damages: [muramana_min, muramana_ranged_max],
+        melee_damages: [muramana_min, muramana_melee_max],
         riot_id: 3042,
-        deals_damage: (false, false),
+        deals_damage: (true, true),
         stats: S_ {
             attack_damage: 35f32,
             mana: 1000f32,
@@ -59162,21 +59203,30 @@ pub mod items {
             unknown_map_35: true,
         },
     };
+    pub const fn muramana_min(ctx: &Ctx) -> f32 {
+        0.012 * ctx.max_mana
+    }
+    pub const fn muramana_ranged_max(ctx: &Ctx) -> f32 {
+        0.03 * ctx.max_mana
+    }
+    pub const fn muramana_melee_max(ctx: &Ctx) -> f32 {
+        0.04 * ctx.max_mana
+    }
     pub static MURAMANA_ARENA: X = X {
         name: "Muramana [Arena]",
         price: 2500,
         prettified_stats: &[(AbilityHaste, 15), (AttackDamage, 40), (Mana, 1000)],
         metadata: TypeMetadata {
             kind: ItemId::MuramanaArena,
-            damage_type: Unknown,
-            attributes: Undefined,
+            damage_type: Physical,
+            attributes: Onhit,
         },
         tier: 0,
         purchasable: false,
-        ranged_damages: [zero, zero],
-        melee_damages: [zero, zero],
+        ranged_damages: [muramana_arena_min, muramana_arena_ranged_max],
+        melee_damages: [muramana_arena_min, muramana_arena_melee_max],
         riot_id: 223042,
-        deals_damage: (false, false),
+        deals_damage: (true, true),
         stats: S_ {
             attack_damage: 40f32,
             mana: 1000f32,
@@ -59192,6 +59242,15 @@ pub mod items {
             unknown_map_35: false,
         },
     };
+    pub const fn muramana_arena_min(ctx: &Ctx) -> f32 {
+        0.012 * ctx.max_mana
+    }
+    pub const fn muramana_arena_ranged_max(ctx: &Ctx) -> f32 {
+        0.03 * ctx.max_mana
+    }
+    pub const fn muramana_arena_melee_max(ctx: &Ctx) -> f32 {
+        0.04 * ctx.max_mana
+    }
     pub static MURAMANA_U_32: X = X {
         name: "Muramana [U-32]",
         price: 2900,
@@ -61148,15 +61207,15 @@ pub mod items {
         prettified_stats: &[(AttackSpeed, 25)],
         metadata: TypeMetadata {
             kind: ItemId::Rageknife,
-            damage_type: Unknown,
-            attributes: Undefined,
+            damage_type: Magic,
+            attributes: Onhit,
         },
         tier: 0,
         purchasable: false,
-        ranged_damages: [zero, zero],
-        melee_damages: [zero, zero],
+        ranged_damages: [rageknife_min, zero],
+        melee_damages: [rageknife_min, zero],
         riot_id: 6677,
-        deals_damage: (false, false),
+        deals_damage: (true, false),
         stats: S_ {
             attack_speed: 25f32,
             ..ZEROED_STATS
@@ -61171,6 +61230,9 @@ pub mod items {
             unknown_map_35: false,
         },
     };
+    pub const fn rageknife_min(_: &Ctx) -> f32 {
+        20.0
+    }
     pub static RANDUINS_OMEN: X = X {
         name: "Randuin's Omen",
         price: 2700,
@@ -61237,15 +61299,15 @@ pub mod items {
         prettified_stats: &[(AttackSpeed, 35), (CritChance, 25), (MoveSpeed, 4)],
         metadata: TypeMetadata {
             kind: ItemId::RapidFirecannon,
-            damage_type: Unknown,
-            attributes: Undefined,
+            damage_type: Magic,
+            attributes: OnhitMax,
         },
         tier: 3,
         purchasable: true,
-        ranged_damages: [zero, zero],
-        melee_damages: [zero, zero],
+        ranged_damages: [rapid_firecannon_min, zero],
+        melee_damages: [rapid_firecannon_min, zero],
         riot_id: 3094,
-        deals_damage: (false, false),
+        deals_damage: (true, false),
         stats: S_ {
             attack_speed: 35f32,
             crit_chance: 25f32,
@@ -61262,21 +61324,24 @@ pub mod items {
             unknown_map_35: true,
         },
     };
+    pub const fn rapid_firecannon_min(_: &Ctx) -> f32 {
+        40.0
+    }
     pub static RAPID_FIRECANNON_ARENA: X = X {
         name: "Rapid Firecannon [Arena]",
         price: 2500,
         prettified_stats: &[(AttackSpeed, 30), (CritChance, 25), (MoveSpeed, 4)],
         metadata: TypeMetadata {
             kind: ItemId::RapidFirecannonArena,
-            damage_type: Unknown,
-            attributes: Undefined,
+            damage_type: Magic,
+            attributes: OnhitMax,
         },
         tier: 0,
         purchasable: true,
-        ranged_damages: [zero, zero],
-        melee_damages: [zero, zero],
+        ranged_damages: [rapid_firecannon_arena_min, zero],
+        melee_damages: [rapid_firecannon_arena_min, zero],
         riot_id: 223094,
-        deals_damage: (false, false),
+        deals_damage: (true, false),
         stats: S_ {
             attack_speed: 30f32,
             crit_chance: 25f32,
@@ -61293,6 +61358,9 @@ pub mod items {
             unknown_map_35: false,
         },
     };
+    pub const fn rapid_firecannon_arena_min(_: &Ctx) -> f32 {
+        40.0
+    }
     pub static RAPID_RABBIT_RAINDOWN: X = X {
         name: "Rapid Rabbit Raindown",
         price: 0,
@@ -61350,10 +61418,10 @@ pub mod items {
         },
     };
     pub const fn ravenous_hydra_ranged_min(ctx: &Ctx) -> f32 {
-        0.25 * 0.8 * ctx.attack_damage
+        0.2 * ctx.attack_damage
     }
     pub const fn ravenous_hydra_melee_min(ctx: &Ctx) -> f32 {
-        0.5 * 0.8 * ctx.attack_damage
+        0.4 * ctx.attack_damage
     }
     pub const fn ravenous_hydra_max(ctx: &Ctx) -> f32 {
         0.8 * ctx.attack_damage
@@ -61389,10 +61457,10 @@ pub mod items {
         },
     };
     pub const fn ravenous_hydra_arena_ranged_min(ctx: &Ctx) -> f32 {
-        0.25 * 0.8 * ctx.attack_damage
+        0.2 * ctx.attack_damage
     }
     pub const fn ravenous_hydra_arena_melee_min(ctx: &Ctx) -> f32 {
-        0.5 * 0.8 * ctx.attack_damage
+        0.4 * ctx.attack_damage
     }
     pub const fn ravenous_hydra_arena_max(ctx: &Ctx) -> f32 {
         0.8 * ctx.attack_damage
@@ -61587,15 +61655,15 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::Redemption,
-            damage_type: Unknown,
-            attributes: Undefined,
+            damage_type: True,
+            attributes: Area,
         },
         tier: 3,
         purchasable: true,
-        ranged_damages: [zero, zero],
-        melee_damages: [zero, zero],
+        ranged_damages: [redemption_min, zero],
+        melee_damages: [redemption_min, zero],
         riot_id: 3107,
-        deals_damage: (false, false),
+        deals_damage: (true, false),
         stats: S_ {
             ability_power: 30f32,
             ..ZEROED_STATS
@@ -61610,6 +61678,9 @@ pub mod items {
             unknown_map_35: true,
         },
     };
+    pub const fn redemption_min(ctx: &Ctx) -> f32 {
+        0.1 * ctx.enemy_max_health
+    }
     pub static REDEMPTION_ARENA: X = X {
         name: "Redemption [Arena]",
         price: 2500,
@@ -61621,15 +61692,15 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::RedemptionArena,
-            damage_type: Unknown,
-            attributes: Undefined,
+            damage_type: True,
+            attributes: Area,
         },
         tier: 0,
         purchasable: true,
-        ranged_damages: [zero, zero],
-        melee_damages: [zero, zero],
+        ranged_damages: [redemption_arena_min, zero],
+        melee_damages: [redemption_arena_min, zero],
         riot_id: 223107,
-        deals_damage: (false, false),
+        deals_damage: (true, false),
         stats: ZEROED_STATS,
         maps: I_ {
             aram: false,
@@ -61641,6 +61712,9 @@ pub mod items {
             unknown_map_35: false,
         },
     };
+    pub const fn redemption_arena_min(ctx: &Ctx) -> f32 {
+        0.1 * ctx.enemy_max_health
+    }
     pub static REDEMPTION_U_32: X = X {
         name: "Redemption [U-32]",
         price: 2800,
@@ -64098,15 +64172,15 @@ pub mod items {
         prettified_stats: &[(AttackDamage, 45), (AttackSpeed, 30), (MoveSpeed, 4)],
         metadata: TypeMetadata {
             kind: ItemId::StatikkShiv,
-            damage_type: Unknown,
-            attributes: Undefined,
+            damage_type: Magic,
+            attributes: AreaOnhitMax,
         },
         tier: 3,
         purchasable: true,
-        ranged_damages: [zero, zero],
-        melee_damages: [zero, zero],
+        ranged_damages: [statikk_shiv_min, zero],
+        melee_damages: [statikk_shiv_min, zero],
         riot_id: 3087,
-        deals_damage: (false, false),
+        deals_damage: (true, false),
         stats: S_ {
             attack_damage: 45f32,
             attack_speed: 30f32,
@@ -64123,21 +64197,24 @@ pub mod items {
             unknown_map_35: true,
         },
     };
+    pub const fn statikk_shiv_min(_: &Ctx) -> f32 {
+        60.0
+    }
     pub static STATIKK_SHIV_ARENA: X = X {
         name: "Statikk Shiv [Arena]",
         price: 2500,
         prettified_stats: &[(AttackDamage, 45), (AttackSpeed, 40), (MoveSpeed, 4)],
         metadata: TypeMetadata {
             kind: ItemId::StatikkShivArena,
-            damage_type: Unknown,
-            attributes: Undefined,
+            damage_type: Magic,
+            attributes: AreaOnhitMax,
         },
         tier: 0,
         purchasable: true,
-        ranged_damages: [zero, zero],
-        melee_damages: [zero, zero],
+        ranged_damages: [statikk_shiv_arena_min, zero],
+        melee_damages: [statikk_shiv_arena_min, zero],
         riot_id: 223087,
-        deals_damage: (false, false),
+        deals_damage: (true, false),
         stats: S_ {
             attack_damage: 45f32,
             attack_speed: 40f32,
@@ -64154,6 +64231,9 @@ pub mod items {
             unknown_map_35: false,
         },
     };
+    pub const fn statikk_shiv_arena_min(_: &Ctx) -> f32 {
+        60.0
+    }
     pub static STATIKK_SWORD: X = X {
         name: "Statikk Sword",
         price: 0,
@@ -64447,15 +64527,15 @@ pub mod items {
         prettified_stats: &[(AttackDamage, 50), (AttackSpeed, 20), (CritChance, 25)],
         metadata: TypeMetadata {
             kind: ItemId::Stormrazor3097,
-            damage_type: Unknown,
-            attributes: Undefined,
+            damage_type: Magic,
+            attributes: OnhitMax,
         },
         tier: 3,
         purchasable: true,
-        ranged_damages: [zero, zero],
-        melee_damages: [zero, zero],
+        ranged_damages: [stormrazor_3097_min, zero],
+        melee_damages: [stormrazor_3097_min, zero],
         riot_id: 3097,
-        deals_damage: (false, false),
+        deals_damage: (true, false),
         stats: S_ {
             attack_damage: 50f32,
             attack_speed: 20f32,
@@ -64472,6 +64552,9 @@ pub mod items {
             unknown_map_35: false,
         },
     };
+    pub const fn stormrazor_3097_min(_: &Ctx) -> f32 {
+        100.0
+    }
     pub static STORMRAZOR_ARENA: X = X {
         name: "Stormrazor [Arena]",
         price: 2500,
@@ -64571,15 +64654,15 @@ pub mod items {
         prettified_stats: &[(AttackDamage, 40), (AttackSpeed, 25), (Health, 450)],
         metadata: TypeMetadata {
             kind: ItemId::Stridebreaker,
-            damage_type: Unknown,
-            attributes: Undefined,
+            damage_type: Physical,
+            attributes: AreaOnhit,
         },
         tier: 3,
         purchasable: true,
-        ranged_damages: [zero, zero],
-        melee_damages: [zero, zero],
+        ranged_damages: [stridebreaker_ranged_min, stridebreaker_max],
+        melee_damages: [stridebreaker_melee_min, stridebreaker_max],
         riot_id: 6631,
-        deals_damage: (false, false),
+        deals_damage: (true, true),
         stats: S_ {
             attack_damage: 40f32,
             attack_speed: 25f32,
@@ -64596,21 +64679,30 @@ pub mod items {
             unknown_map_35: true,
         },
     };
+    pub const fn stridebreaker_ranged_min(ctx: &Ctx) -> f32 {
+        0.2 * ctx.attack_damage
+    }
+    pub const fn stridebreaker_melee_min(ctx: &Ctx) -> f32 {
+        0.4 * ctx.attack_damage
+    }
+    pub const fn stridebreaker_max(ctx: &Ctx) -> f32 {
+        0.8 * ctx.attack_damage
+    }
     pub static STRIDEBREAKER_ARENA: X = X {
         name: "Stridebreaker [Arena]",
         price: 2500,
         prettified_stats: &[(AttackDamage, 40), (AttackSpeed, 15), (Health, 375)],
         metadata: TypeMetadata {
             kind: ItemId::StridebreakerArena,
-            damage_type: Unknown,
-            attributes: Undefined,
+            damage_type: Physical,
+            attributes: AreaOnhit,
         },
         tier: 0,
         purchasable: true,
-        ranged_damages: [zero, zero],
-        melee_damages: [zero, zero],
+        ranged_damages: [stridebreaker_arena_ranged_min, stridebreaker_arena_max],
+        melee_damages: [stridebreaker_arena_melee_min, stridebreaker_arena_max],
         riot_id: 226631,
-        deals_damage: (false, false),
+        deals_damage: (true, true),
         stats: S_ {
             attack_damage: 40f32,
             attack_speed: 15f32,
@@ -64627,6 +64719,15 @@ pub mod items {
             unknown_map_35: false,
         },
     };
+    pub const fn stridebreaker_arena_ranged_min(ctx: &Ctx) -> f32 {
+        0.2 * ctx.attack_damage
+    }
+    pub const fn stridebreaker_arena_melee_min(ctx: &Ctx) -> f32 {
+        0.4 * ctx.attack_damage
+    }
+    pub const fn stridebreaker_arena_max(ctx: &Ctx) -> f32 {
+        0.8 * ctx.attack_damage
+    }
     pub static STRUCTURE_BOUNTY_1516: X = X {
         name: "Structure Bounty 1516",
         price: 0,
@@ -64797,15 +64898,15 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 10), (Armor, 50), (Health, 350)],
         metadata: TypeMetadata {
             kind: ItemId::SunfireAegis,
-            damage_type: Unknown,
-            attributes: Undefined,
+            damage_type: Magic,
+            attributes: Area,
         },
         tier: 3,
         purchasable: true,
-        ranged_damages: [zero, zero],
-        melee_damages: [zero, zero],
+        ranged_damages: [sunfire_aegis_min, zero],
+        melee_damages: [sunfire_aegis_min, zero],
         riot_id: 3068,
-        deals_damage: (false, false),
+        deals_damage: (true, false),
         stats: S_ {
             armor: 50f32,
             health: 350f32,
@@ -64821,21 +64922,24 @@ pub mod items {
             unknown_map_35: true,
         },
     };
+    pub const fn sunfire_aegis_min(ctx: &Ctx) -> f32 {
+        20.0 + 0.01 * ctx.bonus_health
+    }
     pub static SUNFIRE_AEGIS_ARENA: X = X {
         name: "Sunfire Aegis [Arena]",
         price: 2500,
         prettified_stats: &[(AbilityHaste, 10), (Armor, 40), (Health, 350)],
         metadata: TypeMetadata {
             kind: ItemId::SunfireAegisArena,
-            damage_type: Unknown,
-            attributes: Undefined,
+            damage_type: Magic,
+            attributes: Area,
         },
         tier: 0,
         purchasable: true,
-        ranged_damages: [zero, zero],
-        melee_damages: [zero, zero],
+        ranged_damages: [sunfire_aegis_arena_min, zero],
+        melee_damages: [sunfire_aegis_arena_min, zero],
         riot_id: 223068,
-        deals_damage: (false, false),
+        deals_damage: (true, false),
         stats: S_ {
             armor: 40f32,
             health: 350f32,
@@ -64851,6 +64955,9 @@ pub mod items {
             unknown_map_35: false,
         },
     };
+    pub const fn sunfire_aegis_arena_min(ctx: &Ctx) -> f32 {
+        20.0 + 0.01 * ctx.bonus_health
+    }
     pub static SUPER_MECH_ARMOR: X = X {
         name: "Super Mech Armor",
         price: 0,
@@ -65830,15 +65937,15 @@ pub mod items {
         prettified_stats: &[(Armor, 75), (Health, 150)],
         metadata: TypeMetadata {
             kind: ItemId::Thornmail,
-            damage_type: Unknown,
+            damage_type: Magic,
             attributes: Undefined,
         },
         tier: 3,
         purchasable: true,
-        ranged_damages: [zero, zero],
-        melee_damages: [zero, zero],
+        ranged_damages: [thornmail_min, zero],
+        melee_damages: [thornmail_min, zero],
         riot_id: 3075,
-        deals_damage: (false, false),
+        deals_damage: (true, false),
         stats: S_ {
             armor: 75f32,
             health: 150f32,
@@ -65854,21 +65961,24 @@ pub mod items {
             unknown_map_35: true,
         },
     };
+    pub const fn thornmail_min(ctx: &Ctx) -> f32 {
+        20.0 + 0.1 * ctx.bonus_armor
+    }
     pub static THORNMAIL_ARENA: X = X {
         name: "Thornmail [Arena]",
         price: 2500,
         prettified_stats: &[(Armor, 60), (Health, 300)],
         metadata: TypeMetadata {
             kind: ItemId::ThornmailArena,
-            damage_type: Unknown,
+            damage_type: Magic,
             attributes: Undefined,
         },
         tier: 0,
         purchasable: true,
-        ranged_damages: [zero, zero],
-        melee_damages: [zero, zero],
+        ranged_damages: [thornmail_arena_min, zero],
+        melee_damages: [thornmail_arena_min, zero],
         riot_id: 223075,
-        deals_damage: (false, false),
+        deals_damage: (true, false),
         stats: S_ {
             armor: 60f32,
             health: 300f32,
@@ -65884,6 +65994,9 @@ pub mod items {
             unknown_map_35: false,
         },
     };
+    pub const fn thornmail_arena_min(ctx: &Ctx) -> f32 {
+        20.0 + 0.1 * ctx.bonus_armor
+    }
     pub static THORNMAIL_U_32: X = X {
         name: "Thornmail [U-32]",
         price: 2650,
@@ -65958,15 +66071,15 @@ pub mod items {
         prettified_stats: &[(AttackDamage, 40), (Health, 600)],
         metadata: TypeMetadata {
             kind: ItemId::TitanicHydra,
-            damage_type: Unknown,
-            attributes: Undefined,
+            damage_type: Physical,
+            attributes: AreaOnhit,
         },
         tier: 3,
         purchasable: true,
-        ranged_damages: [zero, zero],
-        melee_damages: [zero, zero],
+        ranged_damages: [titanic_hydra_ranged_min, titanic_hydra_ranged_max],
+        melee_damages: [titanic_hydra_melee_min, titanic_hydra_melee_max],
         riot_id: 3748,
-        deals_damage: (false, false),
+        deals_damage: (true, true),
         stats: S_ {
             attack_damage: 40f32,
             health: 600f32,
@@ -65982,21 +66095,36 @@ pub mod items {
             unknown_map_35: true,
         },
     };
+    pub const fn titanic_hydra_ranged_min(ctx: &Ctx) -> f32 {
+        0.005 * ctx.max_health
+    }
+    pub const fn titanic_hydra_melee_min(ctx: &Ctx) -> f32 {
+        0.01 * ctx.max_health
+    }
+    pub const fn titanic_hydra_ranged_max(ctx: &Ctx) -> f32 {
+        0.02 * ctx.max_health
+    }
+    pub const fn titanic_hydra_melee_max(ctx: &Ctx) -> f32 {
+        0.04 * ctx.max_health
+    }
     pub static TITANIC_HYDRA_ARENA: X = X {
         name: "Titanic Hydra [Arena]",
         price: 2500,
         prettified_stats: &[(AttackDamage, 40), (Health, 400)],
         metadata: TypeMetadata {
             kind: ItemId::TitanicHydraArena,
-            damage_type: Unknown,
-            attributes: Undefined,
+            damage_type: Physical,
+            attributes: AreaOnhit,
         },
         tier: 0,
         purchasable: true,
-        ranged_damages: [zero, zero],
-        melee_damages: [zero, zero],
+        ranged_damages: [
+            titanic_hydra_arena_ranged_min,
+            titanic_hydra_arena_ranged_max,
+        ],
+        melee_damages: [titanic_hydra_arena_melee_min, titanic_hydra_arena_melee_max],
         riot_id: 223748,
-        deals_damage: (false, false),
+        deals_damage: (true, true),
         stats: S_ {
             attack_damage: 40f32,
             health: 400f32,
@@ -66012,6 +66140,18 @@ pub mod items {
             unknown_map_35: false,
         },
     };
+    pub const fn titanic_hydra_arena_ranged_min(ctx: &Ctx) -> f32 {
+        0.005 * ctx.max_health
+    }
+    pub const fn titanic_hydra_arena_melee_min(ctx: &Ctx) -> f32 {
+        0.01 * ctx.max_health
+    }
+    pub const fn titanic_hydra_arena_ranged_max(ctx: &Ctx) -> f32 {
+        0.02 * ctx.max_health
+    }
+    pub const fn titanic_hydra_arena_melee_max(ctx: &Ctx) -> f32 {
+        0.04 * ctx.max_health
+    }
     pub static TOP_LANE_QUEST_1200: X = X {
         name: "Top Lane Quest 1200",
         price: 0,
@@ -66246,15 +66386,15 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::TrinityForce,
-            damage_type: Unknown,
-            attributes: Undefined,
+            damage_type: Physical,
+            attributes: OnhitMax,
         },
         tier: 3,
         purchasable: true,
-        ranged_damages: [zero, zero],
-        melee_damages: [zero, zero],
+        ranged_damages: [trinity_force_min, zero],
+        melee_damages: [trinity_force_min, zero],
         riot_id: 3078,
-        deals_damage: (false, false),
+        deals_damage: (true, false),
         stats: S_ {
             attack_damage: 36f32,
             attack_speed: 30f32,
@@ -66271,6 +66411,9 @@ pub mod items {
             unknown_map_35: true,
         },
     };
+    pub const fn trinity_force_min(ctx: &Ctx) -> f32 {
+        2.0 * ctx.base_ad
+    }
     pub static TRINITY_FORCE_ARENA: X = X {
         name: "Trinity Force [Arena]",
         price: 2500,
@@ -66282,15 +66425,15 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::TrinityForceArena,
-            damage_type: Unknown,
-            attributes: Undefined,
+            damage_type: Physical,
+            attributes: OnhitMax,
         },
         tier: 0,
         purchasable: true,
-        ranged_damages: [zero, zero],
-        melee_damages: [zero, zero],
+        ranged_damages: [trinity_force_arena_min, zero],
+        melee_damages: [trinity_force_arena_min, zero],
         riot_id: 223078,
-        deals_damage: (false, false),
+        deals_damage: (true, false),
         stats: S_ {
             attack_damage: 35f32,
             attack_speed: 25f32,
@@ -66307,6 +66450,9 @@ pub mod items {
             unknown_map_35: false,
         },
     };
+    pub const fn trinity_force_arena_min(ctx: &Ctx) -> f32 {
+        2.0 * ctx.base_ad
+    }
     pub static TUNNELER: X = X {
         name: "Tunneler",
         price: 1150,
@@ -67791,15 +67937,15 @@ pub mod items {
         prettified_stats: &[(AttackSpeed, 50), (MagicResist, 45), (Tenacity, 20)],
         metadata: TypeMetadata {
             kind: ItemId::WitsEnd,
-            damage_type: Unknown,
-            attributes: Undefined,
+            damage_type: Magic,
+            attributes: Onhit,
         },
         tier: 3,
         purchasable: true,
-        ranged_damages: [zero, zero],
-        melee_damages: [zero, zero],
+        ranged_damages: [wits_end_min, zero],
+        melee_damages: [wits_end_min, zero],
         riot_id: 3091,
-        deals_damage: (false, false),
+        deals_damage: (true, false),
         stats: S_ {
             attack_speed: 50f32,
             magic_resist: 45f32,
@@ -67815,21 +67961,24 @@ pub mod items {
             unknown_map_35: true,
         },
     };
+    pub const fn wits_end_min(_: &Ctx) -> f32 {
+        45.0
+    }
     pub static WITS_END_ARENA: X = X {
         name: "Wit's End [Arena]",
         price: 2500,
         prettified_stats: &[(AttackSpeed, 50), (MagicResist, 40), (Tenacity, 20)],
         metadata: TypeMetadata {
             kind: ItemId::WitsEndArena,
-            damage_type: Unknown,
-            attributes: Undefined,
+            damage_type: Magic,
+            attributes: Onhit,
         },
         tier: 0,
         purchasable: true,
-        ranged_damages: [zero, zero],
-        melee_damages: [zero, zero],
+        ranged_damages: [wits_end_arena_min, zero],
+        melee_damages: [wits_end_arena_min, zero],
         riot_id: 223091,
-        deals_damage: (false, false),
+        deals_damage: (true, false),
         stats: S_ {
             attack_speed: 50f32,
             magic_resist: 40f32,
@@ -67845,6 +67994,9 @@ pub mod items {
             unknown_map_35: false,
         },
     };
+    pub const fn wits_end_arena_min(_: &Ctx) -> f32 {
+        45.0
+    }
     pub static WOOGLETS_WITCHCAP_ARENA: X = X {
         name: "Wooglet's Witchcap [Arena]",
         price: 6000,
@@ -68463,6 +68615,8 @@ pub mod items {
         &[],
         &[],
         &[],
+        &[CtxVar::MagicMultiplier],
+        &[CtxVar::MagicMultiplier],
         &[],
         &[],
         &[],
@@ -68472,6 +68626,7 @@ pub mod items {
         &[],
         &[],
         &[],
+        &[CtxVar::MagicMultiplier],
         &[],
         &[],
         &[],
@@ -68480,10 +68635,7 @@ pub mod items {
         &[],
         &[],
         &[],
-        &[],
-        &[],
-        &[],
-        &[],
+        &[CtxVar::ArmorPenetrationFlat],
         &[],
         &[],
         &[],
@@ -68520,185 +68672,6 @@ pub mod items {
         &[],
         &[],
         &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[CtxVar::MagicMultiplier],
         &[CtxVar::MagicMultiplier],
         &[],
         &[],
@@ -68722,8 +68695,6 @@ pub mod items {
         &[],
         &[],
         &[],
-        &[CtxVar::AbilityPower, CtxVar::MagicMultiplier],
-        &[CtxVar::AbilityPower, CtxVar::MagicMultiplier],
         &[],
         &[],
         &[],
@@ -68747,7 +68718,7 @@ pub mod items {
         &[],
         &[],
         &[],
-        &[],
+        &[CtxVar::BaseAd, CtxVar::PhysicalMultiplier],
         &[CtxVar::BaseAd, CtxVar::PhysicalMultiplier],
         &[],
         &[],
@@ -68781,6 +68752,203 @@ pub mod items {
         &[],
         &[],
         &[],
+        &[],
+        &[],
+        &[],
+        &[CtxVar::EnemyMaxHealth, CtxVar::MagicMultiplier],
+        &[CtxVar::EnemyMaxHealth, CtxVar::MagicMultiplier],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[
+            CtxVar::BaseAd,
+            CtxVar::CritChance,
+            CtxVar::PhysicalMultiplier,
+        ],
+        &[
+            CtxVar::BaseAd,
+            CtxVar::CritChance,
+            CtxVar::PhysicalMultiplier,
+        ],
+        &[],
+        &[],
+        &[CtxVar::AbilityPower, CtxVar::MagicMultiplier],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[CtxVar::MagicMultiplier],
+        &[CtxVar::MagicMultiplier],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[CtxVar::MaxHealth, CtxVar::PhysicalMultiplier],
+        &[CtxVar::MaxHealth, CtxVar::PhysicalMultiplier],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[CtxVar::MagicMultiplier],
+        &[],
+        &[],
+        &[],
+        &[CtxVar::AbilityPower, CtxVar::MagicMultiplier],
+        &[CtxVar::AbilityPower, CtxVar::MagicMultiplier],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[CtxVar::BaseAd, CtxVar::PhysicalMultiplier],
+        &[CtxVar::BaseAd, CtxVar::PhysicalMultiplier],
+        &[],
+        &[],
+        &[CtxVar::EnemyCurrentHealth, CtxVar::MagicMultiplier],
+        &[CtxVar::EnemyCurrentHealth, CtxVar::MagicMultiplier],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[CtxVar::BaseAd, CtxVar::PhysicalMultiplier],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[CtxVar::MagicMultiplier],
+        &[],
+        &[],
+        &[],
+        &[
+            CtxVar::EnemyMissingHealth,
+            CtxVar::Level,
+            CtxVar::PhysicalMultiplier,
+        ],
+        &[
+            CtxVar::EnemyMissingHealth,
+            CtxVar::Level,
+            CtxVar::PhysicalMultiplier,
+        ],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[CtxVar::EnemyMaxHealth, CtxVar::MagicMultiplier],
         &[
             CtxVar::AbilityPower,
             CtxVar::BaseAd,
@@ -68842,8 +69010,8 @@ pub mod items {
         &[],
         &[],
         &[],
-        &[],
-        &[],
+        &[CtxVar::MaxMana, CtxVar::PhysicalMultiplier],
+        &[CtxVar::MaxMana, CtxVar::PhysicalMultiplier],
         &[],
         &[CtxVar::AbilityPower, CtxVar::MagicMultiplier],
         &[CtxVar::AbilityPower, CtxVar::MagicMultiplier],
@@ -68911,11 +69079,11 @@ pub mod items {
         &[],
         &[],
         &[],
+        &[CtxVar::MagicMultiplier],
         &[],
         &[],
-        &[],
-        &[],
-        &[],
+        &[CtxVar::MagicMultiplier],
+        &[CtxVar::MagicMultiplier],
         &[],
         &[CtxVar::AttackDamage, CtxVar::PhysicalMultiplier],
         &[CtxVar::AttackDamage, CtxVar::PhysicalMultiplier],
@@ -68925,8 +69093,8 @@ pub mod items {
         &[],
         &[CtxVar::PhysicalMultiplier],
         &[],
-        &[],
-        &[],
+        &[CtxVar::EnemyMaxHealth],
+        &[CtxVar::EnemyMaxHealth],
         &[],
         &[],
         &[],
@@ -69007,6 +69175,8 @@ pub mod items {
         &[],
         &[],
         &[],
+        &[CtxVar::MagicMultiplier],
+        &[CtxVar::MagicMultiplier],
         &[],
         &[],
         &[],
@@ -69017,56 +69187,11 @@ pub mod items {
         &[],
         &[],
         &[],
+        &[CtxVar::MagicMultiplier],
         &[],
         &[],
         &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
+        &[CtxVar::AttackDamage, CtxVar::PhysicalMultiplier],
         &[CtxVar::AttackDamage, CtxVar::PhysicalMultiplier],
         &[],
         &[],
@@ -69074,6 +69199,55 @@ pub mod items {
         &[],
         &[],
         &[],
+        &[CtxVar::BonusHealth, CtxVar::MagicMultiplier],
+        &[CtxVar::BonusHealth, CtxVar::MagicMultiplier],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[CtxVar::BonusArmor, CtxVar::MagicMultiplier],
+        &[CtxVar::BonusArmor, CtxVar::MagicMultiplier],
+        &[],
+        &[CtxVar::AttackDamage, CtxVar::PhysicalMultiplier],
+        &[CtxVar::MaxHealth, CtxVar::PhysicalMultiplier],
+        &[CtxVar::MaxHealth, CtxVar::PhysicalMultiplier],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[],
+        &[CtxVar::BaseAd, CtxVar::PhysicalMultiplier],
+        &[CtxVar::BaseAd, CtxVar::PhysicalMultiplier],
         &[],
         &[],
         &[],
@@ -69126,14 +69300,8 @@ pub mod items {
         &[],
         &[],
         &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
-        &[],
+        &[CtxVar::MagicMultiplier],
+        &[CtxVar::MagicMultiplier],
         &[],
         &[],
         &[],
@@ -69177,6 +69345,8 @@ pub mod items {
         (1090..1450),
         (1090..1450),
         (1090..1450),
+        (4109441..4109768),
+        (4113036..4113369),
         (1090..1450),
         (1090..1450),
         (1090..1450),
@@ -69186,6 +69356,7 @@ pub mod items {
         (1090..1450),
         (1090..1450),
         (1090..1450),
+        (4140554..4140880),
         (1090..1450),
         (1090..1450),
         (1090..1450),
@@ -69194,6 +69365,7 @@ pub mod items {
         (1090..1450),
         (1090..1450),
         (1090..1450),
+        (4165340..4166309),
         (1090..1450),
         (1090..1450),
         (1090..1450),
@@ -69205,12 +69377,12 @@ pub mod items {
         (1090..1450),
         (1090..1450),
         (1090..1450),
+        (4200708..4202210),
+        (4207841..4209355),
         (1090..1450),
         (1090..1450),
         (1090..1450),
         (1090..1450),
-        (4171964..4174788),
-        (4180419..4183255),
         (1090..1450),
         (1090..1450),
         (1090..1450),
@@ -69222,6 +69394,7 @@ pub mod items {
         (1090..1450),
         (1090..1450),
         (1090..1450),
+        (4250433..4250759),
         (1090..1450),
         (1090..1450),
         (1090..1450),
@@ -69267,6 +69440,8 @@ pub mod items {
         (1090..1450),
         (1090..1450),
         (1090..1450),
+        (4373039..4373441),
+        (4376767..4377175),
         (1090..1450),
         (1090..1450),
         (1090..1450),
@@ -69302,6 +69477,8 @@ pub mod items {
         (1090..1450),
         (1090..1450),
         (1090..1450),
+        (4475759..4476637),
+        (4479899..4480789),
         (1090..1450),
         (1090..1450),
         (1090..1450),
@@ -69318,8 +69495,11 @@ pub mod items {
         (1090..1450),
         (1090..1450),
         (1090..1450),
+        (4523402..4523950),
+        (4527821..4528375),
         (1090..1450),
         (1090..1450),
+        (4538228..4538699),
         (1090..1450),
         (1090..1450),
         (1090..1450),
@@ -69392,6 +69572,8 @@ pub mod items {
         (1090..1450),
         (1090..1450),
         (1090..1450),
+        (4735666..4735998),
+        (4739215..4739560),
         (1090..1450),
         (1090..1450),
         (1090..1450),
@@ -69402,17 +69584,20 @@ pub mod items {
         (1090..1450),
         (1090..1450),
         (1090..1450),
+        (4767940..4768408),
+        (4771690..4772164),
         (1090..1450),
         (1090..1450),
-        (4699979..4700311),
-        (4703528..4703873),
         (1090..1450),
         (1090..1450),
         (1090..1450),
         (1090..1450),
+        (4791233..4791565),
         (1090..1450),
         (1090..1450),
         (1090..1450),
+        (4804051..4804530),
+        (4808229..4808721),
         (1090..1450),
         (1090..1450),
         (1090..1450),
@@ -69424,17 +69609,20 @@ pub mod items {
         (1090..1450),
         (1090..1450),
         (1090..1450),
+        (4841720..4842157),
+        (4845478..4845928),
         (1090..1450),
         (1090..1450),
+        (4854767..4855217),
+        (4858656..4859119),
         (1090..1450),
         (1090..1450),
-        (4765158..4765637),
-        (4769336..4769828),
         (1090..1450),
         (1090..1450),
         (1090..1450),
         (1090..1450),
         (1090..1450),
+        (4881821..4882222),
         (1090..1450),
         (1090..1450),
         (1090..1450),
@@ -69451,10 +69639,12 @@ pub mod items {
         (1090..1450),
         (1090..1450),
         (1090..1450),
+        (4925230..4925558),
         (1090..1450),
         (1090..1450),
         (1090..1450),
-        (4838870..4839271),
+        (4939959..4943050),
+        (4948709..4951852),
         (1090..1450),
         (1090..1450),
         (1090..1450),
@@ -69464,6 +69654,9 @@ pub mod items {
         (1090..1450),
         (1090..1450),
         (1090..1450),
+        (4977030..4977913),
+        (4981743..4982288),
+        (4986142..4986693),
         (1090..1450),
         (1090..1450),
         (1090..1450),
@@ -69481,14 +69674,16 @@ pub mod items {
         (1090..1450),
         (1090..1450),
         (1090..1450),
+        (5036390..5037323),
+        (5041767..5042712),
+        (5046883..5047816),
+        (5052007..5052952),
         (1090..1450),
         (1090..1450),
         (1090..1450),
         (1090..1450),
         (1090..1450),
         (1090..1450),
-        (4924604..4925149),
-        (4929003..4929554),
         (1090..1450),
         (1090..1450),
         (1090..1450),
@@ -69506,10 +69701,6 @@ pub mod items {
         (1090..1450),
         (1090..1450),
         (1090..1450),
-        (4979251..4980280),
-        (4984724..4985765),
-        (4989936..4990966),
-        (4995157..4996199),
         (1090..1450),
         (1090..1450),
         (1090..1450),
@@ -69517,7 +69708,11 @@ pub mod items {
         (1090..1450),
         (1090..1450),
         (1090..1450),
+        (5137492..5138777),
+        (5142643..5143946),
         (1090..1450),
+        (5150448..5150922),
+        (5154617..5155097),
         (1090..1450),
         (1090..1450),
         (1090..1450),
@@ -69543,8 +69738,6 @@ pub mod items {
         (1090..1450),
         (1090..1450),
         (1090..1450),
-        (5089045..5089519),
-        (5093214..5093694),
         (1090..1450),
         (1090..1450),
         (1090..1450),
@@ -69584,14 +69777,22 @@ pub mod items {
         (1090..1450),
         (1090..1450),
         (1090..1450),
+        (5319387..5319710),
         (1090..1450),
         (1090..1450),
+        (5328238..5328568),
+        (5331768..5332104),
         (1090..1450),
+        (5338317..5339631),
+        (5343707..5345053),
         (1090..1450),
         (1090..1450),
         (1090..1450),
         (1090..1450),
+        (5358400..5358725),
         (1090..1450),
+        (5364730..5365170),
+        (5368565..5369011),
         (1090..1450),
         (1090..1450),
         (1090..1450),
@@ -69608,6 +69809,8 @@ pub mod items {
         (1090..1450),
         (1090..1450),
         (1090..1450),
+        (5414672..5415131),
+        (5418526..5418991),
         (1090..1450),
         (1090..1450),
         (1090..1450),
@@ -69615,13 +69818,10 @@ pub mod items {
         (1090..1450),
         (1090..1450),
         (1090..1450),
-        (5275148..5276531),
-        (5280607..5282022),
         (1090..1450),
         (1090..1450),
         (1090..1450),
         (1090..1450),
-        (5295369..5295694),
         (1090..1450),
         (1090..1450),
         (1090..1450),
@@ -69640,9 +69840,8 @@ pub mod items {
         (1090..1450),
         (1090..1450),
         (1090..1450),
+        (5499687..5500079),
         (1090..1450),
-        (5349469..5349928),
-        (5353323..5353788),
         (1090..1450),
         (1090..1450),
         (1090..1450),
@@ -69672,9 +69871,10 @@ pub mod items {
         (1090..1450),
         (1090..1450),
         (1090..1450),
-        (5434420..5434812),
         (1090..1450),
         (1090..1450),
+        (5590628..5590954),
+        (5594150..5594482),
         (1090..1450),
         (1090..1450),
         (1090..1450),
@@ -69685,15 +69885,20 @@ pub mod items {
         (1090..1450),
         (1090..1450),
         (1090..1450),
+        (5622646..5622976),
         (1090..1450),
         (1090..1450),
         (1090..1450),
+        (5635713..5637024),
+        (5640985..5642328),
         (1090..1450),
         (1090..1450),
         (1090..1450),
         (1090..1450),
         (1090..1450),
         (1090..1450),
+        (5660277..5660750),
+        (5664417..5664896),
         (1090..1450),
         (1090..1450),
         (1090..1450),
@@ -69725,7 +69930,12 @@ pub mod items {
         (1090..1450),
         (1090..1450),
         (1090..1450),
+        (5754362..5754829),
+        (5758338..5758811),
         (1090..1450),
+        (5764932..5766223),
+        (5769962..5771708),
+        (5775471..5777269),
         (1090..1450),
         (1090..1450),
         (1090..1450),
@@ -69734,6 +69944,8 @@ pub mod items {
         (1090..1450),
         (1090..1450),
         (1090..1450),
+        (5800291..5800723),
+        (5804277..5804715),
         (1090..1450),
         (1090..1450),
         (1090..1450),
@@ -69765,7 +69977,6 @@ pub mod items {
         (1090..1450),
         (1090..1450),
         (1090..1450),
-        (5687957..5689248),
         (1090..1450),
         (1090..1450),
         (1090..1450),
@@ -69787,51 +69998,8 @@ pub mod items {
         (1090..1450),
         (1090..1450),
         (1090..1450),
-        (1090..1450),
-        (1090..1450),
-        (1090..1450),
-        (1090..1450),
-        (1090..1450),
-        (1090..1450),
-        (1090..1450),
-        (1090..1450),
-        (1090..1450),
-        (1090..1450),
-        (1090..1450),
-        (1090..1450),
-        (1090..1450),
-        (1090..1450),
-        (1090..1450),
-        (1090..1450),
-        (1090..1450),
-        (1090..1450),
-        (1090..1450),
-        (1090..1450),
-        (1090..1450),
-        (1090..1450),
-        (1090..1450),
-        (1090..1450),
-        (1090..1450),
-        (1090..1450),
-        (1090..1450),
-        (1090..1450),
-        (1090..1450),
-        (1090..1450),
-        (1090..1450),
-        (1090..1450),
-        (1090..1450),
-        (1090..1450),
-        (1090..1450),
-        (1090..1450),
-        (1090..1450),
-        (1090..1450),
-        (1090..1450),
-        (1090..1450),
-        (1090..1450),
-        (1090..1450),
-        (1090..1450),
-        (1090..1450),
-        (1090..1450),
+        (5935532..5935854),
+        (5938950..5939278),
         (1090..1450),
         (1090..1450),
         (1090..1450),
@@ -69854,6 +70022,13 @@ pub mod items {
     ];
     pub const fn item_const_eval(ctx: &Ctx, item_id: ItemId, attack_type: AttackType) -> [f32; 2] {
         match item_id {
+            ItemId::ArdentCenser => [ardent_censer_min(ctx), zero(ctx)],
+            ItemId::ArdentCenserArena => [ardent_censer_arena_min(ctx), zero(ctx)],
+            ItemId::BamisCinder => [bamis_cinder_min(ctx), zero(ctx)],
+            ItemId::Bastionbreaker => match attack_type {
+                Melee => [bastionbreaker_melee_min(ctx), zero(ctx)],
+                Ranged => [bastionbreaker_ranged_min(ctx), zero(ctx)],
+            },
             ItemId::BladeOfTheRuinedKing => match attack_type {
                 Melee => [blade_of_the_ruined_king_melee_min(ctx), zero(ctx)],
                 Ranged => [blade_of_the_ruined_king_ranged_min(ctx), zero(ctx)],
@@ -69862,19 +70037,67 @@ pub mod items {
                 Melee => [blade_of_the_ruined_king_arena_melee_min(ctx), zero(ctx)],
                 Ranged => [blade_of_the_ruined_king_arena_ranged_min(ctx), zero(ctx)],
             },
+            ItemId::BrambleVest => [bramble_vest_min(ctx), zero(ctx)],
+            ItemId::DeadMansPlate => [dead_mans_plate_min(ctx), zero(ctx)],
+            ItemId::DeadMansPlateArena => [dead_mans_plate_arena_min(ctx), zero(ctx)],
+            ItemId::Eclipse => match attack_type {
+                Melee => [eclipse_melee_min(ctx), zero(ctx)],
+                Ranged => [eclipse_ranged_min(ctx), zero(ctx)],
+            },
+            ItemId::EclipseArena => match attack_type {
+                Melee => [eclipse_arena_melee_min(ctx), zero(ctx)],
+                Ranged => [eclipse_arena_ranged_min(ctx), zero(ctx)],
+            },
+            ItemId::EssenceReaver => [essence_reaver_min(ctx), zero(ctx)],
+            ItemId::EssenceReaverArena => [essence_reaver_arena_min(ctx), zero(ctx)],
+            ItemId::Everfrost => [everfrost_min(ctx), zero(ctx)],
             ItemId::GuinsoosRageblade => [guinsoos_rageblade_min(ctx), zero(ctx)],
             ItemId::GuinsoosRagebladeArena => [guinsoos_rageblade_arena_min(ctx), zero(ctx)],
+            ItemId::Heartsteel => [heartsteel_min(ctx), zero(ctx)],
+            ItemId::HeartsteelArena => [heartsteel_arena_min(ctx), zero(ctx)],
+            ItemId::HextechAlternator => [hextech_alternator_min(ctx), zero(ctx)],
             ItemId::HextechRocketbelt => [hextech_rocketbelt_min(ctx), zero(ctx)],
             ItemId::HextechRocketbeltArena => [hextech_rocketbelt_arena_min(ctx), zero(ctx)],
+            ItemId::IcebornGauntlet => [iceborn_gauntlet_min(ctx), zero(ctx)],
+            ItemId::IcebornGauntletArena => [iceborn_gauntlet_arena_min(ctx), zero(ctx)],
+            ItemId::ImperialMandate => [imperial_mandate_min(ctx), zero(ctx)],
+            ItemId::ImperialMandateArena => [imperial_mandate_arena_min(ctx), zero(ctx)],
             ItemId::IronspikeWhip => [ironspike_whip_min(ctx), zero(ctx)],
+            ItemId::KircheisShard => [kircheis_shard_min(ctx), zero(ctx)],
+            ItemId::KrakenSlayer => match attack_type {
+                Melee => [kraken_slayer_melee_min(ctx), kraken_slayer_melee_max(ctx)],
+                Ranged => [kraken_slayer_ranged_min(ctx), kraken_slayer_ranged_max(ctx)],
+            },
+            ItemId::KrakenSlayerArena => match attack_type {
+                Melee => [
+                    kraken_slayer_arena_melee_min(ctx),
+                    kraken_slayer_arena_melee_max(ctx),
+                ],
+                Ranged => [
+                    kraken_slayer_arena_ranged_min(ctx),
+                    kraken_slayer_arena_ranged_max(ctx),
+                ],
+            },
+            ItemId::LiandrysTorment => [liandrys_torment_min(ctx), liandrys_torment_max(ctx)],
             ItemId::LichBane => [lich_bane_min(ctx), zero(ctx)],
             ItemId::LichBaneArena => [lich_bane_arena_min(ctx), zero(ctx)],
             ItemId::LudensEcho => [ludens_echo_min(ctx), ludens_echo_max(ctx)],
             ItemId::LudensEchoArena => [ludens_echo_arena_min(ctx), ludens_echo_arena_max(ctx)],
             ItemId::Malignance => [malignance_min(ctx), malignance_max(ctx)],
             ItemId::MalignanceArena => [malignance_arena_min(ctx), malignance_arena_max(ctx)],
+            ItemId::Muramana => match attack_type {
+                Melee => [muramana_min(ctx), muramana_melee_max(ctx)],
+                Ranged => [muramana_min(ctx), muramana_ranged_max(ctx)],
+            },
+            ItemId::MuramanaArena => match attack_type {
+                Melee => [muramana_arena_min(ctx), muramana_arena_melee_max(ctx)],
+                Ranged => [muramana_arena_min(ctx), muramana_arena_ranged_max(ctx)],
+            },
             ItemId::NashorsTooth => [nashors_tooth_min(ctx), zero(ctx)],
             ItemId::NashorsToothArena => [nashors_tooth_arena_min(ctx), zero(ctx)],
+            ItemId::Rageknife => [rageknife_min(ctx), zero(ctx)],
+            ItemId::RapidFirecannon => [rapid_firecannon_min(ctx), zero(ctx)],
+            ItemId::RapidFirecannonArena => [rapid_firecannon_arena_min(ctx), zero(ctx)],
             ItemId::RavenousHydra => match attack_type {
                 Melee => [ravenous_hydra_melee_min(ctx), ravenous_hydra_max(ctx)],
                 Ranged => [ravenous_hydra_ranged_min(ctx), ravenous_hydra_max(ctx)],
@@ -69890,6 +70113,8 @@ pub mod items {
                 ],
             },
             ItemId::RecurveBow => [recurve_bow_min(ctx), zero(ctx)],
+            ItemId::Redemption => [redemption_min(ctx), zero(ctx)],
+            ItemId::RedemptionArena => [redemption_arena_min(ctx), zero(ctx)],
             ItemId::RunaansHurricane => match attack_type {
                 Melee => [zero(ctx), zero(ctx)],
                 Ranged => [runaans_hurricane_ranged_min(ctx), zero(ctx)],
@@ -69899,10 +70124,49 @@ pub mod items {
                 Ranged => [runaans_hurricane_arena_ranged_min(ctx), zero(ctx)],
             },
             ItemId::Sheen => [sheen_min(ctx), zero(ctx)],
+            ItemId::StatikkShiv => [statikk_shiv_min(ctx), zero(ctx)],
+            ItemId::StatikkShivArena => [statikk_shiv_arena_min(ctx), zero(ctx)],
+            ItemId::Stormrazor3097 => [stormrazor_3097_min(ctx), zero(ctx)],
+            ItemId::Stridebreaker => match attack_type {
+                Melee => [stridebreaker_melee_min(ctx), stridebreaker_max(ctx)],
+                Ranged => [stridebreaker_ranged_min(ctx), stridebreaker_max(ctx)],
+            },
+            ItemId::StridebreakerArena => match attack_type {
+                Melee => [
+                    stridebreaker_arena_melee_min(ctx),
+                    stridebreaker_arena_max(ctx),
+                ],
+                Ranged => [
+                    stridebreaker_arena_ranged_min(ctx),
+                    stridebreaker_arena_max(ctx),
+                ],
+            },
+            ItemId::SunfireAegis => [sunfire_aegis_min(ctx), zero(ctx)],
+            ItemId::SunfireAegisArena => [sunfire_aegis_arena_min(ctx), zero(ctx)],
+            ItemId::Thornmail => [thornmail_min(ctx), zero(ctx)],
+            ItemId::ThornmailArena => [thornmail_arena_min(ctx), zero(ctx)],
             ItemId::Tiamat => match attack_type {
                 Melee => [tiamat_melee_min(ctx), tiamat_max(ctx)],
                 Ranged => [tiamat_ranged_min(ctx), tiamat_max(ctx)],
             },
+            ItemId::TitanicHydra => match attack_type {
+                Melee => [titanic_hydra_melee_min(ctx), titanic_hydra_melee_max(ctx)],
+                Ranged => [titanic_hydra_ranged_min(ctx), titanic_hydra_ranged_max(ctx)],
+            },
+            ItemId::TitanicHydraArena => match attack_type {
+                Melee => [
+                    titanic_hydra_arena_melee_min(ctx),
+                    titanic_hydra_arena_melee_max(ctx),
+                ],
+                Ranged => [
+                    titanic_hydra_arena_ranged_min(ctx),
+                    titanic_hydra_arena_ranged_max(ctx),
+                ],
+            },
+            ItemId::TrinityForce => [trinity_force_min(ctx), zero(ctx)],
+            ItemId::TrinityForceArena => [trinity_force_arena_min(ctx), zero(ctx)],
+            ItemId::WitsEnd => [wits_end_min(ctx), zero(ctx)],
+            ItemId::WitsEndArena => [wits_end_arena_min(ctx), zero(ctx)],
             _ => [0.0, 0.0],
         }
     }
@@ -70743,7 +71007,9 @@ pub mod runes {
         ranged_damage: aftershock,
     };
     pub const fn aftershock(ctx: &Ctx) -> f32 {
-        (25.0 + 95.0 / 17.0 * (ctx.level - 1.0) + 0.08 * ctx.bonus_health) * ctx.magic_multiplier
+        19.411765 * ctx.magic_multiplier
+            + 0.08 * ctx.bonus_health * ctx.magic_multiplier
+            + 5.588235 * ctx.level * ctx.magic_multiplier
     }
     static APPROACH_VELOCITY: C_ = C_ {
         name: "Approach Velocity",
@@ -70858,7 +71124,7 @@ pub mod runes {
         ranged_damage: cheap_shot,
     };
     pub const fn cheap_shot(ctx: &Ctx) -> f32 {
-        10.0 + 35.0 / 17.0 * (ctx.level - 1.0)
+        7.941176 + 2.058824 * ctx.level
     }
     static CONDITIONING: C_ = C_ {
         name: "Conditioning",
@@ -71073,10 +71339,10 @@ pub mod runes {
         ranged_damage: grasp_of_the_undying_ranged,
     };
     pub const fn grasp_of_the_undying_melee(ctx: &Ctx) -> f32 {
-        0.035 * ctx.max_health * ctx.magic_multiplier
+        0.035 * ctx.magic_multiplier * ctx.max_health
     }
     pub const fn grasp_of_the_undying_ranged(ctx: &Ctx) -> f32 {
-        0.021 * ctx.max_health * ctx.magic_multiplier
+        0.021 * ctx.magic_multiplier * ctx.max_health
     }
     static GRISLY_MEMENTOS: C_ = C_ {
         name: "Grisly Mementos",
@@ -71335,7 +71601,7 @@ pub mod runes {
         ranged_damage: press_the_attack,
     };
     pub const fn press_the_attack(ctx: &Ctx) -> f32 {
-        (40.0 + 120.0 / 17.0 * (ctx.level - 1.0)) * ctx.adaptive_damage
+        32.941176 * ctx.adaptive_damage + 7.058824 * ctx.adaptive_damage * ctx.level
     }
     static RELENTLESS_HUNTER: C_ = C_ {
         name: "Relentless Hunter",
@@ -71374,7 +71640,7 @@ pub mod runes {
         ranged_damage: scorch,
     };
     pub const fn scorch(ctx: &Ctx) -> f32 {
-        (20.0 + 20.0 / 17.0 * (ctx.level - 1.0)) * ctx.magic_multiplier
+        18.823529 * ctx.magic_multiplier + 1.176471 * ctx.level * ctx.magic_multiplier
     }
     static SECOND_WIND: C_ = C_ {
         name: "Second Wind",
@@ -71425,7 +71691,7 @@ pub mod runes {
         ranged_damage: sudden_impact,
     };
     pub const fn sudden_impact(ctx: &Ctx) -> f32 {
-        20.0 + 60.0 / 17.0 * (ctx.level - 1.0)
+        16.470588 + 3.529412 * ctx.level
     }
     pub static SUMMON_AERY: C_ = C_ {
         name: "Summon Aery",
@@ -71833,113 +72099,111 @@ pub mod runes {
         }
     }
     pub static RUNE_FORMULAS: [Range<usize>; RuneId::VARIANTS] = [
-        (5905949..5906848),
-        (5906848..5907750),
-        (5907750..5908643),
-        (5908643..5909545),
-        (5909545..5911071),
-        (5911942..5912853),
-        (5912853..5914502),
-        (5915493..5916389),
-        (5916389..5917291),
-        (5917291..5918199),
-        (5918199..5919095),
-        (5919095..5919982),
-        (5919982..5920871),
-        (5920871..5922103),
-        (5922689..5923590),
-        (5923590..5924482),
-        (5924482..5925384),
-        (5925384..5926282),
-        (5926282..5927166),
-        (5927166..5928814),
-        (5929804..5930691),
-        (5930691..5931580),
-        (5931580..5933231),
-        (5934221..5935135),
-        (5935135..5936031),
-        (5936031..5936933),
-        (5936933..5937828),
-        (5937828..5938733),
-        (5938733..5939623),
-        (5939623..5940528),
-        (5940528..5942130),
-        (5943228..5944133),
-        (5944133..5945022),
-        (5945022..5945923),
-        (5945923..5946806),
-        (5946806..5947708),
-        (5947708..5948631),
-        (5948631..5949543),
-        (5949543..5950433),
-        (5950433..5951339),
-        (5951339..5952248),
-        (5952248..5953145),
-        (5953145..5954041),
-        (5954041..5954949),
-        (5954949..5955848),
-        (5955848..5956738),
-        (5956738..5957634),
-        (5957634..5958529),
-        (5958529..5959419),
-        (5959419..5961062),
-        (5962050..5962957),
-        (5962957..5964369),
-        (5965116..5966027),
-        (5966027..5966922),
-        (5966922..5968307),
-        (5969044..5969937),
-        (5969937..5970830),
-        (5970830..5971723),
-        (5971723..5972964),
-        (5973553..5975198),
-        (5976187..5977088),
-        (5977088..5978018),
-        (5978018..5978922),
-        (5978922..5979826),
-        (5979826..5980731),
-        (5980731..5981627),
-        (5981627..5982513),
-        (5982513..5983418),
-        (5983418..5984316),
-        (5984316..5985230),
-        (5985230..5986131),
-        (5986131..5987024),
+        (5991570..5992469),
+        (5992469..5993371),
+        (5993371..5994264),
+        (5994264..5995166),
+        (5995166..5996692),
+        (5997583..5998494),
+        (5998494..6000143),
+        (6001134..6002030),
+        (6002030..6002932),
+        (6002932..6003840),
+        (6003840..6004736),
+        (6004736..6005623),
+        (6005623..6006512),
+        (6006512..6007744),
+        (6008207..6009108),
+        (6009108..6010000),
+        (6010000..6010902),
+        (6010902..6011800),
+        (6011800..6012684),
+        (6012684..6014332),
+        (6015322..6016209),
+        (6016209..6017098),
+        (6017098..6018749),
+        (6019739..6020653),
+        (6020653..6021549),
+        (6021549..6022451),
+        (6022451..6023346),
+        (6023346..6024251),
+        (6024251..6025141),
+        (6025141..6026046),
+        (6026046..6027648),
+        (6028746..6029651),
+        (6029651..6030540),
+        (6030540..6031441),
+        (6031441..6032324),
+        (6032324..6033226),
+        (6033226..6034149),
+        (6034149..6035061),
+        (6035061..6035951),
+        (6035951..6036857),
+        (6036857..6037766),
+        (6037766..6038663),
+        (6038663..6039559),
+        (6039559..6040467),
+        (6040467..6041366),
+        (6041366..6042256),
+        (6042256..6043152),
+        (6043152..6044047),
+        (6044047..6044937),
+        (6044937..6046580),
+        (6047568..6048475),
+        (6048475..6049887),
+        (6050553..6051464),
+        (6051464..6052359),
+        (6052359..6053744),
+        (6054402..6055295),
+        (6055295..6056188),
+        (6056188..6057081),
+        (6057081..6058322),
+        (6058789..6060434),
+        (6061423..6062324),
+        (6062324..6063254),
+        (6063254..6064158),
+        (6064158..6065062),
+        (6065062..6065967),
+        (6065967..6066863),
+        (6066863..6067749),
+        (6067749..6068654),
+        (6068654..6069552),
+        (6069552..6070466),
+        (6070466..6071367),
+        (6071367..6072260),
     ];
     pub static RUNE_CLOSURES: [Range<usize>; RuneId::VARIANTS] = [
         (1090..1450),
         (1090..1450),
         (1090..1450),
         (1090..1450),
-        (5911071..5911942),
+        (5996692..5997583),
         (1090..1450),
-        (5914502..5915493),
-        (1090..1450),
-        (1090..1450),
-        (1090..1450),
-        (1090..1450),
-        (1090..1450),
-        (1090..1450),
-        (5922103..5922689),
-        (1090..1450),
-        (1090..1450),
-        (1090..1450),
-        (1090..1450),
-        (1090..1450),
-        (5928814..5929804),
-        (1090..1450),
-        (1090..1450),
-        (5933231..5934221),
+        (6000143..6001134),
         (1090..1450),
         (1090..1450),
         (1090..1450),
         (1090..1450),
         (1090..1450),
         (1090..1450),
+        (6007744..6008207),
         (1090..1450),
-        (5942130..5943228),
         (1090..1450),
         (1090..1450),
+        (1090..1450),
+        (1090..1450),
+        (6014332..6015322),
+        (1090..1450),
+        (1090..1450),
+        (6018749..6019739),
+        (1090..1450),
+        (1090..1450),
+        (1090..1450),
+        (1090..1450),
+        (1090..1450),
+        (1090..1450),
+        (1090..1450),
+        (6027648..6028746),
         (1090..1450),
         (1090..1450),
         (1090..1450),
@@ -71956,17 +72220,19 @@ pub mod runes {
         (1090..1450),
         (1090..1450),
         (1090..1450),
-        (5961062..5962050),
-        (1090..1450),
-        (5964369..5965116),
         (1090..1450),
         (1090..1450),
-        (5968307..5969044),
+        (6046580..6047568),
+        (1090..1450),
+        (6049887..6050553),
+        (1090..1450),
+        (1090..1450),
+        (6053744..6054402),
         (1090..1450),
         (1090..1450),
         (1090..1450),
-        (5972964..5973553),
-        (5975198..5976187),
+        (6058322..6058789),
+        (6060434..6061423),
         (1090..1450),
         (1090..1450),
         (1090..1450),
@@ -72099,13 +72365,13 @@ pub mod runes {
         }
     }
 }
-pub static IGNITE_OFFSET: Range<usize> = 5987024..5987863;
-pub static ONHIT_EFFECT_OFFSET: Range<usize> = 5987863..5988501;
-pub static BASIC_ATTACK_OFFSET: Range<usize> = 5988501..5989013;
-pub static TOWER_DAMAGE_OFFSET: Range<usize> = 5989013..5990074;
-pub static CRITICAL_STRIKE_OFFSET: Range<usize> = 5990074..5990778;
-pub static ONHIT_EFFECT_FN_OFFSET: Range<usize> = 5990778..5991355;
-pub static TOWER_DAMAGE_FN_OFFSET: Range<usize> = 5991355..5993336;
-pub static BASIC_ATTACK_FN_OFFSET: Range<usize> = 5993336..5993786;
-pub static CRITICAL_STRIKE_FN_OFFSET: Range<usize> = 5993786..5994295;
-pub const RAW_BLOCK_LEN: usize = 5994295;
+pub static IGNITE_OFFSET: Range<usize> = 6072260..6073099;
+pub static ONHIT_EFFECT_OFFSET: Range<usize> = 6073099..6073737;
+pub static BASIC_ATTACK_OFFSET: Range<usize> = 6073737..6074249;
+pub static TOWER_DAMAGE_OFFSET: Range<usize> = 6074249..6075310;
+pub static CRITICAL_STRIKE_OFFSET: Range<usize> = 6075310..6076014;
+pub static ONHIT_EFFECT_FN_OFFSET: Range<usize> = 6076014..6076591;
+pub static TOWER_DAMAGE_FN_OFFSET: Range<usize> = 6076591..6078572;
+pub static BASIC_ATTACK_FN_OFFSET: Range<usize> = 6078572..6079022;
+pub static CRITICAL_STRIKE_FN_OFFSET: Range<usize> = 6079022..6079531;
+pub const RAW_BLOCK_LEN: usize = 6079531;

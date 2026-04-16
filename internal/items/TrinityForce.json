@@ -5,9 +5,9 @@
   "price": 3333,
   "sell": 2333,
   "tier": 3,
-  "attributes": "Undefined",
+  "attributes": "OnhitMax",
   "purchasable": true,
-  "damage_type": "Unknown",
+  "damage_type": "Physical",
   "prettified_stats": {
     "AbilityHaste": 15,
     "AttackDamage": 36,
@@ -15,11 +15,11 @@
     "Health": 333
   },
   "ranged": {
-    "minimum_damage": "zero",
+    "minimum_damage": "2 * ctx.base_ad",
     "maximum_damage": "zero"
   },
   "melee": {
-    "minimum_damage": "zero",
+    "minimum_damage": "2 * ctx.base_ad",
     "maximum_damage": "zero"
   },
   "stats": {

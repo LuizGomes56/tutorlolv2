@@ -1,6 +1,6 @@
 use crate::{
     CwdPath, Generated, GeneratorFn, Tracker, ZERO_FN_OFFSET, push_end,
-    scripts::{StringExt, model::Rune, rustfmt_batch},
+    scripts::{StringExt, model::Rune, rustfmt_batch, simplify_formula},
 };
 use rayon::iter::{IntoParallelIterator, ParallelIterator};
 use std::collections::{BTreeMap, HashMap};
@@ -45,7 +45,12 @@ pub fn generate_runes() -> GeneratorFn {
                     }}"
                 );
 
-                let normalize = |expr: &str| expr.clean().to_lowercase().cast_f32();
+                let normalize = |expr: &str| {
+                    simplify_formula(expr.to_string())
+                        .clean()
+                        .to_lowercase()
+                        .cast_f32()
+                };
 
                 let melee_body = normalize(melee);
                 let ranged_body = normalize(ranged);

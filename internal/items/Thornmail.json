@@ -7,17 +7,17 @@
   "tier": 3,
   "attributes": "Undefined",
   "purchasable": true,
-  "damage_type": "Unknown",
+  "damage_type": "Magic",
   "prettified_stats": {
     "Armor": 75,
     "Health": 150
   },
   "ranged": {
-    "minimum_damage": "zero",
+    "minimum_damage": "20 + (0.1 * ctx.bonus_armor)",
     "maximum_damage": "zero"
   },
   "melee": {
-    "minimum_damage": "zero",
+    "minimum_damage": "20 + (0.1 * ctx.bonus_armor)",
     "maximum_damage": "zero"
   },
   "stats": {

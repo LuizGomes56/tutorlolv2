@@ -1,6 +1,9 @@
 use once_cell::sync::Lazy;
 use regex::{Captures, Regex};
-use std::{collections::BTreeSet, fmt::Display};
+use std::{
+    collections::{BTreeMap, BTreeSet},
+    fmt::Display,
+};
 use tutorlolv2_fmt::rust_html;
 
 pub mod champions;
@@ -332,6 +335,262 @@ fn parse_op(tok: &String) -> Option<Op> {
     }
 }
 
+const SIMPLIFY_EPS: f64 = 1e-10;
+
+#[derive(Debug, Clone, Default)]
+struct Poly {
+    terms: BTreeMap<Vec<String>, f64>,
+}
+
+impl Poly {
+    fn constant(value: f64) -> Self {
+        let mut out = Self::default();
+        if value.abs() > SIMPLIFY_EPS {
+            out.terms.insert(Vec::new(), value);
+        }
+        out
+    }
+
+    fn variable(name: String) -> Self {
+        let mut out = Self::default();
+        out.terms.insert(vec![name], 1.0);
+        out
+    }
+
+    fn normalize_key(mut vars: Vec<String>) -> Vec<String> {
+        vars.sort();
+        vars
+    }
+
+    fn clean(&mut self) {
+        self.terms.retain(|_, value| value.abs() > SIMPLIFY_EPS);
+    }
+
+    fn add(mut self, other: Self) -> Self {
+        for (key, value) in other.terms {
+            *self.terms.entry(key).or_insert(0.0) += value;
+        }
+        self.clean();
+        self
+    }
+
+    fn sub(mut self, other: Self) -> Self {
+        for (key, value) in other.terms {
+            *self.terms.entry(key).or_insert(0.0) -= value;
+        }
+        self.clean();
+        self
+    }
+
+    fn mul(self, other: Self) -> Self {
+        let mut out = BTreeMap::<Vec<String>, f64>::new();
+
+        for (k1, c1) in self.terms {
+            for (k2, c2) in &other.terms {
+                let mut key = k1.clone();
+                key.extend(k2.clone());
+                let key = Self::normalize_key(key);
+                *out.entry(key).or_insert(0.0) += c1 * *c2;
+            }
+        }
+
+        let mut poly = Self { terms: out };
+        poly.clean();
+        poly
+    }
+
+    fn div(self, other: Self) -> Option<Self> {
+        let value = other.as_constant()?;
+        if value.abs() <= SIMPLIFY_EPS {
+            return None;
+        }
+
+        let mut out = self;
+        for coeff in out.terms.values_mut() {
+            *coeff /= value;
+        }
+        out.clean();
+        Some(out)
+    }
+
+    // fn neg(self) -> Self {
+    //     let mut out = self;
+    //     for value in out.terms.values_mut() {
+    //         *value = -*value;
+    //     }
+    //     out
+    // }
+
+    fn as_constant(&self) -> Option<f64> {
+        if self.terms.is_empty() {
+            return Some(0.0);
+        }
+        if self.terms.len() != 1 {
+            return None;
+        }
+        let (key, value) = self.terms.iter().next()?;
+        if key.is_empty() { Some(*value) } else { None }
+    }
+
+    fn render(&self) -> String {
+        if self.terms.is_empty() {
+            return "0".into();
+        }
+
+        let mut items = self
+            .terms
+            .iter()
+            .map(|(key, value)| (key.clone(), *value))
+            .collect::<Vec<_>>();
+
+        items.sort_by(|(ka, _), (kb, _)| {
+            let da = ka.len();
+            let db = kb.len();
+            da.cmp(&db).then_with(|| ka.cmp(kb))
+        });
+
+        let mut out = String::new();
+
+        for (index, (vars, coeff)) in items.into_iter().enumerate() {
+            let negative = coeff < 0.0;
+            let abs = coeff.abs();
+
+            let term = if vars.is_empty() {
+                format_simplified_number(abs)
+            } else if (abs - 1.0).abs() <= SIMPLIFY_EPS {
+                vars.join(" * ")
+            } else {
+                format!("{} * {}", format_simplified_number(abs), vars.join(" * "))
+            };
+
+            if index == 0 {
+                if negative {
+                    out.push('-');
+                }
+                out.push_str(&term);
+            } else {
+                if negative {
+                    out.push_str(" - ");
+                } else {
+                    out.push_str(" + ");
+                }
+                out.push_str(&term);
+            }
+        }
+
+        out
+    }
+}
+
+fn format_simplified_number(value: f64) -> String {
+    let value = if value.abs() <= SIMPLIFY_EPS {
+        0.0
+    } else {
+        value
+    };
+    let s = format!("{value:.6}");
+    let s = s.trim_end_matches('0').trim_end_matches('.');
+    match s {
+        "" | "-0" => "0".into(),
+        _ => s.to_string(),
+    }
+}
+
+fn expr_to_poly(expr: &Expr) -> Option<Poly> {
+    match expr {
+        Expr::Term(term) => match term.parse::<f64>() {
+            Ok(number) => Some(Poly::constant(number)),
+            Err(_) => Some(Poly::variable(term.clone())),
+        },
+        Expr::Binary { left, op, right } => {
+            let left = expr_to_poly(left)?;
+            let right = expr_to_poly(right)?;
+
+            match op {
+                Op::Add => Some(left.add(right)),
+                Op::Sub => Some(left.sub(right)),
+                Op::Mul => Some(left.mul(right)),
+                Op::Div => left.div(right),
+            }
+        }
+    }
+}
+
+#[derive(Debug, Copy, Clone, Default, PartialEq, Eq)]
+struct ExprCost {
+    adds: usize,
+    subs: usize,
+    muls: usize,
+    divs: usize,
+}
+
+impl ExprCost {
+    fn score(self) -> usize {
+        self.adds + self.subs + self.muls * 3 + self.divs * 6
+    }
+}
+
+fn expr_cost(expr: &Expr) -> ExprCost {
+    match expr {
+        Expr::Term(_) => ExprCost::default(),
+        Expr::Binary { left, op, right } => {
+            let mut cost = expr_cost(left);
+            let rhs = expr_cost(right);
+
+            cost.adds += rhs.adds;
+            cost.subs += rhs.subs;
+            cost.muls += rhs.muls;
+            cost.divs += rhs.divs;
+
+            match op {
+                Op::Add => cost.adds += 1,
+                Op::Sub => cost.subs += 1,
+                Op::Mul => cost.muls += 1,
+                Op::Div => cost.divs += 1,
+            }
+
+            cost
+        }
+    }
+}
+
+fn parse_full_expr(input: &str) -> Option<Expr> {
+    let tokens = tokenize(input);
+    let (expr, rest) = parse_expr(&tokens, 0)?;
+    if rest.is_empty() { Some(expr) } else { None }
+}
+
+fn simplify_formula(input: String) -> String {
+    let Some(original_expr) = parse_full_expr(&input) else {
+        return input;
+    };
+
+    let Some(poly) = expr_to_poly(&original_expr) else {
+        return input;
+    };
+
+    let simplified = poly.render();
+
+    let Some(simplified_expr) = parse_full_expr(&simplified) else {
+        return input;
+    };
+
+    let original_cost = expr_cost(&original_expr);
+    let simplified_cost = expr_cost(&simplified_expr);
+
+    match simplified_cost.score().cmp(&original_cost.score()) {
+        std::cmp::Ordering::Less => simplified,
+        std::cmp::Ordering::Greater => input,
+        std::cmp::Ordering::Equal => {
+            if simplified.len() < input.len() {
+                simplified
+            } else {
+                input
+            }
+        }
+    }
+}
+
 fn format_expr(expr: &Expr, parent: Option<Op>, is_right: bool) -> String {
     let out = match expr {
         Expr::Term(t) => t.clone(),
@@ -541,10 +800,12 @@ pub fn simplify(values: &[String]) -> Simplified {
         final_expression = final_expression.replace(&marker, formula);
     }
 
-    let result = final_expression
+    let expr = final_expression
         .replace("+ -", "- ")
         .replace("( ", "(")
         .replace(" )", ")");
+
+    let result = simplify_formula(expr);
 
     match depends_on_n {
         true => Simplified::Progression(result),

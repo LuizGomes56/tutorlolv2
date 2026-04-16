@@ -7,18 +7,18 @@
   "tier": 3,
   "attributes": "Undefined",
   "purchasable": true,
-  "damage_type": "Unknown",
+  "damage_type": "True",
   "prettified_stats": {
     "AbilityHaste": 15,
     "AttackDamage": 55,
     "Lethality": 22
   },
   "ranged": {
-    "minimum_damage": "zero",
+    "minimum_damage": "0.5 * (30 + 1.5 * ctx.armor_penetration_flat)",
     "maximum_damage": "zero"
   },
   "melee": {
-    "minimum_damage": "zero",
+    "minimum_damage": "30 + 1.5 * ctx.armor_penetration_flat",
     "maximum_damage": "zero"
   },
   "stats": {

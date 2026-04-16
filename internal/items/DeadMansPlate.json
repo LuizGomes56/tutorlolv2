@@ -5,20 +5,20 @@
   "price": 2900,
   "sell": 2030,
   "tier": 3,
-  "attributes": "Undefined",
+  "attributes": "OnhitMax",
   "purchasable": true,
-  "damage_type": "Unknown",
+  "damage_type": "Physical",
   "prettified_stats": {
     "Armor": 55,
     "Health": 350,
     "MoveSpeed": 4
   },
   "ranged": {
-    "minimum_damage": "zero",
+    "minimum_damage": "ctx.base_ad",
     "maximum_damage": "zero"
   },
   "melee": {
-    "minimum_damage": "zero",
+    "minimum_damage": "ctx.base_ad",
     "maximum_damage": "zero"
   },
   "stats": {

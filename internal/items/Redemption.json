@@ -5,9 +5,9 @@
   "price": 2300,
   "sell": 1610,
   "tier": 3,
-  "attributes": "Undefined",
+  "attributes": "Area",
   "purchasable": true,
-  "damage_type": "Unknown",
+  "damage_type": "True",
   "prettified_stats": {
     "AbilityHaste": 15,
     "AbilityPower": 30,
@@ -15,11 +15,11 @@
     "HealAndShieldPower": 10
   },
   "ranged": {
-    "minimum_damage": "zero",
+    "minimum_damage": "0.1 * ctx.enemy_max_health",
     "maximum_damage": "zero"
   },
   "melee": {
-    "minimum_damage": "zero",
+    "minimum_damage": "0.1 * ctx.enemy_max_health",
     "maximum_damage": "zero"
   },
   "stats": {
