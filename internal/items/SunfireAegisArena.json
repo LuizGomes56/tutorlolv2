@@ -5,20 +5,20 @@
   "price": 2500,
   "sell": 1250,
   "tier": 0,
-  "attributes": "Undefined",
+  "attributes": "Area",
   "purchasable": true,
-  "damage_type": "Unknown",
+  "damage_type": "Magic",
   "prettified_stats": {
     "AbilityHaste": 10,
     "Armor": 40,
     "Health": 350
   },
   "ranged": {
-    "minimum_damage": "zero",
+    "minimum_damage": "20 + (0.01 * ctx.bonus_health)",
     "maximum_damage": "zero"
   },
   "melee": {
-    "minimum_damage": "zero",
+    "minimum_damage": "20 + (0.01 * ctx.bonus_health)",
     "maximum_damage": "zero"
   },
   "stats": {

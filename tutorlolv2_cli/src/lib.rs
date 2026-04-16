@@ -1,5 +1,5 @@
 use clap::{Parser, Subcommand};
-use std::{process::Command, str::FromStr};
+use std::str::FromStr;
 use tutorlolv2_dev::{
     MayFail,
     gen_factories::{fac_champions::ChampionFactory, fac_items::ItemFactory},
@@ -108,7 +108,8 @@ pub fn run() -> MayFail {
             ChampionFactory::create_all()?;
             ChampionFactory::run_all()?;
             ItemFactory::run_all()?;
-            Command::new("./build.bat").spawn()?.wait()?;
+            std::env::set_current_dir("./tutorlolv2_build")?;
+            tutorlolv2_build::run()?;
         }
         GenArgs::Html => tutorlolv2_html::run(),
         GenArgs::Setup { setup } => match setup {
