@@ -65,6 +65,7 @@ macro_rules! decl_items {
 }
 
 decl_items!(
+    ArdentCenser,
     BladeOfTheRuinedKing,
     LichBane,
     Malignance,
@@ -80,5 +81,7 @@ decl_items!(
     IronspikeWhip,
     TitanicHydra,
     Eclipse,
-    Heartsteel
+    Heartsteel,
+    BamisCinder,
+    IcebornGauntlet
 );
