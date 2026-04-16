@@ -2,6 +2,7 @@ use crate::{
     ENV_CONFIG, JsonRead, JsonWrite, MayFail, Progress,
     champions::{Ability, Champion, MerakiAbility, MerakiChampion, Modifiers},
     client::{SaveTo, Tag},
+    gen_utils::process_linear_scalings,
     generators::{
         gen_champions::*,
         gen_utils::{F64Ext, RegExtractor},
@@ -595,7 +596,7 @@ impl ChampionData {
             .get_interval()
             .expect("Couldn't extract numeric values for passive.");
 
-        let mut damage = str::process_linear_scalings(passive_bounds, 18, postfix);
+        let mut damage = process_linear_scalings(passive_bounds, 18, postfix);
 
         let scalings = description.get_scalings();
         if scalings.len() > 0 {

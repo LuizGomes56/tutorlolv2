@@ -140,11 +140,6 @@ pub trait RegExtractor {
     fn get_damage(&self) -> String;
     fn clean_formula(&self) -> String;
     fn from_scaled_string(&self) -> String;
-    fn process_linear_scalings(
-        bounds: (f64, f64),
-        size: usize,
-        postfix: Option<String>,
-    ) -> Vec<String>;
 }
 
 impl RegExtractor for str {
@@ -440,22 +435,67 @@ impl RegExtractor for str {
             base
         }
     }
+}
 
-    fn process_linear_scalings(
-        bounds: (f64, f64),
-        size: usize,
-        postfix: Option<String>,
-    ) -> Vec<String> {
-        let mut result = Vec::<String>::new();
-        let (start, end) = bounds;
-        for i in 0..size {
-            let value = start + (((end - start) * (i as f64)) / (size as f64 - 1.0));
-            if let Some(ref postfix) = postfix {
-                result.push(format!("({value}{postfix})"));
-                continue;
-            }
-            result.push(value.to_string());
+pub fn process_linear_scalings(
+    bounds: (f64, f64),
+    size: usize,
+    postfix: Option<String>,
+) -> Vec<String> {
+    let mut result = Vec::<String>::new();
+    let (start, end) = bounds;
+    for i in 0..size {
+        let value = start + (((end - start) * (i as f64)) / (size as f64 - 1.0));
+        if let Some(ref postfix) = postfix {
+            result.push(format!("({value}{postfix})"));
+            continue;
         }
-        result
+        result.push(value.to_string());
+    }
+    result
+}
+
+impl<T: AsRef<str>> RegExtractor for T {
+    fn capture_numbers_slash(&self) -> Vec<f64> {
+        self.as_ref().capture_numbers_slash()
+    }
+    fn capture_percent(&self, number: usize) -> MayFail<f64> {
+        self.as_ref().capture_percent(number)
+    }
+    fn capture_numbers<U: FromStr>(&self) -> Vec<U> {
+        self.as_ref().capture_numbers::<U>()
+    }
+    fn capture_parens(&self, number: usize) -> MayFail<String> {
+        self.as_ref().capture_parens(number)
+    }
+    fn mul(&self, value: f64) -> String {
+        self.as_ref().mul(value)
+    }
+    fn half(&self) -> String {
+        self.as_ref().half()
+    }
+    fn replace_keys(&self) -> String {
+        self.as_ref().replace_keys()
+    }
+    fn replace_percentages(&self) -> String {
+        self.as_ref().replace_percentages()
+    }
+    fn remove_parenthesis(&self) -> String {
+        self.as_ref().remove_parenthesis()
+    }
+    fn get_scalings(&self) -> String {
+        self.as_ref().get_scalings()
+    }
+    fn get_interval(&self) -> Option<(f64, f64)> {
+        self.as_ref().get_interval()
+    }
+    fn get_damage(&self) -> String {
+        self.as_ref().get_damage()
+    }
+    fn clean_formula(&self) -> String {
+        self.as_ref().clean_formula()
+    }
+    fn from_scaled_string(&self) -> String {
+        self.as_ref().from_scaled_string()
     }
 }

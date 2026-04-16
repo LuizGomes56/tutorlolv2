@@ -144,7 +144,7 @@ impl ItemData {
         }?
         .capture_numbers::<f64>()
         .get(0..2)
-        .ok_or("Failed to get melee/ranged scaling at Self::capture")?
+        .ok_or("Failed to get melee/ranged scaling at Self::scalings")?
         .try_into()
         .map_err(|v| format!("Self::scalings failed, error: {v:?}").into())
     }
