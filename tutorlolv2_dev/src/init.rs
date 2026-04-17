@@ -1,5 +1,5 @@
 use crate::client::HttpClient;
-use once_cell::sync::Lazy;
+use std::sync::LazyLock;
 
 /// Loads environment variables or panics if they're not set
 macro_rules! env_var {
@@ -45,9 +45,9 @@ impl EnvConfig {
 }
 
 /// Holds all useful environment variables this application will use
-pub static ENV_CONFIG: Lazy<EnvConfig> = Lazy::new(EnvConfig::new);
+pub static ENV_CONFIG: LazyLock<EnvConfig> = LazyLock::new(EnvConfig::new);
 
 /// Wrapper around [`reqwest::Client`] which implements methods
 /// to download and save files to a local cache and avoids requests
 /// to the same URLs
-pub static HTTP_CLIENT: Lazy<HttpClient> = Lazy::new(HttpClient::new);
+pub static HTTP_CLIENT: LazyLock<HttpClient> = LazyLock::new(HttpClient::new);

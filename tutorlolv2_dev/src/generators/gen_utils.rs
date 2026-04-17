@@ -1,23 +1,27 @@
 use crate::MayFail;
-use once_cell::sync::Lazy;
 use regex::{Captures, Regex};
-use std::{fmt::Display, str::FromStr};
+use std::{fmt::Display, str::FromStr, sync::LazyLock};
 use tutorlolv2_gen::eval::CtxVar::*;
 
-static CAPTURE_NUMBERS_SLASH_RE: Lazy<Regex> =
-    Lazy::new(|| Regex::new(r"\d+(?:\s*/\s*\d+)+").unwrap());
-static CAPTURE_NUMBERS_RE: Lazy<Regex> = Lazy::new(|| Regex::new(r"\d+(?:\.\d+)?").unwrap());
-static REPLACE_PERCENTAGES_RE: Lazy<Regex> = Lazy::new(|| Regex::new(r"(\d+(?:\.\d+)?)%").unwrap());
-static REMOVE_PARENTHESIS_RE: Lazy<Regex> = Lazy::new(|| Regex::new(r"\(\+\s*[^)]*\)").unwrap());
-static GET_SCALINGS_RE: Lazy<Regex> = Lazy::new(|| Regex::new(r"\(([^)]+)\)").unwrap());
-static GET_INTERVAL_RE: Lazy<Regex> =
-    Lazy::new(|| Regex::new(r"(\d+(?:\.\d+)?)(%)?\s*[:\-–]\s*(\d+(?:\.\d+)?)(%)?").unwrap());
-static GET_DAMAGE_RE: Lazy<Regex> = Lazy::new(|| Regex::new(r"\{\{as\|([^\}]+)\}\}").unwrap());
-static GET_DAMAGE_NESTED_RE: Lazy<Regex> =
-    Lazy::new(|| Regex::new(r"\{\{[^}]+\|([^}]+)\}\}").unwrap());
-static CLEAN_FORMULA_TOKEN_RE: Lazy<Regex> =
-    Lazy::new(|| Regex::new(r"ctx\.[a-zA-Z_][a-zA-Z0-9_]*|\d+(?:\.\d+)?|[()+\-*/]").unwrap());
-static FROM_SCALED_STRING_RE: Lazy<Regex> = Lazy::new(|| Regex::new(r"\([^\)]*\)").unwrap());
+static CAPTURE_NUMBERS_SLASH_RE: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"\d+(?:\s*/\s*\d+)+").unwrap());
+static CAPTURE_NUMBERS_RE: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"\d+(?:\.\d+)?").unwrap());
+static REPLACE_PERCENTAGES_RE: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"(\d+(?:\.\d+)?)%").unwrap());
+static REMOVE_PARENTHESIS_RE: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"\(\+\s*[^)]*\)").unwrap());
+static GET_SCALINGS_RE: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"\(([^)]+)\)").unwrap());
+static GET_INTERVAL_RE: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"(\d+(?:\.\d+)?)(%)?\s*[:\-–]\s*(\d+(?:\.\d+)?)(%)?").unwrap());
+static GET_DAMAGE_RE: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"\{\{as\|([^\}]+)\}\}").unwrap());
+static GET_DAMAGE_NESTED_RE: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"\{\{[^}]+\|([^}]+)\}\}").unwrap());
+static CLEAN_FORMULA_TOKEN_RE: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"ctx\.[a-zA-Z_][a-zA-Z0-9_]*|\d+(?:\.\d+)?|[()+\-*/]").unwrap());
+static FROM_SCALED_STRING_RE: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"\([^\)]*\)").unwrap());
 
 static REPLACEMENTS_MAP: [(&str, &(dyn Display + Send + Sync)); 45] = [
     ("per 100", &"0.01 *"),

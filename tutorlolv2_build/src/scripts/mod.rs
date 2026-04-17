@@ -1,8 +1,8 @@
-use once_cell::sync::Lazy;
 use regex::{Captures, Regex};
 use std::{
     collections::{BTreeMap, BTreeSet},
     fmt::Display,
+    sync::LazyLock,
 };
 use tutorlolv2_fmt::rust_html;
 
@@ -11,12 +11,15 @@ pub mod items;
 pub mod model;
 pub mod runes;
 
-static RE_CAST_F32: Lazy<Regex> =
-    Lazy::new(|| Regex::new(r"(?P<before>^|[^.\d])(?P<num>\d+)(?P<after>[^.\d]|$)").unwrap());
-static RE_DROP_F32: Lazy<Regex> = Lazy::new(|| Regex::new(r"(\d+(?:\.\d+)?)(f32)").unwrap());
-static RE_DROP_F32_DECIMAL: Lazy<Regex> = Lazy::new(|| Regex::new(r"\d+\.\d+|\d+").unwrap());
-static RE_SIMPLIFY: Lazy<Regex> = Lazy::new(|| Regex::new(r"([-+]?\d*\.?\d+)").unwrap());
-static RE_IDENTS: Lazy<Regex> = Lazy::new(|| Regex::new(r"ctx\.([a-z_][a-z0-9_]*)").unwrap());
+static RE_CAST_F32: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"(?P<before>^|[^.\d])(?P<num>\d+)(?P<after>[^.\d]|$)").unwrap());
+static RE_DROP_F32: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"(\d+(?:\.\d+)?)(f32)").unwrap());
+static RE_DROP_F32_DECIMAL: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"\d+\.\d+|\d+").unwrap());
+static RE_SIMPLIFY: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"([-+]?\d*\.?\d+)").unwrap());
+static RE_IDENTS: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"ctx\.([a-z_][a-z0-9_]*)").unwrap());
 
 pub const ZERO_FN: &str = r#"fn zero(_: &Ctx) -> f32 {
     0.0 /* No damage */

@@ -8,12 +8,12 @@ use crate::{
     parallel_read,
     riot::RiotCdnRune,
 };
-use once_cell::sync::Lazy;
 use regex::Regex;
 use std::{
     collections::{BTreeMap, HashMap},
     fs,
     path::Path,
+    sync::LazyLock,
 };
 use tutorlolv2_fmt::pascal_case;
 use tutorlolv2_gen::{CastId, GameMap, ItemId, StatName};
@@ -188,7 +188,7 @@ pub fn setup_runes_json() -> MayFail {
     result.into_file("internal/rune_names.json")
 }
 
-static RE_DMGI_PARENS: Lazy<Regex> = Lazy::new(|| Regex::new(r"\{\{[^}]*\}\}").unwrap());
+static RE_DMGI_PARENS: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"\{\{[^}]*\}\}").unwrap());
 
 /// Not meant to be used frequently. Just a quick check for every
 /// patch to identify if a new damaging item was added
@@ -244,13 +244,14 @@ pub fn prettify_internal_items() -> MayFail {
 }
 
 static TAGS: [&str; 4] = ["buffedStat", "nerfedStat", "attention", "ornnBonus"];
-static RE_LINE: Lazy<Regex> = Lazy::new(|| Regex::new(r"(.*?)<br>").unwrap());
-static RE_TAG: Lazy<Regex> = Lazy::new(|| {
+static RE_LINE: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"(.*?)<br>").unwrap());
+static RE_TAG: LazyLock<Regex> = LazyLock::new(|| {
     let tags = TAGS.join("|");
     Regex::new(&format!(r#"<({tags})>(.*?)<\/({tags})>"#)).unwrap()
 });
-static RE_PERCENT_PREFIX: Lazy<Regex> = Lazy::new(|| Regex::new(r"^\s*\d+\s*%?\s*").unwrap());
-static RE_TAG_STRIP: Lazy<Regex> = Lazy::new(|| Regex::new(r"<\/?[^>]+(>|$)").unwrap());
+static RE_PERCENT_PREFIX: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"^\s*\d+\s*%?\s*").unwrap());
+static RE_TAG_STRIP: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"<\/?[^>]+(>|$)").unwrap());
 
 /// Returns the value that will be added to key `prettified_stats` for each item.
 /// Depends on Riot API `item.json` and requires manual maintainance if a new XML tag is added

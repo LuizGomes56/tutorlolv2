@@ -1,10 +1,10 @@
 use minify_html::Cfg;
-use once_cell::sync::Lazy;
 use serde::Serialize;
 use serde_json::{Serializer, Value, ser::PrettyFormatter};
 use std::{
     io::Write,
     process::{Command, Stdio},
+    sync::LazyLock,
 };
 use synoptic::{Highlighter, TokOpt};
 
@@ -189,7 +189,7 @@ pub fn rustfmt(src: &str, width: Option<usize>) -> String {
     })
 }
 
-static RUST_HIGHLIGHTER: Lazy<Highlighter> = Lazy::new(|| {
+static RUST_HIGHLIGHTER: LazyLock<Highlighter> = LazyLock::new(|| {
     let mut h = Highlighter::new(4);
     h.bounded("comment", r"/\*", r"\*/", false);
     h.keyword("comment", r"//.*$");
@@ -432,7 +432,7 @@ pub fn rust_html(rust_code: &str) -> String {
     format!("<pre>{out}</pre>")
 }
 
-static JSON_HIGHLIGHTER: Lazy<Highlighter> = Lazy::new(|| {
+static JSON_HIGHLIGHTER: LazyLock<Highlighter> = LazyLock::new(|| {
     let mut h = Highlighter::new(4);
 
     h.keyword("string", r#""(?:[^"\\]|\\.)*""#);
