@@ -75,7 +75,7 @@ impl ChampionFactory {
     /// Creates a new generator file, given a [`ChampionId`]
     pub fn create(name: &str) -> MayFail<String> {
         if let Ok(data) = std::fs::read_to_string(SaveTo::GeneratorRaw(Tag::Champions, name).path())
-            && (data.contains("self.progress(Stable)") || data.contains("self.progress(Preserve)"))
+            && (data.contains(".progress(Stable)") || data.contains(".progress(Preserve)"))
         {
             println!("[stable] Skipping generator for {name:?}");
             return Ok(data);
@@ -95,7 +95,7 @@ impl ChampionFactory {
                 })
                 .collect::<Vec<String>>();
             format!(
-                "self.ability(Key::{ability_char}, [{offsets}]);",
+                ".ability(Key::{ability_char}, [{offsets}])",
                 offsets = offsets.join(","),
             )
         };
@@ -114,10 +114,14 @@ impl ChampionFactory {
         for (ability_char, ability_vec) in meraki_champion.abilities.into_iter() {
             let meraki_offsets = ChampionData::get_ability_offsets(ability_vec);
             if meraki_offsets.len() > 0 {
+                generated_content.push_str("self");
                 generated_content.push_str(&bind_function(ability_char, &meraki_offsets));
             }
         }
 
+        if generated_content.ends_with(")") {
+            generated_content.push(';');
+        }
         generated_content.push_str("self.end()}}");
 
         let formatted = rustfmt(&generated_content, None);
@@ -198,8 +202,9 @@ impl ChampionData {
         self.version != ENV_CONFIG.lol_version
     }
 
-    pub const fn progress(&mut self, progress: Progress) {
+    pub const fn progress(&mut self, progress: Progress) -> &mut Self {
         self.progress = progress;
+        self
     }
 
     /// Converts the [`ChampionData`] into a [`Champion`], ending
@@ -347,8 +352,9 @@ impl ChampionData {
     }
 
     /// Inserts a new ability into [`Self::map`].
-    pub fn insert(&mut self, key: AbilityId, ability: Ability) {
+    pub fn insert(&mut self, key: AbilityId, ability: Ability) -> &mut Self {
         self.map.insert(key, ability);
+        self
     }
 
     /// Returns a mutable reference to some key in [`Self::map`],
@@ -368,7 +374,7 @@ impl ChampionData {
             .ok_or(format!("[get] Failed to find key: {key:?}"))?)
     }
 
-    pub fn combo<const N: usize>(&mut self, combo: [ComboElement; N]) -> MayFail {
+    pub fn combo<const N: usize>(&mut self, combo: [ComboElement; N]) -> MayFail<&mut Self> {
         for &c in combo.iter() {
             if let ComboElement::Ability(id) = c
                 && self.get(id).is_err()
@@ -376,7 +382,8 @@ impl ChampionData {
                 return Err(format!("[combo] Failed to find key: {id:?}").into());
             }
         }
-        Ok(self.combo.push(combo.to_vec()))
+        self.combo.push(combo.to_vec());
+        Ok(self)
     }
 
     /// Receives some ability key and a pattern of that helps locate where
@@ -389,9 +396,14 @@ impl ChampionData {
     ///     [(0, 0, _1), (0, 1, _1Max), (2, 1, _2)]
     /// )
     /// ```
-    pub fn ability<const N: usize>(&mut self, key: Key, pattern: [(usize, usize, AbilityName); N]) {
+    pub fn ability<const N: usize>(
+        &mut self,
+        key: Key,
+        pattern: [(usize, usize, AbilityName); N],
+    ) -> &mut Self {
         let offsets = Self::modify_pattern(key, pattern);
         self.extract_ability_damage(key, 0, &offsets);
+        self
     }
 
     pub fn ability_nth<const N: usize>(
@@ -399,20 +411,21 @@ impl ChampionData {
         key: Key,
         offset: usize,
         pattern: [(usize, usize, AbilityName); N],
-    ) {
+    ) -> &mut Self {
         let offsets = Self::modify_pattern(key, pattern);
         self.extract_ability_damage(key, offset, &offsets);
+        self
     }
 
     /// Adds the attribute to all abilities in the provided array. If any ability in that
     /// array does not exist in [`Self::map`], this function will fail.
     /// If there's an ability with a different [`AbilityId`] kind, you may want to use the
     /// macro [`dynarr`]
-    pub fn attr<const N: usize>(&mut self, attr: Attrs, set: [AbilityId; N]) -> MayFail {
+    pub fn attr<const N: usize>(&mut self, attr: Attrs, set: [AbilityId; N]) -> MayFail<&mut Self> {
         for key in set {
             self.get_mut(key)?.attributes = attr;
         }
-        Ok(())
+        Ok(self)
     }
 
     /// Use method [`Self::ability`] instead. It allows the usage of [`AbilityName`] values
@@ -582,7 +595,7 @@ impl ChampionData {
         offsets: (usize, usize),
         postfix: Option<String>,
         scalings: Option<usize>,
-    ) {
+    ) -> &mut Self {
         let (ability_index, effect_index) = offsets;
         let (passive, passive_description) =
             self.get_passive_description(ability_index, effect_index);
@@ -606,6 +619,7 @@ impl ChampionData {
         }
 
         self.map.insert(AbilityId::P(name), passive.format(damage));
+        self
     }
 
     /// Takes in two fields and returns a mutable reference to a new cloned value, that was
@@ -620,9 +634,9 @@ impl ChampionData {
 
     /// Associates some damage type to a key in [`Self::map`]. If that key is missing,
     /// this function will fail
-    pub fn damage_type(&mut self, key: AbilityId, damage_type: DamageType) -> MayFail {
+    pub fn damage_type(&mut self, key: AbilityId, damage_type: DamageType) -> MayFail<&mut Self> {
         self.get_mut(key)?.damage_type = damage_type;
-        Ok(())
+        Ok(self)
     }
 
     pub fn sum<const N: usize>(&self, args: [AbilityId; N]) -> MayFail<Vec<String>> {

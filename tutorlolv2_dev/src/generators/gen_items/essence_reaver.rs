@@ -9,9 +9,10 @@ impl Generator<ItemData> for EssenceReaver {
         let scaling = rest.capture_parens(0).unwrap();
         let damage = base.plus(scaling);
 
-        self.const_min_dmg(damage);
-        self.attr(OnhitMax);
-        self.damage_type(Physical);
+        self.const_min_dmg(damage)
+            .attr(OnhitMax)
+            .damage_type(Physical);
+
         self.end()
     }
 }

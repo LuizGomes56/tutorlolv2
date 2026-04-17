@@ -12,8 +12,9 @@ impl Generator<Champion> for Karma {
                 (2, 1, _5),
                 (2, 2, _6),
             ],
-        );
-        self.ability(Key::W, [(0, 0, _1), (1, 1, _2)]);
+        )
+        .ability(Key::W, [(0, 0, _1), (1, 1, _2)]);
+
         self.end()
     }
 }

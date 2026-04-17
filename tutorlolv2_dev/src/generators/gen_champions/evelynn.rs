@@ -12,10 +12,11 @@ impl Generator<Champion> for Evelynn {
                 (5, 1, _5),
                 (5, 2, _6),
             ],
-        );
-        self.ability(Key::W, [(2, 0, _1)]);
-        self.ability(Key::E, [(0, 0, _1), (0, 0, _2)]);
-        self.ability(Key::R, [(0, 0, _1), (1, 0, _2)]);
+        )
+        .ability(Key::W, [(2, 0, _1)])
+        .ability(Key::E, [(0, 0, _1), (0, 0, _2)])
+        .ability(Key::R, [(0, 0, _1), (1, 0, _2)]);
+
         self.end()
     }
 }

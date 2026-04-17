@@ -12,8 +12,9 @@ impl Generator<Champion> for Lulu {
                 (1, 2, _5),
                 (1, 3, _6),
             ],
-        );
-        self.ability(Key::E, [(1, 0, _1)]);
+        )
+        .ability(Key::E, [(1, 0, _1)]);
+
         self.end()
     }
 }

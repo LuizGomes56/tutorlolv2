@@ -8,9 +8,7 @@ impl Generator<ItemData> for ArdentCenser {
             .ok_or("Failed to ignore attack speed scaling")?
             .1;
 
-        self.const_min_dmg(damage);
-        self.attr(OnhitMax);
-        self.damage_type(Magic);
+        self.const_min_dmg(damage).attr(OnhitMax).damage_type(Magic);
         self.end()
     }
 }

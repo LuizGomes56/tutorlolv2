@@ -7,9 +7,7 @@ impl Generator<ItemData> for LiandrysTorment {
             .split_once(" + ")
             .ok_or("Failed to get passive damage")?;
 
-        self.const_min_dmg(min);
-        self.const_max_dmg(max);
-        self.damage_type(Magic);
+        self.const_dmg(min, max).damage_type(Magic);
         self.end()
     }
 }

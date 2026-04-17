@@ -12,10 +12,11 @@ impl Generator<Champion> for Qiyana {
                 (4, 0, _5),
                 (4, 1, _6),
             ],
-        );
-        self.ability(Key::W, [(3, 1, _1)]);
-        self.ability(Key::E, [(0, 0, _1)]);
-        self.ability(Key::R, [(1, 0, _1), (1, 1, _2)]);
+        )
+        .ability(Key::W, [(3, 1, _1)])
+        .ability(Key::E, [(0, 0, _1)])
+        .ability(Key::R, [(1, 0, _1), (1, 1, _2)]);
+
         self.end()
     }
 }

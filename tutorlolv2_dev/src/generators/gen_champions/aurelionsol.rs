@@ -13,11 +13,12 @@ impl Generator<Champion> for AurelionSol {
                 (0, 5, _6),
                 // (1, 0, _7),
             ],
-        );
-        self.ability(Key::W, [(0, 0, _1)]);
-        self.ability(Key::E, [(0, 0, _1), (0, 1, _2)]);
-        self.ability(Key::R, [(0, 0, _1), (0, 0, _2), (1, 0, _3)]);
-        self.progress(Preserve);
+        )
+        .ability(Key::W, [(0, 0, _1)])
+        .ability(Key::E, [(0, 0, _1), (0, 1, _2)])
+        .ability(Key::R, [(0, 0, _1), (0, 0, _2), (1, 0, _3)])
+        .progress(Preserve);
+
         self.end()
     }
 }

@@ -159,51 +159,57 @@ impl ItemData {
     }
 
     /// Sets some attribute for the current item
-    pub const fn attr(&mut self, attr: Attrs) {
+    pub const fn attr(&mut self, attr: Attrs) -> &mut Self {
         self.current_data.attributes = attr;
+        self
     }
 
     /// Sets the damage type of the current item
-    pub const fn damage_type(&mut self, damage_type: DamageType) {
+    pub const fn damage_type(&mut self, damage_type: DamageType) -> &mut Self {
         self.current_data.damage_type = damage_type;
+        self
     }
 
     /// Sets the damage only for the `melee` and `minimum_damage` fields
-    pub fn melee_min_dmg<S: ToString>(&mut self, dmg: S) {
+    pub fn melee_min_dmg<S: ToString>(&mut self, dmg: S) -> &mut Self {
         self.current_data.melee.minimum_damage = dmg.to_string().trim().to_string();
+        self
     }
 
     /// Sets the damage only for the `melee` and `maximum_damage` fields
-    pub fn melee_max_dmg<S: ToString>(&mut self, dmg: S) {
+    pub fn melee_max_dmg<S: ToString>(&mut self, dmg: S) -> &mut Self {
         self.current_data.melee.maximum_damage = dmg.to_string().trim().to_string();
+        self
     }
 
     /// Sets the damage only for the `ranged` and `minimum_damage` fields
-    pub fn ranged_min_dmg<S: ToString>(&mut self, dmg: S) {
+    pub fn ranged_min_dmg<S: ToString>(&mut self, dmg: S) -> &mut Self {
         self.current_data.ranged.minimum_damage = dmg.to_string().trim().to_string();
+        self
     }
 
     /// Sets the damage only for the `ranged` and `maximum_damage` fields
-    pub fn ranged_max_dmg<S: ToString>(&mut self, dmg: S) {
+    pub fn ranged_max_dmg<S: ToString>(&mut self, dmg: S) -> &mut Self {
         self.current_data.ranged.maximum_damage = dmg.to_string().trim().to_string();
+        self
     }
 
     /// Sets only the `minimum_damage` field for both `melee` and `ranged` fields
-    pub fn const_min_dmg<S: ToString>(&mut self, dmg: S) {
+    pub fn const_min_dmg<S: ToString>(&mut self, dmg: S) -> &mut Self {
         self.melee_min_dmg(dmg.to_string());
-        self.ranged_min_dmg(dmg);
+        self.ranged_min_dmg(dmg)
     }
 
     /// Sets only the `maximum_damage` field for both `melee` and `ranged` fields
-    pub fn const_max_dmg<S: ToString>(&mut self, dmg: S) {
+    pub fn const_max_dmg<S: ToString>(&mut self, dmg: S) -> &mut Self {
         self.melee_max_dmg(dmg.to_string());
-        self.ranged_max_dmg(dmg);
+        self.ranged_max_dmg(dmg)
     }
 
     /// Adds a `::rust` marker at the beginning of all damage defined damage
     /// fields to indicate that they are rust code, not regular math expressions.
     /// In other words, they may use any rust code that is valid within a const context
-    pub fn nonstandard(&mut self) {
+    pub fn nonstandard(&mut self) -> &mut Self {
         let data = &mut self.current_data;
         let add_marker = |field: &mut String| {
             if !field.is_empty() && field == "zero" {
@@ -214,13 +220,14 @@ impl ItemData {
         add_marker(&mut data.melee.maximum_damage);
         add_marker(&mut data.ranged.minimum_damage);
         add_marker(&mut data.ranged.maximum_damage);
+        self
     }
 
     /// Sets the `minimum_damage` and `maximum_damage` to both `melee` and `ranged`
     /// fields according to the provided values
-    pub fn const_dmg<S: ToString>(&mut self, min_dmg: S, max_dmg: S) {
+    pub fn const_dmg<T: ToString, U: ToString>(&mut self, min_dmg: T, max_dmg: U) -> &mut Self {
         self.const_min_dmg(min_dmg);
-        self.const_max_dmg(max_dmg);
+        self.const_max_dmg(max_dmg)
     }
 }
 

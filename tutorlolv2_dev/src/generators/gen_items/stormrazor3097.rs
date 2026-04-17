@@ -7,9 +7,7 @@ impl Generator<ItemData> for Stormrazor3097 {
             .split_once(" + ")
             .ok_or("Failed to ignore move speed scaling")?
             .0;
-        self.const_min_dmg(damage);
-        self.attr(OnhitMax);
-        self.damage_type(Magic);
+        self.const_min_dmg(damage).attr(OnhitMax).damage_type(Magic);
         self.end()
     }
 }

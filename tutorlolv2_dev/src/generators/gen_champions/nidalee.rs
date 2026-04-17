@@ -14,9 +14,10 @@ impl Generator<Champion> for Nidalee {
                 (1, 0, _7),
                 (1, 1, _8),
             ],
-        );
-        self.ability(Key::W, [(0, 0, _1), (0, 1, _2), (0, 0, _3)]);
-        self.ability(Key::E, [(0, 0, _1)]);
+        )
+        .ability(Key::W, [(0, 0, _1), (0, 1, _2), (0, 0, _3)])
+        .ability(Key::E, [(0, 0, _1)]);
+
         self.end()
     }
 }

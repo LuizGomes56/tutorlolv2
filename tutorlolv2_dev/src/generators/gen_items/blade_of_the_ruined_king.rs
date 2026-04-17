@@ -16,9 +16,10 @@ impl Generator<ItemData> for BladeOfTheRuinedKing {
             EnemyCurrentHealth.minus(numerator.div(scaling).parens())
         };
 
-        self.damage_type(Physical);
-        self.melee_min_dmg(damage(melee));
-        self.ranged_min_dmg(damage(ranged));
+        self.damage_type(Physical)
+            .melee_min_dmg(damage(melee))
+            .ranged_min_dmg(damage(ranged));
+
         self.end()
     }
 }

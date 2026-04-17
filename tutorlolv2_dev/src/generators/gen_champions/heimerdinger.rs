@@ -18,8 +18,9 @@ impl Generator<Champion> for Heimerdinger {
                 (0, 3, _3Min),
                 (0, 4, _4Min),
             ],
-        );
-        self.ability(Key::E, [(0, 0, _1)]);
+        )
+        .ability(Key::E, [(0, 0, _1)]);
+
         self.end()
     }
 }

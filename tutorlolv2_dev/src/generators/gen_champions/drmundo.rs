@@ -2,20 +2,21 @@ use super::*;
 
 impl Generator<Champion> for DrMundo {
     fn generate(mut self: Box<Self>) -> MayFail<Champion> {
-        self.ability(Key::Q, [(0, 0, _1), (2, 0, _2), (2, 1, _3)]);
-        self.ability(Key::W, [(0, 0, _1), (0, 1, _2), (2, 0, _3)]);
-        self.ability(
-            Key::E,
-            [
-                (0, 0, _1),
-                (0, 1, _2),
-                (1, 0, _3),
-                (1, 1, _4),
-                (1, 2, _5),
-                (1, 3, _6),
-                (3, 0, _7),
-            ],
-        );
+        self.ability(Key::Q, [(0, 0, _1), (2, 0, _2), (2, 1, _3)])
+            .ability(Key::W, [(0, 0, _1), (0, 1, _2), (2, 0, _3)])
+            .ability(
+                Key::E,
+                [
+                    (0, 0, _1),
+                    (0, 1, _2),
+                    (1, 0, _3),
+                    (1, 1, _4),
+                    (1, 2, _5),
+                    (1, 3, _6),
+                    (3, 0, _7),
+                ],
+            );
+
         self.end()
     }
 }

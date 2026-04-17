@@ -29,12 +29,12 @@ impl Generator<Champion> for Akshan {
             self.insert(P(Void), ability);
         }
 
-        self.ability(Key::Q, [(0, 0, Min), (3, 0, Max)]);
-        self.ability(Key::E, [(4, 0, Void)]);
-        self.ability(
-            Key::R,
-            [(4, 0, _2Max), (4, 1, _1Max), (4, 2, _2Min), (4, 3, _1Min)],
-        );
+        self.ability(Key::Q, [(0, 0, Min), (3, 0, Max)])
+            .ability(Key::E, [(4, 0, Void)])
+            .ability(
+                Key::R,
+                [(4, 0, _2Max), (4, 1, _1Max), (4, 2, _2Min), (4, 3, _1Min)],
+            );
 
         for key in [_1Min, _1Max, _2Min, _2Max] {
             let ability = self.get_mut(AbilityId::R(key))?;
@@ -51,9 +51,10 @@ impl Generator<Champion> for Akshan {
             }
         }
 
-        self.attr(Area, [Q(Min), Q(Max)])?;
-        self.damage_type(P(Void), Magic)?;
-        self.progress(Preserve);
+        self.attr(Area, [Q(Min), Q(Max)])?
+            .damage_type(P(Void), Magic)?
+            .progress(Preserve);
+
         self.end()
     }
 }

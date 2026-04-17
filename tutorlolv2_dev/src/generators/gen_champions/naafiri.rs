@@ -14,9 +14,10 @@ impl Generator<Champion> for Naafiri {
                 (1, 3, _7),
                 (1, 4, _8),
             ],
-        );
-        self.ability(Key::E, [(0, 0, _1), (0, 1, _2), (0, 2, _3)]);
-        self.ability(Key::R, [(0, 0, _1), (0, 1, _2)]);
+        )
+        .ability(Key::E, [(0, 0, _1), (0, 1, _2), (0, 2, _3)])
+        .ability(Key::R, [(0, 0, _1), (0, 1, _2)]);
+
         self.end()
     }
 }

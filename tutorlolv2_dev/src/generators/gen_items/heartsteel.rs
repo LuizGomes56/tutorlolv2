@@ -7,8 +7,10 @@ impl Generator<ItemData> for Heartsteel {
         let base_dmg = passive.capture_numbers::<i32>()[0];
         let scaling = passive.get_scalings();
 
-        self.const_min_dmg(base_dmg.plus(scaling));
-        self.damage_type(Physical);
+        self.const_min_dmg(base_dmg.plus(scaling))
+            .damage_type(Physical)
+            .attr(OnhitMax);
+
         self.end()
     }
 }

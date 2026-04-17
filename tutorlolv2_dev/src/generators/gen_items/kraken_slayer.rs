@@ -12,13 +12,14 @@ impl Generator<ItemData> for KrakenSlayer {
                 .times(dmg.parens())
         };
 
-        self.melee_min_dmg(&melee_dmg);
-        self.ranged_min_dmg(&ranged_dmg);
-        self.melee_max_dmg(max(melee_dmg));
-        self.ranged_max_dmg(max(ranged_dmg));
-        self.nonstandard();
-        self.attr(OnhitMax);
-        self.damage_type(Physical);
+        self.melee_min_dmg(&melee_dmg)
+            .ranged_min_dmg(&ranged_dmg)
+            .melee_max_dmg(max(melee_dmg))
+            .ranged_max_dmg(max(ranged_dmg))
+            .nonstandard()
+            .attr(OnhitMax)
+            .damage_type(Physical);
+
         self.end()
     }
 }

@@ -22,9 +22,10 @@ impl Generator<Champion> for Rumble {
                 (1, 6, _7Min),
                 (1, 7, _8Min),
             ],
-        );
-        self.ability(Key::E, [(0, 0, _1), (0, 4, _2), (1, 0, _3), (1, 3, _4)]);
-        self.ability(Key::R, [(1, 0, _1), (1, 1, _2), (1, 2, _3)]);
+        )
+        .ability(Key::E, [(0, 0, _1), (0, 4, _2), (1, 0, _3), (1, 3, _4)])
+        .ability(Key::R, [(1, 0, _1), (1, 1, _2), (1, 2, _3)]);
+
         self.end()
     }
 }

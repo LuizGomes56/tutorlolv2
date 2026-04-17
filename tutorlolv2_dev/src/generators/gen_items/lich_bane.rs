@@ -7,9 +7,7 @@ impl Generator<ItemData> for LichBane {
             .split_once(" + ")
             .ok_or("Unable to remove attack speed property")?
             .1;
-        self.const_min_dmg(damage);
-        self.attr(OnhitMax);
-        self.damage_type(Magic);
+        self.const_min_dmg(damage).attr(OnhitMax).damage_type(Magic);
         self.end()
     }
 }

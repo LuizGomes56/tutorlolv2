@@ -13,9 +13,10 @@ impl Generator<Champion> for MasterYi {
                 (3, 5, _6),
                 (3, 6, _7),
             ],
-        );
-        self.ability(Key::W, [(2, 0, _1), (2, 1, _2)]);
-        self.ability(Key::E, [(0, 0, _1)]);
+        )
+        .ability(Key::W, [(2, 0, _1), (2, 1, _2)])
+        .ability(Key::E, [(0, 0, _1)]);
+
         self.end()
     }
 }

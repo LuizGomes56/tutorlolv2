@@ -12,10 +12,11 @@ impl Generator<Champion> for Pantheon {
                 (5, 0, _5),
                 (5, 1, _6),
             ],
-        );
-        self.ability(Key::W, [(0, 0, _1)]);
-        self.ability(Key::E, [(4, 0, _1)]);
-        self.ability(Key::R, [(3, 0, _1), (3, 1, _2)]);
+        )
+        .ability(Key::W, [(0, 0, _1)])
+        .ability(Key::E, [(4, 0, _1)])
+        .ability(Key::R, [(3, 0, _1), (3, 1, _2)]);
+
         self.end()
     }
 }

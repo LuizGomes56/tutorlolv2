@@ -14,11 +14,12 @@ impl Generator<Champion> for Gwen {
                 (1, 2, _7),
                 (1, 3, _8),
             ],
-        );
-        self.ability(
+        )
+        .ability(
             Key::R,
             [(0, 0, _1), (0, 1, _2), (3, 0, _3), (3, 1, _4), (3, 2, _5)],
         );
+
         self.end()
     }
 }

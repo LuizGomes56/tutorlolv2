@@ -10,9 +10,11 @@ impl Generator<ItemData> for Bastionbreaker {
             }
             _ => Err("Expected exactly 3 numbers in passive")?,
         };
-        self.melee_min_dmg(melee);
-        self.ranged_min_dmg(ranged);
-        self.damage_type(True);
+
+        self.melee_min_dmg(melee)
+            .ranged_min_dmg(ranged)
+            .damage_type(True);
+
         self.end()
     }
 }

@@ -12,9 +12,10 @@ impl Generator<Champion> for Kayn {
                 (2, 0, _5),
                 (2, 1, _6),
             ],
-        );
-        self.ability(Key::W, [(0, 0, _1)]);
-        self.ability(Key::R, [(3, 0, _1)]);
+        )
+        .ability(Key::W, [(0, 0, _1)])
+        .ability(Key::R, [(3, 0, _1)]);
+
         self.end()
     }
 }

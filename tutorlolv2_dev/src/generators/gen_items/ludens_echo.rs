@@ -12,13 +12,10 @@ impl Generator<ItemData> for LudensEcho {
             .trim()
             .trim_end_matches("))");
 
-        let min_dmg = base_dmg.plus(scaling);
-        let max_dmg = min_dmg.parens().times(2);
+        let min = base_dmg.plus(scaling);
+        let max = min.parens().times(2);
 
-        self.const_min_dmg(min_dmg);
-        self.const_max_dmg(max_dmg);
-        self.attr(Area);
-        self.damage_type(Magic);
+        self.const_dmg(min, max).attr(Area).damage_type(Magic);
         self.end()
     }
 }
