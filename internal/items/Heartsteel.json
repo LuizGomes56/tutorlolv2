@@ -5,7 +5,7 @@
   "price": 3000,
   "sell": 2100,
   "tier": 3,
-  "attributes": "Undefined",
+  "attributes": "OnhitMax",
   "purchasable": true,
   "damage_type": "Physical",
   "prettified_stats": {

@@ -14,11 +14,7 @@ impl Generator<Champion> for Aatrox {
                     (5, 1, _3Max),
                 ],
             )
-            .ability(Key::W, [(0, 1, Min), (1, 0, Max)])
-            .attr(
-                Area,
-                [Q(_1Min), Q(_1Max), Q(_2Min), Q(_2Max), Q(_3Min), Q(_3Max)],
-            )?;
+            .ability(Key::W, [(0, 1, Min), (1, 0, Max)]);
 
         let q = &self[Q(_1Min)];
 
@@ -34,6 +30,19 @@ impl Generator<Champion> for Aatrox {
 
         self.insert(Q(Min), q_min)
             .insert(Q(Max), q_max)
+            .attr(
+                Area,
+                [
+                    Q(_1Min),
+                    Q(_1Max),
+                    Q(_2Min),
+                    Q(_2Max),
+                    Q(_3Min),
+                    Q(_3Max),
+                    Q(Min),
+                    Q(Max),
+                ],
+            )?
             .combo([
                 Ability(Q(_1Min)),
                 Ability(P(Void)),

@@ -10,14 +10,14 @@ pub struct Effect {
     pub unique: bool,
 }
 
-#[derive(Serialize, Deserialize, Default)]
+#[derive(Debug, Default, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct MerakiItemStatsMap {
     pub flat: f64,
     pub percent: f64,
 }
 
-#[derive(Serialize, Deserialize, Default)]
+#[derive(Debug, Default, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ItemStats {
     pub ability_power: MerakiItemStatsMap,
@@ -66,7 +66,7 @@ pub struct Shop {
     pub prices: ItemPrices,
 }
 
-#[derive(Serialize, Deserialize, Clone)]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct DamageObject {
     pub minimum_damage: String,
     pub maximum_damage: String,
@@ -81,7 +81,7 @@ impl Default for DamageObject {
     }
 }
 
-#[derive(Default, Deserialize, Serialize)]
+#[derive(Debug, Default, Deserialize, Serialize)]
 pub struct Item {
     pub version: String,
     pub riot_id: u32,

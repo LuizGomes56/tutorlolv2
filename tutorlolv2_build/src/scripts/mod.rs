@@ -17,7 +17,8 @@ static RE_DROP_F32: LazyLock<Regex> =
     LazyLock::new(|| Regex::new(r"(\d+(?:\.\d+)?)(f32)").unwrap());
 static RE_DROP_F32_DECIMAL: LazyLock<Regex> =
     LazyLock::new(|| Regex::new(r"\d+\.\d+|\d+").unwrap());
-static RE_SIMPLIFY: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"([-+]?\d*\.?\d+)").unwrap());
+static RE_SIMPLIFY: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"[-+]?(?:[0-9]+(?:\.[0-9]+)?|\.[0-9]+)").unwrap());
 static RE_IDENTS: LazyLock<Regex> =
     LazyLock::new(|| Regex::new(r"ctx\.([a-z_][a-z0-9_]*)").unwrap());
 
@@ -416,14 +417,6 @@ impl Poly {
         Some(out)
     }
 
-    // fn neg(self) -> Self {
-    //     let mut out = self;
-    //     for value in out.terms.values_mut() {
-    //         *value = -*value;
-    //     }
-    //     out
-    // }
-
     fn as_constant(&self) -> Option<f64> {
         if self.terms.is_empty() {
             return Some(0.0);
@@ -669,6 +662,7 @@ impl Display for Simplified {
     }
 }
 
+/// AI-generated
 pub fn simplify(values: &[String]) -> Simplified {
     fn normalize_expr(expr: &String) -> String {
         let mut out = String::with_capacity(expr.len() + 8);
@@ -706,7 +700,254 @@ pub fn simplify(values: &[String]) -> Simplified {
             out.push(chars[i]);
             i += 1;
         }
+
         out
+    }
+
+    fn approx_eq_eps(a: f64, b: f64, eps: f64) -> bool {
+        (a - b).abs() <= eps
+    }
+
+    fn decimal_places(s: &str) -> usize {
+        s.split_once('.').map(|(_, frac)| frac.len()).unwrap_or(0)
+    }
+
+    fn infer_column_epsilon(column_text: &[String]) -> f64 {
+        let max_dp = column_text
+            .iter()
+            .map(|s| decimal_places(s))
+            .max()
+            .unwrap_or(0);
+
+        let base = 0.5 * 10f64.powi(-(max_dp as i32));
+
+        match max_dp {
+            0..=2 => base.max(0.01),
+            3 => base.max(0.001),
+            _ => base.max(0.0001),
+        }
+    }
+
+    fn trim_f64(value: f64) -> String {
+        let s = format!("{value:.6}");
+        match s.split_once('.') {
+            Some((int, frac)) => {
+                let frac = frac.trim_end_matches('0');
+                if frac.is_empty() {
+                    return int.to_string();
+                }
+                format!("{int}.{frac}")
+            }
+            None => s,
+        }
+    }
+
+    fn render_linear(intercept: f64, slope: f64, var: &str) -> String {
+        let intercept_zero = intercept.abs() < 1e-10;
+        let slope_zero = slope.abs() < 1e-10;
+
+        match (intercept_zero, slope_zero) {
+            (true, true) => "0".into(),
+            (false, true) => trim_f64(intercept),
+            (true, false) => format!("({} * {var})", trim_f64(slope)),
+            (false, false) => format!("({} + {} * {var})", trim_f64(intercept), trim_f64(slope)),
+        }
+    }
+
+    fn render_quadratic(a: f64, b: f64, c: f64, var: &str) -> String {
+        if a.abs() < 1e-10 {
+            return render_linear(c, b, var);
+        }
+
+        format!(
+            "(({} * {var} + {}) * {var} + {})",
+            trim_f64(a),
+            trim_f64(b),
+            trim_f64(c)
+        )
+    }
+
+    fn fit_linear_ls(column: &[f64]) -> Option<(f64, f64)> {
+        if column.len() < 2 {
+            return None;
+        }
+
+        let n = column.len() as f64;
+        let mut sum_x = 0.0;
+        let mut sum_y = 0.0;
+        let mut sum_xx = 0.0;
+        let mut sum_xy = 0.0;
+
+        for (i, y) in column.iter().enumerate() {
+            let x = (i + 1) as f64;
+            sum_x += x;
+            sum_y += *y;
+            sum_xx += x * x;
+            sum_xy += x * *y;
+        }
+
+        let denom = n * sum_xx - sum_x * sum_x;
+        if denom.abs() < 1e-12 {
+            return None;
+        }
+
+        let slope = (n * sum_xy - sum_x * sum_y) / denom;
+        let intercept = (sum_y - slope * sum_x) / n;
+
+        Some((intercept, slope))
+    }
+
+    fn validate_linear(column: &[f64], intercept: f64, slope: f64, eps: f64) -> bool {
+        column.iter().enumerate().all(|(i, actual)| {
+            let x = (i + 1) as f64;
+            let predicted = intercept + slope * x;
+            approx_eq_eps(predicted, *actual, eps)
+        })
+    }
+
+    fn snap_rational(value: f64, max_den: i64, eps: f64) -> Option<f64> {
+        let mut best: Option<(f64, f64)> = None;
+
+        for den in 1..=max_den {
+            let num = (value * den as f64).round();
+            let snapped = num / den as f64;
+            let err = (snapped - value).abs();
+
+            if err <= eps {
+                match best {
+                    None => best = Some((err, snapped)),
+                    Some((best_err, _)) if err < best_err => best = Some((err, snapped)),
+                    _ => {}
+                }
+            }
+        }
+
+        best.map(|(_, snapped)| snapped)
+    }
+
+    fn solve_3x3(mut m: [[f64; 4]; 3]) -> Option<(f64, f64, f64)> {
+        for col in 0..3 {
+            let mut pivot = col;
+            for row in (col + 1)..3 {
+                if m[row][col].abs() > m[pivot][col].abs() {
+                    pivot = row;
+                }
+            }
+
+            if m[pivot][col].abs() < 1e-12 {
+                return None;
+            }
+
+            if pivot != col {
+                m.swap(pivot, col);
+            }
+
+            let div = m[col][col];
+            for k in col..4 {
+                m[col][k] /= div;
+            }
+
+            for row in 0..3 {
+                if row == col {
+                    continue;
+                }
+
+                let factor = m[row][col];
+                if factor.abs() < 1e-12 {
+                    continue;
+                }
+
+                for k in col..4 {
+                    m[row][k] -= factor * m[col][k];
+                }
+            }
+        }
+
+        Some((m[0][3], m[1][3], m[2][3]))
+    }
+
+    fn fit_quadratic_ls(column: &[f64]) -> Option<(f64, f64, f64)> {
+        if column.len() < 3 {
+            return None;
+        }
+
+        let mut n = 0.0;
+        let mut sx = 0.0;
+        let mut sx2 = 0.0;
+        let mut sx3 = 0.0;
+        let mut sx4 = 0.0;
+        let mut sy = 0.0;
+        let mut sxy = 0.0;
+        let mut sx2y = 0.0;
+
+        for (i, y) in column.iter().enumerate() {
+            let x = (i + 1) as f64;
+            let x2 = x * x;
+            let x3 = x2 * x;
+            let x4 = x2 * x2;
+
+            n += 1.0;
+            sx += x;
+            sx2 += x2;
+            sx3 += x3;
+            sx4 += x4;
+            sy += *y;
+            sxy += x * *y;
+            sx2y += x2 * *y;
+        }
+
+        solve_3x3([[sx4, sx3, sx2, sx2y], [sx3, sx2, sx, sxy], [sx2, sx, n, sy]])
+    }
+
+    fn validate_quadratic(column: &[f64], a: f64, b: f64, c: f64, eps: f64) -> bool {
+        column.iter().enumerate().all(|(i, actual)| {
+            let x = (i + 1) as f64;
+            let predicted = (a * x + b) * x + c;
+            approx_eq_eps(predicted, *actual, eps)
+        })
+    }
+
+    fn try_soft_linear(column: &[f64], column_text: &[String], var: &str) -> Option<String> {
+        let eps = infer_column_epsilon(column_text);
+
+        let (raw_intercept, raw_slope) = fit_linear_ls(column)?;
+
+        if !validate_linear(column, raw_intercept, raw_slope, eps) {
+            return None;
+        }
+
+        let snapped_intercept = snap_rational(raw_intercept, 240, eps);
+        let snapped_slope = snap_rational(raw_slope, 240, eps);
+
+        if let (Some(i), Some(s)) = (snapped_intercept, snapped_slope) {
+            if validate_linear(column, i, s, eps) {
+                return Some(render_linear(i, s, var));
+            }
+        }
+
+        Some(render_linear(raw_intercept, raw_slope, var))
+    }
+
+    fn try_soft_quadratic(column: &[f64], column_text: &[String], var: &str) -> Option<String> {
+        let eps = infer_column_epsilon(column_text);
+
+        let (raw_a, raw_b, raw_c) = fit_quadratic_ls(column)?;
+
+        if !validate_quadratic(column, raw_a, raw_b, raw_c, eps) {
+            return None;
+        }
+
+        let snapped_a = snap_rational(raw_a, 240, eps);
+        let snapped_b = snap_rational(raw_b, 240, eps);
+        let snapped_c = snap_rational(raw_c, 240, eps);
+
+        if let (Some(a), Some(b), Some(c)) = (snapped_a, snapped_b, snapped_c) {
+            if validate_quadratic(column, a, b, c, eps) {
+                return Some(render_quadratic(a, b, c, var));
+            }
+        }
+
+        Some(render_quadratic(raw_a, raw_b, raw_c, var))
     }
 
     let values = values.iter().map(normalize_expr).collect::<Vec<_>>();
@@ -727,16 +968,26 @@ pub fn simplify(values: &[String]) -> Simplified {
         })
         .into_owned();
 
+    let mut text_matrix = Vec::<Vec<String>>::new();
     let mut value_matrix = Vec::<Vec<f64>>::new();
-    for s in values {
-        let nums = RE_SIMPLIFY
-            .find_iter(&s)
-            .filter_map(|m| m.as_str().parse::<f64>().ok())
+
+    for s in &values {
+        let text_row = RE_SIMPLIFY
+            .find_iter(s)
+            .map(|m| m.as_str().to_string())
             .collect::<Vec<_>>();
-        value_matrix.push(nums);
+
+        let value_row = text_row
+            .iter()
+            .filter_map(|v| v.parse::<f64>().ok())
+            .collect::<Vec<_>>();
+
+        text_matrix.push(text_row);
+        value_matrix.push(value_row);
     }
 
     let num_constants = value_matrix[0].len();
+
     for row in &value_matrix {
         if row.len() != num_constants {
             return Simplified::Unknown;
@@ -746,55 +997,45 @@ pub fn simplify(values: &[String]) -> Simplified {
     let mut depends_on_n = false;
     let mut formulas = Vec::new();
 
-    fn trim_f64(value: f64) -> String {
-        let s = format!("{value:.6}");
-        match s.split_once('.') {
-            Some((int, frac)) => {
-                let frac = frac.trim_end_matches('0');
-                if frac.is_empty() {
-                    return int.to_string();
-                }
-                let bytes = frac.as_bytes();
-                if bytes.len() >= 3 && bytes.iter().all(|&b| b == bytes[0]) {
-                    return format!("{int}.{}", &frac[..1]);
-                }
-                let unique_prefix = frac
-                    .chars()
-                    .take_while(|c| *c != frac.chars().last().unwrap())
-                    .collect::<String>();
-                if unique_prefix.len() >= 3 {
-                    return format!("{int}.{unique_prefix}");
-                }
-                format!("{int}.{frac}")
-            }
-            None => s,
-        }
-    }
-
     for col in 0..num_constants {
-        let v1 = value_matrix[0][col];
-        let v2 = value_matrix[1][col];
-        let diff = v2 - v1;
+        let column = value_matrix.iter().map(|row| row[col]).collect::<Vec<_>>();
+        let column_text = text_matrix
+            .iter()
+            .map(|row| row[col].clone())
+            .collect::<Vec<_>>();
 
-        match diff.abs() < 0.0001 {
-            true => {
-                formulas.push(v1.to_string());
-            }
-            false => {
-                depends_on_n = true;
-                let start_offset = v1 - diff;
-                let display_diff = trim_f64(diff);
+        let eps = infer_column_epsilon(&column_text);
 
-                let pa = match start_offset.abs() < 0.0001 {
-                    true => format!("({display_diff} * context_level)"),
-                    false => format!(
-                        "({start} + {display_diff} * context_level)",
-                        start = trim_f64(start_offset)
-                    ),
-                };
-                formulas.push(pa);
-            }
+        let all_equal = column.windows(2).all(|w| approx_eq_eps(w[0], w[1], eps));
+        if all_equal {
+            formulas.push(trim_f64(column[0]));
+            continue;
         }
+
+        let diffs = column.windows(2).map(|w| w[1] - w[0]).collect::<Vec<_>>();
+        let first_diff = diffs[0];
+        let is_linear = diffs.iter().all(|d| approx_eq_eps(*d, first_diff, eps));
+
+        if is_linear {
+            depends_on_n = true;
+            let intercept = column[0] - first_diff;
+            formulas.push(render_linear(intercept, first_diff, "context_level"));
+            continue;
+        }
+
+        if let Some(expr) = try_soft_linear(&column, &column_text, "context_level") {
+            depends_on_n = true;
+            formulas.push(expr);
+            continue;
+        }
+
+        if let Some(expr) = try_soft_quadratic(&column, &column_text, "context_level") {
+            depends_on_n = true;
+            formulas.push(expr);
+            continue;
+        }
+
+        return Simplified::Unknown;
     }
 
     let mut final_expression = template;

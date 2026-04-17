@@ -212,7 +212,7 @@ impl ItemData {
     pub fn nonstandard(&mut self) -> &mut Self {
         let data = &mut self.current_data;
         let add_marker = |field: &mut String| {
-            if !field.is_empty() && field == "zero" {
+            if !field.is_empty() && field != "zero" {
                 field.insert_str(0, "::rust ");
             }
         };
