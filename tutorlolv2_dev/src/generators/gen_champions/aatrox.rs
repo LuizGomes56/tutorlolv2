@@ -2,7 +2,7 @@ use super::*;
 
 impl Generator<Champion> for Aatrox {
     fn generate(mut self: Box<Self>) -> MayFail<Champion> {
-        self.passive(Void, (0, 0), Some(format!(" * {EnemyBonusHealth}")), None);
+        self.passive(Void, (0, 0), Some("".times(EnemyBonusHealth)), None);
         self.ability(
             Key::Q,
             [

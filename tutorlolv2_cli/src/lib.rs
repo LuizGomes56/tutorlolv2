@@ -29,19 +29,11 @@ impl FromStr for RunTarget {
             "all" | "a" => Ok(Self::All),
             "items" | "i" => Ok(Self::Factory(ItemFactory::run_all)),
             "champions" | "c" => Ok(Self::Factory(ChampionFactory::run_all)),
-            _ => {
-                if let Ok(champion_id) = ChampionId::from_str(s) {
-                    return Ok(Self::Champion(champion_id));
-                }
-
-                if let Ok(item) = ItemId::from_str(s) {
-                    return Ok(Self::Item(item));
-                }
-
-                Err(format!(
-                    "Value {s:?} can't be converted to ChampionId or ItemId"
-                ))
-            }
+            s if let Ok(champion_id) = ChampionId::from_str(s) => Ok(Self::Champion(champion_id)),
+            s if let Ok(item_id) = ItemId::from_str(s) => Ok(Self::Item(item_id)),
+            _ => Err(format!(
+                "Value {s:?} can't be converted to ChampionId or ItemId"
+            )),
         }
     }
 }

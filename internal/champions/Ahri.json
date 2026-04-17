@@ -194,9 +194,9 @@
         "damage_type": "Magic",
         "attributes": "Undefined",
         "damage": [
-          "3 * (75 + (0.35 * ctx.ability_power))",
-          "3 * (125 + (0.35 * ctx.ability_power))",
-          "3 * (175 + (0.35 * ctx.ability_power))"
+          "(75 + (0.35 * ctx.ability_power)) * 3",
+          "(125 + (0.35 * ctx.ability_power)) * 3",
+          "(175 + (0.35 * ctx.ability_power)) * 3"
         ]
       }
     ]
@@ -236,5 +236,59 @@
       }
     }
   ],
-  "combo": []
+  "combo": [
+    [
+      "Attack",
+      {
+        "Ability": {
+          "E": "Void"
+        }
+      },
+      {
+        "Ability": {
+          "Q": "Max"
+        }
+      },
+      {
+        "Ability": {
+          "W": "Max"
+        }
+      }
+    ],
+    [
+      {
+        "Ability": {
+          "R": "Min"
+        }
+      },
+      {
+        "Ability": {
+          "E": "Void"
+        }
+      },
+      "Attack",
+      {
+        "Ability": {
+          "W": "Max"
+        }
+      },
+      {
+        "Ability": {
+          "Q": "Max"
+        }
+      },
+      "Attack",
+      {
+        "Ability": {
+          "R": "Min"
+        }
+      },
+      "Attack",
+      {
+        "Ability": {
+          "R": "Min"
+        }
+      }
+    ]
+  ]
 }

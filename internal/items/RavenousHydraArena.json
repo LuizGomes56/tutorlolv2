@@ -14,11 +14,11 @@
     "LifeSteal": 15
   },
   "ranged": {
-    "minimum_damage": "0.25 * (0.8 * ctx.attack_damage)",
+    "minimum_damage": "0.8 * ctx.attack_damage * 0.25",
     "maximum_damage": "0.8 * ctx.attack_damage"
   },
   "melee": {
-    "minimum_damage": "0.5 * (0.8 * ctx.attack_damage)",
+    "minimum_damage": "0.8 * ctx.attack_damage * 0.5",
     "maximum_damage": "0.8 * ctx.attack_damage"
   },
   "stats": {

@@ -137,7 +137,7 @@ impl ItemData {
         self.effect_damage(&self.meraki_data()?.passives, offset, "passives")
     }
 
-    pub fn scalings(&self, from: Capture) -> MayFail<[f64; 2]> {
+    pub fn scaling(&self, from: Capture) -> MayFail<[f64; 2]> {
         match from {
             Capture::Passive(i) => self.passive(i),
             Capture::Active(i) => self.active(i),
@@ -150,7 +150,7 @@ impl ItemData {
     }
 
     pub fn capture(&self, from: Capture, f: impl Fn(f64) -> String) -> MayFail<[String; 2]> {
-        Ok(self.scalings(from)?.map(f))
+        Ok(self.scaling(from)?.map(f))
     }
 
     /// Returns the damage of the `active` effect in the field `active`
@@ -169,40 +169,40 @@ impl ItemData {
     }
 
     /// Sets the damage only for the `melee` and `minimum_damage` fields
-    pub fn melee_min_dmg<S: AsRef<str>>(&mut self, dmg: S) {
-        self.current_data.melee.minimum_damage = dmg.as_ref().trim().to_string();
+    pub fn melee_min_dmg<S: ToString>(&mut self, dmg: S) {
+        self.current_data.melee.minimum_damage = dmg.to_string().trim().to_string();
     }
 
     /// Sets the damage only for the `melee` and `maximum_damage` fields
-    pub fn melee_max_dmg<S: AsRef<str>>(&mut self, dmg: S) {
-        self.current_data.melee.maximum_damage = dmg.as_ref().trim().to_string();
+    pub fn melee_max_dmg<S: ToString>(&mut self, dmg: S) {
+        self.current_data.melee.maximum_damage = dmg.to_string().trim().to_string();
     }
 
     /// Sets the damage only for the `ranged` and `minimum_damage` fields
-    pub fn ranged_min_dmg<S: AsRef<str>>(&mut self, dmg: S) {
-        self.current_data.ranged.minimum_damage = dmg.as_ref().trim().to_string();
+    pub fn ranged_min_dmg<S: ToString>(&mut self, dmg: S) {
+        self.current_data.ranged.minimum_damage = dmg.to_string().trim().to_string();
     }
 
     /// Sets the damage only for the `ranged` and `maximum_damage` fields
-    pub fn ranged_max_dmg<S: AsRef<str>>(&mut self, dmg: S) {
-        self.current_data.ranged.maximum_damage = dmg.as_ref().trim().to_string();
+    pub fn ranged_max_dmg<S: ToString>(&mut self, dmg: S) {
+        self.current_data.ranged.maximum_damage = dmg.to_string().trim().to_string();
     }
 
     /// Sets only the `minimum_damage` field for both `melee` and `ranged` fields
-    pub fn const_min_dmg<S: AsRef<str>>(&mut self, dmg: S) {
-        self.melee_min_dmg(&dmg);
+    pub fn const_min_dmg<S: ToString>(&mut self, dmg: S) {
+        self.melee_min_dmg(dmg.to_string());
         self.ranged_min_dmg(dmg);
     }
 
     /// Sets only the `maximum_damage` field for both `melee` and `ranged` fields
-    pub fn const_max_dmg<S: AsRef<str>>(&mut self, dmg: S) {
-        self.melee_max_dmg(&dmg);
+    pub fn const_max_dmg<S: ToString>(&mut self, dmg: S) {
+        self.melee_max_dmg(dmg.to_string());
         self.ranged_max_dmg(dmg);
     }
 
     /// Sets the `minimum_damage` and `maximum_damage` to both `melee` and `ranged`
     /// fields according to the provided values
-    pub fn const_dmg<S: AsRef<str>>(&mut self, min_dmg: S, max_dmg: S) {
+    pub fn const_dmg<S: ToString>(&mut self, min_dmg: S, max_dmg: S) {
         self.const_min_dmg(min_dmg);
         self.const_max_dmg(max_dmg);
     }

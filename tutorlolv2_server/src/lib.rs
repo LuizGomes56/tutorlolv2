@@ -8,7 +8,11 @@ use actix_web::{
     dev::HttpServiceFactory,
     http::header,
     middleware::DefaultHeaders,
-    web::{self, Data, scope},
+    web::{
+        self,
+        // Data,
+        scope,
+    },
 };
 use dotenvy::dotenv;
 use server::{embed::*, games::*};

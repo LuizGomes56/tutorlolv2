@@ -15,11 +15,11 @@
   },
   "ranged": {
     "minimum_damage": "75 + (0.05 * ctx.ability_power)",
-    "maximum_damage": "2 * (75 + (0.05 * ctx.ability_power))"
+    "maximum_damage": "(75 + (0.05 * ctx.ability_power)) * 2"
   },
   "melee": {
     "minimum_damage": "75 + (0.05 * ctx.ability_power)",
-    "maximum_damage": "2 * (75 + (0.05 * ctx.ability_power))"
+    "maximum_damage": "(75 + (0.05 * ctx.ability_power)) * 2"
   },
   "stats": {
     "abilityPower": {

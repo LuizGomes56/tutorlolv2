@@ -115,8 +115,17 @@ pub trait RegExtractor {
     /// (+ 84 * ATTACK_DAMAGE) -> 84.0
     /// ```
     fn capture_parens(&self, number: usize) -> MayFail<String>;
-    fn mul(&self, value: f64) -> String;
-    fn half(&self) -> String;
+    fn parens(&self) -> String;
+    fn times<T: Display>(&self, value: T) -> String;
+    fn plus<U>(&self, value: U) -> String
+    where
+        U: Display;
+    fn minus<T>(&self, value: T) -> String
+    where
+        T: Display;
+    fn div<T>(&self, value: T) -> String
+    where
+        T: Display;
 
     /// Replaces several string matches to values that are mathematically
     /// evaluable.
@@ -184,12 +193,24 @@ impl RegExtractor for str {
         nums
     }
 
-    fn mul(&self, value: f64) -> String {
-        format!("{value} * ({self})")
+    fn parens(&self) -> String {
+        format!("({self})")
     }
 
-    fn half(&self) -> String {
-        self.mul(0.5)
+    fn plus<T: Display>(&self, value: T) -> String {
+        format!("{self} + {value}")
+    }
+
+    fn minus<T: Display>(&self, value: T) -> String {
+        format!("{self} - {value}")
+    }
+
+    fn times<T: Display>(&self, value: T) -> String {
+        format!("{self} * {value}")
+    }
+
+    fn div<T: Display>(&self, value: T) -> String {
+        format!("{self} / {value}")
     }
 
     fn capture_numbers<T: FromStr>(&self) -> Vec<T> {
@@ -458,47 +479,56 @@ pub fn process_linear_scalings(
     result
 }
 
-impl<T: AsRef<str>> RegExtractor for T {
+impl<T: Display> RegExtractor for T {
     fn capture_numbers_slash(&self) -> Vec<f64> {
-        self.as_ref().capture_numbers_slash()
+        self.to_string().as_str().capture_numbers_slash()
     }
     fn capture_percent(&self, number: usize) -> MayFail<f64> {
-        self.as_ref().capture_percent(number)
+        self.to_string().as_str().capture_percent(number)
     }
     fn capture_numbers<U: FromStr>(&self) -> Vec<U> {
-        self.as_ref().capture_numbers::<U>()
+        self.to_string().as_str().capture_numbers::<U>()
     }
     fn capture_parens(&self, number: usize) -> MayFail<String> {
-        self.as_ref().capture_parens(number)
+        self.to_string().as_str().capture_parens(number)
     }
-    fn mul(&self, value: f64) -> String {
-        self.as_ref().mul(value)
+    fn parens(&self) -> String {
+        self.to_string().as_str().parens()
     }
-    fn half(&self) -> String {
-        self.as_ref().half()
+    fn times<U: Display>(&self, value: U) -> String {
+        self.to_string().as_str().times(value)
+    }
+    fn minus<U: Display>(&self, value: U) -> String {
+        self.to_string().as_str().minus(value)
+    }
+    fn div<U: Display>(&self, value: U) -> String {
+        self.to_string().as_str().div(value)
+    }
+    fn plus<U: Display>(&self, value: U) -> String {
+        self.to_string().as_str().plus(value)
     }
     fn replace_keys(&self) -> String {
-        self.as_ref().replace_keys()
+        self.to_string().as_str().replace_keys()
     }
     fn replace_percentages(&self) -> String {
-        self.as_ref().replace_percentages()
+        self.to_string().as_str().replace_percentages()
     }
     fn remove_parenthesis(&self) -> String {
-        self.as_ref().remove_parenthesis()
+        self.to_string().as_str().remove_parenthesis()
     }
     fn get_scalings(&self) -> String {
-        self.as_ref().get_scalings()
+        self.to_string().as_str().get_scalings()
     }
     fn get_interval(&self) -> Option<(f64, f64)> {
-        self.as_ref().get_interval()
+        self.to_string().as_str().get_interval()
     }
     fn get_damage(&self) -> String {
-        self.as_ref().get_damage()
+        self.to_string().as_str().get_damage()
     }
     fn clean_formula(&self) -> String {
-        self.as_ref().clean_formula()
+        self.to_string().as_str().clean_formula()
     }
     fn from_scaled_string(&self) -> String {
-        self.as_ref().from_scaled_string()
+        self.to_string().as_str().from_scaled_string()
     }
 }

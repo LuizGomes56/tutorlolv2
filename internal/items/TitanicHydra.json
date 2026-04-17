@@ -13,11 +13,11 @@
     "Health": 600
   },
   "ranged": {
-    "minimum_damage": "0.25 * (0.02 * ctx.max_health)",
+    "minimum_damage": "0.02 * ctx.max_health * 0.25",
     "maximum_damage": "0.02 * ctx.max_health"
   },
   "melee": {
-    "minimum_damage": "0.25 * (0.04 * ctx.max_health)",
+    "minimum_damage": "0.04 * ctx.max_health * 0.25",
     "maximum_damage": "0.04 * ctx.max_health"
   },
   "stats": {

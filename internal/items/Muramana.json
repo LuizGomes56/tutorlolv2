@@ -14,12 +14,12 @@
     "Mana": 1000
   },
   "ranged": {
-    "minimum_damage": "0.012 * (ctx.max_mana)",
-    "maximum_damage": "0.03 * (ctx.max_mana)"
+    "minimum_damage": "ctx.max_mana * 0.012",
+    "maximum_damage": "ctx.max_mana * 0.03"
   },
   "melee": {
-    "minimum_damage": "0.012 * (ctx.max_mana)",
-    "maximum_damage": "0.04 * (ctx.max_mana)"
+    "minimum_damage": "ctx.max_mana * 0.012",
+    "maximum_damage": "ctx.max_mana * 0.04"
   },
   "stats": {
     "abilityPower": {

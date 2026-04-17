@@ -23,7 +23,7 @@ impl Generator<Champion> for Jinx {
             .first()
             .ok_or("Failed to find Jinx's Q")?
             // n = 1 generates unrecognized pattern
-            .format(vec![format!("1.1 * {AttackDamage}"); 5]);
+            .format(vec![1.1.times(AttackDamage); 5]);
 
         self.insert(Q(Void), q);
 

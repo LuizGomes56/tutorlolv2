@@ -2,12 +2,10 @@ use super::*;
 
 impl Generator<ItemData> for Malignance {
     fn generate(mut self: Box<Self>) -> MayFail<ItemData> {
-        const TICKS: usize = 12;
-
-        let damage_per_tick = format!("15 + 0.0125 * {AbilityPower}");
+        let damage_per_tick = 15.plus(0.0125).times(AbilityPower);
 
         self.const_min_dmg(&damage_per_tick);
-        self.const_max_dmg(format!("{TICKS} * ({damage_per_tick})"));
+        self.const_max_dmg(12.times(damage_per_tick.parens()));
         self.damage_type(Magic);
         self.attr(Area);
         self.end()

@@ -14,7 +14,7 @@
     "Lethality": 22
   },
   "ranged": {
-    "minimum_damage": "0.5 * (30 + 1.5 * ctx.armor_penetration_flat)",
+    "minimum_damage": "(30 + 1.5 * ctx.armor_penetration_flat) * 0.5",
     "maximum_damage": "zero"
   },
   "melee": {

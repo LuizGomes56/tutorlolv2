@@ -14,7 +14,6 @@ impl Generator<Champion> for Akshan {
                 .trim()
                 .to_string();
 
-            let get_passive_damage = |base| format!("{base} + {passive_scaling}");
             let mut passive_damages = vec![String::new(); 18];
 
             [0..6, 6..11, 11..16, 16..18]
@@ -22,7 +21,7 @@ impl Generator<Champion> for Akshan {
                 .enumerate()
                 .for_each(|(i, range)| {
                     range.for_each(|j| {
-                        passive_damages[j] = get_passive_damage(passive_numbers[i]);
+                        passive_damages[j] = passive_numbers[i].plus(&passive_scaling);
                     })
                 });
 
@@ -45,10 +44,10 @@ impl Generator<Champion> for Akshan {
                     .get(0)
                     .ok_or("Can't capture first scaling")?;
                 let norm_scaling = damage.capture_parens(0)?;
-                *damage = format!(
-                    "({base_scalings} + {norm_scaling}) * {crit_scaling}",
-                    crit_scaling = format_args!("(1 + {CritChance} / 200)")
-                );
+                *damage = base_scalings
+                    .plus(norm_scaling)
+                    .parens()
+                    .times(1.plus(CritChance).div(200).parens());
             }
         }
 
