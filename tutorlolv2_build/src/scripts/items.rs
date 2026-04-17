@@ -55,6 +55,9 @@ fn declare_item(name: &str, item: &Item) -> DeclaredItem {
 
     let normalize = |expr: &str| -> Option<String> {
         (!expr.is_empty() && expr != "zero").then(|| {
+            if expr.starts_with("::rust") {
+                return expr.trim_start_matches("::rust").trim().cast_f32();
+            }
             simplify_formula(expr.to_string())
                 .clean()
                 .to_lowercase()
@@ -133,7 +136,10 @@ fn declare_item(name: &str, item: &Item) -> DeclaredItem {
         let ctx = expr.ctx_param();
         match expr.to_lowercase() {
             body if body == "zero" => "zero".into(),
-            body => format!("|{ctx}| {body}"),
+            body => format!(
+                "|{ctx}| {block}",
+                block = body.trim_start_matches("::rust ")
+            ),
         }
     };
 

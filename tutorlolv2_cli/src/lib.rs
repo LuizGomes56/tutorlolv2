@@ -102,6 +102,7 @@ pub fn run() -> MayFail {
             ItemFactory::run_all()?;
             std::env::set_current_dir("./tutorlolv2_build")?;
             tutorlolv2_build::run()?;
+            tutorlolv2_html::run();
         }
         GenArgs::Html => tutorlolv2_html::run(),
         GenArgs::Setup { setup } => match setup {

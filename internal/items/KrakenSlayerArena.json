@@ -14,12 +14,12 @@
     "MoveSpeed": 7
   },
   "ranged": {
-    "minimum_damage": "120.0 + 4.0 * (ctx.level - 8.0).max(0.0)",
-    "maximum_damage": "(1.0 + 0.75 * ctx.enemy_missing_health) * (120.0 + 4.0 * (ctx.level - 8.0).max(0.0))"
+    "minimum_damage": "::rust 120 + 4 * (ctx.level - 8).max(0)",
+    "maximum_damage": "::rust (1 + 0.75 * ctx.enemy_missing_health) * (120 + 4 * (ctx.level - 8).max(0))"
   },
   "melee": {
-    "minimum_damage": "150.0 + 5.0 * (ctx.level - 8.0).max(0.0)",
-    "maximum_damage": "(1.0 + 0.75 * ctx.enemy_missing_health) * (150.0 + 5.0 * (ctx.level - 8.0).max(0.0))"
+    "minimum_damage": "::rust 150 + 5 * (ctx.level - 8).max(0)",
+    "maximum_damage": "::rust (1 + 0.75 * ctx.enemy_missing_health) * (150 + 5 * (ctx.level - 8).max(0))"
   },
   "stats": {
     "abilityPower": {

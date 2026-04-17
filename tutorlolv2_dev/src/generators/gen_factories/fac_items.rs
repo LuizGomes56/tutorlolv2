@@ -200,6 +200,22 @@ impl ItemData {
         self.ranged_max_dmg(dmg);
     }
 
+    /// Adds a `::rust` marker at the beginning of all damage defined damage
+    /// fields to indicate that they are rust code, not regular math expressions.
+    /// In other words, they may use any rust code that is valid within a const context
+    pub fn nonstandard(&mut self) {
+        let data = &mut self.current_data;
+        let add_marker = |field: &mut String| {
+            if !field.is_empty() && field == "zero" {
+                field.insert_str(0, "::rust ");
+            }
+        };
+        add_marker(&mut data.melee.minimum_damage);
+        add_marker(&mut data.melee.maximum_damage);
+        add_marker(&mut data.ranged.minimum_damage);
+        add_marker(&mut data.ranged.maximum_damage);
+    }
+
     /// Sets the `minimum_damage` and `maximum_damage` to both `melee` and `ranged`
     /// fields according to the provided values
     pub fn const_dmg<S: ToString>(&mut self, min_dmg: S, max_dmg: S) {
