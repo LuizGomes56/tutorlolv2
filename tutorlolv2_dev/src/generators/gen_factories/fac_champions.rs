@@ -73,12 +73,11 @@ impl ChampionFactory {
     }
 
     /// Creates a new generator file, given a [`ChampionId`]
-    pub fn create(name: &str) -> MayFail<String> {
+    pub fn create(name: &str) -> MayFail {
         if let Ok(data) = std::fs::read_to_string(SaveTo::GeneratorRaw(Tag::Champions, name).path())
             && (data.contains(".progress(Stable)") || data.contains(".progress(Preserve)"))
         {
-            println!("[stable] Skipping generator for {name:?}");
-            return Ok(data);
+            return Ok(println!("[stable] Skipping generator for {name:?}"));
         }
 
         let bind_function = |ability_char: char, meraki_offsets: &[MerakiOffset]| -> String {
@@ -111,46 +110,58 @@ impl ChampionFactory {
             SaveTo::MerakiCache(Tag::Champions, &name).path(),
         )
         .map_err(|e| format!("Error calling MerakiChampion::from_file for {name:?}: {e:?}"))?;
-        for (ability_char, ability_vec) in meraki_champion.abilities.into_iter() {
-            let meraki_offsets = ChampionData::get_ability_offsets(ability_vec);
-            if meraki_offsets.len() > 0 {
-                generated_content.push_str("self");
-                generated_content.push_str(&bind_function(ability_char, &meraki_offsets));
-            }
+
+        let methods = meraki_champion
+            .abilities
+            .into_iter()
+            .filter_map(|(ability_char, ability_vec)| {
+                let meraki_offsets = ChampionData::get_ability_offsets(ability_vec);
+                (meraki_offsets.len() > 0).then_some(bind_function(ability_char, &meraki_offsets))
+            })
+            .collect::<Vec<_>>();
+
+        let marker = methods.len() > 0;
+
+        if marker {
+            generated_content.push_str("self");
         }
 
-        if generated_content.ends_with(")") {
-            generated_content.push(';');
+        for method in methods {
+            generated_content.push_str(&method);
         }
+
+        if marker {
+            generated_content.push_str(";\n\n");
+        }
+
         generated_content.push_str("self.end()}}");
 
         let formatted = rustfmt(&generated_content, None);
-        Ok(match formatted.is_empty() {
+        let content = match formatted.is_empty() {
             true => generated_content,
             false => formatted,
-        })
+        };
+
+        let path = SaveTo::GeneratorRaw(Tag::Champions, name).path();
+
+        std::fs::write(&path, content)?;
+
+        Ok(println!("[write] {path:?}"))
     }
 
     /// Creates the whole folder of champion generators. Fails if an error
     /// is thrown in some iteration
     pub fn create_all() -> MayFail {
         let dir = SaveTo::GeneratorDir(Tag::Champions).path();
+
         if !std::fs::exists(&dir)? {
             std::fs::create_dir(dir)?;
         }
 
-        Self::GENERATOR_NAMES.into_par_iter().for_each(|name| {
-            let Ok(data) = Self::create(name) else {
-                return println!("Unable to create generator file for {name:?}");
-            };
-            std::fs::write(
-                SaveTo::GeneratorRaw(Tag::Champions, name).path(),
-                data.as_bytes(),
-            )
-            .unwrap();
-        });
-
-        Ok(())
+        Self::GENERATOR_NAMES
+            .into_par_iter()
+            .copied()
+            .try_for_each(Self::create)
     }
 
     /// Runs all generator files. It means that several `.json` files will be created

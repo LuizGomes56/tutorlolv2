@@ -38,11 +38,29 @@ impl FromStr for RunTarget {
     }
 }
 
+#[derive(Clone, Copy, Debug)]
+pub enum GenCreator {
+    All,
+    Champion(ChampionId),
+}
+
+impl FromStr for GenCreator {
+    type Err = String;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "all" | "a" => Ok(Self::All),
+            s if let Ok(champion_id) = ChampionId::from_str(s) => Ok(Self::Champion(champion_id)),
+            _ => Err(format!("Value {s:?} can't be converted to ChampionId")),
+        }
+    }
+}
+
 #[derive(Subcommand, Debug)]
 pub enum GenArgs {
     #[command(alias = "c")]
     Create {
-        champ: ChampionId,
+        creator: GenCreator,
     },
     #[command(alias = "r")]
     Run {
@@ -78,9 +96,10 @@ pub fn run() -> MayFail {
     std::env::set_current_dir("../")?;
 
     match args {
-        GenArgs::Create { champ } => {
-            ChampionFactory::create(champ.debug())?;
-        }
+        GenArgs::Create { creator } => match creator {
+            GenCreator::All => ChampionFactory::create_all()?,
+            GenCreator::Champion(champion_id) => ChampionFactory::create(champion_id.debug())?,
+        },
         GenArgs::Run { target } => match target {
             RunTarget::Champion(champ) => {
                 ChampionFactory::run(champ.debug())?;
