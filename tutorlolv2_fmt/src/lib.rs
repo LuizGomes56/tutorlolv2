@@ -55,27 +55,12 @@ pub fn encode_brotli_11(bytes: &[u8]) -> Vec<u8> {
 pub fn pascal_case(input: &str) -> String {
     let mut words = Vec::new();
     let mut cur = String::new();
-    let mut chars = input.chars().peekable();
 
-    while let Some(ch) = chars.next() {
+    for ch in input.chars() {
         if ch.is_alphanumeric() {
             cur.push(ch);
-        } else if ch == '\'' {
-            if let Some(&next) = chars.peek() {
-                if (next == 's' || next == 'S') && !cur.is_empty() {
-                    chars.next();
-                    cur.push('s');
-                    continue;
-                }
-            }
-
-            if !cur.is_empty() {
-                words.push(std::mem::take(&mut cur));
-            }
-        } else {
-            if !cur.is_empty() {
-                words.push(std::mem::take(&mut cur));
-            }
+        } else if !cur.is_empty() {
+            words.push(core::mem::take(&mut cur));
         }
     }
 
