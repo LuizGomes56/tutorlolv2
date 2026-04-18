@@ -1,7 +1,7 @@
 use super::*;
 
-impl Generator<Champion> for Akshan {
-    fn generate(mut self: Box<Self>) -> MayFail<Champion> {
+impl Generator for Akshan {
+    fn generate(&mut self) -> MayFail {
         {
             let (passive, passive_description) = self.get_passive_description(0, 0);
             let passive_numbers = passive_description.capture_numbers_slash();
@@ -53,8 +53,7 @@ impl Generator<Champion> for Akshan {
 
         self.attr(Area, [Q(Min), Q(Max)])?
             .damage_type(P(Void), Magic)?
-            .progress(Preserve);
-
-        self.end()
+            .progress(Preserve)
+            .end()
     }
 }

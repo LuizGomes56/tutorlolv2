@@ -1,9 +1,8 @@
 use super::*;
 
-impl Generator<ItemData> for HextechRocketbelt {
-    fn generate(mut self: Box<Self>) -> MayFail<ItemData> {
+impl Generator for HextechRocketbelt {
+    fn generate(&mut self) -> MayFail {
         let damage = self.active(0)?;
-        self.const_min_dmg(damage).attr(Area).damage_type(Magic);
-        self.end()
+        self.const_min_dmg(damage).attr(Area).damage_type(Magic).end()
     }
 }

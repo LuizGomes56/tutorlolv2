@@ -1,7 +1,7 @@
 use super::*;
 
-impl Generator<Champion> for Jinx {
-    fn generate(mut self: Box<Self>) -> MayFail<Champion> {
+impl Generator for Jinx {
+    fn generate(&mut self) -> MayFail {
         self.ability(Key::W, [(0, 0, Void)])
             .ability(Key::E, [(0, 0, Void)])
             .ability(
@@ -35,8 +35,7 @@ impl Generator<Champion> for Jinx {
                 Attack,
                 Ability(W(Void)),
             ])?
-            .progress(Stable);
-
-        self.end()
+            .progress(Stable)
+            .end()
     }
 }

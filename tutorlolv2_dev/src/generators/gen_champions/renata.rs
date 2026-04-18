@@ -1,10 +1,9 @@
 use super::*;
 
-impl Generator<Champion> for Renata {
-    fn generate(mut self: Box<Self>) -> MayFail<Champion> {
+impl Generator for Renata {
+    fn generate(&mut self) -> MayFail {
         self.ability(Key::Q, [(0, 0, _1)])
-            .ability(Key::E, [(1, 0, _1)]);
-
-        self.end()
+            .ability(Key::E, [(1, 0, _1)])
+            .end()
     }
 }

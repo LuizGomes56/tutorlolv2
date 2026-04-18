@@ -1,7 +1,7 @@
 pub(self) use crate::{
     MayFail,
     generators::{
-        Generator,
+        Generator, GeneratorExt,
         gen_factories::fac_items::{Capture::*, ItemData},
         gen_utils::RegExtractor,
     },
@@ -14,32 +14,33 @@ pub(self) use tutorlolv2_gen::{
 
 macro_rules! decl_items {
     (inner $Name:ident) => {
-        pub struct $Name(pub ItemData);
+        pub struct $Name {
+            pub inner: ItemData
+        }
 
         impl $Name {
-            pub fn new(data: ItemData) -> Box<dyn Generator<ItemData>> {
-                Box::new(Self(data))
+            pub fn new(data: ItemData) -> Box<dyn GeneratorExt<ItemData>> {
+                Box::new(Self { inner: data })
             }
+        }
 
-            pub fn end(self) -> MayFail<ItemData> {
-                Ok(self.0)
-            }
-
-            pub fn into_inner(self) -> ItemData {
-                self.0
+        impl GeneratorExt<ItemData> for $Name {
+            fn end(self: Box<Self>) -> MayFail<ItemData> {
+                println!(concat!("[ok] ending generator for ", stringify!($Name)));
+                Ok(self.inner)
             }
         }
 
         impl ::core::ops::Deref for $Name {
             type Target = ItemData;
             fn deref(&self) -> &Self::Target {
-                &self.0
+                &self.inner
             }
         }
 
         impl ::core::ops::DerefMut for $Name {
             fn deref_mut(&mut self) -> &mut Self::Target {
-                &mut self.0
+                &mut self.inner
             }
         }
     };
@@ -53,7 +54,7 @@ macro_rules! decl_items {
         )*
 
         pub fn item_gen_fn(item_id: &str) -> Option<
-            fn(ItemData) -> Box<dyn Generator<ItemData>>
+            fn(ItemData) -> Box<dyn GeneratorExt<ItemData>>
         > {
             $(const _: ItemId = ItemId::$Name;)*
             match item_id {

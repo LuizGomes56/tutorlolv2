@@ -1,7 +1,7 @@
 use super::*;
 
-impl Generator<Champion> for Ahri {
-    fn generate(mut self: Box<Self>) -> MayFail<Champion> {
+impl Generator for Ahri {
+    fn generate(&mut self) -> MayFail {
         self.ability(Key::Q, [(0, 0, Min)])
             .ability(Key::W, [(1, 0, Min), (1, 1, _1), (1, 2, Max)])
             .ability(Key::E, [(0, 1, Void)])
@@ -33,8 +33,7 @@ impl Generator<Champion> for Ahri {
                 Attack,
                 Ability(R(Min)),
             ])?
-            .progress(Stable);
-
-        self.end()
+            .progress(Stable)
+            .end()
     }
 }

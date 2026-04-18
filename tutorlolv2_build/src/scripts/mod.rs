@@ -28,11 +28,10 @@ pub const ZERO_FN: &str = r#"fn zero(_: &Ctx) -> f32 {
 
 pub const DEFAULT_ITEM_GENERATOR: &str = r#"use super::*;
 
-impl Generator<ItemData> for Item {
-    fn generate(mut self: Box<Self>) -> MayFail<ItemData> {
+impl Generator for Item {
+    fn generate(&mut self) -> MayFail {
         /* No implementation */
-        self.infer_stats_ifdef();
-        self.end()
+        self.infer_stats_ifdef().end()
     }
 }"#;
 

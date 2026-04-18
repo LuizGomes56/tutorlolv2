@@ -1,7 +1,7 @@
 use super::*;
 
-impl Generator<Champion> for Gnar {
-    fn generate(mut self: Box<Self>) -> MayFail<Champion> {
+impl Generator for Gnar {
+    fn generate(&mut self) -> MayFail {
         self.ability(Key::Q, [(0, 0, Max), (0, 1, Min)])
             .ability_nth(Key::Q, 1, [(0, 0, Mega)])
             .ability(Key::W, [(2, 0, Void)])
@@ -24,8 +24,7 @@ impl Generator<Champion> for Gnar {
                 Ability(Q(Mega)),
                 Attack,
             ])?
-            .progress(Stable);
-
-        self.end()
+            .progress(Stable)
+            .end()
     }
 }

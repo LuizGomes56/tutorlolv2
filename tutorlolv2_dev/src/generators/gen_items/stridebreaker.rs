@@ -1,7 +1,7 @@
 use super::*;
 
-impl Generator<ItemData> for Stridebreaker {
-    fn generate(mut self: Box<Self>) -> MayFail<ItemData> {
+impl Generator for Stridebreaker {
+    fn generate(&mut self) -> MayFail {
         let passive = self.passive(0)?;
         let active = self.active(0)?;
 
@@ -18,8 +18,7 @@ impl Generator<ItemData> for Stridebreaker {
             .ranged_min_dmg(ranged)
             .const_max_dmg(max)
             .attr(AreaOnhit)
-            .damage_type(Physical);
-
-        self.end()
+            .damage_type(Physical)
+            .end()
     }
 }

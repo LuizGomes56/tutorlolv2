@@ -103,7 +103,7 @@ impl ChampionFactory {
             "use super::*;
 
             impl Generator<Champion> for {name} {{
-                fn generate(mut self: Box<Self>) -> MayFail<Champion> {{"
+                fn generate(&mut self) -> MayFail {{"
         );
 
         let meraki_champion = MerakiChampion::from_file(
@@ -180,12 +180,15 @@ impl ChampionFactory {
         }
     }
 
+    pub fn end(&mut self) -> MayFail {
+        Ok(())
+    }
+
     pub fn run_fn(name: &str) -> MayFail<Champion> {
         let data = MerakiChampion::from_file(SaveTo::MerakiCache(Tag::Champions, &name).path())?;
         let function =
             champion_gen_fn(name).ok_or(format!("Unable to find generator function for {name}"))?;
-        let generator = function(data);
-        generator.generate()
+        function(data).call()
     }
 }
 
@@ -510,7 +513,7 @@ impl ChampionData {
     /// Finishes the generator function, performing damage type checks and creating
     /// the [`Self::mergevec`] vector which represents what abilities should be displayed
     /// in a single table cell, and printing useful warning messages to the console
-    pub fn end(mut self) -> MayFail<Champion> {
+    pub fn end(&mut self) -> MayFail {
         let name = &self.data.name;
 
         // Verifies if any ability found has unknown damage and emits a warning
@@ -584,7 +587,7 @@ impl ChampionData {
             return Err("Found inconsistent merge vec".into());
         }
 
-        Ok(self.finish())
+        Ok(())
     }
 
     /// Extracts some passive from the merakianalytics data.

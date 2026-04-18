@@ -1,7 +1,7 @@
 use super::*;
 
-impl Generator<ItemData> for Muramana {
-    fn generate(mut self: Box<Self>) -> MayFail<ItemData> {
+impl Generator for Muramana {
+    fn generate(&mut self) -> MayFail {
         let scaling = self.passive(0)?.capture_numbers::<f64>()[0];
         let ctx = |v| MaxMana.times(v / 100.0);
         let [melee, ranged] = [4.0, 3.0].map(ctx);
@@ -10,8 +10,7 @@ impl Generator<ItemData> for Muramana {
             .melee_max_dmg(melee)
             .ranged_max_dmg(ranged)
             .attr(Onhit)
-            .damage_type(Physical);
-
-        self.end()
+            .damage_type(Physical)
+            .end()
     }
 }

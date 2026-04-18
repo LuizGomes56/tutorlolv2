@@ -1,9 +1,8 @@
 use super::*;
 
-impl Generator<ItemData> for NashorsTooth {
-    fn generate(mut self: Box<Self>) -> MayFail<ItemData> {
+impl Generator for NashorsTooth {
+    fn generate(&mut self) -> MayFail {
         let damage = self.passive(0)?;
-        self.const_min_dmg(damage).attr(Onhit).damage_type(Magic);
-        self.end()
+        self.const_min_dmg(damage).attr(Onhit).damage_type(Magic).end()
     }
 }

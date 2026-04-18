@@ -1,7 +1,7 @@
 use super::*;
 
-impl Generator<Champion> for Aatrox {
-    fn generate(mut self: Box<Self>) -> MayFail<Champion> {
+impl Generator for Aatrox {
+    fn generate(&mut self) -> MayFail {
         self.passive(Void, (0, 0), Some("".times(EnemyBonusHealth)), None)
             .ability(
                 Key::Q,
@@ -65,8 +65,7 @@ impl Generator<Champion> for Aatrox {
                 Ability(Q(_3Max)),
                 Attack,
             ])?
-            .progress(Stable);
-
-        self.end()
+            .progress(Stable)
+            .end()
     }
 }

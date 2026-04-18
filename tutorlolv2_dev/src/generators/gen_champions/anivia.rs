@@ -1,7 +1,7 @@
 use super::*;
 
-impl Generator<Champion> for Anivia {
-    fn generate(mut self: Box<Self>) -> MayFail<Champion> {
+impl Generator for Anivia {
+    fn generate(&mut self) -> MayFail {
         self.ability(
             Key::Q,
             [
@@ -19,8 +19,7 @@ impl Generator<Champion> for Anivia {
             Ability(Q(_1Max)),
             Ability(E(Max)),
         ])?
-        .progress(Stable);
-
-        self.end()
+        .progress(Stable)
+        .end()
     }
 }

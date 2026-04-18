@@ -1,7 +1,7 @@
 use super::*;
 
-impl Generator<Champion> for Varus {
-    fn generate(mut self: Box<Self>) -> MayFail<Champion> {
+impl Generator for Varus {
+    fn generate(&mut self) -> MayFail {
         self.ability(Key::Q, [(2, 0, _1), (2, 1, _2), (2, 2, _3), (2, 3, _4)])
             .ability(
                 Key::W,
@@ -16,8 +16,7 @@ impl Generator<Champion> for Varus {
                 ],
             )
             .ability(Key::E, [(0, 0, _1)])
-            .ability(Key::R, [(0, 0, _1)]);
-
-        self.end()
+            .ability(Key::R, [(0, 0, _1)])
+            .end()
     }
 }

@@ -1,7 +1,7 @@
 use super::*;
 
-impl Generator<ItemData> for BladeOfTheRuinedKing {
-    fn generate(mut self: Box<Self>) -> MayFail<ItemData> {
+impl Generator for BladeOfTheRuinedKing {
+    fn generate(&mut self) -> MayFail {
         let [melee, ranged] = self.scaling(Passive(0))?;
 
         let damage = |scaling: f64| {
@@ -18,8 +18,7 @@ impl Generator<ItemData> for BladeOfTheRuinedKing {
 
         self.damage_type(Physical)
             .melee_min_dmg(damage(melee))
-            .ranged_min_dmg(damage(ranged));
-
-        self.end()
+            .ranged_min_dmg(damage(ranged))
+            .end()
     }
 }

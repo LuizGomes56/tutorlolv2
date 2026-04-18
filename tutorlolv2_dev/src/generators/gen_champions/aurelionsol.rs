@@ -1,7 +1,7 @@
 use super::*;
 
-impl Generator<Champion> for AurelionSol {
-    fn generate(mut self: Box<Self>) -> MayFail<Champion> {
+impl Generator for AurelionSol {
+    fn generate(&mut self) -> MayFail {
         self.ability(
             Key::Q,
             [
@@ -17,8 +17,7 @@ impl Generator<Champion> for AurelionSol {
         .ability(Key::W, [(0, 0, _1)])
         .ability(Key::E, [(0, 0, _1), (0, 1, _2)])
         .ability(Key::R, [(0, 0, _1), (0, 0, _2), (1, 0, _3)])
-        .progress(Preserve);
-
-        self.end()
+        .progress(Preserve)
+        .end()
     }
 }

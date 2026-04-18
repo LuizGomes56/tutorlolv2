@@ -1,8 +1,7 @@
 use super::*;
 
-impl Generator<Champion> for Bard {
-    fn generate(mut self: Box<Self>) -> MayFail<Champion> {
-        self.ability(Key::Q, [(0, 1, Void)]).progress(Preserve);
-        self.end()
+impl Generator for Bard {
+    fn generate(&mut self) -> MayFail {
+        self.ability(Key::Q, [(0, 1, Void)]).progress(Preserve).end()
     }
 }

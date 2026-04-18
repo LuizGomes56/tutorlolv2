@@ -1,7 +1,7 @@
 use super::*;
 
-impl Generator<ItemData> for Bastionbreaker {
-    fn generate(mut self: Box<Self>) -> MayFail<ItemData> {
+impl Generator for Bastionbreaker {
+    fn generate(&mut self) -> MayFail {
         let [melee, ranged] = match self.passive(1)?.capture_numbers::<f64>()[..] {
             [base_dmg, _, scaling] => {
                 let melee_dmg = base_dmg.plus(scaling.times(ArmorPenetrationFlat));
@@ -13,8 +13,7 @@ impl Generator<ItemData> for Bastionbreaker {
 
         self.melee_min_dmg(melee)
             .ranged_min_dmg(ranged)
-            .damage_type(True);
-
-        self.end()
+            .damage_type(True)
+            .end()
     }
 }

@@ -1,7 +1,7 @@
 use super::*;
 
-impl Generator<Champion> for KogMaw {
-    fn generate(mut self: Box<Self>) -> MayFail<Champion> {
+impl Generator for KogMaw {
+    fn generate(&mut self) -> MayFail {
         self.passive(Void, (0, 0), None, None)
             .ability(Key::Q, [(0, 0, Void)])
             .ability(Key::W, [(0, 1, Void)])
@@ -19,8 +19,7 @@ impl Generator<Champion> for KogMaw {
                 Attack,
                 Ability(W(Void)),
             ])?
-            .progress(Stable);
-
-        self.end()
+            .progress(Stable)
+            .end()
     }
 }
