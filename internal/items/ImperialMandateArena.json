@@ -5,7 +5,7 @@
   "price": 2500,
   "sell": 1250,
   "tier": 0,
-  "attributes": "Area",
+  "attributes": "Undefined",
   "purchasable": true,
   "damage_type": "Magic",
   "prettified_stats": {

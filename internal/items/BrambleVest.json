@@ -5,7 +5,7 @@
   "price": 800,
   "sell": 560,
   "tier": 2,
-  "attributes": "OnhitMax",
+  "attributes": "Undefined",
   "purchasable": true,
   "damage_type": "Magic",
   "prettified_stats": {

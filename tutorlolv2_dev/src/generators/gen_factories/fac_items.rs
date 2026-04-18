@@ -165,7 +165,7 @@ impl ItemData {
     }
 
     pub fn end(&mut self) -> MayFail {
-        Ok(())
+        Ok(self.infer_stats_ifdef())
     }
 
     /// Sets the damage type of the current item
