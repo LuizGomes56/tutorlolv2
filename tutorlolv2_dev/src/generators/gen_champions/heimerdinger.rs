@@ -20,6 +20,6 @@ impl Generator for Heimerdinger {
             ],
         )
         .ability(Key::E, [(0, 0, _1)])
-            .end()
+        .end()
     }
 }

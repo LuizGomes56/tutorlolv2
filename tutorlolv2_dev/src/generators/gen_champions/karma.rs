@@ -14,6 +14,6 @@ impl Generator for Karma {
             ],
         )
         .ability(Key::W, [(0, 0, _1), (1, 1, _2)])
-            .end()
+        .end()
     }
 }
