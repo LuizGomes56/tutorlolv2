@@ -195,17 +195,22 @@ pub fn rustfmt(src: &str, width: Option<usize>) -> String {
 
 static RUST_HIGHLIGHTER: LazyLock<Highlighter> = LazyLock::new(|| {
     let mut h = Highlighter::new(4);
-    h.bounded("comment", r"/\*", r"\*/", false);
-    h.keyword("comment", r"//.*$");
-    h.bounded_interp("string", "\"", "\"", "\\{", "\\}", true);
-    h.keyword("lifetime", r"'\w+");
+    // Comment
+    h.bounded("_x", r"/\*", r"\*/", false);
+    // Comment
+    h.keyword("_x", r"//.*$");
+    // String
+    h.bounded_interp("_s", "\"", "\"", "\\{", "\\}", true);
+    // Lifetime
+    h.keyword("_l", r"'\w+");
 
     fn regkw<const N: usize>(values: [&str; N]) -> String {
         format!(r"\b({})\b", values.join("|"))
     }
 
     h.keyword(
-        "keyword",
+        // Keyword
+        "_k",
         &regkw([
             "void", "pub", "use", "crate", "mut", "static", "ref", "dyn", "unsafe", "extern",
             "type", "super", "mod", "struct", "const", "enum", "fn", "let", "impl", "trait",
@@ -213,7 +218,8 @@ static RUST_HIGHLIGHTER: LazyLock<Highlighter> = LazyLock::new(|| {
         ]),
     );
     h.keyword(
-        "control",
+        // Control
+        "_r",
         &regkw([
             "break",
             "continue",
@@ -234,10 +240,13 @@ static RUST_HIGHLIGHTER: LazyLock<Highlighter> = LazyLock::new(|| {
             "unrecognized",
         ]),
     );
-    h.keyword("constant", r"::[A-Z_][A-Za-z0-9_]*\b");
-    h.keyword("constant", r"\b[A-Z]+\b");
+    // Constant
+    h.keyword("_c", r"::[A-Z_][A-Za-z0-9_]*\b");
+    // Constant
+    h.keyword("_c", r"\b[A-Z]+\b");
+    // Constant
     h.keyword(
-        "constant",
+        "_c",
         &regkw([
             "Some",
             "None",
@@ -326,23 +335,33 @@ static RUST_HIGHLIGHTER: LazyLock<Highlighter> = LazyLock::new(|| {
             "Tenacity",
         ]),
     );
-    h.keyword("type", r"\b[A-Z][a-zA-Z0-9_]*\b");
+    // Type
+    h.keyword("_t", r"\b[A-Z][a-zA-Z0-9_]*\b");
     h.keyword(
-        "primitive",
+        // Primitive
+        "_p",
         &regkw([
             "bool", "usize", "u8", "u16", "u32", "u64", "isize", "i8", "i16", "i32", "i64", "f32",
             "f64", "char", "str",
         ]),
     );
     h.keyword(
-        "number",
+        // Number
+        "_n",
         r"\b(?:0x[0-9A-Fa-f_]+|0o[0-7_]+|0b[01_]+|\d[\d_]*(?:\.\d[\d_]*)?(?:[eE][+-]?\d[\d_]*)?)(?:[iu](?:8|16|32|64|128|size)|f(?:32|64))?\b",
     );
-    h.keyword("boolean", r"\b(true|false)\b");
-    h.keyword("macro", r"[a-zA-Z_][a-zA-Z0-9_]*!");
-    h.keyword("function", r"\b[a-z][a-zA-Z0-9_]*\(");
-    h.keyword("function", r"\b(zero)\b");
-    h.keyword("variable", r"\b[a-z][a-zA-Z0-9_]*\b");
+    // Boolean
+    h.keyword("_b", r"\b(true|false)\b");
+    // Macro
+    h.keyword("_m", r"[a-zA-Z_][a-zA-Z0-9_]*!");
+    // Function
+    h.keyword("_f", r"\b[a-z][a-zA-Z0-9_]*\(");
+    // Function
+    h.keyword("_f", r"\b(zero)\b");
+    // Function
+    h.keyword("_f", r"\b([a-z][a-zA-Z0-9_]*)\s*\(");
+    // Variable
+    h.keyword("_v", r"\b[a-z][a-zA-Z0-9_]*\b");
     h
 });
 
@@ -364,19 +383,18 @@ pub fn rust_html(rust_code: &str) -> String {
         for token in h.line(i, line) {
             match token {
                 TokOpt::Some(text, kind) => match kind.as_str() {
-                    "function" if text.ends_with('(') => {
+                    "_f" if text.ends_with('(') => {
                         let name = &text[..text.len() - 1];
                         line_html.push_str(&format!("<span class=\"{kind}\">{name}</span>"));
                         let c = ((bracket_stack.len() % 3) + 1) as u8;
                         bracket_stack.push(c);
-                        line_html.push_str(&format!(r#"<span class="bracket_{c}">(</span>"#));
+                        line_html.push_str(&format!(r#"<span class="_b{c}">(</span>"#));
                     }
-                    "string" => {
+                    "_s" => {
                         let mut buf = String::new();
                         let flush = |buf: &mut String, line_html: &mut String| {
                             if !buf.is_empty() {
-                                line_html
-                                    .push_str(&format!(r#"<span class="string">{buf}</span>"#));
+                                line_html.push_str(&format!(r#"<span class="_s">{buf}</span>"#));
                                 buf.clear();
                             }
                         };
@@ -384,8 +402,7 @@ pub fn rust_html(rust_code: &str) -> String {
                             match ch == '{' || ch == '}' {
                                 true => {
                                     flush(&mut buf, &mut line_html);
-                                    line_html
-                                        .push_str(&format!(r#"<span class="keyword">{ch}</span>"#));
+                                    line_html.push_str(&format!(r#"<span class="_k">{ch}</span>"#));
                                 }
                                 false => {
                                     buf.push(ch);
@@ -394,7 +411,7 @@ pub fn rust_html(rust_code: &str) -> String {
                         }
                         flush(&mut buf, &mut line_html);
                     }
-                    "constant" if text.starts_with("::") => {
+                    "_c" if text.starts_with("::") => {
                         let name = &text[2..];
                         line_html.push_str("::");
                         line_html.push_str(&format!("<span class=\"{kind}\">{name}</span>"));
@@ -409,14 +426,12 @@ pub fn rust_html(rust_code: &str) -> String {
                             '(' | '[' | '{' => {
                                 let c = ((bracket_stack.len() % 3) + 1) as u8;
                                 bracket_stack.push(c);
-                                line_html
-                                    .push_str(&format!(r#"<span class="bracket_{c}">{ch}</span>"#));
+                                line_html.push_str(&format!(r#"<span class="_b{c}">{ch}</span>"#));
                             }
                             ')' | ']' | '}' => match bracket_stack.pop() {
                                 Some(c) => {
-                                    line_html.push_str(&format!(
-                                        r#"<span class="bracket_{c}">{ch}</span>"#
-                                    ));
+                                    line_html
+                                        .push_str(&format!(r#"<span class="_b{c}">{ch}</span>"#));
                                 }
                                 None => {
                                     line_html.push(ch);
@@ -439,9 +454,12 @@ pub fn rust_html(rust_code: &str) -> String {
 static JSON_HIGHLIGHTER: LazyLock<Highlighter> = LazyLock::new(|| {
     let mut h = Highlighter::new(4);
 
-    h.keyword("string", r#""(?:[^"\\]|\\.)*""#);
-    h.keyword("number", r"-?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?");
-    h.keyword("boolean", r"\b(?:null|true|false)\b");
+    // String
+    h.keyword("_s", r#""(?:[^"\\]|\\.)*""#);
+    // Number
+    h.keyword("_n", r"-?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?");
+    // Boolean
+    h.keyword("_b", r"\b(?:null|true|false)\b");
     h
 });
 
@@ -459,7 +477,7 @@ pub fn json_html(data: &str) -> String {
     for (i, line) in lines.iter().enumerate() {
         let mut toks = h.line(i, line).into_iter().collect::<Vec<_>>();
         for k in 0..toks.len() {
-            let is_string = matches!(&toks[k], TokOpt::Some(_, kind) if kind == "string");
+            let is_string = matches!(&toks[k], TokOpt::Some(_, kind) if kind == "_s");
             if !is_string {
                 continue;
             }
@@ -481,7 +499,7 @@ pub fn json_html(data: &str) -> String {
 
             if next_non_ws == Some(':') {
                 if let TokOpt::Some(text, _) = &toks[k] {
-                    toks[k] = TokOpt::Some(text.clone(), "variable".to_string());
+                    toks[k] = TokOpt::Some(text.clone(), "_v".to_string());
                 }
             }
         }
@@ -498,14 +516,12 @@ pub fn json_html(data: &str) -> String {
                             '{' | '[' | '(' => {
                                 let c = ((bracket_stack.len() % 3) + 1) as u8;
                                 bracket_stack.push(c);
-                                line_html
-                                    .push_str(&format!(r#"<span class="bracket_{c}">{ch}</span>"#));
+                                line_html.push_str(&format!(r#"<span class="_b{c}">{ch}</span>"#));
                             }
                             '}' | ']' | ')' => match bracket_stack.pop() {
                                 Some(c) => {
-                                    line_html.push_str(&format!(
-                                        r#"<span class="bracket_{c}">{ch}</span>"#
-                                    ));
+                                    line_html
+                                        .push_str(&format!(r#"<span class="_b{c}">{ch}</span>"#));
                                 }
                                 None => {
                                     line_html.push(ch);

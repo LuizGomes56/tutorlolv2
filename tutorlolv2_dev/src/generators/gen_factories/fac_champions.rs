@@ -384,7 +384,7 @@ impl ChampionData {
         Ok(self)
     }
 
-    pub fn ability_raw<const N: usize>(
+    pub fn ability_raw(
         &mut self,
         key: AbilityId,
         f: impl FnMut(usize) -> String,
@@ -394,7 +394,15 @@ impl ChampionData {
             .ok_or(format!(
                 "[ability_raw] Failed to find {key:?}'s first element"
             ))?
-            .format(core::array::from_fn::<_, N, _>(f));
+            .format(
+                (0..match key.as_key() {
+                    Key::P => 18,
+                    Key::R => 3,
+                    _ => 5,
+                })
+                    .map(f)
+                    .collect::<Vec<_>>(),
+            );
 
         Ok(self.insert(key, ability))
     }

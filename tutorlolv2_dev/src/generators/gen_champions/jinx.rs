@@ -9,7 +9,7 @@ impl Generator for Jinx {
             .and_then(|effect| effect.description.capture_percent(0).ok())
             .unwrap_or(1.1);
 
-        self.ability_raw::<5>(Q(Void), |_| q_scaling.times(AttackDamage))?
+        self.ability_raw(Q(Void), |_| q_scaling.times(AttackDamage))?
             .ability(Key::W, [(0, 0, Void)])
             .ability(Key::E, [(0, 0, Void)])
             .ability(

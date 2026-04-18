@@ -46,7 +46,7 @@ fn declare_abilities(
                             _ => &match_src,
                         }
                     );
-                    let match_closure = format!("|ctx| {{ match {comparator} as u8 {{");
+                    let match_closure = format!("|ctx| match {comparator} as u8 {{");
 
                     let get_arms = |src: &[String]| {
                         src.iter()
@@ -61,14 +61,14 @@ fn declare_abilities(
 
                     let simplified = simplify(&damage);
 
-                    let get_closure = |arm| format!("{match_closure} {arm} {simplified} }}}}");
+                    let get_closure = |arm| format!("{match_closure} {arm} {simplified} }}");
                     match simplified {
                         Simplified::Progression(_) | Simplified::Independent(_) => {
                             let body = simplified
                                 .expr()
                                 .cast_f32()
                                 .replace("context_level", &comparator);
-                            format!("|ctx| {{ {body} }}")
+                            format!("|ctx| {body}")
                         }
                         _ => {
                             let damage_f32 = damage
@@ -91,7 +91,7 @@ fn declare_abilities(
             .to_lowercase();
 
             let constfn_declaration = format!(
-                "pub const fn {constfn_name}(ctx: &Ctx) -> f32 {body}",
+                "pub const fn {constfn_name}(ctx: &Ctx) -> f32 {{{body}}}",
                 body = damage.trim_start_matches("|ctx|")
             );
 
@@ -554,17 +554,16 @@ fn build_champions(data: Vec<(String, ChampionResult)>) -> GeneratorFn {
             };
 
             let discriminant_upper = discriminant.to_uppercase();
-
-            rustfmt_inputs.push(format!(
+            let input = format!(
                 "static {champion_id_upper}_{discriminant_upper}: Ability = Ability {{
                     name: {name:?},
                     damage_type: {damage_type},
                     attributes: {attributes},
                     {damage},
                 }};"
-            ))
+            );
 
-            // rustfmt_inputs.push(value);
+            rustfmt_inputs.push(input);
         }
 
         fmt_args.push(FmtArgs {

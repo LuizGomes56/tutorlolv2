@@ -74,7 +74,7 @@ impl Html {
             .into_iter()
             .map(ToString::to_string)
             .map(|ctxvar| {
-                let var = conv("variable", &ctxvar["ctx.".len()..]);
+                let var = conv("_v", &ctxvar["ctx.".len()..]);
                 format!("\t{var}")
             })
             .collect::<Vec<_>>()
@@ -84,11 +84,11 @@ impl Html {
 
         let code = format!(
             "<pre>{letkw} {ctxty} {lbracket}{space}{idents}{space}{rbracket} = {ctx};</pre>",
-            letkw = conv("keyword", "let"),
-            ctxty = conv("type", "Ctx"),
-            lbracket = conv("bracket_1", "{"),
-            rbracket = conv("bracket_1", "}"),
-            ctx = conv("variable", "ctx")
+            letkw = conv("_k", "let"),
+            ctxty = conv("_t", "Ctx"),
+            lbracket = conv("_b1", "{"),
+            rbracket = conv("_b1", "}"),
+            ctx = conv("_v", "ctx")
         );
 
         self.code_block(&code)

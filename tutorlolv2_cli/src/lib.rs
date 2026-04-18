@@ -73,28 +73,21 @@ pub enum Fetch {
 #[derive(Subcommand, Debug)]
 pub enum GenArgs {
     #[command(alias = "c")]
-    Create {
-        creator: GenCreator,
-    },
+    Create { creator: GenCreator },
     #[command(alias = "r")]
-    Run {
-        target: RunTarget,
-    },
+    Run { target: RunTarget },
     #[command(alias = "p")]
     Progress,
     #[command(alias = "u")]
     Update,
+    #[command(alias = "h")]
     Html,
     #[command(alias = "s")]
-    Setup {
-        setup: Setup,
-    },
+    Setup { setup: Setup },
     #[command(alias = "b")]
     Build,
     #[command(alias = "f")]
-    Fetch {
-        function: Fetch,
-    },
+    Fetch { function: Fetch },
 }
 
 #[derive(Clone, Copy, Debug, ValueEnum)]

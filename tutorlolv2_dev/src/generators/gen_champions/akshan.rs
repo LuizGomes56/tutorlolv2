@@ -32,7 +32,7 @@ impl Generator for Akshan {
             .unwrap_or(0.5);
 
         self.insert(P(Void), ability)
-            .ability_raw::<18>(P(_1), |_| p1_scaling.times(AttackDamage))?
+            .ability_raw(P(_1), |_| p1_scaling.times(AttackDamage))?
             .ability(Key::Q, [(0, 0, Min), (3, 0, Max)])
             .ability(Key::E, [(4, 0, Void)])
             .ability(
