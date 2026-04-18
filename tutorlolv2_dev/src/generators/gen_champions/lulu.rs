@@ -14,6 +14,6 @@ impl Generator for Lulu {
             ],
         )
         .ability(Key::E, [(1, 0, _1)])
-        .end()
+            .end()
     }
 }

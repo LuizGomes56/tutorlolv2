@@ -17,6 +17,6 @@ impl Generator for Naafiri {
         )
         .ability(Key::E, [(0, 0, _1), (0, 1, _2), (0, 2, _3)])
         .ability(Key::R, [(0, 0, _1), (0, 1, _2)])
-        .end()
+            .end()
     }
 }

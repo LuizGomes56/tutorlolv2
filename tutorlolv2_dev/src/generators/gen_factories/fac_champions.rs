@@ -102,8 +102,8 @@ impl ChampionFactory {
         let mut generated_content = format!(
             "use super::*;
 
-            impl Generator for {name} {{
-                fn generate(&mut self) -> MayFail {{ self"
+            impl Generator<Champion> for {name} {{
+                fn generate(&mut self) -> MayFail {{"
         );
 
         let meraki_champion = MerakiChampion::from_file(
@@ -111,14 +111,30 @@ impl ChampionFactory {
         )
         .map_err(|e| format!("Error calling MerakiChampion::from_file for {name:?}: {e:?}"))?;
 
-        for (ability_char, ability_vec) in meraki_champion.abilities.into_iter() {
-            let meraki_offsets = ChampionData::get_ability_offsets(ability_vec);
-            if meraki_offsets.len() > 0 {
-                generated_content.push_str(&bind_function(ability_char, &meraki_offsets))
-            }
+        let methods = meraki_champion
+            .abilities
+            .into_iter()
+            .filter_map(|(ability_char, ability_vec)| {
+                let meraki_offsets = ChampionData::get_ability_offsets(ability_vec);
+                (meraki_offsets.len() > 0).then_some(bind_function(ability_char, &meraki_offsets))
+            })
+            .collect::<Vec<_>>();
+
+        let marker = methods.len() > 0;
+
+        if marker {
+            generated_content.push_str("self");
         }
 
-        generated_content.push_str(".end()}}");
+        for method in methods {
+            generated_content.push_str(&method);
+        }
+
+        if marker {
+            generated_content.push_str(";\n\n");
+        }
+
+        generated_content.push_str("self.end()}}");
 
         let formatted = rustfmt(&generated_content, None);
         let content = match formatted.is_empty() {

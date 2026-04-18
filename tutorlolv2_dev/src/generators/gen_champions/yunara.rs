@@ -8,6 +8,6 @@ impl Generator for Yunara {
         )
         .ability(Key::W, [(0, 0, _1), (0, 1, _2), (0, 2, _3)])
         .ability(Key::R, [(1, 0, _1)])
-        .end()
+            .end()
     }
 }

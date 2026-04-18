@@ -16,6 +16,6 @@ impl Generator for MasterYi {
         )
         .ability(Key::W, [(2, 0, _1), (2, 1, _2)])
         .ability(Key::E, [(0, 0, _1)])
-        .end()
+            .end()
     }
 }
