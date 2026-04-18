@@ -4,7 +4,10 @@ pub(self) use crate::{
     MayFail,
     Progress::*,
     champions::{Ability, Champion, MerakiChampion},
-    generators::{Generator, gen_factories::fac_champions::ChampionData, gen_utils::RegExtractor},
+    generators::{
+        Generator, GeneratorExt, gen_factories::fac_champions::ChampionData,
+        gen_utils::RegExtractor,
+    },
 };
 pub(self) use tutorlolv2_gen::{
     AbilityId,
@@ -31,19 +34,17 @@ macro_rules! decl_mod {
             }
 
             impl $Name {
-                pub const fn name() -> &'static str {
-                    stringify!($Name)
-                }
-
-                pub fn new(data: MerakiChampion) -> Box<dyn Generator<Champion>> {
+                pub fn new(data: MerakiChampion) -> Box<dyn GeneratorExt<Champion>> {
                     Box::new(Self {
                         inner: ChampionData::new(data)
                     })
                 }
+            }
 
-                pub fn end(self) -> MayFail<Champion> {
-                    println!("[ok] ending generator for {}", Self::name());
-                    self.inner.end()
+            impl GeneratorExt<Champion> for $Name {
+                fn end(self: Box<Self>) -> MayFail<Champion> {
+                    println!(concat!("[ok] ending generator for ", stringify!($Name)));
+                    Ok(self.inner.finish())
                 }
             }
 
@@ -76,7 +77,7 @@ macro_rules! decl_mod {
         )*
 
         pub fn champion_gen_fn(champion_id: &str) -> Option<
-            fn(MerakiChampion) -> Box<dyn Generator<Champion>>
+            fn(MerakiChampion) -> Box<dyn GeneratorExt<Champion>>
         > {
             match champion_id {
                 $(stringify!($Name) => Some($Name::new),)*

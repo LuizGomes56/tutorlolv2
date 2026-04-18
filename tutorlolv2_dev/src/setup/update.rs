@@ -133,43 +133,47 @@ pub fn setup_internal_items() -> MayFail {
 
     parallel_read(
         SaveTo::RiotItemsDir.path(),
-        move |fname, riot_cdn_item: RiotCdnItem| {
-            let meraki_item =
-                MerakiItem::from_file(SaveTo::MerakiCache(Tag::Items, &fname).path()).ok();
-            let riot_id = fname.parse()?;
-
-            let (stats, tier, builds_from_riot_ids, builds_into_riot_ids) = meraki_item
-                .and_then(|item| Some((item.stats, item.tier, item.builds_from, item.builds_into)))
-                .unwrap_or_default();
-
-            let name = names
-                .get(fname)
-                .ok_or(format!("Failed to get name for riot_id: {riot_id}"))?
-                .to_string();
-
-            let internal_fname = pascal_case(&name);
-
-            Item {
-                version: ENV_CONFIG.lol_version.clone(),
-                maps: riot_cdn_item
-                    .maps
-                    .into_iter()
-                    .map(|(map_id, is_available)| (GameMap::from_u8(map_id), is_available))
-                    .collect::<BTreeMap<_, _>>(),
-                sell: riot_cdn_item.gold.sell,
-                purchasable: riot_cdn_item.gold.purchasable,
-                price: riot_cdn_item.gold.total,
-                riot_id,
-                name,
-                stats,
-                tier,
-                builds_from_riot_ids: builds_from_riot_ids.into_iter().collect(),
-                builds_into_riot_ids: builds_into_riot_ids.into_iter().collect(),
-                ..Default::default()
-            }
-            .into_file(SaveTo::InternalRaw(Tag::Items, &internal_fname).path())
+        |fname, riot_cdn_item: RiotCdnItem| {
+            setup_item(
+                names
+                    .get(fname)
+                    .ok_or(format!("Failed to get name for riot_id / fname: {fname}"))?,
+                fname.parse()?,
+                riot_cdn_item,
+            )
         },
     )
+}
+
+/// `fname` should be a number
+pub fn setup_item(name: &str, riot_id: u32, riot_cdn_item: RiotCdnItem) -> MayFail {
+    let meraki_item = MerakiItem::from_file(SaveTo::MerakiCache(Tag::Items, &riot_id).path()).ok();
+
+    let (stats, tier, builds_from_riot_ids, builds_into_riot_ids) = meraki_item
+        .and_then(|item| Some((item.stats, item.tier, item.builds_from, item.builds_into)))
+        .unwrap_or_default();
+
+    let internal_fname = pascal_case(&name);
+
+    Item {
+        version: ENV_CONFIG.lol_version.clone(),
+        maps: riot_cdn_item
+            .maps
+            .into_iter()
+            .map(|(map_id, is_available)| (GameMap::from_u8(map_id), is_available))
+            .collect::<BTreeMap<_, _>>(),
+        sell: riot_cdn_item.gold.sell,
+        purchasable: riot_cdn_item.gold.purchasable,
+        price: riot_cdn_item.gold.total,
+        riot_id,
+        name: name.to_string(),
+        stats,
+        tier,
+        builds_from_riot_ids: builds_from_riot_ids.into_iter().collect(),
+        builds_into_riot_ids: builds_into_riot_ids.into_iter().collect(),
+        ..Default::default()
+    }
+    .into_file(SaveTo::InternalRaw(Tag::Items, &internal_fname).path())
 }
 
 /// Reads the cached runes json extracted from Riot's API and generates a new file containing

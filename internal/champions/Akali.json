@@ -237,5 +237,34 @@
       }
     }
   ],
-  "combo": []
+  "combo": [
+    [
+      {
+        "Ability": {
+          "Q": "Void"
+        }
+      },
+      {
+        "Ability": {
+          "E": "_1Min"
+        }
+      },
+      "Attack",
+      {
+        "Ability": {
+          "P": "Void"
+        }
+      },
+      {
+        "Ability": {
+          "E": "_1Max"
+        }
+      },
+      {
+        "Ability": {
+          "R": "_1"
+        }
+      }
+    ]
+  ]
 }

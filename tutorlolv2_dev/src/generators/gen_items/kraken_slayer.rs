@@ -1,7 +1,7 @@
 use super::*;
 
-impl Generator<ItemData> for KrakenSlayer {
-    fn generate(mut self: Box<Self>) -> MayFail<ItemData> {
+impl Generator for KrakenSlayer {
+    fn generate(&mut self) -> MayFail {
         let bound = Level.minus(8).parens() + ".max(0)";
         let melee_dmg = 150.plus(5).times(&bound);
         let ranged_dmg = 120.plus(4).times(bound);
@@ -18,8 +18,7 @@ impl Generator<ItemData> for KrakenSlayer {
             .ranged_max_dmg(max(ranged_dmg))
             .nonstandard()
             .attr(OnhitMax)
-            .damage_type(Physical);
-
-        self.end()
+            .damage_type(Physical)
+            .end()
     }
 }

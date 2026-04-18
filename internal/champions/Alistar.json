@@ -150,5 +150,24 @@
       }
     }
   ],
-  "combo": []
+  "combo": [
+    [
+      {
+        "Ability": {
+          "W": "Void"
+        }
+      },
+      {
+        "Ability": {
+          "Q": "Void"
+        }
+      },
+      "Attack",
+      {
+        "Ability": {
+          "E": "Max"
+        }
+      }
+    ]
+  ]
 }

@@ -102,8 +102,8 @@ impl ChampionFactory {
         let mut generated_content = format!(
             "use super::*;
 
-            impl Generator<Champion> for {name} {{
-                fn generate(mut self: Box<Self>) -> MayFail<Champion> {{"
+            impl Generator for {name} {{
+                fn generate(&mut self) -> MayFail {{ self"
         );
 
         let meraki_champion = MerakiChampion::from_file(
@@ -111,30 +111,14 @@ impl ChampionFactory {
         )
         .map_err(|e| format!("Error calling MerakiChampion::from_file for {name:?}: {e:?}"))?;
 
-        let methods = meraki_champion
-            .abilities
-            .into_iter()
-            .filter_map(|(ability_char, ability_vec)| {
-                let meraki_offsets = ChampionData::get_ability_offsets(ability_vec);
-                (meraki_offsets.len() > 0).then_some(bind_function(ability_char, &meraki_offsets))
-            })
-            .collect::<Vec<_>>();
-
-        let marker = methods.len() > 0;
-
-        if marker {
-            generated_content.push_str("self");
+        for (ability_char, ability_vec) in meraki_champion.abilities.into_iter() {
+            let meraki_offsets = ChampionData::get_ability_offsets(ability_vec);
+            if meraki_offsets.len() > 0 {
+                generated_content.push_str(&bind_function(ability_char, &meraki_offsets))
+            }
         }
 
-        for method in methods {
-            generated_content.push_str(&method);
-        }
-
-        if marker {
-            generated_content.push_str(";\n\n");
-        }
-
-        generated_content.push_str("self.end()}}");
+        generated_content.push_str(".end()}}");
 
         let formatted = rustfmt(&generated_content, None);
         let content = match formatted.is_empty() {
@@ -180,12 +164,15 @@ impl ChampionFactory {
         }
     }
 
+    pub fn end(&mut self) -> MayFail {
+        Ok(())
+    }
+
     pub fn run_fn(name: &str) -> MayFail<Champion> {
         let data = MerakiChampion::from_file(SaveTo::MerakiCache(Tag::Champions, &name).path())?;
         let function =
             champion_gen_fn(name).ok_or(format!("Unable to find generator function for {name}"))?;
-        let generator = function(data);
-        generator.generate()
+        function(data).call()
     }
 }
 
@@ -397,6 +384,29 @@ impl ChampionData {
         Ok(self)
     }
 
+    pub fn ability_raw(
+        &mut self,
+        key: AbilityId,
+        f: impl FnMut(usize) -> String,
+    ) -> MayFail<&mut Self> {
+        let ability = self.data.abilities[key.as_key()]
+            .first()
+            .ok_or(format!(
+                "[ability_raw] Failed to find {key:?}'s first element"
+            ))?
+            .format(
+                (0..match key.as_key() {
+                    Key::P => 18,
+                    Key::R => 3,
+                    _ => 5,
+                })
+                    .map(f)
+                    .collect::<Vec<_>>(),
+            );
+
+        Ok(self.insert(key, ability))
+    }
+
     /// Receives some ability key and a pattern of that helps locate where
     /// in the effects and levelings array some ability of that kind is located,
     /// and the desired name to call it through the application.
@@ -510,7 +520,7 @@ impl ChampionData {
     /// Finishes the generator function, performing damage type checks and creating
     /// the [`Self::mergevec`] vector which represents what abilities should be displayed
     /// in a single table cell, and printing useful warning messages to the console
-    pub fn end(mut self) -> MayFail<Champion> {
+    pub fn end(&mut self) -> MayFail {
         let name = &self.data.name;
 
         // Verifies if any ability found has unknown damage and emits a warning
@@ -584,7 +594,7 @@ impl ChampionData {
             return Err("Found inconsistent merge vec".into());
         }
 
-        Ok(self.finish())
+        Ok(())
     }
 
     /// Extracts some passive from the merakianalytics data.

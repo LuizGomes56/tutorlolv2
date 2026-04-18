@@ -1,9 +1,7 @@
 use super::*;
 
-impl Generator<Champion> for Aphelios {
-    fn generate(mut self: Box<Self>) -> MayFail<Champion> {
-        self.ability(Key::P, [(2, 0, _1)]);
-
-        self.end()
+impl Generator for Aphelios {
+    fn generate(&mut self) -> MayFail {
+        self.ability(Key::P, [(2, 0, _1)]).end()
     }
 }

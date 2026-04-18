@@ -1,7 +1,7 @@
 use super::*;
 
-impl Generator<Champion> for Leblanc {
-    fn generate(mut self: Box<Self>) -> MayFail<Champion> {
+impl Generator for Leblanc {
+    fn generate(&mut self) -> MayFail {
         self.ability(Key::Q, [(0, 0, _1), (1, 0, _2)])
             .ability(Key::W, [(0, 0, _1)])
             .ability(Key::E, [(0, 0, _1), (1, 0, _2), (1, 1, _3)])
@@ -16,8 +16,7 @@ impl Generator<Champion> for Leblanc {
                     (3, 1, _6),
                     (3, 2, _7),
                 ],
-            );
-
-        self.end()
+            )
+            .end()
     }
 }

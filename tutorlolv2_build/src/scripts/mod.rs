@@ -28,11 +28,10 @@ pub const ZERO_FN: &str = r#"fn zero(_: &Ctx) -> f32 {
 
 pub const DEFAULT_ITEM_GENERATOR: &str = r#"use super::*;
 
-impl Generator<ItemData> for Item {
-    fn generate(mut self: Box<Self>) -> MayFail<ItemData> {
+impl Generator for Item {
+    fn generate(&mut self) -> MayFail {
         /* No implementation */
-        self.infer_stats_ifdef();
-        self.end()
+        self.infer_stats_ifdef().end()
     }
 }"#;
 
@@ -134,8 +133,7 @@ pub trait StringExt: AsRef<str> {
     }
 
     fn as_const(&self) -> String {
-        self.as_ref()
-            .replacen("class=\"type\"", "class=\"constant\"", 1)
+        self.as_ref().replacen("class=\"_t\"", "class=\"_c\"", 1)
     }
 
     fn to_ssnake(&self) -> String {
@@ -1068,7 +1066,11 @@ pub fn rustfmt_batch(snips: &[String]) -> Vec<String> {
     for (i, s) in snips.iter().enumerate() {
         input.push_str(&format!("//__SNIP_{i:06}__"));
         input.push('\n');
-        input.push_str(s);
+        input.push_str(
+            &s.replace("ctx.", "")
+                .replace("|ctx| ", "")
+                .replace("(ctx: &Ctx) -> f32", "()"),
+        );
         if !s.ends_with('\n') {
             input.push('\n');
         }

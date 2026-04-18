@@ -1,3 +1,4 @@
+use crate::MayFail;
 use serde::{Deserialize, Serialize};
 
 pub mod gen_champions;
@@ -25,6 +26,17 @@ pub enum Progress {
 ///
 /// Also, with each champion, item, and rune having its own file, with its name, it is
 /// easier to fix their generators in case some breaking change occur.
-pub trait Generator<T> {
-    fn generate(self: Box<Self>) -> crate::MayFail<T>;
+pub trait Generator {
+    fn generate(&mut self) -> MayFail;
+}
+
+pub trait GeneratorExt<T>
+where
+    Self: Generator,
+{
+    fn end(self: Box<Self>) -> MayFail<T>;
+    fn call(mut self: Box<Self>) -> MayFail<T> {
+        self.generate()?;
+        self.end()
+    }
 }

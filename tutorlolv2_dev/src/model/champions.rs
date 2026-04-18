@@ -40,13 +40,16 @@ impl MerakiAbility {
     /// Receives a `damage` vector and returns a new [`Ability`] struct,
     /// filling the information that can be inferred from the [`Self`] object,
     /// such as name, attributes, and damage type
-    pub fn format(&self, damage: Vec<String>) -> Ability {
+    pub fn format<T>(&self, damage: T) -> Ability
+    where
+        Vec<String>: From<T>,
+    {
         Ability {
             name: self.name.clone(),
             damage_type: DamageType::from_str(self.damage_type.as_deref().unwrap_or_default())
                 .unwrap_or_default(),
             attributes: Attrs::Undefined,
-            damage,
+            damage: damage.into(),
         }
     }
 }

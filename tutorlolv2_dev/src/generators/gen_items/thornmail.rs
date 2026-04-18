@@ -1,9 +1,8 @@
 use super::*;
 
-impl Generator<ItemData> for Thornmail {
-    fn generate(mut self: Box<Self>) -> MayFail<ItemData> {
+impl Generator for Thornmail {
+    fn generate(&mut self) -> MayFail {
         let damage = self.passive(0)?;
-        self.const_min_dmg(damage).damage_type(Magic);
-        self.end()
+        self.const_min_dmg(damage).damage_type(Magic).end()
     }
 }

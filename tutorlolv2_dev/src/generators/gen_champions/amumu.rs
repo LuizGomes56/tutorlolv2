@@ -1,13 +1,24 @@
 use super::*;
 
-impl Generator<Champion> for Amumu {
-    fn generate(mut self: Box<Self>) -> MayFail<Champion> {
+impl Generator for Amumu {
+    fn generate(&mut self) -> MayFail {
         self.ability(Key::Q, [(0, 0, Void)])
             .ability(Key::W, [(0, 0, Void)])
             .ability(Key::E, [(0, 0, Void)])
             .ability(Key::R, [(0, 0, Void)])
-            .progress(Preserve);
-
-        self.end()
+            .combo([
+                Ability(Q(Void)),
+                Ability(W(Void)),
+                Ability(E(Void)),
+                Ability(W(Void)),
+                Ability(R(Void)),
+                Attack,
+                Ability(W(Void)),
+                Attack,
+                Ability(W(Void)),
+                Ability(E(Void)),
+            ])?
+            .progress(Stable)
+            .end()
     }
 }

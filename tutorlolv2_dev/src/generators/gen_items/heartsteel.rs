@@ -1,7 +1,7 @@
 use super::*;
 
-impl Generator<ItemData> for Heartsteel {
-    fn generate(mut self: Box<Self>) -> MayFail<ItemData> {
+impl Generator for Heartsteel {
+    fn generate(&mut self) -> MayFail {
         let passive = self.passive(1)?;
 
         let base_dmg = passive.capture_numbers::<i32>()[0];
@@ -9,8 +9,7 @@ impl Generator<ItemData> for Heartsteel {
 
         self.const_min_dmg(base_dmg.plus(scaling))
             .damage_type(Physical)
-            .attr(OnhitMax);
-
-        self.end()
+            .attr(OnhitMax)
+            .end()
     }
 }

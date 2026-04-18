@@ -1,8 +1,16 @@
 use super::*;
 
-impl Generator<Champion> for Jinx {
-    fn generate(mut self: Box<Self>) -> MayFail<Champion> {
-        self.ability(Key::W, [(0, 0, Void)])
+impl Generator for Jinx {
+    fn generate(&mut self) -> MayFail {
+        let q_scaling = self
+            .get_meraki_ability(Key::Q, 0)
+            .effects
+            .first()
+            .and_then(|effect| effect.description.capture_percent(0).ok())
+            .unwrap_or(1.1);
+
+        self.ability_raw(Q(Void), |_| q_scaling.times(AttackDamage))?
+            .ability(Key::W, [(0, 0, Void)])
             .ability(Key::E, [(0, 0, Void)])
             .ability(
                 Key::R,
@@ -14,18 +22,7 @@ impl Generator<Champion> for Jinx {
                     (2, 0, Max),
                     (2, 1, Min),
                 ],
-            );
-
-        let q = self
-            .data
-            .abilities
-            .q
-            .first()
-            .ok_or("Failed to find Jinx's Q")?
-            // n = 1 generates unrecognized pattern
-            .format(vec![1.1.times(AttackDamage); 5]);
-
-        self.insert(Q(Void), q)
+            )
             .attr(AreaOnhitMax, [Q(Void)])?
             .attr(Area, [Q(Void), E(Void), R(_1Max), R(_1Min), R(Max), R(Min)])?
             .combo([
@@ -35,8 +32,7 @@ impl Generator<Champion> for Jinx {
                 Attack,
                 Ability(W(Void)),
             ])?
-            .progress(Stable);
-
-        self.end()
+            .progress(Stable)
+            .end()
     }
 }

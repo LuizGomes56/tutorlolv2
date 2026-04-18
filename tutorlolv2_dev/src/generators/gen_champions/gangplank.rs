@@ -1,7 +1,7 @@
 use super::*;
 
-impl Generator<Champion> for Gangplank {
-    fn generate(mut self: Box<Self>) -> MayFail<Champion> {
+impl Generator for Gangplank {
+    fn generate(&mut self) -> MayFail {
         self.ability(Key::Q, [(0, 0, _1)])
             .ability(Key::E, [(1, 0, _1)])
             .ability(
@@ -15,8 +15,7 @@ impl Generator<Champion> for Gangplank {
                     (2, 0, _6),
                     (2, 1, _7),
                 ],
-            );
-
-        self.end()
+            )
+            .end()
     }
 }

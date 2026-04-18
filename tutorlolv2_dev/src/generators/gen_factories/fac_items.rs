@@ -164,6 +164,10 @@ impl ItemData {
         self
     }
 
+    pub fn end(&mut self) -> MayFail {
+        Ok(self.infer_stats_ifdef())
+    }
+
     /// Sets the damage type of the current item
     pub const fn damage_type(&mut self, damage_type: DamageType) -> &mut Self {
         self.current_data.damage_type = damage_type;
@@ -283,7 +287,7 @@ impl ItemFactory {
         let mut args = ItemData::new(meraki_data, riot_data, current_data);
 
         match item_gen_fn(name) {
-            Some(f) => f(args).generate(),
+            Some(f) => f(args).call(),
             None => {
                 if args.has_map(GameMap::Arena) && name.contains("Arena") {
                     args.try_yield(name)?;

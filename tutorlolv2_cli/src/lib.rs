@@ -1,4 +1,4 @@
-use clap::{Parser, Subcommand};
+use clap::{Parser, Subcommand, ValueEnum};
 use std::str::FromStr;
 use tutorlolv2_dev::{
     MayFail,
@@ -6,6 +6,10 @@ use tutorlolv2_dev::{
     update,
 };
 use tutorlolv2_gen::{ChampionId, ItemId};
+
+fn from_str_err<T>(s: &str, into: &str) -> Result<T, String> {
+    Err(format!("Value {s:?} can't be converted into {into}"))
+}
 
 #[derive(Parser, Debug)]
 pub struct Cli {
@@ -31,9 +35,7 @@ impl FromStr for RunTarget {
             "champions" | "c" => Ok(Self::Factory(ChampionFactory::run_all)),
             s if let Ok(champion_id) = ChampionId::from_str(s) => Ok(Self::Champion(champion_id)),
             s if let Ok(item_id) = ItemId::from_str(s) => Ok(Self::Item(item_id)),
-            _ => Err(format!(
-                "Value {s:?} can't be converted to ChampionId or ItemId"
-            )),
+            _ => from_str_err(s, "ChampionId or ItemId"),
         }
     }
 }
@@ -51,35 +53,44 @@ impl FromStr for GenCreator {
         match s {
             "all" | "a" => Ok(Self::All),
             s if let Ok(champion_id) = ChampionId::from_str(s) => Ok(Self::Champion(champion_id)),
-            _ => Err(format!("Value {s:?} can't be converted to ChampionId")),
+            _ => from_str_err(s, "ChampionId"),
         }
     }
+}
+
+#[derive(Clone, Copy, Debug, ValueEnum)]
+pub enum Fetch {
+    #[clap(alias = "i")]
+    Images,
+    #[clap(alias = "c")]
+    Cache,
+    #[clap(alias = "s")]
+    Scraper,
+    #[clap(alias = "v")]
+    Version,
 }
 
 #[derive(Subcommand, Debug)]
 pub enum GenArgs {
     #[command(alias = "c")]
-    Create {
-        creator: GenCreator,
-    },
+    Create { creator: GenCreator },
     #[command(alias = "r")]
-    Run {
-        target: RunTarget,
-    },
+    Run { target: RunTarget },
     #[command(alias = "p")]
     Progress,
     #[command(alias = "u")]
     Update,
+    #[command(alias = "h")]
     Html,
     #[command(alias = "s")]
-    Setup {
-        setup: Setup,
-    },
+    Setup { setup: Setup },
     #[command(alias = "b")]
     Build,
+    #[command(alias = "f")]
+    Fetch { function: Fetch },
 }
 
-#[derive(Clone, Copy, Debug, clap::ValueEnum)]
+#[derive(Clone, Copy, Debug, ValueEnum)]
 pub enum Setup {
     #[clap(alias = "i")]
     Items,
@@ -89,7 +100,7 @@ pub enum Setup {
     Folders,
 }
 
-pub fn run() -> MayFail {
+pub async fn run() -> MayFail {
     let Cli { args } = Cli::parse();
 
     dotenvy::dotenv()?;
@@ -121,8 +132,6 @@ pub fn run() -> MayFail {
             ItemFactory::run_all()?;
             std::env::set_current_dir("./tutorlolv2_build")?;
             tutorlolv2_build::run()?;
-            std::env::set_current_dir("../")?;
-            tutorlolv2_html::run();
         }
         GenArgs::Html => tutorlolv2_html::run(),
         GenArgs::Setup { setup } => match setup {
@@ -137,6 +146,7 @@ pub fn run() -> MayFail {
             std::env::set_current_dir("./tutorlolv2_build")?;
             tutorlolv2_build::run()?
         }
+        GenArgs::Fetch { function } => todo!(),
     }
 
     Ok(())

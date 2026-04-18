@@ -98,9 +98,10 @@ pub trait RegExtractor {
 
     /// Capture the numbers that are followed by a `%` symbol
     /// ```txt
-    /// 100% -> 100.0
-    /// 200% -> 200.0
-    /// 300% -> 300.0
+    /// 50% -> 0.5
+    /// 100% -> 1.0
+    /// 200% -> 2.0
+    /// 300% -> 3.0
     /// ```
     fn capture_percent(&self, number: usize) -> MayFail<f64>;
 
@@ -175,7 +176,8 @@ impl RegExtractor for str {
             .and_then(|cap| cap.get(1).map(|m| m.as_str()))
             .ok_or(format!("No percent value in #{number} for '{self}'"))?
             .parse::<f64>()
-            .map_err(|e| format!("Unable to convert all numbers to f64: {e:?}"))?)
+            .map_err(|e| format!("Unable to convert all numbers to f64: {e:?}"))?
+            / 100.0)
     }
 
     fn capture_numbers_slash(&self) -> Vec<f64> {
