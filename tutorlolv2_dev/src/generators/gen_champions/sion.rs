@@ -17,6 +17,6 @@ impl Generator for Sion {
         .ability(Key::W, [(3, 0, _1)])
         .ability(Key::E, [(0, 0, _1)])
         .ability(Key::R, [(2, 0, _1), (2, 1, _2)])
-        .end()
+            .end()
     }
 }

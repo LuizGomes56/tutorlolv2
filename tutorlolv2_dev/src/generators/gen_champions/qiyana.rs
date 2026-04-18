@@ -16,6 +16,6 @@ impl Generator for Qiyana {
         .ability(Key::W, [(3, 1, _1)])
         .ability(Key::E, [(0, 0, _1)])
         .ability(Key::R, [(1, 0, _1), (1, 1, _2)])
-        .end()
+            .end()
     }
 }

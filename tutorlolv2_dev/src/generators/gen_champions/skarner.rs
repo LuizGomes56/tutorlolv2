@@ -9,6 +9,6 @@ impl Generator for Skarner {
         .ability(Key::W, [(0, 0, _1)])
         .ability(Key::E, [(1, 0, _1)])
         .ability(Key::R, [(0, 0, _1)])
-        .end()
+            .end()
     }
 }

@@ -16,6 +16,6 @@ impl Generator for Pantheon {
         .ability(Key::W, [(0, 0, _1)])
         .ability(Key::E, [(4, 0, _1)])
         .ability(Key::R, [(3, 0, _1), (3, 1, _2)])
-        .end()
+            .end()
     }
 }
