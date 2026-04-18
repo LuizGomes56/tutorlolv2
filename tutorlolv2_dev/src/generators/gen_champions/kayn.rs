@@ -15,6 +15,6 @@ impl Generator for Kayn {
         )
         .ability(Key::W, [(0, 0, _1)])
         .ability(Key::R, [(3, 0, _1)])
-            .end()
+        .end()
     }
 }

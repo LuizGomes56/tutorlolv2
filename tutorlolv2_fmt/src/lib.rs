@@ -96,6 +96,10 @@ pub fn pascal_case(input: &str) -> String {
         }
     }
 
+    if out == "JakshoTheProtean" {
+        return "JakShoTheProtean".to_string();
+    }
+
     out
 }
 
