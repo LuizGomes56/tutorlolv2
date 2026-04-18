@@ -384,6 +384,21 @@ impl ChampionData {
         Ok(self)
     }
 
+    pub fn ability_raw<const N: usize>(
+        &mut self,
+        key: AbilityId,
+        f: impl FnMut(usize) -> String,
+    ) -> MayFail<&mut Self> {
+        let ability = self.data.abilities[key.as_key()]
+            .first()
+            .ok_or(format!(
+                "[ability_raw] Failed to find {key:?}'s first element"
+            ))?
+            .format(core::array::from_fn::<_, N, _>(f));
+
+        Ok(self.insert(key, ability))
+    }
+
     /// Receives some ability key and a pattern of that helps locate where
     /// in the effects and levelings array some ability of that kind is located,
     /// and the desired name to call it through the application.

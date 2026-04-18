@@ -6,7 +6,19 @@ impl Generator for Amumu {
             .ability(Key::W, [(0, 0, Void)])
             .ability(Key::E, [(0, 0, Void)])
             .ability(Key::R, [(0, 0, Void)])
-            .progress(Preserve)
+            .combo([
+                Ability(Q(Void)),
+                Ability(W(Void)),
+                Ability(E(Void)),
+                Ability(W(Void)),
+                Ability(R(Void)),
+                Attack,
+                Ability(W(Void)),
+                Attack,
+                Ability(W(Void)),
+                Ability(E(Void)),
+            ])?
+            .progress(Stable)
             .end()
     }
 }

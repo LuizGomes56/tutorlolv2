@@ -5,7 +5,8 @@ impl Generator for Alistar {
         self.ability(Key::Q, [(0, 0, Void)])
             .ability(Key::W, [(0, 0, Void)])
             .ability(Key::E, [(0, 0, Min), (0, 1, Max)])
-            .progress(Preserve)
+            .combo([Ability(W(Void)), Ability(Q(Void)), Attack, Ability(E(Max))])?
+            .progress(Stable)
             .end()
     }
 }

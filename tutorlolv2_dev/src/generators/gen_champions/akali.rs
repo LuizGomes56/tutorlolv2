@@ -8,7 +8,15 @@ impl Generator for Akali {
             .ability(Key::R, [(0, 0, _1), (2, 0, _2Min), (2, 1, _2Max)])
             .attr(Area, [Q(Void), R(_1), R(_2Min), R(_2Max)])?
             .attr(Onhit, [P(Void)])?
-            .progress(Preserve)
+            .combo([
+                Ability(Q(Void)),
+                Ability(E(_1Min)),
+                Attack,
+                Ability(P(Void)),
+                Ability(E(_1Max)),
+                Ability(R(_1)),
+            ])?
+            .progress(Stable)
             .end()
     }
 }
