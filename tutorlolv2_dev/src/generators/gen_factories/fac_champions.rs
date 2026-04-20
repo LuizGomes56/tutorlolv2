@@ -145,16 +145,23 @@ impl ChampionFactory {
         Self::GENERATOR_NAMES
             .into_par_iter()
             .copied()
-            .try_for_each(Self::create)
+            .for_each(|v| {
+                let _ =
+                    Self::create(v).inspect_err(|e| eprintln!("Error on try::create::{v}: {e:?}"));
+            });
+
+        Ok(())
     }
 
     /// Runs all generator files. It means that several `.json` files will be created
     /// in the internal cache folder
-    pub fn run_all() -> MayFail {
+    pub fn run_all() {
         Self::GENERATOR_NAMES
             .into_par_iter()
             .copied()
-            .try_for_each(Self::run)
+            .for_each(|v| {
+                let _ = Self::run(v).inspect_err(|e| eprintln!("Error on try::run::{v}: {e:?}"));
+            })
     }
 
     pub fn run(name: &str) -> MayFail {

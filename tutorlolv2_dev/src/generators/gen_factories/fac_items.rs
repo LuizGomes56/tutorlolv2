@@ -239,10 +239,11 @@ pub struct ItemFactory;
 
 impl ItemFactory {
     /// Runs all item generators, stopping the execution if one of them fails
-    pub fn run_all() -> MayFail {
-        ItemId::VALUES
-            .into_par_iter()
-            .try_for_each(|item_id| Self::run(item_id.debug(), item_id.to_riot_id()))
+    pub fn run_all() {
+        ItemId::VALUES.into_par_iter().for_each(|item_id| {
+            let _ = Self::run(item_id.debug(), item_id.to_riot_id())
+                .inspect_err(|e| eprintln!("Error on ItemFactory::run::{item_id:?}: {e:?}"));
+        });
     }
 
     pub fn run(name: &str, riot_id: u32) -> MayFail {
