@@ -1,4 +1,3 @@
-use crate::parallel_read;
 use crate::wiki::model::{
     AbilityBlockRaw, AbilityFetchJob, AbilityTemplatePageRaw, ChampionTemplatePageRaw, FormulaKind,
     ParameterEntry, WikiLink,

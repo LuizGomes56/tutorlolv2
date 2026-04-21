@@ -180,7 +180,9 @@ pub async fn run() -> MayFail {
                 // parse_champions_lua()?;
                 // HTTP_CLIENT.download_wiki_champions().await?;
                 // parse_champion_templates()?;
-                HTTP_CLIENT.build_wiki_abilities().await?;
+                // HTTP_CLIENT.build_wiki_abilities().await?;
+                // tutorlolv2_wiki::try_fetch().await.unwrap();
+                tutorlolv2_wiki::champions::run().await?;
             }
         },
     }
