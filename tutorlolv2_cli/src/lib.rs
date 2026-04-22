@@ -4,7 +4,6 @@ use tutorlolv2_dev::{
     ENV_CONFIG, HTTP_CLIENT, MayFail,
     gen_factories::{fac_champions::ChampionFactory, fac_items::ItemFactory},
     update,
-    wiki::parser::{parse_champion_templates, parse_champions_lua},
 };
 use tutorlolv2_gen::{ChampionId, ItemId};
 

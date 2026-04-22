@@ -40,7 +40,7 @@ pub fn generate_runes() -> GeneratorFn {
                 let metadata = format!(
                     "TypeMetadata {{
                         kind: RuneId::{name_pascal},
-                        damage_type: {damage_type},
+                        damage_type: {damage_type:?},
                         attributes: Undefined
                     }}"
                 );
@@ -134,7 +134,7 @@ pub fn generate_runes() -> GeneratorFn {
                 };
 
                 let idents = (melee_closure.clone() + &ranged_closure)
-                    .get_idents(&damage_type)
+                    .get_idents(damage_type)
                     .into_iter()
                     .collect::<String>();
 

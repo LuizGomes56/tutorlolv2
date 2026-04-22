@@ -2,7 +2,6 @@ pub mod generators;
 pub mod init;
 pub mod model;
 pub mod setup;
-pub mod wiki;
 
 pub use generators::*;
 pub use init::*;

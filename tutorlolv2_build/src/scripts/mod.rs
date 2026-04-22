@@ -5,6 +5,7 @@ use std::{
     sync::LazyLock,
 };
 use tutorlolv2_fmt::rust_html;
+use tutorlolv2_types::DamageType;
 
 pub mod champions;
 pub mod items;
@@ -109,14 +110,14 @@ pub const BASIC_ATTACK_FN: &str = r#"fn basic_attack(ctx: &Ctx) -> f32 {
 }"#;
 
 pub trait StringExt: AsRef<str> {
-    fn get_idents(&self, damage_type: &str) -> BTreeSet<String> {
+    fn get_idents(&self, damage_type: DamageType) -> BTreeSet<String> {
         RE_IDENTS
             .captures_iter(self.as_ref())
             .map(|cap| format!("CtxVar::{},", cap[1].pascal_case()))
             .chain(
                 match damage_type {
-                    "Physical" => Some("CtxVar::PhysicalMultiplier,"),
-                    "Magic" => Some("CtxVar::MagicMultiplier,"),
+                    DamageType::Physical => Some("CtxVar::PhysicalMultiplier,"),
+                    DamageType::Magic => Some("CtxVar::MagicMultiplier,"),
                     _ => None,
                 }
                 .map(str::to_string),

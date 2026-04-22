@@ -16,7 +16,8 @@ use std::{
     sync::LazyLock,
 };
 use tutorlolv2_fmt::pascal_case;
-use tutorlolv2_gen::{CastId, GameMap, ItemId, StatName};
+use tutorlolv2_gen::{CastId, ItemId};
+use tutorlolv2_types::{GameMap, StatName};
 
 /// Creates basic folders necessary to run the program. If one of these folders are not found,
 /// The program is likely to panic when an update is called.

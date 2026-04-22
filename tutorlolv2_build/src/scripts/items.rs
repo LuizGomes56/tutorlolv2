@@ -36,7 +36,7 @@ fn declare_item(name: &str, item: &Item) -> DeclaredItem {
     let metadata = format!(
         "TypeMetadata {{
         kind: ItemId::{name},
-        damage_type: {damage_type},
+        damage_type: {damage_type:?},
         attributes: {attributes:?},
     }}"
     );
@@ -343,7 +343,7 @@ pub fn generate_items() -> GeneratorFn {
             .maps
             .into_iter()
             .map(|(key, val)| {
-                let map_name = key.to_ssnake().to_lowercase();
+                let map_name = format!("{key:?}").to_ssnake().to_lowercase();
                 format!("{map_name}: {val},")
             })
             .collect::<Vec<_>>()
@@ -408,7 +408,7 @@ pub fn generate_items() -> GeneratorFn {
             CwdPath::get_generator(SrcFolder::Items, name_pascal.to_ssnake().to_lowercase()).ok();
 
         let idents = constfn_declaration
-            .get_idents(&item.damage_type)
+            .get_idents(item.damage_type)
             .into_iter()
             .collect::<String>();
 

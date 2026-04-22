@@ -1,5 +1,3 @@
-use std::str::FromStr;
-
 use crate::{
     ENV_CONFIG, JsonRead, JsonWrite, MayFail,
     client::{SaveTo, Tag},
@@ -8,9 +6,11 @@ use crate::{
     items::{Effect, Item, ItemStats, MerakiItem},
     riot::RiotCdnItem,
 };
+use core::str::FromStr;
 use rayon::iter::{IntoParallelIterator, ParallelIterator};
 use serde_json::Value;
-use tutorlolv2_gen::{Attrs, DamageType, GameMap, ItemId, StatName};
+use tutorlolv2_gen::ItemId;
+use tutorlolv2_types::{Attrs, DamageType, GameMap, StatName};
 
 pub struct ItemData {
     pub meraki_data: Option<MerakiItem>,

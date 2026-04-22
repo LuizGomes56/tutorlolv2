@@ -14,7 +14,7 @@ use std::{
     str::FromStr,
 };
 use tutorlolv2_fmt::rustfmt;
-use tutorlolv2_gen::{
+use tutorlolv2_types::{
     AbilityId, AbilityName, AdaptiveType, AttackType, Attrs, ComboElement, DamageType,
     DevMergeData, Key, Position,
 };

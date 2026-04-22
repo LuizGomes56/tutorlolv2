@@ -1,6 +1,9 @@
 use serde::Deserialize;
 use std::collections::{BTreeMap, BTreeSet};
-use tutorlolv2_types::{AbilityId, ComboElement, DevMergeData, StatName};
+use tutorlolv2_types::{
+    AbilityId, AdaptiveType, AttackType, Attrs, ComboElement, DamageType, DevMergeData, GameMap,
+    Position, StatName,
+};
 
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -33,23 +36,10 @@ pub struct MerakiChampionStats {
     pub urf_damage_dealt: MerakiChampionStatMap,
 }
 
-#[derive(Copy, Clone, Debug, Deserialize, Default)]
-pub enum Attrs {
-    #[default]
-    Undefined,
-    Onhit,
-    OnhitMin,
-    OnhitMax,
-    Area,
-    AreaOnhit,
-    AreaOnhitMin,
-    AreaOnhitMax,
-}
-
 #[derive(Deserialize)]
 pub struct Ability {
     pub name: String,
-    pub damage_type: String,
+    pub damage_type: DamageType,
     #[serde(default)]
     pub attributes: Attrs,
     pub damage: Vec<String>,
@@ -58,9 +48,9 @@ pub struct Ability {
 #[derive(Deserialize)]
 pub struct Champion {
     pub name: String,
-    pub adaptive_type: String,
-    pub attack_type: String,
-    pub positions: Vec<String>,
+    pub adaptive_type: AdaptiveType,
+    pub attack_type: AttackType,
+    pub positions: Vec<Position>,
     pub stats: MerakiChampionStats,
     pub abilities: Vec<(AbilityId, Ability)>,
     pub merge_data: BTreeSet<DevMergeData>,
@@ -111,19 +101,19 @@ pub struct Item {
     pub price: usize,
     pub tier: u8,
     pub prettified_stats: BTreeMap<StatName, u16>,
-    pub damage_type: String,
+    pub damage_type: DamageType,
     pub stats: ItemStats,
     pub ranged: DamageObject,
     pub melee: DamageObject,
     pub attributes: Attrs,
     pub purchasable: bool,
-    pub maps: BTreeMap<String, bool>,
+    pub maps: BTreeMap<GameMap, bool>,
 }
 
 #[derive(Deserialize)]
 pub struct Rune {
     pub name: String,
-    pub damage_type: String,
+    pub damage_type: DamageType,
     pub ranged: String,
     pub melee: String,
 }

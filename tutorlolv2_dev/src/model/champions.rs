@@ -4,7 +4,7 @@ use std::{
     ops::Index,
     str::FromStr,
 };
-use tutorlolv2_gen::{
+use tutorlolv2_types::{
     AbilityId, AdaptiveType, AttackType, Attrs, ComboElement, DamageType, DevMergeData, Key,
     Position,
 };

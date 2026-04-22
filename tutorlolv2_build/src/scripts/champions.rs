@@ -9,7 +9,7 @@ use crate::{
 use rayon::iter::{IntoParallelIterator, ParallelIterator};
 use std::collections::{BTreeMap, BTreeSet};
 use tutorlolv2_fmt::to_ssnake;
-use tutorlolv2_types::{AbilityId, DevMergeData};
+use tutorlolv2_types::{AbilityId, DamageType, DevMergeData};
 
 struct DeclaredAbility {
     data: AbilityData,
@@ -95,14 +95,14 @@ fn declare_abilities(
                 body = damage.trim_start_matches("|ctx|")
             );
 
-            let idents = damage.get_idents(&damage_type);
+            let idents = damage.get_idents(damage_type);
 
             let attributes = format!("{attributes:?}");
 
             let metadata = format!(
                 "TypeMetadata {{ 
                     kind: {ability_id:?},
-                    damage_type: {damage_type},
+                    damage_type: {damage_type:?},
                     attributes: {attributes}
                 }}"
             );
@@ -213,7 +213,7 @@ struct ConstFn {
 
 struct AbilityData {
     name: String,
-    damage_type: String,
+    damage_type: DamageType,
     attributes: String,
     damage: String,
 }
@@ -295,7 +295,11 @@ pub fn generate_champions() -> GeneratorFn {
             constfns.push(constfn);
         }
 
-        let positions = positions.join(",");
+        let positions = positions
+            .iter()
+            .map(|v| format!("{v:?}"))
+            .collect::<Vec<_>>()
+            .join(",");
 
         let combos = combo
             .into_iter()
@@ -320,8 +324,8 @@ pub fn generate_champions() -> GeneratorFn {
         let base_declaration = format!(
             "static {champion_id_upper}: CC = CC {{
                 name: {name:?},
-                adaptive_type: AdaptiveType::{adaptive_type},
-                attack_type: {attack_type},
+                adaptive_type: AdaptiveType::{adaptive_type:?},
+                attack_type: {attack_type:?},
                 positions: &[{positions}],"
         );
 
@@ -557,7 +561,7 @@ fn build_champions(data: Vec<(String, ChampionResult)>) -> GeneratorFn {
             let input = format!(
                 "static {champion_id_upper}_{discriminant_upper}: Ability = Ability {{
                     name: {name:?},
-                    damage_type: {damage_type},
+                    damage_type: {damage_type:?},
                     attributes: {attributes},
                     {damage},
                 }};"

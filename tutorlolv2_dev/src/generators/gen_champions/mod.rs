@@ -9,10 +9,10 @@ pub(self) use crate::{
         gen_utils::RegExtractor,
     },
 };
-pub(self) use tutorlolv2_gen::{
-    AbilityId, AbilityId::*, AbilityName::*, ComboElement::*, CtxVar::*, Key,
+pub(self) use tutorlolv2_gen::CtxVar::*;
+pub(self) use tutorlolv2_types::{
+    AbilityId, AbilityId::*, AbilityName::*, Attrs::*, ComboElement::*, DamageType::*, Key,
 };
-pub(self) use tutorlolv2_types::{Attrs::*, DamageType::*};
 
 macro_rules! decl_mod {
     (inner $Name:ident) => {
