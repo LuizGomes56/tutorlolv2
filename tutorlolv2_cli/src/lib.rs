@@ -6,6 +6,7 @@ use tutorlolv2_dev::{
     update,
 };
 use tutorlolv2_gen::{ChampionId, ItemId};
+use tutorlolv2_wiki::champions;
 
 fn from_str_err<T>(s: &str, into: &str) -> Result<T, String> {
     Err(format!("Value {s:?} can't be converted into {into}"))
@@ -68,8 +69,6 @@ pub enum Fetch {
     Scraper,
     #[clap(alias = "v")]
     Version,
-    #[clap(alias = "w")]
-    Wiki,
 }
 
 #[derive(Subcommand, Debug)]
@@ -90,6 +89,26 @@ pub enum GenArgs {
     Build,
     #[command(alias = "f")]
     Fetch { function: Fetch },
+    #[command(alias = "w")]
+    Wiki { function: Wiki },
+}
+
+#[derive(Clone, Copy, Debug, ValueEnum)]
+pub enum Wiki {
+    #[clap(alias = "c")]
+    Champions,
+    #[clap(alias = "df")]
+    DownloadFull,
+    #[clap(alias = "dt")]
+    DownloadTemplates,
+    #[clap(alias = "da")]
+    DownloadAbilities,
+    #[clap(alias = "pf")]
+    ParseFull,
+    #[clap(alias = "pt")]
+    ParseTemplates,
+    #[clap(alias = "pa")]
+    ParseAbilities,
 }
 
 #[derive(Clone, Copy, Debug, ValueEnum)]
@@ -174,15 +193,15 @@ pub async fn run() -> MayFail {
                     println!("App is outdated: Expected {riot_version}, found: {curr_version}");
                 }
             }
-            Fetch::Wiki => {
-                // HTTP_CLIENT.wiki_cache()?;
-                // parse_champions_lua()?;
-                // HTTP_CLIENT.download_wiki_champions().await?;
-                // parse_champion_templates()?;
-                // HTTP_CLIENT.build_wiki_abilities().await?;
-                // tutorlolv2_wiki::try_fetch().await.unwrap();
-                tutorlolv2_wiki::champions::run().await?;
-            }
+        },
+        GenArgs::Wiki { function } => match function {
+            Wiki::Champions => champions::run().await?,
+            Wiki::DownloadFull => champions::full::download().await.map(|_| ())?,
+            Wiki::ParseFull => champions::full::parse().map(|_| ())?,
+            Wiki::DownloadTemplates => champions::template::download().await?,
+            Wiki::ParseTemplates => champions::template::parse()?,
+            Wiki::DownloadAbilities => champions::abilities::download().await?,
+            Wiki::ParseAbilities => champions::abilities::parse()?,
         },
     }
 

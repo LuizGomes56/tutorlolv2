@@ -5,7 +5,7 @@ use crate::{
 use rayon::iter::{IntoParallelIterator, ParallelBridge, ParallelIterator};
 use scraper::{Html, Selector};
 use serde::{Deserialize, Serialize};
-use std::collections::BTreeMap;
+use std::{collections::BTreeMap, path::Path};
 
 pub async fn download() -> MayFail {
     println!("[fn] champions::template::download");
@@ -21,8 +21,11 @@ pub async fn download() -> MayFail {
     {
         let ChampionRaw { apiname, .. } = raw;
 
+        let path = Path::new("cache/wiki/champions").join(&apiname);
+        std::fs::create_dir_all(&path)?;
+
         fetch(
-            format!("cache/wiki/champions/{apiname}/template.html"),
+            path.join("template").with_extension("html"),
             format!("Template:Data_{name}"),
         )
         .await?;

@@ -37,18 +37,22 @@ pub async fn fetch(save_to: impl AsRef<Path>, url: impl Display) -> MayFail<Stri
         return Ok(std::fs::read_to_string(&path)?);
     }
 
-    let bytes = CLIENT
-        .get(format!("https://wiki.leagueoflegends.com/en-us/{url}"))
-        .send()
-        .await?
-        .text()
-        .await?;
+    let url = format!("https://wiki.leagueoflegends.com/en-us/{url}");
+
+    async fn request(url: &str) -> MayFail<String> {
+        Ok(CLIENT.get(url).send().await?.text().await?)
+    }
+
+    let mut bytes = request(&url).await?;
+
+    if bytes.contains("Too many requests") {
+        eprintln!("[error] Too many requests, trying again in 500ms");
+        tokio::time::sleep(std::time::Duration::from_millis(500)).await;
+        bytes = request(&url).await?;
+    }
 
     println!("[fetch] {url} -> {path:?}");
 
     std::fs::write(path, &bytes)?;
-
-    // tokio::time::sleep(std::time::Duration::from_secs(5)).await;
-
     Ok(bytes)
 }
