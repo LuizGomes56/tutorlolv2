@@ -1,4 +1,13 @@
 #![no_std]
+
+#[cfg(feature = "dev")]
+extern crate alloc;
+#[cfg(feature = "dev")]
+use alloc::{format, string::String};
+use bincode::{Decode, Encode};
+use core::{convert::Infallible, fmt::Display, str::FromStr};
+use serde::{Deserialize, Serialize};
+
 #[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
 pub enum Key {
     P,
@@ -105,14 +114,6 @@ impl AbilityId {
         }
     }
 }
-
-#[cfg(feature = "dev")]
-extern crate alloc;
-#[cfg(feature = "dev")]
-use alloc::{format, string::String};
-use bincode::{Decode, Encode};
-use core::fmt::Display;
-use serde::{Deserialize, Serialize};
 
 #[cfg(feature = "dev")]
 impl AbilityId {
@@ -346,6 +347,325 @@ impl AbilityName {
         match value {
             x if x < Self::MonsterMax as u8 => Some(unsafe { core::mem::transmute(x) }),
             _ => None,
+        }
+    }
+}
+
+/// A champion can have either melee or ranged damage. Ranged champions
+/// often have some damage penalty for items and runes, which are considered
+/// by branching over this enum
+#[derive(
+    Clone,
+    Copy,
+    Debug,
+    Default,
+    Eq,
+    Hash,
+    Ord,
+    PartialEq,
+    PartialOrd,
+    Encode,
+    Decode,
+    Serialize,
+    Deserialize,
+)]
+#[repr(u8)]
+pub enum AttackType {
+    #[default]
+    Melee,
+    Ranged,
+}
+
+impl FromStr for AttackType {
+    type Err = &'static str;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "RANGED" => Ok(AttackType::Ranged),
+            "MELEE" => Ok(AttackType::Melee),
+            _ => Err("No matches when calling AttackType::from_str"),
+        }
+    }
+}
+
+impl FromStr for AdaptiveType {
+    type Err = &'static str;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "MAGIC_DAMAGE" => Ok(AdaptiveType::Magic),
+            "PHYSICAL_DAMAGE" => Ok(AdaptiveType::Physical),
+            _ => Err("No matches when calling AdaptiveType::from_str"),
+        }
+    }
+}
+
+/// Enum that holds the current adaptive type of some champion, which
+/// can be either physical or magic. It is mainly used to determine if runes
+/// should deal physical or magic damage, or to convert `Adaptive Force`
+/// stats to either `Attack Damage` or `Ability Power`. Check the enum [`StatName`]
+/// for more details about all the possibilities
+#[derive(
+    Clone,
+    Copy,
+    Debug,
+    Default,
+    Eq,
+    Hash,
+    Ord,
+    PartialEq,
+    PartialOrd,
+    Encode,
+    Decode,
+    Serialize,
+    Deserialize,
+)]
+#[repr(u8)]
+pub enum AdaptiveType {
+    #[default]
+    Physical,
+    Magic,
+}
+
+/// Represents each playable position or `lane` that a champion can
+/// play in the standard gamemode `SummonersRift`, whose definition
+/// is [`GameMap::SummonersRift`]. If we don't know a champion's position,
+/// it is set to [`Position::Top`].
+#[derive(
+    Clone,
+    Copy,
+    Debug,
+    Default,
+    Eq,
+    Hash,
+    Ord,
+    PartialEq,
+    PartialOrd,
+    Encode,
+    Decode,
+    Serialize,
+    Deserialize,
+)]
+#[repr(u8)]
+pub enum Position {
+    #[default]
+    Top,
+    Jungle,
+    Middle,
+    Bottom,
+    Support,
+}
+
+impl Position {
+    pub const VARIANTS: u8 = 5;
+    pub const ARRAY: [Self; Self::VARIANTS as _] = [
+        Position::Top,
+        Position::Jungle,
+        Position::Middle,
+        Position::Bottom,
+        Position::Support,
+    ];
+
+    pub const fn index(&self) -> usize {
+        *self as _
+    }
+
+    pub const fn from_u8(value: u8) -> Option<Self> {
+        match value {
+            0..Self::VARIANTS => Some(unsafe { Self::from_u8_unchecked(value) }),
+            _ => None,
+        }
+    }
+
+    pub const fn name(&self) -> &'static str {
+        match self {
+            Position::Top => "Top",
+            Position::Jungle => "Jungle",
+            Position::Middle => "Mid",
+            Position::Bottom => "Adc / Bottom",
+            Position::Support => "Support",
+        }
+    }
+
+    pub const fn role(&self) -> &'static str {
+        match self {
+            Position::Top => "top",
+            Position::Jungle => "jungle",
+            Position::Middle => "mid",
+            Position::Bottom => "adc",
+            Position::Support => "support",
+        }
+    }
+
+    pub const unsafe fn from_u8_unchecked(value: u8) -> Self {
+        unsafe { core::mem::transmute(value) }
+    }
+}
+
+impl FromStr for Position {
+    type Err = &'static str;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "TOP" => Ok(Position::Top),
+            "JUNGLE" => Ok(Position::Jungle),
+            "MIDDLE" => Ok(Position::Middle),
+            "BOTTOM" => Ok(Position::Bottom),
+            "SUPPORT" => Ok(Position::Support),
+            _ => Err("No matches when calling Position::from_str"),
+        }
+    }
+}
+
+/// All possible maps and codes that can be played. Most of them are
+/// event maps that may never return to the game, and don't have a
+/// deterministic code. [`GameMap::SummonersRift`] is the default map.
+#[derive(
+    Clone,
+    Copy,
+    Debug,
+    Default,
+    Eq,
+    Hash,
+    Ord,
+    PartialEq,
+    PartialOrd,
+    Encode,
+    Decode,
+    Serialize,
+    Deserialize,
+)]
+#[repr(u8)]
+pub enum GameMap {
+    Aram,
+    Arena,
+    DarkStar,
+    Dominion,
+    Invasion,
+    NexusBlitz,
+    Odyssey,
+    Project,
+    StarGuardian,
+    SummonersRift,
+    Tft,
+    Tutorial,
+    TwistedTreeline,
+    Urf,
+    #[default]
+    Unknown,
+    UnknownMap33,
+    UnknownMap35,
+}
+
+impl GameMap {
+    /// Constant conversion of a [`u8`] into a [`GameMap`] enum,
+    /// where the byte represents the code of the current map
+    pub const fn from_u8(value: u8) -> Self {
+        match value {
+            3 => GameMap::Tutorial,
+            4 | 10 => GameMap::TwistedTreeline,
+            8 => GameMap::Dominion,
+            11 => GameMap::SummonersRift,
+            12 | 14 => GameMap::Aram,
+            13 => GameMap::Invasion,
+            16 => GameMap::DarkStar,
+            18 => GameMap::StarGuardian,
+            19 => GameMap::Project,
+            20 => GameMap::Odyssey,
+            21 => GameMap::NexusBlitz,
+            22 => GameMap::Tft,
+            30 => GameMap::Arena,
+            // Unknown
+            33 => GameMap::UnknownMap33,
+            35 => GameMap::UnknownMap35,
+            0xFF => GameMap::Urf,
+            _ => GameMap::Unknown,
+        }
+    }
+}
+
+/// Creates an enum and associates constants that represents each of its
+/// variants, using the same name and ignores `upper_case` lints
+macro_rules! const_enum {
+    (
+        $(#[$meta:meta])*
+        pub enum $name:ident {
+            $(
+                $(#[$vmeta:meta])*
+                $Variant:ident,
+            )+
+        }
+    ) => {
+        $(#[$meta])*
+        pub enum $name {
+            $(
+                $(#[$vmeta])*
+                $Variant,
+            )+
+        }
+    };
+}
+
+const_enum! {
+    /// Defines what is the damage type of some entity.
+    /// - [`DamageType::Physical`] and [`DamageType::Magic`] Represents any damage related
+    /// to how much (armor or magic resistence) the enemy player has, and is affected by the
+    /// percent and flat values or (armor or magic) penetration of the current player
+    /// - [`DamageType::Mixed`] Damages of this type are treated as a special case of
+    /// [`DamageType::True`], where the closure has to multiply on its own the `physical_mod`
+    /// and `magic_mod` modifiers of the [`tutorlolv2_math::DamageModifiers`] struct. It is
+    /// usually used when a single ability or item deals both physical and magic damage in the
+    /// same hit.
+    /// - [`DamageType::True`] Damages of this type are not affected by armor or magic resistence,
+    /// their values are in general irreducible.
+    /// - [`DamageType::Adaptive`] Damages of this type will vary into the [`DamageType::Physical`]
+    /// or [`DamageType::Magic`] depending on how much bonus armor or ability power the current player
+    /// has.
+    /// - [`DamageType::Unknown`] is the default value when no damage type is set
+    #[derive(Clone, Copy, Debug, Default, Eq, Hash, Ord, PartialEq, PartialOrd)]
+    #[derive(bincode::Encode, bincode::Decode)]
+    #[derive(serde::Serialize, serde::Deserialize)]
+    pub enum DamageType {
+        Physical,
+        Magic,
+        Mixed,
+        True,
+        Adaptive,
+        #[default]
+        Unknown,
+    }
+}
+
+const_enum! {
+    /// An enum with several variants that can be used to add up to `255` attributes
+    /// to some ability, item or rune. It is mostly used to determine if the current
+    /// instance damages onhit only for the `maximum`, `minimum` or both damage kinds.
+    /// [`Attrs::Undefined`] is set to be the default variant, representing no extra data. This
+    /// is also used to determine if some ability has area damage
+    #[derive(Clone, Copy, Debug, Default, Eq, Hash, Ord, PartialEq, PartialOrd)]
+    #[derive(bincode::Encode, bincode::Decode)]
+    #[derive(serde::Serialize, serde::Deserialize)]
+    pub enum Attrs {
+        #[default]
+        Undefined,
+        Onhit,
+        OnhitMin,
+        OnhitMax,
+        Area,
+        AreaOnhit,
+        AreaOnhitMin,
+        AreaOnhitMax,
+    }
+}
+
+impl FromStr for DamageType {
+    type Err = Infallible;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "PHYSICAL_DAMAGE" => Ok(DamageType::Physical),
+            "MAGIC_DAMAGE" => Ok(DamageType::Magic),
+            "MIXED_DAMAGE" => Ok(DamageType::Mixed),
+            "TRUE_DAMAGE" => Ok(DamageType::True),
+            "ADAPTIVE_DAMAGE" => Ok(DamageType::Adaptive),
+            _ => Ok(DamageType::Unknown),
         }
     }
 }

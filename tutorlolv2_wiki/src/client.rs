@@ -48,7 +48,7 @@ pub async fn fetch(save_to: impl AsRef<Path>, url: impl Display) -> MayFail<Stri
 
     std::fs::write(path, &bytes)?;
 
-    tokio::time::sleep(std::time::Duration::from_secs(5)).await;
+    // tokio::time::sleep(std::time::Duration::from_secs(5)).await;
 
     Ok(bytes)
 }

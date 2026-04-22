@@ -10,14 +10,9 @@ pub(self) use crate::{
     },
 };
 pub(self) use tutorlolv2_gen::{
-    AbilityId,
-    AbilityId::*,
-    AbilityName::*,
-    ComboElement::*,
-    Key,
-    enums::{Attrs::*, DamageType::*},
-    eval::CtxVar::*,
+    AbilityId, AbilityId::*, AbilityName::*, ComboElement::*, CtxVar::*, Key,
 };
+pub(self) use tutorlolv2_types::{Attrs::*, DamageType::*};
 
 macro_rules! decl_mod {
     (inner $Name:ident) => {
