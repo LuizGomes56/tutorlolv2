@@ -1,5 +1,5 @@
 use crate::{
-    champions::full::ChampionRaw,
+    champions::{clean_text, full::ChampionRaw},
     client::{MayFail, SyncMayFail, fetch},
 };
 use rayon::iter::{IntoParallelIterator, ParallelBridge, ParallelIterator};
@@ -22,7 +22,7 @@ pub async fn download() -> MayFail {
         let ChampionRaw { apiname, .. } = raw;
 
         fetch(
-            format!("cache/wiki/champions/templates/{apiname}.html"),
+            format!("cache/wiki/champions/{apiname}/template.html"),
             format!("Template:Data_{name}"),
         )
         .await?;
@@ -34,23 +34,24 @@ pub async fn download() -> MayFail {
 pub fn parse() -> MayFail {
     println!("[fn] champions::template::parse");
 
-    let result: SyncMayFail = std::fs::read_dir("cache/wiki/champions/templates")
+    let result: SyncMayFail = std::fs::read_dir("cache/wiki/champions")
         .map_err(|e| format!("[error] Unable to read directory path: {e:?}"))?
         .filter_map(Result::ok)
+        .filter(|entry| entry.file_type().ok().map(|v| v.is_dir()).unwrap_or(false))
         .par_bridge()
         .into_par_iter()
         .try_for_each(|entry| {
             let f = || -> MayFail {
-                let file = entry.file_name().into_string().map_err(|e| {
-                    format!("[error] Failed to get file name for entry: {entry:?}: {e:?}")
+                let path = entry.path().join("template");
+
+                let data = std::fs::read_to_string(path.with_extension("html"))
+                    .map_err(|e| format!("[error] Failed to read path: {path:?}: {e:?}"))?;
+
+                let champion_id = entry.file_name().into_string().map_err(|e| {
+                    format!("[error] Failed to get file name for path: {path:?}: {e:?}")
                 })?;
 
-                let file_name = file.trim_end_matches(".html");
-
-                println!("[parallel] Processing {file_name:?}");
-
-                let data = std::fs::read_to_string(entry.path())
-                    .map_err(|e| format!("[error] Failed to read entry: {entry:?}: {e:?}"))?;
+                println!("[parallel] Processing templates for {champion_id:?}");
 
                 let doc = Html::parse_document(&data);
 
@@ -81,13 +82,13 @@ pub fn parse() -> MayFail {
                             continue;
                         }
 
-                        let key = clean_text(cells[0].text().collect::<String>());
+                        let key = clean_text(&cells[0].text().collect::<String>());
 
                         if key.is_empty() {
                             continue;
                         }
 
-                        let value_text = clean_text(cells[1].text().collect::<String>());
+                        let value_text = clean_text(&cells[1].text().collect::<String>());
 
                         if value_text.is_empty() && !is_skill_key(&key) {
                             continue;
@@ -103,16 +104,14 @@ pub fn parse() -> MayFail {
 
                 let mut out = ChampionTemplate::default();
 
-                out.skills(skill_cells, &values)
+                out.general(&values)
+                    .skills(skill_cells, &values)
                     .stats(&values)
                     .modes(&values);
 
                 let json = serde_json::to_string_pretty(&out)?;
 
-                std::fs::write(
-                    format!("cache/wiki/champions/parsed_abilities/{file_name}.json"),
-                    json,
-                )?;
+                std::fs::write(path.with_extension("json"), json)?;
 
                 Ok(())
             };
@@ -121,17 +120,6 @@ pub fn parse() -> MayFail {
         });
 
     result.map_err(|e| e.to_string().into())
-}
-
-fn clean_text(s: String) -> String {
-    s.replace('\u{a0}', " ")
-        .lines()
-        .map(str::trim)
-        .filter(|x| !x.is_empty())
-        .collect::<Vec<_>>()
-        .join(" ")
-        .trim()
-        .to_string()
 }
 
 fn is_skill_key(key: &str) -> bool {
@@ -159,12 +147,28 @@ fn parse_f32(s: &str) -> Option<f32> {
 
 #[derive(Clone, Debug, Default, Serialize, Deserialize)]
 pub struct ChampionTemplate {
+    pub adaptive_type: String,
+    pub attack_type: String,
     pub skills: SkillSet,
     pub stats: Stats,
     pub modes: ModeStats,
 }
 
 impl ChampionTemplate {
+    pub fn general(&mut self, values: &BTreeMap<String, String>) -> &mut Self {
+        let clean = |key: &str| {
+            values
+                .get(key)
+                .map(String::as_str)
+                .map(clean_text)
+                .unwrap_or_default()
+        };
+
+        self.adaptive_type = clean("adaptivetype");
+        self.attack_type = clean("rangetype");
+        self
+    }
+
     pub fn skills(
         &mut self,
         skill_cells: BTreeMap<String, String>,
@@ -275,7 +279,7 @@ fn parse_skill_list(value_html: Option<&String>, value_text: Option<&String>) ->
 
         let from_links = fragment
             .select(&a_selector)
-            .map(|a| clean_text(a.text().collect::<String>()))
+            .map(|a| clean_text(&a.text().collect::<String>()))
             .filter(|s| !s.is_empty())
             .collect::<Vec<_>>();
 
