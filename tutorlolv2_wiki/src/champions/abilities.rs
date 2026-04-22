@@ -43,6 +43,8 @@ pub struct ParsedLevelingLine {
     pub data: String,
     pub formula_attempt: Vec<String>,
     pub raw_html: String,
+    pub from_description: bool,
+    pub level_ranges: Vec<(usize, usize)>,
 }
 
 pub async fn download() -> MayFail {
@@ -297,10 +299,16 @@ fn build_effect_blocks(
 
         let effect_index = out.len();
 
-        let levelings = leveling_raw_html
+        let mut levelings = leveling_raw_html
             .as_deref()
             .map(parse_leveling_lines)
             .unwrap_or_default();
+
+        if levelings.is_empty() {
+            if let Some(raw_desc) = description_raw_html.as_deref() {
+                levelings = parse_description_tooltips(raw_desc);
+            }
+        }
 
         out.push(ParsedEffectBlock {
             index: effect_index,
@@ -343,9 +351,11 @@ fn parse_leveling_lines(raw_html: &str) -> Vec<ParsedLevelingLine> {
             out.push(ParsedLevelingLine {
                 leveling_index: out.len(),
                 attribute: attr.trim_end_matches(':').trim().to_string(),
-                formula_attempt: try_parse_formula_attempt(data),
                 data: data.clone(),
+                formula_attempt: try_parse_formula_attempt(data),
                 raw_html: raw.clone(),
+                from_description: false,
+                level_ranges: Vec::new(),
             });
             i += 2;
         } else {
@@ -366,6 +376,18 @@ fn parse_variant(file_name: &str) -> Option<usize> {
     digits.parse::<usize>().ok()
 }
 
+static PP_TOOLTIP_RE: LazyLock<Regex> = LazyLock::new(|| {
+    Regex::new(
+        r#"(?s)<span[^>]*class="[^"]*\bpp-tooltip\b[^"]*"(?P<attrs>[^>]*)>(?P<body>.*?)</span>"#,
+    )
+    .unwrap()
+});
+
+static ATTR_RE: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r#"([a-zA-Z0-9_-]+)="([^"]*)""#).unwrap());
+
+static TAG_RE: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"(?s)<[^>]+>").unwrap());
+
 static SLASH_NUMBERS_RE: LazyLock<Regex> =
     LazyLock::new(|| Regex::new(r"-?\d+(?:\.\d+)?(?:\s*/\s*-?\d+(?:\.\d+)?)+").unwrap());
 
@@ -380,7 +402,7 @@ const REPLACEMENTS: &[(&str, &dyn Display)] = &[
     ("per 100", &"0.01 *"),
     ("of damage dealt", &"100.0"),
     ("of damage stored", &"100.0"),
-    ("of expended Grit", &"0.0"),
+    ("of expended Grit", &"* (ctx.current_mana / ctx.max_mana)"),
     ("of the original damage", &"100.0"),
     ("per Overwhelm stack on the target", &"1.0"),
     ("of primary target's bonus health", &EnemyBonusHealth),
@@ -401,6 +423,7 @@ const REPLACEMENTS: &[(&str, &dyn Display)] = &[
     ("bonus AD", &BonusAd),
     ("bonus armor", &BonusArmor),
     ("bonus magic resistance", &BonusMagicResist),
+    ("bonus magic damage", &""),
     ("bonus health", &BonusHealth),
     ("of the target's maximum health", &EnemyMaxHealth),
     ("of target's maximum health", &EnemyMaxHealth),
@@ -440,6 +463,11 @@ fn try_parse_formula_attempt(data: &str) -> Vec<String> {
 
     if rank_count == 0 {
         return Vec::new();
+    }
+
+    // exceções primeiro
+    if let Some(result) = try_parse_formula_exception(&data, rank_count) {
+        return result;
     }
 
     let mut per_rank = vec![Vec::<String>::new(); rank_count];
@@ -591,31 +619,66 @@ fn apply_replacements(input: &str) -> String {
     pairs.sort_by_key(|(from, _)| usize::MAX - from.len());
 
     let mut out = input.to_string();
+    let mut placeholders = Vec::<(String, String)>::new();
 
-    for (from, to) in pairs {
-        let re = RegexBuilder::new(&regex::escape(from))
+    for (idx, (from, to)) in pairs.into_iter().enumerate() {
+        let escaped = regex::escape(from);
+
+        let starts_word = from
+            .chars()
+            .next()
+            .map(|c| c.is_ascii_alphanumeric())
+            .unwrap_or(false);
+
+        let ends_word = from
+            .chars()
+            .last()
+            .map(|c| c.is_ascii_alphanumeric())
+            .unwrap_or(false);
+
+        let pattern = match (starts_word, ends_word) {
+            (true, true) => format!(r"\b{escaped}\b"),
+            (true, false) => format!(r"\b{escaped}"),
+            (false, true) => format!(r"{escaped}\b"),
+            (false, false) => escaped,
+        };
+
+        let re = RegexBuilder::new(&pattern)
             .case_insensitive(true)
             .build()
             .unwrap();
-        out = re.replace_all(&out, to.to_string()).to_string();
+
+        if !re.is_match(&out) {
+            continue;
+        }
+
+        let placeholder = format!("__CTX_REPL_{idx}__");
+        out = re.replace_all(&out, placeholder.as_str()).to_string();
+        placeholders.push((placeholder, to.to_string()));
+    }
+
+    for (placeholder, value) in placeholders {
+        out = out.replace(&placeholder, &value);
     }
 
     out
 }
 
 fn cleanup_formula(s: String) -> String {
-    let mut out = s;
+    let mut out = s
+        .replace("( ", "(")
+        .replace(" )", ")")
+        .replace("+ -", "- ")
+        .replace("* +", "* ")
+        .replace("  ", " ");
 
-    out = out.replace("( ", "(").replace(" )", ")");
-    out = out.replace("+ -", "- ");
-    out = out.replace("* +", "* ");
-    out = out.replace("  ", " ");
+    out = normalize_inline_percent_products(&out);
 
     while out.contains("  ") {
         out = out.replace("  ", " ");
     }
 
-    out.trim().trim_matches('+').trim().to_string()
+    out.trim().trim_matches('+').trim().replace("(+ ", "(")
 }
 
 fn extract_top_level_parens(s: &str) -> Vec<String> {
@@ -671,4 +734,318 @@ fn trim_f64(v: f64) -> String {
         let s = v.to_string();
         s.trim_end_matches('0').trim_end_matches('.').to_string()
     }
+}
+
+fn html_to_text(s: &str) -> String {
+    clean_text(&TAG_RE.replace_all(s, " ").to_string())
+}
+
+fn parse_attrs(attrs: &str) -> BTreeMap<String, String> {
+    let mut map = BTreeMap::new();
+    for cap in ATTR_RE.captures_iter(attrs) {
+        map.insert(cap[1].to_string(), cap[2].to_string());
+    }
+    map
+}
+
+fn parse_semicolon_f64s(s: &str) -> Vec<f64> {
+    s.split(';')
+        .filter_map(|x| x.trim().parse::<f64>().ok())
+        .collect()
+}
+
+fn parse_semicolon_usizes(s: &str) -> Vec<usize> {
+    s.split(';')
+        .filter_map(|x| x.trim().parse::<usize>().ok())
+        .collect()
+}
+
+fn build_level_ranges(starts: &[usize], max_level: usize) -> Vec<(usize, usize)> {
+    if starts.is_empty() {
+        return Vec::new();
+    }
+
+    let mut out = Vec::new();
+    for (i, start) in starts.iter().copied().enumerate() {
+        let end = starts
+            .get(i + 1)
+            .copied()
+            .map(|v| v.saturating_sub(1))
+            .unwrap_or(max_level);
+        out.push((start, end));
+    }
+    out
+}
+
+fn infer_suffix_from_context(context_html: &str) -> String {
+    let text = clean_tooltip_context(context_html);
+
+    if text.is_empty() {
+        return String::new();
+    }
+
+    // "against monsters" é qualificador do cap, não escala
+    if text.to_ascii_lowercase().starts_with("against ") {
+        return String::new();
+    }
+
+    let replaced = cleanup_formula(apply_replacements(&text));
+
+    if replaced.contains("ctx.") {
+        return replaced;
+    }
+
+    String::new()
+}
+
+fn parse_description_tooltips(raw_description: &str) -> Vec<ParsedLevelingLine> {
+    let mut out = Vec::new();
+
+    for cap in PP_TOOLTIP_RE.captures_iter(raw_description) {
+        let full = cap.get(0).map(|m| m.as_str()).unwrap_or_default();
+        let attrs_raw = cap.name("attrs").map(|m| m.as_str()).unwrap_or_default();
+        let body_html = cap.name("body").map(|m| m.as_str()).unwrap_or_default();
+        let body_text = html_to_text(body_html);
+
+        let attrs = parse_attrs(attrs_raw);
+
+        let match_end = cap.get(0).map(|m| m.end()).unwrap_or(0);
+
+        let context_html = tooltip_context_window(raw_description, match_end);
+        let suffix = infer_suffix_from_context(context_html);
+        // let attribute =
+        //     infer_description_attribute(raw_description, &body_text, &suffix, context_html);
+
+        let bot_values = attrs
+            .get("data-bot-values")
+            .map(|s| parse_semicolon_f64s(s))
+            .unwrap_or_default();
+
+        let top_values = attrs
+            .get("data-top-values")
+            .map(|s| parse_semicolon_usizes(s))
+            .unwrap_or_default();
+
+        let is_percent = attrs
+            .get("data-bot-key")
+            .map(|v| v == "%")
+            .unwrap_or_else(|| body_text.contains('%'));
+
+        let (formula_attempt, level_ranges) = if !top_values.is_empty() && !bot_values.is_empty() {
+            let ranges = build_level_ranges(&top_values, 20);
+            let formulas = bot_values
+                .into_iter()
+                .map(|v| {
+                    if !suffix.is_empty() {
+                        if is_percent {
+                            format!("{} * {}", trim_f64(v / 100.0), suffix)
+                        } else {
+                            format!("{} * {}", trim_f64(v), suffix)
+                        }
+                    } else if is_percent {
+                        trim_f64(v / 100.0)
+                    } else {
+                        trim_f64(v)
+                    }
+                })
+                .collect::<Vec<_>>();
+
+            (formulas, ranges)
+        } else if !bot_values.is_empty() {
+            let formulas = bot_values
+                .into_iter()
+                .map(|v| {
+                    if !suffix.is_empty() {
+                        if is_percent {
+                            format!("{} * {}", trim_f64(v / 100.0), suffix)
+                        } else {
+                            format!("{} * {}", trim_f64(v), suffix)
+                        }
+                    } else if is_percent {
+                        trim_f64(v / 100.0)
+                    } else {
+                        trim_f64(v)
+                    }
+                })
+                .collect::<Vec<_>>();
+
+            (formulas, Vec::new())
+        } else {
+            (Vec::new(), Vec::new())
+        };
+
+        if formula_attempt.is_empty() {
+            continue;
+        }
+
+        let attribute =
+            infer_description_attribute(raw_description, &body_text, &suffix, context_html);
+
+        out.push(ParsedLevelingLine {
+            leveling_index: out.len(),
+            attribute,
+            data: body_text,
+            formula_attempt: formula_attempt.into_iter().map(cleanup_formula).collect(),
+            raw_html: full.to_string(),
+            from_description: true,
+            level_ranges,
+        });
+    }
+
+    out
+}
+
+fn infer_description_attribute(
+    raw_description: &str,
+    body_text: &str,
+    suffix: &str,
+    context_html: &str,
+) -> String {
+    let desc = normalize_formula_input(&html_to_text(raw_description)).to_ascii_lowercase();
+    let body = body_text.to_ascii_lowercase();
+    let context = clean_tooltip_context(context_html).to_ascii_lowercase();
+
+    if context.starts_with("against monsters") {
+        return "Description Cap Against Monsters".to_string();
+    }
+
+    if desc.contains("damage") && suffix.contains("ctx.enemy_max_health") {
+        return "Description Damage".to_string();
+    }
+
+    if desc.contains("capped at") {
+        return "Description Cap".to_string();
+    }
+
+    if body.contains("based on level") {
+        return "Description Scaling".to_string();
+    }
+
+    "Description Tooltip".to_string()
+}
+
+fn tooltip_context_window(raw_description: &str, match_end: usize) -> &str {
+    let rest = raw_description.get(match_end..).unwrap_or("");
+
+    let next_tooltip = rest.find("class=\"pp-tooltip\"");
+    let end = next_tooltip.unwrap_or(rest.len());
+
+    &rest[..end]
+}
+
+fn truncate_case_insensitive<'a>(s: &'a str, needle: &str) -> &'a str {
+    let hay = s.to_ascii_lowercase();
+    let nee = needle.to_ascii_lowercase();
+    if let Some(idx) = hay.find(&nee) {
+        &s[..idx]
+    } else {
+        s
+    }
+}
+
+fn clean_tooltip_context(raw_html_after_tooltip: &str) -> String {
+    let mut text = html_to_text(raw_html_after_tooltip);
+    text = normalize_formula_input(&text);
+
+    text = truncate_case_insensitive(&text, ", capped at").to_string();
+    text = truncate_case_insensitive(&text, " capped at ").to_string();
+    text = truncate_case_insensitive(&text, ". ").to_string();
+    text = truncate_case_insensitive(&text, ".").to_string();
+
+    text = text
+        .trim_start_matches(|c: char| c == ',' || c.is_whitespace())
+        .trim()
+        .to_string();
+
+    text
+}
+
+static NESTED_PERCENT_OF_RE: LazyLock<Regex> = LazyLock::new(|| {
+    Regex::new(
+        r"(?ix)
+        ^
+        (?P<base>
+            -?\d+(?:\.\d+)?
+            (?:\s*/\s*-?\d+(?:\.\d+)?)*
+        )
+        \s*%
+        \s*\(\+\s*
+        (?P<bonus>
+            -?\d+(?:\.\d+)?
+            (?:\s*/\s*-?\d+(?:\.\d+)?)*
+        )
+        \s*%
+        \s*per\s*100\s*
+        (?P<stat>.+?)
+        \)
+        \s*
+        (?P<target>of .+)
+        $
+        ",
+    )
+    .unwrap()
+});
+
+fn parse_ranked_numbers_or_single(s: &str, rank_count: usize) -> Option<Vec<f64>> {
+    parse_ranked_numbers(s).or_else(|| parse_single_number(s).map(|v| vec![v; rank_count]))
+}
+
+fn try_parse_formula_exception(data: &str, rank_count: usize) -> Option<Vec<String>> {
+    let data = normalize_formula_input(data);
+
+    let caps = NESTED_PERCENT_OF_RE.captures(&data)?;
+
+    let base = parse_ranked_numbers_or_single(caps.name("base")?.as_str(), rank_count)?;
+    let bonus = parse_ranked_numbers_or_single(caps.name("bonus")?.as_str(), rank_count)?;
+
+    let stat = cleanup_formula(apply_replacements(caps.name("stat")?.as_str()));
+    let target = cleanup_formula(apply_replacements(caps.name("target")?.as_str()));
+
+    if !target.contains("ctx.") {
+        return Some(Vec::new());
+    }
+
+    let out = (0..rank_count)
+        .map(|i| {
+            let base_coeff = trim_f64(base[i] / 100.0);
+            let bonus_coeff = trim_f64((bonus[i] / 100.0) * 0.01);
+
+            cleanup_formula(format!(
+                "({base_coeff} + {bonus_coeff} * {stat}) * {target}"
+            ))
+        })
+        .collect::<Vec<_>>();
+
+    Some(out)
+}
+
+static INLINE_PERCENT_PRODUCT_RE: LazyLock<Regex> = LazyLock::new(|| {
+    Regex::new(
+        r"(?ix)
+        (\d+(?:\.\d+)?)
+        %
+        \s*
+        (
+            ctx\.[a-zA-Z_][a-zA-Z0-9_]*
+            |
+            -?\d+(?:\.\d+)?
+        )
+        ",
+    )
+    .unwrap()
+});
+
+fn normalize_inline_percent_products(s: &str) -> String {
+    INLINE_PERCENT_PRODUCT_RE
+        .replace_all(s, |caps: &regex::Captures| {
+            let lhs = caps
+                .get(1)
+                .and_then(|m| m.as_str().parse::<f64>().ok())
+                .unwrap_or(0.0);
+
+            let rhs = caps.get(2).map(|m| m.as_str()).unwrap_or_default();
+
+            format!("{} * {rhs}", trim_f64(lhs / 100.0))
+        })
+        .to_string()
 }
