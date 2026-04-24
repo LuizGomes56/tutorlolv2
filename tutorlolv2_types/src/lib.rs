@@ -380,8 +380,8 @@ impl FromStr for AttackType {
     type Err = &'static str;
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match s {
-            "RANGED" => Ok(AttackType::Ranged),
-            "MELEE" => Ok(AttackType::Melee),
+            "Melee" | "MELEE" => Ok(AttackType::Melee),
+            "Ranged" | "RANGED" => Ok(AttackType::Ranged),
             _ => Err("No matches when calling AttackType::from_str"),
         }
     }
@@ -391,8 +391,8 @@ impl FromStr for AdaptiveType {
     type Err = &'static str;
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match s {
-            "MAGIC_DAMAGE" => Ok(AdaptiveType::Magic),
-            "PHYSICAL_DAMAGE" => Ok(AdaptiveType::Physical),
+            "Magic" | "MAGIC_DAMAGE" => Ok(Self::Magic),
+            "Physical" | "PHYSICAL_DAMAGE" => Ok(Self::Physical),
             _ => Err("No matches when calling AdaptiveType::from_str"),
         }
     }

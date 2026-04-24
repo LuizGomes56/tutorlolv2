@@ -3,11 +3,12 @@ use crate::{
         clean_text,
         template::{ChampionTemplate, SkillSet},
     },
-    client::{MayFail, SyncMayFail, fetch},
+    client::{MayFail, fetch},
+    is_dir, selector,
 };
 use rayon::iter::{IntoParallelIterator, ParallelBridge, ParallelIterator};
 use regex::{Regex, RegexBuilder};
-use scraper::{Html, Selector};
+use scraper::Html;
 use serde::{Deserialize, Serialize};
 use std::{collections::BTreeMap, fmt::Display, sync::LazyLock};
 use tutorlolv2_types::{CtxVar::*, DamageType};
@@ -48,11 +49,9 @@ pub struct ParsedLevelingLine {
 }
 
 pub async fn download() -> MayFail {
-    for entry in std::fs::read_dir("cache/wiki/champions")
-        .map_err(|e| format!("[error] Unable to read directory path: {e:?}"))?
-        .filter_map(Result::ok)
-        .filter(|entry| entry.file_type().ok().map(|v| v.is_dir()).unwrap_or(false))
-    {
+    println!("[download] champions::abilities::download");
+
+    for entry in crate::read_dir("cache/wiki/champions")?.filter(is_dir) {
         let path = entry.path();
 
         let champion_id = entry
@@ -62,7 +61,7 @@ pub async fn download() -> MayFail {
 
         println!("[dir] Processing {champion_id:?}");
 
-        let bytes = std::fs::read(path.join("template").with_extension("json"))
+        let bytes = crate::read(path.join("template").with_extension("json"))
             .map_err(|e| format!("[error] Failed to read entry: {entry:?}: {e:?}"))?;
 
         let data = serde_json::from_slice::<ChampionTemplate>(&bytes)
@@ -104,10 +103,16 @@ pub async fn download() -> MayFail {
 }
 
 pub fn parse() -> MayFail {
-    let result: SyncMayFail = std::fs::read_dir("cache/wiki/champions")
-        .map_err(|e| format!("[error] Unable to read directory path: {e:?}"))?
-        .filter_map(Result::ok)
-        .filter(|entry| entry.file_type().ok().map(|v| v.is_dir()).unwrap_or(false))
+    println!("[download] champions::abilities::parse");
+
+    crate::read_dir("cache/wiki/champions")?
+        .filter(|entry| {
+            entry
+                .file_type()
+                .ok()
+                .map(|v: std::fs::FileType| v.is_dir())
+                .unwrap_or(false)
+        })
         .par_bridge()
         .into_par_iter()
         .try_for_each(|entry| {
@@ -119,11 +124,9 @@ pub fn parse() -> MayFail {
 
             println!("[parallel] Processing {champion_id:?}");
 
-            std::fs::read_dir(path.join("abilities"))
-                .map_err(|e| format!("[error] Failed to read abilities directory: {e:?}"))?
-                .filter_map(Result::ok)
+            crate::read_dir(path.join("abilities"))?
                 .filter(|entry| {
-                    entry.file_type().ok().map(|v| v.is_file()).unwrap_or(false)
+                    is_dir(entry)
                         && entry
                             .path()
                             .extension()
@@ -133,56 +136,50 @@ pub fn parse() -> MayFail {
                 .par_bridge()
                 .into_par_iter()
                 .try_for_each(|entry| {
-                    let f = || -> MayFail {
-                        let file_name = entry.file_name().into_string().map_err(|e| {
-                            format!("[error] Failed to get file name for entry: {entry:?}: {e:?}")
-                        })?;
+                    let file_name = entry.file_name().into_string().map_err(|e| {
+                        format!("[error] Failed to get file name for entry: {entry:?}: {e:?}")
+                    })?;
 
-                        let key = file_name.chars().next().ok_or_else(|| {
-                            format!("[error] Failed to get key from file name: {file_name:?}")
-                        })?;
+                    let key = file_name.chars().next().ok_or_else(|| {
+                        format!("[error] Failed to get key from file name: {file_name:?}")
+                    })?;
 
-                        let path = entry.path();
+                    let path = entry.path();
 
-                        let html = std::fs::read_to_string(&path)?;
+                    let html = crate::read_to_string(&path)?;
 
-                        let title_selector = Selector::parse("title")?;
+                    let title_selector = selector("title")?;
 
-                        let title = Html::parse_document(&html)
-                            .select(&title_selector)
-                            .next()
-                            .ok_or_else(|| {
-                                format!("[error] Failed to get title for file: {file_name:?}")
-                            })?
-                            .text()
-                            .collect::<String>();
+                    let title = Html::parse_document(&html)
+                        .select(&title_selector)
+                        .next()
+                        .ok_or_else(|| {
+                            format!("[error] Failed to get title for file: {file_name:?}")
+                        })?
+                        .text()
+                        .collect::<String>();
 
-                        if title.contains("Too many requests") {
-                            std::fs::remove_file(&path)
-                                .map_err(|e| format!("[error] Failed to remove file: {e:?}"))?;
+                    if title.contains("Too many requests") {
+                        std::fs::remove_file(&path)
+                            .map_err(|e| format!("[error] Failed to remove file: {e:?}"))?;
 
-                            eprintln!("[{champion_id:?}] Too many requests for {file_name:?}");
+                        eprintln!("[{champion_id:?}] Too many requests for {file_name:?}");
 
-                            return Ok(());
-                        }
+                        return Ok(());
+                    }
 
-                        let parsed = parse_ability_html(&champion_id, key, &file_name, &html)?;
+                    let parsed = parse_ability_html(&champion_id, key, &file_name, &html)?;
 
-                        println!("[{champion_id:?}] Processing {file_name:?}");
+                    println!("[{champion_id:?}] Processing {file_name:?}");
 
-                        std::fs::write(
-                            path.with_extension("json"),
-                            serde_json::to_string_pretty(&parsed)?,
-                        )?;
+                    std::fs::write(
+                        path.with_extension("json"),
+                        serde_json::to_string_pretty(&parsed)?,
+                    )?;
 
-                        Ok(())
-                    };
-
-                    f().map_err(|e| e.to_string().into())
+                    Ok(())
                 })
-        });
-
-    result.map_err(|e| e.to_string().into())
+        })
 }
 
 fn parse_ability_html(
@@ -193,9 +190,9 @@ fn parse_ability_html(
 ) -> MayFail<ParsedAbilityPage> {
     let doc = Html::parse_document(html);
 
-    let table_selector = Selector::parse("table")?;
-    let tr_selector = Selector::parse("tr")?;
-    let cell_selector = Selector::parse("th, td")?;
+    let table_selector = selector("table")?;
+    let tr_selector = selector("tr")?;
+    let cell_selector = selector("th, td")?;
 
     let mut value_texts = BTreeMap::<String, String>::new();
     let mut value_htmls = BTreeMap::<String, String>::new();
@@ -325,7 +322,7 @@ fn build_effect_blocks(
 
 fn parse_leveling_lines(raw_html: &str) -> Vec<ParsedLevelingLine> {
     let fragment = Html::parse_fragment(raw_html);
-    let selector = Selector::parse("dt, dd").unwrap();
+    let selector = selector("dt, dd").unwrap();
 
     let mut parts = Vec::<(String, String, String)>::new();
 
@@ -405,6 +402,8 @@ const REPLACEMENTS: &[(&str, &dyn Display)] = &[
     ("of expended Grit", &"* (ctx.current_mana / ctx.max_mana)"),
     ("of the original damage", &"100.0"),
     ("per Overwhelm stack on the target", &"1.0"),
+    ("Grand Challenge's Rank", &RLevel),
+    ("Transcend One's Self's Rank", &RLevel),
     ("of primary target's bonus health", &EnemyBonusHealth),
     ("of his bonus health", &BonusHealth),
     ("Pantheon's bonus health", &BonusHealth),
@@ -432,19 +431,25 @@ const REPLACEMENTS: &[(&str, &dyn Display)] = &[
     ("target's current health", &EnemyCurrentHealth),
     ("of the target's missing health", &MissingHealth),
     ("of target's missing health", &MissingHealth),
+    ("of target's armor", &Armor),
     ("target's missing health", &MissingHealth),
     ("of Zac's maximum health", &MaxHealth),
     ("of Braum's maximum health", &MaxHealth),
     ("of her maximum health", &MaxHealth),
     ("of his maximum health", &MaxHealth),
+    ("of their maximum health", &EnemyMaxHealth),
     ("of maximum health", &MaxHealth),
     ("maximum health", &MaxHealth),
     ("maximum mana", &MaxMana),
+    ("per  Soul collected", &Stacks),
+    ("of Taric's armor", &Armor),
     ("armor", &Armor),
     ("AP", &AbilityPower),
     ("base AD", &BaseAd),
     ("AD", &AttackDamage),
+    ("base health", &BaseHealth),
     ("of turret's ", &""),
+    ("Trophies)", &Stacks),
     ("\u{00D7}", &"*"),
 ];
 
@@ -678,7 +683,11 @@ fn cleanup_formula(s: String) -> String {
         out = out.replace("  ", " ");
     }
 
-    out.trim().trim_matches('+').trim().replace("(+ ", "(")
+    out.trim()
+        .trim_matches('+')
+        .trim()
+        .replace("(+ ", "(")
+        .replace(") ctx.", ") * ctx.")
 }
 
 fn extract_top_level_parens(s: &str) -> Vec<String> {

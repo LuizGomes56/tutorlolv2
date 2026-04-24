@@ -1,9 +1,10 @@
 use crate::{
     champions::{clean_text, full::ChampionRaw},
-    client::{MayFail, SyncMayFail, fetch},
+    client::{MayFail, fetch},
+    is_dir, selector,
 };
 use rayon::iter::{IntoParallelIterator, ParallelBridge, ParallelIterator};
-use scraper::{Html, Selector};
+use scraper::Html;
 use serde::{Deserialize, Serialize};
 use std::{collections::BTreeMap, path::Path};
 
@@ -37,92 +38,84 @@ pub async fn download() -> MayFail {
 pub fn parse() -> MayFail {
     println!("[fn] champions::template::parse");
 
-    let result: SyncMayFail = std::fs::read_dir("cache/wiki/champions")
-        .map_err(|e| format!("[error] Unable to read directory path: {e:?}"))?
-        .filter_map(Result::ok)
-        .filter(|entry| entry.file_type().ok().map(|v| v.is_dir()).unwrap_or(false))
+    crate::read_dir("cache/wiki/champions")?
+        .filter(is_dir)
         .par_bridge()
         .into_par_iter()
         .try_for_each(|entry| {
-            let f = || -> MayFail {
-                let path = entry.path().join("template");
+            let path = entry.path().join("template");
 
-                let data = std::fs::read_to_string(path.with_extension("html"))
-                    .map_err(|e| format!("[error] Failed to read path: {path:?}: {e:?}"))?;
+            let data = crate::read_to_string(path.with_extension("html"))
+                .map_err(|e| format!("[error] Failed to read path: {path:?}: {e:?}"))?;
 
-                let champion_id = entry.file_name().into_string().map_err(|e| {
-                    format!("[error] Failed to get file name for path: {path:?}: {e:?}")
-                })?;
+            let champion_id = entry.file_name().into_string().map_err(|e| {
+                format!("[error] Failed to get file name for path: {path:?}: {e:?}")
+            })?;
 
-                println!("[parallel] Processing templates for {champion_id:?}");
+            println!("[parallel] Processing templates for {champion_id:?}");
 
-                let doc = Html::parse_document(&data);
+            let doc = Html::parse_document(&data);
 
-                let table_selector = Selector::parse("table")?;
-                let tr_selector = Selector::parse("tr")?;
-                let cell_selector = Selector::parse("th, td")?;
+            let table_selector = selector("table")?;
+            let tr_selector = selector("tr")?;
+            let cell_selector = selector("th, td")?;
 
-                let mut values = BTreeMap::<String, String>::new();
-                let mut skill_cells = BTreeMap::<String, String>::new();
+            let mut values = BTreeMap::<String, String>::new();
+            let mut skill_cells = BTreeMap::<String, String>::new();
 
-                for table in doc.select(&table_selector) {
-                    let rows = table.select(&tr_selector).collect::<Vec<_>>();
+            for table in doc.select(&table_selector) {
+                let rows = table.select(&tr_selector).collect::<Vec<_>>();
 
-                    if rows.is_empty() {
-                        continue;
-                    }
-
-                    let header = rows[0].text().collect::<String>().to_ascii_lowercase();
-
-                    if !(header.contains("parameter") && header.contains("value")) {
-                        continue;
-                    }
-
-                    for row in rows.into_iter().skip(1) {
-                        let cells = row.select(&cell_selector).collect::<Vec<_>>();
-
-                        if cells.len() < 2 {
-                            continue;
-                        }
-
-                        let key = clean_text(&cells[0].text().collect::<String>());
-
-                        if key.is_empty() {
-                            continue;
-                        }
-
-                        let value_text = clean_text(&cells[1].text().collect::<String>());
-
-                        if value_text.is_empty() && !is_skill_key(&key) {
-                            continue;
-                        }
-
-                        values.insert(key.clone(), value_text);
-
-                        if is_skill_key(&key) {
-                            skill_cells.insert(key, cells[1].inner_html());
-                        }
-                    }
+                if rows.is_empty() {
+                    continue;
                 }
 
-                let mut out = ChampionTemplate::default();
+                let header = rows[0].text().collect::<String>().to_ascii_lowercase();
 
-                out.general(&values)
-                    .skills(skill_cells, &values)
-                    .stats(&values)
-                    .modes(&values);
+                if !(header.contains("parameter") && header.contains("value")) {
+                    continue;
+                }
 
-                let json = serde_json::to_string_pretty(&out)?;
+                for row in rows.into_iter().skip(1) {
+                    let cells = row.select(&cell_selector).collect::<Vec<_>>();
 
-                std::fs::write(path.with_extension("json"), json)?;
+                    if cells.len() < 2 {
+                        continue;
+                    }
 
-                Ok(())
-            };
+                    let key = clean_text(&cells[0].text().collect::<String>());
 
-            f().map_err(|e| e.to_string().into())
-        });
+                    if key.is_empty() {
+                        continue;
+                    }
 
-    result.map_err(|e| e.to_string().into())
+                    let value_text = clean_text(&cells[1].text().collect::<String>());
+
+                    if value_text.is_empty() && !is_skill_key(&key) {
+                        continue;
+                    }
+
+                    values.insert(key.clone(), value_text);
+
+                    if is_skill_key(&key) {
+                        skill_cells.insert(key, cells[1].inner_html());
+                    }
+                }
+            }
+
+            let mut out = ChampionTemplate::default();
+
+            out.general(&values)
+                .skills(skill_cells, &values)
+                .stats(&values)
+                .modes(&values);
+
+            let json = serde_json::to_string_pretty(&out)?;
+
+            std::fs::write(path.with_extension("json"), json)?;
+
+            Ok(())
+        })
 }
 
 fn is_skill_key(key: &str) -> bool {
@@ -197,7 +190,7 @@ impl ChampionTemplate {
         }
         parse!(
             hp_base, hp_lvl, hp5_base, hp5_lvl, mp_base, mp_lvl, arm_base, arm_lvl, mr_base,
-            mr_lvl, dam_base, dam_lvl, as_base, as_ratio, as_lvl, crit_base
+            mr_lvl, dam_base, dam_lvl, as_base, as_ratio, as_lvl, crit_base, crit_mod, ms
         );
         self
     }
@@ -255,6 +248,8 @@ pub struct Stats {
     pub as_ratio: f32,
     pub as_lvl: f32,
     pub crit_base: f32,
+    pub crit_mod: f32,
+    pub ms: f32,
 }
 
 #[derive(Clone, Debug, Default, Serialize, Deserialize)]
@@ -278,7 +273,7 @@ pub struct ModeStats {
 fn parse_skill_list(value_html: Option<&String>, value_text: Option<&String>) -> Vec<String> {
     if let Some(html) = value_html {
         let fragment = Html::parse_fragment(html);
-        let a_selector = Selector::parse("a").unwrap();
+        let a_selector = selector("a").unwrap();
 
         let from_links = fragment
             .select(&a_selector)

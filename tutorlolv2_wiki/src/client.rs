@@ -4,8 +4,7 @@ use reqwest::{
 };
 use std::{fmt::Display, path::Path, sync::LazyLock};
 
-pub type MayFail<T = (), E = Box<dyn core::error::Error>> = Result<T, E>;
-pub type SyncMayFail<T = (), E = Box<dyn core::error::Error + Send + Sync>> = Result<T, E>;
+pub type MayFail<T = (), E = Box<dyn core::error::Error + Send + Sync>> = Result<T, E>;
 
 static CLIENT: LazyLock<Client> = LazyLock::new(|| {
     let mut headers = HeaderMap::new();

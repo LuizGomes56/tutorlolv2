@@ -97,18 +97,20 @@ pub enum GenArgs {
 pub enum Wiki {
     #[clap(alias = "c")]
     Champions,
-    #[clap(alias = "df")]
-    DownloadFull,
-    #[clap(alias = "dt")]
-    DownloadTemplates,
-    #[clap(alias = "da")]
-    DownloadAbilities,
-    #[clap(alias = "pf")]
-    ParseFull,
-    #[clap(alias = "pt")]
-    ParseTemplates,
-    #[clap(alias = "pa")]
-    ParseAbilities,
+    #[clap(alias = "cc")]
+    ChampionsConcat,
+    #[clap(alias = "cdf")]
+    ChampionsDownloadFull,
+    #[clap(alias = "cdt")]
+    ChampionsDownloadTemplates,
+    #[clap(alias = "cda")]
+    ChampionsDownloadAbilities,
+    #[clap(alias = "cpf")]
+    ChampionsParseFull,
+    #[clap(alias = "cpt")]
+    ChampionsParseTemplates,
+    #[clap(alias = "cpa")]
+    ChampionsParseAbilities,
 }
 
 #[derive(Clone, Copy, Debug, ValueEnum)]
@@ -195,14 +197,16 @@ pub async fn run() -> MayFail {
             }
         },
         GenArgs::Wiki { function } => match function {
-            Wiki::Champions => champions::run().await?,
-            Wiki::DownloadFull => champions::full::download().await.map(|_| ())?,
-            Wiki::ParseFull => champions::full::parse().map(|_| ())?,
-            Wiki::DownloadTemplates => champions::template::download().await?,
-            Wiki::ParseTemplates => champions::template::parse()?,
-            Wiki::DownloadAbilities => champions::abilities::download().await?,
-            Wiki::ParseAbilities => champions::abilities::parse()?,
-        },
+            Wiki::Champions => champions::run().await,
+            Wiki::ChampionsConcat => champions::concat(),
+            Wiki::ChampionsDownloadFull => champions::full::download().await.map(|_| ()),
+            Wiki::ChampionsParseFull => champions::full::parse().map(|_| ()),
+            Wiki::ChampionsDownloadTemplates => champions::template::download().await,
+            Wiki::ChampionsParseTemplates => champions::template::parse(),
+            Wiki::ChampionsDownloadAbilities => champions::abilities::download().await,
+            Wiki::ChampionsParseAbilities => champions::abilities::parse(),
+        }
+        .unwrap(),
     }
 
     Ok(())
