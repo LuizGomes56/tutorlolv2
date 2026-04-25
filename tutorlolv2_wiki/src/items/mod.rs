@@ -1,11 +1,19 @@
 use crate::{
     client::{MayFail, fetch},
+    parser::parse_lua,
     selector,
 };
 use mlua::{Lua, LuaSerdeExt, Value};
 use scraper::Html;
 use serde::{Deserialize, Serialize};
-use std::collections::{BTreeMap, BTreeSet};
+use std::{
+    collections::{BTreeMap, BTreeSet},
+    path::PathBuf,
+};
+
+fn cache() -> PathBuf {
+    PathBuf::from("cache/wiki/items")
+}
 
 #[derive(Debug, Clone, Deserialize, Serialize, Default)]
 pub struct ItemEffectRaw {
@@ -106,24 +114,15 @@ pub struct ItemRaw {
 pub async fn download() -> MayFail<String> {
     println!("[fn] items::full::download");
 
-    let text = fetch("cache/wiki/items/data.html", "Module:ItemData/data").await?;
-    let html = Html::parse_document(&text);
+    let text = fetch(
+        cache().join("data").with_extension("html"),
+        "Module:ItemData/data",
+    )
+    .await?;
+    let pre = parse_lua(&text)?;
 
-    let pre_selector = selector("pre.mw-code.mw-script")?;
-
-    let pre = html
-        .select(&pre_selector)
-        .next()
-        .ok_or("Failed to select <pre> tag")?
-        .text()
-        .collect::<String>()
-        .lines()
-        .filter(|line| !line.trim_start().starts_with("--"))
-        .collect::<Vec<_>>()
-        .join("\n");
-
-    std::fs::create_dir_all("cache/wiki/items")?;
-    std::fs::write("cache/wiki/items/lua.txt", &pre)?;
+    std::fs::create_dir_all(cache())?;
+    std::fs::write(cache().join("lua").with_extension("txt"), &pre)?;
 
     Ok(pre)
 }
@@ -131,7 +130,7 @@ pub async fn download() -> MayFail<String> {
 pub fn parse() -> MayFail<BTreeMap<String, ItemRaw>> {
     println!("[fn] items::full::parse");
 
-    let src = crate::read_to_string("cache/wiki/items/lua.txt")?;
+    let src = crate::read_to_string(cache().join("lua").with_extension("txt"))?;
     let lua = Lua::new();
 
     let value = lua
@@ -145,9 +144,9 @@ pub fn parse() -> MayFail<BTreeMap<String, ItemRaw>> {
 
     let map = finalize_items(&raw_map);
 
-    std::fs::create_dir_all("cache/wiki/items")?;
+    std::fs::create_dir_all(cache())?;
     std::fs::write(
-        "cache/wiki/items/data.json",
+        cache().join("data").with_extension("json"),
         serde_json::to_string_pretty(&map)?,
     )?;
 

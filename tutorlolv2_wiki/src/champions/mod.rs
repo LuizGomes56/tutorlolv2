@@ -1,16 +1,14 @@
 use crate::{
     champions::template::{ChampionTemplate, ModeStats, Stats},
     client::MayFail,
-    is_dir,
+    file_name, is_dir,
 };
 use rayon::iter::{ParallelBridge, ParallelIterator};
 use serde::{Deserialize, Serialize};
-use std::{
-    collections::BTreeMap,
-    path::{Path, PathBuf},
-};
+use std::{collections::BTreeMap, path::PathBuf};
 use tutorlolv2_types::{AdaptiveType, AttackType, DamageType, Key};
 
+pub mod _abilities2;
 pub mod abilities;
 pub mod full;
 pub mod template;
@@ -29,14 +27,20 @@ pub async fn run() -> MayFail {
     concat()
 }
 
-#[derive(Clone, Debug, Deserialize, Serialize)]
+#[derive(Clone, Debug, Serialize)]
 pub struct WikiChampion {
+    #[serde(skip)]
     pub champion_id: String,
+    #[serde(skip)]
     pub adaptive_type: AdaptiveType,
+    #[serde(skip)]
     pub attack_type: AttackType,
+    #[serde(skip)]
     pub stats: WikiStats,
+    #[serde(skip)]
     pub modifiers: WikiModifiers,
-    pub abilities: BTreeMap<Key, Vec<WikiAbility>>,
+    // pub abilities: BTreeMap<Key, Vec<WikiAbility>>,
+    pub abilities: BTreeMap<String, serde_json::Value>,
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
@@ -100,9 +104,7 @@ pub struct WikiLeveling {
 pub fn concat() -> MayFail {
     println!("[download] champions::concat");
 
-    let dir = Path::new("cache/wiki/champions");
-
-    let champions = crate::read_dir(dir)?
+    let champions = crate::read_dir(cache())?
         .filter(is_dir)
         .par_bridge()
         .map(|entry| {
@@ -110,13 +112,12 @@ pub fn concat() -> MayFail {
             let template = crate::read(path.join("template").with_extension("json"))?;
             let champion = serde_json::from_slice::<ChampionTemplate>(&template)?;
 
-            let champion_id = entry.file_name().into_string().map_err(|e| {
-                format!("[error] Failed to get file name for path: {path:?}: {e:?}")
-            })?;
+            let champion_id = file_name(&entry)?;
 
             println!("[concat] Processing {champion_id:?}");
 
-            let mut abilities = BTreeMap::<Key, Vec<WikiAbility>>::new();
+            // let mut abilities = BTreeMap::<Key, Vec<WikiAbility>>::new();
+            let mut abilities = BTreeMap::new();
 
             for entry in crate::read_dir(path.join("abilities"))?.filter(|entry| {
                 entry
@@ -126,12 +127,23 @@ pub fn concat() -> MayFail {
                     .unwrap_or(false)
             }) {
                 let bytes = crate::read(entry.path())?;
-                let ability = serde_json::from_slice::<WikiAbility>(&bytes)?;
+                // let ability = serde_json::from_slice::<WikiAbility>(&bytes)?;
 
-                abilities
-                    .entry(ability.slot)
-                    .and_modify(|v| v.push(ability))
-                    .or_default();
+                // abilities
+                //     .entry(ability.slot)
+                //     .and_modify(|v| v.push(ability))
+                //     .or_default();
+
+                let ability = serde_json::from_slice::<serde_json::Value>(&bytes)?;
+                abilities.insert(
+                    ability["skill"]
+                        .as_str()
+                        .ok_or(format!(
+                            "[{champion_id}] Failed to get skill from ability: {ability:?}"
+                        ))?
+                        .to_string(),
+                    ability,
+                );
             }
 
             let ModeStats {
@@ -243,11 +255,14 @@ pub fn concat() -> MayFail {
 
             MayFail::<(String, WikiChampion)>::Ok((champion_id, wiki_champion))
         })
+        .inspect(|v| {
+            let _ = v.as_ref().inspect_err(|e| eprintln!("Task error: {e:?}"));
+        })
         .filter_map(Result::ok)
         .collect::<BTreeMap<String, WikiChampion>>();
 
     let bytes = serde_json::to_string_pretty(&champions)?;
-    std::fs::write(dir.join("full").with_extension("json"), bytes)?;
+    std::fs::write(cache().join("full").with_extension("json"), bytes)?;
 
     Ok(())
 }

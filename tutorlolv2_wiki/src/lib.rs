@@ -5,6 +5,7 @@ use std::{fs::DirEntry, path::Path};
 pub mod champions;
 pub mod client;
 pub mod items;
+pub mod parser;
 pub mod runes;
 
 pub fn selector(selectors: &str) -> MayFail<Selector> {
@@ -36,4 +37,11 @@ pub fn is_dir(entry: &DirEntry) -> bool {
         .ok()
         .map(|v: std::fs::FileType| v.is_dir())
         .unwrap_or(false)
+}
+
+pub fn file_name(entry: &DirEntry) -> MayFail<String> {
+    entry
+        .file_name()
+        .into_string()
+        .map_err(|e| format!("[error] Failed to get file name for entry: {entry:?}: {e:?}").into())
 }

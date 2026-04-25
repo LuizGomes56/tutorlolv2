@@ -3,7 +3,9 @@
 
 use crate::{
     client::{MayFail, fetch},
-    is_dir, selector,
+    is_dir,
+    parser::get_cells,
+    selector,
 };
 use rayon::iter::{ParallelBridge, ParallelIterator};
 use scraper::Html;
@@ -89,7 +91,8 @@ pub fn parse() -> MayFail {
             let data = crate::read_to_string(path.join("data").with_extension("html"))?;
             let html = Html::parse_document(&data);
 
-            let json = serde_json::to_string_pretty(&{})?;
+            let cells = get_cells(&html)?;
+            let json = serde_json::to_string_pretty(&cells)?;
 
             std::fs::write(path.join("data").with_extension("json"), &json)?;
 

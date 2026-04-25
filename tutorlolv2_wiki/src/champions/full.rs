@@ -1,10 +1,9 @@
 use crate::{
     champions::cache,
     client::{MayFail, fetch},
-    selector,
+    parser::parse_lua,
 };
 use mlua::{Lua, LuaSerdeExt, Value};
-use scraper::Html;
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
 
@@ -35,20 +34,7 @@ pub async fn download() -> MayFail<String> {
     )
     .await?;
 
-    let html = Html::parse_document(&text);
-
-    let pre_selector = selector("pre.mw-code.mw-script")?;
-
-    let pre = html
-        .select(&pre_selector)
-        .next()
-        .ok_or("Failed to select <pre> tag")?
-        .text()
-        .collect::<String>()
-        .lines()
-        .filter(|line| !line.trim_start().starts_with("--"))
-        .collect::<Vec<_>>()
-        .join("\n");
+    let pre = parse_lua(&text)?;
 
     std::fs::write(cache().join("lua").with_extension("txt"), &pre)?;
 
@@ -56,7 +42,7 @@ pub async fn download() -> MayFail<String> {
 }
 
 pub fn parse() -> MayFail<BTreeMap<String, ChampionRaw>> {
-    println!("[download] champions::full::parse");
+    println!("[fn] champions::full::parse");
 
     let src = crate::read_to_string(cache().join("lua").with_extension("txt"))?;
     let lua = Lua::new();
