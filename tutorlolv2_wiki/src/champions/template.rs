@@ -1,18 +1,18 @@
 use crate::{
-    champions::{clean_text, full::ChampionRaw},
+    champions::{cache, clean_text, full::ChampionRaw},
     client::{MayFail, fetch},
     is_dir, selector,
 };
 use rayon::iter::{IntoParallelIterator, ParallelBridge, ParallelIterator};
 use scraper::Html;
 use serde::{Deserialize, Serialize};
-use std::{collections::BTreeMap, path::Path};
+use std::collections::BTreeMap;
 
 pub async fn download() -> MayFail {
     println!("[fn] champions::template::download");
 
     let champions = {
-        let bytes = std::fs::read("cache/wiki/champions/data.json")?;
+        let bytes = crate::read(cache().join("data").with_extension("json"))?;
         serde_json::from_slice::<BTreeMap<String, ChampionRaw>>(&bytes)?
     };
 
@@ -22,7 +22,7 @@ pub async fn download() -> MayFail {
     {
         let ChampionRaw { apiname, .. } = raw;
 
-        let path = Path::new("cache/wiki/champions").join(&apiname);
+        let path = cache().join(&apiname);
         std::fs::create_dir_all(&path)?;
 
         fetch(
@@ -38,7 +38,7 @@ pub async fn download() -> MayFail {
 pub fn parse() -> MayFail {
     println!("[fn] champions::template::parse");
 
-    crate::read_dir("cache/wiki/champions")?
+    crate::read_dir(cache())?
         .filter(is_dir)
         .par_bridge()
         .into_par_iter()
@@ -103,14 +103,13 @@ pub fn parse() -> MayFail {
                 }
             }
 
-            let mut out = ChampionTemplate::default();
-
-            out.general(&values)
-                .skills(skill_cells, &values)
-                .stats(&values)
-                .modes(&values);
-
-            let json = serde_json::to_string_pretty(&out)?;
+            let json = serde_json::to_string_pretty(
+                ChampionTemplate::default()
+                    .general(&values)
+                    .skills(skill_cells, &values)
+                    .stats(&values)
+                    .modes(&values),
+            )?;
 
             std::fs::write(path.with_extension("json"), json)?;
 

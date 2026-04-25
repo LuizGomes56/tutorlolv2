@@ -1,4 +1,5 @@
 use crate::{
+    champions::cache,
     client::{MayFail, fetch},
     selector,
 };
@@ -28,7 +29,11 @@ pub struct ChampionRaw {
 pub async fn download() -> MayFail<String> {
     println!("[fn] champions::full::download");
 
-    let text = fetch("cache/wiki/champions/data.html", "Module:ChampionData/data").await?;
+    let text = fetch(
+        cache().join("data").with_extension("html"),
+        "Module:ChampionData/data",
+    )
+    .await?;
 
     let html = Html::parse_document(&text);
 
@@ -45,7 +50,7 @@ pub async fn download() -> MayFail<String> {
         .collect::<Vec<_>>()
         .join("\n");
 
-    std::fs::write("cache/wiki/champions/lua.txt", &pre)?;
+    std::fs::write(cache().join("lua").with_extension("txt"), &pre)?;
 
     Ok(pre)
 }
@@ -53,7 +58,7 @@ pub async fn download() -> MayFail<String> {
 pub fn parse() -> MayFail<BTreeMap<String, ChampionRaw>> {
     println!("[download] champions::full::parse");
 
-    let src = crate::read_to_string("cache/wiki/champions/lua.txt")?;
+    let src = crate::read_to_string(cache().join("lua").with_extension("txt"))?;
     let lua = Lua::new();
 
     let value = lua
@@ -67,7 +72,7 @@ pub fn parse() -> MayFail<BTreeMap<String, ChampionRaw>> {
 
     let data = serde_json::to_string_pretty(&map)?;
 
-    std::fs::write("cache/wiki/champions/data.json", &data)?;
+    std::fs::write(cache().join("data").with_extension("json"), &data)?;
 
     Ok(map)
 }

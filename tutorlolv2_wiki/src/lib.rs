@@ -5,6 +5,7 @@ use std::{fs::DirEntry, path::Path};
 pub mod champions;
 pub mod client;
 pub mod items;
+pub mod runes;
 
 pub fn selector(selectors: &str) -> MayFail<Selector> {
     Selector::parse(selectors)

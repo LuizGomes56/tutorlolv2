@@ -1,6 +1,6 @@
 use crate::{
     champions::{
-        clean_text,
+        cache, clean_text,
         template::{ChampionTemplate, SkillSet},
     },
     client::{MayFail, fetch},
@@ -51,7 +51,7 @@ pub struct ParsedLevelingLine {
 pub async fn download() -> MayFail {
     println!("[download] champions::abilities::download");
 
-    for entry in crate::read_dir("cache/wiki/champions")?.filter(is_dir) {
+    for entry in crate::read_dir(cache())?.filter(is_dir) {
         let path = entry.path();
 
         let champion_id = entry
@@ -105,14 +105,8 @@ pub async fn download() -> MayFail {
 pub fn parse() -> MayFail {
     println!("[download] champions::abilities::parse");
 
-    crate::read_dir("cache/wiki/champions")?
-        .filter(|entry| {
-            entry
-                .file_type()
-                .ok()
-                .map(|v: std::fs::FileType| v.is_dir())
-                .unwrap_or(false)
-        })
+    crate::read_dir(cache())?
+        .filter(|entry| entry.file_type().ok().map(|v| v.is_dir()).unwrap_or(false))
         .par_bridge()
         .into_par_iter()
         .try_for_each(|entry| {

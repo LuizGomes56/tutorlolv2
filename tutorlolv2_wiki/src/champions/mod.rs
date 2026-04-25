@@ -5,12 +5,19 @@ use crate::{
 };
 use rayon::iter::{ParallelBridge, ParallelIterator};
 use serde::{Deserialize, Serialize};
-use std::{collections::BTreeMap, path::Path};
+use std::{
+    collections::BTreeMap,
+    path::{Path, PathBuf},
+};
 use tutorlolv2_types::{AdaptiveType, AttackType, DamageType, Key};
 
 pub mod abilities;
 pub mod full;
 pub mod template;
+
+pub(self) fn cache() -> PathBuf {
+    PathBuf::from("cache/wiki/champions")
+}
 
 pub async fn run() -> MayFail {
     full::download().await?;

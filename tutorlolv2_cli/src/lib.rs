@@ -6,7 +6,7 @@ use tutorlolv2_dev::{
     update,
 };
 use tutorlolv2_gen::{ChampionId, ItemId};
-use tutorlolv2_wiki::{champions, items};
+use tutorlolv2_wiki::{champions, items, runes};
 
 fn from_str_err<T>(s: &str, into: &str) -> Result<T, String> {
     Err(format!("Value {s:?} can't be converted into {into}"))
@@ -117,6 +117,14 @@ pub enum Wiki {
     ItemsDownload,
     #[clap(alias = "ip")]
     ItemsParse,
+    #[clap(alias = "r")]
+    Runes,
+    #[clap(alias = "rl")]
+    RunesLinks,
+    #[clap(alias = "rd")]
+    RunesDownload,
+    #[clap(alias = "rp")]
+    RunesParse,
 }
 
 #[derive(Clone, Copy, Debug, ValueEnum)]
@@ -214,6 +222,10 @@ pub async fn run() -> MayFail {
             Wiki::Items => items::run().await,
             Wiki::ItemsDownload => items::download().await.map(|_| ()),
             Wiki::ItemsParse => items::parse().map(|_| ()),
+            Wiki::Runes => todo!(),
+            Wiki::RunesLinks => runes::links().await,
+            Wiki::RunesDownload => runes::download().await,
+            Wiki::RunesParse => runes::parse(),
         }
         .map_err(|e| format!("[wiki] Error: {e:?}"))?,
     }
