@@ -84,6 +84,7 @@ fn parse_f32(map: &BTreeMap<String, String>, key: &str) -> Option<f32> {
 #[derive(Clone, Debug, Default, Serialize, Deserialize)]
 pub struct ChampionTemplate {
     pub name: String,
+    pub champion_id: String,
     pub adaptive_type: String,
     pub attack_type: String,
     pub skills: SkillSet,
@@ -102,6 +103,7 @@ impl ChampionTemplate {
         };
 
         self.name = clean("1")?;
+        self.champion_id = clean("apiname")?;
         self.adaptive_type = clean("adaptivetype")?;
         self.attack_type = clean("rangetype")?;
         Ok(self)

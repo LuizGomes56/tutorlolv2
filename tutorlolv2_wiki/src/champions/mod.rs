@@ -1,12 +1,15 @@
 use crate::{
-    champions::template::{ChampionTemplate, ModeStats, Stats},
+    champions::{
+        abilities::Ability,
+        template::{ChampionTemplate, ModeStats, Stats},
+    },
     client::MayFail,
-    file_name, is_dir,
+    is_dir,
 };
 use rayon::iter::{ParallelBridge, ParallelIterator};
 use serde::{Deserialize, Serialize};
 use std::{collections::BTreeMap, path::PathBuf};
-use tutorlolv2_types::{AdaptiveType, AttackType, DamageType, Key};
+use tutorlolv2_types::{AdaptiveType, AttackType, Key};
 
 pub mod abilities;
 pub mod full;
@@ -26,7 +29,7 @@ pub async fn run() -> MayFail {
     concat()
 }
 
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct WikiChampion {
     #[serde(skip)]
     pub champion_id: String,
@@ -38,11 +41,10 @@ pub struct WikiChampion {
     pub stats: WikiStats,
     #[serde(skip)]
     pub modifiers: WikiModifiers,
-    // pub abilities: BTreeMap<Key, Vec<WikiAbility>>,
-    pub abilities: BTreeMap<String, serde_json::Value>,
+    pub abilities: BTreeMap<Key, Vec<Ability>>,
 }
 
-#[derive(Clone, Debug, Deserialize, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub struct WikiStats {
     pub health: Stat,
     pub mana: Stat,
@@ -56,19 +58,19 @@ pub struct WikiStats {
     pub move_speed: f32,
 }
 
-#[derive(Clone, Debug, Deserialize, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub struct Stat {
     pub base: f32,
     pub per_level: f32,
 }
 
-#[derive(Clone, Debug, Deserialize, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub struct Modifier {
     pub damage_dealt: f32,
     pub damage_taken: f32,
 }
 
-#[derive(Clone, Debug, Deserialize, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub struct WikiModifiers {
     pub ofa: Modifier,
     pub usb: Modifier,
@@ -77,27 +79,6 @@ pub struct WikiModifiers {
     pub nb: Modifier,
     pub swift: Modifier,
     pub urf: Modifier,
-}
-
-#[derive(Clone, Debug, Deserialize, Serialize)]
-pub struct WikiAbility {
-    pub slot: Key,
-    pub name: String,
-    pub damage_type: DamageType,
-    pub effects: Vec<WikiEffect>,
-}
-
-#[derive(Clone, Debug, Deserialize, Serialize)]
-pub struct WikiEffect {
-    pub description: String,
-    pub levelings: Vec<WikiLeveling>,
-}
-
-#[derive(Clone, Debug, Deserialize, Serialize)]
-pub struct WikiLeveling {
-    pub attribute: String,
-    pub formula_attempt: Vec<String>,
-    pub data: String,
 }
 
 pub fn concat() -> MayFail {
@@ -111,12 +92,9 @@ pub fn concat() -> MayFail {
             let template = crate::read(path.join("template").with_extension("json"))?;
             let champion = serde_json::from_slice::<ChampionTemplate>(&template)?;
 
-            let champion_id = file_name(&entry)?;
+            let champion_id = champion.champion_id;
 
-            println!("[concat] Processing {champion_id:?}");
-
-            // let mut abilities = BTreeMap::<Key, Vec<WikiAbility>>::new();
-            let mut abilities = BTreeMap::new();
+            let mut abilities = BTreeMap::<Key, Vec<Ability>>::new();
 
             for entry in crate::read_dir(path.join("abilities"))?.filter(|entry| {
                 entry
@@ -126,23 +104,9 @@ pub fn concat() -> MayFail {
                     .unwrap_or(false)
             }) {
                 let bytes = crate::read(entry.path())?;
-                // let ability = serde_json::from_slice::<WikiAbility>(&bytes)?;
+                let ability = serde_json::from_slice::<Ability>(&bytes)?;
 
-                // abilities
-                //     .entry(ability.slot)
-                //     .and_modify(|v| v.push(ability))
-                //     .or_default();
-
-                let ability = serde_json::from_slice::<serde_json::Value>(&bytes)?;
-                abilities.insert(
-                    ability["skill"]
-                        .as_str()
-                        .ok_or(format!(
-                            "[{champion_id}] Failed to get skill from ability: {ability:?}"
-                        ))?
-                        .to_string(),
-                    ability,
-                );
+                abilities.entry(ability.skill).or_default().push(ability);
             }
 
             let ModeStats {
@@ -261,7 +225,42 @@ pub fn concat() -> MayFail {
         .collect::<BTreeMap<String, WikiChampion>>();
 
     let bytes = serde_json::to_string_pretty(&champions)?;
+
     std::fs::write(cache().join("_full").with_extension("json"), bytes)?;
+
+    let mut use_values = Vec::new();
+    let mut use_formula = Vec::new();
+    let mut base = Vec::new();
+    let mut scalings = Vec::new();
+    let mut old_scalings = Vec::new();
+
+    for (_, wiki) in &champions {
+        for (_, abilities) in &wiki.abilities {
+            for ability in abilities {
+                for (_, effect) in &ability.effects {
+                    use_values.extend_from_slice(effect.use_values.as_ref().unwrap_or(&vec![]));
+                    if let Some(ref formula) = effect.use_formula {
+                        use_formula.push(formula);
+                    }
+                    base.extend_from_slice(effect.base.as_ref().unwrap_or(&vec![]));
+                    scalings.extend_from_slice(&effect.scalings);
+                    old_scalings.extend_from_slice(&effect.__scalings);
+                }
+            }
+        }
+    }
+
+    let debug_values = serde_json::json!({
+        "use_values": use_values,
+        "use_formula": use_formula,
+        "base": base,
+        "old_scalings": old_scalings,
+        "scalings": scalings
+    });
+
+    let debug_bytes = serde_json::to_string(&debug_values)?;
+
+    std::fs::write(cache().join("_debug").with_extension("json"), debug_bytes)?;
 
     Ok(())
 }

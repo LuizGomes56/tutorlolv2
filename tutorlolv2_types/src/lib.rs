@@ -8,8 +8,11 @@ use bincode::{Decode, Encode};
 use core::{convert::Infallible, fmt::Display, ops::Index, str::FromStr};
 use serde::{Deserialize, Serialize};
 
-#[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
+#[derive(
+    Clone, Copy, Debug, Default, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize,
+)]
 pub enum Key {
+    #[default]
     P,
     Q,
     W,
@@ -25,6 +28,21 @@ impl Key {
             Key::W => 'W',
             Key::E => 'E',
             Key::R => 'R',
+        }
+    }
+}
+
+impl TryFrom<char> for Key {
+    type Error = &'static str;
+
+    fn try_from(value: char) -> Result<Self, Self::Error> {
+        match value {
+            'I' | 'A' | 'P' => Ok(Key::P),
+            'Q' => Ok(Key::Q),
+            'W' => Ok(Key::W),
+            'E' => Ok(Key::E),
+            'R' => Ok(Key::R),
+            _ => Err("Invalid char when calling Key::try_from"),
         }
     }
 }
@@ -768,6 +786,7 @@ create_eval_struct!(
     rocksolid_effect,
     stacks,
     steelcaps_effect,
+    life_steal,
     enemy_armor,
     enemy_bonus_armor,
     enemy_bonus_health,
