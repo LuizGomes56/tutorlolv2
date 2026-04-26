@@ -1,8 +1,7 @@
+use crate::{client::MayFail, selector};
 use scraper::Html;
 use std::collections::BTreeMap;
 use tutorlolv2_types::CtxVar;
-
-use crate::{client::MayFail, selector};
 
 pub fn scalings(html: &str) -> Vec<String> {
     let map = match "" {
@@ -42,10 +41,7 @@ pub fn get_cells(html: &Html) -> MayFail<BTreeMap<String, String>> {
                 continue;
             }
 
-            cells.insert(
-                key.clone() + "_raw",
-                value.child_elements().map(|e| e.html()).collect::<String>(),
-            );
+            cells.insert(key.clone() + "_raw", value.inner_html());
             cells.insert(key, text.trim().to_string());
         }
     }

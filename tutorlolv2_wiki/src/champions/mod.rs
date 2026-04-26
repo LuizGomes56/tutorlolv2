@@ -8,7 +8,6 @@ use serde::{Deserialize, Serialize};
 use std::{collections::BTreeMap, path::PathBuf};
 use tutorlolv2_types::{AdaptiveType, AttackType, DamageType, Key};
 
-pub mod _abilities2;
 pub mod abilities;
 pub mod full;
 pub mod template;
@@ -262,7 +261,7 @@ pub fn concat() -> MayFail {
         .collect::<BTreeMap<String, WikiChampion>>();
 
     let bytes = serde_json::to_string_pretty(&champions)?;
-    std::fs::write(cache().join("full").with_extension("json"), bytes)?;
+    std::fs::write(cache().join("_full").with_extension("json"), bytes)?;
 
     Ok(())
 }

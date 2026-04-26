@@ -1,7 +1,7 @@
 use crate::{
     champions::{cache, clean_text, full::ChampionRaw},
     client::{MayFail, fetch},
-    file_name, is_dir,
+    is_dir,
     parser::get_cells,
 };
 use rayon::iter::{IntoParallelIterator, ParallelBridge, ParallelIterator};
@@ -47,10 +47,6 @@ pub fn parse() -> MayFail {
             let path = entry.path().join("template");
             let data = crate::read_to_string(path.with_extension("html"))?;
 
-            let champion_id = file_name(&entry)?;
-
-            println!("[parallel] Processing templates for {champion_id:?}");
-
             let html = Html::parse_document(&data);
             let cells = get_cells(&html)?
                 .into_iter()
@@ -87,6 +83,7 @@ fn parse_f32(map: &BTreeMap<String, String>, key: &str) -> Option<f32> {
 
 #[derive(Clone, Debug, Default, Serialize, Deserialize)]
 pub struct ChampionTemplate {
+    pub name: String,
     pub adaptive_type: String,
     pub attack_type: String,
     pub skills: SkillSet,
@@ -104,6 +101,7 @@ impl ChampionTemplate {
                 .ok_or(format!("Failed to extract key: {key}"))
         };
 
+        self.name = clean("1")?;
         self.adaptive_type = clean("adaptivetype")?;
         self.attack_type = clean("rangetype")?;
         Ok(self)
