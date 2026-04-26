@@ -227,8 +227,9 @@ pub fn concat() -> MayFail {
 
     let bytes = serde_json::to_string_pretty(&champions)?;
 
-    crate::write(cache().join("full").with_extension("json"), bytes)?;
+    crate::write(cache().join("full").with_extension("json"), bytes)
 
+    /*
     let mut use_values = Vec::new();
     let mut use_formula = Vec::new();
     let mut base = Vec::new();
@@ -259,17 +260,5 @@ pub fn concat() -> MayFail {
     let debug_bytes = serde_json::to_string(&debug_values)?;
 
     crate::write(cache().join("debug").with_extension("json"), debug_bytes)?;
-
-    Ok(())
-}
-
-pub fn clean_text(s: &str) -> String {
-    s.replace('\u{a0}', " ")
-        .lines()
-        .map(str::trim)
-        .filter(|x| !x.is_empty())
-        .collect::<Vec<_>>()
-        .join(" ")
-        .trim()
-        .to_string()
+    */
 }

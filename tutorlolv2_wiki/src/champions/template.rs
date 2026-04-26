@@ -1,8 +1,8 @@
 use crate::{
-    champions::{cache, clean_text, full::ChampionRaw},
+    champions::{cache, full::ChampionRaw},
     client::{MayFail, fetch},
     is_dir,
-    parser::get_cells,
+    parser::{clean_text, get_cells},
 };
 use rayon::iter::{IntoParallelIterator, ParallelBridge, ParallelIterator};
 use scraper::Html;

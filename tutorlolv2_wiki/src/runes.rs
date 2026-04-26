@@ -1,15 +1,13 @@
-// https://wiki.leagueoflegends.com/en-us/Template:Rune%20data%20Electrocute
-// https://wiki.leagueoflegends.com/en-us/Template:Rune%20data%20<name>
-
 use crate::{
     client::{MayFail, fetch},
-    is_dir,
-    parser::get_cells,
+    file_name, is_dir,
+    parser::{SUFFIXES, get_cells, parse_description_effects},
     selector,
 };
 use rayon::iter::{ParallelBridge, ParallelIterator};
 use scraper::Html;
 use serde::{Deserialize, Serialize};
+use serde_json::{Value, json};
 use std::{collections::BTreeMap, path::PathBuf};
 use tutorlolv2_fmt::pascal_case;
 
@@ -91,7 +89,32 @@ pub fn parse() -> MayFail {
             let html = Html::parse_document(&data);
 
             let cells = get_cells(&html)?;
-            let json = serde_json::to_string_pretty(&cells)?;
+
+            let mut result = json!(cells);
+
+            let effects = SUFFIXES
+                .into_iter()
+                .enumerate()
+                .filter_map(|(i, suffix)| {
+                    let key = format!("description{suffix}");
+
+                    match cells.get(&key) {
+                        Some(description)
+                            if let Some(description_raw) = cells.get(&(key + "_raw")) =>
+                        {
+                            parse_description_effects(i, description, description_raw).ok()
+                        }
+                        _ => None,
+                    }
+                })
+                .collect::<BTreeMap<_, _>>();
+
+            result
+                .as_object_mut()
+                .ok_or("[unlikely] Failed to transform cells in a map")?
+                .insert("effects".into(), json!(effects));
+
+            let json = serde_json::to_string_pretty(&result)?;
 
             crate::write(path.join("data").with_extension("json"), &json)?;
 
@@ -99,8 +122,28 @@ pub fn parse() -> MayFail {
         })
 }
 
+pub fn concat() -> MayFail {
+    println!("[fn] runes::concat");
+
+    let runes = crate::read_dir(cache())?
+        .filter(is_dir)
+        .par_bridge()
+        .filter_map(|entry| {
+            let path = entry.path();
+            let key = file_name(&entry).ok()?;
+            let bytes = crate::read(path.join("data").with_extension("json")).ok()?;
+            let json = serde_json::from_slice::<Value>(&bytes).ok()?;
+            Some((key, json))
+        })
+        .collect::<BTreeMap<_, _>>();
+
+    let json = serde_json::to_string_pretty(&runes)?;
+    crate::write(cache().join("data").with_extension("json"), &json)
+}
+
 pub async fn run() -> MayFail {
     links().await?;
     download().await?;
-    parse()
+    parse()?;
+    concat()
 }

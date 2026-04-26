@@ -127,6 +127,8 @@ pub enum Wiki {
     RunesDownload,
     #[clap(alias = "rp")]
     RunesParse,
+    #[clap(alias = "rc")]
+    RunesConcat,
 }
 
 #[derive(Clone, Copy, Debug, ValueEnum)]
@@ -229,6 +231,7 @@ pub async fn run() -> MayFail {
             Wiki::RunesLinks => runes::links().await,
             Wiki::RunesDownload => runes::download().await,
             Wiki::RunesParse => runes::parse(),
+            Wiki::RunesConcat => runes::concat(),
         }
         .map_err(|e| format!("[wiki] Error: {e:?}"))?,
     }
