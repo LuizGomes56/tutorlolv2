@@ -55,7 +55,7 @@ pub async fn links() -> MayFail {
             .collect::<BTreeMap<_, _>>();
 
         let json = serde_json::to_string_pretty(&links)?;
-        std::fs::write(cache().join(save_to).with_extension("json"), &json)?;
+        crate::write(cache().join(save_to).with_extension("json"), &json)?;
 
         Ok(())
     };
@@ -70,9 +70,8 @@ pub async fn download() -> MayFail {
     let links_file = crate::read(cache().join("links_lol").with_extension("json"))?;
     let links = serde_json::from_slice::<BTreeMap<String, RuneLink>>(&links_file)?;
 
-    for (id, link) in links.iter() {
+    for (id, link) in links {
         let save_to = cache().join(id);
-        std::fs::create_dir_all(&save_to)?;
         fetch(save_to.join("data").with_extension("html"), link.href).await?;
     }
 
@@ -94,8 +93,14 @@ pub fn parse() -> MayFail {
             let cells = get_cells(&html)?;
             let json = serde_json::to_string_pretty(&cells)?;
 
-            std::fs::write(path.join("data").with_extension("json"), &json)?;
+            crate::write(path.join("data").with_extension("json"), &json)?;
 
             Ok(())
         })
+}
+
+pub async fn run() -> MayFail {
+    links().await?;
+    download().await?;
+    parse()
 }

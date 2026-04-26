@@ -36,7 +36,7 @@ pub async fn download() -> MayFail<String> {
 
     let pre = parse_lua(&text)?;
 
-    std::fs::write(cache().join("lua").with_extension("txt"), &pre)?;
+    crate::write(cache().join("lua").with_extension("txt"), &pre)?;
 
     Ok(pre)
 }
@@ -58,7 +58,7 @@ pub fn parse() -> MayFail<BTreeMap<String, ChampionRaw>> {
 
     let data = serde_json::to_string_pretty(&map)?;
 
-    std::fs::write(cache().join("data").with_extension("json"), &data)?;
+    crate::write(cache().join("data").with_extension("json"), &data)?;
 
     Ok(map)
 }

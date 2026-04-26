@@ -109,6 +109,8 @@ pub const fn base_stats_bf32(
 ) -> BasicStats<f32> {
     match champion_id {
         ChampionId::Gnar if is_mega_gnar => {
+            core::hint::cold_path();
+
             type S = CachedChampionStatsMap;
 
             const GNAR_STATS: CachedChampionStats = ChampionId::Gnar.cache().stats;
@@ -641,7 +643,7 @@ pub const fn ability_id_mod(
     let Modifiers { damages, abilities } = modifiers;
     let mut modifier = damages.modifier(damage_type);
 
-    if let Some((v, modf)) = match ability_id {
+    if let Some((v, mul)) = match ability_id {
         AbilityId::Q(v) => Some((v, abilities.q)),
         AbilityId::W(v) => Some((v, abilities.w)),
         AbilityId::E(v) => Some((v, abilities.e)),
@@ -649,7 +651,7 @@ pub const fn ability_id_mod(
         _ => None,
     } && v as u8 <= AbilityName::Mega as u8
     {
-        modifier *= modf;
+        modifier *= mul;
     }
     modifier
 }

@@ -1,23 +1,6 @@
 use crate::{client::MayFail, selector};
 use scraper::Html;
 use std::collections::BTreeMap;
-use tutorlolv2_types::CtxVar;
-
-pub fn scalings(html: &str) -> Vec<String> {
-    let map = match "" {
-        "#F5EE99" => CtxVar::AttackSpeed,
-        "orange" => CtxVar::AttackDamage,
-        "#7A6DFF" => CtxVar::AbilityPower,
-        "#21B053" => CtxVar::MaxHealth,
-        "orangered" => CtxVar::CritDamage,
-        "#B4814C" => CtxVar::CritChance,
-        "#D929D9" | "#26DFB0" => CtxVar::Stacks,
-        "#9FFF4D" => CtxVar::BonusMoveSpeed,
-        _ => todo!(),
-    };
-
-    todo!()
-}
 
 pub fn get_cells(html: &Html) -> MayFail<BTreeMap<String, String>> {
     let mut cells = BTreeMap::new();

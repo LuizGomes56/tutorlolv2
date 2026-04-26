@@ -12,7 +12,7 @@ use rayon::iter::{IntoParallelIterator, ParallelBridge, ParallelIterator};
 use regex::Regex;
 use scraper::Html;
 use serde::{Deserialize, Serialize};
-use std::{collections::BTreeMap, fmt::Display, sync::LazyLock};
+use std::{collections::BTreeMap, fmt::Display, str::FromStr, sync::LazyLock};
 use tutorlolv2_types::{CtxVar, DamageType, Key};
 
 pub async fn download() -> MayFail {
@@ -40,9 +40,6 @@ pub async fn download() -> MayFail {
         println!("[download] Processing {name:?}");
 
         let save_to = path.join("abilities");
-
-        std::fs::create_dir_all(&save_to)
-            .map_err(|e| format!("[error] Failed to create directory: {e:?}"))?;
 
         for (key, skills) in [
             ('P', skill_i),
@@ -109,7 +106,7 @@ pub fn parse() -> MayFail {
                     let mut ability = parse_abilities(&cells)?;
                     ability.champion_id = champion_id.clone();
 
-                    std::fs::write(
+                    crate::write(
                         path.with_extension("json"),
                         serde_json::to_string_pretty(&ability)?,
                     )?;
@@ -139,7 +136,6 @@ pub struct AbilityInner {
 pub struct Effect {
     pub index: usize,
     pub inner: AbilityInner,
-    pub __scalings: Vec<String>,
     pub scalings: Vec<Scaling>,
     pub use_formula: Option<String>,
     pub use_values: Option<Vec<String>>,
@@ -249,7 +245,7 @@ pub fn parse_abilities(cells: &BTreeMap<String, String>) -> MayFail<Ability> {
 
                 ability
                     .effects
-                    .extend(parse_description_effects(i, description, raw)?);
+                    .extend([parse_description_effects(i, description, raw)?]);
             }
         }
     }
@@ -322,7 +318,6 @@ fn parse_effects(
                     use_formula,
                     use_values,
                     scalings: parse_scalings(&dd_leveling_raw),
-                    __scalings: __parse_scalings(&clean_text(&dd_leveling_raw)),
                 },
             ))
         })
@@ -333,7 +328,7 @@ fn parse_description_effects(
     index: usize,
     description: &str,
     description_raw: &str,
-) -> MayFail<BTreeMap<String, Effect>> {
+) -> MayFail<(String, Effect)> {
     let fragment = Html::parse_fragment(description_raw);
 
     let tooltip = fragment.select(&selector("span.pp-tooltip")?).next();
@@ -363,9 +358,7 @@ fn parse_description_effects(
         .filter(|s| !s.is_empty())
         .unwrap_or(format!("Description {index}"));
 
-    let mut map = BTreeMap::new();
-
-    map.insert(
+    Ok((
         key,
         Effect {
             index,
@@ -374,14 +367,11 @@ fn parse_description_effects(
                 leveling: String::new(),
             },
             scalings: parse_scalings(description_raw),
-            __scalings: __parse_scalings(&clean_text(description_raw)),
             use_formula,
             use_values,
             base: parse_base_damage(description),
         },
-    );
-
-    Ok(map)
+    ))
 }
 
 fn parse_base_damage(text: &str) -> Option<Vec<String>> {
@@ -414,61 +404,6 @@ fn parse_base_damage(text: &str) -> Option<Vec<String>> {
     }
 }
 
-fn __parse_scalings(input: &str) -> Vec<String> {
-    let chars: Vec<(usize, char)> = input.char_indices().collect();
-    let mut out = Vec::new();
-    let mut i = 0usize;
-
-    while i + 1 < chars.len() {
-        let (_, c1) = chars[i];
-        let (_, c2) = chars[i + 1];
-
-        if c1 == '(' && c2 == '+' {
-            let start = chars[i].0;
-            let mut depth = 1usize;
-            let mut j = i + 1;
-
-            while j + 1 < chars.len() {
-                j += 1;
-                let (byte, ch) = chars[j];
-
-                match ch {
-                    '(' => depth += 1,
-                    ')' => {
-                        depth -= 1;
-                        if depth == 0 {
-                            let end = byte + ch.len_utf8();
-                            out.push(input[start..end].trim().to_string());
-                            break;
-                        }
-                    }
-                    _ => {}
-                }
-            }
-
-            i = j;
-        } else {
-            i += 1;
-        }
-    }
-
-    fn dedup_strings(list: &mut Vec<String>) {
-        list.retain(|s| !s.trim().is_empty());
-
-        let mut temp = Vec::new();
-        for item in core::mem::take(list) {
-            if !temp.contains(&item) {
-                temp.push(item);
-            }
-        }
-
-        *list = temp;
-    }
-
-    dedup_strings(&mut out);
-    out
-}
-
 fn parse_scalings(input_raw: &str) -> Vec<Scaling> {
     let mut raws = extract_plus_paren_blocks(input_raw);
 
@@ -478,6 +413,18 @@ fn parse_scalings(input_raw: &str) -> Vec<Scaling> {
         .into_iter()
         .map(|raw| parse_scaling_block(&raw))
         .collect::<Vec<_>>();
+
+    fn dedup_scalings<T: PartialEq>(list: &mut Vec<T>) {
+        let mut out = Vec::new();
+
+        for item in core::mem::take(list) {
+            if !out.contains(&item) {
+                out.push(item);
+            }
+        }
+
+        *list = out;
+    }
 
     dedup_scalings(&mut out);
     out
@@ -513,7 +460,7 @@ fn parse_scaling_block(raw_block: &str) -> Scaling {
 }
 
 fn parse_non_nested_scaling(raw: &str) -> Scaling {
-    let text = normalize_scaling_text(&html_to_text(raw));
+    let text = normalize_text(&html_to_text(raw));
 
     if text.is_empty() {
         return Scaling::Other {
@@ -521,13 +468,13 @@ fn parse_non_nested_scaling(raw: &str) -> Scaling {
         };
     }
 
-    if let Some(scaling) = parse_based_on_level_scaling(raw, &text)
-        .or_else(|| parse_percent_attr_scaling(&text))
-        .or_else(|| parse_ranked_per100_scaling(&text))
-        .or_else(|| parse_ranked_scaling(&text))
-        .or_else(|| parse_simple_per100_scaling(&text))
-        .or_else(|| parse_simple_scaling(&text))
-        .or_else(|| parse_flat_scaling(&text))
+    if let Some(scaling) = Scaling::based_on_level(raw, &text)
+        .or_else(|| Scaling::percent_attr(&text))
+        .or_else(|| Scaling::ranked_per100(&text))
+        .or_else(|| Scaling::ranked(&text))
+        .or_else(|| Scaling::per100(&text))
+        .or_else(|| Scaling::simple(&text))
+        .or_else(|| Scaling::flat(&text))
     {
         return scaling;
     }
@@ -619,143 +566,152 @@ fn remove_nested_plus_blocks(input: &str) -> String {
     out
 }
 
-fn parse_simple_scaling(text: &str) -> Option<Scaling> {
-    static SIMPLE_PERCENT_TAIL_RE: LazyLock<Regex> =
-        LazyLock::new(|| Regex::new(r"(?i)^(-?\d+(?:\.\d+)?)%\s+(.+)$").unwrap());
+impl Scaling {
+    fn simple(text: &str) -> Option<Scaling> {
+        static SIMPLE_PERCENT_TAIL_RE: LazyLock<Regex> =
+            LazyLock::new(|| Regex::new(r"(?i)^(-?\d+(?:\.\d+)?)%\s+(.+)$").unwrap());
 
-    let caps = SIMPLE_PERCENT_TAIL_RE.captures(text)?;
-    let value = caps.get(1)?.as_str().parse::<f32>().ok()? / 100.0;
-    let ctx_var = parse_ctx_var_or_marker(caps.get(2)?.as_str());
+        let caps = SIMPLE_PERCENT_TAIL_RE.captures(text)?;
+        let value = caps.get(1)?.as_str().parse::<f32>().ok()? / 100.0;
+        let ctx_var = assign_ctx_var(caps.get(2)?.as_str());
 
-    Some(Scaling::Simple { value, ctx_var })
-}
-
-fn parse_ranked_scaling(text: &str) -> Option<Scaling> {
-    static RANKED_PERCENT_TAIL_RE: LazyLock<Regex> = LazyLock::new(|| {
-        Regex::new(r"(?i)^(-?\d+(?:\.\d+)?(?:\s*/\s*-?\d+(?:\.\d+)?)+)%\s+(.+)$").unwrap()
-    });
-
-    let caps = RANKED_PERCENT_TAIL_RE.captures(text)?;
-    let values = parse_slash_f32s(caps.get(1)?.as_str())
-        .into_iter()
-        .map(|v| v / 100.0)
-        .collect::<Vec<_>>();
-
-    let ctx_var = parse_ctx_var_or_marker(caps.get(2)?.as_str());
-
-    Some(Scaling::Ranked { values, ctx_var })
-}
-
-fn parse_simple_per100_scaling(text: &str) -> Option<Scaling> {
-    static SIMPLE_PER100_RE: LazyLock<Regex> =
-        LazyLock::new(|| Regex::new(r"(?i)^(-?\d+(?:\.\d+)?)%\s+per\s+100%?\s+(.+)$").unwrap());
-
-    let caps = SIMPLE_PER100_RE.captures(text)?;
-    let value = caps.get(1)?.as_str().parse::<f32>().ok()? / 100.0;
-    let ctx_var = parse_ctx_var_or_marker(caps.get(2)?.as_str());
-
-    Some(Scaling::Per100 { value, ctx_var })
-}
-
-fn parse_ranked_per100_scaling(text: &str) -> Option<Scaling> {
-    static RANKED_PER100_RE: LazyLock<Regex> = LazyLock::new(|| {
-        Regex::new(r"(?i)^(-?\d+(?:\.\d+)?(?:\s*/\s*-?\d+(?:\.\d+)?)+)%\s+per\s+100%?\s+(.+)$")
-            .unwrap()
-    });
-
-    let caps = RANKED_PER100_RE.captures(text)?;
-    let values = parse_slash_f32s(caps.get(1)?.as_str())
-        .into_iter()
-        .map(|v| v / 100.0)
-        .collect::<Vec<_>>();
-
-    let ctx_var = parse_ctx_var_or_marker(caps.get(2)?.as_str());
-
-    Some(Scaling::RankedPer100 { values, ctx_var })
-}
-
-fn parse_percent_attr_scaling(text: &str) -> Option<Scaling> {
-    static PERCENT_ATTR_RE: LazyLock<Regex> =
-        LazyLock::new(|| Regex::new(r"(?i)^(-?\d+(?:\.\d+)?)%\s+(of .+)$").unwrap());
-
-    let caps = PERCENT_ATTR_RE.captures(text)?;
-    let value = caps.get(1)?.as_str().parse::<f32>().ok()? / 100.0;
-    let debug = caps.get(2)?.as_str().trim().to_string();
-    let ctx_var = parse_ctx_var_or_marker(&debug);
-
-    Some(Scaling::PercentAttr {
-        value,
-        debug,
-        ctx_var,
-    })
-}
-
-fn parse_flat_scaling(text: &str) -> Option<Scaling> {
-    static RANKED_VALUES_ONLY_RE: LazyLock<Regex> =
-        LazyLock::new(|| Regex::new(r"^-?\d+(?:\.\d+)?(?:\s*/\s*-?\d+(?:\.\d+)?)+$").unwrap());
-
-    if !RANKED_VALUES_ONLY_RE.is_match(text) {
-        return None;
+        Some(Scaling::Simple { value, ctx_var })
     }
 
-    let values = parse_slash_f32s(text);
-    if values.is_empty() {
-        return None;
+    fn ranked(text: &str) -> Option<Scaling> {
+        static RANKED_PERCENT_TAIL_RE: LazyLock<Regex> = LazyLock::new(|| {
+            Regex::new(r"(?i)^(-?\d+(?:\.\d+)?(?:\s*/\s*-?\d+(?:\.\d+)?)+)%\s+(.+)$").unwrap()
+        });
+
+        let caps = RANKED_PERCENT_TAIL_RE.captures(text)?;
+        let values = parse_slash_f32s(caps.get(1)?.as_str())
+            .into_iter()
+            .map(|v| v / 100.0)
+            .collect::<Vec<_>>();
+
+        let ctx_var = assign_ctx_var(caps.get(2)?.as_str());
+
+        Some(Scaling::Ranked { values, ctx_var })
     }
 
-    Some(Scaling::Flat { values })
-}
+    fn per100(text: &str) -> Option<Scaling> {
+        static SIMPLE_PER100_RE: LazyLock<Regex> =
+            LazyLock::new(|| Regex::new(r"(?i)^(-?\d+(?:\.\d+)?)%\s+per\s+100%?\s+(.+)$").unwrap());
 
-fn parse_based_on_level_scaling(raw: &str, text: &str) -> Option<Scaling> {
-    if !text.to_ascii_lowercase().contains("based on level") {
-        return None;
+        let caps = SIMPLE_PER100_RE.captures(text)?;
+        let value = caps.get(1)?.as_str().parse::<f32>().ok()? / 100.0;
+        let ctx_var = assign_ctx_var(caps.get(2)?.as_str());
+
+        Some(Scaling::Per100 { value, ctx_var })
     }
 
-    let fragment = Html::parse_fragment(raw);
-    let tooltip = fragment.select(&selector("span.pp-tooltip").ok()?).next()?;
+    fn ranked_per100(text: &str) -> Option<Scaling> {
+        static RANKED_PER100_RE: LazyLock<Regex> = LazyLock::new(|| {
+            Regex::new(r"(?i)^(-?\d+(?:\.\d+)?(?:\s*/\s*-?\d+(?:\.\d+)?)+)%\s+per\s+100%?\s+(.+)$")
+                .unwrap()
+        });
 
-    let top_values = tooltip.value().attr("data-top-values")?;
-    let bot_values = tooltip.value().attr("data-bot-values")?;
+        let caps = RANKED_PER100_RE.captures(text)?;
+        let values = parse_slash_f32s(caps.get(1)?.as_str())
+            .into_iter()
+            .map(|v| v / 100.0)
+            .collect::<Vec<_>>();
 
-    let starts = parse_semicolon_u8s(top_values);
-    let mut values = parse_semicolon_f32s(bot_values);
+        let ctx_var = assign_ctx_var(caps.get(2)?.as_str());
 
-    if values.is_empty() || starts.is_empty() || values.len() != starts.len() {
-        return None;
+        Some(Scaling::RankedPer100 { values, ctx_var })
     }
 
-    let is_percent = tooltip
-        .value()
-        .attr("data-bot-key")
-        .map(|v| v == "%")
-        .unwrap_or(false);
+    fn percent_attr(text: &str) -> Option<Scaling> {
+        static PERCENT_ATTR_RE: LazyLock<Regex> =
+            LazyLock::new(|| Regex::new(r"(?i)^(-?\d+(?:\.\d+)?)%\s+(of .+)$").unwrap());
 
-    if is_percent {
-        for value in &mut values {
-            *value /= 100.0;
+        let caps = PERCENT_ATTR_RE.captures(text)?;
+        let value = caps.get(1)?.as_str().parse::<f32>().ok()? / 100.0;
+        let debug = caps.get(2)?.as_str().trim().to_string();
+        let ctx_var = assign_ctx_var(&debug);
+
+        Some(Scaling::PercentAttr {
+            value,
+            debug,
+            ctx_var,
+        })
+    }
+
+    fn flat(text: &str) -> Option<Scaling> {
+        static RANKED_VALUES_ONLY_RE: LazyLock<Regex> =
+            LazyLock::new(|| Regex::new(r"^-?\d+(?:\.\d+)?(?:\s*/\s*-?\d+(?:\.\d+)?)+$").unwrap());
+
+        if !RANKED_VALUES_ONLY_RE.is_match(text) {
+            return None;
         }
+
+        let values = parse_slash_f32s(text);
+        if values.is_empty() {
+            return None;
+        }
+
+        Some(Scaling::Flat { values })
     }
 
-    let tooltip_text = normalize_scaling_text(&clean_text(&tooltip.text().collect::<String>()));
-    let debug = normalize_scaling_text(&text.replacen(&tooltip_text, "", 1));
-    let ctx_var = parse_ctx_var_or_marker(&debug);
+    fn based_on_level(raw: &str, text: &str) -> Option<Scaling> {
+        if !text.to_ascii_lowercase().contains("based on level") {
+            return None;
+        }
 
-    let arms = build_level_arms(&starts, &values);
+        let fragment = Html::parse_fragment(raw);
+        let tooltip = fragment.select(&selector("span.pp-tooltip").ok()?).next()?;
 
-    Some(Scaling::BasedOnLevel {
-        level_var: CtxVar::Level,
-        arms,
-        debug,
-        ctx_var,
-    })
+        let top_values = tooltip.value().attr("data-top-values")?;
+        let bot_values = tooltip.value().attr("data-bot-values")?;
+
+        fn get_values<T: FromStr>(text: &str) -> Vec<T> {
+            text.split(';')
+                .map(str::trim)
+                .filter_map(|v| v.parse::<T>().ok())
+                .collect::<Vec<_>>()
+        }
+
+        let starts = get_values::<u8>(top_values);
+        let mut values = get_values::<f32>(bot_values);
+
+        if values.is_empty() || starts.is_empty() || values.len() != starts.len() {
+            return None;
+        }
+
+        let is_percent = tooltip
+            .value()
+            .attr("data-bot-key")
+            .map(|v| v == "%")
+            .unwrap_or(false);
+
+        if is_percent {
+            for value in &mut values {
+                *value /= 100.0;
+            }
+        }
+
+        let tooltip_text = normalize_text(&clean_text(&tooltip.text().collect::<String>()));
+        let debug = normalize_text(&text.replacen(&tooltip_text, "", 1));
+        let ctx_var = assign_ctx_var(&debug);
+
+        let arms = build_level_arms(&starts, &values);
+
+        Some(Scaling::BasedOnLevel {
+            level_var: CtxVar::Level,
+            arms,
+            debug,
+            ctx_var,
+        })
+    }
 }
 
 fn build_level_arms(starts: &[u8], values: &[f32]) -> Vec<LevelArm> {
     let mut out = Vec::new();
 
-    for (idx, (&start, &value)) in starts.iter().zip(values.iter()).enumerate() {
-        match starts.get(idx + 1).copied() {
-            Some(next) if idx == 0 => out.push(LevelArm::To {
+    for (i, (&start, &value)) in starts.iter().zip(values.iter()).enumerate() {
+        match starts.get(i + 1).copied() {
+            Some(next) if i == 0 => out.push(LevelArm::To {
                 end_exclusive: next,
                 value,
             }),
@@ -777,28 +733,12 @@ fn build_level_arms(starts: &[u8], values: &[f32]) -> Vec<LevelArm> {
 fn parse_slash_f32s(input: &str) -> Vec<f32> {
     input
         .split('/')
-        .map(|v| normalize_scaling_text(v))
+        .map(normalize_text)
         .filter_map(|v| v.parse::<f32>().ok())
         .collect()
 }
 
-fn parse_semicolon_f32s(input: &str) -> Vec<f32> {
-    input
-        .split(';')
-        .map(str::trim)
-        .filter_map(|v| v.parse::<f32>().ok())
-        .collect()
-}
-
-fn parse_semicolon_u8s(input: &str) -> Vec<u8> {
-    input
-        .split(';')
-        .map(str::trim)
-        .filter_map(|v| v.parse::<u8>().ok())
-        .collect()
-}
-
-fn normalize_scaling_text(input: &str) -> String {
+fn normalize_text(input: &str) -> String {
     clean_text(input)
         .replace('\u{a0}', " ")
         .replace('\u{2013}', "-")
@@ -823,90 +763,67 @@ fn html_to_text(input: &str) -> String {
     )
 }
 
-fn parse_ctx_var_or_marker(input: &str) -> CtxVar {
-    let text = normalize_scaling_text(input).to_ascii_lowercase();
+fn assign_ctx_var(input: &str) -> CtxVar {
+    let text = normalize_text(input).to_ascii_lowercase();
 
-    if text.contains("bonus attack speed") {
-        return CtxVar::AttackSpeed;
+    macro_rules! match_str {
+        ($text:expr, == $pat:literal) => {
+            $text == $pat
+        };
+        ($text:expr, ... $pat:literal) => {
+            $text.ends_with($pat)
+        };
+        ($text:expr, in $pat:literal) => {
+            $text.contains($pat)
+        };
     }
-    if text.contains("bonus ad") || text.contains("bonus attack damage") {
-        return CtxVar::BonusAd;
+
+    macro_rules! check {
+        (
+            $text:expr;
+            $( $( $method:tt $pat:literal )|+ => $variant:expr );+
+            $(;)?
+        ) => {
+            $(
+                if $( match_str!($text, $method $pat) )||+ {
+                    return $variant;
+                }
+            )+
+        };
     }
-    if text == "ad" || text.ends_with(" ad") || text.contains(" attack damage") {
-        return CtxVar::AttackDamage;
-    }
-    if text == "ap" || text.ends_with(" ap") || text.contains("ability power") {
-        return CtxVar::AbilityPower;
-    }
-    if text.contains("target's maximum health") || text.contains("of target's maximum health") {
-        return CtxVar::EnemyMaxHealth;
-    }
-    if text.contains("target's current health") || text.contains("of target's current health") {
-        return CtxVar::EnemyCurrentHealth;
-    }
-    if text.contains("target's missing health") || text.contains("of target's missing health") {
-        return CtxVar::EnemyMissingHealth;
-    }
-    if text.contains("missing health") {
-        return CtxVar::MissingHealth;
-    }
-    if text.contains("bonus movement speed") {
-        return CtxVar::BonusMoveSpeed;
-    }
-    if text.contains("maximum health") {
-        return CtxVar::MaxHealth;
-    }
-    if text.contains("maximum mana") {
-        return CtxVar::MaxMana;
-    }
-    if text.contains("bonus health") {
-        return CtxVar::BonusHealth;
-    }
-    if text.contains("bonus armor") {
-        return CtxVar::BonusArmor;
-    }
-    if text.contains("bonus magic resistance") {
-        return CtxVar::BonusMagicResist;
-    }
-    if text.contains("bonus mana") {
-        return CtxVar::BonusMana;
-    }
-    if text.contains("critical strike chance") {
-        return CtxVar::CritChance;
-    }
-    if text.contains("life steal") {
-        return CtxVar::LifeSteal;
-    }
-    if text.contains("stacks")
-        || text.contains("mark")
-        || text.contains("stardust")
-        || text.contains("of damage stored")
-        || text.contains("mist")
-        || text.contains("grit")
-    {
-        return CtxVar::Stacks;
-    }
-    if text.contains("armor") || text.contains("total armor") {
-        return CtxVar::Armor;
-    }
-    if text.contains("magic resist") || text.contains("total magic resist") {
-        return CtxVar::MagicResist;
-    }
-    if text.contains("lethality") {
-        return CtxVar::ArmorPenetrationFlat;
-    }
+
+    check! {
+        text;
+        in "bonus attack speed" => CtxVar::AttackSpeed;
+        in "bonus ad" | in "bonus attack damage" => CtxVar::BonusAd;
+        == "ad" | ... " ad" | in " attack damage" => CtxVar::AttackDamage;
+        == "ap" | ... " ap" | in "ability power" => CtxVar::AbilityPower;
+        in "target's maximum health"
+            | in "of target's maximum health" => CtxVar::EnemyMaxHealth;
+        in "target's current health"
+            | in "of target's current health" => CtxVar::EnemyCurrentHealth;
+        in "target's missing health"
+            | in "of target's missing health" => CtxVar::EnemyMissingHealth;
+        in "missing health" => CtxVar::MissingHealth;
+        in "bonus movement speed" => CtxVar::BonusMoveSpeed;
+        in "maximum health" => CtxVar::MaxHealth;
+        in "maximum mana" => CtxVar::MaxMana;
+        in "bonus health" => CtxVar::BonusHealth;
+        in "bonus armor" => CtxVar::BonusArmor;
+        in "bonus magic resistance" => CtxVar::BonusMagicResist;
+        in "bonus mana" => CtxVar::BonusMana;
+        in "critical strike chance" => CtxVar::CritChance;
+        in "life steal" => CtxVar::LifeSteal;
+        in "stacks"
+            | in "mark"
+            | in "stardust"
+            | in "of damage stored"
+            | in "mist"
+            | in "grit" => CtxVar::Stacks;
+        in "armor" | in "total armor" => CtxVar::Armor;
+        in "magic resist" | in "total magic resist" => CtxVar::MagicResist;
+        in "lethality" => CtxVar::ArmorPenetrationFlat
+    };
 
     CtxVar::SteelcapsEffect
-}
-
-fn dedup_scalings(list: &mut Vec<Scaling>) {
-    let mut out = Vec::new();
-
-    for item in core::mem::take(list) {
-        if !out.contains(&item) {
-            out.push(item);
-        }
-    }
-
-    *list = out;
 }

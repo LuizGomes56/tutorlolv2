@@ -2,7 +2,7 @@ use reqwest::{
     Client,
     header::{ACCEPT, ACCEPT_ENCODING, ACCEPT_LANGUAGE, HeaderMap, HeaderValue, USER_AGENT},
 };
-use std::{fmt::Display, path::Path, sync::LazyLock};
+use std::{fmt::Display, io::Write, path::Path, sync::LazyLock};
 
 pub type MayFail<T = (), E = Box<dyn core::error::Error + Send + Sync>> = Result<T, E>;
 
@@ -28,15 +28,21 @@ static CLIENT: LazyLock<Client> = LazyLock::new(|| {
         .unwrap()
 });
 
-pub async fn fetch(save_to: impl AsRef<Path>, url: impl Display) -> MayFail<String> {
+pub async fn fetch(save_to: impl AsRef<Path>, link: impl Display) -> MayFail<String> {
     let path = save_to.as_ref();
 
-    if std::fs::exists(&path)? {
+    if std::fs::exists(path)? {
         println!("[exists] {path:?}");
-        return Ok(std::fs::read_to_string(&path)?);
+        return Ok(std::fs::read_to_string(path)?);
     }
 
-    let url = format!("https://wiki.leagueoflegends.com/en-us/{url}");
+    if let Some(parent) = path.parent()
+        && !parent.as_os_str().is_empty()
+    {
+        std::fs::create_dir_all(parent)?;
+    }
+
+    let url = format!("https://wiki.leagueoflegends.com/en-us/{link}");
 
     async fn request(url: &str) -> MayFail<String> {
         Ok(CLIENT.get(url).send().await?.text().await?)
@@ -50,8 +56,11 @@ pub async fn fetch(save_to: impl AsRef<Path>, url: impl Display) -> MayFail<Stri
         bytes = request(&url).await?;
     }
 
-    println!("[fetch] {url} -> {path:?}");
+    println!("[fetch] {link} -> {path:?}");
 
-    std::fs::write(path, &bytes)?;
+    let mut file = std::fs::File::create(path)?;
+    file.write_all(bytes.as_bytes())?;
+    file.flush()?;
+
     Ok(bytes)
 }

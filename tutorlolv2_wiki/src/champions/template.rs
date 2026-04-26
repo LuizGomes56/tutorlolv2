@@ -61,7 +61,7 @@ pub fn parse() -> MayFail {
                     .modes(&cells),
             )?;
 
-            std::fs::write(path.with_extension("json"), json)?;
+            crate::write(path.with_extension("json"), json)?;
 
             Ok(())
         })

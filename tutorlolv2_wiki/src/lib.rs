@@ -13,6 +13,19 @@ pub fn selector(selectors: &str) -> MayFail<Selector> {
         .map_err(|e| format!("[selector] Error parsing selector: {selectors:?}: {e:?}").into())
 }
 
+pub fn write(path: impl AsRef<Path>, data: impl AsRef<[u8]>) -> MayFail<()> {
+    let path = path.as_ref();
+
+    if let Some(parent) = path.parent()
+        && !parent.as_os_str().is_empty()
+    {
+        std::fs::create_dir_all(parent)?;
+    }
+
+    std::fs::write(path, data)
+        .map_err(|e| format!("[write] Error writing file: {path:?}: {e:?}").into())
+}
+
 pub fn read(path: impl AsRef<Path>) -> MayFail<Vec<u8>> {
     let path = path.as_ref();
     std::fs::read(path).map_err(|e| format!("[read] Error reading file: {path:?}: {e:?}").into())
@@ -44,4 +57,10 @@ pub fn file_name(entry: &DirEntry) -> MayFail<String> {
         .file_name()
         .into_string()
         .map_err(|e| format!("[error] Failed to get file name for entry: {entry:?}: {e:?}").into())
+}
+
+pub async fn run() -> MayFail {
+    champions::run().await?;
+    items::run().await?;
+    runes::run().await
 }

@@ -1,10 +1,8 @@
 use crate::{
     client::{MayFail, fetch},
     parser::parse_lua,
-    selector,
 };
 use mlua::{Lua, LuaSerdeExt, Value};
-use scraper::Html;
 use serde::{Deserialize, Serialize};
 use std::{
     collections::{BTreeMap, BTreeSet},
@@ -121,8 +119,7 @@ pub async fn download() -> MayFail<String> {
     .await?;
     let pre = parse_lua(&text)?;
 
-    std::fs::create_dir_all(cache())?;
-    std::fs::write(cache().join("lua").with_extension("txt"), &pre)?;
+    crate::write(cache().join("lua").with_extension("txt"), &pre)?;
 
     Ok(pre)
 }
@@ -144,8 +141,7 @@ pub fn parse() -> MayFail<BTreeMap<String, ItemRaw>> {
 
     let map = finalize_items(&raw_map);
 
-    std::fs::create_dir_all(cache())?;
-    std::fs::write(
+    crate::write(
         cache().join("data").with_extension("json"),
         serde_json::to_string_pretty(&map)?,
     )?;

@@ -95,6 +95,8 @@ pub enum GenArgs {
 
 #[derive(Clone, Copy, Debug, ValueEnum)]
 pub enum Wiki {
+    #[clap(alias = "a")]
+    All,
     #[clap(alias = "c")]
     Champions,
     #[clap(alias = "cc")]
@@ -211,6 +213,7 @@ pub async fn run() -> MayFail {
             }
         },
         GenArgs::Wiki { function } => match function {
+            Wiki::All => tutorlolv2_wiki::run().await,
             Wiki::Champions => champions::run().await,
             Wiki::ChampionsConcat => champions::concat(),
             Wiki::ChampionsDownloadFull => champions::full::download().await.map(|_| ()),

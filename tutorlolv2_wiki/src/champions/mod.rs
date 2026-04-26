@@ -31,15 +31,11 @@ pub async fn run() -> MayFail {
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct WikiChampion {
-    #[serde(skip)]
+    pub name: String,
     pub champion_id: String,
-    #[serde(skip)]
     pub adaptive_type: AdaptiveType,
-    #[serde(skip)]
     pub attack_type: AttackType,
-    #[serde(skip)]
     pub stats: WikiStats,
-    #[serde(skip)]
     pub modifiers: WikiModifiers,
     pub abilities: BTreeMap<Key, Vec<Ability>>,
 }
@@ -90,9 +86,50 @@ pub fn concat() -> MayFail {
         .map(|entry| {
             let path = entry.path();
             let template = crate::read(path.join("template").with_extension("json"))?;
-            let champion = serde_json::from_slice::<ChampionTemplate>(&template)?;
-
-            let champion_id = champion.champion_id;
+            let ChampionTemplate {
+                name,
+                champion_id,
+                adaptive_type,
+                attack_type,
+                stats:
+                    Stats {
+                        hp_base,
+                        hp_lvl,
+                        mp_base,
+                        mp_lvl,
+                        arm_base,
+                        arm_lvl,
+                        mr_base,
+                        mr_lvl,
+                        dam_base,
+                        dam_lvl,
+                        as_base,
+                        as_ratio,
+                        as_lvl,
+                        crit_base,
+                        crit_mod,
+                        ms,
+                        ..
+                    },
+                modes:
+                    ModeStats {
+                        ofa_dmg_dealt,
+                        ofa_dmg_taken,
+                        usb_dmg_dealt,
+                        usb_dmg_taken,
+                        aram_dmg_dealt,
+                        aram_dmg_taken,
+                        ar_dmg_dealt,
+                        ar_dmg_taken,
+                        nb_dmg_dealt,
+                        nb_dmg_taken,
+                        swift_dmg_dealt,
+                        swift_dmg_taken,
+                        urf_dmg_dealt,
+                        urf_dmg_taken,
+                    },
+                ..
+            } = serde_json::from_slice(&template)?;
 
             let mut abilities = BTreeMap::<Key, Vec<Ability>>::new();
 
@@ -109,47 +146,11 @@ pub fn concat() -> MayFail {
                 abilities.entry(ability.skill).or_default().push(ability);
             }
 
-            let ModeStats {
-                ofa_dmg_dealt,
-                ofa_dmg_taken,
-                usb_dmg_dealt,
-                usb_dmg_taken,
-                aram_dmg_dealt,
-                aram_dmg_taken,
-                ar_dmg_dealt,
-                ar_dmg_taken,
-                nb_dmg_dealt,
-                nb_dmg_taken,
-                swift_dmg_dealt,
-                swift_dmg_taken,
-                urf_dmg_dealt,
-                urf_dmg_taken,
-            } = champion.modes;
-
-            let Stats {
-                hp_base,
-                hp_lvl,
-                mp_base,
-                mp_lvl,
-                arm_base,
-                arm_lvl,
-                mr_base,
-                mr_lvl,
-                dam_base,
-                dam_lvl,
-                as_base,
-                as_ratio,
-                as_lvl,
-                crit_base,
-                crit_mod,
-                ms,
-                ..
-            } = champion.stats;
-
             let wiki_champion = WikiChampion {
+                name,
                 champion_id: champion_id.clone(),
-                adaptive_type: champion.adaptive_type.parse()?,
-                attack_type: champion.attack_type.parse()?,
+                adaptive_type: adaptive_type.parse()?,
+                attack_type: attack_type.parse()?,
                 stats: WikiStats {
                     health: Stat {
                         base: hp_base,
@@ -214,7 +215,7 @@ pub fn concat() -> MayFail {
             };
 
             let bytes = serde_json::to_string_pretty(&wiki_champion)?;
-            std::fs::write(path.join("data").with_extension("json"), bytes)?;
+            crate::write(path.join("data").with_extension("json"), bytes)?;
 
             MayFail::<(String, WikiChampion)>::Ok((champion_id, wiki_champion))
         })
@@ -226,13 +227,12 @@ pub fn concat() -> MayFail {
 
     let bytes = serde_json::to_string_pretty(&champions)?;
 
-    std::fs::write(cache().join("_full").with_extension("json"), bytes)?;
+    crate::write(cache().join("full").with_extension("json"), bytes)?;
 
     let mut use_values = Vec::new();
     let mut use_formula = Vec::new();
     let mut base = Vec::new();
     let mut scalings = Vec::new();
-    let mut old_scalings = Vec::new();
 
     for (_, wiki) in &champions {
         for (_, abilities) in &wiki.abilities {
@@ -244,7 +244,6 @@ pub fn concat() -> MayFail {
                     }
                     base.extend_from_slice(effect.base.as_ref().unwrap_or(&vec![]));
                     scalings.extend_from_slice(&effect.scalings);
-                    old_scalings.extend_from_slice(&effect.__scalings);
                 }
             }
         }
@@ -254,13 +253,12 @@ pub fn concat() -> MayFail {
         "use_values": use_values,
         "use_formula": use_formula,
         "base": base,
-        "old_scalings": old_scalings,
         "scalings": scalings
     });
 
     let debug_bytes = serde_json::to_string(&debug_values)?;
 
-    std::fs::write(cache().join("_debug").with_extension("json"), debug_bytes)?;
+    crate::write(cache().join("debug").with_extension("json"), debug_bytes)?;
 
     Ok(())
 }
