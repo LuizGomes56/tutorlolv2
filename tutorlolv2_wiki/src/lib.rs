@@ -7,6 +7,7 @@ pub mod client;
 pub mod formula;
 pub mod items;
 pub mod parser;
+pub mod render;
 pub mod runes;
 
 pub fn selector(selectors: &str) -> MayFail<Selector> {

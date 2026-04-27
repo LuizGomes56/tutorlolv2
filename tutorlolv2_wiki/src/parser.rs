@@ -17,8 +17,8 @@ pub struct Effect {
     pub inner: EffectInner,
     pub scalings: Vec<Scaling>,
     pub use_formula: Option<String>,
-    pub use_values: Option<Vec<String>>,
-    pub base: Option<Vec<String>>,
+    pub use_values: Option<Vec<f64>>,
+    pub base: Option<Vec<f64>>,
 }
 
 pub fn get_cells(html: &Html) -> MayFail<BTreeMap<String, String>> {
@@ -551,7 +551,7 @@ pub fn parse_description_effects(
             s.split(';')
                 .map(str::trim)
                 .filter(|v| !v.is_empty())
-                .map(String::from)
+                .filter_map(|v| v.parse().ok())
                 .collect::<Vec<_>>()
         });
 
@@ -583,7 +583,7 @@ pub fn parse_description_effects(
     ))
 }
 
-pub fn parse_base_damage(text: &str) -> Option<Vec<String>> {
+pub fn parse_base_damage(text: &str) -> Option<Vec<f64>> {
     static RANKED_VALUES_RE: LazyLock<Regex> =
         LazyLock::new(|| Regex::new(r"-?\d+(?:\.\d+)?%?(?:\s*/\s*-?\d+(?:\.\d+)?%?)+").unwrap());
 
@@ -604,7 +604,7 @@ pub fn parse_base_damage(text: &str) -> Option<Vec<String>> {
         .split('/')
         .map(|v| v.trim().trim_end_matches('%').trim())
         .filter(|v| !v.is_empty())
-        .map(String::from)
+        .filter_map(|v| v.parse().ok())
         .collect::<Vec<_>>();
 
     match values.is_empty() {

@@ -4,6 +4,7 @@ use crate::{
         template::{ChampionTemplate, ModeStats, Stats},
     },
     client::MayFail,
+    formula::Formula,
     is_dir,
 };
 use rayon::iter::{ParallelBridge, ParallelIterator};
@@ -31,7 +32,7 @@ pub async fn run() -> MayFail {
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct WikiAbility {
-    pub formulas: Vec<crate::formula::Formula>,
+    pub formulas: Vec<Option<String>>,
     #[serde(flatten)]
     pub ability: Ability,
 }
@@ -153,7 +154,7 @@ pub fn concat() -> MayFail {
                 let mut formulas = Vec::new();
 
                 for (_, effect) in &ability.effects {
-                    let formula = crate::formula::build_effect_formula(ability.skill, effect)?;
+                    let formula = crate::render::simplify_formula(ability.skill, effect)?;
                     formulas.push(formula);
                 }
 

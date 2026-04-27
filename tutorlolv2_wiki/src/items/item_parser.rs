@@ -124,7 +124,7 @@ impl Default for MarkupNode {
 #[derive(Clone, Debug, Default)]
 struct EffectAnalysis {
     scalings: Vec<Scaling>,
-    base: Option<Vec<String>>,
+    base: Option<Vec<f64>>,
 }
 
 impl EffectAnalysis {
@@ -690,7 +690,7 @@ fn contextual_suffix(nodes: &[MarkupNode]) -> String {
     flatten_nodes(nodes)
 }
 
-fn parse_base_from_sequence(nodes: &[MarkupNode]) -> Option<Vec<String>> {
+fn parse_base_from_sequence(nodes: &[MarkupNode]) -> Option<Vec<f64>> {
     let text = normalize_whitespace(&flatten_base_text(nodes));
     if text.is_empty() || text.contains('%') {
         return None;
@@ -726,7 +726,7 @@ fn parse_base_from_sequence(nodes: &[MarkupNode]) -> Option<Vec<String>> {
         .split('/')
         .map(str::trim)
         .filter(|v| !v.is_empty())
-        .map(String::from)
+        .filter_map(|v| v.parse().ok())
         .collect::<Vec<_>>();
 
     if values.is_empty() {

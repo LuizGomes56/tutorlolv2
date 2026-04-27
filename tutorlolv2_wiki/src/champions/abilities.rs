@@ -225,6 +225,7 @@ fn parse_effects(
                     s.split(';')
                         .map(|v| v.trim().to_string())
                         .filter(|v| !v.is_empty())
+                        .filter_map(|v| v.parse().ok())
                         .collect()
                 });
 
