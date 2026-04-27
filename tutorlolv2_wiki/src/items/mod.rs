@@ -9,6 +9,8 @@ use std::{
     path::PathBuf,
 };
 
+mod item_parser;
+
 fn cache() -> PathBuf {
     PathBuf::from("cache/wiki/items")
 }
@@ -289,5 +291,6 @@ fn resolve_modes(
 
 pub async fn run() -> MayFail {
     download().await?;
-    parse().map(|_| ())
+    parse().map(|_| ())?;
+    item_parser::parse_items()
 }

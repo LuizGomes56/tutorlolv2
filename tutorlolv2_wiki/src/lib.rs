@@ -4,6 +4,7 @@ use std::{fs::DirEntry, path::Path};
 
 pub mod champions;
 pub mod client;
+pub mod formula;
 pub mod items;
 pub mod parser;
 pub mod runes;

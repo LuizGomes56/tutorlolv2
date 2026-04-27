@@ -336,7 +336,7 @@ pub fn html_to_text(input: &str) -> String {
     )
 }
 
-fn assign_ctx_var(input: &str) -> CtxVar {
+pub fn assign_ctx_var(input: &str) -> CtxVar {
     let text = normalize_text(input).to_ascii_lowercase();
 
     macro_rules! match_str {
@@ -624,20 +624,20 @@ pub fn parse_scalings(input_raw: &str) -> Vec<Scaling> {
         .map(Scaling::parse)
         .collect::<Vec<_>>();
 
-    fn vec_dedup<T: PartialEq>(list: &mut Vec<T>) {
-        let mut out = Vec::new();
-
-        for item in core::mem::take(list) {
-            if !out.contains(&item) {
-                out.push(item);
-            }
-        }
-
-        *list = out;
-    }
-
     vec_dedup(&mut out);
     out
+}
+
+pub fn vec_dedup<T: PartialEq>(list: &mut Vec<T>) {
+    let mut out = Vec::new();
+
+    for item in core::mem::take(list) {
+        if !out.contains(&item) {
+            out.push(item);
+        }
+    }
+
+    *list = out;
 }
 
 pub const SUFFIXES: [&str; 10] = ["", "2", "3", "4", "5", "6", "7", "8", "9", "10"];

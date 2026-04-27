@@ -30,6 +30,13 @@ pub async fn run() -> MayFail {
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
+pub struct WikiAbility {
+    pub formulas: Vec<crate::formula::Formula>,
+    #[serde(flatten)]
+    pub ability: Ability,
+}
+
+#[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct WikiChampion {
     pub name: String,
     pub champion_id: String,
@@ -37,7 +44,7 @@ pub struct WikiChampion {
     pub attack_type: AttackType,
     pub stats: WikiStats,
     pub modifiers: WikiModifiers,
-    pub abilities: BTreeMap<Key, Vec<Ability>>,
+    pub abilities: BTreeMap<Key, Vec<WikiAbility>>,
 }
 
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
@@ -131,7 +138,7 @@ pub fn concat() -> MayFail {
                 ..
             } = serde_json::from_slice(&template)?;
 
-            let mut abilities = BTreeMap::<Key, Vec<Ability>>::new();
+            let mut abilities = BTreeMap::<Key, Vec<_>>::new();
 
             for entry in crate::read_dir(path.join("abilities"))?.filter(|entry| {
                 entry
@@ -143,7 +150,17 @@ pub fn concat() -> MayFail {
                 let bytes = crate::read(entry.path())?;
                 let ability = serde_json::from_slice::<Ability>(&bytes)?;
 
-                abilities.entry(ability.skill).or_default().push(ability);
+                let mut formulas = Vec::new();
+
+                for (_, effect) in &ability.effects {
+                    let formula = crate::formula::build_effect_formula(ability.skill, effect)?;
+                    formulas.push(formula);
+                }
+
+                abilities
+                    .entry(ability.skill)
+                    .or_default()
+                    .push(WikiAbility { ability, formulas });
             }
 
             let wiki_champion = WikiChampion {
