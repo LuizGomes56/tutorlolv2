@@ -181,6 +181,7 @@ fn parse_item_effect(raw: ItemEffectRaw, index: usize) -> ParsedItemEffect {
         raw_description: raw_description.clone(),
         effect: Effect {
             index,
+            formula: None,
             inner: EffectInner {
                 description: raw_description.unwrap_or_default(),
                 leveling: String::new(),

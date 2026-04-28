@@ -107,6 +107,7 @@ pub fn parse() -> MayFail {
                         _ => None,
                     }
                 })
+                .flatten()
                 .collect::<BTreeMap<_, _>>();
 
             result

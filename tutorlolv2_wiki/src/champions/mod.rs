@@ -4,7 +4,6 @@ use crate::{
         template::{ChampionTemplate, ModeStats, Stats},
     },
     client::MayFail,
-    formula::Formula,
     is_dir,
 };
 use rayon::iter::{ParallelBridge, ParallelIterator};
@@ -31,13 +30,6 @@ pub async fn run() -> MayFail {
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
-pub struct WikiAbility {
-    pub formulas: Vec<(Option<String>, String)>,
-    #[serde(flatten)]
-    pub ability: Ability,
-}
-
-#[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct WikiChampion {
     pub name: String,
     pub champion_id: String,
@@ -45,7 +37,7 @@ pub struct WikiChampion {
     pub attack_type: AttackType,
     pub stats: WikiStats,
     pub modifiers: WikiModifiers,
-    pub abilities: BTreeMap<Key, Vec<WikiAbility>>,
+    pub abilities: BTreeMap<Key, Vec<Ability>>,
 }
 
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
@@ -151,18 +143,7 @@ pub fn concat() -> MayFail {
                 let bytes = crate::read(entry.path())?;
                 let ability = serde_json::from_slice::<Ability>(&bytes)?;
 
-                let mut formulas = Vec::new();
-
-                for (_, effect) in &ability.effects {
-                    let formula = crate::render::simplify_formula(ability.skill, effect)?;
-                    let leveling = effect.inner.leveling.clone();
-                    formulas.push((formula, leveling));
-                }
-
-                abilities
-                    .entry(ability.skill)
-                    .or_default()
-                    .push(WikiAbility { ability, formulas });
+                abilities.entry(ability.skill).or_default().push(ability);
             }
 
             let wiki_champion = WikiChampion {

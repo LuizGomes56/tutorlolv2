@@ -106,6 +106,12 @@ pub fn parse() -> MayFail {
                     let cells = get_cells(&html)?;
 
                     let mut ability = parse_abilities(&cells)?;
+
+                    ability
+                        .effects
+                        .values_mut()
+                        .try_for_each(|effect| effect.load_formula(&champion_id, ability.skill))?;
+
                     ability.champion_id = champion_id.clone();
 
                     crate::write(
@@ -167,7 +173,7 @@ pub fn parse_abilities(cells: &BTreeMap<String, String>) -> MayFail<Ability> {
 
                 ability
                     .effects
-                    .extend([parse_description_effects(i, description, raw)?]);
+                    .extend(parse_description_effects(i, description, raw)?);
             }
         }
     }
@@ -233,6 +239,7 @@ fn parse_effects(
                 key,
                 Effect {
                     index,
+                    formula: None,
                     base: parse_base_damage(&dd_leveling),
                     inner: EffectInner {
                         description: description.to_string(),

@@ -1,62 +1,3 @@
-use crate::{client::MayFail, parser::Effect};
-use serde::{Deserialize, Serialize};
-use tutorlolv2_types::Key;
-
-#[derive(Clone, Debug, Deserialize, Serialize)]
-pub enum Formula {
-    PerLevel(Vec<String>),
-    Linear(String),
-}
-
-impl Formula {
-    pub fn new(champion_id: &str, key: Key, effect: &Effect) -> MayFail<Self> {
-        let Effect {
-            index,
-            inner,
-            scalings,
-            use_formula,
-            use_values,
-            base,
-        } = effect;
-
-        if let Some(b) = base {
-            let pat = SequencePattern::new(b);
-
-            if !matches!(
-                pat,
-                SequencePattern::Linear | SequencePattern::Quadratic | SequencePattern::Cubic
-            ) {
-                println!("[{champion_id}][{key:?}][{index}][{pat:?}]: {b:?}");
-            }
-        };
-
-        let _ = match base {
-            Some(b) if let Some(v) = use_values => {
-                if b.len() != v.len() {
-                    return Err(format!(
-                        "[{champion_id}][::1] [b != v] Base: {b:?}; UseValues: {v:?}"
-                    )
-                    .into());
-                }
-                b.len()
-            }
-            Some(b)
-                if let len = b.len()
-                    && key != Key::P
-                    && !matches!(len, 3 | 5 | 6) =>
-            {
-                // Nidalee scales with R level for all {1} abilities with n = 4
-                return Err(format!("[{champion_id}][::2] base[{len}][{key:?}]: {b:?}").into());
-            }
-            Some(b) => b.len(),
-            None if let Some(v) = use_values => v.len(),
-            _ => 0,
-        };
-
-        Ok(Self::Linear("0".into()))
-    }
-}
-
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum SequencePattern {
     Inconclusive,
@@ -66,13 +7,16 @@ pub enum SequencePattern {
     Unknown,
 }
 
+fn differences(v: &[f64]) -> Vec<f64> {
+    v.windows(2).map(|w| w[1] - w[0]).collect::<Vec<_>>()
+}
+
 impl SequencePattern {
     pub fn new(values: &[f64]) -> Self {
         const TOLERANCE: f64 = 3.0;
 
         let len = values.len();
 
-        let differences = |v: &[f64]| v.windows(2).map(|w| w[1] - w[0]).collect::<Vec<_>>();
         let approx_constant = |v: &[f64]| -> bool {
             if v.is_empty() {
                 return false;
@@ -117,6 +61,30 @@ impl SequencePattern {
                     _ => Self::Unknown,
                 }
             }
+        }
+    }
+
+    pub fn predict_next(&self, values: &[f64]) -> f64 {
+        match self {
+            SequencePattern::Linear => {
+                let d1 = values[values.len() - 1] - values[values.len() - 2];
+                values[values.len() - 1] + d1
+            }
+            SequencePattern::Quadratic => {
+                let d1 = differences(values);
+                let d2 = differences(&d1);
+                let next_d1 = d1[d1.len() - 1] + d2[d2.len() - 1];
+                values[values.len() - 1] + next_d1
+            }
+            SequencePattern::Cubic => {
+                let d1 = differences(values);
+                let d2 = differences(&d1);
+                let d3 = differences(&d2);
+                let next_d2 = d2[d2.len() - 1] + d3[d3.len() - 1];
+                let next_d1 = d1[d1.len() - 1] + next_d2;
+                values[values.len() - 1] + next_d1
+            }
+            _ => values[values.len() - 1],
         }
     }
 }

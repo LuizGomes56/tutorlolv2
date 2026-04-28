@@ -1,7 +1,7 @@
 use crate::{
+    parser::parse_lua,
     champions::cache,
     client::{MayFail, fetch},
-    parser::parse_lua,
 };
 use mlua::{Lua, LuaSerdeExt, Value};
 use serde::{Deserialize, Serialize};
