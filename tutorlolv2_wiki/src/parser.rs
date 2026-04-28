@@ -2,7 +2,12 @@ use crate::{client::MayFail, selector};
 use regex::Regex;
 use scraper::Html;
 use serde::{Deserialize, Serialize};
-use std::{collections::BTreeMap, str::FromStr, sync::LazyLock};
+use std::{
+    collections::BTreeMap,
+    ops::{Range, RangeFrom, RangeTo},
+    str::FromStr,
+    sync::LazyLock,
+};
 use tutorlolv2_types::CtxVar;
 
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
@@ -67,23 +72,23 @@ pub fn parse_lua(text: &str) -> MayFail<String> {
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 pub enum Scaling {
     Simple {
-        value: f32,
+        value: f64,
         ctx_var: CtxVar,
     },
     Ranked {
-        values: Vec<f32>,
+        values: Vec<f64>,
         ctx_var: CtxVar,
     },
     RankedPer100 {
-        values: Vec<f32>,
+        values: Vec<f64>,
         ctx_var: CtxVar,
     },
     Per100 {
-        value: f32,
+        value: f64,
         ctx_var: CtxVar,
     },
     PercentAttr {
-        value: f32,
+        value: f64,
         debug: String,
         ctx_var: CtxVar,
     },
@@ -94,7 +99,7 @@ pub enum Scaling {
         ctx_var: CtxVar,
     },
     Flat {
-        values: Vec<f32>,
+        values: Vec<f64>,
     },
     Nested {
         raw: String,
@@ -108,19 +113,9 @@ pub enum Scaling {
 
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 pub enum LevelArm {
-    To {
-        end_exclusive: u8,
-        value: f32,
-    },
-    Range {
-        start_inclusive: u8,
-        end_exclusive: u8,
-        value: f32,
-    },
-    From {
-        start_inclusive: u8,
-        value: f32,
-    },
+    To { range: RangeTo<u8>, value: f64 },
+    Range { range: Range<u8>, value: f64 },
+    From { range: RangeFrom<u8>, value: f64 },
 }
 
 impl Scaling {
@@ -164,10 +159,15 @@ impl Scaling {
         }
 
         if let Some(scaling) = Self::based_on_level(raw, &text)
+            .or_else(|| Self::nested_percent_attr(&text))
             .or_else(|| Self::percent_attr(&text))
             .or_else(|| Self::ranked_per100(&text))
-            .or_else(|| Self::ranked(&text))
             .or_else(|| Self::per100(&text))
+            .or_else(|| Self::ranked_per_ctx(&text))
+            .or_else(|| Self::per_ctx(&text))
+            .or_else(|| Self::bare_percent(&text))
+            .or_else(|| Self::ranked_bare_percent(&text))
+            .or_else(|| Self::ranked(&text))
             .or_else(|| Self::simple(&text))
             .or_else(|| Self::flat(&text))
         {
@@ -182,7 +182,7 @@ impl Scaling {
             LazyLock::new(|| Regex::new(r"(?i)^(-?\d+(?:\.\d+)?)%\s+(.+)$").unwrap());
 
         let caps = SIMPLE_PERCENT_TAIL_RE.captures(text)?;
-        let value = caps.get(1)?.as_str().parse::<f32>().ok()? / 100.0;
+        let value = caps.get(1)?.as_str().parse::<f64>().ok()? / 100.0;
         let ctx_var = assign_ctx_var(caps.get(2)?.as_str());
 
         Some(Scaling::Simple { value, ctx_var })
@@ -194,7 +194,7 @@ impl Scaling {
         });
 
         let caps = RANKED_PERCENT_TAIL_RE.captures(text)?;
-        let values = parse_slash_f32s(caps.get(1)?.as_str())
+        let values = parse_slash_f64s(caps.get(1)?.as_str())
             .into_iter()
             .map(|v| v / 100.0)
             .collect::<Vec<_>>();
@@ -209,7 +209,7 @@ impl Scaling {
             LazyLock::new(|| Regex::new(r"(?i)^(-?\d+(?:\.\d+)?)%\s+per\s+100%?\s+(.+)$").unwrap());
 
         let caps = SIMPLE_PER100_RE.captures(text)?;
-        let value = caps.get(1)?.as_str().parse::<f32>().ok()? / 100.0;
+        let value = caps.get(1)?.as_str().parse::<f64>().ok()? / 100.0;
         let ctx_var = assign_ctx_var(caps.get(2)?.as_str());
 
         Some(Scaling::Per100 { value, ctx_var })
@@ -222,7 +222,7 @@ impl Scaling {
         });
 
         let caps = RANKED_PER100_RE.captures(text)?;
-        let values = parse_slash_f32s(caps.get(1)?.as_str())
+        let values = parse_slash_f64s(caps.get(1)?.as_str())
             .into_iter()
             .map(|v| v / 100.0)
             .collect::<Vec<_>>();
@@ -237,7 +237,7 @@ impl Scaling {
             LazyLock::new(|| Regex::new(r"(?i)^(-?\d+(?:\.\d+)?)%\s+(of .+)$").unwrap());
 
         let caps = PERCENT_ATTR_RE.captures(text)?;
-        let value = caps.get(1)?.as_str().parse::<f32>().ok()? / 100.0;
+        let value = caps.get(1)?.as_str().parse::<f64>().ok()? / 100.0;
         let debug = caps.get(2)?.as_str().trim().to_string();
         let ctx_var = assign_ctx_var(&debug);
 
@@ -256,7 +256,7 @@ impl Scaling {
             return None;
         }
 
-        let values = parse_slash_f32s(text);
+        let values = parse_slash_f64s(text);
         if values.is_empty() {
             return None;
         }
@@ -283,7 +283,7 @@ impl Scaling {
         }
 
         let starts = get_values::<u8>(top_values);
-        let mut values = get_values::<f32>(bot_values);
+        let mut values = get_values::<f64>(bot_values);
 
         if values.is_empty() || starts.is_empty() || values.len() != starts.len() {
             return None;
@@ -312,6 +312,81 @@ impl Scaling {
             arms,
             debug,
             ctx_var,
+        })
+    }
+
+    pub fn nested_percent_attr(text: &str) -> Option<Scaling> {
+        static NESTED_PERCENT_ATTR_RE: LazyLock<Regex> =
+            LazyLock::new(|| Regex::new(r"(?i)^\((.+)\)%\s+(of .+)$").unwrap());
+
+        let caps = NESTED_PERCENT_ATTR_RE.captures(text)?;
+        let inner_raw = caps.get(1)?.as_str().trim();
+        let debug = caps.get(2)?.as_str().trim().to_string();
+        let ctx_var = assign_ctx_var(&debug);
+
+        let inner = Scaling::from_non_nested(inner_raw);
+
+        if matches!(inner, Scaling::Other { .. }) {
+            return None;
+        }
+
+        Some(Scaling::Nested {
+            raw: text.to_string(),
+            outer: Box::new(Scaling::PercentAttr {
+                value: 0.0,
+                debug,
+                ctx_var,
+            }),
+            inner: vec![inner],
+        })
+    }
+
+    pub fn ranked_per_ctx(text: &str) -> Option<Scaling> {
+        static RANKED_PER_CTX_RE: LazyLock<Regex> = LazyLock::new(|| {
+            Regex::new(r"(?i)^(-?\d+(?:\.\d+)?(?:\s*/\s*-?\d+(?:\.\d+)?)+)\s+per\s+(.+)$").unwrap()
+        });
+
+        let caps = RANKED_PER_CTX_RE.captures(text)?;
+        let values = parse_slash_f64s(caps.get(1)?.as_str());
+        let ctx_var = assign_ctx_var(caps.get(2)?.as_str());
+
+        Some(Scaling::Ranked { values, ctx_var })
+    }
+
+    pub fn per_ctx(text: &str) -> Option<Scaling> {
+        static PER_CTX_RE: LazyLock<Regex> =
+            LazyLock::new(|| Regex::new(r"(?i)^(-?\d+(?:\.\d+)?)\s+per\s+(.+)$").unwrap());
+
+        let caps = PER_CTX_RE.captures(text)?;
+        let value = caps.get(1)?.as_str().parse::<f64>().ok()?;
+        let ctx_var = assign_ctx_var(caps.get(2)?.as_str());
+
+        Some(Scaling::Simple { value, ctx_var })
+    }
+
+    pub fn ranked_bare_percent(text: &str) -> Option<Scaling> {
+        static RANKED_BARE_PERCENT_RE: LazyLock<Regex> = LazyLock::new(|| {
+            Regex::new(r"(?i)^(-?\d+(?:\.\d+)?(?:\s*/\s*-?\d+(?:\.\d+)?)+)%$").unwrap()
+        });
+
+        let caps = RANKED_BARE_PERCENT_RE.captures(text)?;
+        let values = parse_slash_f64s(caps.get(1)?.as_str())
+            .into_iter()
+            .map(|v| v / 100.0)
+            .collect::<Vec<_>>();
+
+        Some(Scaling::Flat { values })
+    }
+
+    pub fn bare_percent(text: &str) -> Option<Scaling> {
+        static BARE_PERCENT_RE: LazyLock<Regex> =
+            LazyLock::new(|| Regex::new(r"(?i)^(-?\d+(?:\.\d+)?)%$").unwrap());
+
+        let caps = BARE_PERCENT_RE.captures(text)?;
+        let value = caps.get(1)?.as_str().parse::<f64>().ok()? / 100.0;
+
+        Some(Scaling::Flat {
+            values: vec![value],
         })
     }
 }
@@ -388,11 +463,15 @@ pub fn assign_ctx_var(input: &str) -> CtxVar {
         in "critical strike chance" => CtxVar::CritChance;
         in "life steal" => CtxVar::LifeSteal;
         in "stacks"
-            | in "mark"
+            | in " stack"
+            | in "overwhelm"
             | in "stardust"
-            | in "of damage stored"
+            | in "soul collected"
+            | in "feast stack"
             | in "mist"
-            | in "grit" => CtxVar::Stacks;
+            | in "grit"
+            | in "mark"
+            | in "of damage stored" => CtxVar::Stacks;
         in "armor" | in "total armor" => CtxVar::Armor;
         in "magic resist" | in "total magic resist" => CtxVar::MagicResist;
         in "lethality" => CtxVar::ArmorPenetrationFlat
@@ -485,22 +564,21 @@ fn remove_nested_scalings(input: &str) -> String {
     out
 }
 
-fn build_level_arms(starts: &[u8], values: &[f32]) -> Vec<LevelArm> {
+fn build_level_arms(starts: &[u8], values: &[f64]) -> Vec<LevelArm> {
     let mut out = Vec::new();
 
     for (i, (&start, &value)) in starts.iter().zip(values.iter()).enumerate() {
         match starts.get(i + 1).copied() {
             Some(next) if i == 0 => out.push(LevelArm::To {
-                end_exclusive: next,
+                range: ..next,
                 value,
             }),
             Some(next) => out.push(LevelArm::Range {
-                start_inclusive: start,
-                end_exclusive: next,
+                range: start..next,
                 value,
             }),
             None => out.push(LevelArm::From {
-                start_inclusive: start,
+                range: start..,
                 value,
             }),
         }
@@ -509,11 +587,11 @@ fn build_level_arms(starts: &[u8], values: &[f32]) -> Vec<LevelArm> {
     out
 }
 
-fn parse_slash_f32s(input: &str) -> Vec<f32> {
+fn parse_slash_f64s(input: &str) -> Vec<f64> {
     input
         .split('/')
         .map(normalize_text)
-        .filter_map(|v| v.parse::<f32>().ok())
+        .filter_map(|v| v.parse::<f64>().ok())
         .collect()
 }
 

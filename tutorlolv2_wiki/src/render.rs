@@ -22,6 +22,7 @@ pub fn simplify_formula(key: Key, effect: &Effect) -> MayFail<Option<String>> {
     simplify_formula_with_axis(key, effect, None)
 }
 
+/// Nidalee and Tahm Kench should use this variant
 pub fn simplify_formula_with_axis(
     key: Key,
     effect: &Effect,
@@ -47,86 +48,67 @@ pub fn simplify_formula_with_axis(
 
 fn build_base_expr(axis: CtxVar, effect: &Effect) -> MayFail<Option<String>> {
     if let Some(use_formula) = &effect.use_formula {
-        let x = axis_as_f32(axis);
-        return Ok(Some(use_formula.replace('x', &x)));
+        return Ok(Some(use_formula.replace('x', &format!("({axis} as f32)"))));
     }
 
-    if let Some(base) = &effect.base {
-        if let Some(expr) = simplify_series_f64(base, axis)? {
-            return Ok(Some(expr));
-        }
-        return Ok(None);
-    }
-
-    if let Some(use_values) = &effect.use_values {
-        if let Some(expr) = simplify_series_f64(use_values, axis)? {
-            return Ok(Some(expr));
-        }
-        return Ok(None);
-    }
-
-    Ok(None)
+    effect
+        .base
+        .as_ref()
+        .or(effect.use_values.as_ref())
+        .map(|series| simplify_series(series, axis))
+        .transpose()
+        .map(Option::flatten)
 }
 
 fn render_scaling(axis: CtxVar, scaling: &Scaling) -> MayFail<String> {
     match scaling {
         Scaling::Simple { value, ctx_var } => Ok(piece_to_expr(Piece {
-            coeff: render_f32(*value),
+            coeff: value.to_string(),
             target: TargetMode::Direct(*ctx_var),
         })),
 
         Scaling::PercentAttr { value, ctx_var, .. } => Ok(piece_to_expr(Piece {
-            coeff: render_f32(*value),
+            coeff: value.to_string(),
             target: TargetMode::Direct(*ctx_var),
         })),
 
         Scaling::Per100 { value, ctx_var } => Ok(piece_to_expr(Piece {
-            coeff: render_f32(*value),
+            coeff: value.to_string(),
             target: TargetMode::Per100(*ctx_var),
         })),
 
         Scaling::Flat { values } => {
-            let coeff = simplify_series_f32(values, axis)?
-                .ok_or("[formula] Flat scaling is Unknown/Inconclusive")?;
+            if values.len() == 1 {
+                return Ok(values[0].to_string());
+            }
 
-            Ok(coeff)
+            Ok(simplify_series(values, axis)?
+                .ok_or("[formula] Flat scaling is Unknown/Inconclusive")?)
         }
 
-        Scaling::Ranked { values, ctx_var } => {
-            let coeff = simplify_series_f32(values, axis)?
-                .ok_or("[formula] Ranked scaling is Unknown/Inconclusive")?;
+        Scaling::Ranked { values, ctx_var } => Ok(piece_to_expr(Piece {
+            coeff: simplify_series(&values, axis)?
+                .ok_or("[formula] Ranked scaling is Unknown/Inconclusive")?,
+            target: TargetMode::Direct(*ctx_var),
+        })),
 
-            Ok(piece_to_expr(Piece {
-                coeff,
-                target: TargetMode::Direct(*ctx_var),
-            }))
-        }
-
-        Scaling::RankedPer100 { values, ctx_var } => {
-            let coeff = simplify_series_f32(values, axis)?
-                .ok_or("[formula] RankedPer100 scaling is Unknown/Inconclusive")?;
-
-            Ok(piece_to_expr(Piece {
-                coeff,
-                target: TargetMode::Per100(*ctx_var),
-            }))
-        }
+        Scaling::RankedPer100 { values, ctx_var } => Ok(piece_to_expr(Piece {
+            coeff: simplify_series(&values, axis)?
+                .ok_or("[formula] RankedPer100 scaling is Unknown/Inconclusive")?,
+            target: TargetMode::Per100(*ctx_var),
+        })),
 
         Scaling::BasedOnLevel {
             level_var,
             arms,
             ctx_var,
             ..
-        } => {
-            let coeff = render_level_match(*level_var, arms);
+        } => Ok(piece_to_expr(Piece {
+            coeff: render_level_match(*level_var, arms),
+            target: TargetMode::Direct(*ctx_var),
+        })),
 
-            Ok(piece_to_expr(Piece {
-                coeff,
-                target: TargetMode::Direct(*ctx_var),
-            }))
-        }
-
-        Scaling::Nested { outer, inner, .. } => render_nested(axis, outer, inner),
+        Scaling::Nested { outer, inner, .. } => render_nested(axis, &outer, &inner),
 
         Scaling::Other { raw } => {
             Err(format!("[formula] Unsupported Scaling::Other: {raw}").into())
@@ -135,8 +117,7 @@ fn render_scaling(axis: CtxVar, scaling: &Scaling) -> MayFail<String> {
 }
 
 fn render_nested(axis: CtxVar, outer: &Scaling, inner: &[Scaling]) -> MayFail<String> {
-    let outer_piece = render_piece(axis, outer)?;
-    let mut coeff = outer_piece.coeff.clone();
+    let Piece { mut coeff, target } = render_piece(axis, outer)?;
 
     for child in inner {
         let child_piece = render_piece(axis, child)?;
@@ -144,58 +125,43 @@ fn render_nested(axis: CtxVar, outer: &Scaling, inner: &[Scaling]) -> MayFail<St
         coeff = add_expr(&coeff, &child_expr);
     }
 
-    Ok(piece_to_expr(Piece {
-        coeff,
-        target: outer_piece.target,
-    }))
+    Ok(piece_to_expr(Piece { coeff, target }))
 }
 
 fn render_piece(axis: CtxVar, scaling: &Scaling) -> MayFail<Piece> {
     match scaling {
         Scaling::Simple { value, ctx_var } => Ok(Piece {
-            coeff: render_f32(*value),
+            coeff: value.to_string(),
             target: TargetMode::Direct(*ctx_var),
         }),
 
         Scaling::PercentAttr { value, ctx_var, .. } => Ok(Piece {
-            coeff: render_f32(*value),
+            coeff: value.to_string(),
             target: TargetMode::Direct(*ctx_var),
         }),
 
         Scaling::Per100 { value, ctx_var } => Ok(Piece {
-            coeff: render_f32(*value),
+            coeff: value.to_string(),
             target: TargetMode::Per100(*ctx_var),
         }),
 
-        Scaling::Flat { values } => {
-            let coeff = simplify_series_f32(values, axis)?
-                .ok_or("[formula] Flat scaling is Unknown/Inconclusive")?;
+        Scaling::Flat { values } => Ok(Piece {
+            coeff: simplify_series(values, axis)?
+                .ok_or("[formula] Flat scaling is Unknown/Inconclusive")?,
+            target: TargetMode::None,
+        }),
 
-            Ok(Piece {
-                coeff,
-                target: TargetMode::None,
-            })
-        }
+        Scaling::Ranked { values, ctx_var } => Ok(Piece {
+            coeff: simplify_series(values, axis)?
+                .ok_or("[formula] Ranked scaling is Unknown/Inconclusive")?,
+            target: TargetMode::Direct(*ctx_var),
+        }),
 
-        Scaling::Ranked { values, ctx_var } => {
-            let coeff = simplify_series_f32(values, axis)?
-                .ok_or("[formula] Ranked scaling is Unknown/Inconclusive")?;
-
-            Ok(Piece {
-                coeff,
-                target: TargetMode::Direct(*ctx_var),
-            })
-        }
-
-        Scaling::RankedPer100 { values, ctx_var } => {
-            let coeff = simplify_series_f32(values, axis)?
-                .ok_or("[formula] RankedPer100 scaling is Unknown/Inconclusive")?;
-
-            Ok(Piece {
-                coeff,
-                target: TargetMode::Per100(*ctx_var),
-            })
-        }
+        Scaling::RankedPer100 { values, ctx_var } => Ok(Piece {
+            coeff: simplify_series(values, axis)?
+                .ok_or("[formula] RankedPer100 scaling is Unknown/Inconclusive")?,
+            target: TargetMode::Per100(*ctx_var),
+        }),
 
         Scaling::BasedOnLevel {
             level_var,
@@ -207,13 +173,10 @@ fn render_piece(axis: CtxVar, scaling: &Scaling) -> MayFail<Piece> {
             target: TargetMode::Direct(*ctx_var),
         }),
 
-        Scaling::Nested { outer, inner, .. } => {
-            let expr = render_nested(axis, outer, inner)?;
-            Ok(Piece {
-                coeff: expr,
-                target: TargetMode::None,
-            })
-        }
+        Scaling::Nested { outer, inner, .. } => Ok(Piece {
+            coeff: render_nested(axis, outer, inner)?,
+            target: TargetMode::None,
+        }),
 
         Scaling::Other { raw } => {
             Err(format!("[formula] Unsupported Scaling::Other: {raw}").into())
@@ -222,10 +185,12 @@ fn render_piece(axis: CtxVar, scaling: &Scaling) -> MayFail<Piece> {
 }
 
 fn piece_to_expr(piece: Piece) -> String {
-    match piece.target {
-        TargetMode::None => piece.coeff,
-        TargetMode::Direct(ctx_var) => format!("({}) * {}", piece.coeff, ctx_var),
-        TargetMode::Per100(ctx_var) => format!("({}) * ({} * 0.01)", piece.coeff, ctx_var),
+    let Piece { coeff, target } = piece;
+
+    match target {
+        TargetMode::None => coeff,
+        TargetMode::Direct(ctx_var) => format!("({coeff}) * {ctx_var}"),
+        TargetMode::Per100(ctx_var) => format!("({coeff}) * ({ctx_var} * 0.01)"),
     }
 }
 
@@ -246,22 +211,14 @@ fn infer_axis_from_effect(key: Key, effect: &Effect) -> Option<CtxVar> {
         Key::W => Some(CtxVar::WLevel),
         Key::E => Some(CtxVar::ELevel),
         Key::R => Some(CtxVar::RLevel),
-        Key::P => {
-            if len == 0 {
-                Some(CtxVar::Level)
-            } else {
-                None
-            }
-        }
+        Key::P => match len == 0 {
+            true => Some(CtxVar::Level),
+            false => None,
+        },
     }
 }
 
-fn simplify_series_f32(values: &[f32], axis: CtxVar) -> MayFail<Option<String>> {
-    let vec = values.iter().map(|v| *v as f64).collect::<Vec<_>>();
-    simplify_series_f64(&vec, axis)
-}
-
-fn simplify_series_f64(values: &[f64], axis: CtxVar) -> MayFail<Option<String>> {
+fn simplify_series(values: &[f64], axis: CtxVar) -> MayFail<Option<String>> {
     let pat = SequencePattern::new(values);
 
     let expr = match pat {
@@ -275,70 +232,67 @@ fn simplify_series_f64(values: &[f64], axis: CtxVar) -> MayFail<Option<String>> 
 }
 
 fn render_linear(values: &[f64], axis: CtxVar) -> String {
-    let a = values[0];
-    let d1 = values[1] - values[0];
+    let &[v0, v1, ..] = values else {
+        panic!("render_linear requires 2 values: {values:?}");
+    };
+
+    let d1 = v1 - v0;
     let n = axis_offset(axis);
 
     combine_terms([
-        Some(render_f64(a)),
-        if approx_zero(d1) {
-            None
-        } else {
-            Some(format!("{} * {}", render_f64(d1), n))
+        Some(v0.to_string()),
+        match approx_zero(d1) {
+            true => None,
+            false => Some(format!("{d1} * {n}")),
         },
     ])
 }
 
 fn render_quadratic(values: &[f64], axis: CtxVar) -> String {
-    let a = values[0];
-    let d1 = values[1] - values[0];
-    let d2 = values[2] - 2.0 * values[1] + values[0];
+    let &[v0, v1, v2, ..] = values else {
+        panic!("render_quadratic requires 3 values");
+    };
+
+    let d1 = v1 - v0;
+    let d2 = v2 - 2.0 * v1 + v0;
     let n = axis_offset(axis);
 
     combine_terms([
-        Some(render_f64(a)),
-        if approx_zero(d1) {
-            None
-        } else {
-            Some(format!("{} * {}", render_f64(d1), n))
+        Some(v0.to_string()),
+        match approx_zero(d1) {
+            true => None,
+            false => Some(format!("{d1} * {n}")),
         },
-        if approx_zero(d2) {
-            None
-        } else {
-            Some(format!("{} * {} * ({} - 1.0) * 0.5", render_f64(d2), n, n))
+        match approx_zero(d2) {
+            true => None,
+            false => Some(format!("{d2} * {n} * ({n} - 1.0) * 0.5")),
         },
     ])
 }
 
 fn render_cubic(values: &[f64], axis: CtxVar) -> String {
-    let a = values[0];
-    let d1 = values[1] - values[0];
-    let d2 = values[2] - 2.0 * values[1] + values[0];
-    let d3 = values[3] - 3.0 * values[2] + 3.0 * values[1] - values[0];
+    let &[v0, v1, v2, v3, ..] = values else {
+        panic!("render_cubic requires 4 values");
+    };
+
+    let d1 = v1 - v0;
+    let d2 = v2 - 2.0 * v1 + v0;
+    let d3 = v3 - 3.0 * v2 + 3.0 * v1 - v0;
     let n = axis_offset(axis);
 
     combine_terms([
-        Some(render_f64(a)),
-        if approx_zero(d1) {
-            None
-        } else {
-            Some(format!("{} * {}", render_f64(d1), n))
+        Some(v0.to_string()),
+        match approx_zero(d1) {
+            true => None,
+            false => Some(format!("{d1} * {n}")),
         },
-        if approx_zero(d2) {
-            None
-        } else {
-            Some(format!("{} * {} * ({} - 1.0) * 0.5", render_f64(d2), n, n))
+        match approx_zero(d2) {
+            true => None,
+            false => Some(format!("{d2} * {n} * ({n} - 1.0) * 0.5")),
         },
-        if approx_zero(d3) {
-            None
-        } else {
-            Some(format!(
-                "{} * {} * ({} - 1.0) * ({} - 2.0) / 6.0",
-                render_f64(d3),
-                n,
-                n,
-                n
-            ))
+        match approx_zero(d3) {
+            true => None,
+            false => Some(format!("{d3} * {n} * ({n} - 1.0) * ({n} - 2.0) / 6.0")),
         },
     ])
 }
@@ -348,28 +302,13 @@ fn render_level_match(level_var: CtxVar, arms: &[LevelArm]) -> String {
 
     for arm in arms {
         match arm {
-            LevelArm::To {
-                end_exclusive,
-                value,
-            } => rendered.push(format!("..{end_exclusive} => {}", render_f32(*value))),
-            LevelArm::Range {
-                start_inclusive,
-                end_exclusive,
-                value,
-            } => rendered.push(format!(
-                "{start_inclusive}..{end_exclusive} => {}",
-                render_f32(*value)
-            )),
-            LevelArm::From {
-                start_inclusive,
-                value,
-            } => rendered.push(format!("{start_inclusive}.. => {}", render_f32(*value))),
+            LevelArm::To { range, value, .. } => rendered.push(format!("{range:?} => {value}")),
+            LevelArm::Range { range, value, .. } => rendered.push(format!("{range:?} => {value}")),
+            LevelArm::From { range, value, .. } => rendered.push(format!("{range:?} => {value}")),
         }
     }
 
-    rendered.push("_ => 0.0".to_string());
-
-    format!("match {} as u8 {{ {} }}", level_var, rendered.join(", "))
+    format!("match {level_var} as u8 {{ {} }}", rendered.join(", "))
 }
 
 fn add_expr(lhs: &str, rhs: &str) -> String {
@@ -382,45 +321,30 @@ fn add_expr(lhs: &str, rhs: &str) -> String {
     }
 }
 
-fn axis_as_f32(axis: CtxVar) -> String {
-    format!("({axis} as f32)")
-}
-
 fn axis_offset(axis: CtxVar) -> String {
-    format!("(({} as f32) - 1.0)", axis)
+    format!("(({axis} as f32) - 1.0)")
 }
 
 fn combine_terms<const N: usize>(terms: [Option<String>; N]) -> String {
     let mut out = String::new();
 
     for term in terms.into_iter().flatten() {
-        if out.is_empty() {
-            out = term;
-        } else {
-            out = format!("({out}) + ({term})");
+        match out.is_empty() {
+            true => out = term,
+            false => out = format!("({out}) + ({term})"),
         }
     }
 
-    if out.is_empty() {
-        "0.0".to_string()
-    } else {
-        out
-    }
-}
-
-fn render_f32(v: f32) -> String {
-    render_f64(v as f64)
-}
-
-fn render_f64(v: f64) -> String {
-    let s = v.to_string();
-    if s.contains('.') {
-        s.trim_end_matches('0').trim_end_matches('.').to_string()
-    } else {
-        format!("{s}.0")
+    match out.is_empty() {
+        true => "0.0".to_string(),
+        false => out,
     }
 }
 
 fn approx_zero(v: f64) -> bool {
-    v.abs() < 1e-9
+    let c = v.abs() < 1e-9;
+    if v != 0.0 && c {
+        println!("Rounded-NonZero")
+    }
+    c
 }

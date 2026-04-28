@@ -827,14 +827,14 @@ fn parse_simple_or_ranked(input: &str) -> Option<Scaling> {
     let ctx_var = assign_ctx_var(right);
 
     if left.contains('/') {
-        let values = parse_slash_f32s(left)
+        let values = parse_slash_f64s(left)
             .into_iter()
             .map(|v| v / 100.0)
             .collect::<Vec<_>>();
 
         Some(Scaling::Ranked { values, ctx_var })
     } else {
-        let value = left.parse::<f32>().ok()? / 100.0;
+        let value = left.parse::<f64>().ok()? / 100.0;
         Some(Scaling::Simple { value, ctx_var })
     }
 }
@@ -851,7 +851,7 @@ fn parse_ranked_per100(input: &str) -> Option<Scaling> {
         .trim();
 
     let (values_raw, _) = split_percent_tail(left)?;
-    let values = parse_slash_f32s(values_raw)
+    let values = parse_slash_f64s(values_raw)
         .into_iter()
         .map(|v| v / 100.0)
         .collect::<Vec<_>>();
@@ -874,7 +874,7 @@ fn parse_per100(input: &str) -> Option<Scaling> {
         .trim();
 
     let (value_raw, _) = split_percent_tail(left)?;
-    let value = value_raw.parse::<f32>().ok()? / 100.0;
+    let value = value_raw.parse::<f64>().ok()? / 100.0;
 
     Some(Scaling::Per100 {
         value,
@@ -886,7 +886,7 @@ fn parse_percent_attr(input: &str) -> Option<Scaling> {
     let text = normalize_whitespace(input);
     let lower = text.to_ascii_lowercase();
     let idx = lower.find("% of ")?;
-    let value = text[..idx].trim().parse::<f32>().ok()? / 100.0;
+    let value = text[..idx].trim().parse::<f64>().ok()? / 100.0;
     let debug = text[idx + 2..].trim().to_string();
 
     Some(Scaling::PercentAttr {
@@ -903,11 +903,11 @@ fn split_percent_tail(input: &str) -> Option<(&str, &str)> {
     Some((left, right))
 }
 
-fn parse_slash_f32s(input: &str) -> Vec<f32> {
+fn parse_slash_f64s(input: &str) -> Vec<f64> {
     input
         .split('/')
         .map(normalize_whitespace)
-        .filter_map(|v| v.parse::<f32>().ok())
+        .filter_map(|v| v.parse().ok())
         .collect()
 }
 

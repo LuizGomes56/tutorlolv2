@@ -32,7 +32,7 @@ pub async fn run() -> MayFail {
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct WikiAbility {
-    pub formulas: Vec<Option<String>>,
+    pub formulas: Vec<(Option<String>, String)>,
     #[serde(flatten)]
     pub ability: Ability,
 }
@@ -86,7 +86,7 @@ pub struct WikiModifiers {
 }
 
 pub fn concat() -> MayFail {
-    println!("[download] champions::concat");
+    println!("[fn] champions::concat");
 
     let champions = crate::read_dir(cache())?
         .filter(is_dir)
@@ -155,7 +155,8 @@ pub fn concat() -> MayFail {
 
                 for (_, effect) in &ability.effects {
                     let formula = crate::render::simplify_formula(ability.skill, effect)?;
-                    formulas.push(formula);
+                    let leveling = effect.inner.leveling.clone();
+                    formulas.push((formula, leveling));
                 }
 
                 abilities
@@ -248,35 +249,25 @@ pub fn concat() -> MayFail {
     crate::write(cache().join("full").with_extension("json"), bytes)
 
     /*
-    let mut use_values = Vec::new();
-    let mut use_formula = Vec::new();
-    let mut base = Vec::new();
-    let mut scalings = Vec::new();
+    ?;
+
+    let mut formulas = Vec::new();
 
     for (_, wiki) in &champions {
         for (_, abilities) in &wiki.abilities {
             for ability in abilities {
-                for (_, effect) in &ability.effects {
-                    use_values.extend_from_slice(effect.use_values.as_ref().unwrap_or(&vec![]));
-                    if let Some(ref formula) = effect.use_formula {
-                        use_formula.push(formula);
-                    }
-                    base.extend_from_slice(effect.base.as_ref().unwrap_or(&vec![]));
-                    scalings.extend_from_slice(&effect.scalings);
-                }
+                formulas.extend_from_slice(&ability.formulas);
             }
         }
     }
 
     let debug_values = serde_json::json!({
-        "use_values": use_values,
-        "use_formula": use_formula,
-        "base": base,
-        "scalings": scalings
+        "formulas": formulas
     });
 
     let debug_bytes = serde_json::to_string(&debug_values)?;
 
-    crate::write(cache().join("debug").with_extension("json"), debug_bytes)?;
+    crate::write(cache().join("debug").with_extension("json"), debug_bytes)
+
     */
 }
