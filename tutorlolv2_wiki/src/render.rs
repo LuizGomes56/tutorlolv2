@@ -221,11 +221,9 @@ impl Scaling {
 }
 
 impl Effect {
-    pub fn load_formula(&mut self, champion_id: &str, key: Key) -> MayFail {
+    pub fn load_formula(&mut self, key: Key, champion_id: &str, offset: usize) -> MayFail {
         self.formula = match champion_id {
-            // "Nidalee" if self.index > 0 && matches!(key, Key::Q) => {
-            //     self.simplify_formula_with_axis(key, Some(CtxVar::QLevel))
-            // }
+            "Nidalee" if offset > 0 => self.simplify_formula_with_axis(key, Some(CtxVar::RLevel)),
             _ => self.simplify_formula(key),
         }?;
 
@@ -245,13 +243,7 @@ impl Effect {
             return Some(CtxVar::Level);
         }
 
-        match key {
-            Key::P => Some(CtxVar::Level),
-            Key::Q => Some(CtxVar::QLevel),
-            Key::W => Some(CtxVar::WLevel),
-            Key::E => Some(CtxVar::ELevel),
-            Key::R => Some(CtxVar::RLevel),
-        }
+        Some(key.as_ctx_var())
     }
 
     fn use_values_belongs_to_level_scaling(&self, key: Key) -> bool {

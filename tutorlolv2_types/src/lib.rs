@@ -30,6 +30,16 @@ impl Key {
             Key::R => 'R',
         }
     }
+
+    pub const fn as_ctx_var(&self) -> CtxVar {
+        match self {
+            Key::P => CtxVar::Level,
+            Key::Q => CtxVar::QLevel,
+            Key::W => CtxVar::WLevel,
+            Key::E => CtxVar::ELevel,
+            Key::R => CtxVar::RLevel,
+        }
+    }
 }
 
 impl TryFrom<char> for Key {

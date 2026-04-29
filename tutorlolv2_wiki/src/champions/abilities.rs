@@ -110,7 +110,10 @@ pub fn parse() -> MayFail {
                     ability
                         .effects
                         .values_mut()
-                        .try_for_each(|effect| effect.load_formula(&champion_id, ability.skill))?;
+                        .enumerate()
+                        .try_for_each(|(i, effect)| {
+                            effect.load_formula(ability.skill, &champion_id, i)
+                        })?;
 
                     ability.champion_id = champion_id.clone();
 
