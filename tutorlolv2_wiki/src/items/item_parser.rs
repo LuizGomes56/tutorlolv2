@@ -1,6 +1,6 @@
 use crate::{
     client::MayFail,
-    items::{ItemEffectRaw, ItemRaw, cache},
+    items::{ItemEffect, ItemRaw, cache},
     parser::{Effect, EffectInner, Scaling, assign_ctx_var, vec_dedup},
 };
 use serde::{Deserialize, Serialize};
@@ -23,8 +23,8 @@ pub struct ParsedItemEffects {
 
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub struct ParsedItem {
-    pub id: f64,
-    pub tier: Option<f64>,
+    pub id: u32,
+    pub tier: Option<u8>,
 
     #[serde(default)]
     pub modes: BTreeMap<String, bool>,
@@ -38,7 +38,7 @@ pub struct ParsedItem {
     #[serde(default)]
     pub recipe: Vec<String>,
 
-    pub buy: Option<f64>,
+    pub buy: Option<u16>,
 }
 
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
@@ -164,7 +164,7 @@ fn parse_item(raw: ItemRaw) -> ParsedItem {
     }
 }
 
-fn parse_item_effect(raw: ItemEffectRaw, index: usize) -> ParsedItemEffect {
+fn parse_item_effect(raw: ItemEffect, index: usize) -> ParsedItemEffect {
     let raw_description = raw.description.clone();
     let ast = raw
         .description

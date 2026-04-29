@@ -227,7 +227,7 @@ pub async fn run() -> MayFail {
             Wiki::Items => items::run().await,
             Wiki::ItemsDownload => items::download().await.map(|_| ()),
             Wiki::ItemsParse => items::parse().map(|_| ()),
-            Wiki::Runes => todo!(),
+            Wiki::Runes => runes::run().await,
             Wiki::RunesLinks => runes::links().await,
             Wiki::RunesDownload => runes::download().await,
             Wiki::RunesParse => runes::parse(),
