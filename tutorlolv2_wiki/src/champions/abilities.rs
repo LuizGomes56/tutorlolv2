@@ -128,7 +128,7 @@ pub fn parse() -> MayFail {
 }
 
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
-pub struct Ability {
+pub struct WikiAbility {
     pub champion_id: String,
     pub damage_type: DamageType,
     pub name: String,
@@ -137,8 +137,8 @@ pub struct Ability {
     pub effects: BTreeMap<String, Effect>,
 }
 
-pub fn parse_abilities(cells: &BTreeMap<String, String>) -> MayFail<Ability> {
-    let mut ability = Ability::default();
+pub fn parse_abilities(cells: &BTreeMap<String, String>) -> MayFail<WikiAbility> {
+    let mut ability = WikiAbility::default();
 
     ability.name = cells["1"].clone();
     ability.skill = cells["skill"].parse::<char>()?.try_into()?;
@@ -232,7 +232,7 @@ fn parse_effects(
                 .and_then(|el| el.value().attr("data-bot-values"))
                 .map(|s| {
                     s.split(';')
-                        .map(|v| v.trim().to_string())
+                        .map(str::trim)
                         .filter(|v| !v.is_empty())
                         .filter_map(|v| v.parse().ok())
                         .collect()

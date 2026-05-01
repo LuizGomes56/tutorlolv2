@@ -533,11 +533,11 @@ impl FromStr for Position {
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match s {
-            "TOP" => Ok(Position::Top),
-            "JUNGLE" => Ok(Position::Jungle),
-            "MIDDLE" => Ok(Position::Middle),
-            "BOTTOM" => Ok(Position::Bottom),
-            "SUPPORT" => Ok(Position::Support),
+            "Top" | "TOP" => Ok(Position::Top),
+            "Jungle" | "JUNGLE" => Ok(Position::Jungle),
+            "Middle" | "MIDDLE" => Ok(Position::Middle),
+            "Bottom" | "BOTTOM" => Ok(Position::Bottom),
+            "Support" | "SUPPORT" => Ok(Position::Support),
             _ => Err("No matches when calling Position::from_str"),
         }
     }

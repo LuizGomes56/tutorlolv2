@@ -1,8 +1,8 @@
 use crate::{
-    parser::{clean_text, get_cells},
     champions::{cache, full::ChampionRaw},
     client::{MayFail, fetch},
     is_dir,
+    parser::{clean_text, get_cells, vec_dedup},
 };
 use rayon::iter::{IntoParallelIterator, ParallelBridge, ParallelIterator};
 use scraper::Html;
@@ -84,6 +84,7 @@ fn parse_f32(map: &BTreeMap<String, String>, key: &str) -> Option<f32> {
 #[derive(Clone, Debug, Default, Serialize, Deserialize)]
 pub struct ChampionTemplate {
     pub name: String,
+    pub positions: Vec<String>,
     pub champion_id: String,
     pub adaptive_type: String,
     pub attack_type: String,
@@ -106,6 +107,20 @@ impl ChampionTemplate {
         self.champion_id = clean("apiname")?;
         self.adaptive_type = clean("adaptivetype")?;
         self.attack_type = clean("rangetype")?;
+
+        let client_positions = clean("client_positions")?;
+        let external_positions = clean("external_positions")?;
+
+        let mut positions = client_positions
+            .split(',')
+            .chain(external_positions.split(','))
+            .map(String::from)
+            .collect::<Vec<_>>();
+
+        vec_dedup(&mut positions);
+
+        self.positions = positions;
+
         Ok(self)
     }
 

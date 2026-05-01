@@ -847,6 +847,7 @@ pub fn parse_description_effects(
     let use_formula = tooltip
         .and_then(|el| el.value().attr("data-useformula"))
         .map(str::to_string);
+
     let use_values = tooltip
         .and_then(|el| el.value().attr("data-bot-values"))
         .map(|s| {
@@ -926,15 +927,12 @@ pub fn parse_description_effects(
         let key = format!("{base_key} [{}]", i + 1);
         let effect = Effect {
             index,
-            formula: None,
             inner: EffectInner {
                 description: description.to_string(),
                 leveling: String::new(),
             },
             scalings: vec![scaling],
-            use_formula: None,
-            use_values: None,
-            base: None,
+            ..Default::default()
         };
 
         if effect.should_keep() {
@@ -947,15 +945,11 @@ pub fn parse_description_effects(
             base_key,
             Effect {
                 index,
-                formula: None,
                 inner: EffectInner {
                     description: description.to_string(),
                     leveling: String::new(),
                 },
-                scalings: Vec::new(),
-                use_formula: None,
-                use_values: None,
-                base: None,
+                ..Default::default()
             },
         ));
     }
@@ -983,10 +977,9 @@ pub fn parse_base_damage(text: &str) -> Option<Vec<f64>> {
         .filter_map(|v| v.parse::<f64>().ok())
         .collect::<Vec<_>>();
 
-    if values.is_empty() {
-        None
-    } else {
-        Some(values)
+    match values.is_empty() {
+        true => None,
+        false => Some(values),
     }
 }
 
@@ -1092,7 +1085,7 @@ fn is_contextual_remainder(remainder: &str) -> bool {
         return false;
     }
 
-    let contextual = [
+    [
         " of ",
         "of ",
         " per ",
@@ -1115,9 +1108,9 @@ fn is_contextual_remainder(remainder: &str) -> bool {
         "overwhelm",
         "soul",
         "stack",
-    ];
-
-    contextual.iter().any(|s| remainder.contains(s))
+    ]
+    .iter()
+    .any(|s| remainder.contains(s))
 }
 
 pub fn parse_scalings(input_raw: &str) -> Vec<Scaling> {

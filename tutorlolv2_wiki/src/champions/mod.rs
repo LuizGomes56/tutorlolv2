@@ -1,6 +1,6 @@
 use crate::{
     champions::{
-        abilities::Ability,
+        abilities::WikiAbility,
         template::{ChampionTemplate, ModeStats, Stats},
     },
     client::MayFail,
@@ -9,7 +9,7 @@ use crate::{
 use rayon::iter::{ParallelBridge, ParallelIterator};
 use serde::{Deserialize, Serialize};
 use std::{collections::BTreeMap, path::PathBuf};
-use tutorlolv2_types::{AdaptiveType, AttackType, Key};
+use tutorlolv2_types::{AdaptiveType, AttackType, Key, Position};
 
 pub mod abilities;
 pub mod full;
@@ -35,9 +35,10 @@ pub struct WikiChampion {
     pub champion_id: String,
     pub adaptive_type: AdaptiveType,
     pub attack_type: AttackType,
+    pub positions: Vec<Position>,
     pub stats: WikiStats,
     pub modifiers: WikiModifiers,
-    pub abilities: BTreeMap<Key, Vec<Ability>>,
+    pub abilities: BTreeMap<Key, Vec<WikiAbility>>,
 }
 
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
@@ -91,6 +92,7 @@ pub fn concat() -> MayFail {
                 champion_id,
                 adaptive_type,
                 attack_type,
+                positions,
                 stats:
                     Stats {
                         hp_base,
@@ -141,13 +143,17 @@ pub fn concat() -> MayFail {
                     .unwrap_or(false)
             }) {
                 let bytes = crate::read(entry.path())?;
-                let ability = serde_json::from_slice::<Ability>(&bytes)?;
+                let ability = serde_json::from_slice::<WikiAbility>(&bytes)?;
 
                 abilities.entry(ability.skill).or_default().push(ability);
             }
 
             let wiki_champion = WikiChampion {
                 name,
+                positions: positions
+                    .into_iter()
+                    .filter_map(|v| v.parse().ok())
+                    .collect(),
                 champion_id: champion_id.clone(),
                 adaptive_type: adaptive_type.parse()?,
                 attack_type: attack_type.parse()?,

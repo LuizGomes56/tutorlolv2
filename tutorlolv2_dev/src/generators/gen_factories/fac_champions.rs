@@ -171,10 +171,6 @@ impl ChampionFactory {
         }
     }
 
-    pub fn end(&mut self) -> MayFail {
-        Ok(())
-    }
-
     pub fn run_fn(name: &str) -> MayFail<Champion> {
         let data = MerakiChampion::from_file(SaveTo::MerakiCache(Tag::Champions, &name).path())?;
         let function =

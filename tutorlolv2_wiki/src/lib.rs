@@ -47,11 +47,7 @@ pub fn read_dir(path: impl AsRef<Path>) -> MayFail<impl Iterator<Item = DirEntry
 }
 
 pub fn is_dir(entry: &DirEntry) -> bool {
-    entry
-        .file_type()
-        .ok()
-        .map(|v: std::fs::FileType| v.is_dir())
-        .unwrap_or(false)
+    entry.file_type().ok().map(|v| v.is_dir()).unwrap_or(false)
 }
 
 pub fn file_name(entry: &DirEntry) -> MayFail<String> {
