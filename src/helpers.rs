@@ -113,9 +113,11 @@ impl SimpleStats<f32> {
 }
 
 impl BasicStats<f32> {
+    // Constructs a new [`BasicStats`] struct for the given champion at the specified level
+    // It does not consider exceptions (Ex: Gnar)
     pub const fn new(champion_id: ChampionId, level: u8) -> Self {
         let stats = &champion_id.cache().stats;
-        BasicStats {
+        Self {
             max_health: RiotFormulas::stat(&stats.health, level),
             armor: RiotFormulas::stat(&stats.armor, level),
             magic_resist: RiotFormulas::stat(&stats.magic_resist, level),
@@ -124,6 +126,8 @@ impl BasicStats<f32> {
         }
     }
 
+    /// Infers the champion's base stats at a given level. `is_mega_gnar` is valid only
+    /// when `champion_id` is [`ChampionId::Gnar`], otherwise it has no effect.
     pub const fn infer(champion_id: ChampionId, level: u8, is_mega_gnar: bool) -> Self {
         match champion_id {
             ChampionId::Gnar if is_mega_gnar => {

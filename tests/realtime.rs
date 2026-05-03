@@ -6,7 +6,7 @@ const CFG: bincode::config::Configuration = bincode::config::standard();
 fn test_realtime() -> MayFail {
     let bytes = std::fs::read("temp_test.json")?;
     let game = serde_json::from_slice(&bytes)?;
-    let data = tutorlolv2::realtime(&game).ok_or("Failed to run `tutorlolv2::realtime`")?;
+    let data = tutorlolv2::realtime(&game).unwrap();
 
     let dbg_data = format!("{data:#?}");
     let dbg_json = serde_json::to_string_pretty(&data)?;

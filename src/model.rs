@@ -189,7 +189,7 @@ pub struct Enemy<'a> {
 impl Stats<f32> {
     /// Returns a new struct [`Stats`] with the same original values except the ones
     /// that involve percent penetration, which are resolved and converted to the
-    /// `[0.0, 100.0]` range used in this library
+    /// `0..100` range used in this library
     pub const fn base100(&self) -> Self {
         Self {
             armor_penetration_percent: (1.0 - self.armor_penetration_percent).clamp(0.0, 1.0)
@@ -484,7 +484,8 @@ impl Modifiers {
 
 /// Holds float values that will be multiplied by the damages of each ability
 /// depending on their letters, which can be obtained through the method
-/// [`AbilityId::as_char`] with simple branching. Values of `1.0` mean no modifiers
+/// [`AbilityId::as_char`] with simple branching. Values of `1.0` mean no modifiers.
+/// Also, [`Key`] can also be used to identify it
 #[derive(Clone, Copy, Debug, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize)]
 pub struct AbilityModifiers {
     pub q: f32,
