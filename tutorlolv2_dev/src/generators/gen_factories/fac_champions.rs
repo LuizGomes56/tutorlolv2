@@ -14,7 +14,7 @@ use std::{
     str::FromStr,
 };
 use tutorlolv2_fmt::rustfmt;
-use tutorlolv2_gen::{
+use tutorlolv2_types::{
     AbilityId, AbilityName, AdaptiveType, AttackType, Attrs, ComboElement, DamageType,
     DevMergeData, Key, Position,
 };
@@ -145,16 +145,23 @@ impl ChampionFactory {
         Self::GENERATOR_NAMES
             .into_par_iter()
             .copied()
-            .try_for_each(Self::create)
+            .for_each(|v| {
+                let _ =
+                    Self::create(v).inspect_err(|e| eprintln!("Error on try::create::{v}: {e:?}"));
+            });
+
+        Ok(())
     }
 
     /// Runs all generator files. It means that several `.json` files will be created
     /// in the internal cache folder
-    pub fn run_all() -> MayFail {
+    pub fn run_all() {
         Self::GENERATOR_NAMES
             .into_par_iter()
             .copied()
-            .try_for_each(Self::run)
+            .for_each(|v| {
+                let _ = Self::run(v).inspect_err(|e| eprintln!("Error on try::run::{v}: {e:?}"));
+            })
     }
 
     pub fn run(name: &str) -> MayFail {
@@ -162,10 +169,6 @@ impl ChampionFactory {
             Ok(champion) => champion.into_file(SaveTo::InternalRaw(Tag::Champions, name).path()),
             Err(e) => Ok(println!("Error generating {name:?}: {e:?}")),
         }
-    }
-
-    pub fn end(&mut self) -> MayFail {
-        Ok(())
     }
 
     pub fn run_fn(name: &str) -> MayFail<Champion> {

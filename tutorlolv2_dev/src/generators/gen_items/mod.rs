@@ -6,11 +6,8 @@ pub(self) use crate::{
         gen_utils::RegExtractor,
     },
 };
-pub(self) use tutorlolv2_gen::{
-    ItemId,
-    enums::{Attrs::*, DamageType::*},
-    eval::CtxVar::*,
-};
+pub(self) use tutorlolv2_gen::{CtxVar::*, ItemId};
+pub(self) use tutorlolv2_types::{Attrs::*, DamageType::*};
 
 macro_rules! decl_items {
     (inner $Name:ident) => {

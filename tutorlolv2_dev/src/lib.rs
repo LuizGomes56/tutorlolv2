@@ -6,6 +6,7 @@ pub mod setup;
 pub use generators::*;
 pub use init::*;
 pub use model::*;
+pub use reqwest;
 pub use serde::{Serialize, de::DeserializeOwned};
 pub use setup::*;
 
@@ -15,7 +16,7 @@ use std::{collections::HashMap, path::Path};
 /// Alias type for [`Result`] that accepts anything that implements the trait
 /// [`std::error::Error`]. Since the application doesn't need detailed errors,
 /// this can be used to propagate almost all existing errors
-pub type MayFail<T = ()> = Result<T, Box<dyn std::error::Error + Send + Sync + 'static>>;
+pub type MayFail<T = (), E = Box<dyn core::error::Error>> = Result<T, E>;
 
 /// Custom trait that allows to deserialize a JSON instance
 /// by providing only the file path and the desired type

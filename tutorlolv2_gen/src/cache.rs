@@ -1,256 +1,8 @@
-use crate::{Attrs, Ctx, DamageType, ItemId, RuneId};
+use crate::{ItemId, RuneId};
 use bincode::{Decode, Encode};
 use core::{ops::Index, str::FromStr};
 use serde::{Deserialize, Serialize};
 use tutorlolv2_types::*;
-
-/// A champion can have either melee or ranged damage. Ranged champions
-/// often have some damage penalty for items and runes, which are considered
-/// by branching over this enum
-#[derive(
-    Clone,
-    Copy,
-    Debug,
-    Default,
-    Eq,
-    Hash,
-    Ord,
-    PartialEq,
-    PartialOrd,
-    Encode,
-    Decode,
-    Serialize,
-    Deserialize,
-)]
-#[repr(u8)]
-pub enum AttackType {
-    #[default]
-    Melee,
-    Ranged,
-}
-
-impl FromStr for AttackType {
-    type Err = &'static str;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
-        match s {
-            "RANGED" => Ok(AttackType::Ranged),
-            "MELEE" => Ok(AttackType::Melee),
-            _ => Err("No matches when calling AttackType::from_str"),
-        }
-    }
-}
-
-impl FromStr for AdaptiveType {
-    type Err = &'static str;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
-        match s {
-            "MAGIC_DAMAGE" => Ok(AdaptiveType::Magic),
-            "PHYSICAL_DAMAGE" => Ok(AdaptiveType::Physical),
-            _ => Err("No matches when calling AdaptiveType::from_str"),
-        }
-    }
-}
-
-/// Enum that holds the current adaptive type of some champion, which
-/// can be either physical or magic. It is mainly used to determine if runes
-/// should deal physical or magic damage, or to convert `Adaptive Force`
-/// stats to either `Attack Damage` or `Ability Power`. Check the enum [`StatName`]
-/// for more details about all the possibilities
-#[derive(
-    Clone,
-    Copy,
-    Debug,
-    Default,
-    Eq,
-    Hash,
-    Ord,
-    PartialEq,
-    PartialOrd,
-    Encode,
-    Decode,
-    Serialize,
-    Deserialize,
-)]
-#[repr(u8)]
-pub enum AdaptiveType {
-    #[default]
-    Physical,
-    Magic,
-}
-
-/// Represents each playable position or `lane` that a champion can
-/// play in the standard gamemode `SummonersRift`, whose definition
-/// is [`GameMap::SummonersRift`]. If we don't know a champion's position,
-/// it is set to [`Position::Top`].
-#[derive(
-    Clone,
-    Copy,
-    Debug,
-    Default,
-    Eq,
-    Hash,
-    Ord,
-    PartialEq,
-    PartialOrd,
-    Encode,
-    Decode,
-    Serialize,
-    Deserialize,
-)]
-#[repr(u8)]
-pub enum Position {
-    #[default]
-    Top,
-    Jungle,
-    Middle,
-    Bottom,
-    Support,
-}
-
-impl Position {
-    pub const VARIANTS: u8 = 5;
-    pub const ARRAY: [Self; Self::VARIANTS as _] = [
-        Position::Top,
-        Position::Jungle,
-        Position::Middle,
-        Position::Bottom,
-        Position::Support,
-    ];
-
-    pub const fn index(&self) -> usize {
-        *self as _
-    }
-
-    pub const fn from_u8(value: u8) -> Option<Self> {
-        match value {
-            0..Self::VARIANTS => Some(unsafe { Self::from_u8_unchecked(value) }),
-            _ => None,
-        }
-    }
-
-    pub const fn name(&self) -> &'static str {
-        match self {
-            Position::Top => "Top",
-            Position::Jungle => "Jungle",
-            Position::Middle => "Mid",
-            Position::Bottom => "Adc / Bottom",
-            Position::Support => "Support",
-        }
-    }
-
-    pub const fn role(&self) -> &'static str {
-        match self {
-            Position::Top => "top",
-            Position::Jungle => "jungle",
-            Position::Middle => "mid",
-            Position::Bottom => "adc",
-            Position::Support => "support",
-        }
-    }
-
-    pub const unsafe fn from_u8_unchecked(value: u8) -> Self {
-        unsafe { core::mem::transmute(value) }
-    }
-}
-
-impl FromStr for Position {
-    type Err = &'static str;
-
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
-        match s {
-            "TOP" => Ok(Position::Top),
-            "JUNGLE" => Ok(Position::Jungle),
-            "MIDDLE" => Ok(Position::Middle),
-            "BOTTOM" => Ok(Position::Bottom),
-            "SUPPORT" => Ok(Position::Support),
-            _ => Err("No matches when calling Position::from_str"),
-        }
-    }
-}
-
-/// All possible maps and codes that can be played. Most of them are
-/// event maps that may never return to the game, and don't have a
-/// deterministic code. [`GameMap::SummonersRift`] is the default map.
-#[derive(
-    Clone,
-    Copy,
-    Debug,
-    Default,
-    Eq,
-    Hash,
-    Ord,
-    PartialEq,
-    PartialOrd,
-    Encode,
-    Decode,
-    Serialize,
-    Deserialize,
-)]
-#[repr(u8)]
-pub enum GameMap {
-    Aram,
-    Arena,
-    DarkStar,
-    Dominion,
-    Invasion,
-    NexusBlitz,
-    Odyssey,
-    Project,
-    StarGuardian,
-    SummonersRift,
-    Tft,
-    Tutorial,
-    TwistedTreeline,
-    Urf,
-    #[default]
-    Unknown,
-    UnknownMap33,
-    UnknownMap35,
-}
-
-impl Index<GameMap> for ItemMaps {
-    type Output = bool;
-
-    fn index(&self, index: GameMap) -> &Self::Output {
-        match index {
-            GameMap::Aram => &self.aram,
-            GameMap::Arena => &self.arena,
-            GameMap::NexusBlitz => &self.nexus_blitz,
-            GameMap::SummonersRift => &self.summoners_rift,
-            GameMap::Tft => &self.tft,
-            GameMap::UnknownMap33 => &self.unknown_map_33,
-            GameMap::UnknownMap35 => &self.unknown_map_35,
-            _ => &false,
-        }
-    }
-}
-
-impl GameMap {
-    /// Constant conversion of a [`u8`] into a [`GameMap`] enum,
-    /// where the byte represents the code of the current map
-    pub const fn from_u8(value: u8) -> Self {
-        match value {
-            3 => GameMap::Tutorial,
-            4 | 10 => GameMap::TwistedTreeline,
-            8 => GameMap::Dominion,
-            11 => GameMap::SummonersRift,
-            12 | 14 => GameMap::Aram,
-            13 => GameMap::Invasion,
-            16 => GameMap::DarkStar,
-            18 => GameMap::StarGuardian,
-            19 => GameMap::Project,
-            20 => GameMap::Odyssey,
-            21 => GameMap::NexusBlitz,
-            22 => GameMap::Tft,
-            30 => GameMap::Arena,
-            // Unknown
-            33 => GameMap::UnknownMap33,
-            35 => GameMap::UnknownMap35,
-            0xFF => GameMap::Urf,
-            _ => GameMap::Unknown,
-        }
-    }
-}
 
 /// A generic metadata holder for [`AbilityId`], [`ItemId`], or [`RuneId`].
 /// Contains its damage type, attributes, and which instance of the enum the value is.
@@ -457,4 +209,21 @@ pub struct ItemMaps {
     pub tft: bool,
     pub unknown_map_33: bool,
     pub unknown_map_35: bool,
+}
+
+impl Index<GameMap> for ItemMaps {
+    type Output = bool;
+
+    fn index(&self, index: GameMap) -> &Self::Output {
+        match index {
+            GameMap::Aram => &self.aram,
+            GameMap::Arena => &self.arena,
+            GameMap::NexusBlitz => &self.nexus_blitz,
+            GameMap::SummonersRift => &self.summoners_rift,
+            GameMap::Tft => &self.tft,
+            GameMap::UnknownMap33 => &self.unknown_map_33,
+            GameMap::UnknownMap35 => &self.unknown_map_35,
+            _ => &false,
+        }
+    }
 }

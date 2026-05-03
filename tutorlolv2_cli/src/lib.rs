@@ -1,11 +1,12 @@
 use clap::{Parser, Subcommand, ValueEnum};
 use std::str::FromStr;
 use tutorlolv2_dev::{
-    MayFail,
+    ENV_CONFIG, HTTP_CLIENT, MayFail,
     gen_factories::{fac_champions::ChampionFactory, fac_items::ItemFactory},
     update,
 };
 use tutorlolv2_gen::{ChampionId, ItemId};
+use tutorlolv2_wiki::{champions, items, runes};
 
 fn from_str_err<T>(s: &str, into: &str) -> Result<T, String> {
     Err(format!("Value {s:?} can't be converted into {into}"))
@@ -21,7 +22,7 @@ pub struct Cli {
 pub enum RunTarget {
     Champion(ChampionId),
     Item(ItemId),
-    Factory(fn() -> MayFail),
+    Factory(fn()),
     All,
 }
 
@@ -88,6 +89,46 @@ pub enum GenArgs {
     Build,
     #[command(alias = "f")]
     Fetch { function: Fetch },
+    #[command(alias = "w")]
+    Wiki { function: Wiki },
+}
+
+#[derive(Clone, Copy, Debug, ValueEnum)]
+pub enum Wiki {
+    #[clap(alias = "a")]
+    All,
+    #[clap(alias = "c")]
+    Champions,
+    #[clap(alias = "cc")]
+    ChampionsConcat,
+    #[clap(alias = "cdf")]
+    ChampionsDownloadFull,
+    #[clap(alias = "cdt")]
+    ChampionsDownloadTemplates,
+    #[clap(alias = "cda")]
+    ChampionsDownloadAbilities,
+    #[clap(alias = "cpf")]
+    ChampionsParseFull,
+    #[clap(alias = "cpt")]
+    ChampionsParseTemplates,
+    #[clap(alias = "cpa")]
+    ChampionsParseAbilities,
+    #[clap(alias = "i")]
+    Items,
+    #[clap(alias = "id")]
+    ItemsDownload,
+    #[clap(alias = "ip")]
+    ItemsParse,
+    #[clap(alias = "r")]
+    Runes,
+    #[clap(alias = "rl")]
+    RunesLinks,
+    #[clap(alias = "rd")]
+    RunesDownload,
+    #[clap(alias = "rp")]
+    RunesParse,
+    #[clap(alias = "rc")]
+    RunesConcat,
 }
 
 #[derive(Clone, Copy, Debug, ValueEnum)]
@@ -118,24 +159,26 @@ pub async fn run() -> MayFail {
             RunTarget::Item(item) => {
                 ItemFactory::run(item.debug(), item.to_riot_id())?;
             }
-            RunTarget::Factory(f) => f()?,
+            RunTarget::Factory(f) => f(),
             RunTarget::All => {
-                ChampionFactory::run_all()?;
-                ItemFactory::run_all()?;
+                ChampionFactory::run_all();
+                ItemFactory::run_all();
             }
         },
         GenArgs::Progress => ChampionFactory::progress(),
         GenArgs::Update => {
             update::setup_project_folders()?;
             ChampionFactory::create_all()?;
-            ChampionFactory::run_all()?;
-            ItemFactory::run_all()?;
+            ChampionFactory::run_all();
+            ItemFactory::run_all();
             std::env::set_current_dir("./tutorlolv2_build")?;
             tutorlolv2_build::run()?;
         }
         GenArgs::Html => tutorlolv2_html::run(),
         GenArgs::Setup { setup } => match setup {
             Setup::Items => {
+                update::setup_damaging_items()?;
+                update::setup_runes_json()?;
                 update::setup_internal_items()?;
                 update::prettify_internal_items()?;
             }
@@ -144,9 +187,53 @@ pub async fn run() -> MayFail {
         },
         GenArgs::Build => {
             std::env::set_current_dir("./tutorlolv2_build")?;
-            tutorlolv2_build::run()?
+            tutorlolv2_build::run()?;
         }
-        GenArgs::Fetch { function } => todo!(),
+        GenArgs::Fetch { function } => match function {
+            Fetch::Images => {
+                HTTP_CLIENT.download_arts_img().await?;
+                HTTP_CLIENT.download_items_img().await?;
+                HTTP_CLIENT.download_runes_img().await?;
+                HTTP_CLIENT.download_general_img().await?;
+            }
+            Fetch::Cache => {
+                HTTP_CLIENT.update_riot_cache().await?;
+                HTTP_CLIENT.update_language_cache().await?;
+            }
+            Fetch::Scraper => {
+                HTTP_CLIENT.call_scraper().await?;
+                HTTP_CLIENT.combo_scraper().await?;
+            }
+            Fetch::Version => {
+                let riot_version = HTTP_CLIENT.fetch_version().await?;
+                let curr_version = &ENV_CONFIG.lol_version;
+                if &riot_version == curr_version {
+                    println!("App is up to date with game version");
+                } else {
+                    println!("App is outdated: Expected {riot_version}, found: {curr_version}");
+                }
+            }
+        },
+        GenArgs::Wiki { function } => match function {
+            Wiki::All => tutorlolv2_wiki::run().await,
+            Wiki::Champions => champions::run().await,
+            Wiki::ChampionsConcat => champions::concat(),
+            Wiki::ChampionsDownloadFull => champions::full::download().await.map(|_| ()),
+            Wiki::ChampionsParseFull => champions::full::parse().map(|_| ()),
+            Wiki::ChampionsDownloadTemplates => champions::template::download().await,
+            Wiki::ChampionsParseTemplates => champions::template::parse(),
+            Wiki::ChampionsDownloadAbilities => champions::abilities::download().await,
+            Wiki::ChampionsParseAbilities => champions::abilities::parse(),
+            Wiki::Items => items::run().await,
+            Wiki::ItemsDownload => items::download().await.map(|_| ()),
+            Wiki::ItemsParse => items::parse().map(|_| ()),
+            Wiki::Runes => runes::run().await,
+            Wiki::RunesLinks => runes::links().await,
+            Wiki::RunesDownload => runes::download().await,
+            Wiki::RunesParse => runes::parse(),
+            Wiki::RunesConcat => runes::concat(),
+        }
+        .map_err(|e| format!("[wiki] Error: {e:?}"))?,
     }
 
     Ok(())

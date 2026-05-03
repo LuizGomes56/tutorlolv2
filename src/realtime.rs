@@ -95,7 +95,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
     let is_mega_gnar = current_player.champion_name == "Mega Gnar";
 
     let current_player_base_stats =
-        base_stats_bf32(current_player_champion_id, level, is_mega_gnar);
+        BasicStats::infer(current_player_champion_id, level, is_mega_gnar);
 
     let current_player_bonus_stats = bonus_stats!(
         BasicStats::<f32>(current_player_stats, current_player_base_stats) {
@@ -147,7 +147,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
     let dragons = get_dragons(events, all_players);
 
     let enemy_earth_dragons = dragons.enemy_earth_dragons;
-    let simulated_stats = get_simulated_stats(&current_player_stats, dragons);
+    let simulated_stats = current_player_stats.get_simulated_stats(dragons);
     let ability_levels = abilities.ability_levels();
     let current_player_position = Position::from_str(current_player.position)
         .unwrap_or(current_player_champion_id.main_position());
@@ -207,8 +207,8 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
             metadata: current_player_cache.metadata,
             closures: current_player_cache.closures,
         },
-        items: get_items_data(&current_player_items, current_player_cache_attack_type),
-        runes: get_runes_data(&current_player_runes, current_player_cache_attack_type),
+        items: DamageKind::items(&current_player_items, current_player_cache_attack_type),
+        runes: DamageKind::runes(&current_player_runes, current_player_cache_attack_type),
     };
 
     let enemies = all_players
@@ -259,8 +259,8 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
                 .filter_map(|riot_item| Some(ItemId::from_riot_id(riot_item.item_id)? as _))
                 .collect::<Box<[_]>>();
 
-            let e_base_stats = base_stats_sf32(e_champion_id, e_level, false);
-            let full_state = get_enemy_state(
+            let e_base_stats = SimpleStats::infer(e_champion_id, e_level, false);
+            let full_state = get_enemy_full_state(
                 EnemyState {
                     base_stats: e_base_stats,
                     items: &e_items,
@@ -298,7 +298,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
                         * full_state.modifiers.global_mod,
                 },
             };
-            let damages = get_damages(ctx, &eval_data, modifiers);
+            let damages = Damages::new(ctx, &eval_data, modifiers);
 
             let siml_items = core::array::from_fn(|i| {
                 let siml_stat = simulated_stats[i];
@@ -309,7 +309,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Option<Realtime<'a>> {
                     },
                     &full_state,
                 );
-                get_damages(siml_ctx, &eval_data, modifiers)
+                Damages::new(siml_ctx, &eval_data, modifiers)
             });
 
             Some(Enemy {

@@ -4,8 +4,6 @@
 pub mod bitset;
 pub mod cache;
 pub mod data;
-pub mod enums;
-pub mod eval;
 
 use crate::data::{
     champions::CHAMPION_GENERATOR,
@@ -21,11 +19,8 @@ use core::{
 
 #[allow(non_upper_case_globals)]
 pub(crate) const unknown: f32 = 0.0;
-pub(crate) use crate::{
-    cache::{AttackType::*, Position::*},
-    enums::{Attrs::*, DamageType::*},
-};
 pub use tutorlolv2_types::*;
+pub(crate) use tutorlolv2_types::{AttackType::*, Attrs::*, DamageType::*, Position::*};
 
 pub use bitset::*;
 pub use cache::*;
@@ -38,8 +33,6 @@ pub use data::{
     runes::{RUNE_CACHE, RUNE_CLOSURES, RUNE_FORMULAS, RUNE_IDENTS, RuneId},
     *,
 };
-pub use enums::{Attrs, DamageType};
-pub use eval::*;
 pub(crate) use tutorlolv2_types::{AbilityId::*, AbilityName::*, ComboElement::*};
 
 pub static RAW_BLOCK: &str = include_str!("block.txt");

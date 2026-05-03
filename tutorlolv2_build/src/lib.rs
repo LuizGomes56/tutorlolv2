@@ -1,7 +1,7 @@
 use crate::scripts::{
-    champions::generate_champions, items::generate_items, runes::generate_runes, StringExt,
     BASIC_ATTACK, BASIC_ATTACK_FN, CRITICAL_STRIKE, CRITICAL_STRIKE_FN, DEFAULT_ITEM_GENERATOR,
-    IGNITE_FN, ONHIT_EFFECT, ONHIT_EFFECT_FN, TOWER_DAMAGE, TOWER_DAMAGE_FN, ZERO_FN,
+    IGNITE_FN, ONHIT_EFFECT, ONHIT_EFFECT_FN, StringExt, TOWER_DAMAGE, TOWER_DAMAGE_FN, ZERO_FN,
+    champions::generate_champions, items::generate_items, runes::generate_runes,
 };
 use rayon::iter::{IntoParallelIterator, ParallelBridge, ParallelIterator};
 use serde::de::DeserializeOwned;
@@ -13,7 +13,7 @@ use tutorlolv2_fmt::encode_brotli_11;
 
 mod scripts;
 
-pub type MayFail<T = ()> = Result<T, Box<dyn std::error::Error + Send + Sync>>;
+pub type MayFail<T = ()> = Result<T, Box<dyn std::error::Error>>;
 pub type GeneratorClosure = Box<dyn FnOnce(usize) -> Generated + Send + Sync + 'static>;
 pub type GeneratorFn = MayFail<GeneratorClosure>;
 

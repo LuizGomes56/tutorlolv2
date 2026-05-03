@@ -1,5 +1,3 @@
-use std::str::FromStr;
-
 use crate::{
     ENV_CONFIG, JsonRead, JsonWrite, MayFail,
     client::{SaveTo, Tag},
@@ -8,9 +6,11 @@ use crate::{
     items::{Effect, Item, ItemStats, MerakiItem},
     riot::RiotCdnItem,
 };
+use core::str::FromStr;
 use rayon::iter::{IntoParallelIterator, ParallelIterator};
 use serde_json::Value;
-use tutorlolv2_gen::{Attrs, DamageType, GameMap, ItemId, StatName};
+use tutorlolv2_gen::ItemId;
+use tutorlolv2_types::{Attrs, DamageType, GameMap, StatName};
 
 pub struct ItemData {
     pub meraki_data: Option<MerakiItem>,
@@ -239,10 +239,11 @@ pub struct ItemFactory;
 
 impl ItemFactory {
     /// Runs all item generators, stopping the execution if one of them fails
-    pub fn run_all() -> MayFail {
-        ItemId::VALUES
-            .into_par_iter()
-            .try_for_each(|item_id| Self::run(item_id.debug(), item_id.to_riot_id()))
+    pub fn run_all() {
+        ItemId::VALUES.into_par_iter().for_each(|item_id| {
+            let _ = Self::run(item_id.debug(), item_id.to_riot_id())
+                .inspect_err(|e| eprintln!("Error on ItemFactory::run::{item_id:?}: {e:?}"));
+        });
     }
 
     pub fn run(name: &str, riot_id: u32) -> MayFail {

@@ -1,6 +1,18 @@
 #![no_std]
-#[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+
+#[cfg(feature = "dev")]
+extern crate alloc;
+#[cfg(feature = "dev")]
+use alloc::{format, string::String};
+use bincode::{Decode, Encode};
+use core::{convert::Infallible, fmt::Display, ops::Index, str::FromStr};
+use serde::{Deserialize, Serialize};
+
+#[derive(
+    Clone, Copy, Debug, Default, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize,
+)]
 pub enum Key {
+    #[default]
     P,
     Q,
     W,
@@ -16,6 +28,31 @@ impl Key {
             Key::W => 'W',
             Key::E => 'E',
             Key::R => 'R',
+        }
+    }
+
+    pub const fn as_ctx_var(&self) -> CtxVar {
+        match self {
+            Key::P => CtxVar::Level,
+            Key::Q => CtxVar::QLevel,
+            Key::W => CtxVar::WLevel,
+            Key::E => CtxVar::ELevel,
+            Key::R => CtxVar::RLevel,
+        }
+    }
+}
+
+impl TryFrom<char> for Key {
+    type Error = &'static str;
+
+    fn try_from(value: char) -> Result<Self, Self::Error> {
+        match value {
+            'I' | 'A' | 'P' => Ok(Key::P),
+            'Q' => Ok(Key::Q),
+            'W' => Ok(Key::W),
+            'E' => Ok(Key::E),
+            'R' => Ok(Key::R),
+            _ => Err("Invalid char when calling Key::try_from"),
         }
     }
 }
@@ -105,14 +142,6 @@ impl AbilityId {
         }
     }
 }
-
-#[cfg(feature = "dev")]
-extern crate alloc;
-#[cfg(feature = "dev")]
-use alloc::{format, string::String};
-use bincode::{Decode, Encode};
-use core::fmt::Display;
-use serde::{Deserialize, Serialize};
 
 #[cfg(feature = "dev")]
 impl AbilityId {
@@ -348,4 +377,437 @@ impl AbilityName {
             _ => None,
         }
     }
+}
+
+/// A champion can have either melee or ranged damage. Ranged champions
+/// often have some damage penalty for items and runes, which are considered
+/// by branching over this enum
+#[derive(
+    Clone,
+    Copy,
+    Debug,
+    Default,
+    Eq,
+    Hash,
+    Ord,
+    PartialEq,
+    PartialOrd,
+    Encode,
+    Decode,
+    Serialize,
+    Deserialize,
+)]
+#[repr(u8)]
+pub enum AttackType {
+    #[default]
+    Melee,
+    Ranged,
+}
+
+impl FromStr for AttackType {
+    type Err = &'static str;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "Melee" | "MELEE" => Ok(AttackType::Melee),
+            "Ranged" | "RANGED" => Ok(AttackType::Ranged),
+            _ => Err("No matches when calling AttackType::from_str"),
+        }
+    }
+}
+
+impl FromStr for AdaptiveType {
+    type Err = &'static str;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "Magic" | "MAGIC_DAMAGE" => Ok(Self::Magic),
+            "Physical" | "PHYSICAL_DAMAGE" => Ok(Self::Physical),
+            _ => Err("No matches when calling AdaptiveType::from_str"),
+        }
+    }
+}
+
+/// Enum that holds the current adaptive type of some champion, which
+/// can be either physical or magic. It is mainly used to determine if runes
+/// should deal physical or magic damage, or to convert `Adaptive Force`
+/// stats to either `Attack Damage` or `Ability Power`. Check the enum [`StatName`]
+/// for more details about all the possibilities
+#[derive(
+    Clone,
+    Copy,
+    Debug,
+    Default,
+    Eq,
+    Hash,
+    Ord,
+    PartialEq,
+    PartialOrd,
+    Encode,
+    Decode,
+    Serialize,
+    Deserialize,
+)]
+#[repr(u8)]
+pub enum AdaptiveType {
+    #[default]
+    Physical,
+    Magic,
+}
+
+/// Represents each playable position or `lane` that a champion can
+/// play in the standard gamemode `SummonersRift`, whose definition
+/// is [`GameMap::SummonersRift`]. If we don't know a champion's position,
+/// it is set to [`Position::Top`].
+#[derive(
+    Clone,
+    Copy,
+    Debug,
+    Default,
+    Eq,
+    Hash,
+    Ord,
+    PartialEq,
+    PartialOrd,
+    Encode,
+    Decode,
+    Serialize,
+    Deserialize,
+)]
+#[repr(u8)]
+pub enum Position {
+    #[default]
+    Top,
+    Jungle,
+    Middle,
+    Bottom,
+    Support,
+}
+
+impl Position {
+    pub const VARIANTS: u8 = 5;
+    pub const ARRAY: [Self; Self::VARIANTS as _] = [
+        Position::Top,
+        Position::Jungle,
+        Position::Middle,
+        Position::Bottom,
+        Position::Support,
+    ];
+
+    pub const fn index(&self) -> usize {
+        *self as _
+    }
+
+    pub const fn from_u8(value: u8) -> Option<Self> {
+        match value {
+            0..Self::VARIANTS => Some(unsafe { Self::from_u8_unchecked(value) }),
+            _ => None,
+        }
+    }
+
+    pub const fn name(&self) -> &'static str {
+        match self {
+            Position::Top => "Top",
+            Position::Jungle => "Jungle",
+            Position::Middle => "Mid",
+            Position::Bottom => "Adc / Bottom",
+            Position::Support => "Support",
+        }
+    }
+
+    pub const fn role(&self) -> &'static str {
+        match self {
+            Position::Top => "top",
+            Position::Jungle => "jungle",
+            Position::Middle => "mid",
+            Position::Bottom => "adc",
+            Position::Support => "support",
+        }
+    }
+
+    pub const unsafe fn from_u8_unchecked(value: u8) -> Self {
+        unsafe { core::mem::transmute(value) }
+    }
+}
+
+impl FromStr for Position {
+    type Err = &'static str;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "Top" | "TOP" => Ok(Position::Top),
+            "Jungle" | "JUNGLE" => Ok(Position::Jungle),
+            "Middle" | "MIDDLE" => Ok(Position::Middle),
+            "Bottom" | "BOTTOM" => Ok(Position::Bottom),
+            "Support" | "SUPPORT" => Ok(Position::Support),
+            _ => Err("No matches when calling Position::from_str"),
+        }
+    }
+}
+
+/// All possible maps and codes that can be played. Most of them are
+/// event maps that may never return to the game, and don't have a
+/// deterministic code. [`GameMap::SummonersRift`] is the default map.
+#[derive(
+    Clone,
+    Copy,
+    Debug,
+    Default,
+    Eq,
+    Hash,
+    Ord,
+    PartialEq,
+    PartialOrd,
+    Encode,
+    Decode,
+    Serialize,
+    Deserialize,
+)]
+#[repr(u8)]
+pub enum GameMap {
+    Aram,
+    Arena,
+    DarkStar,
+    Dominion,
+    Invasion,
+    NexusBlitz,
+    Odyssey,
+    Project,
+    StarGuardian,
+    SummonersRift,
+    Tft,
+    Tutorial,
+    TwistedTreeline,
+    Urf,
+    #[default]
+    Unknown,
+    UnknownMap33,
+    UnknownMap35,
+}
+
+impl GameMap {
+    /// Constant conversion of a [`u8`] into a [`GameMap`] enum,
+    /// where the byte represents the code of the current map
+    pub const fn from_u8(value: u8) -> Self {
+        match value {
+            3 => GameMap::Tutorial,
+            4 | 10 => GameMap::TwistedTreeline,
+            8 => GameMap::Dominion,
+            11 => GameMap::SummonersRift,
+            12 | 14 => GameMap::Aram,
+            13 => GameMap::Invasion,
+            16 => GameMap::DarkStar,
+            18 => GameMap::StarGuardian,
+            19 => GameMap::Project,
+            20 => GameMap::Odyssey,
+            21 => GameMap::NexusBlitz,
+            22 => GameMap::Tft,
+            30 => GameMap::Arena,
+            // Unknown
+            33 => GameMap::UnknownMap33,
+            35 => GameMap::UnknownMap35,
+            0xFF => GameMap::Urf,
+            _ => GameMap::Unknown,
+        }
+    }
+}
+
+/// Creates an enum and associates constants that represents each of its
+/// variants, using the same name and ignores `upper_case` lints
+macro_rules! const_enum {
+    (
+        $(#[$meta:meta])*
+        pub enum $name:ident {
+            $(
+                $(#[$vmeta:meta])*
+                $Variant:ident,
+            )+
+        }
+    ) => {
+        $(#[$meta])*
+        pub enum $name {
+            $(
+                $(#[$vmeta])*
+                $Variant,
+            )+
+        }
+    };
+}
+
+const_enum! {
+    /// Defines what is the damage type of some entity.
+    /// - [`DamageType::Physical`] and [`DamageType::Magic`] Represents any damage related
+    /// to how much (armor or magic resistence) the enemy player has, and is affected by the
+    /// percent and flat values or (armor or magic) penetration of the current player
+    /// - [`DamageType::Mixed`] Damages of this type are treated as a special case of
+    /// [`DamageType::True`], where the closure has to multiply on its own the `physical_mod`
+    /// and `magic_mod` modifiers of the [`tutorlolv2_math::DamageModifiers`] struct. It is
+    /// usually used when a single ability or item deals both physical and magic damage in the
+    /// same hit.
+    /// - [`DamageType::True`] Damages of this type are not affected by armor or magic resistence,
+    /// their values are in general irreducible.
+    /// - [`DamageType::Adaptive`] Damages of this type will vary into the [`DamageType::Physical`]
+    /// or [`DamageType::Magic`] depending on how much bonus armor or ability power the current player
+    /// has.
+    /// - [`DamageType::Unknown`] is the default value when no damage type is set
+    #[derive(Clone, Copy, Debug, Default, Eq, Hash, Ord, PartialEq, PartialOrd)]
+    #[derive(bincode::Encode, bincode::Decode)]
+    #[derive(serde::Serialize, serde::Deserialize)]
+    pub enum DamageType {
+        Physical,
+        Magic,
+        Mixed,
+        True,
+        Adaptive,
+        #[default]
+        Unknown,
+    }
+}
+
+const_enum! {
+    /// An enum with several variants that can be used to add up to `255` attributes
+    /// to some ability, item or rune. It is mostly used to determine if the current
+    /// instance damages onhit only for the `maximum`, `minimum` or both damage kinds.
+    /// [`Attrs::Undefined`] is set to be the default variant, representing no extra data. This
+    /// is also used to determine if some ability has area damage
+    #[derive(Clone, Copy, Debug, Default, Eq, Hash, Ord, PartialEq, PartialOrd)]
+    #[derive(bincode::Encode, bincode::Decode)]
+    #[derive(serde::Serialize, serde::Deserialize)]
+    pub enum Attrs {
+        #[default]
+        Undefined,
+        Onhit,
+        OnhitMin,
+        OnhitMax,
+        Area,
+        AreaOnhit,
+        AreaOnhitMin,
+        AreaOnhitMax,
+    }
+}
+
+impl FromStr for DamageType {
+    type Err = Infallible;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "PHYSICAL_DAMAGE" | "Physical" => Ok(DamageType::Physical),
+            "MAGIC_DAMAGE" | "Magic" | "magic" => Ok(DamageType::Magic),
+            "MIXED_DAMAGE" | "Mixed" | "Magic True" => Ok(DamageType::Mixed),
+            "TRUE_DAMAGE" | "True" | "true" => Ok(DamageType::True),
+            "ADAPTIVE_DAMAGE" | "adaptive" => Ok(DamageType::Adaptive),
+            _ => Ok(DamageType::Unknown),
+        }
+    }
+}
+
+/// Creates the `CtxVar` and `Ctx` structs, associating
+/// the appropriate names and numeric types that it will hold. This struct
+/// is essential to the application since it is used to evaluate all the
+/// generated closures contained in cache static variables
+macro_rules! create_eval_struct {
+    ($($value:ident),*$(,)?) => {
+        pastey::paste! {
+            /// Defines a standard type that implements trait [`core::fmt::Display`]
+            /// and is used to create constant closures in the static variables of
+            /// this module. For example:
+            /// [`CtxVar::QLevel`] is converted to: `ctx.q_level`
+            #[derive(Copy, Clone, Debug, Eq, Hash, PartialEq, Ord, PartialOrd, Encode, Decode, Serialize, Deserialize)]
+            #[repr(u8)]
+            pub enum CtxVar {
+                $([<$value:camel>],)*
+            }
+
+            impl CtxVar {
+                pub const ARRAY: [Self; Self::VARIANTS] = [$(Self::[<$value:camel>],)*];
+                pub const fn as_var(&self) -> &'static str {
+                    match self {
+                        $(
+                            Self::[<$value:camel>] => concat!("ctx.", stringify!($value)),
+                        )*
+                    }
+                }
+            }
+
+            impl AsRef<str> for CtxVar {
+                fn as_ref(&self) -> &str {
+                    self.as_var()
+                }
+            }
+
+            impl Index<CtxVar> for Ctx {
+                type Output = f32;
+                fn index(&self, index: CtxVar) -> &Self::Output {
+                    match index {
+                        $(CtxVar::[<$value:camel>] => &self.$value),*
+                    }
+                }
+            }
+
+            #[derive(Clone, Copy, Debug, Decode, Default, Deserialize, Encode, PartialEq, PartialOrd, Serialize)]
+            #[repr(C)]
+            pub struct Ctx {
+                $(pub $value: f32,)*
+            }
+
+            impl ::core::fmt::Display for CtxVar {
+                fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
+                    write!(f, "{}", self.as_var())
+                }
+            }
+        }
+    };
+}
+
+create_eval_struct!(
+    ability_power,
+    adaptive_damage,
+    armor,
+    armor_penetration_flat,
+    armor_penetration_percent,
+    attack_damage,
+    attack_speed,
+    base_ad,
+    base_armor,
+    base_health,
+    base_magic_resist,
+    base_mana,
+    bonus_ad,
+    bonus_armor,
+    bonus_health,
+    bonus_magic_resist,
+    bonus_mana,
+    bonus_move_speed,
+    crit_chance,
+    crit_damage,
+    current_health,
+    current_mana,
+    level,
+    q_level,
+    w_level,
+    e_level,
+    r_level,
+    magic_multiplier,
+    magic_penetration_flat,
+    magic_penetration_percent,
+    magic_resist,
+    max_health,
+    max_mana,
+    missing_health,
+    physical_multiplier,
+    randuin_effect,
+    rocksolid_effect,
+    stacks,
+    steelcaps_effect,
+    life_steal,
+    enemy_armor,
+    enemy_bonus_armor,
+    enemy_bonus_health,
+    enemy_bonus_magic_resist,
+    enemy_current_health,
+    enemy_magic_resist,
+    enemy_max_health,
+    enemy_missing_health,
+);
+
+impl CtxVar {
+    pub const VARIANTS: usize = size_of::<Ctx>() / size_of::<f32>();
+    pub const SKIP: usize = Self::SteelcapsEffect as usize + 1;
 }

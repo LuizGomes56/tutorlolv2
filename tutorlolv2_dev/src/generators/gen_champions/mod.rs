@@ -9,14 +9,9 @@ pub(self) use crate::{
         gen_utils::RegExtractor,
     },
 };
-pub(self) use tutorlolv2_gen::{
-    AbilityId,
-    AbilityId::*,
-    AbilityName::*,
-    ComboElement::*,
-    Key,
-    enums::{Attrs::*, DamageType::*},
-    eval::CtxVar::*,
+pub(self) use tutorlolv2_gen::CtxVar::*;
+pub(self) use tutorlolv2_types::{
+    AbilityId, AbilityId::*, AbilityName::*, Attrs::*, ComboElement::*, DamageType::*, Key,
 };
 
 macro_rules! decl_mod {

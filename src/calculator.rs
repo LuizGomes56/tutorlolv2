@@ -145,7 +145,7 @@ pub const fn infer_champion_stats(data: InferStats<'_>) -> Stats<f32> {
     );
 
     let cached_stats = cache.stats;
-    let base_stats = base_stats_bf32(champion_id, level, is_mega_gnar);
+    let base_stats = BasicStats::infer(champion_id, level, is_mega_gnar);
 
     let mut stats = Stats {
         armor: base_stats.armor,
@@ -464,7 +464,7 @@ pub fn calculator(game: InputGame) -> OutputGame {
     let current_player_cache = current_player_champion_id.cache();
 
     let current_player_base_stats =
-        base_stats_bf32(current_player_champion_id, level, is_mega_gnar);
+        BasicStats::infer(current_player_champion_id, level, is_mega_gnar);
 
     let champion_stats = match infer_stats {
         true => infer_champion_stats(InferStats {
@@ -533,8 +533,8 @@ pub fn calculator(game: InputGame) -> OutputGame {
             metadata: current_player_cache.metadata,
             closures: current_player_cache.closures,
         },
-        items: get_items_data(&current_player_items, attack_type),
-        runes: get_runes_data(&current_player_runes, attack_type),
+        items: DamageKind::items(&current_player_items, attack_type),
+        runes: DamageKind::runes(&current_player_runes, attack_type),
     };
 
     let monster_damages = get_monster_damages(&self_state, &eval_data, shred);
@@ -588,8 +588,8 @@ pub fn get_calculator_enemies(
 
             let e_stats = EnemyStats::from_i32(&e_stats_i32);
 
-            let e_base_stats = base_stats_sf32(e_champion_id, e_level, e_is_mega_gnar);
-            let full_state = get_enemy_state(
+            let e_base_stats = SimpleStats::infer(e_champion_id, e_level, e_is_mega_gnar);
+            let full_state = get_enemy_full_state(
                 EnemyState {
                     current_stats: match e_infer_stats {
                         true => None,
@@ -624,7 +624,7 @@ pub fn get_calculator_enemies(
             };
 
             // The only non-const function
-            let damages = get_damages(ctx, eval_data, modifiers);
+            let damages = Damages::new(ctx, eval_data, modifiers);
 
             OutputEnemy {
                 current_stats: EnemyStats::from_f32(&full_state.current_stats),

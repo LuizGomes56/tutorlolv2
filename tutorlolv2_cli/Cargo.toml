@@ -6,9 +6,13 @@ edition = "2024"
 [dependencies]
 clap = { version = "4.6.0", features = ["derive"] }
 dotenvy = "0.15.7"
-tokio = { version = "1.49.0", default-features = false, features = ["macros", "rt-multi-thread"] }
+tokio = { version = "1.49.0", default-features = false, features = [
+    "macros",
+    "rt-multi-thread",
+] }
 tutorlolv2_gen = { path = "../tutorlolv2_gen" }
 tutorlolv2_dev = { path = "../tutorlolv2_dev" }
-tutorlolv2_html = { version = "0.1.0", path = "../tutorlolv2_html" }
+tutorlolv2_html = { path = "../tutorlolv2_html" }
 tutorlolv2_build = { path = "../tutorlolv2_build" }
+tutorlolv2_wiki = { path = "../tutorlolv2_wiki" }
 # tutorlolv2_server = { path = "../tutorlolv2_server" }
