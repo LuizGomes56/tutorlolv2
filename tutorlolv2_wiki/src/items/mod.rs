@@ -14,18 +14,18 @@ fn cache() -> PathBuf {
 }
 
 #[derive(Debug, Clone, Deserialize, Serialize, Default)]
-pub struct ItemEffect {
+pub struct ItemEffectRaw {
     pub name: Option<String>,
     pub unique: Option<bool>,
     pub description: Option<String>,
 }
 
 #[derive(Debug, Clone, Deserialize, Serialize, Default)]
-pub struct ItemEffects {
+pub struct ItemEffectsRaw {
     #[serde(default)]
-    pub pass: Option<ItemEffect>,
+    pub pass: Option<ItemEffectRaw>,
     #[serde(default)]
-    pub act: Option<ItemEffect>,
+    pub act: Option<ItemEffectRaw>,
 }
 
 #[derive(Debug, Clone, Deserialize, Serialize, Default)]
@@ -37,7 +37,7 @@ pub struct ItemRaw {
     #[serde(default)]
     pub stats: BTreeMap<String, f64>,
     #[serde(default)]
-    pub effects: ItemEffects,
+    pub effects: ItemEffectsRaw,
     #[serde(default)]
     pub recipe: Vec<String>,
     pub buy: Option<u16>,

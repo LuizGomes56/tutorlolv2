@@ -71,6 +71,7 @@ pub async fn download() -> MayFail {
     for (id, link) in links {
         let save_to = cache().join(id);
         fetch(save_to.join("data").with_extension("html"), link.href).await?;
+        std::thread::sleep(std::time::Duration::from_millis(200));
     }
 
     Ok(())

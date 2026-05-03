@@ -1,13 +1,13 @@
 use crate::{
     client::MayFail,
-    items::{ItemEffect, ItemRaw, cache},
+    items::{ItemEffectRaw, ItemRaw, cache},
     parser::{Effect, EffectInner, Scaling, assign_ctx_var, vec_dedup},
 };
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
 
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
-pub struct ParsedItemEffect {
+pub struct ItemEffect {
     pub name: Option<String>,
     pub unique: Option<bool>,
     pub raw_description: Option<String>,
@@ -16,13 +16,13 @@ pub struct ParsedItemEffect {
 }
 
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
-pub struct ParsedItemEffects {
-    pub pass: Option<ParsedItemEffect>,
-    pub act: Option<ParsedItemEffect>,
+pub struct ItemEffects {
+    pub pass: Option<ItemEffect>,
+    pub act: Option<ItemEffect>,
 }
 
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
-pub struct ParsedItem {
+pub struct WikiItem {
     pub id: u32,
     pub tier: Option<u8>,
 
@@ -33,7 +33,7 @@ pub struct ParsedItem {
     pub stats: BTreeMap<String, f64>,
 
     #[serde(default)]
-    pub effects: ParsedItemEffects,
+    pub effects: ItemEffects,
 
     #[serde(default)]
     pub recipe: Vec<String>,
@@ -149,22 +149,22 @@ pub fn parse_items() -> MayFail {
     crate::write(cache().join("parsed").with_extension("json"), &json)
 }
 
-fn parse_item(raw: ItemRaw) -> ParsedItem {
-    ParsedItem {
+fn parse_item(raw: ItemRaw) -> WikiItem {
+    WikiItem {
         id: raw.id,
         tier: raw.tier,
         modes: raw.modes,
         stats: raw.stats,
-        effects: ParsedItemEffects {
-            pass: raw.effects.pass.map(|v| parse_item_effect(v, 0)),
-            act: raw.effects.act.map(|v| parse_item_effect(v, 1)),
+        effects: ItemEffects {
+            pass: raw.effects.pass.map(parse_item_effect),
+            act: raw.effects.act.map(parse_item_effect),
         },
         recipe: raw.recipe,
         buy: raw.buy,
     }
 }
 
-fn parse_item_effect(raw: ItemEffect, index: usize) -> ParsedItemEffect {
+fn parse_item_effect(raw: ItemEffectRaw) -> ItemEffect {
     let raw_description = raw.description.clone();
     let ast = raw
         .description
@@ -175,12 +175,12 @@ fn parse_item_effect(raw: ItemEffect, index: usize) -> ParsedItemEffect {
     let mut analysis = analyze_sequence(&ast, false);
     vec_dedup(&mut analysis.scalings);
 
-    ParsedItemEffect {
+    ItemEffect {
         name: raw.name,
         unique: raw.unique,
         raw_description: raw_description.clone(),
         effect: Effect {
-            index,
+            index: 0,
             formula: None,
             inner: EffectInner {
                 description: raw_description.unwrap_or_default(),
