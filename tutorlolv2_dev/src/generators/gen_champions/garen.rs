@@ -15,18 +15,6 @@ impl Generator for Garen {
                     (5, _6), /* Physical Damage Per Spin */
                 ],
             )
-            .ability_nth(
-                1,
-                Key::E,
-                [
-                    (0, _7),    /* Critical Strike Damage Per Spin */
-                    (1, _8),    /* IE Damage Per Spin */
-                    (2, _1Min), /* Increased  IE Damage Per Spin */
-                    (3, _2Min), /* Increased Critical Strike Damage Per Spin */
-                    (4, _3Min), /* Increased Damage Per Spin */
-                    (5, _4Min), /* Physical Damage Per Spin */
-                ],
-            )
             .ability(Key::R, [(0, _1) /* True Damage */])
             .end()
     }

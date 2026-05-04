@@ -24,16 +24,6 @@ impl Generator for Rumble {
                 (10, _4), /* Total Magic Damage */
             ],
         )
-        .ability_nth(
-            1,
-            Key::E,
-            [
-                (0, _5),  /* Enhanced Damage */
-                (3, _6),  /* Magic Damage */
-                (6, _7),  /* Total Enhanced Damage */
-                (10, _8), /* Total Magic Damage */
-            ],
-        )
         .ability(
             Key::R,
             [

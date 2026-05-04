@@ -11,7 +11,6 @@ impl Generator for Zed {
         )
         .ability(Key::E, [(1, _1) /* Physical Damage */])
         .ability(Key::R, [(0, _1) /* Physical Damage */])
-        .ability_nth(1, Key::R, [(0, _2) /* Physical Damage */])
         .end()
     }
 }

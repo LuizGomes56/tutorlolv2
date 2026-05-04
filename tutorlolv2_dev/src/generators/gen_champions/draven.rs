@@ -13,16 +13,6 @@ impl Generator for Draven {
                     (3, _4), /* Total Physical Damage */
                 ],
             )
-            .ability_nth(
-                1,
-                Key::R,
-                [
-                    (0, _5), /* Minimum Physical Damage */
-                    (1, _6), /* Minimum Total Damage */
-                    (2, _7), /* Physical Damage */
-                    (3, _8), /* Total Physical Damage */
-                ],
-            )
             .end()
     }
 }

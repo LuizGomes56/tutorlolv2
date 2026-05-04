@@ -12,17 +12,6 @@ impl Generator for Aurora {
                 (4, _5), /* Subsequent Bolt Minimum Magic Damage */
             ],
         )
-        .ability_nth(
-            1,
-            Key::Q,
-            [
-                (0, _6),    /* Magic Damage */
-                (1, _7),    /* Maximum Magic Damage */
-                (2, _8),    /* Minimum Magic Damage */
-                (3, _1Min), /* Subsequent Bolt Maximum Magic Damage */
-                (4, _2Min), /* Subsequent Bolt Minimum Magic Damage */
-            ],
-        )
         .ability(Key::E, [(0, _1) /* Magic Damage */])
         .ability(Key::R, [(0, _1) /* Magic Damage */])
         .end()

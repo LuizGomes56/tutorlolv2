@@ -9,22 +9,6 @@ impl Generator for Camille {
                 (2, _2), /* Increased Mixed Damage */
             ],
         )
-        .ability_nth(
-            1,
-            Key::Q,
-            [
-                (1, _3), /* Bonus Physical Damage */
-                (2, _4), /* Increased Mixed Damage */
-            ],
-        )
-        .ability_nth(
-            2,
-            Key::Q,
-            [
-                (1, _5), /* Bonus Physical Damage */
-                (2, _6), /* Increased Mixed Damage */
-            ],
-        )
         .ability(
             Key::W,
             [

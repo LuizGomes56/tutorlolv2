@@ -9,14 +9,6 @@ impl Generator for Vladimir {
                 (2, _2), /* Magic Damage */
             ],
         )
-        .ability_nth(
-            1,
-            Key::Q,
-            [
-                (1, _3), /* Increased Damage */
-                (2, _4), /* Magic Damage */
-            ],
-        )
         .ability(
             Key::W,
             [

@@ -25,15 +25,6 @@ impl Generator for Shaco {
                     (2, _3), /* Modified Magic Damage */
                 ],
             )
-            .ability_nth(
-                1,
-                Key::R,
-                [
-                    (0, _4), /* Increased Modified Damage */
-                    (1, _5), /* Magic Damage */
-                    (2, _6), /* Modified Magic Damage */
-                ],
-            )
             .end()
     }
 }

@@ -24,14 +24,6 @@ impl Generator for Corki {
                     (1, _2), /* Physical Damage */
                 ],
             )
-            .ability_nth(
-                1,
-                Key::R,
-                [
-                    (0, _3), /* Big One Physical Damage */
-                    (1, _4), /* Physical Damage */
-                ],
-            )
             .end()
     }
 }

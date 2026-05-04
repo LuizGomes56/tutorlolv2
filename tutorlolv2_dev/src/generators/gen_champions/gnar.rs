@@ -2,22 +2,25 @@ use super::*;
 
 impl Generator for Gnar {
     fn generate(&mut self) -> MayFail {
-        self.attr(
-            Area,
-            [Q(Min), Q(Max), Q(Mega), W(Mega), E(Mega), R(Min), R(Max)],
-        )?
-        .combo([Ability(Q(Min)), Attack, Attack, Ability(W(Void))])?
-        .combo([
-            Ability(W(Mega)),
-            Attack,
-            Ability(Q(Mega)),
-            Attack,
-            Ability(R(Min)),
-            Attack,
-            Ability(Q(Mega)),
-            Attack,
-        ])?
-        .progress(Stable)
+        self.ability(
+            Key::Q,
+            [
+                (0, _1), /* Physical Damage */
+                (1, _2), /* Reduced Damage */
+            ],
+        )
+        .ability_nth(1, Key::Q, [(0, _3) /* Physical Damage */])
+        .ability(Key::W, [(0, _1) /* Bonus Magic Damage */])
+        .ability_nth(1, Key::W, [(0, _2) /* Physical Damage */])
+        .ability(Key::E, [(1, _1) /* Physical Damage */])
+        .ability_nth(1, Key::E, [(0, _2) /* Physical Damage */])
+        .ability(
+            Key::R,
+            [
+                (2, _1), /* Increased Damage */
+                (3, _2), /* Physical Damage */
+            ],
+        )
         .end()
     }
 }

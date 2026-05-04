@@ -11,21 +11,12 @@ impl Generator for Sion {
             ],
         )
         .ability(Key::W, [(0, _1) /* Magic Damage */])
-        .ability_nth(1, Key::W, [(0, _2) /* Magic Damage */])
         .ability(Key::E, [(0, _1) /* Magic Damage */])
         .ability(
             Key::R,
             [
                 (0, _1), /* Maximum Physical Damage */
                 (1, _2), /* Minimum Physical Damage */
-            ],
-        )
-        .ability_nth(
-            1,
-            Key::R,
-            [
-                (0, _3), /* Maximum Physical Damage */
-                (1, _4), /* Minimum Physical Damage */
             ],
         )
         .end()

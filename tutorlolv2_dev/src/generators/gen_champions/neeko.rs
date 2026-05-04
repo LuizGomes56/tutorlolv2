@@ -2,16 +2,17 @@ use super::*;
 
 impl Generator for Neeko {
     fn generate(&mut self) -> MayFail {
-        self.attr(Area, [Q(_1), Q(Min), Q(Max), E(Void), R(Void)])?
-            .combo([
-                Ability(E(Void)),
-                Ability(Q(Max)),
-                Attack,
-                Ability(W(Void)),
-                Ability(R(Void)),
-            ])?
-            .combo([Ability(Q(_1)), Attack, Ability(W(Void))])?
-            .progress(Stable)
-            .end()
+        self.ability(
+            Key::Q,
+            [
+                (1, _1), /* Initial Magic Damage */
+                (2, _2), /* Subsequent Magic Damage */
+                (3, _3), /* Total Maximum Magic Damage */
+            ],
+        )
+        .ability(Key::W, [(0, _1) /* Bonus Magic Damage */])
+        .ability(Key::E, [(1, _1) /* Magic Damage */])
+        .ability(Key::R, [(0, _1) /* Magic Damage */])
+        .end()
     }
 }

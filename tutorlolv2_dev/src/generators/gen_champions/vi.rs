@@ -10,9 +10,7 @@ impl Generator for Vi {
             ],
         )
         .ability(Key::W, [(1, _1) /* Bonus Physical Damage */])
-        .ability_nth(1, Key::W, [(1, _2) /* Bonus Physical Damage */])
         .ability(Key::E, [(0, _1) /* Physical Damage */])
-        .ability_nth(1, Key::E, [(0, _2) /* Physical Damage */])
         .ability(Key::R, [(0, _1) /* Physical Damage */])
         .end()
     }

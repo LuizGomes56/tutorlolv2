@@ -2,14 +2,27 @@ use super::*;
 
 impl Generator for Anivia {
     fn generate(&mut self) -> MayFail {
-        self.attr(Area, [Q(_1Min), Q(_1Max), Q(Max), R(Min), R(Max)])?
-            .combo([
-                Ability(Q(_1Min)),
-                Attack,
-                Ability(Q(_1Max)),
-                Ability(E(Max)),
-            ])?
-            .progress(Preserve)
-            .end()
+        self.ability(
+            Key::Q,
+            [
+                (0, _1), /* Magic Damage */
+                (2, _2), /* Total Magic Damage */
+            ],
+        )
+        .ability(
+            Key::E,
+            [
+                (0, _1), /* Enhanced Damage */
+                (1, _2), /* Magic Damage */
+            ],
+        )
+        .ability(
+            Key::R,
+            [
+                (0, _1), /* Empowered Damage per Tick */
+                (2, _2), /* Magic Damage per Tick */
+            ],
+        )
+        .end()
     }
 }

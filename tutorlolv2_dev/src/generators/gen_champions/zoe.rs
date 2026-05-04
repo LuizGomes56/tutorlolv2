@@ -9,14 +9,6 @@ impl Generator for Zoe {
                 (1, _2), /* Minimum Magic Damage */
             ],
         )
-        .ability_nth(
-            1,
-            Key::Q,
-            [
-                (0, _3), /* Maximum Magic Damage */
-                (1, _4), /* Minimum Magic Damage */
-            ],
-        )
         .ability(
             Key::W,
             [

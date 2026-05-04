@@ -2,38 +2,23 @@ use super::*;
 
 impl Generator for Ahri {
     fn generate(&mut self) -> MayFail {
-        // self.ability(Key::Q, [(0, 0, Min)])
-        //     .ability(Key::W, [(1, 0, Min), (1, 1, _1), (1, 2, Max)])
-        //     .ability(Key::E, [(0, 1, Void)])
-        //     .ability(Key::R, [(0, 0, Min)]);
-
-        // self.clone_to(Q(Min), Q(Max))?.damage = self.merge_damage(
-        //     |[q_min]| {
-        //         let q = q_min.parens();
-        //         q.times(MagicMultiplier).plus(q)
-        //     },
-        //     [Q(Min)],
-        // )?;
-
-        // self.clone_to(R(Min), R(Max))?.damage =
-        //     self.merge_damage(|[r]| r.parens().times(3), [R(Min)])?;
-
-        self.damage_type(Q(Min), Magic)?
-            .damage_type(Q(Max), Mixed)?
-            .attr(Area, [Q(Min), Q(Max)])?
-            .combo([Attack, Ability(E(Void)), Ability(Q(Max)), Ability(W(Max))])?
-            .combo([
-                Ability(R(Min)),
-                Ability(E(Void)),
-                Attack,
-                Ability(W(Max)),
-                Ability(Q(Max)),
-                Attack,
-                Ability(R(Min)),
-                Attack,
-                Ability(R(Min)),
-            ])?
-            .progress(Stable)
-            .end()
+        self.ability(
+            Key::Q,
+            [
+                (0, _1), /* Damage Per Pass */
+                (1, _2), /* Total Mixed Damage */
+            ],
+        )
+        .ability(
+            Key::W,
+            [
+                (0, _1), /* Primary Magic Damage */
+                (2, _2), /* Subsequent Magic Damage */
+                (4, _3), /* Total Single-Target Damage */
+            ],
+        )
+        .ability(Key::E, [(1, _1) /* Magic Damage */])
+        .ability(Key::R, [(0, _1) /* Magic Damage */])
+        .end()
     }
 }

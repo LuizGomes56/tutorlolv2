@@ -11,15 +11,6 @@ impl Generator for Syndra {
                     (2, _3), /* Total Mixed Damage */
                 ],
             )
-            .ability_nth(
-                1,
-                Key::W,
-                [
-                    (0, _4), /* Bonus Damage */
-                    (1, _5), /* Magic Damage */
-                    (2, _6), /* Total Mixed Damage */
-                ],
-            )
             .ability(Key::E, [(0, _1) /* Magic Damage */])
             .ability(
                 Key::R,

@@ -10,15 +10,6 @@ impl Generator for Viktor {
                 (2, _3), /* Total Magic Damage */
             ],
         )
-        .ability_nth(
-            1,
-            Key::Q,
-            [
-                (0, _4), /* Magic Damage */
-                (1, _5), /* Modified Magic Damage */
-                (2, _6), /* Total Magic Damage */
-            ],
-        )
         .ability(
             Key::E,
             [

@@ -12,16 +12,6 @@ impl Generator for Galio {
                     (4, _4), /* Physical Damage Reduction */
                 ],
             )
-            .ability_nth(
-                1,
-                Key::W,
-                [
-                    (0, _5), /* Magic Damage Reduction */
-                    (2, _6), /* Maximum Magic Damage */
-                    (3, _7), /* Minimum Magic Damage */
-                    (4, _8), /* Physical Damage Reduction */
-                ],
-            )
             .ability(
                 Key::E,
                 [

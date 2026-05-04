@@ -2,17 +2,22 @@ use super::*;
 
 impl Generator for Akali {
     fn generate(&mut self) -> MayFail {
-        self.attr(Area, [Q(Void), R(_1), R(_2Min), R(_2Max)])?
-            .attr(Onhit, [P(Void)])?
-            .combo([
-                Ability(Q(Void)),
-                Ability(E(_1Min)),
-                Attack,
-                Ability(P(Void)),
-                Ability(E(_1Max)),
-                Ability(R(_1)),
-            ])?
-            .progress(Stable)
+        self.ability(Key::Q, [(0, _1) /* Magic Damage */])
+            .ability(
+                Key::E,
+                [
+                    (0, _1), /* Magic Damage */
+                    (1, _2), /* Total Magic Damage */
+                ],
+            )
+            .ability(
+                Key::R,
+                [
+                    (0, _1), /* Magic Damage */
+                    (1, _2), /* Maximum Magic Damage */
+                    (2, _3), /* Minimum Magic Damage */
+                ],
+            )
             .end()
     }
 }

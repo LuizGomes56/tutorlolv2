@@ -22,7 +22,6 @@ impl Generator for Briar {
                 ],
             )
             .ability(Key::R, [(2, _1) /* Magic Damage */])
-            .ability_nth(1, Key::R, [(2, _2) /* Magic Damage */])
             .end()
     }
 }

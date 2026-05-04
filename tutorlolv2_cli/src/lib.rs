@@ -151,10 +151,7 @@ pub async fn run() -> MayFail {
 
     match args {
         GenArgs::Create { creator } => match creator {
-            GenCreator::All => {
-                cparser.create()?;
-                // ChampionFactory::create_all()?
-            }
+            GenCreator::All => cparser.create()?,
             GenCreator::Champion(champion_id) => todo!(),
         },
         GenArgs::Run { target } => match target {
@@ -170,7 +167,7 @@ pub async fn run() -> MayFail {
                 ItemFactory::run_all();
             }
         },
-        GenArgs::Progress => ChampionParser::progress(),
+        GenArgs::Progress => cparser.progress(),
         GenArgs::Update => {
             update::setup_project_folders()?;
             cparser.create()?;

@@ -2,16 +2,17 @@ use super::*;
 
 impl Generator for Jinx {
     fn generate(&mut self) -> MayFail {
-        self.attr(AreaOnhitMax, [Q(Void)])?
-            .attr(Area, [Q(Void), E(Void), R(_1Max), R(_1Min), R(Max), R(Min)])?
-            .combo([
-                Ability(E(Void)),
-                Attack,
-                Ability(R(Min)),
-                Attack,
-                Ability(W(Void)),
-            ])?
-            .progress(Stable)
+        self.ability(Key::W, [(0, _1) /* Physical Damage */])
+            .ability(Key::E, [(0, _1) /* Magic Damage */])
+            .ability(
+                Key::R,
+                [
+                    (0, _1), /* Maximum Physical Damage */
+                    (1, _2), /* Maximum Secondary Damage */
+                    (2, _3), /* Minimum Physical Damage */
+                    (3, _4), /* Minimum Secondary Damage */
+                ],
+            )
             .end()
     }
 }

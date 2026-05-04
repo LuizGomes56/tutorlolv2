@@ -25,14 +25,6 @@ impl Generator for Nautilus {
                     (2, _2), /* Magic Damage */
                 ],
             )
-            .ability_nth(
-                1,
-                Key::R,
-                [
-                    (0, _3), /* Increased Damage */
-                    (2, _4), /* Magic Damage */
-                ],
-            )
             .end()
     }
 }

@@ -9,14 +9,6 @@ impl Generator for Sett {
                 (1, _2), /* Total Bonus Physical Damage */
             ],
         )
-        .ability_nth(
-            1,
-            Key::Q,
-            [
-                (0, _3), /* Bonus Physical Damage */
-                (1, _4), /* Total Bonus Physical Damage */
-            ],
-        )
         .ability(Key::W, [(0, _1) /* Damage */])
         .ability(Key::E, [(0, _1) /* Physical Damage */])
         .ability(

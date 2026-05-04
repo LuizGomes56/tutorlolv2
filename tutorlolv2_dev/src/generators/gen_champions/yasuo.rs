@@ -9,22 +9,6 @@ impl Generator for Yasuo {
                 (1, _2), /* Physical Damage */
             ],
         )
-        .ability_nth(
-            1,
-            Key::Q,
-            [
-                (0, _3), /* Critical Strike Damage */
-                (1, _4), /* Physical Damage */
-            ],
-        )
-        .ability_nth(
-            2,
-            Key::Q,
-            [
-                (0, _5), /* Critical Strike Damage */
-                (1, _6), /* Physical Damage */
-            ],
-        )
         .ability(
             Key::E,
             [

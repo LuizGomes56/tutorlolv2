@@ -12,17 +12,6 @@ impl Generator for Taliyah {
                 (7, _5), /* Total Magic Damage */
             ],
         )
-        .ability_nth(
-            1,
-            Key::Q,
-            [
-                (2, _6),    /* Empowered Damage */
-                (3, _7),    /* Magic Damage */
-                (4, _8),    /* Reduced Damage */
-                (5, _1Min), /* Secondary Target Damage */
-                (7, _2Min), /* Total Magic Damage */
-            ],
-        )
         .ability(
             Key::E,
             [

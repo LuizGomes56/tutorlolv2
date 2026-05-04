@@ -2,19 +2,16 @@ use super::*;
 
 impl Generator for Amumu {
     fn generate(&mut self) -> MayFail {
-        self.combo([
-            Ability(Q(Void)),
-            Ability(W(Void)),
-            Ability(E(Void)),
-            Ability(W(Void)),
-            Ability(R(Void)),
-            Attack,
-            Ability(W(Void)),
-            Attack,
-            Ability(W(Void)),
-            Ability(E(Void)),
-        ])?
-        .progress(Preserve)
-        .end()
+        self.ability(Key::Q, [(0, _1) /* Magic Damage */])
+            .ability(Key::W, [(0, _1) /* Magic Damage Per Tick */])
+            .ability(
+                Key::E,
+                [
+                    (0, _1), /* Magic Damage */
+                    (1, _2), /* Physical Damage Reduction */
+                ],
+            )
+            .ability(Key::R, [(0, _1) /* Magic Damage */])
+            .end()
     }
 }

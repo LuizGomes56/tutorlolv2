@@ -53,8 +53,38 @@ impl ChampionParser {
         Ok(())
     }
 
-    pub fn progress() {
-        todo!()
+    pub fn progress(&self) {
+        let mut stables = 0;
+        let mut preserve = 0;
+        let mut unstables = 0;
+        let mut total = 0;
+        for name in self.data.keys() {
+            if let Ok(data) =
+                std::fs::read_to_string(SaveTo::GeneratorRaw(Tag::Champions, name).path())
+            {
+                if data.contains("Stable") {
+                    stables += 1;
+                } else if data.contains("Preserve") {
+                    preserve += 1;
+                } else {
+                    unstables += 1;
+                }
+                total += 1;
+            }
+        }
+
+        println!(
+            concat!(
+                "ChampionFactory::progress\n",
+                "{stables:>3} / {total} stable\n",
+                "{preserve:>3} / {total} preserved\n",
+                "{unstables:>3} / {total} unstable\n",
+            ),
+            stables = stables,
+            preserve = preserve,
+            unstables = unstables,
+            total = total
+        );
     }
 
     pub fn run_fn(&self, champion_id: &str) -> MayFail<Champion> {
@@ -97,7 +127,7 @@ impl ChampionParser {
             let mut groups = BTreeMap::<_, Vec<_>>::new();
 
             for (key, abilities) in &data.abilities {
-                let mut alias_counter = 1;
+                let mut counter = 1usize;
 
                 for (i, ability) in abilities.iter().enumerate() {
                     for (j, (name, effect)) in ability.effects.iter().enumerate() {
@@ -111,9 +141,9 @@ impl ChampionParser {
                             groups
                                 .entry((*key, i))
                                 .or_default()
-                                .push((j, alias_counter, name));
+                                .push((j, counter, name));
 
-                            alias_counter += 1;
+                            counter += 1;
                         }
                     }
                 }
@@ -124,12 +154,12 @@ impl ChampionParser {
                     .iter()
                     .map(|(j, k, comment)| {
                         let alias = match k {
-                            ..9 => format_args!("{k}"),
-                            9..18 => format_args!("{k}Min"),
-                            18..27 => format_args!("{k}Max"),
+                            ..9 => "",
+                            9..18 => "Min",
+                            18..27 => "Max",
                             _ => panic!("[{champion_id}] Too many abilities found"),
                         };
-                        format!("({j}, _{alias}) /* {comment} */")
+                        format!("({j}, _{k}{alias}) /* {comment} */")
                     })
                     .collect::<Vec<_>>()
                     .join(", ");
@@ -154,9 +184,8 @@ impl ChampionParser {
 
             let path = SaveTo::GeneratorRaw(Tag::Champions, champion_id).path();
 
+            println!("[write] {path:?}");
             std::fs::write(&path, content)?;
-
-            println!("[write] {path:?}")
         }
 
         Ok(())
@@ -346,7 +375,7 @@ impl Champion {
             abilities.contains_key(minimum_damage) && abilities.contains_key(maximum_damage)
         }) {
             println!(
-                "[{champion_id}]: inconsistent data inserted into merge: {merge:?},\n`keys of abilities: {:?}",
+                "[{champion_id}]: inconsistent data inserted into merge: {merge:?},\nkeys of abilities: {:?}",
                 abilities.keys().collect::<Vec<_>>()
             );
             return Err("Found inconsistent merge vec".into());

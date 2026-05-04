@@ -9,14 +9,6 @@ impl Generator for Lillia {
                 (3, _2), /* Total Mixed Damage */
             ],
         )
-        .ability_nth(
-            1,
-            Key::Q,
-            [
-                (1, _3), /* Magic Damage */
-                (3, _4), /* Total Mixed Damage */
-            ],
-        )
         .ability(
             Key::W,
             [

@@ -10,15 +10,6 @@ impl Generator for Zaahen {
                 (4, _3), /* Total Physical Damage */
             ],
         )
-        .ability_nth(
-            1,
-            Key::Q,
-            [
-                (0, _4), /* Bonus Physical Damage */
-                (3, _5), /* Physical Damage per Hit */
-                (4, _6), /* Total Physical Damage */
-            ],
-        )
         .ability(
             Key::W,
             [
