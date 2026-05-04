@@ -2,9 +2,27 @@ use super::*;
 
 impl Generator for Draven {
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::Q, [(0, 0, _1)])
-            .ability(Key::E, [(0, 0, _1)])
-            .ability(Key::R, [(0, 0, _1), (0, 1, _2), (4, 0, _3), (4, 1, _4)])
+        self.ability(Key::Q, [(0, _1) /* Bonus Physical Damage */])
+            .ability(Key::E, [(0, _1) /* Physical Damage */])
+            .ability(
+                Key::R,
+                [
+                    (0, _1), /* Minimum Physical Damage */
+                    (1, _2), /* Minimum Total Damage */
+                    (2, _3), /* Physical Damage */
+                    (3, _4), /* Total Physical Damage */
+                ],
+            )
+            .ability_nth(
+                1,
+                Key::R,
+                [
+                    (0, _5), /* Minimum Physical Damage */
+                    (1, _6), /* Minimum Total Damage */
+                    (2, _7), /* Physical Damage */
+                    (3, _8), /* Total Physical Damage */
+                ],
+            )
             .end()
     }
 }

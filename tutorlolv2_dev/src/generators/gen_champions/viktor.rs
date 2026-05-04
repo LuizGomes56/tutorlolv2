@@ -2,9 +2,38 @@ use super::*;
 
 impl Generator for Viktor {
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::Q, [(0, 0, _1), (2, 0, _2), (2, 1, _3)])
-            .ability(Key::E, [(0, 0, _1), (1, 0, _2), (1, 1, _3)])
-            .ability(Key::R, [(0, 0, _1), (5, 0, _2), (5, 1, _3)])
-            .end()
+        self.ability(
+            Key::Q,
+            [
+                (0, _1), /* Magic Damage */
+                (1, _2), /* Modified Magic Damage */
+                (2, _3), /* Total Magic Damage */
+            ],
+        )
+        .ability_nth(
+            1,
+            Key::Q,
+            [
+                (0, _4), /* Magic Damage */
+                (1, _5), /* Modified Magic Damage */
+                (2, _6), /* Total Magic Damage */
+            ],
+        )
+        .ability(
+            Key::E,
+            [
+                (0, _1), /* Magic Damage */
+                (1, _2), /* Total Magic Damage */
+            ],
+        )
+        .ability(
+            Key::R,
+            [
+                (0, _1), /* Magic Damage */
+                (1, _2), /* Magic Damage Per Tick */
+                (2, _3), /* Total Magic Damage */
+            ],
+        )
+        .end()
     }
 }

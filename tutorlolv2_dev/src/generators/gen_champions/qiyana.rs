@@ -5,17 +5,23 @@ impl Generator for Qiyana {
         self.ability(
             Key::Q,
             [
-                (0, 0, _1),
-                (0, 1, _2),
-                (2, 0, _3),
-                (2, 1, _4),
-                (4, 0, _5),
-                (4, 1, _6),
+                (0, _1), /* Physical Damage */
+                (1, _2), /* Reduced Damage */
             ],
         )
-        .ability(Key::W, [(3, 1, _1)])
-        .ability(Key::E, [(0, 0, _1)])
-        .ability(Key::R, [(1, 0, _1), (1, 1, _2)])
+        .ability_nth(
+            1,
+            Key::Q,
+            [
+                (0, _3), /* Increased Damage */
+                (1, _4), /* Physical Damage */
+                (2, _5), /* Reduced Damage */
+                (3, _6), /* Subsequent Increased Damage */
+            ],
+        )
+        .ability(Key::W, [(1, _1) /* Bonus Magic Damage */])
+        .ability(Key::E, [(0, _1) /* Physical Damage */])
+        .ability(Key::R, [(1, _1) /* Physical Damage */])
         .end()
     }
 }

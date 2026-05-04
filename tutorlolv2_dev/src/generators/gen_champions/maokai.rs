@@ -2,13 +2,18 @@ use super::*;
 
 impl Generator for Maokai {
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::Q, [(0, 0, _1), (0, 1, _2), (0, 2, _3)])
-            .ability(Key::W, [(0, 0, _1)])
+        self.ability(Key::Q, [(1, _1) /* Magic Damage */])
+            .ability(Key::W, [(0, _1) /* Magic Damage */])
             .ability(
                 Key::E,
-                [(0, 0, _1), (0, 1, _2), (0, 2, _3), (0, 3, _4), (2, 0, _5)],
+                [
+                    (0, _1), /* Magic Damage */
+                    (1, _2), /* Magic Damage per Instance */
+                    (3, _3), /* Total Attached Sapling Damage */
+                    (4, _4), /* Total Magic Damage */
+                ],
             )
-            .ability(Key::R, [(1, 0, _1)])
+            .ability(Key::R, [(1, _1) /* Magic Damage */])
             .end()
     }
 }

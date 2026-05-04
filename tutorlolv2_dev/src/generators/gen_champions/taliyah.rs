@@ -2,8 +2,35 @@ use super::*;
 
 impl Generator for Taliyah {
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::Q, [(0, 0, _1), (0, 1, _2), (0, 2, _3), (3, 0, _4)])
-            .ability(Key::E, [(0, 0, _1), (1, 0, _2), (2, 0, _3)])
-            .end()
+        self.ability(
+            Key::Q,
+            [
+                (2, _1), /* Empowered Damage */
+                (3, _2), /* Magic Damage */
+                (4, _3), /* Reduced Damage */
+                (5, _4), /* Secondary Target Damage */
+                (7, _5), /* Total Magic Damage */
+            ],
+        )
+        .ability_nth(
+            1,
+            Key::Q,
+            [
+                (2, _6),    /* Empowered Damage */
+                (3, _7),    /* Magic Damage */
+                (4, _8),    /* Reduced Damage */
+                (5, _1Min), /* Secondary Target Damage */
+                (7, _2Min), /* Total Magic Damage */
+            ],
+        )
+        .ability(
+            Key::E,
+            [
+                (0, _1), /* Detonation Magic Damage */
+                (1, _2), /* Magic Damage */
+                (2, _3), /* Total Maximum Detonation Damage */
+            ],
+        )
+        .end()
     }
 }

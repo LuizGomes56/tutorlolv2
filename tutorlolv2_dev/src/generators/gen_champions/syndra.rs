@@ -2,10 +2,33 @@ use super::*;
 
 impl Generator for Syndra {
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::Q, [(0, 0, _1)])
-            .ability(Key::W, [(2, 0, _1), (3, 0, _2), (3, 1, _3)])
-            .ability(Key::E, [(0, 0, _1)])
-            .ability(Key::R, [(0, 0, _1), (0, 1, _2), (0, 2, _3)])
+        self.ability(Key::Q, [(0, _1) /* Magic Damage */])
+            .ability(
+                Key::W,
+                [
+                    (0, _1), /* Bonus Damage */
+                    (1, _2), /* Magic Damage */
+                    (2, _3), /* Total Mixed Damage */
+                ],
+            )
+            .ability_nth(
+                1,
+                Key::W,
+                [
+                    (0, _4), /* Bonus Damage */
+                    (1, _5), /* Magic Damage */
+                    (2, _6), /* Total Mixed Damage */
+                ],
+            )
+            .ability(Key::E, [(0, _1) /* Magic Damage */])
+            .ability(
+                Key::R,
+                [
+                    (1, _1), /* Magic Damage per Sphere */
+                    (2, _2), /* Maximum Magic Damage */
+                    (3, _3), /* Minimum Magic Damage */
+                ],
+            )
             .end()
     }
 }

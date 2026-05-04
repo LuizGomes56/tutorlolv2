@@ -4,10 +4,27 @@ impl Generator for Aurora {
     fn generate(&mut self) -> MayFail {
         self.ability(
             Key::Q,
-            [(0, 0, _1), (1, 0, _2), (1, 1, _3), (1, 2, _4), (1, 3, _5)],
+            [
+                (0, _1), /* Magic Damage */
+                (1, _2), /* Maximum Magic Damage */
+                (2, _3), /* Minimum Magic Damage */
+                (3, _4), /* Subsequent Bolt Maximum Magic Damage */
+                (4, _5), /* Subsequent Bolt Minimum Magic Damage */
+            ],
         )
-        .ability(Key::E, [(0, 0, _1)])
-        .ability(Key::R, [(0, 0, _1)])
+        .ability_nth(
+            1,
+            Key::Q,
+            [
+                (0, _6),    /* Magic Damage */
+                (1, _7),    /* Maximum Magic Damage */
+                (2, _8),    /* Minimum Magic Damage */
+                (3, _1Min), /* Subsequent Bolt Maximum Magic Damage */
+                (4, _2Min), /* Subsequent Bolt Minimum Magic Damage */
+            ],
+        )
+        .ability(Key::E, [(0, _1) /* Magic Damage */])
+        .ability(Key::R, [(0, _1) /* Magic Damage */])
         .end()
     }
 }

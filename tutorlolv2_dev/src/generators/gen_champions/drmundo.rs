@@ -2,20 +2,29 @@ use super::*;
 
 impl Generator for DrMundo {
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::Q, [(0, 0, _1), (2, 0, _2), (2, 1, _3)])
-            .ability(Key::W, [(0, 0, _1), (0, 1, _2), (2, 0, _3)])
-            .ability(
-                Key::E,
-                [
-                    (0, 0, _1),
-                    (0, 1, _2),
-                    (1, 0, _3),
-                    (1, 1, _4),
-                    (1, 2, _5),
-                    (1, 3, _6),
-                    (3, 0, _7),
-                ],
-            )
-            .end()
+        self.ability(
+            Key::Q,
+            [
+                (1, _1), /* Magic Damage */
+                (2, _2), /* Minimum Damage */
+            ],
+        )
+        .ability(
+            Key::W,
+            [
+                (0, _1), /* Magic Damage */
+                (1, _2), /* Magic Damage per Tick */
+                (2, _3), /* Total Magic Damage */
+            ],
+        )
+        .ability(
+            Key::E,
+            [
+                (0, _1), /* Bonus Attack Damage */
+                (1, _2), /* Maximum Bonus Physical Damage */
+                (4, _3), /* Minimum Bonus Physical Damage */
+            ],
+        )
+        .end()
     }
 }

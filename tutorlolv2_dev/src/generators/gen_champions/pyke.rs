@@ -2,8 +2,8 @@ use super::*;
 
 impl Generator for Pyke {
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::Q, [(2, 0, _1)])
-            .ability(Key::E, [(1, 0, _1)])
+        self.ability(Key::Q, [(0, _1) /* Physical Damage */])
+            .ability(Key::E, [(0, _1) /* Physical Damage */])
             .end()
     }
 }

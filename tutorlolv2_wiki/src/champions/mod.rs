@@ -148,6 +148,10 @@ pub fn concat() -> MayFail {
                 abilities.entry(ability.skill).or_default().push(ability);
             }
 
+            abilities
+                .values_mut()
+                .for_each(|values| values.dedup_by(|a, b| a.effects == b.effects));
+
             let wiki_champion = WikiChampion {
                 name,
                 positions: positions

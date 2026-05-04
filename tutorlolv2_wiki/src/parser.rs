@@ -9,13 +9,13 @@ use std::{
 };
 use tutorlolv2_types::CtxVar;
 
-#[derive(Clone, Debug, Default, Deserialize, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 pub struct EffectInner {
     pub description: String,
     pub leveling: String,
 }
 
-#[derive(Clone, Debug, Default, Deserialize, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 pub struct Effect {
     pub index: usize,
     #[serde(default)]

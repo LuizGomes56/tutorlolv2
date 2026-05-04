@@ -5,18 +5,29 @@ impl Generator for Sion {
         self.ability(
             Key::Q,
             [
-                (0, 0, _1),
-                (0, 1, _2),
-                (0, 2, _3),
-                (3, 0, _4),
-                (3, 1, _5),
-                (3, 2, _6),
-                (3, 3, _7),
+                (0, _1), /* Maximum Base Damage Increase */
+                (3, _2), /* Maximum Physical Damage */
+                (6, _3), /* Minimum Physical Damage */
             ],
         )
-        .ability(Key::W, [(3, 0, _1)])
-        .ability(Key::E, [(0, 0, _1)])
-        .ability(Key::R, [(2, 0, _1), (2, 1, _2)])
+        .ability(Key::W, [(0, _1) /* Magic Damage */])
+        .ability_nth(1, Key::W, [(0, _2) /* Magic Damage */])
+        .ability(Key::E, [(0, _1) /* Magic Damage */])
+        .ability(
+            Key::R,
+            [
+                (0, _1), /* Maximum Physical Damage */
+                (1, _2), /* Minimum Physical Damage */
+            ],
+        )
+        .ability_nth(
+            1,
+            Key::R,
+            [
+                (0, _3), /* Maximum Physical Damage */
+                (1, _4), /* Minimum Physical Damage */
+            ],
+        )
         .end()
     }
 }

@@ -2,10 +2,22 @@ use super::*;
 
 impl Generator for Jax {
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::Q, [(1, 0, _1)])
-            .ability(Key::W, [(0, 0, _1)])
-            .ability(Key::E, [(1, 0, _1), (1, 1, _2)])
-            .ability(Key::R, [(0, 4, _1), (2, 0, _2)])
+        self.ability(Key::Q, [(0, _1) /* Physical Damage */])
+            .ability(Key::W, [(0, _1) /* Additional Magic Damage */])
+            .ability(
+                Key::E,
+                [
+                    (0, _1), /* Maximum Magic Damage */
+                    (1, _2), /* Minimum Magic Damage */
+                ],
+            )
+            .ability(
+                Key::R,
+                [
+                    (0, _1), /* Additional Magic Damage */
+                    (5, _2), /* Magic Damage */
+                ],
+            )
             .end()
     }
 }

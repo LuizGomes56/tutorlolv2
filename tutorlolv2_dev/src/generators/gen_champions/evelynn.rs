@@ -5,17 +5,23 @@ impl Generator for Evelynn {
         self.ability(
             Key::Q,
             [
-                (1, 0, _1),
-                (2, 0, _2),
-                (2, 1, _3),
-                (5, 0, _4),
-                (5, 1, _5),
-                (5, 2, _6),
+                (0, _1), /* Bonus Magic Damage */
+                (1, _2), /* Magic Damage */
+                (2, _3), /* Maximum Magic Damage */
+                (3, _4), /* Total Bonus Damage */
+                (4, _5), /* Total Magic Damage */
             ],
         )
-        .ability(Key::W, [(2, 0, _1)])
-        .ability(Key::E, [(0, 0, _1), (0, 0, _2)])
-        .ability(Key::R, [(0, 0, _1), (1, 0, _2)])
+        .ability(Key::W, [(0, _1) /* Bonus Magic Damage */])
+        .ability(Key::E, [(1, _1) /* Magic Damage */])
+        .ability_nth(1, Key::E, [(0, _2) /* Empowered Magic Damage */])
+        .ability(
+            Key::R,
+            [
+                (0, _1), /* Empowered Damage */
+                (1, _2), /* Magic Damage */
+            ],
+        )
         .end()
     }
 }

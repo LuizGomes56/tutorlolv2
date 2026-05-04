@@ -5,17 +5,23 @@ impl Generator for Pantheon {
         self.ability(
             Key::Q,
             [
-                (4, 0, _1),
-                (4, 1, _2),
-                (4, 2, _3),
-                (4, 3, _4),
-                (5, 0, _5),
-                (5, 1, _6),
+                (0, _1), /* Hurl Physical Damage */
+                (1, _2), /* Hurl Secondary Physical Damage */
+                (2, _3), /* Increased Hurl Damage */
+                (3, _4), /* Increased Hurl Secondary Damage */
+                (4, _5), /* Increased Thrust Damage */
+                (5, _6), /* Thrust Physical Damage */
             ],
         )
-        .ability(Key::W, [(0, 0, _1)])
-        .ability(Key::E, [(4, 0, _1)])
-        .ability(Key::R, [(3, 0, _1), (3, 1, _2)])
+        .ability(Key::W, [(0, _1) /* Physical Damage */])
+        .ability(Key::E, [(0, _1) /* Physical Damage */])
+        .ability(
+            Key::R,
+            [
+                (1, _1), /* Magic Damage */
+                (2, _2), /* Reduced Damage */
+            ],
+        )
         .end()
     }
 }

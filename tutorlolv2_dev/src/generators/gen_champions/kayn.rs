@@ -5,16 +5,39 @@ impl Generator for Kayn {
         self.ability(
             Key::Q,
             [
-                (0, 0, _1),
-                (0, 1, _2),
-                (1, 0, _3),
-                (1, 1, _4),
-                (2, 0, _5),
-                (2, 1, _6),
+                (1, _1), /* Non-Champion Damage */
+                (2, _2), /* Physical Damage */
+                (4, _3), /* Total Non-Champion Damage */
+                (5, _4), /* Total Physical Damage */
             ],
         )
-        .ability(Key::W, [(0, 0, _1)])
-        .ability(Key::R, [(3, 0, _1)])
+        .ability_nth(
+            1,
+            Key::Q,
+            [
+                (1, _5), /* Non-Champion Damage */
+                (2, _6), /* Physical Damage */
+                (4, _7), /* Total Non-Champion Damage */
+                (5, _8), /* Total Physical Damage */
+            ],
+        )
+        .ability_nth(
+            2,
+            Key::Q,
+            [
+                (1, _1Min), /* Non-Champion Damage */
+                (2, _2Min), /* Physical Damage */
+                (4, _3Min), /* Total Non-Champion Damage */
+                (5, _4Min), /* Total Physical Damage */
+            ],
+        )
+        .ability(Key::W, [(0, _1) /* Physical Damage */])
+        .ability_nth(1, Key::W, [(0, _2) /* Physical Damage */])
+        .ability_nth(2, Key::W, [(0, _3) /* Physical Damage */])
+        .ability(Key::R, [(0, _1) /* Physical Damage */])
+        .ability_nth(1, Key::R, [(0, _2) /* Physical Damage */])
+        .ability_nth(2, Key::R, [(0, _3) /* Physical Damage */])
+        .ability_nth(3, Key::R, [(0, _4) /* Physical Damage */])
         .end()
     }
 }

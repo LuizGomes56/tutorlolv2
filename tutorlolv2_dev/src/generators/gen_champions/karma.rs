@@ -2,18 +2,25 @@ use super::*;
 
 impl Generator for Karma {
     fn generate(&mut self) -> MayFail {
-        self.ability(
-            Key::Q,
-            [
-                (0, 0, _1),
-                (0, 0, _2),
-                (0, 1, _3),
-                (2, 0, _4),
-                (2, 1, _5),
-                (2, 2, _6),
-            ],
-        )
-        .ability(Key::W, [(0, 0, _1), (1, 1, _2)])
-        .end()
+        self.ability(Key::Q, [(0, _1) /* Magic Damage */])
+            .ability_nth(
+                1,
+                Key::Q,
+                [
+                    (0, _2), /* Bonus Magic Damage */
+                    (1, _3), /* Magic Damage */
+                    (2, _4), /* Total Bonus Damage */
+                    (3, _5), /* Total Damage */
+                    (4, _6), /* Total Magic Damage */
+                ],
+            )
+            .ability(
+                Key::W,
+                [
+                    (0, _1), /* Magic Damage */
+                    (2, _2), /* Total Magic Damage */
+                ],
+            )
+            .end()
     }
 }

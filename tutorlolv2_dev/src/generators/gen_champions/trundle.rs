@@ -2,8 +2,22 @@ use super::*;
 
 impl Generator for Trundle {
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::Q, [(0, 0, _1), (1, 0, _2), (1, 1, _3)])
-            .ability(Key::R, [(0, 1, _1), (1, 2, _2), (1, 3, _3)])
-            .end()
+        self.ability(
+            Key::Q,
+            [
+                (0, _1), /* Attack Damage Reduction */
+                (1, _2), /* Bonus Attack Damage */
+                (2, _3), /* Bonus Physical Damage */
+            ],
+        )
+        .ability(
+            Key::R,
+            [
+                (2, _1), /* Initial Magic Damage */
+                (3, _2), /* Magic Damage Per Second */
+                (5, _3), /* Total Magic Damage */
+            ],
+        )
+        .end()
     }
 }

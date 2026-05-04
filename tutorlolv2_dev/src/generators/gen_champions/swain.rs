@@ -2,10 +2,18 @@ use super::*;
 
 impl Generator for Swain {
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::Q, [(0, 0, _1), (0, 1, _2), (0, 2, _3)])
-            .ability(Key::W, [(0, 0, _1), (0, 1, _2)])
-            .ability(Key::E, [(1, 0, _1)])
-            .ability(Key::R, [(2, 1, _1), (0, 0, _2)])
-            .end()
+        self.ability(
+            Key::Q,
+            [
+                (0, _1), /* Bonus Damage Per Bolt */
+                (1, _2), /* Magic Damage */
+                (2, _3), /* Total Damage */
+            ],
+        )
+        .ability(Key::W, [(0, _1) /* Magic Damage */])
+        .ability(Key::E, [(0, _1) /* Magic Damage */])
+        .ability(Key::R, [(1, _1) /* Magic Damage per Tick */])
+        .ability_nth(1, Key::R, [(0, _2) /* Magic Damage */])
+        .end()
     }
 }

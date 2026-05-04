@@ -2,9 +2,39 @@ use super::*;
 
 impl Generator for Yasuo {
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::Q, [(0, 0, _1)])
-            .ability(Key::E, [(0, 0, _1), (2, 0, _2), (2, 1, _3), (2, 2, _4)])
-            .ability(Key::R, [(3, 0, _1)])
-            .end()
+        self.ability(
+            Key::Q,
+            [
+                (0, _1), /* Critical Strike Damage */
+                (1, _2), /* Physical Damage */
+            ],
+        )
+        .ability_nth(
+            1,
+            Key::Q,
+            [
+                (0, _3), /* Critical Strike Damage */
+                (1, _4), /* Physical Damage */
+            ],
+        )
+        .ability_nth(
+            2,
+            Key::Q,
+            [
+                (0, _5), /* Critical Strike Damage */
+                (1, _6), /* Physical Damage */
+            ],
+        )
+        .ability(
+            Key::E,
+            [
+                (0, _1), /* Bonus Damage per Stack */
+                (1, _2), /* Magic Damage */
+                (2, _3), /* Maximum Bonus Damage */
+                (3, _4), /* Total Combined Damage */
+            ],
+        )
+        .ability(Key::R, [(0, _1) /* Physical Damage */])
+        .end()
     }
 }

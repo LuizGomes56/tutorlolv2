@@ -2,10 +2,30 @@ use super::*;
 
 impl Generator for Nunu {
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::Q, [(1, 1, _1), (2, 2, _2)])
-            .ability(Key::W, [(2, 0, _1), (2, 1, _2), (4, 0, _3), (4, 1, _4)])
-            .ability(Key::E, [(0, 0, _1), (0, 1, _2), (1, 0, _3), (3, 0, _4)])
-            .ability(Key::R, [(2, 0, _1)])
-            .end()
+        self.ability(
+            Key::Q,
+            [
+                (2, _1), /* Champion Magic Damage */
+                (5, _2), /* Non-Champion True Damage */
+            ],
+        )
+        .ability(
+            Key::W,
+            [
+                (0, _1), /* Maximum Magic Damage */
+                (2, _2), /* Minimum Magic Damage */
+            ],
+        )
+        .ability(
+            Key::E,
+            [
+                (0, _1), /* Magic Damage */
+                (1, _2), /* Magic Damage Per Hit */
+                (2, _3), /* Maximum Total Magic Damage */
+                (4, _4), /* Total Magic Damage */
+            ],
+        )
+        .ability(Key::R, [(0, _1) /* Maximum Magic Damage */])
+        .end()
     }
 }

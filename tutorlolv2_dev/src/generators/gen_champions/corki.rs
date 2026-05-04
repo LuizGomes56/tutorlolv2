@@ -2,10 +2,36 @@ use super::*;
 
 impl Generator for Corki {
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::Q, [(0, 0, _1)])
-            .ability(Key::W, [(1, 0, _1), (1, 1, _2)])
-            .ability(Key::E, [(0, 0, _1), (0, 2, _2)])
-            .ability(Key::R, [(0, 0, _1), (2, 0, _2)])
+        self.ability(Key::Q, [(0, _1) /* Magic Damage */])
+            .ability(
+                Key::W,
+                [
+                    (0, _1), /* Magic Damage Per Tick */
+                    (1, _2), /* Total Magic Damage */
+                ],
+            )
+            .ability(
+                Key::E,
+                [
+                    (0, _1), /* Physical Damage Per Tick */
+                    (2, _2), /* Total Physical Damage */
+                ],
+            )
+            .ability(
+                Key::R,
+                [
+                    (0, _1), /* Big One Physical Damage */
+                    (1, _2), /* Physical Damage */
+                ],
+            )
+            .ability_nth(
+                1,
+                Key::R,
+                [
+                    (0, _3), /* Big One Physical Damage */
+                    (1, _4), /* Physical Damage */
+                ],
+            )
             .end()
     }
 }

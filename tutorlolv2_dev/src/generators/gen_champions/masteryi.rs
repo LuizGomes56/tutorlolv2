@@ -5,17 +5,19 @@ impl Generator for MasterYi {
         self.ability(
             Key::Q,
             [
-                (3, 0, _1),
-                (3, 1, _2),
-                (3, 2, _3),
-                (3, 3, _4),
-                (3, 4, _5),
-                (3, 5, _6),
-                (3, 6, _7),
+                (2, _1), /* Maximum Single-Target Damage */
+                (4, _2), /* Primary Physical Damage */
+                (5, _3), /* Reduced Damage per hit */
             ],
         )
-        .ability(Key::W, [(2, 0, _1), (2, 1, _2)])
-        .ability(Key::E, [(0, 0, _1)])
+        .ability(
+            Key::W,
+            [
+                (4, _1), /* Modified Damage Reduction */
+                (5, _2), /* Turret Modified Damage Reduction */
+            ],
+        )
+        .ability(Key::E, [(0, _1) /* Bonus True Damage */])
         .end()
     }
 }

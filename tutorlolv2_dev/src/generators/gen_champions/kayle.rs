@@ -2,9 +2,15 @@ use super::*;
 
 impl Generator for Kayle {
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::Q, [(0, 0, _1)])
-            .ability(Key::E, [(0, 0, _1), (2, 0, _2)])
-            .ability(Key::R, [(1, 0, _1)])
+        self.ability(Key::Q, [(0, _1) /* Magic Damage */])
+            .ability(
+                Key::E,
+                [
+                    (0, _1), /* Bonus Magic Damage */
+                    (1, _2), /* Passive Damage */
+                ],
+            )
+            .ability(Key::R, [(0, _1) /* Magic Damage */])
             .end()
     }
 }

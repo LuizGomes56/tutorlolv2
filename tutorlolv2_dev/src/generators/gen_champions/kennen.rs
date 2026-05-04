@@ -2,10 +2,28 @@ use super::*;
 
 impl Generator for Kennen {
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::Q, [(0, 0, _1)])
-            .ability(Key::W, [(0, 0, _1), (2, 0, _2)])
-            .ability(Key::E, [(0, 0, _1), (0, 1, _2)])
-            .ability(Key::R, [(2, 0, _1), (3, 0, _2)])
+        self.ability(Key::Q, [(0, _1) /* Magic Damage */])
+            .ability(
+                Key::W,
+                [
+                    (0, _1), /* Bonus Magic Damage */
+                    (1, _2), /* Magic Damage */
+                ],
+            )
+            .ability(
+                Key::E,
+                [
+                    (1, _1), /* Magic Damage */
+                    (2, _2), /* Non-Champion Damage */
+                ],
+            )
+            .ability(
+                Key::R,
+                [
+                    (1, _1), /* Magic Damage Per Bolt */
+                    (2, _2), /* Total Single-Target Damage */
+                ],
+            )
             .end()
     }
 }

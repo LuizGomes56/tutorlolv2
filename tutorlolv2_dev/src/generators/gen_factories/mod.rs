@@ -1,5 +1,4 @@
-pub mod fac_champions;
 pub mod fac_items;
 pub mod fac_runes;
 
-mod wiki_champions;
+pub mod wiki_champions;

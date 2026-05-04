@@ -2,10 +2,16 @@ use super::*;
 
 impl Generator for Caitlyn {
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::Q, [(0, 0, _1), (0, 1, _2)])
-            .ability(Key::W, [(2, 0, _1)])
-            .ability(Key::E, [(0, 0, _1)])
-            .ability(Key::R, [(2, 0, _1)])
-            .end()
+        self.ability(
+            Key::Q,
+            [
+                (0, _1), /* Physical Damage */
+                (1, _2), /* Reduced Damage */
+            ],
+        )
+        .ability(Key::W, [(0, _1) /* Headshot Damage Increase */])
+        .ability(Key::E, [(0, _1) /* Magic Damage */])
+        .ability(Key::R, [(0, _1) /* Physical damage */])
+        .end()
     }
 }

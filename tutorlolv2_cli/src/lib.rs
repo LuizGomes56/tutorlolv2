@@ -2,7 +2,7 @@ use clap::{Parser, Subcommand, ValueEnum};
 use std::str::FromStr;
 use tutorlolv2_dev::{
     ENV_CONFIG, HTTP_CLIENT, MayFail,
-    gen_factories::{fac_champions::ChampionFactory, fac_items::ItemFactory},
+    gen_factories::{fac_items::ItemFactory, wiki_champions::ChampionParser},
     update,
 };
 use tutorlolv2_gen::{ChampionId, ItemId};
@@ -33,7 +33,7 @@ impl FromStr for RunTarget {
         match s {
             "all" | "a" => Ok(Self::All),
             "items" | "i" => Ok(Self::Factory(ItemFactory::run_all)),
-            "champions" | "c" => Ok(Self::Factory(ChampionFactory::run_all)),
+            "champions" | "c" => Ok(Self::Factory(todo!())),
             s if let Ok(champion_id) = ChampionId::from_str(s) => Ok(Self::Champion(champion_id)),
             s if let Ok(item_id) = ItemId::from_str(s) => Ok(Self::Item(item_id)),
             _ => from_str_err(s, "ChampionId or ItemId"),
@@ -147,29 +147,34 @@ pub async fn run() -> MayFail {
     dotenvy::dotenv()?;
     std::env::set_current_dir("../")?;
 
+    let cparser = ChampionParser::new()?;
+
     match args {
         GenArgs::Create { creator } => match creator {
-            GenCreator::All => ChampionFactory::create_all()?,
-            GenCreator::Champion(champion_id) => ChampionFactory::create(champion_id.debug())?,
+            GenCreator::All => {
+                cparser.create()?;
+                // ChampionFactory::create_all()?
+            }
+            GenCreator::Champion(champion_id) => todo!(),
         },
         GenArgs::Run { target } => match target {
             RunTarget::Champion(champ) => {
-                ChampionFactory::run(champ.debug())?;
+                cparser.run(champ.debug())?;
             }
             RunTarget::Item(item) => {
                 ItemFactory::run(item.debug(), item.to_riot_id())?;
             }
             RunTarget::Factory(f) => f(),
             RunTarget::All => {
-                ChampionFactory::run_all();
+                cparser.run_all()?;
                 ItemFactory::run_all();
             }
         },
-        GenArgs::Progress => ChampionFactory::progress(),
+        GenArgs::Progress => ChampionParser::progress(),
         GenArgs::Update => {
             update::setup_project_folders()?;
-            ChampionFactory::create_all()?;
-            ChampionFactory::run_all();
+            cparser.create()?;
+            cparser.run_all()?;
             ItemFactory::run_all();
             std::env::set_current_dir("./tutorlolv2_build")?;
             tutorlolv2_build::run()?;

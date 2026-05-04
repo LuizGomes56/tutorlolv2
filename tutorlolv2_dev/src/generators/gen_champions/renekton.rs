@@ -2,10 +2,36 @@ use super::*;
 
 impl Generator for Renekton {
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::Q, [(0, 0, _1), (0, 5, _2)])
-            .ability(Key::W, [(0, 0, _1), (0, 1, _2), (1, 0, _3)])
-            .ability(Key::E, [(0, 0, _1), (3, 0, _2), (4, 1, _3), (4, 2, _4)])
-            .ability(Key::R, [(1, 0, _1), (1, 1, _2)])
-            .end()
+        self.ability(
+            Key::Q,
+            [
+                (2, _1), /* Enhanced Damage */
+                (7, _2), /* Physical Damage */
+            ],
+        )
+        .ability(
+            Key::W,
+            [
+                (0, _1), /* Physical Damage Per Hit */
+                (1, _2), /* Total Physical Damage */
+            ],
+        )
+        .ability(
+            Key::E,
+            [
+                (1, _1), /* Enhanced Physical Damage */
+                (2, _2), /* Physical Damage */
+                (3, _3), /* Total Enhanced Damage */
+                (4, _4), /* Total Physical Damage */
+            ],
+        )
+        .ability(
+            Key::R,
+            [
+                (1, _1), /* Magic Damage Per Tick */
+                (2, _2), /* Total Magic Damage */
+            ],
+        )
+        .end()
     }
 }

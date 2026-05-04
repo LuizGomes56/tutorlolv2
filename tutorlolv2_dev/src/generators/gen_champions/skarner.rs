@@ -4,11 +4,15 @@ impl Generator for Skarner {
     fn generate(&mut self) -> MayFail {
         self.ability(
             Key::Q,
-            [(0, 1, _1), (0, 2, _2), (3, 0, _3), (0, 0, _4), (0, 1, _5)],
+            [
+                (1, _1), /* Bonus Physical Damage per Hit */
+                (3, _2), /* Total Bonus Physical Damage */
+            ],
         )
-        .ability(Key::W, [(0, 0, _1)])
-        .ability(Key::E, [(1, 0, _1)])
-        .ability(Key::R, [(0, 0, _1)])
+        .ability_nth(1, Key::Q, [(1, _3) /* Physical Damage */])
+        .ability(Key::W, [(0, _1) /* Magic Damage */])
+        .ability(Key::E, [(0, _1) /* Physical Damage */])
+        .ability(Key::R, [(0, _1) /* Magic Damage */])
         .end()
     }
 }

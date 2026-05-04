@@ -2,19 +2,22 @@ use super::*;
 
 impl Generator for Teemo {
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::Q, [(0, 1, _1)])
+        self.ability(Key::Q, [(2, _1) /* Magic Damage */])
             .ability(
                 Key::E,
                 [
-                    (0, 0, _1),
-                    (0, 1, _2),
-                    (0, 2, _3),
-                    (1, 0, _4),
-                    (1, 1, _5),
-                    (1, 2, _6),
+                    (0, _1), /* Magic Damage On-Hit */
+                    (1, _2), /* Magic Damage per Tick */
+                    (5, _3), /* Total Poison Damage */
                 ],
             )
-            .ability(Key::R, [(5, 0, _1), (5, 1, _2)])
+            .ability(
+                Key::R,
+                [
+                    (1, _1), /* Magic Damage per Tick */
+                    (4, _2), /* Total Magic Damage */
+                ],
+            )
             .end()
     }
 }

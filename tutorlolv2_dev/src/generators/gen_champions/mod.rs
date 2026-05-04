@@ -1,18 +1,18 @@
-use std::ops::{Index, IndexMut};
-
 pub(self) use crate::{
     MayFail,
     Progress::*,
-    champions::{Ability, Champion, MerakiChampion},
     generators::{
-        Generator, GeneratorExt, gen_factories::fac_champions::ChampionData,
+        Generator, GeneratorExt,
+        gen_factories::wiki_champions::{Ability, Champion},
         gen_utils::RegExtractor,
     },
 };
+use std::ops::{Index, IndexMut};
 pub(self) use tutorlolv2_gen::CtxVar::*;
 pub(self) use tutorlolv2_types::{
     AbilityId, AbilityId::*, AbilityName::*, Attrs::*, ComboElement::*, DamageType::*, Key,
 };
+pub(self) use tutorlolv2_wiki::champions::WikiChampion;
 
 macro_rules! decl_mod {
     (inner $Name:ident) => {
@@ -25,13 +25,13 @@ macro_rules! decl_mod {
             decl_mod!(inner $Name);
 
             pub struct $Name {
-                pub inner: ChampionData
+                pub inner: Champion
             }
 
             impl $Name {
-                pub fn new(data: MerakiChampion) -> Box<dyn GeneratorExt<Champion>> {
+                pub fn new(data: WikiChampion) -> Box<dyn GeneratorExt<Champion>> {
                     Box::new(Self {
-                        inner: ChampionData::new(data)
+                        inner: Champion::new(data)
                     })
                 }
             }
@@ -39,7 +39,7 @@ macro_rules! decl_mod {
             impl GeneratorExt<Champion> for $Name {
                 fn end(self: Box<Self>) -> MayFail<Champion> {
                     println!(concat!("[ok] ending generator for ", stringify!($Name)));
-                    Ok(self.inner.finish())
+                    Ok(self.inner)
                 }
             }
 
@@ -58,7 +58,7 @@ macro_rules! decl_mod {
             }
 
             impl ::core::ops::Deref for $Name {
-                type Target = ChampionData;
+                type Target = Champion;
                 fn deref(&self) -> &Self::Target {
                     &self.inner
                 }
@@ -72,16 +72,12 @@ macro_rules! decl_mod {
         )*
 
         pub fn champion_gen_fn(champion_id: &str) -> Option<
-            fn(MerakiChampion) -> Box<dyn GeneratorExt<Champion>>
+            fn(WikiChampion) -> Box<dyn GeneratorExt<Champion>>
         > {
             match champion_id {
                 $(stringify!($Name) => Some($Name::new),)*
                 _ => None,
             }
-        }
-
-        pub const fn champion_gen_names() -> &'static [&'static str] {
-            &[$(stringify!($Name),)*]
         }
     };
 }

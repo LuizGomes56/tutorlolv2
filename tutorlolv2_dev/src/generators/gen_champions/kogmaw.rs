@@ -2,12 +2,7 @@ use super::*;
 
 impl Generator for KogMaw {
     fn generate(&mut self) -> MayFail {
-        self.passive(Void, (0, 0), None, None)
-            .ability(Key::Q, [(0, 0, Void)])
-            .ability(Key::W, [(0, 1, Void)])
-            .ability(Key::E, [(1, 0, Void)])
-            .ability(Key::R, [(0, 0, Max), (0, 1, Min)])
-            .attr(Area, [P(Void), E(Void), R(Min), R(Max)])?
+        self.attr(Area, [P(Void), E(Void), R(Min), R(Max)])?
             .combo([
                 Ability(E(Void)),
                 Attack,

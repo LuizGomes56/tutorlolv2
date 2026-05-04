@@ -2,12 +2,24 @@ use super::*;
 
 impl Generator for KSante {
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::Q, [(0, 0, _1)])
+        self.ability(Key::Q, [(0, _1) /* Physical Damage */])
             .ability(
                 Key::W,
-                [(1, 0, _1), (1, 1, _2), (1, 2, _3), (4, 0, _4), (4, 1, _5)],
+                [
+                    (0, _1), /* Maximum Bonus True Damage */
+                    (1, _2), /* Minimum Bonus True Damage */
+                    (3, _3), /* Physical Damage */
+                    (4, _4), /* Total Maximum Mixed Damage */
+                ],
             )
-            .ability(Key::R, [(0, 0, _1), (3, 0, _2), (3, 1, _3)])
+            .ability(
+                Key::R,
+                [
+                    (1, _1), /* Physical Damage */
+                    (2, _2), /* Strike Physical Damage */
+                    (3, _3), /* Total Physical Damage */
+                ],
+            )
             .end()
     }
 }
