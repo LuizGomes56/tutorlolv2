@@ -11,6 +11,9 @@ use serde_json::{Value, json};
 use std::{collections::BTreeMap, path::PathBuf};
 use tutorlolv2_fmt::pascal_case;
 
+#[derive(Clone, Debug, Default, Deserialize, Serialize)]
+pub struct WikiRune;
+
 fn cache() -> PathBuf {
     PathBuf::from("cache/wiki/runes")
 }

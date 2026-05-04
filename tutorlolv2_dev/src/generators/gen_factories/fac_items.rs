@@ -1,6 +1,7 @@
 use crate::{
     ENV_CONFIG, JsonRead, JsonWrite, MayFail,
     client::{SaveTo, Tag},
+    gen_factories::Parser,
     gen_utils::RegExtractor,
     generators::gen_items::*,
     items::{Effect, Item, ItemStats, MerakiItem},
@@ -9,8 +10,44 @@ use crate::{
 use core::str::FromStr;
 use rayon::iter::{IntoParallelIterator, ParallelIterator};
 use serde_json::Value;
+use std::collections::BTreeMap;
 use tutorlolv2_gen::ItemId;
 use tutorlolv2_types::{Attrs, DamageType, GameMap, StatName};
+
+pub struct ItemParser {
+    pub data: BTreeMap<String, Item>,
+}
+
+impl Parser<Item> for ItemParser {
+    const TAG: Tag = Tag::Items;
+
+    fn run_fn(&self, id: &str) -> MayFail<Item> {
+        todo!()
+        // self.data
+        //     .get(rune_id)
+        //     .and_then(|data| {
+        //         let function = rune_gen_fn(rune_id)?;
+        //         Some(function(data.clone()))
+        //     })
+        //     .ok_or_else(|| format!("[WikiFactory::run] {rune_id} not found"))?
+        //     .call()
+    }
+
+    fn keys(&self) -> Vec<&str> {
+        self.data.keys().map(String::as_str).collect()
+    }
+
+    fn create_methods(&self, result: &mut String, id: &str) {
+        let data = &self.data[id];
+
+        todo!()
+    }
+
+    fn new() -> MayFail<Self> {
+        let data = BTreeMap::<String, _>::from_file("cache/wiki/items/full.json")?;
+        Ok(Self { data })
+    }
+}
 
 pub struct ItemData {
     pub meraki_data: Option<MerakiItem>,

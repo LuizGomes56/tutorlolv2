@@ -1,12 +1,9 @@
 use crate::{
-    ENV_CONFIG, JsonRead, JsonWrite, MayFail, Progress,
-    client::{SaveTo, Tag},
-    gen_champions::champion_gen_fn,
-    gen_utils::RegExtractor,
+    ENV_CONFIG, JsonRead, MayFail, Progress, client::Tag, gen_champions::champion_gen_fn,
+    gen_factories::Parser, gen_utils::RegExtractor,
 };
 use serde::{Deserialize, Serialize};
 use std::collections::{BTreeMap, BTreeSet};
-use tutorlolv2_fmt::rustfmt;
 use tutorlolv2_types::{
     AbilityId, AbilityName, Attrs, ComboElement, DamageType, DevMergeData, Key,
 };
@@ -40,54 +37,19 @@ pub struct Champion {
     version: String,
 }
 
-impl ChampionParser {
-    pub fn new() -> MayFail<Self> {
+impl Parser<Champion> for ChampionParser {
+    const TAG: Tag = Tag::Champions;
+
+    fn new() -> MayFail<Self> {
         let data = BTreeMap::<String, WikiChampion>::from_file("cache/wiki/champions/full.json")?;
         Ok(Self { data })
     }
 
-    pub fn run_all(self) -> MayFail<()> {
-        for champion_id in self.data.keys() {
-            self.run(champion_id)?
-        }
-        Ok(())
+    fn keys(&self) -> Vec<&str> {
+        self.data.keys().map(String::as_str).collect()
     }
 
-    pub fn progress(&self) {
-        let mut stables = 0;
-        let mut preserve = 0;
-        let mut unstables = 0;
-        let mut total = 0;
-        for name in self.data.keys() {
-            if let Ok(data) =
-                std::fs::read_to_string(SaveTo::GeneratorRaw(Tag::Champions, name).path())
-            {
-                if data.contains("Stable") {
-                    stables += 1;
-                } else if data.contains("Preserve") {
-                    preserve += 1;
-                } else {
-                    unstables += 1;
-                }
-                total += 1;
-            }
-        }
-
-        println!(
-            concat!(
-                "ChampionFactory::progress\n",
-                "{stables:>3} / {total} stable\n",
-                "{preserve:>3} / {total} preserved\n",
-                "{unstables:>3} / {total} unstable\n",
-            ),
-            stables = stables,
-            preserve = preserve,
-            unstables = unstables,
-            total = total
-        );
-    }
-
-    pub fn run_fn(&self, champion_id: &str) -> MayFail<Champion> {
+    fn run_fn(&self, champion_id: &str) -> MayFail<Champion> {
         self.data
             .get(champion_id)
             .and_then(|data| {
@@ -98,97 +60,58 @@ impl ChampionParser {
             .call()
     }
 
-    pub fn run(&self, champion_id: &str) -> MayFail {
-        match self.run_fn(champion_id) {
-            Ok(champion) => {
-                champion.into_file(SaveTo::InternalRaw(Tag::Champions, champion_id).path())
-            }
-            Err(e) => Ok(println!("Error generating {champion_id:?}: {e:?}")),
-        }
-    }
+    fn create_methods(&self, result: &mut String, id: &str) {
+        let data = &self.data[id];
 
-    pub fn create(&self) -> MayFail {
-        for (champion_id, data) in &self.data {
-            if let Ok(data) =
-                std::fs::read_to_string(SaveTo::GeneratorRaw(Tag::Champions, champion_id).path())
-                && (data.contains(".progress(Stable)") || data.contains(".progress(Preserve)"))
-            {
-                println!("[stable] Skipping generator for {champion_id:?}");
-                continue;
-            }
+        let mut groups = BTreeMap::<_, Vec<_>>::new();
 
-            let mut result = format!(
-                "use super::*;
+        for (key, abilities) in &data.abilities {
+            let mut counter = 1usize;
 
-                impl Generator for {champion_id} {{
-                    fn generate(&mut self) -> MayFail {{ self"
-            );
+            for (i, ability) in abilities.iter().enumerate() {
+                for (j, (name, effect)) in ability.effects.iter().enumerate() {
+                    let tag = name.to_lowercase();
 
-            let mut groups = BTreeMap::<_, Vec<_>>::new();
+                    if effect.formula.is_some()
+                        && tag.contains("damage")
+                        && !tag.contains("monster")
+                        && !tag.contains("minion")
+                    {
+                        groups
+                            .entry((*key, i))
+                            .or_default()
+                            .push((j, counter, name));
 
-            for (key, abilities) in &data.abilities {
-                let mut counter = 1usize;
-
-                for (i, ability) in abilities.iter().enumerate() {
-                    for (j, (name, effect)) in ability.effects.iter().enumerate() {
-                        let tag = name.to_lowercase();
-
-                        if effect.formula.is_some()
-                            && tag.contains("damage")
-                            && !tag.contains("monster")
-                            && !tag.contains("minion")
-                        {
-                            groups
-                                .entry((*key, i))
-                                .or_default()
-                                .push((j, counter, name));
-
-                            counter += 1;
-                        }
+                        counter += 1;
                     }
                 }
             }
-
-            for ((key, i), entries) in groups {
-                let args = entries
-                    .iter()
-                    .map(|(j, k, comment)| {
-                        let alias = match k {
-                            ..9 => "",
-                            9..18 => "Min",
-                            18..27 => "Max",
-                            _ => panic!("[{champion_id}] Too many abilities found"),
-                        };
-                        format!("({j}, _{k}{alias}) /* {comment} */")
-                    })
-                    .collect::<Vec<_>>()
-                    .join(", ");
-
-                result.push_str(".ability(");
-
-                if i > 0 {
-                    result.pop();
-                    result.push_str(&format!("_nth({i}, "));
-                }
-
-                result.push_str(&format!("Key::{key:?}, [{args}])"));
-            }
-
-            result.push_str(".end()}}");
-
-            let formatted = rustfmt(&result, None);
-            let content = match formatted.is_empty() {
-                true => result,
-                false => formatted,
-            };
-
-            let path = SaveTo::GeneratorRaw(Tag::Champions, champion_id).path();
-
-            println!("[write] {path:?}");
-            std::fs::write(&path, content)?;
         }
 
-        Ok(())
+        for ((key, i), entries) in groups {
+            let args = entries
+                .iter()
+                .map(|(j, k, comment)| {
+                    let alias = match k {
+                        ..9 => "",
+                        9..18 => "Min",
+                        18..27 => "Max",
+                        _ => panic!("[{id}] Too many abilities found"),
+                    };
+                    format!("({j}, _{k}{alias}) /* {comment} */")
+                })
+                .collect::<Vec<_>>()
+                .join(", ");
+
+            result.push_str(".ability(");
+
+            if i > 0 {
+                result.pop();
+                result.push_str(&format!("_nth({i}, "));
+            }
+
+            result.push_str(&format!("Key::{key:?}, [{args}])"));
+        }
     }
 }
 

@@ -2,7 +2,7 @@ use clap::{Parser, Subcommand, ValueEnum};
 use std::str::FromStr;
 use tutorlolv2_dev::{
     ENV_CONFIG, HTTP_CLIENT, MayFail,
-    gen_factories::{fac_items::ItemFactory, wiki_champions::ChampionParser},
+    gen_factories::{Parser as _, fac_items::ItemFactory, wiki_champions::ChampionParser},
     update,
 };
 use tutorlolv2_gen::{ChampionId, ItemId};
@@ -151,8 +151,8 @@ pub async fn run() -> MayFail {
 
     match args {
         GenArgs::Create { creator } => match creator {
-            GenCreator::All => cparser.create()?,
-            GenCreator::Champion(champion_id) => todo!(),
+            GenCreator::All => cparser.create_all()?,
+            GenCreator::Champion(champion_id) => cparser.create(champion_id.debug())?,
         },
         GenArgs::Run { target } => match target {
             RunTarget::Champion(champ) => {
@@ -170,7 +170,7 @@ pub async fn run() -> MayFail {
         GenArgs::Progress => cparser.progress(),
         GenArgs::Update => {
             update::setup_project_folders()?;
-            cparser.create()?;
+            cparser.create_all()?;
             cparser.run_all()?;
             ItemFactory::run_all();
             std::env::set_current_dir("./tutorlolv2_build")?;
