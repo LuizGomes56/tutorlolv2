@@ -6,10 +6,10 @@ use tutorlolv2_types::DamageType;
 use tutorlolv2_wiki::runes::WikiRune;
 
 pub struct RuneParser {
-    pub data: BTreeMap<String, Value>,
+    pub data: BTreeMap<String, WikiRune>,
 }
 
-#[derive(Clone, Debug, Default, Deserialize, Serialize)]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct Rune {
     pub data: WikiRune,
     pub damage_type: DamageType,
@@ -45,8 +45,9 @@ impl Parser<Rune> for RuneParser {
     }
 
     fn new() -> MayFail<Self> {
-        let data = BTreeMap::<String, _>::from_file("cache/wiki/runes/full.json")?;
-        Ok(Self { data })
+        Ok(Self {
+            data: BTreeMap::from_file("cache/wiki/runes/full.json")?,
+        })
     }
 }
 
@@ -55,7 +56,10 @@ impl Rune {
         Self {
             data,
             version: ENV_CONFIG.lol_version.clone(),
-            ..Default::default()
+            damage_type: Default::default(),
+            minimum_damage: Default::default(),
+            maximum_damage: Default::default(),
+            progress: Default::default(),
         }
     }
 

@@ -41,8 +41,9 @@ impl Parser<Champion> for ChampionParser {
     const TAG: Tag = Tag::Champions;
 
     fn new() -> MayFail<Self> {
-        let data = BTreeMap::<String, WikiChampion>::from_file("cache/wiki/champions/full.json")?;
-        Ok(Self { data })
+        Ok(Self {
+            data: BTreeMap::from_file("cache/wiki/champions/full.json")?,
+        })
     }
 
     fn keys(&self) -> Vec<&str> {

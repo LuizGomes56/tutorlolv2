@@ -7,7 +7,7 @@ use serde::{Deserialize, Serialize};
 use serde_json::{Value as JsonValue, json};
 use std::{collections::BTreeMap, path::PathBuf};
 
-mod item_parser;
+pub mod item_parser;
 
 fn cache() -> PathBuf {
     PathBuf::from("cache/wiki/items")
@@ -112,7 +112,7 @@ pub fn parse() -> MayFail<BTreeMap<String, ItemRaw>> {
     let map = serde_json::from_value(raw_map)?;
 
     crate::write(
-        cache().join("data").with_extension("json"),
+        cache().join("full").with_extension("json"),
         serde_json::to_string_pretty(&map)?,
     )?;
 

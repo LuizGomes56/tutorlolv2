@@ -1,18 +1,16 @@
 use crate::{
     client::{MayFail, fetch},
     file_name, is_dir,
-    parser::{SUFFIXES, get_cells, parse_description_effects},
+    parser::{Effect, SUFFIXES, get_cells, parse_description_effects},
     selector,
 };
 use rayon::iter::{ParallelBridge, ParallelIterator};
 use scraper::Html;
-use serde::{Deserialize, Serialize};
-use serde_json::{Value, json};
+use serde::{Deserialize, Serialize, de::DeserializeOwned};
+use serde_json::{Map, Value, json};
 use std::{collections::BTreeMap, path::PathBuf};
 use tutorlolv2_fmt::pascal_case;
-
-#[derive(Clone, Debug, Default, Deserialize, Serialize)]
-pub struct WikiRune;
+use tutorlolv2_types::Key;
 
 fn cache() -> PathBuf {
     PathBuf::from("cache/wiki/runes")
@@ -127,6 +125,31 @@ pub fn parse() -> MayFail {
         })
 }
 
+#[derive(Clone, Debug, Deserialize, Serialize)]
+pub enum RuneSlot {
+    Keystone,
+    Position(usize),
+}
+
+#[derive(Clone, Debug, Deserialize, Serialize)]
+pub enum RuneKeystone {
+    Precision,
+    Domination,
+    Sorcery,
+    Resolve,
+    Inspiration,
+}
+
+#[derive(Clone, Debug, Deserialize, Serialize)]
+pub struct WikiRune {
+    pub name: String,
+    pub rune_id: String,
+    pub path: RuneKeystone,
+    pub slot: RuneSlot,
+    pub effects: BTreeMap<String, Effect>,
+    pub descriptions: Vec<String>,
+}
+
 pub fn concat() -> MayFail {
     println!("[fn] runes::concat");
 
@@ -138,12 +161,55 @@ pub fn concat() -> MayFail {
             let key = file_name(&entry).ok()?;
             let bytes = crate::read(path.join("data").with_extension("json")).ok()?;
             let json = serde_json::from_slice::<Value>(&bytes).ok()?;
-            Some((key, json))
+
+            let object = json.as_object()?;
+
+            let mut descriptions = Vec::new();
+
+            for suffix in SUFFIXES {
+                if let Some(desc) = object.get(&format!("description{suffix}"))
+                    && let Some(description) = desc.as_str()
+                {
+                    descriptions.push(description.to_string());
+                }
+            }
+
+            fn get_value<T: DeserializeOwned>(object: &Map<String, Value>, key: &str) -> Option<T> {
+                serde_json::from_value(object.get(key)?.clone()).ok()
+            }
+
+            let get_str = |key: &str| object.get(key)?.as_str();
+
+            let slot = match get_str("slot")? {
+                "Keystone" => RuneSlot::Keystone,
+                n => RuneSlot::Position(n.parse().ok()?),
+            };
+
+            let effects = {
+                let mut data = get_value::<BTreeMap<String, Effect>>(object, "effects")?;
+
+                data.values_mut().for_each(|v| {
+                    v.formula = v.simplify_formula(Key::P).ok().flatten();
+                });
+
+                data
+            };
+
+            let rune = WikiRune {
+                name: get_str("1")?.to_string(),
+                rune_id: key.clone(),
+                path: get_value(object, "path")?,
+                slot,
+                effects,
+                descriptions,
+            };
+
+            Some((key, rune))
         })
         .collect::<BTreeMap<_, _>>();
 
     let json = serde_json::to_string_pretty(&runes)?;
-    crate::write(cache().join("data").with_extension("json"), &json)
+    crate::write(cache().join("full").with_extension("json"), &json)
 }
 
 pub async fn run() -> MayFail {

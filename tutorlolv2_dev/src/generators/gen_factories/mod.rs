@@ -6,7 +6,6 @@ use serde::Serialize;
 use tutorlolv2_fmt::rustfmt;
 
 pub mod fac_items;
-pub mod fac_runes;
 
 pub mod wiki_champions;
 pub mod wiki_runes;

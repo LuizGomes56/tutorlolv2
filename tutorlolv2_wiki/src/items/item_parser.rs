@@ -5,6 +5,7 @@ use crate::{
 };
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
+use tutorlolv2_types::Key;
 
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub struct ItemEffect {
@@ -142,7 +143,22 @@ pub fn parse_items() -> MayFail {
 
     let result = data
         .into_iter()
-        .map(|(name, raw)| (name, parse_item(raw)))
+        .map(|(name, raw)| {
+            let mut value = parse_item(raw);
+
+            let assign_formula = |v: Option<&mut ItemEffect>| {
+                if let Some(ie) = v
+                    && let Ok(formula) = ie.effect.simplify_formula(Key::P)
+                {
+                    ie.effect.formula = formula;
+                }
+            };
+
+            assign_formula(value.effects.act.as_mut());
+            assign_formula(value.effects.pass.as_mut());
+
+            (name, value)
+        })
         .collect::<BTreeMap<_, _>>();
 
     let json = serde_json::to_string_pretty(&result)?;

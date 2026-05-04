@@ -13,9 +13,10 @@ use serde_json::Value;
 use std::collections::BTreeMap;
 use tutorlolv2_gen::ItemId;
 use tutorlolv2_types::{Attrs, DamageType, GameMap, StatName};
+use tutorlolv2_wiki::items::item_parser::{ItemEffect, WikiItem};
 
 pub struct ItemParser {
-    pub data: BTreeMap<String, Item>,
+    pub data: BTreeMap<String, WikiItem>,
 }
 
 impl Parser<Item> for ItemParser {
@@ -24,12 +25,12 @@ impl Parser<Item> for ItemParser {
     fn run_fn(&self, id: &str) -> MayFail<Item> {
         todo!()
         // self.data
-        //     .get(rune_id)
+        //     .get(id)
         //     .and_then(|data| {
-        //         let function = rune_gen_fn(rune_id)?;
+        //         let function = item_gen_fn(id)?;
         //         Some(function(data.clone()))
         //     })
-        //     .ok_or_else(|| format!("[WikiFactory::run] {rune_id} not found"))?
+        //     .ok_or_else(|| format!("[WikiFactory::run] {id} not found"))?
         //     .call()
     }
 
@@ -40,12 +41,24 @@ impl Parser<Item> for ItemParser {
     fn create_methods(&self, result: &mut String, id: &str) {
         let data = &self.data[id];
 
+        let mut new_method = |field: &Option<ItemEffect>, tag| {
+            if let Some(ie) = &field
+                && ie.effect.formula.is_some()
+            {
+                result.push_str(&format!(".min({tag})"));
+            }
+        };
+
+        new_method(&data.effects.act, "Active");
+        new_method(&data.effects.pass, "Passive");
+
         todo!()
     }
 
     fn new() -> MayFail<Self> {
-        let data = BTreeMap::<String, _>::from_file("cache/wiki/items/full.json")?;
-        Ok(Self { data })
+        Ok(Self {
+            data: BTreeMap::from_file("cache/wiki/items/full.json")?,
+        })
     }
 }
 

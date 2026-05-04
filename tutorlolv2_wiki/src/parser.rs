@@ -748,6 +748,7 @@ pub fn clean_text(s: &str) -> String {
         .replace('\u{2014}', "-")
         .replace('\u{2212}', "-")
         .replace('\u{00D7}', "*")
+        .replace("'''", "")
         .lines()
         .map(str::trim)
         .filter(|x| !x.is_empty())
@@ -807,8 +808,8 @@ pub fn assign_ctx_var(input: &str) -> CtxVar {
 
     check! {
         text;
-        in "bonus attack speed" => CtxVar::AttackSpeed;
-        in "bonus ad" | in "bonus attack damage" => CtxVar::BonusAd;
+        in "attack speed" => CtxVar::AttackSpeed;
+        in "bonus ad" | in "bonus ad" | in "bonus attack damage" => CtxVar::BonusAd;
         == "ad" | ... " ad" | in " attack damage" => CtxVar::AttackDamage;
         == "ap" | ... " ap" | in "ability power" => CtxVar::AbilityPower;
         in "enchanted target's ad" => CtxVar::SteelcapsEffect;
@@ -817,7 +818,7 @@ pub fn assign_ctx_var(input: &str) -> CtxVar {
         in "target's missing health" | in "of target's missing health" => CtxVar::EnemyMissingHealth;
         in "his current health" | in "of his current health" | in "current health" => CtxVar::CurrentHealth;
         in "missing health" => CtxVar::MissingHealth;
-        in "bonus movement speed" => CtxVar::BonusMoveSpeed;
+        in "movement speed" => CtxVar::BonusMoveSpeed;
         in "maximum health" => CtxVar::MaxHealth;
         in "maximum mana" => CtxVar::MaxMana;
         in "missing mana" => CtxVar::SteelcapsEffect; // Not supported yet
@@ -829,7 +830,7 @@ pub fn assign_ctx_var(input: &str) -> CtxVar {
         in "life steal" => CtxVar::LifeSteal;
         in "stacks" | in " stack" | in "overwhelm" | in "stardust" | in "soul collected" | in "feast stack" | in "mist" | in "grit" | in "mark" | in "of damage stored" => CtxVar::Stacks;
         in "armor" | in "total armor" => CtxVar::Armor;
-        in "magic resist" | in "total magic resist" => CtxVar::MagicResist;
+        in "magic resist" | in "total magic resist" | in "mr" => CtxVar::MagicResist;
         in "lethality" => CtxVar::ArmorPenetrationFlat
     };
 
