@@ -3,6 +3,14 @@ use super::*;
 impl Generator for Gnar {
     fn generate(&mut self) -> MayFail {
         self.ability(
+            Key::P,
+            [
+                (3, _1), /* Innate - Rage Gene */
+                (4, _2), /* Innate - Rage Gene [1] */
+                (5, _3), /* Innate - Rage Gene [2] */
+            ],
+        )
+        .ability(
             Key::Q,
             [
                 (0, _1), /* Physical Damage */

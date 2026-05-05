@@ -3,6 +3,10 @@ use super::*;
 impl Generator for Karthus {
     fn generate(&mut self) -> MayFail {
         self.ability(
+            Key::P,
+            [(0, _1) /* Description 1 */, (1, _2) /* Innate */],
+        )
+        .ability(
             Key::Q,
             [
                 (0, _1), /* Isolated Enhanced Damage */

@@ -15,8 +15,8 @@ pub struct RuneParser {
 pub struct Rune {
     pub data: WikiRune,
     pub damage_type: DamageType,
-    pub minimum_damage: Option<String>,
-    pub maximum_damage: Option<String>,
+    pub minimum_damage: String,
+    pub maximum_damage: String,
     progress: Progress,
     version: String,
 }
@@ -44,7 +44,7 @@ impl Parser<Rune> for RuneParser {
 
         for (i, (key, effect)) in data.effects.iter().enumerate() {
             if effect.formula.is_some() {
-                result.push_str(&format!(".min({i}) /* {key} */"));
+                result.push_str(&format!(".min({i})? /* {key} */"));
             }
         }
 
@@ -65,10 +65,10 @@ impl Rune {
         Self {
             data,
             version: ENV_CONFIG.lol_version.clone(),
-            damage_type: Default::default(),
-            minimum_damage: Default::default(),
-            maximum_damage: Default::default(),
             progress: Default::default(),
+            damage_type: Default::default(),
+            minimum_damage: "zero".into(),
+            maximum_damage: "zero".into(),
         }
     }
 
@@ -81,21 +81,33 @@ impl Rune {
         self
     }
 
-    pub fn end(&self) -> MayFail {
-        Ok(())
-    }
-
     pub fn damage_type(&mut self, damage_type: DamageType) -> &mut Self {
         self.damage_type = damage_type;
         self
     }
 
-    pub fn min(&mut self, index: usize) -> &mut Self {
-        if let Some(effect) = self.data.effects.values().nth(index)
-            && let Some(formula) = &effect.formula
-        {
-            self.minimum_damage = Some(formula.clone());
+    pub fn formula(&self, index: usize) -> MayFail<String> {
+        match self.data.effects.values().nth(index) {
+            Some(effect) if let Some(formula) = &effect.formula => Ok(formula.clone()),
+            _ => Err(format!(
+                "[{name}] No formula found in effect[{index}]",
+                name = self.data.name
+            )
+            .into()),
         }
-        self
+    }
+
+    pub fn min(&mut self, index: usize) -> MayFail<&mut Self> {
+        self.minimum_damage = self.formula(index)?;
+        Ok(self)
+    }
+
+    pub fn max(&mut self, index: usize) -> MayFail<&mut Self> {
+        self.maximum_damage = self.formula(index)?;
+        Ok(self)
+    }
+
+    pub fn end(&self) -> MayFail {
+        Ok(())
     }
 }

@@ -1,7 +1,7 @@
 use crate::MayFail;
 use regex::{Captures, Regex};
 use std::{fmt::Display, str::FromStr, sync::LazyLock};
-use tutorlolv2_gen::CtxVar::*;
+use tutorlolv2_types::CtxVar::*;
 
 static CAPTURE_NUMBERS_SLASH_RE: LazyLock<Regex> =
     LazyLock::new(|| Regex::new(r"\d+(?:\s*/\s*\d+)+").unwrap());

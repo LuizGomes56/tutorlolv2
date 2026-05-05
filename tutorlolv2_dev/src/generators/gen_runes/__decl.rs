@@ -5,8 +5,7 @@ pub use crate::{
         Generator, GeneratorExt, gen_factories::wiki_runes::Rune, gen_utils::RegExtractor,
     },
 };
-pub use tutorlolv2_gen::CtxVar::*;
-pub use tutorlolv2_types::{Attrs::*, DamageType::*};
+pub use tutorlolv2_types::{Attrs::*, CtxVar::*, DamageType::*};
 pub use tutorlolv2_wiki::runes::WikiRune;
 
 #[macro_export]

@@ -3,6 +3,16 @@ use super::*;
 impl Generator for Rumble {
     fn generate(&mut self) -> MayFail {
         self.ability(
+            Key::P,
+            [
+                (2, _1), /* Overheated */
+                (3, _2), /* Overheated [1] */
+                (4, _3), /* Overheated [2] */
+                (5, _4), /* Overheated [3] */
+                (6, _5), /* Overheated [4] */
+            ],
+        )
+        .ability(
             Key::Q,
             [
                 (0, _1),  /* Enhanced Damage per Second */

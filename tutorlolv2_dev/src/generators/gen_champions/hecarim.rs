@@ -2,7 +2,8 @@ use super::*;
 
 impl Generator for Hecarim {
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::Q, [(1, _1) /* Physical Damage */])
+        self.ability(Key::P, [(0, _1) /* Innate */])
+            .ability(Key::Q, [(1, _1) /* Physical Damage */])
             .ability(
                 Key::W,
                 [

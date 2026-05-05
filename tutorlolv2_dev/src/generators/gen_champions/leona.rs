@@ -2,7 +2,8 @@ use super::*;
 
 impl Generator for Leona {
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::Q, [(0, _1) /* Bonus Magic Damage */])
+        self.ability(Key::P, [(0, _1) /* Innate */])
+            .ability(Key::Q, [(0, _1) /* Bonus Magic Damage */])
             .ability(
                 Key::W,
                 [

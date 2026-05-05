@@ -3,6 +3,13 @@ use super::*;
 impl Generator for Sett {
     fn generate(&mut self) -> MayFail {
         self.ability(
+            Key::P,
+            [
+                (0, _1), /* Description 2 */
+                (1, _2), /* Description 2 [1] */
+            ],
+        )
+        .ability(
             Key::Q,
             [
                 (0, _1), /* Bonus Physical Damage */

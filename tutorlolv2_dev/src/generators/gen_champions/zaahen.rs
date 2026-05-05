@@ -3,6 +3,15 @@ use super::*;
 impl Generator for Zaahen {
     fn generate(&mut self) -> MayFail {
         self.ability(
+            Key::P,
+            [
+                (0, _1), /* Determination */
+                (1, _2), /* Determination [1] */
+                (2, _3), /* Determination [2] */
+                (3, _4), /* Innate */
+            ],
+        )
+        .ability(
             Key::Q,
             [
                 (0, _1), /* Bonus Physical Damage */

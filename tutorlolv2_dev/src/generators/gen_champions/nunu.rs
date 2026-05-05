@@ -3,6 +3,13 @@ use super::*;
 impl Generator for Nunu {
     fn generate(&mut self) -> MayFail {
         self.ability(
+            Key::P,
+            [
+                (0, _1), /* Call of the Freljord */
+                (2, _2), /* Innate */
+            ],
+        )
+        .ability(
             Key::Q,
             [
                 (2, _1), /* Champion Magic Damage */

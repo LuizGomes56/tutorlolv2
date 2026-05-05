@@ -3,6 +3,16 @@ use super::*;
 impl Generator for Skarner {
     fn generate(&mut self) -> MayFail {
         self.ability(
+            Key::P,
+            [
+                (0, _1), /* Innate */
+                (1, _2), /* Innate [1] */
+                (2, _3), /* Innate [2] */
+                (3, _4), /* Innate [3] */
+                (4, _5), /* Innate [4] */
+            ],
+        )
+        .ability(
             Key::Q,
             [
                 (1, _1), /* Bonus Physical Damage per Hit */

@@ -3,6 +3,18 @@ use super::*;
 impl Generator for Zeri {
     fn generate(&mut self) -> MayFail {
         self.ability(
+            Key::P,
+            [
+                (0, _1), /* Basic Attack */
+                (1, _2), /* Basic Attack [1] */
+                (2, _3), /* Description 2 */
+                (3, _4), /* Description 2 [1] */
+                (4, _5), /* Description 2 [2] */
+                (5, _6), /* Description 2 [3] */
+                (6, _7), /* Innate */
+            ],
+        )
+        .ability(
             Key::Q,
             [
                 (1, _1), /* Infinity Edge Damage per Hit */

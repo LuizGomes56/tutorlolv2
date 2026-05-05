@@ -73,10 +73,11 @@ impl Parser<Champion> for ChampionParser {
                 for (j, (name, effect)) in ability.effects.iter().enumerate() {
                     let tag = name.to_lowercase();
 
-                    if effect.formula.is_some()
+                    if (effect.formula.is_some()
                         && tag.contains("damage")
                         && !tag.contains("monster")
-                        && !tag.contains("minion")
+                        && !tag.contains("minion"))
+                        || (*key == Key::P && effect.inner.description.contains("damage"))
                     {
                         groups
                             .entry((*key, i))
@@ -91,7 +92,7 @@ impl Parser<Champion> for ChampionParser {
 
         for ((key, i), entries) in groups {
             let args = entries
-                .iter()
+                .into_iter()
                 .map(|(j, k, comment)| {
                     let alias = match k {
                         ..9 => "",
@@ -99,7 +100,8 @@ impl Parser<Champion> for ChampionParser {
                         18..27 => "Max",
                         _ => panic!("[{id}] Too many abilities found"),
                     };
-                    format!("({j}, _{k}{alias}) /* {comment} */")
+                    let index = k.clamp(0, 8);
+                    format!("({j}, _{index}{alias}) /* {comment} */")
                 })
                 .collect::<Vec<_>>()
                 .join(", ");
@@ -228,6 +230,89 @@ impl Champion {
         Ok(self)
     }
 
+    pub fn clone_to(
+        &mut self,
+        from: AbilityId,
+        into: AbilityId,
+        damage: DamageFormula,
+    ) -> MayFail<&mut Self> {
+        let clone_from = self.get(from)?.clone();
+        self.abilities.insert(into, clone_from);
+        self.get_mut(into)?.damage = damage;
+        Ok(self)
+    }
+
+    pub fn damage_type(&mut self, key: AbilityId, damage_type: DamageType) -> MayFail<&mut Self> {
+        self.get_mut(key)?.damage_type = damage_type;
+        Ok(self)
+    }
+
+    pub fn sum<const N: usize>(&self, args: [AbilityId; N]) -> MayFail<DamageFormula> {
+        self.merge_damage(
+            |array| {
+                array
+                    .iter()
+                    .map(RegExtractor::parens)
+                    .collect::<Vec<_>>()
+                    .join(" + ")
+            },
+            args,
+        )
+    }
+
+    pub fn merge_damage<const N: usize>(
+        &self,
+        closure: fn([&str; N]) -> String,
+        args: [AbilityId; N],
+    ) -> MayFail<DamageFormula> {
+        let mut formulas = Vec::with_capacity(N);
+
+        for arg in args {
+            formulas.push(&self.get(arg)?.damage);
+        }
+
+        assert!(
+            !formulas.is_empty(),
+            "Closure must take at least one argument"
+        );
+
+        let mut len = None;
+
+        for f in &formulas {
+            if let DamageFormula::Unknown(v) = f {
+                match len {
+                    Some(l) => assert!(l == v.len(), "Mismatched lengths"),
+                    None => len = Some(v.len()),
+                }
+            }
+        }
+
+        match len {
+            Some(len) => {
+                let mut result = Vec::with_capacity(len);
+
+                for i in 0..len {
+                    let closure_args = core::array::from_fn(|j| match formulas[j] {
+                        DamageFormula::Progression(s) => s.as_str(),
+                        DamageFormula::Unknown(v) => v[i].as_str(),
+                    });
+
+                    result.push(closure(closure_args));
+                }
+
+                Ok(DamageFormula::Unknown(result))
+            }
+            None => {
+                let closure_args = core::array::from_fn(|i| match formulas[i] {
+                    DamageFormula::Progression(s) => s.as_str(),
+                    DamageFormula::Unknown(_) => unreachable!(),
+                });
+
+                Ok(DamageFormula::Progression(closure(closure_args)))
+            }
+        }
+    }
+
     pub fn end(&mut self) -> MayFail {
         let Self {
             data: WikiChampion { champion_id, .. },
@@ -306,83 +391,5 @@ impl Champion {
         }
 
         Ok(())
-    }
-
-    pub fn clone_to(&mut self, from: AbilityId, into: AbilityId) -> MayFail<&mut Ability> {
-        let clone_from = self.get(from)?.clone();
-        let into_key = into;
-        self.abilities.insert(into_key, clone_from);
-        self.get_mut(into_key)
-    }
-
-    pub fn damage_type(&mut self, key: AbilityId, damage_type: DamageType) -> MayFail<&mut Self> {
-        self.get_mut(key)?.damage_type = damage_type;
-        Ok(self)
-    }
-
-    pub fn sum<const N: usize>(&self, args: [AbilityId; N]) -> MayFail<DamageFormula> {
-        self.merge_damage(
-            |array| {
-                array
-                    .iter()
-                    .map(RegExtractor::parens)
-                    .collect::<Vec<_>>()
-                    .join(" + ")
-            },
-            args,
-        )
-    }
-
-    pub fn merge_damage<const N: usize>(
-        &self,
-        closure: fn([&str; N]) -> String,
-        args: [AbilityId; N],
-    ) -> MayFail<DamageFormula> {
-        let mut formulas = Vec::with_capacity(N);
-
-        for arg in args {
-            formulas.push(&self.get(arg)?.damage);
-        }
-
-        assert!(
-            !formulas.is_empty(),
-            "Closure must take at least one argument"
-        );
-
-        let mut len = None;
-
-        for f in &formulas {
-            if let DamageFormula::Unknown(v) = f {
-                match len {
-                    Some(l) => assert!(l == v.len(), "Mismatched lengths"),
-                    None => len = Some(v.len()),
-                }
-            }
-        }
-
-        match len {
-            Some(len) => {
-                let mut result = Vec::with_capacity(len);
-
-                for i in 0..len {
-                    let closure_args = core::array::from_fn(|j| match formulas[j] {
-                        DamageFormula::Progression(s) => s.as_str(),
-                        DamageFormula::Unknown(v) => v[i].as_str(),
-                    });
-
-                    result.push(closure(closure_args));
-                }
-
-                Ok(DamageFormula::Unknown(result))
-            }
-            None => {
-                let closure_args = core::array::from_fn(|i| match formulas[i] {
-                    DamageFormula::Progression(s) => s.as_str(),
-                    DamageFormula::Unknown(_) => unreachable!(),
-                });
-
-                Ok(DamageFormula::Progression(closure(closure_args)))
-            }
-        }
     }
 }

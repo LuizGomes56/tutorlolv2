@@ -3,6 +3,17 @@ use super::*;
 impl Generator for Mel {
     fn generate(&mut self) -> MayFail {
         self.ability(
+            Key::P,
+            [
+                (0, _1), /* Innate */
+                (1, _2), /* Innate - Searing Brilliance */
+                (2, _3), /* Innate - Searing Brilliance [1] */
+                (3, _4), /* Overwhelm */
+                (4, _5), /* Overwhelm [1] */
+                (5, _6), /* Overwhelm [2] */
+            ],
+        )
+        .ability(
             Key::Q,
             [
                 (0, _1), /* Initial Explosion Magic Damage */

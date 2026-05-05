@@ -3,6 +3,15 @@ use super::*;
 impl Generator for Aurora {
     fn generate(&mut self) -> MayFail {
         self.ability(
+            Key::P,
+            [
+                (2, _1), /* Innate */
+                (3, _2), /* Innate [1] */
+                (4, _3), /* Innate [2] */
+                (5, _4), /* Innate [3] */
+            ],
+        )
+        .ability(
             Key::Q,
             [
                 (0, _1), /* Magic Damage */

@@ -6,7 +6,6 @@ pub mod setup;
 pub use generators::*;
 pub use init::*;
 pub use model::*;
-pub use reqwest;
 pub use serde::{Serialize, de::DeserializeOwned};
 pub use setup::*;
 

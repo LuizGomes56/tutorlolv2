@@ -2,8 +2,8 @@ use super::*;
 
 impl Generator for BiscuitDelivery {
     fn generate(&mut self) -> MayFail {
-        self.min(0) /* Description 1 */
-            .min(1) /* Passive */
+        self.min(0)? /* Description 1 */
+            .min(1)? /* Passive */
             .end()
     }
 }

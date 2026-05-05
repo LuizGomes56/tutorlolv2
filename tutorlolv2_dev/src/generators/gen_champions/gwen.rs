@@ -3,6 +3,18 @@ use super::*;
 impl Generator for Gwen {
     fn generate(&mut self) -> MayFail {
         self.ability(
+            Key::P,
+            [
+                (0, _1), /* Description 1 */
+                (1, _2), /* Description 1 [1] */
+                (2, _3), /* Description 1 [2] */
+                (3, _4), /* Description 1 [3] */
+                (4, _5), /* Description 1 [4] */
+                (5, _6), /* Description 1 [5] */
+                (6, _7), /* Innate */
+            ],
+        )
+        .ability(
             Key::Q,
             [
                 (0, _1), /* Center Damage per Snip */

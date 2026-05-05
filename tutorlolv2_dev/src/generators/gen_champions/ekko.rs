@@ -3,6 +3,13 @@ use super::*;
 impl Generator for Ekko {
     fn generate(&mut self) -> MayFail {
         self.ability(
+            Key::P,
+            [
+                (1, _1), /* Innate - Resonance */
+                (2, _2), /* Innate - Resonance [1] */
+            ],
+        )
+        .ability(
             Key::Q,
             [
                 (0, _1), /* Initial Magic Damage */

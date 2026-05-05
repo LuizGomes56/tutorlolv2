@@ -2,7 +2,8 @@ use super::*;
 
 impl Generator for TahmKench {
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::Q, [(1, _1) /* Magic Damage */])
+        self.ability(Key::P, [(1, _1) /* Innate */, (2, _2) /* Innate [1] */])
+            .ability(Key::Q, [(1, _1) /* Magic Damage */])
             .ability(Key::W, [(1, _1) /* Magic Damage */])
             .ability(
                 Key::E,

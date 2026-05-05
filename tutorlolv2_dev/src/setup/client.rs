@@ -23,7 +23,8 @@ use std::{
 };
 use tokio::{sync::Semaphore, task::JoinHandle};
 use tutorlolv2_fmt::{pascal_case, to_ssnake};
-use tutorlolv2_gen::{ChampionId, EntityId, ItemId, Position, RuneId};
+use tutorlolv2_gen::{ChampionId, EntityId, ItemId, RuneId};
+use tutorlolv2_types::Position;
 
 pub enum SaveTo<'a> {
     GeneratorDir(Tag),

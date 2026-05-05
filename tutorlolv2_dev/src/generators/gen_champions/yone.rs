@@ -3,6 +3,14 @@ use super::*;
 impl Generator for Yone {
     fn generate(&mut self) -> MayFail {
         self.ability(
+            Key::P,
+            [
+                (0, _1), /* Description 1 */
+                (1, _2), /* Innate - Intent */
+                (2, _3), /* Innate - Steel and Spirit */
+            ],
+        )
+        .ability(
             Key::Q,
             [
                 (0, _1), /* Critical Strike Damage */

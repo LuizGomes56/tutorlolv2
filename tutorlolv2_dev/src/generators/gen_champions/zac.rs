@@ -3,6 +3,13 @@ use super::*;
 impl Generator for Zac {
     fn generate(&mut self) -> MayFail {
         self.ability(
+            Key::P,
+            [
+                (3, _1), /* Innate - Cell Division */
+                (4, _2), /* Innate - Cell Division [1] */
+            ],
+        )
+        .ability(
             Key::Q,
             [
                 (0, _1), /* Magic Damage */

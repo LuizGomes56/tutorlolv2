@@ -7,9 +7,9 @@ pub use crate::{
         gen_utils::RegExtractor,
     },
 };
-pub use tutorlolv2_gen::CtxVar::*;
 pub use tutorlolv2_types::{
-    AbilityId, AbilityId::*, AbilityName::*, Attrs::*, ComboElement::*, DamageType::*, Key,
+    AbilityId, AbilityId::*, AbilityName::*, Attrs::*, ComboElement::*, CtxVar::*, DamageType::*,
+    Key,
 };
 pub use tutorlolv2_wiki::champions::WikiChampion;
 
