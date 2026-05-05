@@ -2,10 +2,12 @@ use clap::{Parser, Subcommand, ValueEnum};
 use std::{str::FromStr, sync::LazyLock};
 use tutorlolv2_dev::{
     ENV_CONFIG, HTTP_CLIENT, MayFail,
-    gen_factories::{Parser as _, wiki_champions::ChampionParser, wiki_items::ItemParser},
+    gen_factories::{
+        Parser as _, wiki_champions::ChampionParser, wiki_items::ItemParser, wiki_runes::RuneParser,
+    },
     update,
 };
-use tutorlolv2_gen::{ChampionId, ItemId};
+use tutorlolv2_gen::{ChampionId, ItemId, RuneId};
 use tutorlolv2_wiki::{champions, items, runes};
 
 fn from_str_err<T>(s: &str, into: &str) -> Result<T, String> {
@@ -43,6 +45,7 @@ pub enum GenCreator {
     All,
     Champion(ChampionId),
     Item(ItemId),
+    Rune(RuneId),
 }
 
 impl FromStr for GenCreator {
@@ -53,6 +56,7 @@ impl FromStr for GenCreator {
             "all" | "a" => Ok(Self::All),
             s if let Ok(champion_id) = ChampionId::from_str(s) => Ok(Self::Champion(champion_id)),
             s if let Ok(item_id) = ItemId::from_str(s) => Ok(Self::Item(item_id)),
+            s if let Ok(rune_id) = RuneId::from_str(s) => Ok(Self::Rune(rune_id)),
             _ => from_str_err(s, "ChampionId or ItemId"),
         }
     }
@@ -142,6 +146,7 @@ pub enum Setup {
 
 static IPARSER: LazyLock<ItemParser> = LazyLock::new(|| ItemParser::new().unwrap());
 static CPARSER: LazyLock<ChampionParser> = LazyLock::new(|| ChampionParser::new().unwrap());
+static RPARSER: LazyLock<RuneParser> = LazyLock::new(|| RuneParser::new().unwrap());
 
 pub async fn run() -> MayFail {
     let Cli { args } = Cli::parse();
@@ -154,9 +159,11 @@ pub async fn run() -> MayFail {
             GenCreator::All => {
                 CPARSER.create_all()?;
                 IPARSER.create_all()?;
+                RPARSER.create_all()?;
             }
             GenCreator::Champion(champion_id) => CPARSER.create(champion_id.debug())?,
             GenCreator::Item(item_id) => IPARSER.create(item_id.debug())?,
+            GenCreator::Rune(rune_id) => RPARSER.create(rune_id.debug())?,
         },
         GenArgs::Run { target } => match target {
             RunTarget::Champion(champ) => CPARSER.run(champ.debug())?,

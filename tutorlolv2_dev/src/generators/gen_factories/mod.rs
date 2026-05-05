@@ -2,7 +2,9 @@ use crate::{
     JsonWrite, MayFail,
     client::{SaveTo, Tag},
 };
+use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
 use serde::Serialize;
+use std::path::Path;
 use tutorlolv2_fmt::rustfmt;
 
 pub mod wiki_champions;
@@ -11,7 +13,7 @@ pub mod wiki_runes;
 
 pub trait Parser<T: Serialize>
 where
-    Self: Sized,
+    Self: Sized + Sync,
 {
     const TAG: Tag;
 
@@ -100,13 +102,46 @@ where
 
         println!("[write] {path:?}");
 
-        std::fs::create_dir_all(&path)?;
+        let dir = SaveTo::GeneratorDir(Self::TAG).path();
+
+        std::fs::create_dir_all(dir)?;
         std::fs::write(&path, content)?;
 
         Ok(())
     }
 
     fn create_all(&self) -> MayFail {
-        self.keys().iter().try_for_each(|key| self.create(key))
+        let keys = self.keys();
+        let tag = Self::TAG;
+
+        let dir = SaveTo::GeneratorDir(tag).path();
+        std::fs::create_dir_all(&dir)?;
+
+        let decl = Path::new(&dir).join("mod").with_extension("rs");
+
+        let decl_content = format!(
+            "mod __decl;\nuse __decl::*;\ncrate::decl_{tag}!(\n\t{modules}\n);",
+            modules = keys.join(",\n\t"),
+        );
+        std::fs::write(&decl, decl_content)?;
+
+        keys.par_iter()
+            .try_for_each(|key| self.create(key).map_err(|e| e.to_string()))
+            .map_err(|e| e.into())
+    }
+
+    fn infer_damage_type(result: &mut String, description: &str) {
+        if let Some(dtype) = ["physical", "physical", "true"]
+            .into_iter()
+            .find(|d| description.to_lowercase().contains(d))
+        {
+            let alias = dtype
+                .chars()
+                .next()
+                .map(|c| c.to_uppercase().collect::<String>() + &dtype[1..])
+                .unwrap_or(dtype.to_string());
+
+            result.push_str(&format!(".damage_type({alias})"));
+        }
     }
 }

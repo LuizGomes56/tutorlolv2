@@ -8,6 +8,7 @@ pub mod data;
 use crate::data::{
     champions::CHAMPION_GENERATOR,
     items::{ITEM_GENERATOR, ITEM_NAME_TO_ID},
+    runes::RUNE_NAME_TO_ID,
 };
 use core::{
     any::{Any, TypeId},
@@ -146,6 +147,17 @@ impl FromStr for ItemId {
             .get(s)
             .copied()
             .ok_or("No matches when calling ItemId::from_str")
+    }
+}
+
+impl FromStr for RuneId {
+    type Err = &'static str;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        RUNE_NAME_TO_ID
+            .get(s)
+            .copied()
+            .ok_or("No matches when calling RuneId::from_str")
     }
 }
 

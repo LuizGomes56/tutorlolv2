@@ -3,7 +3,7 @@ use crate::{
     scripts::{StringExt, model::Rune, rustfmt_batch, simplify_formula},
 };
 use rayon::iter::{IntoParallelIterator, ParallelIterator};
-use std::collections::{BTreeMap, HashMap};
+use std::collections::{BTreeMap, BTreeSet, HashMap};
 
 struct RuneResult {
     name: String,
@@ -266,6 +266,7 @@ fn build_runes(data: Vec<RuneResult>) -> GeneratorFn {
     let mut rune_id_enum_fields = Vec::with_capacity(len);
     let mut const_match_arms = String::new();
     let mut rustfmt_inputs = Vec::with_capacity(len * 2);
+    let mut name_to_id_arms = Vec::with_capacity(len * 2);
 
     for RuneResult {
         riot_id,
@@ -277,9 +278,23 @@ fn build_runes(data: Vec<RuneResult>) -> GeneratorFn {
         name_pascal,
         idents,
         html_closure,
-        ..
+        name,
     } in data
     {
+        let name_alias = BTreeSet::from_iter([
+            &name,
+            &name_pascal,
+            &name_ssnake,
+            &name.to_lowercase(),
+            &name_pascal.to_lowercase(),
+            &name_ssnake.to_lowercase(),
+        ])
+        .into_iter()
+        .map(|v| format!("{v:?}"))
+        .collect::<Vec<_>>()
+        .join(" | ");
+        name_to_id_arms.push(format!("{name_alias} => RuneId::{name_pascal}"));
+
         if deals_damage {
             let match_arm = format!("RuneId::{name_pascal} => {{{match_arm}}}");
             const_match_arms.push_str(&match_arm);
@@ -338,10 +353,17 @@ fn build_runes(data: Vec<RuneResult>) -> GeneratorFn {
 
     push_end([&mut rune_cache, &mut rune_idents], "];");
 
+    let rune_name_to_id = format!(
+        "pub static RUNE_NAME_TO_ID: phf::Map<&str, RuneId> = phf::phf_map! {{
+            {arms}
+        }};",
+        arms = name_to_id_arms.join(",\n\t\t\t")
+    );
+
     let const_eval = format!(
         "pub const fn rune_const_eval(
-            ctx: &Ctx, 
-            rune_id: RuneId, 
+            ctx: &Ctx,
+            rune_id: RuneId,
             attack_type: AttackType
         ) -> f32 {{
             match rune_id {{ {const_match_arms}, _ => 0.0 }}
@@ -379,14 +401,15 @@ fn build_runes(data: Vec<RuneResult>) -> GeneratorFn {
             rune_closures,
             rune_idents,
             const_eval,
+            rune_name_to_id,
         ]
         .concat();
 
         let exports = format!(
-            "pub mod runes {{ 
-                use super::*; 
+            "pub mod runes {{
+                use super::*;
                 type C_ = CachedRune;
-                {content} 
+                {content}
             }}"
         );
 

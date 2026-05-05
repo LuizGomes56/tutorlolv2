@@ -5,6 +5,7 @@ use crate::{
 };
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
+use tutorlolv2_fmt::{pascal_case, to_ssnake};
 use tutorlolv2_types::Key;
 
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
@@ -25,6 +26,7 @@ pub struct ItemEffects {
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub struct WikiItem {
     pub id: u32,
+    pub name: String,
     pub tier: Option<u8>,
 
     #[serde(default)]
@@ -157,7 +159,10 @@ pub fn parse_items() -> MayFail {
             assign_formula(value.effects.act.as_mut());
             assign_formula(value.effects.pass.as_mut());
 
-            (name, value)
+            let key = pascal_case(&name);
+            value.name = name;
+
+            (key, value)
         })
         .collect::<BTreeMap<_, _>>();
 
@@ -167,6 +172,7 @@ pub fn parse_items() -> MayFail {
 
 fn parse_item(raw: ItemRaw) -> WikiItem {
     WikiItem {
+        name: raw.name,
         id: raw.id,
         tier: raw.tier,
         modes: raw.modes,

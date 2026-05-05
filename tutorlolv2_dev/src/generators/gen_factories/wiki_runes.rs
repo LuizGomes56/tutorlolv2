@@ -1,6 +1,8 @@
-use crate::{ENV_CONFIG, JsonRead, MayFail, Progress, client::Tag, gen_factories::Parser};
+use crate::{
+    ENV_CONFIG, JsonRead, MayFail, Progress, client::Tag, gen_factories::Parser,
+    gen_runes::rune_gen_fn,
+};
 use serde::{Deserialize, Serialize};
-use serde_json::Value;
 use std::collections::BTreeMap;
 use tutorlolv2_types::DamageType;
 use tutorlolv2_wiki::runes::WikiRune;
@@ -23,15 +25,14 @@ impl Parser<Rune> for RuneParser {
     const TAG: Tag = Tag::Runes;
 
     fn run_fn(&self, id: &str) -> MayFail<Rune> {
-        todo!()
-        // self.data
-        //     .get(rune_id)
-        //     .and_then(|data| {
-        //         let function = rune_gen_fn(rune_id)?;
-        //         Some(function(data.clone()))
-        //     })
-        //     .ok_or_else(|| format!("[WikiFactory::run] {rune_id} not found"))?
-        //     .call()
+        self.data
+            .get(id)
+            .and_then(|data| {
+                let function = rune_gen_fn(id)?;
+                Some(function(data.clone()))
+            })
+            .ok_or_else(|| format!("[WikiFactory::run] {id} not found"))?
+            .call()
     }
 
     fn keys(&self) -> Vec<&str> {
@@ -41,7 +42,15 @@ impl Parser<Rune> for RuneParser {
     fn create_methods(&self, result: &mut String, id: &str) {
         let data = &self.data[id];
 
-        todo!()
+        for (i, (key, effect)) in data.effects.iter().enumerate() {
+            if effect.formula.is_some() {
+                result.push_str(&format!(".min({i}) /* {key} */"));
+            }
+        }
+
+        for description in &data.descriptions {
+            Self::infer_damage_type(result, &description)
+        }
     }
 
     fn new() -> MayFail<Self> {
@@ -72,12 +81,21 @@ impl Rune {
         self
     }
 
-    pub fn end(&mut self) -> MayFail {
+    pub fn end(&self) -> MayFail {
         Ok(())
     }
 
-    pub fn damage_type(&mut self, damage_type: DamageType) -> MayFail<&mut Self> {
+    pub fn damage_type(&mut self, damage_type: DamageType) -> &mut Self {
         self.damage_type = damage_type;
-        Ok(self)
+        self
+    }
+
+    pub fn min(&mut self, index: usize) -> &mut Self {
+        if let Some(effect) = self.data.effects.values().nth(index)
+            && let Some(formula) = &effect.formula
+        {
+            self.minimum_damage = Some(formula.clone());
+        }
+        self
     }
 }
