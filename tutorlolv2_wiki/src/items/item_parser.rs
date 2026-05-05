@@ -162,7 +162,7 @@ pub fn parse_items() -> MayFail {
         .collect::<BTreeMap<_, _>>();
 
     let json = serde_json::to_string_pretty(&result)?;
-    crate::write(cache().join("parsed").with_extension("json"), &json)
+    crate::write(cache().join("full").with_extension("json"), &json)
 }
 
 fn parse_item(raw: ItemRaw) -> WikiItem {

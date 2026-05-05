@@ -91,7 +91,7 @@ impl<'a> SaveTo<'a> {
                         (Tag::Champions, champion_id.debug().to_string())
                     }
                     EntityId::Item(item_id) => (Tag::Items, to_ssnake(&item_id.debug())),
-                    _ => panic!("Rune generators are not supported"),
+                    EntityId::Rune(rune_id) => (Tag::Runes, to_ssnake(&rune_id.debug())),
                 };
                 let file = name.to_lowercase();
                 let path = Self::GeneratorDir(tag).path();
@@ -100,9 +100,8 @@ impl<'a> SaveTo<'a> {
             SaveTo::GeneratorRaw(tag, s) => {
                 let path = Self::GeneratorDir(*tag).path();
                 let file = match tag {
-                    Tag::Items => to_ssnake(s),
+                    Tag::Items | Tag::Runes => to_ssnake(s),
                     Tag::Champions => s.to_string(),
-                    _ => panic!("Rune generators are not supported"),
                 }
                 .to_lowercase();
                 format!("{path}/{file}.rs")

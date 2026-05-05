@@ -112,7 +112,7 @@ pub fn parse() -> MayFail<BTreeMap<String, ItemRaw>> {
     let map = serde_json::from_value(raw_map)?;
 
     crate::write(
-        cache().join("full").with_extension("json"),
+        cache().join("data").with_extension("json"),
         serde_json::to_string_pretty(&map)?,
     )?;
 

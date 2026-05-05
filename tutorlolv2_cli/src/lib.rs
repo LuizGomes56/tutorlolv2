@@ -1,8 +1,8 @@
 use clap::{Parser, Subcommand, ValueEnum};
-use std::str::FromStr;
+use std::{str::FromStr, sync::LazyLock};
 use tutorlolv2_dev::{
     ENV_CONFIG, HTTP_CLIENT, MayFail,
-    gen_factories::{Parser as _, fac_items::ItemFactory, wiki_champions::ChampionParser},
+    gen_factories::{Parser as _, wiki_champions::ChampionParser, wiki_items::ItemParser},
     update,
 };
 use tutorlolv2_gen::{ChampionId, ItemId};
@@ -22,7 +22,6 @@ pub struct Cli {
 pub enum RunTarget {
     Champion(ChampionId),
     Item(ItemId),
-    Factory(fn()),
     All,
 }
 
@@ -32,8 +31,6 @@ impl FromStr for RunTarget {
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match s {
             "all" | "a" => Ok(Self::All),
-            "items" | "i" => Ok(Self::Factory(ItemFactory::run_all)),
-            "champions" | "c" => Ok(Self::Factory(todo!())),
             s if let Ok(champion_id) = ChampionId::from_str(s) => Ok(Self::Champion(champion_id)),
             s if let Ok(item_id) = ItemId::from_str(s) => Ok(Self::Item(item_id)),
             _ => from_str_err(s, "ChampionId or ItemId"),
@@ -45,6 +42,7 @@ impl FromStr for RunTarget {
 pub enum GenCreator {
     All,
     Champion(ChampionId),
+    Item(ItemId),
 }
 
 impl FromStr for GenCreator {
@@ -54,7 +52,8 @@ impl FromStr for GenCreator {
         match s {
             "all" | "a" => Ok(Self::All),
             s if let Ok(champion_id) = ChampionId::from_str(s) => Ok(Self::Champion(champion_id)),
-            _ => from_str_err(s, "ChampionId"),
+            s if let Ok(item_id) = ItemId::from_str(s) => Ok(Self::Item(item_id)),
+            _ => from_str_err(s, "ChampionId or ItemId"),
         }
     }
 }
@@ -141,38 +140,39 @@ pub enum Setup {
     Folders,
 }
 
+static IPARSER: LazyLock<ItemParser> = LazyLock::new(|| ItemParser::new().unwrap());
+static CPARSER: LazyLock<ChampionParser> = LazyLock::new(|| ChampionParser::new().unwrap());
+
 pub async fn run() -> MayFail {
     let Cli { args } = Cli::parse();
 
     dotenvy::dotenv()?;
     std::env::set_current_dir("../")?;
 
-    let cparser = ChampionParser::new()?;
-
     match args {
         GenArgs::Create { creator } => match creator {
-            GenCreator::All => cparser.create_all()?,
-            GenCreator::Champion(champion_id) => cparser.create(champion_id.debug())?,
+            GenCreator::All => {
+                CPARSER.create_all()?;
+                IPARSER.create_all()?;
+            }
+            GenCreator::Champion(champion_id) => CPARSER.create(champion_id.debug())?,
+            GenCreator::Item(item_id) => IPARSER.create(item_id.debug())?,
         },
         GenArgs::Run { target } => match target {
-            RunTarget::Champion(champ) => {
-                cparser.run(champ.debug())?;
-            }
-            RunTarget::Item(item) => {
-                ItemFactory::run(item.debug(), item.to_riot_id())?;
-            }
-            RunTarget::Factory(f) => f(),
+            RunTarget::Champion(champ) => CPARSER.run(champ.debug())?,
+            RunTarget::Item(item) => IPARSER.run(item.debug())?,
             RunTarget::All => {
-                cparser.run_all()?;
-                ItemFactory::run_all();
+                CPARSER.run_all()?;
+                IPARSER.run_all()?;
             }
         },
-        GenArgs::Progress => cparser.progress(),
+        GenArgs::Progress => CPARSER.progress(),
         GenArgs::Update => {
             update::setup_project_folders()?;
-            cparser.create_all()?;
-            cparser.run_all()?;
-            ItemFactory::run_all();
+            CPARSER.create_all()?;
+            CPARSER.run_all()?;
+            IPARSER.create_all()?;
+            IPARSER.run_all()?;
             std::env::set_current_dir("./tutorlolv2_build")?;
             tutorlolv2_build::run()?;
         }
@@ -207,12 +207,11 @@ pub async fn run() -> MayFail {
                 HTTP_CLIENT.combo_scraper().await?;
             }
             Fetch::Version => {
-                let riot_version = HTTP_CLIENT.fetch_version().await?;
-                let curr_version = &ENV_CONFIG.lol_version;
-                if &riot_version == curr_version {
-                    println!("App is up to date with game version");
-                } else {
-                    println!("App is outdated: Expected {riot_version}, found: {curr_version}");
+                let gamev = HTTP_CLIENT.fetch_version().await?;
+                let currv = &ENV_CONFIG.lol_version;
+                match &gamev == currv {
+                    true => println!("App is up to date with game version"),
+                    false => println!("App is outdated: Expected {gamev}, found: {currv}"),
                 }
             }
         },

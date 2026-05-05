@@ -4,6 +4,7 @@ use serde::{Deserialize, Serialize};
 pub mod gen_champions;
 pub mod gen_factories;
 pub mod gen_items;
+pub mod gen_runes;
 pub mod gen_utils;
 
 #[derive(Clone, Copy, Debug, Default, Deserialize, Serialize)]

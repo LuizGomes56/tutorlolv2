@@ -5,9 +5,8 @@ use crate::{
 use serde::Serialize;
 use tutorlolv2_fmt::rustfmt;
 
-pub mod fac_items;
-
 pub mod wiki_champions;
+pub mod wiki_items;
 pub mod wiki_runes;
 
 pub trait Parser<T: Serialize>
@@ -21,7 +20,7 @@ where
     fn run_fn(&self, id: &str) -> MayFail<T>;
     fn create_methods(&self, result: &mut String, id: &str);
 
-    fn run_all(self) -> MayFail {
+    fn run_all(&self) -> MayFail {
         for key in self.keys() {
             self.run(key)?
         }
@@ -100,6 +99,8 @@ where
         let path = SaveTo::GeneratorRaw(Self::TAG, id).path();
 
         println!("[write] {path:?}");
+
+        std::fs::create_dir_all(&path)?;
         std::fs::write(&path, content)?;
 
         Ok(())
