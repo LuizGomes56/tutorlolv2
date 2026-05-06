@@ -13,6 +13,7 @@ pub struct RuneParser {
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct Rune {
+    #[serde(flatten)]
     pub data: WikiRune,
     pub damage_type: DamageType,
     pub minimum_damage: String,

@@ -53,6 +53,7 @@ pub struct ItemDamage {
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct Item {
+    #[serde(flatten)]
     pub data: WikiItem,
     pub damage_type: DamageType,
     pub ranged: ItemDamage,

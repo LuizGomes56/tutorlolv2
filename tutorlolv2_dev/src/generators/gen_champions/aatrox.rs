@@ -2,37 +2,34 @@ use super::*;
 
 impl Generator for Aatrox {
     fn generate(&mut self) -> MayFail {
-        self.ability(
-            Key::P,
-            [
-                (1, _1), /* Innate */
-                (2, _2), /* Innate [1] */
-                (3, _3), /* Innate [2] */
-            ],
-        )
-        .ability(
-            Key::Q,
-            [
-                (0, _1Min), /* First Cast Damage */
-                (1, _1Max), /* First Sweetspot Damage */
-                (4, _2Min), /* Second Cast Damage */
-                (5, _2Max), /* Second Sweetspot Damage */
-                (6, _3Min), /* Third Cast Damage */
-                (7, _3Max), /* Third Sweetspot Damage */
-            ],
-        )
-        .ability(
-            Key::W,
-            [
-                (1, Min), /* Physical Damage */
-                (3, Max), /* Total Damage */
-            ],
-        );
+        self.ability(Key::P, [(1, _1) /* Innate */, (2, _2) /* Innate [1] */])
+            .ability(
+                Key::Q,
+                [
+                    (0, _1Min), /* First Cast Damage */
+                    (1, _1Max), /* First Sweetspot Damage */
+                    (4, _2Min), /* Second Cast Damage */
+                    (5, _2Max), /* Second Sweetspot Damage */
+                    (6, _3Min), /* Third Cast Damage */
+                    (7, _3Max), /* Third Sweetspot Damage */
+                ],
+            )
+            .ability(
+                Key::W,
+                [
+                    (1, Min), /* Physical Damage */
+                    (3, Max), /* Total Damage */
+                ],
+            );
 
+        let pdmg = self.sum([P(_1), P(_2)])?;
         let qmin = self.sum([Q(_1Min), Q(_2Min), Q(_3Min)])?;
         let qmax = self.sum([Q(_1Max), Q(_2Max), Q(_3Max)])?;
 
-        self.clone_to(Q(_1Min), Q(Min), qmin)?
+        self.clone_to(P(_1), P(Void), pdmg)?
+            .delete(P(_1))
+            .delete(P(_2))
+            .clone_to(Q(_1Min), Q(Min), qmin)?
             .clone_to(Q(_1Max), Q(Max), qmax)?
             .attr(
                 Area,
@@ -69,7 +66,7 @@ impl Generator for Aatrox {
                 Ability(Q(_3Max)),
                 Attack,
             ])?
-            .progress(Stable)
+            .progress(Preserve)
             .end()
     }
 }

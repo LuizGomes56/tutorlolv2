@@ -2,7 +2,6 @@ use crate::{
     GeneratorExt, JsonWrite, MayFail,
     client::{SaveTo, Tag},
 };
-use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
 use serde::{Serialize, de::DeserializeOwned};
 use std::{collections::BTreeMap, path::Path};
 use tutorlolv2_fmt::rustfmt;
@@ -34,10 +33,7 @@ where
     }
 
     fn run_all(&self) -> MayFail {
-        for key in self.map().keys() {
-            self.run(key)?
-        }
-        Ok(())
+        self.map().keys().try_for_each(|key| self.run(key))
     }
 
     fn run(&self, id: &str) -> MayFail {
@@ -136,9 +132,7 @@ where
         );
         std::fs::write(&decl, decl_content)?;
 
-        keys.par_iter()
-            .try_for_each(|key| self.create(key).map_err(|e| e.to_string()))
-            .map_err(|e| e.into())
+        keys.into_iter().try_for_each(|key| self.create(key))
     }
 
     fn infer_damage_type(result: &mut String, description: &str) {

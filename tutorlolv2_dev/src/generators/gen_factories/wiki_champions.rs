@@ -3,6 +3,7 @@ use crate::{
     gen_champions::champion_gen_fn, gen_factories::Parser, gen_utils::RegExtractor,
 };
 use serde::{Deserialize, Serialize};
+use serde_with::{Seq, serde_as};
 use std::collections::{BTreeMap, BTreeSet};
 use tutorlolv2_types::{
     AbilityId, AbilityName, Attrs, ComboElement, DamageType, DevMergeData, Key,
@@ -27,11 +28,14 @@ pub struct Ability {
     pub damage: DamageFormula,
 }
 
+#[serde_as]
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct Champion {
+    #[serde(flatten)]
     pub data: WikiChampion,
     pub merge: BTreeSet<DevMergeData>,
     pub combo: Vec<Vec<ComboElement>>,
+    #[serde_as(as = "Seq<(_, _)>")]
     pub abilities: BTreeMap<AbilityId, Ability>,
     progress: Progress,
     version: String,
@@ -57,7 +61,7 @@ impl Parser<WikiChampion, Champion> for ChampionParser {
 
         let mut groups = BTreeMap::<_, Vec<_>>::new();
 
-        for (key, abilities) in &data.abilities {
+        for (key, abilities) in &data.wiki_abilities {
             let mut counter = 1usize;
 
             for (i, ability) in abilities.iter().enumerate() {
@@ -156,7 +160,7 @@ impl Champion {
         pattern: [(usize, AbilityName); N],
     ) -> &mut Self {
         for (i, ability_id) in Self::modify_pattern(key, pattern) {
-            if let Some(abilities) = self.data.abilities.get(&key)
+            if let Some(abilities) = self.data.wiki_abilities.get(&key)
                 && let Some(ability) = abilities.iter().nth(nth)
                 && let Some(effect) = ability.effects.values().nth(i)
             {
@@ -219,6 +223,11 @@ impl Champion {
 
         self.combo.push(combo.to_vec());
         Ok(self)
+    }
+
+    pub fn delete(&mut self, key: AbilityId) -> &mut Self {
+        self.abilities.remove(&key);
+        self
     }
 
     pub fn clone_to(

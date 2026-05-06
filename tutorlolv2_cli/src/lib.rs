@@ -24,6 +24,7 @@ pub struct Cli {
 pub enum RunTarget {
     Champion(ChampionId),
     Item(ItemId),
+    Rune(RuneId),
     All,
 }
 
@@ -35,6 +36,7 @@ impl FromStr for RunTarget {
             "all" | "a" => Ok(Self::All),
             s if let Ok(champion_id) = ChampionId::from_str(s) => Ok(Self::Champion(champion_id)),
             s if let Ok(item_id) = ItemId::from_str(s) => Ok(Self::Item(item_id)),
+            s if let Ok(rune_id) = RuneId::from_str(s) => Ok(Self::Rune(rune_id)),
             _ => from_str_err(s, "ChampionId or ItemId"),
         }
     }
@@ -168,6 +170,7 @@ pub async fn run() -> MayFail {
         GenArgs::Run { target } => match target {
             RunTarget::Champion(champ) => CPARSER.run(champ.debug())?,
             RunTarget::Item(item) => IPARSER.run(item.debug())?,
+            RunTarget::Rune(rune) => RPARSER.run(rune.debug())?,
             RunTarget::All => {
                 CPARSER.run_all()?;
                 IPARSER.run_all()?;
