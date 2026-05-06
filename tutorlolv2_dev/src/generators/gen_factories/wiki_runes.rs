@@ -1,5 +1,5 @@
 use crate::{
-    ENV_CONFIG, JsonRead, MayFail, Progress, client::Tag, gen_factories::Parser,
+    ENV_CONFIG, GeneratorExt, JsonRead, MayFail, Progress, client::Tag, gen_factories::Parser,
     gen_runes::rune_gen_fn,
 };
 use serde::{Deserialize, Serialize};
@@ -21,22 +21,12 @@ pub struct Rune {
     version: String,
 }
 
-impl Parser<Rune> for RuneParser {
+impl Parser<WikiRune, Rune> for RuneParser {
     const TAG: Tag = Tag::Runes;
+    const FN: fn(&str) -> Option<fn(WikiRune) -> Box<dyn GeneratorExt<Rune>>> = rune_gen_fn;
 
-    fn run_fn(&self, id: &str) -> MayFail<Rune> {
-        self.data
-            .get(id)
-            .and_then(|data| {
-                let function = rune_gen_fn(id)?;
-                Some(function(data.clone()))
-            })
-            .ok_or_else(|| format!("[WikiFactory::run] {id} not found"))?
-            .call()
-    }
-
-    fn keys(&self) -> Vec<&str> {
-        self.data.keys().map(String::as_str).collect()
+    fn map(&self) -> &BTreeMap<String, WikiRune> {
+        &self.data
     }
 
     fn create_methods(&self, result: &mut String, id: &str) {

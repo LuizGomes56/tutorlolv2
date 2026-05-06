@@ -1,29 +1,40 @@
 use crate::{
-    JsonWrite, MayFail,
+    GeneratorExt, JsonWrite, MayFail,
     client::{SaveTo, Tag},
 };
 use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
-use serde::Serialize;
-use std::path::Path;
+use serde::{Serialize, de::DeserializeOwned};
+use std::{collections::BTreeMap, path::Path};
 use tutorlolv2_fmt::rustfmt;
 
 pub mod wiki_champions;
 pub mod wiki_items;
 pub mod wiki_runes;
 
-pub trait Parser<T: Serialize>
+pub trait Parser<T: Clone + DeserializeOwned, U: Serialize>
 where
     Self: Sized + Sync,
 {
     const TAG: Tag;
+    const FN: fn(&str) -> Option<fn(T) -> Box<dyn GeneratorExt<U>>>;
 
     fn new() -> MayFail<Self>;
-    fn keys(&self) -> Vec<&str>;
-    fn run_fn(&self, id: &str) -> MayFail<T>;
+    fn map(&self) -> &BTreeMap<String, T>;
     fn create_methods(&self, result: &mut String, id: &str);
 
+    fn run_fn(&self, id: &str) -> MayFail<U> {
+        self.map()
+            .get(id)
+            .and_then(|data| {
+                let function = Self::FN(id)?;
+                Some(function(data.clone()))
+            })
+            .ok_or_else(|| format!("[WikiFactory::run] {id} not found"))?
+            .call()
+    }
+
     fn run_all(&self) -> MayFail {
-        for key in self.keys() {
+        for key in self.map().keys() {
             self.run(key)?
         }
         Ok(())
@@ -41,7 +52,7 @@ where
         let mut preserve = 0;
         let mut unstables = 0;
         let mut total = 0;
-        for name in self.keys() {
+        for name in self.map().keys() {
             if let Ok(data) = std::fs::read_to_string(SaveTo::GeneratorRaw(Self::TAG, name).path())
             {
                 if data.contains("Stable") {
@@ -70,7 +81,7 @@ where
     }
 
     fn create(&self, id: &str) -> MayFail {
-        if !self.keys().contains(&id) {
+        if !self.map().keys().any(|k| k == id) {
             return Err(format!("[WikiFactory::create] {id} not found").into());
         }
 
@@ -111,7 +122,7 @@ where
     }
 
     fn create_all(&self) -> MayFail {
-        let keys = self.keys();
+        let keys = self.map().keys().map(String::as_str).collect::<Vec<_>>();
         let tag = Self::TAG;
 
         let dir = SaveTo::GeneratorDir(tag).path();

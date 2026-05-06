@@ -171,6 +171,7 @@ pub async fn run() -> MayFail {
             RunTarget::All => {
                 CPARSER.run_all()?;
                 IPARSER.run_all()?;
+                RPARSER.run_all()?;
             }
         },
         GenArgs::Progress => CPARSER.progress(),

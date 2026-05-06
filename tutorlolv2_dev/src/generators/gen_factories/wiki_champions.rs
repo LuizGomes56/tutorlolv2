@@ -1,6 +1,6 @@
 use crate::{
-    ENV_CONFIG, JsonRead, MayFail, Progress, client::Tag, gen_champions::champion_gen_fn,
-    gen_factories::Parser, gen_utils::RegExtractor,
+    ENV_CONFIG, GeneratorExt, JsonRead, MayFail, Progress, client::Tag,
+    gen_champions::champion_gen_fn, gen_factories::Parser, gen_utils::RegExtractor,
 };
 use serde::{Deserialize, Serialize};
 use std::collections::{BTreeMap, BTreeSet};
@@ -37,8 +37,10 @@ pub struct Champion {
     version: String,
 }
 
-impl Parser<Champion> for ChampionParser {
+impl Parser<WikiChampion, Champion> for ChampionParser {
     const TAG: Tag = Tag::Champions;
+    const FN: fn(&str) -> Option<fn(WikiChampion) -> Box<dyn GeneratorExt<Champion>>> =
+        champion_gen_fn;
 
     fn new() -> MayFail<Self> {
         Ok(Self {
@@ -46,19 +48,8 @@ impl Parser<Champion> for ChampionParser {
         })
     }
 
-    fn keys(&self) -> Vec<&str> {
-        self.data.keys().map(String::as_str).collect()
-    }
-
-    fn run_fn(&self, champion_id: &str) -> MayFail<Champion> {
-        self.data
-            .get(champion_id)
-            .and_then(|data| {
-                let function = champion_gen_fn(champion_id)?;
-                Some(function(data.clone()))
-            })
-            .ok_or_else(|| format!("[WikiFactory::run] {champion_id} not found"))?
-            .call()
+    fn map(&self) -> &BTreeMap<String, WikiChampion> {
+        &self.data
     }
 
     fn create_methods(&self, result: &mut String, id: &str) {

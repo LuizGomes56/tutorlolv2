@@ -1,5 +1,5 @@
 use crate::{
-    ENV_CONFIG, JsonRead, MayFail, Progress, client::Tag, gen_factories::Parser,
+    ENV_CONFIG, GeneratorExt, JsonRead, MayFail, Progress, client::Tag, gen_factories::Parser,
     gen_items::item_gen_fn,
 };
 use serde::{Deserialize, Serialize};
@@ -11,22 +11,12 @@ pub struct ItemParser {
     pub data: BTreeMap<String, WikiItem>,
 }
 
-impl Parser<Item> for ItemParser {
+impl Parser<WikiItem, Item> for ItemParser {
     const TAG: Tag = Tag::Items;
+    const FN: fn(&str) -> Option<fn(WikiItem) -> Box<dyn GeneratorExt<Item>>> = item_gen_fn;
 
-    fn run_fn(&self, id: &str) -> MayFail<Item> {
-        self.data
-            .get(id)
-            .and_then(|data| {
-                let function = item_gen_fn(id)?;
-                Some(function(data.clone()))
-            })
-            .ok_or_else(|| format!("[WikiFactory::run] {id} not found"))?
-            .call()
-    }
-
-    fn keys(&self) -> Vec<&str> {
-        self.data.keys().map(String::as_str).collect()
+    fn map(&self) -> &BTreeMap<String, WikiItem> {
+        &self.data
     }
 
     fn create_methods(&self, result: &mut String, id: &str) {
