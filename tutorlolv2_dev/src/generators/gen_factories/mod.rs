@@ -2,6 +2,7 @@ use crate::{
     GeneratorExt, JsonWrite, MayFail,
     client::{SaveTo, Tag},
 };
+use rayon::iter::{IntoParallelRefIterator, ParallelBridge, ParallelIterator};
 use serde::{Serialize, de::DeserializeOwned};
 use std::{collections::BTreeMap, path::Path};
 use tutorlolv2_fmt::rustfmt;
@@ -10,16 +11,18 @@ pub mod wiki_champions;
 pub mod wiki_items;
 pub mod wiki_runes;
 
-pub trait Parser<T: Clone + DeserializeOwned, U: Serialize>
+pub trait Parser<T, U>
 where
     Self: Sized + Sync,
+    T: Clone + DeserializeOwned + Send + Sync + 'static,
+    U: Serialize,
 {
     const TAG: Tag;
     const FN: fn(&str) -> Option<fn(T) -> Box<dyn GeneratorExt<U>>>;
 
     fn new() -> MayFail<Self>;
     fn map(&self) -> &BTreeMap<String, T>;
-    fn create_methods(&self, result: &mut String, id: &str);
+    fn create_methods(&self, result: &mut String, id: &str) -> bool;
 
     fn run_fn(&self, id: &str) -> MayFail<U> {
         self.map()
@@ -33,7 +36,10 @@ where
     }
 
     fn run_all(&self) -> MayFail {
-        self.map().keys().try_for_each(|key| self.run(key))
+        self.map()
+            .keys()
+            .par_bridge()
+            .try_for_each(|key| self.run(key))
     }
 
     fn run(&self, id: &str) -> MayFail {
@@ -49,8 +55,7 @@ where
         let mut unstables = 0;
         let mut total = 0;
         for name in self.map().keys() {
-            if let Ok(data) = std::fs::read_to_string(SaveTo::GeneratorRaw(Self::TAG, name).path())
-            {
+            if let Ok(data) = crate::read_to_string(SaveTo::GeneratorRaw(Self::TAG, name).path()) {
                 if data.contains("Stable") {
                     stables += 1;
                 } else if data.contains("Preserve") {
@@ -81,7 +86,7 @@ where
             return Err(format!("[WikiFactory::create] {id} not found").into());
         }
 
-        if let Ok(text) = std::fs::read_to_string(SaveTo::GeneratorRaw(Self::TAG, id).path())
+        if let Ok(text) = crate::read_to_string(SaveTo::GeneratorRaw(Self::TAG, id).path())
             && (text.contains(".progress(Stable)") || text.contains(".progress(Preserve)"))
         {
             println!("[stable] Skipping generator for {id:?}");
@@ -95,44 +100,55 @@ where
                 fn generate(&mut self) -> MayFail {{ self"
         );
 
-        self.create_methods(&mut result, id);
-
-        result.push_str(".end()}}");
-
-        let formatted = rustfmt(&result, None);
-        let content = match formatted.is_empty() {
-            true => result,
-            false => formatted,
-        };
-
         let path = SaveTo::GeneratorRaw(Self::TAG, id).path();
-
-        println!("[write] {path:?}");
-
         let dir = SaveTo::GeneratorDir(Self::TAG).path();
 
-        std::fs::create_dir_all(dir)?;
-        std::fs::write(&path, content)?;
+        crate::create_dir_all(dir)?;
 
-        Ok(())
+        match self.create_methods(&mut result, id) {
+            true => {
+                result.push_str(".end()}}");
+
+                let formatted = rustfmt(&result, None);
+                let content = match formatted.is_empty() {
+                    true => result,
+                    false => formatted,
+                };
+
+                crate::write(&path, content)
+            }
+            false => Ok(crate::remove_file(&path)),
+        }
     }
 
     fn create_all(&self) -> MayFail {
         let keys = self.map().keys().map(String::as_str).collect::<Vec<_>>();
         let tag = Self::TAG;
 
-        let dir = SaveTo::GeneratorDir(tag).path();
-        std::fs::create_dir_all(&dir)?;
+        let dir_loc = SaveTo::GeneratorDir(tag).path();
+        let dir = Path::new(&dir_loc);
+        crate::create_dir_all(dir)?;
 
-        let decl = Path::new(&dir).join("mod").with_extension("rs");
+        let decl = dir.join("mod").with_extension("rs");
+        let module = format_args!("decl_{tag}");
 
-        let decl_content = format!(
-            "mod __decl;\nuse __decl::*;\ncrate::decl_{tag}!(\n\t{modules}\n);",
-            modules = keys.join(",\n\t"),
-        );
-        std::fs::write(&decl, decl_content)?;
+        keys.par_iter().try_for_each(|key| self.create(key))?;
 
-        keys.into_iter().try_for_each(|key| self.create(key))
+        let modules = keys
+            .iter()
+            .copied()
+            .filter_map(|key| {
+                let loc = SaveTo::GeneratorRaw(Self::TAG, key).path();
+                Path::new(&loc).exists().then_some(key)
+            })
+            .collect::<Vec<_>>()
+            .join(",\n\t");
+
+        let decl_content = format!("use super::{module}::*;\ncrate::{module}!(\n\t{modules}\n);",);
+
+        crate::write(&decl, decl_content)?;
+
+        Ok(())
     }
 
     fn infer_damage_type(result: &mut String, description: &str) {

@@ -2,6 +2,6 @@ use super::*;
 
 impl Generator for CrystallineOvergrowth {
     fn generate(&mut self) -> MayFail {
-        self.min(Passive)?.damage_type(True).end()
+        self.damage_type(True).min(Passive)?.end()
     }
 }

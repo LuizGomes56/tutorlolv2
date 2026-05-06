@@ -56,7 +56,7 @@ impl Parser<WikiChampion, Champion> for ChampionParser {
         &self.data
     }
 
-    fn create_methods(&self, result: &mut String, id: &str) {
+    fn create_methods(&self, result: &mut String, id: &str) -> bool {
         let data = &self.data[id];
 
         let mut groups = BTreeMap::<_, Vec<_>>::new();
@@ -110,6 +110,8 @@ impl Parser<WikiChampion, Champion> for ChampionParser {
 
             result.push_str(&format!("Key::{key:?}, [{args}])"));
         }
+
+        true
     }
 }
 

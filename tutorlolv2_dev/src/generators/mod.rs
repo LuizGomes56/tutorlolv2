@@ -1,6 +1,9 @@
 use crate::MayFail;
 use serde::{Deserialize, Serialize};
 
+pub mod decl_champions;
+pub mod decl_items;
+pub mod decl_runes;
 pub mod gen_champions;
 pub mod gen_factories;
 pub mod gen_items;

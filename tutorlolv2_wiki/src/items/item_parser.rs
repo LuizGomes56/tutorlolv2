@@ -5,7 +5,7 @@ use crate::{
 };
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
-use tutorlolv2_fmt::{pascal_case, to_ssnake};
+use tutorlolv2_fmt::pascal_case;
 use tutorlolv2_types::Key;
 
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]

@@ -30,8 +30,15 @@ impl Parser<WikiRune, Rune> for RuneParser {
         &self.data
     }
 
-    fn create_methods(&self, result: &mut String, id: &str) {
+    fn create_methods(&self, result: &mut String, id: &str) -> bool {
         let data = &self.data[id];
+
+        for description in &data.descriptions {
+            match description.contains("damage") {
+                true => Self::infer_damage_type(result, &description),
+                false => return false,
+            }
+        }
 
         for (i, (key, effect)) in data.effects.iter().enumerate() {
             if effect.formula.is_some() {
@@ -39,9 +46,7 @@ impl Parser<WikiRune, Rune> for RuneParser {
             }
         }
 
-        for description in &data.descriptions {
-            Self::infer_damage_type(result, &description)
-        }
+        true
     }
 
     fn new() -> MayFail<Self> {

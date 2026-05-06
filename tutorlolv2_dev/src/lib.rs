@@ -10,12 +10,12 @@ pub use serde::{Serialize, de::DeserializeOwned};
 pub use setup::*;
 
 use rayon::iter::{FromParallelIterator, IntoParallelIterator, ParallelBridge, ParallelIterator};
-use std::{collections::HashMap, path::Path};
+use std::{collections::HashMap, fs::DirEntry, path::Path};
 
 /// Alias type for [`Result`] that accepts anything that implements the trait
 /// [`std::error::Error`]. Since the application doesn't need detailed errors,
 /// this can be used to propagate almost all existing errors
-pub type MayFail<T = (), E = Box<dyn core::error::Error>> = Result<T, E>;
+pub type MayFail<T = (), E = Box<dyn core::error::Error + Send + Sync + 'static>> = Result<T, E>;
 
 /// Custom trait that allows to deserialize a JSON instance
 /// by providing only the file path and the desired type
@@ -23,8 +23,7 @@ pub trait JsonRead: DeserializeOwned {
     /// Receives a file path and deserializes the target JSON file into the
     /// struct that called this function as method.
     fn from_file(path: impl AsRef<Path>) -> MayFail<Self> {
-        println!("[read] {:?}", path.as_ref());
-        let data = std::fs::read(path)?;
+        let data = read(path)?;
         Ok(serde_json::from_slice(&data)?)
     }
 
@@ -50,8 +49,7 @@ pub trait JsonRead: DeserializeOwned {
 /// without their extensions
 pub fn get_file_names(path: impl AsRef<Path>) -> MayFail<Vec<String>> {
     let mut result = Vec::new();
-    for entry in std::fs::read_dir(path)? {
-        let entry = entry?;
+    for entry in read_dir(path)? {
         let path = entry.path();
         let name = path
             .file_stem()
@@ -72,7 +70,7 @@ pub trait JsonWrite: Serialize {
     fn into_file(&self, path: impl AsRef<Path>) -> MayFail {
         println!("[write] {:?}", path.as_ref());
         let data = serde_json::to_string_pretty(self)?;
-        Ok(std::fs::write(path, data.as_bytes())?)
+        Ok(write(path, data.as_bytes())?)
     }
 }
 
@@ -85,17 +83,11 @@ pub trait FileWrite: AsRef<[u8]> {
     /// Resolves the provided path and save the contents into the provided
     /// file path
     fn write_file(&self, path: impl AsRef<Path>) -> MayFail {
-        Ok(std::fs::write(path, self)?)
+        Ok(write(path, self)?)
     }
 }
 
 impl<T> FileWrite for T where T: AsRef<[u8]> {}
-
-/// Resolves the file path and returns a vector with the bytes found in the provided
-/// file path. Wrapper around the standard library [`std::fs::read`]
-pub fn read_file(path: impl AsRef<Path>) -> MayFail<Vec<u8>> {
-    Ok(std::fs::read(path)?)
-}
 
 #[track_caller]
 pub fn parallel_read<P, F, T, R, C>(path: P, f: F) -> MayFail<C>
@@ -106,9 +98,7 @@ where
     R: Send,
     C: FromParallelIterator<R>,
 {
-    let result = std::fs::read_dir(path)
-        .map_err(|e| format!("[error] Unable to read directory path in fn [parallel_read]: {e:?}"))?
-        .filter_map(Result::ok)
+    let result = read_dir(path)?
         .par_bridge()
         .into_par_iter()
         .filter_map(|entry| {
@@ -118,7 +108,7 @@ where
 
             println!("[parallel] Processing {file_name:?}");
 
-            let Ok(bytes) = std::fs::read(entry.path()) else {
+            let Ok(bytes) = read(entry.path()) else {
                 panic!("[error] Failed to read file bytes for entry: {entry:?}");
             };
 
@@ -137,4 +127,50 @@ where
         .collect::<C>();
 
     Ok(result)
+}
+
+pub fn write(path: impl AsRef<Path>, data: impl AsRef<[u8]>) -> MayFail {
+    let path = path.as_ref();
+
+    if let Some(parent) = path.parent()
+        && !parent.as_os_str().is_empty()
+    {
+        std::fs::create_dir_all(parent)?;
+    }
+
+    std::fs::write(path, data)
+        .map_err(|e| format!("[write] Error writing file: {path:?}: {e:?}").into())
+}
+
+pub fn read(path: impl AsRef<Path>) -> MayFail<Vec<u8>> {
+    let path = path.as_ref();
+    std::fs::read(path).map_err(|e| format!("[read] Error reading file: {path:?}: {e:?}").into())
+}
+
+pub fn read_to_string(path: impl AsRef<Path>) -> MayFail<String> {
+    let path = path.as_ref();
+    std::fs::read_to_string(path)
+        .map_err(|e| format!("[read] Error reading file: {path:?}: {e:?}").into())
+}
+
+pub fn read_dir(path: impl AsRef<Path>) -> MayFail<impl Iterator<Item = DirEntry>> {
+    let path = path.as_ref();
+    Ok(std::fs::read_dir(path)
+        .map_err(|e| format!("[error] Unable to read directory path: {e:?}"))?
+        .filter_map(Result::ok))
+}
+
+pub fn remove_file(path: impl AsRef<Path>) {
+    let path = path.as_ref();
+    if let Err(e) = std::fs::remove_file(path)
+        && !e.kind().eq(&std::io::ErrorKind::NotFound)
+    {
+        println!("[remove_file] Error removing file: {path:?}: {e:?}");
+    }
+}
+
+pub fn create_dir_all(path: impl AsRef<Path>) -> MayFail {
+    let path = path.as_ref();
+    std::fs::create_dir_all(path)
+        .map_err(|e| format!("[create_dir_all] Error creating directory: {path:?}: {e:?}").into())
 }

@@ -1,5 +1,4 @@
-mod __decl;
-use __decl::*;
+use super::decl_champions::*;
 crate::decl_champions!(
 	Aatrox,
 	Ahri,

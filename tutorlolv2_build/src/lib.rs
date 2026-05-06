@@ -13,7 +13,7 @@ use tutorlolv2_fmt::encode_brotli_11;
 
 mod scripts;
 
-pub type MayFail<T = ()> = Result<T, Box<dyn std::error::Error>>;
+pub type MayFail<T = ()> = Result<T, Box<dyn std::error::Error + Send + Sync + 'static>>;
 pub type GeneratorClosure = Box<dyn FnOnce(usize) -> Generated + Send + Sync + 'static>;
 pub type GeneratorFn = MayFail<GeneratorClosure>;
 

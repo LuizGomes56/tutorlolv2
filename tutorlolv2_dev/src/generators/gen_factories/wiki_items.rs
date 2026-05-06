@@ -19,8 +19,20 @@ impl Parser<WikiItem, Item> for ItemParser {
         &self.data
     }
 
-    fn create_methods(&self, result: &mut String, id: &str) {
+    fn create_methods(&self, result: &mut String, id: &str) -> bool {
         let data = &self.data[id];
+
+        match data.effects.act.as_ref().or(data.effects.pass.as_ref()) {
+            Some(ie) => {
+                let description = &ie.effect.inner.description;
+
+                match description.contains("damage") {
+                    true => Self::infer_damage_type(result, description),
+                    false => return false,
+                }
+            }
+            None => return false,
+        }
 
         let mut new_method = |field: &Option<ItemEffect>, tag| {
             if let Some(ie) = &field
@@ -33,9 +45,7 @@ impl Parser<WikiItem, Item> for ItemParser {
         new_method(&data.effects.act, "Active");
         new_method(&data.effects.pass, "Passive");
 
-        if let Some(ie) = data.effects.act.as_ref().or(data.effects.pass.as_ref()) {
-            Self::infer_damage_type(result, &ie.effect.inner.description);
-        }
+        true
     }
 
     fn new() -> MayFail<Self> {

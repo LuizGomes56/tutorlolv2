@@ -97,7 +97,7 @@ pub fn setup_project_folders() -> MayFail {
 pub fn setup_internal_items() -> MayFail {
     let dir = SaveTo::InternalDir(Tag::Items).path();
     std::fs::remove_dir_all(&dir)?;
-    std::fs::create_dir(dir)?;
+    crate::create_dir_all(dir)?;
 
     let all_names: Vec<(_, _)> = parallel_read(
         SaveTo::RiotItemsDir.path(),

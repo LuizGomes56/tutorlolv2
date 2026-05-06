@@ -6,8 +6,8 @@ use crate::{
     init::ENV_CONFIG,
     items::MerakiItem,
     model::riot::{RiotCdnChampion, RiotCdnRune},
-    read_file,
     riot::RiotCdnStandard,
+    selector,
     update::setup_project_folders,
 };
 use reqwest::Client;
@@ -256,7 +256,7 @@ impl HttpClient {
         F: FnOnce(Self, String, T) -> Fut + 'static + Copy + Send + Sync,
         Fut: Future<Output = MayFail> + Send,
     {
-        let entries = std::fs::read_dir(dir.path())?.filter_map(Result::ok);
+        let entries = crate::read_dir(dir.path())?;
         let (lower, upper) = entries.size_hint();
         let mut futures = Vec::with_capacity(upper.unwrap_or(lower));
         let semaphore = Arc::new(Semaphore::new(limit));
@@ -666,13 +666,13 @@ impl HttpClient {
 
             tokio::task::spawn_blocking(move || {
                 let run_task = || -> MayFail {
-                    let bytes = read_file(path)?;
-                    let html = Html::parse_document(&String::from_utf8(bytes)?);
+                    let bytes = crate::read_to_string(path)?;
+                    let html = Html::parse_document(&bytes);
 
                     let mut result = Vec::<Vec<String>>::new();
 
-                    let combo_section = Selector::parse("div.m-1o7d3sk").unwrap();
-                    let combo_span = Selector::parse("span.m-1pm4585.e1o1aytf0").unwrap();
+                    let combo_section = selector("div.m-1o7d3sk")?;
+                    let combo_span = selector("span.m-1pm4585.e1o1aytf0")?;
 
                     for combo_div in html.select(&combo_section) {
                         let mut combo_strings = Vec::new();
@@ -726,18 +726,18 @@ impl HttpClient {
 
                     tokio::task::spawn_blocking(move || {
                         let run_task = || -> MayFail {
-                            let html = std::fs::read_to_string(&cache_path)
+                            let html = crate::read_to_string(&cache_path)
                                 .map_err(|e| format!("Failed to read file: {cache_path}: {e:?}"))?;
 
                             let document = Html::parse_document(&html);
-                            let full_build =
-                                Selector::parse(".m-1q4a7cx:nth-of-type(4) > div > div img")
-                                    .unwrap();
-                            let situational_build =
-                                Selector::parse(".m-s76v8c > div > div img").unwrap();
-                            let rune_selector = Selector::parse("img.m-1nx2cdb").unwrap();
-                            let legend_selector = Selector::parse("img.m-1u3ui07").unwrap();
+                            let full_build = selector(".m-1q4a7cx:nth-of-type(4) > div > div img")?;
+                            let situational_build = selector(".m-s76v8c > div > div img")?;
+                            let rune_selector = selector("img.m-1nx2cdb")?;
+                            let legend_selector = selector("img.m-1u3ui07")?;
+
+                            let mut items = BTreeSet::<String>::new();
                             let mut runes = BTreeSet::<String>::new();
+
                             fn push_alt_attr<T: Debug>(
                                 document: &Html,
                                 array: &mut BTreeSet<String>,
@@ -761,8 +761,6 @@ impl HttpClient {
                                     }
                                 }
                             }
-
-                            let mut items = BTreeSet::<String>::new();
 
                             push_alt_attr(
                                 &document,
