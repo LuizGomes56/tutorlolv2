@@ -1,5 +1,7 @@
 use crate::{
-    ENV_CONFIG, GeneratorExt, JsonRead, MayFail, Progress, client::Tag, gen_factories::Parser,
+    ENV_CONFIG, GeneratorExt, JsonRead, MayFail, Progress,
+    client::Tag,
+    gen_factories::{Parser, infer_damage_type, likely_damages},
     gen_items::item_gen_fn,
 };
 use serde::{Deserialize, Serialize};
@@ -26,8 +28,8 @@ impl Parser<WikiItem, Item> for ItemParser {
             Some(ie) => {
                 let description = &ie.effect.inner.description;
 
-                match description.contains("damage") {
-                    true => Self::infer_damage_type(result, description),
+                match likely_damages(description) {
+                    true => infer_damage_type(result, description),
                     false => return false,
                 }
             }

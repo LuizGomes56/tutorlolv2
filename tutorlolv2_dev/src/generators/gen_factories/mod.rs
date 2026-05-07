@@ -150,19 +150,37 @@ where
 
         Ok(())
     }
+}
 
-    fn infer_damage_type(result: &mut String, description: &str) {
-        if let Some(dtype) = ["physical", "physical", "true"]
-            .into_iter()
-            .find(|d| description.to_lowercase().contains(d))
-        {
-            let alias = dtype
-                .chars()
-                .next()
-                .map(|c| c.to_uppercase().collect::<String>() + &dtype[1..])
-                .unwrap_or(dtype.to_string());
+pub fn likely_damages(text: &str) -> bool {
+    let mut isad = false;
 
-            result.push_str(&format!(".damage_type({alias})"));
+    for word in text.split(|c: char| !c.is_ascii_alphabetic()) {
+        if word.is_empty() {
+            continue;
         }
+
+        if word.eq_ignore_ascii_case("damage") {
+            return !isad;
+        }
+
+        isad = word.eq_ignore_ascii_case("attack");
+    }
+
+    false
+}
+
+pub fn infer_damage_type(result: &mut String, description: &str) {
+    if let Some(dtype) = ["physical", "physical", "true"]
+        .into_iter()
+        .find(|d| description.to_lowercase().contains(d))
+    {
+        let alias = dtype
+            .chars()
+            .next()
+            .map(|c| c.to_uppercase().collect::<String>() + &dtype[1..])
+            .unwrap_or(dtype.to_string());
+
+        result.push_str(&format!(".damage_type({alias})"));
     }
 }
