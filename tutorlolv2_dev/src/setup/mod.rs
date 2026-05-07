@@ -2,6 +2,7 @@ use crate::MayFail;
 use scraper::Selector;
 
 pub mod client;
+pub mod riot;
 pub mod update;
 
 pub fn selector(selectors: &str) -> MayFail<Selector> {

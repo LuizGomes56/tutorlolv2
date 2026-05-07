@@ -190,12 +190,13 @@ pub async fn run() -> MayFail {
         GenArgs::Html => tutorlolv2_html::run(),
         GenArgs::Setup { setup } => match setup {
             Setup::Items => {
-                update::setup_damaging_items()?;
-                update::setup_runes_json()?;
-                update::setup_internal_items()?;
-                update::prettify_internal_items()?;
+                /* update::setup_runes_json()? */
+                todo!()
             }
-            Setup::Prettify => update::prettify_internal_items()?,
+            Setup::Prettify => {
+                /* update::prettify_internal_items()? */
+                todo!()
+            }
             Setup::Folders => update::setup_project_folders()?,
         },
         GenArgs::Build => {

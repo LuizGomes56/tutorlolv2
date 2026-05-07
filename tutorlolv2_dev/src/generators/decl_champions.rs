@@ -71,6 +71,10 @@ macro_rules! decl_champions {
             }
         )*
 
+        pub fn champion_ids() -> &'static [&'static str] {
+            &[$(stringify!($Name)),*]
+        }
+
         pub fn champion_gen_fn(champion_id: &str) -> Option<
             fn(WikiChampion) -> Box<dyn GeneratorExt<Champion>>
         > {
