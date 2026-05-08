@@ -1,6 +1,7 @@
 use super::*;
 
 impl Generator for Kled {
+    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
         self.ability(Key::P, [(1, _1) /* Innate */])
             .ability_nth(

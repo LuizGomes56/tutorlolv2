@@ -1,6 +1,7 @@
 use super::*;
 
 impl Generator for Draven {
+    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
         self.ability(Key::Q, [(0, _1) /* Bonus Physical Damage */])
             .ability(Key::E, [(0, _1) /* Physical Damage */])

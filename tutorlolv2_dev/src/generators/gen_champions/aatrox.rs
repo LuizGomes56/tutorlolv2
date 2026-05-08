@@ -66,7 +66,6 @@ impl Generator for Aatrox {
                 Ability(Q(_3Max)),
                 Attack,
             ])?
-            .progress(Preserve)
             .end()
     }
 }

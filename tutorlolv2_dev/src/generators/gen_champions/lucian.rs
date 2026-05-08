@@ -1,6 +1,7 @@
 use super::*;
 
 impl Generator for Lucian {
+    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
         self.ability(
             Key::P,

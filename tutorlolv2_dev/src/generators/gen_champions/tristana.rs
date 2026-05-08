@@ -1,6 +1,7 @@
 use super::*;
 
 impl Generator for Tristana {
+    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
         self.ability(Key::W, [(0, _1) /* Magic Damage */])
             .ability(

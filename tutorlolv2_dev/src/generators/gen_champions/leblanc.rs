@@ -1,6 +1,7 @@
 use super::*;
 
 impl Generator for Leblanc {
+    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
         self.ability(Key::P, [(2, _1) /* Innate */])
             .ability(

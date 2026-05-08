@@ -1,6 +1,7 @@
 use super::*;
 
 impl Generator for AurelionSol {
+    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
         self.ability(Key::P, [(0, _1) /* Innate */])
             .ability(

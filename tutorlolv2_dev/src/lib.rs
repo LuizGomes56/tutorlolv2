@@ -32,9 +32,15 @@ pub trait JsonRead: DeserializeOwned {
     /// files inside the directory should have the same JSON structure, and if the
     /// deserialization fails for some file, it is skipped
     fn from_dir(path: impl AsRef<Path>) -> MayFail<HashMap<String, Self>> {
-        Ok(get_file_names(&path)?
+        Ok(read_dir(&path)?
             .into_iter()
-            .filter_map(|file_name| {
+            .filter_map(|entry| {
+                let entry_name = entry.file_name().to_string_lossy().into_owned();
+                let file_name = entry_name
+                    .strip_suffix(".json")
+                    .unwrap_or(&entry_name)
+                    .to_string();
+
                 let data =
                     Self::from_file(path.as_ref().join(&file_name).with_extension("json")).ok()?;
                 Some((file_name, data))
@@ -43,30 +49,15 @@ pub trait JsonRead: DeserializeOwned {
     }
 }
 
-/// Returns a vector containing the absolute file names found in a directory,
-/// without their extensions
-pub fn get_file_names(path: impl AsRef<Path>) -> MayFail<Vec<String>> {
-    let mut result = Vec::new();
-    for entry in read_dir(path)? {
-        let path = entry.path();
-        let name = path
-            .file_stem()
-            .ok_or("Can't recover file_stem")?
-            .to_str()
-            .ok_or("Could not convert file_stem to str")?
-            .to_string();
-        result.push(name);
-    }
-    Ok(result)
-}
-
 /// Provides a method to convert any type that implements trait [`Serialize`]
 /// to a json file, and save to the provided path as a pretty-printed json
 pub trait JsonWrite: Serialize {
     /// Saves a struct that implements [`Serialize`] into the provided file path
     /// as a pretty-printed json
     fn into_file(&self, path: impl AsRef<Path>) -> MayFail {
-        println!("[write] {:?}", path.as_ref());
+        let path = path.as_ref();
+        println!("[write] {path:?}");
+
         let data = serde_json::to_string_pretty(self)?;
         Ok(write(path, data.as_bytes())?)
     }
@@ -133,7 +124,7 @@ pub fn write(path: impl AsRef<Path>, data: impl AsRef<[u8]>) -> MayFail {
     if let Some(parent) = path.parent()
         && !parent.as_os_str().is_empty()
     {
-        std::fs::create_dir_all(parent)?;
+        create_dir_all(parent)?;
     }
 
     std::fs::write(path, data)

@@ -172,18 +172,18 @@ pub async fn run() -> MayFail {
             RunTarget::Item(item) => IPARSER.run(item.debug())?,
             RunTarget::Rune(rune) => RPARSER.run(rune.debug())?,
             RunTarget::All => {
-                CPARSER.run_all()?;
-                IPARSER.run_all()?;
-                RPARSER.run_all()?;
+                CPARSER.run_all();
+                IPARSER.run_all();
+                RPARSER.run_all();
             }
         },
         GenArgs::Progress => CPARSER.progress(),
         GenArgs::Update => {
             update::setup_project_folders()?;
             CPARSER.create_all()?;
-            CPARSER.run_all()?;
+            CPARSER.run_all();
             IPARSER.create_all()?;
-            IPARSER.run_all()?;
+            IPARSER.run_all();
             std::env::set_current_dir("./tutorlolv2_build")?;
             tutorlolv2_build::run()?;
         }

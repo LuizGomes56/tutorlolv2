@@ -1,6 +1,7 @@
 use super::*;
 
 impl Generator for Shyvana {
+    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
         self.ability(
             Key::Q,

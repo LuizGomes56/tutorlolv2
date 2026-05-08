@@ -31,7 +31,7 @@ macro_rules! decl_champions {
             impl $Name {
                 pub fn new(data: WikiChampion) -> Box<dyn GeneratorExt<Champion>> {
                     Box::new(Self {
-                        inner: Champion::new(data)
+                        inner: Champion::from(data)
                     })
                 }
             }

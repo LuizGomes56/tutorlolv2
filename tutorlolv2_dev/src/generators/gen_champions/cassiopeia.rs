@@ -1,6 +1,7 @@
 use super::*;
 
 impl Generator for Cassiopeia {
+    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
         self.ability(
             Key::Q,

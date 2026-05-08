@@ -14,12 +14,7 @@ pub use tutorlolv2_wiki::items::item_parser::WikiItem;
 macro_rules! decl_items {
     (inner $Name:ident) => {
         pastey::paste! {
-            pub mod [<
-                $Name:snake
-                    :lower
-                    :replace("b_f", "bf")
-                    :replace("c44", "c_44")
-            >];
+            pub mod [<$Name:snake:lower:replace("c44", "c_44")>];
         }
     };
     ($($Name:ident),*$(,)*) => {
@@ -33,7 +28,7 @@ macro_rules! decl_items {
             impl $Name {
                 pub fn new(data: WikiItem) -> Box<dyn GeneratorExt<Item>> {
                     Box::new(Self {
-                        inner: Item::new(data)
+                        inner: Item::from(data)
                     })
                 }
             }

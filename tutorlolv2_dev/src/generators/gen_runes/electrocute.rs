@@ -1,6 +1,7 @@
 use super::*;
 
 impl Generator for Electrocute {
+    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
         self.damage_type(Physical)
             .damage_type(Physical)

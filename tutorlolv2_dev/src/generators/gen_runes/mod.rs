@@ -2,7 +2,6 @@ use super::decl_runes::*;
 crate::decl_runes!(
 	ArcaneComet,
 	BonePlating,
-	Conqueror,
 	CoupDeGrace,
 	CutDown,
 	DeathfireTouch,

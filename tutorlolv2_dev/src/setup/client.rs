@@ -2,7 +2,6 @@ use crate::{
     EnvConfig, FileWrite, JsonRead, JsonWrite, MayFail,
     gen_champions::champion_ids,
     gen_utils::RegExtractor,
-    get_file_names,
     init::ENV_CONFIG,
     riot::RiotCdnStandard,
     selector,
@@ -24,6 +23,7 @@ use tokio::{sync::Semaphore, task::JoinHandle};
 use tutorlolv2_fmt::{pascal_case, to_ssnake};
 use tutorlolv2_types::{Key, Position};
 
+#[derive(Copy, Clone)]
 pub enum SaveTo<'a> {
     GeneratorDir(Tag),
     GeneratorRaw(Tag, &'a str),
@@ -56,7 +56,7 @@ pub enum SaveTo<'a> {
     InternalScraperCombos(&'a str),
 }
 
-#[derive(Clone, Copy)]
+#[derive(Copy, Clone, Debug, PartialEq, Eq)]
 pub enum Tag {
     Items,
     Champions,
@@ -80,6 +80,7 @@ impl Display for Tag {
 impl<'a> SaveTo<'a> {
     pub fn path(&self) -> String {
         let img = "raw_img";
+
         match self {
             SaveTo::GeneratorDir(tag) => format!("tutorlolv2_dev/src/generators/gen_{tag}"),
             SaveTo::GeneratorRaw(tag, s) => {
@@ -128,6 +129,7 @@ impl<'a> SaveTo<'a> {
     }
 }
 
+#[derive(Copy, Clone, Debug, PartialEq, Eq)]
 pub enum DDragon<'a> {
     Champion(&'a str),
     Passive(&'a str),
@@ -176,6 +178,7 @@ impl<'a> DDragon<'a> {
 /// Wrapper around [`reqwest::Client`] that adds methods to
 /// download files and cache then to avoid repeated requests
 #[derive(Clone)]
+#[repr(transparent)]
 pub struct HttpClient(Client);
 
 impl From<Client> for HttpClient {
@@ -202,6 +205,7 @@ impl HttpClient {
     pub async fn download(&self, url: impl AsRef<str>, save_to: impl AsRef<Path>) -> MayFail {
         let url = url.as_ref();
         let save_to = save_to.as_ref();
+
         match save_to.try_exists() {
             Ok(true) => {
                 println!("[exists] {save_to:?}");
@@ -210,10 +214,7 @@ impl HttpClient {
             Ok(false) => {
                 println!("[download] {url}");
                 match self.get(url).send().await {
-                    Ok(response) => {
-                        let bytes = response.bytes().await?;
-                        bytes.write_file(save_to)
-                    }
+                    Ok(response) => response.bytes().await?.write_file(save_to),
                     Err(e) => {
                         println!("[error] {e}");
                         Err(e.into())
@@ -272,10 +273,11 @@ impl HttpClient {
     /// Skips images that have already been downloaded
     pub async fn download_general_img(&self) -> MayFail {
         println!("Called fn [download_general_img]");
+
         self.parallel_task(
             4,
             SaveTo::RiotChampionsDir,
-            async move |client, fname, champion: RiotCdnChampion| {
+            async move |client, _, champion: RiotCdnChampion| {
                 let champion_id = &champion.id;
 
                 client
@@ -315,95 +317,86 @@ impl HttpClient {
     /// that have already been downloaded, and does not skip the ones that
     /// throw an error
     pub async fn download_items_img(&self) -> MayFail {
-        let riot_items = get_file_names(SaveTo::RiotItemsDir.path())?;
-        let mut futures = Vec::new();
+        println!("Called fn [download_items_img]");
 
-        for item_id in riot_items {
-            let client = self.clone();
-            futures.push(tokio::spawn(async move {
-                let _ = client
+        self.parallel_task(
+            4,
+            SaveTo::RiotItemsDir,
+            async move |client, item_id, _: Value| {
+                client
                     .download(
                         DDragon::Item(&item_id).url(),
                         SaveTo::ImgItem(&item_id).path(),
                     )
-                    .await;
-            }));
-        }
-
-        for future in futures {
-            if let Err(e) = future.await {
-                println!("[error] requesting item images: {e}");
-            }
-        }
-
-        Ok(())
+                    .await
+            },
+        )
+        .await
     }
 
     /// Downloads the images of splash and centered arts for all champions and
     /// every skin available in the current patch. Skips the ones that emit an error
     pub async fn download_arts_img(&self) -> MayFail {
-        let riot_champions = RiotCdnChampion::from_dir(SaveTo::RiotChampionsDir.path())?;
+        println!("Called fn [download_arts_img]");
 
-        for (champion_id, champion) in riot_champions {
-            let mut futures = Vec::new();
-            let cid = Arc::new(champion_id);
+        self.parallel_task(
+            2,
+            SaveTo::RiotChampionsDir,
+            async move |client, champion_id, champion: RiotCdnChampion| {
+                for skin in champion.skins.into_iter() {
+                    let num = skin.num;
 
-            for skin in champion.skins.into_iter() {
-                let num = skin.num;
-                let client = self.clone();
-                let cid = cid.clone();
-
-                futures.push(tokio::spawn(async move {
                     for i in [false, true] {
                         let (url, save_to) = match i {
                             false => (
-                                DDragon::Splash(&cid, num).url(),
-                                SaveTo::ImgSplash(&cid, num).path(),
+                                DDragon::Splash(&champion_id, num).url(),
+                                SaveTo::ImgSplash(&champion_id, num).path(),
                             ),
                             true => (
-                                DDragon::Centered(&cid, num).url(),
-                                SaveTo::ImgCentered(&cid, num).path(),
+                                DDragon::Centered(&champion_id, num).url(),
+                                SaveTo::ImgCentered(&champion_id, num).path(),
                             ),
                         };
+
                         let _ = client.download(url, save_to).await;
                     }
-                }));
-            }
-
-            for future in futures {
-                if let Err(e) = future.await {
-                    println!("[error] requesting images for {cid}: {e}");
                 }
-            }
-        }
-        Ok(())
+
+                Ok(())
+            },
+        )
+        .await
     }
 
     /// Downloads the images of every rune, rune-tree and icon
     pub async fn download_runes_img(&self) -> MayFail {
-        let riot_runes = Vec::<RiotCdnRune>::from_file(SaveTo::RiotRunes.path())?;
-        let mut futures = Vec::new();
-        let mut icon_map = Vec::<(usize, String)>::new();
-        for value in riot_runes {
-            icon_map.push((value.id, value.icon));
-            for slot in value.slots {
-                for rune in slot.runes {
-                    icon_map.push((rune.id, rune.icon));
+        println!("Called fn [download_runes_img]");
+
+        self.parallel_task(
+            6,
+            SaveTo::RiotRunes,
+            async |client, _, rune: RiotCdnRune| {
+                let mut icon_map = vec![(rune.id, rune.icon)];
+
+                for slot in rune.slots {
+                    for rune in slot.runes {
+                        icon_map.push((rune.id, rune.icon));
+                    }
                 }
-            }
-        }
-        for (rune_id, rune_icon) in icon_map {
-            let url = DDragon::Rune(&rune_icon).url();
-            let save_to = SaveTo::ImgRunes(rune_id).path();
-            let client = self.clone();
-            futures.push(tokio::spawn(async move {
-                let _ = client.download(url, save_to).await;
-            }));
-        }
-        for future in futures {
-            let _ = future.await;
-        }
-        Ok(())
+
+                for (rune_id, rune_icon) in icon_map {
+                    let _ = client
+                        .download(
+                            DDragon::Rune(&rune_icon).url(),
+                            SaveTo::ImgRunes(rune_id).path(),
+                        )
+                        .await;
+                }
+
+                Ok(())
+            },
+        )
+        .await
     }
 
     /// Fetches the latest version of League of Legends, returning
@@ -418,18 +411,6 @@ impl HttpClient {
             .get(0)
             .ok_or("Version not found")?
             .clone())
-    }
-
-    /// Creates the riot endpoint using the environment variables.
-    /// This is mainly used to download champion json files.
-    /// Language defaults to `ENV_CONFIG.lol_language`
-    pub fn riot_endpoint(endpoint: &str, language: Option<&str>) -> String {
-        let language = language.unwrap_or(&ENV_CONFIG.lol_language);
-        let path = format_args!(
-            "{}/cdn/{}",
-            ENV_CONFIG.dd_dragon_endpoint, ENV_CONFIG.lol_version
-        );
-        format!("{path}/data/{language}/{endpoint}.json")
     }
 
     /// Fetches League of Legends current version and updates it directly

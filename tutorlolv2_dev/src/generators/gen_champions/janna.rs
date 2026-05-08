@@ -1,6 +1,7 @@
 use super::*;
 
 impl Generator for Janna {
+    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
         self.ability(Key::P, [(0, _1) /* Description 1 */])
             .ability(

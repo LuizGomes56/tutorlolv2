@@ -1,6 +1,6 @@
 use crate::{
-    ENV_CONFIG, GeneratorExt, JsonRead, MayFail, Progress, client::Tag,
-    gen_champions::champion_gen_fn, gen_factories::Parser, gen_utils::RegExtractor,
+    GeneratorExt, JsonRead, MayFail, client::Tag, gen_champions::champion_gen_fn,
+    gen_factories::Parser, gen_utils::RegExtractor,
 };
 use serde::{Deserialize, Serialize};
 use serde_with::{Seq, serde_as};
@@ -37,8 +37,6 @@ pub struct Champion {
     pub combo: Vec<Vec<ComboElement>>,
     #[serde_as(as = "Seq<(_, _)>")]
     pub abilities: BTreeMap<AbilityId, Ability>,
-    progress: Progress,
-    version: String,
 }
 
 impl Parser<WikiChampion, Champion> for ChampionParser {
@@ -115,27 +113,18 @@ impl Parser<WikiChampion, Champion> for ChampionParser {
     }
 }
 
-impl Champion {
-    pub fn new(data: WikiChampion) -> Self {
+impl From<WikiChampion> for Champion {
+    fn from(data: WikiChampion) -> Self {
         Self {
             data,
             abilities: Default::default(),
             merge: Default::default(),
             combo: Default::default(),
-            progress: Default::default(),
-            version: ENV_CONFIG.lol_version.clone(),
         }
     }
+}
 
-    pub fn is_outdated(&self) -> bool {
-        self.version != ENV_CONFIG.lol_version
-    }
-
-    pub const fn progress(&mut self, progress: Progress) -> &mut Self {
-        self.progress = progress;
-        self
-    }
-
+impl Champion {
     fn modify_pattern<const N: usize>(
         key: Key,
         pattern: [(usize, AbilityName); N],

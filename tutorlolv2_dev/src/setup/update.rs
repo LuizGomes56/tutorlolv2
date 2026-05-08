@@ -1,4 +1,6 @@
-use crate::{JsonRead, JsonWrite, MayFail, riot::RiotCdnRune, setup::riot::RiotCdnItem};
+use crate::{
+    JsonWrite, MayFail, client::SaveTo, parallel_read, riot::RiotCdnRune, setup::riot::RiotCdnItem,
+};
 use regex::Regex;
 use std::{collections::BTreeMap, fs, path::Path, sync::LazyLock};
 use tutorlolv2_types::StatName;
@@ -70,26 +72,30 @@ pub fn setup_project_folders() -> MayFail {
 
 /// Reads the cached runes json extracted from Riot's API and generates a new file containing
 /// only the names of each rune, and their ids
-pub fn setup_runes_json() -> MayFail {
-    let map = Vec::<RiotCdnRune>::from_file("cache/riot/runes.json")?;
-    let mut result = BTreeMap::<String, usize>::new();
+pub fn setup_runes_names() -> MayFail {
+    let result: Vec<Vec<(String, usize)>> =
+        parallel_read(SaveTo::RiotRunes.path(), |_, rune: RiotCdnRune| {
+            let mut runes = Vec::new();
 
-    for tree in map.into_iter() {
-        for slot in tree.slots.into_iter() {
-            for riot_rune in slot.runes.into_iter() {
-                result.insert(riot_rune.name, riot_rune.id);
+            for slot in rune.slots.into_iter() {
+                for riot_rune in slot.runes.into_iter() {
+                    runes.push((riot_rune.name, riot_rune.id));
+                }
             }
-        }
-    }
-    result.into_file("internal/rune_names.json")
+
+            Ok(runes)
+        })?;
+
+    result
+        .into_iter()
+        .flatten()
+        .collect::<BTreeMap<String, usize>>()
+        .into_file(SaveTo::InternalRuneNames.path())
 }
 
 /// Returns the value that will be added to key `prettified_stats` for each item.
 /// Depends on Riot API `item.json` and requires manual maintainance if a new XML tag is added
 fn pretiffy_items(data: &RiotCdnItem) -> MayFail<BTreeMap<StatName, u16>> {
-    static RE_DMGI_PARENS: LazyLock<Regex> =
-        LazyLock::new(|| Regex::new(r"\{\{[^}]*\}\}").unwrap());
-
     static TAGS: [&str; 4] = ["buffedStat", "nerfedStat", "attention", "ornnBonus"];
     static RE_LINE: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"(.*?)<br>").unwrap());
     static RE_TAG: LazyLock<Regex> = LazyLock::new(|| {
@@ -110,18 +116,17 @@ fn pretiffy_items(data: &RiotCdnItem) -> MayFail<BTreeMap<StatName, u16>> {
         let v = caps[2].replace('%', "");
         let mut n = None;
         if line_index < lines.len() {
-            let cleaned = RE_TAG_STRIP
-                .replace_all(&lines[line_index][1], "")
-                .trim()
-                .to_string();
+            let tag_strip = RE_TAG_STRIP.replace_all(&lines[line_index][1], "");
+            let cleaned = tag_strip.trim();
             if !cleaned.is_empty() {
-                n = Some(cleaned);
+                n = Some(cleaned.to_string());
             }
             line_index += 1;
         }
         if TAGS.contains(&t) {
             if let Some(n_val) = &n {
-                let j = RE_PERCENT_PREFIX.replace(n_val, "").trim().to_string();
+                let percent_prefix = RE_PERCENT_PREFIX.replace(n_val, "");
+                let j = percent_prefix.trim();
                 if !j.is_empty() {
                     match v.parse::<u16>() {
                         Ok(num) => result.insert(tutorlolv2_fmt::pascal_case(&j), num),

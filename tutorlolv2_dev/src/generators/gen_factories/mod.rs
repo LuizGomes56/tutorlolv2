@@ -1,9 +1,9 @@
 use crate::{
-    GeneratorExt, JsonWrite, MayFail,
+    ENV_CONFIG, GeneratorExt, JsonWrite, MayFail,
     client::{SaveTo, Tag},
 };
 use rayon::iter::{IntoParallelRefIterator, ParallelBridge, ParallelIterator};
-use serde::{Serialize, de::DeserializeOwned};
+use serde::{Deserialize, Serialize, de::DeserializeOwned};
 use std::{collections::BTreeMap, path::Path};
 use tutorlolv2_fmt::rustfmt;
 
@@ -15,7 +15,7 @@ pub trait Parser<T, U>
 where
     Self: Sized + Sync,
     T: Clone + DeserializeOwned + Send + Sync + 'static,
-    U: Serialize,
+    U: From<T> + Serialize,
 {
     const TAG: Tag;
     const FN: fn(&str) -> Option<fn(T) -> Box<dyn GeneratorExt<U>>>;
@@ -27,57 +27,80 @@ where
     fn run_fn(&self, id: &str) -> MayFail<U> {
         self.map()
             .get(id)
-            .and_then(|data| {
-                let function = Self::FN(id)?;
-                Some(function(data.clone()))
+            .map(|data| {
+                let data = data.clone();
+
+                match Self::FN(id) {
+                    Some(f) => f(data).call(),
+                    None => Ok(U::from(data)),
+                }
             })
             .ok_or_else(|| format!("[WikiFactory::run] {id} not found"))?
-            .call()
     }
 
-    fn run_all(&self) -> MayFail {
-        self.map()
-            .keys()
-            .par_bridge()
-            .try_for_each(|key| self.run(key))
+    fn run_all(&self) {
+        self.map().keys().par_bridge().for_each(|key| {
+            let _ = self.run(key);
+        })
     }
 
     fn run(&self, id: &str) -> MayFail {
+        #[derive(Serialize)]
+        struct TaskResult<'a, D> {
+            #[serde(flatten)]
+            pub data: D,
+            pub version: &'a str,
+            pub stable: bool,
+        }
+
         match self.run_fn(id) {
-            Ok(value) => value.into_file(SaveTo::InternalRaw(Self::TAG, id).path()),
+            Ok(data) => TaskResult {
+                data,
+                version: &ENV_CONFIG.lol_version,
+                stable: Self::is_stable(id),
+            }
+            .into_file(SaveTo::InternalRaw(Self::TAG, id).path()),
             Err(e) => Ok(println!("Error generating {id:?}: {e:?}")),
         }
     }
 
+    fn is_stable(id: &str) -> bool {
+        if let Ok(data) = crate::read_to_string(SaveTo::GeneratorRaw(Self::TAG, id).path())
+            && !data.contains("#[warn(unstable_features)]")
+        {
+            return true;
+        }
+
+        false
+    }
+
     fn progress(&self) {
         let mut stables = 0;
-        let mut preserve = 0;
         let mut unstables = 0;
-        let mut total = 0;
+
         for name in self.map().keys() {
-            if let Ok(data) = crate::read_to_string(SaveTo::GeneratorRaw(Self::TAG, name).path()) {
-                if data.contains("Stable") {
-                    stables += 1;
-                } else if data.contains("Preserve") {
-                    preserve += 1;
-                } else {
-                    unstables += 1;
-                }
-                total += 1;
+            if Self::is_stable(name) {
+                stables += 1;
+                continue;
             }
+
+            unstables += 1;
         }
+
+        let total = stables + unstables;
+        let length = self.map().len();
 
         println!(
             concat!(
                 "Parser::progress\n",
                 "{stables:>3} / {total} stable\n",
-                "{preserve:>3} / {total} preserved\n",
                 "{unstables:>3} / {total} unstable\n",
+                "{total} / {length} generators"
             ),
             stables = stables,
-            preserve = preserve,
             unstables = unstables,
-            total = total
+            total = total,
+            length = length,
         );
     }
 
@@ -86,9 +109,7 @@ where
             return Err(format!("[WikiFactory::create] {id} not found").into());
         }
 
-        if let Ok(text) = crate::read_to_string(SaveTo::GeneratorRaw(Self::TAG, id).path())
-            && (text.contains(".progress(Stable)") || text.contains(".progress(Preserve)"))
-        {
+        if Self::is_stable(id) {
             println!("[stable] Skipping generator for {id:?}");
             return Ok(());
         }
@@ -97,13 +118,11 @@ where
             "use super::*;
 
             impl Generator for {id} {{
+                #[warn(unstable_features)]
                 fn generate(&mut self) -> MayFail {{ self"
         );
 
         let path = SaveTo::GeneratorRaw(Self::TAG, id).path();
-        let dir = SaveTo::GeneratorDir(Self::TAG).path();
-
-        crate::create_dir_all(dir)?;
 
         match self.create_methods(&mut result, id) {
             true => {
@@ -182,5 +201,20 @@ pub fn infer_damage_type(result: &mut String, description: &str) {
             .unwrap_or(dtype.to_string());
 
         result.push_str(&format!(".damage_type({alias})"));
+    }
+}
+
+#[derive(Clone, Debug, Deserialize, Serialize)]
+pub struct DamageObject {
+    pub minimum_damage: String,
+    pub maximum_damage: String,
+}
+
+impl Default for DamageObject {
+    fn default() -> Self {
+        Self {
+            minimum_damage: "zero".into(),
+            maximum_damage: "zero".into(),
+        }
     }
 }

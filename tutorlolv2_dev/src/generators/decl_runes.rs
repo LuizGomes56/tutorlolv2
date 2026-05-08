@@ -26,7 +26,7 @@ macro_rules! decl_runes {
             impl $Name {
                 pub fn new(data: WikiRune) -> Box<dyn GeneratorExt<Rune>> {
                     Box::new(Self {
-                        inner: Rune::new(data)
+                        inner: Rune::from(data)
                     })
                 }
             }

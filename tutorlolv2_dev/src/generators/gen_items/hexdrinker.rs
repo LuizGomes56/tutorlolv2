@@ -1,6 +1,7 @@
 use super::*;
 
 impl Generator for Hexdrinker {
+    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
         self.damage_type(True).end()
     }

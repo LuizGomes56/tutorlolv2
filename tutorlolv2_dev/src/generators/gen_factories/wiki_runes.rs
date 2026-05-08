@@ -1,7 +1,7 @@
 use crate::{
-    ENV_CONFIG, GeneratorExt, JsonRead, MayFail, Progress,
+    GeneratorExt, JsonRead, MayFail,
     client::Tag,
-    gen_factories::{Parser, infer_damage_type, likely_damages},
+    gen_factories::{DamageObject, Parser, infer_damage_type, likely_damages},
     gen_runes::rune_gen_fn,
 };
 use serde::{Deserialize, Serialize};
@@ -18,10 +18,8 @@ pub struct Rune {
     #[serde(flatten)]
     pub data: WikiRune,
     pub damage_type: DamageType,
-    pub minimum_damage: String,
-    pub maximum_damage: String,
-    progress: Progress,
-    version: String,
+    #[serde(flatten)]
+    pub damage: DamageObject,
 }
 
 impl Parser<WikiRune, Rune> for RuneParser {
@@ -58,27 +56,17 @@ impl Parser<WikiRune, Rune> for RuneParser {
     }
 }
 
-impl Rune {
-    pub fn new(data: WikiRune) -> Self {
+impl From<WikiRune> for Rune {
+    fn from(data: WikiRune) -> Self {
         Self {
             data,
-            version: ENV_CONFIG.lol_version.clone(),
-            progress: Default::default(),
             damage_type: Default::default(),
-            minimum_damage: "zero".into(),
-            maximum_damage: "zero".into(),
+            damage: Default::default(),
         }
     }
+}
 
-    pub fn is_outdated(&self) -> bool {
-        self.version != ENV_CONFIG.lol_version
-    }
-
-    pub const fn progress(&mut self, progress: Progress) -> &mut Self {
-        self.progress = progress;
-        self
-    }
-
+impl Rune {
     pub fn damage_type(&mut self, damage_type: DamageType) -> &mut Self {
         self.damage_type = damage_type;
         self
@@ -96,12 +84,12 @@ impl Rune {
     }
 
     pub fn min(&mut self, index: usize) -> MayFail<&mut Self> {
-        self.minimum_damage = self.formula(index)?;
+        self.damage.minimum_damage = self.formula(index)?;
         Ok(self)
     }
 
     pub fn max(&mut self, index: usize) -> MayFail<&mut Self> {
-        self.maximum_damage = self.formula(index)?;
+        self.damage.maximum_damage = self.formula(index)?;
         Ok(self)
     }
 

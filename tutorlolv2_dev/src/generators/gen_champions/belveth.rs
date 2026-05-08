@@ -1,6 +1,7 @@
 use super::*;
 
 impl Generator for Belveth {
+    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
         self.ability(Key::Q, [(2, _1) /* Physical Damage */])
             .ability(Key::W, [(0, _1) /* Magic Damage */])

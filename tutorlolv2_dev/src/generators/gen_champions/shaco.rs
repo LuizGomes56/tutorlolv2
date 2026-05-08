@@ -1,6 +1,7 @@
 use super::*;
 
 impl Generator for Shaco {
+    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
         self.ability(Key::P, [(1, _1) /* Innate */, (2, _2) /* Innate [1] */])
             .ability(Key::Q, [(0, _1) /* Bonus Physical Damage */])

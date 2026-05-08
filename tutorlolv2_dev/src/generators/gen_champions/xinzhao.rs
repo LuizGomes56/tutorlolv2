@@ -1,6 +1,7 @@
 use super::*;
 
 impl Generator for XinZhao {
+    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
         self.ability(
             Key::P,

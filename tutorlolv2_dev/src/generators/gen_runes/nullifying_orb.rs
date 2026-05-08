@@ -1,6 +1,7 @@
 use super::*;
 
 impl Generator for NullifyingOrb {
+    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
         self.min(0)? /* Passive */
             .min(1)? /* Passive [1] */

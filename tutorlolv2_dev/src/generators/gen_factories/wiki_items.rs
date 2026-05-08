@@ -1,7 +1,7 @@
 use crate::{
-    ENV_CONFIG, GeneratorExt, JsonRead, MayFail, Progress,
+    GeneratorExt, JsonRead, MayFail,
     client::Tag,
-    gen_factories::{Parser, infer_damage_type, likely_damages},
+    gen_factories::{DamageObject, Parser, infer_damage_type, likely_damages},
     gen_items::item_gen_fn,
 };
 use serde::{Deserialize, Serialize};
@@ -57,21 +57,13 @@ impl Parser<WikiItem, Item> for ItemParser {
     }
 }
 
-#[derive(Clone, Debug, Default, Deserialize, Serialize)]
-pub struct ItemDamage {
-    pub minimum_damage: String,
-    pub maximum_damage: String,
-}
-
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct Item {
     #[serde(flatten)]
     pub data: WikiItem,
     pub damage_type: DamageType,
-    pub ranged: ItemDamage,
-    pub melee: ItemDamage,
-    version: String,
-    progress: Progress,
+    pub ranged: DamageObject,
+    pub melee: DamageObject,
 }
 
 #[derive(Copy, Clone, Debug)]
@@ -80,27 +72,18 @@ pub enum Source {
     Passive,
 }
 
-impl Item {
-    pub fn new(data: WikiItem) -> Self {
+impl From<WikiItem> for Item {
+    fn from(data: WikiItem) -> Self {
         Self {
             data,
-            version: ENV_CONFIG.lol_version.clone(),
-            progress: Default::default(),
             damage_type: Default::default(),
             ranged: Default::default(),
             melee: Default::default(),
         }
     }
+}
 
-    pub fn is_outdated(&self) -> bool {
-        self.version != ENV_CONFIG.lol_version
-    }
-
-    pub const fn progress(&mut self, progress: Progress) -> &mut Self {
-        self.progress = progress;
-        self
-    }
-
+impl Item {
     pub fn damage_type(&mut self, damage_type: DamageType) -> &mut Self {
         self.damage_type = damage_type;
         self
