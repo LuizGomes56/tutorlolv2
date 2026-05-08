@@ -6,7 +6,6 @@ use crate::{
     riot::RiotCdnStandard,
     selector,
     setup::riot::{RiotCdnChampion, RiotCdnRune},
-    update::setup_project_folders,
 };
 use reqwest::Client;
 use scraper::{Html, Selector};
@@ -433,8 +432,6 @@ impl HttpClient {
             ),
         )?;
 
-        setup_project_folders()?;
-
         Ok(unsafe { set_env_var("LOL_VERSION", &version)? })
     }
 
@@ -689,7 +686,7 @@ impl HttpClient {
                                                 .flatten())
                                         && let Some(value_id) = f(number as _)
                                     {
-                                        array.insert(format!("{value_id:?}"));
+                                        array.insert(value_id.to_string());
                                     } else if let Some(alt) = img.value().attr("alt") {
                                         array.insert(pascal_case(alt));
                                     }
@@ -723,6 +720,7 @@ impl HttpClient {
 
                             [items, runes].into_file(internal_path)
                         };
+
                         if let Err(e) = run_task() {
                             println!("[error] processing HTML from {champion_id:?}: {e:#?}")
                         }
@@ -747,11 +745,13 @@ impl HttpClient {
 
         for champion_id in champion_ids() {
             let mut positions = BTreeMap::new();
+
             for position in Position::ARRAY {
                 let path = SaveTo::InternalScraperBuilds(position, champion_id).path();
                 let data = Inner::from_file(path)?;
                 positions.insert(position, data);
             }
+
             results.insert(champion_id, positions);
         }
 

@@ -10,14 +10,12 @@ macro_rules! env_var {
 
 /// Holds all environment variables. Example of `.env` file
 /// ```toml
-/// DATABASE_URL=postgresql://postgres:{PASSWORD}@localhost:5432/{USER}
-/// HOST=127.0.0.1:*
 /// LOL_VERSION=*
 /// LOL_LANGUAGE=en_US
-/// MERAKI_ENDPOINT=https://cdn.merakianalytics.com/riot/lol/resources/latest/en-US
 /// DD_DRAGON_ENDPOINT=https://ddragon.leagueoflegends.com
 /// RIOT_IMAGE_ENDPOINT=https://ddragon.canisback.com/img
 /// META_ENDPOINT=*
+/// META_ASSETS=*
 /// ```
 pub struct EnvConfig {
     pub lol_version: String,

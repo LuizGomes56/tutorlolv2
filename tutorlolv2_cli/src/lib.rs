@@ -5,7 +5,6 @@ use tutorlolv2_dev::{
     gen_factories::{
         Parser as _, wiki_champions::ChampionParser, wiki_items::ItemParser, wiki_runes::RuneParser,
     },
-    update,
 };
 use tutorlolv2_gen::{ChampionId, ItemId, RuneId};
 use tutorlolv2_wiki::{champions, items, runes};
@@ -21,45 +20,29 @@ pub struct Cli {
 }
 
 #[derive(Clone, Copy, Debug)]
-pub enum RunTarget {
+pub enum EntityTarget {
     Champion(ChampionId),
     Item(ItemId),
     Rune(RuneId),
+    Champions,
+    Items,
+    Runes,
     All,
 }
 
-impl FromStr for RunTarget {
+impl FromStr for EntityTarget {
     type Err = String;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match s {
             "all" | "a" => Ok(Self::All),
+            "c" | "champion" => Ok(Self::Champions),
+            "i" | "item" => Ok(Self::Items),
+            "r" | "rune" => Ok(Self::Runes),
             s if let Ok(champion_id) = ChampionId::from_str(s) => Ok(Self::Champion(champion_id)),
             s if let Ok(item_id) = ItemId::from_str(s) => Ok(Self::Item(item_id)),
             s if let Ok(rune_id) = RuneId::from_str(s) => Ok(Self::Rune(rune_id)),
-            _ => from_str_err(s, "ChampionId or ItemId"),
-        }
-    }
-}
-
-#[derive(Clone, Copy, Debug)]
-pub enum GenCreator {
-    All,
-    Champion(ChampionId),
-    Item(ItemId),
-    Rune(RuneId),
-}
-
-impl FromStr for GenCreator {
-    type Err = String;
-
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
-        match s {
-            "all" | "a" => Ok(Self::All),
-            s if let Ok(champion_id) = ChampionId::from_str(s) => Ok(Self::Champion(champion_id)),
-            s if let Ok(item_id) = ItemId::from_str(s) => Ok(Self::Item(item_id)),
-            s if let Ok(rune_id) = RuneId::from_str(s) => Ok(Self::Rune(rune_id)),
-            _ => from_str_err(s, "ChampionId or ItemId"),
+            _ => from_str_err(s, "ChampionId, ItemId, or RuneId"),
         }
     }
 }
@@ -79,9 +62,9 @@ pub enum Fetch {
 #[derive(Subcommand, Debug)]
 pub enum GenArgs {
     #[command(alias = "c")]
-    Create { creator: GenCreator },
+    Create { creator: EntityTarget },
     #[command(alias = "r")]
-    Run { target: RunTarget },
+    Run { target: EntityTarget },
     #[command(alias = "p")]
     Progress,
     #[command(alias = "u")]
@@ -142,8 +125,6 @@ pub enum Setup {
     Items,
     #[clap(alias = "p")]
     Prettify,
-    #[clap(alias = "f")]
-    Folders,
 }
 
 static IPARSER: LazyLock<ItemParser> = LazyLock::new(|| ItemParser::new().unwrap());
@@ -158,32 +139,40 @@ pub async fn run() -> MayFail {
 
     match args {
         GenArgs::Create { creator } => match creator {
-            GenCreator::All => {
+            EntityTarget::All => {
                 CPARSER.create_all()?;
                 IPARSER.create_all()?;
                 RPARSER.create_all()?;
             }
-            GenCreator::Champion(champion_id) => CPARSER.create(champion_id.debug())?,
-            GenCreator::Item(item_id) => IPARSER.create(item_id.debug())?,
-            GenCreator::Rune(rune_id) => RPARSER.create(rune_id.debug())?,
+            EntityTarget::Champion(v) => CPARSER.create(v.debug())?,
+            EntityTarget::Champions => CPARSER.create_all()?,
+            EntityTarget::Item(v) => IPARSER.create(v.debug())?,
+            EntityTarget::Items => IPARSER.create_all()?,
+            EntityTarget::Rune(v) => RPARSER.create(v.debug())?,
+            EntityTarget::Runes => RPARSER.create_all()?,
         },
         GenArgs::Run { target } => match target {
-            RunTarget::Champion(champ) => CPARSER.run(champ.debug())?,
-            RunTarget::Item(item) => IPARSER.run(item.debug())?,
-            RunTarget::Rune(rune) => RPARSER.run(rune.debug())?,
-            RunTarget::All => {
+            EntityTarget::All => {
                 CPARSER.run_all();
                 IPARSER.run_all();
                 RPARSER.run_all();
             }
+            EntityTarget::Champion(v) => CPARSER.run(v.debug())?,
+            EntityTarget::Champions => CPARSER.run_all(),
+            EntityTarget::Item(v) => IPARSER.run(v.debug())?,
+            EntityTarget::Items => IPARSER.run_all(),
+            EntityTarget::Rune(v) => RPARSER.run(v.debug())?,
+            EntityTarget::Runes => RPARSER.run_all(),
         },
         GenArgs::Progress => CPARSER.progress(),
         GenArgs::Update => {
-            update::setup_project_folders()?;
             CPARSER.create_all()?;
             CPARSER.run_all();
             IPARSER.create_all()?;
             IPARSER.run_all();
+            RPARSER.create_all()?;
+            RPARSER.run_all();
+
             std::env::set_current_dir("./tutorlolv2_build")?;
             tutorlolv2_build::run()?;
         }
@@ -197,7 +186,6 @@ pub async fn run() -> MayFail {
                 /* update::prettify_internal_items()? */
                 todo!()
             }
-            Setup::Folders => update::setup_project_folders()?,
         },
         GenArgs::Build => {
             std::env::set_current_dir("./tutorlolv2_build")?;

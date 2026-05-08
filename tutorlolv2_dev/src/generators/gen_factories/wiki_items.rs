@@ -1,12 +1,16 @@
 use crate::{
     GeneratorExt, JsonRead, MayFail,
     client::Tag,
-    gen_factories::{DamageObject, Parser, infer_damage_type, likely_damages},
+    gen_factories::{DamageIndex, DamageRange, Parser, infer_damage_type, likely_damages},
     gen_items::item_gen_fn,
+    gen_utils::RegExtractor,
 };
 use serde::{Deserialize, Serialize};
-use std::collections::BTreeMap;
-use tutorlolv2_types::DamageType;
+use std::{
+    collections::BTreeMap,
+    ops::{Index, IndexMut},
+};
+use tutorlolv2_types::{AttackType, DamageType};
 use tutorlolv2_wiki::items::item_parser::{ItemEffect, WikiItem};
 
 pub struct ItemParser {
@@ -62,8 +66,8 @@ pub struct Item {
     #[serde(flatten)]
     pub data: WikiItem,
     pub damage_type: DamageType,
-    pub ranged: DamageObject,
-    pub melee: DamageObject,
+    pub ranged: DamageRange,
+    pub melee: DamageRange,
 }
 
 #[derive(Copy, Clone, Debug)]
@@ -90,15 +94,8 @@ impl Item {
     }
 
     pub fn formula(&self, source: Source) -> MayFail<String> {
-        let effects = &self.data.effects;
-
-        let item_effect = match source {
-            Source::Active => &effects.act,
-            Source::Passive => &effects.pass,
-        };
-
-        match item_effect {
-            Some(ie) if let Some(ref formula) = ie.effect.formula => Ok(formula.clone()),
+        match &self[source] {
+            Some(ie) if let Some(ref formula) = ie.effect.formula => Ok(formula.parens()),
             _ => Err(format!(
                 "[{name}] No formula for its {source:?}",
                 name = self.data.name
@@ -107,39 +104,87 @@ impl Item {
         }
     }
 
-    pub fn min(&mut self, source: Source) -> MayFail<&mut Self> {
-        self.ranged_min(source)?;
-        self.melee_min(source)?;
-        Ok(self)
+    pub fn assign(
+        &mut self,
+        attack_type: AttackType,
+        var: DamageIndex,
+        damage: impl AsRef<str>,
+    ) -> &mut Self {
+        self[attack_type][var] = damage.as_ref().to_string();
+        self
     }
 
-    pub fn max(&mut self, source: Source) -> MayFail<&mut Self> {
-        self.ranged_max(source)?;
-        self.melee_max(source)?;
-        Ok(self)
+    pub fn damage(
+        &mut self,
+        attack_type: AttackType,
+        var: DamageIndex,
+        index: Source,
+    ) -> MayFail<&mut Self> {
+        let formula = self.formula(index)?;
+        Ok(self.assign(attack_type, var, formula))
     }
 
-    pub fn melee_min(&mut self, source: Source) -> MayFail<&mut Self> {
-        self.melee.minimum_damage = self.formula(source)?;
-        Ok(self)
+    pub fn asgn_min(&mut self, damage: impl AsRef<str>) -> &mut Self {
+        self.assign(AttackType::Melee, DamageIndex::Min, &damage)
+            .assign(AttackType::Ranged, DamageIndex::Min, damage)
     }
 
-    pub fn melee_max(&mut self, source: Source) -> MayFail<&mut Self> {
-        self.melee.maximum_damage = self.formula(source)?;
-        Ok(self)
+    pub fn asgn_max(&mut self, damage: impl AsRef<str>) -> &mut Self {
+        self.assign(AttackType::Melee, DamageIndex::Max, &damage)
+            .assign(AttackType::Ranged, DamageIndex::Max, damage)
     }
 
-    pub fn ranged_min(&mut self, source: Source) -> MayFail<&mut Self> {
-        self.ranged.minimum_damage = self.formula(source)?;
-        Ok(self)
+    pub fn min(&mut self, index: Source) -> MayFail<&mut Self> {
+        self.damage(AttackType::Melee, DamageIndex::Min, index)?;
+        self.damage(AttackType::Ranged, DamageIndex::Min, index)
     }
 
-    pub fn ranged_max(&mut self, source: Source) -> MayFail<&mut Self> {
-        self.ranged.maximum_damage = self.formula(source)?;
-        Ok(self)
+    pub fn max(&mut self, index: Source) -> MayFail<&mut Self> {
+        self.damage(AttackType::Melee, DamageIndex::Max, index)?;
+        self.damage(AttackType::Ranged, DamageIndex::Max, index)
     }
 
     pub fn end(&self) -> MayFail {
         Ok(())
+    }
+}
+
+impl Index<AttackType> for Item {
+    type Output = DamageRange;
+
+    fn index(&self, index: AttackType) -> &Self::Output {
+        match index {
+            AttackType::Melee => &self.melee,
+            AttackType::Ranged => &self.ranged,
+        }
+    }
+}
+
+impl IndexMut<AttackType> for Item {
+    fn index_mut(&mut self, index: AttackType) -> &mut Self::Output {
+        match index {
+            AttackType::Melee => &mut self.melee,
+            AttackType::Ranged => &mut self.ranged,
+        }
+    }
+}
+
+impl Index<Source> for Item {
+    type Output = Option<ItemEffect>;
+
+    fn index(&self, index: Source) -> &Self::Output {
+        match index {
+            Source::Active => &self.data.effects.act,
+            Source::Passive => &self.data.effects.pass,
+        }
+    }
+}
+
+impl IndexMut<Source> for Item {
+    fn index_mut(&mut self, index: Source) -> &mut Self::Output {
+        match index {
+            Source::Active => &mut self.data.effects.act,
+            Source::Passive => &mut self.data.effects.pass,
+        }
     }
 }

@@ -1,12 +1,16 @@
 use crate::{
     GeneratorExt, JsonRead, MayFail,
     client::Tag,
-    gen_factories::{DamageObject, Parser, infer_damage_type, likely_damages},
+    gen_factories::{DamageIndex, DamageRange, Parser, infer_damage_type, likely_damages},
     gen_runes::rune_gen_fn,
+    gen_utils::RegExtractor,
 };
 use serde::{Deserialize, Serialize};
-use std::collections::BTreeMap;
-use tutorlolv2_types::DamageType;
+use std::{
+    collections::BTreeMap,
+    ops::{Index, IndexMut},
+};
+use tutorlolv2_types::{AttackType, DamageType};
 use tutorlolv2_wiki::runes::WikiRune;
 
 pub struct RuneParser {
@@ -18,8 +22,8 @@ pub struct Rune {
     #[serde(flatten)]
     pub data: WikiRune,
     pub damage_type: DamageType,
-    #[serde(flatten)]
-    pub damage: DamageObject,
+    pub ranged: DamageRange,
+    pub melee: DamageRange,
 }
 
 impl Parser<WikiRune, Rune> for RuneParser {
@@ -61,7 +65,8 @@ impl From<WikiRune> for Rune {
         Self {
             data,
             damage_type: Default::default(),
-            damage: Default::default(),
+            ranged: Default::default(),
+            melee: Default::default(),
         }
     }
 }
@@ -74,7 +79,7 @@ impl Rune {
 
     pub fn formula(&self, index: usize) -> MayFail<String> {
         match self.data.effects.values().nth(index) {
-            Some(effect) if let Some(formula) = &effect.formula => Ok(formula.clone()),
+            Some(effect) if let Some(formula) = &effect.formula => Ok(formula.parens()),
             _ => Err(format!(
                 "[{name}] No formula found in effect[{index}]",
                 name = self.data.name
@@ -83,17 +88,76 @@ impl Rune {
         }
     }
 
+    pub fn damage(
+        &mut self,
+        attack_type: AttackType,
+        var: DamageIndex,
+        index: usize,
+    ) -> MayFail<&mut Self> {
+        let formula = self.formula(index)?;
+        Ok(self.assign(attack_type, var, formula))
+    }
+
+    pub fn assign(
+        &mut self,
+        attack_type: AttackType,
+        var: DamageIndex,
+        damage: impl AsRef<str>,
+    ) -> &mut Self {
+        self[attack_type][var] = damage.as_ref().to_string();
+        self
+    }
+
+    pub fn compose<const N: usize>(&mut self, indexes: [usize; N]) -> MayFail<String> {
+        let mut result = [const { String::new() }; N];
+        for (i, index) in indexes.into_iter().enumerate() {
+            let formula = self.formula(index)?;
+            result[i] = formula;
+        }
+        Ok(result.join(" + "))
+    }
+
+    pub fn asgn_min(&mut self, damage: impl AsRef<str>) -> &mut Self {
+        self.assign(AttackType::Melee, DamageIndex::Min, &damage)
+            .assign(AttackType::Ranged, DamageIndex::Min, damage)
+    }
+
+    pub fn asgn_max(&mut self, damage: impl AsRef<str>) -> &mut Self {
+        self.assign(AttackType::Melee, DamageIndex::Max, &damage)
+            .assign(AttackType::Ranged, DamageIndex::Max, damage)
+    }
+
     pub fn min(&mut self, index: usize) -> MayFail<&mut Self> {
-        self.damage.minimum_damage = self.formula(index)?;
-        Ok(self)
+        self.damage(AttackType::Melee, DamageIndex::Min, index)?;
+        self.damage(AttackType::Ranged, DamageIndex::Min, index)
     }
 
     pub fn max(&mut self, index: usize) -> MayFail<&mut Self> {
-        self.damage.maximum_damage = self.formula(index)?;
-        Ok(self)
+        self.damage(AttackType::Melee, DamageIndex::Max, index)?;
+        self.damage(AttackType::Ranged, DamageIndex::Max, index)
     }
 
     pub fn end(&self) -> MayFail {
         Ok(())
+    }
+}
+
+impl Index<AttackType> for Rune {
+    type Output = DamageRange;
+
+    fn index(&self, index: AttackType) -> &Self::Output {
+        match index {
+            AttackType::Melee => &self.melee,
+            AttackType::Ranged => &self.ranged,
+        }
+    }
+}
+
+impl IndexMut<AttackType> for Rune {
+    fn index_mut(&mut self, index: AttackType) -> &mut Self::Output {
+        match index {
+            AttackType::Melee => &mut self.melee,
+            AttackType::Ranged => &mut self.ranged,
+        }
     }
 }

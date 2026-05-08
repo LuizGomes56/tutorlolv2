@@ -4,7 +4,11 @@ use crate::{
 };
 use rayon::iter::{IntoParallelRefIterator, ParallelBridge, ParallelIterator};
 use serde::{Deserialize, Serialize, de::DeserializeOwned};
-use std::{collections::BTreeMap, path::Path};
+use std::{
+    collections::BTreeMap,
+    ops::{Index, IndexMut},
+    path::Path,
+};
 use tutorlolv2_fmt::rustfmt;
 
 pub mod wiki_champions;
@@ -146,7 +150,6 @@ where
 
         let dir_loc = SaveTo::GeneratorDir(tag).path();
         let dir = Path::new(&dir_loc);
-        crate::create_dir_all(dir)?;
 
         let decl = dir.join("mod").with_extension("rs");
         let module = format_args!("decl_{tag}");
@@ -205,16 +208,42 @@ pub fn infer_damage_type(result: &mut String, description: &str) {
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
-pub struct DamageObject {
-    pub minimum_damage: String,
-    pub maximum_damage: String,
+pub struct DamageRange {
+    pub min_dmg: String,
+    pub max_dmg: String,
 }
 
-impl Default for DamageObject {
+#[derive(Clone, Copy, Debug)]
+pub enum DamageIndex {
+    Min,
+    Max,
+}
+
+impl Index<DamageIndex> for DamageRange {
+    type Output = String;
+
+    fn index(&self, index: DamageIndex) -> &Self::Output {
+        match index {
+            DamageIndex::Min => &self.min_dmg,
+            DamageIndex::Max => &self.max_dmg,
+        }
+    }
+}
+
+impl IndexMut<DamageIndex> for DamageRange {
+    fn index_mut(&mut self, index: DamageIndex) -> &mut Self::Output {
+        match index {
+            DamageIndex::Min => &mut self.min_dmg,
+            DamageIndex::Max => &mut self.max_dmg,
+        }
+    }
+}
+
+impl Default for DamageRange {
     fn default() -> Self {
         Self {
-            minimum_damage: "zero".into(),
-            maximum_damage: "zero".into(),
+            min_dmg: "zero".into(),
+            max_dmg: "zero".into(),
         }
     }
 }
