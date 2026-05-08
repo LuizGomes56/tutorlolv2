@@ -16,7 +16,7 @@ pub trait RegExtractor: Display {
             .collect()
     }
 
-    fn parens(&self) -> String {
+    fn parenthesize(&self) -> String {
         format!("({self})")
     }
 

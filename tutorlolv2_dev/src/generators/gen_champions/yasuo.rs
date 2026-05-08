@@ -7,8 +7,7 @@ impl Generator for Yasuo {
             Key::P,
             [
                 (0, _1), /* Description 1 */
-                (1, _2), /* Innate - Intent */
-                (2, _3), /* Innate - Resolve */
+                (2, _2), /* Innate - Resolve */
             ],
         )
         .ability(

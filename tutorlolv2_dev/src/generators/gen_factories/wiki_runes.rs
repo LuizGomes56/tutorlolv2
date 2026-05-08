@@ -10,8 +10,8 @@ use std::{
     collections::BTreeMap,
     ops::{Index, IndexMut},
 };
-use tutorlolv2_types::{AttackType, DamageType};
-use tutorlolv2_wiki::runes::WikiRune;
+use tutorlolv2_types::{AttackType, CtxVar, DamageType};
+use tutorlolv2_wiki::{parser::Effect, runes::WikiRune};
 
 pub struct RuneParser {
     pub data: BTreeMap<String, WikiRune>,
@@ -78,14 +78,49 @@ impl Rune {
     }
 
     pub fn formula(&self, index: usize) -> MayFail<String> {
-        match self.data.effects.values().nth(index) {
-            Some(effect) if let Some(formula) = &effect.formula => Ok(formula.parens()),
-            _ => Err(format!(
-                "[{name}] No formula found in effect[{index}]",
-                name = self.data.name
-            )
-            .into()),
-        }
+        self.effect(index).and_then(|v| {
+            v.formula
+                .as_ref()
+                .ok_or_else(|| format!("No formula string found for effect {index}").into())
+                .map(RegExtractor::parenthesize)
+        })
+    }
+
+    pub fn effect(&self, index: usize) -> MayFail<&Effect> {
+        self.data
+            .effects
+            .values()
+            .nth(index)
+            .ok_or_else(|| format!("No effect found at index {index}").into())
+    }
+
+    pub fn use_formula(&self, index: usize) -> MayFail<String> {
+        self.effect(index)?
+            .use_formula
+            .as_deref()
+            .map(|v| v.replace("x", &format!("{level} as f32", level = CtxVar::Level)))
+            .ok_or_else(|| format!("No use formula found at index {index}").into())
+    }
+
+    pub fn description(&self, index: usize) -> MayFail<&String> {
+        Ok(self
+            .data
+            .descriptions
+            .get(index)
+            .ok_or_else(|| format!("No description found at index {index}"))?)
+    }
+
+    pub fn scaling(&self, n: usize, indexes: impl Iterator<Item = usize>) -> MayFail<String> {
+        let filter = indexes.collect::<Vec<_>>();
+        Ok(self
+            .effect(n)?
+            .scalings
+            .iter()
+            .enumerate()
+            .filter(|(i, _)| filter.contains(i))
+            .filter_map(|(_, scaling)| scaling.render(CtxVar::Level).ok())
+            .collect::<Vec<_>>()
+            .join(" + "))
     }
 
     pub fn damage(
@@ -117,12 +152,12 @@ impl Rune {
         Ok(result.join(" + "))
     }
 
-    pub fn asgn_min(&mut self, damage: impl AsRef<str>) -> &mut Self {
+    pub fn assign_min(&mut self, damage: impl AsRef<str>) -> &mut Self {
         self.assign(AttackType::Melee, DamageIndex::Min, &damage)
             .assign(AttackType::Ranged, DamageIndex::Min, damage)
     }
 
-    pub fn asgn_max(&mut self, damage: impl AsRef<str>) -> &mut Self {
+    pub fn assign_max(&mut self, damage: impl AsRef<str>) -> &mut Self {
         self.assign(AttackType::Melee, DamageIndex::Max, &damage)
             .assign(AttackType::Ranged, DamageIndex::Max, damage)
     }
@@ -138,6 +173,10 @@ impl Rune {
     }
 
     pub fn end(&self) -> MayFail {
+        if matches!(self.damage_type, DamageType::Unknown) {
+            return Err("Unknown damage type for this rune".into());
+        }
+
         Ok(())
     }
 }

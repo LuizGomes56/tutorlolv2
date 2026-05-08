@@ -1,6 +1,9 @@
 use crate::{
-    GeneratorExt, JsonRead, MayFail, client::Tag, gen_champions::champion_gen_fn,
-    gen_factories::Parser, gen_utils::RegExtractor,
+    GeneratorExt, JsonRead, MayFail,
+    client::Tag,
+    gen_champions::champion_gen_fn,
+    gen_factories::{Parser, likely_damages},
+    gen_utils::RegExtractor,
 };
 use serde::{Deserialize, Serialize};
 use serde_with::{Seq, serde_as};
@@ -70,7 +73,7 @@ impl Parser<WikiChampion, Champion> for ChampionParser {
                         && tag.contains("damage")
                         && !tag.contains("monster")
                         && !tag.contains("minion"))
-                        || (*key == Key::P && effect.inner.description.contains("damage"))
+                        || (*key == Key::P && likely_damages(&effect.inner.description))
                     {
                         groups
                             .entry((*key, i))
@@ -87,13 +90,12 @@ impl Parser<WikiChampion, Champion> for ChampionParser {
             let args = entries
                 .into_iter()
                 .map(|(j, k, comment)| {
-                    let alias = match k {
-                        ..9 => "",
-                        9..18 => "Min",
-                        18..27 => "Max",
+                    let (index, alias) = match k {
+                        v @ ..9 => (v, ""),
+                        v @ 9..17 => (v - 8, "Min"),
+                        v @ 17..25 => (v - 16, "Max"),
                         _ => panic!("[{id}] Too many abilities found"),
                     };
-                    let index = k.clamp(0, 8);
                     format!("({j}, _{index}{alias}) /* {comment} */")
                 })
                 .collect::<Vec<_>>()
@@ -243,7 +245,7 @@ impl Champion {
             |array| {
                 array
                     .iter()
-                    .map(RegExtractor::parens)
+                    .map(RegExtractor::parenthesize)
                     .collect::<Vec<_>>()
                     .join(" + ")
             },

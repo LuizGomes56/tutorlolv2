@@ -1,8 +1,8 @@
 use super::*;
 
-impl Generator for Electrocute {
+impl Generator for SummonAery {
     fn generate(&mut self) -> MayFail {
-        let damage = self.compose([0, 1])?;
+        let damage = self.compose([3, 4])?;
         self.assign_min(&damage).damage_type(Adaptive).end()
     }
 }

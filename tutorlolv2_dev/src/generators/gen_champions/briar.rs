@@ -14,17 +14,17 @@ impl Generator for Briar {
                 (7, _6),     /* Innate [14] */
                 (8, _7),     /* Innate [15] */
                 (9, _8),     /* Innate [16] */
-                (10, _8Min), /* Innate [17] */
-                (11, _8Min), /* Innate [18] */
-                (12, _8Min), /* Innate [1] */
-                (13, _8Min), /* Innate [2] */
-                (14, _8Min), /* Innate [3] */
-                (15, _8Min), /* Innate [4] */
-                (16, _8Min), /* Innate [5] */
+                (10, _1Min), /* Innate [17] */
+                (11, _2Min), /* Innate [18] */
+                (12, _3Min), /* Innate [1] */
+                (13, _4Min), /* Innate [2] */
+                (14, _5Min), /* Innate [3] */
+                (15, _6Min), /* Innate [4] */
+                (16, _7Min), /* Innate [5] */
                 (17, _8Min), /* Innate [6] */
-                (18, _8Min), /* Innate [7] */
-                (19, _8Max), /* Innate [8] */
-                (20, _8Max), /* Innate [9] */
+                (18, _1Max), /* Innate [7] */
+                (19, _2Max), /* Innate [8] */
+                (20, _3Max), /* Innate [9] */
             ],
         )
         .ability(Key::Q, [(0, _1) /* Physical Damage */])

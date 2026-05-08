@@ -1,9 +1,10 @@
 use crate::{
-    ENV_CONFIG, GeneratorExt, JsonWrite, MayFail,
+    ENV_CONFIG, GeneratorExt, JsonRead, JsonWrite, MayFail,
     client::{SaveTo, Tag},
 };
 use rayon::iter::{IntoParallelRefIterator, ParallelBridge, ParallelIterator};
 use serde::{Deserialize, Serialize, de::DeserializeOwned};
+use serde_json::Value;
 use std::{
     collections::BTreeMap,
     ops::{Index, IndexMut},
@@ -45,7 +46,15 @@ where
     fn run_all(&self) {
         self.map().keys().par_bridge().for_each(|key| {
             let _ = self.run(key);
-        })
+        });
+
+        let dir = SaveTo::InternalDir(Self::TAG).path();
+        let path = Path::new(&dir);
+
+        if let Some(parent) = path.parent() {
+            let target = parent.join(Self::TAG.to_string()).with_extension("json");
+            let _ = Value::from_dir(dir).map(|r| r.into_file(target));
+        }
     }
 
     fn run(&self, id: &str) -> MayFail {

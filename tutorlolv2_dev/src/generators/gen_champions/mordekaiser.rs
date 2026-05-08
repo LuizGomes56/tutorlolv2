@@ -14,8 +14,7 @@ impl Generator for Mordekaiser {
                 (5, _6),    /* Darkness Rise [5] */
                 (6, _7),    /* Darkness Rise [6] */
                 (7, _8),    /* Darkness Rise [7] */
-                (8, _8Min), /* Darkness Rise [8] */
-                (9, _8Min), /* Innate */
+                (8, _1Min), /* Darkness Rise [8] */
             ],
         )
         .ability(

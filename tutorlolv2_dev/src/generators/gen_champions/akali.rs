@@ -6,10 +6,9 @@ impl Generator for Akali {
         self.ability(
             Key::P,
             [
-                (1, _1), /* Innate */
-                (2, _2), /* Swinging Kama */
-                (3, _3), /* Swinging Kama [1] */
-                (4, _4), /* Swinging Kama [2] */
+                (2, _1), /* Swinging Kama */
+                (3, _2), /* Swinging Kama [1] */
+                (4, _3), /* Swinging Kama [2] */
             ],
         )
         .ability(Key::Q, [(0, _1) /* Magic Damage */])

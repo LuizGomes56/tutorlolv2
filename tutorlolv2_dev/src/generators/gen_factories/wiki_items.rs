@@ -95,7 +95,7 @@ impl Item {
 
     pub fn formula(&self, source: Source) -> MayFail<String> {
         match &self[source] {
-            Some(ie) if let Some(ref formula) = ie.effect.formula => Ok(formula.parens()),
+            Some(ie) if let Some(ref formula) = ie.effect.formula => Ok(formula.parenthesize()),
             _ => Err(format!(
                 "[{name}] No formula for its {source:?}",
                 name = self.data.name

@@ -1,5 +1,5 @@
 use clap::{Parser, Subcommand, ValueEnum};
-use std::{str::FromStr, sync::LazyLock};
+use std::{convert::Infallible, str::FromStr, sync::LazyLock};
 use tutorlolv2_dev::{
     ENV_CONFIG, HTTP_CLIENT, MayFail,
     gen_factories::{
@@ -19,7 +19,7 @@ pub struct Cli {
     pub args: GenArgs,
 }
 
-#[derive(Clone, Copy, Debug)]
+#[derive(Clone, Debug)]
 pub enum EntityTarget {
     Champion(ChampionId),
     Item(ItemId),
@@ -28,10 +28,11 @@ pub enum EntityTarget {
     Items,
     Runes,
     All,
+    Unsafe(String),
 }
 
 impl FromStr for EntityTarget {
-    type Err = String;
+    type Err = Infallible;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match s {
@@ -42,7 +43,7 @@ impl FromStr for EntityTarget {
             s if let Ok(champion_id) = ChampionId::from_str(s) => Ok(Self::Champion(champion_id)),
             s if let Ok(item_id) = ItemId::from_str(s) => Ok(Self::Item(item_id)),
             s if let Ok(rune_id) = RuneId::from_str(s) => Ok(Self::Rune(rune_id)),
-            _ => from_str_err(s, "ChampionId, ItemId, or RuneId"),
+            s => Ok(Self::Unsafe(s.to_string())),
         }
     }
 }
@@ -150,6 +151,7 @@ pub async fn run() -> MayFail {
             EntityTarget::Items => IPARSER.create_all()?,
             EntityTarget::Rune(v) => RPARSER.create(v.debug())?,
             EntityTarget::Runes => RPARSER.create_all()?,
+            EntityTarget::Unsafe(s) => panic!("Can't create generator for unknown string {s}"),
         },
         GenArgs::Run { target } => match target {
             EntityTarget::All => {
@@ -163,6 +165,7 @@ pub async fn run() -> MayFail {
             EntityTarget::Items => IPARSER.run_all(),
             EntityTarget::Rune(v) => RPARSER.run(v.debug())?,
             EntityTarget::Runes => RPARSER.run_all(),
+            EntityTarget::Unsafe(s) => RPARSER.run(&s)?,
         },
         GenArgs::Progress => CPARSER.progress(),
         GenArgs::Update => {

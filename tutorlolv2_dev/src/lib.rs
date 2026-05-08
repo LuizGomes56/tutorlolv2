@@ -8,7 +8,7 @@ pub use serde::{Serialize, de::DeserializeOwned};
 pub use setup::*;
 
 use rayon::iter::{FromParallelIterator, IntoParallelIterator, ParallelBridge, ParallelIterator};
-use std::{collections::HashMap, fs::DirEntry, path::Path};
+use std::{collections::BTreeMap, fs::DirEntry, path::Path};
 
 /// Alias type for [`Result`] that accepts anything that implements the trait
 /// [`std::error::Error`]. Since the application doesn't need detailed errors,
@@ -31,7 +31,7 @@ pub trait JsonRead: DeserializeOwned {
     /// extension, and whose values are the deserialized structs. Note that all
     /// files inside the directory should have the same JSON structure, and if the
     /// deserialization fails for some file, it is skipped
-    fn from_dir(path: impl AsRef<Path>) -> MayFail<HashMap<String, Self>> {
+    fn from_dir(path: impl AsRef<Path>) -> MayFail<BTreeMap<String, Self>> {
         Ok(read_dir(&path)?
             .into_iter()
             .filter_map(|entry| {
@@ -45,7 +45,7 @@ pub trait JsonRead: DeserializeOwned {
                     Self::from_file(path.as_ref().join(&file_name).with_extension("json")).ok()?;
                 Some((file_name, data))
             })
-            .collect::<HashMap<String, Self>>())
+            .collect::<BTreeMap<String, Self>>())
     }
 }
 

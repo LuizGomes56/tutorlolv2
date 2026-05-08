@@ -9,7 +9,6 @@ impl Generator for Senna {
                 (1, _1), /* Innate - Relic Cannon */
                 (2, _2), /* Innate - Relic Cannon [1] */
                 (3, _3), /* Innate - Weakened Soul */
-                (4, _4), /* Mist */
             ],
         )
         .ability(Key::Q, [(1, _1) /* Physical Damage */])

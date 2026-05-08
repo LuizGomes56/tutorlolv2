@@ -3,8 +3,7 @@ use super::*;
 impl Generator for Rengar {
     #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::P, [(1, _1) /* Innate - Bonetooth Necklace */])
-            .ability(Key::Q, [(0, _1) /* Additional Physical Damage */])
+        self.ability(Key::Q, [(0, _1) /* Additional Physical Damage */])
             .ability(Key::W, [(0, _1) /* Magic Damage */])
             .ability(Key::E, [(0, _1) /* Physical Damage */])
             .end()

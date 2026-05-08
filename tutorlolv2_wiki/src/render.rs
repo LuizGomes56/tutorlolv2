@@ -27,7 +27,7 @@ pub enum RenderAction {
 }
 
 impl Piece {
-    fn to_expr(self) -> String {
+    pub fn to_expr(self) -> String {
         let Self { coeff, target } = self;
 
         match target {
@@ -39,7 +39,7 @@ impl Piece {
 }
 
 impl Scaling {
-    fn render(&self, axis: CtxVar) -> MayFail<String> {
+    pub fn render(&self, axis: CtxVar) -> MayFail<String> {
         match self {
             Self::Simple { value, ctx_var } => Ok(Piece {
                 coeff: render_num(*value),
@@ -121,7 +121,7 @@ impl Scaling {
         }
     }
 
-    fn render_scaling_action(&self, axis: CtxVar) -> MayFail<RenderAction> {
+    pub fn render_scaling_action(&self, axis: CtxVar) -> MayFail<RenderAction> {
         match self {
             Scaling::Multiplier { raw, base, inner } => Ok(RenderAction::Mul(render_multiplier(
                 axis, raw, *base, inner,
@@ -130,7 +130,7 @@ impl Scaling {
         }
     }
 
-    fn render_piece(&self, axis: CtxVar) -> MayFail<Piece> {
+    pub fn render_piece(&self, axis: CtxVar) -> MayFail<Piece> {
         match self {
             Self::Simple { value, ctx_var } => Ok(Piece {
                 coeff: render_num(*value),
@@ -279,7 +279,7 @@ impl Effect {
             None => return Ok(None),
         };
 
-        let mut expr = match build_base_expr(key, axis, self)? {
+        let mut expr = match self.build_base_expr(key, axis)? {
             Some(v) => v,
             None => "0.0".to_string(),
         };
@@ -297,26 +297,26 @@ impl Effect {
 
         Ok(Some(expr))
     }
-}
 
-fn build_base_expr(key: Key, axis: CtxVar, effect: &Effect) -> MayFail<Option<String>> {
-    if let Some(use_formula) = &effect.use_formula {
-        return Ok(Some(use_formula.replace('x', &format!("({axis} as f32)"))));
-    }
-
-    if let Some(base) = &effect.base {
-        return simplify_series(base, axis);
-    }
-
-    if let Some(use_values) = &effect.use_values {
-        if effect.use_values_belongs_to_level_scaling(key) {
-            return Ok(None);
+    fn build_base_expr(&self, key: Key, axis: CtxVar) -> MayFail<Option<String>> {
+        if let Some(use_formula) = &self.use_formula {
+            return Ok(Some(use_formula.replace('x', &format!("({axis} as f32)"))));
         }
 
-        return simplify_series(use_values, axis);
-    }
+        if let Some(base) = &self.base {
+            return simplify_series(base, axis);
+        }
 
-    Ok(None)
+        if let Some(use_values) = &self.use_values {
+            if self.use_values_belongs_to_level_scaling(key) {
+                return Ok(None);
+            }
+
+            return simplify_series(use_values, axis);
+        }
+
+        Ok(None)
+    }
 }
 
 fn render_nested(axis: CtxVar, outer: &Scaling, inner: &[Scaling]) -> MayFail<String> {

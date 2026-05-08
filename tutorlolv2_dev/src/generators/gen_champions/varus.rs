@@ -4,14 +4,6 @@ impl Generator for Varus {
     #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
         self.ability(
-            Key::P,
-            [
-                (0, _1), /* Description 1 */
-                (1, _2), /* Innate */
-                (2, _3), /* Innate [1] */
-            ],
-        )
-        .ability(
             Key::Q,
             [
                 (0, _1), /* Maximum Physical Damage */

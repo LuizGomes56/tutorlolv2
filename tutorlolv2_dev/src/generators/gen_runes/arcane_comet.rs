@@ -1,15 +1,11 @@
 use super::*;
 
 impl Generator for ArcaneComet {
-    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
-        self.damage_type(Physical)
-            .damage_type(Physical)
-            .min(0)? /* Passive */
-            .min(1)? /* Passive [1] */
-            .min(2)? /* Passive [2] */
-            .min(3)? /* Passive [3] */
-            .min(4)? /* Variable Damage */
+        let damage = self.compose([0, 1])?;
+        self.assign_min(&damage)
+            .assign_max(damage.parenthesize().times(2))
+            .damage_type(Adaptive)
             .end()
     }
 }

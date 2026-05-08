@@ -828,7 +828,11 @@ pub fn assign_ctx_var(input: &str) -> CtxVar {
         in "bonus mana" => CtxVar::BonusMana;
         in "critical strike chance" => CtxVar::CritChance;
         in "life steal" => CtxVar::LifeSteal;
-        in "stacks" | in " stack" | in "overwhelm" | in "stardust" | in "soul collected" | in "feast stack" | in "mist" | in "grit" | in "mark" | in "of damage stored" => CtxVar::Stacks;
+        in "stacks" | in " stack" | in "overwhelm"
+            | in "stardust" | in "soul collected"
+            | in "feast stack" | in "mist" | in "grit"
+            | in "mark" | in "of damage stored"
+            | in "soul" => CtxVar::Stacks;
         in "armor" | in "total armor" => CtxVar::Armor;
         in "magic resist" | in "total magic resist" | in "mr" => CtxVar::MagicResist;
         in "lethality" => CtxVar::ArmorPenetrationFlat
