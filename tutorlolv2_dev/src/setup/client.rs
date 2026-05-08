@@ -681,13 +681,13 @@ impl HttpClient {
                                 for img in document.select(selector) {
                                     if let Some(src) = img.value().attr("src")
                                         && let Some(number) =
-                                            src.capture_numbers::<u32>().get(0).copied().or(src
+                                            src.capture_numbers().get(0).copied().or(src
                                                 .trim_start_matches(&ENV_CONFIG.meta_assets)
                                                 .split(".")
                                                 .next()
                                                 .map(|a| a.parse().ok())
                                                 .flatten())
-                                        && let Some(value_id) = f(number)
+                                        && let Some(value_id) = f(number as _)
                                     {
                                         array.insert(format!("{value_id:?}"));
                                     } else if let Some(alt) = img.value().attr("alt") {
