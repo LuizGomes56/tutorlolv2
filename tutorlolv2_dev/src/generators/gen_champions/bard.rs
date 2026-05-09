@@ -7,12 +7,11 @@ impl Generator for Bard {
             Key::P,
             [
                 (2, _1), /* Innate - Meeps */
-                (3, _2), /* Innate - Meeps [1] */
-                (4, _3), /* Innate - Meeps [2] */
-                (5, _4), /* Innate - Meeps [3] */
+                (4, _2), /* Innate - Meeps [2] */
             ],
         )
-        .ability(Key::Q, [(1, _1) /* Magic Damage */])
+        .merge_sum([P(_1), P(_2)], P(Void))?
+        .ability(Key::Q, [(1, Void) /* Magic Damage */])
         .end()
     }
 }

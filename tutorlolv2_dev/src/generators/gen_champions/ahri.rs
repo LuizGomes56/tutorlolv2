@@ -1,25 +1,40 @@
 use super::*;
 
 impl Generator for Ahri {
-    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
-        self.ability(
-            Key::Q,
-            [
-                (0, _1), /* Damage Per Pass */
-                (1, _2), /* Total Mixed Damage */
-            ],
-        )
-        .ability(
-            Key::W,
-            [
-                (0, _1), /* Primary Magic Damage */
-                (2, _2), /* Subsequent Magic Damage */
-                (4, _3), /* Total Single-Target Damage */
-            ],
-        )
-        .ability(Key::E, [(1, _1) /* Magic Damage */])
-        .ability(Key::R, [(0, _1) /* Magic Damage */])
-        .end()
+        self.ability(Key::Q, [(0, Min) /* Damage Per Pass */])
+            .ability(
+                Key::W,
+                [
+                    (0, Min), /* Primary Magic Damage */
+                    (2, _1),  /* Subsequent Magic Damage */
+                    (4, Max), /* Total Single-Target Damage */
+                ],
+            )
+            .ability(Key::E, [(1, Void) /* Magic Damage */])
+            .ability(Key::R, [(0, Min) /* Magic Damage */]);
+
+        let qmax = self.merge_damage([Q(Min)], |[qmin]| {
+            qmin.times(MagicMultiplier).parenthesize().plus(qmin)
+        })?;
+
+        let rmax = self.merge_damage([R(Min)], |[rmin]| rmin.parenthesize().times(3))?;
+
+        self.clone_to(Q(Min), Q(Max), qmax)?
+            .clone_to(R(Min), R(Max), rmax)?
+            .damage_type(Q(Max), Mixed)?
+            .combo([Attack, Ability(E(Void)), Ability(Q(Max)), Ability(W(Max))])?
+            .combo([
+                Ability(R(Min)),
+                Ability(E(Void)),
+                Attack,
+                Ability(W(Max)),
+                Ability(Q(Max)),
+                Attack,
+                Ability(R(Min)),
+                Attack,
+                Ability(R(Min)),
+            ])?
+            .end()
     }
 }

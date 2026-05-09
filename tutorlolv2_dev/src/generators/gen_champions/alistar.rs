@@ -1,18 +1,16 @@
 use super::*;
 
 impl Generator for Alistar {
-    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::Q, [(0, _1) /* Magic Damage */])
-            .ability(Key::W, [(0, _1) /* Magic Damage */])
+        self.ability(Key::Q, [(0, Void) /* Magic Damage */])
+            .ability(Key::W, [(0, Void) /* Magic Damage */])
             .ability(
                 Key::E,
                 [
-                    (0, _1), /* Magic Damage Per Tick */
-                    (1, _2), /* Total Magic Damage */
+                    (0, Min), /* Magic Damage Per Tick */
+                    (1, Max), /* Total Magic Damage */
                 ],
             )
-            .ability(Key::R, [(0, _1) /* Damage Reduction */])
             .end()
     }
 }

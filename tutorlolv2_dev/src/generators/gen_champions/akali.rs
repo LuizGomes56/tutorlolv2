@@ -8,23 +8,23 @@ impl Generator for Akali {
             [
                 (2, _1), /* Swinging Kama */
                 (3, _2), /* Swinging Kama [1] */
-                (4, _3), /* Swinging Kama [2] */
             ],
         )
-        .ability(Key::Q, [(0, _1) /* Magic Damage */])
+        .merge_sum([P(_1), P(_2)], P(Void))?
+        .ability(Key::Q, [(0, Void) /* Magic Damage */])
         .ability(
             Key::E,
             [
-                (0, _1), /* Magic Damage */
-                (1, _2), /* Total Magic Damage */
+                (0, Min), /* Magic Damage */
+                (1, Max), /* Total Magic Damage */
             ],
         )
         .ability(
             Key::R,
             [
-                (0, _1), /* Magic Damage */
-                (1, _2), /* Maximum Magic Damage */
-                (2, _3), /* Minimum Magic Damage */
+                (0, _1),  /* Magic Damage */
+                (1, Min), /* Maximum Magic Damage */
+                (2, Max), /* Minimum Magic Damage */
             ],
         )
         .end()

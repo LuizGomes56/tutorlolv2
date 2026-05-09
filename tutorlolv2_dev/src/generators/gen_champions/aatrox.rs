@@ -22,28 +22,12 @@ impl Generator for Aatrox {
                 ],
             );
 
-        let pdmg = self.sum([P(_1), P(_2)])?;
         let qmin = self.sum([Q(_1Min), Q(_2Min), Q(_3Min)])?;
         let qmax = self.sum([Q(_1Max), Q(_2Max), Q(_3Max)])?;
 
-        self.clone_to(P(_1), P(Void), pdmg)?
-            .delete(P(_1))
-            .delete(P(_2))
+        self.merge_sum([P(_1), P(_2)], P(Void))?
             .clone_to(Q(_1Min), Q(Min), qmin)?
             .clone_to(Q(_1Max), Q(Max), qmax)?
-            .attr(
-                Area,
-                [
-                    Q(_1Min),
-                    Q(_1Max),
-                    Q(_2Min),
-                    Q(_2Max),
-                    Q(_3Min),
-                    Q(_3Max),
-                    Q(Min),
-                    Q(Max),
-                ],
-            )?
             .combo([
                 Ability(Q(_1Min)),
                 Ability(P(Void)),

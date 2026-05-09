@@ -3,32 +3,24 @@ use super::*;
 impl Generator for Akshan {
     #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
-        self.ability(
-            Key::P,
-            [
-                (1, _1), /* Innate */
-                (2, _2), /* Innate [1] */
-                (3, _3), /* Innate [2] */
-            ],
-        )
-        .ability(
-            Key::Q,
-            [
-                (0, _1), /* Non-Champion Damage */
-                (1, _2), /* Physical Damage */
-                (2, _3), /* Total Physical Damage */
-            ],
-        )
-        .ability(Key::E, [(0, _1) /* Physical Damage per Shot */])
-        .ability(
-            Key::R,
-            [
-                (1, _1), /* Damage to target on 67% missing hp */
-                (3, _2), /* Maximum Physical Damage per Bullet */
-                (4, _3), /* Minimum Charged Physical Damage */
-                (5, _4), /* Minimum Physical Damage per Bullet */
-            ],
-        )
-        .end()
+        self.ability(Key::P, [(1, Void) /* Innate */])
+            .ability(
+                Key::Q,
+                [
+                    (1, Min), /* Physical Damage */
+                    (2, Max), /* Total Physical Damage */
+                ],
+            )
+            .ability(Key::E, [(0, Void) /* Physical Damage per Shot */])
+            .ability(
+                Key::R,
+                [
+                    (1, _1Max), /* Damage to target on 67% missing hp */
+                    (3, Max),   /* Maximum Physical Damage per Bullet */
+                    (4, _1Min), /* Minimum Charged Physical Damage */
+                    (5, Min),   /* Minimum Physical Damage per Bullet */
+                ],
+            )
+            .end()
     }
 }

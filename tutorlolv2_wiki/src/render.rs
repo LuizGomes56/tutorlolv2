@@ -209,12 +209,22 @@ impl Scaling {
         }
     }
 
-    fn try_get_len(scaling: &Scaling) -> Option<usize> {
-        match scaling {
-            Scaling::Ranked { values, .. }
-            | Scaling::RankedPer100 { values, .. }
-            | Scaling::Flat { values } => Some(values.len()),
-            Scaling::BasedOnLevel { arms, .. } => level_arm_values(arms).map(|v| v.len()),
+    fn try_get_len(&self) -> Option<usize> {
+        match self {
+            Self::Ranked { values, .. }
+            | Self::RankedPer100 { values, .. }
+            | Self::Flat { values } => Some(values.len()),
+            Self::BasedOnLevel { arms, .. } => level_arm_values(arms).map(|v| v.len()),
+            _ => None,
+        }
+    }
+
+    pub fn try_get_value(&self) -> Option<f64> {
+        match self {
+            Self::Simple { value, .. }
+            | Self::Per100 { value, .. }
+            | Self::PercentAttr { value, .. }
+            | Self::Multiplier { base: value, .. } => Some(*value),
             _ => None,
         }
     }

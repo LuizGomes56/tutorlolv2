@@ -3,8 +3,8 @@ use super::*;
 impl Generator for Blitzcrank {
     #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::Q, [(0, _1) /* Magic Damage */])
-            .ability(Key::R, [(0, _1) /* Magic Damage */])
+        self.ability(Key::Q, [(0, Void) /* Magic Damage */])
+            .ability(Key::R, [(0, Void) /* Magic Damage */])
             .end()
     }
 }

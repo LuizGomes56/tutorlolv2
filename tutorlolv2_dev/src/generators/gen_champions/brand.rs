@@ -6,28 +6,25 @@ impl Generator for Brand {
         self.ability(
             Key::P,
             [
-                (0, _1), /* Ablaze */
-                (1, _2), /* Ablaze [1] */
-                (2, _3), /* Ablaze [2] */
-                (3, _4), /* Description 2 */
-                (4, _5), /* Description 2 [1] */
-                (5, _6), /* Description 2 [2] */
+                (0, Void), /* Ablaze */
+                (3, _1),   /* Description 2 */
             ],
         )
-        .ability(Key::Q, [(0, _1) /* Magic Damage */])
+        .modify(P(_1), |p| p.parenthesize().times(EnemyMaxHealth))?
+        .ability(Key::Q, [(0, Void) /* Magic Damage */])
         .ability(
             Key::W,
             [
-                (0, _1), /* Increased Damage */
-                (1, _2), /* Magic Damage */
+                (0, Max), /* Increased Damage */
+                (1, Min), /* Magic Damage */
             ],
         )
-        .ability(Key::E, [(0, _1) /* Magic Damage */])
+        .ability(Key::E, [(0, Void) /* Magic Damage */])
         .ability(
             Key::R,
             [
-                (0, _1), /* Magic Damage */
-                (2, _2), /* Total Single-Target Damage */
+                (0, Min), /* Magic Damage */
+                (2, Max), /* Total Single-Target Damage */
             ],
         )
         .end()

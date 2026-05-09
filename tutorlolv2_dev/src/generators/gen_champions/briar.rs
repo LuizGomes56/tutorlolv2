@@ -27,26 +27,19 @@ impl Generator for Briar {
                 (20, _3Max), /* Innate [9] */
             ],
         )
-        .ability(Key::Q, [(0, _1) /* Physical Damage */])
-        .ability(Key::W, [(2, _1) /* Physical Damage */])
-        .ability_nth(
-            1,
-            Key::W,
-            [
-                (0, _2), /* Bonus Physical Damage */
-                (2, _3), /* Non-Champion Bonus Damage */
-            ],
-        )
+        .ability(Key::Q, [(0, Void) /* Physical Damage */])
+        .ability(Key::W, [(2, Void) /* Physical Damage */])
+        .ability_nth(1, Key::W, [(0, Void) /* Bonus Physical Damage */])
         .ability(
             Key::E,
             [
-                (0, _1), /* Bonus Magic Damage */
-                (3, _2), /* Maximum Magic Damage */
-                (4, _3), /* Minimum Magic Damage */
-                (5, _4), /* Total Magic Damage */
+                (0, _2),    /* Bonus Magic Damage */
+                (3, Max),   /* Maximum Magic Damage */
+                (4, Min),   /* Minimum Magic Damage */
+                (5, _1Max), /* Total Magic Damage */
             ],
         )
-        .ability(Key::R, [(2, _1) /* Magic Damage */])
+        .ability(Key::R, [(2, Void) /* Magic Damage */])
         .end()
     }
 }

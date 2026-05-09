@@ -11,7 +11,10 @@ use std::collections::{BTreeMap, BTreeSet};
 use tutorlolv2_types::{
     AbilityId, AbilityName, Attrs, ComboElement, DamageType, DevMergeData, Key,
 };
-use tutorlolv2_wiki::champions::WikiChampion;
+use tutorlolv2_wiki::{
+    champions::{WikiChampion, abilities::WikiAbility},
+    parser::{Effect, Scaling},
+};
 
 pub struct ChampionParser {
     pub data: BTreeMap<String, WikiChampion>,
@@ -28,6 +31,7 @@ pub struct Ability {
     pub name: String,
     pub damage_type: DamageType,
     pub attributes: Attrs,
+    pub comment: String,
     pub damage: DamageFormula,
 }
 
@@ -146,6 +150,43 @@ impl Champion {
         self.ability_nth(0, key, pattern)
     }
 
+    pub fn modify(&mut self, key: AbilityId, f: impl Fn(&str) -> String) -> MayFail<&mut Self> {
+        let damage = self.merge_damage([key], |[k]| f(k))?;
+        self.get_mut(key)?.damage = damage;
+        Ok(self)
+    }
+
+    pub fn wiki_ability(&self, key: Key) -> MayFail<&[WikiAbility]> {
+        Ok(self
+            .data
+            .wiki_abilities
+            .get(&key)
+            .ok_or_else(|| format!("Failed to get wiki abilities for key: {key:?}"))?
+            .as_slice())
+    }
+
+    pub fn effect_nth(&self, key: Key, nth: usize) -> MayFail<&BTreeMap<String, Effect>> {
+        Ok(&self
+            .wiki_ability(key)?
+            .get(nth)
+            .ok_or_else(|| format!("Failed to get wiki ability for key: {key:?} nth: {nth}"))?
+            .effects)
+    }
+
+    pub fn scaling_nth(&self, key: Key, nth: usize, n: usize) -> MayFail<&[Scaling]> {
+        Ok(self
+            .effect_nth(key, nth)?
+            .values()
+            .nth(n)
+            .ok_or_else(|| format!("Failed to get scaling for key: {key:?} n: {n}"))?
+            .scalings
+            .as_slice())
+    }
+
+    pub fn scaling(&self, key: Key, n: usize) -> MayFail<&[Scaling]> {
+        self.scaling_nth(key, 0, n)
+    }
+
     pub fn ability_nth<const N: usize>(
         &mut self,
         nth: usize,
@@ -153,14 +194,15 @@ impl Champion {
         pattern: [(usize, AbilityName); N],
     ) -> &mut Self {
         for (i, ability_id) in Self::modify_pattern(key, pattern) {
-            if let Some(abilities) = self.data.wiki_abilities.get(&key)
+            if let Some(abilities) = self.wiki_ability(key).ok()
                 && let Some(ability) = abilities.iter().nth(nth)
-                && let Some(effect) = ability.effects.values().nth(i)
+                && let Some((comment, effect)) = ability.effects.iter().nth(i)
             {
                 let mut value = Ability {
                     name: ability.name.clone(),
                     damage_type: ability.damage_type,
                     attributes: Attrs::Undefined,
+                    comment: comment.clone(),
                     damage: DamageFormula::Unknown(Vec::new()),
                 };
 
@@ -173,6 +215,56 @@ impl Champion {
         }
 
         self
+    }
+
+    pub fn merge<const N: usize>(
+        &mut self,
+        from: [AbilityId; N],
+        into: AbilityId,
+        sep: &str,
+    ) -> MayFail<&mut Self> {
+        assert!(N > 0);
+        let damage = self.concat(from, sep)?;
+        self.clone_to(from[0], into, damage)?;
+
+        let comment = from
+            .map(|v| match &self.get(v) {
+                Ok(ability) => format!("{v:?} /* {c} */", c = ability.comment),
+                _ => format!("{v:?} /* Unknown */"),
+            })
+            .join(", ");
+
+        self.get_mut(into)?.comment = format!("Merged from: [{comment}]");
+
+        for key in from {
+            self.delete(key);
+        }
+
+        Ok(self)
+    }
+
+    pub fn merge_sum<const N: usize>(
+        &mut self,
+        from: [AbilityId; N],
+        into: AbilityId,
+    ) -> MayFail<&mut Self> {
+        self.merge(from, into, " + ")
+    }
+
+    pub fn merge_mul<const N: usize>(
+        &mut self,
+        from: [AbilityId; N],
+        into: AbilityId,
+    ) -> MayFail<&mut Self> {
+        self.merge(from, into, " * ")
+    }
+
+    pub fn sum<const N: usize>(&self, args: [AbilityId; N]) -> MayFail<DamageFormula> {
+        self.concat(args, " + ")
+    }
+
+    pub fn mul<const N: usize>(&self, args: [AbilityId; N]) -> MayFail<DamageFormula> {
+        self.concat(args, " * ")
     }
 
     pub fn attr<const N: usize>(&mut self, attr: Attrs, set: [AbilityId; N]) -> MayFail<&mut Self> {
@@ -231,7 +323,9 @@ impl Champion {
     ) -> MayFail<&mut Self> {
         let clone_from = self.get(from)?.clone();
         self.abilities.insert(into, clone_from);
-        self.get_mut(into)?.damage = damage;
+        let ability = self.get_mut(into)?;
+        ability.damage = damage;
+        ability.comment = format!("Custom reference of {from:?}");
         Ok(self)
     }
 
@@ -240,20 +334,24 @@ impl Champion {
         Ok(self)
     }
 
-    pub fn sum<const N: usize>(&self, args: [AbilityId; N]) -> MayFail<DamageFormula> {
+    pub fn concat<const N: usize>(
+        &self,
+        args: [AbilityId; N],
+        sep: &str,
+    ) -> MayFail<DamageFormula> {
         self.merge_damage(args, |array| {
             array
                 .into_iter()
                 .map(RegExtractor::parenthesize)
                 .collect::<Vec<_>>()
-                .join(" + ")
+                .join(sep)
         })
     }
 
     pub fn merge_damage<const N: usize>(
         &self,
         args: [AbilityId; N],
-        closure: fn([&str; N]) -> String,
+        closure: impl Fn([&str; N]) -> String,
     ) -> MayFail<DamageFormula> {
         let mut formulas = Vec::with_capacity(N);
 

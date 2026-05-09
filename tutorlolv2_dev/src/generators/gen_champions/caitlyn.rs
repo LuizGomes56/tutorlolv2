@@ -14,13 +14,12 @@ impl Generator for Caitlyn {
         .ability(
             Key::Q,
             [
-                (0, _1), /* Physical Damage */
-                (1, _2), /* Reduced Damage */
+                (0, Max), /* Physical Damage */
+                (1, Min), /* Reduced Damage */
             ],
         )
-        .ability(Key::W, [(0, _1) /* Headshot Damage Increase */])
-        .ability(Key::E, [(0, _1) /* Magic Damage */])
-        .ability(Key::R, [(0, _1) /* Physical damage */])
+        .ability(Key::E, [(0, Void) /* Magic Damage */])
+        .ability(Key::R, [(0, Void) /* Physical damage */])
         .end()
     }
 }
