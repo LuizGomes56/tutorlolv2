@@ -131,7 +131,7 @@ static RPARSER: LazyLock<RuneParser> = LazyLock::new(|| RuneParser::new().unwrap
 pub async fn run() -> MayFail {
     let Cli { args } = Cli::parse();
 
-    dotenvy::dotenv()?;
+    dotenvy::dotenv().expect(".env file not found");
     std::env::set_current_dir("../")?;
 
     match args {

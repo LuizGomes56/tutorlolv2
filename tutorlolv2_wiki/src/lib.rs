@@ -15,13 +15,13 @@ pub fn selector(selectors: &str) -> MayFail<Selector> {
         .map_err(|e| format!("[selector] Error parsing selector: {selectors:?}: {e:?}").into())
 }
 
-pub fn write(path: impl AsRef<Path>, data: impl AsRef<[u8]>) -> MayFail<()> {
+pub fn write(path: impl AsRef<Path>, data: impl AsRef<[u8]>) -> MayFail {
     let path = path.as_ref();
 
     if let Some(parent) = path.parent()
         && !parent.as_os_str().is_empty()
     {
-        std::fs::create_dir_all(parent)?;
+        create_dir_all(parent)?;
     }
 
     std::fs::write(path, data)
@@ -44,6 +44,12 @@ pub fn read_dir(path: impl AsRef<Path>) -> MayFail<impl Iterator<Item = DirEntry
     Ok(std::fs::read_dir(path)
         .map_err(|e| format!("[error] Unable to read directory path: {e:?}"))?
         .filter_map(Result::ok))
+}
+
+pub fn create_dir_all(path: impl AsRef<Path>) -> MayFail {
+    let path = path.as_ref();
+    std::fs::create_dir_all(path)
+        .map_err(|e| format!("[create_dir_all] Error creating directory: {path:?}: {e:?}").into())
 }
 
 pub fn is_dir(entry: &DirEntry) -> bool {

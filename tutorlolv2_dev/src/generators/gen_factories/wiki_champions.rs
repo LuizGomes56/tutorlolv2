@@ -243,7 +243,7 @@ impl Champion {
     pub fn sum<const N: usize>(&self, args: [AbilityId; N]) -> MayFail<DamageFormula> {
         self.merge_damage(args, |array| {
             array
-                .iter()
+                .into_iter()
                 .map(RegExtractor::parenthesize)
                 .collect::<Vec<_>>()
                 .join(" + ")
