@@ -9,14 +9,10 @@ use tutorlolv2_dev::{
 use tutorlolv2_gen::{ChampionId, ItemId, RuneId};
 use tutorlolv2_wiki::{champions, items, runes};
 
-fn from_str_err<T>(s: &str, into: &str) -> Result<T, String> {
-    Err(format!("Value {s:?} can't be converted into {into}"))
-}
-
 #[derive(Parser, Debug)]
 pub struct Cli {
     #[command(subcommand)]
-    pub args: GenArgs,
+    pub args: AppArgs,
 }
 
 #[derive(Clone, Debug)]
@@ -28,7 +24,7 @@ pub enum EntityTarget {
     Items,
     Runes,
     All,
-    Unsafe(String),
+    Unknown(String),
 }
 
 impl FromStr for EntityTarget {
@@ -43,7 +39,7 @@ impl FromStr for EntityTarget {
             s if let Ok(champion_id) = ChampionId::from_str(s) => Ok(Self::Champion(champion_id)),
             s if let Ok(item_id) = ItemId::from_str(s) => Ok(Self::Item(item_id)),
             s if let Ok(rune_id) = RuneId::from_str(s) => Ok(Self::Rune(rune_id)),
-            s => Ok(Self::Unsafe(s.to_string())),
+            s => Ok(Self::Unknown(s.to_string())),
         }
     }
 }
@@ -61,7 +57,7 @@ pub enum Fetch {
 }
 
 #[derive(Subcommand, Debug)]
-pub enum GenArgs {
+pub enum AppArgs {
     #[command(alias = "c")]
     Create { creator: EntityTarget },
     #[command(alias = "r")]
@@ -139,7 +135,7 @@ pub async fn run() -> MayFail {
     std::env::set_current_dir("../")?;
 
     match args {
-        GenArgs::Create { creator } => match creator {
+        AppArgs::Create { creator } => match creator {
             EntityTarget::All => {
                 CPARSER.create_all()?;
                 IPARSER.create_all()?;
@@ -151,9 +147,9 @@ pub async fn run() -> MayFail {
             EntityTarget::Items => IPARSER.create_all()?,
             EntityTarget::Rune(v) => RPARSER.create(v.debug())?,
             EntityTarget::Runes => RPARSER.create_all()?,
-            EntityTarget::Unsafe(s) => panic!("Can't create generator for unknown string {s}"),
+            EntityTarget::Unknown(s) => panic!("Can't create generator for unknown string {s}"),
         },
-        GenArgs::Run { target } => match target {
+        AppArgs::Run { target } => match target {
             EntityTarget::All => {
                 CPARSER.run_all();
                 IPARSER.run_all();
@@ -165,10 +161,10 @@ pub async fn run() -> MayFail {
             EntityTarget::Items => IPARSER.run_all(),
             EntityTarget::Rune(v) => RPARSER.run(v.debug())?,
             EntityTarget::Runes => RPARSER.run_all(),
-            EntityTarget::Unsafe(s) => RPARSER.run(&s)?,
+            EntityTarget::Unknown(s) => RPARSER.run(&s)?,
         },
-        GenArgs::Progress => CPARSER.progress(),
-        GenArgs::Update => {
+        AppArgs::Progress => CPARSER.progress(),
+        AppArgs::Update => {
             CPARSER.create_all()?;
             CPARSER.run_all();
             IPARSER.create_all()?;
@@ -179,8 +175,8 @@ pub async fn run() -> MayFail {
             std::env::set_current_dir("./tutorlolv2_build")?;
             tutorlolv2_build::run()?;
         }
-        GenArgs::Html => tutorlolv2_html::run(),
-        GenArgs::Setup { setup } => match setup {
+        AppArgs::Html => tutorlolv2_html::run(),
+        AppArgs::Setup { setup } => match setup {
             Setup::Items => {
                 /* update::setup_runes_json()? */
                 todo!()
@@ -190,11 +186,11 @@ pub async fn run() -> MayFail {
                 todo!()
             }
         },
-        GenArgs::Build => {
+        AppArgs::Build => {
             std::env::set_current_dir("./tutorlolv2_build")?;
             tutorlolv2_build::run()?;
         }
-        GenArgs::Fetch { function } => match function {
+        AppArgs::Fetch { function } => match function {
             Fetch::Images => {
                 HTTP_CLIENT.download_arts_img().await?;
                 HTTP_CLIENT.download_items_img().await?;
@@ -218,7 +214,7 @@ pub async fn run() -> MayFail {
                 }
             }
         },
-        GenArgs::Wiki { function } => match function {
+        AppArgs::Wiki { function } => match function {
             Wiki::All => tutorlolv2_wiki::run().await,
             Wiki::Champions => champions::run().await,
             Wiki::ChampionsConcat => champions::concat(),

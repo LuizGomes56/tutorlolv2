@@ -241,22 +241,19 @@ impl Champion {
     }
 
     pub fn sum<const N: usize>(&self, args: [AbilityId; N]) -> MayFail<DamageFormula> {
-        self.merge_damage(
-            |array| {
-                array
-                    .iter()
-                    .map(RegExtractor::parenthesize)
-                    .collect::<Vec<_>>()
-                    .join(" + ")
-            },
-            args,
-        )
+        self.merge_damage(args, |array| {
+            array
+                .iter()
+                .map(RegExtractor::parenthesize)
+                .collect::<Vec<_>>()
+                .join(" + ")
+        })
     }
 
     pub fn merge_damage<const N: usize>(
         &self,
-        closure: fn([&str; N]) -> String,
         args: [AbilityId; N],
+        closure: fn([&str; N]) -> String,
     ) -> MayFail<DamageFormula> {
         let mut formulas = Vec::with_capacity(N);
 
