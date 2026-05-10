@@ -310,7 +310,7 @@ impl Effect {
 
     fn build_base_expr(&self, key: Key, axis: CtxVar) -> MayFail<Option<String>> {
         if let Some(use_formula) = &self.use_formula {
-            return Ok(Some(use_formula.replace('x', &format!("({axis} as f32)"))));
+            return Ok(Some(use_formula.replace('x', axis.as_var())));
         }
 
         if let Some(base) = &self.base {
@@ -680,7 +680,7 @@ fn mul_expr(lhs: &str, rhs: &str) -> String {
 }
 
 fn axis_offset(axis: CtxVar) -> String {
-    format!("(({axis} as f32) - 1.0)")
+    format!("({axis} - 1.0)")
 }
 
 fn combine_terms<const N: usize>(terms: [Option<String>; N]) -> String {

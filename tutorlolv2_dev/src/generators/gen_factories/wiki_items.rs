@@ -10,7 +10,7 @@ use std::{
     collections::BTreeMap,
     ops::{Index, IndexMut},
 };
-use tutorlolv2_types::{AttackType, DamageType};
+use tutorlolv2_types::{AttackType, DamageType, GameMap, StatName, TypeMetadata};
 use tutorlolv2_wiki::items::item_parser::{ItemEffect, WikiItem};
 
 pub struct ItemParser {
@@ -68,6 +68,22 @@ pub struct Item {
     pub damage_type: DamageType,
     pub ranged: DamageRange,
     pub melee: DamageRange,
+    pub build: ItemBuild,
+}
+
+#[derive(Clone, Debug, Deserialize, Serialize)]
+pub struct ItemBuild {
+    pub name: String,
+    pub tier: u8,
+    pub price: u16,
+    pub stats: Vec<(StatName, u16)>,
+    pub maps: Vec<GameMap>,
+    pub metadata: TypeMetadata<String>,
+    pub ranged: [String; 2],
+    pub melee: [String; 2],
+    pub deals_damage: (bool, bool),
+    pub purchasable: bool,
+    pub riot_id: u32,
 }
 
 #[derive(Copy, Clone, Debug)]
@@ -78,11 +94,80 @@ pub enum Source {
 
 impl From<WikiItem> for Item {
     fn from(data: WikiItem) -> Self {
+        let damage = ["zero".into(), "zero".into()];
+
         Self {
-            data,
             damage_type: Default::default(),
             ranged: Default::default(),
             melee: Default::default(),
+            build: ItemBuild {
+                name: data.name.clone(),
+                tier: data.tier.unwrap_or(1),
+                price: data.buy.unwrap_or(0),
+                stats: data
+                    .stats
+                    .iter()
+                    .map(|(k, v)| {
+                        (
+                            match k.as_str() {
+                                "ah" => StatName::AbilityHaste,
+                                "hp" => StatName::Health,
+                                "mr" => StatName::MagicResist,
+                                "ap" => StatName::AbilityPower,
+                                "mana" => StatName::Mana,
+                                "ms" => StatName::MoveSpeed,
+                                "hsp" => StatName::HealAndShieldPower,
+                                "mp5" => StatName::BaseManaRegen,
+                                "armor" => StatName::Armor,
+                                "msflat" => StatName::MoveSpeedPercent,
+                                "crit" => StatName::CritChance,
+                                "ad" => StatName::AttackDamage,
+                                "lethality" => StatName::Lethality,
+                                "as" => StatName::AttackSpeed,
+                                "lifesteal" => StatName::LifeSteal,
+                                "mpen" => StatName::MagicPenetration,
+                                "gp10" => StatName::GoldPer10Seconds,
+                                "hp5" => StatName::BaseHealthRegen,
+                                "tenacity" => StatName::Tenacity,
+                                "spec" => StatName::AdaptiveForce,
+                                "mpenflat" => StatName::MagicPenetration,
+                                "omnivamp" => StatName::Omnivamp,
+                                "hp5flat" => StatName::BaseHealthRegen,
+                                "critdamage" => StatName::CritDamage,
+                                "armpen" => StatName::ArmorPenetration,
+                                _ => unreachable!(
+                                    "Found unknown stat: {k} for {item_id}",
+                                    item_id = data.item_id
+                                ),
+                            },
+                            *v as _,
+                        )
+                    })
+                    .collect(),
+                maps: data
+                    .modes
+                    .iter()
+                    .filter(|(_, v)| **v)
+                    .filter_map(|(k, _)| match k.as_str() {
+                        "ar" => Some(GameMap::Arena),
+                        "aram" => Some(GameMap::Aram),
+                        "classic sr 5v5" => Some(GameMap::SummonersRift),
+                        "nb" => Some(GameMap::NexusBlitz),
+                        _ => None,
+                    })
+                    .collect(),
+                metadata: TypeMetadata {
+                    kind: data.item_id.clone(),
+                    damage_type: Default::default(),
+                    attributes: Default::default(),
+                },
+                ranged: damage.clone(),
+                melee: damage,
+                deals_damage: (false, false),
+                purchasable: false,
+                riot_id: data.id,
+            },
+            data,
         }
     }
 }
@@ -144,7 +229,21 @@ impl Item {
         self.damage(AttackType::Ranged, DamageIndex::Max, index)
     }
 
-    pub fn end(&self) -> MayFail {
+    pub fn end(&mut self) -> MayFail {
+        if matches!(self.damage_type, DamageType::Unknown) {
+            println!(
+                "[warn] {item_id} has unknown damage type",
+                item_id = self.data.item_id
+            )
+            // return Err("Unknown damage type for this item".into());
+        }
+
+        let build = &mut self.build;
+
+        build.metadata.damage_type = self.damage_type;
+        build.melee = [self.melee.min_dmg.clone(), self.melee.max_dmg.clone()];
+        build.ranged = [self.ranged.min_dmg.clone(), self.ranged.max_dmg.clone()];
+
         Ok(())
     }
 }

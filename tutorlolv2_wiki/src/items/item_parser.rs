@@ -27,6 +27,7 @@ pub struct ItemEffects {
 pub struct WikiItem {
     pub id: u32,
     pub name: String,
+    pub item_id: String,
     pub tier: Option<u8>,
 
     #[serde(default)]
@@ -161,6 +162,7 @@ pub fn parse_items() -> MayFail {
 
             let key = pascal_case(&name);
             value.name = name;
+            value.item_id = key.clone();
 
             (key, value)
         })
@@ -172,6 +174,7 @@ pub fn parse_items() -> MayFail {
 
 fn parse_item(raw: ItemRaw) -> WikiItem {
     WikiItem {
+        item_id: pascal_case(&raw.name),
         name: raw.name,
         id: raw.id,
         tier: raw.tier,

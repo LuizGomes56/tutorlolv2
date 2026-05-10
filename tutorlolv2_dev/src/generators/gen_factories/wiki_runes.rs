@@ -10,7 +10,7 @@ use std::{
     collections::BTreeMap,
     ops::{Index, IndexMut},
 };
-use tutorlolv2_types::{AttackType, CtxVar, DamageType};
+use tutorlolv2_types::{AttackType, CtxVar, DamageType, TypeMetadata};
 use tutorlolv2_wiki::{parser::Effect, runes::WikiRune};
 
 pub struct RuneParser {
@@ -24,6 +24,17 @@ pub struct Rune {
     pub damage_type: DamageType,
     pub ranged: DamageRange,
     pub melee: DamageRange,
+    pub build: RuneBuild,
+}
+
+#[derive(Clone, Debug, Deserialize, Serialize)]
+pub struct RuneBuild {
+    pub name: String,
+    pub metadata: TypeMetadata<String>,
+    pub melee: [String; 2],
+    pub ranged: [String; 2],
+    pub riot_id: u32,
+    pub undeclared: bool,
 }
 
 impl Parser<WikiRune, Rune> for RuneParser {
@@ -62,11 +73,25 @@ impl Parser<WikiRune, Rune> for RuneParser {
 
 impl From<WikiRune> for Rune {
     fn from(data: WikiRune) -> Self {
+        let damage = ["zero".into(), "zero".into()];
+
         Self {
-            data,
             damage_type: Default::default(),
             ranged: Default::default(),
             melee: Default::default(),
+            build: RuneBuild {
+                name: data.name.clone(),
+                metadata: TypeMetadata {
+                    kind: data.rune_id.clone(),
+                    damage_type: DamageType::Unknown,
+                    attributes: Default::default(),
+                },
+                melee: damage.clone(),
+                ranged: damage,
+                riot_id: 0,
+                undeclared: false,
+            },
+            data,
         }
     }
 }
@@ -172,10 +197,20 @@ impl Rune {
         self.damage(AttackType::Ranged, DamageIndex::Max, index)
     }
 
-    pub fn end(&self) -> MayFail {
+    pub fn end(&mut self) -> MayFail {
         if matches!(self.damage_type, DamageType::Unknown) {
-            return Err("Unknown damage type for this rune".into());
+            println!(
+                "[warn] {rune_id} has unknown damage type",
+                rune_id = self.data.rune_id
+            );
+            // return Err("Unknown damage type for this rune".into());
         }
+
+        let build = &mut self.build;
+
+        build.metadata.damage_type = self.damage_type;
+        build.melee = [self.melee.min_dmg.clone(), self.melee.max_dmg.clone()];
+        build.ranged = [self.ranged.min_dmg.clone(), self.ranged.max_dmg.clone()];
 
         Ok(())
     }

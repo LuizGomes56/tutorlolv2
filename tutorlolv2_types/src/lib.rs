@@ -8,6 +8,15 @@ use bincode::{Decode, Encode};
 use core::{convert::Infallible, fmt::Display, ops::Index, str::FromStr};
 use serde::{Deserialize, Serialize};
 
+/// A generic metadata holder for [`AbilityId`], [`ItemId`], or [`RuneId`].
+/// Contains its damage type, attributes, and which instance of the enum the value is.
+#[derive(Clone, Copy, Debug, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize)]
+pub struct TypeMetadata<T> {
+    pub kind: T,
+    pub damage_type: DamageType,
+    pub attributes: Attrs,
+}
+
 #[derive(
     Clone, Copy, Debug, Default, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize,
 )]
@@ -191,9 +200,11 @@ pub enum StatName {
     Lethality,
     LifeSteal,
     MagicPenetration,
+    MagicPenetrationPercent,
     MagicResist,
     Mana,
     MoveSpeed,
+    MoveSpeedPercent,
     Omnivamp,
     Tenacity,
 }
@@ -203,28 +214,28 @@ impl StatName {
 
     pub const fn name(&self) -> &'static str {
         match self {
-            StatName::AbilityHaste => "Ability Haste",
-            StatName::AbilityPower => "Ability Power",
-            StatName::AdaptiveForce => "Adaptive Force",
-            StatName::Armor => "Armor",
-            StatName::ArmorPenetration => "Armor Penetration",
-            StatName::AttackDamage => "Attack Damage",
-            StatName::AttackSpeed => "Attack Speed",
-            StatName::BaseHealthRegen => "Base Health Regen",
-            StatName::BaseManaRegen => "Base Mana Regen",
-            StatName::CritChance => "Crit Chance",
-            StatName::CritDamage => "Crit Damage",
-            StatName::GoldPer10Seconds => "Gold / 10s",
-            StatName::HealAndShieldPower => "Heal & Shield Power",
-            StatName::Health => "Health",
-            StatName::Lethality => "Lethality",
-            StatName::LifeSteal => "Life Steal",
-            StatName::MagicPenetration => "Magic Penetration",
-            StatName::MagicResist => "Magic Resist",
-            StatName::Mana => "Mana",
-            StatName::MoveSpeed => "Move Speed",
-            StatName::Omnivamp => "Omnivamp",
-            StatName::Tenacity => "Tenacity",
+            Self::AbilityHaste => "Ability Haste",
+            Self::AbilityPower => "Ability Power",
+            Self::AdaptiveForce => "Adaptive Force",
+            Self::Armor => "Armor",
+            Self::ArmorPenetration => "Armor Penetration",
+            Self::AttackDamage => "Attack Damage",
+            Self::AttackSpeed => "Attack Speed",
+            Self::BaseHealthRegen => "Base Health Regen",
+            Self::BaseManaRegen => "Base Mana Regen",
+            Self::CritChance => "Crit Chance",
+            Self::CritDamage => "Crit Damage",
+            Self::GoldPer10Seconds => "Gold / 10s",
+            Self::HealAndShieldPower => "Heal & Shield Power",
+            Self::Health => "Health",
+            Self::Lethality => "Lethality",
+            Self::LifeSteal => "Life Steal",
+            Self::MagicPenetration | Self::MagicPenetrationPercent => "Magic Penetration",
+            Self::MagicResist => "Magic Resist",
+            Self::Mana => "Mana",
+            Self::MoveSpeed | Self::MoveSpeedPercent => "Move Speed",
+            Self::Omnivamp => "Omnivamp",
+            Self::Tenacity => "Tenacity",
         }
     }
 

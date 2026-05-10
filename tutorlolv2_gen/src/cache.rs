@@ -4,22 +4,6 @@ use core::{ops::Index, str::FromStr};
 use serde::{Deserialize, Serialize};
 use tutorlolv2_types::*;
 
-/// A generic metadata holder for [`AbilityId`], [`ItemId`], or [`RuneId`].
-/// Contains its damage type, attributes, and which instance of the enum the value is.
-#[derive(Clone, Copy, Debug, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize)]
-pub struct TypeMetadata<T> {
-    /// Represents a variety of values:
-    /// - [`AbilityId`] Which ability key it represents, and its name
-    /// - [`ItemId`] Can be casted to [`usize`] and indexes into [`crate::ITEM_CACHE`]
-    /// - [`RuneId`] Can be casted to [`usize`] and indexes into [`crate::RUNE_CACHE`]
-    pub kind: T,
-    /// Represents the damage type of the current instance
-    pub damage_type: DamageType,
-    /// A variety of possible extra attributes the current instance can have.
-    /// See [`Attrs`] for more details
-    pub attributes: Attrs,
-}
-
 /// Definition of a closure that lives in the generated static variables of
 /// cache fields, such as [`crate::CHAMPION_CACHE`], [`crate::ITEM_CACHE`], or
 /// [`crate::RUNE_CACHE`]. They all receive a [`Ctx`], which contains

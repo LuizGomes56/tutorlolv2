@@ -41,7 +41,7 @@ pub struct WikiChampion {
     pub wiki_abilities: BTreeMap<Key, Vec<WikiAbility>>,
 }
 
-#[derive(Clone, Debug, Default, Deserialize, Serialize)]
+#[derive(Clone, Copy, Debug, Default, Deserialize, Serialize)]
 pub struct WikiStats {
     pub health: Stat,
     pub mana: Stat,
@@ -55,19 +55,19 @@ pub struct WikiStats {
     pub move_speed: f32,
 }
 
-#[derive(Clone, Debug, Default, Deserialize, Serialize)]
+#[derive(Clone, Copy, Debug, Default, Deserialize, Serialize)]
 pub struct Stat {
     pub base: f32,
     pub per_level: f32,
 }
 
-#[derive(Clone, Debug, Default, Deserialize, Serialize)]
+#[derive(Clone, Copy, Debug, Default, Deserialize, Serialize)]
 pub struct Modifier {
     pub damage_dealt: f32,
     pub damage_taken: f32,
 }
 
-#[derive(Clone, Debug, Default, Deserialize, Serialize)]
+#[derive(Clone, Copy, Debug, Default, Deserialize, Serialize)]
 pub struct WikiModifiers {
     pub ofa: Modifier,
     pub usb: Modifier,

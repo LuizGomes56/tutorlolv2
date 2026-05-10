@@ -9,10 +9,11 @@ use serde::{Deserialize, Serialize};
 use serde_with::{Seq, serde_as};
 use std::collections::{BTreeMap, BTreeSet};
 use tutorlolv2_types::{
-    AbilityId, AbilityName, Attrs, ComboElement, DamageType, DevMergeData, Key,
+    AbilityId, AbilityName, AdaptiveType, AttackType, Attrs, ComboElement, DamageType,
+    DevMergeData, Key, MergeData, Position, TypeMetadata,
 };
 use tutorlolv2_wiki::{
-    champions::{WikiChampion, abilities::WikiAbility},
+    champions::{WikiChampion, WikiModifiers, WikiStats, abilities::WikiAbility},
     parser::{Effect, Scaling},
 };
 
@@ -44,6 +45,21 @@ pub struct Champion {
     pub combo: Vec<Vec<ComboElement>>,
     #[serde_as(as = "Seq<(_, _)>")]
     pub abilities: BTreeMap<AbilityId, Ability>,
+    pub build: ChampionBuild,
+}
+
+#[derive(Clone, Debug, Deserialize, Serialize)]
+pub struct ChampionBuild {
+    pub name: String,
+    pub adaptive_type: AdaptiveType,
+    pub attack_type: AttackType,
+    pub positions: Vec<Position>,
+    pub stats: WikiStats,
+    pub modifiers: WikiModifiers,
+    pub combos: Vec<Vec<ComboElement>>,
+    pub metadata: Vec<TypeMetadata<AbilityId>>,
+    pub closures: Vec<String>,
+    pub merge_data: Vec<MergeData>,
 }
 
 impl Parser<WikiChampion, Champion> for ChampionParser {
@@ -122,10 +138,22 @@ impl Parser<WikiChampion, Champion> for ChampionParser {
 impl From<WikiChampion> for Champion {
     fn from(data: WikiChampion) -> Self {
         Self {
-            data,
             abilities: Default::default(),
             merge: Default::default(),
             combo: Default::default(),
+            build: ChampionBuild {
+                name: data.name.clone(),
+                adaptive_type: data.adaptive_type,
+                attack_type: data.attack_type,
+                positions: data.positions.clone(),
+                stats: data.stats,
+                modifiers: data.modifiers,
+                combos: vec![],
+                metadata: vec![],
+                closures: vec![],
+                merge_data: vec![],
+            },
+            data,
         }
     }
 }
@@ -477,6 +505,69 @@ impl Champion {
             );
             return Err("Found inconsistent merge vec".into());
         }
+
+        self.build.combos = self.combo.clone();
+
+        self.build.metadata = self
+            .abilities
+            .iter()
+            .map(|(k, v)| TypeMetadata {
+                kind: *k,
+                damage_type: v.damage_type,
+                attributes: v.attributes,
+            })
+            .collect();
+
+        self.build.closures = self
+            .abilities
+            .iter()
+            .map(|(k, v)| match &v.damage {
+                DamageFormula::Progression(v) => v.clone(),
+                DamageFormula::Unknown(items) => {
+                    if items.is_empty() {
+                        return "zero".into();
+                    }
+
+                    let leveling = k.as_key().as_ctx_var();
+
+                    let arms = items
+                        .iter()
+                        .enumerate()
+                        .map(|(i, damage)| format!("{i} => {damage}"))
+                        .collect::<Vec<_>>()
+                        .join(",");
+
+                    format!("match {leveling} {{ {arms} }}")
+                }
+            })
+            .collect();
+
+        self.build.merge_data = {
+            let mut index = BTreeMap::new();
+            for (i, &ability_id) in self.abilities.keys().enumerate() {
+                index.entry(ability_id).or_insert(i);
+            }
+
+            self.merge
+                .iter()
+                .filter_map(|value| {
+                    let DevMergeData {
+                        minimum_damage,
+                        maximum_damage,
+                        alias,
+                    } = value;
+
+                    match (index.get(minimum_damage), index.get(maximum_damage)) {
+                        (Some(ia), Some(ib)) => Some(MergeData {
+                            minimum_damage: *ia as _,
+                            maximum_damage: *ib as _,
+                            alias: *alias,
+                        }),
+                        _ => None,
+                    }
+                })
+                .collect()
+        };
 
         Ok(())
     }
