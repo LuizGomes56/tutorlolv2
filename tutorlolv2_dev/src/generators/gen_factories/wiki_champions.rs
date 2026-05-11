@@ -2,14 +2,14 @@ use crate::{
     GeneratorExt, JsonRead, MayFail,
     client::Tag,
     gen_champions::champion_gen_fn,
-    gen_factories::{Parser, likely_damages},
+    gen_factories::{Parser, ZERO, get_identifiers, likely_damages},
     gen_utils::RegExtractor,
 };
 use serde::{Deserialize, Serialize};
 use serde_with::{Seq, serde_as};
 use std::collections::{BTreeMap, BTreeSet};
 use tutorlolv2_types::{
-    AbilityId, AbilityName, AdaptiveType, AttackType, Attrs, ComboElement, DamageType,
+    AbilityId, AbilityName, AdaptiveType, AttackType, Attrs, ComboElement, CtxVar, DamageType,
     DevMergeData, Key, MergeData, Position, TypeMetadata,
 };
 use tutorlolv2_wiki::{
@@ -22,24 +22,17 @@ pub struct ChampionParser {
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
-pub enum DamageFormula {
-    Progression(String),
-    Unknown(Vec<String>),
-}
-
-#[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct Ability {
     pub name: String,
     pub damage_type: DamageType,
     pub attributes: Attrs,
     pub comment: String,
-    pub damage: DamageFormula,
+    pub damage: String,
 }
 
 #[serde_as]
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct Champion {
-    #[serde(flatten)]
     pub data: WikiChampion,
     pub merge: BTreeSet<DevMergeData>,
     pub combo: Vec<Vec<ComboElement>>,
@@ -60,6 +53,8 @@ pub struct ChampionBuild {
     pub metadata: Vec<TypeMetadata<AbilityId>>,
     pub closures: Vec<String>,
     pub merge_data: Vec<MergeData>,
+    pub identifiers: Vec<Vec<CtxVar>>,
+    pub functions: Vec<String>,
 }
 
 impl Parser<WikiChampion, Champion> for ChampionParser {
@@ -148,10 +143,12 @@ impl From<WikiChampion> for Champion {
                 positions: data.positions.clone(),
                 stats: data.stats,
                 modifiers: data.modifiers,
-                combos: vec![],
-                metadata: vec![],
-                closures: vec![],
-                merge_data: vec![],
+                combos: Default::default(),
+                metadata: Default::default(),
+                closures: Default::default(),
+                merge_data: Default::default(),
+                identifiers: Default::default(),
+                functions: Default::default(),
             },
             data,
         }
@@ -231,11 +228,11 @@ impl Champion {
                     damage_type: ability.damage_type,
                     attributes: Attrs::Undefined,
                     comment: comment.clone(),
-                    damage: DamageFormula::Unknown(Vec::new()),
+                    damage: ZERO.into(),
                 };
 
                 if let Some(formula) = &effect.formula {
-                    value.damage = DamageFormula::Progression(formula.clone());
+                    value.damage = formula.clone();
                 }
 
                 self.abilities.insert(ability_id, value);
@@ -287,11 +284,11 @@ impl Champion {
         self.merge(from, into, " * ")
     }
 
-    pub fn sum<const N: usize>(&self, args: [AbilityId; N]) -> MayFail<DamageFormula> {
+    pub fn sum<const N: usize>(&self, args: [AbilityId; N]) -> MayFail<String> {
         self.concat(args, " + ")
     }
 
-    pub fn mul<const N: usize>(&self, args: [AbilityId; N]) -> MayFail<DamageFormula> {
+    pub fn mul<const N: usize>(&self, args: [AbilityId; N]) -> MayFail<String> {
         self.concat(args, " * ")
     }
 
@@ -347,7 +344,7 @@ impl Champion {
         &mut self,
         from: AbilityId,
         into: AbilityId,
-        damage: DamageFormula,
+        damage: String,
     ) -> MayFail<&mut Self> {
         let clone_from = self.get(from)?.clone();
         self.abilities.insert(into, clone_from);
@@ -362,11 +359,7 @@ impl Champion {
         Ok(self)
     }
 
-    pub fn concat<const N: usize>(
-        &self,
-        args: [AbilityId; N],
-        sep: &str,
-    ) -> MayFail<DamageFormula> {
+    pub fn concat<const N: usize>(&self, args: [AbilityId; N], sep: &str) -> MayFail<String> {
         self.merge_damage(args, |array| {
             array
                 .into_iter()
@@ -380,53 +373,18 @@ impl Champion {
         &self,
         args: [AbilityId; N],
         closure: impl Fn([&str; N]) -> String,
-    ) -> MayFail<DamageFormula> {
-        let mut formulas = Vec::with_capacity(N);
+    ) -> MayFail<String> {
+        assert!(N > 0);
 
-        for arg in args {
-            formulas.push(&self.get(arg)?.damage);
+        let mut formulas = [ZERO; _];
+
+        let mut i = 0;
+        while i < N {
+            formulas[i] = self.get(args[i])?.damage.as_str();
+            i += 1;
         }
 
-        assert!(
-            !formulas.is_empty(),
-            "Closure must take at least one argument"
-        );
-
-        let mut len = None;
-
-        for f in &formulas {
-            if let DamageFormula::Unknown(v) = f {
-                match len {
-                    Some(l) => assert!(l == v.len(), "Mismatched lengths"),
-                    None => len = Some(v.len()),
-                }
-            }
-        }
-
-        match len {
-            Some(len) => {
-                let mut result = Vec::with_capacity(len);
-
-                for i in 0..len {
-                    let closure_args = core::array::from_fn(|j| match formulas[j] {
-                        DamageFormula::Progression(s) => s.as_str(),
-                        DamageFormula::Unknown(v) => v[i].as_str(),
-                    });
-
-                    result.push(closure(closure_args));
-                }
-
-                Ok(DamageFormula::Unknown(result))
-            }
-            None => {
-                let closure_args = core::array::from_fn(|i| match formulas[i] {
-                    DamageFormula::Progression(s) => s.as_str(),
-                    DamageFormula::Unknown(_) => unreachable!(),
-                });
-
-                Ok(DamageFormula::Progression(closure(closure_args)))
-            }
-        }
+        Ok(closure(formulas))
     }
 
     pub fn end(&mut self) -> MayFail {
@@ -518,27 +476,18 @@ impl Champion {
             })
             .collect();
 
-        self.build.closures = self
+        self.build.closures = self.abilities.values().map(|v| v.damage.clone()).collect();
+        self.build.functions = self
             .abilities
-            .iter()
-            .map(|(k, v)| match &v.damage {
-                DamageFormula::Progression(v) => v.clone(),
-                DamageFormula::Unknown(items) => {
-                    if items.is_empty() {
-                        return "zero".into();
-                    }
+            .keys()
+            .map(|ability_id| {
+                let discriminant = ability_id.discriminant().to_uppercase();
 
-                    let leveling = k.as_key().as_ctx_var();
-
-                    let arms = items
-                        .iter()
-                        .enumerate()
-                        .map(|(i, damage)| format!("{i} => {damage}"))
-                        .collect::<Vec<_>>()
-                        .join(",");
-
-                    format!("match {leveling} {{ {arms} }}")
-                }
+                format!(
+                    "{champion_id}_{discriminant}",
+                    champion_id = tutorlolv2_fmt::to_ssnake(&self.data.champion_id),
+                )
+                .to_lowercase()
             })
             .collect();
 
@@ -568,6 +517,12 @@ impl Champion {
                 })
                 .collect()
         };
+
+        self.build.identifiers = self
+            .abilities
+            .values()
+            .map(|ability| get_identifiers(&ability.damage, ability.damage_type).collect())
+            .collect();
 
         Ok(())
     }

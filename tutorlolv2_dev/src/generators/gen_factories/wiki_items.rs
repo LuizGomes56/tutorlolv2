@@ -1,16 +1,18 @@
 use crate::{
     GeneratorExt, JsonRead, MayFail,
     client::Tag,
-    gen_factories::{DamageIndex, DamageRange, Parser, infer_damage_type, likely_damages},
+    gen_factories::{
+        DamageIndex, DamageRange, Parser, ZERO, get_identifiers, infer_damage_type, likely_damages,
+    },
     gen_items::item_gen_fn,
     gen_utils::RegExtractor,
 };
 use serde::{Deserialize, Serialize};
 use std::{
-    collections::BTreeMap,
+    collections::{BTreeMap, BTreeSet},
     ops::{Index, IndexMut},
 };
-use tutorlolv2_types::{AttackType, DamageType, GameMap, StatName, TypeMetadata};
+use tutorlolv2_types::{AttackType, CtxVar, DamageType, GameMap, StatName, TypeMetadata};
 use tutorlolv2_wiki::items::item_parser::{ItemEffect, WikiItem};
 
 pub struct ItemParser {
@@ -63,7 +65,6 @@ impl Parser<WikiItem, Item> for ItemParser {
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct Item {
-    #[serde(flatten)]
     pub data: WikiItem,
     pub damage_type: DamageType,
     pub ranged: DamageRange,
@@ -84,6 +85,8 @@ pub struct ItemBuild {
     pub deals_damage: (bool, bool),
     pub purchasable: bool,
     pub riot_id: u32,
+    pub identifiers: [[Vec<CtxVar>; 2]; 2],
+    pub functions: [[String; 2]; 2],
 }
 
 #[derive(Copy, Clone, Debug)]
@@ -94,7 +97,7 @@ pub enum Source {
 
 impl From<WikiItem> for Item {
     fn from(data: WikiItem) -> Self {
-        let damage = ["zero".into(), "zero".into()];
+        let damage = [ZERO.into(), ZERO.into()];
 
         Self {
             damage_type: Default::default(),
@@ -163,9 +166,23 @@ impl From<WikiItem> for Item {
                 },
                 ranged: damage.clone(),
                 melee: damage,
-                deals_damage: (false, false),
-                purchasable: false,
                 riot_id: data.id,
+                deals_damage: Default::default(),
+                purchasable: false,
+                identifiers: Default::default(),
+                functions: {
+                    let item_id = tutorlolv2_fmt::to_ssnake(&data.item_id).to_lowercase();
+                    [
+                        [
+                            format!("{item_id}_melee_min",),
+                            format!("{item_id}_melee_max",),
+                        ],
+                        [
+                            format!("{item_id}_ranged_min",),
+                            format!("{item_id}_ranged_max",),
+                        ],
+                    ]
+                },
             },
             data,
         }
@@ -238,11 +255,34 @@ impl Item {
             // return Err("Unknown damage type for this item".into());
         }
 
-        let build = &mut self.build;
+        self.build.metadata.damage_type = self.damage_type;
+        self.build.melee = [self.melee.min_dmg.clone(), self.melee.max_dmg.clone()];
+        self.build.ranged = [self.ranged.min_dmg.clone(), self.ranged.max_dmg.clone()];
+        self.build.deals_damage = (
+            self.melee.min_dmg != ZERO || self.ranged.min_dmg != ZERO,
+            self.melee.max_dmg != ZERO || self.ranged.max_dmg != ZERO,
+        );
 
-        build.metadata.damage_type = self.damage_type;
-        build.melee = [self.melee.min_dmg.clone(), self.melee.max_dmg.clone()];
-        build.ranged = [self.ranged.min_dmg.clone(), self.ranged.max_dmg.clone()];
+        self.build.identifiers = core::array::from_fn(|i| {
+            let attack_type = match i {
+                0 => AttackType::Melee,
+                1 => AttackType::Ranged,
+                _ => unreachable!(),
+            };
+
+            core::array::from_fn(|j| {
+                let damage_index = match j {
+                    0 => DamageIndex::Min,
+                    1 => DamageIndex::Max,
+                    _ => unreachable!(),
+                };
+
+                get_identifiers(&self[attack_type][damage_index], self.damage_type)
+                    .collect::<BTreeSet<_>>()
+                    .into_iter()
+                    .collect()
+            })
+        });
 
         Ok(())
     }

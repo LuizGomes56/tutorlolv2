@@ -7,6 +7,7 @@ use std::{
 use tutorlolv2_fmt::rust_html;
 use tutorlolv2_types::DamageType;
 
+pub mod _champions2;
 pub mod champions;
 pub mod items;
 pub mod model;
@@ -42,29 +43,29 @@ pub const TOWER_DAMAGE: &str = r#"intrinsic TOWER_DAMAGE {
         current_stats.ability_power,
     ),
     definition: const fn get_tower_damages(
-        AdaptiveType, 
-        ResistShred, 
+        AdaptiveType,
+        ResistShred,
         ...f32
     ) -> [i32; L_TWRD]
 }"#;
 
 pub const IGNITE_FN: &str = r#"fn ignite(level: i32) -> i32 {
-    70 + 20 * level + 5 
-      * if level > 4 { level - 4 } 
+    70 + 20 * level + 5
+      * if level > 4 { level - 4 }
         else { 0 }
 }"#;
 
 pub const TOWER_DAMAGE_FN: &str = r#"fn tower_damage(_: f32, ...) -> i32 {
-    let base = base_attack_damage 
-        + bonus_attack_damage 
+    let base = base_attack_damage
+        + bonus_attack_damage
         + ability_power * 0.6;
     let bonus_resist = match plates == 0 {
         true => 0.0,
         false => -25 + 50 * (plates - 1),
     };
     let raw_resist = 40 + bonus_resist;
-    let resist = raw_resist 
-        * (1 - pen_percent / 100) 
+    let resist = raw_resist
+        * (1 - pen_percent / 100)
         - pen_flat;
     let mult = 100 / (100 + resist);
     base * mult
@@ -73,15 +74,15 @@ pub const TOWER_DAMAGE_FN: &str = r#"fn tower_damage(_: f32, ...) -> i32 {
 pub const ONHIT_EFFECT: &str = r#"intrinsic ONHIT_EFFECT {
     damage_type: Mixed,
     definition: const fn eval_attacks(
-        &Ctx, 
-        RangeDamage, 
+        &Ctx,
+        RangeDamage,
         f32
     ) -> Attacks
 };"#;
 
 pub const ONHIT_EFFECT_FN: &str = r#"fn eval_attacks(
-    ctx: &Ctx, 
-    mut onhit_damage: RangeDamage, 
+    ctx: &Ctx,
+    mut onhit_damage: RangeDamage,
     physical_mod: f32
 ) -> Attacks {
     intrinsic

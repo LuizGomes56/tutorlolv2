@@ -3,18 +3,23 @@ use crate::{
     client::{SaveTo, Tag},
 };
 use rayon::iter::{IntoParallelRefIterator, ParallelBridge, ParallelIterator};
+use regex::Regex;
 use serde::{Deserialize, Serialize, de::DeserializeOwned};
 use serde_json::Value;
 use std::{
     collections::BTreeMap,
     ops::{Index, IndexMut},
     path::Path,
+    sync::LazyLock,
 };
 use tutorlolv2_fmt::rustfmt;
+use tutorlolv2_types::{CtxVar, DamageType};
 
 pub mod wiki_champions;
 pub mod wiki_items;
 pub mod wiki_runes;
+
+pub const ZERO: &str = "zero";
 
 pub trait Parser<T, U>
 where
@@ -255,4 +260,18 @@ impl Default for DamageRange {
             max_dmg: "zero".into(),
         }
     }
+}
+
+pub fn get_identifiers(damage: &str, damage_type: DamageType) -> impl Iterator<Item = CtxVar> + '_ {
+    static RE_IDENTS: LazyLock<Regex> =
+        LazyLock::new(|| Regex::new(r"ctx\.([a-z_][a-z0-9_]*)").unwrap());
+
+    RE_IDENTS
+        .captures_iter(&damage)
+        .filter_map(|cap| tutorlolv2_fmt::pascal_case(&cap[1]).parse().ok())
+        .chain(match damage_type {
+            DamageType::Physical => Some(CtxVar::PhysicalMultiplier),
+            DamageType::Magic => Some(CtxVar::MagicMultiplier),
+            _ => None,
+        })
 }

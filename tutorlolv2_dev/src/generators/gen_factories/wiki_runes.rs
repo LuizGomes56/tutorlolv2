@@ -1,13 +1,15 @@
 use crate::{
     GeneratorExt, JsonRead, MayFail,
     client::Tag,
-    gen_factories::{DamageIndex, DamageRange, Parser, infer_damage_type, likely_damages},
+    gen_factories::{
+        DamageIndex, DamageRange, Parser, ZERO, get_identifiers, infer_damage_type, likely_damages,
+    },
     gen_runes::rune_gen_fn,
     gen_utils::RegExtractor,
 };
 use serde::{Deserialize, Serialize};
 use std::{
-    collections::BTreeMap,
+    collections::{BTreeMap, BTreeSet},
     ops::{Index, IndexMut},
 };
 use tutorlolv2_types::{AttackType, CtxVar, DamageType, TypeMetadata};
@@ -19,7 +21,6 @@ pub struct RuneParser {
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct Rune {
-    #[serde(flatten)]
     pub data: WikiRune,
     pub damage_type: DamageType,
     pub ranged: DamageRange,
@@ -35,6 +36,8 @@ pub struct RuneBuild {
     pub ranged: [String; 2],
     pub riot_id: u32,
     pub undeclared: bool,
+    pub identifiers: [[Vec<CtxVar>; 2]; 2],
+    pub functions: [[String; 2]; 2],
 }
 
 impl Parser<WikiRune, Rune> for RuneParser {
@@ -73,7 +76,7 @@ impl Parser<WikiRune, Rune> for RuneParser {
 
 impl From<WikiRune> for Rune {
     fn from(data: WikiRune) -> Self {
-        let damage = ["zero".into(), "zero".into()];
+        let damage = [ZERO.into(), ZERO.into()];
 
         Self {
             damage_type: Default::default(),
@@ -83,13 +86,27 @@ impl From<WikiRune> for Rune {
                 name: data.name.clone(),
                 metadata: TypeMetadata {
                     kind: data.rune_id.clone(),
-                    damage_type: DamageType::Unknown,
+                    damage_type: Default::default(),
                     attributes: Default::default(),
                 },
                 melee: damage.clone(),
                 ranged: damage,
                 riot_id: 0,
                 undeclared: false,
+                identifiers: Default::default(),
+                functions: {
+                    let rune_id = tutorlolv2_fmt::to_ssnake(&data.rune_id).to_lowercase();
+                    [
+                        [
+                            format!("{rune_id}_melee_min",),
+                            format!("{rune_id}_melee_max",),
+                        ],
+                        [
+                            format!("{rune_id}_ranged_min",),
+                            format!("{rune_id}_ranged_max",),
+                        ],
+                    ]
+                },
             },
             data,
         }
@@ -206,11 +223,30 @@ impl Rune {
             // return Err("Unknown damage type for this rune".into());
         }
 
-        let build = &mut self.build;
+        self.build.metadata.damage_type = self.damage_type;
+        self.build.melee = [self.melee.min_dmg.clone(), self.melee.max_dmg.clone()];
+        self.build.ranged = [self.ranged.min_dmg.clone(), self.ranged.max_dmg.clone()];
 
-        build.metadata.damage_type = self.damage_type;
-        build.melee = [self.melee.min_dmg.clone(), self.melee.max_dmg.clone()];
-        build.ranged = [self.ranged.min_dmg.clone(), self.ranged.max_dmg.clone()];
+        self.build.identifiers = core::array::from_fn(|i| {
+            let attack_type = match i {
+                0 => AttackType::Melee,
+                1 => AttackType::Ranged,
+                _ => unreachable!(),
+            };
+
+            core::array::from_fn(|j| {
+                let damage_index = match j {
+                    0 => DamageIndex::Min,
+                    1 => DamageIndex::Max,
+                    _ => unreachable!(),
+                };
+
+                get_identifiers(&self[attack_type][damage_index], self.damage_type)
+                    .collect::<BTreeSet<_>>()
+                    .into_iter()
+                    .collect()
+            })
+        });
 
         Ok(())
     }

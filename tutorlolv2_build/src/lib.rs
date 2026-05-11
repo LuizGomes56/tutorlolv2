@@ -180,6 +180,11 @@ impl<'a> Tracker<'a> {
         self.inner.len()
     }
 
+    pub fn record_range(&mut self, value: &str) -> String {
+        let (a, b) = self.record(value);
+        format!("{a}..{b}")
+    }
+
     /// Returns the start and end offsets of a new record `value`
     /// in the current tracked string. The `value` is added to that
     /// string and the offsets are adjusted properly
@@ -210,6 +215,9 @@ pub fn run() -> MayFail {
     let mut full_exports = String::with_capacity(4 * 1024 * 1024);
 
     let mut tracker = Tracker::new(&mut full_block);
+
+    crate::scripts::_champions2::generate_champions(&mut tracker)?;
+    panic!();
 
     unsafe {
         DEFAULT_ITEM_GENERATOR_OFFSET = tracker.record(&DEFAULT_ITEM_GENERATOR.rust_html());

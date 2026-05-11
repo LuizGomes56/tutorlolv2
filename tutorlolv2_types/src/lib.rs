@@ -737,6 +737,16 @@ macro_rules! create_eval_struct {
                 }
             }
 
+            impl ::core::str::FromStr for CtxVar {
+                type Err = &'static str;
+                fn from_str(s: &str) -> Result<Self, Self::Err> {
+                    match s {
+                        $(stringify!($value) | stringify!([<$value:camel>]) => Ok(Self::[<$value:camel>]),)*
+                        _ => Err("CtxVar::from_str: Invalid variable provided"),
+                    }
+                }
+            }
+
             impl AsRef<str> for CtxVar {
                 fn as_ref(&self) -> &str {
                     self.as_var()

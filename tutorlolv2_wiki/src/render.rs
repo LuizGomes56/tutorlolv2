@@ -617,7 +617,7 @@ fn render_level_match(level_var: CtxVar, arms: &[LevelArm]) -> String {
         rendered.push(format!("_ => {}", render_num(fallback)));
     }
 
-    format!("match {level_var} as u8 {{ {} }}", rendered.join(", "))
+    format!("match {level_var} {{ {} }}", rendered.join(", "))
 }
 
 fn level_arm_values(arms: &[LevelArm]) -> Option<Vec<f64>> {
@@ -714,7 +714,7 @@ fn render_exact_match(values: &[f64], axis: CtxVar) -> String {
     let fallback = values.last().copied().unwrap_or(0.0);
 
     format!(
-        "match {axis} as u8 {{ {}, _ => {} }}",
+        "match {axis} {{ {}, _ => {} }}",
         arms.join(", "),
         render_num(fallback),
     )
