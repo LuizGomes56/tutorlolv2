@@ -7,6 +7,7 @@ use std::{
 use tutorlolv2_fmt::rust_html;
 use tutorlolv2_types::DamageType;
 
+pub mod _batch;
 pub mod _champions2;
 pub mod champions;
 pub mod items;
