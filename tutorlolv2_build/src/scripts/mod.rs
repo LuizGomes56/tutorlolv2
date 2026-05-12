@@ -10,6 +10,7 @@ use tutorlolv2_types::DamageType;
 pub mod _batch;
 pub mod _champions2;
 pub mod _items2;
+pub mod _runes2;
 pub mod champions;
 pub mod items;
 pub mod model;
