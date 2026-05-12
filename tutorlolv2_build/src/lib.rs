@@ -180,9 +180,11 @@ impl<'a> Tracker<'a> {
         self.inner.len()
     }
 
-    pub fn record_range(&mut self, value: &str) -> String {
-        let (a, b) = self.record(value);
-        format!("{a}..{b}")
+    pub fn record_range(&mut self, target: &mut String, value: &str) {
+        let start = self.offset();
+        self.inner.push_str(value);
+        let end = self.offset();
+        target.push_str(&format!("{start}..{end},"));
     }
 
     /// Returns the start and end offsets of a new record `value`
@@ -211,12 +213,26 @@ pub static mut DEFAULT_ITEM_GENERATOR_OFFSET: (usize, usize) = (0, 0);
 /// internal code that will be shown when hovering over some objects in the
 /// frontend application
 pub fn run() -> MayFail {
+    std::env::set_current_dir("../")?;
+
     let mut full_block = String::with_capacity(12 * 1024 * 1024);
     let mut full_exports = String::with_capacity(4 * 1024 * 1024);
 
     let mut tracker = Tracker::new(&mut full_block);
 
-    crate::scripts::_champions2::generate_champions(&mut tracker)?;
+    for f in [
+        crate::scripts::_champions2::generate_champions,
+        crate::scripts::_items2::generate_items,
+        // crate::scripts::_runes2::generate_runes,
+    ] {
+        let (fmt, fmt_args) = f()?;
+        let result = crate::scripts::_batch::fmt_batch(&mut tracker, fmt, fmt_args)?;
+        full_exports.push_str(&result);
+    }
+
+    tutorlolv2_dev::write("debug.txt", &full_exports)?;
+    tutorlolv2_dev::write("block.txt", &full_block)?;
+
     panic!();
 
     unsafe {
