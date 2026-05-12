@@ -1,10 +1,51 @@
 use crate::Tracker;
 use regex::Regex;
-use std::sync::LazyLock;
+use std::{
+    fmt::{Debug, Display},
+    sync::LazyLock,
+};
 use tutorlolv2_dev::MayFail;
+use tutorlolv2_fmt::{pascal_case, to_ssnake};
 
-static FMT_ATTR_RE: LazyLock<Regex> =
-    LazyLock::new(|| Regex::new(r#"(?s)#\s*\[\s*fmt\s*\((?P<args>.*?)\)\s*\]"#).unwrap());
+pub fn slice_repr<T: Debug>(slice: &[T]) -> String {
+    slice
+        .iter()
+        .map(|ident| format!("&{ident:#?}"))
+        .collect::<Vec<_>>()
+        .join(",")
+}
+
+pub fn get_arg(len: usize, i: &usize) -> &dyn Display {
+    match *i {
+        i if i == 0 && i == len - 1 => &"unique",
+        i if i == len - 1 => &"last",
+        i if i == 0 => &"first",
+        _ => i,
+    }
+}
+
+pub fn get_aliases<'a>(id: &'a str, name: &'a str) -> Vec<String> {
+    let get = |s: &str| {
+        [
+            s.to_string(),
+            s.to_lowercase(),
+            s.to_uppercase(),
+            pascal_case(s),
+            pascal_case(s).to_lowercase(),
+            pascal_case(s).to_uppercase(),
+            to_ssnake(s),
+            to_ssnake(s).to_lowercase(),
+            to_ssnake(s).to_uppercase(),
+        ]
+    };
+
+    [get(id), get(name)].concat()
+}
+
+pub struct Batch {
+    pub eval: String,
+    pub fmt: String,
+}
 
 #[derive(Debug)]
 struct FmtBatchError(String);
@@ -77,21 +118,24 @@ impl<'a> Tracker<'a> {
     }
 }
 
-pub fn fmt_batch<const N: usize>(
+pub fn fmt_batch(
     tracker: &mut Tracker<'_>,
     src: String,
-    fmt_args: [(&str, String); N],
+    fmt_args: Vec<(&str, String)>,
 ) -> MayFail<String> {
+    static FMT_ATTR_RE: LazyLock<Regex> =
+        LazyLock::new(|| Regex::new(r#"(?s)#\s*\[\s*fmt\s*\((?P<args>.*?)\)\s*\]"#).unwrap());
+
     let src = tutorlolv2_fmt::rustfmt(&src, None);
 
-    let mut targets: Vec<TargetOut> = fmt_args
+    let mut targets = fmt_args
         .into_iter()
         .map(|(name, out)| TargetOut {
             name: name.to_owned(),
             is_array_target: out.contains("&["),
             out,
         })
-        .collect();
+        .collect::<Vec<_>>();
 
     let mut events = Vec::<FmtEvent>::new();
     let mut variants = Vec::<String>::new();

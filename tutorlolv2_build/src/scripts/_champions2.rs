@@ -1,26 +1,15 @@
-use crate::{Tracker, scripts::_batch::fmt_batch};
-use rayon::iter::{IntoParallelIterator, IntoParallelRefIterator, ParallelIterator};
-use std::{
-    collections::{BTreeMap, BTreeSet, HashMap},
-    fmt::{Debug, Display},
-};
+use crate::scripts::_batch::{Batch, get_aliases, get_arg, slice_repr};
+use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
+use std::collections::{BTreeMap, BTreeSet};
 use tutorlolv2_dev::{
     JsonRead, MayFail, decl_champions::Ability, gen_factories::wiki_champions::ChampionBuild,
     generators::gen_factories::wiki_champions::Champion,
 };
-use tutorlolv2_fmt::to_ssnake;
 
-pub fn generate_champions() -> MayFail {
-    std::env::set_current_dir("../")?;
-
+pub fn generate_champions() -> MayFail<(String, Vec<(&'static str, String)>)> {
     let data = BTreeMap::<String, Champion>::from_file("internal/champions.json")?;
     let languages =
         BTreeMap::<String, BTreeSet<String>>::from_file("internal/champion_languages.json")?;
-
-    struct Batch {
-        eval: String,
-        fmt: String,
-    }
 
     let result = data
         .par_iter()
@@ -50,7 +39,7 @@ pub fn generate_champions() -> MayFail {
             let decl = format!(
                 "
                 #[derive(Clone, Debug, Deserialize, Serialize)]
-                #[fmt(champion_formulas, keep, {variant})]
+                #[fmt(formula, keep, {variant})]
                 pub static {upper_id}: Champion = Champion {{
                     name: {name:?},
                     adaptive_type: AdaptiveType::{adaptive_type:?},
@@ -77,7 +66,10 @@ pub fn generate_champions() -> MayFail {
             ))
             .unwrap();
 
-            generator.drain(0.."use super::*;\n".len());
+            if let Some(pos) = generator.find("impl") {
+                generator.drain(..pos);
+            }
+
             generator.insert_str(0, &format!("#[fmt(generator, {variant})]"));
 
             let abilities_decl = abilities
@@ -97,8 +89,8 @@ pub fn generate_champions() -> MayFail {
                     format!(
                         r#"
                         #[fmt(
-                            ability_formulas,
-                            replace(": Ability", ""),
+                            ability,
+                            replace(": Ability = Ability", " ="),
                             replace("ctx.", ""),
                             array({array_arg}),
                             {variant}
@@ -145,7 +137,7 @@ pub fn generate_champions() -> MayFail {
                     format!(
                         r#"
                         #[fmt(
-                            ability_closures,
+                            closure,
                             keep,
                             replace("pub const", ""),
                             array({array_arg}),
@@ -213,14 +205,13 @@ pub fn generate_champions() -> MayFail {
     let champion_name_to_id = format!(
         "pub static CHAMPION_NAME_TO_ID: phf::Map<&str, ChampionId> = phf::phf_map!({arguments});",
         arguments = data
-            .keys()
-            .map(|champion_id| {
+            .iter()
+            .map(|(champion_id, champion)| {
+                let name = &champion.data.name;
+
                 let alias = languages[champion_id]
                     .iter()
-                    .chain(core::iter::once(&champion_id.clone()))
-                    .chain(core::iter::once(&champion_id.to_lowercase()))
-                    .chain(core::iter::once(&to_ssnake(&champion_id)))
-                    .chain(core::iter::once(&to_ssnake(&champion_id).to_lowercase()))
+                    .chain(get_aliases(champion_id, name).iter())
                     .chain(
                         (champion_id == "Gnar")
                             .then_some(&"Mega Gnar".into())
@@ -268,46 +259,12 @@ pub fn generate_champions() -> MayFail {
         + &champion_name_to_id
         + &const_eval;
 
-    let fmt_args = [
-        ("champion_formulas", champion_formulas),
+    let fmt_args = vec![
+        ("formula", champion_formulas),
         ("generator", champion_generator),
-        ("ability_formulas", ability_formulas),
-        ("ability_closures", ability_closures),
+        ("ability", ability_formulas),
+        ("closure", ability_closures),
     ];
 
-    let mut inner = String::with_capacity(8 * 1024 * 1024);
-    let mut tracker = Tracker::new(&mut inner);
-    let src = fmt_batch(&mut tracker, fmt, fmt_args).unwrap();
-
-    tutorlolv2_dev::write("src.txt", src).unwrap();
-    tutorlolv2_dev::write("tracker.txt", inner).unwrap();
-
-    // let module = format!(
-    //     "
-    //     pub mod champions {{
-    //         {fmt}
-    //     }}
-    //     ",
-    // );
-
-    // println!("{module}");
-
-    Ok(())
-}
-
-fn slice_repr<T: Debug>(slice: &[T]) -> String {
-    slice
-        .iter()
-        .map(|ident| format!("&{ident:#?}"))
-        .collect::<Vec<_>>()
-        .join(",")
-}
-
-fn get_arg(len: usize, i: &usize) -> &dyn Display {
-    match *i {
-        i if i == 0 && i == len - 1 => &"unique",
-        i if i == len - 1 => &"last",
-        i if i == 0 => &"first",
-        _ => i,
-    }
+    Ok((fmt, fmt_args))
 }
