@@ -82,7 +82,7 @@ pub struct ItemBuild {
     pub metadata: TypeMetadata<String>,
     pub ranged: [String; 2],
     pub melee: [String; 2],
-    pub deals_damage: (bool, bool),
+    pub deals_damage: [bool; 4],
     pub purchasable: bool,
     pub riot_id: u32,
     pub identifiers: [[Vec<CtxVar>; 2]; 2],
@@ -174,12 +174,12 @@ impl From<WikiItem> for Item {
                     let item_id = tutorlolv2_fmt::to_ssnake(&data.item_id).to_lowercase();
                     [
                         [
-                            format!("{item_id}_melee_min",),
-                            format!("{item_id}_melee_max",),
+                            format!("{item_id}_melee_min"),
+                            format!("{item_id}_melee_max"),
                         ],
                         [
-                            format!("{item_id}_ranged_min",),
-                            format!("{item_id}_ranged_max",),
+                            format!("{item_id}_ranged_min"),
+                            format!("{item_id}_ranged_max"),
                         ],
                     ]
                 },
@@ -258,10 +258,13 @@ impl Item {
         self.build.metadata.damage_type = self.damage_type;
         self.build.melee = [self.melee.min_dmg.clone(), self.melee.max_dmg.clone()];
         self.build.ranged = [self.ranged.min_dmg.clone(), self.ranged.max_dmg.clone()];
-        self.build.deals_damage = (
-            self.melee.min_dmg != ZERO || self.ranged.min_dmg != ZERO,
-            self.melee.max_dmg != ZERO || self.ranged.max_dmg != ZERO,
-        );
+        self.build.deals_damage = [
+            &self.melee.min_dmg,
+            &self.melee.max_dmg,
+            &self.ranged.min_dmg,
+            &self.ranged.max_dmg,
+        ]
+        .map(|s| s != ZERO);
 
         self.build.identifiers = core::array::from_fn(|i| {
             let attack_type = match i {

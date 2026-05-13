@@ -1,4 +1,4 @@
-use crate::scripts::_batch::{Batch, get_aliases, get_arg, slice_repr};
+use crate::scripts::_batch::{Batch, get_aliases, get_arg, simplify, slice_repr};
 use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
 use std::collections::{BTreeMap, BTreeSet};
 use tutorlolv2_dev::{
@@ -34,7 +34,7 @@ pub fn generate_champions() -> MayFail<(String, Vec<(&'static str, String)>)> {
                 ..
             } = champion;
 
-            let variant = format!("variant({champion_id})");
+            let variant = format_args!("variant({champion_id})");
 
             let decl = format!(
                 "
@@ -103,7 +103,8 @@ pub fn generate_champions() -> MayFail<(String, Vec<(&'static str, String)>)> {
                             damage: {damage},
                         }};
                         "#,
-                        variable = function.to_uppercase()
+                        variable = function.to_uppercase(),
+                        damage = simplify(damage)
                     )
                 })
                 .collect::<String>();
@@ -133,6 +134,7 @@ pub fn generate_champions() -> MayFail<(String, Vec<(&'static str, String)>)> {
                 .enumerate()
                 .map(|(i, (function, body))| {
                     let array_arg = get_arg(functions.len(), &i);
+                    let formula = simplify(body);
 
                     format!(
                         r#"
@@ -143,7 +145,7 @@ pub fn generate_champions() -> MayFail<(String, Vec<(&'static str, String)>)> {
                             array({array_arg}),
                             {variant}
                         )]
-                        pub const fn {function}(ctx: &Ctx) -> f32 {{{body}}}
+                        pub const fn {function}(ctx: &Ctx) -> f32 {{{formula}}}
                         "#
                     )
                 })

@@ -1,8 +1,12 @@
-use crate::scripts::_batch::{Batch, get_aliases, get_arg};
+use crate::scripts::_batch::{Batch, get_aliases, get_arg, simplify};
 use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
-use std::collections::{BTreeMap, BTreeSet};
+use std::{
+    collections::{BTreeMap, BTreeSet},
+    ops::Range,
+};
 use tutorlolv2_dev::{
-    JsonRead, MayFail, gen_factories::wiki_items::ItemBuild,
+    JsonRead, MayFail,
+    gen_factories::{ZERO, wiki_items::ItemBuild},
     generators::gen_factories::wiki_items::Item,
 };
 
@@ -32,7 +36,7 @@ pub fn generate_items() -> MayFail<(String, Vec<(&'static str, String)>)> {
                 ..
             } = item;
 
-            let variant = format!("variant({item_id})");
+            let variant = format_args!("variant({item_id})");
 
             let decl = format!(
                 "
@@ -61,14 +65,7 @@ pub fn generate_items() -> MayFail<(String, Vec<(&'static str, String)>)> {
                 "tutorlolv2_dev/src/generators/gen_items/{file_name}.rs",
                 file_name = item_id.to_lowercase()
             ))
-            .unwrap_or(
-                "impl Generator for Item {
-                    fn generate(&mut self) -> MayFail {
-                        /* No implementation */
-                    }
-                }"
-                .into(),
-            );
+            .unwrap_or("impl Generator {}".into());
 
             if let Some(pos) = generator.find("impl") {
                 generator.drain(..pos);
@@ -76,18 +73,35 @@ pub fn generate_items() -> MayFail<(String, Vec<(&'static str, String)>)> {
 
             generator.insert_str(0, &format!("#[fmt(generator, {variant})]"));
 
-            let eval = format!(
-                "
-                ItemId::{item_id} => {{
-                    match attack_type {{
-                        Melee => [{melee_arms}],
-                        Ranged => [{ranged_arms}]
-                    }}
-                }},
-                ",
-                melee_arms = 0,
-                ranged_arms = 0,
-            );
+            let eval = {
+                let get_arms = |range: Range<_>, array: &[String]| {
+                    deals_damage[range]
+                        .iter()
+                        .enumerate()
+                        .map(|(i, v)| {
+                            let f = match *v {
+                                true => &array[i],
+                                false => ZERO,
+                            };
+                            format!("{f}(&ctx)")
+                        })
+                        .collect::<Vec<_>>()
+                        .join(",")
+                };
+
+                format!(
+                    "
+                    ItemId::{item_id} => {{
+                        match attack_type {{
+                            Melee => [{melee_arms}],
+                            Ranged => [{ranged_arms}]
+                        }}
+                    }},
+                    ",
+                    melee_arms = get_arms(0..2, melee),
+                    ranged_arms = get_arms(2..4, ranged),
+                )
+            };
 
             let fn_closures = functions
                 .iter()
@@ -103,6 +117,7 @@ pub fn generate_items() -> MayFail<(String, Vec<(&'static str, String)>)> {
                                 1 => ranged,
                                 _ => unreachable!(),
                             }[j];
+                            let formula = simplify(body);
 
                             format!(
                                 r#"
@@ -113,7 +128,7 @@ pub fn generate_items() -> MayFail<(String, Vec<(&'static str, String)>)> {
                                     array({array_arg}),
                                     {variant}
                                 )]
-                                pub const fn {function}(ctx: &Ctx) -> f32 {{{body}}}
+                                pub const fn {function}(ctx: &Ctx) -> f32 {{{formula}}}
                                 "#
                             )
                         })

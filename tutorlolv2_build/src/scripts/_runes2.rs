@@ -1,8 +1,12 @@
-use crate::scripts::_batch::{Batch, get_aliases, get_arg};
+use crate::scripts::_batch::{Batch, get_aliases, get_arg, simplify};
 use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
-use std::collections::{BTreeMap, BTreeSet};
+use std::{
+    collections::{BTreeMap, BTreeSet},
+    ops::Range,
+};
 use tutorlolv2_dev::{
-    JsonRead, MayFail, gen_factories::wiki_runes::RuneBuild,
+    JsonRead, MayFail,
+    gen_factories::{ZERO, wiki_runes::RuneBuild},
     generators::gen_factories::wiki_runes::Rune,
 };
 
@@ -20,14 +24,14 @@ pub fn generate_runes() -> MayFail<(String, Vec<(&'static str, String)>)> {
                         melee,
                         ranged,
                         riot_id,
-                        undeclared,
+                        deals_damage,
                         identifiers,
                         functions,
                     },
                 ..
             } = rune;
 
-            let variant = format!("variant({rune_id})");
+            let variant = format_args!("variant({rune_id})");
 
             let decl = format!(
                 "
@@ -38,7 +42,7 @@ pub fn generate_runes() -> MayFail<(String, Vec<(&'static str, String)>)> {
                     metadata: {metadata:?},
                     ranged: {ranged:?},
                     melee: {melee:?},
-                    undeclared: {undeclared:?},
+                    deals_damage: {deals_damage:?},
                     riot_id: {riot_id},
                     identifiers: {identifiers:?},
                     functions: {functions:?},
@@ -51,14 +55,7 @@ pub fn generate_runes() -> MayFail<(String, Vec<(&'static str, String)>)> {
                 "tutorlolv2_dev/src/generators/gen_runes/{file_name}.rs",
                 file_name = rune_id.to_lowercase()
             ))
-            .unwrap_or(
-                "impl Generator for Rune {
-                    fn generate(&mut self) -> MayFail {
-                        /* No implementation */
-                    }
-                }"
-                .into(),
-            );
+            .unwrap_or("impl Generator {}".into());
 
             if let Some(pos) = generator.find("impl") {
                 generator.drain(..pos);
@@ -66,18 +63,35 @@ pub fn generate_runes() -> MayFail<(String, Vec<(&'static str, String)>)> {
 
             generator.insert_str(0, &format!("#[fmt(generator, {variant})]"));
 
-            let eval = format!(
-                "
-                RuneId::{rune_id} => {{
-                    match attack_type {{
-                        Melee => [{melee_arms}],
-                        Ranged => [{ranged_arms}]
-                    }}
-                }},
-                ",
-                melee_arms = 0,
-                ranged_arms = 0,
-            );
+            let eval = {
+                let get_arms = |range: Range<_>, array: &[String]| {
+                    deals_damage[range]
+                        .iter()
+                        .enumerate()
+                        .map(|(i, v)| {
+                            let f = match *v {
+                                true => &array[i],
+                                false => ZERO,
+                            };
+                            format!("{f}(&ctx)")
+                        })
+                        .collect::<Vec<_>>()
+                        .join(",")
+                };
+
+                format!(
+                    "
+                    RuneId::{rune_id} => {{
+                        match attack_type {{
+                            Melee => [{melee_arms}],
+                            Ranged => [{ranged_arms}]
+                        }}
+                    }},
+                    ",
+                    melee_arms = get_arms(0..2, melee),
+                    ranged_arms = get_arms(2..4, ranged),
+                )
+            };
 
             let fn_closures = functions
                 .iter()
@@ -93,6 +107,7 @@ pub fn generate_runes() -> MayFail<(String, Vec<(&'static str, String)>)> {
                                 1 => ranged,
                                 _ => unreachable!(),
                             }[j];
+                            let formula = simplify(body);
 
                             format!(
                                 r#"
@@ -103,7 +118,7 @@ pub fn generate_runes() -> MayFail<(String, Vec<(&'static str, String)>)> {
                                     array({array_arg}),
                                     {variant}
                                 )]
-                                pub const fn {function}(ctx: &Ctx) -> f32 {{{body}}}
+                                pub const fn {function}(ctx: &Ctx) -> f32 {{{formula}}}
                                 "#
                             )
                         })

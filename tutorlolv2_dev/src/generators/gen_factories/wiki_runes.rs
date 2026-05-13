@@ -35,7 +35,7 @@ pub struct RuneBuild {
     pub melee: [String; 2],
     pub ranged: [String; 2],
     pub riot_id: u32,
-    pub undeclared: bool,
+    pub deals_damage: [bool; 4],
     pub identifiers: [[Vec<CtxVar>; 2]; 2],
     pub functions: [[String; 2]; 2],
 }
@@ -92,18 +92,18 @@ impl From<WikiRune> for Rune {
                 melee: damage.clone(),
                 ranged: damage,
                 riot_id: 0,
-                undeclared: false,
+                deals_damage: Default::default(),
                 identifiers: Default::default(),
                 functions: {
                     let rune_id = tutorlolv2_fmt::to_ssnake(&data.rune_id).to_lowercase();
                     [
                         [
-                            format!("{rune_id}_melee_min",),
-                            format!("{rune_id}_melee_max",),
+                            format!("{rune_id}_melee_min"),
+                            format!("{rune_id}_melee_max"),
                         ],
                         [
-                            format!("{rune_id}_ranged_min",),
-                            format!("{rune_id}_ranged_max",),
+                            format!("{rune_id}_ranged_min"),
+                            format!("{rune_id}_ranged_max"),
                         ],
                     ]
                 },
@@ -140,7 +140,7 @@ impl Rune {
         self.effect(index)?
             .use_formula
             .as_deref()
-            .map(|v| v.replace("x", &format!("{level} as f32", level = CtxVar::Level)))
+            .map(|v| v.replace("x", &format!("{level}", level = CtxVar::Level)))
             .ok_or_else(|| format!("No use formula found at index {index}").into())
     }
 
@@ -226,6 +226,13 @@ impl Rune {
         self.build.metadata.damage_type = self.damage_type;
         self.build.melee = [self.melee.min_dmg.clone(), self.melee.max_dmg.clone()];
         self.build.ranged = [self.ranged.min_dmg.clone(), self.ranged.max_dmg.clone()];
+        self.build.deals_damage = [
+            &self.melee.min_dmg,
+            &self.melee.max_dmg,
+            &self.ranged.min_dmg,
+            &self.ranged.max_dmg,
+        ]
+        .map(|s| s != ZERO);
 
         self.build.identifiers = core::array::from_fn(|i| {
             let attack_type = match i {

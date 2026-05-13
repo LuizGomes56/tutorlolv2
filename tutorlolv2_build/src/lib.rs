@@ -223,7 +223,7 @@ pub fn run() -> MayFail {
     for f in [
         crate::scripts::_champions2::generate_champions,
         crate::scripts::_items2::generate_items,
-        // crate::scripts::_runes2::generate_runes,
+        crate::scripts::_runes2::generate_runes,
     ] {
         let (fmt, fmt_args) = f()?;
         let result = crate::scripts::_batch::fmt_batch(&mut tracker, fmt, fmt_args)?;

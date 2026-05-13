@@ -7,6 +7,12 @@ use std::{
 use tutorlolv2_dev::MayFail;
 use tutorlolv2_fmt::{pascal_case, to_ssnake};
 
+pub fn simplify(formula: &str) -> String {
+    symb_anafis::simplify(&formula.replace("ctx.", "ctx_"), &[], None)
+        .map(|r| r.replace("ctx_", "ctx."))
+        .unwrap_or(formula.to_string())
+}
+
 pub fn slice_repr<T: Debug>(slice: &[T]) -> String {
     slice
         .iter()
