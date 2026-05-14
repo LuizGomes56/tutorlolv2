@@ -225,13 +225,14 @@ pub fn run() -> MayFail {
         crate::scripts::_items2::generate_items,
         crate::scripts::_runes2::generate_runes,
     ] {
-        let (fmt, fmt_args) = f()?;
-        let result = crate::scripts::_batch::fmt_batch(&mut tracker, fmt, fmt_args)?;
-        full_exports.push_str(&result);
+        let result = f()?;
+        let block = result(&mut tracker)?;
+
+        full_exports.push_str(&block);
     }
 
-    tutorlolv2_dev::write("debug.txt", &full_exports)?;
-    tutorlolv2_dev::write("block.txt", &full_block)?;
+    tutorlolv2_dev::write("__debug.txt", &full_exports)?;
+    tutorlolv2_dev::write("__block.txt", &full_block)?;
 
     panic!();
 

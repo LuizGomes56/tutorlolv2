@@ -1,16 +1,18 @@
-use crate::scripts::_batch::{Batch, get_aliases, get_arg, simplify};
-use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
-use std::{
-    collections::{BTreeMap, BTreeSet},
-    ops::Range,
+use crate::{
+    Tracker,
+    scripts::utils::{
+        Batch, StaticVar, Tag, closures, get_const_eval, get_eval, get_generator, get_id_enum,
+        get_name_phf, get_static_vars,
+    },
 };
+use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
+use std::collections::BTreeMap;
 use tutorlolv2_dev::{
-    JsonRead, MayFail,
-    gen_factories::{ZERO, wiki_items::ItemBuild},
+    JsonRead, MayFail, gen_factories::wiki_items::ItemBuild,
     generators::gen_factories::wiki_items::Item,
 };
 
-pub fn generate_items() -> MayFail<(String, Vec<(&'static str, String)>)> {
+pub fn generate_items() -> MayFail<Box<dyn FnOnce(&mut Tracker<'_>) -> MayFail<String>>> {
     let data = BTreeMap::<String, Item>::from_file("internal/items.json")?;
 
     let result = data
@@ -36,12 +38,30 @@ pub fn generate_items() -> MayFail<(String, Vec<(&'static str, String)>)> {
                 ..
             } = item;
 
-            let variant = format_args!("variant({item_id})");
-
             let decl = format!(
-                "
+                r#"
+                #[fmt(
+                    target = formula,
+                    variant = {item_id},
+                    replace = [
+                        ": Item = Item" => " =",
+                        "TypeMetadata " => ""
+                    ]
+                )]
+                static {upper_id}: Item = Item {{
+                    name: {name:?},
+                    tier: {tier},
+                    price: {price},
+                    purchasable: {purchasable:?},
+                    maps: {maps:?},
+                    stats: {stats:?},
+                    metadata: {metadata:?},
+                    ranged: {ranged:?},
+                    melee: {melee:?},
+                    riot_id: {riot_id},
+                }};
+
                 #[derive(Clone, Debug, Deserialize, Serialize)]
-                #[fmt(formula, keep, {variant})]
                 pub static {upper_id}: Item = Item {{
                     name: {name:?},
                     tier: {tier},
@@ -55,86 +75,14 @@ pub fn generate_items() -> MayFail<(String, Vec<(&'static str, String)>)> {
                     purchasable: {purchasable:?},
                     riot_id: {riot_id},
                     identifiers: {identifiers:?},
-                    functions: {functions:?},
                 }};
-                ",
+                "#,
                 upper_id = item_id.to_uppercase(),
             );
 
-            let mut generator = tutorlolv2_dev::read_to_string(format!(
-                "tutorlolv2_dev/src/generators/gen_items/{file_name}.rs",
-                file_name = item_id.to_lowercase()
-            ))
-            .unwrap_or("impl Generator {}".into());
-
-            if let Some(pos) = generator.find("impl") {
-                generator.drain(..pos);
-            }
-
-            generator.insert_str(0, &format!("#[fmt(generator, {variant})]"));
-
-            let eval = {
-                let get_arms = |range: Range<_>, array: &[String]| {
-                    deals_damage[range]
-                        .iter()
-                        .enumerate()
-                        .map(|(i, v)| {
-                            let f = match *v {
-                                true => &array[i],
-                                false => ZERO,
-                            };
-                            format!("{f}(&ctx)")
-                        })
-                        .collect::<Vec<_>>()
-                        .join(",")
-                };
-
-                format!(
-                    "
-                    ItemId::{item_id} => {{
-                        match attack_type {{
-                            Melee => [{melee_arms}],
-                            Ranged => [{ranged_arms}]
-                        }}
-                    }},
-                    ",
-                    melee_arms = get_arms(0..2, melee),
-                    ranged_arms = get_arms(2..4, ranged),
-                )
-            };
-
-            let fn_closures = functions
-                .iter()
-                .enumerate()
-                .map(|(i, function)| {
-                    function
-                        .iter()
-                        .enumerate()
-                        .map(|(j, function)| {
-                            let array_arg = get_arg(functions.len(), &j);
-                            let body = &match i {
-                                0 => melee,
-                                1 => ranged,
-                                _ => unreachable!(),
-                            }[j];
-                            let formula = simplify(body);
-
-                            format!(
-                                r#"
-                                #[fmt(
-                                    closure,
-                                    keep,
-                                    replace("pub const", ""),
-                                    array({array_arg}),
-                                    {variant}
-                                )]
-                                pub const fn {function}(ctx: &Ctx) -> f32 {{{formula}}}
-                                "#
-                            )
-                        })
-                        .collect::<String>()
-                })
-                .collect::<String>();
+            let generator = get_generator(Tag::Item, &item_id, item_id);
+            let eval = get_eval(Tag::Item, &item_id, &deals_damage, melee, ranged);
+            let fn_closures = closures(functions, melee, ranged, item_id);
 
             (
                 item_id,
@@ -146,109 +94,44 @@ pub fn generate_items() -> MayFail<(String, Vec<(&'static str, String)>)> {
         })
         .collect::<BTreeMap<_, _>>();
 
-    let const_eval = format!(
-        "
-        pub const fn item_const_eval(
-            ctx: &Ctx,
-            item_id: ItemId,
-            attack_type: AttackType
-        ) -> [f32; 2] {{
-            match item_id {{ {eval} _ => [0.0, 0.0] }}
-        }}
-        ",
-        eval = result
-            .values()
-            .map(|batch| batch.eval.as_str())
-            .collect::<Vec<&str>>()
-            .concat()
+    let const_eval = get_const_eval(&result, Tag::Item);
+    let item_id_enum = get_id_enum(&data, Tag::Item);
+    let item_name_to_id = get_name_phf(&data, Tag::Item, None);
+
+    let (cache, mut fmt_args) = get_static_vars(
+        Tag::Item,
+        &data,
+        [
+            StaticVar {
+                attribute: "formula",
+                name: "ITEM_FORMULAS",
+                vtype: "Range<usize>",
+            },
+            StaticVar {
+                attribute: "generator",
+                name: "ITEM_GENERATOR",
+                vtype: "Range<usize>",
+            },
+            StaticVar {
+                attribute: "closure",
+                name: "ITEM_CLOSURES",
+                vtype: "&[Range<usize>]",
+            },
+        ],
     );
-
-    let item_id_enum = format!(
-        "
-        #[derive(
-            Clone, Copy, Debug, Decode, Deserialize, Eq, Encode,
-            Hash, Ord, PartialEq, PartialOrd, Serialize
-        )]
-        #[repr(u8)]
-        pub enum ItemId {{{variants}}}
-
-        impl ItemId {{
-            pub const VARIANTS: usize = {len};
-            pub const fn debug(&self) -> &'static str {{
-                match self {{{debug_arms}}}
-            }}
-            pub const fn from_riot_id(id: u32) -> Option<Self> {{
-                match id {{ {match_arms} _ => None }}
-            }}
-        }}
-        ",
-        variants = data
-            .keys()
-            .map(String::as_str)
-            .collect::<Vec<_>>()
-            .join(","),
-        len = data.len(),
-        debug_arms = data
-            .keys()
-            .map(|name| format!("Self::{name} => {name:?},"))
-            .collect::<String>(),
-        match_arms = data
-            .iter()
-            .map(|(item_id, item)| format!(
-                "{riot_id} => Some(Self::{item_id}),",
-                riot_id = item.data.id
-            ))
-            .collect::<String>()
-    );
-
-    let item_name_to_id = format!(
-        "pub static ITEM_NAME_TO_ID: phf::Map<&str, ItemId> = phf::phf_map!({arguments});",
-        arguments = data
-            .iter()
-            .map(|(item_id, item)| {
-                let name = &item.data.name;
-
-                let alias = BTreeSet::from_iter(get_aliases(item_id, name))
-                    .into_iter()
-                    .map(|v| format!("{v:?}"))
-                    .collect::<Vec<_>>()
-                    .join(" | ");
-
-                format!("{alias} => ItemId::{item_id}")
-            })
-            .collect::<String>()
-    );
-
-    let [mut item_cache, item_formulas, item_generator, item_closures] =
-        core::array::from_fn(|i| {
-            let (name, vtype) = [
-                ("ITEM_CACHE", "&Item"),
-                ("ITEM_FORMULAS", "Range<usize>"),
-                ("ITEM_GENERATOR", "Range<usize>"),
-                ("ITEM_CLOSURES", "&[Range<usize>]"),
-            ][i];
-            format!("pub static {name}: [{vtype}; ItemId::VARIANTS] = [")
-        });
-
-    for item_id in data.keys() {
-        let upper_id = item_id.to_uppercase();
-        item_cache.push_str(&format!("&{upper_id},"));
-    }
 
     let fmt = result
         .values()
         .map(|batch| batch.fmt.as_str())
-        .collect::<Vec<&str>>()
+        .collect::<Vec<_>>()
         .concat()
         + &item_id_enum
         + &item_name_to_id
-        + &const_eval;
+        + &const_eval
+        + &cache;
 
-    let fmt_args = vec![
-        ("formula", item_formulas),
-        ("generator", item_generator),
-        ("closure", item_closures),
-    ];
-
-    Ok((fmt, fmt_args))
+    Ok(Box::new(move |tracker| {
+        tracker.batch(fmt, &mut fmt_args)?;
+        Ok(String::new())
+    }))
 }

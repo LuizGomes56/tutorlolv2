@@ -15,6 +15,7 @@ pub mod champions;
 pub mod items;
 pub mod model;
 pub mod runes;
+pub mod utils;
 
 static RE_CAST_F32: LazyLock<Regex> =
     LazyLock::new(|| Regex::new(r"(?P<before>^|[^.\d])(?P<num>\d+)(?P<after>[^.\d]|$)").unwrap());

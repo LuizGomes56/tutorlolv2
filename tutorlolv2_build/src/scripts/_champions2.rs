@@ -1,4 +1,10 @@
-use crate::scripts::_batch::{Batch, get_aliases, get_arg, simplify, slice_repr};
+use crate::{
+    Tracker,
+    scripts::utils::{
+        Batch, StaticVar, Tag, get_generator, get_id_enum, get_name_phf, get_static_vars, simplify,
+        slice_repr,
+    },
+};
 use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
 use std::collections::{BTreeMap, BTreeSet};
 use tutorlolv2_dev::{
@@ -6,7 +12,7 @@ use tutorlolv2_dev::{
     generators::gen_factories::wiki_champions::Champion,
 };
 
-pub fn generate_champions() -> MayFail<(String, Vec<(&'static str, String)>)> {
+pub fn generate_champions() -> MayFail<Box<dyn FnOnce(&mut Tracker<'_>) -> MayFail<String>>> {
     let data = BTreeMap::<String, Champion>::from_file("internal/champions.json")?;
     let languages =
         BTreeMap::<String, BTreeSet<String>>::from_file("internal/champion_languages.json")?;
@@ -34,12 +40,34 @@ pub fn generate_champions() -> MayFail<(String, Vec<(&'static str, String)>)> {
                 ..
             } = champion;
 
-            let variant = format_args!("variant({champion_id})");
-
             let decl = format!(
-                "
+                r#"
+                #[fmt(
+                    target = formula,
+                    variant = {champion_id},
+                    replace = [
+                        ": Champion = Champion" => " =",
+                        "MergeData " => "",
+                        "WikiStats " => "",
+                        "Stats " => "",
+                        "WikiModifiers " => "",
+                        "Modifiers " => "",
+                        "TypeMetadata " => ""
+                    ],
+                )]
+                static {upper_id}: Champion = Champion {{
+                    name: {name:?},
+                    adaptive_type: {adaptive_type:?},
+                    attack_type: {attack_type:?},
+                    positions: {positions:#?},
+                    stats: {stats:#?},
+                    modifiers: {modifiers:#?},
+                    combos: [{combos}],
+                    metadata: {metadata:#?},
+                    merge_data: {merge_data:#?}
+                }};
+
                 #[derive(Clone, Debug, Deserialize, Serialize)]
-                #[fmt(formula, keep, {variant})]
                 pub static {upper_id}: Champion = Champion {{
                     name: {name:?},
                     adaptive_type: AdaptiveType::{adaptive_type:?},
@@ -53,31 +81,20 @@ pub fn generate_champions() -> MayFail<(String, Vec<(&'static str, String)>)> {
                     identifiers: &[{identifiers}],
                     closures: &[{fn_names}],
                 }};
-                ",
+                "#,
                 upper_id = champion_id.to_uppercase(),
                 combos = slice_repr(&combos),
                 identifiers = slice_repr(&identifiers),
                 fn_names = functions.join(","),
             );
 
-            let mut generator = tutorlolv2_dev::read_to_string(format!(
-                "tutorlolv2_dev/src/generators/gen_champions/{file_name}.rs",
-                file_name = champion_id.to_lowercase()
-            ))
-            .unwrap();
-
-            if let Some(pos) = generator.find("impl") {
-                generator.drain(..pos);
-            }
-
-            generator.insert_str(0, &format!("#[fmt(generator, {variant})]"));
+            let generator = get_generator(Tag::Champion, champion_id, champion_id);
 
             let abilities_decl = abilities
                 .values()
                 .zip(functions)
-                .enumerate()
-                .map(|(i, (ability, function))| {
-                    let array_arg = get_arg(functions.len(), &i);
+                .zip(closures)
+                .map(|((ability, function), body)| {
                     let Ability {
                         name,
                         damage_type,
@@ -86,14 +103,22 @@ pub fn generate_champions() -> MayFail<(String, Vec<(&'static str, String)>)> {
                         damage,
                     } = ability;
 
+                    let formula = simplify(body);
+
                     format!(
                         r#"
+                        pub const fn {function}(ctx: &Ctx) -> f32 {{{formula}}}
+
+                        #[fmt(target = closure, variant = {champion_id})]
+                        fn {function}() {{{formula}}}
+
                         #[fmt(
-                            ability,
-                            replace(": Ability = Ability", " ="),
-                            replace("ctx.", ""),
-                            array({array_arg}),
-                            {variant}
+                            target = ability,
+                            variant = {champion_id},
+                            replace = [
+                                ": Ability = Ability" => " = Ability",
+                                "ctx." => "",
+                            ],
                         )]
                         static {variable}: Ability = Ability {{
                             name: {name:?},
@@ -128,34 +153,11 @@ pub fn generate_champions() -> MayFail<(String, Vec<(&'static str, String)>)> {
                     .collect::<String>()
             );
 
-            let fn_closures = functions
-                .iter()
-                .zip(closures)
-                .enumerate()
-                .map(|(i, (function, body))| {
-                    let array_arg = get_arg(functions.len(), &i);
-                    let formula = simplify(body);
-
-                    format!(
-                        r#"
-                        #[fmt(
-                            closure,
-                            keep,
-                            replace("pub const", ""),
-                            array({array_arg}),
-                            {variant}
-                        )]
-                        pub const fn {function}(ctx: &Ctx) -> f32 {{{formula}}}
-                        "#
-                    )
-                })
-                .collect::<String>();
-
             (
                 champion_id,
                 Batch {
                     eval,
-                    fmt: [decl, generator, abilities_decl, fn_closures].concat(),
+                    fmt: [decl, generator, abilities_decl].concat(),
                 },
             )
         })
@@ -172,85 +174,58 @@ pub fn generate_champions() -> MayFail<(String, Vec<(&'static str, String)>)> {
         eval = result
             .values()
             .map(|batch| batch.eval.as_str())
-            .collect::<Vec<&str>>()
+            .collect::<Vec<_>>()
             .concat()
     );
 
-    let champion_id_enum = format!(
-        "
-        #[derive(
-            Clone, Copy, Debug, Decode, Deserialize, Eq, Encode,
-            Hash, Ord, PartialEq, PartialOrd, Serialize
-        )]
-        #[repr(u8)]
-        pub enum ChampionId {{{variants}}}
+    let champion_id_enum = get_id_enum(&data, Tag::Champion);
 
-        impl ChampionId {{
-            pub const VARIANTS: usize = {len};
-            pub const fn debug(&self) -> &'static str {{
-                match self {{{arms}}}
-            }}
-        }}
-        ",
-        variants = data
-            .keys()
-            .map(String::as_str)
-            .collect::<Vec<_>>()
-            .join(","),
-        len = data.len(),
-        arms = data
-            .keys()
-            .map(|name| format!("Self::{name} => {name:?},"))
-            .collect::<String>()
-    );
-
-    let champion_name_to_id = format!(
-        "pub static CHAMPION_NAME_TO_ID: phf::Map<&str, ChampionId> = phf::phf_map!({arguments});",
-        arguments = data
-            .iter()
-            .map(|(champion_id, champion)| {
-                let name = &champion.data.name;
-
-                let alias = languages[champion_id]
+    let alias = data
+        .keys()
+        .map(|champion_id| {
+            (
+                champion_id.clone(),
+                languages[champion_id]
                     .iter()
-                    .chain(get_aliases(champion_id, name).iter())
+                    .cloned()
                     .chain(
                         (champion_id == "Gnar")
-                            .then_some(&"Mega Gnar".into())
+                            .then_some("Mega Gnar".into())
                             .into_iter(),
                     )
-                    .map(|alias| format!("{alias:?}"))
-                    .collect::<BTreeSet<_>>()
-                    .into_iter()
-                    .collect::<Vec<_>>()
-                    .join(" | ");
+                    .collect::<Vec<_>>(),
+            )
+        })
+        .collect();
 
-                format!("{alias} => ChampionId::{champion_id},")
-            })
-            .collect::<String>()
+    let champion_name_to_id = get_name_phf(&data, Tag::Champion, Some(alias));
+
+    let (cache, mut fmt_args) = get_static_vars(
+        Tag::Champion,
+        &data,
+        [
+            StaticVar {
+                attribute: "formula",
+                name: "CHAMPION_FORMULAS",
+                vtype: "Range<usize>",
+            },
+            StaticVar {
+                attribute: "generator",
+                name: "CHAMPION_GENERATOR",
+                vtype: "Range<usize>",
+            },
+            StaticVar {
+                attribute: "ability",
+                name: "ABILITY_FORMULAS",
+                vtype: "&[Range<usize>]",
+            },
+            StaticVar {
+                attribute: "closure",
+                name: "ABILITY_CLOSURES",
+                vtype: "&[Range<usize>]",
+            },
+        ],
     );
-
-    let [
-        mut champion_cache,
-        champion_formulas,
-        champion_generator,
-        ability_formulas,
-        ability_closures,
-    ] = core::array::from_fn(|i| {
-        let (name, vtype) = [
-            ("CHAMPION_CACHE", "&Champion"),
-            ("CHAMPION_FORMULAS", "Range<usize>"),
-            ("CHAMPION_GENERATOR", "Range<usize>"),
-            ("ABILITY_FORMULAS", "&[Range<usize>]"),
-            ("ABILITY_CLOSURES", "&[Range<usize>]"),
-        ][i];
-        format!("pub static {name}: [{vtype}; ChampionId::VARIANTS] = [")
-    });
-
-    for champion_id in data.keys() {
-        let upper_id = champion_id.to_uppercase();
-        champion_cache.push_str(&format!("&{upper_id},"));
-    }
 
     let fmt = result
         .values()
@@ -259,14 +234,11 @@ pub fn generate_champions() -> MayFail<(String, Vec<(&'static str, String)>)> {
         .concat()
         + &champion_id_enum
         + &champion_name_to_id
-        + &const_eval;
+        + &const_eval
+        + &cache;
 
-    let fmt_args = vec![
-        ("formula", champion_formulas),
-        ("generator", champion_generator),
-        ("ability", ability_formulas),
-        ("closure", ability_closures),
-    ];
-
-    Ok((fmt, fmt_args))
+    Ok(Box::new(move |tracker| {
+        tracker.batch(fmt, &mut fmt_args)?;
+        Ok(String::new())
+    }))
 }
