@@ -1,18 +1,19 @@
-use crate::{
-    Tracker,
-    scripts::utils::{
-        Batch, StaticVar, Tag, closures, get_const_eval, get_eval, get_generator, get_id_enum,
+use crate::scripts::{
+    batch::{FmtArgs, Batch},
+    utils::{
+        StaticVar, Tag, closures, get_const_eval, get_eval, get_generator, get_id_enum,
         get_name_phf, get_static_vars,
     },
 };
 use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
-use std::collections::BTreeMap;
+use serde_json::json;
+use std::collections::{BTreeMap, HashMap};
 use tutorlolv2_dev::{
     JsonRead, MayFail, gen_factories::wiki_items::ItemBuild,
     generators::gen_factories::wiki_items::Item,
 };
 
-pub fn generate_items() -> MayFail<Box<dyn FnOnce(&mut Tracker<'_>) -> MayFail<String>>> {
+pub fn generate_items() -> MayFail<(HashMap<&'static str, String>, String)> {
     let data = BTreeMap::<String, Item>::from_file("internal/items.json")?;
 
     let result = data
@@ -38,16 +39,17 @@ pub fn generate_items() -> MayFail<Box<dyn FnOnce(&mut Tracker<'_>) -> MayFail<S
                 ..
             } = item;
 
+            let fmt_arg = json!(FmtArgs {
+                target: "formula",
+                variant: item_id,
+                meta: (),
+                replace: [(": Item = Item", " ="), ("TypeMetadata ", ""),].into(),
+                default: false
+            });
+
             let decl = format!(
                 r#"
-                #[fmt(
-                    target = formula,
-                    variant = {item_id},
-                    replace = [
-                        ": Item = Item" => " =",
-                        "TypeMetadata " => ""
-                    ]
-                )]
+                #[fmt({fmt_arg})]
                 static {upper_id}: Item = Item {{
                     name: {name:?},
                     tier: {tier},
@@ -81,7 +83,7 @@ pub fn generate_items() -> MayFail<Box<dyn FnOnce(&mut Tracker<'_>) -> MayFail<S
             );
 
             let generator = get_generator(Tag::Item, &item_id, item_id);
-            let eval = get_eval(Tag::Item, &item_id, &deals_damage, melee, ranged);
+            let eval = get_eval(Tag::Item, &item_id, &deals_damage, functions);
             let fn_closures = closures(functions, melee, ranged, item_id);
 
             (
@@ -98,7 +100,7 @@ pub fn generate_items() -> MayFail<Box<dyn FnOnce(&mut Tracker<'_>) -> MayFail<S
     let item_id_enum = get_id_enum(&data, Tag::Item);
     let item_name_to_id = get_name_phf(&data, Tag::Item, None);
 
-    let (cache, mut fmt_args) = get_static_vars(
+    let (cache, fmt_args) = get_static_vars(
         Tag::Item,
         &data,
         [
@@ -115,7 +117,7 @@ pub fn generate_items() -> MayFail<Box<dyn FnOnce(&mut Tracker<'_>) -> MayFail<S
             StaticVar {
                 attribute: "closure",
                 name: "ITEM_CLOSURES",
-                vtype: "&[Range<usize>]",
+                vtype: "[[Range<usize>; 2]; 2]",
             },
         ],
     );
@@ -130,8 +132,5 @@ pub fn generate_items() -> MayFail<Box<dyn FnOnce(&mut Tracker<'_>) -> MayFail<S
         + &const_eval
         + &cache;
 
-    Ok(Box::new(move |tracker| {
-        tracker.batch(fmt, &mut fmt_args)?;
-        Ok(String::new())
-    }))
+    Ok((fmt_args, fmt))
 }

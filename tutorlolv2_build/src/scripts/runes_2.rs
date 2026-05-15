@@ -1,18 +1,24 @@
-use crate::{
-    Tracker,
-    scripts::utils::{
-        Batch, StaticVar, Tag, closures, get_const_eval, get_eval, get_generator, get_id_enum,
+use crate::scripts::{
+    batch::{Batch, FmtArgs, FmtOutput},
+    utils::{
+        StaticVar, Tag, closures, get_const_eval, get_eval, get_generator, get_id_enum,
         get_name_phf, get_static_vars,
     },
 };
 use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
-use std::collections::BTreeMap;
+use serde_json::json;
+use std::{
+    collections::{BTreeMap, HashMap},
+    ops::Range,
+};
 use tutorlolv2_dev::{
-    JsonRead, MayFail, gen_factories::wiki_runes::RuneBuild,
+    JsonRead, MayFail,
+    gen_factories::{DamageIndex, wiki_runes::RuneBuild},
     generators::gen_factories::wiki_runes::Rune,
 };
+use tutorlolv2_types::AttackType;
 
-pub fn generate_runes() -> MayFail<Box<dyn FnOnce(&mut Tracker<'_>) -> MayFail<String>>> {
+pub fn generate_runes() -> MayFail<(HashMap<&'static str, String>, String)> {
     let data = BTreeMap::<String, Rune>::from_file("internal/runes.json")?;
 
     let result = data
@@ -33,16 +39,17 @@ pub fn generate_runes() -> MayFail<Box<dyn FnOnce(&mut Tracker<'_>) -> MayFail<S
                 ..
             } = rune;
 
+            let fmt_arg = json!(FmtArgs {
+                target: "formula",
+                variant: rune_id,
+                meta: (),
+                replace: [(": Rune = Rune", " ="), ("TypeMetadata ", ""),].into(),
+                default: false
+            });
+
             let decl = format!(
                 r#"
-                #[fmt(
-                    target = formula,
-                    variant = {rune_id},
-                    replace = [
-                        ": Rune = Rune" => " =",
-                        "TypeMetadata " => ""
-                    ]
-                )]
+                #[fmt({fmt_arg})]
                 static {upper_id}: Rune = Rune {{
                     name: {name:?},
                     riot_id: {riot_id},
@@ -66,7 +73,7 @@ pub fn generate_runes() -> MayFail<Box<dyn FnOnce(&mut Tracker<'_>) -> MayFail<S
             );
 
             let generator = get_generator(Tag::Rune, &rune_id, rune_id);
-            let eval = get_eval(Tag::Rune, &rune_id, &deals_damage, melee, ranged);
+            let eval = get_eval(Tag::Rune, &rune_id, &deals_damage, functions);
             let fn_closures = closures(functions, melee, ranged, rune_id);
 
             (
@@ -83,7 +90,7 @@ pub fn generate_runes() -> MayFail<Box<dyn FnOnce(&mut Tracker<'_>) -> MayFail<S
     let rune_id_enum = get_id_enum(&data, Tag::Rune);
     let rune_name_to_id = get_name_phf(&data, Tag::Rune, None);
 
-    let (cache, mut fmt_args) = get_static_vars(
+    let (cache, fmt_args) = get_static_vars(
         Tag::Rune,
         &data,
         [
@@ -100,7 +107,7 @@ pub fn generate_runes() -> MayFail<Box<dyn FnOnce(&mut Tracker<'_>) -> MayFail<S
             StaticVar {
                 attribute: "closure",
                 name: "RUNE_CLOSURES",
-                vtype: "&[Range<usize>]",
+                vtype: "[[Range<usize>; 2]; 2]",
             },
         ],
     );
@@ -115,8 +122,39 @@ pub fn generate_runes() -> MayFail<Box<dyn FnOnce(&mut Tracker<'_>) -> MayFail<S
         + &const_eval
         + &cache;
 
-    Ok(Box::new(move |tracker| {
-        tracker.batch(fmt, &mut fmt_args)?;
-        Ok(String::new())
-    }))
+    Ok((fmt_args, fmt))
+}
+
+pub fn finish(target: &str, variable: &mut String, value: &[FmtOutput<'_>]) {
+    let push = match target {
+        "formula" | "generator" => {
+            value
+                .iter()
+                .map(|FmtOutput { html_range, .. }| format!("{html_range:?}"))
+                .collect::<Vec<_>>()
+                .join(",")
+                + ","
+        }
+        "closure" => {
+            let mut ranges: [[Range<usize>; 2]; 2] =
+                core::array::from_fn(|_| core::array::from_fn(|_| 0..0));
+
+            for FmtOutput {
+                html_range,
+                json: FmtArgs { meta, .. },
+                ..
+            } in value
+            {
+                let (attack_type, damage_index) =
+                    serde_json::from_value::<(AttackType, DamageIndex)>(meta.clone()).unwrap();
+
+                ranges[attack_type as usize][damage_index as usize] = html_range.clone();
+            }
+
+            format!("{ranges:?},")
+        }
+        _ => panic!("Unknown target set to fmt_args: {target}"),
+    };
+
+    variable.push_str(&push);
 }

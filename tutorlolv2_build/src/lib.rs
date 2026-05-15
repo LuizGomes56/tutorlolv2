@@ -1,7 +1,13 @@
 use crate::scripts::{
     BASIC_ATTACK, BASIC_ATTACK_FN, CRITICAL_STRIKE, CRITICAL_STRIKE_FN, DEFAULT_ITEM_GENERATOR,
     IGNITE_FN, ONHIT_EFFECT, ONHIT_EFFECT_FN, StringExt, TOWER_DAMAGE, TOWER_DAMAGE_FN, ZERO_FN,
-    champions::generate_champions, items::generate_items, runes::generate_runes,
+    batch::{FmtOutput, batch},
+    champions::generate_champions,
+    champions_2,
+    items::generate_items,
+    items_2,
+    runes::generate_runes,
+    runes_2,
 };
 use rayon::iter::{IntoParallelIterator, ParallelBridge, ParallelIterator};
 use serde::de::DeserializeOwned;
@@ -220,18 +226,60 @@ pub fn run() -> MayFail {
 
     let mut tracker = Tracker::new(&mut full_block);
 
-    for f in [
-        crate::scripts::_champions2::generate_champions,
-        crate::scripts::_items2::generate_items,
-        crate::scripts::_runes2::generate_runes,
-    ] {
-        let result = f()?;
-        let block = result(&mut tracker)?;
+    for (function, finish) in [
+        (champions_2::generate_champions, champions_2::finish),
+        (items_2::generate_items, runes_2::finish),
+        (runes_2::generate_runes, runes_2::finish),
+    ] as [(fn() -> _, fn(&str, &mut String, &[FmtOutput<'_>])); _]
+    {
+        let (mut fmt_args, fmt) = function()?;
+        let mut src = tutorlolv2_fmt::rustfmt(&fmt, None);
+        let mut batch = batch(&src);
+        tracker.batch(&mut batch);
+
+        let mut delete_ranges = batch
+            .values()
+            .map(|output| {
+                output
+                    .iter()
+                    .map(|(target, value)| {
+                        let variable = fmt_args.get_mut(*target).unwrap();
+
+                        finish(target, variable, value);
+
+                        value
+                            .iter()
+                            .map(|output| output.delete_range.clone())
+                            .collect::<Vec<_>>()
+                    })
+                    .collect::<Vec<_>>()
+            })
+            .flatten()
+            .flatten()
+            .collect::<Vec<_>>();
+
+        delete_ranges.sort_by_key(|range| range.start);
+
+        for range in delete_ranges.into_iter().rev() {
+            src.drain(range);
+        }
+
+        let block = fmt_args
+            .values_mut()
+            .map(|variable| {
+                variable.push_str("];");
+                variable.as_str()
+            })
+            .collect::<String>()
+            + &src;
 
         full_exports.push_str(&block);
     }
 
-    tutorlolv2_dev::write("__debug.txt", &full_exports)?;
+    let exports = tutorlolv2_fmt::rustfmt(&full_exports, None);
+    // let exports = full_exports;
+
+    tutorlolv2_dev::write("__debug.txt", &exports)?;
     tutorlolv2_dev::write("__block.txt", &full_block)?;
 
     panic!();

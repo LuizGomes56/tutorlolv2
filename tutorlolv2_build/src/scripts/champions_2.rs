@@ -1,18 +1,19 @@
-use crate::{
-    Tracker,
-    scripts::utils::{
-        Batch, StaticVar, Tag, get_generator, get_id_enum, get_name_phf, get_static_vars, simplify,
+use crate::scripts::{
+    batch::{Batch, FmtArgs, FmtOutput},
+    utils::{
+        StaticVar, Tag, get_generator, get_id_enum, get_name_phf, get_static_vars, simplify,
         slice_repr,
     },
 };
 use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
-use std::collections::{BTreeMap, BTreeSet};
+use serde_json::json;
+use std::collections::{BTreeMap, BTreeSet, HashMap};
 use tutorlolv2_dev::{
     JsonRead, MayFail, decl_champions::Ability, gen_factories::wiki_champions::ChampionBuild,
     generators::gen_factories::wiki_champions::Champion,
 };
 
-pub fn generate_champions() -> MayFail<Box<dyn FnOnce(&mut Tracker<'_>) -> MayFail<String>>> {
+pub fn generate_champions() -> MayFail<(HashMap<&'static str, String>, String)> {
     let data = BTreeMap::<String, Champion>::from_file("internal/champions.json")?;
     let languages =
         BTreeMap::<String, BTreeSet<String>>::from_file("internal/champion_languages.json")?;
@@ -40,21 +41,26 @@ pub fn generate_champions() -> MayFail<Box<dyn FnOnce(&mut Tracker<'_>) -> MayFa
                 ..
             } = champion;
 
+            let fmt_formula = json!(FmtArgs {
+                target: "formula",
+                variant: champion_id,
+                meta: (),
+                replace: [
+                    (": Champion = Champion", " ="),
+                    ("MergeData ", ""),
+                    ("WikiStats ", ""),
+                    ("Stats ", ""),
+                    ("WikiModifiers ", ""),
+                    ("Modifiers ", ""),
+                    ("TypeMetadata ", ""),
+                ]
+                .into(),
+                default: false
+            });
+
             let decl = format!(
                 r#"
-                #[fmt(
-                    target = formula,
-                    variant = {champion_id},
-                    replace = [
-                        ": Champion = Champion" => " =",
-                        "MergeData " => "",
-                        "WikiStats " => "",
-                        "Stats " => "",
-                        "WikiModifiers " => "",
-                        "Modifiers " => "",
-                        "TypeMetadata " => ""
-                    ],
-                )]
+                #[fmt({fmt_formula})]
                 static {upper_id}: Champion = Champion {{
                     name: {name:?},
                     adaptive_type: {adaptive_type:?},
@@ -91,10 +97,10 @@ pub fn generate_champions() -> MayFail<Box<dyn FnOnce(&mut Tracker<'_>) -> MayFa
             let generator = get_generator(Tag::Champion, champion_id, champion_id);
 
             let abilities_decl = abilities
-                .values()
+                .iter()
                 .zip(functions)
                 .zip(closures)
-                .map(|((ability, function), body)| {
+                .map(|(((ability_id, ability), function), body)| {
                     let Ability {
                         name,
                         damage_type,
@@ -105,21 +111,30 @@ pub fn generate_champions() -> MayFail<Box<dyn FnOnce(&mut Tracker<'_>) -> MayFa
 
                     let formula = simplify(body);
 
+                    let fmt_closure = json!(FmtArgs {
+                        target: "closure",
+                        variant: champion_id,
+                        meta: ability_id,
+                        replace: [("ctx.", "")].into(),
+                        default: false
+                    });
+
+                    let fmt_ability = json!(FmtArgs {
+                        target: "ability",
+                        variant: champion_id,
+                        meta: ability_id,
+                        replace: [(": Ability = Ability", " = Ability"), ("ctx.", "")].into(),
+                        default: false
+                    });
+
                     format!(
                         r#"
                         pub const fn {function}(ctx: &Ctx) -> f32 {{{formula}}}
 
-                        #[fmt(target = closure, variant = {champion_id})]
+                        #[fmt({fmt_closure})]
                         fn {function}() {{{formula}}}
 
-                        #[fmt(
-                            target = ability,
-                            variant = {champion_id},
-                            replace = [
-                                ": Ability = Ability" => " = Ability",
-                                "ctx." => "",
-                            ],
-                        )]
+                        #[fmt({fmt_ability})]
                         static {variable}: Ability = Ability {{
                             name: {name:?},
                             damage_type: {damage_type:?},
@@ -200,7 +215,7 @@ pub fn generate_champions() -> MayFail<Box<dyn FnOnce(&mut Tracker<'_>) -> MayFa
 
     let champion_name_to_id = get_name_phf(&data, Tag::Champion, Some(alias));
 
-    let (cache, mut fmt_args) = get_static_vars(
+    let (cache, fmt_args) = get_static_vars(
         Tag::Champion,
         &data,
         [
@@ -237,8 +252,21 @@ pub fn generate_champions() -> MayFail<Box<dyn FnOnce(&mut Tracker<'_>) -> MayFa
         + &const_eval
         + &cache;
 
-    Ok(Box::new(move |tracker| {
-        tracker.batch(fmt, &mut fmt_args)?;
-        Ok(String::new())
-    }))
+    Ok((fmt_args, fmt))
+}
+
+pub fn finish(target: &str, variable: &mut String, value: &[FmtOutput<'_>]) {
+    let ranges = value
+        .iter()
+        .map(|FmtOutput { html_range, .. }| format!("{html_range:?}"))
+        .collect::<Vec<_>>()
+        .join(",");
+
+    let push = match target {
+        "formula" | "generator" => format!("{ranges},"),
+        "ability" | "closure" => format!("&[{ranges},],"),
+        _ => panic!("Unknown target set to fmt_args: {target}"),
+    };
+
+    variable.push_str(&push);
 }

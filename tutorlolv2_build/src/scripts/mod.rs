@@ -7,14 +7,14 @@ use std::{
 use tutorlolv2_fmt::rust_html;
 use tutorlolv2_types::DamageType;
 
-pub mod _batch;
-pub mod _champions2;
-pub mod _items2;
-pub mod _runes2;
+pub mod batch;
 pub mod champions;
+pub mod champions_2;
 pub mod items;
+pub mod items_2;
 pub mod model;
 pub mod runes;
+pub mod runes_2;
 pub mod utils;
 
 static RE_CAST_F32: LazyLock<Regex> =

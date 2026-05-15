@@ -1,12 +1,18 @@
+use crate::scripts::batch::{Batch, FmtArgs};
+use serde_json::json;
 use std::{
     collections::{BTreeMap, BTreeSet, HashMap},
-    fmt::{Arguments, Debug},
+    fmt::Debug,
     ops::Range,
 };
 use tutorlolv2_dev::{
-    decl_champions::Champion, decl_items::Item, decl_runes::Rune, gen_factories::ZERO,
+    decl_champions::Champion,
+    decl_items::Item,
+    decl_runes::Rune,
+    gen_factories::{DamageIndex, ZERO},
 };
 use tutorlolv2_fmt::{pascal_case, to_ssnake};
+use tutorlolv2_types::AttackType;
 
 pub trait MapValueExt {
     fn riot_id(&self) -> u32;
@@ -162,17 +168,29 @@ pub fn get_const_eval(data: &BTreeMap<&String, Batch>, tag: Tag) -> String {
 
 pub fn get_generator(tag: Tag, id: &str, variant: &str) -> String {
     let folder = tag.as_ref().to_lowercase();
+    let mut default = false;
     let mut generator = tutorlolv2_dev::read_to_string(format!(
         "tutorlolv2_dev/src/generators/gen_{folder}s/{file_name}.rs",
         file_name = id.to_lowercase()
     ))
-    .unwrap_or("impl Generator {}".into());
+    .unwrap_or_else(|_| {
+        default = true;
+        "impl Generator {}".into()
+    });
 
     if let Some(pos) = generator.find("impl") {
         generator.drain(..pos);
     }
 
-    generator.insert_str(0, &format!("#[fmt(generator, {variant})]"));
+    let fmt_arg = json!(FmtArgs {
+        target: "generator",
+        variant,
+        meta: (),
+        replace: Default::default(),
+        default
+    });
+
+    generator.insert_str(0, &format!("#[fmt({fmt_arg})]"));
     generator
 }
 
@@ -180,16 +198,16 @@ pub fn get_eval(
     tag: Tag,
     id: &str,
     deals_damage: &[bool; 4],
-    melee: &[String],
-    ranged: &[String],
+    functions: &[[String; 2]; 2],
 ) -> String {
-    let get_arms = |range: Range<_>, array: &[String]| {
+    let slice = functions.as_flattened();
+    let get_arms = |range: Range<_>| {
         deals_damage[range]
             .iter()
             .enumerate()
             .map(|(i, v)| {
                 let f = match *v {
-                    true => &array[i],
+                    true => &slice[i],
                     false => ZERO,
                 };
                 format!("{f}(&ctx)")
@@ -207,8 +225,8 @@ pub fn get_eval(
                 }}
             }},
             ",
-        melee_arms = get_arms(0..2, melee),
-        ranged_arms = get_arms(2..4, ranged),
+        melee_arms = get_arms(0..2),
+        ranged_arms = get_arms(2..4),
     )
 }
 
@@ -218,16 +236,11 @@ pub struct StaticVar {
     pub vtype: &'static str,
 }
 
-pub struct FmtArgs {
-    pub variable: String,
-    pub output: Vec<Range<usize>>,
-}
-
 pub fn get_static_vars<const N: usize, T>(
     tag: Tag,
     data: &BTreeMap<String, T>,
     array: [StaticVar; N],
-) -> (String, HashMap<&'static str, FmtArgs>) {
+) -> (String, HashMap<&'static str, String>) {
     let make = |name: &str, vtype| {
         format!(
             "pub static {var}: [{vtype}; {tag:?}Id::VARIANTS] = [",
@@ -244,7 +257,7 @@ pub fn get_static_vars<const N: usize, T>(
 
     cache.push_str("];");
 
-    let fmt_args = array
+    let result = array
         .into_iter()
         .map(|static_var| {
             let StaticVar {
@@ -253,17 +266,11 @@ pub fn get_static_vars<const N: usize, T>(
                 vtype,
             } = static_var;
             let variable = make(name, vtype);
-            (
-                attribute,
-                FmtArgs {
-                    variable,
-                    output: Vec::new(),
-                },
-            )
+            (attribute, variable)
         })
         .collect::<HashMap<_, _>>();
 
-    (cache, fmt_args)
+    (cache, result)
 }
 
 pub fn closures(
@@ -276,35 +283,43 @@ pub fn closures(
         .iter()
         .enumerate()
         .map(|(i, function)| {
+            let attack_type = match i {
+                0 => AttackType::Melee,
+                1 => AttackType::Ranged,
+                _ => unreachable!(),
+            };
             function
                 .iter()
                 .enumerate()
                 .map(|(j, function)| {
-                    let body = &match i {
-                        0 => melee,
-                        1 => ranged,
+                    let (damage_index, body) = match i {
+                        0 => (DamageIndex::Min, &melee[j]),
+                        1 => (DamageIndex::Max, &ranged[j]),
                         _ => unreachable!(),
-                    }[j];
+                    };
 
                     let default = body == ZERO || body == "0";
 
                     let formula = simplify(body);
                     let closure = if default {
-                        format_args!("pub const fn {function}(ctx: &Ctx) -> f32 {{{formula}}}")
-                    } else {
                         format_args!("")
+                    } else {
+                        format_args!("pub const fn {function}(ctx: &Ctx) -> f32 {{{formula}}}")
                     };
+
+                    let fmt_arg = json!(FmtArgs {
+                        target: "closure",
+                        variant,
+                        meta: (attack_type, damage_index),
+                        replace: [("ctx.", "")].into(),
+                        default
+                    });
 
                     format!(
                         r#"
                         {closure}
 
-                        #[fmt(
-                            target = closure,
-                            variant = {variant},
-                            replace = ["ctx." => ""],
-                            default = {default}
-                        )]
+                        #[fmt({fmt_arg})]
                         fn {function}() {{{formula}}}
                         "#
                     )
@@ -344,9 +359,4 @@ pub fn get_aliases<'a>(id: &'a str, name: &'a str) -> Vec<String> {
     };
 
     [get(id), get(name)].concat()
-}
-
-pub struct Batch {
-    pub eval: String,
-    pub fmt: String,
 }
