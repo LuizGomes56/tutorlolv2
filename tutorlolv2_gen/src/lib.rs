@@ -4,7 +4,7 @@
 pub mod bitset;
 pub mod cache;
 pub mod data;
-pub mod test__;
+// pub mod test__;
 
 use crate::data::{
     champions::CHAMPION_GENERATOR,

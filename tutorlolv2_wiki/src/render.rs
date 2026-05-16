@@ -428,7 +428,7 @@ fn render_range_percent_attr(
 
     let driver = match ctx_var {
         // These are naturally 0.0..1.0 drivers in the formula system.
-        CtxVar::CritChance => format!("{ctx_var}"),
+        // CtxVar::CritChance => format!("{ctx_var}"),
         // These are best-effort: the parser marks some stack/chime/fury-like values
         // as SteelcapsEffect when no dedicated CtxVar exists.
         _ => format!("{ctx_var}"),
@@ -612,7 +612,12 @@ fn render_level_match(level_var: CtxVar, arms: &[LevelArm]) -> String {
         }
     }
 
-    if !rendered.iter().any(|v| v.trim_start().starts_with("_")) {
+    if !rendered.iter().any(|v| v.trim_start().starts_with("_"))
+        && arms
+            .last()
+            .map(|arm| !matches!(arm, LevelArm::From { .. }))
+            .unwrap_or(false)
+    {
         let fallback = arms.last().map(LevelArm::value).unwrap_or(0.0);
         rendered.push(format!("_ => {}", render_num(fallback)));
     }
@@ -705,19 +710,19 @@ fn approx_zero(v: f64) -> bool {
 
 fn render_exact_match(values: &[f64], axis: CtxVar) -> String {
     let mut arms = Vec::new();
+    let len = values.len();
 
     for (i, value) in values.iter().enumerate() {
         let rank = i + 1;
-        arms.push(format!("{rank} => {}", render_num(*value)));
+        let arm = match i {
+            0 => format_args!("..={rank}"),
+            _ if i == len - 1 => format_args!("{rank}.."),
+            _ => format_args!("{rank}"),
+        };
+        arms.push(format!("{arm} => {}", render_num(*value)));
     }
 
-    let fallback = values.last().copied().unwrap_or(0.0);
-
-    format!(
-        "match {axis} {{ {}, _ => {} }}",
-        arms.join(", "),
-        render_num(fallback),
-    )
+    format!("match {axis} {{{}}}", arms.join(", "),)
 }
 
 fn maybe_extend_series(values: &[f64], axis: CtxVar) -> Vec<f64> {

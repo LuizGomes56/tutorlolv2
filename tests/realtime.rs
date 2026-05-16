@@ -4,7 +4,7 @@ const CFG: bincode::config::Configuration = bincode::config::standard();
 
 #[test]
 fn test_realtime() -> MayFail {
-    let bytes = std::fs::read("temp_test.json")?;
+    let bytes = std::fs::read("realtime_sample.json")?;
     let game = serde_json::from_slice(&bytes)?;
     let data = tutorlolv2::realtime(&game).unwrap();
 

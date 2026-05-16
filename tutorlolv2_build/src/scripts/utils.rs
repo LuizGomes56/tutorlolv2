@@ -1,12 +1,11 @@
-use crate::scripts::{
-    StringExt,
-    batch::{Batch, FmtArgs},
-};
+use crate::scripts::batch::{Batch, FmtArgs};
+use regex::{Captures, Regex};
 use serde_json::json;
 use std::{
     collections::{BTreeMap, BTreeSet, HashMap},
     fmt::Debug,
     ops::Range,
+    sync::LazyLock,
 };
 use tutorlolv2_dev::{
     decl_champions::Champion,
@@ -163,7 +162,7 @@ pub fn get_const_eval(data: &BTreeMap<&String, Batch>, tag: Tag) -> String {
             {ltag}_id: {tag:?}Id,
             attack_type: AttackType
         ) -> [f32; 2] {{
-            match {ltag}_id {{ {eval} _ => [0.0, 0.0] }}
+            match {ltag}_id {{ {eval} }}
         }}
         ",
         ltag = tag.as_ref().to_lowercase(),
@@ -313,8 +312,8 @@ pub fn closures(
                     let closure = if default {
                         format!("")
                     } else {
-                        let formula_f32 = formula.cast_f32();
-                        let param = formula_f32.ctx_param();
+                        let formula_f32 = cast_f32(&formula);
+                        let param = ctx_param(&formula_f32);
 
                         format!("pub const fn {function}({param}: &Ctx) -> f32 {{{formula_f32}}}",)
                     };
@@ -345,14 +344,6 @@ pub fn simplify(formula: &str) -> String {
     symb_anafis::simplify(&formula.replace("ctx.", "ctx_"), &[], None)
         .map(|r| r.replace("ctx_", "ctx."))
         .unwrap_or(formula.to_string())
-}
-
-pub fn slice_repr<T: Debug>(slice: &[T]) -> String {
-    slice
-        .iter()
-        .map(|ident| format!("&{ident:#?}"))
-        .collect::<Vec<_>>()
-        .join(",")
 }
 
 pub fn get_aliases<'a>(id: &'a str, name: &'a str) -> Vec<String> {
@@ -411,4 +402,30 @@ pub fn get_identifiers(identifiers: &[[Vec<CtxVar>; 2]; 2]) -> String {
             .collect::<Vec<_>>()
             .join(",")
     )
+}
+
+pub fn cast_f32(s: &str) -> String {
+    static RE_CAST_F32: LazyLock<Regex> = LazyLock::new(|| {
+        Regex::new(r"(?P<before>^|[^.\d])(?P<num>\d+)(?P<after>[^.\d]|$)").unwrap()
+    });
+
+    let result = RE_CAST_F32.replace_all(s, |caps: &Captures| {
+        let before = &caps["before"];
+        let num = &caps["num"];
+        let after = &caps["after"];
+
+        format!("{before}{num}.0{after}")
+    });
+
+    result
+        .replace("match ctx.level", "match ctx.level as u8")
+        .replace("match ctx.q_level", "match ctx.q_level as u8")
+        .replace("match ctx.w_level", "match ctx.w_level as u8")
+        .replace("match ctx.e_level", "match ctx.e_level as u8")
+        .replace("match ctx.r_level", "match ctx.r_level as u8")
+        .replace(".0 =>", "=>")
+}
+
+pub fn ctx_param(s: &str) -> &'static str {
+    if s.contains("ctx.") { "ctx" } else { "_" }
 }

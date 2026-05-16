@@ -1,4 +1,3 @@
-use crate::Tracker;
 use rayon::iter::{ParallelBridge, ParallelIterator};
 use regex::Regex;
 use serde::{Deserialize, Serialize};
@@ -28,26 +27,6 @@ pub struct FmtOutput<'a> {
     pub html: String,
     pub json: FmtArgs<'a, Value>,
     pub delete_range: Range<usize>,
-}
-
-impl<'a> Tracker<'a> {
-    pub fn push(&mut self, value: &str) -> Range<usize> {
-        let start = self.offset();
-        self.inner.push_str(value);
-        start..self.offset()
-    }
-
-    pub fn batch(&mut self, batch: &mut BTreeMap<&str, BTreeMap<&str, Vec<FmtOutput<'_>>>>) {
-        for value in batch.values_mut() {
-            for data in value.values_mut() {
-                for output in data.iter_mut() {
-                    if !output.json.default {
-                        output.html_range = self.push(&output.html);
-                    }
-                }
-            }
-        }
-    }
 }
 
 pub fn batch<'b>(src: &'b str) -> BTreeMap<&'b str, BTreeMap<&'b str, Vec<FmtOutput<'b>>>> {

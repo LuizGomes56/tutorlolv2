@@ -19,7 +19,7 @@ pub struct RiotCdnItem {
 }
 
 #[derive(Serialize, Deserialize)]
-pub struct RiotCdnStandard<T = Value> {
+pub struct RiotCdn<T = Value> {
     pub data: HashMap<String, T>,
 }
 

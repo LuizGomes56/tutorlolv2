@@ -3,7 +3,7 @@ use crate::{
     gen_champions::champion_ids,
     gen_utils::RegExtractor,
     init::ENV_CONFIG,
-    riot::RiotCdnStandard,
+    riot::RiotCdn,
     selector,
     setup::riot::{RiotCdnChampion, RiotCdnRune},
 };
@@ -19,7 +19,7 @@ use std::{
     sync::Arc,
 };
 use tokio::{sync::Semaphore, task::JoinHandle};
-use tutorlolv2_fmt::{pascal_case, to_ssnake};
+use tutorlolv2_fmt::to_ssnake;
 use tutorlolv2_types::{Key, Position};
 
 #[derive(Copy, Clone)]
@@ -407,9 +407,9 @@ impl HttpClient {
             .await?
             .json::<Vec<String>>()
             .await?
-            .get(0)
+            .first()
             .ok_or("Version not found")?
-            .clone())
+            .to_owned())
     }
 
     /// Fetches League of Legends current version and updates it directly
@@ -436,7 +436,6 @@ impl HttpClient {
     }
 
     /// Updates files in `cache/riot` with the corresponding ones in the patch determined by `LOL_VERSION`
-    /// Runs a maximum of 32 tokio threads at the same time
     pub async fn update_riot_cache(&self) -> MayFail {
         self.download(
             DDragon::Riot("champion", None).url(),
@@ -444,7 +443,7 @@ impl HttpClient {
         )
         .await?;
 
-        let champions_json = RiotCdnStandard::<Value>::from_file(SaveTo::RiotChampions.path())?;
+        let champions_json = RiotCdn::<Value>::from_file(SaveTo::RiotChampions.path())?;
 
         let champion_ids = champions_json
             .data
@@ -453,7 +452,7 @@ impl HttpClient {
             .collect::<Vec<String>>();
 
         let mut champions_futures = Vec::<JoinHandle<_>>::new();
-        let semaphore = Arc::new(Semaphore::new(32));
+        let semaphore = Arc::new(Semaphore::new(16));
 
         for champion_id in champion_ids.clone() {
             let client = self.clone();
@@ -471,7 +470,7 @@ impl HttpClient {
                     .await
                     .unwrap();
 
-                let champion_data = RiotCdnStandard::<Value>::from_file(save_to).unwrap();
+                let champion_data = RiotCdn::<Value>::from_file(save_to).unwrap();
 
                 champion_data
                     .data
@@ -493,22 +492,10 @@ impl HttpClient {
         self.download(DDragon::Riot("item", None).url(), &items_path)
             .await?;
 
-        let items_json = RiotCdnStandard::<Value>::from_file(items_path)?;
+        let items_json = RiotCdn::<Value>::from_file(items_path)?;
 
-        let mut items_futures = Vec::<_>::new();
-
-        for (item_id, item_data) in items_json.data.clone() {
-            items_futures.push(tokio::task::spawn_blocking(move || {
-                item_data
-                    .into_file(SaveTo::RiotCache(Tag::Items, &item_id).path())
-                    .unwrap();
-            }));
-        }
-
-        for future in items_futures {
-            if let Err(e) = future.await {
-                println!("[error] [items] Task join error: {e:?}");
-            }
+        for (item_id, item_data) in items_json.data {
+            item_data.into_file(SaveTo::RiotCache(Tag::Items, &item_id).path())?;
         }
 
         self.download(
@@ -528,11 +515,6 @@ impl HttpClient {
 
         let mut languages_future = Vec::new();
 
-        #[derive(Deserialize)]
-        struct NameField {
-            name: String,
-        }
-
         for language in languages {
             let champion_file = SaveTo::RiotLangDir(&language).path();
             let client = self.clone();
@@ -546,19 +528,26 @@ impl HttpClient {
                     .await
                     .unwrap();
 
-                let champion_lang = RiotCdnStandard::<NameField>::from_file(champion_file).unwrap();
+                #[derive(Deserialize)]
+                struct NameField {
+                    name: String,
+                }
+
+                let champion_lang = RiotCdn::<NameField>::from_file(champion_file).unwrap();
 
                 let mut result = HashMap::new();
+
                 for (champion_id, name_field) in champion_lang.data {
                     result.insert(champion_id, name_field.name);
                 }
+
                 result
             }))
         }
 
         for future in languages_future {
             if let Ok(data) = future.await {
-                for (champion_id, champion_name) in data.into_iter() {
+                for (champion_id, champion_name) in data {
                     match languages_data.get_mut(&champion_id) {
                         Some(v) => {
                             v.insert(champion_name);
@@ -666,8 +655,8 @@ impl HttpClient {
                             let rune_selector = selector("img.m-1nx2cdb")?;
                             let legend_selector = selector("img.m-1u3ui07")?;
 
-                            let mut items = BTreeSet::<String>::new();
-                            let mut runes = BTreeSet::<String>::new();
+                            let mut items = BTreeSet::new();
+                            let mut runes = BTreeSet::new();
 
                             fn push_alt_attr<'a>(
                                 document: &'a Html,
@@ -688,7 +677,7 @@ impl HttpClient {
                                     {
                                         array.insert(value_id.to_string());
                                     } else if let Some(alt) = img.value().attr("alt") {
-                                        array.insert(pascal_case(alt));
+                                        array.insert(alt.to_string());
                                     }
                                 }
                             }
@@ -738,8 +727,7 @@ impl HttpClient {
         }
 
         type Inner = [BTreeSet<String>; 2];
-        type Data = BTreeMap<Position, Inner>;
-        type FinalData = BTreeMap<&'static str, Data>;
+        type FinalData = BTreeMap<&'static str, BTreeMap<Position, Inner>>;
 
         let mut results = FinalData::new();
 
