@@ -1,8 +1,8 @@
 use crate::scripts::{
-    batch::{FmtArgs, Batch},
+    batch::{Batch, FmtArgs},
     utils::{
-        StaticVar, Tag, closures, get_const_eval, get_eval, get_generator, get_id_enum,
-        get_name_phf, get_static_vars,
+        StaticVar, Tag, closures, get_const_eval, get_eval, get_fn_names, get_generator,
+        get_id_enum, get_identifiers, get_name_phf, get_static_vars, repr_damages,
     },
 };
 use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
@@ -12,6 +12,8 @@ use tutorlolv2_dev::{
     JsonRead, MayFail, gen_factories::wiki_items::ItemBuild,
     generators::gen_factories::wiki_items::Item,
 };
+use tutorlolv2_fmt::to_ssnake;
+use tutorlolv2_types::AttackType;
 
 pub fn generate_items() -> MayFail<(HashMap<&'static str, String>, String)> {
     let data = BTreeMap::<String, Item>::from_file("internal/items.json")?;
@@ -54,32 +56,51 @@ pub fn generate_items() -> MayFail<(HashMap<&'static str, String>, String)> {
                     name: {name:?},
                     tier: {tier},
                     price: {price},
-                    purchasable: {purchasable:?},
+                    purchasable: {purchasable},
                     maps: {maps:?},
                     stats: {stats:?},
                     metadata: {metadata:?},
-                    ranged: {ranged:?},
-                    melee: {melee:?},
+                    ranged: {ranged},
+                    melee: {melee},
                     riot_id: {riot_id},
                 }};
 
-                #[derive(Clone, Debug, Deserialize, Serialize)]
                 pub static {upper_id}: Item = Item {{
                     name: {name:?},
                     tier: {tier},
                     price: {price},
-                    stats: &{stats:?},
+                    stats: &[{full_stats}],
                     maps: &{maps:?},
-                    metadata: {metadata:?},
-                    ranged: {ranged:?},
-                    melee: {melee:?},
+                    metadata: {metadata},
+                    ranged: {ranged_fns},
+                    melee: {melee_fns},
                     deals_damage: {deals_damage:?},
-                    purchasable: {purchasable:?},
+                    purchasable: {purchasable},
                     riot_id: {riot_id},
-                    identifiers: {identifiers:?},
+                    identifiers: {identifiers},
                 }};
                 "#,
-                upper_id = item_id.to_uppercase(),
+                upper_id = to_ssnake(item_id),
+                melee = repr_damages(melee),
+                ranged = repr_damages(ranged),
+                melee_fns = get_fn_names(&functions[AttackType::Melee as usize], melee),
+                ranged_fns = get_fn_names(&functions[AttackType::Ranged as usize], ranged),
+                identifiers = get_identifiers(&identifiers),
+                full_stats = stats
+                    .iter()
+                    .map(|(stat, number)| { format!("(StatName::{stat:?}, {number})") })
+                    .collect::<Vec<_>>()
+                    .join(", "),
+                metadata = format_args!(
+                    "TypeMetadata {{
+                        kind: ItemId::{kind},
+                        damage_type: {damage_type:?},
+                        attributes: {attributes:?},
+                    }}",
+                    kind = metadata.kind,
+                    damage_type = metadata.damage_type,
+                    attributes = metadata.attributes,
+                )
             );
 
             let generator = get_generator(Tag::Item, &item_id, item_id);

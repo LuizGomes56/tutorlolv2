@@ -33,7 +33,7 @@
       ],
       "metadata": {
         "attributes": "Undefined",
-        "damage_type": "Unknown",
+        "damage_type": "Unspecified",
         "kind": "AbsoluteFocus"
       },
       "name": "Absolute Focus",
@@ -43,7 +43,7 @@
       ],
       "riot_id": 0
     },
-    "damage_type": "Unknown",
+    "damage_type": "Unspecified",
     "data": {
       "descriptions": [
         "Passive: Gain 1.8 – 19.91 (based on level) bonus Attack Damage  or 3 – 33.18 (based on level) Ability Power (Adaptive) while above 70% of your maximum health.",
@@ -52,7 +52,7 @@
       "effects": {
         "Adaptive": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 1,
           "inner": {
             "description": "Adaptive: Grants bonuses based on which stat you already have the most bonuses for. Defaults to the first listed.",
@@ -64,7 +64,7 @@
         },
         "Passive": {
           "base": null,
-          "formula": "1.8 + 0.95*(-1 + ctx.level) + 1.7999999999999998*(17 + 9*(-1 + ctx.level))/17",
+          "formula": "((3 + (30-3)/17*(ctx.level-1))*0.6) + ((1.8) + (0.95 * (ctx.level - 1.0)))",
           "index": 0,
           "inner": {
             "description": "Passive: Gain 1.8 – 19.91 (based on level) bonus Attack Damage  or 3 – 33.18 (based on level) Ability Power (Adaptive) while above 70% of your maximum health.",
@@ -285,7 +285,7 @@
         },
         "Passive [1]": {
           "base": null,
-          "formula": "0.7*ctx.max_health",
+          "formula": "(0.7) * ctx.max_health",
           "index": 0,
           "inner": {
             "description": "Passive: Gain 1.8 – 19.91 (based on level) bonus Attack Damage  or 3 – 33.18 (based on level) Ability Power (Adaptive) while above 70% of your maximum health.",
@@ -305,7 +305,7 @@
         },
         "Passive [2]": {
           "base": null,
-          "formula": "3 + 1.59*(-1 + ctx.level)",
+          "formula": "(3.0) + (1.59 * (ctx.level - 1.0))",
           "index": 0,
           "inner": {
             "description": "Passive: Gain 1.8 – 19.91 (based on level) bonus Attack Damage  or 3 – 33.18 (based on level) Ability Power (Adaptive) while above 70% of your maximum health.",
@@ -556,7 +556,7 @@
       ],
       "metadata": {
         "attributes": "Undefined",
-        "damage_type": "Unknown",
+        "damage_type": "Unspecified",
         "kind": "AbsorbLife"
       },
       "name": "Absorb Life",
@@ -566,7 +566,7 @@
       ],
       "riot_id": 0
     },
-    "damage_type": "Unknown",
+    "damage_type": "Unspecified",
     "data": {
       "descriptions": [
         "Passive: Killing an enemy  heals you for 1 – 27 (based on level)."
@@ -574,7 +574,7 @@
       "effects": {
         "Passive": {
           "base": null,
-          "formula": "1 + 0.25*(-1 + ctx.level)",
+          "formula": "(1.0) + (0.25 * (ctx.level - 1.0))",
           "index": 0,
           "inner": {
             "description": "Passive: Killing an enemy  heals you for 1 – 27 (based on level).",
@@ -665,7 +665,7 @@
         ]
       ],
       "melee": [
-        "(5*(5 + 0.016*ctx.bonus_health + 1.1179999999999999*(-1 + ctx.level)))",
+        "(((25.0) + (5.59 * (ctx.level - 1.0))) + ((0.08) * ctx.bonus_health))",
         "zero"
       ],
       "metadata": {
@@ -675,7 +675,7 @@
       },
       "name": "Aftershock",
       "ranged": [
-        "(5*(5 + 0.016*ctx.bonus_health + 1.1179999999999999*(-1 + ctx.level)))",
+        "(((25.0) + (5.59 * (ctx.level - 1.0))) + ((0.08) * ctx.bonus_health))",
         "zero"
       ],
       "riot_id": 0
@@ -689,7 +689,7 @@
       "effects": {
         "Description 1": {
           "base": null,
-          "formula": "5*(5 + 0.016*ctx.bonus_health + 1.1179999999999999*(-1 + ctx.level))",
+          "formula": "((25.0) + (5.59 * (ctx.level - 1.0))) + ((0.08) * ctx.bonus_health)",
           "index": 1,
           "inner": {
             "description": "After the duration, you release a shockwave that deals 25 – 120 (based on level) (+ 8% of your bonus health) magic damage to enemy champions and  monsters within a  350 radius.",
@@ -728,7 +728,7 @@
         },
         "Passive": {
           "base": null,
-          "formula": "4*(20 + 0.2*ctx.bonus_armor + 1.03*(-1 + ctx.level))",
+          "formula": "((80.0) + (4.12 * (ctx.level - 1.0))) + ((0.8) * ctx.bonus_armor)",
           "index": 0,
           "inner": {
             "description": "Passive:  Immobilizing an enemy  champion grants you a static 35 (+ 80% bonus armor) bonus armor and 35 (+ 80% bonus magic resistance) bonus magic resistance for 2.5 seconds. The bonus resistances are each capped at 80 – 150 (based on level).",
@@ -766,7 +766,7 @@
         },
         "Passive [1]": {
           "base": null,
-          "formula": "0.8*ctx.bonus_magic_resist",
+          "formula": "(0.8) * ctx.bonus_magic_resist",
           "index": 0,
           "inner": {
             "description": "Passive:  Immobilizing an enemy  champion grants you a static 35 (+ 80% bonus armor) bonus armor and 35 (+ 80% bonus magic resistance) bonus magic resistance for 2.5 seconds. The bonus resistances are each capped at 80 – 150 (based on level).",
@@ -973,11 +973,11 @@
     },
     "melee": {
       "max_dmg": "zero",
-      "min_dmg": "(5*(5 + 0.016*ctx.bonus_health + 1.1179999999999999*(-1 + ctx.level)))"
+      "min_dmg": "(((25.0) + (5.59 * (ctx.level - 1.0))) + ((0.08) * ctx.bonus_health))"
     },
     "ranged": {
       "max_dmg": "zero",
-      "min_dmg": "(5*(5 + 0.016*ctx.bonus_health + 1.1179999999999999*(-1 + ctx.level)))"
+      "min_dmg": "(((25.0) + (5.59 * (ctx.level - 1.0))) + ((0.08) * ctx.bonus_health))"
     },
     "stable": true,
     "version": "15.24.1"
@@ -1016,7 +1016,7 @@
       ],
       "metadata": {
         "attributes": "Undefined",
-        "damage_type": "Unknown",
+        "damage_type": "Unspecified",
         "kind": "ApproachVelocity"
       },
       "name": "Approach Velocity",
@@ -1026,7 +1026,7 @@
       ],
       "riot_id": 0
     },
-    "damage_type": "Unknown",
+    "damage_type": "Unspecified",
     "data": {
       "descriptions": [
         "Passive: Gain  7.5% bonus total movement speed while facing  visible enemy  champions that are  immobilized,  grounded, or  slowed within  1000 range.",
@@ -1035,7 +1035,7 @@
       "effects": {
         "Description 1": {
           "base": null,
-          "formula": "0.15*ctx.steelcaps_effect",
+          "formula": "(0.15) * ctx.steelcaps_effect",
           "index": 1,
           "inner": {
             "description": "This bonus is doubled to 15% and does not have a range cap nor require  vision toward enemy champions whose movement you impaired when they were  visible.(unexpected)",
@@ -1054,7 +1054,7 @@
         },
         "Passive": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 0,
           "inner": {
             "description": "Passive: Gain  7.5% bonus total movement speed while facing  visible enemy  champions that are  immobilized,  grounded, or  slowed within  1000 range.",
@@ -1128,8 +1128,8 @@
         ]
       ],
       "melee": [
-        "(5*(2 + 0.02*ctx.bonus_ad + ctx.level)) + (0.05*ctx.ability_power)",
-        "((5*(2 + 0.02*ctx.bonus_ad + ctx.level)) + (0.05*ctx.ability_power)) * 2"
+        "((15 + (100-15)/17*(ctx.level-1)) + ((0.1) * ctx.bonus_ad)) + ((0.05) * ctx.ability_power)",
+        "(((15 + (100-15)/17*(ctx.level-1)) + ((0.1) * ctx.bonus_ad)) + ((0.05) * ctx.ability_power)) * 2"
       ],
       "metadata": {
         "attributes": "Undefined",
@@ -1138,8 +1138,8 @@
       },
       "name": "Arcane Comet",
       "ranged": [
-        "(5*(2 + 0.02*ctx.bonus_ad + ctx.level)) + (0.05*ctx.ability_power)",
-        "((5*(2 + 0.02*ctx.bonus_ad + ctx.level)) + (0.05*ctx.ability_power)) * 2"
+        "((15 + (100-15)/17*(ctx.level-1)) + ((0.1) * ctx.bonus_ad)) + ((0.05) * ctx.ability_power)",
+        "(((15 + (100-15)/17*(ctx.level-1)) + ((0.1) * ctx.bonus_ad)) + ((0.05) * ctx.ability_power)) * 2"
       ],
       "riot_id": 0
     },
@@ -1152,7 +1152,7 @@
       "effects": {
         "Passive": {
           "base": null,
-          "formula": "5*(2 + 0.02*ctx.bonus_ad + ctx.level)",
+          "formula": "(15 + (100-15)/17*(ctx.level-1)) + ((0.1) * ctx.bonus_ad)",
           "index": 0,
           "inner": {
             "description": "Passive: Dealing  ability damage or  pet damage to an enemy  champion hurls an Arcane Comet at their current location that lands after 0.825 seconds, dealing 15 – 110 (based on level) (+ 10% bonus AD) (+ 5% AP) of either physical or magic damage to enemies within a  140 radius upon impact. This damage is increased by 0% – 100% (based on distance the comet travelled).",
@@ -1192,7 +1192,7 @@
         },
         "Passive [1]": {
           "base": null,
-          "formula": "0.05*ctx.ability_power",
+          "formula": "(0.05) * ctx.ability_power",
           "index": 0,
           "inner": {
             "description": "Passive: Dealing  ability damage or  pet damage to an enemy  champion hurls an Arcane Comet at their current location that lands after 0.825 seconds, dealing 15 – 110 (based on level) (+ 10% bonus AD) (+ 5% AP) of either physical or magic damage to enemies within a  140 radius upon impact. This damage is increased by 0% – 100% (based on distance the comet travelled).",
@@ -1211,7 +1211,7 @@
         },
         "Passive [2]": {
           "base": null,
-          "formula": "5*(2 + ctx.level)",
+          "formula": "(15.0) + (5.0 * (ctx.level - 1.0))",
           "index": 0,
           "inner": {
             "description": "Passive: Dealing  ability damage or  pet damage to an enemy  champion hurls an Arcane Comet at their current location that lands after 0.825 seconds, dealing 15 – 110 (based on level) (+ 10% bonus AD) (+ 5% AP) of either physical or magic damage to enemies within a  140 radius upon impact. This damage is increased by 0% – 100% (based on distance the comet travelled).",
@@ -1411,7 +1411,7 @@
         },
         "Passive [3]": {
           "base": null,
-          "formula": "ctx.steelcaps_effect",
+          "formula": "1.0 * (ctx.steelcaps_effect)",
           "index": 0,
           "inner": {
             "description": "Passive: Dealing  ability damage or  pet damage to an enemy  champion hurls an Arcane Comet at their current location that lands after 0.825 seconds, dealing 15 – 110 (based on level) (+ 10% bonus AD) (+ 5% AP) of either physical or magic damage to enemies within a  140 radius upon impact. This damage is increased by 0% – 100% (based on distance the comet travelled).",
@@ -1432,7 +1432,7 @@
         },
         "Variable Damage": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 1,
           "inner": {
             "description": "Variable Damage: This effect deals either physical or magic damage depending on the damage contribution from your  attack damage and  ability power to the effect's damage formula.Greater bonus damage from the  AD ratio → Physical damageGreater bonus damage from the  AP ratio → Magic damageIf the damage contribution of  AD and  AP are zero or otherwise equal, the damage type defaults to magic damage.",
@@ -1449,12 +1449,12 @@
       "slot": "Keystone"
     },
     "melee": {
-      "max_dmg": "((5*(2 + 0.02*ctx.bonus_ad + ctx.level)) + (0.05*ctx.ability_power)) * 2",
-      "min_dmg": "(5*(2 + 0.02*ctx.bonus_ad + ctx.level)) + (0.05*ctx.ability_power)"
+      "max_dmg": "(((15 + (100-15)/17*(ctx.level-1)) + ((0.1) * ctx.bonus_ad)) + ((0.05) * ctx.ability_power)) * 2",
+      "min_dmg": "((15 + (100-15)/17*(ctx.level-1)) + ((0.1) * ctx.bonus_ad)) + ((0.05) * ctx.ability_power)"
     },
     "ranged": {
-      "max_dmg": "((5*(2 + 0.02*ctx.bonus_ad + ctx.level)) + (0.05*ctx.ability_power)) * 2",
-      "min_dmg": "(5*(2 + 0.02*ctx.bonus_ad + ctx.level)) + (0.05*ctx.ability_power)"
+      "max_dmg": "(((15 + (100-15)/17*(ctx.level-1)) + ((0.1) * ctx.bonus_ad)) + ((0.05) * ctx.ability_power)) * 2",
+      "min_dmg": "((15 + (100-15)/17*(ctx.level-1)) + ((0.1) * ctx.bonus_ad)) + ((0.05) * ctx.ability_power)"
     },
     "stable": true,
     "version": "15.24.1"
@@ -1493,7 +1493,7 @@
       ],
       "metadata": {
         "attributes": "Undefined",
-        "damage_type": "Unknown",
+        "damage_type": "Unspecified",
         "kind": "AxiomArcanist"
       },
       "name": "Axiom Arcanist",
@@ -1503,7 +1503,7 @@
       ],
       "riot_id": 0
     },
-    "damage_type": "Unknown",
+    "damage_type": "Unspecified",
     "data": {
       "descriptions": [
         "Passive: Your ultimate has 12% increased damage (reduced to 8% for area of effect abilities),  healing and  shielding.",
@@ -1512,7 +1512,7 @@
       "effects": {
         "Description 1": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 1,
           "inner": {
             "description": "Scoring an enemy champion  takedown reduces your ultimate ability's current cooldown by 7%.",
@@ -1524,7 +1524,7 @@
         },
         "Passive": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 0,
           "inner": {
             "description": "Passive: Your ultimate has 12% increased damage (reduced to 8% for area of effect abilities),  healing and  shielding.",
@@ -1587,7 +1587,7 @@
       ],
       "metadata": {
         "attributes": "Undefined",
-        "damage_type": "Unknown",
+        "damage_type": "Unspecified",
         "kind": "BiscuitDelivery"
       },
       "name": "Biscuit Delivery",
@@ -1597,7 +1597,7 @@
       ],
       "riot_id": 0
     },
-    "damage_type": "Unknown",
+    "damage_type": "Unspecified",
     "data": {
       "descriptions": [
         "Passive: Receive a  Total Biscuit of Everlasting Will at 2:00, 4:00, and 6:00. If the inventory is full while receiving a biscuit, the biscuit(s) will appear as soon as a slot in the inventory is available.",
@@ -1606,7 +1606,7 @@
       "effects": {
         "Description 1": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 1,
           "inner": {
             "description": "Consuming a Biscuit will permanently increase your  maximum health by 30, in addition to its effects. You will also gain the increased health if you sell the biscuit for  5.",
@@ -1618,7 +1618,7 @@
         },
         "Passive": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 0,
           "inner": {
             "description": "Passive: Receive a  Total Biscuit of Everlasting Will at 2:00, 4:00, and 6:00. If the inventory is full while receiving a biscuit, the biscuit(s) will appear as soon as a slot in the inventory is available.",
@@ -1681,7 +1681,7 @@
       ],
       "metadata": {
         "attributes": "Undefined",
-        "damage_type": "Unknown",
+        "damage_type": "Unspecified",
         "kind": "BonePlating"
       },
       "name": "Bone Plating",
@@ -1691,7 +1691,7 @@
       ],
       "riot_id": 0
     },
-    "damage_type": "Unknown",
+    "damage_type": "Unspecified",
     "data": {
       "descriptions": [
         "Passive: After taking damage from an enemy  champion, activate Bone Plating for 1.5 seconds. While active, the next 3 spells or attacks you receive from the enemy champion that triggered this effect deal 30 – 63.53 (based on level) less damage (including  true damage)."
@@ -1699,7 +1699,7 @@
       "effects": {
         "Passive": {
           "base": null,
-          "formula": "30*(16 + ctx.level)/17",
+          "formula": "30 + (60-30)/17*(ctx.level-1)",
           "index": 0,
           "inner": {
             "description": "Passive: After taking damage from an enemy  champion, activate Bone Plating for 1.5 seconds. While active, the next 3 spells or attacks you receive from the enemy champion that triggered this effect deal 30 – 63.53 (based on level) less damage (including  true damage).",
@@ -1783,7 +1783,7 @@
       ],
       "metadata": {
         "attributes": "Undefined",
-        "damage_type": "Unknown",
+        "damage_type": "Unspecified",
         "kind": "CashBack"
       },
       "name": "Cash Back",
@@ -1793,7 +1793,7 @@
       ],
       "riot_id": 0
     },
-    "damage_type": "Unknown",
+    "damage_type": "Unspecified",
     "data": {
       "descriptions": [
         "Passive: Upon purchasing a Legendary item, you are automatically refunded 7.5% of its total  gold cost.",
@@ -1802,7 +1802,7 @@
       "effects": {
         "Description 1": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 1,
           "inner": {
             "description": "Selling or undoing the item's purchase will cancel the refund, reducing your current  gold equal to the refunded amount.",
@@ -1814,7 +1814,7 @@
         },
         "Passive": {
           "base": null,
-          "formula": "0.075*ctx.steelcaps_effect",
+          "formula": "(0.075) * ctx.steelcaps_effect",
           "index": 0,
           "inner": {
             "description": "Passive: Upon purchasing a Legendary item, you are automatically refunded 7.5% of its total  gold cost.",
@@ -1885,7 +1885,7 @@
       ],
       "metadata": {
         "attributes": "Undefined",
-        "damage_type": "Unknown",
+        "damage_type": "Unspecified",
         "kind": "Celerity"
       },
       "name": "Celerity",
@@ -1895,7 +1895,7 @@
       ],
       "riot_id": 0
     },
-    "damage_type": "Unknown",
+    "damage_type": "Unspecified",
     "data": {
       "descriptions": [
         "Passive: All movement speed bonuses increase in effectiveness by 7%.",
@@ -1904,7 +1904,7 @@
       "effects": {
         "Description 1": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 1,
           "inner": {
             "description": "Additionally, you gain  1% bonus movement speed.",
@@ -1916,7 +1916,7 @@
         },
         "Passive": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 0,
           "inner": {
             "description": "Passive: All movement speed bonuses increase in effectiveness by 7%.",
@@ -1979,7 +1979,7 @@
       ],
       "metadata": {
         "attributes": "Undefined",
-        "damage_type": "Unknown",
+        "damage_type": "Unspecified",
         "kind": "CelestialBody"
       },
       "name": "Celestial Body",
@@ -1989,7 +1989,7 @@
       ],
       "riot_id": 0
     },
-    "damage_type": "Unknown",
+    "damage_type": "Unspecified",
     "data": {
       "descriptions": [
         "Passive: Gain 100 bonus health permanently.",
@@ -1998,7 +1998,7 @@
       "effects": {
         "Description 1": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 1,
           "inner": {
             "description": "Deal 10% reduced damage to enemy  champions and  monsters for the first 10 minutes.",
@@ -2010,7 +2010,7 @@
         },
         "Passive": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 0,
           "inner": {
             "description": "Passive: Gain 100 bonus health permanently.",
@@ -2072,7 +2072,7 @@
         ]
       ],
       "melee": [
-        "(5*(34 + 7*(-1 + ctx.level))/17)",
+        "(10 + (45-10)/17*(ctx.level-1))",
         "zero"
       ],
       "metadata": {
@@ -2082,7 +2082,7 @@
       },
       "name": "Cheap Shot",
       "ranged": [
-        "(5*(34 + 7*(-1 + ctx.level))/17)",
+        "(10 + (45-10)/17*(ctx.level-1))",
         "zero"
       ],
       "riot_id": 0
@@ -2097,7 +2097,7 @@
       "effects": {
         "Description 2": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 2,
           "inner": {
             "description": "The target must already be impaired prior to the damaging attack or spell in order to trigger the bonus damage.",
@@ -2109,7 +2109,7 @@
         },
         "Passive": {
           "base": null,
-          "formula": "5*(34 + 7*(-1 + ctx.level))/17",
+          "formula": "10 + (45-10)/17*(ctx.level-1)",
           "index": 0,
           "inner": {
             "description": "Passive: Non- proc damage sources deal 10 – 49.12 (based on level) bonus true damage to enemy  champions affected by certain  crowd control effects.",
@@ -2142,7 +2142,7 @@
         },
         "Valid Crowd Control": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 1,
           "inner": {
             "description": "Valid Crowd Control:\n Immobilizes\n Blind\n Disarm\n Ground\n Nearsight\n Polymorph\n Silence\n Slow",
@@ -2162,11 +2162,11 @@
     },
     "melee": {
       "max_dmg": "zero",
-      "min_dmg": "(5*(34 + 7*(-1 + ctx.level))/17)"
+      "min_dmg": "(10 + (45-10)/17*(ctx.level-1))"
     },
     "ranged": {
       "max_dmg": "zero",
-      "min_dmg": "(5*(34 + 7*(-1 + ctx.level))/17)"
+      "min_dmg": "(10 + (45-10)/17*(ctx.level-1))"
     },
     "stable": true,
     "version": "15.24.1"
@@ -2205,7 +2205,7 @@
       ],
       "metadata": {
         "attributes": "Undefined",
-        "damage_type": "Unknown",
+        "damage_type": "Unspecified",
         "kind": "Chrysalis"
       },
       "name": "Chrysalis",
@@ -2215,7 +2215,7 @@
       ],
       "riot_id": 0
     },
-    "damage_type": "Unknown",
+    "damage_type": "Unspecified",
     "data": {
       "descriptions": [
         "Passive: Gain 50 bonus health. Upon scoring 4 champions  takedowns, and if not in combat with champions, convert the bonus health into 9 bonus Attack Damage  or 15 Ability Power (Adaptive).",
@@ -2224,7 +2224,7 @@
       "effects": {
         "Adaptive": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 1,
           "inner": {
             "description": "Adaptive: Grants bonuses based on which stat you already have the most bonuses for. Defaults to the first listed.",
@@ -2236,7 +2236,7 @@
         },
         "Passive": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 0,
           "inner": {
             "description": "Passive: Gain 50 bonus health. Upon scoring 4 champions  takedowns, and if not in combat with champions, convert the bonus health into 9 bonus Attack Damage  or 15 Ability Power (Adaptive).",
@@ -2299,7 +2299,7 @@
       ],
       "metadata": {
         "attributes": "Undefined",
-        "damage_type": "Unknown",
+        "damage_type": "Unspecified",
         "kind": "Conditioning"
       },
       "name": "Conditioning",
@@ -2309,7 +2309,7 @@
       ],
       "riot_id": 0
     },
-    "damage_type": "Unknown",
+    "damage_type": "Unspecified",
     "data": {
       "descriptions": [
         "Passive: After 12 minutes, gain  8 bonus armor and  8 bonus magic resistance and your total armor and total magic resistance are increased by 3%."
@@ -2317,7 +2317,7 @@
       "effects": {
         "Passive": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 0,
           "inner": {
             "description": "Passive: After 12 minutes, gain  8 bonus armor and  8 bonus magic resistance and your total armor and total magic resistance are increased by 3%.",
@@ -2380,7 +2380,7 @@
       ],
       "metadata": {
         "attributes": "Undefined",
-        "damage_type": "Unknown",
+        "damage_type": "Unspecified",
         "kind": "Conqueror"
       },
       "name": "Conqueror",
@@ -2390,7 +2390,7 @@
       ],
       "riot_id": 0
     },
-    "damage_type": "Unknown",
+    "damage_type": "Unspecified",
     "data": {
       "descriptions": [
         "Passive: Dealing damage to enemy  champions generates  stacks of Conqueror, lasting for 5 seconds, refreshing on subsequent damage against champions, and stacking up to 12 times. Gain ( 2 /  1) stacks for  basic damage  on-hit. Otherwise, gain 2 stacks for any damage that is neither  basic nor non- pet  proc damage, up to once every 4 seconds per cast instance.",
@@ -2399,7 +2399,7 @@
       "effects": {
         "Description 1": {
           "base": null,
-          "formula": "1.08 + 0.08*(-1 + ctx.level) + 1.2*(15.3 + 1.1*(-1 + ctx.level))/17",
+          "formula": "((1.8 + (4-1.8)/17*(ctx.level-1))*0.6) + ((1.08) + (0.08 * (ctx.level - 1.0)))",
           "index": 1,
           "inner": {
             "description": "Each stack of Conqueror grants 1.08 – 2.56 (based on level) bonus Attack Damage  or 1.8 – 4.26 (based on level) Ability Power (Adaptive), up to 12.96 – 30.66 (based on level) bonus Attack Damage  or 21.6 – 51.11 (based on level) Ability Power (Adaptive) at maximum stacks, at which you also  heal for ( 8% /  5%) of the post-mitigation damage dealt against enemy champions.",
@@ -2620,7 +2620,7 @@
         },
         "Description 1 [1]": {
           "base": null,
-          "formula": "1.8 + 0.13*(-1 + ctx.level)",
+          "formula": "(1.8) + (0.13 * (ctx.level - 1.0))",
           "index": 1,
           "inner": {
             "description": "Each stack of Conqueror grants 1.08 – 2.56 (based on level) bonus Attack Damage  or 1.8 – 4.26 (based on level) Ability Power (Adaptive), up to 12.96 – 30.66 (based on level) bonus Attack Damage  or 21.6 – 51.11 (based on level) Ability Power (Adaptive) at maximum stacks, at which you also  heal for ( 8% /  5%) of the post-mitigation damage dealt against enemy champions.",
@@ -2820,7 +2820,7 @@
         },
         "Description 1 [2]": {
           "base": null,
-          "formula": "12.96 + 0.93*(-1 + ctx.level)",
+          "formula": "(12.96) + (0.93 * (ctx.level - 1.0))",
           "index": 1,
           "inner": {
             "description": "Each stack of Conqueror grants 1.08 – 2.56 (based on level) bonus Attack Damage  or 1.8 – 4.26 (based on level) Ability Power (Adaptive), up to 12.96 – 30.66 (based on level) bonus Attack Damage  or 21.6 – 51.11 (based on level) Ability Power (Adaptive) at maximum stacks, at which you also  heal for ( 8% /  5%) of the post-mitigation damage dealt against enemy champions.",
@@ -3020,7 +3020,7 @@
         },
         "Description 1 [3]": {
           "base": null,
-          "formula": "21.6 + 1.55*(-1 + ctx.level)",
+          "formula": "(21.6) + (1.55 * (ctx.level - 1.0))",
           "index": 1,
           "inner": {
             "description": "Each stack of Conqueror grants 1.08 – 2.56 (based on level) bonus Attack Damage  or 1.8 – 4.26 (based on level) Ability Power (Adaptive), up to 12.96 – 30.66 (based on level) bonus Attack Damage  or 21.6 – 51.11 (based on level) Ability Power (Adaptive) at maximum stacks, at which you also  heal for ( 8% /  5%) of the post-mitigation damage dealt against enemy champions.",
@@ -3220,7 +3220,7 @@
         },
         "Passive": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 0,
           "inner": {
             "description": "Passive: Dealing damage to enemy  champions generates  stacks of Conqueror, lasting for 5 seconds, refreshing on subsequent damage against champions, and stacking up to 12 times. Gain ( 2 /  1) stacks for  basic damage  on-hit. Otherwise, gain 2 stacks for any damage that is neither  basic nor non- pet  proc damage, up to once every 4 seconds per cast instance.",
@@ -3281,7 +3281,7 @@
       ],
       "metadata": {
         "attributes": "Undefined",
-        "damage_type": "Unknown",
+        "damage_type": "Unspecified",
         "kind": "CosmicInsight"
       },
       "name": "Cosmic Insight",
@@ -3291,7 +3291,7 @@
       ],
       "riot_id": 0
     },
-    "damage_type": "Unknown",
+    "damage_type": "Unspecified",
     "data": {
       "descriptions": [
         "Passive: Gain 18 summoner spell haste and 10 item haste."
@@ -3299,7 +3299,7 @@
       "effects": {
         "Passive": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 0,
           "inner": {
             "description": "Passive: Gain 18 summoner spell haste and 10 item haste.",
@@ -3362,7 +3362,7 @@
       ],
       "metadata": {
         "attributes": "Undefined",
-        "damage_type": "Unknown",
+        "damage_type": "Unspecified",
         "kind": "CoupDeGrace"
       },
       "name": "Coup de Grace",
@@ -3372,7 +3372,7 @@
       ],
       "riot_id": 0
     },
-    "damage_type": "Unknown",
+    "damage_type": "Unspecified",
     "data": {
       "descriptions": [
         "Passive: Deal 8% increased damage to champions below 40% maximum health."
@@ -3380,7 +3380,7 @@
       "effects": {
         "Passive": {
           "base": null,
-          "formula": "0.08*ctx.max_health",
+          "formula": "(0.08) * ctx.max_health",
           "index": 0,
           "inner": {
             "description": "Passive: Deal 8% increased damage to champions below 40% maximum health.",
@@ -3450,7 +3450,7 @@
       ],
       "metadata": {
         "attributes": "Undefined",
-        "damage_type": "Unknown",
+        "damage_type": "Unspecified",
         "kind": "CutDown"
       },
       "name": "Cut Down",
@@ -3460,7 +3460,7 @@
       ],
       "riot_id": 0
     },
-    "damage_type": "Unknown",
+    "damage_type": "Unspecified",
     "data": {
       "descriptions": [
         "Passive: Deal 8% increased damage to champions above 60% maximum health."
@@ -3468,7 +3468,7 @@
       "effects": {
         "Passive": {
           "base": null,
-          "formula": "0.08*ctx.max_health",
+          "formula": "(0.08) * ctx.max_health",
           "index": 0,
           "inner": {
             "description": "Passive: Deal 8% increased damage to champions above 60% maximum health.",
@@ -3566,7 +3566,7 @@
       "effects": {
         "Adaptive Damage": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 2,
           "inner": {
             "description": "Adaptive Damage: This effect deals either physical or magic damage depending on whether you have more  bonus attack damage or  ability power.Greater  bonus attack damage → Physical damageGreater  ability power → Magic damageIf the damage contribution of  AD and  AP are zero or otherwise equal, the damage type depends on the champion's  adaptive type.",
@@ -3578,7 +3578,7 @@
         },
         "Description 1": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 1,
           "inner": {
             "description": "While not on cooldown, also reap 1 Soul from receiving the kill credit of a champion killed by a  minion,  monster, or  turret.",
@@ -3590,7 +3590,7 @@
         },
         "Passive": {
           "base": null,
-          "formula": "0.05*ctx.ability_power + (0.6*ctx.bonus_ad) + 11*ctx.stacks",
+          "formula": "((((11.0) * ctx.stacks) + ((0.1) * ctx.bonus_ad)) + ((0.05) * ctx.ability_power)) + ((0.5) * ctx.bonus_ad)",
           "index": 0,
           "inner": {
             "description": "Passive: Damaging basic attacks and  ability damage against enemy  champions below 50% of their maximum health deal 30 (+ 11 per Soul) (+ 10% bonus AD) (+ 5% AP) bonus  adaptive damage and, after a 1.75-second delay, reap 1 Soul. This cannot occur again for 35 seconds, resetting to 1 second upon scoring a  takedown against an enemy champion.",
@@ -3688,8 +3688,8 @@
         ]
       ],
       "melee": [
-        "(2 + 0.035*ctx.bonus_ad + 4*(-1 + ctx.level)/17) + (0.0125*ctx.ability_power)",
-        "(3.5 + 0.41*(-1 + ctx.level)) + (0.06125*ctx.bonus_ad) + (0.02188*ctx.ability_power)"
+        "(((4/2) + ((12/2)-(4/2))/17*(ctx.level-1)) + ((0.035) * ctx.bonus_ad)) + ((0.0125) * ctx.ability_power)",
+        "((3.5) + (0.41 * (ctx.level - 1.0))) + ((0.06125) * ctx.bonus_ad) + ((0.02188) * ctx.ability_power)"
       ],
       "metadata": {
         "attributes": "Undefined",
@@ -3698,8 +3698,8 @@
       },
       "name": "Deathfire Touch",
       "ranged": [
-        "(2 + 0.035*ctx.bonus_ad + 4*(-1 + ctx.level)/17) + (0.0125*ctx.ability_power)",
-        "(3.5 + 0.41*(-1 + ctx.level)) + (0.06125*ctx.bonus_ad) + (0.02188*ctx.ability_power)"
+        "(((4/2) + ((12/2)-(4/2))/17*(ctx.level-1)) + ((0.035) * ctx.bonus_ad)) + ((0.0125) * ctx.ability_power)",
+        "((3.5) + (0.41 * (ctx.level - 1.0))) + ((0.06125) * ctx.bonus_ad) + ((0.02188) * ctx.ability_power)"
       ],
       "riot_id": 0
     },
@@ -3713,7 +3713,7 @@
       "effects": {
         "Adaptive Damage": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 2,
           "inner": {
             "description": "Adaptive Damage: This effect deals either physical or magic damage depending on whether you have more  bonus attack damage or  ability power.Greater  bonus attack damage → Physical damageGreater  ability power → Magic damageIf the damage contribution of  AD and  AP are zero or otherwise equal, the damage type depends on the champion's  adaptive type.",
@@ -3725,7 +3725,7 @@
         },
         "Description 0": {
           "base": null,
-          "formula": "2 + 0.035*ctx.bonus_ad + 4*(-1 + ctx.level)/17",
+          "formula": "((4/2) + ((12/2)-(4/2))/17*(ctx.level-1)) + ((0.035) * ctx.bonus_ad)",
           "index": 0,
           "inner": {
             "description": "Dealing  ability damage or  pet damage to enemy  champions inflicts a burn that deals 2 – 6.47 (based on level) (+ 3.5% bonus AD) (+ 1.25% AP)  adaptive damage every 0.5 seconds over the duration. After the burn has lingered on a target for 3 seconds, its damage to them is increased「 by 75% 」「 to 3.5 – 11.32 (based on level) (+ 6.125% bonus AD) (+ 2.188% AP) per tick 」while it lasts.",
@@ -3765,7 +3765,7 @@
         },
         "Description 0 [1]": {
           "base": null,
-          "formula": "0.0125*ctx.ability_power",
+          "formula": "(0.0125) * ctx.ability_power",
           "index": 0,
           "inner": {
             "description": "Dealing  ability damage or  pet damage to enemy  champions inflicts a burn that deals 2 – 6.47 (based on level) (+ 3.5% bonus AD) (+ 1.25% AP)  adaptive damage every 0.5 seconds over the duration. After the burn has lingered on a target for 3 seconds, its damage to them is increased「 by 75% 」「 to 3.5 – 11.32 (based on level) (+ 6.125% bonus AD) (+ 2.188% AP) per tick 」while it lasts.",
@@ -3784,7 +3784,7 @@
         },
         "Description 0 [2]": {
           "base": null,
-          "formula": "0.06125*ctx.bonus_ad",
+          "formula": "(0.06125) * ctx.bonus_ad",
           "index": 0,
           "inner": {
             "description": "Dealing  ability damage or  pet damage to enemy  champions inflicts a burn that deals 2 – 6.47 (based on level) (+ 3.5% bonus AD) (+ 1.25% AP)  adaptive damage every 0.5 seconds over the duration. After the burn has lingered on a target for 3 seconds, its damage to them is increased「 by 75% 」「 to 3.5 – 11.32 (based on level) (+ 6.125% bonus AD) (+ 2.188% AP) per tick 」while it lasts.",
@@ -3803,7 +3803,7 @@
         },
         "Description 0 [3]": {
           "base": null,
-          "formula": "0.02188*ctx.ability_power",
+          "formula": "(0.02188) * ctx.ability_power",
           "index": 0,
           "inner": {
             "description": "Dealing  ability damage or  pet damage to enemy  champions inflicts a burn that deals 2 – 6.47 (based on level) (+ 3.5% bonus AD) (+ 1.25% AP)  adaptive damage every 0.5 seconds over the duration. After the burn has lingered on a target for 3 seconds, its damage to them is increased「 by 75% 」「 to 3.5 – 11.32 (based on level) (+ 6.125% bonus AD) (+ 2.188% AP) per tick 」while it lasts.",
@@ -3822,7 +3822,7 @@
         },
         "Description 0 [4]": {
           "base": null,
-          "formula": "2 + 0.24*(-1 + ctx.level)",
+          "formula": "(2.0) + (0.24 * (ctx.level - 1.0))",
           "index": 0,
           "inner": {
             "description": "Dealing  ability damage or  pet damage to enemy  champions inflicts a burn that deals 2 – 6.47 (based on level) (+ 3.5% bonus AD) (+ 1.25% AP)  adaptive damage every 0.5 seconds over the duration. After the burn has lingered on a target for 3 seconds, its damage to them is increased「 by 75% 」「 to 3.5 – 11.32 (based on level) (+ 6.125% bonus AD) (+ 2.188% AP) per tick 」while it lasts.",
@@ -4022,7 +4022,7 @@
         },
         "Description 0 [5]": {
           "base": null,
-          "formula": "3.5 + 0.41*(-1 + ctx.level)",
+          "formula": "(3.5) + (0.41 * (ctx.level - 1.0))",
           "index": 0,
           "inner": {
             "description": "Dealing  ability damage or  pet damage to enemy  champions inflicts a burn that deals 2 – 6.47 (based on level) (+ 3.5% bonus AD) (+ 1.25% AP)  adaptive damage every 0.5 seconds over the duration. After the burn has lingered on a target for 3 seconds, its damage to them is increased「 by 75% 」「 to 3.5 – 11.32 (based on level) (+ 6.125% bonus AD) (+ 2.188% AP) per tick 」while it lasts.",
@@ -4222,7 +4222,7 @@
         },
         "Description 1": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 1,
           "inner": {
             "description": "The burn's duration is based on the form of ability damage dealt to the target and is refreshed on subsequent applications:\n Spell damage: 4 seconds.\n Area damage: 2 seconds.\n Persistent damage: 1 second.\n Persistent area damage: 1 second.\n Pet damage: 1 second.",
@@ -4239,12 +4239,12 @@
       "slot": "Keystone"
     },
     "melee": {
-      "max_dmg": "(3.5 + 0.41*(-1 + ctx.level)) + (0.06125*ctx.bonus_ad) + (0.02188*ctx.ability_power)",
-      "min_dmg": "(2 + 0.035*ctx.bonus_ad + 4*(-1 + ctx.level)/17) + (0.0125*ctx.ability_power)"
+      "max_dmg": "((3.5) + (0.41 * (ctx.level - 1.0))) + ((0.06125) * ctx.bonus_ad) + ((0.02188) * ctx.ability_power)",
+      "min_dmg": "(((4/2) + ((12/2)-(4/2))/17*(ctx.level-1)) + ((0.035) * ctx.bonus_ad)) + ((0.0125) * ctx.ability_power)"
     },
     "ranged": {
-      "max_dmg": "(3.5 + 0.41*(-1 + ctx.level)) + (0.06125*ctx.bonus_ad) + (0.02188*ctx.ability_power)",
-      "min_dmg": "(2 + 0.035*ctx.bonus_ad + 4*(-1 + ctx.level)/17) + (0.0125*ctx.ability_power)"
+      "max_dmg": "((3.5) + (0.41 * (ctx.level - 1.0))) + ((0.06125) * ctx.bonus_ad) + ((0.02188) * ctx.ability_power)",
+      "min_dmg": "(((4/2) + ((12/2)-(4/2))/17*(ctx.level-1)) + ((0.035) * ctx.bonus_ad)) + ((0.0125) * ctx.ability_power)"
     },
     "stable": true,
     "version": "15.24.1"
@@ -4283,7 +4283,7 @@
       ],
       "metadata": {
         "attributes": "Undefined",
-        "damage_type": "Unknown",
+        "damage_type": "Unspecified",
         "kind": "DeepWard"
       },
       "name": "Deep Ward",
@@ -4293,7 +4293,7 @@
       ],
       "riot_id": 0
     },
-    "damage_type": "Unknown",
+    "damage_type": "Unspecified",
     "data": {
       "descriptions": [
         "Passive:  Stealth Wards and  Totem Wards placed in the enemy jungle are considered Deep. All Deep wards are granted 1 bonus health, Deep  Stealth Wards last 30 – 45 (based on average champion level) seconds longer, and Deep  Totem Wards last 45 – 150 (based on average champion level) seconds longer.",
@@ -4302,7 +4302,7 @@
       "effects": {
         "Description 1": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 1,
           "inner": {
             "description": "At level 9, wards placed in the river will also be considered Deep.",
@@ -4314,7 +4314,7 @@
         },
         "Passive": {
           "base": null,
-          "formula": "30 + 0.88*(-1 + ctx.level)",
+          "formula": "(30.0) + (0.88 * (ctx.level - 1.0))",
           "index": 0,
           "inner": {
             "description": "Passive:  Stealth Wards and  Totem Wards placed in the enemy jungle are considered Deep. All Deep wards are granted 1 bonus health, Deep  Stealth Wards last 30 – 45 (based on average champion level) seconds longer, and Deep  Totem Wards last 45 – 150 (based on average champion level) seconds longer.",
@@ -4396,7 +4396,7 @@
       ],
       "metadata": {
         "attributes": "Undefined",
-        "damage_type": "Unknown",
+        "damage_type": "Unspecified",
         "kind": "Demolish"
       },
       "name": "Demolish",
@@ -4406,7 +4406,7 @@
       ],
       "riot_id": 0
     },
-    "damage_type": "Unknown",
+    "damage_type": "Unspecified",
     "data": {
       "descriptions": [
         "Passive: Basic attacks  on-hit against  turrets apply a stack of Demolish, stacking up to 3 times. The third stack against a turret consumes them all to deal ( 85 /  50) (+ ( 28% /  20%) of your maximum health) bonus physical damage.",
@@ -4415,7 +4415,7 @@
       "effects": {
         "Description 1": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 1,
           "inner": {
             "description": "Demolish cannot be triggered on the same turret by any of its users more than once every 3 seconds.",
@@ -4427,7 +4427,7 @@
         },
         "Passive": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 0,
           "inner": {
             "description": "Passive: Basic attacks  on-hit against  turrets apply a stack of Demolish, stacking up to 3 times. The third stack against a turret consumes them all to deal ( 85 /  50) (+ ( 28% /  20%) of your maximum health) bonus physical damage.",
@@ -4493,7 +4493,7 @@
         ]
       ],
       "melee": [
-        "(10*(6 + 0.01*ctx.bonus_ad + ctx.level)) + (0.05*ctx.ability_power)",
+        "((60 + 10 * ctx.level) + ((0.1) * ctx.bonus_ad)) + ((0.05) * ctx.ability_power)",
         "zero"
       ],
       "metadata": {
@@ -4503,7 +4503,7 @@
       },
       "name": "Electrocute",
       "ranged": [
-        "(10*(6 + 0.01*ctx.bonus_ad + ctx.level)) + (0.05*ctx.ability_power)",
+        "((60 + 10 * ctx.level) + ((0.1) * ctx.bonus_ad)) + ((0.05) * ctx.ability_power)",
         "zero"
       ],
       "riot_id": 0
@@ -4517,7 +4517,7 @@
       "effects": {
         "Passive": {
           "base": null,
-          "formula": "10*(6 + 0.01*ctx.bonus_ad + ctx.level)",
+          "formula": "(60 + 10 * ctx.level) + ((0.1) * ctx.bonus_ad)",
           "index": 0,
           "inner": {
             "description": "Passive: Damaging  basic attacks,  abilities, item effects, and summoner spells, as well as the application of  crowd control and  damage over time effects, apply  stacks against enemy  champions, up to one per cast instance per champion. Applying 3 stacks to a target within a 3 second period causes them to be struck by lightning after a 0.25-second delay, dealing them 70 – 260 (based on level) (+ 10% bonus AD) (+ 5% AP) of either physical or magic damage.",
@@ -4557,7 +4557,7 @@
         },
         "Passive [1]": {
           "base": null,
-          "formula": "0.05*ctx.ability_power",
+          "formula": "(0.05) * ctx.ability_power",
           "index": 0,
           "inner": {
             "description": "Passive: Damaging  basic attacks,  abilities, item effects, and summoner spells, as well as the application of  crowd control and  damage over time effects, apply  stacks against enemy  champions, up to one per cast instance per champion. Applying 3 stacks to a target within a 3 second period causes them to be struck by lightning after a 0.25-second delay, dealing them 70 – 260 (based on level) (+ 10% bonus AD) (+ 5% AP) of either physical or magic damage.",
@@ -4576,7 +4576,7 @@
         },
         "Passive [2]": {
           "base": null,
-          "formula": "10*(6 + ctx.level)",
+          "formula": "(70.0) + (10.0 * (ctx.level - 1.0))",
           "index": 0,
           "inner": {
             "description": "Passive: Damaging  basic attacks,  abilities, item effects, and summoner spells, as well as the application of  crowd control and  damage over time effects, apply  stacks against enemy  champions, up to one per cast instance per champion. Applying 3 stacks to a target within a 3 second period causes them to be struck by lightning after a 0.25-second delay, dealing them 70 – 260 (based on level) (+ 10% bonus AD) (+ 5% AP) of either physical or magic damage.",
@@ -4776,7 +4776,7 @@
         },
         "Variable Damage": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 1,
           "inner": {
             "description": "Variable Damage: This effect deals either physical or magic damage depending on the damage contribution from your  attack damage and  ability power to the effect's damage formula.Greater bonus damage from the  AD ratio → Physical damageGreater bonus damage from the  AP ratio → Magic damageIf the damage contribution of  AD and  AP are zero or otherwise equal, the damage type defaults to magic damage.",
@@ -4794,11 +4794,11 @@
     },
     "melee": {
       "max_dmg": "zero",
-      "min_dmg": "(10*(6 + 0.01*ctx.bonus_ad + ctx.level)) + (0.05*ctx.ability_power)"
+      "min_dmg": "((60 + 10 * ctx.level) + ((0.1) * ctx.bonus_ad)) + ((0.05) * ctx.ability_power)"
     },
     "ranged": {
       "max_dmg": "zero",
-      "min_dmg": "(10*(6 + 0.01*ctx.bonus_ad + ctx.level)) + (0.05*ctx.ability_power)"
+      "min_dmg": "((60 + 10 * ctx.level) + ((0.1) * ctx.bonus_ad)) + ((0.05) * ctx.ability_power)"
     },
     "stable": true,
     "version": "15.24.1"
@@ -4837,7 +4837,7 @@
       ],
       "metadata": {
         "attributes": "Undefined",
-        "damage_type": "Unknown",
+        "damage_type": "Unspecified",
         "kind": "EyeballCollection"
       },
       "name": "Eyeball Collection",
@@ -4847,7 +4847,7 @@
       ],
       "riot_id": 0
     },
-    "damage_type": "Unknown",
+    "damage_type": "Unspecified",
     "data": {
       "descriptions": [
         "Passive: Collect 1 Eyeball whenever scoring a  takedown against an enemy champion, up to 10.",
@@ -4857,7 +4857,7 @@
       "effects": {
         "Adaptive": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 2,
           "inner": {
             "description": "Adaptive: Grants bonuses based on which stat you already have the most bonuses for. Defaults to the first listed.",
@@ -4869,7 +4869,7 @@
         },
         "Description 1": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 1,
           "inner": {
             "description": "Gain 1.2 bonus Attack Damage  or 2 Ability Power (Adaptive) per Eyeball collected, up to 12 bonus Attack Damage  or 20 Ability Power (Adaptive). Completing your collection awards an additional 6 bonus Attack Damage  or 10 Ability Power (Adaptive).",
@@ -4881,7 +4881,7 @@
         },
         "Passive": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 0,
           "inner": {
             "description": "Passive: Collect 1 Eyeball whenever scoring a  takedown against an enemy champion, up to 10.",
@@ -4944,7 +4944,7 @@
       ],
       "metadata": {
         "attributes": "Undefined",
-        "damage_type": "Unknown",
+        "damage_type": "Unspecified",
         "kind": "FirstStrike"
       },
       "name": "First Strike",
@@ -4954,7 +4954,7 @@
       ],
       "riot_id": 0
     },
-    "damage_type": "Unknown",
+    "damage_type": "Unspecified",
     "data": {
       "descriptions": [
         "Passive: Initiating combat with an enemy  champion within the first 0.25 seconds of champion combat grants  10 and First Strike for 3 seconds, causing all of your post-mitigation damage dealt against champions to deal 7% bonus true damage. Afterwards, you are granted  gold equal to ( 50% /  35%) of all bonus damage dealt within the duration.",
@@ -4963,7 +4963,7 @@
       "effects": {
         "Description 1": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 1,
           "inner": {
             "description": "First Strike will be placed on full cooldown without activating its effects after being struck by an enemy champion before you strike them.",
@@ -4975,7 +4975,7 @@
         },
         "Passive": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 0,
           "inner": {
             "description": "Passive: Initiating combat with an enemy  champion within the first 0.25 seconds of champion combat grants  10 and First Strike for 3 seconds, causing all of your post-mitigation damage dealt against champions to deal 7% bonus true damage. Afterwards, you are granted  gold equal to ( 50% /  35%) of all bonus damage dealt within the duration.",
@@ -5036,7 +5036,7 @@
       ],
       "metadata": {
         "attributes": "Undefined",
-        "damage_type": "Unknown",
+        "damage_type": "Unspecified",
         "kind": "FleetFootwork"
       },
       "name": "Fleet Footwork",
@@ -5046,7 +5046,7 @@
       ],
       "riot_id": 0
     },
-    "damage_type": "Unknown",
+    "damage_type": "Unspecified",
     "data": {
       "descriptions": [
         "Unique – Energized: Moving and basic attacking generates Charges, up to 100.",
@@ -5055,7 +5055,7 @@
       "effects": {
         "Description 1": {
           "base": null,
-          "formula": "10*(17 + 12*(-1 + ctx.level)*(0.7025 + 0.0175*(-1 + ctx.level)))/17",
+          "formula": "10+(120/17)*(ctx.level-1)*(0.7025+0.0175*(ctx.level-1))",
           "index": 1,
           "inner": {
             "description": "At 100 Charges, become  Energized, empowering your next  basic attack to  heal you for ( 10 – 148.81 /  6 – 89.29) (based on level) (+ ( 10% /  6%) bonus AD) (+ ( 5% /  3%) AP) and grant ( 20% /  15%)  bonus movement speed for 1 second. Against  minions, the healing is 15% effective.",
@@ -5088,7 +5088,7 @@
         },
         "Unique – Energized": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 0,
           "inner": {
             "description": "Unique – Energized: Moving and basic attacking generates Charges, up to 100.",
@@ -5149,7 +5149,7 @@
       ],
       "metadata": {
         "attributes": "Undefined",
-        "damage_type": "Unknown",
+        "damage_type": "Unspecified",
         "kind": "FontOfLife"
       },
       "name": "Font of Life",
@@ -5159,7 +5159,7 @@
       ],
       "riot_id": 0
     },
-    "damage_type": "Unknown",
+    "damage_type": "Unspecified",
     "data": {
       "descriptions": [
         "Passive:  Slowing or  immobilizing an enemy  champion  heals you and the nearest and most wounded allied champion within  1000 units for ( 10 – 54.71 /  7 – 38.29) (based on your level)."
@@ -5167,7 +5167,7 @@
       "effects": {
         "Passive": {
           "base": null,
-          "formula": "10*(17 + 4*(-1 + ctx.level))/17",
+          "formula": "10 + (50-10)/17*(ctx.level-1)",
           "index": 0,
           "inner": {
             "description": "Passive:  Slowing or  immobilizing an enemy  champion  heals you and the nearest and most wounded allied champion within  1000 units for ( 10 – 54.71 /  7 – 38.29) (based on your level).",
@@ -5251,7 +5251,7 @@
       ],
       "metadata": {
         "attributes": "Undefined",
-        "damage_type": "Unknown",
+        "damage_type": "Unspecified",
         "kind": "FuturesMarket"
       },
       "name": "Future's Market",
@@ -5261,7 +5261,7 @@
       ],
       "riot_id": 0
     },
-    "damage_type": "Unknown",
+    "damage_type": "Unspecified",
     "data": {
       "descriptions": [
         "Passive: You can now enter debt to buy items, up to  100 (+  8 per minute), which is displayed as negative gold in your treasury.",
@@ -5271,7 +5271,7 @@
       "effects": {
         "Description 1": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 1,
           "inner": {
             "description": "A  50 lending fee is added onto the amount of gold you owe after leaving the shop, charged once per visit.",
@@ -5283,7 +5283,7 @@
         },
         "Description 2": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 2,
           "inner": {
             "description": "Future's Market activates after 2 minutes.",
@@ -5295,7 +5295,7 @@
         },
         "Passive": {
           "base": null,
-          "formula": "8*ctx.steelcaps_effect",
+          "formula": "(8.0) * ctx.steelcaps_effect",
           "index": 0,
           "inner": {
             "description": "Passive: You can now enter debt to buy items, up to  100 (+  8 per minute), which is displayed as negative gold in your treasury.",
@@ -5365,7 +5365,7 @@
       ],
       "metadata": {
         "attributes": "Undefined",
-        "damage_type": "Unknown",
+        "damage_type": "Unspecified",
         "kind": "GatheringStorm"
       },
       "name": "Gathering Storm",
@@ -5375,7 +5375,7 @@
       ],
       "riot_id": 0
     },
-    "damage_type": "Unknown",
+    "damage_type": "Unspecified",
     "data": {
       "descriptions": [
         "Passive: Gain increasing  adaptive Force every 10 minutes that grants a total of 0 / 4.8 / 14.4 / 28.8 / 48 / 72 / 100.8 / 134.4 / ∞ (based on minutes) bonus Attack Damage or 0 / 8 / 24 / 48 / 80 / 120 / 168 / 224 / ∞ (based on minutes) Ability Power.",
@@ -5384,7 +5384,7 @@
       "effects": {
         "Adaptive": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 1,
           "inner": {
             "description": "Adaptive: Grants bonuses based on which stat you already have the most bonuses for. Defaults to the first listed.",
@@ -5468,7 +5468,7 @@
       ],
       "metadata": {
         "attributes": "Undefined",
-        "damage_type": "Unknown",
+        "damage_type": "Unspecified",
         "kind": "GhostPoro"
       },
       "name": "Ghost Poro",
@@ -5478,7 +5478,7 @@
       ],
       "riot_id": 0
     },
-    "damage_type": "Unknown",
+    "damage_type": "Unspecified",
     "data": {
       "descriptions": [
         "Passive: When your  wards expire, they leave behind a Ghost Poro, which is  untargetable and grants  sight over the surrounding 450 units for 90 seconds. Wards destroyed by enemies or replacement do not spawn Ghost Poros. You can have multiple Ghost Poros at once.",
@@ -5489,7 +5489,7 @@
       "effects": {
         "Adaptive": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 3,
           "inner": {
             "description": "Adaptive: Grants bonuses in the stat you already have the most bonuses in. Defaults to the first listed.",
@@ -5501,7 +5501,7 @@
         },
         "Description 1": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 1,
           "inner": {
             "description": "Enemy  champions that approach a Ghost Poro (within  400 center-to-edge radius) will cause it to disappear, alert its team, and grant  sight of a 150 radius around the triggering champion for 6 seconds.",
@@ -5513,7 +5513,7 @@
         },
         "Description 2": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 2,
           "inner": {
             "description": "Gain 1.2 bonus Attack Damage  or 2 Ability Power (Adaptive) for every Ghost Poro spawned and for each enemy champion spotted by a Ghost Poro, up to 10 stacks, for a maximum of 12 bonus Attack Damage  or 20 Ability Power (Adaptive). After reaching 10 stacks, additionally gain 6 bonus Attack Damage  or 10 Ability Power (Adaptive).",
@@ -5525,7 +5525,7 @@
         },
         "Passive": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 0,
           "inner": {
             "description": "Passive: When your  wards expire, they leave behind a Ghost Poro, which is  untargetable and grants  sight over the surrounding 450 units for 90 seconds. Wards destroyed by enemies or replacement do not spawn Ghost Poros. You can have multiple Ghost Poros at once.",
@@ -5588,7 +5588,7 @@
       ],
       "metadata": {
         "attributes": "Undefined",
-        "damage_type": "Unknown",
+        "damage_type": "Unspecified",
         "kind": "GlacialAugment"
       },
       "name": "Glacial Augment",
@@ -5598,7 +5598,7 @@
       ],
       "riot_id": 0
     },
-    "damage_type": "Unknown",
+    "damage_type": "Unspecified",
     "data": {
       "descriptions": [
         "Passive:  Immobilizing an enemy  champion will cause 3 glacial rays to emanate from them towards you and other nearby enemy champions, creating icy zones with a 700 unit radius that last for 3 (+ 100% of the immobilizing effect's duration) seconds.",
@@ -5607,7 +5607,7 @@
       "effects": {
         "Description 1": {
           "base": null,
-          "formula": "0.0006*ctx.ability_power + 0.0007000000000000001*ctx.bonus_ad + 0.09*ctx.steelcaps_effect",
+          "formula": "(((0.07) * (ctx.bonus_ad * 0.01)) + ((0.06) * (ctx.ability_power * 0.01))) + ((0.09) * ctx.steelcaps_effect)",
           "index": 1,
           "inner": {
             "description": "Enemies within the icy zones, which have a width of 80 units, are  slowed by 20% (+ 7% per 100 bonus AD) (+ 6% per 100 AP) (+ 9% per 10% heal and shield power) and have their damage reduced by 15% against your allies, excluding yourself.",
@@ -5638,7 +5638,7 @@
         },
         "Passive": {
           "base": null,
-          "formula": "ctx.steelcaps_effect",
+          "formula": "(1.0) * ctx.steelcaps_effect",
           "index": 0,
           "inner": {
             "description": "Passive:  Immobilizing an enemy  champion will cause 3 glacial rays to emanate from them towards you and other nearby enemy champions, creating icy zones with a 700 unit radius that last for 3 (+ 100% of the immobilizing effect's duration) seconds.",
@@ -5735,7 +5735,7 @@
       "effects": {
         "Passive": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 0,
           "inner": {
             "description": "Passive: Entering combat generates 1 stack every second for the next 3 seconds, refreshing the duration with each instance of combat and stacking the effect up to 4 times. At maximum stacks, your next basic attack  on-hit within 5 seconds against an enemy  champion consumes all stacks to deal bonus magic damage equal to ( 3.5% /  1.4%) of your maximum health,  heal you for (+ ( 1.3% /  0.52%) of your maximum health), and permanently grant you ( 5 /  2) bonus health.",
@@ -5796,7 +5796,7 @@
       ],
       "metadata": {
         "attributes": "Undefined",
-        "damage_type": "Unknown",
+        "damage_type": "Unspecified",
         "kind": "GrislyMementos"
       },
       "name": "Grisly Mementos",
@@ -5806,7 +5806,7 @@
       ],
       "riot_id": 0
     },
-    "damage_type": "Unknown",
+    "damage_type": "Unspecified",
     "data": {
       "descriptions": [
         "Passive: Gain 6 trinket haste per Memento stack, up to 108 haste at maximum stacks.",
@@ -5815,7 +5815,7 @@
       "effects": {
         "Description 1": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 1,
           "inner": {
             "description": "Earn a Memento stack whenever scoring a champion  takedown, up to 18 stacks.",
@@ -5827,7 +5827,7 @@
         },
         "Passive": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 0,
           "inner": {
             "description": "Passive: Gain 6 trinket haste per Memento stack, up to 108 haste at maximum stacks.",
@@ -5890,7 +5890,7 @@
       ],
       "metadata": {
         "attributes": "Undefined",
-        "damage_type": "Unknown",
+        "damage_type": "Unspecified",
         "kind": "Guardian"
       },
       "name": "Guardian",
@@ -5900,7 +5900,7 @@
       ],
       "riot_id": 0
     },
-    "damage_type": "Unknown",
+    "damage_type": "Unspecified",
     "data": {
       "descriptions": [
         "Passive: While within 350 units of an allied  champion, you raise your Guard. Allied champions you affect with unit-targeted abilities are also Guarded for 3 seconds, regardless of distance.",
@@ -5910,7 +5910,7 @@
       "effects": {
         "Description 1": {
           "base": null,
-          "formula": "50 + 0.25*ctx.ability_power + 115*(-1 + ctx.level)/17",
+          "formula": "(50 + 115/17*(ctx.level-1)) + ((0.25) * ctx.ability_power)",
           "index": 1,
           "inner": {
             "description": "If you or a Guarded ally would take 50 – 178.53 (based on level) damage within 2.5 seconds or lethal damage from an enemy champion,  monster or  turret, you both gain a  shield for 45 – 195.88 (based on level) (+ 25% of your AP) (+ 5% of your bonus health) for 2 seconds.",
@@ -5951,7 +5951,7 @@
         },
         "Description 1 [1]": {
           "base": null,
-          "formula": "0.05*ctx.bonus_health",
+          "formula": "(0.05) * ctx.bonus_health",
           "index": 1,
           "inner": {
             "description": "If you or a Guarded ally would take 50 – 178.53 (based on level) damage within 2.5 seconds or lethal damage from an enemy champion,  monster or  turret, you both gain a  shield for 45 – 195.88 (based on level) (+ 25% of your AP) (+ 5% of your bonus health) for 2 seconds.",
@@ -5971,7 +5971,7 @@
         },
         "Description 2": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 2,
           "inner": {
             "description": "Guardian only goes on  cooldown when the shield is triggered.",
@@ -5983,7 +5983,7 @@
         },
         "Passive": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 0,
           "inner": {
             "description": "Passive: While within 350 units of an allied  champion, you raise your Guard. Allied champions you affect with unit-targeted abilities are also Guarded for 3 seconds, regardless of distance.",
@@ -6047,7 +6047,7 @@
         ]
       ],
       "melee": [
-        "(4 + 0.08*ctx.bonus_ad + 16*(-1 + ctx.level)/17) + (0.06*ctx.ability_power)",
+        "((4 + (20-4)/17*(ctx.level-1)) + ((0.08) * ctx.bonus_ad)) + ((0.06) * ctx.ability_power)",
         "zero"
       ],
       "metadata": {
@@ -6057,7 +6057,7 @@
       },
       "name": "Hail of Blades",
       "ranged": [
-        "(4 + 0.08*ctx.bonus_ad + 16*(-1 + ctx.level)/17) + (0.06*ctx.ability_power)",
+        "((4 + (20-4)/17*(ctx.level-1)) + ((0.08) * ctx.bonus_ad)) + ((0.06) * ctx.ability_power)",
         "zero"
       ],
       "riot_id": 0
@@ -6071,7 +6071,7 @@
       "effects": {
         "Description 1": {
           "base": null,
-          "formula": "4 + 0.08*ctx.bonus_ad + 16*(-1 + ctx.level)/17",
+          "formula": "(4 + (20-4)/17*(ctx.level-1)) + ((0.08) * ctx.bonus_ad)",
           "index": 1,
           "inner": {
             "description": "While Hail of Blades is active, you gain ( 120% /  60%)  bonus attack speed, are allowed to exceed the attack speed cap, and basic attacks deal 4 – 21.88 (based on level) (+ 8% bonus AD) (+ 6% AP)  bonus true damage.The triggering attack benefits from Hail of Blades.",
@@ -6111,7 +6111,7 @@
         },
         "Description 1 [1]": {
           "base": null,
-          "formula": "0.06*ctx.ability_power",
+          "formula": "(0.06) * ctx.ability_power",
           "index": 1,
           "inner": {
             "description": "While Hail of Blades is active, you gain ( 120% /  60%)  bonus attack speed, are allowed to exceed the attack speed cap, and basic attacks deal 4 – 21.88 (based on level) (+ 8% bonus AD) (+ 6% AP)  bonus true damage.The triggering attack benefits from Hail of Blades.",
@@ -6130,7 +6130,7 @@
         },
         "Description 1 [2]": {
           "base": null,
-          "formula": "4 + 0.94*(-1 + ctx.level)",
+          "formula": "(4.0) + (0.94 * (ctx.level - 1.0))",
           "index": 1,
           "inner": {
             "description": "While Hail of Blades is active, you gain ( 120% /  60%)  bonus attack speed, are allowed to exceed the attack speed cap, and basic attacks deal 4 – 21.88 (based on level) (+ 8% bonus AD) (+ 6% AP)  bonus true damage.The triggering attack benefits from Hail of Blades.",
@@ -6330,7 +6330,7 @@
         },
         "Passive": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 0,
           "inner": {
             "description": "Passive: Starting an attack windup against an enemy  champion triggers Hail of Blades, and if the windup completes, you gain 2 stacks of the effect for 3 seconds, with the duration refreshing on basic attacks  on-attack against enemy champions until all stacks are consumed. Stacks are consumed per basic attack on-attack and you generate an additional stack of the effect each time you cast an ability or spell that has a  basic attack reset, up to 2 times.",
@@ -6348,11 +6348,11 @@
     },
     "melee": {
       "max_dmg": "zero",
-      "min_dmg": "(4 + 0.08*ctx.bonus_ad + 16*(-1 + ctx.level)/17) + (0.06*ctx.ability_power)"
+      "min_dmg": "((4 + (20-4)/17*(ctx.level-1)) + ((0.08) * ctx.bonus_ad)) + ((0.06) * ctx.ability_power)"
     },
     "ranged": {
       "max_dmg": "zero",
-      "min_dmg": "(4 + 0.08*ctx.bonus_ad + 16*(-1 + ctx.level)/17) + (0.06*ctx.ability_power)"
+      "min_dmg": "((4 + (20-4)/17*(ctx.level-1)) + ((0.08) * ctx.bonus_ad)) + ((0.06) * ctx.ability_power)"
     },
     "stable": true,
     "version": "15.24.1"
@@ -6391,7 +6391,7 @@
       ],
       "metadata": {
         "attributes": "Undefined",
-        "damage_type": "Unknown",
+        "damage_type": "Unspecified",
         "kind": "HextechFlashtraption"
       },
       "name": "Hextech Flashtraption",
@@ -6401,7 +6401,7 @@
       ],
       "riot_id": 0
     },
-    "damage_type": "Unknown",
+    "damage_type": "Unspecified",
     "data": {
       "descriptions": [
         "Passive: While  Flash has a remaining cooldown greater than 2 seconds, it is replaced by  Hexflash.",
@@ -6412,7 +6412,7 @@
       "effects": {
         "Active": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 1,
           "inner": {
             "description": "Active: You begin  charging for up to 2 seconds, setting your  movement speed to a static 0, and increasing Hexflash's range over the duration. After at least 1 second, you can reactivate the spell, which is automatically done so when the charge completes without reactivation. Releasing the charge earlier than 1 second or entering combat with an enemy  champion will put Hexflash on  cooldown for 10 seconds.",
@@ -6424,7 +6424,7 @@
         },
         "Description 3": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 3,
           "inner": {
             "description": "Uses Quick Casting by default, which requires the Active to be held and the Recast to occur on release.",
@@ -6436,7 +6436,7 @@
         },
         "Passive": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 0,
           "inner": {
             "description": "Passive: While  Flash has a remaining cooldown greater than 2 seconds, it is replaced by  Hexflash.",
@@ -6448,7 +6448,7 @@
         },
         "Recast": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 2,
           "inner": {
             "description": "Recast: You  blink to the target location within range and gain  50% bonus movement speed for up to 0.25 seconds.",
@@ -6511,7 +6511,7 @@
       ],
       "metadata": {
         "attributes": "Undefined",
-        "damage_type": "Unknown",
+        "damage_type": "Unspecified",
         "kind": "IngeniousHunter"
       },
       "name": "Ingenious Hunter",
@@ -6521,7 +6521,7 @@
       ],
       "riot_id": 0
     },
-    "damage_type": "Unknown",
+    "damage_type": "Unspecified",
     "data": {
       "descriptions": [
         "Passive: Gain 20 (+ 6 per Bounty Hunter stack) item haste, up to 50 at 5 stacks.",
@@ -6530,7 +6530,7 @@
       "effects": {
         "Description 1": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 1,
           "inner": {
             "description": "Earn a Bounty Hunter stack whenever scoring a  takedown against an enemy champion, up to one per unique champion.",
@@ -6542,7 +6542,7 @@
         },
         "Passive": {
           "base": null,
-          "formula": "6*ctx.stacks",
+          "formula": "(6.0) * ctx.stacks",
           "index": 0,
           "inner": {
             "description": "Passive: Gain 20 (+ 6 per Bounty Hunter stack) item haste, up to 50 at 5 stacks.",
@@ -6612,7 +6612,7 @@
       ],
       "metadata": {
         "attributes": "Undefined",
-        "damage_type": "Unknown",
+        "damage_type": "Unspecified",
         "kind": "IronSkin"
       },
       "name": "Iron Skin",
@@ -6622,7 +6622,7 @@
       ],
       "riot_id": 0
     },
-    "damage_type": "Unknown",
+    "damage_type": "Unspecified",
     "data": {
       "descriptions": [
         "Passive: Gain 5 bonus armor.",
@@ -6631,7 +6631,7 @@
       "effects": {
         "Description 1": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 1,
           "inner": {
             "description": "Additionally, increase your total armor by 5% for 3 seconds whenever you  heal for at least 20, consume a potion or biscuit, or gain a  shield. Subsequent triggers will only refresh the duration.",
@@ -6643,7 +6643,7 @@
         },
         "Passive": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 0,
           "inner": {
             "description": "Passive: Gain 5 bonus armor.",
@@ -6706,7 +6706,7 @@
       ],
       "metadata": {
         "attributes": "Undefined",
-        "damage_type": "Unknown",
+        "damage_type": "Unspecified",
         "kind": "JackOfAllTrades"
       },
       "name": "Jack of All Trades",
@@ -6716,7 +6716,7 @@
       ],
       "riot_id": 0
     },
-    "damage_type": "Unknown",
+    "damage_type": "Unspecified",
     "data": {
       "descriptions": [
         "Passive: Earn 1 Jack stack for each unique stat type currently gained from items.",
@@ -6725,7 +6725,7 @@
       "effects": {
         "Jack": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 1,
           "inner": {
             "description": "Jack: For each Jack stack, gain 1 ability haste. At 5 Jack stacks, gain 6 bonus Attack Damage  or 10 Ability Power (Adaptive). At 10 Jack stacks, gain an additional 9 bonus Attack Damage  or 15 Ability Power (Adaptive), for a total of 15 bonus Attack Damage  or 25 Ability Power (Adaptive) at 10 Jack stacks.",
@@ -6737,7 +6737,7 @@
         },
         "Passive": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 0,
           "inner": {
             "description": "Passive: Earn 1 Jack stack for each unique stat type currently gained from items.",
@@ -6800,7 +6800,7 @@
       ],
       "metadata": {
         "attributes": "Undefined",
-        "damage_type": "Unknown",
+        "damage_type": "Unspecified",
         "kind": "Kleptomancy"
       },
       "name": "Kleptomancy",
@@ -6810,7 +6810,7 @@
       ],
       "riot_id": 0
     },
-    "damage_type": "Unknown",
+    "damage_type": "Unspecified",
     "data": {
       "descriptions": [
         "Passive: After using an ability, your next two basic attacks on-hit within 10 seconds are empowered. Each attack used against a champion grants  5, and also has a chance to instead grant a consumable item.",
@@ -6820,7 +6820,7 @@
       "effects": {
         "Applicable Consumables": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 1,
           "inner": {
             "description": "Applicable Consumables:\n Mana Potion (Sell:  12)\n Pilfered Health Potion (Sell:  16)\n Sly Sack of Gold (Sell:  65)\n Pilfered Stealth Ward (Sell:  24)\n Pilfered Potion of Rouge (Sell:  32)\n Total Biscuit of Everlasting Will (Sell:  5)\n Peering Farsight Ward (Sell:  24)\n Looted Oracle's Extract (Sell:  24)\n Control Ward (Sell:  30)\n Travel Size Elixir of Iron (Sell:  32)\n Travel Size Elixir of Sorcery (Sell:  32)\n Travel Size Elixir of Wrath (Sell:  32)\n Elixir of Skill (Cannot be sold)\n Poro-Snax (ARAM only) (Cannot be sold)",
@@ -6832,7 +6832,7 @@
         },
         "Description 2": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 2,
           "inner": {
             "description": "If the inventory is full while receiving a consumable item, it will be consumed immediately.  Manaless champions will not receive  Mana Potions. Wards cannot be obtained outside a  Classic 5v5 mode.",
@@ -6844,7 +6844,7 @@
         },
         "Passive": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 0,
           "inner": {
             "description": "Passive: After using an ability, your next two basic attacks on-hit within 10 seconds are empowered. Each attack used against a champion grants  5, and also has a chance to instead grant a consumable item.",
@@ -6905,7 +6905,7 @@
       ],
       "metadata": {
         "attributes": "Undefined",
-        "damage_type": "Unknown",
+        "damage_type": "Unspecified",
         "kind": "LastStand"
       },
       "name": "Last Stand",
@@ -6915,7 +6915,7 @@
       ],
       "riot_id": 0
     },
-    "damage_type": "Unknown",
+    "damage_type": "Unspecified",
     "data": {
       "descriptions": [
         "Passive: Deal 5% increased damage to champions while below 60% maximum health. This increases further based on your missing health, up to 11% increased damage while below 30% maximum health."
@@ -6923,7 +6923,7 @@
       "effects": {
         "Passive": {
           "base": null,
-          "formula": "0.16*ctx.max_health",
+          "formula": "((0.05) * ctx.max_health) + ((0.11) * ctx.max_health)",
           "index": 0,
           "inner": {
             "description": "Passive: Deal 5% increased damage to champions while below 60% maximum health. This increases further based on your missing health, up to 11% increased damage while below 30% maximum health.",
@@ -6999,7 +6999,7 @@
       ],
       "metadata": {
         "attributes": "Undefined",
-        "damage_type": "Unknown",
+        "damage_type": "Unspecified",
         "kind": "LegendAlacrity"
       },
       "name": "Legend: Alacrity",
@@ -7009,7 +7009,7 @@
       ],
       "riot_id": 0
     },
-    "damage_type": "Unknown",
+    "damage_type": "Unspecified",
     "data": {
       "descriptions": [
         "Passive: Gain  3% (+ 1.5% per Legend  stack) bonus attack speed, up to 18% at maximum stacks.",
@@ -7018,7 +7018,7 @@
       "effects": {
         "Legend": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 1,
           "inner": {
             "description": "Legend: Gain Legend stacks for every 100 points earned, up to 10:\n100 points for champion  takedowns\n100 points for epic monster  takedowns\n25 points for large monster kills\n4 points for minion kills",
@@ -7030,7 +7030,7 @@
         },
         "Passive": {
           "base": null,
-          "formula": "0.03*ctx.attack_speed + (0.195*ctx.stacks)",
+          "formula": "(((0.015) * ctx.stacks) + ((0.03) * ctx.attack_speed)) + ((0.18) * ctx.stacks)",
           "index": 0,
           "inner": {
             "description": "Passive: Gain  3% (+ 1.5% per Legend  stack) bonus attack speed, up to 18% at maximum stacks.",
@@ -7112,7 +7112,7 @@
       ],
       "metadata": {
         "attributes": "Undefined",
-        "damage_type": "Unknown",
+        "damage_type": "Unspecified",
         "kind": "LegendBloodline"
       },
       "name": "Legend: Bloodline",
@@ -7122,7 +7122,7 @@
       ],
       "riot_id": 0
     },
-    "damage_type": "Unknown",
+    "damage_type": "Unspecified",
     "data": {
       "descriptions": [
         "Passive: Gain  0.45% life steal per Legend  stack, up to 6.75% at maximum stacks, at which you also gain 85 bonus health.",
@@ -7131,7 +7131,7 @@
       "effects": {
         "Legend": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 1,
           "inner": {
             "description": "Legend: Gain Legend stacks for every 100 points earned, up to 15:\n100 points for champion  takedowns\n100 points for epic monster  takedowns\n25 points for large monster kills\n4 points for minion kills",
@@ -7143,7 +7143,7 @@
         },
         "Passive": {
           "base": null,
-          "formula": "0.0045*ctx.life_steal + 0.0675*ctx.stacks",
+          "formula": "((0.0045) * ctx.life_steal) + ((0.0675) * ctx.stacks)",
           "index": 0,
           "inner": {
             "description": "Passive: Gain  0.45% life steal per Legend  stack, up to 6.75% at maximum stacks, at which you also gain 85 bonus health.",
@@ -7219,7 +7219,7 @@
       ],
       "metadata": {
         "attributes": "Undefined",
-        "damage_type": "Unknown",
+        "damage_type": "Unspecified",
         "kind": "LegendBloodlineWildRift"
       },
       "name": "Legend: Bloodline (Wild Rift)",
@@ -7229,7 +7229,7 @@
       ],
       "riot_id": 0
     },
-    "damage_type": "Unknown",
+    "damage_type": "Unspecified",
     "data": {
       "descriptions": [
         "Passive: Gain 1% (+ 1% per Legend stack)  omnivamp, up to 7% at maximum stacks.",
@@ -7257,7 +7257,7 @@
         },
         "Passive": {
           "base": null,
-          "formula": "0.08*ctx.stacks",
+          "formula": "((0.07) * ctx.stacks) + ((0.01) * ctx.stacks)",
           "index": 0,
           "inner": {
             "description": "Passive: Gain 1% (+ 1% per Legend stack)  omnivamp, up to 7% at maximum stacks.",
@@ -7333,7 +7333,7 @@
       ],
       "metadata": {
         "attributes": "Undefined",
-        "damage_type": "Unknown",
+        "damage_type": "Unspecified",
         "kind": "LegendHaste"
       },
       "name": "Legend: Haste",
@@ -7343,7 +7343,7 @@
       ],
       "riot_id": 0
     },
-    "damage_type": "Unknown",
+    "damage_type": "Unspecified",
     "data": {
       "descriptions": [
         "Passive: Gain  1.5 basic ability haste per Legend  stack, up to 15 at maximum stacks.",
@@ -7352,7 +7352,7 @@
       "effects": {
         "Legend": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 1,
           "inner": {
             "description": "Legend: Gain Legend stacks for every 100 points earned, up to 10:\n100 points for champion  takedowns\n100 points for epic monster  takedowns\n25 points for large monster kills\n4 points for minion kills",
@@ -7364,7 +7364,7 @@
         },
         "Passive": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 0,
           "inner": {
             "description": "Passive: Gain  1.5 basic ability haste per Legend  stack, up to 15 at maximum stacks.",
@@ -7427,7 +7427,7 @@
       ],
       "metadata": {
         "attributes": "Undefined",
-        "damage_type": "Unknown",
+        "damage_type": "Unspecified",
         "kind": "LegendTenacity"
       },
       "name": "Legend: Tenacity",
@@ -7437,7 +7437,7 @@
       ],
       "riot_id": 0
     },
-    "damage_type": "Unknown",
+    "damage_type": "Unspecified",
     "data": {
       "descriptions": [
         "Passive: Gain 5% (+ 1.5% per Legend stack)  tenacity, up to 20% at maximum stacks.",
@@ -7446,7 +7446,7 @@
       "effects": {
         "Legend": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 1,
           "inner": {
             "description": "Legend: Gain Legend stacks for every 100 points earned, up to 10:\n100 points for champion  takedowns\n100 points for epic monster  takedowns\n25 points for large monster kills\n4 points for minion kills",
@@ -7458,7 +7458,7 @@
         },
         "Passive": {
           "base": null,
-          "formula": "0.21500000000000002*ctx.stacks",
+          "formula": "((0.015) * ctx.stacks) + ((0.2) * ctx.stacks)",
           "index": 0,
           "inner": {
             "description": "Passive: Gain 5% (+ 1.5% per Legend stack)  tenacity, up to 20% at maximum stacks.",
@@ -7559,7 +7559,7 @@
       "effects": {
         "Adaptive Damage": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 3,
           "inner": {
             "description": "Adaptive Damage: This effect deals either physical or magic damage depending on whether you have more  bonus attack damage or  ability power.Greater  bonus attack damage → Physical damageGreater  ability power → Magic damageIf the damage contribution of  AD and  AP are zero or otherwise equal, the damage type depends on the champion's  adaptive type.",
@@ -7571,7 +7571,7 @@
         },
         "Description 1": {
           "base": null,
-          "formula": "9 + 0.01*ctx.attack_speed + 21*(-1 + ctx.level)/17",
+          "formula": "(9 + (30-9)/17*(ctx.level-1)) + ((0.01) * ctx.attack_speed)",
           "index": 1,
           "inner": {
             "description": "At maximum stacks, basic attacks are empowered to fire a bolt at the target  on-attack that deals them ( 9 – 32.47 /  6 – 26.12) (based on level) bonus  adaptive damage upon arrival, increased by ( 1% /  0.66%) per 1% bonus attack speed.",
@@ -7611,7 +7611,7 @@
         },
         "Description 2": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 2,
           "inner": {
             "description": "Stacks expire one by one every 0.5 seconds when the duration ends.",
@@ -7623,7 +7623,7 @@
         },
         "Passive": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 0,
           "inner": {
             "description": "Passive: Basic attacks  on-attack against enemy  champions grant a  stack for 6 seconds, refreshing on subsequent attacks and stacking up to 6 times. Gain ( 6% /  4.8%) bonus attack speed for each stack, up to ( 36% /  28.8%) at maximum stacks.",
@@ -7684,7 +7684,7 @@
       ],
       "metadata": {
         "attributes": "Undefined",
-        "damage_type": "Unknown",
+        "damage_type": "Unspecified",
         "kind": "MagicalFootwear"
       },
       "name": "Magical Footwear",
@@ -7694,7 +7694,7 @@
       ],
       "riot_id": 0
     },
-    "damage_type": "Unknown",
+    "damage_type": "Unspecified",
     "data": {
       "descriptions": [
         "Passive: After 12 minutes (reduced by 45 seconds whenever scoring a  takedown against an enemy champion), you gain  Slightly Magical Boots for  free. Slightly Magical Boots are identical to  Boots and can be upgraded as if it were the item. If the inventory is full while receiving the boots, they will appear as soon as a slot in the inventory is available.",
@@ -7704,7 +7704,7 @@
       "effects": {
         "Description 1": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 1,
           "inner": {
             "description": "Additionally, your boots grant an additional  10 bonus movement speed.",
@@ -7716,7 +7716,7 @@
         },
         "Description 2": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 2,
           "inner": {
             "description": "You cannot purchase  Boots nor any Tier-2 boots prior to obtaining Slightly Magical Boots.",
@@ -7728,7 +7728,7 @@
         },
         "Passive": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 0,
           "inner": {
             "description": "Passive: After 12 minutes (reduced by 45 seconds whenever scoring a  takedown against an enemy champion), you gain  Slightly Magical Boots for  free. Slightly Magical Boots are identical to  Boots and can be upgraded as if it were the item. If the inventory is full while receiving the boots, they will appear as soon as a slot in the inventory is available.",
@@ -7791,7 +7791,7 @@
       ],
       "metadata": {
         "attributes": "Undefined",
-        "damage_type": "Unknown",
+        "damage_type": "Unspecified",
         "kind": "ManaflowBand"
       },
       "name": "Manaflow Band",
@@ -7801,7 +7801,7 @@
       ],
       "riot_id": 0
     },
-    "damage_type": "Unknown",
+    "damage_type": "Unspecified",
     "data": {
       "descriptions": [
         "Passive: Affecting an enemy  champion with an ability permanently increases your  maximum mana by 25, up to 250 mana. Mana gained from this effect preserves your current mana.",
@@ -7810,7 +7810,7 @@
       "effects": {
         "Description 1": {
           "base": null,
-          "formula": "0.01*ctx.steelcaps_effect",
+          "formula": "(0.01) * ctx.steelcaps_effect",
           "index": 1,
           "inner": {
             "description": "After reaching 250 bonus mana, permanently restore 1% of your missing mana every 5 seconds.",
@@ -7830,7 +7830,7 @@
         },
         "Passive": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 0,
           "inner": {
             "description": "Passive: Affecting an enemy  champion with an ability permanently increases your  maximum mana by 25, up to 250 mana. Mana gained from this effect preserves your current mana.",
@@ -7893,7 +7893,7 @@
       ],
       "metadata": {
         "attributes": "Undefined",
-        "damage_type": "Unknown",
+        "damage_type": "Unspecified",
         "kind": "MinionDematerializer"
       },
       "name": "Minion Dematerializer",
@@ -7903,7 +7903,7 @@
       ],
       "riot_id": 0
     },
-    "damage_type": "Unknown",
+    "damage_type": "Unspecified",
     "data": {
       "descriptions": [
         "Passive: Start the game with 3 ×  Minion Dematerializers, which can be activated to  execute the target enemy  minion after a 1-second delay. Dematerializers are placed on a 180-second  cooldown at the start of the game.",
@@ -7912,7 +7912,7 @@
       "effects": {
         "Description 1": {
           "base": null,
-          "formula": "0.06*ctx.steelcaps_effect",
+          "formula": "(0.06) * ctx.steelcaps_effect",
           "index": 1,
           "inner": {
             "description": "In addition to the  gold and  experience obtained from killing the minion, you also gain 6% increased damage to that type of minion for the remainder of the game. Dematerializers beyond the first used on the same type of minion increases this bonus by 3%, up to a maximum of 12% if all three are used on the same minion type.",
@@ -7931,7 +7931,7 @@
         },
         "Passive": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 0,
           "inner": {
             "description": "Passive: Start the game with 3 ×  Minion Dematerializers, which can be activated to  execute the target enemy  minion after a 1-second delay. Dematerializers are placed on a 180-second  cooldown at the start of the game.",
@@ -7994,7 +7994,7 @@
       ],
       "metadata": {
         "attributes": "Undefined",
-        "damage_type": "Unknown",
+        "damage_type": "Unspecified",
         "kind": "MirrorShell"
       },
       "name": "Mirror Shell",
@@ -8004,7 +8004,7 @@
       ],
       "riot_id": 0
     },
-    "damage_type": "Unknown",
+    "damage_type": "Unspecified",
     "data": {
       "descriptions": [
         "Passive: Gain 6 bonus magic resistance.",
@@ -8013,7 +8013,7 @@
       "effects": {
         "Description 1": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 1,
           "inner": {
             "description": "Additionally, increase your total magic resistance by 5% for 3 seconds whenever you  heal for at least 20, consume a potion or biscuit, or gain a  shield. Subsequent triggers will only refresh the duration.",
@@ -8025,7 +8025,7 @@
         },
         "Passive": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 0,
           "inner": {
             "description": "Passive: Gain 6 bonus magic resistance.",
@@ -8088,7 +8088,7 @@
       ],
       "metadata": {
         "attributes": "Undefined",
-        "damage_type": "Unknown",
+        "damage_type": "Unspecified",
         "kind": "NimbusCloak"
       },
       "name": "Nimbus Cloak",
@@ -8098,7 +8098,7 @@
       ],
       "riot_id": 0
     },
-    "damage_type": "Unknown",
+    "damage_type": "Unspecified",
     "data": {
       "descriptions": [
         "Passive: Using a summoner spell grants  ghosting and  15% – 45% (based on summoner spell cooldown) bonus movement speed decaying over 2 seconds."
@@ -8106,7 +8106,7 @@
       "effects": {
         "Passive": {
           "base": null,
-          "formula": "5*(3.0300000000000002 + 0.06*ctx.steelcaps_effect + 4*(-1 + ctx.level) - (-2 + ctx.level)*(-1 + ctx.level))",
+          "formula": "(((15.0) + (20.0 * (ctx.level - 1.0))) + (-10.0 * (ctx.level - 1.0) * ((ctx.level - 1.0) - 1.0) * 0.5)) + ((0.15) + (0.3 * (ctx.steelcaps_effect)))",
           "index": 0,
           "inner": {
             "description": "Passive: Using a summoner spell grants  ghosting and  15% – 45% (based on summoner spell cooldown) bonus movement speed decaying over 2 seconds.",
@@ -8182,7 +8182,7 @@
       ],
       "metadata": {
         "attributes": "Undefined",
-        "damage_type": "Unknown",
+        "damage_type": "Unspecified",
         "kind": "NullifyingOrb"
       },
       "name": "Nullifying Orb",
@@ -8192,7 +8192,7 @@
       ],
       "riot_id": 0
     },
-    "damage_type": "Unknown",
+    "damage_type": "Unspecified",
     "data": {
       "descriptions": [
         "Passive: If you would take magic damage that would reduce you below 30% of your maximum health, you first gain a  shield that absorbs 35 – 110 (based on level) (+ 14% bonus AD) (+ 9% AP) magic damage for 4 seconds."
@@ -8200,7 +8200,7 @@
       "effects": {
         "Passive": {
           "base": null,
-          "formula": "35 + 0.14*ctx.bonus_ad + 4.41*(-1 + ctx.level)",
+          "formula": "((35.0) + (4.41 * (ctx.level - 1.0))) + ((0.14) * ctx.bonus_ad)",
           "index": 0,
           "inner": {
             "description": "Passive: If you would take magic damage that would reduce you below 30% of your maximum health, you first gain a  shield that absorbs 35 – 110 (based on level) (+ 14% bonus AD) (+ 9% AP) magic damage for 4 seconds.",
@@ -8238,7 +8238,7 @@
         },
         "Passive [1]": {
           "base": null,
-          "formula": "0.09*ctx.ability_power",
+          "formula": "(0.09) * ctx.ability_power",
           "index": 0,
           "inner": {
             "description": "Passive: If you would take magic damage that would reduce you below 30% of your maximum health, you first gain a  shield that absorbs 35 – 110 (based on level) (+ 14% bonus AD) (+ 9% AP) magic damage for 4 seconds.",
@@ -8439,7 +8439,7 @@
         },
         "Passive [3]": {
           "base": null,
-          "formula": "0.3*ctx.max_health",
+          "formula": "(0.3) * ctx.max_health",
           "index": 0,
           "inner": {
             "description": "Passive: If you would take magic damage that would reduce you below 30% of your maximum health, you first gain a  shield that absorbs 35 – 110 (based on level) (+ 14% bonus AD) (+ 9% AP) magic damage for 4 seconds.",
@@ -8692,7 +8692,7 @@
       ],
       "metadata": {
         "attributes": "Undefined",
-        "damage_type": "Unknown",
+        "damage_type": "Unspecified",
         "kind": "Overgrowth"
       },
       "name": "Overgrowth",
@@ -8702,7 +8702,7 @@
       ],
       "riot_id": 0
     },
-    "damage_type": "Unknown",
+    "damage_type": "Unspecified",
     "data": {
       "descriptions": [
         "Passive: Every 8  monsters or enemy  minions that die near you permanently generates a stack. Each stack grants 3 bonus health. This effect can stack indefinitely.",
@@ -8711,7 +8711,7 @@
       "effects": {
         "Description 1": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 1,
           "inner": {
             "description": "After reaching 15 stacks (120 monsters or minions), your base and bonus health are permanently increased by 3.5%.",
@@ -8723,7 +8723,7 @@
         },
         "Passive": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 0,
           "inner": {
             "description": "Passive: Every 8  monsters or enemy  minions that die near you permanently generates a stack. Each stack grants 3 bonus health. This effect can stack indefinitely.",
@@ -8786,7 +8786,7 @@
       ],
       "metadata": {
         "attributes": "Undefined",
-        "damage_type": "Unknown",
+        "damage_type": "Unspecified",
         "kind": "Overheal"
       },
       "name": "Overheal",
@@ -8796,7 +8796,7 @@
       ],
       "riot_id": 0
     },
-    "damage_type": "Unknown",
+    "damage_type": "Unspecified",
     "data": {
       "descriptions": [
         "Passive: Converts 20% – 100% (based on level) of the  healing in excess of your maximum health into a  shield for an amount of up to 11% of your maximum health.",
@@ -8805,7 +8805,7 @@
       "effects": {
         "Description 1": {
           "base": null,
-          "formula": "0.01*ctx.steelcaps_effect",
+          "formula": "(0.01) * ctx.steelcaps_effect",
           "index": 1,
           "inner": {
             "description": "After 6 seconds, the shield decays by 1% of its maximum value every 0.25 seconds. Receiving healing, dealing damage, or taking damage will refresh the shield duration to 6 seconds.",
@@ -8825,7 +8825,7 @@
         },
         "Passive": {
           "base": null,
-          "formula": "20 + 4.71*(-1 + ctx.level) + ctx.max_health*(0.2 + 0.0471*(-1 + ctx.level))",
+          "formula": "((20.0) + (4.71 * (ctx.level - 1.0))) + (((0.2) + (0.0471 * (ctx.level - 1.0))) * ctx.max_health)",
           "index": 0,
           "inner": {
             "description": "Passive: Converts 20% – 100% (based on level) of the  healing in excess of your maximum health into a  shield for an amount of up to 11% of your maximum health.",
@@ -9026,7 +9026,7 @@
         },
         "Passive [1]": {
           "base": null,
-          "formula": "0.11*ctx.max_health",
+          "formula": "(0.11) * ctx.max_health",
           "index": 0,
           "inner": {
             "description": "Passive: Converts 20% – 100% (based on level) of the  healing in excess of your maximum health into a  shield for an amount of up to 11% of your maximum health.",
@@ -9097,7 +9097,7 @@
       ],
       "metadata": {
         "attributes": "Undefined",
-        "damage_type": "Unknown",
+        "damage_type": "Unspecified",
         "kind": "PerfectTiming"
       },
       "name": "Perfect Timing",
@@ -9107,7 +9107,7 @@
       ],
       "riot_id": 0
     },
-    "damage_type": "Unknown",
+    "damage_type": "Unspecified",
     "data": {
       "descriptions": [
         "Passive: After 14 minutes (reduced by 2 minutes whenever scoring a  takedown against an enemy champion), you receive a  Perfectly Timed Stopwatch. The Perfectly Timed Stopwatch is identical to the  Stopwatch, except it only contributes for a value of  250. A  free cosmetic,  Commencing Stopwatch occupies one of your item slots before obtaining a Perfectly Timed Stopwatch."
@@ -9115,7 +9115,7 @@
       "effects": {
         "Passive": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 0,
           "inner": {
             "description": "Passive: After 14 minutes (reduced by 2 minutes whenever scoring a  takedown against an enemy champion), you receive a  Perfectly Timed Stopwatch. The Perfectly Timed Stopwatch is identical to the  Stopwatch, except it only contributes for a value of  250. A  free cosmetic,  Commencing Stopwatch occupies one of your item slots before obtaining a Perfectly Timed Stopwatch.",
@@ -9178,7 +9178,7 @@
       ],
       "metadata": {
         "attributes": "Undefined",
-        "damage_type": "Unknown",
+        "damage_type": "Unspecified",
         "kind": "PhaseRush"
       },
       "name": "Phase Rush",
@@ -9188,7 +9188,7 @@
       ],
       "riot_id": 0
     },
-    "damage_type": "Unknown",
+    "damage_type": "Unspecified",
     "data": {
       "descriptions": [
         "Passive: Damaging  basic attacks,  abilities, item effects, and summoner spells, as well as the application of  crowd control and  damage over time effects, apply  stacks against enemy  champions, up to one per cast instance per champion. Applying 3 stacks to a target within a 4 second period grants you ( 25% – 52.94% /  12.5% – 26.47%) (based on level)  bonus movement speed and 50%  slow resist for 3 seconds."
@@ -9196,7 +9196,7 @@
       "effects": {
         "Passive": {
           "base": null,
-          "formula": "25*(16 + ctx.level)/17",
+          "formula": "25 + (50-25)/17*(ctx.level-1)",
           "index": 0,
           "inner": {
             "description": "Passive: Damaging  basic attacks,  abilities, item effects, and summoner spells, as well as the application of  crowd control and  damage over time effects, apply  stacks against enemy  champions, up to one per cast instance per champion. Applying 3 stacks to a target within a 4 second period grants you ( 25% – 52.94% /  12.5% – 26.47%) (based on level)  bonus movement speed and 50%  slow resist for 3 seconds.",
@@ -9281,7 +9281,7 @@
         ]
       ],
       "melee": [
-        "(20 + 0.25*ctx.bonus_ad + 9.41*(-1 + ctx.level)) + (0.15*ctx.ability_power)",
+        "(((20.0) + (9.41 * (ctx.level - 1.0))) + ((0.25) * ctx.bonus_ad)) + ((0.15) * ctx.ability_power)",
         "zero"
       ],
       "metadata": {
@@ -9291,7 +9291,7 @@
       },
       "name": "Predator",
       "ranged": [
-        "(20 + 0.25*ctx.bonus_ad + 9.41*(-1 + ctx.level)) + (0.15*ctx.ability_power)",
+        "(((20.0) + (9.41 * (ctx.level - 1.0))) + ((0.25) * ctx.bonus_ad)) + ((0.15) * ctx.ability_power)",
         "zero"
       ],
       "riot_id": 0
@@ -9307,7 +9307,7 @@
       "effects": {
         "Active - Predator": {
           "base": null,
-          "formula": "25 + 2.3*(-1 + ctx.level)",
+          "formula": "(25.0) + (2.3 * (ctx.level - 1.0))",
           "index": 1,
           "inner": {
             "description": "Active - Predator: After a 0.25-second cast time, gain Predator for 10 seconds, which grants you  bonus movement speed while facing enemy  champions within 3000 units, ramping up to 25% – 50.3% (based on level) over the first 1.5 seconds. Enemy champions within 1500 units of you are also alerted of your presence.",
@@ -9332,7 +9332,7 @@
         },
         "Description 2": {
           "base": null,
-          "formula": "20 + 0.25*ctx.bonus_ad + 9.41*(-1 + ctx.level)",
+          "formula": "((20.0) + (9.41 * (ctx.level - 1.0))) + ((0.25) * ctx.bonus_ad)",
           "index": 2,
           "inner": {
             "description": "After ramping up, your next damaging basic attack or instance of ability damage against an enemy  champion ends Predator to deal 20 – 180 (based on level) (+ 25% bonus AD) (+ 15% AP) bonus physical or magic damage after a 0.25-second delay.",
@@ -9370,7 +9370,7 @@
         },
         "Description 2 [1]": {
           "base": null,
-          "formula": "0.15*ctx.ability_power",
+          "formula": "(0.15) * ctx.ability_power",
           "index": 2,
           "inner": {
             "description": "After ramping up, your next damaging basic attack or instance of ability damage against an enemy  champion ends Predator to deal 20 – 180 (based on level) (+ 25% bonus AD) (+ 15% AP) bonus physical or magic damage after a 0.25-second delay.",
@@ -9571,7 +9571,7 @@
         },
         "Description 3": {
           "base": null,
-          "formula": "0.6*ctx.ability_power + 0.25*ctx.bonus_ad",
+          "formula": "((0.25) * ctx.bonus_ad) + ((0.6) * ctx.ability_power)",
           "index": 3,
           "inner": {
             "description": "If「 25% bonus AD ≥ 15% AP, 」「 bonus AD ≥ 60% AP, 」deals physical damage. If otherwise, deals magic damage.",
@@ -9596,7 +9596,7 @@
         },
         "Passive": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 0,
           "inner": {
             "description": "Passive: Boots gain the active effect Predator.",
@@ -9614,11 +9614,11 @@
     },
     "melee": {
       "max_dmg": "zero",
-      "min_dmg": "(20 + 0.25*ctx.bonus_ad + 9.41*(-1 + ctx.level)) + (0.15*ctx.ability_power)"
+      "min_dmg": "(((20.0) + (9.41 * (ctx.level - 1.0))) + ((0.25) * ctx.bonus_ad)) + ((0.15) * ctx.ability_power)"
     },
     "ranged": {
       "max_dmg": "zero",
-      "min_dmg": "(20 + 0.25*ctx.bonus_ad + 9.41*(-1 + ctx.level)) + (0.15*ctx.ability_power)"
+      "min_dmg": "(((20.0) + (9.41 * (ctx.level - 1.0))) + ((0.25) * ctx.bonus_ad)) + ((0.15) * ctx.ability_power)"
     },
     "stable": true,
     "version": "15.24.1"
@@ -9657,7 +9657,7 @@
       ],
       "metadata": {
         "attributes": "Undefined",
-        "damage_type": "Unknown",
+        "damage_type": "Unspecified",
         "kind": "PresenceOfMind"
       },
       "name": "Presence of Mind",
@@ -9667,7 +9667,7 @@
       ],
       "riot_id": 0
     },
-    "damage_type": "Unknown",
+    "damage_type": "Unspecified",
     "data": {
       "descriptions": [
         "Passive: Scoring a  takedown against an enemy champion restores 15% of your maximum mana or 15% of your maximum energy after a 1-second delay.",
@@ -9709,7 +9709,7 @@
         },
         "Passive": {
           "base": null,
-          "formula": "0.15*ctx.max_mana",
+          "formula": "(0.15) * ctx.max_mana",
           "index": 0,
           "inner": {
             "description": "Passive: Scoring a  takedown against an enemy champion restores 15% of your maximum mana or 15% of your maximum energy after a 1-second delay.",
@@ -9803,7 +9803,7 @@
       "effects": {
         "Adaptive Damage": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 1,
           "inner": {
             "description": "Adaptive Damage: This effect deals either physical or magic damage depending on whether you have more  bonus attack damage or  ability power.Greater  bonus attack damage → Physical damageGreater  ability power → Magic damageIf the damage contribution of  AD and  AP are zero or otherwise equal, the damage type depends on the champion's  adaptive type.",
@@ -9815,7 +9815,7 @@
         },
         "Passive": {
           "base": null,
-          "formula": "80 + 7.06*(-1 + ctx.level) + 120*(-1 + ctx.level)/17",
+          "formula": "(40 + (160-40)/17*(ctx.level-1)) + ((40.0) + (7.06 * (ctx.level - 1.0)))",
           "index": 0,
           "inner": {
             "description": "Passive:  Basic attacks  on-hit against enemy  champions apply a  stack for 4 seconds, refreshing on subsequent applications, expiring upon attacking a new champion, and stacking up to 3 times. The third stack consumes all stacks to deal 40 – 174.12 (based on level) bonus  adaptive damage and grant you 8% increased damage against champions until 5 seconds after exiting combat with them.",
@@ -10085,7 +10085,7 @@
       ],
       "metadata": {
         "attributes": "Undefined",
-        "damage_type": "Unknown",
+        "damage_type": "Unspecified",
         "kind": "PrototypeOmnistone"
       },
       "name": "Prototype: Omnistone",
@@ -10095,7 +10095,7 @@
       ],
       "riot_id": 0
     },
-    "damage_type": "Unknown",
+    "damage_type": "Unspecified",
     "data": {
       "descriptions": [
         "Passive: Periodically grants a single use of another random keystone. The first granted keystone of the game lasts 3 minutes, and all keystones granted thereafter last 40 seconds. After a keystone is used or has expired, another random keystone is granted.",
@@ -10105,7 +10105,7 @@
       "effects": {
         "Applicable Keystones": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 1,
           "inner": {
             "description": "Applicable Keystones:\n Press the Attack,  Lethal Tempo,  Fleet Footwork,  Conqueror\n Electrocute,  Predator,  Dark Harvest,  Hail of Blades\n Predator is only available to champions who have already purchased boots.\n Dark Harvest's soul bonus will increase the effects for all keystones.\n Summon Aery,  Arcane Comet,  Phase Rush\n Grasp of the Undying,  Aftershock\n Aftershock is only available to champions who have learned a basic ability that can trigger it.\n Glacial Augment",
@@ -10117,7 +10117,7 @@
         },
         "Description 2": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 2,
           "inner": {
             "description": "Keystones cycle semi-randomly; if a keystone fits the current situation, it is more likely to be chosen, and if it doesn't, it may not be repeated for 5 rolls after it has been used.",
@@ -10129,7 +10129,7 @@
         },
         "Passive": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 0,
           "inner": {
             "description": "Passive: Periodically grants a single use of another random keystone. The first granted keystone of the game lasts 3 minutes, and all keystones granted thereafter last 40 seconds. After a keystone is used or has expired, another random keystone is granted.",
@@ -10190,7 +10190,7 @@
       ],
       "metadata": {
         "attributes": "Undefined",
-        "damage_type": "Unknown",
+        "damage_type": "Unspecified",
         "kind": "RavenousHunter"
       },
       "name": "Ravenous Hunter",
@@ -10200,7 +10200,7 @@
       ],
       "riot_id": 0
     },
-    "damage_type": "Unknown",
+    "damage_type": "Unspecified",
     "data": {
       "descriptions": [
         "Gain 1.2% omnivamp per Bounty Hunter stack, up to 6% at 5 stacks.",
@@ -10210,7 +10210,7 @@
       "effects": {
         "Description 0": {
           "base": null,
-          "formula": "0.072*ctx.stacks",
+          "formula": "((0.012) * ctx.stacks) + ((0.06) * ctx.stacks)",
           "index": 0,
           "inner": {
             "description": "Gain 1.2% omnivamp per Bounty Hunter stack, up to 6% at 5 stacks.",
@@ -10235,7 +10235,7 @@
         },
         "Description 1": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 1,
           "inner": {
             "description": "Earn a Bounty Hunter stack whenever scoring a  takedown against an enemy champion, up to one per unique champion.",
@@ -10247,7 +10247,7 @@
         },
         "Description 2": {
           "base": null,
-          "formula": "0.33*ctx.steelcaps_effect",
+          "formula": "(0.33) * ctx.steelcaps_effect",
           "index": 2,
           "inner": {
             "description": "Omnivamp is only 33% effective when dealing area of effect damage or damage through pets.",
@@ -10317,7 +10317,7 @@
       ],
       "metadata": {
         "attributes": "Undefined",
-        "damage_type": "Unknown",
+        "damage_type": "Unspecified",
         "kind": "RelentlessHunter"
       },
       "name": "Relentless Hunter",
@@ -10327,7 +10327,7 @@
       ],
       "riot_id": 0
     },
-    "damage_type": "Unknown",
+    "damage_type": "Unspecified",
     "data": {
       "descriptions": [
         "Passive: Gain  8 bonus movement speed while out of combat per Bounty Hunter stack, up to 40 at 5 stacks.",
@@ -10336,7 +10336,7 @@
       "effects": {
         "Description 1": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 1,
           "inner": {
             "description": "Earn a Bounty Hunter stack whenever scoring a  takedown against an enemy champion, up to one per unique champion.",
@@ -10348,7 +10348,7 @@
         },
         "Passive": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 0,
           "inner": {
             "description": "Passive: Gain  8 bonus movement speed while out of combat per Bounty Hunter stack, up to 40 at 5 stacks.",
@@ -10411,7 +10411,7 @@
       ],
       "metadata": {
         "attributes": "Undefined",
-        "damage_type": "Unknown",
+        "damage_type": "Unspecified",
         "kind": "Revitalize"
       },
       "name": "Revitalize",
@@ -10421,7 +10421,7 @@
       ],
       "riot_id": 0
     },
-    "damage_type": "Unknown",
+    "damage_type": "Unspecified",
     "data": {
       "descriptions": [
         "Passive: Grants  5% Heal and shield power.",
@@ -10431,7 +10431,7 @@
       "effects": {
         "Description 1": {
           "base": null,
-          "formula": "0.1*ctx.max_health",
+          "formula": "(0.1) * ctx.max_health",
           "index": 1,
           "inner": {
             "description": "Outgoing  healing and outgoing  shielding are increased by 10% on targets below 40% of their maximum health.",
@@ -10450,7 +10450,7 @@
         },
         "Description 2": {
           "base": null,
-          "formula": "0.1*ctx.max_health",
+          "formula": "(0.1) * ctx.max_health",
           "index": 2,
           "inner": {
             "description": "Incoming healing, incoming shielding, self-healing and self-shielding are increased by 10% while you are below 40% of your maximum health.",
@@ -10469,7 +10469,7 @@
         },
         "Passive": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 0,
           "inner": {
             "description": "Passive: Grants  5% Heal and shield power.",
@@ -10537,7 +10537,7 @@
         ]
       ],
       "melee": [
-        "(20*(16 + ctx.level)/17)",
+        "(20 + (40-20)/17*(ctx.level-1))",
         "zero"
       ],
       "metadata": {
@@ -10547,7 +10547,7 @@
       },
       "name": "Scorch",
       "ranged": [
-        "(20*(16 + ctx.level)/17)",
+        "(20 + (40-20)/17*(ctx.level-1))",
         "zero"
       ],
       "riot_id": 0
@@ -10560,7 +10560,7 @@
       "effects": {
         "Passive": {
           "base": null,
-          "formula": "20*(16 + ctx.level)/17",
+          "formula": "20 + (40-20)/17*(ctx.level-1)",
           "index": 0,
           "inner": {
             "description": "Passive: Dealing  ability damage to an enemy  champion sets them on fire, dealing them 20 – 42.35 (based on level) bonus magic damage after 1 second.",
@@ -10601,11 +10601,11 @@
     },
     "melee": {
       "max_dmg": "zero",
-      "min_dmg": "(20*(16 + ctx.level)/17)"
+      "min_dmg": "(20 + (40-20)/17*(ctx.level-1))"
     },
     "ranged": {
       "max_dmg": "zero",
-      "min_dmg": "(20*(16 + ctx.level)/17)"
+      "min_dmg": "(20 + (40-20)/17*(ctx.level-1))"
     },
     "stable": true,
     "version": "15.24.1"
@@ -10644,7 +10644,7 @@
       ],
       "metadata": {
         "attributes": "Undefined",
-        "damage_type": "Unknown",
+        "damage_type": "Unspecified",
         "kind": "SecondWind"
       },
       "name": "Second Wind",
@@ -10654,7 +10654,7 @@
       ],
       "riot_id": 0
     },
-    "damage_type": "Unknown",
+    "damage_type": "Unspecified",
     "data": {
       "descriptions": [
         "Passive: After taking damage from an enemy  champion,  regenerate 4% of your missing health over 10 seconds, refreshing on subsequent damage."
@@ -10662,7 +10662,7 @@
       "effects": {
         "Passive": {
           "base": null,
-          "formula": "0.04*ctx.missing_health",
+          "formula": "(0.04) * ctx.missing_health",
           "index": 0,
           "inner": {
             "description": "Passive: After taking damage from an enemy  champion,  regenerate 4% of your missing health over 10 seconds, refreshing on subsequent damage.",
@@ -10734,7 +10734,7 @@
         ]
       ],
       "melee": [
-        "(5 + 0.025*ctx.bonus_health + 25*(-1 + ctx.level)/17)",
+        "((5 + (30-5)/17*(ctx.level-1)) + ((0.025) * ctx.bonus_health))",
         "zero"
       ],
       "metadata": {
@@ -10744,7 +10744,7 @@
       },
       "name": "Shield Bash",
       "ranged": [
-        "(5 + 0.025*ctx.bonus_health + 25*(-1 + ctx.level)/17)",
+        "((5 + (30-5)/17*(ctx.level-1)) + ((0.025) * ctx.bonus_health))",
         "zero"
       ],
       "riot_id": 0
@@ -10758,7 +10758,7 @@
       "effects": {
         "Adaptive Damage": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 1,
           "inner": {
             "description": "Adaptive Damage: This effect deals either physical or magic damage depending on whether you have more  bonus attack damage or  ability power.Greater  bonus attack damage → Physical damageGreater  ability power → Magic damageIf the damage contribution of  AD and  AP are zero or otherwise equal, the damage type depends on the champion's  adaptive type.",
@@ -10770,7 +10770,7 @@
         },
         "Passive": {
           "base": null,
-          "formula": "5 + 0.025*ctx.bonus_health + 25*(-1 + ctx.level)/17",
+          "formula": "(5 + (30-5)/17*(ctx.level-1)) + ((0.025) * ctx.bonus_health)",
           "index": 0,
           "inner": {
             "description": "Passive: Whenever you gain a  shield, your next  basic attack against an enemy  champion is empowered to deal 5 – 32.94 (based on level) (+ 2.5% bonus health) (+ 15% shield amount) bonus  adaptive damage. The empowered attack lasts for up to 2 seconds after the shield expires.",
@@ -10810,7 +10810,7 @@
         },
         "Passive [1]": {
           "base": null,
-          "formula": "0.15*ctx.steelcaps_effect",
+          "formula": "(0.15) * ctx.steelcaps_effect",
           "index": 0,
           "inner": {
             "description": "Passive: Whenever you gain a  shield, your next  basic attack against an enemy  champion is empowered to deal 5 – 32.94 (based on level) (+ 2.5% bonus health) (+ 15% shield amount) bonus  adaptive damage. The empowered attack lasts for up to 2 seconds after the shield expires.",
@@ -10829,7 +10829,7 @@
         },
         "Passive [2]": {
           "base": null,
-          "formula": "5 + 1.47*(-1 + ctx.level)",
+          "formula": "(5.0) + (1.47 * (ctx.level - 1.0))",
           "index": 0,
           "inner": {
             "description": "Passive: Whenever you gain a  shield, your next  basic attack against an enemy  champion is empowered to deal 5 – 32.94 (based on level) (+ 2.5% bonus health) (+ 15% shield amount) bonus  adaptive damage. The empowered attack lasts for up to 2 seconds after the shield expires.",
@@ -11029,7 +11029,7 @@
         },
         "Passive [3]": {
           "base": null,
-          "formula": "5 + 1.47*(-1 + ctx.level)",
+          "formula": "(5.0) + (1.47 * (ctx.level - 1.0))",
           "index": 0,
           "inner": {
             "description": "Passive: Whenever you gain a  shield, your next  basic attack against an enemy  champion is empowered to deal 5 – 32.94 (based on level) (+ 2.5% bonus health) (+ 15% shield amount) bonus  adaptive damage. The empowered attack lasts for up to 2 seconds after the shield expires.",
@@ -11237,11 +11237,11 @@
     },
     "melee": {
       "max_dmg": "zero",
-      "min_dmg": "(5 + 0.025*ctx.bonus_health + 25*(-1 + ctx.level)/17)"
+      "min_dmg": "((5 + (30-5)/17*(ctx.level-1)) + ((0.025) * ctx.bonus_health))"
     },
     "ranged": {
       "max_dmg": "zero",
-      "min_dmg": "(5 + 0.025*ctx.bonus_health + 25*(-1 + ctx.level)/17)"
+      "min_dmg": "((5 + (30-5)/17*(ctx.level-1)) + ((0.025) * ctx.bonus_health))"
     },
     "stable": true,
     "version": "15.24.1"
@@ -11280,7 +11280,7 @@
       ],
       "metadata": {
         "attributes": "Undefined",
-        "damage_type": "Unknown",
+        "damage_type": "Unspecified",
         "kind": "SixthSense"
       },
       "name": "Sixth Sense",
@@ -11290,7 +11290,7 @@
       ],
       "riot_id": 0
     },
-    "damage_type": "Unknown",
+    "damage_type": "Unspecified",
     "data": {
       "descriptions": [
         "Passive: Upon moving near an un-tracked enemy  ward, it is automatically tracked with a  ward timer.",
@@ -11299,7 +11299,7 @@
       "effects": {
         "Description 1": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 1,
           "inner": {
             "description": "At level 11, additionally  reveals nearby enemy stealthed wards for 10 seconds upon being triggered.",
@@ -11311,7 +11311,7 @@
         },
         "Passive": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 0,
           "inner": {
             "description": "Passive: Upon moving near an un-tracked enemy  ward, it is automatically tracked with a  ward timer.",
@@ -11374,7 +11374,7 @@
       ],
       "metadata": {
         "attributes": "Undefined",
-        "damage_type": "Unknown",
+        "damage_type": "Unspecified",
         "kind": "StormraidersSurge"
       },
       "name": "Stormraider's Surge",
@@ -11384,7 +11384,7 @@
       ],
       "riot_id": 0
     },
-    "damage_type": "Unknown",
+    "damage_type": "Unspecified",
     "data": {
       "descriptions": [
         "Passive: Dealing damage to an enemy champion equal to 25% of their maximum health within 3 seconds grants you ( 40% /  30%) bonus movement speed and 50%  slow resist for 3 seconds."
@@ -11392,7 +11392,7 @@
       "effects": {
         "Passive": {
           "base": null,
-          "formula": "0.25*ctx.max_health",
+          "formula": "(0.25) * ctx.max_health",
           "index": 0,
           "inner": {
             "description": "Passive: Dealing damage to an enemy champion equal to 25% of their maximum health within 3 seconds grants you ( 40% /  30%) bonus movement speed and 50%  slow resist for 3 seconds.",
@@ -11460,7 +11460,7 @@
         ]
       ],
       "melee": [
-        "(20 + 3.53*(-1 + ctx.level))",
+        "((20.0) + (3.53 * (ctx.level - 1.0)))",
         "zero"
       ],
       "metadata": {
@@ -11470,7 +11470,7 @@
       },
       "name": "Sudden Impact",
       "ranged": [
-        "(20 + 3.53*(-1 + ctx.level))",
+        "((20.0) + (3.53 * (ctx.level - 1.0)))",
         "zero"
       ],
       "riot_id": 0
@@ -11483,7 +11483,7 @@
       "effects": {
         "Passive": {
           "base": null,
-          "formula": "20 + 3.53*(-1 + ctx.level)",
+          "formula": "(20.0) + (3.53 * (ctx.level - 1.0))",
           "index": 0,
           "inner": {
             "description": "Passive: Dealing damage to an enemy  champion within 4 seconds of using a  dash or  blink, or exiting from  stealth, deals 20 – 80 (based on level) bonus true damage to them.",
@@ -11522,11 +11522,11 @@
     },
     "melee": {
       "max_dmg": "zero",
-      "min_dmg": "(20 + 3.53*(-1 + ctx.level))"
+      "min_dmg": "((20.0) + (3.53 * (ctx.level - 1.0)))"
     },
     "ranged": {
       "max_dmg": "zero",
-      "min_dmg": "(20 + 3.53*(-1 + ctx.level))"
+      "min_dmg": "((20.0) + (3.53 * (ctx.level - 1.0)))"
     },
     "stable": true,
     "version": "15.24.1"
@@ -11568,7 +11568,7 @@
         ]
       ],
       "melee": [
-        "(10 + 0.1*ctx.bonus_ad + 40*(-1 + ctx.level)/17) + (0.05*ctx.ability_power)",
+        "((10 + (40/17)*(ctx.level-1)) + ((0.1) * ctx.bonus_ad)) + ((0.05) * ctx.ability_power)",
         "zero"
       ],
       "metadata": {
@@ -11578,7 +11578,7 @@
       },
       "name": "Summon Aery",
       "ranged": [
-        "(10 + 0.1*ctx.bonus_ad + 40*(-1 + ctx.level)/17) + (0.05*ctx.ability_power)",
+        "((10 + (40/17)*(ctx.level-1)) + ((0.1) * ctx.bonus_ad)) + ((0.05) * ctx.ability_power)",
         "zero"
       ],
       "riot_id": 0
@@ -11594,7 +11594,7 @@
       "effects": {
         "Adaptive Damage": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 3,
           "inner": {
             "description": "Adaptive Damage: This effect deals either physical or magic damage depending on whether you have more  bonus attack damage or  ability power.Greater  bonus attack damage → Physical damageGreater  ability power → Magic damageIf the damage contribution of  AD and  AP are zero or otherwise equal, the damage type depends on the champion's  adaptive type.",
@@ -11606,7 +11606,7 @@
         },
         "Description 1": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 1,
           "inner": {
             "description": "Aery applies her effects to the affected champion upon arrival. She then lingers on the target for 2 seconds before flying back to the user, and cannot be sent out again until she returns. While on her way back, she is initially very slow, but gradually accelerates, and can be picked up by moving near her.",
@@ -11618,7 +11618,7 @@
         },
         "Description 2": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 2,
           "inner": {
             "description": "Does not trigger on  persistent  proc damage.",
@@ -11630,7 +11630,7 @@
         },
         "Passive": {
           "base": null,
-          "formula": "10 + 0.1*ctx.bonus_ad + 40*(-1 + ctx.level)/17",
+          "formula": "(10 + (40/17)*(ctx.level-1)) + ((0.1) * ctx.bonus_ad)",
           "index": 0,
           "inner": {
             "description": "Passive: Damaging  basic attacks,  abilities, and item effects against an enemy  champion signal Aery to pounce at them over 0.45 seconds, dealing 10 – 54.71 (based on level) (+ 10% bonus AD) (+ 5% AP)  adaptive damage.  Healing,  shielding, or  buffing an allied champion signals Aery to leap to their side over 0.35 seconds,  shielding them for 30 – 108.24 (based on level) (+ 10% bonus AD) (+ 5% AP) for 2 seconds.",
@@ -11670,7 +11670,7 @@
         },
         "Passive [1]": {
           "base": null,
-          "formula": "0.05*ctx.ability_power",
+          "formula": "(0.05) * ctx.ability_power",
           "index": 0,
           "inner": {
             "description": "Passive: Damaging  basic attacks,  abilities, and item effects against an enemy  champion signal Aery to pounce at them over 0.45 seconds, dealing 10 – 54.71 (based on level) (+ 10% bonus AD) (+ 5% AP)  adaptive damage.  Healing,  shielding, or  buffing an allied champion signals Aery to leap to their side over 0.35 seconds,  shielding them for 30 – 108.24 (based on level) (+ 10% bonus AD) (+ 5% AP) for 2 seconds.",
@@ -11689,7 +11689,7 @@
         },
         "Passive [2]": {
           "base": null,
-          "formula": "2*(5 + 1.175*(-1 + ctx.level))",
+          "formula": "(10.0) + (2.35 * (ctx.level - 1.0))",
           "index": 0,
           "inner": {
             "description": "Passive: Damaging  basic attacks,  abilities, and item effects against an enemy  champion signal Aery to pounce at them over 0.45 seconds, dealing 10 – 54.71 (based on level) (+ 10% bonus AD) (+ 5% AP)  adaptive damage.  Healing,  shielding, or  buffing an allied champion signals Aery to leap to their side over 0.35 seconds,  shielding them for 30 – 108.24 (based on level) (+ 10% bonus AD) (+ 5% AP) for 2 seconds.",
@@ -11889,7 +11889,7 @@
         },
         "Passive [3]": {
           "base": null,
-          "formula": "2*(15 + 2.06*(-1 + ctx.level))",
+          "formula": "(30.0) + (4.12 * (ctx.level - 1.0))",
           "index": 0,
           "inner": {
             "description": "Passive: Damaging  basic attacks,  abilities, and item effects against an enemy  champion signal Aery to pounce at them over 0.45 seconds, dealing 10 – 54.71 (based on level) (+ 10% bonus AD) (+ 5% AP)  adaptive damage.  Healing,  shielding, or  buffing an allied champion signals Aery to leap to their side over 0.35 seconds,  shielding them for 30 – 108.24 (based on level) (+ 10% bonus AD) (+ 5% AP) for 2 seconds.",
@@ -12095,11 +12095,11 @@
     },
     "melee": {
       "max_dmg": "zero",
-      "min_dmg": "(10 + 0.1*ctx.bonus_ad + 40*(-1 + ctx.level)/17) + (0.05*ctx.ability_power)"
+      "min_dmg": "((10 + (40/17)*(ctx.level-1)) + ((0.1) * ctx.bonus_ad)) + ((0.05) * ctx.ability_power)"
     },
     "ranged": {
       "max_dmg": "zero",
-      "min_dmg": "(10 + 0.1*ctx.bonus_ad + 40*(-1 + ctx.level)/17) + (0.05*ctx.ability_power)"
+      "min_dmg": "((10 + (40/17)*(ctx.level-1)) + ((0.1) * ctx.bonus_ad)) + ((0.05) * ctx.ability_power)"
     },
     "stable": true,
     "version": "15.24.1"
@@ -12138,7 +12138,7 @@
       ],
       "metadata": {
         "attributes": "Undefined",
-        "damage_type": "Unknown",
+        "damage_type": "Unspecified",
         "kind": "TasteOfBlood"
       },
       "name": "Taste of Blood",
@@ -12148,7 +12148,7 @@
       ],
       "riot_id": 0
     },
-    "damage_type": "Unknown",
+    "damage_type": "Unspecified",
     "data": {
       "descriptions": [
         "Passive: Damaging an enemy  champion  heals you for 16 – 42.82 (based on level) (+ 10% bonus AD) (+ 5% AP).",
@@ -12157,7 +12157,7 @@
       "effects": {
         "Description 1": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 1,
           "inner": {
             "description": "Does not trigger at full health.",
@@ -12169,7 +12169,7 @@
         },
         "Passive": {
           "base": null,
-          "formula": "16 + 0.1*ctx.bonus_ad + 24*(-1 + ctx.level)/17",
+          "formula": "(16 + (40-16)/17*(ctx.level-1)) + ((0.1) * ctx.bonus_ad)",
           "index": 0,
           "inner": {
             "description": "Passive: Damaging an enemy  champion  heals you for 16 – 42.82 (based on level) (+ 10% bonus AD) (+ 5% AP).",
@@ -12209,7 +12209,7 @@
         },
         "Passive [1]": {
           "base": null,
-          "formula": "0.05*ctx.ability_power",
+          "formula": "(0.05) * ctx.ability_power",
           "index": 0,
           "inner": {
             "description": "Passive: Damaging an enemy  champion  heals you for 16 – 42.82 (based on level) (+ 10% bonus AD) (+ 5% AP).",
@@ -12228,7 +12228,7 @@
         },
         "Passive [2]": {
           "base": null,
-          "formula": "16 + 1.41*(-1 + ctx.level)",
+          "formula": "(16.0) + (1.41 * (ctx.level - 1.0))",
           "index": 0,
           "inner": {
             "description": "Passive: Damaging an enemy  champion  heals you for 16 – 42.82 (based on level) (+ 10% bonus AD) (+ 5% AP).",
@@ -12479,7 +12479,7 @@
       ],
       "metadata": {
         "attributes": "Undefined",
-        "damage_type": "Unknown",
+        "damage_type": "Unspecified",
         "kind": "TheUltimateHat"
       },
       "name": "The Ultimate Hat",
@@ -12489,7 +12489,7 @@
       ],
       "riot_id": 0
     },
-    "damage_type": "Unknown",
+    "damage_type": "Unspecified",
     "data": {
       "descriptions": [
         "Passive: Reduces the cooldown of your ultimate ability by 5%, increased by 2% each time you cast your ultimate, up to 15% after 5 casts.",
@@ -12498,7 +12498,7 @@
       "effects": {
         "Description 1": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 1,
           "inner": {
             "description": "This effect stacks multiplicatively with  cooldown reduction.",
@@ -12510,7 +12510,7 @@
         },
         "Passive": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 0,
           "inner": {
             "description": "Passive: Reduces the cooldown of your ultimate ability by 5%, increased by 2% each time you cast your ultimate, up to 15% after 5 casts.",
@@ -12573,7 +12573,7 @@
       ],
       "metadata": {
         "attributes": "Undefined",
-        "damage_type": "Unknown",
+        "damage_type": "Unspecified",
         "kind": "TimeWarpTonic"
       },
       "name": "Time Warp Tonic",
@@ -12583,7 +12583,7 @@
       ],
       "riot_id": 0
     },
-    "damage_type": "Unknown",
+    "damage_type": "Unspecified",
     "data": {
       "descriptions": [
         "Passive: Upon consuming a potion (), you additionally  heal equal to 40% of its total health restoration.",
@@ -12592,7 +12592,7 @@
       "effects": {
         "Description 1": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 1,
           "inner": {
             "description": "If a health potion is consumed while one is already active, this effect will trigger on the activation of the next potion once the restoration of the current one ends.",
@@ -12604,7 +12604,7 @@
         },
         "Passive": {
           "base": null,
-          "formula": "0.4*ctx.steelcaps_effect",
+          "formula": "(0.4) * ctx.steelcaps_effect",
           "index": 0,
           "inner": {
             "description": "Passive: Upon consuming a potion (), you additionally  heal equal to 40% of its total health restoration.",
@@ -12675,7 +12675,7 @@
       ],
       "metadata": {
         "attributes": "Undefined",
-        "damage_type": "Unknown",
+        "damage_type": "Unspecified",
         "kind": "Transcendence"
       },
       "name": "Transcendence",
@@ -12685,7 +12685,7 @@
       ],
       "riot_id": 0
     },
-    "damage_type": "Unknown",
+    "damage_type": "Unspecified",
     "data": {
       "descriptions": [
         "Passive: Gain bonuses upon reaching the following levels:\nLevel 5: + 5 ability haste.\nLevel 8: + 5 ability haste.\nLevel 11: Scoring a  takedown against an enemy  champion reduces the current cooldowns of your basic abilities by 20%."
@@ -12693,7 +12693,7 @@
       "effects": {
         "Passive": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 0,
           "inner": {
             "description": "Passive: Gain bonuses upon reaching the following levels:\nLevel 5: + 5 ability haste.\nLevel 8: + 5 ability haste.\nLevel 11: Scoring a  takedown against an enemy  champion reduces the current cooldowns of your basic abilities by 20%.",
@@ -12756,7 +12756,7 @@
       ],
       "metadata": {
         "attributes": "Undefined",
-        "damage_type": "Unknown",
+        "damage_type": "Unspecified",
         "kind": "TreasureHunter"
       },
       "name": "Treasure Hunter",
@@ -12766,7 +12766,7 @@
       ],
       "riot_id": 0
     },
-    "damage_type": "Unknown",
+    "damage_type": "Unspecified",
     "data": {
       "descriptions": [
         "Gain  50 (+  20 per Bounty Hunter stack) per unique takedown, up to  450 at 5 unique takedowns.",
@@ -12776,7 +12776,7 @@
       "effects": {
         "Description 0": {
           "base": null,
-          "formula": "10*(2*ctx.stacks + 5*ctx.steelcaps_effect)",
+          "formula": "((20.0) * ctx.stacks) + ((50.0) * ctx.steelcaps_effect)",
           "index": 0,
           "inner": {
             "description": "Gain  50 (+  20 per Bounty Hunter stack) per unique takedown, up to  450 at 5 unique takedowns.",
@@ -12801,7 +12801,7 @@
         },
         "Description 1": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 1,
           "inner": {
             "description": "1st unique takedown:  50, 2nd:  70, 3rd:  90, 4th:  110, 5th:  130.",
@@ -12813,7 +12813,7 @@
         },
         "Description 2": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 2,
           "inner": {
             "description": "Earn a Bounty Hunter stack whenever scoring a  takedown against an enemy champion, up to one per unique champion.",
@@ -12876,7 +12876,7 @@
       ],
       "metadata": {
         "attributes": "Undefined",
-        "damage_type": "Unknown",
+        "damage_type": "Unspecified",
         "kind": "TripleTonic"
       },
       "name": "Triple Tonic",
@@ -12886,7 +12886,7 @@
       ],
       "riot_id": 0
     },
-    "damage_type": "Unknown",
+    "damage_type": "Unspecified",
     "data": {
       "descriptions": [
         "Passive: Gain an Elixir upon reaching each of the following levels:\nLevel 3:  Elixir of Avarice\nLevel 6:  Elixir of Force\nLevel 9:  Elixir of Skill",
@@ -12895,7 +12895,7 @@
       "effects": {
         "Description 1": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 1,
           "inner": {
             "description": "If the inventory is full upon the user becoming eligible to receive  Elixir of Avarice or  Elixir of Force, each item will be granted as soon as an empty slot is available. If the inventory is full upon becoming eligible to receive  Elixir of Skill, the item is consumed automatically.",
@@ -12907,7 +12907,7 @@
         },
         "Passive": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 0,
           "inner": {
             "description": "Passive: Gain an Elixir upon reaching each of the following levels:\nLevel 3:  Elixir of Avarice\nLevel 6:  Elixir of Force\nLevel 9:  Elixir of Skill",
@@ -12970,7 +12970,7 @@
       ],
       "metadata": {
         "attributes": "Undefined",
-        "damage_type": "Unknown",
+        "damage_type": "Unspecified",
         "kind": "Triumph"
       },
       "name": "Triumph",
@@ -12980,7 +12980,7 @@
       ],
       "riot_id": 0
     },
-    "damage_type": "Unknown",
+    "damage_type": "Unspecified",
     "data": {
       "descriptions": [
         "Passive: Scoring a  takedown against an enemy champion  heals you for 2.5% of your maximum health (+ 5% of your missing health) and grants you an additional  20, both after a 1-second delay."
@@ -12988,7 +12988,7 @@
       "effects": {
         "Passive": {
           "base": null,
-          "formula": "0.025*ctx.max_health + 0.05*ctx.missing_health",
+          "formula": "((0.05) * ctx.missing_health) + ((0.025) * ctx.max_health)",
           "index": 0,
           "inner": {
             "description": "Passive: Scoring a  takedown against an enemy champion  heals you for 2.5% of your maximum health (+ 5% of your missing health) and grants you an additional  20, both after a 1-second delay.",
@@ -13066,7 +13066,7 @@
       ],
       "metadata": {
         "attributes": "Undefined",
-        "damage_type": "Unknown",
+        "damage_type": "Unspecified",
         "kind": "UltimateHunter"
       },
       "name": "Ultimate Hunter",
@@ -13076,7 +13076,7 @@
       ],
       "riot_id": 0
     },
-    "damage_type": "Unknown",
+    "damage_type": "Unspecified",
     "data": {
       "descriptions": [
         "Gain 6 (+ 5 per Bounty Hunter stack) ultimate haste, up to 31 at 5 stacks.",
@@ -13085,7 +13085,7 @@
       "effects": {
         "Description 0": {
           "base": null,
-          "formula": "5*ctx.stacks",
+          "formula": "(5.0) * ctx.stacks",
           "index": 0,
           "inner": {
             "description": "Gain 6 (+ 5 per Bounty Hunter stack) ultimate haste, up to 31 at 5 stacks.",
@@ -13104,7 +13104,7 @@
         },
         "Description 1": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 1,
           "inner": {
             "description": "Earn a Bounty Hunter stack whenever scoring a  takedown against an enemy  champion, up to one per unique champion.",
@@ -13167,7 +13167,7 @@
       ],
       "metadata": {
         "attributes": "Undefined",
-        "damage_type": "Unknown",
+        "damage_type": "Unspecified",
         "kind": "Unflinching"
       },
       "name": "Unflinching",
@@ -13177,7 +13177,7 @@
       ],
       "riot_id": 0
     },
-    "damage_type": "Unknown",
+    "damage_type": "Unspecified",
     "data": {
       "descriptions": [
         "Passive: While afflicted with  crowd control sourced from enemy  champions, gain 10 bonus armor and 10 bonus magic resistance, lingering for 2 seconds after the impairment ends."
@@ -13185,7 +13185,7 @@
       "effects": {
         "Passive": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 0,
           "inner": {
             "description": "Passive: While afflicted with  crowd control sourced from enemy  champions, gain 10 bonus armor and 10 bonus magic resistance, lingering for 2 seconds after the impairment ends.",
@@ -13248,7 +13248,7 @@
       ],
       "metadata": {
         "attributes": "Undefined",
-        "damage_type": "Unknown",
+        "damage_type": "Unspecified",
         "kind": "UnsealedSpellbook"
       },
       "name": "Unsealed Spellbook",
@@ -13258,7 +13258,7 @@
       ],
       "riot_id": 0
     },
-    "damage_type": "Unknown",
+    "damage_type": "Unspecified",
     "data": {
       "descriptions": [
         "Passive: While not channeling  Teleport and being out-of-combat for 5 seconds, you can swap one of your equipped summoner spells to a new, single use summoner spell. You cannot select a summoner spell you have already equipped.",
@@ -13268,7 +13268,7 @@
       "effects": {
         "6:00": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 1,
           "inner": {
             "description": "Your first swap becomes available at 6:00. Swaps have an initial cooldown of 270 seconds; selecting a unique summoner spell reduces the swap cooldown by 25 seconds. You must swap to 3 different summoner spells before returning to one you have already used.",
@@ -13280,7 +13280,7 @@
         },
         "Description 2": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 2,
           "inner": {
             "description": "Selecting a summoner spell places it on a 5-second cooldown. Using a selected summoner spell places the summoner spell in the same slot on a 10-second cooldown.",
@@ -13292,7 +13292,7 @@
         },
         "Passive": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 0,
           "inner": {
             "description": "Passive: While not channeling  Teleport and being out-of-combat for 5 seconds, you can swap one of your equipped summoner spells to a new, single use summoner spell. You cannot select a summoner spell you have already equipped.",
@@ -13353,7 +13353,7 @@
       ],
       "metadata": {
         "attributes": "Undefined",
-        "damage_type": "Unknown",
+        "damage_type": "Unspecified",
         "kind": "Waterwalking"
       },
       "name": "Waterwalking",
@@ -13363,7 +13363,7 @@
       ],
       "riot_id": 0
     },
-    "damage_type": "Unknown",
+    "damage_type": "Unspecified",
     "data": {
       "descriptions": [
         "Passive: While in the river, you gain  10 bonus movement speed and 7.8 – 19.2 (based on level) bonus Attack Damage  or 13 – 32 (based on level) Ability Power (Adaptive).",
@@ -13372,7 +13372,7 @@
       "effects": {
         "Adaptive": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 1,
           "inner": {
             "description": "Adaptive: Grants bonuses based on which stat you already have the most bonuses for. Defaults to the first listed.",
@@ -13384,7 +13384,7 @@
         },
         "Passive": {
           "base": null,
-          "formula": "7.8 + 0.6*(-1 + ctx.level) + 0.6*(12 + ctx.level)",
+          "formula": "((13 + (30-13)/17*(ctx.level-1))*0.6) + ((7.8) + (0.6 * (ctx.level - 1.0)))",
           "index": 0,
           "inner": {
             "description": "Passive: While in the river, you gain  10 bonus movement speed and 7.8 – 19.2 (based on level) bonus Attack Damage  or 13 – 32 (based on level) Ability Power (Adaptive).",
@@ -13605,7 +13605,7 @@
         },
         "Passive [1]": {
           "base": null,
-          "formula": "12 + ctx.level",
+          "formula": "(13.0) + (1.0 * (ctx.level - 1.0))",
           "index": 0,
           "inner": {
             "description": "Passive: While in the river, you gain  10 bonus movement speed and 7.8 – 19.2 (based on level) bonus Attack Damage  or 13 – 32 (based on level) Ability Power (Adaptive).",
@@ -13856,7 +13856,7 @@
       ],
       "metadata": {
         "attributes": "Undefined",
-        "damage_type": "Unknown",
+        "damage_type": "Unspecified",
         "kind": "ZombieWard"
       },
       "name": "Zombie Ward",
@@ -13866,7 +13866,7 @@
       ],
       "riot_id": 0
     },
-    "damage_type": "Unknown",
+    "damage_type": "Unspecified",
     "data": {
       "descriptions": [
         "Passive: Scoring a  takedown against an enemy  ward (excluding  Zombie Wards) within 10 seconds of damaging it summons an allied  Zombie Ward in its place.",
@@ -13877,7 +13877,7 @@
       "effects": {
         "Description 1": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 1,
           "inner": {
             "description": "Gain 1.2 bonus Attack Damage  or 2 Ability Power (Adaptive) for every Zombie Ward spawned, up to 10, for a maximum of 12 bonus Attack Damage  or 20 Ability Power (Adaptive). After spawning 10 Zombie Wards, gain an additional 6 bonus Attack Damage  or 10 Ability Power (Adaptive).",
@@ -13889,7 +13889,7 @@
         },
         "Description 2": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 2,
           "inner": {
             "description": "Zombie Wards grant  sight over the surrounding 900 units, are  untargetable to your team, are visible to the enemy team, have  1 health, last for 120 seconds and don't count towards your ward limit.",
@@ -13901,7 +13901,7 @@
         },
         "Description 3": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 3,
           "inner": {
             "description": "Destroying a Zombie Ward will grant  1.",
@@ -13913,7 +13913,7 @@
         },
         "Passive": {
           "base": null,
-          "formula": "0",
+          "formula": "0.0",
           "index": 0,
           "inner": {
             "description": "Passive: Scoring a  takedown against an enemy  ward (excluding  Zombie Wards) within 10 seconds of damaging it summons an allied  Zombie Ward in its place.",

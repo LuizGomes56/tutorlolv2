@@ -215,7 +215,7 @@ impl Rune {
     }
 
     pub fn end(&mut self) -> MayFail {
-        if matches!(self.damage_type, DamageType::Unknown) {
+        if matches!(self.damage_type, DamageType::Unspecified) {
             println!(
                 "[warn] {rune_id} has unknown damage type",
                 rune_id = self.data.rune_id

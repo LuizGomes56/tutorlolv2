@@ -669,7 +669,7 @@ const_enum! {
         True,
         Adaptive,
         #[default]
-        Unknown,
+        Unspecified,
     }
 }
 
@@ -704,7 +704,7 @@ impl FromStr for DamageType {
             "MIXED_DAMAGE" | "Mixed" | "Magic True" => Ok(DamageType::Mixed),
             "TRUE_DAMAGE" | "True" | "true" => Ok(DamageType::True),
             "ADAPTIVE_DAMAGE" | "adaptive" => Ok(DamageType::Adaptive),
-            _ => Ok(DamageType::Unknown),
+            _ => Ok(DamageType::Unspecified),
         }
     }
 }

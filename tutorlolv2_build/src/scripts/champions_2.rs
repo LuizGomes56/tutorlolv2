@@ -1,4 +1,5 @@
 use crate::scripts::{
+    StringExt,
     batch::{Batch, FmtArgs, FmtOutput},
     utils::{
         StaticVar, Tag, get_generator, get_id_enum, get_name_phf, get_static_vars, simplify,
@@ -12,6 +13,7 @@ use tutorlolv2_dev::{
     JsonRead, MayFail, decl_champions::Ability, gen_factories::wiki_champions::ChampionBuild,
     generators::gen_factories::wiki_champions::Champion,
 };
+use tutorlolv2_fmt::to_ssnake;
 
 pub fn generate_champions() -> MayFail<(HashMap<&'static str, String>, String)> {
     let data = BTreeMap::<String, Champion>::from_file("internal/champions.json")?;
@@ -73,7 +75,6 @@ pub fn generate_champions() -> MayFail<(HashMap<&'static str, String>, String)> 
                     merge_data: {merge_data:#?}
                 }};
 
-                #[derive(Clone, Debug, Deserialize, Serialize)]
                 pub static {upper_id}: Champion = Champion {{
                     name: {name:?},
                     adaptive_type: AdaptiveType::{adaptive_type:?},
@@ -84,13 +85,24 @@ pub fn generate_champions() -> MayFail<(HashMap<&'static str, String>, String)> 
                     combos: &[{combos}],
                     metadata: &{metadata:#?},
                     merge_data: &{merge_data:#?},
-                    identifiers: &[{identifiers}],
+                    identifiers: &{identifiers},
                     closures: &[{fn_names}],
                 }};
                 "#,
-                upper_id = champion_id.to_uppercase(),
+                upper_id = to_ssnake(champion_id),
                 combos = slice_repr(&combos),
-                identifiers = slice_repr(&identifiers),
+                identifiers = format!(
+                    "[{}]",
+                    identifiers
+                        .iter()
+                        .enumerate()
+                        .map(|(i, slice)| {
+                            let rest = if i == 0 { "as &[_]" } else { "" };
+                            format!("&{slice:?}{rest}")
+                        })
+                        .collect::<Vec<_>>()
+                        .join(",")
+                ),
                 fn_names = functions.join(","),
             );
 
@@ -127,9 +139,11 @@ pub fn generate_champions() -> MayFail<(HashMap<&'static str, String>, String)> 
                         default: false
                     });
 
+                    let formula_f32 = formula.cast_f32();
+
                     format!(
                         r#"
-                        pub const fn {function}(ctx: &Ctx) -> f32 {{{formula}}}
+                        pub const fn {function}({param}: &Ctx) -> f32 {{{formula_f32}}}
 
                         #[fmt({fmt_closure})]
                         fn {function}() {{{formula}}}
@@ -144,7 +158,8 @@ pub fn generate_champions() -> MayFail<(HashMap<&'static str, String>, String)> 
                         }};
                         "#,
                         variable = function.to_uppercase(),
-                        damage = simplify(damage)
+                        damage = simplify(damage),
+                        param = formula_f32.ctx_param()
                     )
                 })
                 .collect::<String>();

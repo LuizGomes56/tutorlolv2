@@ -399,7 +399,7 @@ impl Champion {
         // to the console so it can be fixed by the next time the generator runs
         abilities
             .iter()
-            .filter(|(_, value)| value.damage_type == DamageType::Unknown)
+            .filter(|(_, value)| value.damage_type == DamageType::Unspecified)
             .for_each(|(key, _)| {
                 println!("[{champion_id}]: Ability[{key:?}] has unknown damage type");
             });

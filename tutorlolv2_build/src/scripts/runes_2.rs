@@ -1,8 +1,8 @@
 use crate::scripts::{
     batch::{Batch, FmtArgs, FmtOutput},
     utils::{
-        StaticVar, Tag, closures, get_const_eval, get_eval, get_generator, get_id_enum,
-        get_name_phf, get_static_vars,
+        StaticVar, Tag, closures, get_const_eval, get_eval, get_fn_names, get_generator,
+        get_id_enum, get_identifiers, get_name_phf, get_static_vars, repr_damages,
     },
 };
 use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
@@ -16,6 +16,7 @@ use tutorlolv2_dev::{
     gen_factories::{DamageIndex, wiki_runes::RuneBuild},
     generators::gen_factories::wiki_runes::Rune,
 };
+use tutorlolv2_fmt::to_ssnake;
 use tutorlolv2_types::AttackType;
 
 pub fn generate_runes() -> MayFail<(HashMap<&'static str, String>, String)> {
@@ -53,23 +54,37 @@ pub fn generate_runes() -> MayFail<(HashMap<&'static str, String>, String)> {
                 static {upper_id}: Rune = Rune {{
                     name: {name:?},
                     riot_id: {riot_id},
-                    ranged: {ranged:?},
-                    melee: {melee:?},
+                    ranged: {ranged},
+                    melee: {melee},
                     metadata: {metadata:?},
                 }};
 
-                #[derive(Clone, Debug, Deserialize, Serialize)]
                 pub static {upper_id}: Rune = Rune {{
                     name: {name:?},
-                    metadata: {metadata:?},
-                    ranged: {ranged:?},
-                    melee: {melee:?},
+                    metadata: {metadata},
+                    ranged: {ranged_fns},
+                    melee: {melee_fns},
                     deals_damage: {deals_damage:?},
                     riot_id: {riot_id},
-                    identifiers: {identifiers:?},
+                    identifiers: {identifiers},
                 }};
                 "#,
-                upper_id = rune_id.to_uppercase(),
+                upper_id = to_ssnake(rune_id),
+                melee = repr_damages(melee),
+                ranged = repr_damages(ranged),
+                melee_fns = get_fn_names(&functions[AttackType::Melee as usize], melee),
+                ranged_fns = get_fn_names(&functions[AttackType::Ranged as usize], ranged),
+                identifiers = get_identifiers(&identifiers),
+                metadata = format_args!(
+                    "TypeMetadata {{
+                        kind: RuneId::{kind},
+                        damage_type: {damage_type:?},
+                        attributes: {attributes:?},
+                    }}",
+                    kind = metadata.kind,
+                    damage_type = metadata.damage_type,
+                    attributes = metadata.attributes,
+                )
             );
 
             let generator = get_generator(Tag::Rune, &rune_id, rune_id);

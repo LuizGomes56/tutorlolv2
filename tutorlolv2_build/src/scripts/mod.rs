@@ -159,7 +159,13 @@ pub trait StringExt: AsRef<str> {
             format!("{before}{num}.0{after}")
         });
 
-        result.into_owned()
+        result
+            .replace("match ctx.level", "match ctx.level as u8")
+            .replace("match ctx.q_level", "match ctx.q_level as u8")
+            .replace("match ctx.w_level", "match ctx.w_level as u8")
+            .replace("match ctx.e_level", "match ctx.e_level as u8")
+            .replace("match ctx.r_level", "match ctx.r_level as u8")
+            .replace(".0 =>", "=>")
     }
 
     fn ctx_param(&self) -> &'static str {

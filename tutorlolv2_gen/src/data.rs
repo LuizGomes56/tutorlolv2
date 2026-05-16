@@ -1842,7 +1842,7 @@ pub mod champions {
             },
             TypeMetadata {
                 kind: P(_1),
-                damage_type: Unknown,
+                damage_type: Unspecified,
                 attributes: Undefined,
             },
             TypeMetadata {
@@ -2489,7 +2489,7 @@ pub mod champions {
         combos: &[],
         metadata: &[TypeMetadata {
             kind: P(_1),
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         }],
         merge_data: &[],
@@ -2665,7 +2665,7 @@ pub mod champions {
             },
             TypeMetadata {
                 kind: W(_1),
-                damage_type: Unknown,
+                damage_type: Unspecified,
                 attributes: Undefined,
             },
             TypeMetadata {
@@ -3337,7 +3337,7 @@ pub mod champions {
             },
             TypeMetadata {
                 kind: E(_1),
-                damage_type: Unknown,
+                damage_type: Unspecified,
                 attributes: Undefined,
             },
             TypeMetadata {
@@ -3516,7 +3516,7 @@ pub mod champions {
             },
             TypeMetadata {
                 kind: W(_1),
-                damage_type: Unknown,
+                damage_type: Unspecified,
                 attributes: Undefined,
             },
             TypeMetadata {
@@ -3594,12 +3594,12 @@ pub mod champions {
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
-                damage_type: Unknown,
+                damage_type: Unspecified,
                 attributes: Undefined,
             },
             TypeMetadata {
                 kind: Q(_2),
-                damage_type: Unknown,
+                damage_type: Unspecified,
                 attributes: Undefined,
             },
             TypeMetadata {
@@ -5085,7 +5085,7 @@ pub mod champions {
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
-                damage_type: Unknown,
+                damage_type: Unspecified,
                 attributes: Undefined,
             },
             TypeMetadata {
@@ -5454,7 +5454,7 @@ pub mod champions {
             },
             TypeMetadata {
                 kind: W(_1),
-                damage_type: Unknown,
+                damage_type: Unspecified,
                 attributes: Undefined,
             },
             TypeMetadata {
@@ -5893,42 +5893,42 @@ pub mod champions {
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
-                damage_type: Unknown,
+                damage_type: Unspecified,
                 attributes: Undefined,
             },
             TypeMetadata {
                 kind: Q(_2),
-                damage_type: Unknown,
+                damage_type: Unspecified,
                 attributes: Undefined,
             },
             TypeMetadata {
                 kind: Q(_3),
-                damage_type: Unknown,
+                damage_type: Unspecified,
                 attributes: Undefined,
             },
             TypeMetadata {
                 kind: Q(_4),
-                damage_type: Unknown,
+                damage_type: Unspecified,
                 attributes: Undefined,
             },
             TypeMetadata {
                 kind: Q(_5),
-                damage_type: Unknown,
+                damage_type: Unspecified,
                 attributes: Undefined,
             },
             TypeMetadata {
                 kind: Q(_6),
-                damage_type: Unknown,
+                damage_type: Unspecified,
                 attributes: Undefined,
             },
             TypeMetadata {
                 kind: Q(_7),
-                damage_type: Unknown,
+                damage_type: Unspecified,
                 attributes: Undefined,
             },
             TypeMetadata {
                 kind: Q(_8),
-                damage_type: Unknown,
+                damage_type: Unspecified,
                 attributes: Undefined,
             },
             TypeMetadata {
@@ -8996,12 +8996,12 @@ pub mod champions {
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
-                damage_type: Unknown,
+                damage_type: Unspecified,
                 attributes: Undefined,
             },
             TypeMetadata {
                 kind: Q(_2),
-                damage_type: Unknown,
+                damage_type: Unspecified,
                 attributes: Undefined,
             },
             TypeMetadata {
@@ -9876,12 +9876,12 @@ pub mod champions {
             },
             TypeMetadata {
                 kind: W(_1),
-                damage_type: Unknown,
+                damage_type: Unspecified,
                 attributes: Undefined,
             },
             TypeMetadata {
                 kind: W(_2),
-                damage_type: Unknown,
+                damage_type: Unspecified,
                 attributes: Undefined,
             },
             TypeMetadata {
@@ -11161,7 +11161,7 @@ pub mod champions {
             },
             TypeMetadata {
                 kind: E(_1),
-                damage_type: Unknown,
+                damage_type: Unspecified,
                 attributes: Undefined,
             },
         ],
@@ -11454,12 +11454,12 @@ pub mod champions {
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
-                damage_type: Unknown,
+                damage_type: Unspecified,
                 attributes: Undefined,
             },
             TypeMetadata {
                 kind: Q(_2),
-                damage_type: Unknown,
+                damage_type: Unspecified,
                 attributes: Undefined,
             },
             TypeMetadata {
@@ -11608,7 +11608,7 @@ pub mod champions {
             },
             TypeMetadata {
                 kind: R(_1),
-                damage_type: Unknown,
+                damage_type: Unspecified,
                 attributes: Undefined,
             },
         ],
@@ -11940,12 +11940,12 @@ pub mod champions {
             },
             TypeMetadata {
                 kind: R(_1),
-                damage_type: Unknown,
+                damage_type: Unspecified,
                 attributes: Undefined,
             },
             TypeMetadata {
                 kind: R(_2),
-                damage_type: Unknown,
+                damage_type: Unspecified,
                 attributes: Undefined,
             },
         ],
@@ -12326,7 +12326,7 @@ pub mod champions {
             },
             TypeMetadata {
                 kind: R(_1),
-                damage_type: Unknown,
+                damage_type: Unspecified,
                 attributes: Undefined,
             },
         ],
@@ -12463,7 +12463,7 @@ pub mod champions {
             },
             TypeMetadata {
                 kind: E(_1),
-                damage_type: Unknown,
+                damage_type: Unspecified,
                 attributes: Undefined,
             },
             TypeMetadata {
@@ -12540,7 +12540,7 @@ pub mod champions {
             },
             TypeMetadata {
                 kind: W(_1),
-                damage_type: Unknown,
+                damage_type: Unspecified,
                 attributes: Undefined,
             },
             TypeMetadata {
@@ -13375,7 +13375,7 @@ pub mod champions {
             },
             TypeMetadata {
                 kind: R(_1),
-                damage_type: Unknown,
+                damage_type: Unspecified,
                 attributes: Undefined,
             },
         ],
@@ -13826,7 +13826,7 @@ pub mod champions {
             },
             TypeMetadata {
                 kind: W(_1),
-                damage_type: Unknown,
+                damage_type: Unspecified,
                 attributes: Undefined,
             },
             TypeMetadata {
@@ -14712,7 +14712,7 @@ pub mod champions {
             },
             TypeMetadata {
                 kind: W(_1),
-                damage_type: Unknown,
+                damage_type: Unspecified,
                 attributes: Undefined,
             },
             TypeMetadata {
@@ -14797,12 +14797,12 @@ pub mod champions {
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
-                damage_type: Unknown,
+                damage_type: Unspecified,
                 attributes: Undefined,
             },
             TypeMetadata {
                 kind: Q(_2),
-                damage_type: Unknown,
+                damage_type: Unspecified,
                 attributes: Undefined,
             },
             TypeMetadata {
@@ -14925,7 +14925,7 @@ pub mod champions {
             },
             TypeMetadata {
                 kind: W(_1),
-                damage_type: Unknown,
+                damage_type: Unspecified,
                 attributes: Undefined,
             },
             TypeMetadata {
@@ -15392,12 +15392,12 @@ pub mod champions {
             },
             TypeMetadata {
                 kind: E(_1),
-                damage_type: Unknown,
+                damage_type: Unspecified,
                 attributes: Undefined,
             },
             TypeMetadata {
                 kind: E(_2),
-                damage_type: Unknown,
+                damage_type: Unspecified,
                 attributes: Undefined,
             },
         ],
@@ -16130,17 +16130,17 @@ pub mod champions {
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
-                damage_type: Unknown,
+                damage_type: Unspecified,
                 attributes: Undefined,
             },
             TypeMetadata {
                 kind: Q(_2),
-                damage_type: Unknown,
+                damage_type: Unspecified,
                 attributes: Undefined,
             },
             TypeMetadata {
                 kind: W(_1),
-                damage_type: Unknown,
+                damage_type: Unspecified,
                 attributes: Undefined,
             },
             TypeMetadata {
@@ -16386,17 +16386,17 @@ pub mod champions {
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
-                damage_type: Unknown,
+                damage_type: Unspecified,
                 attributes: Undefined,
             },
             TypeMetadata {
                 kind: Q(_2),
-                damage_type: Unknown,
+                damage_type: Unspecified,
                 attributes: Undefined,
             },
             TypeMetadata {
                 kind: Q(_3),
-                damage_type: Unknown,
+                damage_type: Unspecified,
                 attributes: Undefined,
             },
             TypeMetadata {
@@ -16487,7 +16487,7 @@ pub mod champions {
             },
             TypeMetadata {
                 kind: R(_1),
-                damage_type: Unknown,
+                damage_type: Unspecified,
                 attributes: Undefined,
             },
         ],
@@ -16740,7 +16740,7 @@ pub mod champions {
             },
             TypeMetadata {
                 kind: R(_1),
-                damage_type: Unknown,
+                damage_type: Unspecified,
                 attributes: Undefined,
             },
         ],
@@ -16920,12 +16920,12 @@ pub mod champions {
             },
             TypeMetadata {
                 kind: R(_1),
-                damage_type: Unknown,
+                damage_type: Unspecified,
                 attributes: Undefined,
             },
             TypeMetadata {
                 kind: R(_2),
-                damage_type: Unknown,
+                damage_type: Unspecified,
                 attributes: Undefined,
             },
         ],
@@ -17598,7 +17598,7 @@ pub mod champions {
             },
             TypeMetadata {
                 kind: E(_1),
-                damage_type: Unknown,
+                damage_type: Unspecified,
                 attributes: Undefined,
             },
             TypeMetadata {
@@ -18096,17 +18096,17 @@ pub mod champions {
             },
             TypeMetadata {
                 kind: W(_1),
-                damage_type: Unknown,
+                damage_type: Unspecified,
                 attributes: Undefined,
             },
             TypeMetadata {
                 kind: W(_2),
-                damage_type: Unknown,
+                damage_type: Unspecified,
                 attributes: Undefined,
             },
             TypeMetadata {
                 kind: W(_3),
-                damage_type: Unknown,
+                damage_type: Unspecified,
                 attributes: Undefined,
             },
             TypeMetadata {
@@ -18116,17 +18116,17 @@ pub mod champions {
             },
             TypeMetadata {
                 kind: R(_1),
-                damage_type: Unknown,
+                damage_type: Unspecified,
                 attributes: Undefined,
             },
             TypeMetadata {
                 kind: R(_2),
-                damage_type: Unknown,
+                damage_type: Unspecified,
                 attributes: Undefined,
             },
             TypeMetadata {
                 kind: R(_3),
-                damage_type: Unknown,
+                damage_type: Unspecified,
                 attributes: Undefined,
             },
         ],
@@ -18282,27 +18282,27 @@ pub mod champions {
         metadata: &[
             TypeMetadata {
                 kind: Q(_1),
-                damage_type: Unknown,
+                damage_type: Unspecified,
                 attributes: Undefined,
             },
             TypeMetadata {
                 kind: Q(_2),
-                damage_type: Unknown,
+                damage_type: Unspecified,
                 attributes: Undefined,
             },
             TypeMetadata {
                 kind: Q(_3),
-                damage_type: Unknown,
+                damage_type: Unspecified,
                 attributes: Undefined,
             },
             TypeMetadata {
                 kind: Q(_4),
-                damage_type: Unknown,
+                damage_type: Unspecified,
                 attributes: Undefined,
             },
             TypeMetadata {
                 kind: Q(_5),
-                damage_type: Unknown,
+                damage_type: Unspecified,
                 attributes: Undefined,
             },
             TypeMetadata {
@@ -18322,7 +18322,7 @@ pub mod champions {
             },
             TypeMetadata {
                 kind: R(_1),
-                damage_type: Unknown,
+                damage_type: Unspecified,
                 attributes: Undefined,
             },
         ],
@@ -18522,17 +18522,17 @@ pub mod champions {
             },
             TypeMetadata {
                 kind: E(_1),
-                damage_type: Unknown,
+                damage_type: Unspecified,
                 attributes: Undefined,
             },
             TypeMetadata {
                 kind: E(_2),
-                damage_type: Unknown,
+                damage_type: Unspecified,
                 attributes: Undefined,
             },
             TypeMetadata {
                 kind: E(_3),
-                damage_type: Unknown,
+                damage_type: Unspecified,
                 attributes: Undefined,
             },
             TypeMetadata {
@@ -18832,7 +18832,7 @@ pub mod champions {
             },
             TypeMetadata {
                 kind: R(_1),
-                damage_type: Unknown,
+                damage_type: Unspecified,
                 attributes: Undefined,
             },
         ],
@@ -47575,7 +47575,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 15), (Health, 350), (MagicResist, 45)],
         metadata: TypeMetadata {
             kind: ItemId::AbyssalMask,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -47605,7 +47605,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 15), (Health, 350), (MagicResist, 50)],
         metadata: TypeMetadata {
             kind: ItemId::AbyssalMaskArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -47635,7 +47635,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 15), (Health, 350), (MagicResist, 50)],
         metadata: TypeMetadata {
             kind: ItemId::AbyssalMaskU32,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -47665,7 +47665,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 10), (AbilityPower, 90), (Mana, 300)],
         metadata: TypeMetadata {
             kind: ItemId::Actualizer,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -47695,7 +47695,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 10), (AbilityPower, 90), (Mana, 300)],
         metadata: TypeMetadata {
             kind: ItemId::ActualizerArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -47725,7 +47725,7 @@ pub mod items {
         prettified_stats: &[(Armor, 50), (Health, 800), (MagicResist, 100)],
         metadata: TypeMetadata {
             kind: ItemId::AdaptiveHelmArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -47756,7 +47756,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 10), (Armor, 25), (MagicResist, 25)],
         metadata: TypeMetadata {
             kind: ItemId::AegisOfTheLegion,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 2,
@@ -47786,7 +47786,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 10), (Armor, 30), (MagicResist, 30)],
         metadata: TypeMetadata {
             kind: ItemId::AegisOfTheLegionArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -47816,7 +47816,7 @@ pub mod items {
         prettified_stats: &[(AbilityPower, 30), (MoveSpeed, 4)],
         metadata: TypeMetadata {
             kind: ItemId::AetherWisp,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 2,
@@ -47846,7 +47846,7 @@ pub mod items {
         prettified_stats: &[(AbilityPower, 20)],
         metadata: TypeMetadata {
             kind: ItemId::AmplifyingTome,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 1,
@@ -47875,7 +47875,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 20), (Health, 650)],
         metadata: TypeMetadata {
             kind: ItemId::AnathemasChains,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -47904,7 +47904,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 20), (Health, 650)],
         metadata: TypeMetadata {
             kind: ItemId::AnathemasChainsArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -47933,7 +47933,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::AniMines,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -47959,7 +47959,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::AnimaEcho,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -47985,7 +47985,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::Animapocalypse,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -48011,7 +48011,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::AntiSharkSeaMine,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -48037,7 +48037,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::AntiTowerSocks,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 1,
@@ -48063,7 +48063,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::AnvilVoucherArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -48089,7 +48089,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::ArcaneSweeper,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 1,
@@ -48115,7 +48115,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 25), (AbilityPower, 70), (Mana, 600)],
         metadata: TypeMetadata {
             kind: ItemId::ArchangelsStaff,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -48145,7 +48145,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 25), (AbilityPower, 55), (Mana, 600)],
         metadata: TypeMetadata {
             kind: ItemId::ArchangelsStaffArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -48175,7 +48175,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 25), (AbilityPower, 70), (Mana, 600)],
         metadata: TypeMetadata {
             kind: ItemId::ArchangelsStaffU32,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -48286,7 +48286,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::ArdentCenserU32,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -48316,7 +48316,7 @@ pub mod items {
         prettified_stats: &[(Armor, 35), (MoveSpeed, 45)],
         metadata: TypeMetadata {
             kind: ItemId::ArmoredAdvance,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -48346,7 +48346,7 @@ pub mod items {
         prettified_stats: &[(CritChance, 20), (Health, 700)],
         metadata: TypeMetadata {
             kind: ItemId::AtmasReckoning,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -48376,7 +48376,7 @@ pub mod items {
         prettified_stats: &[(CritChance, 20), (Health, 700)],
         metadata: TypeMetadata {
             kind: ItemId::AtmasReckoningArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -48406,7 +48406,7 @@ pub mod items {
         prettified_stats: &[(CritChance, 20), (Health, 500)],
         metadata: TypeMetadata {
             kind: ItemId::AtmasReckoningU66,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -48436,7 +48436,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 20), (AttackDamage, 55), (Lethality, 18)],
         metadata: TypeMetadata {
             kind: ItemId::AxiomArc,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -48466,7 +48466,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 20), (AttackDamage, 45), (Lethality, 18)],
         metadata: TypeMetadata {
             kind: ItemId::AxiomArcArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -48496,7 +48496,7 @@ pub mod items {
         prettified_stats: &[(AttackDamage, 40)],
         metadata: TypeMetadata {
             kind: ItemId::BFSword,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 1,
@@ -48525,7 +48525,7 @@ pub mod items {
         prettified_stats: &[(AttackDamage, 40)],
         metadata: TypeMetadata {
             kind: ItemId::BFSwordArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -48586,7 +48586,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::BandleJuiceOfHaste,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -48612,7 +48612,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::BandleJuiceOfPower,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -48638,7 +48638,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::BandleJuiceOfVitality,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -48664,7 +48664,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 10), (AbilityPower, 20), (BaseManaRegen, 100)],
         metadata: TypeMetadata {
             kind: ItemId::BandleglassMirror,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -48698,7 +48698,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::Bandlepipes,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -48734,7 +48734,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::BandlepipesArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -48765,7 +48765,7 @@ pub mod items {
         prettified_stats: &[(AbilityPower, 105), (MagicResist, 40)],
         metadata: TypeMetadata {
             kind: ItemId::BansheesVeil,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -48795,7 +48795,7 @@ pub mod items {
         prettified_stats: &[(AbilityPower, 80), (MagicResist, 40)],
         metadata: TypeMetadata {
             kind: ItemId::BansheesVeilArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -48861,7 +48861,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::BattleBunnyCrossbow,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -48887,7 +48887,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::BattleCatBarrage,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -48913,7 +48913,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::BearfootChemDispenser,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -48939,7 +48939,7 @@ pub mod items {
         prettified_stats: &[(AttackSpeed, 25), (MoveSpeed, 45)],
         metadata: TypeMetadata {
             kind: ItemId::BerserkersGreaves,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 2,
@@ -48969,7 +48969,7 @@ pub mod items {
         prettified_stats: &[(AttackSpeed, 35), (MoveSpeed, 55)],
         metadata: TypeMetadata {
             kind: ItemId::BerserkersGreavesArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -48999,7 +48999,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 20), (AttackDamage, 40), (Health, 400)],
         metadata: TypeMetadata {
             kind: ItemId::BlackCleaver,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -49029,7 +49029,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 20), (AttackDamage, 40), (Health, 350)],
         metadata: TypeMetadata {
             kind: ItemId::BlackCleaverArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -49059,7 +49059,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 25), (Health, 900)],
         metadata: TypeMetadata {
             kind: ItemId::BlackHoleGauntletU44,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -49093,7 +49093,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::BlackMistScythe,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -49123,7 +49123,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 20), (AbilityPower, 80), (Mana, 600)],
         metadata: TypeMetadata {
             kind: ItemId::BlackfireTorch,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -49153,7 +49153,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 20), (AbilityPower, 60), (Mana, 600)],
         metadata: TypeMetadata {
             kind: ItemId::BlackfireTorchArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -49261,7 +49261,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::BladeORang,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -49287,7 +49287,7 @@ pub mod items {
         prettified_stats: &[(AbilityPower, 45)],
         metadata: TypeMetadata {
             kind: ItemId::BlastingWand,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 1,
@@ -49316,7 +49316,7 @@ pub mod items {
         prettified_stats: &[(AbilityPower, 45)],
         metadata: TypeMetadata {
             kind: ItemId::BlastingWandArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -49345,7 +49345,7 @@ pub mod items {
         prettified_stats: &[(AbilityPower, 25), (MagicPenetration, 13)],
         metadata: TypeMetadata {
             kind: ItemId::BlightingJewel,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 2,
@@ -49376,7 +49376,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 15), (AbilityPower, 60), (Health, 350)],
         metadata: TypeMetadata {
             kind: ItemId::BloodlettersCurse4010,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -49406,7 +49406,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 15), (AbilityPower, 65), (Health, 400)],
         metadata: TypeMetadata {
             kind: ItemId::BloodlettersCurse8010,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -49441,7 +49441,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::Bloodsong,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -49470,7 +49470,7 @@ pub mod items {
         prettified_stats: &[(AttackDamage, 80), (LifeSteal, 15)],
         metadata: TypeMetadata {
             kind: ItemId::Bloodthirster,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -49500,7 +49500,7 @@ pub mod items {
         prettified_stats: &[(AttackDamage, 70), (LifeSteal, 18)],
         metadata: TypeMetadata {
             kind: ItemId::BloodthirsterArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -49530,7 +49530,7 @@ pub mod items {
         prettified_stats: &[(MoveSpeed, 25)],
         metadata: TypeMetadata {
             kind: ItemId::Boots,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 1,
@@ -49559,7 +49559,7 @@ pub mod items {
         prettified_stats: &[(MoveSpeed, 55)],
         metadata: TypeMetadata {
             kind: ItemId::BootsOfSwiftness,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 2,
@@ -49588,7 +49588,7 @@ pub mod items {
         prettified_stats: &[(MoveSpeed, 70)],
         metadata: TypeMetadata {
             kind: ItemId::BootsOfSwiftnessArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -49617,7 +49617,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::BotLaneQuest1202,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -49643,7 +49643,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::BotLaneQuest1207,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -49674,7 +49674,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::BountyOfWorlds,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -49735,7 +49735,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::BraveryVoucherArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -49766,7 +49766,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::BulwarkOfTheMountain,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -49796,7 +49796,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::BunnyHop,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -49822,7 +49822,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::BunnyMegaBlast,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -49848,7 +49848,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::BunnyPrimeBallista,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -49874,7 +49874,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::CappaJuice,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 1,
@@ -49900,7 +49900,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::CappaJuiceArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -49926,7 +49926,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::CarrotCrash,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -49952,7 +49952,7 @@ pub mod items {
         prettified_stats: &[(Health, 300), (Mana, 375)],
         metadata: TypeMetadata {
             kind: ItemId::CatalystOfAeons,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 2,
@@ -49982,7 +49982,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 10), (AttackDamage, 20)],
         metadata: TypeMetadata {
             kind: ItemId::CaulfieldsWarhammer,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 2,
@@ -50016,7 +50016,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::CelestialOpposition,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -50045,7 +50045,7 @@ pub mod items {
         prettified_stats: &[(Armor, 40)],
         metadata: TypeMetadata {
             kind: ItemId::ChainVest,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 2,
@@ -50074,7 +50074,7 @@ pub mod items {
         prettified_stats: &[(Armor, 40)],
         metadata: TypeMetadata {
             kind: ItemId::ChainVestArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -50103,7 +50103,7 @@ pub mod items {
         prettified_stats: &[(MagicResist, 30), (MoveSpeed, 45), (Tenacity, 30)],
         metadata: TypeMetadata {
             kind: ItemId::ChainlacedCrushers,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -50133,7 +50133,7 @@ pub mod items {
         prettified_stats: &[(BaseManaRegen, 50), (Health, 200)],
         metadata: TypeMetadata {
             kind: ItemId::ChaliceOfBlessing,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -50162,7 +50162,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 15), (AttackDamage, 45), (Health, 450)],
         metadata: TypeMetadata {
             kind: ItemId::ChempunkChainsword,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -50192,7 +50192,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 15), (AttackDamage, 45), (Health, 450)],
         metadata: TypeMetadata {
             kind: ItemId::ChempunkChainswordArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -50227,7 +50227,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::ChemtechPutrifier,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -50261,7 +50261,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::ChemtechPutrifierArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -50290,7 +50290,7 @@ pub mod items {
         prettified_stats: &[(CritChance, 15)],
         metadata: TypeMetadata {
             kind: ItemId::CloakOfAgility,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 1,
@@ -50319,7 +50319,7 @@ pub mod items {
         prettified_stats: &[(Health, 300), (MagicResist, 100)],
         metadata: TypeMetadata {
             kind: ItemId::CloakOfStarryNightU44,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -50349,7 +50349,7 @@ pub mod items {
         prettified_stats: &[(Health, 250), (MagicResist, 60)],
         metadata: TypeMetadata {
             kind: ItemId::CloakOfStarryNightU66,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -50379,7 +50379,7 @@ pub mod items {
         prettified_stats: &[(Armor, 15)],
         metadata: TypeMetadata {
             kind: ItemId::ClothArmor,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 1,
@@ -50408,7 +50408,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::ControlWard,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 1,
@@ -50434,7 +50434,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::CorruptingPotion,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -50465,7 +50465,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::CosmicDrive,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -50501,7 +50501,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::CosmicDriveArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -50532,7 +50532,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 20), (MoveSpeed, 45)],
         metadata: TypeMetadata {
             kind: ItemId::CrimsonLucidity,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -50566,7 +50566,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::CrownOfTheShatteredQueen,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -50602,7 +50602,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::CrownOfTheShatteredQueenArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -50638,7 +50638,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::CrownOfTheShatteredQueenU44,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -50674,7 +50674,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::CrownOfTheShatteredQueenU66,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -50705,7 +50705,7 @@ pub mod items {
         prettified_stats: &[(AbilityPower, 80), (Armor, 30), (MagicResist, 30)],
         metadata: TypeMetadata {
             kind: ItemId::CrueltyU44,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -50736,7 +50736,7 @@ pub mod items {
         prettified_stats: &[(AbilityPower, 60), (Armor, 25), (MagicResist, 25)],
         metadata: TypeMetadata {
             kind: ItemId::CrueltyU66,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -50771,7 +50771,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::Cryptbloom,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -50806,7 +50806,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::CryptbloomArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -50836,7 +50836,7 @@ pub mod items {
         prettified_stats: &[(BaseHealthRegen, 100), (Health, 200)],
         metadata: TypeMetadata {
             kind: ItemId::CrystallineBracer,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 2,
@@ -50865,7 +50865,7 @@ pub mod items {
         prettified_stats: &[(AttackDamage, 7)],
         metadata: TypeMetadata {
             kind: ItemId::Cull,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 1,
@@ -50894,7 +50894,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::CyclonicSlicers,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -50920,7 +50920,7 @@ pub mod items {
         prettified_stats: &[(AttackSpeed, 10)],
         metadata: TypeMetadata {
             kind: ItemId::Dagger,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 1,
@@ -50949,7 +50949,7 @@ pub mod items {
         prettified_stats: &[(AbilityPower, 15), (Health, 50)],
         metadata: TypeMetadata {
             kind: ItemId::DarkSeal,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 1,
@@ -50979,7 +50979,7 @@ pub mod items {
         prettified_stats: &[(Armor, 55), (AttackSpeed, 50), (MoveSpeed, 5)],
         metadata: TypeMetadata {
             kind: ItemId::DarksteelTalonsU44,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -51014,7 +51014,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::Dawncore,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -51047,7 +51047,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::DawncoreArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -51080,7 +51080,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::DawncoreU32,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -51177,7 +51177,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 15), (Armor, 50), (AttackDamage, 60)],
         metadata: TypeMetadata {
             kind: ItemId::DeathsDance,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -51207,7 +51207,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 10), (Armor, 45), (AttackDamage, 60)],
         metadata: TypeMetadata {
             kind: ItemId::DeathsDanceArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -51242,7 +51242,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::DeathbladeArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -51274,7 +51274,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 10), (AbilityPower, 120)],
         metadata: TypeMetadata {
             kind: ItemId::DeathfireGrasp,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -51303,7 +51303,7 @@ pub mod items {
         prettified_stats: &[(AdaptiveForce, 80), (AttackSpeed, 50), (MoveSpeed, 8)],
         metadata: TypeMetadata {
             kind: ItemId::DecapitatorU44,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -51334,7 +51334,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::DeepFreeze,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -51360,7 +51360,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::DemonKingsCrownU44,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -51386,7 +51386,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::DemonKingsCrownU66,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -51412,7 +51412,7 @@ pub mod items {
         prettified_stats: &[(AbilityPower, 75), (Health, 350)],
         metadata: TypeMetadata {
             kind: ItemId::DemonicEmbrace,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -51442,7 +51442,7 @@ pub mod items {
         prettified_stats: &[(AbilityPower, 75), (Health, 350)],
         metadata: TypeMetadata {
             kind: ItemId::DemonicEmbraceArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -51472,7 +51472,7 @@ pub mod items {
         prettified_stats: &[(AbilityPower, 80), (Health, 700)],
         metadata: TypeMetadata {
             kind: ItemId::DemonicEmbraceU44,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -51507,7 +51507,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::DetonationOrbU44,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -51543,7 +51543,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::DiademOfSongs,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 4,
@@ -51578,7 +51578,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::DiademOfSongsArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -51613,7 +51613,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::DiademOfSongsU32,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -51643,7 +51643,7 @@ pub mod items {
         prettified_stats: &[(AdaptiveForce, 75), (AttackSpeed, 30)],
         metadata: TypeMetadata {
             kind: ItemId::DiamondTippedSpearU44,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -51673,7 +51673,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::DisabledRecall,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -51699,7 +51699,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 20), (AttackDamage, 40), (Health, 300)],
         metadata: TypeMetadata {
             kind: ItemId::DivineSunderer,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -51729,7 +51729,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 20), (AttackDamage, 40), (Health, 300)],
         metadata: TypeMetadata {
             kind: ItemId::DivineSundererArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -51759,7 +51759,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 20), (AttackDamage, 55), (Health, 350)],
         metadata: TypeMetadata {
             kind: ItemId::DivineSundererU44,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -51789,7 +51789,7 @@ pub mod items {
         prettified_stats: &[(AttackDamage, 10), (Health, 80)],
         metadata: TypeMetadata {
             kind: ItemId::DoransBlade,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 1,
@@ -51819,7 +51819,7 @@ pub mod items {
         prettified_stats: &[(AbilityPower, 18), (Health, 90)],
         metadata: TypeMetadata {
             kind: ItemId::DoransRing,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 1,
@@ -51849,7 +51849,7 @@ pub mod items {
         prettified_stats: &[(Health, 110)],
         metadata: TypeMetadata {
             kind: ItemId::DoransShield,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 1,
@@ -51878,7 +51878,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::DoubleBunBunBarrage,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -51904,7 +51904,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::DragonheartU44,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -51935,7 +51935,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::DreamMaker,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -51969,7 +51969,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::DuskAndDawn,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -52005,7 +52005,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::DuskAndDawnArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -52036,7 +52036,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 15), (AttackDamage, 60), (Lethality, 18)],
         metadata: TypeMetadata {
             kind: ItemId::DuskbladeOfDraktharr,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -52066,7 +52066,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 15), (AttackDamage, 60), (Lethality, 18)],
         metadata: TypeMetadata {
             kind: ItemId::DuskbladeOfDraktharrArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -52096,7 +52096,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 20), (AttackDamage, 50), (Lethality, 20)],
         metadata: TypeMetadata {
             kind: ItemId::DuskbladeOfDraktharrU44,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -52131,7 +52131,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::EchoesOfHelia,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -52166,7 +52166,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::EchoesOfHeliaArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -52201,7 +52201,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::EchoesOfHeliaU32,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -52231,7 +52231,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::EchoingBatblades,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -52327,7 +52327,7 @@ pub mod items {
         prettified_stats: &[(AttackDamage, 50), (Health, 250), (Lethality, 15)],
         metadata: TypeMetadata {
             kind: ItemId::EdgeOfNight,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -52358,7 +52358,7 @@ pub mod items {
         prettified_stats: &[(AttackDamage, 45), (Health, 375), (Lethality, 14)],
         metadata: TypeMetadata {
             kind: ItemId::EdgeOfNightArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -52389,7 +52389,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 25), (Armor, 50), (MagicResist, 50)],
         metadata: TypeMetadata {
             kind: ItemId::EleisasMiracleU44,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -52419,7 +52419,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::ElixirOfAvarice,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 1,
@@ -52445,7 +52445,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::ElixirOfForce,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 1,
@@ -52471,7 +52471,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::ElixirOfIron,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 1,
@@ -52497,7 +52497,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::ElixirOfSkill,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 1,
@@ -52523,7 +52523,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::ElixirOfSorcery,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 1,
@@ -52549,7 +52549,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::ElixirOfWrath,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 1,
@@ -52575,7 +52575,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::Emberknife,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -52606,7 +52606,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::EmpyreanPromiseU44,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -52635,7 +52635,7 @@ pub mod items {
         prettified_stats: &[(AttackDamage, 60), (Omnivamp, 5), (Tenacity, 20)],
         metadata: TypeMetadata {
             kind: ItemId::EndlessHunger,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -52665,7 +52665,7 @@ pub mod items {
         prettified_stats: &[(AttackDamage, 60), (Omnivamp, 5), (Tenacity, 20)],
         metadata: TypeMetadata {
             kind: ItemId::EndlessHungerArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -52695,7 +52695,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::EnhancedLuckyDice,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 1,
@@ -52721,7 +52721,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::EnhancedRecall,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -52747,7 +52747,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::EnvelopingLight,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -52844,7 +52844,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::Evenshroud,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -52880,7 +52880,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::EvenshroudArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -52955,7 +52955,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::EverfrostArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -52991,7 +52991,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::EverfrostU44,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -53022,7 +53022,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::EvolvedEmbershot,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -53048,7 +53048,7 @@ pub mod items {
         prettified_stats: &[(AttackDamage, 15)],
         metadata: TypeMetadata {
             kind: ItemId::ExecutionersCalling,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 2,
@@ -53077,7 +53077,7 @@ pub mod items {
         prettified_stats: &[(AttackDamage, 40), (AttackSpeed, 20), (Health, 450)],
         metadata: TypeMetadata {
             kind: ItemId::ExperimentalHexplate,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -53108,7 +53108,7 @@ pub mod items {
         prettified_stats: &[(AttackDamage, 40), (AttackSpeed, 30), (Health, 450)],
         metadata: TypeMetadata {
             kind: ItemId::ExperimentalHexplateArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -53139,7 +53139,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::ExplosiveEmbrace,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -53165,7 +53165,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::EyeOfTheHerald1104,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -53191,7 +53191,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::EyeOfTheHerald3513,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 1,
@@ -53217,7 +53217,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::FcLimitedExpress,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -53243,7 +53243,7 @@ pub mod items {
         prettified_stats: &[(BaseManaRegen, 50)],
         metadata: TypeMetadata {
             kind: ItemId::FaerieCharm,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 1,
@@ -53269,7 +53269,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::FarsightAlteration,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 1,
@@ -53295,7 +53295,7 @@ pub mod items {
         prettified_stats: &[(AbilityPower, 30)],
         metadata: TypeMetadata {
             kind: ItemId::FatedAshes,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 2,
@@ -53324,7 +53324,7 @@ pub mod items {
         prettified_stats: &[(AttackSpeed, 45), (CritChance, 25), (MoveSpeed, 4)],
         metadata: TypeMetadata {
             kind: ItemId::FiendhunterBolts,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -53355,7 +53355,7 @@ pub mod items {
         prettified_stats: &[(AttackSpeed, 40), (CritChance, 25), (MoveSpeed, 4)],
         metadata: TypeMetadata {
             kind: ItemId::FiendhunterBoltsArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -53386,7 +53386,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 10), (AbilityPower, 25)],
         metadata: TypeMetadata {
             kind: ItemId::FiendishCodex,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 2,
@@ -53415,7 +53415,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 15), (Health, 550), (Mana, 1000)],
         metadata: TypeMetadata {
             kind: ItemId::Fimbulwinter,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 4,
@@ -53445,7 +53445,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 15), (Health, 400), (Mana, 1000)],
         metadata: TypeMetadata {
             kind: ItemId::FimbulwinterArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -53475,7 +53475,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 15), (Health, 550), (Mana, 1000)],
         metadata: TypeMetadata {
             kind: ItemId::FimbulwinterU32,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -53505,7 +53505,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::FinalCityTransit,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -53531,7 +53531,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 20), (AdaptiveForce, 70), (Health, 500)],
         metadata: TypeMetadata {
             kind: ItemId::FlesheaterU44,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -53561,7 +53561,7 @@ pub mod items {
         prettified_stats: &[(AdaptiveForce, 55), (Health, 500)],
         metadata: TypeMetadata {
             kind: ItemId::FlesheaterU66,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -53591,7 +53591,7 @@ pub mod items {
         prettified_stats: &[(BaseManaRegen, 50), (HealAndShieldPower, 8)],
         metadata: TypeMetadata {
             kind: ItemId::ForbiddenIdol,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 2,
@@ -53617,7 +53617,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 30), (CritChance, 25), (Health, 900)],
         metadata: TypeMetadata {
             kind: ItemId::ForceOfEntropyU44,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -53647,7 +53647,7 @@ pub mod items {
         prettified_stats: &[(Health, 400), (MagicResist, 55), (MoveSpeed, 4)],
         metadata: TypeMetadata {
             kind: ItemId::ForceOfNature,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -53678,7 +53678,7 @@ pub mod items {
         prettified_stats: &[(Health, 400), (MagicResist, 50), (MoveSpeed, 4)],
         metadata: TypeMetadata {
             kind: ItemId::ForceOfNatureArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -53709,7 +53709,7 @@ pub mod items {
         prettified_stats: &[(MoveSpeed, 55)],
         metadata: TypeMetadata {
             kind: ItemId::ForeverForward,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -53738,7 +53738,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::Fortification1501,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 1,
@@ -53764,7 +53764,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::Fortification1521,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -53795,7 +53795,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::Frostfang,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -53825,7 +53825,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 20), (Armor, 75), (Mana, 400)],
         metadata: TypeMetadata {
             kind: ItemId::FrozenHeart,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -53855,7 +53855,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 15), (Armor, 90), (Mana, 450)],
         metadata: TypeMetadata {
             kind: ItemId::FrozenHeartArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -53885,7 +53885,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 25), (Armor, 75), (Mana, 500)],
         metadata: TypeMetadata {
             kind: ItemId::FrozenHeartU32,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -53915,7 +53915,7 @@ pub mod items {
         prettified_stats: &[(AttackSpeed, 60), (Health, 600)],
         metadata: TypeMetadata {
             kind: ItemId::FrozenMallet,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -53945,7 +53945,7 @@ pub mod items {
         prettified_stats: &[(AttackDamage, 55), (AttackSpeed, 45), (MoveSpeed, 15)],
         metadata: TypeMetadata {
             kind: ItemId::FulminationU44,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -53981,7 +53981,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::Galeforce,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -54018,7 +54018,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::GaleforceArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -54055,7 +54055,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::GaleforceU44,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -54087,7 +54087,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 40), (AttackSpeed, 70), (MoveSpeed, 8)],
         metadata: TypeMetadata {
             kind: ItemId::GamblersBladeU44,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -54123,7 +54123,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::GamblersBladeU66,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -54155,7 +54155,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::GangplankPlaceholder,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -54181,7 +54181,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 15), (Armor, 60), (MagicResist, 60)],
         metadata: TypeMetadata {
             kind: ItemId::GargoyleStoneplate,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -54211,7 +54211,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 15), (Armor, 60), (MagicResist, 60)],
         metadata: TypeMetadata {
             kind: ItemId::GargoyleStoneplateArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -54246,7 +54246,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::GargoyleStoneplateU44,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -54282,7 +54282,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::GargoyleStoneplateU66,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -54313,7 +54313,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::GatlingBunnyGuns,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -54339,7 +54339,7 @@ pub mod items {
         prettified_stats: &[(MoveSpeed, 45)],
         metadata: TypeMetadata {
             kind: ItemId::Ghostcrawlers,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -54368,7 +54368,7 @@ pub mod items {
         prettified_stats: &[(MoveSpeed, 70)],
         metadata: TypeMetadata {
             kind: ItemId::GhostcrawlersArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 2,
@@ -54397,7 +54397,7 @@ pub mod items {
         prettified_stats: &[(Health, 350)],
         metadata: TypeMetadata {
             kind: ItemId::GiantsBelt,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 2,
@@ -54426,7 +54426,7 @@ pub mod items {
         prettified_stats: &[(Health, 300)],
         metadata: TypeMetadata {
             kind: ItemId::GiantsBeltArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -54455,7 +54455,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 10), (Armor, 25), (Mana, 300)],
         metadata: TypeMetadata {
             kind: ItemId::GlacialBuckler,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 2,
@@ -54485,7 +54485,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 5)],
         metadata: TypeMetadata {
             kind: ItemId::GlowingMote,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 1,
@@ -54511,7 +54511,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 5)],
         metadata: TypeMetadata {
             kind: ItemId::GlowingMoteArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -54537,7 +54537,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::GoldStatAnvilVoucherArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -54577,7 +54577,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::GoldenSpatulaU99,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -54620,7 +54620,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::Goredrinker,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -54656,7 +54656,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::GoredrinkerArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -54687,7 +54687,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::GrizzlySmash,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -54713,7 +54713,7 @@ pub mod items {
         prettified_stats: &[(Armor, 45), (AttackDamage, 55)],
         metadata: TypeMetadata {
             kind: ItemId::GuardianAngel,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -54743,7 +54743,7 @@ pub mod items {
         prettified_stats: &[(Armor, 45), (AttackDamage, 55)],
         metadata: TypeMetadata {
             kind: ItemId::GuardianAngelArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -54777,7 +54777,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::GuardiansAmulet,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 1,
@@ -54806,7 +54806,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 15), (AttackDamage, 30), (Health, 150)],
         metadata: TypeMetadata {
             kind: ItemId::GuardiansBlade,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 1,
@@ -54836,7 +54836,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 15), (AttackDamage, 25), (Health, 250)],
         metadata: TypeMetadata {
             kind: ItemId::GuardiansBladeArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -54866,7 +54866,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 10), (AttackDamage, 25), (Lethality, 11)],
         metadata: TypeMetadata {
             kind: ItemId::GuardiansDirkArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 1,
@@ -54896,7 +54896,7 @@ pub mod items {
         prettified_stats: &[(AttackDamage, 25), (Health, 150), (LifeSteal, 5)],
         metadata: TypeMetadata {
             kind: ItemId::GuardiansHammer,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 1,
@@ -54927,7 +54927,7 @@ pub mod items {
         prettified_stats: &[(AttackDamage, 25), (AttackSpeed, 35), (LifeSteal, 5)],
         metadata: TypeMetadata {
             kind: ItemId::GuardiansHammerArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -54958,7 +54958,7 @@ pub mod items {
         prettified_stats: &[(Health, 150)],
         metadata: TypeMetadata {
             kind: ItemId::GuardiansHorn,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 1,
@@ -54987,7 +54987,7 @@ pub mod items {
         prettified_stats: &[(Health, 300)],
         metadata: TypeMetadata {
             kind: ItemId::GuardiansHornArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -55016,7 +55016,7 @@ pub mod items {
         prettified_stats: &[(AbilityPower, 50), (Health, 150)],
         metadata: TypeMetadata {
             kind: ItemId::GuardiansOrb,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 1,
@@ -55046,7 +55046,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 25), (AbilityPower, 55)],
         metadata: TypeMetadata {
             kind: ItemId::GuardiansOrbArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -55075,7 +55075,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 15), (AbilityPower, 35), (Health, 300)],
         metadata: TypeMetadata {
             kind: ItemId::GuardiansShroud,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 1,
@@ -55105,7 +55105,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::GuidingHex,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -55199,7 +55199,7 @@ pub mod items {
         prettified_stats: &[(AttackSpeed, 40), (LifeSteal, 5), (MoveSpeed, 45)],
         metadata: TypeMetadata {
             kind: ItemId::GunmetalGreaves,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -55230,7 +55230,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::Gusto,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 1,
@@ -55256,7 +55256,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::GustwalkerHatchling1102,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 1,
@@ -55282,7 +55282,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::GustwalkerHatchling1106,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -55308,7 +55308,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::Hailblade,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -55334,7 +55334,7 @@ pub mod items {
         prettified_stats: &[(AttackDamage, 45), (AttackSpeed, 40), (CritChance, 25)],
         metadata: TypeMetadata {
             kind: ItemId::HamstringerU44,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -55370,7 +55370,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::HarrowingCrescent,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -55400,7 +55400,7 @@ pub mod items {
         prettified_stats: &[(AbilityPower, 30), (Health, 200)],
         metadata: TypeMetadata {
             kind: ItemId::HauntingGuise,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 2,
@@ -55430,7 +55430,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::HealthPotion,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 1,
@@ -55456,7 +55456,7 @@ pub mod items {
         prettified_stats: &[(AttackDamage, 20), (AttackSpeed, 20)],
         metadata: TypeMetadata {
             kind: ItemId::HearthboundAxe,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 2,
@@ -55550,7 +55550,7 @@ pub mod items {
         prettified_stats: &[(AttackDamage, 35), (Lethality, 12)],
         metadata: TypeMetadata {
             kind: ItemId::HellfireHatchet,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -55580,7 +55580,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 30), (AttackDamage, 70), (Omnivamp, 15)],
         metadata: TypeMetadata {
             kind: ItemId::HemomancersHelmU44,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -55610,7 +55610,7 @@ pub mod items {
         prettified_stats: &[(AttackSpeed, 75), (Health, 500)],
         metadata: TypeMetadata {
             kind: ItemId::HexboltCompanionU44,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -55640,7 +55640,7 @@ pub mod items {
         prettified_stats: &[(AttackDamage, 25), (MagicResist, 25)],
         metadata: TypeMetadata {
             kind: ItemId::Hexdrinker,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 2,
@@ -55670,7 +55670,7 @@ pub mod items {
         prettified_stats: &[(AttackDamage, 55), (CritChance, 25)],
         metadata: TypeMetadata {
             kind: ItemId::HexopticsC44,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -55700,7 +55700,7 @@ pub mod items {
         prettified_stats: &[(AttackDamage, 50), (CritChance, 25)],
         metadata: TypeMetadata {
             kind: ItemId::HexopticsC44Arena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -55762,7 +55762,7 @@ pub mod items {
         prettified_stats: &[(AbilityPower, 80), (AttackDamage, 40), (Omnivamp, 10)],
         metadata: TypeMetadata {
             kind: ItemId::HextechGunblade,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -55793,7 +55793,7 @@ pub mod items {
         prettified_stats: &[(AbilityPower, 90), (AttackDamage, 45), (Omnivamp, 15)],
         metadata: TypeMetadata {
             kind: ItemId::HextechGunbladeArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -55824,7 +55824,7 @@ pub mod items {
         prettified_stats: &[(AbilityPower, 90), (AttackDamage, 45), (Omnivamp, 15)],
         metadata: TypeMetadata {
             kind: ItemId::HextechGunbladeU66,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -55926,7 +55926,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::HollowRadiance,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -55956,7 +55956,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 10), (Health, 450), (MagicResist, 40)],
         metadata: TypeMetadata {
             kind: ItemId::HollowRadianceArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -55986,7 +55986,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::HoppedUpHex,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -56012,7 +56012,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 25), (AbilityPower, 75)],
         metadata: TypeMetadata {
             kind: ItemId::HorizonFocus,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -56041,7 +56041,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 25), (AbilityPower, 90)],
         metadata: TypeMetadata {
             kind: ItemId::HorizonFocusArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -56070,7 +56070,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 15), (AttackDamage, 60), (Lethality, 18)],
         metadata: TypeMetadata {
             kind: ItemId::Hubris126697,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -56100,7 +56100,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 10), (AttackDamage, 60), (Lethality, 18)],
         metadata: TypeMetadata {
             kind: ItemId::Hubris6697,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -56130,7 +56130,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 10), (AttackDamage, 50), (Lethality, 18)],
         metadata: TypeMetadata {
             kind: ItemId::HubrisArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -56160,7 +56160,7 @@ pub mod items {
         prettified_stats: &[(AttackDamage, 40), (Health, 500), (MoveSpeed, 4)],
         metadata: TypeMetadata {
             kind: ItemId::Hullbreaker,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -56191,7 +56191,7 @@ pub mod items {
         prettified_stats: &[(AttackDamage, 40), (Health, 500), (MoveSpeed, 4)],
         metadata: TypeMetadata {
             kind: ItemId::HullbreakerArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -56222,7 +56222,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::IceblastArmor,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -56314,7 +56314,7 @@ pub mod items {
         prettified_stats: &[(AttackDamage, 55), (CritChance, 25)],
         metadata: TypeMetadata {
             kind: ItemId::ImmortalShieldbow,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -56344,7 +56344,7 @@ pub mod items {
         prettified_stats: &[(AttackDamage, 55), (CritChance, 25)],
         metadata: TypeMetadata {
             kind: ItemId::ImmortalShieldbowArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -56438,7 +56438,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 20), (AbilityPower, 65), (BaseManaRegen, 150)],
         metadata: TypeMetadata {
             kind: ItemId::ImperialMandateU32,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -56467,7 +56467,7 @@ pub mod items {
         prettified_stats: &[(AttackDamage, 75), (CritChance, 25), (CritDamage, 30)],
         metadata: TypeMetadata {
             kind: ItemId::InfinityEdge,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 2,
@@ -56498,7 +56498,7 @@ pub mod items {
         prettified_stats: &[(AttackDamage, 55), (CritChance, 25), (CritDamage, 40)],
         metadata: TypeMetadata {
             kind: ItemId::InfinityEdgeArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -56534,7 +56534,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::InnervatingLocket,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -56565,7 +56565,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 20), (AbilityPower, 70), (Health, 200)],
         metadata: TypeMetadata {
             kind: ItemId::InnervatingLocketU44,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -56595,7 +56595,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 10), (MoveSpeed, 45)],
         metadata: TypeMetadata {
             kind: ItemId::IonianBootsOfLucidity,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 2,
@@ -56624,7 +56624,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 40), (MoveSpeed, 45)],
         metadata: TypeMetadata {
             kind: ItemId::IonianBootsOfLucidityArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -56685,7 +56685,7 @@ pub mod items {
         prettified_stats: &[(Armor, 45), (Health, 350), (MagicResist, 45)],
         metadata: TypeMetadata {
             kind: ItemId::JakShoTheProtean,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -56716,7 +56716,7 @@ pub mod items {
         prettified_stats: &[(Armor, 35), (Health, 350), (MagicResist, 35)],
         metadata: TypeMetadata {
             kind: ItemId::JakshoTheProteanArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -56755,7 +56755,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::JarvanIs,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 2,
@@ -56788,7 +56788,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::JinxsTriNamite,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -56814,7 +56814,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::JuiceOfHaste,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 1,
@@ -56840,7 +56840,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::JuiceOfPower,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 1,
@@ -56866,7 +56866,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::JuiceOfVitality,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 1,
@@ -56892,7 +56892,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::JungleQuest1204,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -56918,7 +56918,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::JungleQuest1209,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -56944,7 +56944,7 @@ pub mod items {
         prettified_stats: &[(BaseHealthRegen, 100), (Health, 400), (MagicResist, 80)],
         metadata: TypeMetadata {
             kind: ItemId::KaenicRookern,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -56974,7 +56974,7 @@ pub mod items {
         prettified_stats: &[(Health, 350), (MagicResist, 80)],
         metadata: TypeMetadata {
             kind: ItemId::KaenicRookernArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -57004,7 +57004,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::KalistasBlackSpear3599,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 1,
@@ -57030,7 +57030,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::KalistasBlackSpear3600,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -57056,7 +57056,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 10), (Health, 200)],
         metadata: TypeMetadata {
             kind: ItemId::Kindlegem,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 2,
@@ -57085,7 +57085,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 10), (Health, 200)],
         metadata: TypeMetadata {
             kind: ItemId::KindlegemArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -57114,7 +57114,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 30), (AdaptiveForce, 85), (Health, 400)],
         metadata: TypeMetadata {
             kind: ItemId::KinkouJitteU44,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -57181,7 +57181,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::KnightsVow,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -57211,7 +57211,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 15), (Armor, 50), (Health, 400)],
         metadata: TypeMetadata {
             kind: ItemId::KnightsVowArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -57246,7 +57246,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::KnightsVowU32,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -57365,7 +57365,7 @@ pub mod items {
         prettified_stats: &[(ArmorPenetration, 18), (AttackDamage, 20)],
         metadata: TypeMetadata {
             kind: ItemId::LastWhisper,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 2,
@@ -57395,7 +57395,7 @@ pub mod items {
         prettified_stats: &[(AbilityPower, 20), (Health, 250), (Omnivamp, 5)],
         metadata: TypeMetadata {
             kind: ItemId::LeechingLeer,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -57426,7 +57426,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::LegendaryAssassinItemArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 1,
@@ -57452,7 +57452,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::LegendaryFighterItemArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 1,
@@ -57478,7 +57478,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::LegendaryMageItemArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 1,
@@ -57504,7 +57504,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::LegendaryMarksmanItemArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 1,
@@ -57530,7 +57530,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::LegendarySupportItemArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 1,
@@ -57556,7 +57556,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::LegendaryTankItemArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 1,
@@ -57582,7 +57582,7 @@ pub mod items {
         prettified_stats: &[(AbilityPower, 50), (Health, 250)],
         metadata: TypeMetadata {
             kind: ItemId::LiandrysAnguishArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -57714,7 +57714,7 @@ pub mod items {
         prettified_stats: &[(AttackDamage, 25), (Lethality, 5), (MoveSpeed, 4)],
         metadata: TypeMetadata {
             kind: ItemId::Lifeline,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 2,
@@ -57745,7 +57745,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 5), (Armor, 25), (Health, 150)],
         metadata: TypeMetadata {
             kind: ItemId::LifewellPendant,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -57775,7 +57775,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::LightOfTheLion,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -57806,7 +57806,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::LightningBraid,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -57842,7 +57842,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::LightningRodU44,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -57874,7 +57874,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::LionesssLament,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -57900,7 +57900,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::LockedWeaponSlot,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -57931,7 +57931,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::LocketOfTheIronSolari,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -57967,7 +57967,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::LocketOfTheIronSolariArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -58003,7 +58003,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::LocketOfTheIronSolariU32,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -58034,7 +58034,7 @@ pub mod items {
         prettified_stats: &[(AttackDamage, 10)],
         metadata: TypeMetadata {
             kind: ItemId::LongSword,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 1,
@@ -58063,7 +58063,7 @@ pub mod items {
         prettified_stats: &[(ArmorPenetration, 35), (AttackDamage, 35), (CritChance, 25)],
         metadata: TypeMetadata {
             kind: ItemId::LordDominiksRegards,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -58094,7 +58094,7 @@ pub mod items {
         prettified_stats: &[(ArmorPenetration, 40), (AttackDamage, 30), (CritChance, 25)],
         metadata: TypeMetadata {
             kind: ItemId::LordDominiksRegardsArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -58125,7 +58125,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 10), (AbilityPower, 40), (Mana, 300)],
         metadata: TypeMetadata {
             kind: ItemId::LostChapter,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 2,
@@ -58155,7 +58155,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::LoversRicochet,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -58181,7 +58181,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::LucentSingularity,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -58207,7 +58207,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::LuckyDice,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 1,
@@ -58377,7 +58377,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 15), (AttackDamage, 35), (Mana, 500)],
         metadata: TypeMetadata {
             kind: ItemId::Manamune,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -58407,7 +58407,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 15), (AttackDamage, 40), (Mana, 600)],
         metadata: TypeMetadata {
             kind: ItemId::ManamuneArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -58437,7 +58437,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 15), (AttackDamage, 35), (Mana, 500)],
         metadata: TypeMetadata {
             kind: ItemId::ManamuneU32,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -58467,7 +58467,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 15), (AttackDamage, 60), (MagicResist, 40)],
         metadata: TypeMetadata {
             kind: ItemId::MawOfMalmortius,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -58497,7 +58497,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 15), (AttackDamage, 50), (MagicResist, 40)],
         metadata: TypeMetadata {
             kind: ItemId::MawOfMalmortiusArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -58527,7 +58527,7 @@ pub mod items {
         prettified_stats: &[(AbilityPower, 20), (Health, 100)],
         metadata: TypeMetadata {
             kind: ItemId::MejaisSoulstealer,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 2,
@@ -58557,7 +58557,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::MeowMeow,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -58583,7 +58583,7 @@ pub mod items {
         prettified_stats: &[(AttackDamage, 50), (LifeSteal, 10), (MagicResist, 35)],
         metadata: TypeMetadata {
             kind: ItemId::MercurialScimitar,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -58614,7 +58614,7 @@ pub mod items {
         prettified_stats: &[(AttackDamage, 45), (LifeSteal, 10), (MagicResist, 40)],
         metadata: TypeMetadata {
             kind: ItemId::MercurialScimitarArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -58645,7 +58645,7 @@ pub mod items {
         prettified_stats: &[(MagicResist, 20), (MoveSpeed, 45), (Tenacity, 30)],
         metadata: TypeMetadata {
             kind: ItemId::MercurysTreads,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 2,
@@ -58675,7 +58675,7 @@ pub mod items {
         prettified_stats: &[(MagicResist, 30), (MoveSpeed, 30), (Tenacity, 30)],
         metadata: TypeMetadata {
             kind: ItemId::MercurysTreadsArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -58705,7 +58705,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::MidLaneQuest1201,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -58731,7 +58731,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::MidLaneQuest1206,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -58762,7 +58762,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::MikaelsBlessing,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -58795,7 +58795,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::MikaelsBlessingArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -58829,7 +58829,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::MikaelsBlessingU32,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -58858,7 +58858,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::MinionDematerializer,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -58884,7 +58884,7 @@ pub mod items {
         prettified_stats: &[(AdaptiveForce, 65), (AttackSpeed, 60), (MoveSpeed, 6)],
         metadata: TypeMetadata {
             kind: ItemId::MirageBladeU44,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -58915,7 +58915,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::MobilityBoots,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -58941,7 +58941,7 @@ pub mod items {
         prettified_stats: &[(AbilityPower, 85), (Health, 400), (Tenacity, 30)],
         metadata: TypeMetadata {
             kind: ItemId::MoonflairSpellbladeU44,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -58976,7 +58976,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::MoonstoneRenewer,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -59011,7 +59011,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::MoonstoneRenewerArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -59046,7 +59046,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::MoonstoneRenewerU32,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -59076,7 +59076,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 15), (AbilityPower, 75), (Health, 350)],
         metadata: TypeMetadata {
             kind: ItemId::Morellonomicon,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -59106,7 +59106,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 15), (AbilityPower, 90), (Health, 250)],
         metadata: TypeMetadata {
             kind: ItemId::MorellonomiconArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -59136,7 +59136,7 @@ pub mod items {
         prettified_stats: &[(ArmorPenetration, 30), (AttackDamage, 35), (CritChance, 25)],
         metadata: TypeMetadata {
             kind: ItemId::MortalReminder,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -59167,7 +59167,7 @@ pub mod items {
         prettified_stats: &[(ArmorPenetration, 30), (AttackDamage, 30), (CritChance, 25)],
         metadata: TypeMetadata {
             kind: ItemId::MortalReminderArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -59198,7 +59198,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::MosstomperSeedling1103,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 1,
@@ -59224,7 +59224,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::MosstomperSeedling1105,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -59250,7 +59250,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::MultitoolArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -59354,7 +59354,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 15), (AttackDamage, 35), (Mana, 1000)],
         metadata: TypeMetadata {
             kind: ItemId::MuramanaU32,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -59450,7 +59450,7 @@ pub mod items {
         prettified_stats: &[(AttackSpeed, 40), (CritChance, 25), (MoveSpeed, 4)],
         metadata: TypeMetadata {
             kind: ItemId::NavoriFlickerblade,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -59481,7 +59481,7 @@ pub mod items {
         prettified_stats: &[(AttackSpeed, 35), (CritChance, 25), (MoveSpeed, 4)],
         metadata: TypeMetadata {
             kind: ItemId::NavoriFlickerbladesArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -59512,7 +59512,7 @@ pub mod items {
         prettified_stats: &[(AbilityPower, 65)],
         metadata: TypeMetadata {
             kind: ItemId::NeedlesslyLargeRod,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 1,
@@ -59541,7 +59541,7 @@ pub mod items {
         prettified_stats: &[(AbilityPower, 120)],
         metadata: TypeMetadata {
             kind: ItemId::NeedlesslyLargeRodArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -59570,7 +59570,7 @@ pub mod items {
         prettified_stats: &[(MagicResist, 45)],
         metadata: TypeMetadata {
             kind: ItemId::NegatronCloak,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 2,
@@ -59599,7 +59599,7 @@ pub mod items {
         prettified_stats: &[(MagicResist, 30)],
         metadata: TypeMetadata {
             kind: ItemId::NegatronCloakArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -59628,7 +59628,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::NeverendingMobstomper,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -59654,7 +59654,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 25), (AbilityPower, 90), (Health, 300)],
         metadata: TypeMetadata {
             kind: ItemId::NightHarvester,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -59684,7 +59684,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 25), (AbilityPower, 90), (Health, 300)],
         metadata: TypeMetadata {
             kind: ItemId::NightHarvesterArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -59714,7 +59714,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 25), (AbilityPower, 90), (Health, 300)],
         metadata: TypeMetadata {
             kind: ItemId::NightHarvesterU44,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -59744,7 +59744,7 @@ pub mod items {
         prettified_stats: &[(AttackDamage, 15), (CritChance, 20)],
         metadata: TypeMetadata {
             kind: ItemId::Noonquiver,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 2,
@@ -59774,7 +59774,7 @@ pub mod items {
         prettified_stats: &[(MagicResist, 20)],
         metadata: TypeMetadata {
             kind: ItemId::NullMagicMantle,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 1,
@@ -59803,7 +59803,7 @@ pub mod items {
         prettified_stats: &[(AbilityPower, 25)],
         metadata: TypeMetadata {
             kind: ItemId::OblivionOrb,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 2,
@@ -59832,7 +59832,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 40), (AttackDamage, 70), (Health, 700)],
         metadata: TypeMetadata {
             kind: ItemId::ObsidianCleaverArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -59862,7 +59862,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::ObsidianEdge,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -59888,7 +59888,7 @@ pub mod items {
         prettified_stats: &[(AttackDamage, 55), (Lethality, 18)],
         metadata: TypeMetadata {
             kind: ItemId::Opportunity,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -59918,7 +59918,7 @@ pub mod items {
         prettified_stats: &[(AttackDamage, 50), (Lethality, 15)],
         metadata: TypeMetadata {
             kind: ItemId::OpportunityArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -59948,7 +59948,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::OracleLens,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 1,
@@ -59974,7 +59974,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::Overcharged1507,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 1,
@@ -60000,7 +60000,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::Overcharged1523,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -60026,7 +60026,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::Overerchargedha,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -60052,7 +60052,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::Overgrowth,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -60078,7 +60078,7 @@ pub mod items {
         prettified_stats: &[(AttackDamage, 30), (Health, 550)],
         metadata: TypeMetadata {
             kind: ItemId::OverlordsBloodmail,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -60108,7 +60108,7 @@ pub mod items {
         prettified_stats: &[(AttackDamage, 40), (Health, 400)],
         metadata: TypeMetadata {
             kind: ItemId::OverlordsBloodmailU44,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -60138,7 +60138,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::OwoBlaster,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -60164,7 +60164,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::PartyFavor,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -60195,7 +60195,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::PauldronsOfWhiterock,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -60225,7 +60225,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::PawPrintPoisoner,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -60251,7 +60251,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::PenetratingBullets,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 1,
@@ -60285,7 +60285,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::Perplexity,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -60318,7 +60318,7 @@ pub mod items {
         prettified_stats: &[(AttackDamage, 15), (Health, 200)],
         metadata: TypeMetadata {
             kind: ItemId::Phage,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 2,
@@ -60348,7 +60348,7 @@ pub mod items {
         prettified_stats: &[(AttackSpeed, 65), (CritChance, 25), (MoveSpeed, 10)],
         metadata: TypeMetadata {
             kind: ItemId::PhantomDancer,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -60379,7 +60379,7 @@ pub mod items {
         prettified_stats: &[(AttackSpeed, 60), (CritChance, 25), (MoveSpeed, 8)],
         metadata: TypeMetadata {
             kind: ItemId::PhantomDancerArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -60410,7 +60410,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::PhreakishGusto,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 1,
@@ -60436,7 +60436,7 @@ pub mod items {
         prettified_stats: &[(AttackDamage, 25)],
         metadata: TypeMetadata {
             kind: ItemId::Pickaxe,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 1,
@@ -60465,7 +60465,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::PillorySwipe,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -60491,7 +60491,7 @@ pub mod items {
         prettified_stats: &[(Armor, 25), (MoveSpeed, 45)],
         metadata: TypeMetadata {
             kind: ItemId::PlatedSteelcaps,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 2,
@@ -60521,7 +60521,7 @@ pub mod items {
         prettified_stats: &[(Armor, 25), (MoveSpeed, 30)],
         metadata: TypeMetadata {
             kind: ItemId::PlatedSteelcapsArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -60551,7 +60551,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::PoroSnax,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 1,
@@ -60577,7 +60577,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::PrismaticItemArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 1,
@@ -60603,7 +60603,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::PrismaticStatVoucherArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -60629,7 +60629,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 10), (AttackDamage, 55), (Lethality, 18)],
         metadata: TypeMetadata {
             kind: ItemId::ProfaneHydra,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -60659,7 +60659,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 15), (AttackDamage, 50), (Lethality, 18)],
         metadata: TypeMetadata {
             kind: ItemId::ProfaneHydraArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -60689,7 +60689,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 15), (Health, 600)],
         metadata: TypeMetadata {
             kind: ItemId::ProtoplasmHarness,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -60718,7 +60718,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 15), (Health, 600)],
         metadata: TypeMetadata {
             kind: ItemId::ProtoplasmHarnessArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -60747,7 +60747,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 15), (AttackDamage, 55), (Lethality, 22)],
         metadata: TypeMetadata {
             kind: ItemId::ProwlersClaw,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -60777,7 +60777,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 15), (AttackDamage, 55), (Lethality, 22)],
         metadata: TypeMetadata {
             kind: ItemId::ProwlersClawArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -60807,7 +60807,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 20), (AttackDamage, 60), (Lethality, 20)],
         metadata: TypeMetadata {
             kind: ItemId::ProwlersClawU44,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -60837,7 +60837,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::PrumbissElectrocarver,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -60868,7 +60868,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::PuppeteerU44,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -60897,7 +60897,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 15), (AdaptiveForce, 85), (Health, 400)],
         metadata: TypeMetadata {
             kind: ItemId::PyromancersCloakU44,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -60927,7 +60927,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::QuadORang,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -60953,7 +60953,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::QuestBot,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -60979,7 +60979,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::QuestJungle,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -61005,7 +61005,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::QuestMid,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -61031,7 +61031,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::QuestSupport,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -61057,7 +61057,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::QuestTop,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -61083,7 +61083,7 @@ pub mod items {
         prettified_stats: &[(MagicResist, 30)],
         metadata: TypeMetadata {
             kind: ItemId::QuicksilverSash,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 2,
@@ -61112,7 +61112,7 @@ pub mod items {
         prettified_stats: &[(AbilityPower, 130)],
         metadata: TypeMetadata {
             kind: ItemId::RabadonsDeathcap,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 2,
@@ -61141,7 +61141,7 @@ pub mod items {
         prettified_stats: &[(AbilityPower, 65)],
         metadata: TypeMetadata {
             kind: ItemId::RabadonsDeathcapArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -61170,7 +61170,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::RadiantField,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -61201,7 +61201,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::RadiantVirtue,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -61237,7 +61237,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::RadiantVirtueArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -61273,7 +61273,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::RadiantVirtueU44,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -61336,7 +61336,7 @@ pub mod items {
         prettified_stats: &[(Armor, 75), (Health, 350)],
         metadata: TypeMetadata {
             kind: ItemId::RanduinsOmen,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -61366,7 +61366,7 @@ pub mod items {
         prettified_stats: &[(Armor, 75), (Health, 300)],
         metadata: TypeMetadata {
             kind: ItemId::RanduinsOmenArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -61464,7 +61464,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::RapidRabbitRaindown,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -61568,7 +61568,7 @@ pub mod items {
         prettified_stats: &[(AbilityPower, 80), (AttackSpeed, 40), (Health, 300)],
         metadata: TypeMetadata {
             kind: ItemId::RealityFractureU44,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -61599,7 +61599,7 @@ pub mod items {
         prettified_stats: &[(AdaptiveForce, 40), (AttackSpeed, 50), (MoveSpeed, 5)],
         metadata: TypeMetadata {
             kind: ItemId::ReapersTollU44,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -61630,7 +61630,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::Recall,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -61656,7 +61656,7 @@ pub mod items {
         prettified_stats: &[(AttackDamage, 15), (MoveSpeed, 4)],
         metadata: TypeMetadata {
             kind: ItemId::Rectrix,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 2,
@@ -61718,7 +61718,7 @@ pub mod items {
         prettified_stats: &[(AttackSpeed, 15)],
         metadata: TypeMetadata {
             kind: ItemId::RecurveBowArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -61823,7 +61823,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::RedemptionU32,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -61852,7 +61852,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::RefillablePotion,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 1,
@@ -61878,7 +61878,7 @@ pub mod items {
         prettified_stats: &[(AttackDamage, 60), (Lethality, 15), (MoveSpeed, 8)],
         metadata: TypeMetadata {
             kind: ItemId::RegicideU44,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -61909,7 +61909,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::ReinforcedArmor1502,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 1,
@@ -61935,7 +61935,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::ReinforcedArmor1505,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -61961,7 +61961,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::ReinforcedArmor1506,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 1,
@@ -61987,7 +61987,7 @@ pub mod items {
         prettified_stats: &[(BaseHealthRegen, 100)],
         metadata: TypeMetadata {
             kind: ItemId::RejuvenationBead,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 1,
@@ -62018,7 +62018,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::RelicShield,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -62048,7 +62048,7 @@ pub mod items {
         prettified_stats: &[(Armor, 35), (AttackSpeed, 40), (MagicResist, 35)],
         metadata: TypeMetadata {
             kind: ItemId::ReverberationU44,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -62079,7 +62079,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 15), (AbilityPower, 70), (Health, 350)],
         metadata: TypeMetadata {
             kind: ItemId::Riftmaker,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -62109,7 +62109,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 15), (AbilityPower, 60), (Health, 350)],
         metadata: TypeMetadata {
             kind: ItemId::RiftmakerArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -62139,7 +62139,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 15), (AbilityPower, 50), (CritChance, 25)],
         metadata: TypeMetadata {
             kind: ItemId::RiteOfRuin,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -62169,7 +62169,7 @@ pub mod items {
         prettified_stats: &[(AbilityPower, 45), (Health, 350), (Mana, 500)],
         metadata: TypeMetadata {
             kind: ItemId::RodOfAges,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -62200,7 +62200,7 @@ pub mod items {
         prettified_stats: &[(AbilityPower, 60), (Health, 350), (Mana, 300)],
         metadata: TypeMetadata {
             kind: ItemId::RodOfAgesArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -62231,7 +62231,7 @@ pub mod items {
         prettified_stats: &[(AbilityPower, 45), (Health, 350), (Mana, 500)],
         metadata: TypeMetadata {
             kind: ItemId::RodOfAgesU32,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -62262,7 +62262,7 @@ pub mod items {
         prettified_stats: &[(Health, 150)],
         metadata: TypeMetadata {
             kind: ItemId::RubyCrystal,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 1,
@@ -62359,7 +62359,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 20), (AbilityPower, 80), (MoveSpeed, 4)],
         metadata: TypeMetadata {
             kind: ItemId::RunecarverU44,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -62398,7 +62398,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::RuneglaiveArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -62438,7 +62438,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::RunesteelSpaulders,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -62473,7 +62473,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::RunicCompass,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 2,
@@ -62502,7 +62502,7 @@ pub mod items {
         prettified_stats: &[(AbilityPower, 65), (Health, 400)],
         metadata: TypeMetadata {
             kind: ItemId::RylaisCrystalScepter,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -62532,7 +62532,7 @@ pub mod items {
         prettified_stats: &[(AbilityPower, 60), (Health, 350)],
         metadata: TypeMetadata {
             kind: ItemId::RylaisCrystalScepterArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -62567,7 +62567,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::SanguineBladeArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -62602,7 +62602,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::SanguineGiftU44,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -62631,7 +62631,7 @@ pub mod items {
         prettified_stats: &[(Mana, 300)],
         metadata: TypeMetadata {
             kind: ItemId::SapphireCrystal,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 1,
@@ -62660,7 +62660,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::SavageSlice,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -62686,7 +62686,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::ScarecrowEffigy,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 1,
@@ -62712,7 +62712,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::ScorchclawPup1101,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 1,
@@ -62738,7 +62738,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::ScorchclawPup1107,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -62764,7 +62764,7 @@ pub mod items {
         prettified_stats: &[(AttackSpeed, 20)],
         metadata: TypeMetadata {
             kind: ItemId::ScoutsSlingshot,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 2,
@@ -62793,7 +62793,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::ScoutingAhead,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -62819,7 +62819,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::SearingShortbow,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -62845,7 +62845,7 @@ pub mod items {
         prettified_stats: &[(AbilityPower, 40), (Armor, 25)],
         metadata: TypeMetadata {
             kind: ItemId::SeekersArmguard,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 2,
@@ -62875,7 +62875,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 25), (AbilityPower, 70), (Mana, 1000)],
         metadata: TypeMetadata {
             kind: ItemId::SeraphsEmbrace,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 4,
@@ -62905,7 +62905,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 25), (AbilityPower, 60), (Mana, 1200)],
         metadata: TypeMetadata {
             kind: ItemId::SeraphsEmbraceArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -62935,7 +62935,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 25), (AbilityPower, 70), (Mana, 1000)],
         metadata: TypeMetadata {
             kind: ItemId::SeraphsEmbraceU32,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -62965,7 +62965,7 @@ pub mod items {
         prettified_stats: &[(AttackDamage, 55), (Lethality, 15)],
         metadata: TypeMetadata {
             kind: ItemId::SerpentsFang,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -62995,7 +62995,7 @@ pub mod items {
         prettified_stats: &[(AttackDamage, 55), (Lethality, 19)],
         metadata: TypeMetadata {
             kind: ItemId::SerpentsFangArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -63025,7 +63025,7 @@ pub mod items {
         prettified_stats: &[(AttackDamage, 20), (Lethality, 10)],
         metadata: TypeMetadata {
             kind: ItemId::SerratedDirk,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 2,
@@ -63059,7 +63059,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::SeryldasGrudge,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -63093,7 +63093,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::SeryldasGrudgeArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -63123,7 +63123,7 @@ pub mod items {
         prettified_stats: &[(AbilityPower, 110), (MagicPenetration, 15)],
         metadata: TypeMetadata {
             kind: ItemId::Shadowflame,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -63153,7 +63153,7 @@ pub mod items {
         prettified_stats: &[(AbilityPower, 90), (MagicPenetration, 10)],
         metadata: TypeMetadata {
             kind: ItemId::ShadowflameArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -63188,7 +63188,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::ShardOfTrueIce,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -63218,7 +63218,7 @@ pub mod items {
         prettified_stats: &[(AbilityPower, 40), (Armor, 25)],
         metadata: TypeMetadata {
             kind: ItemId::ShatteredArmguard,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 2,
@@ -63277,7 +63277,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 10)],
         metadata: TypeMetadata {
             kind: ItemId::SheenArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -63303,7 +63303,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::ShieldSlam,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -63329,7 +63329,7 @@ pub mod items {
         prettified_stats: &[(Armor, 100), (Health, 300)],
         metadata: TypeMetadata {
             kind: ItemId::ShieldOfMoltenStoneU44,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -63359,7 +63359,7 @@ pub mod items {
         prettified_stats: &[(Armor, 80), (Health, 250)],
         metadata: TypeMetadata {
             kind: ItemId::ShieldOfMoltenStoneU66,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -63389,7 +63389,7 @@ pub mod items {
         prettified_stats: &[(Armor, 30), (AttackDamage, 50), (MoveSpeed, 5)],
         metadata: TypeMetadata {
             kind: ItemId::ShieldOfTheRakkor,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -63425,7 +63425,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::ShurelyasBattlesong,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -63460,7 +63460,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::ShurelyasBattlesongArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -63495,7 +63495,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::ShurelyasBattlesongU32,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -63525,7 +63525,7 @@ pub mod items {
         prettified_stats: &[(AttackDamage, 40), (Health, 300), (MagicResist, 40)],
         metadata: TypeMetadata {
             kind: ItemId::SilvermereDawn,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -63556,7 +63556,7 @@ pub mod items {
         prettified_stats: &[(AttackDamage, 40), (Health, 300), (MagicResist, 40)],
         metadata: TypeMetadata {
             kind: ItemId::SilvermereDawnArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -63592,7 +63592,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::SinEater,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -63623,7 +63623,7 @@ pub mod items {
         prettified_stats: &[(MoveSpeed, 25)],
         metadata: TypeMetadata {
             kind: ItemId::SlightlyMagicalFootwear,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 1,
@@ -63652,7 +63652,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::SmallPartyFavor,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -63683,7 +63683,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::SolsticeSleigh,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -63712,7 +63712,7 @@ pub mod items {
         prettified_stats: &[(MagicPenetration, 12), (MoveSpeed, 45)],
         metadata: TypeMetadata {
             kind: ItemId::SorcerersShoes,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 2,
@@ -63742,7 +63742,7 @@ pub mod items {
         prettified_stats: &[(MagicPenetration, 20), (MoveSpeed, 55)],
         metadata: TypeMetadata {
             kind: ItemId::SorcerersShoesArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -63772,7 +63772,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::SoundWave,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -63798,7 +63798,7 @@ pub mod items {
         prettified_stats: &[(AttackDamage, 45), (Health, 450)],
         metadata: TypeMetadata {
             kind: ItemId::SpearOfShojin,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -63828,7 +63828,7 @@ pub mod items {
         prettified_stats: &[(AttackDamage, 40), (Health, 350)],
         metadata: TypeMetadata {
             kind: ItemId::SpearOfShojinArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -63858,7 +63858,7 @@ pub mod items {
         prettified_stats: &[(AttackDamage, 50), (Lethality, 15), (MoveSpeed, 4)],
         metadata: TypeMetadata {
             kind: ItemId::SpectralCutlass,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -63889,7 +63889,7 @@ pub mod items {
         prettified_stats: &[(AttackDamage, 55), (Lethality, 21)],
         metadata: TypeMetadata {
             kind: ItemId::SpectralCutlassArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -63924,7 +63924,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::SpectralSickle,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -63954,7 +63954,7 @@ pub mod items {
         prettified_stats: &[(BaseHealthRegen, 100), (Health, 200), (MagicResist, 35)],
         metadata: TypeMetadata {
             kind: ItemId::SpectresCowl,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 2,
@@ -63984,7 +63984,7 @@ pub mod items {
         prettified_stats: &[(MagicPenetration, 8), (MoveSpeed, 45)],
         metadata: TypeMetadata {
             kind: ItemId::SpellslingersShoes,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -64020,7 +64020,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::SpellthiefsEdge,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -64055,7 +64055,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::SpiritVisage,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -64085,7 +64085,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 10), (Health, 300), (MagicResist, 40)],
         metadata: TypeMetadata {
             kind: ItemId::SpiritVisageArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -64120,7 +64120,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::StaffOfFlowingWater,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -64154,7 +64154,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::StaffOfFlowingWaterArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -64188,7 +64188,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::StaffOfFlowingWaterU32,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -64217,7 +64217,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::StatBonus,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -64243,7 +64243,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::StatBonusArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 1,
@@ -64337,7 +64337,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::StatikkSword,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -64363,7 +64363,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::StealthWard2056,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -64389,7 +64389,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::StealthWard3340,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 1,
@@ -64420,7 +64420,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::SteelShoulderguards,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -64450,7 +64450,7 @@ pub mod items {
         prettified_stats: &[(Armor, 30), (AttackDamage, 15)],
         metadata: TypeMetadata {
             kind: ItemId::SteelSigil,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 2,
@@ -64480,7 +64480,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::SteelTempest,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -64506,7 +64506,7 @@ pub mod items {
         prettified_stats: &[(Health, 400), (Tenacity, 20)],
         metadata: TypeMetadata {
             kind: ItemId::SteraksGage,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -64535,7 +64535,7 @@ pub mod items {
         prettified_stats: &[(Health, 300), (Tenacity, 20)],
         metadata: TypeMetadata {
             kind: ItemId::SteraksGageArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -64564,7 +64564,7 @@ pub mod items {
         prettified_stats: &[(BaseManaRegen, 25), (Health, 80)],
         metadata: TypeMetadata {
             kind: ItemId::StirringWardstone,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -64593,7 +64593,7 @@ pub mod items {
         prettified_stats: &[(AttackDamage, 50), (AttackSpeed, 20), (CritChance, 25)],
         metadata: TypeMetadata {
             kind: ItemId::Stormrazor3095,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -64658,7 +64658,7 @@ pub mod items {
         prettified_stats: &[(AttackDamage, 50), (AttackSpeed, 20), (CritChance, 25)],
         metadata: TypeMetadata {
             kind: ItemId::StormrazorArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -64689,7 +64689,7 @@ pub mod items {
         prettified_stats: &[(AbilityPower, 90), (MagicPenetration, 15), (MoveSpeed, 6)],
         metadata: TypeMetadata {
             kind: ItemId::Stormsurge,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -64720,7 +64720,7 @@ pub mod items {
         prettified_stats: &[(AbilityPower, 90), (MagicPenetration, 15), (MoveSpeed, 4)],
         metadata: TypeMetadata {
             kind: ItemId::StormsurgeArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -64831,7 +64831,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::StructureBounty1516,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -64857,7 +64857,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::StructureBounty1517,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -64883,7 +64883,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::StructureBounty1518,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -64909,7 +64909,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::StructureBounty1519,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -64935,7 +64935,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 10), (AttackDamage, 45), (Health, 400)],
         metadata: TypeMetadata {
             kind: ItemId::SunderedSky,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -64965,7 +64965,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 10), (AttackDamage, 40), (Health, 350)],
         metadata: TypeMetadata {
             kind: ItemId::SunderedSkyArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -65061,7 +65061,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::SuperMechArmor,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 1,
@@ -65087,7 +65087,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::SuperMechPowerField,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 1,
@@ -65113,7 +65113,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::SupportQuest1203,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -65139,7 +65139,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::SupportQuest1208,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -65165,7 +65165,7 @@ pub mod items {
         prettified_stats: &[(MoveSpeed, 65)],
         metadata: TypeMetadata {
             kind: ItemId::Swiftmarch,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -65199,7 +65199,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::SwordOfBlossomingDawn124011,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -65234,7 +65234,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::SwordOfBlossomingDawn4011,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -65269,7 +65269,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::SwordOfBlossomingDawnU66,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -65299,7 +65299,7 @@ pub mod items {
         prettified_stats: &[(AttackDamage, 30), (AttackSpeed, 25), (Lethality, 18)],
         metadata: TypeMetadata {
             kind: ItemId::SwordOfTheDivine,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -65330,7 +65330,7 @@ pub mod items {
         prettified_stats: &[(AdaptiveForce, 110), (CritChance, 50)],
         metadata: TypeMetadata {
             kind: ItemId::SwordOfTheDivineU44,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -65360,7 +65360,7 @@ pub mod items {
         prettified_stats: &[(AdaptiveForce, 90), (CritChance, 50)],
         metadata: TypeMetadata {
             kind: ItemId::SwordOfTheDivineU66,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -65390,7 +65390,7 @@ pub mod items {
         prettified_stats: &[(MoveSpeed, 40)],
         metadata: TypeMetadata {
             kind: ItemId::SymbioticSoles,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 2,
@@ -65419,7 +65419,7 @@ pub mod items {
         prettified_stats: &[(MoveSpeed, 45)],
         metadata: TypeMetadata {
             kind: ItemId::SynchronizedSouls,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -65448,7 +65448,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::TIBBERS,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -65474,7 +65474,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::TIBBERSBEEGEdition,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -65500,7 +65500,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::TalismanOfAscensionU44,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -65531,7 +65531,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::TargonsBuckler,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -65561,7 +65561,7 @@ pub mod items {
         prettified_stats: &[(Mana, 240)],
         metadata: TypeMetadata {
             kind: ItemId::TearOfTheGoddess,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 1,
@@ -65590,7 +65590,7 @@ pub mod items {
         prettified_stats: &[(Mana, 240)],
         metadata: TypeMetadata {
             kind: ItemId::TearOfTheGoddessU32,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -65619,7 +65619,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::TempestsGauntlet,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -65645,7 +65645,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::TentacleSlam,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -65671,7 +65671,7 @@ pub mod items {
         prettified_stats: &[(AttackDamage, 30), (AttackSpeed, 35)],
         metadata: TypeMetadata {
             kind: ItemId::Terminus,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -65701,7 +65701,7 @@ pub mod items {
         prettified_stats: &[(AttackDamage, 30), (AttackSpeed, 25)],
         metadata: TypeMetadata {
             kind: ItemId::TerminusArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -65731,7 +65731,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::TheAnnihilator,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -65757,7 +65757,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 10), (AttackDamage, 25), (Lethality, 5)],
         metadata: TypeMetadata {
             kind: ItemId::TheBrutalizer,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 2,
@@ -65787,7 +65787,7 @@ pub mod items {
         prettified_stats: &[(AttackDamage, 50), (CritChance, 25), (Lethality, 10)],
         metadata: TypeMetadata {
             kind: ItemId::TheCollector,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -65818,7 +65818,7 @@ pub mod items {
         prettified_stats: &[(AttackDamage, 45), (CritChance, 25), (Lethality, 12)],
         metadata: TypeMetadata {
             kind: ItemId::TheCollectorArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -65849,7 +65849,7 @@ pub mod items {
         prettified_stats: &[(AttackDamage, 50), (CritChance, 25), (Lethality, 10)],
         metadata: TypeMetadata {
             kind: ItemId::TheCollectorU66,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -65894,7 +65894,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::TheGoldenSpatula,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -65946,7 +65946,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::TheGoldenSpatulaArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -65997,7 +65997,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::TheGoldenSpatulaU66,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -66100,7 +66100,7 @@ pub mod items {
         prettified_stats: &[(Armor, 85), (Health, 200)],
         metadata: TypeMetadata {
             kind: ItemId::ThornmailU32,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -66255,7 +66255,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::TopLaneQuest1200,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -66281,7 +66281,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::TopLaneQuest1221,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -66307,7 +66307,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::TopLaneQuest1222,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -66333,7 +66333,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::TotalBiscuitOfEverlastingWill,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 1,
@@ -66359,7 +66359,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::TowerPowerUp,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -66385,7 +66385,7 @@ pub mod items {
         prettified_stats: &[(Armor, 40), (Health, 250), (MoveSpeed, 4)],
         metadata: TypeMetadata {
             kind: ItemId::Trailblazer,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -66416,7 +66416,7 @@ pub mod items {
         prettified_stats: &[(Armor, 45), (Health, 300), (MoveSpeed, 6)],
         metadata: TypeMetadata {
             kind: ItemId::TrailblazerArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -66447,7 +66447,7 @@ pub mod items {
         prettified_stats: &[(Armor, 45), (Health, 300), (MoveSpeed, 6)],
         metadata: TypeMetadata {
             kind: ItemId::TrailblazerU32,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -66556,7 +66556,7 @@ pub mod items {
         prettified_stats: &[(AttackDamage, 15), (Health, 250)],
         metadata: TypeMetadata {
             kind: ItemId::Tunneler,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 2,
@@ -66586,7 +66586,7 @@ pub mod items {
         prettified_stats: &[(AdaptiveForce, 80), (Health, 600)],
         metadata: TypeMetadata {
             kind: ItemId::TurboChemtankU44,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -66616,7 +66616,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::TurretPlating,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 1,
@@ -66642,7 +66642,7 @@ pub mod items {
         prettified_stats: &[(AbilityPower, 100), (AttackDamage, 70)],
         metadata: TypeMetadata {
             kind: ItemId::TwilightsEdgeU44,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -66672,7 +66672,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::TwinMaskU44,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -66698,7 +66698,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 15), (AttackDamage, 60), (Lethality, 18)],
         metadata: TypeMetadata {
             kind: ItemId::UmbralGlaive,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -66728,7 +66728,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::UnceasingCyclone,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -66754,7 +66754,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 15), (Armor, 50), (Health, 400)],
         metadata: TypeMetadata {
             kind: ItemId::UnendingDespair,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -66784,7 +66784,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 10), (Armor, 50), (Health, 350)],
         metadata: TypeMetadata {
             kind: ItemId::UnendingDespairArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -66814,7 +66814,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::Unknown1205,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -66840,7 +66840,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::Unknown1210,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -66866,7 +66866,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::Unknown1211,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -66892,7 +66892,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::Unknown1212,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -66918,7 +66918,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::Unknown1213,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -66944,7 +66944,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::Unknown1214,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -66970,7 +66970,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::Unknown1215,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -66996,7 +66996,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::Unknown1216,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -67022,7 +67022,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::Unknown1217,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -67048,7 +67048,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::Unknown1218,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -67074,7 +67074,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::Unknown1219,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -67100,7 +67100,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::Unknown2008,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -67126,7 +67126,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::Unknown3901,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 1,
@@ -67152,7 +67152,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::Unknown3902,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 1,
@@ -67178,7 +67178,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::Unknown3903,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 1,
@@ -67204,7 +67204,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::UnleashedTeleport,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -67230,7 +67230,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::UwuBlaster,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -67256,7 +67256,7 @@ pub mod items {
         prettified_stats: &[(AttackDamage, 15), (LifeSteal, 7)],
         metadata: TypeMetadata {
             kind: ItemId::VampiricScepter,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 2,
@@ -67286,7 +67286,7 @@ pub mod items {
         prettified_stats: &[(AttackDamage, 15), (LifeSteal, 7)],
         metadata: TypeMetadata {
             kind: ItemId::VampiricScepterArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -67316,7 +67316,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::Vanguard,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -67342,7 +67342,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::VaynesChromablades,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -67368,7 +67368,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::VeigarsTalismanOfAscensionU66,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -67394,7 +67394,7 @@ pub mod items {
         prettified_stats: &[(AbilityPower, 40), (MagicResist, 25)],
         metadata: TypeMetadata {
             kind: ItemId::VerdantBarrier,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 2,
@@ -67429,7 +67429,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::VigilantWardstone,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 2,
@@ -67460,7 +67460,7 @@ pub mod items {
         prettified_stats: &[(AbilityPower, 95), (MagicPenetration, 40)],
         metadata: TypeMetadata {
             kind: ItemId::VoidStaff,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -67491,7 +67491,7 @@ pub mod items {
         prettified_stats: &[(AbilityPower, 65), (MagicPenetration, 40)],
         metadata: TypeMetadata {
             kind: ItemId::VoidStaffArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -67521,7 +67521,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 10), (AttackDamage, 55), (Lethality, 18)],
         metadata: TypeMetadata {
             kind: ItemId::VoltaicCyclosword,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -67551,7 +67551,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 20), (AttackDamage, 50), (Lethality, 18)],
         metadata: TypeMetadata {
             kind: ItemId::VoltaicCycloswordArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -67581,7 +67581,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::VortexGlove,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -67607,7 +67607,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::WanderingStorms,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -67633,7 +67633,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::WardensEye,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 1,
@@ -67659,7 +67659,7 @@ pub mod items {
         prettified_stats: &[(Armor, 40)],
         metadata: TypeMetadata {
             kind: ItemId::WardensMail,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 2,
@@ -67688,7 +67688,7 @@ pub mod items {
         prettified_stats: &[(BaseHealthRegen, 100), (Health, 1000)],
         metadata: TypeMetadata {
             kind: ItemId::WarmogsArmor,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -67717,7 +67717,7 @@ pub mod items {
         prettified_stats: &[(Health, 1100), (MoveSpeed, 4)],
         metadata: TypeMetadata {
             kind: ItemId::WarmogsArmorU44,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -67752,7 +67752,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::WatchfulWardstone,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 1,
@@ -67788,7 +67788,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::WhisperingCirclet,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -67823,7 +67823,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::WhisperingCircletArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -67858,7 +67858,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::WhisperingCircletU32,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -67888,7 +67888,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::WingedDagger,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -67914,7 +67914,7 @@ pub mod items {
         prettified_stats: &[(Health, 200), (MoveSpeed, 4)],
         metadata: TypeMetadata {
             kind: ItemId::WingedMoonplate,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 2,
@@ -67944,7 +67944,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 15), (Health, 550), (Mana, 500)],
         metadata: TypeMetadata {
             kind: ItemId::WintersApproach,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -67974,7 +67974,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 15), (Health, 400), (Mana, 600)],
         metadata: TypeMetadata {
             kind: ItemId::WintersApproachArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -68004,7 +68004,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 15), (Health, 550), (Mana, 500)],
         metadata: TypeMetadata {
             kind: ItemId::WintersApproachU32,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -68100,7 +68100,7 @@ pub mod items {
         prettified_stats: &[(AbilityHaste, 20), (AbilityPower, 300), (Armor, 50)],
         metadata: TypeMetadata {
             kind: ItemId::WoogletsWitchcapArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -68134,7 +68134,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::WordlessPromise,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -68163,7 +68163,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::WorldAtlas,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 1,
@@ -68192,7 +68192,7 @@ pub mod items {
         prettified_stats: &[(AttackDamage, 55), (Lethality, 18), (MoveSpeed, 4)],
         metadata: TypeMetadata {
             kind: ItemId::YoumuusGhostblade,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -68223,7 +68223,7 @@ pub mod items {
         prettified_stats: &[(AttackDamage, 55), (Lethality, 22), (MoveSpeed, 4)],
         metadata: TypeMetadata {
             kind: ItemId::YoumuusGhostbladeArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -68254,7 +68254,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::YourCut,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 1,
@@ -68280,7 +68280,7 @@ pub mod items {
         prettified_stats: &[(AttackDamage, 50), (AttackSpeed, 40), (CritChance, 0)],
         metadata: TypeMetadata {
             kind: ItemId::YunTalWildarrows,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -68310,7 +68310,7 @@ pub mod items {
         prettified_stats: &[(AttackDamage, 45), (AttackSpeed, 40), (CritChance, 0)],
         metadata: TypeMetadata {
             kind: ItemId::YunTalWildarrowsArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -68340,7 +68340,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::Yuumibot,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -68366,7 +68366,7 @@ pub mod items {
         prettified_stats: &[],
         metadata: TypeMetadata {
             kind: ItemId::YuumibotFinalFinal,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -68397,7 +68397,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::ZazZaksRealmspike,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -68426,7 +68426,7 @@ pub mod items {
         prettified_stats: &[(AttackSpeed, 15), (CritChance, 15), (MoveSpeed, 4)],
         metadata: TypeMetadata {
             kind: ItemId::Zeal,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 2,
@@ -68462,7 +68462,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::ZekesConvergence,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -68498,7 +68498,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::ZekesConvergenceArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -68534,7 +68534,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::ZekesConvergenceU32,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -68570,7 +68570,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::ZephyrArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -68605,7 +68605,7 @@ pub mod items {
         ],
         metadata: TypeMetadata {
             kind: ItemId::ZephyrU66,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -68635,7 +68635,7 @@ pub mod items {
         prettified_stats: &[(AbilityPower, 105), (Armor, 50)],
         metadata: TypeMetadata {
             kind: ItemId::ZhonyasHourglass,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 3,
@@ -68665,7 +68665,7 @@ pub mod items {
         prettified_stats: &[(AbilityPower, 80), (Armor, 50)],
         metadata: TypeMetadata {
             kind: ItemId::ZhonyasHourglassArena,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         tier: 0,
@@ -71050,7 +71050,7 @@ pub mod runes {
         riot_id: 9994,
         metadata: TypeMetadata {
             kind: RuneId::AbilityHaste,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         undeclared: true,
@@ -71062,7 +71062,7 @@ pub mod runes {
         riot_id: 8233,
         metadata: TypeMetadata {
             kind: RuneId::AbsoluteFocus,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         undeclared: true,
@@ -71074,7 +71074,7 @@ pub mod runes {
         riot_id: 9101,
         metadata: TypeMetadata {
             kind: RuneId::AbsorbLife,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         undeclared: true,
@@ -71086,7 +71086,7 @@ pub mod runes {
         riot_id: 9990,
         metadata: TypeMetadata {
             kind: RuneId::AdaptiveForce,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         undeclared: true,
@@ -71115,7 +71115,7 @@ pub mod runes {
         riot_id: 8410,
         metadata: TypeMetadata {
             kind: RuneId::ApproachVelocity,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         undeclared: true,
@@ -71143,7 +71143,7 @@ pub mod runes {
         riot_id: 9992,
         metadata: TypeMetadata {
             kind: RuneId::AttackSpeed,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         undeclared: true,
@@ -71155,7 +71155,7 @@ pub mod runes {
         riot_id: 8224,
         metadata: TypeMetadata {
             kind: RuneId::AxiomArcanist,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         undeclared: true,
@@ -71167,7 +71167,7 @@ pub mod runes {
         riot_id: 8345,
         metadata: TypeMetadata {
             kind: RuneId::BiscuitDelivery,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         undeclared: true,
@@ -71179,7 +71179,7 @@ pub mod runes {
         riot_id: 8473,
         metadata: TypeMetadata {
             kind: RuneId::BonePlating,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         undeclared: true,
@@ -71191,7 +71191,7 @@ pub mod runes {
         riot_id: 8321,
         metadata: TypeMetadata {
             kind: RuneId::CashBack,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         undeclared: true,
@@ -71203,7 +71203,7 @@ pub mod runes {
         riot_id: 8234,
         metadata: TypeMetadata {
             kind: RuneId::Celerity,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         undeclared: true,
@@ -71230,7 +71230,7 @@ pub mod runes {
         riot_id: 8429,
         metadata: TypeMetadata {
             kind: RuneId::Conditioning,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         undeclared: true,
@@ -71242,7 +71242,7 @@ pub mod runes {
         riot_id: 8010,
         metadata: TypeMetadata {
             kind: RuneId::Conqueror,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         undeclared: true,
@@ -71254,7 +71254,7 @@ pub mod runes {
         riot_id: 8347,
         metadata: TypeMetadata {
             kind: RuneId::CosmicInsight,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         undeclared: true,
@@ -71266,7 +71266,7 @@ pub mod runes {
         riot_id: 8014,
         metadata: TypeMetadata {
             kind: RuneId::CoupDeGrace,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         undeclared: true,
@@ -71278,7 +71278,7 @@ pub mod runes {
         riot_id: 8017,
         metadata: TypeMetadata {
             kind: RuneId::CutDown,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         undeclared: true,
@@ -71306,7 +71306,7 @@ pub mod runes {
         riot_id: 8141,
         metadata: TypeMetadata {
             kind: RuneId::DeepWard,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         undeclared: true,
@@ -71318,7 +71318,7 @@ pub mod runes {
         riot_id: 8446,
         metadata: TypeMetadata {
             kind: RuneId::Demolish,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         undeclared: true,
@@ -71346,7 +71346,7 @@ pub mod runes {
         riot_id: 8120,
         metadata: TypeMetadata {
             kind: RuneId::EyeballCollection,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         undeclared: true,
@@ -71358,7 +71358,7 @@ pub mod runes {
         riot_id: 8369,
         metadata: TypeMetadata {
             kind: RuneId::FirstStrike,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         undeclared: true,
@@ -71370,7 +71370,7 @@ pub mod runes {
         riot_id: 8021,
         metadata: TypeMetadata {
             kind: RuneId::FleetFootwork,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         undeclared: true,
@@ -71382,7 +71382,7 @@ pub mod runes {
         riot_id: 8463,
         metadata: TypeMetadata {
             kind: RuneId::FontOfLife,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         undeclared: true,
@@ -71394,7 +71394,7 @@ pub mod runes {
         riot_id: 8236,
         metadata: TypeMetadata {
             kind: RuneId::GatheringStorm,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         undeclared: true,
@@ -71406,7 +71406,7 @@ pub mod runes {
         riot_id: 8136,
         metadata: TypeMetadata {
             kind: RuneId::GhostPoro,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         undeclared: true,
@@ -71418,7 +71418,7 @@ pub mod runes {
         riot_id: 8351,
         metadata: TypeMetadata {
             kind: RuneId::GlacialAugment,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         undeclared: true,
@@ -71448,7 +71448,7 @@ pub mod runes {
         riot_id: 8140,
         metadata: TypeMetadata {
             kind: RuneId::GrislyMementos,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         undeclared: true,
@@ -71460,7 +71460,7 @@ pub mod runes {
         riot_id: 8465,
         metadata: TypeMetadata {
             kind: RuneId::Guardian,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         undeclared: true,
@@ -71472,7 +71472,7 @@ pub mod runes {
         riot_id: 9923,
         metadata: TypeMetadata {
             kind: RuneId::HailOfBlades,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         undeclared: true,
@@ -71484,7 +71484,7 @@ pub mod runes {
         riot_id: 9993,
         metadata: TypeMetadata {
             kind: RuneId::Health,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         undeclared: true,
@@ -71496,7 +71496,7 @@ pub mod runes {
         riot_id: 9991,
         metadata: TypeMetadata {
             kind: RuneId::HealthScaling,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         undeclared: true,
@@ -71508,7 +71508,7 @@ pub mod runes {
         riot_id: 8306,
         metadata: TypeMetadata {
             kind: RuneId::HextechFlashtraption,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         undeclared: true,
@@ -71520,7 +71520,7 @@ pub mod runes {
         riot_id: 8316,
         metadata: TypeMetadata {
             kind: RuneId::JackOfAllTrades,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         undeclared: true,
@@ -71532,7 +71532,7 @@ pub mod runes {
         riot_id: 8299,
         metadata: TypeMetadata {
             kind: RuneId::LastStand,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         undeclared: true,
@@ -71544,7 +71544,7 @@ pub mod runes {
         riot_id: 9104,
         metadata: TypeMetadata {
             kind: RuneId::LegendAlacrity,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         undeclared: true,
@@ -71556,7 +71556,7 @@ pub mod runes {
         riot_id: 9103,
         metadata: TypeMetadata {
             kind: RuneId::LegendBloodline,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         undeclared: true,
@@ -71568,7 +71568,7 @@ pub mod runes {
         riot_id: 9105,
         metadata: TypeMetadata {
             kind: RuneId::LegendHaste,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         undeclared: true,
@@ -71580,7 +71580,7 @@ pub mod runes {
         riot_id: 8008,
         metadata: TypeMetadata {
             kind: RuneId::LethalTempo,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         undeclared: true,
@@ -71592,7 +71592,7 @@ pub mod runes {
         riot_id: 8304,
         metadata: TypeMetadata {
             kind: RuneId::MagicalFootwear,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         undeclared: true,
@@ -71604,7 +71604,7 @@ pub mod runes {
         riot_id: 8226,
         metadata: TypeMetadata {
             kind: RuneId::ManaflowBand,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         undeclared: true,
@@ -71616,7 +71616,7 @@ pub mod runes {
         riot_id: 9996,
         metadata: TypeMetadata {
             kind: RuneId::MoveSpeed,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         undeclared: true,
@@ -71628,7 +71628,7 @@ pub mod runes {
         riot_id: 8275,
         metadata: TypeMetadata {
             kind: RuneId::NimbusCloak,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         undeclared: true,
@@ -71640,7 +71640,7 @@ pub mod runes {
         riot_id: 8451,
         metadata: TypeMetadata {
             kind: RuneId::Overgrowth,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         undeclared: true,
@@ -71652,7 +71652,7 @@ pub mod runes {
         riot_id: 8230,
         metadata: TypeMetadata {
             kind: RuneId::PhaseRush,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         undeclared: true,
@@ -71680,7 +71680,7 @@ pub mod runes {
         riot_id: 8009,
         metadata: TypeMetadata {
             kind: RuneId::PresenceOfMind,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         undeclared: true,
@@ -71707,7 +71707,7 @@ pub mod runes {
         riot_id: 8105,
         metadata: TypeMetadata {
             kind: RuneId::RelentlessHunter,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         undeclared: true,
@@ -71719,7 +71719,7 @@ pub mod runes {
         riot_id: 8453,
         metadata: TypeMetadata {
             kind: RuneId::Revitalize,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         undeclared: true,
@@ -71746,7 +71746,7 @@ pub mod runes {
         riot_id: 8444,
         metadata: TypeMetadata {
             kind: RuneId::SecondWind,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         undeclared: true,
@@ -71758,7 +71758,7 @@ pub mod runes {
         riot_id: 8401,
         metadata: TypeMetadata {
             kind: RuneId::ShieldBash,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         undeclared: true,
@@ -71770,7 +71770,7 @@ pub mod runes {
         riot_id: 8137,
         metadata: TypeMetadata {
             kind: RuneId::SixthSense,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         undeclared: true,
@@ -71813,7 +71813,7 @@ pub mod runes {
         riot_id: 8139,
         metadata: TypeMetadata {
             kind: RuneId::TasteOfBlood,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         undeclared: true,
@@ -71825,7 +71825,7 @@ pub mod runes {
         riot_id: 9995,
         metadata: TypeMetadata {
             kind: RuneId::TenacityAndSlowResist,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         undeclared: true,
@@ -71837,7 +71837,7 @@ pub mod runes {
         riot_id: 8352,
         metadata: TypeMetadata {
             kind: RuneId::TimeWarpTonic,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         undeclared: true,
@@ -71849,7 +71849,7 @@ pub mod runes {
         riot_id: 8210,
         metadata: TypeMetadata {
             kind: RuneId::Transcendence,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         undeclared: true,
@@ -71861,7 +71861,7 @@ pub mod runes {
         riot_id: 8135,
         metadata: TypeMetadata {
             kind: RuneId::TreasureHunter,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         undeclared: true,
@@ -71873,7 +71873,7 @@ pub mod runes {
         riot_id: 8313,
         metadata: TypeMetadata {
             kind: RuneId::TripleTonic,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         undeclared: true,
@@ -71885,7 +71885,7 @@ pub mod runes {
         riot_id: 9111,
         metadata: TypeMetadata {
             kind: RuneId::Triumph,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         undeclared: true,
@@ -71897,7 +71897,7 @@ pub mod runes {
         riot_id: 8106,
         metadata: TypeMetadata {
             kind: RuneId::UltimateHunter,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         undeclared: true,
@@ -71909,7 +71909,7 @@ pub mod runes {
         riot_id: 8242,
         metadata: TypeMetadata {
             kind: RuneId::Unflinching,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         undeclared: true,
@@ -71921,7 +71921,7 @@ pub mod runes {
         riot_id: 8360,
         metadata: TypeMetadata {
             kind: RuneId::UnsealedSpellbook,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         undeclared: true,
@@ -71933,7 +71933,7 @@ pub mod runes {
         riot_id: 8232,
         metadata: TypeMetadata {
             kind: RuneId::Waterwalking,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         undeclared: true,
@@ -71945,7 +71945,7 @@ pub mod runes {
         riot_id: 8138,
         metadata: TypeMetadata {
             kind: RuneId::ZombieWard,
-            damage_type: Unknown,
+            damage_type: Unspecified,
             attributes: Undefined,
         },
         undeclared: true,

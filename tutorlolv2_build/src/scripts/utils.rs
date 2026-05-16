@@ -1,4 +1,7 @@
-use crate::scripts::batch::{Batch, FmtArgs};
+use crate::scripts::{
+    StringExt,
+    batch::{Batch, FmtArgs},
+};
 use serde_json::json;
 use std::{
     collections::{BTreeMap, BTreeSet, HashMap},
@@ -12,7 +15,7 @@ use tutorlolv2_dev::{
     gen_factories::{DamageIndex, ZERO},
 };
 use tutorlolv2_fmt::{pascal_case, to_ssnake};
-use tutorlolv2_types::AttackType;
+use tutorlolv2_types::{AttackType, CtxVar};
 
 pub trait MapValueExt {
     fn riot_id(&self) -> u32;
@@ -92,7 +95,8 @@ pub fn get_name_phf<T: MapValueExt>(
 
             format!("{alias} => {tag:?}Id::{key}")
         })
-        .collect::<String>();
+        .collect::<Vec<_>>()
+        .join(",");
 
     format!(
         "pub static {utag}_NAME_TO_ID: phf::Map<&str, {tag:?}Id> = phf::phf_map!({arguments});",
@@ -107,7 +111,7 @@ pub fn get_id_enum<T: MapValueExt>(data: &BTreeMap<String, T>, tag: Tag) -> Stri
             Clone, Copy, Debug, Decode, Deserialize, Eq, Encode,
             Hash, Ord, PartialEq, PartialOrd, Serialize
         )]
-        #[repr(u8)]
+        #[repr({repr})]
         pub enum {tag:?}Id {{{variants}}}
 
         impl {tag:?}Id {{
@@ -118,6 +122,11 @@ pub fn get_id_enum<T: MapValueExt>(data: &BTreeMap<String, T>, tag: Tag) -> Stri
             {riot_id_conv}
         }}
         ",
+        repr = if matches!(tag, Tag::Champion | Tag::Rune,) {
+            "u8"
+        } else {
+            "u16"
+        },
         variants = data
             .keys()
             .map(String::as_str)
@@ -241,17 +250,17 @@ pub fn get_static_vars<const N: usize, T>(
     data: &BTreeMap<String, T>,
     array: [StaticVar; N],
 ) -> (String, HashMap<&'static str, String>) {
-    let make = |name: &str, vtype| {
+    let make = |name: &str, vtype: &str| {
         format!(
             "pub static {var}: [{vtype}; {tag:?}Id::VARIANTS] = [",
             var = name.to_uppercase()
         )
     };
 
-    let mut cache = make(&format!("{tag:?}_CACHE"), tag.as_ref());
+    let mut cache = make(&format!("{tag:?}_CACHE"), &format!("&{tag:?}"));
 
     for id in data.keys() {
-        let upper_id = id.to_uppercase();
+        let upper_id = to_ssnake(id);
         cache.push_str(&format!("&{upper_id},"));
     }
 
@@ -302,9 +311,12 @@ pub fn closures(
 
                     let formula = simplify(body);
                     let closure = if default {
-                        format_args!("")
+                        format!("")
                     } else {
-                        format_args!("pub const fn {function}(ctx: &Ctx) -> f32 {{{formula}}}")
+                        let formula_f32 = formula.cast_f32();
+                        let param = formula_f32.ctx_param();
+
+                        format!("pub const fn {function}({param}: &Ctx) -> f32 {{{formula_f32}}}",)
                     };
 
                     let fmt_arg = json!(FmtArgs {
@@ -359,4 +371,44 @@ pub fn get_aliases<'a>(id: &'a str, name: &'a str) -> Vec<String> {
     };
 
     [get(id), get(name)].concat()
+}
+
+pub fn repr_damages(field: &[String; 2]) -> String {
+    format!("[{fields}]", fields = field.join(","))
+}
+
+pub fn get_fn_names(functions: &[String; 2], field: &[String; 2]) -> String {
+    let names = field
+        .iter()
+        .zip(functions)
+        .map(|(value, function)| match value == ZERO || value == "0" {
+            true => ZERO,
+            false => function,
+        })
+        .collect::<Vec<_>>()
+        .join(",");
+
+    format!("[{names}]")
+}
+
+pub fn get_identifiers(identifiers: &[[Vec<CtxVar>; 2]; 2]) -> String {
+    format!(
+        "[{}]",
+        identifiers
+            .iter()
+            .map(|slice| format!(
+                "[{}]",
+                slice
+                    .iter()
+                    .enumerate()
+                    .map(|(i, vec)| {
+                        let rest = if i == 0 { " as &[_]" } else { "" };
+                        format!("&{vec:?}{rest}")
+                    })
+                    .collect::<Vec<_>>()
+                    .join(",")
+            ))
+            .collect::<Vec<_>>()
+            .join(",")
+    )
 }

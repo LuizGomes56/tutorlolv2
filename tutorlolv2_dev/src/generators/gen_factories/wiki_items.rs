@@ -247,7 +247,7 @@ impl Item {
     }
 
     pub fn end(&mut self) -> MayFail {
-        if matches!(self.damage_type, DamageType::Unknown) {
+        if matches!(self.damage_type, DamageType::Unspecified) {
             println!(
                 "[warn] {item_id} has unknown damage type",
                 item_id = self.data.item_id

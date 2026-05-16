@@ -224,6 +224,8 @@ pub fn run() -> MayFail {
     let mut full_block = String::with_capacity(12 * 1024 * 1024);
     let mut full_exports = String::with_capacity(4 * 1024 * 1024);
 
+    full_exports.push_str("use super::*;");
+
     let mut tracker = Tracker::new(&mut full_block);
 
     for (function, finish) in [
@@ -279,7 +281,7 @@ pub fn run() -> MayFail {
     let exports = tutorlolv2_fmt::rustfmt(&full_exports, None);
     // let exports = full_exports;
 
-    tutorlolv2_dev::write("__debug.txt", &exports)?;
+    tutorlolv2_dev::write("tutorlolv2_gen/src/test__/exports.rs", &exports)?;
     tutorlolv2_dev::write("__block.txt", &full_block)?;
 
     panic!();
