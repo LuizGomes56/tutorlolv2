@@ -42,7 +42,7 @@ impl Generator for Ambessa {
                 (1, _2), /* Total Physical Damage */
             ],
         )
-        .ability(Key::R, [(4, _1) /* Physical Damage */])
+        .ability(Key::R, [(2, _1) /* Physical Damage */])
         .end()
     }
 }

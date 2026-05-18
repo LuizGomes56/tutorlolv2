@@ -59,8 +59,6 @@ pub static mut DEFAULT_ITEM_GENERATOR_OFFSET: Range<usize> = 0..0;
 /// internal code that will be shown when hovering over some objects in the
 /// frontend application
 pub fn run() -> MayFail {
-    std::env::set_current_dir("../")?;
-
     let mut full_block = String::with_capacity(12 * 1024 * 1024);
     let mut full_exports = String::with_capacity(4 * 1024 * 1024);
 

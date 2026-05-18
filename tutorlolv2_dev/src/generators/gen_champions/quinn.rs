@@ -8,6 +8,7 @@ impl Generator for Quinn {
             [
                 (0, _1), /* Description 1 */
                 (1, _2), /* Description 1 [1] */
+                (2, _3), /* Description 2 */
             ],
         )
         .ability(Key::Q, [(0, _1) /* Physical Damage */])

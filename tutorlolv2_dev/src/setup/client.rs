@@ -319,7 +319,7 @@ impl HttpClient {
         println!("Called fn [download_items_img]");
 
         self.parallel_task(
-            4,
+            8,
             SaveTo::RiotItemsDir,
             async move |client, item_id, _: Value| {
                 client
@@ -339,7 +339,7 @@ impl HttpClient {
         println!("Called fn [download_arts_img]");
 
         self.parallel_task(
-            2,
+            6,
             SaveTo::RiotChampionsDir,
             async move |client, champion_id, champion: RiotCdnChampion| {
                 for skin in champion.skins.into_iter() {

@@ -165,14 +165,22 @@ pub async fn run() -> MayFail {
         },
         AppArgs::Progress => CPARSER.progress(),
         AppArgs::Update => {
-            CPARSER.create_all()?;
+            tutorlolv2_wiki::run().await?;
+            HTTP_CLIENT.update_riot_cache().await?;
+
+            // CPARSER.create_all()?;
+            // IPARSER.create_all()?;
+            // RPARSER.create_all()?;
+
             CPARSER.run_all();
-            IPARSER.create_all()?;
             IPARSER.run_all();
-            RPARSER.create_all()?;
             RPARSER.run_all();
 
-            std::env::set_current_dir("./tutorlolv2_build")?;
+            HTTP_CLIENT.download_arts_img().await?;
+            HTTP_CLIENT.download_items_img().await?;
+            HTTP_CLIENT.download_runes_img().await?;
+            HTTP_CLIENT.download_general_img().await?;
+
             tutorlolv2_build::run()?;
         }
         AppArgs::Html => tutorlolv2_html::run(),
@@ -186,10 +194,7 @@ pub async fn run() -> MayFail {
                 todo!()
             }
         },
-        AppArgs::Build => {
-            std::env::set_current_dir("./tutorlolv2_build")?;
-            tutorlolv2_build::run()?;
-        }
+        AppArgs::Build => tutorlolv2_build::run()?,
         AppArgs::Fetch { function } => match function {
             Fetch::Images => {
                 HTTP_CLIENT.download_arts_img().await?;
@@ -197,10 +202,7 @@ pub async fn run() -> MayFail {
                 HTTP_CLIENT.download_runes_img().await?;
                 HTTP_CLIENT.download_general_img().await?;
             }
-            Fetch::Cache => {
-                HTTP_CLIENT.update_riot_cache().await?;
-                HTTP_CLIENT.update_language_cache().await?;
-            }
+            Fetch::Cache => HTTP_CLIENT.update_riot_cache().await?,
             Fetch::Scraper => {
                 HTTP_CLIENT.call_scraper().await?;
                 HTTP_CLIENT.combo_scraper().await?;
