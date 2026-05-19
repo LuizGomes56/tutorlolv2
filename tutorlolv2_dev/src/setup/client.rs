@@ -3,10 +3,13 @@ use crate::{
     gen_champions::champion_ids,
     gen_utils::RegExtractor,
     init::ENV_CONFIG,
-    riot::RiotCdn,
+    riot::{RiotCdn, RiotCdnItem},
     selector,
     setup::riot::{RiotCdnChampion, RiotCdnRune},
 };
+use chromiumoxide::{Browser, BrowserConfig};
+use futures::StreamExt;
+use rand::RngExt;
 use reqwest::Client;
 use scraper::{Html, Selector};
 use serde::{Deserialize, de::DeserializeOwned};
@@ -17,6 +20,7 @@ use std::{
     io::{BufRead, BufReader, Write},
     path::Path,
     sync::Arc,
+    time::Duration,
 };
 use tokio::{sync::Semaphore, task::JoinHandle};
 use tutorlolv2_fmt::to_ssnake;
@@ -191,6 +195,11 @@ impl std::ops::Deref for HttpClient {
     fn deref(&self) -> &Self::Target {
         &self.0
     }
+}
+
+pub fn randomize_sleep() {
+    let time = rand::rng().random_range(2000..10000);
+    std::thread::sleep(Duration::from_millis(time))
 }
 
 impl HttpClient {
@@ -371,31 +380,28 @@ impl HttpClient {
     pub async fn download_runes_img(&self) -> MayFail {
         println!("Called fn [download_runes_img]");
 
-        self.parallel_task(
-            6,
-            SaveTo::RiotRunes,
-            async |client, _, rune: RiotCdnRune| {
-                let mut icon_map = vec![(rune.id, rune.icon)];
+        let path = SaveTo::RiotRunes.path();
 
-                for slot in rune.slots {
-                    for rune in slot.runes {
-                        icon_map.push((rune.id, rune.icon));
-                    }
+        for rune in Vec::<RiotCdnRune>::from_file(&path)? {
+            let mut icon_map = vec![(rune.id, rune.icon)];
+
+            for slot in rune.slots {
+                for rune in slot.runes {
+                    icon_map.push((rune.id, rune.icon));
                 }
+            }
 
-                for (rune_id, rune_icon) in icon_map {
-                    let _ = client
-                        .download(
-                            DDragon::Rune(&rune_icon).url(),
-                            SaveTo::ImgRunes(rune_id).path(),
-                        )
-                        .await;
-                }
+            for (rune_id, rune_icon) in icon_map {
+                let _ = self
+                    .download(
+                        DDragon::Rune(&rune_icon).url(),
+                        SaveTo::ImgRunes(rune_id).path(),
+                    )
+                    .await;
+            }
+        }
 
-                Ok(())
-            },
-        )
-        .await
+        Ok(())
     }
 
     /// Fetches the latest version of League of Legends, returning
@@ -576,18 +582,26 @@ impl HttpClient {
     /// Fetches the `meta_endpoint` and scrapes the information from some champion's
     /// common ability combos and saves to a cache file
     pub async fn combo_scraper(&self) -> MayFail {
+        let (browser, mut handler) = Browser::launch(BrowserConfig::builder().build()?).await?;
+
+        tokio::spawn(async move { while handler.next().await.is_some() {} });
+
         for champion_id in champion_ids() {
             let path = SaveTo::ScraperCombos(champion_id).path();
-            self.download(
-                format!("{}/{champion_id}/combos", ENV_CONFIG.meta_endpoint),
-                &path,
-            )
-            .await?;
+
+            let url = format!("{}/{champion_id}/combos", ENV_CONFIG.meta_endpoint);
+            let page = browser.new_page(url).await?;
+
+            page.wait_for_navigation().await?;
+
+            let content = page.content().await?;
+            content.write_file(&path)?;
+
+            randomize_sleep();
 
             tokio::task::spawn_blocking(move || {
                 let run_task = || -> MayFail {
-                    let bytes = crate::read_to_string(path)?;
-                    let html = Html::parse_document(&bytes);
+                    let html = Html::parse_document(&content);
 
                     let mut result = Vec::<Vec<_>>::new();
 
@@ -608,11 +622,13 @@ impl HttpClient {
 
                     result.into_file(SaveTo::InternalScraperCombos(champion_id).path())
                 };
+
                 if let Err(e) = run_task() {
                     println!("[error] scraping combo for {champion_id:?}: {e:?}.")
                 }
             });
         }
+
         Ok(())
     }
 
@@ -621,105 +637,109 @@ impl HttpClient {
     /// json file is generated, aggregating all the collected information in a single
     /// location
     pub async fn call_scraper(&self) -> MayFail {
+        let (browser, mut handler) = Browser::launch(BrowserConfig::builder().build()?).await?;
+
+        tokio::spawn(async move { while handler.next().await.is_some() {} });
+
         for champion_id in champion_ids() {
-            let mut futures_vec = Vec::new();
+            let mut futures = Vec::new();
 
             for position in Position::ARRAY {
-                let client = self.clone();
+                let name = champion_id.to_lowercase();
 
-                futures_vec.push(tokio::spawn(async move {
-                    let name = champion_id.to_lowercase();
+                let cache_path = SaveTo::ScraperBuilds(position, champion_id).path();
+                let internal_path = SaveTo::InternalScraperBuilds(position, champion_id).path();
 
-                    let cache_path = SaveTo::ScraperBuilds(position, champion_id).path();
-                    let internal_path = SaveTo::InternalScraperBuilds(position, champion_id).path();
+                let pos = position.role();
 
-                    let pos = position.role();
+                let url = format!("{}/{name}/build/{pos}", ENV_CONFIG.meta_endpoint);
+                let page = browser.new_page(url).await?;
 
-                    if let Err(e) = client
-                        .download(
-                            format!("{}/{name}/build/{pos}", ENV_CONFIG.meta_endpoint),
-                            &cache_path,
-                        )
-                        .await
-                    {
-                        println!("[error] downloading {name} {pos} build: {e:?}");
-                    }
+                page.wait_for_navigation().await?;
 
-                    tokio::task::spawn_blocking(move || {
-                        let run_task = || -> MayFail {
-                            let html = crate::read_to_string(&cache_path)?;
+                let content = page.content().await?;
+                content.write_file(&cache_path)?;
 
-                            let document = Html::parse_document(&html);
-                            let full_build = selector(".m-1q4a7cx:nth-of-type(4) > div > div img")?;
-                            let situational_build = selector(".m-s76v8c > div > div img")?;
-                            let rune_selector = selector("img.m-1nx2cdb")?;
-                            let legend_selector = selector("img.m-1u3ui07")?;
+                randomize_sleep();
 
-                            let mut items = BTreeSet::new();
-                            let mut runes = BTreeSet::new();
+                futures.push(tokio::task::spawn_blocking(move || {
+                    let run_task = || -> MayFail {
+                        let document = Html::parse_document(&content);
+                        let full_build = selector(".m-1q4a7cx:nth-of-type(4) > div > div img")?;
+                        let situational_build = selector(".m-s76v8c > div > div img")?;
+                        let rune_selector = selector("img.m-1nx2cdb")?;
+                        let legend_selector = selector("img.m-1u3ui07")?;
 
-                            fn push_alt_attr<'a>(
-                                document: &'a Html,
-                                array: &'a mut BTreeSet<String>,
-                                selector: &'a Selector,
-                                f: impl Fn(u32) -> Option<&'a str>,
-                            ) {
-                                for img in document.select(selector) {
-                                    if let Some(src) = img.value().attr("src")
-                                        && let Some(number) =
-                                            src.capture_numbers().get(0).copied().or(src
-                                                .trim_start_matches(&ENV_CONFIG.meta_assets)
-                                                .split(".")
-                                                .next()
-                                                .map(|a| a.parse().ok())
-                                                .flatten())
-                                        && let Some(value_id) = f(number as _)
-                                    {
-                                        array.insert(value_id.to_string());
-                                    } else if let Some(alt) = img.value().attr("alt") {
-                                        array.insert(alt.to_string());
-                                    }
+                        let mut items = BTreeSet::new();
+                        let mut runes = BTreeSet::new();
+
+                        fn push_alt_attr<'a>(
+                            document: &'a Html,
+                            array: &'a mut BTreeSet<String>,
+                            selector: &'a Selector,
+                            f: impl Fn(usize) -> Option<String>,
+                        ) {
+                            for img in document.select(selector) {
+                                if let Some(result) = if let Some(alt) = img.value().attr("alt") {
+                                    Some(alt.to_string())
+                                } else if let Some(src) = img.value().attr("src")
+                                    && let Some(number) =
+                                        src.capture_numbers().first().copied().or(src
+                                            .trim_start_matches(&ENV_CONFIG.meta_assets)
+                                            .split(".")
+                                            .next()
+                                            .map(|a| a.parse().ok())
+                                            .flatten())
+                                    && let Some(value_id) = f(number as _)
+                                {
+                                    Some(value_id.to_string())
+                                } else {
+                                    None
+                                } {
+                                    array.insert(tutorlolv2_fmt::pascal_case(&result));
                                 }
                             }
+                        }
 
-                            push_alt_attr(
-                                &document,
-                                &mut runes,
-                                &rune_selector,
-                                /* RuneId::from_riot_id */ |_| None,
-                            );
-                            push_alt_attr(
-                                &document,
-                                &mut runes,
-                                &legend_selector,
-                                /* RuneId::from_riot_id */ |_| None,
-                            );
-                            push_alt_attr(
-                                &document,
-                                &mut items,
-                                &full_build,
-                                /* ItemId::from_riot_id */ |_| None,
-                            );
-                            push_alt_attr(
-                                &document,
-                                &mut items,
-                                &situational_build,
-                                /* ItemId::from_riot_id */ |_| None,
-                            );
-
-                            [items, runes].into_file(internal_path)
+                        let item_f = |number| {
+                            RiotCdnItem::from_file(SaveTo::RiotCache(Tag::Items, &number).path())
+                                .ok()
+                                .map(|item| item.name)
                         };
 
-                        if let Err(e) = run_task() {
-                            println!("[error] processing HTML from {champion_id:?}: {e:#?}")
-                        }
-                    })
-                    .await
-                    .unwrap();
+                        let rune_f = |number| {
+                            Vec::<RiotCdnRune>::from_file(SaveTo::RiotRunes.path())
+                                .ok()
+                                .and_then(|rune| {
+                                    rune.into_iter().find_map(|cdn_rune| {
+                                        (cdn_rune.id == number).then_some(cdn_rune.name).or_else(
+                                            || {
+                                                cdn_rune.slots.into_iter().find_map(|slot| {
+                                                    slot.runes.into_iter().find_map(|tree| {
+                                                        (tree.id == number).then_some(tree.name)
+                                                    })
+                                                })
+                                            },
+                                        )
+                                    })
+                                })
+                        };
+
+                        push_alt_attr(&document, &mut runes, &rune_selector, rune_f);
+                        push_alt_attr(&document, &mut runes, &legend_selector, rune_f);
+                        push_alt_attr(&document, &mut items, &full_build, item_f);
+                        push_alt_attr(&document, &mut items, &situational_build, item_f);
+
+                        [items, runes].into_file(internal_path)
+                    };
+
+                    if let Err(e) = run_task() {
+                        println!("[error] processing HTML from {champion_id:?}: {e:#?}")
+                    }
                 }));
             }
 
-            for future in futures_vec {
+            for future in futures {
                 if let Err(e) = future.await {
                     println!("[error] failed future for {champion_id:?}: {e:#?}")
                 }

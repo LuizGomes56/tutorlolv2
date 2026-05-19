@@ -47,6 +47,7 @@ pub struct RiotCdnRuneSlot {
 
 #[derive(Deserialize)]
 pub struct RiotCdnRune {
+    pub name: String,
     pub icon: String,
     pub id: usize,
     pub slots: Vec<RiotCdnRuneSlot>,

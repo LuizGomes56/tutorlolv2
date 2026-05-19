@@ -181,6 +181,9 @@ pub async fn run() -> MayFail {
             HTTP_CLIENT.download_runes_img().await?;
             HTTP_CLIENT.download_general_img().await?;
 
+            let _ = HTTP_CLIENT.call_scraper().await;
+            let _ = HTTP_CLIENT.combo_scraper().await;
+
             tutorlolv2_build::run()?;
         }
         AppArgs::Html => tutorlolv2_html::run(),
