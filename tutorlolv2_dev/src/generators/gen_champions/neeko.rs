@@ -1,27 +1,26 @@
 use super::*;
 
 impl Generator for Neeko {
-    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
         self.ability(
-            Key::P,
-            [
-                (1, _1), /* Description 2 */
-                (2, _2), /* Description 3 */
-                (4, _3), /* Innate */
-            ],
-        )
-        .ability(
             Key::Q,
             [
-                (1, _1), /* Initial Magic Damage */
-                (2, _2), /* Subsequent Magic Damage */
-                (3, _3), /* Total Maximum Magic Damage */
+                (1, Min), /* Initial Magic Damage */
+                (2, _1),  /* Subsequent Magic Damage */
+                (3, Max), /* Total Maximum Magic Damage */
             ],
         )
-        .ability(Key::W, [(0, _1) /* Bonus Magic Damage */])
-        .ability(Key::E, [(1, _1) /* Magic Damage */])
-        .ability(Key::R, [(0, _1) /* Magic Damage */])
+        .ability(Key::W, [(0, Void) /* Bonus Magic Damage */])
+        .ability(Key::E, [(1, Void) /* Magic Damage */])
+        .ability(Key::R, [(0, Void) /* Magic Damage */])
+        .combo([
+            Ability(E(Void)),
+            Ability(Q(Max)),
+            Attack,
+            Ability(W(Void)),
+            Ability(R(Void)),
+        ])?
+        .combo([Ability(Q(_1)), Attack, Ability(W(Void))])?
         .end()
     }
 }
