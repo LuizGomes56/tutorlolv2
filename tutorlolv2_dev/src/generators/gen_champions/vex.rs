@@ -1,26 +1,18 @@
 use super::*;
 
 impl Generator for Vex {
-    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
-        self.ability(
-            Key::P,
-            [
-                (0, _1), /* Description 2 */
-                (1, _2), /* Description 2 [1] */
-                (2, _3), /* Description 2 [2] */
-            ],
-        )
-        .ability(Key::Q, [(0, _1) /* Magic Damage */])
-        .ability(Key::W, [(0, _1) /* Magic Damage */])
-        .ability(Key::E, [(0, _1) /* Magic Damage */])
-        .ability(
-            Key::R,
-            [
-                (0, _1), /* Magic Damage */
-                (1, _2), /* Total Magic Damage */
-            ],
-        )
-        .end()
+        self.ability(Key::P, [(0, Void) /* Description 2 */])
+            .ability(Key::Q, [(0, Void) /* Magic Damage */])
+            .ability(Key::W, [(0, Void) /* Magic Damage */])
+            .ability(Key::E, [(0, Void) /* Magic Damage */])
+            .ability(
+                Key::R,
+                [
+                    (0, Min), /* Magic Damage */
+                    (1, Max), /* Total Magic Damage */
+                ],
+            )
+            .end()
     }
 }
