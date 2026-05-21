@@ -143,19 +143,19 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
             match item_id {
                 // Assume the passive is always active. Damages will be higher than
                 // they really are in most situations
-                ItemId::Riftmaker | ItemId::RiftmakerArena => {
+                ItemId::Riftmaker => {
                     base_modifiers.global_mod *= RiotFormulas::RIFTMAKER_BONUS_DAMAGE
                 }
                 // Adding this makes it the best ability power item in the game because
                 // it will consider that the enemy is always at low health. Removing this
                 // block will make it far less effective than it really is
-                ItemId::Shadowflame | ItemId::ShadowflameArena => {
+                ItemId::Shadowflame => {
                     base_modifiers.magic_mod *= RiotFormulas::SHADOWFLAME_BONUS_DAMAGE;
                     base_modifiers.true_mod *= RiotFormulas::SHADOWFLAME_BONUS_DAMAGE;
                 }
                 // Similar to Shadowflame, we're considering the item's passive is always
                 // fully stacked since there's no way we know what the current stack count is
-                ItemId::SpearOfShojin | ItemId::SpearOfShojinArena => {
+                ItemId::SpearOfShojin => {
                     ability_modifiers.q *= RiotFormulas::SHOJIN_BONUS_DAMAGE;
                     ability_modifiers.w *= RiotFormulas::SHOJIN_BONUS_DAMAGE;
                     ability_modifiers.e *= RiotFormulas::SHOJIN_BONUS_DAMAGE;
@@ -357,12 +357,12 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
                     global_mod: base_modifiers.global_mod
                         * match game_map {
                             GameMap::Aram => {
-                                current_player_cache.stats.aram_damage_dealt
-                                    * e_cache.stats.aram_damage_taken
+                                current_player_cache.modifiers.aram.damage_dealt
+                                    * e_cache.modifiers.aram.damage_taken
                             }
                             GameMap::Urf => {
-                                current_player_cache.stats.urf_damage_dealt
-                                    * e_cache.stats.urf_damage_taken
+                                current_player_cache.modifiers.urf.damage_dealt
+                                    * e_cache.modifiers.urf.damage_taken
                             }
                             // More maps will be added soon
                             _ => 1.0,

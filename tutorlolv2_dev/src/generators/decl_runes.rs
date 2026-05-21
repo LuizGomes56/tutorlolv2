@@ -26,10 +26,10 @@ macro_rules! decl_runes {
             }
 
             impl $Name {
-                pub fn new(data: WikiRune) -> Box<dyn GeneratorExt<Rune>> {
-                    Box::new(Self {
-                        inner: Rune::from(data)
-                    })
+                pub fn new(data: WikiRune) -> MayFail<Box<dyn GeneratorExt<Rune>>> {
+                    Ok(Box::new(Self {
+                        inner: Rune::try_from(data)?
+                    }))
                 }
             }
 
@@ -55,7 +55,7 @@ macro_rules! decl_runes {
         )*
 
         pub fn rune_gen_fn(rune_id: &str) -> Option<
-            fn(WikiRune) -> Box<dyn GeneratorExt<Rune>>
+            fn(WikiRune) -> MayFail<Box<dyn GeneratorExt<Rune>>>
         > {
             match rune_id {
                 $(stringify!($Name) => Some($Name::new),)*

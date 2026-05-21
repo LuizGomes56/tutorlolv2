@@ -1,12 +1,9 @@
 #![no_std]
-#![allow(unused_imports)]
 
 pub mod bitset;
-pub mod cache;
-pub mod data;
-// pub mod test__;
+pub mod generated;
 
-use crate::data::{
+use crate::generated::{
     champions::CHAMPION_GENERATOR,
     items::{ITEM_GENERATOR, ITEM_NAME_TO_ID},
     runes::RUNE_NAME_TO_ID,
@@ -15,27 +12,24 @@ use core::{
     any::{Any, TypeId},
     fmt::{Debug, Display},
     mem::MaybeUninit,
-    ops::{Index, Range},
+    ops::Range,
     str::FromStr,
 };
 
 #[allow(non_upper_case_globals)]
 pub(crate) const unknown: f32 = 0.0;
 pub use tutorlolv2_types::*;
-pub(crate) use tutorlolv2_types::{AttackType::*, Attrs::*, DamageType::*, Position::*};
 
 pub use bitset::*;
-pub use cache::*;
-pub use data::{
+pub use generated::{
     champions::{
-        ABILITY_CLOSURES, ABILITY_FORMULAS, ABILITY_IDENTS, CHAMPION_CACHE, CHAMPION_FORMULAS,
-        CHAMPION_NAME_TO_ID, ChampionId, RECOMMENDED_ITEMS, RECOMMENDED_RUNES,
+        ABILITY_CLOSURES, ABILITY_FORMULAS, CHAMPION_CACHE, CHAMPION_FORMULAS, CHAMPION_NAME_TO_ID,
+        ChampionId, RECOMMENDED_ITEMS, RECOMMENDED_RUNES,
     },
-    items::{ITEM_CACHE, ITEM_CLOSURES, ITEM_FORMULAS, ITEM_IDENTS, ItemId},
-    runes::{RUNE_CACHE, RUNE_CLOSURES, RUNE_FORMULAS, RUNE_IDENTS, RuneId},
+    items::{ITEM_CACHE, ITEM_CLOSURES, ITEM_FORMULAS, ItemId},
+    runes::{RUNE_CACHE, RUNE_CLOSURES, RUNE_FORMULAS, RuneId},
     *,
 };
-pub(crate) use tutorlolv2_types::{AbilityId::*, AbilityName::*, ComboElement::*};
 
 pub static RAW_BLOCK: &str = include_str!("block.txt");
 const BR_BLOCK: &[u8] = include_bytes!("block.br");
@@ -54,8 +48,8 @@ pub const fn ignite(level: u8) -> i32 {
 /// - `price > 0`
 /// - `len(stats)` > 0
 /// - `purchasable`
-pub const fn is_simulated_item(item: &CachedItem) -> bool {
-    let CachedItem {
+pub const fn is_simulated_item(item: &Item) -> bool {
+    let Item {
         purchasable,
         tier,
         price,
@@ -84,7 +78,16 @@ pub const fn is_simulated_item(item: &CachedItem) -> bool {
         i += 1;
     }
 
-    tier >= 3 && price > 0 && purchasable && allow && maps.summoners_rift
+    tier >= 3 && price > 0 && purchasable && allow && {
+        let mut j = 0;
+        while j < maps.len() {
+            if matches!(maps[j], GameMap::SummonersRift) {
+                return true;
+            }
+            j += 1;
+        }
+        false
+    }
 }
 
 /// Number of items that are compared and obey the rule:
@@ -171,7 +174,7 @@ pub const SIMULATED_ITEMS_METADATA: [TypeMetadata<ItemId>; L_SIML] = {
     let mut i = 0;
     while i < L_SIML {
         let item_id = SIMULATED_ITEMS_ENUM[i];
-        let CachedItem {
+        let Item {
             metadata:
                 TypeMetadata {
                     damage_type,
@@ -200,7 +203,8 @@ pub const NUMBER_OF_DAMAGING_RUNES: usize = {
     let mut i = 0;
     while i < RuneId::VARIANTS {
         let rune = RUNE_CACHE[i];
-        if !rune.undeclared {
+        let [mmin, mmax, rmin, rmax] = rune.deals_damage;
+        if mmin || mmax || rmin || rmax {
             sum += 1;
         }
         i += 1;
@@ -216,8 +220,8 @@ pub const NUMBER_OF_DAMAGING_ITEMS: usize = {
     let mut i = 0;
     while i < ItemId::VARIANTS {
         let item = ITEM_CACHE[i];
-        let (min, max) = item.deals_damage;
-        if min || max {
+        let [mmin, mmax, rmin, rmax] = item.deals_damage;
+        if mmin || mmax || rmin || rmax {
             sum += 1;
         }
         i += 1;
@@ -233,11 +237,12 @@ pub const DAMAGING_ITEMS_ARRAY: [ItemId; NUMBER_OF_DAMAGING_ITEMS] = {
     let mut j = 0;
     while i < ItemId::VARIANTS {
         let item = ITEM_CACHE[i];
-        let (min, max) = item.deals_damage;
-        if min || max {
+        let [mmin, mmax, rmin, rmax] = item.deals_damage;
+        if mmin || mmax || rmin || rmax {
             result[j] = ItemId::from_repr(i as _).unwrap();
             j += 1;
         }
+
         i += 1;
     }
     result
@@ -251,10 +256,13 @@ pub const DAMAGING_RUNES_ARRAY: [RuneId; NUMBER_OF_DAMAGING_RUNES] = {
     let mut j = 0;
     while i < RuneId::VARIANTS {
         let rune = RUNE_CACHE[i];
-        if !rune.undeclared {
+        let [mmin, mmax, rmin, rmax] = rune.deals_damage;
+
+        if mmin || mmax || rmin || rmax {
             result[j] = RuneId::from_repr(i as _).unwrap();
             j += 1;
         }
+
         i += 1;
     }
     result
@@ -297,7 +305,7 @@ const _: () = {
         let len = champion_id.number_of_abilities();
 
         assert!(len == champion_id.closures().len());
-        assert!(len == champion_id.idents().len());
+        assert!(len == champion_id.identifiers().len());
 
         let mut j = 0;
         while j < merge_data.len() {
@@ -322,7 +330,7 @@ const _: () = {
             while l < combo.len() {
                 let element = combo[l];
 
-                if let Ability(ability_id) = element {
+                if let ComboElement::Ability(ability_id) = element {
                     assert!(champion_id.index_of_ability(ability_id).is_some());
                 }
                 l += 1;
@@ -460,16 +468,16 @@ impl ChampionId {
         &self.closures()[index]
     }
 
+    pub const fn identifiers(&self) -> &'static [&'static [CtxVar]] {
+        self.cache().identifiers
+    }
+
     pub const fn get_ability_idents(&self, index: usize) -> &'static [CtxVar] {
-        &self.idents()[index]
+        &self.identifiers()[index]
     }
 
     pub const fn generator(&self) -> &'static Range<usize> {
         &CHAMPION_GENERATOR[self.index()]
-    }
-
-    pub const fn idents(&self) -> &'static [&'static [CtxVar]] {
-        ABILITY_IDENTS[self.index()]
     }
 
     pub const fn combos(&self) -> &'static [&'static [ComboElement]] {
@@ -485,6 +493,10 @@ impl ChampionId {
             i += 1;
         }
         return None;
+    }
+
+    pub const fn metadata(&self) -> &'static [TypeMetadata<AbilityId>] {
+        self.cache().metadata
     }
 }
 
@@ -544,7 +556,7 @@ const _: () = {
 };
 
 impl ItemId {
-    pub const CLOSURES: &[Range<usize>; Self::VARIANTS] = &ITEM_CLOSURES;
+    pub const CLOSURES: &[[[Range<usize>; 2]; 2]; Self::VARIANTS] = &ITEM_CLOSURES;
     pub const RIOT_IDS: [u32; Self::VARIANTS] = {
         let mut result = [0; _];
         let mut i = 0;
@@ -556,26 +568,26 @@ impl ItemId {
         result
     };
 
-    pub const ALLY_EXCEPTIONS: [Self; 13] = [
+    pub const ALLY_EXCEPTIONS: [Self; 4] = [
         Self::DarkSeal,
-        Self::DragonheartU44,
-        Self::DemonKingsCrownU44,
-        Self::DemonKingsCrownU66,
+        // Self::DragonheartU44,
+        // Self::DemonKingsCrownU44,
+        // Self::DemonKingsCrownU66,
         Self::RiteOfRuin,
         Self::MejaisSoulstealer,
-        Self::Hubris6697,
-        Self::Hubris126697,
-        Self::HubrisArena,
-        Self::BloodlettersCurse4010,
-        Self::BloodlettersCurse8010,
+        // Self::Hubris6697,
+        // Self::Hubris126697,
+        // Self::HubrisArena,
+        // Self::BloodlettersCurse4010,
+        // Self::BloodlettersCurse8010,
         Self::BlackCleaver,
-        Self::BlackCleaverArena,
+        // Self::BlackCleaverArena,
     ];
 
-    pub const ENEMY_EXCEPTIONS: [Self; 3] = [
-        Self::DragonheartU44,
-        Self::DemonKingsCrownU44,
-        Self::DemonKingsCrownU66,
+    pub const ENEMY_EXCEPTIONS: [Self; 0] = [
+        // Self::DragonheartU44,
+        // Self::DemonKingsCrownU44,
+        // Self::DemonKingsCrownU66,
     ];
 
     pub const SIZE_OF_EXCEPTIONS: usize = max_usize(
@@ -596,7 +608,7 @@ impl ItemId {
 
     pub const fn has_stat(&self, stat_name: StatName) -> bool {
         let mut i = 0;
-        let stats = self.cache().prettified_stats;
+        let stats = self.cache().stats;
         while i < stats.len() {
             if stats[i].0 as u8 == stat_name as u8 {
                 return true;
@@ -629,7 +641,7 @@ impl ItemId {
         self.cache().riot_id
     }
 
-    pub const fn closure(&self) -> &'static Range<usize> {
+    pub const fn closure(&self) -> &[[Range<usize>; 2]; 2] {
         &Self::CLOSURES[self.index()]
     }
 
@@ -649,25 +661,31 @@ impl ItemId {
         result
     }
 
-    pub const fn idents(&self) -> &'static [CtxVar] {
-        ITEM_IDENTS[self.index()]
-    }
-
     pub const fn deals_damage(&self) -> bool {
-        self.cache().deals_damage.0
+        let [mmin, mmax, rmin, rmax] = self.cache().deals_damage;
+        mmin || mmax || rmin || rmax
     }
 
     pub const fn deals_max_damage(&self) -> bool {
-        self.cache().deals_damage.1
+        let [_, mmax, _, rmax] = self.cache().deals_damage;
+        mmax || rmax
     }
 
     pub const fn price(&self) -> u16 {
         self.cache().price
     }
+
+    pub const fn identifiers(&self) -> &[[&'static [CtxVar]; 2]; 2] {
+        &self.cache().identifiers
+    }
+
+    pub const fn metadata(&self) -> TypeMetadata<Self> {
+        self.cache().metadata
+    }
 }
 
 impl RuneId {
-    pub const CLOSURES: &[Range<usize>; Self::VARIANTS] = &RUNE_CLOSURES;
+    pub const CLOSURES: &[[[Range<usize>; 2]; 2]; Self::VARIANTS] = &RUNE_CLOSURES;
     pub const RIOT_IDS: [u32; Self::VARIANTS] = {
         let mut result = [0; _];
         let mut i = 0;
@@ -706,12 +724,16 @@ impl RuneId {
         self.cache().riot_id
     }
 
-    pub const fn closure(&self) -> &'static Range<usize> {
+    pub const fn closure(&self) -> &[[Range<usize>; 2]; 2] {
         &Self::CLOSURES[self.index()]
     }
 
-    pub const fn idents(&self) -> &'static [CtxVar] {
-        RUNE_IDENTS[self.index()]
+    pub const fn identifiers(&self) -> &[[&'static [CtxVar]; 2]; 2] {
+        &self.cache().identifiers
+    }
+
+    pub const fn metadata(&self) -> TypeMetadata<Self> {
+        self.cache().metadata
     }
 }
 
@@ -813,7 +835,7 @@ macro_rules! impl_methods {
                         unsafe { Self::from_repr_unchecked(0) }
                     }
 
-                    pub const fn cache(&self) -> &'static [<Cached $stru:replace("Id", "")>] {
+                    pub const fn cache(&self) -> &'static [<$stru:replace("Id", "")>] {
                         [<$stru:replace("Id", ""):upper _CACHE>][self.index()]
                     }
 
@@ -860,26 +882,6 @@ impl_methods!(
     ItemId => u16,
     RuneId => u8
 );
-
-pub const ZEROED_STATS: CachedItemStats = CachedItemStats {
-    ability_power: 0.0,
-    adaptive_force: 0.0,
-    armor: 0.0,
-    armor_penetration_flat: 0.0,
-    armor_penetration_percent: 0.0,
-    attack_damage: 0.0,
-    attack_speed: 0.0,
-    crit_chance: 0.0,
-    crit_damage: 0.0,
-    health: 0.0,
-    lifesteal: 0.0,
-    magic_penetration_flat: 0.0,
-    magic_penetration_percent: 0.0,
-    magic_resist: 0.0,
-    mana: 0.0,
-    movespeed: 0.0,
-    omnivamp: 0.0,
-};
 
 #[derive(Copy, Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub enum EntityId {

@@ -60,9 +60,9 @@ pub static mut DEFAULT_ITEM_GENERATOR_OFFSET: Range<usize> = 0..0;
 /// frontend application
 pub fn run() -> MayFail {
     let mut full_block = String::with_capacity(12 * 1024 * 1024);
-    let mut full_exports = String::with_capacity(4 * 1024 * 1024);
+    let mut exports = String::with_capacity(4 * 1024 * 1024);
 
-    full_exports.push_str("use super::*;");
+    exports.push_str("use super::*;");
 
     let mut tracker = Tracker::new(&mut full_block);
 
@@ -91,13 +91,13 @@ pub fn run() -> MayFail {
         ("CRITICAL_STRIKE_FN_OFFSET", CRITICAL_STRIKE_FN),
     ] {
         let range = tracker.push(&&tutorlolv2_fmt::rust_html(value));
-        full_exports.push_str(&format!("pub static {name}: Range<usize> = {range:?};"));
+        exports.push_str(&format!("pub static {name}: Range<usize> = {range:?};"));
     }
 
-    for (function, finish) in
-        closures
-            .into_iter()
-            .zip([champions::finish, runes::finish, runes::finish])
+    for ((function, finish), module) in closures
+        .into_iter()
+        .zip([champions::finish, runes::finish, runes::finish])
+        .zip(["champions", "items", "runes"])
     {
         let (mut fmt_args, fmt) = function;
         let mut src = tutorlolv2_fmt::rustfmt(&fmt, None);
@@ -131,7 +131,7 @@ pub fn run() -> MayFail {
             src.drain(range);
         }
 
-        let block = fmt_args
+        let mut block = fmt_args
             .values_mut()
             .map(|variable| {
                 variable.push_str("];");
@@ -140,19 +140,21 @@ pub fn run() -> MayFail {
             .collect::<String>()
             + &src;
 
-        full_exports.push_str(&block);
+        block.insert_str(0, "use super::*;\n");
+
+        tutorlolv2_dev::write(format!("tutorlolv2_gen/src/generated/{module}.rs"), &block)?;
     }
 
     let offset = tracker.offset();
-    full_exports.push_str(&format!("pub const RAW_BLOCK_LEN: usize = {offset};"));
+    exports.push_str(&format!("pub const RAW_BLOCK_LEN: usize = {offset};"));
 
     println!("[ok] Formatting generated file");
 
-    let exports = tutorlolv2_fmt::rustfmt(&full_exports, None);
+    let final_exports = tutorlolv2_fmt::rustfmt(&exports, None);
 
     println!("[ok] Writing exports and block");
 
-    tutorlolv2_dev::write("tutorlolv2_gen/src/test__/exports.rs", &exports)?;
+    tutorlolv2_dev::write("tutorlolv2_gen/src/generated/exports.rs", &final_exports)?;
     tutorlolv2_dev::write("tutorlolv2_gen/src/block.txt", &full_block)?;
 
     println!("[ok] Compressing full block");

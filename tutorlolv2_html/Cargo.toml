@@ -1,10 +1,10 @@
 [package]
 name = "tutorlolv2_html"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2024"
 
 [dependencies]
 pastey = "0.2.1"
-tutorlolv2_gen = { path = "../tutorlolv2_gen" }
-tutorlolv2_fmt = { path = "../tutorlolv2_fmt" }
 rayon = "1.11.0"
+tutorlolv2_fmt = { path = "../tutorlolv2_fmt" }
+tutorlolv2_gen = { path = "../tutorlolv2_gen" }

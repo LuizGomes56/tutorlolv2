@@ -25,26 +25,37 @@ pub const fn get_item_bonus_stats(
     while i < items.len() {
         let item_id = items[i];
         let item = item_id.cache();
-        let item_stats = &item.stats;
+        let item_stats = item.stats;
 
-        *adaptive_force += item_stats.adaptive_force;
-        stats.ability_power += item_stats.ability_power;
-        stats.attack_damage += item_stats.attack_damage;
-        stats.magic_resist += item_stats.magic_resist;
-        stats.attack_speed += item_stats.attack_speed;
-        stats.crit_chance += item_stats.crit_chance;
-        stats.crit_damage += item_stats.crit_damage;
-        stats.armor += item_stats.armor;
-        stats.current_health = stats.max_health;
-        stats.max_health += item_stats.health;
-        stats.current_mana = stats.max_mana;
-        stats.max_mana += item_stats.mana;
+        let mut armor_pen = 0.0;
+        let mut magic_pen = 0.0;
 
-        let armor_pen = item_stats.armor_penetration_percent.clamp(0.0, 100.0);
-        let magic_pen = item_stats.magic_penetration_percent.clamp(0.0, 100.0);
+        let mut j = 0;
+        while j < item_stats.len() {
+            let (stat, value) = item_stats[j];
+            let v = value as f32;
+            match stat {
+                StatName::AbilityPower => stats.ability_power += v,
+                StatName::AdaptiveForce => *adaptive_force += v,
+                StatName::Armor => stats.armor += v,
+                StatName::ArmorPenetration => armor_pen = v,
+                StatName::AttackDamage => stats.attack_damage += v,
+                StatName::AttackSpeed => stats.attack_speed += v,
+                StatName::CritChance => stats.crit_chance += v,
+                StatName::CritDamage => stats.crit_damage += v,
+                StatName::Health => stats.max_health += v,
+                StatName::Lethality => stats.armor_penetration_flat += v,
+                StatName::MagicPenetration => stats.magic_penetration_flat += v,
+                StatName::MagicPenetrationPercent => magic_pen = v,
+                StatName::MagicResist => stats.magic_resist += v,
+                StatName::Mana => stats.max_mana += v,
+                _ => {}
+            }
+            j += 1;
+        }
 
-        armor_pen_mult *= 1.0 - (armor_pen * 0.01);
-        magic_pen_mult *= 1.0 - (magic_pen * 0.01);
+        armor_pen_mult *= 1.0 - (armor_pen.clamp(0.0, 100.0) * 0.01);
+        magic_pen_mult *= 1.0 - (magic_pen.clamp(0.0, 100.0) * 0.01);
 
         match item_id {
             ItemId::ElixirOfIron => stats.max_health += 300.0,
@@ -92,8 +103,8 @@ pub const fn get_rune_bonus_stats(
                 )
             }
             RuneId::AxiomArcanist => modifiers.abilities.r *= 1.12,
-            RuneId::Health => stats.max_health += 65.0,
-            RuneId::HealthScaling => stats.max_health += 10.0 * level as f32,
+            // RuneId::Health => stats.max_health += 65.0,
+            // RuneId::HealthScaling => stats.max_health += 10.0 * level as f32,
             _ => {}
         }
         i += 1;
@@ -150,7 +161,7 @@ pub const fn infer_champion_stats(data: InferStats<'_>) -> Stats<f32> {
     let mut stats = Stats {
         armor: base_stats.armor,
         attack_damage: base_stats.attack_damage,
-        crit_damage: cached_stats.crit_damage * cached_stats.crit_damage_mod,
+        crit_damage: cached_stats.crit_base * cached_stats.crit_modifier,
         current_health: base_stats.max_health,
         magic_resist: base_stats.magic_resist,
         max_health: base_stats.max_health,
@@ -213,7 +224,7 @@ pub const fn infer_champion_stats(data: InferStats<'_>) -> Stats<f32> {
         champion_id,
     );
 
-    stats.attack_speed *= cached_stats.attack_speed_mod * stats.attack_speed
+    stats.attack_speed *= cached_stats.attack_speed_ratio * stats.attack_speed
         + RiotFormulas::stat(&cached_stats.attack_speed, level);
 
     let mut i = 0;
@@ -240,7 +251,7 @@ pub const fn infer_champion_stats(data: InferStats<'_>) -> Stats<f32> {
             }
             ItemId::JuiceOfVitality => stats.max_health += 300.0 + 0.1 * stats.max_health,
             ItemId::RabadonsDeathcap => stats.ability_power *= 1.3,
-            ItemId::WoogletsWitchcapArena => stats.ability_power *= 1.5,
+            ItemId::WoogletsWitchcap => stats.ability_power *= 1.5,
             ItemId::WarmogsArmor => stats.max_health *= 1.12,
             ItemId::JuiceOfPower => {
                 stats.attack_damage += 18.0 + 0.1 * stats.attack_damage;
@@ -364,8 +375,8 @@ pub const fn assign_rune_exceptions(data: RuneExceptionData, exceptions: &[Value
                     }
                 }
                 RuneId::GatheringStorm => *adaptive_force += ((stacks * (stacks + 1)) << 2) as f32,
-                RuneId::AdaptiveForce => *adaptive_force += 9.0 * stacks as f32,
-                RuneId::AttackSpeed => stats.attack_speed += 10.0 * (stacks as f32),
+                // RuneId::AdaptiveForce => *adaptive_force += 9.0 * stacks as f32,
+                // RuneId::AttackSpeed => stats.attack_speed += 10.0 * (stacks as f32),
                 _ => {}
             }
         }
@@ -389,7 +400,7 @@ pub const fn assign_item_exceptions(stats: &mut Stats<f32>, exceptions: &[ValueE
         if let Some(item_id) = item_exception.get_item_id() {
             match item_id {
                 ItemId::DarkSeal => stats.ability_power += (stacks << 2) as f32,
-                ItemId::DragonheartU44 => {
+                ItemId::Dragonheart => {
                     let modifier = 1.0 + 0.04 * stacks as f32;
                     stats.ability_power *= modifier;
                     stats.attack_speed *= modifier;
@@ -398,7 +409,7 @@ pub const fn assign_item_exceptions(stats: &mut Stats<f32>, exceptions: &[ValueE
                     stats.armor *= modifier;
                     stats.magic_resist *= modifier;
                 }
-                ItemId::DemonKingsCrownU44 | ItemId::DemonKingsCrownU66 => {
+                ItemId::DemonKingsCrown => {
                     let modifier = 1.0 + 0.01 * stacks as f32;
                     stats.ability_power *= modifier;
                     stats.attack_speed *= modifier;
@@ -415,13 +426,13 @@ pub const fn assign_item_exceptions(stats: &mut Stats<f32>, exceptions: &[ValueE
                         (6 * stacks) as f32,
                     )
                 }
-                ItemId::BloodlettersCurse4010 | ItemId::BloodlettersCurse8010 => {
+                ItemId::BloodlettersCurse => {
                     stats.magic_penetration_percent = RiotFormulas::combine_percentage(
                         stats.magic_penetration_percent,
                         7.5 * stacks as f32,
                     )
                 }
-                ItemId::Hubris6697 | ItemId::Hubris126697 | ItemId::HubrisArena => {
+                ItemId::Hubris => {
                     stats.attack_damage += (15 + (stacks << 1)) as f32;
                 }
                 _ => {}

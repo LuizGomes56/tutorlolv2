@@ -22,18 +22,18 @@ use tutorlolv2_gen::*;
 #[derive(Clone, Copy, Debug, PartialEq, PartialOrd)]
 pub struct StaticDamageKind<T: 'static> {
     pub metadata: &'static [TypeMetadata<T>],
-    pub closures: &'static [ConstClosure],
+    pub closures: &'static [Closure],
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, PartialOrd)]
 pub struct ConstDamageKind<T: 'static, const N: usize, const L: usize> {
     pub metadata: [TypeMetadata<T>; N],
-    pub closures: [ConstClosure; L],
+    pub closures: [Closure; L],
 }
 
 /// Runtime-known values that depend on how many damaging items or runes the
 /// current player has. Holds the metadata and closures of the given `T` parameter.
-/// See [`TypeMetadata`] and [`ConstClosure`] for more details
+/// See [`TypeMetadata`] and [`Closure`] for more details
 #[derive(Clone, Debug, PartialEq, PartialOrd)]
 pub struct DamageKind<T> {
     /// Vector of the [`TypeMetadata`] of either [`ItemId`] or [`RuneId`]
@@ -41,9 +41,9 @@ pub struct DamageKind<T> {
     /// since they depend on how many damaging items the current player has
     pub metadata: Box<[TypeMetadata<T>]>,
     /// Vector of closures of some [`ItemId`] or [`RuneId`], defined by the generic
-    /// parameter `T`. See [`ConstClosure`] to learn more of how to evaluate these
+    /// parameter `T`. See [`Closure`] to learn more of how to evaluate these
     /// functions, and what they return
-    pub closures: Box<[ConstClosure]>,
+    pub closures: Box<[Closure]>,
 }
 
 /// Contains all the results from function [`crate::realtime::realtime`] that could be extracted
@@ -634,9 +634,9 @@ impl RiotFormulas {
         factor * (0.7025 + 0.0175 * factor)
     }
 
-    pub const fn stat(stat_map: &CachedChampionStatsMap, level: u8) -> f32 {
+    pub const fn stat(stat_map: &Stat, level: u8) -> f32 {
         let growth_factor = Self::growth(level);
-        Self::stat_growth(stat_map.flat, stat_map.per_level, growth_factor)
+        Self::stat_growth(stat_map.base, stat_map.per_level, growth_factor)
     }
 
     /// Given the base stats and growth factors, return a number after applying the formula

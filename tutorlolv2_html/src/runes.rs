@@ -6,11 +6,19 @@ pub fn runes_html() {
         let mut html = Html::new(rune_id);
 
         html.code(rune_id.formula())
-            .section("Source code definition for damage calculation")
-            .code(rune_id.closure())
-            .describe()
-            .idents(rune_id.idents())
-            .json(rune_id);
+            .section("Source code definition for damage calculation");
+
+        for range in rune_id.closure().iter().flatten() {
+            html.code(range);
+        }
+
+        html.describe();
+
+        for array in rune_id.identifiers().iter().flatten() {
+            html.idents(array);
+        }
+
+        html.json(rune_id);
 
         html
     });

@@ -14,9 +14,8 @@ use crate::{
     model::{ConstDamageKind, Modifiers, RangeDamage},
 };
 use tutorlolv2_gen::{
-    AttackType, CachedChampion, CachedItem, CachedRune, ChampionId, ConstClosure, Ctx, ITEM_CACHE,
-    ItemId, ItemsBitSet, RuneId, TypeMetadata, champions::ability_const_eval,
-    items::item_const_eval, runes::rune_const_eval,
+    AttackType, ChampionId, Closure, Ctx, ITEM_CACHE, ItemId, ItemsBitSet, RuneId, TypeMetadata,
+    champions::ability_const_eval, items::item_const_eval, runes::rune_const_eval,
 };
 
 pub const fn get_items_data_const<const N: usize, const L: usize>(
@@ -26,7 +25,7 @@ pub const fn get_items_data_const<const N: usize, const L: usize>(
     assert!(L == N << 1);
     unsafe {
         let mut metadata: [TypeMetadata<ItemId>; N] = core::mem::zeroed();
-        let mut closures: [ConstClosure; L] = core::mem::zeroed();
+        let mut closures: [Closure; L] = core::mem::zeroed();
 
         let mut i = 0;
         let mut j = 0;
@@ -34,8 +33,8 @@ pub const fn get_items_data_const<const N: usize, const L: usize>(
         while let Some(item_offset) = items.iter_const().next_const() {
             let item = ITEM_CACHE[item_offset as usize];
             let slice = match attack_type {
-                AttackType::Ranged => item.ranged_damages,
-                AttackType::Melee => item.melee_damages,
+                AttackType::Ranged => item.ranged,
+                AttackType::Melee => item.melee,
             };
 
             metadata[i] = item.metadata;
@@ -123,12 +122,14 @@ pub const fn const_ability_id_eval_damage<const N: usize>(
     let mut result = [0; N];
     let mut i = 0;
     while i < N {
-        let CachedChampion { metadata, .. } = champion_id.cache();
+        let metadata = champion_id.metadata();
+
         let TypeMetadata {
             kind,
             damage_type,
             attributes,
         } = metadata[i];
+
         let modifier = ability_id_mod(kind, damage_type, modifiers);
         let damage = (modifier * ability_const_eval(ctx, champion_id, kind)) as i32;
         onhit.inc_attr(attributes, damage);
@@ -153,23 +154,19 @@ pub const fn const_item_id_eval_damage<const N: usize, const L: usize>(
     while i < N {
         let item_id = item_ids[i];
 
-        let CachedItem {
-            metadata:
-                TypeMetadata {
-                    damage_type,
-                    attributes,
-                    ..
-                },
+        let TypeMetadata {
+            damage_type,
+            attributes,
             ..
-        } = item_id.cache();
+        } = item_id.metadata();
 
-        let modifier = modifiers.damages.modifier(*damage_type);
+        let modifier = modifiers.damages.modifier(damage_type);
         let damages = item_const_eval(ctx, item_id, attack_type);
 
         let mut k = 0usize;
         while k < 2 {
             let damage = (modifier * damages[k]) as i32;
-            onhit.inc_attr(*attributes, damage);
+            onhit.inc_attr(attributes, damage);
             result[j + k] = damage;
             k += 1;
         }
@@ -182,20 +179,34 @@ pub const fn const_item_id_eval_damage<const N: usize, const L: usize>(
 }
 
 /// Constant evaluation of runes, similar to function [`crate::helpers::rune_id_eval_damage`].
-pub const fn const_rune_id_eval_damage<const N: usize>(
+pub const fn const_rune_id_eval_damage<const N: usize, const L: usize>(
     ctx: &Ctx,
     rune_ids: [RuneId; N],
     attack_type: AttackType,
     modifiers: Modifiers,
-) -> [i32; N] {
-    let mut result = [0; N];
-    let mut i = 0;
+) -> [i32; L] {
+    assert!(L == N << 1);
+    let mut result = [0i32; L];
+    let mut i = 0usize;
+    let mut j = 0usize;
     while i < N {
         let rune_id = rune_ids[i];
-        let CachedRune { metadata, .. } = rune_id.cache();
-        let modifier = modifiers.damages.modifier(metadata.damage_type);
-        result[i] = (modifier * rune_const_eval(ctx, rune_id, attack_type)) as i32;
+
+        let TypeMetadata { damage_type, .. } = rune_id.metadata();
+
+        let modifier = modifiers.damages.modifier(damage_type);
+        let damages = rune_const_eval(ctx, rune_id, attack_type);
+
+        let mut k = 0usize;
+        while k < 2 {
+            let damage = (modifier * damages[k]) as i32;
+            result[j + k] = damage;
+            k += 1;
+        }
+
         i += 1;
+        j += 2;
     }
+
     result
 }

@@ -1,5 +1,5 @@
 use crate::{
-    GeneratorExt, JsonRead, MayFail,
+    DynError, GeneratorExt, JsonRead, MayFail,
     client::Tag,
     gen_factories::{
         DamageIndex, DamageRange, Parser, ZERO, get_identifiers, infer_damage_type, likely_damages,
@@ -21,7 +21,8 @@ pub struct ItemParser {
 
 impl Parser<WikiItem, Item> for ItemParser {
     const TAG: Tag = Tag::Items;
-    const FN: fn(&str) -> Option<fn(WikiItem) -> Box<dyn GeneratorExt<Item>>> = item_gen_fn;
+    const FN: fn(&str) -> Option<fn(WikiItem) -> MayFail<Box<dyn GeneratorExt<Item>>>> =
+        item_gen_fn;
 
     fn map(&self) -> &BTreeMap<String, WikiItem> {
         &self.data
@@ -95,11 +96,13 @@ pub enum Source {
     Passive,
 }
 
-impl From<WikiItem> for Item {
-    fn from(data: WikiItem) -> Self {
+impl TryFrom<WikiItem> for Item {
+    type Error = DynError;
+
+    fn try_from(data: WikiItem) -> Result<Self, Self::Error> {
         let damage = [ZERO.into(), ZERO.into()];
 
-        Self {
+        Ok(Self {
             damage_type: Default::default(),
             ranged: Default::default(),
             melee: Default::default(),
@@ -185,7 +188,7 @@ impl From<WikiItem> for Item {
                 },
             },
             data,
-        }
+        })
     }
 }
 

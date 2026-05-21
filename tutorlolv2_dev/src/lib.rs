@@ -10,10 +10,12 @@ pub use setup::*;
 use rayon::iter::{FromParallelIterator, IntoParallelIterator, ParallelBridge, ParallelIterator};
 use std::{collections::BTreeMap, fs::DirEntry, path::Path};
 
+pub type DynError = Box<dyn core::error::Error + Send + Sync + 'static>;
+
 /// Alias type for [`Result`] that accepts anything that implements the trait
 /// [`std::error::Error`]. Since the application doesn't need detailed errors,
 /// this can be used to propagate almost all existing errors
-pub type MayFail<T = (), E = Box<dyn core::error::Error + Send + Sync + 'static>> = Result<T, E>;
+pub type MayFail<T = (), E = DynError> = Result<T, E>;
 
 /// Custom trait that allows to deserialize a JSON instance
 /// by providing only the file path and the desired type

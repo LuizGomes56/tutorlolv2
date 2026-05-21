@@ -1,11 +1,12 @@
 use crate::{
-    GeneratorExt, JsonRead, MayFail,
-    client::Tag,
+    DynError, GeneratorExt, JsonRead, MayFail,
+    client::{SaveTo, Tag},
     gen_factories::{
         DamageIndex, DamageRange, Parser, ZERO, get_identifiers, infer_damage_type, likely_damages,
     },
     gen_runes::rune_gen_fn,
     gen_utils::RegExtractor,
+    riot::RiotCdnRune,
 };
 use serde::{Deserialize, Serialize};
 use std::{
@@ -42,7 +43,8 @@ pub struct RuneBuild {
 
 impl Parser<WikiRune, Rune> for RuneParser {
     const TAG: Tag = Tag::Runes;
-    const FN: fn(&str) -> Option<fn(WikiRune) -> Box<dyn GeneratorExt<Rune>>> = rune_gen_fn;
+    const FN: fn(&str) -> Option<fn(WikiRune) -> MayFail<Box<dyn GeneratorExt<Rune>>>> =
+        rune_gen_fn;
 
     fn map(&self) -> &BTreeMap<String, WikiRune> {
         &self.data
@@ -74,16 +76,34 @@ impl Parser<WikiRune, Rune> for RuneParser {
     }
 }
 
-impl From<WikiRune> for Rune {
-    fn from(data: WikiRune) -> Self {
-        let damage = [ZERO.into(), ZERO.into()];
+impl TryFrom<WikiRune> for Rune {
+    type Error = DynError;
 
-        Self {
+    fn try_from(data: WikiRune) -> Result<Self, Self::Error> {
+        let damage = [ZERO.into(), ZERO.into()];
+        let name = data.name.clone();
+
+        let riot_id = Vec::<RiotCdnRune>::from_file(SaveTo::RiotRunes.path())
+            .ok()
+            .and_then(|runes| {
+                runes.into_iter().find_map(|cdn_rune| {
+                    (cdn_rune.name == name).then_some(cdn_rune.id).or_else(|| {
+                        cdn_rune.slots.into_iter().find_map(|slot| {
+                            slot.runes
+                                .into_iter()
+                                .find_map(|tree| (tree.name == name).then_some(tree.id))
+                        })
+                    })
+                })
+            })
+            .unwrap_or(0) as _;
+
+        Ok(Self {
             damage_type: Default::default(),
             ranged: Default::default(),
             melee: Default::default(),
             build: RuneBuild {
-                name: data.name.clone(),
+                name,
                 metadata: TypeMetadata {
                     kind: data.rune_id.clone(),
                     damage_type: Default::default(),
@@ -91,7 +111,7 @@ impl From<WikiRune> for Rune {
                 },
                 melee: damage.clone(),
                 ranged: damage,
-                riot_id: 0,
+                riot_id,
                 deals_damage: Default::default(),
                 identifiers: Default::default(),
                 functions: {
@@ -109,7 +129,7 @@ impl From<WikiRune> for Rune {
                 },
             },
             data,
-        }
+        })
     }
 }
 

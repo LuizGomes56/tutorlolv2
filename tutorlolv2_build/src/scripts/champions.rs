@@ -279,12 +279,13 @@ pub fn get_recommendations(len: usize) -> MayFail<String> {
     let mut globals = core::array::from_fn::<_, 2, _>(|i| {
         let enumv = enum_ids[i];
         let var = declaration[i];
-        format!("pub static {var}: [[&[{enumv}]; 5]; {len}] = [")
+        format!("pub static {var}: [[&[crate::{enumv}]; 5]; {len}] = [")
     });
 
     let json = BTreeMap::<String, BTreeMap<String, [BTreeSet<String>; 2]>>::from_file(
         "internal/scraper/data.json",
-    )?;
+    )
+    .unwrap_or_default();
 
     let push_end = |globals: &mut [String; 2], str| {
         for value in globals.each_mut() {

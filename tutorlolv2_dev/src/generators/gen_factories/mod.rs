@@ -25,10 +25,10 @@ pub trait Parser<T, U>
 where
     Self: Sized + Sync,
     T: Clone + DeserializeOwned + Send + Sync + 'static,
-    U: From<T> + Serialize,
+    U: TryFrom<T, Error = Box<dyn core::error::Error + Send + Sync>> + Serialize,
 {
     const TAG: Tag;
-    const FN: fn(&str) -> Option<fn(T) -> Box<dyn GeneratorExt<U>>>;
+    const FN: fn(&str) -> Option<fn(T) -> MayFail<Box<dyn GeneratorExt<U>>>>;
 
     fn new() -> MayFail<Self>;
     fn map(&self) -> &BTreeMap<String, T>;
@@ -41,8 +41,8 @@ where
                 let data = data.clone();
 
                 match Self::FN(id) {
-                    Some(f) => f(data).call(),
-                    None => Ok(U::from(data)),
+                    Some(f) => f(data)?.call(),
+                    None => U::try_from(data),
                 }
             })
             .ok_or_else(|| format!("[WikiFactory::run] {id} not found"))?

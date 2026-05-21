@@ -29,10 +29,10 @@ macro_rules! decl_champions {
             }
 
             impl $Name {
-                pub fn new(data: WikiChampion) -> Box<dyn GeneratorExt<Champion>> {
-                    Box::new(Self {
-                        inner: Champion::from(data)
-                    })
+                pub fn new(data: WikiChampion) -> MayFail<Box<dyn GeneratorExt<Champion>>> {
+                    Ok(Box::new(Self {
+                        inner: Champion::try_from(data)?
+                    }))
                 }
             }
 
@@ -76,7 +76,7 @@ macro_rules! decl_champions {
         }
 
         pub fn champion_gen_fn(champion_id: &str) -> Option<
-            fn(WikiChampion) -> Box<dyn GeneratorExt<Champion>>
+            fn(WikiChampion) -> MayFail<Box<dyn GeneratorExt<Champion>>>
         > {
             match champion_id {
                 $(stringify!($Name) => Some($Name::new),)*

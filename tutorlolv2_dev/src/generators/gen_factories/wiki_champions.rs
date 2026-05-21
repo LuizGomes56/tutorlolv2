@@ -1,5 +1,5 @@
 use crate::{
-    GeneratorExt, JsonRead, MayFail,
+    DynError, GeneratorExt, JsonRead, MayFail,
     client::Tag,
     gen_champions::champion_gen_fn,
     gen_factories::{Parser, ZERO, get_identifiers, likely_damages},
@@ -59,7 +59,7 @@ pub struct ChampionBuild {
 
 impl Parser<WikiChampion, Champion> for ChampionParser {
     const TAG: Tag = Tag::Champions;
-    const FN: fn(&str) -> Option<fn(WikiChampion) -> Box<dyn GeneratorExt<Champion>>> =
+    const FN: fn(&str) -> Option<fn(WikiChampion) -> MayFail<Box<dyn GeneratorExt<Champion>>>> =
         champion_gen_fn;
 
     fn new() -> MayFail<Self> {
@@ -130,9 +130,11 @@ impl Parser<WikiChampion, Champion> for ChampionParser {
     }
 }
 
-impl From<WikiChampion> for Champion {
-    fn from(data: WikiChampion) -> Self {
-        Self {
+impl TryFrom<WikiChampion> for Champion {
+    type Error = DynError;
+
+    fn try_from(data: WikiChampion) -> Result<Self, Self::Error> {
+        Ok(Self {
             abilities: Default::default(),
             merge: Default::default(),
             combo: Default::default(),
@@ -151,7 +153,7 @@ impl From<WikiChampion> for Champion {
                 functions: Default::default(),
             },
             data,
-        }
+        })
     }
 }
 

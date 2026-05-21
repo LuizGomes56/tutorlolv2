@@ -372,9 +372,16 @@ pub fn get_fn_names(functions: &[String; 2], field: &[String; 2]) -> String {
     let names = field
         .iter()
         .zip(functions)
-        .map(|(value, function)| match value == ZERO || value == "0" {
-            true => ZERO,
-            false => function,
+        .map(|(value, function)| {
+            match value == ZERO
+                || value == "0"
+                || value == "0.0"
+                || value == "(0.0)"
+                || value == "(0)"
+            {
+                true => ZERO,
+                false => function,
+            }
         })
         .collect::<Vec<_>>()
         .join(",");
@@ -405,25 +412,41 @@ pub fn get_identifiers(identifiers: &[[Vec<CtxVar>; 2]; 2]) -> String {
 }
 
 pub fn cast_f32(s: &str) -> String {
-    static RE_CAST_F32: LazyLock<Regex> = LazyLock::new(|| {
-        Regex::new(r"(?P<before>^|[^.\d])(?P<num>\d+)(?P<after>[^.\d]|$)").unwrap()
-    });
+    static RE_CAST_F32: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"\d+").unwrap());
 
-    let result = RE_CAST_F32.replace_all(s, |caps: &Captures| {
-        let before = &caps["before"];
-        let num = &caps["num"];
-        let after = &caps["after"];
+    RE_CAST_F32
+        .replace_all(s, |caps: &Captures| {
+            let m = caps.get(0).unwrap();
 
-        format!("{before}{num}.0{after}")
-    });
+            let start = m.start();
+            let end = m.end();
 
-    result
+            let num = m.as_str();
+
+            let before = s[..start].chars().next_back();
+
+            let after = s[end..].chars().next();
+
+            if matches!(before, Some('.')) || matches!(after, Some('.')) {
+                return num.to_string();
+            }
+
+            let tail = &s[end..];
+
+            let trimmed = tail.trim_start();
+
+            if trimmed.starts_with("=>") || trimmed.starts_with("..") {
+                return num.to_string();
+            }
+
+            format!("{num}f32")
+        })
+        .into_owned()
         .replace("match ctx.level", "match ctx.level as u8")
         .replace("match ctx.q_level", "match ctx.q_level as u8")
         .replace("match ctx.w_level", "match ctx.w_level as u8")
         .replace("match ctx.e_level", "match ctx.e_level as u8")
         .replace("match ctx.r_level", "match ctx.r_level as u8")
-        .replace(".0 =>", "=>")
 }
 
 pub fn ctx_param(s: &str) -> &'static str {

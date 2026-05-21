@@ -26,10 +26,10 @@ macro_rules! decl_items {
             }
 
             impl $Name {
-                pub fn new(data: WikiItem) -> Box<dyn GeneratorExt<Item>> {
-                    Box::new(Self {
-                        inner: Item::from(data)
-                    })
+                pub fn new(data: WikiItem) -> MayFail<Box<dyn GeneratorExt<Item>>> {
+                    Ok(Box::new(Self {
+                        inner: Item::try_from(data)?
+                    }))
                 }
             }
 
@@ -55,7 +55,7 @@ macro_rules! decl_items {
         )*
 
         pub fn item_gen_fn(item_id: &str) -> Option<
-            fn(WikiItem) -> Box<dyn GeneratorExt<Item>>
+            fn(WikiItem) -> MayFail<Box<dyn GeneratorExt<Item>>>
         > {
             match item_id {
                 $(stringify!($Name) => Some($Name::new),)*
