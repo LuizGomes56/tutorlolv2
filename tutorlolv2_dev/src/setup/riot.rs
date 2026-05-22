@@ -16,11 +16,15 @@ pub struct RiotCdnItem {
     pub description: String,
     pub gold: RiotCdnItemGold,
     pub maps: HashMap<u8, bool>,
+    #[serde(default)]
+    pub from: Vec<String>,
+    #[serde(default)]
+    pub into: Vec<String>,
 }
 
 #[derive(Serialize, Deserialize)]
-pub struct RiotCdn<T = Value> {
-    pub data: HashMap<String, T>,
+pub struct RiotCdn<T: core::hash::Hash + Eq = String, U = Value> {
+    pub data: HashMap<T, U>,
 }
 
 #[derive(Deserialize)]

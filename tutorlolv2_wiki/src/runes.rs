@@ -148,6 +148,7 @@ pub struct WikiRune {
     pub slot: RuneSlot,
     pub effects: BTreeMap<String, Effect>,
     pub descriptions: Vec<String>,
+    pub riot_id: usize,
 }
 
 pub fn concat() -> MayFail {
@@ -202,6 +203,7 @@ pub fn concat() -> MayFail {
                 slot,
                 effects,
                 descriptions,
+                riot_id: 0,
             };
 
             Some((key, rune))

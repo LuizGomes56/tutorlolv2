@@ -64,10 +64,11 @@ pub const fn get_item_bonus_stats(
                 modifiers.damages.true_mod *= RiotFormulas::SHADOWFLAME_BONUS_DAMAGE;
             }
             ItemId::SpearOfShojin => {
-                modifiers.abilities.q *= RiotFormulas::SHOJIN_BONUS_DAMAGE;
-                modifiers.abilities.w *= RiotFormulas::SHOJIN_BONUS_DAMAGE;
-                modifiers.abilities.e *= RiotFormulas::SHOJIN_BONUS_DAMAGE;
-                modifiers.abilities.r *= RiotFormulas::SHOJIN_BONUS_DAMAGE;
+                let AbilityModifiers { q, w, e, r } = &mut modifiers.abilities;
+                *q *= RiotFormulas::SHOJIN_BONUS_DAMAGE;
+                *w *= RiotFormulas::SHOJIN_BONUS_DAMAGE;
+                *e *= RiotFormulas::SHOJIN_BONUS_DAMAGE;
+                *r *= RiotFormulas::SHOJIN_BONUS_DAMAGE;
             }
             _ => {}
         }

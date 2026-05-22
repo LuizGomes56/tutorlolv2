@@ -1,3 +1,4 @@
+#![allow(unreachable_patterns)]
 pub mod champions;
 pub mod exports;
 pub mod items;

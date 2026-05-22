@@ -16,10 +16,6 @@ use core::{
     str::FromStr,
 };
 
-#[allow(non_upper_case_globals)]
-pub(crate) const unknown: f32 = 0.0;
-pub use tutorlolv2_types::*;
-
 pub use bitset::*;
 pub use generated::{
     champions::{
@@ -30,6 +26,7 @@ pub use generated::{
     runes::{RUNE_CACHE, RUNE_CLOSURES, RUNE_FORMULAS, RuneId},
     *,
 };
+pub use tutorlolv2_types::*;
 
 pub static RAW_BLOCK: &str = include_str!("block.txt");
 const BR_BLOCK: &[u8] = include_bytes!("block.br");
@@ -537,9 +534,11 @@ impl_item_filters! {
     Lethality,
     LifeSteal,
     MagicPenetration,
+    MagicPenetrationPercent,
     MagicResist,
     Mana,
     MoveSpeed,
+    MoveSpeedPercent,
     Omnivamp,
     Tenacity,
 }

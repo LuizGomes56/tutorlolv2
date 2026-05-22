@@ -162,7 +162,7 @@ pub fn get_const_eval(data: &BTreeMap<&String, Batch>, tag: Tag) -> String {
             {ltag}_id: {tag:?}Id,
             attack_type: AttackType
         ) -> [f32; 2] {{
-            match {ltag}_id {{ {eval} }}
+            match {ltag}_id {{{eval}}}
         }}
         ",
         ltag = tag.as_ref().to_lowercase(),
@@ -306,7 +306,7 @@ pub fn closures(
                         _ => unreachable!(),
                     };
 
-                    let default = body == ZERO || body == "0";
+                    let default = is_zero(body);
 
                     let formula = simplify(body);
                     let closure = if default {
@@ -368,20 +368,17 @@ pub fn repr_damages(field: &[String; 2]) -> String {
     format!("[{fields}]", fields = field.join(","))
 }
 
+pub fn is_zero(value: &str) -> bool {
+    value == ZERO || value == "0" || value == "0.0" || value == "(0.0)" || value == "(0)"
+}
+
 pub fn get_fn_names(functions: &[String; 2], field: &[String; 2]) -> String {
     let names = field
         .iter()
         .zip(functions)
-        .map(|(value, function)| {
-            match value == ZERO
-                || value == "0"
-                || value == "0.0"
-                || value == "(0.0)"
-                || value == "(0)"
-            {
-                true => ZERO,
-                false => function,
-            }
+        .map(|(value, function)| match is_zero(value) {
+            true => ZERO,
+            false => function,
         })
         .collect::<Vec<_>>()
         .join(",");

@@ -2,7 +2,8 @@ use crate::{
     DynError, GeneratorExt, JsonRead, MayFail,
     client::{SaveTo, Tag},
     gen_factories::{
-        DamageIndex, DamageRange, Parser, ZERO, get_identifiers, infer_damage_type, likely_damages,
+        DamageIndex, DamageRange, Parser, ZERO, get_identifiers, infer_damage_type, is_zero,
+        likely_damages,
     },
     gen_runes::rune_gen_fn,
     gen_utils::RegExtractor,
@@ -14,7 +15,10 @@ use std::{
     ops::{Index, IndexMut},
 };
 use tutorlolv2_types::{AttackType, CtxVar, DamageType, TypeMetadata};
-use tutorlolv2_wiki::{parser::Effect, runes::WikiRune};
+use tutorlolv2_wiki::{
+    parser::Effect,
+    runes::{RuneKeystone, RuneSlot, WikiRune},
+};
 
 pub struct RuneParser {
     pub data: BTreeMap<String, WikiRune>,
@@ -70,9 +74,30 @@ impl Parser<WikiRune, Rune> for RuneParser {
     }
 
     fn new() -> MayFail<Self> {
-        Ok(Self {
-            data: BTreeMap::from_file("cache/wiki/runes/full.json")?,
-        })
+        let mut data = BTreeMap::from_file("cache/wiki/runes/full.json")?;
+
+        let mut customize = |name, riot_id| {
+            let rune_id = tutorlolv2_fmt::pascal_case(name);
+            data.insert(
+                rune_id.clone(),
+                WikiRune {
+                    name: format!("{name} Shard"),
+                    rune_id,
+                    path: RuneKeystone::Domination,
+                    slot: RuneSlot::Keystone,
+                    effects: Default::default(),
+                    descriptions: Default::default(),
+                    riot_id,
+                },
+            );
+        };
+
+        customize("Health", 8980);
+        customize("Health Scaling", 8981);
+        customize("Adaptive Force", 8982);
+        customize("Attack Speed", 8983);
+
+        Ok(Self { data })
     }
 }
 
@@ -96,7 +121,7 @@ impl TryFrom<WikiRune> for Rune {
                     })
                 })
             })
-            .unwrap_or(0) as _;
+            .unwrap_or(data.riot_id) as _;
 
         Ok(Self {
             damage_type: Default::default(),
@@ -247,12 +272,12 @@ impl Rune {
         self.build.melee = [self.melee.min_dmg.clone(), self.melee.max_dmg.clone()];
         self.build.ranged = [self.ranged.min_dmg.clone(), self.ranged.max_dmg.clone()];
         self.build.deals_damage = [
-            &self.melee.min_dmg,
+            self.melee.min_dmg.as_str(),
             &self.melee.max_dmg,
             &self.ranged.min_dmg,
             &self.ranged.max_dmg,
         ]
-        .map(|s| s != ZERO);
+        .map(|v| !is_zero(v));
 
         self.build.identifiers = core::array::from_fn(|i| {
             let attack_type = match i {

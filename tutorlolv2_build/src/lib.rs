@@ -142,7 +142,12 @@ pub fn run() -> MayFail {
 
         block.insert_str(0, "use super::*;\n");
 
-        tutorlolv2_dev::write(format!("tutorlolv2_gen/src/generated/{module}.rs"), &block)?;
+        let fmt_block = tutorlolv2_fmt::rustfmt(&block, None);
+
+        tutorlolv2_dev::write(
+            format!("tutorlolv2_gen/src/generated/{module}.rs"),
+            fmt_block,
+        )?;
     }
 
     let offset = tracker.offset();

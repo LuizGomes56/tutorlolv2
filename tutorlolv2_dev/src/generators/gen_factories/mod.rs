@@ -221,6 +221,10 @@ pub fn infer_damage_type(result: &mut String, description: &str) {
     }
 }
 
+pub fn is_zero(value: &str) -> bool {
+    value == ZERO || value == "0" || value == "0.0" || value == "(0.0)" || value == "(0)"
+}
+
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct DamageRange {
     pub min_dmg: String,
@@ -256,8 +260,8 @@ impl IndexMut<DamageIndex> for DamageRange {
 impl Default for DamageRange {
     fn default() -> Self {
         Self {
-            min_dmg: "zero".into(),
-            max_dmg: "zero".into(),
+            min_dmg: ZERO.into(),
+            max_dmg: ZERO.into(),
         }
     }
 }

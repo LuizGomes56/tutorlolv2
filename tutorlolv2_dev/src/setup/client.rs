@@ -476,7 +476,7 @@ impl HttpClient {
                     .await
                     .unwrap();
 
-                let champion_data = RiotCdn::<Value>::from_file(save_to).unwrap();
+                let champion_data = RiotCdn::<String, Value>::from_file(save_to).unwrap();
 
                 champion_data
                     .data
@@ -539,7 +539,7 @@ impl HttpClient {
                     name: String,
                 }
 
-                let champion_lang = RiotCdn::<NameField>::from_file(champion_file).unwrap();
+                let champion_lang = RiotCdn::<String, NameField>::from_file(champion_file).unwrap();
 
                 let mut result = HashMap::new();
 

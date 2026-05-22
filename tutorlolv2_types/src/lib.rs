@@ -210,7 +210,7 @@ pub enum StatName {
 }
 
 impl StatName {
-    pub const VARIANTS: usize = 22;
+    pub const VARIANTS: usize = 24;
 
     pub const fn name(&self) -> &'static str {
         match self {
@@ -239,8 +239,18 @@ impl StatName {
         }
     }
 
-    pub const fn from_u8_unchecked(value: u8) -> Self {
+    pub const unsafe fn from_u8_unchecked(value: u8) -> Self {
         unsafe { core::mem::transmute(value) }
+    }
+
+    pub const fn from_u8(value: u8) -> Option<Self> {
+        unsafe {
+            if value <= Self::VARIANTS as _ {
+                Some(Self::from_u8_unchecked(value))
+            } else {
+                None
+            }
+        }
     }
 }
 

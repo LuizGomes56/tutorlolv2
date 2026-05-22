@@ -1,11 +1,13 @@
 use crate::{
     DynError, GeneratorExt, JsonRead, MayFail,
-    client::Tag,
+    client::{SaveTo, Tag},
     gen_factories::{
-        DamageIndex, DamageRange, Parser, ZERO, get_identifiers, infer_damage_type, likely_damages,
+        DamageIndex, DamageRange, Parser, ZERO, get_identifiers, infer_damage_type, is_zero,
+        likely_damages,
     },
     gen_items::item_gen_fn,
     gen_utils::RegExtractor,
+    riot::{RiotCdn, RiotCdnItem, RiotCdnItemGold},
 };
 use serde::{Deserialize, Serialize};
 use std::{
@@ -58,9 +60,55 @@ impl Parser<WikiItem, Item> for ItemParser {
     }
 
     fn new() -> MayFail<Self> {
-        Ok(Self {
-            data: BTreeMap::from_file("cache/wiki/items/full.json")?,
-        })
+        let mut data = BTreeMap::<String, WikiItem>::from_file("cache/wiki/items/full.json")?;
+        let riot_items = RiotCdn::<u32, RiotCdnItem>::from_file(SaveTo::RiotItems.path())?;
+
+        for (id, cdn_item) in riot_items.data {
+            let stats = cdn_item.pretiffy_stats().unwrap_or_default();
+
+            let RiotCdnItem {
+                name,
+                gold: RiotCdnItemGold {
+                    total, purchasable, ..
+                },
+                maps,
+                from: recipe,
+                ..
+            } = cdn_item;
+
+            let key = tutorlolv2_fmt::pascal_case(&name);
+
+            match data.get_mut(&key) {
+                Some(item) => item.purchasable = purchasable,
+                None => {
+                    if !name.is_empty() && !name.starts_with("<") {
+                        let value = WikiItem {
+                            id,
+                            name,
+                            item_id: key.clone(),
+                            tier: Some(match total {
+                                0..750 => 1,
+                                750..2000 => 2,
+                                _ => 3,
+                            }),
+                            modes: maps.into_iter().map(|(k, v)| (k.to_string(), v)).collect(),
+                            stats: stats
+                                .into_iter()
+                                .map(|(k, v)| ((k as u8).to_string(), v as _))
+                                .collect(),
+                            effects: Default::default(),
+                            recipe,
+                            buy: Some(total as _),
+                            purchasable,
+                        };
+
+                        data.insert(key, value);
+                    }
+                }
+            }
+        }
+
+        Ok(Self { data })
     }
 }
 
@@ -113,9 +161,13 @@ impl TryFrom<WikiItem> for Item {
                 stats: data
                     .stats
                     .iter()
-                    .map(|(k, v)| {
-                        (
-                            match k.as_str() {
+                    .filter_map(|(k, v)| {
+                        let stat = k
+                            .parse::<u8>()
+                            .ok()
+                            .map(StatName::from_u8)
+                            .flatten()
+                            .unwrap_or_else(|| match k.as_str() {
                                 "ah" => StatName::AbilityHaste,
                                 "hp" => StatName::Health,
                                 "mr" => StatName::MagicResist,
@@ -145,21 +197,26 @@ impl TryFrom<WikiItem> for Item {
                                     "Found unknown stat: {k} for {item_id}",
                                     item_id = data.item_id
                                 ),
-                            },
-                            *v as _,
-                        )
+                            });
+
+                        Some((stat, *v as _))
                     })
                     .collect(),
                 maps: data
                     .modes
                     .iter()
                     .filter(|(_, v)| **v)
-                    .filter_map(|(k, _)| match k.as_str() {
-                        "ar" => Some(GameMap::Arena),
-                        "aram" => Some(GameMap::Aram),
-                        "classic sr 5v5" => Some(GameMap::SummonersRift),
-                        "nb" => Some(GameMap::NexusBlitz),
-                        _ => None,
+                    .filter_map(|(k, _)| {
+                        k.parse::<u8>()
+                            .ok()
+                            .map(GameMap::from_u8)
+                            .or_else(|| match k.as_str() {
+                                "ar" => Some(GameMap::Arena),
+                                "aram" => Some(GameMap::Aram),
+                                "classic sr 5v5" => Some(GameMap::SummonersRift),
+                                "nb" => Some(GameMap::NexusBlitz),
+                                _ => None,
+                            })
                     })
                     .collect(),
                 metadata: TypeMetadata {
@@ -171,7 +228,7 @@ impl TryFrom<WikiItem> for Item {
                 melee: damage,
                 riot_id: data.id,
                 deals_damage: Default::default(),
-                purchasable: false,
+                purchasable: data.purchasable,
                 identifiers: Default::default(),
                 functions: {
                     let item_id = tutorlolv2_fmt::to_ssnake(&data.item_id).to_lowercase();
@@ -201,11 +258,13 @@ impl Item {
     pub fn formula(&self, source: Source) -> MayFail<String> {
         match &self[source] {
             Some(ie) if let Some(ref formula) = ie.effect.formula => Ok(formula.parenthesize()),
-            _ => Err(format!(
-                "[{name}] No formula for its {source:?}",
-                name = self.data.name
-            )
-            .into()),
+            _ => {
+                println!(
+                    "[{name}] No formula for its {source:?}",
+                    name = self.data.name
+                );
+                Ok(ZERO.into())
+            }
         }
     }
 
@@ -262,12 +321,12 @@ impl Item {
         self.build.melee = [self.melee.min_dmg.clone(), self.melee.max_dmg.clone()];
         self.build.ranged = [self.ranged.min_dmg.clone(), self.ranged.max_dmg.clone()];
         self.build.deals_damage = [
-            &self.melee.min_dmg,
+            self.melee.min_dmg.as_str(),
             &self.melee.max_dmg,
             &self.ranged.min_dmg,
             &self.ranged.max_dmg,
         ]
-        .map(|s| s != ZERO);
+        .map(|v| !is_zero(v));
 
         self.build.identifiers = core::array::from_fn(|i| {
             let attack_type = match i {
