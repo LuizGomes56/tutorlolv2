@@ -864,7 +864,11 @@ macro_rules! impl_default {
     ($ty:ty, $init:literal, $typedef:ty) => {
         impl $ty {
             pub const fn default() -> Self {
-                unsafe { core::mem::transmute([$init; size_of::<$ty>() / size_of::<$typedef>()]) }
+                unsafe {
+                    core::mem::transmute(
+                        [$init as $typedef; size_of::<$ty>() / size_of::<$typedef>()],
+                    )
+                }
             }
         }
 
@@ -876,13 +880,13 @@ macro_rules! impl_default {
     };
 }
 
-impl_default!(Stats<f32>, 0.0f32, f32);
-impl_default!(SimpleStats<f32>, 0.0f32, f32);
-impl_default!(BasicStats<f32>, 0.0f32, f32);
-impl_default!(SimpleStats<i32>, 0i32, i32);
-impl_default!(BasicStats<i32>, 0i32, i32);
-impl_default!(DamageModifiers, 1.0f32, f32);
-impl_default!(AbilityModifiers, 1.0f32, f32);
-impl_default!(Modifiers, 1.0f32, f32);
-impl_default!(Dragons, 0u8, u8);
-impl_default!(RangeDamage, 0i32, i32);
+impl_default!(Stats<f32>, 0, f32);
+impl_default!(SimpleStats<f32>, 0, f32);
+impl_default!(BasicStats<f32>, 0, f32);
+impl_default!(SimpleStats<i32>, 0, i32);
+impl_default!(BasicStats<i32>, 0, i32);
+impl_default!(DamageModifiers, 1, f32);
+impl_default!(AbilityModifiers, 1, f32);
+impl_default!(Modifiers, 1, f32);
+impl_default!(Dragons, 0, u8);
+impl_default!(RangeDamage, 0, i32);

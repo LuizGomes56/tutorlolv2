@@ -602,6 +602,9 @@ pub enum GameMap {
     Unknown,
     UnknownMap33,
     UnknownMap35,
+    OneForAll,
+    UnsealedSpellbook,
+    SwiftPlay,
 }
 
 impl GameMap {
@@ -625,6 +628,9 @@ impl GameMap {
             // Unknown
             33 => GameMap::UnknownMap33,
             35 => GameMap::UnknownMap35,
+            0xFC => GameMap::OneForAll,
+            0xFD => GameMap::UnsealedSpellbook,
+            0xFE => GameMap::SwiftPlay,
             0xFF => GameMap::Urf,
             _ => GameMap::Unknown,
         }

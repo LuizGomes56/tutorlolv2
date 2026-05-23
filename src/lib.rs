@@ -189,3 +189,88 @@ pub mod const_eval;
 pub mod helpers;
 pub mod realtime;
 pub mod riot;
+
+/*
+mod test {
+
+    #[test]
+    pub fn const_eval() {
+        use crate::{
+            const_eval,
+            model::{Modifiers, RangeDamage},
+        };
+        use tutorlolv2_gen::{AbilityId, AbilityName, ChampionId, Ctx};
+
+        const CHAMPION_ID: ChampionId = ChampionId::Neeko;
+        const N: usize = CHAMPION_ID.number_of_abilities();
+        const CTX: Ctx = Ctx {
+            ability_power: 590.0,
+            adaptive_damage: 0.0,
+            armor: 0.0,
+            armor_penetration_flat: 0.0,
+            armor_penetration_percent: 0.0,
+            attack_damage: 0.0,
+            attack_speed: 0.0,
+            base_ad: 0.0,
+            base_armor: 0.0,
+            base_health: 0.0,
+            base_magic_resist: 0.0,
+            base_mana: 0.0,
+            bonus_ad: 0.0,
+            bonus_armor: 0.0,
+            bonus_health: 0.0,
+            bonus_magic_resist: 0.0,
+            bonus_mana: 0.0,
+            bonus_move_speed: 0.0,
+            crit_chance: 0.0,
+            crit_damage: 0.0,
+            current_health: 0.0,
+            current_mana: 0.0,
+            level: 18.0,
+            q_level: 5.0,
+            w_level: 5.0,
+            e_level: 5.0,
+            r_level: 5.0,
+            magic_multiplier: 1.0,
+            magic_penetration_flat: 0.0,
+            magic_penetration_percent: 0.0,
+            magic_resist: 0.0,
+            max_health: 0.0,
+            max_mana: 0.0,
+            missing_health: 0.0,
+            physical_multiplier: 0.0,
+            randuin_effect: 0.0,
+            rocksolid_effect: 0.0,
+            stacks: 0.0,
+            steelcaps_effect: 0.0,
+            life_steal: 0.0,
+            enemy_armor: 0.0,
+            enemy_bonus_armor: 0.0,
+            enemy_bonus_health: 0.0,
+            enemy_bonus_magic_resist: 0.0,
+            enemy_current_health: 0.0,
+            enemy_magic_resist: 0.0,
+            enemy_max_health: 0.0,
+            enemy_missing_health: 0.0,
+        };
+
+        const ABILITIES: [AbilityId; N] = {
+            let mut i = 0;
+            let mut result = [AbilityId::P(AbilityName::Void); _];
+            while i < N {
+                result[i] = CHAMPION_ID.abilities()[i].kind;
+                i += 1;
+            }
+            result
+        };
+
+        const DAMAGES: [i32; N] = const_eval::const_ability_id_eval_damage(
+            &CTX,
+            &mut RangeDamage::default(),
+            CHAMPION_ID,
+            Modifiers::default(),
+        );
+        assert_eq!(DAMAGES.len(), N);
+    }
+}
+*/

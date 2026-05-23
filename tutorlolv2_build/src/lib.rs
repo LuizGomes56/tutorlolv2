@@ -152,9 +152,6 @@ pub fn run() -> MayFail {
         )?;
     }
 
-    let offset = tracker.offset();
-    exports.push_str(&format!("pub const RAW_BLOCK_LEN: usize = {offset};"));
-
     println!("[ok] Formatting generated file");
 
     let final_exports = tutorlolv2_fmt::rustfmt(&exports, None);

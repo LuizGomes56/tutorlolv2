@@ -8,4 +8,3 @@ pub static ONHIT_EFFECT_FN_OFFSET: Range<usize> = 3602..3849;
 pub static TOWER_DAMAGE_FN_OFFSET: Range<usize> = 3849..5543;
 pub static BASIC_ATTACK_FN_OFFSET: Range<usize> = 5543..5838;
 pub static CRITICAL_STRIKE_FN_OFFSET: Range<usize> = 5838..6163;
-pub const RAW_BLOCK_LEN: usize = 4754192;

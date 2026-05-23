@@ -29,6 +29,8 @@ pub use generated::{
 pub use tutorlolv2_types::*;
 
 pub static RAW_BLOCK: &str = include_str!("block.txt");
+pub const RAW_BLOCK_LEN: usize = RAW_BLOCK.len();
+
 const BR_BLOCK: &[u8] = include_bytes!("block.br");
 pub static mut BLOCK: &[u8] = BR_BLOCK;
 
@@ -430,7 +432,7 @@ impl ChampionId {
     }
 
     pub const fn number_of_abilities(&self) -> usize {
-        self.cache().closures.len()
+        self.closures().len()
     }
 
     pub const fn recommended_items(&self, position: Position) -> &'static [ItemId] {
