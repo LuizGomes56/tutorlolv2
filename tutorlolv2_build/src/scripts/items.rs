@@ -13,7 +13,6 @@ use tutorlolv2_dev::{
     generators::gen_factories::wiki_items::Item,
 };
 use tutorlolv2_fmt::to_ssnake;
-use tutorlolv2_types::AttackType;
 
 pub fn generate_items() -> MayFail<(HashMap<&'static str, String>, String)> {
     let data = BTreeMap::<String, Item>::from_file("internal/items.json")?;
@@ -36,7 +35,6 @@ pub fn generate_items() -> MayFail<(HashMap<&'static str, String>, String)> {
                         purchasable,
                         riot_id,
                         identifiers,
-                        functions,
                     },
                 ..
             } = item;
@@ -45,23 +43,30 @@ pub fn generate_items() -> MayFail<(HashMap<&'static str, String>, String)> {
                 target: "formula",
                 variant: item_id,
                 meta: (),
-                replace: [(": Item = Item", " ="), ("TypeMetadata ", ""),].into(),
+                replace: [
+                    (": Item = Item", " ="),
+                    ("TypeMetadata ", ""),
+                    ("ItemId::", ""),
+                    ("ctx.", ""),
+                ]
+                .into(),
                 default: false
             });
+
+            let fns = get_fn_names(item_id, melee, ranged);
+            let functions = [[&fns[0], &fns[1]], [&fns[2], &fns[3]]];
 
             let decl = format!(
                 r#"
                 #[fmt({fmt_arg})]
                 static {upper_id}: Item = Item {{
                     name: {name:?},
-                    tier: {tier},
-                    price: {price},
-                    purchasable: {purchasable},
-                    maps: {maps:?},
                     stats: {stats:?},
+                    price: {price},
+                    maps: {maps:?},
+                    tier: {tier},
+                    purchasable: {purchasable}, {damage}
                     metadata: {metadata:?},
-                    ranged: {ranged},
-                    melee: {melee},
                     riot_id: {riot_id},
                 }};
 
@@ -72,8 +77,7 @@ pub fn generate_items() -> MayFail<(HashMap<&'static str, String>, String)> {
                     stats: &[{full_stats}],
                     maps: &{maps:?},
                     metadata: {metadata},
-                    ranged: {ranged_fns},
-                    melee: {melee_fns},
+                    {fn_names}
                     deals_damage: {deals_damage:?},
                     purchasable: {purchasable},
                     riot_id: {riot_id},
@@ -81,10 +85,13 @@ pub fn generate_items() -> MayFail<(HashMap<&'static str, String>, String)> {
                 }};
                 "#,
                 upper_id = to_ssnake(item_id),
-                melee = repr_damages(melee),
-                ranged = repr_damages(ranged),
-                melee_fns = get_fn_names(&functions[AttackType::Melee as usize], melee),
-                ranged_fns = get_fn_names(&functions[AttackType::Ranged as usize], ranged),
+                damage = repr_damages(melee, ranged, deals_damage),
+                fn_names = {
+                    let melee_fns = fns[0..2].join(",");
+                    let ranged_fns = fns[2..4].join(",");
+
+                    format!("melee: [{melee_fns}], ranged: [{ranged_fns}],")
+                },
                 identifiers = get_identifiers(&identifiers),
                 full_stats = stats
                     .iter()
@@ -104,8 +111,8 @@ pub fn generate_items() -> MayFail<(HashMap<&'static str, String>, String)> {
             );
 
             let generator = get_generator(Tag::Item, &item_id, item_id);
-            let eval = get_eval(Tag::Item, &item_id, &deals_damage, functions);
-            let fn_closures = closures(functions, melee, ranged, item_id);
+            let eval = get_eval(Tag::Item, &item_id, &deals_damage, &functions);
+            let fn_closures = closures(&functions, melee, ranged, item_id);
 
             (
                 item_id,

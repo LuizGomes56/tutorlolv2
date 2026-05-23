@@ -105,19 +105,21 @@ pub fn run() -> MayFail {
         tracker.batch(&mut batch);
 
         let mut delete_ranges = batch
-            .values()
+            .into_values()
             .map(|output| {
                 output
-                    .iter()
+                    .into_iter()
                     .map(|(target, value)| {
-                        let variable = fmt_args.get_mut(*target).unwrap();
+                        let variable = fmt_args.get_mut(target).unwrap();
+
+                        let deletes = value
+                            .iter()
+                            .map(|output| output.delete_range.clone())
+                            .collect::<Vec<_>>();
 
                         finish(target, variable, value);
 
-                        value
-                            .iter()
-                            .map(|output| output.delete_range.clone())
-                            .collect::<Vec<_>>()
+                        deletes
                     })
                     .collect::<Vec<_>>()
             })

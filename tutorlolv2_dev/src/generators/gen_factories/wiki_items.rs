@@ -135,7 +135,6 @@ pub struct ItemBuild {
     pub purchasable: bool,
     pub riot_id: u32,
     pub identifiers: [[Vec<CtxVar>; 2]; 2],
-    pub functions: [[String; 2]; 2],
 }
 
 #[derive(Copy, Clone, Debug)]
@@ -230,19 +229,6 @@ impl TryFrom<WikiItem> for Item {
                 deals_damage: Default::default(),
                 purchasable: data.purchasable,
                 identifiers: Default::default(),
-                functions: {
-                    let item_id = tutorlolv2_fmt::to_ssnake(&data.item_id).to_lowercase();
-                    [
-                        [
-                            format!("{item_id}_melee_min"),
-                            format!("{item_id}_melee_max"),
-                        ],
-                        [
-                            format!("{item_id}_ranged_min"),
-                            format!("{item_id}_ranged_max"),
-                        ],
-                    ]
-                },
             },
             data,
         })

@@ -300,11 +300,30 @@ static RUST_HIGHLIGHTER: LazyLock<Highlighter> = LazyLock::new(|| {
             "Lethality",
             "LifeSteal",
             "MagicPenetration",
+            "MagicPenetrationPercent",
             "MagicResist",
             "Mana",
             "MoveSpeed",
+            "MoveSpeedPercent",
             "Omnivamp",
             "Tenacity",
+            "Aram",
+            "Arena",
+            "DarkStar",
+            "Dominion",
+            "Invasion",
+            "NexusBlitz",
+            "Odyssey",
+            "Project",
+            "StarGuardian",
+            "SummonersRift",
+            "Tft",
+            "Tutorial",
+            "TwistedTreeline",
+            "Urf",
+            "Unknown",
+            "UnknownMap33",
+            "UnknownMap35",
         ]),
     );
     // Type
@@ -387,6 +406,10 @@ pub fn rust_html(rust_code: &str) -> String {
                         let name = &text[2..];
                         line_html.push_str("::");
                         line_html.push_str(&format!("<span class=\"{kind}\">{name}</span>"));
+                    }
+                    "_x" => {
+                        let text = text.trim_matches(|c| c == '*' || c == '/').trim();
+                        line_html.push_str(&format!("<span class=\"{kind}\">{text}</span>"));
                     }
                     kind => {
                         line_html.push_str(&format!("<span class=\"{kind}\">{text}</span>"));

@@ -35,16 +35,25 @@ pub fn generate_runes() -> MayFail<(HashMap<&'static str, String>, String)> {
                         riot_id,
                         deals_damage,
                         identifiers,
-                        functions,
+                        ..
                     },
                 ..
             } = rune;
+
+            let fns = get_fn_names(rune_id, melee, ranged);
+            let functions = [[&fns[0], &fns[1]], [&fns[2], &fns[3]]];
 
             let fmt_arg = json!(FmtArgs {
                 target: "formula",
                 variant: rune_id,
                 meta: (),
-                replace: [(": Rune = Rune", " ="), ("TypeMetadata ", ""),].into(),
+                replace: [
+                    (": Rune = Rune", " ="),
+                    ("TypeMetadata ", ""),
+                    ("RuneId::", ""),
+                    ("ctx.", ""),
+                ]
+                .into(),
                 default: false
             });
 
@@ -52,28 +61,28 @@ pub fn generate_runes() -> MayFail<(HashMap<&'static str, String>, String)> {
                 r#"
                 #[fmt({fmt_arg})]
                 static {upper_id}: Rune = Rune {{
-                    name: {name:?},
+                    name: {name:?}, {damage}
                     riot_id: {riot_id},
-                    ranged: {ranged},
-                    melee: {melee},
                     metadata: {metadata:?},
                 }};
 
                 pub static {upper_id}: Rune = Rune {{
                     name: {name:?},
                     metadata: {metadata},
-                    ranged: {ranged_fns},
-                    melee: {melee_fns},
+                    {fn_names}
                     deals_damage: {deals_damage:?},
                     riot_id: {riot_id},
                     identifiers: {identifiers},
                 }};
                 "#,
                 upper_id = to_ssnake(rune_id),
-                melee = repr_damages(melee),
-                ranged = repr_damages(ranged),
-                melee_fns = get_fn_names(&functions[AttackType::Melee as usize], melee),
-                ranged_fns = get_fn_names(&functions[AttackType::Ranged as usize], ranged),
+                damage = repr_damages(melee, ranged, deals_damage),
+                fn_names = {
+                    let melee_fns = fns[0..2].join(",");
+                    let ranged_fns = fns[2..4].join(",");
+
+                    format!("melee: [{melee_fns}], ranged: [{ranged_fns}],")
+                },
                 identifiers = get_identifiers(&identifiers),
                 metadata = format_args!(
                     "TypeMetadata {{
@@ -88,8 +97,8 @@ pub fn generate_runes() -> MayFail<(HashMap<&'static str, String>, String)> {
             );
 
             let generator = get_generator(Tag::Rune, &rune_id, rune_id);
-            let eval = get_eval(Tag::Rune, &rune_id, &deals_damage, functions);
-            let fn_closures = closures(functions, melee, ranged, rune_id);
+            let eval = get_eval(Tag::Rune, &rune_id, &deals_damage, &functions);
+            let fn_closures = closures(&functions, melee, ranged, rune_id);
 
             (
                 rune_id,
@@ -140,7 +149,18 @@ pub fn generate_runes() -> MayFail<(HashMap<&'static str, String>, String)> {
     Ok((fmt_args, fmt))
 }
 
-pub fn finish(target: &str, variable: &mut String, value: &[FmtOutput<'_>]) {
+pub fn finish(target: &str, variable: &mut String, mut value: Vec<FmtOutput<'_>>) {
+    value.sort_by(|a, b| match &a.json.meta {
+        v if let Ok((ata, dia)) =
+            serde_json::from_value::<(AttackType, DamageIndex)>(v.clone())
+            && let Ok((atb, dib)) =
+                serde_json::from_value::<(AttackType, DamageIndex)>(b.json.meta.clone()) =>
+        {
+            ata.cmp(&atb).then(dia.cmp(&dib))
+        }
+        _ => a.json.target.cmp(&b.json.target),
+    });
+
     let push = match target {
         "formula" | "generator" => {
             value

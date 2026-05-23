@@ -1,97 +1,97 @@
 use super::*;
 pub static RUNE_FORMULAS: [Range<usize>; RuneId::VARIANTS] = [
-    4865510..4866548,
-    4866548..4867577,
-    4867577..4868621,
-    4869790..4872023,
-    4872820..4873867,
-    4876087..4880522,
-    4880522..4881560,
-    4881560..4882598,
-    4882598..4883642,
-    4883642..4884674,
-    4884674..4885697,
-    4885697..4886718,
-    4886718..4887753,
-    4888750..4890427,
-    4890427..4891448,
-    4891448..4892481,
-    4892481..4893505,
-    4893505..4894543,
-    4894543..4895577,
-    4895577..4896597,
-    4897606..4899605,
-    4902175..4906873,
-    4906873..4907896,
-    4907896..4908917,
-    4910028..4912307,
-    4913408..4914455,
-    4914455..4915487,
-    4915487..4916525,
-    4916525..4917556,
-    4917556..4918592,
-    4918592..4919633,
-    4919633..4920656,
-    4920656..4921697,
-    4922290..4923466,
-    4923466..4924507,
-    4924507..4925528,
-    4926791..4929451,
-    4929451..4930472,
-    4930472..4931516,
-    4931516..4932575,
-    4932575..4933616,
-    4933616..4934636,
-    4934636..4935681,
-    4935681..4936708,
-    4936708..4937734,
-    4937734..4938776,
-    4938776..4939821,
-    4939821..4940854,
-    4940854..4941893,
-    4942894..4944593,
-    4944593..4945637,
-    4945637..4946672,
-    4946672..4947728,
-    4947728..4948757,
-    4948757..4949789,
-    4949789..4950824,
-    4950824..4951851,
-    4951851..4952869,
-    4952869..4953904,
-    4953904..4954927,
-    4956126..4958775,
-    4959873..4960916,
-    4961927..4963523,
-    4963523..4964574,
-    4964574..4965612,
-    4965612..4966659,
-    4966659..4967686,
-    4968459..4970126,
-    4970919..4971948,
-    4972985..4975221,
-    4975221..4976250,
-    4976250..4977301,
-    4978092..4979778,
-    4981035..4983635,
-    4983635..4984672,
-    4984672..4985712,
-    4985712..4986752,
-    4986752..4987788,
-    4987788..4988829,
-    4988829..4989861,
-    4989861..4990879,
-    4990879..4991920,
-    4991920..4992950,
-    4992950..4994000,
-    4994000..4995033,
-    4995033..4996059,
+    4676354..4676969,
+    4676969..4677575,
+    4677575..4678196,
+    4679240..4680230,
+    4681026..4681650,
+    4683508..4684757,
+    4684757..4685372,
+    4685372..4685987,
+    4685987..4686608,
+    4686608..4687217,
+    4687217..4687817,
+    4687817..4688415,
+    4688415..4689027,
+    4689955..4690865,
+    4690865..4691463,
+    4691463..4692073,
+    4692073..4692674,
+    4692674..4693289,
+    4693289..4693900,
+    4693900..4694497,
+    4695325..4696217,
+    4698425..4699844,
+    4699844..4700444,
+    4700444..4701042,
+    4701972..4702898,
+    4703997..4704621,
+    4704621..4705230,
+    4705230..4705845,
+    4705845..4706453,
+    4706453..4707066,
+    4707066..4707684,
+    4707684..4708284,
+    4708284..4708902,
+    4709439..4710283,
+    4710283..4710901,
+    4710901..4711499,
+    4712581..4713583,
+    4713583..4714181,
+    4714181..4714802,
+    4714802..4715438,
+    4715438..4716056,
+    4716056..4716653,
+    4716653..4717275,
+    4717275..4717879,
+    4717879..4718482,
+    4718482..4719101,
+    4719101..4719723,
+    4719723..4720333,
+    4720333..4720949,
+    4721894..4723143,
+    4723143..4723764,
+    4723764..4724376,
+    4724376..4725009,
+    4725009..4725615,
+    4725615..4726224,
+    4726224..4726836,
+    4726836..4727440,
+    4727440..4728035,
+    4728035..4728647,
+    4728647..4729247,
+    4730265..4731226,
+    4732322..4732942,
+    4733884..4734816,
+    4734816..4735444,
+    4735444..4736059,
+    4736059..4736683,
+    4736683..4737287,
+    4737991..4738783,
+    4739575..4740181,
+    4741093..4742001,
+    4742001..4742607,
+    4742607..4743235,
+    4743957..4744770,
+    4745846..4746844,
+    4746844..4747458,
+    4747458..4748075,
+    4748075..4748692,
+    4748692..4749305,
+    4749305..4749923,
+    4749923..4750532,
+    4750532..4751127,
+    4751127..4751745,
+    4751745..4752352,
+    4752352..4752979,
+    4752979..4753589,
+    4753589..4754192,
 ];
 pub static RUNE_GENERATOR: [Range<usize>; RuneId::VARIANTS] = [
     0..0,
     0..0,
     0..0,
-    4872023..4872820,
+    4680230..4681026,
     0..0,
     0..0,
     0..0,
@@ -112,7 +112,7 @@ pub static RUNE_GENERATOR: [Range<usize>; RuneId::VARIANTS] = [
     0..0,
     0..0,
     0..0,
-    4912307..4913408,
+    4702898..4703997,
     0..0,
     0..0,
     0..0,
@@ -148,14 +148,14 @@ pub static RUNE_GENERATOR: [Range<usize>; RuneId::VARIANTS] = [
     0..0,
     0..0,
     0..0,
-    4958775..4959873,
+    4731226..4732322,
     0..0,
     0..0,
     0..0,
     0..0,
     0..0,
     0..0,
-    4970126..4970919,
+    4738783..4739575,
     0..0,
     0..0,
     0..0,
@@ -179,17 +179,12 @@ pub static RUNE_CLOSURES: [[[Range<usize>; 2]; 2]; RuneId::VARIANTS] = [
     [[0..0, 0..0], [0..0, 0..0]],
     [[0..0, 0..0], [0..0, 0..0]],
     [[0..0, 0..0], [0..0, 0..0]],
+    [[4678196..4678718, 0..0], [4678718..4679240, 0..0]],
     [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[4874977..4875531, 0..0], [0..0, 4875531..4876087]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[4888252..4888750, 0..0], [0..0, 4887753..4888252]],
+    [
+        [4681650..4682114, 4682114..4682579],
+        [4682579..4683043, 4683043..4683508],
+    ],
     [[0..0, 0..0], [0..0, 0..0]],
     [[0..0, 0..0], [0..0, 0..0]],
     [[0..0, 0..0], [0..0, 0..0]],
@@ -197,22 +192,21 @@ pub static RUNE_CLOSURES: [[[Range<usize>; 2]; 2]; RuneId::VARIANTS] = [
     [[0..0, 0..0], [0..0, 0..0]],
     [[0..0, 0..0], [0..0, 0..0]],
     [[0..0, 0..0], [0..0, 0..0]],
-    [[4901561..4902175, 0..0], [0..0, 4900220..4900891]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[4909473..4910028, 0..0], [0..0, 0..0]],
+    [[4689027..4689491, 0..0], [4689491..4689955, 0..0]],
     [[0..0, 0..0], [0..0, 0..0]],
     [[0..0, 0..0], [0..0, 0..0]],
     [[0..0, 0..0], [0..0, 0..0]],
     [[0..0, 0..0], [0..0, 0..0]],
     [[0..0, 0..0], [0..0, 0..0]],
     [[0..0, 0..0], [0..0, 0..0]],
+    [[4694911..4695325, 0..0], [4694497..4694911, 0..0]],
+    [
+        [4696741..4697321, 4697901..4698425],
+        [4697321..4697901, 4696217..4696741],
+    ],
     [[0..0, 0..0], [0..0, 0..0]],
     [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 4921993..4922290]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[4925528..4926159, 0..0], [0..0, 4926159..4926791]],
+    [[4701507..4701972, 0..0], [4701042..4701507, 0..0]],
     [[0..0, 0..0], [0..0, 0..0]],
     [[0..0, 0..0], [0..0, 0..0]],
     [[0..0, 0..0], [0..0, 0..0]],
@@ -221,11 +215,10 @@ pub static RUNE_CLOSURES: [[[Range<usize>; 2]; 2]; RuneId::VARIANTS] = [
     [[0..0, 0..0], [0..0, 0..0]],
     [[0..0, 0..0], [0..0, 0..0]],
     [[0..0, 0..0], [0..0, 0..0]],
+    [[4709171..4709439, 0..0], [4708902..4709171, 0..0]],
     [[0..0, 0..0], [0..0, 0..0]],
     [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[4941893..4942393, 0..0], [0..0, 4942393..4942894]],
+    [[4712040..4712581, 0..0], [4711499..4712040, 0..0]],
     [[0..0, 0..0], [0..0, 0..0]],
     [[0..0, 0..0], [0..0, 0..0]],
     [[0..0, 0..0], [0..0, 0..0]],
@@ -236,20 +229,33 @@ pub static RUNE_CLOSURES: [[[Range<usize>; 2]; 2]; RuneId::VARIANTS] = [
     [[0..0, 0..0], [0..0, 0..0]],
     [[0..0, 0..0], [0..0, 0..0]],
     [[0..0, 0..0], [0..0, 0..0]],
-    [[4955527..4956126, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[4960916..4961421, 0..0], [0..0, 4961421..4961927]],
     [[0..0, 0..0], [0..0, 0..0]],
     [[0..0, 0..0], [0..0, 0..0]],
+    [[4720949..4721421, 0..0], [4721421..4721894, 0..0]],
     [[0..0, 0..0], [0..0, 0..0]],
     [[0..0, 0..0], [0..0, 0..0]],
     [[0..0, 0..0], [0..0, 0..0]],
     [[0..0, 0..0], [0..0, 0..0]],
-    [[4972467..4972985, 0..0], [0..0, 4971948..4972467]],
     [[0..0, 0..0], [0..0, 0..0]],
     [[0..0, 0..0], [0..0, 0..0]],
     [[0..0, 0..0], [0..0, 0..0]],
-    [[4979778..4980406, 0..0], [0..0, 4980406..4981035]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[4729247..4729756, 0..0], [4729756..4730265, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[4733413..4733884, 0..0], [4732942..4733413, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[4737639..4737991, 0..0], [4737287..4737639, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[4740637..4741093, 0..0], [4740181..4740637, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[4743235..4743596, 0..0], [4743596..4743957, 0..0]],
+    [[4744770..4745308, 0..0], [4745308..4745846, 0..0]],
     [[0..0, 0..0], [0..0, 0..0]],
     [[0..0, 0..0], [0..0, 0..0]],
     [[0..0, 0..0], [0..0, 0..0]],
@@ -271,8 +277,8 @@ pub static ABSOLUTE_FOCUS: Rune = Rune {
         damage_type: Unspecified,
         attributes: Undefined,
     },
-    ranged: [zero, zero],
     melee: [zero, zero],
+    ranged: [zero, zero],
     deals_damage: [false, false, false, false],
     riot_id: 8233,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
@@ -285,8 +291,8 @@ pub static ABSORB_LIFE: Rune = Rune {
         damage_type: Unspecified,
         attributes: Undefined,
     },
-    ranged: [zero, zero],
     melee: [zero, zero],
+    ranged: [zero, zero],
     deals_damage: [false, false, false, false],
     riot_id: 9101,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
@@ -299,8 +305,8 @@ pub static ADAPTIVE_FORCE: Rune = Rune {
         damage_type: Unspecified,
         attributes: Undefined,
     },
-    ranged: [zero, zero],
     melee: [zero, zero],
+    ranged: [zero, zero],
     deals_damage: [false, false, false, false],
     riot_id: 8982,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
@@ -313,8 +319,8 @@ pub static AFTERSHOCK: Rune = Rune {
         damage_type: Magic,
         attributes: Undefined,
     },
-    ranged: [aftershock_ranged_min, zero],
-    melee: [aftershock_melee_min, zero],
+    melee: [aftershock_min, zero],
+    ranged: [aftershock_min, zero],
     deals_damage: [true, false, true, false],
     riot_id: 8439,
     identifiers: [
@@ -329,13 +335,7 @@ pub static AFTERSHOCK: Rune = Rune {
     ],
 };
 
-pub const fn aftershock_melee_min(ctx: &Ctx) -> f32 {
-    5f32 * (5f32
-        + 0.016 * ctx.bonus_health
-        + 1.1179999999999999 * (-1f32 + ctx.level))
-}
-
-pub const fn aftershock_ranged_min(ctx: &Ctx) -> f32 {
+pub const fn aftershock_min(ctx: &Ctx) -> f32 {
     5f32 * (5f32
         + 0.016 * ctx.bonus_health
         + 1.1179999999999999 * (-1f32 + ctx.level))
@@ -348,8 +348,8 @@ pub static APPROACH_VELOCITY: Rune = Rune {
         damage_type: Unspecified,
         attributes: Undefined,
     },
-    ranged: [zero, zero],
     melee: [zero, zero],
+    ranged: [zero, zero],
     deals_damage: [false, false, false, false],
     riot_id: 8410,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
@@ -362,8 +362,8 @@ pub static ARCANE_COMET: Rune = Rune {
         damage_type: Adaptive,
         attributes: Undefined,
     },
-    ranged: [arcane_comet_ranged_min, arcane_comet_ranged_max],
-    melee: [arcane_comet_melee_min, arcane_comet_melee_max],
+    melee: [arcane_comet_min, arcane_comet_max],
+    ranged: [arcane_comet_min, arcane_comet_max],
     deals_damage: [true, true, true, true],
     riot_id: 8229,
     identifiers: [
@@ -378,19 +378,11 @@ pub static ARCANE_COMET: Rune = Rune {
     ],
 };
 
-pub const fn arcane_comet_melee_min(ctx: &Ctx) -> f32 {
+pub const fn arcane_comet_min(ctx: &Ctx) -> f32 {
     5f32 * (2f32 + 0.01 * ctx.ability_power + 0.02 * ctx.bonus_ad + ctx.level)
 }
 
-pub const fn arcane_comet_melee_max(ctx: &Ctx) -> f32 {
-    10f32 * (2f32 + 0.01 * ctx.ability_power + 0.02 * ctx.bonus_ad + ctx.level)
-}
-
-pub const fn arcane_comet_ranged_min(ctx: &Ctx) -> f32 {
-    5f32 * (2f32 + 0.01 * ctx.ability_power + 0.02 * ctx.bonus_ad + ctx.level)
-}
-
-pub const fn arcane_comet_ranged_max(ctx: &Ctx) -> f32 {
+pub const fn arcane_comet_max(ctx: &Ctx) -> f32 {
     10f32 * (2f32 + 0.01 * ctx.ability_power + 0.02 * ctx.bonus_ad + ctx.level)
 }
 
@@ -401,8 +393,8 @@ pub static ATTACK_SPEED: Rune = Rune {
         damage_type: Unspecified,
         attributes: Undefined,
     },
-    ranged: [zero, zero],
     melee: [zero, zero],
+    ranged: [zero, zero],
     deals_damage: [false, false, false, false],
     riot_id: 8983,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
@@ -415,8 +407,8 @@ pub static AXIOM_ARCANIST: Rune = Rune {
         damage_type: Unspecified,
         attributes: Undefined,
     },
-    ranged: [zero, zero],
     melee: [zero, zero],
+    ranged: [zero, zero],
     deals_damage: [false, false, false, false],
     riot_id: 8224,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
@@ -429,8 +421,8 @@ pub static BISCUIT_DELIVERY: Rune = Rune {
         damage_type: Unspecified,
         attributes: Undefined,
     },
-    ranged: [zero, zero],
     melee: [zero, zero],
+    ranged: [zero, zero],
     deals_damage: [false, false, false, false],
     riot_id: 8345,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
@@ -443,8 +435,8 @@ pub static BONE_PLATING: Rune = Rune {
         damage_type: Unspecified,
         attributes: Undefined,
     },
-    ranged: [zero, zero],
     melee: [zero, zero],
+    ranged: [zero, zero],
     deals_damage: [false, false, false, false],
     riot_id: 8473,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
@@ -457,8 +449,8 @@ pub static CASH_BACK: Rune = Rune {
         damage_type: Unspecified,
         attributes: Undefined,
     },
-    ranged: [zero, zero],
     melee: [zero, zero],
+    ranged: [zero, zero],
     deals_damage: [false, false, false, false],
     riot_id: 8321,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
@@ -471,8 +463,8 @@ pub static CELERITY: Rune = Rune {
         damage_type: Unspecified,
         attributes: Undefined,
     },
-    ranged: [zero, zero],
     melee: [zero, zero],
+    ranged: [zero, zero],
     deals_damage: [false, false, false, false],
     riot_id: 8234,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
@@ -485,8 +477,8 @@ pub static CELESTIAL_BODY: Rune = Rune {
         damage_type: Unspecified,
         attributes: Undefined,
     },
-    ranged: [zero, zero],
     melee: [zero, zero],
+    ranged: [zero, zero],
     deals_damage: [false, false, false, false],
     riot_id: 0,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
@@ -499,18 +491,14 @@ pub static CHEAP_SHOT: Rune = Rune {
         damage_type: True,
         attributes: Undefined,
     },
-    ranged: [cheap_shot_ranged_min, zero],
-    melee: [cheap_shot_melee_min, zero],
+    melee: [cheap_shot_min, zero],
+    ranged: [cheap_shot_min, zero],
     deals_damage: [true, false, true, false],
     riot_id: 8126,
     identifiers: [[&[Level] as &[_], &[]], [&[Level] as &[_], &[]]],
 };
 
-pub const fn cheap_shot_melee_min(ctx: &Ctx) -> f32 {
-    5f32 * (34f32 + 7f32 * (-1f32 + ctx.level)) / 17f32
-}
-
-pub const fn cheap_shot_ranged_min(ctx: &Ctx) -> f32 {
+pub const fn cheap_shot_min(ctx: &Ctx) -> f32 {
     5f32 * (34f32 + 7f32 * (-1f32 + ctx.level)) / 17f32
 }
 
@@ -521,8 +509,8 @@ pub static CHRYSALIS: Rune = Rune {
         damage_type: Unspecified,
         attributes: Undefined,
     },
-    ranged: [zero, zero],
     melee: [zero, zero],
+    ranged: [zero, zero],
     deals_damage: [false, false, false, false],
     riot_id: 0,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
@@ -535,8 +523,8 @@ pub static CONDITIONING: Rune = Rune {
         damage_type: Unspecified,
         attributes: Undefined,
     },
-    ranged: [zero, zero],
     melee: [zero, zero],
+    ranged: [zero, zero],
     deals_damage: [false, false, false, false],
     riot_id: 8429,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
@@ -549,8 +537,8 @@ pub static CONQUEROR: Rune = Rune {
         damage_type: Unspecified,
         attributes: Undefined,
     },
-    ranged: [zero, zero],
     melee: [zero, zero],
+    ranged: [zero, zero],
     deals_damage: [false, false, false, false],
     riot_id: 8010,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
@@ -563,8 +551,8 @@ pub static COSMIC_INSIGHT: Rune = Rune {
         damage_type: Unspecified,
         attributes: Undefined,
     },
-    ranged: [zero, zero],
     melee: [zero, zero],
+    ranged: [zero, zero],
     deals_damage: [false, false, false, false],
     riot_id: 8347,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
@@ -577,8 +565,8 @@ pub static COUP_DE_GRACE: Rune = Rune {
         damage_type: Unspecified,
         attributes: Undefined,
     },
-    ranged: [zero, zero],
     melee: [zero, zero],
+    ranged: [zero, zero],
     deals_damage: [false, false, false, false],
     riot_id: 8014,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
@@ -591,8 +579,8 @@ pub static CUT_DOWN: Rune = Rune {
         damage_type: Unspecified,
         attributes: Undefined,
     },
-    ranged: [zero, zero],
     melee: [zero, zero],
+    ranged: [zero, zero],
     deals_damage: [false, false, false, false],
     riot_id: 8017,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
@@ -605,8 +593,8 @@ pub static DARK_HARVEST: Rune = Rune {
         damage_type: Adaptive,
         attributes: Undefined,
     },
-    ranged: [dark_harvest_ranged_min, zero],
-    melee: [dark_harvest_melee_min, zero],
+    melee: [dark_harvest_min, zero],
+    ranged: [dark_harvest_min, zero],
     deals_damage: [true, false, true, false],
     riot_id: 8128,
     identifiers: [
@@ -615,11 +603,7 @@ pub static DARK_HARVEST: Rune = Rune {
     ],
 };
 
-pub const fn dark_harvest_melee_min(ctx: &Ctx) -> f32 {
-    30f32 + 0.05 * ctx.ability_power + 0.1 * ctx.bonus_ad + 11f32 * ctx.stacks
-}
-
-pub const fn dark_harvest_ranged_min(ctx: &Ctx) -> f32 {
+pub const fn dark_harvest_min(ctx: &Ctx) -> f32 {
     30f32 + 0.05 * ctx.ability_power + 0.1 * ctx.bonus_ad + 11f32 * ctx.stacks
 }
 
@@ -630,8 +614,8 @@ pub static DEATHFIRE_TOUCH: Rune = Rune {
         damage_type: Adaptive,
         attributes: Undefined,
     },
-    ranged: [deathfire_touch_ranged_min, deathfire_touch_ranged_max],
-    melee: [deathfire_touch_melee_min, deathfire_touch_melee_max],
+    melee: [deathfire_touch_min, deathfire_touch_max],
+    ranged: [deathfire_touch_min, deathfire_touch_max],
     deals_damage: [true, true, true, true],
     riot_id: 8992,
     identifiers: [
@@ -646,27 +630,14 @@ pub static DEATHFIRE_TOUCH: Rune = Rune {
     ],
 };
 
-pub const fn deathfire_touch_melee_min(ctx: &Ctx) -> f32 {
+pub const fn deathfire_touch_min(ctx: &Ctx) -> f32 {
     0.0125 * ctx.ability_power
         + 0.035 * ctx.bonus_ad
         + 3f32 / 2f32
         + 9f32 * (-1f32 + ctx.level) / 34f32
 }
 
-pub const fn deathfire_touch_melee_max(ctx: &Ctx) -> f32 {
-    2.63 + 0.02188 * ctx.ability_power
-        + 0.06125 * ctx.bonus_ad
-        + 0.46 * (-1f32 + ctx.level)
-}
-
-pub const fn deathfire_touch_ranged_min(ctx: &Ctx) -> f32 {
-    0.0125 * ctx.ability_power
-        + 0.035 * ctx.bonus_ad
-        + 3f32 / 2f32
-        + 9f32 * (-1f32 + ctx.level) / 34f32
-}
-
-pub const fn deathfire_touch_ranged_max(ctx: &Ctx) -> f32 {
+pub const fn deathfire_touch_max(ctx: &Ctx) -> f32 {
     2.63 + 0.02188 * ctx.ability_power
         + 0.06125 * ctx.bonus_ad
         + 0.46 * (-1f32 + ctx.level)
@@ -679,8 +650,8 @@ pub static DEEP_WARD: Rune = Rune {
         damage_type: Unspecified,
         attributes: Undefined,
     },
-    ranged: [zero, zero],
     melee: [zero, zero],
+    ranged: [zero, zero],
     deals_damage: [false, false, false, false],
     riot_id: 8141,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
@@ -693,8 +664,8 @@ pub static DEMOLISH: Rune = Rune {
         damage_type: Unspecified,
         attributes: Undefined,
     },
-    ranged: [zero, zero],
     melee: [zero, zero],
+    ranged: [zero, zero],
     deals_damage: [false, false, false, false],
     riot_id: 8446,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
@@ -707,8 +678,8 @@ pub static ELECTROCUTE: Rune = Rune {
         damage_type: Adaptive,
         attributes: Undefined,
     },
-    ranged: [electrocute_ranged_min, zero],
-    melee: [electrocute_melee_min, zero],
+    melee: [electrocute_min, zero],
+    ranged: [electrocute_min, zero],
     deals_damage: [true, false, true, false],
     riot_id: 8112,
     identifiers: [
@@ -717,11 +688,7 @@ pub static ELECTROCUTE: Rune = Rune {
     ],
 };
 
-pub const fn electrocute_melee_min(ctx: &Ctx) -> f32 {
-    10f32 * (6f32 + 0.005 * ctx.ability_power + 0.01 * ctx.bonus_ad + ctx.level)
-}
-
-pub const fn electrocute_ranged_min(ctx: &Ctx) -> f32 {
+pub const fn electrocute_min(ctx: &Ctx) -> f32 {
     10f32 * (6f32 + 0.005 * ctx.ability_power + 0.01 * ctx.bonus_ad + ctx.level)
 }
 
@@ -732,8 +699,8 @@ pub static EYEBALL_COLLECTION: Rune = Rune {
         damage_type: Unspecified,
         attributes: Undefined,
     },
-    ranged: [zero, zero],
     melee: [zero, zero],
+    ranged: [zero, zero],
     deals_damage: [false, false, false, false],
     riot_id: 0,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
@@ -746,8 +713,8 @@ pub static FIRST_STRIKE: Rune = Rune {
         damage_type: Unspecified,
         attributes: Undefined,
     },
-    ranged: [zero, zero],
     melee: [zero, zero],
+    ranged: [zero, zero],
     deals_damage: [false, false, false, false],
     riot_id: 8369,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
@@ -760,8 +727,8 @@ pub static FLEET_FOOTWORK: Rune = Rune {
         damage_type: Unspecified,
         attributes: Undefined,
     },
-    ranged: [zero, zero],
     melee: [zero, zero],
+    ranged: [zero, zero],
     deals_damage: [false, false, false, false],
     riot_id: 8021,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
@@ -774,8 +741,8 @@ pub static FONT_OF_LIFE: Rune = Rune {
         damage_type: Unspecified,
         attributes: Undefined,
     },
-    ranged: [zero, zero],
     melee: [zero, zero],
+    ranged: [zero, zero],
     deals_damage: [false, false, false, false],
     riot_id: 8463,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
@@ -788,8 +755,8 @@ pub static FUTURES_MARKET: Rune = Rune {
         damage_type: Unspecified,
         attributes: Undefined,
     },
-    ranged: [zero, zero],
     melee: [zero, zero],
+    ranged: [zero, zero],
     deals_damage: [false, false, false, false],
     riot_id: 0,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
@@ -802,8 +769,8 @@ pub static GATHERING_STORM: Rune = Rune {
         damage_type: Unspecified,
         attributes: Undefined,
     },
-    ranged: [zero, zero],
     melee: [zero, zero],
+    ranged: [zero, zero],
     deals_damage: [false, false, false, false],
     riot_id: 8236,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
@@ -816,8 +783,8 @@ pub static GHOST_PORO: Rune = Rune {
         damage_type: Unspecified,
         attributes: Undefined,
     },
-    ranged: [zero, zero],
     melee: [zero, zero],
+    ranged: [zero, zero],
     deals_damage: [false, false, false, false],
     riot_id: 0,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
@@ -830,8 +797,8 @@ pub static GLACIAL_AUGMENT: Rune = Rune {
         damage_type: Unspecified,
         attributes: Undefined,
     },
-    ranged: [zero, zero],
     melee: [zero, zero],
+    ranged: [zero, zero],
     deals_damage: [false, false, false, false],
     riot_id: 8351,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
@@ -844,8 +811,8 @@ pub static GRASP_OF_THE_UNDYING: Rune = Rune {
         damage_type: Magic,
         attributes: Undefined,
     },
-    ranged: [grasp_of_the_undying_ranged_min, zero],
     melee: [grasp_of_the_undying_melee_min, zero],
+    ranged: [grasp_of_the_undying_ranged_min, zero],
     deals_damage: [true, false, true, false],
     riot_id: 8437,
     identifiers: [
@@ -869,8 +836,8 @@ pub static GRISLY_MEMENTOS: Rune = Rune {
         damage_type: Unspecified,
         attributes: Undefined,
     },
-    ranged: [zero, zero],
     melee: [zero, zero],
+    ranged: [zero, zero],
     deals_damage: [false, false, false, false],
     riot_id: 8140,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
@@ -883,8 +850,8 @@ pub static GUARDIAN: Rune = Rune {
         damage_type: Unspecified,
         attributes: Undefined,
     },
-    ranged: [zero, zero],
     melee: [zero, zero],
+    ranged: [zero, zero],
     deals_damage: [false, false, false, false],
     riot_id: 8465,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
@@ -897,8 +864,8 @@ pub static HAIL_OF_BLADES: Rune = Rune {
         damage_type: True,
         attributes: Undefined,
     },
-    ranged: [hail_of_blades_ranged_min, zero],
-    melee: [hail_of_blades_melee_min, zero],
+    melee: [hail_of_blades_min, zero],
+    ranged: [hail_of_blades_min, zero],
     deals_damage: [true, false, true, false],
     riot_id: 9923,
     identifiers: [
@@ -907,13 +874,7 @@ pub static HAIL_OF_BLADES: Rune = Rune {
     ],
 };
 
-pub const fn hail_of_blades_melee_min(ctx: &Ctx) -> f32 {
-    4f32 + 0.06 * ctx.ability_power
-        + 0.08 * ctx.bonus_ad
-        + 16f32 * (-1f32 + ctx.level) / 17f32
-}
-
-pub const fn hail_of_blades_ranged_min(ctx: &Ctx) -> f32 {
+pub const fn hail_of_blades_min(ctx: &Ctx) -> f32 {
     4f32 + 0.06 * ctx.ability_power
         + 0.08 * ctx.bonus_ad
         + 16f32 * (-1f32 + ctx.level) / 17f32
@@ -926,8 +887,8 @@ pub static HEALTH: Rune = Rune {
         damage_type: Unspecified,
         attributes: Undefined,
     },
-    ranged: [zero, zero],
     melee: [zero, zero],
+    ranged: [zero, zero],
     deals_damage: [false, false, false, false],
     riot_id: 8980,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
@@ -940,8 +901,8 @@ pub static HEALTH_SCALING: Rune = Rune {
         damage_type: Unspecified,
         attributes: Undefined,
     },
-    ranged: [zero, zero],
     melee: [zero, zero],
+    ranged: [zero, zero],
     deals_damage: [false, false, false, false],
     riot_id: 8981,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
@@ -954,8 +915,8 @@ pub static HEXTECH_FLASHTRAPTION: Rune = Rune {
         damage_type: Unspecified,
         attributes: Undefined,
     },
-    ranged: [zero, zero],
     melee: [zero, zero],
+    ranged: [zero, zero],
     deals_damage: [false, false, false, false],
     riot_id: 8306,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
@@ -968,8 +929,8 @@ pub static INGENIOUS_HUNTER: Rune = Rune {
         damage_type: Unspecified,
         attributes: Undefined,
     },
-    ranged: [zero, zero],
     melee: [zero, zero],
+    ranged: [zero, zero],
     deals_damage: [false, false, false, false],
     riot_id: 0,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
@@ -982,8 +943,8 @@ pub static IRON_SKIN: Rune = Rune {
         damage_type: Unspecified,
         attributes: Undefined,
     },
-    ranged: [zero, zero],
     melee: [zero, zero],
+    ranged: [zero, zero],
     deals_damage: [false, false, false, false],
     riot_id: 0,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
@@ -996,8 +957,8 @@ pub static JACK_OF_ALL_TRADES: Rune = Rune {
         damage_type: Unspecified,
         attributes: Undefined,
     },
-    ranged: [zero, zero],
     melee: [zero, zero],
+    ranged: [zero, zero],
     deals_damage: [false, false, false, false],
     riot_id: 0,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
@@ -1010,8 +971,8 @@ pub static KLEPTOMANCY: Rune = Rune {
         damage_type: Unspecified,
         attributes: Undefined,
     },
-    ranged: [zero, zero],
     melee: [zero, zero],
+    ranged: [zero, zero],
     deals_damage: [false, false, false, false],
     riot_id: 0,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
@@ -1024,8 +985,8 @@ pub static LAST_STAND: Rune = Rune {
         damage_type: Unspecified,
         attributes: Undefined,
     },
-    ranged: [zero, zero],
     melee: [zero, zero],
+    ranged: [zero, zero],
     deals_damage: [false, false, false, false],
     riot_id: 8299,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
@@ -1038,8 +999,8 @@ pub static LEGEND_ALACRITY: Rune = Rune {
         damage_type: Unspecified,
         attributes: Undefined,
     },
-    ranged: [zero, zero],
     melee: [zero, zero],
+    ranged: [zero, zero],
     deals_damage: [false, false, false, false],
     riot_id: 9104,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
@@ -1052,8 +1013,8 @@ pub static LEGEND_BLOODLINE: Rune = Rune {
         damage_type: Unspecified,
         attributes: Undefined,
     },
-    ranged: [zero, zero],
     melee: [zero, zero],
+    ranged: [zero, zero],
     deals_damage: [false, false, false, false],
     riot_id: 9103,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
@@ -1066,8 +1027,8 @@ pub static LEGEND_HASTE: Rune = Rune {
         damage_type: Unspecified,
         attributes: Undefined,
     },
-    ranged: [zero, zero],
     melee: [zero, zero],
+    ranged: [zero, zero],
     deals_damage: [false, false, false, false],
     riot_id: 9105,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
@@ -1080,8 +1041,8 @@ pub static LEGEND_TENACITY: Rune = Rune {
         damage_type: Unspecified,
         attributes: Undefined,
     },
-    ranged: [zero, zero],
     melee: [zero, zero],
+    ranged: [zero, zero],
     deals_damage: [false, false, false, false],
     riot_id: 0,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
@@ -1094,8 +1055,8 @@ pub static LETHAL_TEMPO: Rune = Rune {
         damage_type: Adaptive,
         attributes: Undefined,
     },
-    ranged: [lethal_tempo_ranged_min, zero],
     melee: [lethal_tempo_melee_min, zero],
+    ranged: [lethal_tempo_ranged_min, zero],
     deals_damage: [true, false, true, false],
     riot_id: 8008,
     identifiers: [[&[Level] as &[_], &[]], [&[Level] as &[_], &[]]],
@@ -1116,8 +1077,8 @@ pub static MAGICAL_FOOTWEAR: Rune = Rune {
         damage_type: Unspecified,
         attributes: Undefined,
     },
-    ranged: [zero, zero],
     melee: [zero, zero],
+    ranged: [zero, zero],
     deals_damage: [false, false, false, false],
     riot_id: 8304,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
@@ -1130,8 +1091,8 @@ pub static MANAFLOW_BAND: Rune = Rune {
         damage_type: Unspecified,
         attributes: Undefined,
     },
-    ranged: [zero, zero],
     melee: [zero, zero],
+    ranged: [zero, zero],
     deals_damage: [false, false, false, false],
     riot_id: 8226,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
@@ -1144,8 +1105,8 @@ pub static MINION_DEMATERIALIZER: Rune = Rune {
         damage_type: Unspecified,
         attributes: Undefined,
     },
-    ranged: [zero, zero],
     melee: [zero, zero],
+    ranged: [zero, zero],
     deals_damage: [false, false, false, false],
     riot_id: 0,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
@@ -1158,8 +1119,8 @@ pub static MIRROR_SHELL: Rune = Rune {
         damage_type: Unspecified,
         attributes: Undefined,
     },
-    ranged: [zero, zero],
     melee: [zero, zero],
+    ranged: [zero, zero],
     deals_damage: [false, false, false, false],
     riot_id: 0,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
@@ -1172,8 +1133,8 @@ pub static NIMBUS_CLOAK: Rune = Rune {
         damage_type: Unspecified,
         attributes: Undefined,
     },
-    ranged: [zero, zero],
     melee: [zero, zero],
+    ranged: [zero, zero],
     deals_damage: [false, false, false, false],
     riot_id: 8275,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
@@ -1186,8 +1147,8 @@ pub static NULLIFYING_ORB: Rune = Rune {
         damage_type: Unspecified,
         attributes: Undefined,
     },
-    ranged: [zero, zero],
     melee: [zero, zero],
+    ranged: [zero, zero],
     deals_damage: [false, false, false, false],
     riot_id: 0,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
@@ -1200,8 +1161,8 @@ pub static OVERGROWTH: Rune = Rune {
         damage_type: Unspecified,
         attributes: Undefined,
     },
-    ranged: [zero, zero],
     melee: [zero, zero],
+    ranged: [zero, zero],
     deals_damage: [false, false, false, false],
     riot_id: 8451,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
@@ -1214,8 +1175,8 @@ pub static OVERHEAL: Rune = Rune {
         damage_type: Unspecified,
         attributes: Undefined,
     },
-    ranged: [zero, zero],
     melee: [zero, zero],
+    ranged: [zero, zero],
     deals_damage: [false, false, false, false],
     riot_id: 0,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
@@ -1228,8 +1189,8 @@ pub static PERFECT_TIMING: Rune = Rune {
         damage_type: Unspecified,
         attributes: Undefined,
     },
-    ranged: [zero, zero],
     melee: [zero, zero],
+    ranged: [zero, zero],
     deals_damage: [false, false, false, false],
     riot_id: 0,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
@@ -1242,8 +1203,8 @@ pub static PHASE_RUSH: Rune = Rune {
         damage_type: Unspecified,
         attributes: Undefined,
     },
-    ranged: [zero, zero],
     melee: [zero, zero],
+    ranged: [zero, zero],
     deals_damage: [false, false, false, false],
     riot_id: 0,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
@@ -1256,8 +1217,8 @@ pub static PREDATOR: Rune = Rune {
         damage_type: Adaptive,
         attributes: Undefined,
     },
-    ranged: [predator_ranged_min, zero],
-    melee: [predator_melee_min, zero],
+    melee: [predator_min, zero],
+    ranged: [predator_min, zero],
     deals_damage: [true, false, true, false],
     riot_id: 0,
     identifiers: [
@@ -1266,14 +1227,7 @@ pub static PREDATOR: Rune = Rune {
     ],
 };
 
-pub const fn predator_melee_min(ctx: &Ctx) -> f32 {
-    20f32
-        + 0.15 * ctx.ability_power
-        + 0.25 * ctx.bonus_ad
-        + 9.41 * (-1f32 + ctx.level)
-}
-
-pub const fn predator_ranged_min(ctx: &Ctx) -> f32 {
+pub const fn predator_min(ctx: &Ctx) -> f32 {
     20f32
         + 0.15 * ctx.ability_power
         + 0.25 * ctx.bonus_ad
@@ -1287,8 +1241,8 @@ pub static PRESENCE_OF_MIND: Rune = Rune {
         damage_type: Unspecified,
         attributes: Undefined,
     },
-    ranged: [zero, zero],
     melee: [zero, zero],
+    ranged: [zero, zero],
     deals_damage: [false, false, false, false],
     riot_id: 8009,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
@@ -1301,18 +1255,14 @@ pub static PRESS_THE_ATTACK: Rune = Rune {
         damage_type: Adaptive,
         attributes: Undefined,
     },
-    ranged: [press_the_attack_ranged_min, zero],
-    melee: [press_the_attack_melee_min, zero],
+    melee: [press_the_attack_min, zero],
+    ranged: [press_the_attack_min, zero],
     deals_damage: [true, false, true, false],
     riot_id: 8005,
     identifiers: [[&[Level] as &[_], &[]], [&[Level] as &[_], &[]]],
 };
 
-pub const fn press_the_attack_melee_min(ctx: &Ctx) -> f32 {
-    40f32 * (17f32 + 3f32 * (-1f32 + ctx.level)) / 17f32
-}
-
-pub const fn press_the_attack_ranged_min(ctx: &Ctx) -> f32 {
+pub const fn press_the_attack_min(ctx: &Ctx) -> f32 {
     40f32 * (17f32 + 3f32 * (-1f32 + ctx.level)) / 17f32
 }
 
@@ -1323,8 +1273,8 @@ pub static PROTOTYPE_OMNISTONE: Rune = Rune {
         damage_type: Unspecified,
         attributes: Undefined,
     },
-    ranged: [zero, zero],
     melee: [zero, zero],
+    ranged: [zero, zero],
     deals_damage: [false, false, false, false],
     riot_id: 0,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
@@ -1337,8 +1287,8 @@ pub static RAVENOUS_HUNTER: Rune = Rune {
         damage_type: Unspecified,
         attributes: Undefined,
     },
-    ranged: [zero, zero],
     melee: [zero, zero],
+    ranged: [zero, zero],
     deals_damage: [false, false, false, false],
     riot_id: 0,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
@@ -1351,8 +1301,8 @@ pub static RELENTLESS_HUNTER: Rune = Rune {
         damage_type: Unspecified,
         attributes: Undefined,
     },
-    ranged: [zero, zero],
     melee: [zero, zero],
+    ranged: [zero, zero],
     deals_damage: [false, false, false, false],
     riot_id: 8105,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
@@ -1365,8 +1315,8 @@ pub static REVITALIZE: Rune = Rune {
         damage_type: Unspecified,
         attributes: Undefined,
     },
-    ranged: [zero, zero],
     melee: [zero, zero],
+    ranged: [zero, zero],
     deals_damage: [false, false, false, false],
     riot_id: 8453,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
@@ -1379,8 +1329,8 @@ pub static SCORCH: Rune = Rune {
         damage_type: Magic,
         attributes: Undefined,
     },
-    ranged: [scorch_ranged_min, zero],
-    melee: [scorch_melee_min, zero],
+    melee: [scorch_min, zero],
+    ranged: [scorch_min, zero],
     deals_damage: [true, false, true, false],
     riot_id: 8237,
     identifiers: [
@@ -1389,11 +1339,7 @@ pub static SCORCH: Rune = Rune {
     ],
 };
 
-pub const fn scorch_melee_min(ctx: &Ctx) -> f32 {
-    20f32 * (16f32 + ctx.level) / 17f32
-}
-
-pub const fn scorch_ranged_min(ctx: &Ctx) -> f32 {
+pub const fn scorch_min(ctx: &Ctx) -> f32 {
     20f32 * (16f32 + ctx.level) / 17f32
 }
 
@@ -1404,8 +1350,8 @@ pub static SECOND_WIND: Rune = Rune {
         damage_type: Unspecified,
         attributes: Undefined,
     },
-    ranged: [zero, zero],
     melee: [zero, zero],
+    ranged: [zero, zero],
     deals_damage: [false, false, false, false],
     riot_id: 8444,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
@@ -1418,8 +1364,8 @@ pub static SHIELD_BASH: Rune = Rune {
         damage_type: Adaptive,
         attributes: Undefined,
     },
-    ranged: [shield_bash_ranged_min, zero],
-    melee: [shield_bash_melee_min, zero],
+    melee: [shield_bash_min, zero],
+    ranged: [shield_bash_min, zero],
     deals_damage: [true, false, true, false],
     riot_id: 8401,
     identifiers: [
@@ -1428,11 +1374,7 @@ pub static SHIELD_BASH: Rune = Rune {
     ],
 };
 
-pub const fn shield_bash_melee_min(ctx: &Ctx) -> f32 {
-    5f32 + 0.025 * ctx.bonus_health + 25f32 * (-1f32 + ctx.level) / 17f32
-}
-
-pub const fn shield_bash_ranged_min(ctx: &Ctx) -> f32 {
+pub const fn shield_bash_min(ctx: &Ctx) -> f32 {
     5f32 + 0.025 * ctx.bonus_health + 25f32 * (-1f32 + ctx.level) / 17f32
 }
 
@@ -1443,8 +1385,8 @@ pub static SIXTH_SENSE: Rune = Rune {
         damage_type: Unspecified,
         attributes: Undefined,
     },
-    ranged: [zero, zero],
     melee: [zero, zero],
+    ranged: [zero, zero],
     deals_damage: [false, false, false, false],
     riot_id: 8137,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
@@ -1457,8 +1399,8 @@ pub static STORMRAIDERS_SURGE: Rune = Rune {
         damage_type: Unspecified,
         attributes: Undefined,
     },
-    ranged: [zero, zero],
     melee: [zero, zero],
+    ranged: [zero, zero],
     deals_damage: [false, false, false, false],
     riot_id: 8230,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
@@ -1471,18 +1413,14 @@ pub static SUDDEN_IMPACT: Rune = Rune {
         damage_type: True,
         attributes: Undefined,
     },
-    ranged: [sudden_impact_ranged_min, zero],
-    melee: [sudden_impact_melee_min, zero],
+    melee: [sudden_impact_min, zero],
+    ranged: [sudden_impact_min, zero],
     deals_damage: [true, false, true, false],
     riot_id: 8143,
     identifiers: [[&[Level] as &[_], &[]], [&[Level] as &[_], &[]]],
 };
 
-pub const fn sudden_impact_melee_min(ctx: &Ctx) -> f32 {
-    20f32 + 3.53 * (-1f32 + ctx.level)
-}
-
-pub const fn sudden_impact_ranged_min(ctx: &Ctx) -> f32 {
+pub const fn sudden_impact_min(ctx: &Ctx) -> f32 {
     20f32 + 3.53 * (-1f32 + ctx.level)
 }
 
@@ -1493,8 +1431,8 @@ pub static SUMMON_AERY: Rune = Rune {
         damage_type: Adaptive,
         attributes: Undefined,
     },
-    ranged: [summon_aery_ranged_min, zero],
-    melee: [summon_aery_melee_min, zero],
+    melee: [summon_aery_min, zero],
+    ranged: [summon_aery_min, zero],
     deals_damage: [true, false, true, false],
     riot_id: 8214,
     identifiers: [
@@ -1503,14 +1441,7 @@ pub static SUMMON_AERY: Rune = Rune {
     ],
 };
 
-pub const fn summon_aery_melee_min(ctx: &Ctx) -> f32 {
-    10f32
-        + 0.05 * ctx.ability_power
-        + 0.1 * ctx.bonus_ad
-        + 40f32 * (-1f32 + ctx.level) / 17f32
-}
-
-pub const fn summon_aery_ranged_min(ctx: &Ctx) -> f32 {
+pub const fn summon_aery_min(ctx: &Ctx) -> f32 {
     10f32
         + 0.05 * ctx.ability_power
         + 0.1 * ctx.bonus_ad
@@ -1524,8 +1455,8 @@ pub static TASTE_OF_BLOOD: Rune = Rune {
         damage_type: Unspecified,
         attributes: Undefined,
     },
-    ranged: [zero, zero],
     melee: [zero, zero],
+    ranged: [zero, zero],
     deals_damage: [false, false, false, false],
     riot_id: 8139,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
@@ -1538,8 +1469,8 @@ pub static THE_ULTIMATE_HAT: Rune = Rune {
         damage_type: Unspecified,
         attributes: Undefined,
     },
-    ranged: [zero, zero],
     melee: [zero, zero],
+    ranged: [zero, zero],
     deals_damage: [false, false, false, false],
     riot_id: 0,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
@@ -1552,8 +1483,8 @@ pub static TIME_WARP_TONIC: Rune = Rune {
         damage_type: Unspecified,
         attributes: Undefined,
     },
-    ranged: [zero, zero],
     melee: [zero, zero],
+    ranged: [zero, zero],
     deals_damage: [false, false, false, false],
     riot_id: 8352,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
@@ -1566,8 +1497,8 @@ pub static TRANSCENDENCE: Rune = Rune {
         damage_type: Unspecified,
         attributes: Undefined,
     },
-    ranged: [zero, zero],
     melee: [zero, zero],
+    ranged: [zero, zero],
     deals_damage: [false, false, false, false],
     riot_id: 8210,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
@@ -1580,8 +1511,8 @@ pub static TREASURE_HUNTER: Rune = Rune {
         damage_type: Unspecified,
         attributes: Undefined,
     },
-    ranged: [zero, zero],
     melee: [zero, zero],
+    ranged: [zero, zero],
     deals_damage: [false, false, false, false],
     riot_id: 8135,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
@@ -1594,8 +1525,8 @@ pub static TRIPLE_TONIC: Rune = Rune {
         damage_type: Unspecified,
         attributes: Undefined,
     },
-    ranged: [zero, zero],
     melee: [zero, zero],
+    ranged: [zero, zero],
     deals_damage: [false, false, false, false],
     riot_id: 8313,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
@@ -1608,8 +1539,8 @@ pub static TRIUMPH: Rune = Rune {
         damage_type: Unspecified,
         attributes: Undefined,
     },
-    ranged: [zero, zero],
     melee: [zero, zero],
+    ranged: [zero, zero],
     deals_damage: [false, false, false, false],
     riot_id: 9111,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
@@ -1622,8 +1553,8 @@ pub static ULTIMATE_HUNTER: Rune = Rune {
         damage_type: Unspecified,
         attributes: Undefined,
     },
-    ranged: [zero, zero],
     melee: [zero, zero],
+    ranged: [zero, zero],
     deals_damage: [false, false, false, false],
     riot_id: 8106,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
@@ -1636,8 +1567,8 @@ pub static UNFLINCHING: Rune = Rune {
         damage_type: Unspecified,
         attributes: Undefined,
     },
-    ranged: [zero, zero],
     melee: [zero, zero],
+    ranged: [zero, zero],
     deals_damage: [false, false, false, false],
     riot_id: 8242,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
@@ -1650,8 +1581,8 @@ pub static UNSEALED_SPELLBOOK: Rune = Rune {
         damage_type: Unspecified,
         attributes: Undefined,
     },
-    ranged: [zero, zero],
     melee: [zero, zero],
+    ranged: [zero, zero],
     deals_damage: [false, false, false, false],
     riot_id: 8360,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
@@ -1664,8 +1595,8 @@ pub static WATERWALKING: Rune = Rune {
         damage_type: Unspecified,
         attributes: Undefined,
     },
-    ranged: [zero, zero],
     melee: [zero, zero],
+    ranged: [zero, zero],
     deals_damage: [false, false, false, false],
     riot_id: 8232,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
@@ -1678,8 +1609,8 @@ pub static ZOMBIE_WARD: Rune = Rune {
         damage_type: Unspecified,
         attributes: Undefined,
     },
-    ranged: [zero, zero],
     melee: [zero, zero],
+    ranged: [zero, zero],
     deals_damage: [false, false, false, false],
     riot_id: 0,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
@@ -1996,8 +1927,8 @@ pub const fn rune_const_eval(
         },
 
         RuneId::Aftershock => match attack_type {
-            Melee => [aftershock_melee_min(&ctx), zero(&ctx)],
-            Ranged => [aftershock_melee_min(&ctx), zero(&ctx)],
+            Melee => [aftershock_min(&ctx), zero(&ctx)],
+            Ranged => [aftershock_min(&ctx), zero(&ctx)],
         },
 
         RuneId::ApproachVelocity => match attack_type {
@@ -2006,12 +1937,8 @@ pub const fn rune_const_eval(
         },
 
         RuneId::ArcaneComet => match attack_type {
-            Melee => {
-                [arcane_comet_melee_min(&ctx), arcane_comet_melee_max(&ctx)]
-            }
-            Ranged => {
-                [arcane_comet_melee_min(&ctx), arcane_comet_melee_max(&ctx)]
-            }
+            Melee => [arcane_comet_min(&ctx), arcane_comet_max(&ctx)],
+            Ranged => [arcane_comet_min(&ctx), arcane_comet_max(&ctx)],
         },
 
         RuneId::AttackSpeed => match attack_type {
@@ -2050,8 +1977,8 @@ pub const fn rune_const_eval(
         },
 
         RuneId::CheapShot => match attack_type {
-            Melee => [cheap_shot_melee_min(&ctx), zero(&ctx)],
-            Ranged => [cheap_shot_melee_min(&ctx), zero(&ctx)],
+            Melee => [cheap_shot_min(&ctx), zero(&ctx)],
+            Ranged => [cheap_shot_min(&ctx), zero(&ctx)],
         },
 
         RuneId::Chrysalis => match attack_type {
@@ -2085,19 +2012,13 @@ pub const fn rune_const_eval(
         },
 
         RuneId::DarkHarvest => match attack_type {
-            Melee => [dark_harvest_melee_min(&ctx), zero(&ctx)],
-            Ranged => [dark_harvest_melee_min(&ctx), zero(&ctx)],
+            Melee => [dark_harvest_min(&ctx), zero(&ctx)],
+            Ranged => [dark_harvest_min(&ctx), zero(&ctx)],
         },
 
         RuneId::DeathfireTouch => match attack_type {
-            Melee => [
-                deathfire_touch_melee_min(&ctx),
-                deathfire_touch_melee_max(&ctx),
-            ],
-            Ranged => [
-                deathfire_touch_melee_min(&ctx),
-                deathfire_touch_melee_max(&ctx),
-            ],
+            Melee => [deathfire_touch_min(&ctx), deathfire_touch_max(&ctx)],
+            Ranged => [deathfire_touch_min(&ctx), deathfire_touch_max(&ctx)],
         },
 
         RuneId::DeepWard => match attack_type {
@@ -2111,8 +2032,8 @@ pub const fn rune_const_eval(
         },
 
         RuneId::Electrocute => match attack_type {
-            Melee => [electrocute_melee_min(&ctx), zero(&ctx)],
-            Ranged => [electrocute_melee_min(&ctx), zero(&ctx)],
+            Melee => [electrocute_min(&ctx), zero(&ctx)],
+            Ranged => [electrocute_min(&ctx), zero(&ctx)],
         },
 
         RuneId::EyeballCollection => match attack_type {
@@ -2171,8 +2092,8 @@ pub const fn rune_const_eval(
         },
 
         RuneId::HailOfBlades => match attack_type {
-            Melee => [hail_of_blades_melee_min(&ctx), zero(&ctx)],
-            Ranged => [hail_of_blades_melee_min(&ctx), zero(&ctx)],
+            Melee => [hail_of_blades_min(&ctx), zero(&ctx)],
+            Ranged => [hail_of_blades_min(&ctx), zero(&ctx)],
         },
 
         RuneId::Health => match attack_type {
@@ -2291,8 +2212,8 @@ pub const fn rune_const_eval(
         },
 
         RuneId::Predator => match attack_type {
-            Melee => [predator_melee_min(&ctx), zero(&ctx)],
-            Ranged => [predator_melee_min(&ctx), zero(&ctx)],
+            Melee => [predator_min(&ctx), zero(&ctx)],
+            Ranged => [predator_min(&ctx), zero(&ctx)],
         },
 
         RuneId::PresenceOfMind => match attack_type {
@@ -2301,8 +2222,8 @@ pub const fn rune_const_eval(
         },
 
         RuneId::PressTheAttack => match attack_type {
-            Melee => [press_the_attack_melee_min(&ctx), zero(&ctx)],
-            Ranged => [press_the_attack_melee_min(&ctx), zero(&ctx)],
+            Melee => [press_the_attack_min(&ctx), zero(&ctx)],
+            Ranged => [press_the_attack_min(&ctx), zero(&ctx)],
         },
 
         RuneId::PrototypeOmnistone => match attack_type {
@@ -2326,8 +2247,8 @@ pub const fn rune_const_eval(
         },
 
         RuneId::Scorch => match attack_type {
-            Melee => [scorch_melee_min(&ctx), zero(&ctx)],
-            Ranged => [scorch_melee_min(&ctx), zero(&ctx)],
+            Melee => [scorch_min(&ctx), zero(&ctx)],
+            Ranged => [scorch_min(&ctx), zero(&ctx)],
         },
 
         RuneId::SecondWind => match attack_type {
@@ -2336,8 +2257,8 @@ pub const fn rune_const_eval(
         },
 
         RuneId::ShieldBash => match attack_type {
-            Melee => [shield_bash_melee_min(&ctx), zero(&ctx)],
-            Ranged => [shield_bash_melee_min(&ctx), zero(&ctx)],
+            Melee => [shield_bash_min(&ctx), zero(&ctx)],
+            Ranged => [shield_bash_min(&ctx), zero(&ctx)],
         },
 
         RuneId::SixthSense => match attack_type {
@@ -2351,13 +2272,13 @@ pub const fn rune_const_eval(
         },
 
         RuneId::SuddenImpact => match attack_type {
-            Melee => [sudden_impact_melee_min(&ctx), zero(&ctx)],
-            Ranged => [sudden_impact_melee_min(&ctx), zero(&ctx)],
+            Melee => [sudden_impact_min(&ctx), zero(&ctx)],
+            Ranged => [sudden_impact_min(&ctx), zero(&ctx)],
         },
 
         RuneId::SummonAery => match attack_type {
-            Melee => [summon_aery_melee_min(&ctx), zero(&ctx)],
-            Ranged => [summon_aery_melee_min(&ctx), zero(&ctx)],
+            Melee => [summon_aery_min(&ctx), zero(&ctx)],
+            Ranged => [summon_aery_min(&ctx), zero(&ctx)],
         },
 
         RuneId::TasteOfBlood => match attack_type {

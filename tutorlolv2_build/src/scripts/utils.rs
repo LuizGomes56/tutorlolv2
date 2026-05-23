@@ -2,7 +2,7 @@ use crate::scripts::batch::{Batch, FmtArgs};
 use regex::{Captures, Regex};
 use serde_json::json;
 use std::{
-    collections::{BTreeMap, BTreeSet, HashMap},
+    collections::{BTreeMap, BTreeSet, HashMap, HashSet},
     fmt::Debug,
     ops::Range,
     sync::LazyLock,
@@ -206,7 +206,7 @@ pub fn get_eval(
     tag: Tag,
     id: &str,
     deals_damage: &[bool; 4],
-    functions: &[[String; 2]; 2],
+    functions: &[[&String; 2]; 2],
 ) -> String {
     let slice = functions.as_flattened();
     let get_arms = |range: Range<_>| {
@@ -282,11 +282,13 @@ pub fn get_static_vars<const N: usize, T>(
 }
 
 pub fn closures(
-    functions: &[[String; 2]; 2],
+    functions: &[[&String; 2]; 2],
     melee: &[String],
     ranged: &[String],
     variant: &str,
 ) -> String {
+    let mut seen = HashSet::new();
+
     functions
         .iter()
         .enumerate()
@@ -296,22 +298,30 @@ pub fn closures(
                 1 => AttackType::Ranged,
                 _ => unreachable!(),
             };
+
             function
                 .iter()
                 .enumerate()
                 .map(|(j, function)| {
-                    let (damage_index, body) = match i {
-                        0 => (DamageIndex::Min, &melee[j]),
-                        1 => (DamageIndex::Max, &ranged[j]),
+                    let damage_index = match j {
+                        0 => DamageIndex::Min,
+                        1 => DamageIndex::Max,
+                        _ => unreachable!(),
+                    };
+
+                    let body = match i {
+                        0 => &melee[j],
+                        1 => &ranged[j],
                         _ => unreachable!(),
                     };
 
                     let default = is_zero(body);
 
                     let formula = simplify(body);
-                    let closure = if default {
+                    let closure = if default || seen.contains(function) {
                         format!("")
                     } else {
+                        seen.insert(function);
                         let formula_f32 = cast_f32(&formula);
                         let param = ctx_param(&formula_f32);
 
@@ -364,26 +374,108 @@ pub fn get_aliases<'a>(id: &'a str, name: &'a str) -> Vec<String> {
     [get(id), get(name)].concat()
 }
 
-pub fn repr_damages(field: &[String; 2]) -> String {
-    format!("[{fields}]", fields = field.join(","))
+pub fn repr_damages(melee: &[String; 2], ranged: &[String; 2], deals_damage: &[bool; 4]) -> String {
+    let [melee_min, melee_max] = melee;
+    let [ranged_min, ranged_max] = ranged;
+
+    let same_min = melee_min == ranged_min;
+    let same_max = melee_max == ranged_max;
+
+    let mut parts = Vec::new();
+
+    match *deals_damage {
+        [false, false, false, false] => {}
+        [true, false, false, false] => {
+            parts.push(format!("melee_min_dmg: {}", simplify(melee_min)));
+        }
+        [false, false, true, false] => {
+            parts.push(format!("ranged_min_dmg: {}", simplify(ranged_min)));
+        }
+        [true, false, true, false] => {
+            if same_min {
+                parts.push(format!("damage: {}", simplify(melee_min)));
+            } else {
+                parts.push(format!("melee_min_dmg: {}", simplify(melee_min)));
+                parts.push(format!("ranged_min_dmg: {}", simplify(ranged_min)));
+            }
+        }
+        [true, true, false, false] => {
+            parts.push(format!("melee_min_dmg: {}", simplify(melee_min)));
+
+            parts.push(format!("melee_max_dmg: {}", simplify(melee_max)));
+        }
+        [false, false, true, true] => {
+            parts.push(format!("ranged_min_dmg: {}", simplify(ranged_min)));
+
+            parts.push(format!("ranged_max_dmg: {}", simplify(ranged_max)));
+        }
+        [true, true, true, true] => {
+            if same_min {
+                parts.push(format!("min_dmg: {}", simplify(melee_min)));
+            } else {
+                parts.push(format!("melee_min_dmg: {}", simplify(melee_min)));
+
+                parts.push(format!("ranged_min_dmg: {}", simplify(ranged_min)));
+            }
+
+            if same_max {
+                parts.push(format!("max_dmg: {}", simplify(melee_max)));
+            } else {
+                parts.push(format!("melee_max_dmg: {}", simplify(melee_max)));
+
+                parts.push(format!("ranged_max_dmg: {}", simplify(ranged_max)));
+            }
+        }
+        _ => unreachable!("Invalid deals_damage state. Maybe max without min"),
+    }
+
+    if parts.is_empty() {
+        String::new()
+    } else {
+        format!("{},", parts.join(", "))
+    }
 }
 
 pub fn is_zero(value: &str) -> bool {
     value == ZERO || value == "0" || value == "0.0" || value == "(0.0)" || value == "(0)"
 }
 
-pub fn get_fn_names(functions: &[String; 2], field: &[String; 2]) -> String {
-    let names = field
-        .iter()
-        .zip(functions)
-        .map(|(value, function)| match is_zero(value) {
-            true => ZERO,
-            false => function,
-        })
-        .collect::<Vec<_>>()
-        .join(",");
+pub fn get_fn_names(value_id: &str, melee: &[String; 2], ranged: &[String; 2]) -> [String; 4] {
+    let id = tutorlolv2_fmt::to_ssnake(value_id).to_lowercase();
 
-    format!("[{names}]")
+    let min_shared = !is_zero(&melee[0]) && melee[0] == ranged[0];
+    let max_shared = !is_zero(&melee[1]) && melee[1] == ranged[1];
+
+    [
+        if is_zero(&melee[0]) {
+            ZERO.into()
+        } else if min_shared {
+            format!("{id}_min")
+        } else {
+            format!("{id}_melee_min")
+        },
+        if is_zero(&melee[1]) {
+            ZERO.into()
+        } else if max_shared {
+            format!("{id}_max")
+        } else {
+            format!("{id}_melee_max")
+        },
+        if is_zero(&ranged[0]) {
+            ZERO.into()
+        } else if min_shared {
+            format!("{id}_min")
+        } else {
+            format!("{id}_ranged_min")
+        },
+        if is_zero(&ranged[1]) {
+            ZERO.into()
+        } else if max_shared {
+            format!("{id}_max")
+        } else {
+            format!("{id}_ranged_max")
+        },
+    ]
 }
 
 pub fn get_identifiers(identifiers: &[[Vec<CtxVar>; 2]; 2]) -> String {

@@ -13,6 +13,7 @@ use tutorlolv2_dev::{
     generators::gen_factories::wiki_champions::Champion,
 };
 use tutorlolv2_fmt::to_ssnake;
+use tutorlolv2_types::AbilityId;
 
 pub fn generate_champions() -> MayFail<(HashMap<&'static str, String>, String)> {
     let data = BTreeMap::<String, Champion>::from_file("internal/champions.json")?;
@@ -50,10 +51,11 @@ pub fn generate_champions() -> MayFail<(HashMap<&'static str, String>, String)> 
                     (": Champion = Champion", " ="),
                     ("MergeData ", ""),
                     ("WikiStats ", ""),
-                    ("Stats ", ""),
+                    ("Stat ", ""),
                     ("WikiModifiers ", ""),
-                    ("Modifiers ", ""),
+                    ("Modifier ", ""),
                     ("TypeMetadata ", ""),
+                    ("ctx.", "")
                 ]
                 .into(),
                 default: false
@@ -66,7 +68,7 @@ pub fn generate_champions() -> MayFail<(HashMap<&'static str, String>, String)> 
                     name: {name:?},
                     adaptive_type: {adaptive_type:?},
                     attack_type: {attack_type:?},
-                    positions: {positions:#?},
+                    positions: {positions:#?}, {damage}
                     stats: {stats:#?},
                     modifiers: {modifiers:#?},
                     combos: [{combos}],
@@ -89,6 +91,14 @@ pub fn generate_champions() -> MayFail<(HashMap<&'static str, String>, String)> 
                 }};
                 "#,
                 upper_id = to_ssnake(champion_id),
+                damage = abilities
+                    .iter()
+                    .map(|(k, v)| {
+                        let discriminant = k.discriminant().to_lowercase();
+                        let formula = simplify(&v.damage);
+                        format!("{discriminant}: {formula},")
+                    })
+                    .collect::<String>(),
                 combos = combos
                     .iter()
                     .map(|ident| format!("&{ident:#?}"))
@@ -135,7 +145,7 @@ pub fn generate_champions() -> MayFail<(HashMap<&'static str, String>, String)> 
                         target: "ability",
                         variant: champion_id,
                         meta: ability_id,
-                        replace: [(": Ability = Ability", " = Ability"), ("ctx.", "")].into(),
+                        replace: [(": Ability = Ability", " ="), ("ctx.", "")].into(),
                         default: false
                     });
 
@@ -318,7 +328,16 @@ pub fn get_recommendations(len: usize) -> MayFail<String> {
     Ok(globals.concat())
 }
 
-pub fn finish(target: &str, variable: &mut String, value: &[FmtOutput<'_>]) {
+pub fn finish(target: &str, variable: &mut String, mut value: Vec<FmtOutput<'_>>) {
+    value.sort_by(|a, b| match &a.json.meta {
+        v if let Ok(ability_a) = serde_json::from_value::<AbilityId>(v.clone())
+            && let Ok(ability_b) = serde_json::from_value::<AbilityId>(b.json.meta.clone()) =>
+        {
+            ability_a.cmp(&ability_b)
+        }
+        _ => a.json.target.cmp(&b.json.target),
+    });
+
     let ranges = value
         .iter()
         .map(|FmtOutput { html_range, .. }| format!("{html_range:?}"))

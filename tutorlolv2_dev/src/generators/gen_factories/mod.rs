@@ -231,7 +231,7 @@ pub struct DamageRange {
     pub max_dmg: String,
 }
 
-#[derive(Clone, Copy, Debug, Deserialize, Serialize)]
+#[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize, Deserialize)]
 pub enum DamageIndex {
     Min,
     Max,

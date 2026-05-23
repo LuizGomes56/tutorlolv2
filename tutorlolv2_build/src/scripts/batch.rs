@@ -13,7 +13,7 @@ pub struct Batch {
     pub fmt: String,
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Debug, Deserialize, Serialize)]
 pub struct FmtArgs<'a, T> {
     pub target: &'a str,
     pub variant: &'a str,
@@ -22,6 +22,7 @@ pub struct FmtArgs<'a, T> {
     pub default: bool,
 }
 
+#[derive(Debug)]
 pub struct FmtOutput<'a> {
     pub html_range: Range<usize>,
     pub html: String,
@@ -66,8 +67,13 @@ pub fn batch<'b>(src: &'b str) -> BTreeMap<&'b str, BTreeMap<&'b str, Vec<FmtOut
                 }
             }
 
-            let block = rest[..end].trim();
-            let html = tutorlolv2_fmt::rust_html(block);
+            let mut block = rest[..end].trim().to_string();
+
+            for (from, into) in &json.replace {
+                block = block.replace(from, into);
+            }
+
+            let html = tutorlolv2_fmt::rust_html(&block);
 
             let mut absolute_end = attr_end + end;
 

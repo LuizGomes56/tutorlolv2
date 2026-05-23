@@ -42,7 +42,6 @@ pub struct RuneBuild {
     pub riot_id: u32,
     pub deals_damage: [bool; 4],
     pub identifiers: [[Vec<CtxVar>; 2]; 2],
-    pub functions: [[String; 2]; 2],
 }
 
 impl Parser<WikiRune, Rune> for RuneParser {
@@ -139,19 +138,6 @@ impl TryFrom<WikiRune> for Rune {
                 riot_id,
                 deals_damage: Default::default(),
                 identifiers: Default::default(),
-                functions: {
-                    let rune_id = tutorlolv2_fmt::to_ssnake(&data.rune_id).to_lowercase();
-                    [
-                        [
-                            format!("{rune_id}_melee_min"),
-                            format!("{rune_id}_melee_max"),
-                        ],
-                        [
-                            format!("{rune_id}_ranged_min"),
-                            format!("{rune_id}_ranged_max"),
-                        ],
-                    ]
-                },
             },
             data,
         })
