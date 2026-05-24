@@ -122,7 +122,8 @@ pub fn generate_champions() -> MayFail<(HashMap<&'static str, String>, String)> 
                 .iter()
                 .zip(functions)
                 .zip(closures)
-                .map(|(((ability_id, ability), function), body)| {
+                .enumerate()
+                .map(|(i, (((ability_id, ability), function), body))| {
                     let Ability {
                         name,
                         damage_type,
@@ -151,6 +152,41 @@ pub fn generate_champions() -> MayFail<(HashMap<&'static str, String>, String)> 
 
                     let formula_f32 = cast_f32(&formula);
 
+                    let mut variable = function.to_uppercase();
+
+                    let damage_attr = match merge_data.iter().find(|merge| {
+                        merge.minimum_damage as usize == i || merge.maximum_damage as usize == i
+                    }) {
+                        Some(merge) => {
+                            let get_ability = |j| abilities.values().nth(j as usize).unwrap();
+
+                            let min_ability = get_ability(merge.minimum_damage);
+                            let max_ability = get_ability(merge.maximum_damage);
+
+                            let min_damage = simplify(&min_ability.damage);
+                            let max_damage = simplify(&max_ability.damage);
+
+                            let alias = merge.alias.discriminant();
+                            variable = format!("{champion_id}_{alias}").to_uppercase();
+
+                            format!("min_damage: {min_damage}, max_damage: {max_damage}")
+                        }
+                        None => {
+                            let damage = simplify(damage);
+                            format!("damage: {damage}")
+                        }
+                    };
+
+                    let ability_decl = format_args!(
+                        "static {variable}: Ability = Ability {{
+                            name: {name:?},
+                            damage_type: {damage_type:?},
+                            attributes: {attributes:?},
+                            comment: {comment:?},
+                            {damage_attr},
+                        }};",
+                    );
+
                     format!(
                         r#"
                         pub const fn {function}({param}: &Ctx) -> f32 {{{formula_f32}}}
@@ -159,16 +195,8 @@ pub fn generate_champions() -> MayFail<(HashMap<&'static str, String>, String)> 
                         fn {function}() {{{formula}}}
 
                         #[fmt({fmt_ability})]
-                        static {variable}: Ability = Ability {{
-                            name: {name:?},
-                            damage_type: {damage_type:?},
-                            attributes: {attributes:?},
-                            comment: {comment:?},
-                            damage: {damage},
-                        }};
+                        {ability_decl}
                         "#,
-                        variable = function.to_uppercase(),
-                        damage = simplify(damage),
                         param = ctx_param(&formula_f32)
                     )
                 })
@@ -296,6 +324,16 @@ pub fn get_recommendations(len: usize) -> MayFail<String> {
         "internal/scraper/data.json",
     )
     .unwrap_or_default();
+
+    if json.is_empty() {
+        return Ok(enum_ids
+            .iter()
+            .zip(declaration)
+            .map(|(enumv, var)| {
+                format!("pub static {var}: [[&[crate::{enumv}]; 5]; {len}] = [[&[]; _]; _];")
+            })
+            .collect::<String>());
+    }
 
     let push_end = |globals: &mut [String; 2], str| {
         for value in globals.each_mut() {

@@ -449,7 +449,7 @@ impl HttpClient {
         )
         .await?;
 
-        let champions_json = RiotCdn::<Value>::from_file(SaveTo::RiotChampions.path())?;
+        let champions_json = RiotCdn::<String, Value>::from_file(SaveTo::RiotChampions.path())?;
 
         let champion_ids = champions_json
             .data
@@ -498,7 +498,7 @@ impl HttpClient {
         self.download(DDragon::Riot("item", None).url(), &items_path)
             .await?;
 
-        let items_json = RiotCdn::<Value>::from_file(items_path)?;
+        let items_json = RiotCdn::<u32, Value>::from_file(items_path)?;
 
         for (item_id, item_data) in items_json.data {
             item_data.into_file(SaveTo::RiotCache(Tag::Items, &item_id).path())?;
