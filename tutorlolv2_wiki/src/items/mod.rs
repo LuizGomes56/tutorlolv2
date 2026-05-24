@@ -7,37 +7,38 @@ use serde::{Deserialize, Serialize};
 use serde_json::{Value as JsonValue, json};
 use std::{collections::BTreeMap, path::PathBuf};
 
-mod item_parser;
+pub mod item_parser;
 
 fn cache() -> PathBuf {
     PathBuf::from("cache/wiki/items")
 }
 
 #[derive(Debug, Clone, Deserialize, Serialize, Default)]
-pub struct ItemEffect {
+pub struct ItemEffectRaw {
     pub name: Option<String>,
     pub unique: Option<bool>,
     pub description: Option<String>,
 }
 
 #[derive(Debug, Clone, Deserialize, Serialize, Default)]
-pub struct ItemEffects {
+pub struct ItemEffectsRaw {
     #[serde(default)]
-    pub pass: Option<ItemEffect>,
+    pub pass: Option<ItemEffectRaw>,
     #[serde(default)]
-    pub act: Option<ItemEffect>,
+    pub act: Option<ItemEffectRaw>,
 }
 
 #[derive(Debug, Clone, Deserialize, Serialize, Default)]
 pub struct ItemRaw {
     pub id: u32,
+    pub name: String,
     pub tier: Option<u8>,
     #[serde(default)]
     pub modes: BTreeMap<String, bool>,
     #[serde(default)]
     pub stats: BTreeMap<String, f64>,
     #[serde(default)]
-    pub effects: ItemEffects,
+    pub effects: ItemEffectsRaw,
     #[serde(default)]
     pub recipe: Vec<String>,
     pub buy: Option<u16>,
@@ -89,22 +90,25 @@ pub fn parse() -> MayFail<BTreeMap<String, ItemRaw>> {
     resolve_redirects_all(&mut raw_map);
 
     if let Some(json_map) = raw_map.as_object_mut() {
-        for (_, value) in json_map {
-            if let Some(object) = value.as_object_mut()
-                && let Some(stats_entry) = object.get_mut("stats")
-                && let Some(stats) = stats_entry.as_object_mut()
-                && let Some(spec_value) = stats.get_mut("spec")
-                && let Some(spec) = spec_value.as_str()
-            {
-                if let Some((_, part)) = spec.split_once('|')
-                    && let Ok(adaptive) = part.trim_end_matches("}}").parse::<f64>()
-                    && spec.contains("adaptive")
-                {
-                    *spec_value = json!(adaptive);
-                    continue;
-                }
+        for (key, value) in json_map {
+            if let Some(object) = value.as_object_mut() {
+                object.insert("name".to_string(), json!(key));
 
-                stats.remove("spec");
+                if let Some(stats_entry) = object.get_mut("stats")
+                    && let Some(stats) = stats_entry.as_object_mut()
+                    && let Some(spec_value) = stats.get_mut("spec")
+                    && let Some(spec) = spec_value.as_str()
+                {
+                    if let Some((_, part)) = spec.split_once('|')
+                        && let Ok(adaptive) = part.trim_end_matches("}}").parse::<f64>()
+                        && spec.contains("adaptive")
+                    {
+                        *spec_value = json!(adaptive);
+                        continue;
+                    }
+
+                    stats.remove("spec");
+                }
             }
         }
     }

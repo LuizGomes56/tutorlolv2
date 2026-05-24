@@ -1,10 +1,25 @@
 use super::*;
 
 impl Generator for Ekko {
+    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::Q, [(0, 0, _1), (1, 0, _2), (1, 1, _3)])
-            .ability(Key::E, [(0, 0, _1)])
-            .ability(Key::R, [(0, 1, _1)])
-            .end()
+        self.ability(
+            Key::P,
+            [
+                (1, _1), /* Innate - Resonance */
+                (2, _2), /* Innate - Resonance [1] */
+            ],
+        )
+        .ability(
+            Key::Q,
+            [
+                (0, _1), /* Initial Magic Damage */
+                (1, _2), /* Return Magic Damage */
+                (3, _3), /* Total Magic Damage */
+            ],
+        )
+        .ability(Key::E, [(0, _1) /* Bonus Magic Damage */])
+        .ability(Key::R, [(0, _1) /* Magic Damage */])
+        .end()
     }
 }

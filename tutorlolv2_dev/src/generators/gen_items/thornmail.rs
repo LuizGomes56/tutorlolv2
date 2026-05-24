@@ -1,8 +1,8 @@
 use super::*;
 
 impl Generator for Thornmail {
+    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
-        let damage = self.passive(0)?;
-        self.const_min_dmg(damage).damage_type(Magic).end()
+        self.min(Passive)?.end()
     }
 }

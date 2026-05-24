@@ -1,10 +1,32 @@
 use super::*;
 
 impl Generator for Riven {
+    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::Q, [(2, 0, _1), (2, 1, _2)])
-            .ability(Key::W, [(0, 0, _1)])
-            .ability(Key::R, [(0, 0, _1), (0, 1, _2)])
-            .end()
+        self.ability(
+            Key::P,
+            [
+                (0, _1), /* Description 1 */
+                (1, _2), /* Innate */
+                (2, _3), /* Innate [1] */
+            ],
+        )
+        .ability(
+            Key::Q,
+            [
+                (0, _1), /* Physical Damage */
+                (1, _2), /* Total Physical Damage */
+            ],
+        )
+        .ability(Key::W, [(0, _1) /* Physical Damage */])
+        .ability_nth(
+            1,
+            Key::R,
+            [
+                (0, _1), /* Maximum Physical Damage */
+                (1, _2), /* Minimum Physical Damage */
+            ],
+        )
+        .end()
     }
 }

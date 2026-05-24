@@ -1,11 +1,19 @@
 use super::*;
 
 impl Generator for Leona {
+    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::Q, [(0, 0, _1)])
-            .ability(Key::W, [(0, 2, _1), (1, 0, _2)])
-            .ability(Key::E, [(0, 0, _1)])
-            .ability(Key::R, [(0, 0, _1)])
+        self.ability(Key::P, [(0, _1) /* Innate */])
+            .ability(Key::Q, [(0, _1) /* Bonus Magic Damage */])
+            .ability(
+                Key::W,
+                [
+                    (2, _1), /* Flat Damage Reduction */
+                    (3, _2), /* Magic Damage */
+                ],
+            )
+            .ability(Key::E, [(0, _1) /* Magic Damage */])
+            .ability(Key::R, [(0, _1) /* Magic Damage */])
             .end()
     }
 }

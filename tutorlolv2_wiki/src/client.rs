@@ -31,9 +31,11 @@ static CLIENT: LazyLock<Client> = LazyLock::new(|| {
 pub async fn fetch(save_to: impl AsRef<Path>, link: impl Display) -> MayFail<String> {
     let path = save_to.as_ref();
 
-    if std::fs::exists(path)? {
+    if let Ok(this) = std::fs::exists(path)
+        && this
+    {
         println!("[exists] {path:?}");
-        return Ok(std::fs::read_to_string(path)?);
+        return Ok(crate::read_to_string(path)?);
     }
 
     if let Some(parent) = path.parent()

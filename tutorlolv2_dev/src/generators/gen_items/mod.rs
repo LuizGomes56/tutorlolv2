@@ -1,106 +1,128 @@
-pub(self) use crate::{
-    MayFail,
-    generators::{
-        Generator, GeneratorExt,
-        gen_factories::fac_items::{Capture::*, ItemData},
-        gen_utils::RegExtractor,
-    },
-};
-pub(self) use tutorlolv2_gen::{CtxVar::*, ItemId};
-pub(self) use tutorlolv2_types::{Attrs::*, DamageType::*};
-
-macro_rules! decl_items {
-    (inner $Name:ident) => {
-        pub struct $Name {
-            pub inner: ItemData
-        }
-
-        impl $Name {
-            pub fn new(data: ItemData) -> Box<dyn GeneratorExt<ItemData>> {
-                Box::new(Self { inner: data })
-            }
-        }
-
-        impl GeneratorExt<ItemData> for $Name {
-            fn end(self: Box<Self>) -> MayFail<ItemData> {
-                println!(concat!("[ok] ending generator for ", stringify!($Name)));
-                Ok(self.inner)
-            }
-        }
-
-        impl ::core::ops::Deref for $Name {
-            type Target = ItemData;
-            fn deref(&self) -> &Self::Target {
-                &self.inner
-            }
-        }
-
-        impl ::core::ops::DerefMut for $Name {
-            fn deref_mut(&mut self) -> &mut Self::Target {
-                &mut self.inner
-            }
-        }
-    };
-    ($($Name:ident),*$(,)*) => {
-        $(
-            pastey::paste! {
-                pub mod [<$Name:snake>];
-            }
-
-            decl_items!(inner $Name);
-        )*
-
-        pub fn item_gen_fn(item_id: &str) -> Option<
-            fn(ItemData) -> Box<dyn GeneratorExt<ItemData>>
-        > {
-            $(const _: ItemId = ItemId::$Name;)*
-            match item_id {
-                $(stringify!($Name) => Some($Name::new),)*
-                _ => None,
-            }
-        }
-    };
-}
-
-decl_items!(
-    ArdentCenser,
-    BladeOfTheRuinedKing,
-    LichBane,
-    Malignance,
-    NashorsTooth,
-    LudensEcho,
-    HextechRocketbelt,
-    GuinsoosRageblade,
-    Sheen,
-    Redemption,
-    KrakenSlayer,
-    Rageknife,
-    Stridebreaker,
-    StatikkShiv,
-    DeadMansPlate,
-    EssenceReaver,
-    WitsEnd,
-    HextechAlternator,
-    RavenousHydra,
-    RunaansHurricane,
-    RecurveBow,
-    Tiamat,
-    IronspikeWhip,
-    TitanicHydra,
-    Muramana,
-    KircheisShard,
-    RapidFirecannon,
-    SunfireAegis,
-    Eclipse,
-    Heartsteel,
-    Stormrazor3097,
-    Bastionbreaker,
-    ImperialMandate,
-    LiandrysTorment,
-    BrambleVest,
-    Everfrost,
-    Thornmail,
-    BamisCinder,
-    IcebornGauntlet,
-    TrinityForce
+use super::decl_items::*;
+crate::decl_items!(
+	AbyssalMask,
+	Actualizer,
+	AntiTowerSocks,
+	ArdentCenser,
+	ArmoredAdvance,
+	BamisCinder,
+	BansheesVeil,
+	BaseTurretReinforcedArmorTurretItem,
+	Bastionbreaker,
+	BlackCleaver,
+	BlackHoleGauntlet,
+	BlackfireTorch,
+	BladeOfTheRuinedKing,
+	BloodlettersCurse,
+	BrambleVest,
+	CatalystOfAeons,
+	ChainlacedCrushers,
+	ChempunkChainsword,
+	CloakOfStarryNight,
+	CosmicDrive,
+	CrownOfTheShatteredQueen,
+	Cruelty,
+	CrystallineOvergrowth,
+	DarksteelTalons,
+	DeadMansPlate,
+	DeathsDance,
+	DeathsDaughter,
+	Decapitator,
+	DetonationOrb,
+	DivineSunderer,
+	DoransHelm,
+	DoransRing,
+	DoransShield,
+	DuskAndDawn,
+	DuskbladeOfDraktharr,
+	EchoesOfHelia,
+	Eclipse,
+	EdgeOfNight,
+	EmpyreanPromise,
+	EssenceReaver,
+	Everfrost,
+	ExecutionersCalling,
+	FatedAshes,
+	Flesheater,
+	ForceOfNature,
+	FortificationAram,
+	Galeforce,
+	Goredrinker,
+	GuardianAngel,
+	GuardiansDirk,
+	GuardiansHorn,
+	GuinsoosRageblade,
+	Gusto,
+	Hamstringer,
+	HauntingGuise,
+	Heartsteel,
+	HellfireHatchet,
+	HemomancersHelm,
+	HexboltCompanion,
+	Hexdrinker,
+	HexopticsC44,
+	HextechAlternator,
+	HextechGunblade,
+	HextechRocketbelt,
+	HollowRadiance,
+	HorizonFocus,
+	Hullbreaker,
+	IcebornGauntlet,
+	ImmortalShieldbow,
+	ImperialMandate,
+	KaenicRookern,
+	KinkouJitte,
+	KrakenSlayer,
+	LiandrysTorment,
+	LichBane,
+	LightningRod,
+	LordDominiksRegards,
+	LudensEcho,
+	MawOfMalmortius,
+	Morellonomicon,
+	MortalReminder,
+	NashorsTooth,
+	NightHarvester,
+	OblivionOrb,
+	Perplexity,
+	PhreakishGusto,
+	PlatedSteelcaps,
+	ProfaneHydra,
+	ProtoplasmHarness,
+	ProwlersClaw,
+	PyromancersCloak,
+	RavenousHydra,
+	RealityFracture,
+	ReapersToll,
+	RecurveBow,
+	Redemption,
+	ReinforcedArmorTurretItem,
+	Riftmaker,
+	RunaansHurricane,
+	RylaisCrystalScepter,
+	SanguineGift,
+	ScarecrowEffigy,
+	ScoutsSlingshot,
+	SerpentsFang,
+	SeryldasGrudge,
+	Shadowflame,
+	Sheen,
+	Stormsurge,
+	Stridebreaker,
+	SunderedSky,
+	SunfireAegis,
+	SuperMechArmor,
+	SwordOfTheDivine,
+	Terminus,
+	TheCollector,
+	TheGoldenSpatula,
+	Thornmail,
+	Tiamat,
+	TitanicHydra,
+	TrinityForce,
+	UnendingDespair,
+	VerdantBarrier,
+	VoidImmolation,
+	WardensMail,
+	WitsEnd
 );

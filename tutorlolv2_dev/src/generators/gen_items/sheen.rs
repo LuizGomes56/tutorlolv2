@@ -1,10 +1,8 @@
 use super::*;
 
 impl Generator for Sheen {
+    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
-        let damage = self.passive(0)?;
-        self.const_min_dmg(damage)
-            .attr(OnhitMax)
-            .damage_type(Physical).end()
+        self.damage_type(Physical).min(Passive)?.end()
     }
 }

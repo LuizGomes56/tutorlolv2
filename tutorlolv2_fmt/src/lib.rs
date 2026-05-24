@@ -1,50 +1,22 @@
-use minify_html::Cfg;
 use serde::Serialize;
 use serde_json::{Serializer, Value, ser::PrettyFormatter};
 use std::{
-    io::Write,
+    io::{Cursor, Write},
     process::{Command, Stdio},
     sync::LazyLock,
 };
 use synoptic::{Highlighter, TokOpt};
 
-/// Takes an HTML string as input and minifies it, returning a sequence
-/// of bytes. Text defined inside tags `<pre>` and `<code>` are ignored
-pub fn minify_html(html: &str) -> Vec<u8> {
-    minify_html::minify(
-        html.as_bytes(),
-        &Cfg {
-            allow_noncompliant_unquoted_attribute_values: false,
-            allow_optimal_entities: false,
-            allow_removing_spaces_between_attributes: false,
-            keep_closing_tags: false,
-            keep_comments: false,
-            keep_html_and_head_opening_tags: false,
-            keep_input_type_text_attr: false,
-            keep_ssi_comments: false,
-            minify_css: true,
-            minify_doctype: true,
-            minify_js: true,
-            preserve_brace_template_syntax: false,
-            preserve_chevron_percent_template_syntax: false,
-            remove_bangs: true,
-            remove_processing_instructions: true,
-        },
-    )
-}
-
-/// Encodes some data using `zstd` at the maximum level, which is 9
-/// Panics if the input is invalid, or if the compression fails
-pub fn encode_zstd_9(bytes: &[u8]) -> Vec<u8> {
-    zstd::encode_all(bytes, 9).unwrap()
-}
-
 /// Encodes some data using `brotli` at the maximum level, which is 11.
 /// Panics if the input is invalid, or if the compression fails
 pub fn encode_brotli_11(bytes: &[u8]) -> Vec<u8> {
-    let mut encoder = brotli2::write::BrotliEncoder::new(Vec::new(), 11);
-    encoder.write_all(bytes).unwrap();
-    encoder.finish().unwrap()
+    let mut output = Vec::new();
+    let mut input = Cursor::new(bytes);
+    let mut params = brotli::enc::BrotliEncoderParams::default();
+    params.quality = 11;
+    params.size_hint = bytes.len();
+    let _ = brotli::BrotliCompress(&mut input, &mut output, &params);
+    output
 }
 
 /// Converts the input [`str`] to pascal case
@@ -328,11 +300,30 @@ static RUST_HIGHLIGHTER: LazyLock<Highlighter> = LazyLock::new(|| {
             "Lethality",
             "LifeSteal",
             "MagicPenetration",
+            "MagicPenetrationPercent",
             "MagicResist",
             "Mana",
             "MoveSpeed",
+            "MoveSpeedPercent",
             "Omnivamp",
             "Tenacity",
+            "Aram",
+            "Arena",
+            "DarkStar",
+            "Dominion",
+            "Invasion",
+            "NexusBlitz",
+            "Odyssey",
+            "Project",
+            "StarGuardian",
+            "SummonersRift",
+            "Tft",
+            "Tutorial",
+            "TwistedTreeline",
+            "Urf",
+            "Unknown",
+            "UnknownMap33",
+            "UnknownMap35",
         ]),
     );
     // Type
@@ -415,6 +406,10 @@ pub fn rust_html(rust_code: &str) -> String {
                         let name = &text[2..];
                         line_html.push_str("::");
                         line_html.push_str(&format!("<span class=\"{kind}\">{name}</span>"));
+                    }
+                    "_x" => {
+                        let text = text.trim_matches(|c| c == '*' || c == '/').trim();
+                        line_html.push_str(&format!("<span class=\"{kind}\">{text}</span>"));
                     }
                     kind => {
                         line_html.push_str(&format!("<span class=\"{kind}\">{text}</span>"));

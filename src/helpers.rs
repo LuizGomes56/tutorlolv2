@@ -99,10 +99,23 @@ impl SimpleStats<f32> {
         let mut i = 0;
         while i < items.len() {
             let item = items[i].cache();
-            self.magic_resist += item.stats.magic_resist;
-            self.max_health += item.stats.health;
-            self.armor += item.stats.armor;
-            bonus_mana += item.stats.mana;
+            let item_stats = item.stats;
+
+            let mut j = 0;
+            while j < item_stats.len() {
+                let (stat_name, value) = item_stats[j];
+                let v = value as f32;
+
+                match stat_name {
+                    StatName::MagicResist => self.magic_resist += v,
+                    StatName::Health => self.max_health += v,
+                    StatName::Armor => self.armor += v,
+                    StatName::Mana => bonus_mana += v,
+                    _ => {}
+                }
+                j += 1;
+            }
+
             i += 1;
         }
         let dragon_mod = RiotFormulas::get_earth_multiplier(earth_dragons);
@@ -133,24 +146,24 @@ impl BasicStats<f32> {
             ChampionId::Gnar if is_mega_gnar => {
                 core::hint::cold_path();
 
-                type S = CachedChampionStatsMap;
+                type S = Stat;
 
-                const GNAR_STATS: CachedChampionStats = ChampionId::Gnar.cache().stats;
+                const GNAR_STATS: WikiStats = ChampionId::Gnar.cache().stats;
 
                 const MEGA_GNAR_HEALTH: S = S {
-                    flat: GNAR_STATS.health.flat + 100.0,
+                    base: GNAR_STATS.health.base + 100.0,
                     per_level: GNAR_STATS.health.per_level + 43.0,
                 };
                 const MEGA_GNAR_ARMOR: S = S {
-                    flat: GNAR_STATS.armor.flat + 3.5,
+                    base: GNAR_STATS.armor.base + 3.5,
                     per_level: GNAR_STATS.armor.per_level + 3.0,
                 };
                 const MEGA_GNAR_MAGIC_RESIST: S = S {
-                    flat: GNAR_STATS.magic_resist.flat + 3.5,
+                    base: GNAR_STATS.magic_resist.base + 3.5,
                     per_level: GNAR_STATS.magic_resist.per_level + 3.5,
                 };
                 const MEGA_GNAR_ATTACK_DAMAGE: S = S {
-                    flat: GNAR_STATS.attack_damage.flat + 6.0,
+                    base: GNAR_STATS.attack_damage.base + 6.0,
                     per_level: GNAR_STATS.attack_damage.per_level + 2.5,
                 };
 
@@ -179,27 +192,37 @@ impl Stats<f32> {
         let mut i = 0;
         while i < SIMULATED_ITEMS_ENUM.len() {
             let mut new_stat = *self;
-            let cache = SIMULATED_ITEMS_ENUM[i].cache().stats;
+            let item_stats = SIMULATED_ITEMS_ENUM[i].cache().stats;
 
-            new_stat.armor_penetration_flat += cache.armor_penetration_flat;
-            new_stat.magic_penetration_flat += cache.magic_penetration_flat;
-            new_stat.ability_power += cache.ability_power;
-            new_stat.attack_damage += cache.attack_damage;
-            new_stat.magic_resist += cache.magic_resist;
-            new_stat.attack_speed += cache.attack_speed;
-            new_stat.crit_chance += cache.crit_chance;
-            new_stat.crit_damage += cache.crit_damage;
-            new_stat.max_health += cache.health;
-            new_stat.armor += cache.armor;
-            new_stat.max_mana += cache.mana;
-            new_stat.armor_penetration_percent = RiotFormulas::combine_percentage(
-                new_stat.armor_penetration_percent,
-                cache.armor_penetration_percent,
-            );
-            new_stat.magic_penetration_percent = RiotFormulas::combine_percentage(
-                new_stat.magic_penetration_percent,
-                cache.magic_penetration_percent,
-            );
+            let mut j = 0;
+            while j < item_stats.len() {
+                let (stat_name, value) = item_stats[j];
+                let v = value as f32;
+
+                match stat_name {
+                    StatName::Lethality => new_stat.armor_penetration_flat += v,
+                    StatName::MagicPenetration => new_stat.magic_penetration_flat += v,
+                    StatName::AbilityPower => new_stat.ability_power += v,
+                    StatName::AttackDamage => new_stat.attack_damage += v,
+                    StatName::MagicResist => new_stat.magic_resist += v,
+                    StatName::AttackSpeed => new_stat.attack_speed += v,
+                    StatName::CritChance => new_stat.crit_chance += v,
+                    StatName::CritDamage => new_stat.crit_damage += v,
+                    StatName::Health => new_stat.max_health += v,
+                    StatName::Armor => new_stat.armor += v,
+                    StatName::Mana => new_stat.max_mana += v,
+                    StatName::ArmorPenetration => {
+                        new_stat.armor_penetration_percent =
+                            RiotFormulas::combine_percentage(new_stat.armor_penetration_percent, v)
+                    }
+                    StatName::MagicPenetrationPercent => {
+                        new_stat.magic_penetration_percent =
+                            RiotFormulas::combine_percentage(new_stat.magic_penetration_percent, v)
+                    }
+                    _ => {}
+                }
+                j += 1;
+            }
 
             let earth_mod = RiotFormulas::get_earth_multiplier(dragons.ally_earth_dragons);
             let fire_mod = RiotFormulas::get_fire_multiplier(dragons.ally_fire_dragons);
@@ -220,23 +243,31 @@ impl Stats<f32> {
     }
 }
 
-impl DamageKind<RuneId> {
+impl<T> DamageKind<T> {
     /// Returns an instance [`DamageKind`] containing the closures and metadata of the runes.
     /// Since the number of runes is unknown at compile time, those values are dynamically
     /// allocated. This function does not evaluate any closures
-    pub fn runes(runes: &RunesBitSet, attack_type: AttackType) -> Self {
-        let count = runes.count_const() as usize;
+    pub fn new<const N: usize>(
+        bitset: &BitSetArray<N>,
+        attack_type: AttackType,
+        f: impl Fn(usize, AttackType) -> (TypeMetadata<T>, [Closure; 2]),
+    ) -> Self {
+        let count = bitset.count_const() as usize;
+
         let mut metadata = Box::new_uninit_slice(count);
-        let mut closures = Box::new_uninit_slice(count);
+        let mut closures = Box::new_uninit_slice(count << 1);
+
         unsafe {
-            for (i, rune_offset) in runes.iter_const().enumerate() {
-                let rune = RUNE_CACHE.get_unchecked(rune_offset as usize);
-                metadata.get_unchecked_mut(i).write(rune.metadata);
-                closures.get_unchecked_mut(i).write(match attack_type {
-                    AttackType::Ranged => rune.ranged_damage,
-                    AttackType::Melee => rune.melee_damage,
-                });
+            for (i, j) in bitset.iter_const().enumerate() {
+                //
+                let (meta, slice) = f(j as usize, attack_type);
+
+                let base = i << 1;
+                closures.get_unchecked_mut(base).write(slice[0]);
+                closures.get_unchecked_mut(base + 1).write(slice[1]);
+                metadata.get_unchecked_mut(i).write(meta);
             }
+
             Self {
                 metadata: metadata.assume_init(),
                 closures: closures.assume_init(),
@@ -246,38 +277,30 @@ impl DamageKind<RuneId> {
 }
 
 impl DamageKind<ItemId> {
-    /// Returns an instance [`DamageKind`] containing the closures and metadata of the items.
-    /// Since the number of items is unknown at compile time, those values are dynamically
-    /// allocated. This function does not evaluate any closures. Note that exclusively for
-    /// items, every [`ItemId`] has two closures for a single metadata object. In other words
-    /// ```rs
-    /// assert!(metadata.len() == closures.len() / 2)
-    /// ```
-    pub fn items(items: &ItemsBitSet, attack_type: AttackType) -> Self {
-        let count = items.count_const() as usize;
+    pub fn items(bitset: &ItemsBitSet, attack_type: AttackType) -> Self {
+        Self::new(bitset, attack_type, |i, attack_type| unsafe {
+            let item = ITEM_CACHE.get_unchecked(i);
+            let slice = match attack_type {
+                AttackType::Ranged => item.ranged,
+                AttackType::Melee => item.melee,
+            };
 
-        let mut metadata = Box::new_uninit_slice(count);
-        let mut closures = Box::new_uninit_slice(count << 1);
+            (item.metadata, slice)
+        })
+    }
+}
 
-        unsafe {
-            for (i, item_offset) in items.iter_const().enumerate() {
-                let item = ITEM_CACHE.get_unchecked(item_offset as usize);
-                let slice = match attack_type {
-                    AttackType::Ranged => item.ranged_damages,
-                    AttackType::Melee => item.melee_damages,
-                };
+impl DamageKind<RuneId> {
+    pub fn runes(bitset: &RunesBitSet, attack_type: AttackType) -> Self {
+        Self::new(bitset, attack_type, |i, attack_type| unsafe {
+            let rune = RUNE_CACHE.get_unchecked(i);
+            let slice = match attack_type {
+                AttackType::Ranged => rune.ranged,
+                AttackType::Melee => rune.melee,
+            };
 
-                let base = i << 1;
-                closures.get_unchecked_mut(base).write(slice[0]);
-                closures.get_unchecked_mut(base + 1).write(slice[1]);
-                metadata.get_unchecked_mut(i).write(item.metadata);
-            }
-
-            DamageKind {
-                metadata: metadata.assume_init(),
-                closures: closures.assume_init(),
-            }
-        }
+            (rune.metadata, slice)
+        })
     }
 }
 
@@ -331,6 +354,7 @@ pub const fn get_enemy_full_state(
         level,
         item_exceptions,
     } = state;
+
     let ResistShred {
         armor_penetration_flat,
         armor_penetration_percent,
@@ -352,13 +376,13 @@ pub const fn get_enemy_full_state(
                 ItemId::WintersApproach | ItemId::Fimbulwinter => {
                     e_default_stats.max_health += 0.15 * bonus_mana
                 }
-                ItemId::DragonheartU44 => {
+                ItemId::Dragonheart => {
                     let modifier = 1.0 + 0.04 * stacks as f32;
                     e_default_stats.max_health *= modifier;
                     e_default_stats.armor *= modifier;
                     e_default_stats.magic_resist *= modifier
                 }
-                ItemId::DemonKingsCrownU44 | ItemId::DemonKingsCrownU66 => {
+                ItemId::DemonKingsCrown => {
                     let modifier = 1.0 + 0.01 * stacks as f32;
                     e_default_stats.max_health *= modifier;
                     e_default_stats.armor *= modifier;
@@ -444,6 +468,7 @@ pub const fn get_enemy_full_state(
         e_current_stats.armor,
         accept_negatives,
     );
+
     let magic_values = RiotFormulas::real_resist(
         magic_penetration_percent,
         magic_penetration_flat,
@@ -472,9 +497,7 @@ pub const fn get_enemy_full_state(
         modifiers: e_modifiers,
         armor_values,
         magic_values,
-        // #![manual_impl]
         steelcaps: has_item(&origin, [ItemId::PlatedSteelcaps, ItemId::ArmoredAdvance]),
-        // #![manual_impl]
         rocksolid: has_item(
             &origin,
             [
@@ -483,14 +506,13 @@ pub const fn get_enemy_full_state(
                 ItemId::WardensMail,
             ],
         ),
-        // #![manual_impl]
         randuin: has_item(&origin, [ItemId::RanduinsOmen]),
     }
 }
 
 /// Construct a new [`Ctx`] type that can be used to evaluate any champion's
 /// closures and get their intermediary damage values, before applying the reductions
-/// from armor and magic resist. See [`ConstClosure`] for more details about those
+/// from armor and magic resist. See [`Closure`] for more details about those
 /// functions
 pub const fn get_eval_ctx(self_state: &SelfState, e_state: &EnemyFullState) -> Ctx {
     let SelfState {
@@ -624,9 +646,11 @@ pub const fn get_eval_ctx(self_state: &SelfState, e_state: &EnemyFullState) -> C
 
 pub const fn get_stacks(champion_id: ChampionId, game_time: f32) -> f32 {
     const AVERAGE_GAME_TIME: u32 = 60 * 30;
-    pub const fn time(game_time: f32, stacks_at_avg_time: u32) -> f32 {
-        (AVERAGE_GAME_TIME / stacks_at_avg_time) as f32 / game_time
+
+    pub const fn time(game_time: f32, average: u32) -> f32 {
+        (AVERAGE_GAME_TIME / average) as f32 / game_time
     }
+
     match champion_id {
         ChampionId::Chogath => time(game_time, 12),
         ChampionId::Nasus => time(game_time, 450),
@@ -661,111 +685,6 @@ pub const fn ability_id_mod(
     modifier
 }
 
-/// Evaluates the damage of all provided metadata of [`AbilityId`]. This function
-/// already multiplies the final damage result by the appropriate armor, or magic
-/// resist multiplier of the enemy, and considers global and local damage modifiers
-/// This function will cause `Undefined Behavior` if the length of `closures` and
-/// `metadata` are not equal. See similar functions [`item_id_eval_damage`] and
-/// [`rune_id_eval_damage`]
-pub fn ability_id_eval_damage(
-    ctx: &Ctx,
-    onhit: &mut RangeDamage,
-    metadata: &[TypeMetadata<AbilityId>],
-    closures: &[ConstClosure],
-    modifiers: Modifiers,
-) -> Box<[i32]> {
-    let len = metadata.len();
-    debug_assert_eq!(len, closures.len());
-
-    (0..len)
-        .map(|i| {
-            let TypeMetadata {
-                kind,
-                damage_type,
-                attributes,
-            } = metadata[i];
-            let closure = unsafe { closures.get_unchecked(i) };
-            let modifier = ability_id_mod(kind, damage_type, modifiers);
-            let damage = (modifier * closure(ctx)) as i32;
-            onhit.inc_attr(attributes, damage);
-            damage
-        })
-        .collect()
-}
-
-/// Evaluates the damages of all requested items. This function causes
-/// `Undefined Behavior` if the length of `closures` is not twice as much as `metadata`
-/// or panic in debug mode. See similar function [`ability_id_eval_damage`] and
-/// [`rune_id_eval_damage`]
-pub fn item_id_eval_damage(
-    ctx: &Ctx,
-    onhit: &mut RangeDamage,
-    metadata: &[TypeMetadata<ItemId>],
-    closures: &[ConstClosure],
-    modifiers: Modifiers,
-) -> Box<[i32]> {
-    let out_len = closures.len();
-    debug_assert_eq!(out_len, metadata.len() << 1);
-    let mut result = Box::<[i32]>::new_uninit_slice(out_len);
-
-    let mut meta_index = 0usize;
-    let mut out_index = 0usize;
-
-    while meta_index < metadata.len() {
-        let TypeMetadata {
-            damage_type,
-            attributes,
-            ..
-        } = unsafe { metadata.get_unchecked(meta_index) };
-        let modifier = modifiers.damages.modifier(*damage_type);
-        let mut j = 0;
-        while j < 2 {
-            let closure = unsafe { closures.get_unchecked((meta_index << 1) + j) };
-            let damage = (modifier * closure(ctx)) as i32;
-            onhit.inc_attr(*attributes, damage);
-            unsafe {
-                result.get_unchecked_mut(out_index).write(damage);
-            }
-            out_index += 1;
-            j += 1;
-        }
-        meta_index += 1;
-    }
-
-    debug_assert_eq!(out_index, out_len);
-    unsafe { result.assume_init() }
-}
-
-/// Evaluates the damages of all runes that deal damage, owned by the current player.
-/// This function causes `Undefined Behavior` if the length of `closures` is not equal
-/// to the length of `metadata`. See similar function [`ability_id_eval_damage`] and
-/// [`item_id_eval_damage`]
-pub fn rune_id_eval_damage(
-    ctx: &Ctx,
-    onhit: &mut RangeDamage,
-    metadata: &[TypeMetadata<RuneId>],
-    closures: &[ConstClosure],
-    modifiers: Modifiers,
-) -> Box<[i32]> {
-    let len = metadata.len();
-    debug_assert_eq!(len, closures.len());
-
-    (0..len)
-        .map(|i| {
-            let TypeMetadata {
-                damage_type,
-                attributes,
-                ..
-            } = unsafe { metadata.get_unchecked(i) };
-            let modifier = modifiers.damages.modifier(*damage_type);
-            let closure = unsafe { closures.get_unchecked(i) };
-            let damage = (modifier * closure(ctx)) as i32;
-            onhit.inc_attr(*attributes, damage);
-            damage
-        })
-        .collect()
-}
-
 impl Attacks {
     /// Evaluates the damage of basic attacks, onhit damages and critical strikes
     pub const fn new(ctx: &Ctx, mut onhit_damage: RangeDamage, physical_mod: f32) -> Self {
@@ -792,7 +711,7 @@ const _: () = {
     let mut i = 0;
     while i < ChampionId::VARIANTS {
         let champion_id = ChampionId::from_usize(i).unwrap();
-        let CachedChampion {
+        let Champion {
             metadata, closures, ..
         } = champion_id.cache();
         assert!(metadata.len() == closures.len());
@@ -807,7 +726,7 @@ impl Damages {
     pub fn new(ctx: Ctx, data: &DamageEvalData, modifiers: Modifiers) -> Self {
         let mut onhit = RangeDamage::default();
 
-        let abilities = ability_id_eval_damage(
+        let abilities = Self::eval_ability(
             &ctx,
             &mut onhit,
             data.abilities.metadata,
@@ -815,7 +734,7 @@ impl Damages {
             modifiers,
         );
 
-        let items = item_id_eval_damage(
+        let items = Self::eval(
             &ctx,
             &mut onhit,
             &data.items.metadata,
@@ -823,7 +742,7 @@ impl Damages {
             modifiers,
         );
 
-        let runes = rune_id_eval_damage(
+        let runes = Self::eval(
             &ctx,
             &mut onhit,
             &data.runes.metadata,
@@ -840,6 +759,83 @@ impl Damages {
             attacks,
             ctx,
         }
+    }
+
+    /// Evaluates the damage of all provided metadata of [`AbilityId`]. This function
+    /// already multiplies the final damage result by the appropriate armor, or magic
+    /// resist multiplier of the enemy, and considers global and local damage modifiers
+    /// This function will cause `Undefined Behavior` if the length of `closures` and
+    /// `metadata` are not equal.
+    pub fn eval_ability(
+        ctx: &Ctx,
+        onhit: &mut RangeDamage,
+        metadata: &[TypeMetadata<AbilityId>],
+        closures: &[Closure],
+        modifiers: Modifiers,
+    ) -> Box<[i32]> {
+        let len = metadata.len();
+        debug_assert_eq!(len, closures.len());
+
+        (0..len)
+            .map(|i| {
+                let TypeMetadata {
+                    kind,
+                    damage_type,
+                    attributes,
+                } = metadata[i];
+                let closure = unsafe { closures.get_unchecked(i) };
+                let modifier = ability_id_mod(kind, damage_type, modifiers);
+                let damage = (modifier * closure(ctx)) as i32;
+                onhit.inc_attr(attributes, damage);
+                damage
+            })
+            .collect()
+    }
+
+    /// Evaluates the damages of all requested items or runes. This function causes
+    /// `Undefined Behavior` if the length of `closures` is not twice as much as `metadata`
+    /// or panic in debug mode. See similar function [`ability_id_eval_damage`]
+    pub fn eval<T>(
+        ctx: &Ctx,
+        onhit: &mut RangeDamage,
+        metadata: &[TypeMetadata<T>],
+        closures: &[Closure],
+        modifiers: Modifiers,
+    ) -> Box<[i32]> {
+        let out_len = closures.len();
+        debug_assert_eq!(out_len, metadata.len() << 1);
+        let mut result = Box::<[i32]>::new_uninit_slice(out_len);
+
+        let mut meta_index = 0usize;
+        let mut out_index = 0usize;
+
+        while meta_index < metadata.len() {
+            let TypeMetadata {
+                damage_type,
+                attributes,
+                ..
+            } = *unsafe { metadata.get_unchecked(meta_index) };
+
+            let modifier = modifiers.damages.modifier(damage_type);
+
+            let mut j = 0;
+            while j < 2 {
+                let closure = unsafe { closures.get_unchecked((meta_index << 1) + j) };
+                let damage = (modifier * closure(ctx)) as i32;
+                onhit.inc_attr(attributes, damage);
+
+                unsafe {
+                    result.get_unchecked_mut(out_index).write(damage);
+                }
+
+                out_index += 1;
+                j += 1;
+            }
+            meta_index += 1;
+        }
+
+        debug_assert_eq!(out_index, out_len);
+        unsafe { result.assume_init() }
     }
 }
 

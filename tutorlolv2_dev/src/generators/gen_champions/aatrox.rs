@@ -2,47 +2,32 @@ use super::*;
 
 impl Generator for Aatrox {
     fn generate(&mut self) -> MayFail {
-        self.passive(Void, (0, 0), Some("".times(EnemyBonusHealth)), None)
+        self.ability(Key::P, [(1, _1) /* Innate */, (2, _2) /* Innate [1] */])
             .ability(
                 Key::Q,
                 [
-                    (2, 0, _1Min),
-                    (2, 1, _1Max),
-                    (3, 0, _2Min),
-                    (3, 1, _2Max),
-                    (5, 0, _3Min),
-                    (5, 1, _3Max),
+                    (0, _1Min), /* First Cast Damage */
+                    (1, _1Max), /* First Sweetspot Damage */
+                    (4, _2Min), /* Second Cast Damage */
+                    (5, _2Max), /* Second Sweetspot Damage */
+                    (6, _3Min), /* Third Cast Damage */
+                    (7, _3Max), /* Third Sweetspot Damage */
                 ],
             )
-            .ability(Key::W, [(0, 1, Min), (1, 0, Max)]);
-
-        let q = &self[Q(_1Min)];
-
-        let q_min = Ability {
-            damage: self.sum([Q(_1Min), Q(_2Min), Q(_3Min)])?,
-            ..q.clone()
-        };
-
-        let q_max = Ability {
-            damage: self.sum([Q(_1Max), Q(_2Max), Q(_3Max)])?,
-            ..q.clone()
-        };
-
-        self.insert(Q(Min), q_min)
-            .insert(Q(Max), q_max)
-            .attr(
-                Area,
+            .ability(
+                Key::W,
                 [
-                    Q(_1Min),
-                    Q(_1Max),
-                    Q(_2Min),
-                    Q(_2Max),
-                    Q(_3Min),
-                    Q(_3Max),
-                    Q(Min),
-                    Q(Max),
+                    (1, Min), /* Physical Damage */
+                    (3, Max), /* Total Damage */
                 ],
-            )?
+            );
+
+        let qmin = self.sum([Q(_1Min), Q(_2Min), Q(_3Min)])?;
+        let qmax = self.sum([Q(_1Max), Q(_2Max), Q(_3Max)])?;
+
+        self.merge_sum([P(_1), P(_2)], P(Void))?
+            .clone_to(Q(_1Min), Q(Min), qmin)?
+            .clone_to(Q(_1Max), Q(Max), qmax)?
             .combo([
                 Ability(Q(_1Min)),
                 Ability(P(Void)),
@@ -65,7 +50,6 @@ impl Generator for Aatrox {
                 Ability(Q(_3Max)),
                 Attack,
             ])?
-            .progress(Stable)
             .end()
     }
 }

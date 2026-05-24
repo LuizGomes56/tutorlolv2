@@ -1,60 +1,45 @@
 use clap::{Parser, Subcommand, ValueEnum};
-use std::str::FromStr;
+use std::{convert::Infallible, str::FromStr, sync::LazyLock};
 use tutorlolv2_dev::{
     ENV_CONFIG, HTTP_CLIENT, MayFail,
-    gen_factories::{fac_champions::ChampionFactory, fac_items::ItemFactory},
-    update,
+    gen_factories::{
+        Parser as _, wiki_champions::ChampionParser, wiki_items::ItemParser, wiki_runes::RuneParser,
+    },
 };
-use tutorlolv2_gen::{ChampionId, ItemId};
+use tutorlolv2_gen::{ChampionId, ItemId, RuneId};
 use tutorlolv2_wiki::{champions, items, runes};
-
-fn from_str_err<T>(s: &str, into: &str) -> Result<T, String> {
-    Err(format!("Value {s:?} can't be converted into {into}"))
-}
 
 #[derive(Parser, Debug)]
 pub struct Cli {
     #[command(subcommand)]
-    pub args: GenArgs,
+    pub args: AppArgs,
 }
 
-#[derive(Clone, Copy, Debug)]
-pub enum RunTarget {
+#[derive(Clone, Debug)]
+pub enum EntityTarget {
     Champion(ChampionId),
     Item(ItemId),
-    Factory(fn()),
+    Rune(RuneId),
+    Champions,
+    Items,
+    Runes,
     All,
+    Unknown(String),
 }
 
-impl FromStr for RunTarget {
-    type Err = String;
+impl FromStr for EntityTarget {
+    type Err = Infallible;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match s {
             "all" | "a" => Ok(Self::All),
-            "items" | "i" => Ok(Self::Factory(ItemFactory::run_all)),
-            "champions" | "c" => Ok(Self::Factory(ChampionFactory::run_all)),
+            "c" | "champion" => Ok(Self::Champions),
+            "i" | "item" => Ok(Self::Items),
+            "r" | "rune" => Ok(Self::Runes),
             s if let Ok(champion_id) = ChampionId::from_str(s) => Ok(Self::Champion(champion_id)),
             s if let Ok(item_id) = ItemId::from_str(s) => Ok(Self::Item(item_id)),
-            _ => from_str_err(s, "ChampionId or ItemId"),
-        }
-    }
-}
-
-#[derive(Clone, Copy, Debug)]
-pub enum GenCreator {
-    All,
-    Champion(ChampionId),
-}
-
-impl FromStr for GenCreator {
-    type Err = String;
-
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
-        match s {
-            "all" | "a" => Ok(Self::All),
-            s if let Ok(champion_id) = ChampionId::from_str(s) => Ok(Self::Champion(champion_id)),
-            _ => from_str_err(s, "ChampionId"),
+            s if let Ok(rune_id) = RuneId::from_str(s) => Ok(Self::Rune(rune_id)),
+            s => Ok(Self::Unknown(s.to_string())),
         }
     }
 }
@@ -72,11 +57,11 @@ pub enum Fetch {
 }
 
 #[derive(Subcommand, Debug)]
-pub enum GenArgs {
+pub enum AppArgs {
     #[command(alias = "c")]
-    Create { creator: GenCreator },
+    Create { creator: EntityTarget },
     #[command(alias = "r")]
-    Run { target: RunTarget },
+    Run { target: EntityTarget },
     #[command(alias = "p")]
     Progress,
     #[command(alias = "u")]
@@ -137,84 +122,104 @@ pub enum Setup {
     Items,
     #[clap(alias = "p")]
     Prettify,
-    #[clap(alias = "f")]
-    Folders,
 }
+
+static IPARSER: LazyLock<ItemParser> = LazyLock::new(|| ItemParser::new().unwrap());
+static CPARSER: LazyLock<ChampionParser> = LazyLock::new(|| ChampionParser::new().unwrap());
+static RPARSER: LazyLock<RuneParser> = LazyLock::new(|| RuneParser::new().unwrap());
 
 pub async fn run() -> MayFail {
     let Cli { args } = Cli::parse();
 
-    dotenvy::dotenv()?;
+    dotenvy::dotenv().expect(".env file not found");
     std::env::set_current_dir("../")?;
 
     match args {
-        GenArgs::Create { creator } => match creator {
-            GenCreator::All => ChampionFactory::create_all()?,
-            GenCreator::Champion(champion_id) => ChampionFactory::create(champion_id.debug())?,
+        AppArgs::Create { creator } => match creator {
+            EntityTarget::All => {
+                CPARSER.create_all()?;
+                IPARSER.create_all()?;
+                RPARSER.create_all()?;
+            }
+            EntityTarget::Champion(v) => CPARSER.create(v.debug())?,
+            EntityTarget::Champions => CPARSER.create_all()?,
+            EntityTarget::Item(v) => IPARSER.create(v.debug())?,
+            EntityTarget::Items => IPARSER.create_all()?,
+            EntityTarget::Rune(v) => RPARSER.create(v.debug())?,
+            EntityTarget::Runes => RPARSER.create_all()?,
+            EntityTarget::Unknown(s) => panic!("Can't create generator for unknown string {s}"),
         },
-        GenArgs::Run { target } => match target {
-            RunTarget::Champion(champ) => {
-                ChampionFactory::run(champ.debug())?;
+        AppArgs::Run { target } => match target {
+            EntityTarget::All => {
+                CPARSER.run_all();
+                IPARSER.run_all();
+                RPARSER.run_all();
             }
-            RunTarget::Item(item) => {
-                ItemFactory::run(item.debug(), item.to_riot_id())?;
-            }
-            RunTarget::Factory(f) => f(),
-            RunTarget::All => {
-                ChampionFactory::run_all();
-                ItemFactory::run_all();
-            }
+            EntityTarget::Champion(v) => CPARSER.run(v.debug())?,
+            EntityTarget::Champions => CPARSER.run_all(),
+            EntityTarget::Item(v) => IPARSER.run(v.debug())?,
+            EntityTarget::Items => IPARSER.run_all(),
+            EntityTarget::Rune(v) => RPARSER.run(v.debug())?,
+            EntityTarget::Runes => RPARSER.run_all(),
+            EntityTarget::Unknown(s) => RPARSER.run(&s)?,
         },
-        GenArgs::Progress => ChampionFactory::progress(),
-        GenArgs::Update => {
-            update::setup_project_folders()?;
-            ChampionFactory::create_all()?;
-            ChampionFactory::run_all();
-            ItemFactory::run_all();
-            std::env::set_current_dir("./tutorlolv2_build")?;
+        AppArgs::Progress => CPARSER.progress(),
+        AppArgs::Update => {
+            tutorlolv2_wiki::run().await?;
+            HTTP_CLIENT.update_riot_cache().await?;
+
+            // CPARSER.create_all()?;
+            // IPARSER.create_all()?;
+            // RPARSER.create_all()?;
+
+            CPARSER.run_all();
+            IPARSER.run_all();
+            RPARSER.run_all();
+
+            HTTP_CLIENT.download_arts_img().await?;
+            HTTP_CLIENT.download_items_img().await?;
+            HTTP_CLIENT.download_runes_img().await?;
+            HTTP_CLIENT.download_general_img().await?;
+
+            // let _ = HTTP_CLIENT.call_scraper().await;
+            // let _ = HTTP_CLIENT.combo_scraper().await;
+
             tutorlolv2_build::run()?;
         }
-        GenArgs::Html => tutorlolv2_html::run(),
-        GenArgs::Setup { setup } => match setup {
+        AppArgs::Html => tutorlolv2_html::run(),
+        AppArgs::Setup { setup } => match setup {
             Setup::Items => {
-                update::setup_damaging_items()?;
-                update::setup_runes_json()?;
-                update::setup_internal_items()?;
-                update::prettify_internal_items()?;
+                /* update::setup_runes_json()? */
+                todo!()
             }
-            Setup::Prettify => update::prettify_internal_items()?,
-            Setup::Folders => update::setup_project_folders()?,
+            Setup::Prettify => {
+                /* update::prettify_internal_items()? */
+                todo!()
+            }
         },
-        GenArgs::Build => {
-            std::env::set_current_dir("./tutorlolv2_build")?;
-            tutorlolv2_build::run()?;
-        }
-        GenArgs::Fetch { function } => match function {
+        AppArgs::Build => tutorlolv2_build::run()?,
+        AppArgs::Fetch { function } => match function {
             Fetch::Images => {
                 HTTP_CLIENT.download_arts_img().await?;
                 HTTP_CLIENT.download_items_img().await?;
                 HTTP_CLIENT.download_runes_img().await?;
                 HTTP_CLIENT.download_general_img().await?;
             }
-            Fetch::Cache => {
-                HTTP_CLIENT.update_riot_cache().await?;
-                HTTP_CLIENT.update_language_cache().await?;
-            }
+            Fetch::Cache => HTTP_CLIENT.update_riot_cache().await?,
             Fetch::Scraper => {
                 HTTP_CLIENT.call_scraper().await?;
                 HTTP_CLIENT.combo_scraper().await?;
             }
             Fetch::Version => {
-                let riot_version = HTTP_CLIENT.fetch_version().await?;
-                let curr_version = &ENV_CONFIG.lol_version;
-                if &riot_version == curr_version {
-                    println!("App is up to date with game version");
-                } else {
-                    println!("App is outdated: Expected {riot_version}, found: {curr_version}");
+                let gamev = HTTP_CLIENT.fetch_version().await?;
+                let currv = &ENV_CONFIG.lol_version;
+                match &gamev == currv {
+                    true => println!("App is up to date with game version"),
+                    false => println!("App is outdated: Expected {gamev}, found: {currv}"),
                 }
             }
         },
-        GenArgs::Wiki { function } => match function {
+        AppArgs::Wiki { function } => match function {
             Wiki::All => tutorlolv2_wiki::run().await,
             Wiki::Champions => champions::run().await,
             Wiki::ChampionsConcat => champions::concat(),

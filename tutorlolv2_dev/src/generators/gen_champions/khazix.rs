@@ -1,10 +1,18 @@
 use super::*;
 
 impl Generator for Khazix {
+    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::Q, [(0, 0, _1), (0, 1, _2)])
-            .ability(Key::W, [(0, 0, _1)])
-            .ability(Key::E, [(0, 0, _1)])
+        self.ability(Key::P, [(0, _1) /* Innate */, (1, _2) /* Innate [1] */])
+            .ability(
+                Key::Q,
+                [
+                    (0, _1), /* Isolated Target Physical Damage */
+                    (1, _2), /* Physical Damage */
+                ],
+            )
+            .ability(Key::W, [(1, _1) /* Physical Damage */])
+            .ability(Key::E, [(0, _1) /* Physical Damage */])
             .end()
     }
 }

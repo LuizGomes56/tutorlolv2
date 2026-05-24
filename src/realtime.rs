@@ -143,19 +143,19 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
             match item_id {
                 // Assume the passive is always active. Damages will be higher than
                 // they really are in most situations
-                ItemId::Riftmaker | ItemId::RiftmakerArena => {
+                ItemId::Riftmaker => {
                     base_modifiers.global_mod *= RiotFormulas::RIFTMAKER_BONUS_DAMAGE
                 }
                 // Adding this makes it the best ability power item in the game because
                 // it will consider that the enemy is always at low health. Removing this
                 // block will make it far less effective than it really is
-                ItemId::Shadowflame | ItemId::ShadowflameArena => {
+                ItemId::Shadowflame => {
                     base_modifiers.magic_mod *= RiotFormulas::SHADOWFLAME_BONUS_DAMAGE;
                     base_modifiers.true_mod *= RiotFormulas::SHADOWFLAME_BONUS_DAMAGE;
                 }
                 // Similar to Shadowflame, we're considering the item's passive is always
                 // fully stacked since there's no way we know what the current stack count is
-                ItemId::SpearOfShojin | ItemId::SpearOfShojinArena => {
+                ItemId::SpearOfShojin => {
                     ability_modifiers.q *= RiotFormulas::SHOJIN_BONUS_DAMAGE;
                     ability_modifiers.w *= RiotFormulas::SHOJIN_BONUS_DAMAGE;
                     ability_modifiers.e *= RiotFormulas::SHOJIN_BONUS_DAMAGE;
@@ -174,7 +174,11 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
         })
         .collect::<ItemsBitSet>();
 
-    let dragons = get_dragons(events, all_players);
+    // If we don't know his team, put in team `Team::default()`, which by now is `Team::Blue`.
+    // Note that it may lead to incorrect results, but it is better than not giving any results
+    let current_player_team = Team::from_str(current_player.team).unwrap_or_default();
+
+    let dragons = get_dragons(current_player_team, events, all_players);
 
     let enemy_earth_dragons = dragons.enemy_earth_dragons;
 
@@ -191,10 +195,6 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
     // Assume champion attack types cannot change. Mayhem and Arena have augments that change it,
     // but there's no way to know
     let current_player_cache_attack_type = current_player_cache.attack_type;
-
-    // If we don't know his team, put in team `Team::default()`, which by now is `Team::Blue`.
-    // Note that it may lead to incorrect results, but it is better than not giving any results
-    let current_player_team = Team::from_str(current_player.team).unwrap_or_default();
 
     let shred = ResistShred::new(&current_player_stats);
 
@@ -355,17 +355,37 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
                         * full_state.modifiers.magic_mod,
                     true_mod: base_modifiers.true_mod * full_state.modifiers.true_mod,
                     global_mod: base_modifiers.global_mod
-                        * match game_map {
-                            GameMap::Aram => {
-                                current_player_cache.stats.aram_damage_dealt
-                                    * e_cache.stats.aram_damage_taken
+                        * {
+                            let WikiModifiers {
+                                ofa,
+                                usb,
+                                aram,
+                                ar,
+                                nb,
+                                swift,
+                                urf,
+                            } = current_player_cache.modifiers;
+
+                            let WikiModifiers {
+                                ofa: e_ofa,
+                                usb: e_usb,
+                                aram: e_aram,
+                                ar: e_ar,
+                                nb: e_nb,
+                                swift: e_swift,
+                                urf: e_urf,
+                            } = e_cache.modifiers;
+
+                            match game_map {
+                                GameMap::OneForAll => ofa.damage_dealt * e_ofa.damage_taken,
+                                GameMap::UnsealedSpellbook => usb.damage_dealt * e_usb.damage_taken,
+                                GameMap::Aram => aram.damage_dealt * e_aram.damage_taken,
+                                GameMap::Arena => ar.damage_dealt * e_ar.damage_taken,
+                                GameMap::NexusBlitz => nb.damage_dealt * e_nb.damage_taken,
+                                GameMap::SwiftPlay => swift.damage_dealt * e_swift.damage_taken,
+                                GameMap::Urf => urf.damage_dealt * e_urf.damage_taken,
+                                _ => 1.0,
                             }
-                            GameMap::Urf => {
-                                current_player_cache.stats.urf_damage_dealt
-                                    * e_cache.stats.urf_damage_taken
-                            }
-                            // More maps will be added soon
-                            _ => 1.0,
                         }
                         * full_state.modifiers.global_mod,
                 },
@@ -438,21 +458,29 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
 /// all players in the game needs to be provided so the dragon kill per team
 /// can be assigned correctly. Dragons that do not guarantee buffs that can
 /// affect damage calculations are ignored.
-pub fn get_dragons(events: &[RealtimeEvent], players: &[RiotAllPlayers]) -> Dragons {
+pub fn get_dragons(team: Team, events: &[RealtimeEvent], players: &[RiotAllPlayers]) -> Dragons {
     let mut dragons = Dragons::default();
-    for event in events {
+
+    for RealtimeEvent {
+        dragon_type,
+        killer_name,
+    } in events
+    {
         // Both must be defined otherwise we don't know which team got the buff from this event
-        if let Some(killer) = event.killer_name
+        if let Some(killer) = *killer_name
             // We need to know the dragon type
-            && let Some(dragon) = event.dragon_type
+            && let Some(dragon) = *dragon_type
+            // We need to know the player's team
+            && let Some(player) = players.iter().find(|p| p.riot_id == killer)
         {
+            let player_team = Team::from_str(player.team).unwrap_or_default();
+            let ally = player_team == team;
+
             match dragon {
-                "Earth" => match players.iter().any(|player| player.riot_id == killer) {
-                    true => dragons.ally_earth_dragons += 1,
-                    false => dragons.enemy_earth_dragons += 1,
-                },
-                "Fire" => dragons.ally_fire_dragons += 1,
-                "Chemtech" => dragons.ally_chemtech_dragons += 1,
+                "Earth" if ally => dragons.ally_earth_dragons += 1,
+                "Earth" if !ally => dragons.enemy_earth_dragons += 1,
+                "Fire" if ally => dragons.ally_fire_dragons += 1,
+                "Chemtech" if ally => dragons.ally_chemtech_dragons += 1,
                 _ => {}
             }
         }

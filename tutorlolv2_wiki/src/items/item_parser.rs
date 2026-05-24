@@ -1,13 +1,15 @@
 use crate::{
     client::MayFail,
-    items::{ItemEffect, ItemRaw, cache},
+    items::{ItemEffectRaw, ItemRaw, cache},
     parser::{Effect, EffectInner, Scaling, assign_ctx_var, vec_dedup},
 };
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
+use tutorlolv2_fmt::pascal_case;
+use tutorlolv2_types::Key;
 
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
-pub struct ParsedItemEffect {
+pub struct ItemEffect {
     pub name: Option<String>,
     pub unique: Option<bool>,
     pub raw_description: Option<String>,
@@ -16,14 +18,16 @@ pub struct ParsedItemEffect {
 }
 
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
-pub struct ParsedItemEffects {
-    pub pass: Option<ParsedItemEffect>,
-    pub act: Option<ParsedItemEffect>,
+pub struct ItemEffects {
+    pub pass: Option<ItemEffect>,
+    pub act: Option<ItemEffect>,
 }
 
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
-pub struct ParsedItem {
+pub struct WikiItem {
     pub id: u32,
+    pub name: String,
+    pub item_id: String,
     pub tier: Option<u8>,
 
     #[serde(default)]
@@ -33,12 +37,13 @@ pub struct ParsedItem {
     pub stats: BTreeMap<String, f64>,
 
     #[serde(default)]
-    pub effects: ParsedItemEffects,
+    pub effects: ItemEffects,
 
     #[serde(default)]
     pub recipe: Vec<String>,
 
     pub buy: Option<u16>,
+    pub purchasable: bool,
 }
 
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
@@ -142,29 +147,51 @@ pub fn parse_items() -> MayFail {
 
     let result = data
         .into_iter()
-        .map(|(name, raw)| (name, parse_item(raw)))
+        .map(|(name, raw)| {
+            let mut value = parse_item(raw);
+
+            let assign_formula = |v: Option<&mut ItemEffect>| {
+                if let Some(ie) = v
+                    && let Ok(formula) = ie.effect.simplify_formula(Key::P)
+                {
+                    ie.effect.formula = formula;
+                }
+            };
+
+            assign_formula(value.effects.act.as_mut());
+            assign_formula(value.effects.pass.as_mut());
+
+            let key = pascal_case(&name);
+            value.name = name;
+            value.item_id = key.clone();
+
+            (key, value)
+        })
         .collect::<BTreeMap<_, _>>();
 
     let json = serde_json::to_string_pretty(&result)?;
-    crate::write(cache().join("parsed").with_extension("json"), &json)
+    crate::write(cache().join("full").with_extension("json"), &json)
 }
 
-fn parse_item(raw: ItemRaw) -> ParsedItem {
-    ParsedItem {
+fn parse_item(raw: ItemRaw) -> WikiItem {
+    WikiItem {
+        item_id: pascal_case(&raw.name),
+        name: raw.name,
         id: raw.id,
         tier: raw.tier,
         modes: raw.modes,
         stats: raw.stats,
-        effects: ParsedItemEffects {
-            pass: raw.effects.pass.map(|v| parse_item_effect(v, 0)),
-            act: raw.effects.act.map(|v| parse_item_effect(v, 1)),
+        effects: ItemEffects {
+            pass: raw.effects.pass.map(parse_item_effect),
+            act: raw.effects.act.map(parse_item_effect),
         },
         recipe: raw.recipe,
         buy: raw.buy,
+        purchasable: false,
     }
 }
 
-fn parse_item_effect(raw: ItemEffect, index: usize) -> ParsedItemEffect {
+fn parse_item_effect(raw: ItemEffectRaw) -> ItemEffect {
     let raw_description = raw.description.clone();
     let ast = raw
         .description
@@ -175,12 +202,12 @@ fn parse_item_effect(raw: ItemEffect, index: usize) -> ParsedItemEffect {
     let mut analysis = analyze_sequence(&ast, false);
     vec_dedup(&mut analysis.scalings);
 
-    ParsedItemEffect {
+    ItemEffect {
         name: raw.name,
         unique: raw.unique,
         raw_description: raw_description.clone(),
         effect: Effect {
-            index,
+            index: 0,
             formula: None,
             inner: EffectInner {
                 description: raw_description.unwrap_or_default(),

@@ -1,10 +1,19 @@
 use super::*;
 
 impl Generator for Quinn {
+    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::Q, [(0, 0, _1)])
-            .ability(Key::E, [(0, 0, _1)])
-            .ability(Key::R, [(0, 0, _1)])
-            .end()
+        self.ability(
+            Key::P,
+            [
+                (0, _1), /* Description 1 */
+                (1, _2), /* Description 1 [1] */
+                (2, _3), /* Description 2 */
+            ],
+        )
+        .ability(Key::Q, [(0, _1) /* Physical Damage */])
+        .ability(Key::E, [(0, _1) /* Physical damage */])
+        .ability_nth(1, Key::R, [(0, _1) /* Physical Damage */])
+        .end()
     }
 }

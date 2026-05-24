@@ -1,13 +1,17 @@
 use super::*;
 
 impl Generator for Ashe {
+    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::Q, [(0, 1, Min), (0, 2, Max)])
-            .ability(Key::W, [(0, 1, Void)])
-            .ability(Key::R, [(0, 0, Void)])
-            .attr(Area, [R(Void), W(Void)])?
-            .combo([Attack, Ability(W(Void)), Ability(R(Void)), Attack])?
-            .progress(Stable)
-            .end()
+        self.ability(
+            Key::Q,
+            [
+                (1, Min), /* Physical Damage Per Arrow */
+                (2, Max), /* Total Damage Per Flurry */
+            ],
+        )
+        .ability(Key::W, [(1, Void) /* Physical Damage */])
+        .ability(Key::R, [(0, Void) /* Magic Damage */])
+        .end()
     }
 }

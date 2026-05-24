@@ -1,165 +1,17 @@
 use crate::scripts::{
     BASIC_ATTACK, BASIC_ATTACK_FN, CRITICAL_STRIKE, CRITICAL_STRIKE_FN, DEFAULT_ITEM_GENERATOR,
-    IGNITE_FN, ONHIT_EFFECT, ONHIT_EFFECT_FN, StringExt, TOWER_DAMAGE, TOWER_DAMAGE_FN, ZERO_FN,
-    champions::generate_champions, items::generate_items, runes::generate_runes,
+    IGNITE_FN, ONHIT_EFFECT, ONHIT_EFFECT_FN, TOWER_DAMAGE, TOWER_DAMAGE_FN, ZERO_FN,
+    batch::{FmtOutput, batch},
+    champions::{self, generate_champions},
+    items::generate_items,
+    runes::{self, generate_runes},
 };
-use rayon::iter::{IntoParallelIterator, ParallelBridge, ParallelIterator};
-use serde::de::DeserializeOwned;
-use std::{
-    path::{Path, PathBuf},
-    process::Command,
-};
+use rayon::iter::{IntoParallelIterator, ParallelIterator};
+use std::{collections::BTreeMap, ops::Range};
+use tutorlolv2_dev::MayFail;
 use tutorlolv2_fmt::encode_brotli_11;
 
 mod scripts;
-
-pub type MayFail<T = ()> = Result<T, Box<dyn std::error::Error>>;
-pub type GeneratorClosure = Box<dyn FnOnce(usize) -> Generated + Send + Sync + 'static>;
-pub type GeneratorFn = MayFail<GeneratorClosure>;
-
-/// Definition of what each generator function should return
-pub struct Generated {
-    /// Refers to what will be written to the `exports` folder,
-    /// and that is useful for the frontend application to use.
-    /// This is going to be concatenated with the same field for
-    /// other generators, creating a very large String that will
-    /// serve as a library to the frontend application
-    pub exports: String,
-    /// Every HTML that the generator function wants to export to
-    /// the `BLOCK` of the frontend application, appearing when
-    /// the user hovers over some object. It will be concatenated,
-    /// compressed and exported to the frontend at the end
-    pub block: String,
-}
-
-/// Definition of all available folders to write at, in the target directory
-/// of the `exports`
-pub enum SrcFolder {
-    Champions,
-    Items,
-    Runes,
-}
-
-impl SrcFolder {
-    /// Returns the name of the folder holding the generators of some
-    /// definition of the enum [`SrcFolder`]
-    pub fn gen_folder(self) -> impl AsRef<Path> {
-        match self {
-            SrcFolder::Champions => "gen_champions",
-            SrcFolder::Items => "gen_items",
-            SrcFolder::Runes => "gen_runes",
-        }
-    }
-}
-
-/// Helper struct that resolves the paths of the data that will be saved to files
-pub struct CwdPath {
-    inner: PathBuf,
-}
-
-impl CwdPath {
-    /// Create a new path in the working directory of the main project
-    pub fn new(path: impl AsRef<Path>) -> Self {
-        Self {
-            inner: Path::new("../").join(path),
-        }
-    }
-
-    /// Helper function that spawns a new thread to write some data to a file
-    pub fn fwrite<D>(&self, data: D) -> Result<(), std::io::Error>
-    where
-        D: AsRef<[u8]>,
-    {
-        let path = &self.inner;
-        println!("[write] {path:?}");
-        std::fs::write(path, data)
-    }
-
-    /// Checks if some path exists, and logs to the console the result
-    pub fn exists(path: &PathBuf) -> bool {
-        let result = path.try_exists();
-        match path.try_exists() {
-            Ok(true) => println!("[ok] {path:?}"),
-            Ok(false) => println!("[null] {path:?}"),
-            Err(ref e) => println!("[error] {path:?}: {e:?}"),
-        }
-        result.ok().unwrap_or_default()
-    }
-
-    /// Returns the HTML of some generator file that will be exported to the frontend,
-    /// already formatted properly, and highlighted
-    pub fn get_generator(gen_folder: SrcFolder, file: impl AsRef<Path>) -> MayFail<String> {
-        let folder = gen_folder.gen_folder();
-        let path = Self::new("tutorlolv2_dev/src/generators")
-            .inner
-            .join(folder)
-            .join(file)
-            .with_extension("rs");
-
-        #[cfg(debug_assertions)]
-        Self::exists(&path);
-
-        let data = std::fs::read_to_string(path)?;
-        Ok(data)
-    }
-
-    /// Returns a `T` that represents a deserialized JSON file, from some `origin` path.
-    /// The `.json` extension is added if it is missing in the provided path
-    pub fn deserialize<T: DeserializeOwned>(origin: impl AsRef<Path>) -> MayFail<T> {
-        let path = Self::new(origin).inner.with_extension("json");
-
-        #[cfg(debug_assertions)]
-        Self::exists(&path);
-
-        let bytes = std::fs::read(path)?;
-        let data = serde_json::from_slice::<T>(&bytes)?;
-        Ok(data)
-    }
-}
-
-/// Adds some string to the end of each variable in the provided array of mutable
-/// references
-pub fn push_end<const N: usize>(variables: [&mut String; N], end: &str) {
-    variables
-        .into_iter()
-        .for_each(|variable| variable.push_str(end));
-}
-
-pub fn parallel_task<P, F, T, R>(path: P, f: F) -> Vec<(String, R)>
-where
-    P: AsRef<Path>,
-    T: DeserializeOwned,
-    F: Fn(&str, T) -> MayFail<R> + Send + Sync,
-    R: Send,
-{
-    let folder = CwdPath::new(path);
-    std::fs::read_dir(folder.inner)
-        .unwrap()
-        .filter_map(Result::ok)
-        .par_bridge()
-        .into_par_iter()
-        .map(|entry| {
-            let path = entry.path();
-            let name = path
-                .file_stem()
-                .and_then(|s| s.to_str())
-                .ok_or("Invalid file name")
-                .unwrap();
-
-            let data = std::fs::read(&path)
-                .inspect_err(|e| eprintln!("Failed to read for {path:?}: {e:?}"))
-                .unwrap();
-
-            let json = serde_json::from_slice(&data)
-                .inspect_err(|e| eprintln!("Failed to deserialize for T::{name:?} {path:?}: {e:?}"))
-                .unwrap();
-
-            let result = f(name, json).unwrap();
-
-            (name.to_owned(), result)
-        })
-        .collect::<Vec<_>>()
-}
 
 /// Provides functions to help track the current and new offsets of some
 /// data inside a very large string
@@ -180,26 +32,27 @@ impl<'a> Tracker<'a> {
         self.inner.len()
     }
 
-    /// Returns the start and end offsets of a new record `value`
-    /// in the current tracked string. The `value` is added to that
-    /// string and the offsets are adjusted properly
-    pub fn record(&mut self, value: &str) -> (usize, usize) {
+    pub fn push(&mut self, value: &str) -> Range<usize> {
         let start = self.offset();
         self.inner.push_str(value);
-        let end = self.offset();
-        (start, end)
+        start..self.offset()
     }
 
-    /// Adds a new record to the current tracked string, but adds
-    /// the result tuple into the provided vector
-    pub fn record_into(&mut self, value: &str, into: &mut Vec<(usize, usize)>) {
-        let (start, end) = self.record(value);
-        into.push((start, end));
+    pub fn batch(&mut self, batch: &mut BTreeMap<&str, BTreeMap<&str, Vec<FmtOutput<'_>>>>) {
+        for value in batch.values_mut() {
+            for data in value.values_mut() {
+                for output in data.iter_mut() {
+                    if !output.json.default {
+                        output.html_range = self.push(&output.html);
+                    }
+                }
+            }
+        }
     }
 }
 
-pub static mut ZERO_FN_OFFSET: (usize, usize) = (0, 0);
-pub static mut DEFAULT_ITEM_GENERATOR_OFFSET: (usize, usize) = (0, 0);
+pub static mut ZERO_FN_OFFSET: Range<usize> = 0..0;
+pub static mut DEFAULT_ITEM_GENERATOR_OFFSET: Range<usize> = 0..0;
 
 /// Entry point of the build library. Generates a new library that will be
 /// used by both frontend and backend, as well as HTML that represents the
@@ -207,31 +60,24 @@ pub static mut DEFAULT_ITEM_GENERATOR_OFFSET: (usize, usize) = (0, 0);
 /// frontend application
 pub fn run() -> MayFail {
     let mut full_block = String::with_capacity(12 * 1024 * 1024);
-    let mut full_exports = String::with_capacity(4 * 1024 * 1024);
+    let mut exports = String::with_capacity(4 * 1024 * 1024);
+
+    exports.push_str("use super::*;");
 
     let mut tracker = Tracker::new(&mut full_block);
-
-    unsafe {
-        DEFAULT_ITEM_GENERATOR_OFFSET = tracker.record(&DEFAULT_ITEM_GENERATOR.rust_html());
-        ZERO_FN_OFFSET = tracker.record(&ZERO_FN.rust_html());
-    }
-
-    full_exports.push_str("use crate::*;");
 
     let closures = [generate_champions, generate_items, generate_runes]
         .into_par_iter()
         .map(|task| task().unwrap())
         .collect::<Vec<_>>();
 
-    println!("[ok] Generation task finished. Processing results");
-
-    for closure in closures {
-        let Generated { exports, block } = closure(full_block.len());
-        full_block.push_str(&block);
-        full_exports.push_str(&exports);
+    unsafe {
+        DEFAULT_ITEM_GENERATOR_OFFSET =
+            tracker.push(&tutorlolv2_fmt::rust_html(DEFAULT_ITEM_GENERATOR));
+        ZERO_FN_OFFSET = tracker.push(&tutorlolv2_fmt::rust_html(ZERO_FN));
     }
 
-    let mut tracker = Tracker::new(&mut full_block);
+    println!("[ok] Generation task finished. Processing results");
 
     for (name, value) in [
         ("IGNITE_OFFSET", IGNITE_FN),
@@ -244,34 +90,84 @@ pub fn run() -> MayFail {
         ("BASIC_ATTACK_FN_OFFSET", BASIC_ATTACK_FN),
         ("CRITICAL_STRIKE_FN_OFFSET", CRITICAL_STRIKE_FN),
     ] {
-        let (start, end) = tracker.record(&value.rust_html().as_const());
-        full_exports.push_str(&format!(
-            "pub static {name}: Range<usize> = {start}..{end};"
-        ));
+        let range = tracker.push(&&tutorlolv2_fmt::rust_html(value));
+        exports.push_str(&format!("pub static {name}: Range<usize> = {range:?};"));
     }
 
-    let offset = tracker.offset();
-    let data_path = CwdPath::new("tutorlolv2_gen/src/data.rs");
+    for ((function, finish), module) in closures
+        .into_iter()
+        .zip([champions::finish, runes::finish, runes::finish])
+        .zip(["champions", "items", "runes"])
+    {
+        let (mut fmt_args, fmt) = function;
+        let mut src = tutorlolv2_fmt::rustfmt(&fmt, None);
+        let mut batch = batch(&src);
+        tracker.batch(&mut batch);
 
-    full_exports.push_str(&format!("pub const RAW_BLOCK_LEN: usize = {offset};"));
+        let mut delete_ranges = batch
+            .into_values()
+            .map(|output| {
+                output
+                    .into_iter()
+                    .map(|(target, value)| {
+                        let variable = fmt_args.get_mut(target).unwrap();
 
-    CwdPath::new("tutorlolv2_gen/src/block.txt").fwrite(&full_block)?;
-    data_path.fwrite(full_exports)?;
+                        let deletes = value
+                            .iter()
+                            .map(|output| output.delete_range.clone())
+                            .collect::<Vec<_>>();
+
+                        finish(target, variable, value);
+
+                        deletes
+                    })
+                    .collect::<Vec<_>>()
+            })
+            .flatten()
+            .flatten()
+            .collect::<Vec<_>>();
+
+        delete_ranges.sort_by_key(|range| range.start);
+
+        for range in delete_ranges.into_iter().rev() {
+            src.drain(range);
+        }
+
+        let mut block = fmt_args
+            .values_mut()
+            .map(|variable| {
+                variable.push_str("];");
+                variable.as_str()
+            })
+            .collect::<String>()
+            + &src;
+
+        block.insert_str(0, "use super::*;\n");
+
+        let fmt_block = tutorlolv2_fmt::rustfmt(&block, None);
+
+        tutorlolv2_dev::write(
+            format!("tutorlolv2_gen/src/generated/{module}.rs"),
+            fmt_block,
+        )?;
+    }
 
     println!("[ok] Formatting generated file");
 
-    Command::new("rustfmt")
-        .arg(data_path.inner)
-        .status()
-        .inspect_err(|e| eprintln!("Failed to run rustfmt: on generated data file {e:?}"))?;
+    let final_exports = tutorlolv2_fmt::rustfmt(&exports, None);
+
+    println!("[ok] Writing exports and block");
+
+    tutorlolv2_dev::write("tutorlolv2_gen/src/generated/exports.rs", &final_exports)?;
+    tutorlolv2_dev::write("tutorlolv2_gen/src/block.txt", &full_block)?;
 
     println!("[ok] Compressing full block");
 
     let compressed_block = encode_brotli_11(full_block.as_bytes());
 
-    println!("[ok] Saving results");
+    println!("[ok] Saving brotli file");
 
-    CwdPath::new("tutorlolv2_gen/src/block.br").fwrite(compressed_block)?;
+    tutorlolv2_dev::write("tutorlolv2_gen/src/block.br", compressed_block)?;
 
     Ok(())
 }

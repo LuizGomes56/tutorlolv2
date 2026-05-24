@@ -2,25 +2,27 @@ use super::*;
 
 impl Generator for Ahri {
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::Q, [(0, 0, Min)])
-            .ability(Key::W, [(1, 0, Min), (1, 1, _1), (1, 2, Max)])
-            .ability(Key::E, [(0, 1, Void)])
-            .ability(Key::R, [(0, 0, Min)]);
+        self.ability(Key::Q, [(0, Min) /* Damage Per Pass */])
+            .ability(
+                Key::W,
+                [
+                    (0, Min), /* Primary Magic Damage */
+                    (2, _1),  /* Subsequent Magic Damage */
+                    (4, Max), /* Total Single-Target Damage */
+                ],
+            )
+            .ability(Key::E, [(1, Void) /* Magic Damage */])
+            .ability(Key::R, [(0, Min) /* Magic Damage */]);
 
-        self.clone_to(Q(Min), Q(Max))?.damage = self.merge_damage(
-            |[q_min]| {
-                let q = q_min.parens();
-                q.times(MagicMultiplier).plus(q)
-            },
-            [Q(Min)],
-        )?;
+        let qmax = self.merge_damage([Q(Min)], |[qmin]| {
+            qmin.times(MagicMultiplier).parenthesize().plus(qmin)
+        })?;
 
-        self.clone_to(R(Min), R(Max))?.damage =
-            self.merge_damage(|[r]| r.parens().times(3), [R(Min)])?;
+        let rmax = self.merge_damage([R(Min)], |[rmin]| rmin.parenthesize().times(3))?;
 
-        self.damage_type(Q(Min), Magic)?
+        self.clone_to(Q(Min), Q(Max), qmax)?
+            .clone_to(R(Min), R(Max), rmax)?
             .damage_type(Q(Max), Mixed)?
-            .attr(Area, [Q(Min), Q(Max)])?
             .combo([Attack, Ability(E(Void)), Ability(Q(Max)), Ability(W(Max))])?
             .combo([
                 Ability(R(Min)),
@@ -33,7 +35,6 @@ impl Generator for Ahri {
                 Attack,
                 Ability(R(Min)),
             ])?
-            .progress(Stable)
             .end()
     }
 }

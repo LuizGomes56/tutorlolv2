@@ -1,30 +1,48 @@
 use super::*;
 
 impl Generator for Rumble {
+    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
         self.ability(
-            Key::Q,
+            Key::P,
             [
-                (0, 0, _1),
-                (0, 1, _2),
-                (0, 2, _3),
-                (0, 3, _4),
-                (0, 4, _5),
-                (0, 5, _6),
-                (0, 6, _7),
-                (0, 7, _8),
-                (1, 0, _1Min),
-                (1, 1, _2Min),
-                (1, 2, _3Min),
-                (1, 3, _4Min),
-                (1, 4, _5Min),
-                (1, 5, _6Min),
-                (1, 6, _7Min),
-                (1, 7, _8Min),
+                (2, _1), /* Overheated */
+                (3, _2), /* Overheated [1] */
+                (4, _3), /* Overheated [2] */
+                (5, _4), /* Overheated [3] */
+                (6, _5), /* Overheated [4] */
             ],
         )
-        .ability(Key::E, [(0, 0, _1), (0, 4, _2), (1, 0, _3), (1, 3, _4)])
-        .ability(Key::R, [(1, 0, _1), (1, 1, _2), (1, 2, _3)])
+        .ability(
+            Key::Q,
+            [
+                (0, _1),  /* Enhanced Damage per Second */
+                (1, _2),  /* Enhanced Damage per Tick */
+                (4, _3),  /* Magic Damage per Second */
+                (5, _4),  /* Magic Damage per Tick */
+                (6, _5),  /* Maximum Enhanced Damage */
+                (8, _6),  /* Maximum Magic Damage */
+                (10, _7), /* Minimum Enhanced Damage */
+                (12, _8), /* Minimum Magic Damage */
+            ],
+        )
+        .ability(
+            Key::E,
+            [
+                (0, _1),  /* Enhanced Damage */
+                (3, _2),  /* Magic Damage */
+                (6, _3),  /* Total Enhanced Damage */
+                (10, _4), /* Total Magic Damage */
+            ],
+        )
+        .ability(
+            Key::R,
+            [
+                (0, _1), /* Magic Damage per Second */
+                (1, _2), /* Magic Damage per Tick */
+                (2, _3), /* Maximum Magic Damage */
+            ],
+        )
         .end()
     }
 }

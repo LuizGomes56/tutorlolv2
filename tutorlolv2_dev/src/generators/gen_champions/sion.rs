@@ -1,22 +1,35 @@
 use super::*;
 
 impl Generator for Sion {
+    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
         self.ability(
-            Key::Q,
+            Key::P,
             [
-                (0, 0, _1),
-                (0, 1, _2),
-                (0, 2, _3),
-                (3, 0, _4),
-                (3, 1, _5),
-                (3, 2, _6),
-                (3, 3, _7),
+                (0, _1), /* Description 1 */
+                (1, _2), /* Description 2 */
+                (2, _3), /* Innate */
+                (3, _4), /* Innate [1] */
+                (4, _5), /* Innate [2] */
             ],
         )
-        .ability(Key::W, [(3, 0, _1)])
-        .ability(Key::E, [(0, 0, _1)])
-        .ability(Key::R, [(2, 0, _1), (2, 1, _2)])
+        .ability(
+            Key::Q,
+            [
+                (0, _1), /* Maximum Base Damage Increase */
+                (3, _2), /* Maximum Physical Damage */
+                (6, _3), /* Minimum Physical Damage */
+            ],
+        )
+        .ability(Key::W, [(0, _1) /* Magic Damage */])
+        .ability(Key::E, [(0, _1) /* Magic Damage */])
+        .ability(
+            Key::R,
+            [
+                (0, _1), /* Maximum Physical Damage */
+                (1, _2), /* Minimum Physical Damage */
+            ],
+        )
         .end()
     }
 }

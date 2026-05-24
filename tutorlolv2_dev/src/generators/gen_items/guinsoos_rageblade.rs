@@ -1,8 +1,8 @@
 use super::*;
 
 impl Generator for GuinsoosRageblade {
+    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
-        let damage = self.passive(0)?;
-        self.const_min_dmg(damage).attr(Onhit).damage_type(Magic).end()
+        self.min(Passive)?.end()
     }
 }

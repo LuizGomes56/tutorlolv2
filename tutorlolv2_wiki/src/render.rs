@@ -27,7 +27,7 @@ pub enum RenderAction {
 }
 
 impl Piece {
-    fn to_expr(self) -> String {
+    pub fn to_expr(self) -> String {
         let Self { coeff, target } = self;
 
         match target {
@@ -39,7 +39,7 @@ impl Piece {
 }
 
 impl Scaling {
-    fn render(&self, axis: CtxVar) -> MayFail<String> {
+    pub fn render(&self, axis: CtxVar) -> MayFail<String> {
         match self {
             Self::Simple { value, ctx_var } => Ok(Piece {
                 coeff: render_num(*value),
@@ -121,7 +121,7 @@ impl Scaling {
         }
     }
 
-    fn render_scaling_action(&self, axis: CtxVar) -> MayFail<RenderAction> {
+    pub fn render_scaling_action(&self, axis: CtxVar) -> MayFail<RenderAction> {
         match self {
             Scaling::Multiplier { raw, base, inner } => Ok(RenderAction::Mul(render_multiplier(
                 axis, raw, *base, inner,
@@ -130,7 +130,7 @@ impl Scaling {
         }
     }
 
-    fn render_piece(&self, axis: CtxVar) -> MayFail<Piece> {
+    pub fn render_piece(&self, axis: CtxVar) -> MayFail<Piece> {
         match self {
             Self::Simple { value, ctx_var } => Ok(Piece {
                 coeff: render_num(*value),
@@ -209,12 +209,22 @@ impl Scaling {
         }
     }
 
-    fn try_get_len(scaling: &Scaling) -> Option<usize> {
-        match scaling {
-            Scaling::Ranked { values, .. }
-            | Scaling::RankedPer100 { values, .. }
-            | Scaling::Flat { values } => Some(values.len()),
-            Scaling::BasedOnLevel { arms, .. } => level_arm_values(arms).map(|v| v.len()),
+    fn try_get_len(&self) -> Option<usize> {
+        match self {
+            Self::Ranked { values, .. }
+            | Self::RankedPer100 { values, .. }
+            | Self::Flat { values } => Some(values.len()),
+            Self::BasedOnLevel { arms, .. } => level_arm_values(arms).map(|v| v.len()),
+            _ => None,
+        }
+    }
+
+    pub fn try_get_value(&self) -> Option<f64> {
+        match self {
+            Self::Simple { value, .. }
+            | Self::Per100 { value, .. }
+            | Self::PercentAttr { value, .. }
+            | Self::Multiplier { base: value, .. } => Some(*value),
             _ => None,
         }
     }
@@ -279,7 +289,7 @@ impl Effect {
             None => return Ok(None),
         };
 
-        let mut expr = match build_base_expr(key, axis, self)? {
+        let mut expr = match self.build_base_expr(key, axis)? {
             Some(v) => v,
             None => "0.0".to_string(),
         };
@@ -297,26 +307,26 @@ impl Effect {
 
         Ok(Some(expr))
     }
-}
 
-fn build_base_expr(key: Key, axis: CtxVar, effect: &Effect) -> MayFail<Option<String>> {
-    if let Some(use_formula) = &effect.use_formula {
-        return Ok(Some(use_formula.replace('x', &format!("({axis} as f32)"))));
-    }
-
-    if let Some(base) = &effect.base {
-        return simplify_series(base, axis);
-    }
-
-    if let Some(use_values) = &effect.use_values {
-        if effect.use_values_belongs_to_level_scaling(key) {
-            return Ok(None);
+    fn build_base_expr(&self, key: Key, axis: CtxVar) -> MayFail<Option<String>> {
+        if let Some(use_formula) = &self.use_formula {
+            return Ok(Some(use_formula.replace('x', axis.as_var())));
         }
 
-        return simplify_series(use_values, axis);
-    }
+        if let Some(base) = &self.base {
+            return simplify_series(base, axis);
+        }
 
-    Ok(None)
+        if let Some(use_values) = &self.use_values {
+            if self.use_values_belongs_to_level_scaling(key) {
+                return Ok(None);
+            }
+
+            return simplify_series(use_values, axis);
+        }
+
+        Ok(None)
+    }
 }
 
 fn render_nested(axis: CtxVar, outer: &Scaling, inner: &[Scaling]) -> MayFail<String> {
@@ -418,7 +428,7 @@ fn render_range_percent_attr(
 
     let driver = match ctx_var {
         // These are naturally 0.0..1.0 drivers in the formula system.
-        CtxVar::CritChance => format!("{ctx_var}"),
+        // CtxVar::CritChance => format!("{ctx_var}"),
         // These are best-effort: the parser marks some stack/chime/fury-like values
         // as SteelcapsEffect when no dedicated CtxVar exists.
         _ => format!("{ctx_var}"),
@@ -602,12 +612,17 @@ fn render_level_match(level_var: CtxVar, arms: &[LevelArm]) -> String {
         }
     }
 
-    if !rendered.iter().any(|v| v.trim_start().starts_with("_")) {
+    if !rendered.iter().any(|v| v.trim_start().starts_with("_"))
+        && arms
+            .last()
+            .map(|arm| !matches!(arm, LevelArm::From { .. }))
+            .unwrap_or(false)
+    {
         let fallback = arms.last().map(LevelArm::value).unwrap_or(0.0);
         rendered.push(format!("_ => {}", render_num(fallback)));
     }
 
-    format!("match {level_var} as u8 {{ {} }}", rendered.join(", "))
+    format!("match {level_var} {{ {} }}", rendered.join(", "))
 }
 
 fn level_arm_values(arms: &[LevelArm]) -> Option<Vec<f64>> {
@@ -670,7 +685,7 @@ fn mul_expr(lhs: &str, rhs: &str) -> String {
 }
 
 fn axis_offset(axis: CtxVar) -> String {
-    format!("(({axis} as f32) - 1.0)")
+    format!("({axis} - 1.0)")
 }
 
 fn combine_terms<const N: usize>(terms: [Option<String>; N]) -> String {
@@ -695,19 +710,19 @@ fn approx_zero(v: f64) -> bool {
 
 fn render_exact_match(values: &[f64], axis: CtxVar) -> String {
     let mut arms = Vec::new();
+    let len = values.len();
 
     for (i, value) in values.iter().enumerate() {
         let rank = i + 1;
-        arms.push(format!("{rank} => {}", render_num(*value)));
+        let arm = match i {
+            0 => format_args!("..={rank}"),
+            _ if i == len - 1 => format_args!("{rank}.."),
+            _ => format_args!("{rank}"),
+        };
+        arms.push(format!("{arm} => {}", render_num(*value)));
     }
 
-    let fallback = values.last().copied().unwrap_or(0.0);
-
-    format!(
-        "match {axis} as u8 {{ {}, _ => {} }}",
-        arms.join(", "),
-        render_num(fallback),
-    )
+    format!("match {axis} {{{}}}", arms.join(", "),)
 }
 
 fn maybe_extend_series(values: &[f64], axis: CtxVar) -> Vec<f64> {

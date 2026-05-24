@@ -1,11 +1,8 @@
 use super::*;
 
 impl Generator for BamisCinder {
+    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
-        let damage = self.passive(0)?;
-        self.const_min_dmg(damage)
-            .damage_type(Magic)
-            .attr(Area)
-            .end()
+        self.damage_type(True).min(Passive)?.end()
     }
 }

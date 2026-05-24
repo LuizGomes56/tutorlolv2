@@ -1,397 +1,195 @@
-use crate::{
-    CwdPath, Generated, GeneratorFn, Tracker, ZERO_FN_OFFSET, push_end,
-    scripts::{StringExt, model::Rune, rustfmt_batch, simplify_formula},
+use crate::scripts::{
+    batch::{Batch, FmtArgs, FmtOutput},
+    utils::{
+        StaticVar, Tag, closures, get_const_eval, get_eval, get_fn_names, get_generator,
+        get_id_enum, get_identifiers, get_name_phf, get_static_vars, repr_damages,
+    },
 };
-use rayon::iter::{IntoParallelIterator, ParallelIterator};
-use std::collections::{BTreeMap, HashMap};
+use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
+use serde_json::json;
+use std::{
+    collections::{BTreeMap, HashMap},
+    ops::Range,
+};
+use tutorlolv2_dev::{
+    JsonRead, MayFail,
+    gen_factories::{DamageIndex, wiki_runes::RuneBuild},
+    generators::gen_factories::wiki_runes::Rune,
+};
+use tutorlolv2_fmt::to_ssnake;
+use tutorlolv2_types::AttackType;
 
-struct RuneResult {
-    name: String,
-    name_pascal: String,
-    name_ssnake: String,
-    base_declaration: String,
-    html_declaration: String,
-    riot_id: usize,
-    match_arm: String,
-    idents: String,
-    html_closure: String,
-    deals_damage: bool,
-}
+pub fn generate_runes() -> MayFail<(HashMap<&'static str, String>, String)> {
+    let data = BTreeMap::<String, Rune>::from_file("internal/runes.json")?;
 
-const MAX_TUPLE: (usize, usize) = (usize::MAX, usize::MAX);
-
-pub fn generate_runes() -> GeneratorFn {
-    let data = {
-        let json = CwdPath::deserialize::<HashMap<usize, Rune>>("internal/runes.json")?;
-
-        let mut runes = json
-            .into_par_iter()
-            .map(|(riot_id, rune)| {
-                let Rune {
-                    name,
-                    damage_type,
-                    ref ranged,
-                    ref melee,
-                } = rune;
-
-                let name_pascal = name.pascal_case();
-                let name_ssnake = name.to_ssnake();
-
-                let metadata = format!(
-                    "TypeMetadata {{
-                        kind: RuneId::{name_pascal},
-                        damage_type: {damage_type:?},
-                        attributes: Undefined
-                    }}"
-                );
-
-                let normalize = |expr: &str| {
-                    simplify_formula(expr.to_string())
-                        .clean()
-                        .to_lowercase()
-                        .cast_f32()
-                };
-
-                let melee_body = normalize(melee);
-                let ranged_body = normalize(ranged);
-
-                let mut constfn_declaration = String::new();
-                let single_damage = melee_body == ranged_body;
-
-                let (melee_fn, ranged_fn) = match single_damage {
-                    true => {
-                        let fn_name = name_ssnake.to_lowercase();
-                        constfn_declaration.push_str(&format!(
-                            "pub const fn {fn_name}(ctx: &Ctx) -> f32 {{
-                                {melee_body}
-                            }}"
-                        ));
-
-                        (fn_name.clone(), fn_name)
-                    }
-                    false => {
-                        let melee_fn = format!("{name_ssnake}_melee").to_lowercase();
-                        let ranged_fn = format!("{name_ssnake}_ranged").to_lowercase();
-
-                        constfn_declaration.push_str(&format!(
-                            "pub const fn {melee_fn}(ctx: &Ctx) -> f32 {{
-                                {melee_body}
-                            }}"
-                        ));
-
-                        constfn_declaration.push_str(&format!(
-                            "pub const fn {ranged_fn}(ctx: &Ctx) -> f32 {{
-                                {ranged_body}
-                            }}"
-                        ));
-
-                        (melee_fn, ranged_fn)
-                    }
-                };
-
-                let mk_closure = |expr: &str| {
-                    let arg = expr.ctx_param();
-                    format!("|{arg}| {}", expr.clean().to_lowercase())
-                };
-
-                let melee_closure = mk_closure(melee);
-                let ranged_closure = mk_closure(ranged);
-
-                let base_declaration = format!(
-                    "static {name_ssnake}: C_ = C_ {{
-                        name: {name:?},
-                        riot_id: {riot_id},
-                        metadata: {metadata},
-                        undeclared: false,"
-                );
-
-                let html_declaration = [
-                    base_declaration.as_str(),
-                    &match single_damage {
-                        true => format!("damage: {melee_closure}}};"),
-                        false => format!(
-                            "melee_damage: {melee_closure}, ranged_damage: {ranged_closure} }};"
-                        ),
+    let result = data
+        .par_iter()
+        .map(|(rune_id, rune)| {
+            let Rune {
+                build:
+                    RuneBuild {
+                        name,
+                        metadata,
+                        melee,
+                        ranged,
+                        riot_id,
+                        deals_damage,
+                        identifiers,
+                        ..
                     },
+                ..
+            } = rune;
+
+            let fns = get_fn_names(rune_id, melee, ranged);
+            let functions = [[&fns[0], &fns[1]], [&fns[2], &fns[3]]];
+
+            let fmt_arg = json!(FmtArgs {
+                target: "formula",
+                variant: rune_id,
+                meta: (),
+                replace: [
+                    (": Rune = Rune", " ="),
+                    ("TypeMetadata ", ""),
+                    ("RuneId::", ""),
+                    ("ctx.", ""),
                 ]
-                .concat();
-
-                let base_declaration = format!(
-                    "pub {base_declaration}
-                    melee_damage: {melee_fn},
-                    ranged_damage: {ranged_fn} }};
-                    {constfn_declaration}"
-                );
-
-                let match_arm = match single_damage {
-                    true => format!("{melee_fn}(ctx)"),
-                    false => format!(
-                        "match attack_type {{
-                            Melee => {melee_fn}(ctx),
-                            Ranged => {ranged_fn}(ctx)
-                        }}"
-                    ),
-                };
-
-                let idents = (melee_closure.clone() + &ranged_closure)
-                    .get_idents(damage_type)
-                    .into_iter()
-                    .collect::<String>();
-
-                println!("[build] RuneId::{name_pascal}");
-
-                RuneResult {
-                    riot_id,
-                    match_arm,
-                    html_declaration,
-                    base_declaration,
-                    name,
-                    name_ssnake,
-                    name_pascal,
-                    html_closure: constfn_declaration
-                        .replace("pub const ", "")
-                        .trim()
-                        .to_string(),
-                    deals_damage: true,
-                    idents: format!("&[{idents}]"),
-                }
-            })
-            .collect::<Vec<_>>();
-
-        let mut undeclared =
-            CwdPath::deserialize::<BTreeMap<String, usize>>("internal/rune_names.json")?;
-
-        for (name, riot_id) in [
-            ("Ability Haste", 9994),
-            ("Adaptive Force", 9990),
-            ("Attack Speed", 9992),
-            ("Eyeball Collection", 8120),
-            ("Ghost Poro", 8136),
-            ("Health", 9993),
-            ("Health Scaling", 9991),
-            ("Move Speed", 9996),
-            ("Tenacity and Slow Resist", 9995),
-            ("Zombie Ward", 8138),
-        ] {
-            undeclared.insert(name.to_string(), riot_id);
-        }
-
-        for (name, riot_id) in undeclared {
-            let name_pascal = name.pascal_case();
-
-            let mut repeated = false;
-            for value in &runes {
-                if value.name_pascal.to_lowercase() == name_pascal.to_lowercase() {
-                    repeated = true;
-                }
-            }
-
-            if repeated {
-                continue;
-            }
-
-            let name_ssnake = name.to_ssnake();
-
-            let metadata = format!(
-                "TypeMetadata {{
-                    kind: RuneId::{name_pascal},
-                    damage_type: Unknown,
-                    attributes: Undefined
-                }}"
-            );
-
-            let base_declaration = format!(
-                "static {name_ssnake}: C_ = C_ {{
-                    name: {name:?},
-                    melee_damage:zero,ranged_damage:zero,
-                    riot_id: {riot_id},
-                    metadata: {metadata},
-                    undeclared: true,
-                }};"
-            );
-
-            let html_declaration =
-                base_declaration.replace("melee_damage:zero,ranged_damage:zero", "damage: zero");
-
-            println!("[build] RuneId::{name_pascal}");
-
-            runes.push(RuneResult {
-                name_pascal,
-                deals_damage: false,
-                match_arm: "zero(ctx)".into(),
-                riot_id,
-                html_declaration,
-                base_declaration,
-                name_ssnake,
-                html_closure: String::new(),
-                name,
-                idents: "&[]".into(),
+                .into(),
+                default: false
             });
-        }
 
-        runes.sort_by(|a, b| a.name.cmp(&b.name));
-        runes
-    };
+            let decl = format!(
+                r#"
+                #[fmt({fmt_arg})]
+                static {upper_id}: Rune = Rune {{
+                    name: {name:?}, {damage}
+                    riot_id: {riot_id},
+                    metadata: {metadata:?},
+                }};
 
-    build_runes(data)
+                pub static {upper_id}: Rune = Rune {{
+                    name: {name:?},
+                    metadata: {metadata},
+                    {fn_names}
+                    deals_damage: {deals_damage:?},
+                    riot_id: {riot_id},
+                    identifiers: {identifiers},
+                }};
+                "#,
+                upper_id = to_ssnake(rune_id),
+                damage = repr_damages(melee, ranged, deals_damage),
+                fn_names = {
+                    let melee_fns = fns[0..2].join(",");
+                    let ranged_fns = fns[2..4].join(",");
+
+                    format!("melee: [{melee_fns}], ranged: [{ranged_fns}],")
+                },
+                identifiers = get_identifiers(&identifiers),
+                metadata = format_args!(
+                    "TypeMetadata {{
+                        kind: RuneId::{kind},
+                        damage_type: {damage_type:?},
+                        attributes: {attributes:?},
+                    }}",
+                    kind = metadata.kind,
+                    damage_type = metadata.damage_type,
+                    attributes = metadata.attributes,
+                )
+            );
+
+            let generator = get_generator(Tag::Rune, &rune_id, rune_id);
+            let eval = get_eval(Tag::Rune, &rune_id, &deals_damage, &functions);
+            let fn_closures = closures(&functions, melee, ranged, rune_id);
+
+            (
+                rune_id,
+                Batch {
+                    eval,
+                    fmt: [decl, generator, fn_closures].concat(),
+                },
+            )
+        })
+        .collect::<BTreeMap<_, _>>();
+
+    let const_eval = get_const_eval(&result, Tag::Rune);
+    let rune_id_enum = get_id_enum(&data, Tag::Rune);
+    let rune_name_to_id = get_name_phf(&data, Tag::Rune, None);
+
+    let (cache, fmt_args) = get_static_vars(
+        Tag::Rune,
+        &data,
+        [
+            StaticVar {
+                attribute: "formula",
+                name: "RUNE_FORMULAS",
+                vtype: "Range<usize>",
+            },
+            StaticVar {
+                attribute: "generator",
+                name: "RUNE_GENERATOR",
+                vtype: "Range<usize>",
+            },
+            StaticVar {
+                attribute: "closure",
+                name: "RUNE_CLOSURES",
+                vtype: "[[Range<usize>; 2]; 2]",
+            },
+        ],
+    );
+
+    let fmt = result
+        .values()
+        .map(|batch| batch.fmt.as_str())
+        .collect::<Vec<_>>()
+        .concat()
+        + &rune_id_enum
+        + &rune_name_to_id
+        + &const_eval
+        + &cache;
+
+    Ok((fmt_args, fmt))
 }
 
-fn build_runes(data: Vec<RuneResult>) -> GeneratorFn {
-    let len = data.len();
-    let mut rune_declarations = String::new();
-
-    let [
-        mut rune_cache,
-        mut rune_formulas,
-        mut rune_idents,
-        mut rune_closures,
-    ] = std::array::from_fn(|i| {
-        let (name, vtype) = [
-            ("RUNE_CACHE", "&CachedRune"),
-            ("RUNE_FORMULAS", "Range<usize>"),
-            ("RUNE_IDENTS", "&[CtxVar]"),
-            ("RUNE_CLOSURES", "Range<usize>"),
-        ][i];
-        format!("pub static {name}: [{vtype}; RuneId::VARIANTS] = [")
+pub fn finish(target: &str, variable: &mut String, mut value: Vec<FmtOutput<'_>>) {
+    value.sort_by(|a, b| match &a.json.meta {
+        v if let Ok((ata, dia)) =
+            serde_json::from_value::<(AttackType, DamageIndex)>(v.clone())
+            && let Ok((atb, dib)) =
+                serde_json::from_value::<(AttackType, DamageIndex)>(b.json.meta.clone()) =>
+        {
+            ata.cmp(&atb).then(dia.cmp(&dib))
+        }
+        _ => a.json.target.cmp(&b.json.target),
     });
 
-    let mut block = String::new();
-
-    let mut tracker = Tracker::new(&mut block);
-
-    let mut formula_offsets = Vec::with_capacity(len);
-    let mut closure_offsets = Vec::with_capacity(len);
-
-    let mut rune_id_enum_match_arms = Vec::with_capacity(len);
-    let mut rune_id_enum_fields = Vec::with_capacity(len);
-    let mut const_match_arms = String::new();
-    let mut rustfmt_inputs = Vec::with_capacity(len * 2);
-
-    for RuneResult {
-        riot_id,
-        deals_damage,
-        html_declaration,
-        base_declaration,
-        match_arm,
-        name_ssnake,
-        name_pascal,
-        idents,
-        html_closure,
-        ..
-    } in data
-    {
-        if deals_damage {
-            let match_arm = format!("RuneId::{name_pascal} => {{{match_arm}}}");
-            const_match_arms.push_str(&match_arm);
+    let push = match target {
+        "formula" | "generator" => {
+            value
+                .iter()
+                .map(|FmtOutput { html_range, .. }| format!("{html_range:?}"))
+                .collect::<Vec<_>>()
+                .join(",")
+                + ","
         }
+        "closure" => {
+            let mut ranges: [[Range<usize>; 2]; 2] =
+                core::array::from_fn(|_| core::array::from_fn(|_| 0..0));
 
-        rune_idents.push_str(&format!("{idents},"));
-        rune_id_enum_match_arms.push(format!("{riot_id} => Some(Self::{name_pascal})"));
-        rune_id_enum_fields.push(name_pascal);
-        rune_cache.push_str(&format!("&{name_ssnake},"));
-        rune_declarations.push_str(&base_declaration);
-        rustfmt_inputs.push(html_declaration);
-        rustfmt_inputs.push(html_closure);
-    }
+            for FmtOutput {
+                html_range,
+                json: FmtArgs { meta, .. },
+                ..
+            } in value
+            {
+                let (attack_type, damage_index) =
+                    serde_json::from_value::<(AttackType, DamageIndex)>(meta.clone()).unwrap();
 
-    let formatted = rustfmt_batch(&rustfmt_inputs);
-
-    for i in 0..len {
-        let decl_fmt = &formatted[i * 2];
-        let clos_fmt = &formatted[i * 2 + 1];
-        let html_declaration = decl_fmt
-            .replace("TypeMetadata ", "")
-            .replace(": C_ = C_ ", " = ")
-            .rust_html()
-            .as_const();
-        tracker.record_into(&html_declaration, &mut formula_offsets);
-        match clos_fmt.trim().is_empty() {
-            true => closure_offsets.push(MAX_TUPLE),
-            false => tracker.record_into(&clos_fmt.drop_f32s().rust_html(), &mut closure_offsets),
-        }
-    }
-
-    let fields = rune_id_enum_fields.join(",");
-    let match_arms = rune_id_enum_match_arms.join(",");
-
-    let rune_id_enum = format!(
-        r#"
-        #[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
-        #[derive(bincode::Encode, bincode::Decode)]
-        #[derive(serde::Serialize, serde::Deserialize)]
-        #[repr(u8)]
-        pub enum RuneId {{ {fields} }}
-        impl RuneId {{
-            pub const VARIANTS: usize = {len};
-            pub const fn from_riot_id(id: u32) -> Option<Self> {{
-                match id {{ {match_arms}, _ => None }}
-            }}
-            pub const fn debug(&self) -> &'static str {{
-                match self {{{arms}}}
-            }}
-        }}"#,
-        arms = rune_id_enum_fields
-            .iter()
-            .map(|v| format!("RuneId::{v} => {v:?},"))
-            .collect::<String>()
-    );
-
-    push_end([&mut rune_cache, &mut rune_idents], "];");
-
-    let const_eval = format!(
-        "pub const fn rune_const_eval(
-            ctx: &Ctx, 
-            rune_id: RuneId, 
-            attack_type: AttackType
-        ) -> f32 {{
-            match rune_id {{ {const_match_arms}, _ => 0.0 }}
-        }}"
-    );
-
-    println!("[ok] Finished building runes");
-
-    let callback = move |index: usize| {
-        let add_offsets = |list: Vec<_>, target: &mut String| {
-            for tuple in list {
-                match tuple {
-                    MAX_TUPLE => {
-                        let (s, e) = unsafe { ZERO_FN_OFFSET };
-                        target.push_str(&format!("({s}..{e}),"));
-                    }
-                    (start, end) => {
-                        let new_start = start + index;
-                        let new_end = end + index;
-                        target.push_str(&format!("({new_start}..{new_end}),"));
-                    }
-                }
+                ranges[attack_type as usize][damage_index as usize] = html_range.clone();
             }
-            push_end([target], "];");
-        };
 
-        add_offsets(formula_offsets, &mut rune_formulas);
-        add_offsets(closure_offsets, &mut rune_closures);
-
-        let content = [
-            rune_cache,
-            rune_declarations,
-            rune_id_enum,
-            rune_formulas,
-            rune_closures,
-            rune_idents,
-            const_eval,
-        ]
-        .concat();
-
-        let exports = format!(
-            "pub mod runes {{ 
-                use super::*; 
-                type C_ = CachedRune;
-                {content} 
-            }}"
-        );
-
-        Generated { exports, block }
+            format!("{ranges:?},")
+        }
+        _ => panic!("Unknown target set to fmt_args: {target}"),
     };
 
-    Ok(Box::new(callback))
+    variable.push_str(&push);
 }

@@ -1,29 +1,50 @@
 use super::*;
 
 impl Generator for Mel {
+    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::Q, [(0, 0, _1), (0, 1, _2), (0, 3, _3), (0, 4, _4)])
-            .ability(Key::W, [(1, 0, _1)])
-            .ability(
-                Key::E,
-                [
-                    (0, 0, _1),
-                    (1, 0, _2),
-                    (1, 1, _3),
-                    (1, 2, _4),
-                    (2, 0, _5),
-                    (2, 1, _6),
-                ],
-            )
-            .ability(
-                Key::R,
-                [
-                    // (0, 0, _1),
-                    (2, 0, _2),
-                    (2, 1, _3),
-                ],
-            )
-            .progress(Preserve)
-            .end()
+        self.ability(
+            Key::P,
+            [
+                (0, _1), /* Innate */
+                (1, _2), /* Innate - Searing Brilliance */
+                (2, _3), /* Innate - Searing Brilliance [1] */
+                (3, _4), /* Overwhelm */
+                (4, _5), /* Overwhelm [1] */
+                (5, _6), /* Overwhelm [2] */
+            ],
+        )
+        .ability(
+            Key::Q,
+            [
+                (0, _1), /* Initial Explosion Magic Damage */
+                (1, _2), /* Magic Damage per Subsequent Explosion */
+                (3, _3), /* Total Magic Damage */
+            ],
+        )
+        .ability(
+            Key::W,
+            [
+                (0, _1), /* Replicated Projectile Magic Damage Modifier */
+                (1, _2), /* Replicated Projectile Physical Damage Modifier */
+            ],
+        )
+        .ability(
+            Key::E,
+            [
+                (0, _1), /* Field Magic Damage per Second */
+                (1, _2), /* Field Magic Damage per Tick */
+                (3, _3), /* Orb Magic Damage */
+            ],
+        )
+        .ability(
+            Key::R,
+            [
+                (0, _1), /* Increased Stored Damage */
+                (1, _2), /* Magic Damage */
+                (2, _3), /* Stored Damage Increase per Stack */
+            ],
+        )
+        .end()
     }
 }

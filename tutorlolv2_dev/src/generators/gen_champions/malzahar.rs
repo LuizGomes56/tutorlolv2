@@ -1,11 +1,28 @@
 use super::*;
 
 impl Generator for Malzahar {
+    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::Q, [(0, 0, _1)])
-            .ability(Key::W, [(3, 0, _1), (3, 1, _2)])
-            .ability(Key::E, [(0, 0, _1), (0, 1, _2)])
-            .ability(Key::R, [(0, 0, _1), (0, 1, _2), (1, 0, _3), (1, 1, _4)])
-            .end()
+        self.ability(
+            Key::P,
+            [(0, _1) /* Description 1 */, (1, _2) /* Innate */],
+        )
+        .ability(Key::Q, [(0, _1) /* Magic Damage */])
+        .ability(Key::W, [(0, _1) /* Magic Damage */])
+        .ability(
+            Key::E,
+            [
+                (0, _1), /* Magic Damage Per Tick */
+                (1, _2), /* Total Magic Damage */
+            ],
+        )
+        .ability(
+            Key::R,
+            [
+                (0, _1), /* Magic Damage Per Tick */
+                (1, _2), /* Total Magic Damage */
+            ],
+        )
+        .end()
     }
 }

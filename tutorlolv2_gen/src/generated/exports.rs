@@ -1,0 +1,10 @@
+use super::*;
+pub static IGNITE_OFFSET: Range<usize> = 740..1446;
+pub static ONHIT_EFFECT_OFFSET: Range<usize> = 1446..1842;
+pub static BASIC_ATTACK_OFFSET: Range<usize> = 1842..2251;
+pub static TOWER_DAMAGE_OFFSET: Range<usize> = 2251..3171;
+pub static CRITICAL_STRIKE_OFFSET: Range<usize> = 3171..3602;
+pub static ONHIT_EFFECT_FN_OFFSET: Range<usize> = 3602..3849;
+pub static TOWER_DAMAGE_FN_OFFSET: Range<usize> = 3849..5543;
+pub static BASIC_ATTACK_FN_OFFSET: Range<usize> = 5543..5838;
+pub static CRITICAL_STRIKE_FN_OFFSET: Range<usize> = 5838..6163;

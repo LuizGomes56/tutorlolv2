@@ -1,9 +1,18 @@
 use super::*;
 
 impl Generator for Elise {
+    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::Q, [(0, 0, _1), (0, 1, _2), (0, 0, _3), (0, 1, _4)])
-            .ability(Key::W, [(1, 0, _1)])
-            .end()
+        self.ability(
+            Key::P,
+            [
+                (2, _1), /* Innate - Spider Form */
+                (3, _2), /* Innate - Spider Form [1] */
+            ],
+        )
+        .ability(Key::Q, [(1, _1) /* Magic Damage */])
+        .ability_nth(1, Key::Q, [(1, _2) /* Magic Damage */])
+        .ability(Key::W, [(0, _1) /* Magic Damage */])
+        .end()
     }
 }

@@ -5,21 +5,24 @@ impl Generator for Anivia {
         self.ability(
             Key::Q,
             [
-                (0, 0, _1Min), // Cast #1
-                (2, 0, _1Max), // Cast #2
-                (2, 2, Max),   // Total
+                (0, Min), /* Magic Damage */
+                (2, Max), /* Total Magic Damage */
             ],
         )
-        .ability(Key::E, [(0, 0, Max), (0, 1, Min)])
-        .ability(Key::R, [(0, 0, Min), (4, 0, Max)])
-        .attr(Area, [Q(_1Min), Q(_1Max), Q(Max), R(Min), R(Max)])?
-        .combo([
-            Ability(Q(_1Min)),
-            Attack,
-            Ability(Q(_1Max)),
-            Ability(E(Max)),
-        ])?
-        .progress(Stable)
+        .ability(
+            Key::E,
+            [
+                (0, Max), /* Enhanced Damage */
+                (1, Min), /* Magic Damage */
+            ],
+        )
+        .ability(
+            Key::R,
+            [
+                (0, Max), /* Empowered Damage per Tick */
+                (2, Min), /* Magic Damage per Tick */
+            ],
+        )
         .end()
     }
 }

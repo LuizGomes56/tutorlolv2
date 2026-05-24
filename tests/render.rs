@@ -44,8 +44,22 @@ fn render() {
         .into_iter()
         .map(|champion_id| source_code(ABILITY_CLOSURES[champion_id.index()]))
         .collect::<String>();
-    let items_closures = source_code(&ITEM_CLOSURES);
-    let runes_closures = source_code(&RUNE_CLOSURES);
+    let items_closures = source_code(
+        &ITEM_CLOSURES
+            .iter()
+            .flatten()
+            .flatten()
+            .cloned()
+            .collect::<Vec<_>>(),
+    );
+    let runes_closures = source_code(
+        &RUNE_CLOSURES
+            .iter()
+            .flatten()
+            .flatten()
+            .cloned()
+            .collect::<Vec<_>>(),
+    );
 
     let abilities = ChampionId::VALUES
         .into_iter()

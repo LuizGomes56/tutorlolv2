@@ -1,13 +1,26 @@
 use super::*;
 
 impl Generator for Yunara {
+    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
-        self.ability(
-            Key::Q,
-            [(0, 0, _1), (0, 1, _2), (0, 3, _3), (0, 4, _4), (2, 0, _5)],
-        )
-        .ability(Key::W, [(0, 0, _1), (0, 1, _2), (0, 2, _3)])
-        .ability(Key::R, [(1, 0, _1)])
-        .end()
+        self.ability(Key::P, [(0, _1) /* Innate */])
+            .ability(
+                Key::Q,
+                [
+                    (0, _1), /* Active Bonus Magic Damage */
+                    (3, _2), /* Combined Bonus Magic Damage */
+                    (5, _3), /* Passive Bonus Magic Damage */
+                ],
+            )
+            .ability(
+                Key::W,
+                [
+                    (0, _1), /* Initial Magic Damage */
+                    (1, _2), /* Linger Magic Damage per Tick */
+                    (2, _3), /* Total Expanded Damage */
+                ],
+            )
+            .ability(Key::R, [(0, _1) /* Arc of Ruin Base Damage */])
+            .end()
     }
 }

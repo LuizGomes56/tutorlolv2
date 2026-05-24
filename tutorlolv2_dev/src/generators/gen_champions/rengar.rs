@@ -1,10 +1,11 @@
 use super::*;
 
 impl Generator for Rengar {
+    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::Q, [(0, 0, _1)])
-            .ability(Key::W, [(0, 0, _1)])
-            .ability(Key::E, [(0, 0, _1)])
+        self.ability(Key::Q, [(0, _1) /* Additional Physical Damage */])
+            .ability(Key::W, [(0, _1) /* Magic Damage */])
+            .ability(Key::E, [(0, _1) /* Physical Damage */])
             .end()
     }
 }

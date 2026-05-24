@@ -32,25 +32,13 @@ where
 
             println!("[write] {target:?}");
 
-            let result = tutorlolv2_fmt::minify_html(&html);
+            // let result = tutorlolv2_fmt::minify_html(&html);
 
-            let outputs = [
-                (
-                    target.join("index.zst"),
-                    tutorlolv2_fmt::encode_zstd_9(&result),
-                ),
-                (
-                    target.join("index.br"),
-                    tutorlolv2_fmt::encode_brotli_11(&result),
-                ),
-                (target.join("index.html"), result),
-            ];
+            let original = html.as_bytes();
+            std::fs::write(target.join("index.html"), original)?;
 
-            for (path, bytes) in outputs {
-                std::fs::write(path, bytes)?;
-            }
-
-            std::io::Result::Ok(())
+            let brotli = tutorlolv2_fmt::encode_brotli_11(&original);
+            std::fs::write(target.join("index.br"), brotli)
         })
         .unwrap();
 }

@@ -1,13 +1,25 @@
 use super::*;
 
 impl Generator for Sylas {
+    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
         self.ability(
-            Key::Q,
-            [(0, 0, _1), (1, 0, _2), (1, 1, _3), (1, 2, _4), (1, 3, _5)],
+            Key::P,
+            [
+                (0, _1), /* Description 2 */
+                (1, _2), /* Description 3 */
+                (3, _3), /* Unshackled */
+            ],
         )
-        .ability(Key::W, [(0, 0, _1)])
-        .ability(Key::E, [(0, 0, _1)])
+        .ability(
+            Key::Q,
+            [
+                (0, _1), /* Magic Damage */
+                (3, _2), /* Total Magic Damage */
+            ],
+        )
+        .ability(Key::W, [(0, _1) /* Magic Damage */])
+        .ability_nth(1, Key::E, [(0, _1) /* Magic Damage */])
         .end()
     }
 }

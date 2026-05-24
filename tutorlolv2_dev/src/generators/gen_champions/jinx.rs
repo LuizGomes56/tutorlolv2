@@ -1,38 +1,19 @@
 use super::*;
 
 impl Generator for Jinx {
+    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
-        let q_scaling = self
-            .get_meraki_ability(Key::Q, 0)
-            .effects
-            .first()
-            .and_then(|effect| effect.description.capture_percent(0).ok())
-            .unwrap_or(1.1);
-
-        self.ability_raw(Q(Void), |_| q_scaling.times(AttackDamage))?
-            .ability(Key::W, [(0, 0, Void)])
-            .ability(Key::E, [(0, 0, Void)])
+        self.ability(Key::W, [(0, _1) /* Physical Damage */])
+            .ability(Key::E, [(0, _1) /* Magic Damage */])
             .ability(
                 Key::R,
                 [
-                    // Surroundings
-                    (1, 0, _1Max),
-                    (1, 1, _1Min),
-                    // Primary Target
-                    (2, 0, Max),
-                    (2, 1, Min),
+                    (0, _1), /* Maximum Physical Damage */
+                    (1, _2), /* Maximum Secondary Damage */
+                    (2, _3), /* Minimum Physical Damage */
+                    (3, _4), /* Minimum Secondary Damage */
                 ],
             )
-            .attr(AreaOnhitMax, [Q(Void)])?
-            .attr(Area, [Q(Void), E(Void), R(_1Max), R(_1Min), R(Max), R(Min)])?
-            .combo([
-                Ability(E(Void)),
-                Attack,
-                Ability(R(Min)),
-                Attack,
-                Ability(W(Void)),
-            ])?
-            .progress(Stable)
             .end()
     }
 }

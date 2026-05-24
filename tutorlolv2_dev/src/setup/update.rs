@@ -1,313 +1,93 @@
 use crate::{
-    ENV_CONFIG, JsonRead, JsonWrite, MayFail,
-    client::{SaveTo, Tag},
-    model::{
-        items::{Item, MerakiItem},
-        riot::RiotCdnItem,
-    },
-    parallel_read,
-    riot::RiotCdnRune,
+    JsonWrite, MayFail, client::SaveTo, parallel_read, riot::RiotCdnRune, setup::riot::RiotCdnItem,
 };
 use regex::Regex;
-use std::{
-    collections::{BTreeMap, HashMap},
-    fs,
-    path::Path,
-    sync::LazyLock,
-};
-use tutorlolv2_fmt::pascal_case;
-use tutorlolv2_gen::{CastId, ItemId};
-use tutorlolv2_types::{GameMap, StatName};
-
-/// Creates basic folders necessary to run the program. If one of these folders are not found,
-/// The program is likely to panic when an update is called.
-pub fn setup_project_folders() -> MayFail {
-    for dir in [
-        "html",
-        "html/brotli/champions",
-        "html/brotli/items",
-        "html/brotli/runes",
-        "html/zstd/champions",
-        "html/zstd/items",
-        "html/zstd/runes",
-        "html/raw/champions",
-        "html/raw/items",
-        "html/raw/runes",
-        "img",
-        "img/champions",
-        "img/runes",
-        "img/centered",
-        "img/splash",
-        "img/abilities",
-        "img/items",
-        "img/other",
-        "img/stats",
-        "raw_img",
-        "raw_img/champions",
-        "raw_img/runes",
-        "raw_img/centered",
-        "raw_img/splash",
-        "raw_img/abilities",
-        "raw_img/items",
-        "cache",
-        "cache/scraper",
-        "cache/scraper/combos",
-        "cache/scraper/builds",
-        "cache/scraper/builds/Top",
-        "cache/scraper/builds/Jungle",
-        "cache/scraper/builds/Middle",
-        "cache/scraper/builds/Bottom",
-        "cache/scraper/builds/Support",
-        "cache/wiki",
-        "cache/wiki/champions",
-        "cache/wiki/items",
-        "cache/wiki/templates/champions",
-        "cache/wiki/templates/items",
-        "cache/meraki",
-        "cache/meraki/champions",
-        "cache/meraki/items",
-        "cache/riot",
-        "cache/riot/champions",
-        "cache/riot/champions_lang",
-        "cache/riot/raw_champions",
-        "cache/riot/items",
-        "internal",
-        "internal/items",
-        "internal/champions",
-        "internal/scraper",
-        "internal/scraper/combos",
-        "internal/scraper/builds",
-        "internal/scraper/builds/Top",
-        "internal/scraper/builds/Jungle",
-        "internal/scraper/builds/Middle",
-        "internal/scraper/builds/Bottom",
-        "internal/scraper/builds/Support",
-    ] {
-        let path = Path::new(dir);
-
-        if !path.exists() {
-            fs::create_dir_all(path)?;
-        }
-    }
-    Ok(())
-}
-
-/// Replaces the content found in the files to a shorter and adapted version,
-/// initializes items as default, and Damaging stats must be added separately.
-pub fn setup_internal_items() -> MayFail {
-    let dir = SaveTo::InternalDir(Tag::Items).path();
-    std::fs::remove_dir_all(&dir)?;
-    std::fs::create_dir(dir)?;
-
-    let all_names: Vec<(_, _)> = parallel_read(
-        SaveTo::RiotItemsDir.path(),
-        move |fname, riot_cdn_item: RiotCdnItem| {
-            let riot_id = fname.parse()?;
-            let mut name = {
-                let rname = riot_cdn_item.name;
-                match rname.is_empty() || rname.starts_with("<") {
-                    true => format!("Unknown_{fname}"),
-                    false => rname,
-                }
-            };
-
-            match riot_id {
-                220000..230000 => name += " [Arena]",
-                320000..330000 => name += " [U-32]",
-                440000..450000 => name += " [U-44]",
-                660000..670000 => name += " [U-66]",
-                990000..1000000 => name += " [U-99]",
-                _ => {}
-            }
-
-            Ok((name, fname.to_string()))
-        },
-    )?;
-
-    let mut names = HashMap::new();
-
-    for (name, fname) in all_names.iter() {
-        let matches = all_names.iter().filter(|(n, _)| n == name);
-        names.insert(
-            fname.to_string(),
-            match matches.count() > 1 {
-                true => format!("{name} {fname}"),
-                false => name.to_string(),
-            },
-        );
-    }
-
-    parallel_read(
-        SaveTo::RiotItemsDir.path(),
-        |fname, riot_cdn_item: RiotCdnItem| {
-            setup_item(
-                names
-                    .get(fname)
-                    .ok_or(format!("Failed to get name for riot_id / fname: {fname}"))?,
-                fname.parse()?,
-                riot_cdn_item,
-            )
-        },
-    )
-}
-
-/// `fname` should be a number
-pub fn setup_item(name: &str, riot_id: u32, riot_cdn_item: RiotCdnItem) -> MayFail {
-    let meraki_item = MerakiItem::from_file(SaveTo::MerakiCache(Tag::Items, &riot_id).path()).ok();
-
-    let (stats, tier, builds_from_riot_ids, builds_into_riot_ids) = meraki_item
-        .and_then(|item| Some((item.stats, item.tier, item.builds_from, item.builds_into)))
-        .unwrap_or_default();
-
-    let internal_fname = pascal_case(&name);
-
-    Item {
-        version: ENV_CONFIG.lol_version.clone(),
-        maps: riot_cdn_item
-            .maps
-            .into_iter()
-            .map(|(map_id, is_available)| (GameMap::from_u8(map_id), is_available))
-            .collect::<BTreeMap<_, _>>(),
-        sell: riot_cdn_item.gold.sell,
-        purchasable: riot_cdn_item.gold.purchasable,
-        price: riot_cdn_item.gold.total,
-        riot_id,
-        name: name.to_string(),
-        stats,
-        tier,
-        builds_from_riot_ids: builds_from_riot_ids.into_iter().collect(),
-        builds_into_riot_ids: builds_into_riot_ids.into_iter().collect(),
-        ..Default::default()
-    }
-    .into_file(SaveTo::InternalRaw(Tag::Items, &internal_fname).path())
-}
+use std::{collections::BTreeMap, sync::LazyLock};
+use tutorlolv2_types::StatName;
 
 /// Reads the cached runes json extracted from Riot's API and generates a new file containing
 /// only the names of each rune, and their ids
-pub fn setup_runes_json() -> MayFail {
-    let map = Vec::<RiotCdnRune>::from_file("cache/riot/runes.json")?;
-    let mut result = BTreeMap::<String, usize>::new();
+pub fn setup_runes_names() -> MayFail {
+    let result: Vec<Vec<(String, usize)>> =
+        parallel_read(SaveTo::RiotRunes.path(), |_, rune: RiotCdnRune| {
+            let mut runes = Vec::new();
 
-    for tree in map.into_iter() {
-        for slot in tree.slots.into_iter() {
-            for riot_rune in slot.runes.into_iter() {
-                result.insert(riot_rune.name, riot_rune.id);
-            }
-        }
-    }
-    result.into_file("internal/rune_names.json")
-}
-
-static RE_DMGI_PARENS: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"\{\{[^}]*\}\}").unwrap());
-
-/// Not meant to be used frequently. Just a quick check for every
-/// patch to identify if a new damaging item was added
-pub fn setup_damaging_items() -> MayFail {
-    let likely_damages = |text: &str| -> bool {
-        let cleaned = RE_DMGI_PARENS.replace_all(text, "");
-        cleaned.contains("damage")
-    };
-
-    let is_damaging: Vec<_> = parallel_read("cache/meraki/items", {
-        move |_, meraki_item: MerakiItem| {
-            if !meraki_item.shop.purchasable {
-                return Ok(None);
-            }
-
-            let mut found_match = false;
-
-            for passive in &meraki_item.passives {
-                if likely_damages(&passive.effects) {
-                    found_match = true;
-                    break;
+            for slot in rune.slots.into_iter() {
+                for riot_rune in slot.runes.into_iter() {
+                    runes.push((riot_rune.name, riot_rune.id));
                 }
             }
 
-            if !found_match {
-                for active in &meraki_item.active {
-                    if likely_damages(&active.effects) {
-                        found_match = true;
-                        break;
-                    }
-                }
-            }
+            Ok(runes)
+        })?;
 
-            Ok(found_match.then_some(meraki_item.id))
-        }
-    })?;
-
-    let mut is_damaging = is_damaging.into_iter().flatten().collect::<Vec<_>>();
-    is_damaging.sort();
-    is_damaging.into_file("internal/damaging_items.json")
-}
-
-pub fn prettify_internal_items() -> MayFail {
-    parallel_read("cache/riot/items", |riot_id, riot_item| {
-        if let Some(item_id) = ItemId::from_riot_id(riot_id.parse()?) {
-            let internal_path = SaveTo::Internal(item_id.entity()).path();
-            let mut internal_item = Item::from_file(&internal_path)?;
-            internal_item.prettified_stats = pretiffy_items(&riot_item)?;
-            internal_item.into_file(internal_path)?;
-        }
-        Ok(())
-    })
-}
-
-static TAGS: [&str; 4] = ["buffedStat", "nerfedStat", "attention", "ornnBonus"];
-static RE_LINE: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"(.*?)<br>").unwrap());
-static RE_TAG: LazyLock<Regex> = LazyLock::new(|| {
-    let tags = TAGS.join("|");
-    Regex::new(&format!(r#"<({tags})>(.*?)<\/({tags})>"#)).unwrap()
-});
-static RE_PERCENT_PREFIX: LazyLock<Regex> =
-    LazyLock::new(|| Regex::new(r"^\s*\d+\s*%?\s*").unwrap());
-static RE_TAG_STRIP: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"<\/?[^>]+(>|$)").unwrap());
-
-/// Returns the value that will be added to key `prettified_stats` for each item.
-/// Depends on Riot API `item.json` and requires manual maintainance if a new XML tag is added
-fn pretiffy_items(data: &RiotCdnItem) -> MayFail<BTreeMap<StatName, u16>> {
-    let mut result = BTreeMap::<_, _>::default();
-
-    let lines = RE_LINE.captures_iter(&data.description).collect::<Vec<_>>();
-    let mut line_index = 0usize;
-
-    for caps in RE_TAG.captures_iter(&data.description) {
-        let t = &caps[1];
-        let v = caps[2].replace('%', "");
-        let mut n = None;
-        if line_index < lines.len() {
-            let cleaned = RE_TAG_STRIP
-                .replace_all(&lines[line_index][1], "")
-                .trim()
-                .to_string();
-            if !cleaned.is_empty() {
-                n = Some(cleaned);
-            }
-            line_index += 1;
-        }
-        if TAGS.contains(&t) {
-            if let Some(n_val) = &n {
-                let j = RE_PERCENT_PREFIX.replace(n_val, "").trim().to_string();
-                if !j.is_empty() {
-                    match v.parse::<u16>() {
-                        Ok(num) => result.insert(tutorlolv2_fmt::pascal_case(&j), num),
-                        Err(_) => continue,
-                    };
-                }
-            }
-        }
-    }
-
-    let json = result
+    result
         .into_iter()
-        .map(|(stat, value)| {
-            let variant = format!("{stat:?}")
-                .replace("CriticalStrikeChance", "CritChance")
-                .replace("CriticalStrikeDamage", "CritDamage");
-            let key = serde_json::from_str(&variant).unwrap();
-            (key, value)
-        })
-        .collect();
+        .flatten()
+        .collect::<BTreeMap<String, usize>>()
+        .into_file(SaveTo::InternalRuneNames.path())
+}
 
-    Ok(json)
+impl RiotCdnItem {
+    /// Returns the value that will be added to key `prettified_stats` for each item.
+    /// Depends on Riot API `item.json` and requires manual maintainance if a new XML tag is added
+    pub fn pretiffy_stats(&self) -> MayFail<BTreeMap<StatName, u16>> {
+        static TAGS: [&str; 4] = ["buffedStat", "nerfedStat", "attention", "ornnBonus"];
+        static RE_LINE: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"(.*?)<br>").unwrap());
+        static RE_TAG: LazyLock<Regex> = LazyLock::new(|| {
+            let tags = TAGS.join("|");
+            Regex::new(&format!(r#"<({tags})>(.*?)<\/({tags})>"#)).unwrap()
+        });
+        static RE_PERCENT_PREFIX: LazyLock<Regex> =
+            LazyLock::new(|| Regex::new(r"^\s*\d+\s*%?\s*").unwrap());
+        static RE_TAG_STRIP: LazyLock<Regex> =
+            LazyLock::new(|| Regex::new(r"<\/?[^>]+(>|$)").unwrap());
+
+        let mut result = BTreeMap::<_, _>::default();
+
+        let lines = RE_LINE.captures_iter(&self.description).collect::<Vec<_>>();
+        let mut line_index = 0usize;
+
+        for caps in RE_TAG.captures_iter(&self.description) {
+            let t = &caps[1];
+            let v = caps[2].replace('%', "");
+            let mut n = None;
+
+            if line_index < lines.len() {
+                let tag_strip = RE_TAG_STRIP.replace_all(&lines[line_index][1], "");
+                let cleaned = tag_strip.trim();
+                if !cleaned.is_empty() {
+                    n = Some(cleaned.to_string());
+                }
+
+                line_index += 1;
+            }
+
+            if TAGS.contains(&t)
+                && let Some(n_val) = &n
+            {
+                let percent_prefix = RE_PERCENT_PREFIX.replace(n_val, "");
+                let j = percent_prefix.trim();
+
+                if let Ok(num) = v.parse::<u16>()
+                    && !j.is_empty()
+                {
+                    result.insert(tutorlolv2_fmt::pascal_case(&j), num);
+                }
+            }
+        }
+
+        let json = result
+            .into_iter()
+            .filter_map(|(stat, value)| {
+                let variant = format!("{stat:?}")
+                    .replace("CriticalStrikeChance", "CritChance")
+                    .replace("CriticalStrikeDamage", "CritDamage");
+                let key = serde_json::from_str(&variant).ok()?;
+                Some((key, value))
+            })
+            .collect();
+
+        Ok(json)
+    }
 }

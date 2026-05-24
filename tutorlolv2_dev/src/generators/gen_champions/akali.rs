@@ -1,22 +1,32 @@
 use super::*;
 
 impl Generator for Akali {
+    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
-        self.passive(Void, (0, 1), None, None)
-            .ability(Key::Q, [(0, 0, Void)])
-            .ability(Key::E, [(0, 0, _1Min), (2, 0, _1Max), (2, 1, Max)])
-            .ability(Key::R, [(0, 0, _1), (2, 0, _2Min), (2, 1, _2Max)])
-            .attr(Area, [Q(Void), R(_1), R(_2Min), R(_2Max)])?
-            .attr(Onhit, [P(Void)])?
-            .combo([
-                Ability(Q(Void)),
-                Ability(E(_1Min)),
-                Attack,
-                Ability(P(Void)),
-                Ability(E(_1Max)),
-                Ability(R(_1)),
-            ])?
-            .progress(Stable)
-            .end()
+        self.ability(
+            Key::P,
+            [
+                (2, _1), /* Swinging Kama */
+                (3, _2), /* Swinging Kama [1] */
+            ],
+        )
+        .merge_sum([P(_1), P(_2)], P(Void))?
+        .ability(Key::Q, [(0, Void) /* Magic Damage */])
+        .ability(
+            Key::E,
+            [
+                (0, Min), /* Magic Damage */
+                (1, Max), /* Total Magic Damage */
+            ],
+        )
+        .ability(
+            Key::R,
+            [
+                (0, _1),  /* Magic Damage */
+                (1, Min), /* Maximum Magic Damage */
+                (2, Max), /* Minimum Magic Damage */
+            ],
+        )
+        .end()
     }
 }

@@ -1,20 +1,27 @@
 use super::*;
 
 impl Generator for Kayn {
+    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
         self.ability(
-            Key::Q,
+            Key::P,
             [
-                (0, 0, _1),
-                (0, 1, _2),
-                (1, 0, _3),
-                (1, 1, _4),
-                (2, 0, _5),
-                (2, 1, _6),
+                (0, _1), /* Darkin Slayer Bonus */
+                (2, _2), /* Innate */
+                (3, _3), /* Shadow Assassin Bonus */
             ],
         )
-        .ability(Key::W, [(0, 0, _1)])
-        .ability(Key::R, [(3, 0, _1)])
+        .ability(
+            Key::Q,
+            [
+                (1, _1), /* Non-Champion Damage */
+                (2, _2), /* Physical Damage */
+                (4, _3), /* Total Non-Champion Damage */
+                (5, _4), /* Total Physical Damage */
+            ],
+        )
+        .ability(Key::W, [(0, _1) /* Physical Damage */])
+        .ability(Key::R, [(0, _1) /* Physical Damage */])
         .end()
     }
 }

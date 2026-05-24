@@ -1,11 +1,29 @@
 use super::*;
 
 impl Generator for Irelia {
+    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::Q, [(0, 1, _1)])
-            .ability(Key::W, [(3, 0, _1), (3, 1, _2)])
-            .ability(Key::E, [(2, 0, _1)])
-            .ability(Key::R, [(0, 0, _1)])
-            .end()
+        self.ability(
+            Key::P,
+            [
+                (2, _1), /* Ionian Fervor */
+                (3, _2), /* Ionian Fervor [1] */
+                (4, _3), /* Ionian Fervor [2] */
+                (5, _4), /* Ionian Fervor [3] */
+                (6, _5), /* Ionian Fervor [4] */
+                (7, _6), /* Ionian Fervor [5] */
+            ],
+        )
+        .ability(Key::Q, [(1, _1) /* Physical Damage */])
+        .ability(
+            Key::W,
+            [
+                (0, _1), /* Maximum Physical Damage */
+                (1, _2), /* Minimum Physical Damage */
+            ],
+        )
+        .ability(Key::E, [(0, _1) /* Magic Damage */])
+        .ability(Key::R, [(0, _1) /* Magic Damage */])
+        .end()
     }
 }

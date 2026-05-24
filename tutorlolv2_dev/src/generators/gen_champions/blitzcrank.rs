@@ -1,9 +1,10 @@
 use super::*;
 
 impl Generator for Blitzcrank {
+    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::Q, [(0, 0, _1)])
-            .ability(Key::R, [(0, 0, _1), (1, 0, _2)])
+        self.ability(Key::Q, [(0, Void) /* Magic Damage */])
+            .ability(Key::R, [(0, Void) /* Magic Damage */])
             .end()
     }
 }
