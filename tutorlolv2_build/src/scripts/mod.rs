@@ -32,7 +32,7 @@ pub const IGNITE_FN: &str = r#"fn ignite(level: i32) -> i32 {
         else { 0 }
 }"#;
 
-pub const TOWER_DAMAGE_FN: &str = r#"fn tower_damage(_: f32, ...) -> i32 {
+pub const TOWER_DAMAGE_FN: &str = r#"fn tower_damage(...) -> i32 {
     let base = base_attack_damage
         + bonus_attack_damage
         + ability_power * 0.6;
@@ -64,15 +64,16 @@ pub const CRITICAL_STRIKE: &str = r#"intrinsic CRITICAL_STRIKE {
 };"#;
 
 pub const CRITICAL_STRIKE_FN: &str = r#"fn critical_strike() -> f32 {
-    attack_damage * crit_damage / 100
+    attack_damage * crit_damage
+      / 100 /* * physical_multiplier */
 }"#;
 
 pub const BASIC_ATTACK: &str = r#"intrinsic BASIC_ATTACK {
     attributes: OnhitMin,
     damage_type: Physical,
-    damage: attack_damage /* mul physical_multiplier */,
+    damage: attack_damage /* * physical_multiplier */,
 };"#;
 
 pub const BASIC_ATTACK_FN: &str = r#"fn basic_attack() -> f32 {
-    attack_damage /* mul physical_mod */
+    attack_damage /* * physical_multiplier */
 }"#;

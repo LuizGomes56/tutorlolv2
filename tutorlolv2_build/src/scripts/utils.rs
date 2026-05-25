@@ -176,7 +176,7 @@ pub fn get_generator(tag: Tag, id: &str, variant: &str) -> String {
     let mut default = false;
     let mut generator = tutorlolv2_dev::read_to_string(format!(
         "tutorlolv2_dev/src/generators/gen_{folder}s/{file_name}.rs",
-        file_name = id.to_lowercase()
+        file_name = to_ssnake(id).to_lowercase()
     ))
     .unwrap_or_else(|_| {
         default = true;
@@ -350,12 +350,53 @@ pub fn closures(
 pub fn simplify(formula: &str) -> String {
     static FLOAT_RE: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"\b\d+\.\d+\b").unwrap());
 
-    let simplified = symb_anafis::simplify(&formula.replace("ctx.", "ctx_"), &[], None)
+    static MATCH_RE: LazyLock<Regex> =
+        LazyLock::new(|| Regex::new(r"match\s+[^{]+\{(?:[^{}]|\{[^{}]*\})*\}").unwrap());
+
+    let mut matches = Vec::new();
+
+    let protected = MATCH_RE.replace_all(formula, |caps: &Captures| {
+        let idx = matches.len();
+
+        matches.push(caps[0].to_string());
+
+        format!("__MATCH_{idx}__")
+    });
+
+    let simplified = symb_anafis::simplify(&protected.replace("ctx.", "ctx_"), &[], None)
         .map(|r| r.replace("ctx_", "ctx."))
-        .unwrap_or(formula.to_string());
+        .unwrap_or_else(|_| protected.into_owned());
+
+    let mut restored = simplified;
+
+    fn match_needs_parens(s: &str, placeholder: &str) -> bool {
+        const BIN_OPS: &[char] = &['+', '-', '*', '/', '%', '&', '|', '^'];
+
+        let Some(pos) = s.find(placeholder) else {
+            return false;
+        };
+
+        let before = s[..pos].trim_end();
+        let after = s[pos + placeholder.len()..].trim_start();
+
+        let preceded_by_op = before.ends_with(BIN_OPS);
+        let followed_by_op = after.starts_with(BIN_OPS);
+
+        preceded_by_op || followed_by_op
+    }
+
+    for (i, match_block) in matches.iter().enumerate() {
+        let placeholder = format!("__MATCH_{i}__");
+        let replacement = if match_needs_parens(&restored, &placeholder) {
+            format!("({match_block})")
+        } else {
+            match_block.clone()
+        };
+        restored = restored.replace(&placeholder, &replacement);
+    }
 
     FLOAT_RE
-        .replace_all(&simplified, |caps: &Captures| {
+        .replace_all(&restored, |caps: &Captures| {
             let original = &caps[0];
 
             let Ok(value) = original.parse::<f64>() else {
@@ -380,16 +421,16 @@ pub fn simplify(formula: &str) -> String {
             if suspicious {
                 for precision in 2..=6 {
                     let candidate = format!("{value:.precision$}");
+
                     let reparsed = candidate.parse::<f64>().unwrap();
+
                     let diff = (value - reparsed).abs();
 
                     if diff < 1e-9 {
-                        let cleaned = candidate
+                        return candidate
                             .trim_end_matches('0')
                             .trim_end_matches('.')
                             .to_string();
-
-                        return cleaned;
                     }
                 }
             }

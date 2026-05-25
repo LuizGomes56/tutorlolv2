@@ -33,6 +33,10 @@ impl<'a> Tracker<'a> {
     }
 
     pub fn push(&mut self, value: &str) -> Range<usize> {
+        if let Some(pos) = self.inner.find(value) {
+            return pos..pos + value.len();
+        }
+
         let start = self.offset();
         self.inner.push_str(value);
         start..self.offset()
