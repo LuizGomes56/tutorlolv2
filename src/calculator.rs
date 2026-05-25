@@ -104,8 +104,8 @@ pub const fn get_rune_bonus_stats(
                 )
             }
             RuneId::AxiomArcanist => modifiers.abilities.r *= 1.12,
-            // RuneId::Health => stats.max_health += 65.0,
-            // RuneId::HealthScaling => stats.max_health += 10.0 * level as f32,
+            RuneId::Health => stats.max_health += 65.0,
+            RuneId::HealthScaling => stats.max_health += 10.0 * level as f32,
             _ => {}
         }
         i += 1;
@@ -157,7 +157,7 @@ pub const fn infer_champion_stats(data: InferStats<'_>) -> Stats<f32> {
     );
 
     let cached_stats = cache.stats;
-    let base_stats = BasicStats::infer(champion_id, level, is_mega_gnar);
+    let base_stats = BasicStats::base_stats(champion_id, level, is_mega_gnar);
 
     let mut stats = Stats {
         armor: base_stats.armor,
@@ -276,6 +276,12 @@ pub const fn infer_champion_stats(data: InferStats<'_>) -> Stats<f32> {
     stats
 }
 
+impl Stats<f32> {
+    pub const fn infer(data: InferStats<'_>) -> Self {
+        infer_champion_stats(data)
+    }
+}
+
 pub struct ChampionExceptionData<'a> {
     pub stats: &'a mut Stats<f32>,
     pub ability_levels: AbilityLevels,
@@ -376,8 +382,8 @@ pub const fn assign_rune_exceptions(data: RuneExceptionData, exceptions: &[Value
                     }
                 }
                 RuneId::GatheringStorm => *adaptive_force += ((stacks * (stacks + 1)) << 2) as f32,
-                // RuneId::AdaptiveForce => *adaptive_force += 9.0 * stacks as f32,
-                // RuneId::AttackSpeed => stats.attack_speed += 10.0 * (stacks as f32),
+                RuneId::AdaptiveForce => *adaptive_force += 9.0 * stacks as f32,
+                RuneId::AttackSpeed => stats.attack_speed += 10.0 * (stacks as f32),
                 _ => {}
             }
         }
@@ -476,7 +482,7 @@ pub fn calculator(game: InputGame) -> OutputGame {
     let current_player_cache = current_player_champion_id.cache();
 
     let current_player_base_stats =
-        BasicStats::infer(current_player_champion_id, level, is_mega_gnar);
+        BasicStats::base_stats(current_player_champion_id, level, is_mega_gnar);
 
     let champion_stats = match infer_stats {
         true => infer_champion_stats(InferStats {
@@ -623,6 +629,7 @@ pub fn get_calculator_enemies(
 
             let modifiers = Modifiers {
                 damages: DamageModifiers {
+                    adaptive_type: self_state.adaptive_type,
                     physical_mod: modifiers.damages.physical_mod
                         * full_state.armor_values.modifier
                         * full_state.modifiers.physical_mod,

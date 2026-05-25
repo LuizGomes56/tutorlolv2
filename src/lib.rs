@@ -1,276 +1,163 @@
 #![no_std]
 
-//! ### `tutorlolv2`
-//!
-//! This is a library that provides functions that evaluate the damage of every
-//! ability of every champion, every item, and every rune in League of Legends. It
-//! is focused on performance and it is fully statically typed, with wide support
-//! to constant evaluation. In other words, there's no regex and any kind of string
-//! parsing and expression-evaluation, meaning that everything can be evaluated at
-//! compile time, with all of Rust's limitations related to it.
-//!
-//! - This crate depends on `alloc`, `const_sized_bit_set`, and `phf`
-//! - **This crate does not depend on the standard library**, and has `no_std` on by default
-//!
-//! There are two main functions that are exported: [`realtime`] and [`calculator`].
-//!
-//! - [`realtime`] Receives deserialized data that comes directly from port 2999 of
-//!   the user's local machine livegame and returns the damage of every found item, rune,
-//!   and ability of the current player, against every enemy in the other team, and other
-//!   useful information about the game. You can enable feature `livegame` and use
-//!   `serde_json` to call that function directly.
-//!
-//!     ```rs
-//!
-//!     let port_2999_bytes = Client::get(
-//!         "http://127.0.0.1:2999/liveclientdata/allgamedata"
-//!     )
-//!     .await?
-//!     .bytes()
-//!     .await?;
-//!     // You can deserialize if feature "livegame" or "serde" is enabled
-//!     let game = serde_json::from_slice(&port_2999_bytes)?;
-//!     // If you don't activate those features, you can deserialize manually
-//!     // or obtain such data from another source
-//!     let data = realtime(&game).ok_or("Failed to run `tutorlolv2::realtime`")?;
-//!
-//!     // If you have feature "serde" activated, you can save it to a JSON file
-//!     let json = serde_json::to_string_pretty(&data)?;
-//!     std::fs::write("realtime_data.json", json)?;
-//!
-//!     // With feature "bincode", you can encode it to binary data and export
-//!     // to your WebAssembly application
-//!     let bin = bincode::encode_to_vec(&data, CFG)?;
-//!     std::fs::write("realtime_data.bin", bin)?;
-//!
-//!     let number_of_enemies = data.enemies.len();
-//!     for enemy in data.enemies {
-//!         let Damages {
-//!             abilities,
-//!             items,
-//!             runes,
-//!             attacks
-//!         } = enemy.damages;
-//!         println!("Damage of attacks: {attacks:?}");
-//!         // All instances below have the same type of `Box<[i32]>`, so you can
-//!         // create a closure to simplify the code
-//!         for (i, damage) in abilities.into_iter().enumerate() {
-//!             let ability_id = data.abilities_meta[i].kind;
-//!             println!("Damage for ability {ability_id:?} is {damage}");
-//!         }
-//!         for (i, damage) in items.into_iter().enumerate() {
-//!             let item_id = data.items_meta[i].kind;
-//!             println!("Damage for item {item_id:?} is {damage}");
-//!         }
-//!         for (i, damage) in runes.into_iter().enumerate() {
-//!             let rune_id = data.runes_meta[i].kind;
-//!             println!("Damage for rune {rune_id:?} is {damage}");
-//!         }
-//!         ...
-//!     }
-//!     ```
-//!
-//!     See the documentation for function [`realtime()`] for more details
-//!
-//! - [`calculator`] Receives data similar to function [`realtime`], but with the
-//!   library's own data types, and containing only the information needed to calculate
-//!   the current player and enemies state, and to achieve a more precise calculation,
-//!   accounting for item, rune, and champion exceptions. You have to provide the inputs
-//!   on your own since it is unrelated to Riot's API, and there's no public endpoint where
-//!   you can get data that fits this function's input.
-//!
-//! If you want to calculate the game information on your own, you can still use
-//! this library to help you on this task, and avoid having to manually implement
-//! all the logic to update your application on every patch. Everything used in
-//! this library is re-exported, which means you can personalize the usage of the
-//! calculations into your own data types, and recreate the functions [`realtime()`]
-//! and [`calculator()`] to fit your needs. See the documentation for module
-//! [`helpers`] for more details
-//!
-//! ### features
-//! - `livegame` Enables serde's `Deserialize` traits to all types in the module [`riot`],
-//!   which allows you to get the data directly from Riot's API, deserialize it and call
-//!   the function [`realtime()`] afterwards (see the provided examples)
-//! - `serde` Includes feature `livegame` and adds the traits `Serialize` and `Deserialize`
-//!   to every eligible struct. Notethat several structs have lifetime annotations, and some
-//!   have static lifetimes. Those do not implement `Deserialize`, so if you want to transform
-//!   it into a JSON file, you will not be able to get it back unless you create your own
-//!   derived data type to make it happen
-//! - `bincode` Adds the traits `Encode` and `Decode` to every eligible struct. Structs
-//!   with lifetime annotations try to implement `BorrowDecode`, if no static lifetimes are
-//!   involved
-//! - `no_std` is always on
-//!
-//! ### Warnings
-//! - Since this library is entirely static, it needs to be recompiled if anything
-//!   in League of Legends gets updated. If a champion receives a rework, a new ability, or
-//!   a damage adjustment, this library have to be updated to a new version. Check the github
-//!   repository if you want to download it into your machine to not depend on its updates from
-//!   `crates.io`
-//! - Riot's API is not guaranteed to be stable, so if anything changes, this entire library
-//!   may break
-//! - It is recommended to add a panic handler to every non-constant function called from
-//!   this library, since they assume that the input data is always valid, that the
-//!   generated function prototypes are correct, and that oversized inputs might trigger
-//!   an stack overflow error
-
 pub use calculator::calculator;
 pub use realtime::realtime;
 pub use tutorlolv2_gen::{
-    AdaptiveType, AttackType, Attrs, ChampionId, Ctx, DamageType, GameMap, ItemId, Position, RuneId,
+    AbilityId, AbilityName, AdaptiveType, AttackType, Attrs, ChampionId, Ctx, DamageType, GameMap,
+    ItemId, Position, RuneId,
 };
-
-pub mod model;
-
-pub mod constants {
-    //! This module exports static variables that represent the data generated
-    //! by the build script. All of those variables are arrays that can be indexed
-    //! using their corresponding `id` enum types, which are the following
-    //! - [`ChampionId`] indexes [`CHAMPION_CACHE`]
-    //! - [`ItemId`] indexes [`ITEM_CACHE`]
-    //! - [`RuneId`] indexes [`RUNE_CACHE`]
-    //!
-    //! If you're still in doubt of how to use this module, see the example below
-    //! ```rs
-    //! let my_champion = ChampionId::Neeko;
-    //! let my_item = ItemId::BladeOfTheRuinedKing;
-    //! let my_rune = RuneId::Electrocute;
-    //!
-    //! let neeko = CHAMPION_CACHE[my_champion as usize];
-    //! let bork = ITEM_CACHE[my_item as usize];
-    //! let electrocute = RUNE_CACHE[my_rune as usize];
-    //! ```
-    //!
-    //! If you only want to use one single value, you don't need to use any of those
-    //! arrays. Instead you can directly access each static variable by using its
-    //! corresponding module, such as [`champions`], [`items`], or [`runes`].
-    //!
-    //! The code shown before can be simplified using:
-    //! ```rs
-    //! let neeko = tutorlolv2::champions::NEEKO;
-    //! let bork = tutorlolv2::items::BLADE_OF_THE_RUINED_KING;
-    //! let electrocute = tutorlolv2::runes::ELECTROCUTE;
-    //! ```
-    //!
-    //! If you want to verify what information those static variables hold, check
-    //! fields for the following structs
-    //! - [`tutorlolv2_gen::CachedChampion`]
-    //! - [`tutorlolv2_gen::CachedItem`]
-    //! - [`tutorlolv2_gen::CachedRune`]
-
-    pub use tutorlolv2_gen::{CHAMPION_CACHE, ITEM_CACHE, RUNE_CACHE};
-}
-
-pub mod champions {
-    //! Holds static variables about champions, and functions
-    //! that evaluate the damages of their abilities
-
-    pub use tutorlolv2_gen::champions::*;
-}
-
-pub mod items {
-    //! Holds static variables and functions that evaluate damages
-    //! for every item
-
-    pub use tutorlolv2_gen::items::*;
-}
-
-pub mod runes {
-    //! Holds static variables and functions that evaluate damages
-    //! for every rune
-
-    pub use tutorlolv2_gen::runes::*;
-}
 
 extern crate alloc;
 
 pub mod calculator;
 pub mod const_eval;
 pub mod helpers;
+pub mod model;
 pub mod realtime;
 pub mod riot;
 
-/*
+pub mod constants {
+    pub use tutorlolv2_gen::{CHAMPION_CACHE, ITEM_CACHE, RUNE_CACHE};
+}
+
+pub mod champions {
+    pub use tutorlolv2_gen::champions::*;
+}
+
+pub mod items {
+    pub use tutorlolv2_gen::items::*;
+}
+
+pub mod runes {
+    pub use tutorlolv2_gen::runes::*;
+}
+
+pub mod bitset {
+    pub use tutorlolv2_gen::{
+        bitset,
+        bitset::{ItemsBitSet, RunesBitSet},
+    };
+}
+
+#[allow(dead_code, unused_imports)]
 mod test {
+    use tutorlolv2_gen::DamageType;
+
+    use crate::{
+        calculator::{InferStats, infer_champion_stats},
+        model::Dragons,
+    };
 
     #[test]
     pub fn const_eval() {
         use crate::{
+            AbilityId, ChampionId, Ctx, ItemId, RuneId,
+            bitset::{ItemsBitSet, RunesBitSet, bitset},
             const_eval,
-            model::{Modifiers, RangeDamage},
+            helpers::{get_damaging_items, get_damaging_runes, get_enemy_full_state, get_eval_ctx},
+            model::{
+                AbilityLevels, BasicStats, EnemyFullState, EnemyState, EnemyStats, Modifiers,
+                RangeDamage, ResistShred, SelfState, SimpleStats, Stats, ValueException,
+            },
         };
-        use tutorlolv2_gen::{AbilityId, AbilityName, ChampionId, Ctx};
 
-        const CHAMPION_ID: ChampionId = ChampionId::Neeko;
         const N: usize = CHAMPION_ID.number_of_abilities();
-        const CTX: Ctx = Ctx {
-            ability_power: 590.0,
-            adaptive_damage: 0.0,
-            armor: 0.0,
-            armor_penetration_flat: 0.0,
-            armor_penetration_percent: 0.0,
-            attack_damage: 0.0,
-            attack_speed: 0.0,
-            base_ad: 0.0,
-            base_armor: 0.0,
-            base_health: 0.0,
-            base_magic_resist: 0.0,
-            base_mana: 0.0,
-            bonus_ad: 0.0,
-            bonus_armor: 0.0,
-            bonus_health: 0.0,
-            bonus_magic_resist: 0.0,
-            bonus_mana: 0.0,
-            bonus_move_speed: 0.0,
-            crit_chance: 0.0,
-            crit_damage: 0.0,
-            current_health: 0.0,
-            current_mana: 0.0,
-            level: 18.0,
-            q_level: 5.0,
-            w_level: 5.0,
-            e_level: 5.0,
-            r_level: 5.0,
-            magic_multiplier: 1.0,
-            magic_penetration_flat: 0.0,
-            magic_penetration_percent: 0.0,
-            magic_resist: 0.0,
-            max_health: 0.0,
-            max_mana: 0.0,
-            missing_health: 0.0,
-            physical_multiplier: 0.0,
-            randuin_effect: 0.0,
-            rocksolid_effect: 0.0,
-            stacks: 0.0,
-            steelcaps_effect: 0.0,
-            life_steal: 0.0,
-            enemy_armor: 0.0,
-            enemy_bonus_armor: 0.0,
-            enemy_bonus_health: 0.0,
-            enemy_bonus_magic_resist: 0.0,
-            enemy_current_health: 0.0,
-            enemy_magic_resist: 0.0,
-            enemy_max_health: 0.0,
-            enemy_missing_health: 0.0,
+        const CHAMPION_ID: ChampionId = ChampionId::Neeko;
+        const BASE_STATS: BasicStats<f32> =
+            BasicStats::base_stats(CHAMPION_ID, LEVEL, matches!(CHAMPION_ID, ChampionId::Gnar));
+        // const STATS: Stats<f32> = Stats {
+        //     ability_power: 500.0,
+        //     armor: BASE_STATS.armor,
+        //     armor_penetration_flat: 0.0,
+        //     armor_penetration_percent: 0.0,
+        //     attack_damage: BASE_STATS.attack_damage,
+        //     attack_speed: CHAMPION_ID.stats().attack_speed.base,
+        //     crit_chance: 0.0,
+        //     crit_damage: CHAMPION_ID.stats().crit_base * CHAMPION_ID.stats().crit_modifier,
+        //     current_health: BASE_STATS.max_health,
+        //     magic_penetration_flat: 0.0,
+        //     magic_penetration_percent: 0.0,
+        //     magic_resist: BASE_STATS.magic_resist,
+        //     max_health: BASE_STATS.max_health,
+        //     max_mana: BASE_STATS.max_mana,
+        //     current_mana: BASE_STATS.max_mana,
+        // };
+        const DRAGONS: Dragons = Dragons::default();
+        const STATS: Stats<f32> = infer_champion_stats(InferStats {
+            item_exceptions: &[],
+            rune_exceptions: &[],
+            items: &ITEMS,
+            runes: &RUNES,
+            modifiers: &mut Modifiers::default(),
+            dragons: DRAGONS,
+            ability_levels: ABILITY_LEVELS,
+            stacks: STACKS as _,
+            level: LEVEL,
+            champion_id: CHAMPION_ID,
+            is_mega_gnar: matches!(CHAMPION_ID, ChampionId::Gnar),
+        });
+        const ABILITY_LEVELS: AbilityLevels = AbilityLevels {
+            q: 5,
+            w: 5,
+            e: 5,
+            r: 3,
         };
-
-        const ABILITIES: [AbilityId; N] = {
-            let mut i = 0;
-            let mut result = [AbilityId::P(AbilityName::Void); _];
-            while i < N {
-                result[i] = CHAMPION_ID.abilities()[i].kind;
-                i += 1;
-            }
-            result
+        const LEVEL: u8 = 18;
+        const STACKS: f32 = 0.0;
+        const BONUS_STATS: BasicStats<f32> = STATS.bonus_stats(BASE_STATS);
+        const SELF_STATE: SelfState = SelfState {
+            stacks: STACKS,
+            ability_levels: ABILITY_LEVELS,
+            current_stats: STATS,
+            bonus_stats: BONUS_STATS,
+            base_stats: BASE_STATS,
+            level: LEVEL,
+            adaptive_type: CHAMPION_ID.adaptive_type(),
         };
+        const SHRED: ResistShred = ResistShred::new(&STATS);
 
-        const DAMAGES: [i32; N] = const_eval::const_ability_id_eval_damage(
-            &CTX,
-            &mut RangeDamage::default(),
-            CHAMPION_ID,
-            Modifiers::default(),
+        const E_STATS: Option<EnemyStats<f32>> = None;
+        const E_CHAMPION_ID: ChampionId = ChampionId::Aatrox;
+        const E_ITEMS: &[ItemId] = &[ItemId::ForceOfNature, ItemId::JakShoTheProtean];
+        const E_STACKS: u32 = 0;
+        const E_LEVEL: u8 = 18;
+        const E_EARTH_DRAGONS: u16 = 0;
+        const E_ITEM_EXCEPTIONS: &[ValueException] =
+            &[ValueException::pack_item_id(ItemId::Dragonheart, 2)];
+        const E_BASE_STATS: SimpleStats<f32> = SimpleStats::infer(
+            E_CHAMPION_ID,
+            E_LEVEL,
+            matches!(E_CHAMPION_ID, ChampionId::Gnar),
         );
-        assert_eq!(DAMAGES.len(), N);
+        const ENEMY_STATE: EnemyState = EnemyState {
+            current_stats: E_STATS,
+            base_stats: E_BASE_STATS,
+            items: E_ITEMS,
+            stacks: E_STACKS,
+            champion_id: E_CHAMPION_ID,
+            earth_dragons: E_EARTH_DRAGONS,
+            level: E_LEVEL,
+            item_exceptions: E_ITEM_EXCEPTIONS,
+        };
+        const E_STATE: EnemyFullState = get_enemy_full_state(ENEMY_STATE, SHRED, false);
+
+        const CTX: Ctx = get_eval_ctx(&SELF_STATE, &E_STATE);
+        const MODIFIERS: Modifiers = Modifiers::new(&CTX, CHAMPION_ID.adaptive_type());
+
+        const _ABILITIES: [AbilityId; N] = CHAMPION_ID.ability_ids();
+
+        const ABILITY_DAMAGES: [i32; N] =
+            const_eval::const_ability_id_eval_damage(&CTX, CHAMPION_ID, MODIFIERS);
+
+        const ITEMS: [ItemId; 1] = [ItemId::NashorsTooth];
+        const ITEM_DAMAGES: [i32; ITEMS.len() << 1] =
+            const_eval::eval_item_damage_const(&CTX, ITEMS, CHAMPION_ID.attack_type(), MODIFIERS);
+
+        const RUNES: [RuneId; 1] = [RuneId::Electrocute];
+        const RUNE_DAMAGES: [i32; RUNES.len() << 1] =
+            const_eval::eval_rune_damage_const(&CTX, RUNES, CHAMPION_ID.attack_type(), MODIFIERS);
+
+        const I0_DMG: [f32; 2] = ItemId::NashorsTooth.eval(&CTX, CHAMPION_ID.attack_type());
+        const R0_DMG: [f32; 2] = RuneId::Electrocute.eval(&CTX, CHAMPION_ID.attack_type());
     }
 }
-*/

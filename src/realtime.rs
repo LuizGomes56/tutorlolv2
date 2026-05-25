@@ -116,7 +116,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
     let is_mega_gnar = current_player.champion_name == "Mega Gnar";
 
     let current_player_base_stats =
-        BasicStats::infer(current_player_champion_id, level, is_mega_gnar);
+        BasicStats::base_stats(current_player_champion_id, level, is_mega_gnar);
 
     // This is the difference between the current stats and the base values
     let current_player_bonus_stats = bonus_stats!(
@@ -355,6 +355,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
             let modifiers = Modifiers {
                 abilities: ability_modifiers,
                 damages: DamageModifiers {
+                    adaptive_type,
                     physical_mod: base_modifiers.physical_mod
                         * full_state.armor_values.modifier
                         * full_state.modifiers.physical_mod,

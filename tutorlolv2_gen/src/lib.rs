@@ -180,7 +180,7 @@ pub const SIMULATED_ITEMS_METADATA: [TypeMetadata<ItemId>; L_SIML] = {
             ..
         } = item_id.metadata();
         unsafe {
-            core::ptr::addr_of_mut!((*siml_items_ptr)[i]).write(TypeMetadata {
+            (&raw mut (*siml_items_ptr)[i]).write(TypeMetadata {
                 kind: item_id,
                 damage_type,
                 attributes,
@@ -429,12 +429,33 @@ impl ChampionId {
         self.cache().metadata
     }
 
+    pub const fn stats(&self) -> &'static WikiStats {
+        &self.cache().stats
+    }
+
     pub const fn merge_data(&self) -> &'static [MergeData] {
         self.cache().merge_data
     }
 
     pub const fn number_of_abilities(&self) -> usize {
         self.closures().len()
+    }
+
+    pub const fn adaptive_type(&self) -> AdaptiveType {
+        self.cache().adaptive_type
+    }
+
+    pub const fn ability_ids<const N: usize>(&self) -> [AbilityId; N] {
+        let mut i = 0;
+
+        assert!(N == self.number_of_abilities());
+
+        let mut result = [AbilityId::P(AbilityName::Void); _];
+        while i < N {
+            result[i] = self.abilities()[i].kind;
+            i += 1;
+        }
+        result
     }
 
     pub const fn recommended_items(&self, position: Position) -> &'static [ItemId] {
@@ -757,6 +778,10 @@ impl RuneId {
         self.cache().metadata
     }
 
+    pub const fn damage_type(&self) -> DamageType {
+        self.cache().metadata.damage_type
+    }
+
     pub const fn eval(&self, ctx: &Ctx, attack_type: AttackType) -> [f32; 2] {
         rune_const_eval(ctx, *self, attack_type)
     }
@@ -975,6 +1000,9 @@ pub trait ValueId: CastId {
     fn identifiers(&self) -> &'static [[&'static [CtxVar]; 2]];
     fn functions(&self) -> &'static [[Range<usize>; 2]; 2];
     fn metadata(&self) -> TypeMetadata<Self>;
+    fn damage_type(&self) -> DamageType {
+        self.metadata().damage_type
+    }
 }
 
 impl ValueId for ItemId {

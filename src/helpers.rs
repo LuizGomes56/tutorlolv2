@@ -80,7 +80,7 @@ impl SimpleStats<f32> {
             armor,
             magic_resist,
             ..
-        } = BasicStats::infer(champion_id, level, is_mega_gnar);
+        } = BasicStats::base_stats(champion_id, level, is_mega_gnar);
 
         Self {
             max_health,
@@ -141,7 +141,7 @@ impl BasicStats<f32> {
 
     /// Infers the champion's base stats at a given level. `is_mega_gnar` is valid only
     /// when `champion_id` is [`ChampionId::Gnar`], otherwise it has no effect.
-    pub const fn infer(champion_id: ChampionId, level: u8, is_mega_gnar: bool) -> Self {
+    pub const fn base_stats(champion_id: ChampionId, level: u8, is_mega_gnar: bool) -> Self {
         match champion_id {
             ChampionId::Gnar if is_mega_gnar => {
                 core::hint::cold_path();
@@ -176,6 +176,16 @@ impl BasicStats<f32> {
                 }
             }
             _ => Self::new(champion_id, level),
+        }
+    }
+
+    pub const fn bonus_stats(&self, base_stats: Self) -> Self {
+        Self {
+            armor: self.armor - base_stats.armor,
+            max_health: self.max_health - base_stats.max_health,
+            attack_damage: self.attack_damage - base_stats.attack_damage,
+            magic_resist: self.magic_resist - base_stats.magic_resist,
+            max_mana: self.max_mana - base_stats.max_mana,
         }
     }
 }
@@ -233,7 +243,7 @@ impl Stats<f32> {
             new_stat.armor *= earth_mod;
 
             unsafe {
-                core::ptr::addr_of_mut!((*result_ptr)[i]).write(new_stat);
+                (&raw mut (*result_ptr)[i]).write(new_stat);
             }
 
             i += 1;
@@ -241,12 +251,21 @@ impl Stats<f32> {
 
         unsafe { result.assume_init() }
     }
+
+    pub const fn bonus_stats(&self, base_stats: BasicStats<f32>) -> BasicStats<f32> {
+        BasicStats {
+            armor: self.armor - base_stats.armor,
+            max_health: self.max_health - base_stats.max_health,
+            attack_damage: self.attack_damage - base_stats.attack_damage,
+            magic_resist: self.magic_resist - base_stats.magic_resist,
+            max_mana: self.max_mana - base_stats.max_mana,
+        }
+    }
 }
 
 impl<T> DamageKind<T> {
-    /// Returns an instance [`DamageKind`] containing the closures and metadata of the runes.
-    /// Since the number of runes is unknown at compile time, those values are dynamically
-    /// allocated. This function does not evaluate any closures
+    /// Receives a bitset of damaging items or runes and a function that returns
+    /// all metadata and closures for each element
     pub fn new<const N: usize>(
         bitset: &BitSetArray<N>,
         attack_type: AttackType,
@@ -259,7 +278,6 @@ impl<T> DamageKind<T> {
 
         unsafe {
             for (i, j) in bitset.iter_const().enumerate() {
-                //
                 let (meta, slice) = f(j as usize, attack_type);
 
                 let base = i << 1;
@@ -670,19 +688,7 @@ pub const fn ability_id_mod(
     modifiers: Modifiers,
 ) -> f32 {
     let Modifiers { damages, abilities } = modifiers;
-    let mut modifier = damages.modifier(damage_type);
-
-    if let Some((v, mul)) = match ability_id {
-        AbilityId::Q(v) => Some((v, abilities.q)),
-        AbilityId::W(v) => Some((v, abilities.w)),
-        AbilityId::E(v) => Some((v, abilities.e)),
-        AbilityId::R(v) => Some((v, abilities.r)),
-        _ => None,
-    } && v as u8 <= AbilityName::Mega as u8
-    {
-        modifier *= mul;
-    }
-    modifier
+    damages.modifier(damage_type) * abilities.modifier(ability_id)
 }
 
 impl Attacks {
@@ -726,7 +732,7 @@ impl Damages {
     pub fn new(ctx: Ctx, data: &DamageEvalData, modifiers: Modifiers) -> Self {
         let mut onhit = RangeDamage::default();
 
-        let abilities = Self::eval_ability(
+        let abilities = Self::eval_abilities(
             &ctx,
             &mut onhit,
             data.abilities.metadata,
@@ -766,7 +772,7 @@ impl Damages {
     /// resist multiplier of the enemy, and considers global and local damage modifiers
     /// This function will cause `Undefined Behavior` if the length of `closures` and
     /// `metadata` are not equal.
-    pub fn eval_ability(
+    pub fn eval_abilities(
         ctx: &Ctx,
         onhit: &mut RangeDamage,
         metadata: &[TypeMetadata<AbilityId>],
@@ -862,7 +868,7 @@ pub fn get_monster_damages(
             true,
         );
         let ctx = get_eval_ctx(self_state, &full_state);
-        let modifiers = Modifiers::new(&ctx);
+        let modifiers = Modifiers::new(&ctx, self_state.adaptive_type);
         Damages::new(ctx, eval_data, modifiers)
     })
 }
@@ -902,7 +908,7 @@ pub const fn get_tower_damages(
             pen_flat,
         );
         unsafe {
-            core::ptr::addr_of_mut!((*tower_ptr)[i]).write(damage);
+            (&raw mut (*tower_ptr)[i]).write(damage);
         }
         i += 1;
     }

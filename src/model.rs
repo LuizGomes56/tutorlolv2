@@ -444,6 +444,7 @@ pub struct OutputEnemy {
 /// of the damage type provided
 #[derive(Clone, Copy, Debug, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize)]
 pub struct DamageModifiers {
+    pub adaptive_type: AdaptiveType,
     pub physical_mod: f32,
     pub magic_mod: f32,
     pub true_mod: f32,
@@ -457,6 +458,10 @@ impl DamageModifiers {
                 DamageType::Physical => self.physical_mod,
                 DamageType::Magic => self.magic_mod,
                 DamageType::True => self.true_mod,
+                DamageType::Adaptive => match self.adaptive_type {
+                    AdaptiveType::Physical => self.physical_mod,
+                    AdaptiveType::Magic => self.magic_mod,
+                },
                 _ => 1.0,
             }
     }
@@ -469,9 +474,10 @@ pub struct Modifiers {
 }
 
 impl Modifiers {
-    pub const fn new(ctx: &Ctx) -> Self {
+    pub const fn new(ctx: &Ctx, adaptive_type: AdaptiveType) -> Self {
         Self {
             damages: DamageModifiers {
+                adaptive_type,
                 physical_mod: ctx.physical_multiplier,
                 magic_mod: ctx.magic_multiplier,
                 true_mod: 1.0,
@@ -492,6 +498,21 @@ pub struct AbilityModifiers {
     pub w: f32,
     pub e: f32,
     pub r: f32,
+}
+
+impl AbilityModifiers {
+    pub const fn modifier(&self, ability_id: AbilityId) -> f32 {
+        match match ability_id {
+            AbilityId::Q(v) => Some((v, self.q)),
+            AbilityId::W(v) => Some((v, self.w)),
+            AbilityId::E(v) => Some((v, self.e)),
+            AbilityId::R(v) => Some((v, self.r)),
+            _ => None,
+        } {
+            Some((v, mul)) if v as u8 <= AbilityName::Mega as u8 => mul,
+            _ => 1.0,
+        }
+    }
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize)]
