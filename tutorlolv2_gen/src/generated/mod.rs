@@ -91,6 +91,7 @@ pub struct Item {
     pub purchasable: bool,
     pub riot_id: u32,
     pub identifiers: [[&'static [CtxVar]; 2]; 2],
+    pub custom: bool,
 }
 
 #[derive(Clone, Copy, Debug)]
@@ -102,6 +103,7 @@ pub struct Rune {
     pub deals_damage: [bool; 4],
     pub riot_id: u32,
     pub identifiers: [[&'static [CtxVar]; 2]; 2],
+    pub custom: bool,
 }
 
 pub const fn zero(_: &Ctx) -> f32 {

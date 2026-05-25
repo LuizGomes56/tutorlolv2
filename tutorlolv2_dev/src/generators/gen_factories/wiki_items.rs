@@ -101,6 +101,7 @@ impl Parser<WikiItem, Item> for ItemParser {
                             recipe,
                             buy: Some(total as _),
                             purchasable,
+                            custom: true,
                         };
 
                         data.insert(key, value);
@@ -136,6 +137,7 @@ pub struct ItemBuild {
     pub purchasable: bool,
     pub riot_id: u32,
     pub identifiers: [[BTreeSet<CtxVar>; 2]; 2],
+    pub custom: bool,
 }
 
 #[derive(Copy, Clone, Debug)]
@@ -230,6 +232,7 @@ impl TryFrom<WikiItem> for Item {
                 deals_damage: Default::default(),
                 purchasable: data.purchasable,
                 identifiers: Default::default(),
+                custom: data.custom,
             },
             data,
         })

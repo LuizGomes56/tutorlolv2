@@ -35,6 +35,7 @@ pub fn generate_items() -> MayFail<(HashMap<&'static str, String>, String)> {
                         purchasable,
                         riot_id,
                         identifiers,
+                        custom,
                     },
                 ..
             } = item;
@@ -48,8 +49,6 @@ pub fn generate_items() -> MayFail<(HashMap<&'static str, String>, String)> {
                     ("TypeMetadata ", ""),
                     ("ItemId::", ""),
                     ("ctx.", ""),
-                    ("      ", ""),
-                    ("      }", "}")
                 ]
                 .into(),
                 default: false
@@ -60,31 +59,32 @@ pub fn generate_items() -> MayFail<(HashMap<&'static str, String>, String)> {
 
             let decl = format!(
                 r#"
-                #[fmt({fmt_arg})]
-                static {upper_id}: X = X {{
-                    name: {name:?},
-                    stats: {stats:?},
-                    price: {price},
-                    maps: {maps:?},
-                    tier: {tier},
-                    purchasable: {purchasable}, {damage}
-                    metadata: {metadata:?},
-                    riot_id: {riot_id},
-                }};
+#[fmt({fmt_arg})]
+static {upper_id}: X = X {{
+    name: {name:?},
+    stats: {stats:?},
+    price: {price},
+    maps: {maps:?},
+    tier: {tier},
+    purchasable: {purchasable}, {damage}
+    metadata: {metadata:?},
+    riot_id: {riot_id},
+}};
 
-                pub static {upper_id}: X = X {{
-                    name: {name:?},
-                    tier: {tier},
-                    price: {price},
-                    stats: &[{full_stats}],
-                    maps: &{maps:?},
-                    metadata: {metadata},
-                    {fn_names}
-                    deals_damage: {deals_damage:?},
-                    purchasable: {purchasable},
-                    riot_id: {riot_id},
-                    identifiers: {identifiers},
-                }};
+pub static {upper_id}: X = X {{
+    name: {name:?},
+    tier: {tier},
+    price: {price},
+    stats: &[{full_stats}],
+    maps: &{maps:?},
+    metadata: {metadata},
+    {fn_names}
+    deals_damage: {deals_damage:?},
+    purchasable: {purchasable},
+    riot_id: {riot_id},
+    identifiers: {identifiers},
+    custom: {custom}
+}};
                 "#,
                 upper_id = to_ssnake(item_id),
                 damage = repr_damages(melee, ranged, deals_damage),
@@ -102,10 +102,10 @@ pub fn generate_items() -> MayFail<(HashMap<&'static str, String>, String)> {
                     .join(", "),
                 metadata = format_args!(
                     "TypeMetadata {{
-                        kind: ItemId::{kind},
-                        damage_type: {damage_type:?},
-                        attributes: {attributes:?},
-                    }}",
+        kind: ItemId::{kind},
+        damage_type: {damage_type:?},
+        attributes: {attributes:?},
+    }}",
                     kind = metadata.kind,
                     damage_type = metadata.damage_type,
                     attributes = metadata.attributes,

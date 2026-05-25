@@ -1,97 +1,191 @@
 use super::*;
+pub static RUNE_CLOSURES: [[[Range<usize>; 2]; 2]; RuneId::VARIANTS] = [
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[4762505..4763030, 0..0], [4763030..4763555, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [
+        [4767419..4767907, 4765953..4766442],
+        [4766931..4767419, 4766442..4766931],
+    ],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[4773938..4774402, 0..0], [4773474..4773938, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[4779382..4779812, 0..0], [4778952..4779382, 0..0]],
+    [
+        [4781228..4781808, 4780704..4781228],
+        [4781808..4782388, 4782388..4782912],
+    ],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[4786018..4786507, 0..0], [4785529..4786018, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[4793758..4794026, 0..0], [4793489..4793758, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[4796086..4796627, 0..0], [4796627..4797168, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[4806009..4806481, 0..0], [4805536..4806009, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[4814375..4814884, 0..0], [4813866..4814375, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[4818060..4818531, 0..0], [4817589..4818060, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[4822294..4822646, 0..0], [4821942..4822294, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[4825301..4825765, 0..0], [4824837..4825301, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[4827923..4828284, 0..0], [4828284..4828645, 0..0]],
+    [[4829458..4829996, 0..0], [4829996..4830534, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+];
 pub static RUNE_FORMULAS: [Range<usize>; RuneId::VARIANTS] = [
-    4757433..4758030,
-    4758030..4758618,
-    4758618..4759221,
-    4760297..4761255,
-    4762052..4762658,
-    4764612..4765831,
-    4765831..4766428,
-    4766428..4767025,
-    4767025..4767628,
-    4767628..4768219,
-    4768219..4768801,
-    4768801..4769381,
-    4769381..4769975,
-    4770903..4771797,
-    4771797..4772377,
-    4772377..4772969,
-    4772969..4773552,
-    4773552..4774149,
-    4774149..4774742,
-    4774742..4775321,
-    4776181..4777037,
-    4779245..4780610,
-    4780610..4781192,
-    4781192..4781772,
-    4782750..4783652,
-    4784779..4785385,
-    4785385..4785976,
-    4785976..4786573,
-    4786573..4787163,
-    4787163..4787758,
-    4787758..4788358,
-    4788358..4788940,
-    4788940..4789540,
-    4790077..4790903,
-    4790903..4791503,
-    4791503..4792083,
-    4793165..4794131,
-    4794131..4794711,
-    4794711..4795314,
-    4795314..4795932,
-    4795932..4796532,
-    4796532..4797111,
-    4797111..4797715,
-    4797715..4798301,
-    4798301..4798886,
-    4798886..4799487,
-    4799487..4800091,
-    4800091..4800683,
-    4800683..4801281,
-    4802226..4803465,
-    4803465..4804068,
-    4804068..4804662,
-    4804662..4805277,
-    4805277..4805865,
-    4805865..4806456,
-    4806456..4807050,
-    4807050..4807636,
-    4807636..4808213,
-    4808213..4808807,
-    4808807..4809389,
-    4810407..4811332,
-    4812456..4813058,
-    4814000..4814916,
-    4814916..4815526,
-    4815526..4816123,
-    4816123..4816729,
-    4816729..4817315,
-    4818019..4818793,
-    4819586..4820174,
-    4821102..4821996,
-    4821996..4822584,
-    4822584..4823194,
-    4823916..4824711,
-    4825787..4826749,
-    4826749..4827345,
-    4827345..4827944,
-    4827944..4828543,
-    4828543..4829138,
-    4829138..4829738,
-    4829738..4830329,
-    4830329..4830906,
-    4830906..4831506,
-    4831506..4832095,
-    4832095..4832704,
-    4832704..4833296,
-    4833296..4833881,
+    4760663..4761278,
+    4761278..4761884,
+    4761884..4762505,
+    4763555..4764532,
+    4765329..4765953,
+    4767907..4769204,
+    4769204..4769819,
+    4769819..4770434,
+    4770434..4771055,
+    4771055..4771664,
+    4771664..4772264,
+    4772264..4772862,
+    4772862..4773474,
+    4774402..4775320,
+    4775320..4775918,
+    4775918..4776528,
+    4776528..4777129,
+    4777129..4777744,
+    4777744..4778355,
+    4778355..4778952,
+    4779812..4780704,
+    4782912..4784331,
+    4784331..4784931,
+    4784931..4785529,
+    4786507..4787457,
+    4788584..4789208,
+    4789208..4789817,
+    4789817..4790432,
+    4790432..4791040,
+    4791040..4791653,
+    4791653..4792271,
+    4792271..4792871,
+    4792871..4793489,
+    4794026..4794870,
+    4794870..4795488,
+    4795488..4796086,
+    4797168..4798170,
+    4798170..4798768,
+    4798768..4799389,
+    4799389..4800025,
+    4800025..4800643,
+    4800643..4801240,
+    4801240..4801862,
+    4801862..4802466,
+    4802466..4803069,
+    4803069..4803688,
+    4803688..4804310,
+    4804310..4804920,
+    4804920..4805536,
+    4806481..4807762,
+    4807762..4808383,
+    4808383..4808995,
+    4808995..4809628,
+    4809628..4810234,
+    4810234..4810843,
+    4810843..4811455,
+    4811455..4812059,
+    4812059..4812654,
+    4812654..4813266,
+    4813266..4813866,
+    4814884..4815845,
+    4816969..4817589,
+    4818531..4819471,
+    4819471..4820099,
+    4820099..4820714,
+    4820714..4821338,
+    4821338..4821942,
+    4822646..4823438,
+    4824231..4824837,
+    4825765..4826689,
+    4826689..4827295,
+    4827295..4827923,
+    4828645..4829458,
+    4830534..4831532,
+    4831532..4832146,
+    4832146..4832763,
+    4832763..4833380,
+    4833380..4833993,
+    4833993..4834611,
+    4834611..4835220,
+    4835220..4835815,
+    4835815..4836433,
+    4836433..4837040,
+    4837040..4837667,
+    4837667..4838277,
+    4838277..4838880,
 ];
 pub static RUNE_GENERATOR: [Range<usize>; RuneId::VARIANTS] = [
     0..0,
     0..0,
     0..0,
-    4761255..4762052,
+    4764532..4765329,
     0..0,
     0..0,
     0..0,
@@ -112,7 +206,7 @@ pub static RUNE_GENERATOR: [Range<usize>; RuneId::VARIANTS] = [
     0..0,
     0..0,
     0..0,
-    4783652..4784779,
+    4787457..4788584,
     0..0,
     0..0,
     0..0,
@@ -148,14 +242,14 @@ pub static RUNE_GENERATOR: [Range<usize>; RuneId::VARIANTS] = [
     0..0,
     0..0,
     0..0,
-    4811332..4812456,
+    4815845..4816969,
     0..0,
     0..0,
     0..0,
     0..0,
     0..0,
     0..0,
-    4818793..4819586,
+    4823438..4824231,
     0..0,
     0..0,
     0..0,
@@ -174,100 +268,6 @@ pub static RUNE_GENERATOR: [Range<usize>; RuneId::VARIANTS] = [
     0..0,
     0..0,
     0..0,
-];
-pub static RUNE_CLOSURES: [[[Range<usize>; 2]; 2]; RuneId::VARIANTS] = [
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[4759759..4760297, 0..0], [4759221..4759759, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [
-        [4762658..4763146, 4764123..4764612],
-        [4763146..4763634, 4763634..4764123],
-    ],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[4770439..4770903, 0..0], [4769975..4770439, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[4775751..4776181, 0..0], [4775321..4775751, 0..0]],
-    [
-        [4778665..4779245, 4778141..4778665],
-        [4777037..4777617, 4777617..4778141],
-    ],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[4781772..4782261, 0..0], [4782261..4782750, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[4789809..4790077, 0..0], [4789540..4789809, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[4792624..4793165, 0..0], [4792083..4792624, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[4801281..4801753, 0..0], [4801753..4802226, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[4809898..4810407, 0..0], [4809389..4809898, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[4813058..4813529, 0..0], [4813529..4814000, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[4817315..4817667, 0..0], [4817667..4818019, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[4820638..4821102, 0..0], [4820174..4820638, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[4823555..4823916, 0..0], [4823194..4823555, 0..0]],
-    [[4825249..4825787, 0..0], [4824711..4825249, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
 ];
 
 pub static ABSOLUTE_FOCUS: X = X {
@@ -282,6 +282,7 @@ pub static ABSOLUTE_FOCUS: X = X {
     deals_damage: [false, false, false, false],
     riot_id: 8233,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
+    custom: false,
 };
 
 pub static ABSORB_LIFE: X = X {
@@ -296,6 +297,7 @@ pub static ABSORB_LIFE: X = X {
     deals_damage: [false, false, false, false],
     riot_id: 9101,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
+    custom: false,
 };
 
 pub static ADAPTIVE_FORCE: X = X {
@@ -310,6 +312,7 @@ pub static ADAPTIVE_FORCE: X = X {
     deals_damage: [false, false, false, false],
     riot_id: 8982,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
+    custom: true,
 };
 
 pub static AFTERSHOCK: X = X {
@@ -333,12 +336,11 @@ pub static AFTERSHOCK: X = X {
             &[MagicMultiplier],
         ],
     ],
+    custom: false,
 };
 
 pub const fn aftershock_min(ctx: &Ctx) -> f32 {
-    5f32 * (5f32
-        + 0.016 * ctx.bonus_health
-        + 1.1179999999999999 * (-1f32 + ctx.level))
+    5f32 * (5f32 + 0.016 * ctx.bonus_health + 1.118 * (-1f32 + ctx.level))
 }
 
 pub static APPROACH_VELOCITY: X = X {
@@ -353,6 +355,7 @@ pub static APPROACH_VELOCITY: X = X {
     deals_damage: [false, false, false, false],
     riot_id: 8410,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
+    custom: false,
 };
 
 pub static ARCANE_COMET: X = X {
@@ -376,6 +379,7 @@ pub static ARCANE_COMET: X = X {
             &[AbilityPower, BonusAd, Level],
         ],
     ],
+    custom: false,
 };
 
 pub const fn arcane_comet_min(ctx: &Ctx) -> f32 {
@@ -398,6 +402,7 @@ pub static ATTACK_SPEED: X = X {
     deals_damage: [false, false, false, false],
     riot_id: 8983,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
+    custom: true,
 };
 
 pub static AXIOM_ARCANIST: X = X {
@@ -412,6 +417,7 @@ pub static AXIOM_ARCANIST: X = X {
     deals_damage: [false, false, false, false],
     riot_id: 8224,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
+    custom: false,
 };
 
 pub static BISCUIT_DELIVERY: X = X {
@@ -426,6 +432,7 @@ pub static BISCUIT_DELIVERY: X = X {
     deals_damage: [false, false, false, false],
     riot_id: 8345,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
+    custom: false,
 };
 
 pub static BONE_PLATING: X = X {
@@ -440,6 +447,7 @@ pub static BONE_PLATING: X = X {
     deals_damage: [false, false, false, false],
     riot_id: 8473,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
+    custom: false,
 };
 
 pub static CASH_BACK: X = X {
@@ -454,6 +462,7 @@ pub static CASH_BACK: X = X {
     deals_damage: [false, false, false, false],
     riot_id: 8321,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
+    custom: false,
 };
 
 pub static CELERITY: X = X {
@@ -468,6 +477,7 @@ pub static CELERITY: X = X {
     deals_damage: [false, false, false, false],
     riot_id: 8234,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
+    custom: false,
 };
 
 pub static CELESTIAL_BODY: X = X {
@@ -482,6 +492,7 @@ pub static CELESTIAL_BODY: X = X {
     deals_damage: [false, false, false, false],
     riot_id: 0,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
+    custom: true,
 };
 
 pub static CHEAP_SHOT: X = X {
@@ -496,6 +507,7 @@ pub static CHEAP_SHOT: X = X {
     deals_damage: [true, false, true, false],
     riot_id: 8126,
     identifiers: [[&[Level] as &[_], &[]], [&[Level] as &[_], &[]]],
+    custom: false,
 };
 
 pub const fn cheap_shot_min(ctx: &Ctx) -> f32 {
@@ -514,6 +526,7 @@ pub static CHRYSALIS: X = X {
     deals_damage: [false, false, false, false],
     riot_id: 0,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
+    custom: true,
 };
 
 pub static CONDITIONING: X = X {
@@ -528,6 +541,7 @@ pub static CONDITIONING: X = X {
     deals_damage: [false, false, false, false],
     riot_id: 8429,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
+    custom: false,
 };
 
 pub static CONQUEROR: X = X {
@@ -542,6 +556,7 @@ pub static CONQUEROR: X = X {
     deals_damage: [false, false, false, false],
     riot_id: 8010,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
+    custom: false,
 };
 
 pub static COSMIC_INSIGHT: X = X {
@@ -556,6 +571,7 @@ pub static COSMIC_INSIGHT: X = X {
     deals_damage: [false, false, false, false],
     riot_id: 8347,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
+    custom: false,
 };
 
 pub static COUP_DE_GRACE: X = X {
@@ -570,6 +586,7 @@ pub static COUP_DE_GRACE: X = X {
     deals_damage: [false, false, false, false],
     riot_id: 8014,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
+    custom: false,
 };
 
 pub static CUT_DOWN: X = X {
@@ -584,6 +601,7 @@ pub static CUT_DOWN: X = X {
     deals_damage: [false, false, false, false],
     riot_id: 8017,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
+    custom: false,
 };
 
 pub static DARK_HARVEST: X = X {
@@ -601,6 +619,7 @@ pub static DARK_HARVEST: X = X {
         [&[AbilityPower, BonusAd, Stacks] as &[_], &[]],
         [&[AbilityPower, BonusAd, Stacks] as &[_], &[]],
     ],
+    custom: false,
 };
 
 pub const fn dark_harvest_min(ctx: &Ctx) -> f32 {
@@ -628,6 +647,7 @@ pub static DEATHFIRE_TOUCH: X = X {
             &[AbilityPower, BonusAd, Level],
         ],
     ],
+    custom: false,
 };
 
 pub const fn deathfire_touch_min(ctx: &Ctx) -> f32 {
@@ -655,6 +675,7 @@ pub static DEEP_WARD: X = X {
     deals_damage: [false, false, false, false],
     riot_id: 8141,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
+    custom: false,
 };
 
 pub static DEMOLISH: X = X {
@@ -669,6 +690,7 @@ pub static DEMOLISH: X = X {
     deals_damage: [false, false, false, false],
     riot_id: 8446,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
+    custom: false,
 };
 
 pub static ELECTROCUTE: X = X {
@@ -686,6 +708,7 @@ pub static ELECTROCUTE: X = X {
         [&[AbilityPower, BonusAd, Level] as &[_], &[]],
         [&[AbilityPower, BonusAd, Level] as &[_], &[]],
     ],
+    custom: false,
 };
 
 pub const fn electrocute_min(ctx: &Ctx) -> f32 {
@@ -704,6 +727,7 @@ pub static EYEBALL_COLLECTION: X = X {
     deals_damage: [false, false, false, false],
     riot_id: 0,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
+    custom: true,
 };
 
 pub static FIRST_STRIKE: X = X {
@@ -718,6 +742,7 @@ pub static FIRST_STRIKE: X = X {
     deals_damage: [false, false, false, false],
     riot_id: 8369,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
+    custom: false,
 };
 
 pub static FLEET_FOOTWORK: X = X {
@@ -732,6 +757,7 @@ pub static FLEET_FOOTWORK: X = X {
     deals_damage: [false, false, false, false],
     riot_id: 8021,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
+    custom: false,
 };
 
 pub static FONT_OF_LIFE: X = X {
@@ -746,6 +772,7 @@ pub static FONT_OF_LIFE: X = X {
     deals_damage: [false, false, false, false],
     riot_id: 8463,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
+    custom: false,
 };
 
 pub static FUTURES_MARKET: X = X {
@@ -760,6 +787,7 @@ pub static FUTURES_MARKET: X = X {
     deals_damage: [false, false, false, false],
     riot_id: 0,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
+    custom: true,
 };
 
 pub static GATHERING_STORM: X = X {
@@ -774,6 +802,7 @@ pub static GATHERING_STORM: X = X {
     deals_damage: [false, false, false, false],
     riot_id: 8236,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
+    custom: false,
 };
 
 pub static GHOST_PORO: X = X {
@@ -788,6 +817,7 @@ pub static GHOST_PORO: X = X {
     deals_damage: [false, false, false, false],
     riot_id: 0,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
+    custom: true,
 };
 
 pub static GLACIAL_AUGMENT: X = X {
@@ -802,6 +832,7 @@ pub static GLACIAL_AUGMENT: X = X {
     deals_damage: [false, false, false, false],
     riot_id: 8351,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
+    custom: false,
 };
 
 pub static GRASP_OF_THE_UNDYING: X = X {
@@ -819,6 +850,7 @@ pub static GRASP_OF_THE_UNDYING: X = X {
         [&[MagicMultiplier, MaxHealth] as &[_], &[MagicMultiplier]],
         [&[MagicMultiplier, MaxHealth] as &[_], &[MagicMultiplier]],
     ],
+    custom: false,
 };
 
 pub const fn grasp_of_the_undying_melee_min(ctx: &Ctx) -> f32 {
@@ -841,6 +873,7 @@ pub static GRISLY_MEMENTOS: X = X {
     deals_damage: [false, false, false, false],
     riot_id: 8140,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
+    custom: false,
 };
 
 pub static GUARDIAN: X = X {
@@ -855,6 +888,7 @@ pub static GUARDIAN: X = X {
     deals_damage: [false, false, false, false],
     riot_id: 8465,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
+    custom: false,
 };
 
 pub static HAIL_OF_BLADES: X = X {
@@ -872,6 +906,7 @@ pub static HAIL_OF_BLADES: X = X {
         [&[AbilityPower, BonusAd, Level] as &[_], &[]],
         [&[AbilityPower, BonusAd, Level] as &[_], &[]],
     ],
+    custom: false,
 };
 
 pub const fn hail_of_blades_min(ctx: &Ctx) -> f32 {
@@ -892,6 +927,7 @@ pub static HEALTH: X = X {
     deals_damage: [false, false, false, false],
     riot_id: 8980,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
+    custom: true,
 };
 
 pub static HEALTH_SCALING: X = X {
@@ -906,6 +942,7 @@ pub static HEALTH_SCALING: X = X {
     deals_damage: [false, false, false, false],
     riot_id: 8981,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
+    custom: true,
 };
 
 pub static HEXTECH_FLASHTRAPTION: X = X {
@@ -920,6 +957,7 @@ pub static HEXTECH_FLASHTRAPTION: X = X {
     deals_damage: [false, false, false, false],
     riot_id: 8306,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
+    custom: false,
 };
 
 pub static INGENIOUS_HUNTER: X = X {
@@ -934,6 +972,7 @@ pub static INGENIOUS_HUNTER: X = X {
     deals_damage: [false, false, false, false],
     riot_id: 0,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
+    custom: true,
 };
 
 pub static IRON_SKIN: X = X {
@@ -948,6 +987,7 @@ pub static IRON_SKIN: X = X {
     deals_damage: [false, false, false, false],
     riot_id: 0,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
+    custom: true,
 };
 
 pub static JACK_OF_ALL_TRADES: X = X {
@@ -962,6 +1002,7 @@ pub static JACK_OF_ALL_TRADES: X = X {
     deals_damage: [false, false, false, false],
     riot_id: 0,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
+    custom: false,
 };
 
 pub static KLEPTOMANCY: X = X {
@@ -976,6 +1017,7 @@ pub static KLEPTOMANCY: X = X {
     deals_damage: [false, false, false, false],
     riot_id: 0,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
+    custom: true,
 };
 
 pub static LAST_STAND: X = X {
@@ -990,6 +1032,7 @@ pub static LAST_STAND: X = X {
     deals_damage: [false, false, false, false],
     riot_id: 8299,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
+    custom: false,
 };
 
 pub static LEGEND_ALACRITY: X = X {
@@ -1004,6 +1047,7 @@ pub static LEGEND_ALACRITY: X = X {
     deals_damage: [false, false, false, false],
     riot_id: 9104,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
+    custom: false,
 };
 
 pub static LEGEND_BLOODLINE: X = X {
@@ -1018,6 +1062,7 @@ pub static LEGEND_BLOODLINE: X = X {
     deals_damage: [false, false, false, false],
     riot_id: 9103,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
+    custom: false,
 };
 
 pub static LEGEND_HASTE: X = X {
@@ -1032,6 +1077,7 @@ pub static LEGEND_HASTE: X = X {
     deals_damage: [false, false, false, false],
     riot_id: 9105,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
+    custom: false,
 };
 
 pub static LEGEND_TENACITY: X = X {
@@ -1046,6 +1092,7 @@ pub static LEGEND_TENACITY: X = X {
     deals_damage: [false, false, false, false],
     riot_id: 0,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
+    custom: true,
 };
 
 pub static LETHAL_TEMPO: X = X {
@@ -1060,6 +1107,7 @@ pub static LETHAL_TEMPO: X = X {
     deals_damage: [true, false, true, false],
     riot_id: 8008,
     identifiers: [[&[Level] as &[_], &[]], [&[Level] as &[_], &[]]],
+    custom: false,
 };
 
 pub const fn lethal_tempo_melee_min(ctx: &Ctx) -> f32 {
@@ -1082,6 +1130,7 @@ pub static MAGICAL_FOOTWEAR: X = X {
     deals_damage: [false, false, false, false],
     riot_id: 8304,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
+    custom: false,
 };
 
 pub static MANAFLOW_BAND: X = X {
@@ -1096,6 +1145,7 @@ pub static MANAFLOW_BAND: X = X {
     deals_damage: [false, false, false, false],
     riot_id: 8226,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
+    custom: false,
 };
 
 pub static MINION_DEMATERIALIZER: X = X {
@@ -1110,6 +1160,7 @@ pub static MINION_DEMATERIALIZER: X = X {
     deals_damage: [false, false, false, false],
     riot_id: 0,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
+    custom: true,
 };
 
 pub static MIRROR_SHELL: X = X {
@@ -1124,6 +1175,7 @@ pub static MIRROR_SHELL: X = X {
     deals_damage: [false, false, false, false],
     riot_id: 0,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
+    custom: true,
 };
 
 pub static NIMBUS_CLOAK: X = X {
@@ -1138,6 +1190,7 @@ pub static NIMBUS_CLOAK: X = X {
     deals_damage: [false, false, false, false],
     riot_id: 8275,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
+    custom: false,
 };
 
 pub static NULLIFYING_ORB: X = X {
@@ -1152,6 +1205,7 @@ pub static NULLIFYING_ORB: X = X {
     deals_damage: [false, false, false, false],
     riot_id: 0,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
+    custom: true,
 };
 
 pub static OVERGROWTH: X = X {
@@ -1166,6 +1220,7 @@ pub static OVERGROWTH: X = X {
     deals_damage: [false, false, false, false],
     riot_id: 8451,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
+    custom: false,
 };
 
 pub static OVERHEAL: X = X {
@@ -1180,6 +1235,7 @@ pub static OVERHEAL: X = X {
     deals_damage: [false, false, false, false],
     riot_id: 0,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
+    custom: true,
 };
 
 pub static PERFECT_TIMING: X = X {
@@ -1194,6 +1250,7 @@ pub static PERFECT_TIMING: X = X {
     deals_damage: [false, false, false, false],
     riot_id: 0,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
+    custom: true,
 };
 
 pub static PHASE_RUSH: X = X {
@@ -1208,6 +1265,7 @@ pub static PHASE_RUSH: X = X {
     deals_damage: [false, false, false, false],
     riot_id: 0,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
+    custom: true,
 };
 
 pub static PREDATOR: X = X {
@@ -1225,6 +1283,7 @@ pub static PREDATOR: X = X {
         [&[AbilityPower, BonusAd, Level] as &[_], &[]],
         [&[AbilityPower, BonusAd, Level] as &[_], &[]],
     ],
+    custom: true,
 };
 
 pub const fn predator_min(ctx: &Ctx) -> f32 {
@@ -1246,6 +1305,7 @@ pub static PRESENCE_OF_MIND: X = X {
     deals_damage: [false, false, false, false],
     riot_id: 8009,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
+    custom: false,
 };
 
 pub static PRESS_THE_ATTACK: X = X {
@@ -1260,6 +1320,7 @@ pub static PRESS_THE_ATTACK: X = X {
     deals_damage: [true, false, true, false],
     riot_id: 8005,
     identifiers: [[&[Level] as &[_], &[]], [&[Level] as &[_], &[]]],
+    custom: false,
 };
 
 pub const fn press_the_attack_min(ctx: &Ctx) -> f32 {
@@ -1278,6 +1339,7 @@ pub static PROTOTYPE_OMNISTONE: X = X {
     deals_damage: [false, false, false, false],
     riot_id: 0,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
+    custom: true,
 };
 
 pub static RAVENOUS_HUNTER: X = X {
@@ -1292,6 +1354,7 @@ pub static RAVENOUS_HUNTER: X = X {
     deals_damage: [false, false, false, false],
     riot_id: 0,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
+    custom: true,
 };
 
 pub static RELENTLESS_HUNTER: X = X {
@@ -1306,6 +1369,7 @@ pub static RELENTLESS_HUNTER: X = X {
     deals_damage: [false, false, false, false],
     riot_id: 8105,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
+    custom: false,
 };
 
 pub static REVITALIZE: X = X {
@@ -1320,6 +1384,7 @@ pub static REVITALIZE: X = X {
     deals_damage: [false, false, false, false],
     riot_id: 8453,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
+    custom: false,
 };
 
 pub static SCORCH: X = X {
@@ -1337,6 +1402,7 @@ pub static SCORCH: X = X {
         [&[Level, MagicMultiplier] as &[_], &[MagicMultiplier]],
         [&[Level, MagicMultiplier] as &[_], &[MagicMultiplier]],
     ],
+    custom: false,
 };
 
 pub const fn scorch_min(ctx: &Ctx) -> f32 {
@@ -1355,6 +1421,7 @@ pub static SECOND_WIND: X = X {
     deals_damage: [false, false, false, false],
     riot_id: 8444,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
+    custom: false,
 };
 
 pub static SHIELD_BASH: X = X {
@@ -1372,6 +1439,7 @@ pub static SHIELD_BASH: X = X {
         [&[BonusHealth, Level] as &[_], &[]],
         [&[BonusHealth, Level] as &[_], &[]],
     ],
+    custom: false,
 };
 
 pub const fn shield_bash_min(ctx: &Ctx) -> f32 {
@@ -1390,6 +1458,7 @@ pub static SIXTH_SENSE: X = X {
     deals_damage: [false, false, false, false],
     riot_id: 8137,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
+    custom: false,
 };
 
 pub static STORMRAIDERS_SURGE: X = X {
@@ -1404,6 +1473,7 @@ pub static STORMRAIDERS_SURGE: X = X {
     deals_damage: [false, false, false, false],
     riot_id: 8230,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
+    custom: false,
 };
 
 pub static SUDDEN_IMPACT: X = X {
@@ -1418,6 +1488,7 @@ pub static SUDDEN_IMPACT: X = X {
     deals_damage: [true, false, true, false],
     riot_id: 8143,
     identifiers: [[&[Level] as &[_], &[]], [&[Level] as &[_], &[]]],
+    custom: false,
 };
 
 pub const fn sudden_impact_min(ctx: &Ctx) -> f32 {
@@ -1439,6 +1510,7 @@ pub static SUMMON_AERY: X = X {
         [&[AbilityPower, BonusAd, Level] as &[_], &[]],
         [&[AbilityPower, BonusAd, Level] as &[_], &[]],
     ],
+    custom: false,
 };
 
 pub const fn summon_aery_min(ctx: &Ctx) -> f32 {
@@ -1460,6 +1532,7 @@ pub static TASTE_OF_BLOOD: X = X {
     deals_damage: [false, false, false, false],
     riot_id: 8139,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
+    custom: false,
 };
 
 pub static THE_ULTIMATE_HAT: X = X {
@@ -1474,6 +1547,7 @@ pub static THE_ULTIMATE_HAT: X = X {
     deals_damage: [false, false, false, false],
     riot_id: 0,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
+    custom: true,
 };
 
 pub static TIME_WARP_TONIC: X = X {
@@ -1488,6 +1562,7 @@ pub static TIME_WARP_TONIC: X = X {
     deals_damage: [false, false, false, false],
     riot_id: 8352,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
+    custom: false,
 };
 
 pub static TRANSCENDENCE: X = X {
@@ -1502,6 +1577,7 @@ pub static TRANSCENDENCE: X = X {
     deals_damage: [false, false, false, false],
     riot_id: 8210,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
+    custom: false,
 };
 
 pub static TREASURE_HUNTER: X = X {
@@ -1516,6 +1592,7 @@ pub static TREASURE_HUNTER: X = X {
     deals_damage: [false, false, false, false],
     riot_id: 8135,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
+    custom: false,
 };
 
 pub static TRIPLE_TONIC: X = X {
@@ -1530,6 +1607,7 @@ pub static TRIPLE_TONIC: X = X {
     deals_damage: [false, false, false, false],
     riot_id: 8313,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
+    custom: false,
 };
 
 pub static TRIUMPH: X = X {
@@ -1544,6 +1622,7 @@ pub static TRIUMPH: X = X {
     deals_damage: [false, false, false, false],
     riot_id: 9111,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
+    custom: false,
 };
 
 pub static ULTIMATE_HUNTER: X = X {
@@ -1558,6 +1637,7 @@ pub static ULTIMATE_HUNTER: X = X {
     deals_damage: [false, false, false, false],
     riot_id: 8106,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
+    custom: false,
 };
 
 pub static UNFLINCHING: X = X {
@@ -1572,6 +1652,7 @@ pub static UNFLINCHING: X = X {
     deals_damage: [false, false, false, false],
     riot_id: 8242,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
+    custom: false,
 };
 
 pub static UNSEALED_SPELLBOOK: X = X {
@@ -1586,6 +1667,7 @@ pub static UNSEALED_SPELLBOOK: X = X {
     deals_damage: [false, false, false, false],
     riot_id: 8360,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
+    custom: false,
 };
 
 pub static WATERWALKING: X = X {
@@ -1600,6 +1682,7 @@ pub static WATERWALKING: X = X {
     deals_damage: [false, false, false, false],
     riot_id: 8232,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
+    custom: false,
 };
 
 pub static ZOMBIE_WARD: X = X {
@@ -1614,6 +1697,7 @@ pub static ZOMBIE_WARD: X = X {
     deals_damage: [false, false, false, false],
     riot_id: 0,
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
+    custom: true,
 };
 
 #[derive(

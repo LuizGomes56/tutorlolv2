@@ -348,9 +348,55 @@ pub fn closures(
 }
 
 pub fn simplify(formula: &str) -> String {
-    symb_anafis::simplify(&formula.replace("ctx.", "ctx_"), &[], None)
+    static FLOAT_RE: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"\b\d+\.\d+\b").unwrap());
+
+    let simplified = symb_anafis::simplify(&formula.replace("ctx.", "ctx_"), &[], None)
         .map(|r| r.replace("ctx_", "ctx."))
-        .unwrap_or(formula.to_string())
+        .unwrap_or(formula.to_string());
+
+    FLOAT_RE
+        .replace_all(&simplified, |caps: &Captures| {
+            let original = &caps[0];
+
+            let Ok(value) = original.parse::<f64>() else {
+                return original.to_string();
+            };
+
+            let mut s = format!("{value:.12}");
+
+            while s.contains('.') && s.ends_with('0') {
+                s.pop();
+            }
+
+            if s.ends_with('.') {
+                s.pop();
+            }
+
+            let suspicious = s.contains("999999")
+                || s.contains("000000")
+                || s.contains("333333")
+                || s.contains("666666");
+
+            if suspicious {
+                for precision in 2..=6 {
+                    let candidate = format!("{value:.precision$}");
+                    let reparsed = candidate.parse::<f64>().unwrap();
+                    let diff = (value - reparsed).abs();
+
+                    if diff < 1e-9 {
+                        let cleaned = candidate
+                            .trim_end_matches('0')
+                            .trim_end_matches('.')
+                            .to_string();
+
+                        return cleaned;
+                    }
+                }
+            }
+
+            s
+        })
+        .into_owned()
 }
 
 pub fn get_aliases<'a>(id: &'a str, name: &'a str) -> Vec<String> {

@@ -34,7 +34,7 @@ pub fn generate_runes() -> MayFail<(HashMap<&'static str, String>, String)> {
                         riot_id,
                         deals_damage,
                         identifiers,
-                        ..
+                        custom,
                     },
                 ..
             } = rune;
@@ -51,8 +51,6 @@ pub fn generate_runes() -> MayFail<(HashMap<&'static str, String>, String)> {
                     ("TypeMetadata ", ""),
                     ("RuneId::", ""),
                     ("ctx.", ""),
-                    ("      ", ""),
-                    ("      }", "}")
                 ]
                 .into(),
                 default: false
@@ -60,21 +58,22 @@ pub fn generate_runes() -> MayFail<(HashMap<&'static str, String>, String)> {
 
             let decl = format!(
                 r#"
-                #[fmt({fmt_arg})]
-                static {upper_id}: X = X {{
-                    name: {name:?}, {damage}
-                    riot_id: {riot_id},
-                    metadata: {metadata:?},
-                }};
+#[fmt({fmt_arg})]
+static {upper_id}: X = X {{
+    name: {name:?}, {damage}
+    riot_id: {riot_id},
+    metadata: {metadata:?},
+}};
 
-                pub static {upper_id}: X = X {{
-                    name: {name:?},
-                    metadata: {metadata},
-                    {fn_names}
-                    deals_damage: {deals_damage:?},
-                    riot_id: {riot_id},
-                    identifiers: {identifiers},
-                }};
+pub static {upper_id}: X = X {{
+    name: {name:?},
+    metadata: {metadata},
+    {fn_names}
+    deals_damage: {deals_damage:?},
+    riot_id: {riot_id},
+    identifiers: {identifiers},
+    custom: {custom}
+}};
                 "#,
                 upper_id = to_ssnake(rune_id),
                 damage = repr_damages(melee, ranged, deals_damage),
@@ -87,10 +86,10 @@ pub fn generate_runes() -> MayFail<(HashMap<&'static str, String>, String)> {
                 identifiers = get_identifiers(&identifiers),
                 metadata = format_args!(
                     "TypeMetadata {{
-                        kind: RuneId::{kind},
-                        damage_type: {damage_type:?},
-                        attributes: {attributes:?},
-                    }}",
+        kind: RuneId::{kind},
+        damage_type: {damage_type:?},
+        attributes: {attributes:?},
+    }}",
                     kind = metadata.kind,
                     damage_type = metadata.damage_type,
                     attributes = metadata.attributes,

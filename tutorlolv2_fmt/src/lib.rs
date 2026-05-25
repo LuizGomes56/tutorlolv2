@@ -221,7 +221,7 @@ static RUST_HIGHLIGHTER: LazyLock<Highlighter> = LazyLock::new(|| {
     // Constant
     h.keyword("_c", r"::[A-Z_][A-Za-z0-9_]*\b");
     // Constant
-    h.keyword("_c", r"\b[A-Z]+\b");
+    h.keyword("_c", r"\b[A-Z][A-Z0-9_]*\b");
     // Constant
     h.keyword(
         "_c",
@@ -233,6 +233,7 @@ static RUST_HIGHLIGHTER: LazyLock<Highlighter> = LazyLock::new(|| {
             "Physical",
             "Undefined",
             "Unknown",
+            "Unspecified",
             "Mixed",
             "True",
             "Adaptive",
@@ -333,7 +334,7 @@ static RUST_HIGHLIGHTER: LazyLock<Highlighter> = LazyLock::new(|| {
         ]),
     );
     // Type
-    h.keyword("_t", r"\b[A-Z][a-zA-Z0-9_]*\b");
+    h.keyword("_t", r"\b[A-Z][a-zA-Z0-9]*\b");
     h.keyword(
         // Primitive
         "_p",

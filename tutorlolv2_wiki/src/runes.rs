@@ -149,6 +149,7 @@ pub struct WikiRune {
     pub effects: BTreeMap<String, Effect>,
     pub descriptions: Vec<String>,
     pub riot_id: usize,
+    pub custom: bool,
 }
 
 pub fn concat() -> MayFail {
@@ -204,6 +205,7 @@ pub fn concat() -> MayFail {
                 effects,
                 descriptions,
                 riot_id: 0,
+                custom: get_str("removed").map(|s| s == "true").unwrap_or(false),
             };
 
             Some((key, rune))

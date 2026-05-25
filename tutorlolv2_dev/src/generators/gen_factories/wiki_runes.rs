@@ -41,6 +41,7 @@ pub struct RuneBuild {
     pub riot_id: u32,
     pub deals_damage: [bool; 4],
     pub identifiers: [[BTreeSet<CtxVar>; 2]; 2],
+    pub custom: bool,
 }
 
 impl Parser<WikiRune, Rune> for RuneParser {
@@ -86,6 +87,7 @@ impl Parser<WikiRune, Rune> for RuneParser {
                     effects: Default::default(),
                     descriptions: Default::default(),
                     riot_id,
+                    custom: true,
                 },
             );
         };
@@ -137,6 +139,7 @@ impl TryFrom<WikiRune> for Rune {
                 riot_id,
                 deals_damage: Default::default(),
                 identifiers: Default::default(),
+                custom: data.custom,
             },
             data,
         })

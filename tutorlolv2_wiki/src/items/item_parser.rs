@@ -44,6 +44,7 @@ pub struct WikiItem {
 
     pub buy: Option<u16>,
     pub purchasable: bool,
+    pub custom: bool,
 }
 
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
@@ -188,6 +189,7 @@ fn parse_item(raw: ItemRaw) -> WikiItem {
         recipe: raw.recipe,
         buy: raw.buy,
         purchasable: false,
+        custom: false,
     }
 }
 
