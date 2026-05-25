@@ -425,6 +425,15 @@ pub enum AttackType {
     Ranged,
 }
 
+#[derive(
+    Clone, Copy, Debug, Default, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize, Deserialize,
+)]
+pub enum DamageIndex {
+    #[default]
+    Min,
+    Max,
+}
+
 impl FromStr for AttackType {
     type Err = &'static str;
     fn from_str(s: &str) -> Result<Self, Self::Err> {

@@ -44,10 +44,12 @@ pub fn generate_items() -> MayFail<(HashMap<&'static str, String>, String)> {
                 variant: item_id,
                 meta: (),
                 replace: [
-                    (": Item = Item", " ="),
+                    (": X = X", " ="),
                     ("TypeMetadata ", ""),
                     ("ItemId::", ""),
                     ("ctx.", ""),
+                    ("      ", ""),
+                    ("      }", "}")
                 ]
                 .into(),
                 default: false
@@ -59,7 +61,7 @@ pub fn generate_items() -> MayFail<(HashMap<&'static str, String>, String)> {
             let decl = format!(
                 r#"
                 #[fmt({fmt_arg})]
-                static {upper_id}: Item = Item {{
+                static {upper_id}: X = X {{
                     name: {name:?},
                     stats: {stats:?},
                     price: {price},
@@ -70,7 +72,7 @@ pub fn generate_items() -> MayFail<(HashMap<&'static str, String>, String)> {
                     riot_id: {riot_id},
                 }};
 
-                pub static {upper_id}: Item = Item {{
+                pub static {upper_id}: X = X {{
                     name: {name:?},
                     tier: {tier},
                     price: {price},
@@ -158,7 +160,8 @@ pub fn generate_items() -> MayFail<(HashMap<&'static str, String>, String)> {
         + &item_id_enum
         + &item_name_to_id
         + &const_eval
-        + &cache;
+        + &cache
+        + "type X = Item;";
 
     Ok((fmt_args, fmt))
 }

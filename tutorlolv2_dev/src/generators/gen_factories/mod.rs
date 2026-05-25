@@ -13,7 +13,7 @@ use std::{
     sync::LazyLock,
 };
 use tutorlolv2_fmt::rustfmt;
-use tutorlolv2_types::{CtxVar, DamageType};
+use tutorlolv2_types::{CtxVar, DamageIndex, DamageType};
 
 pub mod wiki_champions;
 pub mod wiki_items;
@@ -229,12 +229,6 @@ pub fn is_zero(value: &str) -> bool {
 pub struct DamageRange {
     pub min_dmg: String,
     pub max_dmg: String,
-}
-
-#[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize, Deserialize)]
-pub enum DamageIndex {
-    Min,
-    Max,
 }
 
 impl Index<DamageIndex> for DamageRange {

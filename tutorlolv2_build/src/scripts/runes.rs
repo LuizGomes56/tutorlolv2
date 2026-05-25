@@ -12,12 +12,11 @@ use std::{
     ops::Range,
 };
 use tutorlolv2_dev::{
-    JsonRead, MayFail,
-    gen_factories::{DamageIndex, wiki_runes::RuneBuild},
+    JsonRead, MayFail, gen_factories::wiki_runes::RuneBuild,
     generators::gen_factories::wiki_runes::Rune,
 };
 use tutorlolv2_fmt::to_ssnake;
-use tutorlolv2_types::AttackType;
+use tutorlolv2_types::{AttackType, DamageIndex};
 
 pub fn generate_runes() -> MayFail<(HashMap<&'static str, String>, String)> {
     let data = BTreeMap::<String, Rune>::from_file("internal/runes.json")?;
@@ -48,10 +47,12 @@ pub fn generate_runes() -> MayFail<(HashMap<&'static str, String>, String)> {
                 variant: rune_id,
                 meta: (),
                 replace: [
-                    (": Rune = Rune", " ="),
+                    (": X = X", " ="),
                     ("TypeMetadata ", ""),
                     ("RuneId::", ""),
                     ("ctx.", ""),
+                    ("      ", ""),
+                    ("      }", "}")
                 ]
                 .into(),
                 default: false
@@ -60,13 +61,13 @@ pub fn generate_runes() -> MayFail<(HashMap<&'static str, String>, String)> {
             let decl = format!(
                 r#"
                 #[fmt({fmt_arg})]
-                static {upper_id}: Rune = Rune {{
+                static {upper_id}: X = X {{
                     name: {name:?}, {damage}
                     riot_id: {riot_id},
                     metadata: {metadata:?},
                 }};
 
-                pub static {upper_id}: Rune = Rune {{
+                pub static {upper_id}: X = X {{
                     name: {name:?},
                     metadata: {metadata},
                     {fn_names}
@@ -144,7 +145,8 @@ pub fn generate_runes() -> MayFail<(HashMap<&'static str, String>, String)> {
         + &rune_id_enum
         + &rune_name_to_id
         + &const_eval
-        + &cache;
+        + &cache
+        + "type X = Rune;";
 
     Ok((fmt_args, fmt))
 }

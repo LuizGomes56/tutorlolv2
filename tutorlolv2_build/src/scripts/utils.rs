@@ -8,13 +8,10 @@ use std::{
     sync::LazyLock,
 };
 use tutorlolv2_dev::{
-    decl_champions::Champion,
-    decl_items::Item,
-    decl_runes::Rune,
-    gen_factories::{DamageIndex, ZERO},
+    decl_champions::Champion, decl_items::Item, decl_runes::Rune, gen_factories::ZERO,
 };
 use tutorlolv2_fmt::{pascal_case, to_ssnake};
-use tutorlolv2_types::{AttackType, CtxVar};
+use tutorlolv2_types::{AttackType, CtxVar, DamageIndex};
 
 pub trait MapValueExt {
     fn riot_id(&self) -> u32;
@@ -478,7 +475,7 @@ pub fn get_fn_names(value_id: &str, melee: &[String; 2], ranged: &[String; 2]) -
     ]
 }
 
-pub fn get_identifiers(identifiers: &[[Vec<CtxVar>; 2]; 2]) -> String {
+pub fn get_identifiers(identifiers: &[[BTreeSet<CtxVar>; 2]; 2]) -> String {
     format!(
         "[{}]",
         identifiers
@@ -488,8 +485,9 @@ pub fn get_identifiers(identifiers: &[[Vec<CtxVar>; 2]; 2]) -> String {
                 slice
                     .iter()
                     .enumerate()
-                    .map(|(i, vec)| {
+                    .map(|(i, set)| {
                         let rest = if i == 0 { " as &[_]" } else { "" };
+                        let vec = set.iter().collect::<Vec<_>>();
                         format!("&{vec:?}{rest}")
                     })
                     .collect::<Vec<_>>()

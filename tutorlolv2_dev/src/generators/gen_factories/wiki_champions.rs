@@ -53,7 +53,7 @@ pub struct ChampionBuild {
     pub metadata: Vec<TypeMetadata<AbilityId>>,
     pub closures: Vec<String>,
     pub merge_data: Vec<MergeData>,
-    pub identifiers: Vec<Vec<CtxVar>>,
+    pub identifiers: Vec<BTreeSet<CtxVar>>,
     pub functions: Vec<String>,
 }
 

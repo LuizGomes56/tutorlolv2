@@ -153,7 +153,13 @@ pub fn rustfmt(src: &str, width: Option<usize>) -> String {
             .stdin
             .as_mut()
             .ok_or("Failed to open stdin")?
-            .write_all(src.as_bytes())?;
+            .write_all(
+                src.lines()
+                    .map(str::trim_end)
+                    .collect::<Vec<_>>()
+                    .join("\n")
+                    .as_bytes(),
+            )?;
         let output = child.wait_with_output()?;
         Ok(String::from_utf8_lossy(&output.stdout).into_owned())
     };

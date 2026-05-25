@@ -2,8 +2,7 @@ use crate::{
     DynError, GeneratorExt, JsonRead, MayFail,
     client::{SaveTo, Tag},
     gen_factories::{
-        DamageIndex, DamageRange, Parser, ZERO, get_identifiers, infer_damage_type, is_zero,
-        likely_damages,
+        DamageRange, Parser, ZERO, get_identifiers, infer_damage_type, is_zero, likely_damages,
     },
     gen_runes::rune_gen_fn,
     gen_utils::RegExtractor,
@@ -14,7 +13,7 @@ use std::{
     collections::{BTreeMap, BTreeSet},
     ops::{Index, IndexMut},
 };
-use tutorlolv2_types::{AttackType, CtxVar, DamageType, TypeMetadata};
+use tutorlolv2_types::{AttackType, CtxVar, DamageIndex, DamageType, TypeMetadata};
 use tutorlolv2_wiki::{
     parser::Effect,
     runes::{RuneKeystone, RuneSlot, WikiRune},
@@ -41,7 +40,7 @@ pub struct RuneBuild {
     pub ranged: [String; 2],
     pub riot_id: u32,
     pub deals_damage: [bool; 4],
-    pub identifiers: [[Vec<CtxVar>; 2]; 2],
+    pub identifiers: [[BTreeSet<CtxVar>; 2]; 2],
 }
 
 impl Parser<WikiRune, Rune> for RuneParser {

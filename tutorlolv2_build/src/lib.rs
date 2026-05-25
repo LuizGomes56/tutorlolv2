@@ -100,7 +100,7 @@ pub fn run() -> MayFail {
         .zip(["champions", "items", "runes"])
     {
         let (mut fmt_args, fmt) = function;
-        let mut src = tutorlolv2_fmt::rustfmt(&fmt, None);
+        let mut src = tutorlolv2_fmt::rustfmt(&fmt, Some(48));
         let mut batch = batch(&src);
         tracker.batch(&mut batch);
 

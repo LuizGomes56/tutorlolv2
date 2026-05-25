@@ -2,12 +2,10 @@ pub use crate::{
     MayFail,
     Progress::*,
     generators::{
-        Generator, GeneratorExt,
-        gen_factories::{DamageIndex::*, wiki_runes::Rune},
-        gen_utils::RegExtractor,
+        Generator, GeneratorExt, gen_factories::wiki_runes::Rune, gen_utils::RegExtractor,
     },
 };
-pub use tutorlolv2_types::{AttackType::*, Attrs::*, CtxVar::*, DamageType::*};
+pub use tutorlolv2_types::{AttackType::*, Attrs::*, CtxVar::*, DamageIndex::*, DamageType::*};
 pub use tutorlolv2_wiki::runes::WikiRune;
 
 #[macro_export]

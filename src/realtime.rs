@@ -31,6 +31,14 @@ pub enum RealtimeError<'a> {
     UnrecognizedCurrentPlayer(&'a str),
 }
 
+impl core::fmt::Display for RealtimeError<'_> {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+        write!(f, "Unable to recognize current player")
+    }
+}
+
+impl core::error::Error for RealtimeError<'_> {}
+
 /// Receives a reference to the current player's game, defined by the struct [`RiotRealtime`]
 /// and returns a new [`Option<Realtime>`], which contains all the information that could be
 /// extracted from the input struct. See [`Realtime`] for more information

@@ -2,8 +2,7 @@ use crate::{
     DynError, GeneratorExt, JsonRead, MayFail,
     client::{SaveTo, Tag},
     gen_factories::{
-        DamageIndex, DamageRange, Parser, ZERO, get_identifiers, infer_damage_type, is_zero,
-        likely_damages,
+        DamageRange, Parser, ZERO, get_identifiers, infer_damage_type, is_zero, likely_damages,
     },
     gen_items::item_gen_fn,
     gen_utils::RegExtractor,
@@ -14,7 +13,9 @@ use std::{
     collections::{BTreeMap, BTreeSet},
     ops::{Index, IndexMut},
 };
-use tutorlolv2_types::{AttackType, CtxVar, DamageType, GameMap, StatName, TypeMetadata};
+use tutorlolv2_types::{
+    AttackType, CtxVar, DamageIndex, DamageType, GameMap, StatName, TypeMetadata,
+};
 use tutorlolv2_wiki::items::item_parser::{ItemEffect, WikiItem};
 
 pub struct ItemParser {
@@ -134,7 +135,7 @@ pub struct ItemBuild {
     pub deals_damage: [bool; 4],
     pub purchasable: bool,
     pub riot_id: u32,
-    pub identifiers: [[Vec<CtxVar>; 2]; 2],
+    pub identifiers: [[BTreeSet<CtxVar>; 2]; 2],
 }
 
 #[derive(Copy, Clone, Debug)]

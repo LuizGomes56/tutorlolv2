@@ -1,97 +1,97 @@
 use super::*;
 pub static RUNE_FORMULAS: [Range<usize>; RuneId::VARIANTS] = [
-    4702000..4702615,
-    4702615..4703221,
-    4703221..4703842,
-    4704886..4705876,
-    4706673..4707297,
-    4709155..4710404,
-    4710404..4711019,
-    4711019..4711634,
-    4711634..4712255,
-    4712255..4712864,
-    4712864..4713464,
-    4713464..4714062,
-    4714062..4714674,
-    4715602..4716512,
-    4716512..4717110,
-    4717110..4717720,
-    4717720..4718321,
-    4718321..4718936,
-    4718936..4719547,
-    4719547..4720144,
-    4720972..4721864,
-    4724072..4725491,
-    4725491..4726091,
-    4726091..4726689,
-    4727619..4728545,
-    4729646..4730270,
-    4730270..4730879,
-    4730879..4731494,
-    4731494..4732102,
-    4732102..4732715,
-    4732715..4733333,
-    4733333..4733933,
-    4733933..4734551,
-    4735088..4735932,
-    4735932..4736550,
-    4736550..4737148,
-    4738230..4739232,
-    4739232..4739830,
-    4739830..4740451,
-    4740451..4741087,
-    4741087..4741705,
-    4741705..4742302,
-    4742302..4742924,
-    4742924..4743528,
-    4743528..4744131,
-    4744131..4744750,
-    4744750..4745372,
-    4745372..4745982,
-    4745982..4746598,
-    4747543..4748792,
-    4748792..4749413,
-    4749413..4750025,
-    4750025..4750658,
-    4750658..4751264,
-    4751264..4751873,
-    4751873..4752485,
-    4752485..4753089,
-    4753089..4753684,
-    4753684..4754296,
-    4754296..4754896,
-    4755914..4756875,
-    4757973..4758593,
-    4759535..4760467,
-    4760467..4761095,
-    4761095..4761710,
-    4761710..4762334,
-    4762334..4762938,
-    4763642..4764434,
-    4765227..4765833,
-    4766745..4767653,
-    4767653..4768259,
-    4768259..4768887,
-    4769609..4770422,
-    4771498..4772496,
-    4772496..4773110,
-    4773110..4773727,
-    4773727..4774344,
-    4774344..4774957,
-    4774957..4775575,
-    4775575..4776184,
-    4776184..4776779,
-    4776779..4777397,
-    4777397..4778004,
-    4778004..4778631,
-    4778631..4779241,
-    4779241..4779844,
+    4757433..4758030,
+    4758030..4758618,
+    4758618..4759221,
+    4760297..4761255,
+    4762052..4762658,
+    4764612..4765831,
+    4765831..4766428,
+    4766428..4767025,
+    4767025..4767628,
+    4767628..4768219,
+    4768219..4768801,
+    4768801..4769381,
+    4769381..4769975,
+    4770903..4771797,
+    4771797..4772377,
+    4772377..4772969,
+    4772969..4773552,
+    4773552..4774149,
+    4774149..4774742,
+    4774742..4775321,
+    4776181..4777037,
+    4779245..4780610,
+    4780610..4781192,
+    4781192..4781772,
+    4782750..4783652,
+    4784779..4785385,
+    4785385..4785976,
+    4785976..4786573,
+    4786573..4787163,
+    4787163..4787758,
+    4787758..4788358,
+    4788358..4788940,
+    4788940..4789540,
+    4790077..4790903,
+    4790903..4791503,
+    4791503..4792083,
+    4793165..4794131,
+    4794131..4794711,
+    4794711..4795314,
+    4795314..4795932,
+    4795932..4796532,
+    4796532..4797111,
+    4797111..4797715,
+    4797715..4798301,
+    4798301..4798886,
+    4798886..4799487,
+    4799487..4800091,
+    4800091..4800683,
+    4800683..4801281,
+    4802226..4803465,
+    4803465..4804068,
+    4804068..4804662,
+    4804662..4805277,
+    4805277..4805865,
+    4805865..4806456,
+    4806456..4807050,
+    4807050..4807636,
+    4807636..4808213,
+    4808213..4808807,
+    4808807..4809389,
+    4810407..4811332,
+    4812456..4813058,
+    4814000..4814916,
+    4814916..4815526,
+    4815526..4816123,
+    4816123..4816729,
+    4816729..4817315,
+    4818019..4818793,
+    4819586..4820174,
+    4821102..4821996,
+    4821996..4822584,
+    4822584..4823194,
+    4823916..4824711,
+    4825787..4826749,
+    4826749..4827345,
+    4827345..4827944,
+    4827944..4828543,
+    4828543..4829138,
+    4829138..4829738,
+    4829738..4830329,
+    4830329..4830906,
+    4830906..4831506,
+    4831506..4832095,
+    4832095..4832704,
+    4832704..4833296,
+    4833296..4833881,
 ];
 pub static RUNE_GENERATOR: [Range<usize>; RuneId::VARIANTS] = [
     0..0,
     0..0,
     0..0,
-    4705876..4706673,
+    4761255..4762052,
     0..0,
     0..0,
     0..0,
@@ -112,7 +112,7 @@ pub static RUNE_GENERATOR: [Range<usize>; RuneId::VARIANTS] = [
     0..0,
     0..0,
     0..0,
-    4728545..4729646,
+    4783652..4784779,
     0..0,
     0..0,
     0..0,
@@ -148,14 +148,14 @@ pub static RUNE_GENERATOR: [Range<usize>; RuneId::VARIANTS] = [
     0..0,
     0..0,
     0..0,
-    4756875..4757973,
+    4811332..4812456,
     0..0,
     0..0,
     0..0,
     0..0,
     0..0,
     0..0,
-    4764434..4765227,
+    4818793..4819586,
     0..0,
     0..0,
     0..0,
@@ -179,11 +179,11 @@ pub static RUNE_CLOSURES: [[[Range<usize>; 2]; 2]; RuneId::VARIANTS] = [
     [[0..0, 0..0], [0..0, 0..0]],
     [[0..0, 0..0], [0..0, 0..0]],
     [[0..0, 0..0], [0..0, 0..0]],
-    [[4704364..4704886, 0..0], [4703842..4704364, 0..0]],
+    [[4759759..4760297, 0..0], [4759221..4759759, 0..0]],
     [[0..0, 0..0], [0..0, 0..0]],
     [
-        [4707762..4708226, 4708690..4709155],
-        [4708226..4708690, 4707297..4707762],
+        [4762658..4763146, 4764123..4764612],
+        [4763146..4763634, 4763634..4764123],
     ],
     [[0..0, 0..0], [0..0, 0..0]],
     [[0..0, 0..0], [0..0, 0..0]],
@@ -192,21 +192,21 @@ pub static RUNE_CLOSURES: [[[Range<usize>; 2]; 2]; RuneId::VARIANTS] = [
     [[0..0, 0..0], [0..0, 0..0]],
     [[0..0, 0..0], [0..0, 0..0]],
     [[0..0, 0..0], [0..0, 0..0]],
-    [[4715138..4715602, 0..0], [4714674..4715138, 0..0]],
+    [[4770439..4770903, 0..0], [4769975..4770439, 0..0]],
     [[0..0, 0..0], [0..0, 0..0]],
     [[0..0, 0..0], [0..0, 0..0]],
     [[0..0, 0..0], [0..0, 0..0]],
     [[0..0, 0..0], [0..0, 0..0]],
     [[0..0, 0..0], [0..0, 0..0]],
     [[0..0, 0..0], [0..0, 0..0]],
-    [[4720144..4720558, 0..0], [4720558..4720972, 0..0]],
+    [[4775751..4776181, 0..0], [4775321..4775751, 0..0]],
     [
-        [4722388..4722968, 4723548..4724072],
-        [4722968..4723548, 4721864..4722388],
+        [4778665..4779245, 4778141..4778665],
+        [4777037..4777617, 4777617..4778141],
     ],
     [[0..0, 0..0], [0..0, 0..0]],
     [[0..0, 0..0], [0..0, 0..0]],
-    [[4726689..4727154, 0..0], [4727154..4727619, 0..0]],
+    [[4781772..4782261, 0..0], [4782261..4782750, 0..0]],
     [[0..0, 0..0], [0..0, 0..0]],
     [[0..0, 0..0], [0..0, 0..0]],
     [[0..0, 0..0], [0..0, 0..0]],
@@ -215,23 +215,10 @@ pub static RUNE_CLOSURES: [[[Range<usize>; 2]; 2]; RuneId::VARIANTS] = [
     [[0..0, 0..0], [0..0, 0..0]],
     [[0..0, 0..0], [0..0, 0..0]],
     [[0..0, 0..0], [0..0, 0..0]],
-    [[4734551..4734819, 0..0], [4734819..4735088, 0..0]],
+    [[4789809..4790077, 0..0], [4789540..4789809, 0..0]],
     [[0..0, 0..0], [0..0, 0..0]],
     [[0..0, 0..0], [0..0, 0..0]],
-    [[4737148..4737689, 0..0], [4737689..4738230, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[4747071..4747543, 0..0], [4746598..4747071, 0..0]],
+    [[4792624..4793165, 0..0], [4792083..4792624, 0..0]],
     [[0..0, 0..0], [0..0, 0..0]],
     [[0..0, 0..0], [0..0, 0..0]],
     [[0..0, 0..0], [0..0, 0..0]],
@@ -242,20 +229,33 @@ pub static RUNE_CLOSURES: [[[Range<usize>; 2]; 2]; RuneId::VARIANTS] = [
     [[0..0, 0..0], [0..0, 0..0]],
     [[0..0, 0..0], [0..0, 0..0]],
     [[0..0, 0..0], [0..0, 0..0]],
-    [[4755405..4755914, 0..0], [4754896..4755405, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[4758593..4759064, 0..0], [4759064..4759535, 0..0]],
     [[0..0, 0..0], [0..0, 0..0]],
     [[0..0, 0..0], [0..0, 0..0]],
+    [[4801281..4801753, 0..0], [4801753..4802226, 0..0]],
     [[0..0, 0..0], [0..0, 0..0]],
     [[0..0, 0..0], [0..0, 0..0]],
-    [[4763290..4763642, 0..0], [4762938..4763290, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[4765833..4766289, 0..0], [4766289..4766745, 0..0]],
     [[0..0, 0..0], [0..0, 0..0]],
     [[0..0, 0..0], [0..0, 0..0]],
-    [[4769248..4769609, 0..0], [4768887..4769248, 0..0]],
-    [[4770422..4770960, 0..0], [4770960..4771498, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[4809898..4810407, 0..0], [4809389..4809898, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[4813058..4813529, 0..0], [4813529..4814000, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[4817315..4817667, 0..0], [4817667..4818019, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[4820638..4821102, 0..0], [4820174..4820638, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[4823555..4823916, 0..0], [4823194..4823555, 0..0]],
+    [[4825249..4825787, 0..0], [4824711..4825249, 0..0]],
     [[0..0, 0..0], [0..0, 0..0]],
     [[0..0, 0..0], [0..0, 0..0]],
     [[0..0, 0..0], [0..0, 0..0]],
@@ -270,7 +270,7 @@ pub static RUNE_CLOSURES: [[[Range<usize>; 2]; 2]; RuneId::VARIANTS] = [
     [[0..0, 0..0], [0..0, 0..0]],
 ];
 
-pub static ABSOLUTE_FOCUS: Rune = Rune {
+pub static ABSOLUTE_FOCUS: X = X {
     name: "Absolute Focus",
     metadata: TypeMetadata {
         kind: RuneId::AbsoluteFocus,
@@ -284,7 +284,7 @@ pub static ABSOLUTE_FOCUS: Rune = Rune {
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
 };
 
-pub static ABSORB_LIFE: Rune = Rune {
+pub static ABSORB_LIFE: X = X {
     name: "Absorb Life",
     metadata: TypeMetadata {
         kind: RuneId::AbsorbLife,
@@ -298,7 +298,7 @@ pub static ABSORB_LIFE: Rune = Rune {
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
 };
 
-pub static ADAPTIVE_FORCE: Rune = Rune {
+pub static ADAPTIVE_FORCE: X = X {
     name: "Adaptive Force Shard",
     metadata: TypeMetadata {
         kind: RuneId::AdaptiveForce,
@@ -312,7 +312,7 @@ pub static ADAPTIVE_FORCE: Rune = Rune {
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
 };
 
-pub static AFTERSHOCK: Rune = Rune {
+pub static AFTERSHOCK: X = X {
     name: "Aftershock",
     metadata: TypeMetadata {
         kind: RuneId::Aftershock,
@@ -341,7 +341,7 @@ pub const fn aftershock_min(ctx: &Ctx) -> f32 {
         + 1.1179999999999999 * (-1f32 + ctx.level))
 }
 
-pub static APPROACH_VELOCITY: Rune = Rune {
+pub static APPROACH_VELOCITY: X = X {
     name: "Approach Velocity",
     metadata: TypeMetadata {
         kind: RuneId::ApproachVelocity,
@@ -355,7 +355,7 @@ pub static APPROACH_VELOCITY: Rune = Rune {
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
 };
 
-pub static ARCANE_COMET: Rune = Rune {
+pub static ARCANE_COMET: X = X {
     name: "Arcane Comet",
     metadata: TypeMetadata {
         kind: RuneId::ArcaneComet,
@@ -386,7 +386,7 @@ pub const fn arcane_comet_max(ctx: &Ctx) -> f32 {
     10f32 * (2f32 + 0.01 * ctx.ability_power + 0.02 * ctx.bonus_ad + ctx.level)
 }
 
-pub static ATTACK_SPEED: Rune = Rune {
+pub static ATTACK_SPEED: X = X {
     name: "Attack Speed Shard",
     metadata: TypeMetadata {
         kind: RuneId::AttackSpeed,
@@ -400,7 +400,7 @@ pub static ATTACK_SPEED: Rune = Rune {
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
 };
 
-pub static AXIOM_ARCANIST: Rune = Rune {
+pub static AXIOM_ARCANIST: X = X {
     name: "Axiom Arcanist",
     metadata: TypeMetadata {
         kind: RuneId::AxiomArcanist,
@@ -414,7 +414,7 @@ pub static AXIOM_ARCANIST: Rune = Rune {
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
 };
 
-pub static BISCUIT_DELIVERY: Rune = Rune {
+pub static BISCUIT_DELIVERY: X = X {
     name: "Biscuit Delivery",
     metadata: TypeMetadata {
         kind: RuneId::BiscuitDelivery,
@@ -428,7 +428,7 @@ pub static BISCUIT_DELIVERY: Rune = Rune {
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
 };
 
-pub static BONE_PLATING: Rune = Rune {
+pub static BONE_PLATING: X = X {
     name: "Bone Plating",
     metadata: TypeMetadata {
         kind: RuneId::BonePlating,
@@ -442,7 +442,7 @@ pub static BONE_PLATING: Rune = Rune {
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
 };
 
-pub static CASH_BACK: Rune = Rune {
+pub static CASH_BACK: X = X {
     name: "Cash Back",
     metadata: TypeMetadata {
         kind: RuneId::CashBack,
@@ -456,7 +456,7 @@ pub static CASH_BACK: Rune = Rune {
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
 };
 
-pub static CELERITY: Rune = Rune {
+pub static CELERITY: X = X {
     name: "Celerity",
     metadata: TypeMetadata {
         kind: RuneId::Celerity,
@@ -470,7 +470,7 @@ pub static CELERITY: Rune = Rune {
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
 };
 
-pub static CELESTIAL_BODY: Rune = Rune {
+pub static CELESTIAL_BODY: X = X {
     name: "Celestial Body",
     metadata: TypeMetadata {
         kind: RuneId::CelestialBody,
@@ -484,7 +484,7 @@ pub static CELESTIAL_BODY: Rune = Rune {
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
 };
 
-pub static CHEAP_SHOT: Rune = Rune {
+pub static CHEAP_SHOT: X = X {
     name: "Cheap Shot",
     metadata: TypeMetadata {
         kind: RuneId::CheapShot,
@@ -502,7 +502,7 @@ pub const fn cheap_shot_min(ctx: &Ctx) -> f32 {
     5f32 * (34f32 + 7f32 * (-1f32 + ctx.level)) / 17f32
 }
 
-pub static CHRYSALIS: Rune = Rune {
+pub static CHRYSALIS: X = X {
     name: "Chrysalis",
     metadata: TypeMetadata {
         kind: RuneId::Chrysalis,
@@ -516,7 +516,7 @@ pub static CHRYSALIS: Rune = Rune {
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
 };
 
-pub static CONDITIONING: Rune = Rune {
+pub static CONDITIONING: X = X {
     name: "Conditioning",
     metadata: TypeMetadata {
         kind: RuneId::Conditioning,
@@ -530,7 +530,7 @@ pub static CONDITIONING: Rune = Rune {
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
 };
 
-pub static CONQUEROR: Rune = Rune {
+pub static CONQUEROR: X = X {
     name: "Conqueror",
     metadata: TypeMetadata {
         kind: RuneId::Conqueror,
@@ -544,7 +544,7 @@ pub static CONQUEROR: Rune = Rune {
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
 };
 
-pub static COSMIC_INSIGHT: Rune = Rune {
+pub static COSMIC_INSIGHT: X = X {
     name: "Cosmic Insight",
     metadata: TypeMetadata {
         kind: RuneId::CosmicInsight,
@@ -558,7 +558,7 @@ pub static COSMIC_INSIGHT: Rune = Rune {
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
 };
 
-pub static COUP_DE_GRACE: Rune = Rune {
+pub static COUP_DE_GRACE: X = X {
     name: "Coup de Grace",
     metadata: TypeMetadata {
         kind: RuneId::CoupDeGrace,
@@ -572,7 +572,7 @@ pub static COUP_DE_GRACE: Rune = Rune {
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
 };
 
-pub static CUT_DOWN: Rune = Rune {
+pub static CUT_DOWN: X = X {
     name: "Cut Down",
     metadata: TypeMetadata {
         kind: RuneId::CutDown,
@@ -586,7 +586,7 @@ pub static CUT_DOWN: Rune = Rune {
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
 };
 
-pub static DARK_HARVEST: Rune = Rune {
+pub static DARK_HARVEST: X = X {
     name: "Dark Harvest",
     metadata: TypeMetadata {
         kind: RuneId::DarkHarvest,
@@ -607,7 +607,7 @@ pub const fn dark_harvest_min(ctx: &Ctx) -> f32 {
     30f32 + 0.05 * ctx.ability_power + 0.1 * ctx.bonus_ad + 11f32 * ctx.stacks
 }
 
-pub static DEATHFIRE_TOUCH: Rune = Rune {
+pub static DEATHFIRE_TOUCH: X = X {
     name: "Deathfire Touch",
     metadata: TypeMetadata {
         kind: RuneId::DeathfireTouch,
@@ -643,7 +643,7 @@ pub const fn deathfire_touch_max(ctx: &Ctx) -> f32 {
         + 0.46 * (-1f32 + ctx.level)
 }
 
-pub static DEEP_WARD: Rune = Rune {
+pub static DEEP_WARD: X = X {
     name: "Deep Ward",
     metadata: TypeMetadata {
         kind: RuneId::DeepWard,
@@ -657,7 +657,7 @@ pub static DEEP_WARD: Rune = Rune {
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
 };
 
-pub static DEMOLISH: Rune = Rune {
+pub static DEMOLISH: X = X {
     name: "Demolish",
     metadata: TypeMetadata {
         kind: RuneId::Demolish,
@@ -671,7 +671,7 @@ pub static DEMOLISH: Rune = Rune {
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
 };
 
-pub static ELECTROCUTE: Rune = Rune {
+pub static ELECTROCUTE: X = X {
     name: "Electrocute",
     metadata: TypeMetadata {
         kind: RuneId::Electrocute,
@@ -692,7 +692,7 @@ pub const fn electrocute_min(ctx: &Ctx) -> f32 {
     10f32 * (6f32 + 0.005 * ctx.ability_power + 0.01 * ctx.bonus_ad + ctx.level)
 }
 
-pub static EYEBALL_COLLECTION: Rune = Rune {
+pub static EYEBALL_COLLECTION: X = X {
     name: "Eyeball Collection",
     metadata: TypeMetadata {
         kind: RuneId::EyeballCollection,
@@ -706,7 +706,7 @@ pub static EYEBALL_COLLECTION: Rune = Rune {
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
 };
 
-pub static FIRST_STRIKE: Rune = Rune {
+pub static FIRST_STRIKE: X = X {
     name: "First Strike",
     metadata: TypeMetadata {
         kind: RuneId::FirstStrike,
@@ -720,7 +720,7 @@ pub static FIRST_STRIKE: Rune = Rune {
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
 };
 
-pub static FLEET_FOOTWORK: Rune = Rune {
+pub static FLEET_FOOTWORK: X = X {
     name: "Fleet Footwork",
     metadata: TypeMetadata {
         kind: RuneId::FleetFootwork,
@@ -734,7 +734,7 @@ pub static FLEET_FOOTWORK: Rune = Rune {
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
 };
 
-pub static FONT_OF_LIFE: Rune = Rune {
+pub static FONT_OF_LIFE: X = X {
     name: "Font of Life",
     metadata: TypeMetadata {
         kind: RuneId::FontOfLife,
@@ -748,7 +748,7 @@ pub static FONT_OF_LIFE: Rune = Rune {
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
 };
 
-pub static FUTURES_MARKET: Rune = Rune {
+pub static FUTURES_MARKET: X = X {
     name: "Future's Market",
     metadata: TypeMetadata {
         kind: RuneId::FuturesMarket,
@@ -762,7 +762,7 @@ pub static FUTURES_MARKET: Rune = Rune {
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
 };
 
-pub static GATHERING_STORM: Rune = Rune {
+pub static GATHERING_STORM: X = X {
     name: "Gathering Storm",
     metadata: TypeMetadata {
         kind: RuneId::GatheringStorm,
@@ -776,7 +776,7 @@ pub static GATHERING_STORM: Rune = Rune {
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
 };
 
-pub static GHOST_PORO: Rune = Rune {
+pub static GHOST_PORO: X = X {
     name: "Ghost Poro",
     metadata: TypeMetadata {
         kind: RuneId::GhostPoro,
@@ -790,7 +790,7 @@ pub static GHOST_PORO: Rune = Rune {
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
 };
 
-pub static GLACIAL_AUGMENT: Rune = Rune {
+pub static GLACIAL_AUGMENT: X = X {
     name: "Glacial Augment",
     metadata: TypeMetadata {
         kind: RuneId::GlacialAugment,
@@ -804,7 +804,7 @@ pub static GLACIAL_AUGMENT: Rune = Rune {
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
 };
 
-pub static GRASP_OF_THE_UNDYING: Rune = Rune {
+pub static GRASP_OF_THE_UNDYING: X = X {
     name: "Grasp of the Undying",
     metadata: TypeMetadata {
         kind: RuneId::GraspOfTheUndying,
@@ -829,7 +829,7 @@ pub const fn grasp_of_the_undying_ranged_min(ctx: &Ctx) -> f32 {
     1.4 * ctx.max_health
 }
 
-pub static GRISLY_MEMENTOS: Rune = Rune {
+pub static GRISLY_MEMENTOS: X = X {
     name: "Grisly Mementos",
     metadata: TypeMetadata {
         kind: RuneId::GrislyMementos,
@@ -843,7 +843,7 @@ pub static GRISLY_MEMENTOS: Rune = Rune {
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
 };
 
-pub static GUARDIAN: Rune = Rune {
+pub static GUARDIAN: X = X {
     name: "Guardian",
     metadata: TypeMetadata {
         kind: RuneId::Guardian,
@@ -857,7 +857,7 @@ pub static GUARDIAN: Rune = Rune {
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
 };
 
-pub static HAIL_OF_BLADES: Rune = Rune {
+pub static HAIL_OF_BLADES: X = X {
     name: "Hail of Blades",
     metadata: TypeMetadata {
         kind: RuneId::HailOfBlades,
@@ -880,7 +880,7 @@ pub const fn hail_of_blades_min(ctx: &Ctx) -> f32 {
         + 16f32 * (-1f32 + ctx.level) / 17f32
 }
 
-pub static HEALTH: Rune = Rune {
+pub static HEALTH: X = X {
     name: "Health Shard",
     metadata: TypeMetadata {
         kind: RuneId::Health,
@@ -894,7 +894,7 @@ pub static HEALTH: Rune = Rune {
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
 };
 
-pub static HEALTH_SCALING: Rune = Rune {
+pub static HEALTH_SCALING: X = X {
     name: "Health Scaling Shard",
     metadata: TypeMetadata {
         kind: RuneId::HealthScaling,
@@ -908,7 +908,7 @@ pub static HEALTH_SCALING: Rune = Rune {
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
 };
 
-pub static HEXTECH_FLASHTRAPTION: Rune = Rune {
+pub static HEXTECH_FLASHTRAPTION: X = X {
     name: "Hextech Flashtraption",
     metadata: TypeMetadata {
         kind: RuneId::HextechFlashtraption,
@@ -922,7 +922,7 @@ pub static HEXTECH_FLASHTRAPTION: Rune = Rune {
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
 };
 
-pub static INGENIOUS_HUNTER: Rune = Rune {
+pub static INGENIOUS_HUNTER: X = X {
     name: "Ingenious Hunter",
     metadata: TypeMetadata {
         kind: RuneId::IngeniousHunter,
@@ -936,7 +936,7 @@ pub static INGENIOUS_HUNTER: Rune = Rune {
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
 };
 
-pub static IRON_SKIN: Rune = Rune {
+pub static IRON_SKIN: X = X {
     name: "Iron Skin",
     metadata: TypeMetadata {
         kind: RuneId::IronSkin,
@@ -950,7 +950,7 @@ pub static IRON_SKIN: Rune = Rune {
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
 };
 
-pub static JACK_OF_ALL_TRADES: Rune = Rune {
+pub static JACK_OF_ALL_TRADES: X = X {
     name: "Jack of All Trades",
     metadata: TypeMetadata {
         kind: RuneId::JackOfAllTrades,
@@ -964,7 +964,7 @@ pub static JACK_OF_ALL_TRADES: Rune = Rune {
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
 };
 
-pub static KLEPTOMANCY: Rune = Rune {
+pub static KLEPTOMANCY: X = X {
     name: "Kleptomancy",
     metadata: TypeMetadata {
         kind: RuneId::Kleptomancy,
@@ -978,7 +978,7 @@ pub static KLEPTOMANCY: Rune = Rune {
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
 };
 
-pub static LAST_STAND: Rune = Rune {
+pub static LAST_STAND: X = X {
     name: "Last Stand",
     metadata: TypeMetadata {
         kind: RuneId::LastStand,
@@ -992,7 +992,7 @@ pub static LAST_STAND: Rune = Rune {
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
 };
 
-pub static LEGEND_ALACRITY: Rune = Rune {
+pub static LEGEND_ALACRITY: X = X {
     name: "Legend: Alacrity",
     metadata: TypeMetadata {
         kind: RuneId::LegendAlacrity,
@@ -1006,7 +1006,7 @@ pub static LEGEND_ALACRITY: Rune = Rune {
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
 };
 
-pub static LEGEND_BLOODLINE: Rune = Rune {
+pub static LEGEND_BLOODLINE: X = X {
     name: "Legend: Bloodline",
     metadata: TypeMetadata {
         kind: RuneId::LegendBloodline,
@@ -1020,7 +1020,7 @@ pub static LEGEND_BLOODLINE: Rune = Rune {
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
 };
 
-pub static LEGEND_HASTE: Rune = Rune {
+pub static LEGEND_HASTE: X = X {
     name: "Legend: Haste",
     metadata: TypeMetadata {
         kind: RuneId::LegendHaste,
@@ -1034,7 +1034,7 @@ pub static LEGEND_HASTE: Rune = Rune {
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
 };
 
-pub static LEGEND_TENACITY: Rune = Rune {
+pub static LEGEND_TENACITY: X = X {
     name: "Legend: Tenacity",
     metadata: TypeMetadata {
         kind: RuneId::LegendTenacity,
@@ -1048,7 +1048,7 @@ pub static LEGEND_TENACITY: Rune = Rune {
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
 };
 
-pub static LETHAL_TEMPO: Rune = Rune {
+pub static LETHAL_TEMPO: X = X {
     name: "Lethal Tempo",
     metadata: TypeMetadata {
         kind: RuneId::LethalTempo,
@@ -1070,7 +1070,7 @@ pub const fn lethal_tempo_ranged_min(ctx: &Ctx) -> f32 {
     2f32 * (51f32 + 7f32 * (-1f32 + ctx.level)) / 17f32
 }
 
-pub static MAGICAL_FOOTWEAR: Rune = Rune {
+pub static MAGICAL_FOOTWEAR: X = X {
     name: "Magical Footwear",
     metadata: TypeMetadata {
         kind: RuneId::MagicalFootwear,
@@ -1084,7 +1084,7 @@ pub static MAGICAL_FOOTWEAR: Rune = Rune {
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
 };
 
-pub static MANAFLOW_BAND: Rune = Rune {
+pub static MANAFLOW_BAND: X = X {
     name: "Manaflow Band",
     metadata: TypeMetadata {
         kind: RuneId::ManaflowBand,
@@ -1098,7 +1098,7 @@ pub static MANAFLOW_BAND: Rune = Rune {
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
 };
 
-pub static MINION_DEMATERIALIZER: Rune = Rune {
+pub static MINION_DEMATERIALIZER: X = X {
     name: "Minion Dematerializer",
     metadata: TypeMetadata {
         kind: RuneId::MinionDematerializer,
@@ -1112,7 +1112,7 @@ pub static MINION_DEMATERIALIZER: Rune = Rune {
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
 };
 
-pub static MIRROR_SHELL: Rune = Rune {
+pub static MIRROR_SHELL: X = X {
     name: "Mirror Shell",
     metadata: TypeMetadata {
         kind: RuneId::MirrorShell,
@@ -1126,7 +1126,7 @@ pub static MIRROR_SHELL: Rune = Rune {
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
 };
 
-pub static NIMBUS_CLOAK: Rune = Rune {
+pub static NIMBUS_CLOAK: X = X {
     name: "Nimbus Cloak",
     metadata: TypeMetadata {
         kind: RuneId::NimbusCloak,
@@ -1140,7 +1140,7 @@ pub static NIMBUS_CLOAK: Rune = Rune {
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
 };
 
-pub static NULLIFYING_ORB: Rune = Rune {
+pub static NULLIFYING_ORB: X = X {
     name: "Nullifying Orb",
     metadata: TypeMetadata {
         kind: RuneId::NullifyingOrb,
@@ -1154,7 +1154,7 @@ pub static NULLIFYING_ORB: Rune = Rune {
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
 };
 
-pub static OVERGROWTH: Rune = Rune {
+pub static OVERGROWTH: X = X {
     name: "Overgrowth",
     metadata: TypeMetadata {
         kind: RuneId::Overgrowth,
@@ -1168,7 +1168,7 @@ pub static OVERGROWTH: Rune = Rune {
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
 };
 
-pub static OVERHEAL: Rune = Rune {
+pub static OVERHEAL: X = X {
     name: "Overheal",
     metadata: TypeMetadata {
         kind: RuneId::Overheal,
@@ -1182,7 +1182,7 @@ pub static OVERHEAL: Rune = Rune {
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
 };
 
-pub static PERFECT_TIMING: Rune = Rune {
+pub static PERFECT_TIMING: X = X {
     name: "Perfect Timing",
     metadata: TypeMetadata {
         kind: RuneId::PerfectTiming,
@@ -1196,7 +1196,7 @@ pub static PERFECT_TIMING: Rune = Rune {
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
 };
 
-pub static PHASE_RUSH: Rune = Rune {
+pub static PHASE_RUSH: X = X {
     name: "Phase Rush",
     metadata: TypeMetadata {
         kind: RuneId::PhaseRush,
@@ -1210,7 +1210,7 @@ pub static PHASE_RUSH: Rune = Rune {
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
 };
 
-pub static PREDATOR: Rune = Rune {
+pub static PREDATOR: X = X {
     name: "Predator",
     metadata: TypeMetadata {
         kind: RuneId::Predator,
@@ -1234,7 +1234,7 @@ pub const fn predator_min(ctx: &Ctx) -> f32 {
         + 9.41 * (-1f32 + ctx.level)
 }
 
-pub static PRESENCE_OF_MIND: Rune = Rune {
+pub static PRESENCE_OF_MIND: X = X {
     name: "Presence of Mind",
     metadata: TypeMetadata {
         kind: RuneId::PresenceOfMind,
@@ -1248,7 +1248,7 @@ pub static PRESENCE_OF_MIND: Rune = Rune {
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
 };
 
-pub static PRESS_THE_ATTACK: Rune = Rune {
+pub static PRESS_THE_ATTACK: X = X {
     name: "Press the Attack",
     metadata: TypeMetadata {
         kind: RuneId::PressTheAttack,
@@ -1266,7 +1266,7 @@ pub const fn press_the_attack_min(ctx: &Ctx) -> f32 {
     40f32 * (17f32 + 3f32 * (-1f32 + ctx.level)) / 17f32
 }
 
-pub static PROTOTYPE_OMNISTONE: Rune = Rune {
+pub static PROTOTYPE_OMNISTONE: X = X {
     name: "Prototype: Omnistone",
     metadata: TypeMetadata {
         kind: RuneId::PrototypeOmnistone,
@@ -1280,7 +1280,7 @@ pub static PROTOTYPE_OMNISTONE: Rune = Rune {
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
 };
 
-pub static RAVENOUS_HUNTER: Rune = Rune {
+pub static RAVENOUS_HUNTER: X = X {
     name: "Ravenous Hunter",
     metadata: TypeMetadata {
         kind: RuneId::RavenousHunter,
@@ -1294,7 +1294,7 @@ pub static RAVENOUS_HUNTER: Rune = Rune {
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
 };
 
-pub static RELENTLESS_HUNTER: Rune = Rune {
+pub static RELENTLESS_HUNTER: X = X {
     name: "Relentless Hunter",
     metadata: TypeMetadata {
         kind: RuneId::RelentlessHunter,
@@ -1308,7 +1308,7 @@ pub static RELENTLESS_HUNTER: Rune = Rune {
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
 };
 
-pub static REVITALIZE: Rune = Rune {
+pub static REVITALIZE: X = X {
     name: "Revitalize",
     metadata: TypeMetadata {
         kind: RuneId::Revitalize,
@@ -1322,7 +1322,7 @@ pub static REVITALIZE: Rune = Rune {
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
 };
 
-pub static SCORCH: Rune = Rune {
+pub static SCORCH: X = X {
     name: "Scorch",
     metadata: TypeMetadata {
         kind: RuneId::Scorch,
@@ -1343,7 +1343,7 @@ pub const fn scorch_min(ctx: &Ctx) -> f32 {
     20f32 * (16f32 + ctx.level) / 17f32
 }
 
-pub static SECOND_WIND: Rune = Rune {
+pub static SECOND_WIND: X = X {
     name: "Second Wind",
     metadata: TypeMetadata {
         kind: RuneId::SecondWind,
@@ -1357,7 +1357,7 @@ pub static SECOND_WIND: Rune = Rune {
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
 };
 
-pub static SHIELD_BASH: Rune = Rune {
+pub static SHIELD_BASH: X = X {
     name: "Shield Bash",
     metadata: TypeMetadata {
         kind: RuneId::ShieldBash,
@@ -1378,7 +1378,7 @@ pub const fn shield_bash_min(ctx: &Ctx) -> f32 {
     5f32 + 0.025 * ctx.bonus_health + 25f32 * (-1f32 + ctx.level) / 17f32
 }
 
-pub static SIXTH_SENSE: Rune = Rune {
+pub static SIXTH_SENSE: X = X {
     name: "Sixth Sense",
     metadata: TypeMetadata {
         kind: RuneId::SixthSense,
@@ -1392,7 +1392,7 @@ pub static SIXTH_SENSE: Rune = Rune {
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
 };
 
-pub static STORMRAIDERS_SURGE: Rune = Rune {
+pub static STORMRAIDERS_SURGE: X = X {
     name: "Stormraider's Surge",
     metadata: TypeMetadata {
         kind: RuneId::StormraidersSurge,
@@ -1406,7 +1406,7 @@ pub static STORMRAIDERS_SURGE: Rune = Rune {
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
 };
 
-pub static SUDDEN_IMPACT: Rune = Rune {
+pub static SUDDEN_IMPACT: X = X {
     name: "Sudden Impact",
     metadata: TypeMetadata {
         kind: RuneId::SuddenImpact,
@@ -1424,7 +1424,7 @@ pub const fn sudden_impact_min(ctx: &Ctx) -> f32 {
     20f32 + 3.53 * (-1f32 + ctx.level)
 }
 
-pub static SUMMON_AERY: Rune = Rune {
+pub static SUMMON_AERY: X = X {
     name: "Summon Aery",
     metadata: TypeMetadata {
         kind: RuneId::SummonAery,
@@ -1448,7 +1448,7 @@ pub const fn summon_aery_min(ctx: &Ctx) -> f32 {
         + 40f32 * (-1f32 + ctx.level) / 17f32
 }
 
-pub static TASTE_OF_BLOOD: Rune = Rune {
+pub static TASTE_OF_BLOOD: X = X {
     name: "Taste of Blood",
     metadata: TypeMetadata {
         kind: RuneId::TasteOfBlood,
@@ -1462,7 +1462,7 @@ pub static TASTE_OF_BLOOD: Rune = Rune {
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
 };
 
-pub static THE_ULTIMATE_HAT: Rune = Rune {
+pub static THE_ULTIMATE_HAT: X = X {
     name: "The Ultimate Hat",
     metadata: TypeMetadata {
         kind: RuneId::TheUltimateHat,
@@ -1476,7 +1476,7 @@ pub static THE_ULTIMATE_HAT: Rune = Rune {
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
 };
 
-pub static TIME_WARP_TONIC: Rune = Rune {
+pub static TIME_WARP_TONIC: X = X {
     name: "Time Warp Tonic",
     metadata: TypeMetadata {
         kind: RuneId::TimeWarpTonic,
@@ -1490,7 +1490,7 @@ pub static TIME_WARP_TONIC: Rune = Rune {
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
 };
 
-pub static TRANSCENDENCE: Rune = Rune {
+pub static TRANSCENDENCE: X = X {
     name: "Transcendence",
     metadata: TypeMetadata {
         kind: RuneId::Transcendence,
@@ -1504,7 +1504,7 @@ pub static TRANSCENDENCE: Rune = Rune {
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
 };
 
-pub static TREASURE_HUNTER: Rune = Rune {
+pub static TREASURE_HUNTER: X = X {
     name: "Treasure Hunter",
     metadata: TypeMetadata {
         kind: RuneId::TreasureHunter,
@@ -1518,7 +1518,7 @@ pub static TREASURE_HUNTER: Rune = Rune {
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
 };
 
-pub static TRIPLE_TONIC: Rune = Rune {
+pub static TRIPLE_TONIC: X = X {
     name: "Triple Tonic",
     metadata: TypeMetadata {
         kind: RuneId::TripleTonic,
@@ -1532,7 +1532,7 @@ pub static TRIPLE_TONIC: Rune = Rune {
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
 };
 
-pub static TRIUMPH: Rune = Rune {
+pub static TRIUMPH: X = X {
     name: "Triumph",
     metadata: TypeMetadata {
         kind: RuneId::Triumph,
@@ -1546,7 +1546,7 @@ pub static TRIUMPH: Rune = Rune {
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
 };
 
-pub static ULTIMATE_HUNTER: Rune = Rune {
+pub static ULTIMATE_HUNTER: X = X {
     name: "Ultimate Hunter",
     metadata: TypeMetadata {
         kind: RuneId::UltimateHunter,
@@ -1560,7 +1560,7 @@ pub static ULTIMATE_HUNTER: Rune = Rune {
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
 };
 
-pub static UNFLINCHING: Rune = Rune {
+pub static UNFLINCHING: X = X {
     name: "Unflinching",
     metadata: TypeMetadata {
         kind: RuneId::Unflinching,
@@ -1574,7 +1574,7 @@ pub static UNFLINCHING: Rune = Rune {
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
 };
 
-pub static UNSEALED_SPELLBOOK: Rune = Rune {
+pub static UNSEALED_SPELLBOOK: X = X {
     name: "Unsealed Spellbook",
     metadata: TypeMetadata {
         kind: RuneId::UnsealedSpellbook,
@@ -1588,7 +1588,7 @@ pub static UNSEALED_SPELLBOOK: Rune = Rune {
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
 };
 
-pub static WATERWALKING: Rune = Rune {
+pub static WATERWALKING: X = X {
     name: "Waterwalking",
     metadata: TypeMetadata {
         kind: RuneId::Waterwalking,
@@ -1602,7 +1602,7 @@ pub static WATERWALKING: Rune = Rune {
     identifiers: [[&[] as &[_], &[]], [&[] as &[_], &[]]],
 };
 
-pub static ZOMBIE_WARD: Rune = Rune {
+pub static ZOMBIE_WARD: X = X {
     name: "Zombie Ward",
     metadata: TypeMetadata {
         kind: RuneId::ZombieWard,
@@ -2430,3 +2430,4 @@ pub static RUNE_CACHE: [&Rune; RuneId::VARIANTS] = [
     &WATERWALKING,
     &ZOMBIE_WARD,
 ];
+type X = Rune;

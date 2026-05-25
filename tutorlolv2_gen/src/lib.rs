@@ -6,10 +6,10 @@ pub mod generated;
 use crate::generated::{
     champions::CHAMPION_GENERATOR,
     items::{ITEM_GENERATOR, ITEM_NAME_TO_ID},
-    runes::RUNE_NAME_TO_ID,
+    runes::{RUNE_GENERATOR, RUNE_NAME_TO_ID},
 };
 use core::{
-    any::{Any, TypeId},
+    any::Any,
     fmt::{Debug, Display},
     mem::MaybeUninit,
     ops::Range,
@@ -22,6 +22,7 @@ pub use generated::{
         ABILITY_CLOSURES, ABILITY_FORMULAS, CHAMPION_CACHE, CHAMPION_FORMULAS, CHAMPION_NAME_TO_ID,
         ChampionId, RECOMMENDED_ITEMS, RECOMMENDED_RUNES,
     },
+    exports::*,
     items::{ITEM_CACHE, ITEM_CLOSURES, ITEM_FORMULAS, ItemId},
     runes::{RUNE_CACHE, RUNE_CLOSURES, RUNE_FORMULAS, RuneId},
     *,
@@ -373,6 +374,7 @@ impl TryFrom<&str> for ChampionId {
 impl ChampionId {
     pub const CLOSURES: &[&[Range<usize>]; Self::VARIANTS] = &ABILITY_CLOSURES;
     pub const ABILITIES: &[&[Range<usize>]; Self::VARIANTS] = &ABILITY_FORMULAS;
+    pub const GENERATORS: &[Range<usize>; Self::VARIANTS] = &CHAMPION_GENERATOR;
 
     pub const IRML: usize = {
         let mut i = 0;
@@ -449,6 +451,10 @@ impl ChampionId {
 
     pub const fn main_position(&self) -> Position {
         self.positions()[0]
+    }
+
+    pub const fn attack_type(&self) -> AttackType {
+        self.cache().attack_type
     }
 
     pub const fn closures(&self) -> &'static [Range<usize>] {
@@ -558,6 +564,7 @@ const _: () = {
 
 impl ItemId {
     pub const CLOSURES: &[[[Range<usize>; 2]; 2]; Self::VARIANTS] = &ITEM_CLOSURES;
+    pub const GENERATORS: &[Range<usize>; Self::VARIANTS] = &ITEM_GENERATOR;
     pub const RIOT_IDS: [u32; Self::VARIANTS] = {
         let mut result = [0; _];
         let mut i = 0;
@@ -607,6 +614,18 @@ impl ItemId {
         }
     }
 
+    pub const fn has_map(&self, game_map: GameMap) -> bool {
+        let mut i = 0;
+        let stats = self.cache().maps;
+        while i < stats.len() {
+            if stats[i] as u8 == game_map as u8 {
+                return true;
+            }
+            i += 1;
+        }
+        false
+    }
+
     pub const fn has_stat(&self, stat_name: StatName) -> bool {
         let mut i = 0;
         let stats = self.cache().stats;
@@ -622,7 +641,7 @@ impl ItemId {
     pub const fn find_variants<const N: usize>(stat_name: StatName) -> [ItemId; N] {
         let mut i = 0;
         let mut j = 0;
-        let mut result: [ItemId; _] = unsafe { core::mem::zeroed() };
+        let mut result: [Self; _] = unsafe { core::mem::zeroed() };
         while i < Self::VARIANTS {
             let item = Self::VALUES[i];
             if item.has_stat(stat_name) {
@@ -642,7 +661,7 @@ impl ItemId {
         self.cache().riot_id
     }
 
-    pub const fn closure(&self) -> &[[Range<usize>; 2]; 2] {
+    pub const fn closure(&self) -> &'static [[Range<usize>; 2]; 2] {
         &Self::CLOSURES[self.index()]
     }
 
@@ -676,7 +695,7 @@ impl ItemId {
         self.cache().price
     }
 
-    pub const fn identifiers(&self) -> &[[&'static [CtxVar]; 2]; 2] {
+    pub const fn identifiers(&self) -> &'static [[&'static [CtxVar]; 2]; 2] {
         &self.cache().identifiers
     }
 
@@ -687,6 +706,7 @@ impl ItemId {
 
 impl RuneId {
     pub const CLOSURES: &[[[Range<usize>; 2]; 2]; Self::VARIANTS] = &RUNE_CLOSURES;
+    pub const GENERATORS: &[Range<usize>; Self::VARIANTS] = &RUNE_GENERATOR;
     pub const RIOT_IDS: [u32; Self::VARIANTS] = {
         let mut result = [0; _];
         let mut i = 0;
@@ -725,11 +745,11 @@ impl RuneId {
         self.cache().riot_id
     }
 
-    pub const fn closure(&self) -> &[[Range<usize>; 2]; 2] {
+    pub const fn closure(&self) -> &'static [[Range<usize>; 2]; 2] {
         &Self::CLOSURES[self.index()]
     }
 
-    pub const fn identifiers(&self) -> &[[&'static [CtxVar]; 2]; 2] {
+    pub const fn identifiers(&self) -> &'static [[&'static [CtxVar]; 2]; 2] {
         &self.cache().identifiers
     }
 
@@ -856,6 +876,7 @@ macro_rules! impl_methods {
                     const NAMES: &'static [&'static str] = &Self::NAMES;
                     const VALUES: &'static [Self] = &Self::VALUES;
                     const FORMULAS: &'static [Range<usize>] = Self::FORMULAS;
+                    const GENERATORS: &'static [Range<usize>] = Self::GENERATORS;
 
                     fn entity(&self) -> EntityId {
                         EntityId::[<$stru:replace("Id", "")>](*self)
@@ -916,12 +937,13 @@ trait Sealed {}
 #[allow(private_bounds)]
 pub trait CastId
 where
-    Self: Any + Copy + Debug + Sealed + Sized + 'static,
+    Self: Any + Copy + Debug + Default + Sealed + Sized + 'static,
 {
     const VARIANTS: usize;
     const NAMES: &'static [&'static str];
     const VALUES: &'static [Self];
     const FORMULAS: &'static [Range<usize>];
+    const GENERATORS: &'static [Range<usize>];
 
     fn entity(&self) -> EntityId;
     fn name(&self) -> &'static str;
@@ -930,7 +952,59 @@ where
     fn formula(&self) -> &'static Range<usize> {
         &Self::FORMULAS[self.index()]
     }
-    fn is(value: &TypeId) -> bool {
-        *value == TypeId::of::<Self>()
+    fn generator(&self) -> &'static Range<usize> {
+        &Self::GENERATORS[self.index()]
+    }
+    fn is_champion(&self) -> bool {
+        matches!(self.entity(), EntityId::Champion(_))
+    }
+    fn is_item(&self) -> bool {
+        matches!(self.entity(), EntityId::Item(_))
+    }
+    fn is_rune(&self) -> bool {
+        matches!(self.entity(), EntityId::Rune(_))
+    }
+}
+
+pub trait ValueId: CastId {
+    fn to_riot_id(&self) -> u32;
+    fn identifiers(&self) -> &'static [[&'static [CtxVar]; 2]];
+    fn functions(&self) -> &'static [[Range<usize>; 2]; 2];
+    fn metadata(&self) -> TypeMetadata<Self>;
+}
+
+impl ValueId for ItemId {
+    fn to_riot_id(&self) -> u32 {
+        self.to_riot_id()
+    }
+
+    fn identifiers(&self) -> &'static [[&'static [CtxVar]; 2]] {
+        ItemId::identifiers(&self)
+    }
+
+    fn functions(&self) -> &'static [[Range<usize>; 2]; 2] {
+        self.closure()
+    }
+
+    fn metadata(&self) -> TypeMetadata<Self> {
+        self.metadata()
+    }
+}
+
+impl ValueId for RuneId {
+    fn to_riot_id(&self) -> u32 {
+        self.to_riot_id()
+    }
+
+    fn identifiers(&self) -> &'static [[&'static [CtxVar]; 2]] {
+        RuneId::identifiers(&self)
+    }
+
+    fn functions(&self) -> &'static [[Range<usize>; 2]; 2] {
+        self.closure()
+    }
+
+    fn metadata(&self) -> TypeMetadata<Self> {
+        self.metadata()
     }
 }

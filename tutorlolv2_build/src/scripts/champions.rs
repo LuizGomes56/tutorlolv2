@@ -107,9 +107,10 @@ pub fn generate_champions() -> MayFail<(HashMap<&'static str, String>, String)> 
                 identifiers = identifiers
                     .iter()
                     .enumerate()
-                    .map(|(i, slice)| {
+                    .map(|(i, set)| {
                         let rest = if i == 0 { "as &[_]" } else { "" };
-                        format!("&{slice:?}{rest}")
+                        let vec = set.iter().collect::<Vec<_>>();
+                        format!("&{vec:?}{rest}")
                     })
                     .collect::<Vec<_>>()
                     .join(","),
