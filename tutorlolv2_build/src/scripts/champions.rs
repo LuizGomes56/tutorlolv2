@@ -178,14 +178,40 @@ pub fn generate_champions() -> MayFail<(HashMap<&'static str, String>, String)> 
                         }
                     };
 
+                    fn fmt_comment(c: &str) -> String {
+                        const CHUNK: usize = 36;
+                        let comment = c.replace("  ", " ");
+                        if comment.len() <= CHUNK {
+                            return format!("{comment:?}");
+                        }
+                        let mut chunks = Vec::new();
+                        let mut current = String::new();
+                        for word in comment.split(' ') {
+                            if !current.is_empty() && current.len() + 1 + word.len() > CHUNK {
+                                chunks.push(format!("{current:?}"));
+                                current = word.to_string();
+                            } else {
+                                if !current.is_empty() {
+                                    current.push(' ');
+                                }
+                                current.push_str(word);
+                            }
+                        }
+                        if !current.is_empty() {
+                            chunks.push(format!("{current:?}"));
+                        }
+                        format!("concat!({})", chunks.join(", "))
+                    }
+
                     let ability_decl = format_args!(
                         "static {variable}: Ability = Ability {{
     name: {name:?},
     damage_type: {damage_type:?},
     attributes: {attributes:?},
-    comment: {comment:?},
+    comment: {comment},
     {damage_attr},
 }};",
+                        comment = fmt_comment(comment)
                     );
 
                     format!(

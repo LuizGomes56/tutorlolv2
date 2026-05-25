@@ -311,6 +311,24 @@ impl Champion {
         })?)
     }
 
+    pub fn nth(&self, index: usize) -> MayFail<&Ability> {
+        Ok(self.abilities.values().nth(index).ok_or_else(|| {
+            format!(
+                "[{champion_id}] self.abilities.values().nth({index}) failed",
+                champion_id = self.data.champion_id
+            )
+        })?)
+    }
+
+    pub fn nth_mut(&mut self, index: usize) -> MayFail<&mut Ability> {
+        Ok(self.abilities.values_mut().nth(index).ok_or_else(|| {
+            format!(
+                "[{champion_id}] self.abilities.values_mut().nth({index}) failed",
+                champion_id = self.data.champion_id
+            )
+        })?)
+    }
+
     pub fn get_mut(&mut self, key: AbilityId) -> MayFail<&mut Ability> {
         Ok(self.abilities.get_mut(&key).ok_or_else(|| {
             format!(
@@ -499,7 +517,8 @@ impl Champion {
                 index.entry(ability_id).or_insert(i);
             }
 
-            self.merge
+            let result = self
+                .merge
                 .iter()
                 .filter_map(|value| {
                     let DevMergeData {
@@ -517,7 +536,29 @@ impl Champion {
                         _ => None,
                     }
                 })
-                .collect()
+                .collect::<Vec<_>>();
+
+            for value in result.iter().copied() {
+                let MergeData {
+                    minimum_damage,
+                    maximum_damage,
+                    ..
+                } = value;
+
+                let min = self.nth(minimum_damage as _)?;
+                let max = self.nth(maximum_damage as _)?;
+
+                let comment = format!(
+                    "{min_c} & {max_c}",
+                    min_c = min.comment,
+                    max_c = max.comment
+                );
+
+                self.nth_mut(minimum_damage as _)?.comment = comment.clone();
+                self.nth_mut(maximum_damage as _)?.comment = comment;
+            }
+
+            result
         };
 
         self.build.identifiers = self
