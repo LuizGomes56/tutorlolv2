@@ -15,7 +15,6 @@ use crate::{
 };
 use tutorlolv2_gen::{
     AttackType, ChampionId, Closure, Ctx, ITEM_CACHE, ItemId, ItemsBitSet, RuneId, TypeMetadata,
-    champions::ability_const_eval, items::item_const_eval, runes::rune_const_eval,
 };
 
 pub const fn get_items_data_const<const N: usize, const L: usize>(
@@ -131,7 +130,7 @@ pub const fn const_ability_id_eval_damage<const N: usize>(
         } = metadata[i];
 
         let modifier = ability_id_mod(kind, damage_type, modifiers);
-        let damage = (modifier * ability_const_eval(ctx, champion_id, kind)) as i32;
+        let damage = (modifier * champion_id.eval(ctx, kind)) as i32;
         onhit.inc_attr(attributes, damage);
         result[i] = damage;
         i += 1;
@@ -147,7 +146,7 @@ pub const fn const_item_id_eval_damage<const N: usize, const L: usize>(
     attack_type: AttackType,
     modifiers: Modifiers,
 ) -> [i32; L] {
-    assert!(L == N << 1);
+    assert!(L == N << 1, "Generic argument #2 must be #1 * 2");
     let mut result = [0i32; L];
     let mut i = 0usize;
     let mut j = 0usize;
@@ -161,7 +160,7 @@ pub const fn const_item_id_eval_damage<const N: usize, const L: usize>(
         } = item_id.metadata();
 
         let modifier = modifiers.damages.modifier(damage_type);
-        let damages = item_const_eval(ctx, item_id, attack_type);
+        let damages = item_id.eval(ctx, attack_type);
 
         let mut k = 0usize;
         while k < 2 {
@@ -185,7 +184,7 @@ pub const fn const_rune_id_eval_damage<const N: usize, const L: usize>(
     attack_type: AttackType,
     modifiers: Modifiers,
 ) -> [i32; L] {
-    assert!(L == N << 1);
+    assert!(L == N << 1, "Generic argument #2 must be #1 * 2");
     let mut result = [0i32; L];
     let mut i = 0usize;
     let mut j = 0usize;
@@ -195,7 +194,7 @@ pub const fn const_rune_id_eval_damage<const N: usize, const L: usize>(
         let TypeMetadata { damage_type, .. } = rune_id.metadata();
 
         let modifier = modifiers.damages.modifier(damage_type);
-        let damages = rune_const_eval(ctx, rune_id, attack_type);
+        let damages = rune_id.eval(ctx, attack_type);
 
         let mut k = 0usize;
         while k < 2 {

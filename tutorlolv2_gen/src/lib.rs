@@ -4,9 +4,9 @@ pub mod bitset;
 pub mod generated;
 
 use crate::generated::{
-    champions::CHAMPION_GENERATOR,
-    items::{ITEM_GENERATOR, ITEM_NAME_TO_ID},
-    runes::{RUNE_GENERATOR, RUNE_NAME_TO_ID},
+    champions::{CHAMPION_GENERATOR, ability_const_eval},
+    items::{ITEM_GENERATOR, ITEM_NAME_TO_ID, item_const_eval},
+    runes::{RUNE_GENERATOR, RUNE_NAME_TO_ID, rune_const_eval},
 };
 use core::{
     any::Any,
@@ -174,17 +174,13 @@ pub const SIMULATED_ITEMS_METADATA: [TypeMetadata<ItemId>; L_SIML] = {
     let mut i = 0;
     while i < L_SIML {
         let item_id = SIMULATED_ITEMS_ENUM[i];
-        let Item {
-            metadata:
-                TypeMetadata {
-                    damage_type,
-                    attributes,
-                    ..
-                },
+        let TypeMetadata {
+            damage_type,
+            attributes,
             ..
-        } = *ITEM_CACHE[item_id as usize];
+        } = item_id.metadata();
         unsafe {
-            core::ptr::addr_of_mut!((*siml_items_ptr)[i]).write(TypeMetadata::<ItemId> {
+            core::ptr::addr_of_mut!((*siml_items_ptr)[i]).write(TypeMetadata {
                 kind: item_id,
                 damage_type,
                 attributes,
@@ -219,9 +215,8 @@ pub const NUMBER_OF_DAMAGING_ITEMS: usize = {
     let mut sum = 0;
     let mut i = 0;
     while i < ItemId::VARIANTS {
-        let item = ITEM_CACHE[i];
-        let [mmin, mmax, rmin, rmax] = item.deals_damage;
-        if mmin || mmax || rmin || rmax {
+        let item = ItemId::from_repr(i as _).unwrap();
+        if item.deals_damage() {
             sum += 1;
         }
         i += 1;
@@ -235,11 +230,12 @@ pub const DAMAGING_ITEMS_ARRAY: [ItemId; NUMBER_OF_DAMAGING_ITEMS] = {
     let mut result: [ItemId; _] = unsafe { core::mem::zeroed() };
     let mut i = 0;
     let mut j = 0;
+
     while i < ItemId::VARIANTS {
-        let item = ITEM_CACHE[i];
-        let [mmin, mmax, rmin, rmax] = item.deals_damage;
-        if mmin || mmax || rmin || rmax {
-            result[j] = ItemId::from_repr(i as _).unwrap();
+        let item = ItemId::from_repr(i as _).unwrap();
+
+        if item.deals_damage() {
+            result[j] = item;
             j += 1;
         }
 
@@ -254,6 +250,7 @@ pub const DAMAGING_RUNES_ARRAY: [RuneId; NUMBER_OF_DAMAGING_RUNES] = {
     let mut result: [RuneId; _] = unsafe { core::mem::zeroed() };
     let mut i = 0;
     let mut j = 0;
+
     while i < RuneId::VARIANTS {
         let rune = RUNE_CACHE[i];
         let [mmin, mmax, rmin, rmax] = rune.deals_damage;
@@ -322,19 +319,22 @@ const _: () = {
         }
 
         let mut k = 0;
-
         let combos = champion_id.combos();
+
         while k < combos.len() {
             let combo = combos[k];
             let mut l = 0;
+
             while l < combo.len() {
                 let element = combo[l];
 
                 if let ComboElement::Ability(ability_id) = element {
                     assert!(champion_id.index_of_ability(ability_id).is_some());
                 }
+
                 l += 1;
             }
+
             k += 1;
         }
 
@@ -503,6 +503,10 @@ impl ChampionId {
     pub const fn metadata(&self) -> &'static [TypeMetadata<AbilityId>] {
         self.cache().metadata
     }
+
+    pub const fn eval(&self, ctx: &Ctx, kind: AbilityId) -> f32 {
+        ability_const_eval(ctx, *self, kind)
+    }
 }
 
 macro_rules! impl_item_filters {
@@ -576,27 +580,19 @@ impl ItemId {
         result
     };
 
-    pub const ALLY_EXCEPTIONS: [Self; 4] = [
+    pub const ALLY_EXCEPTIONS: [Self; 8] = [
         Self::DarkSeal,
-        // Self::DragonheartU44,
-        // Self::DemonKingsCrownU44,
-        // Self::DemonKingsCrownU66,
+        Self::Dragonheart,
+        Self::DemonKingsCrown,
         Self::RiteOfRuin,
         Self::MejaisSoulstealer,
-        // Self::Hubris6697,
-        // Self::Hubris126697,
-        // Self::HubrisArena,
-        // Self::BloodlettersCurse4010,
-        // Self::BloodlettersCurse8010,
+        Self::Hubris,
+        Self::BloodlettersCurse,
         Self::BlackCleaver,
-        // Self::BlackCleaverArena,
     ];
 
-    pub const ENEMY_EXCEPTIONS: [Self; 0] = [
-        // Self::DragonheartU44,
-        // Self::DemonKingsCrownU44,
-        // Self::DemonKingsCrownU66,
-    ];
+    pub const ENEMY_EXCEPTIONS: [Self; 3] =
+        [Self::Dragonheart, Self::DemonKingsCrown, Self::BlackCleaver];
 
     pub const SIZE_OF_EXCEPTIONS: usize = max_usize(
         bitset_size(bitset!(ItemId::ALLY_EXCEPTIONS => [usize])),
@@ -604,7 +600,7 @@ impl ItemId {
     );
 
     pub const fn damage_type(&self) -> DamageType {
-        self.cache().metadata.damage_type
+        self.metadata().damage_type
     }
 
     pub const fn exceptions(ally: bool) -> ItemsExcSet {
@@ -682,8 +678,8 @@ impl ItemId {
     }
 
     pub const fn deals_damage(&self) -> bool {
-        let [mmin, mmax, rmin, rmax] = self.cache().deals_damage;
-        mmin || mmax || rmin || rmax
+        let [mmin, _, rmin, _] = self.cache().deals_damage;
+        mmin || rmin
     }
 
     pub const fn deals_max_damage(&self) -> bool {
@@ -701,6 +697,10 @@ impl ItemId {
 
     pub const fn metadata(&self) -> TypeMetadata<Self> {
         self.cache().metadata
+    }
+
+    pub const fn eval(&self, ctx: &Ctx, attack_type: AttackType) -> [f32; 2] {
+        item_const_eval(ctx, *self, attack_type)
     }
 }
 
@@ -755,6 +755,10 @@ impl RuneId {
 
     pub const fn metadata(&self) -> TypeMetadata<Self> {
         self.cache().metadata
+    }
+
+    pub const fn eval(&self, ctx: &Ctx, attack_type: AttackType) -> [f32; 2] {
+        rune_const_eval(ctx, *self, attack_type)
     }
 }
 
@@ -979,7 +983,7 @@ impl ValueId for ItemId {
     }
 
     fn identifiers(&self) -> &'static [[&'static [CtxVar]; 2]] {
-        ItemId::identifiers(&self)
+        self.identifiers()
     }
 
     fn functions(&self) -> &'static [[Range<usize>; 2]; 2] {
@@ -997,7 +1001,7 @@ impl ValueId for RuneId {
     }
 
     fn identifiers(&self) -> &'static [[&'static [CtxVar]; 2]] {
-        RuneId::identifiers(&self)
+        self.identifiers()
     }
 
     fn functions(&self) -> &'static [[Range<usize>; 2]; 2] {

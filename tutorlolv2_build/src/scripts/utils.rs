@@ -485,12 +485,10 @@ pub fn repr_damages(melee: &[String; 2], ranged: &[String; 2], deals_damage: &[b
         }
         [true, true, false, false] => {
             parts.push(format!("melee_min_dmg: {}", simplify(melee_min)));
-
             parts.push(format!("melee_max_dmg: {}", simplify(melee_max)));
         }
         [false, false, true, true] => {
             parts.push(format!("ranged_min_dmg: {}", simplify(ranged_min)));
-
             parts.push(format!("ranged_max_dmg: {}", simplify(ranged_max)));
         }
         [true, true, true, true] => {
@@ -498,7 +496,6 @@ pub fn repr_damages(melee: &[String; 2], ranged: &[String; 2], deals_damage: &[b
                 parts.push(format!("min_dmg: {}", simplify(melee_min)));
             } else {
                 parts.push(format!("melee_min_dmg: {}", simplify(melee_min)));
-
                 parts.push(format!("ranged_min_dmg: {}", simplify(ranged_min)));
             }
 
@@ -506,7 +503,6 @@ pub fn repr_damages(melee: &[String; 2], ranged: &[String; 2], deals_damage: &[b
                 parts.push(format!("max_dmg: {}", simplify(melee_max)));
             } else {
                 parts.push(format!("melee_max_dmg: {}", simplify(melee_max)));
-
                 parts.push(format!("ranged_max_dmg: {}", simplify(ranged_max)));
             }
         }
@@ -527,16 +523,19 @@ pub fn is_zero(value: &str) -> bool {
 pub fn get_fn_names(value_id: &str, melee: &[String; 2], ranged: &[String; 2]) -> [String; 4] {
     let id = tutorlolv2_fmt::to_ssnake(value_id).to_lowercase();
 
+    let has_max = !is_zero(&melee[1]) || !is_zero(&ranged[1]);
+
     let min_shared = !is_zero(&melee[0]) && melee[0] == ranged[0];
     let max_shared = !is_zero(&melee[1]) && melee[1] == ranged[1];
+    let min_suffix = if has_max { "_min" } else { "" };
 
     [
         if is_zero(&melee[0]) {
             ZERO.into()
         } else if min_shared {
-            format!("{id}_min")
+            format!("{id}{min_suffix}")
         } else {
-            format!("{id}_melee_min")
+            format!("{id}_melee{min_suffix}")
         },
         if is_zero(&melee[1]) {
             ZERO.into()
@@ -548,9 +547,9 @@ pub fn get_fn_names(value_id: &str, melee: &[String; 2], ranged: &[String; 2]) -
         if is_zero(&ranged[0]) {
             ZERO.into()
         } else if min_shared {
-            format!("{id}_min")
+            format!("{id}{min_suffix}")
         } else {
-            format!("{id}_ranged_min")
+            format!("{id}_ranged{min_suffix}")
         },
         if is_zero(&ranged[1]) {
             ZERO.into()

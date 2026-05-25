@@ -180,12 +180,12 @@ pub fn generate_champions() -> MayFail<(HashMap<&'static str, String>, String)> 
 
                     let ability_decl = format_args!(
                         "static {variable}: Ability = Ability {{
-                            name: {name:?},
-                            damage_type: {damage_type:?},
-                            attributes: {attributes:?},
-                            comment: {comment:?},
-                            {damage_attr},
-                        }};",
+    name: {name:?},
+    damage_type: {damage_type:?},
+    attributes: {attributes:?},
+    comment: {comment:?},
+    {damage_attr},
+}};",
                     );
 
                     format!(

@@ -1,193 +1,11 @@
 use super::*;
-pub static RUNE_CLOSURES: [[[Range<usize>; 2]; 2]; RuneId::VARIANTS] = [
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[4782325..4782850, 0..0], [4782325..4782850, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [
-        [4785737..4786225, 4785248..4785737],
-        [4785737..4786225, 4785248..4785737],
-    ],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[4793276..4793740, 0..0], [4793276..4793740, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[4799085..4799515, 0..0], [4799085..4799515, 0..0]],
-    [
-        [4802244..4802824, 4801720..4802244],
-        [4802244..4802824, 4801720..4802244],
-    ],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[4807038..4807527, 0..0], [4807038..4807527, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[4814509..4814777, 0..0], [4814777..4815046, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[4819475..4820016, 0..0], [4819475..4820016, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[4829508..4829980, 0..0], [4829980..4830453, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[4839469..4839978, 0..0], [4839469..4839978, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[4842683..4843154, 0..0], [4842683..4843154, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[4847621..4847973, 0..0], [4847621..4847973, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[4850164..4850628, 0..0], [4850164..4850628, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[4853586..4853947, 0..0], [4853586..4853947, 0..0]],
-    [[4855558..4856096, 0..0], [4855558..4856096, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-    [[0..0, 0..0], [0..0, 0..0]],
-];
-pub static RUNE_FORMULAS: [Range<usize>; RuneId::VARIANTS] = [
-    4780483..4781098,
-    4781098..4781704,
-    4781704..4782325,
-    4782850..4783827,
-    4784624..4785248,
-    4786225..4787522,
-    4789006..4789621,
-    4789621..4790236,
-    4790236..4790857,
-    4790857..4791466,
-    4791466..4792066,
-    4792066..4792664,
-    4792664..4793276,
-    4793740..4794658,
-    4795453..4796051,
-    4796051..4796661,
-    4796661..4797262,
-    4797262..4797877,
-    4797877..4798488,
-    4798488..4799085,
-    4799515..4800407,
-    4802824..4804243,
-    4805840..4806440,
-    4806440..4807038,
-    4807527..4808477,
-    4809604..4810228,
-    4810228..4810837,
-    4810837..4811452,
-    4811452..4812060,
-    4812060..4812673,
-    4812673..4813291,
-    4813291..4813891,
-    4813891..4814509,
-    4815046..4815890,
-    4818259..4818877,
-    4818877..4819475,
-    4820016..4821018,
-    4822142..4822740,
-    4822740..4823361,
-    4823361..4823997,
-    4823997..4824615,
-    4824615..4825212,
-    4825212..4825834,
-    4825834..4826438,
-    4826438..4827041,
-    4827041..4827660,
-    4827660..4828282,
-    4828282..4828892,
-    4828892..4829508,
-    4830453..4831734,
-    4833365..4833986,
-    4833986..4834598,
-    4834598..4835231,
-    4835231..4835837,
-    4835837..4836446,
-    4836446..4837058,
-    4837058..4837662,
-    4837662..4838257,
-    4838257..4838869,
-    4838869..4839469,
-    4839978..4840939,
-    4842063..4842683,
-    4843154..4844094,
-    4845150..4845778,
-    4845778..4846393,
-    4846393..4847017,
-    4847017..4847621,
-    4847973..4848765,
-    4849558..4850164,
-    4850628..4851552,
-    4852352..4852958,
-    4852958..4853586,
-    4853947..4854760,
-    4856096..4857094,
-    4858220..4858834,
-    4858834..4859451,
-    4859451..4860068,
-    4860068..4860681,
-    4860681..4861299,
-    4861299..4861908,
-    4861908..4862503,
-    4862503..4863121,
-    4863121..4863728,
-    4863728..4864355,
-    4864355..4864965,
-    4864965..4865568,
-];
 pub static RUNE_GENERATOR: [Range<usize>; RuneId::VARIANTS] = [
     0..0,
     0..0,
     0..0,
-    4783827..4784624,
+    4781887..4782684,
     0..0,
-    4787522..4789006,
+    4785582..4787066,
     0..0,
     0..0,
     0..0,
@@ -195,18 +13,18 @@ pub static RUNE_GENERATOR: [Range<usize>; RuneId::VARIANTS] = [
     0..0,
     0..0,
     0..0,
-    4794658..4795453,
+    4792714..4793509,
     0..0,
     0..0,
     0..0,
     0..0,
     0..0,
     0..0,
-    4800407..4801720,
-    4804243..4805840,
+    4798459..4799772,
+    4802295..4803892,
     0..0,
     0..0,
-    4808477..4809604,
+    4806525..4807652,
     0..0,
     0..0,
     0..0,
@@ -215,10 +33,10 @@ pub static RUNE_GENERATOR: [Range<usize>; RuneId::VARIANTS] = [
     0..0,
     0..0,
     0..0,
-    4815890..4818259,
+    4813930..4816299,
     0..0,
     0..0,
-    4821018..4822142,
+    4819054..4820178,
     0..0,
     0..0,
     0..0,
@@ -231,7 +49,7 @@ pub static RUNE_GENERATOR: [Range<usize>; RuneId::VARIANTS] = [
     0..0,
     0..0,
     0..0,
-    4831734..4833365,
+    4829762..4831393,
     0..0,
     0..0,
     0..0,
@@ -242,20 +60,20 @@ pub static RUNE_GENERATOR: [Range<usize>; RuneId::VARIANTS] = [
     0..0,
     0..0,
     0..0,
-    4840939..4842063,
+    4838963..4840087,
     0..0,
-    4844094..4845150,
+    4842114..4843170,
     0..0,
     0..0,
     0..0,
     0..0,
-    4848765..4849558,
+    4846781..4847574,
     0..0,
-    4851552..4852352,
+    4849564..4850364,
     0..0,
     0..0,
-    4854760..4855558,
-    4857094..4858220,
+    4852768..4853566,
+    4855098..4856224,
     0..0,
     0..0,
     0..0,
@@ -268,6 +86,188 @@ pub static RUNE_GENERATOR: [Range<usize>; RuneId::VARIANTS] = [
     0..0,
     0..0,
     0..0,
+];
+pub static RUNE_FORMULAS: [Range<usize>; RuneId::VARIANTS] = [
+    4778547..4779162,
+    4779162..4779768,
+    4779768..4780389,
+    4780910..4781887,
+    4782684..4783308,
+    4784285..4785582,
+    4787066..4787681,
+    4787681..4788296,
+    4788296..4788917,
+    4788917..4789526,
+    4789526..4790126,
+    4790126..4790724,
+    4790724..4791336,
+    4791796..4792714,
+    4793509..4794107,
+    4794107..4794717,
+    4794717..4795318,
+    4795318..4795933,
+    4795933..4796544,
+    4796544..4797141,
+    4797567..4798459,
+    4800876..4802295,
+    4803892..4804492,
+    4804492..4805090,
+    4805575..4806525,
+    4807652..4808276,
+    4808276..4808885,
+    4808885..4809500,
+    4809500..4810108,
+    4810108..4810721,
+    4810721..4811339,
+    4811339..4811939,
+    4811939..4812557,
+    4813086..4813930,
+    4816299..4816917,
+    4816917..4817515,
+    4818052..4819054,
+    4820178..4820776,
+    4820776..4821397,
+    4821397..4822033,
+    4822033..4822651,
+    4822651..4823248,
+    4823248..4823870,
+    4823870..4824474,
+    4824474..4825077,
+    4825077..4825696,
+    4825696..4826318,
+    4826318..4826928,
+    4826928..4827544,
+    4828481..4829762,
+    4831393..4832014,
+    4832014..4832626,
+    4832626..4833259,
+    4833259..4833865,
+    4833865..4834474,
+    4834474..4835086,
+    4835086..4835690,
+    4835690..4836285,
+    4836285..4836897,
+    4836897..4837497,
+    4838002..4838963,
+    4840087..4840707,
+    4841174..4842114,
+    4843170..4843798,
+    4843798..4844413,
+    4844413..4845037,
+    4845037..4845641,
+    4845989..4846781,
+    4847574..4848180,
+    4848640..4849564,
+    4850364..4850970,
+    4850970..4851598,
+    4851955..4852768,
+    4854100..4855098,
+    4856224..4856838,
+    4856838..4857455,
+    4857455..4858072,
+    4858072..4858685,
+    4858685..4859303,
+    4859303..4859912,
+    4859912..4860507,
+    4860507..4861125,
+    4861125..4861732,
+    4861732..4862359,
+    4862359..4862969,
+    4862969..4863572,
+];
+pub static RUNE_CLOSURES: [[[Range<usize>; 2]; 2]; RuneId::VARIANTS] = [
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[4780389..4780910, 0..0], [4780389..4780910, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [
+        [4783797..4784285, 4783308..4783797],
+        [4783797..4784285, 4783308..4783797],
+    ],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[4791336..4791796, 0..0], [4791336..4791796, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[4797141..4797567, 0..0], [4797141..4797567, 0..0]],
+    [
+        [4799772..4800352, 4800352..4800876],
+        [4799772..4800352, 4800352..4800876],
+    ],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[4805090..4805575, 0..0], [4805090..4805575, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[4812557..4812821, 0..0], [4812821..4813086, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[4817515..4818052, 0..0], [4817515..4818052, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[4827544..4828012, 0..0], [4828012..4828481, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[4837497..4838002, 0..0], [4837497..4838002, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[4840707..4841174, 0..0], [4840707..4841174, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[4845641..4845989, 0..0], [4845641..4845989, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[4848180..4848640, 0..0], [4848180..4848640, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[4851598..4851955, 0..0], [4851598..4851955, 0..0]],
+    [[4853566..4854100, 0..0], [4853566..4854100, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
+    [[0..0, 0..0], [0..0, 0..0]],
 ];
 
 pub static ABSOLUTE_FOCUS: X = X {
@@ -322,8 +322,8 @@ pub static AFTERSHOCK: X = X {
         damage_type: Magic,
         attributes: Undefined,
     },
-    melee: [aftershock_min, zero],
-    ranged: [aftershock_min, zero],
+    melee: [aftershock, zero],
+    ranged: [aftershock, zero],
     deals_damage: [true, false, true, false],
     riot_id: 8439,
     identifiers: [
@@ -339,7 +339,7 @@ pub static AFTERSHOCK: X = X {
     custom: false,
 };
 
-pub const fn aftershock_min(ctx: &Ctx) -> f32 {
+pub const fn aftershock(ctx: &Ctx) -> f32 {
     5f32 * (5f32 + 0.016 * ctx.bonus_health + 1.118 * (-1f32 + ctx.level))
 }
 
@@ -502,15 +502,15 @@ pub static CHEAP_SHOT: X = X {
         damage_type: True,
         attributes: Undefined,
     },
-    melee: [cheap_shot_min, zero],
-    ranged: [cheap_shot_min, zero],
+    melee: [cheap_shot, zero],
+    ranged: [cheap_shot, zero],
     deals_damage: [true, false, true, false],
     riot_id: 8126,
     identifiers: [[&[Level] as &[_], &[]], [&[Level] as &[_], &[]]],
     custom: false,
 };
 
-pub const fn cheap_shot_min(ctx: &Ctx) -> f32 {
+pub const fn cheap_shot(ctx: &Ctx) -> f32 {
     5f32 * (34f32 + 7f32 * (-1f32 + ctx.level)) / 17f32
 }
 
@@ -611,8 +611,8 @@ pub static DARK_HARVEST: X = X {
         damage_type: Adaptive,
         attributes: Undefined,
     },
-    melee: [dark_harvest_min, zero],
-    ranged: [dark_harvest_min, zero],
+    melee: [dark_harvest, zero],
+    ranged: [dark_harvest, zero],
     deals_damage: [true, false, true, false],
     riot_id: 8128,
     identifiers: [
@@ -622,7 +622,7 @@ pub static DARK_HARVEST: X = X {
     custom: false,
 };
 
-pub const fn dark_harvest_min(ctx: &Ctx) -> f32 {
+pub const fn dark_harvest(ctx: &Ctx) -> f32 {
     30f32 + 0.05 * ctx.ability_power + 0.1 * ctx.bonus_ad + 11f32 * ctx.stacks
 }
 
@@ -700,8 +700,8 @@ pub static ELECTROCUTE: X = X {
         damage_type: Adaptive,
         attributes: Undefined,
     },
-    melee: [electrocute_min, zero],
-    ranged: [electrocute_min, zero],
+    melee: [electrocute, zero],
+    ranged: [electrocute, zero],
     deals_damage: [true, false, true, false],
     riot_id: 8112,
     identifiers: [
@@ -711,7 +711,7 @@ pub static ELECTROCUTE: X = X {
     custom: false,
 };
 
-pub const fn electrocute_min(ctx: &Ctx) -> f32 {
+pub const fn electrocute(ctx: &Ctx) -> f32 {
     10f32 * (6f32 + 0.005 * ctx.ability_power + 0.01 * ctx.bonus_ad + ctx.level)
 }
 
@@ -842,8 +842,8 @@ pub static GRASP_OF_THE_UNDYING: X = X {
         damage_type: Magic,
         attributes: Undefined,
     },
-    melee: [grasp_of_the_undying_melee_min, zero],
-    ranged: [grasp_of_the_undying_ranged_min, zero],
+    melee: [grasp_of_the_undying_melee, zero],
+    ranged: [grasp_of_the_undying_ranged, zero],
     deals_damage: [true, false, true, false],
     riot_id: 8437,
     identifiers: [
@@ -853,11 +853,11 @@ pub static GRASP_OF_THE_UNDYING: X = X {
     custom: false,
 };
 
-pub const fn grasp_of_the_undying_melee_min(ctx: &Ctx) -> f32 {
+pub const fn grasp_of_the_undying_melee(ctx: &Ctx) -> f32 {
     3.5 * ctx.max_health
 }
 
-pub const fn grasp_of_the_undying_ranged_min(ctx: &Ctx) -> f32 {
+pub const fn grasp_of_the_undying_ranged(ctx: &Ctx) -> f32 {
     1.4 * ctx.max_health
 }
 
@@ -898,8 +898,8 @@ pub static HAIL_OF_BLADES: X = X {
         damage_type: True,
         attributes: Undefined,
     },
-    melee: [hail_of_blades_min, zero],
-    ranged: [hail_of_blades_min, zero],
+    melee: [hail_of_blades, zero],
+    ranged: [hail_of_blades, zero],
     deals_damage: [true, false, true, false],
     riot_id: 9923,
     identifiers: [
@@ -909,7 +909,7 @@ pub static HAIL_OF_BLADES: X = X {
     custom: false,
 };
 
-pub const fn hail_of_blades_min(ctx: &Ctx) -> f32 {
+pub const fn hail_of_blades(ctx: &Ctx) -> f32 {
     4f32 + 0.06 * ctx.ability_power
         + 0.08 * ctx.bonus_ad
         + 16f32 * (-1f32 + ctx.level) / 17f32
@@ -1102,19 +1102,19 @@ pub static LETHAL_TEMPO: X = X {
         damage_type: Adaptive,
         attributes: Undefined,
     },
-    melee: [lethal_tempo_melee_min, zero],
-    ranged: [lethal_tempo_ranged_min, zero],
+    melee: [lethal_tempo_melee, zero],
+    ranged: [lethal_tempo_ranged, zero],
     deals_damage: [true, false, true, false],
     riot_id: 8008,
     identifiers: [[&[Level] as &[_], &[]], [&[Level] as &[_], &[]]],
     custom: false,
 };
 
-pub const fn lethal_tempo_melee_min(ctx: &Ctx) -> f32 {
+pub const fn lethal_tempo_melee(ctx: &Ctx) -> f32 {
     3f32 * (51f32 + 7f32 * (-1f32 + ctx.level)) / 17f32
 }
 
-pub const fn lethal_tempo_ranged_min(ctx: &Ctx) -> f32 {
+pub const fn lethal_tempo_ranged(ctx: &Ctx) -> f32 {
     2f32 * (51f32 + 7f32 * (-1f32 + ctx.level)) / 17f32
 }
 
@@ -1275,8 +1275,8 @@ pub static PREDATOR: X = X {
         damage_type: Adaptive,
         attributes: Undefined,
     },
-    melee: [predator_min, zero],
-    ranged: [predator_min, zero],
+    melee: [predator, zero],
+    ranged: [predator, zero],
     deals_damage: [true, false, true, false],
     riot_id: 0,
     identifiers: [
@@ -1286,7 +1286,7 @@ pub static PREDATOR: X = X {
     custom: true,
 };
 
-pub const fn predator_min(ctx: &Ctx) -> f32 {
+pub const fn predator(ctx: &Ctx) -> f32 {
     20f32
         + 0.15 * ctx.ability_power
         + 0.25 * ctx.bonus_ad
@@ -1315,15 +1315,15 @@ pub static PRESS_THE_ATTACK: X = X {
         damage_type: Adaptive,
         attributes: Undefined,
     },
-    melee: [press_the_attack_min, zero],
-    ranged: [press_the_attack_min, zero],
+    melee: [press_the_attack, zero],
+    ranged: [press_the_attack, zero],
     deals_damage: [true, false, true, false],
     riot_id: 8005,
     identifiers: [[&[Level] as &[_], &[]], [&[Level] as &[_], &[]]],
     custom: false,
 };
 
-pub const fn press_the_attack_min(ctx: &Ctx) -> f32 {
+pub const fn press_the_attack(ctx: &Ctx) -> f32 {
     40f32 * (17f32 + 3f32 * (-1f32 + ctx.level)) / 17f32
 }
 
@@ -1394,8 +1394,8 @@ pub static SCORCH: X = X {
         damage_type: Magic,
         attributes: Undefined,
     },
-    melee: [scorch_min, zero],
-    ranged: [scorch_min, zero],
+    melee: [scorch, zero],
+    ranged: [scorch, zero],
     deals_damage: [true, false, true, false],
     riot_id: 8237,
     identifiers: [
@@ -1405,7 +1405,7 @@ pub static SCORCH: X = X {
     custom: false,
 };
 
-pub const fn scorch_min(ctx: &Ctx) -> f32 {
+pub const fn scorch(ctx: &Ctx) -> f32 {
     20f32 * (16f32 + ctx.level) / 17f32
 }
 
@@ -1431,8 +1431,8 @@ pub static SHIELD_BASH: X = X {
         damage_type: Adaptive,
         attributes: Undefined,
     },
-    melee: [shield_bash_min, zero],
-    ranged: [shield_bash_min, zero],
+    melee: [shield_bash, zero],
+    ranged: [shield_bash, zero],
     deals_damage: [true, false, true, false],
     riot_id: 8401,
     identifiers: [
@@ -1442,7 +1442,7 @@ pub static SHIELD_BASH: X = X {
     custom: false,
 };
 
-pub const fn shield_bash_min(ctx: &Ctx) -> f32 {
+pub const fn shield_bash(ctx: &Ctx) -> f32 {
     5f32 + 0.025 * ctx.bonus_health + 25f32 * (-1f32 + ctx.level) / 17f32
 }
 
@@ -1483,15 +1483,15 @@ pub static SUDDEN_IMPACT: X = X {
         damage_type: True,
         attributes: Undefined,
     },
-    melee: [sudden_impact_min, zero],
-    ranged: [sudden_impact_min, zero],
+    melee: [sudden_impact, zero],
+    ranged: [sudden_impact, zero],
     deals_damage: [true, false, true, false],
     riot_id: 8143,
     identifiers: [[&[Level] as &[_], &[]], [&[Level] as &[_], &[]]],
     custom: false,
 };
 
-pub const fn sudden_impact_min(ctx: &Ctx) -> f32 {
+pub const fn sudden_impact(ctx: &Ctx) -> f32 {
     20f32 + 3.53 * (-1f32 + ctx.level)
 }
 
@@ -1502,8 +1502,8 @@ pub static SUMMON_AERY: X = X {
         damage_type: Adaptive,
         attributes: Undefined,
     },
-    melee: [summon_aery_min, zero],
-    ranged: [summon_aery_min, zero],
+    melee: [summon_aery, zero],
+    ranged: [summon_aery, zero],
     deals_damage: [true, false, true, false],
     riot_id: 8214,
     identifiers: [
@@ -1513,7 +1513,7 @@ pub static SUMMON_AERY: X = X {
     custom: false,
 };
 
-pub const fn summon_aery_min(ctx: &Ctx) -> f32 {
+pub const fn summon_aery(ctx: &Ctx) -> f32 {
     10f32
         + 0.05 * ctx.ability_power
         + 0.1 * ctx.bonus_ad
@@ -2011,8 +2011,8 @@ pub const fn rune_const_eval(
         },
 
         RuneId::Aftershock => match attack_type {
-            Melee => [aftershock_min(&ctx), zero(&ctx)],
-            Ranged => [aftershock_min(&ctx), zero(&ctx)],
+            Melee => [aftershock(&ctx), zero(&ctx)],
+            Ranged => [aftershock(&ctx), zero(&ctx)],
         },
 
         RuneId::ApproachVelocity => match attack_type {
@@ -2061,8 +2061,8 @@ pub const fn rune_const_eval(
         },
 
         RuneId::CheapShot => match attack_type {
-            Melee => [cheap_shot_min(&ctx), zero(&ctx)],
-            Ranged => [cheap_shot_min(&ctx), zero(&ctx)],
+            Melee => [cheap_shot(&ctx), zero(&ctx)],
+            Ranged => [cheap_shot(&ctx), zero(&ctx)],
         },
 
         RuneId::Chrysalis => match attack_type {
@@ -2096,8 +2096,8 @@ pub const fn rune_const_eval(
         },
 
         RuneId::DarkHarvest => match attack_type {
-            Melee => [dark_harvest_min(&ctx), zero(&ctx)],
-            Ranged => [dark_harvest_min(&ctx), zero(&ctx)],
+            Melee => [dark_harvest(&ctx), zero(&ctx)],
+            Ranged => [dark_harvest(&ctx), zero(&ctx)],
         },
 
         RuneId::DeathfireTouch => match attack_type {
@@ -2116,8 +2116,8 @@ pub const fn rune_const_eval(
         },
 
         RuneId::Electrocute => match attack_type {
-            Melee => [electrocute_min(&ctx), zero(&ctx)],
-            Ranged => [electrocute_min(&ctx), zero(&ctx)],
+            Melee => [electrocute(&ctx), zero(&ctx)],
+            Ranged => [electrocute(&ctx), zero(&ctx)],
         },
 
         RuneId::EyeballCollection => match attack_type {
@@ -2161,8 +2161,8 @@ pub const fn rune_const_eval(
         },
 
         RuneId::GraspOfTheUndying => match attack_type {
-            Melee => [grasp_of_the_undying_melee_min(&ctx), zero(&ctx)],
-            Ranged => [grasp_of_the_undying_melee_min(&ctx), zero(&ctx)],
+            Melee => [grasp_of_the_undying_melee(&ctx), zero(&ctx)],
+            Ranged => [grasp_of_the_undying_melee(&ctx), zero(&ctx)],
         },
 
         RuneId::GrislyMementos => match attack_type {
@@ -2176,8 +2176,8 @@ pub const fn rune_const_eval(
         },
 
         RuneId::HailOfBlades => match attack_type {
-            Melee => [hail_of_blades_min(&ctx), zero(&ctx)],
-            Ranged => [hail_of_blades_min(&ctx), zero(&ctx)],
+            Melee => [hail_of_blades(&ctx), zero(&ctx)],
+            Ranged => [hail_of_blades(&ctx), zero(&ctx)],
         },
 
         RuneId::Health => match attack_type {
@@ -2241,8 +2241,8 @@ pub const fn rune_const_eval(
         },
 
         RuneId::LethalTempo => match attack_type {
-            Melee => [lethal_tempo_melee_min(&ctx), zero(&ctx)],
-            Ranged => [lethal_tempo_melee_min(&ctx), zero(&ctx)],
+            Melee => [lethal_tempo_melee(&ctx), zero(&ctx)],
+            Ranged => [lethal_tempo_melee(&ctx), zero(&ctx)],
         },
 
         RuneId::MagicalFootwear => match attack_type {
@@ -2296,8 +2296,8 @@ pub const fn rune_const_eval(
         },
 
         RuneId::Predator => match attack_type {
-            Melee => [predator_min(&ctx), zero(&ctx)],
-            Ranged => [predator_min(&ctx), zero(&ctx)],
+            Melee => [predator(&ctx), zero(&ctx)],
+            Ranged => [predator(&ctx), zero(&ctx)],
         },
 
         RuneId::PresenceOfMind => match attack_type {
@@ -2306,8 +2306,8 @@ pub const fn rune_const_eval(
         },
 
         RuneId::PressTheAttack => match attack_type {
-            Melee => [press_the_attack_min(&ctx), zero(&ctx)],
-            Ranged => [press_the_attack_min(&ctx), zero(&ctx)],
+            Melee => [press_the_attack(&ctx), zero(&ctx)],
+            Ranged => [press_the_attack(&ctx), zero(&ctx)],
         },
 
         RuneId::PrototypeOmnistone => match attack_type {
@@ -2331,8 +2331,8 @@ pub const fn rune_const_eval(
         },
 
         RuneId::Scorch => match attack_type {
-            Melee => [scorch_min(&ctx), zero(&ctx)],
-            Ranged => [scorch_min(&ctx), zero(&ctx)],
+            Melee => [scorch(&ctx), zero(&ctx)],
+            Ranged => [scorch(&ctx), zero(&ctx)],
         },
 
         RuneId::SecondWind => match attack_type {
@@ -2341,8 +2341,8 @@ pub const fn rune_const_eval(
         },
 
         RuneId::ShieldBash => match attack_type {
-            Melee => [shield_bash_min(&ctx), zero(&ctx)],
-            Ranged => [shield_bash_min(&ctx), zero(&ctx)],
+            Melee => [shield_bash(&ctx), zero(&ctx)],
+            Ranged => [shield_bash(&ctx), zero(&ctx)],
         },
 
         RuneId::SixthSense => match attack_type {
@@ -2356,13 +2356,13 @@ pub const fn rune_const_eval(
         },
 
         RuneId::SuddenImpact => match attack_type {
-            Melee => [sudden_impact_min(&ctx), zero(&ctx)],
-            Ranged => [sudden_impact_min(&ctx), zero(&ctx)],
+            Melee => [sudden_impact(&ctx), zero(&ctx)],
+            Ranged => [sudden_impact(&ctx), zero(&ctx)],
         },
 
         RuneId::SummonAery => match attack_type {
-            Melee => [summon_aery_min(&ctx), zero(&ctx)],
-            Ranged => [summon_aery_min(&ctx), zero(&ctx)],
+            Melee => [summon_aery(&ctx), zero(&ctx)],
+            Ranged => [summon_aery(&ctx), zero(&ctx)],
         },
 
         RuneId::TasteOfBlood => match attack_type {
