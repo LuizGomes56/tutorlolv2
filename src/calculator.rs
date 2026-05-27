@@ -501,15 +501,7 @@ pub fn calculator(game: InputGame) -> OutputGame {
         false => champion_raw_stats,
     };
 
-    let current_player_bonus_stats = bonus_stats!(
-        BasicStats::<f32>(champion_stats, current_player_base_stats) {
-            armor,
-            max_health,
-            attack_damage,
-            magic_resist,
-            max_mana
-        }
-    );
+    let current_player_bonus_stats = champion_stats.bonus_stats(current_player_base_stats);
 
     let adaptive_type = match RiotFormulas::adaptive_type(
         current_player_bonus_stats.attack_damage,

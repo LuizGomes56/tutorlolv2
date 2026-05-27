@@ -20,33 +20,6 @@ use alloc::boxed::Box;
 use core::{mem::MaybeUninit, ops::RangeInclusive};
 use tutorlolv2_gen::*;
 
-/// Simplified way to construct a new struct from the provided base stats and
-/// current stats. Only structs with generic arguments `T` are accepted in this
-/// macro
-/// ```rs
-/// let current_player_bonus_stats = bonus_stats!(
-///     BasicStats::<f32>(champion_stats, current_player_base_stats) {
-///         armor,
-///         health,
-///         attack_damage,
-///         magic_resist,
-///         mana
-///     }
-/// );
-/// ```
-#[macro_export]
-macro_rules! bonus_stats {
-    ($struct:ident::<$t:ty>($current_stats:expr, $base_stats:expr) { $($field:ident),*}) => {
-        $struct::<$t> {
-            $(
-                $field: $current_stats.$field - $base_stats.$field,
-            )*
-        }
-    };
-}
-
-pub use bonus_stats;
-
 /// Checks if at least one of the provided [`ItemId`] in the array is in the
 /// [`tutorlolv2_gen::ItemsBitSet`], similar to method [`core::iter::Iterator::any`]
 pub const fn has_item<const N: usize>(origin: &ItemsBitSet, check_for: [ItemId; N]) -> bool {
@@ -129,12 +102,22 @@ impl BasicStats<f32> {
     // Constructs a new [`BasicStats`] struct for the given champion at the specified level
     // It does not consider exceptions (Ex: Gnar)
     pub const fn new(champion_id: ChampionId, level: u8) -> Self {
-        let stats = &champion_id.cache().stats;
+        let stats = &champion_id.stats();
         Self {
-            max_health: RiotFormulas::stat(&stats.health, level),
             armor: RiotFormulas::stat(&stats.armor, level),
-            magic_resist: RiotFormulas::stat(&stats.magic_resist, level),
             attack_damage: RiotFormulas::stat(&stats.attack_damage, level),
+            attack_speed: stats.attack_speed.base
+                + stats.attack_speed_ratio
+                    * RiotFormulas::stat(
+                        &Stat {
+                            base: 0.0,
+                            per_level: stats.attack_speed.per_level,
+                        },
+                        level,
+                    )
+                    / 100.0,
+            magic_resist: RiotFormulas::stat(&stats.magic_resist, level),
+            max_health: RiotFormulas::stat(&stats.health, level),
             max_mana: RiotFormulas::stat(&stats.mana, level),
         }
     }
@@ -166,12 +149,20 @@ impl BasicStats<f32> {
                     base: GNAR_STATS.attack_damage.base + 6.0,
                     per_level: GNAR_STATS.attack_damage.per_level + 2.5,
                 };
+                const MEGA_GNAR_ATTACK_SPEED: S = S {
+                    base: 0.0,
+                    per_level: 0.5,
+                };
 
                 Self {
-                    max_health: RiotFormulas::stat(&MEGA_GNAR_HEALTH, level),
                     armor: RiotFormulas::stat(&MEGA_GNAR_ARMOR, level),
-                    magic_resist: RiotFormulas::stat(&MEGA_GNAR_MAGIC_RESIST, level),
                     attack_damage: RiotFormulas::stat(&MEGA_GNAR_ATTACK_DAMAGE, level),
+                    attack_speed: GNAR_STATS.attack_speed.base
+                        + GNAR_STATS.attack_speed_ratio
+                            * RiotFormulas::stat(&MEGA_GNAR_ATTACK_SPEED, level)
+                            / 100.0,
+                    magic_resist: RiotFormulas::stat(&MEGA_GNAR_MAGIC_RESIST, level),
+                    max_health: RiotFormulas::stat(&MEGA_GNAR_HEALTH, level),
                     max_mana: 0.0,
                 }
             }
@@ -182,15 +173,39 @@ impl BasicStats<f32> {
     pub const fn bonus_stats(&self, base_stats: Self) -> Self {
         Self {
             armor: self.armor - base_stats.armor,
-            max_health: self.max_health - base_stats.max_health,
             attack_damage: self.attack_damage - base_stats.attack_damage,
+            attack_speed: self.attack_speed - base_stats.attack_speed,
             magic_resist: self.magic_resist - base_stats.magic_resist,
+            max_health: self.max_health - base_stats.max_health,
             max_mana: self.max_mana - base_stats.max_mana,
         }
     }
 }
 
+impl EnemyStats<f32> {
+    pub const fn bonus_stats(&self, base_stats: SimpleStats<f32>) -> SimpleStats<f32> {
+        SimpleStats {
+            armor: self.armor - base_stats.armor,
+            max_health: self.max_health - base_stats.max_health,
+            magic_resist: self.magic_resist - base_stats.magic_resist,
+        }
+    }
+}
+
 impl Stats<f32> {
+    /// Returns a new struct [`Stats`] with the same original values except the ones
+    /// that involve percent penetration, which are resolved and converted to the
+    /// `0..100` range used in this library
+    pub const fn base100(&self) -> Self {
+        Self {
+            armor_penetration_percent: (1.0 - self.armor_penetration_percent).clamp(0.0, 1.0)
+                * 100.0,
+            magic_penetration_percent: (1.0 - self.magic_penetration_percent).clamp(0.0, 1.0)
+                * 100.0,
+            ..*self
+        }
+    }
+
     /// Receives the current player stats and the qualified dragons and returns a large array
     /// of stats as if the player owned the qualified item, defined in the constant
     /// [`SIMULATED_ITEMS_ENUM`]. The qualified items are defined by their tier, gold, and if
@@ -255,9 +270,10 @@ impl Stats<f32> {
     pub const fn bonus_stats(&self, base_stats: BasicStats<f32>) -> BasicStats<f32> {
         BasicStats {
             armor: self.armor - base_stats.armor,
-            max_health: self.max_health - base_stats.max_health,
             attack_damage: self.attack_damage - base_stats.attack_damage,
+            attack_speed: self.attack_speed - base_stats.attack_speed,
             magic_resist: self.magic_resist - base_stats.magic_resist,
+            max_health: self.max_health - base_stats.max_health,
             max_mana: self.max_mana - base_stats.max_mana,
         }
     }
@@ -494,13 +510,7 @@ pub const fn get_enemy_full_state(
         accept_negatives,
     );
 
-    let e_bonus_stats = bonus_stats!(
-        SimpleStats::<f32>(e_current_stats, base_stats) {
-            armor,
-            max_health,
-            magic_resist
-        }
-    );
+    let e_bonus_stats = e_current_stats.bonus_stats(base_stats);
 
     let mut origin = ItemsBitSet::EMPTY;
     let mut i = 0;
@@ -553,7 +563,6 @@ pub const fn get_eval_ctx(self_state: &SelfState, e_state: &EnemyFullState) -> C
                 max_health,
                 max_mana,
                 current_mana,
-                ..
             },
         bonus_stats:
             BasicStats {
@@ -562,6 +571,7 @@ pub const fn get_eval_ctx(self_state: &SelfState, e_state: &EnemyFullState) -> C
                 magic_resist: bonus_magic_resist,
                 max_health: bonus_health,
                 max_mana: bonus_mana,
+                attack_speed: bonus_attack_speed,
             },
         base_stats:
             BasicStats {
@@ -570,6 +580,7 @@ pub const fn get_eval_ctx(self_state: &SelfState, e_state: &EnemyFullState) -> C
                 attack_damage: base_ad,
                 magic_resist: base_magic_resist,
                 max_mana: base_mana,
+                attack_speed: base_attack_speed,
             },
         level,
         adaptive_type,
@@ -617,10 +628,12 @@ pub const fn get_eval_ctx(self_state: &SelfState, e_state: &EnemyFullState) -> C
         base_health,
         base_ad,
         base_armor,
+        base_attack_speed,
         base_magic_resist,
         base_mana,
         bonus_ad,
         bonus_armor,
+        bonus_attack_speed,
         bonus_magic_resist,
         bonus_health,
         bonus_mana,

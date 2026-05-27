@@ -186,21 +186,6 @@ pub struct Enemy<'a> {
     pub position: Position,
 }
 
-impl Stats<f32> {
-    /// Returns a new struct [`Stats`] with the same original values except the ones
-    /// that involve percent penetration, which are resolved and converted to the
-    /// `0..100` range used in this library
-    pub const fn base100(&self) -> Self {
-        Self {
-            armor_penetration_percent: (1.0 - self.armor_penetration_percent).clamp(0.0, 1.0)
-                * 100.0,
-            magic_penetration_percent: (1.0 - self.magic_penetration_percent).clamp(0.0, 1.0)
-                * 100.0,
-            ..*self
-        }
-    }
-}
-
 /// Enum that defines the team of some player.
 /// - `CHAOS` is converted to [`Team::Red`],
 /// - `ORDER` and any other variant matches [`Team::Blue`]
@@ -841,9 +826,10 @@ impl_cast_from!(
     )]
     BasicStats,
     armor,
-    max_health,
     attack_damage,
+    attack_speed,
     magic_resist,
+    max_health,
     max_mana
 );
 impl_cast_from!(

@@ -119,15 +119,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
         BasicStats::base_stats(current_player_champion_id, level, is_mega_gnar);
 
     // This is the difference between the current stats and the base values
-    let current_player_bonus_stats = bonus_stats!(
-        BasicStats::<f32>(current_player_stats, current_player_base_stats) {
-            armor,
-            max_health,
-            attack_damage,
-            magic_resist,
-            max_mana
-        }
-    );
+    let current_player_bonus_stats = current_player_stats.bonus_stats(current_player_base_stats);
 
     // If the player hasn't bought any damaging items, the function defaults,
     // but since we have the champion's adaptive damage, we can use that instead
