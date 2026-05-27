@@ -723,6 +723,10 @@ impl ItemId {
     pub const fn eval(&self, ctx: &Ctx, attack_type: AttackType) -> [f32; 2] {
         item_const_eval(ctx, *self, attack_type)
     }
+
+    pub const fn stats(&self) -> &'static [(StatName, u16)] {
+        self.cache().stats
+    }
 }
 
 impl RuneId {
@@ -985,13 +989,13 @@ where
         &Self::GENERATORS[self.index()]
     }
     fn is_champion(&self) -> bool {
-        matches!(self.entity(), EntityId::Champion(_))
+        self.entity().is_champion()
     }
     fn is_item(&self) -> bool {
-        matches!(self.entity(), EntityId::Item(_))
+        self.entity().is_item()
     }
     fn is_rune(&self) -> bool {
-        matches!(self.entity(), EntityId::Rune(_))
+        self.entity().is_rune()
     }
 }
 

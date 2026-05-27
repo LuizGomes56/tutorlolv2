@@ -68,15 +68,14 @@ impl SimpleStats<f32> {
     /// the bonus mana allows a better estimate about the enemy's current HP
     pub const fn infer_stats(&mut self, items: &[ItemId], earth_dragons: u16) -> f32 {
         let mut bonus_mana = 0.0;
-
         let mut i = 0;
-        while i < items.len() {
-            let item = items[i].cache();
-            let item_stats = item.stats;
 
+        while i < items.len() {
+            let stats = items[i].stats();
             let mut j = 0;
-            while j < item_stats.len() {
-                let (stat_name, value) = item_stats[j];
+
+            while j < stats.len() {
+                let (stat_name, value) = stats[j];
                 let v = value as f32;
 
                 match stat_name {
@@ -91,7 +90,9 @@ impl SimpleStats<f32> {
 
             i += 1;
         }
+
         let dragon_mod = RiotFormulas::get_earth_multiplier(earth_dragons);
+
         self.magic_resist *= dragon_mod;
         self.armor *= dragon_mod;
         bonus_mana
@@ -106,16 +107,12 @@ impl BasicStats<f32> {
         Self {
             armor: RiotFormulas::stat(&stats.armor, level),
             attack_damage: RiotFormulas::stat(&stats.attack_damage, level),
-            attack_speed: stats.attack_speed.base
-                + stats.attack_speed_ratio
-                    * RiotFormulas::stat(
-                        &Stat {
-                            base: 0.0,
-                            per_level: stats.attack_speed.per_level,
-                        },
-                        level,
-                    )
-                    / 100.0,
+            attack_speed: RiotFormulas::attack_speed(
+                &stats.attack_speed,
+                stats.attack_speed_ratio,
+                0.0,
+                level,
+            ),
             magic_resist: RiotFormulas::stat(&stats.magic_resist, level),
             max_health: RiotFormulas::stat(&stats.health, level),
             max_mana: RiotFormulas::stat(&stats.mana, level),
@@ -131,7 +128,7 @@ impl BasicStats<f32> {
 
                 type S = Stat;
 
-                const GNAR_STATS: WikiStats = ChampionId::Gnar.cache().stats;
+                const GNAR_STATS: &WikiStats = ChampionId::Gnar.stats();
 
                 const MEGA_GNAR_HEALTH: S = S {
                     base: GNAR_STATS.health.base + 100.0,
@@ -149,18 +146,19 @@ impl BasicStats<f32> {
                     base: GNAR_STATS.attack_damage.base + 6.0,
                     per_level: GNAR_STATS.attack_damage.per_level + 2.5,
                 };
-                const MEGA_GNAR_ATTACK_SPEED: S = S {
-                    base: 0.0,
-                    per_level: 0.5,
-                };
 
                 Self {
                     armor: RiotFormulas::stat(&MEGA_GNAR_ARMOR, level),
                     attack_damage: RiotFormulas::stat(&MEGA_GNAR_ATTACK_DAMAGE, level),
-                    attack_speed: GNAR_STATS.attack_speed.base
-                        + GNAR_STATS.attack_speed_ratio
-                            * RiotFormulas::stat(&MEGA_GNAR_ATTACK_SPEED, level)
-                            / 100.0,
+                    attack_speed: RiotFormulas::attack_speed(
+                        &Stat {
+                            base: GNAR_STATS.attack_speed.base,
+                            per_level: 0.5,
+                        },
+                        GNAR_STATS.attack_speed_ratio,
+                        0.0,
+                        level,
+                    ),
                     magic_resist: RiotFormulas::stat(&MEGA_GNAR_MAGIC_RESIST, level),
                     max_health: RiotFormulas::stat(&MEGA_GNAR_HEALTH, level),
                     max_mana: 0.0,
@@ -217,11 +215,11 @@ impl Stats<f32> {
         let mut i = 0;
         while i < SIMULATED_ITEMS_ENUM.len() {
             let mut new_stat = *self;
-            let item_stats = SIMULATED_ITEMS_ENUM[i].cache().stats;
+            let stats = SIMULATED_ITEMS_ENUM[i].stats();
 
             let mut j = 0;
-            while j < item_stats.len() {
-                let (stat_name, value) = item_stats[j];
+            while j < stats.len() {
+                let (stat_name, value) = stats[j];
                 let v = value as f32;
 
                 match stat_name {
@@ -345,6 +343,7 @@ pub const fn get_damaging_runes(input: &[RuneId]) -> RunesBitSet {
     let mut i = 0;
     while i < input.len() {
         let rune = input[i] as _;
+
         if DAMAGING_RUNES.contains_const(rune) {
             out.insert_const(rune);
         }
@@ -358,8 +357,10 @@ pub const fn get_damaging_runes(input: &[RuneId]) -> RunesBitSet {
 pub const fn get_damaging_items(input: &[ItemId]) -> ItemsBitSet {
     let mut out = ItemsBitSet::EMPTY;
     let mut i = 0;
+
     while i < input.len() {
         let item = input[i] as _;
+
         if DAMAGING_ITEMS.contains_const(item) {
             out.insert_const(item);
         }
@@ -658,17 +659,20 @@ pub const fn get_eval_ctx(self_state: &SelfState, e_state: &EnemyFullState) -> C
             AdaptiveType::Physical => armor_values.modifier,
             AdaptiveType::Magic => magic_values.modifier,
         },
-        steelcaps_effect: match steelcaps {
-            true => RiotFormulas::STEEL_CAPS_PROTECTION,
-            false => 1.0,
+        steelcaps_effect: if steelcaps {
+            RiotFormulas::STEEL_CAPS_PROTECTION
+        } else {
+            1.0
         },
-        randuin_effect: match randuin {
-            true => RiotFormulas::RANDUIN_CRIT_PROTECTION,
-            false => 1.0,
+        randuin_effect: if randuin {
+            RiotFormulas::RANDUIN_CRIT_PROTECTION
+        } else {
+            1.0
         },
-        rocksolid_effect: match rocksolid {
-            true => RiotFormulas::ROCKSOLID_PROTECTION,
-            false => 1.0,
+        rocksolid_effect: if rocksolid {
+            RiotFormulas::ROCKSOLID_PROTECTION
+        } else {
+            1.0
         },
         stacks,
         life_steal: 0.0,
@@ -733,6 +737,7 @@ const _: () = {
         let Champion {
             metadata, closures, ..
         } = champion_id.cache();
+
         assert!(metadata.len() == closures.len());
         i += 1;
     }
@@ -802,6 +807,7 @@ impl Damages {
                     damage_type,
                     attributes,
                 } = metadata[i];
+
                 let closure = unsafe { closures.get_unchecked(i) };
                 let modifier = ability_id_mod(kind, damage_type, modifiers);
                 let damage = (modifier * closure(ctx)) as i32;
@@ -836,8 +842,8 @@ impl Damages {
             } = *unsafe { metadata.get_unchecked(meta_index) };
 
             let modifier = modifiers.damages.modifier(damage_type);
-
             let mut j = 0;
+
             while j < 2 {
                 let closure = unsafe { closures.get_unchecked((meta_index << 1) + j) };
                 let damage = (modifier * closure(ctx)) as i32;
@@ -880,6 +886,7 @@ pub fn get_monster_damages(
             shred,
             true,
         );
+
         let ctx = get_eval_ctx(self_state, &full_state);
         let modifiers = Modifiers::new(&ctx, self_state.adaptive_type);
         Damages::new(ctx, eval_data, modifiers)

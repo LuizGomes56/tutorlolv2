@@ -592,6 +592,19 @@ impl RiotFormulas {
         (100f32, -30f32),
     ];
 
+    pub const fn attack_speed(stat: &Stat, ratio: f32, bonus: f32, level: u8) -> f32 {
+        stat.base
+            + ratio
+                * (RiotFormulas::stat(
+                    &Stat {
+                        base: 0.0,
+                        per_level: stat.per_level,
+                    },
+                    level,
+                ) + bonus)
+                / 100.0
+    }
+
     pub const fn missing_health(current_health: f32, max_health: f32) -> f32 {
         1.0 - (current_health / max_health.max(1.0))
     }
@@ -640,9 +653,9 @@ impl RiotFormulas {
         factor * (0.7025 + 0.0175 * factor)
     }
 
-    pub const fn stat(stat_map: &Stat, level: u8) -> f32 {
+    pub const fn stat(stat: &Stat, level: u8) -> f32 {
         let growth_factor = Self::growth(level);
-        Self::stat_growth(stat_map.base, stat_map.per_level, growth_factor)
+        Self::stat_growth(stat.base, stat.per_level, growth_factor)
     }
 
     /// Given the base stats and growth factors, return a number after applying the formula

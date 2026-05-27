@@ -21,7 +21,7 @@ const _: () = {
     let mut i = 0;
     while i < ChampionId::VARIANTS {
         let champion_id = ChampionId::VALUES[i];
-        assert!(!champion_id.cache().positions.is_empty());
+        assert!(!champion_id.positions().is_empty());
         i += 1;
     }
 };
@@ -33,7 +33,14 @@ pub enum RealtimeError<'a> {
 
 impl core::fmt::Display for RealtimeError<'_> {
     fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
-        write!(f, "Unable to recognize current player")
+        let id = match self {
+            RealtimeError::UnrecognizedCurrentPlayer(s) => s,
+        };
+
+        write!(
+            f,
+            "Unable to find current player with `riot_id`: {id} in field `all_players`"
+        )
     }
 }
 
@@ -260,9 +267,6 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
             metadata: current_player_cache.metadata,
             closures: current_player_cache.closures,
         },
-        // Get closures and metadata for items and runes. Items always have two closures
-        // for each, while runes have only a single one. It will have to be changed as
-        // now there's one rune whose damage is measured in a range x..1.75x
         items: DamageKind::items(&current_player_items, current_player_cache_attack_type),
         runes: DamageKind::runes(&current_player_runes, current_player_cache_attack_type),
     };
