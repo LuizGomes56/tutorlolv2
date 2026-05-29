@@ -241,10 +241,11 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
                                 RiotFormulas::COUP_DE_GRACE_AND_CUTDOWN_BONUS_DAMAGE
                         }
                         RuneId::LastStand => {
-                            base_modifiers.global_mod *= RiotFormulas::get_last_stand(
-                                1.0 - (self_state.current_stats.current_health
-                                    / self_state.current_stats.max_health.max(1.0)),
-                            )
+                            base_modifiers.global_mod *=
+                                RiotFormulas::get_last_stand(RiotFormulas::missing_health(
+                                    self_state.current_stats.current_health,
+                                    self_state.current_stats.max_health,
+                                ))
                         }
                         _ => {}
                     };

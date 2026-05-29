@@ -309,13 +309,13 @@ const _: () = {
         let mut j = 0;
         while j < merge_data.len() {
             let m = &merge_data[j];
-            assert!((m.minimum_damage as usize) < len);
-            assert!((m.maximum_damage as usize) < len);
-            assert!(m.minimum_damage < m.maximum_damage);
+            assert!((m.min as usize) < len);
+            assert!((m.max as usize) < len);
+            assert!(m.min < m.max);
             if j + 1 < merge_data.len() {
                 let a = &merge_data[j];
                 let b = &merge_data[j + 1];
-                assert!(a.maximum_damage < b.maximum_damage);
+                assert!(a.max < b.max);
             }
             j += 1;
         }
