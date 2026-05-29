@@ -43,50 +43,52 @@ pub const fn ignite(level: u8) -> i32 {
     70 + 20 * n + 5 * nth
 }
 
-/// Verifies the following conditions
-/// - `tier >= 3`
-/// - `price > 0`
-/// - `len(stats)` > 0
-/// - `purchasable`
-pub const fn is_simulated_item(item: &Item) -> bool {
-    let Item {
-        purchasable,
-        tier,
-        price,
-        maps,
-        metadata: TypeMetadata { kind, .. },
-        ..
-    } = *item;
+impl Item {
+    /// Verifies the following conditions
+    /// - `tier >= 3`
+    /// - `price > 0`
+    /// - `len(stats)` > 0
+    /// - `purchasable`
+    pub const fn is_simulated_item(&self) -> bool {
+        let Self {
+            purchasable,
+            tier,
+            price,
+            maps,
+            metadata: TypeMetadata { kind, .. },
+            ..
+        } = *self;
 
-    let check = [
-        StatName::AbilityPower,
-        StatName::AttackDamage,
-        StatName::AdaptiveForce,
-        StatName::Lethality,
-        StatName::ArmorPenetration,
-        StatName::MagicPenetration,
-    ];
+        let check = [
+            StatName::AbilityPower,
+            StatName::AttackDamage,
+            StatName::AdaptiveForce,
+            StatName::Lethality,
+            StatName::ArmorPenetration,
+            StatName::MagicPenetration,
+        ];
 
-    let mut allow = false;
-    let mut i = 0;
+        let mut allow = false;
+        let mut i = 0;
 
-    while i < check.len() {
-        if kind.has_stat(check[i]) {
-            allow = true;
-        }
-
-        i += 1;
-    }
-
-    tier >= 3 && price > 0 && purchasable && allow && {
-        let mut j = 0;
-        while j < maps.len() {
-            if matches!(maps[j], GameMap::SummonersRift) {
-                return true;
+        while i < check.len() {
+            if kind.has_stat(check[i]) {
+                allow = true;
             }
-            j += 1;
+
+            i += 1;
         }
-        false
+
+        tier >= 3 && price > 0 && purchasable && allow && {
+            let mut j = 0;
+            while j < maps.len() {
+                if matches!(maps[j], GameMap::SummonersRift) {
+                    return true;
+                }
+                j += 1;
+            }
+            false
+        }
     }
 }
 
@@ -100,7 +102,7 @@ pub const L_SIML: usize = {
     let mut sum = 0;
     let mut i = 0;
     while i < ItemId::VARIANTS {
-        if is_simulated_item(ITEM_CACHE[i]) {
+        if ITEM_CACHE[i].is_simulated_item() {
             sum += 1;
         }
         i += 1;
@@ -123,7 +125,7 @@ pub const SIMULATED_ITEMS_ENUM: [ItemId; L_SIML] = {
     let mut i = 0;
     let mut j = 0;
     while i < ItemId::VARIANTS {
-        if is_simulated_item(ITEM_CACHE[i]) {
+        if ITEM_CACHE[i].is_simulated_item() {
             result[j] = ItemId::from_repr(i as _).unwrap();
             j += 1;
         }

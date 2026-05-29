@@ -829,7 +829,7 @@ impl_cast_from!(
         Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize,
     )]
     SimpleStats,
-    max_health, armor, magic_resist
+    armor, max_health, magic_resist
 );
 impl_cast_from!(
     /// Struct holding the core champion stats of a player, where `T` is a

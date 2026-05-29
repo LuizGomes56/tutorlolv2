@@ -41,6 +41,8 @@ pub mod bitset {
 
 #[allow(dead_code, unused_imports)]
 mod test {
+    use tutorlolv2_gen::{L_SIML, SIMULATED_ITEMS_ENUM};
+
     use crate::{
         AbilityId, AdaptiveType, ChampionId, ComboElement, Ctx, DamageType, ItemId, RuneId,
         bitset::{ItemsBitSet, RunesBitSet, bitset},
@@ -91,6 +93,21 @@ mod test {
             champion_id: CHAMPION_ID,
             is_mega_gnar: matches!(CHAMPION_ID, ChampionId::Gnar),
         });
+        const SIML_STATS: [Stats<f32>; L_SIML] = STATS.get_simulated_stats(DRAGONS);
+
+        const SPELLSLINGERS_SHOES_SIML: Stats<f32> = {
+            let mut i = 0;
+            let mut index = 0;
+            while i < L_SIML {
+                if matches!(SIMULATED_ITEMS_ENUM[i], ItemId::SpellslingersShoes) {
+                    index = i;
+                    break;
+                }
+                i += 1;
+            }
+            SIML_STATS[index]
+        };
+
         const ABILITY_LEVELS: AbilityLevels = AbilityLevels {
             q: 5,
             w: 5,
