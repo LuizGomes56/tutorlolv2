@@ -16,7 +16,10 @@ use std::{
 use tutorlolv2_types::{
     AttackType, CtxVar, DamageIndex, DamageType, GameMap, StatName, TypeMetadata,
 };
-use tutorlolv2_wiki::items::item_parser::{ItemEffect, WikiItem};
+use tutorlolv2_wiki::{
+    items::item_parser::{ItemEffect, WikiItem},
+    parser::Effect,
+};
 
 pub struct ItemParser {
     pub data: BTreeMap<String, WikiItem>,
@@ -245,9 +248,23 @@ impl Item {
         self
     }
 
-    pub fn formula(&self, source: Source) -> MayFail<String> {
+    pub fn effect(&self, source: Source) -> MayFail<&Effect> {
         match &self[source] {
-            Some(ie) if let Some(ref formula) = ie.effect.formula => Ok(formula.parenthesize()),
+            Some(ie) => Ok(&ie.effect),
+            _ => Err(format!("No source for its {source:?}").into()),
+        }
+    }
+
+    pub fn base(&self, source: Source) -> MayFail<&Vec<f64>> {
+        self.effect(source)?
+            .base
+            .as_ref()
+            .ok_or(format!("No base damage for its {source:?}").into())
+    }
+
+    pub fn formula(&self, source: Source) -> MayFail<String> {
+        match self.effect(source).ok() {
+            Some(effect) if let Some(ref formula) = effect.formula => Ok(formula.parenthesize()),
             _ => {
                 println!(
                     "[{name}] No formula for its {source:?}",
@@ -262,10 +279,27 @@ impl Item {
         &mut self,
         attack_type: AttackType,
         var: DamageIndex,
-        damage: impl AsRef<str>,
+        damage: &impl ToString,
     ) -> &mut Self {
-        self[attack_type][var] = damage.as_ref().to_string();
+        self[attack_type][var] = damage.to_string();
         self
+    }
+
+    pub fn scaling(
+        &self,
+        source: Source,
+        indexes: impl IntoIterator<Item = usize>,
+    ) -> MayFail<String> {
+        let filter = indexes.into_iter().collect::<Vec<_>>();
+        Ok(self
+            .effect(source)?
+            .scalings
+            .iter()
+            .enumerate()
+            .filter(|(i, _)| filter.contains(i))
+            .filter_map(|(_, scaling)| scaling.render(CtxVar::Level).ok())
+            .collect::<Vec<_>>()
+            .join(" + "))
     }
 
     pub fn damage(
@@ -275,17 +309,17 @@ impl Item {
         index: Source,
     ) -> MayFail<&mut Self> {
         let formula = self.formula(index)?;
-        Ok(self.assign(attack_type, var, formula))
+        Ok(self.assign(attack_type, var, &formula))
     }
 
-    pub fn asgn_min(&mut self, damage: impl AsRef<str>) -> &mut Self {
+    pub fn asgn_min(&mut self, damage: impl ToString) -> &mut Self {
         self.assign(AttackType::Melee, DamageIndex::Min, &damage)
-            .assign(AttackType::Ranged, DamageIndex::Min, damage)
+            .assign(AttackType::Ranged, DamageIndex::Min, &damage)
     }
 
-    pub fn asgn_max(&mut self, damage: impl AsRef<str>) -> &mut Self {
+    pub fn asgn_max(&mut self, damage: impl ToString) -> &mut Self {
         self.assign(AttackType::Melee, DamageIndex::Max, &damage)
-            .assign(AttackType::Ranged, DamageIndex::Max, damage)
+            .assign(AttackType::Ranged, DamageIndex::Max, &damage)
     }
 
     pub fn min(&mut self, index: Source) -> MayFail<&mut Self> {

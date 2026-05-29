@@ -7,7 +7,8 @@ pub use crate::{
         gen_utils::RegExtractor,
     },
 };
-pub use tutorlolv2_types::{Attrs::*, CtxVar::*, DamageType::*};
+pub use core::fmt::Display;
+pub use tutorlolv2_types::{AttackType::*, Attrs::*, CtxVar::*, DamageIndex::*, DamageType::*};
 pub use tutorlolv2_wiki::items::item_parser::WikiItem;
 
 #[macro_export]

@@ -1,8 +1,8 @@
 use super::*;
 
 impl Generator for ArdentCenser {
-    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
-        self.min(Passive)?.end()
+        let damage = self.base(Passive)?[0];
+        self.damage_type(Magic).asgn_min(damage).end()
     }
 }

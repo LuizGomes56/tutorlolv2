@@ -173,7 +173,7 @@ pub fn generate_champions() -> MayFail<(HashMap<&'static str, String>, String)> 
                             let alias = merge.alias.discriminant();
                             variable = format!("{champion_id}_{alias}").to_uppercase();
 
-                            format!("min_damage: {min_damage}, max_damage: {max_damage}")
+                            format!("min_dmg: {min_damage}, max_dmg: {max_damage}")
                         }
                         None => {
                             let damage = simplify(damage);
