@@ -493,13 +493,6 @@ impl Modifiers {
             ..Self::default()
         }
     }
-
-    pub const fn infer(&mut self, ctx: &Ctx, adaptive_type: AdaptiveType) {
-        let damages = &mut self.damages;
-        damages.adaptive_type = adaptive_type;
-        damages.physical_mod = ctx.physical_multiplier;
-        damages.magic_mod = ctx.magic_multiplier;
-    }
 }
 
 /// Holds float values that will be multiplied by the damages of each ability

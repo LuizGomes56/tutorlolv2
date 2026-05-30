@@ -17,41 +17,26 @@ pub mod realtime;
 pub mod riot;
 pub use tutorlolv2_gen::*;
 
-#[allow(dead_code, unused_imports)]
+#[allow(dead_code)]
 mod test {
     use crate::{
-        AbilityId, AdaptiveType, AttackType, ChampionId, ComboElement, Ctx, DamageType, ItemId,
-        L_SIML, RuneId, SIMULATED_ITEMS_ENUM, bitset,
-        bitset::{ItemsBitSet, RunesBitSet},
-        calculator::{InferStats, infer_champion_stats},
-        const_eval::{self, ConstEnemy, ConstInput, ConstOutput},
-        helpers::{get_damaging_items, get_damaging_runes, get_enemy_full_state, get_eval_ctx},
-        model::{
-            AbilityLevels, Attacks, BasicStats, Damages, Dragons, EnemyFullState, EnemyState,
-            EnemyStats, Modifiers, RangeDamage, ResistShred, RiotFormulas, SelfState, SimpleStats,
-            Stats, ValueException,
-        },
+        AbilityId, ChampionId, Ctx, ItemId, RuneId,
+        const_eval::{ConstDamage, ConstEnemy, ConstInput, ConstOutput},
+        model::{AbilityLevels, Attacks, BasicStats, Dragons, Modifiers, ResistShred, Stats},
     };
 
     const CHAMPION_ID: ChampionId = ChampionId::Neeko;
-    const ITEMS: [ItemId; 6] = [
-        ItemId::NashorsTooth,
-        ItemId::RabadonsDeathcap,
-        ItemId::HextechRocketbelt,
-        ItemId::ZhonyasHourglass,
-        ItemId::SorcerersShoes,
-        ItemId::BansheesVeil,
-    ];
-    const RUNES: [RuneId; 1] = [RuneId::Electrocute];
-
-    static OUT: ConstOutput<
-        { CHAMPION_ID.number_of_abilities() },
-        { ITEMS.len() },
-        { RUNES.len() },
-    > = ConstInput {
+    const OUT: ConstOutput<{ CHAMPION_ID.number_of_abilities() }, 6, 1> = ConstInput {
         champion_id: CHAMPION_ID,
-        items: ITEMS,
-        runes: RUNES,
+        items: [
+            ItemId::NashorsTooth,
+            ItemId::RabadonsDeathcap,
+            ItemId::HextechRocketbelt,
+            ItemId::ZhonyasHourglass,
+            ItemId::SorcerersShoes,
+            ItemId::VoidStaff,
+        ],
+        runes: [RuneId::Electrocute],
         rune_exceptions: [(RuneId::GatheringStorm, 4)],
         item_exceptions: [(ItemId::Dragonheart, 3)],
         ability_levels: AbilityLevels::default(),
@@ -71,4 +56,15 @@ mod test {
         },
     }
     .eval();
+
+    const ATTACKS: Attacks = OUT.attacks;
+    const ABILITIES: &[(AbilityId, i32)] = &OUT.abilities;
+    const ITEMS_DMG: &[ConstDamage<ItemId>] = &OUT.items;
+    const RUNES_DMG: &[ConstDamage<RuneId>] = &OUT.runes;
+    const CTX: Ctx = OUT.ctx;
+    const STATS: Stats<f32> = OUT.stats;
+    const BASE_STATS: BasicStats<f32> = OUT.base_stats;
+    const BONUS_STATS: BasicStats<f32> = OUT.bonus_stats;
+    const SHRED: ResistShred = OUT.shred;
+    const MODIFIERS: Modifiers = OUT.modifiers;
 }

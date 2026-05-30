@@ -2,9 +2,9 @@ use crate::{
     calculator::InferStats,
     helpers::{ability_id_mod, get_enemy_full_state, get_eval_ctx},
     model::{
-        AbilityLevels, Attacks, BasicStats, ConstDamageKind, Dragons, EnemyState, EnemyStats,
-        Modifiers, RangeDamage, ResistShred, RiotFormulas, SelfState, SimpleStats, Stats,
-        ValueException,
+        AbilityLevels, Attacks, BasicStats, ConstDamageKind, DamageModifiers, Dragons, EnemyState,
+        EnemyStats, Modifiers, RangeDamage, ResistShred, RiotFormulas, SelfState, SimpleStats,
+        Stats, ValueException,
     },
 };
 use tutorlolv2_gen::{
@@ -89,22 +89,23 @@ pub const fn const_ability_id_eval_damage<const N: usize>(
     onhit: &mut RangeDamage,
     champion_id: ChampionId,
     modifiers: Modifiers,
-) -> [i32; N] {
-    let mut result = [0; N];
+) -> [(AbilityId, i32); N] {
+    let mut result: [_; _] = unsafe { core::mem::zeroed() };
     let mut i = 0;
-    while i < N {
-        let metadata = champion_id.metadata();
 
+    while i < N {
         let TypeMetadata {
             kind,
             damage_type,
             attributes,
-        } = metadata[i];
+        } = champion_id.metadata()[i];
 
         let modifier = ability_id_mod(kind, damage_type, modifiers);
         let damage = (modifier * champion_id.eval(ctx, kind)) as i32;
+
         onhit.inc_attr(attributes, damage);
-        result[i] = damage;
+        result[i] = (kind, damage);
+
         i += 1;
     }
     result
@@ -117,8 +118,8 @@ pub const fn eval_item_damage_const<const N: usize>(
     attack_type: AttackType,
     modifiers: Modifiers,
 ) -> [ConstDamage<ItemId>; N] {
-    let mut result: [ConstDamage<ItemId>; _] = unsafe { core::mem::zeroed() };
-    let mut i = 0usize;
+    let mut result: [_; _] = unsafe { core::mem::zeroed() };
+    let mut i = 0;
 
     while i < N {
         let item_id = item_ids[i];
@@ -150,8 +151,8 @@ pub const fn eval_rune_damage_const<const N: usize>(
     attack_type: AttackType,
     modifiers: Modifiers,
 ) -> [ConstDamage<RuneId>; N] {
-    let mut result: [ConstDamage<RuneId>; _] = unsafe { core::mem::zeroed() };
-    let mut i = 0usize;
+    let mut result: [_; _] = unsafe { core::mem::zeroed() };
+    let mut i = 0;
 
     while i < N {
         let rune_id = rune_ids[i];
@@ -333,25 +334,24 @@ impl<
         let enemy = get_enemy_full_state(enemy_state, shred, false);
         let ctx = get_eval_ctx(&self_state, &enemy);
 
-        modifiers.infer(&ctx, adaptive_type);
+        let modifiers = Modifiers {
+            damages: DamageModifiers {
+                adaptive_type: self_state.adaptive_type,
+                physical_mod: modifiers.damages.physical_mod
+                    * enemy.armor_values.modifier
+                    * enemy.modifiers.physical_mod,
+                magic_mod: modifiers.damages.magic_mod
+                    * enemy.magic_values.modifier
+                    * enemy.modifiers.magic_mod,
+                true_mod: modifiers.damages.true_mod * enemy.modifiers.true_mod,
+                global_mod: modifiers.damages.global_mod * enemy.modifiers.global_mod,
+            },
+            ..modifiers
+        };
 
         let mut onhit = RangeDamage::default();
 
-        let abilities = {
-            let damages: [i32; A] =
-                const_ability_id_eval_damage(&ctx, &mut onhit, champion_id, modifiers);
-            let ids: [AbilityId; A] = champion_id.ability_ids();
-            let mut result: [(AbilityId, i32); A] = unsafe { core::mem::zeroed() };
-            let mut i = 0;
-
-            while i < damages.len() {
-                result[i] = (ids[i], damages[i]);
-                i += 1;
-            }
-
-            result
-        };
-
+        let abilities = const_ability_id_eval_damage::<A>(&ctx, &mut onhit, champion_id, modifiers);
         let items = eval_item_damage_const(&ctx, &mut onhit, items, attack_type, modifiers);
         let runes = eval_rune_damage_const(&ctx, runes, attack_type, modifiers);
 
@@ -384,13 +384,13 @@ impl<
 ///
 /// static OUT: ConstOutput<
 ///     { CHAMPION_ID.number_of_abilities() },
-///     { ITEMS.len() },
-///     { RUNES.len() },
+///     { ITEMS.len() } /* 1 */,
+///     { RUNES.len() } /* 1 */,
 /// > =
 ///     ConstInput {
 ///         champion_id: CHAMPION_ID,
-///         items: ITEMS,
-///         runes: RUNES,
+///         items: ITEMS /* [ItemId::NashorsTooth] */,
+///         runes: RUNES /* [RuneId::Electrocute] */,
 ///         rune_exceptions: [(RuneId::GatheringStorm, 4)],
 ///         item_exceptions: [(ItemId::Dragonheart, 3)],
 ///         ability_levels: AbilityLevels::default(),
