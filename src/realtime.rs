@@ -201,7 +201,11 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
 
     // Assume champion attack types cannot change. Mayhem and Arena have augments that change it,
     // but there's no way to know
-    let current_player_cache_attack_type = current_player_cache.attack_type;
+    let current_player_cache_attack_type = if is_mega_gnar {
+        AttackType::Melee
+    } else {
+        current_player_cache.attack_type
+    };
 
     let shred = ResistShred::new(&current_player_stats);
 

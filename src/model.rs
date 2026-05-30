@@ -363,6 +363,28 @@ impl ValueException {
         let disc = (i as u32) & Self::DISC_LOW_MASK;
         Self((disc << Self::VAL_BITS) | Self::truncate_value(v))
     }
+
+    pub const fn pack_items<const N: usize>(items: &[(ItemId, u32); N]) -> [Self; N] {
+        let mut result: [Self; N] = unsafe { core::mem::zeroed() };
+        let mut i = 0;
+        while i < N {
+            let (item_id, v) = items[i];
+            result[i] = Self::pack_item_id(item_id, v);
+            i += 1;
+        }
+        result
+    }
+
+    pub const fn pack_runes<const N: usize>(runes: &[(RuneId, u32); N]) -> [Self; N] {
+        let mut result: [Self; N] = unsafe { core::mem::zeroed() };
+        let mut i = 0;
+        while i < N {
+            let (rune_id, v) = runes[i];
+            result[i] = Self::pack_rune_id(rune_id, v);
+            i += 1;
+        }
+        result
+    }
 }
 
 /// Holds the number of dragons and their types, associated to the ally or enemy team.
@@ -470,6 +492,13 @@ impl Modifiers {
             },
             ..Self::default()
         }
+    }
+
+    pub const fn infer(&mut self, ctx: &Ctx, adaptive_type: AdaptiveType) {
+        let damages = &mut self.damages;
+        damages.adaptive_type = adaptive_type;
+        damages.physical_mod = ctx.physical_multiplier;
+        damages.magic_mod = ctx.magic_multiplier;
     }
 }
 
@@ -910,3 +939,4 @@ impl_default!(AbilityModifiers, 1, f32);
 impl_default!(Modifiers, 1, f32);
 impl_default!(Dragons, 0, u8);
 impl_default!(RangeDamage, 0, i32);
+impl_default!(AbilityLevels, 0, u8);
