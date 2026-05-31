@@ -25,12 +25,6 @@ pub struct StaticDamageKind<T: 'static> {
     pub closures: &'static [Closure],
 }
 
-#[derive(Clone, Copy, Debug, PartialEq, PartialOrd)]
-pub struct ConstDamageKind<T: 'static, const N: usize, const L: usize> {
-    pub metadata: [TypeMetadata<T>; N],
-    pub closures: [Closure; L],
-}
-
 /// Runtime-known values that depend on how many damaging items or runes the
 /// current player has. Holds the metadata and closures of the given `T` parameter.
 /// See [`TypeMetadata`] and [`Closure`] for more details
@@ -793,6 +787,10 @@ macro_rules! impl_cast_from {
                     $($fields: value.$fields as f32),*
                 }
             }
+
+            pub const fn as_i32(&self) -> $stru<i32> {
+                $stru::from_f32(self)
+            }
         }
 
         impl $stru<i32> {
@@ -800,6 +798,10 @@ macro_rules! impl_cast_from {
                 $stru {
                     $($fields: value.$fields.round() as i32),*
                 }
+            }
+
+            pub const fn as_f32(&self) -> $stru<f32> {
+                $stru::from_i32(self)
             }
         }
 

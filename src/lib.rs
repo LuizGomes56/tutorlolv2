@@ -19,14 +19,10 @@ pub use tutorlolv2_gen::*;
 
 #[allow(dead_code)]
 mod test {
-    use tutorlolv2_gen::L_SIML;
-
     use crate::{
-        AbilityId, ChampionId, Ctx, ItemId, RuneId,
+        AbilityId, ChampionId, Ctx, ItemId, L_SIML, RuneId,
         const_eval::{ConstDamage, ConstDamages, ConstEnemy, ConstInput, ConstOutput},
-        model::{
-            AbilityLevels, Attacks, BasicStats, Dragons, EnemyStats, Modifiers, ResistShred, Stats,
-        },
+        model::{AbilityLevels, Attacks, BasicStats, Dragons, Modifiers, ResistShred, Stats},
     };
 
     const CHAMPION_ID: ChampionId = ChampionId::Neeko;
@@ -53,13 +49,7 @@ mod test {
             champion_id: ChampionId::Aatrox,
             items: [ItemId::ForceOfNature],
             item_exceptions: [(ItemId::Dragonheart, 4)],
-            stats: Some(EnemyStats {
-                armor: 100.0,
-                current_health: 1000.0,
-                magic_resist: 100.0,
-                max_health: 1000.0,
-                missing_health: 1.0,
-            }),
+            stats: None,
             stacks: 0,
             level: 18,
             is_mega_gnar: false,

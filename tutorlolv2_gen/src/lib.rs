@@ -587,6 +587,15 @@ const _: () = {
         }
         i += 1;
     }
+
+    let mut j = 0;
+    while j < RuneId::VARIANTS {
+        let rune = RuneId::VALUES[j];
+        if rune.deals_max_damage() {
+            assert!(rune.deals_damage());
+        }
+        j += 1;
+    }
 };
 
 impl ItemId {
@@ -602,6 +611,7 @@ impl ItemId {
         }
         result
     };
+    pub const SIML: &[Self; L_SIML] = &SIMULATED_ITEMS_ENUM;
 
     pub const ALLY_EXCEPTIONS: [Self; 8] = [
         Self::DarkSeal,
@@ -622,6 +632,28 @@ impl ItemId {
         bitset_size(bitset!(ItemId::ENEMY_EXCEPTIONS => [usize])),
     );
 
+    pub const fn is_siml(&self) -> bool {
+        let mut i = 0;
+        while i < L_SIML {
+            if self.index() == Self::SIML[i].index() {
+                return true;
+            }
+            i += 1;
+        }
+        false
+    }
+
+    pub const fn indexof_siml(index: usize) -> Option<Self> {
+        let mut i = 0;
+        while i < L_SIML {
+            if index == Self::SIML[i].index() {
+                return Some(Self::SIML[i]);
+            }
+            i += 1;
+        }
+        None
+    }
+
     pub const fn damage_type(&self) -> DamageType {
         self.metadata().damage_type
     }
@@ -633,21 +665,28 @@ impl ItemId {
         }
     }
 
+    pub const fn maps(&self) -> &'static [GameMap] {
+        self.cache().maps
+    }
+
     pub const fn has_map(&self, game_map: GameMap) -> bool {
+        let stats = self.maps();
         let mut i = 0;
-        let stats = self.cache().maps;
+
         while i < stats.len() {
             if stats[i] as u8 == game_map as u8 {
                 return true;
             }
             i += 1;
         }
+
         false
     }
 
     pub const fn has_stat(&self, stat_name: StatName) -> bool {
+        let stats = self.stats();
         let mut i = 0;
-        let stats = self.cache().stats;
+
         while i < stats.len() {
             if stats[i].0 as u8 == stat_name as u8 {
                 return true;
@@ -790,6 +829,16 @@ impl RuneId {
 
     pub const fn eval(&self, ctx: &Ctx, attack_type: AttackType) -> [f32; 2] {
         rune_const_eval(ctx, *self, attack_type)
+    }
+
+    pub const fn deals_damage(&self) -> bool {
+        let [mmin, _, rmin, _] = self.cache().deals_damage;
+        mmin || rmin
+    }
+
+    pub const fn deals_max_damage(&self) -> bool {
+        let [_, mmax, _, rmax] = self.cache().deals_damage;
+        mmax || rmax
     }
 }
 

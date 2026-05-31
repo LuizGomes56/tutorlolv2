@@ -588,9 +588,9 @@ pub fn calculator(game: InputGame) -> OutputGame {
 
     OutputGame {
         current_player: OutputCurrentPlayer {
-            base_stats: BasicStats::from_f32(&current_player_base_stats),
-            bonus_stats: BasicStats::from_f32(&current_player_bonus_stats),
-            current_stats: Stats::from_f32(&champion_stats),
+            base_stats: current_player_base_stats.as_i32(),
+            bonus_stats: current_player_bonus_stats.as_i32(),
+            current_stats: champion_stats.as_i32(),
             champion_id: current_player_champion_id,
             adaptive_type,
             level,
@@ -661,9 +661,9 @@ pub fn get_calculator_enemies(
             let damages = Damages::new(ctx, eval_data, modifiers);
 
             OutputEnemy {
-                current_stats: EnemyStats::from_f32(&full_state.current_stats),
-                bonus_stats: SimpleStats::from_f32(&full_state.bonus_stats),
-                base_stats: SimpleStats::from_f32(&e_base_stats),
+                current_stats: full_state.current_stats.as_i32(),
+                bonus_stats: full_state.bonus_stats.as_i32(),
+                base_stats: e_base_stats.as_i32(),
                 real_magic_resist: full_state.magic_values.real as _,
                 real_armor: full_state.armor_values.real as _,
                 champion_id: e_champion_id,

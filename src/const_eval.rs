@@ -2,89 +2,17 @@ use crate::{
     calculator::InferStats,
     helpers::{ability_id_mod, get_enemy_full_state, get_eval_ctx},
     model::{
-        AbilityLevels, Attacks, BasicStats, ConstDamageKind, DamageModifiers, Dragons, EnemyState,
-        EnemyStats, Modifiers, RangeDamage, ResistShred, RiotFormulas, SelfState, SimpleStats,
-        Stats, ValueException,
+        AbilityLevels, Attacks, BasicStats, DamageModifiers, Dragons, EnemyState, EnemyStats,
+        Modifiers, RangeDamage, ResistShred, RiotFormulas, SelfState, SimpleStats, Stats,
+        ValueException,
     },
 };
 use tutorlolv2_gen::{
-    AbilityId, AttackType, ChampionId, Closure, Ctx, ITEM_CACHE, ItemId, ItemsBitSet, L_SIML,
-    RUNE_CACHE, RuneId, RunesBitSet, SIMULATED_ITEMS_ENUM, TypeMetadata,
+    AbilityId, AttackType, ChampionId, Ctx, ItemId, L_SIML, RuneId, SIMULATED_ITEMS_ENUM,
+    TypeMetadata,
 };
 
-pub const fn get_items_data_const<const N: usize, const L: usize>(
-    items: &ItemsBitSet,
-    attack_type: AttackType,
-) -> ConstDamageKind<ItemId, N, L> {
-    assert!(L == N << 1);
-    unsafe {
-        let mut metadata: [TypeMetadata<ItemId>; N] = core::mem::zeroed();
-        let mut closures: [Closure; L] = core::mem::zeroed();
-
-        let mut i = 0;
-        let mut j = 0;
-
-        let mut iter = items.iter_const();
-
-        while let Some(index) = iter.next_const() {
-            let item = ITEM_CACHE[index as usize];
-            let slice = match attack_type {
-                AttackType::Ranged => item.ranged,
-                AttackType::Melee => item.melee,
-            };
-
-            metadata[i] = item.metadata;
-            closures[j] = slice[0];
-            closures[j + 1] = slice[1];
-
-            i += 1;
-            j += 2;
-        }
-
-        assert!(i == N);
-        assert!(j == L);
-
-        ConstDamageKind { metadata, closures }
-    }
-}
-
-pub const fn get_runes_data_const<const N: usize, const L: usize>(
-    runes: &RunesBitSet,
-    attack_type: AttackType,
-) -> ConstDamageKind<RuneId, N, L> {
-    assert!(L == N << 1);
-    unsafe {
-        let mut metadata: [TypeMetadata<RuneId>; N] = core::mem::zeroed();
-        let mut closures: [Closure; L] = core::mem::zeroed();
-
-        let mut i = 0;
-        let mut j = 0;
-
-        let mut iter = runes.iter_const();
-
-        while let Some(index) = iter.next_const() {
-            let rune = RUNE_CACHE[index as usize];
-            let slice = match attack_type {
-                AttackType::Ranged => rune.ranged,
-                AttackType::Melee => rune.melee,
-            };
-
-            metadata[i] = rune.metadata;
-            closures[j] = slice[0];
-            closures[j + 1] = slice[1];
-
-            i += 1;
-            j += 2;
-        }
-
-        assert!(i == N);
-        assert!(j == L);
-
-        ConstDamageKind { metadata, closures }
-    }
-}
-
-pub const fn const_ability_id_eval_damage<const N: usize>(
+pub const fn eval_abilities_const<const N: usize>(
     ctx: &Ctx,
     onhit: &mut RangeDamage,
     champion_id: ChampionId,
@@ -178,7 +106,7 @@ pub struct ConstInput<
     const I: usize,
     const R: usize,
     const EI: usize,
-    const EIX: usize,
+    const EIE: usize,
     const RE: usize,
     const IE: usize,
 > {
@@ -193,7 +121,7 @@ pub struct ConstInput<
     pub stacks: u32,
     pub level: u8,
     pub is_mega_gnar: bool,
-    pub enemy: ConstEnemy<EI, EIX>,
+    pub enemy: ConstEnemy<EI, EIE>,
 }
 
 #[derive(Clone, Copy)]
@@ -231,7 +159,7 @@ pub struct ConstOutput<const A: usize, const I: usize, const R: usize> {
     pub bonus_stats: BasicStats<f32>,
     pub shred: ResistShred,
     pub modifiers: Modifiers,
-    pub siml: [(ItemId, ConstDamages<A, I, R>); 76],
+    pub siml: [(ItemId, ConstDamages<A, I, R>); L_SIML],
 }
 
 impl<
@@ -357,8 +285,7 @@ impl<
 
         let mut onhit = RangeDamage::default();
 
-        let abilities_dmg =
-            const_ability_id_eval_damage::<A>(&ctx, &mut onhit, champion_id, modifiers);
+        let abilities_dmg = eval_abilities_const::<A>(&ctx, &mut onhit, champion_id, modifiers);
         let items_dmg = eval_item_damage_const(&ctx, &mut onhit, items, attack_type, modifiers);
         let runes_dmg = eval_rune_damage_const(&ctx, runes, attack_type, modifiers);
 
@@ -381,12 +308,8 @@ impl<
 
                 let mut onhit = RangeDamage::default();
 
-                let abilities = const_ability_id_eval_damage::<A>(
-                    &siml_ctx,
-                    &mut onhit,
-                    champion_id,
-                    modifiers,
-                );
+                let abilities =
+                    eval_abilities_const::<A>(&siml_ctx, &mut onhit, champion_id, modifiers);
                 let items =
                     eval_item_damage_const(&siml_ctx, &mut onhit, items, attack_type, modifiers);
                 let runes = eval_rune_damage_const(&siml_ctx, runes, attack_type, modifiers);
@@ -465,7 +388,7 @@ impl<
 ///     }
 ///     .eval();
 /// ```
-pub const fn calculator<
+pub const fn calculator_const<
     const A: usize,
     const I: usize,
     const R: usize,
