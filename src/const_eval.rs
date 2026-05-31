@@ -8,8 +8,8 @@ use crate::{
     },
 };
 use tutorlolv2_gen::{
-    AbilityId, AttackType, ChampionId, Closure, Ctx, ITEM_CACHE, ItemId, ItemsBitSet, RUNE_CACHE,
-    RuneId, RunesBitSet, TypeMetadata,
+    AbilityId, AttackType, ChampionId, Closure, Ctx, ITEM_CACHE, ItemId, ItemsBitSet, L_SIML,
+    RUNE_CACHE, RuneId, RunesBitSet, SIMULATED_ITEMS_ENUM, TypeMetadata,
 };
 
 pub const fn get_items_data_const<const N: usize, const L: usize>(
@@ -215,17 +215,23 @@ pub struct ConstDamage<T> {
 }
 
 #[derive(Clone, Copy)]
-pub struct ConstOutput<const A: usize, const I: usize, const R: usize> {
+pub struct ConstDamages<const A: usize, const I: usize, const R: usize> {
     pub attacks: Attacks,
     pub abilities: [(AbilityId, i32); A],
     pub items: [ConstDamage<ItemId>; I],
     pub runes: [ConstDamage<RuneId>; R],
+}
+
+#[derive(Clone, Copy)]
+pub struct ConstOutput<const A: usize, const I: usize, const R: usize> {
+    pub damages: ConstDamages<A, I, R>,
     pub ctx: Ctx,
     pub stats: Stats<f32>,
     pub base_stats: BasicStats<f32>,
     pub bonus_stats: BasicStats<f32>,
     pub shred: ResistShred,
     pub modifiers: Modifiers,
+    pub siml: [(ItemId, ConstDamages<A, I, R>); 76],
 }
 
 impl<
@@ -315,7 +321,7 @@ impl<
 
             EnemyState {
                 current_stats: stats,
-                base_stats: SimpleStats::infer(enemy.champion_id, enemy.level, is_mega_gnar),
+                base_stats: SimpleStats::base_stats(enemy.champion_id, enemy.level, is_mega_gnar),
                 items: &enemy.items,
                 stacks,
                 champion_id,
@@ -351,18 +357,66 @@ impl<
 
         let mut onhit = RangeDamage::default();
 
-        let abilities = const_ability_id_eval_damage::<A>(&ctx, &mut onhit, champion_id, modifiers);
-        let items = eval_item_damage_const(&ctx, &mut onhit, items, attack_type, modifiers);
-        let runes = eval_rune_damage_const(&ctx, runes, attack_type, modifiers);
+        let abilities_dmg =
+            const_ability_id_eval_damage::<A>(&ctx, &mut onhit, champion_id, modifiers);
+        let items_dmg = eval_item_damage_const(&ctx, &mut onhit, items, attack_type, modifiers);
+        let runes_dmg = eval_rune_damage_const(&ctx, runes, attack_type, modifiers);
 
         let attacks = Attacks::new(&ctx, onhit, modifiers.damages.physical_mod);
 
+        let siml = {
+            let mut result = unsafe { core::mem::zeroed::<[_; L_SIML]>() };
+            let siml_stats = stats.get_simulated_stats(dragons);
+            let mut i = 0;
+
+            while i < L_SIML {
+                let siml_stat = siml_stats[i];
+                let siml_ctx = get_eval_ctx(
+                    &SelfState {
+                        current_stats: siml_stat,
+                        ..self_state
+                    },
+                    &enemy,
+                );
+
+                let mut onhit = RangeDamage::default();
+
+                let abilities = const_ability_id_eval_damage::<A>(
+                    &siml_ctx,
+                    &mut onhit,
+                    champion_id,
+                    modifiers,
+                );
+                let items =
+                    eval_item_damage_const(&siml_ctx, &mut onhit, items, attack_type, modifiers);
+                let runes = eval_rune_damage_const(&siml_ctx, runes, attack_type, modifiers);
+                let attacks = Attacks::new(&siml_ctx, onhit, modifiers.damages.physical_mod);
+
+                result[i] = (
+                    SIMULATED_ITEMS_ENUM[i],
+                    ConstDamages {
+                        attacks,
+                        abilities,
+                        items,
+                        runes,
+                    },
+                );
+
+                i += 1;
+            }
+
+            result
+        };
+
         ConstOutput {
             ctx,
-            attacks,
-            abilities,
-            items,
-            runes,
+            damages: ConstDamages {
+                attacks,
+                abilities: abilities_dmg,
+                items: items_dmg,
+                runes: runes_dmg,
+            },
+            siml,
             stats,
             base_stats,
             bonus_stats,

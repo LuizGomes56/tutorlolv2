@@ -491,10 +491,9 @@ pub fn calculator(game: InputGame) -> OutputGame {
                 rune_exceptions,
                 data:
                     InputMinData {
-                        stats: champion_raw_stats_i32,
+                        stats: champion_raw_stats,
                         level,
                         items: current_player_raw_items,
-                        infer_stats,
                         champion_id: current_player_champion_id,
                         is_mega_gnar,
                         stacks,
@@ -505,7 +504,6 @@ pub fn calculator(game: InputGame) -> OutputGame {
         enemy_players,
     } = game;
 
-    let champion_raw_stats = Stats::from_i32(&champion_raw_stats_i32);
     let mut modifiers = Modifiers::default();
 
     let current_player_cache = current_player_champion_id.cache();
@@ -513,22 +511,24 @@ pub fn calculator(game: InputGame) -> OutputGame {
     let current_player_base_stats =
         BasicStats::base_stats(current_player_champion_id, level, is_mega_gnar);
 
-    let champion_stats = match infer_stats {
-        true => infer_champion_stats(InferStats {
-            item_exceptions: &item_exceptions,
-            rune_exceptions: &rune_exceptions,
-            items: &current_player_raw_items,
-            runes: &current_player_raw_runes,
-            modifiers: &mut modifiers,
-            dragons,
-            ability_levels,
-            stacks,
-            level,
-            champion_id: current_player_champion_id,
-            is_mega_gnar,
-        }),
-        false => champion_raw_stats,
-    };
+    let champion_stats = champion_raw_stats
+        .as_ref()
+        .map(Stats::from_i32)
+        .unwrap_or_else(|| {
+            infer_champion_stats(InferStats {
+                item_exceptions: &item_exceptions,
+                rune_exceptions: &rune_exceptions,
+                items: &current_player_raw_items,
+                runes: &current_player_raw_runes,
+                modifiers: &mut modifiers,
+                dragons,
+                ability_levels,
+                stacks,
+                level,
+                champion_id: current_player_champion_id,
+                is_mega_gnar,
+            })
+        });
 
     let current_player_bonus_stats = champion_stats.bonus_stats(current_player_base_stats);
 
@@ -615,7 +615,6 @@ pub fn get_calculator_enemies(
         .into_iter()
         .map(|player| {
             let InputMinData {
-                infer_stats: e_infer_stats,
                 items: e_items,
                 stacks: e_stacks,
                 stats: e_stats_i32,
@@ -625,15 +624,10 @@ pub fn get_calculator_enemies(
                 item_exceptions: e_item_exceptions,
             } = player;
 
-            let e_stats = EnemyStats::from_i32(&e_stats_i32);
-
-            let e_base_stats = SimpleStats::infer(e_champion_id, e_level, e_is_mega_gnar);
+            let e_base_stats = SimpleStats::base_stats(e_champion_id, e_level, e_is_mega_gnar);
             let full_state = get_enemy_full_state(
                 EnemyState {
-                    current_stats: match e_infer_stats {
-                        true => None,
-                        false => Some(e_stats),
-                    },
+                    current_stats: e_stats_i32.as_ref().map(EnemyStats::from_i32),
                     base_stats: e_base_stats,
                     items: &e_items,
                     stacks: e_stacks,

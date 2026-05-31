@@ -331,7 +331,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
 
             // Works the same as the current player basic stats inference, but with less fields
             // since the other ones are unnecessary
-            let e_base_stats = SimpleStats::infer(e_champion_id, e_level, false);
+            let e_base_stats = SimpleStats::base_stats(e_champion_id, e_level, false);
 
             // Holds a collection of more detailed information about this enemy player
             let full_state = get_enemy_full_state(

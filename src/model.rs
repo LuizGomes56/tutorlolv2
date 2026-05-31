@@ -422,12 +422,11 @@ pub struct InputActivePlayer {
 /// characteristics that are related to stack-scaling
 #[derive(Clone, Debug, Default, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize)]
 pub struct InputMinData<T> {
-    pub stats: T,
+    pub stats: Option<T>,
     pub items: Box<[ItemId]>,
     pub item_exceptions: Box<[ValueException]>,
     pub stacks: u32,
     pub level: u8,
-    pub infer_stats: bool,
     pub is_mega_gnar: bool,
     pub champion_id: ChampionId,
 }

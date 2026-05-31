@@ -47,7 +47,7 @@ pub const fn const_clamp(value: u8, range: RangeInclusive<u8>) -> usize {
 }
 
 impl SimpleStats<f32> {
-    pub const fn infer(champion_id: ChampionId, level: u8, is_mega_gnar: bool) -> Self {
+    pub const fn base_stats(champion_id: ChampionId, level: u8, is_mega_gnar: bool) -> Self {
         let BasicStats {
             max_health,
             armor,

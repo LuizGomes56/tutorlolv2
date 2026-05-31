@@ -19,10 +19,14 @@ pub use tutorlolv2_gen::*;
 
 #[allow(dead_code)]
 mod test {
+    use tutorlolv2_gen::L_SIML;
+
     use crate::{
         AbilityId, ChampionId, Ctx, ItemId, RuneId,
-        const_eval::{ConstDamage, ConstEnemy, ConstInput, ConstOutput},
-        model::{AbilityLevels, Attacks, BasicStats, Dragons, Modifiers, ResistShred, Stats},
+        const_eval::{ConstDamage, ConstDamages, ConstEnemy, ConstInput, ConstOutput},
+        model::{
+            AbilityLevels, Attacks, BasicStats, Dragons, EnemyStats, Modifiers, ResistShred, Stats,
+        },
     };
 
     const CHAMPION_ID: ChampionId = ChampionId::Neeko;
@@ -49,7 +53,13 @@ mod test {
             champion_id: ChampionId::Aatrox,
             items: [ItemId::ForceOfNature],
             item_exceptions: [(ItemId::Dragonheart, 4)],
-            stats: None,
+            stats: Some(EnemyStats {
+                armor: 100.0,
+                current_health: 1000.0,
+                magic_resist: 100.0,
+                max_health: 1000.0,
+                missing_health: 1.0,
+            }),
             stacks: 0,
             level: 18,
             is_mega_gnar: false,
@@ -57,14 +67,18 @@ mod test {
     }
     .eval();
 
-    const ATTACKS: Attacks = OUT.attacks;
-    const ABILITIES: &[(AbilityId, i32)] = &OUT.abilities;
-    const ITEMS_DMG: &[ConstDamage<ItemId>] = &OUT.items;
-    const RUNES_DMG: &[ConstDamage<RuneId>] = &OUT.runes;
+    const ATTACKS: Attacks = OUT.damages.attacks;
+    const ABILITIES: &[(AbilityId, i32)] = &OUT.damages.abilities;
+    const ITEMS_DMG: &[ConstDamage<ItemId>] = &OUT.damages.items;
+    const RUNES_DMG: &[ConstDamage<RuneId>] = &OUT.damages.runes;
     const CTX: Ctx = OUT.ctx;
     const STATS: Stats<f32> = OUT.stats;
     const BASE_STATS: BasicStats<f32> = OUT.base_stats;
     const BONUS_STATS: BasicStats<f32> = OUT.bonus_stats;
     const SHRED: ResistShred = OUT.shred;
     const MODIFIERS: Modifiers = OUT.modifiers;
+    const SIML: [(
+        ItemId,
+        ConstDamages<{ ABILITIES.len() }, { ITEMS_DMG.len() }, { RUNES_DMG.len() }>,
+    ); L_SIML] = OUT.siml;
 }
