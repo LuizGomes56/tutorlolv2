@@ -263,15 +263,15 @@ impl Display for StatName {
 
 #[derive(Clone, Copy, Debug, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize)]
 pub struct MergeData {
-    pub minimum_damage: u8,
-    pub maximum_damage: u8,
+    pub min: u8,
+    pub max: u8,
     pub alias: AbilityId,
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, PartialOrd, Ord, Serialize, Deserialize)]
 pub struct DevMergeData {
-    pub minimum_damage: AbilityId,
-    pub maximum_damage: AbilityId,
+    pub min: AbilityId,
+    pub max: AbilityId,
     pub alias: AbilityId,
 }
 
@@ -812,11 +812,13 @@ create_eval_struct!(
     attack_speed,
     base_ad,
     base_armor,
+    base_attack_speed,
     base_health,
     base_magic_resist,
     base_mana,
     bonus_ad,
     bonus_armor,
+    bonus_attack_speed,
     bonus_health,
     bonus_magic_resist,
     bonus_mana,

@@ -25,12 +25,6 @@ pub struct StaticDamageKind<T: 'static> {
     pub closures: &'static [Closure],
 }
 
-#[derive(Clone, Copy, Debug, PartialEq, PartialOrd)]
-pub struct ConstDamageKind<T: 'static, const N: usize, const L: usize> {
-    pub metadata: [TypeMetadata<T>; N],
-    pub closures: [Closure; L],
-}
-
 /// Runtime-known values that depend on how many damaging items or runes the
 /// current player has. Holds the metadata and closures of the given `T` parameter.
 /// See [`TypeMetadata`] and [`Closure`] for more details
@@ -184,21 +178,6 @@ pub struct Enemy<'a> {
     pub champion_id: ChampionId,
     pub team: Team,
     pub position: Position,
-}
-
-impl Stats<f32> {
-    /// Returns a new struct [`Stats`] with the same original values except the ones
-    /// that involve percent penetration, which are resolved and converted to the
-    /// `0..100` range used in this library
-    pub const fn base100(&self) -> Self {
-        Self {
-            armor_penetration_percent: (1.0 - self.armor_penetration_percent).clamp(0.0, 1.0)
-                * 100.0,
-            magic_penetration_percent: (1.0 - self.magic_penetration_percent).clamp(0.0, 1.0)
-                * 100.0,
-            ..*self
-        }
-    }
 }
 
 /// Enum that defines the team of some player.
@@ -378,6 +357,28 @@ impl ValueException {
         let disc = (i as u32) & Self::DISC_LOW_MASK;
         Self((disc << Self::VAL_BITS) | Self::truncate_value(v))
     }
+
+    pub const fn pack_items<const N: usize>(items: &[(ItemId, u32); N]) -> [Self; N] {
+        let mut result: [Self; N] = unsafe { core::mem::zeroed() };
+        let mut i = 0;
+        while i < N {
+            let (item_id, v) = items[i];
+            result[i] = Self::pack_item_id(item_id, v);
+            i += 1;
+        }
+        result
+    }
+
+    pub const fn pack_runes<const N: usize>(runes: &[(RuneId, u32); N]) -> [Self; N] {
+        let mut result: [Self; N] = unsafe { core::mem::zeroed() };
+        let mut i = 0;
+        while i < N {
+            let (rune_id, v) = runes[i];
+            result[i] = Self::pack_rune_id(rune_id, v);
+            i += 1;
+        }
+        result
+    }
 }
 
 /// Holds the number of dragons and their types, associated to the ally or enemy team.
@@ -415,12 +416,11 @@ pub struct InputActivePlayer {
 /// characteristics that are related to stack-scaling
 #[derive(Clone, Debug, Default, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize)]
 pub struct InputMinData<T> {
-    pub stats: T,
+    pub stats: Option<T>,
     pub items: Box<[ItemId]>,
     pub item_exceptions: Box<[ValueException]>,
     pub stacks: u32,
     pub level: u8,
-    pub infer_stats: bool,
     pub is_mega_gnar: bool,
     pub champion_id: ChampionId,
 }
@@ -444,6 +444,7 @@ pub struct OutputEnemy {
 /// of the damage type provided
 #[derive(Clone, Copy, Debug, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize)]
 pub struct DamageModifiers {
+    pub adaptive_type: AdaptiveType,
     pub physical_mod: f32,
     pub magic_mod: f32,
     pub true_mod: f32,
@@ -457,6 +458,10 @@ impl DamageModifiers {
                 DamageType::Physical => self.physical_mod,
                 DamageType::Magic => self.magic_mod,
                 DamageType::True => self.true_mod,
+                DamageType::Adaptive => match self.adaptive_type {
+                    AdaptiveType::Physical => self.physical_mod,
+                    AdaptiveType::Magic => self.magic_mod,
+                },
                 _ => 1.0,
             }
     }
@@ -469,9 +474,10 @@ pub struct Modifiers {
 }
 
 impl Modifiers {
-    pub const fn new(ctx: &Ctx) -> Self {
+    pub const fn new(ctx: &Ctx, adaptive_type: AdaptiveType) -> Self {
         Self {
             damages: DamageModifiers {
+                adaptive_type,
                 physical_mod: ctx.physical_multiplier,
                 magic_mod: ctx.magic_multiplier,
                 true_mod: 1.0,
@@ -492,6 +498,21 @@ pub struct AbilityModifiers {
     pub w: f32,
     pub e: f32,
     pub r: f32,
+}
+
+impl AbilityModifiers {
+    pub const fn modifier(&self, ability_id: AbilityId) -> f32 {
+        match match ability_id {
+            AbilityId::Q(v) => Some((v, self.q)),
+            AbilityId::W(v) => Some((v, self.w)),
+            AbilityId::E(v) => Some((v, self.e)),
+            AbilityId::R(v) => Some((v, self.r)),
+            _ => None,
+        } {
+            Some((v, mul)) if v as u8 <= AbilityName::Mega as u8 => mul,
+            _ => 1.0,
+        }
+    }
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize)]
@@ -586,6 +607,19 @@ impl RiotFormulas {
         (100f32, -30f32),
     ];
 
+    pub const fn attack_speed(stat: &Stat, ratio: f32, bonus: f32, level: u8) -> f32 {
+        stat.base
+            + ratio
+                * (RiotFormulas::stat(
+                    &Stat {
+                        base: 0.0,
+                        per_level: stat.per_level,
+                    },
+                    level,
+                ) + bonus)
+                / 100.0
+    }
+
     pub const fn missing_health(current_health: f32, max_health: f32) -> f32 {
         1.0 - (current_health / max_health.max(1.0))
     }
@@ -634,9 +668,9 @@ impl RiotFormulas {
         factor * (0.7025 + 0.0175 * factor)
     }
 
-    pub const fn stat(stat_map: &Stat, level: u8) -> f32 {
+    pub const fn stat(stat: &Stat, level: u8) -> f32 {
         let growth_factor = Self::growth(level);
-        Self::stat_growth(stat_map.base, stat_map.per_level, growth_factor)
+        Self::stat_growth(stat.base, stat.per_level, growth_factor)
     }
 
     /// Given the base stats and growth factors, return a number after applying the formula
@@ -753,6 +787,10 @@ macro_rules! impl_cast_from {
                     $($fields: value.$fields as f32),*
                 }
             }
+
+            pub const fn as_i32(&self) -> $stru<i32> {
+                $stru::from_f32(self)
+            }
         }
 
         impl $stru<i32> {
@@ -760,6 +798,10 @@ macro_rules! impl_cast_from {
                 $stru {
                     $($fields: value.$fields.round() as i32),*
                 }
+            }
+
+            pub const fn as_f32(&self) -> $stru<f32> {
+                $stru::from_i32(self)
             }
         }
 
@@ -810,7 +852,7 @@ impl_cast_from!(
         Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize,
     )]
     SimpleStats,
-    max_health, armor, magic_resist
+    armor, max_health, magic_resist
 );
 impl_cast_from!(
     /// Struct holding the core champion stats of a player, where `T` is a
@@ -820,9 +862,10 @@ impl_cast_from!(
     )]
     BasicStats,
     armor,
-    max_health,
     attack_damage,
+    attack_speed,
     magic_resist,
+    max_health,
     max_mana
 );
 impl_cast_from!(
@@ -890,3 +933,4 @@ impl_default!(AbilityModifiers, 1, f32);
 impl_default!(Modifiers, 1, f32);
 impl_default!(Dragons, 0, u8);
 impl_default!(RangeDamage, 0, i32);
+impl_default!(AbilityLevels, 0, u8);

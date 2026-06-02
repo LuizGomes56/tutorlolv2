@@ -314,6 +314,9 @@ impl Effect {
         }
 
         if let Some(base) = &self.base {
+            if base.len() == 5 && matches!(key, Key::R) {
+                return simplify_series(&[base[0], base[2], base[4]], axis);
+            }
             return simplify_series(base, axis);
         }
 

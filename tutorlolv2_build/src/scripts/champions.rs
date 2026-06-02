@@ -25,6 +25,7 @@ pub fn generate_champions() -> MayFail<(HashMap<&'static str, String>, String)> 
         .map(|(champion_id, champion)| {
             let Champion {
                 abilities,
+                merge,
                 build:
                     ChampionBuild {
                         name,
@@ -49,7 +50,7 @@ pub fn generate_champions() -> MayFail<(HashMap<&'static str, String>, String)> 
                 meta: (),
                 replace: [
                     (": Champion = Champion", " ="),
-                    ("MergeData ", ""),
+                    ("DevMergeData ", ""),
                     ("WikiStats ", ""),
                     ("Stat ", ""),
                     ("WikiModifiers ", ""),
@@ -73,7 +74,7 @@ pub fn generate_champions() -> MayFail<(HashMap<&'static str, String>, String)> 
                     modifiers: {modifiers:#?},
                     combos: [{combos}],
                     metadata: {metadata:#?},
-                    merge_data: {merge_data:#?}
+                    merge_data: {merge:#?}
                 }};
 
                 pub static {upper_id}: Champion = Champion {{
@@ -91,6 +92,7 @@ pub fn generate_champions() -> MayFail<(HashMap<&'static str, String>, String)> 
                 }};
                 "#,
                 upper_id = to_ssnake(champion_id),
+                merge = merge.into_iter().collect::<Vec<_>>(),
                 damage = abilities
                     .iter()
                     .map(|(k, v)| {
@@ -155,14 +157,15 @@ pub fn generate_champions() -> MayFail<(HashMap<&'static str, String>, String)> 
 
                     let mut variable = function.to_uppercase();
 
-                    let damage_attr = match merge_data.iter().find(|merge| {
-                        merge.minimum_damage as usize == i || merge.maximum_damage as usize == i
-                    }) {
+                    let damage_attr = match merge_data
+                        .iter()
+                        .find(|merge| merge.min as usize == i || merge.max as usize == i)
+                    {
                         Some(merge) => {
                             let get_ability = |j| abilities.values().nth(j as usize).unwrap();
 
-                            let min_ability = get_ability(merge.minimum_damage);
-                            let max_ability = get_ability(merge.maximum_damage);
+                            let min_ability = get_ability(merge.min);
+                            let max_ability = get_ability(merge.max);
 
                             let min_damage = simplify(&min_ability.damage);
                             let max_damage = simplify(&max_ability.damage);
@@ -170,7 +173,7 @@ pub fn generate_champions() -> MayFail<(HashMap<&'static str, String>, String)> 
                             let alias = merge.alias.discriminant();
                             variable = format!("{champion_id}_{alias}").to_uppercase();
 
-                            format!("min_damage: {min_damage}, max_damage: {max_damage}")
+                            format!("min_dmg: {min_damage}, max_dmg: {max_damage}")
                         }
                         None => {
                             let damage = simplify(damage);

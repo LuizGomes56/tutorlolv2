@@ -21,7 +21,7 @@ const _: () = {
     let mut i = 0;
     while i < ChampionId::VARIANTS {
         let champion_id = ChampionId::VALUES[i];
-        assert!(!champion_id.cache().positions.is_empty());
+        assert!(!champion_id.positions().is_empty());
         i += 1;
     }
 };
@@ -33,7 +33,14 @@ pub enum RealtimeError<'a> {
 
 impl core::fmt::Display for RealtimeError<'_> {
     fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
-        write!(f, "Unable to recognize current player")
+        let id = match self {
+            RealtimeError::UnrecognizedCurrentPlayer(s) => s,
+        };
+
+        write!(
+            f,
+            "Unable to find current player with `riot_id`: {id} in field `all_players`"
+        )
     }
 }
 
@@ -116,18 +123,10 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
     let is_mega_gnar = current_player.champion_name == "Mega Gnar";
 
     let current_player_base_stats =
-        BasicStats::infer(current_player_champion_id, level, is_mega_gnar);
+        BasicStats::base_stats(current_player_champion_id, level, is_mega_gnar);
 
     // This is the difference between the current stats and the base values
-    let current_player_bonus_stats = bonus_stats!(
-        BasicStats::<f32>(current_player_stats, current_player_base_stats) {
-            armor,
-            max_health,
-            attack_damage,
-            magic_resist,
-            max_mana
-        }
-    );
+    let current_player_bonus_stats = current_player_stats.bonus_stats(current_player_base_stats);
 
     // If the player hasn't bought any damaging items, the function defaults,
     // but since we have the champion's adaptive damage, we can use that instead
@@ -202,7 +201,11 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
 
     // Assume champion attack types cannot change. Mayhem and Arena have augments that change it,
     // but there's no way to know
-    let current_player_cache_attack_type = current_player_cache.attack_type;
+    let current_player_cache_attack_type = if is_mega_gnar {
+        AttackType::Melee
+    } else {
+        current_player_cache.attack_type
+    };
 
     let shred = ResistShred::new(&current_player_stats);
 
@@ -242,10 +245,11 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
                                 RiotFormulas::COUP_DE_GRACE_AND_CUTDOWN_BONUS_DAMAGE
                         }
                         RuneId::LastStand => {
-                            base_modifiers.global_mod *= RiotFormulas::get_last_stand(
-                                1.0 - (self_state.current_stats.current_health
-                                    / self_state.current_stats.max_health.max(1.0)),
-                            )
+                            base_modifiers.global_mod *=
+                                RiotFormulas::get_last_stand(RiotFormulas::missing_health(
+                                    self_state.current_stats.current_health,
+                                    self_state.current_stats.max_health,
+                                ))
                         }
                         _ => {}
                     };
@@ -268,9 +272,6 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
             metadata: current_player_cache.metadata,
             closures: current_player_cache.closures,
         },
-        // Get closures and metadata for items and runes. Items always have two closures
-        // for each, while runes have only a single one. It will have to be changed as
-        // now there's one rune whose damage is measured in a range x..1.75x
         items: DamageKind::items(&current_player_items, current_player_cache_attack_type),
         runes: DamageKind::runes(&current_player_runes, current_player_cache_attack_type),
     };
@@ -330,7 +331,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
 
             // Works the same as the current player basic stats inference, but with less fields
             // since the other ones are unnecessary
-            let e_base_stats = SimpleStats::infer(e_champion_id, e_level, false);
+            let e_base_stats = SimpleStats::base_stats(e_champion_id, e_level, false);
 
             // Holds a collection of more detailed information about this enemy player
             let full_state = get_enemy_full_state(
@@ -355,6 +356,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
             let modifiers = Modifiers {
                 abilities: ability_modifiers,
                 damages: DamageModifiers {
+                    adaptive_type,
                     physical_mod: base_modifiers.physical_mod
                         * full_state.armor_values.modifier
                         * full_state.modifiers.physical_mod,

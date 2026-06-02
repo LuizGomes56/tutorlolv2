@@ -222,7 +222,17 @@ impl HttpClient {
             Ok(false) => {
                 println!("[download] {url}");
                 match self.get(url).send().await {
-                    Ok(response) => response.bytes().await?.write_file(save_to),
+                    Ok(response) => {
+                        let bytes = response.bytes().await?;
+
+                        const ERROR_TAG: &[u8] = b"<Code>AccessDenied</Code>";
+
+                        if bytes.windows(ERROR_TAG.len()).any(|w| w == ERROR_TAG) {
+                            return Err("Access denied".into());
+                        }
+
+                        bytes.write_file(save_to)
+                    }
                     Err(e) => {
                         println!("[error] {e}");
                         Err(e.into())
@@ -283,7 +293,7 @@ impl HttpClient {
         println!("Called fn [download_general_img]");
 
         self.parallel_task(
-            4,
+            20,
             SaveTo::RiotChampionsDir,
             async move |client, _, champion: RiotCdnChampion| {
                 let champion_id = &champion.id;
@@ -328,7 +338,7 @@ impl HttpClient {
         println!("Called fn [download_items_img]");
 
         self.parallel_task(
-            8,
+            32,
             SaveTo::RiotItemsDir,
             async move |client, item_id, _: Value| {
                 client
@@ -348,10 +358,10 @@ impl HttpClient {
         println!("Called fn [download_arts_img]");
 
         self.parallel_task(
-            6,
+            16,
             SaveTo::RiotChampionsDir,
             async move |client, champion_id, champion: RiotCdnChampion| {
-                for skin in champion.skins.into_iter() {
+                for skin in champion.skins {
                     let num = skin.num;
 
                     for i in [false, true] {

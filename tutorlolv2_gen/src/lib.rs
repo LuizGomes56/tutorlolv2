@@ -43,50 +43,52 @@ pub const fn ignite(level: u8) -> i32 {
     70 + 20 * n + 5 * nth
 }
 
-/// Verifies the following conditions
-/// - `tier >= 3`
-/// - `price > 0`
-/// - `len(stats)` > 0
-/// - `purchasable`
-pub const fn is_simulated_item(item: &Item) -> bool {
-    let Item {
-        purchasable,
-        tier,
-        price,
-        maps,
-        metadata: TypeMetadata { kind, .. },
-        ..
-    } = *item;
+impl Item {
+    /// Verifies the following conditions
+    /// - `tier >= 3`
+    /// - `price > 0`
+    /// - `len(stats)` > 0
+    /// - `purchasable`
+    pub const fn is_simulated_item(&self) -> bool {
+        let Self {
+            purchasable,
+            tier,
+            price,
+            maps,
+            metadata: TypeMetadata { kind, .. },
+            ..
+        } = *self;
 
-    let check = [
-        StatName::AbilityPower,
-        StatName::AttackDamage,
-        StatName::AdaptiveForce,
-        StatName::Lethality,
-        StatName::ArmorPenetration,
-        StatName::MagicPenetration,
-    ];
+        let check = [
+            StatName::AbilityPower,
+            StatName::AttackDamage,
+            StatName::AdaptiveForce,
+            StatName::Lethality,
+            StatName::ArmorPenetration,
+            StatName::MagicPenetration,
+        ];
 
-    let mut allow = false;
-    let mut i = 0;
+        let mut allow = false;
+        let mut i = 0;
 
-    while i < check.len() {
-        if kind.has_stat(check[i]) {
-            allow = true;
-        }
-
-        i += 1;
-    }
-
-    tier >= 3 && price > 0 && purchasable && allow && {
-        let mut j = 0;
-        while j < maps.len() {
-            if matches!(maps[j], GameMap::SummonersRift) {
-                return true;
+        while i < check.len() {
+            if kind.has_stat(check[i]) {
+                allow = true;
             }
-            j += 1;
+
+            i += 1;
         }
-        false
+
+        tier >= 3 && price > 0 && purchasable && allow && {
+            let mut j = 0;
+            while j < maps.len() {
+                if matches!(maps[j], GameMap::SummonersRift) {
+                    return true;
+                }
+                j += 1;
+            }
+            false
+        }
     }
 }
 
@@ -100,7 +102,7 @@ pub const L_SIML: usize = {
     let mut sum = 0;
     let mut i = 0;
     while i < ItemId::VARIANTS {
-        if is_simulated_item(ITEM_CACHE[i]) {
+        if ITEM_CACHE[i].is_simulated_item() {
             sum += 1;
         }
         i += 1;
@@ -123,7 +125,7 @@ pub const SIMULATED_ITEMS_ENUM: [ItemId; L_SIML] = {
     let mut i = 0;
     let mut j = 0;
     while i < ItemId::VARIANTS {
-        if is_simulated_item(ITEM_CACHE[i]) {
+        if ITEM_CACHE[i].is_simulated_item() {
             result[j] = ItemId::from_repr(i as _).unwrap();
             j += 1;
         }
@@ -180,7 +182,7 @@ pub const SIMULATED_ITEMS_METADATA: [TypeMetadata<ItemId>; L_SIML] = {
             ..
         } = item_id.metadata();
         unsafe {
-            core::ptr::addr_of_mut!((*siml_items_ptr)[i]).write(TypeMetadata {
+            (&raw mut (*siml_items_ptr)[i]).write(TypeMetadata {
                 kind: item_id,
                 damage_type,
                 attributes,
@@ -307,13 +309,13 @@ const _: () = {
         let mut j = 0;
         while j < merge_data.len() {
             let m = &merge_data[j];
-            assert!((m.minimum_damage as usize) < len);
-            assert!((m.maximum_damage as usize) < len);
-            assert!(m.minimum_damage < m.maximum_damage);
+            assert!((m.min as usize) < len);
+            assert!((m.max as usize) < len);
+            assert!(m.min < m.max);
             if j + 1 < merge_data.len() {
                 let a = &merge_data[j];
                 let b = &merge_data[j + 1];
-                assert!(a.maximum_damage < b.maximum_damage);
+                assert!(a.max < b.max);
             }
             j += 1;
         }
@@ -429,12 +431,33 @@ impl ChampionId {
         self.cache().metadata
     }
 
+    pub const fn stats(&self) -> &'static WikiStats {
+        &self.cache().stats
+    }
+
     pub const fn merge_data(&self) -> &'static [MergeData] {
         self.cache().merge_data
     }
 
     pub const fn number_of_abilities(&self) -> usize {
         self.closures().len()
+    }
+
+    pub const fn adaptive_type(&self) -> AdaptiveType {
+        self.cache().adaptive_type
+    }
+
+    pub const fn ability_ids<const N: usize>(&self) -> [AbilityId; N] {
+        let mut i = 0;
+
+        assert!(N == self.number_of_abilities());
+
+        let mut result = [AbilityId::P(AbilityName::Void); _];
+        while i < N {
+            result[i] = self.abilities()[i].kind;
+            i += 1;
+        }
+        result
     }
 
     pub const fn recommended_items(&self, position: Position) -> &'static [ItemId] {
@@ -564,6 +587,15 @@ const _: () = {
         }
         i += 1;
     }
+
+    let mut j = 0;
+    while j < RuneId::VARIANTS {
+        let rune = RuneId::VALUES[j];
+        if rune.deals_max_damage() {
+            assert!(rune.deals_damage());
+        }
+        j += 1;
+    }
 };
 
 impl ItemId {
@@ -579,6 +611,7 @@ impl ItemId {
         }
         result
     };
+    pub const SIML: &[Self; L_SIML] = &SIMULATED_ITEMS_ENUM;
 
     pub const ALLY_EXCEPTIONS: [Self; 8] = [
         Self::DarkSeal,
@@ -599,6 +632,28 @@ impl ItemId {
         bitset_size(bitset!(ItemId::ENEMY_EXCEPTIONS => [usize])),
     );
 
+    pub const fn is_siml(&self) -> bool {
+        let mut i = 0;
+        while i < L_SIML {
+            if self.index() == Self::SIML[i].index() {
+                return true;
+            }
+            i += 1;
+        }
+        false
+    }
+
+    pub const fn indexof_siml(index: usize) -> Option<Self> {
+        let mut i = 0;
+        while i < L_SIML {
+            if index == Self::SIML[i].index() {
+                return Some(Self::SIML[i]);
+            }
+            i += 1;
+        }
+        None
+    }
+
     pub const fn damage_type(&self) -> DamageType {
         self.metadata().damage_type
     }
@@ -610,21 +665,28 @@ impl ItemId {
         }
     }
 
+    pub const fn maps(&self) -> &'static [GameMap] {
+        self.cache().maps
+    }
+
     pub const fn has_map(&self, game_map: GameMap) -> bool {
+        let stats = self.maps();
         let mut i = 0;
-        let stats = self.cache().maps;
+
         while i < stats.len() {
             if stats[i] as u8 == game_map as u8 {
                 return true;
             }
             i += 1;
         }
+
         false
     }
 
     pub const fn has_stat(&self, stat_name: StatName) -> bool {
+        let stats = self.stats();
         let mut i = 0;
-        let stats = self.cache().stats;
+
         while i < stats.len() {
             if stats[i].0 as u8 == stat_name as u8 {
                 return true;
@@ -702,6 +764,10 @@ impl ItemId {
     pub const fn eval(&self, ctx: &Ctx, attack_type: AttackType) -> [f32; 2] {
         item_const_eval(ctx, *self, attack_type)
     }
+
+    pub const fn stats(&self) -> &'static [(StatName, u16)] {
+        self.cache().stats
+    }
 }
 
 impl RuneId {
@@ -757,8 +823,22 @@ impl RuneId {
         self.cache().metadata
     }
 
+    pub const fn damage_type(&self) -> DamageType {
+        self.cache().metadata.damage_type
+    }
+
     pub const fn eval(&self, ctx: &Ctx, attack_type: AttackType) -> [f32; 2] {
         rune_const_eval(ctx, *self, attack_type)
+    }
+
+    pub const fn deals_damage(&self) -> bool {
+        let [mmin, _, rmin, _] = self.cache().deals_damage;
+        mmin || rmin
+    }
+
+    pub const fn deals_max_damage(&self) -> bool {
+        let [_, mmax, _, rmax] = self.cache().deals_damage;
+        mmax || rmax
     }
 }
 
@@ -960,13 +1040,13 @@ where
         &Self::GENERATORS[self.index()]
     }
     fn is_champion(&self) -> bool {
-        matches!(self.entity(), EntityId::Champion(_))
+        self.entity().is_champion()
     }
     fn is_item(&self) -> bool {
-        matches!(self.entity(), EntityId::Item(_))
+        self.entity().is_item()
     }
     fn is_rune(&self) -> bool {
-        matches!(self.entity(), EntityId::Rune(_))
+        self.entity().is_rune()
     }
 }
 
@@ -975,6 +1055,9 @@ pub trait ValueId: CastId {
     fn identifiers(&self) -> &'static [[&'static [CtxVar]; 2]];
     fn functions(&self) -> &'static [[Range<usize>; 2]; 2];
     fn metadata(&self) -> TypeMetadata<Self>;
+    fn damage_type(&self) -> DamageType {
+        self.metadata().damage_type
+    }
 }
 
 impl ValueId for ItemId {

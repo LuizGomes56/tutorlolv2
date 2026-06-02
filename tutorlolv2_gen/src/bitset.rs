@@ -35,10 +35,39 @@ pub const fn make_bitset<const N: usize, const L: usize>(values: [u32; L]) -> Bi
     array
 }
 
+pub const fn unmake_bitset<const N: usize, const L: usize>(bitset: BitSetArray<N>) -> [u32; L] {
+    let mut result = [0; L];
+
+    let mut iter = bitset.iter_const();
+    let mut i = 0;
+
+    while let Some(value) = iter.next_const() {
+        result[i] = value;
+        i += 1;
+    }
+
+    result
+}
+
 #[macro_export]
 macro_rules! bitset {
     ([$($value:expr),*$(,)*]) => {
-        const { $crate::make_bitset::<_, L>([$($value.index()),*]) }
+        const { $crate::make_bitset([$($value.index() as _),*]) }
+    };
+    ($bitset:expr => [$ty:ty] => [$enum:ty]) => {
+        const {
+            const LEN: usize = $bitset.count_const() as usize;
+            let array = $crate::unmake_bitset::<_, LEN>($bitset);
+            let mut i = 0;
+            let mut result: [$enum; LEN] = unsafe { core::mem::zeroed() };
+            while i < array.len() {
+                unsafe {
+                    result[i] = <$enum>::from_u32(array[i]).unwrap();
+                }
+                i += 1;
+            }
+            result
+        }
     };
     ($array:expr => [$ty:ty]) => {
         const {

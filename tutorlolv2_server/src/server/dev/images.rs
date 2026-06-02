@@ -70,7 +70,7 @@ pub mod avif {
         "stats",
     ];
 
-    pub async fn img_convert_avif<const N: usize>(folders: [&'static str; N]) {
+    pub fn img_convert_avif<const N: usize>(folders: [&'static str; N]) {
         for folder in folders {
             println!("Converting folder: {folder}");
             let _ = convert_folder("raw_img", folder);

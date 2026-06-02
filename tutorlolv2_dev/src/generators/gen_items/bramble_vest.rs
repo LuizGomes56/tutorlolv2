@@ -1,8 +1,7 @@
 use super::*;
 
 impl Generator for BrambleVest {
-    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
-        self.min(Passive)?.end()
+        self.damage_type(Magic).min(Passive)?.end()
     }
 }

@@ -13,103 +13,22 @@ use alloc::boxed::Box;
 use tutorlolv2_gen::*;
 
 pub const fn get_item_bonus_stats(
-    adaptive_force: &mut f32,
     stats: &mut Stats<f32>,
     items: &[ItemId],
     modifiers: &mut Modifiers,
+    adaptive_force: &mut f32,
 ) {
-    let mut armor_pen_mult = 1.0;
-    let mut magic_pen_mult = 1.0;
-
-    let mut i = 0;
-    while i < items.len() {
-        let item_id = items[i];
-        let item = item_id.cache();
-        let item_stats = item.stats;
-
-        let mut armor_pen = 0.0;
-        let mut magic_pen = 0.0;
-
-        let mut j = 0;
-        while j < item_stats.len() {
-            let (stat, value) = item_stats[j];
-            let v = value as f32;
-            match stat {
-                StatName::AbilityPower => stats.ability_power += v,
-                StatName::AdaptiveForce => *adaptive_force += v,
-                StatName::Armor => stats.armor += v,
-                StatName::ArmorPenetration => armor_pen = v,
-                StatName::AttackDamage => stats.attack_damage += v,
-                StatName::AttackSpeed => stats.attack_speed += v,
-                StatName::CritChance => stats.crit_chance += v,
-                StatName::CritDamage => stats.crit_damage += v,
-                StatName::Health => stats.max_health += v,
-                StatName::Lethality => stats.armor_penetration_flat += v,
-                StatName::MagicPenetration => stats.magic_penetration_flat += v,
-                StatName::MagicPenetrationPercent => magic_pen = v,
-                StatName::MagicResist => stats.magic_resist += v,
-                StatName::Mana => stats.max_mana += v,
-                _ => {}
-            }
-            j += 1;
-        }
-
-        armor_pen_mult *= 1.0 - (armor_pen.clamp(0.0, 100.0) * 0.01);
-        magic_pen_mult *= 1.0 - (magic_pen.clamp(0.0, 100.0) * 0.01);
-
-        match item_id {
-            ItemId::ElixirOfIron => stats.max_health += 300.0,
-            ItemId::Shadowflame => {
-                modifiers.damages.magic_mod *= RiotFormulas::SHADOWFLAME_BONUS_DAMAGE;
-                modifiers.damages.true_mod *= RiotFormulas::SHADOWFLAME_BONUS_DAMAGE;
-            }
-            ItemId::SpearOfShojin => {
-                let AbilityModifiers { q, w, e, r } = &mut modifiers.abilities;
-                *q *= RiotFormulas::SHOJIN_BONUS_DAMAGE;
-                *w *= RiotFormulas::SHOJIN_BONUS_DAMAGE;
-                *e *= RiotFormulas::SHOJIN_BONUS_DAMAGE;
-                *r *= RiotFormulas::SHOJIN_BONUS_DAMAGE;
-            }
-            _ => {}
-        }
-
-        i += 1;
-    }
-
-    stats.armor_penetration_percent = (1.0 - armor_pen_mult) * 100.0;
-    stats.magic_penetration_percent = (1.0 - magic_pen_mult) * 100.0;
+    stats.get_item_bonus_stats(items, modifiers, adaptive_force);
 }
 
 pub const fn get_rune_bonus_stats(
-    adaptive_force: &mut f32,
     stats: &mut Stats<f32>,
     runes: &[RuneId],
     modifiers: &mut Modifiers,
     level: u8,
+    adaptive_force: &mut f32,
 ) {
-    let mut i = 0;
-    while i < runes.len() {
-        let rune_id = runes[i];
-        match rune_id {
-            RuneId::Waterwalking => {
-                *adaptive_force += (12 + level) as f32;
-            }
-            RuneId::AbsoluteFocus => *adaptive_force += 1.8 + 16.2 / 17.0 * (level - 1) as f32,
-            RuneId::CoupDeGrace | RuneId::CutDown => {
-                modifiers.damages.global_mod *= RiotFormulas::COUP_DE_GRACE_AND_CUTDOWN_BONUS_DAMAGE
-            }
-            RuneId::LastStand => {
-                modifiers.damages.global_mod *= RiotFormulas::get_last_stand(
-                    1.0 - (stats.current_health / stats.max_health.max(1.0)),
-                )
-            }
-            RuneId::AxiomArcanist => modifiers.abilities.r *= 1.12,
-            // RuneId::Health => stats.max_health += 65.0,
-            // RuneId::HealthScaling => stats.max_health += 10.0 * level as f32,
-            _ => {}
-        }
-        i += 1;
-    }
+    stats.get_rune_bonus_stats(runes, modifiers, adaptive_force, level);
 }
 
 #[derive(Debug)]
@@ -147,17 +66,12 @@ pub const fn infer_champion_stats(data: InferStats<'_>) -> Stats<f32> {
     let cache = champion_id.cache();
 
     let mut adaptive_force = 0.0;
-    get_item_bonus_stats(&mut adaptive_force, &mut bonus_stats, items, modifiers);
-    get_rune_bonus_stats(
-        &mut adaptive_force,
-        &mut bonus_stats,
-        runes,
-        modifiers,
-        level,
-    );
+
+    bonus_stats.get_item_bonus_stats(items, modifiers, &mut adaptive_force);
+    bonus_stats.get_rune_bonus_stats(runes, modifiers, &mut adaptive_force, level);
 
     let cached_stats = cache.stats;
-    let base_stats = BasicStats::infer(champion_id, level, is_mega_gnar);
+    let base_stats = BasicStats::base_stats(champion_id, level, is_mega_gnar);
 
     let mut stats = Stats {
         armor: base_stats.armor,
@@ -193,14 +107,11 @@ pub const fn infer_champion_stats(data: InferStats<'_>) -> Stats<f32> {
     stats.max_mana += bonus_stats.max_mana;
     stats.current_mana += bonus_stats.current_mana;
 
-    assign_rune_exceptions(
-        RuneExceptionData {
-            stats: &mut stats,
-            adaptive_force: &mut adaptive_force,
-            attack_type: cache.attack_type,
-            level,
-        },
+    stats.assign_rune_exceptions(
         rune_exceptions,
+        &mut adaptive_force,
+        cache.attack_type,
+        level,
     );
 
     let adaptive_type =
@@ -214,24 +125,19 @@ pub const fn infer_champion_stats(data: InferStats<'_>) -> Stats<f32> {
         AdaptiveType::Physical => stats.attack_damage += 0.6 * adaptive_force,
     }
 
-    assign_item_exceptions(&mut stats, item_exceptions);
+    stats.assign_item_exceptions(item_exceptions);
+    stats.assign_champion_exceptions(champion_id, ability_levels, stacks);
 
-    assign_champion_exceptions(
-        ChampionExceptionData {
-            ability_levels,
-            stacks,
-            stats: &mut stats,
-        },
-        champion_id,
+    stats.attack_speed = RiotFormulas::attack_speed(
+        &cached_stats.attack_speed,
+        cached_stats.attack_speed_ratio,
+        stats.attack_speed,
+        level,
     );
-
-    stats.attack_speed *= cached_stats.attack_speed_ratio * stats.attack_speed
-        + RiotFormulas::stat(&cached_stats.attack_speed, level);
 
     let mut i = 0;
     while i < items.len() {
-        let item_id = items[i];
-        match item_id {
+        match items[i] {
             ItemId::OverlordsBloodmail => {
                 stats.attack_damage += 0.025 * bonus_stats.max_health;
             }
@@ -276,6 +182,258 @@ pub const fn infer_champion_stats(data: InferStats<'_>) -> Stats<f32> {
     stats
 }
 
+impl Stats<f32> {
+    pub const fn infer(data: InferStats<'_>) -> Self {
+        infer_champion_stats(data)
+    }
+
+    pub const fn get_item_bonus_stats(
+        &mut self,
+        items: &[ItemId],
+        modifiers: &mut Modifiers,
+        adaptive_force: &mut f32,
+    ) {
+        let mut armor_pen_mult = 1.0;
+        let mut magic_pen_mult = 1.0;
+
+        let mut i = 0;
+        while i < items.len() {
+            let item_id = items[i];
+            let item = item_id.cache();
+            let item_stats = item.stats;
+
+            let mut armor_pen = 0.0;
+            let mut magic_pen = 0.0;
+
+            let mut j = 0;
+            while j < item_stats.len() {
+                let (stat, value) = item_stats[j];
+                let v = value as f32;
+
+                match stat {
+                    StatName::AbilityPower => self.ability_power += v,
+                    StatName::AdaptiveForce => *adaptive_force += v,
+                    StatName::Armor => self.armor += v,
+                    StatName::ArmorPenetration => armor_pen = v,
+                    StatName::AttackDamage => self.attack_damage += v,
+                    StatName::AttackSpeed => self.attack_speed += v,
+                    StatName::CritChance => self.crit_chance += v,
+                    StatName::CritDamage => self.crit_damage += v,
+                    StatName::Health => self.max_health += v,
+                    StatName::Lethality => self.armor_penetration_flat += v,
+                    StatName::MagicPenetration => self.magic_penetration_flat += v,
+                    StatName::MagicPenetrationPercent => magic_pen = v,
+                    StatName::MagicResist => self.magic_resist += v,
+                    StatName::Mana => self.max_mana += v,
+                    _ => {}
+                }
+                j += 1;
+            }
+
+            armor_pen_mult *= 1.0 - (armor_pen.clamp(0.0, 100.0) * 0.01);
+            magic_pen_mult *= 1.0 - (magic_pen.clamp(0.0, 100.0) * 0.01);
+
+            match item_id {
+                ItemId::ElixirOfIron => self.max_health += 300.0,
+                ItemId::Shadowflame => {
+                    modifiers.damages.magic_mod *= RiotFormulas::SHADOWFLAME_BONUS_DAMAGE;
+                    modifiers.damages.true_mod *= RiotFormulas::SHADOWFLAME_BONUS_DAMAGE;
+                }
+                ItemId::SpearOfShojin => {
+                    let AbilityModifiers { q, w, e, r } = &mut modifiers.abilities;
+                    *q *= RiotFormulas::SHOJIN_BONUS_DAMAGE;
+                    *w *= RiotFormulas::SHOJIN_BONUS_DAMAGE;
+                    *e *= RiotFormulas::SHOJIN_BONUS_DAMAGE;
+                    *r *= RiotFormulas::SHOJIN_BONUS_DAMAGE;
+                }
+                _ => {}
+            }
+
+            i += 1;
+        }
+
+        self.armor_penetration_percent = (1.0 - armor_pen_mult) * 100.0;
+        self.magic_penetration_percent = (1.0 - magic_pen_mult) * 100.0;
+    }
+
+    pub const fn get_rune_bonus_stats(
+        &mut self,
+        runes: &[RuneId],
+        modifiers: &mut Modifiers,
+        adaptive_force: &mut f32,
+        level: u8,
+    ) {
+        let mut i = 0;
+
+        while i < runes.len() {
+            match runes[i] {
+                RuneId::Waterwalking => {
+                    *adaptive_force += (12 + level) as f32;
+                }
+                RuneId::AbsoluteFocus => *adaptive_force += 1.8 + 16.2 / 17.0 * (level - 1) as f32,
+                RuneId::CoupDeGrace | RuneId::CutDown => {
+                    modifiers.damages.global_mod *=
+                        RiotFormulas::COUP_DE_GRACE_AND_CUTDOWN_BONUS_DAMAGE
+                }
+                RuneId::LastStand => {
+                    modifiers.damages.global_mod *= RiotFormulas::get_last_stand(
+                        1.0 - (self.current_health / self.max_health.max(1.0)),
+                    )
+                }
+                RuneId::AxiomArcanist => modifiers.abilities.r *= 1.12,
+                RuneId::Health => self.max_health += 65.0,
+                RuneId::HealthScaling => self.max_health += 10.0 * level as f32,
+                _ => {}
+            }
+            i += 1;
+        }
+    }
+
+    pub const fn assign_item_exceptions(&mut self, exceptions: &[ValueException]) {
+        if exceptions.is_empty() {
+            return;
+        }
+
+        let mut i = 0;
+        while i < exceptions.len() {
+            let item_exception = exceptions[i];
+            let stacks = item_exception.stacks();
+
+            if let Some(item_id) = item_exception.get_item_id() {
+                match item_id {
+                    ItemId::DarkSeal => self.ability_power += (stacks << 2) as f32,
+                    ItemId::Dragonheart => {
+                        let modifier = 1.0 + 0.04 * stacks as f32;
+                        self.ability_power *= modifier;
+                        self.attack_speed *= modifier;
+                        self.attack_damage *= modifier;
+                        self.max_health *= modifier;
+                        self.armor *= modifier;
+                        self.magic_resist *= modifier;
+                    }
+                    ItemId::DemonKingsCrown => {
+                        let modifier = 1.0 + 0.01 * stacks as f32;
+                        self.ability_power *= modifier;
+                        self.attack_speed *= modifier;
+                        self.attack_damage *= modifier;
+                        self.max_health *= modifier;
+                        self.armor *= modifier;
+                        self.magic_resist *= modifier;
+                    }
+                    ItemId::RiteOfRuin => self.crit_chance += stacks as f32 * 2.5,
+                    ItemId::MejaisSoulstealer => self.ability_power += (5 * stacks) as f32,
+                    ItemId::BlackCleaver => {
+                        self.armor_penetration_percent = RiotFormulas::combine_percentage(
+                            self.armor_penetration_percent,
+                            (6 * stacks) as f32,
+                        )
+                    }
+                    ItemId::BloodlettersCurse => {
+                        self.magic_penetration_percent = RiotFormulas::combine_percentage(
+                            self.magic_penetration_percent,
+                            7.5 * stacks as f32,
+                        )
+                    }
+                    ItemId::Hubris => self.attack_damage += (15 + (stacks << 1)) as f32,
+                    _ => {}
+                }
+            }
+            i += 1;
+        }
+    }
+
+    pub const fn assign_rune_exceptions(
+        &mut self,
+        exceptions: &[ValueException],
+        adaptive_force: &mut f32,
+        attack_type: AttackType,
+        level: u8,
+    ) {
+        if exceptions.is_empty() {
+            return;
+        }
+
+        let mut i = 0;
+        while i < exceptions.len() {
+            let rune_exception = exceptions[i];
+            let stacks = rune_exception.stacks();
+            if let Some(rune_id) = rune_exception.get_rune_id() {
+                match rune_id {
+                    RuneId::LethalTempo => match attack_type {
+                        AttackType::Melee => {
+                            self.attack_speed +=
+                                (stacks as f32) * (5.0 + 11.0 / 17.0 * (level - 1) as f32);
+                        }
+                        AttackType::Ranged => {
+                            self.attack_speed +=
+                                (stacks as f32) * (3.6 + 4.4 / 17.0 * (level - 1) as f32);
+                        }
+                    },
+                    RuneId::Conqueror => {
+                        *adaptive_force += (stacks as f32) * (1.8 + 2.2 / 17.0 * (level - 1) as f32)
+                    }
+                    RuneId::EyeballCollection | RuneId::GhostPoro | RuneId::ZombieWard => {
+                        *adaptive_force += match stacks {
+                            ..10 => (stacks << 1) as f32,
+                            10.. => 30.0,
+                        }
+                    }
+                    RuneId::GatheringStorm => {
+                        *adaptive_force += ((stacks * (stacks + 1)) << 2) as f32
+                    }
+                    RuneId::AdaptiveForce => *adaptive_force += 9.0 * stacks as f32,
+                    RuneId::AttackSpeed => self.attack_speed += 10.0 * (stacks as f32),
+                    _ => {}
+                }
+            }
+            i += 1;
+        }
+    }
+
+    pub const fn assign_champion_exceptions(
+        &mut self,
+        champion_id: ChampionId,
+        ability_levels: AbilityLevels,
+        stacks: u32,
+    ) {
+        match champion_id {
+            ChampionId::Yasuo => self.attack_damage += 0.5 * (self.crit_chance - 100.0).max(0.0),
+            ChampionId::Veigar => self.ability_power += stacks as f32,
+            ChampionId::Swain => self.max_health += (12 * stacks) as f32,
+            ChampionId::Chogath => {
+                self.max_health +=
+                    (stacks * 80 + 40 * const_clamp(ability_levels.r, 0..=3) as u32) as f32
+            }
+            ChampionId::Sion => self.max_health += stacks as f32,
+            ChampionId::Darius => {
+                self.armor_penetration_percent = RiotFormulas::combine_percentage(
+                    self.armor_penetration_percent,
+                    (15 + 5 * ability_levels.e) as f32,
+                )
+            }
+            ChampionId::Pantheon => {
+                self.armor_penetration_percent = RiotFormulas::combine_percentage(
+                    self.armor_penetration_percent,
+                    (10 * ability_levels.r) as f32,
+                )
+            }
+            ChampionId::Nilah => {
+                self.armor_penetration_percent = RiotFormulas::combine_percentage(
+                    self.armor_penetration_percent,
+                    self.crit_chance / 3.0,
+                )
+            }
+            ChampionId::Mordekaiser => {
+                self.magic_penetration_percent = RiotFormulas::combine_percentage(
+                    self.magic_penetration_percent,
+                    2.5 + 2.5 * ability_levels.e as f32,
+                )
+            }
+            _ => {}
+        };
+    }
+}
+
 pub struct ChampionExceptionData<'a> {
     pub stats: &'a mut Stats<f32>,
     pub ability_levels: AbilityLevels,
@@ -287,46 +445,12 @@ pub struct ChampionExceptionData<'a> {
 /// value of the enum [`ChampionId`], this function might do nothing
 pub const fn assign_champion_exceptions(data: ChampionExceptionData, champion_id: ChampionId) {
     let ChampionExceptionData {
+        stats,
         ability_levels,
         stacks,
-        stats,
     } = data;
 
-    match champion_id {
-        ChampionId::Yasuo => stats.attack_damage += 0.5 * (stats.crit_chance - 100.0).max(0.0),
-        ChampionId::Veigar => stats.ability_power += stacks as f32,
-        ChampionId::Swain => stats.max_health += (12 * stacks) as f32,
-        ChampionId::Chogath => {
-            stats.max_health +=
-                (stacks * 80 + 40 * const_clamp(ability_levels.r, 0..=3) as u32) as f32
-        }
-        ChampionId::Sion => stats.max_health += stacks as f32,
-        ChampionId::Darius => {
-            stats.armor_penetration_percent = RiotFormulas::combine_percentage(
-                stats.armor_penetration_percent,
-                (15 + 5 * ability_levels.e) as f32,
-            )
-        }
-        ChampionId::Pantheon => {
-            stats.armor_penetration_percent = RiotFormulas::combine_percentage(
-                stats.armor_penetration_percent,
-                (10 * ability_levels.r) as f32,
-            )
-        }
-        ChampionId::Nilah => {
-            stats.armor_penetration_percent = RiotFormulas::combine_percentage(
-                stats.armor_penetration_percent,
-                stats.crit_chance / 3.0,
-            )
-        }
-        ChampionId::Mordekaiser => {
-            stats.magic_penetration_percent = RiotFormulas::combine_percentage(
-                stats.magic_penetration_percent,
-                2.5 + 2.5 * ability_levels.e as f32,
-            )
-        }
-        _ => {}
-    };
+    stats.assign_champion_exceptions(champion_id, ability_levels, stacks);
 }
 
 pub struct RuneExceptionData<'a> {
@@ -336,13 +460,14 @@ pub struct RuneExceptionData<'a> {
     pub level: u8,
 }
 
-/// Receives a struct containing mutable references to the player's stats and modifiers,
-/// applying them based on the received `exceptions` slice
-pub const fn assign_rune_exceptions(data: RuneExceptionData, exceptions: &[ValueException]) {
-    if exceptions.is_empty() {
-        return;
-    }
+/// Receives mutable references to the champion's current stats, bonus stats and modifiers,
+/// modifying their values based on the `exceptions` slice. Only the items that
+/// depend on some stack count should be added to the match arms of this function
+pub const fn assign_item_exceptions(stats: &mut Stats<f32>, exceptions: &[ValueException]) {
+    stats.assign_item_exceptions(exceptions);
+}
 
+pub const fn assign_rune_exceptions(data: RuneExceptionData, exceptions: &[ValueException]) {
     let RuneExceptionData {
         adaptive_force,
         stats,
@@ -350,97 +475,7 @@ pub const fn assign_rune_exceptions(data: RuneExceptionData, exceptions: &[Value
         level,
     } = data;
 
-    let mut i = 0;
-    while i < exceptions.len() {
-        let rune_exception = exceptions[i];
-        let stacks = rune_exception.stacks();
-        if let Some(rune_id) = rune_exception.get_rune_id() {
-            match rune_id {
-                RuneId::LethalTempo => match attack_type {
-                    AttackType::Melee => {
-                        stats.attack_speed +=
-                            (stacks as f32) * (5.0 + 11.0 / 17.0 * (level - 1) as f32);
-                    }
-                    AttackType::Ranged => {
-                        stats.attack_speed +=
-                            (stacks as f32) * (3.6 + 4.4 / 17.0 * (level - 1) as f32);
-                    }
-                },
-                RuneId::Conqueror => {
-                    *adaptive_force += (stacks as f32) * (1.8 + 2.2 / 17.0 * (level - 1) as f32)
-                }
-                RuneId::EyeballCollection | RuneId::GhostPoro | RuneId::ZombieWard => {
-                    *adaptive_force += match stacks {
-                        ..10 => (stacks << 1) as f32,
-                        10.. => 30.0,
-                    }
-                }
-                RuneId::GatheringStorm => *adaptive_force += ((stacks * (stacks + 1)) << 2) as f32,
-                // RuneId::AdaptiveForce => *adaptive_force += 9.0 * stacks as f32,
-                // RuneId::AttackSpeed => stats.attack_speed += 10.0 * (stacks as f32),
-                _ => {}
-            }
-        }
-        i += 1;
-    }
-}
-
-/// Receives mutable references to the champion's current stats, bonus stats and modifiers,
-/// modifying their values based on the `exceptions` slice. Only the items that
-/// depend on some stack count should be added to the match arms of this function
-pub const fn assign_item_exceptions(stats: &mut Stats<f32>, exceptions: &[ValueException]) {
-    if exceptions.is_empty() {
-        return;
-    }
-
-    let mut i = 0;
-    while i < exceptions.len() {
-        let item_exception = exceptions[i];
-        let stacks = item_exception.stacks();
-
-        if let Some(item_id) = item_exception.get_item_id() {
-            match item_id {
-                ItemId::DarkSeal => stats.ability_power += (stacks << 2) as f32,
-                ItemId::Dragonheart => {
-                    let modifier = 1.0 + 0.04 * stacks as f32;
-                    stats.ability_power *= modifier;
-                    stats.attack_speed *= modifier;
-                    stats.attack_damage *= modifier;
-                    stats.max_health *= modifier;
-                    stats.armor *= modifier;
-                    stats.magic_resist *= modifier;
-                }
-                ItemId::DemonKingsCrown => {
-                    let modifier = 1.0 + 0.01 * stacks as f32;
-                    stats.ability_power *= modifier;
-                    stats.attack_speed *= modifier;
-                    stats.attack_damage *= modifier;
-                    stats.max_health *= modifier;
-                    stats.armor *= modifier;
-                    stats.magic_resist *= modifier;
-                }
-                ItemId::RiteOfRuin => stats.crit_chance += stacks as f32 * 2.5,
-                ItemId::MejaisSoulstealer => stats.ability_power += (5 * stacks) as f32,
-                ItemId::BlackCleaver => {
-                    stats.armor_penetration_percent = RiotFormulas::combine_percentage(
-                        stats.armor_penetration_percent,
-                        (6 * stacks) as f32,
-                    )
-                }
-                ItemId::BloodlettersCurse => {
-                    stats.magic_penetration_percent = RiotFormulas::combine_percentage(
-                        stats.magic_penetration_percent,
-                        7.5 * stacks as f32,
-                    )
-                }
-                ItemId::Hubris => {
-                    stats.attack_damage += (15 + (stacks << 1)) as f32;
-                }
-                _ => {}
-            }
-        }
-        i += 1;
-    }
+    stats.assign_rune_exceptions(exceptions, adaptive_force, attack_type, level);
 }
 
 /// Receives data about some custom game, containing the minimum information about the
@@ -456,10 +491,9 @@ pub fn calculator(game: InputGame) -> OutputGame {
                 rune_exceptions,
                 data:
                     InputMinData {
-                        stats: champion_raw_stats_i32,
+                        stats: champion_raw_stats,
                         level,
                         items: current_player_raw_items,
-                        infer_stats,
                         champion_id: current_player_champion_id,
                         is_mega_gnar,
                         stacks,
@@ -470,40 +504,33 @@ pub fn calculator(game: InputGame) -> OutputGame {
         enemy_players,
     } = game;
 
-    let champion_raw_stats = Stats::from_i32(&champion_raw_stats_i32);
     let mut modifiers = Modifiers::default();
 
     let current_player_cache = current_player_champion_id.cache();
 
     let current_player_base_stats =
-        BasicStats::infer(current_player_champion_id, level, is_mega_gnar);
+        BasicStats::base_stats(current_player_champion_id, level, is_mega_gnar);
 
-    let champion_stats = match infer_stats {
-        true => infer_champion_stats(InferStats {
-            item_exceptions: &item_exceptions,
-            rune_exceptions: &rune_exceptions,
-            items: &current_player_raw_items,
-            runes: &current_player_raw_runes,
-            modifiers: &mut modifiers,
-            dragons,
-            ability_levels,
-            stacks,
-            level,
-            champion_id: current_player_champion_id,
-            is_mega_gnar,
-        }),
-        false => champion_raw_stats,
-    };
+    let champion_stats = champion_raw_stats
+        .as_ref()
+        .map(Stats::from_i32)
+        .unwrap_or_else(|| {
+            infer_champion_stats(InferStats {
+                item_exceptions: &item_exceptions,
+                rune_exceptions: &rune_exceptions,
+                items: &current_player_raw_items,
+                runes: &current_player_raw_runes,
+                modifiers: &mut modifiers,
+                dragons,
+                ability_levels,
+                stacks,
+                level,
+                champion_id: current_player_champion_id,
+                is_mega_gnar,
+            })
+        });
 
-    let current_player_bonus_stats = bonus_stats!(
-        BasicStats::<f32>(champion_stats, current_player_base_stats) {
-            armor,
-            max_health,
-            attack_damage,
-            magic_resist,
-            max_mana
-        }
-    );
+    let current_player_bonus_stats = champion_stats.bonus_stats(current_player_base_stats);
 
     let adaptive_type = match RiotFormulas::adaptive_type(
         current_player_bonus_stats.attack_damage,
@@ -561,9 +588,9 @@ pub fn calculator(game: InputGame) -> OutputGame {
 
     OutputGame {
         current_player: OutputCurrentPlayer {
-            base_stats: BasicStats::from_f32(&current_player_base_stats),
-            bonus_stats: BasicStats::from_f32(&current_player_bonus_stats),
-            current_stats: Stats::from_f32(&champion_stats),
+            base_stats: current_player_base_stats.as_i32(),
+            bonus_stats: current_player_bonus_stats.as_i32(),
+            current_stats: champion_stats.as_i32(),
             champion_id: current_player_champion_id,
             adaptive_type,
             level,
@@ -588,7 +615,6 @@ pub fn get_calculator_enemies(
         .into_iter()
         .map(|player| {
             let InputMinData {
-                infer_stats: e_infer_stats,
                 items: e_items,
                 stacks: e_stacks,
                 stats: e_stats_i32,
@@ -598,15 +624,10 @@ pub fn get_calculator_enemies(
                 item_exceptions: e_item_exceptions,
             } = player;
 
-            let e_stats = EnemyStats::from_i32(&e_stats_i32);
-
-            let e_base_stats = SimpleStats::infer(e_champion_id, e_level, e_is_mega_gnar);
+            let e_base_stats = SimpleStats::base_stats(e_champion_id, e_level, e_is_mega_gnar);
             let full_state = get_enemy_full_state(
                 EnemyState {
-                    current_stats: match e_infer_stats {
-                        true => None,
-                        false => Some(e_stats),
-                    },
+                    current_stats: e_stats_i32.as_ref().map(EnemyStats::from_i32),
                     base_stats: e_base_stats,
                     items: &e_items,
                     stacks: e_stacks,
@@ -623,6 +644,7 @@ pub fn get_calculator_enemies(
 
             let modifiers = Modifiers {
                 damages: DamageModifiers {
+                    adaptive_type: self_state.adaptive_type,
                     physical_mod: modifiers.damages.physical_mod
                         * full_state.armor_values.modifier
                         * full_state.modifiers.physical_mod,
@@ -639,9 +661,9 @@ pub fn get_calculator_enemies(
             let damages = Damages::new(ctx, eval_data, modifiers);
 
             OutputEnemy {
-                current_stats: EnemyStats::from_f32(&full_state.current_stats),
-                bonus_stats: SimpleStats::from_f32(&full_state.bonus_stats),
-                base_stats: SimpleStats::from_f32(&e_base_stats),
+                current_stats: full_state.current_stats.as_i32(),
+                bonus_stats: full_state.bonus_stats.as_i32(),
+                base_stats: e_base_stats.as_i32(),
                 real_magic_resist: full_state.magic_values.real as _,
                 real_armor: full_state.armor_values.real as _,
                 champion_id: e_champion_id,

@@ -453,8 +453,8 @@ impl Champion {
                 let alias = make(name_alias);
                 if abilities.contains_key(&ability_id) {
                     merge.insert(DevMergeData {
-                        minimum_damage: key,
-                        maximum_damage: ability_id,
+                        min: key,
+                        max: ability_id,
                         alias,
                     });
                     found = true;
@@ -471,8 +471,8 @@ impl Champion {
         // returns a fail and prints a message to the console.
         if !merge.iter().all(|value| {
             let DevMergeData {
-                minimum_damage,
-                maximum_damage,
+                min: minimum_damage,
+                max: maximum_damage,
                 ..
             } = value;
             abilities.contains_key(minimum_damage) && abilities.contains_key(maximum_damage)
@@ -521,16 +521,12 @@ impl Champion {
                 .merge
                 .iter()
                 .filter_map(|value| {
-                    let DevMergeData {
-                        minimum_damage,
-                        maximum_damage,
-                        alias,
-                    } = value;
+                    let DevMergeData { min, max, alias } = value;
 
-                    match (index.get(minimum_damage), index.get(maximum_damage)) {
+                    match (index.get(min), index.get(max)) {
                         (Some(ia), Some(ib)) => Some(MergeData {
-                            minimum_damage: *ia as _,
-                            maximum_damage: *ib as _,
+                            min: *ia as _,
+                            max: *ib as _,
                             alias: *alias,
                         }),
                         _ => None,
@@ -540,13 +536,13 @@ impl Champion {
 
             for value in result.iter().copied() {
                 let MergeData {
-                    minimum_damage,
-                    maximum_damage,
+                    min: min_damage,
+                    max: max_damage,
                     ..
                 } = value;
 
-                let min = self.nth(minimum_damage as _)?;
-                let max = self.nth(maximum_damage as _)?;
+                let min = self.nth(min_damage as _)?;
+                let max = self.nth(max_damage as _)?;
 
                 let comment = format!(
                     "{min_c} & {max_c}",
@@ -554,8 +550,8 @@ impl Champion {
                     max_c = max.comment
                 );
 
-                self.nth_mut(minimum_damage as _)?.comment = comment.clone();
-                self.nth_mut(maximum_damage as _)?.comment = comment;
+                self.nth_mut(min_damage as _)?.comment = comment.clone();
+                self.nth_mut(max_damage as _)?.comment = comment;
             }
 
             result
