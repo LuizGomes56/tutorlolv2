@@ -7,7 +7,7 @@ impl Generator for BladeOfTheRuinedKing {
             .try_get_value()
             .ok_or("Unknown melee percent scaling")?;
 
-        let ranged_ratio = melee_ratio.div(1.5);
+        let ranged_ratio = melee_ratio.div(1.5).parenthesize();
 
         let damage = |scaling: &dyn Display| {
             format!(

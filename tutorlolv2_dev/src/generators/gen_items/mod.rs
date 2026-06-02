@@ -13,7 +13,6 @@ crate::decl_items!(
     DivineSunderer,
     DuskAndDawn,
     DuskbladeOfDraktharr,
-    EchoesOfHelia,
     Eclipse,
     EdgeOfNight,
     EmpyreanPromise,
