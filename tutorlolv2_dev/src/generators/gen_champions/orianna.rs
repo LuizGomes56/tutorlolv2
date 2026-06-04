@@ -1,26 +1,22 @@
 use super::*;
 
 impl Generator for Orianna {
-    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
-        self.ability(
-            Key::P,
-            [
-                (1, _1), /* Innate */
-                (3, _2), /* Innate [1] */
-                (4, _3), /* Innate [2] */
-            ],
-        )
-        .ability(
-            Key::Q,
-            [
-                (0, _1), /* Magic Damage */
-                (1, _2), /* Reduced Damage */
-            ],
-        )
-        .ability(Key::W, [(0, _1) /* Magic Damage */])
-        .ability(Key::E, [(1, _1) /* Magic Damage */])
-        .ability(Key::R, [(0, _1) /* Magic Damage */])
-        .end()
+        let pmax = self
+            .ability(Key::P, [(1, Min) /* Innate */])
+            .merge_damage([P(Min)], |[p]| 1.4.times(p))?;
+
+        self.clone_to(P(Min), P(Max), pmax)?
+            .ability(
+                Key::Q,
+                [
+                    (0, Max), /* Magic Damage */
+                    (1, Min), /* Reduced Damage */
+                ],
+            )
+            .ability(Key::W, [(0, Void) /* Magic Damage */])
+            .ability(Key::E, [(1, Void) /* Magic Damage */])
+            .ability(Key::R, [(0, Void) /* Magic Damage */])
+            .end()
     }
 }

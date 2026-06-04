@@ -6,8 +6,8 @@ impl Generator for Nidalee {
         self.ability(
             Key::Q,
             [
-                (0, _1), /* Maximum Magic Damage */
-                (1, _2), /* Minimum Magic Damage */
+                (0, Max), /* Maximum Magic Damage */
+                (1, Min), /* Minimum Magic Damage */
             ],
         )
         .ability_nth(

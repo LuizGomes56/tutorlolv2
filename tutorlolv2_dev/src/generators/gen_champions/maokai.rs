@@ -3,8 +3,8 @@ use super::*;
 impl Generator for Maokai {
     #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::Q, [(1, _1) /* Magic Damage */])
-            .ability(Key::W, [(0, _1) /* Magic Damage */])
+        self.ability(Key::Q, [(1, Void) /* Magic Damage */])
+            .ability(Key::W, [(0, Void) /* Magic Damage */])
             .ability(
                 Key::E,
                 [
@@ -14,7 +14,7 @@ impl Generator for Maokai {
                     (4, _4), /* Total Magic Damage */
                 ],
             )
-            .ability(Key::R, [(1, _1) /* Magic Damage */])
+            .ability(Key::R, [(1, Void) /* Magic Damage */])
             .end()
     }
 }

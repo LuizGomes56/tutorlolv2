@@ -1,24 +1,22 @@
 use super::*;
 
 impl Generator for Morgana {
-    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::P, [(0, _1) /* Innate */])
-            .ability(Key::Q, [(0, _1) /* Magic Damage */])
+        self.ability(Key::Q, [(0, Void) /* Magic Damage */])
             .ability(
                 Key::W,
                 [
-                    (0, _1), /* Maximum Damage Per Tick */
-                    (1, _2), /* Maximum Total Damage */
-                    (2, _3), /* Minimum Damage Per Tick */
-                    (3, _4), /* Minimum Total Damage */
+                    (0, _1Max), /* Maximum Damage Per Tick */
+                    (1, Max),   /* Maximum Total Damage */
+                    (2, _1Min), /* Minimum Damage Per Tick */
+                    (3, Min),   /* Minimum Total Damage */
                 ],
             )
             .ability(
                 Key::R,
                 [
-                    (1, _1), /* Magic Damage */
-                    (3, _2), /* Total Magic Damage */
+                    (1, Min), /* Magic Damage */
+                    (3, Max), /* Total Magic Damage */
                 ],
             )
             .end()

@@ -1,10 +1,8 @@
 use super::*;
 
 impl Generator for Malphite {
-    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::P, [(0, _1) /* Innate - Granite Shield */])
-            .ability(Key::Q, [(0, _1) /* Magic Damage */])
+        self.ability(Key::Q, [(0, Void) /* Magic Damage */])
             .ability(
                 Key::W,
                 [
@@ -12,8 +10,8 @@ impl Generator for Malphite {
                     (3, _2), /* Physical Damage */
                 ],
             )
-            .ability(Key::E, [(1, _1) /* Magic Damage */])
-            .ability(Key::R, [(0, _1) /* Magic Damage */])
+            .ability(Key::E, [(1, Void) /* Magic Damage */])
+            .ability(Key::R, [(0, Void) /* Magic Damage */])
             .end()
     }
 }

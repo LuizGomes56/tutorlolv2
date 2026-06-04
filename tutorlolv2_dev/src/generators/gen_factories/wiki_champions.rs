@@ -244,6 +244,11 @@ impl Champion {
         self
     }
 
+    pub fn comment(&mut self, key: AbilityId, comment: String) -> MayFail<&mut Self> {
+        self.get_mut(key)?.comment = comment;
+        Ok(self)
+    }
+
     pub fn merge<const N: usize>(
         &mut self,
         from: [AbilityId; N],
@@ -256,12 +261,12 @@ impl Champion {
 
         let comment = from
             .map(|v| match &self.get(v) {
-                Ok(ability) => format!("{v:?} /* {c} */", c = ability.comment),
-                _ => format!("{v:?} /* Unknown */"),
+                Ok(ability) => format!("{v:?} ({c})", c = ability.comment),
+                _ => format!("{v:?} (Unknown)"),
             })
             .join(", ");
 
-        self.get_mut(into)?.comment = format!("Merged from: [{comment}]");
+        self.comment(into, format!("Merged from: [{comment}]"))?;
 
         for key in from {
             self.delete(key);
@@ -303,39 +308,33 @@ impl Champion {
     }
 
     pub fn get(&self, key: AbilityId) -> MayFail<&Ability> {
-        Ok(self.abilities.get(&key).ok_or_else(|| {
-            format!(
-                "[{champion_id}] &self.abilities[..] failed for: {key:?}",
-                champion_id = self.data.champion_id
-            )
-        })?)
+        Ok(self
+            .abilities
+            .get(&key)
+            .ok_or_else(|| format!("&self.abilities[..] failed for: {key:?}"))?)
     }
 
     pub fn nth(&self, index: usize) -> MayFail<&Ability> {
-        Ok(self.abilities.values().nth(index).ok_or_else(|| {
-            format!(
-                "[{champion_id}] self.abilities.values().nth({index}) failed",
-                champion_id = self.data.champion_id
-            )
-        })?)
+        Ok(self
+            .abilities
+            .values()
+            .nth(index)
+            .ok_or_else(|| format!("self.abilities.values().nth({index}) failed"))?)
     }
 
     pub fn nth_mut(&mut self, index: usize) -> MayFail<&mut Ability> {
-        Ok(self.abilities.values_mut().nth(index).ok_or_else(|| {
-            format!(
-                "[{champion_id}] self.abilities.values_mut().nth({index}) failed",
-                champion_id = self.data.champion_id
-            )
-        })?)
+        Ok(self
+            .abilities
+            .values_mut()
+            .nth(index)
+            .ok_or_else(|| format!("self.abilities.values_mut().nth({index}) failed"))?)
     }
 
     pub fn get_mut(&mut self, key: AbilityId) -> MayFail<&mut Ability> {
-        Ok(self.abilities.get_mut(&key).ok_or_else(|| {
-            format!(
-                "[{champion_id}] &mut self.abilities[..] failed for: {key:?}",
-                champion_id = self.data.champion_id
-            )
-        })?)
+        Ok(self
+            .abilities
+            .get_mut(&key)
+            .ok_or_else(|| format!("&mut self.abilities[..] failed for: {key:?}"))?)
     }
 
     pub fn combo<const N: usize>(&mut self, combo: [ComboElement; N]) -> MayFail<&mut Self> {
@@ -343,11 +342,7 @@ impl Champion {
             if let ComboElement::Ability(id) = c
                 && self.get(id).is_err()
             {
-                return Err(format!(
-                    "[{champion_id}] self.combo(...) failed for {c:?}",
-                    champion_id = self.data.champion_id
-                )
-                .into());
+                return Err(format!("self.combo(...) failed for {c:?}",).into());
             }
         }
 
@@ -376,6 +371,17 @@ impl Champion {
         let ability = self.get_mut(into)?;
         ability.damage = damage;
         ability.comment = format!("Custom reference of {from:?}");
+        Ok(self)
+    }
+
+    pub fn damage_types<const N: usize>(
+        &mut self,
+        keys: [AbilityId; N],
+        damage_type: DamageType,
+    ) -> MayFail<&mut Self> {
+        for key in keys {
+            self.damage_type(key, damage_type)?;
+        }
         Ok(self)
     }
 
