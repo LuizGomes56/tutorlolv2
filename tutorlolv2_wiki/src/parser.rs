@@ -4,7 +4,7 @@ use scraper::Html;
 use serde::{Deserialize, Serialize};
 use std::{
     collections::BTreeMap,
-    ops::{Range, RangeFrom, RangeTo},
+    ops::{Bound, Range, RangeBounds, RangeFrom, RangeTo},
     sync::LazyLock,
 };
 use tutorlolv2_types::CtxVar;
@@ -140,6 +140,36 @@ pub enum LevelArm {
 }
 
 impl LevelArm {
+    pub fn flat(level: u8, value: impl Into<f64>) -> Self {
+        LevelArm::Range {
+            range: level..level + 1,
+            value: value.into(),
+        }
+    }
+
+    pub fn new(range: impl RangeBounds<u8>, value: impl Into<f64>) -> Self {
+        let value = value.into();
+
+        match (range.start_bound(), range.end_bound()) {
+            (Bound::Unbounded, Bound::Excluded(&end)) => Self::To {
+                range: RangeTo { end },
+                value,
+            },
+            (Bound::Included(&start), Bound::Excluded(&end)) => Self::Range {
+                range: start..end,
+                value,
+            },
+            (Bound::Included(&start), Bound::Unbounded) => Self::From {
+                range: RangeFrom { start },
+                value,
+            },
+            (Bound::Unbounded, Bound::Unbounded) => {
+                panic!(".. não é um intervalo válido para LevelArm");
+            }
+            _ => panic!("Formato de intervalo não suportado"),
+        }
+    }
+
     pub const fn value(&self) -> f64 {
         match self {
             LevelArm::To { value, .. }
@@ -293,6 +323,15 @@ impl Scaling {
             debug,
             ctx_var,
         })
+    }
+
+    pub fn based_on_level_raw<const N: usize>(ctx_var: CtxVar, arms: [LevelArm; N]) -> Self {
+        Self::BasedOnLevel {
+            level_var: ctx_var,
+            arms: arms.to_vec(),
+            debug: "Call to based_on_level_raw".into(),
+            ctx_var,
+        }
     }
 
     pub fn based_on_level(raw: &str, text: &str) -> Option<Self> {

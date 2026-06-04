@@ -11,7 +11,10 @@ pub use tutorlolv2_types::{
     AbilityId, AbilityId::*, AbilityName::*, Attrs::*, ComboElement::*, CtxVar::*, DamageType::*,
     Key,
 };
-pub use tutorlolv2_wiki::{champions::WikiChampion, parser::Scaling};
+pub use tutorlolv2_wiki::{
+    champions::WikiChampion,
+    parser::{LevelArm, Scaling},
+};
 
 #[macro_export]
 macro_rules! decl_champions {

@@ -1,32 +1,24 @@
 use super::*;
 
 impl Generator for Ornn {
-    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
-        self.ability(
-            Key::P,
-            [
-                (0, _1), /* Innate - Living Forge */
-                (2, _2), /* Innate - Temper */
-                (3, _3), /* Innate - Temper [1] */
-            ],
-        )
-        .ability(Key::Q, [(0, _1) /* Physical Damage */])
-        .ability(
-            Key::W,
-            [
-                (0, _1), /* Magic Damage Per Tick */
-                (3, _2), /* Total Magic Damage */
-            ],
-        )
-        .ability(Key::E, [(0, _1) /* Physical Damage */])
-        .ability(
-            Key::R,
-            [
-                (0, _1), /* Magic Damage */
-                (2, _2), /* Total Magic Damage */
-            ],
-        )
-        .end()
+        self.ability(Key::P, [(3, Void) /* Innate - Temper [1] */])
+            .ability(Key::Q, [(0, Void) /* Physical Damage */])
+            .ability(
+                Key::W,
+                [
+                    (0, Min), /* Magic Damage Per Tick */
+                    (3, Max), /* Total Magic Damage */
+                ],
+            )
+            .ability(Key::E, [(0, Void) /* Physical Damage */])
+            .ability(
+                Key::R,
+                [
+                    (0, Min), /* Magic Damage */
+                    (2, Max), /* Total Magic Damage */
+                ],
+            )
+            .end()
     }
 }

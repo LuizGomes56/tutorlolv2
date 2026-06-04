@@ -223,24 +223,32 @@ impl Champion {
         for (i, ability_id) in Self::modify_pattern(key, pattern) {
             if let Some(abilities) = self.wiki_ability(key).ok()
                 && let Some(ability) = abilities.iter().nth(nth)
-                && let Some((comment, effect)) = ability.effects.iter().nth(i)
             {
                 let mut value = Ability {
                     name: ability.name.clone(),
                     damage_type: ability.damage_type,
                     attributes: Attrs::Undefined,
-                    comment: comment.clone(),
+                    comment: "Unknown".into(),
                     damage: ZERO.into(),
                 };
 
-                if let Some(formula) = &effect.formula {
-                    value.damage = formula.clone();
+                if let Some((comment, effect)) = ability.effects.iter().nth(i) {
+                    value.comment = comment.clone();
+
+                    if let Some(formula) = &effect.formula {
+                        value.damage = formula.clone();
+                    }
                 }
 
-                self.abilities.insert(ability_id, value);
+                self.insert(ability_id, value);
             }
         }
 
+        self
+    }
+
+    pub fn insert(&mut self, key: AbilityId, ability: Ability) -> &mut Self {
+        self.abilities.insert(key, ability);
         self
     }
 
@@ -367,7 +375,7 @@ impl Champion {
         damage: String,
     ) -> MayFail<&mut Self> {
         let clone_from = self.get(from)?.clone();
-        self.abilities.insert(into, clone_from);
+        self.insert(into, clone_from);
         let ability = self.get_mut(into)?;
         ability.damage = damage;
         ability.comment = format!("Custom reference of {from:?}");
