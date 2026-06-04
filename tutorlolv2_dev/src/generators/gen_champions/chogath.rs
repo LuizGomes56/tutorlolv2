@@ -1,24 +1,17 @@
 use super::*;
 
 impl Generator for Chogath {
-    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::Q, [(0, _1) /* Magic damage */])
-            .ability(Key::W, [(0, _1) /* Magic damage */])
+        self.ability(Key::Q, [(0, Void) /* Magic damage */])
+            .ability(Key::W, [(0, Void) /* Magic damage */])
             .ability(
                 Key::E,
                 [
-                    (0, _1), /* Magic Damage */
-                    (3, _2), /* Total Magic Damage */
+                    (0, Min), /* Magic Damage */
+                    (3, Max), /* Total Magic Damage */
                 ],
             )
-            .ability(
-                Key::R,
-                [
-                    (3, _1), /* Champion True Damage */
-                    (4, _2), /* Non-Champion True Damage */
-                ],
-            )
+            .ability(Key::R, [(3, Void) /* Champion True Damage */])
             .end()
     }
 }

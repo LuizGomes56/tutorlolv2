@@ -1,19 +1,17 @@
 use super::*;
 
 impl Generator for Kassadin {
-    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::P, [(0, _1) /* Innate */])
-            .ability(Key::Q, [(0, _1) /* Magic Damage */])
-            .ability(Key::W, [(0, _1) /* Increased Bonus Magic Damage */])
-            .ability(Key::E, [(0, _1) /* Magic Damage */])
+        self.ability(Key::Q, [(0, Void) /* Magic Damage */])
+            .ability(Key::W, [(0, Void) /* Increased Bonus Magic Damage */])
+            .ability(Key::E, [(0, Void) /* Magic Damage */])
             .ability(
                 Key::R,
                 [
-                    (0, _1), /* Bonus Damage Per Stack */
-                    (1, _2), /* Magic Damage */
-                    (2, _3), /* Maximum Bonus Damage */
-                    (3, _4), /* Maximum Magic Damage */
+                    (0, _1Min), /* Bonus Damage Per Stack */
+                    (1, Min),   /* Magic Damage */
+                    (2, _1Max), /* Maximum Bonus Damage */
+                    (3, Max),   /* Maximum Magic Damage */
                 ],
             )
             .end()

@@ -6,24 +6,23 @@ impl Generator for DrMundo {
         self.ability(
             Key::Q,
             [
-                (1, _1), /* Magic Damage */
-                (2, _2), /* Minimum Damage */
+                (1, Max), /* Magic Damage */
+                (2, Min), /* Minimum Damage */
             ],
         )
         .ability(
             Key::W,
             [
-                (0, _1), /* Magic Damage */
-                (1, _2), /* Magic Damage per Tick */
-                (2, _3), /* Total Magic Damage */
+                (0, Min), /* Magic Damage */
+                (1, _1),  /* Magic Damage per Tick */
+                (2, Max), /* Total Magic Damage */
             ],
         )
         .ability(
             Key::E,
             [
-                (0, _1), /* Bonus Attack Damage */
-                (1, _2), /* Maximum Bonus Physical Damage */
-                (4, _3), /* Minimum Bonus Physical Damage */
+                (1, Max), /* Maximum Bonus Physical Damage */
+                (4, Min), /* Minimum Bonus Physical Damage */
             ],
         )
         .end()

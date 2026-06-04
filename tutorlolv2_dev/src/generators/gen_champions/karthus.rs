@@ -1,27 +1,22 @@
 use super::*;
 
 impl Generator for Karthus {
-    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
         self.ability(
-            Key::P,
-            [(0, _1) /* Description 1 */, (1, _2) /* Innate */],
-        )
-        .ability(
             Key::Q,
             [
-                (0, _1), /* Isolated Enhanced Damage */
-                (1, _2), /* Magic Damage */
+                (0, Max), /* Isolated Enhanced Damage */
+                (1, Min), /* Magic Damage */
             ],
         )
         .ability(
             Key::E,
             [
-                (0, _1), /* Damage Per Second */
-                (1, _2), /* Magic Damage Per Tick */
+                (0, Max), /* Damage Per Second */
+                (1, Min), /* Magic Damage Per Tick */
             ],
         )
-        .ability(Key::R, [(0, _1) /* Magic Damage */])
+        .ability(Key::R, [(0, Void) /* Magic Damage */])
         .end()
     }
 }

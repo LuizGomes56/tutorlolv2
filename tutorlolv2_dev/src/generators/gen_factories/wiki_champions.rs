@@ -179,7 +179,7 @@ impl Champion {
 
     pub fn modify(&mut self, key: AbilityId, f: impl Fn(&str) -> String) -> MayFail<&mut Self> {
         let damage = self.merge_damage([key], |[k]| f(k))?;
-        self.get_mut(key)?.damage = damage;
+        self.set_damage(key, damage)?;
         Ok(self)
     }
 
@@ -358,6 +358,11 @@ impl Champion {
     pub fn delete(&mut self, key: AbilityId) -> &mut Self {
         self.abilities.remove(&key);
         self
+    }
+
+    pub fn set_damage(&mut self, key: AbilityId, damage: String) -> MayFail<&mut Self> {
+        self.get_mut(key)?.damage = damage;
+        Ok(self)
     }
 
     pub fn clone_to(

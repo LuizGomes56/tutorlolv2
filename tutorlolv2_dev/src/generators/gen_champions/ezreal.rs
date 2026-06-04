@@ -1,18 +1,11 @@
 use super::*;
 
 impl Generator for Ezreal {
-    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::Q, [(0, _1) /* Physical Damage */])
-            .ability(Key::W, [(0, _1) /* Bonus Magic Damage */])
-            .ability(Key::E, [(0, _1) /* Magic Damage */])
-            .ability(
-                Key::R,
-                [
-                    (0, _1), /* Magic Damage */
-                    (1, _2), /* Modified Damage */
-                ],
-            )
+        self.ability(Key::Q, [(0, Void) /* Physical Damage */])
+            .ability(Key::W, [(0, Void) /* Bonus Magic Damage */])
+            .ability(Key::E, [(0, Void) /* Magic Damage */])
+            .ability(Key::R, [(0, Void) /* Magic Damage */])
             .end()
     }
 }
