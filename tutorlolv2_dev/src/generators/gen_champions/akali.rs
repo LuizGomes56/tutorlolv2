@@ -12,6 +12,7 @@ impl Generator for Akali {
         )
         .merge_sum([P(_1), P(_2)], P(Void))?
         .ability(Key::Q, [(0, Void) /* Magic Damage */])
+        /* Missing first cast damage */
         .ability(
             Key::E,
             [
@@ -23,8 +24,8 @@ impl Generator for Akali {
             Key::R,
             [
                 (0, _1),  /* Magic Damage */
-                (1, Min), /* Maximum Magic Damage */
-                (2, Max), /* Minimum Magic Damage */
+                (1, Max), /* Maximum Magic Damage */
+                (2, Min), /* Minimum Magic Damage */
             ],
         )
         .end()

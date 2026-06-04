@@ -1,12 +1,13 @@
 use super::*;
 
 impl Generator for Ryze {
-    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::Q, [(1, _1) /* Magic Damage */])
-            .ability(Key::W, [(0, _1) /* Magic Damage */])
-            .ability(Key::E, [(0, _1) /* Magic Damage */])
-            .ability(Key::R, [(0, _1) /* Bonus Overload Damage */])
+        let r = &self.formula(Key::R, 0)?.to_string();
+
+        self.ability(Key::Q, [(1, Void) /* Magic Damage */])
+            .modify(Q(Void), |dmg| dmg.parenthesize().times(r))?
+            .ability(Key::W, [(0, Void) /* Magic Damage */])
+            .ability(Key::E, [(0, Void) /* Magic Damage */])
             .end()
     }
 }

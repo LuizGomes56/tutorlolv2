@@ -1,7 +1,6 @@
 use super::*;
 
 impl Generator for MonkeyKing {
-    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
         self.ability(Key::Q, [(1, Void) /* Bonus Physical Damage */])
             .ability(Key::W, [(0, Void) /* Clone Outgoing Damage */])

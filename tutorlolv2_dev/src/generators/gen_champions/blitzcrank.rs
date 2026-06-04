@@ -5,6 +5,7 @@ impl Generator for Blitzcrank {
     fn generate(&mut self) -> MayFail {
         self.ability(Key::Q, [(0, Void) /* Magic Damage */])
             .ability(Key::R, [(0, Void) /* Magic Damage */])
+            /* Missing E damage */
             .end()
     }
 }

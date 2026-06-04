@@ -11,16 +11,16 @@ impl Generator for Illaoi {
                 (2, _3), /* Description 1 [2] */
             ],
         )
-        .ability(Key::Q, [(0, _1) /* Damage Increase */])
+        .ability(Key::Q, [(0, Void) /* Damage Increase */])
         .ability(
             Key::W,
             [
-                (0, _1), /* Additional Physical Damage */
-                (1, _2), /* Minimum Physical Damage */
+                (0, Max), /* Additional Physical Damage */
+                (1, Min), /* Minimum Physical Damage */
             ],
         )
-        .ability(Key::E, [(0, _1) /* Damage Transmission */])
-        .ability(Key::R, [(0, _1) /* Physical Damage */])
+        .ability(Key::E, [(0, Void) /* Damage Transmission */])
+        .ability(Key::R, [(0, Void) /* Physical Damage */])
         .end()
     }
 }

@@ -163,7 +163,14 @@ pub async fn run() -> MayFail {
             EntityTarget::Runes => RPARSER.run_all(),
             EntityTarget::Unknown(s) => RPARSER.run(&s)?,
         },
-        AppArgs::Progress => CPARSER.progress(),
+        AppArgs::Progress => {
+            println!("Champions:");
+            CPARSER.progress();
+            println!("Items:");
+            IPARSER.progress();
+            println!("Runes:");
+            RPARSER.progress();
+        }
         AppArgs::Update => {
             tutorlolv2_wiki::run().await?;
             HTTP_CLIENT.update_riot_cache().await?;

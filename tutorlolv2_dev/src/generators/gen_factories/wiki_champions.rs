@@ -192,7 +192,18 @@ impl Champion {
             .as_slice())
     }
 
-    pub fn effect_nth(&self, key: Key, nth: usize) -> MayFail<&BTreeMap<String, Effect>> {
+    pub fn effect(&self, key: Key, nth: usize) -> MayFail<&Effect> {
+        self.effect_map(key, 0)?
+            .values()
+            .nth(nth)
+            .ok_or_else(|| format!("Failed to get effect for key: {key:?}[{nth}]").into())
+    }
+
+    pub fn formula(&self, key: Key, nth: usize) -> MayFail<&str> {
+        Ok(self.effect(key, nth)?.formula.as_deref().unwrap_or("0"))
+    }
+
+    pub fn effect_map(&self, key: Key, nth: usize) -> MayFail<&BTreeMap<String, Effect>> {
         Ok(&self
             .wiki_ability(key)?
             .get(nth)
@@ -201,13 +212,7 @@ impl Champion {
     }
 
     pub fn scaling_nth(&self, key: Key, nth: usize, n: usize) -> MayFail<&[Scaling]> {
-        Ok(self
-            .effect_nth(key, nth)?
-            .values()
-            .nth(n)
-            .ok_or_else(|| format!("Failed to get scaling for key: {key:?} n: {n}"))?
-            .scalings
-            .as_slice())
+        Ok(self.effect(key, nth)?.scalings.as_slice())
     }
 
     pub fn scaling(&self, key: Key, n: usize) -> MayFail<&[Scaling]> {
@@ -252,8 +257,8 @@ impl Champion {
         self
     }
 
-    pub fn comment(&mut self, key: AbilityId, comment: String) -> MayFail<&mut Self> {
-        self.get_mut(key)?.comment = comment;
+    pub fn comment(&mut self, key: AbilityId, comment: impl ToString) -> MayFail<&mut Self> {
+        self.get_mut(key)?.comment = comment.to_string();
         Ok(self)
     }
 
@@ -368,18 +373,27 @@ impl Champion {
         Ok(self)
     }
 
-    pub fn clone_to(
+    pub fn clone_with(
         &mut self,
         from: AbilityId,
         into: AbilityId,
-        damage: String,
+        f: impl Fn(&str) -> String,
     ) -> MayFail<&mut Self> {
         let clone_from = self.get(from)?.clone();
         self.insert(into, clone_from);
         let ability = self.get_mut(into)?;
-        ability.damage = damage;
-        ability.comment = format!("Custom reference of {from:?}");
+        ability.damage = f(ability.damage.as_str());
+        ability.comment = format!("Modified clone of {from:?}");
         Ok(self)
+    }
+
+    pub fn clone_to(
+        &mut self,
+        from: AbilityId,
+        into: AbilityId,
+        damage: impl ToString,
+    ) -> MayFail<&mut Self> {
+        self.clone_with(from, into, |_| damage.to_string())
     }
 
     pub fn damage_types<const N: usize>(
@@ -489,12 +503,8 @@ impl Champion {
         // contain all keys that are present in the mergevec. If it doesn't, the function
         // returns a fail and prints a message to the console.
         if !merge.iter().all(|value| {
-            let DevMergeData {
-                min: minimum_damage,
-                max: maximum_damage,
-                ..
-            } = value;
-            abilities.contains_key(minimum_damage) && abilities.contains_key(maximum_damage)
+            let DevMergeData { min, max, .. } = value;
+            abilities.contains_key(min) && abilities.contains_key(max)
         }) {
             println!(
                 "[{champion_id}]: inconsistent data inserted into merge: {merge:?},\nkeys of abilities: {:?}",

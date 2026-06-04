@@ -3,6 +3,7 @@ use super::*;
 impl Generator for Ashe {
     #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
+        /* Missing passive damage */
         self.ability(
             Key::Q,
             [

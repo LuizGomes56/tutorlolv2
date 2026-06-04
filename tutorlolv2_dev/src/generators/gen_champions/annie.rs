@@ -7,6 +7,7 @@ impl Generator for Annie {
             .ability(Key::W, [(0, Void) /* Magic Damage */])
             .ability(Key::E, [(0, Void) /* Magic Damage */])
             .ability(Key::R, [(0, Void) /* Initial Magic Damage */])
+            /* Missing Tibbers */
             .end()
     }
 }

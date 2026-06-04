@@ -1,32 +1,25 @@
 use super::*;
 
 impl Generator for Riven {
-    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
-        self.ability(
-            Key::P,
-            [
-                (0, _1), /* Description 1 */
-                (1, _2), /* Innate */
-                (2, _3), /* Innate [1] */
-            ],
-        )
-        .ability(
-            Key::Q,
-            [
-                (0, _1), /* Physical Damage */
-                (1, _2), /* Total Physical Damage */
-            ],
-        )
-        .ability(Key::W, [(0, _1) /* Physical Damage */])
-        .ability_nth(
-            1,
-            Key::R,
-            [
-                (0, _1), /* Maximum Physical Damage */
-                (1, _2), /* Minimum Physical Damage */
-            ],
-        )
-        .end()
+        self.ability(Key::P, [(1, Void) /* Innate */])
+            .modify(P(Void), |dmg| dmg.times(AttackDamage))?
+            .ability(
+                Key::Q,
+                [
+                    (0, Min), /* Physical Damage */
+                    (1, Max), /* Total Physical Damage */
+                ],
+            )
+            .ability(Key::W, [(0, Void) /* Physical Damage */])
+            .ability_nth(
+                1,
+                Key::R,
+                [
+                    (0, Max), /* Maximum Physical Damage */
+                    (1, Min), /* Minimum Physical Damage */
+                ],
+            )
+            .end()
     }
 }

@@ -1,31 +1,24 @@
 use super::*;
 
 impl Generator for Sejuani {
-    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
-        self.ability(
-            Key::P,
-            [
-                (1, _1), /* Innate - Frost Armor */
-                (2, _2), /* Innate - Icebreaker */
-            ],
-        )
-        .ability(Key::Q, [(0, _1) /* Magic Damage */])
-        .ability(
-            Key::W,
-            [
-                (0, _1), /* Physical Damage */
-                (1, _2), /* Total Physical Damage */
-            ],
-        )
-        .ability(Key::E, [(0, _1) /* Magic Damage */])
-        .ability(
-            Key::R,
-            [
-                (0, _1), /* Increased Damage */
-                (1, _2), /* Magic Damage */
-            ],
-        )
-        .end()
+        self.ability(Key::P, [(2, Void) /* Innate - Icebreaker */])
+            .ability(Key::Q, [(0, Void) /* Magic Damage */])
+            .ability(
+                Key::W,
+                [
+                    (0, Min), /* Physical Damage */
+                    (1, Max), /* Total Physical Damage */
+                ],
+            )
+            .ability(Key::E, [(0, Void) /* Magic Damage */])
+            .ability(
+                Key::R,
+                [
+                    (0, Max), /* Increased Damage */
+                    (1, Min), /* Magic Damage */
+                ],
+            )
+            .end()
     }
 }

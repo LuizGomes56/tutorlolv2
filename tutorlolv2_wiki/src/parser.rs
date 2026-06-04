@@ -855,6 +855,7 @@ pub fn assign_ctx_var(input: &str) -> CtxVar {
         in "target's maximum health" | in "of target's maximum health" => CtxVar::EnemyMaxHealth;
         in "target's current health" | in "of target's current health" => CtxVar::EnemyCurrentHealth;
         in "target's missing health" | in "of target's missing health" => CtxVar::EnemyMissingHealth;
+        in "primary target's bonus health" => CtxVar::EnemyBonusHealth;
         in "his current health" | in "of his current health" | in "current health" => CtxVar::CurrentHealth;
         in "missing health" => CtxVar::MissingHealth;
         in "movement speed" => CtxVar::BonusMoveSpeed;

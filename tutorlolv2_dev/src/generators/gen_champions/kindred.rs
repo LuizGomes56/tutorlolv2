@@ -1,11 +1,10 @@
 use super::*;
 
 impl Generator for Kindred {
-    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::Q, [(0, _1) /* Physical Damage */])
-            .ability(Key::W, [(0, _1) /* Magic Damage */])
-            .ability(Key::E, [(0, _1) /* Additional Physical Damage */])
+        self.ability(Key::Q, [(0, Void) /* Physical Damage */])
+            .ability(Key::W, [(0, Void) /* Magic Damage */])
+            .ability(Key::E, [(0, Void) /* Additional Physical Damage */])
             .end()
     }
 }

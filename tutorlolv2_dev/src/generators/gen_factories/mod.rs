@@ -82,6 +82,10 @@ where
         }
     }
 
+    fn is_generator(id: &str) -> bool {
+        crate::read_to_string(SaveTo::GeneratorRaw(Self::TAG, id).path()).is_ok()
+    }
+
     fn is_stable(id: &str) -> bool {
         if let Ok(data) = crate::read_to_string(SaveTo::GeneratorRaw(Self::TAG, id).path())
             && !data.contains("#[warn(unstable_features)]")
@@ -97,6 +101,10 @@ where
         let mut unstables = 0;
 
         for name in self.map().keys() {
+            if !Self::is_generator(name) {
+                continue;
+            }
+
             if Self::is_stable(name) {
                 stables += 1;
                 continue;
