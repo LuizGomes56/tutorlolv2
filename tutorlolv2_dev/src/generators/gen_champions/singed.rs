@@ -1,17 +1,16 @@
 use super::*;
 
 impl Generator for Singed {
-    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
         self.ability(
             Key::Q,
             [
-                (0, _1), /* Magic Damage per Second */
-                (1, _2), /* Magic Damage per Tick */
-                (2, _3), /* Minimum Magic Damage */
+                (0, Min),  /* Magic Damage per Second */
+                (1, Max),  /* Magic Damage per Tick */
+                (2, Void), /* Minimum Magic Damage */
             ],
         )
-        .ability(Key::E, [(0, _1) /* Magic Damage */])
+        .ability(Key::E, [(0, Void) /* Magic Damage */])
         .end()
     }
 }

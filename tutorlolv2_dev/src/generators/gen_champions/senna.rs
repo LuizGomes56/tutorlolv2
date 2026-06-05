@@ -1,19 +1,21 @@
 use super::*;
 
 impl Generator for Senna {
-    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
         self.ability(
             Key::P,
             [
-                (1, _1), /* Innate - Relic Cannon */
-                (2, _2), /* Innate - Relic Cannon [1] */
-                (3, _3), /* Innate - Weakened Soul */
+                (2, _1),   /* Innate - Relic Cannon [1] */
+                (3, Void), /* Innate - Weakened Soul */
             ],
         )
-        .ability(Key::Q, [(1, _1) /* Physical Damage */])
-        .ability(Key::W, [(0, _1) /* Physical Damage */])
-        .ability(Key::R, [(0, _1) /* Physical Damage */])
+        .modify(P(_1), |dmg| {
+            dmg.replace(&SteelcapsEffect.to_string(), &AttackDamage.to_string())
+        })?
+        .modify(P(Void), |dmg| dmg.parenthesize().times(EnemyCurrentHealth))?
+        .ability(Key::Q, [(1, Void) /* Physical Damage */])
+        .ability(Key::W, [(0, Void) /* Physical Damage */])
+        .ability(Key::R, [(0, Void) /* Physical Damage */])
         .end()
     }
 }

@@ -192,31 +192,49 @@ impl Champion {
             .as_slice())
     }
 
-    pub fn effect(&self, key: Key, nth: usize) -> MayFail<&Effect> {
-        self.effect_map(key, 0)?
+    pub fn effect_nth(&self, key: Key, nth_ability: usize, nth_effect: usize) -> MayFail<&Effect> {
+        self.effect_map(key, nth_ability)?
             .values()
-            .nth(nth)
-            .ok_or_else(|| format!("Failed to get effect for key: {key:?}[{nth}]").into())
+            .nth(nth_effect)
+            .ok_or_else(|| format!("Failed to get effect for key: {key:?}[{nth_effect}]").into())
     }
 
-    pub fn formula(&self, key: Key, nth: usize) -> MayFail<&str> {
-        Ok(self.effect(key, nth)?.formula.as_deref().unwrap_or("0"))
+    pub fn effect(&self, key: Key, nth_effect: usize) -> MayFail<&Effect> {
+        self.effect_nth(key, 0, nth_effect)
     }
 
-    pub fn effect_map(&self, key: Key, nth: usize) -> MayFail<&BTreeMap<String, Effect>> {
+    pub fn formula(&self, key: Key, nth_effect: usize) -> MayFail<&str> {
+        Ok(self
+            .effect(key, nth_effect)?
+            .formula
+            .as_deref()
+            .unwrap_or("0"))
+    }
+
+    pub fn effect_map(&self, key: Key, nth_ability: usize) -> MayFail<&BTreeMap<String, Effect>> {
         Ok(&self
             .wiki_ability(key)?
-            .get(nth)
-            .ok_or_else(|| format!("Failed to get wiki ability for key: {key:?} nth: {nth}"))?
+            .get(nth_ability)
+            .ok_or_else(|| {
+                format!("Failed to get wiki ability for key: {key:?} nth: {nth_ability}")
+            })?
             .effects)
     }
 
-    pub fn scaling_nth(&self, key: Key, nth: usize, n: usize) -> MayFail<&[Scaling]> {
-        Ok(self.effect(key, nth)?.scalings.as_slice())
+    pub fn scaling_nth(
+        &self,
+        key: Key,
+        nth_ability: usize,
+        nth_effect: usize,
+    ) -> MayFail<&[Scaling]> {
+        Ok(self
+            .effect_nth(key, nth_ability, nth_effect)?
+            .scalings
+            .as_slice())
     }
 
-    pub fn scaling(&self, key: Key, n: usize) -> MayFail<&[Scaling]> {
-        self.scaling_nth(key, 0, n)
+    pub fn scaling(&self, key: Key, nth_effect: usize) -> MayFail<&[Scaling]> {
+        self.scaling_nth(key, 0, nth_effect)
     }
 
     pub fn ability_nth<const N: usize>(

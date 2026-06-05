@@ -1,31 +1,24 @@
 use super::*;
 
 impl Generator for Sett {
-    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
-        self.ability(
-            Key::P,
-            [
-                (0, _1), /* Description 2 */
-                (1, _2), /* Description 2 [1] */
-            ],
-        )
-        .ability(
-            Key::Q,
-            [
-                (0, _1), /* Bonus Physical Damage */
-                (1, _2), /* Total Bonus Physical Damage */
-            ],
-        )
-        .ability(Key::W, [(0, _1) /* Damage */])
-        .ability(Key::E, [(0, _1) /* Physical Damage */])
-        .ability(
-            Key::R,
-            [
-                (0, _1), /* Physical Damage */
-                (1, _2), /* Reduced Damage */
-            ],
-        )
-        .end()
+        self.ability(Key::P, [(0, Void) /* Description 2 */])
+            .ability(
+                Key::Q,
+                [
+                    (0, Min), /* Bonus Physical Damage */
+                    (1, Max), /* Total Bonus Physical Damage */
+                ],
+            )
+            .ability(Key::W, [(0, Void) /* Damage */])
+            .ability(Key::E, [(0, Void) /* Physical Damage */])
+            .ability(
+                Key::R,
+                [
+                    (0, Max), /* Physical Damage */
+                    (1, Min), /* Reduced Damage */
+                ],
+            )
+            .end()
     }
 }

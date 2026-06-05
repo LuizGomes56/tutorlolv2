@@ -1,25 +1,24 @@
 use super::*;
 
 impl Generator for Shyvana {
-    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
         self.ability(
             Key::Q,
             [
-                (0, _1), /* Area Physical Damage */
-                (1, _2), /* True Damage */
+                (0, Void), /* Area Physical Damage */
+                (1, _1),   /* True Damage */
             ],
         )
-        .ability(Key::W, [(1, _1) /* Magic Damage */])
+        .ability(Key::W, [(1, Void) /* Magic Damage */])
         .ability(
             Key::E,
             [
-                (0, _1), /* Increased/Explosion Magic Damage */
-                (1, _2), /* Magic Damage */
-                (2, _3), /* Subsequent Explosion Damage */
+                (0, Max),  /* Increased/Explosion Magic Damage */
+                (1, Void), /* Magic Damage */
+                (2, Min),  /* Subsequent Explosion Damage */
             ],
         )
-        .ability(Key::R, [(4, _1) /* Magic Damage */])
+        .ability(Key::R, [(4, Void) /* Magic Damage */])
         .end()
     }
 }
