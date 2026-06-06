@@ -1,29 +1,20 @@
 use super::*;
 
 impl Generator for Skarner {
-    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
-        self.ability(
-            Key::P,
-            [
-                (0, _1), /* Innate */
-                (1, _2), /* Innate [1] */
-                (2, _3), /* Innate [2] */
-                (3, _4), /* Innate [3] */
-                (4, _5), /* Innate [4] */
-            ],
-        )
-        .ability(
-            Key::Q,
-            [
-                (1, _1), /* Bonus Physical Damage per Hit */
-                (3, _2), /* Total Bonus Physical Damage */
-            ],
-        )
-        .ability_nth(1, Key::Q, [(1, _3) /* Physical Damage */])
-        .ability(Key::W, [(0, _1) /* Magic Damage */])
-        .ability(Key::E, [(0, _1) /* Physical Damage */])
-        .ability(Key::R, [(0, _1) /* Magic Damage */])
-        .end()
+        self.ability(Key::P, [(0, Void) /* Innate */])
+            .modify(P(Void), |dmg| dmg.times(EnemyMaxHealth))?
+            .ability(
+                Key::Q,
+                [
+                    (1, Min), /* Bonus Physical Damage per Hit */
+                    (3, Max), /* Total Bonus Physical Damage */
+                ],
+            )
+            .ability_nth(1, Key::Q, [(1, Void) /* Physical Damage */])
+            .ability(Key::W, [(0, Void) /* Magic Damage */])
+            .ability(Key::E, [(0, Void) /* Physical Damage */])
+            .ability(Key::R, [(0, Void) /* Magic Damage */])
+            .end()
     }
 }

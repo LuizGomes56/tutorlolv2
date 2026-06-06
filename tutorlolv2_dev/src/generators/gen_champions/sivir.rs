@@ -1,21 +1,20 @@
 use super::*;
 
 impl Generator for Sivir {
-    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
         self.ability(
             Key::Q,
             [
-                (0, _1), /* Minimum Damage */
-                (1, _2), /* Physical Damage */
-                (2, _3), /* Total Maximum Champion Damage */
+                (0, Min),  /* Minimum Damage */
+                (1, Void), /* Physical Damage */
+                (2, Max),  /* Total Maximum Champion Damage */
             ],
         )
         .ability(
             Key::W,
             [
-                (1, _1), /* Bounce Critical Damage */
-                (2, _2), /* Bounce Damage */
+                (1, Max), /* Bounce Critical Damage */
+                (2, Min), /* Bounce Damage */
             ],
         )
         .end()
