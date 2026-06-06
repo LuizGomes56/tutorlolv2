@@ -992,7 +992,7 @@ pub fn parse_description_effects(
 
     if results.is_empty() {
         results.push((
-            base_key,
+            base_key.replace("–", "-"),
             Effect {
                 index,
                 inner: EffectInner {

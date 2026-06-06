@@ -239,7 +239,7 @@ fn parse_effects(
                 });
 
             Some((
-                key,
+                key.replace("–", "-"),
                 Effect {
                     index,
                     formula: None,

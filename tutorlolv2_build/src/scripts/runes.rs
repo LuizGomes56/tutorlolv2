@@ -61,8 +61,6 @@ pub fn generate_runes() -> MayFail<(HashMap<&'static str, String>, String)> {
 #[fmt({fmt_arg})]
 static {upper_id}: X = X {{
     name: {name:?}, {damage}
-    riot_id: {riot_id},
-    metadata: {metadata:?},
 }};
 
 pub static {upper_id}: X = X {{
@@ -76,7 +74,15 @@ pub static {upper_id}: X = X {{
 }};
                 "#,
                 upper_id = to_ssnake(rune_id),
-                damage = repr_damages(melee, ranged, deals_damage),
+                damage = {
+                    let dmg = repr_damages(melee, ranged, deals_damage);
+                    if !dmg.is_empty() {
+                        let damage_type = metadata.damage_type;
+                        format!("{dmg} damage_type: {damage_type:?}")
+                    } else {
+                        dmg
+                    }
+                },
                 fn_names = {
                     let melee_fns = fns[0..2].join(",");
                     let ranged_fns = fns[2..4].join(",");

@@ -24,7 +24,7 @@ impl Generator for Pantheon {
             ],
         );
 
-        /* 40 – 190 (based on Comet Spear's rank) */
+        /* 40 - 190 (based on Comet Spear's rank) */
         /* (+ 115% bonus AD) (+ 50% AP) */
         let r1 = 40
             .plus(30)

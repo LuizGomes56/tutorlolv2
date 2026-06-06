@@ -228,7 +228,7 @@ impl HttpClient {
                         const ERROR_TAG: &[u8] = b"<Code>AccessDenied</Code>";
 
                         if bytes.windows(ERROR_TAG.len()).any(|w| w == ERROR_TAG) {
-                            return Err("Access denied".into());
+                            return [].write_file(save_to);
                         }
 
                         bytes.write_file(save_to)

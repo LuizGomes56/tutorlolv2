@@ -25,7 +25,6 @@ pub fn generate_champions() -> MayFail<(HashMap<&'static str, String>, String)> 
         .map(|(champion_id, champion)| {
             let Champion {
                 abilities,
-                merge,
                 build:
                     ChampionBuild {
                         name,
@@ -70,11 +69,6 @@ pub fn generate_champions() -> MayFail<(HashMap<&'static str, String>, String)> 
                     adaptive_type: {adaptive_type:?},
                     attack_type: {attack_type:?},
                     positions: {positions:#?}, {damage}
-                    stats: {stats:#?},
-                    modifiers: {modifiers:#?},
-                    combos: [{combos}],
-                    metadata: {metadata:#?},
-                    merge_data: {merge:#?}
                 }};
 
                 pub static {upper_id}: Champion = Champion {{
@@ -92,7 +86,6 @@ pub fn generate_champions() -> MayFail<(HashMap<&'static str, String>, String)> 
                 }};
                 "#,
                 upper_id = to_ssnake(champion_id),
-                merge = merge.into_iter().collect::<Vec<_>>(),
                 damage = abilities
                     .iter()
                     .map(|(k, v)| {

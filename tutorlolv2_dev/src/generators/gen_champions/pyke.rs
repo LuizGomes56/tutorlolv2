@@ -2,7 +2,7 @@ use super::*;
 
 impl Generator for Pyke {
     fn generate(&mut self) -> MayFail {
-        /* 250 – 550 (based on level) */
+        /* 250 - 550 (based on level) */
         /* (+ 80% bonus AD) */
         /* (+ 1.5 per 1 Lethality) */
         let r = [

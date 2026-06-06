@@ -15,8 +15,8 @@ impl Generator for Heimerdinger {
             Key::W,
             [
                 (2, _3), /* Initial Rocket Damage */
-                (4, _4), /* Rockets 2–5 Magic Damage */
-                (5, _5), /* Rockets 6–20 Magic Damage */
+                (4, _4), /* Rockets 2-5 Magic Damage */
+                (5, _5), /* Rockets 6-20 Magic Damage */
             ],
         )
         .ability(Key::E, [(0, _1) /* Magic Damage */])

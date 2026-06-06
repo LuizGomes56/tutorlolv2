@@ -66,9 +66,7 @@ static {upper_id}: X = X {{
     price: {price},
     maps: {maps:?},
     tier: {tier},
-    purchasable: {purchasable}, {damage}
-    metadata: {metadata:?},
-    riot_id: {riot_id},
+    purchasable: {purchasable},{damage}
 }};
 
 pub static {upper_id}: X = X {{
@@ -87,7 +85,15 @@ pub static {upper_id}: X = X {{
 }};
                 "#,
                 upper_id = to_ssnake(item_id),
-                damage = repr_damages(melee, ranged, deals_damage),
+                damage = {
+                    let dmg = repr_damages(melee, ranged, deals_damage);
+                    if !dmg.is_empty() {
+                        let damage_type = metadata.damage_type;
+                        format!("{dmg} damage_type: {damage_type:?}")
+                    } else {
+                        dmg
+                    }
+                },
                 fn_names = {
                     let melee_fns = fns[0..2].join(",");
                     let ranged_fns = fns[2..4].join(",");

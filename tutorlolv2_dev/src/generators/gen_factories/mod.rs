@@ -116,23 +116,16 @@ where
         let total = stables + unstables;
         let length = self.map().len();
 
-        println!(
-            "{stables:>3} / {total:>3} {:<10} ({ratio:.1}%)",
-            "stable",
-            ratio = stables as f32 / total as f32 * 100.0
-        );
+        let print = |a, b, tag| {
+            println!(
+                "{a:>3} / {b:>3} {tag:<10} ({ratio:.1}%)",
+                ratio = a as f32 / b as f32 * 100.0
+            );
+        };
 
-        println!(
-            "{unstables:>3} / {total:>3} {:<10} ({ratio:.1}%)",
-            "unstable",
-            ratio = unstables as f32 / total as f32 * 100.0
-        );
-
-        println!(
-            "{total:>3} / {length:>3} {:<10} ({ratio:.1}%)",
-            "generators",
-            ratio = total as f32 / length as f32 * 100.0
-        );
+        print(stables, total, "stable");
+        print(unstables, total, "unstable");
+        print(total, length, "generators");
     }
 
     fn create(&self, id: &str) -> MayFail {
