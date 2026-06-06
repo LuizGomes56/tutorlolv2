@@ -1,25 +1,20 @@
 use super::*;
 
 impl Generator for Zed {
-    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
-        self.ability(
-            Key::P,
-            [
-                (0, _1), /* Description 1 */
-                (2, _2), /* Innate */
-                (3, _3), /* Innate [1] */
-            ],
-        )
-        .ability(
-            Key::Q,
-            [
-                (0, _1), /* Physical Damage */
-                (1, _2), /* Reduced Damage */
-            ],
-        )
-        .ability(Key::E, [(1, _1) /* Physical Damage */])
-        .ability(Key::R, [(0, _1) /* Physical Damage */])
-        .end()
+        let p1 = self.formula(Key::P, 3)?.to_string();
+
+        self.ability(Key::P, [(2, Void) /* Innate */])
+            .modify(P(Void), |dmg| dmg.replace(&p1, "").times(EnemyMaxHealth))?
+            .ability(
+                Key::Q,
+                [
+                    (0, Max), /* Physical Damage */
+                    (1, Min), /* Reduced Damage */
+                ],
+            )
+            .ability(Key::E, [(1, Void) /* Physical Damage */])
+            .ability(Key::R, [(0, Void) /* Physical Damage */])
+            .end()
     }
 }

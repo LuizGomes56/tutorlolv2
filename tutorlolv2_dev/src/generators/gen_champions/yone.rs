@@ -1,39 +1,24 @@
 use super::*;
 
 impl Generator for Yone {
-    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
+        let mix = |dmg: &str| {
+            let physical = dmg.times(PhysicalMultiplier).parenthesize();
+            dmg.times(MagicMultiplier).parenthesize().plus(physical)
+        };
+
         self.ability(
-            Key::P,
-            [
-                (0, _1), /* Description 1 */
-                (2, _2), /* Innate - Steel and Spirit */
-            ],
-        )
-        .ability(
             Key::Q,
             [
-                (0, _1), /* Critical Strike Damage */
-                (1, _2), /* Physical Damage */
+                (0, Max), /* Critical Strike Damage */
+                (1, Min), /* Physical Damage */
             ],
         )
-        .ability(
-            Key::W,
-            [
-                (0, _1), /* Magic Damage */
-                (1, _2), /* Physical Damage */
-                (2, _3), /* Total Mixed Damage */
-            ],
-        )
-        .ability(Key::E, [(0, _1) /* Damage Stored */])
-        .ability(
-            Key::R,
-            [
-                (0, _1), /* Magic Damage */
-                (1, _2), /* Physical Damage */
-                (2, _3), /* Total Mixed Damage */
-            ],
-        )
+        .ability(Key::W, [(0, Void) /* Magic Damage */])
+        .modify(W(Void), mix)?
+        .ability(Key::R, [(0, Void) /* Magic Damage */])
+        .modify(R(Void), mix)?
+        .damage_types([W(Void), R(Void)], Mixed)?
         .end()
     }
 }

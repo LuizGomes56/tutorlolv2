@@ -36,11 +36,11 @@ impl Generator for Zeri {
         .ability(
             Key::E,
             [
-                (0, _1), /* Burst Fire Bonus Magic Damage */
-                (1, _2), /* Burst Fire Secondary Target Damage */
+                (0, Max), /* Burst Fire Bonus Magic Damage */
+                (1, Min), /* Burst Fire Secondary Target Damage */
             ],
         )
-        .ability(Key::R, [(0, _1) /* Magic Damage */])
+        .ability(Key::R, [(0, Void) /* Magic Damage */])
         .end()
     }
 }

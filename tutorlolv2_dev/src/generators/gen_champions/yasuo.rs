@@ -1,32 +1,24 @@
 use super::*;
 
 impl Generator for Yasuo {
-    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
         self.ability(
-            Key::P,
-            [
-                (0, _1), /* Description 1 */
-                (2, _2), /* Innate - Resolve */
-            ],
-        )
-        .ability(
             Key::Q,
             [
-                (0, _1), /* Critical Strike Damage */
-                (1, _2), /* Physical Damage */
+                (0, Max), /* Critical Strike Damage */
+                (1, Min), /* Physical Damage */
             ],
         )
         .ability(
             Key::E,
             [
-                (0, _1), /* Bonus Damage per Stack */
-                (1, _2), /* Magic Damage */
-                (2, _3), /* Maximum Bonus Damage */
-                (3, _4), /* Total Combined Damage */
+                (0, _1Min), /* Bonus Damage per Stack */
+                (1, Min),   /* Magic Damage */
+                (2, _1Max), /* Maximum Bonus Damage */
+                (3, Max),   /* Total Combined Damage */
             ],
         )
-        .ability(Key::R, [(0, _1) /* Physical Damage */])
+        .ability(Key::R, [(0, Void) /* Physical Damage */])
         .end()
     }
 }

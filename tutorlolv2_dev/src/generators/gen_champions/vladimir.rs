@@ -1,30 +1,29 @@
 use super::*;
 
 impl Generator for Vladimir {
-    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
         self.ability(
             Key::Q,
             [
-                (1, _1), /* Increased Damage */
-                (2, _2), /* Magic Damage */
+                (1, Max), /* Increased Damage */
+                (2, Min), /* Magic Damage */
             ],
         )
         .ability(
             Key::W,
             [
-                (0, _1), /* Magic Damage Per Tick */
-                (1, _2), /* Total Magic Damage */
+                (0, Min), /* Magic Damage Per Tick */
+                (1, Max), /* Total Magic Damage */
             ],
         )
         .ability(
             Key::E,
             [
-                (0, _1), /* Maximum Magic Damage */
-                (1, _2), /* Minimum Magic Damage */
+                (0, Max), /* Maximum Magic Damage */
+                (1, Min), /* Minimum Magic Damage */
             ],
         )
-        .ability(Key::R, [(1, _1) /* Magic damage */])
+        .ability(Key::R, [(1, Void) /* Magic damage */])
         .end()
     }
 }

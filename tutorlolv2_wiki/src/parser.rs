@@ -159,14 +159,18 @@ impl LevelArm {
                 range: start..end,
                 value,
             },
+            (Bound::Included(&start), Bound::Included(&end)) => Self::Range {
+                range: start..(end + 1),
+                value,
+            },
             (Bound::Included(&start), Bound::Unbounded) => Self::From {
                 range: RangeFrom { start },
                 value,
             },
             (Bound::Unbounded, Bound::Unbounded) => {
-                panic!(".. não é um intervalo válido para LevelArm");
+                panic!(".. is not a valid interval for LevelArm");
             }
-            _ => panic!("Formato de intervalo não suportado"),
+            _ => panic!("Invalid interval format"),
         }
     }
 

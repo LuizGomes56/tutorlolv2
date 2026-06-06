@@ -1,23 +1,22 @@
 use super::*;
 
 impl Generator for Velkoz {
-    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::P, [(0, _1) /* Description 1 */])
-            .ability(Key::Q, [(0, _1) /* Magic Damage */])
+        self.ability(Key::P, [(0, Void) /* Description 1 */])
+            .ability(Key::Q, [(0, Void) /* Magic Damage */])
             .ability(
                 Key::W,
                 [
-                    (0, _1), /* Magic Damage */
-                    (1, _2), /* Total Magic Damage */
+                    (0, Min), /* Magic Damage */
+                    (1, Max), /* Total Magic Damage */
                 ],
             )
-            .ability(Key::E, [(0, _1) /* Magic Damage */])
+            .ability(Key::E, [(0, Void) /* Magic Damage */])
             .ability(
                 Key::R,
                 [
-                    (0, _1), /* Damage Per Tick */
-                    (1, _2), /* Maximum Damage */
+                    (0, Min), /* Damage Per Tick */
+                    (1, Max), /* Maximum Damage */
                 ],
             )
             .end()

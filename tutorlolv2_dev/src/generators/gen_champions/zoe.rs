@@ -1,31 +1,29 @@
 use super::*;
 
 impl Generator for Zoe {
-    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::P, [(0, _1) /* Innate */])
+        self.ability(Key::P, [(0, Void) /* Innate */])
             .ability(
                 Key::Q,
                 [
-                    (0, _1), /* Maximum Magic Damage */
-                    (1, _2), /* Minimum Magic Damage */
+                    (0, Max), /* Maximum Magic Damage */
+                    (1, Min), /* Minimum Magic Damage */
                 ],
             )
             .ability(
                 Key::W,
                 [
-                    (2, _1), /* Magic Damage Per Bolt */
-                    (3, _2), /* Total Magic Damage */
+                    (2, Min), /* Magic Damage Per Bolt */
+                    (3, Max), /* Total Magic Damage */
                 ],
             )
-            .ability(
-                Key::E,
-                [
-                    (0, _1), /* Bonus Damage Cap */
-                    (2, _2), /* Magic Damage */
-                    (3, _3), /* Maximum Mixed Damage */
-                ],
-            )
+            .ability(Key::E, [(2, Min) /* Magic Damage */])
+            .clone_with(E(Min), E(Max), |dmg| {
+                dmg.parenthesize()
+                    .times(MagicMultiplier)
+                    .parenthesize()
+                    .plus(dmg)
+            })?
             .end()
     }
 }

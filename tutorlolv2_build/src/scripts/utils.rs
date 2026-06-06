@@ -395,7 +395,7 @@ pub fn simplify(formula: &str) -> String {
         restored = restored.replace(&placeholder, &replacement);
     }
 
-    FLOAT_RE
+    let result = FLOAT_RE
         .replace_all(&restored, |caps: &Captures| {
             let original = &caps[0];
 
@@ -436,6 +436,24 @@ pub fn simplify(formula: &str) -> String {
             }
 
             s
+        })
+        .into_owned();
+
+    static POW_RE: LazyLock<Regex> = LazyLock::new(|| {
+        Regex::new(r"(?P<base>\([^()]+\)|[\w.]+)\s*\^\s*(?P<exp>\d+)(?:f32)?").unwrap()
+    });
+
+    POW_RE
+        .replace_all(&result, |caps: &Captures| {
+            let base = &caps["base"];
+            let exp: usize = caps["exp"].parse().unwrap();
+
+            match exp {
+                1 => base.to_string(),
+                2 => format!("({base} * {base})"),
+                3 => format!("({base} * {base} * {base})"),
+                _ => panic!("Unsupported exponent {exp}; maximum supported exponent is 3"),
+            }
         })
         .into_owned()
 }

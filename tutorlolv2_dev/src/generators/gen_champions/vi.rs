@@ -1,18 +1,17 @@
 use super::*;
 
 impl Generator for Vi {
-    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
         self.ability(
             Key::Q,
             [
-                (0, _1), /* Maximum Physical Damage */
-                (1, _2), /* Minimum Physical Damage */
+                (0, Max), /* Maximum Physical Damage */
+                (1, Min), /* Minimum Physical Damage */
             ],
         )
-        .ability(Key::W, [(1, _1) /* Bonus Physical Damage */])
-        .ability(Key::E, [(0, _1) /* Physical Damage */])
-        .ability(Key::R, [(0, _1) /* Physical Damage */])
+        .ability(Key::W, [(1, Void) /* Bonus Physical Damage */])
+        .ability(Key::E, [(0, Void) /* Physical Damage */])
+        .ability(Key::R, [(0, Void) /* Physical Damage */])
         .end()
     }
 }

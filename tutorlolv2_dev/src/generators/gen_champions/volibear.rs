@@ -1,25 +1,12 @@
 use super::*;
 
 impl Generator for Volibear {
-    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
-        self.ability(
-            Key::P,
-            [
-                (0, _1), /* Innate */
-                (1, _2), /* Lightning Claws */
-            ],
-        )
-        .ability(Key::Q, [(1, _1) /* Bonus Physical Damage */])
-        .ability(Key::W, [(2, _1) /* Physical Damage */])
-        .ability(
-            Key::E,
-            [
-                (0, _1), /* Magic Damage */
-                (1, _2), /* Non-Champion Capped Damage */
-            ],
-        )
-        .ability(Key::R, [(1, _1) /* Physical Damage */])
-        .end()
+        self.ability(Key::P, [(1, Void) /* Lightning Claws */])
+            .ability(Key::Q, [(1, Void) /* Bonus Physical Damage */])
+            .ability(Key::W, [(2, Void) /* Physical Damage */])
+            .ability(Key::E, [(0, Void) /* Magic Damage */])
+            .ability(Key::R, [(1, Void) /* Physical Damage */])
+            .end()
     }
 }

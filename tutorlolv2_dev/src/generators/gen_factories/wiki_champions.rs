@@ -88,6 +88,7 @@ impl Parser<WikiChampion, Champion> for ChampionParser {
                         && tag.contains("damage")
                         && !tag.contains("monster")
                         && !tag.contains("minion"))
+                        && !tag.contains("non-champion")
                         || (*key == Key::P && likely_damages(&effect.inner.description))
                     {
                         groups

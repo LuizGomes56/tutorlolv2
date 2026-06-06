@@ -3,9 +3,10 @@ use super::*;
 impl Generator for Yorick {
     #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::P, [(2, _1) /* Innate - Final Service */])
-            .ability(Key::Q, [(0, _1) /* Bonus Physical Damage */])
-            .ability(Key::E, [(3, _1) /* Magic Damage */])
+        /* Missing Ghoul specifications */
+        self.ability(Key::P, [(2, Void) /* Innate - Final Service */])
+            .ability(Key::Q, [(0, Void) /* Bonus Physical Damage */])
+            .ability(Key::E, [(3, Void) /* Magic Damage */])
             .end()
     }
 }

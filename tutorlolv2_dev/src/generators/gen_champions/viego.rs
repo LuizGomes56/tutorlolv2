@@ -1,18 +1,17 @@
 use super::*;
 
 impl Generator for Viego {
-    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
         self.ability(
             Key::Q,
             [
-                (0, _1), /* Bonus Physical Damage */
-                (1, _2), /* Minimum Bonus Damage */
-                (2, _3), /* Physical Damage */
+                (0, Void), /* Bonus Physical Damage */
+                (1, Min),  /* Minimum Bonus Damage */
+                (2, Max),  /* Physical Damage */
             ],
         )
-        .ability(Key::W, [(0, _1) /* Magic Damage */])
-        .ability(Key::R, [(0, _1) /* Physical Damage */])
+        .ability(Key::W, [(0, Void) /* Magic Damage */])
+        .ability(Key::R, [(0, Void) /* Physical Damage */])
         .end()
     }
 }

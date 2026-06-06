@@ -1,10 +1,7 @@
 use super::*;
 
 impl Generator for Zilean {
-    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::P, [(0, _1) /* Description 1 */])
-            .ability(Key::Q, [(0, _1) /* Magic Damage */])
-            .end()
+        self.ability(Key::Q, [(0, Void) /* Magic Damage */]).end()
     }
 }

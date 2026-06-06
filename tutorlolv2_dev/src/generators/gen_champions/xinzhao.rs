@@ -15,8 +15,8 @@ impl Generator for XinZhao {
         .ability(
             Key::Q,
             [
-                (0, _1), /* Bonus Physical Damage */
-                (1, _2), /* Total Bonus Physical Damage */
+                (0, Min), /* Bonus Physical Damage */
+                (1, Max), /* Total Bonus Physical Damage */
             ],
         )
         .ability(
@@ -28,8 +28,8 @@ impl Generator for XinZhao {
                 (3, _4), /* Total Physical Damage */
             ],
         )
-        .ability(Key::E, [(1, _1) /* Magic Damage */])
-        .ability(Key::R, [(0, _1) /* Physical Damage */])
+        .ability(Key::E, [(1, Void) /* Magic Damage */])
+        .ability(Key::R, [(0, Void) /* Physical Damage */])
         .end()
     }
 }
