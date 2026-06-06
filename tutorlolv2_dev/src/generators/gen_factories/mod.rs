@@ -117,16 +117,21 @@ where
         let length = self.map().len();
 
         println!(
-            concat!(
-                "Parser::progress\n",
-                "{stables:>3} / {total} stable\n",
-                "{unstables:>3} / {total} unstable\n",
-                "{total} / {length} generators"
-            ),
-            stables = stables,
-            unstables = unstables,
-            total = total,
-            length = length,
+            "{stables:>3} / {total:>3} {:<10} ({ratio:.1}%)",
+            "stable",
+            ratio = stables as f32 / total as f32 * 100.0
+        );
+
+        println!(
+            "{unstables:>3} / {total:>3} {:<10} ({ratio:.1}%)",
+            "unstable",
+            ratio = unstables as f32 / total as f32 * 100.0
+        );
+
+        println!(
+            "{total:>3} / {length:>3} {:<10} ({ratio:.1}%)",
+            "generators",
+            ratio = total as f32 / length as f32 * 100.0
         );
     }
 

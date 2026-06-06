@@ -166,9 +166,9 @@ pub async fn run() -> MayFail {
         AppArgs::Progress => {
             println!("Champions:");
             CPARSER.progress();
-            println!("Items:");
+            println!("\nItems:");
             IPARSER.progress();
-            println!("Runes:");
+            println!("\nRunes:");
             RPARSER.progress();
         }
         AppArgs::Update => {
