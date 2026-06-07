@@ -213,10 +213,7 @@ pub async fn run() -> MayFail {
                 HTTP_CLIENT.download_general_img().await?;
             }
             Fetch::Cache => HTTP_CLIENT.update_riot_cache().await?,
-            Fetch::Scraper => {
-                HTTP_CLIENT.call_scraper().await?;
-                HTTP_CLIENT.combo_scraper().await?;
-            }
+            Fetch::Scraper => {}
             Fetch::Version => {
                 let gamev = HTTP_CLIENT.fetch_version().await?;
                 let currv = &ENV_CONFIG.lol_version;

@@ -1,0 +1,80 @@
+use super::*;
+
+impl Generator for Smolder {
+    fn generate(&mut self) -> MayFail {
+        let passive_q = self
+            .formula(Key::P, 4)?
+            .times(Stacks)
+            .times(MagicMultiplier);
+        let passive_w = self.formula(Key::P, 2)?.times(MagicMultiplier);
+        let passive_e = self.formula(Key::P, 3)?.times(MagicMultiplier);
+
+        let q_tier_3 = 0.083
+            .times(BonusAd)
+            .div(100)
+            .plus(0.017)
+            .times(Stacks)
+            .div(100)
+            .parenthesize()
+            .times(EnemyMaxHealth);
+
+        let w_dmg = |dmg: &str| {
+            dmg.times(PhysicalMultiplier)
+                .parenthesize()
+                .plus(&passive_w)
+        };
+
+        self.ability(Key::Q, [(0, Min) /* Physical Damage */])
+            .ability(
+                Key::W,
+                [
+                    (0, Void), /* Explosion Physical Damage */
+                    (1, Min),  /* Glob Physical Damage */
+                    (2, Max),  /* Total Physical Damage On Champion Hit */
+                ],
+            )
+            .ability(
+                Key::R,
+                [
+                    (0, Max), /* Increased Physical Damage */
+                    (1, Min), /* Physical Damage */
+                ],
+            )
+            .modify(Q(Min), |dmg| {
+                dmg.times(PhysicalMultiplier)
+                    .parenthesize()
+                    .plus(&passive_q)
+                    .parenthesize()
+                    .plus(&q_tier_3)
+            })?
+            .clone_with(Q(Min), Q(Max), |dmg| dmg.parenthesize().times(2))?
+            .modify(W(Void), w_dmg)?
+            .modify(W(Min), w_dmg)?
+            .modify(W(Max), w_dmg)?
+            .insert(
+                E(Min),
+                Ability {
+                    name: "Flap, Flap, Flap".into(),
+                    damage_type: Mixed,
+                    attributes: Undefined,
+                    comment: "Physical Damage per Hit".into(),
+                    damage: 10
+                        .plus(5)
+                        .times(ELevel)
+                        .plus(0.3)
+                        .times(AttackDamage)
+                        .parenthesize()
+                        .times(PhysicalMultiplier)
+                        .parenthesize()
+                        .plus(passive_e),
+                },
+            )
+            .clone_with(E(Min), E(Max), |dmg| {
+                let hits = 5.plus(Stacks).div(100).parenthesize();
+                dmg.parenthesize().times(hits)
+            })?
+            .damage_types([Q(Min), Q(Max), W(Void), W(Min), W(Max)], Mixed)?
+            .damage_types([R(Min), R(Max)], Physical)?
+            .end()
+    }
+}

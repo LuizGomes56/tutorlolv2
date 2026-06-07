@@ -32,7 +32,7 @@ where
 
     fn new() -> MayFail<Self>;
     fn map(&self) -> &BTreeMap<String, T>;
-    fn create_methods(&self, result: &mut String, id: &str) -> bool;
+    fn create_methods(&self, result: &mut String, id: &str) -> MayFail<bool>;
 
     fn run_fn(&self, id: &str) -> MayFail<U> {
         self.map()
@@ -148,7 +148,7 @@ where
 
         let path = SaveTo::GeneratorRaw(Self::TAG, id).path();
 
-        match self.create_methods(&mut result, id) {
+        match self.create_methods(&mut result, id)? {
             true => {
                 result.push_str(".end()}}");
 

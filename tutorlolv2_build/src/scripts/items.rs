@@ -20,25 +20,21 @@ pub fn generate_items() -> MayFail<(HashMap<&'static str, String>, String)> {
     let result = data
         .par_iter()
         .map(|(item_id, item)| {
-            let Item {
-                build:
-                    ItemBuild {
-                        name,
-                        tier,
-                        price,
-                        stats,
-                        maps,
-                        metadata,
-                        ranged,
-                        melee,
-                        deals_damage,
-                        purchasable,
-                        riot_id,
-                        identifiers,
-                        custom,
-                    },
-                ..
-            } = item;
+            let ItemBuild {
+                name,
+                tier,
+                price,
+                stats,
+                maps,
+                metadata,
+                ranged,
+                melee,
+                deals_damage,
+                purchasable,
+                riot_id,
+                identifiers,
+                custom,
+            } = &item.build;
 
             let fmt_arg = json!(FmtArgs {
                 target: "formula",

@@ -11,6 +11,7 @@ use crate::{
 use serde::{Deserialize, Serialize};
 use std::{
     collections::{BTreeMap, BTreeSet},
+    fmt::Write,
     ops::{Index, IndexMut},
 };
 use tutorlolv2_types::{AttackType, CtxVar, DamageIndex, DamageType, TypeMetadata};
@@ -53,23 +54,23 @@ impl Parser<WikiRune, Rune> for RuneParser {
         &self.data
     }
 
-    fn create_methods(&self, result: &mut String, id: &str) -> bool {
+    fn create_methods(&self, result: &mut String, id: &str) -> MayFail<bool> {
         let data = &self.data[id];
 
         for description in &data.descriptions {
             match likely_damages(description) {
                 true => infer_damage_type(result, &description),
-                false => return false,
+                false => return Ok(false),
             }
         }
 
         for (i, (key, effect)) in data.effects.iter().enumerate() {
             if effect.formula.is_some() {
-                result.push_str(&format!(".min({i})? /* {key} */"));
+                write!(result, ".min({i})? /* {key} */")?;
             }
         }
 
-        true
+        Ok(true)
     }
 
     fn new() -> MayFail<Self> {

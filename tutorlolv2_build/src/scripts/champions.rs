@@ -23,25 +23,21 @@ pub fn generate_champions() -> MayFail<(HashMap<&'static str, String>, String)> 
     let result = data
         .par_iter()
         .map(|(champion_id, champion)| {
-            let Champion {
+            let ChampionBuild {
                 abilities,
-                build:
-                    ChampionBuild {
-                        name,
-                        adaptive_type,
-                        attack_type,
-                        positions,
-                        stats,
-                        modifiers,
-                        combos,
-                        metadata,
-                        closures,
-                        merge_data,
-                        identifiers,
-                        functions,
-                    },
-                ..
-            } = champion;
+                name,
+                adaptive_type,
+                attack_type,
+                positions,
+                stats,
+                modifiers,
+                combos,
+                metadata,
+                closures,
+                merge_data,
+                identifiers,
+                functions,
+            } = &champion.build;
 
             let fmt_formula = json!(FmtArgs {
                 target: "formula",

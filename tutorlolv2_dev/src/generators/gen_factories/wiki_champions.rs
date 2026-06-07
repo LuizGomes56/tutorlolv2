@@ -7,7 +7,10 @@ use crate::{
 };
 use serde::{Deserialize, Serialize};
 use serde_with::{Seq, serde_as};
-use std::collections::{BTreeMap, BTreeSet};
+use std::{
+    collections::{BTreeMap, BTreeSet},
+    fmt::Write,
+};
 use tutorlolv2_types::{
     AbilityId, AbilityName, AdaptiveType, AttackType, Attrs, ComboElement, CtxVar, DamageType,
     DevMergeData, Key, MergeData, Position, TypeMetadata,
@@ -41,6 +44,7 @@ pub struct Champion {
     pub build: ChampionBuild,
 }
 
+#[serde_as]
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct ChampionBuild {
     pub name: String,
@@ -55,6 +59,8 @@ pub struct ChampionBuild {
     pub merge_data: Vec<MergeData>,
     pub identifiers: Vec<BTreeSet<CtxVar>>,
     pub functions: Vec<String>,
+    #[serde_as(as = "Seq<(_, _)>")]
+    pub abilities: BTreeMap<AbilityId, Ability>,
 }
 
 impl Parser<WikiChampion, Champion> for ChampionParser {
@@ -72,7 +78,7 @@ impl Parser<WikiChampion, Champion> for ChampionParser {
         &self.data
     }
 
-    fn create_methods(&self, result: &mut String, id: &str) -> bool {
+    fn create_methods(&self, result: &mut String, id: &str) -> MayFail<bool> {
         let data = &self.data[id];
 
         let mut groups = BTreeMap::<_, Vec<_>>::new();
@@ -121,13 +127,13 @@ impl Parser<WikiChampion, Champion> for ChampionParser {
 
             if i > 0 {
                 result.pop();
-                result.push_str(&format!("_nth({i}, "));
+                write!(result, "_nth({i}, ")?;
             }
 
-            result.push_str(&format!("Key::{key:?}, [{args}])"));
+            write!(result, "Key::{key:?}, [{args}])")?;
         }
 
-        true
+        Ok(true)
     }
 }
 
@@ -152,6 +158,7 @@ impl TryFrom<WikiChampion> for Champion {
                 merge_data: Default::default(),
                 identifiers: Default::default(),
                 functions: Default::default(),
+                abilities: Default::default(),
             },
             data,
         })
@@ -533,6 +540,7 @@ impl Champion {
         }
 
         self.build.combos = self.combo.clone();
+        self.build.abilities = self.abilities.clone();
 
         self.build.metadata = self
             .abilities

@@ -28,25 +28,4 @@ serde_arrays = { version = "0.2.0", default-features = false }
 tutorlolv2_gen = { path = "tutorlolv2_gen" }
 
 [dev-dependencies]
-bincode = "2.0.1"
-dotenvy = "0.15.7"
-serde_json = "1.0.149"
-tokio = { version = "1.49.0", features = ["full"] }
-tutorlolv2 = { path = "." }
-tutorlolv2_build = { path = "tutorlolv2_build" }
-tutorlolv2_cli = { path = "tutorlolv2_cli" }
-tutorlolv2_dev = { path = "tutorlolv2_dev" }
-tutorlolv2_gen = { path = "tutorlolv2_gen" }
-tutorlolv2_html = { path = "tutorlolv2_html" }
-
-# [workspace]
-# members = [
-#     "tutorlolv2_build",
-#     "tutorlolv2_dev",
-#     "tutorlolv2_fmt",
-#     "tutorlolv2_gen",
-#     "tutorlolv2_html",
-#     "tutorlolv2_macros",
-#     "tutorlolv2_server",
-#     "tutorlolv2_types",
-# ]
+tutorlolv2_build_dep = { path = "build" }

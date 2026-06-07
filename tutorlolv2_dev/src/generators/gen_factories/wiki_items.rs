@@ -11,6 +11,7 @@ use crate::{
 use serde::{Deserialize, Serialize};
 use std::{
     collections::{BTreeMap, BTreeSet},
+    fmt::Write,
     ops::{Index, IndexMut},
 };
 use tutorlolv2_types::{
@@ -34,7 +35,7 @@ impl Parser<WikiItem, Item> for ItemParser {
         &self.data
     }
 
-    fn create_methods(&self, result: &mut String, id: &str) -> bool {
+    fn create_methods(&self, result: &mut String, id: &str) -> MayFail<bool> {
         let data = &self.data[id];
 
         match data.effects.act.as_ref().or(data.effects.pass.as_ref()) {
@@ -43,24 +44,26 @@ impl Parser<WikiItem, Item> for ItemParser {
 
                 match likely_damages(description) {
                     true => infer_damage_type(result, description),
-                    false => return false,
+                    false => return Ok(false),
                 }
             }
-            None => return false,
+            None => return Ok(false),
         }
 
-        let mut new_method = |field: &Option<ItemEffect>, tag| {
+        let mut new_method = |field: &Option<ItemEffect>, tag| -> MayFail {
             if let Some(ie) = &field
                 && ie.effect.formula.is_some()
             {
-                result.push_str(&format!(".min({tag})?"));
+                write!(result, ".min({tag})?")?;
             }
+
+            Ok(())
         };
 
-        new_method(&data.effects.act, "Active");
-        new_method(&data.effects.pass, "Passive");
+        new_method(&data.effects.act, "Active")?;
+        new_method(&data.effects.pass, "Passive")?;
 
-        true
+        Ok(true)
     }
 
     fn new() -> MayFail<Self> {

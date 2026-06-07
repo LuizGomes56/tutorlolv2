@@ -24,20 +24,16 @@ pub fn generate_runes() -> MayFail<(HashMap<&'static str, String>, String)> {
     let result = data
         .par_iter()
         .map(|(rune_id, rune)| {
-            let Rune {
-                build:
-                    RuneBuild {
-                        name,
-                        metadata,
-                        melee,
-                        ranged,
-                        riot_id,
-                        deals_damage,
-                        identifiers,
-                        custom,
-                    },
-                ..
-            } = rune;
+            let RuneBuild {
+                name,
+                metadata,
+                melee,
+                ranged,
+                riot_id,
+                deals_damage,
+                identifiers,
+                custom,
+            } = &rune.build;
 
             let fns = get_fn_names(rune_id, melee, ranged);
             let functions = [[&fns[0], &fns[1]], [&fns[2], &fns[3]]];
