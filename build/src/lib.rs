@@ -8,7 +8,7 @@ use tutorlolv2_wiki::champions::WikiChampion;
 use crate::generators::impls::champions::{champion_gen_fn, champion_ids};
 
 mod generators;
-mod scripts;
+// mod scripts;
 
 pub type DynError = Box<dyn core::error::Error + Send + Sync + 'static>;
 pub type MayFail<T = (), E = DynError> = Result<T, E>;
@@ -33,7 +33,7 @@ pub fn s() -> MayFail {
             "[error] Failed to find generator function for {id}"
         ))?;
 
-        function(data)?.call()?._end()?;
+        // function(data)?.call()?._end()?;
     }
 
     Ok(())
