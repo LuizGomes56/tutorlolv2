@@ -39,6 +39,7 @@ pub struct Ability {
 #[serde_as]
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct Champion {
+    pub champion_id: String,
     pub data: WikiChampion,
     pub merge: BTreeSet<DevMergeData>,
     pub combo: Vec<Vec<ComboElement>>,
@@ -145,6 +146,7 @@ impl TryFrom<WikiChampion> for Champion {
 
     fn try_from(data: WikiChampion) -> Result<Self, Self::Error> {
         Ok(Self {
+            champion_id: data.champion_id.clone(),
             abilities: Default::default(),
             merge: Default::default(),
             combo: Default::default(),
@@ -622,10 +624,6 @@ impl Champion {
             .map(|ability| get_identifiers(&ability.damage, ability.damage_type).collect())
             .collect();
 
-        Ok(())
-    }
-
-    pub fn _end(self) -> MayFail {
         Ok(())
     }
 }
