@@ -11,6 +11,7 @@ regex = "1.11.2"
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0.149"
 serde_with = "3.19.0"
+symb_anafis = "0.8.1"
 tutorlolv2_dev = { path = "../tutorlolv2_dev" }
 tutorlolv2_fmt = { path = "../tutorlolv2_fmt" }
 tutorlolv2_types = { path = "../tutorlolv2_types", features = ["dev"] }

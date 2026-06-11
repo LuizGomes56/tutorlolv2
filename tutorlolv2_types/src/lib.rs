@@ -10,7 +10,9 @@ use serde::{Deserialize, Serialize};
 
 /// A generic metadata holder for [`AbilityId`], [`ItemId`], or [`RuneId`].
 /// Contains its damage type, attributes, and which instance of the enum the value is.
-#[derive(Clone, Copy, Debug, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize)]
+#[derive(
+    Clone, Copy, Debug, PartialEq, PartialOrd, Ord, Eq, Encode, Decode, Serialize, Deserialize,
+)]
 pub struct TypeMetadata<T> {
     pub kind: T,
     pub damage_type: DamageType,

@@ -36,34 +36,12 @@ pub struct Ability {
     pub damage: String,
 }
 
-#[serde_as]
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct Champion {
     pub champion_id: String,
     pub data: WikiChampion,
     pub merge: BTreeSet<DevMergeData>,
     pub combo: Vec<Vec<ComboElement>>,
-    #[serde_as(as = "Seq<(_, _)>")]
-    pub abilities: BTreeMap<AbilityId, Ability>,
-    pub build: ChampionBuild,
-}
-
-#[serde_as]
-#[derive(Clone, Debug, Deserialize, Serialize)]
-pub struct ChampionBuild {
-    pub name: String,
-    pub adaptive_type: AdaptiveType,
-    pub attack_type: AttackType,
-    pub positions: Vec<Position>,
-    pub stats: WikiStats,
-    pub modifiers: WikiModifiers,
-    pub combos: Vec<Vec<ComboElement>>,
-    pub metadata: Vec<TypeMetadata<AbilityId>>,
-    pub closures: Vec<String>,
-    pub merge_data: Vec<MergeData>,
-    pub identifiers: Vec<BTreeSet<CtxVar>>,
-    pub functions: Vec<String>,
-    #[serde_as(as = "Seq<(_, _)>")]
     pub abilities: BTreeMap<AbilityId, Ability>,
 }
 
@@ -76,6 +54,10 @@ impl Parser<WikiChampion, Champion> for ChampionParser {
         Ok(Self {
             data: BTreeMap::from_file("cache/wiki/champions/full.json")?,
         })
+    }
+
+    fn from_map(data: BTreeMap<String, WikiChampion>) -> Self {
+        Self { data }
     }
 
     fn map(&self) -> &BTreeMap<String, WikiChampion> {
@@ -150,21 +132,6 @@ impl TryFrom<WikiChampion> for Champion {
             abilities: Default::default(),
             merge: Default::default(),
             combo: Default::default(),
-            build: ChampionBuild {
-                name: data.name.clone(),
-                adaptive_type: data.adaptive_type,
-                attack_type: data.attack_type,
-                positions: data.positions.clone(),
-                stats: data.stats,
-                modifiers: data.modifiers,
-                combos: Default::default(),
-                metadata: Default::default(),
-                closures: Default::default(),
-                merge_data: Default::default(),
-                identifiers: Default::default(),
-                functions: Default::default(),
-                abilities: Default::default(),
-            },
             data,
         })
     }
@@ -543,86 +510,6 @@ impl Champion {
             );
             return Err("Found inconsistent merge vec".into());
         }
-
-        self.build.combos = self.combo.clone();
-        self.build.abilities = self.abilities.clone();
-
-        self.build.metadata = self
-            .abilities
-            .iter()
-            .map(|(k, v)| TypeMetadata {
-                kind: *k,
-                damage_type: v.damage_type,
-                attributes: v.attributes,
-            })
-            .collect();
-
-        self.build.closures = self.abilities.values().map(|v| v.damage.clone()).collect();
-        self.build.functions = self
-            .abilities
-            .keys()
-            .map(|ability_id| {
-                let discriminant = ability_id.discriminant().to_uppercase();
-
-                format!(
-                    "{champion_id}_{discriminant}",
-                    champion_id = tutorlolv2_fmt::to_ssnake(&self.data.champion_id),
-                )
-                .to_lowercase()
-            })
-            .collect();
-
-        self.build.merge_data = {
-            let mut index = BTreeMap::new();
-            for (i, &ability_id) in self.abilities.keys().enumerate() {
-                index.entry(ability_id).or_insert(i);
-            }
-
-            let result = self
-                .merge
-                .iter()
-                .filter_map(|value| {
-                    let DevMergeData { min, max, alias } = value;
-
-                    match (index.get(min), index.get(max)) {
-                        (Some(ia), Some(ib)) => Some(MergeData {
-                            min: *ia as _,
-                            max: *ib as _,
-                            alias: *alias,
-                        }),
-                        _ => None,
-                    }
-                })
-                .collect::<Vec<_>>();
-
-            for value in result.iter().copied() {
-                let MergeData {
-                    min: min_damage,
-                    max: max_damage,
-                    ..
-                } = value;
-
-                let min = self.nth(min_damage as _)?;
-                let max = self.nth(max_damage as _)?;
-
-                let comment = format!(
-                    "{min_c} & {max_c}",
-                    min_c = min.comment,
-                    max_c = max.comment
-                );
-
-                self.nth_mut(min_damage as _)?.comment = comment.clone();
-                self.nth_mut(max_damage as _)?.comment = comment;
-            }
-
-            result
-        };
-
-        self.build.identifiers = self
-            .abilities
-            .values()
-            .map(|ability| get_identifiers(&ability.damage, ability.damage_type).collect())
-            .collect();
 
         Ok(())
     }

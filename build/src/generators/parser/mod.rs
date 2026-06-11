@@ -38,6 +38,8 @@ where
     fn map(&self) -> &BTreeMap<String, T>;
     fn create_methods(&self, result: &mut String, id: &str) -> MayFail<bool>;
 
+    fn from_map(data: BTreeMap<String, T>) -> Self;
+
     fn run_fn(&self, id: &str) -> MayFail<U> {
         self.map()
             .get(id)

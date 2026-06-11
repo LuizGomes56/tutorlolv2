@@ -1,40 +1,73 @@
+use crate::generators::impls::champions::{champion_gen_fn, champion_ids};
+use rayon::iter::{IntoParallelIterator, ParallelIterator};
 use std::{
+    fmt::Write,
     path::{Path, PathBuf},
+    process::Command,
     time::SystemTime,
 };
 use tutorlolv2_dev::JsonRead;
 use tutorlolv2_wiki::champions::WikiChampion;
 
-use crate::generators::impls::champions::{champion_gen_fn, champion_ids};
-
 mod generators;
-// mod scripts;
+mod scripts;
 
 pub type DynError = Box<dyn core::error::Error + Send + Sync + 'static>;
 pub type MayFail<T = (), E = DynError> = Result<T, E>;
 
-pub fn s() -> MayFail {
+pub fn run() -> MayFail {
+    let out_dir = PathBuf::from(std::env::var("OUT_DIR")?);
+
+    let mut cmd48 = Command::new("rustfmt");
+    cmd48.arg("max_width=48");
+
+    let mut cmd80 = Command::new("rustfmt");
+
+    let mut cmod = String::new();
+
     for id in champion_ids() {
         let lower_id = id.to_lowercase();
+        let out_path = out_dir.join(id);
 
-        let wiki_path = format!("cache/wiki/champions/{id}/data.json");
-        let impl_path = format!("build/src/generators/impls/champions/{lower_id}.rs");
-        let out_path = format!("generated/champions/{lower_id}.rs");
+        cmd48.arg(out_path.with_extension("w48"));
+        cmd80.arg(out_path.with_extension("rs"));
 
-        let input = PathBuf::from(&impl_path);
-        let output = PathBuf::from(&out_path);
-
-        if !needs_regeneration(&input, &output) {
-            continue;
-        }
-
-        let data = WikiChampion::from_file(&wiki_path)?;
-        let function = champion_gen_fn(id).ok_or(format!(
-            "[error] Failed to find generator function for {id}"
-        ))?;
-
-        // function(data)?.call()?._end()?;
+        writeln!(
+            &mut cmod,
+            r#"pub mod {lower_id} {{
+            include!(concat!(env!("OUT_DIR"), "/{id}.rs"));
+        }}"#
+        )?;
     }
+
+    champion_ids()
+        .into_par_iter()
+        .try_for_each(|id| -> MayFail {
+            let lower_id = id.to_lowercase();
+
+            let wiki_path = format!("cache/wiki/champions/{id}/data.json");
+            let impl_path = format!("build/src/generators/impls/champions/{lower_id}.rs");
+            let out_path = out_dir.join(id);
+
+            let input = PathBuf::from(&impl_path);
+            let output = PathBuf::from(&out_path.with_extension("rs"));
+
+            if !needs_regeneration(&input, &output) {
+                return Ok(());
+            }
+
+            let data = WikiChampion::from_file(&wiki_path)?;
+            let function = champion_gen_fn(id).ok_or(format!(
+                "[error] Failed to find generator function for {id}"
+            ))?;
+
+            function(data)?.call()?.build(&out_dir)
+        })?;
+
+    cmd48.status()?;
+    cmd80.status()?;
+
+    std::fs::write(out_dir.join("champions.rs"), cmod)?;
 
     Ok(())
 }

@@ -56,6 +56,10 @@ impl Parser<WikiRune, Rune> for RuneParser {
         &self.data
     }
 
+    fn from_map(data: BTreeMap<String, WikiRune>) -> Self {
+        Self { data }
+    }
+
     fn create_methods(&self, result: &mut String, id: &str) -> MayFail<bool> {
         let data = &self.data[id];
 

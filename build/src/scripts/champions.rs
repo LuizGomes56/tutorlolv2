@@ -1,57 +1,104 @@
 use crate::{
     MayFail,
-    generators::parser::champions::{Champion, ChampionBuild},
+    generators::parser::{
+        champions::{Ability, Champion},
+        get_identifiers,
+    },
+    scripts::{
+        batch::FmtArgs,
+        utils::{Tag, cast_f32, ctx_param, get_generator, simplify},
+    },
 };
-use serde_json::{Value, json};
+use serde_json::json;
+use std::{
+    collections::{BTreeMap, BTreeSet},
+    fmt::Write,
+    path::PathBuf,
+    write,
+};
+use tutorlolv2_fmt::to_ssnake;
+use tutorlolv2_types::{AbilityId, CtxVar, DevMergeData, MergeData, TypeMetadata};
+use tutorlolv2_wiki::champions::WikiChampion;
+
+struct ChampionExt {
+    metadata: Vec<TypeMetadata<AbilityId>>,
+    closures: Vec<String>,
+    identifiers: Vec<BTreeSet<CtxVar>>,
+    functions: Vec<String>,
+    merge_data: Vec<MergeData>,
+}
 
 impl Champion {
-    pub fn _end(&self) -> MayFail {
-        let champion_id = &self.champion_id;
-        let ChampionBuild {
-            abilities,
-            name,
-            adaptive_type,
-            attack_type,
-            positions,
-            stats,
-            modifiers,
-            combos,
+    pub fn build(mut self, out_dir: &PathBuf) -> MayFail {
+        let ChampionExt {
             metadata,
             closures,
-            merge_data,
             identifiers,
             functions,
-        } = &self.build;
+            merge_data,
+        } = self.extend()?;
 
-        let fmt_formula = json!(FmtArgs {
-            target: "formula",
-            variant: champion_id,
-            meta: (),
-            replace: [
-                (": Champion = Champion", " ="),
-                ("DevMergeData ", ""),
-                ("WikiStats ", ""),
-                ("Stat ", ""),
-                ("WikiModifiers ", ""),
-                ("Modifier ", ""),
-                ("TypeMetadata ", ""),
-                ("ctx.", "")
-            ]
-            .into(),
-            default: false
-        });
+        let Self {
+            champion_id,
+            data:
+                WikiChampion {
+                    name,
+                    adaptive_type,
+                    attack_type,
+                    positions,
+                    stats,
+                    modifiers,
+                    ..
+                },
+            combo,
+            abilities,
+            ..
+        } = self;
 
-        let decl = format!(
-            r#"
-            #[fmt({fmt_formula})]
+        let mut rust = String::new();
+        let mut docs = String::new();
+
+        let upper_id = to_ssnake(&champion_id);
+        let damage = abilities
+            .iter()
+            .map(|(k, v)| {
+                let discriminant = k.discriminant().to_lowercase();
+                let formula = simplify(&v.damage);
+                format!("{discriminant}: {formula},")
+            })
+            .collect::<String>();
+
+        write!(
+            docs,
+            "#[fmt({fmt_args})]
             static {upper_id}: Champion = Champion {{
                 name: {name:?},
                 adaptive_type: {adaptive_type:?},
                 attack_type: {attack_type:?},
                 positions: {positions:#?}, {damage}
-            }};
+            }};",
+            fmt_args = json!(FmtArgs {
+                target: "formula",
+                variant: &champion_id,
+                meta: (),
+                replace: [
+                    (": Champion = Champion", " ="),
+                    ("DevMergeData ", ""),
+                    ("WikiStats ", ""),
+                    ("Stat ", ""),
+                    ("WikiModifiers ", ""),
+                    ("Modifier ", ""),
+                    ("TypeMetadata ", ""),
+                    ("ctx.", "")
+                ]
+                .into(),
+                default: false
+            })
+        )?;
 
-            pub static {upper_id}: Champion = Champion {{
+        write!(
+            rust,
+            "pub static {upper_id}: Champion = Champion {{
                 name: {name:?},
                 adaptive_type: AdaptiveType::{adaptive_type:?},
                 attack_type: {attack_type:?},
@@ -63,18 +110,8 @@ impl Champion {
                 merge_data: &{merge_data:#?},
                 identifiers: &[{identifiers}],
                 closures: &[{fn_names}],
-            }};
-            "#,
-            upper_id = to_ssnake(champion_id),
-            damage = abilities
-                .iter()
-                .map(|(k, v)| {
-                    let discriminant = k.discriminant().to_lowercase();
-                    let formula = simplify(&v.damage);
-                    format!("{discriminant}: {formula},")
-                })
-                .collect::<String>(),
-            combos = combos
+            }};",
+            combos = combo
                 .iter()
                 .map(|ident| format!("&{ident:#?}"))
                 .collect::<Vec<_>>()
@@ -89,121 +126,120 @@ impl Champion {
                 })
                 .collect::<Vec<_>>()
                 .join(","),
-            fn_names = functions.join(","),
-        );
+            fn_names = functions.join(",")
+        )?;
 
-        let generator = get_generator(Tag::Champion, champion_id, champion_id);
+        for (i, (((ability_id, ability), function), body)) in
+            abilities.iter().zip(&functions).zip(closures).enumerate()
+        {
+            let Ability {
+                name,
+                damage_type,
+                attributes,
+                comment,
+                damage,
+            } = ability;
 
-        let abilities_decl = abilities
-            .iter()
-            .zip(functions)
-            .zip(closures)
-            .enumerate()
-            .map(|(i, (((ability_id, ability), function), body))| {
-                let Ability {
-                    name,
-                    damage_type,
-                    attributes,
-                    comment,
-                    damage,
-                } = ability;
+            let formula = simplify(&body);
+            let formula_f32 = cast_f32(&formula);
 
-                let formula = simplify(body);
+            let mut variable = function.to_uppercase();
 
-                let fmt_closure = json!(FmtArgs {
+            let damage_attr = match merge_data
+                .iter()
+                .find(|merge| merge.min as usize == i || merge.max as usize == i)
+            {
+                Some(merge) => {
+                    let get_ability = |j| abilities.values().nth(j as usize).unwrap();
+
+                    let min_ability = get_ability(merge.min);
+                    let max_ability = get_ability(merge.max);
+
+                    let min_damage = simplify(&min_ability.damage);
+                    let max_damage = simplify(&max_ability.damage);
+
+                    let alias = merge.alias.discriminant();
+                    variable = format!("{champion_id}_{alias}").to_uppercase();
+
+                    format!("min_dmg: {min_damage}, max_dmg: {max_damage}")
+                }
+                None => {
+                    let damage = simplify(damage);
+                    format!("damage: {damage}")
+                }
+            };
+
+            fn fmt_comment(c: &str) -> String {
+                const CHUNK: usize = 36;
+                let comment = c.replace("  ", " ");
+                if comment.len() <= CHUNK {
+                    return format!("{comment:?}");
+                }
+                let mut chunks = Vec::new();
+                let mut current = String::new();
+                for word in comment.split(' ') {
+                    if !current.is_empty() && current.len() + 1 + word.len() > CHUNK {
+                        chunks.push(format!("{current:?}"));
+                        current = word.to_string();
+                    } else {
+                        if !current.is_empty() {
+                            current.push(' ');
+                        }
+                        current.push_str(word);
+                    }
+                }
+                if !current.is_empty() {
+                    chunks.push(format!("{current:?}"));
+                }
+                format!("concat!({})", chunks.join(", "))
+            }
+
+            let rust_block = format_args!(
+                "static {variable}: Ability = Ability {{
+                    name: {name:?},
+                    damage_type: {damage_type:?},
+                    attributes: {attributes:?},
+                    comment: {comment},
+                    {damage_attr},
+                }};",
+                comment = fmt_comment(comment),
+            );
+
+            write!(
+                rust,
+                "
+                pub const fn {function}({param}: &Ctx) -> f32 {{
+                    {formula_f32}
+                }}
+
+                {rust_block}
+                ",
+                param = ctx_param(&formula_f32)
+            )?;
+
+            write!(
+                docs,
+                "#[fmt({fmt_fn})]
+                fn {function}() {{{formula}}}
+
+                #[fmt({fmt_block})]
+                {rust_block}",
+                fmt_fn = json!(FmtArgs {
                     target: "closure",
-                    variant: champion_id,
+                    variant: &champion_id,
                     meta: ability_id,
                     replace: [("ctx.", "")].into(),
                     default: false
-                });
-
-                let fmt_ability = json!(FmtArgs {
+                }),
+                fmt_block = json!(FmtArgs {
                     target: "ability",
-                    variant: champion_id,
+                    variant: &champion_id,
                     meta: ability_id,
                     replace: [(": Ability = Ability", " ="), ("ctx.", "")].into(),
                     default: false
-                });
-
-                let formula_f32 = cast_f32(&formula);
-
-                let mut variable = function.to_uppercase();
-
-                let damage_attr = match merge_data
-                    .iter()
-                    .find(|merge| merge.min as usize == i || merge.max as usize == i)
-                {
-                    Some(merge) => {
-                        let get_ability = |j| abilities.values().nth(j as usize).unwrap();
-
-                        let min_ability = get_ability(merge.min);
-                        let max_ability = get_ability(merge.max);
-
-                        let min_damage = simplify(&min_ability.damage);
-                        let max_damage = simplify(&max_ability.damage);
-
-                        let alias = merge.alias.discriminant();
-                        variable = format!("{champion_id}_{alias}").to_uppercase();
-
-                        format!("min_dmg: {min_damage}, max_dmg: {max_damage}")
-                    }
-                    None => {
-                        let damage = simplify(damage);
-                        format!("damage: {damage}")
-                    }
-                };
-
-                fn fmt_comment(c: &str) -> String {
-                    const CHUNK: usize = 36;
-                    let comment = c.replace("  ", " ");
-                    if comment.len() <= CHUNK {
-                        return format!("{comment:?}");
-                    }
-                    let mut chunks = Vec::new();
-                    let mut current = String::new();
-                    for word in comment.split(' ') {
-                        if !current.is_empty() && current.len() + 1 + word.len() > CHUNK {
-                            chunks.push(format!("{current:?}"));
-                            current = word.to_string();
-                        } else {
-                            if !current.is_empty() {
-                                current.push(' ');
-                            }
-                            current.push_str(word);
-                        }
-                    }
-                    if !current.is_empty() {
-                        chunks.push(format!("{current:?}"));
-                    }
-                    format!("concat!({})", chunks.join(", "))
-                }
-
-                let ability_decl = format_args!(
-                    "static {variable}: Ability = Ability {{
-name: {name:?},
-damage_type: {damage_type:?},
-attributes: {attributes:?},
-comment: {comment},
-{damage_attr},
-}};",
-                    comment = fmt_comment(comment)
-                );
-
-                format!(
-                    r#"
-                    pub const fn {function}({param}: &Ctx) -> f32 {{{formula_f32}}}
-
-                    #[fmt({fmt_closure})]
-                    fn {function}() {{{formula}}}
-
-                    #[fmt({fmt_ability})]
-                    {ability_decl}
-                    "#,
-                    param = ctx_param(&formula_f32)
-                )
-            })
-            .collect::<String>();
+                })
+            )?;
+        }
 
         let eval = format!(
             r#"
@@ -224,14 +260,106 @@ comment: {comment},
                 .collect::<String>()
         );
 
-        (
-            champion_id,
-            Batch {
-                eval,
-                fmt: [decl, generator, abilities_decl].concat(),
-            },
-        );
+        let out = out_dir.join(champion_id);
+
+        std::fs::write(out.with_extension("rs"), rust)?;
+        std::fs::write(out.with_extension("w48"), docs)?;
+        std::fs::write(out.with_extension("eval"), eval)?;
 
         Ok(())
+    }
+
+    fn extend(&mut self) -> MayFail<ChampionExt> {
+        let metadata = self
+            .abilities
+            .iter()
+            .map(|(k, v)| TypeMetadata {
+                kind: *k,
+                damage_type: v.damage_type,
+                attributes: v.attributes,
+            })
+            .collect::<Vec<_>>();
+
+        let closures = self
+            .abilities
+            .values()
+            .map(|v| v.damage.clone())
+            .collect::<Vec<_>>();
+
+        let functions = self
+            .abilities
+            .keys()
+            .map(|ability_id| {
+                let discriminant = ability_id.discriminant().to_uppercase();
+
+                format!(
+                    "{champion_id}_{discriminant}",
+                    champion_id = tutorlolv2_fmt::to_ssnake(&self.data.champion_id),
+                )
+                .to_lowercase()
+            })
+            .collect::<Vec<_>>();
+
+        let merge_data = {
+            let mut index = BTreeMap::new();
+            for (i, &ability_id) in self.abilities.keys().enumerate() {
+                index.entry(ability_id).or_insert(i);
+            }
+
+            let result = self
+                .merge
+                .iter()
+                .filter_map(|value| {
+                    let DevMergeData { min, max, alias } = value;
+
+                    match (index.get(min), index.get(max)) {
+                        (Some(ia), Some(ib)) => Some(MergeData {
+                            min: *ia as _,
+                            max: *ib as _,
+                            alias: *alias,
+                        }),
+                        _ => None,
+                    }
+                })
+                .collect::<Vec<_>>();
+
+            for value in result.iter().copied() {
+                let MergeData {
+                    min: min_damage,
+                    max: max_damage,
+                    ..
+                } = value;
+
+                let min = self.nth(min_damage as _)?;
+                let max = self.nth(max_damage as _)?;
+
+                let comment = format!(
+                    "{min_c} & {max_c}",
+                    min_c = min.comment,
+                    max_c = max.comment
+                );
+
+                self.nth_mut(min_damage as _)?.comment = comment.clone();
+                self.nth_mut(max_damage as _)?.comment = comment;
+            }
+
+            result
+        };
+
+        let identifiers = self
+            .abilities
+            .values()
+            .map(|ability| {
+                get_identifiers(&ability.damage, ability.damage_type).collect::<BTreeSet<_>>()
+            })
+            .collect::<Vec<_>>();
+
+        Ok(ChampionExt {
+            metadata,
+            closures,
+            identifiers,
+            functions,
+            merge_data,
+        })
     }
 }

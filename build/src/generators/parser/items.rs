@@ -40,6 +40,10 @@ impl Parser<WikiItem, Item> for ItemParser {
         &self.data
     }
 
+    fn from_map(data: BTreeMap<String, WikiItem>) -> Self {
+        Self { data }
+    }
+
     fn create_methods(&self, result: &mut String, id: &str) -> MayFail<bool> {
         let data = &self.data[id];
 
