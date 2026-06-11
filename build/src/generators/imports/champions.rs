@@ -1,5 +1,5 @@
 pub use crate::{
-    MayFail,
+    MayFail, formula as f,
     generators::{
         Generator, GeneratorExt,
         parser::champions::{Ability, Champion},

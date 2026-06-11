@@ -62,6 +62,57 @@ pub trait RegExtractor: Display {
     }
 }
 
+#[macro_export]
+macro_rules! formula {
+    (($($inner:tt)*)) => {
+        formula!($($inner)*).parenthesize()
+    };
+    ($first:tt $($rest:tt)*) => {
+        $crate::formula_impl!($crate::formula_atom!($first); $($rest)*)
+    };
+}
+
+#[macro_export]
+macro_rules! formula_atom {
+    (($($inner:tt)*)) => {
+        $crate::formula!($($inner)*).parenthesize()
+    };
+    ($value:tt) => {
+        $value
+    };
+}
+
+#[macro_export]
+macro_rules! formula_impl {
+    ($acc:expr;) => {
+        $acc
+    };
+    ($acc:expr; + $rhs:tt $($rest:tt)*) => {
+        $crate::formula_impl!(
+            $acc.plus($crate::formula_atom!($rhs));
+            $($rest)*
+        )
+    };
+    ($acc:expr; - $rhs:tt $($rest:tt)*) => {
+        $crate::formula_impl!(
+            $acc.minus($crate::formula_atom!($rhs));
+            $($rest)*
+        )
+    };
+    ($acc:expr; * $rhs:tt $($rest:tt)*) => {
+        $crate::formula_impl!(
+            $acc.times($crate::formula_atom!($rhs));
+            $($rest)*
+        )
+    };
+    ($acc:expr; / $rhs:tt $($rest:tt)*) => {
+        $crate::formula_impl!(
+            $acc.div(formula_atom!($rhs));
+            $($rest)*
+        )
+    };
+}
+
 impl<T: Display + ?Sized> RegExtractor for T {}
 
 #[derive(Copy, Clone)]
