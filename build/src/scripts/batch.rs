@@ -22,7 +22,7 @@ pub struct FmtArgs<'a, T> {
     pub default: bool,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Serialize)]
 pub struct FmtOutput<'a> {
     pub html_range: Range<usize>,
     pub html: String,

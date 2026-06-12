@@ -3,7 +3,7 @@ use std::{fmt::Display, sync::LazyLock};
 use tutorlolv2_fmt::to_ssnake;
 use tutorlolv2_types::{Key, Position};
 
-#[derive(Copy, Clone, Debug, PartialEq, Eq)]
+#[derive(Copy, Clone, Debug, PartialEq, Ord, PartialOrd, Eq)]
 pub enum Tag {
     Items,
     Champions,

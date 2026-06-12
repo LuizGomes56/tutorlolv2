@@ -1,10 +1,14 @@
 use crate::{
-    generators::parser::{
-        Parser, StaticVar, champions::ChampionParser, items::ItemParser, runes::RuneParser,
+    generators::{
+        parser::{
+            Parser, StaticVar, champions::ChampionParser, items::ItemParser, runes::RuneParser,
+        },
+        utils::Tag,
     },
     scripts::{
         batch::{FmtOutput, Tracker, batch},
         consts::*,
+        finish::{cfinish, ifinish},
     },
 };
 use rayon::iter::{IntoParallelIterator, ParallelBridge, ParallelIterator};
@@ -18,7 +22,6 @@ use std::{
     process::Command,
 };
 use tutorlolv2_fmt::{rust_html, to_ssnake};
-use tutorlolv2_types::AbilityId;
 
 mod generators;
 mod model;
@@ -69,6 +72,7 @@ pub fn run() -> MayFail {
     cmd48.args(["--config", "max_width=48"]);
 
     let mut cmd80 = Command::new("rustfmt");
+    cmd80.arg(out_dir.join("docs.rs"));
 
     let cparser = ChampionParser::new()?;
     let iparser = ItemParser::new()?;
@@ -175,19 +179,22 @@ pub fn run() -> MayFail {
     r_result?;
 
     cmd48.status()?;
+
+    build_docs(out_dir)?;
+
     cmd80.status()?;
 
-    build_docs(out_dir)
+    Ok(())
 }
 
 fn build_docs(out_dir: PathBuf) -> MayFail {
     pub static mut ZERO_FN_OFFSET: Range<usize> = 0..0;
     pub static mut DEFAULT_ITEM_GENERATOR_OFFSET: Range<usize> = 0..0;
 
-    let full = ["champions", "items", "runes"]
+    let full = [Tag::Champions, Tag::Items, Tag::Runes]
         .into_par_iter()
         .map(|dir| {
-            read_dir(out_dir.join(dir))
+            read_dir(out_dir.join(format!("{}s", dir.singular())))
                 .map(|r| {
                     r.filter(|entry| entry.path().extension().map_or(false, |e| e == "w48"))
                         .par_bridge()
@@ -196,9 +203,9 @@ fn build_docs(out_dir: PathBuf) -> MayFail {
                         .collect::<MayFail<String>>()
                 })
                 .flatten()
+                .and_then(|s| Ok((dir, s)))
         })
-        .collect::<MayFail<Vec<String>>>()?
-        .concat();
+        .collect::<MayFail<BTreeMap<_, _>>>()?;
 
     let mut full_block = String::with_capacity(12 * 1024 * 1024);
     let mut exports = String::with_capacity(4 * 1024 * 1024);
@@ -224,61 +231,91 @@ fn build_docs(out_dir: PathBuf) -> MayFail {
         writeln!(exports, "pub static {name}: Range<usize> = {range:?};")?;
     }
 
-    let mut batch = batch(&full);
+    for (dir, src) in full {
+        let mut batch = batch(&src);
+        tracker.batch(&mut batch);
 
-    let mut fmt_args = ChampionParser::static_vars([
-        StaticVar {
-            attribute: "formula",
-            name: "CHAMPION_FORMULAS",
-            vtype: "Range<usize>",
-        },
-        StaticVar {
-            attribute: "generator",
-            name: "CHAMPION_GENERATOR",
-            vtype: "Range<usize>",
-        },
-        StaticVar {
-            attribute: "ability",
-            name: "ABILITY_FORMULAS",
-            vtype: "&[Range<usize>]",
-        },
-        StaticVar {
-            attribute: "closure",
-            name: "ABILITY_CLOSURES",
-            vtype: "&[Range<usize>]",
-        },
-    ]);
-
-    for values in batch.values_mut() {
-        for (target, outputs) in values.iter_mut() {
-            let variable = fmt_args.get_mut(target).unwrap();
-            cfinish(target, variable, outputs);
-        }
-    }
-
-    pub fn cfinish(target: &str, variable: &mut String, value: &mut [FmtOutput<'_>]) {
-        value.sort_by(|a, b| match &a.json.meta {
-            v if let Ok(ability_a) = serde_json::from_value::<AbilityId>(v.clone())
-                && let Ok(ability_b) = serde_json::from_value::<AbilityId>(b.json.meta.clone()) =>
-            {
-                ability_a.cmp(&ability_b)
-            }
-            _ => a.json.target.cmp(&b.json.target),
-        });
-
-        let ranges = value
-            .iter()
-            .map(|FmtOutput { html_range, .. }| format!("{html_range:?}"))
-            .collect::<Vec<_>>()
-            .join(",");
-
-        let push = match target {
-            "formula" | "generator" => format!("{ranges},"),
-            "ability" | "closure" => format!("&[{ranges},],"),
-            _ => panic!("Unknown target set to fmt_args: {target}"),
+        let mut fmt_args = match dir {
+            Tag::Champions => ChampionParser::static_vars([
+                StaticVar {
+                    attribute: "formula",
+                    name: "CHAMPION_FORMULAS",
+                    vtype: "Range<usize>",
+                },
+                StaticVar {
+                    attribute: "generator",
+                    name: "CHAMPION_GENERATOR",
+                    vtype: "Range<usize>",
+                },
+                StaticVar {
+                    attribute: "ability",
+                    name: "ABILITY_FORMULAS",
+                    vtype: "&[Range<usize>]",
+                },
+                StaticVar {
+                    attribute: "closure",
+                    name: "ABILITY_CLOSURES",
+                    vtype: "&[Range<usize>]",
+                },
+            ]),
+            Tag::Items => ItemParser::static_vars([
+                StaticVar {
+                    attribute: "formula",
+                    name: "ITEM_FORMULAS",
+                    vtype: "Range<usize>",
+                },
+                StaticVar {
+                    attribute: "generator",
+                    name: "ITEM_GENERATOR",
+                    vtype: "Range<usize>",
+                },
+                StaticVar {
+                    attribute: "closure",
+                    name: "ITEM_CLOSURES",
+                    vtype: "[[Range<usize>; 2]; 2]",
+                },
+            ]),
+            Tag::Runes => RuneParser::static_vars([
+                StaticVar {
+                    attribute: "formula",
+                    name: "RUNE_FORMULAS",
+                    vtype: "Range<usize>",
+                },
+                StaticVar {
+                    attribute: "generator",
+                    name: "RUNE_GENERATOR",
+                    vtype: "Range<usize>",
+                },
+                StaticVar {
+                    attribute: "closure",
+                    name: "RUNE_CLOSURES",
+                    vtype: "[[Range<usize>; 2]; 2]",
+                },
+            ]),
         };
 
-        variable.push_str(&push);
+        let finish = match dir {
+            Tag::Champions => cfinish,
+            Tag::Items | Tag::Runes => ifinish,
+        } as fn(&str, &mut String, &mut [FmtOutput]);
+
+        for values in batch.values_mut() {
+            for (target, outputs) in values.iter_mut() {
+                if let Some(variable) = fmt_args.get_mut(target) {
+                    finish(target, variable, outputs);
+                }
+            }
+        }
+
+        let docs = fmt_args
+            .values_mut()
+            .map(|variable| {
+                variable.push_str("];");
+                variable.as_str()
+            })
+            .collect::<String>();
+
+        exports.push_str(&docs);
     }
 
     write(out_dir.join("docs").with_extension("txt"), full_block)?;
