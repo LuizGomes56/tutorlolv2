@@ -1,5 +1,5 @@
 use crate::{
-    MayFail,
+    JsonRead, JsonWrite, MayFail,
     generators::{
         GeneratorExt, VERSION,
         utils::{SaveTo, Tag},
@@ -15,12 +15,12 @@ use std::{
     path::Path,
     sync::LazyLock,
 };
-use tutorlolv2_dev::{JsonRead, JsonWrite};
 use tutorlolv2_fmt::rustfmt;
 use tutorlolv2_types::{CtxVar, DamageIndex, DamageType};
 
 pub mod champions;
 pub mod items;
+pub mod model;
 pub mod runes;
 
 pub const ZERO: &str = "zero";
@@ -89,11 +89,11 @@ where
     }
 
     fn is_generator(id: &str) -> bool {
-        tutorlolv2_dev::read_to_string(SaveTo::GeneratorRaw(Self::TAG, id).path()).is_ok()
+        crate::read_to_string(SaveTo::GeneratorRaw(Self::TAG, id).path()).is_ok()
     }
 
     fn is_stable(id: &str) -> bool {
-        if let Ok(data) = tutorlolv2_dev::read_to_string(SaveTo::GeneratorRaw(Self::TAG, id).path())
+        if let Ok(data) = crate::read_to_string(SaveTo::GeneratorRaw(Self::TAG, id).path())
             && !data.contains("#[warn(unstable_features)]")
         {
             return true;
@@ -164,9 +164,9 @@ where
                     false => formatted,
                 };
 
-                tutorlolv2_dev::write(&path, content)
+                crate::write(&path, content)
             }
-            false => Ok(tutorlolv2_dev::remove_file(&path)),
+            false => Ok(crate::remove_file(&path)),
         }
     }
 
@@ -196,7 +196,7 @@ where
             "use crate::generators::imports::{module}::*;\ncrate::{module}!(\n\t{modules}\n);",
         );
 
-        tutorlolv2_dev::write(&decl, decl_content)?;
+        crate::write(&decl, decl_content)?;
 
         Ok(())
     }
@@ -243,6 +243,12 @@ pub fn is_zero(value: &str) -> bool {
 pub struct DamageRange {
     pub min_dmg: String,
     pub max_dmg: String,
+}
+
+impl DamageRange {
+    pub fn deals_damage(&self) -> [bool; 2] {
+        [self.min_dmg != ZERO, self.max_dmg != ZERO]
+    }
 }
 
 impl Index<DamageIndex> for DamageRange {

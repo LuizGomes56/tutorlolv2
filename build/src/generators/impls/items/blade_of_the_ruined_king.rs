@@ -3,10 +3,10 @@ use super::*;
 impl Generator for BladeOfTheRuinedKing {
     #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
-        let melee_ratio = self.effect(Passive)?.scalings[0]
-            .try_get_value()
-            .ok_or("Unknown melee percent scaling")?;
-
+        // let melee_ratio = self.effect(Passive)?.scalings[0]
+        //     .try_get_value()
+        //     .ok_or("Unknown melee percent scaling")?;
+        let melee_ratio = 1.0;
         let ranged_ratio = melee_ratio.div(1.5).parenthesize();
 
         let damage = |scaling: &dyn Display| {

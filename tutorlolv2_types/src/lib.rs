@@ -211,6 +211,41 @@ pub enum StatName {
     Tenacity,
 }
 
+impl FromStr for StatName {
+    type Err = &'static str;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "ah" => Ok(Self::AbilityHaste),
+            "hp" => Ok(Self::Health),
+            "mr" => Ok(Self::MagicResist),
+            "ap" => Ok(Self::AbilityPower),
+            "mana" => Ok(Self::Mana),
+            "ms" => Ok(Self::MoveSpeedPercent),
+            "hsp" => Ok(Self::HealAndShieldPower),
+            "mp5" => Ok(Self::BaseManaRegen),
+            "armor" => Ok(Self::Armor),
+            "msflat" => Ok(Self::MoveSpeed),
+            "crit" => Ok(Self::CritChance),
+            "ad" => Ok(Self::AttackDamage),
+            "armpen" => Ok(Self::ArmorPenetration),
+            "lethality" => Ok(Self::Lethality),
+            "as" => Ok(Self::AttackSpeed),
+            "lifesteal" => Ok(Self::LifeSteal),
+            "mpen" => Ok(Self::MagicPenetrationPercent),
+            "mpenflat" => Ok(Self::MagicPenetration),
+            "gp10" => Ok(Self::GoldPer10Seconds),
+            "hp5" => Ok(Self::BaseHealthRegen),
+            "tenacity" => Ok(Self::Tenacity),
+            "spec" => Ok(Self::AdaptiveForce),
+            "omnivamp" => Ok(Self::Omnivamp),
+            "hp5flat" => Ok(Self::BaseHealthRegen),
+            "critdamage" => Ok(Self::CritDamage),
+            _ => return Err("Unknown stat in StatName::from_str"),
+        }
+    }
+}
+
 impl StatName {
     pub const VARIANTS: usize = 24;
 

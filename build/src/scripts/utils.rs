@@ -1,4 +1,7 @@
-use crate::scripts::batch::{Batch, FmtArgs};
+use crate::{
+    generators::parser::{DamageRange, ZERO, champions::Champion, items::Item, runes::Rune},
+    scripts::batch::{Batch, FmtArgs},
+};
 use regex::{Captures, Regex};
 use serde_json::json;
 use std::{
@@ -6,9 +9,6 @@ use std::{
     fmt::Debug,
     ops::Range,
     sync::LazyLock,
-};
-use tutorlolv2_dev::{
-    decl_champions::Champion, decl_items::Item, decl_runes::Rune, gen_factories::ZERO,
 };
 use tutorlolv2_fmt::{pascal_case, to_ssnake};
 use tutorlolv2_types::{AttackType, CtxVar, DamageIndex};
@@ -30,7 +30,7 @@ impl MapValueExt for Champion {
 
 impl MapValueExt for Item {
     fn riot_id(&self) -> u32 {
-        self.build.riot_id
+        self.data.id
     }
 
     fn name(&self) -> &str {
@@ -40,7 +40,7 @@ impl MapValueExt for Item {
 
 impl MapValueExt for Rune {
     fn riot_id(&self) -> u32 {
-        self.build.riot_id
+        self.data.riot_id as _
     }
 
     fn name(&self) -> &str {
@@ -174,8 +174,8 @@ pub fn get_const_eval(data: &BTreeMap<&String, Batch>, tag: Tag) -> String {
 pub fn get_generator(tag: Tag, id: &str, variant: &str) -> String {
     let folder = tag.as_ref().to_lowercase();
     let mut default = false;
-    let mut generator = tutorlolv2_dev::read_to_string(format!(
-        "tutorlolv2_dev/src/generators/gen_{folder}s/{file_name}.rs",
+    let mut generator = crate::read_to_string(format!(
+        "build/src/generators/impls/{folder}s/{file_name}.rs",
         file_name = to_ssnake(id).to_lowercase()
     ))
     .unwrap_or_else(|_| {
@@ -202,7 +202,7 @@ pub fn get_generator(tag: Tag, id: &str, variant: &str) -> String {
 pub fn get_eval(
     tag: Tag,
     id: &str,
-    deals_damage: &[bool; 4],
+    deals_damage: &[bool],
     functions: &[[&String; 2]; 2],
 ) -> String {
     let slice = functions.as_flattened();
@@ -222,14 +222,12 @@ pub fn get_eval(
     };
 
     format!(
-        "
-            {tag:?}Id::{id} => {{
-                match attack_type {{
-                    Melee => [{melee_arms}],
-                    Ranged => [{ranged_arms}]
-                }}
-            }},
-            ",
+        "{tag:?}Id::{id} => {{
+            match attack_type {{
+                Melee => [{melee_arms}],
+                Ranged => [{ranged_arms}]
+            }}
+        }},",
         melee_arms = get_arms(0..2),
         ranged_arms = get_arms(2..4),
     )
@@ -280,10 +278,10 @@ pub fn get_static_vars<const N: usize, T>(
 
 pub fn closures(
     functions: &[[&String; 2]; 2],
-    melee: &[String],
-    ranged: &[String],
+    melee: &DamageRange,
+    ranged: &DamageRange,
     variant: &str,
-) -> String {
+) -> Vec<Vec<(String, String)>> {
     let mut seen = HashSet::new();
 
     functions
@@ -307,15 +305,15 @@ pub fn closures(
                     };
 
                     let body = match i {
-                        0 => &melee[j],
-                        1 => &ranged[j],
+                        0 => &melee[damage_index],
+                        1 => &ranged[damage_index],
                         _ => unreachable!(),
                     };
 
                     let default = is_zero(body);
 
                     let formula = simplify(body);
-                    let closure = if default || seen.contains(function) {
+                    let rust = if default || seen.contains(function) {
                         format!("")
                     } else {
                         seen.insert(function);
@@ -325,26 +323,25 @@ pub fn closures(
                         format!("pub const fn {function}({param}: &Ctx) -> f32 {{{formula_f32}}}",)
                     };
 
-                    let fmt_arg = json!(FmtArgs {
-                        target: "closure",
-                        variant,
-                        meta: (attack_type, damage_index),
-                        replace: [("ctx.", "")].into(),
-                        default
-                    });
+                    let docs = format!(
+                        "#[fmt({fmt})]
+                        fn {function}() {{
+                            {formula}
+                        }}",
+                        fmt = json!(FmtArgs {
+                            target: "closure",
+                            variant,
+                            meta: (attack_type, damage_index),
+                            replace: [("ctx.", "")].into(),
+                            default
+                        })
+                    );
 
-                    format!(
-                        r#"
-                        {closure}
-
-                        #[fmt({fmt_arg})]
-                        fn {function}() {{{formula}}}
-                        "#
-                    )
+                    (rust, docs)
                 })
-                .collect::<String>()
+                .collect::<Vec<_>>()
         })
-        .collect::<String>()
+        .collect::<Vec<_>>()
 }
 
 pub fn simplify(formula: &str) -> String {
@@ -476,16 +473,18 @@ pub fn get_aliases<'a>(id: &'a str, name: &'a str) -> Vec<String> {
     [get(id), get(name)].concat()
 }
 
-pub fn repr_damages(melee: &[String; 2], ranged: &[String; 2], deals_damage: &[bool; 4]) -> String {
-    let [melee_min, melee_max] = melee;
-    let [ranged_min, ranged_max] = ranged;
+pub fn repr_damages(melee: &DamageRange, ranged: &DamageRange) -> String {
+    let melee_min = &melee.min_dmg;
+    let melee_max = &melee.max_dmg;
+    let ranged_min = &ranged.min_dmg;
+    let ranged_max = &ranged.max_dmg;
 
     let same_min = melee_min == ranged_min;
     let same_max = melee_max == ranged_max;
 
     let mut parts = Vec::new();
 
-    match *deals_damage {
+    match [melee.deals_damage(), ranged.deals_damage()].concat()[..] {
         [false, false, false, false] => {}
         [true, false, false, false] => {
             parts.push(format!("melee_min_dmg: {}", simplify(melee_min)));
@@ -538,38 +537,41 @@ pub fn is_zero(value: &str) -> bool {
     value == ZERO || value == "0" || value == "0.0" || value == "(0.0)" || value == "(0)"
 }
 
-pub fn get_fn_names(value_id: &str, melee: &[String; 2], ranged: &[String; 2]) -> [String; 4] {
-    let id = tutorlolv2_fmt::to_ssnake(value_id).to_lowercase();
+pub fn get_fn_names(value_id: &str, melee: &DamageRange, ranged: &DamageRange) -> [String; 4] {
+    let id = to_ssnake(value_id).to_lowercase();
 
-    let has_max = !is_zero(&melee[1]) || !is_zero(&ranged[1]);
+    let min = DamageIndex::Min;
+    let max = DamageIndex::Max;
 
-    let min_shared = !is_zero(&melee[0]) && melee[0] == ranged[0];
-    let max_shared = !is_zero(&melee[1]) && melee[1] == ranged[1];
+    let has_max = !is_zero(&melee[max]) || !is_zero(&ranged[max]);
+
+    let min_shared = !is_zero(&melee[min]) && melee[min] == ranged[min];
+    let max_shared = !is_zero(&melee[max]) && melee[max] == ranged[max];
     let min_suffix = if has_max { "_min" } else { "" };
 
     [
-        if is_zero(&melee[0]) {
+        if is_zero(&melee[min]) {
             ZERO.into()
         } else if min_shared {
             format!("{id}{min_suffix}")
         } else {
             format!("{id}_melee{min_suffix}")
         },
-        if is_zero(&melee[1]) {
+        if is_zero(&melee[max]) {
             ZERO.into()
         } else if max_shared {
             format!("{id}_max")
         } else {
             format!("{id}_melee_max")
         },
-        if is_zero(&ranged[0]) {
+        if is_zero(&ranged[min]) {
             ZERO.into()
         } else if min_shared {
             format!("{id}{min_suffix}")
         } else {
             format!("{id}_ranged{min_suffix}")
         },
-        if is_zero(&ranged[1]) {
+        if is_zero(&ranged[max]) {
             ZERO.into()
         } else if max_shared {
             format!("{id}_max")

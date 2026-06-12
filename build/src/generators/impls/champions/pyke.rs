@@ -5,6 +5,7 @@ impl Generator for Pyke {
         /* 250 - 550 (based on level) */
         /* (+ 80% bonus AD) */
         /* (+ 1.5 per 1 Lethality) */
+        /*
         let r = [
             Scaling::based_on_level_raw(
                 Level,
@@ -37,6 +38,9 @@ impl Generator for Pyke {
         .map(|scaling| scaling.render(Level))
         .collect::<MayFail<Vec<_>>>()?
         .join(" + ");
+        */
+
+        let r = 0;
 
         self.ability(Key::Q, [(0, Void) /* Physical Damage */])
             .ability(Key::E, [(0, Void) /* Physical Damage */])

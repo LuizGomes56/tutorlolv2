@@ -1,26 +1,20 @@
 use crate::{
-    DynError, MayFail,
+    DynError, JsonRead, MayFail,
     generators::{
         GeneratorExt,
         impls::runes::rune_gen_fn,
-        parser::{
-            DamageRange, Parser, ZERO, get_identifiers, infer_damage_type, is_zero, likely_damages,
-        },
+        parser::{DamageRange, Parser, infer_damage_type, likely_damages, model::RiotCdnRune},
         utils::{RegExtractor, SaveTo, Tag},
     },
+    model::{Effect, runes::WikiRune},
 };
 use serde::{Deserialize, Serialize};
 use std::{
-    collections::{BTreeMap, BTreeSet},
+    collections::BTreeMap,
     fmt::Write,
     ops::{Index, IndexMut},
 };
-use tutorlolv2_dev::{JsonRead, riot::RiotCdnRune};
-use tutorlolv2_types::{AttackType, CtxVar, DamageIndex, DamageType, TypeMetadata};
-use tutorlolv2_wiki::{
-    parser::Effect,
-    runes::{RuneKeystone, RuneSlot, WikiRune},
-};
+use tutorlolv2_types::{AttackType, CtxVar, DamageIndex, DamageType};
 
 pub struct RuneParser {
     pub data: BTreeMap<String, WikiRune>,
@@ -28,23 +22,11 @@ pub struct RuneParser {
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct Rune {
+    pub riot_id: u32,
     pub data: WikiRune,
     pub damage_type: DamageType,
     pub ranged: DamageRange,
     pub melee: DamageRange,
-    pub build: RuneBuild,
-}
-
-#[derive(Clone, Debug, Deserialize, Serialize)]
-pub struct RuneBuild {
-    pub name: String,
-    pub metadata: TypeMetadata<String>,
-    pub melee: [String; 2],
-    pub ranged: [String; 2],
-    pub riot_id: u32,
-    pub deals_damage: [bool; 4],
-    pub identifiers: [[BTreeSet<CtxVar>; 2]; 2],
-    pub custom: bool,
 }
 
 impl Parser<WikiRune, Rune> for RuneParser {
@@ -89,8 +71,6 @@ impl Parser<WikiRune, Rune> for RuneParser {
                 WikiRune {
                     name: format!("{name} Shard"),
                     rune_id,
-                    path: RuneKeystone::Domination,
-                    slot: RuneSlot::Keystone,
                     effects: Default::default(),
                     descriptions: Default::default(),
                     riot_id,
@@ -112,7 +92,6 @@ impl TryFrom<WikiRune> for Rune {
     type Error = DynError;
 
     fn try_from(data: WikiRune) -> Result<Self, Self::Error> {
-        let damage = [ZERO.into(), ZERO.into()];
         let name = data.name.clone();
 
         let riot_id = Vec::<RiotCdnRune>::from_file(SaveTo::RiotRunes.path())
@@ -131,23 +110,10 @@ impl TryFrom<WikiRune> for Rune {
             .unwrap_or(data.riot_id) as _;
 
         Ok(Self {
+            riot_id,
             damage_type: Default::default(),
             ranged: Default::default(),
             melee: Default::default(),
-            build: RuneBuild {
-                name,
-                metadata: TypeMetadata {
-                    kind: data.rune_id.clone(),
-                    damage_type: Default::default(),
-                    attributes: Default::default(),
-                },
-                melee: damage.clone(),
-                ranged: damage,
-                riot_id,
-                deals_damage: Default::default(),
-                identifiers: Default::default(),
-                custom: data.custom,
-            },
             data,
         })
     }
@@ -193,16 +159,17 @@ impl Rune {
     }
 
     pub fn scaling(&self, n: usize, indexes: impl Iterator<Item = usize>) -> MayFail<String> {
-        let filter = indexes.collect::<Vec<_>>();
-        Ok(self
-            .effect(n)?
-            .scalings
-            .iter()
-            .enumerate()
-            .filter(|(i, _)| filter.contains(i))
-            .filter_map(|(_, scaling)| scaling.render(CtxVar::Level).ok())
-            .collect::<Vec<_>>()
-            .join(" + "))
+        Ok("0".into())
+        // let filter = indexes.collect::<Vec<_>>();
+        // Ok(self
+        //     .effect(n)?
+        //     .scalings
+        //     .iter()
+        //     .enumerate()
+        //     .filter(|(i, _)| filter.contains(i))
+        //     .filter_map(|(_, scaling)| scaling.render(CtxVar::Level).ok())
+        //     .collect::<Vec<_>>()
+        //     .join(" + "))
     }
 
     pub fn damage(
@@ -262,38 +229,6 @@ impl Rune {
             );
             // return Err("Unknown damage type for this rune".into());
         }
-
-        self.build.metadata.damage_type = self.damage_type;
-        self.build.melee = [self.melee.min_dmg.clone(), self.melee.max_dmg.clone()];
-        self.build.ranged = [self.ranged.min_dmg.clone(), self.ranged.max_dmg.clone()];
-        self.build.deals_damage = [
-            self.melee.min_dmg.as_str(),
-            &self.melee.max_dmg,
-            &self.ranged.min_dmg,
-            &self.ranged.max_dmg,
-        ]
-        .map(|v| !is_zero(v));
-
-        self.build.identifiers = core::array::from_fn(|i| {
-            let attack_type = match i {
-                0 => AttackType::Melee,
-                1 => AttackType::Ranged,
-                _ => unreachable!(),
-            };
-
-            core::array::from_fn(|j| {
-                let damage_index = match j {
-                    0 => DamageIndex::Min,
-                    1 => DamageIndex::Max,
-                    _ => unreachable!(),
-                };
-
-                get_identifiers(&self[attack_type][damage_index], self.damage_type)
-                    .collect::<BTreeSet<_>>()
-                    .into_iter()
-                    .collect()
-            })
-        });
 
         Ok(())
     }

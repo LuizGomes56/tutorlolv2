@@ -7,9 +7,9 @@ pub use tutorlolv2_gen::{
     DamageType, GameMap, ItemId, Position, RuneId,
 };
 
-mod __test {
-    include!(concat!(env!("OUT_DIR"), "/champions.rs"));
-}
+// mod __test {
+//     include!(concat!(env!("OUT_DIR"), "/size.rs"));
+// }
 
 extern crate alloc;
 

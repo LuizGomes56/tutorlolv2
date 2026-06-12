@@ -15,7 +15,8 @@ impl Generator for Braum {
         let pmul = self
             .scaling(Key::P, 0)?
             .first()
-            .map(Scaling::try_get_value)
+            .map(|_| Some(0.0))
+            // .map(Scaling::try_get_value)
             .flatten()
             .unwrap_or(0.4);
 

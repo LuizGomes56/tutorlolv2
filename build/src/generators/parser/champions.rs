@@ -3,24 +3,21 @@ use crate::{
     generators::{
         GeneratorExt,
         impls::champions::champion_gen_fn,
-        parser::{Parser, ZERO, get_identifiers, likely_damages},
+        parser::{Parser, ZERO, likely_damages},
         utils::{RegExtractor, Tag},
     },
+    model::{
+        Effect, Scaling,
+        champions::{WikiAbility, WikiChampion},
+    },
 };
-
 use serde::{Deserialize, Serialize};
-use serde_with::{Seq, serde_as};
 use std::{
     collections::{BTreeMap, BTreeSet},
     fmt::Write,
 };
 use tutorlolv2_types::{
-    AbilityId, AbilityName, AdaptiveType, AttackType, Attrs, ComboElement, CtxVar, DamageType,
-    DevMergeData, Key, MergeData, Position, TypeMetadata,
-};
-use tutorlolv2_wiki::{
-    champions::{WikiChampion, WikiModifiers, WikiStats, abilities::WikiAbility},
-    parser::{Effect, Scaling},
+    AbilityId, AbilityName, Attrs, ComboElement, DamageType, DevMergeData, Key,
 };
 
 pub struct ChampionParser {

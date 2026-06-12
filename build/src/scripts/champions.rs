@@ -4,9 +4,10 @@ use crate::{
         champions::{Ability, Champion},
         get_identifiers,
     },
+    model::champions::WikiChampion,
     scripts::{
         batch::FmtArgs,
-        utils::{Tag, cast_f32, ctx_param, get_generator, simplify},
+        utils::{cast_f32, ctx_param, simplify},
     },
 };
 use serde_json::json;
@@ -18,7 +19,6 @@ use std::{
 };
 use tutorlolv2_fmt::to_ssnake;
 use tutorlolv2_types::{AbilityId, CtxVar, DevMergeData, MergeData, TypeMetadata};
-use tutorlolv2_wiki::champions::WikiChampion;
 
 struct ChampionExt {
     metadata: Vec<TypeMetadata<AbilityId>>,
@@ -29,14 +29,14 @@ struct ChampionExt {
 }
 
 impl Champion {
-    pub fn build(mut self, out_dir: &PathBuf) -> MayFail {
+    pub fn build(&mut self, out: &PathBuf) -> MayFail {
         let ChampionExt {
             metadata,
             closures,
             identifiers,
             functions,
             merge_data,
-        } = self.extend()?;
+        } = self.finish()?;
 
         let Self {
             champion_id,
@@ -242,14 +242,12 @@ impl Champion {
         }
 
         let eval = format!(
-            r#"
-            ChampionId::{champion_id} => {{
+            r#"ChampionId::{champion_id} => {{
                 match kind {{
                     {arms}
                     _ => panic!("Invalid AbilityId provided for '{champion_id}'"),
                 }}
-            }},
-            "#,
+            }},"#,
             arms = functions
                 .iter()
                 .zip(metadata)
@@ -260,16 +258,12 @@ impl Champion {
                 .collect::<String>()
         );
 
-        let out = out_dir.join(champion_id);
-
-        std::fs::write(out.with_extension("rs"), rust)?;
-        std::fs::write(out.with_extension("w48"), docs)?;
-        std::fs::write(out.with_extension("eval"), eval)?;
-
-        Ok(())
+        crate::write(&out.with_extension("rs"), rust)?;
+        crate::write(&out.with_extension("w48"), docs)?;
+        crate::write(&out.with_extension("eval"), eval)
     }
 
-    fn extend(&mut self) -> MayFail<ChampionExt> {
+    fn finish(&mut self) -> MayFail<ChampionExt> {
         let metadata = self
             .abilities
             .iter()
@@ -294,7 +288,7 @@ impl Champion {
 
                 format!(
                     "{champion_id}_{discriminant}",
-                    champion_id = tutorlolv2_fmt::to_ssnake(&self.data.champion_id),
+                    champion_id = to_ssnake(&self.data.champion_id),
                 )
                 .to_lowercase()
             })
@@ -302,6 +296,7 @@ impl Champion {
 
         let merge_data = {
             let mut index = BTreeMap::new();
+
             for (i, &ability_id) in self.abilities.keys().enumerate() {
                 index.entry(ability_id).or_insert(i);
             }

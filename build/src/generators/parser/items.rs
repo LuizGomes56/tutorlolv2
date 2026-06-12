@@ -1,31 +1,26 @@
 use crate::{
-    DynError, MayFail,
+    DynError, JsonRead, MayFail,
     generators::{
         GeneratorExt,
         impls::items::item_gen_fn,
         parser::{
-            DamageRange, Parser, ZERO, get_identifiers, infer_damage_type, is_zero, likely_damages,
+            DamageRange, Parser, ZERO, infer_damage_type, is_zero, likely_damages,
+            model::{RiotCdn, RiotCdnItem, RiotCdnItemGold},
         },
         utils::{RegExtractor, SaveTo, Tag},
+    },
+    model::{
+        Effect,
+        items::{ItemEffect, WikiItem},
     },
 };
 use serde::{Deserialize, Serialize};
 use std::{
-    collections::{BTreeMap, BTreeSet},
+    collections::BTreeMap,
     fmt::Write,
     ops::{Index, IndexMut},
 };
-use tutorlolv2_dev::{
-    JsonRead,
-    riot::{RiotCdn, RiotCdnItem, RiotCdnItemGold},
-};
-use tutorlolv2_types::{
-    AttackType, CtxVar, DamageIndex, DamageType, GameMap, StatName, TypeMetadata,
-};
-use tutorlolv2_wiki::{
-    items::item_parser::{ItemEffect, WikiItem},
-    parser::Effect,
-};
+use tutorlolv2_types::{AttackType, Attrs, DamageIndex, DamageType};
 
 pub struct ItemParser {
     pub data: BTreeMap<String, WikiItem>,
@@ -135,24 +130,7 @@ pub struct Item {
     pub damage_type: DamageType,
     pub ranged: DamageRange,
     pub melee: DamageRange,
-    pub build: ItemBuild,
-}
-
-#[derive(Clone, Debug, Deserialize, Serialize)]
-pub struct ItemBuild {
-    pub name: String,
-    pub tier: u8,
-    pub price: u16,
-    pub stats: Vec<(StatName, u16)>,
-    pub maps: Vec<GameMap>,
-    pub metadata: TypeMetadata<String>,
-    pub ranged: [String; 2],
-    pub melee: [String; 2],
-    pub deals_damage: [bool; 4],
-    pub purchasable: bool,
-    pub riot_id: u32,
-    pub identifiers: [[BTreeSet<CtxVar>; 2]; 2],
-    pub custom: bool,
+    pub attributes: Attrs,
 }
 
 #[derive(Copy, Clone, Debug)]
@@ -165,90 +143,11 @@ impl TryFrom<WikiItem> for Item {
     type Error = DynError;
 
     fn try_from(data: WikiItem) -> Result<Self, Self::Error> {
-        let damage = [ZERO.into(), ZERO.into()];
-
         Ok(Self {
             damage_type: Default::default(),
             ranged: Default::default(),
             melee: Default::default(),
-            build: ItemBuild {
-                name: data.name.clone(),
-                tier: data.tier.unwrap_or(1),
-                price: data.buy.unwrap_or(0),
-                stats: data
-                    .stats
-                    .iter()
-                    .filter_map(|(k, v)| {
-                        let stat = k
-                            .parse::<u8>()
-                            .ok()
-                            .map(StatName::from_u8)
-                            .flatten()
-                            .unwrap_or_else(|| match k.as_str() {
-                                "ah" => StatName::AbilityHaste,
-                                "hp" => StatName::Health,
-                                "mr" => StatName::MagicResist,
-                                "ap" => StatName::AbilityPower,
-                                "mana" => StatName::Mana,
-                                "ms" => StatName::MoveSpeedPercent,
-                                "hsp" => StatName::HealAndShieldPower,
-                                "mp5" => StatName::BaseManaRegen,
-                                "armor" => StatName::Armor,
-                                "msflat" => StatName::MoveSpeed,
-                                "crit" => StatName::CritChance,
-                                "ad" => StatName::AttackDamage,
-                                "armpen" => StatName::ArmorPenetration,
-                                "lethality" => StatName::Lethality,
-                                "as" => StatName::AttackSpeed,
-                                "lifesteal" => StatName::LifeSteal,
-                                "mpen" => StatName::MagicPenetrationPercent,
-                                "mpenflat" => StatName::MagicPenetration,
-                                "gp10" => StatName::GoldPer10Seconds,
-                                "hp5" => StatName::BaseHealthRegen,
-                                "tenacity" => StatName::Tenacity,
-                                "spec" => StatName::AdaptiveForce,
-                                "omnivamp" => StatName::Omnivamp,
-                                "hp5flat" => StatName::BaseHealthRegen,
-                                "critdamage" => StatName::CritDamage,
-                                _ => unreachable!(
-                                    "Found unknown stat: {k} for {item_id}",
-                                    item_id = data.item_id
-                                ),
-                            });
-
-                        Some((stat, *v as _))
-                    })
-                    .collect(),
-                maps: data
-                    .modes
-                    .iter()
-                    .filter(|(_, v)| **v)
-                    .filter_map(|(k, _)| {
-                        k.parse::<u8>()
-                            .ok()
-                            .map(GameMap::from_u8)
-                            .or_else(|| match k.as_str() {
-                                "ar" => Some(GameMap::Arena),
-                                "aram" => Some(GameMap::Aram),
-                                "classic sr 5v5" => Some(GameMap::SummonersRift),
-                                "nb" => Some(GameMap::NexusBlitz),
-                                _ => None,
-                            })
-                    })
-                    .collect(),
-                metadata: TypeMetadata {
-                    kind: data.item_id.clone(),
-                    damage_type: Default::default(),
-                    attributes: Default::default(),
-                },
-                ranged: damage.clone(),
-                melee: damage,
-                riot_id: data.id,
-                deals_damage: Default::default(),
-                purchasable: data.purchasable,
-                identifiers: Default::default(),
-                custom: data.custom,
-            },
+            attributes: Attrs::Undefined,
             data,
         })
     }
@@ -302,16 +201,17 @@ impl Item {
         source: Source,
         indexes: impl IntoIterator<Item = usize>,
     ) -> MayFail<String> {
-        let filter = indexes.into_iter().collect::<Vec<_>>();
-        Ok(self
-            .effect(source)?
-            .scalings
-            .iter()
-            .enumerate()
-            .filter(|(i, _)| filter.contains(i))
-            .filter_map(|(_, scaling)| scaling.render(CtxVar::Level).ok())
-            .collect::<Vec<_>>()
-            .join(" + "))
+        Ok("0".into())
+        // let filter = indexes.into_iter().collect::<Vec<_>>();
+        // Ok(self
+        //     .effect(source)?
+        //     .scalings
+        //     .iter()
+        //     .enumerate()
+        //     .filter(|(i, _)| filter.contains(i))
+        //     .filter_map(|(_, scaling)| scaling.render(CtxVar::Level).ok())
+        //     .collect::<Vec<_>>()
+        //     .join(" + "))
     }
 
     pub fn damage(
@@ -344,6 +244,11 @@ impl Item {
         self.damage(AttackType::Ranged, DamageIndex::Max, index)
     }
 
+    pub fn attr(&mut self, attrs: Attrs) -> &mut Self {
+        self.attributes = attrs;
+        self
+    }
+
     pub fn end(&mut self) -> MayFail {
         if matches!(self.damage_type, DamageType::Unspecified) {
             println!(
@@ -352,38 +257,6 @@ impl Item {
             )
             // return Err("Unknown damage type for this item".into());
         }
-
-        self.build.metadata.damage_type = self.damage_type;
-        self.build.melee = [self.melee.min_dmg.clone(), self.melee.max_dmg.clone()];
-        self.build.ranged = [self.ranged.min_dmg.clone(), self.ranged.max_dmg.clone()];
-        self.build.deals_damage = [
-            self.melee.min_dmg.as_str(),
-            &self.melee.max_dmg,
-            &self.ranged.min_dmg,
-            &self.ranged.max_dmg,
-        ]
-        .map(|v| !is_zero(v));
-
-        self.build.identifiers = core::array::from_fn(|i| {
-            let attack_type = match i {
-                0 => AttackType::Melee,
-                1 => AttackType::Ranged,
-                _ => unreachable!(),
-            };
-
-            core::array::from_fn(|j| {
-                let damage_index = match j {
-                    0 => DamageIndex::Min,
-                    1 => DamageIndex::Max,
-                    _ => unreachable!(),
-                };
-
-                get_identifiers(&self[attack_type][damage_index], self.damage_type)
-                    .collect::<BTreeSet<_>>()
-                    .into_iter()
-                    .collect()
-            })
-        });
 
         Ok(())
     }
