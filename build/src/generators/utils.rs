@@ -10,6 +10,31 @@ pub enum Tag {
     Runes,
 }
 
+impl Tag {
+    pub const fn repr(&self) -> &'static str {
+        match self {
+            Self::Items => "u16",
+            Self::Champions | Self::Runes => "u8",
+        }
+    }
+
+    pub const fn singular(&self) -> &'static str {
+        match self {
+            Self::Items => "item",
+            Self::Champions => "champion",
+            Self::Runes => "rune",
+        }
+    }
+
+    pub const fn enum_name(&self) -> &'static str {
+        match self {
+            Self::Items => "ItemId",
+            Self::Champions => "ChampionId",
+            Self::Runes => "RuneId",
+        }
+    }
+}
+
 impl Display for Tag {
     fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         let name = match self {

@@ -93,8 +93,7 @@ pub fn batch<'b>(src: &'b str) -> BTreeMap<&'b str, BTreeMap<&'b str, Vec<FmtOut
     let mut map = BTreeMap::<_, BTreeMap<_, Vec<_>>>::new();
 
     for data in result {
-        let key = data.json.variant;
-        map.entry(key)
+        map.entry(data.json.variant)
             .or_default()
             .entry(data.json.target)
             .or_default()
@@ -102,4 +101,44 @@ pub fn batch<'b>(src: &'b str) -> BTreeMap<&'b str, BTreeMap<&'b str, Vec<FmtOut
     }
 
     map
+}
+
+pub struct Tracker<'a> {
+    inner: &'a mut String,
+}
+
+impl<'a> Tracker<'a> {
+    /// Creates a new instance of self, from an existing string that
+    /// should live longer than this struct
+    pub const fn new(inner: &'a mut String) -> Self {
+        Self { inner }
+    }
+
+    /// Get the current length of the string, which represents
+    /// the `end` offset of the last record
+    pub const fn offset(&self) -> usize {
+        self.inner.len()
+    }
+
+    pub fn push(&mut self, value: &str) -> Range<usize> {
+        if let Some(pos) = self.inner.find(value) {
+            return pos..pos + value.len();
+        }
+
+        let start = self.offset();
+        self.inner.push_str(value);
+        start..self.offset()
+    }
+
+    pub fn batch(&mut self, batch: &mut BTreeMap<&str, BTreeMap<&str, Vec<FmtOutput<'_>>>>) {
+        for value in batch.values_mut() {
+            for data in value.values_mut() {
+                for output in data.iter_mut() {
+                    if !output.json.default {
+                        output.html_range = self.push(&output.html);
+                    }
+                }
+            }
+        }
+    }
 }

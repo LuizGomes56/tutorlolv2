@@ -4,7 +4,7 @@ use crate::{
         GeneratorExt,
         impls::items::item_gen_fn,
         parser::{
-            DamageRange, Parser, ZERO, infer_damage_type, is_zero, likely_damages,
+            DamageRange, Parser, ZERO, infer_damage_type, likely_damages,
             model::{RiotCdn, RiotCdnItem, RiotCdnItemGold},
         },
         utils::{RegExtractor, SaveTo, Tag},
@@ -33,10 +33,6 @@ impl Parser<WikiItem, Item> for ItemParser {
 
     fn map(&self) -> &BTreeMap<String, WikiItem> {
         &self.data
-    }
-
-    fn from_map(data: BTreeMap<String, WikiItem>) -> Self {
-        Self { data }
     }
 
     fn create_methods(&self, result: &mut String, id: &str) -> MayFail<bool> {

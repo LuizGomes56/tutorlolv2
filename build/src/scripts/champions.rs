@@ -29,7 +29,7 @@ struct ChampionExt {
 }
 
 impl Champion {
-    pub fn build(&mut self, out: &PathBuf) -> MayFail {
+    pub fn build(&mut self, out: PathBuf) -> MayFail {
         let ChampionExt {
             metadata,
             closures,
@@ -70,28 +70,18 @@ impl Champion {
 
         write!(
             docs,
-            "#[fmt({fmt_args})]
+            "#[fmt({fmt})]
             static {upper_id}: Champion = Champion {{
                 name: {name:?},
                 adaptive_type: {adaptive_type:?},
                 attack_type: {attack_type:?},
                 positions: {positions:#?}, {damage}
             }};",
-            fmt_args = json!(FmtArgs {
+            fmt = json!(FmtArgs {
                 target: "formula",
                 variant: &champion_id,
                 meta: (),
-                replace: [
-                    (": Champion = Champion", " ="),
-                    ("DevMergeData ", ""),
-                    ("WikiStats ", ""),
-                    ("Stat ", ""),
-                    ("WikiModifiers ", ""),
-                    ("Modifier ", ""),
-                    ("TypeMetadata ", ""),
-                    ("ctx.", "")
-                ]
-                .into(),
+                replace: [(": Champion = Champion", " ="), ("ctx.", "")].into(),
                 default: false
             })
         )?;
@@ -207,15 +197,11 @@ impl Champion {
 
             write!(
                 rust,
-                "
-                pub const fn {function}({param}: &Ctx) -> f32 {{
-                    {formula_f32}
-                }}
-
-                {rust_block}
-                ",
+                "pub const fn {function}({param}: &Ctx) -> f32 {{{formula_f32}}}",
                 param = ctx_param(&formula_f32)
             )?;
+
+            writeln!(rust, "{rust_block}")?;
 
             write!(
                 docs,

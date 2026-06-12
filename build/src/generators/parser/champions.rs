@@ -53,10 +53,6 @@ impl Parser<WikiChampion, Champion> for ChampionParser {
         })
     }
 
-    fn from_map(data: BTreeMap<String, WikiChampion>) -> Self {
-        Self { data }
-    }
-
     fn map(&self) -> &BTreeMap<String, WikiChampion> {
         &self.data
     }

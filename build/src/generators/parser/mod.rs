@@ -4,18 +4,20 @@ use crate::{
         GeneratorExt, VERSION,
         utils::{SaveTo, Tag},
     },
+    model::{champions::WikiChampion, items::WikiItem, runes::WikiRune},
+    scripts::batch::FmtArgs,
 };
 use rayon::iter::{IntoParallelRefIterator, ParallelBridge, ParallelIterator};
 use regex::Regex;
 use serde::{Deserialize, Serialize, de::DeserializeOwned};
-use serde_json::Value;
+use serde_json::{Value, json};
 use std::{
-    collections::BTreeMap,
+    collections::{BTreeMap, BTreeSet, HashMap},
     ops::{Index, IndexMut},
     path::Path,
     sync::LazyLock,
 };
-use tutorlolv2_fmt::rustfmt;
+use tutorlolv2_fmt::{pascal_case, rustfmt, to_ssnake};
 use tutorlolv2_types::{CtxVar, DamageIndex, DamageType};
 
 pub mod champions;
@@ -25,10 +27,51 @@ pub mod runes;
 
 pub const ZERO: &str = "zero";
 
+pub trait MapValueExt {
+    fn riot_id(&self) -> u32;
+    fn name(&self) -> &str;
+}
+
+impl MapValueExt for WikiChampion {
+    fn riot_id(&self) -> u32 {
+        panic!("Champions can't have riot_id fields")
+    }
+
+    fn name(&self) -> &str {
+        &self.name
+    }
+}
+
+impl MapValueExt for WikiItem {
+    fn riot_id(&self) -> u32 {
+        self.id
+    }
+
+    fn name(&self) -> &str {
+        &self.name
+    }
+}
+
+impl MapValueExt for WikiRune {
+    fn riot_id(&self) -> u32 {
+        self.riot_id as _
+    }
+
+    fn name(&self) -> &str {
+        &self.name
+    }
+}
+
+pub struct StaticVar {
+    pub attribute: &'static str,
+    pub name: &'static str,
+    pub vtype: &'static str,
+}
+
 pub trait Parser<T, U>
 where
     Self: Sized + Sync,
-    T: Clone + DeserializeOwned + Send + Sync + 'static,
+    T: Clone + DeserializeOwned + MapValueExt + Send + Sync + 'static,
     U: TryFrom<T, Error = Box<dyn core::error::Error + Send + Sync>> + Serialize,
 {
     const TAG: Tag;
@@ -38,7 +81,159 @@ where
     fn map(&self) -> &BTreeMap<String, T>;
     fn create_methods(&self, result: &mut String, id: &str) -> MayFail<bool>;
 
-    fn from_map(data: BTreeMap<String, T>) -> Self;
+    fn phf(&self, extras: Option<BTreeMap<String, Vec<String>>>) -> String {
+        let enum_name = Self::TAG.enum_name();
+
+        fn get_aliases<'a>(id: &'a str, name: &'a str) -> Vec<String> {
+            let get = |s: &str| {
+                [
+                    s.to_string(),
+                    s.to_lowercase(),
+                    s.to_uppercase(),
+                    pascal_case(s),
+                    pascal_case(s).to_lowercase(),
+                    pascal_case(s).to_uppercase(),
+                    to_ssnake(s),
+                    to_ssnake(s).to_lowercase(),
+                    to_ssnake(s).to_uppercase(),
+                ]
+            };
+
+            [get(id), get(name)].concat()
+        }
+
+        let arguments = self
+            .map()
+            .iter()
+            .map(|(key, value)| {
+                let name = &value.name();
+
+                let mut aliases = get_aliases(key, name);
+
+                if let Some(extra) = &extras
+                    && let Some(extra_aliases) = extra.get(key)
+                {
+                    extra_aliases.iter().cloned().for_each(|a| aliases.push(a));
+                }
+
+                let alias = BTreeSet::from_iter(aliases)
+                    .into_iter()
+                    .map(|v| format!("{v:?}"))
+                    .collect::<Vec<_>>()
+                    .join(" | ");
+
+                format!("{alias} => {enum_name}::{key}")
+            })
+            .collect::<Vec<_>>()
+            .join(",");
+
+        format!(
+            "pub static {utag}_NAME_TO_ID: phf::Map<&str, {enum_name}> = phf::phf_map!({arguments});",
+            utag = Self::TAG.singular().to_uppercase(),
+        )
+    }
+
+    fn id_enum(&self) -> String {
+        format!(
+            "#[derive(
+                Clone, Copy, Debug, Decode, Deserialize, Eq, Encode,
+                Hash, Ord, PartialEq, PartialOrd, Serialize
+            )]
+            #[repr({repr})]
+            pub enum {enum_name} {{{variants}}}
+
+            impl {enum_name} {{
+                pub const VARIANTS: usize = {len};
+                pub const fn debug(&self) -> &'static str {{
+                    match self {{{debug_arms}}}
+                }}
+                {riot_id_conv}
+            }}",
+            enum_name = Self::TAG.enum_name(),
+            repr = Self::TAG.repr(),
+            variants = self.keys().collect::<Vec<_>>().join(","),
+            len = self.map().len(),
+            debug_arms = self
+                .keys()
+                .map(|name| format!("Self::{name} => {name:?},"))
+                .collect::<String>(),
+            riot_id_conv = if !matches!(Self::TAG, Tag::Champions) {
+                format!(
+                    "pub const fn from_riot_id(id: u32) -> Option<Self> {{
+                        match id {{ {match_arms} _ => None }}
+                    }}",
+                    match_arms = self
+                        .map()
+                        .iter()
+                        .map(|(key, value)| {
+                            format!("{riot_id} => Some(Self::{key}),", riot_id = value.riot_id())
+                        })
+                        .collect::<String>()
+                )
+            } else {
+                String::new()
+            }
+        )
+    }
+
+    fn generator(id: &str, variant: &str) -> String {
+        let folder = Self::TAG.singular();
+        let mut default = false;
+        let mut generator = crate::read_to_string(format!(
+            "build/src/generators/impls/{folder}s/{file_name}.rs",
+            file_name = to_ssnake(id).to_lowercase()
+        ))
+        .unwrap_or_else(|_| {
+            default = true;
+            "impl Generator {}".into()
+        });
+
+        if let Some(pos) = generator.find("impl") {
+            generator.drain(..pos);
+        }
+
+        generator.insert_str(
+            0,
+            &format!(
+                "#[fmt({fmt})]",
+                fmt = json!(FmtArgs {
+                    target: "generator",
+                    variant,
+                    meta: (),
+                    replace: Default::default(),
+                    default
+                })
+            ),
+        );
+        generator
+    }
+
+    fn variable(var: &str, vtype: &str) -> String {
+        let enum_name = Self::TAG.enum_name();
+        format!(
+            "pub static {var}: [{vtype}; {enum_name}::VARIANTS] = [",
+            var = var.to_uppercase()
+        )
+    }
+
+    fn data_variable(&self) -> String {
+        let vtype = pascal_case(Self::TAG.singular());
+        let var = format!("{}S_DATA", vtype.to_uppercase());
+        let mut data = Self::variable(&var, &format!("&{vtype}"));
+
+        for id in self.keys() {
+            let upper_id = to_ssnake(id);
+            let lower_id = upper_id.to_lowercase();
+            data.push_str(&format!("&{lower_id}::{upper_id},"));
+        }
+
+        data.push_str("];");
+        data
+    }
+
+    fn keys(&self) -> impl Iterator<Item = &str> {
+        self.map().keys().map(String::as_str)
+    }
 
     fn run_fn(&self, id: &str) -> MayFail<U> {
         self.map()
@@ -200,6 +395,21 @@ where
 
         Ok(())
     }
+
+    fn static_vars<const N: usize>(array: [StaticVar; N]) -> HashMap<&'static str, String> {
+        array
+            .into_iter()
+            .map(|static_var| {
+                let StaticVar {
+                    attribute,
+                    name,
+                    vtype,
+                } = static_var;
+
+                (attribute, Self::variable(name, vtype))
+            })
+            .collect::<HashMap<_, _>>()
+    }
 }
 
 pub fn likely_damages(text: &str) -> bool {
@@ -233,10 +443,6 @@ pub fn infer_damage_type(result: &mut String, description: &str) {
 
         result.push_str(&format!(".damage_type({alias})"));
     }
-}
-
-pub fn is_zero(value: &str) -> bool {
-    value == ZERO || value == "0" || value == "0.0" || value == "(0.0)" || value == "(0)"
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
