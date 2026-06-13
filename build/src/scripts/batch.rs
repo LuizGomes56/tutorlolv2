@@ -8,11 +8,6 @@ use std::{
     sync::LazyLock,
 };
 
-pub struct Batch {
-    pub eval: String,
-    pub fmt: String,
-}
-
 #[derive(Debug, Deserialize, Serialize)]
 pub struct FmtArgs<'a, T> {
     pub target: &'a str,

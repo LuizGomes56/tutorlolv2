@@ -7,8 +7,8 @@ impl Generator for BlackfireTorch {
         let max_dmg = self.base(Passive)?[0].times(scaling);
         let min_dmg = max_dmg.div(6);
         self.damage_type(Magic)
-            .asgn_min(min_dmg)
-            .asgn_max(max_dmg)
+            .set_min(min_dmg)
+            .set_max(max_dmg)
             .end()
     }
 }

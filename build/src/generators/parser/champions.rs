@@ -130,6 +130,7 @@ impl TryFrom<WikiChampion> for Champion {
     }
 }
 
+#[allow(dead_code)]
 impl Champion {
     fn modify_pattern<const N: usize>(
         key: Key,

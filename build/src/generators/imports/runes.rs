@@ -3,7 +3,7 @@ pub use crate::{
     generators::{Generator, GeneratorExt, parser::runes::Rune, utils::RegExtractor},
     model::runes::WikiRune,
 };
-pub use tutorlolv2_types::{AttackType::*, Attrs::*, CtxVar::*, DamageIndex::*, DamageType::*};
+pub use tutorlolv2_types::{AttackType::*, CtxVar::*, DamageIndex::*, DamageType::*};
 
 #[macro_export]
 macro_rules! decl_runes {

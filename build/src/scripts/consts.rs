@@ -1,13 +1,3 @@
-pub const ZERO_FN: &str = r#"fn zero() {
-    0.0 /* No damage */
-}"#;
-
-pub const DEFAULT_ITEM_GENERATOR: &str = r#"impl Generator for Item {
-    fn generate(&mut self) -> MayFail {
-        /* No implementation */
-    }
-}"#;
-
 pub const TOWER_DAMAGE: &str = r#"intrinsic TOWER_DAMAGE {
     damage_type: RiotFormulas::adaptive_type(
         bonus_stats.attack_damage,

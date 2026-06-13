@@ -462,6 +462,20 @@ pub enum AttackType {
     Ranged,
 }
 
+impl AttackType {
+    pub const fn from_u8(value: u8) -> Option<Self> {
+        match value {
+            0 => Some(Self::Melee),
+            1 => Some(Self::Ranged),
+            _ => None,
+        }
+    }
+
+    pub const unsafe fn from_u8_unchecked(value: u8) -> Self {
+        unsafe { core::mem::transmute(value) }
+    }
+}
+
 #[derive(
     Clone, Copy, Debug, Default, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize, Deserialize,
 )]
@@ -469,6 +483,20 @@ pub enum DamageIndex {
     #[default]
     Min,
     Max,
+}
+
+impl DamageIndex {
+    pub const fn from_u8(value: u8) -> Option<Self> {
+        match value {
+            0 => Some(Self::Min),
+            1 => Some(Self::Max),
+            _ => None,
+        }
+    }
+
+    pub const unsafe fn from_u8_unchecked(value: u8) -> Self {
+        unsafe { core::mem::transmute(value) }
+    }
 }
 
 impl FromStr for AttackType {

@@ -32,7 +32,7 @@ pub struct RiotCdn<T: core::hash::Hash + Eq = String, U = Value> {
 #[derive(Deserialize)]
 pub struct RiotCdnRuneTree {
     pub name: String,
-    pub id: usize,
+    pub id: u32,
 }
 
 #[derive(Deserialize)]
@@ -43,7 +43,7 @@ pub struct RiotCdnRuneSlot {
 #[derive(Deserialize)]
 pub struct RiotCdnRune {
     pub name: String,
-    pub id: usize,
+    pub id: u32,
     pub slots: Vec<RiotCdnRuneSlot>,
 }
 

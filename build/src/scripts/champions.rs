@@ -1,13 +1,10 @@
 use crate::{
-    MayFail,
-    generators::parser::{
-        champions::{Ability, Champion},
-        get_identifiers,
-    },
+    Build, MayFail,
+    generators::parser::champions::{Ability, Champion},
     model::champions::WikiChampion,
     scripts::{
         batch::FmtArgs,
-        utils::{cast_f32, ctx_param, simplify},
+        utils::{cast_f32, ctx_param, get_identifiers, simplify},
     },
 };
 use serde_json::json;
@@ -28,8 +25,8 @@ struct ChampionExt {
     merge_data: Vec<MergeData>,
 }
 
-impl Champion {
-    pub fn build(&mut self, out: PathBuf) -> MayFail {
+impl Build for Champion {
+    fn build(&mut self, out: PathBuf) -> MayFail {
         let ChampionExt {
             metadata,
             closures,
@@ -53,7 +50,7 @@ impl Champion {
             combo,
             abilities,
             ..
-        } = self;
+        } = &self;
 
         let mut rust = String::new();
         let mut docs = String::new();
@@ -71,7 +68,7 @@ impl Champion {
         write!(
             docs,
             "#[fmt({fmt})]
-            static {upper_id}: Champion = Champion {{
+            static {upper_id}: X = X {{
                 name: {name:?},
                 adaptive_type: {adaptive_type:?},
                 attack_type: {attack_type:?},
@@ -81,7 +78,7 @@ impl Champion {
                 target: "formula",
                 variant: &champion_id,
                 meta: (),
-                replace: [(": Champion = Champion", " ="), ("ctx.", "")].into(),
+                replace: [(": X = X", " ="), ("ctx.", "")].into(),
                 default: false
             })
         )?;
@@ -184,7 +181,7 @@ impl Champion {
                 format!("concat!({})", chunks.join(", "))
             }
 
-            let rust_block = format_args!(
+            let docs_block = format_args!(
                 "static {variable}: Ability = Ability {{
                     name: {name:?},
                     damage_type: {damage_type:?},
@@ -201,15 +198,13 @@ impl Champion {
                 param = ctx_param(&formula_f32)
             )?;
 
-            writeln!(rust, "{rust_block}")?;
-
             write!(
                 docs,
                 "#[fmt({fmt_fn})]
                 fn {function}() {{{formula}}}
 
                 #[fmt({fmt_block})]
-                {rust_block}",
+                {docs_block}",
                 fmt_fn = json!(FmtArgs {
                     target: "closure",
                     variant: &champion_id,
@@ -244,11 +239,13 @@ impl Champion {
                 .collect::<String>()
         );
 
-        crate::write(&out.with_extension("rs"), rust)?;
-        crate::write(&out.with_extension("w48"), docs)?;
-        crate::write(&out.with_extension("eval"), eval)
+        crate::write(out.with_extension("rs"), rust)?;
+        crate::write(out.with_extension("w48"), docs)?;
+        crate::write(out.with_extension("eval"), eval)
     }
+}
 
+impl Champion {
     fn finish(&mut self) -> MayFail<ChampionExt> {
         let metadata = self
             .abilities

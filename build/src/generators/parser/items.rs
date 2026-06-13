@@ -149,6 +149,7 @@ impl TryFrom<WikiItem> for Item {
     }
 }
 
+#[allow(dead_code)]
 impl Item {
     pub fn damage_type(&mut self, damage_type: DamageType) -> &mut Self {
         self.damage_type = damage_type;
@@ -197,17 +198,19 @@ impl Item {
         source: Source,
         indexes: impl IntoIterator<Item = usize>,
     ) -> MayFail<String> {
-        Ok("0".into())
-        // let filter = indexes.into_iter().collect::<Vec<_>>();
-        // Ok(self
-        //     .effect(source)?
-        //     .scalings
-        //     .iter()
-        //     .enumerate()
-        //     .filter(|(i, _)| filter.contains(i))
-        //     .filter_map(|(_, scaling)| scaling.render(CtxVar::Level).ok())
-        //     .collect::<Vec<_>>()
-        //     .join(" + "))
+        let filter = indexes.into_iter().collect::<Vec<_>>();
+        Ok(self
+            .effect(source)?
+            .scalings
+            .iter()
+            .enumerate()
+            .filter(|(i, _)| filter.contains(i))
+            .filter_map(|(_, scaling)| {
+                Some("0")
+                // scaling.render(CtxVar::Level).ok()
+            })
+            .collect::<Vec<_>>()
+            .join(" + "))
     }
 
     pub fn damage(
@@ -220,12 +223,12 @@ impl Item {
         Ok(self.assign(attack_type, var, &formula))
     }
 
-    pub fn asgn_min(&mut self, damage: impl ToString) -> &mut Self {
+    pub fn set_min(&mut self, damage: impl ToString) -> &mut Self {
         self.assign(AttackType::Melee, DamageIndex::Min, &damage)
             .assign(AttackType::Ranged, DamageIndex::Min, &damage)
     }
 
-    pub fn asgn_max(&mut self, damage: impl ToString) -> &mut Self {
+    pub fn set_max(&mut self, damage: impl ToString) -> &mut Self {
         self.assign(AttackType::Melee, DamageIndex::Max, &damage)
             .assign(AttackType::Ranged, DamageIndex::Max, &damage)
     }

@@ -5,20 +5,21 @@ use crate::{
         utils::{SaveTo, Tag},
     },
     model::{champions::WikiChampion, items::WikiItem, runes::WikiRune},
-    scripts::batch::FmtArgs,
+    scripts::{
+        batch::FmtArgs,
+        utils::{StaticVar, static_vars, variable},
+    },
 };
 use rayon::iter::{IntoParallelRefIterator, ParallelBridge, ParallelIterator};
-use regex::Regex;
 use serde::{Deserialize, Serialize, de::DeserializeOwned};
 use serde_json::{Value, json};
 use std::{
     collections::{BTreeMap, BTreeSet, HashMap},
     ops::{Index, IndexMut},
     path::Path,
-    sync::LazyLock,
 };
 use tutorlolv2_fmt::{pascal_case, rustfmt, to_ssnake};
-use tutorlolv2_types::{CtxVar, DamageIndex, DamageType};
+use tutorlolv2_types::DamageIndex;
 
 pub mod champions;
 pub mod items;
@@ -62,12 +63,7 @@ impl MapValueExt for WikiRune {
     }
 }
 
-pub struct StaticVar {
-    pub attribute: &'static str,
-    pub name: &'static str,
-    pub vtype: &'static str,
-}
-
+#[allow(dead_code)]
 pub trait Parser<T, U>
 where
     Self: Sized + Sync,
@@ -80,6 +76,10 @@ where
     fn new() -> MayFail<Self>;
     fn map(&self) -> &BTreeMap<String, T>;
     fn create_methods(&self, result: &mut String, id: &str) -> MayFail<bool>;
+
+    fn tag(&self) -> Tag {
+        Self::TAG
+    }
 
     fn phf(&self, extras: Option<BTreeMap<String, Vec<String>>>) -> String {
         let enum_name = Self::TAG.enum_name();
@@ -177,10 +177,10 @@ where
     }
 
     fn generator(id: &str, variant: &str) -> String {
-        let folder = Self::TAG.singular();
+        let folder = Self::TAG.plural();
         let mut default = false;
         let mut generator = crate::read_to_string(format!(
-            "build/src/generators/impls/{folder}s/{file_name}.rs",
+            "build/src/generators/impls/{folder}/{file_name}.rs",
             file_name = to_ssnake(id).to_lowercase()
         ))
         .unwrap_or_else(|_| {
@@ -208,18 +208,14 @@ where
         generator
     }
 
-    fn variable(var: &str, vtype: &str) -> String {
-        let enum_name = Self::TAG.enum_name();
-        format!(
-            "pub static {var}: [{vtype}; {enum_name}::VARIANTS] = [",
-            var = var.to_uppercase()
-        )
+    fn static_vars<'a, const N: usize>(array: [StaticVar<'a>; N]) -> HashMap<&'a str, String> {
+        static_vars(Self::TAG, array)
     }
 
     fn data_variable(&self) -> String {
         let vtype = pascal_case(Self::TAG.singular());
         let var = format!("{}S_DATA", vtype.to_uppercase());
-        let mut data = Self::variable(&var, &format!("&{vtype}"));
+        let mut data = variable(Self::TAG, &var, &format!("&{vtype}"));
 
         for id in self.keys() {
             let upper_id = to_ssnake(id);
@@ -231,7 +227,7 @@ where
         data
     }
 
-    fn keys(&self) -> impl Iterator<Item = &str> {
+    fn keys(&self) -> impl Iterator<Item = &str> + Send + Sync {
         self.map().keys().map(String::as_str)
     }
 
@@ -258,7 +254,7 @@ where
         let path = Path::new(&dir);
 
         if let Some(parent) = path.parent() {
-            let target = parent.join(Self::TAG.to_string()).with_extension("json");
+            let target = parent.join(Self::TAG.plural()).with_extension("json");
             let _ = Value::from_dir(dir).map(|r| r.into_file(target));
         }
     }
@@ -373,7 +369,7 @@ where
         let dir = Path::new(&dir_loc);
 
         let decl = dir.join("mod").with_extension("rs");
-        let module = format_args!("decl_{tag}");
+        let module = format_args!("decl_{}", tag.plural());
 
         keys.par_iter().try_for_each(|key| self.create(key))?;
 
@@ -394,21 +390,6 @@ where
         crate::write(&decl, decl_content)?;
 
         Ok(())
-    }
-
-    fn static_vars<const N: usize>(array: [StaticVar; N]) -> HashMap<&'static str, String> {
-        array
-            .into_iter()
-            .map(|static_var| {
-                let StaticVar {
-                    attribute,
-                    name,
-                    vtype,
-                } = static_var;
-
-                (attribute, Self::variable(name, vtype))
-            })
-            .collect::<HashMap<_, _>>()
     }
 }
 
@@ -484,18 +465,4 @@ impl Default for DamageRange {
             max_dmg: ZERO.into(),
         }
     }
-}
-
-pub fn get_identifiers(damage: &str, damage_type: DamageType) -> impl Iterator<Item = CtxVar> + '_ {
-    static RE_IDENTS: LazyLock<Regex> =
-        LazyLock::new(|| Regex::new(r"ctx\.([a-z_][a-z0-9_]*)").unwrap());
-
-    RE_IDENTS
-        .captures_iter(&damage)
-        .filter_map(|cap| tutorlolv2_fmt::pascal_case(&cap[1]).parse().ok())
-        .chain(match damage_type {
-            DamageType::Physical => Some(CtxVar::PhysicalMultiplier),
-            DamageType::Magic => Some(CtxVar::MagicMultiplier),
-            _ => None,
-        })
 }

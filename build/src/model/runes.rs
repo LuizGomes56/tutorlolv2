@@ -8,6 +8,6 @@ pub struct WikiRune {
     pub rune_id: String,
     pub effects: BTreeMap<String, Effect>,
     pub descriptions: Vec<String>,
-    pub riot_id: usize,
+    pub riot_id: u32,
     pub custom: bool,
 }

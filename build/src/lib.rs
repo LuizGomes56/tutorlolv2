@@ -1,14 +1,15 @@
 use crate::{
     generators::{
         parser::{
-            Parser, StaticVar, champions::ChampionParser, items::ItemParser, runes::RuneParser,
+            MapValueExt, Parser, champions::ChampionParser, items::ItemParser, runes::RuneParser,
         },
         utils::Tag,
     },
     scripts::{
         batch::{FmtOutput, Tracker, batch},
         consts::*,
-        finish::{cfinish, ifinish},
+        finish::{finish_champions, finish_items_or_runes},
+        utils::{StaticVar, static_vars},
     },
 };
 use rayon::iter::{IntoParallelIterator, ParallelBridge, ParallelIterator};
@@ -17,7 +18,6 @@ use std::{
     collections::{BTreeMap, BTreeSet},
     fmt::Write,
     fs::DirEntry,
-    ops::Range,
     path::{Path, PathBuf},
     process::Command,
 };
@@ -29,6 +29,10 @@ mod scripts;
 
 pub type DynError = Box<dyn core::error::Error + Send + Sync + 'static>;
 pub type MayFail<T = (), E = DynError> = Result<T, E>;
+
+pub trait Build {
+    fn build(&mut self, out_path: PathBuf) -> MayFail;
+}
 
 fn write_module<'a>(
     cmd48: &mut Command,
@@ -93,16 +97,33 @@ pub fn run() -> MayFail {
     let mut i_result = MayFail::Ok(());
     let mut r_result = MayFail::Ok(());
 
+    fn build_code<
+        T: Clone + DeserializeOwned + MapValueExt + Send + Sync + 'static,
+        U: Build + TryFrom<T, Error = DynError> + Serialize,
+    >(
+        parser: &impl Parser<T, U>,
+        out_dir: impl AsRef<Path>,
+        f: impl Fn() -> MayFail<Option<BTreeMap<String, Vec<String>>>>,
+    ) -> MayFail {
+        || -> MayFail {
+            let out = out_dir.as_ref();
+            let tag = parser.tag().plural();
+            parser.keys().par_bridge().try_for_each(|id| {
+                let out_path = out.join(tag).join(id);
+                parser.run_fn(id)?.build(out_path)
+            })?;
+
+            write(
+                out.join(format!("{tag}_code")).with_extension("rs"),
+                [parser.id_enum(), parser.phf(f()?), parser.data_variable()].concat(),
+            )
+        }()
+    }
+
     rayon::scope(|s| {
         s.spawn(|_| {
-            let map = cparser.map();
-
-            c_result = || -> MayFail {
-                cparser.keys().par_bridge().try_for_each(|id| {
-                    let out_path = out_dir.join("champions").join(id);
-                    cparser.run_fn(id)?.build(out_path)
-                })?;
-
+            c_result = build_code(&cparser, &out_dir, || {
+                let map = cparser.map();
                 let languages = BTreeMap::<String, BTreeSet<String>>::from_file(
                     "internal/champion_languages.json",
                 )?;
@@ -125,58 +146,42 @@ pub fn run() -> MayFail {
                     })
                     .collect();
 
-                write(
-                    out_dir.join("champions_code").with_extension("rs"),
-                    [
-                        cparser.id_enum(),
-                        cparser.phf(Some(alias)),
-                        cparser.data_variable(),
-                    ]
-                    .concat(),
-                )
-            }();
+                Ok(Some(alias))
+            });
         });
         s.spawn(|_| {
-            i_result = || -> MayFail {
-                iparser.keys().par_bridge().try_for_each(|id| {
-                    let out_path = out_dir.join("items").join(id);
-                    iparser.run_fn(id)?.build(out_path)
-                })?;
-
-                write(
-                    out_dir.join("items_code").with_extension("rs"),
-                    [
-                        iparser.id_enum(),
-                        iparser.phf(None),
-                        iparser.data_variable(),
-                    ]
-                    .concat(),
-                )
-            }();
+            i_result = build_code(&iparser, &out_dir, || Ok(None));
         });
         s.spawn(|_| {
-            r_result = || -> MayFail {
-                rparser.keys().par_bridge().try_for_each(|id| {
-                    let out_path = out_dir.join("runes").join(id);
-                    rparser.run_fn(id)?.build(out_path)
-                })?;
-
-                write(
-                    out_dir.join("runes_code").with_extension("rs"),
-                    [
-                        rparser.id_enum(),
-                        rparser.phf(None),
-                        rparser.data_variable(),
-                    ]
-                    .concat(),
-                )
-            }();
+            r_result = build_code(&rparser, &out_dir, || Ok(None));
         });
     });
 
     c_result?;
     i_result?;
     r_result?;
+
+    /*
+    * pub fn get_const_eval(data: &BTreeMap<&String, Batch>, tag: Tag) -> String {
+        format!(
+            "
+             pub const fn {ltag}_const_eval(
+                 ctx: &Ctx,
+                 {ltag}_id: {tag:?}Id,
+                 attack_type: AttackType
+             ) -> [f32; 2] {{
+                 match {ltag}_id {{{eval}}}
+             }}
+             ",
+            ltag = tag.singular().to_lowercase(),
+            eval = data
+                .values()
+                .map(|batch| batch.eval.as_str())
+                .collect::<Vec<&str>>()
+                .concat()
+        )
+    }
+    */
 
     cmd48.status()?;
 
@@ -188,9 +193,6 @@ pub fn run() -> MayFail {
 }
 
 fn build_docs(out_dir: PathBuf) -> MayFail {
-    pub static mut ZERO_FN_OFFSET: Range<usize> = 0..0;
-    pub static mut DEFAULT_ITEM_GENERATOR_OFFSET: Range<usize> = 0..0;
-
     let full = [Tag::Champions, Tag::Items, Tag::Runes]
         .into_par_iter()
         .map(|dir| {
@@ -210,11 +212,6 @@ fn build_docs(out_dir: PathBuf) -> MayFail {
     let mut full_block = String::with_capacity(12 * 1024 * 1024);
     let mut exports = String::with_capacity(4 * 1024 * 1024);
     let mut tracker = Tracker::new(&mut full_block);
-
-    unsafe {
-        DEFAULT_ITEM_GENERATOR_OFFSET = tracker.push(&rust_html(DEFAULT_ITEM_GENERATOR));
-        ZERO_FN_OFFSET = tracker.push(&rust_html(ZERO_FN));
-    }
 
     for (name, value) in [
         ("IGNITE_OFFSET", IGNITE_FN),
@@ -239,64 +236,54 @@ fn build_docs(out_dir: PathBuf) -> MayFail {
             Tag::Champions => ChampionParser::static_vars([
                 StaticVar {
                     attribute: "formula",
-                    name: "CHAMPION_FORMULAS",
+                    name: "CHAMPION_FORMULAS".into(),
                     vtype: "Range<usize>",
                 },
                 StaticVar {
                     attribute: "generator",
-                    name: "CHAMPION_GENERATOR",
+                    name: "CHAMPION_GENERATOR".into(),
                     vtype: "Range<usize>",
                 },
                 StaticVar {
                     attribute: "ability",
-                    name: "ABILITY_FORMULAS",
+                    name: "ABILITY_FORMULAS".into(),
                     vtype: "&[Range<usize>]",
                 },
                 StaticVar {
                     attribute: "closure",
-                    name: "ABILITY_CLOSURES",
+                    name: "ABILITY_CLOSURES".into(),
                     vtype: "&[Range<usize>]",
                 },
             ]),
-            Tag::Items => ItemParser::static_vars([
-                StaticVar {
-                    attribute: "formula",
-                    name: "ITEM_FORMULAS",
-                    vtype: "Range<usize>",
-                },
-                StaticVar {
-                    attribute: "generator",
-                    name: "ITEM_GENERATOR",
-                    vtype: "Range<usize>",
-                },
-                StaticVar {
-                    attribute: "closure",
-                    name: "ITEM_CLOSURES",
-                    vtype: "[[Range<usize>; 2]; 2]",
-                },
-            ]),
-            Tag::Runes => RuneParser::static_vars([
-                StaticVar {
-                    attribute: "formula",
-                    name: "RUNE_FORMULAS",
-                    vtype: "Range<usize>",
-                },
-                StaticVar {
-                    attribute: "generator",
-                    name: "RUNE_GENERATOR",
-                    vtype: "Range<usize>",
-                },
-                StaticVar {
-                    attribute: "closure",
-                    name: "RUNE_CLOSURES",
-                    vtype: "[[Range<usize>; 2]; 2]",
-                },
-            ]),
+            _ => {
+                let var = |postfix| format!("{}_{postfix}", dir.singular().to_uppercase());
+
+                static_vars(
+                    dir,
+                    [
+                        StaticVar {
+                            attribute: "formula",
+                            name: var("FORMULAS"),
+                            vtype: "Range<usize>",
+                        },
+                        StaticVar {
+                            attribute: "generator",
+                            name: var("GENERATOR"),
+                            vtype: "Range<usize>",
+                        },
+                        StaticVar {
+                            attribute: "closure",
+                            name: var("CLOSURES"),
+                            vtype: "[[Range<usize>; 2]; 2]",
+                        },
+                    ],
+                )
+            }
         };
 
         let finish = match dir {
-            Tag::Champions => cfinish,
-            Tag::Items | Tag::Runes => ifinish,
+            Tag::Champions => finish_champions,
+            Tag::Items | Tag::Runes => finish_items_or_runes,
         } as fn(&str, &mut String, &mut [FmtOutput]);
 
         for values in batch.values_mut() {

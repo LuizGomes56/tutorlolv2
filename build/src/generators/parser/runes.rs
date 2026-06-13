@@ -103,7 +103,7 @@ impl TryFrom<WikiRune> for Rune {
                     })
                 })
             })
-            .unwrap_or(data.riot_id) as _;
+            .unwrap_or(data.riot_id);
 
         Ok(Self {
             riot_id,
@@ -115,6 +115,7 @@ impl TryFrom<WikiRune> for Rune {
     }
 }
 
+#[allow(dead_code)]
 impl Rune {
     pub fn damage_type(&mut self, damage_type: DamageType) -> &mut Self {
         self.damage_type = damage_type;
@@ -155,17 +156,19 @@ impl Rune {
     }
 
     pub fn scaling(&self, n: usize, indexes: impl Iterator<Item = usize>) -> MayFail<String> {
-        Ok("0".into())
-        // let filter = indexes.collect::<Vec<_>>();
-        // Ok(self
-        //     .effect(n)?
-        //     .scalings
-        //     .iter()
-        //     .enumerate()
-        //     .filter(|(i, _)| filter.contains(i))
-        //     .filter_map(|(_, scaling)| scaling.render(CtxVar::Level).ok())
-        //     .collect::<Vec<_>>()
-        //     .join(" + "))
+        let filter = indexes.collect::<Vec<_>>();
+        Ok(self
+            .effect(n)?
+            .scalings
+            .iter()
+            .enumerate()
+            .filter(|(i, _)| filter.contains(i))
+            .filter_map(|(_, scaling)| {
+                Some("0")
+                // scaling.render(CtxVar::Level).ok()
+            })
+            .collect::<Vec<_>>()
+            .join(" + "))
     }
 
     pub fn damage(

@@ -6,7 +6,7 @@ impl Generator for Cruelty {
         let scalings = self.scaling(Passive, 0..2)?;
         self.damage_type(Magic)
             /* Missing base damage (based on level) */
-            .asgn_min(scalings)
+            .set_min(scalings)
             .end()
     }
 }
