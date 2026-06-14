@@ -1,10 +1,10 @@
 use crate::{
-    Build, MayFail,
-    generators::parser::items::Item,
+    Build, MayFail, OUT_DIR,
+    generators::{parser::items::Item, utils::Tag},
     model::items::WikiItem,
     scripts::utils::{ItemOrRuneExt, fit_str},
 };
-use std::{fmt::Write, path::PathBuf};
+use std::fmt::Write;
 use tutorlolv2_fmt::to_ssnake;
 use tutorlolv2_types::{GameMap, StatName};
 
@@ -16,7 +16,7 @@ struct ItemExt {
 }
 
 impl Build for Item {
-    fn build(&mut self, out: PathBuf) -> MayFail<String> {
+    fn build(&mut self) -> MayFail<String> {
         let ItemExt {
             tier,
             price,
@@ -98,8 +98,11 @@ impl Build for Item {
         rust.push_str(code);
         docs.push_str(doc);
 
+        let out = OUT_DIR.join(Tag::Items.plural()).join(item_id);
+
         crate::write(out.with_extension("rs"), rust)?;
         crate::write(out.with_extension("w48"), docs)?;
+
         Ok(self.eval())
     }
 }

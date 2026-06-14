@@ -36,21 +36,19 @@ pub type DynError = Box<dyn core::error::Error + Send + Sync + 'static>;
 pub type MayFail<T = (), E = DynError> = Result<T, E>;
 
 pub trait Build {
-    fn build(&mut self, out_path: PathBuf) -> MayFail<String>;
+    fn build(&mut self) -> MayFail<String>;
 }
 
 fn write_module<'a>(
     cmd48: &mut Command,
     cmd80: &mut Command,
-    out_dir: impl AsRef<Path>,
     dir: &str,
     iter: &mut dyn Iterator<Item = &'a str>,
 ) -> MayFail {
-    let path = out_dir.as_ref();
-    let out = path.join(dir);
+    let out = PathBuf::from(dir);
     let mut result = String::new();
 
-    cmd80.arg(path.join(format!("{dir}_code")).with_extension("rs"));
+    cmd80.arg(PathBuf::from(format!("{dir}_code")).with_extension("rs"));
 
     for id in iter.into_iter() {
         let lower_id = to_ssnake(id).to_lowercase();
@@ -73,6 +71,10 @@ fn write_module<'a>(
 static CPARSER: LazyLock<ChampionParser> = LazyLock::new(|| ChampionParser::new().unwrap());
 static IPARSER: LazyLock<ItemParser> = LazyLock::new(|| ItemParser::new().unwrap());
 static RPARSER: LazyLock<RuneParser> = LazyLock::new(|| RuneParser::new().unwrap());
+static OUT_DIR: LazyLock<PathBuf> = LazyLock::new(|| {
+    // PathBuf::from("build_output")
+    PathBuf::from(std::env::var("OUT_DIR").unwrap())
+});
 
 pub fn run() -> MayFail {
     println!("cargo:rerun-if-changed=build/src/generators/impls/champions");
@@ -82,14 +84,13 @@ pub fn run() -> MayFail {
     println!("cargo:rerun-if-changed=cache/wiki/items");
     println!("cargo:rerun-if-changed=cache/wiki/runes");
 
-    // let out_dir = PathBuf::from(std::env::var("OUT_DIR")?);
-    let out_dir = PathBuf::from("build_output");
-
     let mut cmd48 = Command::new("rustfmt");
-    cmd48.args(["--config", "max_width=48"]);
+    cmd48
+        .current_dir(&*OUT_DIR)
+        .args(["--config", "max_width=48"]);
 
     let mut cmd80 = Command::new("rustfmt");
-    cmd80.arg(out_dir.join("docs.rs"));
+    cmd80.current_dir(&*OUT_DIR).arg(PathBuf::from("docs.rs"));
 
     for (dir, iter) in [
         (
@@ -99,7 +100,7 @@ pub fn run() -> MayFail {
         ("items", &mut IPARSER.keys()),
         ("runes", &mut RPARSER.keys()),
     ] {
-        write_module(&mut cmd48, &mut cmd80, &out_dir, dir, iter)?;
+        write_module(&mut cmd48, &mut cmd80, dir, iter)?;
     }
 
     let mut c_result = MayFail::Ok(());
@@ -108,49 +109,44 @@ pub fn run() -> MayFail {
 
     fn build_code<
         T: Clone + DeserializeOwned + MapValueExt + Send + Sync + 'static,
-        U: Build + TryFrom<T, Error = DynError> + Serialize,
+        U: Build + Serialize + TryFrom<T, Error = DynError>,
     >(
         parser: &impl Parser<T, U>,
-        out_dir: impl AsRef<Path>,
         phf_fn: impl Fn() -> MayFail<Option<BTreeMap<String, Vec<String>>>>,
         eval_fn: impl Fn(&str, Tag) -> String,
     ) -> MayFail {
-        || -> MayFail {
-            let out = out_dir.as_ref();
-            let tag = parser.tag();
-            let plural = tag.plural();
+        let tag = parser.tag();
+        let plural = tag.plural();
 
-            let eval_arms = parser
-                .keys()
-                .par_bridge()
-                .map(|id| -> MayFail<String> {
-                    let out_path = out.join(plural).join(id);
-                    parser.run_fn(id)?.build(out_path)
-                })
-                .collect::<MayFail<String>>()?;
+        println!("Building {plural}...");
 
-            write(
-                out.join(format!("{plural}_code")).with_extension("rs"),
-                [
-                    parser.id_enum(),
-                    parser.phf(phf_fn()?),
-                    parser.data_variable(),
-                    eval_fn(&eval_arms, tag),
-                ]
-                .concat(),
-            )
-        }()
+        let eval_arms = parser
+            .keys()
+            .par_bridge()
+            .map(|id| parser.run_fn(id)?.build())
+            .collect::<MayFail<String>>()?;
+
+        write(
+            OUT_DIR.join(format!("{plural}_code")).with_extension("rs"),
+            [
+                parser.id_enum(),
+                parser.phf(phf_fn()?),
+                parser.data_variable(),
+                eval_fn(&eval_arms, tag),
+            ]
+            .concat(),
+        )
     }
 
     rayon::scope(|s| {
         s.spawn(|_| {
-            c_result = build_code(&*CPARSER, &out_dir, champion_aliases, eval_abilities);
+            c_result = build_code(&*CPARSER, champion_aliases, eval_abilities);
         });
         s.spawn(|_| {
-            i_result = build_code(&*IPARSER, &out_dir, || Ok(None), eval_items_or_runes);
+            i_result = build_code(&*IPARSER, || Ok(None), eval_items_or_runes);
         });
         s.spawn(|_| {
-            r_result = build_code(&*RPARSER, &out_dir, || Ok(None), eval_items_or_runes);
+            r_result = build_code(&*RPARSER, || Ok(None), eval_items_or_runes);
         });
     });
 
@@ -160,18 +156,31 @@ pub fn run() -> MayFail {
 
     cmd48.status()?;
 
-    build_docs(out_dir)?;
+    build_docs()?;
+
+    for file in [
+        "champions",
+        "champions_code",
+        "items",
+        "items_code",
+        "runes",
+        "runes_code",
+        "docs",
+    ] {
+        let path = OUT_DIR.join(file).with_extension("rs");
+        assert!(path.exists())
+    }
 
     cmd80.status()?;
 
     Ok(())
 }
 
-fn build_docs(out_dir: PathBuf) -> MayFail {
+fn build_docs() -> MayFail {
     let full = [Tag::Champions, Tag::Items, Tag::Runes]
         .into_par_iter()
         .map(|dir| {
-            read_dir(out_dir.join(dir.plural()))
+            read_dir(OUT_DIR.join(dir.plural()))
                 .map(|r| {
                     r.filter(|entry| entry.path().extension().map_or(false, |e| e == "w48"))
                         .par_bridge()
@@ -324,8 +333,8 @@ fn build_docs(out_dir: PathBuf) -> MayFail {
         exports.push_str(&docs);
     }
 
-    write(out_dir.join("docs").with_extension("txt"), full_block)?;
-    write(out_dir.join("docs").with_extension("rs"), exports)
+    write(OUT_DIR.join("docs").with_extension("txt"), full_block)?;
+    write(OUT_DIR.join("docs").with_extension("rs"), exports)
 }
 
 pub trait JsonRead: DeserializeOwned {

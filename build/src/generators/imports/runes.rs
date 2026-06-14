@@ -30,7 +30,6 @@ macro_rules! decl_runes {
 
             impl GeneratorExt<Rune> for $Name {
                 fn end(self: Box<Self>) -> MayFail<Rune> {
-                    println!(concat!("[ok] ending generator for ", stringify!($Name)));
                     Ok(self.inner)
                 }
             }

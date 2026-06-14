@@ -35,7 +35,6 @@ macro_rules! decl_items {
 
             impl GeneratorExt<Item> for $Name {
                 fn end(self: Box<Self>) -> MayFail<Item> {
-                    println!(concat!("[ok] ending generator for ", stringify!($Name)));
                     Ok(self.inner)
                 }
             }

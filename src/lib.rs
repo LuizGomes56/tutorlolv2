@@ -7,14 +7,11 @@ pub use tutorlolv2_gen::{
     DamageType, GameMap, ItemId, Position, RuneId,
 };
 
-// mod __test {
-//     include!(concat!(env!("OUT_DIR"), "/size.rs"));
-// }
-
 extern crate alloc;
 
 pub mod calculator;
 pub mod const_eval;
+pub mod generated;
 pub mod helpers;
 pub mod model;
 pub mod realtime;

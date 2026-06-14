@@ -1,6 +1,9 @@
 use crate::{
-    Build, MayFail,
-    generators::parser::champions::{Ability, Champion},
+    Build, MayFail, OUT_DIR,
+    generators::{
+        parser::champions::{Ability, Champion},
+        utils::Tag,
+    },
     model::champions::WikiChampion,
     scripts::{
         batch::FmtArgs,
@@ -11,7 +14,6 @@ use serde_json::json;
 use std::{
     collections::{BTreeMap, BTreeSet},
     fmt::Write,
-    path::PathBuf,
     write,
 };
 use tutorlolv2_fmt::to_ssnake;
@@ -26,7 +28,7 @@ struct ChampionExt {
 }
 
 impl Build for Champion {
-    fn build(&mut self, out: PathBuf) -> MayFail<String> {
+    fn build(&mut self) -> MayFail<String> {
         let ChampionExt {
             metadata,
             closures,
@@ -51,6 +53,8 @@ impl Build for Champion {
             abilities,
             ..
         } = &self;
+
+        println!("Building {champion_id:?}...");
 
         let mut rust = String::new();
         let mut docs = String::new();
@@ -196,6 +200,8 @@ impl Build for Champion {
                 })
             )?;
         }
+
+        let out = OUT_DIR.join(Tag::Champions.plural()).join(champion_id);
 
         crate::write(out.with_extension("rs"), rust)?;
         crate::write(out.with_extension("w48"), docs)?;
