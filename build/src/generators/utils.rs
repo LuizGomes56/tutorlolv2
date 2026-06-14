@@ -4,8 +4,8 @@ use tutorlolv2_fmt::to_ssnake;
 
 #[derive(Copy, Clone, Debug, PartialEq, Ord, PartialOrd, Eq)]
 pub enum Tag {
-    Items,
     Champions,
+    Items,
     Runes,
 }
 

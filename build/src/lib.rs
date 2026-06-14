@@ -6,7 +6,7 @@ use crate::{
         utils::Tag,
     },
     scripts::{
-        batch::{FmtOutput, Tracker, batch},
+        batch::{FmtArgs, FmtOutput, Tracker, batch},
         consts::*,
         finish::{finish_champions, finish_items_or_runes},
         utils::{StaticVar, static_vars},
@@ -14,12 +14,14 @@ use crate::{
 };
 use rayon::iter::{IntoParallelIterator, ParallelBridge, ParallelIterator};
 use serde::{Serialize, de::DeserializeOwned};
+use serde_json::json;
 use std::{
     collections::{BTreeMap, BTreeSet},
     fmt::Write,
     fs::DirEntry,
     path::{Path, PathBuf},
     process::Command,
+    sync::LazyLock,
 };
 use tutorlolv2_fmt::{rust_html, to_ssnake};
 
@@ -65,6 +67,10 @@ fn write_module<'a>(
     crate::write(out.with_extension("rs"), result)
 }
 
+static CPARSER: LazyLock<ChampionParser> = LazyLock::new(|| ChampionParser::new().unwrap());
+static IPARSER: LazyLock<ItemParser> = LazyLock::new(|| ItemParser::new().unwrap());
+static RPARSER: LazyLock<RuneParser> = LazyLock::new(|| RuneParser::new().unwrap());
+
 pub fn run() -> MayFail {
     println!("cargo:rerun-if-changed=build/src/generators/impls/champions");
     println!("cargo:rerun-if-changed=cache/wiki/champions");
@@ -78,17 +84,13 @@ pub fn run() -> MayFail {
     let mut cmd80 = Command::new("rustfmt");
     cmd80.arg(out_dir.join("docs.rs"));
 
-    let cparser = ChampionParser::new()?;
-    let iparser = ItemParser::new()?;
-    let rparser = RuneParser::new()?;
-
     for (dir, iter) in [
         (
             "champions",
-            &mut cparser.keys() as &mut dyn Iterator<Item = &str>,
+            &mut CPARSER.keys() as &mut dyn Iterator<Item = &str>,
         ),
-        ("items", &mut iparser.keys()),
-        ("runes", &mut rparser.keys()),
+        ("items", &mut IPARSER.keys()),
+        ("runes", &mut RPARSER.keys()),
     ] {
         write_module(&mut cmd48, &mut cmd80, &out_dir, dir, iter)?;
     }
@@ -122,8 +124,8 @@ pub fn run() -> MayFail {
 
     rayon::scope(|s| {
         s.spawn(|_| {
-            c_result = build_code(&cparser, &out_dir, || {
-                let map = cparser.map();
+            c_result = build_code(&*CPARSER, &out_dir, || {
+                let map = CPARSER.map();
                 let languages = BTreeMap::<String, BTreeSet<String>>::from_file(
                     "internal/champion_languages.json",
                 )?;
@@ -150,10 +152,10 @@ pub fn run() -> MayFail {
             });
         });
         s.spawn(|_| {
-            i_result = build_code(&iparser, &out_dir, || Ok(None));
+            i_result = build_code(&*IPARSER, &out_dir, || Ok(None));
         });
         s.spawn(|_| {
-            r_result = build_code(&rparser, &out_dir, || Ok(None));
+            r_result = build_code(&*RPARSER, &out_dir, || Ok(None));
         });
     });
 
@@ -228,11 +230,51 @@ fn build_docs(out_dir: PathBuf) -> MayFail {
         writeln!(exports, "pub static {name}: Range<usize> = {range:?};")?;
     }
 
-    for (dir, src) in full {
+    for (tag, mut src) in full {
+        let iter = match tag {
+            Tag::Champions => &mut CPARSER.keys() as &mut (dyn Iterator<Item = &str> + Send + Sync),
+            Tag::Items => &mut IPARSER.keys(),
+            Tag::Runes => &mut RPARSER.keys(),
+        };
+
+        let generators = iter
+            .par_bridge()
+            .map(|variant| {
+                let file_name = to_ssnake(variant).to_lowercase();
+                let mut default = false;
+
+                let mut generator = read_to_string(format!(
+                    "build/src/generators/impls/{}/{file_name}.rs",
+                    tag.plural()
+                ))
+                .unwrap_or_else(|_| {
+                    default = true;
+                    "impl Generator {}".into()
+                });
+
+                if let Some(pos) = generator.find("impl") {
+                    generator.drain(..pos);
+                }
+
+                let fmt_arg = json!(FmtArgs {
+                    target: "generator",
+                    variant,
+                    meta: (),
+                    replace: Default::default(),
+                    default
+                });
+
+                generator.insert_str(0, &format!("#[fmt({fmt_arg})]"));
+                generator
+            })
+            .collect::<String>();
+
+        src.push_str(&generators);
+
         let mut batch = batch(&src);
         tracker.batch(&mut batch);
 
-        let mut fmt_args = match dir {
+        let mut fmt_args = match tag {
             Tag::Champions => ChampionParser::static_vars([
                 StaticVar {
                     attribute: "formula",
@@ -256,10 +298,10 @@ fn build_docs(out_dir: PathBuf) -> MayFail {
                 },
             ]),
             _ => {
-                let var = |postfix| format!("{}_{postfix}", dir.singular().to_uppercase());
+                let var = |postfix| format!("{}_{postfix}", tag.singular().to_uppercase());
 
                 static_vars(
-                    dir,
+                    tag,
                     [
                         StaticVar {
                             attribute: "formula",
@@ -281,7 +323,7 @@ fn build_docs(out_dir: PathBuf) -> MayFail {
             }
         };
 
-        let finish = match dir {
+        let finish = match tag {
             Tag::Champions => finish_champions,
             Tag::Items | Tag::Runes => finish_items_or_runes,
         } as fn(&str, &mut String, &mut [FmtOutput]);

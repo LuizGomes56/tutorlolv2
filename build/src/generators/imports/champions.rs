@@ -16,7 +16,7 @@ pub use tutorlolv2_types::{
 macro_rules! decl_champions {
     (inner $Name:ident) => {
         pastey::paste! {
-            pub mod [<$Name:lower>];
+            pub mod [<$Name:snake:lower:replace("jarvan_i_v", "jarvan_iv")>];
         }
     };
     ($($Name:ident),*$(,)*) => {
