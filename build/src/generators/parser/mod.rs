@@ -7,7 +7,7 @@ use crate::{
     model::{champions::WikiChampion, items::WikiItem, runes::WikiRune},
     scripts::{
         batch::FmtArgs,
-        utils::{StaticVar, static_vars, variable},
+        utils::{StaticVar, is_zero, static_vars, variable},
     },
 };
 use rayon::iter::{IntoParallelRefIterator, ParallelBridge, ParallelIterator};
@@ -434,7 +434,7 @@ pub struct DamageRange {
 
 impl DamageRange {
     pub fn deals_damage(&self) -> [bool; 2] {
-        [self.min_dmg != ZERO, self.max_dmg != ZERO]
+        [!is_zero(&self.min_dmg), !is_zero(&self.max_dmg)]
     }
 }
 

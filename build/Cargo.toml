@@ -4,7 +4,9 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
+const_sized_bit_set = { version = "0.5.0", default-features = false }
 pastey = "0.2.1"
+phf = { version = "0.13.1", features = ["macros"] }
 rayon = "1.11.0"
 regex = "1.11.2"
 serde = { version = "1.0", features = ["derive"] }

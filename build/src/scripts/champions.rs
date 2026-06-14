@@ -89,7 +89,7 @@ impl Build for Champion {
 
         write!(
             rust,
-            "pub static {upper_id}: Champion = Champion {{
+            "pub static {upper_id}: X = X {{
                 name: {name:?},
                 adaptive_type: AdaptiveType::{adaptive_type:?},
                 attack_type: {attack_type:?},
@@ -160,17 +160,6 @@ impl Build for Champion {
                 }
             };
 
-            let docs_block = format_args!(
-                "static {variable}: Ability = Ability {{
-                    name: {name:?},
-                    damage_type: {damage_type:?},
-                    attributes: {attributes:?},
-                    comment: {comment},
-                    {damage_attr},
-                }};",
-                comment = fit_str(comment),
-            );
-
             write!(
                 rust,
                 "pub const fn {function}({param}: &Ctx) -> f32 {{{formula_f32}}}",
@@ -183,7 +172,14 @@ impl Build for Champion {
                 fn {function}() {{{formula}}}
 
                 #[fmt({fmt_block})]
-                {docs_block}",
+                static {variable}: Ability = Ability {{
+                    name: {name:?},
+                    damage_type: {damage_type:?},
+                    attributes: {attributes:?},
+                    comment: {comment},
+                    {damage_attr},
+                }};",
+                comment = fit_str(comment),
                 fmt_fn = json!(FmtArgs {
                     target: "closure",
                     variant: &champion_id,
@@ -218,7 +214,8 @@ impl Build for Champion {
                 .zip(metadata)
                 .map(|(function, metadata)| {
                     let ability_id = metadata.kind;
-                    format!("{ability_id:?} => {function}(ctx),")
+                    let module = to_ssnake(champion_id).to_lowercase();
+                    format!("{ability_id:?} => {module}::{function}(ctx),")
                 })
                 .collect::<String>()
         ))

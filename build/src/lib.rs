@@ -51,7 +51,7 @@ fn write_module<'a>(
     cmd80.arg(PathBuf::from(format!("{dir}_code")).with_extension("rs"));
 
     for id in iter.into_iter() {
-        let lower_id = to_ssnake(id).to_lowercase();
+        let module = to_ssnake(id).to_lowercase();
         let out_path = out.join(id);
 
         cmd48.arg(out_path.with_extension("w48"));
@@ -59,13 +59,14 @@ fn write_module<'a>(
 
         writeln!(
             result,
-            r#"pub mod {lower_id} {{
+            r#"pub mod {module} {{
+                use super::*;
                 include!(concat!(env!("OUT_DIR"), "/{dir}/{id}.rs"));
             }}"#
         )?;
     }
 
-    crate::write(out.with_extension("rs"), result)
+    crate::write(OUT_DIR.join(dir).with_extension("rs"), result)
 }
 
 static CPARSER: LazyLock<ChampionParser> = LazyLock::new(|| ChampionParser::new().unwrap());
@@ -117,8 +118,6 @@ pub fn run() -> MayFail {
     ) -> MayFail {
         let tag = parser.tag();
         let plural = tag.plural();
-
-        println!("Building {plural}...");
 
         let eval_arms = parser
             .keys()

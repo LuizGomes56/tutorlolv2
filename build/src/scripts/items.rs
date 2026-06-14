@@ -55,7 +55,7 @@ impl Build for Item {
                 deals_damage: {deals_damage:?},
                 purchasable: {purchasable},
                 riot_id: {id},
-                identifiers: {identifiers:?},
+                identifiers: &{identifiers:?},
                 custom: {custom}
             }};",
             identifiers = self.identifiers(),

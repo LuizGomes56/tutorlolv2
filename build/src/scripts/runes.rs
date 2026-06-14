@@ -34,7 +34,7 @@ impl Build for Rune {
                 {fn_names}
                 deals_damage: {deals_damage:?},
                 riot_id: {riot_id},
-                identifiers: {identifiers:?},
+                identifiers: &{identifiers:?},
                 custom: {custom}
             }};",
             identifiers = self.identifiers(),

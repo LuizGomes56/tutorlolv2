@@ -10,7 +10,7 @@ use regex::{Captures, Regex};
 use serde_json::{Value, json};
 use std::{
     collections::{BTreeSet, HashMap, HashSet},
-    fmt::Write,
+    fmt::{Debug, Write},
     ops::{Index, Range},
     sync::LazyLock,
 };
@@ -175,7 +175,7 @@ impl ItemOrRune for Rune {
 impl ItemOrRuneExt for Item {}
 impl ItemOrRuneExt for Rune {}
 
-pub trait ItemOrRuneExt: Index<AttackType, Output = DamageRange> + ItemOrRune {
+pub trait ItemOrRuneExt: Index<AttackType, Output = DamageRange> + ItemOrRune + Debug {
     fn identifiers(&self) -> Vec<CtxVar> {
         let mut set = BTreeSet::new();
 
@@ -225,11 +225,14 @@ pub trait ItemOrRuneExt: Index<AttackType, Output = DamageRange> + ItemOrRune {
 
     fn eval(&self) -> String {
         let id = self.id();
+        let module = to_ssnake(id).to_lowercase();
+
         let deals_damage = [
             self[AttackType::Melee].deals_damage(),
             self[AttackType::Ranged].deals_damage(),
         ]
         .concat();
+
         let functions = self.functions();
 
         let get_arms = |range: Range<_>| {
@@ -238,7 +241,7 @@ pub trait ItemOrRuneExt: Index<AttackType, Output = DamageRange> + ItemOrRune {
                 .enumerate()
                 .map(|(i, v)| {
                     let f = match *v {
-                        true => &functions[i],
+                        true => &format!("{module}::{}", functions[i]),
                         false => ZERO,
                     };
                     format!("{f}(&ctx)")
@@ -338,8 +341,9 @@ pub trait ItemOrRuneExt: Index<AttackType, Output = DamageRange> + ItemOrRune {
         let same_max = melee_max == ranged_max;
 
         let mut parts = Vec::new();
+        let deals_damage = [melee.deals_damage(), ranged.deals_damage()].concat();
 
-        match [melee.deals_damage(), ranged.deals_damage()].concat()[..] {
+        match deals_damage[..] {
             [false, false, false, false] => {}
             [true, false, false, false] => {
                 parts.push(format!("melee_min_dmg: {}", simplify(melee_min)));
@@ -378,7 +382,10 @@ pub trait ItemOrRuneExt: Index<AttackType, Output = DamageRange> + ItemOrRune {
                     parts.push(format!("ranged_max_dmg: {}", simplify(ranged_max)));
                 }
             }
-            _ => unreachable!("Invalid deals_damage state. Maybe max without min"),
+            _ => unreachable!(
+                "Invalid deals_damage state for {} [{deals_damage:?}]:\n{self:#?}",
+                self.id()
+            ),
         }
 
         if parts.is_empty() {
