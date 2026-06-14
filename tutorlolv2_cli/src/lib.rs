@@ -1,12 +1,12 @@
 use clap::{Parser, Subcommand, ValueEnum};
 use std::{convert::Infallible, str::FromStr, sync::LazyLock};
+use tutorlolv2::{ChampionId, ItemId, RuneId};
 use tutorlolv2_dev::{
     ENV_CONFIG, HTTP_CLIENT, MayFail,
     gen_factories::{
         Parser as _, wiki_champions::ChampionParser, wiki_items::ItemParser, wiki_runes::RuneParser,
     },
 };
-use tutorlolv2_gen::{ChampionId, ItemId, RuneId};
 use tutorlolv2_wiki::{champions, items, runes};
 
 #[derive(Parser, Debug)]
@@ -70,8 +70,6 @@ pub enum AppArgs {
     Html,
     #[command(alias = "s")]
     Setup { setup: Setup },
-    #[command(alias = "b")]
-    Build,
     #[command(alias = "f")]
     Fetch { function: Fetch },
     #[command(alias = "w")]
@@ -190,8 +188,6 @@ pub async fn run() -> MayFail {
 
             // let _ = HTTP_CLIENT.call_scraper().await;
             // let _ = HTTP_CLIENT.combo_scraper().await;
-
-            tutorlolv2_build::run()?;
         }
         AppArgs::Html => tutorlolv2_html::run(),
         AppArgs::Setup { setup } => match setup {
@@ -204,7 +200,6 @@ pub async fn run() -> MayFail {
                 todo!()
             }
         },
-        AppArgs::Build => tutorlolv2_build::run()?,
         AppArgs::Fetch { function } => match function {
             Fetch::Images => {
                 HTTP_CLIENT.download_arts_img().await?;

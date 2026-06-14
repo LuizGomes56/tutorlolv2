@@ -1,7 +1,7 @@
 use crate::{champions::champions_html, items::items_html, runes::runes_html};
 use rayon::iter::{IntoParallelIterator, ParallelIterator};
 use std::path::Path;
-use tutorlolv2_gen::CastId;
+use tutorlolv2::CastId;
 
 mod champions;
 mod html;

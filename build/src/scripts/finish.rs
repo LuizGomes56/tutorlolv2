@@ -106,6 +106,8 @@ pub fn champion_aliases() -> MayFail<Option<BTreeMap<String, Vec<String>>>> {
 }
 
 pub fn eval_abilities(arms: &str, _: Tag) -> String {
+    let recommendations = get_recommendations().unwrap_or_default();
+
     format!(
         "pub const fn ability_const_eval(
             champion_id: ChampionId,
@@ -113,7 +115,9 @@ pub fn eval_abilities(arms: &str, _: Tag) -> String {
             kind: AbilityId
         ) -> f32 {{
             match champion_id {{{arms}}}
-        }}"
+        }}
+
+        {recommendations}"
     )
 }
 
@@ -129,4 +133,60 @@ pub fn eval_items_or_runes(arms: &str, tag: Tag) -> String {
         ltag = tag.singular().to_lowercase(),
         enum_name = tag.enum_name()
     )
+}
+
+pub fn get_recommendations() -> MayFail<String> {
+    let enum_ids = ["ItemId", "RuneId"];
+    let declaration = ["RECOMMENDED_ITEMS", "RECOMMENDED_RUNES"];
+
+    let mut globals = core::array::from_fn::<_, 2, _>(|i| {
+        let enumv = enum_ids[i];
+        let var = declaration[i];
+        format!("pub static {var}: [[&[crate::{enumv}]; 5]; ChampionId::VARIANTS] = [")
+    });
+
+    let json = BTreeMap::<String, BTreeMap<String, [BTreeSet<String>; 2]>>::from_file(
+        "internal/scraper/data.json",
+    )
+    .unwrap_or_default();
+
+    if json.is_empty() {
+        return Ok(enum_ids
+            .iter()
+            .zip(declaration)
+            .map(|(enumv, var)| {
+                format!("pub static {var}: [[&[crate::{enumv}]; 5]; ChampionId::VARIANTS] = [[&[]; _]; _];")
+            })
+            .collect::<String>());
+    }
+
+    let push_end = |globals: &mut [String; 2], str| {
+        for value in globals.each_mut() {
+            value.push_str(str);
+        }
+    };
+
+    for data in json.values() {
+        push_end(&mut globals, "[");
+        for recommendations in data.values() {
+            for (i, value) in core::array::from_fn::<_, 2, _>(|j| {
+                let venum = enum_ids[j];
+                let result = recommendations[j]
+                    .iter()
+                    .map(|element| format!("{venum}::{element}"))
+                    .collect::<Vec<_>>()
+                    .join(",");
+                format!("&[{result}]")
+            })
+            .into_iter()
+            .enumerate()
+            {
+                globals[i].push_str(&format!("{value},"));
+            }
+        }
+        push_end(&mut globals, "],");
+    }
+
+    push_end(&mut globals, "];");
+    Ok(globals.concat())
 }

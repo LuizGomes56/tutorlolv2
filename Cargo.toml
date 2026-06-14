@@ -6,6 +6,9 @@ authors = ["Luiz Gustavo Santana Dias Gomes"]
 repository = "https://github.com/LuizGomes56/tutorlolv2"
 description = "League of Legends static library that evaluates damages of abilities, passives, items, and runes"
 
+[workspace]
+members = ["tutorlolv2_cli"]
+
 [dependencies]
 bincode = {
   version = "2.0.1",
@@ -16,6 +19,7 @@ bincode = {
   ]
 }
 const_sized_bit_set = "0.5.0"
+pastey = "0.2.1"
 phf = { version = "0.13.1", default-features = false, features = ["macros"] }
 serde = {
   version = "1.0",
@@ -26,7 +30,6 @@ serde = {
   ]
 }
 serde_arrays = { version = "0.2.0", default-features = false }
-tutorlolv2_gen = { path = "tutorlolv2_gen" }
 tutorlolv2_types = { path = "tutorlolv2_types" }
 
 [build-dependencies]

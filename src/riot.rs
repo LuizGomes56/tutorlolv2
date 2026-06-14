@@ -43,8 +43,8 @@ impl RiotAbilities {
 }
 
 /// Field `id` is the rune identifier in Riot's API,
-/// which has to be translated to enum [`tutorlolv2_gen::RuneId`],
-/// using the function [`tutorlolv2_gen::RuneId::from_riot_id`]
+/// which has to be translated to enum [`crate::RuneId`],
+/// using the function [`crate::RuneId::from_riot_id`]
 #[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Encode, Decode, Deserialize)]
 #[serde(rename_all = "camelCase")]
 #[derive(Serialize)]
@@ -54,7 +54,7 @@ pub struct RiotGeneralRunes {
 
 /// Field `general_runes` is an array, but might be undefined
 /// in gamemodes that doesn't allow champions to use runes, such
-/// as Arena, defined at [`tutorlolv2_gen::GameMap::Arena`]
+/// as Arena, defined at [`crate::GameMap::Arena`]
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Encode, Decode, Deserialize)]
 #[serde(rename_all = "camelCase")]
 #[derive(Serialize)]
@@ -78,7 +78,7 @@ pub struct RiotActivePlayer<'a> {
 /// A champion's score. `kills` and `deaths` are of type [`u8`],
 /// meaning that their maximum values are 255. Note that field
 /// `assists` is of type [`u16`] since it is possible that in
-/// ARAM mode ([`tutorlolv2_gen::GameMap::Aram`]), this many
+/// ARAM mode ([`crate::GameMap::Aram`]), this many
 /// assistences is achieved. However, having more than 255
 /// assistences will truncate in the returned [`Scoreboard`] struct
 #[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Encode, Decode, Deserialize)]
@@ -92,8 +92,8 @@ pub struct RiotScoreboard {
 }
 
 /// Holds the riot identifier of an item, which will
-/// be converted to enum [`tutorlolv2_gen::ItemId`],
-/// using function [`tutorlolv2_gen::ItemId::from_riot_id`]
+/// be converted to enum [`crate::ItemId`],
+/// using function [`crate::ItemId::from_riot_id`]
 #[derive(
     Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Encode, Decode, Deserialize, Serialize,
 )]
@@ -104,10 +104,10 @@ pub struct RiotItems {
 }
 
 /// All useful fields from the `all_players` object.
-/// Field `champion_name` can be coerced to enum [`tutorlolv2_gen::ChampionId`]
-/// by using the `phf` stored in variable [`tutorlolv2_gen::CHAMPION_NAME_TO_ID`],
+/// Field `champion_name` can be coerced to enum [`crate::ChampionId`]
+/// by using the `phf` stored in variable [`crate::CHAMPION_NAME_TO_ID`],
 /// which supports all languages. For example, `آتروكس` translates to
-/// [`tutorlolv2_gen::ChampionId::Aatrox`]
+/// [`crate::ChampionId::Aatrox`]
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Encode, BorrowDecode, Deserialize)]
 #[serde(rename_all = "camelCase")]
 #[derive(Serialize)]
@@ -126,8 +126,8 @@ pub struct RiotAllPlayers<'a> {
 }
 
 /// Field `game_time` is in seconds, and field `map_number` can
-/// be coerced to enum [`tutorlolv2_gen::GameMap`] using
-/// function [`tutorlolv2_gen::GameMap::from_u8`]
+/// be coerced to enum [`crate::GameMap`] using
+/// function [`crate::GameMap::from_u8`]
 #[derive(Clone, Copy, Debug, PartialEq, PartialOrd, Encode, Decode, Deserialize)]
 #[serde(rename_all = "camelCase")]
 #[derive(Serialize)]

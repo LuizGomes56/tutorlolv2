@@ -8,11 +8,18 @@
 //!   structs and enums. Structs that have `'static` lifetimes do not implement
 //!   `Deserialize`
 
+use crate::{
+    ChampionId, ItemId, RuneId,
+    generated::{Closure, Stat},
+    libgen::{L_MSTR, L_SIML, L_TWRD},
+};
 use alloc::boxed::Box;
 use bincode::{BorrowDecode, Decode, Encode};
 use core::str::FromStr;
 use serde::{Deserialize, Serialize};
-use tutorlolv2_gen::*;
+use tutorlolv2_types::{
+    AbilityId, AbilityName, AdaptiveType, Attrs, Ctx, DamageType, GameMap, Position, TypeMetadata,
+};
 
 /// Holds the compile-time known metadata and closures of the current champion,
 /// obtained from the static variable [`CHAMPION_CACHE`]. Note that
@@ -439,7 +446,7 @@ pub struct OutputEnemy {
 }
 
 /// Holds values that will be multiplied by all damages, depending on their
-/// damage types, defined by the metadata [`tutorlolv2_gen::DamageType`]. Note
+/// damage types, defined by the metadata [`crate::DamageType`]. Note
 /// that the value `1.0` means no modifiers, and `global_mod` is applied regardless
 /// of the damage type provided
 #[derive(Clone, Copy, Debug, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize)]

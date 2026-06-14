@@ -8,9 +8,9 @@
 //! so all the function inputs have to be obtained through your
 //! own mechanism
 
-use crate::{helpers::*, model::*};
+use crate::{ChampionId, ItemId, RuneId, helpers::*, model::*};
 use alloc::boxed::Box;
-use tutorlolv2_gen::*;
+use tutorlolv2_types::{AdaptiveType, AttackType, StatName};
 
 pub const fn get_item_bonus_stats(
     stats: &mut Stats<f32>,
@@ -63,14 +63,14 @@ pub const fn infer_champion_stats(data: InferStats<'_>) -> Stats<f32> {
 
     let mut bonus_stats = Stats::<f32>::default();
 
-    let cache = champion_id.cache();
+    let data = champion_id.data();
 
     let mut adaptive_force = 0.0;
 
     bonus_stats.get_item_bonus_stats(items, modifiers, &mut adaptive_force);
     bonus_stats.get_rune_bonus_stats(runes, modifiers, &mut adaptive_force, level);
 
-    let cached_stats = cache.stats;
+    let cached_stats = data.stats;
     let base_stats = BasicStats::base_stats(champion_id, level, is_mega_gnar);
 
     let mut stats = Stats {
@@ -110,14 +110,14 @@ pub const fn infer_champion_stats(data: InferStats<'_>) -> Stats<f32> {
     stats.assign_rune_exceptions(
         rune_exceptions,
         &mut adaptive_force,
-        cache.attack_type,
+        data.attack_type,
         level,
     );
 
     let adaptive_type =
         match RiotFormulas::adaptive_type(bonus_stats.attack_damage, bonus_stats.ability_power) {
             Some(x) => x,
-            None => cache.adaptive_type,
+            None => data.adaptive_type,
         };
 
     match adaptive_type {
@@ -199,7 +199,7 @@ impl Stats<f32> {
         let mut i = 0;
         while i < items.len() {
             let item_id = items[i];
-            let item = item_id.cache();
+            let item = item_id.data();
             let item_stats = item.stats;
 
             let mut armor_pen = 0.0;
@@ -506,7 +506,7 @@ pub fn calculator(game: InputGame) -> OutputGame {
 
     let mut modifiers = Modifiers::default();
 
-    let current_player_cache = current_player_champion_id.cache();
+    let current_player_cache = current_player_champion_id.data();
 
     let current_player_base_stats =
         BasicStats::base_stats(current_player_champion_id, level, is_mega_gnar);

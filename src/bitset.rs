@@ -84,7 +84,7 @@ macro_rules! bitset {
     ($array:expr) => {
         const {
             let cast = $crate::bitset!($array => [u32]);
-            $crate::make_bitset(cast)
+            $crate::bitset::make_bitset(cast)
         }
     };
 }

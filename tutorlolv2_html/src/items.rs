@@ -1,5 +1,5 @@
 use crate::{html::Html, parallel_task};
-use tutorlolv2_gen::{CastId, ItemId};
+use tutorlolv2::{CastId, ItemId};
 
 pub fn items_html() {
     parallel_task(|item_id: ItemId| {
@@ -12,13 +12,9 @@ pub fn items_html() {
             html.code(range);
         }
 
-        html.describe();
-
-        for array in item_id.identifiers().iter().flatten() {
-            html.idents(array);
-        }
-
-        html.section("Item generator definition")
+        html.describe()
+            .idents(item_id.identifiers())
+            .section("Item generator definition")
             .code(item_id.generator())
             .json(item_id);
 

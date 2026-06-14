@@ -54,8 +54,6 @@ impl Build for Champion {
             ..
         } = &self;
 
-        println!("Building {champion_id:?}...");
-
         let mut rust = String::new();
         let mut docs = String::new();
 

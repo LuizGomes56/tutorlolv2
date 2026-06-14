@@ -1,12 +1,7 @@
-#![no_std]
-
-pub mod bitset;
-pub mod generated;
-
-use crate::generated::{
-    champions::{CHAMPION_GENERATOR, ability_const_eval},
-    items::{ITEM_GENERATOR, ITEM_NAME_TO_ID, item_const_eval},
-    runes::{RUNE_GENERATOR, RUNE_NAME_TO_ID, rune_const_eval},
+use crate::{
+    bitset,
+    bitset::*,
+    generated::{champions::*, docs::*, items::*, runes::*, *},
 };
 use core::{
     any::Any,
@@ -15,27 +10,7 @@ use core::{
     ops::Range,
     str::FromStr,
 };
-
-pub use bitset::*;
-pub use generated::{
-    champions::{
-        ABILITY_CLOSURES, ABILITY_FORMULAS, CHAMPION_CACHE, CHAMPION_FORMULAS, CHAMPION_NAME_TO_ID,
-        ChampionId, RECOMMENDED_ITEMS, RECOMMENDED_RUNES,
-    },
-    exports::*,
-    items::{ITEM_CACHE, ITEM_CLOSURES, ITEM_FORMULAS, ItemId},
-    runes::{RUNE_CACHE, RUNE_CLOSURES, RUNE_FORMULAS, RuneId},
-    *,
-};
-pub use tutorlolv2_types::*;
-
-pub static RAW_BLOCK: &str = include_str!("block.txt");
-pub const RAW_BLOCK_LEN: usize = RAW_BLOCK.len();
-
-const BR_BLOCK: &[u8] = include_bytes!("block.br");
-pub static mut BLOCK: &[u8] = BR_BLOCK;
-
-pub const BLOCK_LEN: usize = BR_BLOCK.len();
+use tutorlolv2_types::*;
 
 pub const fn ignite(level: u8) -> i32 {
     let n = level as i32;
@@ -102,7 +77,7 @@ pub const L_SIML: usize = {
     let mut sum = 0;
     let mut i = 0;
     while i < ItemId::VARIANTS {
-        if ITEM_CACHE[i].is_simulated_item() {
+        if ITEMS_DATA[i].is_simulated_item() {
             sum += 1;
         }
         i += 1;
@@ -125,7 +100,7 @@ pub const SIMULATED_ITEMS_ENUM: [ItemId; L_SIML] = {
     let mut i = 0;
     let mut j = 0;
     while i < ItemId::VARIANTS {
-        if ITEM_CACHE[i].is_simulated_item() {
+        if ITEMS_DATA[i].is_simulated_item() {
             result[j] = ItemId::from_repr(i as _).unwrap();
             j += 1;
         }
@@ -200,7 +175,7 @@ pub const NUMBER_OF_DAMAGING_RUNES: usize = {
     let mut sum = 0;
     let mut i = 0;
     while i < RuneId::VARIANTS {
-        let rune = RUNE_CACHE[i];
+        let rune = RUNES_DATA[i];
         let [mmin, mmax, rmin, rmax] = rune.deals_damage;
         if mmin || mmax || rmin || rmax {
             sum += 1;
@@ -254,7 +229,7 @@ pub const DAMAGING_RUNES_ARRAY: [RuneId; NUMBER_OF_DAMAGING_RUNES] = {
     let mut j = 0;
 
     while i < RuneId::VARIANTS {
-        let rune = RUNE_CACHE[i];
+        let rune = RUNES_DATA[i];
         let [mmin, mmax, rmin, rmax] = rune.deals_damage;
 
         if mmin || mmax || rmin || rmax {
@@ -277,7 +252,7 @@ pub const NUMBER_OF_ABILITIES: usize = {
     let mut i = 0;
     let mut sum = 0;
     while i < ChampionId::VARIANTS {
-        let data = CHAMPION_CACHE[i];
+        let data = CHAMPIONS_DATA[i];
         sum += data.closures.len();
         i += 1;
     }
@@ -288,7 +263,7 @@ pub static CHAMPION_POSITIONS: [&[Position]; ChampionId::VARIANTS] = {
     let mut i = 0;
     let mut result = [&[] as &[_]; _];
     while i < ChampionId::VARIANTS {
-        let champion = CHAMPION_CACHE[i];
+        let champion = CHAMPIONS_DATA[i];
         result[i] = champion.positions;
         i += 1;
     }
@@ -348,7 +323,7 @@ const _: () = {
 const _: () = {
     let mut i = 0;
     while i < ChampionId::VARIANTS {
-        let champion = CHAMPION_CACHE[i].positions;
+        let champion = CHAMPIONS_DATA[i].positions;
         let position = CHAMPION_POSITIONS[i];
         assert!(!position.is_empty());
         assert!(champion.len() == position.len());
@@ -428,15 +403,15 @@ impl ChampionId {
     }
 
     pub const fn abilities(&self) -> &'static [TypeMetadata<AbilityId>] {
-        self.cache().metadata
+        self.data().metadata
     }
 
     pub const fn stats(&self) -> &'static WikiStats {
-        &self.cache().stats
+        &self.data().stats
     }
 
     pub const fn merge_data(&self) -> &'static [MergeData] {
-        self.cache().merge_data
+        self.data().merge_data
     }
 
     pub const fn number_of_abilities(&self) -> usize {
@@ -444,7 +419,7 @@ impl ChampionId {
     }
 
     pub const fn adaptive_type(&self) -> AdaptiveType {
-        self.cache().adaptive_type
+        self.data().adaptive_type
     }
 
     pub const fn ability_ids<const N: usize>(&self) -> [AbilityId; N] {
@@ -469,7 +444,7 @@ impl ChampionId {
     }
 
     pub const fn positions(&self) -> &'static [Position] {
-        self.cache().positions
+        self.data().positions
     }
 
     pub const fn main_position(&self) -> Position {
@@ -477,7 +452,7 @@ impl ChampionId {
     }
 
     pub const fn attack_type(&self) -> AttackType {
-        self.cache().attack_type
+        self.data().attack_type
     }
 
     pub const fn closures(&self) -> &'static [Range<usize>] {
@@ -497,7 +472,7 @@ impl ChampionId {
     }
 
     pub const fn identifiers(&self) -> &'static [&'static [CtxVar]] {
-        self.cache().identifiers
+        self.data().identifiers
     }
 
     pub const fn get_ability_idents(&self, index: usize) -> &'static [CtxVar] {
@@ -509,7 +484,7 @@ impl ChampionId {
     }
 
     pub const fn combos(&self) -> &'static [&'static [ComboElement]] {
-        self.cache().combos
+        self.data().combos
     }
 
     pub const fn index_of_ability(&self, ability_id: AbilityId) -> Option<usize> {
@@ -524,11 +499,11 @@ impl ChampionId {
     }
 
     pub const fn metadata(&self) -> &'static [TypeMetadata<AbilityId>] {
-        self.cache().metadata
+        self.data().metadata
     }
 
     pub const fn eval(&self, ctx: &Ctx, kind: AbilityId) -> f32 {
-        ability_const_eval(ctx, *self, kind)
+        ability_const_eval(*self, ctx, kind)
     }
 }
 
@@ -666,7 +641,7 @@ impl ItemId {
     }
 
     pub const fn maps(&self) -> &'static [GameMap] {
-        self.cache().maps
+        self.data().maps
     }
 
     pub const fn has_map(&self, game_map: GameMap) -> bool {
@@ -716,7 +691,7 @@ impl ItemId {
     }
 
     pub const fn to_riot_id(&self) -> u32 {
-        self.cache().riot_id
+        self.data().riot_id
     }
 
     pub const fn closure(&self) -> &'static [[Range<usize>; 2]; 2] {
@@ -740,33 +715,33 @@ impl ItemId {
     }
 
     pub const fn deals_damage(&self) -> bool {
-        let [mmin, _, rmin, _] = self.cache().deals_damage;
+        let [mmin, _, rmin, _] = self.data().deals_damage;
         mmin || rmin
     }
 
     pub const fn deals_max_damage(&self) -> bool {
-        let [_, mmax, _, rmax] = self.cache().deals_damage;
+        let [_, mmax, _, rmax] = self.data().deals_damage;
         mmax || rmax
     }
 
     pub const fn price(&self) -> u16 {
-        self.cache().price
+        self.data().price
     }
 
-    pub const fn identifiers(&self) -> &'static [[&'static [CtxVar]; 2]; 2] {
-        &self.cache().identifiers
+    pub const fn identifiers(&self) -> &'static [CtxVar] {
+        &self.data().identifiers
     }
 
     pub const fn metadata(&self) -> TypeMetadata<Self> {
-        self.cache().metadata
+        self.data().metadata
     }
 
     pub const fn eval(&self, ctx: &Ctx, attack_type: AttackType) -> [f32; 2] {
-        item_const_eval(ctx, *self, attack_type)
+        item_const_eval(*self, ctx, attack_type)
     }
 
     pub const fn stats(&self) -> &'static [(StatName, u16)] {
-        self.cache().stats
+        self.data().stats
     }
 }
 
@@ -808,36 +783,36 @@ impl RuneId {
     }
 
     pub const fn to_riot_id(&self) -> u32 {
-        self.cache().riot_id
+        self.data().riot_id
     }
 
     pub const fn closure(&self) -> &'static [[Range<usize>; 2]; 2] {
         &Self::CLOSURES[self.index()]
     }
 
-    pub const fn identifiers(&self) -> &'static [[&'static [CtxVar]; 2]; 2] {
-        &self.cache().identifiers
+    pub const fn identifiers(&self) -> &'static [CtxVar] {
+        &self.data().identifiers
     }
 
     pub const fn metadata(&self) -> TypeMetadata<Self> {
-        self.cache().metadata
+        self.data().metadata
     }
 
     pub const fn damage_type(&self) -> DamageType {
-        self.cache().metadata.damage_type
+        self.data().metadata.damage_type
     }
 
     pub const fn eval(&self, ctx: &Ctx, attack_type: AttackType) -> [f32; 2] {
-        rune_const_eval(ctx, *self, attack_type)
+        rune_const_eval(*self, ctx, attack_type)
     }
 
     pub const fn deals_damage(&self) -> bool {
-        let [mmin, _, rmin, _] = self.cache().deals_damage;
+        let [mmin, _, rmin, _] = self.data().deals_damage;
         mmin || rmin
     }
 
     pub const fn deals_max_damage(&self) -> bool {
-        let [_, mmax, _, rmax] = self.cache().deals_damage;
+        let [_, mmax, _, rmax] = self.data().deals_damage;
         mmax || rmax
     }
 }
@@ -940,12 +915,12 @@ macro_rules! impl_methods {
                         unsafe { Self::from_repr_unchecked(0) }
                     }
 
-                    pub const fn cache(&self) -> &'static [<$stru:replace("Id", "")>] {
-                        [<$stru:replace("Id", ""):upper _CACHE>][self.index()]
+                    pub const fn data(&self) -> &'static [<$stru:replace("Id", "")>] {
+                        [<$stru:replace("Id", "S"):upper _DATA>][self.index()]
                     }
 
                     pub const fn name(&self) -> &'static str {
-                        self.cache().name
+                        self.data().name
                     }
 
                     pub const fn index(&self) -> usize {
@@ -1052,7 +1027,7 @@ where
 
 pub trait ValueId: CastId {
     fn to_riot_id(&self) -> u32;
-    fn identifiers(&self) -> &'static [[&'static [CtxVar]; 2]];
+    fn identifiers(&self) -> &'static [CtxVar];
     fn functions(&self) -> &'static [[Range<usize>; 2]; 2];
     fn metadata(&self) -> TypeMetadata<Self>;
     fn damage_type(&self) -> DamageType {
@@ -1065,7 +1040,7 @@ impl ValueId for ItemId {
         self.to_riot_id()
     }
 
-    fn identifiers(&self) -> &'static [[&'static [CtxVar]; 2]] {
+    fn identifiers(&self) -> &'static [CtxVar] {
         self.identifiers()
     }
 
@@ -1083,7 +1058,7 @@ impl ValueId for RuneId {
         self.to_riot_id()
     }
 
-    fn identifiers(&self) -> &'static [[&'static [CtxVar]; 2]] {
+    fn identifiers(&self) -> &'static [CtxVar] {
         self.identifiers()
     }
 
