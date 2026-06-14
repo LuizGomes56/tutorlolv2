@@ -1,7 +1,7 @@
 mod server;
 
 #[cfg(feature = "dev")]
-use crate::server::dev::{images::*, internal::*, setup::*, update::*};
+use crate::server::dev::{images::*, setup::*, update::*};
 use actix_cors::Cors;
 use actix_web::{
     App, HttpResponse, HttpServer,
@@ -34,30 +34,11 @@ fn api_scope() -> impl HttpServiceFactory + 'static {
     #[cfg(feature = "dev")]
     let api_routes = api_routes.service(
         scope("")
-            .service(
-                scope("/setup")
-                    .service(setup_champions)
-                    .service(setup_folders)
-                    .service(setup_project)
-                    .service(setup_items)
-                    .service(setup_runes)
-                    .service(setup_docs),
-            )
+            .service(scope("/setup").service(setup_project).service(setup_docs))
             .service(
                 scope("/update")
                     .service(update_riot)
-                    .service(update_champions)
-                    .service(update_items)
-                    .service(update_scraped_data)
-                    .service(update_combo_scraper)
                     .service(update_version),
-            )
-            .service(
-                scope("/internal")
-                    .service(internal_create_generator_files)
-                    .service(internal_prettify_item_stats)
-                    .service(internal_create_damaging_items)
-                    .service(internal_assign_item_damages),
             )
             .service(
                 scope("/images")

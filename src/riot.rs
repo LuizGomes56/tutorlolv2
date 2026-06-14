@@ -2,7 +2,7 @@
 //! which can be used to deserialize the JSON data to this library's
 //! own data types
 
-use crate::model::*;
+use crate::{model::*, realtime::RealtimeError};
 use alloc::boxed::Box;
 use bincode::{BorrowDecode, Decode, Encode};
 use serde::{Deserialize, Serialize};
@@ -171,4 +171,10 @@ pub struct RiotRealtime<'a> {
     #[serde(borrow)]
     pub events: RiotRealtimeEvents<'a>,
     pub game_data: RiotRealtimeGameData,
+}
+
+impl RiotRealtime<'_> {
+    pub fn eval(&self) -> Result<Realtime<'_>, RealtimeError<'_>> {
+        crate::realtime(self)
+    }
 }

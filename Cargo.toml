@@ -7,7 +7,16 @@ repository = "https://github.com/LuizGomes56/tutorlolv2"
 description = "League of Legends static library that evaluates damages of abilities, passives, items, and runes"
 
 [workspace]
-members = ["tutorlolv2_cli"]
+members = [
+  "tutorlolv2_avif",
+  "tutorlolv2_cli",
+  "tutorlolv2_dev",
+  "tutorlolv2_fmt",
+  "tutorlolv2_html",
+  "tutorlolv2_server",
+  "tutorlolv2_types",
+  "tutorlolv2_wiki/"
+]
 
 [dependencies]
 bincode = {
