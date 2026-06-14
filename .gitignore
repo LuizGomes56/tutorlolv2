@@ -10,7 +10,6 @@
 *.txt
 *.pdf
 *.html
-imports
 target
 html
 raw_img
@@ -18,3 +17,4 @@ internal
 cache
 archives
 **/conv
+build_output

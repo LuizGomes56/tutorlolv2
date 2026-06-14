@@ -1,16 +1,15 @@
 use crate::{
+    ChampionId, ItemId, RuneId,
     calculator::InferStats,
     helpers::{ability_id_mod, get_enemy_full_state, get_eval_ctx},
+    libgen::{L_SIML, SIMULATED_ITEMS_ENUM},
     model::{
         AbilityLevels, Attacks, BasicStats, DamageModifiers, Dragons, EnemyState, EnemyStats,
         Modifiers, RangeDamage, ResistShred, RiotFormulas, SelfState, SimpleStats, Stats,
         ValueException,
     },
 };
-use tutorlolv2_gen::{
-    AbilityId, AttackType, ChampionId, Ctx, ItemId, L_SIML, RuneId, SIMULATED_ITEMS_ENUM,
-    TypeMetadata,
-};
+use tutorlolv2_types::{AbilityId, AttackType, Ctx, TypeMetadata};
 
 pub const fn eval_abilities_const<const N: usize>(
     ctx: &Ctx,

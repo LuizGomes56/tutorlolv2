@@ -1,5 +1,5 @@
 use crate::{html::Html, parallel_task};
-use tutorlolv2_gen::{CastId, RuneId};
+use tutorlolv2::{CastId, RuneId};
 
 pub fn runes_html() {
     parallel_task(|rune_id: RuneId| {
@@ -12,14 +12,7 @@ pub fn runes_html() {
             html.code(range);
         }
 
-        html.describe();
-
-        for array in rune_id.identifiers().iter().flatten() {
-            html.idents(array);
-        }
-
-        html.json(rune_id);
-
+        html.describe().idents(rune_id.identifiers()).json(rune_id);
         html
     });
 }

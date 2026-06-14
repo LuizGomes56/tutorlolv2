@@ -1,41 +1,16 @@
-use crate::dev_response;
 #[cfg(feature = "avif")]
 use crate::server::dev::images::avif::{IMG_FOLDERS, img_convert_avif};
 use actix_web::{HttpResponse, Responder, get};
 use tokio::spawn;
-use tutorlolv2_dev::{
-    HTTP_CLIENT,
-    gen_factories::{fac_champions::ChampionFactory, fac_items::ItemFactory},
-    setup::{client::Tag, update::*},
-};
+use tutorlolv2_dev::HTTP_CLIENT;
 
 #[get("/project")]
 pub async fn setup_project() -> impl Responder {
-    let _ = setup_project_folders();
-
     spawn(async move {
-        for future in [
-            spawn(async move { HTTP_CLIENT.update_riot_cache().await }),
-            spawn(async move { HTTP_CLIENT.update_meraki_cache(Tag::Champions).await }),
-            spawn(async move { HTTP_CLIENT.update_meraki_cache(Tag::Items).await }),
-        ] {
-            let _ = future.await;
-        }
+        let _ = HTTP_CLIENT.update_riot_cache().await;
 
-        for f in [
-            setup_runes_json,
-            setup_internal_items,
-            prettify_internal_items,
-            setup_damaging_items,
-            ItemFactory::run_all,
-            ChampionFactory::create_all,
-            ChampionFactory::run_all,
-        ] {
-            let _ = tokio::task::spawn_blocking(f);
-        }
-
-        spawn(async move { HTTP_CLIENT.call_scraper().await });
-        spawn(async move { HTTP_CLIENT.combo_scraper().await });
+        // spawn(async move { HTTP_CLIENT.call_scraper().await });
+        // spawn(async move { HTTP_CLIENT.combo_scraper().await });
 
         for future in [
             spawn(async move { HTTP_CLIENT.download_arts_img().await }),
@@ -59,24 +34,4 @@ pub async fn setup_project() -> impl Responder {
 pub async fn setup_docs() -> impl Responder {
     tutorlolv2_html::run();
     HttpResponse::Ok().body("Html docs setup finished")
-}
-
-#[get("/folders")]
-pub async fn setup_folders() -> impl Responder {
-    dev_response!(setup_project_folders())
-}
-
-#[get("/champions")]
-pub async fn setup_champions() -> impl Responder {
-    dev_response!(ChampionFactory::run_all())
-}
-
-#[get("/items")]
-pub async fn setup_items() -> impl Responder {
-    dev_response!(setup_internal_items())
-}
-
-#[get("/runes")]
-pub async fn setup_runes() -> impl Responder {
-    dev_response!(setup_runes_json())
 }

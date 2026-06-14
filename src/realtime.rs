@@ -10,10 +10,18 @@
 //! Check the module [`tutorlolv2::riot`] for more information about the
 //! types extracted from the json file in port 2999
 
-use crate::{helpers::*, model::*, riot::*};
+use crate::{
+    ChampionId, ItemId, RuneId,
+    bitset::{ItemsBitSet, RunesBitSet},
+    generated::WikiModifiers,
+    helpers::*,
+    libgen::{DAMAGING_ITEMS, DAMAGING_RUNES},
+    model::*,
+    riot::*,
+};
 use alloc::boxed::Box;
 use core::str::FromStr;
-use tutorlolv2_gen::*;
+use tutorlolv2_types::{AttackType, GameMap, Position};
 
 /// Ensure that all champions have at least one position, so the unchecked
 /// access does not cause a panic or undefined behavior
@@ -116,7 +124,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
     // [`ChampionId::default`] has a different value
     let current_player_champion_id =
         ChampionId::from_str(current_player.champion_name).unwrap_or(ChampionId::Neeko);
-    let current_player_cache = current_player_champion_id.cache();
+    let current_player_cache = current_player_champion_id.data();
 
     // When Gnar is Mega, the current API changes `champion_name`, previously we
     // had to infer it from his attack range
@@ -300,7 +308,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
             // return until the scoreboard is fully populated, otherwise we will cause undefined behavior or have to
             // reallocate it at the end
             let e_champion_id = ChampionId::from_str(e_champion_name).unwrap_or(ChampionId::Neeko);
-            let e_cache = e_champion_id.cache();
+            let e_cache = e_champion_id.data();
             let e_position =
                 Position::from_str(e_raw_position).unwrap_or(e_champion_id.main_position());
             let team = Team::from_str(e_team).unwrap_or_default();

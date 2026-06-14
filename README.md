@@ -2,20 +2,21 @@
 
 **`tutorlolv2`** is a highly optimized library for the game League of Legends that calculates the damages of all abilities, items, runes, passives for every champion, updating automatically every new game patch. Also, it has great support to compile-time evaluation (const fn) and does not depend on the Rust's standard library `#![no_std]`
 
-### Function `realtime` 
+### Function `realtime`
 
 Takes as function argument a parsed struct that can be created from the JSON object provided by Riot's API on port 2999 while some player is playing a League of Legends game, for any game mode.
 
 - The official endpoint is located at the following url, only available if the current machine has an ongoing match being played (replays do not work)
     - https://127.0.0.1:2999/liveclientdata/allgamedata
     - To see an example of how this data look like, check the following url:
-    https://static.developer.riotgames.com/docs/lol/liveclientdata_sample.json
+      https://static.developer.riotgames.com/docs/lol/liveclientdata_sample.json
 
 You can recover bytes from that URL directly and use `serde_json` to deserialize it and call the exported function `realtime` (see example in the `#[examples]` section). This is the cheapest way to use this library and get all the necessary information
-    
+
 Each call of this function takes about **80μs** and returns an average payload size of **70kB**, which can be reduced to an average of **25kB** when encoded with bincode. It can also be transformed to JSON, but the result payload will be much larger and slower to send to the frontend application
-    
+
 ### Example of usage
+
 ```rs
 const URL: &str = "https://127.0.0.1:2999/liveclientdata/allgamedata";
 
@@ -44,19 +45,20 @@ The variable `data` holds all the information of damages against every player in
 
 ## Project structure
 
-This project is split in several different modules or crates, where each do part of the work. Most of these modules help generate the crate `tutorlolv2_gen`, which contains closures and enum definitions that are used in the core library and frontend application
+This project is split in several different modules or crates, where each do part of the work. Most of these modules help generate the crate `tutorlolv2`, which contains closures and enum definitions that are used in the core library and frontend application
 
 ### `tutorlolv2_avif`
 
-This module is used to convert all images downloaded from Riot's API to the `.avif` encoding, which help reduce the total size of all images by 66%. 
+This module is used to convert all images downloaded from Riot's API to the `.avif` encoding, which help reduce the total size of all images by 66%.
 
 By now, all images are embedded in the final compiled binary, which means there's no need to save them to a folder and move them to the AWS server, but it causes the final binary to be over 200MB in size, and requires recompilation to add new images
 
 ### `tutorlolv2_dev`
 
-Has several "generator files", which read cache files the following directories 
+Has several "generator files", which read cache files the following directories
+
 - `cache/riot/(champions | items)`
-- `cache/meraki/(champions | items)` 
+- `cache/meraki/(champions | items)`
 
 With the data in those folders, the useful information is gathered and new JSON files are generated on `internal/(champions | items)`, which will be read by `tutorlolv2_build` module and generate closures, structs, enums, static and constant variables. This method makes the evaluation speed of all functions much faster and type-safe than if we used Regex or other string-parsing method. However, the cost of this approach is that it needs the program to be recompiled every patch
 
@@ -96,40 +98,40 @@ After this function is called, it generates a JSON file at location `internal/ch
 
 ```jsonc
 {
-  "name": "Neeko",
-  "adaptative_type": "Magic",
-  "attack_type": "Ranged",
-  "positions": ["Middle", "Support"],
-  "stats": {
-    "health": {
-      "flat": 610.0,
-      "perLevel": 104.0
+    "name": "Neeko",
+    "adaptative_type": "Magic",
+    "attack_type": "Ranged",
+    "positions": ["Middle", "Support"],
+    "stats": {
+        "health": {
+            "flat": 610.0,
+            "perLevel": 104.0,
+        },
+        // ...
     },
-    // ...
-  },
-  "abilities": [
-    [
-        // Deserializes to Q::_1
-        { "type": "Q", "name": "_1" },
-        // Data about ability Q::1
-        {
-            "name": "Blooming Burst",
-            "damage_type": "Magic",
-            "attributes": "Undefined",
-            // Rust code that represents
-            // the damage of this ability
-            "damage": [
-                "60 + (0.6 * ctx.ap)",
-                "110 + (0.6 * ctx.ap)",
-                "160 + (0.6 * ctx.ap)",
-                "210 + (0.6 * ctx.ap)",
-                "260 + (0.6 * ctx.ap)"
-            ]
-        }
+    "abilities": [
+        [
+            // Deserializes to Q::_1
+            { "type": "Q", "name": "_1" },
+            // Data about ability Q::1
+            {
+                "name": "Blooming Burst",
+                "damage_type": "Magic",
+                "attributes": "Undefined",
+                // Rust code that represents
+                // the damage of this ability
+                "damage": [
+                    "60 + (0.6 * ctx.ap)",
+                    "110 + (0.6 * ctx.ap)",
+                    "160 + (0.6 * ctx.ap)",
+                    "210 + (0.6 * ctx.ap)",
+                    "260 + (0.6 * ctx.ap)",
+                ],
+            },
+        ],
+        // ...
     ],
     // ...
-  ],
-  // ...
 }
 ```
 
@@ -200,9 +202,9 @@ Exports enums `AbilityId`, `AbilityName`, and `StatName`, which are used by almo
 
 ### `tutorlolv2_build`
 
-Reads all data generated in the `internal` folder and generates a huge rust file at `tutorlolv2_gen/src/data.rs`. Generates structs, arrays and phf maps with the necessary data to evaluate damages of all kinds, as well as a big brotli-compressed block of about 6MB in size, and several offsets to it, which represents the internal source code used by this application. It is helpful to let users see how the damages are being calculated, if they're accurate, and most importantly, if they're outdated.
+Reads all data generated in the `internal` folder and generates a huge rust file at `tutorlolv2/src/data.rs`. Generates structs, arrays and phf maps with the necessary data to evaluate damages of all kinds, as well as a big brotli-compressed block of about 6MB in size, and several offsets to it, which represents the internal source code used by this application. It is helpful to let users see how the damages are being calculated, if they're accurate, and most importantly, if they're outdated.
 
-### Examples of generated structures (`tutorlolv2_gen`)
+### Examples of generated structures (`tutorlolv2`)
 
 ```rs
 #[derive(...)]
@@ -245,7 +247,7 @@ pub static NEEKO: CachedChampion = CachedChampion {
     },
     merge_data: &[],
     closures: &[
-        neeko_q_1, neeko_q_2, neeko_q_3, 
+        neeko_q_1, neeko_q_2, neeko_q_3,
         neeko_q_4, neeko_w_1, neeko_e_1,
         neeko_r_1,
     ],
@@ -301,11 +303,13 @@ let tower_damage_html = block_str[i..j];
 ```
 
 The generated file has over 60,000 lines, and intense work is needed to generate it. For this reason, a recent rework was done in this module, and now all CPU cores are used to generate this file, now taking about 1 minute to finish the work.
+
 - All tasks that can be done independently run in its own thread, and when it finishes, the dependent result is collected and parsed in the synchronously
 
 ### Frontend and Desktop Application
 
 Check the following repositories
+
 - [tutorlolv2_web](https://github.com/LuizGomes56/tutorlolv2_web)
 - [tutorlolv2_desktop_app](https://github.com/LuizGomes56/tutorlolv2_desktop_app)
 
@@ -324,7 +328,7 @@ The expected size of the whole frontend application is 1.3MB (WASM), while the c
 
 ## Key features
 
-- Memory layout optimized to reduce total size of data generated while calculating data. 
+- Memory layout optimized to reduce total size of data generated while calculating data.
     - `Realtime<'a>` size reduced from 195kB to 100kB
     - `InputGame` size reduced from 800B to 300B
 
@@ -345,6 +349,7 @@ The expected size of the whole frontend application is 1.3MB (WASM), while the c
 - Almost all functions have a `const` equivalent
 
 ### Performance
+
 - The average runtime of `realtime` function in the current [TypeScript backend](https://github.com/LuizGomes56/TSRemakeTutorLoL) is `18ms`. The new version runs in about `80μs`, while comparing the damages of 117 more items. Without considering it, the performance enhancement is 225x. If all items are considered, we can conclude it is approximately 20,000x faster
 
 - Average memory consumption reduced from 400MB to 36MB
@@ -374,12 +379,15 @@ To run the project, do the following:
 > cd tutorlolv2_server
 
 - Running server
+
     > cargo run -r
 
 - Setting up the project (generating cache folders)
+
     > GET `http://localhost:8082/api/setup/project`
 
 - Running build script (create `tutorlolv2_gen/src/data.rs`)
+
     > cd tutorlolv2_build
 
     > cargo run -r

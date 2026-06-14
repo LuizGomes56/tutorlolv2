@@ -11,7 +11,7 @@ use actix_web::{
 };
 use bincode::{Encode, config::Configuration};
 // use rand::random_range;
-use tutorlolv2::{calculator, realtime};
+use tutorlolv2::{calculator, realtime::RealtimeError};
 // use uuid::Uuid;
 
 type Response = Result<HttpResponse, Box<dyn std::error::Error>>;
@@ -50,7 +50,12 @@ pub async fn realtime_handler(body: Bytes) -> Response {
     // }
 
     let start = std::time::Instant::now();
-    let data = realtime(&game_data).ok_or("Error executing fn `realtime`")?;
+    let data = tutorlolv2::realtime(&game_data).map_err(|e| match e {
+        RealtimeError::UnrecognizedCurrentPlayer(player) => {
+            format!("Unrecognized current player: {player}")
+        }
+    })?;
+
     println!("[time] fn realtime took: {end:?}", end = start.elapsed());
     respond(data)
 }

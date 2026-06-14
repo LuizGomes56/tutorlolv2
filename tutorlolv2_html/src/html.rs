@@ -3,7 +3,7 @@ use core::{
     ops::{Deref, DerefMut, Range},
 };
 use std::path::Path;
-use tutorlolv2_gen::{CastId, CtxVar, EntityId, RAW_BLOCK};
+use tutorlolv2::{CastId, CtxVar, EntityId, generated::docs::RAW_BLOCK};
 
 pub struct Html {
     inner: String,

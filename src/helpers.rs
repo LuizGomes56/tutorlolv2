@@ -15,13 +15,22 @@
 //! want to do it, you can use the [`crate::const_eval`] module to
 //! do it
 
-use crate::model::*;
+use crate::{
+    ChampionId, ItemId, RuneId,
+    bitset::{ItemsBitSet, RunesBitSet},
+    generated::{Champion, Closure, Stat, WikiStats, items::ITEMS_DATA, runes::RUNES_DATA},
+    libgen::{DAMAGING_ITEMS, DAMAGING_RUNES, L_MSTR, L_SIML, L_TWRD, SIMULATED_ITEMS_ENUM},
+    model::*,
+};
 use alloc::boxed::Box;
+use const_sized_bit_set::bit_set_array::BitSetArray;
 use core::{mem::MaybeUninit, ops::RangeInclusive};
-use tutorlolv2_gen::*;
+use tutorlolv2_types::{
+    AbilityId, AdaptiveType, AttackType, Ctx, DamageType, StatName, TypeMetadata,
+};
 
 /// Checks if at least one of the provided [`ItemId`] in the array is in the
-/// [`tutorlolv2_gen::ItemsBitSet`], similar to method [`core::iter::Iterator::any`]
+/// [`crate::bitset::ItemsBitSet`], similar to method [`core::iter::Iterator::any`]
 pub const fn has_item<const N: usize>(origin: &ItemsBitSet, check_for: [ItemId; N]) -> bool {
     let mut i = 0;
     while i < N {
@@ -311,7 +320,7 @@ impl<T> DamageKind<T> {
 impl DamageKind<ItemId> {
     pub fn items(bitset: &ItemsBitSet, attack_type: AttackType) -> Self {
         Self::new(bitset, attack_type, |i, attack_type| unsafe {
-            let item = ITEM_CACHE.get_unchecked(i);
+            let item = ITEMS_DATA.get_unchecked(i);
             let slice = match attack_type {
                 AttackType::Ranged => item.ranged,
                 AttackType::Melee => item.melee,
@@ -325,7 +334,7 @@ impl DamageKind<ItemId> {
 impl DamageKind<RuneId> {
     pub fn runes(bitset: &RunesBitSet, attack_type: AttackType) -> Self {
         Self::new(bitset, attack_type, |i, attack_type| unsafe {
-            let rune = RUNE_CACHE.get_unchecked(i);
+            let rune = RUNES_DATA.get_unchecked(i);
             let slice = match attack_type {
                 AttackType::Ranged => rune.ranged,
                 AttackType::Melee => rune.melee,
@@ -736,7 +745,7 @@ const _: () = {
         let champion_id = ChampionId::from_usize(i).unwrap();
         let Champion {
             metadata, closures, ..
-        } = champion_id.cache();
+        } = champion_id.data();
 
         assert!(metadata.len() == closures.len());
         i += 1;

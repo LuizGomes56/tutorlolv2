@@ -10,7 +10,9 @@ use serde::{Deserialize, Serialize};
 
 /// A generic metadata holder for [`AbilityId`], [`ItemId`], or [`RuneId`].
 /// Contains its damage type, attributes, and which instance of the enum the value is.
-#[derive(Clone, Copy, Debug, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize)]
+#[derive(
+    Clone, Copy, Debug, PartialEq, PartialOrd, Ord, Eq, Encode, Decode, Serialize, Deserialize,
+)]
 pub struct TypeMetadata<T> {
     pub kind: T,
     pub damage_type: DamageType,
@@ -207,6 +209,41 @@ pub enum StatName {
     MoveSpeedPercent,
     Omnivamp,
     Tenacity,
+}
+
+impl FromStr for StatName {
+    type Err = &'static str;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "ah" => Ok(Self::AbilityHaste),
+            "hp" => Ok(Self::Health),
+            "mr" => Ok(Self::MagicResist),
+            "ap" => Ok(Self::AbilityPower),
+            "mana" => Ok(Self::Mana),
+            "ms" => Ok(Self::MoveSpeedPercent),
+            "hsp" => Ok(Self::HealAndShieldPower),
+            "mp5" => Ok(Self::BaseManaRegen),
+            "armor" => Ok(Self::Armor),
+            "msflat" => Ok(Self::MoveSpeed),
+            "crit" => Ok(Self::CritChance),
+            "ad" => Ok(Self::AttackDamage),
+            "armpen" => Ok(Self::ArmorPenetration),
+            "lethality" => Ok(Self::Lethality),
+            "as" => Ok(Self::AttackSpeed),
+            "lifesteal" => Ok(Self::LifeSteal),
+            "mpen" => Ok(Self::MagicPenetrationPercent),
+            "mpenflat" => Ok(Self::MagicPenetration),
+            "gp10" => Ok(Self::GoldPer10Seconds),
+            "hp5" => Ok(Self::BaseHealthRegen),
+            "tenacity" => Ok(Self::Tenacity),
+            "spec" => Ok(Self::AdaptiveForce),
+            "omnivamp" => Ok(Self::Omnivamp),
+            "hp5flat" => Ok(Self::BaseHealthRegen),
+            "critdamage" => Ok(Self::CritDamage),
+            _ => return Err("Unknown stat in StatName::from_str"),
+        }
+    }
 }
 
 impl StatName {
@@ -425,6 +462,20 @@ pub enum AttackType {
     Ranged,
 }
 
+impl AttackType {
+    pub const fn from_u8(value: u8) -> Option<Self> {
+        match value {
+            0 => Some(Self::Melee),
+            1 => Some(Self::Ranged),
+            _ => None,
+        }
+    }
+
+    pub const unsafe fn from_u8_unchecked(value: u8) -> Self {
+        unsafe { core::mem::transmute(value) }
+    }
+}
+
 #[derive(
     Clone, Copy, Debug, Default, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize, Deserialize,
 )]
@@ -432,6 +483,20 @@ pub enum DamageIndex {
     #[default]
     Min,
     Max,
+}
+
+impl DamageIndex {
+    pub const fn from_u8(value: u8) -> Option<Self> {
+        match value {
+            0 => Some(Self::Min),
+            1 => Some(Self::Max),
+            _ => None,
+        }
+    }
+
+    pub const unsafe fn from_u8_unchecked(value: u8) -> Self {
+        unsafe { core::mem::transmute(value) }
+    }
 }
 
 impl FromStr for AttackType {

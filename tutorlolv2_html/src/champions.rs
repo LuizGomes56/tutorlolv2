@@ -1,5 +1,5 @@
 use crate::{html::Html, parallel_task};
-use tutorlolv2_gen::{CastId, ChampionId, Position};
+use tutorlolv2::{CastId, ChampionId, Position};
 
 pub fn champions_html() {
     parallel_task(|champion_id: ChampionId| {
@@ -25,8 +25,8 @@ pub fn champions_html() {
                                 };
                                 format!(
                                     r#"
-                                    <a 
-                                        href="../../{folder}/{value:?}/index.html" 
+                                    <a
+                                        href="../../{folder}/{value:?}/index.html"
                                         class="flex items-center gap-2"
                                     >
                                         <img src={src:?} alt={value:?} title={name:?}>
@@ -121,6 +121,7 @@ pub fn champions_html() {
         html.section("Generator definition")
             .code(champion_id.generator())
             .json(champion_id);
+
         html
     });
 }
