@@ -14,7 +14,6 @@ tokio = {
     "rt-multi-thread",
   ]
 }
-tutorlolv2 = { path = "../" }
 tutorlolv2_dev = { path = "../tutorlolv2_dev" }
 tutorlolv2_html = { path = "../tutorlolv2_html" }
 tutorlolv2_wiki = { path = "../tutorlolv2_wiki" }
