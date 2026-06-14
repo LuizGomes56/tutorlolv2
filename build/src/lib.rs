@@ -8,7 +8,10 @@ use crate::{
     scripts::{
         batch::{FmtArgs, FmtOutput, Tracker, batch},
         consts::*,
-        finish::{finish_champions, finish_items_or_runes},
+        finish::{
+            champion_aliases, eval_abilities, eval_items_or_runes, finish_champions,
+            finish_items_or_runes,
+        },
         utils::{StaticVar, static_vars},
     },
 };
@@ -16,7 +19,7 @@ use rayon::iter::{IntoParallelIterator, ParallelBridge, ParallelIterator};
 use serde::{Serialize, de::DeserializeOwned};
 use serde_json::json;
 use std::{
-    collections::{BTreeMap, BTreeSet},
+    collections::BTreeMap,
     fmt::Write,
     fs::DirEntry,
     path::{Path, PathBuf},
@@ -33,7 +36,7 @@ pub type DynError = Box<dyn core::error::Error + Send + Sync + 'static>;
 pub type MayFail<T = (), E = DynError> = Result<T, E>;
 
 pub trait Build {
-    fn build(&mut self, out_path: PathBuf) -> MayFail;
+    fn build(&mut self, out_path: PathBuf) -> MayFail<String>;
 }
 
 fn write_module<'a>(
@@ -105,85 +108,51 @@ pub fn run() -> MayFail {
     >(
         parser: &impl Parser<T, U>,
         out_dir: impl AsRef<Path>,
-        f: impl Fn() -> MayFail<Option<BTreeMap<String, Vec<String>>>>,
+        phf_fn: impl Fn() -> MayFail<Option<BTreeMap<String, Vec<String>>>>,
+        eval_fn: impl Fn(&str, Tag) -> String,
     ) -> MayFail {
         || -> MayFail {
             let out = out_dir.as_ref();
-            let tag = parser.tag().plural();
-            parser.keys().par_bridge().try_for_each(|id| {
-                let out_path = out.join(tag).join(id);
-                parser.run_fn(id)?.build(out_path)
-            })?;
+            let tag = parser.tag();
+            let plural = tag.plural();
+
+            let eval_arms = parser
+                .keys()
+                .par_bridge()
+                .map(|id| -> MayFail<String> {
+                    let out_path = out.join(plural).join(id);
+                    parser.run_fn(id)?.build(out_path)
+                })
+                .collect::<MayFail<String>>()?;
 
             write(
-                out.join(format!("{tag}_code")).with_extension("rs"),
-                [parser.id_enum(), parser.phf(f()?), parser.data_variable()].concat(),
+                out.join(format!("{plural}_code")).with_extension("rs"),
+                [
+                    parser.id_enum(),
+                    parser.phf(phf_fn()?),
+                    parser.data_variable(),
+                    eval_fn(&eval_arms, tag),
+                ]
+                .concat(),
             )
         }()
     }
 
     rayon::scope(|s| {
         s.spawn(|_| {
-            c_result = build_code(&*CPARSER, &out_dir, || {
-                let map = CPARSER.map();
-                let languages = BTreeMap::<String, BTreeSet<String>>::from_file(
-                    "internal/champion_languages.json",
-                )?;
-
-                let alias = map
-                    .keys()
-                    .map(|champion_id| {
-                        (
-                            champion_id.clone(),
-                            languages[champion_id]
-                                .iter()
-                                .cloned()
-                                .chain(
-                                    (champion_id == "Gnar")
-                                        .then_some("Mega Gnar".into())
-                                        .into_iter(),
-                                )
-                                .collect::<Vec<_>>(),
-                        )
-                    })
-                    .collect();
-
-                Ok(Some(alias))
-            });
+            c_result = build_code(&*CPARSER, &out_dir, champion_aliases, eval_abilities);
         });
         s.spawn(|_| {
-            i_result = build_code(&*IPARSER, &out_dir, || Ok(None));
+            i_result = build_code(&*IPARSER, &out_dir, || Ok(None), eval_items_or_runes);
         });
         s.spawn(|_| {
-            r_result = build_code(&*RPARSER, &out_dir, || Ok(None));
+            r_result = build_code(&*RPARSER, &out_dir, || Ok(None), eval_items_or_runes);
         });
     });
 
     c_result?;
     i_result?;
     r_result?;
-
-    /*
-    * pub fn get_const_eval(data: &BTreeMap<&String, Batch>, tag: Tag) -> String {
-        format!(
-            "
-             pub const fn {ltag}_const_eval(
-                 ctx: &Ctx,
-                 {ltag}_id: {tag:?}Id,
-                 attack_type: AttackType
-             ) -> [f32; 2] {{
-                 match {ltag}_id {{{eval}}}
-             }}
-             ",
-            ltag = tag.singular().to_lowercase(),
-            eval = data
-                .values()
-                .map(|batch| batch.eval.as_str())
-                .collect::<Vec<&str>>()
-                .concat()
-        )
-    }
-    */
 
     cmd48.status()?;
 
@@ -232,7 +201,7 @@ fn build_docs(out_dir: PathBuf) -> MayFail {
 
     for (tag, mut src) in full {
         let iter = match tag {
-            Tag::Champions => &mut CPARSER.keys() as &mut (dyn Iterator<Item = &str> + Send + Sync),
+            Tag::Champions => &mut CPARSER.keys() as &mut (dyn Iterator<Item = &str> + Send),
             Tag::Items => &mut IPARSER.keys(),
             Tag::Runes => &mut RPARSER.keys(),
         };

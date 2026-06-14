@@ -6,7 +6,7 @@ use std::{fmt::Write, path::PathBuf};
 use tutorlolv2_fmt::to_ssnake;
 
 impl Build for Rune {
-    fn build(&mut self, out: PathBuf) -> MayFail {
+    fn build(&mut self, out: PathBuf) -> MayFail<String> {
         let Self {
             riot_id,
             data:
@@ -57,6 +57,6 @@ impl Build for Rune {
 
         crate::write(out.with_extension("rs"), rust)?;
         crate::write(out.with_extension("w48"), docs)?;
-        crate::write(out.with_extension("eval"), self.eval())
+        Ok(self.eval())
     }
 }

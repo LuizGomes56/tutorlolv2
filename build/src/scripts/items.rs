@@ -14,7 +14,7 @@ struct ItemExt {
 }
 
 impl Build for Item {
-    fn build(&mut self, out: PathBuf) -> MayFail {
+    fn build(&mut self, out: PathBuf) -> MayFail<String> {
         let ItemExt {
             tier,
             price,
@@ -89,7 +89,7 @@ impl Build for Item {
 
         crate::write(out.with_extension("rs"), rust)?;
         crate::write(out.with_extension("w48"), docs)?;
-        crate::write(out.with_extension("eval"), self.eval())
+        Ok(self.eval())
     }
 }
 

@@ -1,5 +1,12 @@
-use crate::scripts::batch::{FmtArgs, FmtOutput};
-use std::ops::Range;
+use crate::{
+    CPARSER, JsonRead, MayFail,
+    generators::{parser::Parser, utils::Tag},
+    scripts::batch::{FmtArgs, FmtOutput},
+};
+use std::{
+    collections::{BTreeMap, BTreeSet},
+    ops::Range,
+};
 use tutorlolv2_types::{AbilityId, AttackType, DamageIndex};
 
 pub fn finish_champions(target: &str, variable: &mut String, value: &mut [FmtOutput<'_>]) {
@@ -70,4 +77,56 @@ pub fn finish_items_or_runes(target: &str, variable: &mut String, value: &mut [F
     };
 
     variable.push_str(&push);
+}
+
+pub fn champion_aliases() -> MayFail<Option<BTreeMap<String, Vec<String>>>> {
+    let map = CPARSER.map();
+    let languages =
+        BTreeMap::<String, BTreeSet<String>>::from_file("internal/champion_languages.json")?;
+
+    let alias = map
+        .keys()
+        .map(|champion_id| {
+            (
+                champion_id.clone(),
+                languages[champion_id]
+                    .iter()
+                    .cloned()
+                    .chain(
+                        (champion_id == "Gnar")
+                            .then_some("Mega Gnar".into())
+                            .into_iter(),
+                    )
+                    .collect::<Vec<_>>(),
+            )
+        })
+        .collect();
+
+    Ok(Some(alias))
+}
+
+pub fn eval_abilities(arms: &str, _: Tag) -> String {
+    format!(
+        "pub const fn ability_const_eval(
+            champion_id: ChampionId,
+            ctx: &Ctx,
+            kind: AbilityId
+        ) -> f32 {{
+            match champion_id {{{arms}}}
+        }}"
+    )
+}
+
+pub fn eval_items_or_runes(arms: &str, tag: Tag) -> String {
+    format!(
+        "pub const fn {ltag}_const_eval(
+                {ltag}_id: {enum_name},
+                ctx: &Ctx,
+                attack_type: AttackType
+            ) -> [f32; 2] {{
+                match {ltag}_id {{{arms}}}
+            }}",
+        ltag = tag.singular().to_lowercase(),
+        enum_name = tag.enum_name()
+    )
 }

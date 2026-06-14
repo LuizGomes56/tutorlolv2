@@ -26,7 +26,7 @@ struct ChampionExt {
 }
 
 impl Build for Champion {
-    fn build(&mut self, out: PathBuf) -> MayFail {
+    fn build(&mut self, out: PathBuf) -> MayFail<String> {
         let ChampionExt {
             metadata,
             closures,
@@ -222,7 +222,10 @@ impl Build for Champion {
             )?;
         }
 
-        let eval = format!(
+        crate::write(out.with_extension("rs"), rust)?;
+        crate::write(out.with_extension("w48"), docs)?;
+
+        Ok(format!(
             r#"ChampionId::{champion_id} => {{
                 match kind {{
                     {arms}
@@ -237,11 +240,7 @@ impl Build for Champion {
                     format!("{ability_id:?} => {function}(ctx),")
                 })
                 .collect::<String>()
-        );
-
-        crate::write(out.with_extension("rs"), rust)?;
-        crate::write(out.with_extension("w48"), docs)?;
-        crate::write(out.with_extension("eval"), eval)
+        ))
     }
 }
 
