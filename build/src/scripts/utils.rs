@@ -280,7 +280,7 @@ pub trait ItemOrRuneExt: Index<AttackType, Output = DamageRange> + ItemOrRune {
 
                 let formula = simplify(body);
 
-                if !default || !seen.contains(f) {
+                if !default && !seen.contains(f) {
                     seen.insert(f);
                     let formula_f32 = cast_f32(&formula);
                     let param = ctx_param(&formula_f32);
@@ -451,6 +451,31 @@ pub fn get_identifiers(damage: &str, damage_type: DamageType) -> impl Iterator<I
             DamageType::Magic => Some(CtxVar::MagicMultiplier),
             _ => None,
         })
+}
+
+pub fn fit_str(c: &str) -> String {
+    const CHUNK: usize = 30;
+    let comment = c.replace("  ", " ");
+    if comment.len() <= CHUNK {
+        return format!("{comment:?}");
+    }
+    let mut chunks = Vec::new();
+    let mut current = String::new();
+    for word in comment.split(' ') {
+        if !current.is_empty() && current.len() + 1 + word.len() > CHUNK {
+            chunks.push(format!("{current:?}"));
+            current = word.to_string();
+        } else {
+            if !current.is_empty() {
+                current.push(' ');
+            }
+            current.push_str(word);
+        }
+    }
+    if !current.is_empty() {
+        chunks.push(format!("{current:?}"));
+    }
+    format!("concat!({})", chunks.join(", "))
 }
 
 pub fn cast_f32(s: &str) -> String {

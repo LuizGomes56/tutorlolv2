@@ -1,6 +1,8 @@
 use crate::{
-    Build, MayFail, generators::parser::items::Item, model::items::WikiItem,
-    scripts::utils::ItemOrRuneExt,
+    Build, MayFail,
+    generators::parser::items::Item,
+    model::items::WikiItem,
+    scripts::utils::{ItemOrRuneExt, fit_str},
 };
 use std::{fmt::Write, path::PathBuf};
 use tutorlolv2_fmt::to_ssnake;
@@ -70,8 +72,8 @@ impl Build for Item {
         write!(
             docs,
             "#[fmt({fmt})]
-            static {upper_id}: X = X {{
-                name: {name:?},
+            static {var_name}: X = X {{
+                name: {name},
                 stats: {stats:?},
                 price: {price},
                 maps: {maps:?},
@@ -80,7 +82,16 @@ impl Build for Item {
                 {damage}
             }};",
             damage = self.repr_damages(),
-            fmt = self.formula_fmt()
+            fmt = self.formula_fmt(),
+            name = fit_str(&name),
+            var_name = {
+                let max_len = 28;
+                if upper_id.len() > max_len {
+                    upper_id[..max_len].to_string()
+                } else {
+                    upper_id
+                }
+            }
         )?;
 
         let (code, doc) = &self.closures()?;

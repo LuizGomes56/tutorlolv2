@@ -76,7 +76,11 @@ static RPARSER: LazyLock<RuneParser> = LazyLock::new(|| RuneParser::new().unwrap
 
 pub fn run() -> MayFail {
     println!("cargo:rerun-if-changed=build/src/generators/impls/champions");
+    println!("cargo:rerun-if-changed=build/src/generators/impls/items");
+    println!("cargo:rerun-if-changed=build/src/generators/impls/runes");
     println!("cargo:rerun-if-changed=cache/wiki/champions");
+    println!("cargo:rerun-if-changed=cache/wiki/items");
+    println!("cargo:rerun-if-changed=cache/wiki/runes");
 
     // let out_dir = PathBuf::from(std::env::var("OUT_DIR")?);
     let out_dir = PathBuf::from("build_output");
@@ -167,7 +171,7 @@ fn build_docs(out_dir: PathBuf) -> MayFail {
     let full = [Tag::Champions, Tag::Items, Tag::Runes]
         .into_par_iter()
         .map(|dir| {
-            read_dir(out_dir.join(format!("{}s", dir.singular())))
+            read_dir(out_dir.join(dir.plural()))
                 .map(|r| {
                     r.filter(|entry| entry.path().extension().map_or(false, |e| e == "w48"))
                         .par_bridge()
@@ -225,15 +229,19 @@ fn build_docs(out_dir: PathBuf) -> MayFail {
                     generator.drain(..pos);
                 }
 
-                let fmt_arg = json!(FmtArgs {
-                    target: "generator",
-                    variant,
-                    meta: (),
-                    replace: Default::default(),
-                    default
-                });
-
-                generator.insert_str(0, &format!("#[fmt({fmt_arg})]"));
+                generator.insert_str(
+                    0,
+                    &format!(
+                        "#[fmt({})]",
+                        json!(FmtArgs {
+                            target: "generator",
+                            variant,
+                            meta: (),
+                            replace: Default::default(),
+                            default
+                        })
+                    ),
+                );
                 generator
             })
             .collect::<String>();

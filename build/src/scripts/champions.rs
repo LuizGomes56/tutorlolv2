@@ -4,7 +4,7 @@ use crate::{
     model::champions::WikiChampion,
     scripts::{
         batch::FmtArgs,
-        utils::{cast_f32, ctx_param, get_identifiers, simplify},
+        utils::{cast_f32, ctx_param, fit_str, get_identifiers, simplify},
     },
 };
 use serde_json::json;
@@ -156,31 +156,6 @@ impl Build for Champion {
                 }
             };
 
-            fn fmt_comment(c: &str) -> String {
-                const CHUNK: usize = 36;
-                let comment = c.replace("  ", " ");
-                if comment.len() <= CHUNK {
-                    return format!("{comment:?}");
-                }
-                let mut chunks = Vec::new();
-                let mut current = String::new();
-                for word in comment.split(' ') {
-                    if !current.is_empty() && current.len() + 1 + word.len() > CHUNK {
-                        chunks.push(format!("{current:?}"));
-                        current = word.to_string();
-                    } else {
-                        if !current.is_empty() {
-                            current.push(' ');
-                        }
-                        current.push_str(word);
-                    }
-                }
-                if !current.is_empty() {
-                    chunks.push(format!("{current:?}"));
-                }
-                format!("concat!({})", chunks.join(", "))
-            }
-
             let docs_block = format_args!(
                 "static {variable}: Ability = Ability {{
                     name: {name:?},
@@ -189,7 +164,7 @@ impl Build for Champion {
                     comment: {comment},
                     {damage_attr},
                 }};",
-                comment = fmt_comment(comment),
+                comment = fit_str(comment),
             );
 
             write!(
