@@ -321,8 +321,22 @@ fn build_docs() -> MayFail {
         exports.push_str(&docs);
     }
 
-    write(OUT_DIR.join("docs").with_extension("txt"), full_block)?;
-    write(OUT_DIR.join("docs").with_extension("rs"), exports)
+    let (r1, (r2, r3)) = rayon::join(
+        || write(&OUT_DIR.join("docs").with_extension("txt"), &full_block),
+        || {
+            rayon::join(
+                || write(&OUT_DIR.join("docs").with_extension("rs"), &exports),
+                || {
+                    let brotli = tutorlolv2_fmt::encode_brotli_11(full_block.as_bytes());
+                    write(&OUT_DIR.join("docs").with_extension("br"), &brotli)
+                },
+            )
+        },
+    );
+
+    r1?;
+    r2?;
+    r3
 }
 
 pub trait JsonRead: DeserializeOwned {

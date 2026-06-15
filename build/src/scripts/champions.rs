@@ -89,7 +89,7 @@ impl Build for Champion {
 
         write!(
             rust,
-            "pub static {upper_id}: X = X {{
+            r#"pub static {upper_id}: X = X {{
                 name: {name:?},
                 adaptive_type: AdaptiveType::{adaptive_type:?},
                 attack_type: {attack_type:?},
@@ -99,9 +99,10 @@ impl Build for Champion {
                 combos: &[{combos}],
                 metadata: &{metadata:#?},
                 merge_data: &{merge_data:#?},
+                #[cfg(feature = "docs")]
                 identifiers: &[{identifiers}],
                 closures: &[{fn_names}],
-            }};",
+            }};"#,
             combos = combo
                 .iter()
                 .map(|ident| format!("&{ident:#?}"))

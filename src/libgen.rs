@@ -6,7 +6,6 @@ use core::{
     any::Any,
     fmt::{Debug, Display},
     mem::MaybeUninit,
-    ops::Range,
     str::FromStr,
 };
 use serde::{Deserialize, Serialize};
@@ -17,15 +16,17 @@ use tutorlolv2_types::{
     AttackType::{self, *},
     Attrs::*,
     ComboElement::{self, *},
-    Ctx,
-    CtxVar::{self, *},
+    Ctx, CtxVar,
     DamageType::{self, *},
     GameMap::{self, *},
     Key, MergeData,
     Position::{self, *},
     StatName, TypeMetadata,
 };
-pub use {champions_code::*, docs::*, items_code::*, runes_code::*};
+pub use {champions_code::*, items_code::*, runes_code::*};
+
+#[cfg(feature = "docs")]
+pub use {CtxVar::*, core::ops::Range, docs::*};
 
 pub mod champions_code {
     use super::{champions::*, *};
@@ -60,6 +61,7 @@ pub mod runes {
     type X = Rune;
 }
 
+#[cfg(feature = "docs")]
 pub mod docs {
     use super::*;
     include!(concat!(env!("OUT_DIR"), "/docs.rs"));
@@ -67,10 +69,10 @@ pub mod docs {
     pub static RAW_BLOCK: &str = include_str!(concat!(env!("OUT_DIR"), "/docs.txt"));
     pub const RAW_BLOCK_LEN: usize = RAW_BLOCK.len();
 
-    // const BR_BLOCK: &[u8] = include_bytes!("block.br");
-    // pub static mut BLOCK: &[u8] = BR_BLOCK;
+    const BR_BLOCK: &[u8] = include_bytes!(concat!(env!("OUT_DIR"), "/docs.br"));
+    pub static mut BLOCK: &[u8] = BR_BLOCK;
 
-    // pub const BLOCK_LEN: usize = BR_BLOCK.len();
+    pub const BLOCK_LEN: usize = BR_BLOCK.len();
 }
 
 pub type Closure = fn(&Ctx) -> f32;
@@ -86,6 +88,7 @@ pub struct Champion {
     pub combos: &'static [&'static [ComboElement]],
     pub metadata: &'static [TypeMetadata<AbilityId>],
     pub merge_data: &'static [MergeData],
+    #[cfg(feature = "docs")]
     pub identifiers: &'static [&'static [CtxVar]],
     pub closures: &'static [Closure],
 }
@@ -140,6 +143,7 @@ pub struct Item {
     pub deals_damage: [bool; 4],
     pub purchasable: bool,
     pub riot_id: u32,
+    #[cfg(feature = "docs")]
     pub identifiers: &'static [CtxVar],
     pub custom: bool,
 }
@@ -152,6 +156,7 @@ pub struct Rune {
     pub melee: [Closure; 2],
     pub deals_damage: [bool; 4],
     pub riot_id: u32,
+    #[cfg(feature = "docs")]
     pub identifiers: &'static [CtxVar],
     pub custom: bool,
 }
@@ -426,7 +431,9 @@ const _: () = {
 
         let len = champion_id.number_of_abilities();
 
+        #[cfg(feature = "docs")]
         assert!(len == champion_id.closures().len());
+        #[cfg(feature = "docs")]
         assert!(len == champion_id.identifiers().len());
 
         let mut j = 0;
@@ -497,8 +504,11 @@ impl TryFrom<&str> for ChampionId {
 }
 
 impl ChampionId {
+    #[cfg(feature = "docs")]
     pub const CLOSURES: &[&[Range<usize>]; Self::VARIANTS] = &ABILITY_CLOSURES;
+    #[cfg(feature = "docs")]
     pub const ABILITIES: &[&[Range<usize>]; Self::VARIANTS] = &ABILITY_FORMULAS;
+    #[cfg(feature = "docs")]
     pub const GENERATORS: &[Range<usize>; Self::VARIANTS] = &CHAMPION_GENERATOR;
 
     pub const IRML: usize = {
@@ -563,7 +573,7 @@ impl ChampionId {
     }
 
     pub const fn number_of_abilities(&self) -> usize {
-        self.closures().len()
+        self.data().closures.len()
     }
 
     pub const fn adaptive_type(&self) -> AdaptiveType {
@@ -603,30 +613,37 @@ impl ChampionId {
         self.data().attack_type
     }
 
+    #[cfg(feature = "docs")]
     pub const fn closures(&self) -> &'static [Range<usize>] {
         Self::CLOSURES[self.index()]
     }
 
+    #[cfg(feature = "docs")]
     pub const fn ability_formulas(&self) -> &'static [Range<usize>] {
         ABILITY_FORMULAS[self.index()]
     }
 
+    #[cfg(feature = "docs")]
     pub const fn get_ability_formula(&self, index: usize) -> &'static Range<usize> {
         &self.ability_formulas()[index]
     }
 
+    #[cfg(feature = "docs")]
     pub const fn get_ability_closure(&self, index: usize) -> &'static Range<usize> {
         &self.closures()[index]
     }
 
+    #[cfg(feature = "docs")]
     pub const fn identifiers(&self) -> &'static [&'static [CtxVar]] {
         self.data().identifiers
     }
 
+    #[cfg(feature = "docs")]
     pub const fn get_ability_idents(&self, index: usize) -> &'static [CtxVar] {
         &self.identifiers()[index]
     }
 
+    #[cfg(feature = "docs")]
     pub const fn generator(&self) -> &'static Range<usize> {
         &CHAMPION_GENERATOR[self.index()]
     }
@@ -722,7 +739,9 @@ const _: () = {
 };
 
 impl ItemId {
+    #[cfg(feature = "docs")]
     pub const CLOSURES: &[[[Range<usize>; 2]; 2]; Self::VARIANTS] = &ITEM_CLOSURES;
+    #[cfg(feature = "docs")]
     pub const GENERATORS: &[Range<usize>; Self::VARIANTS] = &ITEM_GENERATOR;
     pub const RIOT_IDS: [u32; Self::VARIANTS] = {
         let mut result = [0; _];
@@ -842,10 +861,12 @@ impl ItemId {
         self.data().riot_id
     }
 
+    #[cfg(feature = "docs")]
     pub const fn closure(&self) -> &'static [[Range<usize>; 2]; 2] {
         &Self::CLOSURES[self.index()]
     }
 
+    #[cfg(feature = "docs")]
     pub const fn generator(&self) -> &'static Range<usize> {
         &ITEM_GENERATOR[self.index()]
     }
@@ -876,6 +897,7 @@ impl ItemId {
         self.data().price
     }
 
+    #[cfg(feature = "docs")]
     pub const fn identifiers(&self) -> &'static [CtxVar] {
         &self.data().identifiers
     }
@@ -894,7 +916,9 @@ impl ItemId {
 }
 
 impl RuneId {
+    #[cfg(feature = "docs")]
     pub const CLOSURES: &[[[Range<usize>; 2]; 2]; Self::VARIANTS] = &RUNE_CLOSURES;
+    #[cfg(feature = "docs")]
     pub const GENERATORS: &[Range<usize>; Self::VARIANTS] = &RUNE_GENERATOR;
     pub const RIOT_IDS: [u32; Self::VARIANTS] = {
         let mut result = [0; _];
@@ -934,10 +958,12 @@ impl RuneId {
         self.data().riot_id
     }
 
+    #[cfg(feature = "docs")]
     pub const fn closure(&self) -> &'static [[Range<usize>; 2]; 2] {
         &Self::CLOSURES[self.index()]
     }
 
+    #[cfg(feature = "docs")]
     pub const fn identifiers(&self) -> &'static [CtxVar] {
         &self.data().identifiers
     }
@@ -1046,6 +1072,7 @@ macro_rules! impl_methods {
                         unsafe { core::mem::transmute(result) }
                     };
 
+                    #[cfg(feature = "docs")]
                     pub const FORMULAS: &[Range<usize>; Self::VARIANTS] = &[<$stru:replace("Id", ""):upper _FORMULAS>];
 
                     pub const unsafe fn from_repr_unchecked(id: $repr) -> Self {
@@ -1082,7 +1109,9 @@ macro_rules! impl_methods {
                     const VARIANTS: usize = Self::VARIANTS;
                     const NAMES: &'static [&'static str] = &Self::NAMES;
                     const VALUES: &'static [Self] = &Self::VALUES;
+                    #[cfg(feature = "docs")]
                     const FORMULAS: &'static [Range<usize>] = Self::FORMULAS;
+                    #[cfg(feature = "docs")]
                     const GENERATORS: &'static [Range<usize>] = Self::GENERATORS;
 
                     fn entity(&self) -> EntityId {
@@ -1149,16 +1178,20 @@ where
     const VARIANTS: usize;
     const NAMES: &'static [&'static str];
     const VALUES: &'static [Self];
+    #[cfg(feature = "docs")]
     const FORMULAS: &'static [Range<usize>];
+    #[cfg(feature = "docs")]
     const GENERATORS: &'static [Range<usize>];
 
     fn entity(&self) -> EntityId;
     fn name(&self) -> &'static str;
     fn index(&self) -> usize;
     fn debug(&self) -> &'static str;
+    #[cfg(feature = "docs")]
     fn formula(&self) -> &'static Range<usize> {
         &Self::FORMULAS[self.index()]
     }
+    #[cfg(feature = "docs")]
     fn generator(&self) -> &'static Range<usize> {
         &Self::GENERATORS[self.index()]
     }
@@ -1175,7 +1208,9 @@ where
 
 pub trait ValueId: CastId {
     fn to_riot_id(&self) -> u32;
+    #[cfg(feature = "docs")]
     fn identifiers(&self) -> &'static [CtxVar];
+    #[cfg(feature = "docs")]
     fn functions(&self) -> &'static [[Range<usize>; 2]; 2];
     fn metadata(&self) -> TypeMetadata<Self>;
     fn damage_type(&self) -> DamageType {
@@ -1188,10 +1223,12 @@ impl ValueId for ItemId {
         self.to_riot_id()
     }
 
+    #[cfg(feature = "docs")]
     fn identifiers(&self) -> &'static [CtxVar] {
         self.identifiers()
     }
 
+    #[cfg(feature = "docs")]
     fn functions(&self) -> &'static [[Range<usize>; 2]; 2] {
         self.closure()
     }
@@ -1206,10 +1243,12 @@ impl ValueId for RuneId {
         self.to_riot_id()
     }
 
+    #[cfg(feature = "docs")]
     fn identifiers(&self) -> &'static [CtxVar] {
         self.identifiers()
     }
 
+    #[cfg(feature = "docs")]
     fn functions(&self) -> &'static [[Range<usize>; 2]; 2] {
         self.closure()
     }

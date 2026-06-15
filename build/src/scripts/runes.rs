@@ -28,15 +28,16 @@ impl Build for Rune {
 
         write!(
             rust,
-            "pub static {upper_id}: X = X {{
+            r#"pub static {upper_id}: X = X {{
                 name: {name:?},
                 metadata: {metadata},
                 {fn_names}
                 deals_damage: {deals_damage:?},
                 riot_id: {riot_id},
+                #[cfg(feature = "docs")]
                 identifiers: &{identifiers:?},
                 custom: {custom}
-            }};",
+            }};"#,
             identifiers = self.identifiers(),
             deals_damage = self.deals_damage(),
             fn_names = self.function_names(),

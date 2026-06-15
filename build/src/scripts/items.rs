@@ -44,7 +44,7 @@ impl Build for Item {
 
         write!(
             rust,
-            "pub static {upper_id}: X = X {{
+            r#"pub static {upper_id}: X = X {{
                 name: {name:?},
                 tier: {tier},
                 price: {price},
@@ -55,9 +55,10 @@ impl Build for Item {
                 deals_damage: {deals_damage:?},
                 purchasable: {purchasable},
                 riot_id: {id},
+                #[cfg(feature = "docs")]
                 identifiers: &{identifiers:?},
                 custom: {custom}
-            }};",
+            }};"#,
             identifiers = self.identifiers(),
             deals_damage = self.deals_damage(),
             fn_names = self.function_names(),
