@@ -299,10 +299,12 @@ pub trait ItemOrRuneExt: Index<AttackType, Output = DamageRange> + ItemOrRune + 
                     "#[fmt({fmt})]
                     fn {f}() {{{formula}}}",
                     fmt = json!(FmtArgs {
-                        target: "closure",
-                        variant,
+                        target: "closure".into(),
+                        variant: variant.into(),
                         meta: (attack_type, damage_index),
-                        replace: [("ctx.", "")].into(),
+                        replace: [("ctx.", "")]
+                            .map(|(a, b)| (a.to_string(), b.to_string()))
+                            .into(),
                         default
                     })
                 )?;
@@ -314,8 +316,8 @@ pub trait ItemOrRuneExt: Index<AttackType, Output = DamageRange> + ItemOrRune + 
 
     fn formula_fmt(&self) -> Value {
         json!(FmtArgs {
-            target: "formula",
-            variant: self.id(),
+            target: "formula".into(),
+            variant: self.id().into(),
             meta: (),
             replace: [
                 (": X = X", " ="),
@@ -323,6 +325,7 @@ pub trait ItemOrRuneExt: Index<AttackType, Output = DamageRange> + ItemOrRune + 
                 (&format!("{}::", Self::TAG.enum_name()), ""),
                 ("ctx.", ""),
             ]
+            .map(|(a, b)| (a.to_string(), b.to_string()))
             .into(),
             default: false
         })

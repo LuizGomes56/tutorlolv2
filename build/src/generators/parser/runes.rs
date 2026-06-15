@@ -13,6 +13,7 @@ use std::{
     collections::BTreeMap,
     fmt::Write,
     ops::{Index, IndexMut},
+    sync::LazyLock,
 };
 use tutorlolv2_types::{AttackType, CtxVar, DamageIndex, DamageType};
 
@@ -84,22 +85,23 @@ impl Parser<WikiRune, Rune> for RuneParser {
     }
 }
 
+static RIOT_RUNES: LazyLock<Vec<RiotCdnRune>> =
+    LazyLock::new(|| Vec::<RiotCdnRune>::from_file(SaveTo::RiotRunes.path()).unwrap());
+
 impl TryFrom<WikiRune> for Rune {
     type Error = DynError;
 
     fn try_from(data: WikiRune) -> Result<Self, Self::Error> {
         let name = data.name.clone();
 
-        let riot_id = Vec::<RiotCdnRune>::from_file(SaveTo::RiotRunes.path())
-            .ok()
-            .and_then(|runes| {
-                runes.into_iter().find_map(|cdn_rune| {
-                    (cdn_rune.name == name).then_some(cdn_rune.id).or_else(|| {
-                        cdn_rune.slots.into_iter().find_map(|slot| {
-                            slot.runes
-                                .into_iter()
-                                .find_map(|tree| (tree.name == name).then_some(tree.id))
-                        })
+        let riot_id = RIOT_RUNES
+            .iter()
+            .find_map(|cdn_rune| {
+                (cdn_rune.name == name).then_some(cdn_rune.id).or_else(|| {
+                    cdn_rune.slots.iter().find_map(|slot| {
+                        slot.runes
+                            .iter()
+                            .find_map(|tree| (tree.name == name).then_some(tree.id))
                     })
                 })
             })

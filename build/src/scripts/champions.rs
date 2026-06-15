@@ -77,10 +77,12 @@ impl Build for Champion {
                 positions: {positions:#?}, {damage}
             }};",
             fmt = json!(FmtArgs {
-                target: "formula",
-                variant: &champion_id,
+                target: "formula".into(),
+                variant: champion_id.clone(),
                 meta: (),
-                replace: [(": X = X", " ="), ("ctx.", "")].into(),
+                replace: [(": X = X", " ="), ("ctx.", "")]
+                    .map(|(a, b)| (a.to_string(), b.to_string()))
+                    .into(),
                 default: false
             })
         )?;
@@ -179,17 +181,21 @@ impl Build for Champion {
                 }};",
                 comment = fit_str(comment),
                 fmt_fn = json!(FmtArgs {
-                    target: "closure",
-                    variant: &champion_id,
+                    target: "closure".into(),
+                    variant: champion_id.clone(),
                     meta: ability_id,
-                    replace: [("ctx.", "")].into(),
+                    replace: [("ctx.", "")]
+                        .map(|(a, b)| (a.to_string(), b.to_string()))
+                        .into(),
                     default: false
                 }),
                 fmt_block = json!(FmtArgs {
-                    target: "ability",
-                    variant: &champion_id,
+                    target: "ability".into(),
+                    variant: champion_id.clone(),
                     meta: ability_id,
-                    replace: [(": Ability = Ability", " ="), ("ctx.", "")].into(),
+                    replace: [(": Ability = Ability", " ="), ("ctx.", "")]
+                        .map(|(a, b)| (a.to_string(), b.to_string()))
+                        .into(),
                     default: false
                 })
             )?;

@@ -72,10 +72,8 @@ fn write_module<'a>(
 static CPARSER: LazyLock<ChampionParser> = LazyLock::new(|| ChampionParser::new().unwrap());
 static IPARSER: LazyLock<ItemParser> = LazyLock::new(|| ItemParser::new().unwrap());
 static RPARSER: LazyLock<RuneParser> = LazyLock::new(|| RuneParser::new().unwrap());
-static OUT_DIR: LazyLock<PathBuf> = LazyLock::new(|| {
-    // PathBuf::from("build_output")
-    PathBuf::from(std::env::var("OUT_DIR").unwrap())
-});
+static OUT_DIR: LazyLock<PathBuf> =
+    LazyLock::new(|| PathBuf::from(std::env::var("OUT_DIR").unwrap()));
 
 pub fn run() -> MayFail {
     println!("cargo:rerun-if-changed=build/src/generators/impls/champions");
@@ -84,6 +82,11 @@ pub fn run() -> MayFail {
     println!("cargo:rerun-if-changed=cache/wiki/champions");
     println!("cargo:rerun-if-changed=cache/wiki/items");
     println!("cargo:rerun-if-changed=cache/wiki/runes");
+
+    rayon::join(
+        || LazyLock::force(&CPARSER),
+        || rayon::join(|| LazyLock::force(&IPARSER), || LazyLock::force(&RPARSER)),
+    );
 
     let mut cmd48 = Command::new("rustfmt");
     cmd48
@@ -104,9 +107,9 @@ pub fn run() -> MayFail {
         write_module(&mut cmd48, &mut cmd80, dir, iter)?;
     }
 
-    let mut c_result = MayFail::Ok(());
-    let mut i_result = MayFail::Ok(());
-    let mut r_result = MayFail::Ok(());
+    let mut c_result = Ok(());
+    let mut i_result = Ok(());
+    let mut r_result = Ok(());
 
     fn build_code<
         T: Clone + DeserializeOwned + MapValueExt + Send + Sync + 'static,
@@ -157,44 +160,15 @@ pub fn run() -> MayFail {
 
     build_docs()?;
 
-    for file in [
-        "champions",
-        "champions_code",
-        "items",
-        "items_code",
-        "runes",
-        "runes_code",
-        "docs",
-    ] {
-        let path = OUT_DIR.join(file).with_extension("rs");
-        assert!(path.exists())
-    }
-
     cmd80.status()?;
 
     Ok(())
 }
 
 fn build_docs() -> MayFail {
-    let full = [Tag::Champions, Tag::Items, Tag::Runes]
-        .into_par_iter()
-        .map(|dir| {
-            read_dir(OUT_DIR.join(dir.plural()))
-                .map(|r| {
-                    r.filter(|entry| entry.path().extension().map_or(false, |e| e == "w48"))
-                        .par_bridge()
-                        .into_par_iter()
-                        .map(|entry| read_to_string(entry.path()))
-                        .collect::<MayFail<String>>()
-                })
-                .flatten()
-                .and_then(|s| Ok((dir, s)))
-        })
-        .collect::<MayFail<BTreeMap<_, _>>>()?;
-
     let mut full_block = String::with_capacity(12 * 1024 * 1024);
-    let mut exports = String::with_capacity(4 * 1024 * 1024);
     let mut tracker = Tracker::new(&mut full_block);
+    let mut exports = String::with_capacity(4 * 1024 * 1024);
 
     for (name, value) in [
         ("IGNITE_OFFSET", IGNITE_FN),
@@ -211,54 +185,69 @@ fn build_docs() -> MayFail {
         writeln!(exports, "pub static {name}: Range<usize> = {range:?};")?;
     }
 
-    for (tag, mut src) in full {
-        let iter = match tag {
-            Tag::Champions => &mut CPARSER.keys() as &mut (dyn Iterator<Item = &str> + Send),
-            Tag::Items => &mut IPARSER.keys(),
-            Tag::Runes => &mut RPARSER.keys(),
-        };
+    let mut batches = [Tag::Champions, Tag::Items, Tag::Runes]
+        .into_par_iter()
+        .map(|tag| -> MayFail<_> {
+            let mut src = read_dir(OUT_DIR.join(tag.plural()))?
+                .filter(|entry| entry.path().extension().map_or(false, |e| e == "w48"))
+                .par_bridge()
+                .map(|entry| read_to_string(entry.path()))
+                .flatten()
+                .collect::<String>();
 
-        let generators = iter
-            .par_bridge()
-            .map(|variant| {
-                let file_name = to_ssnake(variant).to_lowercase();
-                let mut default = false;
+            let iter = match tag {
+                Tag::Champions => &mut CPARSER.keys() as &mut (dyn Iterator<Item = &str> + Send),
+                Tag::Items => &mut IPARSER.keys(),
+                Tag::Runes => &mut RPARSER.keys(),
+            };
 
-                let mut generator = read_to_string(format!(
-                    "build/src/generators/impls/{}/{file_name}.rs",
-                    tag.plural()
-                ))
-                .unwrap_or_else(|_| {
-                    default = true;
-                    "impl Generator {}".into()
-                });
+            let generators = iter
+                .par_bridge()
+                .map(|variant| {
+                    let file_name = to_ssnake(variant).to_lowercase();
+                    let mut default = false;
 
-                if let Some(pos) = generator.find("impl") {
-                    generator.drain(..pos);
-                }
+                    let mut generator = read_to_string(format!(
+                        "build/src/generators/impls/{}/{file_name}.rs",
+                        tag.plural()
+                    ))
+                    .unwrap_or_else(|_| {
+                        default = true;
+                        "impl Generator {}".into()
+                    });
 
-                generator.insert_str(
-                    0,
-                    &format!(
-                        "#[fmt({})]",
-                        json!(FmtArgs {
-                            target: "generator",
-                            variant,
-                            meta: (),
-                            replace: Default::default(),
-                            default
-                        })
-                    ),
-                );
-                generator
-            })
-            .collect::<String>();
+                    if let Some(pos) = generator.find("impl") {
+                        generator.drain(..pos);
+                    }
 
-        src.push_str(&generators);
+                    generator.insert_str(
+                        0,
+                        &format!(
+                            "#[fmt({})]",
+                            json!(FmtArgs {
+                                target: "generator".into(),
+                                variant: variant.into(),
+                                meta: (),
+                                replace: Default::default(),
+                                default
+                            })
+                        ),
+                    );
+                    generator
+                })
+                .collect::<String>();
 
-        let mut batch = batch(&src);
-        tracker.batch(&mut batch);
+            src.push_str(&generators);
 
+            Ok((tag, batch(src)))
+        })
+        .collect::<MayFail<Vec<_>>>()?;
+
+    for (_, batch) in &mut batches {
+        tracker.batch(batch);
+    }
+
+    for (tag, mut batch) in batches {
         let mut fmt_args = match tag {
             Tag::Champions => ChampionParser::static_vars([
                 StaticVar {
@@ -315,7 +304,7 @@ fn build_docs() -> MayFail {
 
         for values in batch.values_mut() {
             for (target, outputs) in values.iter_mut() {
-                if let Some(variable) = fmt_args.get_mut(target) {
+                if let Some(variable) = fmt_args.get_mut(target.as_str()) {
                     finish(target, variable, outputs);
                 }
             }

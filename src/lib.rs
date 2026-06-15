@@ -1,7 +1,6 @@
 #![no_std]
 
 pub use calculator::calculator;
-pub use generated::{champions::ChampionId, items::ItemId, runes::RuneId};
 pub use libgen::*;
 pub use realtime::realtime;
 pub use tutorlolv2_types::*;
@@ -11,7 +10,6 @@ extern crate alloc;
 pub mod bitset;
 pub mod calculator;
 pub mod const_eval;
-pub mod generated;
 pub mod helpers;
 pub mod libgen;
 pub mod model;
@@ -21,9 +19,8 @@ pub mod riot;
 #[allow(dead_code)]
 mod test {
     use crate::{
-        ChampionId, ItemId, RuneId,
+        ChampionId, ItemId, L_SIML, RuneId,
         const_eval::{ConstDamage, ConstDamages, ConstEnemy, ConstInput, ConstOutput},
-        libgen::L_SIML,
         model::{AbilityLevels, Attacks, BasicStats, Dragons, Modifiers, ResistShred, Stats},
     };
     use tutorlolv2_types::{AbilityId, Ctx};

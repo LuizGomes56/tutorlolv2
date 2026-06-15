@@ -18,8 +18,10 @@
 use crate::{
     ChampionId, ItemId, RuneId,
     bitset::{ItemsBitSet, RunesBitSet},
-    generated::{Champion, Closure, Stat, WikiStats, items::ITEMS_DATA, runes::RUNES_DATA},
-    libgen::{DAMAGING_ITEMS, DAMAGING_RUNES, L_MSTR, L_SIML, L_TWRD, SIMULATED_ITEMS_ENUM},
+    libgen::{
+        Champion, Closure, DAMAGING_ITEMS, DAMAGING_RUNES, ITEMS_DATA, L_MSTR, L_SIML, L_TWRD,
+        RUNES_DATA, SIMULATED_ITEMS_ENUM, Stat, WikiStats,
+    },
     model::*,
 };
 use alloc::boxed::Box;

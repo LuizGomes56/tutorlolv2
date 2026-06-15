@@ -10,8 +10,7 @@
 
 use crate::{
     ChampionId, ItemId, RuneId,
-    generated::{Closure, Stat},
-    libgen::{L_MSTR, L_SIML, L_TWRD},
+    libgen::{Closure, L_MSTR, L_SIML, L_TWRD, Stat},
 };
 use alloc::boxed::Box;
 use bincode::{BorrowDecode, Decode, Encode};

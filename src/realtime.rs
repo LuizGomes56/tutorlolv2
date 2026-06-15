@@ -13,9 +13,8 @@
 use crate::{
     ChampionId, ItemId, RuneId,
     bitset::{ItemsBitSet, RunesBitSet},
-    generated::WikiModifiers,
     helpers::*,
-    libgen::{DAMAGING_ITEMS, DAMAGING_RUNES},
+    libgen::{DAMAGING_ITEMS, DAMAGING_RUNES, WikiModifiers},
     model::*,
     riot::*,
 };

@@ -9,7 +9,7 @@ use std::{
 };
 use tutorlolv2_types::{AbilityId, AttackType, DamageIndex};
 
-pub fn finish_champions(target: &str, variable: &mut String, value: &mut [FmtOutput<'_>]) {
+pub fn finish_champions(target: &str, variable: &mut String, value: &mut [FmtOutput]) {
     value.sort_by(|a, b| match &a.json.meta {
         v if let Ok(ability_a) = serde_json::from_value::<AbilityId>(v.clone())
             && let Ok(ability_b) = serde_json::from_value::<AbilityId>(b.json.meta.clone()) =>
@@ -34,7 +34,7 @@ pub fn finish_champions(target: &str, variable: &mut String, value: &mut [FmtOut
     variable.push_str(&push);
 }
 
-pub fn finish_items_or_runes(target: &str, variable: &mut String, value: &mut [FmtOutput<'_>]) {
+pub fn finish_items_or_runes(target: &str, variable: &mut String, value: &mut [FmtOutput]) {
     value.sort_by(|a, b| match &a.json.meta {
         v if let Ok((ata, dia)) =
             serde_json::from_value::<(AttackType, DamageIndex)>(v.clone())

@@ -9,23 +9,23 @@ use std::{
 };
 
 #[derive(Debug, Deserialize, Serialize)]
-pub struct FmtArgs<'a, T> {
-    pub target: &'a str,
-    pub variant: &'a str,
+pub struct FmtArgs<T> {
+    pub target: String,
+    pub variant: String,
     pub meta: T,
-    pub replace: HashMap<&'a str, &'a str>,
+    pub replace: HashMap<String, String>,
     pub default: bool,
 }
 
 #[derive(Debug, Serialize)]
-pub struct FmtOutput<'a> {
+pub struct FmtOutput {
     pub html_range: Range<usize>,
     pub html: String,
-    pub json: FmtArgs<'a, Value>,
+    pub json: FmtArgs<Value>,
     pub delete_range: Range<usize>,
 }
 
-pub fn batch<'b>(src: &'b str) -> BTreeMap<&'b str, BTreeMap<&'b str, Vec<FmtOutput<'b>>>> {
+pub fn batch(src: String) -> BTreeMap<String, BTreeMap<String, Vec<FmtOutput>>> {
     static FMT_RE: LazyLock<Regex> =
         LazyLock::new(|| Regex::new(r#"#\[fmt\((\{.*?\})\)\]"#).unwrap());
 
@@ -39,7 +39,7 @@ pub fn batch<'b>(src: &'b str) -> BTreeMap<&'b str, BTreeMap<&'b str, Vec<FmtOut
             let start_index = full.start();
             let attr_end = full.end();
 
-            let json = serde_json::from_str::<FmtArgs<'_, Value>>(inner).unwrap();
+            let json = serde_json::from_str::<FmtArgs<Value>>(inner).unwrap();
 
             let rest = &src[attr_end..];
             let start = rest.find('{').unwrap();
@@ -88,9 +88,9 @@ pub fn batch<'b>(src: &'b str) -> BTreeMap<&'b str, BTreeMap<&'b str, Vec<FmtOut
     let mut map = BTreeMap::<_, BTreeMap<_, Vec<_>>>::new();
 
     for data in result {
-        map.entry(data.json.variant)
+        map.entry(data.json.variant.clone())
             .or_default()
-            .entry(data.json.target)
+            .entry(data.json.target.clone())
             .or_default()
             .push(data);
     }
@@ -125,7 +125,7 @@ impl<'a> Tracker<'a> {
         start..self.offset()
     }
 
-    pub fn batch(&mut self, batch: &mut BTreeMap<&str, BTreeMap<&str, Vec<FmtOutput<'_>>>>) {
+    pub fn batch(&mut self, batch: &mut BTreeMap<String, BTreeMap<String, Vec<FmtOutput>>>) {
         for value in batch.values_mut() {
             for data in value.values_mut() {
                 for output in data.iter_mut() {
