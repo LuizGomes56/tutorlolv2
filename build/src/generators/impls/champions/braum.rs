@@ -15,11 +15,10 @@ impl Generator for Braum {
         let pmul = self
             .scaling(Key::P, 0)?
             .first()
-            .map(|_| Some(0.0))
-            // .map(Scaling::try_get_value)
+            .map(Scaling::try_get_value)
             .flatten()
             .unwrap_or(0.4);
 
-        self.modify(P(_1), |p| p.parenthesize().times(pmul))?.end()
+        self.modify(P(_1), |p| f![pmul * (p)])?.end()
     }
 }

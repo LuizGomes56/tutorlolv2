@@ -14,7 +14,7 @@ impl Generator for MonkeyKing {
                 ],
             )
             .damage_types([W(Void), R(Min), R(Max), R(_1Max)], Physical)?
-            .modify(W(Void), |ratio| ratio.times(AttackDamage))?
+            .modify(W(Void), |ratio| f![ratio * AttackDamage])?
             .end()
     }
 }

@@ -4,7 +4,6 @@ use crate::{
         parser::champions::{Ability, Champion},
         utils::Tag,
     },
-    model::champions::WikiChampion,
     scripts::{
         batch::FmtArgs,
         utils::{cast_f32, ctx_param, fit_str, get_identifiers, simplify},
@@ -18,6 +17,7 @@ use std::{
 };
 use tutorlolv2_fmt::to_ssnake;
 use tutorlolv2_types::{AbilityId, CtxVar, DevMergeData, MergeData, TypeMetadata};
+use tutorlolv2_wiki::champions::WikiChampion;
 
 struct ChampionExt {
     metadata: Vec<TypeMetadata<AbilityId>>,

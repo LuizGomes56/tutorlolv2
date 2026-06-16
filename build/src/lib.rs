@@ -29,7 +29,7 @@ use std::{
 use tutorlolv2_fmt::{rust_html, to_ssnake};
 
 mod generators;
-mod model;
+// mod model;
 mod scripts;
 
 pub type DynError = Box<dyn core::error::Error + Send + Sync + 'static>;

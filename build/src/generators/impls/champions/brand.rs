@@ -9,7 +9,7 @@ impl Generator for Brand {
                 (3, _1),   /* Description 2 */
             ],
         )
-        .modify(P(_1), |p| p.parenthesize().times(EnemyMaxHealth))?
+        .modify(P(_1), |p| f![EnemyMaxHealth * (p)])?
         .ability(Key::Q, [(0, Void) /* Magic Damage */])
         .ability(
             Key::W,

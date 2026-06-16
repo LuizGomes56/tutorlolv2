@@ -3,7 +3,7 @@ use super::*;
 impl Generator for Sion {
     fn generate(&mut self) -> MayFail {
         self.ability(Key::P, [(0, Void) /* Description 1 */])
-            .modify(P(Void), |dmg| dmg.div(10))?
+            .modify(P(Void), |dmg| f![dmg / 10])?
             .ability(
                 Key::Q,
                 [

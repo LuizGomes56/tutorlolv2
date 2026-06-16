@@ -16,7 +16,7 @@ use tutorlolv2_types::{
     AttackType::{self, *},
     Attrs::*,
     ComboElement::{self, *},
-    Ctx, CtxVar,
+    Ctx,
     DamageType::{self, *},
     GameMap::{self, *},
     Key, MergeData,
@@ -26,7 +26,11 @@ use tutorlolv2_types::{
 pub use {champions_code::*, items_code::*, runes_code::*};
 
 #[cfg(feature = "docs")]
-pub use {CtxVar::*, core::ops::Range, docs::*};
+use {
+    core::ops::Range,
+    docs::*,
+    tutorlolv2_types::CtxVar::{self, *},
+};
 
 pub mod champions_code {
     use super::{champions::*, *};

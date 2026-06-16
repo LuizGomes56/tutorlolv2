@@ -3,7 +3,7 @@ use super::*;
 impl Generator for Skarner {
     fn generate(&mut self) -> MayFail {
         self.ability(Key::P, [(0, Void) /* Innate */])
-            .modify(P(Void), |dmg| dmg.times(EnemyMaxHealth))?
+            .modify(P(Void), |dmg| f![dmg * EnemyMaxHealth])?
             .ability(
                 Key::Q,
                 [

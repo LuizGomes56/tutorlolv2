@@ -9,14 +9,14 @@ impl Generator for Lucian {
                 (2, _1),   /* Innate - Vigilance */
             ],
         )
-        .modify(P(_1), |dmg| 15.plus(dmg))?
+        .modify(P(_1), |dmg| f![15 + dmg])?
         .ability(Key::Q, [(0, Void) /* Physical Damage */])
         .ability(Key::W, [(1, Void) /* Magic Damage */])
         .ability(Key::R, [(1, Min) /* Physical Damage Per Shot */])
         .clone_with(R(Min), R(Max), |dmg| {
-            let shots = 2.2222.times(CritChance).div(100);
+            let shots = f![2.2222 * CritChance / 100];
             /* Maybe include IE bonus shots in the future */
-            dmg.parenthesize().times(shots)
+            f![(dmg) * shots]
         })?
         .comment(R(Max), "Maximum Damage without IE")?
         .end()

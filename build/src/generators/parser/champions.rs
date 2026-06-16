@@ -6,10 +6,6 @@ use crate::{
         parser::{Parser, ZERO, likely_damages},
         utils::{RegExtractor, Tag},
     },
-    model::{
-        Effect, Scaling,
-        champions::{WikiAbility, WikiChampion},
-    },
 };
 use serde::{Deserialize, Serialize};
 use std::{
@@ -18,6 +14,10 @@ use std::{
 };
 use tutorlolv2_types::{
     AbilityId, AbilityName, Attrs, ComboElement, DamageType, DevMergeData, Key,
+};
+use tutorlolv2_wiki::{
+    champions::{WikiChampion, abilities::WikiAbility},
+    parser::{Effect, Scaling},
 };
 
 pub struct ChampionParser {

@@ -14,11 +14,8 @@ impl Generator for Ahri {
             .ability(Key::E, [(1, Void) /* Magic Damage */])
             .ability(Key::R, [(0, Min) /* Magic Damage */]);
 
-        let qmax = self.merge_damage([Q(Min)], |[qmin]| {
-            qmin.times(MagicMultiplier).parenthesize().plus(qmin)
-        })?;
-
-        let rmax = self.merge_damage([R(Min)], |[rmin]| rmin.parenthesize().times(3))?;
+        let qmax = self.merge_damage([Q(Min)], |[qmin]| f![(qmin * MagicMultiplier) + qmin])?;
+        let rmax = self.merge_damage([R(Min)], |[rmin]| f![3 * (rmin)])?;
 
         self.clone_to(Q(Min), Q(Max), qmax)?
             .clone_to(R(Min), R(Max), rmax)?

@@ -1,14 +1,14 @@
 pub use crate::{
-    MayFail,
+    MayFail, formula as f,
     generators::{
         Generator, GeneratorExt,
         parser::items::{Item, Source::*},
         utils::RegExtractor,
     },
-    model::items::WikiItem,
 };
 pub use core::fmt::Display;
-pub use tutorlolv2_types::{AttackType::*, Attrs::*, CtxVar::*, DamageIndex::*, DamageType::*};
+pub use tutorlolv2_types::{AttackType::*, CtxVar::*, DamageIndex::*, DamageType::*};
+pub use tutorlolv2_wiki::items::item_parser::WikiItem;
 
 #[macro_export]
 macro_rules! decl_items {

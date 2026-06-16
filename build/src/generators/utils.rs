@@ -85,23 +85,25 @@ pub trait RegExtractor: Display {
 #[macro_export]
 macro_rules! formula {
     (($($inner:tt)*)) => {
-        formula!($($inner)*).parenthesize()
+        $crate::formula!($($inner)*).parenthesize()
     };
     ($first:tt $($rest:tt)*) => {
         $crate::formula_impl!($crate::formula_atom!($first); $($rest)*)
     };
 }
 
+#[doc(hidden)]
 #[macro_export]
 macro_rules! formula_atom {
     (($($inner:tt)*)) => {
         $crate::formula!($($inner)*).parenthesize()
     };
     ($value:tt) => {
-        $value
+        &$value
     };
 }
 
+#[doc(hidden)]
 #[macro_export]
 macro_rules! formula_impl {
     ($acc:expr;) => {
@@ -127,7 +129,7 @@ macro_rules! formula_impl {
     };
     ($acc:expr; / $rhs:tt $($rest:tt)*) => {
         $crate::formula_impl!(
-            $acc.div(formula_atom!($rhs));
+            $acc.div($crate::formula_atom!($rhs));
             $($rest)*
         )
     };

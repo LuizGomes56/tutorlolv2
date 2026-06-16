@@ -3,7 +3,7 @@ use super::*;
 impl Generator for Jinx {
     fn generate(&mut self) -> MayFail {
         self.ability(Key::Q, [(0, Void)])
-            .modify(Q(Void), |_| 1.1.times(AttackDamage))?
+            .modify(Q(Void), |_| f![1.1 * AttackDamage])?
             .ability(Key::W, [(0, Void) /* Physical Damage */])
             .ability(Key::E, [(0, Void) /* Magic Damage */])
             .ability(

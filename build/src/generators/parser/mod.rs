@@ -4,7 +4,6 @@ use crate::{
         GeneratorExt, VERSION,
         utils::{SaveTo, Tag},
     },
-    model::{champions::WikiChampion, items::WikiItem, runes::WikiRune},
     scripts::{
         batch::FmtArgs,
         utils::{StaticVar, is_zero, static_vars, variable},
@@ -20,6 +19,7 @@ use std::{
 };
 use tutorlolv2_fmt::{pascal_case, rustfmt, to_ssnake};
 use tutorlolv2_types::DamageIndex;
+use tutorlolv2_wiki::{champions::WikiChampion, items::item_parser::WikiItem, runes::WikiRune};
 
 pub mod champions;
 pub mod items;

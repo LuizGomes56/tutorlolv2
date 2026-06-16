@@ -6,7 +6,6 @@ use crate::{
         parser::{DamageRange, Parser, infer_damage_type, likely_damages, model::RiotCdnRune},
         utils::{RegExtractor, SaveTo, Tag},
     },
-    model::{Effect, runes::WikiRune},
 };
 use serde::{Deserialize, Serialize};
 use std::{
@@ -16,6 +15,10 @@ use std::{
     sync::LazyLock,
 };
 use tutorlolv2_types::{AttackType, CtxVar, DamageIndex, DamageType};
+use tutorlolv2_wiki::{
+    parser::Effect,
+    runes::{RuneKeystone, RuneSlot, WikiRune},
+};
 
 pub struct RuneParser {
     pub data: BTreeMap<String, WikiRune>,
@@ -72,6 +75,8 @@ impl Parser<WikiRune, Rune> for RuneParser {
                     descriptions: Default::default(),
                     riot_id,
                     custom: true,
+                    path: RuneKeystone::Inspiration,
+                    slot: RuneSlot::Keystone,
                 },
             );
         };
@@ -105,7 +110,7 @@ impl TryFrom<WikiRune> for Rune {
                     })
                 })
             })
-            .unwrap_or(data.riot_id);
+            .unwrap_or(data.riot_id as _);
 
         Ok(Self {
             riot_id,
@@ -165,10 +170,7 @@ impl Rune {
             .iter()
             .enumerate()
             .filter(|(i, _)| filter.contains(i))
-            .filter_map(|(_, scaling)| {
-                Some("0")
-                // scaling.render(CtxVar::Level).ok()
-            })
+            .filter_map(|(_, scaling)| scaling.render(CtxVar::Level).ok())
             .collect::<Vec<_>>()
             .join(" + "))
     }

@@ -3,7 +3,7 @@ use super::*;
 impl Generator for Riven {
     fn generate(&mut self) -> MayFail {
         self.ability(Key::P, [(1, Void) /* Innate */])
-            .modify(P(Void), |dmg| dmg.times(AttackDamage))?
+            .modify(P(Void), |dmg| f![dmg * AttackDamage])?
             .ability(
                 Key::Q,
                 [

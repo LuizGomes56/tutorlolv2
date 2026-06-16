@@ -1,12 +1,12 @@
 use crate::{
     Build, MayFail, OUT_DIR,
     generators::{parser::items::Item, utils::Tag},
-    model::items::WikiItem,
     scripts::utils::{ItemOrRuneExt, fit_str},
 };
 use std::fmt::Write;
 use tutorlolv2_fmt::to_ssnake;
 use tutorlolv2_types::{GameMap, StatName};
+use tutorlolv2_wiki::items::item_parser::WikiItem;
 
 struct ItemExt {
     pub tier: u8,

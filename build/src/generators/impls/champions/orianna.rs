@@ -4,7 +4,7 @@ impl Generator for Orianna {
     fn generate(&mut self) -> MayFail {
         let pmax = self
             .ability(Key::P, [(1, Min) /* Innate */])
-            .merge_damage([P(Min)], |[p]| 1.4.times(p))?;
+            .merge_damage([P(Min)], |[p]| f![1.4 * p])?;
 
         self.clone_to(P(Min), P(Max), pmax)?
             .ability(

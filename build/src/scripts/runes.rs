@@ -1,11 +1,11 @@
 use crate::{
     Build, MayFail, OUT_DIR,
     generators::{parser::runes::Rune, utils::Tag},
-    model::runes::WikiRune,
     scripts::utils::ItemOrRuneExt,
 };
 use std::fmt::Write;
 use tutorlolv2_fmt::to_ssnake;
+use tutorlolv2_wiki::runes::WikiRune;
 
 impl Build for Rune {
     fn build(&mut self) -> MayFail<String> {

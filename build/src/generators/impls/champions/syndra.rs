@@ -14,21 +14,16 @@ impl Generator for Syndra {
 
         let w_bonus = self[W(Void)].damage.clone();
 
-        self.modify(W(Max), |dmg: &str| {
-            dmg.parenthesize()
-                .times(MagicMultiplier)
-                .parenthesize()
-                .plus(&w_bonus)
-        })?
-        .ability(Key::E, [(0, Void) /* Magic Damage */])
-        .ability(
-            Key::R,
-            [
-                (1, Void), /* Magic Damage per Sphere */
-                (2, Max),  /* Maximum Magic Damage */
-                (3, Min),  /* Minimum Magic Damage */
-            ],
-        )
-        .end()
+        self.modify(W(Max), |dmg: &str| f![((dmg) * MagicMultiplier) + w_bonus])?
+            .ability(Key::E, [(0, Void) /* Magic Damage */])
+            .ability(
+                Key::R,
+                [
+                    (1, Void), /* Magic Damage per Sphere */
+                    (2, Max),  /* Maximum Magic Damage */
+                    (3, Min),  /* Minimum Magic Damage */
+                ],
+            )
+            .end()
     }
 }

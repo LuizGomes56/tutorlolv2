@@ -26,13 +26,7 @@ impl Generator for Pantheon {
 
         /* 40 - 190 (based on Comet Spear's rank) */
         /* (+ 115% bonus AD) (+ 50% AP) */
-        let r1 = 40
-            .plus(30)
-            .times(QLevel)
-            .plus(1.15)
-            .times(BonusAd)
-            .plus(0.5)
-            .times(AbilityPower);
+        let r1 = f![40 + 30 * QLevel + 1.15 * BonusAd + 0.5 * AbilityPower];
 
         self.clone_to(R(Min), R(_1), r1)?
             .damage_types([W(Void), E(Void), R(_1)], Physical)?

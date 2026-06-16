@@ -9,10 +9,6 @@ use crate::{
         },
         utils::{RegExtractor, SaveTo, Tag},
     },
-    model::{
-        Effect,
-        items::{ItemEffect, WikiItem},
-    },
 };
 use serde::{Deserialize, Serialize};
 use std::{
@@ -20,7 +16,11 @@ use std::{
     fmt::Write,
     ops::{Index, IndexMut},
 };
-use tutorlolv2_types::{AttackType, Attrs, DamageIndex, DamageType};
+use tutorlolv2_types::{AttackType, Attrs, CtxVar, DamageIndex, DamageType};
+use tutorlolv2_wiki::{
+    items::item_parser::{ItemEffect, WikiItem},
+    parser::Effect,
+};
 
 pub struct ItemParser {
     pub data: BTreeMap<String, WikiItem>,
@@ -205,10 +205,7 @@ impl Item {
             .iter()
             .enumerate()
             .filter(|(i, _)| filter.contains(i))
-            .filter_map(|(_, scaling)| {
-                Some("0")
-                // scaling.render(CtxVar::Level).ok()
-            })
+            .filter_map(|(_, scaling)| scaling.render(CtxVar::Level).ok())
             .collect::<Vec<_>>()
             .join(" + "))
     }

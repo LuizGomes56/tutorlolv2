@@ -5,7 +5,10 @@ impl Generator for Zed {
         let p1 = self.formula(Key::P, 3)?.to_string();
 
         self.ability(Key::P, [(2, Void) /* Innate */])
-            .modify(P(Void), |dmg| dmg.replace(&p1, "").times(EnemyMaxHealth))?
+            .modify(P(Void), |dmg| {
+                let p = dmg.replace(&p1, "");
+                f![(p * EnemyMaxHealth)]
+            })?
             .ability(
                 Key::Q,
                 [

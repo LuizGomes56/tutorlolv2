@@ -12,10 +12,7 @@ impl Generator for Kalista {
                 ],
             );
 
-        let e_dmg = self.merge_damage([E(_1), E(Void)], |[e1, e]| {
-            e.parenthesize().plus(e1.times(Stacks).parenthesize())
-        })?;
-
+        let e_dmg = self.merge_damage([E(_1), E(Void)], |[e1, e]| f![(e) + (e1 * Stacks)])?;
         self.set_damage(E(Void), e_dmg)?.end()
     }
 }

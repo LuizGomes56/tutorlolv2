@@ -5,13 +5,7 @@ impl Generator for Hecarim {
         self.ability(Key::Q, [(1, Void) /* Physical Damage */])
             .modify(Q(Void), |dmg| {
                 /* Rampage bonus damage per stack */
-                dmg.parenthesize().times(
-                    1.03.plus(0.03)
-                        .times(BonusAd)
-                        .div(100)
-                        .parenthesize()
-                        .times(Stacks),
-                )
+                f![(dmg) * Stacks * (1.03 + 0.03 * BonusAd / 100)]
             })?
             .ability(
                 Key::W,

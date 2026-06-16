@@ -12,7 +12,7 @@ impl Generator for Senna {
         .modify(P(_1), |dmg| {
             dmg.replace(&SteelcapsEffect.to_string(), &AttackDamage.to_string())
         })?
-        .modify(P(Void), |dmg| dmg.parenthesize().times(EnemyCurrentHealth))?
+        .modify(P(Void), |dmg| f![(dmg) * EnemyCurrentHealth])?
         .ability(Key::Q, [(1, Void) /* Physical Damage */])
         .ability(Key::W, [(0, Void) /* Physical Damage */])
         .ability(Key::R, [(0, Void) /* Physical Damage */])

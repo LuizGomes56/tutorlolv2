@@ -2,10 +2,7 @@ use super::*;
 
 impl Generator for Yone {
     fn generate(&mut self) -> MayFail {
-        let mix = |dmg: &str| {
-            let physical = dmg.times(PhysicalMultiplier).parenthesize();
-            dmg.times(MagicMultiplier).parenthesize().plus(physical)
-        };
+        let mix = |dmg: &str| f![(dmg * MagicMultiplier) + (dmg * PhysicalMultiplier)];
 
         self.ability(
             Key::Q,

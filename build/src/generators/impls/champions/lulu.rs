@@ -17,7 +17,7 @@ impl Generator for Lulu {
                 damage_type: Magic,
                 attributes: Undefined,
                 comment: "Magic Damage: 70 / 110 / 150 / 190 / 230 (+ 50% AP)".into(),
-                damage: 70.plus(ELevel).times(40).plus(0.5).times(AbilityPower),
+                damage: f![70 + ELevel * 40 + 0.5 * AbilityPower],
             },
         )
         .end()
