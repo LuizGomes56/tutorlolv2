@@ -326,7 +326,7 @@ pub trait ItemOrRuneExt: Index<AttackType, Output = DamageRange> + ItemOrRune + 
                     target: "closure".into(),
                     variant: variant.into(),
                     meta: (attack_type, damage_index),
-                    replace: [("ctx.", ""), ("(ctx)", "__simp__")]
+                    replace: [("ctx.", ""), ("(ctx)", "__fn__")]
                         .map(|(a, b)| (a.to_string(), b.to_string()))
                         .into(),
                     default
@@ -388,8 +388,14 @@ pub trait ItemOrRuneExt: Index<AttackType, Output = DamageRange> + ItemOrRune + 
             }
 
             let value = if let Some((base_idx, ref ratio)) = aliases[i] {
-                let base_fn = self.functions()[base_idx].clone();
-                format!("{ratio} * {base_fn}")
+                let postfix = labels[base_idx];
+                let function = format_args!("{postfix}__fn__");
+
+                if ratio == "1" {
+                    format!("{function}")
+                } else {
+                    format!("{ratio} * {function}")
+                }
             } else {
                 simplify(raw[i])
             };
@@ -418,7 +424,7 @@ pub trait ItemOrRuneExt: Index<AttackType, Output = DamageRange> + ItemOrRune + 
                 ("TypeMetadata ", ""),
                 (&format!("{}::", Self::TAG.enum_name()), ""),
                 ("ctx.", ""),
-                ("(ctx)", "__simp__")
+                ("(ctx)", "__fn__")
             ]
             .map(|(a, b)| (a.to_string(), b.to_string()))
             .into(),

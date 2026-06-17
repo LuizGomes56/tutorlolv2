@@ -293,8 +293,8 @@ pub fn rust_html(rust_code: &str) -> String {
         for token in h.line(i, line) {
             match token {
                 TokOpt::Some(text, kind) => match kind.as_str() {
-                    "_v" if text.ends_with("__simp__") => {
-                        let name = &text[..text.len() - "__simp__".len()];
+                    "_v" if text.ends_with("__fn__") => {
+                        let name = &text[..text.len() - "__fn__".len()];
                         line_html.push_str(&format!(r#"<span class="_f">{name}</span>"#));
                     }
                     "_f" if text.ends_with('(') => {

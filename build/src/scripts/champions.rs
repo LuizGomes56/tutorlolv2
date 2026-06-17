@@ -109,7 +109,7 @@ impl Build for Champion {
                 target: "formula".into(),
                 variant: champion_id.clone(),
                 meta: (),
-                replace: [(": X = X", " ="), ("ctx.", ""), ("(ctx)", "__simp__")]
+                replace: [(": X = X", " ="), ("ctx.", ""), ("(ctx)", "__fn__")]
                     .map(|(a, b)| (a.to_string(), b.to_string()))
                     .into(),
                 default: false
@@ -209,7 +209,7 @@ impl Build for Champion {
                     target: "closure".into(),
                     variant: champion_id.clone(),
                     meta: ability_id,
-                    replace: [("ctx.", ""), ("(ctx)", "__simp__")]
+                    replace: [("ctx.", ""), ("(ctx)", "__fn__")]
                         .map(|(a, b)| (a.to_string(), b.to_string()))
                         .into(),
                     default: false
@@ -221,7 +221,7 @@ impl Build for Champion {
                     replace: [
                         (": Ability = Ability", " ="),
                         ("ctx.", ""),
-                        ("(ctx)", "__simp__")
+                        ("(ctx)", "__fn__")
                     ]
                     .map(|(a, b)| (a.to_string(), b.to_string()))
                     .into(),
