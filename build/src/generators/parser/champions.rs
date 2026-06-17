@@ -312,6 +312,20 @@ impl Champion {
         Ok(self)
     }
 
+    pub fn indexof(&self, key: AbilityId) -> MayFail<usize> {
+        Ok(self
+            .abilities
+            .iter()
+            .position(|(k, _)| k == &key)
+            .ok_or_else(|| {
+                format!("self.abilities.iter().position(|(k, _)| k == &key) failed for: {key:?}")
+            })?)
+    }
+
+    pub fn damage_of(&self, key: AbilityId) -> MayFail<&String> {
+        self.get(key).map(|v| &v.damage)
+    }
+
     pub fn get(&self, key: AbilityId) -> MayFail<&Ability> {
         Ok(self
             .abilities

@@ -34,9 +34,9 @@ impl Build for Rune {
                 {fn_names}
                 deals_damage: {deals_damage:?},
                 riot_id: {riot_id},
+                custom: {custom},
                 #[cfg(feature = "docs")]
                 identifiers: &{identifiers:?},
-                custom: {custom}
             }};"#,
             identifiers = self.identifiers(),
             deals_damage = self.deals_damage(),

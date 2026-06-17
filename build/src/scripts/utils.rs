@@ -263,55 +263,149 @@ pub trait ItemOrRuneExt: Index<AttackType, Output = DamageRange> + ItemOrRune + 
         )
     }
 
+    fn build_aliases(&self) -> [Option<(usize, String)>; 4] {
+        let melee = &self[AttackType::Melee];
+        let ranged = &self[AttackType::Ranged];
+
+        let raw = [
+            &melee.min_dmg,
+            &melee.max_dmg,
+            &ranged.min_dmg,
+            &ranged.max_dmg,
+        ];
+
+        let mut aliases = [None, None, None, None];
+
+        for i in 0..4 {
+            if is_zero(raw[i]) {
+                continue;
+            }
+
+            for j in 0..i {
+                if is_zero(raw[j]) {
+                    continue;
+                }
+
+                let ratio = simplify(&format!("({}) / ({})", raw[j], raw[i]));
+
+                if !ratio.contains("ctx") {
+                    aliases[i] = Some((j, ratio));
+                    break;
+                }
+            }
+        }
+
+        aliases
+    }
+
     fn closures(&self) -> MayFail<(String, String)> {
         let variant = self.id();
         let functions = self.functions();
+        let aliases = self.build_aliases();
+
         let mut seen = HashSet::new();
 
         let mut rust = String::new();
         let mut docs = String::new();
 
-        for i in 0..2 {
-            let attack_type = unsafe { AttackType::from_u8_unchecked(i) };
+        for i in 0..4 {
+            let attack_type = unsafe { AttackType::from_u8_unchecked(i / 2) };
+            let damage_index = unsafe { DamageIndex::from_u8_unchecked(i % 2) };
 
-            for j in 0..2 {
-                let f = &functions[(i * 2 + j) as usize];
-                let damage_index = unsafe { DamageIndex::from_u8_unchecked(j) };
-                let body = &self[attack_type][damage_index];
+            let body = &self[attack_type][damage_index];
+            let f = &functions[i as usize];
 
-                let default = is_zero(body);
+            let default = is_zero(body);
+            let formula = simplify(body);
 
-                let formula = simplify(body);
+            write!(
+                docs,
+                "#[fmt({fmt})]
+                fn {f}() {{{formula}}}",
+                fmt = json!(FmtArgs {
+                    target: "closure".into(),
+                    variant: variant.into(),
+                    meta: (attack_type, damage_index),
+                    replace: [("ctx.", ""), ("(ctx)", "__simp__")]
+                        .map(|(a, b)| (a.to_string(), b.to_string()))
+                        .into(),
+                    default
+                })
+            )?;
 
-                if !default && !seen.contains(f) {
-                    seen.insert(f);
-                    let formula_f32 = cast_f32(&formula);
-                    let param = ctx_param(&formula_f32);
+            let formula_f32 = if default {
+                continue;
+            } else if let Some((base_idx, ref ratio)) = aliases[i as usize] {
+                let base_fn = &functions[base_idx];
 
-                    write!(
-                        rust,
-                        "pub const fn {f}({param}: &Ctx) -> f32 {{{formula_f32}}}"
-                    )?;
-                }
+                cast_f32(&format!("{ratio} * {base_fn}(ctx)"))
+            } else {
+                cast_f32(&formula)
+            };
+
+            if !seen.contains(f) {
+                seen.insert(f);
+
+                let param = ctx_param(&formula_f32);
 
                 write!(
-                    docs,
-                    "#[fmt({fmt})]
-                    fn {f}() {{{formula}}}",
-                    fmt = json!(FmtArgs {
-                        target: "closure".into(),
-                        variant: variant.into(),
-                        meta: (attack_type, damage_index),
-                        replace: [("ctx.", "")]
-                            .map(|(a, b)| (a.to_string(), b.to_string()))
-                            .into(),
-                        default
-                    })
+                    rust,
+                    "pub const fn {f}({param}: &Ctx) -> f32 {{{formula_f32}}}"
                 )?;
             }
         }
 
         Ok((rust, docs))
+    }
+
+    fn repr_damages(&self) -> String {
+        let melee = &self[AttackType::Melee];
+        let ranged = &self[AttackType::Ranged];
+
+        let aliases = self.build_aliases();
+
+        let raw = [
+            &melee.min_dmg,
+            &melee.max_dmg,
+            &ranged.min_dmg,
+            &ranged.max_dmg,
+        ];
+
+        let labels = [
+            "melee_min_dmg",
+            "melee_max_dmg",
+            "ranged_min_dmg",
+            "ranged_max_dmg",
+        ];
+
+        let mut parts = Vec::new();
+
+        let deals_damage = [melee.deals_damage(), ranged.deals_damage()].concat();
+
+        for i in 0..4 {
+            if !deals_damage[i] {
+                continue;
+            }
+
+            let value = if let Some((base_idx, ref ratio)) = aliases[i] {
+                let base_fn = self.functions()[base_idx].clone();
+                format!("{ratio} * {base_fn}")
+            } else {
+                simplify(raw[i])
+            };
+
+            parts.push(format!("{}: {value}", labels[i]));
+        }
+
+        if parts.is_empty() {
+            String::new()
+        } else {
+            format!(
+                "damage_type: {:?}, {}",
+                self.damage_type(),
+                parts.join(", ")
+            )
+        }
     }
 
     fn formula_fmt(&self) -> Value {
@@ -324,80 +418,12 @@ pub trait ItemOrRuneExt: Index<AttackType, Output = DamageRange> + ItemOrRune + 
                 ("TypeMetadata ", ""),
                 (&format!("{}::", Self::TAG.enum_name()), ""),
                 ("ctx.", ""),
+                ("(ctx)", "__simp__")
             ]
             .map(|(a, b)| (a.to_string(), b.to_string()))
             .into(),
             default: false
         })
-    }
-
-    fn repr_damages(&self) -> String {
-        let melee = &self[AttackType::Melee];
-        let ranged = &self[AttackType::Ranged];
-
-        let melee_min = &melee[DamageIndex::Min];
-        let melee_max = &melee[DamageIndex::Max];
-        let ranged_min = &ranged[DamageIndex::Min];
-        let ranged_max = &ranged[DamageIndex::Max];
-
-        let same_min = melee_min == ranged_min;
-        let same_max = melee_max == ranged_max;
-
-        let mut parts = Vec::new();
-        let deals_damage = [melee.deals_damage(), ranged.deals_damage()].concat();
-
-        match deals_damage[..] {
-            [false, false, false, false] => {}
-            [true, false, false, false] => {
-                parts.push(format!("melee_min_dmg: {}", simplify(melee_min)));
-            }
-            [false, false, true, false] => {
-                parts.push(format!("ranged_min_dmg: {}", simplify(ranged_min)));
-            }
-            [true, false, true, false] => {
-                if same_min {
-                    parts.push(format!("damage: {}", simplify(melee_min)));
-                } else {
-                    parts.push(format!("melee_min_dmg: {}", simplify(melee_min)));
-                    parts.push(format!("ranged_min_dmg: {}", simplify(ranged_min)));
-                }
-            }
-            [true, true, false, false] => {
-                parts.push(format!("melee_min_dmg: {}", simplify(melee_min)));
-                parts.push(format!("melee_max_dmg: {}", simplify(melee_max)));
-            }
-            [false, false, true, true] => {
-                parts.push(format!("ranged_min_dmg: {}", simplify(ranged_min)));
-                parts.push(format!("ranged_max_dmg: {}", simplify(ranged_max)));
-            }
-            [true, true, true, true] => {
-                if same_min {
-                    parts.push(format!("min_dmg: {}", simplify(melee_min)));
-                } else {
-                    parts.push(format!("melee_min_dmg: {}", simplify(melee_min)));
-                    parts.push(format!("ranged_min_dmg: {}", simplify(ranged_min)));
-                }
-
-                if same_max {
-                    parts.push(format!("max_dmg: {}", simplify(melee_max)));
-                } else {
-                    parts.push(format!("melee_max_dmg: {}", simplify(melee_max)));
-                    parts.push(format!("ranged_max_dmg: {}", simplify(ranged_max)));
-                }
-            }
-            _ => unreachable!(
-                "Invalid deals_damage state for {} [{deals_damage:?}]:\n{self:#?}",
-                self.id()
-            ),
-        }
-
-        if parts.is_empty() {
-            String::new()
-        } else {
-            let damage_type = self.damage_type();
-            let dmg = parts.join(", ");
-            format!("{dmg}, damage_type: {damage_type:?}")
-        }
     }
 
     fn functions(&self) -> [String; 4] {
@@ -489,37 +515,38 @@ pub fn fit_str(c: &str) -> String {
 }
 
 pub fn cast_f32(s: &str) -> String {
-    static RE_CAST_F32: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"\d+").unwrap());
+    let mut out = String::with_capacity(s.len());
+    let bytes = s.as_bytes();
+    let mut i = 0;
 
-    RE_CAST_F32
-        .replace_all(s, |caps: &Captures| {
-            let m = caps.get(0).unwrap();
+    while i < s.len() {
+        if bytes[i].is_ascii_digit() {
+            let start = i;
 
-            let start = m.start();
-            let end = m.end();
-
-            let num = m.as_str();
-
-            let before = s[..start].chars().next_back();
-
-            let after = s[end..].chars().next();
-
-            if matches!(before, Some('.')) || matches!(after, Some('.')) {
-                return num.to_string();
+            while i < s.len() && (bytes[i].is_ascii_digit() || bytes[i] == b'.') {
+                i += 1;
             }
 
-            let tail = &s[end..];
+            let num = &s[start..i];
 
-            let trimmed = tail.trim_start();
+            let prev_ok =
+                start == 0 || !matches!(bytes[start - 1], b'a'..=b'z' | b'A'..=b'Z' | b'_');
+            let next_ok = i >= s.len() || !matches!(bytes[i], b'a'..=b'z' | b'A'..=b'Z' | b'_');
 
-            if trimmed.starts_with("=>") || trimmed.starts_with("..") {
-                return num.to_string();
+            let tail = s[i..].trim_start();
+            let is_pattern = tail.starts_with("=>") || tail.starts_with("..");
+
+            out.push_str(num);
+            if prev_ok && next_ok && !is_pattern {
+                out.push_str("f32");
             }
+        } else {
+            out.push(bytes[i] as char);
+            i += 1;
+        }
+    }
 
-            format!("{num}f32")
-        })
-        .into_owned()
-        .replace("match ctx.level", "match ctx.level as u8")
+    out.replace("match ctx.level", "match ctx.level as u8")
         .replace("match ctx.q_level", "match ctx.q_level as u8")
         .replace("match ctx.w_level", "match ctx.w_level as u8")
         .replace("match ctx.e_level", "match ctx.e_level as u8")
@@ -527,7 +554,7 @@ pub fn cast_f32(s: &str) -> String {
 }
 
 pub fn ctx_param(s: &str) -> &'static str {
-    if s.contains("ctx.") { "ctx" } else { "_" }
+    if s.contains("ctx") { "ctx" } else { "_" }
 }
 
 pub struct StaticVar<'a> {

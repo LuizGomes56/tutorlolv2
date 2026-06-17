@@ -17,7 +17,7 @@ use std::{
     ops::{Index, IndexMut},
     path::Path,
 };
-use tutorlolv2_fmt::{pascal_case, rustfmt, to_ssnake};
+use tutorlolv2_fmt::{pascal_case, to_ssnake};
 use tutorlolv2_types::DamageIndex;
 use tutorlolv2_wiki::{champions::WikiChampion, items::item_parser::WikiItem, runes::WikiRune};
 
@@ -348,14 +348,7 @@ where
         match self.create_methods(&mut result, id)? {
             true => {
                 result.push_str(".end()}}");
-
-                let formatted = rustfmt(&result, None);
-                let content = match formatted.is_empty() {
-                    true => result,
-                    false => formatted,
-                };
-
-                crate::write(&path, content)
+                crate::write(&path, result)
             }
             false => Ok(crate::remove_file(&path)),
         }

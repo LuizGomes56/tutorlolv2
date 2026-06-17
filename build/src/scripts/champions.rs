@@ -51,19 +51,48 @@ impl Build for Champion {
                 },
             combo,
             abilities,
-            ..
+            merge,
         } = &self;
 
         let mut rust = String::new();
         let mut docs = String::new();
+        let mut damage_override = BTreeMap::<AbilityId, String>::new();
 
         let upper_id = to_ssnake(&champion_id);
+
+        for merge in merge {
+            let min = self.get(merge.min)?;
+            let max = self.get(merge.max)?;
+
+            let ratio = simplify(&format!(
+                "({}) / ({})",
+                simplify(&max.damage),
+                simplify(&min.damage),
+            ));
+
+            if ratio.contains("ctx") {
+                continue;
+            }
+
+            let min_fn = &functions[self.indexof(merge.min)?];
+
+            damage_override.insert(merge.max, format!("{ratio} * {min_fn}(ctx)"));
+        }
+
+        let resolve_damage = |id: &AbilityId, raw: &str| -> String {
+            damage_override
+                .get(id)
+                .cloned()
+                .unwrap_or_else(|| simplify(raw))
+        };
+
         let damage = abilities
             .iter()
-            .map(|(k, v)| {
-                let discriminant = k.discriminant().to_lowercase();
-                let formula = simplify(&v.damage);
-                format!("{discriminant}: {formula},")
+            .map(|(id, v)| {
+                let discriminant = id.discriminant().to_lowercase();
+                let dmg = resolve_damage(id, &v.damage);
+
+                format!("{discriminant}: {dmg},")
             })
             .collect::<String>();
 
@@ -80,7 +109,7 @@ impl Build for Champion {
                 target: "formula".into(),
                 variant: champion_id.clone(),
                 meta: (),
-                replace: [(": X = X", " ="), ("ctx.", "")]
+                replace: [(": X = X", " ="), ("ctx.", ""), ("(ctx)", "__simp__")]
                     .map(|(a, b)| (a.to_string(), b.to_string()))
                     .into(),
                 default: false
@@ -99,9 +128,9 @@ impl Build for Champion {
                 combos: &[{combos}],
                 metadata: &{metadata:#?},
                 merge_data: &{merge_data:#?},
+                closures: &[{fn_names}],
                 #[cfg(feature = "docs")]
                 identifiers: &[{identifiers}],
-                closures: &[{fn_names}],
             }};"#,
             combos = combo
                 .iter()
@@ -121,8 +150,8 @@ impl Build for Champion {
             fn_names = functions.join(",")
         )?;
 
-        for (i, (((ability_id, ability), function), body)) in
-            abilities.iter().zip(&functions).zip(closures).enumerate()
+        for (((ability_id, ability), function), body) in
+            abilities.iter().zip(&functions).zip(closures)
         {
             let Ability {
                 name,
@@ -133,22 +162,16 @@ impl Build for Champion {
             } = ability;
 
             let formula = simplify(&body);
-            let formula_f32 = cast_f32(&formula);
-
+            let rust_formula = cast_f32(&formula);
             let mut variable = function.to_uppercase();
 
-            let damage_attr = match merge_data
+            let damage_attr = match merge
                 .iter()
-                .find(|merge| merge.min as usize == i || merge.max as usize == i)
+                .find(|merge| merge.min == *ability_id || merge.max == *ability_id)
             {
                 Some(merge) => {
-                    let get_ability = |j| abilities.values().nth(j as usize).unwrap();
-
-                    let min_ability = get_ability(merge.min);
-                    let max_ability = get_ability(merge.max);
-
-                    let min_damage = simplify(&min_ability.damage);
-                    let max_damage = simplify(&max_ability.damage);
+                    let min_damage = resolve_damage(&merge.min, &self.damage_of(merge.min)?);
+                    let max_damage = resolve_damage(&merge.max, &self.damage_of(merge.max)?);
 
                     let alias = merge.alias.discriminant();
                     variable = format!("{champion_id}_{alias}").to_uppercase();
@@ -156,15 +179,14 @@ impl Build for Champion {
                     format!("min_dmg: {min_damage}, max_dmg: {max_damage}")
                 }
                 None => {
-                    let damage = simplify(damage);
-                    format!("damage: {damage}")
+                    format!("damage: {}", resolve_damage(ability_id, damage))
                 }
             };
 
             write!(
                 rust,
-                "pub const fn {function}({param}: &Ctx) -> f32 {{{formula_f32}}}",
-                param = ctx_param(&formula_f32)
+                "pub const fn {function}({param}: &Ctx) -> f32 {{{rust_formula}}}",
+                param = ctx_param(&rust_formula)
             )?;
 
             write!(
@@ -185,7 +207,7 @@ impl Build for Champion {
                     target: "closure".into(),
                     variant: champion_id.clone(),
                     meta: ability_id,
-                    replace: [("ctx.", "")]
+                    replace: [("ctx.", ""), ("(ctx)", "__simp__")]
                         .map(|(a, b)| (a.to_string(), b.to_string()))
                         .into(),
                     default: false
@@ -194,9 +216,13 @@ impl Build for Champion {
                     target: "ability".into(),
                     variant: champion_id.clone(),
                     meta: ability_id,
-                    replace: [(": Ability = Ability", " ="), ("ctx.", "")]
-                        .map(|(a, b)| (a.to_string(), b.to_string()))
-                        .into(),
+                    replace: [
+                        (": Ability = Ability", " ="),
+                        ("ctx.", ""),
+                        ("(ctx)", "__simp__")
+                    ]
+                    .map(|(a, b)| (a.to_string(), b.to_string()))
+                    .into(),
                     default: false
                 })
             )?;

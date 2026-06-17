@@ -55,9 +55,9 @@ impl Build for Item {
                 deals_damage: {deals_damage:?},
                 purchasable: {purchasable},
                 riot_id: {id},
+                custom: {custom},
                 #[cfg(feature = "docs")]
                 identifiers: &{identifiers:?},
-                custom: {custom}
             }};"#,
             identifiers = self.identifiers(),
             deals_damage = self.deals_damage(),
@@ -75,8 +75,8 @@ impl Build for Item {
             "#[fmt({fmt})]
             static {var_name}: X = X {{
                 name: {name},
-                stats: {stats:?},
                 price: {price},
+                stats: {stats:?},
                 maps: {maps:?},
                 tier: {tier},
                 purchasable: {purchasable},

@@ -1,10 +1,6 @@
 use serde::Serialize;
 use serde_json::{Serializer, Value, ser::PrettyFormatter};
-use std::{
-    io::{Cursor, Write},
-    process::{Command, Stdio},
-    sync::LazyLock,
-};
+use std::{io::Cursor, sync::LazyLock};
 use synoptic::{Highlighter, TokOpt};
 
 /// Encodes some data using `brotli` at the maximum level, which is 11.
@@ -134,43 +130,6 @@ pub fn to_ssnake(value: &str) -> String {
     out
 }
 
-/// Invokes `rustfmt` program to the input [`str`], with some defined `width`,
-/// often set to be `80`. Returns the formatted code or an empty [`String`] if
-/// it emits an error or warning
-pub fn rustfmt(src: &str, width: Option<usize>) -> String {
-    let try_run = || -> Result<String, Box<dyn std::error::Error>> {
-        let mut child = Command::new("rustfmt")
-            .args(&[
-                "--emit",
-                "stdout",
-                "--config",
-                &format!("max_width={w}", w = width.unwrap_or(80)),
-            ])
-            .stdin(Stdio::piped())
-            .stdout(Stdio::piped())
-            .spawn()?;
-        child
-            .stdin
-            .as_mut()
-            .ok_or("Failed to open stdin")?
-            .write_all(
-                src.lines()
-                    .map(str::trim_end)
-                    .collect::<Vec<_>>()
-                    .join("\n")
-                    .as_bytes(),
-            )?;
-        let output = child.wait_with_output()?;
-        Ok(String::from_utf8_lossy(&output.stdout).into_owned())
-    };
-    try_run().unwrap_or_else(|e| {
-        let prev = src.to_string();
-        println!("Failed to call rustfmt: {e:?}");
-        std::fs::write("rustfmt.txt", &prev).unwrap();
-        prev
-    })
-}
-
 static RUST_HIGHLIGHTER: LazyLock<Highlighter> = LazyLock::new(|| {
     let mut h = Highlighter::new(4);
     // Comment
@@ -246,7 +205,6 @@ static RUST_HIGHLIGHTER: LazyLock<Highlighter> = LazyLock::new(|| {
             "AreaOnhitMax",
             "Magic",
             "Void",
-            "ZEROED_STATS",
             "_1",
             "_2",
             "_3",
@@ -285,52 +243,6 @@ static RUST_HIGHLIGHTER: LazyLock<Highlighter> = LazyLock::new(|| {
             "Monster3",
             "Monster4",
             "MonsterMax",
-            "Top",
-            "Jungle",
-            "Middle",
-            "Bottom",
-            "Support",
-            "AbilityHaste",
-            "AbilityPower",
-            "AdaptiveForce",
-            "Armor",
-            "ArmorPenetration",
-            "AttackDamage",
-            "AttackSpeed",
-            "BaseHealthRegen",
-            "BaseManaRegen",
-            "CritChance",
-            "CritDamage",
-            "GoldPer10Seconds",
-            "HealAndShieldPower",
-            "Health",
-            "Lethality",
-            "LifeSteal",
-            "MagicPenetration",
-            "MagicPenetrationPercent",
-            "MagicResist",
-            "Mana",
-            "MoveSpeed",
-            "MoveSpeedPercent",
-            "Omnivamp",
-            "Tenacity",
-            "Aram",
-            "Arena",
-            "DarkStar",
-            "Dominion",
-            "Invasion",
-            "NexusBlitz",
-            "Odyssey",
-            "Project",
-            "StarGuardian",
-            "SummonersRift",
-            "Tft",
-            "Tutorial",
-            "TwistedTreeline",
-            "Urf",
-            "Unknown",
-            "UnknownMap33",
-            "UnknownMap35",
         ]),
     );
     // Type
@@ -381,6 +293,10 @@ pub fn rust_html(rust_code: &str) -> String {
         for token in h.line(i, line) {
             match token {
                 TokOpt::Some(text, kind) => match kind.as_str() {
+                    "_v" if text.ends_with("__simp__") => {
+                        let name = &text[..text.len() - "__simp__".len()];
+                        line_html.push_str(&format!(r#"<span class="_f">{name}</span>"#));
+                    }
                     "_f" if text.ends_with('(') => {
                         let name = &text[..text.len() - 1];
                         line_html.push_str(&format!("<span class=\"{kind}\">{name}</span>"));

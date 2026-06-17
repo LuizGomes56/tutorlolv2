@@ -7,7 +7,7 @@ impl Generator for TahmKench {
             .merge_sum([P(_1), P(_2)], P(Void))?
             .ability(Key::Q, [(1, Min) /* Magic Damage */]);
 
-        let passive = self[Q(Min)].damage.clone();
+        let passive = self.damage_of(Q(Min))?.clone();
 
         self.clone_with(Q(Min), Q(Max), |dmg| f![(dmg) + passive])?
             .comment(Q(Max), "Damage Including Passive")?
