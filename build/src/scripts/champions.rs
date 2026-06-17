@@ -189,10 +189,12 @@ impl Build for Champion {
                 param = ctx_param(&rust_formula)
             )?;
 
+            let simp = resolve_damage(ability_id, &body);
+
             write!(
                 docs,
                 "#[fmt({fmt_fn})]
-                fn {function}() {{{formula}}}
+                fn {function}() {{{simp}}}
 
                 #[fmt({fmt_block})]
                 static {variable}: Ability = Ability {{
