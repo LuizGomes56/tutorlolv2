@@ -14,13 +14,12 @@ use crate::{
     ChampionId, ItemId, RuneId,
     bitset::{ItemsBitSet, RunesBitSet},
     helpers::*,
-    libgen::WikiModifiers,
     model::*,
     riot::*,
 };
 use alloc::boxed::Box;
 use core::str::FromStr;
-use tutorlolv2_types::{AttackType, GameMap, Position};
+use tutorlolv2_types::{AdaptiveType, AttackType, GameMap, Position};
 
 /// Ensure that all champions have at least one position, so the unchecked
 /// access does not cause a panic or undefined behavior
@@ -121,8 +120,11 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
     // to the entity's name. Instead of tracking all possible entities, just make
     // her the default if the champion name is not recognized. Note that
     // [`ChampionId::default`] has a different value
-    let current_player_champion_id =
-        ChampionId::from_str(current_player.champion_name).unwrap_or(ChampionId::Neeko);
+    let current_player_champion_id = current_player
+        .champion_name
+        .parse()
+        .unwrap_or(ChampionId::Neeko);
+
     let current_player_cache = current_player_champion_id.data();
 
     // When Gnar is Mega, the current API changes `champion_name`, previously we
@@ -137,7 +139,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
 
     // If the player hasn't bought any damaging items, the function defaults,
     // but since we have the champion's adaptive damage, we can use that instead
-    let adaptive_type = RiotFormulas::adaptive_type(
+    let adaptive_type = AdaptiveType::try_infer(
         current_player_bonus_stats.attack_damage,
         current_player_stats.ability_power,
     )
@@ -190,9 +192,9 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
 
     // If we don't know his team, put in team `Team::default()`, which by now is `Team::Blue`.
     // Note that it may lead to incorrect results, but it is better than not giving any results
-    let current_player_team = Team::from_str(current_player.team).unwrap_or_default();
+    let current_player_team = current_player.team.parse().unwrap_or_default();
 
-    let dragons = get_dragons(current_player_team, events, all_players);
+    let dragons = get_dragons(events, all_players, current_player_team);
 
     let enemy_earth_dragons = dragons.enemy_earth_dragons;
 
@@ -306,11 +308,11 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
             // Similarly, if Neeko is disguised the champion name might change, causing mismatches. The loop cannot
             // return until the scoreboard is fully populated, otherwise we will cause undefined behavior or have to
             // reallocate it at the end
-            let e_champion_id = ChampionId::from_str(e_champion_name).unwrap_or(ChampionId::Neeko);
-            let e_cache = e_champion_id.data();
-            let e_position =
-                Position::from_str(e_raw_position).unwrap_or(e_champion_id.main_position());
-            let team = Team::from_str(e_team).unwrap_or_default();
+            let e_champion_id = e_champion_name.parse().unwrap_or(ChampionId::Neeko);
+            let e_position = e_raw_position
+                .parse()
+                .unwrap_or(e_champion_id.main_position());
+            let team = e_team.parse().unwrap_or_default();
 
             unsafe {
                 scoreboard.get_unchecked_mut(i).write(Scoreboard {
@@ -341,21 +343,18 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
             let e_base_stats = SimpleStats::base_stats(e_champion_id, e_level, false);
 
             // Holds a collection of more detailed information about this enemy player
-            let full_state = get_enemy_full_state(
-                EnemyState {
-                    base_stats: e_base_stats,
-                    items: &e_items,
-                    champion_id: e_champion_id,
-                    level: e_level,
-                    earth_dragons: enemy_earth_dragons,
-                    ..Default::default()
-                },
-                shred,
-                false,
-            );
+            let full_state = EnemyState {
+                base_stats: e_base_stats,
+                items: &e_items,
+                champion_id: e_champion_id,
+                level: e_level,
+                earth_dragons: enemy_earth_dragons,
+                ..Default::default()
+            }
+            .full_state(shred, false);
 
             // Get our values ready to be used when evaluating all damages
-            let ctx = get_eval_ctx(&self_state, &full_state);
+            let ctx = self_state.ctx(&full_state);
 
             // We will multiply the final damage of each ability, item, and rune
             // with these modifiers according to their damage type. `global_mod` is always
@@ -372,38 +371,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
                         * full_state.modifiers.magic_mod,
                     true_mod: base_modifiers.true_mod * full_state.modifiers.true_mod,
                     global_mod: base_modifiers.global_mod
-                        * {
-                            let WikiModifiers {
-                                ofa,
-                                usb,
-                                aram,
-                                ar,
-                                nb,
-                                swift,
-                                urf,
-                            } = current_player_cache.modifiers;
-
-                            let WikiModifiers {
-                                ofa: e_ofa,
-                                usb: e_usb,
-                                aram: e_aram,
-                                ar: e_ar,
-                                nb: e_nb,
-                                swift: e_swift,
-                                urf: e_urf,
-                            } = e_cache.modifiers;
-
-                            match game_map {
-                                GameMap::OneForAll => ofa.damage_dealt * e_ofa.damage_taken,
-                                GameMap::UnsealedSpellbook => usb.damage_dealt * e_usb.damage_taken,
-                                GameMap::Aram => aram.damage_dealt * e_aram.damage_taken,
-                                GameMap::Arena => ar.damage_dealt * e_ar.damage_taken,
-                                GameMap::NexusBlitz => nb.damage_dealt * e_nb.damage_taken,
-                                GameMap::SwiftPlay => swift.damage_dealt * e_swift.damage_taken,
-                                GameMap::Urf => urf.damage_dealt * e_urf.damage_taken,
-                                _ => 1.0,
-                            }
-                        }
+                        * current_player_champion_id.map_damage_modifier(&e_champion_id, game_map)
                         * full_state.modifiers.global_mod,
                 },
             };
@@ -416,13 +384,12 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
             // the greatest amount of damage, or what difference they make
             let siml_items = core::array::from_fn(|i| {
                 let siml_stat = simulated_stats[i];
-                let siml_ctx = get_eval_ctx(
-                    &SelfState {
-                        current_stats: siml_stat,
-                        ..self_state
-                    },
-                    &full_state,
-                );
+                let siml_ctx = SelfState {
+                    current_stats: siml_stat,
+                    ..self_state
+                }
+                .ctx(&full_state);
+
                 Damages::new(siml_ctx, &eval_data, modifiers)
             });
 
@@ -433,9 +400,9 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
                 riot_id,
                 damages,
                 siml_items,
-                base_stats: e_base_stats.into(),
-                bonus_stats: full_state.bonus_stats.into(),
-                current_stats: full_state.current_stats.into(),
+                base_stats: e_base_stats,
+                bonus_stats: full_state.bonus_stats,
+                current_stats: full_state.current_stats,
                 real_armor: full_state.armor_values.real as _,
                 real_magic_resist: full_state.magic_values.real as _,
                 level: e_level,
@@ -472,7 +439,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
 /// all players in the game needs to be provided so the dragon kill per team
 /// can be assigned correctly. Dragons that do not guarantee buffs that can
 /// affect damage calculations are ignored.
-pub fn get_dragons(team: Team, events: &[RealtimeEvent], players: &[RiotAllPlayers]) -> Dragons {
+pub fn get_dragons(events: &[RealtimeEvent], players: &[RiotAllPlayers], team: Team) -> Dragons {
     let mut dragons = Dragons::default();
 
     for RealtimeEvent {

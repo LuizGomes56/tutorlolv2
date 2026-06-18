@@ -120,13 +120,31 @@ pub struct Rune {
     pub custom: bool,
 }
 
+impl Stat {
+    /// Constant growth formula used to calculate base-stats and other scaling
+    /// related fields
+    pub const fn growth(level: u8) -> f32 {
+        let factor = level as f32 - 1.0;
+        factor * (0.7025 + 0.0175 * factor)
+    }
+
+    pub const fn base_stat(&self, level: u8) -> f32 {
+        let growth_factor = Self::growth(level);
+        Self::stat_growth(self.base, self.per_level, growth_factor)
+    }
+
+    /// Given the base stats and growth factors, return a number after applying the formula
+    pub const fn stat_growth(base: f32, per_level: f32, growth_factor: f32) -> f32 {
+        base + per_level * growth_factor
+    }
+}
+
 impl Item {
     pub const fn is_siml(&self) -> bool {
         let Self {
             purchasable,
             tier,
             price,
-            maps,
             metadata: TypeMetadata { kind, .. },
             ..
         } = *self;
@@ -151,15 +169,6 @@ impl Item {
             i += 1;
         }
 
-        tier >= 3 && price > 0 && purchasable && allow && {
-            let mut j = 0;
-            while j < maps.len() {
-                if matches!(maps[j], GameMap::SummonersRift) {
-                    return true;
-                }
-                j += 1;
-            }
-            false
-        }
+        tier >= 3 && price > 0 && purchasable && allow && kind.has_map(GameMap::SummonersRift)
     }
 }

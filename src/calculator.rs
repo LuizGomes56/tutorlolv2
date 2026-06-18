@@ -8,9 +8,11 @@
 //! so all the function inputs have to be obtained through your
 //! own mechanism
 
-use crate::{ChampionId, ItemId, RuneId, helpers::*, model::*};
-use alloc::boxed::Box;
-use tutorlolv2_types::{AdaptiveType, AttackType, StatName};
+use {
+    crate::{ChampionId, ItemId, RuneId, helpers::*, model::*},
+    alloc::boxed::Box,
+    tutorlolv2_types::{AdaptiveType, AttackType, StatName},
+};
 
 pub const fn get_item_bonus_stats(
     stats: &mut Stats,
@@ -71,7 +73,7 @@ pub const fn infer_champion_stats(data: InferStats<'_>) -> Stats {
     bonus_stats.get_rune_bonus_stats(runes, modifiers, &mut adaptive_force, level);
 
     let cached_stats = data.stats;
-    let base_stats = BasicStats::base_stats(champion_id, level, is_mega_gnar);
+    let base_stats = champion_id.base_stats(level, is_mega_gnar);
 
     let mut stats = Stats {
         armor: base_stats.armor,
@@ -115,7 +117,7 @@ pub const fn infer_champion_stats(data: InferStats<'_>) -> Stats {
     );
 
     let adaptive_type =
-        match RiotFormulas::adaptive_type(bonus_stats.attack_damage, bonus_stats.ability_power) {
+        match AdaptiveType::try_infer(bonus_stats.attack_damage, bonus_stats.ability_power) {
             Some(x) => x,
             None => data.adaptive_type,
         };
@@ -128,12 +130,7 @@ pub const fn infer_champion_stats(data: InferStats<'_>) -> Stats {
     stats.assign_item_exceptions(item_exceptions);
     stats.assign_champion_exceptions(champion_id, ability_levels, stacks);
 
-    stats.attack_speed = RiotFormulas::attack_speed(
-        &cached_stats.attack_speed,
-        cached_stats.attack_speed_ratio,
-        stats.attack_speed,
-        level,
-    );
+    stats.attack_speed = cached_stats.attack_speed(stats.attack_speed, level);
 
     let mut i = 0;
     while i < items.len() {
@@ -401,8 +398,19 @@ impl Stats {
             ChampionId::Veigar => self.ability_power += stacks as f32,
             ChampionId::Swain => self.max_health += (12 * stacks) as f32,
             ChampionId::Chogath => {
-                self.max_health +=
-                    (stacks * 80 + 40 * const_clamp(ability_levels.r, 0..=3) as u32) as f32
+                let mul = {
+                    let r = ability_levels.r;
+                    let min = 0;
+                    let max = 3;
+                    (if r < min {
+                        min
+                    } else if r > max {
+                        max
+                    } else {
+                        r
+                    }) as u32
+                };
+                self.max_health += (stacks * 80 + 40 * mul) as f32
             }
             ChampionId::Sion => self.max_health += stacks as f32,
             ChampionId::Darius => {
@@ -482,7 +490,7 @@ pub const fn assign_rune_exceptions(data: RuneExceptionData, exceptions: &[Value
 /// current player and the enemy players, returning a new struct containing the calculated
 /// damages against several entities. This function is generally safe to use, but it assumes
 /// that the received struct [`InputGame`] is valid. There's no undefined behavior checks.
-pub fn calculator(game: InputGame) -> OutputGame {
+pub fn calculator(game: InputGame<'_>) -> OutputGame {
     let InputGame {
         active_player:
             InputActivePlayer {
@@ -507,9 +515,7 @@ pub fn calculator(game: InputGame) -> OutputGame {
     let mut modifiers = Modifiers::default();
 
     let current_player_cache = current_player_champion_id.data();
-
-    let current_player_base_stats =
-        BasicStats::base_stats(current_player_champion_id, level, is_mega_gnar);
+    let current_player_base_stats = current_player_champion_id.base_stats(level, is_mega_gnar);
 
     let champion_stats = champion_raw_stats.unwrap_or_else(|| {
         infer_champion_stats(InferStats {
@@ -529,7 +535,7 @@ pub fn calculator(game: InputGame) -> OutputGame {
 
     let current_player_bonus_stats = champion_stats.bonus_stats(current_player_base_stats);
 
-    let adaptive_type = match RiotFormulas::adaptive_type(
+    let adaptive_type = match AdaptiveType::try_infer(
         current_player_bonus_stats.attack_damage,
         champion_stats.ability_power,
     ) {
@@ -601,7 +607,7 @@ pub fn calculator(game: InputGame) -> OutputGame {
 }
 
 pub fn get_calculator_enemies(
-    enemy_players: Box<[InputMinData<EnemyStats>]>,
+    enemy_players: &[InputMinData<'_, EnemyStats>],
     self_state: &SelfState,
     eval_data: &DamageEvalData,
     modifiers: Modifiers,
@@ -619,25 +625,22 @@ pub fn get_calculator_enemies(
                 champion_id: e_champion_id,
                 is_mega_gnar: e_is_mega_gnar,
                 item_exceptions: e_item_exceptions,
-            } = player;
+            } = *player;
 
             let e_base_stats = SimpleStats::base_stats(e_champion_id, e_level, e_is_mega_gnar);
-            let full_state = get_enemy_full_state(
-                EnemyState {
-                    current_stats: e_stats,
-                    base_stats: e_base_stats,
-                    items: &e_items,
-                    stacks: e_stacks,
-                    champion_id: e_champion_id,
-                    level: e_level,
-                    item_exceptions: &e_item_exceptions,
-                    earth_dragons: enemy_earth_dragons,
-                },
-                shred,
-                false,
-            );
+            let full_state = EnemyState {
+                current_stats: e_stats,
+                base_stats: e_base_stats,
+                items: &e_items,
+                stacks: e_stacks,
+                champion_id: e_champion_id,
+                level: e_level,
+                item_exceptions: &e_item_exceptions,
+                earth_dragons: enemy_earth_dragons,
+            }
+            .full_state(shred, false);
 
-            let ctx = get_eval_ctx(self_state, &full_state);
+            let ctx = full_state.ctx(self_state);
 
             let modifiers = Modifiers {
                 damages: DamageModifiers {

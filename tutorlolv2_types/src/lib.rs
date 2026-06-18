@@ -548,6 +548,30 @@ pub enum AdaptiveType {
     Magic,
 }
 
+impl AdaptiveType {
+    pub const fn try_infer(bonus_attack_damage: f32, ability_power: f32) -> Option<Self> {
+        let lhs = 0.35 * bonus_attack_damage;
+        let rhs = 0.2 * ability_power;
+
+        if lhs == rhs {
+            None
+        } else if lhs > rhs {
+            Some(Self::Physical)
+        } else {
+            Some(Self::Magic)
+        }
+    }
+}
+
+impl TryFrom<(f32, f32)> for AdaptiveType {
+    type Error = ();
+
+    fn try_from(value: (f32, f32)) -> Result<Self, Self::Error> {
+        let (bonus_attack_damage, ability_power) = value;
+        Self::try_infer(bonus_attack_damage, ability_power).ok_or(())
+    }
+}
+
 /// Represents each playable position or `lane` that a champion can
 /// play in the standard gamemode `SummonersRift`, whose definition
 /// is [`GameMap::SummonersRift`]. If we don't know a champion's position,

@@ -1,18 +1,20 @@
-// use crate::AppState;
-use actix_web::{
-    HttpResponse,
-    // get,
-    http::header::HeaderName,
-    post,
-    web::{
-        Bytes,
-        // Data
+use {
+    // crate::AppState,
+    actix_web::{
+        HttpResponse,
+        // get,
+        http::header::HeaderName,
+        post,
+        web::{
+            Bytes,
+            // Data
+        },
     },
+    bincode::{Encode, config::Configuration},
+    // rand::random_range;
+    tutorlolv2::{calculator, model::OwnedInputGame, realtime::RealtimeError},
+    // uuid::Uuid,
 };
-use bincode::{Encode, config::Configuration};
-// use rand::random_range;
-use tutorlolv2::{calculator, realtime::RealtimeError};
-// use uuid::Uuid;
 
 type Response = Result<HttpResponse, Box<dyn std::error::Error>>;
 
@@ -63,9 +65,9 @@ pub async fn realtime_handler(body: Bytes) -> Response {
 #[post("/calculator")]
 pub async fn calculator_handler(body: Bytes) -> Response {
     println!("[call] calculator_handler");
-    let (decoded, _) = bincode::decode_from_slice(&body, BINCODE_CONFIG)?;
+    let (decoded, _) = bincode::decode_from_slice::<OwnedInputGame, _>(&body, BINCODE_CONFIG)?;
     let start = std::time::Instant::now();
-    let data = calculator(decoded);
+    let data = calculator((&decoded).into());
     println!("[time] fn calculator took: {end:?}", end = start.elapsed());
     respond(data)
 }

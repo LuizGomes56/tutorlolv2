@@ -1,14 +1,15 @@
-use crate::{
-    ChampionId, ItemId, RuneId,
-    calculator::InferStats,
-    helpers::{ability_id_mod, get_enemy_full_state, get_eval_ctx},
-    model::{
-        AbilityLevels, Attacks, BasicStats, DamageModifiers, Dragons, EnemyState, EnemyStats,
-        Modifiers, RangeDamage, ResistShred, RiotFormulas, SelfState, SimpleStats, Stats,
-        ValueException,
+use {
+    crate::{
+        ChampionId, ItemId, RuneId,
+        calculator::InferStats,
+        helpers::{ability_id_mod, get_eval_ctx},
+        model::{
+            AbilityLevels, Attacks, BasicStats, DamageModifiers, Dragons, EnemyState, EnemyStats,
+            Modifiers, RangeDamage, ResistShred, SelfState, SimpleStats, Stats, ValueException,
+        },
     },
+    tutorlolv2_types::{AbilityId, AdaptiveType, AttackType, Ctx, TypeMetadata},
 };
-use tutorlolv2_types::{AbilityId, AttackType, Ctx, TypeMetadata};
 
 pub const fn eval_abilities_const<const N: usize>(
     ctx: &Ctx,
@@ -213,7 +214,7 @@ impl<
         let bonus_stats = stats.bonus_stats(base_stats);
 
         let adaptive_type =
-            match RiotFormulas::adaptive_type(bonus_stats.attack_damage, stats.ability_power) {
+            match AdaptiveType::try_infer(bonus_stats.attack_damage, stats.ability_power) {
                 Some(v) => v,
                 None => champion_id.adaptive_type(),
             };
@@ -263,7 +264,7 @@ impl<
             champion_id.attack_type()
         };
 
-        let enemy = get_enemy_full_state(enemy_state, shred, false);
+        let enemy = enemy_state.full_state(shred, false);
         let ctx = get_eval_ctx(&self_state, &enemy);
 
         let modifiers = Modifiers {

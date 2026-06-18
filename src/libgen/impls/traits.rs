@@ -77,7 +77,11 @@ macro_rules! impl_methods {
                         ::[<$stru:replace("Id", ""):upper _NAME_TO_ID>]
                             .get(s)
                             .copied()
-                            .ok_or(concat!("No matches when calling ", stringify!($stru), "::from_str"))
+                            .ok_or(concat!(
+                                "No matches when calling ",
+                                stringify!($stru),
+                                "::from_str"
+                            ))
                     }
                 }
 

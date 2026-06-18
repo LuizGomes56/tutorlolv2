@@ -10,7 +10,7 @@
 
 use crate::{
     ChampionId, ItemId, RuneId,
-    libgen::{Closure, L_MSTR, L_TWRD, Stat},
+    libgen::{Closure, L_MSTR, L_TWRD},
 };
 use alloc::boxed::Box;
 use bincode::{BorrowDecode, Decode, Encode};
@@ -249,7 +249,18 @@ impl RangeDamage {
 
 /// Holds the damage of the basic attack, critical strike damage, and onhits
 #[derive(
-    Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize,
+    Copy,
+    Clone,
+    Debug,
+    Default,
+    Decode,
+    Deserialize,
+    Encode,
+    Eq,
+    Ord,
+    PartialEq,
+    PartialOrd,
+    Serialize,
 )]
 pub struct Attacks {
     /// Damage of the basic attack hit
@@ -264,7 +275,9 @@ pub struct Attacks {
 
 /// Struct that holds the values that can reduce the enemie's armor or
 /// magic resistence benefits
-#[derive(Clone, Copy, Debug, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize)]
+#[derive(
+    Copy, Clone, Debug, Default, Decode, Deserialize, Encode, PartialEq, PartialOrd, Serialize,
+)]
 pub struct ResistShred {
     pub armor_penetration_flat: f32,
     pub armor_penetration_percent: f32,
@@ -293,7 +306,7 @@ impl ResistShred {
     }
 }
 
-#[derive(Clone, Debug, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize)]
+#[derive(Clone, Debug, Default, Decode, Deserialize, Encode, PartialEq, PartialOrd, Serialize)]
 pub struct Damages {
     pub attacks: Attacks,
     pub abilities: Box<[i32]>,
@@ -306,7 +319,18 @@ pub struct Damages {
 /// identify the enum type of the current value, which is either [`ItemId`] or [`RuneId`],
 /// and the remaining [`Self::VAL_BITS`] are used to store the actual number of stacks held
 #[derive(
-    Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize,
+    Copy,
+    Clone,
+    Debug,
+    Default,
+    Decode,
+    Deserialize,
+    Encode,
+    Eq,
+    Ord,
+    PartialEq,
+    PartialOrd,
+    Serialize,
 )]
 #[repr(transparent)]
 pub struct ValueException(u32);
@@ -398,30 +422,49 @@ pub struct Dragons {
     pub enemy_earth_dragons: u16,
 }
 
-#[derive(Clone, Debug, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize)]
-pub struct InputGame {
-    pub active_player: InputActivePlayer,
-    pub enemy_players: Box<[InputMinData<EnemyStats>]>,
+#[derive(Copy, Clone, Debug, Default, Encode, PartialEq, PartialOrd, Serialize)]
+pub struct InputGame<'a> {
+    pub active_player: InputActivePlayer<'a>,
+    pub enemy_players: &'a [InputMinData<'a, EnemyStats>],
     pub dragons: Dragons,
 }
 
-#[derive(Clone, Debug, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize)]
-pub struct InputActivePlayer {
+#[derive(Copy, Clone, Debug, Default, Encode, PartialEq, PartialOrd, Serialize)]
+pub struct InputActivePlayer<'a> {
+    pub runes: &'a [RuneId],
+    pub rune_exceptions: &'a [ValueException],
+    pub abilities: AbilityLevels,
+    pub data: InputMinData<'a, Stats>,
+}
+
+#[derive(Copy, Clone, Debug, Default, Encode, PartialEq, PartialOrd, Serialize)]
+pub struct InputMinData<'a, T> {
+    pub stats: Option<T>,
+    pub items: &'a [ItemId],
+    pub item_exceptions: &'a [ValueException],
+    pub stacks: u32,
+    pub level: u8,
+    pub is_mega_gnar: bool,
+    pub champion_id: ChampionId,
+}
+
+#[derive(Clone, Debug, Default, Decode, Deserialize, Encode, PartialEq, PartialOrd, Serialize)]
+pub struct OwnedInputGame {
+    pub active_player: OwnedInputActivePlayer,
+    pub enemy_players: Box<[OwnedInputMinData<EnemyStats>]>,
+    pub dragons: Dragons,
+}
+
+#[derive(Clone, Debug, Default, Decode, Deserialize, Encode, PartialEq, PartialOrd, Serialize)]
+pub struct OwnedInputActivePlayer {
     pub runes: Box<[RuneId]>,
     pub rune_exceptions: Box<[ValueException]>,
     pub abilities: AbilityLevels,
-    pub data: InputMinData<Stats>,
+    pub data: OwnedInputMinData<Stats>,
 }
 
-/// Minimum required data to qualify a valid enemy player, and calculate
-/// damages against this target. Field `stats` is required, but if `infer_stats`
-/// is set to true, the enemy's stats will be inferred and this field will be ignored.
-/// The same happens with `is_mega_gnar`, which can be set to true, but will only
-/// have effect if field `champion_id` is also of type [`ChampionId::Gnar`].
-/// Field `stacks` is useless if the associated champion does not have any special
-/// characteristics that are related to stack-scaling
-#[derive(Clone, Debug, Default, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize)]
-pub struct InputMinData<T> {
+#[derive(Clone, Debug, Default, Decode, Deserialize, Encode, PartialEq, PartialOrd, Serialize)]
+pub struct OwnedInputMinData<T> {
     pub stats: Option<T>,
     pub items: Box<[ItemId]>,
     pub item_exceptions: Box<[ValueException]>,
@@ -431,8 +474,42 @@ pub struct InputMinData<T> {
     pub champion_id: ChampionId,
 }
 
+impl<'a> From<&'a OwnedInputActivePlayer> for InputActivePlayer<'a> {
+    fn from(de: &'a OwnedInputActivePlayer) -> Self {
+        InputActivePlayer {
+            runes: &de.runes,
+            rune_exceptions: &de.rune_exceptions,
+            abilities: de.abilities,
+            data: InputMinData {
+                stats: de.data.stats,
+                items: &de.data.items,
+                item_exceptions: &de.data.item_exceptions,
+                stacks: de.data.stacks,
+                level: de.data.level,
+                is_mega_gnar: de.data.is_mega_gnar,
+                champion_id: de.data.champion_id,
+            },
+        }
+    }
+}
+
+impl<'a> From<&'a OwnedInputGame> for InputGame<'a> {
+    fn from(de: &'a OwnedInputGame) -> Self {
+        InputGame {
+            active_player: (&de.active_player).into(),
+            enemy_players: unsafe {
+                core::mem::transmute::<
+                    &'a [OwnedInputMinData<EnemyStats>],
+                    &'a [InputMinData<'a, EnemyStats>],
+                >(&de.enemy_players)
+            },
+            dragons: de.dragons,
+        }
+    }
+}
+
 /// Returned data by the function [`crate::calculator::calculator`]
-#[derive(Clone, Debug, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize)]
+#[derive(Clone, Debug, Default, Decode, Deserialize, Encode, PartialEq, PartialOrd, Serialize)]
 pub struct OutputEnemy {
     pub damages: Damages,
     pub base_stats: SimpleStats,
@@ -448,7 +525,7 @@ pub struct OutputEnemy {
 /// damage types, defined by the metadata [`crate::DamageType`]. Note
 /// that the value `1.0` means no modifiers, and `global_mod` is applied regardless
 /// of the damage type provided
-#[derive(Clone, Copy, Debug, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize)]
+#[derive(Copy, Clone, Debug, Decode, Deserialize, Encode, PartialEq, PartialOrd, Serialize)]
 pub struct DamageModifiers {
     pub adaptive_type: AdaptiveType,
     pub physical_mod: f32,
@@ -473,7 +550,7 @@ impl DamageModifiers {
     }
 }
 
-#[derive(Clone, Copy, Debug, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize)]
+#[derive(Copy, Clone, Debug, Decode, Deserialize, Encode, PartialEq, PartialOrd, Serialize)]
 pub struct Modifiers {
     pub damages: DamageModifiers,
     pub abilities: AbilityModifiers,
@@ -498,7 +575,7 @@ impl Modifiers {
 /// depending on their letters, which can be obtained through the method
 /// [`AbilityId::as_char`] with simple branching. Values of `1.0` mean no modifiers.
 /// Also, [`Key`] can also be used to identify it
-#[derive(Clone, Copy, Debug, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize)]
+#[derive(Copy, Clone, Debug, Decode, Deserialize, Encode, PartialEq, PartialOrd, Serialize)]
 pub struct AbilityModifiers {
     pub q: f32,
     pub w: f32,
@@ -521,7 +598,9 @@ impl AbilityModifiers {
     }
 }
 
-#[derive(Clone, Copy, Debug, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize)]
+#[derive(
+    Copy, Clone, Debug, Default, Decode, Deserialize, Encode, PartialEq, PartialOrd, Serialize,
+)]
 pub struct OutputCurrentPlayer {
     pub current_stats: Stats,
     pub base_stats: BasicStats,
@@ -531,7 +610,7 @@ pub struct OutputCurrentPlayer {
     pub champion_id: ChampionId,
 }
 
-#[derive(Clone, Debug, PartialEq, PartialOrd, Encode, Serialize)]
+#[derive(Clone, Debug, Default, Decode, Deserialize, Encode, PartialEq, PartialOrd, Serialize)]
 pub struct OutputGame {
     pub monster_damages: [Damages; L_MSTR],
     pub current_player: OutputCurrentPlayer,
@@ -557,7 +636,9 @@ pub struct AbilityLevels {
 /// penalties applied. Field `modifier` is a value between `0.0` and `1.0` that
 /// represents the number that will be multiplied by the raw damage to obtain
 /// the precise final damage
-#[derive(Clone, Copy, Debug, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize)]
+#[derive(
+    Copy, Clone, Debug, Default, Decode, Deserialize, Encode, PartialEq, PartialOrd, Serialize,
+)]
 pub struct ResistValue {
     pub real: f32,
     pub modifier: f32,
@@ -613,19 +694,6 @@ impl RiotFormulas {
         (100f32, -30f32),
     ];
 
-    pub const fn attack_speed(stat: &Stat, ratio: f32, bonus: f32, level: u8) -> f32 {
-        stat.base
-            + ratio
-                * (RiotFormulas::stat(
-                    &Stat {
-                        base: 0.0,
-                        per_level: stat.per_level,
-                    },
-                    level,
-                ) + bonus)
-                / 100.0
-    }
-
     pub const fn missing_health(current_health: f32, max_health: f32) -> f32 {
         1.0 - (current_health / max_health.max(1.0))
     }
@@ -665,23 +733,6 @@ impl RiotFormulas {
     /// player's numeric value for those fields
     pub const fn get_fire_multiplier(x: u16) -> f32 {
         1.0 + x as f32 * Self::FIRE_DRAGON_MULTIPLIER
-    }
-
-    /// Constant growth formula used to calculate base-stats and other scaling
-    /// related fields
-    pub const fn growth(level: u8) -> f32 {
-        let factor = level as f32 - 1.0;
-        factor * (0.7025 + 0.0175 * factor)
-    }
-
-    pub const fn stat(stat: &Stat, level: u8) -> f32 {
-        let growth_factor = Self::growth(level);
-        Self::stat_growth(stat.base, stat.per_level, growth_factor)
-    }
-
-    /// Given the base stats and growth factors, return a number after applying the formula
-    pub const fn stat_growth(base: f32, per_level: f32, growth_factor: f32) -> f32 {
-        base + per_level * growth_factor
     }
 
     /// Takes in a slice of numbers between `0.0` and `100.0` and treats them as percentage
@@ -746,35 +797,11 @@ impl RiotFormulas {
         let mult = 100.0 / (100.0 + resist);
         (base * mult) as _
     }
-
-    /// Returns the adaptive type of the current player, given its bonus attack_damage
-    /// and ability_power. If they tie, it will return `None`, wich should be unwraped to
-    /// the default adaptive type of the current champion.
-    /// ```rs
-    /// let adaptive_type = RiotFormulas::adaptive_type(
-    ///     current_player_bonus_stats.attack_damage,
-    ///     champion_stats.ability_power,
-    /// )
-    /// .unwrap_or(current_player_cache.adaptive_type);
-    /// ```
-    pub const fn adaptive_type(
-        bonus_attack_damage: f32,
-        ability_power: f32,
-    ) -> Option<AdaptiveType> {
-        let lhs = 0.35 * bonus_attack_damage;
-        let rhs = 0.2 * ability_power;
-
-        if lhs == rhs {
-            None
-        } else if lhs > rhs {
-            Some(AdaptiveType::Physical)
-        } else {
-            Some(AdaptiveType::Magic)
-        }
-    }
 }
 
-#[derive(Clone, Copy, Debug, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize)]
+#[derive(
+    Copy, Clone, Debug, Default, Decode, Deserialize, Encode, PartialEq, PartialOrd, Serialize,
+)]
 pub struct EnemyStats {
     pub armor: f32,
     pub current_health: f32,
@@ -783,14 +810,14 @@ pub struct EnemyStats {
     pub missing_health: f32,
 }
 
-#[derive(Clone, Copy, Debug, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize)]
+#[derive(Copy, Clone, Debug, Decode, Deserialize, Encode, PartialEq, PartialOrd, Serialize)]
 pub struct SimpleStats {
     pub armor: f32,
     pub max_health: f32,
     pub magic_resist: f32,
 }
 
-#[derive(Clone, Copy, Debug, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize)]
+#[derive(Copy, Clone, Debug, Decode, Deserialize, Encode, PartialEq, PartialOrd, Serialize)]
 pub struct BasicStats {
     pub armor: f32,
     pub attack_damage: f32,
@@ -800,7 +827,7 @@ pub struct BasicStats {
     pub max_mana: f32,
 }
 
-#[derive(Clone, Copy, Debug, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize)]
+#[derive(Copy, Clone, Debug, Decode, Deserialize, Encode, PartialEq, PartialOrd, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Stats {
     pub ability_power: f32,
