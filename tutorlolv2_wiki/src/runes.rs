@@ -4,12 +4,12 @@ use crate::{
     parser::{Effect, SUFFIXES, get_cells, parse_description_effects},
     selector,
 };
+use heck::ToPascalCase;
 use rayon::iter::{ParallelBridge, ParallelIterator};
 use scraper::Html;
 use serde::{Deserialize, Serialize, de::DeserializeOwned};
 use serde_json::{Map, Value, json};
 use std::{collections::BTreeMap, path::PathBuf};
-use tutorlolv2_fmt::pascal_case;
 use tutorlolv2_types::Key;
 
 fn cache() -> PathBuf {
@@ -49,7 +49,7 @@ pub async fn links() -> MayFail {
             .filter(|(k, _)| k.contains(trim) && !k.contains("Trait:"))
             .map(|(text, href)| {
                 let name = text.trim_start_matches(trim).trim();
-                (pascal_case(&name), RuneLink { name, href })
+                (name.to_pascal_case(), RuneLink { name, href })
             })
             .collect::<BTreeMap<_, _>>();
 

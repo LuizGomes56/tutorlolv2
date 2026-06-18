@@ -3,9 +3,9 @@ use crate::{
     items::{ItemEffectRaw, ItemRaw, cache},
     parser::{Effect, EffectInner, Scaling, assign_ctx_var, vec_dedup},
 };
+use heck::ToPascalCase;
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
-use tutorlolv2_fmt::pascal_case;
 use tutorlolv2_types::Key;
 
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
@@ -162,7 +162,7 @@ pub fn parse_items() -> MayFail {
             assign_formula(value.effects.act.as_mut());
             assign_formula(value.effects.pass.as_mut());
 
-            let key = pascal_case(&name);
+            let key = name.to_pascal_case();
             value.name = name;
             value.item_id = key.clone();
 
@@ -176,7 +176,7 @@ pub fn parse_items() -> MayFail {
 
 fn parse_item(raw: ItemRaw) -> WikiItem {
     WikiItem {
-        item_id: pascal_case(&raw.name),
+        item_id: raw.name.to_pascal_case(),
         name: raw.name,
         id: raw.id,
         tier: raw.tier,

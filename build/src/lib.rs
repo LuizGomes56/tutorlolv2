@@ -15,6 +15,7 @@ use crate::{
         utils::{StaticVar, static_vars},
     },
 };
+use heck::ToSnakeCase;
 use rayon::iter::{IntoParallelIterator, ParallelBridge, ParallelIterator};
 use serde::{Serialize, de::DeserializeOwned};
 use serde_json::json;
@@ -26,7 +27,7 @@ use std::{
     process::Command,
     sync::LazyLock,
 };
-use tutorlolv2_fmt::{rust_html, to_ssnake};
+use tutorlolv2_fmt::rust_html;
 
 mod generators;
 // mod model;
@@ -51,7 +52,7 @@ fn write_module<'a>(
     cmd80.arg(PathBuf::from(format!("{dir}_code")).with_extension("rs"));
 
     for id in iter.into_iter() {
-        let module = to_ssnake(id).to_lowercase();
+        let module = id.to_snake_case();
         let out_path = out.join(id);
 
         cmd48.arg(out_path.with_extension("w48"));
@@ -204,7 +205,7 @@ fn build_docs() -> MayFail {
             let generators = iter
                 .par_bridge()
                 .map(|variant| {
-                    let file_name = to_ssnake(variant).to_lowercase();
+                    let file_name = variant.to_snake_case();
                     let mut default = false;
 
                     let mut generator = read_to_string(format!(

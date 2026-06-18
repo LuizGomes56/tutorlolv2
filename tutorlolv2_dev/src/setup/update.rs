@@ -1,6 +1,7 @@
 use crate::{
     JsonWrite, MayFail, client::SaveTo, parallel_read, riot::RiotCdnRune, setup::riot::RiotCdnItem,
 };
+use heck::ToPascalCase;
 use regex::Regex;
 use std::{collections::BTreeMap, sync::LazyLock};
 use tutorlolv2_types::StatName;
@@ -72,7 +73,7 @@ impl RiotCdnItem {
                 if let Ok(num) = v.parse::<u16>()
                     && !j.is_empty()
                 {
-                    result.insert(tutorlolv2_fmt::pascal_case(&j), num);
+                    result.insert(j.to_pascal_case(), num);
                 }
             }
         }

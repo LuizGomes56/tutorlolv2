@@ -7,6 +7,7 @@ use crate::{
         utils::{RegExtractor, SaveTo, Tag},
     },
 };
+use heck::ToPascalCase;
 use serde::{Deserialize, Serialize};
 use std::{
     collections::BTreeMap,
@@ -64,8 +65,9 @@ impl Parser<WikiRune, Rune> for RuneParser {
     fn new() -> MayFail<Self> {
         let mut data = BTreeMap::from_file("cache/wiki/runes/full.json")?;
 
-        let mut customize = |name, riot_id| {
-            let rune_id = tutorlolv2_fmt::pascal_case(name);
+        let mut customize = |name: &str, riot_id| {
+            let rune_id = name.to_pascal_case();
+
             data.insert(
                 rune_id.clone(),
                 WikiRune {

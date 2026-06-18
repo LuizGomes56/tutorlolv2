@@ -6,6 +6,7 @@ use crate::{
     },
     scripts::batch::FmtArgs,
 };
+use heck::{ToPascalCase, ToSnakeCase};
 use regex::{Captures, Regex};
 use serde_json::{Value, json};
 use std::{
@@ -14,7 +15,6 @@ use std::{
     ops::{Index, Range},
     sync::LazyLock,
 };
-use tutorlolv2_fmt::to_ssnake;
 use tutorlolv2_types::{AttackType, Attrs, CtxVar, DamageIndex, DamageType};
 
 pub fn simplify(formula: &str) -> String {
@@ -225,7 +225,7 @@ pub trait ItemOrRuneExt: Index<AttackType, Output = DamageRange> + ItemOrRune + 
 
     fn eval(&self) -> String {
         let id = self.id();
-        let module = to_ssnake(id).to_lowercase();
+        let module = id.to_snake_case();
 
         let deals_damage = [
             self[AttackType::Melee].deals_damage(),
@@ -437,7 +437,7 @@ pub trait ItemOrRuneExt: Index<AttackType, Output = DamageRange> + ItemOrRune + 
         let melee = &self[AttackType::Melee];
         let ranged = &self[AttackType::Ranged];
 
-        let id = to_ssnake(value_id).to_lowercase();
+        let id = value_id.to_snake_case();
 
         let min = DamageIndex::Min;
         let max = DamageIndex::Max;
@@ -487,7 +487,7 @@ pub fn get_identifiers(damage: &str, damage_type: DamageType) -> impl Iterator<I
 
     RE_IDENTS
         .captures_iter(&damage)
-        .filter_map(|cap| tutorlolv2_fmt::pascal_case(&cap[1]).parse().ok())
+        .filter_map(|cap| cap[1].to_pascal_case().parse().ok())
         .chain(match damage_type {
             DamageType::Physical => Some(CtxVar::PhysicalMultiplier),
             DamageType::Magic => Some(CtxVar::MagicMultiplier),

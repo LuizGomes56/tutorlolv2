@@ -3,8 +3,8 @@ use crate::{
     generators::{parser::runes::Rune, utils::Tag},
     scripts::utils::ItemOrRuneExt,
 };
+use heck::ToShoutySnakeCase;
 use std::fmt::Write;
-use tutorlolv2_fmt::to_ssnake;
 use tutorlolv2_wiki::runes::WikiRune;
 
 impl Build for Rune {
@@ -24,7 +24,7 @@ impl Build for Rune {
         let mut rust = String::new();
         let mut docs = String::new();
 
-        let upper_id = to_ssnake(&rune_id);
+        let upper_id = rune_id.to_shouty_snake_case();
 
         write!(
             rust,

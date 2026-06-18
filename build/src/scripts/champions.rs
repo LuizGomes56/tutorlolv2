@@ -9,13 +9,13 @@ use crate::{
         utils::{cast_f32, ctx_param, fit_str, get_identifiers, simplify},
     },
 };
+use heck::{ToShoutySnakeCase, ToSnakeCase};
 use serde_json::json;
 use std::{
     collections::{BTreeMap, BTreeSet},
     fmt::Write,
     write,
 };
-use tutorlolv2_fmt::to_ssnake;
 use tutorlolv2_types::{AbilityId, CtxVar, DevMergeData, MergeData, TypeMetadata};
 use tutorlolv2_wiki::champions::WikiChampion;
 
@@ -58,7 +58,7 @@ impl Build for Champion {
         let mut docs = String::new();
         let mut damage_override = BTreeMap::<AbilityId, String>::new();
 
-        let upper_id = to_ssnake(&champion_id);
+        let upper_id = champion_id.to_shouty_snake_case();
 
         for merge in merge {
             let min = self.get(merge.min)?;
@@ -247,7 +247,7 @@ impl Build for Champion {
                 .zip(metadata)
                 .map(|(function, metadata)| {
                     let ability_id = metadata.kind;
-                    let module = to_ssnake(champion_id).to_lowercase();
+                    let module = champion_id.to_snake_case();
                     format!("{ability_id:?} => {module}::{function}(ctx),")
                 })
                 .collect::<String>()
@@ -281,7 +281,7 @@ impl Champion {
 
                 format!(
                     "{champion_id}_{discriminant}",
-                    champion_id = to_ssnake(&self.data.champion_id),
+                    champion_id = self.data.champion_id.to_shouty_snake_case(),
                 )
                 .to_lowercase()
             })

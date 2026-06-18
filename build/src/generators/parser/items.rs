@@ -10,6 +10,7 @@ use crate::{
         utils::{RegExtractor, SaveTo, Tag},
     },
 };
+use heck::ToPascalCase;
 use serde::{Deserialize, Serialize};
 use std::{
     collections::BTreeMap,
@@ -83,10 +84,15 @@ impl Parser<WikiItem, Item> for ItemParser {
                 ..
             } = cdn_item;
 
-            let key = tutorlolv2_fmt::pascal_case(&name);
+            let key = name.to_pascal_case();
 
-            match data.get_mut(&key) {
-                Some(item) => item.purchasable = purchasable,
+            match data
+                .keys()
+                .map(|k| k.to_lowercase())
+                .find(|k| k == &key.to_lowercase())
+            {
+                Some(k) if let Some(item) = data.get_mut(&k) => item.purchasable = purchasable,
+                Some(_) => {}
                 None => {
                     if !name.is_empty() && !name.starts_with("<") {
                         let value = WikiItem {

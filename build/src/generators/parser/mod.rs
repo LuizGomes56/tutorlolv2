@@ -9,6 +9,10 @@ use crate::{
         utils::{StaticVar, is_zero, static_vars, variable},
     },
 };
+use heck::{
+    ToKebabCase, ToLowerCamelCase, ToPascalCase, ToShoutyKebabCase, ToShoutySnakeCase, ToSnakeCase,
+    ToTitleCase, ToTrainCase, ToUpperCamelCase,
+};
 use rayon::iter::{IntoParallelRefIterator, ParallelBridge, ParallelIterator};
 use serde::{Deserialize, Serialize, de::DeserializeOwned};
 use serde_json::{Value, json};
@@ -17,7 +21,6 @@ use std::{
     ops::{Index, IndexMut},
     path::Path,
 };
-use tutorlolv2_fmt::{pascal_case, to_ssnake};
 use tutorlolv2_types::DamageIndex;
 use tutorlolv2_wiki::{champions::WikiChampion, items::item_parser::WikiItem, runes::WikiRune};
 
@@ -90,12 +93,14 @@ where
                     s.to_string(),
                     s.to_lowercase(),
                     s.to_uppercase(),
-                    pascal_case(s),
-                    pascal_case(s).to_lowercase(),
-                    pascal_case(s).to_uppercase(),
-                    to_ssnake(s),
-                    to_ssnake(s).to_lowercase(),
-                    to_ssnake(s).to_uppercase(),
+                    s.to_pascal_case(),
+                    s.to_kebab_case(),
+                    s.to_shouty_kebab_case(),
+                    s.to_shouty_snake_case(),
+                    s.to_lower_camel_case(),
+                    s.to_upper_camel_case(),
+                    s.to_title_case(),
+                    s.to_train_case(),
                 ]
             };
 
@@ -181,7 +186,7 @@ where
         let mut default = false;
         let mut generator = crate::read_to_string(format!(
             "build/src/generators/impls/{folder}/{file_name}.rs",
-            file_name = to_ssnake(id).to_lowercase()
+            file_name = id.to_snake_case()
         ))
         .unwrap_or_else(|_| {
             default = true;
@@ -213,13 +218,13 @@ where
     }
 
     fn data_variable(&self) -> String {
-        let vtype = pascal_case(Self::TAG.singular());
+        let vtype = Self::TAG.singular().to_pascal_case();
         let var = format!("{}S_DATA", vtype.to_uppercase());
         let mut data = variable(Self::TAG, &var, &format!("&{vtype}"));
 
         for id in self.keys() {
-            let upper_id = to_ssnake(id);
-            let lower_id = upper_id.to_lowercase();
+            let upper_id = id.to_shouty_snake_case();
+            let lower_id = id.to_snake_case();
             data.push_str(&format!("&{lower_id}::{upper_id},"));
         }
 

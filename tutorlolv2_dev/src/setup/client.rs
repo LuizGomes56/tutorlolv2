@@ -4,6 +4,7 @@ use crate::{
     riot::RiotCdn,
     setup::riot::{RiotCdnChampion, RiotCdnRune},
 };
+use heck::ToShoutySnakeCase;
 use rand::RngExt;
 use reqwest::Client;
 use serde::{Deserialize, de::DeserializeOwned};
@@ -17,7 +18,6 @@ use std::{
     time::Duration,
 };
 use tokio::{sync::Semaphore, task::JoinHandle};
-use tutorlolv2_fmt::to_ssnake;
 use tutorlolv2_types::{Key, Position};
 
 #[derive(Copy, Clone)]
@@ -83,7 +83,7 @@ impl<'a> SaveTo<'a> {
             SaveTo::GeneratorRaw(tag, s) => {
                 let path = Self::GeneratorDir(*tag).path();
                 let file = match tag {
-                    Tag::Items | Tag::Runes => to_ssnake(s),
+                    Tag::Items | Tag::Runes => s.to_shouty_snake_case(),
                     Tag::Champions => s.to_string(),
                 }
                 .to_lowercase();

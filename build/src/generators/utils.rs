@@ -1,6 +1,6 @@
+use heck::ToSnakeCase;
 use regex::Regex;
 use std::{fmt::Display, sync::LazyLock};
-use tutorlolv2_fmt::to_ssnake;
 
 #[derive(Copy, Clone, Debug, PartialEq, Ord, PartialOrd, Eq)]
 pub enum Tag {
@@ -154,7 +154,7 @@ impl<'a> SaveTo<'a> {
             SaveTo::GeneratorRaw(tag, s) => {
                 let path = Self::GeneratorDir(*tag).path();
                 let file = match tag {
-                    Tag::Items | Tag::Runes => to_ssnake(s),
+                    Tag::Items | Tag::Runes => s.to_snake_case(),
                     Tag::Champions => s.to_string(),
                 }
                 .to_lowercase();

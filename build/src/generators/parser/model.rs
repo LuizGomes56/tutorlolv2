@@ -1,4 +1,5 @@
 use crate::MayFail;
+use heck::ToPascalCase;
 use regex::Regex;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
@@ -91,7 +92,7 @@ impl RiotCdnItem {
                 if let Ok(num) = v.parse::<u16>()
                     && !j.is_empty()
                 {
-                    result.insert(tutorlolv2_fmt::pascal_case(&j), num);
+                    result.insert(j.to_pascal_case(), num);
                 }
             }
         }

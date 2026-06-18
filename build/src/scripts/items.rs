@@ -3,8 +3,8 @@ use crate::{
     generators::{parser::items::Item, utils::Tag},
     scripts::utils::{ItemOrRuneExt, fit_str},
 };
+use heck::ToShoutySnakeCase;
 use std::fmt::Write;
-use tutorlolv2_fmt::to_ssnake;
 use tutorlolv2_types::{GameMap, StatName};
 use tutorlolv2_wiki::items::item_parser::WikiItem;
 
@@ -40,7 +40,7 @@ impl Build for Item {
         let mut rust = String::new();
         let mut docs = String::new();
 
-        let upper_id = to_ssnake(&item_id);
+        let upper_id = item_id.to_shouty_snake_case();
 
         write!(
             rust,

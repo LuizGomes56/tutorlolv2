@@ -4,6 +4,7 @@ version = "0.3.0"
 edition = "2024"
 
 [dependencies]
+heck = "0.5.0"
 pastey = "0.2.1"
 rand = "0.10.1"
 rayon = "1.11.0"
@@ -18,6 +19,5 @@ tokio = {
   default-features = false,
   features = ["fs", "full", "process"]
 }
-tutorlolv2_fmt = { path = "../tutorlolv2_fmt" }
 tutorlolv2_types = { path = "../tutorlolv2_types", features = ["dev"] }
 tutorlolv2_wiki = { path = "../tutorlolv2_wiki" }
