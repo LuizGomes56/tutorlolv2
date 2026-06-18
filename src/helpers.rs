@@ -18,10 +18,7 @@
 use crate::{
     ChampionId, ItemId, RuneId,
     bitset::{ItemsBitSet, RunesBitSet},
-    libgen::{
-        Champion, Closure, DAMAGING_ITEMS, DAMAGING_RUNES, ITEMS_DATA, L_MSTR, L_SIML, L_TWRD,
-        RUNES_DATA, SIMULATED_ITEMS_ENUM, Stat, WikiStats,
-    },
+    libgen::{Champion, Closure, L_MSTR, L_TWRD, Stat, WikiStats},
     model::*,
 };
 use alloc::boxed::Box;
@@ -57,7 +54,7 @@ pub const fn const_clamp(value: u8, range: RangeInclusive<u8>) -> usize {
     }) as usize
 }
 
-impl SimpleStats<f32> {
+impl SimpleStats {
     pub const fn base_stats(champion_id: ChampionId, level: u8, is_mega_gnar: bool) -> Self {
         let BasicStats {
             max_health,
@@ -110,7 +107,7 @@ impl SimpleStats<f32> {
     }
 }
 
-impl BasicStats<f32> {
+impl BasicStats {
     // Constructs a new [`BasicStats`] struct for the given champion at the specified level
     // It does not consider exceptions (Ex: Gnar)
     pub const fn new(champion_id: ChampionId, level: u8) -> Self {
@@ -191,8 +188,8 @@ impl BasicStats<f32> {
     }
 }
 
-impl EnemyStats<f32> {
-    pub const fn bonus_stats(&self, base_stats: SimpleStats<f32>) -> SimpleStats<f32> {
+impl EnemyStats {
+    pub const fn bonus_stats(&self, base_stats: SimpleStats) -> SimpleStats {
         SimpleStats {
             armor: self.armor - base_stats.armor,
             max_health: self.max_health - base_stats.max_health,
@@ -201,7 +198,7 @@ impl EnemyStats<f32> {
     }
 }
 
-impl Stats<f32> {
+impl Stats {
     /// Returns a new struct [`Stats`] with the same original values except the ones
     /// that involve percent penetration, which are resolved and converted to the
     /// `0..100` range used in this library
@@ -219,14 +216,14 @@ impl Stats<f32> {
     /// of stats as if the player owned the qualified item, defined in the constant
     /// [`SIMULATED_ITEMS_ENUM`]. The qualified items are defined by their tier, gold, and if
     /// they're purchasable in the standard gamemode [`GameMap::SummonersRift`].
-    pub const fn get_simulated_stats(&self, dragons: Dragons) -> [Self; L_SIML] {
-        let mut result = MaybeUninit::<[Self; L_SIML]>::uninit();
+    pub const fn get_simulated_stats(&self, dragons: Dragons) -> [Self; ItemId::L_SIML] {
+        let mut result = MaybeUninit::<[Self; ItemId::L_SIML]>::uninit();
         let result_ptr = result.as_mut_ptr();
 
         let mut i = 0;
-        while i < SIMULATED_ITEMS_ENUM.len() {
+        while i < ItemId::L_SIML {
             let mut new_stat = *self;
-            let stats = SIMULATED_ITEMS_ENUM[i].stats();
+            let stats = ItemId::SIML[i].stats();
 
             let mut j = 0;
             while j < stats.len() {
@@ -276,7 +273,7 @@ impl Stats<f32> {
         unsafe { result.assume_init() }
     }
 
-    pub const fn bonus_stats(&self, base_stats: BasicStats<f32>) -> BasicStats<f32> {
+    pub const fn bonus_stats(&self, base_stats: BasicStats) -> BasicStats {
         BasicStats {
             armor: self.armor - base_stats.armor,
             attack_damage: self.attack_damage - base_stats.attack_damage,
@@ -322,7 +319,7 @@ impl<T> DamageKind<T> {
 impl DamageKind<ItemId> {
     pub fn items(bitset: &ItemsBitSet, attack_type: AttackType) -> Self {
         Self::new(bitset, attack_type, |i, attack_type| unsafe {
-            let item = ITEMS_DATA.get_unchecked(i);
+            let item = ItemId::from_usize_unchecked(i).data();
             let slice = match attack_type {
                 AttackType::Ranged => item.ranged,
                 AttackType::Melee => item.melee,
@@ -336,7 +333,7 @@ impl DamageKind<ItemId> {
 impl DamageKind<RuneId> {
     pub fn runes(bitset: &RunesBitSet, attack_type: AttackType) -> Self {
         Self::new(bitset, attack_type, |i, attack_type| unsafe {
-            let rune = RUNES_DATA.get_unchecked(i);
+            let rune = RuneId::from_usize_unchecked(i).data();
             let slice = match attack_type {
                 AttackType::Ranged => rune.ranged,
                 AttackType::Melee => rune.melee,
@@ -355,7 +352,7 @@ pub const fn get_damaging_runes(input: &[RuneId]) -> RunesBitSet {
     while i < input.len() {
         let rune = input[i] as _;
 
-        if DAMAGING_RUNES.contains_const(rune) {
+        if RuneId::DAMAGING_RUNES.contains_const(rune) {
             out.insert_const(rune);
         }
         i += 1;
@@ -372,7 +369,7 @@ pub const fn get_damaging_items(input: &[ItemId]) -> ItemsBitSet {
     while i < input.len() {
         let item = input[i] as _;
 
-        if DAMAGING_ITEMS.contains_const(item) {
+        if ItemId::DAMAGING_ITEMS.contains_const(item) {
             out.insert_const(item);
         }
         i += 1;

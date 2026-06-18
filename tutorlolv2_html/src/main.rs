@@ -1,8 +1,5 @@
 use core::ops::Range;
-use tutorlolv2::{
-    CastId, ChampionId, ItemId, RuneId,
-    docs::{ABILITY_CLOSURES, ITEM_CLOSURES, RAW_BLOCK, RUNE_CLOSURES},
-};
+use tutorlolv2::{ChampionId, ItemId, RuneId, docs::DOCS};
 use tutorlolv2_html::{Html, run};
 
 fn main() {
@@ -11,42 +8,47 @@ fn main() {
     let source_code = |array: &[Range<usize>]| {
         array
             .iter()
-            .map(|range| &RAW_BLOCK[range.clone()])
+            .map(|range| &DOCS[range.clone()])
             .collect::<String>()
     };
 
     let champions = ChampionId::VALUES
         .into_iter()
-        .map(|champion_id| source_code(&[champion_id.formula().clone()]))
+        .map(|champion_id| source_code(&[champion_id.docs().clone()]))
         .collect::<String>();
 
     let items = ItemId::VALUES
         .into_iter()
-        .map(|item_id| source_code(&[item_id.formula().clone()]))
+        .map(|item_id| source_code(&[item_id.docs().clone()]))
         .collect::<String>();
 
     let runes = RuneId::VALUES
         .into_iter()
-        .map(|rune_id| source_code(&[rune_id.formula().clone()]))
+        .map(|rune_id| source_code(&[rune_id.docs().clone()]))
         .collect::<String>();
 
     let champion_gen = ChampionId::VALUES
         .into_iter()
-        .map(|champion_id| source_code(&[champion_id.generator().clone()]))
+        .map(|champion_id| source_code(&[champion_id.generator_docs().clone()]))
         .collect::<String>();
 
     let item_gen = ItemId::VALUES
         .into_iter()
-        .map(|item_id| source_code(&[item_id.generator().clone()]))
+        .map(|item_id| source_code(&[item_id.generator_docs().clone()]))
+        .collect::<String>();
+
+    let rune_gen = RuneId::VALUES
+        .into_iter()
+        .map(|rune_id| source_code(&[rune_id.generator_docs().clone()]))
         .collect::<String>();
 
     let ability_closures = ChampionId::VALUES
         .into_iter()
-        .map(|champion_id| source_code(ABILITY_CLOSURES[champion_id.index()]))
+        .map(|champion_id| source_code(champion_id.functions_docs()))
         .collect::<String>();
 
     let items_closures = source_code(
-        &ITEM_CLOSURES
+        &ItemId::FUNCTIONS_DOCS
             .iter()
             .cloned()
             .flatten()
@@ -55,7 +57,7 @@ fn main() {
     );
 
     let runes_closures = source_code(
-        &RUNE_CLOSURES
+        &RuneId::FUNCTIONS_DOCS
             .iter()
             .cloned()
             .flatten()
@@ -65,7 +67,7 @@ fn main() {
 
     let abilities = ChampionId::VALUES
         .into_iter()
-        .map(|champion_id| source_code(champion_id.ability_formulas()))
+        .map(|champion_id| source_code(champion_id.functions_docs()))
         .collect::<String>();
 
     let data = [
@@ -74,6 +76,7 @@ fn main() {
         runes,
         champion_gen,
         item_gen,
+        rune_gen,
         ability_closures,
         items_closures,
         runes_closures,

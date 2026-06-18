@@ -94,7 +94,7 @@ pub fn champions_html() {
         });
 
         html.section("Source Code Representation")
-            .code(champion_id.formula())
+            .code(champion_id.docs())
             .section(&format!(
                 "This champion has {x} abilit{postfix}",
                 x = champion_id.number_of_abilities(),
@@ -112,14 +112,14 @@ pub fn champions_html() {
             .for_each(|(i, meta)| {
                 let lit = format!("{kind:?}", kind = meta.kind);
                 html.section(&lit)
-                    .code(champion_id.get_ability_formula(i))
+                    .code(champion_id.docs())
                     .describe()
-                    .idents(champion_id.get_ability_idents(i))
-                    .code(champion_id.get_ability_closure(i));
+                    .idents(champion_id.identifiers()[i])
+                    .code(&champion_id.functions_docs()[i]);
             });
 
         html.section("Generator definition")
-            .code(champion_id.generator())
+            .code(champion_id.generator_docs())
             .json(champion_id);
 
         html

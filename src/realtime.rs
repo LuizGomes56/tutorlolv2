@@ -14,7 +14,7 @@ use crate::{
     ChampionId, ItemId, RuneId,
     bitset::{ItemsBitSet, RunesBitSet},
     helpers::*,
-    libgen::{DAMAGING_ITEMS, DAMAGING_RUNES, WikiModifiers},
+    libgen::WikiModifiers,
     model::*,
     riot::*,
 };
@@ -182,7 +182,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
 
             // If the item does not define any personalized closure, we ignore it otherwise we
             // would be wasting time evaluating zeros
-            DAMAGING_ITEMS
+            ItemId::DAMAGING_ITEMS
                 .contains_const(item_index)
                 .then_some(item_index)
         })
@@ -264,7 +264,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
                     let rune_index = rune_id as _;
 
                     // Most runes will be filtered out, very few ones deal damage in the game
-                    DAMAGING_RUNES
+                    RuneId::DAMAGING_RUNES
                         .contains_const(rune_index)
                         .then_some(rune_index)
                 })
@@ -426,9 +426,6 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
                 Damages::new(siml_ctx, &eval_data, modifiers)
             });
 
-            // Collect the result, casting `f32` values to `i32` since the game rounds down
-            // everything, and it is more compact to send through bincode. `f32` takes up
-            // 4 bytes, while an `i32` most of the times will be collapsed to 1 single byte
             Some(Enemy {
                 champion_id: e_champion_id,
                 position: e_position,
@@ -449,9 +446,9 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
     Ok(Realtime {
         current_player: CurrentPlayer {
             riot_id,
-            base_stats: BasicStats::from_f32(&current_player_base_stats),
-            bonus_stats: BasicStats::from_f32(&current_player_bonus_stats),
-            current_stats: Stats::from_f32(&current_player_stats),
+            base_stats: current_player_base_stats,
+            bonus_stats: current_player_bonus_stats,
+            current_stats: current_player_stats,
             level,
             team: current_player_team,
             adaptive_type,

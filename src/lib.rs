@@ -1,7 +1,6 @@
 #![no_std]
 
 pub use calculator::calculator;
-pub use libgen::*;
 pub use realtime::realtime;
 pub use tutorlolv2_types::*;
 
@@ -10,20 +9,22 @@ extern crate alloc;
 pub mod bitset;
 pub mod calculator;
 pub mod const_eval;
+
 pub mod helpers;
 pub mod libgen;
 pub mod model;
 pub mod realtime;
 pub mod riot;
 
+pub use libgen::*;
+
 #[allow(dead_code)]
 mod test {
     use crate::{
-        ChampionId, ItemId, L_SIML, RuneId,
+        AbilityId, ChampionId, Ctx, ItemId, RuneId,
         const_eval::{ConstDamage, ConstDamages, ConstEnemy, ConstInput, ConstOutput},
         model::{AbilityLevels, Attacks, BasicStats, Dragons, Modifiers, ResistShred, Stats},
     };
-    use tutorlolv2_types::{AbilityId, Ctx};
 
     const CHAMPION_ID: ChampionId = ChampionId::Neeko;
     const OUT: ConstOutput<{ CHAMPION_ID.number_of_abilities() }, 6, 1> = ConstInput {
@@ -62,13 +63,13 @@ mod test {
     const ITEMS_DMG: &[ConstDamage<ItemId>] = &OUT.damages.items;
     const RUNES_DMG: &[ConstDamage<RuneId>] = &OUT.damages.runes;
     const CTX: Ctx = OUT.ctx;
-    const STATS: Stats<f32> = OUT.stats;
-    const BASE_STATS: BasicStats<f32> = OUT.base_stats;
-    const BONUS_STATS: BasicStats<f32> = OUT.bonus_stats;
+    const STATS: Stats = OUT.stats;
+    const BASE_STATS: BasicStats = OUT.base_stats;
+    const BONUS_STATS: BasicStats = OUT.bonus_stats;
     const SHRED: ResistShred = OUT.shred;
     const MODIFIERS: Modifiers = OUT.modifiers;
     const SIML: [(
         ItemId,
         ConstDamages<{ ABILITIES.len() }, { ITEMS_DMG.len() }, { RUNES_DMG.len() }>,
-    ); L_SIML] = OUT.siml;
+    ); ItemId::L_SIML] = OUT.siml;
 }

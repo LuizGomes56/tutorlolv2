@@ -13,7 +13,7 @@ use alloc::boxed::Box;
 use tutorlolv2_types::{AdaptiveType, AttackType, StatName};
 
 pub const fn get_item_bonus_stats(
-    stats: &mut Stats<f32>,
+    stats: &mut Stats,
     items: &[ItemId],
     modifiers: &mut Modifiers,
     adaptive_force: &mut f32,
@@ -22,7 +22,7 @@ pub const fn get_item_bonus_stats(
 }
 
 pub const fn get_rune_bonus_stats(
-    stats: &mut Stats<f32>,
+    stats: &mut Stats,
     runes: &[RuneId],
     modifiers: &mut Modifiers,
     level: u8,
@@ -46,7 +46,7 @@ pub struct InferStats<'a> {
     pub is_mega_gnar: bool,
 }
 
-pub const fn infer_champion_stats(data: InferStats<'_>) -> Stats<f32> {
+pub const fn infer_champion_stats(data: InferStats<'_>) -> Stats {
     let InferStats {
         item_exceptions,
         rune_exceptions,
@@ -61,7 +61,7 @@ pub const fn infer_champion_stats(data: InferStats<'_>) -> Stats<f32> {
         is_mega_gnar,
     } = data;
 
-    let mut bonus_stats = Stats::<f32>::default();
+    let mut bonus_stats = Stats::default();
 
     let data = champion_id.data();
 
@@ -182,7 +182,7 @@ pub const fn infer_champion_stats(data: InferStats<'_>) -> Stats<f32> {
     stats
 }
 
-impl Stats<f32> {
+impl Stats {
     pub const fn infer(data: InferStats<'_>) -> Self {
         infer_champion_stats(data)
     }
@@ -435,7 +435,7 @@ impl Stats<f32> {
 }
 
 pub struct ChampionExceptionData<'a> {
-    pub stats: &'a mut Stats<f32>,
+    pub stats: &'a mut Stats,
     pub ability_levels: AbilityLevels,
     pub stacks: u32,
 }
@@ -455,7 +455,7 @@ pub const fn assign_champion_exceptions(data: ChampionExceptionData, champion_id
 
 pub struct RuneExceptionData<'a> {
     pub adaptive_force: &'a mut f32,
-    pub stats: &'a mut Stats<f32>,
+    pub stats: &'a mut Stats,
     pub attack_type: AttackType,
     pub level: u8,
 }
@@ -463,7 +463,7 @@ pub struct RuneExceptionData<'a> {
 /// Receives mutable references to the champion's current stats, bonus stats and modifiers,
 /// modifying their values based on the `exceptions` slice. Only the items that
 /// depend on some stack count should be added to the match arms of this function
-pub const fn assign_item_exceptions(stats: &mut Stats<f32>, exceptions: &[ValueException]) {
+pub const fn assign_item_exceptions(stats: &mut Stats, exceptions: &[ValueException]) {
     stats.assign_item_exceptions(exceptions);
 }
 
@@ -511,24 +511,21 @@ pub fn calculator(game: InputGame) -> OutputGame {
     let current_player_base_stats =
         BasicStats::base_stats(current_player_champion_id, level, is_mega_gnar);
 
-    let champion_stats = champion_raw_stats
-        .as_ref()
-        .map(Stats::from_i32)
-        .unwrap_or_else(|| {
-            infer_champion_stats(InferStats {
-                item_exceptions: &item_exceptions,
-                rune_exceptions: &rune_exceptions,
-                items: &current_player_raw_items,
-                runes: &current_player_raw_runes,
-                modifiers: &mut modifiers,
-                dragons,
-                ability_levels,
-                stacks,
-                level,
-                champion_id: current_player_champion_id,
-                is_mega_gnar,
-            })
-        });
+    let champion_stats = champion_raw_stats.unwrap_or_else(|| {
+        infer_champion_stats(InferStats {
+            item_exceptions: &item_exceptions,
+            rune_exceptions: &rune_exceptions,
+            items: &current_player_raw_items,
+            runes: &current_player_raw_runes,
+            modifiers: &mut modifiers,
+            dragons,
+            ability_levels,
+            stacks,
+            level,
+            champion_id: current_player_champion_id,
+            is_mega_gnar,
+        })
+    });
 
     let current_player_bonus_stats = champion_stats.bonus_stats(current_player_base_stats);
 
@@ -588,9 +585,9 @@ pub fn calculator(game: InputGame) -> OutputGame {
 
     OutputGame {
         current_player: OutputCurrentPlayer {
-            base_stats: current_player_base_stats.as_i32(),
-            bonus_stats: current_player_bonus_stats.as_i32(),
-            current_stats: champion_stats.as_i32(),
+            base_stats: current_player_base_stats,
+            bonus_stats: current_player_bonus_stats,
+            current_stats: champion_stats,
             champion_id: current_player_champion_id,
             adaptive_type,
             level,
@@ -604,7 +601,7 @@ pub fn calculator(game: InputGame) -> OutputGame {
 }
 
 pub fn get_calculator_enemies(
-    enemy_players: Box<[InputMinData<EnemyStats<i32>>]>,
+    enemy_players: Box<[InputMinData<EnemyStats>]>,
     self_state: &SelfState,
     eval_data: &DamageEvalData,
     modifiers: Modifiers,
@@ -617,7 +614,7 @@ pub fn get_calculator_enemies(
             let InputMinData {
                 items: e_items,
                 stacks: e_stacks,
-                stats: e_stats_i32,
+                stats: e_stats,
                 level: e_level,
                 champion_id: e_champion_id,
                 is_mega_gnar: e_is_mega_gnar,
@@ -627,7 +624,7 @@ pub fn get_calculator_enemies(
             let e_base_stats = SimpleStats::base_stats(e_champion_id, e_level, e_is_mega_gnar);
             let full_state = get_enemy_full_state(
                 EnemyState {
-                    current_stats: e_stats_i32.as_ref().map(EnemyStats::from_i32),
+                    current_stats: e_stats,
                     base_stats: e_base_stats,
                     items: &e_items,
                     stacks: e_stacks,
@@ -661,9 +658,9 @@ pub fn get_calculator_enemies(
             let damages = Damages::new(ctx, eval_data, modifiers);
 
             OutputEnemy {
-                current_stats: full_state.current_stats.as_i32(),
-                bonus_stats: full_state.bonus_stats.as_i32(),
-                base_stats: e_base_stats.as_i32(),
+                current_stats: full_state.current_stats,
+                bonus_stats: full_state.bonus_stats,
+                base_stats: e_base_stats,
                 real_magic_resist: full_state.magic_values.real as _,
                 real_armor: full_state.armor_values.real as _,
                 champion_id: e_champion_id,

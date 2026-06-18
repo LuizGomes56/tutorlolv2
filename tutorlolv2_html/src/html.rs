@@ -3,7 +3,7 @@ use core::{
     ops::{Deref, DerefMut, Range},
 };
 use std::path::Path;
-use tutorlolv2::{CastId, CtxVar, EntityId, docs::RAW_BLOCK};
+use tutorlolv2::{CastId, CtxVar, EntityId, docs::DOCS};
 
 pub struct Html {
     inner: String,
@@ -106,7 +106,7 @@ impl Html {
     }
 
     pub fn code(&mut self, offsets: &Range<usize>) -> &mut Self {
-        let code = &RAW_BLOCK[offsets.clone()];
+        let code = &DOCS[offsets.clone()];
         self.code_block(code)
     }
 

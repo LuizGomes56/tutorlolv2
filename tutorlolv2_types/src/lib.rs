@@ -578,7 +578,7 @@ pub enum Position {
 }
 
 impl Position {
-    pub const VARIANTS: u8 = 5;
+    pub const VARIANTS: usize = 5;
     pub const ARRAY: [Self; Self::VARIANTS as _] = [
         Position::Top,
         Position::Jungle,
@@ -592,7 +592,7 @@ impl Position {
     }
 
     pub const fn from_u8(value: u8) -> Option<Self> {
-        match value {
+        match value as usize {
             0..Self::VARIANTS => Some(unsafe { Self::from_u8_unchecked(value) }),
             _ => None,
         }

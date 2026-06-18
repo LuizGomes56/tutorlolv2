@@ -2,7 +2,6 @@ use crate::{
     ChampionId, ItemId, RuneId,
     calculator::InferStats,
     helpers::{ability_id_mod, get_enemy_full_state, get_eval_ctx},
-    libgen::{L_SIML, SIMULATED_ITEMS_ENUM},
     model::{
         AbilityLevels, Attacks, BasicStats, DamageModifiers, Dragons, EnemyState, EnemyStats,
         Modifiers, RangeDamage, ResistShred, RiotFormulas, SelfState, SimpleStats, Stats,
@@ -115,7 +114,7 @@ pub struct ConstInput<
     pub rune_exceptions: [(RuneId, u32); RE],
     pub item_exceptions: [(ItemId, u32); IE],
     pub ability_levels: AbilityLevels,
-    pub stats: Option<Stats<f32>>,
+    pub stats: Option<Stats>,
     pub dragons: Dragons,
     pub stacks: u32,
     pub level: u8,
@@ -128,7 +127,7 @@ pub struct ConstEnemy<const N: usize, const EIE: usize> {
     pub champion_id: ChampionId,
     pub items: [ItemId; N],
     pub item_exceptions: [(ItemId, u32); EIE],
-    pub stats: Option<EnemyStats<f32>>,
+    pub stats: Option<EnemyStats>,
     pub stacks: u32,
     pub level: u8,
     pub is_mega_gnar: bool,
@@ -153,12 +152,12 @@ pub struct ConstDamages<const A: usize, const I: usize, const R: usize> {
 pub struct ConstOutput<const A: usize, const I: usize, const R: usize> {
     pub damages: ConstDamages<A, I, R>,
     pub ctx: Ctx,
-    pub stats: Stats<f32>,
-    pub base_stats: BasicStats<f32>,
-    pub bonus_stats: BasicStats<f32>,
+    pub stats: Stats,
+    pub base_stats: BasicStats,
+    pub bonus_stats: BasicStats,
     pub shred: ResistShred,
     pub modifiers: Modifiers,
-    pub siml: [(ItemId, ConstDamages<A, I, R>); L_SIML],
+    pub siml: [(ItemId, ConstDamages<A, I, R>); ItemId::L_SIML],
 }
 
 impl<
@@ -291,11 +290,11 @@ impl<
         let attacks = Attacks::new(&ctx, onhit, modifiers.damages.physical_mod);
 
         let siml = {
-            let mut result = unsafe { core::mem::zeroed::<[_; L_SIML]>() };
+            let mut result = unsafe { core::mem::zeroed::<[_; ItemId::L_SIML]>() };
             let siml_stats = stats.get_simulated_stats(dragons);
             let mut i = 0;
 
-            while i < L_SIML {
+            while i < ItemId::L_SIML {
                 let siml_stat = siml_stats[i];
                 let siml_ctx = get_eval_ctx(
                     &SelfState {
@@ -315,7 +314,7 @@ impl<
                 let attacks = Attacks::new(&siml_ctx, onhit, modifiers.damages.physical_mod);
 
                 result[i] = (
-                    SIMULATED_ITEMS_ENUM[i],
+                    ItemId::SIML[i],
                     ConstDamages {
                         attacks,
                         abilities,

@@ -10,7 +10,7 @@
 
 use crate::{
     ChampionId, ItemId, RuneId,
-    libgen::{Closure, L_MSTR, L_SIML, L_TWRD, Stat},
+    libgen::{Closure, L_MSTR, L_TWRD, Stat},
 };
 use alloc::boxed::Box;
 use bincode::{BorrowDecode, Decode, Encode};
@@ -105,9 +105,9 @@ pub struct Scoreboard<'a> {
 pub struct CurrentPlayer<'a> {
     #[serde(borrow)]
     pub riot_id: &'a str,
-    pub base_stats: BasicStats<i32>,
-    pub bonus_stats: BasicStats<i32>,
-    pub current_stats: Stats<i32>,
+    pub base_stats: BasicStats,
+    pub bonus_stats: BasicStats,
+    pub current_stats: Stats,
     pub level: u8,
     pub team: Team,
     pub adaptive_type: AdaptiveType,
@@ -119,8 +119,8 @@ pub struct CurrentPlayer<'a> {
 
 #[derive(Clone, Copy, Debug, Default, PartialEq, PartialOrd, Encode, Serialize)]
 pub struct EnemyState<'a> {
-    pub current_stats: Option<EnemyStats<f32>>,
-    pub base_stats: SimpleStats<f32>,
+    pub current_stats: Option<EnemyStats>,
+    pub base_stats: SimpleStats,
     pub items: &'a [ItemId],
     pub stacks: u32,
     pub champion_id: ChampionId,
@@ -137,9 +137,9 @@ pub struct EnemyState<'a> {
 pub struct SelfState {
     pub stacks: f32,
     pub ability_levels: AbilityLevels,
-    pub current_stats: Stats<f32>,
-    pub bonus_stats: BasicStats<f32>,
-    pub base_stats: BasicStats<f32>,
+    pub current_stats: Stats,
+    pub bonus_stats: BasicStats,
+    pub base_stats: BasicStats,
     pub level: u8,
     pub adaptive_type: AdaptiveType,
     // _padding: u16
@@ -150,8 +150,8 @@ pub struct SelfState {
 /// target. Each enemy champion should have their own instance of this struct
 #[derive(Clone, Copy, Debug, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize)]
 pub struct EnemyFullState {
-    pub current_stats: EnemyStats<f32>,
-    pub bonus_stats: SimpleStats<f32>,
+    pub current_stats: EnemyStats,
+    pub bonus_stats: SimpleStats,
     pub modifiers: DamageModifiers,
     pub armor_values: ResistValue,
     pub magic_values: ResistValue,
@@ -174,10 +174,10 @@ pub struct Enemy<'a> {
     pub riot_id: &'a str,
     pub damages: Damages,
     #[serde(with = "serde_arrays")]
-    pub siml_items: [Damages; L_SIML],
-    pub base_stats: SimpleStats<i32>,
-    pub bonus_stats: SimpleStats<i32>,
-    pub current_stats: EnemyStats<i32>,
+    pub siml_items: [Damages; ItemId::L_SIML],
+    pub base_stats: SimpleStats,
+    pub bonus_stats: SimpleStats,
+    pub current_stats: EnemyStats,
     pub real_armor: i32,
     pub real_magic_resist: i32,
     pub level: u8,
@@ -276,7 +276,7 @@ impl ResistShred {
     /// Creates a [`ResistShred`] struct from the current player stats. This API
     /// uses percent penetration as a value in range `[0.0, 100.0]`. Values over
     /// `100.0` will be clamped
-    pub const fn new(stats: &Stats<f32>) -> Self {
+    pub const fn new(stats: &Stats) -> Self {
         let Stats {
             armor_penetration_flat,
             armor_penetration_percent,
@@ -401,7 +401,7 @@ pub struct Dragons {
 #[derive(Clone, Debug, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize)]
 pub struct InputGame {
     pub active_player: InputActivePlayer,
-    pub enemy_players: Box<[InputMinData<EnemyStats<i32>>]>,
+    pub enemy_players: Box<[InputMinData<EnemyStats>]>,
     pub dragons: Dragons,
 }
 
@@ -410,7 +410,7 @@ pub struct InputActivePlayer {
     pub runes: Box<[RuneId]>,
     pub rune_exceptions: Box<[ValueException]>,
     pub abilities: AbilityLevels,
-    pub data: InputMinData<Stats<i32>>,
+    pub data: InputMinData<Stats>,
 }
 
 /// Minimum required data to qualify a valid enemy player, and calculate
@@ -435,9 +435,9 @@ pub struct InputMinData<T> {
 #[derive(Clone, Debug, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize)]
 pub struct OutputEnemy {
     pub damages: Damages,
-    pub base_stats: SimpleStats<i32>,
-    pub bonus_stats: SimpleStats<i32>,
-    pub current_stats: EnemyStats<i32>,
+    pub base_stats: SimpleStats,
+    pub bonus_stats: SimpleStats,
+    pub current_stats: EnemyStats,
     pub real_armor: i32,
     pub real_magic_resist: i32,
     pub level: u8,
@@ -523,9 +523,9 @@ impl AbilityModifiers {
 
 #[derive(Clone, Copy, Debug, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize)]
 pub struct OutputCurrentPlayer {
-    pub current_stats: Stats<i32>,
-    pub base_stats: BasicStats<i32>,
-    pub bonus_stats: BasicStats<i32>,
+    pub current_stats: Stats,
+    pub base_stats: BasicStats,
+    pub bonus_stats: BasicStats,
     pub level: u8,
     pub adaptive_type: AdaptiveType,
     pub champion_id: ChampionId,
@@ -774,141 +774,56 @@ impl RiotFormulas {
     }
 }
 
-/// Implements traits [`From<T<f32>>`] and [`From<T<i32>>`] for some struct
-/// in which all of its fields are numeric types with simple and
-/// deterministic castings from between [`f32`] and [`i32`]
-macro_rules! impl_cast_from {
-    ($(#[$meta:meta])* $stru:ident, $($(#[$fmeta:meta])* $fields:ident),*) => {
-        $(#[$meta])*
-        pub struct $stru<T> {
-            $(
-                $(#[$fmeta])*
-                pub $fields: T
-            ),*
-        }
-
-        impl $stru<f32> {
-            pub const fn from_i32(value: &$stru<i32>) -> Self {
-                $stru {
-                    $($fields: value.$fields as f32),*
-                }
-            }
-
-            pub const fn as_i32(&self) -> $stru<i32> {
-                $stru::from_f32(self)
-            }
-        }
-
-        impl $stru<i32> {
-            pub const fn from_f32(value: &$stru<f32>) -> Self {
-                $stru {
-                    $($fields: value.$fields as i32),*
-                }
-            }
-
-            pub const fn as_f32(&self) -> $stru<f32> {
-                $stru::from_i32(self)
-            }
-        }
-
-        impl From<$stru<f32>> for $stru<i32> {
-            fn from(value: $stru<f32>) -> Self {
-                $stru::from_f32(&value)
-            }
-        }
-
-        impl From<$stru<i32>> for $stru<f32> {
-            fn from(value: $stru<i32>) -> Self {
-                $stru::from_i32(&value)
-            }
-        }
-
-        impl From<&$stru<f32>> for $stru<i32> {
-            fn from(value: &$stru<f32>) -> Self {
-                $stru::from_f32(value)
-            }
-        }
-
-        impl From<&$stru<i32>> for $stru<f32> {
-            fn from(value: &$stru<i32>) -> Self {
-                $stru::from_i32(value)
-            }
-        }
-    };
+#[derive(Clone, Copy, Debug, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize)]
+pub struct EnemyStats {
+    pub armor: f32,
+    pub current_health: f32,
+    pub magic_resist: f32,
+    pub max_health: f32,
+    pub missing_health: f32,
 }
 
-impl_cast_from!(
-    #[derive(
-        Clone, Copy, Debug, Default, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize,
-    )]
-    EnemyStats,
-    armor,
-    current_health,
-    magic_resist,
-    max_health,
-    missing_health
-);
-impl_cast_from!(
-    /// Holds the most simple stats that need to be used to calculate
-    /// the damage against this enemy. Note that it is similar to struct
-    /// [`BasicStats`], but without the `attack_damage` and `mana` fields,
-    /// which are fields that do not quantify any damage reduction the enemy
-    /// champion may take. Generic parameter `T` is supposed to be a numeric type
-    #[derive(
-        Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize,
-    )]
-    SimpleStats,
-    armor, max_health, magic_resist
-);
-impl_cast_from!(
-    /// Struct holding the core champion stats of a player, where `T` is a
-    /// numeric type
-    #[derive(
-        Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize,
-    )]
-    BasicStats,
-    armor,
-    attack_damage,
-    attack_speed,
-    magic_resist,
-    max_health,
-    max_mana
-);
-impl_cast_from!(
-    /// Holds all champion stats provided by Riot's API.
-    /// Generic parameter `T` is intended to be a numeric type,
-    /// like [`f32`], [`f64`], or [`i32`]
-    #[derive(
-        Clone, Copy, Debug, Deserialize, Eq, Ord, PartialEq, PartialOrd, Serialize, Encode, Decode,
-    )]
-    #[serde(rename_all = "camelCase")]
-    Stats,
-    ability_power,
-    armor,
-    #[serde(rename = "physicalLethality")]
-    armor_penetration_flat,
-    armor_penetration_percent,
-    attack_damage,
-    attack_speed,
-    crit_chance,
-    crit_damage,
-    current_health,
-    magic_penetration_flat,
-    magic_penetration_percent,
-    magic_resist,
-    #[serde(rename = "maxHealth")]
-    max_health,
-    #[serde(rename = "resourceMax")]
-    max_mana,
-    #[serde(rename = "resourceValue")]
-    current_mana
-);
+#[derive(Clone, Copy, Debug, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize)]
+pub struct SimpleStats {
+    pub armor: f32,
+    pub max_health: f32,
+    pub magic_resist: f32,
+}
 
-/// Implements trait [`Default`] and a constant method [`Self::default`] for some struct.
-/// The first argument of this macro is the struct in which these functions will be generated,
-/// the second one is the default value. Often `0` or `1`, and the third one is the type
-/// of the default value, that could not be inferred. This macro does not need to know the
-/// fields of the target struct since it uses [`core::mem::transmute`]
+#[derive(Clone, Copy, Debug, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize)]
+pub struct BasicStats {
+    pub armor: f32,
+    pub attack_damage: f32,
+    pub attack_speed: f32,
+    pub magic_resist: f32,
+    pub max_health: f32,
+    pub max_mana: f32,
+}
+
+#[derive(Clone, Copy, Debug, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct Stats {
+    pub ability_power: f32,
+    pub armor: f32,
+    #[serde(rename = "physicalLethality")]
+    pub armor_penetration_flat: f32,
+    pub armor_penetration_percent: f32,
+    pub attack_damage: f32,
+    pub attack_speed: f32,
+    pub crit_chance: f32,
+    pub crit_damage: f32,
+    pub current_health: f32,
+    pub magic_penetration_flat: f32,
+    pub magic_penetration_percent: f32,
+    pub magic_resist: f32,
+    #[serde(rename = "maxHealth")]
+    pub max_health: f32,
+    #[serde(rename = "resourceMax")]
+    pub max_mana: f32,
+    #[serde(rename = "resourceValue")]
+    pub current_mana: f32,
+}
+
 macro_rules! impl_default {
     ($ty:ty, $init:literal, $typedef:ty) => {
         impl $ty {
@@ -929,11 +844,9 @@ macro_rules! impl_default {
     };
 }
 
-impl_default!(Stats<f32>, 0, f32);
-impl_default!(SimpleStats<f32>, 0, f32);
-impl_default!(BasicStats<f32>, 0, f32);
-impl_default!(SimpleStats<i32>, 0, i32);
-impl_default!(BasicStats<i32>, 0, i32);
+impl_default!(Stats, 0, f32);
+impl_default!(BasicStats, 0, f32);
+impl_default!(SimpleStats, 0, f32);
 impl_default!(DamageModifiers, 1, f32);
 impl_default!(AbilityModifiers, 1, f32);
 impl_default!(Modifiers, 1, f32);

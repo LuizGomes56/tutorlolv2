@@ -258,7 +258,7 @@ fn build_docs() -> MayFail {
                 },
                 StaticVar {
                     attribute: "generator",
-                    name: "CHAMPION_GENERATOR".into(),
+                    name: "CHAMPION_GENERATORS".into(),
                     vtype: "Range<usize>",
                 },
                 StaticVar {
@@ -268,7 +268,7 @@ fn build_docs() -> MayFail {
                 },
                 StaticVar {
                     attribute: "closure",
-                    name: "ABILITY_CLOSURES".into(),
+                    name: "CHAMPION_CLOSURES".into(),
                     vtype: "&[Range<usize>]",
                 },
             ]),
@@ -285,7 +285,7 @@ fn build_docs() -> MayFail {
                         },
                         StaticVar {
                             attribute: "generator",
-                            name: var("GENERATOR"),
+                            name: var("GENERATORS"),
                             vtype: "Range<usize>",
                         },
                         StaticVar {
