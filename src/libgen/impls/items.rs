@@ -168,11 +168,11 @@ impl ItemId {
     }
 
     pub const fn has_map(&self, game_map: GameMap) -> bool {
-        let stats = self.maps();
+        let maps = self.maps();
         let mut i = 0;
 
-        while i < stats.len() {
-            if stats[i] as u8 == game_map as u8 {
+        while i < maps.len() {
+            if maps[i] as u8 == game_map as u8 {
                 return true;
             }
             i += 1;

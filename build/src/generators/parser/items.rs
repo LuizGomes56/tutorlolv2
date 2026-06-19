@@ -88,8 +88,10 @@ impl Parser<WikiItem, Item> for ItemParser {
 
             match data
                 .keys()
-                .map(|k| k.to_lowercase())
-                .find(|k| k == &key.to_lowercase())
+                .cloned()
+                .collect::<Vec<_>>()
+                .into_iter()
+                .find(|k| k.to_lowercase() == key.to_lowercase())
             {
                 Some(k) if let Some(item) = data.get_mut(&k) => item.purchasable = purchasable,
                 Some(_) => {}
