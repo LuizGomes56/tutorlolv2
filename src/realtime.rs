@@ -10,16 +10,12 @@
 //! Check the module [`tutorlolv2::riot`] for more information about the
 //! types extracted from the json file in port 2999
 
-use crate::{
-    ChampionId, ItemId, RuneId,
-    bitset::{ItemsBitSet, RunesBitSet},
-    helpers::*,
-    model::*,
-    riot::*,
+use {
+    crate::{ChampionId, ItemId, RuneId, bitset::BitSet, helpers::*, model::*, riot::*},
+    alloc::boxed::Box,
+    core::str::FromStr,
+    tutorlolv2_types::{AdaptiveType, AttackType, GameMap, Position},
 };
-use alloc::boxed::Box;
-use core::str::FromStr;
-use tutorlolv2_types::{AdaptiveType, AttackType, GameMap, Position};
 
 /// Ensure that all champions have at least one position, so the unchecked
 /// access does not cause a panic or undefined behavior
@@ -184,11 +180,11 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
 
             // If the item does not define any personalized closure, we ignore it otherwise we
             // would be wasting time evaluating zeros
-            ItemId::DAMAGING_ITEMS
+            ItemId::DAMAGING
                 .contains_const(item_index)
                 .then_some(item_index)
         })
-        .collect::<ItemsBitSet>();
+        .collect::<BitSet>();
 
     // If we don't know his team, put in team `Team::default()`, which by now is `Team::Blue`.
     // Note that it may lead to incorrect results, but it is better than not giving any results
@@ -266,11 +262,11 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
                     let rune_index = rune_id as _;
 
                     // Most runes will be filtered out, very few ones deal damage in the game
-                    RuneId::DAMAGING_RUNES
+                    RuneId::DAMAGING
                         .contains_const(rune_index)
                         .then_some(rune_index)
                 })
-                .collect::<RunesBitSet>()
+                .collect::<BitSet>()
         })
         // If there's no runes field, the final value will be an empty bit set indicating
         // that there are no runes selected

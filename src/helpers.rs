@@ -18,7 +18,7 @@
 use {
     crate::{
         ChampionId, ItemId, RuneId, WikiModifiers,
-        bitset::{ItemsBitSet, RunesBitSet},
+        bitset::BitSet,
         libgen::{Champion, Closure, L_MSTR, L_TWRD, Stat, WikiStats},
         model::*,
     },
@@ -30,9 +30,7 @@ use {
     },
 };
 
-/// Checks if at least one of the provided [`ItemId`] in the array is in the
-/// [`crate::bitset::ItemsBitSet`], similar to method [`core::iter::Iterator::any`]
-pub const fn has_item<const N: usize>(origin: &ItemsBitSet, check_for: [ItemId; N]) -> bool {
+pub const fn has_item<const N: usize>(origin: &BitSet, check_for: [ItemId; N]) -> bool {
     let mut i = 0;
     while i < N {
         if origin.contains_const(check_for[i] as _) {
@@ -211,7 +209,7 @@ impl EnemyStats {
     }
 }
 
-impl Stats {
+impl PlayerStats {
     /// Returns a new struct [`Stats`] with the same original values except the ones
     /// that involve percent penetration, which are resolved and converted to the
     /// `0..100` range used in this library
@@ -330,7 +328,7 @@ impl<T> DamageKind<T> {
 }
 
 impl DamageKind<ItemId> {
-    pub fn items(bitset: &ItemsBitSet, attack_type: AttackType) -> Self {
+    pub fn items(bitset: &BitSet, attack_type: AttackType) -> Self {
         Self::new(bitset, attack_type, |i, attack_type| unsafe {
             let item = ItemId::from_usize_unchecked(i).data();
             let slice = match attack_type {
@@ -344,7 +342,7 @@ impl DamageKind<ItemId> {
 }
 
 impl DamageKind<RuneId> {
-    pub fn runes(bitset: &RunesBitSet, attack_type: AttackType) -> Self {
+    pub fn runes(bitset: &BitSet, attack_type: AttackType) -> Self {
         Self::new(bitset, attack_type, |i, attack_type| unsafe {
             let rune = RuneId::from_usize_unchecked(i).data();
             let slice = match attack_type {
@@ -357,16 +355,14 @@ impl DamageKind<RuneId> {
     }
 }
 
-/// Converts a slice of [`RuneId`] into a [`RunesBitSet`], removing the ones that
-/// do not deal any damage
-pub const fn get_damaging_runes(input: &[RuneId]) -> RunesBitSet {
-    let mut out = RunesBitSet::EMPTY;
+pub const fn get_damaging_runes(input: &[RuneId]) -> BitSet {
+    let mut out = BitSet::EMPTY;
     let mut i = 0;
 
     while i < input.len() {
         let rune = input[i] as _;
 
-        if RuneId::DAMAGING_RUNES.contains_const(rune) {
+        if RuneId::DAMAGING.contains_const(rune) {
             out.insert_const(rune);
         }
 
@@ -377,14 +373,14 @@ pub const fn get_damaging_runes(input: &[RuneId]) -> RunesBitSet {
 
 /// Converts a slice of [`ItemId`] into a [`ItemsBitSet`], removing the ones that
 /// do not deal any damage
-pub const fn get_damaging_items(input: &[ItemId]) -> ItemsBitSet {
-    let mut out = ItemsBitSet::EMPTY;
+pub const fn get_damaging_items(input: &[ItemId]) -> BitSet {
+    let mut out = BitSet::EMPTY;
     let mut i = 0;
 
     while i < input.len() {
         let item = input[i] as _;
 
-        if ItemId::DAMAGING_ITEMS.contains_const(item) {
+        if ItemId::DAMAGING.contains_const(item) {
             out.insert_const(item);
         }
         i += 1;
@@ -533,7 +529,7 @@ impl EnemyState<'_> {
 
         let e_bonus_stats = e_current_stats.bonus_stats(base_stats);
 
-        let mut origin = ItemsBitSet::EMPTY;
+        let mut origin = BitSet::EMPTY;
         let mut i = 0;
         while i < items.len() {
             origin.insert_const(items[i] as _);
@@ -581,7 +577,7 @@ pub const fn get_eval_ctx(self_state: &SelfState, e_state: &EnemyFullState) -> C
         stacks,
         ability_levels,
         current_stats:
-            Stats {
+            PlayerStats {
                 ability_power,
                 armor,
                 armor_penetration_flat,

@@ -8,16 +8,19 @@
 //!   structs and enums. Structs that have `'static` lifetimes do not implement
 //!   `Deserialize`
 
-use crate::{
-    ChampionId, ItemId, RuneId,
-    libgen::{Closure, L_MSTR, L_TWRD},
-};
-use alloc::boxed::Box;
-use bincode::{BorrowDecode, Decode, Encode};
-use core::str::FromStr;
-use serde::{Deserialize, Serialize};
-use tutorlolv2_types::{
-    AbilityId, AbilityName, AdaptiveType, Attrs, Ctx, DamageType, GameMap, Position, TypeMetadata,
+use {
+    crate::{
+        ChampionId, ItemId, RuneId,
+        libgen::{Closure, L_MSTR, L_TWRD},
+    },
+    alloc::boxed::Box,
+    bincode::{BorrowDecode, Decode, Encode},
+    core::str::FromStr,
+    serde::{Deserialize, Serialize},
+    tutorlolv2_types::{
+        AbilityId, AbilityName, AdaptiveType, Attrs, Ctx, DamageType, GameMap, Position,
+        TypeMetadata,
+    },
 };
 
 /// Holds the compile-time known metadata and closures of the current champion,
@@ -107,7 +110,7 @@ pub struct CurrentPlayer<'a> {
     pub riot_id: &'a str,
     pub base_stats: BasicStats,
     pub bonus_stats: BasicStats,
-    pub current_stats: Stats,
+    pub current_stats: PlayerStats,
     pub level: u8,
     pub team: Team,
     pub adaptive_type: AdaptiveType,
@@ -137,7 +140,7 @@ pub struct EnemyState<'a> {
 pub struct SelfState {
     pub stacks: f32,
     pub ability_levels: AbilityLevels,
-    pub current_stats: Stats,
+    pub current_stats: PlayerStats,
     pub bonus_stats: BasicStats,
     pub base_stats: BasicStats,
     pub level: u8,
@@ -289,8 +292,8 @@ impl ResistShred {
     /// Creates a [`ResistShred`] struct from the current player stats. This API
     /// uses percent penetration as a value in range `[0.0, 100.0]`. Values over
     /// `100.0` will be clamped
-    pub const fn new(stats: &Stats) -> Self {
-        let Stats {
+    pub const fn new(stats: &PlayerStats) -> Self {
+        let PlayerStats {
             armor_penetration_flat,
             armor_penetration_percent,
             magic_penetration_flat,
@@ -313,6 +316,16 @@ pub struct Damages {
     pub items: Box<[i32]>,
     pub runes: Box<[i32]>,
     pub ctx: Ctx,
+}
+
+impl Damages {
+    pub fn sum(&self) -> i32 {
+        self.attacks.onhit_damage.minimum_damage
+            + self.attacks.onhit_damage.maximum_damage
+            + self.abilities.iter().sum::<i32>()
+            + self.items.iter().sum::<i32>()
+            + self.runes.iter().sum::<i32>()
+    }
 }
 
 /// Wrapper around the type [`u32`], whose first [`Self::DISC_BITS`] are used to
@@ -434,7 +447,7 @@ pub struct InputActivePlayer<'a> {
     pub runes: &'a [RuneId],
     pub rune_exceptions: &'a [ValueException],
     pub abilities: AbilityLevels,
-    pub data: InputMinData<'a, Stats>,
+    pub data: InputMinData<'a, PlayerStats>,
 }
 
 #[derive(Copy, Clone, Debug, Default, Encode, PartialEq, PartialOrd, Serialize)]
@@ -444,8 +457,8 @@ pub struct InputMinData<'a, T> {
     pub item_exceptions: &'a [ValueException],
     pub stacks: u32,
     pub level: u8,
-    pub is_mega_gnar: bool,
     pub champion_id: ChampionId,
+    pub is_mega_gnar: bool,
 }
 
 #[derive(Clone, Debug, Default, Decode, Deserialize, Encode, PartialEq, PartialOrd, Serialize)]
@@ -460,7 +473,7 @@ pub struct OwnedInputActivePlayer {
     pub runes: Box<[RuneId]>,
     pub rune_exceptions: Box<[ValueException]>,
     pub abilities: AbilityLevels,
-    pub data: OwnedInputMinData<Stats>,
+    pub data: OwnedInputMinData<PlayerStats>,
 }
 
 #[derive(Clone, Debug, Default, Decode, Deserialize, Encode, PartialEq, PartialOrd, Serialize)]
@@ -517,8 +530,8 @@ pub struct OutputEnemy {
     pub current_stats: EnemyStats,
     pub real_armor: i32,
     pub real_magic_resist: i32,
-    pub level: u8,
     pub champion_id: ChampionId,
+    pub level: u8,
 }
 
 /// Holds values that will be multiplied by all damages, depending on their
@@ -602,12 +615,12 @@ impl AbilityModifiers {
     Copy, Clone, Debug, Default, Decode, Deserialize, Encode, PartialEq, PartialOrd, Serialize,
 )]
 pub struct OutputCurrentPlayer {
-    pub current_stats: Stats,
+    pub current_stats: PlayerStats,
     pub base_stats: BasicStats,
     pub bonus_stats: BasicStats,
-    pub level: u8,
     pub adaptive_type: AdaptiveType,
     pub champion_id: ChampionId,
+    pub level: u8,
 }
 
 #[derive(Clone, Debug, Default, Decode, Deserialize, Encode, PartialEq, PartialOrd, Serialize)]
@@ -829,7 +842,7 @@ pub struct BasicStats {
 
 #[derive(Copy, Clone, Debug, Decode, Deserialize, Encode, PartialEq, PartialOrd, Serialize)]
 #[serde(rename_all = "camelCase")]
-pub struct Stats {
+pub struct PlayerStats {
     pub ability_power: f32,
     pub armor: f32,
     #[serde(rename = "physicalLethality")]
@@ -871,7 +884,7 @@ macro_rules! impl_default {
     };
 }
 
-impl_default!(Stats, 0, f32);
+impl_default!(PlayerStats, 0, f32);
 impl_default!(BasicStats, 0, f32);
 impl_default!(SimpleStats, 0, f32);
 impl_default!(DamageModifiers, 1, f32);

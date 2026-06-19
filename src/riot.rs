@@ -68,7 +68,7 @@ pub struct RiotFullRunes {
 #[derive(Serialize)]
 pub struct RiotActivePlayer<'a> {
     pub abilities: RiotAbilities,
-    pub champion_stats: Stats,
+    pub champion_stats: PlayerStats,
     pub full_runes: RiotFullRunes,
     pub level: u8,
     #[serde(borrow)]

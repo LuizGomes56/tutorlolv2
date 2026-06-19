@@ -39,7 +39,7 @@ impl ItemId {
         result
     };
 
-    pub const DAMAGING_ITEMS: ItemsBitSet = bitset!(ItemId::DAMAGING_ITEMS_ARRAY);
+    pub const DAMAGING: BitSet = bitset!(ItemId::DAMAGING_ITEMS_ARRAY);
 
     pub const RIOT_IDS: [u32; Self::VARIANTS] = {
         let mut result = [0; _];
@@ -156,7 +156,7 @@ impl ItemId {
         self.metadata().damage_type
     }
 
-    pub const fn exceptions(ally: bool) -> ItemsExcSet {
+    pub const fn exceptions(ally: bool) -> BitSetExc {
         match ally {
             true => bitset!(ItemId::ALLY_EXCEPTIONS),
             false => bitset!(ItemId::ENEMY_EXCEPTIONS),

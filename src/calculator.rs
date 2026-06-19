@@ -15,7 +15,7 @@ use {
 };
 
 pub const fn get_item_bonus_stats(
-    stats: &mut Stats,
+    stats: &mut PlayerStats,
     items: &[ItemId],
     modifiers: &mut Modifiers,
     adaptive_force: &mut f32,
@@ -24,7 +24,7 @@ pub const fn get_item_bonus_stats(
 }
 
 pub const fn get_rune_bonus_stats(
-    stats: &mut Stats,
+    stats: &mut PlayerStats,
     runes: &[RuneId],
     modifiers: &mut Modifiers,
     level: u8,
@@ -48,7 +48,7 @@ pub struct InferStats<'a> {
     pub is_mega_gnar: bool,
 }
 
-pub const fn infer_champion_stats(data: InferStats<'_>) -> Stats {
+pub const fn infer_champion_stats(data: InferStats<'_>) -> PlayerStats {
     let InferStats {
         item_exceptions,
         rune_exceptions,
@@ -63,7 +63,7 @@ pub const fn infer_champion_stats(data: InferStats<'_>) -> Stats {
         is_mega_gnar,
     } = data;
 
-    let mut bonus_stats = Stats::default();
+    let mut bonus_stats = PlayerStats::default();
 
     let data = champion_id.data();
 
@@ -75,7 +75,7 @@ pub const fn infer_champion_stats(data: InferStats<'_>) -> Stats {
     let cached_stats = data.stats;
     let base_stats = champion_id.base_stats(level, is_mega_gnar);
 
-    let mut stats = Stats {
+    let mut stats = PlayerStats {
         armor: base_stats.armor,
         attack_damage: base_stats.attack_damage,
         crit_damage: cached_stats.crit_base * cached_stats.crit_modifier,
@@ -179,7 +179,7 @@ pub const fn infer_champion_stats(data: InferStats<'_>) -> Stats {
     stats
 }
 
-impl Stats {
+impl PlayerStats {
     pub const fn infer(data: InferStats<'_>) -> Self {
         infer_champion_stats(data)
     }
@@ -443,7 +443,7 @@ impl Stats {
 }
 
 pub struct ChampionExceptionData<'a> {
-    pub stats: &'a mut Stats,
+    pub stats: &'a mut PlayerStats,
     pub ability_levels: AbilityLevels,
     pub stacks: u32,
 }
@@ -463,7 +463,7 @@ pub const fn assign_champion_exceptions(data: ChampionExceptionData, champion_id
 
 pub struct RuneExceptionData<'a> {
     pub adaptive_force: &'a mut f32,
-    pub stats: &'a mut Stats,
+    pub stats: &'a mut PlayerStats,
     pub attack_type: AttackType,
     pub level: u8,
 }
@@ -471,7 +471,7 @@ pub struct RuneExceptionData<'a> {
 /// Receives mutable references to the champion's current stats, bonus stats and modifiers,
 /// modifying their values based on the `exceptions` slice. Only the items that
 /// depend on some stack count should be added to the match arms of this function
-pub const fn assign_item_exceptions(stats: &mut Stats, exceptions: &[ValueException]) {
+pub const fn assign_item_exceptions(stats: &mut PlayerStats, exceptions: &[ValueException]) {
     stats.assign_item_exceptions(exceptions);
 }
 

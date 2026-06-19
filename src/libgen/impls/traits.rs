@@ -1,5 +1,9 @@
 use {
-    crate::{Champion, ChampionId, EntityId, Item, ItemId, Rune, RuneId},
+    crate::{
+        Champion, ChampionId, EntityId, Item, ItemId, Rune, RuneId,
+        bitset::{BitSet, BitSetExc},
+        model::ValueException,
+    },
     core::{
         any::Any,
         fmt::{Debug, Display},
@@ -246,8 +250,12 @@ where
 }
 
 pub trait ValueId: CastId {
+    const DAMAGING: &BitSet;
+
     fn to_riot_id(&self) -> u32;
     fn metadata(&self) -> TypeMetadata<Self>;
+    fn pack_exc(&self, v: u32) -> ValueException;
+    fn exceptions(ally: bool) -> BitSetExc;
 
     #[cfg(feature = "docs")]
     fn identifiers(&self) -> &'static [CtxVar];
@@ -261,8 +269,18 @@ pub trait ValueId: CastId {
 }
 
 impl ValueId for ItemId {
+    const DAMAGING: &BitSet = &Self::DAMAGING;
+
     fn to_riot_id(&self) -> u32 {
         self.to_riot_id()
+    }
+
+    fn pack_exc(&self, v: u32) -> ValueException {
+        ValueException::pack_item_id(*self, v)
+    }
+
+    fn exceptions(ally: bool) -> BitSetExc {
+        ItemId::exceptions(ally)
     }
 
     #[cfg(feature = "docs")]
@@ -281,8 +299,18 @@ impl ValueId for ItemId {
 }
 
 impl ValueId for RuneId {
+    const DAMAGING: &BitSet = &Self::DAMAGING;
+
     fn to_riot_id(&self) -> u32 {
         self.to_riot_id()
+    }
+
+    fn pack_exc(&self, v: u32) -> ValueException {
+        ValueException::pack_rune_id(*self, v)
+    }
+
+    fn exceptions(_: bool) -> BitSetExc {
+        RuneId::exceptions()
     }
 
     #[cfg(feature = "docs")]

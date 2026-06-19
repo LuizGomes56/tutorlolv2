@@ -39,11 +39,13 @@ serde = {
   ]
 }
 serde_arrays = { version = "0.2.0", default-features = false }
-tutorlolv2_types = { path = "tutorlolv2_types" }
+tutorlolv2_types = { path = "tutorlolv2_types", default-features = false }
+yew = { version = "0.22.0", default-features = false, optional = true }
 
 [build-dependencies]
 tutorlolv2_build_dep = { path = "build" }
 
 [features]
-default = ["docs"]
+default = ["docs", "yew"]
 docs = []
+yew = ["dep:yew"]

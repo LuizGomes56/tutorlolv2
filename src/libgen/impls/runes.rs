@@ -59,7 +59,7 @@ impl RuneId {
         result
     };
 
-    pub const DAMAGING_RUNES: RunesBitSet = bitset!(RuneId::DAMAGING_RUNES_ARRAY);
+    pub const DAMAGING: BitSet = bitset!(RuneId::DAMAGING_RUNES_ARRAY);
 
     pub const RIOT_IDS: [u32; Self::VARIANTS] = {
         let mut result = [0; _];
@@ -89,9 +89,7 @@ impl RuneId {
         Self::ZombieWard,
     ];
 
-    pub const SIZE_OF_EXCEPTIONS: usize = bitset_size(bitset!(RuneId::EXCEPTIONS => [usize]));
-
-    pub const fn exceptions() -> RunesExcSet {
+    pub const fn exceptions() -> BitSetExc {
         bitset!(RuneId::EXCEPTIONS)
     }
 
