@@ -20,7 +20,7 @@ impl ItemId {
         sum
     };
 
-    pub const DAMAGING_ITEMS_ARRAY: [Self; Self::NUMBER_OF_DAMAGING_ITEMS] = {
+    pub const DAMAGING_IDS: [Self; Self::NUMBER_OF_DAMAGING_ITEMS] = {
         let mut result: [Self; _] = unsafe { core::mem::zeroed() };
         let mut i = 0;
         let mut j = 0;
@@ -39,7 +39,7 @@ impl ItemId {
         result
     };
 
-    pub const DAMAGING: BitSet = bitset!(ItemId::DAMAGING_ITEMS_ARRAY);
+    pub const DAMAGING: BitSet = bitset!(ItemId::DAMAGING_IDS);
 
     pub const RIOT_IDS: [u32; Self::VARIANTS] = {
         let mut result = [0; _];
@@ -47,7 +47,7 @@ impl ItemId {
 
         while i < Self::VARIANTS {
             let value = Self::VALUES[i];
-            result[i] = value.to_riot_id();
+            result[i] = value.riot_id();
             i += 1;
         }
 
@@ -214,7 +214,7 @@ impl ItemId {
         Self::FILTERS[stat_name as usize]
     }
 
-    pub const fn to_riot_id(&self) -> u32 {
+    pub const fn riot_id(&self) -> u32 {
         self.data().riot_id
     }
 

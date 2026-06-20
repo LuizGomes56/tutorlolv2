@@ -9,7 +9,7 @@ use {
         fmt::{Debug, Display},
         str::FromStr,
     },
-    tutorlolv2_types::{DamageType, TypeMetadata},
+    tutorlolv2_types::{DamageType, Position, TypeMetadata},
 };
 
 #[cfg(feature = "docs")]
@@ -251,11 +251,13 @@ where
 
 pub trait ValueId: CastId {
     const DAMAGING: &BitSet;
+    const DAMAGING_IDS: &[Self];
 
-    fn to_riot_id(&self) -> u32;
+    fn riot_id(&self) -> u32;
     fn metadata(&self) -> TypeMetadata<Self>;
     fn pack_exc(&self, v: u32) -> ValueException;
     fn exceptions(ally: bool) -> BitSetExc;
+    fn recommendations(champion_id: ChampionId, position: Position) -> &'static [Self];
 
     #[cfg(feature = "docs")]
     fn identifiers(&self) -> &'static [CtxVar];
@@ -270,9 +272,10 @@ pub trait ValueId: CastId {
 
 impl ValueId for ItemId {
     const DAMAGING: &BitSet = &Self::DAMAGING;
+    const DAMAGING_IDS: &[Self] = &Self::DAMAGING_IDS;
 
-    fn to_riot_id(&self) -> u32 {
-        self.to_riot_id()
+    fn riot_id(&self) -> u32 {
+        self.riot_id()
     }
 
     fn pack_exc(&self, v: u32) -> ValueException {
@@ -281,6 +284,10 @@ impl ValueId for ItemId {
 
     fn exceptions(ally: bool) -> BitSetExc {
         ItemId::exceptions(ally)
+    }
+
+    fn recommendations(champion_id: ChampionId, position: Position) -> &'static [Self] {
+        champion_id.recommended_items(position)
     }
 
     #[cfg(feature = "docs")]
@@ -300,9 +307,10 @@ impl ValueId for ItemId {
 
 impl ValueId for RuneId {
     const DAMAGING: &BitSet = &Self::DAMAGING;
+    const DAMAGING_IDS: &[Self] = &Self::DAMAGING_IDS;
 
-    fn to_riot_id(&self) -> u32 {
-        self.to_riot_id()
+    fn riot_id(&self) -> u32 {
+        self.riot_id()
     }
 
     fn pack_exc(&self, v: u32) -> ValueException {
@@ -311,6 +319,10 @@ impl ValueId for RuneId {
 
     fn exceptions(_: bool) -> BitSetExc {
         RuneId::exceptions()
+    }
+
+    fn recommendations(champion_id: ChampionId, position: Position) -> &'static [Self] {
+        champion_id.recommended_runes(position)
     }
 
     #[cfg(feature = "docs")]

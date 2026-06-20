@@ -137,8 +137,8 @@ impl Html {
         let folder = Self::folder(value);
         let tag = match value.entity() {
             EntityId::Champion(champion_id) => &champion_id.debug() as &dyn Display,
-            EntityId::Item(item_id) => &item_id.to_riot_id(),
-            EntityId::Rune(rune_id) => &rune_id.to_riot_id(),
+            EntityId::Item(item_id) => &item_id.riot_id(),
+            EntityId::Rune(rune_id) => &rune_id.riot_id(),
         };
 
         Self::img_src(&format!("{folder}/{tag}.avif"))
