@@ -46,6 +46,6 @@ yew = { version = "0.22.0", default-features = false, optional = true }
 tutorlolv2_build_dep = { path = "build" }
 
 [features]
-default = ["docs", "yew"]
+default = []
 docs = []
 yew = ["dep:yew"]
