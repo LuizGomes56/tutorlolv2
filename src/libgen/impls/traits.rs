@@ -139,10 +139,12 @@ macro_rules! impl_methods {
                         }
                     }
 
+                    #[cfg(feature = "docs")]
                     pub const fn generator_docs(&self) -> &'static Range<usize> {
                         &Self::GENERATOR_DOCS[self.index()]
                     }
 
+                    #[cfg(feature = "docs")]
                     pub const fn docs(&self) -> &'static Range<usize> {
                         &Self::DOCS[self.index()]
                     }
