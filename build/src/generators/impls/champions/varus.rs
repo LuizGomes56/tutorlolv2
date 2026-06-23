@@ -1,31 +1,30 @@
 use super::*;
 
 impl Generator for Varus {
-    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
         self.ability(
             Key::Q,
             [
-                (0, _1), /* Maximum Physical Damage */
-                (1, _2), /* Maximum Reduced Damage */
-                (2, _3), /* Minimum Physical Damage */
-                (3, _4), /* Minimum Reduced Damage */
+                (0, Max),   /* Maximum Physical Damage */
+                (1, _1Max), /* Maximum Reduced Damage */
+                (2, Min),   /* Minimum Physical Damage */
+                (3, _1Min), /* Minimum Reduced Damage */
             ],
         )
         .ability(
             Key::W,
             [
-                (0, _1), /* Active Maximum Magic Damage */
-                (1, _2), /* Active Minimum Magic Damage */
-                (2, _3), /* Bonus Magic Damage */
-                (3, _4), /* Bonus Magic Damage at Max Stacks */
-                (4, _5), /* Bonus Magic Damage per Stack */
-                (5, _6), /* Maximum Bonus Magic Damage at Max Stacks */
-                (6, _7), /* Maximum Bonus Magic Damage per Stack */
+                (0, Max),   /* Active Maximum Magic Damage */
+                (1, Min),   /* Active Minimum Magic Damage */
+                (2, _1Min), /* Bonus Magic Damage */
+                // (3, _2Min), /* Bonus Magic Damage at Max Stacks */
+                // (4, _3), /* Bonus Magic Damage per Stack */
+                (5, _1Max), /* Maximum Bonus Magic Damage at Max Stacks */
+                            // (6, _2Max), /* Maximum Bonus Magic Damage per Stack */
             ],
         )
-        .ability(Key::E, [(0, _1) /* Physical Damage */])
-        .ability(Key::R, [(0, _1) /* Magic Damage */])
+        .ability(Key::E, [(0, Void) /* Physical Damage */])
+        .ability(Key::R, [(0, Void) /* Magic Damage */])
         .end()
     }
 }
