@@ -162,7 +162,7 @@ pub fn parse_items() -> MayFail {
             assign_formula(value.effects.act.as_mut());
             assign_formula(value.effects.pass.as_mut());
 
-            let key = name.to_pascal_case();
+            let key = name.replace("'s", "s").to_pascal_case();
             value.name = name;
             value.item_id = key.clone();
 
@@ -176,7 +176,7 @@ pub fn parse_items() -> MayFail {
 
 fn parse_item(raw: ItemRaw) -> WikiItem {
     WikiItem {
-        item_id: raw.name.to_pascal_case(),
+        item_id: raw.name.replace("'s", "s").to_pascal_case(),
         name: raw.name,
         id: raw.id,
         tier: raw.tier,

@@ -26,7 +26,7 @@ mod test {
     use crate::{
         AbilityId, ChampionId, Ctx, ItemId, RuneId,
         const_eval::{ConstDamage, ConstDamages, ConstEnemy, ConstInput, ConstOutput},
-        model::{AbilityLevels, Attacks, BasicStats, Dragons, Modifiers, ResistShred, PlayerStats},
+        model::{AbilityLevels, Attacks, BasicStats, Dragons, Modifiers, PlayerStats, ResistShred},
     };
 
     const CHAMPION_ID: ChampionId = ChampionId::Neeko;

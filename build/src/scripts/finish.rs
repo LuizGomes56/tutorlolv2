@@ -89,7 +89,13 @@ pub fn champion_aliases() -> MayFail<Option<BTreeMap<String, Vec<String>>>> {
         .map(|champion_id| {
             (
                 champion_id.clone(),
-                languages[champion_id]
+                languages
+                    .get(champion_id)
+                    .cloned()
+                    .unwrap_or_else(|| {
+                        eprintln!("languages[{champion_id}] does not exist");
+                        Default::default()
+                    })
                     .iter()
                     .cloned()
                     .chain(
