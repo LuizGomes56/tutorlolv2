@@ -72,10 +72,8 @@ fn write_module<'a>(
 pub static CPARSER: LazyLock<ChampionParser> = LazyLock::new(|| ChampionParser::new().unwrap());
 pub static IPARSER: LazyLock<ItemParser> = LazyLock::new(|| ItemParser::new().unwrap());
 pub static RPARSER: LazyLock<RuneParser> = LazyLock::new(|| RuneParser::new().unwrap());
-pub static OUT_DIR: LazyLock<PathBuf> = LazyLock::new(|| match std::env::var("OUT_DIR") {
-    Ok(s) => PathBuf::from(s),
-    _ => PathBuf::new(),
-});
+pub static OUT_DIR: LazyLock<PathBuf> =
+    LazyLock::new(|| PathBuf::from(std::env::var("OUT_DIR").unwrap()));
 
 pub fn run() -> MayFail {
     println!("cargo:rerun-if-changed=build/src/generators/impls/champions");

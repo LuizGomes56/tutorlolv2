@@ -19,12 +19,12 @@ use std::{
 use tutorlolv2_types::{AbilityId, CtxVar, DevMergeData, MergeData, TypeMetadata};
 use tutorlolv2_wiki::champions::WikiChampion;
 
-struct ChampionExt {
-    metadata: Vec<TypeMetadata<AbilityId>>,
-    closures: Vec<String>,
-    identifiers: Vec<BTreeSet<CtxVar>>,
-    functions: Vec<String>,
-    merge_data: Vec<MergeData>,
+pub struct ChampionExt {
+    pub metadata: Vec<TypeMetadata<AbilityId>>,
+    pub closures: Vec<String>,
+    pub identifiers: Vec<BTreeSet<CtxVar>>,
+    pub functions: Vec<String>,
+    pub merge_data: Vec<MergeData>,
 }
 
 impl Build for Champion {
@@ -256,7 +256,7 @@ impl Build for Champion {
 }
 
 impl Champion {
-    fn finish(&mut self) -> MayFail<ChampionExt> {
+    pub fn finish(&mut self) -> MayFail<ChampionExt> {
         let metadata = self
             .abilities
             .iter()

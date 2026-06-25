@@ -1,23 +1,26 @@
-use crate::{
-    DynError, JsonRead, MayFail,
-    generators::{
-        GeneratorExt,
-        impls::champions::champion_gen_fn,
-        parser::{Parser, ZERO, likely_damages},
-        utils::{RegExtractor, Tag},
+use {
+    crate::{
+        DynError, JsonRead, MayFail,
+        generators::{
+            GeneratorExt,
+            impls::champions::champion_gen_fn,
+            parser::{Parser, ZERO, likely_damages},
+            utils::{RegExtractor, Tag},
+        },
     },
-};
-use serde::{Deserialize, Serialize};
-use std::{
-    collections::{BTreeMap, BTreeSet},
-    fmt::Write,
-};
-use tutorlolv2_types::{
-    AbilityId, AbilityName, Attrs, ComboElement, DamageType, DevMergeData, Key,
-};
-use tutorlolv2_wiki::{
-    champions::{WikiChampion, abilities::WikiAbility},
-    parser::{Effect, Scaling},
+    serde::{Deserialize, Serialize},
+    serde_with::{Seq, serde_as},
+    std::{
+        collections::{BTreeMap, BTreeSet},
+        fmt::Write,
+    },
+    tutorlolv2_types::{
+        AbilityId, AbilityName, Attrs, ComboElement, DamageType, DevMergeData, Key,
+    },
+    tutorlolv2_wiki::{
+        champions::{WikiChampion, abilities::WikiAbility},
+        parser::{Effect, Scaling},
+    },
 };
 
 pub struct ChampionParser {
@@ -33,12 +36,14 @@ pub struct Ability {
     pub damage: String,
 }
 
+#[serde_as]
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct Champion {
     pub champion_id: String,
     pub data: WikiChampion,
     pub merge: BTreeSet<DevMergeData>,
     pub combo: Vec<Vec<ComboElement>>,
+    #[serde_as(as = "Seq<(_, _)>")]
     pub abilities: BTreeMap<AbilityId, Ability>,
 }
 
