@@ -153,11 +153,7 @@ impl<'a> SaveTo<'a> {
             SaveTo::GeneratorDir(tag) => format!("build/src/generators/impls/{}", tag.plural()),
             SaveTo::GeneratorRaw(tag, s) => {
                 let path = Self::GeneratorDir(*tag).path();
-                let file = match tag {
-                    Tag::Items | Tag::Runes => s.to_snake_case(),
-                    Tag::Champions => s.to_string(),
-                }
-                .to_lowercase();
+                let file = s.to_snake_case();
                 format!("{path}/{file}.rs")
             }
             SaveTo::RiotItems => "cache/riot/items.json".into(),
