@@ -7,6 +7,7 @@ use crate::{
     scripts::batch::FmtArgs,
 };
 use heck::{ToPascalCase, ToSnakeCase};
+use rand::{RngExt, SeedableRng, rngs::SmallRng};
 use regex::{Captures, Regex};
 use serde_json::{Value, json};
 use std::{
@@ -274,6 +275,8 @@ pub trait ItemOrRuneExt: Index<AttackType, Output = DamageRange> + ItemOrRune + 
             &ranged.max_dmg,
         ];
 
+        let all_vars = self.identifiers();
+
         let mut aliases = [None, None, None, None];
 
         for i in 0..4 {
@@ -286,12 +289,19 @@ pub trait ItemOrRuneExt: Index<AttackType, Output = DamageRange> + ItemOrRune + 
                     continue;
                 }
 
-                let ratio = simplify(&format!("({}) / ({})", raw[j], raw[i]));
+                let ratio_sym = simplify(&format!("({}) / ({})", raw[i], raw[j]));
+                let ratio = if !ratio_sym.contains("ctx") {
+                    ratio_sym
+                } else {
+                    let Some(k) = probe_ratio(raw[j], raw[i], &all_vars) else {
+                        continue;
+                    };
 
-                if !ratio.contains("ctx") {
-                    aliases[i] = Some((j, ratio));
-                    break;
-                }
+                    k
+                };
+
+                aliases[i] = Some((j, ratio));
+                break;
             }
         }
 
@@ -593,4 +603,64 @@ pub fn variable(tag: Tag, var: &str, vtype: &str) -> String {
         "pub static {var}: [{vtype}; {enum_name}::VARIANTS] = [",
         var = var.to_uppercase()
     )
+}
+
+pub fn probe_ratio(min_expr: &str, max_expr: &str, all_vars: &[CtxVar]) -> Option<String> {
+    const N_PROBES: usize = 20;
+    const MIN_VALID: usize = 8;
+    const TOL: f64 = 1e-9;
+
+    let mut rng = SmallRng::seed_from_u64(0x4c4f_4c42_5544_494c);
+    let mut k_candidate: Option<f64> = None;
+    let mut valid = 0usize;
+
+    for _ in 0..N_PROBES {
+        let mut min_s = min_expr.to_owned();
+        let mut max_s = max_expr.to_owned();
+
+        for var in all_vars {
+            let v = rng.random_range(2..=998).to_string();
+            min_s = min_s.replace(var.as_var(), &v);
+            max_s = max_s.replace(var.as_var(), &v);
+        }
+
+        let Ok(min_v) = simplify(&min_s).trim().parse::<f64>() else {
+            continue;
+        };
+
+        let Ok(max_v) = simplify(&max_s).trim().parse::<f64>() else {
+            continue;
+        };
+
+        if min_v.abs() < 1e-10 {
+            continue;
+        }
+
+        let ratio = max_v / min_v;
+        valid += 1;
+
+        match k_candidate {
+            None => k_candidate = Some(ratio),
+            Some(k) => {
+                if (ratio - k).abs() / (1.0 + k.abs()) > TOL {
+                    return None;
+                }
+            }
+        }
+    }
+
+    (valid >= MIN_VALID)
+        .then(|| k_candidate)
+        .flatten()
+        .map(|k| {
+            let r = k.round();
+            if (k - r).abs() < 1e-9 {
+                return format!("{}", r as i64);
+            }
+
+            format!("{k:.10}")
+                .trim_end_matches('0')
+                .trim_end_matches('.')
+                .to_owned()
+        })
 }

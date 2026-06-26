@@ -1,23 +1,25 @@
-use crate::{
-    Build, MayFail, OUT_DIR,
-    generators::{
-        parser::champions::{Ability, Champion},
-        utils::Tag,
+use {
+    crate::{
+        Build, MayFail, OUT_DIR,
+        generators::{
+            parser::champions::{Ability, Champion},
+            utils::Tag,
+        },
+        scripts::{
+            batch::FmtArgs,
+            utils::{cast_f32, ctx_param, fit_str, get_identifiers, probe_ratio, simplify},
+        },
     },
-    scripts::{
-        batch::FmtArgs,
-        utils::{cast_f32, ctx_param, fit_str, get_identifiers, simplify},
+    heck::{ToShoutySnakeCase, ToSnakeCase},
+    serde_json::json,
+    std::{
+        collections::{BTreeMap, BTreeSet},
+        fmt::Write,
+        write,
     },
+    tutorlolv2_types::{AbilityId, CtxVar, DevMergeData, MergeData, TypeMetadata},
+    tutorlolv2_wiki::champions::WikiChampion,
 };
-use heck::{ToShoutySnakeCase, ToSnakeCase};
-use serde_json::json;
-use std::{
-    collections::{BTreeMap, BTreeSet},
-    fmt::Write,
-    write,
-};
-use tutorlolv2_types::{AbilityId, CtxVar, DevMergeData, MergeData, TypeMetadata};
-use tutorlolv2_wiki::champions::WikiChampion;
 
 pub struct ChampionExt {
     pub metadata: Vec<TypeMetadata<AbilityId>>,
@@ -58,24 +60,35 @@ impl Build for Champion {
         let mut docs = String::new();
         let mut damage_override = BTreeMap::<AbilityId, String>::new();
 
-        let upper_id = champion_id.to_shouty_snake_case();
-
         for merge in merge {
             let min = self.get(merge.min)?;
             let max = self.get(merge.max)?;
+            let min_i = self.indexof(merge.min)?;
+            let max_i = self.indexof(merge.max)?;
 
-            let ratio = simplify(&format!(
+            let ratio_sym = simplify(&format!(
                 "({}) / ({})",
                 simplify(&max.damage),
                 simplify(&min.damage),
             ));
 
-            if ratio.contains("ctx") {
-                continue;
-            }
+            let ratio = if !ratio_sym.contains("ctx") {
+                ratio_sym
+            } else {
+                let all_vars = &identifiers[min_i]
+                    .iter()
+                    .chain(&identifiers[max_i])
+                    .copied()
+                    .collect::<Vec<_>>();
 
-            let min_fn = &functions[self.indexof(merge.min)?];
+                let Some(k) = probe_ratio(&min.damage, &max.damage, &all_vars) else {
+                    continue;
+                };
 
+                k
+            };
+
+            let min_fn = &functions[min_i];
             damage_override.insert(merge.max, format!("{ratio} * {min_fn}(ctx)"));
         }
 
@@ -95,6 +108,8 @@ impl Build for Champion {
                 format!("{discriminant}: {dmg},")
             })
             .collect::<String>();
+
+        let upper_id = champion_id.to_shouty_snake_case();
 
         write!(
             docs,
@@ -162,7 +177,7 @@ impl Build for Champion {
             } = ability;
 
             let formula = simplify(&body);
-            let rust_formula = cast_f32(&formula);
+            let mut rust_formula = formula.clone();
             let mut variable = function.to_uppercase();
 
             let damage_attr = match merge
@@ -173,6 +188,12 @@ impl Build for Champion {
                     let min_damage = resolve_damage(&merge.min, &self.damage_of(merge.min)?);
                     let max_damage = resolve_damage(&merge.max, &self.damage_of(merge.max)?);
 
+                    if merge.min == *ability_id {
+                        rust_formula = min_damage.clone();
+                    } else {
+                        rust_formula = max_damage.clone();
+                    }
+
                     let alias = merge.alias.discriminant();
                     variable = format!("{champion_id}_{alias}").to_uppercase();
 
@@ -182,6 +203,8 @@ impl Build for Champion {
                     format!("damage: {}", resolve_damage(ability_id, damage))
                 }
             };
+
+            let rust_formula = cast_f32(&rust_formula);
 
             write!(
                 rust,
