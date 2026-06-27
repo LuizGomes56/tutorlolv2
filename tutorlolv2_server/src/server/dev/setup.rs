@@ -35,3 +35,8 @@ pub async fn setup_docs() -> impl Responder {
     tutorlolv2_html::run();
     HttpResponse::Ok().body("Html docs setup finished")
 }
+
+#[get("/riot")]
+pub async fn update_riot() -> impl Responder {
+    crate::dev_response!(HTTP_CLIENT.update_riot_cache().await)
+}

@@ -1,6 +1,5 @@
 pub mod images;
 pub mod setup;
-pub mod update;
 
 #[macro_export]
 macro_rules! dev_response {

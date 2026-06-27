@@ -1,12 +1,21 @@
-pub mod init;
-pub mod setup;
+use {
+    crate::client::HttpClient,
+    serde::{Serialize, de::DeserializeOwned},
+    std::{collections::BTreeMap, fs::DirEntry, path::Path, sync::LazyLock},
+};
 
-pub use init::*;
-pub use serde::{Serialize, de::DeserializeOwned};
-pub use setup::*;
+pub mod client;
+pub mod riot;
 
-use rayon::iter::{FromParallelIterator, IntoParallelIterator, ParallelBridge, ParallelIterator};
-use std::{collections::BTreeMap, fs::DirEntry, path::Path};
+pub const DDRAGON_ENDPOINT: &str = "https://ddragon.leagueoflegends.com";
+pub const CANISBACK_ENDPOINT: &str = "https://ddragon.canisback.com/img";
+pub const LOL_LANGUAGE: &str = "en_US";
+pub static LOL_VERSION: &str = "16.13.1";
+
+/// Wrapper around [`reqwest::Client`] which implements methods
+/// to download and save files to a local cache and avoids requests
+/// to the same URLs
+pub static HTTP_CLIENT: LazyLock<HttpClient> = LazyLock::new(HttpClient::new);
 
 pub type DynError = Box<dyn core::error::Error + Send + Sync + 'static>;
 
@@ -77,46 +86,6 @@ pub trait FileWrite: AsRef<[u8]> {
 }
 
 impl<T> FileWrite for T where T: AsRef<[u8]> {}
-
-#[track_caller]
-pub fn parallel_read<P, F, T, R, C>(path: P, f: F) -> MayFail<C>
-where
-    P: AsRef<Path>,
-    T: DeserializeOwned,
-    F: FnOnce(&str, T) -> MayFail<R> + Send + Sync + Clone,
-    R: Send,
-    C: FromParallelIterator<R>,
-{
-    let result = read_dir(path)?
-        .par_bridge()
-        .into_par_iter()
-        .filter_map(|entry| {
-            let Ok(file_name) = entry.file_name().into_string() else {
-                panic!("[error] Failed to get file name for entry: {entry:?}");
-            };
-
-            println!("[parallel] Processing {file_name:?}");
-
-            let Ok(bytes) = read(entry.path()) else {
-                panic!("[error] Failed to read file bytes for entry: {entry:?}");
-            };
-
-            let Ok(data) = serde_json::from_slice::<T>(&bytes) else {
-                panic!("[error] Failed to deserialize file bytes for entry: {entry:?}");
-            };
-
-            match (f.clone())(file_name.trim_end_matches(".json"), data) {
-                Ok(data) => Some(data),
-                Err(e) => {
-                    println!("[error] Can't process {file_name:?}: {e:?}");
-                    None
-                }
-            }
-        })
-        .collect::<C>();
-
-    Ok(result)
-}
 
 pub fn write(path: impl AsRef<Path>, data: impl AsRef<[u8]>) -> MayFail {
     let path = path.as_ref();

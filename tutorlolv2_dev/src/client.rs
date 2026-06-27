@@ -1,24 +1,22 @@
-use crate::{
-    EnvConfig, FileWrite, JsonRead, JsonWrite, MayFail,
-    init::ENV_CONFIG,
-    riot::RiotCdn,
-    setup::riot::{RiotCdnChampion, RiotCdnRune},
+use {
+    crate::{
+        CANISBACK_ENDPOINT, DDRAGON_ENDPOINT, FileWrite, JsonRead, JsonWrite, LOL_LANGUAGE,
+        LOL_VERSION, MayFail,
+        riot::{RiotCdn, RiotCdnChampion, RiotCdnRune},
+    },
+    heck::ToShoutySnakeCase,
+    reqwest::Client,
+    serde::{Deserialize, de::DeserializeOwned},
+    serde_json::Value,
+    std::{
+        collections::{BTreeMap, BTreeSet, HashMap},
+        fmt::Display,
+        path::Path,
+        sync::Arc,
+    },
+    tokio::{sync::Semaphore, task::JoinHandle},
+    tutorlolv2_types::{Key, Position},
 };
-use heck::ToShoutySnakeCase;
-use rand::RngExt;
-use reqwest::Client;
-use serde::{Deserialize, de::DeserializeOwned};
-use serde_json::Value;
-use std::{
-    collections::{BTreeMap, BTreeSet, HashMap},
-    fmt::Display,
-    io::{BufRead, BufReader, Write},
-    path::Path,
-    sync::Arc,
-    time::Duration,
-};
-use tokio::{sync::Semaphore, task::JoinHandle};
-use tutorlolv2_types::{Key, Position};
 
 #[derive(Copy, Clone)]
 pub enum SaveTo<'a> {
@@ -142,30 +140,22 @@ pub enum DDragon<'a> {
 
 impl<'a> DDragon<'a> {
     pub fn url(&self) -> String {
-        let EnvConfig {
-            dd_dragon_endpoint,
-            lol_version,
-            riot_image_endpoint,
-            lol_language,
-            ..
-        } = &*ENV_CONFIG;
-
-        let path_a = format_args!("{dd_dragon_endpoint}/cdn");
-        let path_b = format_args!("{path_a}/{lol_version}/img");
+        let path_a = format_args!("{DDRAGON_ENDPOINT}/cdn");
+        let path_b = format_args!("{path_a}/{LOL_VERSION}/img");
 
         match self {
             DDragon::Champion(s) => format!("{path_b}/champion/{s}"),
             DDragon::Passive(s) => format!("{path_b}/passive/{s}"),
             DDragon::Spell(s) => format!("{path_b}/spell/{s}"),
             DDragon::Item(s) => format!("{path_b}/item/{s}.png"),
-            DDragon::Rune(s) => format!("{riot_image_endpoint}/{s}"),
+            DDragon::Rune(s) => format!("{CANISBACK_ENDPOINT}/{s}"),
             DDragon::Centered(s, n) => format!("{path_a}/img/champion/centered/{s}_{n}.jpg"),
             DDragon::Splash(s, n) => format!("{path_a}/img/champion/splash/{s}_{n}.jpg"),
-            DDragon::Endpoint(s) => format!("{path_a}/{lol_version}/data/{lol_language}/{s}.json"),
-            DDragon::Version => format!("{dd_dragon_endpoint}/api/versions.json"),
+            DDragon::Endpoint(s) => format!("{path_a}/{LOL_VERSION}/data/{LOL_LANGUAGE}/{s}.json"),
+            DDragon::Version => format!("{DDRAGON_ENDPOINT}/api/versions.json"),
             DDragon::Riot(endpoint, language) => {
-                let language = language.unwrap_or(&lol_language);
-                let path = format_args!("{dd_dragon_endpoint}/cdn/{lol_version}",);
+                let language = language.unwrap_or(&LOL_LANGUAGE);
+                let path = format_args!("{DDRAGON_ENDPOINT}/cdn/{LOL_VERSION}");
                 format!("{path}/data/{language}/{endpoint}.json")
             }
         }
@@ -184,22 +174,24 @@ impl From<Client> for HttpClient {
     }
 }
 
-impl std::ops::Deref for HttpClient {
+impl core::ops::Deref for HttpClient {
     type Target = Client;
     fn deref(&self) -> &Self::Target {
         &self.0
     }
 }
 
-pub fn randomize_sleep() {
-    let time = rand::rng().random_range(2000..10000);
-    std::thread::sleep(Duration::from_millis(time))
-}
-
 impl HttpClient {
     /// Creates a new instance of [`HttpClient`]
     pub fn new() -> Self {
         Self(Client::new())
+    }
+
+    pub async fn download_images(&self) -> MayFail {
+        self.download_arts_img().await?;
+        self.download_items_img().await?;
+        self.download_runes_img().await?;
+        self.download_general_img().await
     }
 
     /// Downloads some url and saves to a file if it doesn't already exist. If it does,
@@ -260,7 +252,7 @@ impl HttpClient {
                     let path = entry.path();
                     let name = path.file_stem().ok_or("Can't recover system file name")?;
                     let enumv = name.to_string_lossy();
-                    let bytes = tokio::fs::read(&path).await?;
+                    let bytes = crate::read(&path)?;
                     let value = serde_json::from_slice::<T>(&bytes)?;
                     f(client, enumv.into(), value).await
                 }()
@@ -422,29 +414,6 @@ impl HttpClient {
             .to_owned())
     }
 
-    /// Fetches League of Legends current version and updates it directly
-    /// in the `.env` file if it has changed, renaming the cache folder and
-    /// setting up a new empty one, which forces the application to re-download
-    /// every champion, item, and rune file again. Does nothing if the version
-    /// is equal
-    pub async unsafe fn update_env_version(&self) -> MayFail {
-        let version = self.fetch_version().await?;
-
-        if version == ENV_CONFIG.lol_version {
-            return Ok(());
-        }
-
-        std::fs::rename(
-            "cache",
-            format!(
-                "cache_{old_version}",
-                old_version = ENV_CONFIG.lol_version.replace(".", "_")
-            ),
-        )?;
-
-        Ok(unsafe { set_env_var("LOL_VERSION", &version)? })
-    }
-
     /// Updates files in `cache/riot` with the corresponding ones in the patch determined by `LOL_VERSION`
     pub async fn update_riot_cache(&self) -> MayFail {
         self.download(
@@ -577,36 +546,9 @@ impl HttpClient {
     /// the appropriate cache location
     pub async fn update_language_cache(&self) -> MayFail {
         self.download(
-            format!("{}/cdn/languages.json", ENV_CONFIG.dd_dragon_endpoint),
+            format!("{DDRAGON_ENDPOINT}/cdn/languages.json"),
             SaveTo::InternalLanguages.path(),
         )
         .await
     }
-}
-
-/// Updates the `.env` file, setting a new key and value pair. If it already
-/// exists, the value gets replaced
-unsafe fn set_env_var(key: &str, value: &str) -> std::io::Result<()> {
-    let path = ".env";
-    let file = std::fs::File::open(path)?;
-    let reader = BufReader::new(file);
-    let mut lines = Vec::new();
-    let mut found = false;
-    for line in reader.lines() {
-        let line = line?;
-        if line.starts_with(&format!("{key}=")) {
-            lines.push(format!("{key}={value}"));
-            found = true;
-        } else {
-            lines.push(line);
-        }
-    }
-    if !found {
-        lines.push(format!("{key}={value}"));
-    }
-    let mut out = std::fs::File::create(path)?;
-    for line in lines {
-        writeln!(out, "{line}")?;
-    }
-    Ok(())
 }

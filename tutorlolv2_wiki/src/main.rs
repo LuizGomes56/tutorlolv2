@@ -1,5 +1,7 @@
+use tutorlolv2_wiki::client::MayFail;
+
 #[tokio::main]
-async fn main() {
-    std::env::set_current_dir("../").unwrap();
-    tutorlolv2_wiki::run().await.unwrap();
+async fn main() -> MayFail {
+    std::env::set_current_dir("../")?;
+    tutorlolv2_wiki::run().await
 }
