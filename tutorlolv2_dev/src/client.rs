@@ -4,7 +4,6 @@ use {
         LOL_VERSION, MayFail,
         riot::{RiotCdn, RiotCdnChampion, RiotCdnRune},
     },
-    heck::ToShoutySnakeCase,
     reqwest::Client,
     serde::{Deserialize, de::DeserializeOwned},
     serde_json::Value,
@@ -15,13 +14,11 @@ use {
         sync::Arc,
     },
     tokio::{sync::Semaphore, task::JoinHandle},
-    tutorlolv2_types::{Key, Position},
+    tutorlolv2_types::Key,
 };
 
 #[derive(Copy, Clone)]
 pub enum SaveTo<'a> {
-    GeneratorDir(Tag),
-    GeneratorRaw(Tag, &'a str),
     RiotChampions,
     RiotItems,
     RiotItemsDir,
@@ -30,25 +27,14 @@ pub enum SaveTo<'a> {
     RiotLangDir(&'a str),
     RiotRawChampions(&'a str),
     RiotCache(Tag, &'a (dyn Display + Send + Sync)),
-    InternalRaw(Tag, &'a str),
-    InternalDir(Tag),
-    InternalScraperData,
-    InternalChampionLanguages,
-    InternalDamagingItems,
-    InternalLanguages,
-    InternalMaps,
-    InternalRuneNames,
-    InternalRunes,
+    RiotChampionLanguages,
+    RiotLanguages,
     ImgChampion(&'a str),
     ImgAbility(&'a str, Key),
     ImgItem(&'a str),
     ImgCentered(&'a str, usize),
     ImgSplash(&'a str, usize),
     ImgRunes(usize),
-    ScraperBuilds(Position, &'a str),
-    ScraperCombos(&'a str),
-    InternalScraperBuilds(Position, &'a str),
-    InternalScraperCombos(&'a str),
 }
 
 #[derive(Copy, Clone, Debug, PartialEq, Eq)]
@@ -77,16 +63,6 @@ impl<'a> SaveTo<'a> {
         let img = "raw_img";
 
         match self {
-            SaveTo::GeneratorDir(tag) => format!("tutorlolv2_dev/src/generators/gen_{tag}"),
-            SaveTo::GeneratorRaw(tag, s) => {
-                let path = Self::GeneratorDir(*tag).path();
-                let file = match tag {
-                    Tag::Items | Tag::Runes => s.to_shouty_snake_case(),
-                    Tag::Champions => s.to_string(),
-                }
-                .to_lowercase();
-                format!("{path}/{file}.rs")
-            }
             SaveTo::ImgChampion(s) => format!("{img}/champions/{s}.png"),
             SaveTo::ImgAbility(s, c) => format!("{img}/abilities/{s}{c:?}.png"),
             SaveTo::ImgItem(s) => format!("{img}/items/{s}.png"),
@@ -99,27 +75,10 @@ impl<'a> SaveTo<'a> {
             SaveTo::RiotItemsDir => "cache/riot/items".into(),
             SaveTo::RiotChampionsDir => "cache/riot/champions".into(),
             SaveTo::RiotRunes => "cache/riot/runes.json".into(),
+            SaveTo::RiotChampionLanguages => "cache/riot/champion_languages.json".into(),
+            SaveTo::RiotLanguages => "cache/riot/languages.json".into(),
             SaveTo::RiotLangDir(s) => format!("cache/riot/champions_lang/{s}.json"),
             SaveTo::RiotRawChampions(s) => format!("cache/riot/raw_champions/{s}.json"),
-            SaveTo::ScraperBuilds(position, s) => {
-                format!("cache/scraper/builds/{position:?}/{s}.html")
-            }
-            SaveTo::ScraperCombos(s) => format!("cache/scraper/combos/{s}.html"),
-            SaveTo::InternalRaw(tag, s) => format!("internal/{tag}/{s}.json"),
-            SaveTo::InternalDir(tag) => format!("internal/{tag}"),
-            SaveTo::InternalScraperBuilds(position, s) => {
-                format!("internal/scraper/builds/{position:?}/{s}.json")
-            }
-            SaveTo::InternalScraperCombos(champion_id) => {
-                format!("internal/scraper/combos/{champion_id}.json")
-            }
-            SaveTo::InternalScraperData => "internal/scraper/data.json".into(),
-            SaveTo::InternalChampionLanguages => "internal/champion_languages.json".into(),
-            SaveTo::InternalDamagingItems => "internal/damaging_items.json".into(),
-            SaveTo::InternalLanguages => "internal/languages.json".into(),
-            SaveTo::InternalMaps => "internal/maps.json".into(),
-            SaveTo::InternalRuneNames => "internal/rune_names.json".into(),
-            SaveTo::InternalRunes => "internal/runes.json".into(),
         }
     }
 }
@@ -133,7 +92,6 @@ pub enum DDragon<'a> {
     Rune(&'a str),
     Centered(&'a str, usize),
     Splash(&'a str, usize),
-    Endpoint(&'a str),
     Version,
     Riot(&'a str, Option<&'a str>),
 }
@@ -151,7 +109,6 @@ impl<'a> DDragon<'a> {
             DDragon::Rune(s) => format!("{CANISBACK_ENDPOINT}/{s}"),
             DDragon::Centered(s, n) => format!("{path_a}/img/champion/centered/{s}_{n}.jpg"),
             DDragon::Splash(s, n) => format!("{path_a}/img/champion/splash/{s}_{n}.jpg"),
-            DDragon::Endpoint(s) => format!("{path_a}/{LOL_VERSION}/data/{LOL_LANGUAGE}/{s}.json"),
             DDragon::Version => format!("{DDRAGON_ENDPOINT}/api/versions.json"),
             DDragon::Riot(endpoint, language) => {
                 let language = language.unwrap_or(&LOL_LANGUAGE);
@@ -484,7 +441,7 @@ impl HttpClient {
         .await?;
 
         self.update_language_cache().await?;
-        let languages = Vec::<String>::from_file(SaveTo::InternalLanguages.path())?;
+        let languages = Vec::<String>::from_file(SaveTo::RiotLanguages.path())?;
 
         let mut languages_data = BTreeMap::<String, BTreeSet<String>>::from_iter(
             champion_ids
@@ -539,7 +496,7 @@ impl HttpClient {
             }
         }
 
-        languages_data.into_file(SaveTo::InternalChampionLanguages.path())
+        languages_data.into_file(SaveTo::RiotChampionLanguages.path())
     }
 
     /// Fetches the available languages in league of legends and saves them to
@@ -547,7 +504,7 @@ impl HttpClient {
     pub async fn update_language_cache(&self) -> MayFail {
         self.download(
             format!("{DDRAGON_ENDPOINT}/cdn/languages.json"),
-            SaveTo::InternalLanguages.path(),
+            SaveTo::RiotLanguages.path(),
         )
         .await
     }

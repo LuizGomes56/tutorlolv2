@@ -82,7 +82,7 @@ pub fn finish_items_or_runes(target: &str, variable: &mut String, value: &mut [F
 pub fn champion_aliases() -> MayFail<Option<BTreeMap<String, Vec<String>>>> {
     let map = CPARSER.map();
     let languages =
-        BTreeMap::<String, BTreeSet<String>>::from_file("internal/champion_languages.json")?;
+        BTreeMap::<String, BTreeSet<String>>::from_file("cache/riot/champion_languages.json")?;
 
     let alias = map
         .keys()
