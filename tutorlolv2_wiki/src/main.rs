@@ -21,6 +21,8 @@ pub enum Fetch {
 pub enum AppArgs {
     #[command(alias = "u")]
     Update,
+    #[command(alias = "a")]
+    Avif,
     #[command(alias = "f")]
     Fetch { function: Fetch },
     #[command(alias = "w")]
@@ -81,8 +83,15 @@ async fn main() -> MayFail {
             HTTP_CLIENT.download_runes_img().await?;
             HTTP_CLIENT.download_general_img().await?;
 
+            #[cfg(feature = "avif")]
+            tutorlolv2_wiki::avif::img_convert_avif();
+
             // let _ = HTTP_CLIENT.call_scraper().await;
             // let _ = HTTP_CLIENT.combo_scraper().await;
+        }
+        AppArgs::Avif => {
+            #[cfg(feature = "avif")]
+            tutorlolv2_wiki::avif::img_convert_avif();
         }
         AppArgs::Fetch { function } => match function {
             Fetch::Images => {

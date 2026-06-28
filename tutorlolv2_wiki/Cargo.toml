@@ -6,6 +6,7 @@ edition = "2024"
 [dependencies]
 clap = { version = "4.6.0", features = ["derive"] }
 heck = "0.5.0"
+image = { version = "0.25.8", optional = true }
 mlua = {
   version = "0.11.6",
   features = [
@@ -15,6 +16,7 @@ mlua = {
     "vendored",
   ]
 }
+ravif = { version = "0.12.0", default-features = false, optional = true }
 rayon = "1.12.0"
 regex = "1.12.3"
 reqwest = {
@@ -30,3 +32,7 @@ tokio = {
   features = ["macros", "rt-multi-thread"]
 }
 tutorlolv2_types = { path = "../tutorlolv2_types", features = ["dev"] }
+
+[features]
+default = []
+avif = ["dep:image", "dep:ravif"]

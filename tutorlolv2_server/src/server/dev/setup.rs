@@ -1,5 +1,3 @@
-#[cfg(feature = "avif")]
-use crate::server::dev::images::avif::{IMG_FOLDERS, img_convert_avif};
 use actix_web::{HttpResponse, Responder, get};
 use tokio::spawn;
 use tutorlolv2_wiki::HTTP_CLIENT;
@@ -20,9 +18,6 @@ pub async fn setup_project() -> impl Responder {
         ] {
             let _ = future.await;
         }
-
-        #[cfg(feature = "avif")]
-        let _ = spawn(img_convert_avif(IMG_FOLDERS));
     })
     .await
     .expect("Could not finish setup tasks");

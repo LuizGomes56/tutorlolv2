@@ -5,6 +5,8 @@ use {
     std::{collections::BTreeMap, fs::DirEntry, path::Path, sync::LazyLock},
 };
 
+#[cfg(feature = "avif")]
+pub mod avif;
 pub mod champions;
 pub mod client;
 pub mod formula;
