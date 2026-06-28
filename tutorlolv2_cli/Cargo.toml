@@ -7,7 +7,6 @@ edition = "2024"
 clap = { version = "4.6.0", features = ["derive"] }
 dotenvy = "0.15.7"
 tokio = { version = "1.49.0", default-features = false, features = ["macros"] }
-tutorlolv2_dev = { path = "../tutorlolv2_dev" }
 tutorlolv2_html = { path = "../tutorlolv2_html" }
 tutorlolv2_wiki = { path = "../tutorlolv2_wiki" }
 # tutorlolv2_server = { path = "../tutorlolv2_server" }

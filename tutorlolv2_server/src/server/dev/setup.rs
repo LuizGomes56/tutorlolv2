@@ -2,7 +2,7 @@
 use crate::server::dev::images::avif::{IMG_FOLDERS, img_convert_avif};
 use actix_web::{HttpResponse, Responder, get};
 use tokio::spawn;
-use tutorlolv2_dev::HTTP_CLIENT;
+use tutorlolv2_wiki::HTTP_CLIENT;
 
 #[get("/project")]
 pub async fn setup_project() -> impl Responder {

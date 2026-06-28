@@ -1,5 +1,5 @@
 use actix_web::{HttpResponse, Responder, get};
-use tutorlolv2_dev::HTTP_CLIENT;
+use tutorlolv2_wiki::HTTP_CLIENT;
 
 macro_rules! download_image {
     (@inner $msg:expr) => {{

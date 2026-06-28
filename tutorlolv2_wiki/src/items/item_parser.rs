@@ -1,5 +1,5 @@
 use crate::{
-    client::MayFail,
+    MayFail,
     items::{ItemEffectRaw, ItemRaw, cache},
     parser::{Effect, EffectInner, Scaling, assign_ctx_var, vec_dedup},
 };

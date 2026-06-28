@@ -1,6 +1,5 @@
 use clap::{Parser, Subcommand, ValueEnum};
-use tutorlolv2_dev::{HTTP_CLIENT, LOL_VERSION, MayFail};
-use tutorlolv2_wiki::{champions, items, runes};
+use tutorlolv2_wiki::{HTTP_CLIENT, LOL_VERSION, MayFail, champions, items, runes};
 
 #[derive(Parser, Debug)]
 pub struct Cli {

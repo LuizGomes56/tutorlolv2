@@ -1,9 +1,9 @@
 use crate::{
+    HTTP_CLIENT, MayFail,
     champions::{
         cache,
         template::{ChampionTemplate, SkillSet},
     },
-    client::{MayFail, fetch},
     file_name, is_dir,
     parser::{
         Effect, EffectInner, SUFFIXES, get_cells, parse_base_damage, parse_description_effects,
@@ -53,11 +53,12 @@ pub async fn download() -> MayFail {
             for (i, skill) in skills.into_iter().enumerate() {
                 let url = format!("Template:Data_{name}/{skill}");
 
-                fetch(
-                    save_to.join(format!("{key}{i}")).with_extension("html"),
-                    &url,
-                )
-                .await?;
+                HTTP_CLIENT
+                    .fetch(
+                        save_to.join(format!("{key}{i}")).with_extension("html"),
+                        &url,
+                    )
+                    .await?;
             }
         }
     }

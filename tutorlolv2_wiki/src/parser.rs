@@ -1,4 +1,4 @@
-use crate::{client::MayFail, selector};
+use crate::{MayFail, selector};
 use regex::Regex;
 use scraper::Html;
 use serde::{Deserialize, Serialize};

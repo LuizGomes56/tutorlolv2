@@ -10,7 +10,6 @@ description = "League of Legends static library that evaluates damages of abilit
 members = [
   "tutorlolv2_avif",
   "tutorlolv2_cli",
-  "tutorlolv2_dev",
   "tutorlolv2_fmt",
   "tutorlolv2_html",
   "tutorlolv2_server",

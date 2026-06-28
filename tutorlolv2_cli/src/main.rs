@@ -1,4 +1,4 @@
-use tutorlolv2_dev::MayFail;
+use tutorlolv2_wiki::MayFail;
 
 #[tokio::main]
 async fn main() -> MayFail {

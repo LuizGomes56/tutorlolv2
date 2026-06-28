@@ -1,6 +1,6 @@
 use crate::{
+    HTTP_CLIENT, MayFail,
     champions::{cache, full::ChampionRaw},
-    client::{MayFail, fetch},
     is_dir,
     parser::{clean_text, get_cells, vec_dedup},
 };
@@ -26,11 +26,12 @@ pub async fn download() -> MayFail {
         let path = cache().join(&apiname);
         std::fs::create_dir_all(&path)?;
 
-        fetch(
-            path.join("template").with_extension("html"),
-            format!("Template:Data_{name}"),
-        )
-        .await?;
+        HTTP_CLIENT
+            .fetch(
+                path.join("template").with_extension("html"),
+                format!("Template:Data_{name}"),
+            )
+            .await?;
     }
 
     Ok(())
