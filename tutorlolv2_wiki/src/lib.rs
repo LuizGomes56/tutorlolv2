@@ -17,36 +17,19 @@ pub mod runes;
 pub const DDRAGON_ENDPOINT: &str = "https://ddragon.leagueoflegends.com";
 pub const CANISBACK_ENDPOINT: &str = "https://ddragon.canisback.com/img";
 pub const LOL_LANGUAGE: &str = "en_US";
-pub static LOL_VERSION: &str = "16.13.1";
+pub const LOL_VERSION: &str = "16.13.1";
 
-/// Wrapper around [`reqwest::Client`] which implements methods
-/// to download and save files to a local cache and avoids requests
-/// to the same URLs
 pub static HTTP_CLIENT: LazyLock<HttpClient> = LazyLock::new(HttpClient::new);
 
 pub type DynError = Box<dyn core::error::Error + Send + Sync + 'static>;
-
-/// Alias type for [`Result`] that accepts anything that implements the trait
-/// [`std::error::Error`]. Since the application doesn't need detailed errors,
-/// this can be used to propagate almost all existing errors
 pub type MayFail<T = (), E = DynError> = Result<T, E>;
 
-/// Custom trait that allows to deserialize a JSON instance
-/// by providing only the file path and the desired type
 pub trait JsonRead: DeserializeOwned {
-    /// Receives a file path and deserializes the target JSON file into the
-    /// struct that called this function as method.
     fn from_file(path: impl AsRef<Path>) -> MayFail<Self> {
         let data = read(path)?;
         Ok(serde_json::from_slice(&data)?)
     }
 
-    /// Stores the deserialized structs that were succesfully extracted from
-    /// `.json` files inside the provided path, which should be a directory.
-    /// Returns a [`HashMap`] whose keys are the file name, without the `.json`
-    /// extension, and whose values are the deserialized structs. Note that all
-    /// files inside the directory should have the same JSON structure, and if the
-    /// deserialization fails for some file, it is skipped
     fn from_dir(path: impl AsRef<Path>) -> MayFail<BTreeMap<String, Self>> {
         Ok(read_dir(&path)?
             .into_iter()
