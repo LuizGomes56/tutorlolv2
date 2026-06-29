@@ -45,7 +45,6 @@ crate::decl_items!(
     LiandrysTorment,
     LichBane,
     LightningRod,
-    LordDominiksRegards,
     LudensEcho,
     NashorsTooth,
     NightHarvester,

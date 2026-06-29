@@ -39,6 +39,20 @@ impl Piece {
 }
 
 impl Scaling {
+    pub fn set_ctx_var(&mut self, var: CtxVar) -> &mut Self {
+        match self {
+            Scaling::Simple { ctx_var, .. } => *ctx_var = var,
+            Scaling::Ranked { ctx_var, .. } => *ctx_var = var,
+            Scaling::RankedPer100 { ctx_var, .. } => *ctx_var = var,
+            Scaling::Per100 { ctx_var, .. } => *ctx_var = var,
+            Scaling::PercentAttr { ctx_var, .. } => *ctx_var = var,
+            Scaling::BasedOnLevel { ctx_var, .. } => *ctx_var = var,
+            Scaling::RangePercentAttr { ctx_var, .. } => *ctx_var = var,
+            _ => {}
+        }
+        self
+    }
+
     pub fn render(&self, axis: CtxVar) -> MayFail<String> {
         match self {
             Self::Simple { value, ctx_var } => Ok(Piece {

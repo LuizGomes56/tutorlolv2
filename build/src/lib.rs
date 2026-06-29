@@ -29,9 +29,8 @@ use std::{
 };
 use tutorlolv2_fmt::rust_html;
 
-mod generators;
-// mod model;
-mod scripts;
+pub mod generators;
+pub mod scripts;
 
 pub type DynError = Box<dyn core::error::Error + Send + Sync + 'static>;
 pub type MayFail<T = (), E = DynError> = Result<T, E>;
@@ -70,10 +69,10 @@ fn write_module<'a>(
     crate::write(OUT_DIR.join(dir).with_extension("rs"), result)
 }
 
-static CPARSER: LazyLock<ChampionParser> = LazyLock::new(|| ChampionParser::new().unwrap());
-static IPARSER: LazyLock<ItemParser> = LazyLock::new(|| ItemParser::new().unwrap());
-static RPARSER: LazyLock<RuneParser> = LazyLock::new(|| RuneParser::new().unwrap());
-static OUT_DIR: LazyLock<PathBuf> =
+pub static CPARSER: LazyLock<ChampionParser> = LazyLock::new(|| ChampionParser::new().unwrap());
+pub static IPARSER: LazyLock<ItemParser> = LazyLock::new(|| ItemParser::new().unwrap());
+pub static RPARSER: LazyLock<RuneParser> = LazyLock::new(|| RuneParser::new().unwrap());
+pub static OUT_DIR: LazyLock<PathBuf> =
     LazyLock::new(|| PathBuf::from(std::env::var("OUT_DIR").unwrap()));
 
 pub fn run() -> MayFail {

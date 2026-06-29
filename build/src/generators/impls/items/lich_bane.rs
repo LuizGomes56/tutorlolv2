@@ -1,8 +1,11 @@
 use super::*;
 
 impl Generator for LichBane {
-    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
-        self.min(Passive)?.end()
+        let dmg = self
+            .scaling(Passive, [0, 2])?
+            .replace(AttackDamage.as_var(), BaseAd.as_var());
+
+        self.damage_type(Magic).set_min(dmg).end()
     }
 }

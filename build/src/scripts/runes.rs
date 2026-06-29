@@ -48,9 +48,9 @@ impl Build for Rune {
             docs,
             "#[fmt({fmt})]
             static {upper_id}: X = X {{
-                name: {name:?}, {damage}
+                name: {name:?}{damage}
             }};",
-            damage = self.repr_damages(),
+            damage = format_args!(",{}", self.repr_damages()),
             fmt = self.formula_fmt()
         )?;
 

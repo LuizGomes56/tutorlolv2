@@ -1,7 +1,7 @@
 mod server;
 
 #[cfg(feature = "dev")]
-use crate::server::dev::{images::*, setup::*, update::*};
+use crate::server::dev::{images::*, setup::*};
 use actix_cors::Cors;
 use actix_web::{
     App, HttpResponse, HttpServer,
@@ -14,7 +14,6 @@ use actix_web::{
         scope,
     },
 };
-use dotenvy::dotenv;
 use server::{embed::*, games::*};
 // use sqlx::{Pool, Postgres, postgres::PgPoolOptions};
 
@@ -34,11 +33,11 @@ fn api_scope() -> impl HttpServiceFactory + 'static {
     #[cfg(feature = "dev")]
     let api_routes = api_routes.service(
         scope("")
-            .service(scope("/setup").service(setup_project).service(setup_docs))
             .service(
-                scope("/update")
-                    .service(update_riot)
-                    .service(update_version),
+                scope("/setup")
+                    .service(setup_project)
+                    .service(setup_docs)
+                    .service(update_riot),
             )
             .service(
                 scope("/images")
@@ -55,10 +54,13 @@ fn api_scope() -> impl HttpServiceFactory + 'static {
 }
 
 pub async fn run() -> std::io::Result<()> {
-    println!("tutorlolv2_server is starting on port 8082");
-    dotenv().ok();
+    dotenvy::dotenv().ok();
 
-    let host = std::env::var("HOST").expect("HOST is not set");
+    let port = std::env::var("PORT").unwrap_or_else(|_| "8082".to_string());
+
+    println!("Starting server on port {port}");
+
+    let host = format!("127.0.0.1:{port}");
     // let dsn = std::env::var("DATABASE_URL").expect("DATABASE_URL is not set");
     // let pool = PgPoolOptions::new()
     //     .max_connections(5)

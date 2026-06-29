@@ -1,29 +1,24 @@
-use crate::{
-    EnvConfig, FileWrite, JsonRead, JsonWrite, MayFail,
-    init::ENV_CONFIG,
-    riot::RiotCdn,
-    setup::riot::{RiotCdnChampion, RiotCdnRune},
+use {
+    crate::{
+        CANISBACK_ENDPOINT, DDRAGON_ENDPOINT, FileWrite, JsonRead, JsonWrite, LOL_LANGUAGE,
+        LOL_VERSION, MayFail,
+        riot::{RiotCdn, RiotCdnChampion, RiotCdnRune},
+    },
+    reqwest::Client,
+    serde::{Deserialize, de::DeserializeOwned},
+    serde_json::Value,
+    std::{
+        collections::{BTreeMap, BTreeSet, HashMap},
+        fmt::Display,
+        path::Path,
+        sync::Arc,
+    },
+    tokio::{sync::Semaphore, task::JoinHandle},
+    tutorlolv2_types::Key,
 };
-use heck::ToShoutySnakeCase;
-use rand::RngExt;
-use reqwest::Client;
-use serde::{Deserialize, de::DeserializeOwned};
-use serde_json::Value;
-use std::{
-    collections::{BTreeMap, BTreeSet, HashMap},
-    fmt::Display,
-    io::{BufRead, BufReader, Write},
-    path::Path,
-    sync::Arc,
-    time::Duration,
-};
-use tokio::{sync::Semaphore, task::JoinHandle};
-use tutorlolv2_types::{Key, Position};
 
 #[derive(Copy, Clone)]
 pub enum SaveTo<'a> {
-    GeneratorDir(Tag),
-    GeneratorRaw(Tag, &'a str),
     RiotChampions,
     RiotItems,
     RiotItemsDir,
@@ -32,25 +27,14 @@ pub enum SaveTo<'a> {
     RiotLangDir(&'a str),
     RiotRawChampions(&'a str),
     RiotCache(Tag, &'a (dyn Display + Send + Sync)),
-    InternalRaw(Tag, &'a str),
-    InternalDir(Tag),
-    InternalScraperData,
-    InternalChampionLanguages,
-    InternalDamagingItems,
-    InternalLanguages,
-    InternalMaps,
-    InternalRuneNames,
-    InternalRunes,
+    RiotChampionLanguages,
+    RiotLanguages,
     ImgChampion(&'a str),
     ImgAbility(&'a str, Key),
     ImgItem(&'a str),
     ImgCentered(&'a str, usize),
     ImgSplash(&'a str, usize),
     ImgRunes(usize),
-    ScraperBuilds(Position, &'a str),
-    ScraperCombos(&'a str),
-    InternalScraperBuilds(Position, &'a str),
-    InternalScraperCombos(&'a str),
 }
 
 #[derive(Copy, Clone, Debug, PartialEq, Eq)]
@@ -79,16 +63,6 @@ impl<'a> SaveTo<'a> {
         let img = "raw_img";
 
         match self {
-            SaveTo::GeneratorDir(tag) => format!("tutorlolv2_dev/src/generators/gen_{tag}"),
-            SaveTo::GeneratorRaw(tag, s) => {
-                let path = Self::GeneratorDir(*tag).path();
-                let file = match tag {
-                    Tag::Items | Tag::Runes => s.to_shouty_snake_case(),
-                    Tag::Champions => s.to_string(),
-                }
-                .to_lowercase();
-                format!("{path}/{file}.rs")
-            }
             SaveTo::ImgChampion(s) => format!("{img}/champions/{s}.png"),
             SaveTo::ImgAbility(s, c) => format!("{img}/abilities/{s}{c:?}.png"),
             SaveTo::ImgItem(s) => format!("{img}/items/{s}.png"),
@@ -101,27 +75,10 @@ impl<'a> SaveTo<'a> {
             SaveTo::RiotItemsDir => "cache/riot/items".into(),
             SaveTo::RiotChampionsDir => "cache/riot/champions".into(),
             SaveTo::RiotRunes => "cache/riot/runes.json".into(),
+            SaveTo::RiotChampionLanguages => "cache/riot/champion_languages.json".into(),
+            SaveTo::RiotLanguages => "cache/riot/languages.json".into(),
             SaveTo::RiotLangDir(s) => format!("cache/riot/champions_lang/{s}.json"),
             SaveTo::RiotRawChampions(s) => format!("cache/riot/raw_champions/{s}.json"),
-            SaveTo::ScraperBuilds(position, s) => {
-                format!("cache/scraper/builds/{position:?}/{s}.html")
-            }
-            SaveTo::ScraperCombos(s) => format!("cache/scraper/combos/{s}.html"),
-            SaveTo::InternalRaw(tag, s) => format!("internal/{tag}/{s}.json"),
-            SaveTo::InternalDir(tag) => format!("internal/{tag}"),
-            SaveTo::InternalScraperBuilds(position, s) => {
-                format!("internal/scraper/builds/{position:?}/{s}.json")
-            }
-            SaveTo::InternalScraperCombos(champion_id) => {
-                format!("internal/scraper/combos/{champion_id}.json")
-            }
-            SaveTo::InternalScraperData => "internal/scraper/data.json".into(),
-            SaveTo::InternalChampionLanguages => "internal/champion_languages.json".into(),
-            SaveTo::InternalDamagingItems => "internal/damaging_items.json".into(),
-            SaveTo::InternalLanguages => "internal/languages.json".into(),
-            SaveTo::InternalMaps => "internal/maps.json".into(),
-            SaveTo::InternalRuneNames => "internal/rune_names.json".into(),
-            SaveTo::InternalRunes => "internal/runes.json".into(),
         }
     }
 }
@@ -135,37 +92,27 @@ pub enum DDragon<'a> {
     Rune(&'a str),
     Centered(&'a str, usize),
     Splash(&'a str, usize),
-    Endpoint(&'a str),
     Version,
     Riot(&'a str, Option<&'a str>),
 }
 
 impl<'a> DDragon<'a> {
     pub fn url(&self) -> String {
-        let EnvConfig {
-            dd_dragon_endpoint,
-            lol_version,
-            riot_image_endpoint,
-            lol_language,
-            ..
-        } = &*ENV_CONFIG;
-
-        let path_a = format_args!("{dd_dragon_endpoint}/cdn");
-        let path_b = format_args!("{path_a}/{lol_version}/img");
+        let path_a = format_args!("{DDRAGON_ENDPOINT}/cdn");
+        let path_b = format_args!("{path_a}/{LOL_VERSION}/img");
 
         match self {
             DDragon::Champion(s) => format!("{path_b}/champion/{s}"),
             DDragon::Passive(s) => format!("{path_b}/passive/{s}"),
             DDragon::Spell(s) => format!("{path_b}/spell/{s}"),
             DDragon::Item(s) => format!("{path_b}/item/{s}.png"),
-            DDragon::Rune(s) => format!("{riot_image_endpoint}/{s}"),
+            DDragon::Rune(s) => format!("{CANISBACK_ENDPOINT}/{s}"),
             DDragon::Centered(s, n) => format!("{path_a}/img/champion/centered/{s}_{n}.jpg"),
             DDragon::Splash(s, n) => format!("{path_a}/img/champion/splash/{s}_{n}.jpg"),
-            DDragon::Endpoint(s) => format!("{path_a}/{lol_version}/data/{lol_language}/{s}.json"),
-            DDragon::Version => format!("{dd_dragon_endpoint}/api/versions.json"),
+            DDragon::Version => format!("{DDRAGON_ENDPOINT}/api/versions.json"),
             DDragon::Riot(endpoint, language) => {
-                let language = language.unwrap_or(&lol_language);
-                let path = format_args!("{dd_dragon_endpoint}/cdn/{lol_version}",);
+                let language = language.unwrap_or(&LOL_LANGUAGE);
+                let path = format_args!("{DDRAGON_ENDPOINT}/cdn/{LOL_VERSION}");
                 format!("{path}/data/{language}/{endpoint}.json")
             }
         }
@@ -184,22 +131,24 @@ impl From<Client> for HttpClient {
     }
 }
 
-impl std::ops::Deref for HttpClient {
+impl core::ops::Deref for HttpClient {
     type Target = Client;
     fn deref(&self) -> &Self::Target {
         &self.0
     }
 }
 
-pub fn randomize_sleep() {
-    let time = rand::rng().random_range(2000..10000);
-    std::thread::sleep(Duration::from_millis(time))
-}
-
 impl HttpClient {
     /// Creates a new instance of [`HttpClient`]
     pub fn new() -> Self {
         Self(Client::new())
+    }
+
+    pub async fn download_images(&self) -> MayFail {
+        self.download_arts_img().await?;
+        self.download_items_img().await?;
+        self.download_runes_img().await?;
+        self.download_general_img().await
     }
 
     /// Downloads some url and saves to a file if it doesn't already exist. If it does,
@@ -260,7 +209,7 @@ impl HttpClient {
                     let path = entry.path();
                     let name = path.file_stem().ok_or("Can't recover system file name")?;
                     let enumv = name.to_string_lossy();
-                    let bytes = tokio::fs::read(&path).await?;
+                    let bytes = crate::read(&path)?;
                     let value = serde_json::from_slice::<T>(&bytes)?;
                     f(client, enumv.into(), value).await
                 }()
@@ -422,29 +371,6 @@ impl HttpClient {
             .to_owned())
     }
 
-    /// Fetches League of Legends current version and updates it directly
-    /// in the `.env` file if it has changed, renaming the cache folder and
-    /// setting up a new empty one, which forces the application to re-download
-    /// every champion, item, and rune file again. Does nothing if the version
-    /// is equal
-    pub async unsafe fn update_env_version(&self) -> MayFail {
-        let version = self.fetch_version().await?;
-
-        if version == ENV_CONFIG.lol_version {
-            return Ok(());
-        }
-
-        std::fs::rename(
-            "cache",
-            format!(
-                "cache_{old_version}",
-                old_version = ENV_CONFIG.lol_version.replace(".", "_")
-            ),
-        )?;
-
-        Ok(unsafe { set_env_var("LOL_VERSION", &version)? })
-    }
-
     /// Updates files in `cache/riot` with the corresponding ones in the patch determined by `LOL_VERSION`
     pub async fn update_riot_cache(&self) -> MayFail {
         self.download(
@@ -515,7 +441,7 @@ impl HttpClient {
         .await?;
 
         self.update_language_cache().await?;
-        let languages = Vec::<String>::from_file(SaveTo::InternalLanguages.path())?;
+        let languages = Vec::<String>::from_file(SaveTo::RiotLanguages.path())?;
 
         let mut languages_data = BTreeMap::<String, BTreeSet<String>>::from_iter(
             champion_ids
@@ -570,43 +496,16 @@ impl HttpClient {
             }
         }
 
-        languages_data.into_file(SaveTo::InternalChampionLanguages.path())
+        languages_data.into_file(SaveTo::RiotChampionLanguages.path())
     }
 
     /// Fetches the available languages in league of legends and saves them to
     /// the appropriate cache location
     pub async fn update_language_cache(&self) -> MayFail {
         self.download(
-            format!("{}/cdn/languages.json", ENV_CONFIG.dd_dragon_endpoint),
-            SaveTo::InternalLanguages.path(),
+            format!("{DDRAGON_ENDPOINT}/cdn/languages.json"),
+            SaveTo::RiotLanguages.path(),
         )
         .await
     }
-}
-
-/// Updates the `.env` file, setting a new key and value pair. If it already
-/// exists, the value gets replaced
-unsafe fn set_env_var(key: &str, value: &str) -> std::io::Result<()> {
-    let path = ".env";
-    let file = std::fs::File::open(path)?;
-    let reader = BufReader::new(file);
-    let mut lines = Vec::new();
-    let mut found = false;
-    for line in reader.lines() {
-        let line = line?;
-        if line.starts_with(&format!("{key}=")) {
-            lines.push(format!("{key}={value}"));
-            found = true;
-        } else {
-            lines.push(line);
-        }
-    }
-    if !found {
-        lines.push(format!("{key}={value}"));
-    }
-    let mut out = std::fs::File::create(path)?;
-    for line in lines {
-        writeln!(out, "{line}")?;
-    }
-    Ok(())
 }

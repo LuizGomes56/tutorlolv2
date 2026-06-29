@@ -2,10 +2,13 @@ use {
     crate::{ChampionId, ItemId, RuneId, impls::traits::CastId},
     core::fmt::Debug,
     tutorlolv2_types::{
-        AbilityId, AdaptiveType, AttackType, ComboElement, Ctx, CtxVar, GameMap, MergeData,
-        Position, StatName, TypeMetadata,
+        AbilityId, AdaptiveType, AttackType, ComboElement, Ctx, GameMap, MergeData, Position,
+        StatName, TypeMetadata,
     },
 };
+
+#[cfg(feature = "docs")]
+use tutorlolv2_types::CtxVar;
 
 #[derive(Copy, Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub enum EntityId {

@@ -5,7 +5,7 @@ use {
         helpers::{ability_id_mod, get_eval_ctx},
         model::{
             AbilityLevels, Attacks, BasicStats, DamageModifiers, Dragons, EnemyState, EnemyStats,
-            Modifiers, RangeDamage, ResistShred, SelfState, SimpleStats, Stats, ValueException,
+            Modifiers, RangeDamage, ResistShred, SelfState, SimpleStats, PlayerStats, ValueException,
         },
     },
     tutorlolv2_types::{AbilityId, AdaptiveType, AttackType, Ctx, TypeMetadata},
@@ -115,7 +115,7 @@ pub struct ConstInput<
     pub rune_exceptions: [(RuneId, u32); RE],
     pub item_exceptions: [(ItemId, u32); IE],
     pub ability_levels: AbilityLevels,
-    pub stats: Option<Stats>,
+    pub stats: Option<PlayerStats>,
     pub dragons: Dragons,
     pub stacks: u32,
     pub level: u8,
@@ -153,7 +153,7 @@ pub struct ConstDamages<const A: usize, const I: usize, const R: usize> {
 pub struct ConstOutput<const A: usize, const I: usize, const R: usize> {
     pub damages: ConstDamages<A, I, R>,
     pub ctx: Ctx,
-    pub stats: Stats,
+    pub stats: PlayerStats,
     pub base_stats: BasicStats,
     pub bonus_stats: BasicStats,
     pub shred: ResistShred,
@@ -196,7 +196,7 @@ impl<
 
         let stats = match stats {
             Some(s) => s,
-            None => Stats::infer(InferStats {
+            None => PlayerStats::infer(InferStats {
                 item_exceptions: &ValueException::pack_items(&item_exceptions),
                 rune_exceptions: &ValueException::pack_runes(&rune_exceptions),
                 items: &items,

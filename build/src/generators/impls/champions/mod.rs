@@ -74,6 +74,7 @@ crate::decl_champions!(
     Leona,
     Lillia,
     Lissandra,
+    Locke,
     Lucian,
     Lulu,
     Lux,

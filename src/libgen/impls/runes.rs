@@ -40,7 +40,7 @@ impl RuneId {
         sum
     };
 
-    pub const DAMAGING_RUNES_ARRAY: [Self; Self::NUMBER_OF_DAMAGING_RUNES] = {
+    pub const DAMAGING_IDS: [Self; Self::NUMBER_OF_DAMAGING_RUNES] = {
         let mut result: [Self; _] = unsafe { core::mem::zeroed() };
         let mut i = 0;
         let mut j = 0;
@@ -59,14 +59,14 @@ impl RuneId {
         result
     };
 
-    pub const DAMAGING_RUNES: RunesBitSet = bitset!(RuneId::DAMAGING_RUNES_ARRAY);
+    pub const DAMAGING: BitSet = bitset!(RuneId::DAMAGING_IDS);
 
     pub const RIOT_IDS: [u32; Self::VARIANTS] = {
         let mut result = [0; _];
         let mut i = 0;
         while i < Self::VARIANTS {
             let value = Self::VALUES[i];
-            result[i] = value.to_riot_id();
+            result[i] = value.riot_id();
             i += 1;
         }
         result
@@ -89,13 +89,11 @@ impl RuneId {
         Self::ZombieWard,
     ];
 
-    pub const SIZE_OF_EXCEPTIONS: usize = bitset_size(bitset!(RuneId::EXCEPTIONS => [usize]));
-
-    pub const fn exceptions() -> RunesExcSet {
+    pub const fn exceptions() -> BitSetExc {
         bitset!(RuneId::EXCEPTIONS)
     }
 
-    pub const fn to_riot_id(&self) -> u32 {
+    pub const fn riot_id(&self) -> u32 {
         self.data().riot_id
     }
 

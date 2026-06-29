@@ -6,5 +6,5 @@ edition = "2024"
 [dependencies]
 pastey = "0.2.1"
 rayon = "1.11.0"
-tutorlolv2 = { path = "../" }
+tutorlolv2 = { path = "../", features = ["docs"] }
 tutorlolv2_fmt = { path = "../tutorlolv2_fmt" }

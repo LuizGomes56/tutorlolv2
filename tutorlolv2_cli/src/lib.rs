@@ -1,5 +1,5 @@
 use clap::{Parser, Subcommand, ValueEnum};
-use tutorlolv2_dev::{ENV_CONFIG, HTTP_CLIENT, MayFail};
+use tutorlolv2_dev::{HTTP_CLIENT, LOL_VERSION, MayFail};
 use tutorlolv2_wiki::{champions, items, runes};
 
 #[derive(Parser, Debug)]
@@ -14,8 +14,6 @@ pub enum Fetch {
     Images,
     #[clap(alias = "c")]
     Cache,
-    #[clap(alias = "s")]
-    Scraper,
     #[clap(alias = "v")]
     Version,
 }
@@ -26,8 +24,6 @@ pub enum AppArgs {
     Update,
     #[command(alias = "h")]
     Html,
-    #[command(alias = "s")]
-    Setup { setup: Setup },
     #[command(alias = "f")]
     Fetch { function: Fetch },
     #[command(alias = "w")]
@@ -72,25 +68,14 @@ pub enum Wiki {
     RunesConcat,
 }
 
-#[derive(Clone, Copy, Debug, ValueEnum)]
-pub enum Setup {
-    #[clap(alias = "i")]
-    Items,
-    #[clap(alias = "p")]
-    Prettify,
-}
-
 pub async fn run() -> MayFail {
     let Cli { args } = Cli::parse();
-
-    dotenvy::dotenv().expect(".env file not found");
-    std::env::set_current_dir("../")?;
 
     match args {
         AppArgs::Update => {
             tutorlolv2_wiki::run().await?;
-            HTTP_CLIENT.update_riot_cache().await?;
 
+            HTTP_CLIENT.update_riot_cache().await?;
             HTTP_CLIENT.download_arts_img().await?;
             HTTP_CLIENT.download_items_img().await?;
             HTTP_CLIENT.download_runes_img().await?;
@@ -100,16 +85,6 @@ pub async fn run() -> MayFail {
             // let _ = HTTP_CLIENT.combo_scraper().await;
         }
         AppArgs::Html => tutorlolv2_html::run(),
-        AppArgs::Setup { setup } => match setup {
-            Setup::Items => {
-                /* update::setup_runes_json()? */
-                todo!()
-            }
-            Setup::Prettify => {
-                /* update::prettify_internal_items()? */
-                todo!()
-            }
-        },
         AppArgs::Fetch { function } => match function {
             Fetch::Images => {
                 HTTP_CLIENT.download_arts_img().await?;
@@ -118,13 +93,11 @@ pub async fn run() -> MayFail {
                 HTTP_CLIENT.download_general_img().await?;
             }
             Fetch::Cache => HTTP_CLIENT.update_riot_cache().await?,
-            Fetch::Scraper => {}
             Fetch::Version => {
                 let gamev = HTTP_CLIENT.fetch_version().await?;
-                let currv = &ENV_CONFIG.lol_version;
-                match &gamev == currv {
+                match &gamev == LOL_VERSION {
                     true => println!("App is up to date with game version"),
-                    false => println!("App is outdated: Expected {gamev}, found: {currv}"),
+                    false => println!("App is outdated: Expected {gamev}, found: {LOL_VERSION}"),
                 }
             }
         },

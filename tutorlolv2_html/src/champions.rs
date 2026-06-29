@@ -15,9 +15,8 @@ pub fn champions_html() {
                             .into_iter()
                             .map(|&value| {
                                 let src = Html::src(value);
-                                let entity_id = value.entity();
                                 let name = value.name();
-                                let folder = match entity_id {
+                                let folder = match value {
                                     x if x.is_item() => "items",
                                     x if x.is_rune() => "runes",
                                     x if x.is_champion() => "champions",

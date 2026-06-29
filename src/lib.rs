@@ -16,6 +16,9 @@ pub mod model;
 pub mod realtime;
 pub mod riot;
 
+#[cfg(feature = "yew")]
+pub mod yew;
+
 pub use libgen::*;
 
 #[allow(dead_code)]
@@ -23,7 +26,7 @@ mod test {
     use crate::{
         AbilityId, ChampionId, Ctx, ItemId, RuneId,
         const_eval::{ConstDamage, ConstDamages, ConstEnemy, ConstInput, ConstOutput},
-        model::{AbilityLevels, Attacks, BasicStats, Dragons, Modifiers, ResistShred, Stats},
+        model::{AbilityLevels, Attacks, BasicStats, Dragons, Modifiers, PlayerStats, ResistShred},
     };
 
     const CHAMPION_ID: ChampionId = ChampionId::Neeko;
@@ -63,7 +66,7 @@ mod test {
     const ITEMS_DMG: &[ConstDamage<ItemId>] = &OUT.damages.items;
     const RUNES_DMG: &[ConstDamage<RuneId>] = &OUT.damages.runes;
     const CTX: Ctx = OUT.ctx;
-    const STATS: Stats = OUT.stats;
+    const STATS: PlayerStats = OUT.stats;
     const BASE_STATS: BasicStats = OUT.base_stats;
     const BONUS_STATS: BasicStats = OUT.bonus_stats;
     const SHRED: ResistShred = OUT.shred;

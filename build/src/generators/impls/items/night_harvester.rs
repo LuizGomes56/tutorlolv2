@@ -1,8 +1,8 @@
 use super::*;
 
 impl Generator for NightHarvester {
-    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
-        self.min(Passive)?.end()
+        let dmg = self.formula(Passive)?.replace(BonusMoveSpeed.as_var(), "0");
+        self.damage_type(Magic).set_min(dmg).end()
     }
 }

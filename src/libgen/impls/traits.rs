@@ -1,11 +1,15 @@
 use {
-    crate::{Champion, ChampionId, EntityId, Item, ItemId, Rune, RuneId},
+    crate::{
+        Champion, ChampionId, EntityId, Item, ItemId, Rune, RuneId,
+        bitset::{BitSet, BitSetExc},
+        model::ValueException,
+    },
     core::{
         any::Any,
         fmt::{Debug, Display},
         str::FromStr,
     },
-    tutorlolv2_types::{DamageType, TypeMetadata},
+    tutorlolv2_types::{DamageType, Position, TypeMetadata},
 };
 
 #[cfg(feature = "docs")]
@@ -135,10 +139,12 @@ macro_rules! impl_methods {
                         }
                     }
 
+                    #[cfg(feature = "docs")]
                     pub const fn generator_docs(&self) -> &'static Range<usize> {
                         &Self::GENERATOR_DOCS[self.index()]
                     }
 
+                    #[cfg(feature = "docs")]
                     pub const fn docs(&self) -> &'static Range<usize> {
                         &Self::DOCS[self.index()]
                     }
@@ -246,8 +252,14 @@ where
 }
 
 pub trait ValueId: CastId {
-    fn to_riot_id(&self) -> u32;
+    const DAMAGING: &BitSet;
+    const DAMAGING_IDS: &[Self];
+
+    fn riot_id(&self) -> u32;
     fn metadata(&self) -> TypeMetadata<Self>;
+    fn pack_exc(&self, v: u32) -> ValueException;
+    fn exceptions(ally: bool) -> BitSetExc;
+    fn recommendations(champion_id: ChampionId, position: Position) -> &'static [Self];
 
     #[cfg(feature = "docs")]
     fn identifiers(&self) -> &'static [CtxVar];
@@ -261,8 +273,23 @@ pub trait ValueId: CastId {
 }
 
 impl ValueId for ItemId {
-    fn to_riot_id(&self) -> u32 {
-        self.to_riot_id()
+    const DAMAGING: &BitSet = &Self::DAMAGING;
+    const DAMAGING_IDS: &[Self] = &Self::DAMAGING_IDS;
+
+    fn riot_id(&self) -> u32 {
+        self.riot_id()
+    }
+
+    fn pack_exc(&self, v: u32) -> ValueException {
+        ValueException::pack_item_id(*self, v)
+    }
+
+    fn exceptions(ally: bool) -> BitSetExc {
+        ItemId::exceptions(ally)
+    }
+
+    fn recommendations(champion_id: ChampionId, position: Position) -> &'static [Self] {
+        champion_id.recommended_items(position)
     }
 
     #[cfg(feature = "docs")]
@@ -281,8 +308,23 @@ impl ValueId for ItemId {
 }
 
 impl ValueId for RuneId {
-    fn to_riot_id(&self) -> u32 {
-        self.to_riot_id()
+    const DAMAGING: &BitSet = &Self::DAMAGING;
+    const DAMAGING_IDS: &[Self] = &Self::DAMAGING_IDS;
+
+    fn riot_id(&self) -> u32 {
+        self.riot_id()
+    }
+
+    fn pack_exc(&self, v: u32) -> ValueException {
+        ValueException::pack_rune_id(*self, v)
+    }
+
+    fn exceptions(_: bool) -> BitSetExc {
+        RuneId::exceptions()
+    }
+
+    fn recommendations(champion_id: ChampionId, position: Position) -> &'static [Self] {
+        champion_id.recommended_runes(position)
     }
 
     #[cfg(feature = "docs")]
