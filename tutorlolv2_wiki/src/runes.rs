@@ -1,16 +1,17 @@
-use crate::{
-    client::{MayFail, fetch},
-    file_name, is_dir,
-    parser::{Effect, SUFFIXES, get_cells, parse_description_effects},
-    selector,
+use {
+    crate::{
+        HTTP_CLIENT, MayFail, file_name, is_dir,
+        parser::{Effect, SUFFIXES, get_cells, parse_description_effects},
+        selector,
+    },
+    heck::ToPascalCase,
+    rayon::iter::{ParallelBridge, ParallelIterator},
+    scraper::Html,
+    serde::{Deserialize, Serialize, de::DeserializeOwned},
+    serde_json::{Map, Value, json},
+    std::{collections::BTreeMap, path::PathBuf},
+    tutorlolv2_types::Key,
 };
-use heck::ToPascalCase;
-use rayon::iter::{ParallelBridge, ParallelIterator};
-use scraper::Html;
-use serde::{Deserialize, Serialize, de::DeserializeOwned};
-use serde_json::{Map, Value, json};
-use std::{collections::BTreeMap, path::PathBuf};
-use tutorlolv2_types::Key;
 
 fn cache() -> PathBuf {
     PathBuf::from("cache/wiki/runes")
@@ -27,7 +28,9 @@ pub async fn links() -> MayFail {
 
     let save_to = cache().join("links").with_extension("html");
 
-    let data = fetch(save_to, "Category:Rune_data_templates").await?;
+    let data = HTTP_CLIENT
+        .fetch(save_to, "Category:Rune_data_templates")
+        .await?;
     let html = Html::parse_document(&data);
 
     let sections_selector =
@@ -71,7 +74,9 @@ pub async fn download() -> MayFail {
 
     for (id, link) in links {
         let save_to = cache().join(id);
-        fetch(save_to.join("data").with_extension("html"), link.href).await?;
+        HTTP_CLIENT
+            .fetch(save_to.join("data").with_extension("html"), link.href)
+            .await?;
         std::thread::sleep(std::time::Duration::from_millis(200));
     }
 

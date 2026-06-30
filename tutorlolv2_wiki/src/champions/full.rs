@@ -1,8 +1,4 @@
-use crate::{
-    parser::parse_lua,
-    champions::cache,
-    client::{MayFail, fetch},
-};
+use crate::{HTTP_CLIENT, MayFail, champions::cache, parser::parse_lua};
 use mlua::{Lua, LuaSerdeExt, Value};
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
@@ -28,11 +24,12 @@ pub struct ChampionRaw {
 pub async fn download() -> MayFail<String> {
     println!("[fn] champions::full::download");
 
-    let text = fetch(
-        cache().join("data").with_extension("html"),
-        "Module:ChampionData/data",
-    )
-    .await?;
+    let text = HTTP_CLIENT
+        .fetch(
+            cache().join("data").with_extension("html"),
+            "Module:ChampionData/data",
+        )
+        .await?;
 
     let pre = parse_lua(&text)?;
 

@@ -101,3 +101,27 @@ pub fn convert_folder_avif(folder: &str) -> Result<(), Box<dyn std::error::Error
 
     Ok(())
 }
+
+pub fn convert_folder(folder: &str) -> Result<(), Box<dyn std::error::Error>> {
+    match convert_folder_avif(&format!("raw_img/{folder}")) {
+        Ok(_) => println!("Convertion of {folder:?} finished"),
+        Err(e) => eprintln!("Error converting {folder:?}: {e:#?}"),
+    }
+    Ok(())
+}
+
+pub fn img_convert_avif() {
+    for folder in [
+        "abilities",
+        "centered",
+        "champions",
+        "items",
+        "other",
+        "runes",
+        "splash",
+        "stats",
+    ] {
+        println!("Converting folder: {folder:?}");
+        let _ = convert_folder(folder);
+    }
+}

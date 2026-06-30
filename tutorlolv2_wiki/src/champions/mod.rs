@@ -1,9 +1,9 @@
 use crate::{
+    MayFail,
     champions::{
         abilities::WikiAbility,
         template::{ChampionTemplate, ModeStats, Stats},
     },
-    client::MayFail,
     is_dir,
 };
 use rayon::iter::{ParallelBridge, ParallelIterator};

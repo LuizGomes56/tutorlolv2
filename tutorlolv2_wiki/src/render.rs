@@ -1,5 +1,5 @@
 use crate::{
-    client::MayFail,
+    MayFail,
     formula::SequencePattern,
     parser::{Effect, LevelArm, Scaling},
 };

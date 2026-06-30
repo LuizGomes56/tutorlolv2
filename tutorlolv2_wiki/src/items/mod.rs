@@ -1,7 +1,4 @@
-use crate::{
-    client::{MayFail, fetch},
-    parser::parse_lua,
-};
+use crate::{HTTP_CLIENT, MayFail, parser::parse_lua};
 use mlua::{Lua, LuaSerdeExt, Value};
 use serde::{Deserialize, Serialize};
 use serde_json::{Value as JsonValue, json};
@@ -47,11 +44,12 @@ pub struct ItemRaw {
 pub async fn download() -> MayFail<String> {
     println!("[fn] items::full::download");
 
-    let text = fetch(
-        cache().join("data").with_extension("html"),
-        "Module:ItemData/data",
-    )
-    .await?;
+    let text = HTTP_CLIENT
+        .fetch(
+            cache().join("data").with_extension("html"),
+            "Module:ItemData/data",
+        )
+        .await?;
     let pre = parse_lua(&text)?;
 
     crate::write(cache().join("lua").with_extension("txt"), &pre)?;
