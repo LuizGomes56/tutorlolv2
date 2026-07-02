@@ -26,7 +26,7 @@ pub fn finish_champions(target: &str, variable: &mut String, value: &mut [FmtOut
         .join(",");
 
     let push = match target {
-        "formula" | "generator" => format!("{ranges},"),
+        "formula" | "generator" | "debug" | "json" => format!("{ranges},"),
         "ability" | "closure" => format!("&[{ranges},],"),
         _ => panic!("Unknown target set to fmt_args: {target}"),
     };
@@ -47,7 +47,7 @@ pub fn finish_items_or_runes(target: &str, variable: &mut String, value: &mut [F
     });
 
     let push = match target {
-        "formula" | "generator" => {
+        "formula" | "generator" | "debug" | "json" => {
             value
                 .iter()
                 .map(|FmtOutput { html_range, .. }| format!("{html_range:?}"))

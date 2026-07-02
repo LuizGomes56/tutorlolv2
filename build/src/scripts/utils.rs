@@ -9,6 +9,7 @@ use crate::{
 use heck::{ToPascalCase, ToSnakeCase};
 use rand::{RngExt, SeedableRng, rngs::SmallRng};
 use regex::{Captures, Regex};
+use serde::Serialize;
 use serde_json::{Value, json};
 use std::{
     collections::{BTreeSet, HashMap, HashSet},
@@ -176,7 +177,9 @@ impl ItemOrRune for Rune {
 impl ItemOrRuneExt for Item {}
 impl ItemOrRuneExt for Rune {}
 
-pub trait ItemOrRuneExt: Index<AttackType, Output = DamageRange> + ItemOrRune + Debug {
+pub trait ItemOrRuneExt:
+    Index<AttackType, Output = DamageRange> + ItemOrRune + Debug + Serialize
+{
     fn identifiers(&self) -> Vec<CtxVar> {
         let mut set = BTreeSet::new();
 
@@ -366,6 +369,55 @@ pub trait ItemOrRuneExt: Index<AttackType, Output = DamageRange> + ItemOrRune + 
         }
 
         Ok((rust, docs))
+    }
+
+    fn html_docs(&self) -> MayFail<String> {
+        let id = self.id();
+        let upper_id = id.to_uppercase();
+
+        let dbg = {
+            if true {
+                format!("")
+            } else {
+                format!(
+                    "#[fmt({fmt_dbg})]
+                    static DBG_{upper_id}: &str = r#####\"{self:#?}\"#####;",
+                    fmt_dbg = json!(FmtArgs {
+                        target: "debug".into(),
+                        variant: id.to_string(),
+                        meta: (),
+                        replace: [(format!("static DBG_{upper_id}: &str = "), "")]
+                            .map(|(a, b)| (a, b.to_string()))
+                            .into(),
+                        default: false
+                    })
+                )
+            }
+        };
+
+        let json = {
+            if true {
+                format!("")
+            } else {
+                let s = serde_json::to_string_pretty(self)?;
+                format!(
+                    "#[fmt({fmt_json})]
+                        static JSON_{upper_id}: &str = {json:?};",
+                    fmt_json = json!(FmtArgs {
+                        target: "json".into(),
+                        variant: id.to_string(),
+                        meta: (),
+                        replace: [(format!("static JSON_{upper_id}: &str = "), "")]
+                            .map(|(a, b)| (a, b.to_string()))
+                            .into(),
+                        default: false
+                    }),
+                    json = format!("__JSON__{}__JSON__", base64::encode(s))
+                )
+            }
+        };
+
+        Ok([dbg, json].concat())
     }
 
     fn repr_damages(&self) -> String {

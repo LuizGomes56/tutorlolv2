@@ -261,6 +261,16 @@ fn build_docs() -> MayFail {
                     vtype: "Range<usize>",
                 },
                 StaticVar {
+                    attribute: "debug",
+                    name: "CHAMPION_DEBUG".into(),
+                    vtype: "Range<usize>",
+                },
+                StaticVar {
+                    attribute: "json",
+                    name: "CHAMPION_JSON".into(),
+                    vtype: "Range<usize>",
+                },
+                StaticVar {
                     attribute: "ability",
                     name: "ABILITY_FORMULAS".into(),
                     vtype: "&[Range<usize>]",
@@ -285,6 +295,16 @@ fn build_docs() -> MayFail {
                         StaticVar {
                             attribute: "generator",
                             name: var("GENERATORS"),
+                            vtype: "Range<usize>",
+                        },
+                        StaticVar {
+                            attribute: "debug",
+                            name: var("DEBUG"),
+                            vtype: "Range<usize>",
+                        },
+                        StaticVar {
+                            attribute: "json",
+                            name: var("JSON"),
                             vtype: "Range<usize>",
                         },
                         StaticVar {

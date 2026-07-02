@@ -68,7 +68,13 @@ pub fn batch(src: String) -> BTreeMap<String, BTreeMap<String, Vec<FmtOutput>>> 
                 block = block.replace(from, into);
             }
 
-            let html = tutorlolv2_fmt::rust_html(&block);
+            let formatter = if json.target == "json" {
+                tutorlolv2_fmt::json_html
+            } else {
+                tutorlolv2_fmt::rust_html
+            };
+
+            let html = formatter(&block);
 
             let mut absolute_end = attr_end + end;
 

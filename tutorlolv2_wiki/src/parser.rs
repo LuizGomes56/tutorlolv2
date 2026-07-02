@@ -59,7 +59,7 @@ pub fn get_cells(html: &Html) -> MayFail<BTreeMap<String, String>> {
             }
 
             cells.insert(key.clone() + "_raw", value.inner_html());
-            cells.insert(key, text.trim().to_string());
+            cells.insert(key, clean_text(text.trim()));
         }
     }
 
@@ -791,6 +791,7 @@ pub fn clean_text(s: &str) -> String {
         .replace('\u{2014}', "-")
         .replace('\u{2212}', "-")
         .replace('\u{00D7}', "*")
+        .replace("–", "-")
         .replace("'''", "")
         .lines()
         .map(str::trim)

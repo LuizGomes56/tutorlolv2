@@ -346,10 +346,30 @@ pub fn json_html(data: &str) -> String {
 
 /// Converts JSON code to a pretty-printed [`String`]. It does not turn it to HTML
 pub fn json_pretty(input: &str) -> String {
-    let v: Value = serde_json::from_str(input).unwrap();
+    let mut s = input.trim().to_string();
+
+    if s.starts_with('"') && s.ends_with('"') {
+        if let Ok(unescaped) = serde_json::from_str::<String>(&s) {
+            s = unescaped;
+        }
+    }
+
+    let v = {
+        let start = input.find("__JSON__").unwrap() + 8;
+        let end = input.rfind("__JSON__").unwrap();
+
+        let encoded = &input[start..end];
+
+        let decoded = base64::decode(encoded).unwrap();
+        let json_str = String::from_utf8(decoded).unwrap();
+
+        serde_json::from_str::<Value>(&json_str).unwrap()
+    };
+
     let mut buf = Vec::new();
     let fmt = PrettyFormatter::with_indent(b"    ");
     let mut ser = Serializer::with_formatter(&mut buf, fmt);
     v.serialize(&mut ser).unwrap();
+
     String::from_utf8(buf).unwrap()
 }

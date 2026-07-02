@@ -49,7 +49,8 @@ impl Build for Rune {
             "#[fmt({fmt})]
             static {upper_id}: X = X {{
                 name: {name:?}{damage}
-            }};",
+            }}; {html_docs}",
+            html_docs = self.html_docs()?,
             damage = format_args!(",{}", self.repr_damages()),
             fmt = self.formula_fmt()
         )?;

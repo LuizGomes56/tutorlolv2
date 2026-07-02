@@ -81,7 +81,8 @@ impl Build for Item {
                 tier: {tier},
                 purchasable: {purchasable},
                 {damage}
-            }};",
+            }}; {html_docs}",
+            html_docs = self.html_docs()?,
             damage = self.repr_damages(),
             fmt = self.formula_fmt(),
             name = fit_str(&name),

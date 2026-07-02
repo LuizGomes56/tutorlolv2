@@ -119,16 +119,58 @@ impl Build for Champion {
                 adaptive_type: {adaptive_type:?},
                 attack_type: {attack_type:?},
                 positions: {positions:#?}, {damage}
-            }};",
+            }};
+
+            {dbg} {json}",
             fmt = json!(FmtArgs {
                 target: "formula".into(),
                 variant: champion_id.clone(),
                 meta: (),
-                replace: [(": X = X", " ="), ("ctx.", ""), ("(ctx)", "__fn__")]
+                replace: [(": X = X", " ="), ("ctx.", ""), ("(ctx)", "__fn__"),]
                     .map(|(a, b)| (a.to_string(), b.to_string()))
                     .into(),
                 default: false
-            })
+            }),
+            dbg = {
+                if true {
+                    format!("")
+                } else {
+                    format!(
+                        "#[fmt({fmt_dbg})]
+                        static DBG_{upper_id}: &str = r#####\"{self:#?}\"#####;",
+                        fmt_dbg = json!(FmtArgs {
+                            target: "debug".into(),
+                            variant: champion_id.clone(),
+                            meta: (),
+                            replace: [(format!("static DBG_{upper_id}: &str = "), "")]
+                                .map(|(a, b)| (a, b.to_string()))
+                                .into(),
+                            default: false
+                        })
+                    )
+                }
+            },
+            json = {
+                if true {
+                    format!("")
+                } else {
+                    let s = serde_json::to_string_pretty(self)?;
+                    format!(
+                        "#[fmt({fmt_json})]
+                        static JSON_{upper_id}: &str = {json:?};",
+                        fmt_json = json!(FmtArgs {
+                            target: "json".into(),
+                            variant: champion_id.to_string(),
+                            meta: (),
+                            replace: [(format!("static JSON_{upper_id}: &str = "), "")]
+                                .map(|(a, b)| (a, b.to_string()))
+                                .into(),
+                            default: false
+                        }),
+                        json = format!("__JSON__{}__JSON__", base64::encode(s))
+                    )
+                }
+            }
         )?;
 
         write!(
