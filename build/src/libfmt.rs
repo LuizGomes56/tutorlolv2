@@ -1,7 +1,9 @@
-use serde::Serialize;
-use serde_json::{Serializer, Value, ser::PrettyFormatter};
-use std::{io::Cursor, sync::LazyLock};
-use synoptic::{Highlighter, TokOpt};
+use {
+    serde::Serialize,
+    serde_json::{Serializer, Value, ser::PrettyFormatter},
+    std::{io::Cursor, sync::LazyLock},
+    synoptic::{Highlighter, TokOpt},
+};
 
 /// Encodes some data using `brotli` at the maximum level, which is 11.
 /// Panics if the input is invalid, or if the compression fails

@@ -1,35 +1,39 @@
-use crate::{
-    generators::{
-        parser::{
-            MapValueExt, Parser, champions::ChampionParser, items::ItemParser, runes::RuneParser,
+use {
+    crate::{
+        generators::{
+            parser::{
+                MapValueExt, Parser, champions::ChampionParser, items::ItemParser,
+                runes::RuneParser,
+            },
+            utils::Tag,
         },
-        utils::Tag,
+        libfmt::{encode_brotli_11, rust_html},
+        scripts::{
+            batch::{FmtArgs, FmtOutput, Tracker, batch},
+            consts::*,
+            finish::{
+                champion_aliases, eval_abilities, eval_items_or_runes, finish_champions,
+                finish_items_or_runes,
+            },
+            utils::{StaticVar, static_vars},
+        },
     },
-    scripts::{
-        batch::{FmtArgs, FmtOutput, Tracker, batch},
-        consts::*,
-        finish::{
-            champion_aliases, eval_abilities, eval_items_or_runes, finish_champions,
-            finish_items_or_runes,
-        },
-        utils::{StaticVar, static_vars},
+    heck::ToSnakeCase,
+    rayon::iter::{IntoParallelIterator, ParallelBridge, ParallelIterator},
+    serde::{Serialize, de::DeserializeOwned},
+    serde_json::json,
+    std::{
+        collections::BTreeMap,
+        fmt::Write,
+        fs::DirEntry,
+        path::{Path, PathBuf},
+        process::Command,
+        sync::LazyLock,
     },
 };
-use heck::ToSnakeCase;
-use rayon::iter::{IntoParallelIterator, ParallelBridge, ParallelIterator};
-use serde::{Serialize, de::DeserializeOwned};
-use serde_json::json;
-use std::{
-    collections::BTreeMap,
-    fmt::Write,
-    fs::DirEntry,
-    path::{Path, PathBuf},
-    process::Command,
-    sync::LazyLock,
-};
-use tutorlolv2_fmt::rust_html;
 
 pub mod generators;
+pub mod libfmt;
 pub mod scripts;
 
 pub type DynError = Box<dyn core::error::Error + Send + Sync + 'static>;
@@ -347,7 +351,7 @@ fn build_docs() -> MayFail {
             rayon::join(
                 || write(&OUT_DIR.join("docs").with_extension("rs"), &exports),
                 || {
-                    let brotli = tutorlolv2_fmt::encode_brotli_11(full_block.as_bytes());
+                    let brotli = encode_brotli_11(full_block.as_bytes());
                     write(&OUT_DIR.join("docs").with_extension("br"), &brotli)
                 },
             )

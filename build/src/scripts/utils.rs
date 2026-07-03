@@ -402,7 +402,7 @@ pub trait ItemOrRuneExt:
                 let s = serde_json::to_string_pretty(self)?;
                 format!(
                     "#[fmt({fmt_json})]
-                        static JSON_{upper_id}: &str = {json:?};",
+                    static JSON_{upper_id}: &str = {json:?};",
                     fmt_json = json!(FmtArgs {
                         target: "json".into(),
                         variant: id.to_string(),

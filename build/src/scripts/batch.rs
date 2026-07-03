@@ -8,6 +8,8 @@ use std::{
     sync::LazyLock,
 };
 
+use crate::libfmt;
+
 #[derive(Debug, Deserialize, Serialize)]
 pub struct FmtArgs<T> {
     pub target: String,
@@ -69,9 +71,9 @@ pub fn batch(src: String) -> BTreeMap<String, BTreeMap<String, Vec<FmtOutput>>> 
             }
 
             let formatter = if json.target == "json" {
-                tutorlolv2_fmt::json_html
+                libfmt::json_html
             } else {
-                tutorlolv2_fmt::rust_html
+                libfmt::rust_html
             };
 
             let html = formatter(&block);

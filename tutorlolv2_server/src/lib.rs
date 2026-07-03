@@ -1,7 +1,5 @@
 mod server;
 
-#[cfg(feature = "dev")]
-use crate::server::dev::{images::*, setup::*};
 use actix_cors::Cors;
 use actix_web::{
     App, HttpResponse, HttpServer,
@@ -22,35 +20,13 @@ use server::{embed::*, games::*};
 // }
 
 fn api_scope() -> impl HttpServiceFactory + 'static {
-    let api_routes = scope("/api").service(
+    scope("/api").service(
         scope("/games")
             .service(realtime_handler)
             .service(calculator_handler),
         // .service(create_game_handler),
         // .service(get_by_code_handler),
-    );
-
-    #[cfg(feature = "dev")]
-    let api_routes = api_routes.service(
-        scope("")
-            .service(
-                scope("/setup")
-                    .service(setup_project)
-                    .service(setup_docs)
-                    .service(update_riot),
-            )
-            .service(
-                scope("/images")
-                    .service(download_instances)
-                    .service(download_items)
-                    .service(download_arts)
-                    .service(download_runes)
-                    .service(download_all)
-                    .service(compress_images),
-            ),
-    );
-
-    api_routes
+    )
 }
 
 pub async fn run() -> std::io::Result<()> {
