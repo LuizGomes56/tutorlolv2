@@ -1,6 +1,6 @@
 use {
     crate::{
-        DynError, JsonRead, MayFail,
+        DynError, MayFail,
         generators::{
             GeneratorExt,
             impls::champions::champion_gen_fn,
@@ -18,6 +18,7 @@ use {
         AbilityId, AbilityName, Attrs, ComboElement, DamageType, DevMergeData, Key,
     },
     tutorlolv2_wiki::{
+        JsonRead,
         champions::{WikiChampion, abilities::WikiAbility},
         parser::{Effect, Scaling},
     },

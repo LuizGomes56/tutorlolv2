@@ -1,26 +1,29 @@
-use crate::{
-    DynError, JsonRead, MayFail,
-    generators::{
-        GeneratorExt,
-        impls::items::item_gen_fn,
-        parser::{
-            DamageRange, Parser, ZERO, infer_damage_type, likely_damages,
-            model::{RiotCdn, RiotCdnItem, RiotCdnItemGold},
+use {
+    crate::{
+        DynError, MayFail,
+        generators::{
+            GeneratorExt,
+            impls::items::item_gen_fn,
+            parser::{
+                DamageRange, Parser, ZERO, infer_damage_type, likely_damages,
+                model::{RiotCdn, RiotCdnItem, RiotCdnItemGold},
+            },
+            utils::{RegExtractor, SaveTo, Tag},
         },
-        utils::{RegExtractor, SaveTo, Tag},
     },
-};
-use heck::ToPascalCase;
-use serde::{Deserialize, Serialize};
-use std::{
-    collections::BTreeMap,
-    fmt::Write,
-    ops::{Index, IndexMut},
-};
-use tutorlolv2_types::{AttackType, Attrs, CtxVar, DamageIndex, DamageType};
-use tutorlolv2_wiki::{
-    items::item_parser::{ItemEffect, WikiItem},
-    parser::Effect,
+    heck::ToPascalCase,
+    serde::{Deserialize, Serialize},
+    std::{
+        collections::BTreeMap,
+        fmt::Write,
+        ops::{Index, IndexMut},
+    },
+    tutorlolv2_types::{AttackType, Attrs, CtxVar, DamageIndex, DamageType},
+    tutorlolv2_wiki::{
+        JsonRead,
+        items::item_parser::{ItemEffect, WikiItem},
+        parser::Effect,
+    },
 };
 
 pub struct ItemParser {

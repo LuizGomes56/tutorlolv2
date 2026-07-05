@@ -297,8 +297,8 @@ impl Build for Champion {
 
         let out = OUT_DIR.join(Tag::Champions.plural()).join(champion_id);
 
-        crate::write(out.with_extension("rs"), rust)?;
-        crate::write(out.with_extension("w48"), docs)?;
+        tutorlolv2_wiki::write(out.with_extension("rs"), rust)?;
+        tutorlolv2_wiki::write(out.with_extension("w48"), docs)?;
 
         Ok(format!(
             r#"ChampionId::{champion_id} => {{

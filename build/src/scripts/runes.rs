@@ -61,8 +61,8 @@ impl Build for Rune {
 
         let out = OUT_DIR.join(Tag::Runes.plural()).join(rune_id);
 
-        crate::write(out.with_extension("rs"), rust)?;
-        crate::write(out.with_extension("w48"), docs)?;
+        tutorlolv2_wiki::write(out.with_extension("rs"), rust)?;
+        tutorlolv2_wiki::write(out.with_extension("w48"), docs)?;
 
         Ok(self.eval())
     }

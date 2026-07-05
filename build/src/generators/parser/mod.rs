@@ -1,28 +1,32 @@
-use crate::{
-    JsonRead, JsonWrite, MayFail,
-    generators::{
-        GeneratorExt, VERSION,
-        utils::{SaveTo, Tag},
+use {
+    crate::{
+        MayFail,
+        generators::{
+            GeneratorExt, VERSION,
+            utils::{SaveTo, Tag},
+        },
+        scripts::{
+            batch::FmtArgs,
+            utils::{StaticVar, is_zero, static_vars, variable},
+        },
     },
-    scripts::{
-        batch::FmtArgs,
-        utils::{StaticVar, is_zero, static_vars, variable},
+    heck::{
+        ToKebabCase, ToLowerCamelCase, ToPascalCase, ToShoutyKebabCase, ToShoutySnakeCase,
+        ToSnakeCase, ToTitleCase, ToTrainCase, ToUpperCamelCase,
+    },
+    rayon::iter::{IntoParallelRefIterator, ParallelBridge, ParallelIterator},
+    serde::{Deserialize, Serialize, de::DeserializeOwned},
+    serde_json::{Value, json},
+    std::{
+        collections::{BTreeMap, BTreeSet, HashMap},
+        ops::{Index, IndexMut},
+        path::Path,
+    },
+    tutorlolv2_types::DamageIndex,
+    tutorlolv2_wiki::{
+        JsonRead, JsonWrite, champions::WikiChampion, items::item_parser::WikiItem, runes::WikiRune,
     },
 };
-use heck::{
-    ToKebabCase, ToLowerCamelCase, ToPascalCase, ToShoutyKebabCase, ToShoutySnakeCase, ToSnakeCase,
-    ToTitleCase, ToTrainCase, ToUpperCamelCase,
-};
-use rayon::iter::{IntoParallelRefIterator, ParallelBridge, ParallelIterator};
-use serde::{Deserialize, Serialize, de::DeserializeOwned};
-use serde_json::{Value, json};
-use std::{
-    collections::{BTreeMap, BTreeSet, HashMap},
-    ops::{Index, IndexMut},
-    path::Path,
-};
-use tutorlolv2_types::DamageIndex;
-use tutorlolv2_wiki::{champions::WikiChampion, items::item_parser::WikiItem, runes::WikiRune};
 
 pub mod champions;
 pub mod items;
@@ -184,7 +188,7 @@ where
     fn generator(id: &str, variant: &str) -> String {
         let folder = Self::TAG.plural();
         let mut default = false;
-        let mut generator = crate::read_to_string(format!(
+        let mut generator = tutorlolv2_wiki::read_to_string(format!(
             "build/src/generators/impls/{folder}/{file_name}.rs",
             file_name = id.to_snake_case()
         ))
@@ -285,11 +289,12 @@ where
     }
 
     fn is_generator(id: &str) -> bool {
-        crate::read_to_string(SaveTo::GeneratorRaw(Self::TAG, id).path()).is_ok()
+        tutorlolv2_wiki::read_to_string(SaveTo::GeneratorRaw(Self::TAG, id).path()).is_ok()
     }
 
     fn is_stable(id: &str) -> bool {
-        if let Ok(data) = crate::read_to_string(SaveTo::GeneratorRaw(Self::TAG, id).path())
+        if let Ok(data) =
+            tutorlolv2_wiki::read_to_string(SaveTo::GeneratorRaw(Self::TAG, id).path())
             && !data.contains("#[warn(unstable_features)]")
         {
             return true;
@@ -353,9 +358,9 @@ where
         match self.create_methods(&mut result, id)? {
             true => {
                 result.push_str(".end()}}");
-                crate::write(&path, result)
+                tutorlolv2_wiki::write(&path, result)
             }
-            false => Ok(crate::remove_file(&path)),
+            false => Ok(tutorlolv2_wiki::remove_file(&path)),
         }
     }
 
@@ -385,7 +390,7 @@ where
             "use crate::generators::imports::{module}::*;\ncrate::{module}!(\n\t{modules}\n);",
         );
 
-        crate::write(&decl, decl_content)?;
+        tutorlolv2_wiki::write(&decl, decl_content)?;
 
         Ok(())
     }

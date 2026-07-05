@@ -1,24 +1,27 @@
-use crate::{
-    DynError, JsonRead, MayFail,
-    generators::{
-        GeneratorExt,
-        impls::runes::rune_gen_fn,
-        parser::{DamageRange, Parser, infer_damage_type, likely_damages, model::RiotCdnRune},
-        utils::{RegExtractor, SaveTo, Tag},
+use {
+    crate::{
+        DynError, MayFail,
+        generators::{
+            GeneratorExt,
+            impls::runes::rune_gen_fn,
+            parser::{DamageRange, Parser, infer_damage_type, likely_damages, model::RiotCdnRune},
+            utils::{RegExtractor, SaveTo, Tag},
+        },
     },
-};
-use heck::ToPascalCase;
-use serde::{Deserialize, Serialize};
-use std::{
-    collections::BTreeMap,
-    fmt::Write,
-    ops::{Index, IndexMut},
-    sync::LazyLock,
-};
-use tutorlolv2_types::{AttackType, CtxVar, DamageIndex, DamageType};
-use tutorlolv2_wiki::{
-    parser::Effect,
-    runes::{RuneKeystone, RuneSlot, WikiRune},
+    heck::ToPascalCase,
+    serde::{Deserialize, Serialize},
+    std::{
+        collections::BTreeMap,
+        fmt::Write,
+        ops::{Index, IndexMut},
+        sync::LazyLock,
+    },
+    tutorlolv2_types::{AttackType, CtxVar, DamageIndex, DamageType},
+    tutorlolv2_wiki::{
+        JsonRead,
+        parser::Effect,
+        runes::{RuneKeystone, RuneSlot, WikiRune},
+    },
 };
 
 pub struct RuneParser {

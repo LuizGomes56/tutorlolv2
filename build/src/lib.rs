@@ -22,22 +22,14 @@ use {
     rayon::iter::{IntoParallelIterator, ParallelBridge, ParallelIterator},
     serde::{Serialize, de::DeserializeOwned},
     serde_json::json,
-    std::{
-        collections::BTreeMap,
-        fmt::Write,
-        fs::DirEntry,
-        path::{Path, PathBuf},
-        process::Command,
-        sync::LazyLock,
-    },
+    std::{collections::BTreeMap, fmt::Write, path::PathBuf, process::Command, sync::LazyLock},
 };
+
+pub use tutorlolv2_wiki::{DynError, MayFail};
 
 pub mod generators;
 pub mod libfmt;
 pub mod scripts;
-
-pub type DynError = Box<dyn core::error::Error + Send + Sync + 'static>;
-pub type MayFail<T = (), E = DynError> = Result<T, E>;
 
 pub trait Build {
     fn build(&mut self) -> MayFail<String>;
@@ -70,7 +62,7 @@ fn write_module<'a>(
         )?;
     }
 
-    crate::write(OUT_DIR.join(dir).with_extension("rs"), result)
+    tutorlolv2_wiki::write(OUT_DIR.join(dir).with_extension("rs"), result)
 }
 
 pub static CPARSER: LazyLock<ChampionParser> = LazyLock::new(|| ChampionParser::new().unwrap());
@@ -132,7 +124,7 @@ pub fn run() -> MayFail {
             .map(|id| parser.run_fn(id)?.build())
             .collect::<MayFail<String>>()?;
 
-        write(
+        tutorlolv2_wiki::write(
             OUT_DIR.join(format!("{plural}_code")).with_extension("rs"),
             [
                 parser.id_enum(),
@@ -192,10 +184,10 @@ fn build_docs() -> MayFail {
     let mut batches = [Tag::Champions, Tag::Items, Tag::Runes]
         .into_par_iter()
         .map(|tag| -> MayFail<_> {
-            let mut src = read_dir(OUT_DIR.join(tag.plural()))?
+            let mut src = tutorlolv2_wiki::read_dir(OUT_DIR.join(tag.plural()))?
                 .filter(|entry| entry.path().extension().map_or(false, |e| e == "w48"))
                 .par_bridge()
-                .map(|entry| read_to_string(entry.path()))
+                .map(|entry| tutorlolv2_wiki::read_to_string(entry.path()))
                 .flatten()
                 .collect::<String>();
 
@@ -211,7 +203,7 @@ fn build_docs() -> MayFail {
                     let file_name = variant.to_snake_case();
                     let mut default = false;
 
-                    let mut generator = read_to_string(format!(
+                    let mut generator = tutorlolv2_wiki::read_to_string(format!(
                         "build/src/generators/impls/{}/{file_name}.rs",
                         tag.plural()
                     ))
@@ -346,13 +338,13 @@ fn build_docs() -> MayFail {
     }
 
     let (r1, (r2, r3)) = rayon::join(
-        || write(&OUT_DIR.join("docs").with_extension("txt"), &full_block),
+        || tutorlolv2_wiki::write(&OUT_DIR.join("docs").with_extension("txt"), &full_block),
         || {
             rayon::join(
-                || write(&OUT_DIR.join("docs").with_extension("rs"), &exports),
+                || tutorlolv2_wiki::write(&OUT_DIR.join("docs").with_extension("rs"), &exports),
                 || {
                     let brotli = encode_brotli_11(full_block.as_bytes());
-                    write(&OUT_DIR.join("docs").with_extension("br"), &brotli)
+                    tutorlolv2_wiki::write(&OUT_DIR.join("docs").with_extension("br"), &brotli)
                 },
             )
         },
@@ -361,87 +353,4 @@ fn build_docs() -> MayFail {
     r1?;
     r2?;
     r3
-}
-
-pub trait JsonRead: DeserializeOwned {
-    fn from_file(path: impl AsRef<Path>) -> MayFail<Self> {
-        let data = read(path)?;
-        Ok(serde_json::from_slice(&data)?)
-    }
-
-    fn from_dir(path: impl AsRef<Path>) -> MayFail<BTreeMap<String, Self>> {
-        Ok(read_dir(&path)?
-            .into_iter()
-            .filter_map(|entry| {
-                let entry_name = entry.file_name().to_string_lossy().into_owned();
-                let file_name = entry_name
-                    .strip_suffix(".json")
-                    .unwrap_or(&entry_name)
-                    .to_string();
-
-                let data =
-                    Self::from_file(path.as_ref().join(&file_name).with_extension("json")).ok()?;
-                Some((file_name, data))
-            })
-            .collect::<BTreeMap<String, Self>>())
-    }
-}
-
-pub trait JsonWrite: Serialize {
-    fn into_file(&self, path: impl AsRef<Path>) -> MayFail {
-        let path = path.as_ref();
-        println!("[write] {path:?}");
-
-        let data = serde_json::to_string_pretty(self)?;
-        Ok(write(path, data.as_bytes())?)
-    }
-}
-
-impl<T> JsonRead for T where T: DeserializeOwned {}
-impl<T> JsonWrite for T where T: Serialize {}
-
-pub fn write(path: impl AsRef<Path>, data: impl AsRef<[u8]>) -> MayFail {
-    let path = path.as_ref();
-
-    if let Some(parent) = path.parent()
-        && !parent.as_os_str().is_empty()
-    {
-        create_dir_all(parent)?;
-    }
-
-    std::fs::write(path, data)
-        .map_err(|e| format!("[write] Error writing file: {path:?}: {e:?}").into())
-}
-
-pub fn read(path: impl AsRef<Path>) -> MayFail<Vec<u8>> {
-    let path = path.as_ref();
-    std::fs::read(path).map_err(|e| format!("[read] Error reading file: {path:?}: {e:?}").into())
-}
-
-pub fn read_to_string(path: impl AsRef<Path>) -> MayFail<String> {
-    let path = path.as_ref();
-    std::fs::read_to_string(path)
-        .map_err(|e| format!("[read] Error reading file: {path:?}: {e:?}").into())
-}
-
-pub fn read_dir(path: impl AsRef<Path>) -> MayFail<impl Iterator<Item = DirEntry>> {
-    let path = path.as_ref();
-    Ok(std::fs::read_dir(path)
-        .map_err(|e| format!("[error] Unable to read directory path: {e:?}"))?
-        .filter_map(Result::ok))
-}
-
-pub fn remove_file(path: impl AsRef<Path>) {
-    let path = path.as_ref();
-    if let Err(e) = std::fs::remove_file(path)
-        && !e.kind().eq(&std::io::ErrorKind::NotFound)
-    {
-        println!("[remove_file] Error removing file: {path:?}: {e:?}");
-    }
-}
-
-pub fn create_dir_all(path: impl AsRef<Path>) -> MayFail {
-    let path = path.as_ref();
-    std::fs::create_dir_all(path)
-        .map_err(|e| format!("[create_dir_all] Error creating directory: {path:?}: {e:?}").into())
 }

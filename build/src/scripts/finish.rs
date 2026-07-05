@@ -1,13 +1,16 @@
-use crate::{
-    CPARSER, JsonRead, MayFail,
-    generators::{parser::Parser, utils::Tag},
-    scripts::batch::{FmtArgs, FmtOutput},
+use {
+    crate::{
+        CPARSER, MayFail,
+        generators::{parser::Parser, utils::Tag},
+        scripts::batch::{FmtArgs, FmtOutput},
+    },
+    std::{
+        collections::{BTreeMap, BTreeSet},
+        ops::Range,
+    },
+    tutorlolv2_types::{AbilityId, AttackType, DamageIndex},
+    tutorlolv2_wiki::JsonRead,
 };
-use std::{
-    collections::{BTreeMap, BTreeSet},
-    ops::Range,
-};
-use tutorlolv2_types::{AbilityId, AttackType, DamageIndex};
 
 pub fn finish_champions(target: &str, variable: &mut String, value: &mut [FmtOutput]) {
     value.sort_by(|a, b| match &a.json.meta {
