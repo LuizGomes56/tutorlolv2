@@ -1,7 +1,9 @@
 use {
+    derive_more::{Display, FromStr},
     serde::Serialize,
     serde_json::{Serializer, Value, ser::PrettyFormatter},
-    std::{io::Cursor, sync::LazyLock},
+    std::{io::Cursor, ops::Range, sync::LazyLock},
+    strum::{EnumIter, EnumString, IntoEnumIterator, IntoStaticStr},
     synoptic::{Highlighter, TokOpt},
 };
 
@@ -17,244 +19,319 @@ pub fn encode_brotli_11(bytes: &[u8]) -> Vec<u8> {
     output
 }
 
-static RUST_HIGHLIGHTER: LazyLock<Highlighter> = LazyLock::new(|| {
-    let mut h = Highlighter::new(4);
-    // Comment
-    h.bounded("_x", r"/\*", r"\*/", false);
-    // Comment
-    h.keyword("_x", r"//.*$");
-    // String
-    h.bounded_interp("_s", "\"", "\"", "\\{", "\\}", true);
-    // Lifetime
-    h.keyword("_l", r"'\w+");
+#[derive(Clone, Copy, Debug, Display, EnumString, EnumIter, IntoStaticStr, PartialEq)]
+#[strum(serialize_all = "lowercase")]
+pub enum Keyword {
+    As,
+    Void,
+    Pub,
+    Use,
+    Crate,
+    Mut,
+    Static,
+    Ref,
+    Dyn,
+    Unsafe,
+    Extern,
+    Type,
+    Super,
+    Mod,
+    Struct,
+    Const,
+    Enum,
+    Fn,
+    Let,
+    Impl,
+    Trait,
+    Where,
+    #[strum(serialize = "Self")]
+    SelfUpper,
+    #[strum(serialize = "self")]
+    SelfLower,
+}
 
-    fn regkw<const N: usize>(values: [&str; N]) -> String {
-        format!(r"\b({})\b", values.join("|"))
-    }
+#[derive(Clone, Copy, Debug, Display, EnumIter, EnumString, IntoStaticStr, PartialEq)]
+#[strum(serialize_all = "lowercase")]
+pub enum Primitive {
+    Bool,
+    Usize,
+    U8,
+    U16,
+    U32,
+    U64,
+    Isize,
+    I8,
+    I16,
+    I32,
+    I64,
+    F32,
+    F64,
+    Char,
+    Str,
+}
 
-    h.keyword(
-        // Keyword
-        "_k",
-        &regkw([
-            "void", "pub", "use", "crate", "mut", "static", "ref", "dyn", "unsafe", "extern",
-            "type", "super", "mod", "struct", "const", "enum", "fn", "let", "impl", "trait",
-            "where", "Self", "self",
-        ]),
-    );
-    h.keyword(
-        // Control
-        "_r",
-        &regkw([
-            "break",
-            "continue",
-            "intrinsic",
-            "loop",
-            "match",
-            "return",
-            "yield",
-            "for",
-            "while",
-            "match",
-            "if",
-            "else",
-            "as",
-            "in",
-            "unknown",
-            "impossible",
-            "unrecognized",
-        ]),
-    );
-    // Constant
-    h.keyword("_c", r"::[A-Z_][A-Za-z0-9_]*\b");
-    // Constant
-    h.keyword("_c", r"\b[A-Z][A-Z0-9_]*\b");
-    // Constant
-    h.keyword(
-        "_c",
-        &regkw([
-            "Some",
-            "None",
-            "Melee",
-            "Ranged",
-            "Physical",
-            "Undefined",
-            "Unknown",
-            "Unspecified",
-            "Mixed",
-            "True",
-            "Adaptive",
-            "Onhit",
-            "OnhitMin",
-            "OnhitMax",
-            "Area",
-            "AreaOnhit",
-            "AreaOnhitMin",
-            "AreaOnhitMax",
-            "Magic",
-            "Void",
-            "_1",
-            "_2",
-            "_3",
-            "_4",
-            "_5",
-            "_6",
-            "_7",
-            "_8",
-            "Min",
-            "_1Min",
-            "_2Min",
-            "_3Min",
-            "_4Min",
-            "_5Min",
-            "_6Min",
-            "_7Min",
-            "_8Min",
-            "Max",
-            "_1Max",
-            "_2Max",
-            "_3Max",
-            "_4Max",
-            "_5Max",
-            "_6Max",
-            "_7Max",
-            "_8Max",
-            "Mega",
-            "Minion",
-            "Minion1",
-            "Minion2",
-            "Minion3",
-            "MinionMax",
-            "Monster",
-            "Monster1",
-            "Monster2",
-            "Monster3",
-            "Monster4",
-            "MonsterMax",
-        ]),
-    );
-    // Type
-    h.keyword("_t", r"\b[A-Z][a-zA-Z0-9]*\b");
-    h.keyword(
-        // Primitive
-        "_p",
-        &regkw([
-            "bool", "usize", "u8", "u16", "u32", "u64", "isize", "i8", "i16", "i32", "i64", "f32",
-            "f64", "char", "str",
-        ]),
-    );
-    h.keyword(
-        // Number
-        "_n",
-        r"\b(?:0x[0-9A-Fa-f_]+|0o[0-7_]+|0b[01_]+|\d[\d_]*(?:\.\d[\d_]*)?(?:[eE][+-]?\d[\d_]*)?)(?:[iu](?:8|16|32|64|128|size)|f(?:32|64))?\b",
-    );
-    // Boolean
-    h.keyword("_b", r"\b(true|false)\b");
-    // Macro
-    h.keyword("_m", r"[a-zA-Z_][a-zA-Z0-9_]*!");
-    // Function
-    h.keyword("_f", r"\b[a-z][a-zA-Z0-9_]*\(");
-    // Function
-    h.keyword("_f", r"\b(zero)\b");
-    // Function
-    h.keyword("_f", r"\b([a-z][a-zA-Z0-9_]*)\s*\(");
-    // Variable
-    h.keyword("_v", r"\b[a-z][a-zA-Z0-9_]*\b");
-    h
-});
+#[derive(Clone, Copy, Debug, Display, EnumIter, EnumString, IntoStaticStr, PartialEq)]
+#[strum(serialize_all = "lowercase")]
+pub enum Control {
+    Break,
+    Continue,
+    Intrinsic,
+    Loop,
+    Match,
+    Return,
+    Yield,
+    For,
+    While,
+    If,
+    Else,
+    In,
+    Impossible,
+    Unrecognized,
+}
 
-/// Converts Rust code contained in the input [`str`] to an HTML [`String`]
-pub fn rust_html(rust_code: &str) -> String {
-    let code = rust_code
-        .lines()
-        .map(str::to_string)
-        .collect::<Vec<String>>();
+#[derive(Clone, Copy, Debug, Display, EnumIter, EnumString, IntoStaticStr, PartialEq)]
+pub enum Constant {
+    Some,
+    None,
+    Melee,
+    Ranged,
+    Physical,
+    Undefined,
+    Unknown,
+    Unspecified,
+    Mixed,
+    True,
+    Adaptive,
+    Onhit,
+    OnhitMin,
+    OnhitMax,
+    Area,
+    AreaOnhit,
+    AreaOnhitMin,
+    AreaOnhitMax,
+    Magic,
+    Void,
+    _1,
+    _2,
+    _3,
+    _4,
+    _5,
+    _6,
+    _7,
+    _8,
+    Min,
+    _1Min,
+    _2Min,
+    _3Min,
+    _4Min,
+    _5Min,
+    _6Min,
+    _7Min,
+    _8Min,
+    Max,
+    _1Max,
+    _2Max,
+    _3Max,
+    _4Max,
+    _5Max,
+    _6Max,
+    _7Max,
+    _8Max,
+    Mega,
+    Minion,
+    Minion1,
+    Minion2,
+    Minion3,
+    MinionMax,
+    Monster,
+    Monster1,
+    Monster2,
+    Monster3,
+    Monster4,
+    MonsterMax,
+}
 
-    let mut h = RUST_HIGHLIGHTER.clone();
-    h.run(&code);
+#[derive(Clone, Copy, Debug, Display, IntoStaticStr, PartialEq)]
+pub enum KnownToken {
+    Keyword(Keyword),
+    Primitive(Primitive),
+    Control(Control),
+    Constant(Constant),
+}
 
-    let mut bracket_stack: Vec<u8> = Vec::new();
-    let mut out = String::new();
-    for (i, line) in code.iter().enumerate() {
-        let mut line_html = String::new();
-
-        for token in h.line(i, line) {
-            match token {
-                TokOpt::Some(text, kind) => match kind.as_str() {
-                    "_v" if text.ends_with("__fn__") => {
-                        let name = &text[..text.len() - "__fn__".len()];
-                        line_html.push_str(&format!(r#"<span class="_f">{name}</span>"#));
-                    }
-                    "_f" if text.ends_with('(') => {
-                        let name = &text[..text.len() - 1];
-                        line_html.push_str(&format!("<span class=\"{kind}\">{name}</span>"));
-                        let c = ((bracket_stack.len() % 3) + 1) as u8;
-                        bracket_stack.push(c);
-                        line_html.push_str(&format!(r#"<span class="_b{c}">(</span>"#));
-                    }
-                    "_s" => {
-                        let mut buf = String::new();
-                        let flush = |buf: &mut String, line_html: &mut String| {
-                            if !buf.is_empty() {
-                                line_html.push_str(&format!(r#"<span class="_s">{buf}</span>"#));
-                                buf.clear();
-                            }
-                        };
-                        for ch in text.chars() {
-                            match ch == '{' || ch == '}' {
-                                true => {
-                                    flush(&mut buf, &mut line_html);
-                                    line_html.push_str(&format!(r#"<span class="_k">{ch}</span>"#));
-                                }
-                                false => {
-                                    buf.push(ch);
-                                }
-                            }
-                        }
-                        flush(&mut buf, &mut line_html);
-                    }
-                    "_c" if text.starts_with("::") => {
-                        let name = &text[2..];
-                        line_html.push_str("::");
-                        line_html.push_str(&format!("<span class=\"{kind}\">{name}</span>"));
-                    }
-                    "_x" => {
-                        let text = text.trim_matches(|c| c == '*' || c == '/').trim();
-                        line_html.push_str(&format!("<span class=\"{kind}\">{text}</span>"));
-                    }
-                    kind => {
-                        line_html.push_str(&format!("<span class=\"{kind}\">{text}</span>"));
-                    }
-                },
-                TokOpt::None(text) => {
-                    for ch in text.chars() {
-                        match ch {
-                            '(' | '[' | '{' => {
-                                let c = ((bracket_stack.len() % 3) + 1) as u8;
-                                bracket_stack.push(c);
-                                line_html.push_str(&format!(r#"<span class="_b{c}">{ch}</span>"#));
-                            }
-                            ')' | ']' | '}' => match bracket_stack.pop() {
-                                Some(c) => {
-                                    line_html
-                                        .push_str(&format!(r#"<span class="_b{c}">{ch}</span>"#));
-                                }
-                                None => {
-                                    line_html.push(ch);
-                                }
-                            },
-                            _ => line_html.push(ch),
-                        }
-                    }
-                }
-            }
+impl KnownToken {
+    pub fn check(text: &str) -> Option<Op> {
+        fn parse<T: core::str::FromStr>(
+            text: &str,
+            constructor: fn(T) -> KnownToken,
+        ) -> Option<KnownToken> {
+            text.parse::<T>().ok().map(constructor)
         }
 
-        out.push_str(&line_html);
-        out.push('\n');
+        None.or_else(|| parse(text, Self::Keyword))
+            .or_else(|| parse(text, Self::Primitive))
+            .or_else(|| parse(text, Self::Control))
+            .or_else(|| parse(text, Self::Constant))
+            .map(Op::Known)
+    }
+}
+
+#[derive(Clone, Copy, Debug, EnumString, IntoStaticStr, PartialEq)]
+pub enum Bracket {
+    #[strum(serialize = "(")]
+    RParen,
+    #[strum(serialize = ")")]
+    LParen,
+    #[strum(serialize = "{")]
+    RCurly,
+    #[strum(serialize = "}")]
+    LCurly,
+    #[strum(serialize = "[")]
+    RBracket,
+    #[strum(serialize = "]")]
+    LBracket,
+}
+
+#[derive(Clone, Debug, IntoStaticStr, PartialEq)]
+pub enum Op {
+    Span { class: Class, len: Range<usize> },
+    Raw(Range<usize>),
+    Bracket { class: Class, this: Bracket },
+    Known(KnownToken),
+    Space(u8),
+    NewLine,
+}
+
+#[derive(Clone, Copy, Debug, Display, EnumIter, FromStr, IntoStaticStr, PartialEq)]
+pub enum Class {
+    Comment,
+    String,
+    Lifetime,
+    Keyword,
+    Control,
+    Constant,
+    Type,
+    Primitive,
+    Number,
+    Boolean,
+    Macro,
+    Function,
+    Variable,
+    Bracket1,
+    Bracket2,
+    Bracket3,
+}
+
+impl Class {
+    pub const fn bracket(len: usize) -> Self {
+        match len % 3 + 1 {
+            1 => Class::Bracket1,
+            2 => Class::Bracket2,
+            3 => Class::Bracket3,
+            _ => unreachable!(),
+        }
+    }
+}
+
+pub struct Builder {
+    pub source: String,
+    pub ops: Vec<Op>,
+    bracket_stack: Vec<Class>,
+}
+
+impl Builder {
+    pub fn new() -> Self {
+        Self {
+            source: String::new(),
+            ops: Vec::new(),
+            bracket_stack: Vec::new(),
+        }
     }
 
-    format!("<pre>{out}</pre>")
+    pub fn bracket(&mut self, this: Bracket) {
+        let class = match this {
+            Bracket::RParen | Bracket::RCurly | Bracket::RBracket => {
+                let class = Class::bracket(self.bracket_stack.len());
+                self.bracket_stack.push(class);
+                class
+            }
+            Bracket::LParen | Bracket::LCurly | Bracket::LBracket => {
+                self.bracket_stack.pop().unwrap_or(Class::Bracket1)
+            }
+        };
+        self.ops.push(Op::Bracket { class, this });
+    }
+
+    pub fn raw(&mut self, text: &str) {
+        let start = self.source.len();
+
+        self.source.push_str(text);
+        self.ops.push(Op::Raw(start..self.source.len()));
+    }
+
+    pub fn span(&mut self, class: Class, text: &str) {
+        if let Some(op) = KnownToken::check(text) {
+            return self.ops.push(op);
+        }
+
+        eprintln!("Span::{class:?}({text:?})");
+
+        let start = self.source.len();
+
+        self.source.push_str(text);
+        self.ops.push(Op::Span {
+            class,
+            len: start..self.source.len(),
+        });
+    }
+
+    pub fn space(&mut self, n: u8) {
+        self.ops.push(Op::Space(n));
+    }
+
+    pub fn newline(&mut self) {
+        self.ops.push(Op::NewLine);
+    }
 }
+
+static RUST_HIGHLIGHTER: LazyLock<Highlighter> = LazyLock::new(|| {
+    let mut h = Highlighter::new(4);
+
+    h.bounded("Comment", r"/\*", r"\*/", false);
+    h.keyword("Comment", r"//.*$");
+    h.bounded_interp("String", "\"", "\"", "\\{", "\\}", true);
+    h.keyword("Lifetime", r"'\w+");
+
+    trait RegexAdd: IntoEnumIterator + ToString {
+        fn regadd() -> String {
+            format!(
+                r"\b({})\b",
+                Self::iter()
+                    .map(|a| a.to_string())
+                    .collect::<Vec<_>>()
+                    .join("|")
+            )
+        }
+    }
+
+    impl<T: IntoEnumIterator + ToString> RegexAdd for T {}
+
+    h.keyword("Keyword", &Keyword::regadd());
+    h.keyword("Control", &Control::regadd());
+    h.keyword("Constant", r"::[A-Z_][A-Za-z0-9_]*\b");
+    h.keyword("Constant", r"\b[A-Z][A-Z0-9_]*\b");
+    h.keyword("Constant", &Constant::regadd());
+    h.keyword("Type", r"\b[A-Z][a-zA-Z0-9]*\b");
+    h.keyword("Primitive", &Primitive::regadd());
+    h.keyword("Number", r"\b(?:0x[0-9A-Fa-f_]+|0o[0-7_]+|0b[01_]+|\d[\d_]*(?:\.\d[\d_]*)?(?:[eE][+-]?\d[\d_]*)?)(?:[iu](?:8|16|32|64|128|size)|f(?:32|64))?\b");
+    h.keyword("Boolean", r"\b(true|false)\b");
+    h.keyword("Macro", r"[a-zA-Z_][a-zA-Z0-9_]*!");
+    h.keyword("Function", r"\b[a-z][a-zA-Z0-9_]*\(");
+    h.keyword("Function", r"\b(zero)\b");
+    h.keyword("Function", r"\b([a-z][a-zA-Z0-9_]*)\s*\(");
+    h.keyword("Variable", r"\b[a-z][a-zA-Z0-9_]*\b");
+    h
+});
 
 static JSON_HIGHLIGHTER: LazyLock<Highlighter> = LazyLock::new(|| {
     let mut h = Highlighter::new(4);
@@ -267,6 +344,109 @@ static JSON_HIGHLIGHTER: LazyLock<Highlighter> = LazyLock::new(|| {
     h.keyword("_b", r"\b(?:null|true|false)\b");
     h
 });
+
+pub fn rust_html(input: &str) -> Builder {
+    let code = input.lines().map(str::to_string).collect::<Vec<_>>();
+
+    let mut h = RUST_HIGHLIGHTER.clone();
+    h.run(&code);
+
+    let mut b = Builder::new();
+
+    for (i, line) in code.iter().enumerate() {
+        for token in h.line(i, line) {
+            match token {
+                TokOpt::Some(text, k) if let Ok(kind) = k.parse() => match kind {
+                    Class::Variable if text.ends_with("__fn__") => {
+                        b.span(Class::Function, &text[..text.len() - "__fn__".len()]);
+                    }
+                    Class::Function if text.ends_with('(') => {
+                        let name = &text[..text.len() - 1];
+
+                        b.span(kind, name);
+                        b.bracket(Bracket::RParen);
+                    }
+                    Class::String => {
+                        let mut start = 0;
+
+                        for (i, ch) in text.char_indices() {
+                            if ch == '{' || ch == '}' {
+                                if start != i {
+                                    b.span(kind, &text[start..i]);
+                                }
+
+                                b.span(Class::Keyword, &text[i..i + ch.len_utf8()]);
+                                start = i + ch.len_utf8();
+                            }
+                        }
+
+                        if start != text.len() {
+                            b.span(kind, &text[start..]);
+                        }
+                    }
+                    Class::Constant if text.starts_with("::") => {
+                        b.raw("::");
+                        b.span(Class::Constant, &text[2..]);
+                    }
+                    Class::Comment => {
+                        let txt = text.trim_matches(|c| c == '*' || c == '/').trim();
+                        b.span(kind, txt);
+                    }
+                    _ => b.span(kind, &text),
+                },
+                TokOpt::Some(text, _) | TokOpt::None(text) => {
+                    let mut buf = String::new();
+                    let mut spaces = 0u8;
+
+                    macro_rules! flush_buf {
+                        () => {
+                            if !buf.is_empty() {
+                                b.raw(&buf);
+                                buf.clear();
+                            }
+                        };
+                    }
+                    macro_rules! flush_spaces {
+                        () => {
+                            if spaces > 0 {
+                                b.space(spaces);
+                                spaces = 0;
+                            }
+                        };
+                    }
+
+                    for ch in text.chars() {
+                        if let Some(bracket) = match ch {
+                            '(' => Some(Bracket::RParen),
+                            ')' => Some(Bracket::LParen),
+                            '{' => Some(Bracket::RCurly),
+                            '}' => Some(Bracket::LCurly),
+                            '[' => Some(Bracket::RBracket),
+                            ']' => Some(Bracket::LBracket),
+                            _ => None,
+                        } {
+                            flush_spaces!();
+                            flush_buf!();
+                            b.bracket(bracket);
+                        } else if ch == ' ' {
+                            flush_buf!();
+                            spaces += 1;
+                        } else {
+                            flush_spaces!();
+                            buf.push(ch);
+                        }
+                    }
+                    flush_spaces!();
+                    flush_buf!();
+                }
+            }
+        }
+
+        b.newline();
+    }
+
+    b
+}
 
 /// Converts JSON code contained in the input [`str`] to an HTML [`String`]
 pub fn json_html(data: &str) -> String {

@@ -61,386 +61,216 @@ mod tests {
 }
 
 mod __tests {
-    use derive_more::{Display, FromStr};
-    use std::{ops::Range, sync::LazyLock};
-    use strum::{EnumIter, IntoEnumIterator};
-    use synoptic::{Highlighter, TokOpt};
+    use tutorlolv2_build_dep::libfmt::{
+        Bracket, Builder, Class, Keyword, KnownToken, Op, rust_html,
+    };
 
-    #[derive(Clone, Copy, Debug, Display, FromStr, EnumIter)]
-    #[display(rename_all = "lowercase")]
-    enum Keyword {
-        As,
-        Void,
-        Pub,
-        Use,
-        Crate,
-        Mut,
-        Static,
-        Ref,
-        Dyn,
-        Unsafe,
-        Extern,
-        Type,
-        Super,
-        Mod,
-        Struct,
-        Const,
-        Enum,
-        Fn,
-        Let,
-        Impl,
-        Trait,
-        Where,
-        #[display("Self")]
-        SelfUpper,
-        #[display("self")]
-        SelfLower,
+    #[test]
+    fn __test() {
+        assert_eq!("(".parse(), Ok(Bracket::RParen));
+        assert_eq!(")".parse(), Ok(Bracket::LParen));
+        assert_eq!("[".parse(), Ok(Bracket::RBracket));
+        assert_eq!("]".parse(), Ok(Bracket::LBracket));
+        assert_eq!("{".parse(), Ok(Bracket::RCurly));
+        assert_eq!("}".parse(), Ok(Bracket::LCurly));
+        assert_eq!("Self".parse(), Ok(Keyword::SelfUpper));
+        assert_eq!("self".parse(), Ok(Keyword::SelfLower));
+        assert_eq!(
+            KnownToken::check("Self"),
+            Some(Op::Known(KnownToken::Keyword(Keyword::SelfUpper)))
+        );
+        assert!(KnownToken::check("impl").is_some(),);
+
+        let input = r#"impl Generator for Neeko {
+    fn generate(&mut self) -> MayFail {
+        self.ability(
+            Key::Q,
+            [
+                (1, Min), /* Initial Magic Damage */
+                (2, _1),  /* Subsequent Magic Damage */
+                (3, Max), /* Total Maximum Magic Damage */
+            ],
+        )
+        .ability(Key::W, [(0, Void) /* Bonus Magic Damage */])
+        .ability(Key::E, [(1, Void) /* Magic Damage */])
+        .ability(Key::R, [(0, Void) /* Magic Damage */])
+        .combo([
+            Ability(E(Void)),
+            Ability(Q(Max)),
+            Attack,
+            Ability(W(Void)),
+            Ability(R(Void)),
+        ])?
+        .combo([Ability(Q(_1)), Attack, Ability(W(Void))])?
+        .end()
+    }
+}"#;
+
+        let builder = rust_html(input);
+        tutorlolv2_wiki::write("__source.txt", &builder.source).unwrap();
+        tutorlolv2_wiki::write("__ops.txt", format!("{:#?}", builder.ops)).unwrap();
+        render(builder)
     }
 
-    #[derive(Clone, Copy, Debug, Display, FromStr, EnumIter)]
-    #[display(rename_all = "lowercase")]
-    enum Primitive {
-        Bool,
-        Usize,
-        U8,
-        U16,
-        U32,
-        U64,
-        Isize,
-        I8,
-        I16,
-        I32,
-        I64,
-        F32,
-        F64,
-        Char,
-        Str,
-    }
+    fn render(builder: Builder) {
+        let Builder { source, ops, .. } = builder;
+        let mut output = String::new();
 
-    #[derive(Clone, Copy, Debug, Display, FromStr, EnumIter)]
-    #[display(rename_all = "lowercase")]
-    enum Control {
-        Break,
-        Continue,
-        Intrinsic,
-        Loop,
-        Match,
-        Return,
-        Yield,
-        For,
-        While,
-        If,
-        Else,
-        In,
-        Impossible,
-        Unrecognized,
-    }
-
-    #[derive(Clone, Copy, Debug, Display, FromStr, EnumIter)]
-    enum Constant {
-        Some,
-        None,
-        Melee,
-        Ranged,
-        Physical,
-        Undefined,
-        Unknown,
-        Unspecified,
-        Mixed,
-        True,
-        Adaptive,
-        Onhit,
-        OnhitMin,
-        OnhitMax,
-        Area,
-        AreaOnhit,
-        AreaOnhitMin,
-        AreaOnhitMax,
-        Magic,
-        Void,
-        _1,
-        _2,
-        _3,
-        _4,
-        _5,
-        _6,
-        _7,
-        _8,
-        Min,
-        _1Min,
-        _2Min,
-        _3Min,
-        _4Min,
-        _5Min,
-        _6Min,
-        _7Min,
-        _8Min,
-        Max,
-        _1Max,
-        _2Max,
-        _3Max,
-        _4Max,
-        _5Max,
-        _6Max,
-        _7Max,
-        _8Max,
-        Mega,
-        Minion,
-        Minion1,
-        Minion2,
-        Minion3,
-        MinionMax,
-        Monster,
-        Monster1,
-        Monster2,
-        Monster3,
-        Monster4,
-        MonsterMax,
-    }
-
-    #[derive(Clone, Copy, Debug, Display)]
-    enum KnownToken {
-        Keyword(Keyword),
-        Primitive(Primitive),
-        Control(Control),
-        Constant(Constant),
-    }
-
-    impl KnownToken {
-        fn check(text: &str) -> Option<Op> {
-            fn parse<T: core::str::FromStr>(
-                text: &str,
-                constructor: fn(T) -> KnownToken,
-                class: Class,
-            ) -> Option<(KnownToken, Class)> {
-                text.parse::<T>().ok().map(|v| (constructor(v), class))
-            }
-
-            None.or_else(|| parse(text, Self::Keyword, Class::Keyword))
-                .or_else(|| parse(text, Self::Primitive, Class::Primitive))
-                .or_else(|| parse(text, Self::Control, Class::Control))
-                .or_else(|| parse(text, Self::Constant, Class::Constant))
-                .map(|(token, kind)| Op::Known { kind, token })
-        }
-    }
-
-    enum Op {
-        Span { kind: Class, len: Range<usize> },
-        Known { kind: Class, token: KnownToken },
-        Raw(Range<usize>),
-        Text(Range<usize>),
-        Space(u8),
-        Indent(u8),
-        NewLine,
-    }
-
-    #[derive(Clone, Copy, Debug, Display, FromStr, EnumIter)]
-    pub enum Class {
-        Comment,
-        String,
-        Lifetime,
-        Keyword,
-        Control,
-        Constant,
-        Type,
-        Primitive,
-        Number,
-        Boolean,
-        Macro,
-        Function,
-        Variable,
-        Bracket1,
-        Bracket2,
-        Bracket3,
-    }
-
-    impl Class {
-        pub const fn bracket(len: usize) -> Self {
-            match len % 3 + 1 {
-                1 => Class::Bracket1,
-                2 => Class::Bracket2,
-                3 => Class::Bracket3,
-                _ => unreachable!(),
-            }
-        }
-    }
-
-    struct Builder {
-        source: String,
-        ops: Vec<Op>,
-    }
-
-    impl Builder {
-        fn new() -> Self {
-            Self {
-                source: String::new(),
-                ops: Vec::new(),
-            }
+        macro_rules! push_str {
+            ($class:expr, $text:expr) => {{
+                let r = format!(r#"<span class="{:?}">{}</span>"#, $class, {
+                    let s: &str = $text;
+                    s
+                });
+                output.push_str(&r);
+            }};
         }
 
-        fn raw(&mut self, text: &str) {
-            let start = self.source.len();
-
-            self.source.push_str(text);
-            self.ops.push(Op::Raw(start..self.source.len()));
-        }
-
-        fn span(&mut self, class: Class, text: &str) {
-            if let Some(op) = KnownToken::check(text) {
-                return self.ops.push(op);
-            }
-
-            let start = self.source.len();
-
-            self.source.push_str(text);
-            self.ops.push(Op::Span {
-                kind: class,
-                len: start..self.source.len(),
-            });
-        }
-
-        fn space(&mut self, n: u8) {
-            self.ops.push(Op::Space(n));
-        }
-
-        fn newline(&mut self) {
-            self.ops.push(Op::NewLine);
-        }
-    }
-
-    static RUST_HIGHLIGHTER: LazyLock<Highlighter> = LazyLock::new(|| {
-        let mut h = Highlighter::new(4);
-
-        h.bounded("Comment", r"/\*", r"\*/", false);
-        h.keyword("Comment", r"//.*$");
-        h.bounded_interp("String", "\"", "\"", "\\{", "\\}", true);
-        h.keyword("Lifetime", r"'\w+");
-
-        trait RegexAdd: IntoEnumIterator + ToString {
-            fn regadd() -> String {
-                format!(
-                    r"\b({})\b",
-                    Self::iter()
-                        .map(|a| a.to_string())
-                        .collect::<Vec<_>>()
-                        .join("|")
-                )
-            }
-        }
-
-        impl<T: IntoEnumIterator + ToString> RegexAdd for T {}
-
-        h.keyword("Keyword", &Keyword::regadd());
-        h.keyword("Control", &Control::regadd());
-        h.keyword("Constant", r"::[A-Z_][A-Za-z0-9_]*\b");
-        h.keyword("Constant", r"\b[A-Z][A-Z0-9_]*\b");
-        h.keyword("Constant", &Constant::regadd());
-        h.keyword("Type", r"\b[A-Z][a-zA-Z0-9]*\b");
-        h.keyword("Primitive", &Primitive::regadd());
-        h.keyword("Number", r"\b(?:0x[0-9A-Fa-f_]+|0o[0-7_]+|0b[01_]+|\d[\d_]*(?:\.\d[\d_]*)?(?:[eE][+-]?\d[\d_]*)?)(?:[iu](?:8|16|32|64|128|size)|f(?:32|64))?\b");
-        h.keyword("Boolean", r"\b(true|false)\b");
-        h.keyword("Macro", r"[a-zA-Z_][a-zA-Z0-9_]*!");
-        h.keyword("Function", r"\b[a-z][a-zA-Z0-9_]*\(");
-        h.keyword("Function", r"\b(zero)\b");
-        h.keyword("Function", r"\b([a-z][a-zA-Z0-9_]*)\s*\(");
-        h.keyword("Variable", r"\b[a-z][a-zA-Z0-9_]*\b");
-        h
-    });
-
-    fn highlight(input: &str) -> Builder {
-        let code = input.lines().map(str::to_string).collect::<Vec<_>>();
-
-        // let mut h = RUST_HIGHLIGHTER.clone();
-        let mut h: Highlighter = todo!();
-        h.run(&code);
-
-        let mut b = Builder::new();
-        let mut bracket_stack = Vec::new();
-
-        for (i, line) in code.iter().enumerate() {
-            for token in h.line(i, line) {
-                match token {
-                    TokOpt::Some(text, k) if let Ok(kind) = k.parse() => match kind {
-                        Class::Variable if text.ends_with("__fn__") => {
-                            b.span(Class::Function, &text[..text.len() - "__fn__".len()]);
-                        }
-                        Class::Function if text.ends_with('(') => {
-                            let name = &text[..text.len() - 1];
-
-                            b.span(kind, name);
-
-                            let bracket = Class::bracket(bracket_stack.len());
-                            bracket_stack.push(bracket);
-
-                            b.span(bracket, "(");
-                        }
-                        Class::String => {
-                            let mut start = 0;
-
-                            for (i, ch) in text.char_indices() {
-                                if ch == '{' || ch == '}' {
-                                    if start != i {
-                                        b.span(kind, &text[start..i]);
-                                    }
-
-                                    b.span(Class::Keyword, &text[i..i + ch.len_utf8()]);
-                                    start = i + ch.len_utf8();
-                                }
-                            }
-
-                            if start != text.len() {
-                                b.span(kind, &text[start..]);
-                            }
-                        }
-                        Class::Constant if text.starts_with("::") => {
-                            b.raw("::");
-                            b.span(Class::Constant, &text[2..]);
-                        }
-                        Class::Comment => {
-                            let txt = text.trim_matches(|c| c == '*' || c == '/').trim();
-                            b.span(kind, txt);
-                        }
-                        _ => b.span(kind, &text),
-                    },
-                    TokOpt::Some(text, _) | TokOpt::None(text) => {
-                        let mut buf = String::new();
-
-                        for ch in text.chars() {
-                            match ch {
-                                '(' | '[' | '{' => {
-                                    if !buf.is_empty() {
-                                        b.raw(&buf);
-                                        buf.clear();
-                                    }
-
-                                    let class = Class::bracket(bracket_stack.len());
-                                    bracket_stack.push(class);
-
-                                    b.span(class, ch.encode_utf8(&mut [0; 4]));
-                                }
-                                ')' | ']' | '}' => {
-                                    if !buf.is_empty() {
-                                        b.raw(&buf);
-                                        buf.clear();
-                                    }
-
-                                    let class = bracket_stack.pop().unwrap_or(Class::Bracket1);
-                                    b.span(class, ch.encode_utf8(&mut [0; 4]));
-                                }
-                                _ => buf.push(ch),
-                            }
-                        }
-
-                        if !buf.is_empty() {
-                            b.raw(&buf);
-                        }
+        for op in ops {
+            match op {
+                Op::Raw(range) => output.push_str(&source[range]),
+                Op::Span { class, len } => push_str!(class, &source[len]),
+                Op::Bracket { class, this } => {
+                    push_str!(class, this.into());
+                }
+                Op::Known(token) => match token {
+                    KnownToken::Keyword(v) => push_str!(Class::Keyword, v.into()),
+                    KnownToken::Primitive(v) => push_str!(Class::Primitive, v.into()),
+                    KnownToken::Control(v) => push_str!(Class::Control, v.into()),
+                    KnownToken::Constant(v) => push_str!(Class::Constant, v.into()),
+                },
+                Op::Space(n) => {
+                    for _ in 0..n {
+                        output.push(' ');
                     }
                 }
+                Op::NewLine => output.push('\n'),
             }
-
-            b.newline();
         }
 
-        b
+        let out = format!(
+            "<!DOCTYPE html>\n<html>\n<head>\n<title>tutorlolv2</title>\n<style>\n{CSS}\n</style>\n</head>\n<body>\n<pre>\n{output}\n</pre>\n</body>\n</html>"
+        );
+
+        tutorlolv2_wiki::write("__render.txt", out).unwrap();
     }
+
+    const CSS: &str = r#"
+html {
+    line-height: 1.5;
+    text-size-adjust: 100%;
+    tab-size: 4;
+    font-family:
+        ui-sans-serif,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        "Helvetica Neue",
+        Arial,
+        "Noto Sans",
+        sans-serif,
+        "Apple Color Emoji",
+        "Segoe UI Emoji",
+        "Segoe UI Symbol",
+        "Noto Color Emoji";
+    font-feature-settings: normal;
+    font-variation-settings: normal;
+}
+
+.Control {
+    color: #c586c0;
+}
+
+.Lifetime,
+.Keyword,
+.Macro,
+.Boolean {
+    color: #569cd6;
+}
+
+.Primitive,
+.Type {
+    color: #4ec8b0;
+}
+
+.Comment {
+    color: #969696;
+    background-color: #262626;
+    padding: 1px 0;
+}
+
+.Function {
+    color: #dcdcaa;
+}
+
+.Number {
+    color: #b3cda8;
+}
+
+.Constant,
+._i {
+    color: #4fc1ff;
+}
+
+.Bracket1 {
+    color: #ffd700;
+}
+
+.Bracket2 {
+    color: #da70d6;
+}
+
+.Bracket3 {
+    color: #189fff;
+}
+
+.String {
+    white-space: break-spaces;
+    color: #ce9178;
+}
+
+.Variable {
+    color: #9cdcfe;
+}
+
+code,
+pre {
+    color: #d4d4d4;
+    line-height: 1.5;
+    background: transparent;
+    font-family: Consolas, Monaco, "AndaleMono", "UbuntuMono", monospace;
+    font-size: 1em;
+}
+
+code {
+    display: block;
+    overflow-x: auto;
+}
+
+code pre {
+    margin: 0;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+hr,
+figure,
+p,
+pre {
+    margin: 0px;
+}
+
+body {
+    color: #ffffff;
+    background-color: #121212;
+    margin: 0;
+}</style>"#;
 }

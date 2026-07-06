@@ -167,18 +167,20 @@ fn build_docs() -> MayFail {
     let mut exports = String::with_capacity(4 * 1024 * 1024);
 
     for (name, value) in [
-        ("IGNITE_OFFSET", IGNITE_FN),
-        ("ONHIT_EFFECT_OFFSET", ONHIT_EFFECT),
-        ("BASIC_ATTACK_OFFSET", BASIC_ATTACK),
-        ("TOWER_DAMAGE_OFFSET", TOWER_DAMAGE),
-        ("CRITICAL_STRIKE_OFFSET", CRITICAL_STRIKE),
-        ("ONHIT_EFFECT_FN_OFFSET", ONHIT_EFFECT_FN),
-        ("TOWER_DAMAGE_FN_OFFSET", TOWER_DAMAGE_FN),
-        ("BASIC_ATTACK_FN_OFFSET", BASIC_ATTACK_FN),
-        ("CRITICAL_STRIKE_FN_OFFSET", CRITICAL_STRIKE_FN),
+        ("IGNITE", IGNITE_FN),
+        ("ONHIT_EFFECT", ONHIT_EFFECT),
+        ("BASIC_ATTACK", BASIC_ATTACK),
+        ("TOWER_DAMAGE", TOWER_DAMAGE),
+        ("CRITICAL_STRIKE", CRITICAL_STRIKE),
+        ("ONHIT_EFFECT_FN", ONHIT_EFFECT_FN),
+        ("TOWER_DAMAGE_FN", TOWER_DAMAGE_FN),
+        ("BASIC_ATTACK_FN", BASIC_ATTACK_FN),
+        ("CRITICAL_STRIKE_FN", CRITICAL_STRIKE_FN),
     ] {
-        let range = tracker.push(&rust_html(value));
-        writeln!(exports, "pub static {name}: Range<usize> = {range:?};")?;
+        return todo!();
+        // let builder = rust_html(value);
+        // let range = tracker.push(builder);
+        // writeln!(exports, "pub static {name}: Range<usize> = {range:?};")?;
     }
 
     let mut batches = [Tag::Champions, Tag::Items, Tag::Runes]

@@ -8,7 +8,7 @@ use std::{
     sync::LazyLock,
 };
 
-use crate::libfmt;
+use crate::libfmt::{self, Builder};
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct FmtArgs<T> {
@@ -70,11 +70,14 @@ pub fn batch(src: String) -> BTreeMap<String, BTreeMap<String, Vec<FmtOutput>>> 
                 block = block.replace(from, into);
             }
 
-            let formatter = if json.target == "json" {
-                libfmt::json_html
-            } else {
-                libfmt::rust_html
-            };
+            // let formatter = if json.target == "json" {
+            //     libfmt::json_html
+            // } else {
+            //     libfmt::rust_html
+            // };
+            //
+            return todo!();
+            let formatter = |_| todo!();
 
             let html = formatter(&block);
 
@@ -121,6 +124,10 @@ impl<'a> Tracker<'a> {
     /// the `end` offset of the last record
     pub const fn offset(&self) -> usize {
         self.inner.len()
+    }
+
+    pub fn push_builder(&mut self, builder: &Builder) -> Range<usize> {
+        todo!()
     }
 
     pub fn push(&mut self, value: &str) -> Range<usize> {
