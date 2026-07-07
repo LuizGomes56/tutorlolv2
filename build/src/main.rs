@@ -1,4 +1,3 @@
-use serde::de::DeserializeOwned;
 use tutorlolv2_build_dep::{CPARSER, IPARSER, MayFail, RPARSER, generators::parser::Parser};
 
 fn main() -> MayFail {
@@ -15,7 +14,9 @@ fn main() -> MayFail {
     IPARSER.run_all();
     RPARSER.run_all();
 
-    Ok(())
+    unsafe { std::env::set_var("OUT_DIR", "./build_output") };
+
+    tutorlolv2_build_dep::run()
 }
 
 #[cfg(test)]
@@ -126,10 +127,18 @@ mod __tests {
             }};
         }
 
+        let mut i = 0;
+
         for op in ops {
             match op {
-                Op::Raw(range) => output.push_str(&source[range]),
-                Op::Span { class, len } => push_str!(class, &source[len]),
+                Op::Raw(len) => {
+                    output.push_str(&source[i..i + len as usize]);
+                    i += len as usize;
+                }
+                Op::Span { class, len } => {
+                    push_str!(class, &source[i..i + len as usize]);
+                    i += len as usize;
+                }
                 Op::Bracket { class, this } => {
                     push_str!(class, this.into());
                 }
@@ -138,6 +147,10 @@ mod __tests {
                     KnownToken::Primitive(v) => push_str!(Class::Primitive, v.into()),
                     KnownToken::Control(v) => push_str!(Class::Control, v.into()),
                     KnownToken::Constant(v) => push_str!(Class::Constant, v.into()),
+                    KnownToken::Variable(v) => push_str!(Class::Variable, v.into()),
+                    KnownToken::Type(v) => push_str!(Class::Type, v.into()),
+                    KnownToken::Function(v) => push_str!(Class::Function, v.into()),
+                    KnownToken::Macro(v) => push_str!(Class::Macro, v.into()),
                 },
                 Op::Space(n) => {
                     for _ in 0..n {

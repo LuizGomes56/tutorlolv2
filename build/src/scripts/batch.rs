@@ -1,3 +1,4 @@
+use crate::libfmt::{self, Builder, Op};
 use rayon::iter::{ParallelBridge, ParallelIterator};
 use regex::Regex;
 use serde::{Deserialize, Serialize};
@@ -7,8 +8,6 @@ use std::{
     ops::Range,
     sync::LazyLock,
 };
-
-use crate::libfmt::{self, Builder};
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct FmtArgs<T> {
@@ -21,8 +20,8 @@ pub struct FmtArgs<T> {
 
 #[derive(Debug, Serialize)]
 pub struct FmtOutput {
-    pub html_range: Range<usize>,
-    pub html: String,
+    pub range: Range<usize>,
+    pub builder: Builder,
     pub json: FmtArgs<Value>,
     pub delete_range: Range<usize>,
 }
@@ -70,16 +69,17 @@ pub fn batch(src: String) -> BTreeMap<String, BTreeMap<String, Vec<FmtOutput>>> 
                 block = block.replace(from, into);
             }
 
+            let formatter = libfmt::rust_html;
+            // formatter had the type: String because both functions returned HTML.
+            // Now they return struct Builder with the IR
             // let formatter = if json.target == "json" {
             //     libfmt::json_html
             // } else {
             //     libfmt::rust_html
             // };
             //
-            return todo!();
-            let formatter = |_| todo!();
 
-            let html = formatter(&block);
+            let builder = formatter(&block);
 
             let mut absolute_end = attr_end + end;
 
@@ -89,8 +89,8 @@ pub fn batch(src: String) -> BTreeMap<String, BTreeMap<String, Vec<FmtOutput>>> 
 
             FmtOutput {
                 delete_range: start_index..absolute_end,
-                html,
-                html_range: 0..0,
+                builder,
+                range: 0..0,
                 json,
             }
         })
@@ -107,48 +107,4 @@ pub fn batch(src: String) -> BTreeMap<String, BTreeMap<String, Vec<FmtOutput>>> 
     }
 
     map
-}
-
-pub struct Tracker<'a> {
-    inner: &'a mut String,
-}
-
-impl<'a> Tracker<'a> {
-    /// Creates a new instance of self, from an existing string that
-    /// should live longer than this struct
-    pub const fn new(inner: &'a mut String) -> Self {
-        Self { inner }
-    }
-
-    /// Get the current length of the string, which represents
-    /// the `end` offset of the last record
-    pub const fn offset(&self) -> usize {
-        self.inner.len()
-    }
-
-    pub fn push_builder(&mut self, builder: &Builder) -> Range<usize> {
-        todo!()
-    }
-
-    pub fn push(&mut self, value: &str) -> Range<usize> {
-        if let Some(pos) = self.inner.find(value) {
-            return pos..pos + value.len();
-        }
-
-        let start = self.offset();
-        self.inner.push_str(value);
-        start..self.offset()
-    }
-
-    pub fn batch(&mut self, batch: &mut BTreeMap<String, BTreeMap<String, Vec<FmtOutput>>>) {
-        for value in batch.values_mut() {
-            for data in value.values_mut() {
-                for output in data.iter_mut() {
-                    if !output.json.default {
-                        output.html_range = self.push(&output.html);
-                    }
-                }
-            }
-        }
-    }
 }

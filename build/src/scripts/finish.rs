@@ -24,7 +24,7 @@ pub fn finish_champions(target: &str, variable: &mut String, value: &mut [FmtOut
 
     let ranges = value
         .iter()
-        .map(|FmtOutput { html_range, .. }| format!("{html_range:?}"))
+        .map(|FmtOutput { range, .. }| format!("{range:?}"))
         .collect::<Vec<_>>()
         .join(",");
 
@@ -53,7 +53,7 @@ pub fn finish_items_or_runes(target: &str, variable: &mut String, value: &mut [F
         "formula" | "generator" | "debug" | "json" => {
             value
                 .iter()
-                .map(|FmtOutput { html_range, .. }| format!("{html_range:?}"))
+                .map(|FmtOutput { range, .. }| format!("{range:?}"))
                 .collect::<Vec<_>>()
                 .join(",")
                 + ","
@@ -63,7 +63,7 @@ pub fn finish_items_or_runes(target: &str, variable: &mut String, value: &mut [F
                 core::array::from_fn(|_| core::array::from_fn(|_| 0..0));
 
             for FmtOutput {
-                html_range,
+                range,
                 json: FmtArgs { meta, .. },
                 ..
             } in value
@@ -71,7 +71,7 @@ pub fn finish_items_or_runes(target: &str, variable: &mut String, value: &mut [F
                 let (attack_type, damage_index) =
                     serde_json::from_value::<(AttackType, DamageIndex)>(meta.clone()).unwrap();
 
-                ranges[attack_type as usize][damage_index as usize] = html_range.clone();
+                ranges[attack_type as usize][damage_index as usize] = range.clone();
             }
 
             format!("{ranges:?},")

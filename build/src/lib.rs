@@ -1,3 +1,5 @@
+use crate::libfmt::Builder;
+
 use {
     crate::{
         generators::{
@@ -9,7 +11,7 @@ use {
         },
         libfmt::{encode_brotli_11, rust_html},
         scripts::{
-            batch::{FmtArgs, FmtOutput, Tracker, batch},
+            batch::{FmtArgs, FmtOutput, batch},
             consts::*,
             finish::{
                 champion_aliases, eval_abilities, eval_items_or_runes, finish_champions,
@@ -162,8 +164,7 @@ pub fn run() -> MayFail {
 }
 
 fn build_docs() -> MayFail {
-    let mut full_block = String::with_capacity(12 * 1024 * 1024);
-    let mut tracker = Tracker::new(&mut full_block);
+    let mut tracker = Builder::new();
     let mut exports = String::with_capacity(4 * 1024 * 1024);
 
     for (name, value) in [
@@ -177,10 +178,9 @@ fn build_docs() -> MayFail {
         ("BASIC_ATTACK_FN", BASIC_ATTACK_FN),
         ("CRITICAL_STRIKE_FN", CRITICAL_STRIKE_FN),
     ] {
-        return todo!();
-        // let builder = rust_html(value);
-        // let range = tracker.push(builder);
-        // writeln!(exports, "pub static {name}: Range<usize> = {range:?};")?;
+        let builder = rust_html(value);
+        let range = tracker.merge(&builder);
+        writeln!(exports, "pub static {name}: Range<usize> = {range:?};")?;
     }
 
     let mut batches = [Tag::Champions, Tag::Items, Tag::Runes]
@@ -339,14 +339,52 @@ fn build_docs() -> MayFail {
         exports.push_str(&docs);
     }
 
-    let (r1, (r2, r3)) = rayon::join(
+    let full_block = tracker.source;
+    let ir = tracker.ops;
+
+    let (r1, (r2, (r3, (r4, r5)))) = rayon::join(
         || tutorlolv2_wiki::write(&OUT_DIR.join("docs").with_extension("txt"), &full_block),
         || {
             rayon::join(
                 || tutorlolv2_wiki::write(&OUT_DIR.join("docs").with_extension("rs"), &exports),
                 || {
-                    let brotli = encode_brotli_11(full_block.as_bytes());
-                    tutorlolv2_wiki::write(&OUT_DIR.join("docs").with_extension("br"), &brotli)
+                    rayon::join(
+                        || {
+                            tutorlolv2_wiki::write(
+                                &OUT_DIR.join("ir").with_extension("rs"),
+                                format!(
+                                    "
+                                    pub const IR_LEN: usize = {len};
+                                    pub static IR: [Op; {len}] = {ir:?};
+                                    ",
+                                    len = ir.len()
+                                ),
+                            )
+                        },
+                        || {
+                            rayon::join(
+                                || -> MayFail {
+                                    let bytes = bincode::encode_to_vec::<
+                                        _,
+                                        bincode::config::Configuration,
+                                    >(
+                                        &ir, bincode::config::Configuration::default()
+                                    )?;
+                                    tutorlolv2_wiki::write(
+                                        &OUT_DIR.join("ir").with_extension("bin"),
+                                        bytes,
+                                    )
+                                },
+                                || {
+                                    let brotli = encode_brotli_11(full_block.as_bytes());
+                                    tutorlolv2_wiki::write(
+                                        &OUT_DIR.join("docs").with_extension("br"),
+                                        &brotli,
+                                    )
+                                },
+                            )
+                        },
+                    )
                 },
             )
         },
@@ -354,5 +392,7 @@ fn build_docs() -> MayFail {
 
     r1?;
     r2?;
-    r3
+    r3?;
+    r4?;
+    r5
 }

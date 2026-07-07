@@ -1,8 +1,10 @@
 use {
+    crate::scripts::batch::FmtOutput,
+    bincode::{Decode, Encode},
     derive_more::{Display, FromStr},
-    serde::Serialize,
+    serde::{Deserialize, Serialize},
     serde_json::{Serializer, Value, ser::PrettyFormatter},
-    std::{io::Cursor, ops::Range, sync::LazyLock},
+    std::{collections::BTreeMap, io::Cursor, ops::Range, sync::LazyLock},
     strum::{EnumIter, EnumString, IntoEnumIterator, IntoStaticStr},
     synoptic::{Highlighter, TokOpt},
 };
@@ -19,8 +21,22 @@ pub fn encode_brotli_11(bytes: &[u8]) -> Vec<u8> {
     output
 }
 
-#[derive(Clone, Copy, Debug, Display, EnumString, EnumIter, IntoStaticStr, PartialEq)]
+#[derive(
+    Clone,
+    Copy,
+    Debug,
+    Decode,
+    Deserialize,
+    Encode,
+    Display,
+    EnumString,
+    EnumIter,
+    IntoStaticStr,
+    PartialEq,
+    Serialize,
+)]
 #[strum(serialize_all = "lowercase")]
+#[display(rename_all = "lowercase")]
 pub enum Keyword {
     As,
     Void,
@@ -50,8 +66,22 @@ pub enum Keyword {
     SelfLower,
 }
 
-#[derive(Clone, Copy, Debug, Display, EnumIter, EnumString, IntoStaticStr, PartialEq)]
+#[derive(
+    Clone,
+    Copy,
+    Debug,
+    Display,
+    Decode,
+    Deserialize,
+    Encode,
+    EnumIter,
+    EnumString,
+    IntoStaticStr,
+    PartialEq,
+    Serialize,
+)]
 #[strum(serialize_all = "lowercase")]
+#[display(rename_all = "lowercase")]
 pub enum Primitive {
     Bool,
     Usize,
@@ -70,8 +100,22 @@ pub enum Primitive {
     Str,
 }
 
-#[derive(Clone, Copy, Debug, Display, EnumIter, EnumString, IntoStaticStr, PartialEq)]
+#[derive(
+    Clone,
+    Copy,
+    Debug,
+    Display,
+    Decode,
+    Deserialize,
+    Encode,
+    EnumIter,
+    EnumString,
+    IntoStaticStr,
+    PartialEq,
+    Serialize,
+)]
 #[strum(serialize_all = "lowercase")]
+#[display(rename_all = "lowercase")]
 pub enum Control {
     Break,
     Continue,
@@ -89,7 +133,20 @@ pub enum Control {
     Unrecognized,
 }
 
-#[derive(Clone, Copy, Debug, Display, EnumIter, EnumString, IntoStaticStr, PartialEq)]
+#[derive(
+    Clone,
+    Copy,
+    Debug,
+    Display,
+    Decode,
+    Deserialize,
+    Encode,
+    EnumIter,
+    EnumString,
+    IntoStaticStr,
+    PartialEq,
+    Serialize,
+)]
 pub enum Constant {
     Some,
     None,
@@ -149,14 +206,262 @@ pub enum Constant {
     Monster3,
     Monster4,
     MonsterMax,
+    AbilityPower,
+    AdaptiveDamage,
+    Armor,
+    ArmorPenetrationFlat,
+    ArmorPenetrationPercent,
+    AttackDamage,
+    AttackSpeed,
+    BaseAd,
+    BaseArmor,
+    BaseAttackSpeed,
+    BaseHealth,
+    BaseMagicResist,
+    BaseMana,
+    BonusAd,
+    BonusArmor,
+    BonusAttackSpeed,
+    BonusHealth,
+    BonusMagicResist,
+    BonusMana,
+    BonusMoveSpeed,
+    CritChance,
+    CritDamage,
+    CurrentHealth,
+    CurrentMana,
+    Level,
+    QLevel,
+    WLevel,
+    ELevel,
+    RLevel,
+    MagicMultiplier,
+    MagicPenetrationFlat,
+    MagicPenetrationPercent,
+    MagicResist,
+    MaxHealth,
+    MaxMana,
+    MissingHealth,
+    PhysicalMultiplier,
+    RanduinEffect,
+    RocksolidEffect,
+    Stacks,
+    SteelcapsEffect,
+    LifeSteal,
+    EnemyArmor,
+    EnemyBonusArmor,
+    EnemyBonusHealth,
+    EnemyBonusMagicResist,
+    EnemyCurrentHealth,
+    EnemyMagicResist,
+    EnemyMaxHealth,
+    EnemyMissingHealth,
+    Top,
+    Middle,
+    Jungle,
+    Bottom,
+    Support,
+    Aram,
+    Arena,
+    DarkStar,
+    Dominion,
+    Invasion,
+    NexusBlitz,
+    Odyssey,
+    Project,
+    StarGuardian,
+    SummonersRift,
+    Tft,
+    Tutorial,
+    TwistedTreeline,
+    Urf,
+    UnknownMap33,
+    UnknownMap35,
+    OneForAll,
+    UnsealedSpellbook,
+    SwiftPlay,
+    AbilityHaste,
+    AdaptiveForce,
+    ArmorPenetration,
+    BaseHealthRegen,
+    BaseManaRegen,
+    GoldPer10Seconds,
+    HealAndShieldPower,
+    Health,
+    Lethality,
+    MagicPenetration,
+    Mana,
+    MoveSpeed,
+    MoveSpeedPercent,
+    Omnivamp,
+    Tenacity,
 }
 
-#[derive(Clone, Copy, Debug, Display, IntoStaticStr, PartialEq)]
+#[derive(
+    Clone,
+    Copy,
+    Debug,
+    Display,
+    Decode,
+    Deserialize,
+    Encode,
+    EnumIter,
+    EnumString,
+    IntoStaticStr,
+    PartialEq,
+    Serialize,
+)]
+#[strum(serialize_all = "snake_case")]
+#[display(rename_all = "snake_case")]
+pub enum Variable {
+    Purchasable,
+    Tier,
+    Maps,
+    Stats,
+    Price,
+    Positions,
+    Name,
+    UnstableFeatures,
+    AdaptiveType,
+    AttackType,
+    Damage,
+    DamageType,
+    Attributes,
+    Comment,
+    MinDmg,
+    MaxDmg,
+    MeleeMinDmg,
+    MeleeMaxDmg,
+    RangedMinDmg,
+    RangedMaxDmg,
+    AbilityPower,
+    AdaptiveDamage,
+    Armor,
+    ArmorPenetrationFlat,
+    ArmorPenetrationPercent,
+    AttackDamage,
+    AttackSpeed,
+    BaseAd,
+    BaseArmor,
+    BaseAttackSpeed,
+    BaseHealth,
+    BaseMagicResist,
+    BaseMana,
+    BonusAd,
+    BonusArmor,
+    BonusAttackSpeed,
+    BonusHealth,
+    BonusMagicResist,
+    BonusMana,
+    BonusMoveSpeed,
+    CritChance,
+    CritDamage,
+    CurrentHealth,
+    CurrentMana,
+    Level,
+    QLevel,
+    WLevel,
+    ELevel,
+    RLevel,
+    MagicMultiplier,
+    MagicPenetrationFlat,
+    MagicPenetrationPercent,
+    MagicResist,
+    MaxHealth,
+    MaxMana,
+    MissingHealth,
+    PhysicalMultiplier,
+    RanduinEffect,
+    RocksolidEffect,
+    Stacks,
+    SteelcapsEffect,
+    LifeSteal,
+    EnemyArmor,
+    EnemyBonusArmor,
+    EnemyBonusHealth,
+    EnemyBonusMagicResist,
+    EnemyCurrentHealth,
+    EnemyMagicResist,
+    EnemyMaxHealth,
+    EnemyMissingHealth,
+}
+
+#[derive(
+    Clone,
+    Copy,
+    Debug,
+    Display,
+    Decode,
+    Deserialize,
+    Encode,
+    EnumIter,
+    EnumString,
+    IntoStaticStr,
+    PartialEq,
+    Serialize,
+)]
+#[strum(serialize_all = "PascalCase")]
+#[display(rename_all = "PascalCase")]
+pub enum Type {
+    Generator,
+    Key,
+    MayFail,
+}
+
+#[derive(
+    Clone,
+    Copy,
+    Debug,
+    Display,
+    Decode,
+    Deserialize,
+    Encode,
+    EnumIter,
+    EnumString,
+    IntoStaticStr,
+    PartialEq,
+    Serialize,
+)]
+#[strum(serialize_all = "snake_case")]
+#[display(rename_all = "snake_case")]
+pub enum Function {
+    Generate,
+    Warn,
+    Ability,
+    End,
+}
+
+#[derive(
+    Clone,
+    Copy,
+    Debug,
+    Display,
+    Decode,
+    Deserialize,
+    Encode,
+    EnumIter,
+    EnumString,
+    IntoStaticStr,
+    PartialEq,
+    Serialize,
+)]
+pub enum Macro {
+    #[strum(serialize = "concat!")]
+    Concat,
+}
+
+#[derive(
+    Clone, Copy, Debug, Decode, Deserialize, Encode, Display, IntoStaticStr, PartialEq, Serialize,
+)]
 pub enum KnownToken {
     Keyword(Keyword),
     Primitive(Primitive),
     Control(Control),
     Constant(Constant),
+    Variable(Variable),
+    Type(Type),
+    Function(Function),
+    Macro(Macro),
 }
 
 impl KnownToken {
@@ -172,11 +477,17 @@ impl KnownToken {
             .or_else(|| parse(text, Self::Primitive))
             .or_else(|| parse(text, Self::Control))
             .or_else(|| parse(text, Self::Constant))
+            .or_else(|| parse(text, Self::Variable))
+            .or_else(|| parse(text, Self::Type))
+            .or_else(|| parse(text, Self::Function))
+            .or_else(|| parse(text, Self::Macro))
             .map(Op::Known)
     }
 }
 
-#[derive(Clone, Copy, Debug, EnumString, IntoStaticStr, PartialEq)]
+#[derive(
+    Clone, Copy, Debug, Decode, Deserialize, Encode, EnumString, IntoStaticStr, PartialEq, Serialize,
+)]
 pub enum Bracket {
     #[strum(serialize = "(")]
     RParen,
@@ -192,17 +503,30 @@ pub enum Bracket {
     LBracket,
 }
 
-#[derive(Clone, Debug, IntoStaticStr, PartialEq)]
+#[derive(Clone, Debug, Decode, Deserialize, Encode, IntoStaticStr, PartialEq, Serialize)]
 pub enum Op {
-    Span { class: Class, len: Range<usize> },
-    Raw(Range<usize>),
+    Span { class: Class, len: u16 },
+    Raw(u16),
     Bracket { class: Class, this: Bracket },
     Known(KnownToken),
     Space(u8),
     NewLine,
 }
 
-#[derive(Clone, Copy, Debug, Display, EnumIter, FromStr, IntoStaticStr, PartialEq)]
+#[derive(
+    Clone,
+    Copy,
+    Debug,
+    Decode,
+    Deserialize,
+    Encode,
+    Display,
+    EnumIter,
+    FromStr,
+    IntoStaticStr,
+    PartialEq,
+    Serialize,
+)]
 pub enum Class {
     Comment,
     String,
@@ -233,6 +557,7 @@ impl Class {
     }
 }
 
+#[derive(Debug, Decode, Deserialize, Encode, Serialize)]
 pub struct Builder {
     pub source: String,
     pub ops: Vec<Op>,
@@ -246,6 +571,27 @@ impl Builder {
             ops: Vec::new(),
             bracket_stack: Vec::new(),
         }
+    }
+
+    pub fn batch(&mut self, batch: &mut BTreeMap<String, BTreeMap<String, Vec<FmtOutput>>>) {
+        for value in batch.values_mut() {
+            for data in value.values_mut() {
+                for output in data.iter_mut() {
+                    if !output.json.default {
+                        output.range = self.merge(&output.builder);
+                    }
+                }
+            }
+        }
+    }
+
+    pub fn merge(&mut self, ir: &Self) -> Range<usize> {
+        let start = self.ops.len();
+
+        self.source.push_str(&ir.source);
+        self.ops.extend(ir.ops.clone());
+
+        start..self.ops.len()
     }
 
     pub fn bracket(&mut self, this: Bracket) {
@@ -266,7 +612,7 @@ impl Builder {
         let start = self.source.len();
 
         self.source.push_str(text);
-        self.ops.push(Op::Raw(start..self.source.len()));
+        self.ops.push(Op::Raw((self.source.len() - start) as _));
     }
 
     pub fn span(&mut self, class: Class, text: &str) {
@@ -274,14 +620,12 @@ impl Builder {
             return self.ops.push(op);
         }
 
-        eprintln!("Span::{class:?}({text:?})");
-
         let start = self.source.len();
 
         self.source.push_str(text);
         self.ops.push(Op::Span {
             class,
-            len: start..self.source.len(),
+            len: (self.source.len() - start) as _,
         });
     }
 
@@ -303,11 +647,17 @@ static RUST_HIGHLIGHTER: LazyLock<Highlighter> = LazyLock::new(|| {
     h.keyword("Lifetime", r"'\w+");
 
     trait RegexAdd: IntoEnumIterator + ToString {
-        fn regadd() -> String {
+        fn regadd(postfix: Option<&str>) -> String {
             format!(
                 r"\b({})\b",
                 Self::iter()
-                    .map(|a| a.to_string())
+                    .map(|a| {
+                        let mut s = a.to_string();
+                        if let Some(postfix) = postfix {
+                            s.push_str(postfix);
+                        }
+                        s
+                    })
                     .collect::<Vec<_>>()
                     .join("|")
             )
@@ -316,20 +666,23 @@ static RUST_HIGHLIGHTER: LazyLock<Highlighter> = LazyLock::new(|| {
 
     impl<T: IntoEnumIterator + ToString> RegexAdd for T {}
 
-    h.keyword("Keyword", &Keyword::regadd());
-    h.keyword("Control", &Control::regadd());
+    h.keyword("Keyword", &Keyword::regadd(None));
+    h.keyword("Control", &Control::regadd(None));
     h.keyword("Constant", r"::[A-Z_][A-Za-z0-9_]*\b");
     h.keyword("Constant", r"\b[A-Z][A-Z0-9_]*\b");
-    h.keyword("Constant", &Constant::regadd());
+    h.keyword("Constant", &Constant::regadd(None));
     h.keyword("Type", r"\b[A-Z][a-zA-Z0-9]*\b");
-    h.keyword("Primitive", &Primitive::regadd());
+    h.keyword("Type", &Type::regadd(None));
+    h.keyword("Primitive", &Primitive::regadd(None));
     h.keyword("Number", r"\b(?:0x[0-9A-Fa-f_]+|0o[0-7_]+|0b[01_]+|\d[\d_]*(?:\.\d[\d_]*)?(?:[eE][+-]?\d[\d_]*)?)(?:[iu](?:8|16|32|64|128|size)|f(?:32|64))?\b");
     h.keyword("Boolean", r"\b(true|false)\b");
     h.keyword("Macro", r"[a-zA-Z_][a-zA-Z0-9_]*!");
     h.keyword("Function", r"\b[a-z][a-zA-Z0-9_]*\(");
     h.keyword("Function", r"\b(zero)\b");
     h.keyword("Function", r"\b([a-z][a-zA-Z0-9_]*)\s*\(");
+    h.keyword("Function", &Function::regadd(Some("\\(")));
     h.keyword("Variable", r"\b[a-z][a-zA-Z0-9_]*\b");
+    h.keyword("Variable", &Variable::regadd(None));
     h
 });
 
