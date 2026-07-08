@@ -295,6 +295,8 @@ pub enum Constant {
     MoveSpeedPercent,
     Omnivamp,
     Tenacity,
+    Ability,
+    Attack,
 }
 
 #[derive(
@@ -428,7 +430,29 @@ pub enum Function {
     Generate,
     Warn,
     Ability,
+    AbilityNth,
     End,
+    Combo,
+    CloneTo,
+    CloneWith,
+    MergeDamage,
+    MergeSum,
+    Times,
+    Formula,
+    Plus,
+    Modify,
+    Insert,
+    Delete,
+    Replace,
+    AsVar,
+    IntoIter,
+    Map,
+    Render,
+    Collect,
+    Join,
+    ToString,
+    Clone,
+    DamageOf,
 }
 
 #[derive(
@@ -505,12 +529,11 @@ pub enum Bracket {
 
 #[derive(Clone, Debug, Decode, Deserialize, Encode, IntoStaticStr, PartialEq, Serialize)]
 pub enum Op {
-    Span { class: Class, len: u16 },
-    Raw(u16),
+    Span { class: Class, len: u8 },
+    Raw(u8),
     Bracket { class: Class, this: Bracket },
     Known(KnownToken),
     Space(u8),
-    NewLine,
 }
 
 #[derive(
@@ -609,10 +632,17 @@ impl Builder {
     }
 
     pub fn raw(&mut self, text: &str) {
-        let start = self.source.len();
+        let length = text.len() as _;
 
         self.source.push_str(text);
-        self.ops.push(Op::Raw((self.source.len() - start) as _));
+        if let Some(op) = self.ops.last_mut()
+            && let Op::Raw(len) = op
+        {
+            *len += length;
+            return;
+        }
+
+        self.ops.push(Op::Raw(length));
     }
 
     pub fn span(&mut self, class: Class, text: &str) {
@@ -630,11 +660,11 @@ impl Builder {
     }
 
     pub fn space(&mut self, n: u8) {
-        self.ops.push(Op::Space(n));
-    }
-
-    pub fn newline(&mut self) {
-        self.ops.push(Op::NewLine);
+        if n < size_of::<Op>() as _ {
+            self.raw(&" ".repeat(n as _));
+        } else {
+            self.ops.push(Op::Space(n));
+        }
     }
 }
 
@@ -795,7 +825,7 @@ pub fn rust_html(input: &str) -> Builder {
             }
         }
 
-        b.newline();
+        b.raw("\n");
     }
 
     b

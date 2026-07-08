@@ -372,7 +372,14 @@ fn build_docs() -> MayFail {
                                     )?;
                                     tutorlolv2_wiki::write(
                                         &OUT_DIR.join("ir").with_extension("bin"),
-                                        bytes,
+                                        &bytes,
+                                    )?;
+
+                                    let brotli = encode_brotli_11(&bytes);
+
+                                    tutorlolv2_wiki::write(
+                                        &OUT_DIR.join("ir").with_extension("br"),
+                                        &brotli,
                                     )
                                 },
                                 || {

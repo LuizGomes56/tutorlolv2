@@ -65,9 +65,10 @@ mod __tests {
     use tutorlolv2_build_dep::libfmt::{
         Bracket, Builder, Class, Keyword, KnownToken, Op, rust_html,
     };
+    use tutorlolv2_wiki::MayFail;
 
     #[test]
-    fn __test() {
+    fn __test() -> MayFail {
         assert_eq!("(".parse(), Ok(Bracket::RParen));
         assert_eq!(")".parse(), Ok(Bracket::LParen));
         assert_eq!("[".parse(), Ok(Bracket::RBracket));
@@ -80,7 +81,7 @@ mod __tests {
             KnownToken::check("Self"),
             Some(Op::Known(KnownToken::Keyword(Keyword::SelfUpper)))
         );
-        assert!(KnownToken::check("impl").is_some(),);
+        assert!(KnownToken::check("impl").is_some());
 
         let input = r#"impl Generator for Neeko {
     fn generate(&mut self) -> MayFail {
@@ -107,10 +108,23 @@ mod __tests {
     }
 }"#;
 
-        let builder = rust_html(input);
-        tutorlolv2_wiki::write("__source.txt", &builder.source).unwrap();
-        tutorlolv2_wiki::write("__ops.txt", format!("{:#?}", builder.ops)).unwrap();
-        render(builder)
+        // let builder = rust_html(input);
+        // tutorlolv2_wiki::write("__source.txt", &builder.source)?;
+        // tutorlolv2_wiki::write("__ops.txt", format!("{:#?}", builder.ops))?;
+        // render(builder);
+
+        let _test_src = tutorlolv2_wiki::read_to_string("../build_output/docs.txt")?;
+        let _test_ir = tutorlolv2_wiki::read("../build_output/ir.bin")?;
+        let (ir, _) = bincode::decode_from_slice::<Vec<Op>, bincode::config::Configuration>(
+            &_test_ir,
+            bincode::config::Configuration::default(),
+        )?;
+        let mut _test_builder = Builder::new();
+        _test_builder.ops = ir;
+        _test_builder.source = _test_src;
+        render(_test_builder);
+
+        Ok(())
     }
 
     fn render(builder: Builder) {
@@ -157,7 +171,6 @@ mod __tests {
                         output.push(' ');
                     }
                 }
-                Op::NewLine => output.push('\n'),
             }
         }
 
