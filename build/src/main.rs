@@ -131,6 +131,8 @@ mod __tests {
         let Builder { source, ops, .. } = builder;
         let mut output = String::new();
 
+        count(&ops);
+
         macro_rules! push_str {
             ($class:expr, $text:expr) => {{
                 let r = format!(r#"<span class="{:?}">{}</span>"#, $class, {
@@ -179,6 +181,41 @@ mod __tests {
         );
 
         tutorlolv2_wiki::write("__render.txt", out).unwrap();
+    }
+
+    fn count(ops: &[Op]) {
+        let mut i = 0;
+
+        for op in ops.iter().copied() {
+            match op {
+                Op::Raw(len) => {
+                    i += len as usize;
+                }
+                Op::Span { len, .. } => {
+                    i += len as usize;
+                }
+                Op::Bracket { .. } => {
+                    i += 1;
+                }
+                Op::Known(token) => match token {
+                    KnownToken::Keyword(v) => i += <&str>::from(v).len(),
+                    KnownToken::Primitive(v) => i += <&str>::from(v).len(),
+                    KnownToken::Control(v) => i += <&str>::from(v).len(),
+                    KnownToken::Constant(v) => i += <&str>::from(v).len(),
+                    KnownToken::Variable(v) => i += <&str>::from(v).len(),
+                    KnownToken::Type(v) => i += <&str>::from(v).len(),
+                    KnownToken::Function(v) => i += <&str>::from(v).len(),
+                    KnownToken::Macro(v) => i += <&str>::from(v).len(),
+                },
+                Op::Space(n) => {
+                    for _ in 0..n {
+                        i += 1;
+                    }
+                }
+            }
+        }
+
+        println!("Size: {i}")
     }
 
     const CSS: &str = r#"

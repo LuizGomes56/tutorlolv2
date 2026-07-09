@@ -527,7 +527,7 @@ pub enum Bracket {
     LBracket,
 }
 
-#[derive(Clone, Debug, Decode, Deserialize, Encode, IntoStaticStr, PartialEq, Serialize)]
+#[derive(Clone, Copy, Debug, Decode, Deserialize, Encode, IntoStaticStr, PartialEq, Serialize)]
 pub enum Op {
     Span { class: Class, len: u8 },
     Raw(u8),
