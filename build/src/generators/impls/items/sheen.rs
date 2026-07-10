@@ -3,6 +3,9 @@ use super::*;
 impl Generator for Sheen {
     #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
-        self.damage_type(Physical).min(Passive)?.end()
+        self.attr(OnhitMax)
+            .damage_type(Physical)
+            .min(Passive)?
+            .end()
     }
 }

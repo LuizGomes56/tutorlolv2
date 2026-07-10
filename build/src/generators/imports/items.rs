@@ -7,7 +7,7 @@ pub use crate::{
     },
 };
 pub use core::fmt::Display;
-pub use tutorlolv2_types::{AttackType::*, CtxVar::*, DamageIndex::*, DamageType::*};
+pub use tutorlolv2_types::{AttackType::*, Attrs::*, CtxVar::*, DamageIndex::*, DamageType::*};
 pub use tutorlolv2_wiki::items::item_parser::WikiItem;
 
 #[macro_export]
