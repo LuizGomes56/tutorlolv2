@@ -10,6 +10,7 @@
 *.txt
 *.pdf
 *.html
+*.zip
 target
 html
 raw_img
