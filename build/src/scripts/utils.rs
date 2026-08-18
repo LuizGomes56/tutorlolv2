@@ -19,7 +19,9 @@ use std::{
 };
 use tutorlolv2_types::{AttackType, Attrs, CtxVar, DamageIndex, DamageType};
 
-pub fn simplify(formula: &str) -> String {
+pub fn simplify(f: &str) -> String {
+    let formula = &f.replace("zero", "0");
+
     static FLOAT_RE: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"\b\d+\.\d+\b").unwrap());
 
     static MATCH_RE: LazyLock<Regex> =
@@ -412,7 +414,7 @@ pub trait ItemOrRuneExt:
                             .into(),
                         default: false
                     }),
-                    json = format!("__JSON__{}__JSON__", base64::encode(s))
+                    json = "" // json = format!("__JSON__{}__JSON__", base64::encode(s))
                 )
             }
         };

@@ -1,13 +1,6 @@
-pub const TOWER_DAMAGE: &str = r#"intrinsic TOWER_DAMAGE {
-    damage_type: RiotFormulas::adaptive_type(
-        bonus_stats.attack_damage,
-        current_stats.ability_power,
-    ),
-    definition: const fn get_tower_damages(
-        AdaptiveType,
-        ResistShred,
-        ...f32
-    ) -> [i32; L_TWRD]
+pub const TOWER_DAMAGE: &str = r#"intrinsic TowerDamage {
+    damage_type: adaptive_type(bonus_ad, ap),
+    def: fn(...f32) -> [i32; L_TWRD]
 }"#;
 
 pub const IGNITE_FN: &str = r#"fn ignite(level: i32) -> i32 {
@@ -32,7 +25,7 @@ pub const TOWER_DAMAGE_FN: &str = r#"fn tower_damage(...) -> i32 {
     base * mult
 }"#;
 
-pub const ONHIT_EFFECT: &str = r#"intrinsic ONHIT_EFFECT {
+pub const ONHIT_EFFECT: &str = r#"intrinsic Onhit {
     damage_type: Mixed,
     definition: fn onhit(...) -> Attacks
 };"#;
@@ -41,7 +34,7 @@ pub const ONHIT_EFFECT_FN: &str = r#"fn onhit() -> Attacks {
     intrinsic
 }"#;
 
-pub const CRITICAL_STRIKE: &str = r#"intrinsic CRITICAL_STRIKE {
+pub const CRITICAL_STRIKE: &str = r#"intrinsic CritStrike {
     attributes: OnhitMax,
     damage_type: Physical,
     damage: attack_damage * crit_damage / 100
@@ -52,7 +45,7 @@ pub const CRITICAL_STRIKE_FN: &str = r#"fn critical_strike() -> f32 {
       / 100 /* * physical_multiplier */
 }"#;
 
-pub const BASIC_ATTACK: &str = r#"intrinsic BASIC_ATTACK {
+pub const BASIC_ATTACK: &str = r#"intrinsic BasicAttack {
     attributes: OnhitMin,
     damage_type: Physical,
     damage: attack_damage /* * physical_multiplier */,

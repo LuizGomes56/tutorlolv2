@@ -7,6 +7,7 @@ use {
             parser::{Parser, ZERO, likely_damages},
             utils::{RegExtractor, Tag},
         },
+        scripts::utils::is_zero,
     },
     serde::{Deserialize, Serialize},
     serde_with::{Seq, serde_as},
@@ -459,6 +460,14 @@ impl Champion {
             merge,
             ..
         } = self;
+
+        abilities.retain(|key, ability| {
+            let zero = is_zero(&ability.damage);
+            if zero {
+                println!("[{champion_id}] Removing [{key:?}]");
+            }
+            !zero
+        });
 
         // Verifies if any ability found has unknown damage and emits a warning
         // to the console so it can be fixed by the next time the generator runs

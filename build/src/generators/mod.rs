@@ -5,7 +5,7 @@ pub mod imports;
 pub mod parser;
 pub mod utils;
 
-pub const VERSION: &str = "16.11.1";
+pub const VERSION: &str = "16.16.1";
 
 /// Base generator trait, that returns a type that will be serialized into a
 /// JSON file to be read by the `tutorlolv2_build` script and generate Rust code,

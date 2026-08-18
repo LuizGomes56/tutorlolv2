@@ -948,3 +948,15 @@ impl CtxVar {
     pub const VARIANTS: usize = size_of::<Ctx>() / size_of::<f32>();
     pub const SKIP: usize = Self::SteelcapsEffect as usize + 1;
 }
+
+macro_rules! impl_display {
+    ($($stru:ty),*) => {
+        $(impl Display for $stru {
+            fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+                write!(f, "{self:?}")
+            }
+        })*
+    };
+}
+
+impl_display!(AttackType, AdaptiveType, Position);

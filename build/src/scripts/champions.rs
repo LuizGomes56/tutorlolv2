@@ -167,7 +167,7 @@ impl Build for Champion {
                                 .into(),
                             default: false
                         }),
-                        json = format!("__JSON__{}__JSON__", base64::encode(s))
+                        json = "" // json = format!("__JSON__{}__JSON__", base64::encode(s))
                     )
                 }
             }
@@ -246,7 +246,12 @@ impl Build for Champion {
                 }
             };
 
-            let rust_formula = cast_f32(&rust_formula);
+            let mut rust_formula = cast_f32(&rust_formula);
+
+            if crate::scripts::utils::is_zero(&rust_formula) {
+                println!("[{champion_id}]: ZeroFormula[{ability_id:?}]; Body = {body:?}");
+                rust_formula = "0.0".to_string();
+            }
 
             write!(
                 rust,

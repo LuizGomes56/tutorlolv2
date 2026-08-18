@@ -919,17 +919,7 @@ pub fn json_pretty(input: &str) -> String {
         }
     }
 
-    let v = {
-        let start = input.find("__JSON__").unwrap() + 8;
-        let end = input.rfind("__JSON__").unwrap();
-
-        let encoded = &input[start..end];
-
-        let decoded = base64::decode(encoded).unwrap();
-        let json_str = String::from_utf8(decoded).unwrap();
-
-        serde_json::from_str::<Value>(&json_str).unwrap()
-    };
+    let v = serde_json::from_str::<Value>("{}").unwrap();
 
     let mut buf = Vec::new();
     let fmt = PrettyFormatter::with_indent(b"    ");
