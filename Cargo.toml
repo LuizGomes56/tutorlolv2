@@ -8,7 +8,7 @@ description = "League of Legends static library that evaluates damages of abilit
 
 [workspace]
 members = [
-  "render_lib",
+  "tutorlolv2_rlib",
   "tutorlolv2_server",
   "tutorlolv2_types",
   "tutorlolv2_wiki/"

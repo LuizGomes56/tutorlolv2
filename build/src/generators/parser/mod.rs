@@ -209,7 +209,6 @@ where
                     target: "generator".into(),
                     variant: variant.into(),
                     meta: (),
-                    replace: Default::default(),
                     default
                 })
             ),

@@ -167,12 +167,7 @@ impl AbilityId {
     pub fn discriminant(&self) -> String {
         let letter = self.as_char();
         let ability_name = self.ability_name();
-        let mut result = String::from(letter);
-        match ability_name {
-            AbilityName::Void => {}
-            _ => result.push_str(&format!("{ability_name:?}").trim_start_matches('_')),
-        }
-        result
+        format!("{letter}{ability_name}")
     }
 }
 
@@ -366,47 +361,89 @@ impl AbilityName {
     bincode::Decode,
     serde::Serialize,
     serde::Deserialize,
+    strum::EnumIter,
+    strum::EnumString,
+    strum::Display,
 )]
 #[repr(u8)]
 pub enum AbilityName {
+    #[strum(serialize = "")]
     Void,
+    #[strum(serialize = "1")]
     _1,
+    #[strum(serialize = "2")]
     _2,
+    #[strum(serialize = "3")]
     _3,
+    #[strum(serialize = "4")]
     _4,
+    #[strum(serialize = "5")]
     _5,
+    #[strum(serialize = "6")]
     _6,
+    #[strum(serialize = "7")]
     _7,
+    #[strum(serialize = "8")]
     _8,
+    #[strum(serialize = "min")]
     Min,
+    #[strum(serialize = "1min")]
     _1Min,
+    #[strum(serialize = "2min")]
     _2Min,
+    #[strum(serialize = "3min")]
     _3Min,
+    #[strum(serialize = "4min")]
     _4Min,
+    #[strum(serialize = "5min")]
     _5Min,
+    #[strum(serialize = "6min")]
     _6Min,
+    #[strum(serialize = "7min")]
     _7Min,
+    #[strum(serialize = "8min")]
     _8Min,
+    #[strum(serialize = "max")]
     Max,
+    #[strum(serialize = "1max")]
     _1Max,
+    #[strum(serialize = "2max")]
     _2Max,
+    #[strum(serialize = "3max")]
     _3Max,
+    #[strum(serialize = "4max")]
     _4Max,
+    #[strum(serialize = "5max")]
     _5Max,
+    #[strum(serialize = "6max")]
     _6Max,
+    #[strum(serialize = "7max")]
     _7Max,
+    #[strum(serialize = "8max")]
     _8Max,
+    #[strum(serialize = "mega")]
     Mega,
+    #[strum(serialize = "c")]
     Minion,
+    #[strum(serialize = "c1")]
     Minion1,
+    #[strum(serialize = "c2")]
     Minion2,
+    #[strum(serialize = "c3")]
     Minion3,
+    #[strum(serialize = "cmax")]
     MinionMax,
+    #[strum(serialize = "m")]
     Monster,
+    #[strum(serialize = "m1")]
     Monster1,
+    #[strum(serialize = "m2")]
     Monster2,
+    #[strum(serialize = "m3")]
     Monster3,
+    #[strum(serialize = "m4")]
     Monster4,
+    #[strum(serialize = "mmax")]
     MonsterMax,
 }
 

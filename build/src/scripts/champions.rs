@@ -114,63 +114,13 @@ impl Build for Champion {
         write!(
             docs,
             "#[fmt({fmt})]
-            static {upper_id}: X = X {{
-                name: {name:?},
-                adaptive_type: {adaptive_type:?},
-                attack_type: {attack_type:?},
-                positions: {positions:#?}, {damage}
-            }};
-
-            {dbg} {json}",
+            static {upper_id}: X = X {{{damage}}};",
             fmt = json!(FmtArgs {
                 target: "formula".into(),
                 variant: champion_id.clone(),
                 meta: (),
-                replace: [(": X = X", " ="), ("ctx.", ""), ("(ctx)", "__fn__"),]
-                    .map(|(a, b)| (a.to_string(), b.to_string()))
-                    .into(),
                 default: false
             }),
-            dbg = {
-                if true {
-                    format!("")
-                } else {
-                    format!(
-                        "#[fmt({fmt_dbg})]
-                        static DBG_{upper_id}: &str = r#####\"{self:#?}\"#####;",
-                        fmt_dbg = json!(FmtArgs {
-                            target: "debug".into(),
-                            variant: champion_id.clone(),
-                            meta: (),
-                            replace: [(format!("static DBG_{upper_id}: &str = "), "")]
-                                .map(|(a, b)| (a, b.to_string()))
-                                .into(),
-                            default: false
-                        })
-                    )
-                }
-            },
-            json = {
-                if true {
-                    format!("")
-                } else {
-                    let s = serde_json::to_string_pretty(self)?;
-                    format!(
-                        "#[fmt({fmt_json})]
-                        static JSON_{upper_id}: &str = {json:?};",
-                        fmt_json = json!(FmtArgs {
-                            target: "json".into(),
-                            variant: champion_id.to_string(),
-                            meta: (),
-                            replace: [(format!("static JSON_{upper_id}: &str = "), "")]
-                                .map(|(a, b)| (a, b.to_string()))
-                                .into(),
-                            default: false
-                        }),
-                        json = "" // json = format!("__JSON__{}__JSON__", base64::encode(s))
-                    )
-                }
-            }
         )?;
 
         write!(
@@ -210,41 +160,28 @@ impl Build for Champion {
         for (((ability_id, ability), function), body) in
             abilities.iter().zip(&functions).zip(closures)
         {
-            let Ability {
-                name,
-                damage_type,
-                attributes,
-                comment,
-                damage,
-            } = ability;
+            let Ability { name, comment, .. } = ability;
 
             let formula = simplify(&body);
             let mut rust_formula = formula.clone();
             let mut variable = function.to_uppercase();
 
-            let damage_attr = match merge
+            if let Some(merge) = merge
                 .iter()
                 .find(|merge| merge.min == *ability_id || merge.max == *ability_id)
             {
-                Some(merge) => {
-                    let min_damage = resolve_damage(&merge.min, &self.damage_of(merge.min)?);
-                    let max_damage = resolve_damage(&merge.max, &self.damage_of(merge.max)?);
+                let min_damage = resolve_damage(&merge.min, &self.damage_of(merge.min)?);
+                let max_damage = resolve_damage(&merge.max, &self.damage_of(merge.max)?);
 
-                    if merge.min == *ability_id {
-                        rust_formula = min_damage.clone();
-                    } else {
-                        rust_formula = max_damage.clone();
-                    }
-
-                    let alias = merge.alias.discriminant();
-                    variable = format!("{champion_id}_{alias}").to_uppercase();
-
-                    format!("min_dmg: {min_damage}, max_dmg: {max_damage}")
+                if merge.min == *ability_id {
+                    rust_formula = min_damage.clone();
+                } else {
+                    rust_formula = max_damage.clone();
                 }
-                None => {
-                    format!("damage: {}", resolve_damage(ability_id, damage))
-                }
-            };
+
+                let alias = merge.alias.discriminant();
+                variable = format!("{champion_id}_{alias}").to_uppercase();
+            }
 
             let mut rust_formula = cast_f32(&rust_formula);
 
@@ -259,42 +196,18 @@ impl Build for Champion {
                 param = ctx_param(&rust_formula)
             )?;
 
-            let simp = resolve_damage(ability_id, &body);
-
             write!(
                 docs,
-                "#[fmt({fmt_fn})]
-                fn {function}() {{{simp}}}
-
-                #[fmt({fmt_block})]
+                "#[fmt({fmt_block})]
                 static {variable}: Ability = Ability {{
                     name: {name:?},
-                    damage_type: {damage_type:?},
-                    attributes: {attributes:?},
                     comment: {comment},
-                    {damage_attr},
                 }};",
                 comment = fit_str(comment),
-                fmt_fn = json!(FmtArgs {
-                    target: "closure".into(),
-                    variant: champion_id.clone(),
-                    meta: ability_id,
-                    replace: [("ctx.", ""), ("(ctx)", "__fn__")]
-                        .map(|(a, b)| (a.to_string(), b.to_string()))
-                        .into(),
-                    default: false
-                }),
                 fmt_block = json!(FmtArgs {
                     target: "ability".into(),
                     variant: champion_id.clone(),
                     meta: ability_id,
-                    replace: [
-                        (": Ability = Ability", " ="),
-                        ("ctx.", ""),
-                        ("(ctx)", "__fn__")
-                    ]
-                    .map(|(a, b)| (a.to_string(), b.to_string()))
-                    .into(),
                     default: false
                 })
             )?;
@@ -305,7 +218,7 @@ impl Build for Champion {
         tutorlolv2_wiki::write(out.with_extension("rs"), rust)?;
         tutorlolv2_wiki::write(out.with_extension("w48"), docs)?;
 
-        Ok(format!(
+        let eval = format!(
             r#"ChampionId::{champion_id} => {{
                 match kind {{
                     {arms}
@@ -321,7 +234,9 @@ impl Build for Champion {
                     format!("{ability_id:?} => {module}::{function}(ctx),")
                 })
                 .collect::<String>()
-        ))
+        );
+
+        Ok(eval)
     }
 }
 
@@ -351,7 +266,7 @@ impl Champion {
 
                 format!(
                     "{champion_id}_{discriminant}",
-                    champion_id = self.data.champion_id.to_shouty_snake_case(),
+                    champion_id = self.data.champion_id.to_snake_case(),
                 )
                 .to_lowercase()
             })

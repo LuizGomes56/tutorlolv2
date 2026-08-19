@@ -1,4 +1,6 @@
-use crate::libfmt::Builder;
+use std::str::FromStr;
+
+use crate::scripts::{batch::packb, encoder::FormulaDbBuilder};
 
 use {
     crate::{
@@ -9,7 +11,7 @@ use {
             },
             utils::Tag,
         },
-        libfmt::{encode_brotli_11, rust_html},
+        libfmt::{Builder, encode_brotli_11, rust_html},
         scripts::{
             batch::{FmtArgs, FmtOutput, batch},
             consts::*,
@@ -27,6 +29,7 @@ use {
     std::{collections::BTreeMap, fmt::Write, path::PathBuf, process::Command, sync::LazyLock},
 };
 
+use tutorlolv2_types::CtxVar;
 pub use tutorlolv2_wiki::{DynError, MayFail};
 
 pub mod generators;
@@ -226,7 +229,6 @@ fn build_docs() -> MayFail {
                                 target: "generator".into(),
                                 variant: variant.into(),
                                 meta: (),
-                                replace: Default::default(),
                                 default
                             })
                         ),
@@ -241,9 +243,23 @@ fn build_docs() -> MayFail {
         })
         .collect::<MayFail<Vec<_>>>()?;
 
-    for (_, batch) in &mut batches {
+    let mut packer = FormulaDbBuilder::new(
+        CPARSER.map().len() as _,
+        IPARSER.map().len() as _,
+        RPARSER.map().len() as _,
+        |s| CtxVar::from_str(s).ok().map(|v| v as u8),
+    );
+
+    for (tag, batch) in &mut batches {
+        packb(&mut packer, *tag, batch)?;
         tracker.batch(batch);
     }
+
+    tutorlolv2_wiki::write(
+        "packer.bin",
+        // OUT_DIR.join("packer").with_extension("bin"),
+        packer.finish()?,
+    )?;
 
     for (tag, mut batch) in batches {
         let mut fmt_args = match tag {

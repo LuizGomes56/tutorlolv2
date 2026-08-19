@@ -313,15 +313,12 @@ pub trait ItemOrRuneExt:
         aliases
     }
 
-    fn closures(&self) -> MayFail<(String, String)> {
-        let variant = self.id();
+    fn closures(&self) -> MayFail<String> {
         let functions = self.functions();
         let aliases = self.build_aliases();
 
         let mut seen = HashSet::new();
-
         let mut rust = String::new();
-        let mut docs = String::new();
 
         for i in 0..4 {
             let attack_type = unsafe { AttackType::from_u8_unchecked(i / 2) };
@@ -332,21 +329,6 @@ pub trait ItemOrRuneExt:
 
             let default = is_zero(body);
             let formula = simplify(body);
-
-            write!(
-                docs,
-                "#[fmt({fmt})]
-                fn {f}() {{{formula}}}",
-                fmt = json!(FmtArgs {
-                    target: "closure".into(),
-                    variant: variant.into(),
-                    meta: (attack_type, damage_index),
-                    replace: [("ctx.", ""), ("(ctx)", "__fn__")]
-                        .map(|(a, b)| (a.to_string(), b.to_string()))
-                        .into(),
-                    default
-                })
-            )?;
 
             let formula_f32 = if default {
                 continue;
@@ -370,56 +352,7 @@ pub trait ItemOrRuneExt:
             }
         }
 
-        Ok((rust, docs))
-    }
-
-    fn html_docs(&self) -> MayFail<String> {
-        let id = self.id();
-        let upper_id = id.to_uppercase();
-
-        let dbg = {
-            if true {
-                format!("")
-            } else {
-                format!(
-                    "#[fmt({fmt_dbg})]
-                    static DBG_{upper_id}: &str = r#####\"{self:#?}\"#####;",
-                    fmt_dbg = json!(FmtArgs {
-                        target: "debug".into(),
-                        variant: id.to_string(),
-                        meta: (),
-                        replace: [(format!("static DBG_{upper_id}: &str = "), "")]
-                            .map(|(a, b)| (a, b.to_string()))
-                            .into(),
-                        default: false
-                    })
-                )
-            }
-        };
-
-        let json = {
-            if true {
-                format!("")
-            } else {
-                let s = serde_json::to_string_pretty(self)?;
-                format!(
-                    "#[fmt({fmt_json})]
-                    static JSON_{upper_id}: &str = {json:?};",
-                    fmt_json = json!(FmtArgs {
-                        target: "json".into(),
-                        variant: id.to_string(),
-                        meta: (),
-                        replace: [(format!("static JSON_{upper_id}: &str = "), "")]
-                            .map(|(a, b)| (a, b.to_string()))
-                            .into(),
-                        default: false
-                    }),
-                    json = "" // json = format!("__JSON__{}__JSON__", base64::encode(s))
-                )
-            }
-        };
-
-        Ok([dbg, json].concat())
+        Ok(rust)
     }
 
     fn repr_damages(&self) -> String {
@@ -435,25 +368,18 @@ pub trait ItemOrRuneExt:
             &ranged.max_dmg,
         ];
 
-        let labels = [
-            "melee_min_dmg",
-            "melee_max_dmg",
-            "ranged_min_dmg",
-            "ranged_max_dmg",
-        ];
-
         let mut parts = Vec::new();
 
         let deals_damage = [melee.deals_damage(), ranged.deals_damage()].concat();
+        let id = self.id().to_snake_case();
 
         for i in 0..4 {
             if !deals_damage[i] {
                 continue;
             }
 
-            let value = if let Some((base_idx, ref ratio)) = aliases[i] {
-                let postfix = labels[base_idx];
-                let function = format_args!("{postfix}__fn__");
+            let value = if let Some((j, ref ratio)) = aliases[i] {
+                let function = format!("{id}_f{j}(ctx)").to_lowercase();
 
                 if ratio == "1" {
                     format!("{function}")
@@ -464,18 +390,10 @@ pub trait ItemOrRuneExt:
                 simplify(raw[i])
             };
 
-            parts.push(format!("{}: {value}", labels[i]));
+            parts.push(format!("f{i}: {value}"));
         }
 
-        if parts.is_empty() {
-            String::new()
-        } else {
-            format!(
-                "damage_type: {:?}, {}",
-                self.damage_type(),
-                parts.join(", ")
-            )
-        }
+        parts.join(", ")
     }
 
     fn formula_fmt(&self) -> Value {
@@ -483,15 +401,6 @@ pub trait ItemOrRuneExt:
             target: "formula".into(),
             variant: self.id().into(),
             meta: (),
-            replace: [
-                (": X = X", " ="),
-                ("TypeMetadata ", ""),
-                (&format!("{}::", Self::TAG.enum_name()), ""),
-                ("ctx.", ""),
-                ("(ctx)", "__fn__")
-            ]
-            .map(|(a, b)| (a.to_string(), b.to_string()))
-            .into(),
             default: false
         })
     }

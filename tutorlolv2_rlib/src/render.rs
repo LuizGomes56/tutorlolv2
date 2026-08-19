@@ -20,6 +20,7 @@ pub enum Class {
     Bracket1,
     Bracket2,
     Bracket3,
+    Any,
 }
 
 impl Class {
@@ -166,6 +167,26 @@ pub fn render_champion_global(id: ChampionId) -> String {
         let damage = { format!("") };
     }
 
-    h.add(",\n\t").bracket(Bracket::LCurly);
+    h.new_line().bracket(Bracket::LCurly);
     h.into_inner()
+}
+
+pub fn render_item_global() -> String {
+    // static {var_name}: X = X {{
+    //     name: {name},
+    //     price: {price},
+    //     stats: {stats:?},
+    //     maps: {maps:?},
+    //     tier: {tier},
+    //     purchasable: {purchasable},
+    //     {damage}
+    // }};
+    todo!()
+}
+
+pub fn render_rune_global() -> String {
+    // static {upper_id}: X = X {{
+    //     name: {name:?}{damage}
+    // }};
+    todo!()
 }

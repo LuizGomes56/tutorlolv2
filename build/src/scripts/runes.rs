@@ -48,16 +48,13 @@ impl Build for Rune {
             docs,
             "#[fmt({fmt})]
             static {upper_id}: X = X {{
-                name: {name:?}{damage}
-            }}; {html_docs}",
-            html_docs = self.html_docs()?,
-            damage = format_args!(",{}", self.repr_damages()),
+                {damage}
+            }};",
+            damage = self.repr_damages(),
             fmt = self.formula_fmt()
         )?;
 
-        let (code, doc) = &self.closures()?;
-        rust.push_str(code);
-        docs.push_str(doc);
+        rust.push_str(&self.closures()?);
 
         let out = OUT_DIR.join(Tag::Runes.plural()).join(rune_id);
 

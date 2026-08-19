@@ -1,7 +1,7 @@
 use crate::{
     Build, MayFail, OUT_DIR,
     generators::{parser::items::Item, utils::Tag},
-    scripts::utils::{ItemOrRuneExt, fit_str},
+    scripts::utils::ItemOrRuneExt,
 };
 use heck::ToShoutySnakeCase;
 use std::fmt::Write;
@@ -74,18 +74,10 @@ impl Build for Item {
             docs,
             "#[fmt({fmt})]
             static {var_name}: X = X {{
-                name: {name},
-                price: {price},
-                stats: {stats:?},
-                maps: {maps:?},
-                tier: {tier},
-                purchasable: {purchasable},
                 {damage}
-            }}; {html_docs}",
-            html_docs = self.html_docs()?,
+            }};",
             damage = self.repr_damages(),
             fmt = self.formula_fmt(),
-            name = fit_str(&name),
             var_name = {
                 let max_len = 28;
                 if upper_id.len() > max_len {
@@ -96,9 +88,7 @@ impl Build for Item {
             }
         )?;
 
-        let (code, doc) = &self.closures()?;
-        rust.push_str(code);
-        docs.push_str(doc);
+        rust.push_str(&self.closures()?);
 
         let out = OUT_DIR.join(Tag::Items.plural()).join(item_id);
 
