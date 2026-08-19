@@ -2,6 +2,8 @@ use heck::ToShoutySnakeCase;
 use std::fmt::{Debug, Display};
 use tutorlolv2::{ChampionId, TypeMetadata};
 
+use crate::packer::render_ch_formula;
+
 #[derive(Clone, Copy)]
 pub enum Class {
     Comment,
@@ -69,7 +71,10 @@ struct Highlighter {
 }
 
 impl Highlighter {
-    pub fn into_inner(self) -> String {
+    pub fn into_inner(mut self) -> String {
+        self.inner
+            .insert_str(0, r#"<pre style="white-space: pre-wrap; tab-size: 4">"#);
+        self.inner.push_str("<pre>");
         self.inner
     }
 
@@ -92,12 +97,14 @@ impl Highlighter {
         Self::span(Class::String, format!("\"{value}\""))
     }
 
-    pub fn array_field<T: Display>(&mut self, class: Class, array: &[T]) -> &mut Self {
-        self.bracket(Bracket::RBracket);
+    pub fn array_field<T: Display>(&mut self, name: &str, class: Class, array: &[T]) -> &mut Self {
+        self.push(Class::Variable, name)
+            .add(": ")
+            .bracket(Bracket::RBracket);
 
         for (i, value) in array.into_iter().enumerate() {
             self.push(class, value);
-            if i < array.len() {
+            if i < array.len() - 1 {
                 self.add(", ");
             }
         }
@@ -136,10 +143,11 @@ impl Highlighter {
     }
 
     pub fn global_const(&mut self, name: &str) -> &mut Self {
-        self.push(Class::Keyword, "const")
+        self.push(Class::Keyword, "const ")
             .push(Class::Constant, name.to_shouty_snake_case())
             .add(" = ")
             .bracket(Bracket::RCurly)
+            .add("\n\t")
     }
 
     pub fn new() -> Self {
@@ -157,17 +165,24 @@ pub fn render_champion_global(id: ChampionId) -> String {
         .field("name", Class::String, id.name())
         .field("adaptive_type", Class::Constant, id.adaptive_type())
         .field("attack_type", Class::Constant, id.attack_type())
-        .array_field(Class::Type, id.positions());
+        .array_field("positions", Class::Type, id.positions());
 
-    for TypeMetadata { kind, .. } in id.abilities() {
+    for (i, TypeMetadata { kind, .. }) in id.abilities().iter().enumerate() {
         h.push(Class::Variable, kind.discriminant().to_lowercase())
             .add(": ");
 
-        // addr of pointer or builtin repr of closure in txt file
-        let damage = { format!("") };
+        let damage = render_ch_formula(id, *kind).unwrap();
+
+        h.add(&damage);
+
+        if i < id.number_of_abilities() - 1 {
+            h.new_line();
+        } else {
+            h.add(",\n");
+        }
     }
 
-    h.new_line().bracket(Bracket::LCurly);
+    h.bracket(Bracket::LCurly);
     h.into_inner()
 }
 
