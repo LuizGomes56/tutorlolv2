@@ -2,8 +2,10 @@
 
 #[cfg(feature = "dev")]
 extern crate alloc;
+
 #[cfg(feature = "dev")]
 use alloc::{format, string::String};
+
 use bincode::{Decode, Encode};
 use core::{convert::Infallible, fmt::Display, ops::Index, str::FromStr};
 use serde::{Deserialize, Serialize};
@@ -156,14 +158,6 @@ impl AbilityId {
 
 #[cfg(feature = "dev")]
 impl AbilityId {
-    pub fn as_literal(&self) -> String {
-        format!(
-            "AbilityId::{}(AbilityName::{:?})",
-            self.as_char(),
-            self.ability_name()
-        )
-    }
-
     pub fn discriminant(&self) -> String {
         let letter = self.as_char();
         let ability_name = self.ability_name();
@@ -364,6 +358,7 @@ impl AbilityName {
     strum::EnumIter,
     strum::EnumString,
     strum::Display,
+    strum::IntoStaticStr,
 )]
 #[repr(u8)]
 pub enum AbilityName {
@@ -883,7 +878,21 @@ macro_rules! create_eval_struct {
             /// and is used to create constant closures in the static variables of
             /// this module. For example:
             /// [`CtxVar::QLevel`] is converted to: `ctx.q_level`
-            #[derive(Copy, Clone, Debug, Eq, Hash, PartialEq, Ord, PartialOrd, Encode, Decode, Serialize, Deserialize)]
+            #[derive(
+                Copy,
+                Clone,
+                Debug,
+                Eq,
+                Hash,
+                PartialEq,
+                Ord,
+                PartialOrd,
+                Encode,
+                Decode,
+                Serialize,
+                Deserialize,
+                strum::FromRepr
+            )]
             #[repr(u8)]
             pub enum CtxVar {
                 $([<$value:camel>],)*
@@ -925,7 +934,18 @@ macro_rules! create_eval_struct {
                 }
             }
 
-            #[derive(Clone, Copy, Debug, Decode, Default, Deserialize, Encode, PartialEq, PartialOrd, Serialize)]
+            #[derive(
+                Clone,
+                Copy,
+                Debug,
+                Decode,
+                Default,
+                Deserialize,
+                Encode,
+                PartialEq,
+                PartialOrd,
+                Serialize
+            )]
             #[repr(C)]
             pub struct Ctx {
                 $(pub $value: f32,)*

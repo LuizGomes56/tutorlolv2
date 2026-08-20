@@ -2,17 +2,14 @@ use {
     crate::{
         CPARSER, MayFail,
         generators::{parser::Parser, utils::Tag},
-        scripts::batch::{FmtArgs, FmtOutput},
+        scripts::batch::FmtOutput,
     },
-    std::{
-        collections::{BTreeMap, BTreeSet},
-        ops::Range,
-    },
+    std::collections::{BTreeMap, BTreeSet},
     tutorlolv2_types::{AbilityId, AttackType, DamageIndex},
     tutorlolv2_wiki::JsonRead,
 };
 
-pub fn finish_champions(target: &str, variable: &mut String, value: &mut [FmtOutput]) {
+pub fn finish_champions(variable: &mut String, value: &mut [FmtOutput]) {
     value.sort_by(|a, b| match &a.json.meta {
         v if let Ok(ability_a) = serde_json::from_value::<AbilityId>(v.clone())
             && let Ok(ability_b) = serde_json::from_value::<AbilityId>(b.json.meta.clone()) =>
@@ -26,18 +23,13 @@ pub fn finish_champions(target: &str, variable: &mut String, value: &mut [FmtOut
         .iter()
         .map(|FmtOutput { range, .. }| format!("{range:?}"))
         .collect::<Vec<_>>()
-        .join(",");
+        .join(",")
+        + ",";
 
-    let push = match target {
-        "formula" | "generator" | "debug" | "json" => format!("{ranges},"),
-        "ability" | "closure" => format!("&[{ranges},],"),
-        _ => panic!("Unknown target set to fmt_args: {target}"),
-    };
-
-    variable.push_str(&push);
+    variable.push_str(&ranges);
 }
 
-pub fn finish_items_or_runes(target: &str, variable: &mut String, value: &mut [FmtOutput]) {
+pub fn finish_items_or_runes(variable: &mut String, value: &mut [FmtOutput]) {
     value.sort_by(|a, b| match &a.json.meta {
         v if let Ok((ata, dia)) =
             serde_json::from_value::<(AttackType, DamageIndex)>(v.clone())
@@ -49,37 +41,14 @@ pub fn finish_items_or_runes(target: &str, variable: &mut String, value: &mut [F
         _ => a.json.target.cmp(&b.json.target),
     });
 
-    let push = match target {
-        "formula" | "generator" | "debug" | "json" => {
-            value
-                .iter()
-                .map(|FmtOutput { range, .. }| format!("{range:?}"))
-                .collect::<Vec<_>>()
-                .join(",")
-                + ","
-        }
-        "closure" => {
-            let mut ranges: [[Range<usize>; 2]; 2] =
-                core::array::from_fn(|_| core::array::from_fn(|_| 0..0));
+    let ranges = value
+        .iter()
+        .map(|FmtOutput { range, .. }| format!("{range:?}"))
+        .collect::<Vec<_>>()
+        .join(",")
+        + ",";
 
-            for FmtOutput {
-                range,
-                json: FmtArgs { meta, .. },
-                ..
-            } in value
-            {
-                let (attack_type, damage_index) =
-                    serde_json::from_value::<(AttackType, DamageIndex)>(meta.clone()).unwrap();
-
-                ranges[attack_type as usize][damage_index as usize] = range.clone();
-            }
-
-            format!("{ranges:?},")
-        }
-        _ => panic!("Unknown target set to fmt_args: {target}"),
-    };
-
-    variable.push_str(&push);
+    variable.push_str(&ranges);
 }
 
 pub fn champion_aliases() -> MayFail<Option<BTreeMap<String, Vec<String>>>> {

@@ -175,6 +175,6 @@ pub struct RiotRealtime<'a> {
 
 impl RiotRealtime<'_> {
     pub fn eval(&self) -> Result<Realtime<'_>, RealtimeError<'_>> {
-        crate::realtime(self)
+        crate::realtime::realtime(self)
     }
 }

@@ -7,12 +7,7 @@ repository = "https://github.com/LuizGomes56/tutorlolv2"
 description = "League of Legends static library that evaluates damages of abilities, passives, items, and runes"
 
 [workspace]
-members = [
-  "tutorlolv2_rlib",
-  "tutorlolv2_server",
-  "tutorlolv2_types",
-  "tutorlolv2_wiki/"
-]
+members = ["tutorlolv2_codec", "tutorlolv2_server", "tutorlolv2_types", "tutorlolv2_wiki"]
 
 [dependencies]
 bincode = {
@@ -35,6 +30,7 @@ serde = {
   ]
 }
 serde_arrays = { version = "0.2.0", default-features = false }
+tutorlolv2_codec = { path = "tutorlolv2_codec" }
 tutorlolv2_types = { path = "tutorlolv2_types", default-features = false }
 yew = { version = "0.22.0", default-features = false, optional = true }
 
@@ -42,6 +38,6 @@ yew = { version = "0.22.0", default-features = false, optional = true }
 tutorlolv2_build_dep = { path = "build" }
 
 [features]
-default = []
+default = ["yew"]
 docs = []
-yew = ["dep:yew"]
+yew = ["dep:yew", "tutorlolv2_types/dev"]

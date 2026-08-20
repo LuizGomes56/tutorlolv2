@@ -10,9 +10,9 @@ use heck::{ToPascalCase, ToSnakeCase};
 use rand::{RngExt, SeedableRng, rngs::SmallRng};
 use regex::{Captures, Regex};
 use serde::Serialize;
-use serde_json::{Value, json};
+use serde_json::json;
 use std::{
-    collections::{BTreeSet, HashMap, HashSet},
+    collections::{BTreeSet, HashSet},
     fmt::{Debug, Write},
     ops::{Index, Range},
     sync::LazyLock,
@@ -536,30 +536,6 @@ pub fn cast_f32(s: &str) -> String {
 
 pub fn ctx_param(s: &str) -> &'static str {
     if s.contains("ctx") { "ctx" } else { "_" }
-}
-
-pub struct StaticVar<'a> {
-    pub name: String,
-    pub attribute: &'a str,
-    pub vtype: &'a str,
-}
-
-pub fn static_vars<'a, const N: usize>(
-    tag: Tag,
-    array: [StaticVar<'a>; N],
-) -> HashMap<&'a str, String> {
-    array
-        .into_iter()
-        .map(|static_var| {
-            let StaticVar {
-                attribute,
-                name,
-                vtype,
-            } = static_var;
-
-            (attribute, variable(tag, &name, vtype))
-        })
-        .collect::<HashMap<_, _>>()
 }
 
 pub fn variable(tag: Tag, var: &str, vtype: &str) -> String {

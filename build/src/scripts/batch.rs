@@ -1,7 +1,6 @@
 use crate::{
     generators::utils::Tag,
     libfmt::{self, Builder},
-    scripts::encoder::{EntityKind, FormulaDbBuilder, FormulaSource},
 };
 use heck::ToSnakeCase;
 use rayon::iter::{ParallelBridge, ParallelIterator};
@@ -9,6 +8,7 @@ use regex::Regex;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use std::{collections::BTreeMap, ops::Range, sync::LazyLock};
+use tutorlolv2_codec::{EntityKind, FormulaDbBuilder, FormulaSource};
 use tutorlolv2_types::AbilityId;
 use tutorlolv2_wiki::MayFail;
 
@@ -67,18 +67,7 @@ pub fn batch(src: String) -> BTreeMap<String, BTreeMap<String, Vec<FmtOutput>>> 
             }
 
             let block = rest[..end].trim().to_string();
-
-            let formatter = libfmt::rust_html;
-            // formatter had the type: String because both functions returned HTML.
-            // Now they return struct Builder with the IR
-            // let formatter = if json.target == "json" {
-            //     libfmt::json_html
-            // } else {
-            //     libfmt::rust_html
-            // };
-            //
-
-            let builder = formatter(&block);
+            let builder = libfmt::rust_html(&block);
 
             let mut absolute_end = attr_end + end;
 
@@ -109,7 +98,7 @@ pub fn batch(src: String) -> BTreeMap<String, BTreeMap<String, Vec<FmtOutput>>> 
     map
 }
 
-pub fn packb(
+pub fn pack_formulas(
     packer: &mut FormulaDbBuilder,
     tag: Tag,
     result: &BTreeMap<String, BTreeMap<String, Vec<FmtOutput>>>,
@@ -150,13 +139,7 @@ pub fn packb(
                         }
                     };
 
-                    Some((
-                        FormulaSource {
-                            local,
-                            source: source.to_string(),
-                        },
-                        (fn_name, local),
-                    ))
+                    Some((FormulaSource { local, source }, (fn_name, local)))
                 },
             )
             .unzip::<_, _, Vec<_>, _>();
@@ -174,7 +157,7 @@ pub fn packb(
                     _ => unreachable!(),
                 };
 
-                packer.push_item_or_rune(entity, i as _, &formulas, &refs)
+                packer.push_sparse(entity, i as _, &formulas, &refs)
             }
         }
         .map_err(|e| format!("Packer Error [{id}][formulas={formulas:?}][refs={refs:?}]: {e:?}"))?;

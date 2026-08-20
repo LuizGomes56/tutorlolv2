@@ -1,10 +1,9 @@
 #![no_std]
 
-pub use calculator::calculator;
-pub use realtime::realtime;
-pub use tutorlolv2_types::*;
-
 extern crate alloc;
+
+#[cfg(feature = "yew")]
+pub mod yew;
 
 pub mod bitset;
 pub mod calculator;
@@ -16,10 +15,8 @@ pub mod model;
 pub mod realtime;
 pub mod riot;
 
-#[cfg(feature = "yew")]
-pub mod yew;
-
 pub use libgen::*;
+pub use tutorlolv2_types::*;
 
 #[allow(dead_code)]
 mod test {

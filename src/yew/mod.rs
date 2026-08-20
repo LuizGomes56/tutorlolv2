@@ -1,6 +1,7 @@
 pub mod ability_levels;
 pub mod dragons;
 pub mod enemy_stats;
+pub mod render;
 pub mod stats;
 
 pub trait ReduceApply

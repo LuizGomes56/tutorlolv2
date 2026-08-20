@@ -7,7 +7,7 @@ use {
         },
         scripts::{
             batch::FmtArgs,
-            utils::{StaticVar, is_zero, static_vars, variable},
+            utils::{is_zero, variable},
         },
     },
     heck::{
@@ -18,7 +18,7 @@ use {
     serde::{Deserialize, Serialize, de::DeserializeOwned},
     serde_json::{Value, json},
     std::{
-        collections::{BTreeMap, BTreeSet, HashMap},
+        collections::{BTreeMap, BTreeSet},
         ops::{Index, IndexMut},
         path::Path,
     },
@@ -214,10 +214,6 @@ where
             ),
         );
         generator
-    }
-
-    fn static_vars<'a, const N: usize>(array: [StaticVar<'a>; N]) -> HashMap<&'a str, String> {
-        static_vars(Self::TAG, array)
     }
 
     fn data_variable(&self) -> String {

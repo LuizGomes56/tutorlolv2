@@ -1,7 +1,3 @@
-use std::str::FromStr;
-
-use crate::scripts::{batch::packb, encoder::FormulaDbBuilder};
-
 use {
     crate::{
         generators::{
@@ -11,24 +7,32 @@ use {
             },
             utils::Tag,
         },
-        libfmt::{Builder, encode_brotli_11},
+        libfmt::Builder,
         scripts::{
-            batch::{FmtArgs, FmtOutput, batch},
+            batch::{FmtArgs, FmtOutput, batch, pack_formulas},
             finish::{
                 champion_aliases, eval_abilities, eval_items_or_runes, finish_champions,
                 finish_items_or_runes,
             },
-            utils::{StaticVar, static_vars},
+            utils::variable,
         },
     },
     heck::ToSnakeCase,
     rayon::iter::{IntoParallelIterator, ParallelBridge, ParallelIterator},
     serde::{Serialize, de::DeserializeOwned},
     serde_json::json,
-    std::{collections::BTreeMap, fmt::Write, path::PathBuf, process::Command, sync::LazyLock},
+    std::{
+        collections::{BTreeMap, HashMap},
+        fmt::Write,
+        path::PathBuf,
+        process::Command,
+        str::FromStr,
+        sync::LazyLock,
+    },
+    tutorlolv2_codec::FormulaDbBuilder,
+    tutorlolv2_types::CtxVar,
 };
 
-use tutorlolv2_types::CtxVar;
 pub use tutorlolv2_wiki::{DynError, MayFail};
 
 pub mod generators;
@@ -234,94 +238,35 @@ fn build_docs() -> MayFail {
     );
 
     for (tag, batch) in &mut batches {
-        packb(&mut packer, *tag, batch)?;
+        pack_formulas(&mut packer, *tag, batch)?;
         tracker.batch(batch);
     }
 
     tutorlolv2_wiki::write(
-        OUT_DIR.join("packer").with_extension("bin"),
+        "packer.bin",
+        // OUT_DIR.join("packer").with_extension("bin"),
         packer.finish()?,
     )?;
 
     for (tag, mut batch) in batches {
-        let mut fmt_args = match tag {
-            Tag::Champions => ChampionParser::static_vars([
-                StaticVar {
-                    attribute: "formula",
-                    name: "CHAMPION_FORMULAS".into(),
-                    vtype: "Range<usize>",
-                },
-                StaticVar {
-                    attribute: "generator",
-                    name: "CHAMPION_GENERATORS".into(),
-                    vtype: "Range<usize>",
-                },
-                StaticVar {
-                    attribute: "debug",
-                    name: "CHAMPION_DEBUG".into(),
-                    vtype: "Range<usize>",
-                },
-                StaticVar {
-                    attribute: "json",
-                    name: "CHAMPION_JSON".into(),
-                    vtype: "Range<usize>",
-                },
-                StaticVar {
-                    attribute: "ability",
-                    name: "ABILITY_FORMULAS".into(),
-                    vtype: "&[Range<usize>]",
-                },
-                StaticVar {
-                    attribute: "closure",
-                    name: "CHAMPION_CLOSURES".into(),
-                    vtype: "&[Range<usize>]",
-                },
-            ]),
-            _ => {
-                let var = |postfix| format!("{}_{postfix}", tag.singular().to_uppercase());
-
-                static_vars(
-                    tag,
-                    [
-                        StaticVar {
-                            attribute: "formula",
-                            name: var("FORMULAS"),
-                            vtype: "Range<usize>",
-                        },
-                        StaticVar {
-                            attribute: "generator",
-                            name: var("GENERATORS"),
-                            vtype: "Range<usize>",
-                        },
-                        StaticVar {
-                            attribute: "debug",
-                            name: var("DEBUG"),
-                            vtype: "Range<usize>",
-                        },
-                        StaticVar {
-                            attribute: "json",
-                            name: var("JSON"),
-                            vtype: "Range<usize>",
-                        },
-                        StaticVar {
-                            attribute: "closure",
-                            name: var("CLOSURES"),
-                            vtype: "[[Range<usize>; 2]; 2]",
-                        },
-                    ],
-                )
-            }
-        };
+        let mut fmt_args = HashMap::from([(
+            "generator",
+            variable(
+                tag,
+                &format!("{}_PARSERS", tag.singular().to_uppercase()),
+                "Range<usize>",
+            ),
+        )]);
 
         let finish = match tag {
             Tag::Champions => finish_champions,
             Tag::Items | Tag::Runes => finish_items_or_runes,
-        } as fn(&str, &mut String, &mut [FmtOutput]);
+        } as fn(&mut String, &mut [FmtOutput]);
 
         for values in batch.values_mut() {
             for (target, outputs) in values.iter_mut() {
                 if let Some(variable) = fmt_args.get_mut(target.as_str()) {
-                    finish(target, variable, outputs);
+                    finish(variable, outputs);
                 }
             }
         }
@@ -340,55 +285,21 @@ fn build_docs() -> MayFail {
     let full_block = tracker.source;
     let ir = tracker.ops;
 
-    let (r1, (r2, (r3, (r4, r5)))) = rayon::join(
+    let (r1, (r2, r3)) = rayon::join(
         || tutorlolv2_wiki::write(&OUT_DIR.join("docs").with_extension("txt"), &full_block),
         || {
             rayon::join(
                 || tutorlolv2_wiki::write(&OUT_DIR.join("docs").with_extension("rs"), &exports),
                 || {
-                    rayon::join(
-                        || {
-                            tutorlolv2_wiki::write(
-                                &OUT_DIR.join("ir").with_extension("rs"),
-                                format!(
-                                    "
+                    tutorlolv2_wiki::write(
+                        &OUT_DIR.join("ir").with_extension("rs"),
+                        format!(
+                            "
                                     pub const IR_LEN: usize = {len};
                                     pub static IR: [Op; {len}] = {ir:?};
                                     ",
-                                    len = ir.len()
-                                ),
-                            )
-                        },
-                        || {
-                            rayon::join(
-                                || -> MayFail {
-                                    let bytes = bincode::encode_to_vec::<
-                                        _,
-                                        bincode::config::Configuration,
-                                    >(
-                                        &ir, bincode::config::Configuration::default()
-                                    )?;
-                                    tutorlolv2_wiki::write(
-                                        &OUT_DIR.join("ir").with_extension("bin"),
-                                        &bytes,
-                                    )?;
-
-                                    let brotli = encode_brotli_11(&bytes);
-
-                                    tutorlolv2_wiki::write(
-                                        &OUT_DIR.join("ir").with_extension("br"),
-                                        &brotli,
-                                    )
-                                },
-                                || {
-                                    let brotli = encode_brotli_11(full_block.as_bytes());
-                                    tutorlolv2_wiki::write(
-                                        &OUT_DIR.join("docs").with_extension("br"),
-                                        &brotli,
-                                    )
-                                },
-                            )
-                        },
+                            len = ir.len()
+                        ),
                     )
                 },
             )
@@ -397,7 +308,5 @@ fn build_docs() -> MayFail {
 
     r1?;
     r2?;
-    r3?;
-    r4?;
-    r5
+    r3
 }
