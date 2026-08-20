@@ -1,8 +1,12 @@
 use crate::packer::{EntityKind, render_ch_formula, render_items_or_runes_formula};
-use heck::{ToShoutySnakeCase, ToSnakeCase};
+use heck::{ToPascalCase, ToShoutySnakeCase, ToSnakeCase};
 use std::fmt::Display;
 use strum::EnumString;
-use tutorlolv2::{AttackType, ChampionId, DamageIndex, ItemId, RuneId, TypeMetadata};
+use tutorlolv2::{
+    AbilityId,
+    AttackType::{self, Melee},
+    ChampionId, DamageIndex, ItemId, RuneId, TypeMetadata,
+};
 
 #[derive(Clone, Copy)]
 pub enum Class {
@@ -73,15 +77,23 @@ struct Highlighter {
     bracket_stack: Vec<Class>,
 }
 
+static CSS: &str = include_str!("style.css");
+
 impl Highlighter {
+    pub const TYPE_INDEX: [(AttackType, DamageIndex); 4] = [
+        (AttackType::Melee, DamageIndex::Min),
+        (AttackType::Melee, DamageIndex::Max),
+        (AttackType::Ranged, DamageIndex::Min),
+        (AttackType::Ranged, DamageIndex::Max),
+    ];
+
     pub fn into_inner(mut self) -> String {
-        let css = include_str!("style.css");
         let head = format!(
             "<html>
                 <head>
                     <title>Packer Check</title>
                     <style>
-                        {css}
+                        {CSS}
                     </style>
                 </head>
                 <body>
@@ -152,7 +164,7 @@ impl Highlighter {
             .new_line()
     }
 
-    pub fn struct_field<T: Display, U: Display>(
+    pub fn tuple_field<T: Display, U: Display>(
         &mut self,
         name: &str,
         class: Class,
@@ -164,9 +176,10 @@ impl Highlighter {
             .add("\n\t\t");
 
         for (i, (field, value)) in array.iter().enumerate() {
-            self.push(Class::Variable, field.to_string().to_snake_case())
-                .add(": ")
+            self.push(Class::Function, field.to_string().to_pascal_case())
+                .bracket(Bracket::RParen)
                 .add(&Self::span(class, value))
+                .bracket(Bracket::LParen)
                 .new_line();
 
             if i < array.len() - 1 {
@@ -190,12 +203,54 @@ impl Highlighter {
             .add("\n\t")
     }
 
+    pub fn pop(&mut self) -> &mut Self {
+        self.inner.pop();
+        self
+    }
+
     pub fn new() -> Self {
         Self {
             inner: String::with_capacity(1 << 12),
             bracket_stack: Vec::new(),
         }
     }
+
+    pub fn function(
+        &mut self,
+        name: (impl Display, impl Display, impl Display),
+        body: &str,
+    ) -> &mut Self {
+        let (id, fn_type, fn_tag) = name;
+        self.push(Class::Keyword, "fn")
+            .add(" ")
+            .push(Class::Type, id)
+            .add("::")
+            .push(Class::Function, fn_type)
+            .bracket(Bracket::RParen)
+            .push(Class::Constant, fn_tag.to_string().to_pascal_case())
+            .bracket(Bracket::LParen)
+            .add(" ")
+            .bracket(Bracket::RCurly)
+            .add("\n\t")
+            .add(body)
+            .add("\n")
+            .bracket(Bracket::LCurly)
+    }
+}
+
+pub fn render_champion_function(
+    id: ChampionId,
+    ability_id: AbilityId,
+) -> Result<String, Box<dyn core::error::Error>> {
+    let mut h = Highlighter::new();
+
+    let ability_char = ability_id.as_char();
+    let ability_name = ability_id.ability_name();
+
+    let body = render_ch_formula(id, ability_id)?;
+
+    h.function((id.debug(), ability_char, ability_name), &body);
+    Ok(h.into_inner())
 }
 
 pub fn render_champion_global(id: ChampionId) -> Result<String, Box<dyn core::error::Error>> {
@@ -207,22 +262,39 @@ pub fn render_champion_global(id: ChampionId) -> Result<String, Box<dyn core::er
         .field("attack_type", Class::Constant, id.attack_type())
         .array_field("positions", Class::Type, id.positions());
 
-    for (i, TypeMetadata { kind, .. }) in id.abilities().iter().enumerate() {
+    for TypeMetadata { kind, .. } in id.abilities() {
         h.push(Class::Variable, kind.discriminant().to_lowercase())
             .add(": ");
 
         let damage = render_ch_formula(id, *kind)?;
 
-        h.add(&damage);
-
-        if i < id.number_of_abilities() - 1 {
-            h.new_line();
-        } else {
-            h.add(",\n");
-        }
+        h.add(&damage).new_line();
     }
 
-    h.bracket(Bracket::LCurly);
+    h.pop().bracket(Bracket::LCurly);
+
+    Ok(h.into_inner())
+}
+
+pub fn render_item_function(id: ItemId) -> Result<String, Box<dyn core::error::Error>> {
+    let mut h = Highlighter::new();
+
+    if id.deals_damage() {
+        for (attack_type, damage_index) in Highlighter::TYPE_INDEX {
+            if !id.deals_max_damage() && matches!(damage_index, DamageIndex::Max) {
+                continue;
+            }
+
+            let slot = 2 * attack_type as u8 + damage_index as u8;
+            let damage = render_items_or_runes_formula(EntityKind::Item, id, slot)?;
+
+            h.function((id.debug(), attack_type, damage_index), &damage)
+                .add("\n\n");
+        }
+    } else {
+        let body = Highlighter::span(Class::Comment, "No damage");
+        h.function((id.debug(), "Type", "Tag"), &body);
+    }
 
     Ok(h.into_inner())
 }
@@ -233,25 +305,15 @@ pub fn render_item_global(id: ItemId) -> Result<String, Box<dyn core::error::Err
     h.global_const(id.debug())
         .field("name", Class::String, id.name())
         .field("price", Class::Number, id.price())
+        .tuple_field("stats", Class::Number, id.stats())
         .field("tier", Class::Number, id.tier())
         .field("purchasable", Class::Boolean, id.purchasable())
-        .array_field("maps", Class::Type, id.maps())
-        .struct_field("stats", Class::Number, id.stats());
+        .array_field("maps", Class::Constant, id.maps());
 
     if id.deals_damage() {
-        for (attack_type, damage_index) in [
-            (AttackType::Melee, DamageIndex::Min),
-            (AttackType::Melee, DamageIndex::Max),
-            (AttackType::Ranged, DamageIndex::Min),
-            (AttackType::Ranged, DamageIndex::Max),
-        ] {
+        for (attack_type, damage_index) in Highlighter::TYPE_INDEX {
             if !id.deals_max_damage() && matches!(damage_index, DamageIndex::Max) {
                 continue;
-            }
-
-            if !matches!(attack_type, AttackType::Melee) && matches!(damage_index, DamageIndex::Min)
-            {
-                h.new_line();
             }
 
             h.push(
@@ -261,15 +323,13 @@ pub fn render_item_global(id: ItemId) -> Result<String, Box<dyn core::error::Err
             .add(": ");
 
             let slot = 2 * attack_type as u8 + damage_index as u8;
-
             let damage = render_items_or_runes_formula(EntityKind::Item, id, slot)?;
 
-            h.add(&damage);
+            h.add(&damage).new_line();
         }
     }
 
-    h.add("\n");
-    h.bracket(Bracket::LCurly);
+    h.pop().bracket(Bracket::LCurly);
 
     Ok(h.into_inner())
 }
@@ -281,19 +341,9 @@ pub fn render_rune_global(id: RuneId) -> Result<String, Box<dyn core::error::Err
         .field("name", Class::String, id.name());
 
     if id.deals_damage() {
-        for (attack_type, damage_index) in [
-            (AttackType::Melee, DamageIndex::Min),
-            (AttackType::Melee, DamageIndex::Max),
-            (AttackType::Ranged, DamageIndex::Min),
-            (AttackType::Ranged, DamageIndex::Max),
-        ] {
+        for (attack_type, damage_index) in Highlighter::TYPE_INDEX {
             if !id.deals_max_damage() && matches!(damage_index, DamageIndex::Max) {
                 continue;
-            }
-
-            if !matches!(attack_type, AttackType::Melee) && matches!(damage_index, DamageIndex::Min)
-            {
-                h.new_line();
             }
 
             h.push(
@@ -303,15 +353,13 @@ pub fn render_rune_global(id: RuneId) -> Result<String, Box<dyn core::error::Err
             .add(": ");
 
             let slot = 2 * attack_type as u8 + damage_index as u8;
-
             let damage = render_items_or_runes_formula(EntityKind::Rune, id, slot)?;
 
-            h.add(&damage);
+            h.add(&damage).new_line();
         }
     }
 
-    h.add("\n");
-    h.bracket(Bracket::LCurly);
+    h.pop().bracket(Bracket::LCurly);
 
     Ok(h.into_inner())
 }
