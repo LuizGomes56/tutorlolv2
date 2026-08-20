@@ -716,6 +716,7 @@ impl FromStr for Position {
     Decode,
     Serialize,
     Deserialize,
+    strum::Display,
 )]
 #[repr(u8)]
 pub enum GameMap {

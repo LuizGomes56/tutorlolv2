@@ -40,8 +40,6 @@ impl Build for Item {
         let mut rust = String::new();
         let mut docs = String::new();
 
-        let upper_id = item_id.to_shouty_snake_case();
-
         write!(
             rust,
             r#"pub static {upper_id}: X = X {{
@@ -59,6 +57,7 @@ impl Build for Item {
                 #[cfg(feature = "docs")]
                 identifiers: &{identifiers:?},
             }};"#,
+            upper_id = item_id.to_shouty_snake_case(),
             identifiers = self.identifiers(),
             deals_damage = self.deals_damage(),
             fn_names = self.function_names(),
@@ -70,24 +69,7 @@ impl Build for Item {
                 .join(", "),
         )?;
 
-        write!(
-            docs,
-            "#[fmt({fmt})]
-            static {var_name}: X = X {{
-                {damage}
-            }};",
-            damage = self.repr_damages(),
-            fmt = self.formula_fmt(),
-            var_name = {
-                let max_len = 28;
-                if upper_id.len() > max_len {
-                    upper_id[..max_len].to_string()
-                } else {
-                    upper_id
-                }
-            }
-        )?;
-
+        docs.push_str(&self.repr_damages());
         rust.push_str(&self.closures()?);
 
         let out = OUT_DIR.join(Tag::Items.plural()).join(item_id);

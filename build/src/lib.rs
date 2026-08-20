@@ -11,10 +11,9 @@ use {
             },
             utils::Tag,
         },
-        libfmt::{Builder, encode_brotli_11, rust_html},
+        libfmt::{Builder, encode_brotli_11},
         scripts::{
             batch::{FmtArgs, FmtOutput, batch},
-            consts::*,
             finish::{
                 champion_aliases, eval_abilities, eval_items_or_runes, finish_champions,
                 finish_items_or_runes,
@@ -170,22 +169,6 @@ fn build_docs() -> MayFail {
     let mut tracker = Builder::new();
     let mut exports = String::with_capacity(4 * 1024 * 1024);
 
-    for (name, value) in [
-        ("IGNITE", IGNITE_FN),
-        ("ONHIT_EFFECT", ONHIT_EFFECT),
-        ("BASIC_ATTACK", BASIC_ATTACK),
-        ("TOWER_DAMAGE", TOWER_DAMAGE),
-        ("CRITICAL_STRIKE", CRITICAL_STRIKE),
-        ("ONHIT_EFFECT_FN", ONHIT_EFFECT_FN),
-        ("TOWER_DAMAGE_FN", TOWER_DAMAGE_FN),
-        ("BASIC_ATTACK_FN", BASIC_ATTACK_FN),
-        ("CRITICAL_STRIKE_FN", CRITICAL_STRIKE_FN),
-    ] {
-        let builder = rust_html(value);
-        let range = tracker.merge(&builder);
-        writeln!(exports, "pub static {name}: Range<usize> = {range:?};")?;
-    }
-
     let mut batches = [Tag::Champions, Tag::Items, Tag::Runes]
         .into_par_iter()
         .map(|tag| -> MayFail<_> {
@@ -256,8 +239,7 @@ fn build_docs() -> MayFail {
     }
 
     tutorlolv2_wiki::write(
-        "packer.bin",
-        // OUT_DIR.join("packer").with_extension("bin"),
+        OUT_DIR.join("packer").with_extension("bin"),
         packer.finish()?,
     )?;
 

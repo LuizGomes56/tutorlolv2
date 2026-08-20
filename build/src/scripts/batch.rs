@@ -1,7 +1,7 @@
 use crate::{
     generators::utils::Tag,
     libfmt::{self, Builder},
-    scripts::encoder::{DamageSlot, EntityKind, FormulaDbBuilder, FormulaSource},
+    scripts::encoder::{EntityKind, FormulaDbBuilder, FormulaSource},
 };
 use heck::ToSnakeCase;
 use rayon::iter::{ParallelBridge, ParallelIterator};
@@ -9,6 +9,7 @@ use regex::Regex;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use std::{collections::BTreeMap, ops::Range, sync::LazyLock};
+use tutorlolv2_types::AbilityId;
 use tutorlolv2_wiki::MayFail;
 
 #[derive(Debug, Deserialize, Serialize)]
@@ -118,312 +119,66 @@ pub fn packb(
             continue;
         };
 
-        for FmtOutput { block, .. } in outputs {
-            let fields = extract_damage_fields(block);
-            let id = variant.to_snake_case();
-            let refs = fields
-                .iter()
-                .enumerate()
-                .map(|(k, (field, _))| (format!("{id}_{field}").to_lowercase(), k as u8))
-                .collect();
+        let id = variant.to_snake_case();
 
-            match tag {
-                Tag::Champions => {
-                    let formulas =
-                        fields
-                            .iter()
-                            .enumerate()
-                            .map(|(k, (_, source))| FormulaSource {
-                                local: k as u8,
-                                source: source.clone(),
-                            });
+        let (formulas, refs) = outputs
+            .iter()
+            .filter_map(
+                |FmtOutput {
+                     block,
+                     json: FmtArgs { meta, .. },
+                     ..
+                 }| {
+                    let body = block
+                        .find('{')
+                        .map(|pos| block[pos + 1..].trim().trim_end_matches('}').trim())?;
 
-                    packer.push_champion(i as _, formulas, &refs)?
-                }
-                _ => {
-                    let damage_slot = |fn_name: &str| match fn_name {
-                        s if s.contains("f0") => DamageSlot::MeleeMin,
-                        s if s.contains("f1") => DamageSlot::MeleeMax,
-                        s if s.contains("f2") => DamageSlot::RangedMin,
-                        s if s.contains("f3") => DamageSlot::RangedMax,
-                        _ => unreachable!(
-                            "fn_name: {fn_name:?} does not match any known damage slot"
-                        ),
-                    } as u8;
-
-                    let formulas = fields.into_iter().map(|(fn_name, source)| FormulaSource {
-                        local: damage_slot(&fn_name),
-                        source,
-                    });
-
-                    let refs = refs
-                        .into_iter()
-                        .map(|(fn_name, _)| {
-                            let slot = damage_slot(&fn_name);
-                            (fn_name, slot)
-                        })
-                        .collect();
-
-                    let entity = match tag {
-                        Tag::Items => EntityKind::Item,
-                        Tag::Runes => EntityKind::Rune,
-                        _ => unreachable!(),
+                    let (source, local, fn_name) = match tag {
+                        Tag::Champions => {
+                            let (f, k) =
+                                serde_json::from_value::<(AbilityId, u8)>(meta.clone()).ok()?;
+                            let fn_type = f.discriminant();
+                            (
+                                body.rfind("] */").map(|pos| &body[pos + 4..])?,
+                                k,
+                                format!("{id}_{fn_type}").to_lowercase(),
+                            )
+                        }
+                        Tag::Items | Tag::Runes => {
+                            let k = meta.as_u64()?;
+                            (body, k as _, format!("{id}_f{k}").to_lowercase())
+                        }
                     };
 
-                    let pre = format!(
-                        "Error for {entity:?}, block={block} for i={i}, formulas={formulas:?}, refs={refs:?}"
-                    );
+                    Some((
+                        FormulaSource {
+                            local,
+                            source: source.to_string(),
+                        },
+                        (fn_name, local),
+                    ))
+                },
+            )
+            .unzip::<_, _, Vec<_>, _>();
 
-                    packer
-                        .push_item_or_rune(entity, i as _, formulas, &refs)
-                        .map_err(|e| format!("{pre}, error={e:?}"))?
-                }
+        match tag {
+            Tag::Champions => {
+                /* comment[{comment:?}] */
+                /* name[{name:?}] */
+                packer.push_champion(i as _, &formulas, &refs)
+            }
+            _ => {
+                let entity = match tag {
+                    Tag::Items => EntityKind::Item,
+                    Tag::Runes => EntityKind::Rune,
+                    _ => unreachable!(),
+                };
+
+                packer.push_item_or_rune(entity, i as _, &formulas, &refs)
             }
         }
+        .map_err(|e| format!("Packer Error [{id}][formulas={formulas:?}][refs={refs:?}]: {e:?}"))?;
     }
 
     Ok(())
-}
-
-pub fn extract_damage_fields(source: &str) -> Vec<(String, String)> {
-    let body = extract_outer_body(source).expect("could not find struct body");
-
-    let fields = split_top_level(body);
-
-    let mut result = Vec::new();
-
-    for field in fields {
-        let field = field.trim();
-
-        if field.is_empty() {
-            continue;
-        }
-
-        let Some(colon) = find_top_level_colon(field) else {
-            continue;
-        };
-
-        let key = field[..colon].trim();
-        let value = field[colon + 1..].trim();
-
-        result.push((key.to_owned(), value.to_owned()));
-    }
-
-    result
-}
-
-fn extract_outer_body(source: &str) -> Option<&str> {
-    let bytes = source.as_bytes();
-
-    let mut start = None;
-    let mut depth = 0usize;
-
-    let mut in_string = false;
-    let mut in_char = false;
-    let mut escaped = false;
-
-    let mut i = 0;
-
-    while i < bytes.len() {
-        let b = bytes[i];
-
-        if in_string {
-            if escaped {
-                escaped = false;
-            } else if b == b'\\' {
-                escaped = true;
-            } else if b == b'"' {
-                in_string = false;
-            }
-
-            i += 1;
-            continue;
-        }
-
-        if in_char {
-            if escaped {
-                escaped = false;
-            } else if b == b'\\' {
-                escaped = true;
-            } else if b == b'\'' {
-                in_char = false;
-            }
-
-            i += 1;
-            continue;
-        }
-
-        match b {
-            b'"' => in_string = true,
-            b'\'' => in_char = true,
-
-            b'{' => {
-                if depth == 0 {
-                    start = Some(i + 1);
-                }
-
-                depth += 1;
-            }
-
-            b'}' => {
-                depth -= 1;
-
-                if depth == 0 {
-                    let start = start?;
-                    return Some(&source[start..i]);
-                }
-            }
-
-            _ => {}
-        }
-
-        i += 1;
-    }
-
-    None
-}
-
-fn split_top_level(source: &str) -> Vec<&str> {
-    let bytes = source.as_bytes();
-
-    let mut result = Vec::new();
-
-    let mut start = 0;
-
-    let mut paren_depth = 0usize;
-    let mut bracket_depth = 0usize;
-    let mut brace_depth = 0usize;
-
-    let mut in_string = false;
-    let mut in_char = false;
-    let mut escaped = false;
-
-    let mut i = 0;
-
-    while i < bytes.len() {
-        let b = bytes[i];
-
-        if in_string {
-            if escaped {
-                escaped = false;
-            } else if b == b'\\' {
-                escaped = true;
-            } else if b == b'"' {
-                in_string = false;
-            }
-
-            i += 1;
-            continue;
-        }
-
-        if in_char {
-            if escaped {
-                escaped = false;
-            } else if b == b'\\' {
-                escaped = true;
-            } else if b == b'\'' {
-                in_char = false;
-            }
-
-            i += 1;
-            continue;
-        }
-
-        match b {
-            b'"' => in_string = true,
-            b'\'' => in_char = true,
-
-            b'(' => paren_depth += 1,
-            b')' => paren_depth -= 1,
-
-            b'[' => bracket_depth += 1,
-            b']' => bracket_depth -= 1,
-
-            b'{' => brace_depth += 1,
-            b'}' => brace_depth -= 1,
-
-            b',' if paren_depth == 0 && bracket_depth == 0 && brace_depth == 0 => {
-                result.push(&source[start..i]);
-                start = i + 1;
-            }
-
-            _ => {}
-        }
-
-        i += 1;
-    }
-
-    if start < source.len() {
-        result.push(&source[start..]);
-    }
-
-    result
-}
-
-fn find_top_level_colon(source: &str) -> Option<usize> {
-    let bytes = source.as_bytes();
-
-    let mut paren_depth = 0usize;
-    let mut bracket_depth = 0usize;
-    let mut brace_depth = 0usize;
-
-    let mut in_string = false;
-    let mut in_char = false;
-    let mut escaped = false;
-
-    let mut i = 0;
-
-    while i < bytes.len() {
-        let b = bytes[i];
-
-        if in_string {
-            if escaped {
-                escaped = false;
-            } else if b == b'\\' {
-                escaped = true;
-            } else if b == b'"' {
-                in_string = false;
-            }
-
-            i += 1;
-            continue;
-        }
-
-        if in_char {
-            if escaped {
-                escaped = false;
-            } else if b == b'\\' {
-                escaped = true;
-            } else if b == b'\'' {
-                in_char = false;
-            }
-
-            i += 1;
-            continue;
-        }
-
-        match b {
-            b'"' => in_string = true,
-            b'\'' => in_char = true,
-
-            b'(' => paren_depth += 1,
-            b')' => paren_depth -= 1,
-
-            b'[' => bracket_depth += 1,
-            b']' => bracket_depth -= 1,
-
-            b'{' => brace_depth += 1,
-            b'}' => brace_depth -= 1,
-
-            b':' if paren_depth == 0 && bracket_depth == 0 && brace_depth == 0 => {
-                return Some(i);
-            }
-
-            _ => {}
-        }
-
-        i += 1;
-    }
-
-    None
 }

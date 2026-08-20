@@ -99,29 +99,12 @@ impl Build for Champion {
                 .unwrap_or_else(|| simplify(raw))
         };
 
-        let damage = abilities
+        let damages = abilities
             .iter()
-            .map(|(id, v)| {
-                let discriminant = id.discriminant().to_lowercase();
-                let dmg = resolve_damage(id, &v.damage);
-
-                format!("{discriminant}: {dmg},")
-            })
-            .collect::<String>();
+            .map(|(id, v)| resolve_damage(id, &v.damage))
+            .collect::<Vec<String>>();
 
         let upper_id = champion_id.to_shouty_snake_case();
-
-        write!(
-            docs,
-            "#[fmt({fmt})]
-            static {upper_id}: X = X {{{damage}}};",
-            fmt = json!(FmtArgs {
-                target: "formula".into(),
-                variant: champion_id.clone(),
-                meta: (),
-                default: false
-            }),
-        )?;
 
         write!(
             rust,
@@ -157,14 +140,13 @@ impl Build for Champion {
             fn_names = functions.join(",")
         )?;
 
-        for (((ability_id, ability), function), body) in
-            abilities.iter().zip(&functions).zip(closures)
+        for (i, (((ability_id, ability), function), body)) in
+            abilities.iter().zip(&functions).zip(closures).enumerate()
         {
             let Ability { name, comment, .. } = ability;
 
             let formula = simplify(&body);
             let mut rust_formula = formula.clone();
-            let mut variable = function.to_uppercase();
 
             if let Some(merge) = merge
                 .iter()
@@ -178,9 +160,6 @@ impl Build for Champion {
                 } else {
                     rust_formula = max_damage.clone();
                 }
-
-                let alias = merge.alias.discriminant();
-                variable = format!("{champion_id}_{alias}").to_uppercase();
             }
 
             let mut rust_formula = cast_f32(&rust_formula);
@@ -199,15 +178,17 @@ impl Build for Champion {
             write!(
                 docs,
                 "#[fmt({fmt_block})]
-                static {variable}: Ability = Ability {{
-                    name: {name:?},
-                    comment: {comment},
-                }};",
+                fn {function}(_: &Ctx) {{
+                    /* comment[{comment:?}] */
+                    /* name[{name:?}] */
+                    {damage}
+                }}",
+                damage = damages[i],
                 comment = fit_str(comment),
                 fmt_block = json!(FmtArgs {
-                    target: "ability".into(),
+                    target: "formula".into(),
                     variant: champion_id.clone(),
-                    meta: ability_id,
+                    meta: (ability_id, i),
                     default: false
                 })
             )?;

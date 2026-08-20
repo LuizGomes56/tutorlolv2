@@ -7,3 +7,4 @@ edition = "2024"
 tutorlolv2 = { path = "../" }
 tutorlolv2_types = { path = "../tutorlolv2_types", features = ["dev"] }
 heck = "0.5.0"
+strum = { version = "0.28.0", features = ["derive", "strum_macros"] }

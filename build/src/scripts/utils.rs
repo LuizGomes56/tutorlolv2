@@ -390,19 +390,21 @@ pub trait ItemOrRuneExt:
                 simplify(raw[i])
             };
 
-            parts.push(format!("f{i}: {value}"));
+            parts.push(format!(
+                "#[fmt({fmt_args})]
+                fn {id}_f{i}(_: &Ctx) {{
+                    {value}
+                }}",
+                fmt_args = json!(FmtArgs {
+                    target: "formula".into(),
+                    variant: self.id().into(),
+                    meta: i,
+                    default: false
+                })
+            ));
         }
 
-        parts.join(", ")
-    }
-
-    fn formula_fmt(&self) -> Value {
-        json!(FmtArgs {
-            target: "formula".into(),
-            variant: self.id().into(),
-            meta: (),
-            default: false
-        })
+        parts.concat()
     }
 
     fn functions(&self) -> [String; 4] {

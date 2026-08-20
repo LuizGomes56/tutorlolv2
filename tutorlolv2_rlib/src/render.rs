@@ -1,8 +1,8 @@
-use heck::ToShoutySnakeCase;
-use std::fmt::{Debug, Display};
-use tutorlolv2::{ChampionId, TypeMetadata};
-
-use crate::packer::render_ch_formula;
+use crate::packer::{EntityKind, render_ch_formula, render_items_or_runes_formula};
+use heck::{ToShoutySnakeCase, ToSnakeCase};
+use std::fmt::Display;
+use strum::EnumString;
+use tutorlolv2::{AttackType, ChampionId, DamageIndex, ItemId, RuneId, TypeMetadata};
 
 #[derive(Clone, Copy)]
 pub enum Class {
@@ -22,7 +22,6 @@ pub enum Class {
     Bracket1,
     Bracket2,
     Bracket3,
-    Any,
 }
 
 impl Class {
@@ -36,32 +35,36 @@ impl Class {
     }
 }
 
+#[derive(EnumString)]
 pub enum Bracket {
-    /// Symbol: '`(`'
+    /// Symbol: `(`
     RParen,
-    /// Symbol: '`)`'
+    /// Symbol: `)`
     LParen,
-    /// Symbol: '`{`'
+    /// Symbol: `{`
     RCurly,
-    /// Symbol: '`}`'
+    /// Symbol: `}`
     LCurly,
-    /// Symbol: '`[`'
+    /// Symbol: `[`
     RBracket,
-    /// Symbol: '`]`'
+    /// Symbol: `]`
     LBracket,
 }
 
 impl Display for Bracket {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        let s = match self {
-            Bracket::RParen => '(',
-            Bracket::LParen => ')',
-            Bracket::RCurly => '{',
-            Bracket::LCurly => '}',
-            Bracket::RBracket => '[',
-            Bracket::LBracket => ']',
-        };
-        write!(f, "{s}")
+        write!(
+            f,
+            "{}",
+            match self {
+                Self::RParen => "(",
+                Self::LParen => ")",
+                Self::RCurly => "{",
+                Self::LCurly => "}",
+                Self::RBracket => "[",
+                Self::LBracket => "]",
+            }
+        )
     }
 }
 
@@ -72,9 +75,20 @@ struct Highlighter {
 
 impl Highlighter {
     pub fn into_inner(mut self) -> String {
-        self.inner
-            .insert_str(0, r#"<pre style="white-space: pre-wrap; tab-size: 4">"#);
-        self.inner.push_str("<pre>");
+        let css = include_str!("style.css");
+        let head = format!(
+            "<html>
+                <head>
+                    <title>Packer Check</title>
+                    <style>
+                        {css}
+                    </style>
+                </head>
+                <body>
+                    <pre>"
+        );
+        self.inner.insert_str(0, &head);
+        self.inner.push_str("</pre></body></html>");
         self.inner
     }
 
@@ -138,12 +152,38 @@ impl Highlighter {
             .new_line()
     }
 
+    pub fn struct_field<T: Display, U: Display>(
+        &mut self,
+        name: &str,
+        class: Class,
+        array: &[(T, U)],
+    ) -> &mut Self {
+        self.push(Class::Variable, name)
+            .add(": ")
+            .bracket(Bracket::RCurly)
+            .add("\n\t\t");
+
+        for (i, (field, value)) in array.iter().enumerate() {
+            self.push(Class::Variable, field.to_string().to_snake_case())
+                .add(": ")
+                .add(&Self::span(class, value))
+                .new_line();
+
+            if i < array.len() - 1 {
+                self.add("\t");
+            }
+        }
+
+        self.bracket(Bracket::LCurly).new_line()
+    }
+
     pub fn new_line(&mut self) -> &mut Self {
         self.add(",\n\t")
     }
 
     pub fn global_const(&mut self, name: &str) -> &mut Self {
-        self.push(Class::Keyword, "const ")
+        self.push(Class::Keyword, "const")
+            .add(" ")
             .push(Class::Constant, name.to_shouty_snake_case())
             .add(" = ")
             .bracket(Bracket::RCurly)
@@ -158,7 +198,7 @@ impl Highlighter {
     }
 }
 
-pub fn render_champion_global(id: ChampionId) -> String {
+pub fn render_champion_global(id: ChampionId) -> Result<String, Box<dyn core::error::Error>> {
     let mut h = Highlighter::new();
 
     h.global_const(id.debug())
@@ -171,7 +211,7 @@ pub fn render_champion_global(id: ChampionId) -> String {
         h.push(Class::Variable, kind.discriminant().to_lowercase())
             .add(": ");
 
-        let damage = render_ch_formula(id, *kind).unwrap();
+        let damage = render_ch_formula(id, *kind)?;
 
         h.add(&damage);
 
@@ -183,25 +223,95 @@ pub fn render_champion_global(id: ChampionId) -> String {
     }
 
     h.bracket(Bracket::LCurly);
-    h.into_inner()
+
+    Ok(h.into_inner())
 }
 
-pub fn render_item_global() -> String {
-    // static {var_name}: X = X {{
-    //     name: {name},
-    //     price: {price},
-    //     stats: {stats:?},
-    //     maps: {maps:?},
-    //     tier: {tier},
-    //     purchasable: {purchasable},
-    //     {damage}
-    // }};
-    todo!()
+pub fn render_item_global(id: ItemId) -> Result<String, Box<dyn core::error::Error>> {
+    let mut h = Highlighter::new();
+
+    h.global_const(id.debug())
+        .field("name", Class::String, id.name())
+        .field("price", Class::Number, id.price())
+        .field("tier", Class::Number, id.tier())
+        .field("purchasable", Class::Boolean, id.purchasable())
+        .array_field("maps", Class::Type, id.maps())
+        .struct_field("stats", Class::Number, id.stats());
+
+    if id.deals_damage() {
+        for (attack_type, damage_index) in [
+            (AttackType::Melee, DamageIndex::Min),
+            (AttackType::Melee, DamageIndex::Max),
+            (AttackType::Ranged, DamageIndex::Min),
+            (AttackType::Ranged, DamageIndex::Max),
+        ] {
+            if !id.deals_max_damage() && matches!(damage_index, DamageIndex::Max) {
+                continue;
+            }
+
+            if !matches!(attack_type, AttackType::Melee) && matches!(damage_index, DamageIndex::Min)
+            {
+                h.new_line();
+            }
+
+            h.push(
+                Class::Variable,
+                format!("{attack_type:?}_{damage_index:?}").to_lowercase(),
+            )
+            .add(": ");
+
+            let slot = 2 * attack_type as u8 + damage_index as u8;
+
+            let damage = render_items_or_runes_formula(EntityKind::Item, id, slot)?;
+
+            h.add(&damage);
+        }
+    }
+
+    h.add("\n");
+    h.bracket(Bracket::LCurly);
+
+    Ok(h.into_inner())
 }
 
-pub fn render_rune_global() -> String {
-    // static {upper_id}: X = X {{
-    //     name: {name:?}{damage}
-    // }};
-    todo!()
+pub fn render_rune_global(id: RuneId) -> Result<String, Box<dyn core::error::Error>> {
+    let mut h = Highlighter::new();
+
+    h.global_const(id.debug())
+        .field("name", Class::String, id.name());
+
+    if id.deals_damage() {
+        for (attack_type, damage_index) in [
+            (AttackType::Melee, DamageIndex::Min),
+            (AttackType::Melee, DamageIndex::Max),
+            (AttackType::Ranged, DamageIndex::Min),
+            (AttackType::Ranged, DamageIndex::Max),
+        ] {
+            if !id.deals_max_damage() && matches!(damage_index, DamageIndex::Max) {
+                continue;
+            }
+
+            if !matches!(attack_type, AttackType::Melee) && matches!(damage_index, DamageIndex::Min)
+            {
+                h.new_line();
+            }
+
+            h.push(
+                Class::Variable,
+                format!("{attack_type:?}_{damage_index:?}").to_lowercase(),
+            )
+            .add(": ");
+
+            let slot = 2 * attack_type as u8 + damage_index as u8;
+
+            let damage = render_items_or_runes_formula(EntityKind::Rune, id, slot)?;
+
+            h.add(&damage);
+        }
+    }
+
+    h.add("\n");
+    h.bracket(Bracket::LCurly);
+
+    Ok(h.into_inner())
 }

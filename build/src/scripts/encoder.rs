@@ -327,7 +327,7 @@ impl FormulaDbBuilder {
     pub fn push_champion(
         &mut self,
         owner_index: u16,
-        formulas: impl Iterator<Item = FormulaSource>,
+        formulas: &[FormulaSource],
         refs: &HashMap<String, u8>,
     ) -> Result<(), Error> {
         let slot = self
@@ -368,7 +368,7 @@ impl FormulaDbBuilder {
         &mut self,
         kind: EntityKind,
         owner_index: u16,
-        formulas: impl Iterator<Item = FormulaSource>,
+        formulas: &[FormulaSource],
         refs: &HashMap<String, u8>,
     ) -> Result<(), Error> {
         let table_len = match kind {

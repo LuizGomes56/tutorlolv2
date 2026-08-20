@@ -246,6 +246,14 @@ impl ItemId {
         self.data().price
     }
 
+    pub const fn tier(&self) -> u8 {
+        self.data().tier
+    }
+
+    pub const fn purchasable(&self) -> bool {
+        self.data().purchasable
+    }
+
     pub const fn metadata(&self) -> TypeMetadata<Self> {
         self.data().metadata
     }

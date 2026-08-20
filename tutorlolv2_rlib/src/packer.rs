@@ -13,12 +13,14 @@
 //!
 //! The on-disk/in-memory format is custom and little-endian.
 
-use crate::render::Class;
-use heck::ToSnakeCase;
 use std::collections::HashMap;
 use std::convert::{TryFrom, TryInto};
 use std::fmt;
+
+use heck::ToSnakeCase;
 use tutorlolv2::{AbilityId, CastId, ChampionId, CtxVar, ItemId, RuneId};
+
+use crate::render::Class;
 
 pub const MAGIC: [u8; 4] = *b"FBC1";
 pub const VERSION: u8 = 1;
@@ -159,13 +161,6 @@ pub struct FormulaSource {
     pub source: String,
 }
 
-/// One Item/Rune formula. Only present slots need to be supplied.
-#[derive(Debug, Clone, Copy)]
-pub struct SlottedFormulaSource<'a> {
-    pub slot: DamageSlot,
-    pub source: &'a str,
-}
-
 /// Build-time conversion used for `ctx.foo` -> one byte.
 ///
 /// A wrapper around your existing `CtxVar::from_str` is ideal:
@@ -257,6 +252,16 @@ struct SparsePending {
     mask: u8,
 }
 
+#[derive(Debug, Clone, Copy)]
+pub struct BuilderStats {
+    pub champions_present: usize,
+    pub champion_formulas: usize,
+    pub items_present: usize,
+    pub item_formulas: usize,
+    pub runes_present: usize,
+    pub rune_formulas: usize,
+}
+
 /// Build-time database builder.
 ///
 /// `item_owner_count` and `rune_owner_count` describe the OWNER INDEX TABLE,
@@ -289,6 +294,37 @@ impl FormulaDbBuilder {
         }
     }
 
+    pub fn stats(&self) -> BuilderStats {
+        BuilderStats {
+            champions_present: self.champions.iter().filter(|v| v.is_some()).count(),
+
+            champion_formulas: self
+                .champions
+                .iter()
+                .filter_map(Option::as_ref)
+                .map(|v| v.formulas.len())
+                .sum(),
+
+            items_present: self.items.iter().filter(|v| v.is_some()).count(),
+
+            item_formulas: self
+                .items
+                .iter()
+                .filter_map(Option::as_ref)
+                .map(|v| v.formulas.len())
+                .sum(),
+
+            runes_present: self.runes.iter().filter(|v| v.is_some()).count(),
+
+            rune_formulas: self
+                .runes
+                .iter()
+                .filter_map(Option::as_ref)
+                .map(|v| v.formulas.len())
+                .sum(),
+        }
+    }
+
     /// Adds one champion.
     ///
     /// `refs` is the per-champion HashMap<String, u8> you described. Function calls
@@ -296,7 +332,7 @@ impl FormulaDbBuilder {
     pub fn push_champion(
         &mut self,
         owner_index: u16,
-        formulas: impl Iterator<Item = FormulaSource>,
+        formulas: &[FormulaSource],
         refs: &HashMap<String, u8>,
     ) -> Result<(), Error> {
         let slot = self
@@ -333,32 +369,11 @@ impl FormulaDbBuilder {
         Ok(())
     }
 
-    /// Adds one Item. Supplying zero formulas is valid, but callers may simply omit
-    /// the call entirely; the default table entry is mask=0 and consumes no formula bytes.
-    pub fn push_item(
-        &mut self,
-        owner_index: u16,
-        formulas: &[SlottedFormulaSource<'_>],
-        refs: &HashMap<String, u8>,
-    ) -> Result<(), Error> {
-        self.push_sparse(EntityKind::Item, owner_index, formulas, refs)
-    }
-
-    /// Adds one Rune. Same physical/logical representation as Item.
-    pub fn push_rune(
-        &mut self,
-        owner_index: u16,
-        formulas: &[SlottedFormulaSource<'_>],
-        refs: &HashMap<String, u8>,
-    ) -> Result<(), Error> {
-        self.push_sparse(EntityKind::Rune, owner_index, formulas, refs)
-    }
-
-    fn push_sparse(
+    pub fn push_item_or_rune(
         &mut self,
         kind: EntityKind,
         owner_index: u16,
-        formulas: &[SlottedFormulaSource<'_>],
+        formulas: &[FormulaSource],
         refs: &HashMap<String, u8>,
     ) -> Result<(), Error> {
         let table_len = match kind {
@@ -387,16 +402,17 @@ impl FormulaDbBuilder {
         }
 
         let mut seen = [false; 4];
-        let mut parsed = Vec::with_capacity(formulas.len());
+        let mut parsed = Vec::new();
         let mut mask = 0u8;
         for f in formulas {
-            let local = f.slot as usize;
+            let local = f.local as usize;
             if seen[local] {
-                return Err(Error::DuplicateLocal(f.slot as u8));
+                return Err(Error::DuplicateLocal(f.local as u8));
             }
             seen[local] = true;
-            mask |= f.slot.bit();
-            parsed.push((f.slot, self.parse_formula(f.source, refs)?));
+            let slot = DamageSlot::ALL[f.local as usize];
+            mask |= slot.bit();
+            parsed.push((slot, self.parse_formula(&f.source, refs)?));
         }
         parsed.sort_by_key(|(slot, _)| *slot as u8);
         validate_sparse_mask(mask)?;
@@ -901,16 +917,6 @@ impl<'a> FormulaDb<'a> {
         let base = read_u16_at(self.bytes, pos).ok()?;
         base.checked_add(local as u16)
             .filter(|id| *id < self.formulas)
-    }
-
-    /// Sparse Item lookup. `mask=0` means the item has no damage and immediately returns None.
-    pub fn item_formula_id(&self, owner_index: u16, slot: DamageSlot) -> Option<u16> {
-        self.sparse_formula_id(EntityKind::Item, owner_index, slot)
-    }
-
-    /// Sparse Rune lookup. Same representation as Item.
-    pub fn rune_formula_id(&self, owner_index: u16, slot: DamageSlot) -> Option<u16> {
-        self.sparse_formula_id(EntityKind::Rune, owner_index, slot)
     }
 
     fn sparse_formula_id(
@@ -1665,9 +1671,11 @@ impl Parser<'_> {
 
     fn parse_function_call(&mut self, start: Token, name: String) -> Result<Parsed, Error> {
         self.expect_simple(TokenKind::LParen, "expected `(` after function name")?;
+
         let arg = self
             .bump()
             .ok_or_else(|| parse_err(&start, "expected function argument"))?;
+
         match &arg.kind {
             TokenKind::Ident(s) if s == "ctx" => {}
             _ => {
@@ -1677,11 +1685,18 @@ impl Parser<'_> {
                 ));
             }
         }
+
+        if matches!(self.peek().map(|t| &t.kind), Some(TokenKind::Comma)) {
+            self.bump();
+        }
+
         let close = self.expect_simple(TokenKind::RParen, "expected `)` after `ctx`")?;
+
         let local = *self
             .refs
             .get(&name)
             .ok_or_else(|| Error::UnknownFunction(name.clone()))?;
+
         Ok(Parsed {
             ast: Ast::RefLocal(local),
             start_line: start.line,
@@ -2094,8 +2109,134 @@ if let Some(formula_id) = db.item_formula_id(item.owner_index_u16(), DamageSlot:
 }
 */
 
+// -------------------------------------------------------------------------------------------------
+// Example integration (not compiled as tests because your real enums are project-specific)
+// -------------------------------------------------------------------------------------------------
+
+/*
+BUILD-TIME SKETCH
+-----------------
+
+fn ctx_id(name: &str) -> Option<u8> {
+    CtxVar::from_str(name).map(|v| v as u8)
+}
+
+let mut b = FormulaDbBuilder::new(
+    ChampionId::LEN as u16,
+    ItemId::LEN as u16,   // owner index table; owners with no damage stay mask=0
+    RuneId::LEN as u16,
+    ctx_id,
+);
+
+for champion in ChampionId::ALL {
+    let mut refs = HashMap::<String, u8>::new();
+    let mut formulas = Vec::new();
+
+    for (local, (ability_id, ability)) in champion.abilities().iter().enumerate() {
+        // Use whatever exact naming helper produced calls such as `gnar_qmin(ctx)`.
+        refs.insert(format!("{}_{}", champion.as_fn_prefix(), ability_id.discriminant().to_lowercase()), local as u8);
+        formulas.push(FormulaSource {
+            local: local as u8,
+            source: ability.damage.as_str(),
+        });
+    }
+
+    b.push_champion(champion.owner_index_u16(), &formulas, &refs)?;
+}
+
+for item in ItemId::ALL {
+    // If the item has no damage: do nothing. Its dense owner table entry remains mask=0.
+    let Some(damage) = item.damage() else { continue };
+
+    let mut refs = HashMap::<String, u8>::new();
+    refs.insert(item.melee_min_fn_name(), DamageSlot::MeleeMin as u8);
+    refs.insert(item.melee_max_fn_name(), DamageSlot::MeleeMax as u8);
+    refs.insert(item.ranged_min_fn_name(), DamageSlot::RangedMin as u8);
+    refs.insert(item.ranged_max_fn_name(), DamageSlot::RangedMax as u8);
+
+    let mut slots = Vec::new();
+    if let Some(s) = damage.melee_min.as_deref() {
+        slots.push(SlottedFormulaSource { slot: DamageSlot::MeleeMin, source: s });
+    }
+    if let Some(s) = damage.melee_max.as_deref() {
+        slots.push(SlottedFormulaSource { slot: DamageSlot::MeleeMax, source: s });
+    }
+    if let Some(s) = damage.ranged_min.as_deref() {
+        slots.push(SlottedFormulaSource { slot: DamageSlot::RangedMin, source: s });
+    }
+    if let Some(s) = damage.ranged_max.as_deref() {
+        slots.push(SlottedFormulaSource { slot: DamageSlot::RangedMax, source: s });
+    }
+
+    b.push_item(item.owner_index_u16(), &slots, &refs)?;
+}
+
+// Runes use exactly the same pattern as Items.
+let binary: Vec<u8> = b.finish()?;
+std::fs::write(out_dir.join("formula_damage.bin"), &binary)?;
+
+RUNTIME SKETCH
+--------------
+
+static FORMULA_BYTES: &[u8] = include_bytes!(concat!(env!("OUT_DIR"), "/formula_damage.bin"));
+let db = FormulaDb::parse(FORMULA_BYTES)?;
+
+// Champion:
+let local = champion.indexof_ability(ability_id)? as u8;
+let formula_id = db.champion_formula_id(champion.owner_index_u16(), local)?;
+let html = db.render_formula_html(
+    formula_id,
+    |ctx| CtxVar::from_repr(ctx).unwrap().as_var().to_owned(),
+    |local| {
+        let ability = &champion.abilities()[local as usize];
+        format!("{}_{}", champion.as_fn_prefix(), ability.kind.discriminant().to_lowercase())
+    },
+    |class| match class {
+        RenderClass::Number => Class::Number as u8,
+        RenderClass::Context => Class::Variable as u8,
+        RenderClass::Field => Class::Field as u8,
+        RenderClass::Operator => Class::Operator as u8,
+        RenderClass::Keyword => Class::Keyword as u8,
+        RenderClass::Type => Class::Type as u8,
+        RenderClass::Function => Class::Function as u8,
+        RenderClass::Punctuation => Class::Punctuation as u8,
+    },
+)?;
+
+// Item:
+if let Some(formula_id) = db.item_formula_id(item.owner_index_u16(), DamageSlot::RangedMin) {
+    // `local` passed to the ref resolver is a LOGICAL DamageSlot, not physical rank.
+    let html = db.render_formula_html(
+        formula_id,
+        |ctx| CtxVar::from_repr(ctx).unwrap().as_var().to_owned(),
+        |local| {
+            let slot = match local {
+                0 => DamageSlot::MeleeMin,
+                1 => DamageSlot::MeleeMax,
+                2 => DamageSlot::RangedMin,
+                3 => DamageSlot::RangedMax,
+                _ => unreachable!(),
+            };
+            item.damage_fn_name(slot)
+        },
+        class_mapper,
+    )?;
+}
+*/
+
 pub fn check_bin_packer() -> Result<(), Box<dyn std::error::Error>> {
-    let mut result = String::from("<pre style=\"white-space: pre-wrap;\">");
+    let css = include_str!("style.css");
+    let mut result = format!(
+        "<html>
+            <head>
+                <title>Packer Check</title>
+                <style>
+                    {css}
+                </style>
+            </head>
+            <body>
+                <pre>"
+    );
 
     for champion in ChampionId::VALUES {
         for metadata in champion.abilities() {
@@ -2108,7 +2249,7 @@ pub fn check_bin_packer() -> Result<(), Box<dyn std::error::Error>> {
 
     for item in ItemId::VALUES {
         for slot in 0..4 {
-            if let Ok(r) = render_items_or_runes_formula(item, slot) {
+            if let Ok(r) = render_items_or_runes_formula(EntityKind::Item, item, slot) {
                 result.push_str(&format!("{item:?}::{slot}<br>"));
                 result.push_str(&r);
                 result.push_str("<br><br>");
@@ -2118,7 +2259,7 @@ pub fn check_bin_packer() -> Result<(), Box<dyn std::error::Error>> {
 
     for rune in RuneId::VALUES {
         for slot in 0..4 {
-            if let Ok(r) = render_items_or_runes_formula(rune, slot) {
+            if let Ok(r) = render_items_or_runes_formula(EntityKind::Rune, rune, slot) {
                 result.push_str(&format!("{rune:?}::{slot}<br>"));
                 result.push_str(&r);
                 result.push_str("<br><br>");
@@ -2126,7 +2267,7 @@ pub fn check_bin_packer() -> Result<(), Box<dyn std::error::Error>> {
         }
     }
 
-    result.push_str("</pre>");
+    result.push_str("</pre></body></html>");
     std::fs::write("packer_html.html", result)?;
     Ok(())
 }
@@ -2136,21 +2277,20 @@ pub const fn class_id(class: RenderClass) -> u8 {
         RenderClass::Number => Class::Number as u8,
         RenderClass::Context => Class::Variable as u8,
         RenderClass::Field => Class::Variable as u8,
-        RenderClass::Operator => Class::Any as u8,
+        RenderClass::Operator => Class::Boolean as u8,
         RenderClass::Keyword => Class::Keyword as u8,
         RenderClass::Type => Class::Type as u8,
         RenderClass::Function => Class::Function as u8,
-        RenderClass::Punctuation => Class::Any as u8,
+        RenderClass::Punctuation => Class::Boolean as u8,
     }
 }
 
 pub fn ctx_name(ctx: u8) -> String {
-    unsafe { core::mem::transmute::<_, CtxVar>(ctx) }
-        .as_var()
-        .to_owned()
+    unsafe { core::mem::transmute::<_, CtxVar>(ctx) }.as_var()[4..].to_owned()
 }
 
 pub fn render_items_or_runes_formula(
+    kind: EntityKind,
     v: impl CastId,
     slot: u8,
 ) -> Result<String, Box<dyn std::error::Error>> {
@@ -2159,9 +2299,9 @@ pub fn render_items_or_runes_formula(
     assert!(matches!(slot, 0..4));
 
     let Some(formula_id) =
-        db.item_formula_id(v.index() as _, unsafe { core::mem::transmute(slot) })
+        db.sparse_formula_id(kind, v.index() as _, unsafe { core::mem::transmute(slot) })
     else {
-        return Err("no formula id".into());
+        return Err(format!("No formula id for {v:?} slot {slot}").into());
     };
 
     let html = db.render_formula_html(

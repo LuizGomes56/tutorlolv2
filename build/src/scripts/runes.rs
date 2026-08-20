@@ -24,8 +24,6 @@ impl Build for Rune {
         let mut rust = String::new();
         let mut docs = String::new();
 
-        let upper_id = rune_id.to_shouty_snake_case();
-
         write!(
             rust,
             r#"pub static {upper_id}: X = X {{
@@ -38,22 +36,14 @@ impl Build for Rune {
                 #[cfg(feature = "docs")]
                 identifiers: &{identifiers:?},
             }};"#,
+            upper_id = rune_id.to_shouty_snake_case(),
             identifiers = self.identifiers(),
             deals_damage = self.deals_damage(),
             fn_names = self.function_names(),
             metadata = self.repr_metadata()
         )?;
 
-        write!(
-            docs,
-            "#[fmt({fmt})]
-            static {upper_id}: X = X {{
-                {damage}
-            }};",
-            damage = self.repr_damages(),
-            fmt = self.formula_fmt()
-        )?;
-
+        docs.push_str(&self.repr_damages());
         rust.push_str(&self.closures()?);
 
         let out = OUT_DIR.join(Tag::Runes.plural()).join(rune_id);
