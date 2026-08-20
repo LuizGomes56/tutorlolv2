@@ -51,6 +51,7 @@ struct Layout {
     formula_data: usize,
 }
 
+#[derive(Clone, Copy)]
 pub struct FormulaDb<'a> {
     bytes: &'a [u8],
     constants: u16,
@@ -130,44 +131,20 @@ impl<'a> FormulaDb<'a> {
         Ok(db)
     }
 
-    pub const fn champion_count(&self) -> u16 {
-        self.champions
-    }
-
-    pub const fn item_count(&self) -> u16 {
-        self.items
-    }
-
-    pub const fn rune_count(&self) -> u16 {
-        self.runes
-    }
-
-    pub const fn formula_count(&self) -> u16 {
-        self.formulas
-    }
-
-    pub const fn match_count(&self) -> u16 {
-        self.matches
-    }
-
-    pub const fn constant_count(&self) -> u16 {
-        self.constants
-    }
-
-    pub fn champion_formula_id(&self, owner_index: u16, local: u8) -> Option<u16> {
-        if owner_index >= self.champions {
+    pub fn champion_formula_id(&self, id: u16, local: u8) -> Option<u16> {
+        if id >= self.champions {
             return None;
         }
-        let pos = self.layout.champion_bases + owner_index as usize * 2;
+        let pos = self.layout.champion_bases + id as usize * 2;
         let base = ByteReader::u16_at(self.bytes, pos).ok()?;
         base.checked_add(local as u16)
             .filter(|id| *id < self.formulas)
     }
 
-    pub fn sparse_formula_id(
+    pub fn item_or_rune_formula_id(
         &self,
         kind: EntityKind,
-        owner_index: u16,
+        id: u16,
         slot: DamageSlot,
     ) -> Option<u16> {
         let (count, start) = match kind {
@@ -176,14 +153,15 @@ impl<'a> FormulaDb<'a> {
             EntityKind::Champion => return None,
         };
 
-        if owner_index >= count {
+        if id >= count {
             return None;
         }
 
-        let pos = start + owner_index as usize * 3;
+        let pos = start + id as usize * 3;
         let first = ByteReader::u16_at(self.bytes, pos).ok()?;
         let mask = *self.bytes.get(pos + 2)?;
         let bit = slot.bit();
+
         if mask & bit == 0 {
             return None;
         }
@@ -193,6 +171,7 @@ impl<'a> FormulaDb<'a> {
         } else {
             mask & ((1u8 << slot as u8) - 1)
         };
+
         let rank = before_mask.count_ones() as u16;
         first.checked_add(rank).filter(|id| *id < self.formulas)
     }
@@ -201,6 +180,7 @@ impl<'a> FormulaDb<'a> {
         if formula_id >= self.formulas {
             return None;
         }
+
         let start = self.formula_offset(formula_id).ok()? as usize;
         let end = self.formula_offset(formula_id + 1).ok()? as usize;
         self.bytes
@@ -221,10 +201,6 @@ impl<'a> FormulaDb<'a> {
         self.render_formula_with(formula_id, &mut ctx_name, &mut local_ref_name, &mut emit)
     }
 
-    /// Renders highlighted HTML using the existing `Class` enum directly.
-    ///
-    /// Operators and unclassified punctuation are emitted without `<span>` wrappers. Brackets keep
-    /// their existing Bracket1/2/3 coloring because they are explicit `Class` variants.
     pub fn render_formula_html<FC, FR>(
         &self,
         formula_id: u16,
@@ -252,8 +228,10 @@ impl<'a> FormulaDb<'a> {
         let bytes = self
             .formula_bytes(formula_id)
             .ok_or(Error::Corrupt("formula id out of range"))?;
+
         let mut cursor = Cursor::new(bytes);
         let mut out = String::new();
+
         let mut renderer = FormulaRenderer {
             db: self,
             ctx_name,
@@ -263,9 +241,11 @@ impl<'a> FormulaDb<'a> {
         };
 
         renderer.expr(&mut cursor, &mut out)?;
+
         if !cursor.is_eof() {
             return Err(Error::Corrupt("formula has trailing bytecode"));
         }
+
         Ok(out)
     }
 
@@ -381,7 +361,6 @@ impl FormulaRenderer<'_, '_, '_> {
             }
             OP_CTX => {
                 let name = (self.ctx_name)(cursor.u8()?);
-                // Deliberately omit `ctx.` from presentation.
                 self.styled(out, Class::Variable, &name);
             }
             OP_REF_LOCAL => {
@@ -699,24 +678,15 @@ impl Display for Bracket {
     }
 }
 
-/// Generic HTML highlighter/builder. It contains no tutorlolv2 owner IDs.
+#[derive(Default)]
 pub struct Highlighter {
     inner: String,
     bracket_stack: Vec<Class>,
 }
 
-impl Default for Highlighter {
-    fn default() -> Self {
-        Self::new()
-    }
-}
-
 impl Highlighter {
     pub fn new() -> Self {
-        Self {
-            inner: String::with_capacity(1 << 12),
-            bracket_stack: Vec::new(),
-        }
+        Self::default()
     }
 
     pub fn into_fragment(self) -> String {
@@ -776,11 +746,13 @@ impl Highlighter {
 
     pub fn field(&mut self, name: &str, class: Class, value: impl Display) -> &mut Self {
         self.push(Class::Variable, name).raw(": ");
+
         if class == Class::String {
             self.string(value);
         } else {
             self.push(class, value);
         }
+
         self.field_end()
     }
 
@@ -793,16 +765,39 @@ impl Highlighter {
     }
 
     pub fn array_field<T: Display>(&mut self, name: &str, class: Class, values: &[T]) -> &mut Self {
-        self.push(Class::Variable, name)
-            .raw(": ")
-            .bracket(Bracket::LBracket);
-        for (index, value) in values.iter().enumerate() {
-            self.push(class, value);
-            if index + 1 != values.len() {
-                self.raw(", ");
+        let max_len = 46 - name.len();
+
+        let values = values.iter().map(ToString::to_string).collect::<Vec<_>>();
+
+        let array_len = 2
+            + values.iter().map(|v| v.chars().count()).sum::<usize>()
+            + values.len().saturating_sub(1) * 2;
+
+        self.push(Class::Variable, name).raw(": ");
+
+        if array_len <= max_len {
+            self.bracket(Bracket::LBracket);
+
+            for (index, value) in values.iter().enumerate() {
+                self.push(class, value);
+
+                if index + 1 != values.len() {
+                    self.raw(", ");
+                }
             }
+
+            self.bracket(Bracket::RBracket);
+        } else {
+            self.bracket(Bracket::LBracket).raw("\n");
+
+            for value in &values {
+                self.raw("\t").push(class, value).raw(",\n");
+            }
+
+            self.bracket(Bracket::RBracket);
         }
-        self.bracket(Bracket::RBracket).field_end()
+
+        self.field_end()
     }
 
     pub fn tuple_field<T: Display, U: Display>(
@@ -813,8 +808,13 @@ impl Highlighter {
     ) -> &mut Self {
         self.push(Class::Variable, name)
             .raw(": ")
-            .bracket(Bracket::LCurly)
-            .raw("\n\t\t");
+            .bracket(Bracket::LCurly);
+
+        if values.is_empty() {
+            return self.bracket(Bracket::RCurly).field_end();
+        }
+
+        self.raw("\n\t\t");
 
         for (index, (field, value)) in values.iter().enumerate() {
             self.push(Class::Function, field.to_string().to_pascal_case())
@@ -822,6 +822,7 @@ impl Highlighter {
                 .push(class, value)
                 .bracket(Bracket::RParen)
                 .field_end();
+
             if index + 1 != values.len() {
                 self.raw("\t");
             }
@@ -832,6 +833,11 @@ impl Highlighter {
 
     pub fn field_end(&mut self) -> &mut Self {
         self.raw(",\n\t")
+    }
+
+    pub fn pop(&mut self) -> &mut Self {
+        self.inner.pop();
+        self
     }
 
     pub fn global_struct(&mut self, name: &str) -> &mut Self {

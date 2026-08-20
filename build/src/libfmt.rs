@@ -1,33 +1,17 @@
 use {
     crate::scripts::batch::FmtOutput,
-    bincode::{Decode, Encode},
     derive_more::{Display, FromStr},
     serde::{Deserialize, Serialize},
-    serde_json::{Serializer, Value, ser::PrettyFormatter},
-    std::{collections::BTreeMap, io::Cursor, ops::Range, sync::LazyLock},
+    std::{collections::BTreeMap, ops::Range, sync::LazyLock},
     strum::{EnumIter, EnumString, IntoEnumIterator, IntoStaticStr},
     synoptic::{Highlighter, TokOpt},
 };
-
-/// Encodes some data using `brotli` at the maximum level, which is 11.
-/// Panics if the input is invalid, or if the compression fails
-pub fn encode_brotli_11(bytes: &[u8]) -> Vec<u8> {
-    let mut output = Vec::new();
-    let mut input = Cursor::new(bytes);
-    let mut params = brotli::enc::BrotliEncoderParams::default();
-    params.quality = 11;
-    params.size_hint = bytes.len();
-    let _ = brotli::BrotliCompress(&mut input, &mut output, &params);
-    output
-}
 
 #[derive(
     Clone,
     Copy,
     Debug,
-    Decode,
     Deserialize,
-    Encode,
     Display,
     EnumString,
     EnumIter,
@@ -71,9 +55,7 @@ pub enum Keyword {
     Copy,
     Debug,
     Display,
-    Decode,
     Deserialize,
-    Encode,
     EnumIter,
     EnumString,
     IntoStaticStr,
@@ -105,9 +87,7 @@ pub enum Primitive {
     Copy,
     Debug,
     Display,
-    Decode,
     Deserialize,
-    Encode,
     EnumIter,
     EnumString,
     IntoStaticStr,
@@ -138,9 +118,7 @@ pub enum Control {
     Copy,
     Debug,
     Display,
-    Decode,
     Deserialize,
-    Encode,
     EnumIter,
     EnumString,
     IntoStaticStr,
@@ -304,9 +282,7 @@ pub enum Constant {
     Copy,
     Debug,
     Display,
-    Decode,
     Deserialize,
-    Encode,
     EnumIter,
     EnumString,
     IntoStaticStr,
@@ -393,9 +369,7 @@ pub enum Variable {
     Copy,
     Debug,
     Display,
-    Decode,
     Deserialize,
-    Encode,
     EnumIter,
     EnumString,
     IntoStaticStr,
@@ -415,9 +389,7 @@ pub enum Type {
     Copy,
     Debug,
     Display,
-    Decode,
     Deserialize,
-    Encode,
     EnumIter,
     EnumString,
     IntoStaticStr,
@@ -460,9 +432,7 @@ pub enum Function {
     Copy,
     Debug,
     Display,
-    Decode,
     Deserialize,
-    Encode,
     EnumIter,
     EnumString,
     IntoStaticStr,
@@ -474,9 +444,7 @@ pub enum Macro {
     Concat,
 }
 
-#[derive(
-    Clone, Copy, Debug, Decode, Deserialize, Encode, Display, IntoStaticStr, PartialEq, Serialize,
-)]
+#[derive(Clone, Copy, Debug, Deserialize, Display, IntoStaticStr, PartialEq, Serialize)]
 pub enum KnownToken {
     Keyword(Keyword),
     Primitive(Primitive),
@@ -509,9 +477,7 @@ impl KnownToken {
     }
 }
 
-#[derive(
-    Clone, Copy, Debug, Decode, Deserialize, Encode, EnumString, IntoStaticStr, PartialEq, Serialize,
-)]
+#[derive(Clone, Copy, Debug, Deserialize, EnumString, IntoStaticStr, PartialEq, Serialize)]
 pub enum Bracket {
     #[strum(serialize = "(")]
     RParen,
@@ -527,7 +493,7 @@ pub enum Bracket {
     LBracket,
 }
 
-#[derive(Clone, Copy, Debug, Decode, Deserialize, Encode, IntoStaticStr, PartialEq, Serialize)]
+#[derive(Clone, Copy, Debug, Deserialize, IntoStaticStr, PartialEq, Serialize)]
 pub enum Op {
     Span { class: Class, len: u8 },
     Raw(u8),
@@ -537,18 +503,7 @@ pub enum Op {
 }
 
 #[derive(
-    Clone,
-    Copy,
-    Debug,
-    Decode,
-    Deserialize,
-    Encode,
-    Display,
-    EnumIter,
-    FromStr,
-    IntoStaticStr,
-    PartialEq,
-    Serialize,
+    Clone, Copy, Debug, Deserialize, Display, EnumIter, FromStr, IntoStaticStr, PartialEq, Serialize,
 )]
 pub enum Class {
     Comment,
@@ -580,7 +535,7 @@ impl Class {
     }
 }
 
-#[derive(Debug, Decode, Deserialize, Encode, Serialize)]
+#[derive(Debug, Deserialize, Serialize)]
 pub struct Builder {
     pub source: String,
     pub ops: Vec<Op>,
@@ -716,18 +671,6 @@ static RUST_HIGHLIGHTER: LazyLock<Highlighter> = LazyLock::new(|| {
     h
 });
 
-static JSON_HIGHLIGHTER: LazyLock<Highlighter> = LazyLock::new(|| {
-    let mut h = Highlighter::new(4);
-
-    // String
-    h.keyword("_s", r#""(?:[^"\\]|\\.)*""#);
-    // Number
-    h.keyword("_n", r"-?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?");
-    // Boolean
-    h.keyword("_b", r"\b(?:null|true|false)\b");
-    h
-});
-
 pub fn rust_html(input: &str) -> Builder {
     let code = input.lines().map(str::to_string).collect::<Vec<_>>();
 
@@ -829,102 +772,4 @@ pub fn rust_html(input: &str) -> Builder {
     }
 
     b
-}
-
-/// Converts JSON code contained in the input [`str`] to an HTML [`String`]
-pub fn json_html(data: &str) -> String {
-    let input = json_pretty(data);
-    let lines = input.lines().map(str::to_string).collect::<Vec<String>>();
-
-    let mut h = JSON_HIGHLIGHTER.clone();
-    h.run(&lines);
-
-    let mut bracket_stack: Vec<u8> = Vec::new();
-    let mut out = String::new();
-
-    for (i, line) in lines.iter().enumerate() {
-        let mut toks = h.line(i, line).into_iter().collect::<Vec<_>>();
-        for k in 0..toks.len() {
-            let is_string = matches!(&toks[k], TokOpt::Some(_, kind) if kind == "_s");
-            if !is_string {
-                continue;
-            }
-
-            let mut next_non_ws = None::<char>;
-            let mut idx = k + 1;
-            while idx < toks.len() {
-                match &toks[idx] {
-                    TokOpt::None(txt) => {
-                        if let Some(ch) = txt.chars().find(|c| !matches!(c, ' ' | '\t')) {
-                            next_non_ws = Some(ch);
-                            break;
-                        }
-                    }
-                    TokOpt::Some(_, _) => break,
-                }
-                idx += 1;
-            }
-
-            if next_non_ws == Some(':') {
-                if let TokOpt::Some(text, _) = &toks[k] {
-                    toks[k] = TokOpt::Some(text.clone(), "_v".to_string());
-                }
-            }
-        }
-
-        let mut line_html = String::new();
-        for t in toks {
-            match t {
-                TokOpt::Some(text, kind) => {
-                    line_html.push_str(&format!("<span class=\"{kind}\">{text}</span>"));
-                }
-                TokOpt::None(text) => {
-                    for ch in text.chars() {
-                        match ch {
-                            '{' | '[' | '(' => {
-                                let c = ((bracket_stack.len() % 3) + 1) as u8;
-                                bracket_stack.push(c);
-                                line_html.push_str(&format!(r#"<span class="_b{c}">{ch}</span>"#));
-                            }
-                            '}' | ']' | ')' => match bracket_stack.pop() {
-                                Some(c) => {
-                                    line_html
-                                        .push_str(&format!(r#"<span class="_b{c}">{ch}</span>"#));
-                                }
-                                None => {
-                                    line_html.push(ch);
-                                }
-                            },
-                            _ => line_html.push(ch),
-                        }
-                    }
-                }
-            }
-        }
-
-        out.push_str(&line_html);
-        out.push('\n');
-    }
-
-    format!("<pre>{out}</pre>")
-}
-
-/// Converts JSON code to a pretty-printed [`String`]. It does not turn it to HTML
-pub fn json_pretty(input: &str) -> String {
-    let mut s = input.trim().to_string();
-
-    if s.starts_with('"') && s.ends_with('"') {
-        if let Ok(unescaped) = serde_json::from_str::<String>(&s) {
-            s = unescaped;
-        }
-    }
-
-    let v = serde_json::from_str::<Value>("{}").unwrap();
-
-    let mut buf = Vec::new();
-    let fmt = PrettyFormatter::with_indent(b"    ");
-    let mut ser = Serializer::with_formatter(&mut buf, fmt);
-    v.serialize(&mut ser).unwrap();
-
-    String::from_utf8(buf).unwrap()
 }

@@ -900,6 +900,9 @@ macro_rules! create_eval_struct {
 
             impl CtxVar {
                 pub const ARRAY: [Self; Self::VARIANTS] = [$(Self::[<$value:camel>],)*];
+                pub fn to_snake_case(&self) -> &'static str {
+                    &self.as_var()[4..]
+                }
                 pub const fn as_var(&self) -> &'static str {
                     match self {
                         $(

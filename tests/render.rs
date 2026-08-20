@@ -3,40 +3,46 @@ use tutorlolv2::{
     yew::render::{MayFail, Renderer},
 };
 
-static PACKED: &[u8] = include_bytes!("../packer.bin");
 static CSS: &str = include_str!("../style.css");
 
 #[test]
 fn pack_repr_build() -> MayFail {
     let mut html = format!("<html><head><style>{CSS}</style></head><body><pre>",);
-    let mut renderer = Renderer::parse(PACKED)?;
+
+    html += &Renderer::tower_global();
+    html += "\n";
+    html += &Renderer::tower_fn();
+    html += "\n";
 
     for champion_id in ChampionId::VALUES {
         for metadata in champion_id.abilities() {
-            html += &renderer.champion_function(champion_id, metadata.kind)?;
+            html += &champion_id.render_fn(metadata.kind)?;
             html += "\n";
         }
 
-        html += &renderer.champion_global(champion_id)?;
+        html += &champion_id.render_global()?;
+        html += "\n";
     }
 
-    fn render_formulas<T: CastId>(html: &mut String, renderer: &mut Renderer<'_>) -> MayFail {
+    fn render_formulas<T: CastId>(html: &mut String) -> MayFail {
         for value in T::VALUES {
             let (function, global) = match value.entity() {
-                EntityId::Item(v) => (renderer.item_function(v)?, renderer.item_global(v)?),
-                EntityId::Rune(v) => (renderer.rune_function(v)?, renderer.rune_global(v)?),
+                EntityId::Item(v) => (v.render_fn()?, v.render_global()?),
+                EntityId::Rune(v) => (v.render_fn()?, v.render_global()?),
                 _ => unreachable!(),
             };
 
             html.push_str(&function);
+            html.push('\n');
             html.push_str(&global);
+            html.push('\n');
         }
 
         Ok(())
     }
 
-    render_formulas::<ItemId>(&mut html, &mut renderer)?;
-    render_formulas::<RuneId>(&mut html, &mut renderer)?;
+    render_formulas::<ItemId>(&mut html)?;
+    render_formulas::<RuneId>(&mut html)?;
 
     html += "</pre></body></html>";
 

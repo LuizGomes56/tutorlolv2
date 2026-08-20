@@ -243,8 +243,7 @@ fn build_docs() -> MayFail {
     }
 
     tutorlolv2_wiki::write(
-        "packer.bin",
-        // OUT_DIR.join("packer").with_extension("bin"),
+        OUT_DIR.join("packer").with_extension("bin"),
         packer.finish()?,
     )?;
 
@@ -294,10 +293,8 @@ fn build_docs() -> MayFail {
                     tutorlolv2_wiki::write(
                         &OUT_DIR.join("ir").with_extension("rs"),
                         format!(
-                            "
-                                    pub const IR_LEN: usize = {len};
-                                    pub static IR: [Op; {len}] = {ir:?};
-                                    ",
+                            "pub const IR_LEN: usize = {len};
+                            pub static IR: [Op; {len}] = {ir:?};",
                             len = ir.len()
                         ),
                     )
