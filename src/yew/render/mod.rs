@@ -8,7 +8,7 @@ use alloc::{
     string::{String, ToString},
 };
 use std::sync::LazyLock;
-use tutorlolv2_codec::{DamageSlot, EntityKind, Error, FormulaDb, render::FnBuilder};
+use tutorlolv2_codec::{DamageSlot, EntityKind, FormulaDb, GeneratorDb, render::FnBuilder};
 
 pub const IGNITE_FN: &str = r#"fn ignite(level: i32) -> i32 {
     70 + 20 * level + 5
@@ -48,18 +48,44 @@ pub const BASIC_ATTACK_FN: &str = r#"fn basic_attack() -> f32 {
 
 pub type MayFail<T = ()> = Result<T, Box<dyn core::error::Error>>;
 
-static PACKED: &[u8] = include_bytes!(concat!(env!("OUT_DIR"), "/packer.bin"));
-pub static RENDERER: LazyLock<Renderer> = LazyLock::new(|| Renderer::new().unwrap());
+static PACKED_FORMULAS: &[u8] = include_bytes!(concat!(env!("OUT_DIR"), "/formulas.bin"));
+static PACKED_GENERATORS: &[u8] = include_bytes!(concat!(env!("OUT_DIR"), "/generator.bin"));
 
-pub struct Renderer {
+pub struct GeneratorRenderer {
+    db: GeneratorDb<'static>,
+}
+
+impl GeneratorRenderer {
+    pub fn new() -> Self {
+        Self {
+            db: GeneratorDb::new(PACKED_GENERATORS).unwrap(),
+        }
+    }
+
+    pub fn render(&self, value: impl CastId) -> Option<String> {
+        let index = value.index();
+        let entity = match value.entity() {
+            EntityId::Champion(_) => EntityKind::Champion,
+            EntityId::Item(_) => EntityKind::Item,
+            EntityId::Rune(_) => EntityKind::Rune,
+        };
+
+        unsafe { self.db.render_html(entity, index as _).unwrap_unchecked() }
+    }
+}
+
+pub static GENERATOR_RENDERER: LazyLock<GeneratorRenderer> = LazyLock::new(GeneratorRenderer::new);
+pub static FORMULA_RENDERER: LazyLock<FormulaRenderer> = LazyLock::new(FormulaRenderer::new);
+
+pub struct FormulaRenderer {
     db: FormulaDb<'static>,
 }
 
-impl Renderer {
-    pub fn new() -> Result<Self, Error> {
-        Ok(Self {
-            db: FormulaDb::parse(PACKED)?,
-        })
+impl FormulaRenderer {
+    pub fn new() -> Self {
+        Self {
+            db: FormulaDb::new(PACKED_FORMULAS).unwrap(),
+        }
     }
 
     pub fn champion_formula(&self, champion: ChampionId, ability_id: AbilityId) -> MayFail<String> {

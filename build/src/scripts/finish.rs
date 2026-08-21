@@ -2,54 +2,10 @@ use {
     crate::{
         CPARSER, MayFail,
         generators::{parser::Parser, utils::Tag},
-        scripts::batch::FmtOutput,
     },
     std::collections::{BTreeMap, BTreeSet},
-    tutorlolv2_types::{AbilityId, AttackType, DamageIndex},
     tutorlolv2_wiki::JsonRead,
 };
-
-pub fn finish_champions(variable: &mut String, value: &mut [FmtOutput]) {
-    value.sort_by(|a, b| match &a.json.meta {
-        v if let Ok(ability_a) = serde_json::from_value::<AbilityId>(v.clone())
-            && let Ok(ability_b) = serde_json::from_value::<AbilityId>(b.json.meta.clone()) =>
-        {
-            ability_a.cmp(&ability_b)
-        }
-        _ => a.json.target.cmp(&b.json.target),
-    });
-
-    let ranges = value
-        .iter()
-        .map(|FmtOutput { range, .. }| format!("{range:?}"))
-        .collect::<Vec<_>>()
-        .join(",")
-        + ",";
-
-    variable.push_str(&ranges);
-}
-
-pub fn finish_items_or_runes(variable: &mut String, value: &mut [FmtOutput]) {
-    value.sort_by(|a, b| match &a.json.meta {
-        v if let Ok((ata, dia)) =
-            serde_json::from_value::<(AttackType, DamageIndex)>(v.clone())
-            && let Ok((atb, dib)) =
-                serde_json::from_value::<(AttackType, DamageIndex)>(b.json.meta.clone()) =>
-        {
-            ata.cmp(&atb).then(dia.cmp(&dib))
-        }
-        _ => a.json.target.cmp(&b.json.target),
-    });
-
-    let ranges = value
-        .iter()
-        .map(|FmtOutput { range, .. }| format!("{range:?}"))
-        .collect::<Vec<_>>()
-        .join(",")
-        + ",";
-
-    variable.push_str(&ranges);
-}
 
 pub fn champion_aliases() -> MayFail<Option<BTreeMap<String, Vec<String>>>> {
     let map = CPARSER.map();

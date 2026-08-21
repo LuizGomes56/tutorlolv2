@@ -12,8 +12,8 @@ use {
     tutorlolv2_types::{DamageType, Position, TypeMetadata},
 };
 
-#[cfg(feature = "docs")]
-use {core::ops::Range, tutorlolv2_types::CtxVar};
+#[cfg(feature = "yew")]
+use tutorlolv2_types::CtxVar;
 
 macro_rules! impl_methods {
     (inner $stru:ident, $($repr:ty),*) => {
@@ -116,14 +116,6 @@ macro_rules! impl_methods {
                         &$crate::[<$stru:replace("Id", "s"):lower _code>]
                         ::[<$stru:replace("Id", ""):upper _NAME_TO_ID>];
 
-                    #[cfg(feature = "docs")]
-                    pub const GENERATOR_DOCS: &[Range<usize>; Self::VARIANTS] =
-                        &$crate::docs::[<$stru:replace("Id", ""):upper _GENERATORS>];
-
-                    #[cfg(feature = "docs")]
-                    pub const DOCS: &[Range<usize>; Self::VARIANTS] =
-                        &$crate::docs::[<$stru:replace("Id", ""):upper _FORMULAS>];
-
                     pub const DATA: &[&[<$stru:replace("Id", "")>]] =
                         &$crate::[<$stru:replace("Id", "s"):lower _code>]
                         ::[<$stru:replace("Id", "S"):upper _DATA>];
@@ -137,16 +129,6 @@ macro_rules! impl_methods {
                             true => unsafe { Some(Self::from_repr_unchecked(id as _)) },
                             false => None
                         }
-                    }
-
-                    #[cfg(feature = "docs")]
-                    pub const fn generator_docs(&self) -> &'static Range<usize> {
-                        &Self::GENERATOR_DOCS[self.index()]
-                    }
-
-                    #[cfg(feature = "docs")]
-                    pub const fn docs(&self) -> &'static Range<usize> {
-                        &Self::DOCS[self.index()]
                     }
 
                     pub const fn default() -> Self {
@@ -172,12 +154,6 @@ macro_rules! impl_methods {
                     const VARIANTS: usize = Self::VARIANTS;
                     const NAMES: &'static [&'static str] = &Self::NAMES;
                     const VALUES: &'static [Self] = &Self::VALUES;
-
-                    #[cfg(feature = "docs")]
-                    const GENERATOR_DOCS: &'static [Range<usize>] = Self::GENERATOR_DOCS;
-
-                    #[cfg(feature = "docs")]
-                    const DOCS: &'static [Range<usize>] = Self::DOCS;
 
                     fn entity(&self) -> EntityId {
                         EntityId::[<$stru:replace("Id", "")>](*self)
@@ -217,25 +193,23 @@ where
     const NAMES: &'static [&'static str];
     const VALUES: &'static [Self];
 
-    #[cfg(feature = "docs")]
-    const GENERATOR_DOCS: &'static [Range<usize>];
-
-    #[cfg(feature = "docs")]
-    const DOCS: &'static [Range<usize>];
-
     fn entity(&self) -> EntityId;
     fn name(&self) -> &'static str;
     fn index(&self) -> usize;
     fn debug(&self) -> &'static str;
 
-    #[cfg(feature = "docs")]
-    fn docs(&self) -> &'static Range<usize> {
-        &Self::DOCS[self.index()]
+    #[cfg(feature = "yew")]
+    fn render_generator(&self) -> Option<alloc::string::String> {
+        crate::yew::render::GENERATOR_RENDERER.render(*self)
     }
 
-    #[cfg(feature = "docs")]
-    fn generator_docs(&self) -> &'static Range<usize> {
-        &Self::GENERATOR_DOCS[self.index()]
+    #[cfg(feature = "yew")]
+    fn render_global(&self) -> crate::yew::render::MayFail<alloc::string::String> {
+        match self.entity() {
+            EntityId::Champion(v) => v.render_global(),
+            EntityId::Item(v) => v.render_global(),
+            EntityId::Rune(v) => v.render_global(),
+        }
     }
 
     fn is_champion(&self) -> bool {
@@ -261,11 +235,8 @@ pub trait ValueId: CastId {
     fn exceptions(ally: bool) -> BitSetExc;
     fn recommendations(champion_id: ChampionId, position: Position) -> &'static [Self];
 
-    #[cfg(feature = "docs")]
+    #[cfg(feature = "yew")]
     fn identifiers(&self) -> &'static [CtxVar];
-
-    #[cfg(feature = "docs")]
-    fn functions_docs(&self) -> &'static [[Range<usize>; 2]; 2];
 
     fn damage_type(&self) -> DamageType {
         self.metadata().damage_type
@@ -292,14 +263,9 @@ impl ValueId for ItemId {
         champion_id.recommended_items(position)
     }
 
-    #[cfg(feature = "docs")]
+    #[cfg(feature = "yew")]
     fn identifiers(&self) -> &'static [CtxVar] {
         self.identifiers()
-    }
-
-    #[cfg(feature = "docs")]
-    fn functions_docs(&self) -> &'static [[Range<usize>; 2]; 2] {
-        self.functions_docs()
     }
 
     fn metadata(&self) -> TypeMetadata<Self> {
@@ -327,14 +293,9 @@ impl ValueId for RuneId {
         champion_id.recommended_runes(position)
     }
 
-    #[cfg(feature = "docs")]
+    #[cfg(feature = "yew")]
     fn identifiers(&self) -> &'static [CtxVar] {
         self.identifiers()
-    }
-
-    #[cfg(feature = "docs")]
-    fn functions_docs(&self) -> &'static [[Range<usize>; 2]; 2] {
-        self.functions_docs()
     }
 
     fn metadata(&self) -> TypeMetadata<Self> {

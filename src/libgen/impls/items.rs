@@ -128,6 +128,11 @@ impl ItemId {
         bitset_size(bitset!(ItemId::ENEMY_EXCEPTIONS => [usize])),
     );
 
+    #[cfg(feature = "yew")]
+    pub const fn identifiers(&self) -> &'static [tutorlolv2_types::CtxVar] {
+        self.data().identifiers
+    }
+
     pub const fn is_siml(&self) -> bool {
         let mut i = 0;
 

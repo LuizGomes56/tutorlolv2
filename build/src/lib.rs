@@ -7,14 +7,9 @@ use {
             },
             utils::Tag,
         },
-        libfmt::Builder,
         scripts::{
-            batch::{FmtArgs, FmtOutput, batch, pack_formulas},
-            finish::{
-                champion_aliases, eval_abilities, eval_items_or_runes, finish_champions,
-                finish_items_or_runes,
-            },
-            utils::variable,
+            batch::{FmtArgs, batch, pack_formulas},
+            finish::{champion_aliases, eval_abilities, eval_items_or_runes},
         },
     },
     heck::ToSnakeCase,
@@ -22,21 +17,17 @@ use {
     serde::{Serialize, de::DeserializeOwned},
     serde_json::json,
     std::{
-        collections::{BTreeMap, HashMap},
-        fmt::Write,
-        path::PathBuf,
-        process::Command,
-        str::FromStr,
+        collections::BTreeMap, fmt::Write, path::PathBuf, process::Command, str::FromStr,
         sync::LazyLock,
     },
     tutorlolv2_codec::FormulaDbBuilder,
     tutorlolv2_types::CtxVar,
 };
 
+use tutorlolv2_codec::{EntityKind, GeneratorDbBuilder};
 pub use tutorlolv2_wiki::{DynError, MayFail};
 
 pub mod generators;
-pub mod libfmt;
 pub mod scripts;
 
 pub trait Build {
@@ -170,9 +161,6 @@ pub fn run() -> MayFail {
 }
 
 fn build_docs() -> MayFail {
-    let mut tracker = Builder::new();
-    let mut exports = String::with_capacity(4 * 1024 * 1024);
-
     let mut batches = [Tag::Champions, Tag::Items, Tag::Runes]
         .into_par_iter()
         .map(|tag| -> MayFail<_> {
@@ -190,8 +178,10 @@ fn build_docs() -> MayFail {
             };
 
             let generators = iter
+                .into_iter()
+                .enumerate()
                 .par_bridge()
-                .map(|variant| {
+                .map(|(i, variant)| {
                     let file_name = variant.to_snake_case();
                     let mut default = false;
 
@@ -215,7 +205,7 @@ fn build_docs() -> MayFail {
                             json!(FmtArgs {
                                 target: "generator".into(),
                                 variant: variant.into(),
-                                meta: (),
+                                meta: (tag as u8, i as u16),
                                 default
                             })
                         ),
@@ -230,7 +220,13 @@ fn build_docs() -> MayFail {
         })
         .collect::<MayFail<Vec<_>>>()?;
 
-    let mut packer = FormulaDbBuilder::new(
+    let mut generators = GeneratorDbBuilder::new(
+        CPARSER.map().len() as _,
+        IPARSER.map().len() as _,
+        RPARSER.map().len() as _,
+        &[],
+    );
+    let mut formulas = FormulaDbBuilder::new(
         CPARSER.map().len() as _,
         IPARSER.map().len() as _,
         RPARSER.map().len() as _,
@@ -238,72 +234,31 @@ fn build_docs() -> MayFail {
     );
 
     for (tag, batch) in &mut batches {
-        pack_formulas(&mut packer, *tag, batch)?;
-        tracker.batch(batch);
-    }
+        pack_formulas(&mut formulas, *tag, batch)?;
 
-    tutorlolv2_wiki::write(
-        OUT_DIR.join("packer").with_extension("bin"),
-        packer.finish()?,
-    )?;
+        for inner in batch.values_mut() {
+            for outputs in inner.values_mut() {
+                for output in outputs {
+                    if output.json.default || output.json.target != "generator" {
+                        continue;
+                    }
 
-    for (tag, mut batch) in batches {
-        let mut fmt_args = HashMap::from([(
-            "generator",
-            variable(
-                tag,
-                &format!("{}_PARSERS", tag.singular().to_uppercase()),
-                "Range<usize>",
-            ),
-        )]);
+                    let (kind, index) =
+                        serde_json::from_value::<(u8, u16)>(output.json.meta.clone())?;
 
-        let finish = match tag {
-            Tag::Champions => finish_champions,
-            Tag::Items | Tag::Runes => finish_items_or_runes,
-        } as fn(&mut String, &mut [FmtOutput]);
-
-        for values in batch.values_mut() {
-            for (target, outputs) in values.iter_mut() {
-                if let Some(variable) = fmt_args.get_mut(target.as_str()) {
-                    finish(variable, outputs);
+                    generators.push(EntityKind::from_repr(kind).unwrap(), index, &output.block)?;
                 }
             }
         }
-
-        let docs = fmt_args
-            .values_mut()
-            .map(|variable| {
-                variable.push_str("];");
-                variable.as_str()
-            })
-            .collect::<String>();
-
-        exports.push_str(&docs);
     }
 
-    let full_block = tracker.source;
-    let ir = tracker.ops;
+    tutorlolv2_wiki::write(
+        OUT_DIR.join("formulas").with_extension("bin"),
+        formulas.finish()?,
+    )?;
 
-    let (r1, (r2, r3)) = rayon::join(
-        || tutorlolv2_wiki::write(&OUT_DIR.join("docs").with_extension("txt"), &full_block),
-        || {
-            rayon::join(
-                || tutorlolv2_wiki::write(&OUT_DIR.join("docs").with_extension("rs"), &exports),
-                || {
-                    tutorlolv2_wiki::write(
-                        &OUT_DIR.join("ir").with_extension("rs"),
-                        format!(
-                            "pub const IR_LEN: usize = {len};
-                            pub static IR: [Op; {len}] = {ir:?};",
-                            len = ir.len()
-                        ),
-                    )
-                },
-            )
-        },
-    );
-
-    r1?;
-    r2?;
-    r3
+    tutorlolv2_wiki::write(
+        OUT_DIR.join("generator").with_extension("bin"),
+        generators.finish_with_stats()?.bytes,
+    )
 }

@@ -8,7 +8,9 @@ use std::convert::TryInto;
 use std::fmt::{self, Display};
 
 #[repr(u8)]
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(
+    Debug, Clone, Copy, PartialEq, Eq, strum::EnumString, strum::IntoStaticStr, strum::FromRepr,
+)]
 pub enum Class {
     Comment,
     String,
@@ -39,7 +41,7 @@ impl Class {
     }
 }
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Clone, Copy, Debug, Default)]
 struct Layout {
     constant_pool: usize,
     match_offsets: usize,
@@ -51,7 +53,7 @@ struct Layout {
     formula_data: usize,
 }
 
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Debug, Default)]
 pub struct FormulaDb<'a> {
     bytes: &'a [u8],
     constants: u16,
@@ -65,29 +67,66 @@ pub struct FormulaDb<'a> {
 }
 
 impl<'a> FormulaDb<'a> {
-    pub fn parse(bytes: &'a [u8]) -> Result<Self, Error> {
-        if bytes.len() < HEADER_LEN {
+    pub fn new(bytes: &'a [u8]) -> Result<Self, Error> {
+        let mut this = Self {
+            bytes,
+            ..Default::default()
+        };
+
+        this.parse()?;
+        Ok(this)
+    }
+
+    pub fn u16_at(&self, offset: usize) -> Result<u16, Error> {
+        let end = offset
+            .checked_add(2)
+            .ok_or(Error::Corrupt("offset overflow"))?;
+
+        let slice = self
+            .bytes
+            .get(offset..end)
+            .ok_or(Error::Corrupt("u16 out of bounds"))?;
+
+        Ok(u16::from_le_bytes(slice.try_into().unwrap()))
+    }
+
+    pub fn u32_at(&self, offset: usize) -> Result<u32, Error> {
+        let end = offset
+            .checked_add(4)
+            .ok_or(Error::Corrupt("offset overflow"))?;
+
+        let slice = self
+            .bytes
+            .get(offset..end)
+            .ok_or(Error::Corrupt("u32 out of bounds"))?;
+
+        Ok(u32::from_le_bytes(slice.try_into().unwrap()))
+    }
+
+    pub fn parse(&mut self) -> Result<(), Error> {
+        if self.bytes.len() < HEADER_LEN {
             return Err(Error::Corrupt("buffer is shorter than header"));
         }
-        if bytes[0..4] != MAGIC {
+
+        if self.bytes[0..4] != MAGIC {
             return Err(Error::Corrupt("bad magic"));
         }
-        if bytes[4] != VERSION {
+
+        if self.bytes[4] != VERSION {
             return Err(Error::Corrupt("unsupported version"));
         }
 
-        let header_len = ByteReader::u16_at(bytes, 6)? as usize;
-        if header_len != HEADER_LEN {
+        if self.u16_at(6)? as usize != HEADER_LEN {
             return Err(Error::Corrupt("unexpected header length"));
         }
 
-        let constants = ByteReader::u16_at(bytes, 8)?;
-        let matches = ByteReader::u16_at(bytes, 10)?;
-        let champions = ByteReader::u16_at(bytes, 12)?;
-        let items = ByteReader::u16_at(bytes, 14)?;
-        let runes = ByteReader::u16_at(bytes, 16)?;
-        let formulas = ByteReader::u16_at(bytes, 18)?;
-        let match_data_len = ByteReader::u32_at(bytes, 20)?;
+        let constants = self.u16_at(8)?;
+        let matches = self.u16_at(10)?;
+        let champions = self.u16_at(12)?;
+        let items = self.u16_at(14)?;
+        let runes = self.u16_at(16)?;
+        let formulas = self.u16_at(18)?;
+        let match_data_len = self.u32_at(20)?;
 
         if constants > 256 || matches > 256 {
             return Err(Error::Corrupt("u8-indexed pool exceeds 256 entries"));
@@ -102,12 +141,12 @@ impl<'a> FormulaDb<'a> {
         let match_data = Self::checked_add(formula_offsets, (formulas as usize + 1) * 4)?;
         let formula_data = Self::checked_add(match_data, match_data_len as usize)?;
 
-        if formula_data > bytes.len() {
+        if formula_data > self.bytes.len() {
             return Err(Error::Corrupt("section layout exceeds buffer"));
         }
 
-        let db = Self {
-            bytes,
+        *self = Self {
+            bytes: self.bytes,
             constants,
             matches,
             champions,
@@ -127,17 +166,17 @@ impl<'a> FormulaDb<'a> {
             },
         };
 
-        db.validate_offsets()?;
-        Ok(db)
+        self.validate_offsets()
     }
 
     pub fn champion_formula_id(&self, id: u16, local: u8) -> Option<u16> {
         if id >= self.champions {
             return None;
         }
-        let pos = self.layout.champion_bases + id as usize * 2;
-        let base = ByteReader::u16_at(self.bytes, pos).ok()?;
-        base.checked_add(local as u16)
+
+        self.u16_at(self.layout.champion_bases + id as usize * 2)
+            .ok()?
+            .checked_add(local as u16)
             .filter(|id| *id < self.formulas)
     }
 
@@ -158,7 +197,7 @@ impl<'a> FormulaDb<'a> {
         }
 
         let pos = start + id as usize * 3;
-        let first = ByteReader::u16_at(self.bytes, pos).ok()?;
+        let first = self.u16_at(pos).ok()?;
         let mask = *self.bytes.get(pos + 2)?;
         let bit = slot.bit();
 
@@ -183,6 +222,7 @@ impl<'a> FormulaDb<'a> {
 
         let start = self.formula_offset(formula_id).ok()? as usize;
         let end = self.formula_offset(formula_id + 1).ok()? as usize;
+
         self.bytes
             .get(self.layout.formula_data + start..self.layout.formula_data + end)
     }
@@ -197,8 +237,8 @@ impl<'a> FormulaDb<'a> {
         FC: FnMut(u8) -> String,
         FR: FnMut(u8) -> FnBuilder,
     {
-        let mut emit = |out: &mut String, _class: Option<Class>, text: &str| out.push_str(text);
-        self.render_formula_with(formula_id, &mut ctx_name, &mut local_ref_name, &mut emit)
+        let mut emit = |out: &mut String, _: Option<Class>, text: &str| out.push_str(text);
+        self.render_formula(formula_id, &mut ctx_name, &mut local_ref_name, &mut emit)
     }
 
     pub fn render_formula_html<FC, FR>(
@@ -215,10 +255,10 @@ impl<'a> FormulaDb<'a> {
             Some(class) => Highlighter::push_span(out, class, text),
             None => Highlighter::push_escaped(out, text),
         };
-        self.render_formula_with(formula_id, &mut ctx_name, &mut local_ref_name, &mut emit)
+        self.render_formula(formula_id, &mut ctx_name, &mut local_ref_name, &mut emit)
     }
 
-    fn render_formula_with(
+    fn render_formula(
         &self,
         formula_id: u16,
         ctx_name: &mut dyn FnMut(u8) -> String,
@@ -254,53 +294,64 @@ impl<'a> FormulaDb<'a> {
             return Err(Error::Corrupt("constant id out of range"));
         }
         let pos = self.layout.constant_pool + id as usize * 4;
-        Ok(f32::from_bits(ByteReader::u32_at(self.bytes, pos)?))
+        Ok(f32::from_bits(self.u32_at(pos)?))
     }
 
     fn match_bytes(&self, id: u8) -> Result<&'a [u8], Error> {
         if id as u16 >= self.matches {
             return Err(Error::Corrupt("match id out of range"));
         }
+
         let start = self.match_offset(id as u16)? as usize;
         let end = self.match_offset(id as u16 + 1)? as usize;
+
         if end < start || end > self.match_data_len as usize {
             return Err(Error::Corrupt("bad match offset"));
         }
+
         self.bytes
             .get(self.layout.match_data + start..self.layout.match_data + end)
             .ok_or(Error::Corrupt("match slice out of bounds"))
     }
 
     fn match_offset(&self, index: u16) -> Result<u32, Error> {
-        ByteReader::u32_at(self.bytes, self.layout.match_offsets + index as usize * 4)
+        self.u32_at(self.layout.match_offsets + index as usize * 4)
     }
 
     fn formula_offset(&self, index: u16) -> Result<u32, Error> {
-        ByteReader::u32_at(self.bytes, self.layout.formula_offsets + index as usize * 4)
+        self.u32_at(self.layout.formula_offsets + index as usize * 4)
     }
 
     fn validate_offsets(&self) -> Result<(), Error> {
         let mut last = 0u32;
+
         for index in 0..=self.matches {
             let value = self.match_offset(index)?;
+
             if value < last || value > self.match_data_len {
                 return Err(Error::Corrupt("non-monotonic match offsets"));
             }
+
             last = value;
         }
+
         if last != self.match_data_len {
             return Err(Error::Corrupt("match offsets do not end at match_data_len"));
         }
 
         let formula_data_len = self.bytes.len() - self.layout.formula_data;
         let mut last = 0u32;
+
         for index in 0..=self.formulas {
             let value = self.formula_offset(index)?;
+
             if value < last || value as usize > formula_data_len {
                 return Err(Error::Corrupt("non-monotonic formula offsets"));
             }
+
             last = value;
         }
+
         if last as usize != formula_data_len {
             return Err(Error::Corrupt(
                 "formula offsets do not end at formula data end",
@@ -621,30 +672,6 @@ impl<'a> Cursor<'a> {
             .get(self.pos..end)
             .ok_or(Error::Corrupt("unexpected end of bytecode"))?;
         self.pos = end;
-        Ok(u32::from_le_bytes(slice.try_into().unwrap()))
-    }
-}
-
-struct ByteReader;
-
-impl ByteReader {
-    fn u16_at(bytes: &[u8], pos: usize) -> Result<u16, Error> {
-        let end = pos
-            .checked_add(2)
-            .ok_or(Error::Corrupt("offset overflow"))?;
-        let slice = bytes
-            .get(pos..end)
-            .ok_or(Error::Corrupt("u16 out of bounds"))?;
-        Ok(u16::from_le_bytes(slice.try_into().unwrap()))
-    }
-
-    fn u32_at(bytes: &[u8], pos: usize) -> Result<u32, Error> {
-        let end = pos
-            .checked_add(4)
-            .ok_or(Error::Corrupt("offset overflow"))?;
-        let slice = bytes
-            .get(pos..end)
-            .ok_or(Error::Corrupt("u32 out of bounds"))?;
         Ok(u32::from_le_bytes(slice.try_into().unwrap()))
     }
 }

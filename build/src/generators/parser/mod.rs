@@ -5,10 +5,7 @@ use {
             GeneratorExt, VERSION,
             utils::{SaveTo, Tag},
         },
-        scripts::{
-            batch::FmtArgs,
-            utils::{is_zero, variable},
-        },
+        scripts::{batch::FmtArgs, utils::is_zero},
     },
     heck::{
         ToKebabCase, ToLowerCamelCase, ToPascalCase, ToShoutyKebabCase, ToShoutySnakeCase,
@@ -219,7 +216,9 @@ where
     fn data_variable(&self) -> String {
         let vtype = Self::TAG.singular().to_pascal_case();
         let var = format!("{}S_DATA", vtype.to_uppercase());
-        let mut data = variable(Self::TAG, &var, &format!("&{vtype}"));
+
+        let enum_name = Self::TAG.enum_name();
+        let mut data = format!("pub static {var}: [&{vtype}; {enum_name}::VARIANTS] = [");
 
         for id in self.keys() {
             let upper_id = id.to_shouty_snake_case();

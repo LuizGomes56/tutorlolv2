@@ -1,7 +1,4 @@
-use crate::{
-    generators::utils::Tag,
-    libfmt::{self, Builder},
-};
+use crate::generators::utils::Tag;
 use heck::ToSnakeCase;
 use rayon::iter::{ParallelBridge, ParallelIterator};
 use regex::Regex;
@@ -20,13 +17,10 @@ pub struct FmtArgs<T> {
     pub default: bool,
 }
 
-#[derive(Debug, Serialize)]
 pub struct FmtOutput {
-    pub range: Range<usize>,
-    pub builder: Builder,
     pub json: FmtArgs<Value>,
     pub delete_range: Range<usize>,
-    block: String,
+    pub block: String,
 }
 
 pub fn batch(src: String) -> BTreeMap<String, BTreeMap<String, Vec<FmtOutput>>> {
@@ -67,7 +61,6 @@ pub fn batch(src: String) -> BTreeMap<String, BTreeMap<String, Vec<FmtOutput>>> 
             }
 
             let block = rest[..end].trim().to_string();
-            let builder = libfmt::rust_html(&block);
 
             let mut absolute_end = attr_end + end;
 
@@ -77,8 +70,6 @@ pub fn batch(src: String) -> BTreeMap<String, BTreeMap<String, Vec<FmtOutput>>> 
 
             FmtOutput {
                 delete_range: start_index..absolute_end,
-                builder,
-                range: 0..0,
                 json,
                 block,
             }

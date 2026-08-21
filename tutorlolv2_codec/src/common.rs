@@ -67,14 +67,20 @@ impl fmt::Display for Error {
             Self::UnknownCtxVar(v) => write!(f, "unknown ctx variable: {v}"),
             Self::UnknownFunction(v) => write!(f, "unknown local function reference: {v}"),
             Self::OwnerOutOfRange { kind, owner, count } => {
-                write!(f, "{kind:?} owner {owner} is outside table of {count} owners")
+                write!(
+                    f,
+                    "{kind:?} owner {owner} is outside table of {count} owners"
+                )
             }
             Self::DuplicateOwner { kind, owner } => {
                 write!(f, "{kind:?} owner {owner} was inserted twice")
             }
             Self::DuplicateLocal(local) => write!(f, "duplicate local formula index {local}"),
             Self::ChampionLocalsMustBeDense => {
-                write!(f, "champion local formula indices must be 0..len with no gaps")
+                write!(
+                    f,
+                    "champion local formula indices must be 0..len with no gaps"
+                )
             }
             Self::InvalidSlotCombination(msg) => write!(f, "invalid damage slots: {msg}"),
             Self::TooManyMatches => write!(f, "more than 256 unique matches"),
@@ -92,7 +98,8 @@ impl fmt::Display for Error {
 
 impl std::error::Error for Error {}
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, strum::FromRepr)]
+#[repr(u8)]
 pub enum EntityKind {
     Champion,
     Item,

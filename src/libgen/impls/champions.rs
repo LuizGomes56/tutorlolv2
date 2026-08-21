@@ -92,6 +92,11 @@ impl ChampionId {
         }
     }
 
+    #[cfg(feature = "yew")]
+    pub const fn identifiers(&self) -> &'static [&'static [tutorlolv2_types::CtxVar]] {
+        self.data().identifiers
+    }
+
     pub const fn abilities(&self) -> &'static [TypeMetadata<AbilityId>] {
         self.data().metadata
     }

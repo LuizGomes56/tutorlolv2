@@ -6,13 +6,8 @@ use crate::common::{
 use std::collections::HashMap;
 use std::convert::TryFrom;
 
-/// Build-time conversion used for `ctx.foo -> u8`.
-///
-/// In the tutorlolv2 integration this can simply wrap `CtxVar::from_str`.
 pub type CtxResolver = fn(&str) -> Option<u8>;
 
-/// One build-time champion formula. `local` must be dense `0..len`.
-/// The builder parses it immediately, so the source can be borrowed.
 #[derive(Debug, Clone, Copy)]
 pub struct FormulaSource<'a> {
     pub local: u8,
@@ -262,17 +257,12 @@ pub struct FormulaDbBuilder {
 }
 
 impl FormulaDbBuilder {
-    pub fn new(
-        champion_owner_count: u16,
-        item_owner_count: u16,
-        rune_owner_count: u16,
-        ctx_resolver: CtxResolver,
-    ) -> Self {
+    pub fn new(cc: u16, ic: u16, rc: u16, ctx_resolver: CtxResolver) -> Self {
         Self {
-            champions: (0..champion_owner_count).map(|_| None).collect(),
-            items: (0..item_owner_count).map(|_| None).collect(),
-            runes: (0..rune_owner_count).map(|_| None).collect(),
-            ctx_resolver,
+            champions: (0..cc).map(|_| None).collect(),
+            items: (0..ic).map(|_| None).collect(),
+            runes: (0..rc).map(|_| None).collect(),
+            ctx_resolver: ctx_resolver,
             match_defs: Vec::new(),
             match_ids: HashMap::new(),
         }
@@ -306,23 +296,23 @@ impl FormulaDbBuilder {
 
     pub fn push_champion(
         &mut self,
-        owner_index: u16,
+        id_index: u16,
         formulas: &[FormulaSource<'_>],
         refs: &HashMap<String, u8>,
     ) -> Result<(), Error> {
         let slot = self
             .champions
-            .get(owner_index as usize)
+            .get(id_index as usize)
             .ok_or(Error::OwnerOutOfRange {
                 kind: EntityKind::Champion,
-                owner: owner_index,
+                owner: id_index,
                 count: self.champions.len() as u16,
             })?;
 
         if slot.is_some() {
             return Err(Error::DuplicateOwner {
                 kind: EntityKind::Champion,
-                owner: owner_index,
+                owner: id_index,
             });
         }
 
@@ -338,29 +328,11 @@ impl FormulaDbBuilder {
             }
         }
 
-        self.champions[owner_index as usize] = Some(ChampionPending {
+        self.champions[id_index as usize] = Some(ChampionPending {
             formulas: parsed.into_iter().map(|(_, ast)| ast).collect(),
         });
 
         Ok(())
-    }
-
-    pub fn push_item(
-        &mut self,
-        owner_index: u16,
-        formulas: &[FormulaSource<'_>],
-        refs: &HashMap<String, u8>,
-    ) -> Result<(), Error> {
-        self.push_sparse(EntityKind::Item, owner_index, formulas, refs)
-    }
-
-    pub fn push_rune(
-        &mut self,
-        owner_index: u16,
-        formulas: &[FormulaSource<'_>],
-        refs: &HashMap<String, u8>,
-    ) -> Result<(), Error> {
-        self.push_sparse(EntityKind::Rune, owner_index, formulas, refs)
     }
 
     /// Kept public for callers that already have an `EntityKind`, but prefer `push_item`/`push_rune`
@@ -368,7 +340,7 @@ impl FormulaDbBuilder {
     pub fn push_sparse(
         &mut self,
         kind: EntityKind,
-        owner_index: u16,
+        id_index: u16,
         formulas: &[FormulaSource<'_>],
         refs: &HashMap<String, u8>,
     ) -> Result<(), Error> {
@@ -380,24 +352,24 @@ impl FormulaDbBuilder {
             }
         };
 
-        if owner_index as usize >= table_len {
+        if id_index as usize >= table_len {
             return Err(Error::OwnerOutOfRange {
                 kind,
-                owner: owner_index,
+                owner: id_index,
                 count: table_len as u16,
             });
         }
 
         let already_present = match kind {
-            EntityKind::Item => self.items[owner_index as usize].is_some(),
-            EntityKind::Rune => self.runes[owner_index as usize].is_some(),
+            EntityKind::Item => self.items[id_index as usize].is_some(),
+            EntityKind::Rune => self.runes[id_index as usize].is_some(),
             EntityKind::Champion => unreachable!(),
         };
 
         if already_present {
             return Err(Error::DuplicateOwner {
                 kind,
-                owner: owner_index,
+                owner: id_index,
             });
         }
 
@@ -428,8 +400,8 @@ impl FormulaDbBuilder {
         };
 
         match kind {
-            EntityKind::Item => self.items[owner_index as usize] = Some(pending),
-            EntityKind::Rune => self.runes[owner_index as usize] = Some(pending),
+            EntityKind::Item => self.items[id_index as usize] = Some(pending),
+            EntityKind::Rune => self.runes[id_index as usize] = Some(pending),
             EntityKind::Champion => unreachable!(),
         }
 
@@ -468,45 +440,48 @@ impl FormulaDbBuilder {
 
         for pending in self.champions {
             champion_bases.push(Self::formula_index(formulas.len())?);
+
             if let Some(pending) = pending {
                 formulas.extend(pending.formulas);
             }
         }
 
-        let mut item_entries = Vec::with_capacity(self.items.len());
-        for pending in self.items {
-            let first_formula = Self::formula_index(formulas.len())?;
-            let mask = pending.as_ref().map_or(0, |p| p.mask);
-            item_entries.push(EntityEntry {
-                first_formula,
-                mask,
-            });
-            if let Some(pending) = pending {
-                formulas.extend(pending.formulas.into_iter().map(|(_, ast)| ast));
+        fn add_entries(
+            values: Vec<Option<SparsePending>>,
+            formulas: &mut Vec<Ast>,
+        ) -> Result<Vec<EntityEntry>, Error> {
+            let mut entries = Vec::with_capacity(values.len());
+
+            for pending in values {
+                let first_formula = FormulaDbBuilder::formula_index(formulas.len())?;
+                let mask = pending.as_ref().map_or(0, |p| p.mask);
+
+                entries.push(EntityEntry {
+                    first_formula,
+                    mask,
+                });
+
+                if let Some(pending) = pending {
+                    formulas.extend(pending.formulas.into_iter().map(|(_, ast)| ast));
+                }
             }
+
+            Ok(entries)
         }
 
-        let mut rune_entries = Vec::with_capacity(self.runes.len());
-        for pending in self.runes {
-            let first_formula = Self::formula_index(formulas.len())?;
-            let mask = pending.as_ref().map_or(0, |p| p.mask);
-            rune_entries.push(EntityEntry {
-                first_formula,
-                mask,
-            });
-            if let Some(pending) = pending {
-                formulas.extend(pending.formulas.into_iter().map(|(_, ast)| ast));
-            }
-        }
+        let item_entries = add_entries(self.items, &mut formulas)?;
+        let rune_entries = add_entries(self.runes, &mut formulas)?;
 
         let formula_count = Self::formula_index(formulas.len())?;
         let match_count =
             u16::try_from(self.match_defs.len()).map_err(|_| Error::TooManyMatches)?;
 
         let mut frequency = HashMap::<u32, u32>::new();
+
         for ast in &formulas {
             ast.count_numbers(&mut frequency);
         }
+
         for definition in &self.match_defs {
             definition.count_numbers(&mut frequency);
         }
@@ -516,18 +491,22 @@ impl FormulaDbBuilder {
 
         let mut match_data = Vec::new();
         let mut match_offsets = Vec::with_capacity(self.match_defs.len() + 1);
+
         for definition in &self.match_defs {
             match_offsets.push(match_data.len() as u32);
             definition.encode(&constants, &mut match_data)?;
         }
+
         match_offsets.push(match_data.len() as u32);
 
         let mut formula_data = Vec::new();
         let mut formula_offsets = Vec::with_capacity(formulas.len() + 1);
+
         for ast in &formulas {
             formula_offsets.push(formula_data.len() as u32);
             ast.encode(&constants, &mut formula_data);
         }
+
         formula_offsets.push(formula_data.len() as u32);
 
         let match_data_len = u32::try_from(match_data.len())
@@ -582,7 +561,6 @@ impl FormulaDbBuilder {
         Ok(out)
     }
 
-    #[inline]
     fn formula_index(len: usize) -> Result<u16, Error> {
         u16::try_from(len).map_err(|_| Error::TooManyFormulas)
     }
@@ -629,6 +607,7 @@ impl ConstantPool {
             .iter()
             .map(|(_, _, bits)| *bits)
             .collect::<Vec<_>>();
+
         let ids = values
             .iter()
             .enumerate()
@@ -660,6 +639,7 @@ enum ImmediateNumber {
 impl ImmediateNumber {
     fn from_bits(bits: u32) -> Option<Self> {
         let value = f32::from_bits(bits);
+
         if !value.is_finite() || value.fract() != 0.0 {
             return None;
         }
@@ -669,6 +649,7 @@ impl ImmediateNumber {
         if (-128.0..0.0).contains(&value) {
             return Some(Self::I8(value as i8));
         }
+
         None
     }
 
@@ -834,12 +815,14 @@ impl<'a> Lexer<'a> {
     fn ident(&mut self) {
         let start = self.index;
         let start_column = self.column;
+
         while self.index < self.bytes.len()
             && (self.bytes[self.index].is_ascii_alphanumeric() || self.bytes[self.index] == b'_')
         {
             self.index += 1;
             self.column += 1;
         }
+
         self.out.push(Token {
             kind: TokenKind::Ident(self.source[start..self.index].to_owned()),
             line: self.line,
@@ -864,6 +847,7 @@ impl<'a> Lexer<'a> {
         {
             self.index += 1;
             self.column += 1;
+
             while self.index < self.bytes.len()
                 && (self.bytes[self.index].is_ascii_digit() || self.bytes[self.index] == b'_')
             {
@@ -875,10 +859,12 @@ impl<'a> Lexer<'a> {
         if self.index < self.bytes.len() && matches!(self.bytes[self.index], b'e' | b'E') {
             self.index += 1;
             self.column += 1;
+
             if self.index < self.bytes.len() && matches!(self.bytes[self.index], b'+' | b'-') {
                 self.index += 1;
                 self.column += 1;
             }
+
             while self.index < self.bytes.len()
                 && (self.bytes[self.index].is_ascii_digit() || self.bytes[self.index] == b'_')
             {
@@ -998,6 +984,7 @@ impl Parser<'_> {
                 Ast::Number(bits) => Ast::Number((-f32::from_bits(bits)).to_bits()),
                 other => Ast::Neg(Box::new(other)),
             };
+
             return Ok(Parsed {
                 ast,
                 start_line: minus.line,
@@ -1056,13 +1043,16 @@ impl Parser<'_> {
 
     fn parse_ctx(&mut self, start: Token) -> Result<Parsed, Error> {
         self.expect(TokenKind::Dot, "expected `.` after `ctx`")?;
+
         let field_token = self
             .bump()
             .ok_or_else(|| start.error("expected ctx field"))?;
+
         let field = match &field_token.kind {
             TokenKind::Ident(value) => value.clone(),
             _ => return Err(field_token.error("expected ctx field identifier")),
         };
+
         let id = (self.ctx_resolver)(&field).ok_or_else(|| Error::UnknownCtxVar(field.clone()))?;
 
         Ok(Parsed {
@@ -1105,18 +1095,22 @@ impl Parser<'_> {
         let ctx_token = self
             .bump()
             .ok_or_else(|| start.error("expected match scrutinee"))?;
+
         if !matches!(&ctx_token.kind, TokenKind::Ident(value) if value == "ctx") {
             return Err(ctx_token.error("match scrutinee must start with `ctx`"));
         }
 
         self.expect(TokenKind::Dot, "expected `.` in match scrutinee")?;
+
         let field_token = self
             .bump()
             .ok_or_else(|| ctx_token.error("expected ctx field"))?;
+
         let field = match &field_token.kind {
             TokenKind::Ident(value) => value.clone(),
             _ => return Err(field_token.error("expected ctx field identifier")),
         };
+
         let ctx = (self.ctx_resolver)(&field).ok_or_else(|| Error::UnknownCtxVar(field.clone()))?;
 
         let mut cast_u8 = false;
@@ -1125,6 +1119,7 @@ impl Parser<'_> {
             let ty = self
                 .bump()
                 .ok_or_else(|| field_token.error("expected `u8` after `as`"))?;
+
             if matches!(&ty.kind, TokenKind::Ident(value) if value == "u8") {
                 cast_u8 = true;
             } else {
@@ -1270,15 +1265,18 @@ impl Parser<'_> {
             column: 0,
             message: "expected numeric match RHS".into(),
         })?;
+
         let source = match &token.kind {
             TokenKind::Number(source) => source,
             _ => return Err(token.error("match RHS must be a number")),
         };
+
         let mut value = Self::parse_f32(source).map_err(|message| Error::Parse {
             line: token.line,
             column: token.column,
             message,
         })?;
+
         if negative {
             value = -value;
         }
@@ -1291,9 +1289,11 @@ impl Parser<'_> {
             column: 0,
             message: message.into(),
         })?;
+
         if std::mem::discriminant(&token.kind) != std::mem::discriminant(&expected) {
             return Err(token.error(message));
         }
+
         Ok(token)
     }
 
@@ -1302,6 +1302,7 @@ impl Parser<'_> {
         if cleaned.ends_with("f32") || cleaned.ends_with("f64") {
             cleaned.truncate(cleaned.len() - 3);
         }
+
         cleaned
             .parse::<f32>()
             .map_err(|_| format!("invalid f32 literal `{source}`"))
@@ -1322,12 +1323,10 @@ trait ByteVecExt {
 }
 
 impl ByteVecExt for Vec<u8> {
-    #[inline]
     fn push_u16_le(&mut self, value: u16) {
         self.extend_from_slice(&value.to_le_bytes());
     }
 
-    #[inline]
     fn push_u32_le(&mut self, value: u32) {
         self.extend_from_slice(&value.to_le_bytes());
     }

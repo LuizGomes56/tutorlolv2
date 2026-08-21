@@ -1,9 +1,9 @@
-use crate::{CtxVar, yew::render::Renderer};
+use crate::{CtxVar, yew::render::FormulaRenderer};
 use alloc::string::String;
 use tutorlolv2_codec::{Bracket, Class, Highlighter};
 use tutorlolv2_types::AdaptiveType;
 
-impl Renderer {
+impl FormulaRenderer {
     pub fn tower_global() -> String {
         let mut h = Highlighter::new();
 

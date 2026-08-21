@@ -538,14 +538,6 @@ pub fn ctx_param(s: &str) -> &'static str {
     if s.contains("ctx") { "ctx" } else { "_" }
 }
 
-pub fn variable(tag: Tag, var: &str, vtype: &str) -> String {
-    let enum_name = tag.enum_name();
-    format!(
-        "pub static {var}: [{vtype}; {enum_name}::VARIANTS] = [",
-        var = var.to_uppercase()
-    )
-}
-
 pub fn probe_ratio(min_expr: &str, max_expr: &str, all_vars: &[CtxVar]) -> Option<String> {
     const N_PROBES: usize = 20;
     const MIN_VALID: usize = 8;

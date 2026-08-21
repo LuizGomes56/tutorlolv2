@@ -1,6 +1,6 @@
 use crate::{
     AbilityId, ChampionId, DamageIndex, ItemId, RuneId,
-    yew::render::{MayFail, RENDERER, Renderer},
+    yew::render::{FORMULA_RENDERER, FormulaRenderer, MayFail},
 };
 use alloc::{format, string::String};
 use tutorlolv2_codec::{Class, Highlighter};
@@ -25,7 +25,7 @@ impl ChampionId {
 
         for metadata in self.abilities() {
             let name = metadata.kind.discriminant().to_lowercase();
-            let damage = RENDERER.champion_formula(*self, metadata.kind)?;
+            let damage = FORMULA_RENDERER.champion_formula(*self, metadata.kind)?;
             h.html_field(&name, &damage);
         }
 
@@ -37,7 +37,7 @@ impl ChampionId {
     pub fn render_fn(&self, ability_id: AbilityId) -> MayFail<String> {
         let mut h = Highlighter::new();
 
-        let body = RENDERER.champion_formula(*self, ability_id)?;
+        let body = FORMULA_RENDERER.champion_formula(*self, ability_id)?;
 
         h.function(
             self.debug(),
@@ -70,8 +70,8 @@ impl ItemId {
                 continue;
             }
 
-            let slot = Renderer::damage_slot(attack_type, damage_index);
-            let body = RENDERER.cast_id_formula(*self, slot)?;
+            let slot = FormulaRenderer::damage_slot(attack_type, damage_index);
+            let body = FORMULA_RENDERER.cast_id_formula(*self, slot)?;
 
             h.function(self.debug(), attack_type, damage_index, &body)
                 .raw("\n\n");
@@ -97,9 +97,9 @@ impl ItemId {
                     continue;
                 }
 
-                let slot = Renderer::damage_slot(attack_type, damage_index);
+                let slot = FormulaRenderer::damage_slot(attack_type, damage_index);
                 let name = format!("{attack_type:?}_{damage_index:?}").to_lowercase();
-                let damage = RENDERER.cast_id_formula(*self, slot)?;
+                let damage = FORMULA_RENDERER.cast_id_formula(*self, slot)?;
 
                 h.html_field(&name, &damage);
             }
@@ -131,8 +131,8 @@ impl RuneId {
                 continue;
             }
 
-            let slot = Renderer::damage_slot(attack_type, damage_index);
-            let body = RENDERER.cast_id_formula(*self, slot)?;
+            let slot = FormulaRenderer::damage_slot(attack_type, damage_index);
+            let body = FORMULA_RENDERER.cast_id_formula(*self, slot)?;
 
             h.function(self.debug(), attack_type, damage_index, &body)
                 .raw("\n\n");
@@ -153,9 +153,9 @@ impl RuneId {
                     continue;
                 }
 
-                let slot = Renderer::damage_slot(attack_type, damage_index);
+                let slot = FormulaRenderer::damage_slot(attack_type, damage_index);
                 let name = format!("{attack_type:?}_{damage_index:?}").to_lowercase();
-                let damage = RENDERER.cast_id_formula(*self, slot)?;
+                let damage = FORMULA_RENDERER.cast_id_formula(*self, slot)?;
 
                 h.html_field(&name, &damage);
             }

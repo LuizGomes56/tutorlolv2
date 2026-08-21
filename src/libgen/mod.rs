@@ -4,12 +4,6 @@ pub mod check;
 pub mod impls;
 pub mod model;
 
-#[cfg(feature = "docs")]
-pub mod docs;
-
-#[cfg(feature = "docs")]
-pub(self) use tutorlolv2_types::CtxVar::*;
-
 pub(self) use {
     bincode::{Decode, Encode},
     core::fmt::Debug,

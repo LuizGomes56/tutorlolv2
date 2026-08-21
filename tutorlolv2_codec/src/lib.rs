@@ -5,8 +5,13 @@
 
 pub mod build;
 mod common;
+pub mod generator;
 pub mod render;
 
 pub use build::{BuilderStats, CtxResolver, FormulaDbBuilder, FormulaSource};
 pub use common::{DamageSlot, EntityKind, Error, MAGIC, VERSION};
+pub use generator::{
+    ClassOverride, GeneratorBuildOutput, GeneratorDb, GeneratorDbBuilder, GeneratorError,
+    GeneratorStats,
+};
 pub use render::{Bracket, Class, FormulaDb, Highlighter};

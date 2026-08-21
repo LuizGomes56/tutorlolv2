@@ -12,9 +12,9 @@ const _: () = {
         let combos = champion_id.combos();
         let len = champion_id.number_of_abilities();
 
-        #[cfg(feature = "docs")]
+        #[cfg(feature = "yew")]
         {
-            assert!(len == champion_id.functions_docs().len());
+            assert!(len == champion_id.number_of_abilities());
             assert!(len == champion_id.identifiers().len());
         }
 

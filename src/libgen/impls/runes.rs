@@ -89,6 +89,11 @@ impl RuneId {
         Self::ZombieWard,
     ];
 
+    #[cfg(feature = "yew")]
+    pub const fn identifiers(&self) -> &'static [tutorlolv2_types::CtxVar] {
+        self.data().identifiers
+    }
+
     pub const fn exceptions() -> BitSetExc {
         bitset!(RuneId::EXCEPTIONS)
     }

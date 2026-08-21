@@ -18,7 +18,7 @@ fn multiline_match_keeps_layout_and_drops_ctx_prefix() {
         .unwrap();
 
     let bytes = builder.finish().unwrap();
-    let db = FormulaDb::parse(&bytes).unwrap();
+    let db = FormulaDb::new(&bytes).unwrap();
     let formula_id = db.champion_formula_id(0, 0).unwrap();
 
     let plain = db
@@ -48,7 +48,7 @@ fn html_colors_only_semantic_classes() {
         .unwrap();
 
     let bytes = builder.finish().unwrap();
-    let db = FormulaDb::parse(&bytes).unwrap();
+    let db = FormulaDb::new(&bytes).unwrap();
     let html = db
         .render_formula_html(0, |_| "level".into(), |_| unreachable!())
         .unwrap();
