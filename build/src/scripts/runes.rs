@@ -33,7 +33,7 @@ impl Build for Rune {
                 deals_damage: {deals_damage:?},
                 riot_id: {riot_id},
                 custom: {custom},
-                #[cfg(feature = "docs")]
+                #[cfg(feature = "yew")]
                 identifiers: &{identifiers:?},
             }};"#,
             upper_id = rune_id.to_shouty_snake_case(),

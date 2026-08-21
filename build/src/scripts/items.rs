@@ -54,7 +54,7 @@ impl Build for Item {
                 purchasable: {purchasable},
                 riot_id: {id},
                 custom: {custom},
-                #[cfg(feature = "docs")]
+                #[cfg(feature = "yew")]
                 identifiers: &{identifiers:?},
             }};"#,
             upper_id = item_id.to_shouty_snake_case(),

@@ -119,7 +119,7 @@ impl Build for Champion {
                 metadata: &{metadata:#?},
                 merge_data: &{merge_data:#?},
                 closures: &[{fn_names}],
-                #[cfg(feature = "docs")]
+                #[cfg(feature = "yew")]
                 identifiers: &[{identifiers}],
             }};"#,
             combos = combo

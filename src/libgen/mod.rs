@@ -32,6 +32,9 @@ pub use {
     runes_code::RuneId,
 };
 
+#[cfg(feature = "yew")]
+pub(self) use tutorlolv2_types::CtxVar::*;
+
 pub mod champions_code {
     use super::{champions::*, *};
     include!(concat!(env!("OUT_DIR"), "/champions_code.rs"));

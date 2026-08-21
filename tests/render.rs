@@ -1,8 +1,9 @@
+#![cfg(feature = "yew")]
+
 use tutorlolv2::{
     CastId, ChampionId, EntityId, ItemId, RuneId,
     yew::render::{FormulaRenderer, MayFail},
 };
-use tutorlolv2_codec::EntityKind;
 
 static CSS: &str = include_str!("../style.css");
 
@@ -10,18 +11,13 @@ static CSS: &str = include_str!("../style.css");
 fn pack_repr_build() -> MayFail {
     let mut html = format!("<html><head><style>{CSS}</style></head><body><pre>");
 
-    static GEN_BIN: &[u8] = include_bytes!("../generator.bin");
-    let gdb = tutorlolv2_codec::generator::GeneratorDb::new(GEN_BIN)?;
-
     html += &FormulaRenderer::tower_global();
     html += "\n";
     html += &FormulaRenderer::tower_fn();
     html += "\n";
 
     for champion_id in ChampionId::VALUES {
-        html += &gdb
-            .render_html(EntityKind::Champion, champion_id.index() as _)?
-            .unwrap();
+        html += &champion_id.render_generator().unwrap();
         html += "\n";
 
         for metadata in champion_id.abilities() {
@@ -33,29 +29,19 @@ fn pack_repr_build() -> MayFail {
         html += "\n";
     }
 
-    fn render_formulas<T: CastId>(
-        gdb: &tutorlolv2_codec::GeneratorDb<'_>,
-        html: &mut String,
-    ) -> MayFail {
+    fn render_formulas<T: CastId>(html: &mut String) -> MayFail {
         for value in T::VALUES {
-            let (function, global, genr) = match value.entity() {
-                EntityId::Item(v) => (
-                    v.render_fn()?,
-                    v.render_global()?,
-                    gdb.render_html(EntityKind::Item, value.index() as _)?,
-                ),
-                EntityId::Rune(v) => (
-                    v.render_fn()?,
-                    v.render_global()?,
-                    gdb.render_html(EntityKind::Rune, value.index() as _)?,
-                ),
+            let (function, global) = match value.entity() {
+                EntityId::Item(v) => (v.render_fn()?, v.render_global()?),
+                EntityId::Rune(v) => (v.render_fn()?, v.render_global()?),
                 _ => unreachable!(),
             };
 
-            if let Some(generator) = genr {
+            if let Some(generator) = value.render_generator() {
                 html.push_str(&generator);
                 html.push('\n');
             }
+
             html.push_str(&function);
             html.push('\n');
             html.push_str(&global);
@@ -65,8 +51,8 @@ fn pack_repr_build() -> MayFail {
         Ok(())
     }
 
-    render_formulas::<ItemId>(&gdb, &mut html)?;
-    render_formulas::<RuneId>(&gdb, &mut html)?;
+    render_formulas::<ItemId>(&mut html)?;
+    render_formulas::<RuneId>(&mut html)?;
 
     html += "</pre></body></html>";
 
