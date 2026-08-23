@@ -1,3 +1,9 @@
+use std::fmt::Debug;
+
+use strum::{IntoEnumIterator, VariantNames};
+use tutorlolv2_codec::{Class, ClassOverride, EntityKind, GeneratorDbBuilder};
+use tutorlolv2_types::{AbilityName, AttackType};
+pub use tutorlolv2_wiki::{DynError, MayFail};
 use {
     crate::{
         generators::{
@@ -24,9 +30,6 @@ use {
     tutorlolv2_types::CtxVar,
 };
 
-use tutorlolv2_codec::{EntityKind, GeneratorDbBuilder};
-pub use tutorlolv2_wiki::{DynError, MayFail};
-
 pub mod generators;
 pub mod scripts;
 
@@ -43,7 +46,10 @@ fn write_module<'a>(
     let out = PathBuf::from(dir);
     let mut result = String::new();
 
-    cmd80.arg(PathBuf::from(format!("{dir}_code")).with_extension("rs"));
+    cmd48.current_dir(&*OUT_DIR);
+    cmd80
+        .current_dir(&*OUT_DIR)
+        .arg(PathBuf::from(format!("{dir}_code")).with_extension("rs"));
 
     for id in iter.into_iter() {
         let module = id.to_snake_case();
@@ -84,12 +90,9 @@ pub fn run() -> MayFail {
     );
 
     let mut cmd48 = Command::new("rustfmt");
-    cmd48
-        .current_dir(&*OUT_DIR)
-        .args(["--config", "max_width=48"]);
+    cmd48.args(["--config", "max_width=48"]);
 
     let mut cmd80 = Command::new("rustfmt");
-    cmd80.current_dir(&*OUT_DIR).arg(PathBuf::from("docs.rs"));
 
     for (dir, iter) in [
         (
@@ -220,12 +223,19 @@ fn build_docs() -> MayFail {
         })
         .collect::<MayFail<Vec<_>>>()?;
 
+    let overrides = [AttackType::VARIANTS, AbilityName::VARIANTS]
+        .into_iter()
+        .flatten()
+        .map(|&text| ClassOverride::new(text, Class::Constant))
+        .collect::<Vec<_>>();
+
     let mut generators = GeneratorDbBuilder::new(
         CPARSER.map().len() as _,
         IPARSER.map().len() as _,
         RPARSER.map().len() as _,
-        &[],
+        &overrides,
     );
+
     let mut formulas = FormulaDbBuilder::new(
         CPARSER.map().len() as _,
         IPARSER.map().len() as _,

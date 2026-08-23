@@ -160,7 +160,7 @@ impl AbilityId {
 impl AbilityId {
     pub fn discriminant(&self) -> String {
         let letter = self.as_char();
-        let ability_name = self.ability_name();
+        let ability_name = self.ability_name().short();
         format!("{letter}{ability_name}")
     }
 }
@@ -170,7 +170,20 @@ impl AbilityId {
 /// means that when bought, the player gets extra 80 ability power. This struct
 /// weighs 4 bytes and the maximum stat buff for one item is [`u16::MAX`]
 #[derive(
-    Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize,
+    Clone,
+    Copy,
+    Debug,
+    Eq,
+    Hash,
+    Ord,
+    PartialEq,
+    PartialOrd,
+    Encode,
+    Decode,
+    Serialize,
+    Deserialize,
+    strum::EnumIter,
+    strum::VariantNames,
 )]
 #[repr(u8)]
 pub enum StatName {
@@ -358,92 +371,98 @@ impl AbilityName {
     strum::EnumIter,
     strum::EnumString,
     strum::Display,
+    strum::VariantNames,
     strum::IntoStaticStr,
 )]
 #[repr(u8)]
 pub enum AbilityName {
-    #[strum(serialize = "")]
     Void,
-    #[strum(serialize = "1")]
     _1,
-    #[strum(serialize = "2")]
     _2,
-    #[strum(serialize = "3")]
     _3,
-    #[strum(serialize = "4")]
     _4,
-    #[strum(serialize = "5")]
     _5,
-    #[strum(serialize = "6")]
     _6,
-    #[strum(serialize = "7")]
     _7,
-    #[strum(serialize = "8")]
     _8,
-    #[strum(serialize = "min")]
     Min,
-    #[strum(serialize = "1min")]
     _1Min,
-    #[strum(serialize = "2min")]
     _2Min,
-    #[strum(serialize = "3min")]
     _3Min,
-    #[strum(serialize = "4min")]
     _4Min,
-    #[strum(serialize = "5min")]
     _5Min,
-    #[strum(serialize = "6min")]
     _6Min,
-    #[strum(serialize = "7min")]
     _7Min,
-    #[strum(serialize = "8min")]
     _8Min,
-    #[strum(serialize = "max")]
     Max,
-    #[strum(serialize = "1max")]
     _1Max,
-    #[strum(serialize = "2max")]
     _2Max,
-    #[strum(serialize = "3max")]
     _3Max,
-    #[strum(serialize = "4max")]
     _4Max,
-    #[strum(serialize = "5max")]
     _5Max,
-    #[strum(serialize = "6max")]
     _6Max,
-    #[strum(serialize = "7max")]
     _7Max,
-    #[strum(serialize = "8max")]
     _8Max,
-    #[strum(serialize = "mega")]
     Mega,
-    #[strum(serialize = "c")]
     Minion,
-    #[strum(serialize = "c1")]
     Minion1,
-    #[strum(serialize = "c2")]
     Minion2,
-    #[strum(serialize = "c3")]
     Minion3,
-    #[strum(serialize = "cmax")]
     MinionMax,
-    #[strum(serialize = "m")]
     Monster,
-    #[strum(serialize = "m1")]
     Monster1,
-    #[strum(serialize = "m2")]
     Monster2,
-    #[strum(serialize = "m3")]
     Monster3,
-    #[strum(serialize = "m4")]
     Monster4,
-    #[strum(serialize = "mmax")]
     MonsterMax,
 }
 
 impl AbilityName {
     pub const JMP: u8 = Self::Min as u8;
+
+    pub const fn short(&self) -> &'static str {
+        match self {
+            Self::Void => "",
+            Self::_1 => "1",
+            Self::_2 => "2",
+            Self::_3 => "3",
+            Self::_4 => "4",
+            Self::_5 => "5",
+            Self::_6 => "6",
+            Self::_7 => "7",
+            Self::_8 => "8",
+            Self::Min => "min",
+            Self::_1Min => "1min",
+            Self::_2Min => "2min",
+            Self::_3Min => "3min",
+            Self::_4Min => "4min",
+            Self::_5Min => "5min",
+            Self::_6Min => "6min",
+            Self::_7Min => "7min",
+            Self::_8Min => "8min",
+            Self::Max => "max",
+            Self::_1Max => "1max",
+            Self::_2Max => "2max",
+            Self::_3Max => "3max",
+            Self::_4Max => "4max",
+            Self::_5Max => "5max",
+            Self::_6Max => "6max",
+            Self::_7Max => "7max",
+            Self::_8Max => "8max",
+            Self::Mega => "mega",
+            Self::Minion => "c",
+            Self::Minion1 => "c1",
+            Self::Minion2 => "c2",
+            Self::Minion3 => "c3",
+            Self::MinionMax => "cmax",
+            Self::Monster => "m",
+            Self::Monster1 => "m1",
+            Self::Monster2 => "m2",
+            Self::Monster3 => "m3",
+            Self::Monster4 => "m4",
+            Self::MonsterMax => "mmax",
+        }
+    }
 
     pub const fn cast_max(&self) -> Self {
         let byte = *self as u8;
@@ -486,6 +505,9 @@ impl AbilityName {
     Decode,
     Serialize,
     Deserialize,
+    strum::EnumIter,
+    strum::Display,
+    strum::VariantNames,
 )]
 #[repr(u8)]
 pub enum AttackType {
@@ -521,6 +543,8 @@ impl AttackType {
     Serialize,
     Deserialize,
     strum::Display,
+    strum::EnumIter,
+    strum::VariantNames,
 )]
 pub enum DamageIndex {
     #[default]
@@ -583,6 +607,9 @@ impl FromStr for AdaptiveType {
     Decode,
     Serialize,
     Deserialize,
+    strum::EnumIter,
+    strum::Display,
+    strum::VariantNames,
 )]
 #[repr(u8)]
 pub enum AdaptiveType {
@@ -633,6 +660,9 @@ impl TryFrom<(f32, f32)> for AdaptiveType {
     Decode,
     Serialize,
     Deserialize,
+    strum::EnumIter,
+    strum::Display,
+    strum::VariantNames,
 )]
 #[repr(u8)]
 pub enum Position {
@@ -723,6 +753,8 @@ impl FromStr for Position {
     Serialize,
     Deserialize,
     strum::Display,
+    strum::EnumIter,
+    strum::VariantNames,
 )]
 #[repr(u8)]
 pub enum GameMap {
@@ -779,78 +811,80 @@ impl GameMap {
     }
 }
 
-/// Creates an enum and associates constants that represents each of its
-/// variants, using the same name and ignores `upper_case` lints
-macro_rules! const_enum {
-    (
-        $(#[$meta:meta])*
-        pub enum $name:ident {
-            $(
-                $(#[$vmeta:meta])*
-                $Variant:ident,
-            )+
-        }
-    ) => {
-        $(#[$meta])*
-        pub enum $name {
-            $(
-                $(#[$vmeta])*
-                $Variant,
-            )+
-        }
-    };
+/// Defines what is the damage type of some entity.
+/// - [`DamageType::Physical`] and [`DamageType::Magic`] Represents any damage related
+/// to how much (armor or magic resistence) the enemy player has, and is affected by the
+/// percent and flat values or (armor or magic) penetration of the current player
+/// - [`DamageType::Mixed`] Damages of this type are treated as a special case of
+/// [`DamageType::True`], where the closure has to multiply on its own the `physical_mod`
+/// and `magic_mod` modifiers of the [`tutorlolv2_math::DamageModifiers`] struct. It is
+/// usually used when a single ability or item deals both physical and magic damage in the
+/// same hit.
+/// - [`DamageType::True`] Damages of this type are not affected by armor or magic resistence,
+/// their values are in general irreducible.
+/// - [`DamageType::Adaptive`] Damages of this type will vary into the [`DamageType::Physical`]
+/// or [`DamageType::Magic`] depending on how much bonus armor or ability power the current player
+/// has.
+/// - [`DamageType::Unknown`] is the default value when no damage type is set
+#[derive(
+    Clone,
+    Copy,
+    Debug,
+    Default,
+    Eq,
+    Hash,
+    Ord,
+    PartialEq,
+    PartialOrd,
+    strum::EnumIter,
+    strum::VariantNames,
+    bincode::Encode,
+    bincode::Decode,
+    serde::Serialize,
+    serde::Deserialize,
+)]
+pub enum DamageType {
+    Physical,
+    Magic,
+    Mixed,
+    True,
+    Adaptive,
+    #[default]
+    Unspecified,
 }
 
-const_enum! {
-    /// Defines what is the damage type of some entity.
-    /// - [`DamageType::Physical`] and [`DamageType::Magic`] Represents any damage related
-    /// to how much (armor or magic resistence) the enemy player has, and is affected by the
-    /// percent and flat values or (armor or magic) penetration of the current player
-    /// - [`DamageType::Mixed`] Damages of this type are treated as a special case of
-    /// [`DamageType::True`], where the closure has to multiply on its own the `physical_mod`
-    /// and `magic_mod` modifiers of the [`tutorlolv2_math::DamageModifiers`] struct. It is
-    /// usually used when a single ability or item deals both physical and magic damage in the
-    /// same hit.
-    /// - [`DamageType::True`] Damages of this type are not affected by armor or magic resistence,
-    /// their values are in general irreducible.
-    /// - [`DamageType::Adaptive`] Damages of this type will vary into the [`DamageType::Physical`]
-    /// or [`DamageType::Magic`] depending on how much bonus armor or ability power the current player
-    /// has.
-    /// - [`DamageType::Unknown`] is the default value when no damage type is set
-    #[derive(Clone, Copy, Debug, Default, Eq, Hash, Ord, PartialEq, PartialOrd)]
-    #[derive(bincode::Encode, bincode::Decode)]
-    #[derive(serde::Serialize, serde::Deserialize)]
-    pub enum DamageType {
-        Physical,
-        Magic,
-        Mixed,
-        True,
-        Adaptive,
-        #[default]
-        Unspecified,
-    }
-}
-
-const_enum! {
-    /// An enum with several variants that can be used to add up to `255` attributes
-    /// to some ability, item or rune. It is mostly used to determine if the current
-    /// instance damages onhit only for the `maximum`, `minimum` or both damage kinds.
-    /// [`Attrs::Undefined`] is set to be the default variant, representing no extra data. This
-    /// is also used to determine if some ability has area damage
-    #[derive(Clone, Copy, Debug, Default, Eq, Hash, Ord, PartialEq, PartialOrd)]
-    #[derive(bincode::Encode, bincode::Decode)]
-    #[derive(serde::Serialize, serde::Deserialize)]
-    pub enum Attrs {
-        #[default]
-        Undefined,
-        Onhit,
-        OnhitMin,
-        OnhitMax,
-        Area,
-        AreaOnhit,
-        AreaOnhitMin,
-        AreaOnhitMax,
-    }
+/// An enum with several variants that can be used to add up to `255` attributes
+/// to some ability, item or rune. It is mostly used to determine if the current
+/// instance damages onhit only for the `maximum`, `minimum` or both damage kinds.
+/// [`Attrs::Undefined`] is set to be the default variant, representing no extra data. This
+/// is also used to determine if some ability has area damage
+#[derive(
+    Clone,
+    Copy,
+    Debug,
+    Default,
+    Eq,
+    Hash,
+    Ord,
+    PartialEq,
+    PartialOrd,
+    strum::EnumIter,
+    strum::VariantNames,
+    bincode::Encode,
+    bincode::Decode,
+    serde::Serialize,
+    serde::Deserialize,
+)]
+pub enum Attrs {
+    #[default]
+    Undefined,
+    Onhit,
+    OnhitMin,
+    OnhitMax,
+    Area,
+    AreaOnhit,
+    AreaOnhitMin,
+    AreaOnhitMax,
 }
 
 impl FromStr for DamageType {
@@ -891,7 +925,8 @@ macro_rules! create_eval_struct {
                 Decode,
                 Serialize,
                 Deserialize,
-                strum::FromRepr
+                strum::FromRepr,
+                strum::EnumIter
             )]
             #[repr(u8)]
             pub enum CtxVar {
@@ -1020,15 +1055,3 @@ impl CtxVar {
     pub const VARIANTS: usize = size_of::<Ctx>() / size_of::<f32>();
     pub const SKIP: usize = Self::SteelcapsEffect as usize + 1;
 }
-
-macro_rules! impl_display {
-    ($($stru:ty),*) => {
-        $(impl Display for $stru {
-            fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
-                write!(f, "{self:?}")
-            }
-        })*
-    };
-}
-
-impl_display!(AttackType, AdaptiveType, Position);

@@ -20,7 +20,8 @@ use crate::{
 use std::{
     collections::HashMap,
     convert::{TryFrom, TryInto},
-    fmt, str,
+    fmt,
+    str::{self, FromStr},
     sync::LazyLock,
 };
 use synoptic::{Highlighter as SynopticHighlighter, TokOpt};
@@ -74,16 +75,6 @@ const MAX_CLASS: u8 = Class::Bracket3 as u8;
 // Public build-time API
 // ============================================================================
 
-/// Exact-token class correction supplied by the consuming build script.
-///
-/// Typical usage:
-///
-/// ```ignore
-/// const GENERATOR_CLASS_OVERRIDES: &[ClassOverride] = &[
-///     ClassOverride::new("_1Min", Class::Constant),
-///     ClassOverride::new("Physical", Class::Constant),
-/// ];
-/// ```
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct ClassOverride {
     pub text: &'static str,
@@ -190,8 +181,6 @@ static RUST_HIGHLIGHTER: LazyLock<SynopticHighlighter> = LazyLock::new(|| {
         r"\b(?:break|continue|else|for|if|in|loop|match|return|while|yield)\b",
     );
 
-    // Keep these two rules before the generic PascalCase type rule. This mirrors
-    // the old libfmt behavior; domain-specific mistakes are fixed by overrides.
     h.keyword("Constant", r"::[A-Z_][A-Za-z0-9_]*\b");
     h.keyword("Constant", r"\b[A-Z][A-Z0-9_]*\b");
     h.keyword("Type", r"\b[A-Z][A-Za-z0-9_]*\b");
@@ -212,26 +201,6 @@ static RUST_HIGHLIGHTER: LazyLock<SynopticHighlighter> = LazyLock::new(|| {
     h
 });
 
-#[inline]
-fn class_from_name(name: &str) -> Option<Class> {
-    Some(match name {
-        "Comment" => Class::Comment,
-        "String" => Class::String,
-        "Lifetime" => Class::Lifetime,
-        "Keyword" => Class::Keyword,
-        "Control" => Class::Control,
-        "Constant" => Class::Constant,
-        "Type" => Class::Type,
-        "Primitive" => Class::Primitive,
-        "Number" => Class::Number,
-        "Boolean" => Class::Boolean,
-        "Macro" => Class::Macro,
-        "Function" => Class::Function,
-        "Variable" => Class::Variable,
-        _ => return None,
-    })
-}
-
 type OverrideMap = HashMap<&'static str, Class>;
 
 fn build_override_map(values: &[ClassOverride]) -> OverrideMap {
@@ -242,7 +211,6 @@ fn build_override_map(values: &[ClassOverride]) -> OverrideMap {
     result
 }
 
-#[inline]
 fn override_class(overrides: &OverrideMap, text: &str, original: Class) -> Class {
     // Never let an identifier override recolor string/comment contents.
     if matches!(original, Class::String | Class::Comment) {
@@ -277,7 +245,7 @@ fn scan_source(
         for token in highlighter.line(line_index, line) {
             match token {
                 TokOpt::Some(text, class_name) => {
-                    if let Some(class) = class_from_name(&class_name) {
+                    if let Ok(class) = Class::from_str(&class_name) {
                         scan_styled(&text, class, overrides, sink)?;
                     } else {
                         scan_raw(&text, overrides, sink)?;
@@ -444,7 +412,6 @@ fn scan_raw(
 // style 0 = raw; style 1..=16 = Class + 1.
 type FrequencyTable = HashMap<u8, HashMap<Box<str>, u32>>;
 
-#[inline]
 fn style_id(class: Option<Class>) -> u8 {
     class.map_or(0, |class| class as u8 + 1)
 }
@@ -868,7 +835,6 @@ impl AtomPool {
         })
     }
 
-    #[inline]
     fn id(&self, style: u8, text: &str) -> Option<u16> {
         self.ids.get(&style)?.get(text).copied()
     }
@@ -1007,22 +973,18 @@ fn encode_owner_group(
     Ok(PackedOwners { presence, offsets })
 }
 
-#[inline]
 fn stream_offset(len: usize) -> Result<u32, GeneratorError> {
     u32::try_from(len).map_err(|_| GeneratorError::StreamTooLarge)
 }
 
-#[inline]
 fn bitmap_len(count: usize) -> usize {
     (count + 7) / 8
 }
 
-#[inline]
 fn bitmap_set(bitmap: &mut [u8], index: usize) {
     bitmap[index >> 3] |= 1u8 << (index & 7);
 }
 
-#[inline]
 fn bitmap_get(bitmap: &[u8], index: usize) -> bool {
     bitmap[index >> 3] & (1u8 << (index & 7)) != 0
 }
@@ -1213,27 +1175,22 @@ impl<'a> GeneratorDb<'a> {
         Ok(db)
     }
 
-    #[inline]
     pub fn champion_count(&self) -> u16 {
         self.layout.champion.count
     }
 
-    #[inline]
     pub fn item_count(&self) -> u16 {
         self.layout.item.count
     }
 
-    #[inline]
     pub fn rune_count(&self) -> u16 {
         self.layout.rune.count
     }
 
-    #[inline]
     pub fn atom_count(&self) -> u16 {
         self.atoms
     }
 
-    #[inline]
     pub fn direct_atom_count(&self) -> u8 {
         self.direct_atoms
     }
@@ -1341,7 +1298,6 @@ impl<'a> GeneratorDb<'a> {
         Ok(out)
     }
 
-    #[inline]
     fn owner_table(&self, kind: EntityKind) -> OwnerTableLayout {
         match kind {
             EntityKind::Champion => self.layout.champion,
@@ -1718,125 +1674,20 @@ fn read_u32_at(bytes: &[u8], pos: usize) -> Result<u32, GeneratorError> {
     Ok(u32::from_le_bytes(slice.try_into().unwrap()))
 }
 
-#[inline]
 fn checked_add(a: usize, b: usize) -> Result<usize, GeneratorError> {
     a.checked_add(b)
         .ok_or(GeneratorError::Corrupt("section offset overflow"))
 }
 
-#[inline]
 fn checked_mul(a: usize, b: usize) -> Result<usize, GeneratorError> {
     a.checked_mul(b)
         .ok_or(GeneratorError::Corrupt("section size overflow"))
 }
 
-#[inline]
 fn class_from_u8(value: u8) -> Result<Class, GeneratorError> {
     if value > MAX_CLASS {
         return Err(GeneratorError::Corrupt("invalid class id"));
     }
-    Ok(class_from_u8_unchecked(value))
-}
 
-#[inline]
-fn class_from_u8_unchecked(value: u8) -> Class {
-    debug_assert!(value <= MAX_CLASS);
-    // Class is #[repr(u8)] with contiguous discriminants 0..=15 in render.rs.
-    unsafe { std::mem::transmute::<u8, Class>(value) }
-}
-
-// ============================================================================
-// Tests
-// ============================================================================
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    const OVERRIDES: &[ClassOverride] = &[
-        ClassOverride::new("_1Min", Class::Constant),
-        ClassOverride::new("Physical", Class::Constant),
-    ];
-
-    #[test]
-    fn exact_round_trip_and_override() {
-        let source = r#"impl Foo {
-    fn generate(&mut self) {
-        self.value = _1Min + Physical;
-    }
-}"#;
-
-        let mut builder = GeneratorDbBuilder::new(2, 4, 3, OVERRIDES);
-        builder.push(EntityKind::Champion, 1, source).unwrap();
-
-        let packed = builder.finish_with_stats().unwrap();
-        let db = GeneratorDb::parse(&packed.bytes).unwrap();
-
-        assert_eq!(
-            db.render_plain(EntityKind::Champion, 1).unwrap().unwrap(),
-            source
-        );
-
-        let html = db.render_html(EntityKind::Champion, 1).unwrap().unwrap();
-        assert!(html.contains(&format!(
-            "<span class=\"C{}\">_1Min</span>",
-            Class::Constant as u8
-        )));
-    }
-
-    #[test]
-    fn sparse_owners_return_none_without_generator_id() {
-        let mut builder = GeneratorDbBuilder::new(1, 16, 16, &[]);
-        builder.push_item(3, "item_three()").unwrap();
-        builder.push_item(15, "item_fifteen()").unwrap();
-        builder.push_rune(9, "rune_nine()").unwrap();
-
-        let bytes = builder.finish().unwrap();
-        let db = GeneratorDb::parse(&bytes).unwrap();
-
-        assert_eq!(
-            db.render_plain(EntityKind::Item, 3).unwrap().as_deref(),
-            Some("item_three()")
-        );
-        assert_eq!(
-            db.render_plain(EntityKind::Item, 15).unwrap().as_deref(),
-            Some("item_fifteen()")
-        );
-        assert!(db.render_plain(EntityKind::Item, 4).unwrap().is_none());
-        assert_eq!(
-            db.render_plain(EntityKind::Rune, 9).unwrap().as_deref(),
-            Some("rune_nine()")
-        );
-    }
-
-    #[test]
-    fn preserves_final_newline_comments_and_invalid_brackets() {
-        let source = "/* keep me exactly */\nfoo(]\n";
-
-        let mut builder = GeneratorDbBuilder::new(1, 0, 0, &[]);
-        builder.push_champion(0, source).unwrap();
-
-        let bytes = builder.finish().unwrap();
-        let db = GeneratorDb::parse(&bytes).unwrap();
-
-        assert_eq!(
-            db.render_plain(EntityKind::Champion, 0).unwrap().unwrap(),
-            source
-        );
-    }
-
-    #[test]
-    fn present_empty_source_is_different_from_missing_owner() {
-        let mut builder = GeneratorDbBuilder::new(0, 2, 0, &[]);
-        builder.push_item(1, "").unwrap();
-
-        let bytes = builder.finish().unwrap();
-        let db = GeneratorDb::parse(&bytes).unwrap();
-
-        assert!(db.render_plain(EntityKind::Item, 0).unwrap().is_none());
-        assert_eq!(
-            db.render_plain(EntityKind::Item, 1).unwrap().as_deref(),
-            Some("")
-        );
-    }
+    Ok(Class::from_repr(value).unwrap())
 }

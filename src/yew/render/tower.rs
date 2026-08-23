@@ -45,19 +45,6 @@ impl FormulaRenderer {
 
                 h.into_fragment()
             })
-            .html_field("ref", &{
-                let mut h = Highlighter::new();
-
-                h.push(Class::Type, "tutorlolv2")
-                    .raw("::")
-                    .push(Class::Type, "model")
-                    .raw("::")
-                    .push(Class::Type, "RiotFormulas")
-                    .raw("::")
-                    .push(Class::Function, "tower_damage");
-
-                h.into_fragment()
-            })
             .finish_struct();
 
         h.into_fragment()
@@ -68,11 +55,7 @@ impl FormulaRenderer {
 
         h.push(Class::Keyword, "fn")
             .raw(" ")
-            .push(Class::Type, "tutorlolv2")
-            .raw("::")
-            .push(Class::Type, "model")
-            .raw("::")
-            .push(Class::Function, "TowerDamage")
+            .push(Class::Function, "tower_damage")
             .bracket(Bracket::LParen)
             .raw("...")
             .bracket(Bracket::RParen)

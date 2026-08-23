@@ -833,15 +833,14 @@ impl Highlighter {
         class: Class,
         values: &[(T, U)],
     ) -> &mut Self {
-        self.push(Class::Variable, name)
-            .raw(": ")
-            .bracket(Bracket::LCurly);
-
         if values.is_empty() {
-            return self.bracket(Bracket::RCurly).field_end();
+            return self;
         }
 
-        self.raw("\n\t\t");
+        self.push(Class::Variable, name)
+            .raw(": ")
+            .bracket(Bracket::LCurly)
+            .raw("\n\t\t");
 
         for (index, (field, value)) in values.iter().enumerate() {
             self.push(Class::Function, field.to_string().to_pascal_case())

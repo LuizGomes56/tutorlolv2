@@ -4,7 +4,7 @@ use rayon::iter::{ParallelBridge, ParallelIterator};
 use regex::Regex;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
-use std::{collections::BTreeMap, ops::Range, sync::LazyLock};
+use std::{collections::BTreeMap, sync::LazyLock};
 use tutorlolv2_codec::{EntityKind, FormulaDbBuilder, FormulaSource};
 use tutorlolv2_types::AbilityId;
 use tutorlolv2_wiki::MayFail;
@@ -19,7 +19,6 @@ pub struct FmtArgs<T> {
 
 pub struct FmtOutput {
     pub json: FmtArgs<Value>,
-    pub delete_range: Range<usize>,
     pub block: String,
 }
 
@@ -34,7 +33,6 @@ pub fn batch(src: String) -> BTreeMap<String, BTreeMap<String, Vec<FmtOutput>>> 
             let full = caps.get(0).unwrap();
             let inner = caps.get(1).unwrap().as_str();
 
-            let start_index = full.start();
             let attr_end = full.end();
 
             let json = serde_json::from_str::<FmtArgs<Value>>(inner).unwrap();
@@ -62,17 +60,7 @@ pub fn batch(src: String) -> BTreeMap<String, BTreeMap<String, Vec<FmtOutput>>> 
 
             let block = rest[..end].trim().to_string();
 
-            let mut absolute_end = attr_end + end;
-
-            if rest.get(end..end + 1) == Some(";") {
-                absolute_end += 1;
-            }
-
-            FmtOutput {
-                delete_range: start_index..absolute_end,
-                json,
-                block,
-            }
+            FmtOutput { json, block }
         })
         .collect::<Vec<_>>();
 
