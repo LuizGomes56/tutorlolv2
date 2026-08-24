@@ -1,9 +1,9 @@
-use {
-    crate::{ChampionId, ItemId, RuneId},
-    tutorlolv2_types::ComboElement,
-};
+use strum::{EnumCount, VariantArray};
 
+#[cfg(feature = "yew")]
 const _: () = {
+    use {crate::ChampionId, tutorlolv2_types::ComboElement};
+
     let mut i = 0;
 
     while i < ChampionId::VARIANTS {
@@ -12,11 +12,8 @@ const _: () = {
         let combos = champion_id.combos();
         let len = champion_id.number_of_abilities();
 
-        #[cfg(feature = "yew")]
-        {
-            assert!(len == champion_id.number_of_abilities());
-            assert!(len == champion_id.identifiers().len());
-        }
+        assert!(len == champion_id.number_of_abilities());
+        assert!(len == champion_id.identifiers().len());
 
         let mut j = 0;
 
@@ -60,23 +57,29 @@ const _: () = {
 };
 
 const _: () = {
+    use crate::{ItemId, RuneId};
+
     let mut i = 0;
 
-    while i < ItemId::VARIANTS {
-        let item = ItemId::VALUES[i];
+    while i < ItemId::COUNT {
+        let item = ItemId::VARIANTS[i];
+
         if item.deals_max_damage() {
             assert!(item.deals_damage());
         }
+
         i += 1;
     }
 
     let mut j = 0;
 
-    while j < RuneId::VARIANTS {
-        let rune = RuneId::VALUES[j];
+    while j < RuneId::COUNT {
+        let rune = RuneId::VARIANTS[j];
+
         if rune.deals_max_damage() {
             assert!(rune.deals_damage());
         }
+
         j += 1;
     }
 };

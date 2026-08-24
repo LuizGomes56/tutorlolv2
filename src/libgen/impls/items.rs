@@ -1,6 +1,7 @@
 use {
     crate::{ItemId, bitset, bitset::*, items_code::item_const_eval},
     core::mem::MaybeUninit,
+    strum::{EnumCount, VariantArray},
     tutorlolv2_types::{AttackType, Ctx, DamageType, GameMap, StatName, TypeMetadata},
 };
 
@@ -9,7 +10,7 @@ impl ItemId {
         let mut sum = 0;
         let mut i = 0;
 
-        while i < Self::VARIANTS {
+        while i < Self::COUNT {
             let item = Self::from_repr(i as _).unwrap();
             if item.deals_damage() {
                 sum += 1;
@@ -25,7 +26,7 @@ impl ItemId {
         let mut i = 0;
         let mut j = 0;
 
-        while i < Self::VARIANTS {
+        while i < Self::COUNT {
             let item = Self::from_repr(i as _).unwrap();
 
             if item.deals_damage() {
@@ -41,12 +42,12 @@ impl ItemId {
 
     pub const DAMAGING: BitSet = bitset!(ItemId::DAMAGING_IDS);
 
-    pub const RIOT_IDS: [u32; Self::VARIANTS] = {
+    pub const RIOT_IDS: [u32; Self::COUNT] = {
         let mut result = [0; _];
         let mut i = 0;
 
-        while i < Self::VARIANTS {
-            let value = Self::VALUES[i];
+        while i < Self::COUNT {
+            let value = Self::VARIANTS[i];
             result[i] = value.riot_id();
             i += 1;
         }
@@ -84,7 +85,7 @@ impl ItemId {
         let mut sum = 0;
         let mut i = 0;
 
-        while i < Self::VARIANTS {
+        while i < Self::COUNT {
             if Self::DATA[i].is_siml() {
                 sum += 1;
             }
@@ -99,7 +100,7 @@ impl ItemId {
         let mut i = 0;
         let mut j = 0;
 
-        while i < Self::VARIANTS {
+        while i < Self::COUNT {
             if Self::DATA[i].is_siml() {
                 result[j] = Self::from_repr(i as _).unwrap();
                 j += 1;
@@ -108,30 +109,6 @@ impl ItemId {
         }
         result
     };
-
-    pub const ALLY_EXCEPTIONS: [Self; 8] = [
-        Self::DarkSeal,
-        Self::Dragonheart,
-        Self::DemonKingsCrown,
-        Self::RiteOfRuin,
-        Self::MejaisSoulstealer,
-        Self::Hubris,
-        Self::BloodlettersCurse,
-        Self::BlackCleaver,
-    ];
-
-    pub const ENEMY_EXCEPTIONS: [Self; 3] =
-        [Self::Dragonheart, Self::DemonKingsCrown, Self::BlackCleaver];
-
-    pub const SIZE_OF_EXCEPTIONS: usize = max_usize(
-        bitset_size(bitset!(ItemId::ALLY_EXCEPTIONS => [usize])),
-        bitset_size(bitset!(ItemId::ENEMY_EXCEPTIONS => [usize])),
-    );
-
-    #[cfg(feature = "yew")]
-    pub const fn identifiers(&self) -> &'static [tutorlolv2_types::CtxVar] {
-        self.data().identifiers
-    }
 
     pub const fn is_siml(&self) -> bool {
         let mut i = 0;
@@ -161,11 +138,89 @@ impl ItemId {
         self.metadata().damage_type
     }
 
-    pub const fn exceptions(ally: bool) -> BitSetExc {
-        match ally {
-            true => bitset!(ItemId::ALLY_EXCEPTIONS),
-            false => bitset!(ItemId::ENEMY_EXCEPTIONS),
+    pub const fn has_stat(&self, stat_name: StatName) -> bool {
+        let stats = self.stats();
+        let mut i = 0;
+
+        while i < stats.len() {
+            if stats[i].0 as u8 == stat_name as u8 {
+                return true;
+            }
+            i += 1;
         }
+        false
+    }
+
+    pub const fn find_variants<const N: usize>(stat_name: StatName) -> [ItemId; N] {
+        let mut i = 0;
+        let mut j = 0;
+        let mut result: [Self; _] = unsafe { core::mem::zeroed() };
+
+        while i < Self::COUNT {
+            let item = Self::VARIANTS[i];
+            if item.has_stat(stat_name) {
+                result[j] = item;
+                j += 1;
+            }
+            i += 1;
+        }
+        result
+    }
+
+    pub const fn filter(stat_name: StatName) -> &'static [Self] {
+        Self::FILTERS[stat_name as usize]
+    }
+
+    pub const fn riot_id(&self) -> u32 {
+        self.data().riot_id
+    }
+
+    pub const fn with_stat(stat_name: StatName) -> usize {
+        let mut result = 0;
+        let mut i = 0;
+
+        while i < Self::COUNT {
+            if Self::VARIANTS[i].has_stat(stat_name) {
+                result += 1;
+            }
+            i += 1;
+        }
+
+        result
+    }
+
+    pub const fn deals_damage(&self) -> bool {
+        let [mmin, _, rmin, _] = self.data().deals_damage;
+        mmin || rmin
+    }
+
+    pub const fn deals_max_damage(&self) -> bool {
+        let [_, mmax, _, rmax] = self.data().deals_damage;
+        mmax || rmax
+    }
+
+    pub const fn metadata(&self) -> TypeMetadata<Self> {
+        self.data().metadata
+    }
+
+    pub const fn eval(&self, ctx: &Ctx, attack_type: AttackType) -> [f32; 2] {
+        item_const_eval(*self, ctx, attack_type)
+    }
+
+    pub const fn stats(&self) -> &'static [(StatName, u16)] {
+        self.data().stats
+    }
+
+    pub const fn price(&self) -> u16 {
+        self.data().price
+    }
+
+    pub const fn tier(&self) -> u8 {
+        self.data().tier
+    }
+
+    pub const fn purchasable(&self) -> bool {
+        self.data().purchasable
     }
 
     pub const fn maps(&self) -> &'static [GameMap] {
@@ -186,89 +241,39 @@ impl ItemId {
         false
     }
 
-    pub const fn has_stat(&self, stat_name: StatName) -> bool {
-        let stats = self.stats();
-        let mut i = 0;
+    #[cfg(feature = "yew")]
+    pub const ALLY_EXCEPTIONS: [Self; 8] = [
+        Self::DarkSeal,
+        Self::Dragonheart,
+        Self::DemonKingsCrown,
+        Self::RiteOfRuin,
+        Self::MejaisSoulstealer,
+        Self::Hubris,
+        Self::BloodlettersCurse,
+        Self::BlackCleaver,
+    ];
 
-        while i < stats.len() {
-            if stats[i].0 as u8 == stat_name as u8 {
-                return true;
-            }
-            i += 1;
+    #[cfg(feature = "yew")]
+    pub const ENEMY_EXCEPTIONS: [Self; 3] =
+        [Self::Dragonheart, Self::DemonKingsCrown, Self::BlackCleaver];
+
+    #[cfg(feature = "yew")]
+    pub const SIZE_OF_EXCEPTIONS: usize = max_usize(
+        bitset_size(bitset!(ItemId::ALLY_EXCEPTIONS => [usize])),
+        bitset_size(bitset!(ItemId::ENEMY_EXCEPTIONS => [usize])),
+    );
+
+    #[cfg(feature = "yew")]
+    pub const fn exceptions(ally: bool) -> BitSetExc {
+        match ally {
+            true => bitset!(ItemId::ALLY_EXCEPTIONS),
+            false => bitset!(ItemId::ENEMY_EXCEPTIONS),
         }
-        false
     }
 
-    pub const fn find_variants<const N: usize>(stat_name: StatName) -> [ItemId; N] {
-        let mut i = 0;
-        let mut j = 0;
-        let mut result: [Self; _] = unsafe { core::mem::zeroed() };
-
-        while i < Self::VARIANTS {
-            let item = Self::VALUES[i];
-            if item.has_stat(stat_name) {
-                result[j] = item;
-                j += 1;
-            }
-            i += 1;
-        }
-        result
-    }
-
-    pub const fn filter(stat_name: StatName) -> &'static [Self] {
-        Self::FILTERS[stat_name as usize]
-    }
-
-    pub const fn riot_id(&self) -> u32 {
-        self.data().riot_id
-    }
-
-    pub const fn count_variants(stat_name: StatName) -> usize {
-        let mut result = 0;
-        let mut i = 0;
-
-        while i < Self::VARIANTS {
-            if Self::VALUES[i].has_stat(stat_name) {
-                result += 1;
-            }
-            i += 1;
-        }
-
-        result
-    }
-
-    pub const fn deals_damage(&self) -> bool {
-        let [mmin, _, rmin, _] = self.data().deals_damage;
-        mmin || rmin
-    }
-
-    pub const fn deals_max_damage(&self) -> bool {
-        let [_, mmax, _, rmax] = self.data().deals_damage;
-        mmax || rmax
-    }
-
-    pub const fn price(&self) -> u16 {
-        self.data().price
-    }
-
-    pub const fn tier(&self) -> u8 {
-        self.data().tier
-    }
-
-    pub const fn purchasable(&self) -> bool {
-        self.data().purchasable
-    }
-
-    pub const fn metadata(&self) -> TypeMetadata<Self> {
-        self.data().metadata
-    }
-
-    pub const fn eval(&self, ctx: &Ctx, attack_type: AttackType) -> [f32; 2] {
-        item_const_eval(*self, ctx, attack_type)
-    }
-
-    pub const fn stats(&self) -> &'static [(StatName, u16)] {
-        self.data().stats
+    #[cfg(feature = "yew")]
+    pub const fn identifiers(&self) -> &'static [tutorlolv2_types::CtxVar] {
+        self.data().identifiers
     }
 }
 
@@ -283,7 +288,7 @@ macro_rules! impl_item_filters {
                 ];
 
                 $(
-                    pub const [<ITEMS_WITH_ $name:snake:upper>]: [Self; Self::count_variants(StatName::$name)] =
+                    pub const [<ITEMS_WITH_ $name:snake:upper>]: [Self; Self::with_stat(StatName::$name)] =
                         Self::find_variants(StatName::$name);
                 )+
             }

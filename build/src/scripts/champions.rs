@@ -115,10 +115,12 @@ impl Build for Champion {
                 positions: &{positions:#?},
                 stats: {stats:#?},
                 modifiers: {modifiers:#?},
-                combos: &[{combos}],
                 metadata: &{metadata:#?},
-                merge_data: &{merge_data:#?},
                 closures: &[{fn_names}],
+                #[cfg(feature = "yew")]
+                combos: &[{combos}],
+                #[cfg(feature = "yew")]
+                merge_data: &{merge_data:#?},
                 #[cfg(feature = "yew")]
                 identifiers: &[{identifiers}],
             }};"#,

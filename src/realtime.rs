@@ -14,6 +14,7 @@ use {
     crate::{ChampionId, ItemId, RuneId, bitset::BitSet, helpers::*, model::*, riot::*},
     alloc::boxed::Box,
     core::str::FromStr,
+    strum::{EnumCount, VariantArray},
     tutorlolv2_types::{AdaptiveType, AttackType, GameMap, Position},
 };
 
@@ -21,8 +22,8 @@ use {
 /// access does not cause a panic or undefined behavior
 const _: () = {
     let mut i = 0;
-    while i < ChampionId::VARIANTS {
-        let champion_id = ChampionId::VALUES[i];
+    while i < ChampionId::COUNT {
+        let champion_id = ChampionId::VARIANTS[i];
         assert!(!champion_id.positions().is_empty());
         i += 1;
     }
@@ -103,7 +104,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
     let current_player_stats = champion_stats.base100();
 
     // Defaults to Unknown, which doesn't  make much difference
-    let game_map = GameMap::from_u8(map_number);
+    let game_map = GameMap::from_code(map_number);
     let mut ability_modifiers = AbilityModifiers::default();
     let mut base_modifiers = DamageModifiers::default();
 
@@ -305,10 +306,11 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
             // return until the scoreboard is fully populated, otherwise we will cause undefined behavior or have to
             // reallocate it at the end
             let e_champion_id = e_champion_name.parse().unwrap_or(ChampionId::Neeko);
+            let team = e_team.parse().unwrap_or_default();
+
             let e_position = e_raw_position
                 .parse()
                 .unwrap_or(e_champion_id.main_position());
-            let team = e_team.parse().unwrap_or_default();
 
             unsafe {
                 scoreboard.get_unchecked_mut(i).write(Scoreboard {

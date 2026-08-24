@@ -25,6 +25,7 @@ use {
     alloc::boxed::Box,
     const_sized_bit_set::bit_set_array::BitSetArray,
     core::mem::MaybeUninit,
+    strum::EnumCount,
     tutorlolv2_types::{
         AbilityId, AdaptiveType, AttackType, Ctx, DamageType, GameMap, StatName, TypeMetadata,
     },
@@ -43,18 +44,7 @@ pub const fn has_item<const N: usize>(origin: &BitSet, check_for: [ItemId; N]) -
 
 impl SimpleStats {
     pub const fn base_stats(champion_id: ChampionId, level: u8, is_mega_gnar: bool) -> Self {
-        let BasicStats {
-            max_health,
-            armor,
-            magic_resist,
-            ..
-        } = champion_id.base_stats(level, is_mega_gnar);
-
-        Self {
-            max_health,
-            armor,
-            magic_resist,
-        }
+        champion_id.base_stats(level, is_mega_gnar).simple()
     }
 
     /// Mutates the variable `stats` and returns the bonus mana recovered from all items.
@@ -90,6 +80,7 @@ impl SimpleStats {
 
         self.magic_resist *= dragon_mod;
         self.armor *= dragon_mod;
+
         bonus_mana
     }
 }
@@ -137,16 +128,18 @@ impl WikiStats {
 
 impl ChampionId {
     pub const fn base_stats(&self, level: u8, is_mega_gnar: bool) -> BasicStats {
+        let stats = self.stats();
+
         match self {
             ChampionId::Gnar if is_mega_gnar => {
                 core::hint::cold_path();
-                self.stats().mega_gnar_base_stats(level)
+                stats.mega_gnar_base_stats(level)
             }
-            _ => self.stats().base_stats(level),
+            _ => stats.base_stats(level),
         }
     }
 
-    pub fn map_damage_modifier(&self, enemy_id: &Self, game_map: GameMap) -> f32 {
+    pub const fn map_damage_modifier(&self, enemy_id: &Self, game_map: GameMap) -> f32 {
         let WikiModifiers {
             ofa,
             usb,
@@ -185,6 +178,14 @@ impl BasicStats {
     /// when `champion_id` is [`ChampionId::Gnar`], otherwise it has no effect.
     pub const fn base_stats(champion_id: ChampionId, level: u8, is_mega_gnar: bool) -> Self {
         champion_id.base_stats(level, is_mega_gnar)
+    }
+
+    pub const fn simple(&self) -> SimpleStats {
+        SimpleStats {
+            armor: self.armor,
+            max_health: self.max_health,
+            magic_resist: self.magic_resist,
+        }
     }
 
     pub const fn bonus_stats(&self, base_stats: Self) -> Self {
@@ -302,7 +303,7 @@ impl<T> DamageKind<T> {
     pub fn new<const N: usize>(
         bitset: &BitSetArray<N>,
         attack_type: AttackType,
-        f: impl Fn(usize, AttackType) -> (TypeMetadata<T>, [Closure; 2]),
+        f: impl Fn(u32, AttackType) -> (TypeMetadata<T>, [Closure; 2]),
     ) -> Self {
         let count = bitset.count_const() as usize;
 
@@ -311,7 +312,7 @@ impl<T> DamageKind<T> {
 
         unsafe {
             for (i, j) in bitset.iter_const().enumerate() {
-                let (meta, slice) = f(j as usize, attack_type);
+                let (meta, slice) = f(j, attack_type);
 
                 let base = i << 1;
                 closures.get_unchecked_mut(base).write(slice[0]);
@@ -329,8 +330,8 @@ impl<T> DamageKind<T> {
 
 impl DamageKind<ItemId> {
     pub fn items(bitset: &BitSet, attack_type: AttackType) -> Self {
-        Self::new(bitset, attack_type, |i, attack_type| unsafe {
-            let item = ItemId::from_usize_unchecked(i).data();
+        Self::new(bitset, attack_type, |i, attack_type| {
+            let item = ItemId::from_repr(i as _).unwrap().data();
             let slice = match attack_type {
                 AttackType::Ranged => item.ranged,
                 AttackType::Melee => item.melee,
@@ -343,8 +344,8 @@ impl DamageKind<ItemId> {
 
 impl DamageKind<RuneId> {
     pub fn runes(bitset: &BitSet, attack_type: AttackType) -> Self {
-        Self::new(bitset, attack_type, |i, attack_type| unsafe {
-            let rune = RuneId::from_usize_unchecked(i).data();
+        Self::new(bitset, attack_type, |i, attack_type| {
+            let rune = RuneId::from_repr(i as _).unwrap().data();
             let slice = match attack_type {
                 AttackType::Ranged => rune.ranged,
                 AttackType::Melee => rune.melee,
@@ -761,8 +762,9 @@ impl Attacks {
 /// will panic or cause undefined behavior
 const _: () = {
     let mut i = 0;
-    while i < ChampionId::VARIANTS {
-        let champion_id = ChampionId::from_usize(i).unwrap();
+
+    while i < ChampionId::COUNT {
+        let champion_id = ChampionId::from_repr(i as _).unwrap();
         let Champion {
             metadata, closures, ..
         } = champion_id.data();
@@ -782,25 +784,25 @@ impl Damages {
         let abilities = Self::eval_abilities(
             &ctx,
             &mut onhit,
+            modifiers,
             data.abilities.metadata,
             data.abilities.closures,
-            modifiers,
         );
 
         let items = Self::eval(
             &ctx,
             &mut onhit,
+            modifiers,
             &data.items.metadata,
             &data.items.closures,
-            modifiers,
         );
 
         let runes = Self::eval(
             &ctx,
             &mut onhit,
+            modifiers,
             &data.runes.metadata,
             &data.runes.closures,
-            modifiers,
         );
 
         let attacks = Attacks::new(&ctx, onhit, modifiers.damages.physical_mod);
@@ -822,9 +824,9 @@ impl Damages {
     pub fn eval_abilities(
         ctx: &Ctx,
         onhit: &mut RangeDamage,
+        modifiers: Modifiers,
         metadata: &[TypeMetadata<AbilityId>],
         closures: &[Closure],
-        modifiers: Modifiers,
     ) -> Box<[i32]> {
         let len = metadata.len();
         debug_assert_eq!(len, closures.len());
@@ -852,9 +854,9 @@ impl Damages {
     pub fn eval<T>(
         ctx: &Ctx,
         onhit: &mut RangeDamage,
+        modifiers: Modifiers,
         metadata: &[TypeMetadata<T>],
         closures: &[Closure],
-        modifiers: Modifiers,
     ) -> Box<[i32]> {
         let out_len = closures.len();
         debug_assert_eq!(out_len, metadata.len() << 1);

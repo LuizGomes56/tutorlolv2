@@ -627,7 +627,7 @@ pub fn get_calculator_enemies(
                 item_exceptions: e_item_exceptions,
             } = *player;
 
-            let e_base_stats = SimpleStats::base_stats(e_champion_id, e_level, e_is_mega_gnar);
+            let e_base_stats = e_champion_id.base_stats(e_level, e_is_mega_gnar).simple();
             let full_state = EnemyState {
                 current_stats: e_stats,
                 base_stats: e_base_stats,

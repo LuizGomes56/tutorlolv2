@@ -140,45 +140,37 @@ where
     }
 
     fn id_enum(&self) -> String {
+        let enum_name = Self::TAG.enum_name();
+        let riot_id_conv = if !matches!(Self::TAG, Tag::Champions) {
+            format!(
+                "impl {enum_name} {{
+                    pub const fn from_riot_id(id: u32) -> Option<Self> {{
+                        match id {{ {match_arms} _ => None }}
+                    }}
+                }}",
+                match_arms = self
+                    .map()
+                    .iter()
+                    .map(|(key, value)| {
+                        format!("{riot_id} => Some(Self::{key}),", riot_id = value.riot_id())
+                    })
+                    .collect::<String>()
+            )
+        } else {
+            String::new()
+        };
+
         format!(
             "#[derive(
                 Clone, Copy, Debug, Decode, Deserialize, Eq, Encode,
-                Hash, Ord, PartialEq, PartialOrd, Serialize
+                Hash, Ord, PartialEq, PartialOrd, Serialize,
+                EnumCount, VariantArray, VariantNames, FromRepr
             )]
             #[repr({repr})]
             pub enum {enum_name} {{{variants}}}
-
-            impl {enum_name} {{
-                pub const VARIANTS: usize = {len};
-                pub const fn debug(&self) -> &'static str {{
-                    match self {{{debug_arms}}}
-                }}
-                {riot_id_conv}
-            }}",
-            enum_name = Self::TAG.enum_name(),
+            {riot_id_conv}",
             repr = Self::TAG.repr(),
             variants = self.keys().collect::<Vec<_>>().join(","),
-            len = self.map().len(),
-            debug_arms = self
-                .keys()
-                .map(|name| format!("Self::{name} => {name:?},"))
-                .collect::<String>(),
-            riot_id_conv = if !matches!(Self::TAG, Tag::Champions) {
-                format!(
-                    "pub const fn from_riot_id(id: u32) -> Option<Self> {{
-                        match id {{ {match_arms} _ => None }}
-                    }}",
-                    match_arms = self
-                        .map()
-                        .iter()
-                        .map(|(key, value)| {
-                            format!("{riot_id} => Some(Self::{key}),", riot_id = value.riot_id())
-                        })
-                        .collect::<String>()
-                )
-            } else {
-                String::new()
-            }
         )
     }
 
@@ -218,7 +210,7 @@ where
         let var = format!("{}S_DATA", vtype.to_uppercase());
 
         let enum_name = Self::TAG.enum_name();
-        let mut data = format!("pub static {var}: [&{vtype}; {enum_name}::VARIANTS] = [");
+        let mut data = format!("pub static {var}: [&{vtype}; {enum_name}::COUNT] = [");
 
         for id in self.keys() {
             let upper_id = id.to_shouty_snake_case();

@@ -8,17 +8,17 @@ pub(self) use {
     bincode::{Decode, Encode},
     core::fmt::Debug,
     serde::{Deserialize, Serialize},
+    strum::{EnumCount, FromRepr, VariantArray, VariantNames},
     tutorlolv2_types::{
         AbilityId::{self, *},
         AbilityName::*,
         AdaptiveType,
         AttackType::{self, *},
         Attrs::*,
-        ComboElement::*,
         Ctx,
         DamageType::*,
         GameMap::*,
-        MergeData,
+        Position,
         Position::*,
         StatName, TypeMetadata,
     },
@@ -33,7 +33,7 @@ pub use {
 };
 
 #[cfg(feature = "yew")]
-pub(self) use tutorlolv2_types::CtxVar::*;
+pub(self) use tutorlolv2_types::{ComboElement::*, CtxVar::*, MergeData};
 
 pub mod champions_code {
     use super::{champions::*, *};

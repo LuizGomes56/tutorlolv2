@@ -3,23 +3,24 @@ use {
         ChampionId, ItemId, RuneId, WikiStats,
         champions_code::{RECOMMENDED_ITEMS, RECOMMENDED_RUNES, ability_const_eval},
     },
+    strum::{EnumCount, VariantArray},
     tutorlolv2_types::{
-        AbilityId, AbilityName, AdaptiveType, AttackType, ComboElement, Ctx, Key, MergeData,
-        Position, TypeMetadata,
+        AbilityId, AbilityName, AdaptiveType, AttackType, Ctx, Position, TypeMetadata,
     },
 };
 
 impl ChampionId {
-    pub const RECOMMENDED_ITEMS: &[[&[ItemId]; Position::VARIANTS]; ChampionId::VARIANTS] =
+    pub const RECOMMENDED_ITEMS: &[[&[ItemId]; Position::COUNT]; ChampionId::COUNT] =
         &RECOMMENDED_ITEMS;
-    pub const RECOMMENDED_RUNES: &[[&[RuneId]; Position::VARIANTS]; ChampionId::VARIANTS] =
+
+    pub const RECOMMENDED_RUNES: &[[&[RuneId]; Position::COUNT]; ChampionId::COUNT] =
         &RECOMMENDED_RUNES;
 
     pub const TOTAL_ABILITIES: usize = {
         let mut i = 0;
         let mut sum = 0;
 
-        while i < Self::VARIANTS {
+        while i < Self::COUNT {
             let data = Self::DATA[i];
             sum += data.closures.len();
             i += 1;
@@ -28,11 +29,11 @@ impl ChampionId {
         sum
     };
 
-    pub const POSITIONS: [&[Position]; Self::VARIANTS] = {
+    pub const POSITIONS: [&[Position]; Self::COUNT] = {
         let mut i = 0;
         let mut result = [&[] as &[_]; _];
 
-        while i < Self::VARIANTS {
+        while i < Self::COUNT {
             let champion = Self::DATA[i];
             result[i] = champion.positions;
             i += 1;
@@ -45,12 +46,12 @@ impl ChampionId {
         let mut i = 0;
         let mut max = 0;
 
-        while i < Self::VARIANTS {
+        while i < Self::COUNT {
             let mut j = 0;
-            let champion_id = Self::VALUES[i];
+            let champion_id = Self::VARIANTS[i];
 
-            while j < Position::VARIANTS as usize {
-                let position = Position::ARRAY[j];
+            while j < Position::COUNT {
+                let position = Position::VARIANTS[j];
                 let data = champion_id.recommended_items(position);
                 if data.len() > max {
                     max = data.len();
@@ -62,51 +63,12 @@ impl ChampionId {
         max
     };
 
-    pub const fn exceptions(&self, ally: bool) -> Option<Key> {
-        match ally {
-            true => match self {
-                Self::AurelionSol
-                | Self::Bard
-                | Self::Belveth
-                | Self::Graves
-                | Self::Hecarim
-                | Self::Kalista
-                | Self::Kindred
-                | Self::Senna
-                | Self::Shyvana
-                | Self::Sion
-                | Self::Smolder
-                | Self::Swain
-                | Self::Thresh
-                | Self::Veigar => Some(Key::P),
-                Self::Nasus => Some(Key::Q),
-                Self::Darius => Some(Key::E),
-                Self::Chogath => Some(Key::R),
-                _ => None,
-            },
-            false => match self {
-                Self::Graves | Self::Sion | Self::Swain | Self::Thresh => Some(Key::P),
-                Self::Chogath => Some(Key::R),
-                _ => None,
-            },
-        }
-    }
-
-    #[cfg(feature = "yew")]
-    pub const fn identifiers(&self) -> &'static [&'static [tutorlolv2_types::CtxVar]] {
-        self.data().identifiers
-    }
-
     pub const fn abilities(&self) -> &'static [TypeMetadata<AbilityId>] {
         self.data().metadata
     }
 
     pub const fn stats(&self) -> &'static WikiStats {
         &self.data().stats
-    }
-
-    pub const fn merge_data(&self) -> &'static [MergeData] {
-        self.data().merge_data
     }
 
     pub const fn number_of_abilities(&self) -> usize {
@@ -151,10 +113,6 @@ impl ChampionId {
         self.data().attack_type
     }
 
-    pub const fn combos(&self) -> &'static [&'static [ComboElement]] {
-        self.data().combos
-    }
-
     pub const fn index_of_ability(&self, ability_id: AbilityId) -> Option<usize> {
         let mut i = 0;
         while i < self.number_of_abilities() {
@@ -172,5 +130,53 @@ impl ChampionId {
 
     pub const fn eval(&self, ctx: &Ctx, kind: AbilityId) -> f32 {
         ability_const_eval(*self, ctx, kind)
+    }
+
+    #[cfg(feature = "yew")]
+    pub const fn exceptions(&self, ally: bool) -> Option<Key> {
+        use tutorlolv2_types::Key;
+
+        match ally {
+            true => match self {
+                Self::AurelionSol
+                | Self::Bard
+                | Self::Belveth
+                | Self::Graves
+                | Self::Hecarim
+                | Self::Kalista
+                | Self::Kindred
+                | Self::Senna
+                | Self::Shyvana
+                | Self::Sion
+                | Self::Smolder
+                | Self::Swain
+                | Self::Thresh
+                | Self::Veigar => Some(Key::P),
+                Self::Nasus => Some(Key::Q),
+                Self::Darius => Some(Key::E),
+                Self::Chogath => Some(Key::R),
+                _ => None,
+            },
+            false => match self {
+                Self::Graves | Self::Sion | Self::Swain | Self::Thresh => Some(Key::P),
+                Self::Chogath => Some(Key::R),
+                _ => None,
+            },
+        }
+    }
+
+    #[cfg(feature = "yew")]
+    pub const fn identifiers(&self) -> &'static [&'static [tutorlolv2_types::CtxVar]] {
+        self.data().identifiers
+    }
+
+    #[cfg(feature = "yew")]
+    pub const fn combos(&self) -> &'static [&'static [tutorlolv2_types::ComboElement]] {
+        self.data().combos
+    }
+
+    #[cfg(feature = "yew")]
+    pub const fn merge_data(&self) -> &'static [tutorlolv2_types::MergeData] {
+        self.data().merge_data
     }
 }

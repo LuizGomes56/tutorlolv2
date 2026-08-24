@@ -118,7 +118,7 @@ impl Item {
                 .filter_map(|(k, _)| {
                     k.parse::<u8>()
                         .ok()
-                        .map(GameMap::from_u8)
+                        .map(GameMap::from_code)
                         .or_else(|| match k.as_str() {
                             "ar" => Some(GameMap::Arena),
                             "aram" => Some(GameMap::Aram),

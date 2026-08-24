@@ -2,13 +2,12 @@ use {
     crate::{ChampionId, ItemId, RuneId, impls::traits::CastId},
     core::fmt::Debug,
     tutorlolv2_types::{
-        AbilityId, AdaptiveType, AttackType, ComboElement, Ctx, GameMap, MergeData, Position,
-        StatName, TypeMetadata,
+        AbilityId, AdaptiveType, AttackType, Ctx, GameMap, Position, StatName, TypeMetadata,
     },
 };
 
 #[cfg(feature = "yew")]
-use tutorlolv2_types::CtxVar;
+use tutorlolv2_types::{ComboElement, CtxVar, MergeData};
 
 #[derive(Copy, Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub enum EntityId {
@@ -47,8 +46,10 @@ pub struct Champion {
     pub positions: &'static [Position],
     pub stats: WikiStats,
     pub modifiers: WikiModifiers,
+    #[cfg(feature = "yew")]
     pub combos: &'static [&'static [ComboElement]],
     pub metadata: &'static [TypeMetadata<AbilityId>],
+    #[cfg(feature = "yew")]
     pub merge_data: &'static [MergeData],
     #[cfg(feature = "yew")]
     pub identifiers: &'static [&'static [CtxVar]],

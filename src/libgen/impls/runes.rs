@@ -1,35 +1,14 @@
-pub use {
-    crate::{ChampionId, ItemId, RuneId, bitset, bitset::*, runes_code::rune_const_eval},
-    bincode::{Decode, Encode},
-    core::{
-        any::Any,
-        fmt::{Debug, Display},
-        mem::MaybeUninit,
-        str::FromStr,
-    },
-    serde::{Deserialize, Serialize},
-    tutorlolv2_types::{
-        AbilityId::{self, *},
-        AbilityName::{self, *},
-        AdaptiveType,
-        AttackType::{self, *},
-        Attrs::*,
-        ComboElement::{self, *},
-        Ctx,
-        CtxVar::*,
-        DamageType::{self, *},
-        GameMap::{self, *},
-        Key, MergeData,
-        Position::{self, *},
-        StatName, TypeMetadata,
-    },
+use {
+    crate::{RuneId, bitset, bitset::*, runes_code::rune_const_eval},
+    strum::{EnumCount, VariantArray},
+    tutorlolv2_types::{AttackType, Ctx, DamageType, TypeMetadata},
 };
 
 impl RuneId {
     pub const NUMBER_OF_DAMAGING_RUNES: usize = {
         let mut sum = 0;
         let mut i = 0;
-        while i < Self::VARIANTS {
+        while i < Self::COUNT {
             let rune = Self::DATA[i];
             let [mmin, mmax, rmin, rmax] = rune.deals_damage;
             if mmin || mmax || rmin || rmax {
@@ -45,7 +24,7 @@ impl RuneId {
         let mut i = 0;
         let mut j = 0;
 
-        while i < Self::VARIANTS {
+        while i < Self::COUNT {
             let rune = Self::DATA[i];
             let [mmin, mmax, rmin, rmax] = rune.deals_damage;
 
@@ -61,42 +40,16 @@ impl RuneId {
 
     pub const DAMAGING: BitSet = bitset!(RuneId::DAMAGING_IDS);
 
-    pub const RIOT_IDS: [u32; Self::VARIANTS] = {
+    pub const RIOT_IDS: [u32; Self::COUNT] = {
         let mut result = [0; _];
         let mut i = 0;
-        while i < Self::VARIANTS {
-            let value = Self::VALUES[i];
+        while i < Self::COUNT {
+            let value = Self::VARIANTS[i];
             result[i] = value.riot_id();
             i += 1;
         }
         result
     };
-
-    pub const EXCEPTIONS: [Self; 14] = [
-        Self::AbsorbLife,
-        Self::Conqueror,
-        Self::DeepWard,
-        Self::EyeballCollection,
-        Self::GhostPoro,
-        Self::GrislyMementos,
-        Self::GatheringStorm,
-        Self::GraspOfTheUndying,
-        Self::LethalTempo,
-        Self::LegendAlacrity,
-        Self::LegendBloodline,
-        Self::LegendHaste,
-        Self::ManaflowBand,
-        Self::ZombieWard,
-    ];
-
-    #[cfg(feature = "yew")]
-    pub const fn identifiers(&self) -> &'static [tutorlolv2_types::CtxVar] {
-        self.data().identifiers
-    }
-
-    pub const fn exceptions() -> BitSetExc {
-        bitset!(RuneId::EXCEPTIONS)
-    }
 
     pub const fn riot_id(&self) -> u32 {
         self.data().riot_id
@@ -122,5 +75,33 @@ impl RuneId {
     pub const fn deals_max_damage(&self) -> bool {
         let [_, mmax, _, rmax] = self.data().deals_damage;
         mmax || rmax
+    }
+
+    #[cfg(feature = "yew")]
+    pub const EXCEPTIONS: [Self; 14] = [
+        Self::AbsorbLife,
+        Self::Conqueror,
+        Self::DeepWard,
+        Self::EyeballCollection,
+        Self::GhostPoro,
+        Self::GrislyMementos,
+        Self::GatheringStorm,
+        Self::GraspOfTheUndying,
+        Self::LethalTempo,
+        Self::LegendAlacrity,
+        Self::LegendBloodline,
+        Self::LegendHaste,
+        Self::ManaflowBand,
+        Self::ZombieWard,
+    ];
+
+    #[cfg(feature = "yew")]
+    pub const fn identifiers(&self) -> &'static [tutorlolv2_types::CtxVar] {
+        self.data().identifiers
+    }
+
+    #[cfg(feature = "yew")]
+    pub const fn exceptions() -> BitSetExc {
+        bitset!(RuneId::EXCEPTIONS)
     }
 }

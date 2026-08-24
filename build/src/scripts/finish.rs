@@ -76,7 +76,7 @@ pub fn get_recommendations() -> MayFail<String> {
     let mut globals = core::array::from_fn::<_, 2, _>(|i| {
         let enumv = enum_ids[i];
         let var = declaration[i];
-        format!("pub static {var}: [[&[crate::{enumv}]; 5]; ChampionId::VARIANTS] = [")
+        format!("pub static {var}: [[&[crate::{enumv}]; Position::COUNT]; ChampionId::COUNT] = [")
     });
 
     let json = BTreeMap::<String, BTreeMap<String, [BTreeSet<String>; 2]>>::from_file(
@@ -89,7 +89,7 @@ pub fn get_recommendations() -> MayFail<String> {
             .iter()
             .zip(declaration)
             .map(|(enumv, var)| {
-                format!("pub static {var}: [[&[crate::{enumv}]; 5]; ChampionId::VARIANTS] = [[&[]; _]; _];")
+                format!("pub static {var}: [[&[crate::{enumv}]; Position::COUNT]; ChampionId::COUNT] = [[&[]; _]; _];")
             })
             .collect::<String>());
     }

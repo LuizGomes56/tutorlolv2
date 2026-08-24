@@ -663,6 +663,9 @@ impl TryFrom<(f32, f32)> for AdaptiveType {
     strum::EnumIter,
     strum::Display,
     strum::VariantNames,
+    strum::VariantArray,
+    strum::EnumCount,
+    strum::FromRepr,
 )]
 #[repr(u8)]
 pub enum Position {
@@ -675,24 +678,8 @@ pub enum Position {
 }
 
 impl Position {
-    pub const VARIANTS: usize = 5;
-    pub const ARRAY: [Self; Self::VARIANTS as _] = [
-        Position::Top,
-        Position::Jungle,
-        Position::Middle,
-        Position::Bottom,
-        Position::Support,
-    ];
-
     pub const fn index(&self) -> usize {
         *self as _
-    }
-
-    pub const fn from_u8(value: u8) -> Option<Self> {
-        match value as usize {
-            0..Self::VARIANTS => Some(unsafe { Self::from_u8_unchecked(value) }),
-            _ => None,
-        }
     }
 
     pub const fn name(&self) -> &'static str {
@@ -784,7 +771,7 @@ pub enum GameMap {
 impl GameMap {
     /// Constant conversion of a [`u8`] into a [`GameMap`] enum,
     /// where the byte represents the code of the current map
-    pub const fn from_u8(value: u8) -> Self {
+    pub const fn from_code(value: u8) -> Self {
         match value {
             3 => GameMap::Tutorial,
             4 | 10 => GameMap::TwistedTreeline,

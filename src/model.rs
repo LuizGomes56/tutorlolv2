@@ -17,6 +17,7 @@ use {
     bincode::{BorrowDecode, Decode, Encode},
     core::str::FromStr,
     serde::{Deserialize, Serialize},
+    strum::EnumCount,
     tutorlolv2_types::{
         AbilityId, AbilityName, AdaptiveType, Attrs, Ctx, DamageType, GameMap, Position,
         TypeMetadata,
@@ -349,8 +350,7 @@ impl Damages {
 pub struct ValueException(u32);
 
 impl ValueException {
-    pub const DISC_BITS: u32 =
-        Self::find_disc_bits(ItemId::VARIANTS as u32, RuneId::VARIANTS as u32);
+    pub const DISC_BITS: u32 = Self::find_disc_bits(ItemId::COUNT as u32, RuneId::COUNT as u32);
     pub const VAL_BITS: u32 = 32 - Self::DISC_BITS;
     pub const VAL_MASK: u32 = (1u32 << Self::VAL_BITS) - 1;
     pub const DISC_MASK: u32 = !Self::VAL_MASK;
@@ -375,12 +375,12 @@ impl ValueException {
 
     /// Returns if the current value is a [`RuneId`]
     pub const fn get_rune_id(&self) -> Option<RuneId> {
-        RuneId::from_u8(self.enum_id() as u8)
+        RuneId::from_repr(self.enum_id() as _)
     }
 
     /// Returns if the current value is an [`ItemId`]
     pub const fn get_item_id(&self) -> Option<ItemId> {
-        ItemId::from_u16(self.enum_id())
+        ItemId::from_repr(self.enum_id() as _)
     }
 
     /// If the value to be stored is greater than [`Self::VAL_MASK`],
@@ -856,7 +856,6 @@ pub struct PlayerStats {
     pub magic_penetration_flat: f32,
     pub magic_penetration_percent: f32,
     pub magic_resist: f32,
-    #[serde(rename = "maxHealth")]
     pub max_health: f32,
     #[serde(rename = "resourceMax")]
     pub max_mana: f32,
