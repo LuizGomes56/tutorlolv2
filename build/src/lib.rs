@@ -1,6 +1,4 @@
-use std::fmt::Debug;
-
-use strum::{IntoEnumIterator, VariantNames};
+use strum::VariantNames;
 use tutorlolv2_codec::{Class, ClassOverride, EntityKind, GeneratorDbBuilder};
 use tutorlolv2_types::{AbilityName, AttackType};
 pub use tutorlolv2_wiki::{DynError, MayFail};
@@ -37,12 +35,16 @@ pub trait Build {
     fn build(&mut self) -> MayFail<String>;
 }
 
-fn write_module<'a>(
+fn write_module<T, U>(
     cmd48: &mut Command,
     cmd80: &mut Command,
-    dir: &str,
-    iter: &mut dyn Iterator<Item = &'a str>,
-) -> MayFail {
+    parser: &impl Parser<T, U>,
+) -> MayFail
+where
+    T: Clone + DeserializeOwned + MapValueExt + Send + Sync + 'static,
+    U: TryFrom<T, Error = Box<dyn core::error::Error + Send + Sync>> + Serialize,
+{
+    let dir = parser.tag().plural();
     let out = PathBuf::from(dir);
     let mut result = String::new();
 
@@ -51,7 +53,7 @@ fn write_module<'a>(
         .current_dir(&*OUT_DIR)
         .arg(PathBuf::from(format!("{dir}_code")).with_extension("rs"));
 
-    for id in iter.into_iter() {
+    for id in parser.keys().into_iter() {
         let module = id.to_snake_case();
         let out_path = out.join(id);
 
@@ -94,16 +96,9 @@ pub fn run() -> MayFail {
 
     let mut cmd80 = Command::new("rustfmt");
 
-    for (dir, iter) in [
-        (
-            "champions",
-            &mut CPARSER.keys() as &mut dyn Iterator<Item = &str>,
-        ),
-        ("items", &mut IPARSER.keys()),
-        ("runes", &mut RPARSER.keys()),
-    ] {
-        write_module(&mut cmd48, &mut cmd80, dir, iter)?;
-    }
+    write_module(&mut cmd48, &mut cmd80, &*CPARSER)?;
+    write_module(&mut cmd48, &mut cmd80, &*IPARSER)?;
+    write_module(&mut cmd48, &mut cmd80, &*RPARSER)?;
 
     let mut c_result = Ok(());
     let mut i_result = Ok(());

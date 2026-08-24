@@ -238,6 +238,9 @@ pub trait ValueId: CastId {
     #[cfg(feature = "yew")]
     fn identifiers(&self) -> &'static [CtxVar];
 
+    #[cfg(feature = "yew")]
+    fn render_fn(&self) -> crate::yew::render::MayFail<alloc::string::String>;
+
     fn damage_type(&self) -> DamageType {
         self.metadata().damage_type
     }
@@ -246,6 +249,11 @@ pub trait ValueId: CastId {
 impl ValueId for ItemId {
     const DAMAGING: &BitSet = &Self::DAMAGING;
     const DAMAGING_IDS: &[Self] = &Self::DAMAGING_IDS;
+
+    #[cfg(feature = "yew")]
+    fn render_fn(&self) -> crate::yew::render::MayFail<alloc::string::String> {
+        self.render_fn()
+    }
 
     fn riot_id(&self) -> u32 {
         self.riot_id()
@@ -276,6 +284,11 @@ impl ValueId for ItemId {
 impl ValueId for RuneId {
     const DAMAGING: &BitSet = &Self::DAMAGING;
     const DAMAGING_IDS: &[Self] = &Self::DAMAGING_IDS;
+
+    #[cfg(feature = "yew")]
+    fn render_fn(&self) -> crate::yew::render::MayFail<alloc::string::String> {
+        self.render_fn()
+    }
 
     fn riot_id(&self) -> u32 {
         self.riot_id()
