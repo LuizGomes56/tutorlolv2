@@ -1,5 +1,5 @@
 use crate::{
-    AbilityId, ChampionId, DamageIndex, ItemId, RuneId,
+    AbilityId, CastId, ChampionId, DamageIndex, ItemId, RuneId,
     yew::render::{FORMULA_RENDERER, FormulaRenderer, MayFail},
 };
 use alloc::{format, string::String};

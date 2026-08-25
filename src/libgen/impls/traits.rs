@@ -87,6 +87,10 @@ macro_rules! impl_methods {
                     fn index(&self) -> usize {
                         self.index()
                     }
+
+                    fn try_from_u16(v: u16) -> Option<Self> {
+                        Self::from_repr(v as _)
+                    }
                 }
             )+
         }
@@ -110,6 +114,7 @@ where
     fn name(&self) -> &'static str;
     fn index(&self) -> usize;
     fn debug(&self) -> &'static str;
+    fn try_from_u16(v: u16) -> Option<Self>;
 
     #[cfg(feature = "yew")]
     fn render_generator(&self) -> Option<alloc::string::String> {
@@ -171,7 +176,7 @@ impl ValueId for ItemId {
     }
 
     #[cfg(feature = "yew")]
-    fn exceptions(ally: bool) -> BitSetExc {
+    fn exceptions(ally: bool) -> crate::bitset::BitSetExc {
         ItemId::exceptions(ally)
     }
 
@@ -207,7 +212,7 @@ impl ValueId for RuneId {
     }
 
     #[cfg(feature = "yew")]
-    fn exceptions(_: bool) -> BitSetExc {
+    fn exceptions(_: bool) -> crate::bitset::BitSetExc {
         RuneId::exceptions()
     }
 

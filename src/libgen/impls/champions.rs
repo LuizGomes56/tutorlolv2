@@ -133,7 +133,7 @@ impl ChampionId {
     }
 
     #[cfg(feature = "yew")]
-    pub const fn exceptions(&self, ally: bool) -> Option<Key> {
+    pub const fn exceptions(&self, ally: bool) -> Option<tutorlolv2_types::Key> {
         use tutorlolv2_types::Key;
 
         match ally {

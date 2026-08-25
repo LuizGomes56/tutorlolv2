@@ -9,10 +9,12 @@ pub const fn max_usize(a: usize, b: usize) -> usize {
 pub const fn bitset_size<const N: usize>(array: [usize; N]) -> usize {
     let mut i = 0;
     let mut max = 0;
+
     while i < N {
         max = max_usize(max, array[i]);
         i += 1;
     }
+
     sizeof_bitset(max)
 }
 

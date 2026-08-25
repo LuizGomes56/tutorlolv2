@@ -6,8 +6,8 @@ const _: () = {
 
     let mut i = 0;
 
-    while i < ChampionId::VARIANTS {
-        let champion_id = ChampionId::VALUES[i];
+    while i < ChampionId::COUNT {
+        let champion_id = ChampionId::VARIANTS[i];
         let merge_data = champion_id.merge_data();
         let combos = champion_id.combos();
         let len = champion_id.number_of_abilities();
