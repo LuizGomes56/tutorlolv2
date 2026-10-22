@@ -47,7 +47,7 @@ mod test {
         stats: None,
         dragons: Dragons::default(),
         stacks: 0,
-        level: 18,
+        level: core::num::NonZeroU8::new(18).unwrap(),
         is_mega_gnar: false,
         enemy: ConstEnemy {
             champion_id: ChampionId::Aatrox,
@@ -55,7 +55,7 @@ mod test {
             item_exceptions: [(ItemId::Dragonheart, 4)],
             stats: None,
             stacks: 0,
-            level: 18,
+            level: core::num::NonZeroU8::new(18).unwrap(),
             is_mega_gnar: false,
         },
     }

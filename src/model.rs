@@ -15,7 +15,7 @@ use {
     },
     alloc::boxed::Box,
     bincode::{BorrowDecode, Decode, Encode},
-    core::str::FromStr,
+    core::{num::NonZeroU8, str::FromStr},
     serde::{Deserialize, Serialize},
     strum::EnumCount,
     tutorlolv2_types::{
@@ -121,7 +121,7 @@ pub struct CurrentPlayer<'a> {
     // pub _padding: u16,
 }
 
-#[derive(Clone, Copy, Debug, Default, PartialEq, PartialOrd, Encode, Serialize)]
+#[derive(Clone, Copy, Debug, PartialEq, PartialOrd, Encode, Serialize)]
 pub struct EnemyState<'a> {
     pub current_stats: Option<EnemyStats>,
     pub base_stats: SimpleStats,
@@ -129,9 +129,8 @@ pub struct EnemyState<'a> {
     pub stacks: u32,
     pub champion_id: ChampionId,
     pub earth_dragons: u16,
-    pub level: u8,
+    pub level: NonZeroU8,
     pub item_exceptions: &'a [ValueException],
-    // _padding: u32
 }
 
 /// Defines the state of the current player, that will be used
@@ -144,9 +143,8 @@ pub struct SelfState {
     pub current_stats: PlayerStats,
     pub bonus_stats: BasicStats,
     pub base_stats: BasicStats,
-    pub level: u8,
+    pub level: NonZeroU8,
     pub adaptive_type: AdaptiveType,
-    // _padding: u16
 }
 
 /// Holds the intermediary data of some enemy champion, including fields
@@ -162,7 +160,6 @@ pub struct EnemyFullState {
     pub steelcaps: bool,
     pub rocksolid: bool,
     pub randuin: bool,
-    // _padding: u8
 }
 
 #[derive(Clone, Debug, PartialEq, PartialOrd)]
@@ -177,8 +174,13 @@ pub struct Enemy<'a> {
     #[serde(borrow)]
     pub riot_id: &'a str,
     pub damages: Damages,
+
+    /// Candidate purchases in ItemId::SIML order. Each Damages.items starts with
+    /// the owned pairs in Realtime.items_meta order. If the candidate is damaging
+    /// and not already owned, its two damage entries are appended to that slice.
     #[serde(with = "serde_arrays")]
     pub siml_items: [Damages; ItemId::L_SIML],
+
     pub base_stats: SimpleStats,
     pub bonus_stats: SimpleStats,
     pub current_stats: EnemyStats,
@@ -320,12 +322,36 @@ pub struct Damages {
 }
 
 impl Damages {
-    pub fn sum(&self) -> i32 {
+    pub const fn sum(&self) -> i32 {
+        let mut abilities = 0;
+        let mut items = 0;
+        let mut runes = 0;
+        let mut i = 0;
+
+        while i < self.abilities.len() {
+            abilities += self.abilities[i];
+            i += 1;
+        }
+
+        i = 0;
+
+        while i < self.items.len() {
+            items += self.items[i];
+            i += 1;
+        }
+
+        i = 0;
+
+        while i < self.runes.len() {
+            runes += self.runes[i];
+            i += 1;
+        }
+
         self.attacks.onhit_damage.minimum_damage
             + self.attacks.onhit_damage.maximum_damage
-            + self.abilities.iter().sum::<i32>()
-            + self.items.iter().sum::<i32>()
-            + self.runes.iter().sum::<i32>()
+            + abilities
+            + items
+            + runes
     }
 }
 
@@ -450,13 +476,13 @@ pub struct InputActivePlayer<'a> {
     pub data: InputMinData<'a, PlayerStats>,
 }
 
-#[derive(Copy, Clone, Debug, Default, Encode, PartialEq, PartialOrd, Serialize)]
+#[derive(Copy, Clone, Debug, Encode, PartialEq, PartialOrd, Serialize)]
 pub struct InputMinData<'a, T> {
     pub stats: Option<T>,
     pub items: &'a [ItemId],
     pub item_exceptions: &'a [ValueException],
     pub stacks: u32,
-    pub level: u8,
+    pub level: NonZeroU8,
     pub champion_id: ChampionId,
     pub is_mega_gnar: bool,
 }
@@ -476,13 +502,13 @@ pub struct OwnedInputActivePlayer {
     pub data: OwnedInputMinData<PlayerStats>,
 }
 
-#[derive(Clone, Debug, Default, Decode, Deserialize, Encode, PartialEq, PartialOrd, Serialize)]
+#[derive(Clone, Debug, Decode, Deserialize, Encode, PartialEq, PartialOrd, Serialize)]
 pub struct OwnedInputMinData<T> {
     pub stats: Option<T>,
     pub items: Box<[ItemId]>,
     pub item_exceptions: Box<[ValueException]>,
     pub stacks: u32,
-    pub level: u8,
+    pub level: NonZeroU8,
     pub is_mega_gnar: bool,
     pub champion_id: ChampionId,
 }
@@ -892,3 +918,46 @@ impl_default!(Modifiers, 1, f32);
 impl_default!(Dragons, 0, u8);
 impl_default!(RangeDamage, 0, i32);
 impl_default!(AbilityLevels, 0, u8);
+
+impl<T> Default for InputMinData<'_, T> {
+    fn default() -> Self {
+        Self {
+            stats: None,
+            items: &[],
+            item_exceptions: &[],
+            stacks: 0,
+            level: NonZeroU8::MIN,
+            champion_id: ChampionId::default(),
+            is_mega_gnar: false,
+        }
+    }
+}
+
+impl<T> Default for OwnedInputMinData<T> {
+    fn default() -> Self {
+        Self {
+            stats: None,
+            items: Box::new([]),
+            item_exceptions: Box::new([]),
+            stacks: 0,
+            level: NonZeroU8::MIN,
+            champion_id: ChampionId::default(),
+            is_mega_gnar: false,
+        }
+    }
+}
+
+impl Default for EnemyState<'_> {
+    fn default() -> Self {
+        Self {
+            current_stats: None,
+            base_stats: SimpleStats::default(),
+            items: &[],
+            stacks: 0,
+            champion_id: ChampionId::default(),
+            earth_dragons: 0,
+            level: NonZeroU8::MIN,
+            item_exceptions: &[],
+        }
+    }
+}
