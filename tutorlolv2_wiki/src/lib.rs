@@ -19,7 +19,7 @@ pub mod runes;
 pub const DDRAGON_ENDPOINT: &str = "https://ddragon.leagueoflegends.com";
 pub const CANISBACK_ENDPOINT: &str = "https://ddragon.canisback.com/img";
 pub const LOL_LANGUAGE: &str = "en_US";
-pub const LOL_VERSION: &str = "16.13.1";
+pub const LOL_VERSION: &str = "16.21.1";
 
 pub static HTTP_CLIENT: LazyLock<HttpClient> = LazyLock::new(HttpClient::new);
 

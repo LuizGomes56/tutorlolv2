@@ -20,7 +20,7 @@ pub struct RiotCdnItem {
     pub name: String,
     pub description: String,
     pub gold: RiotCdnItemGold,
-    pub maps: HashMap<u8, bool>,
+    pub maps: HashMap<u16, bool>,
     #[serde(default)]
     pub from: Vec<String>,
 }

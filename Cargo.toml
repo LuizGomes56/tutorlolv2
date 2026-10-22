@@ -11,29 +11,21 @@ members = [
     "tutorlolv2_codec",
     "tutorlolv2_server",
     "tutorlolv2_types",
-    "tutorlolv2_wiki"
+    "tutorlolv2_wiki",
 ]
 
 [dependencies]
-bincode = {
-  version = "2.0.1",
-  default-features = false,
-  features = [
+bincode = { version = "2.0.1", default-features = false, features = [
     "alloc",
     "derive",
-  ]
-}
+] }
 const_sized_bit_set = "0.5.0"
 pastey = "0.2.1"
 phf = { version = "0.13.1", default-features = false, features = ["macros"] }
-serde = {
-  version = "1.0",
-  default-features = false,
-  features = [
+serde = { version = "1.0", default-features = false, features = [
     "alloc",
     "derive",
-  ]
-}
+] }
 serde_arrays = { version = "0.2.0", default-features = false }
 strum = { version = "0.28.0", default-features = false, features = ["derive"] }
 tutorlolv2_codec = { path = "tutorlolv2_codec", optional = true }
