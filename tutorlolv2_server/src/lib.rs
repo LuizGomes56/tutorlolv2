@@ -32,11 +32,14 @@ fn api_scope() -> impl HttpServiceFactory + 'static {
 pub async fn run() -> std::io::Result<()> {
     dotenvy::dotenv().ok();
 
-    let port = std::env::var("PORT").unwrap_or_else(|_| "8082".to_string());
+    let port = std::env::var("PORT")
+        .ok()
+        .map(|v| v.parse().ok())
+        .flatten()
+        .unwrap_or(8082u16);
 
     println!("Starting server on port {port}");
 
-    let host = format!("127.0.0.1:{port}");
     // let dsn = std::env::var("DATABASE_URL").expect("DATABASE_URL is not set");
     // let pool = PgPoolOptions::new()
     //     .max_connections(5)
@@ -86,7 +89,7 @@ pub async fn run() -> std::io::Result<()> {
                 HttpResponse::NotFound().body("Unimplemented route. Check methods and paths")
             }))
     })
-    .bind(host)
+    .bind(("127.0.0.1", port))
     .expect("Some error has ocurred when starting the server")
     .run()
     .await

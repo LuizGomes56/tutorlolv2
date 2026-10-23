@@ -712,6 +712,10 @@ pub struct Highlighter {
 }
 
 impl Highlighter {
+    const MAX_LINE_WIDTH: usize = 48;
+    /// Display width of the tab that indents each struct field.
+    const INDENT_WIDTH: usize = 4;
+
     pub fn new() -> Self {
         Self::default()
     }
@@ -792,39 +796,12 @@ impl Highlighter {
     }
 
     pub fn array_field<T: Display>(&mut self, name: &str, class: Class, values: &[T]) -> &mut Self {
-        let max_len = 46 - name.len();
-
         let values = values.iter().map(ToString::to_string).collect::<Vec<_>>();
+        let width = values.iter().map(|v| v.chars().count()).sum();
 
-        let array_len = 2
-            + values.iter().map(|v| v.chars().count()).sum::<usize>()
-            + values.len().saturating_sub(1) * 2;
-
-        self.push(Class::Variable, name).raw(": ");
-
-        if array_len <= max_len {
-            self.bracket(Bracket::LBracket);
-
-            for (index, value) in values.iter().enumerate() {
-                self.push(class, value);
-
-                if index + 1 != values.len() {
-                    self.raw(", ");
-                }
-            }
-
-            self.bracket(Bracket::RBracket);
-        } else {
-            self.bracket(Bracket::LBracket).raw("\n");
-
-            for value in &values {
-                self.raw("\t").push(class, value).raw(",\n");
-            }
-
-            self.bracket(Bracket::RBracket);
-        }
-
-        self.field_end()
+        self.list_field(name, &values, width, |h, value| {
+            h.push(class, value);
+        })
     }
 
     pub fn tuple_field<T: Display, U: Display>(
@@ -837,24 +814,65 @@ impl Highlighter {
             return self;
         }
 
-        self.push(Class::Variable, name)
-            .raw(": ")
-            .bracket(Bracket::LCurly)
-            .raw("\n\t\t");
+        let values = values
+            .iter()
+            .map(|(field, value)| (field.to_string().to_pascal_case(), value.to_string()))
+            .collect::<Vec<_>>();
 
-        for (index, (field, value)) in values.iter().enumerate() {
-            self.push(Class::Function, field.to_string().to_pascal_case())
+        let width = values
+            .iter()
+            .map(|(field, value)| field.chars().count() + value.chars().count() + 2)
+            .sum();
+
+        self.list_field(name, &values, width, |h, (field, value)| {
+            h.push(Class::Type, field)
                 .bracket(Bracket::LParen)
                 .push(class, value)
-                .bracket(Bracket::RParen)
-                .field_end();
+                .bracket(Bracket::RParen);
+        })
+    }
 
-            if index + 1 != values.len() {
-                self.raw("\t");
+    /// Renders `name: [a, b],` on a single line when the whole line, indentation and
+    /// trailing comma included, fits in [`Self::MAX_LINE_WIDTH`]. Otherwise each item
+    /// goes on its own line. `width` is the sum of the plain-text width of every item.
+    fn list_field<T>(
+        &mut self,
+        name: &str,
+        values: &[T],
+        width: usize,
+        mut item: impl FnMut(&mut Self, &T),
+    ) -> &mut Self {
+        // `\t` + `name: ` + `[` + items + `, ` separators + `]` + `,`
+        let line_width = Self::INDENT_WIDTH
+            + name.len()
+            + 2
+            + 1
+            + width
+            + values.len().saturating_sub(1) * 2
+            + 1
+            + 1;
+
+        self.push(Class::Variable, name)
+            .raw(": ")
+            .bracket(Bracket::LBracket);
+
+        if line_width <= Self::MAX_LINE_WIDTH {
+            for (index, value) in values.iter().enumerate() {
+                if index != 0 {
+                    self.raw(", ");
+                }
+                item(self, value);
             }
+        } else {
+            for value in values {
+                self.raw("\n\t\t");
+                item(self, value);
+                self.raw(",");
+            }
+            self.raw("\n\t");
         }
 
-        self.bracket(Bracket::RCurly).field_end()
+        self.bracket(Bracket::RBracket).field_end()
     }
 
     pub fn field_end(&mut self) -> &mut Self {

@@ -94,13 +94,7 @@ impl From<Key> for AbilityId {
 
 impl From<AbilityId> for Key {
     fn from(value: AbilityId) -> Self {
-        match value {
-            AbilityId::P(_) => Key::P,
-            AbilityId::Q(_) => Key::Q,
-            AbilityId::W(_) => Key::W,
-            AbilityId::E(_) => Key::E,
-            AbilityId::R(_) => Key::R,
-        }
+        value.as_key()
     }
 }
 
