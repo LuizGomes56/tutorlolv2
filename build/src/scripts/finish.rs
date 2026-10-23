@@ -41,8 +41,8 @@ pub fn eval_abilities(arms: &str, _: Tag) -> String {
     format!(
         "pub const fn ability_const_eval(
             champion_id: ChampionId,
-            ctx: &Ctx,
-            kind: AbilityId
+            ctx: &tutorlolv2_types::Ctx,
+            kind: tutorlolv2_types::AbilityId
         ) -> f32 {{
             match champion_id {{{arms}}}
         }}
@@ -54,12 +54,12 @@ pub fn eval_abilities(arms: &str, _: Tag) -> String {
 pub fn eval_items_or_runes(arms: &str, tag: Tag) -> String {
     format!(
         "pub const fn {ltag}_const_eval(
-                {ltag}_id: {enum_name},
-                ctx: &Ctx,
-                attack_type: AttackType
-            ) -> [f32; 2] {{
-                match {ltag}_id {{{arms}}}
-            }}",
+            {ltag}_id: {enum_name},
+            ctx: &tutorlolv2_types::Ctx,
+            attack_type: tutorlolv2_types::AttackType
+        ) -> [f32; 2] {{
+            match {ltag}_id {{{arms}}}
+        }}",
         ltag = tag.singular().to_lowercase(),
         enum_name = tag.enum_name()
     )
@@ -72,7 +72,9 @@ pub fn get_recommendations() -> MayFail<String> {
     let mut globals = core::array::from_fn::<_, 2, _>(|i| {
         let enumv = enum_ids[i];
         let var = declaration[i];
-        format!("pub static {var}: [[&[crate::{enumv}]; Position::COUNT]; ChampionId::COUNT] = [")
+        format!(
+            "pub static {var}: [[&[crate::{enumv}]; <tutorlolv2_types::Position as strum::EnumCount>::COUNT]; <ChampionId as strum::EnumCount>::COUNT] = ["
+        )
     });
 
     let json = BTreeMap::<String, BTreeMap<String, [BTreeSet<String>; 2]>>::from_file(
@@ -85,7 +87,7 @@ pub fn get_recommendations() -> MayFail<String> {
             .iter()
             .zip(declaration)
             .map(|(enumv, var)| {
-                format!("pub static {var}: [[&[crate::{enumv}]; Position::COUNT]; ChampionId::COUNT] = [[&[]; _]; _];")
+                format!("pub static {var}: [[&[crate::{enumv}]; <tutorlolv2_types::Position as strum::EnumCount>::COUNT]; <ChampionId as strum::EnumCount>::COUNT] = [[&[]; _]; _];")
             })
             .collect::<String>());
     }
@@ -103,7 +105,7 @@ pub fn get_recommendations() -> MayFail<String> {
                 let venum = enum_ids[j];
                 let result = recommendations[j]
                     .iter()
-                    .map(|element| format!("{venum}::{element}"))
+                    .map(|element| format!("crate::libgen::{venum}::{element}"))
                     .collect::<Vec<_>>()
                     .join(",");
                 format!("&[{result}]")

@@ -67,6 +67,8 @@ impl MapValueExt for WikiRune {
     }
 }
 
+type GeneratorFnSig<T, U> = fn(T) -> MayFail<Box<dyn GeneratorExt<U>>>;
+
 #[allow(dead_code)]
 pub trait Parser<T, U>
 where
@@ -75,7 +77,7 @@ where
     U: TryFrom<T, Error = Box<dyn core::error::Error + Send + Sync>> + Serialize,
 {
     const TAG: Tag;
-    const FN: fn(&str) -> Option<fn(T) -> MayFail<Box<dyn GeneratorExt<U>>>>;
+    const FN: fn(&str) -> Option<GeneratorFnSig<T, U>>;
 
     fn new() -> MayFail<Self>;
     fn map(&self) -> &BTreeMap<String, T>;
@@ -218,9 +220,18 @@ where
 
         format!(
             "#[derive(
-                Clone, Copy, Debug, Eq,
-                Hash, Ord, PartialEq, PartialOrd,
-                EnumCount, VariantArray, VariantNames, FromRepr
+                Clone,
+                Copy,
+                Debug,
+                Eq,
+                Hash,
+                Ord,
+                PartialEq,
+                PartialOrd,
+                strum::EnumCount,
+                strum::VariantArray,
+                strum::VariantNames,
+                strum::FromRepr
             )]
             #[repr({repr})]
             pub enum {enum_name} {{{variants}}}
@@ -266,12 +277,17 @@ where
         let var = format!("{}S_DATA", vtype.to_uppercase());
 
         let enum_name = Self::TAG.enum_name();
-        let mut data = format!("pub static {var}: [&{vtype}; {enum_name}::COUNT] = [");
+        let folder = Self::TAG.plural();
+        let mut data = format!(
+            "pub static {var}: [&crate::libgen::model::{vtype}; <{enum_name} as strum::EnumCount>::COUNT] = ["
+        );
 
         for id in self.keys() {
             let upper_id = id.to_shouty_snake_case();
             let lower_id = id.to_snake_case();
-            data.push_str(&format!("&{lower_id}::{upper_id},"));
+            data.push_str(&format!(
+                "&crate::libgen::{folder}::{lower_id}::{upper_id},"
+            ));
         }
 
         data.push_str("];");

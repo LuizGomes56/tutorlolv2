@@ -16,12 +16,15 @@ macro_rules! decl_runes {
         $(
             $crate::decl_runes!(inner $Name);
 
+            #[derive(derive_more::Deref, derive_more::DerefMut)]
             pub struct $Name {
+                #[deref]
+                #[deref_mut]
                 pub inner: Rune
             }
 
             impl $Name {
-                pub fn new(data: WikiRune) -> MayFail<Box<dyn GeneratorExt<Rune>>> {
+                pub fn try_from(data: WikiRune) -> MayFail<Box<dyn GeneratorExt<Rune>>> {
                     Ok(Box::new(Self {
                         inner: Rune::try_from(data)?
                     }))
@@ -33,26 +36,13 @@ macro_rules! decl_runes {
                     Ok(self.inner)
                 }
             }
-
-            impl ::core::ops::Deref for $Name {
-                type Target = Rune;
-                fn deref(&self) -> &Self::Target {
-                    &self.inner
-                }
-            }
-
-            impl ::core::ops::DerefMut for $Name {
-                fn deref_mut(&mut self) -> &mut Self::Target {
-                    &mut self.inner
-                }
-            }
         )*
 
         pub fn rune_gen_fn(rune_id: &str) -> Option<
             fn(WikiRune) -> MayFail<Box<dyn GeneratorExt<Rune>>>
         > {
             match rune_id {
-                $(stringify!($Name) => Some($Name::new),)*
+                $(stringify!($Name) => Some($Name::try_from),)*
                 _ => None,
             }
         }

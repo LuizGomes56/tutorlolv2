@@ -6,6 +6,7 @@ use crate::{
     },
     scripts::batch::FmtArgs,
 };
+use databake::{Bake, CrateEnv};
 use heck::{ToPascalCase, ToSnakeCase};
 use rand::{RngExt, SeedableRng, rngs::SmallRng};
 use regex::{Captures, Regex};
@@ -18,6 +19,13 @@ use std::{
     sync::LazyLock,
 };
 use tutorlolv2_types::{AttackType, Attrs, CtxVar, DamageIndex, DamageType};
+
+pub const ZERO_FN: &str = "crate::libgen::zero";
+
+/// Emit a Rust expression without relying on imports in the generated module.
+pub fn bake(value: &impl Bake) -> String {
+    value.bake(&CrateEnv::default()).to_string()
+}
 
 pub fn simplify(f: &str) -> String {
     let formula = &f.replace("zero", "0");
@@ -209,15 +217,15 @@ pub trait ItemOrRuneExt:
 
     fn repr_metadata(&self) -> String {
         format!(
-            "TypeMetadata {{
-                kind: {enum_name}::{id},
-                damage_type: {damage_type:?},
-                attributes: {attributes:?},
+            "tutorlolv2_types::TypeMetadata {{
+                kind: crate::libgen::{enum_name}::{id},
+                damage_type: {damage_type},
+                attributes: {attributes},
             }}",
             enum_name = Self::TAG.enum_name(),
             id = self.id(),
-            damage_type = self.damage_type(),
-            attributes = self.attributes(),
+            damage_type = bake(&self.damage_type()),
+            attributes = bake(&self.attributes()),
         )
     }
 
@@ -247,8 +255,12 @@ pub trait ItemOrRuneExt:
                 .enumerate()
                 .map(|(i, v)| {
                     let f = match *v {
-                        true => &format!("{module}::{}", functions[i]),
-                        false => ZERO,
+                        true => &format!(
+                            "crate::libgen::{}::{module}::{}",
+                            Self::TAG.plural(),
+                            functions[i]
+                        ),
+                        false => ZERO_FN,
                     };
                     format!("{f}(&ctx)")
                 })
@@ -259,8 +271,8 @@ pub trait ItemOrRuneExt:
         format!(
             "{enum_name}::{id} => {{
                 match attack_type {{
-                    Melee => [{melee_arms}],
-                    Ranged => [{ranged_arms}]
+                    tutorlolv2_types::AttackType::Melee => [{melee_arms}],
+                    tutorlolv2_types::AttackType::Ranged => [{ranged_arms}]
                 }}
             }},",
             enum_name = Self::TAG.enum_name(),
@@ -321,8 +333,8 @@ pub trait ItemOrRuneExt:
         let mut rust = String::new();
 
         for i in 0..4 {
-            let attack_type = unsafe { AttackType::from_u8_unchecked(i / 2) };
-            let damage_index = unsafe { DamageIndex::from_u8_unchecked(i % 2) };
+            let attack_type = AttackType::from_repr(i / 2).unwrap();
+            let damage_index = DamageIndex::from_repr(i % 2).unwrap();
 
             let body = &self[attack_type][damage_index];
             let f = &functions[i as usize];
@@ -347,7 +359,7 @@ pub trait ItemOrRuneExt:
 
                 write!(
                     rust,
-                    "pub const fn {f}({param}: &Ctx) -> f32 {{{formula_f32}}}"
+                    "pub const fn {f}({param}: &tutorlolv2_types::Ctx) -> f32 {{{formula_f32}}}"
                 )?;
             }
         }
@@ -425,28 +437,28 @@ pub trait ItemOrRuneExt:
 
         [
             if is_zero(&melee[min]) {
-                ZERO.into()
+                ZERO_FN.into()
             } else if min_shared {
                 format!("{id}{min_suffix}")
             } else {
                 format!("{id}_melee{min_suffix}")
             },
             if is_zero(&melee[max]) {
-                ZERO.into()
+                ZERO_FN.into()
             } else if max_shared {
                 format!("{id}_max")
             } else {
                 format!("{id}_melee_max")
             },
             if is_zero(&ranged[min]) {
-                ZERO.into()
+                ZERO_FN.into()
             } else if min_shared {
                 format!("{id}{min_suffix}")
             } else {
                 format!("{id}_ranged{min_suffix}")
             },
             if is_zero(&ranged[max]) {
-                ZERO.into()
+                ZERO_FN.into()
             } else if max_shared {
                 format!("{id}_max")
             } else {
@@ -591,7 +603,7 @@ pub fn probe_ratio(min_expr: &str, max_expr: &str, all_vars: &[CtxVar]) -> Optio
     .map(|k| {
         let r = k.round();
         if (k - r).abs() < 1e-9 {
-            return format!("{}", r as i64);
+            return (r as i64).to_string();
         }
 
         format!("{k:.10}")

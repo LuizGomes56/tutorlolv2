@@ -2,7 +2,6 @@
 name = "tutorlolv2"
 version = "0.7.4"
 edition = "2024"
-authors = ["Luiz Gustavo Santana Dias Gomes"]
 repository = "https://github.com/LuizGomes56/tutorlolv2"
 description = "League of Legends static library that evaluates damages of abilities, passives, items, and runes"
 
@@ -36,8 +35,7 @@ yew = { version = "0.22.0", default-features = false, optional = true }
 tutorlolv2_build_dep = { path = "build" }
 
 [features]
-default = []
-# default = ["yew"]
+default = ["yew"]
 yew = ["dep:tutorlolv2_codec", "dep:yew", "tutorlolv2_types/dev"]
 
 # Optimize the final binaries across the entire workspace.

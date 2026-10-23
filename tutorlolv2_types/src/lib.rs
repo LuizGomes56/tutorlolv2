@@ -12,11 +12,16 @@ use core::{convert::Infallible, fmt::Display, ops::Index, str::FromStr};
 use serde::{Deserialize, Serialize};
 use strum::EnumCount;
 
+// Keep the existing string error type when deriving parsers.
+type ParseError = &'static str;
+
 /// A generic metadata holder for [`AbilityId`], [`ItemId`], or [`RuneId`].
 /// Contains its damage type, attributes, and which instance of the enum the value is.
 #[derive(
     Clone, Copy, Debug, PartialEq, PartialOrd, Ord, Eq, Encode, Decode, Serialize, Deserialize,
 )]
+#[cfg_attr(feature = "bake", derive(databake::Bake))]
+#[cfg_attr(feature = "bake", databake(path = tutorlolv2_types))]
 pub struct TypeMetadata<T> {
     pub kind: T,
     pub damage_type: DamageType,
@@ -78,6 +83,8 @@ impl TryFrom<char> for Key {
 #[derive(
     Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize,
 )]
+#[cfg_attr(feature = "bake", derive(databake::Bake))]
+#[cfg_attr(feature = "bake", databake(path = tutorlolv2_types))]
 pub enum AbilityId {
     P(AbilityName),
     Q(AbilityName),
@@ -181,8 +188,11 @@ impl AbilityId {
     EnumCount,
     strum::EnumIter,
     strum::VariantNames,
+    strum::FromRepr,
 )]
 #[repr(u8)]
+#[cfg_attr(feature = "bake", derive(databake::Bake))]
+#[cfg_attr(feature = "bake", databake(path = tutorlolv2_types))]
 pub enum StatName {
     AbilityHaste,
     AbilityPower,
@@ -246,8 +256,6 @@ impl FromStr for StatName {
 }
 
 impl StatName {
-    pub const VARIANTS: usize = 24;
-
     pub const fn name(&self) -> &'static str {
         match self {
             Self::AbilityHaste => "Ability Haste",
@@ -274,22 +282,6 @@ impl StatName {
             Self::Tenacity => "Tenacity",
         }
     }
-
-    /// # Safety
-    /// Value must not exceed [`Self::COUNT`]
-    pub const unsafe fn from_u8_unchecked(value: u8) -> Self {
-        unsafe { core::mem::transmute(value) }
-    }
-
-    pub const fn from_u8(value: u8) -> Option<Self> {
-        unsafe {
-            if value <= Self::VARIANTS as _ {
-                Some(Self::from_u8_unchecked(value))
-            } else {
-                None
-            }
-        }
-    }
 }
 
 impl Display for StatName {
@@ -300,6 +292,8 @@ impl Display for StatName {
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize)]
+#[cfg_attr(feature = "bake", derive(databake::Bake))]
+#[cfg_attr(feature = "bake", databake(path = tutorlolv2_types))]
 pub struct MergeData {
     pub min: u8,
     pub max: u8,
@@ -314,6 +308,8 @@ pub struct DevMergeData {
 }
 
 #[derive(Clone, Copy, Debug, Deserialize, Encode, Hash, PartialEq, PartialOrd, Serialize)]
+#[cfg_attr(feature = "bake", derive(databake::Bake))]
+#[cfg_attr(feature = "bake", databake(path = tutorlolv2_types))]
 pub enum ComboElement {
     Ability(AbilityId),
     Attack,
@@ -372,8 +368,11 @@ impl AbilityName {
     strum::Display,
     strum::VariantNames,
     strum::IntoStaticStr,
+    strum::FromRepr,
 )]
 #[repr(u8)]
+#[cfg_attr(feature = "bake", derive(databake::Bake))]
+#[cfg_attr(feature = "bake", databake(path = tutorlolv2_types))]
 pub enum AbilityName {
     Void,
     _1,
@@ -469,22 +468,13 @@ impl AbilityName {
 
         match byte >= Self::Max as u8 {
             true => *self,
-            false if byte < Self::Min as u8 => unsafe {
-                core::mem::transmute(byte + (Self::JMP << 1))
-            },
-            false => unsafe { core::mem::transmute(byte + Self::JMP) },
+            false if byte < Self::Min as u8 => Self::from_repr(byte + (Self::JMP << 1)).unwrap(),
+            false => Self::from_repr(byte + Self::JMP).unwrap(),
         }
     }
 
     pub const fn cast_min(&self) -> Self {
-        Self::from_u8(self.cast_max() as u8 - Self::JMP).unwrap()
-    }
-
-    pub const fn from_u8(value: u8) -> Option<Self> {
-        match value {
-            x if x < Self::MonsterMax as u8 => Some(unsafe { core::mem::transmute(x) }),
-            _ => None,
-        }
+        Self::from_repr(self.cast_max() as u8 - Self::JMP).unwrap()
     }
 }
 
@@ -509,27 +499,24 @@ impl AbilityName {
     strum::EnumIter,
     strum::Display,
     strum::VariantNames,
+    strum::FromRepr,
+    strum::EnumString,
 )]
 #[repr(u8)]
+#[cfg_attr(feature = "bake", derive(databake::Bake))]
+#[cfg_attr(feature = "bake", databake(path = tutorlolv2_types))]
+#[strum(parse_err_ty = ParseError, parse_err_fn = AttackType::parse_error)]
 pub enum AttackType {
     #[default]
+    #[strum(to_string = "Melee", serialize = "MELEE")]
     Melee,
+    #[strum(to_string = "Ranged", serialize = "RANGED")]
     Ranged,
 }
 
 impl AttackType {
-    pub const fn from_u8(value: u8) -> Option<Self> {
-        match value {
-            0 => Some(Self::Melee),
-            1 => Some(Self::Ranged),
-            _ => None,
-        }
-    }
-
-    /// # Safety
-    /// Value must not exceed [`Self::COUNT`]
-    pub const unsafe fn from_u8_unchecked(value: u8) -> Self {
-        unsafe { core::mem::transmute(value) }
+    fn parse_error(_: &str) -> &'static str {
+        "No matches when calling AttackType::from_str"
     }
 }
 
@@ -549,49 +536,13 @@ impl AttackType {
     strum::Display,
     strum::EnumIter,
     strum::VariantNames,
+    strum::FromRepr,
 )]
+#[repr(u8)]
 pub enum DamageIndex {
     #[default]
     Min,
     Max,
-}
-
-impl DamageIndex {
-    pub const fn from_u8(value: u8) -> Option<Self> {
-        match value {
-            0 => Some(Self::Min),
-            1 => Some(Self::Max),
-            _ => None,
-        }
-    }
-
-    /// # Safety
-    /// Value must not exceed [`Self::COUNT`]
-    pub const unsafe fn from_u8_unchecked(value: u8) -> Self {
-        unsafe { core::mem::transmute(value) }
-    }
-}
-
-impl FromStr for AttackType {
-    type Err = &'static str;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
-        match s {
-            "Melee" | "MELEE" => Ok(AttackType::Melee),
-            "Ranged" | "RANGED" => Ok(AttackType::Ranged),
-            _ => Err("No matches when calling AttackType::from_str"),
-        }
-    }
-}
-
-impl FromStr for AdaptiveType {
-    type Err = &'static str;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
-        match s {
-            "Magic" | "MAGIC_DAMAGE" => Ok(Self::Magic),
-            "Physical" | "PHYSICAL_DAMAGE" => Ok(Self::Physical),
-            _ => Err("No matches when calling AdaptiveType::from_str"),
-        }
-    }
 }
 
 /// Enum that holds the current adaptive type of some champion, which
@@ -616,15 +567,25 @@ impl FromStr for AdaptiveType {
     strum::EnumIter,
     strum::Display,
     strum::VariantNames,
+    strum::EnumString,
 )]
 #[repr(u8)]
+#[cfg_attr(feature = "bake", derive(databake::Bake))]
+#[cfg_attr(feature = "bake", databake(path = tutorlolv2_types))]
+#[strum(parse_err_ty = ParseError, parse_err_fn = AdaptiveType::parse_error)]
 pub enum AdaptiveType {
     #[default]
+    #[strum(to_string = "Physical", serialize = "PHYSICAL_DAMAGE")]
     Physical,
+    #[strum(to_string = "Magic", serialize = "MAGIC_DAMAGE")]
     Magic,
 }
 
 impl AdaptiveType {
+    fn parse_error(_: &str) -> &'static str {
+        "No matches when calling AdaptiveType::from_str"
+    }
+
     pub const fn try_infer(bonus_attack_damage: f32, ability_power: f32) -> Option<Self> {
         let lhs = 0.35 * bonus_attack_damage;
         let rhs = 0.2 * ability_power;
@@ -672,18 +633,31 @@ impl TryFrom<(f32, f32)> for AdaptiveType {
     strum::VariantArray,
     strum::EnumCount,
     strum::FromRepr,
+    strum::EnumString,
 )]
 #[repr(u8)]
+#[cfg_attr(feature = "bake", derive(databake::Bake))]
+#[cfg_attr(feature = "bake", databake(path = tutorlolv2_types))]
+#[strum(parse_err_ty = ParseError, parse_err_fn = Position::parse_error)]
 pub enum Position {
     #[default]
+    #[strum(to_string = "Top", serialize = "TOP")]
     Top,
+    #[strum(to_string = "Jungle", serialize = "JUNGLE")]
     Jungle,
+    #[strum(to_string = "Middle", serialize = "MIDDLE")]
     Middle,
+    #[strum(to_string = "Bottom", serialize = "BOTTOM")]
     Bottom,
+    #[strum(to_string = "Support", serialize = "SUPPORT")]
     Support,
 }
 
 impl Position {
+    fn parse_error(_: &str) -> &'static str {
+        "No matches when calling Position::from_str"
+    }
+
     pub const fn index(&self) -> usize {
         *self as _
     }
@@ -705,27 +679,6 @@ impl Position {
             Position::Middle => "mid",
             Position::Bottom => "adc",
             Position::Support => "support",
-        }
-    }
-
-    /// # Safety
-    /// Value must not exceed [`Self::COUNT`]
-    pub const unsafe fn from_u8_unchecked(value: u8) -> Self {
-        unsafe { core::mem::transmute(value) }
-    }
-}
-
-impl FromStr for Position {
-    type Err = &'static str;
-
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
-        match s {
-            "Top" | "TOP" => Ok(Position::Top),
-            "Jungle" | "JUNGLE" => Ok(Position::Jungle),
-            "Middle" | "MIDDLE" => Ok(Position::Middle),
-            "Bottom" | "BOTTOM" => Ok(Position::Bottom),
-            "Support" | "SUPPORT" => Ok(Position::Support),
-            _ => Err("No matches when calling Position::from_str"),
         }
     }
 }
@@ -752,6 +705,8 @@ impl FromStr for Position {
     strum::VariantNames,
 )]
 #[repr(u8)]
+#[cfg_attr(feature = "bake", derive(databake::Bake))]
+#[cfg_attr(feature = "bake", databake(path = tutorlolv2_types))]
 pub enum GameMap {
     Aram,
     Arena,
@@ -843,6 +798,8 @@ impl GameMap {
     serde::Serialize,
     serde::Deserialize,
 )]
+#[cfg_attr(feature = "bake", derive(databake::Bake))]
+#[cfg_attr(feature = "bake", databake(path = tutorlolv2_types))]
 pub enum DamageType {
     Physical,
     Magic,
@@ -875,6 +832,8 @@ pub enum DamageType {
     serde::Serialize,
     serde::Deserialize,
 )]
+#[cfg_attr(feature = "bake", derive(databake::Bake))]
+#[cfg_attr(feature = "bake", databake(path = tutorlolv2_types))]
 pub enum Attrs {
     #[default]
     Undefined,
@@ -926,33 +885,36 @@ macro_rules! create_eval_struct {
                 Serialize,
                 Deserialize,
                 strum::FromRepr,
-                strum::EnumIter
+                strum::EnumIter,
+                strum::VariantArray,
+                strum::EnumCount,
+                strum::EnumString,
             )]
             #[repr(u8)]
+            #[cfg_attr(feature = "bake", derive(databake::Bake))]
+            #[cfg_attr(feature = "bake", databake(path = tutorlolv2_types))]
+            #[strum(parse_err_ty = ParseError, parse_err_fn = CtxVar::parse_error)]
             pub enum CtxVar {
-                $([<$value:camel>],)*
+                $(
+                    #[strum(serialize = "" $value, serialize = "" [<$value:camel>])]
+                    [<$value:camel>],
+                )*
             }
 
             impl CtxVar {
-                pub const ARRAY: [Self; Self::VARIANTS] = [$(Self::[<$value:camel>],)*];
+                fn parse_error(_: &str) -> &'static str {
+                    "CtxVar::from_str: Invalid variable provided"
+                }
+
                 pub fn to_snake_case(&self) -> &'static str {
                     &self.as_var()[4..]
                 }
+
                 pub const fn as_var(&self) -> &'static str {
                     match self {
                         $(
                             Self::[<$value:camel>] => concat!("ctx.", stringify!($value)),
                         )*
-                    }
-                }
-            }
-
-            impl ::core::str::FromStr for CtxVar {
-                type Err = &'static str;
-                fn from_str(s: &str) -> Result<Self, Self::Err> {
-                    match s {
-                        $(stringify!($value) | stringify!([<$value:camel>]) => Ok(Self::[<$value:camel>]),)*
-                        _ => Err("CtxVar::from_str: Invalid variable provided"),
                     }
                 }
             }
@@ -1052,6 +1014,14 @@ create_eval_struct!(
 );
 
 impl CtxVar {
-    pub const VARIANTS: usize = size_of::<Ctx>() / size_of::<f32>();
     pub const SKIP: usize = Self::SteelcapsEffect as usize + 1;
 }
+
+#[cfg(test)]
+extern crate std;
+
+#[cfg(all(test, feature = "bake"))]
+mod bake_tests;
+
+#[cfg(test)]
+mod strum_tests;

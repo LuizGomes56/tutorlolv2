@@ -281,7 +281,7 @@ macro_rules! impl_item_filters {
     ($($name:ident),+$(,)?) => {
         impl ItemId {
             pastey::paste! {
-                pub const FILTERS: [&[Self]; StatName::VARIANTS] = [
+                pub const FILTERS: [&[Self]; StatName::COUNT] = [
                     $(
                         &Self::[<ITEMS_WITH_ $name:snake:upper>],
                     )+

@@ -7,7 +7,7 @@ use {
         },
         scripts::{
             batch::FmtArgs,
-            utils::{cast_f32, ctx_param, fit_str, get_identifiers, probe_ratio, simplify},
+            utils::{bake, cast_f32, ctx_param, fit_str, get_identifiers, probe_ratio, simplify},
         },
     },
     heck::{ToShoutySnakeCase, ToSnakeCase},
@@ -110,23 +110,31 @@ impl Build for Champion {
             rust,
             r#"pub static {upper_id}: X = X {{
                 name: {name:?},
-                adaptive_type: AdaptiveType::{adaptive_type:?},
-                attack_type: {attack_type:?},
-                positions: &{positions:#?},
+                adaptive_type: {adaptive_type},
+                attack_type: {attack_type},
+                positions: {positions},
                 stats: {stats:#?},
                 modifiers: {modifiers:#?},
-                metadata: &{metadata:#?},
+                metadata: {metadata},
                 closures: &[{fn_names}],
+
                 #[cfg(feature = "yew")]
                 combos: &[{combos}],
+
                 #[cfg(feature = "yew")]
-                merge_data: &{merge_data:#?},
+                merge_data: {merge_data},
+
                 #[cfg(feature = "yew")]
                 identifiers: &[{identifiers}],
             }};"#,
+            adaptive_type = bake(adaptive_type),
+            attack_type = bake(attack_type),
+            positions = bake(&positions.as_slice()),
+            metadata = bake(&metadata.as_slice()),
+            merge_data = bake(&merge_data.as_slice()),
             combos = combo
                 .iter()
-                .map(|ident| format!("&{ident:#?}"))
+                .map(|ident| bake(&ident.as_slice()))
                 .collect::<Vec<_>>()
                 .join(","),
             identifiers = identifiers
@@ -134,8 +142,8 @@ impl Build for Champion {
                 .enumerate()
                 .map(|(i, set)| {
                     let rest = if i == 0 { "as &[_]" } else { "" };
-                    let vec = set.iter().collect::<Vec<_>>();
-                    format!("&{vec:?}{rest}")
+                    let vec = set.iter().copied().collect::<Vec<_>>();
+                    format!("{}{rest}", bake(&vec.as_slice()))
                 })
                 .collect::<Vec<_>>()
                 .join(","),
@@ -173,7 +181,7 @@ impl Build for Champion {
 
             write!(
                 rust,
-                "pub const fn {function}({param}: &Ctx) -> f32 {{{rust_formula}}}",
+                "pub const fn {function}({param}: &tutorlolv2_types::Ctx) -> f32 {{{rust_formula}}}",
                 param = ctx_param(&rust_formula)
             )?;
 
@@ -214,7 +222,10 @@ impl Build for Champion {
                 .map(|(function, metadata)| {
                     let ability_id = metadata.kind;
                     let module = champion_id.to_snake_case();
-                    format!("{ability_id:?} => {module}::{function}(ctx),")
+                    format!(
+                        "{} => crate::libgen::champions::{module}::{function}(ctx),",
+                        bake(&ability_id)
+                    )
                 })
                 .collect::<String>()
         );

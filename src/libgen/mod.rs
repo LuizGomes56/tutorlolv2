@@ -4,26 +4,6 @@ pub mod check;
 pub mod impls;
 pub mod model;
 
-use {
-    bincode::{Decode, Encode},
-    core::fmt::Debug,
-    serde::{Deserialize, Serialize},
-    strum::{EnumCount, FromRepr, VariantArray, VariantNames},
-    tutorlolv2_types::{
-        AbilityId::{self, *},
-        AbilityName::*,
-        AdaptiveType,
-        AttackType::{self, *},
-        Attrs::*,
-        Ctx,
-        DamageType::*,
-        GameMap::*,
-        Position,
-        Position::*,
-        StatName, TypeMetadata,
-    },
-};
-
 pub use {
     champions_code::ChampionId,
     impls::traits::{CastId, ValueId},
@@ -32,40 +12,28 @@ pub use {
     runes_code::RuneId,
 };
 
-#[cfg(feature = "yew")]
-pub(self) use tutorlolv2_types::{ComboElement::*, CtxVar::*, MergeData};
-
 pub mod champions_code {
-    use super::{champions::*, *};
     include!(concat!(env!("OUT_DIR"), "/champions_code.rs"));
 }
 
 pub mod champions {
-    use super::*;
     include!(concat!(env!("OUT_DIR"), "/champions.rs"));
-    type X = Champion;
 }
 
 pub mod items_code {
-    use super::{items::*, *};
     include!(concat!(env!("OUT_DIR"), "/items_code.rs"));
 }
 
 pub mod items {
-    use super::*;
     include!(concat!(env!("OUT_DIR"), "/items.rs"));
-    type X = Item;
 }
 
 pub mod runes_code {
-    use super::{runes::*, *};
     include!(concat!(env!("OUT_DIR"), "/runes_code.rs"));
 }
 
 pub mod runes {
-    use super::*;
     include!(concat!(env!("OUT_DIR"), "/runes.rs"));
-    type X = Rune;
 }
 
 /// Encodes each id as its `repr` primitive. The bincode derive ignores `repr` and emits
@@ -74,7 +42,7 @@ pub mod runes {
 /// below 251 for `u8` ids, since the derive writes the index as a varint `u32`.
 macro_rules! impl_repr_codec {
     ($($ty:ty => $repr:ty),* $(,)?) => {$(
-        impl Encode for $ty {
+        impl bincode::Encode for $ty {
             fn encode<E: bincode::enc::Encoder>(
                 &self,
                 encoder: &mut E,
@@ -83,18 +51,18 @@ macro_rules! impl_repr_codec {
             }
         }
 
-        impl<Context> Decode<Context> for $ty {
+        impl<Context> bincode::Decode<Context> for $ty {
             fn decode<D: bincode::de::Decoder<Context = Context>>(
                 decoder: &mut D,
             ) -> Result<Self, bincode::error::DecodeError> {
-                let repr = <$repr as Decode<Context>>::decode(decoder)?;
+                let repr = <$repr as bincode::Decode<Context>>::decode(decoder)?;
 
                 Self::from_repr(repr).ok_or(bincode::error::DecodeError::UnexpectedVariant {
                     type_name: stringify!($ty),
                     allowed: const {
                         &bincode::error::AllowedEnumVariants::Range {
                             min: 0,
-                            max: <$ty>::COUNT as u32 - 1,
+                            max: <$ty as strum::EnumCount>::COUNT as u32 - 1,
                         }
                     },
                     found: repr as u32,
@@ -142,26 +110,26 @@ const fn is_sorted(names: &[&str]) -> bool {
 macro_rules! impl_name_serde {
     ($($ty:ty => $repr:ty),* $(,)?) => {$(
         const _: () = assert!(
-            is_sorted(<$ty as VariantNames>::VARIANTS),
+            is_sorted(<$ty as strum::VariantNames>::VARIANTS),
             concat!(stringify!($ty), "::VARIANTS must be sorted for its serde impl"),
         );
 
-        impl Serialize for $ty {
+        impl serde::Serialize for $ty {
             fn serialize<S: serde::Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
                 let index = *self as usize;
                 serializer.serialize_unit_variant(
                     stringify!($ty),
                     index as u32,
-                    <Self as VariantNames>::VARIANTS[index],
+                    <Self as strum::VariantNames>::VARIANTS[index],
                 )
             }
         }
 
-        impl<'de> Deserialize<'de> for $ty {
+        impl<'de> serde::Deserialize<'de> for $ty {
             fn deserialize<D: serde::Deserializer<'de>>(deserializer: D) -> Result<Self, D::Error> {
                 use serde::de::{self, EnumAccess, Unexpected, VariantAccess};
 
-                const VARIANTS: &[&str] = <$ty as VariantNames>::VARIANTS;
+                const VARIANTS: &[&str] = <$ty as strum::VariantNames>::VARIANTS;
 
                 struct Variant;
                 struct Identifier;
@@ -226,7 +194,7 @@ macro_rules! impl_name_serde {
 
 impl_name_serde!(ChampionId => u8, ItemId => u16, RuneId => u8);
 
-pub const fn zero(_: &Ctx) -> f32 {
+pub const fn zero(_: &tutorlolv2_types::Ctx) -> f32 {
     0.0
 }
 

@@ -1,7 +1,7 @@
 use crate::{
     Build, MayFail, OUT_DIR,
     generators::{parser::items::Item, utils::Tag},
-    scripts::utils::ItemOrRuneExt,
+    scripts::utils::{ItemOrRuneExt, bake},
 };
 use heck::ToShoutySnakeCase;
 use std::fmt::Write;
@@ -46,27 +46,25 @@ impl Build for Item {
                 name: {name:?},
                 tier: {tier},
                 price: {price},
-                stats: &[{full_stats}],
-                maps: &{maps:?},
+                stats: {full_stats},
+                maps: {maps},
                 metadata: {metadata},
                 {fn_names}
                 deals_damage: {deals_damage:?},
                 purchasable: {purchasable},
                 riot_id: {id},
                 custom: {custom},
+
                 #[cfg(feature = "yew")]
-                identifiers: &{identifiers:?},
+                identifiers: {identifiers},
             }};"#,
             upper_id = item_id.to_shouty_snake_case(),
-            identifiers = self.identifiers(),
+            identifiers = bake(&self.identifiers().as_slice()),
+            maps = bake(&maps.as_slice()),
             deals_damage = self.deals_damage(),
             fn_names = self.function_names(),
             metadata = self.repr_metadata(),
-            full_stats = stats
-                .iter()
-                .map(|(stat, number)| { format!("(StatName::{stat:?}, {number})") })
-                .collect::<Vec<_>>()
-                .join(", "),
+            full_stats = bake(&stats.as_slice()),
         )?;
 
         docs.push_str(&self.repr_damages());
@@ -95,7 +93,7 @@ impl Item {
                     let stat = k
                         .parse::<u8>()
                         .ok()
-                        .and_then(StatName::from_u8)
+                        .and_then(StatName::from_repr)
                         .unwrap_or_else(|| {
                             k.parse()
                                 .map_err(|e| {

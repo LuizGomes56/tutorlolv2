@@ -1,3 +1,4 @@
+use heck::ToPascalCase;
 use strum::VariantNames;
 use tutorlolv2_codec::{Class, ClassOverride, EntityKind, GeneratorDbBuilder};
 use tutorlolv2_types::{AbilityName, AttackType};
@@ -56,6 +57,7 @@ where
     for id in parser.keys() {
         let module = id.to_snake_case();
         let out_path = out.join(id);
+        let model_ty = parser.tag().singular().to_pascal_case();
 
         cmd48.arg(out_path.with_extension("w48"));
         cmd80.arg(out_path.with_extension("rs"));
@@ -63,9 +65,18 @@ where
         writeln!(
             result,
             r#"pub mod {module} {{
-                use super::*;
+                {model_imports}
+                type X = {model_ty};
                 include!(concat!(env!("OUT_DIR"), "/{dir}/{id}.rs"));
-            }}"#
+            }}"#,
+            model_imports = format_args!(
+                "use crate::libgen::model::{{{model_ty}, {}}};",
+                if matches!(parser.tag(), Tag::Champions) {
+                    "WikiStats, WikiModifiers, Stat, Modifier"
+                } else {
+                    ""
+                }
+            )
         )?;
     }
 

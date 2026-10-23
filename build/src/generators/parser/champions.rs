@@ -495,13 +495,13 @@ impl Champion {
                 let name_byte = index + AbilityName::JMP;
                 let alias_byte = index - AbilityName::JMP;
 
-                let ability_name = AbilityName::from_u8(name_byte).ok_or(format!(
-                    "ability_name: AbilityName::from_u8({name_byte}) failed",
+                let ability_name = AbilityName::from_repr(name_byte).ok_or(format!(
+                    "ability_name: AbilityName::from_repr({name_byte}) failed",
                 ))?;
 
                 let ability_id = make(ability_name);
-                let name_alias = AbilityName::from_u8(alias_byte).ok_or(format!(
-                    "name_alias: AbilityName::from_u8({alias_byte}) failed",
+                let name_alias = AbilityName::from_repr(alias_byte).ok_or(format!(
+                    "name_alias: AbilityName::from_repr({alias_byte}) failed",
                 ))?;
 
                 let alias = make(name_alias);

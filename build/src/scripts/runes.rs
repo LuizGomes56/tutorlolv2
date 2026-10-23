@@ -1,7 +1,7 @@
 use crate::{
     Build, MayFail, OUT_DIR,
     generators::{parser::runes::Rune, utils::Tag},
-    scripts::utils::ItemOrRuneExt,
+    scripts::utils::{ItemOrRuneExt, bake},
 };
 use heck::ToShoutySnakeCase;
 use std::fmt::Write;
@@ -33,11 +33,12 @@ impl Build for Rune {
                 deals_damage: {deals_damage:?},
                 riot_id: {riot_id},
                 custom: {custom},
+
                 #[cfg(feature = "yew")]
-                identifiers: &{identifiers:?},
+                identifiers: {identifiers},
             }};"#,
             upper_id = rune_id.to_shouty_snake_case(),
-            identifiers = self.identifiers(),
+            identifiers = bake(&self.identifiers().as_slice()),
             deals_damage = self.deals_damage(),
             fn_names = self.function_names(),
             metadata = self.repr_metadata()
