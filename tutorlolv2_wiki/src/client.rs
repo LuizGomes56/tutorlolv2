@@ -369,6 +369,10 @@ impl HttpClient {
                 for skin in champion.skins {
                     let num = skin.num;
 
+                    if skin.parent_skin.is_some() {
+                        continue;
+                    }
+
                     for i in [false, true] {
                         let (url, save_to) = match i {
                             false => (

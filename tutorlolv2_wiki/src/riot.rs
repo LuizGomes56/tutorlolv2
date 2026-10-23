@@ -60,6 +60,9 @@ pub struct RiotCdnRune {
 #[derive(Deserialize)]
 pub struct RiotCdnSkin {
     pub num: usize,
+
+    #[serde(rename = "parentSkin")]
+    pub parent_skin: Option<usize>,
 }
 
 #[derive(Deserialize)]
