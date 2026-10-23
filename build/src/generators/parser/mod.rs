@@ -162,7 +162,7 @@ where
 
         format!(
             "#[derive(
-                Clone, Copy, Debug, Decode, Deserialize, Eq, Encode,
+                Clone, Copy, Debug, Deserialize, Eq,
                 Hash, Ord, PartialEq, PartialOrd, Serialize,
                 EnumCount, VariantArray, VariantNames, FromRepr
             )]

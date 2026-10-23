@@ -1,6 +1,6 @@
 [package]
 name = "tutorlolv2"
-version = "0.7.2"
+version = "0.7.4"
 edition = "2024"
 authors = ["Luiz Gustavo Santana Dias Gomes"]
 repository = "https://github.com/LuizGomes56/tutorlolv2"
@@ -43,11 +43,11 @@ yew = ["dep:tutorlolv2_codec", "dep:yew", "tutorlolv2_types/dev"]
 # Optimize the final binaries across the entire workspace.
 [profile.release]
 opt-level = 3
-lto = "fat"
-codegen-units = 1
-panic = "abort"
-incremental = false
 debug = false
 strip = "symbols"
 debug-assertions = false
 overflow-checks = false
+lto = "fat"
+panic = "abort"
+incremental = false
+codegen-units = 1

@@ -1,5 +1,6 @@
 #![cfg(feature = "yew")]
 
+use strum::VariantArray;
 use tutorlolv2::{
     CastId, ChampionId, EntityId, ItemId, RuneId,
     yew::render::{FormulaRenderer, MayFail},
@@ -16,7 +17,7 @@ fn pack_repr_build() -> MayFail {
     html += &FormulaRenderer::tower_fn();
     html += "\n";
 
-    for champion_id in ChampionId::VALUES {
+    for champion_id in ChampionId::VARIANTS {
         html += &champion_id.render_generator().unwrap();
         html += "\n";
 
@@ -29,8 +30,8 @@ fn pack_repr_build() -> MayFail {
         html += "\n";
     }
 
-    fn render_formulas<T: CastId>(html: &mut String) -> MayFail {
-        for value in T::VALUES {
+    fn render_formulas<T: CastId + VariantArray>(html: &mut String) -> MayFail {
+        for value in T::VARIANTS {
             let (function, global) = match value.entity() {
                 EntityId::Item(v) => (v.render_fn()?, v.render_global()?),
                 EntityId::Rune(v) => (v.render_fn()?, v.render_global()?),
