@@ -17,7 +17,7 @@ use {
         },
     },
     heck::ToSnakeCase,
-    rayon::iter::{IntoParallelIterator, ParallelBridge, ParallelIterator},
+    rayon::iter::{IntoParallelIterator, ParallelIterator},
     serde::{Serialize, de::DeserializeOwned},
     serde_json::json,
     std::{
@@ -115,9 +115,12 @@ pub fn run() -> MayFail {
         let tag = parser.tag();
         let plural = tag.plural();
 
+        // Indexed parallel iterators keep their order on `collect`; `par_bridge` does not,
+        // which made the generated files differ between builds.
         let eval_arms = parser
             .keys()
-            .par_bridge()
+            .collect::<Vec<_>>()
+            .into_par_iter()
             .map(|id| parser.run_fn(id)?.build())
             .collect::<MayFail<String>>()?;
 
@@ -162,10 +165,16 @@ fn build_docs() -> MayFail {
     let mut batches = [Tag::Champions, Tag::Items, Tag::Runes]
         .into_par_iter()
         .map(|tag| -> MayFail<_> {
-            let mut src = tutorlolv2_wiki::read_dir(OUT_DIR.join(tag.plural()))?
-                .filter(|entry| entry.path().extension().is_some_and(|e| e == "w48"))
-                .par_bridge()
-                .map(|entry| tutorlolv2_wiki::read_to_string(entry.path()))
+            let mut paths = tutorlolv2_wiki::read_dir(OUT_DIR.join(tag.plural()))?
+                .map(|entry| entry.path())
+                .filter(|path| path.extension().is_some_and(|e| e == "w48"))
+                .collect::<Vec<_>>();
+
+            paths.sort();
+
+            let mut src = paths
+                .into_par_iter()
+                .map(tutorlolv2_wiki::read_to_string)
                 .flatten()
                 .collect::<String>();
 
@@ -178,7 +187,8 @@ fn build_docs() -> MayFail {
             let generators = iter
                 .into_iter()
                 .enumerate()
-                .par_bridge()
+                .collect::<Vec<_>>()
+                .into_par_iter()
                 .map(|(i, variant)| {
                     let file_name = variant.to_snake_case();
                     let mut default = false;

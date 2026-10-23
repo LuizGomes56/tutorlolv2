@@ -59,7 +59,7 @@ impl MapValueExt for WikiItem {
 
 impl MapValueExt for WikiRune {
     fn riot_id(&self) -> u32 {
-        self.riot_id as _
+        runes::riot_rune_id(self)
     }
 
     fn name(&self) -> &str {
@@ -108,13 +108,11 @@ where
             [get(id), get(name)].concat()
         }
 
-        let arguments = self
+        let aliases_by_key = self
             .map()
             .iter()
             .map(|(key, value)| {
-                let name = &value.name();
-
-                let mut aliases = get_aliases(key, name);
+                let mut aliases = get_aliases(key, value.name());
 
                 if let Some(extra) = &extras
                     && let Some(extra_aliases) = extra.get(key)
@@ -122,13 +120,43 @@ where
                     extra_aliases.iter().cloned().for_each(|a| aliases.push(a));
                 }
 
-                let alias = BTreeSet::from_iter(aliases)
-                    .into_iter()
-                    .map(|v| format!("{v:?}"))
-                    .collect::<Vec<_>>()
-                    .join(" | ");
+                (key.as_str(), value, BTreeSet::from_iter(aliases))
+            })
+            .collect::<Vec<_>>();
 
-                format!("{alias} => {enum_name}::{key}")
+        // Items sharing a display name, like `JungleQuestReward1209`, also share the aliases
+        // derived from it. Each alias goes to the variant with the lowest riot id, which is
+        // the base game item, so `FromStr` resolves the same way on every build.
+        let mut owners = BTreeMap::<&str, (&str, u32)>::new();
+
+        for (key, value, aliases) in &aliases_by_key {
+            let rank = match Self::TAG {
+                Tag::Champions => 0,
+                _ => value.riot_id(),
+            };
+
+            for alias in aliases {
+                owners
+                    .entry(alias)
+                    .and_modify(|owner| {
+                        if rank < owner.1 {
+                            *owner = (key, rank);
+                        }
+                    })
+                    .or_insert((key, rank));
+            }
+        }
+
+        let arguments = aliases_by_key
+            .iter()
+            .filter_map(|(key, _, aliases)| {
+                let alias = aliases
+                    .iter()
+                    .filter(|alias| owners[alias.as_str()].0 == *key)
+                    .map(|v| format!("{v:?}"))
+                    .collect::<Vec<_>>();
+
+                (!alias.is_empty()).then(|| format!("{} => {enum_name}::{key}", alias.join(" | ")))
             })
             .collect::<Vec<_>>()
             .join(",");
@@ -142,19 +170,47 @@ where
     fn id_enum(&self) -> String {
         let enum_name = Self::TAG.enum_name();
         let riot_id_conv = if !matches!(Self::TAG, Tag::Champions) {
+            // Sorted by riot id so `from_riot_id` is a binary search over a table instead
+            // of a jump table with one arm per variant. A stable sort plus `dedup_by_key`
+            // keeps the first variant for a repeated riot id, as the old `match` did.
+            let mut riot_ids = self
+                .map()
+                .iter()
+                .map(|(key, value)| (value.riot_id(), key.as_str()))
+                .collect::<Vec<_>>();
+
+            riot_ids.sort_by_key(|(riot_id, _)| *riot_id);
+            riot_ids.dedup_by_key(|(riot_id, _)| *riot_id);
+
             format!(
                 "impl {enum_name} {{
+                    const SORTED_RIOT_IDS: [u32; {len}] = [{ids}];
+                    const SORTED_RIOT_ID_VARIANTS: [Self; {len}] = [{variants}];
+
                     pub const fn from_riot_id(id: u32) -> Option<Self> {{
-                        match id {{ {match_arms} _ => None }}
+                        let (mut lo, mut hi) = (0, Self::SORTED_RIOT_IDS.len());
+                        while lo < hi {{
+                            let mid = lo + (hi - lo) / 2;
+                            let key = Self::SORTED_RIOT_IDS[mid];
+                            if key == id {{
+                                return Some(Self::SORTED_RIOT_ID_VARIANTS[mid]);
+                            }}
+                            if key < id {{ lo = mid + 1 }} else {{ hi = mid }}
+                        }}
+                        None
                     }}
                 }}",
-                match_arms = self
-                    .map()
+                len = riot_ids.len(),
+                ids = riot_ids
                     .iter()
-                    .map(|(key, value)| {
-                        format!("{riot_id} => Some(Self::{key}),", riot_id = value.riot_id())
-                    })
-                    .collect::<String>()
+                    .map(|(riot_id, _)| riot_id.to_string())
+                    .collect::<Vec<_>>()
+                    .join(","),
+                variants = riot_ids
+                    .iter()
+                    .map(|(_, key)| format!("Self::{key}"))
+                    .collect::<Vec<_>>()
+                    .join(","),
             )
         } else {
             String::new()
@@ -162,8 +218,8 @@ where
 
         format!(
             "#[derive(
-                Clone, Copy, Debug, Deserialize, Eq,
-                Hash, Ord, PartialEq, PartialOrd, Serialize,
+                Clone, Copy, Debug, Eq,
+                Hash, Ord, PartialEq, PartialOrd,
                 EnumCount, VariantArray, VariantNames, FromRepr
             )]
             #[repr({repr})]

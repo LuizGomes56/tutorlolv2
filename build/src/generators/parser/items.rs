@@ -74,55 +74,88 @@ impl Parser<WikiItem, Item> for ItemParser {
         let mut data = BTreeMap::<String, WikiItem>::from_file("cache/wiki/items/full.json")?;
         let riot_items = RiotCdn::<u32, RiotCdnItem>::from_file(SaveTo::RiotItems.path())?;
 
-        for (id, cdn_item) in riot_items.data {
-            let stats = cdn_item.pretiffy_stats().unwrap_or_default();
+        // `RiotCdn::data` is a `HashMap`, so entries are grouped by name in riot id order
+        // to keep the generated code identical between builds.
+        let mut riot_items = riot_items.data.into_iter().collect::<Vec<_>>();
+        riot_items.sort_by_key(|(id, _)| *id);
 
-            let RiotCdnItem {
-                name,
-                gold: RiotCdnItemGold {
-                    total, purchasable, ..
-                },
-                maps,
-                from: recipe,
-                ..
-            } = cdn_item;
+        let mut groups = BTreeMap::<String, Vec<(u32, RiotCdnItem)>>::new();
 
-            let key = name.to_pascal_case();
+        for (id, cdn_item) in riot_items {
+            let key = cdn_item.name.to_pascal_case().to_lowercase();
+            groups.entry(key).or_default().push((id, cdn_item));
+        }
 
-            match data
-                .keys()
-                .cloned()
-                .collect::<Vec<_>>()
-                .into_iter()
-                .find(|k| k.to_lowercase() == key.to_lowercase())
-            {
-                Some(k) if let Some(item) = data.get_mut(&k) => item.purchasable = purchasable,
-                Some(_) => {}
-                None => {
-                    if !name.is_empty() && !name.starts_with("<") {
-                        let value = WikiItem {
-                            id,
-                            name,
-                            item_id: key.clone(),
-                            tier: Some(match total {
-                                0..750 => 1,
-                                750..2000 => 2,
-                                _ => 3,
-                            }),
-                            modes: maps.into_iter().map(|(k, v)| (k.to_string(), v)).collect(),
-                            stats: stats
-                                .into_iter()
-                                .map(|(k, v)| ((k as u8).to_string(), v as _))
-                                .collect(),
-                            effects: Default::default(),
-                            recipe,
-                            buy: Some(total as _),
-                            purchasable,
-                            custom: true,
-                        };
+        let wiki_keys = data
+            .keys()
+            .map(|key| (key.to_lowercase(), key.clone()))
+            .collect::<BTreeMap<_, _>>();
 
-                        data.insert(key, value);
-                    }
+        for (lowercase_key, entries) in groups {
+            if let Some(key) = wiki_keys.get(&lowercase_key) {
+                let item = data.get_mut(key).unwrap();
+
+                // The wiki already has this item. Prefer the riot entry with the same id
+                // over Arena or other mode-specific copies that share its name.
+                let (_, cdn_item) = entries
+                    .iter()
+                    .find(|(id, _)| *id == item.id)
+                    .unwrap_or(&entries[0]);
+
+                item.purchasable = cdn_item.gold.purchasable;
+                continue;
+            }
+
+            let suffix_id = entries.len() > 1;
+
+            for (id, cdn_item) in entries {
+                let stats = cdn_item.pretiffy_stats().unwrap_or_default();
+
+                let RiotCdnItem {
+                    name,
+                    gold:
+                        RiotCdnItemGold {
+                            total, purchasable, ..
+                        },
+                    maps,
+                    from: recipe,
+                    ..
+                } = cdn_item;
+
+                if name.is_empty() || name.starts_with("<") {
+                    continue;
+                }
+
+                // Different items sharing a name keep one variant each, such as
+                // `JungleQuestReward1209`, instead of collapsing into one of them.
+                let key = match suffix_id {
+                    true => format!("{}{id}", name.to_pascal_case()),
+                    false => name.to_pascal_case(),
+                };
+
+                let value = WikiItem {
+                    id,
+                    name,
+                    item_id: key.clone(),
+                    tier: Some(match total {
+                        0..750 => 1,
+                        750..2000 => 2,
+                        _ => 3,
+                    }),
+                    modes: maps.into_iter().map(|(k, v)| (k.to_string(), v)).collect(),
+                    stats: stats
+                        .into_iter()
+                        .map(|(k, v)| ((k as u8).to_string(), v as _))
+                        .collect(),
+                    effects: Default::default(),
+                    recipe,
+                    buy: Some(total as _),
+                    purchasable,
+                    custom: true,
+                };
+
+                if data.insert(key.clone(), value).is_some() {
+                    return Err(format!("[ItemParser::new] Duplicated item key {key}").into());
                 }
             }
         }

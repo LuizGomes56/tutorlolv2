@@ -108,6 +108,124 @@ macro_rules! impl_repr_codec {
 
 impl_repr_codec!(ChampionId => u8, ItemId => u16, RuneId => u8);
 
+/// Whether `names` is strictly ascending in byte order, the order `binary_search` expects.
+const fn is_sorted(names: &[&str]) -> bool {
+    let mut i = 1;
+
+    while i < names.len() {
+        let (a, b) = (names[i - 1].as_bytes(), names[i].as_bytes());
+        let mut j = 0;
+
+        while j < a.len() && j < b.len() && a[j] == b[j] {
+            j += 1;
+        }
+
+        let ascending = match (j < a.len(), j < b.len()) {
+            (true, true) => a[j] < b[j],
+            (false, true) => true,
+            _ => false,
+        };
+
+        if !ascending {
+            return false;
+        }
+
+        i += 1;
+    }
+
+    true
+}
+
+/// Same wire format as the serde derive (a unit variant named after the variant), but
+/// names are looked up in strum's `VARIANTS` table instead of a `match` with one arm per
+/// variant. `VARIANTS` is sorted because the generator emits variants from a `BTreeMap`.
+macro_rules! impl_name_serde {
+    ($($ty:ty => $repr:ty),* $(,)?) => {$(
+        const _: () = assert!(
+            is_sorted(<$ty as VariantNames>::VARIANTS),
+            concat!(stringify!($ty), "::VARIANTS must be sorted for its serde impl"),
+        );
+
+        impl Serialize for $ty {
+            fn serialize<S: serde::Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
+                let index = *self as usize;
+                serializer.serialize_unit_variant(
+                    stringify!($ty),
+                    index as u32,
+                    <Self as VariantNames>::VARIANTS[index],
+                )
+            }
+        }
+
+        impl<'de> Deserialize<'de> for $ty {
+            fn deserialize<D: serde::Deserializer<'de>>(deserializer: D) -> Result<Self, D::Error> {
+                use serde::de::{self, EnumAccess, Unexpected, VariantAccess};
+
+                const VARIANTS: &[&str] = <$ty as VariantNames>::VARIANTS;
+
+                struct Variant;
+                struct Identifier;
+
+                impl<'de> de::Visitor<'de> for Identifier {
+                    type Value = $ty;
+
+                    fn expecting(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+                        f.write_str(concat!("a variant identifier of ", stringify!($ty)))
+                    }
+
+                    fn visit_u64<E: de::Error>(self, value: u64) -> Result<$ty, E> {
+                        <$repr>::try_from(value)
+                            .ok()
+                            .and_then(<$ty>::from_repr)
+                            .ok_or_else(|| E::invalid_value(Unexpected::Unsigned(value), &self))
+                    }
+
+                    fn visit_str<E: de::Error>(self, value: &str) -> Result<$ty, E> {
+                        VARIANTS
+                            .binary_search(&value)
+                            .ok()
+                            .and_then(|index| <$ty>::from_repr(index as $repr))
+                            .ok_or_else(|| E::unknown_variant(value, VARIANTS))
+                    }
+
+                    fn visit_bytes<E: de::Error>(self, value: &[u8]) -> Result<$ty, E> {
+                        match core::str::from_utf8(value) {
+                            Ok(value) => self.visit_str(value),
+                            Err(_) => Err(E::invalid_value(Unexpected::Bytes(value), &self)),
+                        }
+                    }
+                }
+
+                impl<'de> de::DeserializeSeed<'de> for Identifier {
+                    type Value = $ty;
+
+                    fn deserialize<D: serde::Deserializer<'de>>(self, deserializer: D) -> Result<$ty, D::Error> {
+                        deserializer.deserialize_identifier(self)
+                    }
+                }
+
+                impl<'de> de::Visitor<'de> for Variant {
+                    type Value = $ty;
+
+                    fn expecting(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+                        f.write_str(concat!("enum ", stringify!($ty)))
+                    }
+
+                    fn visit_enum<A: EnumAccess<'de>>(self, data: A) -> Result<$ty, A::Error> {
+                        let (id, variant) = data.variant_seed(Identifier)?;
+                        variant.unit_variant()?;
+                        Ok(id)
+                    }
+                }
+
+                deserializer.deserialize_enum(stringify!($ty), VARIANTS, Variant)
+            }
+        }
+    )*};
+}
+
+impl_name_serde!(ChampionId => u8, ItemId => u16, RuneId => u8);
+
 pub const fn zero(_: &Ctx) -> f32 {
     0.0
 }

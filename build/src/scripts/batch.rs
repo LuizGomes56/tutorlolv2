@@ -1,6 +1,6 @@
 use crate::generators::utils::Tag;
 use heck::ToSnakeCase;
-use rayon::iter::{ParallelBridge, ParallelIterator};
+use rayon::iter::{IntoParallelIterator, ParallelIterator};
 use regex::Regex;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
@@ -26,9 +26,12 @@ pub fn batch(src: String) -> BTreeMap<String, BTreeMap<String, Vec<FmtOutput>>> 
     static FMT_RE: LazyLock<Regex> =
         LazyLock::new(|| Regex::new(r#"#\[fmt\((\{.*?\})\)\]"#).unwrap());
 
+    // Collected first so the indexed parallel iterator keeps source order; formula ids
+    // are assigned in this order, so `par_bridge` made `formulas.bin` differ per build.
     let result = FMT_RE
         .captures_iter(&src)
-        .par_bridge()
+        .collect::<Vec<_>>()
+        .into_par_iter()
         .map(|caps| {
             let full = caps.get(0).unwrap();
             let inner = caps.get(1).unwrap().as_str();

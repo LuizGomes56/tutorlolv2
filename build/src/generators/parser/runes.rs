@@ -98,24 +98,32 @@ impl Parser<WikiRune, Rune> for RuneParser {
 static RIOT_RUNES: LazyLock<Vec<RiotCdnRune>> =
     LazyLock::new(|| Vec::<RiotCdnRune>::from_file(SaveTo::RiotRunes.path()).unwrap());
 
+/// The wiki leaves `riot_id` as zero for most runes, so it is looked up by name in the
+/// Riot CDN data first, falling back to the wiki value (used by the custom stat shards).
+/// Names are compared ignoring case: the wiki writes "Jack of All Trades" and Riot
+/// writes "Jack Of All Trades".
+pub fn riot_rune_id(data: &WikiRune) -> u32 {
+    let matches = |name: &str| name.eq_ignore_ascii_case(&data.name);
+
+    RIOT_RUNES
+        .iter()
+        .find_map(|cdn_rune| {
+            matches(&cdn_rune.name).then_some(cdn_rune.id).or_else(|| {
+                cdn_rune.slots.iter().find_map(|slot| {
+                    slot.runes
+                        .iter()
+                        .find_map(|tree| matches(&tree.name).then_some(tree.id))
+                })
+            })
+        })
+        .unwrap_or(data.riot_id as _)
+}
+
 impl TryFrom<WikiRune> for Rune {
     type Error = DynError;
 
     fn try_from(data: WikiRune) -> Result<Self, Self::Error> {
-        let name = data.name.clone();
-
-        let riot_id = RIOT_RUNES
-            .iter()
-            .find_map(|cdn_rune| {
-                (cdn_rune.name == name).then_some(cdn_rune.id).or_else(|| {
-                    cdn_rune.slots.iter().find_map(|slot| {
-                        slot.runes
-                            .iter()
-                            .find_map(|tree| (tree.name == name).then_some(tree.id))
-                    })
-                })
-            })
-            .unwrap_or(data.riot_id as _);
+        let riot_id = riot_rune_id(&data);
 
         Ok(Self {
             riot_id,
