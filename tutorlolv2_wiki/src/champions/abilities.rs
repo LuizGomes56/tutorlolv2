@@ -139,17 +139,16 @@ pub struct WikiAbility {
 }
 
 pub fn parse_abilities(cells: &BTreeMap<String, String>) -> MayFail<WikiAbility> {
-    let mut ability = WikiAbility::default();
-
-    ability.name = cells["1"].clone();
-    ability.skill = cells["skill"].parse::<char>()?.try_into()?;
-
-    ability.damage_type = cells
-        .get("damagetype")
-        .and_then(|v| v.parse().ok())
-        .unwrap_or_else(DamageType::default);
-
-    ability.spell_effects = cells.get("spelleffects").cloned();
+    let mut ability = WikiAbility {
+        name: cells["1"].clone(),
+        skill: cells["skill"].parse::<char>()?.try_into()?,
+        damage_type: cells
+            .get("damagetype")
+            .and_then(|v| v.parse().ok())
+            .unwrap_or_default(),
+        spell_effects: cells.get("spelleffects").cloned(),
+        ..Default::default()
+    };
 
     for (i, suffix) in SUFFIXES.into_iter().enumerate() {
         let get_key = |k: &str| format!("{k}{suffix}");
@@ -204,7 +203,7 @@ fn parse_effects(
 
     Ok(dts
         .into_iter()
-        .zip(dds.into_iter())
+        .zip(dds)
         .filter_map(|(dt, dd)| {
             let key = dt
                 .select(&selector("span.template_lc").ok()?)

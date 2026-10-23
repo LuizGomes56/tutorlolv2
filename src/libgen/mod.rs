@@ -4,7 +4,7 @@ pub mod check;
 pub mod impls;
 pub mod model;
 
-pub(self) use {
+use {
     bincode::{Decode, Encode},
     core::fmt::Debug,
     serde::{Deserialize, Serialize},

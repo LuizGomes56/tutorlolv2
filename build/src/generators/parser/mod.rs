@@ -250,7 +250,7 @@ where
 
         if let Some(parent) = path.parent() {
             let target = parent.join(Self::TAG.plural()).with_extension("json");
-            let _ = Value::from_dir(dir).map(|r| r.into_file(target));
+            let _ = Value::from_dir(dir).map(|r| r.write_file(target));
         }
     }
 
@@ -269,8 +269,11 @@ where
                 version: VERSION,
                 stable: Self::is_stable(id),
             }
-            .into_file(SaveTo::InternalRaw(Self::TAG, id).path()),
-            Err(e) => Ok(println!("Error generating {id:?}: {e:?}")),
+            .write_file(SaveTo::InternalRaw(Self::TAG, id).path()),
+            Err(e) => {
+                println!("Error generating {id:?}: {e:?}");
+                Ok(())
+            }
         }
     }
 
@@ -346,7 +349,10 @@ where
                 result.push_str(".end()}}");
                 tutorlolv2_wiki::write(&path, result)
             }
-            false => Ok(tutorlolv2_wiki::remove_file(&path)),
+            false => {
+                tutorlolv2_wiki::remove_file(&path);
+                Ok(())
+            }
         }
     }
 
@@ -365,9 +371,9 @@ where
         let modules = keys
             .iter()
             .copied()
-            .filter_map(|key| {
+            .filter(|key| {
                 let loc = SaveTo::GeneratorRaw(Self::TAG, key).path();
-                Path::new(&loc).exists().then_some(key)
+                Path::new(&loc).exists()
             })
             .collect::<Vec<_>>()
             .join(",\n\t");

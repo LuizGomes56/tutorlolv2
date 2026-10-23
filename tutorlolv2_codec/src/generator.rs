@@ -279,7 +279,7 @@ fn scan_styled(
         // the function name part of the Function span.
         Class::Function if text.ends_with('(') => {
             let before_paren = &text[..text.len() - 1];
-            let name = before_paren.trim_end_matches(|c| c == ' ' || c == '\t');
+            let name = before_paren.trim_end_matches([' ', '\t']);
             let spacing = &before_paren[name.len()..];
 
             if !name.is_empty() {
@@ -978,7 +978,7 @@ fn stream_offset(len: usize) -> Result<u32, GeneratorError> {
 }
 
 fn bitmap_len(count: usize) -> usize {
-    (count + 7) / 8
+    count.div_ceil(8)
 }
 
 fn bitmap_set(bitmap: &mut [u8], index: usize) {
@@ -1450,6 +1450,7 @@ impl<'a> GeneratorDb<'a> {
         }
 
         let mut last = None;
+
         for ordinal in 0..=table.present as usize {
             let offset = self.owner_offset(table, ordinal)?;
             if offset > self.stream_data_len {
@@ -1457,11 +1458,13 @@ impl<'a> GeneratorDb<'a> {
                     "owner offset exceeds stream length",
                 ));
             }
-            if let Some(previous) = last {
-                if offset < previous {
-                    return Err(GeneratorError::Corrupt("non-monotonic owner offsets"));
-                }
+
+            if let Some(previous) = last
+                && offset < previous
+            {
+                return Err(GeneratorError::Corrupt("non-monotonic owner offsets"));
             }
+
             last = Some(offset);
         }
 

@@ -51,7 +51,7 @@ impl Parser<WikiRune, Rune> for RuneParser {
 
         for description in &data.descriptions {
             match likely_damages(description) {
-                true => infer_damage_type(result, &description),
+                true => infer_damage_type(result, description),
                 false => return Ok(false),
             }
         }

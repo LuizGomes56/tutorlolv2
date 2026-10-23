@@ -508,10 +508,10 @@ pub fn calculator(game: InputGame<'_>) -> OutputGame {
             stats
         }
         None => infer_champion_stats(InferStats {
-            item_exceptions: &item_exceptions,
-            rune_exceptions: &rune_exceptions,
-            items: &current_player_raw_items,
-            runes: &current_player_raw_runes,
+            item_exceptions,
+            rune_exceptions,
+            items: current_player_raw_items,
+            runes: current_player_raw_runes,
             modifiers: &mut modifiers,
             dragons,
             ability_levels,
@@ -541,8 +541,8 @@ pub fn calculator(game: InputGame<'_>) -> OutputGame {
         shred,
     );
 
-    let current_player_runes = get_damaging_runes(&current_player_raw_runes);
-    let current_player_items = get_damaging_items(&current_player_raw_items);
+    let current_player_runes = get_damaging_runes(current_player_raw_runes);
+    let current_player_items = get_damaging_items(current_player_raw_items);
 
     let self_state = SelfState {
         stacks: stacks as _,
@@ -606,7 +606,7 @@ pub fn get_calculator_enemies(
     enemy_earth_dragons: u16,
 ) -> Box<[OutputEnemy]> {
     enemy_players
-        .into_iter()
+        .iter()
         .map(|player| {
             let InputMinData {
                 items: e_items,
@@ -622,11 +622,11 @@ pub fn get_calculator_enemies(
             let full_state = EnemyState {
                 current_stats: e_stats,
                 base_stats: e_base_stats,
-                items: &e_items,
+                items: e_items,
                 stacks: e_stacks,
                 champion_id: e_champion_id,
                 level: e_level,
-                item_exceptions: &e_item_exceptions,
+                item_exceptions: e_item_exceptions,
                 earth_dragons: enemy_earth_dragons,
             }
             .full_state(shred, false);

@@ -36,9 +36,7 @@ pub enum RealtimeError<'a> {
 
 impl core::fmt::Display for RealtimeError<'_> {
     fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
-        let id = match self {
-            RealtimeError::UnrecognizedCurrentPlayer(s) => s,
-        };
+        let RealtimeError::UnrecognizedCurrentPlayer(id) = self;
 
         write!(
             f,

@@ -81,7 +81,7 @@ impl Build for Champion {
                     .copied()
                     .collect::<Vec<_>>();
 
-                let Some(k) = probe_ratio(&min.damage, &max.damage, &all_vars) else {
+                let Some(k) = probe_ratio(&min.damage, &max.damage, all_vars) else {
                     continue;
                 };
 
@@ -154,8 +154,8 @@ impl Build for Champion {
                 .iter()
                 .find(|merge| merge.min == *ability_id || merge.max == *ability_id)
             {
-                let min_damage = resolve_damage(&merge.min, &self.damage_of(merge.min)?);
-                let max_damage = resolve_damage(&merge.max, &self.damage_of(merge.max)?);
+                let min_damage = resolve_damage(&merge.min, self.damage_of(merge.min)?);
+                let max_damage = resolve_damage(&merge.max, self.damage_of(merge.max)?);
 
                 if merge.min == *ability_id {
                     rust_formula = min_damage.clone();

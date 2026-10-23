@@ -226,7 +226,7 @@ impl Champion {
     ) -> &mut Self {
         for (i, ability_id) in Self::modify_pattern(key, pattern) {
             if let Some(abilities) = self.wiki_ability(key).ok()
-                && let Some(ability) = abilities.iter().nth(nth)
+                && let Some(ability) = abilities.get(nth)
             {
                 let mut value = Ability {
                     name: ability.name.clone(),

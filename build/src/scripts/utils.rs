@@ -382,7 +382,7 @@ pub trait ItemOrRuneExt:
                 let function = format!("{id}_f{j}(ctx)").to_lowercase();
 
                 if ratio == "1" {
-                    format!("{function}")
+                    function.to_string()
                 } else {
                     format!("{ratio} * {function}")
                 }
@@ -461,7 +461,7 @@ pub fn get_identifiers(damage: &str, damage_type: DamageType) -> impl Iterator<I
         LazyLock::new(|| Regex::new(r"ctx\.([a-z_][a-z0-9_]*)").unwrap());
 
     RE_IDENTS
-        .captures_iter(&damage)
+        .captures_iter(damage)
         .filter_map(|cap| cap[1].to_pascal_case().parse().ok())
         .chain(match damage_type {
             DamageType::Physical => Some(CtxVar::PhysicalMultiplier),
@@ -582,18 +582,21 @@ pub fn probe_ratio(min_expr: &str, max_expr: &str, all_vars: &[CtxVar]) -> Optio
         }
     }
 
-    (valid >= MIN_VALID)
-        .then(|| k_candidate)
-        .flatten()
-        .map(|k| {
-            let r = k.round();
-            if (k - r).abs() < 1e-9 {
-                return format!("{}", r as i64);
-            }
+    if valid >= MIN_VALID {
+        Some(k_candidate)
+    } else {
+        None
+    }
+    .flatten()
+    .map(|k| {
+        let r = k.round();
+        if (k - r).abs() < 1e-9 {
+            return format!("{}", r as i64);
+        }
 
-            format!("{k:.10}")
-                .trim_end_matches('0')
-                .trim_end_matches('.')
-                .to_owned()
-        })
+        format!("{k:.10}")
+            .trim_end_matches('0')
+            .trim_end_matches('.')
+            .to_owned()
+    })
 }

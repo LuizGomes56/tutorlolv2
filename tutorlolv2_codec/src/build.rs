@@ -262,7 +262,7 @@ impl FormulaDbBuilder {
             champions: (0..cc).map(|_| None).collect(),
             items: (0..ic).map(|_| None).collect(),
             runes: (0..rc).map(|_| None).collect(),
-            ctx_resolver: ctx_resolver,
+            ctx_resolver,
             match_defs: Vec::new(),
             match_ids: HashMap::new(),
         }
@@ -703,7 +703,7 @@ impl Token {
     }
 
     fn indent_units(&self) -> Result<u8, Error> {
-        if self.column % 2 != 0 || self.column / 2 > u8::MAX as u32 {
+        if !self.column.is_multiple_of(2) || self.column / 2 > u8::MAX as u32 {
             return Err(Error::InvalidIndent {
                 line: self.line,
                 column: self.column,
@@ -925,8 +925,7 @@ impl Parser<'_> {
     fn parse_expression(&mut self, min_precedence: u8) -> Result<Parsed, Error> {
         let mut left = self.parse_unary()?;
 
-        loop {
-            let Some(token) = self.peek() else { break };
+        while let Some(token) = self.peek() {
             let (op, precedence) = match token.kind {
                 TokenKind::Plus => (BinaryOp::Add, 1),
                 TokenKind::Minus => (BinaryOp::Sub, 1),

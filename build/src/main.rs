@@ -46,7 +46,7 @@ mod tests {
                 .copied()
                 .collect::<Vec<_>>();
 
-            let Some(k) = probe_ratio(&min.damage, &max.damage, &all_vars) else {
+            let Some(k) = probe_ratio(&min.damage, &max.damage, all_vars) else {
                 continue;
             };
 

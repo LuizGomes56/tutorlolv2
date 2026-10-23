@@ -53,7 +53,7 @@ where
         .current_dir(&*OUT_DIR)
         .arg(PathBuf::from(format!("{dir}_code")).with_extension("rs"));
 
-    for id in parser.keys().into_iter() {
+    for id in parser.keys() {
         let module = id.to_snake_case();
         let out_path = out.join(id);
 
@@ -163,7 +163,7 @@ fn build_docs() -> MayFail {
         .into_par_iter()
         .map(|tag| -> MayFail<_> {
             let mut src = tutorlolv2_wiki::read_dir(OUT_DIR.join(tag.plural()))?
-                .filter(|entry| entry.path().extension().map_or(false, |e| e == "w48"))
+                .filter(|entry| entry.path().extension().is_some_and(|e| e == "w48"))
                 .par_bridge()
                 .map(|entry| tutorlolv2_wiki::read_to_string(entry.path()))
                 .flatten()

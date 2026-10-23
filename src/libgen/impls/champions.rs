@@ -115,13 +115,16 @@ impl ChampionId {
 
     pub const fn index_of_ability(&self, ability_id: AbilityId) -> Option<usize> {
         let mut i = 0;
+
         while i < self.number_of_abilities() {
             if self.abilities()[i].kind.const_eq(ability_id) {
                 return Some(i);
             }
+
             i += 1;
         }
-        return None;
+
+        None
     }
 
     pub const fn metadata(&self) -> &'static [TypeMetadata<AbilityId>] {

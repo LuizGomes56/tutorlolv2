@@ -1,4 +1,5 @@
 #![no_std]
+#![allow(clippy::missing_transmute_annotations)]
 
 #[cfg(feature = "dev")]
 extern crate alloc;
@@ -9,6 +10,7 @@ use alloc::{format, string::String};
 use bincode::{Decode, Encode};
 use core::{convert::Infallible, fmt::Display, ops::Index, str::FromStr};
 use serde::{Deserialize, Serialize};
+use strum::EnumCount;
 
 /// A generic metadata holder for [`AbilityId`], [`ItemId`], or [`RuneId`].
 /// Contains its damage type, attributes, and which instance of the enum the value is.
@@ -182,6 +184,7 @@ impl AbilityId {
     Decode,
     Serialize,
     Deserialize,
+    EnumCount,
     strum::EnumIter,
     strum::VariantNames,
 )]
@@ -243,7 +246,7 @@ impl FromStr for StatName {
             "omnivamp" => Ok(Self::Omnivamp),
             "hp5flat" => Ok(Self::BaseHealthRegen),
             "critdamage" => Ok(Self::CritDamage),
-            _ => return Err("Unknown stat in StatName::from_str"),
+            _ => Err("Unknown stat in StatName::from_str"),
         }
     }
 }
@@ -278,6 +281,8 @@ impl StatName {
         }
     }
 
+    /// # Safety
+    /// Value must not exceed [`Self::COUNT`]
     pub const unsafe fn from_u8_unchecked(value: u8) -> Self {
         unsafe { core::mem::transmute(value) }
     }
@@ -467,6 +472,7 @@ impl AbilityName {
     pub const fn cast_max(&self) -> Self {
         let byte = *self as u8;
         assert!(byte < Self::Mega as u8 - 1);
+
         match byte >= Self::Max as u8 {
             true => *self,
             false if byte < Self::Min as u8 => unsafe {
@@ -505,6 +511,7 @@ impl AbilityName {
     Decode,
     Serialize,
     Deserialize,
+    strum::EnumCount,
     strum::EnumIter,
     strum::Display,
     strum::VariantNames,
@@ -525,6 +532,8 @@ impl AttackType {
         }
     }
 
+    /// # Safety
+    /// Value must not exceed [`Self::COUNT`]
     pub const unsafe fn from_u8_unchecked(value: u8) -> Self {
         unsafe { core::mem::transmute(value) }
     }
@@ -542,6 +551,7 @@ impl AttackType {
     PartialOrd,
     Serialize,
     Deserialize,
+    strum::EnumCount,
     strum::Display,
     strum::EnumIter,
     strum::VariantNames,
@@ -561,6 +571,8 @@ impl DamageIndex {
         }
     }
 
+    /// # Safety
+    /// Value must not exceed [`Self::COUNT`]
     pub const unsafe fn from_u8_unchecked(value: u8) -> Self {
         unsafe { core::mem::transmute(value) }
     }
@@ -702,6 +714,8 @@ impl Position {
         }
     }
 
+    /// # Safety
+    /// Value must not exceed [`Self::COUNT`]
     pub const unsafe fn from_u8_unchecked(value: u8) -> Self {
         unsafe { core::mem::transmute(value) }
     }
@@ -800,18 +814,23 @@ impl GameMap {
 
 /// Defines what is the damage type of some entity.
 /// - [`DamageType::Physical`] and [`DamageType::Magic`] Represents any damage related
+///
 /// to how much (armor or magic resistence) the enemy player has, and is affected by the
 /// percent and flat values or (armor or magic) penetration of the current player
-/// - [`DamageType::Mixed`] Damages of this type are treated as a special case of
-/// [`DamageType::True`], where the closure has to multiply on its own the `physical_mod`
+/// - [`DamageType::Mixed`] Damages of this type are treated as a special case of [`DamageType::True`],
+///
+/// where the closure has to multiply on its own the `physical_mod`
+///
 /// and `magic_mod` modifiers of the [`tutorlolv2_math::DamageModifiers`] struct. It is
-/// usually used when a single ability or item deals both physical and magic damage in the
-/// same hit.
+/// usually used when a single ability or item deals both physical and magic damage in the same hit.
+///
 /// - [`DamageType::True`] Damages of this type are not affected by armor or magic resistence,
+///
 /// their values are in general irreducible.
+///
 /// - [`DamageType::Adaptive`] Damages of this type will vary into the [`DamageType::Physical`]
-/// or [`DamageType::Magic`] depending on how much bonus armor or ability power the current player
-/// has.
+///
+/// or [`DamageType::Magic`] depending on how much bonus armor or ability power the current player has.
 /// - [`DamageType::Unknown`] is the default value when no damage type is set
 #[derive(
     Clone,

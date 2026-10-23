@@ -443,17 +443,9 @@ fn render_range_percent_attr(
         return render_range_linear(min, max, level_axis, range_denominator_for_axis(level_axis));
     }
 
-    let driver = match ctx_var {
-        // These are naturally 0.0..1.0 drivers in the formula system.
-        // CtxVar::CritChance => format!("{ctx_var}"),
-        // These are best-effort: the parser marks some stack/chime/fury-like values
-        // as SteelcapsEffect when no dedicated CtxVar exists.
-        _ => format!("{ctx_var}"),
-    };
-
     add_expr(
         &render_num(min),
-        &format!("{} * ({driver})", render_num(max - min)),
+        &format!("{} * ({ctx_var})", render_num(max - min)),
     )
 }
 
@@ -576,19 +568,19 @@ fn render_cubic(values: &[f64], axis: CtxVar) -> String {
 }
 
 fn render_level_coeff(level_var: CtxVar, arms: &[LevelArm]) -> String {
-    if let Some(values) = level_arm_values(arms) {
-        if values.len() > 1 {
-            let pat = SequencePattern::new(&values);
+    if let Some(values) = level_arm_values(arms)
+        && values.len() > 1
+    {
+        let pat = SequencePattern::new(&values);
 
-            if matches!(
-                pat,
-                SequencePattern::Linear | SequencePattern::Quadratic | SequencePattern::Cubic
-            ) {
-                return simplify_series(&values, level_var)
-                    .ok()
-                    .flatten()
-                    .unwrap_or_else(|| render_level_match(level_var, arms));
-            }
+        if matches!(
+            pat,
+            SequencePattern::Linear | SequencePattern::Quadratic | SequencePattern::Cubic
+        ) {
+            return simplify_series(&values, level_var)
+                .ok()
+                .flatten()
+                .unwrap_or_else(|| render_level_match(level_var, arms));
         }
     }
 

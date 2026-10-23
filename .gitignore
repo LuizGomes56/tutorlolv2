@@ -19,6 +19,5 @@ cache
 archives
 **/conv
 build_output
-/perf/fixtures/
-/perf/results/
-/perf/__pycache__/
+perf/
+tests/

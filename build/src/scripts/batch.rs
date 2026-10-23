@@ -82,7 +82,7 @@ pub fn pack_formulas(
     tag: Tag,
     result: &BTreeMap<String, BTreeMap<String, Vec<FmtOutput>>>,
 ) -> MayFail {
-    for (i, (variant, inner_map)) in result.into_iter().enumerate() {
+    for (i, (variant, inner_map)) in result.iter().enumerate() {
         let Some(outputs) = inner_map.get("formula") else {
             continue;
         };

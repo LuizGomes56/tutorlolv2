@@ -26,11 +26,7 @@ pub fn champion_aliases() -> MayFail<Option<BTreeMap<String, Vec<String>>>> {
                     })
                     .iter()
                     .cloned()
-                    .chain(
-                        (champion_id == "Gnar")
-                            .then_some("Mega Gnar".into())
-                            .into_iter(),
-                    )
+                    .chain((champion_id == "Gnar").then_some("Mega Gnar".into()))
                     .collect::<Vec<_>>(),
             )
         })

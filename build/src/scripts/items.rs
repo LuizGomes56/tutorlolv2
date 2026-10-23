@@ -91,12 +91,11 @@ impl Item {
             stats: data
                 .stats
                 .iter()
-                .filter_map(|(k, v)| {
+                .map(|(k, v)| {
                     let stat = k
                         .parse::<u8>()
                         .ok()
-                        .map(StatName::from_u8)
-                        .flatten()
+                        .and_then(StatName::from_u8)
                         .unwrap_or_else(|| {
                             k.parse()
                                 .map_err(|e| {
@@ -108,7 +107,7 @@ impl Item {
                                 .unwrap()
                         });
 
-                    Some((stat, *v as _))
+                    (stat, *v as _)
                 })
                 .collect(),
             maps: data
@@ -119,7 +118,7 @@ impl Item {
                     k.parse::<u8>()
                         .ok()
                         .map(GameMap::from_code)
-                        .or_else(|| match k.as_str() {
+                        .or(match k.as_str() {
                             "ar" => Some(GameMap::Arena),
                             "aram" => Some(GameMap::Aram),
                             "classic sr 5v5" => Some(GameMap::SummonersRift),
