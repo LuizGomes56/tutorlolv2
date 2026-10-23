@@ -335,17 +335,23 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
                         AttackType::Ranged => &item.ranged,
                     };
 
-                    let extra = Damages::eval(
-                        &ctx,
-                        &mut damage.attacks.onhit_damage,
-                        modifiers,
-                        &[item.metadata],
-                        closures,
-                    );
-
                     let mut items = damage.items.into_vec();
 
-                    items.extend_from_slice(&extra);
+                    items.reserve_exact(2);
+
+                    let modifier = modifiers.damages.modifier(item.metadata.damage_type);
+
+                    for closure in closures {
+                        let amount = (modifier * closure(&ctx)) as i32;
+
+                        damage
+                            .attacks
+                            .onhit_damage
+                            .inc_attr(item.metadata.attributes, amount);
+
+                        items.push(amount);
+                    }
+
                     damage.items = items.into_boxed_slice();
                 }
 
