@@ -1,5 +1,5 @@
+mod builtin;
 mod ext;
-mod tower;
 
 use crate::{AbilityId, AttackType, CastId, ChampionId, CtxVar, DamageIndex, EntityId};
 use alloc::{
@@ -7,58 +7,25 @@ use alloc::{
     boxed::Box,
     string::{String, ToString},
 };
-use std::sync::LazyLock;
 use tutorlolv2_codec::{DamageSlot, EntityKind, FormulaDb, GeneratorDb, render::FnBuilder};
-
-pub const IGNITE_FN: &str = r#"fn ignite(level: i32) -> i32 {
-    70 + 20 * level + 5
-      * if level > 4 { level - 4 }
-        else { 0 }
-}"#;
-
-pub const ONHIT_EFFECT: &str = r#"intrinsic Onhit {
-    damage_type: Mixed,
-    definition: fn onhit(...) -> Attacks
-};"#;
-
-pub const ONHIT_EFFECT_FN: &str = r#"fn onhit() -> Attacks {
-    intrinsic
-}"#;
-
-pub const CRITICAL_STRIKE: &str = r#"intrinsic CritStrike {
-    attributes: OnhitMax,
-    damage_type: Physical,
-    damage: attack_damage * crit_damage / 100
-};"#;
-
-pub const CRITICAL_STRIKE_FN: &str = r#"fn critical_strike() -> f32 {
-    attack_damage * crit_damage
-      / 100 /* * physical_multiplier */
-}"#;
-
-pub const BASIC_ATTACK: &str = r#"intrinsic BasicAttack {
-    attributes: OnhitMin,
-    damage_type: Physical,
-    damage: attack_damage /* * physical_multiplier */,
-};"#;
-
-pub const BASIC_ATTACK_FN: &str = r#"fn basic_attack() -> f32 {
-    attack_damage /* * physical_multiplier */
-}"#;
 
 pub type MayFail<T = ()> = Result<T, Box<dyn core::error::Error>>;
 
 static PACKED_FORMULAS: &[u8] = include_bytes!(concat!(env!("OUT_DIR"), "/formulas.bin"));
 static PACKED_GENERATORS: &[u8] = include_bytes!(concat!(env!("OUT_DIR"), "/generator.bin"));
 
+#[derive(Clone, Copy)]
 pub struct GeneratorRenderer {
     db: GeneratorDb<'static>,
 }
 
 impl GeneratorRenderer {
-    pub fn new() -> Self {
+    pub const fn new() -> Self {
         Self {
-            db: GeneratorDb::new(PACKED_GENERATORS).unwrap(),
+            db: match GeneratorDb::new(PACKED_GENERATORS) {
+                Ok(db) => db,
+                Err(_) => panic!("invalid embedded generator database"),
+            },
         }
     }
 
@@ -74,17 +41,27 @@ impl GeneratorRenderer {
     }
 }
 
-pub static GENERATOR_RENDERER: LazyLock<GeneratorRenderer> = LazyLock::new(GeneratorRenderer::new);
-pub static FORMULA_RENDERER: LazyLock<FormulaRenderer> = LazyLock::new(FormulaRenderer::new);
+impl Default for GeneratorRenderer {
+    fn default() -> Self {
+        Self::new()
+    }
+}
 
+pub static GENERATOR_RENDERER: GeneratorRenderer = GeneratorRenderer::new();
+pub static FORMULA_RENDERER: FormulaRenderer = FormulaRenderer::new();
+
+#[derive(Clone, Copy)]
 pub struct FormulaRenderer {
     db: FormulaDb<'static>,
 }
 
 impl FormulaRenderer {
-    pub fn new() -> Self {
+    pub const fn new() -> Self {
         Self {
-            db: FormulaDb::new(PACKED_FORMULAS).unwrap(),
+            db: match FormulaDb::new(PACKED_FORMULAS) {
+                Ok(db) => db,
+                Err(_) => panic!("invalid embedded formula database"),
+            },
         }
     }
 
@@ -152,7 +129,13 @@ impl FormulaRenderer {
         raw.strip_prefix("ctx.").unwrap_or(raw).to_owned()
     }
 
-    fn damage_slot(attack_type: AttackType, damage_index: DamageIndex) -> DamageSlot {
+    const fn damage_slot(attack_type: AttackType, damage_index: DamageIndex) -> DamageSlot {
         DamageSlot::from_u8(2 * attack_type as u8 + damage_index as u8).unwrap()
+    }
+}
+
+impl Default for FormulaRenderer {
+    fn default() -> Self {
+        Self::new()
     }
 }

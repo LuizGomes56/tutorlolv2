@@ -71,6 +71,7 @@ pub const fn infer_champion_stats(data: InferStats<'_>) -> PlayerStats {
     let mut adaptive_force = 0.0;
 
     let mut stat_modifiers = Modifiers::default();
+
     bonus_stats.get_item_bonus_stats(items, &mut stat_modifiers, &mut adaptive_force);
     bonus_stats.get_rune_bonus_stats(runes, &mut stat_modifiers, &mut adaptive_force, level);
 
@@ -135,6 +136,7 @@ pub const fn infer_champion_stats(data: InferStats<'_>) -> PlayerStats {
     stats.attack_speed = cached_stats.attack_speed(stats.attack_speed, level);
 
     let mut i = 0;
+
     while i < items.len() {
         match items[i] {
             ItemId::OverlordsBloodmail => {
@@ -196,6 +198,7 @@ impl PlayerStats {
         let mut magic_pen_mult = 1.0;
 
         let mut i = 0;
+
         while i < items.len() {
             let item_id = items[i];
             let item = item_id.data();
@@ -205,6 +208,7 @@ impl PlayerStats {
             let mut magic_pen = 0.0;
 
             let mut j = 0;
+
             while j < item_stats.len() {
                 let (stat, value) = item_stats[j];
                 let v = value as f32;
@@ -235,6 +239,7 @@ impl PlayerStats {
             if matches!(item_id, ItemId::ElixirOfIron) {
                 self.max_health += 300.0;
             }
+
             modifiers.apply_item(item_id);
 
             i += 1;
@@ -265,6 +270,7 @@ impl PlayerStats {
                 RuneId::HealthScaling => self.max_health += 10.0 * level.get() as f32,
                 _ => {}
             }
+
             modifiers.apply_rune(runes[i], self);
             i += 1;
         }
@@ -335,9 +341,11 @@ impl PlayerStats {
         }
 
         let mut i = 0;
+
         while i < exceptions.len() {
             let rune_exception = exceptions[i];
             let stacks = rune_exception.stacks();
+
             if let Some(rune_id) = rune_exception.get_rune_id() {
                 match rune_id {
                     RuneId::LethalTempo => match attack_type {
@@ -395,6 +403,7 @@ impl PlayerStats {
                         r
                     }) as u32
                 };
+
                 self.max_health += (stacks * 80 + 40 * mul) as f32
             }
             ChampionId::Sion => self.max_health += stacks as f32,
@@ -453,22 +462,17 @@ pub struct RuneExceptionData<'a> {
     pub level: NonZeroU8,
 }
 
-/// Receives mutable references to the champion's current stats, bonus stats and modifiers,
-/// modifying their values based on the `exceptions` slice. Only the items that
-/// depend on some stack count should be added to the match arms of this function
-pub const fn assign_item_exceptions(stats: &mut PlayerStats, exceptions: &[ValueException]) {
-    stats.assign_item_exceptions(exceptions);
-}
+impl RuneExceptionData<'_> {
+    pub const fn assign_rune_exceptions(self, exceptions: &[ValueException]) {
+        let Self {
+            adaptive_force,
+            stats,
+            attack_type,
+            level,
+        } = self;
 
-pub const fn assign_rune_exceptions(data: RuneExceptionData, exceptions: &[ValueException]) {
-    let RuneExceptionData {
-        adaptive_force,
-        stats,
-        attack_type,
-        level,
-    } = data;
-
-    stats.assign_rune_exceptions(exceptions, adaptive_force, attack_type, level);
+        stats.assign_rune_exceptions(exceptions, adaptive_force, attack_type, level);
+    }
 }
 
 /// Receives data about some custom game, containing the minimum information about the

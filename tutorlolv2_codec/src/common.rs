@@ -1,3 +1,36 @@
+// Explicit propagation keeps parsing callable during const evaluation.
+macro_rules! const_try {
+    ($value:expr) => {
+        match $value {
+            Ok(value) => value,
+            Err(error) => return Err(error),
+        }
+    };
+}
+pub(crate) use const_try;
+
+/// An invalid packed database. Contains no allocated data and needs no destructor.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum ParseError {
+    Corrupt(&'static str),
+}
+
+impl core::fmt::Display for ParseError {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+        match self {
+            Self::Corrupt(message) => write!(f, "corrupt database: {message}"),
+        }
+    }
+}
+impl core::error::Error for ParseError {}
+impl From<ParseError> for Error {
+    fn from(error: ParseError) -> Self {
+        match error {
+            ParseError::Corrupt(message) => Self::Corrupt(message),
+        }
+    }
+}
+
 use std::fmt;
 
 pub const MAGIC: [u8; 4] = *b"FBC1";
@@ -152,11 +185,13 @@ impl DamageSlot {
                 "MeleeMax cannot exist without MeleeMin",
             ));
         }
+
         if ranged_max && !ranged_min {
             return Err(Error::InvalidSlotCombination(
                 "RangedMax cannot exist without RangedMin",
             ));
         }
+
         if (melee_min || melee_max) && !ranged_min {
             return Err(Error::InvalidSlotCombination(
                 "melee damage requires ranged damage for context",

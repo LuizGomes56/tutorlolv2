@@ -491,8 +491,10 @@ pub const fn get_damaging_items(input: &[ItemId]) -> BitSet {
         if ItemId::DAMAGING.contains_const(item) {
             out.insert_const(item);
         }
+
         i += 1;
     }
+
     out
 }
 
@@ -611,6 +613,7 @@ impl EnemyState<'_> {
                             17 => 1.25,
                             18.. => 1.3,
                         };
+
                         e_default_stats.armor *= malphite_resist_multiplier;
                     }
                     _ => {}
@@ -696,6 +699,7 @@ impl SelfState {
                 already_owned = true;
                 break;
             }
+
             i += 1;
         }
 
@@ -762,6 +766,7 @@ impl SelfState {
                 ItemId::OverlordsBloodmail => added_ad += 0.025 * health_delta,
                 _ => {}
             }
+
             i += 1;
         }
 
@@ -838,12 +843,14 @@ impl EnemyFullState {
             self.current_stats.armor,
             accept_negatives,
         );
+
         self.magic_values = RiotFormulas::real_resist(
             shred.magic_penetration_percent,
             shred.magic_penetration_flat,
             self.current_stats.magic_resist,
             accept_negatives,
         );
+
         self
     }
 
@@ -1018,6 +1025,7 @@ pub const fn ability_id_mod(
     modifiers: Modifiers,
 ) -> f32 {
     let Modifiers { damages, abilities } = modifiers;
+
     damages.modifier(damage_type) * abilities.modifier(ability_id)
 }
 
@@ -1125,6 +1133,7 @@ impl Damages {
                 let closure = unsafe { closures.get_unchecked(i) };
                 let modifier = ability_id_mod(kind, damage_type, modifiers);
                 let damage = (modifier * closure(ctx)) as i32;
+
                 onhit.inc_attr(attributes, damage);
                 damage
             })
@@ -1247,10 +1256,13 @@ pub const fn get_tower_damages(
             pen_percent,
             pen_flat,
         );
+
         unsafe {
             (&raw mut (*tower_ptr)[i]).write(damage);
         }
+
         i += 1;
     }
+
     unsafe { tower_damages.assume_init() }
 }

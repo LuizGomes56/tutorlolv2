@@ -3,9 +3,6 @@
 extern crate alloc;
 
 #[cfg(feature = "yew")]
-extern crate std;
-
-#[cfg(feature = "yew")]
 pub mod yew;
 
 pub mod bitset;

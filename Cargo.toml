@@ -18,7 +18,7 @@ bincode = { version = "2.0.1", default-features = false, features = [
     "alloc",
     "derive",
 ] }
-const_sized_bit_set = "0.5.0"
+const_sized_bit_set = { version = "0.5.0", default-features = false }
 pastey = "0.2.3"
 phf = { version = "0.13.1", default-features = false, features = ["macros"] }
 serde = { version = "1.0", default-features = false, features = [

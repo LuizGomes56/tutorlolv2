@@ -9,9 +9,12 @@ pub mod generator;
 pub mod render;
 
 pub use build::{BuilderStats, CtxResolver, FormulaDbBuilder, FormulaSource};
-pub use common::{DamageSlot, EntityKind, Error, MAGIC, VERSION};
+pub use common::{DamageSlot, EntityKind, Error, MAGIC, ParseError, VERSION};
 pub use generator::{
     ClassOverride, GeneratorBuildOutput, GeneratorDb, GeneratorDbBuilder, GeneratorError,
     GeneratorStats,
 };
 pub use render::{Bracket, Class, FormulaDb, Highlighter};
+
+#[cfg(test)]
+mod const_parsing_tests;

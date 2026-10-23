@@ -13,6 +13,7 @@
 //! discriminant/index of `ChampionId`, `ItemId`, or `RuneId` in the consuming
 //! crate. Missing owners cost one bit in the presence bitmap and no stream bytes.
 
+use crate::common::const_try;
 use crate::{
     common::EntityKind,
     render::{Class, Highlighter as HtmlHighlighter},
@@ -430,6 +431,7 @@ impl ScanSink for FrequencySink<'_> {
         literal_encoded_len(style, text.len())?;
 
         let values = self.values.entry(style).or_default();
+
         if let Some(count) = values.get_mut(text) {
             *count = count.saturating_add(1);
         } else {
@@ -585,8 +587,10 @@ impl GeneratorDbBuilder {
 
         let champion_count = u16::try_from(champions.len())
             .map_err(|_| GeneratorError::Corrupt("champion owner count overflow"))?;
+
         let item_count = u16::try_from(items.len())
             .map_err(|_| GeneratorError::Corrupt("item owner count overflow"))?;
+
         let rune_count = u16::try_from(runes.len())
             .map_err(|_| GeneratorError::Corrupt("rune owner count overflow"))?;
 
@@ -625,21 +629,27 @@ impl GeneratorDbBuilder {
         if dictionary_data.len() > u16::MAX as usize {
             return Err(GeneratorError::DictionaryTooLarge);
         }
+
         atom_offsets.push(dictionary_data.len() as u16);
 
         let atom_count =
             u16::try_from(pool.values.len()).map_err(|_| GeneratorError::TooManyAtoms)?;
+
         let champion_present_u16 = u16::try_from(champions_present)
             .map_err(|_| GeneratorError::Corrupt("champion present count overflow"))?;
+
         let item_present_u16 = u16::try_from(items_present)
             .map_err(|_| GeneratorError::Corrupt("item present count overflow"))?;
+
         let rune_present_u16 = u16::try_from(runes_present)
             .map_err(|_| GeneratorError::Corrupt("rune present count overflow"))?;
 
         let presence_bytes =
             champion_index.presence.len() + item_index.presence.len() + rune_index.presence.len();
+
         let offset_count =
             champion_index.offsets.len() + item_index.offsets.len() + rune_index.offsets.len();
+
         let offset_bytes = offset_count * owner_offset_width;
         let index_bytes = presence_bytes + offset_bytes;
         let dictionary_bytes = atom_offsets.len() * 2 + dictionary_data.len();
@@ -675,6 +685,7 @@ impl GeneratorDbBuilder {
         for offset in atom_offsets {
             writer.u16(offset);
         }
+
         writer.bytes(&dictionary_data);
 
         writer
@@ -822,6 +833,7 @@ impl AtomPool {
         }
 
         let mut ids = HashMap::<u8, HashMap<Box<str>, u16>>::new();
+
         for (index, atom) in values.iter().enumerate() {
             ids.entry(atom.style)
                 .or_default()
@@ -871,6 +883,7 @@ impl ScanSink for EncoderSink<'_> {
         if text.is_empty() {
             return Ok(());
         }
+
         self.pool.encode(class, text, self.out)
     }
 
@@ -977,27 +990,29 @@ fn stream_offset(len: usize) -> Result<u32, GeneratorError> {
     u32::try_from(len).map_err(|_| GeneratorError::StreamTooLarge)
 }
 
-fn bitmap_len(count: usize) -> usize {
+const fn bitmap_len(count: usize) -> usize {
     count.div_ceil(8)
 }
 
-fn bitmap_set(bitmap: &mut [u8], index: usize) {
+const fn bitmap_set(bitmap: &mut [u8], index: usize) {
     bitmap[index >> 3] |= 1u8 << (index & 7);
 }
 
-fn bitmap_get(bitmap: &[u8], index: usize) -> bool {
+const fn bitmap_get(bitmap: &[u8], index: usize) -> bool {
     bitmap[index >> 3] & (1u8 << (index & 7)) != 0
 }
 
 /// Number of present owners with logical index strictly less than `index`.
-fn bitmap_rank(bitmap: &[u8], index: usize) -> usize {
+const fn bitmap_rank(bitmap: &[u8], index: usize) -> usize {
     let full_bytes = index >> 3;
     let remaining = index & 7;
 
-    let mut rank = bitmap[..full_bytes]
-        .iter()
-        .map(|value| value.count_ones() as usize)
-        .sum::<usize>();
+    let mut rank = 0;
+    let mut i = 0;
+    while i < full_bytes {
+        rank += bitmap[i].count_ones() as usize;
+        i += 1;
+    }
 
     if remaining != 0 {
         let mask = ((1u16 << remaining) - 1) as u8;
@@ -1055,15 +1070,19 @@ pub struct GeneratorDb<'a> {
 }
 
 impl<'a> GeneratorDb<'a> {
-    pub fn new(bytes: &'a [u8]) -> Result<Self, GeneratorError> {
+    pub const fn new(bytes: &'a [u8]) -> Result<Self, GeneratorError> {
         Self::parse(bytes)
     }
 
-    pub fn parse(bytes: &'a [u8]) -> Result<Self, GeneratorError> {
+    pub const fn parse(bytes: &'a [u8]) -> Result<Self, GeneratorError> {
         if bytes.len() < HEADER_LEN {
             return Err(GeneratorError::Corrupt("buffer is shorter than header"));
         }
-        if bytes[0..4] != GENERATOR_MAGIC {
+        if bytes[0] != GENERATOR_MAGIC[0]
+            || bytes[1] != GENERATOR_MAGIC[1]
+            || bytes[2] != GENERATOR_MAGIC[2]
+            || bytes[3] != GENERATOR_MAGIC[3]
+        {
             return Err(GeneratorError::Corrupt("bad generator magic"));
         }
         if bytes[4] != GENERATOR_VERSION {
@@ -1075,23 +1094,23 @@ impl<'a> GeneratorDb<'a> {
             return Err(GeneratorError::Corrupt("unknown generator flags"));
         }
 
-        let header_len = read_u16_at(bytes, 6)? as usize;
+        let header_len = const_try!(read_u16_at(bytes, 6)) as usize;
         if header_len != HEADER_LEN {
             return Err(GeneratorError::Corrupt(
                 "unexpected generator header length",
             ));
         }
 
-        let champion_count = read_u16_at(bytes, 8)?;
-        let item_count = read_u16_at(bytes, 10)?;
-        let rune_count = read_u16_at(bytes, 12)?;
-        let atoms = read_u16_at(bytes, 14)?;
+        let champion_count = const_try!(read_u16_at(bytes, 8));
+        let item_count = const_try!(read_u16_at(bytes, 10));
+        let rune_count = const_try!(read_u16_at(bytes, 12));
+        let atoms = const_try!(read_u16_at(bytes, 14));
         let direct_atoms = bytes[16];
-        let dictionary_data_len = read_u16_at(bytes, 18)?;
-        let stream_data_len = read_u32_at(bytes, 20)?;
-        let champion_present = read_u16_at(bytes, 24)?;
-        let item_present = read_u16_at(bytes, 26)?;
-        let rune_present = read_u16_at(bytes, 28)?;
+        let dictionary_data_len = const_try!(read_u16_at(bytes, 18));
+        let stream_data_len = const_try!(read_u32_at(bytes, 20));
+        let champion_present = const_try!(read_u16_at(bytes, 24));
+        let item_present = const_try!(read_u16_at(bytes, 26));
+        let rune_present = const_try!(read_u16_at(bytes, 28));
 
         if direct_atoms as usize > DIRECT_ATOM_LIMIT || direct_atoms as u16 > atoms {
             return Err(GeneratorError::Corrupt("invalid direct atom count"));
@@ -1112,26 +1131,36 @@ impl<'a> GeneratorDb<'a> {
         };
 
         let atom_offsets = HEADER_LEN;
-        let atom_data = checked_add(atom_offsets, checked_mul(atoms as usize + 1, 2)?)?;
+        let atom_data = const_try!(checked_add(
+            atom_offsets,
+            const_try!(checked_mul(atoms as usize + 1, 2))
+        ));
 
-        let champion_presence = checked_add(atom_data, dictionary_data_len as usize)?;
-        let item_presence = checked_add(champion_presence, bitmap_len(champion_count as usize))?;
-        let rune_presence = checked_add(item_presence, bitmap_len(item_count as usize))?;
+        let champion_presence = const_try!(checked_add(atom_data, dictionary_data_len as usize));
+        let item_presence = const_try!(checked_add(
+            champion_presence,
+            bitmap_len(champion_count as usize)
+        ));
+        let rune_presence = const_try!(checked_add(item_presence, bitmap_len(item_count as usize)));
 
-        let champion_offsets = checked_add(rune_presence, bitmap_len(rune_count as usize))?;
-        let item_offsets = checked_add(
+        let champion_offsets =
+            const_try!(checked_add(rune_presence, bitmap_len(rune_count as usize)));
+        let item_offsets = const_try!(checked_add(
             champion_offsets,
-            checked_mul(champion_present as usize + 1, owner_offset_width)?,
-        )?;
-        let rune_offsets = checked_add(
+            const_try!(checked_mul(
+                champion_present as usize + 1,
+                owner_offset_width
+            )),
+        ));
+        let rune_offsets = const_try!(checked_add(
             item_offsets,
-            checked_mul(item_present as usize + 1, owner_offset_width)?,
-        )?;
-        let stream_data = checked_add(
+            const_try!(checked_mul(item_present as usize + 1, owner_offset_width)),
+        ));
+        let stream_data = const_try!(checked_add(
             rune_offsets,
-            checked_mul(rune_present as usize + 1, owner_offset_width)?,
-        )?;
-        let end = checked_add(stream_data, stream_data_len as usize)?;
+            const_try!(checked_mul(rune_present as usize + 1, owner_offset_width)),
+        ));
+        let end = const_try!(checked_add(stream_data, stream_data_len as usize));
 
         if end != bytes.len() {
             return Err(GeneratorError::Corrupt(
@@ -1171,50 +1200,50 @@ impl<'a> GeneratorDb<'a> {
             },
         };
 
-        db.validate()?;
+        const_try!(db.validate());
         Ok(db)
     }
 
-    pub fn champion_count(&self) -> u16 {
+    pub const fn champion_count(&self) -> u16 {
         self.layout.champion.count
     }
 
-    pub fn item_count(&self) -> u16 {
+    pub const fn item_count(&self) -> u16 {
         self.layout.item.count
     }
 
-    pub fn rune_count(&self) -> u16 {
+    pub const fn rune_count(&self) -> u16 {
         self.layout.rune.count
     }
 
-    pub fn atom_count(&self) -> u16 {
+    pub const fn atom_count(&self) -> u16 {
         self.atoms
     }
 
-    pub fn direct_atom_count(&self) -> u8 {
+    pub const fn direct_atom_count(&self) -> u8 {
         self.direct_atoms
     }
 
-    pub fn has_generator(
+    pub const fn has_generator(
         &self,
         kind: EntityKind,
         owner_index: u16,
     ) -> Result<bool, GeneratorError> {
         let table = self.owner_table(kind);
-        self.validate_owner_index(kind, table, owner_index)?;
-        let bitmap = self.owner_bitmap(table)?;
+        const_try!(self.validate_owner_index(kind, table, owner_index));
+        let bitmap = const_try!(self.owner_bitmap(table));
         Ok(bitmap_get(bitmap, owner_index as usize))
     }
 
-    pub fn entity_bytes(
+    pub const fn entity_bytes(
         &self,
         kind: EntityKind,
         owner_index: u16,
     ) -> Result<Option<&'a [u8]>, GeneratorError> {
         let table = self.owner_table(kind);
-        self.validate_owner_index(kind, table, owner_index)?;
+        const_try!(self.validate_owner_index(kind, table, owner_index));
 
-        let bitmap = self.owner_bitmap(table)?;
+        let bitmap = const_try!(self.owner_bitmap(table));
         if !bitmap_get(bitmap, owner_index as usize) {
             return Ok(None);
         }
@@ -1226,19 +1255,27 @@ impl<'a> GeneratorDb<'a> {
             ));
         }
 
-        let start = self.owner_offset(table, ordinal)? as usize;
-        let end = self.owner_offset(table, ordinal + 1)? as usize;
+        let start = const_try!(self.owner_offset(table, ordinal)) as usize;
+        let end = const_try!(self.owner_offset(table, ordinal + 1)) as usize;
 
         if end < start || end > self.stream_data_len as usize {
             return Err(GeneratorError::Corrupt("bad generator owner byte range"));
         }
 
-        self.bytes
-            .get(self.layout.stream_data + start..self.layout.stream_data + end)
-            .map(Some)
-            .ok_or(GeneratorError::Corrupt(
+        let absolute_start = const_try!(checked_add(self.layout.stream_data, start));
+        let absolute_end = const_try!(checked_add(self.layout.stream_data, end));
+        if absolute_end > self.bytes.len() {
+            return Err(GeneratorError::Corrupt(
                 "generator owner slice out of bounds",
-            ))
+            ));
+        }
+        Ok(Some(
+            self.bytes
+                .split_at(absolute_start)
+                .1
+                .split_at(end - start)
+                .0,
+        ))
     }
 
     pub fn render_plain(
@@ -1298,7 +1335,7 @@ impl<'a> GeneratorDb<'a> {
         Ok(out)
     }
 
-    fn owner_table(&self, kind: EntityKind) -> OwnerTableLayout {
+    const fn owner_table(&self, kind: EntityKind) -> OwnerTableLayout {
         match kind {
             EntityKind::Champion => self.layout.champion,
             EntityKind::Item => self.layout.item,
@@ -1306,7 +1343,7 @@ impl<'a> GeneratorDb<'a> {
         }
     }
 
-    fn validate_owner_index(
+    const fn validate_owner_index(
         &self,
         kind: EntityKind,
         table: OwnerTableLayout,
@@ -1322,29 +1359,41 @@ impl<'a> GeneratorDb<'a> {
         Ok(())
     }
 
-    fn owner_bitmap(&self, table: OwnerTableLayout) -> Result<&'a [u8], GeneratorError> {
+    const fn owner_bitmap(&self, table: OwnerTableLayout) -> Result<&'a [u8], GeneratorError> {
         let len = bitmap_len(table.count as usize);
-        self.bytes
-            .get(table.presence..table.presence + len)
-            .ok_or(GeneratorError::Corrupt(
+        let end = const_try!(checked_add(table.presence, len));
+        if end > self.bytes.len() {
+            return Err(GeneratorError::Corrupt(
                 "owner presence bitmap out of bounds",
-            ))
+            ));
+        }
+        Ok(self.bytes.split_at(table.presence).1.split_at(len).0)
     }
 
-    fn owner_offset(&self, table: OwnerTableLayout, ordinal: usize) -> Result<u32, GeneratorError> {
+    const fn owner_offset(
+        &self,
+        table: OwnerTableLayout,
+        ordinal: usize,
+    ) -> Result<u32, GeneratorError> {
         if ordinal > table.present as usize {
             return Err(GeneratorError::Corrupt("owner offset ordinal out of range"));
         }
 
-        let pos = table
-            .offsets
-            .checked_add(ordinal.checked_mul(self.layout.owner_offset_width).ok_or(
-                GeneratorError::Corrupt("owner offset multiplication overflow"),
-            )?)
-            .ok_or(GeneratorError::Corrupt("owner offset overflow"))?;
+        let relative = match ordinal.checked_mul(self.layout.owner_offset_width) {
+            Some(value) => value,
+            None => {
+                return Err(GeneratorError::Corrupt(
+                    "owner offset multiplication overflow",
+                ));
+            }
+        };
+        let pos = match table.offsets.checked_add(relative) {
+            Some(value) => value,
+            None => return Err(GeneratorError::Corrupt("owner offset overflow")),
+        };
 
         if self.layout.owner_offset_width == 2 {
-            Ok(read_u16_at(self.bytes, pos)? as u32)
+            Ok(const_try!(read_u16_at(self.bytes, pos)) as u32)
         } else {
             read_u32_at(self.bytes, pos)
         }
@@ -1377,23 +1426,26 @@ impl<'a> GeneratorDb<'a> {
         Ok(AtomView { class, text })
     }
 
-    fn atom_offset(&self, index: u16) -> Result<u16, GeneratorError> {
+    const fn atom_offset(&self, index: u16) -> Result<u16, GeneratorError> {
         read_u16_at(self.bytes, self.layout.atom_offsets + index as usize * 2)
     }
 
-    fn validate(&self) -> Result<(), GeneratorError> {
-        self.validate_atom_offsets()?;
-        self.validate_owner_table(self.layout.champion)?;
-        self.validate_owner_table(self.layout.item)?;
-        self.validate_owner_table(self.layout.rune)?;
+    const fn validate(&self) -> Result<(), GeneratorError> {
+        const_try!(self.validate_atom_offsets());
+        const_try!(self.validate_owner_table(self.layout.champion));
+        const_try!(self.validate_owner_table(self.layout.item));
+        const_try!(self.validate_owner_table(self.layout.rune));
 
-        let champion_first = self.owner_offset(self.layout.champion, 0)?;
-        let champion_last =
-            self.owner_offset(self.layout.champion, self.layout.champion.present as usize)?;
-        let item_first = self.owner_offset(self.layout.item, 0)?;
-        let item_last = self.owner_offset(self.layout.item, self.layout.item.present as usize)?;
-        let rune_first = self.owner_offset(self.layout.rune, 0)?;
-        let rune_last = self.owner_offset(self.layout.rune, self.layout.rune.present as usize)?;
+        let champion_first = const_try!(self.owner_offset(self.layout.champion, 0));
+        let champion_last = const_try!(
+            self.owner_offset(self.layout.champion, self.layout.champion.present as usize)
+        );
+        let item_first = const_try!(self.owner_offset(self.layout.item, 0));
+        let item_last =
+            const_try!(self.owner_offset(self.layout.item, self.layout.item.present as usize));
+        let rune_first = const_try!(self.owner_offset(self.layout.rune, 0));
+        let rune_last =
+            const_try!(self.owner_offset(self.layout.rune, self.layout.rune.present as usize));
 
         if champion_first != 0
             || champion_last != item_first
@@ -1408,14 +1460,16 @@ impl<'a> GeneratorDb<'a> {
         Ok(())
     }
 
-    fn validate_atom_offsets(&self) -> Result<(), GeneratorError> {
+    const fn validate_atom_offsets(&self) -> Result<(), GeneratorError> {
         let mut last = 0u16;
-        for index in 0..=self.atoms {
-            let offset = self.atom_offset(index)?;
+        let mut index = 0usize;
+        while index <= self.atoms as usize {
+            let offset = const_try!(self.atom_offset(index as u16));
             if offset < last || offset > self.dictionary_data_len {
                 return Err(GeneratorError::Corrupt("non-monotonic atom offsets"));
             }
             last = offset;
+            index += 1;
         }
 
         if last != self.dictionary_data_len {
@@ -1426,12 +1480,17 @@ impl<'a> GeneratorDb<'a> {
         Ok(())
     }
 
-    fn validate_owner_table(&self, table: OwnerTableLayout) -> Result<(), GeneratorError> {
-        let bitmap = self.owner_bitmap(table)?;
+    const fn validate_owner_table(&self, table: OwnerTableLayout) -> Result<(), GeneratorError> {
+        let bitmap = const_try!(self.owner_bitmap(table));
 
-        let actual_present = (0..table.count as usize)
-            .filter(|&index| bitmap_get(bitmap, index))
-            .count();
+        let mut actual_present = 0;
+        let mut index = 0;
+        while index < table.count as usize {
+            if bitmap_get(bitmap, index) {
+                actual_present += 1;
+            }
+            index += 1;
+        }
         if actual_present != table.present as usize {
             return Err(GeneratorError::Corrupt(
                 "presence bitmap count does not match header",
@@ -1451,8 +1510,9 @@ impl<'a> GeneratorDb<'a> {
 
         let mut last = None;
 
-        for ordinal in 0..=table.present as usize {
-            let offset = self.owner_offset(table, ordinal)?;
+        let mut ordinal = 0;
+        while ordinal <= table.present as usize {
+            let offset = const_try!(self.owner_offset(table, ordinal));
             if offset > self.stream_data_len {
                 return Err(GeneratorError::Corrupt(
                     "owner offset exceeds stream length",
@@ -1466,6 +1526,7 @@ impl<'a> GeneratorDb<'a> {
             }
 
             last = Some(offset);
+            ordinal += 1;
         }
 
         Ok(())
@@ -1657,34 +1718,45 @@ impl BinWriter {
     }
 }
 
-fn read_u16_at(bytes: &[u8], pos: usize) -> Result<u16, GeneratorError> {
-    let end = pos
-        .checked_add(2)
-        .ok_or(GeneratorError::Corrupt("u16 offset overflow"))?;
-    let slice = bytes
-        .get(pos..end)
-        .ok_or(GeneratorError::Corrupt("u16 out of bounds"))?;
-    Ok(u16::from_le_bytes(slice.try_into().unwrap()))
+const fn read_u16_at(bytes: &[u8], pos: usize) -> Result<u16, GeneratorError> {
+    let end = match pos.checked_add(2) {
+        Some(end) => end,
+        None => return Err(GeneratorError::Corrupt("u16 offset overflow")),
+    };
+    if end > bytes.len() {
+        return Err(GeneratorError::Corrupt("u16 out of bounds"));
+    }
+    Ok(u16::from_le_bytes([bytes[pos], bytes[pos + 1]]))
 }
 
-fn read_u32_at(bytes: &[u8], pos: usize) -> Result<u32, GeneratorError> {
-    let end = pos
-        .checked_add(4)
-        .ok_or(GeneratorError::Corrupt("u32 offset overflow"))?;
-    let slice = bytes
-        .get(pos..end)
-        .ok_or(GeneratorError::Corrupt("u32 out of bounds"))?;
-    Ok(u32::from_le_bytes(slice.try_into().unwrap()))
+const fn read_u32_at(bytes: &[u8], pos: usize) -> Result<u32, GeneratorError> {
+    let end = match pos.checked_add(4) {
+        Some(end) => end,
+        None => return Err(GeneratorError::Corrupt("u32 offset overflow")),
+    };
+    if end > bytes.len() {
+        return Err(GeneratorError::Corrupt("u32 out of bounds"));
+    }
+    Ok(u32::from_le_bytes([
+        bytes[pos],
+        bytes[pos + 1],
+        bytes[pos + 2],
+        bytes[pos + 3],
+    ]))
 }
 
-fn checked_add(a: usize, b: usize) -> Result<usize, GeneratorError> {
-    a.checked_add(b)
-        .ok_or(GeneratorError::Corrupt("section offset overflow"))
+const fn checked_add(a: usize, b: usize) -> Result<usize, GeneratorError> {
+    match a.checked_add(b) {
+        Some(value) => Ok(value),
+        None => Err(GeneratorError::Corrupt("section offset overflow")),
+    }
 }
 
-fn checked_mul(a: usize, b: usize) -> Result<usize, GeneratorError> {
-    a.checked_mul(b)
-        .ok_or(GeneratorError::Corrupt("section size overflow"))
+const fn checked_mul(a: usize, b: usize) -> Result<usize, GeneratorError> {
+    match a.checked_mul(b) {
+        Some(value) => Ok(value),
+        None => Err(GeneratorError::Corrupt("section size overflow")),
+    }
 }
 
 fn class_from_u8(value: u8) -> Result<Class, GeneratorError> {

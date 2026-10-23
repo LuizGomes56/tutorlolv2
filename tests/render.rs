@@ -12,6 +12,19 @@ static CSS: &str = include_str!("../style.css");
 fn pack_repr_build() -> MayFail {
     let mut html = format!("<html><head><style>{CSS}</style></head><body><pre>");
 
+    for builtin in [
+        FormulaRenderer::ignite_fn(),
+        FormulaRenderer::onhit_effect_global(),
+        FormulaRenderer::onhit_effect_fn(),
+        FormulaRenderer::critical_strike_global(),
+        FormulaRenderer::critical_strike_fn(),
+        FormulaRenderer::basic_attack_global(),
+        FormulaRenderer::basic_attack_fn(),
+    ] {
+        html.push_str(&builtin);
+        html.push_str("\n\n");
+    }
+
     html += &FormulaRenderer::tower_global();
     html += "\n";
     html += &FormulaRenderer::tower_fn();
@@ -60,4 +73,21 @@ fn pack_repr_build() -> MayFail {
     std::fs::write("render.html", html)?;
 
     Ok(())
+}
+
+#[test]
+fn builtin_comments_are_highlighted_without_delimiters() {
+    let comment = tutorlolv2_codec::Highlighter::span(
+        tutorlolv2_codec::Class::Comment,
+        "* physical_multiplier",
+    );
+    for html in [
+        FormulaRenderer::critical_strike_fn(),
+        FormulaRenderer::basic_attack_global(),
+        FormulaRenderer::basic_attack_fn(),
+    ] {
+        assert!(html.contains(&comment));
+        assert!(!html.contains("/*"));
+        assert!(!html.contains("*/"));
+    }
 }

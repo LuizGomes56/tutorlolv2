@@ -3,6 +3,7 @@ use crate::common::{
     OP_MATCH_BLOCK, OP_MATCH_INLINE, OP_NEG, OP_NUM_CONST, OP_NUM_F32, OP_NUM_I8, OP_NUM_U8,
     OP_REF_LOCAL, VERSION,
 };
+use crate::common::{ParseError, const_try};
 use heck::ToPascalCase;
 use std::convert::TryInto;
 use std::fmt::{self, Display};
@@ -67,82 +68,110 @@ pub struct FormulaDb<'a> {
 }
 
 impl<'a> FormulaDb<'a> {
-    pub fn new(bytes: &'a [u8]) -> Result<Self, Error> {
+    pub const fn new(bytes: &'a [u8]) -> Result<Self, ParseError> {
         let mut this = Self {
             bytes,
-            ..Default::default()
+            constants: 0,
+            matches: 0,
+            champions: 0,
+            items: 0,
+            runes: 0,
+            formulas: 0,
+            match_data_len: 0,
+            layout: Layout {
+                constant_pool: 0,
+                match_offsets: 0,
+                champion_bases: 0,
+                item_entries: 0,
+                rune_entries: 0,
+                formula_offsets: 0,
+                match_data: 0,
+                formula_data: 0,
+            },
         };
 
-        this.parse()?;
+        const_try!(this.parse());
         Ok(this)
     }
 
-    pub fn u16_at(&self, offset: usize) -> Result<u16, Error> {
-        let end = offset
-            .checked_add(2)
-            .ok_or(Error::Corrupt("offset overflow"))?;
-
-        let slice = self
-            .bytes
-            .get(offset..end)
-            .ok_or(Error::Corrupt("u16 out of bounds"))?;
-
-        Ok(u16::from_le_bytes(slice.try_into().unwrap()))
+    pub const fn u16_at(&self, offset: usize) -> Result<u16, ParseError> {
+        let end = match offset.checked_add(2) {
+            Some(end) => end,
+            None => return Err(ParseError::Corrupt("offset overflow")),
+        };
+        if end > self.bytes.len() {
+            return Err(ParseError::Corrupt("u16 out of bounds"));
+        }
+        Ok(u16::from_le_bytes([
+            self.bytes[offset],
+            self.bytes[offset + 1],
+        ]))
     }
 
-    pub fn u32_at(&self, offset: usize) -> Result<u32, Error> {
-        let end = offset
-            .checked_add(4)
-            .ok_or(Error::Corrupt("offset overflow"))?;
-
-        let slice = self
-            .bytes
-            .get(offset..end)
-            .ok_or(Error::Corrupt("u32 out of bounds"))?;
-
-        Ok(u32::from_le_bytes(slice.try_into().unwrap()))
+    pub const fn u32_at(&self, offset: usize) -> Result<u32, ParseError> {
+        let end = match offset.checked_add(4) {
+            Some(end) => end,
+            None => return Err(ParseError::Corrupt("offset overflow")),
+        };
+        if end > self.bytes.len() {
+            return Err(ParseError::Corrupt("u32 out of bounds"));
+        }
+        Ok(u32::from_le_bytes([
+            self.bytes[offset],
+            self.bytes[offset + 1],
+            self.bytes[offset + 2],
+            self.bytes[offset + 3],
+        ]))
     }
 
-    pub fn parse(&mut self) -> Result<(), Error> {
+    pub const fn parse(&mut self) -> Result<(), ParseError> {
         if self.bytes.len() < HEADER_LEN {
-            return Err(Error::Corrupt("buffer is shorter than header"));
+            return Err(ParseError::Corrupt("buffer is shorter than header"));
         }
 
-        if self.bytes[0..4] != MAGIC {
-            return Err(Error::Corrupt("bad magic"));
+        if self.bytes[0] != MAGIC[0]
+            || self.bytes[1] != MAGIC[1]
+            || self.bytes[2] != MAGIC[2]
+            || self.bytes[3] != MAGIC[3]
+        {
+            return Err(ParseError::Corrupt("bad magic"));
         }
 
         if self.bytes[4] != VERSION {
-            return Err(Error::Corrupt("unsupported version"));
+            return Err(ParseError::Corrupt("unsupported version"));
         }
 
-        if self.u16_at(6)? as usize != HEADER_LEN {
-            return Err(Error::Corrupt("unexpected header length"));
+        if const_try!(self.u16_at(6)) as usize != HEADER_LEN {
+            return Err(ParseError::Corrupt("unexpected header length"));
         }
 
-        let constants = self.u16_at(8)?;
-        let matches = self.u16_at(10)?;
-        let champions = self.u16_at(12)?;
-        let items = self.u16_at(14)?;
-        let runes = self.u16_at(16)?;
-        let formulas = self.u16_at(18)?;
-        let match_data_len = self.u32_at(20)?;
+        let constants = const_try!(self.u16_at(8));
+        let matches = const_try!(self.u16_at(10));
+        let champions = const_try!(self.u16_at(12));
+        let items = const_try!(self.u16_at(14));
+        let runes = const_try!(self.u16_at(16));
+        let formulas = const_try!(self.u16_at(18));
+        let match_data_len = const_try!(self.u32_at(20));
 
         if constants > 256 || matches > 256 {
-            return Err(Error::Corrupt("u8-indexed pool exceeds 256 entries"));
+            return Err(ParseError::Corrupt("u8-indexed pool exceeds 256 entries"));
         }
 
         let constant_pool = HEADER_LEN;
-        let match_offsets = Self::checked_add(constant_pool, constants as usize * 4)?;
-        let champion_bases = Self::checked_add(match_offsets, (matches as usize + 1) * 4)?;
-        let item_entries = Self::checked_add(champion_bases, champions as usize * 2)?;
-        let rune_entries = Self::checked_add(item_entries, items as usize * 3)?;
-        let formula_offsets = Self::checked_add(rune_entries, runes as usize * 3)?;
-        let match_data = Self::checked_add(formula_offsets, (formulas as usize + 1) * 4)?;
-        let formula_data = Self::checked_add(match_data, match_data_len as usize)?;
+        let match_offsets = const_try!(Self::checked_add(constant_pool, constants as usize * 4));
+        let champion_bases =
+            const_try!(Self::checked_add(match_offsets, (matches as usize + 1) * 4));
+        let item_entries = const_try!(Self::checked_add(champion_bases, champions as usize * 2));
+        let rune_entries = const_try!(Self::checked_add(item_entries, items as usize * 3));
+        let formula_offsets = const_try!(Self::checked_add(rune_entries, runes as usize * 3));
+        let match_data = const_try!(Self::checked_add(
+            formula_offsets,
+            (formulas as usize + 1) * 4
+        ));
+        let formula_data = const_try!(Self::checked_add(match_data, match_data_len as usize));
 
         if formula_data > self.bytes.len() {
-            return Err(Error::Corrupt("section layout exceeds buffer"));
+            return Err(ParseError::Corrupt("section layout exceeds buffer"));
         }
 
         *self = Self {
@@ -169,18 +198,22 @@ impl<'a> FormulaDb<'a> {
         self.validate_offsets()
     }
 
-    pub fn champion_formula_id(&self, id: u16, local: u8) -> Option<u16> {
+    pub const fn champion_formula_id(&self, id: u16, local: u8) -> Option<u16> {
         if id >= self.champions {
             return None;
         }
 
-        self.u16_at(self.layout.champion_bases + id as usize * 2)
-            .ok()?
-            .checked_add(local as u16)
-            .filter(|id| *id < self.formulas)
+        let base = match self.u16_at(self.layout.champion_bases + id as usize * 2) {
+            Ok(value) => value,
+            Err(_) => return None,
+        };
+        match base.checked_add(local as u16) {
+            Some(id) if id < self.formulas => Some(id),
+            _ => None,
+        }
     }
 
-    pub fn item_or_rune_formula_id(
+    pub const fn item_or_rune_formula_id(
         &self,
         kind: EntityKind,
         id: u16,
@@ -197,8 +230,14 @@ impl<'a> FormulaDb<'a> {
         }
 
         let pos = start + id as usize * 3;
-        let first = self.u16_at(pos).ok()?;
-        let mask = *self.bytes.get(pos + 2)?;
+        let first = match self.u16_at(pos) {
+            Ok(value) => value,
+            Err(_) => return None,
+        };
+        if pos + 2 >= self.bytes.len() {
+            return None;
+        }
+        let mask = self.bytes[pos + 2];
         let bit = slot.bit();
 
         if mask & bit == 0 {
@@ -212,19 +251,36 @@ impl<'a> FormulaDb<'a> {
         };
 
         let rank = before_mask.count_ones() as u16;
-        first.checked_add(rank).filter(|id| *id < self.formulas)
+        match first.checked_add(rank) {
+            Some(id) if id < self.formulas => Some(id),
+            _ => None,
+        }
     }
 
-    pub fn formula_bytes(&self, formula_id: u16) -> Option<&'a [u8]> {
+    pub const fn formula_bytes(&self, formula_id: u16) -> Option<&'a [u8]> {
         if formula_id >= self.formulas {
             return None;
         }
 
-        let start = self.formula_offset(formula_id).ok()? as usize;
-        let end = self.formula_offset(formula_id + 1).ok()? as usize;
+        let start = match self.formula_offset(formula_id) {
+            Ok(value) => value as usize,
+            Err(_) => return None,
+        };
+        let end = match self.formula_offset(formula_id + 1) {
+            Ok(value) => value as usize,
+            Err(_) => return None,
+        };
 
-        self.bytes
-            .get(self.layout.formula_data + start..self.layout.formula_data + end)
+        if start > end || end > self.bytes.len() - self.layout.formula_data {
+            return None;
+        }
+        Some(
+            self.bytes
+                .split_at(self.layout.formula_data + start)
+                .1
+                .split_at(end - start)
+                .0,
+        )
     }
 
     pub fn render_formula_plain<FC, FR>(
@@ -314,46 +370,52 @@ impl<'a> FormulaDb<'a> {
             .ok_or(Error::Corrupt("match slice out of bounds"))
     }
 
-    fn match_offset(&self, index: u16) -> Result<u32, Error> {
+    const fn match_offset(&self, index: u16) -> Result<u32, ParseError> {
         self.u32_at(self.layout.match_offsets + index as usize * 4)
     }
 
-    fn formula_offset(&self, index: u16) -> Result<u32, Error> {
+    const fn formula_offset(&self, index: u16) -> Result<u32, ParseError> {
         self.u32_at(self.layout.formula_offsets + index as usize * 4)
     }
 
-    fn validate_offsets(&self) -> Result<(), Error> {
+    const fn validate_offsets(&self) -> Result<(), ParseError> {
         let mut last = 0u32;
 
-        for index in 0..=self.matches {
-            let value = self.match_offset(index)?;
+        let mut index = 0usize;
+        while index <= self.matches as usize {
+            let value = const_try!(self.match_offset(index as u16));
 
             if value < last || value > self.match_data_len {
-                return Err(Error::Corrupt("non-monotonic match offsets"));
+                return Err(ParseError::Corrupt("non-monotonic match offsets"));
             }
 
             last = value;
+            index += 1;
         }
 
         if last != self.match_data_len {
-            return Err(Error::Corrupt("match offsets do not end at match_data_len"));
+            return Err(ParseError::Corrupt(
+                "match offsets do not end at match_data_len",
+            ));
         }
 
         let formula_data_len = self.bytes.len() - self.layout.formula_data;
         let mut last = 0u32;
 
-        for index in 0..=self.formulas {
-            let value = self.formula_offset(index)?;
+        let mut index = 0usize;
+        while index <= self.formulas as usize {
+            let value = const_try!(self.formula_offset(index as u16));
 
             if value < last || value as usize > formula_data_len {
-                return Err(Error::Corrupt("non-monotonic formula offsets"));
+                return Err(ParseError::Corrupt("non-monotonic formula offsets"));
             }
 
             last = value;
+            index += 1;
         }
 
         if last as usize != formula_data_len {
-            return Err(Error::Corrupt(
+            return Err(ParseError::Corrupt(
                 "formula offsets do not end at formula data end",
             ));
         }
@@ -361,9 +423,11 @@ impl<'a> FormulaDb<'a> {
         Ok(())
     }
 
-    fn checked_add(a: usize, b: usize) -> Result<usize, Error> {
-        a.checked_add(b)
-            .ok_or(Error::Corrupt("section offset overflow"))
+    const fn checked_add(a: usize, b: usize) -> Result<usize, ParseError> {
+        match a.checked_add(b) {
+            Some(value) => Ok(value),
+            None => Err(ParseError::Corrupt("section offset overflow")),
+        }
     }
 }
 
@@ -645,7 +709,7 @@ struct Cursor<'a> {
 }
 
 impl<'a> Cursor<'a> {
-    fn new(bytes: &'a [u8]) -> Self {
+    const fn new(bytes: &'a [u8]) -> Self {
         Self { bytes, pos: 0 }
     }
 
