@@ -106,6 +106,51 @@ impl Modifiers {
     }
 }
 
+#[derive(Clone, Copy)]
+struct DefensiveItemStats {
+    values: [f32; 4],
+    present: u8,
+}
+
+// Each item has at most one entry per relevant stat. Retain presence separately
+// so an absent stat does not introduce a floating-point addition of zero.
+const DEFENSIVE_ITEM_STATS: [DefensiveItemStats; ItemId::COUNT] = {
+    let mut result = [DefensiveItemStats {
+        values: [0.0; 4],
+        present: 0,
+    }; ItemId::COUNT];
+
+    let mut i = 0;
+
+    while i < ItemId::COUNT {
+        let stats = ItemId::from_repr(i as _).unwrap().stats();
+        let mut j = 0;
+
+        while j < stats.len() {
+            let (name, value) = stats[j];
+            let slot = match name {
+                StatName::Armor => 0,
+                StatName::MagicResist => 1,
+                StatName::Health => 2,
+                StatName::Mana => 3,
+                _ => 4,
+            };
+
+            if slot < 4 {
+                assert!(result[i].present & (1 << slot) == 0);
+                result[i].present |= 1 << slot;
+                result[i].values[slot] = value as f32;
+            }
+
+            j += 1;
+        }
+
+        i += 1;
+    }
+
+    result
+};
+
 impl SimpleStats {
     pub const fn base_stats(champion_id: ChampionId, level: NonZeroU8, is_mega_gnar: bool) -> Self {
         champion_id.base_stats(level, is_mega_gnar).simple()
@@ -120,21 +165,22 @@ impl SimpleStats {
         let mut i = 0;
 
         while i < items.len() {
-            let stats = items[i].stats();
-            let mut j = 0;
+            let stats = DEFENSIVE_ITEM_STATS[items[i] as usize];
 
-            while j < stats.len() {
-                let (stat_name, value) = stats[j];
-                let v = value as f32;
+            if stats.present & 1 != 0 {
+                self.armor += stats.values[0];
+            }
 
-                match stat_name {
-                    StatName::MagicResist => self.magic_resist += v,
-                    StatName::Health => self.max_health += v,
-                    StatName::Armor => self.armor += v,
-                    StatName::Mana => bonus_mana += v,
-                    _ => {}
-                }
-                j += 1;
+            if stats.present & 2 != 0 {
+                self.magic_resist += stats.values[1];
+            }
+
+            if stats.present & 4 != 0 {
+                self.max_health += stats.values[2];
+            }
+
+            if stats.present & 8 != 0 {
+                bonus_mana += stats.values[3];
             }
 
             i += 1;
@@ -475,90 +521,10 @@ impl EnemyState<'_> {
             magic_penetration_percent,
         } = shred;
 
-        let mut e_default_stats = base_stats;
-        let bonus_mana = e_default_stats.infer_stats(items, earth_dragons);
         let mut e_modifiers = DamageModifiers::default();
 
-        let mut i = 0;
-        while i < item_exceptions.len() {
-            let item_exception = item_exceptions[i];
-            let stacks = item_exception.stacks();
-
-            if let Some(item_id) = item_exception.get_item_id() {
-                match item_id {
-                    ItemId::WintersApproach | ItemId::Fimbulwinter => {
-                        e_default_stats.max_health += 0.15 * bonus_mana
-                    }
-                    ItemId::Dragonheart => {
-                        let modifier = 1.0 + 0.04 * stacks as f32;
-                        e_default_stats.max_health *= modifier;
-                        e_default_stats.armor *= modifier;
-                        e_default_stats.magic_resist *= modifier
-                    }
-                    ItemId::DemonKingsCrown => {
-                        let modifier = 1.0 + 0.01 * stacks as f32;
-                        e_default_stats.max_health *= modifier;
-                        e_default_stats.armor *= modifier;
-                        e_default_stats.magic_resist *= modifier
-                    }
-                    ItemId::WarmogsArmor => e_default_stats.max_health *= 1.12,
-                    _ => {}
-                }
-            }
-            i += 1;
-        }
-
-        match champion_id {
-            ChampionId::Swain => {
-                let stack_hp = 12 * stacks;
-                e_default_stats.max_health += stack_hp as f32;
-            }
-            ChampionId::Chogath => {
-                let stack_hp = stacks * 80
-                    + 40 * match level.get() {
-                        ..6 => 0,
-                        6..11 => 1,
-                        11..16 => 2,
-                        16.. => 3,
-                    };
-                e_default_stats.max_health += stack_hp as f32;
-            }
-            ChampionId::Sion => {
-                e_default_stats.max_health += stacks as f32;
-            }
-            ChampionId::Kassadin => {
-                // #![manual_impl]
-                e_modifiers.magic_mod *= 0.9;
-            }
-            ChampionId::Ornn => {
-                // Starts game with +10% armor/mr/hp already
-                // After level 13, player will start upgrading items
-                // At level 18, the maximum bonus must have been reached
-                // For every upgrade, a +4% resist is applied.
-                // #![manual_impl]
-                let ornn_resist_multiplier = match level.get() {
-                    ..13 => 1.1,
-                    13..18 => 1.1 + (level.get() - 12) as f32 * 0.04,
-                    18.. => 1.3,
-                };
-                e_default_stats.armor *= ornn_resist_multiplier;
-                e_default_stats.magic_resist *= ornn_resist_multiplier;
-                e_default_stats.max_health *= ornn_resist_multiplier;
-            }
-            ChampionId::Malphite => {
-                // W upgrade pattern for malphite by 06/07/2025
-                // #![manual_impl]
-                let malphite_resist_multiplier = match level.get() {
-                    ..3 => 1.0,
-                    3..14 => 1.1,
-                    14 => 1.15,
-                    15..17 => 1.2,
-                    17 => 1.25,
-                    18.. => 1.3,
-                };
-                e_default_stats.armor *= malphite_resist_multiplier;
-            }
-            _ => {}
+        if matches!(champion_id, ChampionId::Kassadin) {
+            e_modifiers.magic_mod *= 0.9;
         }
 
         let e_current_stats = match current_stats {
@@ -566,13 +532,98 @@ impl EnemyState<'_> {
                 missing_health: RiotFormulas::missing_health(s.current_health, s.max_health),
                 ..s
             },
-            None => EnemyStats {
-                armor: e_default_stats.armor,
-                current_health: e_default_stats.max_health,
-                magic_resist: e_default_stats.magic_resist,
-                max_health: e_default_stats.max_health,
-                missing_health: 1.0,
-            },
+            None => {
+                let mut e_default_stats = base_stats;
+                let bonus_mana = e_default_stats.infer_stats(items, earth_dragons);
+
+                let mut i = 0;
+
+                while i < item_exceptions.len() {
+                    let item_exception = item_exceptions[i];
+                    let stacks = item_exception.stacks();
+
+                    if let Some(item_id) = item_exception.get_item_id() {
+                        match item_id {
+                            ItemId::WintersApproach | ItemId::Fimbulwinter => {
+                                e_default_stats.max_health += 0.15 * bonus_mana
+                            }
+                            ItemId::Dragonheart => {
+                                let modifier = 1.0 + 0.04 * stacks as f32;
+                                e_default_stats.max_health *= modifier;
+                                e_default_stats.armor *= modifier;
+                                e_default_stats.magic_resist *= modifier
+                            }
+                            ItemId::DemonKingsCrown => {
+                                let modifier = 1.0 + 0.01 * stacks as f32;
+                                e_default_stats.max_health *= modifier;
+                                e_default_stats.armor *= modifier;
+                                e_default_stats.magic_resist *= modifier
+                            }
+                            ItemId::WarmogsArmor => e_default_stats.max_health *= 1.12,
+                            _ => {}
+                        }
+                    }
+
+                    i += 1;
+                }
+
+                match champion_id {
+                    ChampionId::Swain => {
+                        let stack_hp = 12 * stacks;
+                        e_default_stats.max_health += stack_hp as f32;
+                    }
+                    ChampionId::Chogath => {
+                        let stack_hp = stacks * 80
+                            + 40 * match level.get() {
+                                ..6 => 0,
+                                6..11 => 1,
+                                11..16 => 2,
+                                16.. => 3,
+                            };
+                        e_default_stats.max_health += stack_hp as f32;
+                    }
+                    ChampionId::Sion => {
+                        e_default_stats.max_health += stacks as f32;
+                    }
+                    ChampionId::Ornn => {
+                        // Starts game with +10% armor/mr/hp already
+                        // After level 13, player will start upgrading items
+                        // At level 18, the maximum bonus must have been reached
+                        // For every upgrade, a +4% resist is applied.
+                        // #![manual_impl]
+                        let ornn_resist_multiplier = match level.get() {
+                            ..13 => 1.1,
+                            13..18 => 1.1 + (level.get() - 12) as f32 * 0.04,
+                            18.. => 1.3,
+                        };
+                        e_default_stats.armor *= ornn_resist_multiplier;
+                        e_default_stats.magic_resist *= ornn_resist_multiplier;
+                        e_default_stats.max_health *= ornn_resist_multiplier;
+                    }
+                    ChampionId::Malphite => {
+                        // W upgrade pattern for malphite by 06/07/2025
+                        // #![manual_impl]
+                        let malphite_resist_multiplier = match level.get() {
+                            ..3 => 1.0,
+                            3..14 => 1.1,
+                            14 => 1.15,
+                            15..17 => 1.2,
+                            17 => 1.25,
+                            18.. => 1.3,
+                        };
+                        e_default_stats.armor *= malphite_resist_multiplier;
+                    }
+                    _ => {}
+                }
+
+                EnemyStats {
+                    armor: e_default_stats.armor,
+                    current_health: e_default_stats.max_health,
+                    magic_resist: e_default_stats.magic_resist,
+                    max_health: e_default_stats.max_health,
+                    missing_health: 1.0,
+                }
+            }
         };
 
         let armor_values = RiotFormulas::real_resist(
@@ -593,6 +644,7 @@ impl EnemyState<'_> {
 
         let mut origin = BitSet::EMPTY;
         let mut i = 0;
+
         while i < items.len() {
             origin.insert_const(items[i] as _);
             i += 1;
