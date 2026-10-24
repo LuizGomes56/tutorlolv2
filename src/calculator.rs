@@ -591,7 +591,7 @@ pub fn calculator(game: InputGame<'_>) -> OutputGame {
             current_stats: champion_stats,
             champion_id: current_player_champion_id,
             adaptive_type,
-            level: level.get(),
+            level,
         },
         items_meta: eval_data.items.metadata,
         runes_meta: eval_data.runes.metadata,
@@ -662,7 +662,7 @@ pub fn get_calculator_enemies(
                 real_magic_resist: full_state.magic_values.real as _,
                 real_armor: full_state.armor_values.real as _,
                 champion_id: e_champion_id,
-                level: e_level.get(),
+                level: e_level,
                 damages,
             }
         })

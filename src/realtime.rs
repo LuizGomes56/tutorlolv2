@@ -385,7 +385,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
                 current_stats: full_state.current_stats,
                 real_armor: full_state.armor_values.real as _,
                 real_magic_resist: full_state.magic_values.real as _,
-                level: e_level.get(),
+                level: e_level,
             })
         })
         .collect::<Box<[Enemy<'_>]>>();
@@ -396,7 +396,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
             base_stats: current_player_base_stats,
             bonus_stats: current_player_bonus_stats,
             current_stats: current_player_stats,
-            level: level.get(),
+            level,
             team: current_player_team,
             adaptive_type,
             position: current_player_position,

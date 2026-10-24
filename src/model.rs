@@ -114,7 +114,7 @@ pub struct CurrentPlayer<'a> {
     pub base_stats: BasicStats,
     pub bonus_stats: BasicStats,
     pub current_stats: PlayerStats,
-    pub level: u8,
+    pub level: NonZeroU8,
     pub team: Team,
     pub adaptive_type: AdaptiveType,
     pub position: Position,
@@ -192,7 +192,7 @@ pub struct Enemy<'a> {
     pub current_stats: EnemyStats,
     pub real_armor: i32,
     pub real_magic_resist: i32,
-    pub level: u8,
+    pub level: NonZeroU8,
     pub champion_id: ChampionId,
     pub team: Team,
     pub position: Position,
@@ -493,68 +493,8 @@ pub struct InputMinData<'a, T> {
     pub is_mega_gnar: bool,
 }
 
-#[derive(Clone, Debug, Default, Decode, Deserialize, Encode, PartialEq, PartialOrd, Serialize)]
-pub struct OwnedInputGame {
-    pub active_player: OwnedInputActivePlayer,
-    pub enemy_players: Box<[OwnedInputMinData<EnemyStats>]>,
-    pub dragons: Dragons,
-}
-
-#[derive(Clone, Debug, Default, Decode, Deserialize, Encode, PartialEq, PartialOrd, Serialize)]
-pub struct OwnedInputActivePlayer {
-    pub runes: Box<[RuneId]>,
-    pub rune_exceptions: Box<[ValueException]>,
-    pub abilities: AbilityLevels,
-    pub data: OwnedInputMinData<PlayerStats>,
-}
-
-#[derive(Clone, Debug, Decode, Deserialize, Encode, PartialEq, PartialOrd, Serialize)]
-pub struct OwnedInputMinData<T> {
-    pub stats: Option<T>,
-    pub items: Box<[ItemId]>,
-    pub item_exceptions: Box<[ValueException]>,
-    pub stacks: u32,
-    pub level: NonZeroU8,
-    pub is_mega_gnar: bool,
-    pub champion_id: ChampionId,
-}
-
-impl<'a> From<&'a OwnedInputActivePlayer> for InputActivePlayer<'a> {
-    fn from(de: &'a OwnedInputActivePlayer) -> Self {
-        InputActivePlayer {
-            runes: &de.runes,
-            rune_exceptions: &de.rune_exceptions,
-            abilities: de.abilities,
-            data: InputMinData {
-                stats: de.data.stats,
-                items: &de.data.items,
-                item_exceptions: &de.data.item_exceptions,
-                stacks: de.data.stacks,
-                level: de.data.level,
-                is_mega_gnar: de.data.is_mega_gnar,
-                champion_id: de.data.champion_id,
-            },
-        }
-    }
-}
-
-impl<'a> From<&'a OwnedInputGame> for InputGame<'a> {
-    fn from(de: &'a OwnedInputGame) -> Self {
-        InputGame {
-            active_player: (&de.active_player).into(),
-            enemy_players: unsafe {
-                core::mem::transmute::<
-                    &'a [OwnedInputMinData<EnemyStats>],
-                    &'a [InputMinData<'a, EnemyStats>],
-                >(&de.enemy_players)
-            },
-            dragons: de.dragons,
-        }
-    }
-}
-
 /// Returned data by the function [`crate::calculator::calculator`]
-#[derive(Clone, Debug, Default, Decode, Deserialize, Encode, PartialEq, PartialOrd, Serialize)]
+#[derive(Clone, Debug, Decode, Deserialize, Encode, PartialEq, PartialOrd, Serialize)]
 pub struct OutputEnemy {
     pub damages: Damages,
     pub base_stats: SimpleStats,
@@ -563,7 +503,7 @@ pub struct OutputEnemy {
     pub real_armor: i32,
     pub real_magic_resist: i32,
     pub champion_id: ChampionId,
-    pub level: u8,
+    pub level: NonZeroU8,
 }
 
 /// Holds values that will be multiplied by all damages, depending on their
@@ -643,19 +583,17 @@ impl AbilityModifiers {
     }
 }
 
-#[derive(
-    Copy, Clone, Debug, Default, Decode, Deserialize, Encode, PartialEq, PartialOrd, Serialize,
-)]
+#[derive(Copy, Clone, Debug, Decode, Deserialize, Encode, PartialEq, PartialOrd, Serialize)]
 pub struct OutputCurrentPlayer {
     pub current_stats: PlayerStats,
     pub base_stats: BasicStats,
     pub bonus_stats: BasicStats,
     pub adaptive_type: AdaptiveType,
     pub champion_id: ChampionId,
-    pub level: u8,
+    pub level: NonZeroU8,
 }
 
-#[derive(Clone, Debug, Default, Decode, Deserialize, Encode, PartialEq, PartialOrd, Serialize)]
+#[derive(Clone, Debug, Decode, Deserialize, Encode, PartialEq, PartialOrd, Serialize)]
 pub struct OutputGame {
     pub monster_damages: [Damages; L_MSTR],
     pub current_player: OutputCurrentPlayer,
@@ -931,20 +869,6 @@ impl<T> Default for InputMinData<'_, T> {
             stats: None,
             items: &[],
             item_exceptions: &[],
-            stacks: 0,
-            level: NonZeroU8::MIN,
-            champion_id: ChampionId::default(),
-            is_mega_gnar: false,
-        }
-    }
-}
-
-impl<T> Default for OwnedInputMinData<T> {
-    fn default() -> Self {
-        Self {
-            stats: None,
-            items: Box::new([]),
-            item_exceptions: Box::new([]),
             stacks: 0,
             level: NonZeroU8::MIN,
             champion_id: ChampionId::default(),

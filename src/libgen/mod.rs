@@ -4,6 +4,7 @@ pub mod check;
 pub mod impls;
 pub mod model;
 
+use core::num::NonZeroU8;
 pub use {
     champions_code::ChampionId,
     impls::traits::{CastId, ValueId},
@@ -198,8 +199,8 @@ pub const fn zero(_: &tutorlolv2_types::Ctx) -> f32 {
     0.0
 }
 
-pub const fn ignite(level: u8) -> i32 {
-    let n = level as i32;
+pub const fn ignite(level: NonZeroU8) -> i32 {
+    let n = level.get() as i32;
     let nth = if n > 4 { n - 4 } else { 0 };
     70 + 20 * n + 5 * nth
 }
