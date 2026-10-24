@@ -18,8 +18,7 @@ bincode = "2.0.1"
 # ], default-features = false }
 dotenvy = "0.15.7"
 pastey = "0.2.3"
-rand = "0.10.3"
 rust-embed = { version = "8.13.0", default-features = false }
 serde_json = "1.0.154"
-tokio = { version = "1.54.1", features = ["full"] }
-tutorlolv2 = { path = "../" }
+tokio = { version = "1.54.1", default-features = false, features = ["macros", "rt-multi-thread"] }
+tutorlolv2 = { path = "../", default-features = false }
