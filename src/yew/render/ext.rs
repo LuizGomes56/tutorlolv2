@@ -92,6 +92,8 @@ impl ItemId {
             .array_field("maps", Class::Constant, self.maps());
 
         if self.deals_damage() {
+            h.field("damage_type", Class::Constant, self.damage_type());
+
             for (attack_type, damage_index) in TYPE_INDEX {
                 if !self.deals_max_damage() && matches!(damage_index, DamageIndex::Max) {
                     continue;
@@ -148,6 +150,8 @@ impl RuneId {
             .field("name", Class::String, self.name());
 
         if self.deals_damage() {
+            h.field("damage_type", Class::Constant, self.damage_type());
+
             for (attack_type, damage_index) in TYPE_INDEX {
                 if !self.deals_max_damage() && matches!(damage_index, DamageIndex::Max) {
                     continue;

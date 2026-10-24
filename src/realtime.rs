@@ -197,14 +197,43 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
 
     base_modifiers.apply_loadout(&owned_items, &owned_runes, &current_player_stats);
 
-    // Candidate self stats are independent of the target; defenses are recalculated below.
-    let simulated_states: [_; ItemId::L_SIML] = core::array::from_fn(|i| {
-        self_state.simulated_purchase(
-            ItemId::SIML[i],
+    let fire = RiotFormulas::get_fire_multiplier(dragons.ally_fire_dragons);
+    let earth = RiotFormulas::get_earth_multiplier(dragons.ally_earth_dragons);
+
+    // Prepare attacker-side inputs once; target defenses and contexts remain per enemy.
+    let simulated_candidates: [_; ItemId::L_SIML] = core::array::from_fn(|i| {
+        let candidate = ItemId::SIML[i];
+        let state = self_state.simulated_purchase_with_multipliers(
+            candidate,
             &owned_items,
             current_player_champion_id,
-            dragons,
-        )
+            fire,
+            earth,
+        );
+
+        let shred = ResistShred::new(&state.current_stats);
+        let mut buffs = Modifiers::default();
+
+        buffs.apply_loadout(&owned_items, &owned_runes, &state.current_stats);
+
+        if !owned_items.contains(&candidate) {
+            buffs.apply_item(candidate);
+        }
+
+        let extra_item =
+            if candidate.deals_damage() && !current_player_items.contains_const(candidate as _) {
+                let item = candidate.data();
+                let closures = match current_player_cache_attack_type {
+                    AttackType::Melee => &item.melee,
+                    AttackType::Ranged => &item.ranged,
+                };
+
+                Some((item.metadata, closures))
+            } else {
+                None
+            };
+
+        (state, shred, buffs, extra_item)
     });
 
     let eval_data = DamageEvalData {
@@ -305,17 +334,10 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
             // is likely to buy, it can be used to compare which one would output
             // the greatest amount of damage, or what difference they make
             let siml_items = core::array::from_fn(|i| {
-                let candidate = ItemId::SIML[i];
-                let state = &simulated_states[i];
-                let target = full_state.with_shred(ResistShred::new(&state.current_stats), false);
+                let (state, shred, buffs, extra_item) = &simulated_candidates[i];
+                let target = full_state.with_shred(*shred, false);
                 let ctx = state.ctx(&target);
-                let mut buffs = Modifiers::default();
-
-                buffs.apply_loadout(&owned_items, &owned_runes, &state.current_stats);
-
-                if !owned_items.contains(&candidate) {
-                    buffs.apply_item(candidate);
-                }
+                let mut buffs = *buffs;
 
                 buffs.damages.global_mod *=
                     current_player_champion_id.map_damage_modifier(&e_champion_id, game_map);
@@ -323,35 +345,30 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
                 let modifiers = buffs.against(&target, state.adaptive_type);
                 let mut damage = Damages::new(ctx, &eval_data, modifiers);
 
-                // Existing pairs retain items_meta order. A new candidate's pair is
-                // appended, identified by SIML[i], rather than silently omitted.
-                if candidate.deals_damage() && !current_player_items.contains_const(candidate as _)
-                {
-                    let item = candidate.data();
-                    let closures = match current_player_cache_attack_type {
-                        AttackType::Melee => &item.melee,
-                        AttackType::Ranged => &item.ranged,
-                    };
+                // Every candidate has a final pair, identified by SIML[i]. Keep
+                // zero placeholders when it adds no new damaging item effect.
+                let mut pair = [0; 2];
 
-                    let mut items = damage.items.into_vec();
+                if let Some((metadata, closures)) = extra_item {
+                    let modifier = modifiers.damages.modifier(metadata.damage_type);
 
-                    items.reserve_exact(2);
-
-                    let modifier = modifiers.damages.modifier(item.metadata.damage_type);
-
-                    for closure in closures {
+                    for (slot, closure) in pair.iter_mut().zip(*closures) {
                         let amount = (modifier * closure(&ctx)) as i32;
 
                         damage
                             .attacks
                             .onhit_damage
-                            .inc_attr(item.metadata.attributes, amount);
+                            .inc_attr(metadata.attributes, amount);
 
-                        items.push(amount);
+                        *slot = amount;
                     }
-
-                    damage.items = items.into_boxed_slice();
                 }
+
+                let mut items = damage.items.into_vec();
+
+                items.reserve_exact(2);
+                items.extend_from_slice(&pair);
+                damage.items = items.into_boxed_slice();
 
                 damage
             });

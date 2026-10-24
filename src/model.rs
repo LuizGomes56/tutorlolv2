@@ -72,7 +72,9 @@ pub struct Realtime<'a> {
     /// to be ordered based on team. Sorting this vector has to be done by the caller
     pub scoreboard: Box<[Scoreboard<'a>]>,
 
-    /// Vector of the [`TypeMetadata<ItemId>`] of all damaging items the player had
+    /// Metadata for owned damaging items, in the order of every enemy's base item pairs.
+    /// Every simulated purchase appends one pair without extending this slice;
+    /// use `ItemId::SIML[i].data().metadata` for that final pair in `siml_items[i]`.
     pub items_meta: Box<[TypeMetadata<ItemId>]>,
 
     /// Vector of the [`TypeMetadata<RuneId>`] of all damaging runes the player had
@@ -176,8 +178,12 @@ pub struct Enemy<'a> {
     pub damages: Damages,
 
     /// Candidate purchases in ItemId::SIML order. Each Damages.items starts with
-    /// the owned pairs in Realtime.items_meta order. If the candidate is damaging
-    /// and not already owned, its two damage entries are appended to that slice.
+    /// the owned pairs in Realtime.items_meta order, followed by the candidate pair.
+    /// Its length is always 2 * items_meta.len() + 2, including for non-damaging
+    /// or already-owned candidates, whose appended pair is [0, 0]. Owned effects
+    /// remain in their original pairs and are not duplicated in the extra pair.
+    /// The extra pair uses ItemId::SIML[i].data().metadata and has a zero baseline
+    /// when compared with the owned build. Rune metadata and ordering are unchanged.
     #[serde(with = "serde_arrays")]
     pub siml_items: [Damages; ItemId::L_SIML],
 

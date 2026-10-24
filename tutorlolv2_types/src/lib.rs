@@ -7,6 +7,15 @@ extern crate alloc;
 #[cfg(feature = "dev")]
 use alloc::{format, string::String};
 
+#[cfg(test)]
+extern crate std;
+
+#[cfg(all(test, feature = "bake"))]
+mod bake_tests;
+
+#[cfg(test)]
+mod strum_tests;
+
 use bincode::{Decode, Encode};
 use core::{convert::Infallible, fmt::Display, ops::Index, str::FromStr};
 use serde::{Deserialize, Serialize};
@@ -793,6 +802,7 @@ impl GameMap {
     PartialOrd,
     strum::EnumIter,
     strum::VariantNames,
+    strum::IntoStaticStr,
     bincode::Encode,
     bincode::Decode,
     serde::Serialize,
@@ -808,6 +818,13 @@ pub enum DamageType {
     Adaptive,
     #[default]
     Unspecified,
+}
+
+impl Display for DamageType {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+        let value: &str = self.into();
+        write!(f, "{value}")
+    }
 }
 
 /// An enum with several variants that can be used to add up to `255` attributes
@@ -1016,12 +1033,3 @@ create_eval_struct!(
 impl CtxVar {
     pub const SKIP: usize = Self::SteelcapsEffect as usize + 1;
 }
-
-#[cfg(test)]
-extern crate std;
-
-#[cfg(all(test, feature = "bake"))]
-mod bake_tests;
-
-#[cfg(test)]
-mod strum_tests;

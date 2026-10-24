@@ -348,11 +348,14 @@ impl PlayerStats {
     /// [`SIMULATED_ITEMS_ENUM`]. The qualified items are defined by their tier, gold, and if
     /// they're purchasable in the standard gamemode [`GameMap::SummonersRift`].
     pub const fn get_simulated_stats(&self, dragons: Dragons) -> [Self; ItemId::L_SIML] {
+        let fire = RiotFormulas::get_fire_multiplier(dragons.ally_fire_dragons);
+        let earth = RiotFormulas::get_earth_multiplier(dragons.ally_earth_dragons);
+
         let mut result = [*self; ItemId::L_SIML];
         let mut i = 0;
 
         while i < ItemId::L_SIML {
-            result[i] = self.with_item_stats(ItemId::SIML[i], dragons);
+            result[i] = self.with_item_stats_with_multipliers(ItemId::SIML[i], fire, earth);
             i += 1;
         }
 
@@ -361,12 +364,23 @@ impl PlayerStats {
 
     /// Add raw item stats to live totals, applying dragons only to new stats.
     pub const fn with_item_stats(&self, item: ItemId, dragons: Dragons) -> Self {
+        self.with_item_stats_with_multipliers(
+            item,
+            RiotFormulas::get_fire_multiplier(dragons.ally_fire_dragons),
+            RiotFormulas::get_earth_multiplier(dragons.ally_earth_dragons),
+        )
+    }
+
+    /// Apply item deltas using dragon multipliers shared by a simulation batch.
+    pub(crate) const fn with_item_stats_with_multipliers(
+        &self,
+        item: ItemId,
+        fire: f32,
+        earth: f32,
+    ) -> Self {
         let mut added = PlayerStats::default();
 
         added.get_item_bonus_stats(&[item], &mut Modifiers::default(), &mut 0.0);
-
-        let fire = RiotFormulas::get_fire_multiplier(dragons.ally_fire_dragons);
-        let earth = RiotFormulas::get_earth_multiplier(dragons.ally_earth_dragons);
 
         Self {
             ability_power: self.ability_power + added.ability_power * fire,
@@ -529,6 +543,8 @@ impl EnemyState<'_> {
             e_modifiers.magic_mod *= 0.9;
         }
 
+        // Supplied totals already include stat passives and dragons. Keep inference
+        // confined to None; defensive modifiers and item flags apply to both paths.
         let e_current_stats = match current_stats {
             Some(s) => EnemyStats {
                 missing_health: RiotFormulas::missing_health(s.current_health, s.max_health),
@@ -683,8 +699,26 @@ impl SelfState {
         champion: ChampionId,
         dragons: Dragons,
     ) -> Self {
+        self.simulated_purchase_with_multipliers(
+            item,
+            owned,
+            champion,
+            RiotFormulas::get_fire_multiplier(dragons.ally_fire_dragons),
+            RiotFormulas::get_earth_multiplier(dragons.ally_earth_dragons),
+        )
+    }
+
+    /// Prepare a purchase using dragon multipliers shared by all candidates.
+    pub(crate) const fn simulated_purchase_with_multipliers(
+        &self,
+        item: ItemId,
+        owned: &[ItemId],
+        champion: ChampionId,
+        fire: f32,
+        earth: f32,
+    ) -> Self {
         let current = self.current_stats;
-        let mut stats = current.with_item_stats(item, dragons);
+        let mut stats = current.with_item_stats_with_multipliers(item, fire, earth);
         let data = champion.data();
 
         // Item attack speed is a percent bonus, while live attack_speed is attacks/sec.
@@ -703,7 +737,6 @@ impl SelfState {
             i += 1;
         }
 
-        let fire = RiotFormulas::get_fire_multiplier(dragons.ally_fire_dragons);
         let added_mana = stats.max_mana - current.max_mana;
 
         // Existing conversion passives also benefit from the candidate's stats.

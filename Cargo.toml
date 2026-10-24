@@ -1,12 +1,13 @@
 [package]
 name = "tutorlolv2"
-version = "0.7.4"
+version = "0.7.5"
 edition = "2024"
 repository = "https://github.com/LuizGomes56/tutorlolv2"
 description = "League of Legends static library that evaluates damages of abilities, passives, items, and runes"
 
 [workspace]
 members = [
+    "perf",
     "tutorlolv2_codec",
     "tutorlolv2_server",
     "tutorlolv2_types",
@@ -49,3 +50,7 @@ lto = "fat"
 panic = "abort"
 incremental = false
 codegen-units = 1
+
+# Keep the benchmark launcher on the same optimized settings as release builds.
+[profile.perf]
+inherits = "release"
