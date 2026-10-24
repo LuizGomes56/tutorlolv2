@@ -1,7 +1,7 @@
 use crate::{
     Build, MayFail, OUT_DIR,
     generators::{parser::runes::Rune, utils::Tag},
-    scripts::utils::ItemOrRuneExt,
+    scripts::utils::{ItemOrRuneExt, bake},
 };
 use heck::ToShoutySnakeCase;
 use std::fmt::Write;
@@ -24,8 +24,6 @@ impl Build for Rune {
         let mut rust = String::new();
         let mut docs = String::new();
 
-        let upper_id = rune_id.to_shouty_snake_case();
-
         write!(
             rust,
             r#"pub static {upper_id}: X = X {{
@@ -35,33 +33,24 @@ impl Build for Rune {
                 deals_damage: {deals_damage:?},
                 riot_id: {riot_id},
                 custom: {custom},
-                #[cfg(feature = "docs")]
-                identifiers: &{identifiers:?},
+
+                #[cfg(feature = "yew")]
+                identifiers: {identifiers},
             }};"#,
-            identifiers = self.identifiers(),
+            upper_id = rune_id.to_shouty_snake_case(),
+            identifiers = bake(&self.identifiers().as_slice()),
             deals_damage = self.deals_damage(),
             fn_names = self.function_names(),
             metadata = self.repr_metadata()
         )?;
 
-        write!(
-            docs,
-            "#[fmt({fmt})]
-            static {upper_id}: X = X {{
-                name: {name:?}{damage}
-            }};",
-            damage = format_args!(",{}", self.repr_damages()),
-            fmt = self.formula_fmt()
-        )?;
-
-        let (code, doc) = &self.closures()?;
-        rust.push_str(code);
-        docs.push_str(doc);
+        docs.push_str(&self.repr_damages());
+        rust.push_str(&self.closures()?);
 
         let out = OUT_DIR.join(Tag::Runes.plural()).join(rune_id);
 
-        crate::write(out.with_extension("rs"), rust)?;
-        crate::write(out.with_extension("w48"), docs)?;
+        tutorlolv2_wiki::write(out.with_extension("rs"), rust)?;
+        tutorlolv2_wiki::write(out.with_extension("w48"), docs)?;
 
         Ok(self.eval())
     }

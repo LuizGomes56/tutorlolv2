@@ -1,7 +1,5 @@
 mod server;
 
-#[cfg(feature = "dev")]
-use crate::server::dev::{images::*, setup::*};
 use actix_cors::Cors;
 use actix_web::{
     App, HttpResponse, HttpServer,
@@ -22,45 +20,26 @@ use server::{embed::*, games::*};
 // }
 
 fn api_scope() -> impl HttpServiceFactory + 'static {
-    let api_routes = scope("/api").service(
+    scope("/api").service(
         scope("/games")
             .service(realtime_handler)
             .service(calculator_handler),
         // .service(create_game_handler),
         // .service(get_by_code_handler),
-    );
-
-    #[cfg(feature = "dev")]
-    let api_routes = api_routes.service(
-        scope("")
-            .service(
-                scope("/setup")
-                    .service(setup_project)
-                    .service(setup_docs)
-                    .service(update_riot),
-            )
-            .service(
-                scope("/images")
-                    .service(download_instances)
-                    .service(download_items)
-                    .service(download_arts)
-                    .service(download_runes)
-                    .service(download_all)
-                    .service(compress_images),
-            ),
-    );
-
-    api_routes
+    )
 }
 
 pub async fn run() -> std::io::Result<()> {
     dotenvy::dotenv().ok();
 
-    let port = std::env::var("PORT").unwrap_or_else(|_| "8082".to_string());
+    let port = std::env::var("PORT")
+        .ok()
+        .map(|v| v.parse().ok())
+        .flatten()
+        .unwrap_or(8082u16);
 
     println!("Starting server on port {port}");
 
-    let host = format!("127.0.0.1:{port}");
     // let dsn = std::env::var("DATABASE_URL").expect("DATABASE_URL is not set");
     // let pool = PgPoolOptions::new()
     //     .max_connections(5)
@@ -110,7 +89,7 @@ pub async fn run() -> std::io::Result<()> {
                 HttpResponse::NotFound().body("Unimplemented route. Check methods and paths")
             }))
     })
-    .bind(host)
+    .bind(("127.0.0.1", port))
     .expect("Some error has ocurred when starting the server")
     .run()
     .await

@@ -248,22 +248,24 @@ fn parse_markup(input: &str) -> Vec<MarkupNode> {
             push_text(&mut out, &input[i..next_start]);
         }
 
-        if input[next_start..].starts_with("{{") {
-            if let Some(end) = find_balanced(input, next_start, "{{", "}}") {
-                let content = &input[next_start + 2..end - 2];
-                out.push(MarkupNode::Template(parse_template(content)));
-                i = end;
-                continue;
-            }
+        if input[next_start..].starts_with("{{")
+            && let Some(end) = find_balanced(input, next_start, "{{", "}}")
+        {
+            let content = &input[next_start + 2..end - 2];
+            out.push(MarkupNode::Template(parse_template(content)));
+            i = end;
+
+            continue;
         }
 
-        if input[next_start..].starts_with("[[") {
-            if let Some(end) = find_balanced(input, next_start, "[[", "]]") {
-                let content = &input[next_start + 2..end - 2];
-                out.push(parse_link(content));
-                i = end;
-                continue;
-            }
+        if input[next_start..].starts_with("[[")
+            && let Some(end) = find_balanced(input, next_start, "[[", "]]")
+        {
+            let content = &input[next_start + 2..end - 2];
+            out.push(parse_link(content));
+            i = end;
+
+            continue;
         }
 
         push_text(&mut out, &input[next_start..next_start + 1]);
@@ -295,7 +297,7 @@ fn parse_template(content: &str) -> TemplateNode {
     match name.as_str() {
         "as" => TemplateNode::As { positional, named },
         "rd" => {
-            let melee = positional.get(0).cloned().unwrap_or_default();
+            let melee = positional.first().cloned().unwrap_or_default();
             let ranged = positional.get(1).cloned().unwrap_or_default();
 
             TemplateNode::Rd {
@@ -985,9 +987,7 @@ fn extract_plus_paren_blocks(input: &str) -> Vec<String> {
 fn normalize_whitespace(input: &str) -> String {
     input
         .replace('\u{00a0}', " ")
-        .replace('\u{2013}', "-")
-        .replace('\u{2014}', "-")
-        .replace('\u{2212}', "-")
+        .replace(['\u{2013}', '\u{2014}', '\u{2212}'], "-")
         .replace('\u{00D7}', "*")
         .replace("<br>", " ")
         .replace("<br/>", " ")

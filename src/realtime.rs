@@ -11,9 +11,10 @@
 //! types extracted from the json file in port 2999
 
 use {
-    crate::{ChampionId, ItemId, RuneId, bitset::BitSet, helpers::*, model::*, riot::*},
+    crate::{ChampionId, ItemId, RuneId, helpers::*, model::*, riot::*},
     alloc::boxed::Box,
     core::str::FromStr,
+    strum::{EnumCount, VariantArray},
     tutorlolv2_types::{AdaptiveType, AttackType, GameMap, Position},
 };
 
@@ -21,8 +22,8 @@ use {
 /// access does not cause a panic or undefined behavior
 const _: () = {
     let mut i = 0;
-    while i < ChampionId::VARIANTS {
-        let champion_id = ChampionId::VALUES[i];
+    while i < ChampionId::COUNT {
+        let champion_id = ChampionId::VARIANTS[i];
         assert!(!champion_id.positions().is_empty());
         i += 1;
     }
@@ -35,9 +36,7 @@ pub enum RealtimeError<'a> {
 
 impl core::fmt::Display for RealtimeError<'_> {
     fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
-        let id = match self {
-            RealtimeError::UnrecognizedCurrentPlayer(s) => s,
-        };
+        let RealtimeError::UnrecognizedCurrentPlayer(id) = self;
 
         write!(
             f,
@@ -103,9 +102,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
     let current_player_stats = champion_stats.base100();
 
     // Defaults to Unknown, which doesn't  make much difference
-    let game_map = GameMap::from_u8(map_number);
-    let mut ability_modifiers = AbilityModifiers::default();
-    let mut base_modifiers = DamageModifiers::default();
+    let game_map = GameMap::from_code(map_number);
 
     let current_player = all_players
         .iter()
@@ -141,50 +138,13 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
     )
     .unwrap_or(current_player_cache.adaptive_type);
 
-    // We ignore items our API don't know they exist, this is a safe approach
-    // but may be harder to debug or notice wrong values
-    let current_player_items = current_player
+    let owned_items = current_player
         .items
         .iter()
-        .filter_map(|riot_item| {
-            let riot_id = riot_item.item_id;
-            let item_id = ItemId::from_riot_id(riot_id)?;
+        .filter_map(|item| ItemId::from_riot_id(item.item_id))
+        .collect::<Box<[_]>>();
 
-            // We're not going to iterate through all items again, so we can
-            // calculate these damage modifiers before the end of this function
-            match item_id {
-                // Assume the passive is always active. Damages will be higher than
-                // they really are in most situations
-                ItemId::Riftmaker => {
-                    base_modifiers.global_mod *= RiotFormulas::RIFTMAKER_BONUS_DAMAGE
-                }
-                // Adding this makes it the best ability power item in the game because
-                // it will consider that the enemy is always at low health. Removing this
-                // block will make it far less effective than it really is
-                ItemId::Shadowflame => {
-                    base_modifiers.magic_mod *= RiotFormulas::SHADOWFLAME_BONUS_DAMAGE;
-                    base_modifiers.true_mod *= RiotFormulas::SHADOWFLAME_BONUS_DAMAGE;
-                }
-                // Similar to Shadowflame, we're considering the item's passive is always
-                // fully stacked since there's no way we know what the current stack count is
-                ItemId::SpearOfShojin => {
-                    ability_modifiers.q *= RiotFormulas::SHOJIN_BONUS_DAMAGE;
-                    ability_modifiers.w *= RiotFormulas::SHOJIN_BONUS_DAMAGE;
-                    ability_modifiers.e *= RiotFormulas::SHOJIN_BONUS_DAMAGE;
-                    ability_modifiers.r *= RiotFormulas::SHOJIN_BONUS_DAMAGE;
-                }
-                _ => {}
-            };
-
-            let item_index = item_id as _;
-
-            // If the item does not define any personalized closure, we ignore it otherwise we
-            // would be wasting time evaluating zeros
-            ItemId::DAMAGING
-                .contains_const(item_index)
-                .then_some(item_index)
-        })
-        .collect::<BitSet>();
+    let current_player_items = get_damaging_items(&owned_items);
 
     // If we don't know his team, put in team `Team::default()`, which by now is `Team::Blue`.
     // Note that it may lead to incorrect results, but it is better than not giving any results
@@ -196,7 +156,6 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
 
     // Get an array of stats as if the player had bought all of these items. It is not limited to
     // damaging items. Any item that meets the criteria of `L_SIML` will be included
-    let simulated_stats = current_player_stats.get_simulated_stats(dragons);
     let ability_levels = abilities.ability_levels();
 
     // If we don't know the player's position as in practice mode, we assume he is playing in the
@@ -206,11 +165,8 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
 
     // Assume champion attack types cannot change. Mayhem and Arena have augments that change it,
     // but there's no way to know
-    let current_player_cache_attack_type = if is_mega_gnar {
-        AttackType::Melee
-    } else {
-        current_player_cache.attack_type
-    };
+    let current_player_cache_attack_type =
+        current_player_champion_id.effective_attack_type(is_mega_gnar);
 
     let shred = ResistShred::new(&current_player_stats);
 
@@ -230,47 +186,26 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
         stacks: get_stacks(current_player_champion_id, game_time),
     };
 
-    let current_player_runes = general_runes
-        .as_ref()
-        .map(|gr| {
-            gr.into_iter()
-                .filter_map(|riot_rune| {
-                    let riot_id = riot_rune.id;
-                    // We ignore runes we don't know they exist
-                    let rune_id = RuneId::from_riot_id(riot_id)?;
+    let owned_runes = general_runes
+        .iter()
+        .flatten()
+        .filter_map(|rune| RuneId::from_riot_id(rune.id))
+        .collect::<Box<[_]>>();
 
-                    // Similar to items, we're not iterating over all runes again, so this
-                    // is the chance to assign modifiers as necessary
-                    match rune_id {
-                        RuneId::AxiomArcanist => {
-                            ability_modifiers.r *= RiotFormulas::AXIOM_ARCANIST_BONUS_DAMAGE
-                        }
-                        RuneId::CoupDeGrace | RuneId::CutDown => {
-                            base_modifiers.global_mod *=
-                                RiotFormulas::COUP_DE_GRACE_AND_CUTDOWN_BONUS_DAMAGE
-                        }
-                        RuneId::LastStand => {
-                            base_modifiers.global_mod *=
-                                RiotFormulas::get_last_stand(RiotFormulas::missing_health(
-                                    self_state.current_stats.current_health,
-                                    self_state.current_stats.max_health,
-                                ))
-                        }
-                        _ => {}
-                    };
+    let current_player_runes = get_damaging_runes(&owned_runes);
+    let mut base_modifiers = Modifiers::default();
 
-                    let rune_index = rune_id as _;
+    base_modifiers.apply_loadout(&owned_items, &owned_runes, &current_player_stats);
 
-                    // Most runes will be filtered out, very few ones deal damage in the game
-                    RuneId::DAMAGING
-                        .contains_const(rune_index)
-                        .then_some(rune_index)
-                })
-                .collect::<BitSet>()
-        })
-        // If there's no runes field, the final value will be an empty bit set indicating
-        // that there are no runes selected
-        .unwrap_or_default();
+    // Candidate self stats are independent of the target; defenses are recalculated below.
+    let simulated_states: [_; ItemId::L_SIML] = core::array::from_fn(|i| {
+        self_state.simulated_purchase(
+            ItemId::SIML[i],
+            &owned_items,
+            current_player_champion_id,
+            dragons,
+        )
+    });
 
     let eval_data = DamageEvalData {
         abilities: StaticDamageKind {
@@ -305,10 +240,11 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
             // return until the scoreboard is fully populated, otherwise we will cause undefined behavior or have to
             // reallocate it at the end
             let e_champion_id = e_champion_name.parse().unwrap_or(ChampionId::Neeko);
+            let team = e_team.parse().unwrap_or_default();
+
             let e_position = e_raw_position
                 .parse()
                 .unwrap_or(e_champion_id.main_position());
-            let team = e_team.parse().unwrap_or_default();
 
             unsafe {
                 scoreboard.get_unchecked_mut(i).write(Scoreboard {
@@ -355,22 +291,12 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
             // We will multiply the final damage of each ability, item, and rune
             // with these modifiers according to their damage type. `global_mod` is always
             // multiplied regardless
-            let modifiers = Modifiers {
-                abilities: ability_modifiers,
-                damages: DamageModifiers {
-                    adaptive_type,
-                    physical_mod: base_modifiers.physical_mod
-                        * full_state.armor_values.modifier
-                        * full_state.modifiers.physical_mod,
-                    magic_mod: base_modifiers.magic_mod
-                        * full_state.magic_values.modifier
-                        * full_state.modifiers.magic_mod,
-                    true_mod: base_modifiers.true_mod * full_state.modifiers.true_mod,
-                    global_mod: base_modifiers.global_mod
-                        * current_player_champion_id.map_damage_modifier(&e_champion_id, game_map)
-                        * full_state.modifiers.global_mod,
-                },
-            };
+            let mut attacker_modifiers = base_modifiers;
+
+            attacker_modifiers.damages.global_mod *=
+                current_player_champion_id.map_damage_modifier(&e_champion_id, game_map);
+
+            let modifiers = attacker_modifiers.against(&full_state, adaptive_type);
 
             // Calculate damages of each ability, item, and rune
             let damages = Damages::new(ctx, &eval_data, modifiers);
@@ -379,14 +305,55 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
             // is likely to buy, it can be used to compare which one would output
             // the greatest amount of damage, or what difference they make
             let siml_items = core::array::from_fn(|i| {
-                let siml_stat = simulated_stats[i];
-                let siml_ctx = SelfState {
-                    current_stats: siml_stat,
-                    ..self_state
-                }
-                .ctx(&full_state);
+                let candidate = ItemId::SIML[i];
+                let state = &simulated_states[i];
+                let target = full_state.with_shred(ResistShred::new(&state.current_stats), false);
+                let ctx = state.ctx(&target);
+                let mut buffs = Modifiers::default();
 
-                Damages::new(siml_ctx, &eval_data, modifiers)
+                buffs.apply_loadout(&owned_items, &owned_runes, &state.current_stats);
+
+                if !owned_items.contains(&candidate) {
+                    buffs.apply_item(candidate);
+                }
+
+                buffs.damages.global_mod *=
+                    current_player_champion_id.map_damage_modifier(&e_champion_id, game_map);
+
+                let modifiers = buffs.against(&target, state.adaptive_type);
+                let mut damage = Damages::new(ctx, &eval_data, modifiers);
+
+                // Existing pairs retain items_meta order. A new candidate's pair is
+                // appended, identified by SIML[i], rather than silently omitted.
+                if candidate.deals_damage() && !current_player_items.contains_const(candidate as _)
+                {
+                    let item = candidate.data();
+                    let closures = match current_player_cache_attack_type {
+                        AttackType::Melee => &item.melee,
+                        AttackType::Ranged => &item.ranged,
+                    };
+
+                    let mut items = damage.items.into_vec();
+
+                    items.reserve_exact(2);
+
+                    let modifier = modifiers.damages.modifier(item.metadata.damage_type);
+
+                    for closure in closures {
+                        let amount = (modifier * closure(&ctx)) as i32;
+
+                        damage
+                            .attacks
+                            .onhit_damage
+                            .inc_attr(item.metadata.attributes, amount);
+
+                        items.push(amount);
+                    }
+
+                    damage.items = items.into_boxed_slice();
+                }
+
+                damage
             });
 
             Some(Enemy {
@@ -401,7 +368,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
                 current_stats: full_state.current_stats,
                 real_armor: full_state.armor_values.real as _,
                 real_magic_resist: full_state.magic_values.real as _,
-                level: e_level,
+                level: e_level.get(),
             })
         })
         .collect::<Box<[Enemy<'_>]>>();
@@ -412,7 +379,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
             base_stats: current_player_base_stats,
             bonus_stats: current_player_bonus_stats,
             current_stats: current_player_stats,
-            level,
+            level: level.get(),
             team: current_player_team,
             adaptive_type,
             position: current_player_position,

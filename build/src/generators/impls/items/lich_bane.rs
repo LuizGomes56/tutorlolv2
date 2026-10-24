@@ -6,6 +6,6 @@ impl Generator for LichBane {
             .scaling(Passive, [0, 2])?
             .replace(AttackDamage.as_var(), BaseAd.as_var());
 
-        self.damage_type(Magic).set_min(dmg).end()
+        self.attr(OnhitMax).damage_type(Magic).set_min(dmg).end()
     }
 }

@@ -15,6 +15,7 @@
 //! want to do it, you can use the [`crate::const_eval`] module to
 //! do it
 
+use core::num::NonZeroU8;
 use {
     crate::{
         ChampionId, ItemId, RuneId, WikiModifiers,
@@ -25,6 +26,7 @@ use {
     alloc::boxed::Box,
     const_sized_bit_set::bit_set_array::BitSetArray,
     core::mem::MaybeUninit,
+    strum::EnumCount,
     tutorlolv2_types::{
         AbilityId, AdaptiveType, AttackType, Ctx, DamageType, GameMap, StatName, TypeMetadata,
     },
@@ -32,29 +34,126 @@ use {
 
 pub const fn has_item<const N: usize>(origin: &BitSet, check_for: [ItemId; N]) -> bool {
     let mut i = 0;
+
     while i < N {
         if origin.contains_const(check_for[i] as _) {
             return true;
         }
+
         i += 1;
     }
+
     false
 }
 
-impl SimpleStats {
-    pub const fn base_stats(champion_id: ChampionId, level: u8, is_mega_gnar: bool) -> Self {
-        let BasicStats {
-            max_health,
-            armor,
-            magic_resist,
-            ..
-        } = champion_id.base_stats(level, is_mega_gnar);
-
-        Self {
-            max_health,
-            armor,
-            magic_resist,
+impl Modifiers {
+    pub const fn apply_item(&mut self, item: ItemId) {
+        match item {
+            ItemId::Riftmaker => self.damages.global_mod *= RiotFormulas::RIFTMAKER_BONUS_DAMAGE,
+            ItemId::Shadowflame => {
+                self.damages.magic_mod *= RiotFormulas::SHADOWFLAME_BONUS_DAMAGE;
+                self.damages.true_mod *= RiotFormulas::SHADOWFLAME_BONUS_DAMAGE;
+            }
+            ItemId::SpearOfShojin => {
+                self.abilities.q *= RiotFormulas::SHOJIN_BONUS_DAMAGE;
+                self.abilities.w *= RiotFormulas::SHOJIN_BONUS_DAMAGE;
+                self.abilities.e *= RiotFormulas::SHOJIN_BONUS_DAMAGE;
+                self.abilities.r *= RiotFormulas::SHOJIN_BONUS_DAMAGE;
+            }
+            _ => {}
         }
+    }
+
+    pub const fn apply_rune(&mut self, rune: RuneId, stats: &PlayerStats) {
+        match rune {
+            RuneId::AxiomArcanist => self.abilities.r *= RiotFormulas::AXIOM_ARCANIST_BONUS_DAMAGE,
+            RuneId::CoupDeGrace | RuneId::CutDown => {
+                self.damages.global_mod *= RiotFormulas::COUP_DE_GRACE_AND_CUTDOWN_BONUS_DAMAGE
+            }
+            RuneId::LastStand => {
+                self.damages.global_mod *= RiotFormulas::get_last_stand(
+                    RiotFormulas::missing_health(stats.current_health, stats.max_health),
+                )
+            }
+            _ => {}
+        }
+    }
+
+    pub const fn apply_loadout(&mut self, items: &[ItemId], runes: &[RuneId], stats: &PlayerStats) {
+        let mut i = 0;
+
+        while i < items.len() {
+            self.apply_item(items[i]);
+            i += 1;
+        }
+
+        i = 0;
+
+        while i < runes.len() {
+            self.apply_rune(runes[i], stats);
+            i += 1;
+        }
+    }
+
+    /// Apply target defenses after attacker-side buffs have been collected.
+    pub const fn against(mut self, enemy: &EnemyFullState, adaptive_type: AdaptiveType) -> Self {
+        self.damages.adaptive_type = adaptive_type;
+        self.damages.physical_mod *= enemy.armor_values.modifier * enemy.modifiers.physical_mod;
+        self.damages.magic_mod *= enemy.magic_values.modifier * enemy.modifiers.magic_mod;
+        self.damages.true_mod *= enemy.modifiers.true_mod;
+        self.damages.global_mod *= enemy.modifiers.global_mod;
+        self
+    }
+}
+
+#[derive(Clone, Copy)]
+struct DefensiveItemStats {
+    values: [f32; 4],
+    present: u8,
+}
+
+// Each item has at most one entry per relevant stat. Retain presence separately
+// so an absent stat does not introduce a floating-point addition of zero.
+const DEFENSIVE_ITEM_STATS: [DefensiveItemStats; ItemId::COUNT] = {
+    let mut result = [DefensiveItemStats {
+        values: [0.0; 4],
+        present: 0,
+    }; ItemId::COUNT];
+
+    let mut i = 0;
+
+    while i < ItemId::COUNT {
+        let stats = ItemId::from_repr(i as _).unwrap().stats();
+        let mut j = 0;
+
+        while j < stats.len() {
+            let (name, value) = stats[j];
+            let slot = match name {
+                StatName::Armor => 0,
+                StatName::MagicResist => 1,
+                StatName::Health => 2,
+                StatName::Mana => 3,
+                _ => 4,
+            };
+
+            if slot < 4 {
+                assert!(result[i].present & (1 << slot) == 0);
+                result[i].present |= 1 << slot;
+                result[i].values[slot] = value as f32;
+            }
+
+            j += 1;
+        }
+
+        i += 1;
+    }
+
+    result
+};
+
+impl SimpleStats {
+    pub const fn base_stats(champion_id: ChampionId, level: NonZeroU8, is_mega_gnar: bool) -> Self {
+        champion_id.base_stats(level, is_mega_gnar).simple()
     }
 
     /// Mutates the variable `stats` and returns the bonus mana recovered from all items.
@@ -66,21 +165,22 @@ impl SimpleStats {
         let mut i = 0;
 
         while i < items.len() {
-            let stats = items[i].stats();
-            let mut j = 0;
+            let stats = DEFENSIVE_ITEM_STATS[items[i] as usize];
 
-            while j < stats.len() {
-                let (stat_name, value) = stats[j];
-                let v = value as f32;
+            if stats.present & 1 != 0 {
+                self.armor += stats.values[0];
+            }
 
-                match stat_name {
-                    StatName::MagicResist => self.magic_resist += v,
-                    StatName::Health => self.max_health += v,
-                    StatName::Armor => self.armor += v,
-                    StatName::Mana => bonus_mana += v,
-                    _ => {}
-                }
-                j += 1;
+            if stats.present & 2 != 0 {
+                self.magic_resist += stats.values[1];
+            }
+
+            if stats.present & 4 != 0 {
+                self.max_health += stats.values[2];
+            }
+
+            if stats.present & 8 != 0 {
+                bonus_mana += stats.values[3];
             }
 
             i += 1;
@@ -90,35 +190,36 @@ impl SimpleStats {
 
         self.magic_resist *= dragon_mod;
         self.armor *= dragon_mod;
+
         bonus_mana
     }
 }
 
 impl WikiStats {
-    pub const fn attack_speed(&self, bonus: f32, level: u8) -> f32 {
+    pub const fn attack_speed(&self, bonus: f32, level: NonZeroU8) -> f32 {
         self.attack_speed.base
             + self.attack_speed_ratio
                 * (Stat {
                     base: 0.0,
                     per_level: self.attack_speed.per_level,
                 }
-                .base_stat(level)
+                .base_stat(level.get())
                     + bonus)
                 / 100.0
     }
 
-    pub const fn base_stats(&self, level: u8) -> BasicStats {
+    pub const fn base_stats(&self, level: NonZeroU8) -> BasicStats {
         BasicStats {
-            armor: self.armor.base_stat(level),
-            attack_damage: self.attack_damage.base_stat(level),
+            armor: self.armor.base_stat(level.get()),
+            attack_damage: self.attack_damage.base_stat(level.get()),
             attack_speed: self.attack_speed(0.0, level),
-            magic_resist: self.magic_resist.base_stat(level),
-            max_health: self.health.base_stat(level),
-            max_mana: self.mana.base_stat(level),
+            magic_resist: self.magic_resist.base_stat(level.get()),
+            max_health: self.health.base_stat(level.get()),
+            max_mana: self.mana.base_stat(level.get()),
         }
     }
 
-    pub const fn mega_gnar_base_stats(&self, level: u8) -> BasicStats {
+    pub const fn mega_gnar_base_stats(&self, level: NonZeroU8) -> BasicStats {
         let mut gnar_stats = *ChampionId::Gnar.stats();
 
         gnar_stats.health.base += 100.0;
@@ -136,17 +237,28 @@ impl WikiStats {
 }
 
 impl ChampionId {
-    pub const fn base_stats(&self, level: u8, is_mega_gnar: bool) -> BasicStats {
-        match self {
-            ChampionId::Gnar if is_mega_gnar => {
-                core::hint::cold_path();
-                self.stats().mega_gnar_base_stats(level)
-            }
-            _ => self.stats().base_stats(level),
+    /// Mega Gnar uses melee item and rune effects; other forms use cached data.
+    pub const fn effective_attack_type(self, is_mega_gnar: bool) -> AttackType {
+        if matches!(self, ChampionId::Gnar) && is_mega_gnar {
+            AttackType::Melee
+        } else {
+            self.data().attack_type
         }
     }
 
-    pub fn map_damage_modifier(&self, enemy_id: &Self, game_map: GameMap) -> f32 {
+    pub const fn base_stats(&self, level: NonZeroU8, is_mega_gnar: bool) -> BasicStats {
+        let stats = self.stats();
+
+        match self {
+            ChampionId::Gnar if is_mega_gnar => {
+                core::hint::cold_path();
+                stats.mega_gnar_base_stats(level)
+            }
+            _ => stats.base_stats(level),
+        }
+    }
+
+    pub const fn map_damage_modifier(&self, enemy_id: &Self, game_map: GameMap) -> f32 {
         let WikiModifiers {
             ofa,
             usb,
@@ -183,8 +295,16 @@ impl ChampionId {
 impl BasicStats {
     /// Infers the champion's base stats at a given level. `is_mega_gnar` is valid only
     /// when `champion_id` is [`ChampionId::Gnar`], otherwise it has no effect.
-    pub const fn base_stats(champion_id: ChampionId, level: u8, is_mega_gnar: bool) -> Self {
+    pub const fn base_stats(champion_id: ChampionId, level: NonZeroU8, is_mega_gnar: bool) -> Self {
         champion_id.base_stats(level, is_mega_gnar)
+    }
+
+    pub const fn simple(&self) -> SimpleStats {
+        SimpleStats {
+            armor: self.armor,
+            max_health: self.max_health,
+            magic_resist: self.magic_resist,
+        }
     }
 
     pub const fn bonus_stats(&self, base_stats: Self) -> Self {
@@ -228,60 +348,48 @@ impl PlayerStats {
     /// [`SIMULATED_ITEMS_ENUM`]. The qualified items are defined by their tier, gold, and if
     /// they're purchasable in the standard gamemode [`GameMap::SummonersRift`].
     pub const fn get_simulated_stats(&self, dragons: Dragons) -> [Self; ItemId::L_SIML] {
-        let mut result = MaybeUninit::<[Self; ItemId::L_SIML]>::uninit();
-        let result_ptr = result.as_mut_ptr();
-
+        let mut result = [*self; ItemId::L_SIML];
         let mut i = 0;
+
         while i < ItemId::L_SIML {
-            let mut new_stat = *self;
-            let stats = ItemId::SIML[i].stats();
-
-            let mut j = 0;
-            while j < stats.len() {
-                let (stat_name, value) = stats[j];
-                let v = value as f32;
-
-                match stat_name {
-                    StatName::Lethality => new_stat.armor_penetration_flat += v,
-                    StatName::MagicPenetration => new_stat.magic_penetration_flat += v,
-                    StatName::AbilityPower => new_stat.ability_power += v,
-                    StatName::AttackDamage => new_stat.attack_damage += v,
-                    StatName::MagicResist => new_stat.magic_resist += v,
-                    StatName::AttackSpeed => new_stat.attack_speed += v,
-                    StatName::CritChance => new_stat.crit_chance += v,
-                    StatName::CritDamage => new_stat.crit_damage += v,
-                    StatName::Health => new_stat.max_health += v,
-                    StatName::Armor => new_stat.armor += v,
-                    StatName::Mana => new_stat.max_mana += v,
-                    StatName::ArmorPenetration => {
-                        new_stat.armor_penetration_percent =
-                            RiotFormulas::combine_percentage(new_stat.armor_penetration_percent, v)
-                    }
-                    StatName::MagicPenetrationPercent => {
-                        new_stat.magic_penetration_percent =
-                            RiotFormulas::combine_percentage(new_stat.magic_penetration_percent, v)
-                    }
-                    _ => {}
-                }
-                j += 1;
-            }
-
-            let earth_mod = RiotFormulas::get_earth_multiplier(dragons.ally_earth_dragons);
-            let fire_mod = RiotFormulas::get_fire_multiplier(dragons.ally_fire_dragons);
-
-            new_stat.ability_power *= fire_mod;
-            new_stat.attack_damage *= fire_mod;
-            new_stat.magic_resist *= earth_mod;
-            new_stat.armor *= earth_mod;
-
-            unsafe {
-                (&raw mut (*result_ptr)[i]).write(new_stat);
-            }
-
+            result[i] = self.with_item_stats(ItemId::SIML[i], dragons);
             i += 1;
         }
 
-        unsafe { result.assume_init() }
+        result
+    }
+
+    /// Add raw item stats to live totals, applying dragons only to new stats.
+    pub const fn with_item_stats(&self, item: ItemId, dragons: Dragons) -> Self {
+        let mut added = PlayerStats::default();
+
+        added.get_item_bonus_stats(&[item], &mut Modifiers::default(), &mut 0.0);
+
+        let fire = RiotFormulas::get_fire_multiplier(dragons.ally_fire_dragons);
+        let earth = RiotFormulas::get_earth_multiplier(dragons.ally_earth_dragons);
+
+        Self {
+            ability_power: self.ability_power + added.ability_power * fire,
+            attack_damage: self.attack_damage + added.attack_damage * fire,
+            armor: self.armor + added.armor * earth,
+            magic_resist: self.magic_resist + added.magic_resist * earth,
+            max_health: self.max_health + added.max_health,
+            max_mana: self.max_mana + added.max_mana,
+            attack_speed: self.attack_speed + added.attack_speed,
+            crit_chance: (self.crit_chance + added.crit_chance).clamp(0.0, 100.0),
+            crit_damage: self.crit_damage + added.crit_damage,
+            armor_penetration_flat: self.armor_penetration_flat + added.armor_penetration_flat,
+            magic_penetration_flat: self.magic_penetration_flat + added.magic_penetration_flat,
+            armor_penetration_percent: RiotFormulas::combine_percentage(
+                self.armor_penetration_percent,
+                added.armor_penetration_percent,
+            ),
+            magic_penetration_percent: RiotFormulas::combine_percentage(
+                self.magic_penetration_percent,
+                added.magic_penetration_percent,
+            ),
+            ..*self
+        }
     }
 
     pub const fn bonus_stats(&self, base_stats: BasicStats) -> BasicStats {
@@ -302,7 +410,7 @@ impl<T> DamageKind<T> {
     pub fn new<const N: usize>(
         bitset: &BitSetArray<N>,
         attack_type: AttackType,
-        f: impl Fn(usize, AttackType) -> (TypeMetadata<T>, [Closure; 2]),
+        f: impl Fn(u32, AttackType) -> (TypeMetadata<T>, [Closure; 2]),
     ) -> Self {
         let count = bitset.count_const() as usize;
 
@@ -311,7 +419,7 @@ impl<T> DamageKind<T> {
 
         unsafe {
             for (i, j) in bitset.iter_const().enumerate() {
-                let (meta, slice) = f(j as usize, attack_type);
+                let (meta, slice) = f(j, attack_type);
 
                 let base = i << 1;
                 closures.get_unchecked_mut(base).write(slice[0]);
@@ -329,8 +437,8 @@ impl<T> DamageKind<T> {
 
 impl DamageKind<ItemId> {
     pub fn items(bitset: &BitSet, attack_type: AttackType) -> Self {
-        Self::new(bitset, attack_type, |i, attack_type| unsafe {
-            let item = ItemId::from_usize_unchecked(i).data();
+        Self::new(bitset, attack_type, |i, attack_type| {
+            let item = ItemId::from_repr(i as _).unwrap().data();
             let slice = match attack_type {
                 AttackType::Ranged => item.ranged,
                 AttackType::Melee => item.melee,
@@ -343,8 +451,8 @@ impl DamageKind<ItemId> {
 
 impl DamageKind<RuneId> {
     pub fn runes(bitset: &BitSet, attack_type: AttackType) -> Self {
-        Self::new(bitset, attack_type, |i, attack_type| unsafe {
-            let rune = RuneId::from_usize_unchecked(i).data();
+        Self::new(bitset, attack_type, |i, attack_type| {
+            let rune = RuneId::from_repr(i as _).unwrap().data();
             let slice = match attack_type {
                 AttackType::Ranged => rune.ranged,
                 AttackType::Melee => rune.melee,
@@ -383,8 +491,10 @@ pub const fn get_damaging_items(input: &[ItemId]) -> BitSet {
         if ItemId::DAMAGING.contains_const(item) {
             out.insert_const(item);
         }
+
         i += 1;
     }
+
     out
 }
 
@@ -413,90 +523,10 @@ impl EnemyState<'_> {
             magic_penetration_percent,
         } = shred;
 
-        let mut e_default_stats = base_stats;
-        let bonus_mana = e_default_stats.infer_stats(items, earth_dragons);
         let mut e_modifiers = DamageModifiers::default();
 
-        let mut i = 0;
-        while i < item_exceptions.len() {
-            let item_exception = item_exceptions[i];
-            let stacks = item_exception.stacks();
-
-            if let Some(item_id) = item_exception.get_item_id() {
-                match item_id {
-                    ItemId::WintersApproach | ItemId::Fimbulwinter => {
-                        e_default_stats.max_health += 0.15 * bonus_mana
-                    }
-                    ItemId::Dragonheart => {
-                        let modifier = 1.0 + 0.04 * stacks as f32;
-                        e_default_stats.max_health *= modifier;
-                        e_default_stats.armor *= modifier;
-                        e_default_stats.magic_resist *= modifier
-                    }
-                    ItemId::DemonKingsCrown => {
-                        let modifier = 1.0 + 0.01 * stacks as f32;
-                        e_default_stats.max_health *= modifier;
-                        e_default_stats.armor *= modifier;
-                        e_default_stats.magic_resist *= modifier
-                    }
-                    ItemId::WarmogsArmor => e_default_stats.max_health *= 1.12,
-                    _ => {}
-                }
-            }
-            i += 1;
-        }
-
-        match champion_id {
-            ChampionId::Swain => {
-                let stack_hp = 12 * stacks;
-                e_default_stats.max_health += stack_hp as f32;
-            }
-            ChampionId::Chogath => {
-                let stack_hp = stacks * 80
-                    + 40 * match level {
-                        ..6 => 0,
-                        6..11 => 1,
-                        11..16 => 2,
-                        16.. => 3,
-                    };
-                e_default_stats.max_health += stack_hp as f32;
-            }
-            ChampionId::Sion => {
-                e_default_stats.max_health += stacks as f32;
-            }
-            ChampionId::Kassadin => {
-                // #![manual_impl]
-                e_modifiers.magic_mod *= 0.9;
-            }
-            ChampionId::Ornn => {
-                // Starts game with +10% armor/mr/hp already
-                // After level 13, player will start upgrading items
-                // At level 18, the maximum bonus must have been reached
-                // For every upgrade, a +4% resist is applied.
-                // #![manual_impl]
-                let ornn_resist_multiplier = match level {
-                    ..13 => 1.1,
-                    13..18 => (level - 12) as f32 * 0.04,
-                    18.. => 1.3,
-                };
-                e_default_stats.armor *= ornn_resist_multiplier;
-                e_default_stats.magic_resist *= ornn_resist_multiplier;
-                e_default_stats.max_health *= ornn_resist_multiplier;
-            }
-            ChampionId::Malphite => {
-                // W upgrade pattern for malphite by 06/07/2025
-                // #![manual_impl]
-                let malphite_resist_multiplier = match level {
-                    ..3 => 1.0,
-                    3..14 => 1.1,
-                    14 => 1.15,
-                    15..17 => 1.2,
-                    17 => 1.25,
-                    18.. => 1.3,
-                };
-                e_default_stats.armor *= malphite_resist_multiplier;
-            }
-            _ => {}
+        if matches!(champion_id, ChampionId::Kassadin) {
+            e_modifiers.magic_mod *= 0.9;
         }
 
         let e_current_stats = match current_stats {
@@ -504,13 +534,99 @@ impl EnemyState<'_> {
                 missing_health: RiotFormulas::missing_health(s.current_health, s.max_health),
                 ..s
             },
-            None => EnemyStats {
-                armor: e_default_stats.armor,
-                current_health: e_default_stats.max_health,
-                magic_resist: e_default_stats.magic_resist,
-                max_health: e_default_stats.max_health,
-                missing_health: 1.0,
-            },
+            None => {
+                let mut e_default_stats = base_stats;
+                let bonus_mana = e_default_stats.infer_stats(items, earth_dragons);
+
+                let mut i = 0;
+
+                while i < item_exceptions.len() {
+                    let item_exception = item_exceptions[i];
+                    let stacks = item_exception.stacks();
+
+                    if let Some(item_id) = item_exception.get_item_id() {
+                        match item_id {
+                            ItemId::WintersApproach | ItemId::Fimbulwinter => {
+                                e_default_stats.max_health += 0.15 * bonus_mana
+                            }
+                            ItemId::Dragonheart => {
+                                let modifier = 1.0 + 0.04 * stacks as f32;
+                                e_default_stats.max_health *= modifier;
+                                e_default_stats.armor *= modifier;
+                                e_default_stats.magic_resist *= modifier
+                            }
+                            ItemId::DemonKingsCrown => {
+                                let modifier = 1.0 + 0.01 * stacks as f32;
+                                e_default_stats.max_health *= modifier;
+                                e_default_stats.armor *= modifier;
+                                e_default_stats.magic_resist *= modifier
+                            }
+                            ItemId::WarmogsArmor => e_default_stats.max_health *= 1.12,
+                            _ => {}
+                        }
+                    }
+
+                    i += 1;
+                }
+
+                match champion_id {
+                    ChampionId::Swain => {
+                        let stack_hp = 12 * stacks;
+                        e_default_stats.max_health += stack_hp as f32;
+                    }
+                    ChampionId::Chogath => {
+                        let stack_hp = stacks * 80
+                            + 40 * match level.get() {
+                                ..6 => 0,
+                                6..11 => 1,
+                                11..16 => 2,
+                                16.. => 3,
+                            };
+                        e_default_stats.max_health += stack_hp as f32;
+                    }
+                    ChampionId::Sion => {
+                        e_default_stats.max_health += stacks as f32;
+                    }
+                    ChampionId::Ornn => {
+                        // Starts game with +10% armor/mr/hp already
+                        // After level 13, player will start upgrading items
+                        // At level 18, the maximum bonus must have been reached
+                        // For every upgrade, a +4% resist is applied.
+                        // #![manual_impl]
+                        let ornn_resist_multiplier = match level.get() {
+                            ..13 => 1.1,
+                            13..18 => 1.1 + (level.get() - 12) as f32 * 0.04,
+                            18.. => 1.3,
+                        };
+                        e_default_stats.armor *= ornn_resist_multiplier;
+                        e_default_stats.magic_resist *= ornn_resist_multiplier;
+                        e_default_stats.max_health *= ornn_resist_multiplier;
+                    }
+                    ChampionId::Malphite => {
+                        // W upgrade pattern for malphite by 06/07/2025
+                        // #![manual_impl]
+                        let malphite_resist_multiplier = match level.get() {
+                            ..3 => 1.0,
+                            3..14 => 1.1,
+                            14 => 1.15,
+                            15..17 => 1.2,
+                            17 => 1.25,
+                            18.. => 1.3,
+                        };
+
+                        e_default_stats.armor *= malphite_resist_multiplier;
+                    }
+                    _ => {}
+                }
+
+                EnemyStats {
+                    armor: e_default_stats.armor,
+                    current_health: e_default_stats.max_health,
+                    magic_resist: e_default_stats.magic_resist,
+                    max_health: e_default_stats.max_health,
+                    missing_health: 1.0,
+                }
+            }
         };
 
         let armor_values = RiotFormulas::real_resist(
@@ -531,6 +647,7 @@ impl EnemyState<'_> {
 
         let mut origin = BitSet::EMPTY;
         let mut i = 0;
+
         while i < items.len() {
             origin.insert_const(items[i] as _);
             i += 1;
@@ -557,13 +674,187 @@ impl EnemyState<'_> {
 }
 
 impl SelfState {
-    pub fn ctx(&self, e_state: &EnemyFullState) -> Ctx {
+    /// Estimate a purchase from observed live stats rather than replacing them
+    /// with inferred totals. Unknown stacks and temporary effects remain observed.
+    pub const fn simulated_purchase(
+        &self,
+        item: ItemId,
+        owned: &[ItemId],
+        champion: ChampionId,
+        dragons: Dragons,
+    ) -> Self {
+        let current = self.current_stats;
+        let mut stats = current.with_item_stats(item, dragons);
+        let data = champion.data();
+
+        // Item attack speed is a percent bonus, while live attack_speed is attacks/sec.
+        stats.attack_speed = current.attack_speed
+            + data.stats.attack_speed_ratio * (stats.attack_speed - current.attack_speed) / 100.0;
+
+        let mut already_owned = false;
+        let mut i = 0;
+
+        while i < owned.len() {
+            if owned[i] as u16 == item as u16 {
+                already_owned = true;
+                break;
+            }
+
+            i += 1;
+        }
+
+        let fire = RiotFormulas::get_fire_multiplier(dragons.ally_fire_dragons);
+        let added_mana = stats.max_mana - current.max_mana;
+
+        // Existing conversion passives also benefit from the candidate's stats.
+        i = 0;
+
+        while i < owned.len() {
+            let existing = owned[i];
+
+            match existing {
+                ItemId::WintersApproach | ItemId::Fimbulwinter => {
+                    stats.max_health += 0.15 * added_mana
+                }
+                _ => {}
+            }
+
+            i += 1;
+        }
+
+        if !already_owned {
+            match item {
+                ItemId::WintersApproach | ItemId::Fimbulwinter => {
+                    stats.max_health += 0.15 * (stats.max_mana - self.base_stats.max_mana)
+                }
+                _ => {}
+            }
+        }
+
+        // Amplify the entire added health, including mana converted above.
+        i = 0;
+
+        while i < owned.len() {
+            let existing = owned[i];
+
+            if matches!(existing, ItemId::WarmogsArmor) {
+                stats.max_health =
+                    current.max_health + (stats.max_health - current.max_health) * 1.12;
+            }
+
+            i += 1;
+        }
+
+        if !already_owned && matches!(item, ItemId::WarmogsArmor) {
+            stats.max_health *= 1.12;
+        }
+
+        let health_delta = stats.max_health - current.max_health;
+        let mut added_ap = 0.0;
+        let mut added_ad = 0.0;
+
+        i = 0;
+
+        while i < owned.len() {
+            let existing = owned[i];
+
+            match existing {
+                ItemId::Riftmaker | ItemId::DemonicEmbrace => added_ap += 0.02 * health_delta,
+                ItemId::ArchangelsStaff => added_ap += 0.01 * added_mana,
+                ItemId::SeraphsEmbrace => added_ap += 0.02 * added_mana,
+                ItemId::Manamune | ItemId::Muramana => added_ad += 0.025 * added_mana,
+                ItemId::OverlordsBloodmail => added_ad += 0.025 * health_delta,
+                _ => {}
+            }
+
+            i += 1;
+        }
+
+        if !already_owned {
+            let bonus_health = stats.max_health - self.base_stats.max_health;
+            let bonus_mana = stats.max_mana - self.base_stats.max_mana;
+
+            match item {
+                ItemId::Riftmaker | ItemId::DemonicEmbrace => added_ap += 0.02 * bonus_health,
+                ItemId::ArchangelsStaff => added_ap += 0.01 * bonus_mana,
+                ItemId::SeraphsEmbrace => added_ap += 0.02 * bonus_mana,
+                ItemId::Manamune | ItemId::Muramana => added_ad += 0.025 * bonus_mana,
+                ItemId::OverlordsBloodmail => added_ad += 0.025 * bonus_health,
+                _ => {}
+            }
+        }
+
+        stats.ability_power += added_ap * fire;
+        stats.attack_damage += added_ad * fire;
+
+        // The observed AP already includes owned amplifiers; only amplify the delta.
+        let ap_delta = stats.ability_power - current.ability_power;
+        let mut ap_multiplier = 1.0;
+
+        i = 0;
+
+        while i < owned.len() {
+            let existing = owned[i];
+
+            match existing {
+                ItemId::RabadonsDeathcap => ap_multiplier *= 1.3,
+                ItemId::WoogletsWitchcap => ap_multiplier *= 1.5,
+                _ => {}
+            }
+
+            i += 1;
+        }
+
+        stats.ability_power = current.ability_power + ap_delta * ap_multiplier;
+
+        if !already_owned {
+            match item {
+                ItemId::RabadonsDeathcap => stats.ability_power *= 1.3,
+                ItemId::WoogletsWitchcap => stats.ability_power *= 1.5,
+                _ => {}
+            }
+        }
+
+        let bonus_stats = stats.bonus_stats(self.base_stats);
+        let adaptive_type =
+            match AdaptiveType::try_infer(bonus_stats.attack_damage, stats.ability_power) {
+                Some(value) => value,
+                None => data.adaptive_type,
+            };
+
+        Self {
+            current_stats: stats,
+            bonus_stats,
+            adaptive_type,
+            ..*self
+        }
+    }
+
+    pub const fn ctx(&self, e_state: &EnemyFullState) -> Ctx {
         get_eval_ctx(self, e_state)
     }
 }
 
 impl EnemyFullState {
-    pub fn ctx(&self, self_state: &SelfState) -> Ctx {
+    pub const fn with_shred(mut self, shred: ResistShred, accept_negatives: bool) -> Self {
+        self.armor_values = RiotFormulas::real_resist(
+            shred.armor_penetration_percent,
+            shred.armor_penetration_flat,
+            self.current_stats.armor,
+            accept_negatives,
+        );
+
+        self.magic_values = RiotFormulas::real_resist(
+            shred.magic_penetration_percent,
+            shred.magic_penetration_flat,
+            self.current_stats.magic_resist,
+            accept_negatives,
+        );
+
+        self
+    }
+
+    pub const fn ctx(&self, self_state: &SelfState) -> Ctx {
         get_eval_ctx(self_state, self)
     }
 }
@@ -644,7 +935,7 @@ pub const fn get_eval_ctx(self_state: &SelfState, e_state: &EnemyFullState) -> C
         w_level: ability_levels.w as _,
         e_level: ability_levels.e as _,
         r_level: ability_levels.r as _,
-        level: level as _,
+        level: level.get() as _,
         physical_multiplier: armor_values.modifier,
         magic_multiplier: magic_values.modifier,
         enemy_bonus_health,
@@ -712,7 +1003,7 @@ pub const fn get_stacks(champion_id: ChampionId, game_time: f32) -> f32 {
     const AVERAGE_GAME_TIME: u32 = 60 * 30;
 
     pub const fn time(game_time: f32, average: u32) -> f32 {
-        (AVERAGE_GAME_TIME / average) as f32 / game_time
+        average as f32 * game_time / AVERAGE_GAME_TIME as f32
     }
 
     match champion_id {
@@ -734,6 +1025,7 @@ pub const fn ability_id_mod(
     modifiers: Modifiers,
 ) -> f32 {
     let Modifiers { damages, abilities } = modifiers;
+
     damages.modifier(damage_type) * abilities.modifier(ability_id)
 }
 
@@ -761,8 +1053,9 @@ impl Attacks {
 /// will panic or cause undefined behavior
 const _: () = {
     let mut i = 0;
-    while i < ChampionId::VARIANTS {
-        let champion_id = ChampionId::from_usize(i).unwrap();
+
+    while i < ChampionId::COUNT {
+        let champion_id = ChampionId::from_repr(i as _).unwrap();
         let Champion {
             metadata, closures, ..
         } = champion_id.data();
@@ -782,25 +1075,25 @@ impl Damages {
         let abilities = Self::eval_abilities(
             &ctx,
             &mut onhit,
+            modifiers,
             data.abilities.metadata,
             data.abilities.closures,
-            modifiers,
         );
 
         let items = Self::eval(
             &ctx,
             &mut onhit,
+            modifiers,
             &data.items.metadata,
             &data.items.closures,
-            modifiers,
         );
 
         let runes = Self::eval(
             &ctx,
             &mut onhit,
+            modifiers,
             &data.runes.metadata,
             &data.runes.closures,
-            modifiers,
         );
 
         let attacks = Attacks::new(&ctx, onhit, modifiers.damages.physical_mod);
@@ -822,9 +1115,9 @@ impl Damages {
     pub fn eval_abilities(
         ctx: &Ctx,
         onhit: &mut RangeDamage,
+        modifiers: Modifiers,
         metadata: &[TypeMetadata<AbilityId>],
         closures: &[Closure],
-        modifiers: Modifiers,
     ) -> Box<[i32]> {
         let len = metadata.len();
         debug_assert_eq!(len, closures.len());
@@ -840,6 +1133,7 @@ impl Damages {
                 let closure = unsafe { closures.get_unchecked(i) };
                 let modifier = ability_id_mod(kind, damage_type, modifiers);
                 let damage = (modifier * closure(ctx)) as i32;
+
                 onhit.inc_attr(attributes, damage);
                 damage
             })
@@ -852,9 +1146,9 @@ impl Damages {
     pub fn eval<T>(
         ctx: &Ctx,
         onhit: &mut RangeDamage,
+        modifiers: Modifiers,
         metadata: &[TypeMetadata<T>],
         closures: &[Closure],
-        modifiers: Modifiers,
     ) -> Box<[i32]> {
         let out_len = closures.len();
         debug_assert_eq!(out_len, metadata.len() << 1);
@@ -901,6 +1195,15 @@ pub fn get_monster_damages(
     eval_data: &DamageEvalData,
     shred: ResistShred,
 ) -> [Damages; L_MSTR] {
+    get_monster_damages_with_modifiers(self_state, eval_data, shred, Modifiers::default())
+}
+
+pub(crate) fn get_monster_damages_with_modifiers(
+    self_state: &SelfState,
+    eval_data: &DamageEvalData,
+    shred: ResistShred,
+    modifiers: Modifiers,
+) -> [Damages; L_MSTR] {
     core::array::from_fn(|i| {
         let (armor, magic_resist) = RiotFormulas::MONSTER_RESISTS[i];
         let full_state = EnemyState {
@@ -914,7 +1217,7 @@ pub fn get_monster_damages(
         .full_state(shred, true);
 
         let ctx = get_eval_ctx(self_state, &full_state);
-        let modifiers = Modifiers::new(&ctx, self_state.adaptive_type);
+        let modifiers = modifiers.against(&full_state, self_state.adaptive_type);
         Damages::new(ctx, eval_data, modifiers)
     })
 }
@@ -953,10 +1256,13 @@ pub const fn get_tower_damages(
             pen_percent,
             pen_flat,
         );
+
         unsafe {
             (&raw mut (*tower_ptr)[i]).write(damage);
         }
+
         i += 1;
     }
+
     unsafe { tower_damages.assume_init() }
 }

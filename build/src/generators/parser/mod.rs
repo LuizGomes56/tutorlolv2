@@ -1,28 +1,29 @@
-use crate::{
-    JsonRead, JsonWrite, MayFail,
-    generators::{
-        GeneratorExt, VERSION,
-        utils::{SaveTo, Tag},
+use {
+    crate::{
+        MayFail,
+        generators::{
+            GeneratorExt, VERSION,
+            utils::{SaveTo, Tag},
+        },
+        scripts::{batch::FmtArgs, utils::is_zero},
     },
-    scripts::{
-        batch::FmtArgs,
-        utils::{StaticVar, is_zero, static_vars, variable},
+    heck::{
+        ToKebabCase, ToLowerCamelCase, ToPascalCase, ToShoutyKebabCase, ToShoutySnakeCase,
+        ToSnakeCase, ToTitleCase, ToTrainCase, ToUpperCamelCase,
+    },
+    rayon::iter::{IntoParallelRefIterator, ParallelBridge, ParallelIterator},
+    serde::{Deserialize, Serialize, de::DeserializeOwned},
+    serde_json::{Value, json},
+    std::{
+        collections::{BTreeMap, BTreeSet},
+        ops::{Index, IndexMut},
+        path::Path,
+    },
+    tutorlolv2_types::DamageIndex,
+    tutorlolv2_wiki::{
+        JsonRead, JsonWrite, champions::WikiChampion, items::item_parser::WikiItem, runes::WikiRune,
     },
 };
-use heck::{
-    ToKebabCase, ToLowerCamelCase, ToPascalCase, ToShoutyKebabCase, ToShoutySnakeCase, ToSnakeCase,
-    ToTitleCase, ToTrainCase, ToUpperCamelCase,
-};
-use rayon::iter::{IntoParallelRefIterator, ParallelBridge, ParallelIterator};
-use serde::{Deserialize, Serialize, de::DeserializeOwned};
-use serde_json::{Value, json};
-use std::{
-    collections::{BTreeMap, BTreeSet, HashMap},
-    ops::{Index, IndexMut},
-    path::Path,
-};
-use tutorlolv2_types::DamageIndex;
-use tutorlolv2_wiki::{champions::WikiChampion, items::item_parser::WikiItem, runes::WikiRune};
 
 pub mod champions;
 pub mod items;
@@ -58,13 +59,15 @@ impl MapValueExt for WikiItem {
 
 impl MapValueExt for WikiRune {
     fn riot_id(&self) -> u32 {
-        self.riot_id as _
+        runes::riot_rune_id(self)
     }
 
     fn name(&self) -> &str {
         &self.name
     }
 }
+
+type GeneratorFnSig<T, U> = fn(T) -> MayFail<Box<dyn GeneratorExt<U>>>;
 
 #[allow(dead_code)]
 pub trait Parser<T, U>
@@ -74,7 +77,7 @@ where
     U: TryFrom<T, Error = Box<dyn core::error::Error + Send + Sync>> + Serialize,
 {
     const TAG: Tag;
-    const FN: fn(&str) -> Option<fn(T) -> MayFail<Box<dyn GeneratorExt<U>>>>;
+    const FN: fn(&str) -> Option<GeneratorFnSig<T, U>>;
 
     fn new() -> MayFail<Self>;
     fn map(&self) -> &BTreeMap<String, T>;
@@ -107,13 +110,11 @@ where
             [get(id), get(name)].concat()
         }
 
-        let arguments = self
+        let aliases_by_key = self
             .map()
             .iter()
             .map(|(key, value)| {
-                let name = &value.name();
-
-                let mut aliases = get_aliases(key, name);
+                let mut aliases = get_aliases(key, value.name());
 
                 if let Some(extra) = &extras
                     && let Some(extra_aliases) = extra.get(key)
@@ -121,13 +122,43 @@ where
                     extra_aliases.iter().cloned().for_each(|a| aliases.push(a));
                 }
 
-                let alias = BTreeSet::from_iter(aliases)
-                    .into_iter()
-                    .map(|v| format!("{v:?}"))
-                    .collect::<Vec<_>>()
-                    .join(" | ");
+                (key.as_str(), value, BTreeSet::from_iter(aliases))
+            })
+            .collect::<Vec<_>>();
 
-                format!("{alias} => {enum_name}::{key}")
+        // Items sharing a display name, like `JungleQuestReward1209`, also share the aliases
+        // derived from it. Each alias goes to the variant with the lowest riot id, which is
+        // the base game item, so `FromStr` resolves the same way on every build.
+        let mut owners = BTreeMap::<&str, (&str, u32)>::new();
+
+        for (key, value, aliases) in &aliases_by_key {
+            let rank = match Self::TAG {
+                Tag::Champions => 0,
+                _ => value.riot_id(),
+            };
+
+            for alias in aliases {
+                owners
+                    .entry(alias)
+                    .and_modify(|owner| {
+                        if rank < owner.1 {
+                            *owner = (key, rank);
+                        }
+                    })
+                    .or_insert((key, rank));
+            }
+        }
+
+        let arguments = aliases_by_key
+            .iter()
+            .filter_map(|(key, _, aliases)| {
+                let alias = aliases
+                    .iter()
+                    .filter(|alias| owners[alias.as_str()].0 == *key)
+                    .map(|v| format!("{v:?}"))
+                    .collect::<Vec<_>>();
+
+                (!alias.is_empty()).then(|| format!("{} => {enum_name}::{key}", alias.join(" | ")))
             })
             .collect::<Vec<_>>()
             .join(",");
@@ -139,52 +170,81 @@ where
     }
 
     fn id_enum(&self) -> String {
+        let enum_name = Self::TAG.enum_name();
+        let riot_id_conv = if !matches!(Self::TAG, Tag::Champions) {
+            // Sorted by riot id so `from_riot_id` is a binary search over a table instead
+            // of a jump table with one arm per variant. A stable sort plus `dedup_by_key`
+            // keeps the first variant for a repeated riot id, as the old `match` did.
+            let mut riot_ids = self
+                .map()
+                .iter()
+                .map(|(key, value)| (value.riot_id(), key.as_str()))
+                .collect::<Vec<_>>();
+
+            riot_ids.sort_by_key(|(riot_id, _)| *riot_id);
+            riot_ids.dedup_by_key(|(riot_id, _)| *riot_id);
+
+            format!(
+                "impl {enum_name} {{
+                    const SORTED_RIOT_IDS: [u32; {len}] = [{ids}];
+                    const SORTED_RIOT_ID_VARIANTS: [Self; {len}] = [{variants}];
+
+                    pub const fn from_riot_id(id: u32) -> Option<Self> {{
+                        let (mut lo, mut hi) = (0, Self::SORTED_RIOT_IDS.len());
+                        while lo < hi {{
+                            let mid = lo + (hi - lo) / 2;
+                            let key = Self::SORTED_RIOT_IDS[mid];
+                            if key == id {{
+                                return Some(Self::SORTED_RIOT_ID_VARIANTS[mid]);
+                            }}
+                            if key < id {{ lo = mid + 1 }} else {{ hi = mid }}
+                        }}
+                        None
+                    }}
+                }}",
+                len = riot_ids.len(),
+                ids = riot_ids
+                    .iter()
+                    .map(|(riot_id, _)| riot_id.to_string())
+                    .collect::<Vec<_>>()
+                    .join(","),
+                variants = riot_ids
+                    .iter()
+                    .map(|(_, key)| format!("Self::{key}"))
+                    .collect::<Vec<_>>()
+                    .join(","),
+            )
+        } else {
+            String::new()
+        };
+
         format!(
             "#[derive(
-                Clone, Copy, Debug, Decode, Deserialize, Eq, Encode,
-                Hash, Ord, PartialEq, PartialOrd, Serialize
+                Clone,
+                Copy,
+                Debug,
+                Eq,
+                Hash,
+                Ord,
+                PartialEq,
+                PartialOrd,
+                strum::EnumCount,
+                strum::VariantArray,
+                strum::VariantNames,
+                strum::FromRepr
             )]
             #[repr({repr})]
             pub enum {enum_name} {{{variants}}}
-
-            impl {enum_name} {{
-                pub const VARIANTS: usize = {len};
-                pub const fn debug(&self) -> &'static str {{
-                    match self {{{debug_arms}}}
-                }}
-                {riot_id_conv}
-            }}",
-            enum_name = Self::TAG.enum_name(),
+            {riot_id_conv}",
             repr = Self::TAG.repr(),
             variants = self.keys().collect::<Vec<_>>().join(","),
-            len = self.map().len(),
-            debug_arms = self
-                .keys()
-                .map(|name| format!("Self::{name} => {name:?},"))
-                .collect::<String>(),
-            riot_id_conv = if !matches!(Self::TAG, Tag::Champions) {
-                format!(
-                    "pub const fn from_riot_id(id: u32) -> Option<Self> {{
-                        match id {{ {match_arms} _ => None }}
-                    }}",
-                    match_arms = self
-                        .map()
-                        .iter()
-                        .map(|(key, value)| {
-                            format!("{riot_id} => Some(Self::{key}),", riot_id = value.riot_id())
-                        })
-                        .collect::<String>()
-                )
-            } else {
-                String::new()
-            }
         )
     }
 
     fn generator(id: &str, variant: &str) -> String {
         let folder = Self::TAG.plural();
         let mut default = false;
-        let mut generator = crate::read_to_string(format!(
+        let mut generator = tutorlolv2_wiki::read_to_string(format!(
             "build/src/generators/impls/{folder}/{file_name}.rs",
             file_name = id.to_snake_case()
         ))
@@ -205,7 +265,6 @@ where
                     target: "generator".into(),
                     variant: variant.into(),
                     meta: (),
-                    replace: Default::default(),
                     default
                 })
             ),
@@ -213,19 +272,22 @@ where
         generator
     }
 
-    fn static_vars<'a, const N: usize>(array: [StaticVar<'a>; N]) -> HashMap<&'a str, String> {
-        static_vars(Self::TAG, array)
-    }
-
     fn data_variable(&self) -> String {
         let vtype = Self::TAG.singular().to_pascal_case();
         let var = format!("{}S_DATA", vtype.to_uppercase());
-        let mut data = variable(Self::TAG, &var, &format!("&{vtype}"));
+
+        let enum_name = Self::TAG.enum_name();
+        let folder = Self::TAG.plural();
+        let mut data = format!(
+            "pub static {var}: [&crate::libgen::model::{vtype}; <{enum_name} as strum::EnumCount>::COUNT] = ["
+        );
 
         for id in self.keys() {
             let upper_id = id.to_shouty_snake_case();
             let lower_id = id.to_snake_case();
-            data.push_str(&format!("&{lower_id}::{upper_id},"));
+            data.push_str(&format!(
+                "&crate::libgen::{folder}::{lower_id}::{upper_id},"
+            ));
         }
 
         data.push_str("];");
@@ -260,7 +322,7 @@ where
 
         if let Some(parent) = path.parent() {
             let target = parent.join(Self::TAG.plural()).with_extension("json");
-            let _ = Value::from_dir(dir).map(|r| r.into_file(target));
+            let _ = Value::from_dir(dir).map(|r| r.write_file(target));
         }
     }
 
@@ -279,17 +341,21 @@ where
                 version: VERSION,
                 stable: Self::is_stable(id),
             }
-            .into_file(SaveTo::InternalRaw(Self::TAG, id).path()),
-            Err(e) => Ok(println!("Error generating {id:?}: {e:?}")),
+            .write_file(SaveTo::InternalRaw(Self::TAG, id).path()),
+            Err(e) => {
+                println!("Error generating {id:?}: {e:?}");
+                Ok(())
+            }
         }
     }
 
     fn is_generator(id: &str) -> bool {
-        crate::read_to_string(SaveTo::GeneratorRaw(Self::TAG, id).path()).is_ok()
+        tutorlolv2_wiki::read_to_string(SaveTo::GeneratorRaw(Self::TAG, id).path()).is_ok()
     }
 
     fn is_stable(id: &str) -> bool {
-        if let Ok(data) = crate::read_to_string(SaveTo::GeneratorRaw(Self::TAG, id).path())
+        if let Ok(data) =
+            tutorlolv2_wiki::read_to_string(SaveTo::GeneratorRaw(Self::TAG, id).path())
             && !data.contains("#[warn(unstable_features)]")
         {
             return true;
@@ -353,9 +419,12 @@ where
         match self.create_methods(&mut result, id)? {
             true => {
                 result.push_str(".end()}}");
-                crate::write(&path, result)
+                tutorlolv2_wiki::write(&path, result)
             }
-            false => Ok(crate::remove_file(&path)),
+            false => {
+                tutorlolv2_wiki::remove_file(&path);
+                Ok(())
+            }
         }
     }
 
@@ -374,9 +443,9 @@ where
         let modules = keys
             .iter()
             .copied()
-            .filter_map(|key| {
+            .filter(|key| {
                 let loc = SaveTo::GeneratorRaw(Self::TAG, key).path();
-                Path::new(&loc).exists().then_some(key)
+                Path::new(&loc).exists()
             })
             .collect::<Vec<_>>()
             .join(",\n\t");
@@ -385,7 +454,7 @@ where
             "use crate::generators::imports::{module}::*;\ncrate::{module}!(\n\t{modules}\n);",
         );
 
-        crate::write(&decl, decl_content)?;
+        tutorlolv2_wiki::write(&decl, decl_content)?;
 
         Ok(())
     }

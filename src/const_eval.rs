@@ -1,3 +1,4 @@
+use core::num::NonZeroU8;
 use {
     crate::{
         ChampionId, ItemId, RuneId,
@@ -5,7 +6,8 @@ use {
         helpers::{ability_id_mod, get_eval_ctx},
         model::{
             AbilityLevels, Attacks, BasicStats, DamageModifiers, Dragons, EnemyState, EnemyStats,
-            Modifiers, RangeDamage, ResistShred, SelfState, SimpleStats, PlayerStats, ValueException,
+            Modifiers, PlayerStats, RangeDamage, ResistShred, SelfState, SimpleStats,
+            ValueException,
         },
     },
     tutorlolv2_types::{AbilityId, AdaptiveType, AttackType, Ctx, TypeMetadata},
@@ -118,7 +120,7 @@ pub struct ConstInput<
     pub stats: Option<PlayerStats>,
     pub dragons: Dragons,
     pub stacks: u32,
-    pub level: u8,
+    pub level: NonZeroU8,
     pub is_mega_gnar: bool,
     pub enemy: ConstEnemy<EI, EIE>,
 }
@@ -130,7 +132,7 @@ pub struct ConstEnemy<const N: usize, const EIE: usize> {
     pub item_exceptions: [(ItemId, u32); EIE],
     pub stats: Option<EnemyStats>,
     pub stacks: u32,
-    pub level: u8,
+    pub level: NonZeroU8,
     pub is_mega_gnar: bool,
 }
 
@@ -195,7 +197,10 @@ impl<
         let mut modifiers = Modifiers::default();
 
         let stats = match stats {
-            Some(s) => s,
+            Some(s) => {
+                modifiers.apply_loadout(&items, &runes, &s);
+                s
+            }
             None => PlayerStats::infer(InferStats {
                 item_exceptions: &ValueException::pack_items(&item_exceptions),
                 rune_exceptions: &ValueException::pack_runes(&rune_exceptions),
@@ -258,11 +263,7 @@ impl<
             }
         };
 
-        let attack_type = if is_mega_gnar {
-            AttackType::Ranged
-        } else {
-            champion_id.attack_type()
-        };
+        let attack_type = champion_id.effective_attack_type(is_mega_gnar);
 
         let enemy = enemy_state.full_state(shred, false);
         let ctx = get_eval_ctx(&self_state, &enemy);
@@ -373,7 +374,7 @@ impl<
 ///         stats: None,
 ///         dragons: Dragons::default(),
 ///         stacks: 0,
-///         level: 18,
+///         level: core::num::NonZeroU8::new(18).unwrap(),
 ///         is_mega_gnar: false,
 ///         enemy: ConstEnemy {
 ///             champion_id: ChampionId::Aatrox,
@@ -381,7 +382,7 @@ impl<
 ///             item_exceptions: [(ItemId::Dragonheart, 4)],
 ///             stats: None,
 ///             stacks: 0,
-///             level: 18,
+///             level: core::num::NonZeroU8::new(18).unwrap(),
 ///             is_mega_gnar: false,
 ///         },
 ///     }

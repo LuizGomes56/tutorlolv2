@@ -15,7 +15,7 @@ pub mod abilities;
 pub mod full;
 pub mod template;
 
-pub(self) fn cache() -> PathBuf {
+fn cache() -> PathBuf {
     PathBuf::from("cache/wiki/champions")
 }
 

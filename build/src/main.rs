@@ -14,7 +14,9 @@ fn main() -> MayFail {
     IPARSER.run_all();
     RPARSER.run_all();
 
-    Ok(())
+    unsafe { std::env::set_var("OUT_DIR", "./build_output") };
+
+    tutorlolv2_build_dep::run()
 }
 
 #[cfg(test)]
@@ -44,7 +46,7 @@ mod tests {
                 .copied()
                 .collect::<Vec<_>>();
 
-            let Some(k) = probe_ratio(&min.damage, &max.damage, &all_vars) else {
+            let Some(k) = probe_ratio(&min.damage, &max.damage, all_vars) else {
                 continue;
             };
 

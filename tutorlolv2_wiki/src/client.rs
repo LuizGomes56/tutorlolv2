@@ -115,7 +115,7 @@ impl<'a> DDragon<'a> {
             DDragon::Splash(s, n) => format!("{path_a}/img/champion/splash/{s}_{n}.jpg"),
             DDragon::Version => format!("{DDRAGON_ENDPOINT}/api/versions.json"),
             DDragon::Riot(endpoint, language) => {
-                let language = language.unwrap_or(&LOL_LANGUAGE);
+                let language = language.unwrap_or(LOL_LANGUAGE);
                 let path = format_args!("{DDRAGON_ENDPOINT}/cdn/{LOL_VERSION}");
                 format!("{path}/data/{language}/{endpoint}.json")
             }
@@ -150,7 +150,7 @@ impl HttpClient {
             && this
         {
             println!("[exists] {path:?}");
-            return Ok(crate::read_to_string(path)?);
+            return crate::read_to_string(path);
         }
 
         if let Some(parent) = path.parent()
@@ -233,7 +233,7 @@ impl HttpClient {
                         const ERROR_TAG: &[u8] = b"<Code>AccessDenied</Code>";
 
                         if bytes.windows(ERROR_TAG.len()).any(|w| w == ERROR_TAG) {
-                            return [].write_file(save_to);
+                            return JsonWrite::write_file(&([] as [Value; 0]), save_to);
                         }
 
                         bytes.write_file(save_to)
@@ -369,6 +369,10 @@ impl HttpClient {
                 for skin in champion.skins {
                     let num = skin.num;
 
+                    if skin.parent_skin.is_some() {
+                        continue;
+                    }
+
                     for i in [false, true] {
                         let (url, save_to) = match i {
                             false => (
@@ -474,7 +478,7 @@ impl HttpClient {
                     .data
                     .get(&champion_id)
                     .unwrap()
-                    .into_file(SaveTo::RiotCache(Tag::Champions, &champion_id).path())
+                    .write_file(SaveTo::RiotCache(Tag::Champions, &champion_id).path())
                     .unwrap();
             }));
         }
@@ -493,7 +497,7 @@ impl HttpClient {
         let items_json = RiotCdn::<u32, Value>::from_file(items_path)?;
 
         for (item_id, item_data) in items_json.data {
-            item_data.into_file(SaveTo::RiotCache(Tag::Items, &item_id).path())?;
+            item_data.write_file(SaveTo::RiotCache(Tag::Items, &item_id).path())?;
         }
 
         self.download(
@@ -558,7 +562,7 @@ impl HttpClient {
             }
         }
 
-        languages_data.into_file(SaveTo::RiotChampionLanguages.path())
+        languages_data.write_file(SaveTo::RiotChampionLanguages.path())
     }
 
     /// Fetches the available languages in league of legends and saves them to
@@ -569,5 +573,11 @@ impl HttpClient {
             SaveTo::RiotLanguages.path(),
         )
         .await
+    }
+}
+
+impl Default for HttpClient {
+    fn default() -> Self {
+        Self::new()
     }
 }

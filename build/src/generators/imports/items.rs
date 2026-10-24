@@ -7,7 +7,7 @@ pub use crate::{
     },
 };
 pub use core::fmt::Display;
-pub use tutorlolv2_types::{AttackType::*, CtxVar::*, DamageIndex::*, DamageType::*};
+pub use tutorlolv2_types::{AttackType::*, Attrs::*, CtxVar::*, DamageIndex::*, DamageType::*};
 pub use tutorlolv2_wiki::items::item_parser::WikiItem;
 
 #[macro_export]
@@ -21,12 +21,15 @@ macro_rules! decl_items {
         $(
             $crate::decl_items!(inner $Name);
 
+            #[derive(derive_more::Deref, derive_more::DerefMut)]
             pub struct $Name {
+                #[deref]
+                #[deref_mut]
                 pub inner: Item
             }
 
             impl $Name {
-                pub fn new(data: WikiItem) -> MayFail<Box<dyn GeneratorExt<Item>>> {
+                pub fn try_from(data: WikiItem) -> MayFail<Box<dyn GeneratorExt<Item>>> {
                     Ok(Box::new(Self {
                         inner: Item::try_from(data)?
                     }))
@@ -38,26 +41,13 @@ macro_rules! decl_items {
                     Ok(self.inner)
                 }
             }
-
-            impl ::core::ops::Deref for $Name {
-                type Target = Item;
-                fn deref(&self) -> &Self::Target {
-                    &self.inner
-                }
-            }
-
-            impl ::core::ops::DerefMut for $Name {
-                fn deref_mut(&mut self) -> &mut Self::Target {
-                    &mut self.inner
-                }
-            }
         )*
 
         pub fn item_gen_fn(item_id: &str) -> Option<
             fn(WikiItem) -> MayFail<Box<dyn GeneratorExt<Item>>>
         > {
             match item_id {
-                $(stringify!($Name) => Some($Name::new),)*
+                $(stringify!($Name) => Some($Name::try_from),)*
                 _ => None,
             }
         }

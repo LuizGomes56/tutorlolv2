@@ -1,7 +1,7 @@
 use crate::{
     Build, MayFail, OUT_DIR,
     generators::{parser::items::Item, utils::Tag},
-    scripts::utils::{ItemOrRuneExt, fit_str},
+    scripts::utils::{ItemOrRuneExt, bake},
 };
 use heck::ToShoutySnakeCase;
 use std::fmt::Write;
@@ -40,69 +40,40 @@ impl Build for Item {
         let mut rust = String::new();
         let mut docs = String::new();
 
-        let upper_id = item_id.to_shouty_snake_case();
-
         write!(
             rust,
             r#"pub static {upper_id}: X = X {{
                 name: {name:?},
                 tier: {tier},
                 price: {price},
-                stats: &[{full_stats}],
-                maps: &{maps:?},
+                stats: {full_stats},
+                maps: {maps},
                 metadata: {metadata},
                 {fn_names}
                 deals_damage: {deals_damage:?},
                 purchasable: {purchasable},
                 riot_id: {id},
                 custom: {custom},
-                #[cfg(feature = "docs")]
-                identifiers: &{identifiers:?},
+
+                #[cfg(feature = "yew")]
+                identifiers: {identifiers},
             }};"#,
-            identifiers = self.identifiers(),
+            upper_id = item_id.to_shouty_snake_case(),
+            identifiers = bake(&self.identifiers().as_slice()),
+            maps = bake(&maps.as_slice()),
             deals_damage = self.deals_damage(),
             fn_names = self.function_names(),
             metadata = self.repr_metadata(),
-            full_stats = stats
-                .iter()
-                .map(|(stat, number)| { format!("(StatName::{stat:?}, {number})") })
-                .collect::<Vec<_>>()
-                .join(", "),
+            full_stats = bake(&stats.as_slice()),
         )?;
 
-        write!(
-            docs,
-            "#[fmt({fmt})]
-            static {var_name}: X = X {{
-                name: {name},
-                price: {price},
-                stats: {stats:?},
-                maps: {maps:?},
-                tier: {tier},
-                purchasable: {purchasable},
-                {damage}
-            }};",
-            damage = self.repr_damages(),
-            fmt = self.formula_fmt(),
-            name = fit_str(&name),
-            var_name = {
-                let max_len = 28;
-                if upper_id.len() > max_len {
-                    upper_id[..max_len].to_string()
-                } else {
-                    upper_id
-                }
-            }
-        )?;
-
-        let (code, doc) = &self.closures()?;
-        rust.push_str(code);
-        docs.push_str(doc);
+        docs.push_str(&self.repr_damages());
+        rust.push_str(&self.closures()?);
 
         let out = OUT_DIR.join(Tag::Items.plural()).join(item_id);
 
-        crate::write(out.with_extension("rs"), rust)?;
-        crate::write(out.with_extension("w48"), docs)?;
+        tutorlolv2_wiki::write(out.with_extension("rs"), rust)?;
+        tutorlolv2_wiki::write(out.with_extension("w48"), docs)?;
 
         Ok(self.eval())
     }
@@ -118,12 +89,11 @@ impl Item {
             stats: data
                 .stats
                 .iter()
-                .filter_map(|(k, v)| {
+                .map(|(k, v)| {
                     let stat = k
                         .parse::<u8>()
                         .ok()
-                        .map(StatName::from_u8)
-                        .flatten()
+                        .and_then(StatName::from_repr)
                         .unwrap_or_else(|| {
                             k.parse()
                                 .map_err(|e| {
@@ -135,7 +105,7 @@ impl Item {
                                 .unwrap()
                         });
 
-                    Some((stat, *v as _))
+                    (stat, *v as _)
                 })
                 .collect(),
             maps: data
@@ -145,8 +115,8 @@ impl Item {
                 .filter_map(|(k, _)| {
                     k.parse::<u8>()
                         .ok()
-                        .map(GameMap::from_u8)
-                        .or_else(|| match k.as_str() {
+                        .map(GameMap::from_code)
+                        .or(match k.as_str() {
                             "ar" => Some(GameMap::Arena),
                             "aram" => Some(GameMap::Aram),
                             "classic sr 5v5" => Some(GameMap::SummonersRift),

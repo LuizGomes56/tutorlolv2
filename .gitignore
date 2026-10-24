@@ -10,6 +10,7 @@
 *.txt
 *.pdf
 *.html
+*.zip
 target
 html
 raw_img
@@ -18,3 +19,5 @@ cache
 archives
 **/conv
 build_output
+perf/
+tests/

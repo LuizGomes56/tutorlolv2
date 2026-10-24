@@ -1,7 +1,6 @@
 use {
     crate::{
-        Champion, ChampionId, EntityId, Item, ItemId, Rune, RuneId,
-        bitset::{BitSet, BitSetExc},
+        Champion, ChampionId, EntityId, Item, ItemId, Rune, RuneId, bitset::BitSet,
         model::ValueException,
     },
     core::{
@@ -12,52 +11,7 @@ use {
     tutorlolv2_types::{DamageType, Position, TypeMetadata},
 };
 
-#[cfg(feature = "docs")]
-use {core::ops::Range, tutorlolv2_types::CtxVar};
-
 macro_rules! impl_methods {
-    (inner $stru:ident, $($repr:ty),*) => {
-        pastey::paste! {
-            $(
-                impl TryFrom<$repr> for $stru {
-                    type Error = &'static str;
-                    fn try_from(value: $repr) -> Result<Self, Self::Error> {
-                        Self::from_repr(value as _).ok_or(concat!(
-                            "Index out of bounds when converting ",
-                            stringify!($repr),
-                            " to ",
-                            stringify!($stru)
-                        ))
-                    }
-                }
-
-                impl TryFrom<&$repr> for $stru {
-                    type Error = &'static str;
-                    fn try_from(value: &$repr) -> Result<Self, Self::Error> {
-                        Self::from_repr(*value as _).ok_or(concat!(
-                            "Index out of bounds when converting ",
-                            stringify!($repr),
-                            " to ",
-                            stringify!($stru)
-                        ))
-                    }
-                }
-
-                impl $stru {
-                    pub const unsafe fn [<from_ $repr _unchecked>](id: $repr) -> Self {
-                        unsafe { Self::from_repr_unchecked(id as _) }
-                    }
-
-                    pub const fn [<from_ $repr>](id: $repr) -> Option<Self> {
-                        match id < Self::VARIANTS as _ {
-                            true => unsafe { Some(Self::from_repr_unchecked(id as _)) },
-                            false => None
-                        }
-                    }
-                }
-            )*
-        }
-    };
     ($($stru:ident => $repr:ty),+$(,)*) => {
         pastey::paste! {
             $(
@@ -89,68 +43,17 @@ macro_rules! impl_methods {
                     }
                 }
 
-                impl_methods!(inner $stru, u8, u16, u32, u64, u128, usize, i8, i16, i32, i64, i128, isize);
-
                 impl $stru {
-                    pub const VALUES: [Self; Self::VARIANTS] = {
-                        let mut i = 0;
-                        let mut result: [Self; _] = unsafe { core::mem::zeroed() };
-                        while i < Self::VARIANTS {
-                            result[i] = Self::from_repr(i as _).unwrap();
-                            i += 1;
-                        }
-                        result
-                    };
-
-                    pub const NAMES: [&str; Self::VARIANTS] = {
-                        let mut i = 0;
-                        let mut result: [*const str; Self::VARIANTS] = unsafe { core::mem::zeroed() };
-                        while i < Self::VARIANTS {
-                            result[i] = Self::VALUES[i].name() as *const _;
-                            i += 1;
-                        }
-                        unsafe { core::mem::transmute(result) }
-                    };
-
                     pub const NAME_TO_ID: &phf::Map<&str, Self> =
                         &$crate::[<$stru:replace("Id", "s"):lower _code>]
                         ::[<$stru:replace("Id", ""):upper _NAME_TO_ID>];
-
-                    #[cfg(feature = "docs")]
-                    pub const GENERATOR_DOCS: &[Range<usize>; Self::VARIANTS] =
-                        &$crate::docs::[<$stru:replace("Id", ""):upper _GENERATORS>];
-
-                    #[cfg(feature = "docs")]
-                    pub const DOCS: &[Range<usize>; Self::VARIANTS] =
-                        &$crate::docs::[<$stru:replace("Id", ""):upper _FORMULAS>];
 
                     pub const DATA: &[&[<$stru:replace("Id", "")>]] =
                         &$crate::[<$stru:replace("Id", "s"):lower _code>]
                         ::[<$stru:replace("Id", "S"):upper _DATA>];
 
-                    pub const unsafe fn from_repr_unchecked(id: $repr) -> Self {
-                        unsafe { core::mem::transmute(id) }
-                    }
-
-                    pub const fn from_repr(id: $repr) -> Option<Self> {
-                        match id < Self::VARIANTS as _ {
-                            true => unsafe { Some(Self::from_repr_unchecked(id as _)) },
-                            false => None
-                        }
-                    }
-
-                    #[cfg(feature = "docs")]
-                    pub const fn generator_docs(&self) -> &'static Range<usize> {
-                        &Self::GENERATOR_DOCS[self.index()]
-                    }
-
-                    #[cfg(feature = "docs")]
-                    pub const fn docs(&self) -> &'static Range<usize> {
-                        &Self::DOCS[self.index()]
-                    }
-
                     pub const fn default() -> Self {
-                        unsafe { Self::from_repr_unchecked(0) }
+                        Self::from_repr(0).unwrap()
                     }
 
                     pub const fn data(&self) -> &'static [<$stru:replace("Id", "")>] {
@@ -169,16 +72,6 @@ macro_rules! impl_methods {
                 impl Sealed for $stru {}
 
                 impl CastId for $stru {
-                    const VARIANTS: usize = Self::VARIANTS;
-                    const NAMES: &'static [&'static str] = &Self::NAMES;
-                    const VALUES: &'static [Self] = &Self::VALUES;
-
-                    #[cfg(feature = "docs")]
-                    const GENERATOR_DOCS: &'static [Range<usize>] = Self::GENERATOR_DOCS;
-
-                    #[cfg(feature = "docs")]
-                    const DOCS: &'static [Range<usize>] = Self::DOCS;
-
                     fn entity(&self) -> EntityId {
                         EntityId::[<$stru:replace("Id", "")>](*self)
                     }
@@ -188,11 +81,15 @@ macro_rules! impl_methods {
                     }
 
                     fn debug(&self) -> &'static str {
-                        self.debug()
+                        <Self as strum::VariantNames>::VARIANTS[self.index()]
                     }
 
                     fn index(&self) -> usize {
                         self.index()
+                    }
+
+                    fn try_from_u16(v: u16) -> Option<Self> {
+                        Self::from_repr(v as _)
                     }
                 }
             )+
@@ -213,29 +110,24 @@ pub trait CastId
 where
     Self: Any + Copy + Debug + Default + Sealed + Sized + 'static,
 {
-    const VARIANTS: usize;
-    const NAMES: &'static [&'static str];
-    const VALUES: &'static [Self];
-
-    #[cfg(feature = "docs")]
-    const GENERATOR_DOCS: &'static [Range<usize>];
-
-    #[cfg(feature = "docs")]
-    const DOCS: &'static [Range<usize>];
-
     fn entity(&self) -> EntityId;
     fn name(&self) -> &'static str;
     fn index(&self) -> usize;
     fn debug(&self) -> &'static str;
+    fn try_from_u16(v: u16) -> Option<Self>;
 
-    #[cfg(feature = "docs")]
-    fn docs(&self) -> &'static Range<usize> {
-        &Self::DOCS[self.index()]
+    #[cfg(feature = "yew")]
+    fn render_generator(&self) -> Option<alloc::string::String> {
+        crate::yew::render::GENERATOR_RENDERER.render(*self)
     }
 
-    #[cfg(feature = "docs")]
-    fn generator_docs(&self) -> &'static Range<usize> {
-        &Self::GENERATOR_DOCS[self.index()]
+    #[cfg(feature = "yew")]
+    fn render_global(&self) -> crate::yew::render::MayFail<alloc::string::String> {
+        match self.entity() {
+            EntityId::Champion(v) => v.render_global(),
+            EntityId::Item(v) => v.render_global(),
+            EntityId::Rune(v) => v.render_global(),
+        }
     }
 
     fn is_champion(&self) -> bool {
@@ -258,14 +150,16 @@ pub trait ValueId: CastId {
     fn riot_id(&self) -> u32;
     fn metadata(&self) -> TypeMetadata<Self>;
     fn pack_exc(&self, v: u32) -> ValueException;
-    fn exceptions(ally: bool) -> BitSetExc;
     fn recommendations(champion_id: ChampionId, position: Position) -> &'static [Self];
 
-    #[cfg(feature = "docs")]
-    fn identifiers(&self) -> &'static [CtxVar];
+    #[cfg(feature = "yew")]
+    fn exceptions(ally: bool) -> crate::bitset::BitSetExc;
 
-    #[cfg(feature = "docs")]
-    fn functions_docs(&self) -> &'static [[Range<usize>; 2]; 2];
+    #[cfg(feature = "yew")]
+    fn identifiers(&self) -> &'static [tutorlolv2_types::CtxVar];
+
+    #[cfg(feature = "yew")]
+    fn render_fn(&self) -> crate::yew::render::MayFail<alloc::string::String>;
 
     fn damage_type(&self) -> DamageType {
         self.metadata().damage_type
@@ -276,6 +170,21 @@ impl ValueId for ItemId {
     const DAMAGING: &BitSet = &Self::DAMAGING;
     const DAMAGING_IDS: &[Self] = &Self::DAMAGING_IDS;
 
+    #[cfg(feature = "yew")]
+    fn render_fn(&self) -> crate::yew::render::MayFail<alloc::string::String> {
+        self.render_fn()
+    }
+
+    #[cfg(feature = "yew")]
+    fn exceptions(ally: bool) -> crate::bitset::BitSetExc {
+        ItemId::exceptions(ally)
+    }
+
+    #[cfg(feature = "yew")]
+    fn identifiers(&self) -> &'static [tutorlolv2_types::CtxVar] {
+        self.identifiers()
+    }
+
     fn riot_id(&self) -> u32 {
         self.riot_id()
     }
@@ -284,22 +193,8 @@ impl ValueId for ItemId {
         ValueException::pack_item_id(*self, v)
     }
 
-    fn exceptions(ally: bool) -> BitSetExc {
-        ItemId::exceptions(ally)
-    }
-
     fn recommendations(champion_id: ChampionId, position: Position) -> &'static [Self] {
         champion_id.recommended_items(position)
-    }
-
-    #[cfg(feature = "docs")]
-    fn identifiers(&self) -> &'static [CtxVar] {
-        self.identifiers()
-    }
-
-    #[cfg(feature = "docs")]
-    fn functions_docs(&self) -> &'static [[Range<usize>; 2]; 2] {
-        self.functions_docs()
     }
 
     fn metadata(&self) -> TypeMetadata<Self> {
@@ -311,6 +206,21 @@ impl ValueId for RuneId {
     const DAMAGING: &BitSet = &Self::DAMAGING;
     const DAMAGING_IDS: &[Self] = &Self::DAMAGING_IDS;
 
+    #[cfg(feature = "yew")]
+    fn render_fn(&self) -> crate::yew::render::MayFail<alloc::string::String> {
+        self.render_fn()
+    }
+
+    #[cfg(feature = "yew")]
+    fn exceptions(_: bool) -> crate::bitset::BitSetExc {
+        RuneId::exceptions()
+    }
+
+    #[cfg(feature = "yew")]
+    fn identifiers(&self) -> &'static [tutorlolv2_types::CtxVar] {
+        self.identifiers()
+    }
+
     fn riot_id(&self) -> u32 {
         self.riot_id()
     }
@@ -319,22 +229,8 @@ impl ValueId for RuneId {
         ValueException::pack_rune_id(*self, v)
     }
 
-    fn exceptions(_: bool) -> BitSetExc {
-        RuneId::exceptions()
-    }
-
     fn recommendations(champion_id: ChampionId, position: Position) -> &'static [Self] {
         champion_id.recommended_runes(position)
-    }
-
-    #[cfg(feature = "docs")]
-    fn identifiers(&self) -> &'static [CtxVar] {
-        self.identifiers()
-    }
-
-    #[cfg(feature = "docs")]
-    fn functions_docs(&self) -> &'static [[Range<usize>; 2]; 2] {
-        self.functions_docs()
     }
 
     fn metadata(&self) -> TypeMetadata<Self> {

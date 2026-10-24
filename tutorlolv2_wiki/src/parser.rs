@@ -59,7 +59,7 @@ pub fn get_cells(html: &Html) -> MayFail<BTreeMap<String, String>> {
             }
 
             cells.insert(key.clone() + "_raw", value.inner_html());
-            cells.insert(key, text.trim().to_string());
+            cells.insert(key, clean_text(text.trim()));
         }
     }
 
@@ -67,7 +67,7 @@ pub fn get_cells(html: &Html) -> MayFail<BTreeMap<String, String>> {
 }
 
 pub fn parse_lua(text: &str) -> MayFail<String> {
-    Ok(Html::parse_document(&text)
+    Ok(Html::parse_document(text)
         .select(&selector("pre.mw-code.mw-script")?)
         .next()
         .ok_or("Failed to select <pre> tag")?
@@ -787,10 +787,9 @@ impl Scaling {
 
 pub fn clean_text(s: &str) -> String {
     s.replace('\u{a0}', " ")
-        .replace('\u{2013}', "-")
-        .replace('\u{2014}', "-")
-        .replace('\u{2212}', "-")
+        .replace(['\u{2013}', '\u{2014}', '\u{2212}'], "-")
         .replace('\u{00D7}', "*")
+        .replace("–", "-")
         .replace("'''", "")
         .lines()
         .map(str::trim)
@@ -1055,10 +1054,7 @@ fn strip_leading_non_base_suffixes(input: &str) -> String {
     let mut s = input.trim().to_string();
 
     loop {
-        s = s
-            .trim_start_matches(|c: char| c == ',' || c == ';')
-            .trim()
-            .to_string();
+        s = s.trim_start_matches([',', ';']).trim().to_string();
 
         if let Some(rest) = strip_one_leading_group(&s) {
             s = rest.trim().to_string();
@@ -1131,7 +1127,7 @@ fn is_contextual_remainder(remainder: &str) -> bool {
         "true damage",
     ];
 
-    if harmless_exact.iter().any(|&s| remainder == s) {
+    if harmless_exact.contains(&remainder) {
         return false;
     }
 
@@ -1382,15 +1378,14 @@ fn dedup_scalings_semantic(list: &mut Vec<Scaling>) {
             }
             Scaling::RangePercentAttr {
                 min, max, ctx_var, ..
-            } => {
-                if out.iter().any(|s| match s {
-                    Scaling::BasedOnLevel { ctx_var: other, .. } => {
-                        *other == *ctx_var && approx_eq(*min, *max)
-                    }
-                    _ => false,
-                }) {
-                    continue;
+            } if out.iter().any(|s| match s {
+                Scaling::BasedOnLevel { ctx_var: other, .. } => {
+                    *other == *ctx_var && approx_eq(*min, *max)
                 }
+                _ => false,
+            }) =>
+            {
+                continue;
             }
             _ => {}
         }

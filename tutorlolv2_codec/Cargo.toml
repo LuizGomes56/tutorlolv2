@@ -1,0 +1,9 @@
+[package]
+name = "tutorlolv2_codec"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+heck = "0.5"
+strum = { version = "0.28.0", features = ["derive", "strum_macros"] }
+synoptic = "2.2.9"

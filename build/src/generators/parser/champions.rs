@@ -1,12 +1,13 @@
 use {
     crate::{
-        DynError, JsonRead, MayFail,
+        DynError, MayFail,
         generators::{
             GeneratorExt,
             impls::champions::champion_gen_fn,
             parser::{Parser, ZERO, likely_damages},
             utils::{RegExtractor, Tag},
         },
+        scripts::utils::is_zero,
     },
     serde::{Deserialize, Serialize},
     serde_with::{Seq, serde_as},
@@ -18,6 +19,7 @@ use {
         AbilityId, AbilityName, Attrs, ComboElement, DamageType, DevMergeData, Key,
     },
     tutorlolv2_wiki::{
+        JsonRead,
         champions::{WikiChampion, abilities::WikiAbility},
         parser::{Effect, Scaling},
     },
@@ -224,7 +226,7 @@ impl Champion {
     ) -> &mut Self {
         for (i, ability_id) in Self::modify_pattern(key, pattern) {
             if let Some(abilities) = self.wiki_ability(key).ok()
-                && let Some(ability) = abilities.iter().nth(nth)
+                && let Some(ability) = abilities.get(nth)
             {
                 let mut value = Ability {
                     name: ability.name.clone(),
@@ -459,6 +461,14 @@ impl Champion {
             ..
         } = self;
 
+        abilities.retain(|key, ability| {
+            let zero = is_zero(&ability.damage);
+            if zero {
+                println!("[{champion_id}] Removing [{key:?}]");
+            }
+            !zero
+        });
+
         // Verifies if any ability found has unknown damage and emits a warning
         // to the console so it can be fixed by the next time the generator runs
         abilities
@@ -485,13 +495,13 @@ impl Champion {
                 let name_byte = index + AbilityName::JMP;
                 let alias_byte = index - AbilityName::JMP;
 
-                let ability_name = AbilityName::from_u8(name_byte).ok_or(format!(
-                    "ability_name: AbilityName::from_u8({name_byte}) failed",
+                let ability_name = AbilityName::from_repr(name_byte).ok_or(format!(
+                    "ability_name: AbilityName::from_repr({name_byte}) failed",
                 ))?;
 
                 let ability_id = make(ability_name);
-                let name_alias = AbilityName::from_u8(alias_byte).ok_or(format!(
-                    "name_alias: AbilityName::from_u8({alias_byte}) failed",
+                let name_alias = AbilityName::from_repr(alias_byte).ok_or(format!(
+                    "name_alias: AbilityName::from_repr({alias_byte}) failed",
                 ))?;
 
                 let alias = make(name_alias);

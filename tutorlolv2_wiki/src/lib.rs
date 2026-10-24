@@ -19,7 +19,7 @@ pub mod runes;
 pub const DDRAGON_ENDPOINT: &str = "https://ddragon.leagueoflegends.com";
 pub const CANISBACK_ENDPOINT: &str = "https://ddragon.canisback.com/img";
 pub const LOL_LANGUAGE: &str = "en_US";
-pub const LOL_VERSION: &str = "16.13.1";
+pub const LOL_VERSION: &str = "16.21.1";
 
 pub static HTTP_CLIENT: LazyLock<HttpClient> = LazyLock::new(HttpClient::new);
 
@@ -34,7 +34,6 @@ pub trait JsonRead: DeserializeOwned {
 
     fn from_dir(path: impl AsRef<Path>) -> MayFail<BTreeMap<String, Self>> {
         Ok(read_dir(&path)?
-            .into_iter()
             .filter_map(|entry| {
                 let entry_name = entry.file_name().to_string_lossy().into_owned();
                 let file_name = entry_name
@@ -55,12 +54,12 @@ pub trait JsonRead: DeserializeOwned {
 pub trait JsonWrite: Serialize {
     /// Saves a struct that implements [`Serialize`] into the provided file path
     /// as a pretty-printed json
-    fn into_file(&self, path: impl AsRef<Path>) -> MayFail {
+    fn write_file(&self, path: impl AsRef<Path>) -> MayFail {
         let path = path.as_ref();
         println!("[write] {path:?}");
 
         let data = serde_json::to_string_pretty(self)?;
-        Ok(write(path, data.as_bytes())?)
+        write(path, data.as_bytes())
     }
 }
 
@@ -73,7 +72,7 @@ pub trait FileWrite: AsRef<[u8]> {
     /// Resolves the provided path and save the contents into the provided
     /// file path
     fn write_file(&self, path: impl AsRef<Path>) -> MayFail {
-        Ok(write(path, self)?)
+        write(path, self)
     }
 }
 

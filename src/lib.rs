@@ -1,10 +1,9 @@
 #![no_std]
 
-pub use calculator::calculator;
-pub use realtime::realtime;
-pub use tutorlolv2_types::*;
-
 extern crate alloc;
+
+#[cfg(feature = "yew")]
+pub mod yew;
 
 pub mod bitset;
 pub mod calculator;
@@ -16,10 +15,8 @@ pub mod model;
 pub mod realtime;
 pub mod riot;
 
-#[cfg(feature = "yew")]
-pub mod yew;
-
 pub use libgen::*;
+pub use tutorlolv2_types::*;
 
 #[allow(dead_code)]
 mod test {
@@ -47,7 +44,7 @@ mod test {
         stats: None,
         dragons: Dragons::default(),
         stacks: 0,
-        level: 18,
+        level: core::num::NonZeroU8::new(18).unwrap(),
         is_mega_gnar: false,
         enemy: ConstEnemy {
             champion_id: ChampionId::Aatrox,
@@ -55,7 +52,7 @@ mod test {
             item_exceptions: [(ItemId::Dragonheart, 4)],
             stats: None,
             stacks: 0,
-            level: 18,
+            level: core::num::NonZeroU8::new(18).unwrap(),
             is_mega_gnar: false,
         },
     }

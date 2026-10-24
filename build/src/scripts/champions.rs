@@ -7,7 +7,7 @@ use {
         },
         scripts::{
             batch::FmtArgs,
-            utils::{cast_f32, ctx_param, fit_str, get_identifiers, probe_ratio, simplify},
+            utils::{bake, cast_f32, ctx_param, fit_str, get_identifiers, probe_ratio, simplify},
         },
     },
     heck::{ToShoutySnakeCase, ToSnakeCase},
@@ -81,7 +81,7 @@ impl Build for Champion {
                     .copied()
                     .collect::<Vec<_>>();
 
-                let Some(k) = probe_ratio(&min.damage, &max.damage, &all_vars) else {
+                let Some(k) = probe_ratio(&min.damage, &max.damage, all_vars) else {
                     continue;
                 };
 
@@ -99,57 +99,42 @@ impl Build for Champion {
                 .unwrap_or_else(|| simplify(raw))
         };
 
-        let damage = abilities
+        let damages = abilities
             .iter()
-            .map(|(id, v)| {
-                let discriminant = id.discriminant().to_lowercase();
-                let dmg = resolve_damage(id, &v.damage);
-
-                format!("{discriminant}: {dmg},")
-            })
-            .collect::<String>();
+            .map(|(id, v)| resolve_damage(id, &v.damage))
+            .collect::<Vec<String>>();
 
         let upper_id = champion_id.to_shouty_snake_case();
-
-        write!(
-            docs,
-            "#[fmt({fmt})]
-            static {upper_id}: X = X {{
-                name: {name:?},
-                adaptive_type: {adaptive_type:?},
-                attack_type: {attack_type:?},
-                positions: {positions:#?}, {damage}
-            }};",
-            fmt = json!(FmtArgs {
-                target: "formula".into(),
-                variant: champion_id.clone(),
-                meta: (),
-                replace: [(": X = X", " ="), ("ctx.", ""), ("(ctx)", "__fn__")]
-                    .map(|(a, b)| (a.to_string(), b.to_string()))
-                    .into(),
-                default: false
-            })
-        )?;
 
         write!(
             rust,
             r#"pub static {upper_id}: X = X {{
                 name: {name:?},
-                adaptive_type: AdaptiveType::{adaptive_type:?},
-                attack_type: {attack_type:?},
-                positions: &{positions:#?},
+                adaptive_type: {adaptive_type},
+                attack_type: {attack_type},
+                positions: {positions},
                 stats: {stats:#?},
                 modifiers: {modifiers:#?},
-                combos: &[{combos}],
-                metadata: &{metadata:#?},
-                merge_data: &{merge_data:#?},
+                metadata: {metadata},
                 closures: &[{fn_names}],
-                #[cfg(feature = "docs")]
+
+                #[cfg(feature = "yew")]
+                combos: &[{combos}],
+
+                #[cfg(feature = "yew")]
+                merge_data: {merge_data},
+
+                #[cfg(feature = "yew")]
                 identifiers: &[{identifiers}],
             }};"#,
+            adaptive_type = bake(adaptive_type),
+            attack_type = bake(attack_type),
+            positions = bake(&positions.as_slice()),
+            metadata = bake(&metadata.as_slice()),
+            merge_data = bake(&merge_data.as_slice()),
             combos = combo
                 .iter()
-                .map(|ident| format!("&{ident:#?}"))
+                .map(|ident| bake(&ident.as_slice()))
                 .collect::<Vec<_>>()
                 .join(","),
             identifiers = identifiers
@@ -157,97 +142,63 @@ impl Build for Champion {
                 .enumerate()
                 .map(|(i, set)| {
                     let rest = if i == 0 { "as &[_]" } else { "" };
-                    let vec = set.iter().collect::<Vec<_>>();
-                    format!("&{vec:?}{rest}")
+                    let vec = set.iter().copied().collect::<Vec<_>>();
+                    format!("{}{rest}", bake(&vec.as_slice()))
                 })
                 .collect::<Vec<_>>()
                 .join(","),
             fn_names = functions.join(",")
         )?;
 
-        for (((ability_id, ability), function), body) in
-            abilities.iter().zip(&functions).zip(closures)
+        for (i, (((ability_id, ability), function), body)) in
+            abilities.iter().zip(&functions).zip(closures).enumerate()
         {
-            let Ability {
-                name,
-                damage_type,
-                attributes,
-                comment,
-                damage,
-            } = ability;
+            let Ability { name, comment, .. } = ability;
 
             let formula = simplify(&body);
             let mut rust_formula = formula.clone();
-            let mut variable = function.to_uppercase();
 
-            let damage_attr = match merge
+            if let Some(merge) = merge
                 .iter()
                 .find(|merge| merge.min == *ability_id || merge.max == *ability_id)
             {
-                Some(merge) => {
-                    let min_damage = resolve_damage(&merge.min, &self.damage_of(merge.min)?);
-                    let max_damage = resolve_damage(&merge.max, &self.damage_of(merge.max)?);
+                let min_damage = resolve_damage(&merge.min, self.damage_of(merge.min)?);
+                let max_damage = resolve_damage(&merge.max, self.damage_of(merge.max)?);
 
-                    if merge.min == *ability_id {
-                        rust_formula = min_damage.clone();
-                    } else {
-                        rust_formula = max_damage.clone();
-                    }
-
-                    let alias = merge.alias.discriminant();
-                    variable = format!("{champion_id}_{alias}").to_uppercase();
-
-                    format!("min_dmg: {min_damage}, max_dmg: {max_damage}")
+                if merge.min == *ability_id {
+                    rust_formula = min_damage.clone();
+                } else {
+                    rust_formula = max_damage.clone();
                 }
-                None => {
-                    format!("damage: {}", resolve_damage(ability_id, damage))
-                }
-            };
+            }
 
-            let rust_formula = cast_f32(&rust_formula);
+            let mut rust_formula = cast_f32(&rust_formula);
+
+            if crate::scripts::utils::is_zero(&rust_formula) {
+                println!("[{champion_id}]: ZeroFormula[{ability_id:?}]; Body = {body:?}");
+                rust_formula = "0.0".to_string();
+            }
 
             write!(
                 rust,
-                "pub const fn {function}({param}: &Ctx) -> f32 {{{rust_formula}}}",
+                "pub const fn {function}({param}: &tutorlolv2_types::Ctx) -> f32 {{{rust_formula}}}",
                 param = ctx_param(&rust_formula)
             )?;
 
-            let simp = resolve_damage(ability_id, &body);
-
             write!(
                 docs,
-                "#[fmt({fmt_fn})]
-                fn {function}() {{{simp}}}
-
-                #[fmt({fmt_block})]
-                static {variable}: Ability = Ability {{
-                    name: {name:?},
-                    damage_type: {damage_type:?},
-                    attributes: {attributes:?},
-                    comment: {comment},
-                    {damage_attr},
-                }};",
+                "#[fmt({fmt_block})]
+                fn {function}(_: &Ctx) {{
+                    /* comment[{comment:?}] */
+                    /* name[{name:?}] */
+                    {damage}
+                }}",
+                damage = damages[i],
                 comment = fit_str(comment),
-                fmt_fn = json!(FmtArgs {
-                    target: "closure".into(),
-                    variant: champion_id.clone(),
-                    meta: ability_id,
-                    replace: [("ctx.", ""), ("(ctx)", "__fn__")]
-                        .map(|(a, b)| (a.to_string(), b.to_string()))
-                        .into(),
-                    default: false
-                }),
                 fmt_block = json!(FmtArgs {
-                    target: "ability".into(),
+                    target: "formula".into(),
                     variant: champion_id.clone(),
-                    meta: ability_id,
-                    replace: [
-                        (": Ability = Ability", " ="),
-                        ("ctx.", ""),
-                        ("(ctx)", "__fn__")
-                    ]
-                    .map(|(a, b)| (a.to_string(), b.to_string()))
-                    .into(),
+                    meta: (ability_id, i),
                     default: false
                 })
             )?;
@@ -255,10 +206,10 @@ impl Build for Champion {
 
         let out = OUT_DIR.join(Tag::Champions.plural()).join(champion_id);
 
-        crate::write(out.with_extension("rs"), rust)?;
-        crate::write(out.with_extension("w48"), docs)?;
+        tutorlolv2_wiki::write(out.with_extension("rs"), rust)?;
+        tutorlolv2_wiki::write(out.with_extension("w48"), docs)?;
 
-        Ok(format!(
+        let eval = format!(
             r#"ChampionId::{champion_id} => {{
                 match kind {{
                     {arms}
@@ -271,10 +222,15 @@ impl Build for Champion {
                 .map(|(function, metadata)| {
                     let ability_id = metadata.kind;
                     let module = champion_id.to_snake_case();
-                    format!("{ability_id:?} => {module}::{function}(ctx),")
+                    format!(
+                        "{} => crate::libgen::champions::{module}::{function}(ctx),",
+                        bake(&ability_id)
+                    )
                 })
                 .collect::<String>()
-        ))
+        );
+
+        Ok(eval)
     }
 }
 
@@ -304,7 +260,7 @@ impl Champion {
 
                 format!(
                     "{champion_id}_{discriminant}",
-                    champion_id = self.data.champion_id.to_shouty_snake_case(),
+                    champion_id = self.data.champion_id.to_snake_case(),
                 )
                 .to_lowercase()
             })

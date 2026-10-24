@@ -2,6 +2,8 @@
 //! which can be used to deserialize the JSON data to this library's
 //! own data types
 
+use core::num::NonZeroU8;
+
 use crate::{model::*, realtime::RealtimeError};
 use alloc::boxed::Box;
 use bincode::{BorrowDecode, Decode, Encode};
@@ -70,7 +72,7 @@ pub struct RiotActivePlayer<'a> {
     pub abilities: RiotAbilities,
     pub champion_stats: PlayerStats,
     pub full_runes: RiotFullRunes,
-    pub level: u8,
+    pub level: NonZeroU8,
     #[serde(borrow)]
     pub riot_id: &'a str,
 }
@@ -115,7 +117,7 @@ pub struct RiotAllPlayers<'a> {
     #[serde(borrow)]
     pub champion_name: &'a str,
     pub items: Box<[RiotItems]>,
-    pub level: u8,
+    pub level: NonZeroU8,
     #[serde(borrow)]
     pub position: &'a str,
     #[serde(borrow)]
@@ -175,6 +177,6 @@ pub struct RiotRealtime<'a> {
 
 impl RiotRealtime<'_> {
     pub fn eval(&self) -> Result<Realtime<'_>, RealtimeError<'_>> {
-        crate::realtime(self)
+        crate::realtime::realtime(self)
     }
 }

@@ -26,12 +26,15 @@ macro_rules! decl_champions {
         $(
             $crate::decl_champions!(inner $Name);
 
+            #[derive(derive_more::Deref, derive_more::DerefMut)]
             pub struct $Name {
+                #[deref]
+                #[deref_mut]
                 pub inner: Champion
             }
 
             impl $Name {
-                pub fn new(data: WikiChampion) -> MayFail<Box<dyn GeneratorExt<Champion>>> {
+                pub fn try_from(data: WikiChampion) -> MayFail<Box<dyn GeneratorExt<Champion>>> {
                     Ok(Box::new(Self {
                         inner: Champion::try_from(data)?
                     }))
@@ -57,26 +60,13 @@ macro_rules! decl_champions {
                     self.get_mut(index).unwrap()
                 }
             }
-
-            impl ::core::ops::Deref for $Name {
-                type Target = Champion;
-                fn deref(&self) -> &Self::Target {
-                    &self.inner
-                }
-            }
-
-            impl ::core::ops::DerefMut for $Name {
-                fn deref_mut(&mut self) -> &mut Self::Target {
-                    &mut self.inner
-                }
-            }
         )*
 
         pub fn champion_gen_fn(champion_id: &str) -> Option<
             fn(WikiChampion) -> MayFail<Box<dyn GeneratorExt<Champion>>>
         > {
             match champion_id {
-                $(stringify!($Name) => Some($Name::new),)*
+                $(stringify!($Name) => Some($Name::try_from),)*
                 _ => None,
             }
         }

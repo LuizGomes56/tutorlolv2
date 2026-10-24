@@ -1,58 +1,63 @@
-use crate::{
-    generators::{
-        parser::{
-            MapValueExt, Parser, champions::ChampionParser, items::ItemParser, runes::RuneParser,
+use heck::ToPascalCase;
+use strum::VariantNames;
+use tutorlolv2_codec::{Class, ClassOverride, EntityKind, GeneratorDbBuilder};
+use tutorlolv2_types::{AbilityName, AttackType};
+pub use tutorlolv2_wiki::{DynError, MayFail};
+use {
+    crate::{
+        generators::{
+            parser::{
+                MapValueExt, Parser, champions::ChampionParser, items::ItemParser,
+                runes::RuneParser,
+            },
+            utils::Tag,
         },
-        utils::Tag,
-    },
-    scripts::{
-        batch::{FmtArgs, FmtOutput, Tracker, batch},
-        consts::*,
-        finish::{
-            champion_aliases, eval_abilities, eval_items_or_runes, finish_champions,
-            finish_items_or_runes,
+        scripts::{
+            batch::{FmtArgs, batch, pack_formulas},
+            finish::{champion_aliases, eval_abilities, eval_items_or_runes},
         },
-        utils::{StaticVar, static_vars},
     },
+    heck::ToSnakeCase,
+    rayon::iter::{IntoParallelIterator, ParallelIterator},
+    serde::{Serialize, de::DeserializeOwned},
+    serde_json::json,
+    std::{
+        collections::BTreeMap, fmt::Write, path::PathBuf, process::Command, str::FromStr,
+        sync::LazyLock,
+    },
+    tutorlolv2_codec::FormulaDbBuilder,
+    tutorlolv2_types::CtxVar,
 };
-use heck::ToSnakeCase;
-use rayon::iter::{IntoParallelIterator, ParallelBridge, ParallelIterator};
-use serde::{Serialize, de::DeserializeOwned};
-use serde_json::json;
-use std::{
-    collections::BTreeMap,
-    fmt::Write,
-    fs::DirEntry,
-    path::{Path, PathBuf},
-    process::Command,
-    sync::LazyLock,
-};
-use tutorlolv2_fmt::rust_html;
 
 pub mod generators;
 pub mod scripts;
-
-pub type DynError = Box<dyn core::error::Error + Send + Sync + 'static>;
-pub type MayFail<T = (), E = DynError> = Result<T, E>;
 
 pub trait Build {
     fn build(&mut self) -> MayFail<String>;
 }
 
-fn write_module<'a>(
+fn write_module<T, U>(
     cmd48: &mut Command,
     cmd80: &mut Command,
-    dir: &str,
-    iter: &mut dyn Iterator<Item = &'a str>,
-) -> MayFail {
+    parser: &impl Parser<T, U>,
+) -> MayFail
+where
+    T: Clone + DeserializeOwned + MapValueExt + Send + Sync + 'static,
+    U: TryFrom<T, Error = Box<dyn core::error::Error + Send + Sync>> + Serialize,
+{
+    let dir = parser.tag().plural();
     let out = PathBuf::from(dir);
     let mut result = String::new();
 
-    cmd80.arg(PathBuf::from(format!("{dir}_code")).with_extension("rs"));
+    cmd48.current_dir(&*OUT_DIR);
+    cmd80
+        .current_dir(&*OUT_DIR)
+        .arg(PathBuf::from(format!("{dir}_code")).with_extension("rs"));
 
-    for id in iter.into_iter() {
+    for id in parser.keys() {
         let module = id.to_snake_case();
         let out_path = out.join(id);
+        let model_ty = parser.tag().singular().to_pascal_case();
 
         cmd48.arg(out_path.with_extension("w48"));
         cmd80.arg(out_path.with_extension("rs"));
@@ -60,13 +65,22 @@ fn write_module<'a>(
         writeln!(
             result,
             r#"pub mod {module} {{
-                use super::*;
+                {model_imports}
+                type X = {model_ty};
                 include!(concat!(env!("OUT_DIR"), "/{dir}/{id}.rs"));
-            }}"#
+            }}"#,
+            model_imports = format_args!(
+                "use crate::libgen::model::{{{model_ty}, {}}};",
+                if matches!(parser.tag(), Tag::Champions) {
+                    "WikiStats, WikiModifiers, Stat, Modifier"
+                } else {
+                    ""
+                }
+            )
         )?;
     }
 
-    crate::write(OUT_DIR.join(dir).with_extension("rs"), result)
+    tutorlolv2_wiki::write(OUT_DIR.join(dir).with_extension("rs"), result)
 }
 
 pub static CPARSER: LazyLock<ChampionParser> = LazyLock::new(|| ChampionParser::new().unwrap());
@@ -89,23 +103,13 @@ pub fn run() -> MayFail {
     );
 
     let mut cmd48 = Command::new("rustfmt");
-    cmd48
-        .current_dir(&*OUT_DIR)
-        .args(["--config", "max_width=48"]);
+    cmd48.args(["--config", "max_width=48"]);
 
     let mut cmd80 = Command::new("rustfmt");
-    cmd80.current_dir(&*OUT_DIR).arg(PathBuf::from("docs.rs"));
 
-    for (dir, iter) in [
-        (
-            "champions",
-            &mut CPARSER.keys() as &mut dyn Iterator<Item = &str>,
-        ),
-        ("items", &mut IPARSER.keys()),
-        ("runes", &mut RPARSER.keys()),
-    ] {
-        write_module(&mut cmd48, &mut cmd80, dir, iter)?;
-    }
+    write_module(&mut cmd48, &mut cmd80, &*CPARSER)?;
+    write_module(&mut cmd48, &mut cmd80, &*IPARSER)?;
+    write_module(&mut cmd48, &mut cmd80, &*RPARSER)?;
 
     let mut c_result = Ok(());
     let mut i_result = Ok(());
@@ -122,13 +126,16 @@ pub fn run() -> MayFail {
         let tag = parser.tag();
         let plural = tag.plural();
 
+        // Indexed parallel iterators keep their order on `collect`; `par_bridge` does not,
+        // which made the generated files differ between builds.
         let eval_arms = parser
             .keys()
-            .par_bridge()
+            .collect::<Vec<_>>()
+            .into_par_iter()
             .map(|id| parser.run_fn(id)?.build())
             .collect::<MayFail<String>>()?;
 
-        write(
+        tutorlolv2_wiki::write(
             OUT_DIR.join(format!("{plural}_code")).with_extension("rs"),
             [
                 parser.id_enum(),
@@ -166,32 +173,19 @@ pub fn run() -> MayFail {
 }
 
 fn build_docs() -> MayFail {
-    let mut full_block = String::with_capacity(12 * 1024 * 1024);
-    let mut tracker = Tracker::new(&mut full_block);
-    let mut exports = String::with_capacity(4 * 1024 * 1024);
-
-    for (name, value) in [
-        ("IGNITE_OFFSET", IGNITE_FN),
-        ("ONHIT_EFFECT_OFFSET", ONHIT_EFFECT),
-        ("BASIC_ATTACK_OFFSET", BASIC_ATTACK),
-        ("TOWER_DAMAGE_OFFSET", TOWER_DAMAGE),
-        ("CRITICAL_STRIKE_OFFSET", CRITICAL_STRIKE),
-        ("ONHIT_EFFECT_FN_OFFSET", ONHIT_EFFECT_FN),
-        ("TOWER_DAMAGE_FN_OFFSET", TOWER_DAMAGE_FN),
-        ("BASIC_ATTACK_FN_OFFSET", BASIC_ATTACK_FN),
-        ("CRITICAL_STRIKE_FN_OFFSET", CRITICAL_STRIKE_FN),
-    ] {
-        let range = tracker.push(&rust_html(value));
-        writeln!(exports, "pub static {name}: Range<usize> = {range:?};")?;
-    }
-
     let mut batches = [Tag::Champions, Tag::Items, Tag::Runes]
         .into_par_iter()
         .map(|tag| -> MayFail<_> {
-            let mut src = read_dir(OUT_DIR.join(tag.plural()))?
-                .filter(|entry| entry.path().extension().map_or(false, |e| e == "w48"))
-                .par_bridge()
-                .map(|entry| read_to_string(entry.path()))
+            let mut paths = tutorlolv2_wiki::read_dir(OUT_DIR.join(tag.plural()))?
+                .map(|entry| entry.path())
+                .filter(|path| path.extension().is_some_and(|e| e == "w48"))
+                .collect::<Vec<_>>();
+
+            paths.sort();
+
+            let mut src = paths
+                .into_par_iter()
+                .map(tutorlolv2_wiki::read_to_string)
                 .flatten()
                 .collect::<String>();
 
@@ -202,12 +196,15 @@ fn build_docs() -> MayFail {
             };
 
             let generators = iter
-                .par_bridge()
-                .map(|variant| {
+                .into_iter()
+                .enumerate()
+                .collect::<Vec<_>>()
+                .into_par_iter()
+                .map(|(i, variant)| {
                     let file_name = variant.to_snake_case();
                     let mut default = false;
 
-                    let mut generator = read_to_string(format!(
+                    let mut generator = tutorlolv2_wiki::read_to_string(format!(
                         "build/src/generators/impls/{}/{file_name}.rs",
                         tag.plural()
                     ))
@@ -227,8 +224,7 @@ fn build_docs() -> MayFail {
                             json!(FmtArgs {
                                 target: "generator".into(),
                                 variant: variant.into(),
-                                meta: (),
-                                replace: Default::default(),
+                                meta: (tag as u8, i as u16),
                                 default
                             })
                         ),
@@ -243,181 +239,52 @@ fn build_docs() -> MayFail {
         })
         .collect::<MayFail<Vec<_>>>()?;
 
-    for (_, batch) in &mut batches {
-        tracker.batch(batch);
-    }
+    let overrides = [AttackType::VARIANTS, AbilityName::VARIANTS]
+        .into_iter()
+        .flatten()
+        .map(|&text| ClassOverride::new(text, Class::Constant))
+        .collect::<Vec<_>>();
 
-    for (tag, mut batch) in batches {
-        let mut fmt_args = match tag {
-            Tag::Champions => ChampionParser::static_vars([
-                StaticVar {
-                    attribute: "formula",
-                    name: "CHAMPION_FORMULAS".into(),
-                    vtype: "Range<usize>",
-                },
-                StaticVar {
-                    attribute: "generator",
-                    name: "CHAMPION_GENERATORS".into(),
-                    vtype: "Range<usize>",
-                },
-                StaticVar {
-                    attribute: "ability",
-                    name: "ABILITY_FORMULAS".into(),
-                    vtype: "&[Range<usize>]",
-                },
-                StaticVar {
-                    attribute: "closure",
-                    name: "CHAMPION_CLOSURES".into(),
-                    vtype: "&[Range<usize>]",
-                },
-            ]),
-            _ => {
-                let var = |postfix| format!("{}_{postfix}", tag.singular().to_uppercase());
+    let mut generators = GeneratorDbBuilder::new(
+        CPARSER.map().len() as _,
+        IPARSER.map().len() as _,
+        RPARSER.map().len() as _,
+        &overrides,
+    );
 
-                static_vars(
-                    tag,
-                    [
-                        StaticVar {
-                            attribute: "formula",
-                            name: var("FORMULAS"),
-                            vtype: "Range<usize>",
-                        },
-                        StaticVar {
-                            attribute: "generator",
-                            name: var("GENERATORS"),
-                            vtype: "Range<usize>",
-                        },
-                        StaticVar {
-                            attribute: "closure",
-                            name: var("CLOSURES"),
-                            vtype: "[[Range<usize>; 2]; 2]",
-                        },
-                    ],
-                )
-            }
-        };
+    let mut formulas = FormulaDbBuilder::new(
+        CPARSER.map().len() as _,
+        IPARSER.map().len() as _,
+        RPARSER.map().len() as _,
+        |s| CtxVar::from_str(s).ok().map(|v| v as u8),
+    );
 
-        let finish = match tag {
-            Tag::Champions => finish_champions,
-            Tag::Items | Tag::Runes => finish_items_or_runes,
-        } as fn(&str, &mut String, &mut [FmtOutput]);
+    for (tag, batch) in &mut batches {
+        pack_formulas(&mut formulas, *tag, batch)?;
 
-        for values in batch.values_mut() {
-            for (target, outputs) in values.iter_mut() {
-                if let Some(variable) = fmt_args.get_mut(target.as_str()) {
-                    finish(target, variable, outputs);
+        for inner in batch.values_mut() {
+            for outputs in inner.values_mut() {
+                for output in outputs {
+                    if output.json.default || output.json.target != "generator" {
+                        continue;
+                    }
+
+                    let (kind, index) =
+                        serde_json::from_value::<(u8, u16)>(output.json.meta.clone())?;
+
+                    generators.push(EntityKind::from_repr(kind).unwrap(), index, &output.block)?;
                 }
             }
         }
-
-        let docs = fmt_args
-            .values_mut()
-            .map(|variable| {
-                variable.push_str("];");
-                variable.as_str()
-            })
-            .collect::<String>();
-
-        exports.push_str(&docs);
     }
 
-    let (r1, (r2, r3)) = rayon::join(
-        || write(&OUT_DIR.join("docs").with_extension("txt"), &full_block),
-        || {
-            rayon::join(
-                || write(&OUT_DIR.join("docs").with_extension("rs"), &exports),
-                || {
-                    let brotli = tutorlolv2_fmt::encode_brotli_11(full_block.as_bytes());
-                    write(&OUT_DIR.join("docs").with_extension("br"), &brotli)
-                },
-            )
-        },
-    );
+    tutorlolv2_wiki::write(
+        OUT_DIR.join("formulas").with_extension("bin"),
+        formulas.finish()?,
+    )?;
 
-    r1?;
-    r2?;
-    r3
-}
-
-pub trait JsonRead: DeserializeOwned {
-    fn from_file(path: impl AsRef<Path>) -> MayFail<Self> {
-        let data = read(path)?;
-        Ok(serde_json::from_slice(&data)?)
-    }
-
-    fn from_dir(path: impl AsRef<Path>) -> MayFail<BTreeMap<String, Self>> {
-        Ok(read_dir(&path)?
-            .into_iter()
-            .filter_map(|entry| {
-                let entry_name = entry.file_name().to_string_lossy().into_owned();
-                let file_name = entry_name
-                    .strip_suffix(".json")
-                    .unwrap_or(&entry_name)
-                    .to_string();
-
-                let data =
-                    Self::from_file(path.as_ref().join(&file_name).with_extension("json")).ok()?;
-                Some((file_name, data))
-            })
-            .collect::<BTreeMap<String, Self>>())
-    }
-}
-
-pub trait JsonWrite: Serialize {
-    fn into_file(&self, path: impl AsRef<Path>) -> MayFail {
-        let path = path.as_ref();
-        println!("[write] {path:?}");
-
-        let data = serde_json::to_string_pretty(self)?;
-        Ok(write(path, data.as_bytes())?)
-    }
-}
-
-impl<T> JsonRead for T where T: DeserializeOwned {}
-impl<T> JsonWrite for T where T: Serialize {}
-
-pub fn write(path: impl AsRef<Path>, data: impl AsRef<[u8]>) -> MayFail {
-    let path = path.as_ref();
-
-    if let Some(parent) = path.parent()
-        && !parent.as_os_str().is_empty()
-    {
-        create_dir_all(parent)?;
-    }
-
-    std::fs::write(path, data)
-        .map_err(|e| format!("[write] Error writing file: {path:?}: {e:?}").into())
-}
-
-pub fn read(path: impl AsRef<Path>) -> MayFail<Vec<u8>> {
-    let path = path.as_ref();
-    std::fs::read(path).map_err(|e| format!("[read] Error reading file: {path:?}: {e:?}").into())
-}
-
-pub fn read_to_string(path: impl AsRef<Path>) -> MayFail<String> {
-    let path = path.as_ref();
-    std::fs::read_to_string(path)
-        .map_err(|e| format!("[read] Error reading file: {path:?}: {e:?}").into())
-}
-
-pub fn read_dir(path: impl AsRef<Path>) -> MayFail<impl Iterator<Item = DirEntry>> {
-    let path = path.as_ref();
-    Ok(std::fs::read_dir(path)
-        .map_err(|e| format!("[error] Unable to read directory path: {e:?}"))?
-        .filter_map(Result::ok))
-}
-
-pub fn remove_file(path: impl AsRef<Path>) {
-    let path = path.as_ref();
-    if let Err(e) = std::fs::remove_file(path)
-        && !e.kind().eq(&std::io::ErrorKind::NotFound)
-    {
-        println!("[remove_file] Error removing file: {path:?}: {e:?}");
-    }
-}
-
-pub fn create_dir_all(path: impl AsRef<Path>) -> MayFail {
-    let path = path.as_ref();
-    std::fs::create_dir_all(path)
-        .map_err(|e| format!("[create_dir_all] Error creating directory: {path:?}: {e:?}").into())
+    tutorlolv2_wiki::write(
+        OUT_DIR.join("generator").with_extension("bin"),
+        generators.finish_with_stats()?.bytes,
+    )
 }

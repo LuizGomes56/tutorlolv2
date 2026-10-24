@@ -103,7 +103,7 @@ async fn main() -> MayFail {
             Fetch::Cache => HTTP_CLIENT.update_riot_cache().await?,
             Fetch::Version => {
                 let gamev = HTTP_CLIENT.fetch_version().await?;
-                match &gamev == LOL_VERSION {
+                match gamev == LOL_VERSION {
                     true => println!("App is up to date with game version"),
                     false => println!("App is outdated: Expected {gamev}, found: {LOL_VERSION}"),
                 }

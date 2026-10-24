@@ -1,0 +1,85 @@
+/* Control */
+.C4 {
+    color: #c586c0;
+}
+
+/* Lifetime */
+.C2,
+/* Keyword */
+.C3,
+/* Boolean */
+.C9,
+/* Macro */
+.C10 {
+    color: #569cd6;
+}
+
+/* Primitive */
+.C7,
+/* Type */
+.C6 {
+    color: #4ec8b0;
+}
+
+/* Function */
+.C11 {
+    color: #dcdcaa;
+}
+
+/* Number */
+.C8 {
+    color: #b3cda8;
+}
+
+/* Constant */
+.C5 {
+    color: #4fc1ff;
+}
+
+/* Bracket 1 */
+.C13 {
+    color: #ffd700;
+}
+
+/* Bracket 2 */
+.C14 {
+    color: #da70d6;
+}
+
+/* Bracket 3 */
+.C15 {
+    color: #189fff;
+}
+
+/* String */
+.C1 {
+    white-space: break-spaces;
+    color: #ce9178;
+}
+
+/* Variable */
+.C12 {
+    color: #9cdcfe;
+}
+
+/* Comment */
+.C0 {
+    color: #969696;
+    background-color: #262626;
+    padding: 1px 0;
+}
+
+code,
+pre {
+    color: #d4d4d4;
+    line-height: 1.5;
+    background: transparent;
+    font-family:
+        "SF Mono", Consolas, Monaco, "AndaleMono", "UbuntuMono", monospace;
+    white-space: pre-wrap;
+    tab-size: 4;
+}
+
+body {
+    background-color: #1e1e1e;
+}

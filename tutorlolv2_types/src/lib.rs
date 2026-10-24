@@ -1,18 +1,27 @@
 #![no_std]
+#![allow(clippy::missing_transmute_annotations)]
 
 #[cfg(feature = "dev")]
 extern crate alloc;
+
 #[cfg(feature = "dev")]
 use alloc::{format, string::String};
+
 use bincode::{Decode, Encode};
 use core::{convert::Infallible, fmt::Display, ops::Index, str::FromStr};
 use serde::{Deserialize, Serialize};
+use strum::EnumCount;
+
+// Keep the existing string error type when deriving parsers.
+type ParseError = &'static str;
 
 /// A generic metadata holder for [`AbilityId`], [`ItemId`], or [`RuneId`].
 /// Contains its damage type, attributes, and which instance of the enum the value is.
 #[derive(
     Clone, Copy, Debug, PartialEq, PartialOrd, Ord, Eq, Encode, Decode, Serialize, Deserialize,
 )]
+#[cfg_attr(feature = "bake", derive(databake::Bake))]
+#[cfg_attr(feature = "bake", databake(path = tutorlolv2_types))]
 pub struct TypeMetadata<T> {
     pub kind: T,
     pub damage_type: DamageType,
@@ -74,6 +83,8 @@ impl TryFrom<char> for Key {
 #[derive(
     Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize,
 )]
+#[cfg_attr(feature = "bake", derive(databake::Bake))]
+#[cfg_attr(feature = "bake", databake(path = tutorlolv2_types))]
 pub enum AbilityId {
     P(AbilityName),
     Q(AbilityName),
@@ -90,13 +101,7 @@ impl From<Key> for AbilityId {
 
 impl From<AbilityId> for Key {
     fn from(value: AbilityId) -> Self {
-        match value {
-            AbilityId::P(_) => Key::P,
-            AbilityId::Q(_) => Key::Q,
-            AbilityId::W(_) => Key::W,
-            AbilityId::E(_) => Key::E,
-            AbilityId::R(_) => Key::R,
-        }
+        value.as_key()
     }
 }
 
@@ -156,23 +161,10 @@ impl AbilityId {
 
 #[cfg(feature = "dev")]
 impl AbilityId {
-    pub fn as_literal(&self) -> String {
-        format!(
-            "AbilityId::{}(AbilityName::{:?})",
-            self.as_char(),
-            self.ability_name()
-        )
-    }
-
     pub fn discriminant(&self) -> String {
         let letter = self.as_char();
-        let ability_name = self.ability_name();
-        let mut result = String::from(letter);
-        match ability_name {
-            AbilityName::Void => {}
-            _ => result.push_str(&format!("{ability_name:?}").trim_start_matches('_')),
-        }
-        result
+        let ability_name = self.ability_name().short();
+        format!("{letter}{ability_name}")
     }
 }
 
@@ -181,9 +173,26 @@ impl AbilityId {
 /// means that when bought, the player gets extra 80 ability power. This struct
 /// weighs 4 bytes and the maximum stat buff for one item is [`u16::MAX`]
 #[derive(
-    Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize,
+    Clone,
+    Copy,
+    Debug,
+    Eq,
+    Hash,
+    Ord,
+    PartialEq,
+    PartialOrd,
+    Encode,
+    Decode,
+    Serialize,
+    Deserialize,
+    EnumCount,
+    strum::EnumIter,
+    strum::VariantNames,
+    strum::FromRepr,
 )]
 #[repr(u8)]
+#[cfg_attr(feature = "bake", derive(databake::Bake))]
+#[cfg_attr(feature = "bake", databake(path = tutorlolv2_types))]
 pub enum StatName {
     AbilityHaste,
     AbilityPower,
@@ -241,14 +250,12 @@ impl FromStr for StatName {
             "omnivamp" => Ok(Self::Omnivamp),
             "hp5flat" => Ok(Self::BaseHealthRegen),
             "critdamage" => Ok(Self::CritDamage),
-            _ => return Err("Unknown stat in StatName::from_str"),
+            _ => Err("Unknown stat in StatName::from_str"),
         }
     }
 }
 
 impl StatName {
-    pub const VARIANTS: usize = 24;
-
     pub const fn name(&self) -> &'static str {
         match self {
             Self::AbilityHaste => "Ability Haste",
@@ -275,20 +282,6 @@ impl StatName {
             Self::Tenacity => "Tenacity",
         }
     }
-
-    pub const unsafe fn from_u8_unchecked(value: u8) -> Self {
-        unsafe { core::mem::transmute(value) }
-    }
-
-    pub const fn from_u8(value: u8) -> Option<Self> {
-        unsafe {
-            if value <= Self::VARIANTS as _ {
-                Some(Self::from_u8_unchecked(value))
-            } else {
-                None
-            }
-        }
-    }
 }
 
 impl Display for StatName {
@@ -299,6 +292,8 @@ impl Display for StatName {
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize)]
+#[cfg_attr(feature = "bake", derive(databake::Bake))]
+#[cfg_attr(feature = "bake", databake(path = tutorlolv2_types))]
 pub struct MergeData {
     pub min: u8,
     pub max: u8,
@@ -313,6 +308,8 @@ pub struct DevMergeData {
 }
 
 #[derive(Clone, Copy, Debug, Deserialize, Encode, Hash, PartialEq, PartialOrd, Serialize)]
+#[cfg_attr(feature = "bake", derive(databake::Bake))]
+#[cfg_attr(feature = "bake", databake(path = tutorlolv2_types))]
 pub enum ComboElement {
     Ability(AbilityId),
     Attack,
@@ -366,8 +363,16 @@ impl AbilityName {
     bincode::Decode,
     serde::Serialize,
     serde::Deserialize,
+    strum::EnumIter,
+    strum::EnumString,
+    strum::Display,
+    strum::VariantNames,
+    strum::IntoStaticStr,
+    strum::FromRepr,
 )]
 #[repr(u8)]
+#[cfg_attr(feature = "bake", derive(databake::Bake))]
+#[cfg_attr(feature = "bake", databake(path = tutorlolv2_types))]
 pub enum AbilityName {
     Void,
     _1,
@@ -413,27 +418,63 @@ pub enum AbilityName {
 impl AbilityName {
     pub const JMP: u8 = Self::Min as u8;
 
+    pub const fn short(&self) -> &'static str {
+        match self {
+            Self::Void => "",
+            Self::_1 => "1",
+            Self::_2 => "2",
+            Self::_3 => "3",
+            Self::_4 => "4",
+            Self::_5 => "5",
+            Self::_6 => "6",
+            Self::_7 => "7",
+            Self::_8 => "8",
+            Self::Min => "min",
+            Self::_1Min => "1min",
+            Self::_2Min => "2min",
+            Self::_3Min => "3min",
+            Self::_4Min => "4min",
+            Self::_5Min => "5min",
+            Self::_6Min => "6min",
+            Self::_7Min => "7min",
+            Self::_8Min => "8min",
+            Self::Max => "max",
+            Self::_1Max => "1max",
+            Self::_2Max => "2max",
+            Self::_3Max => "3max",
+            Self::_4Max => "4max",
+            Self::_5Max => "5max",
+            Self::_6Max => "6max",
+            Self::_7Max => "7max",
+            Self::_8Max => "8max",
+            Self::Mega => "mega",
+            Self::Minion => "c",
+            Self::Minion1 => "c1",
+            Self::Minion2 => "c2",
+            Self::Minion3 => "c3",
+            Self::MinionMax => "cmax",
+            Self::Monster => "m",
+            Self::Monster1 => "m1",
+            Self::Monster2 => "m2",
+            Self::Monster3 => "m3",
+            Self::Monster4 => "m4",
+            Self::MonsterMax => "mmax",
+        }
+    }
+
     pub const fn cast_max(&self) -> Self {
         let byte = *self as u8;
         assert!(byte < Self::Mega as u8 - 1);
+
         match byte >= Self::Max as u8 {
             true => *self,
-            false if byte < Self::Min as u8 => unsafe {
-                core::mem::transmute(byte + (Self::JMP << 1))
-            },
-            false => unsafe { core::mem::transmute(byte + Self::JMP) },
+            false if byte < Self::Min as u8 => Self::from_repr(byte + (Self::JMP << 1)).unwrap(),
+            false => Self::from_repr(byte + Self::JMP).unwrap(),
         }
     }
 
     pub const fn cast_min(&self) -> Self {
-        Self::from_u8(self.cast_max() as u8 - Self::JMP).unwrap()
-    }
-
-    pub const fn from_u8(value: u8) -> Option<Self> {
-        match value {
-            x if x < Self::MonsterMax as u8 => Some(unsafe { core::mem::transmute(x) }),
-            _ => None,
-        }
+        Self::from_repr(self.cast_max() as u8 - Self::JMP).unwrap()
     }
 }
 
@@ -454,71 +495,54 @@ impl AbilityName {
     Decode,
     Serialize,
     Deserialize,
+    strum::EnumCount,
+    strum::EnumIter,
+    strum::Display,
+    strum::VariantNames,
+    strum::FromRepr,
+    strum::EnumString,
 )]
 #[repr(u8)]
+#[cfg_attr(feature = "bake", derive(databake::Bake))]
+#[cfg_attr(feature = "bake", databake(path = tutorlolv2_types))]
+#[strum(parse_err_ty = ParseError, parse_err_fn = AttackType::parse_error)]
 pub enum AttackType {
     #[default]
+    #[strum(to_string = "Melee", serialize = "MELEE")]
     Melee,
+    #[strum(to_string = "Ranged", serialize = "RANGED")]
     Ranged,
 }
 
 impl AttackType {
-    pub const fn from_u8(value: u8) -> Option<Self> {
-        match value {
-            0 => Some(Self::Melee),
-            1 => Some(Self::Ranged),
-            _ => None,
-        }
-    }
-
-    pub const unsafe fn from_u8_unchecked(value: u8) -> Self {
-        unsafe { core::mem::transmute(value) }
+    fn parse_error(_: &str) -> &'static str {
+        "No matches when calling AttackType::from_str"
     }
 }
 
 #[derive(
-    Clone, Copy, Debug, Default, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize, Deserialize,
+    Clone,
+    Copy,
+    Debug,
+    Default,
+    Eq,
+    Hash,
+    Ord,
+    PartialEq,
+    PartialOrd,
+    Serialize,
+    Deserialize,
+    strum::EnumCount,
+    strum::Display,
+    strum::EnumIter,
+    strum::VariantNames,
+    strum::FromRepr,
 )]
+#[repr(u8)]
 pub enum DamageIndex {
     #[default]
     Min,
     Max,
-}
-
-impl DamageIndex {
-    pub const fn from_u8(value: u8) -> Option<Self> {
-        match value {
-            0 => Some(Self::Min),
-            1 => Some(Self::Max),
-            _ => None,
-        }
-    }
-
-    pub const unsafe fn from_u8_unchecked(value: u8) -> Self {
-        unsafe { core::mem::transmute(value) }
-    }
-}
-
-impl FromStr for AttackType {
-    type Err = &'static str;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
-        match s {
-            "Melee" | "MELEE" => Ok(AttackType::Melee),
-            "Ranged" | "RANGED" => Ok(AttackType::Ranged),
-            _ => Err("No matches when calling AttackType::from_str"),
-        }
-    }
-}
-
-impl FromStr for AdaptiveType {
-    type Err = &'static str;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
-        match s {
-            "Magic" | "MAGIC_DAMAGE" => Ok(Self::Magic),
-            "Physical" | "PHYSICAL_DAMAGE" => Ok(Self::Physical),
-            _ => Err("No matches when calling AdaptiveType::from_str"),
-        }
-    }
 }
 
 /// Enum that holds the current adaptive type of some champion, which
@@ -540,15 +564,28 @@ impl FromStr for AdaptiveType {
     Decode,
     Serialize,
     Deserialize,
+    strum::EnumIter,
+    strum::Display,
+    strum::VariantNames,
+    strum::EnumString,
 )]
 #[repr(u8)]
+#[cfg_attr(feature = "bake", derive(databake::Bake))]
+#[cfg_attr(feature = "bake", databake(path = tutorlolv2_types))]
+#[strum(parse_err_ty = ParseError, parse_err_fn = AdaptiveType::parse_error)]
 pub enum AdaptiveType {
     #[default]
+    #[strum(to_string = "Physical", serialize = "PHYSICAL_DAMAGE")]
     Physical,
+    #[strum(to_string = "Magic", serialize = "MAGIC_DAMAGE")]
     Magic,
 }
 
 impl AdaptiveType {
+    fn parse_error(_: &str) -> &'static str {
+        "No matches when calling AdaptiveType::from_str"
+    }
+
     pub const fn try_infer(bonus_attack_damage: f32, ability_power: f32) -> Option<Self> {
         let lhs = 0.35 * bonus_attack_damage;
         let rhs = 0.2 * ability_power;
@@ -590,36 +627,39 @@ impl TryFrom<(f32, f32)> for AdaptiveType {
     Decode,
     Serialize,
     Deserialize,
+    strum::EnumIter,
+    strum::Display,
+    strum::VariantNames,
+    strum::VariantArray,
+    strum::EnumCount,
+    strum::FromRepr,
+    strum::EnumString,
 )]
 #[repr(u8)]
+#[cfg_attr(feature = "bake", derive(databake::Bake))]
+#[cfg_attr(feature = "bake", databake(path = tutorlolv2_types))]
+#[strum(parse_err_ty = ParseError, parse_err_fn = Position::parse_error)]
 pub enum Position {
     #[default]
+    #[strum(to_string = "Top", serialize = "TOP")]
     Top,
+    #[strum(to_string = "Jungle", serialize = "JUNGLE")]
     Jungle,
+    #[strum(to_string = "Middle", serialize = "MIDDLE")]
     Middle,
+    #[strum(to_string = "Bottom", serialize = "BOTTOM")]
     Bottom,
+    #[strum(to_string = "Support", serialize = "SUPPORT")]
     Support,
 }
 
 impl Position {
-    pub const VARIANTS: usize = 5;
-    pub const ARRAY: [Self; Self::VARIANTS as _] = [
-        Position::Top,
-        Position::Jungle,
-        Position::Middle,
-        Position::Bottom,
-        Position::Support,
-    ];
+    fn parse_error(_: &str) -> &'static str {
+        "No matches when calling Position::from_str"
+    }
 
     pub const fn index(&self) -> usize {
         *self as _
-    }
-
-    pub const fn from_u8(value: u8) -> Option<Self> {
-        match value as usize {
-            0..Self::VARIANTS => Some(unsafe { Self::from_u8_unchecked(value) }),
-            _ => None,
-        }
     }
 
     pub const fn name(&self) -> &'static str {
@@ -641,25 +681,6 @@ impl Position {
             Position::Support => "support",
         }
     }
-
-    pub const unsafe fn from_u8_unchecked(value: u8) -> Self {
-        unsafe { core::mem::transmute(value) }
-    }
-}
-
-impl FromStr for Position {
-    type Err = &'static str;
-
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
-        match s {
-            "Top" | "TOP" => Ok(Position::Top),
-            "Jungle" | "JUNGLE" => Ok(Position::Jungle),
-            "Middle" | "MIDDLE" => Ok(Position::Middle),
-            "Bottom" | "BOTTOM" => Ok(Position::Bottom),
-            "Support" | "SUPPORT" => Ok(Position::Support),
-            _ => Err("No matches when calling Position::from_str"),
-        }
-    }
 }
 
 /// All possible maps and codes that can be played. Most of them are
@@ -679,8 +700,13 @@ impl FromStr for Position {
     Decode,
     Serialize,
     Deserialize,
+    strum::Display,
+    strum::EnumIter,
+    strum::VariantNames,
 )]
 #[repr(u8)]
+#[cfg_attr(feature = "bake", derive(databake::Bake))]
+#[cfg_attr(feature = "bake", databake(path = tutorlolv2_types))]
 pub enum GameMap {
     Aram,
     Arena,
@@ -708,7 +734,7 @@ pub enum GameMap {
 impl GameMap {
     /// Constant conversion of a [`u8`] into a [`GameMap`] enum,
     /// where the byte represents the code of the current map
-    pub const fn from_u8(value: u8) -> Self {
+    pub const fn from_code(value: u8) -> Self {
         match value {
             3 => GameMap::Tutorial,
             4 | 10 => GameMap::TwistedTreeline,
@@ -735,78 +761,89 @@ impl GameMap {
     }
 }
 
-/// Creates an enum and associates constants that represents each of its
-/// variants, using the same name and ignores `upper_case` lints
-macro_rules! const_enum {
-    (
-        $(#[$meta:meta])*
-        pub enum $name:ident {
-            $(
-                $(#[$vmeta:meta])*
-                $Variant:ident,
-            )+
-        }
-    ) => {
-        $(#[$meta])*
-        pub enum $name {
-            $(
-                $(#[$vmeta])*
-                $Variant,
-            )+
-        }
-    };
+/// Defines what is the damage type of some entity.
+/// - [`DamageType::Physical`] and [`DamageType::Magic`] Represents any damage related
+///
+/// to how much (armor or magic resistence) the enemy player has, and is affected by the
+/// percent and flat values or (armor or magic) penetration of the current player
+/// - [`DamageType::Mixed`] Damages of this type are treated as a special case of [`DamageType::True`],
+///
+/// where the closure has to multiply on its own the `physical_mod`
+///
+/// and `magic_mod` modifiers of the [`tutorlolv2_math::DamageModifiers`] struct. It is
+/// usually used when a single ability or item deals both physical and magic damage in the same hit.
+///
+/// - [`DamageType::True`] Damages of this type are not affected by armor or magic resistence,
+///
+/// their values are in general irreducible.
+///
+/// - [`DamageType::Adaptive`] Damages of this type will vary into the [`DamageType::Physical`]
+///
+/// or [`DamageType::Magic`] depending on how much bonus armor or ability power the current player has.
+/// - [`DamageType::Unknown`] is the default value when no damage type is set
+#[derive(
+    Clone,
+    Copy,
+    Debug,
+    Default,
+    Eq,
+    Hash,
+    Ord,
+    PartialEq,
+    PartialOrd,
+    strum::EnumIter,
+    strum::VariantNames,
+    bincode::Encode,
+    bincode::Decode,
+    serde::Serialize,
+    serde::Deserialize,
+)]
+#[cfg_attr(feature = "bake", derive(databake::Bake))]
+#[cfg_attr(feature = "bake", databake(path = tutorlolv2_types))]
+pub enum DamageType {
+    Physical,
+    Magic,
+    Mixed,
+    True,
+    Adaptive,
+    #[default]
+    Unspecified,
 }
 
-const_enum! {
-    /// Defines what is the damage type of some entity.
-    /// - [`DamageType::Physical`] and [`DamageType::Magic`] Represents any damage related
-    /// to how much (armor or magic resistence) the enemy player has, and is affected by the
-    /// percent and flat values or (armor or magic) penetration of the current player
-    /// - [`DamageType::Mixed`] Damages of this type are treated as a special case of
-    /// [`DamageType::True`], where the closure has to multiply on its own the `physical_mod`
-    /// and `magic_mod` modifiers of the [`tutorlolv2_math::DamageModifiers`] struct. It is
-    /// usually used when a single ability or item deals both physical and magic damage in the
-    /// same hit.
-    /// - [`DamageType::True`] Damages of this type are not affected by armor or magic resistence,
-    /// their values are in general irreducible.
-    /// - [`DamageType::Adaptive`] Damages of this type will vary into the [`DamageType::Physical`]
-    /// or [`DamageType::Magic`] depending on how much bonus armor or ability power the current player
-    /// has.
-    /// - [`DamageType::Unknown`] is the default value when no damage type is set
-    #[derive(Clone, Copy, Debug, Default, Eq, Hash, Ord, PartialEq, PartialOrd)]
-    #[derive(bincode::Encode, bincode::Decode)]
-    #[derive(serde::Serialize, serde::Deserialize)]
-    pub enum DamageType {
-        Physical,
-        Magic,
-        Mixed,
-        True,
-        Adaptive,
-        #[default]
-        Unspecified,
-    }
-}
-
-const_enum! {
-    /// An enum with several variants that can be used to add up to `255` attributes
-    /// to some ability, item or rune. It is mostly used to determine if the current
-    /// instance damages onhit only for the `maximum`, `minimum` or both damage kinds.
-    /// [`Attrs::Undefined`] is set to be the default variant, representing no extra data. This
-    /// is also used to determine if some ability has area damage
-    #[derive(Clone, Copy, Debug, Default, Eq, Hash, Ord, PartialEq, PartialOrd)]
-    #[derive(bincode::Encode, bincode::Decode)]
-    #[derive(serde::Serialize, serde::Deserialize)]
-    pub enum Attrs {
-        #[default]
-        Undefined,
-        Onhit,
-        OnhitMin,
-        OnhitMax,
-        Area,
-        AreaOnhit,
-        AreaOnhitMin,
-        AreaOnhitMax,
-    }
+/// An enum with several variants that can be used to add up to `255` attributes
+/// to some ability, item or rune. It is mostly used to determine if the current
+/// instance damages onhit only for the `maximum`, `minimum` or both damage kinds.
+/// [`Attrs::Undefined`] is set to be the default variant, representing no extra data. This
+/// is also used to determine if some ability has area damage
+#[derive(
+    Clone,
+    Copy,
+    Debug,
+    Default,
+    Eq,
+    Hash,
+    Ord,
+    PartialEq,
+    PartialOrd,
+    strum::EnumIter,
+    strum::VariantNames,
+    bincode::Encode,
+    bincode::Decode,
+    serde::Serialize,
+    serde::Deserialize,
+)]
+#[cfg_attr(feature = "bake", derive(databake::Bake))]
+#[cfg_attr(feature = "bake", databake(path = tutorlolv2_types))]
+pub enum Attrs {
+    #[default]
+    Undefined,
+    Onhit,
+    OnhitMin,
+    OnhitMax,
+    Area,
+    AreaOnhit,
+    AreaOnhitMin,
+    AreaOnhitMax,
 }
 
 impl FromStr for DamageType {
@@ -834,29 +871,50 @@ macro_rules! create_eval_struct {
             /// and is used to create constant closures in the static variables of
             /// this module. For example:
             /// [`CtxVar::QLevel`] is converted to: `ctx.q_level`
-            #[derive(Copy, Clone, Debug, Eq, Hash, PartialEq, Ord, PartialOrd, Encode, Decode, Serialize, Deserialize)]
+            #[derive(
+                Copy,
+                Clone,
+                Debug,
+                Eq,
+                Hash,
+                PartialEq,
+                Ord,
+                PartialOrd,
+                Encode,
+                Decode,
+                Serialize,
+                Deserialize,
+                strum::FromRepr,
+                strum::EnumIter,
+                strum::VariantArray,
+                strum::EnumCount,
+                strum::EnumString,
+            )]
             #[repr(u8)]
+            #[cfg_attr(feature = "bake", derive(databake::Bake))]
+            #[cfg_attr(feature = "bake", databake(path = tutorlolv2_types))]
+            #[strum(parse_err_ty = ParseError, parse_err_fn = CtxVar::parse_error)]
             pub enum CtxVar {
-                $([<$value:camel>],)*
+                $(
+                    #[strum(serialize = "" $value, serialize = "" [<$value:camel>])]
+                    [<$value:camel>],
+                )*
             }
 
             impl CtxVar {
-                pub const ARRAY: [Self; Self::VARIANTS] = [$(Self::[<$value:camel>],)*];
+                fn parse_error(_: &str) -> &'static str {
+                    "CtxVar::from_str: Invalid variable provided"
+                }
+
+                pub fn to_snake_case(&self) -> &'static str {
+                    &self.as_var()[4..]
+                }
+
                 pub const fn as_var(&self) -> &'static str {
                     match self {
                         $(
                             Self::[<$value:camel>] => concat!("ctx.", stringify!($value)),
                         )*
-                    }
-                }
-            }
-
-            impl ::core::str::FromStr for CtxVar {
-                type Err = &'static str;
-                fn from_str(s: &str) -> Result<Self, Self::Err> {
-                    match s {
-                        $(stringify!($value) | stringify!([<$value:camel>]) => Ok(Self::[<$value:camel>]),)*
-                        _ => Err("CtxVar::from_str: Invalid variable provided"),
                     }
                 }
             }
@@ -876,7 +934,18 @@ macro_rules! create_eval_struct {
                 }
             }
 
-            #[derive(Clone, Copy, Debug, Decode, Default, Deserialize, Encode, PartialEq, PartialOrd, Serialize)]
+            #[derive(
+                Clone,
+                Copy,
+                Debug,
+                Decode,
+                Default,
+                Deserialize,
+                Encode,
+                PartialEq,
+                PartialOrd,
+                Serialize
+            )]
             #[repr(C)]
             pub struct Ctx {
                 $(pub $value: f32,)*
@@ -945,6 +1014,14 @@ create_eval_struct!(
 );
 
 impl CtxVar {
-    pub const VARIANTS: usize = size_of::<Ctx>() / size_of::<f32>();
     pub const SKIP: usize = Self::SteelcapsEffect as usize + 1;
 }
+
+#[cfg(test)]
+extern crate std;
+
+#[cfg(all(test, feature = "bake"))]
+mod bake_tests;
+
+#[cfg(test)]
+mod strum_tests;

@@ -52,7 +52,7 @@ pub async fn realtime_handler(body: Bytes) -> Response {
     // }
 
     let start = std::time::Instant::now();
-    let data = tutorlolv2::realtime(&game_data).map_err(|e| match e {
+    let data = tutorlolv2::realtime::realtime(&game_data).map_err(|e| match e {
         RealtimeError::UnrecognizedCurrentPlayer(player) => {
             format!("Unrecognized current player: {player}")
         }
@@ -67,7 +67,7 @@ pub async fn calculator_handler(body: Bytes) -> Response {
     println!("[call] calculator_handler");
     let (decoded, _) = bincode::decode_from_slice::<OwnedInputGame, _>(&body, BINCODE_CONFIG)?;
     let start = std::time::Instant::now();
-    let data = calculator((&decoded).into());
+    let data = calculator::calculator((&decoded).into());
     println!("[time] fn calculator took: {end:?}", end = start.elapsed());
     respond(data)
 }

@@ -6,19 +6,30 @@ use crate::{
     },
     scripts::batch::FmtArgs,
 };
+use databake::{Bake, CrateEnv};
 use heck::{ToPascalCase, ToSnakeCase};
 use rand::{RngExt, SeedableRng, rngs::SmallRng};
 use regex::{Captures, Regex};
-use serde_json::{Value, json};
+use serde::Serialize;
+use serde_json::json;
 use std::{
-    collections::{BTreeSet, HashMap, HashSet},
+    collections::{BTreeSet, HashSet},
     fmt::{Debug, Write},
     ops::{Index, Range},
     sync::LazyLock,
 };
 use tutorlolv2_types::{AttackType, Attrs, CtxVar, DamageIndex, DamageType};
 
-pub fn simplify(formula: &str) -> String {
+pub const ZERO_FN: &str = "crate::libgen::zero";
+
+/// Emit a Rust expression without relying on imports in the generated module.
+pub fn bake(value: &impl Bake) -> String {
+    value.bake(&CrateEnv::default()).to_string()
+}
+
+pub fn simplify(f: &str) -> String {
+    let formula = &f.replace("zero", "0");
+
     static FLOAT_RE: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"\b\d+\.\d+\b").unwrap());
 
     static MATCH_RE: LazyLock<Regex> =
@@ -176,7 +187,9 @@ impl ItemOrRune for Rune {
 impl ItemOrRuneExt for Item {}
 impl ItemOrRuneExt for Rune {}
 
-pub trait ItemOrRuneExt: Index<AttackType, Output = DamageRange> + ItemOrRune + Debug {
+pub trait ItemOrRuneExt:
+    Index<AttackType, Output = DamageRange> + ItemOrRune + Debug + Serialize
+{
     fn identifiers(&self) -> Vec<CtxVar> {
         let mut set = BTreeSet::new();
 
@@ -204,15 +217,15 @@ pub trait ItemOrRuneExt: Index<AttackType, Output = DamageRange> + ItemOrRune + 
 
     fn repr_metadata(&self) -> String {
         format!(
-            "TypeMetadata {{
-                kind: {enum_name}::{id},
-                damage_type: {damage_type:?},
-                attributes: {attributes:?},
+            "tutorlolv2_types::TypeMetadata {{
+                kind: crate::libgen::{enum_name}::{id},
+                damage_type: {damage_type},
+                attributes: {attributes},
             }}",
             enum_name = Self::TAG.enum_name(),
             id = self.id(),
-            damage_type = self.damage_type(),
-            attributes = self.attributes(),
+            damage_type = bake(&self.damage_type()),
+            attributes = bake(&self.attributes()),
         )
     }
 
@@ -242,8 +255,12 @@ pub trait ItemOrRuneExt: Index<AttackType, Output = DamageRange> + ItemOrRune + 
                 .enumerate()
                 .map(|(i, v)| {
                     let f = match *v {
-                        true => &format!("{module}::{}", functions[i]),
-                        false => ZERO,
+                        true => &format!(
+                            "crate::libgen::{}::{module}::{}",
+                            Self::TAG.plural(),
+                            functions[i]
+                        ),
+                        false => ZERO_FN,
                     };
                     format!("{f}(&ctx)")
                 })
@@ -254,8 +271,8 @@ pub trait ItemOrRuneExt: Index<AttackType, Output = DamageRange> + ItemOrRune + 
         format!(
             "{enum_name}::{id} => {{
                 match attack_type {{
-                    Melee => [{melee_arms}],
-                    Ranged => [{ranged_arms}]
+                    tutorlolv2_types::AttackType::Melee => [{melee_arms}],
+                    tutorlolv2_types::AttackType::Ranged => [{ranged_arms}]
                 }}
             }},",
             enum_name = Self::TAG.enum_name(),
@@ -308,40 +325,22 @@ pub trait ItemOrRuneExt: Index<AttackType, Output = DamageRange> + ItemOrRune + 
         aliases
     }
 
-    fn closures(&self) -> MayFail<(String, String)> {
-        let variant = self.id();
+    fn closures(&self) -> MayFail<String> {
         let functions = self.functions();
         let aliases = self.build_aliases();
 
         let mut seen = HashSet::new();
-
         let mut rust = String::new();
-        let mut docs = String::new();
 
         for i in 0..4 {
-            let attack_type = unsafe { AttackType::from_u8_unchecked(i / 2) };
-            let damage_index = unsafe { DamageIndex::from_u8_unchecked(i % 2) };
+            let attack_type = AttackType::from_repr(i / 2).unwrap();
+            let damage_index = DamageIndex::from_repr(i % 2).unwrap();
 
             let body = &self[attack_type][damage_index];
             let f = &functions[i as usize];
 
             let default = is_zero(body);
             let formula = simplify(body);
-
-            write!(
-                docs,
-                "#[fmt({fmt})]
-                fn {f}() {{{formula}}}",
-                fmt = json!(FmtArgs {
-                    target: "closure".into(),
-                    variant: variant.into(),
-                    meta: (attack_type, damage_index),
-                    replace: [("ctx.", ""), ("(ctx)", "__fn__")]
-                        .map(|(a, b)| (a.to_string(), b.to_string()))
-                        .into(),
-                    default
-                })
-            )?;
 
             let formula_f32 = if default {
                 continue;
@@ -360,12 +359,12 @@ pub trait ItemOrRuneExt: Index<AttackType, Output = DamageRange> + ItemOrRune + 
 
                 write!(
                     rust,
-                    "pub const fn {f}({param}: &Ctx) -> f32 {{{formula_f32}}}"
+                    "pub const fn {f}({param}: &tutorlolv2_types::Ctx) -> f32 {{{formula_f32}}}"
                 )?;
             }
         }
 
-        Ok((rust, docs))
+        Ok(rust)
     }
 
     fn repr_damages(&self) -> String {
@@ -381,28 +380,21 @@ pub trait ItemOrRuneExt: Index<AttackType, Output = DamageRange> + ItemOrRune + 
             &ranged.max_dmg,
         ];
 
-        let labels = [
-            "melee_min_dmg",
-            "melee_max_dmg",
-            "ranged_min_dmg",
-            "ranged_max_dmg",
-        ];
-
         let mut parts = Vec::new();
 
         let deals_damage = [melee.deals_damage(), ranged.deals_damage()].concat();
+        let id = self.id().to_snake_case();
 
         for i in 0..4 {
             if !deals_damage[i] {
                 continue;
             }
 
-            let value = if let Some((base_idx, ref ratio)) = aliases[i] {
-                let postfix = labels[base_idx];
-                let function = format_args!("{postfix}__fn__");
+            let value = if let Some((j, ref ratio)) = aliases[i] {
+                let function = format!("{id}_f{j}(ctx)").to_lowercase();
 
                 if ratio == "1" {
-                    format!("{function}")
+                    function.to_string()
                 } else {
                     format!("{ratio} * {function}")
                 }
@@ -410,36 +402,21 @@ pub trait ItemOrRuneExt: Index<AttackType, Output = DamageRange> + ItemOrRune + 
                 simplify(raw[i])
             };
 
-            parts.push(format!("{}: {value}", labels[i]));
+            parts.push(format!(
+                "#[fmt({fmt_args})]
+                fn {id}_f{i}(_: &Ctx) {{
+                    {value}
+                }}",
+                fmt_args = json!(FmtArgs {
+                    target: "formula".into(),
+                    variant: self.id().into(),
+                    meta: i,
+                    default: false
+                })
+            ));
         }
 
-        if parts.is_empty() {
-            String::new()
-        } else {
-            format!(
-                "damage_type: {:?}, {}",
-                self.damage_type(),
-                parts.join(", ")
-            )
-        }
-    }
-
-    fn formula_fmt(&self) -> Value {
-        json!(FmtArgs {
-            target: "formula".into(),
-            variant: self.id().into(),
-            meta: (),
-            replace: [
-                (": X = X", " ="),
-                ("TypeMetadata ", ""),
-                (&format!("{}::", Self::TAG.enum_name()), ""),
-                ("ctx.", ""),
-                ("(ctx)", "__fn__")
-            ]
-            .map(|(a, b)| (a.to_string(), b.to_string()))
-            .into(),
-            default: false
-        })
+        parts.concat()
     }
 
     fn functions(&self) -> [String; 4] {
@@ -460,28 +437,28 @@ pub trait ItemOrRuneExt: Index<AttackType, Output = DamageRange> + ItemOrRune + 
 
         [
             if is_zero(&melee[min]) {
-                ZERO.into()
+                ZERO_FN.into()
             } else if min_shared {
                 format!("{id}{min_suffix}")
             } else {
                 format!("{id}_melee{min_suffix}")
             },
             if is_zero(&melee[max]) {
-                ZERO.into()
+                ZERO_FN.into()
             } else if max_shared {
                 format!("{id}_max")
             } else {
                 format!("{id}_melee_max")
             },
             if is_zero(&ranged[min]) {
-                ZERO.into()
+                ZERO_FN.into()
             } else if min_shared {
                 format!("{id}{min_suffix}")
             } else {
                 format!("{id}_ranged{min_suffix}")
             },
             if is_zero(&ranged[max]) {
-                ZERO.into()
+                ZERO_FN.into()
             } else if max_shared {
                 format!("{id}_max")
             } else {
@@ -496,7 +473,7 @@ pub fn get_identifiers(damage: &str, damage_type: DamageType) -> impl Iterator<I
         LazyLock::new(|| Regex::new(r"ctx\.([a-z_][a-z0-9_]*)").unwrap());
 
     RE_IDENTS
-        .captures_iter(&damage)
+        .captures_iter(damage)
         .filter_map(|cap| cap[1].to_pascal_case().parse().ok())
         .chain(match damage_type {
             DamageType::Physical => Some(CtxVar::PhysicalMultiplier),
@@ -573,38 +550,6 @@ pub fn ctx_param(s: &str) -> &'static str {
     if s.contains("ctx") { "ctx" } else { "_" }
 }
 
-pub struct StaticVar<'a> {
-    pub name: String,
-    pub attribute: &'a str,
-    pub vtype: &'a str,
-}
-
-pub fn static_vars<'a, const N: usize>(
-    tag: Tag,
-    array: [StaticVar<'a>; N],
-) -> HashMap<&'a str, String> {
-    array
-        .into_iter()
-        .map(|static_var| {
-            let StaticVar {
-                attribute,
-                name,
-                vtype,
-            } = static_var;
-
-            (attribute, variable(tag, &name, vtype))
-        })
-        .collect::<HashMap<_, _>>()
-}
-
-pub fn variable(tag: Tag, var: &str, vtype: &str) -> String {
-    let enum_name = tag.enum_name();
-    format!(
-        "pub static {var}: [{vtype}; {enum_name}::VARIANTS] = [",
-        var = var.to_uppercase()
-    )
-}
-
 pub fn probe_ratio(min_expr: &str, max_expr: &str, all_vars: &[CtxVar]) -> Option<String> {
     const N_PROBES: usize = 20;
     const MIN_VALID: usize = 8;
@@ -649,18 +594,21 @@ pub fn probe_ratio(min_expr: &str, max_expr: &str, all_vars: &[CtxVar]) -> Optio
         }
     }
 
-    (valid >= MIN_VALID)
-        .then(|| k_candidate)
-        .flatten()
-        .map(|k| {
-            let r = k.round();
-            if (k - r).abs() < 1e-9 {
-                return format!("{}", r as i64);
-            }
+    if valid >= MIN_VALID {
+        Some(k_candidate)
+    } else {
+        None
+    }
+    .flatten()
+    .map(|k| {
+        let r = k.round();
+        if (k - r).abs() < 1e-9 {
+            return (r as i64).to_string();
+        }
 
-            format!("{k:.10}")
-                .trim_end_matches('0')
-                .trim_end_matches('.')
-                .to_owned()
-        })
+        format!("{k:.10}")
+            .trim_end_matches('0')
+            .trim_end_matches('.')
+            .to_owned()
+    })
 }

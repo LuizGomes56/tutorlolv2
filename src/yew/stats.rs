@@ -1,10 +1,7 @@
 use {
     crate::{model::PlayerStats, yew::ReduceApply},
     alloc::rc::Rc,
-    core::{
-        fmt::Display,
-        ops::{Index, IndexMut},
-    },
+    core::ops::{Index, IndexMut},
     yew::Reducible,
 };
 
@@ -46,27 +43,25 @@ pub enum PlayerStatsField {
     CurrentMana,
 }
 
-impl Display for PlayerStatsField {
-    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
-        let name = match self {
-            PlayerStatsField::AbilityPower => "Ability Power",
-            PlayerStatsField::Armor => "Armor",
-            PlayerStatsField::ArmorPenetrationFlat => "Armor Pen. Flat",
-            PlayerStatsField::ArmorPenetrationPercent => "Armor Pen. %",
-            PlayerStatsField::AttackDamage => "Attack Damage",
-            PlayerStatsField::AttackSpeed => "Attack Speed",
-            PlayerStatsField::CritChance => "Crit Chance",
-            PlayerStatsField::CritDamage => "Crit Damage",
-            PlayerStatsField::CurrentHealth => "Current Health",
-            PlayerStatsField::MagicPenetrationFlat => "Magic Pen. Flat",
-            PlayerStatsField::MagicPenetrationPercent => "Magic Pen. %",
-            PlayerStatsField::MagicResist => "Magic Resist",
-            PlayerStatsField::MaxHealth => "Max Health",
-            PlayerStatsField::MaxMana => "Max Mana",
-            PlayerStatsField::CurrentMana => "Current Mana",
-        };
-
-        write!(f, "{name}")
+impl PlayerStatsField {
+    pub const fn name(&self) -> &'static str {
+        match self {
+            Self::AbilityPower => "Ability Power",
+            Self::Armor => "Armor",
+            Self::ArmorPenetrationFlat => "Armor Pen. Flat",
+            Self::ArmorPenetrationPercent => "Armor Pen. %",
+            Self::AttackDamage => "Attack Damage",
+            Self::AttackSpeed => "Attack Speed",
+            Self::CritChance => "Crit Chance",
+            Self::CritDamage => "Crit Damage",
+            Self::CurrentHealth => "Current Health",
+            Self::MagicPenetrationFlat => "Magic Pen. Flat",
+            Self::MagicPenetrationPercent => "Magic Pen. %",
+            Self::MagicResist => "Magic Resist",
+            Self::MaxHealth => "Max Health",
+            Self::MaxMana => "Max Mana",
+            Self::CurrentMana => "Current Mana",
+        }
     }
 }
 

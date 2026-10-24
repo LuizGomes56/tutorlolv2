@@ -1,42 +1,41 @@
-use rayon::iter::{ParallelBridge, ParallelIterator};
+use crate::generators::utils::Tag;
+use heck::ToSnakeCase;
+use rayon::iter::{IntoParallelIterator, ParallelIterator};
 use regex::Regex;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
-use std::{
-    collections::{BTreeMap, HashMap},
-    ops::Range,
-    sync::LazyLock,
-};
+use std::{collections::BTreeMap, sync::LazyLock};
+use tutorlolv2_codec::{EntityKind, FormulaDbBuilder, FormulaSource};
+use tutorlolv2_types::AbilityId;
+use tutorlolv2_wiki::MayFail;
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct FmtArgs<T> {
     pub target: String,
     pub variant: String,
     pub meta: T,
-    pub replace: HashMap<String, String>,
     pub default: bool,
 }
 
-#[derive(Debug, Serialize)]
 pub struct FmtOutput {
-    pub html_range: Range<usize>,
-    pub html: String,
     pub json: FmtArgs<Value>,
-    pub delete_range: Range<usize>,
+    pub block: String,
 }
 
 pub fn batch(src: String) -> BTreeMap<String, BTreeMap<String, Vec<FmtOutput>>> {
     static FMT_RE: LazyLock<Regex> =
         LazyLock::new(|| Regex::new(r#"#\[fmt\((\{.*?\})\)\]"#).unwrap());
 
+    // Collected first so the indexed parallel iterator keeps source order; formula ids
+    // are assigned in this order, so `par_bridge` made `formulas.bin` differ per build.
     let result = FMT_RE
         .captures_iter(&src)
-        .par_bridge()
+        .collect::<Vec<_>>()
+        .into_par_iter()
         .map(|caps| {
             let full = caps.get(0).unwrap();
             let inner = caps.get(1).unwrap().as_str();
 
-            let start_index = full.start();
             let attr_end = full.end();
 
             let json = serde_json::from_str::<FmtArgs<Value>>(inner).unwrap();
@@ -62,26 +61,9 @@ pub fn batch(src: String) -> BTreeMap<String, BTreeMap<String, Vec<FmtOutput>>> 
                 }
             }
 
-            let mut block = rest[..end].trim().to_string();
+            let block = rest[..end].trim().to_string();
 
-            for (from, into) in &json.replace {
-                block = block.replace(from, into);
-            }
-
-            let html = tutorlolv2_fmt::rust_html(&block);
-
-            let mut absolute_end = attr_end + end;
-
-            if rest.get(end..end + 1) == Some(";") {
-                absolute_end += 1;
-            }
-
-            FmtOutput {
-                delete_range: start_index..absolute_end,
-                html,
-                html_range: 0..0,
-                json,
-            }
+            FmtOutput { json, block }
         })
         .collect::<Vec<_>>();
 
@@ -98,42 +80,70 @@ pub fn batch(src: String) -> BTreeMap<String, BTreeMap<String, Vec<FmtOutput>>> 
     map
 }
 
-pub struct Tracker<'a> {
-    inner: &'a mut String,
-}
+pub fn pack_formulas(
+    packer: &mut FormulaDbBuilder,
+    tag: Tag,
+    result: &BTreeMap<String, BTreeMap<String, Vec<FmtOutput>>>,
+) -> MayFail {
+    for (i, (variant, inner_map)) in result.iter().enumerate() {
+        let Some(outputs) = inner_map.get("formula") else {
+            continue;
+        };
 
-impl<'a> Tracker<'a> {
-    /// Creates a new instance of self, from an existing string that
-    /// should live longer than this struct
-    pub const fn new(inner: &'a mut String) -> Self {
-        Self { inner }
-    }
+        let id = variant.to_snake_case();
 
-    /// Get the current length of the string, which represents
-    /// the `end` offset of the last record
-    pub const fn offset(&self) -> usize {
-        self.inner.len()
-    }
+        let (formulas, refs) = outputs
+            .iter()
+            .filter_map(
+                |FmtOutput {
+                     block,
+                     json: FmtArgs { meta, .. },
+                     ..
+                 }| {
+                    let body = block
+                        .find('{')
+                        .map(|pos| block[pos + 1..].trim().trim_end_matches('}').trim())?;
 
-    pub fn push(&mut self, value: &str) -> Range<usize> {
-        if let Some(pos) = self.inner.find(value) {
-            return pos..pos + value.len();
-        }
+                    let (source, local, fn_name) = match tag {
+                        Tag::Champions => {
+                            let (f, k) =
+                                serde_json::from_value::<(AbilityId, u8)>(meta.clone()).ok()?;
+                            let fn_type = f.discriminant();
+                            (
+                                body.rfind("] */").map(|pos| &body[pos + 4..])?,
+                                k,
+                                format!("{id}_{fn_type}").to_lowercase(),
+                            )
+                        }
+                        Tag::Items | Tag::Runes => {
+                            let k = meta.as_u64()?;
+                            (body, k as _, format!("{id}_f{k}").to_lowercase())
+                        }
+                    };
 
-        let start = self.offset();
-        self.inner.push_str(value);
-        start..self.offset()
-    }
+                    Some((FormulaSource { local, source }, (fn_name, local)))
+                },
+            )
+            .unzip::<_, _, Vec<_>, _>();
 
-    pub fn batch(&mut self, batch: &mut BTreeMap<String, BTreeMap<String, Vec<FmtOutput>>>) {
-        for value in batch.values_mut() {
-            for data in value.values_mut() {
-                for output in data.iter_mut() {
-                    if !output.json.default {
-                        output.html_range = self.push(&output.html);
-                    }
-                }
+        match tag {
+            Tag::Champions => {
+                /* comment[{comment:?}] */
+                /* name[{name:?}] */
+                packer.push_champion(i as _, &formulas, &refs)
+            }
+            _ => {
+                let entity = match tag {
+                    Tag::Items => EntityKind::Item,
+                    Tag::Runes => EntityKind::Rune,
+                    _ => unreachable!(),
+                };
+
+                packer.push_sparse(entity, i as _, &formulas, &refs)
             }
         }
+        .map_err(|e| format!("Packer Error [{id}][formulas={formulas:?}][refs={refs:?}]: {e:?}"))?;
     }
+
+    Ok(())
 }

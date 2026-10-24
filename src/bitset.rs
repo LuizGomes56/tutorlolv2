@@ -1,5 +1,6 @@
 use crate::{ChampionId, ItemId, RuneId};
 pub use const_sized_bit_set::{self, prelude::BitSetArray};
+use strum::EnumCount;
 
 pub const fn max_usize(a: usize, b: usize) -> usize {
     if a > b { a } else { b }
@@ -8,10 +9,12 @@ pub const fn max_usize(a: usize, b: usize) -> usize {
 pub const fn bitset_size<const N: usize>(array: [usize; N]) -> usize {
     let mut i = 0;
     let mut max = 0;
+
     while i < N {
         max = max_usize(max, array[i]);
         i += 1;
     }
+
     sizeof_bitset(max)
 }
 
@@ -19,13 +22,12 @@ pub const fn sizeof_bitset(n: usize) -> usize {
     n.div_ceil(64)
 }
 
-pub const BITSET_SIZE: usize = max_usize(
-    ChampionId::VARIANTS,
-    max_usize(ItemId::VARIANTS, RuneId::VARIANTS),
-);
+pub const BITSET_SIZE: usize =
+    max_usize(ChampionId::COUNT, max_usize(ItemId::COUNT, RuneId::COUNT));
 
 pub type BitSet = BitSetArray<{ sizeof_bitset(BITSET_SIZE) }>;
 
+#[cfg(feature = "yew")]
 pub const BITSET_EXC_SIZE: usize = {
     let ie = max_usize(
         bitset_size(crate::bitset!(ItemId::ALLY_EXCEPTIONS => [usize])),
@@ -35,6 +37,7 @@ pub const BITSET_EXC_SIZE: usize = {
     max_usize(ie, re)
 };
 
+#[cfg(feature = "yew")]
 pub type BitSetExc = BitSetArray<{ BITSET_EXC_SIZE }>;
 
 pub const fn make_bitset<const N: usize, const L: usize>(values: [u32; L]) -> BitSetArray<N> {
