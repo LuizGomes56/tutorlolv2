@@ -1,15 +1,15 @@
 #![allow(unreachable_patterns)]
 
 pub mod check;
+pub mod globals;
 pub mod impls;
-pub mod model;
 
 use core::num::NonZeroU8;
 pub use {
     champions_code::ChampionId,
+    globals::*,
     impls::traits::{CastId, ValueId},
     items_code::ItemId,
-    model::*,
     runes_code::RuneId,
 };
 
@@ -195,6 +195,7 @@ macro_rules! impl_name_serde {
 
 impl_name_serde!(ChampionId => u8, ItemId => u16, RuneId => u8);
 
+#[cfg(feature = "engine")]
 pub const fn zero(_: &tutorlolv2_types::Ctx) -> f32 {
     0.0
 }

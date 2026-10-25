@@ -1,13 +1,14 @@
 //! This module only have structs related to Riot's port 2999 endpoint,
 //! which can be used to deserialize the JSON data to this library's
 //! own data types
-
-use core::num::NonZeroU8;
-
-use crate::{model::*, realtime::RealtimeError};
+use crate::model::*;
 use alloc::boxed::Box;
 use bincode::{BorrowDecode, Decode, Encode};
+use core::num::NonZeroU8;
 use serde::{Deserialize, Serialize};
+
+#[cfg(feature = "engine")]
+use crate::realtime::RealtimeError;
 
 #[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Encode, Decode, Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -175,6 +176,7 @@ pub struct RiotRealtime<'a> {
     pub game_data: RiotRealtimeGameData,
 }
 
+#[cfg(feature = "engine")]
 impl RiotRealtime<'_> {
     pub fn eval(&self) -> Result<Realtime<'_>, RealtimeError<'_>> {
         crate::realtime::realtime(self)

@@ -1,12 +1,13 @@
+#[cfg(feature = "engine")]
+use {crate::champions_code::ability_const_eval, tutorlolv2_types::Ctx};
+
 use {
     crate::{
         ChampionId, ItemId, RuneId, WikiStats,
-        champions_code::{RECOMMENDED_ITEMS, RECOMMENDED_RUNES, ability_const_eval},
+        champions_code::{RECOMMENDED_ITEMS, RECOMMENDED_RUNES},
     },
     strum::{EnumCount, VariantArray},
-    tutorlolv2_types::{
-        AbilityId, AbilityName, AdaptiveType, AttackType, Ctx, Position, TypeMetadata,
-    },
+    tutorlolv2_types::{AbilityId, AbilityName, AdaptiveType, AttackType, Position, TypeMetadata},
 };
 
 impl ChampionId {
@@ -22,7 +23,7 @@ impl ChampionId {
 
         while i < Self::COUNT {
             let data = Self::DATA[i];
-            sum += data.closures.len();
+            sum += data.metadata.len();
             i += 1;
         }
 
@@ -72,7 +73,7 @@ impl ChampionId {
     }
 
     pub const fn number_of_abilities(&self) -> usize {
-        self.data().closures.len()
+        self.data().metadata.len()
     }
 
     pub const fn adaptive_type(&self) -> AdaptiveType {
@@ -131,6 +132,7 @@ impl ChampionId {
         self.data().metadata
     }
 
+    #[cfg(feature = "engine")]
     pub const fn eval(&self, ctx: &Ctx, kind: AbilityId) -> f32 {
         ability_const_eval(*self, ctx, kind)
     }

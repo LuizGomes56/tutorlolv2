@@ -70,7 +70,7 @@ where
                 include!(concat!(env!("OUT_DIR"), "/{dir}/{id}.rs"));
             }}"#,
             model_imports = format_args!(
-                "use crate::libgen::model::{{{model_ty}, {}}};",
+                "use crate::libgen::globals::{{{model_ty}, {}}};",
                 if matches!(parser.tag(), Tag::Champions) {
                     "WikiStats, WikiModifiers, Stat, Modifier"
                 } else {

@@ -1,8 +1,14 @@
+#[cfg(feature = "engine")]
 use {
-    crate::{ItemId, bitset, bitset::*, items_code::item_const_eval},
+    crate::items_code::item_const_eval,
+    tutorlolv2_types::{AttackType, Ctx},
+};
+
+use {
+    crate::{ItemId, bitset, bitset::*},
     core::mem::MaybeUninit,
     strum::{EnumCount, VariantArray},
-    tutorlolv2_types::{AttackType, Ctx, DamageType, GameMap, StatName, TypeMetadata},
+    tutorlolv2_types::{DamageType, GameMap, StatName, TypeMetadata},
 };
 
 impl ItemId {
@@ -203,6 +209,7 @@ impl ItemId {
         self.data().metadata
     }
 
+    #[cfg(feature = "engine")]
     pub const fn eval(&self, ctx: &Ctx, attack_type: AttackType) -> [f32; 2] {
         item_const_eval(*self, ctx, attack_type)
     }

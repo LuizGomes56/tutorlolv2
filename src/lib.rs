@@ -1,24 +1,69 @@
 #![no_std]
+#![cfg_attr(
+    not(feature = "engine"),
+    doc = r#"
+Catalog and transport types remain available without the `engine` feature.
+The executable calculation API requires `engine`:
+
+```compile_fail
+use tutorlolv2::calculator;
+```
+
+```compile_fail
+let _ = tutorlolv2::ChampionId::eval;
+```
+
+```compile_fail
+let _ = tutorlolv2::ItemId::eval;
+```
+
+```compile_fail
+let _ = tutorlolv2::RuneId::eval;
+```
+
+The catalog does not retain executable formula pointers:
+
+```compile_fail
+let _ = |champion: tutorlolv2::Champion| champion.closures;
+```
+
+```compile_fail
+let _ = |item: tutorlolv2::Item| item.melee;
+```
+
+```compile_fail
+let _ = |rune: tutorlolv2::Rune| rune.ranged;
+```
+"#
+)]
 
 extern crate alloc;
 
 #[cfg(feature = "yew")]
 pub mod yew;
 
-pub mod bitset;
+#[cfg(feature = "engine")]
 pub mod calculator;
+
+#[cfg(feature = "engine")]
 pub mod const_eval;
 
+#[cfg(feature = "engine")]
 pub mod helpers;
+
+#[cfg(feature = "engine")]
+pub mod realtime;
+
+pub mod bitset;
 pub mod libgen;
 pub mod model;
-pub mod realtime;
 pub mod riot;
 
 pub use libgen::*;
 pub use tutorlolv2_types::*;
 
 #[allow(dead_code)]
+#[cfg(feature = "engine")]
 mod test {
     use crate::{
         AbilityId, ChampionId, Ctx, ItemId, RuneId,

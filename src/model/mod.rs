@@ -11,7 +11,7 @@
 use {
     crate::{
         ChampionId, ItemId, RuneId,
-        libgen::{Closure, L_MSTR, L_TWRD},
+        libgen::{L_MSTR, L_TWRD},
     },
     alloc::boxed::Box,
     bincode::{BorrowDecode, Decode, Encode},
@@ -24,11 +24,18 @@ use {
     },
 };
 
+#[cfg(feature = "engine")]
+use crate::libgen::Closure;
+
+mod owned_input;
+pub use owned_input::*;
+
 /// Holds the compile-time known metadata and closures of the current champion,
 /// obtained from the static variable [`CHAMPION_CACHE`]. Note that
 /// the current champion is only known at runtime, but since the application knowns
 /// all the possible champion's data at compile-time, the length of both metadata
 /// and closures is known and lives forever, unlike the ones in variant [`DamageKind`]
+#[cfg(feature = "engine")]
 #[derive(Clone, Copy, Debug, PartialEq, PartialOrd)]
 pub struct StaticDamageKind<T: 'static> {
     pub metadata: &'static [TypeMetadata<T>],
@@ -38,6 +45,7 @@ pub struct StaticDamageKind<T: 'static> {
 /// Runtime-known values that depend on how many damaging items or runes the
 /// current player has. Holds the metadata and closures of the given `T` parameter.
 /// See [`TypeMetadata`] and [`Closure`] for more details
+#[cfg(feature = "engine")]
 #[derive(Clone, Debug, PartialEq, PartialOrd)]
 pub struct DamageKind<T> {
     /// Vector of the [`TypeMetadata`] of either [`ItemId`] or [`RuneId`]
@@ -58,7 +66,7 @@ pub struct DamageKind<T> {
 /// the size of this struct is often larger than `70 KB`, and it is created every
 /// second, while part of its fields live in the caller function, which is why it
 /// has lifetime annotations.
-#[derive(Clone, Debug, PartialEq, PartialOrd, Encode, Serialize)]
+#[derive(Clone, Debug, PartialEq, PartialOrd, Encode, BorrowDecode, Serialize)]
 pub struct Realtime<'a> {
     /// Contains the information about the current player
     pub current_player: CurrentPlayer<'a>,
@@ -164,6 +172,7 @@ pub struct EnemyFullState {
     pub randuin: bool,
 }
 
+#[cfg(feature = "engine")]
 #[derive(Clone, Debug, PartialEq, PartialOrd)]
 pub struct DamageEvalData {
     pub abilities: StaticDamageKind<AbilityId>,

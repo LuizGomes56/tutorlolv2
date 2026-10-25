@@ -1,4 +1,4 @@
-#![cfg(feature = "yew")]
+#![cfg(feature = "formula-docs")]
 
 use strum::VariantArray;
 use tutorlolv2::{

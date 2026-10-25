@@ -393,3 +393,27 @@ To run the project, do the following:
     > cargo run -r
 
 To interact with the math module library, you can edit `src/main.rs` directly
+
+
+## Calculation features and Bincode requests
+
+Default library builds include `engine` and `formula-docs` (which enables `yew`).
+Use `default-features = false, features = ["client"]` for catalog metadata,
+transport models, UI helpers and documentation without executable calculation
+formulas. Enable `engine` to make `calculator`, `realtime`, inference and generated
+formula functions available. The `yew` feature alone enables input helpers;
+`formula-docs` additionally enables documentation rendering.
+
+The calculation service accepts Bincode `InputGame` at
+`POST /api/games/calculator`, decoding `OwnedInputGame` and preparing safe borrowed
+views with `request.prepare().as_input()`. Realtime accepts Bincode `RiotRealtime`
+at `POST /api/games/realtime`. Responses are Bincode `OutputGame` and `Realtime`,
+respectively, with `bincode::config::standard()` and `application/octet-stream`.
+Malformed or trailing request bytes receive HTTP 400. Typed slices in calculator
+inputs borrow decoded request collections; no layout casts or leaked allocations
+are used. Borrowed/owned schema compatibility enforcement is intentionally deferred.
+
+The sibling frontend defaults to `local-calculation`; build it with
+`--no-default-features` to use this HTTP service. Its API base defaults to
+`http://127.0.0.1:8082/api/games` and can be overridden at build time using
+`TUTORLOL_API_URL`.

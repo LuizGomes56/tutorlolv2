@@ -2,7 +2,7 @@ use {
     crate::{ChampionId, ItemId, RuneId, impls::traits::CastId},
     core::fmt::Debug,
     tutorlolv2_types::{
-        AbilityId, AdaptiveType, AttackType, Ctx, GameMap, Position, StatName, TypeMetadata,
+        AbilityId, AdaptiveType, AttackType, GameMap, Position, StatName, TypeMetadata,
     },
 };
 
@@ -36,7 +36,8 @@ impl EntityId {
     }
 }
 
-pub type Closure = fn(&Ctx) -> f32;
+#[cfg(feature = "engine")]
+pub type Closure = fn(&tutorlolv2_types::Ctx) -> f32;
 
 #[derive(Clone, Copy, Debug)]
 pub struct Champion {
@@ -46,13 +47,18 @@ pub struct Champion {
     pub positions: &'static [Position],
     pub stats: WikiStats,
     pub modifiers: WikiModifiers,
+    pub metadata: &'static [TypeMetadata<AbilityId>],
+
     #[cfg(feature = "yew")]
     pub combos: &'static [&'static [ComboElement]],
-    pub metadata: &'static [TypeMetadata<AbilityId>],
+
     #[cfg(feature = "yew")]
     pub merge_data: &'static [MergeData],
+
     #[cfg(feature = "yew")]
     pub identifiers: &'static [&'static [CtxVar]],
+
+    #[cfg(feature = "engine")]
     pub closures: &'static [Closure],
 }
 
@@ -101,27 +107,37 @@ pub struct Item {
     pub stats: &'static [(StatName, u16)],
     pub maps: &'static [GameMap],
     pub metadata: TypeMetadata<ItemId>,
-    pub ranged: [Closure; 2],
-    pub melee: [Closure; 2],
     pub deals_damage: [bool; 4],
     pub purchasable: bool,
     pub riot_id: u32,
+    pub custom: bool,
+
+    #[cfg(feature = "engine")]
+    pub ranged: [Closure; 2],
+
+    #[cfg(feature = "engine")]
+    pub melee: [Closure; 2],
+
     #[cfg(feature = "yew")]
     pub identifiers: &'static [CtxVar],
-    pub custom: bool,
 }
 
 #[derive(Clone, Copy, Debug)]
 pub struct Rune {
     pub name: &'static str,
     pub metadata: TypeMetadata<RuneId>,
-    pub ranged: [Closure; 2],
-    pub melee: [Closure; 2],
     pub deals_damage: [bool; 4],
     pub riot_id: u32,
+    pub custom: bool,
+
+    #[cfg(feature = "engine")]
+    pub ranged: [Closure; 2],
+
+    #[cfg(feature = "engine")]
+    pub melee: [Closure; 2],
+
     #[cfg(feature = "yew")]
     pub identifiers: &'static [CtxVar],
-    pub custom: bool,
 }
 
 impl Stat {

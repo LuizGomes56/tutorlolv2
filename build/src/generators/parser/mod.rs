@@ -279,7 +279,7 @@ where
         let enum_name = Self::TAG.enum_name();
         let folder = Self::TAG.plural();
         let mut data = format!(
-            "pub static {var}: [&crate::libgen::model::{vtype}; <{enum_name} as strum::EnumCount>::COUNT] = ["
+            "pub static {var}: [&crate::libgen::globals::{vtype}; <{enum_name} as strum::EnumCount>::COUNT] = ["
         );
 
         for id in self.keys() {

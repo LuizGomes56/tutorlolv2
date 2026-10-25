@@ -1,7 +1,13 @@
+#[cfg(feature = "engine")]
 use {
-    crate::{RuneId, bitset, bitset::*, runes_code::rune_const_eval},
+    crate::runes_code::rune_const_eval,
+    tutorlolv2_types::{AttackType, Ctx},
+};
+
+use {
+    crate::{RuneId, bitset, bitset::*},
     strum::{EnumCount, VariantArray},
-    tutorlolv2_types::{AttackType, Ctx, DamageType, TypeMetadata},
+    tutorlolv2_types::{DamageType, TypeMetadata},
 };
 
 impl RuneId {
@@ -63,6 +69,7 @@ impl RuneId {
         self.metadata().damage_type
     }
 
+    #[cfg(feature = "engine")]
     pub const fn eval(&self, ctx: &Ctx, attack_type: AttackType) -> [f32; 2] {
         rune_const_eval(*self, ctx, attack_type)
     }

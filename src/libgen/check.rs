@@ -1,5 +1,16 @@
 use strum::{EnumCount, VariantArray};
 
+#[cfg(feature = "engine")]
+const _: () = {
+    let mut i = 0;
+
+    while i < crate::ChampionId::COUNT {
+        let champion = crate::ChampionId::DATA[i];
+        assert!(champion.metadata.len() == champion.closures.len());
+        i += 1;
+    }
+};
+
 #[cfg(feature = "yew")]
 const _: () = {
     use {crate::ChampionId, tutorlolv2_types::ComboElement};

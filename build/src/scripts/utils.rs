@@ -234,7 +234,10 @@ pub trait ItemOrRuneExt:
         let melee_fns = functions[0..2].join(",");
         let ranged_fns = functions[2..4].join(",");
 
-        format!("melee: [{melee_fns}], ranged: [{ranged_fns}],")
+        format!(
+            "#[cfg(feature = \"engine\")] melee: [{melee_fns}],
+             #[cfg(feature = \"engine\")] ranged: [{ranged_fns}],"
+        )
     }
 
     fn eval(&self) -> String {
@@ -359,7 +362,7 @@ pub trait ItemOrRuneExt:
 
                 write!(
                     rust,
-                    "pub const fn {f}({param}: &tutorlolv2_types::Ctx) -> f32 {{{formula_f32}}}"
+                    "#[cfg(feature = \"engine\")] pub const fn {f}({param}: &tutorlolv2_types::Ctx) -> f32 {{{formula_f32}}}"
                 )?;
             }
         }

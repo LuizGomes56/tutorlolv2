@@ -36,8 +36,11 @@ yew = { version = "0.23.0", default-features = false, optional = true }
 tutorlolv2_build_dep = { path = "build" }
 
 [features]
-default = ["yew"]
-yew = ["dep:tutorlolv2_codec", "dep:yew", "tutorlolv2_types/dev"]
+default = ["engine", "formula-docs"]
+engine = []
+client = ["formula-docs"]
+formula-docs = ["yew", "dep:tutorlolv2_codec"]
+yew = ["dep:yew", "tutorlolv2_types/dev"]
 
 # Optimize the final binaries across the entire workspace.
 [profile.release]

@@ -116,12 +116,12 @@ where
     fn debug(&self) -> &'static str;
     fn try_from_u16(v: u16) -> Option<Self>;
 
-    #[cfg(feature = "yew")]
+    #[cfg(feature = "formula-docs")]
     fn render_generator(&self) -> Option<alloc::string::String> {
         crate::yew::render::GENERATOR_RENDERER.render(*self)
     }
 
-    #[cfg(feature = "yew")]
+    #[cfg(feature = "formula-docs")]
     fn render_global(&self) -> crate::yew::render::MayFail<alloc::string::String> {
         match self.entity() {
             EntityId::Champion(v) => v.render_global(),
@@ -158,7 +158,7 @@ pub trait ValueId: CastId {
     #[cfg(feature = "yew")]
     fn identifiers(&self) -> &'static [tutorlolv2_types::CtxVar];
 
-    #[cfg(feature = "yew")]
+    #[cfg(feature = "formula-docs")]
     fn render_fn(&self) -> crate::yew::render::MayFail<alloc::string::String>;
 
     fn damage_type(&self) -> DamageType {
@@ -170,7 +170,7 @@ impl ValueId for ItemId {
     const DAMAGING: &BitSet = &Self::DAMAGING;
     const DAMAGING_IDS: &[Self] = &Self::DAMAGING_IDS;
 
-    #[cfg(feature = "yew")]
+    #[cfg(feature = "formula-docs")]
     fn render_fn(&self) -> crate::yew::render::MayFail<alloc::string::String> {
         self.render_fn()
     }
@@ -206,7 +206,7 @@ impl ValueId for RuneId {
     const DAMAGING: &BitSet = &Self::DAMAGING;
     const DAMAGING_IDS: &[Self] = &Self::DAMAGING_IDS;
 
-    #[cfg(feature = "yew")]
+    #[cfg(feature = "formula-docs")]
     fn render_fn(&self) -> crate::yew::render::MayFail<alloc::string::String> {
         self.render_fn()
     }

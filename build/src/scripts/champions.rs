@@ -116,6 +116,7 @@ impl Build for Champion {
                 stats: {stats:#?},
                 modifiers: {modifiers:#?},
                 metadata: {metadata},
+                #[cfg(feature = "engine")]
                 closures: &[{fn_names}],
 
                 #[cfg(feature = "yew")]
@@ -181,7 +182,7 @@ impl Build for Champion {
 
             write!(
                 rust,
-                "pub const fn {function}({param}: &tutorlolv2_types::Ctx) -> f32 {{{rust_formula}}}",
+                "#[cfg(feature = \"engine\")] pub const fn {function}({param}: &tutorlolv2_types::Ctx) -> f32 {{{rust_formula}}}",
                 param = ctx_param(&rust_formula)
             )?;
 
