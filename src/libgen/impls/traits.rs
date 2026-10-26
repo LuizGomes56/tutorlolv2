@@ -53,7 +53,7 @@ macro_rules! impl_methods {
                         ::[<$stru:replace("Id", "S"):upper _DATA>];
 
                     pub const fn default() -> Self {
-                        Self::from_repr(0).unwrap()
+                        const { Self::from_repr(0).unwrap() }
                     }
 
                     pub const fn data(&self) -> &'static [<$stru:replace("Id", "")>] {

@@ -4,7 +4,7 @@ use crate::{
         parser::{DamageRange, ZERO, items::Item, runes::Rune},
         utils::Tag,
     },
-    scripts::batch::FmtArgs,
+    scripts::batch::{FmtArgs, FmtTarget},
 };
 use databake::{Bake, CrateEnv};
 use heck::{ToPascalCase, ToSnakeCase};
@@ -105,7 +105,6 @@ pub fn simplify(f: &str) -> String {
                     let candidate = format!("{value:.precision$}");
 
                     let reparsed = candidate.parse::<f64>().unwrap();
-
                     let diff = (value - reparsed).abs();
 
                     if diff < 1e-9 {
@@ -274,10 +273,12 @@ pub trait ItemOrRuneExt:
         format!(
             "{enum_name}::{id} => {{
                 match attack_type {{
-                    tutorlolv2_types::AttackType::Melee => [{melee_arms}],
-                    tutorlolv2_types::AttackType::Ranged => [{ranged_arms}]
+                    {melee} => [{melee_arms}],
+                    {ranged} => [{ranged_arms}]
                 }}
             }},",
+            melee = bake(&AttackType::Melee),
+            ranged = bake(&AttackType::Ranged),
             enum_name = Self::TAG.enum_name(),
             melee_arms = get_arms(0..2),
             ranged_arms = get_arms(2..4),
@@ -411,7 +412,7 @@ pub trait ItemOrRuneExt:
                     {value}
                 }}",
                 fmt_args = json!(FmtArgs {
-                    target: "formula".into(),
+                    target: FmtTarget::Formula,
                     variant: self.id().into(),
                     meta: i,
                     default: false
@@ -488,11 +489,14 @@ pub fn get_identifiers(damage: &str, damage_type: DamageType) -> impl Iterator<I
 pub fn fit_str(c: &str) -> String {
     const CHUNK: usize = 30;
     let comment = c.replace("  ", " ");
+
     if comment.len() <= CHUNK {
         return format!("{comment:?}");
     }
+
     let mut chunks = Vec::new();
     let mut current = String::new();
+
     for word in comment.split(' ') {
         if !current.is_empty() && current.len() + 1 + word.len() > CHUNK {
             chunks.push(format!("{current:?}"));
@@ -501,12 +505,15 @@ pub fn fit_str(c: &str) -> String {
             if !current.is_empty() {
                 current.push(' ');
             }
+
             current.push_str(word);
         }
     }
+
     if !current.is_empty() {
         chunks.push(format!("{current:?}"));
     }
+
     format!("concat!({})", chunks.join(", "))
 }
 

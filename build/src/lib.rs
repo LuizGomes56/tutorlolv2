@@ -1,8 +1,9 @@
+use crate::scripts::batch::FmtTarget;
 use heck::ToPascalCase;
 use strum::VariantNames;
 use tutorlolv2_codec::{Class, ClassOverride, EntityKind, GeneratorDbBuilder};
 use tutorlolv2_types::{AbilityName, AttackType};
-pub use tutorlolv2_wiki::{DynError, MayFail};
+
 use {
     crate::{
         generators::{
@@ -28,6 +29,8 @@ use {
     tutorlolv2_codec::FormulaDbBuilder,
     tutorlolv2_types::CtxVar,
 };
+
+pub use tutorlolv2_wiki::{DynError, MayFail};
 
 pub mod generators;
 pub mod scripts;
@@ -222,7 +225,7 @@ fn build_docs() -> MayFail {
                         &format!(
                             "#[fmt({})]",
                             json!(FmtArgs {
-                                target: "generator".into(),
+                                target: FmtTarget::Generator,
                                 variant: variant.into(),
                                 meta: (tag as u8, i as u16),
                                 default
@@ -265,7 +268,7 @@ fn build_docs() -> MayFail {
         for inner in batch.values_mut() {
             for outputs in inner.values_mut() {
                 for output in outputs {
-                    if output.json.default || output.json.target != "generator" {
+                    if output.json.default || !matches!(output.json.target, FmtTarget::Generator) {
                         continue;
                     }
 

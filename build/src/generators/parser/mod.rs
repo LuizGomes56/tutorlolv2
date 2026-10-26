@@ -5,7 +5,10 @@ use {
             GeneratorExt, VERSION,
             utils::{SaveTo, Tag},
         },
-        scripts::{batch::FmtArgs, utils::is_zero},
+        scripts::{
+            batch::{FmtArgs, FmtTarget},
+            utils::is_zero,
+        },
     },
     heck::{
         ToKebabCase, ToLowerCamelCase, ToPascalCase, ToShoutyKebabCase, ToShoutySnakeCase,
@@ -262,7 +265,7 @@ where
             &format!(
                 "#[fmt({fmt})]",
                 fmt = json!(FmtArgs {
-                    target: "generator".into(),
+                    target: FmtTarget::Generator,
                     variant: variant.into(),
                     meta: (),
                     default

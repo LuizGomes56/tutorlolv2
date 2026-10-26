@@ -5,13 +5,22 @@ use regex::Regex;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use std::{collections::BTreeMap, sync::LazyLock};
+use strum::EnumString;
 use tutorlolv2_codec::{EntityKind, FormulaDbBuilder, FormulaSource};
 use tutorlolv2_types::AbilityId;
 use tutorlolv2_wiki::MayFail;
 
+#[derive(
+    Clone, Copy, Debug, Deserialize, Serialize, Ord, PartialEq, PartialOrd, Eq, EnumString,
+)]
+pub enum FmtTarget {
+    Generator,
+    Formula,
+}
+
 #[derive(Debug, Deserialize, Serialize)]
 pub struct FmtArgs<T> {
-    pub target: String,
+    pub target: FmtTarget,
     pub variant: String,
     pub meta: T,
     pub default: bool,
@@ -22,7 +31,7 @@ pub struct FmtOutput {
     pub block: String,
 }
 
-pub fn batch(src: String) -> BTreeMap<String, BTreeMap<String, Vec<FmtOutput>>> {
+pub fn batch(src: String) -> BTreeMap<String, BTreeMap<FmtTarget, Vec<FmtOutput>>> {
     static FMT_RE: LazyLock<Regex> =
         LazyLock::new(|| Regex::new(r#"#\[fmt\((\{.*?\})\)\]"#).unwrap());
 
@@ -72,7 +81,7 @@ pub fn batch(src: String) -> BTreeMap<String, BTreeMap<String, Vec<FmtOutput>>> 
     for data in result {
         map.entry(data.json.variant.clone())
             .or_default()
-            .entry(data.json.target.clone())
+            .entry(data.json.target)
             .or_default()
             .push(data);
     }
@@ -83,10 +92,10 @@ pub fn batch(src: String) -> BTreeMap<String, BTreeMap<String, Vec<FmtOutput>>> 
 pub fn pack_formulas(
     packer: &mut FormulaDbBuilder,
     tag: Tag,
-    result: &BTreeMap<String, BTreeMap<String, Vec<FmtOutput>>>,
+    result: &BTreeMap<String, BTreeMap<FmtTarget, Vec<FmtOutput>>>,
 ) -> MayFail {
     for (i, (variant, inner_map)) in result.iter().enumerate() {
-        let Some(outputs) = inner_map.get("formula") else {
+        let Some(outputs) = inner_map.get(&FmtTarget::Formula) else {
             continue;
         };
 
@@ -108,6 +117,7 @@ pub fn pack_formulas(
                         Tag::Champions => {
                             let (f, k) =
                                 serde_json::from_value::<(AbilityId, u8)>(meta.clone()).ok()?;
+
                             let fn_type = f.discriminant();
                             (
                                 body.rfind("] */").map(|pos| &body[pos + 4..])?,

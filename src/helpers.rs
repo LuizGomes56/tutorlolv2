@@ -618,6 +618,12 @@ impl EnemyState<'_> {
                         e_default_stats.magic_resist *= ornn_resist_multiplier;
                         e_default_stats.max_health *= ornn_resist_multiplier;
                     }
+                    ChampionId::Poppy => {
+                        let poppy_w_multiplier = 1.16;
+
+                        e_default_stats.armor *= poppy_w_multiplier;
+                        e_default_stats.magic_resist *= poppy_w_multiplier;
+                    }
                     ChampionId::Malphite => {
                         // W upgrade pattern for malphite by 06/07/2025
                         // #![manual_impl]

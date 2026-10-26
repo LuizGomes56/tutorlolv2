@@ -1,6 +1,6 @@
 [package]
 name = "tutorlolv2_build_dep"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2024"
 
 [dependencies]
@@ -17,5 +17,5 @@ serde_with = "3.24.0"
 strum = { version = "0.28.0", features = ["derive", "strum_macros"] }
 symb_anafis = "0.8.1"
 tutorlolv2_codec = { path = "../tutorlolv2_codec" }
-tutorlolv2_types = { path = "../tutorlolv2_types", features = ["dev", "bake"] }
+tutorlolv2_types = { path = "../tutorlolv2_types", features = ["bake", "dev"] }
 tutorlolv2_wiki = { path = "../tutorlolv2_wiki" }

@@ -6,7 +6,7 @@ use {
             utils::Tag,
         },
         scripts::{
-            batch::FmtArgs,
+            batch::{FmtArgs, FmtTarget},
             utils::{bake, cast_f32, ctx_param, fit_str, get_identifiers, probe_ratio, simplify},
         },
     },
@@ -197,7 +197,7 @@ impl Build for Champion {
                 damage = damages[i],
                 comment = fit_str(comment),
                 fmt_block = json!(FmtArgs {
-                    target: "formula".into(),
+                    target: FmtTarget::Formula,
                     variant: champion_id.clone(),
                     meta: (ability_id, i),
                     default: false
