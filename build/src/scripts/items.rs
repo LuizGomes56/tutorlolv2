@@ -1,7 +1,7 @@
 use crate::{
     Build, BuildContext, BuildOutput, MayFail,
     generators::{parser::items::Item, utils::Tag},
-    scripts::utils::{ItemOrRuneExt, bake},
+    scripts::utils::{BakeExt, ItemOrRuneExt},
 };
 use heck::ToShoutySnakeCase;
 use std::fmt::Write;
@@ -59,12 +59,12 @@ impl Build for Item {
                 identifiers: {identifiers},
             }};"#,
             upper_id = item_id.to_shouty_snake_case(),
-            identifiers = bake(&self.identifiers().as_slice()),
-            maps = bake(&maps.as_slice()),
+            identifiers = self.identifiers().as_slice().bake(),
+            maps = maps.as_slice().bake(),
             deals_damage = self.deals_damage(),
             fn_names = self.function_names(),
             metadata = self.repr_metadata(),
-            full_stats = bake(&stats.as_slice()),
+            full_stats = stats.as_slice().bake(),
         )?;
 
         rust.push_str(&self.closures(&plan)?);

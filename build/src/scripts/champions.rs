@@ -7,7 +7,7 @@ use {
         },
         scripts::{
             batch::FormulaDoc,
-            utils::{bake, cast_f32, ctx_param, get_identifiers, probe_ratio, simplify},
+            utils::{BakeExt, cast_f32, ctx_param, get_identifiers, probe_ratio, simplify},
         },
     },
     heck::{ToShoutySnakeCase, ToSnakeCase},
@@ -127,14 +127,14 @@ impl Build for Champion {
                 #[cfg(feature = "yew")]
                 identifiers: &[{identifiers}],
             }};"#,
-            adaptive_type = bake(adaptive_type),
-            attack_type = bake(attack_type),
-            positions = bake(&positions.as_slice()),
-            metadata = bake(&metadata.as_slice()),
-            merge_data = bake(&merge_data.as_slice()),
+            adaptive_type = adaptive_type.bake(),
+            attack_type = attack_type.bake(),
+            positions = positions.as_slice().bake(),
+            metadata = metadata.as_slice().bake(),
+            merge_data = merge_data.as_slice().bake(),
             combos = combo
                 .iter()
-                .map(|ident| bake(&ident.as_slice()))
+                .map(|ident| ident.as_slice().bake())
                 .collect::<Vec<_>>()
                 .join(","),
             identifiers = identifiers
@@ -143,7 +143,7 @@ impl Build for Champion {
                 .map(|(i, set)| {
                     let rest = if i == 0 { "as &[_]" } else { "" };
                     let vec = set.iter().copied().collect::<Vec<_>>();
-                    format!("{}{rest}", bake(&vec.as_slice()))
+                    format!("{}{rest}", vec.as_slice().bake())
                 })
                 .collect::<Vec<_>>()
                 .join(","),
@@ -199,7 +199,7 @@ impl Build for Champion {
 
                     format!(
                         "{} => crate::libgen::champions::{module}::{function}(ctx),",
-                        bake(&ability_id)
+                        ability_id.bake()
                     )
                 })
                 .collect::<String>()

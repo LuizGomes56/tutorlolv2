@@ -1,7 +1,7 @@
 use crate::{
     Build, BuildContext, BuildOutput, MayFail,
     generators::{parser::runes::Rune, utils::Tag},
-    scripts::utils::{ItemOrRuneExt, bake},
+    scripts::utils::{BakeExt, ItemOrRuneExt},
 };
 use heck::ToShoutySnakeCase;
 use std::fmt::Write;
@@ -38,7 +38,7 @@ impl Build for Rune {
                 identifiers: {identifiers},
             }};"#,
             upper_id = rune_id.to_shouty_snake_case(),
-            identifiers = bake(&self.identifiers().as_slice()),
+            identifiers = self.identifiers().as_slice().bake(),
             deals_damage = self.deals_damage(),
             fn_names = self.function_names(),
             metadata = self.repr_metadata()

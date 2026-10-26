@@ -6,7 +6,7 @@ use crate::{
     },
     scripts::batch::FormulaDoc,
 };
-use databake::{Bake, CrateEnv};
+use databake::CrateEnv;
 use heck::{ToPascalCase, ToSnakeCase};
 use rand::{RngExt, SeedableRng, rngs::SmallRng};
 use regex::{Captures, Regex};
@@ -21,9 +21,15 @@ use tutorlolv2_types::{AttackType, Attrs, CtxVar, DamageIndex, DamageType};
 
 pub const ZERO_FN: &str = "crate::libgen::zero";
 
-/// Emit a Rust expression without relying on imports in the generated module.
-pub fn bake(value: &impl Bake) -> String {
-    value.bake(&CrateEnv::default()).to_string()
+pub trait BakeExt {
+    /// Emit a Rust expression without relying on imports in the generated module.
+    fn bake(&self) -> String;
+}
+
+impl<T: databake::Bake + ?Sized> BakeExt for T {
+    fn bake(&self) -> String {
+        databake::Bake::bake(self, &CrateEnv::default()).to_string()
+    }
 }
 
 pub fn simplify(f: &str) -> String {
@@ -229,8 +235,8 @@ pub trait ItemOrRuneExt:
             }}",
             enum_name = Self::TAG.enum_name(),
             id = self.id(),
-            damage_type = bake(&self.damage_type()),
-            attributes = bake(&self.attributes()),
+            damage_type = self.damage_type().bake(),
+            attributes = self.attributes().bake(),
         )
     }
 
@@ -283,8 +289,8 @@ pub trait ItemOrRuneExt:
                     {ranged} => [{ranged_arms}]
                 }}
             }},",
-            melee = bake(&AttackType::Melee),
-            ranged = bake(&AttackType::Ranged),
+            melee = AttackType::Melee.bake(),
+            ranged = AttackType::Ranged.bake(),
             enum_name = Self::TAG.enum_name(),
             melee_arms = get_arms(0..2),
             ranged_arms = get_arms(2..4),
