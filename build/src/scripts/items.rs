@@ -1,5 +1,5 @@
 use crate::{
-    Build, BuildContext, BuildOutput, MayFail,
+    Build, BuildContext, BuildOutput, MayFail, YEW_CFG,
     generators::{parser::items::Item, utils::Tag},
     scripts::utils::{BakeExt, ItemOrRuneExt},
 };
@@ -55,7 +55,7 @@ impl Build for Item {
                 riot_id: {id},
                 custom: {custom},
 
-                #[cfg(feature = "yew")]
+                {YEW_CFG}
                 identifiers: {identifiers},
             }};"#,
             upper_id = item_id.to_shouty_snake_case(),

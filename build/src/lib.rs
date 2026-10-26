@@ -22,8 +22,13 @@ pub use tutorlolv2_wiki::{DynError, MayFail};
 pub mod context;
 pub mod generators;
 pub mod scripts;
+
 #[cfg(test)]
 mod tests;
+
+pub const ENGINE_CFG: &str = r#"#[cfg(feature = "engine")]"#;
+pub const YEW_CFG: &str = r#"#[cfg(feature = "yew")]"#;
+pub const FORMULA_DOCS_ENV: &str = "CARGO_FEATURE_FORMULA_DOCS";
 
 pub struct BuildOutput {
     pub eval: String,
@@ -171,7 +176,7 @@ impl BuildContext {
             println!("cargo:rerun-if-changed={}", input.display());
         }
 
-        println!("cargo:rerun-if-env-changed=CARGO_FEATURE_FORMULA_DOCS");
+        println!("cargo:rerun-if-env-changed={FORMULA_DOCS_ENV}");
 
         let (champions, (items, runes)) = rayon::join(
             || ChampionParser::from_root(&self.root),

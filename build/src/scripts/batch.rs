@@ -32,7 +32,7 @@ pub fn generator_impl(source: &str) -> MayFail<String> {
         .iter()
         .find(|item| {
             matches!(item,
-                syn::Item::Impl(item) if item.trait_.as_ref().is_some_and(|(_, path, _)|
+                syn::Item::Impl(item) if item.trait_.as_ref().is_some_and(|(path, _)|
                     path.segments.last().is_some_and(|s| s.ident == "Generator"))
             )
         })

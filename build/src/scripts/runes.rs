@@ -1,5 +1,5 @@
 use crate::{
-    Build, BuildContext, BuildOutput, MayFail,
+    Build, BuildContext, BuildOutput, MayFail, YEW_CFG,
     generators::{parser::runes::Rune, utils::Tag},
     scripts::utils::{BakeExt, ItemOrRuneExt},
 };
@@ -34,7 +34,7 @@ impl Build for Rune {
                 riot_id: {riot_id},
                 custom: {custom},
 
-                #[cfg(feature = "yew")]
+                {YEW_CFG}
                 identifiers: {identifiers},
             }};"#,
             upper_id = rune_id.to_shouty_snake_case(),

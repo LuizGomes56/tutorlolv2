@@ -1,4 +1,4 @@
-use crate::MayFail;
+use crate::{FORMULA_DOCS_ENV, MayFail};
 use std::{
     path::{Path, PathBuf},
     process::Command,
@@ -43,7 +43,7 @@ impl BuildContext {
         Self::new(
             project_root(),
             out,
-            std::env::var_os("CARGO_FEATURE_FORMULA_DOCS").is_some(),
+            std::env::var_os(FORMULA_DOCS_ENV).is_some(),
         )
     }
 

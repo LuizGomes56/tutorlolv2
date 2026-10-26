@@ -1,5 +1,5 @@
 use crate::{
-    MayFail,
+    ENGINE_CFG, MayFail,
     generators::{
         parser::{DamageRange, ZERO, items::Item, runes::Rune},
         utils::Tag,
@@ -246,8 +246,8 @@ pub trait ItemOrRuneExt:
         let ranged_fns = functions[2..4].join(",");
 
         format!(
-            "#[cfg(feature = \"engine\")] melee: [{melee_fns}],
-             #[cfg(feature = \"engine\")] ranged: [{ranged_fns}],"
+            "{ENGINE_CFG} melee: [{melee_fns}],
+             {ENGINE_CFG} ranged: [{ranged_fns}],"
         )
     }
 
@@ -382,7 +382,7 @@ pub trait ItemOrRuneExt:
 
                 write!(
                     rust,
-                    "#[cfg(feature = \"engine\")] pub const fn {f}({param}: &tutorlolv2_types::Ctx) -> f32 {{{formula_f32}}}"
+                    "{ENGINE_CFG} pub const fn {f}({param}: &tutorlolv2_types::Ctx) -> f32 {{{formula_f32}}}"
                 )?;
             }
         }

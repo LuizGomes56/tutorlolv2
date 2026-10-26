@@ -1,6 +1,6 @@
 use {
     crate::{
-        MayFail,
+        ENGINE_CFG, MayFail,
         generators::{
             parser::{Parser, champions::ChampionParser},
             utils::Tag,
@@ -63,7 +63,7 @@ pub type Recommendations = BTreeMap<String, BTreeMap<String, [BTreeSet<String>; 
 
 pub fn eval_abilities(arms: &str, recommendations: &str) -> String {
     format!(
-        "#[cfg(feature = \"engine\")] pub const fn ability_const_eval(
+        "{ENGINE_CFG} pub const fn ability_const_eval(
             champion_id: ChampionId,
             ctx: &tutorlolv2_types::Ctx,
             kind: tutorlolv2_types::AbilityId
@@ -77,7 +77,7 @@ pub fn eval_abilities(arms: &str, recommendations: &str) -> String {
 
 pub fn eval_items_or_runes(arms: &str, tag: Tag) -> String {
     format!(
-        "#[cfg(feature = \"engine\")] pub const fn {ltag}_const_eval(
+        "{ENGINE_CFG} pub const fn {ltag}_const_eval(
             {ltag}_id: {enum_name},
             ctx: &tutorlolv2_types::Ctx,
             attack_type: tutorlolv2_types::AttackType

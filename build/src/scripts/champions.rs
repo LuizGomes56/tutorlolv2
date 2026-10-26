@@ -1,6 +1,6 @@
 use {
     crate::{
-        Build, BuildContext, BuildOutput, MayFail,
+        Build, BuildContext, BuildOutput, ENGINE_CFG, MayFail, YEW_CFG,
         generators::{
             parser::champions::{Ability, Champion},
             utils::Tag,
@@ -115,16 +115,16 @@ impl Build for Champion {
                 modifiers: {modifiers:#?},
                 metadata: {metadata},
 
-                #[cfg(feature = "engine")]
+                {ENGINE_CFG}
                 closures: &[{fn_names}],
 
-                #[cfg(feature = "yew")]
+                {YEW_CFG}
                 combos: &[{combos}],
 
-                #[cfg(feature = "yew")]
+                {YEW_CFG}
                 merge_data: {merge_data},
 
-                #[cfg(feature = "yew")]
+                {YEW_CFG}
                 identifiers: &[{identifiers}],
             }};"#,
             adaptive_type = adaptive_type.bake(),
@@ -164,7 +164,7 @@ impl Build for Champion {
 
             write!(
                 rust,
-                "#[cfg(feature = \"engine\")] pub const fn {function}({param}: &tutorlolv2_types::Ctx) -> f32 {{{rust_formula}}}",
+                "{ENGINE_CFG} pub const fn {function}({param}: &tutorlolv2_types::Ctx) -> f32 {{{rust_formula}}}",
                 param = ctx_param(&rust_formula)
             )?;
 
