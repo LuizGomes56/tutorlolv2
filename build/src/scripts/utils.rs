@@ -4,14 +4,13 @@ use crate::{
         parser::{DamageRange, ZERO, items::Item, runes::Rune},
         utils::Tag,
     },
-    scripts::batch::{FmtArgs, FmtTarget},
+    scripts::batch::FormulaDoc,
 };
 use databake::{Bake, CrateEnv};
 use heck::{ToPascalCase, ToSnakeCase};
 use rand::{RngExt, SeedableRng, rngs::SmallRng};
 use regex::{Captures, Regex};
 use serde::Serialize;
-use serde_json::json;
 use std::{
     collections::{BTreeSet, HashSet},
     fmt::{Debug, Write},
@@ -186,6 +185,13 @@ impl ItemOrRune for Rune {
 impl ItemOrRuneExt for Item {}
 impl ItemOrRuneExt for Rune {}
 
+pub struct ItemFormulaPlan {
+    functions: [String; 4],
+    aliases: [Option<(usize, String)>; 4],
+    formulas: [String; 4],
+    active: [bool; 4],
+}
+
 pub trait ItemOrRuneExt:
     Index<AttackType, Output = DamageRange> + ItemOrRune + Debug + Serialize
 {
@@ -252,15 +258,15 @@ pub trait ItemOrRuneExt:
         let functions = self.functions();
 
         let get_arms = |range: Range<_>| {
-            deals_damage[range]
+            deals_damage[range.clone()]
                 .iter()
-                .enumerate()
-                .map(|(i, v)| {
+                .zip(&functions[range])
+                .map(|(v, function)| {
                     let f = match *v {
                         true => &format!(
                             "crate::libgen::{}::{module}::{}",
-                            Self::TAG.plural(),
-                            functions[i]
+                            Self::TAG.as_ref(),
+                            function
                         ),
                         false => ZERO_FN,
                     };
@@ -285,10 +291,9 @@ pub trait ItemOrRuneExt:
         )
     }
 
-    fn build_aliases(&self) -> [Option<(usize, String)>; 4] {
+    fn prepare_formulas(&self) -> ItemFormulaPlan {
         let melee = &self[AttackType::Melee];
         let ranged = &self[AttackType::Ranged];
-
         let raw = [
             &melee.min_dmg,
             &melee.max_dmg,
@@ -296,25 +301,37 @@ pub trait ItemOrRuneExt:
             &ranged.max_dmg,
         ];
 
+        let formulas = core::array::from_fn(|i| simplify(raw[i]));
+
+        ItemFormulaPlan {
+            functions: self.functions(),
+            aliases: self.build_aliases(&formulas),
+            formulas,
+            active: core::array::from_fn(|i| !is_zero(raw[i])),
+        }
+    }
+
+    fn build_aliases(&self, raw: &[String; 4]) -> [Option<(usize, String)>; 4] {
         let all_vars = self.identifiers();
 
         let mut aliases = [None, None, None, None];
 
         for i in 0..4 {
-            if is_zero(raw[i]) {
+            if is_zero(&raw[i]) {
                 continue;
             }
 
             for j in 0..i {
-                if is_zero(raw[j]) {
+                if is_zero(&raw[j]) {
                     continue;
                 }
 
                 let ratio_sym = simplify(&format!("({}) / ({})", raw[i], raw[j]));
+
                 let ratio = if !ratio_sym.contains("ctx") {
                     ratio_sym
                 } else {
-                    let Some(k) = probe_ratio(raw[j], raw[i], &all_vars) else {
+                    let Some(k) = probe_ratio(&raw[j], &raw[i], &all_vars) else {
                         continue;
                     };
 
@@ -329,31 +346,27 @@ pub trait ItemOrRuneExt:
         aliases
     }
 
-    fn closures(&self) -> MayFail<String> {
-        let functions = self.functions();
-        let aliases = self.build_aliases();
+    fn closures(&self, plan: &ItemFormulaPlan) -> MayFail<String> {
+        let functions = &plan.functions;
+        let aliases = &plan.aliases;
 
         let mut seen = HashSet::new();
         let mut rust = String::new();
 
         for i in 0..4 {
-            let attack_type = AttackType::from_repr(i / 2).unwrap();
-            let damage_index = DamageIndex::from_repr(i % 2).unwrap();
-
-            let body = &self[attack_type][damage_index];
+            let body = &plan.formulas[i as usize];
             let f = &functions[i as usize];
 
-            let default = is_zero(body);
-            let formula = simplify(body);
+            let default = !plan.active[i as usize];
 
             let formula_f32 = if default {
                 continue;
             } else if let Some((base_idx, ref ratio)) = aliases[i as usize] {
                 let base_fn = &functions[base_idx];
 
-                cast_f32(&format!("{ratio} * {base_fn}(ctx)"))
+                cast_f32(&format!("{ratio} * {base_fn}(ctx)"))?
             } else {
-                cast_f32(&formula)
+                cast_f32(body)?
             };
 
             if !seen.contains(f) {
@@ -371,56 +384,38 @@ pub trait ItemOrRuneExt:
         Ok(rust)
     }
 
-    fn repr_damages(&self) -> String {
-        let melee = &self[AttackType::Melee];
-        let ranged = &self[AttackType::Ranged];
-
-        let aliases = self.build_aliases();
-
-        let raw = [
-            &melee.min_dmg,
-            &melee.max_dmg,
-            &ranged.min_dmg,
-            &ranged.max_dmg,
-        ];
-
-        let mut parts = Vec::new();
-
-        let deals_damage = [melee.deals_damage(), ranged.deals_damage()].concat();
+    fn formula_docs(&self, plan: &ItemFormulaPlan) -> Vec<FormulaDoc> {
         let id = self.id().to_snake_case();
 
-        for i in 0..4 {
-            if !deals_damage[i] {
-                continue;
-            }
-
-            let value = if let Some((j, ref ratio)) = aliases[i] {
-                let function = format!("{id}_f{j}(ctx)").to_lowercase();
-
-                if ratio == "1" {
-                    function.to_string()
-                } else {
-                    format!("{ratio} * {function}")
+        plan.formulas
+            .iter()
+            .enumerate()
+            .filter_map(|(i, formula)| {
+                if !plan.active[i] {
+                    return None;
                 }
-            } else {
-                simplify(raw[i])
-            };
 
-            parts.push(format!(
-                "#[fmt({fmt_args})]
-                fn {id}_f{i}(_: &Ctx) {{
-                    {value}
-                }}",
-                fmt_args = json!(FmtArgs {
-                    target: FmtTarget::Formula,
-                    variant: self.id().into(),
-                    meta: i,
-                    default: false
+                let source = if let Some((j, ratio)) = &plan.aliases[i] {
+                    let function = format!("{id}_f{j}(ctx)");
+
+                    if ratio == "1" {
+                        function
+                    } else {
+                        format!("{ratio} * {function}")
+                    }
+                } else {
+                    formula.clone()
+                };
+
+                Some(FormulaDoc {
+                    local: i as u8,
+                    function: format!("{id}_f{i}"),
+                    source,
+                    name: self.id().into(),
+                    comment: String::new(),
                 })
-            ));
-        }
-
-        parts.concat()
+            })
+            .collect()
     }
 
     fn functions(&self) -> [String; 4] {
@@ -486,74 +481,47 @@ pub fn get_identifiers(damage: &str, damage_type: DamageType) -> impl Iterator<I
         })
 }
 
-pub fn fit_str(c: &str) -> String {
-    const CHUNK: usize = 30;
-    let comment = c.replace("  ", " ");
+pub fn cast_f32(s: &str) -> MayFail<String> {
+    use quote::ToTokens;
+    use syn::{Expr, Lit, Member, visit_mut::VisitMut};
 
-    if comment.len() <= CHUNK {
-        return format!("{comment:?}");
-    }
+    struct FloatExpressions;
 
-    let mut chunks = Vec::new();
-    let mut current = String::new();
+    impl VisitMut for FloatExpressions {
+        // Patterns, including range bounds, must keep their integer literals.
+        fn visit_pat_mut(&mut self, _: &mut syn::Pat) {}
 
-    for word in comment.split(' ') {
-        if !current.is_empty() && current.len() + 1 + word.len() > CHUNK {
-            chunks.push(format!("{current:?}"));
-            current = word.to_string();
-        } else {
-            if !current.is_empty() {
-                current.push(' ');
+        fn visit_expr_lit_mut(&mut self, expr: &mut syn::ExprLit) {
+            let digits = match &expr.lit {
+                Lit::Int(n) if n.suffix().is_empty() => n.base10_digits(),
+                Lit::Float(n) if n.suffix().is_empty() => n.base10_digits(),
+                _ => return,
+            };
+            expr.lit = Lit::Float(syn::LitFloat::new(&format!("{digits}f32"), expr.lit.span()));
+        }
+
+        fn visit_expr_match_mut(&mut self, expr: &mut syn::ExprMatch) {
+            if let Expr::Field(field) = expr.expr.as_ref()
+                && let Expr::Path(base) = field.base.as_ref()
+                && base.path.is_ident("ctx")
+                && let Member::Named(member) = &field.member
+                && matches!(
+                    member.to_string().as_str(),
+                    "level" | "q_level" | "w_level" | "e_level" | "r_level"
+                )
+            {
+                let discriminant = &expr.expr;
+                expr.expr = syn::parse_quote!(#discriminant as u8);
             }
-
-            current.push_str(word);
+            syn::visit_mut::visit_expr_match_mut(self, expr);
         }
     }
 
-    if !current.is_empty() {
-        chunks.push(format!("{current:?}"));
-    }
+    let mut expr = syn::parse_str::<Expr>(s).map_err(|e| format!("Invalid formula {s:?}: {e}"))?;
 
-    format!("concat!({})", chunks.join(", "))
-}
+    FloatExpressions.visit_expr_mut(&mut expr);
 
-pub fn cast_f32(s: &str) -> String {
-    let mut out = String::with_capacity(s.len());
-    let bytes = s.as_bytes();
-    let mut i = 0;
-
-    while i < s.len() {
-        if bytes[i].is_ascii_digit() {
-            let start = i;
-
-            while i < s.len() && (bytes[i].is_ascii_digit() || bytes[i] == b'.') {
-                i += 1;
-            }
-
-            let num = &s[start..i];
-
-            let prev_ok =
-                start == 0 || !matches!(bytes[start - 1], b'a'..=b'z' | b'A'..=b'Z' | b'_');
-            let next_ok = i >= s.len() || !matches!(bytes[i], b'a'..=b'z' | b'A'..=b'Z' | b'_');
-
-            let tail = s[i..].trim_start();
-            let is_pattern = tail.starts_with("=>") || tail.starts_with("..");
-
-            out.push_str(num);
-            if prev_ok && next_ok && !is_pattern {
-                out.push_str("f32");
-            }
-        } else {
-            out.push(bytes[i] as char);
-            i += 1;
-        }
-    }
-
-    out.replace("match ctx.level", "match ctx.level as u8")
-        .replace("match ctx.q_level", "match ctx.q_level as u8")
-        .replace("match ctx.w_level", "match ctx.w_level as u8")
-        .replace("match ctx.e_level", "match ctx.e_level as u8")
-        .replace("match ctx.r_level", "match ctx.r_level as u8")
+    Ok(expr.into_token_stream().to_string())
 }
 
 pub fn ctx_param(s: &str) -> &'static str {
@@ -612,6 +580,7 @@ pub fn probe_ratio(min_expr: &str, max_expr: &str, all_vars: &[CtxVar]) -> Optio
     .flatten()
     .map(|k| {
         let r = k.round();
+
         if (k - r).abs() < 1e-9 {
             return (r as i64).to_string();
         }

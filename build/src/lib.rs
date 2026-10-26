@@ -1,293 +1,273 @@
-use crate::scripts::batch::FmtTarget;
-use heck::ToPascalCase;
-use strum::VariantNames;
-use tutorlolv2_codec::{Class, ClassOverride, EntityKind, GeneratorDbBuilder};
-use tutorlolv2_types::{AbilityName, AttackType};
-
-use {
-    crate::{
-        generators::{
-            parser::{
-                MapValueExt, Parser, champions::ChampionParser, items::ItemParser,
-                runes::RuneParser,
-            },
-            utils::Tag,
-        },
-        scripts::{
-            batch::{FmtArgs, batch, pack_formulas},
-            finish::{champion_aliases, eval_abilities, eval_items_or_runes},
-        },
+use crate::{
+    context::run_formatter,
+    generators::parser::{
+        MapValueExt, Parser, champions::ChampionParser, items::ItemParser, runes::RuneParser,
     },
-    heck::ToSnakeCase,
-    rayon::iter::{IntoParallelIterator, ParallelIterator},
-    serde::{Serialize, de::DeserializeOwned},
-    serde_json::json,
-    std::{
-        collections::BTreeMap, fmt::Write, path::PathBuf, process::Command, str::FromStr,
-        sync::LazyLock,
+    scripts::{
+        batch::{EntityDocs, FormulaDoc, read_generator},
+        finish::{eval_abilities, eval_items_or_runes},
     },
-    tutorlolv2_codec::FormulaDbBuilder,
-    tutorlolv2_types::CtxVar,
 };
+use heck::ToSnakeCase;
+use rayon::prelude::*;
+use serde::{Serialize, de::DeserializeOwned};
+use std::{collections::BTreeMap, fmt::Write, process::Command, str::FromStr};
+use strum::VariantNames;
+use tutorlolv2_codec::{Class, ClassOverride, FormulaDbBuilder, GeneratorDbBuilder};
+use tutorlolv2_types::{AbilityName, AttackType, CtxVar};
 
+pub use context::{BuildContext, project_root};
 pub use tutorlolv2_wiki::{DynError, MayFail};
 
+pub mod context;
 pub mod generators;
 pub mod scripts;
+#[cfg(test)]
+mod tests;
+
+pub struct BuildOutput {
+    pub eval: String,
+    pub formulas: Vec<FormulaDoc>,
+}
 
 pub trait Build {
-    fn build(&mut self) -> MayFail<String>;
+    fn build(&mut self, context: &BuildContext) -> MayFail<BuildOutput>;
 }
-
-fn write_module<T, U>(
-    cmd48: &mut Command,
-    cmd80: &mut Command,
-    parser: &impl Parser<T, U>,
-) -> MayFail
-where
-    T: Clone + DeserializeOwned + MapValueExt + Send + Sync + 'static,
-    U: TryFrom<T, Error = Box<dyn core::error::Error + Send + Sync>> + Serialize,
-{
-    let dir = parser.tag().plural();
-    let out = PathBuf::from(dir);
-    let mut result = String::new();
-
-    cmd48.current_dir(&*OUT_DIR);
-    cmd80
-        .current_dir(&*OUT_DIR)
-        .arg(PathBuf::from(format!("{dir}_code")).with_extension("rs"));
-
-    for id in parser.keys() {
-        let module = id.to_snake_case();
-        let out_path = out.join(id);
-        let model_ty = parser.tag().singular().to_pascal_case();
-
-        cmd48.arg(out_path.with_extension("w48"));
-        cmd80.arg(out_path.with_extension("rs"));
-
-        writeln!(
-            result,
-            r#"pub mod {module} {{
-                {model_imports}
-                type X = {model_ty};
-                include!(concat!(env!("OUT_DIR"), "/{dir}/{id}.rs"));
-            }}"#,
-            model_imports = format_args!(
-                "use crate::libgen::globals::{{{model_ty}, {}}};",
-                if matches!(parser.tag(), Tag::Champions) {
-                    "WikiStats, WikiModifiers, Stat, Modifier"
-                } else {
-                    ""
-                }
-            )
-        )?;
-    }
-
-    tutorlolv2_wiki::write(OUT_DIR.join(dir).with_extension("rs"), result)
-}
-
-pub static CPARSER: LazyLock<ChampionParser> = LazyLock::new(|| ChampionParser::new().unwrap());
-pub static IPARSER: LazyLock<ItemParser> = LazyLock::new(|| ItemParser::new().unwrap());
-pub static RPARSER: LazyLock<RuneParser> = LazyLock::new(|| RuneParser::new().unwrap());
-pub static OUT_DIR: LazyLock<PathBuf> =
-    LazyLock::new(|| PathBuf::from(std::env::var("OUT_DIR").unwrap()));
 
 pub fn run() -> MayFail {
-    println!("cargo:rerun-if-changed=build/src/generators/impls/champions");
-    println!("cargo:rerun-if-changed=build/src/generators/impls/items");
-    println!("cargo:rerun-if-changed=build/src/generators/impls/runes");
-    println!("cargo:rerun-if-changed=cache/wiki/champions");
-    println!("cargo:rerun-if-changed=cache/wiki/items");
-    println!("cargo:rerun-if-changed=cache/wiki/runes");
+    let ctx = BuildContext::from_env()?;
 
-    rayon::join(
-        || LazyLock::force(&CPARSER),
-        || rayon::join(|| LazyLock::force(&IPARSER), || LazyLock::force(&RPARSER)),
-    );
-
-    let mut cmd48 = Command::new("rustfmt");
-    cmd48.args(["--config", "max_width=48"]);
-
-    let mut cmd80 = Command::new("rustfmt");
-
-    write_module(&mut cmd48, &mut cmd80, &*CPARSER)?;
-    write_module(&mut cmd48, &mut cmd80, &*IPARSER)?;
-    write_module(&mut cmd48, &mut cmd80, &*RPARSER)?;
-
-    let mut c_result = Ok(());
-    let mut i_result = Ok(());
-    let mut r_result = Ok(());
-
-    fn build_code<
-        T: Clone + DeserializeOwned + MapValueExt + Send + Sync + 'static,
-        U: Build + Serialize + TryFrom<T, Error = DynError>,
-    >(
-        parser: &impl Parser<T, U>,
-        phf_fn: impl Fn() -> MayFail<Option<BTreeMap<String, Vec<String>>>>,
-        eval_fn: impl Fn(&str, Tag) -> String,
-    ) -> MayFail {
-        let tag = parser.tag();
-        let plural = tag.plural();
-
-        // Indexed parallel iterators keep their order on `collect`; `par_bridge` does not,
-        // which made the generated files differ between builds.
-        let eval_arms = parser
-            .keys()
-            .collect::<Vec<_>>()
-            .into_par_iter()
-            .map(|id| parser.run_fn(id)?.build())
-            .collect::<MayFail<String>>()?;
-
-        tutorlolv2_wiki::write(
-            OUT_DIR.join(format!("{plural}_code")).with_extension("rs"),
-            [
-                parser.id_enum(),
-                parser.phf(phf_fn()?),
-                parser.data_variable(),
-                eval_fn(&eval_arms, tag),
-            ]
-            .concat(),
-        )
-    }
-
-    rayon::scope(|s| {
-        s.spawn(|_| {
-            c_result = build_code(&*CPARSER, champion_aliases, eval_abilities);
-        });
-        s.spawn(|_| {
-            i_result = build_code(&*IPARSER, || Ok(None), eval_items_or_runes);
-        });
-        s.spawn(|_| {
-            r_result = build_code(&*RPARSER, || Ok(None), eval_items_or_runes);
-        });
-    });
-
-    c_result?;
-    i_result?;
-    r_result?;
-
-    cmd48.status()?;
-
-    build_docs()?;
-
-    cmd80.status()?;
-
-    Ok(())
+    ctx.run()
 }
 
-fn build_docs() -> MayFail {
-    let mut batches = [Tag::Champions, Tag::Items, Tag::Runes]
-        .into_par_iter()
-        .map(|tag| -> MayFail<_> {
-            let mut paths = tutorlolv2_wiki::read_dir(OUT_DIR.join(tag.plural()))?
-                .map(|entry| entry.path())
-                .filter(|path| path.extension().is_some_and(|e| e == "w48"))
-                .collect::<Vec<_>>();
+impl BuildContext {
+    fn build_code<T, U>(
+        &self,
+        parser: &impl Parser<T, U>,
+        aliases: Option<BTreeMap<String, Vec<String>>>,
+        eval_fn: impl FnOnce(&str) -> String,
+    ) -> MayFail<Vec<EntityDocs>>
+    where
+        T: Clone + DeserializeOwned + MapValueExt + Send + Sync + 'static,
+        U: Build + Serialize + TryFrom<T, Error = DynError>,
+    {
+        let tag = parser.tag();
+        let keys = parser.keys().collect::<Vec<_>>();
 
-            paths.sort();
+        // Indexed parallel collection preserves the enum/codec order.
+        let builds = keys
+            .par_iter()
+            .map(|id| -> MayFail<_> {
+                let mut entity = parser
+                    .run_fn(id)
+                    .map_err(|e| format!("Generating {} {id}: {e}", tag.as_ref()))?;
 
-            let mut src = paths
-                .into_par_iter()
-                .map(tutorlolv2_wiki::read_to_string)
-                .flatten()
-                .collect::<String>();
+                let export = if self.export_json {
+                    Some(parser.export(id, &entity, &self.root)?)
+                } else {
+                    None
+                };
 
-            let iter = match tag {
-                Tag::Champions => &mut CPARSER.keys() as &mut (dyn Iterator<Item = &str> + Send),
-                Tag::Items => &mut IPARSER.keys(),
-                Tag::Runes => &mut RPARSER.keys(),
-            };
+                let output = entity
+                    .build(self)
+                    .map_err(|e| format!("Building {} {id}: {e}", tag.as_ref()))?;
 
-            let generators = iter
-                .into_iter()
-                .enumerate()
-                .collect::<Vec<_>>()
-                .into_par_iter()
-                .map(|(i, variant)| {
-                    let file_name = variant.to_snake_case();
-                    let mut default = false;
+                Ok((output, export))
+            })
+            .collect::<MayFail<Vec<_>>>()?;
 
-                    let mut generator = tutorlolv2_wiki::read_to_string(format!(
-                        "build/src/generators/impls/{}/{file_name}.rs",
-                        tag.plural()
-                    ))
-                    .unwrap_or_else(|_| {
-                        default = true;
-                        "impl Generator {}".into()
-                    });
+        let mut eval = String::new();
+        let mut docs = Vec::new();
+        let mut exports = BTreeMap::new();
 
-                    if let Some(pos) = generator.find("impl") {
-                        generator.drain(..pos);
-                    }
+        for (index, (id, (output, export))) in keys.iter().zip(builds).enumerate() {
+            eval.push_str(&output.eval);
 
-                    generator.insert_str(
-                        0,
-                        &format!(
-                            "#[fmt({})]",
-                            json!(FmtArgs {
-                                target: FmtTarget::Generator,
-                                variant: variant.into(),
-                                meta: (tag as u8, i as u16),
-                                default
-                            })
-                        ),
-                    );
-                    generator
-                })
-                .collect::<String>();
+            if self.docs {
+                docs.push(EntityDocs {
+                    tag,
+                    index: index.try_into()?,
+                    variant: (*id).into(),
+                    formulas: output.formulas,
+                    generator: read_generator(&self.root, tag, id)?,
+                });
+            }
 
-            src.push_str(&generators);
-
-            Ok((tag, batch(src)))
-        })
-        .collect::<MayFail<Vec<_>>>()?;
-
-    let overrides = [AttackType::VARIANTS, AbilityName::VARIANTS]
-        .into_iter()
-        .flatten()
-        .map(|&text| ClassOverride::new(text, Class::Constant))
-        .collect::<Vec<_>>();
-
-    let mut generators = GeneratorDbBuilder::new(
-        CPARSER.map().len() as _,
-        IPARSER.map().len() as _,
-        RPARSER.map().len() as _,
-        &overrides,
-    );
-
-    let mut formulas = FormulaDbBuilder::new(
-        CPARSER.map().len() as _,
-        IPARSER.map().len() as _,
-        RPARSER.map().len() as _,
-        |s| CtxVar::from_str(s).ok().map(|v| v as u8),
-    );
-
-    for (tag, batch) in &mut batches {
-        pack_formulas(&mut formulas, *tag, batch)?;
-
-        for inner in batch.values_mut() {
-            for outputs in inner.values_mut() {
-                for output in outputs {
-                    if output.json.default || !matches!(output.json.target, FmtTarget::Generator) {
-                        continue;
-                    }
-
-                    let (kind, index) =
-                        serde_json::from_value::<(u8, u16)>(output.json.meta.clone())?;
-
-                    generators.push(EntityKind::from_repr(kind).unwrap(), index, &output.block)?;
-                }
+            if let Some(export) = export {
+                exports.insert(*id, export);
             }
         }
+
+        if self.export_json {
+            use tutorlolv2_wiki::JsonWrite;
+
+            exports.write_file(
+                self.root
+                    .join("internal")
+                    .join(tag.as_ref())
+                    .with_extension("json"),
+            )?;
+        }
+
+        tutorlolv2_wiki::write(
+            self.out.join(format!("{}_code.rs", tag.as_ref())),
+            [
+                parser.id_enum(),
+                parser.phf(aliases),
+                parser.data_variable(),
+                eval_fn(&eval),
+            ]
+            .concat(),
+        )?;
+
+        Ok(docs)
     }
 
-    tutorlolv2_wiki::write(
-        OUT_DIR.join("formulas").with_extension("bin"),
-        formulas.finish()?,
-    )?;
+    fn write_module<T, U>(&self, command: &mut Command, parser: &impl Parser<T, U>) -> MayFail
+    where
+        T: Clone + DeserializeOwned + MapValueExt + Send + Sync + 'static,
+        U: TryFrom<T, Error = DynError> + Serialize,
+    {
+        let mut result = String::new();
+        let dir = parser.tag().to_string();
 
-    tutorlolv2_wiki::write(
-        OUT_DIR.join("generator").with_extension("bin"),
-        generators.finish_with_stats()?.bytes,
-    )
+        command.arg(self.out.join(format!("{dir}_code.rs")));
+
+        for id in parser.keys() {
+            let module = id.to_snake_case();
+            let model_ty = parser.tag().enum_name().trim_end_matches("Id");
+
+            command.arg(self.out.join(&dir).join(id).with_extension("rs"));
+
+            writeln!(
+                result,
+                r#"pub mod {module} {{
+                    {model_imports}
+                    type X = {model_ty};
+                    include!(concat!(env!("OUT_DIR"), "/{dir}/{id}.rs"));
+                }}"#,
+                model_imports = format_args!(
+                    "use crate::libgen::globals::{{{model_ty}, {}}};",
+                    if matches!(parser.tag(), generators::utils::Tag::Champions) {
+                        "WikiStats, WikiModifiers, Stat, Modifier"
+                    } else {
+                        ""
+                    }
+                )
+            )?;
+        }
+
+        let path = self.out.join(&dir).with_extension("rs");
+
+        tutorlolv2_wiki::write(&path, result)?;
+
+        command.arg(path);
+
+        Ok(())
+    }
+
+    pub fn run(&self) -> MayFail {
+        for input in self.inputs() {
+            println!("cargo:rerun-if-changed={}", input.display());
+        }
+
+        println!("cargo:rerun-if-env-changed=CARGO_FEATURE_FORMULA_DOCS");
+
+        let (champions, (items, runes)) = rayon::join(
+            || ChampionParser::from_root(&self.root),
+            || {
+                rayon::join(
+                    || ItemParser::from_root(&self.root),
+                    || RuneParser::from_root(&self.root),
+                )
+            },
+        );
+
+        let (champions, items, runes) = (champions?, items?, runes?);
+
+        if self.export_json {
+            champions.progress();
+            items.progress();
+            runes.progress();
+        }
+
+        let aliases = champions.aliases(&self.root)?;
+        let recommendations = champions.recommendations(&self.root)?;
+
+        let (c, (i, r)) = rayon::join(
+            || {
+                self.build_code(&champions, aliases, |arms| {
+                    eval_abilities(arms, &recommendations)
+                })
+            },
+            || {
+                rayon::join(
+                    || self.build_code(&items, None, |arms| eval_items_or_runes(arms, items.tag())),
+                    || self.build_code(&runes, None, |arms| eval_items_or_runes(arms, runes.tag())),
+                )
+            },
+        );
+
+        let mut docs = [c?, i?, r?].into_iter().flatten().collect::<Vec<_>>();
+
+        if self.docs {
+            let [champion_count, item_count, rune_count] =
+                [champions.len(), items.len(), runes.len()].map(u16::try_from);
+
+            self.build_docs(&mut docs, [champion_count?, item_count?, rune_count?])?;
+        }
+
+        let mut command = Command::new("rustfmt");
+        command.args(["--edition", "2024", "--config", "max_width=80"]);
+
+        self.write_module(&mut command, &champions)?;
+        self.write_module(&mut command, &items)?;
+        self.write_module(&mut command, &runes)?;
+
+        run_formatter(&mut command)
+    }
+
+    fn build_docs(&self, docs: &mut [EntityDocs], counts: [u16; 3]) -> MayFail {
+        self.format_formulas(docs)?;
+
+        let overrides = [AttackType::VARIANTS, AbilityName::VARIANTS]
+            .into_iter()
+            .flatten()
+            .map(|&text| ClassOverride::new(text, Class::Constant))
+            .collect::<Vec<_>>();
+
+        let mut generators = GeneratorDbBuilder::new(counts[0], counts[1], counts[2], &overrides);
+
+        let mut formulas = FormulaDbBuilder::new(counts[0], counts[1], counts[2], |s| {
+            CtxVar::from_str(s).ok().map(|v| v as u8)
+        });
+
+        for doc in docs.iter() {
+            doc.pack_formulas(&mut formulas)?;
+
+            if let Some(source) = &doc.generator {
+                generators
+                    .push(doc.tag.entity_kind(), doc.index, source)
+                    .map_err(|e| {
+                        format!(
+                            "Packing {} generator {}: {e}",
+                            doc.tag.as_ref(),
+                            doc.variant
+                        )
+                    })?;
+            }
+        }
+
+        tutorlolv2_wiki::write(self.out.join("formulas.bin"), formulas.finish()?)?;
+        tutorlolv2_wiki::write(
+            self.out.join("generator.bin"),
+            generators.finish_with_stats()?.bytes,
+        )?;
+
+        // A lossless, inspectable sidecar for tooling; never read back as a build input.
+        tutorlolv2_wiki::write(
+            self.out.join("documentation.json"),
+            serde_json::to_vec_pretty(docs)?,
+        )
+    }
 }

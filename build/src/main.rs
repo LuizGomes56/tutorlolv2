@@ -1,35 +1,42 @@
-use tutorlolv2_build_dep::{CPARSER, IPARSER, MayFail, RPARSER, generators::parser::Parser};
+use tutorlolv2_build_dep::{BuildContext, MayFail, project_root};
 
 fn main() -> MayFail {
-    std::env::set_current_dir("..")?;
+    let mut context = BuildContext::new(project_root(), "build_output", true)?;
 
-    println!("Champions");
-    CPARSER.progress();
-    println!("\nItems");
-    IPARSER.progress();
-    println!("\nRunes");
-    RPARSER.progress();
+    context.export_json = true;
 
-    CPARSER.run_all();
-    IPARSER.run_all();
-    RPARSER.run_all();
+    let mut args = std::env::args_os().skip(1);
 
-    unsafe { std::env::set_var("OUT_DIR", "./build_output") };
+    while let Some(arg) = args.next() {
+        match arg.to_str() {
+            Some("--out-dir") => {
+                let out = args.next().ok_or("--out-dir requires a path")?;
+                context.out = context.root.join(out);
+            }
+            Some("--no-docs") => context.docs = false,
+            Some("--no-export") => context.export_json = false,
+            Some("--help" | "-h") => {
+                println!("Usage: tutorlolv2_build_dep [--out-dir PATH] [--no-docs] [--no-export]");
+                return Ok(());
+            }
+            _ => return Err(format!("Unknown argument: {arg:?}").into()),
+        }
+    }
 
-    tutorlolv2_build_dep::run()
+    context.run()
 }
 
 #[cfg(test)]
 mod tests {
     use tutorlolv2_build_dep::{
-        CPARSER, MayFail, generators::parser::Parser, scripts::utils::probe_ratio,
+        MayFail,
+        generators::parser::{Parser, champions::ChampionParser},
+        scripts::utils::probe_ratio,
     };
 
     #[test]
     fn check_simplify() -> MayFail {
-        std::env::set_current_dir("..")?;
-
-        let mut champion = CPARSER.run_fn("Samira")?;
+        let mut champion = ChampionParser::new()?.run_fn("Samira")?;
         let cext = champion.finish()?;
         let identifiers = &cext.identifiers;
 

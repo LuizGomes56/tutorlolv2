@@ -1,159 +1,159 @@
-use crate::generators::utils::Tag;
-use heck::ToSnakeCase;
-use rayon::iter::{IntoParallelIterator, ParallelIterator};
-use regex::Regex;
+//! Typed documentation transport. Metadata never travels inside Rust attributes.
+use crate::{BuildContext, MayFail, context::run_formatter, generators::utils::Tag};
 use serde::{Deserialize, Serialize};
-use serde_json::Value;
-use std::{collections::BTreeMap, sync::LazyLock};
-use strum::EnumString;
-use tutorlolv2_codec::{EntityKind, FormulaDbBuilder, FormulaSource};
-use tutorlolv2_types::AbilityId;
-use tutorlolv2_wiki::MayFail;
+use std::{collections::HashMap, io::ErrorKind, path::Path, process::Command};
+use syn::spanned::Spanned;
+use tutorlolv2_codec::{FormulaDbBuilder, FormulaSource};
 
-#[derive(
-    Clone, Copy, Debug, Deserialize, Serialize, Ord, PartialEq, PartialOrd, Eq, EnumString,
-)]
-pub enum FmtTarget {
-    Generator,
-    Formula,
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct FormulaDoc {
+    pub local: u8,
+    pub function: String,
+    pub source: String,
+    pub name: String,
+    pub comment: String,
 }
 
-#[derive(Debug, Deserialize, Serialize)]
-pub struct FmtArgs<T> {
-    pub target: FmtTarget,
+#[derive(Debug, Serialize, Deserialize)]
+pub struct EntityDocs {
+    pub tag: Tag,
+    pub index: u16,
     pub variant: String,
-    pub meta: T,
-    pub default: bool,
+    pub formulas: Vec<FormulaDoc>,
+    pub generator: Option<String>,
 }
 
-pub struct FmtOutput {
-    pub json: FmtArgs<Value>,
-    pub block: String,
-}
+/// Preserve the original source, including comments, instead of rebuilding tokens.
+pub fn generator_impl(source: &str) -> MayFail<String> {
+    let file = syn::parse_file(source)?;
 
-pub fn batch(src: String) -> BTreeMap<String, BTreeMap<FmtTarget, Vec<FmtOutput>>> {
-    static FMT_RE: LazyLock<Regex> =
-        LazyLock::new(|| Regex::new(r#"#\[fmt\((\{.*?\})\)\]"#).unwrap());
-
-    // Collected first so the indexed parallel iterator keeps source order; formula ids
-    // are assigned in this order, so `par_bridge` made `formulas.bin` differ per build.
-    let result = FMT_RE
-        .captures_iter(&src)
-        .collect::<Vec<_>>()
-        .into_par_iter()
-        .map(|caps| {
-            let full = caps.get(0).unwrap();
-            let inner = caps.get(1).unwrap().as_str();
-
-            let attr_end = full.end();
-
-            let json = serde_json::from_str::<FmtArgs<Value>>(inner).unwrap();
-
-            let rest = &src[attr_end..];
-            let start = rest.find('{').unwrap();
-
-            let mut depth = 0;
-            let mut end = 0;
-
-            for (i, ch) in rest[start..].char_indices() {
-                match ch {
-                    '{' => depth += 1,
-                    '}' => {
-                        depth -= 1;
-
-                        if depth == 0 {
-                            end = start + i + 1;
-                            break;
-                        }
-                    }
-                    _ => {}
-                }
-            }
-
-            let block = rest[..end].trim().to_string();
-
-            FmtOutput { json, block }
-        })
-        .collect::<Vec<_>>();
-
-    let mut map = BTreeMap::<_, BTreeMap<_, Vec<_>>>::new();
-
-    for data in result {
-        map.entry(data.json.variant.clone())
-            .or_default()
-            .entry(data.json.target)
-            .or_default()
-            .push(data);
-    }
-
-    map
-}
-
-pub fn pack_formulas(
-    packer: &mut FormulaDbBuilder,
-    tag: Tag,
-    result: &BTreeMap<String, BTreeMap<FmtTarget, Vec<FmtOutput>>>,
-) -> MayFail {
-    for (i, (variant, inner_map)) in result.iter().enumerate() {
-        let Some(outputs) = inner_map.get(&FmtTarget::Formula) else {
-            continue;
-        };
-
-        let id = variant.to_snake_case();
-
-        let (formulas, refs) = outputs
-            .iter()
-            .filter_map(
-                |FmtOutput {
-                     block,
-                     json: FmtArgs { meta, .. },
-                     ..
-                 }| {
-                    let body = block
-                        .find('{')
-                        .map(|pos| block[pos + 1..].trim().trim_end_matches('}').trim())?;
-
-                    let (source, local, fn_name) = match tag {
-                        Tag::Champions => {
-                            let (f, k) =
-                                serde_json::from_value::<(AbilityId, u8)>(meta.clone()).ok()?;
-
-                            let fn_type = f.discriminant();
-                            (
-                                body.rfind("] */").map(|pos| &body[pos + 4..])?,
-                                k,
-                                format!("{id}_{fn_type}").to_lowercase(),
-                            )
-                        }
-                        Tag::Items | Tag::Runes => {
-                            let k = meta.as_u64()?;
-                            (body, k as _, format!("{id}_f{k}").to_lowercase())
-                        }
-                    };
-
-                    Some((FormulaSource { local, source }, (fn_name, local)))
-                },
+    let item = file
+        .items
+        .iter()
+        .find(|item| {
+            matches!(item,
+                syn::Item::Impl(item) if item.trait_.as_ref().is_some_and(|(_, path, _)|
+                    path.segments.last().is_some_and(|s| s.ident == "Generator"))
             )
-            .unzip::<_, _, Vec<_>, _>();
+        })
+        .ok_or("Generator source has no impl Generator block")?;
 
-        match tag {
-            Tag::Champions => {
-                /* comment[{comment:?}] */
-                /* name[{name:?}] */
-                packer.push_champion(i as _, &formulas, &refs)
-            }
-            _ => {
-                let entity = match tag {
-                    Tag::Items => EntityKind::Item,
-                    Tag::Runes => EntityKind::Rune,
-                    _ => unreachable!(),
-                };
+    Ok(source[item.span().byte_range()].to_owned())
+}
 
-                packer.push_sparse(entity, i as _, &formulas, &refs)
-            }
-        }
-        .map_err(|e| format!("Packer Error [{id}][formulas={formulas:?}][refs={refs:?}]: {e:?}"))?;
+pub fn read_generator(root: &Path, tag: Tag, variant: &str) -> MayFail<Option<String>> {
+    use heck::ToSnakeCase;
+
+    let path = root
+        .join("build/src/generators/impls")
+        .join(tag.as_ref())
+        .join(variant.to_snake_case())
+        .with_extension("rs");
+
+    match std::fs::read_to_string(&path) {
+        Ok(source) => generator_impl(&source)
+            .map(Some)
+            .map_err(|e| format!("Invalid generator documentation {path:?}: {e}").into()),
+        Err(e) if e.kind() == ErrorKind::NotFound => Ok(None),
+        Err(e) => Err(format!("Unable to read generator documentation {path:?}: {e}").into()),
     }
+}
 
-    Ok(())
+impl BuildContext {
+    /// Format all formulas in one process. Only text is recovered from Rust syntax;
+    /// IDs, references, names, and comments remain in their typed records throughout.
+    pub fn format_formulas(&self, docs: &mut [EntityDocs]) -> MayFail {
+        let mut source = String::new();
+
+        let count = docs
+            .iter()
+            .flat_map(|doc| &doc.formulas)
+            .enumerate()
+            .map(|(i, formula)| {
+                source.push_str(&format!("fn __formula_{i}() {{\n{}\n}}\n", formula.source));
+            })
+            .count();
+
+        if count == 0 {
+            return Ok(());
+        }
+
+        let path = self.out.join("formula_sources.rs");
+
+        tutorlolv2_wiki::write(&path, source)?;
+
+        run_formatter(
+            Command::new("rustfmt")
+                .args(["--edition", "2024", "--config", "max_width=48"])
+                .arg(&path),
+        )?;
+
+        let formatted = tutorlolv2_wiki::read_to_string(&path)?;
+        let file = syn::parse_file(&formatted)?;
+
+        if file.items.len() != count {
+            return Err("Formatted formula count changed".into());
+        }
+
+        for (i, (item, formula)) in file
+            .items
+            .iter()
+            .zip(docs.iter_mut().flat_map(|doc| &mut doc.formulas))
+            .enumerate()
+        {
+            let syn::Item::Fn(item) = item else {
+                return Err("Expected a formatted formula function".into());
+            };
+
+            if item.sig.ident != format!("__formula_{i}") {
+                return Err(
+                    format!("Unexpected formatted formula name: {}", item.sig.ident).into(),
+                );
+            }
+
+            let start = item.block.brace_token.span.open().byte_range().end;
+            let end = item.block.brace_token.span.close().byte_range().start;
+
+            formula.source = formatted[start..end].trim().to_owned();
+        }
+
+        Ok(())
+    }
+}
+
+impl EntityDocs {
+    pub fn pack_formulas(&self, packer: &mut FormulaDbBuilder) -> MayFail {
+        if self.formulas.is_empty() {
+            return Ok(());
+        }
+
+        let formulas = self
+            .formulas
+            .iter()
+            .map(|formula| FormulaSource {
+                local: formula.local,
+                source: &formula.source,
+            })
+            .collect::<Vec<_>>();
+
+        let refs = self
+            .formulas
+            .iter()
+            .map(|formula| (formula.function.clone(), formula.local))
+            .collect::<HashMap<_, _>>();
+
+        match self.tag {
+            Tag::Champions => packer.push_champion(self.index, &formulas, &refs),
+            _ => packer.push_sparse(self.tag.entity_kind(), self.index, &formulas, &refs),
+        }
+        .map_err(|e| {
+            format!(
+                "Packing {} {} formulas at index {}: {e}",
+                self.tag.as_ref(),
+                self.variant,
+                self.index
+            )
+            .into()
+        })
+    }
 }

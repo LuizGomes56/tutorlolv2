@@ -2,10 +2,12 @@ use {
     crate::{
         DynError, MayFail,
         generators::{
-            GeneratorExt,
             impls::runes::rune_gen_fn,
-            parser::{DamageRange, Parser, infer_damage_type, likely_damages, model::RiotCdnRune},
-            utils::{RegExtractor, SaveTo, Tag},
+            parser::{
+                DamageRange, GeneratorFnSig, Parser, infer_damage_type, likely_damages,
+                model::RiotCdnRune,
+            },
+            utils::{RegExtractor, Tag},
         },
     },
     heck::ToPascalCase,
@@ -14,7 +16,6 @@ use {
         collections::BTreeMap,
         fmt::Write,
         ops::{Index, IndexMut},
-        sync::LazyLock,
     },
     tutorlolv2_types::{AttackType, CtxVar, DamageIndex, DamageType},
     tutorlolv2_wiki::{
@@ -39,8 +40,7 @@ pub struct Rune {
 
 impl Parser<WikiRune, Rune> for RuneParser {
     const TAG: Tag = Tag::Runes;
-    const FN: fn(&str) -> Option<fn(WikiRune) -> MayFail<Box<dyn GeneratorExt<Rune>>>> =
-        rune_gen_fn;
+    const FN: fn(&str) -> Option<GeneratorFnSig<WikiRune, Rune>> = rune_gen_fn;
 
     fn map(&self) -> &BTreeMap<String, WikiRune> {
         &self.data
@@ -65,8 +65,27 @@ impl Parser<WikiRune, Rune> for RuneParser {
         Ok(true)
     }
 
-    fn new() -> MayFail<Self> {
-        let mut data = BTreeMap::from_file("cache/wiki/runes/full.json")?;
+    fn from_root(root: &std::path::Path) -> MayFail<Self> {
+        let mut data =
+            BTreeMap::<String, WikiRune>::from_file(root.join("cache/wiki/runes/full.json"))?;
+
+        let cdn = Vec::<RiotCdnRune>::from_file(root.join("cache/riot/runes.json"))?;
+
+        for rune in data.values_mut() {
+            let matches = |name: &str| name.eq_ignore_ascii_case(&rune.name);
+
+            if let Some(id) = cdn.iter().find_map(|tree| {
+                matches(&tree.name).then_some(tree.id).or_else(|| {
+                    tree.slots.iter().find_map(|slot| {
+                        slot.runes
+                            .iter()
+                            .find_map(|rune| matches(&rune.name).then_some(rune.id))
+                    })
+                })
+            }) {
+                rune.riot_id = id as _;
+            }
+        }
 
         let mut customize = |name: &str, riot_id| {
             let rune_id = name.to_pascal_case();
@@ -95,35 +114,11 @@ impl Parser<WikiRune, Rune> for RuneParser {
     }
 }
 
-static RIOT_RUNES: LazyLock<Vec<RiotCdnRune>> =
-    LazyLock::new(|| Vec::<RiotCdnRune>::from_file(SaveTo::RiotRunes.path()).unwrap());
-
-/// The wiki leaves `riot_id` as zero for most runes, so it is looked up by name in the
-/// Riot CDN data first, falling back to the wiki value (used by the custom stat shards).
-/// Names are compared ignoring case: the wiki writes "Jack of All Trades" and Riot
-/// writes "Jack Of All Trades".
-pub fn riot_rune_id(data: &WikiRune) -> u32 {
-    let matches = |name: &str| name.eq_ignore_ascii_case(&data.name);
-
-    RIOT_RUNES
-        .iter()
-        .find_map(|cdn_rune| {
-            matches(&cdn_rune.name).then_some(cdn_rune.id).or_else(|| {
-                cdn_rune.slots.iter().find_map(|slot| {
-                    slot.runes
-                        .iter()
-                        .find_map(|tree| matches(&tree.name).then_some(tree.id))
-                })
-            })
-        })
-        .unwrap_or(data.riot_id as _)
-}
-
 impl TryFrom<WikiRune> for Rune {
     type Error = DynError;
 
     fn try_from(data: WikiRune) -> Result<Self, Self::Error> {
-        let riot_id = riot_rune_id(&data);
+        let riot_id = data.riot_id as _;
 
         Ok(Self {
             riot_id,
@@ -177,6 +172,7 @@ impl Rune {
 
     pub fn scaling(&self, n: usize, indexes: impl Iterator<Item = usize>) -> MayFail<String> {
         let filter = indexes.collect::<Vec<_>>();
+
         Ok(self
             .effect(n)?
             .scalings
@@ -210,10 +206,12 @@ impl Rune {
 
     pub fn compose<const N: usize>(&mut self, indexes: [usize; N]) -> MayFail<String> {
         let mut result = [const { String::new() }; N];
+
         for (i, index) in indexes.into_iter().enumerate() {
             let formula = self.formula(index)?;
             result[i] = formula;
         }
+
         Ok(result.join(" + "))
     }
 

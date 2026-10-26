@@ -2,13 +2,12 @@ use {
     crate::{
         DynError, MayFail,
         generators::{
-            GeneratorExt,
             impls::items::item_gen_fn,
             parser::{
-                DamageRange, Parser, ZERO, infer_damage_type, likely_damages,
+                DamageRange, GeneratorFnSig, Parser, ZERO, infer_damage_type, likely_damages,
                 model::{RiotCdn, RiotCdnItem, RiotCdnItemGold},
             },
-            utils::{RegExtractor, SaveTo, Tag},
+            utils::{RegExtractor, Tag},
         },
     },
     heck::ToPascalCase,
@@ -32,8 +31,7 @@ pub struct ItemParser {
 
 impl Parser<WikiItem, Item> for ItemParser {
     const TAG: Tag = Tag::Items;
-    const FN: fn(&str) -> Option<fn(WikiItem) -> MayFail<Box<dyn GeneratorExt<Item>>>> =
-        item_gen_fn;
+    const FN: fn(&str) -> Option<GeneratorFnSig<WikiItem, Item>> = item_gen_fn;
 
     fn map(&self) -> &BTreeMap<String, WikiItem> {
         &self.data
@@ -70,13 +68,17 @@ impl Parser<WikiItem, Item> for ItemParser {
         Ok(true)
     }
 
-    fn new() -> MayFail<Self> {
-        let mut data = BTreeMap::<String, WikiItem>::from_file("cache/wiki/items/full.json")?;
-        let riot_items = RiotCdn::<u32, RiotCdnItem>::from_file(SaveTo::RiotItems.path())?;
+    fn from_root(root: &std::path::Path) -> MayFail<Self> {
+        let mut data =
+            BTreeMap::<String, WikiItem>::from_file(root.join("cache/wiki/items/full.json"))?;
+
+        let riot_items =
+            RiotCdn::<u32, RiotCdnItem>::from_file(root.join("cache/riot/items.json"))?;
 
         // `RiotCdn::data` is a `HashMap`, so entries are grouped by name in riot id order
         // to keep the generated code identical between builds.
         let mut riot_items = riot_items.data.into_iter().collect::<Vec<_>>();
+
         riot_items.sort_by_key(|(id, _)| *id);
 
         let mut groups = BTreeMap::<String, Vec<(u32, RiotCdnItem)>>::new();

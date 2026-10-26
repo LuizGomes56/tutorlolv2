@@ -1,5 +1,5 @@
 use crate::{
-    Build, MayFail, OUT_DIR,
+    Build, BuildContext, BuildOutput, MayFail,
     generators::{parser::items::Item, utils::Tag},
     scripts::utils::{ItemOrRuneExt, bake},
 };
@@ -16,7 +16,7 @@ struct ItemExt {
 }
 
 impl Build for Item {
-    fn build(&mut self) -> MayFail<String> {
+    fn build(&mut self, context: &BuildContext) -> MayFail<BuildOutput> {
         let ItemExt {
             tier,
             price,
@@ -38,7 +38,7 @@ impl Build for Item {
         } = &self;
 
         let mut rust = String::new();
-        let mut docs = String::new();
+        let plan = self.prepare_formulas();
 
         write!(
             rust,
@@ -67,15 +67,20 @@ impl Build for Item {
             full_stats = bake(&stats.as_slice()),
         )?;
 
-        docs.push_str(&self.repr_damages());
-        rust.push_str(&self.closures()?);
+        rust.push_str(&self.closures(&plan)?);
 
-        let out = OUT_DIR.join(Tag::Items.plural()).join(item_id);
+        let out = context.out.join(Tag::Items.as_ref()).join(item_id);
 
         tutorlolv2_wiki::write(out.with_extension("rs"), rust)?;
-        tutorlolv2_wiki::write(out.with_extension("w48"), docs)?;
 
-        Ok(self.eval())
+        Ok(BuildOutput {
+            eval: self.eval(),
+            formulas: if context.docs {
+                self.formula_docs(&plan)
+            } else {
+                Vec::new()
+            },
+        })
     }
 }
 

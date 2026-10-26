@@ -1,5 +1,5 @@
 use crate::{
-    Build, MayFail, OUT_DIR,
+    Build, BuildContext, BuildOutput, MayFail,
     generators::{parser::runes::Rune, utils::Tag},
     scripts::utils::{ItemOrRuneExt, bake},
 };
@@ -8,7 +8,7 @@ use std::fmt::Write;
 use tutorlolv2_wiki::runes::WikiRune;
 
 impl Build for Rune {
-    fn build(&mut self) -> MayFail<String> {
+    fn build(&mut self, context: &BuildContext) -> MayFail<BuildOutput> {
         let Self {
             riot_id,
             data:
@@ -22,7 +22,7 @@ impl Build for Rune {
         } = &self;
 
         let mut rust = String::new();
-        let mut docs = String::new();
+        let plan = self.prepare_formulas();
 
         write!(
             rust,
@@ -44,14 +44,19 @@ impl Build for Rune {
             metadata = self.repr_metadata()
         )?;
 
-        docs.push_str(&self.repr_damages());
-        rust.push_str(&self.closures()?);
+        rust.push_str(&self.closures(&plan)?);
 
-        let out = OUT_DIR.join(Tag::Runes.plural()).join(rune_id);
+        let out = context.out.join(Tag::Runes.as_ref()).join(rune_id);
 
         tutorlolv2_wiki::write(out.with_extension("rs"), rust)?;
-        tutorlolv2_wiki::write(out.with_extension("w48"), docs)?;
 
-        Ok(self.eval())
+        Ok(BuildOutput {
+            eval: self.eval(),
+            formulas: if context.docs {
+                self.formula_docs(&plan)
+            } else {
+                Vec::new()
+            },
+        })
     }
 }
