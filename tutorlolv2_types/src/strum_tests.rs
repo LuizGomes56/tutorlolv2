@@ -174,3 +174,14 @@ fn numeric_conversions_remain_const() {
     assert_eq!(RANGED, Some(AttackType::Ranged));
     assert_eq!(MAX, Some(DamageIndex::Max));
 }
+
+#[test]
+fn ability_discriminants_are_available_without_bake() {
+    for (ability, expected) in [
+        (AbilityId::P(AbilityName::Void), "P"),
+        (AbilityId::Q(AbilityName::_1Min), "Q1min"),
+        (AbilityId::E(AbilityName::Max), "Emax"),
+    ] {
+        assert_eq!(ability.discriminant(), expected);
+    }
+}

@@ -88,6 +88,9 @@ where
     fn map(&self) -> &BTreeMap<String, T>;
     fn create_methods(&self, result: &mut String, id: &str) -> MayFail<bool>;
 
+    /// Attach catalog-wide metadata after the entity's custom generator has run.
+    fn prepare(&self, _id: &str, _value: &mut U) {}
+
     fn tag(&self) -> Tag {
         Self::TAG
     }
@@ -284,7 +287,8 @@ where
     }
 
     fn run_fn(&self, id: &str) -> MayFail<U> {
-        self.map()
+        let mut value = self
+            .map()
             .get(id)
             .map(|data| {
                 let data = data.clone();
@@ -294,7 +298,11 @@ where
                     None => U::try_from(data),
                 }
             })
-            .ok_or_else(|| format!("[WikiFactory::run] {id} not found"))?
+            .ok_or_else(|| format!("[WikiFactory::run] {id} not found"))??;
+
+        self.prepare(id, &mut value);
+
+        Ok(value)
     }
 
     fn run_all(&self) -> MayFail {

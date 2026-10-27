@@ -276,7 +276,8 @@ pub trait ItemOrRuneExt:
                         ),
                         false => ZERO_FN,
                     };
-                    format!("{f}(&ctx)")
+
+                    format!("{f}(ctx)")
                 })
                 .collect::<Vec<_>>()
                 .join(",")

@@ -377,3 +377,199 @@ fn missing_recommendations_watch_the_existing_parent_then_the_file() {
             .contains(&dir.0.join("internal/scraper/data.json"))
     );
 }
+
+fn wiki_item(
+    id: u32,
+    key: &str,
+    name: &str,
+    recipe: &[&str],
+) -> tutorlolv2_wiki::items::item_parser::WikiItem {
+    tutorlolv2_wiki::items::item_parser::WikiItem {
+        id,
+        item_id: key.into(),
+        name: name.into(),
+        recipe: recipe.iter().map(|s| (*s).into()).collect(),
+        ..Default::default()
+    }
+}
+
+fn riot_item(name: &str, from: &[&str], into: &[&str]) -> serde_json::Value {
+    serde_json::json!({"name": name, "description": "", "gold": {"total": 1000, "purchasable": true},
+        "maps": {"11": true}, "from": from, "into": into})
+}
+
+fn recipe_fixture(
+    wiki: Vec<tutorlolv2_wiki::items::item_parser::WikiItem>,
+    riot: serde_json::Value,
+) -> (TestDir, crate::generators::parser::items::ItemParser) {
+    let dir = TestDir::new();
+    let wiki = wiki
+        .into_iter()
+        .map(|item| (item.item_id.clone(), item))
+        .collect::<std::collections::BTreeMap<_, _>>();
+    tutorlolv2_wiki::write(
+        dir.0.join("cache/wiki/items/full.json"),
+        serde_json::to_vec(&wiki).unwrap(),
+    )
+    .unwrap();
+    tutorlolv2_wiki::write(
+        dir.0.join("cache/riot/items.json"),
+        serde_json::to_vec(&serde_json::json!({"data": riot})).unwrap(),
+    )
+    .unwrap();
+    let parser = crate::generators::parser::items::ItemParser::from_root(&dir.0).unwrap();
+    (dir, parser)
+}
+
+#[test]
+fn riot_recipes_take_precedence_and_preserve_repeated_components() {
+    let (_dir, parser) = recipe_fixture(
+        vec![
+            wiki_item(1, "Component", "Component", &[]),
+            wiki_item(2, "Other", "Other", &[]),
+            wiki_item(3, "Finished", "Finished", &["Other"]),
+        ],
+        serde_json::json!({
+            "1": riot_item("Component", &[], &["3", "3"]),
+            "2": riot_item("Other", &[], &[]),
+            "3": riot_item("Finished", &["1", "1"], &[]),
+        }),
+    );
+    assert_eq!(
+        parser.run_fn("Finished").unwrap().builds_from,
+        ["Component", "Component"]
+    );
+    assert_eq!(
+        parser.run_fn("Component").unwrap().builds_into,
+        ["Finished"]
+    );
+    assert!(parser.run_fn("Other").unwrap().builds_into.is_empty());
+}
+
+#[test]
+fn wiki_only_recipes_resolve_display_names_and_add_reverse_links() {
+    let (_dir, parser) = recipe_fixture(
+        vec![
+            wiki_item(1, "ComponentsBlade", "Component's Blade", &[]),
+            wiki_item(
+                3,
+                "Finished",
+                "Finished",
+                &["Component's Blade", "Component's Blade"],
+            ),
+        ],
+        serde_json::json!({"1": riot_item("Component's Blade", &[], &[])}),
+    );
+    assert_eq!(
+        parser.run_fn("Finished").unwrap().builds_from,
+        ["ComponentsBlade", "ComponentsBlade"]
+    );
+    assert_eq!(
+        parser.run_fn("ComponentsBlade").unwrap().builds_into,
+        ["Finished"]
+    );
+}
+
+#[test]
+fn numeric_recipes_follow_collapsed_mode_ids() {
+    let (_dir, parser) = recipe_fixture(
+        vec![
+            wiki_item(1, "Component", "Component", &[]),
+            wiki_item(3, "Finished", "Finished", &[]),
+        ],
+        serde_json::json!({
+            "1": riot_item("Component", &[], &["3"]),
+            "101": riot_item("Component", &[], &["3"]),
+            "3": riot_item("Finished", &["101"], &[]),
+        }),
+    );
+    assert_eq!(
+        parser.run_fn("Finished").unwrap().builds_from,
+        ["Component"]
+    );
+    assert!(!parser.map().contains_key("Component101"));
+}
+
+#[test]
+fn numeric_recipes_keep_distinct_duplicate_name_variants() {
+    let (_dir, parser) = recipe_fixture(
+        vec![wiki_item(3, "Finished", "Finished", &[])],
+        serde_json::json!({
+            "10": riot_item("Token", &[], &["3"]),
+            "20": riot_item("Token", &[], &["3"]),
+            "3": riot_item("Finished", &["20"], &[]),
+        }),
+    );
+    assert_eq!(parser.run_fn("Finished").unwrap().builds_from, ["Token20"]);
+    assert_eq!(parser.run_fn("Token10").unwrap().builds_into, ["Finished"]);
+}
+
+#[test]
+fn unavailable_and_collapsed_self_references_are_not_emitted() {
+    let (_dir, parser) = recipe_fixture(
+        vec![
+            wiki_item(1, "Component", "Component", &[]),
+            wiki_item(2, "WikiOnly", "Wiki Only", &["Missing Item"]),
+        ],
+        serde_json::json!({"1": riot_item("Component", &["999"], &["1", "999"])}),
+    );
+    let item = parser.run_fn("Component").unwrap();
+    assert!(item.builds_from.is_empty());
+    assert!(item.builds_into.is_empty());
+    assert!(parser.run_fn("WikiOnly").unwrap().builds_from.is_empty());
+}
+
+#[test]
+fn empty_riot_recipes_do_not_fall_back_to_wiki_recipes() {
+    let (_dir, parser) = recipe_fixture(
+        vec![
+            wiki_item(1, "Component", "Component", &[]),
+            wiki_item(3, "Finished", "Finished", &["Component"]),
+        ],
+        serde_json::json!({
+            "1": riot_item("Component", &[], &[]),
+            "3": riot_item("Finished", &[], &[]),
+        }),
+    );
+    assert!(parser.run_fn("Finished").unwrap().builds_from.is_empty());
+    assert!(parser.run_fn("Component").unwrap().builds_into.is_empty());
+}
+
+#[test]
+fn wiki_only_components_receive_reverse_links_from_riot_recipes() {
+    let (_dir, parser) = recipe_fixture(
+        vec![
+            wiki_item(1, "Component", "Component", &[]),
+            wiki_item(3, "Finished", "Finished", &[]),
+        ],
+        serde_json::json!({"3": riot_item("Finished", &["1"], &[])}),
+    );
+    assert_eq!(
+        parser.run_fn("Component").unwrap().builds_into,
+        ["Finished"]
+    );
+}
+
+#[test]
+fn recipes_use_the_riot_record_selected_by_name_when_wiki_ids_are_stale() {
+    let (_dir, parser) = recipe_fixture(
+        vec![
+            wiki_item(1, "Component", "Component", &[]),
+            wiki_item(2, "Other", "Other", &[]),
+            wiki_item(300, "Finished", "Finished", &["Other"]),
+        ],
+        serde_json::json!({
+            "1": riot_item("Component", &[], &["3"]),
+            "2": riot_item("Other", &[], &[]),
+            "3": riot_item("Finished", &["1"], &[]),
+        }),
+    );
+    assert_eq!(
+        parser.run_fn("Finished").unwrap().builds_from,
+        ["Component"]
+    );
+    assert_eq!(
+        parser.run_fn("Component").unwrap().builds_into,
+        ["Finished"]
+    );
+}

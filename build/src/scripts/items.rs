@@ -57,6 +57,12 @@ impl Build for Item {
 
                 {YEW_CFG}
                 identifiers: {identifiers},
+
+                {YEW_CFG}
+                builds_from: {builds_from},
+
+                {YEW_CFG}
+                builds_into: {builds_into},
             }};"#,
             upper_id = item_id.to_shouty_snake_case(),
             identifiers = self.identifiers().as_slice().bake(),
@@ -65,6 +71,8 @@ impl Build for Item {
             fn_names = self.function_names(),
             metadata = self.repr_metadata(),
             full_stats = stats.as_slice().bake(),
+            builds_from = item_ids(&self.builds_from),
+            builds_into = item_ids(&self.builds_into),
         )?;
 
         rust.push_str(&self.closures(&plan)?);
@@ -82,6 +90,16 @@ impl Build for Item {
             },
         })
     }
+}
+
+fn item_ids(items: &[String]) -> String {
+    let variants = items
+        .iter()
+        .map(|item| format!("crate::libgen::ItemId::{item}"))
+        .collect::<Vec<_>>()
+        .join(",");
+
+    format!("&[{variants}]")
 }
 
 impl Item {

@@ -1,7 +1,6 @@
 #![no_std]
 #![allow(clippy::missing_transmute_annotations)]
 
-#[cfg(feature = "bake")]
 extern crate alloc;
 
 #[cfg(test)]
@@ -163,10 +162,7 @@ impl AbilityId {
             AbilityId::R(v) => *v,
         }
     }
-}
 
-#[cfg(feature = "bake")]
-impl AbilityId {
     pub fn discriminant(&self) -> alloc::string::String {
         let letter = self.as_char();
         let ability_name = self.ability_name().short();
