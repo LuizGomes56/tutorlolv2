@@ -19,25 +19,27 @@ impl Generator for Kayle {
                 f![(0.08 + 0.005 * (ELevel - 1) + 0.00015 * AbilityPower) * EnemyMissingHealth]
             })?
             .ability(Key::R, [(0, Void) /* Magic Damage */])
-            .combo([Ability(Q(Void)), Attack, Ability(E(Void))])?
-            .combo([
-                Ability(R(Void)),
-                Ability(Q(Void)),
-                Ability(E(Void)),
-                Ability(E(Void)),
-                Attack,
+            .combos([
+                &[Ability(Q(Void)), Attack, Ability(E(Void))],
+                &[
+                    Ability(R(Void)),
+                    Ability(Q(Void)),
+                    Ability(E(Void)),
+                    Ability(E(Void)),
+                    Attack,
+                ],
+                &[Ability(Q(Void)), Ability(E(Void)), Ability(E(Void)), Attack],
+                &[
+                    Ability(Q(Void)),
+                    Attack,
+                    Ability(E(Void)),
+                    Attack,
+                    Ability(R(Void)),
+                    Attack,
+                ],
+                &[Attack, Ability(E(Void)), Ability(Q(Void))],
+                &[Ability(Q(Void)), Attack, Attack, Ability(E(Void))],
             ])?
-            .combo([Ability(Q(Void)), Ability(E(Void)), Ability(E(Void)), Attack])?
-            .combo([
-                Ability(Q(Void)),
-                Attack,
-                Ability(E(Void)),
-                Attack,
-                Ability(R(Void)),
-                Attack,
-            ])?
-            .combo([Attack, Ability(E(Void)), Ability(Q(Void))])?
-            .combo([Ability(Q(Void)), Attack, Attack, Ability(E(Void))])?
             .end()
     }
 }

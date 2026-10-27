@@ -25,54 +25,56 @@ impl Generator for Poppy {
                     (1, Max), /* Physical Damage */
                 ],
             )
-            .combo([
-                Ability(Q(Max)),
-                Attack,
-                Ability(E(Max)),
-                Attack,
-                Ability(R(Max)),
-                Attack,
+            .combos([
+                &[
+                    Ability(Q(Max)),
+                    Attack,
+                    Ability(E(Max)),
+                    Attack,
+                    Ability(R(Max)),
+                    Attack,
+                ],
+                &[
+                    Ability(R(Max)),
+                    Ability(E(Max)),
+                    Attack,
+                    Ability(W(Void)),
+                    Ability(Q(Max)),
+                    Attack,
+                ],
+                &[
+                    Ability(W(Void)),
+                    Ability(R(Max)),
+                    Attack,
+                    Ability(E(Max)),
+                    Attack,
+                    Ability(Q(Max)),
+                    Attack,
+                ],
+                &[
+                    Ability(E(Max)),
+                    Ability(Q(Max)),
+                    Attack,
+                    Ability(R(Max)),
+                    Attack,
+                ],
+                &[
+                    Ability(R(Max)),
+                    Ability(W(Void)),
+                    Ability(E(Max)),
+                    Attack,
+                    Ability(Q(Max)),
+                    Attack,
+                ],
+                &[
+                    Ability(W(Void)),
+                    Ability(E(Max)),
+                    Ability(Q(Max)),
+                    Ability(R(Max)),
+                    Attack,
+                ],
+                &[Attack, Ability(E(Max)), Attack, Ability(Q(Max)), Attack],
             ])?
-            .combo([
-                Ability(R(Max)),
-                Ability(E(Max)),
-                Attack,
-                Ability(W(Void)),
-                Ability(Q(Max)),
-                Attack,
-            ])?
-            .combo([
-                Ability(W(Void)),
-                Ability(R(Max)),
-                Attack,
-                Ability(E(Max)),
-                Attack,
-                Ability(Q(Max)),
-                Attack,
-            ])?
-            .combo([
-                Ability(E(Max)),
-                Ability(Q(Max)),
-                Attack,
-                Ability(R(Max)),
-                Attack,
-            ])?
-            .combo([
-                Ability(R(Max)),
-                Ability(W(Void)),
-                Ability(E(Max)),
-                Attack,
-                Ability(Q(Max)),
-                Attack,
-            ])?
-            .combo([
-                Ability(W(Void)),
-                Ability(E(Max)),
-                Ability(Q(Max)),
-                Ability(R(Max)),
-                Attack,
-            ])?
-            .combo([Attack, Ability(E(Max)), Attack, Ability(Q(Max)), Attack])?
             .end()
     }
 }

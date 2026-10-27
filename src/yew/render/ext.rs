@@ -109,9 +109,7 @@ impl ItemId {
             .tuple_field("stats", Class::Number, self.stats())
             .field("tier", Class::Number, self.tier())
             .field("purchasable", Class::Boolean, self.purchasable())
-            .array_field("maps", Class::Constant, self.maps())
-            .array_field("recipe", Class::Constant, self.builds_from())
-            .array_field("builds", Class::Constant, self.builds_into());
+            .array_field("maps", Class::Constant, self.maps());
 
         if self.deals_damage() {
             h.field("damage_type", Class::Constant, self.damage_type());
@@ -129,7 +127,17 @@ impl ItemId {
             }
         }
 
-        h.finish_struct();
+        h.array_field(
+            "recipe",
+            Class::Type,
+            self.builds_from().iter().map(Self::debug),
+        )
+        .array_field(
+            "builds",
+            Class::Type,
+            self.builds_into().iter().map(Self::debug),
+        )
+        .finish_struct();
 
         Ok(h.into_fragment())
     }
@@ -169,7 +177,8 @@ impl RuneId {
         let mut h = Highlighter::new();
 
         h.global_struct(self.debug())
-            .field("name", Class::String, self.name());
+            .field("name", Class::String, self.name())
+            .field("riot_id", Class::Number, self.riot_id());
 
         if self.deals_damage() {
             h.field("damage_type", Class::Constant, self.damage_type());

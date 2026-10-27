@@ -65,22 +65,24 @@ impl Generator for Aphelios {
                 damage: f![(sentry_base) + (sentry_ratio) * BonusAd + 0.5 * AbilityPower],
             },
         )
-        .combo([Ability(Q(Void)), Ability(Q(Void))])?
-        .combo([
-            Ability(Q(Void)),
-            Attack,
-            Attack,
-            Attack,
-            Attack,
-            Ability(Q(Void)),
-            Attack,
-            Attack,
+        .combos([
+            &[Ability(Q(Void)), Ability(Q(Void))],
+            &[
+                Ability(Q(Void)),
+                Attack,
+                Attack,
+                Attack,
+                Attack,
+                Ability(Q(Void)),
+                Attack,
+                Attack,
+            ],
+            &[Ability(Q(Void)), Ability(Q(Void)), Attack],
+            &[Ability(Q(Void)), Ability(Q(Void)), Attack, Attack],
+            &[Ability(Q(Void)), Attack],
+            &[Ability(Q(Void)), Attack, Ability(Q(Void)), Attack],
+            &[Ability(Q(Void)), Attack, Attack],
         ])?
-        .combo([Ability(Q(Void)), Ability(Q(Void)), Attack])?
-        .combo([Ability(Q(Void)), Ability(Q(Void)), Attack, Attack])?
-        .combo([Ability(Q(Void)), Attack])?
-        .combo([Ability(Q(Void)), Attack, Ability(Q(Void)), Attack])?
-        .combo([Ability(Q(Void)), Attack, Attack])?
         .end()
     }
 }

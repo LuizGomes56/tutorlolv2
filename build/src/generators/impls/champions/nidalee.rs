@@ -27,44 +27,46 @@ impl Generator for Nidalee {
         )
         .ability(Key::W, [(0, _2) /* Magic Damage */])
         .ability(Key::E, [(0, Void) /* Magic Damage */])
-        .combo([
-            Ability(W(Void)),
-            Attack,
-            Ability(E(Void)),
-            Ability(Q(Min)),
-            Ability(E(Void)),
-            Ability(Q(Min)),
-            Attack,
-            Attack,
-        ])?
-        .combo([Attack, Ability(E(Void)), Ability(Q(Max)), Ability(W(Void))])?
-        .combo([Ability(W(Void)), Ability(Q(Max)), Attack])?
-        .combo([Ability(E(Void)), Ability(W(Void)), Ability(Q(Max)), Attack])?
-        .combo([
-            Ability(Q(Min)),
-            Ability(W(Void)),
-            Ability(E(Void)),
-            Ability(Q(Min)),
-            Ability(E(Void)),
-            Attack,
-        ])?
-        .combo([
-            Ability(Q(Min)),
-            Attack,
-            Ability(E(Void)),
-            Attack,
-            Ability(W(Void)),
-            Attack,
-            Ability(E(Void)),
-            Ability(Q(Min)),
-        ])?
-        .combo([
-            Ability(W(Void)),
-            Ability(Q(Max)),
-            Ability(E(Void)),
-            Attack,
-            Ability(E(Void)),
-            Attack,
+        .combos([
+            &[
+                Ability(W(Void)),
+                Attack,
+                Ability(E(Void)),
+                Ability(Q(Min)),
+                Ability(E(Void)),
+                Ability(Q(Min)),
+                Attack,
+                Attack,
+            ],
+            &[Attack, Ability(E(Void)), Ability(Q(Max)), Ability(W(Void))],
+            &[Ability(W(Void)), Ability(Q(Max)), Attack],
+            &[Ability(E(Void)), Ability(W(Void)), Ability(Q(Max)), Attack],
+            &[
+                Ability(Q(Min)),
+                Ability(W(Void)),
+                Ability(E(Void)),
+                Ability(Q(Min)),
+                Ability(E(Void)),
+                Attack,
+            ],
+            &[
+                Ability(Q(Min)),
+                Attack,
+                Ability(E(Void)),
+                Attack,
+                Ability(W(Void)),
+                Attack,
+                Ability(E(Void)),
+                Ability(Q(Min)),
+            ],
+            &[
+                Ability(W(Void)),
+                Ability(Q(Max)),
+                Ability(E(Void)),
+                Attack,
+                Ability(E(Void)),
+                Attack,
+            ],
         ])?
         .end()
     }

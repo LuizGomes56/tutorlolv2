@@ -18,41 +18,43 @@ impl Generator for Nasus {
                     (4, Max), /* Total Magic Damage */
                 ],
             )
-            .combo([
-                Ability(E(Min)),
-                Ability(R(Max)),
-                Ability(Q(Void)),
-                Ability(E(Min)),
-                Attack,
+            .combos([
+                &[
+                    Ability(E(Min)),
+                    Ability(R(Max)),
+                    Ability(Q(Void)),
+                    Ability(E(Min)),
+                    Attack,
+                ],
+                &[
+                    Ability(E(Min)),
+                    Ability(R(Max)),
+                    Ability(Q(Void)),
+                    Ability(E(Min)),
+                    Attack,
+                    Attack,
+                ],
+                &[
+                    Ability(R(Max)),
+                    Ability(E(Min)),
+                    Ability(Q(Void)),
+                    Ability(E(Min)),
+                    Attack,
+                    Attack,
+                    Attack,
+                    Ability(Q(Void)),
+                ],
+                &[
+                    Ability(R(Max)),
+                    Ability(E(Min)),
+                    Ability(Q(Void)),
+                    Ability(E(Min)),
+                    Attack,
+                ],
+                &[Ability(E(Min)), Ability(Q(Void)), Ability(E(Min)), Attack],
+                &[Ability(E(Max)), Attack, Ability(Q(Void))],
+                &[Attack, Ability(Q(Void)), Ability(E(Max)), Attack],
             ])?
-            .combo([
-                Ability(E(Min)),
-                Ability(R(Max)),
-                Ability(Q(Void)),
-                Ability(E(Min)),
-                Attack,
-                Attack,
-            ])?
-            .combo([
-                Ability(R(Max)),
-                Ability(E(Min)),
-                Ability(Q(Void)),
-                Ability(E(Min)),
-                Attack,
-                Attack,
-                Attack,
-                Ability(Q(Void)),
-            ])?
-            .combo([
-                Ability(R(Max)),
-                Ability(E(Min)),
-                Ability(Q(Void)),
-                Ability(E(Min)),
-                Attack,
-            ])?
-            .combo([Ability(E(Min)), Ability(Q(Void)), Ability(E(Min)), Attack])?
-            .combo([Ability(E(Max)), Attack, Ability(Q(Void))])?
-            .combo([Attack, Ability(Q(Void)), Ability(E(Max)), Attack])?
             .end()
     }
 }

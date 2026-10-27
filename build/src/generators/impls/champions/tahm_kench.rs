@@ -13,44 +13,46 @@ impl Generator for TahmKench {
             .comment(Q(Max), "Damage Including Passive")?
             .ability(Key::W, [(1, Void) /* Magic Damage */])
             .ability(Key::R, [(0, Void) /* Magic Damage */])
-            .combo([Ability(R(Void)), Ability(W(Void))])?
-            .combo([
-                Ability(W(Void)),
-                Ability(R(Void)),
-                Attack,
-                Attack,
-                Attack,
-                Ability(Q(Max)),
+            .combos([
+                &[Ability(R(Void)), Ability(W(Void))],
+                &[
+                    Ability(W(Void)),
+                    Ability(R(Void)),
+                    Attack,
+                    Attack,
+                    Attack,
+                    Ability(Q(Max)),
+                ],
+                &[
+                    Attack,
+                    Attack,
+                    Attack,
+                    Ability(Q(Max)),
+                    Ability(W(Void)),
+                    Attack,
+                ],
+                &[
+                    Ability(Q(Min)),
+                    Ability(W(Void)),
+                    Attack,
+                    Attack,
+                    Attack,
+                    Ability(R(Void)),
+                    Attack,
+                    Attack,
+                    Attack,
+                    Ability(Q(Min)),
+                ],
+                &[
+                    Ability(W(Void)),
+                    Attack,
+                    Attack,
+                    Attack,
+                    Ability(Q(Max)),
+                    Attack,
+                ],
+                &[Attack, Attack, Attack, Ability(Q(Max)), Attack],
             ])?
-            .combo([
-                Attack,
-                Attack,
-                Attack,
-                Ability(Q(Max)),
-                Ability(W(Void)),
-                Attack,
-            ])?
-            .combo([
-                Ability(Q(Min)),
-                Ability(W(Void)),
-                Attack,
-                Attack,
-                Attack,
-                Ability(R(Void)),
-                Attack,
-                Attack,
-                Attack,
-                Ability(Q(Min)),
-            ])?
-            .combo([
-                Ability(W(Void)),
-                Attack,
-                Attack,
-                Attack,
-                Ability(Q(Max)),
-                Attack,
-            ])?
-            .combo([Attack, Attack, Attack, Ability(Q(Max)), Attack])?
             .end()
     }
 }

@@ -15,20 +15,22 @@ impl Generator for Twitch {
                     (3, _1),   /* Physical Damage Per Stack */
                 ],
             )
-            .combo([Attack, Attack, Ability(E(Void)), Attack, Attack])?
-            .combo([Attack, Attack, Attack, Ability(E(Void)), Attack, Attack])?
-            .combo([Attack, Attack, Attack, Ability(E(Void))])?
-            .combo([
-                Attack,
-                Attack,
-                Attack,
-                Attack,
-                Ability(E(Void)),
-                Attack,
-                Attack,
-                Attack,
+            .combos([
+                &[Attack, Attack, Ability(E(Void)), Attack, Attack],
+                &[Attack, Attack, Attack, Ability(E(Void)), Attack, Attack],
+                &[Attack, Attack, Attack, Ability(E(Void))],
+                &[
+                    Attack,
+                    Attack,
+                    Attack,
+                    Attack,
+                    Ability(E(Void)),
+                    Attack,
+                    Attack,
+                    Attack,
+                ],
+                &[Attack, Attack, Attack, Attack, Ability(E(Void))],
             ])?
-            .combo([Attack, Attack, Attack, Attack, Ability(E(Void))])?
             .end()
     }
 }

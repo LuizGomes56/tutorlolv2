@@ -13,14 +13,16 @@ impl Generator for Neeko {
         .ability(Key::W, [(0, Void) /* Bonus Magic Damage */])
         .ability(Key::E, [(1, Void) /* Magic Damage */])
         .ability(Key::R, [(0, Void) /* Magic Damage */])
-        .combo([
-            Ability(E(Void)),
-            Ability(Q(Max)),
-            Attack,
-            Ability(W(Void)),
-            Ability(R(Void)),
+        .combos([
+            &[
+                Ability(E(Void)),
+                Ability(Q(Max)),
+                Attack,
+                Ability(W(Void)),
+                Ability(R(Void)),
+            ],
+            &[Ability(Q(_1)), Attack, Ability(W(Void))],
         ])?
-        .combo([Ability(Q(_1)), Attack, Ability(W(Void))])?
         .end()
     }
 }

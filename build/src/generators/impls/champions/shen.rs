@@ -12,21 +12,23 @@ impl Generator for Shen {
             ],
         )
         .ability(Key::E, [(0, Void) /* Physical Damage */])
-        .combo([Ability(E(Void)), Ability(Q(Max)), Attack, Attack, Attack])?
-        .combo([
-            Ability(Q(Min)),
-            Ability(E(Void)),
-            Attack,
-            Attack,
-            Attack,
-            Ability(Q(Min)),
-            Attack,
-            Attack,
-            Attack,
+        .combos([
+            &[Ability(E(Void)), Ability(Q(Max)), Attack, Attack, Attack],
+            &[
+                Ability(Q(Min)),
+                Ability(E(Void)),
+                Attack,
+                Attack,
+                Attack,
+                Ability(Q(Min)),
+                Attack,
+                Attack,
+                Attack,
+            ],
+            &[Ability(Q(Max)), Attack, Attack, Attack],
+            &[Ability(Q(Max)), Attack, Ability(E(Void))],
+            &[Ability(Q(Max)), Attack],
         ])?
-        .combo([Ability(Q(Max)), Attack, Attack, Attack])?
-        .combo([Ability(Q(Max)), Attack, Ability(E(Void))])?
-        .combo([Ability(Q(Max)), Attack])?
         .end()
     }
 }

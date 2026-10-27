@@ -25,35 +25,37 @@ impl Generator for Gwen {
                     (6, _2),  /* Third Cast Total Damage */
                 ],
             )
-            .combo([
-                Ability(R(Min)),
-                Attack,
-                Attack,
-                Ability(R(_1)),
-                Ability(Q(Max)),
-                Attack,
-                Ability(R(_2)),
+            .combos([
+                &[
+                    Ability(R(Min)),
+                    Attack,
+                    Attack,
+                    Ability(R(_1)),
+                    Ability(Q(Max)),
+                    Attack,
+                    Ability(R(_2)),
+                ],
+                &[Attack, Attack, Attack, Attack, Ability(Q(Max)), Attack],
+                &[
+                    Ability(R(Min)),
+                    Attack,
+                    Ability(R(_1)),
+                    Attack,
+                    Ability(R(_2)),
+                ],
+                &[
+                    Ability(R(Min)),
+                    Attack,
+                    Attack,
+                    Ability(R(_1)),
+                    Attack,
+                    Attack,
+                    Ability(R(_2)),
+                    Ability(Q(Max)),
+                    Attack,
+                ],
+                &[Attack, Attack, Ability(Q(Max)), Attack],
             ])?
-            .combo([Attack, Attack, Attack, Attack, Ability(Q(Max)), Attack])?
-            .combo([
-                Ability(R(Min)),
-                Attack,
-                Ability(R(_1)),
-                Attack,
-                Ability(R(_2)),
-            ])?
-            .combo([
-                Ability(R(Min)),
-                Attack,
-                Attack,
-                Ability(R(_1)),
-                Attack,
-                Attack,
-                Ability(R(_2)),
-                Ability(Q(Max)),
-                Attack,
-            ])?
-            .combo([Attack, Attack, Ability(Q(Max)), Attack])?
             .end()
     }
 }

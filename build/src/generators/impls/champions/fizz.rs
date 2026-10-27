@@ -21,70 +21,72 @@ impl Generator for Fizz {
                     (1, Max), /* Gigalodon Damage */
                 ],
             )
-            .combo([
-                Ability(Q(Void)),
-                Ability(R(Max)),
-                Ability(E(Void)),
-                Ability(E(Void)),
-                Attack,
-                Ability(W(Void)),
-                Attack,
-            ])?
-            .combo([Ability(E(Void)), Attack, Ability(W(Void)), Ability(Q(Void))])?
-            .combo([Ability(Q(Void)), Ability(R(Max))])?
-            .combo([Ability(E(Void)), Ability(W(Void)), Ability(Q(Void))])?
-            .combo([
-                Ability(E(Void)),
-                Ability(E(Void)),
-                Attack,
-                Ability(W(Void)),
-                Ability(Q(Void)),
-            ])?
-            .combo([
-                Ability(R(Max)),
-                Ability(E(Void)),
-                Attack,
-                Ability(W(Void)),
-                Ability(Q(Void)),
-            ])?
-            .combo([
-                Ability(R(Max)),
-                Attack,
-                Ability(W(Void)),
-                Ability(E(Void)),
-                Attack,
-                Ability(Q(Void)),
-            ])?
-            .combo([
-                Ability(R(Max)),
-                Ability(Q(Void)),
-                Attack,
-                Ability(W(Void)),
-                Ability(E(Void)),
-                Ability(E(Void)),
-                Attack,
-            ])?
-            .combo([
-                Ability(E(Void)),
-                Attack,
-                Ability(W(Void)),
-                Attack,
-                Ability(Q(Void)),
-                Attack,
-            ])?
-            .combo([
-                Ability(Q(Void)),
-                Attack,
-                Ability(W(Void)),
-                Ability(E(Void)),
-                Attack,
-            ])?
-            .combo([
-                Ability(Q(Void)),
-                Attack,
-                Ability(W(Void)),
-                Ability(E(Void)),
-                Ability(E(Void)),
+            .combos([
+                &[
+                    Ability(Q(Void)),
+                    Ability(R(Max)),
+                    Ability(E(Void)),
+                    Ability(E(Void)),
+                    Attack,
+                    Ability(W(Void)),
+                    Attack,
+                ],
+                &[Ability(E(Void)), Attack, Ability(W(Void)), Ability(Q(Void))],
+                &[Ability(Q(Void)), Ability(R(Max))],
+                &[Ability(E(Void)), Ability(W(Void)), Ability(Q(Void))],
+                &[
+                    Ability(E(Void)),
+                    Ability(E(Void)),
+                    Attack,
+                    Ability(W(Void)),
+                    Ability(Q(Void)),
+                ],
+                &[
+                    Ability(R(Max)),
+                    Ability(E(Void)),
+                    Attack,
+                    Ability(W(Void)),
+                    Ability(Q(Void)),
+                ],
+                &[
+                    Ability(R(Max)),
+                    Attack,
+                    Ability(W(Void)),
+                    Ability(E(Void)),
+                    Attack,
+                    Ability(Q(Void)),
+                ],
+                &[
+                    Ability(R(Max)),
+                    Ability(Q(Void)),
+                    Attack,
+                    Ability(W(Void)),
+                    Ability(E(Void)),
+                    Ability(E(Void)),
+                    Attack,
+                ],
+                &[
+                    Ability(E(Void)),
+                    Attack,
+                    Ability(W(Void)),
+                    Attack,
+                    Ability(Q(Void)),
+                    Attack,
+                ],
+                &[
+                    Ability(Q(Void)),
+                    Attack,
+                    Ability(W(Void)),
+                    Ability(E(Void)),
+                    Attack,
+                ],
+                &[
+                    Ability(Q(Void)),
+                    Attack,
+                    Ability(W(Void)),
+                    Ability(E(Void)),
+                    Ability(E(Void)),
+                ],
             ])?
             .end()
     }

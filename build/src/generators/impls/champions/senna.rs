@@ -15,25 +15,27 @@ impl Generator for Senna {
         .ability(Key::W, [(0, Void) /* Physical Damage */])
         .ability(Key::R, [(0, Void) /* Physical Damage */])
         .damage_types([P(Void), P(_1), R(Void)], Physical)?
-        .combo([
-            Ability(W(Void)),
-            Attack,
-            Ability(Q(Void)),
-            Ability(R(Void)),
-            Attack,
+        .combos([
+            &[
+                Ability(W(Void)),
+                Attack,
+                Ability(Q(Void)),
+                Ability(R(Void)),
+                Attack,
+            ],
+            &[Ability(R(Void)), Ability(Q(Void))],
+            &[Ability(W(Void)), Ability(Q(Void)), Ability(R(Void))],
+            &[Ability(Q(Void)), Attack],
+            &[
+                Ability(Q(Void)),
+                Attack,
+                Ability(W(Void)),
+                Attack,
+                Ability(R(Void)),
+                Attack,
+            ],
+            &[Ability(W(Void)), Attack, Ability(Q(Void)), Attack],
         ])?
-        .combo([Ability(R(Void)), Ability(Q(Void))])?
-        .combo([Ability(W(Void)), Ability(Q(Void)), Ability(R(Void))])?
-        .combo([Ability(Q(Void)), Attack])?
-        .combo([
-            Ability(Q(Void)),
-            Attack,
-            Ability(W(Void)),
-            Attack,
-            Ability(R(Void)),
-            Attack,
-        ])?
-        .combo([Ability(W(Void)), Attack, Ability(Q(Void)), Attack])?
         .end()
     }
 }

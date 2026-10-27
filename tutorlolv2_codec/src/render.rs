@@ -872,7 +872,7 @@ impl Highlighter {
 
         let width = values.iter().map(|v| v.chars().count()).sum();
 
-        self.list_field(name, &values, width, |h, value| {
+        self.list_field(name, &values, width, |h, value, _| {
             // If the field already has Html tags, we render as raw
             if value.contains("</span>") {
                 h.raw(value);
@@ -902,11 +902,10 @@ impl Highlighter {
             .map(|(field, value)| field.chars().count() + value.chars().count() + 2)
             .sum();
 
-        self.list_field(name, &values, width, |h, (field, value)| {
-            h.push(Class::Type, field)
-                .bracket(Bracket::LParen)
-                .push(class, value)
-                .bracket(Bracket::RParen);
+        self.list_field(name, &values, width, |h, (field, value), wrapped| {
+            h.push(class, value)
+                .raw(if wrapped { "\t" } else { " " })
+                .push(Class::Type, field);
         })
     }
 
@@ -918,9 +917,8 @@ impl Highlighter {
         name: &str,
         values: &[T],
         width: usize,
-        mut item: impl FnMut(&mut Self, &T),
+        mut item: impl FnMut(&mut Self, &T, bool),
     ) -> &mut Self {
-        // `\t` + `name: ` + `[` + items + `, ` separators + `]` + `,`
         let line_width = Self::INDENT_WIDTH
             + name.len()
             + 2
@@ -939,14 +937,16 @@ impl Highlighter {
                 if index != 0 {
                     self.raw(", ");
                 }
-                item(self, value);
+
+                item(self, value, false);
             }
         } else {
             for value in values {
                 self.raw("\n\t\t");
-                item(self, value);
+                item(self, value, true);
                 self.raw(",");
             }
+
             self.raw("\n\t");
         }
 

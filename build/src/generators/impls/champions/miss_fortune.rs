@@ -22,30 +22,32 @@ impl Generator for MissFortune {
                     (1, Min), /* Physical Damage per Wave */
                 ],
             )
-            .combo([
-                Ability(E(Max)),
-                Attack,
-                Ability(Q(Void)),
-                Ability(R(Max)),
-                Attack,
+            .combos([
+                &[
+                    Ability(E(Max)),
+                    Attack,
+                    Ability(Q(Void)),
+                    Ability(R(Max)),
+                    Attack,
+                ],
+                &[
+                    Attack,
+                    Attack,
+                    Ability(E(Max)),
+                    Ability(Q(Void)),
+                    Ability(R(Max)),
+                ],
+                &[
+                    Attack,
+                    Ability(Q(Void)),
+                    Attack,
+                    Ability(E(Max)),
+                    Ability(R(Max)),
+                ],
+                &[Ability(E(Max)), Ability(R(Max))],
+                &[Ability(E(Max)), Attack, Ability(Q(Void)), Attack],
+                &[Ability(Q(Void)), Attack],
             ])?
-            .combo([
-                Attack,
-                Attack,
-                Ability(E(Max)),
-                Ability(Q(Void)),
-                Ability(R(Max)),
-            ])?
-            .combo([
-                Attack,
-                Ability(Q(Void)),
-                Attack,
-                Ability(E(Max)),
-                Ability(R(Max)),
-            ])?
-            .combo([Ability(E(Max)), Ability(R(Max))])?
-            .combo([Ability(E(Max)), Attack, Ability(Q(Void)), Attack])?
-            .combo([Ability(Q(Void)), Attack])?
             .end()
     }
 }

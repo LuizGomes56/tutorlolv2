@@ -22,28 +22,30 @@ impl Generator for Darius {
                     (1, Max), /* Maximum True Damage */
                 ],
             )
-            .combo([
-                Attack,
-                Ability(W(Void)),
-                Ability(Q(Max)),
-                Attack,
-                Attack,
-                Ability(R(Min)),
-                Attack,
-                Ability(R(Min)),
+            .combos([
+                &[
+                    Attack,
+                    Ability(W(Void)),
+                    Ability(Q(Max)),
+                    Attack,
+                    Attack,
+                    Ability(R(Min)),
+                    Attack,
+                    Ability(R(Min)),
+                ],
+                &[Ability(Q(Max)), Attack, Ability(W(Void)), Ability(R(Max))],
+                &[Attack, Ability(W(Void)), Ability(Q(Max))],
+                &[
+                    Attack,
+                    Ability(W(Void)),
+                    Ability(Q(Max)),
+                    Attack,
+                    Attack,
+                    Ability(R(Max)),
+                ],
+                &[Ability(W(Void)), Attack, Ability(Q(Max))],
+                &[Ability(Q(Max)), Attack, Ability(W(Void))],
             ])?
-            .combo([Ability(Q(Max)), Attack, Ability(W(Void)), Ability(R(Max))])?
-            .combo([Attack, Ability(W(Void)), Ability(Q(Max))])?
-            .combo([
-                Attack,
-                Ability(W(Void)),
-                Ability(Q(Max)),
-                Attack,
-                Attack,
-                Ability(R(Max)),
-            ])?
-            .combo([Ability(W(Void)), Attack, Ability(Q(Max))])?
-            .combo([Ability(Q(Max)), Attack, Ability(W(Void))])?
             .end()
     }
 }

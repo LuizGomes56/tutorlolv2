@@ -1,6 +1,48 @@
 use tutorlolv2_types::{EntityKind, Tag};
 
 #[test]
+fn batch_combos_preserve_order_and_stop_at_the_first_invalid_ability() {
+    use crate::generators::parser::champions::Champion;
+    use tutorlolv2_types::{
+        AbilityId::Q,
+        AbilityName::Void,
+        ComboElement::{Ability, Attack},
+    };
+
+    let mut champion = Champion::try_from(tutorlolv2_wiki::champions::WikiChampion {
+        name: Default::default(),
+        champion_id: Default::default(),
+        adaptive_type: Default::default(),
+        attack_type: Default::default(),
+        positions: Default::default(),
+        stats: Default::default(),
+        modifiers: Default::default(),
+        wiki_abilities: Default::default(),
+    })
+    .unwrap();
+    champion.combo([Attack]).unwrap();
+    champion
+        .combos([&[Attack, Attack], &[], &[Attack]])
+        .unwrap();
+    assert_eq!(
+        champion.combo,
+        vec![vec![Attack], vec![Attack, Attack], vec![], vec![Attack]]
+    );
+
+    let error = champion
+        .combos([
+            &[Attack, Attack, Attack],
+            &[Attack, Ability(Q(Void))],
+            &[Attack],
+        ])
+        .unwrap_err()
+        .to_string();
+    assert!(error.contains("self.combo(...) failed"), "{error}");
+    assert_eq!(champion.combo.len(), 5);
+    assert_eq!(champion.combo.last().unwrap(), &[Attack, Attack, Attack]);
+}
+
+#[test]
 fn shared_tags_work_through_legacy_build_and_wiki_paths() {
     for (tag, expected) in [
         (Tag::Champions, "cache/riot/champions/42.json"),

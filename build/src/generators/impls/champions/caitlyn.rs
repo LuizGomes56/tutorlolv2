@@ -26,61 +26,63 @@ impl Generator for Caitlyn {
             .comment(W(Void), "Bonus Headshot damage against trapped enemies")?
             .ability(Key::E, [(0, Void) /* Magic Damage */])
             .ability(Key::R, [(0, Void) /* Physical damage */])
-            .combo([
-                Ability(W(Void)),
-                Ability(Q(Max)),
-                Ability(E(Void)),
-                Ability(W(Void)),
-                Attack,
-                Attack,
-                Attack,
+            .combos([
+                &[
+                    Ability(W(Void)),
+                    Ability(Q(Max)),
+                    Ability(E(Void)),
+                    Ability(W(Void)),
+                    Attack,
+                    Attack,
+                    Attack,
+                ],
+                &[
+                    Ability(W(Void)),
+                    Ability(Q(Max)),
+                    Attack,
+                    Attack,
+                    Ability(E(Void)),
+                    Ability(W(Void)),
+                    Attack,
+                    Ability(R(Void)),
+                    Attack,
+                ],
+                &[Ability(E(Void)), Attack, Attack],
+                &[Ability(R(Void)), Ability(E(Void)), Ability(Q(Max)), Attack],
+                &[
+                    Ability(Q(Max)),
+                    Ability(E(Void)),
+                    Ability(W(Void)),
+                    Attack,
+                    Attack,
+                ],
+                &[Ability(E(Void)), Ability(Q(Max)), Attack, Attack],
+                &[
+                    Ability(E(Void)),
+                    Ability(W(Void)),
+                    Attack,
+                    Ability(Q(Max)),
+                    Attack,
+                ],
+                &[Ability(E(Void)), Ability(Q(Max)), Ability(R(Void))],
+                &[
+                    Ability(W(Void)),
+                    Attack,
+                    Ability(E(Void)),
+                    Ability(Q(Max)),
+                    Ability(R(Void)),
+                    Attack,
+                ],
+                &[
+                    Ability(W(Void)),
+                    Ability(E(Void)),
+                    Ability(Q(Max)),
+                    Attack,
+                    Attack,
+                    Ability(R(Void)),
+                ],
+                &[Ability(E(Void)), Ability(Q(Max)), Attack],
             ])?
-            .combo([
-                Ability(W(Void)),
-                Ability(Q(Max)),
-                Attack,
-                Attack,
-                Ability(E(Void)),
-                Ability(W(Void)),
-                Attack,
-                Ability(R(Void)),
-                Attack,
-            ])?
-            .combo([Ability(E(Void)), Attack, Attack])?
-            .combo([Ability(R(Void)), Ability(E(Void)), Ability(Q(Max)), Attack])?
-            .combo([
-                Ability(Q(Max)),
-                Ability(E(Void)),
-                Ability(W(Void)),
-                Attack,
-                Attack,
-            ])?
-            .combo([Ability(E(Void)), Ability(Q(Max)), Attack, Attack])?
-            .combo([
-                Ability(E(Void)),
-                Ability(W(Void)),
-                Attack,
-                Ability(Q(Max)),
-                Attack,
-            ])?
-            .combo([Ability(E(Void)), Ability(Q(Max)), Ability(R(Void))])?
-            .combo([
-                Ability(W(Void)),
-                Attack,
-                Ability(E(Void)),
-                Ability(Q(Max)),
-                Ability(R(Void)),
-                Attack,
-            ])?
-            .combo([
-                Ability(W(Void)),
-                Ability(E(Void)),
-                Ability(Q(Max)),
-                Attack,
-                Attack,
-                Ability(R(Void)),
-            ])?
-            .combo([Ability(E(Void)), Ability(Q(Max)), Attack])?
             .end()
     }
 }

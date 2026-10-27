@@ -17,42 +17,44 @@ impl Generator for Graves {
                 (1, _1),   /* Reduced Damage */
             ],
         )
-        .combo([
-            Ability(W(Void)),
-            Attack,
-            Ability(Q(Max)),
-            Attack,
-            Ability(R(Void)),
-            Attack,
+        .combos([
+            &[
+                Ability(W(Void)),
+                Attack,
+                Ability(Q(Max)),
+                Attack,
+                Ability(R(Void)),
+                Attack,
+            ],
+            &[
+                Ability(W(Void)),
+                Ability(Q(Max)),
+                Ability(R(Void)),
+                Attack,
+                Attack,
+                Attack,
+            ],
+            &[Ability(Q(Max)), Attack, Ability(R(Void))],
+            &[Ability(W(Void)), Ability(Q(Max)), Ability(R(Void))],
+            &[
+                Ability(W(Void)),
+                Attack,
+                Ability(Q(Max)),
+                Attack,
+                Ability(R(Void)),
+            ],
+            &[
+                Ability(W(Void)),
+                Ability(Q(Max)),
+                Attack,
+                Attack,
+                Ability(R(Void)),
+                Attack,
+            ],
+            &[Ability(W(Void)), Attack, Ability(Q(Max)), Attack, Attack],
+            &[Attack, Attack, Ability(Q(Max)), Attack],
+            &[Ability(W(Void)), Attack, Attack, Ability(Q(Max)), Attack],
         ])?
-        .combo([
-            Ability(W(Void)),
-            Ability(Q(Max)),
-            Ability(R(Void)),
-            Attack,
-            Attack,
-            Attack,
-        ])?
-        .combo([Ability(Q(Max)), Attack, Ability(R(Void))])?
-        .combo([Ability(W(Void)), Ability(Q(Max)), Ability(R(Void))])?
-        .combo([
-            Ability(W(Void)),
-            Attack,
-            Ability(Q(Max)),
-            Attack,
-            Ability(R(Void)),
-        ])?
-        .combo([
-            Ability(W(Void)),
-            Ability(Q(Max)),
-            Attack,
-            Attack,
-            Ability(R(Void)),
-            Attack,
-        ])?
-        .combo([Ability(W(Void)), Attack, Ability(Q(Max)), Attack, Attack])?
-        .combo([Attack, Attack, Ability(Q(Max)), Attack])?
-        .combo([Ability(W(Void)), Attack, Attack, Ability(Q(Max)), Attack])?
         .end()
     }
 }

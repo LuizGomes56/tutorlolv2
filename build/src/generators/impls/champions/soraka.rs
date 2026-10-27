@@ -10,10 +10,12 @@ impl Generator for Soraka {
                     (2, Max), /* Total Magic Damage */
                 ],
             )
-            .combo([Ability(Q(Void)), Ability(E(Max)), Attack, Attack])?
-            .combo([Ability(E(Max)), Ability(Q(Void))])?
-            .combo([Ability(E(Max)), Ability(Q(Void)), Attack, Attack])?
-            .combo([Ability(Q(Void)), Attack, Ability(E(Max))])?
+            .combos([
+                &[Ability(Q(Void)), Ability(E(Max)), Attack, Attack],
+                &[Ability(E(Max)), Ability(Q(Void))],
+                &[Ability(E(Max)), Ability(Q(Void)), Attack, Attack],
+                &[Ability(Q(Void)), Attack, Ability(E(Max))],
+            ])?
             .end()
     }
 }

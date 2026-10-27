@@ -24,59 +24,61 @@ impl Generator for Qiyana {
             .ability(Key::E, [(0, Void) /* Physical Damage */])
             .ability(Key::R, [(1, Void) /* Physical Damage */])
             .damage_types([P(Void), E(Void), R(Void)], Physical)?
-            .combo([
-                Ability(R(Void)),
-                Ability(Q(Min)),
-                Ability(W(Void)),
-                Ability(E(Void)),
-                Ability(Q(Min)),
-            ])?
-            .combo([
-                Ability(E(Void)),
-                Ability(Q(Min)),
-                Ability(W(Void)),
-                Ability(R(Void)),
-                Ability(Q(Min)),
-            ])?
-            .combo([
-                Ability(R(Void)),
-                Ability(E(Void)),
-                Attack,
-                Ability(Q(Min)),
-                Ability(W(Void)),
-                Attack,
-                Ability(Q(Min)),
-            ])?
-            .combo([
-                Ability(E(Void)),
-                Ability(R(Void)),
-                Attack,
-                Ability(Q(Min)),
-                Ability(W(Void)),
-                Ability(Q(Min)),
-            ])?
-            .combo([
-                Ability(E(Void)),
-                Ability(Q(Min)),
-                Ability(W(Void)),
-                Ability(Q(Min)),
-            ])?
-            .combo([
-                Ability(E(Void)),
-                Ability(R(Void)),
-                Ability(Q(Min)),
-                Ability(W(Void)),
-                Ability(Q(Min)),
-                Attack,
-            ])?
-            .combo([Ability(W(Void)), Ability(E(Void)), Ability(Q(Max)), Attack])?
-            .combo([Ability(Q(Min)), Ability(W(Void)), Ability(Q(Min))])?
-            .combo([
-                Ability(E(Void)),
-                Ability(Q(Min)),
-                Ability(W(Void)),
-                Attack,
-                Ability(Q(Min)),
+            .combos([
+                &[
+                    Ability(R(Void)),
+                    Ability(Q(Min)),
+                    Ability(W(Void)),
+                    Ability(E(Void)),
+                    Ability(Q(Min)),
+                ],
+                &[
+                    Ability(E(Void)),
+                    Ability(Q(Min)),
+                    Ability(W(Void)),
+                    Ability(R(Void)),
+                    Ability(Q(Min)),
+                ],
+                &[
+                    Ability(R(Void)),
+                    Ability(E(Void)),
+                    Attack,
+                    Ability(Q(Min)),
+                    Ability(W(Void)),
+                    Attack,
+                    Ability(Q(Min)),
+                ],
+                &[
+                    Ability(E(Void)),
+                    Ability(R(Void)),
+                    Attack,
+                    Ability(Q(Min)),
+                    Ability(W(Void)),
+                    Ability(Q(Min)),
+                ],
+                &[
+                    Ability(E(Void)),
+                    Ability(Q(Min)),
+                    Ability(W(Void)),
+                    Ability(Q(Min)),
+                ],
+                &[
+                    Ability(E(Void)),
+                    Ability(R(Void)),
+                    Ability(Q(Min)),
+                    Ability(W(Void)),
+                    Ability(Q(Min)),
+                    Attack,
+                ],
+                &[Ability(W(Void)), Ability(E(Void)), Ability(Q(Max)), Attack],
+                &[Ability(Q(Min)), Ability(W(Void)), Ability(Q(Min))],
+                &[
+                    Ability(E(Void)),
+                    Ability(Q(Min)),
+                    Ability(W(Void)),
+                    Attack,
+                    Ability(Q(Min)),
+                ],
             ])?
             .end()
     }

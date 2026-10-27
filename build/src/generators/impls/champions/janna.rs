@@ -13,31 +13,33 @@ impl Generator for Janna {
             )
             .ability(Key::W, [(1, Void) /* Magic Damage */])
             .damage_type(P(Void), Magic)?
-            .combo([Ability(Q(Min)), Ability(Q(Min)), Ability(W(Void))])?
-            .combo([Ability(Q(Max)), Ability(W(Void))])?
-            .combo([
-                Ability(Q(Min)),
-                Ability(Q(Min)),
-                Attack,
-                Ability(W(Void)),
-                Attack,
+            .combos([
+                &[Ability(Q(Min)), Ability(Q(Min)), Ability(W(Void))],
+                &[Ability(Q(Max)), Ability(W(Void))],
+                &[
+                    Ability(Q(Min)),
+                    Ability(Q(Min)),
+                    Attack,
+                    Ability(W(Void)),
+                    Attack,
+                ],
+                &[
+                    Ability(Q(Min)),
+                    Ability(W(Void)),
+                    Attack,
+                    Ability(Q(Min)),
+                    Attack,
+                ],
+                &[
+                    Attack,
+                    Ability(W(Void)),
+                    Attack,
+                    Ability(Q(Min)),
+                    Ability(Q(Min)),
+                    Attack,
+                ],
+                &[Ability(W(Void)), Ability(Q(Min)), Ability(Q(Min)), Attack],
             ])?
-            .combo([
-                Ability(Q(Min)),
-                Ability(W(Void)),
-                Attack,
-                Ability(Q(Min)),
-                Attack,
-            ])?
-            .combo([
-                Attack,
-                Ability(W(Void)),
-                Attack,
-                Ability(Q(Min)),
-                Ability(Q(Min)),
-                Attack,
-            ])?
-            .combo([Ability(W(Void)), Ability(Q(Min)), Ability(Q(Min)), Attack])?
             .end()
     }
 }

@@ -19,38 +19,40 @@ impl Generator for Velkoz {
                     (1, Max), /* Maximum Damage */
                 ],
             )
-            .combo([
-                Ability(Q(Void)),
-                Ability(W(Min)),
-                Attack,
-                Ability(E(Void)),
-                Ability(W(Min)),
-                Ability(R(Max)),
+            .combos([
+                &[
+                    Ability(Q(Void)),
+                    Ability(W(Min)),
+                    Attack,
+                    Ability(E(Void)),
+                    Ability(W(Min)),
+                    Ability(R(Max)),
+                ],
+                &[
+                    Ability(E(Void)),
+                    Ability(W(Min)),
+                    Ability(Q(Void)),
+                    Ability(R(Max)),
+                    Ability(W(Min)),
+                    Attack,
+                ],
+                &[Ability(Q(Void)), Ability(R(Max))],
+                &[
+                    Ability(E(Void)),
+                    Ability(W(Min)),
+                    Ability(Q(Void)),
+                    Attack,
+                    Ability(W(Min)),
+                    Attack,
+                ],
+                &[
+                    Ability(Q(Void)),
+                    Ability(W(Min)),
+                    Ability(E(Void)),
+                    Ability(W(Min)),
+                ],
+                &[Ability(E(Void)), Ability(W(Max))],
             ])?
-            .combo([
-                Ability(E(Void)),
-                Ability(W(Min)),
-                Ability(Q(Void)),
-                Ability(R(Max)),
-                Ability(W(Min)),
-                Attack,
-            ])?
-            .combo([Ability(Q(Void)), Ability(R(Max))])?
-            .combo([
-                Ability(E(Void)),
-                Ability(W(Min)),
-                Ability(Q(Void)),
-                Attack,
-                Ability(W(Min)),
-                Attack,
-            ])?
-            .combo([
-                Ability(Q(Void)),
-                Ability(W(Min)),
-                Ability(E(Void)),
-                Ability(W(Min)),
-            ])?
-            .combo([Ability(E(Void)), Ability(W(Max))])?
             .end()
     }
 }

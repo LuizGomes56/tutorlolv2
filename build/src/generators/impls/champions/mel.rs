@@ -28,38 +28,40 @@ impl Generator for Mel {
             R(Void),
             "Magic damage, Stacks = Overwhelm stacks on the target",
         )?
-        .combo([
-            Ability(E(Void)),
-            Attack,
-            Ability(Q(Min)),
-            Attack,
-            Attack,
-            Attack,
-            Attack,
-            Ability(Q(Min)),
-            Ability(R(Void)),
-        ])?
-        .combo([Ability(E(Void)), Ability(Q(Max)), Ability(R(Void))])?
-        .combo([
-            Ability(E(Void)),
-            Attack,
-            Ability(Q(Min)),
-            Attack,
-            Attack,
-            Attack,
-            Ability(Q(Min)),
-            Ability(R(Void)),
-        ])?
-        .combo([
-            Ability(Q(Min)),
-            Attack,
-            Attack,
-            Ability(E(Void)),
-            Attack,
-            Attack,
-            Attack,
-            Ability(Q(Min)),
-            Ability(R(Void)),
+        .combos([
+            &[
+                Ability(E(Void)),
+                Attack,
+                Ability(Q(Min)),
+                Attack,
+                Attack,
+                Attack,
+                Attack,
+                Ability(Q(Min)),
+                Ability(R(Void)),
+            ],
+            &[Ability(E(Void)), Ability(Q(Max)), Ability(R(Void))],
+            &[
+                Ability(E(Void)),
+                Attack,
+                Ability(Q(Min)),
+                Attack,
+                Attack,
+                Attack,
+                Ability(Q(Min)),
+                Ability(R(Void)),
+            ],
+            &[
+                Ability(Q(Min)),
+                Attack,
+                Attack,
+                Ability(E(Void)),
+                Attack,
+                Attack,
+                Attack,
+                Ability(Q(Min)),
+                Ability(R(Void)),
+            ],
         ])?
         .end()
     }

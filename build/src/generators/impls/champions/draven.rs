@@ -13,32 +13,34 @@ impl Generator for Draven {
                     (3, Max),   /* Total Physical Damage */
                 ],
             )
-            .combo([
-                Ability(Q(Void)),
-                Attack,
-                Attack,
-                Ability(E(Void)),
-                Ability(R(Max)),
-                Attack,
+            .combos([
+                &[
+                    Ability(Q(Void)),
+                    Attack,
+                    Attack,
+                    Ability(E(Void)),
+                    Ability(R(Max)),
+                    Attack,
+                ],
+                &[Attack, Ability(Q(Void)), Attack, Attack, Attack],
+                &[
+                    Ability(R(Max)),
+                    Ability(E(Void)),
+                    Ability(Q(Void)),
+                    Attack,
+                    Attack,
+                ],
+                &[Ability(E(Void)), Ability(Q(Void)), Attack],
+                &[Attack, Ability(Q(Void))],
+                &[
+                    Ability(Q(Void)),
+                    Ability(R(Max)),
+                    Attack,
+                    Ability(E(Void)),
+                    Attack,
+                ],
+                &[Attack, Ability(E(Void)), Attack, Attack, Attack],
             ])?
-            .combo([Attack, Ability(Q(Void)), Attack, Attack, Attack])?
-            .combo([
-                Ability(R(Max)),
-                Ability(E(Void)),
-                Ability(Q(Void)),
-                Attack,
-                Attack,
-            ])?
-            .combo([Ability(E(Void)), Ability(Q(Void)), Attack])?
-            .combo([Attack, Ability(Q(Void))])?
-            .combo([
-                Ability(Q(Void)),
-                Ability(R(Max)),
-                Attack,
-                Ability(E(Void)),
-                Attack,
-            ])?
-            .combo([Attack, Ability(E(Void)), Attack, Attack, Attack])?
             .end()
     }
 }

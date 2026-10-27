@@ -20,23 +20,25 @@ impl Generator for Lulu {
                 damage: f![70 + 40 * (ELevel - 1) + 0.5 * AbilityPower],
             },
         )
-        .combo([Attack, Ability(E(Void)), Attack, Ability(Q(Min)), Attack])?
-        .combo([Ability(E(Void)), Ability(Q(Min))])?
-        .combo([
-            Ability(Q(Min)),
-            Attack,
-            Attack,
-            Attack,
-            Ability(E(Void)),
-            Attack,
-            Attack,
-            Ability(Q(Min)),
+        .combos([
+            &[Attack, Ability(E(Void)), Attack, Ability(Q(Min)), Attack],
+            &[Ability(E(Void)), Ability(Q(Min))],
+            &[
+                Ability(Q(Min)),
+                Attack,
+                Attack,
+                Attack,
+                Ability(E(Void)),
+                Attack,
+                Attack,
+                Ability(Q(Min)),
+            ],
+            &[Ability(Q(Min)), Attack, Ability(E(Void))],
+            &[Ability(E(Void)), Attack, Ability(Q(Min))],
+            &[Ability(E(Void)), Ability(Q(Min)), Attack, Attack],
+            &[Ability(Q(Min)), Ability(E(Void)), Attack],
+            &[Ability(E(Void)), Attack, Ability(Q(Min)), Attack],
         ])?
-        .combo([Ability(Q(Min)), Attack, Ability(E(Void))])?
-        .combo([Ability(E(Void)), Attack, Ability(Q(Min))])?
-        .combo([Ability(E(Void)), Ability(Q(Min)), Attack, Attack])?
-        .combo([Ability(Q(Min)), Ability(E(Void)), Attack])?
-        .combo([Ability(E(Void)), Attack, Ability(Q(Min)), Attack])?
         .end()
     }
 }

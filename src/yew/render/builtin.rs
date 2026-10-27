@@ -58,7 +58,7 @@ impl FormulaRenderer {
     pub fn onhit_effect_global() -> String {
         let mut h = Highlighter::new();
 
-        h.push(Class::Keyword, "intrinsic")
+        h.push(Class::Control, "intrinsic")
             .text(" ")
             .push(Class::Type, "Onhit")
             .text(" ")
@@ -98,7 +98,7 @@ impl FormulaRenderer {
             .text(" ")
             .bracket(Bracket::LCurly)
             .text("\n\t")
-            .push(Class::Keyword, "intrinsic")
+            .push(Class::Control, "intrinsic")
             .text("\n")
             .bracket(Bracket::RCurly);
 
@@ -108,7 +108,7 @@ impl FormulaRenderer {
     pub fn critical_strike_global() -> String {
         let mut h = Highlighter::new();
 
-        h.push(Class::Keyword, "intrinsic")
+        h.push(Class::Control, "intrinsic")
             .text(" ")
             .push(Class::Type, "CritStrike")
             .text(" ")
@@ -165,7 +165,7 @@ impl FormulaRenderer {
     pub fn basic_attack_global() -> String {
         let mut h = Highlighter::new();
 
-        h.push(Class::Keyword, "intrinsic")
+        h.push(Class::Control, "intrinsic")
             .text(" ")
             .push(Class::Type, "BasicAttack")
             .text(" ")

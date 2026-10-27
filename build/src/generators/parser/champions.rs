@@ -367,7 +367,16 @@ impl Champion {
             .ok_or_else(|| format!("&mut self.abilities[..] failed for: {key:?}"))?)
     }
 
-    pub fn combo<const N: usize>(&mut self, combo: [ComboElement; N]) -> MayFail<&mut Self> {
+    pub fn combos<const N: usize>(&mut self, combos: [&[ComboElement]; N]) -> MayFail<&mut Self> {
+        for combo in combos {
+            self.combo(combo)?;
+        }
+
+        Ok(self)
+    }
+
+    pub fn combo(&mut self, combo: impl AsRef<[ComboElement]>) -> MayFail<&mut Self> {
+        let combo = combo.as_ref();
         for &c in combo.iter() {
             if let ComboElement::Ability(id) = c
                 && self.get(id).is_err()

@@ -11,11 +11,13 @@ impl Generator for Mordekaiser {
             .clone_with(Q(Min), Q(Max), |q| f![(q) * (1.3 + 0.05 * (QLevel - 1))])?
             .comment(Q(Max), "Isolated target")?
             .ability(Key::E, [(0, Void) /* Magic Damage */])
-            .combo([Ability(E(Void)), Ability(Q(Max)), Attack, Attack])?
-            .combo([Ability(Q(Max)), Attack, Attack, Ability(E(Void)), Attack])?
-            .combo([Ability(E(Void)), Attack, Ability(Q(Max)), Attack])?
-            .combo([Attack, Ability(Q(Max)), Attack])?
-            .combo([Ability(E(Void)), Ability(Q(Max)), Attack])?
+            .combos([
+                &[Ability(E(Void)), Ability(Q(Max)), Attack, Attack],
+                &[Ability(Q(Max)), Attack, Attack, Ability(E(Void)), Attack],
+                &[Ability(E(Void)), Attack, Ability(Q(Max)), Attack],
+                &[Attack, Ability(Q(Max)), Attack],
+                &[Ability(E(Void)), Ability(Q(Max)), Attack],
+            ])?
             .end()
     }
 }

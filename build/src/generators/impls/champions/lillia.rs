@@ -24,39 +24,41 @@ impl Generator for Lillia {
             )
             .ability(Key::E, [(0, Void) /* Magic Damage */])
             .ability(Key::R, [(0, Void) /* Magic Damage */])
-            .combo([
-                Ability(E(Void)),
-                Ability(Q(Min)),
-                Ability(R(Void)),
-                Ability(W(Max)),
-                Ability(Q(Min)),
+            .combos([
+                &[
+                    Ability(E(Void)),
+                    Ability(Q(Min)),
+                    Ability(R(Void)),
+                    Ability(W(Max)),
+                    Ability(Q(Min)),
+                ],
+                &[Ability(Q(Max)), Ability(R(Void))],
+                &[
+                    Ability(E(Void)),
+                    Ability(R(Void)),
+                    Ability(Q(Max)),
+                    Attack,
+                    Ability(W(Max)),
+                ],
+                &[
+                    Ability(E(Void)),
+                    Ability(R(Void)),
+                    Ability(W(Max)),
+                    Ability(Q(Max)),
+                ],
+                &[
+                    Attack,
+                    Ability(Q(Min)),
+                    Attack,
+                    Ability(W(Max)),
+                    Attack,
+                    Ability(E(Void)),
+                    Attack,
+                    Attack,
+                    Ability(Q(Min)),
+                ],
+                &[Ability(E(Void)), Ability(W(Max)), Ability(Q(Max))],
             ])?
-            .combo([Ability(Q(Max)), Ability(R(Void))])?
-            .combo([
-                Ability(E(Void)),
-                Ability(R(Void)),
-                Ability(Q(Max)),
-                Attack,
-                Ability(W(Max)),
-            ])?
-            .combo([
-                Ability(E(Void)),
-                Ability(R(Void)),
-                Ability(W(Max)),
-                Ability(Q(Max)),
-            ])?
-            .combo([
-                Attack,
-                Ability(Q(Min)),
-                Attack,
-                Ability(W(Max)),
-                Attack,
-                Ability(E(Void)),
-                Attack,
-                Attack,
-                Ability(Q(Min)),
-            ])?
-            .combo([Ability(E(Void)), Ability(W(Max)), Ability(Q(Max))])?
             .end()
     }
 }

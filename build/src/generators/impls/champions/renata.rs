@@ -8,25 +8,27 @@ impl Generator for Renata {
             })?
             .ability(Key::Q, [(0, Void) /* Magic Damage */])
             .ability(Key::E, [(0, Void) /* Magic Damage */])
-            .combo([
-                Ability(Q(Void)),
-                Ability(Q(Void)),
-                Attack,
-                Ability(E(Void)),
-                Attack,
+            .combos([
+                &[
+                    Ability(Q(Void)),
+                    Ability(Q(Void)),
+                    Attack,
+                    Ability(E(Void)),
+                    Attack,
+                ],
+                &[Ability(Q(Void)), Ability(Q(Void)), Ability(E(Void))],
+                &[Ability(E(Void)), Ability(Q(Void)), Ability(Q(Void)), Attack],
+                &[
+                    Attack,
+                    Attack,
+                    Ability(E(Void)),
+                    Attack,
+                    Ability(Q(Void)),
+                    Ability(Q(Void)),
+                    Attack,
+                ],
+                &[Ability(Q(Void)), Ability(Q(Void)), Ability(E(Void)), Attack],
             ])?
-            .combo([Ability(Q(Void)), Ability(Q(Void)), Ability(E(Void))])?
-            .combo([Ability(E(Void)), Ability(Q(Void)), Ability(Q(Void)), Attack])?
-            .combo([
-                Attack,
-                Attack,
-                Ability(E(Void)),
-                Attack,
-                Ability(Q(Void)),
-                Ability(Q(Void)),
-                Attack,
-            ])?
-            .combo([Ability(Q(Void)), Ability(Q(Void)), Ability(E(Void)), Attack])?
             .end()
     }
 }

@@ -21,28 +21,30 @@ impl Generator for Ashe {
         )
         .ability(Key::W, [(1, Void) /* Physical Damage */])
         .ability(Key::R, [(0, Void) /* Magic Damage */])
-        .combo([
-            Attack,
-            Ability(Q(Max)),
-            Ability(R(Void)),
-            Attack,
-            Ability(W(Void)),
-            Attack,
+        .combos([
+            &[
+                Attack,
+                Ability(Q(Max)),
+                Ability(R(Void)),
+                Attack,
+                Ability(W(Void)),
+                Attack,
+            ],
+            &[Ability(W(Void)), Attack],
+            &[Ability(R(Void)), Attack],
+            &[Attack, Attack, Attack, Attack, Ability(Q(Max))],
+            &[
+                Ability(R(Void)),
+                Attack,
+                Ability(W(Void)),
+                Attack,
+                Attack,
+                Attack,
+                Ability(Q(Max)),
+                Attack,
+            ],
+            &[Attack, Ability(W(Void)), Attack],
         ])?
-        .combo([Ability(W(Void)), Attack])?
-        .combo([Ability(R(Void)), Attack])?
-        .combo([Attack, Attack, Attack, Attack, Ability(Q(Max))])?
-        .combo([
-            Ability(R(Void)),
-            Attack,
-            Ability(W(Void)),
-            Attack,
-            Attack,
-            Attack,
-            Ability(Q(Max)),
-            Attack,
-        ])?
-        .combo([Attack, Ability(W(Void)), Attack])?
         .end()
     }
 }

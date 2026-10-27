@@ -32,47 +32,49 @@ impl Generator for Rumble {
                     (2, Max), /* Maximum Magic Damage */
                 ],
             )
-            .combo([
-                Ability(R(Max)),
-                Ability(E(Min)),
-                Ability(Q(Max)),
-                Attack,
-                Ability(E(Min)),
-                Attack,
-            ])?
-            .combo([
-                Ability(R(Max)),
-                Ability(Q(Max)),
-                Attack,
-                Ability(E(Min)),
-                Attack,
-                Ability(E(Min)),
-                Attack,
-            ])?
-            .combo([Ability(E(Max)), Ability(Q(Max)), Attack, Attack, Attack])?
-            .combo([
-                Ability(Q(Max)),
-                Ability(R(Max)),
-                Attack,
-                Ability(E(Min)),
-                Attack,
-                Ability(E(Min)),
-                Attack,
-            ])?
-            .combo([
-                Ability(E(Min)),
-                Ability(Q(Max)),
-                Attack,
-                Ability(E(Min)),
-                Attack,
-            ])?
-            .combo([
-                Ability(Q(Max)),
-                Attack,
-                Ability(E(Min)),
-                Attack,
-                Ability(E(Min)),
-                Attack,
+            .combos([
+                &[
+                    Ability(R(Max)),
+                    Ability(E(Min)),
+                    Ability(Q(Max)),
+                    Attack,
+                    Ability(E(Min)),
+                    Attack,
+                ],
+                &[
+                    Ability(R(Max)),
+                    Ability(Q(Max)),
+                    Attack,
+                    Ability(E(Min)),
+                    Attack,
+                    Ability(E(Min)),
+                    Attack,
+                ],
+                &[Ability(E(Max)), Ability(Q(Max)), Attack, Attack, Attack],
+                &[
+                    Ability(Q(Max)),
+                    Ability(R(Max)),
+                    Attack,
+                    Ability(E(Min)),
+                    Attack,
+                    Ability(E(Min)),
+                    Attack,
+                ],
+                &[
+                    Ability(E(Min)),
+                    Ability(Q(Max)),
+                    Attack,
+                    Ability(E(Min)),
+                    Attack,
+                ],
+                &[
+                    Ability(Q(Max)),
+                    Attack,
+                    Ability(E(Min)),
+                    Attack,
+                    Ability(E(Min)),
+                    Attack,
+                ],
             ])?
             .end()
     }

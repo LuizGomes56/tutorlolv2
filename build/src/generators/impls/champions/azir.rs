@@ -27,33 +27,35 @@ impl Generator for Azir {
             .comment(W(Void), "Sand Soldier attack")?
             .ability(Key::E, [(0, Void) /* Magic Damage */])
             .ability(Key::R, [(0, Void) /* Magic Damage */])
-            .combo([Ability(E(Void)), Ability(Q(Void)), Ability(R(Void))])?
-            .combo([Ability(W(Void)), Ability(E(Void)), Ability(Q(Void)), Attack])?
-            .combo([Ability(W(Void)), Ability(E(Void)), Ability(Q(Void))])?
-            .combo([
-                Ability(E(Void)),
-                Ability(Q(Void)),
-                Ability(R(Void)),
-                Ability(W(Void)),
-                Attack,
-                Attack,
-            ])?
-            .combo([
-                Ability(W(Void)),
-                Attack,
-                Ability(E(Void)),
-                Ability(Q(Void)),
-                Attack,
-            ])?
-            .combo([Ability(W(Void)), Attack, Ability(Q(Void)), Attack])?
-            .combo([
-                Ability(R(Void)),
-                Ability(W(Void)),
-                Attack,
-                Ability(Q(Void)),
-                Attack,
-                Ability(W(Void)),
-                Attack,
+            .combos([
+                &[Ability(E(Void)), Ability(Q(Void)), Ability(R(Void))],
+                &[Ability(W(Void)), Ability(E(Void)), Ability(Q(Void)), Attack],
+                &[Ability(W(Void)), Ability(E(Void)), Ability(Q(Void))],
+                &[
+                    Ability(E(Void)),
+                    Ability(Q(Void)),
+                    Ability(R(Void)),
+                    Ability(W(Void)),
+                    Attack,
+                    Attack,
+                ],
+                &[
+                    Ability(W(Void)),
+                    Attack,
+                    Ability(E(Void)),
+                    Ability(Q(Void)),
+                    Attack,
+                ],
+                &[Ability(W(Void)), Attack, Ability(Q(Void)), Attack],
+                &[
+                    Ability(R(Void)),
+                    Ability(W(Void)),
+                    Attack,
+                    Ability(Q(Void)),
+                    Attack,
+                    Ability(W(Void)),
+                    Attack,
+                ],
             ])?
             .end()
     }

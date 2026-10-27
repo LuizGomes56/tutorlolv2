@@ -19,40 +19,42 @@ impl Generator for Vayne {
                 ],
             )
             .damage_types([Q(Void), E(Void), E(Min), E(Max)], Physical)?
-            .combo([
-                Ability(E(Void)),
-                Attack,
-                Ability(Q(Void)),
-                Ability(E(Void)),
-                Attack,
-                Attack,
+            .combos([
+                &[
+                    Ability(E(Void)),
+                    Attack,
+                    Ability(Q(Void)),
+                    Ability(E(Void)),
+                    Attack,
+                    Attack,
+                ],
+                &[
+                    Ability(Q(Void)),
+                    Ability(E(Void)),
+                    Attack,
+                    Ability(E(Void)),
+                    Attack,
+                    Attack,
+                    Ability(Q(Void)),
+                    Ability(E(Void)),
+                    Attack,
+                ],
+                &[
+                    Attack,
+                    Ability(Q(Void)),
+                    Ability(E(Void)),
+                    Attack,
+                    Ability(E(Void)),
+                ],
+                &[
+                    Attack,
+                    Ability(E(Void)),
+                    Ability(Q(Void)),
+                    Ability(E(Void)),
+                    Attack,
+                ],
+                &[Attack, Ability(Q(Void)), Ability(E(Void)), Attack, Attack],
             ])?
-            .combo([
-                Ability(Q(Void)),
-                Ability(E(Void)),
-                Attack,
-                Ability(E(Void)),
-                Attack,
-                Attack,
-                Ability(Q(Void)),
-                Ability(E(Void)),
-                Attack,
-            ])?
-            .combo([
-                Attack,
-                Ability(Q(Void)),
-                Ability(E(Void)),
-                Attack,
-                Ability(E(Void)),
-            ])?
-            .combo([
-                Attack,
-                Ability(E(Void)),
-                Ability(Q(Void)),
-                Ability(E(Void)),
-                Attack,
-            ])?
-            .combo([Attack, Ability(Q(Void)), Ability(E(Void)), Attack, Attack])?
             .end()
     }
 }

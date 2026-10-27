@@ -15,48 +15,50 @@ impl Generator for Tristana {
             )
             .comment(E(Void), "Passive explosion damage on kill")?
             .ability(Key::R, [(1, Void) /* Magic Damage */])
-            .combo([
-                Ability(W(Void)),
-                Ability(E(Void)),
-                Ability(R(Void)),
-                Attack,
-                Attack,
-                Ability(W(Void)),
-                Attack,
+            .combos([
+                &[
+                    Ability(W(Void)),
+                    Ability(E(Void)),
+                    Ability(R(Void)),
+                    Attack,
+                    Attack,
+                    Ability(W(Void)),
+                    Attack,
+                ],
+                &[
+                    Ability(W(Void)),
+                    Ability(E(Void)),
+                    Ability(R(Void)),
+                    Attack,
+                    Attack,
+                    Attack,
+                ],
+                &[
+                    Ability(E(Void)),
+                    Ability(W(Void)),
+                    Attack,
+                    Attack,
+                    Ability(R(Void)),
+                    Attack,
+                ],
+                &[
+                    Ability(E(Void)),
+                    Attack,
+                    Attack,
+                    Attack,
+                    Ability(R(Void)),
+                    Attack,
+                ],
+                &[
+                    Ability(W(Void)),
+                    Ability(E(Void)),
+                    Attack,
+                    Attack,
+                    Attack,
+                    Ability(W(Void)),
+                ],
+                &[Attack, Ability(E(Void)), Attack, Attack, Attack, Attack],
             ])?
-            .combo([
-                Ability(W(Void)),
-                Ability(E(Void)),
-                Ability(R(Void)),
-                Attack,
-                Attack,
-                Attack,
-            ])?
-            .combo([
-                Ability(E(Void)),
-                Ability(W(Void)),
-                Attack,
-                Attack,
-                Ability(R(Void)),
-                Attack,
-            ])?
-            .combo([
-                Ability(E(Void)),
-                Attack,
-                Attack,
-                Attack,
-                Ability(R(Void)),
-                Attack,
-            ])?
-            .combo([
-                Ability(W(Void)),
-                Ability(E(Void)),
-                Attack,
-                Attack,
-                Attack,
-                Ability(W(Void)),
-            ])?
-            .combo([Attack, Ability(E(Void)), Attack, Attack, Attack, Attack])?
             .end()
     }
 }

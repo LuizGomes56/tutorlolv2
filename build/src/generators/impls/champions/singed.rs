@@ -11,11 +11,13 @@ impl Generator for Singed {
             ],
         )
         .ability(Key::E, [(0, Void) /* Magic Damage */])
-        .combo([Ability(Q(Void)), Attack, Ability(E(Void)), Attack])?
-        .combo([Ability(Q(Void)), Ability(E(Void)), Attack, Attack])?
-        .combo([Ability(E(Void)), Ability(Q(Void)), Attack, Attack])?
-        .combo([Ability(Q(Void)), Attack, Ability(E(Void)), Attack, Attack])?
-        .combo([Ability(E(Void)), Ability(Q(Void)), Attack])?
+        .combos([
+            &[Ability(Q(Void)), Attack, Ability(E(Void)), Attack],
+            &[Ability(Q(Void)), Ability(E(Void)), Attack, Attack],
+            &[Ability(E(Void)), Ability(Q(Void)), Attack, Attack],
+            &[Ability(Q(Void)), Attack, Ability(E(Void)), Attack, Attack],
+            &[Ability(E(Void)), Ability(Q(Void)), Attack],
+        ])?
         .end()
     }
 }

@@ -15,12 +15,14 @@ impl Generator for Zyra {
                     damage: f![15 + 60 / 17 * (Level - 1) + 0.2 * AbilityPower],
                 },
             )
-            .combo([Ability(R(Void)), Ability(E(Void)), Ability(Q(Void))])?
-            .combo([Ability(E(Void)), Ability(Q(Void)), Ability(R(Void)), Attack])?
-            .combo([Ability(R(Void)), Ability(Q(Void))])?
-            .combo([Ability(Q(Void)), Ability(E(Void)), Ability(R(Void))])?
-            .combo([Ability(Q(Void)), Ability(E(Void))])?
-            .combo([Ability(E(Void)), Ability(Q(Void))])?
+            .combos([
+                &[Ability(R(Void)), Ability(E(Void)), Ability(Q(Void))],
+                &[Ability(E(Void)), Ability(Q(Void)), Ability(R(Void)), Attack],
+                &[Ability(R(Void)), Ability(Q(Void))],
+                &[Ability(Q(Void)), Ability(E(Void)), Ability(R(Void))],
+                &[Ability(Q(Void)), Ability(E(Void))],
+                &[Ability(E(Void)), Ability(Q(Void))],
+            ])?
             .end()
     }
 }

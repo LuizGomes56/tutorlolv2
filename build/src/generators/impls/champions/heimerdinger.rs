@@ -39,48 +39,50 @@ impl Generator for Heimerdinger {
         )
         .ability_nth(1, Key::E, [(0, Void) /* Magic Damage */])
         .ability(Key::E, [(0, _1) /* Magic Damage */])
-        .combo([
-            Ability(Q(Void)),
-            Ability(E(Void)),
-            Ability(Q(Void)),
-            Ability(W(Max)),
-            Attack,
+        .combos([
+            &[
+                Ability(Q(Void)),
+                Ability(E(Void)),
+                Ability(Q(Void)),
+                Ability(W(Max)),
+                Attack,
+            ],
+            &[
+                Ability(E(Void)),
+                Ability(Q(Void)),
+                Ability(W(Max)),
+                Attack,
+                Ability(Q(Void)),
+                Attack,
+            ],
+            &[
+                Ability(Q(Void)),
+                Ability(Q(Void)),
+                Ability(Q(Void)),
+                Ability(E(Void)),
+                Ability(Q(Void)),
+                Attack,
+                Ability(W(Max)),
+            ],
+            &[
+                Ability(Q(Void)),
+                Ability(Q(Void)),
+                Ability(Q(Void)),
+                Ability(E(Void)),
+                Ability(W(Max)),
+            ],
+            &[Ability(E(Void)), Ability(W(Max)), Attack],
+            &[
+                Ability(E(Void)),
+                Ability(Q(Void)),
+                Attack,
+                Ability(Q(Void)),
+                Ability(W(Max)),
+                Attack,
+            ],
+            &[Ability(E(Void)), Ability(Q(Void)), Ability(W(Max)), Attack],
+            &[Ability(E(Void)), Ability(W(Max)), Ability(Q(Void)), Attack],
         ])?
-        .combo([
-            Ability(E(Void)),
-            Ability(Q(Void)),
-            Ability(W(Max)),
-            Attack,
-            Ability(Q(Void)),
-            Attack,
-        ])?
-        .combo([
-            Ability(Q(Void)),
-            Ability(Q(Void)),
-            Ability(Q(Void)),
-            Ability(E(Void)),
-            Ability(Q(Void)),
-            Attack,
-            Ability(W(Max)),
-        ])?
-        .combo([
-            Ability(Q(Void)),
-            Ability(Q(Void)),
-            Ability(Q(Void)),
-            Ability(E(Void)),
-            Ability(W(Max)),
-        ])?
-        .combo([Ability(E(Void)), Ability(W(Max)), Attack])?
-        .combo([
-            Ability(E(Void)),
-            Ability(Q(Void)),
-            Attack,
-            Ability(Q(Void)),
-            Ability(W(Max)),
-            Attack,
-        ])?
-        .combo([Ability(E(Void)), Ability(Q(Void)), Ability(W(Max)), Attack])?
-        .combo([Ability(E(Void)), Ability(W(Max)), Ability(Q(Void)), Attack])?
         .end()
     }
 }

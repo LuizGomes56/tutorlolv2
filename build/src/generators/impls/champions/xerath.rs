@@ -19,28 +19,30 @@ impl Generator for Xerath {
                     (5, Max),  /* Total Magic Damage */
                 ],
             )
-            .combo([Ability(E(Void)), Ability(W(Max)), Ability(Q(Void)), Attack])?
-            .combo([
-                Ability(Q(Void)),
-                Ability(W(Max)),
-                Ability(E(Void)),
-                Ability(R(Void)),
-                Ability(R(Void)),
-                Ability(R(Void)),
-                Ability(R(Void)),
+            .combos([
+                &[Ability(E(Void)), Ability(W(Max)), Ability(Q(Void)), Attack],
+                &[
+                    Ability(Q(Void)),
+                    Ability(W(Max)),
+                    Ability(E(Void)),
+                    Ability(R(Void)),
+                    Ability(R(Void)),
+                    Ability(R(Void)),
+                    Ability(R(Void)),
+                ],
+                &[
+                    Ability(Q(Void)),
+                    Ability(E(Void)),
+                    Ability(W(Max)),
+                    Ability(R(Void)),
+                    Ability(R(Void)),
+                    Ability(R(Void)),
+                    Ability(R(Void)),
+                ],
+                &[Ability(E(Void)), Ability(W(Max)), Ability(Q(Void))],
+                &[Ability(W(Max)), Ability(Q(Void))],
+                &[Ability(W(Max)), Ability(E(Void)), Ability(Q(Void))],
             ])?
-            .combo([
-                Ability(Q(Void)),
-                Ability(E(Void)),
-                Ability(W(Max)),
-                Ability(R(Void)),
-                Ability(R(Void)),
-                Ability(R(Void)),
-                Ability(R(Void)),
-            ])?
-            .combo([Ability(E(Void)), Ability(W(Max)), Ability(Q(Void))])?
-            .combo([Ability(W(Max)), Ability(Q(Void))])?
-            .combo([Ability(W(Max)), Ability(E(Void)), Ability(Q(Void))])?
             .end()
     }
 }

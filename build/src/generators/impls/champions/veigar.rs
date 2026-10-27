@@ -11,16 +11,18 @@ impl Generator for Veigar {
                     (1, Min), /* Minimum Magic Damage */
                 ],
             )
-            .combo([
-                Ability(W(Void)),
-                Ability(Q(Void)),
-                Attack,
-                Ability(R(Max)),
-                Attack,
+            .combos([
+                &[
+                    Ability(W(Void)),
+                    Ability(Q(Void)),
+                    Attack,
+                    Ability(R(Max)),
+                    Attack,
+                ],
+                &[Ability(W(Void)), Ability(Q(Void)), Ability(R(Max))],
+                &[Ability(Q(Void)), Ability(R(Max))],
+                &[Ability(W(Void)), Ability(Q(Void)), Attack],
             ])?
-            .combo([Ability(W(Void)), Ability(Q(Void)), Ability(R(Max))])?
-            .combo([Ability(Q(Void)), Ability(R(Max))])?
-            .combo([Ability(W(Void)), Ability(Q(Void)), Attack])?
             .end()
     }
 }

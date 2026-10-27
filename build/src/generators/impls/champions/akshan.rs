@@ -31,43 +31,45 @@ impl Generator for Akshan {
                     (5, Min),   /* Minimum Physical Damage per Bullet */
                 ],
             )
-            .combo([
-                Attack,
-                Attack,
-                Ability(Q(Max)),
-                Attack,
-                Ability(E(Void)),
-                Ability(R(Max)),
-            ])?
-            .combo([Attack, Attack, Ability(Q(Max))])?
-            .combo([
-                Attack,
-                Attack,
-                Ability(Q(Max)),
-                Attack,
-                Attack,
-                Ability(R(Max)),
-                Ability(E(Void)),
-            ])?
-            .combo([
-                Attack,
-                Attack,
-                Ability(Q(Max)),
-                Attack,
-                Attack,
-                Ability(E(Void)),
-                Attack,
-                Attack,
-                Attack,
-                Ability(E(Void)),
-            ])?
-            .combo([
-                Attack,
-                Attack,
-                Ability(Q(Max)),
-                Attack,
-                Attack,
-                Ability(E(Void)),
+            .combos([
+                &[
+                    Attack,
+                    Attack,
+                    Ability(Q(Max)),
+                    Attack,
+                    Ability(E(Void)),
+                    Ability(R(Max)),
+                ],
+                &[Attack, Attack, Ability(Q(Max))],
+                &[
+                    Attack,
+                    Attack,
+                    Ability(Q(Max)),
+                    Attack,
+                    Attack,
+                    Ability(R(Max)),
+                    Ability(E(Void)),
+                ],
+                &[
+                    Attack,
+                    Attack,
+                    Ability(Q(Max)),
+                    Attack,
+                    Attack,
+                    Ability(E(Void)),
+                    Attack,
+                    Attack,
+                    Attack,
+                    Ability(E(Void)),
+                ],
+                &[
+                    Attack,
+                    Attack,
+                    Ability(Q(Max)),
+                    Attack,
+                    Attack,
+                    Ability(E(Void)),
+                ],
             ])?
             .end()
     }

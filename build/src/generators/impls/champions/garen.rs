@@ -13,18 +13,20 @@ impl Generator for Garen {
             .clone_with(E(Min), E(Max), |e| f![7 * (e)])?
             .comment(E(Max), "Total damage of 7 spins")?
             .ability(Key::R, [(0, Void) /* True Damage */])
-            .combo([
-                Ability(Q(Void)),
-                Ability(E(Max)),
-                Attack,
-                Ability(E(Max)),
-                Attack,
-                Ability(R(Void)),
+            .combos([
+                &[
+                    Ability(Q(Void)),
+                    Ability(E(Max)),
+                    Attack,
+                    Ability(E(Max)),
+                    Attack,
+                    Ability(R(Void)),
+                ],
+                &[Ability(Q(Void)), Ability(E(Max)), Attack, Ability(R(Void))],
+                &[Attack, Ability(Q(Void)), Ability(E(Max)), Attack],
+                &[Ability(E(Max)), Attack, Ability(Q(Void)), Ability(R(Void))],
+                &[Attack, Ability(Q(Void)), Attack],
             ])?
-            .combo([Ability(Q(Void)), Ability(E(Max)), Attack, Ability(R(Void))])?
-            .combo([Attack, Ability(Q(Void)), Ability(E(Max)), Attack])?
-            .combo([Ability(E(Max)), Attack, Ability(Q(Void)), Ability(R(Void))])?
-            .combo([Attack, Ability(Q(Void)), Attack])?
             .end()
     }
 }

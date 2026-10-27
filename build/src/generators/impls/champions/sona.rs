@@ -12,18 +12,20 @@ impl Generator for Sona {
                 ],
             )
             .ability(Key::R, [(0, Void) /* Magic Damage */])
-            .combo([
-                Ability(R(Void)),
-                Ability(Q(Void)),
-                Attack,
-                Attack,
-                Attack,
-                Attack,
+            .combos([
+                &[
+                    Ability(R(Void)),
+                    Ability(Q(Void)),
+                    Attack,
+                    Attack,
+                    Attack,
+                    Attack,
+                ],
+                &[Ability(R(Void)), Ability(Q(Void)), Attack, Attack],
+                &[Attack, Ability(Q(Void)), Attack],
+                &[Ability(R(Void)), Ability(Q(Void)), Attack],
+                &[Ability(Q(Void)), Attack],
             ])?
-            .combo([Ability(R(Void)), Ability(Q(Void)), Attack, Attack])?
-            .combo([Attack, Ability(Q(Void)), Attack])?
-            .combo([Ability(R(Void)), Ability(Q(Void)), Attack])?
-            .combo([Ability(Q(Void)), Attack])?
             .end()
     }
 }

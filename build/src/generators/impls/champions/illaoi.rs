@@ -20,46 +20,48 @@ impl Generator for Illaoi {
                 f![(0.03 + 0.005 * (WLevel - 1) + 0.00035 * AttackDamage) * EnemyMaxHealth]
             })?
             .ability(Key::R, [(0, Void) /* Physical Damage */])
-            .combo([
-                Ability(R(Void)),
-                Ability(W(Min)),
-                Attack,
-                Ability(Q(Void)),
-                Attack,
-                Ability(W(Min)),
-                Attack,
-                Ability(W(Min)),
+            .combos([
+                &[
+                    Ability(R(Void)),
+                    Ability(W(Min)),
+                    Attack,
+                    Ability(Q(Void)),
+                    Attack,
+                    Ability(W(Min)),
+                    Attack,
+                    Ability(W(Min)),
+                ],
+                &[
+                    Attack,
+                    Ability(W(Min)),
+                    Ability(R(Void)),
+                    Ability(Q(Void)),
+                    Ability(W(Min)),
+                    Attack,
+                    Ability(W(Min)),
+                    Attack,
+                    Ability(W(Min)),
+                ],
+                &[
+                    Ability(R(Void)),
+                    Ability(W(Min)),
+                    Attack,
+                    Ability(Q(Void)),
+                    Attack,
+                    Ability(W(Min)),
+                ],
+                &[
+                    Ability(W(Min)),
+                    Attack,
+                    Ability(Q(Void)),
+                    Attack,
+                    Attack,
+                    Ability(W(Min)),
+                ],
+                &[Attack, Ability(W(Max)), Ability(Q(Void)), Attack, Attack],
+                &[Ability(W(Max)), Attack, Ability(Q(Void)), Attack],
+                &[Attack, Ability(W(Max)), Ability(Q(Void)), Attack],
             ])?
-            .combo([
-                Attack,
-                Ability(W(Min)),
-                Ability(R(Void)),
-                Ability(Q(Void)),
-                Ability(W(Min)),
-                Attack,
-                Ability(W(Min)),
-                Attack,
-                Ability(W(Min)),
-            ])?
-            .combo([
-                Ability(R(Void)),
-                Ability(W(Min)),
-                Attack,
-                Ability(Q(Void)),
-                Attack,
-                Ability(W(Min)),
-            ])?
-            .combo([
-                Ability(W(Min)),
-                Attack,
-                Ability(Q(Void)),
-                Attack,
-                Attack,
-                Ability(W(Min)),
-            ])?
-            .combo([Attack, Ability(W(Max)), Ability(Q(Void)), Attack, Attack])?
-            .combo([Ability(W(Max)), Attack, Ability(Q(Void)), Attack])?
-            .combo([Attack, Ability(W(Max)), Ability(Q(Void)), Attack])?
             .end()
     }
 }

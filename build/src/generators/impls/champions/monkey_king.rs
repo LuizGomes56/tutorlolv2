@@ -15,54 +15,56 @@ impl Generator for MonkeyKing {
             )
             .damage_types([W(Void), R(Min), R(Max), R(_1Max)], Physical)?
             .modify(W(Void), |ratio| f![ratio * AttackDamage])?
-            .combo([
-                Ability(E(Void)),
-                Attack,
-                Ability(Q(Void)),
-                Ability(W(Void)),
-                Ability(R(Max)),
-                Attack,
-                Ability(Q(Void)),
-                Ability(R(Max)),
-                Attack,
+            .combos([
+                &[
+                    Ability(E(Void)),
+                    Attack,
+                    Ability(Q(Void)),
+                    Ability(W(Void)),
+                    Ability(R(Max)),
+                    Attack,
+                    Ability(Q(Void)),
+                    Ability(R(Max)),
+                    Attack,
+                ],
+                &[
+                    Ability(E(Void)),
+                    Ability(W(Void)),
+                    Ability(R(Max)),
+                    Ability(Q(Void)),
+                    Ability(R(Max)),
+                ],
+                &[Ability(E(Void)), Ability(R(Max))],
+                &[
+                    Ability(E(Void)),
+                    Ability(Q(Void)),
+                    Ability(R(Max)),
+                    Attack,
+                    Ability(W(Void)),
+                    Ability(Q(Void)),
+                    Ability(R(Max)),
+                ],
+                &[
+                    Ability(E(Void)),
+                    Ability(W(Void)),
+                    Attack,
+                    Ability(Q(Void)),
+                    Ability(R(Max)),
+                    Attack,
+                    Ability(Q(Void)),
+                    Ability(R(Max)),
+                ],
+                &[Ability(Q(Void)), Ability(W(Void))],
+                &[
+                    Ability(E(Void)),
+                    Attack,
+                    Ability(W(Void)),
+                    Attack,
+                    Ability(Q(Void)),
+                    Attack,
+                ],
+                &[Ability(E(Void)), Attack, Ability(Q(Void)), Attack],
             ])?
-            .combo([
-                Ability(E(Void)),
-                Ability(W(Void)),
-                Ability(R(Max)),
-                Ability(Q(Void)),
-                Ability(R(Max)),
-            ])?
-            .combo([Ability(E(Void)), Ability(R(Max))])?
-            .combo([
-                Ability(E(Void)),
-                Ability(Q(Void)),
-                Ability(R(Max)),
-                Attack,
-                Ability(W(Void)),
-                Ability(Q(Void)),
-                Ability(R(Max)),
-            ])?
-            .combo([
-                Ability(E(Void)),
-                Ability(W(Void)),
-                Attack,
-                Ability(Q(Void)),
-                Ability(R(Max)),
-                Attack,
-                Ability(Q(Void)),
-                Ability(R(Max)),
-            ])?
-            .combo([Ability(Q(Void)), Ability(W(Void))])?
-            .combo([
-                Ability(E(Void)),
-                Attack,
-                Ability(W(Void)),
-                Attack,
-                Ability(Q(Void)),
-                Attack,
-            ])?
-            .combo([Ability(E(Void)), Attack, Ability(Q(Void)), Attack])?
             .end()
     }
 }

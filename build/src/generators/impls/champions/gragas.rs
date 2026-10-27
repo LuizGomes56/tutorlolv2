@@ -12,52 +12,54 @@ impl Generator for Gragas {
         .ability(Key::W, [(0, Void) /* Bonus Magic Damage */])
         .ability(Key::E, [(0, Void) /* Magic Damage */])
         .ability(Key::R, [(0, Void) /* Magic Damage */])
-        .combo([
-            Ability(W(Void)),
-            Ability(R(Void)),
-            Ability(E(Void)),
-            Ability(Q(Min)),
-            Attack,
-            Ability(Q(Min)),
+        .combos([
+            &[
+                Ability(W(Void)),
+                Ability(R(Void)),
+                Ability(E(Void)),
+                Ability(Q(Min)),
+                Attack,
+                Ability(Q(Min)),
+            ],
+            &[
+                Ability(E(Void)),
+                Ability(Q(Min)),
+                Ability(R(Void)),
+                Ability(Q(Min)),
+            ],
+            &[
+                Ability(Q(Min)),
+                Ability(W(Void)),
+                Ability(R(Void)),
+                Attack,
+                Ability(E(Void)),
+                Ability(Q(Min)),
+            ],
+            &[
+                Ability(Q(Min)),
+                Ability(W(Void)),
+                Ability(E(Void)),
+                Ability(R(Void)),
+                Attack,
+                Ability(Q(Min)),
+            ],
+            &[
+                Ability(Q(Min)),
+                Ability(R(Void)),
+                Ability(E(Void)),
+                Ability(Q(Min)),
+            ],
+            &[Ability(E(Void)), Ability(R(Void))],
+            &[
+                Ability(W(Void)),
+                Ability(E(Void)),
+                Ability(Q(Min)),
+                Attack,
+                Ability(R(Void)),
+                Ability(Q(Min)),
+            ],
+            &[Ability(Q(Max)), Ability(W(Void))],
         ])?
-        .combo([
-            Ability(E(Void)),
-            Ability(Q(Min)),
-            Ability(R(Void)),
-            Ability(Q(Min)),
-        ])?
-        .combo([
-            Ability(Q(Min)),
-            Ability(W(Void)),
-            Ability(R(Void)),
-            Attack,
-            Ability(E(Void)),
-            Ability(Q(Min)),
-        ])?
-        .combo([
-            Ability(Q(Min)),
-            Ability(W(Void)),
-            Ability(E(Void)),
-            Ability(R(Void)),
-            Attack,
-            Ability(Q(Min)),
-        ])?
-        .combo([
-            Ability(Q(Min)),
-            Ability(R(Void)),
-            Ability(E(Void)),
-            Ability(Q(Min)),
-        ])?
-        .combo([Ability(E(Void)), Ability(R(Void))])?
-        .combo([
-            Ability(W(Void)),
-            Ability(E(Void)),
-            Ability(Q(Min)),
-            Attack,
-            Ability(R(Void)),
-            Ability(Q(Min)),
-        ])?
-        .combo([Ability(Q(Max)), Ability(W(Void))])?
         .end()
     }
 }

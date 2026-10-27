@@ -20,19 +20,21 @@ impl Generator for Karma {
                     (2, Max), /* Total Magic Damage */
                 ],
             )
-            .combo([Ability(Q(Void)), Ability(W(Max)), Attack, Attack, Attack])?
-            .combo([
-                Ability(W(Max)),
-                Attack,
-                Attack,
-                Ability(Q(Void)),
-                Attack,
-                Attack,
+            .combos([
+                &[Ability(Q(Void)), Ability(W(Max)), Attack, Attack, Attack],
+                &[
+                    Ability(W(Max)),
+                    Attack,
+                    Attack,
+                    Ability(Q(Void)),
+                    Attack,
+                    Attack,
+                ],
+                &[Ability(W(Max)), Attack, Ability(Q(Void)), Attack],
+                &[Ability(W(Max)), Ability(Q(Void))],
+                &[Ability(Q(Void)), Ability(W(Max)), Attack, Attack],
+                &[Attack, Ability(Q(Void)), Attack],
             ])?
-            .combo([Ability(W(Max)), Attack, Ability(Q(Void)), Attack])?
-            .combo([Ability(W(Max)), Ability(Q(Void))])?
-            .combo([Ability(Q(Void)), Ability(W(Max)), Attack, Attack])?
-            .combo([Attack, Ability(Q(Void)), Attack])?
             .end()
     }
 }

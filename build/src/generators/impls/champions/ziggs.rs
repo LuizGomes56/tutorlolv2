@@ -20,46 +20,48 @@ impl Generator for Ziggs {
                     (1, Min), /* Reduced Damage */
                 ],
             )
-            .combo([
-                Attack,
-                Ability(E(Void)),
-                Ability(Q(Void)),
-                Ability(R(Max)),
-                Attack,
-                Ability(W(Void)),
-                Ability(W(Void)),
-                Attack,
-            ])?
-            .combo([
-                Ability(E(Void)),
-                Ability(W(Void)),
-                Ability(W(Void)),
-                Ability(R(Max)),
-                Ability(Q(Void)),
-                Attack,
-            ])?
-            .combo([
-                Ability(W(Void)),
-                Ability(W(Void)),
-                Ability(E(Void)),
-                Ability(Q(Void)),
-                Ability(R(Max)),
-            ])?
-            .combo([
-                Attack,
-                Ability(E(Void)),
-                Ability(Q(Void)),
-                Ability(W(Void)),
-                Attack,
-                Ability(W(Void)),
-            ])?
-            .combo([Ability(W(Void)), Ability(W(Void)), Ability(Q(Void)), Attack])?
-            .combo([Ability(E(Void)), Ability(Q(Void)), Attack])?
-            .combo([
-                Ability(E(Void)),
-                Ability(W(Void)),
-                Ability(Q(Void)),
-                Ability(W(Void)),
+            .combos([
+                &[
+                    Attack,
+                    Ability(E(Void)),
+                    Ability(Q(Void)),
+                    Ability(R(Max)),
+                    Attack,
+                    Ability(W(Void)),
+                    Ability(W(Void)),
+                    Attack,
+                ],
+                &[
+                    Ability(E(Void)),
+                    Ability(W(Void)),
+                    Ability(W(Void)),
+                    Ability(R(Max)),
+                    Ability(Q(Void)),
+                    Attack,
+                ],
+                &[
+                    Ability(W(Void)),
+                    Ability(W(Void)),
+                    Ability(E(Void)),
+                    Ability(Q(Void)),
+                    Ability(R(Max)),
+                ],
+                &[
+                    Attack,
+                    Ability(E(Void)),
+                    Ability(Q(Void)),
+                    Ability(W(Void)),
+                    Attack,
+                    Ability(W(Void)),
+                ],
+                &[Ability(W(Void)), Ability(W(Void)), Ability(Q(Void)), Attack],
+                &[Ability(E(Void)), Ability(Q(Void)), Attack],
+                &[
+                    Ability(E(Void)),
+                    Ability(W(Void)),
+                    Ability(Q(Void)),
+                    Ability(W(Void)),
+                ],
             ])?
             .end()
     }

@@ -22,32 +22,34 @@ impl Generator for Gnar {
                 (3, Min), /* Physical Damage */
             ],
         )
-        .combo([Ability(E(Void)), Ability(R(Max))])?
-        .combo([
-            Ability(E(Void)),
-            Attack,
-            Ability(R(Max)),
-            Attack,
-            Ability(W(Void)),
-            Attack,
-            Ability(Q(Max)),
-            Attack,
+        .combos([
+            &[Ability(E(Void)), Ability(R(Max))],
+            &[
+                Ability(E(Void)),
+                Attack,
+                Ability(R(Max)),
+                Attack,
+                Ability(W(Void)),
+                Attack,
+                Ability(Q(Max)),
+                Attack,
+            ],
+            &[
+                Ability(E(Void)),
+                Ability(R(Max)),
+                Attack,
+                Ability(Q(Max)),
+                Attack,
+            ],
+            &[
+                Ability(Q(Max)),
+                Ability(E(Void)),
+                Attack,
+                Ability(W(Void)),
+                Attack,
+            ],
+            &[Attack, Ability(E(Void)), Ability(Q(Max)), Attack],
         ])?
-        .combo([
-            Ability(E(Void)),
-            Ability(R(Max)),
-            Attack,
-            Ability(Q(Max)),
-            Attack,
-        ])?
-        .combo([
-            Ability(Q(Max)),
-            Ability(E(Void)),
-            Attack,
-            Ability(W(Void)),
-            Attack,
-        ])?
-        .combo([Attack, Ability(E(Void)), Ability(Q(Max)), Attack])?
         .end()
     }
 }

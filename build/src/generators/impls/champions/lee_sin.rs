@@ -18,52 +18,54 @@ impl Generator for LeeSin {
                     (1, Min), /* Physical Damage */
                 ],
             )
-            .combo([Ability(Q(Min)), Ability(Q(Min)), Ability(R(Max))])?
-            .combo([
-                Ability(Q(Min)),
-                Ability(R(Max)),
-                Ability(Q(Min)),
-                Ability(E(Void)),
-            ])?
-            .combo([
-                Ability(Q(Min)),
-                Ability(R(Max)),
-                Ability(Q(Min)),
-                Attack,
-                Ability(E(Void)),
-                Attack,
-            ])?
-            .combo([Ability(Q(Min)), Ability(R(Max)), Ability(Q(Min)), Attack])?
-            .combo([
-                Attack,
-                Ability(E(Void)),
-                Attack,
-                Ability(E(Void)),
-                Attack,
-                Attack,
-                Ability(R(Max)),
-                Ability(Q(Max)),
-            ])?
-            .combo([
-                Attack,
-                Attack,
-                Ability(E(Void)),
-                Attack,
-                Ability(E(Void)),
-                Attack,
-                Ability(Q(Min)),
-                Ability(Q(Min)),
-            ])?
-            .combo([
-                Ability(E(Void)),
-                Attack,
-                Ability(E(Void)),
-                Attack,
-                Attack,
-                Ability(Q(Min)),
-                Attack,
-                Attack,
-                Ability(Q(Min)),
+            .combos([
+                &[Ability(Q(Min)), Ability(Q(Min)), Ability(R(Max))],
+                &[
+                    Ability(Q(Min)),
+                    Ability(R(Max)),
+                    Ability(Q(Min)),
+                    Ability(E(Void)),
+                ],
+                &[
+                    Ability(Q(Min)),
+                    Ability(R(Max)),
+                    Ability(Q(Min)),
+                    Attack,
+                    Ability(E(Void)),
+                    Attack,
+                ],
+                &[Ability(Q(Min)), Ability(R(Max)), Ability(Q(Min)), Attack],
+                &[
+                    Attack,
+                    Ability(E(Void)),
+                    Attack,
+                    Ability(E(Void)),
+                    Attack,
+                    Attack,
+                    Ability(R(Max)),
+                    Ability(Q(Max)),
+                ],
+                &[
+                    Attack,
+                    Attack,
+                    Ability(E(Void)),
+                    Attack,
+                    Ability(E(Void)),
+                    Attack,
+                    Ability(Q(Min)),
+                    Ability(Q(Min)),
+                ],
+                &[
+                    Ability(E(Void)),
+                    Attack,
+                    Ability(E(Void)),
+                    Attack,
+                    Attack,
+                    Ability(Q(Min)),
+                    Attack,
+                    Attack,
+                    Ability(Q(Min)),
+                ],
             ])?
             .end()
     }

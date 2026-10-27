@@ -54,54 +54,56 @@ impl Generator for Smolder {
             })?
             .damage_types([Q(Min), Q(Max), W(Void), W(Min), W(Max)], Mixed)?
             .damage_types([R(Min), R(Max)], Physical)?
-            .combo([
-                Ability(Q(Min)),
-                Ability(W(Void)),
-                Ability(R(Max)),
-                Attack,
-                Attack,
-                Attack,
-                Ability(Q(Min)),
-                Attack,
+            .combos([
+                &[
+                    Ability(Q(Min)),
+                    Ability(W(Void)),
+                    Ability(R(Max)),
+                    Attack,
+                    Attack,
+                    Attack,
+                    Ability(Q(Min)),
+                    Attack,
+                ],
+                &[
+                    Ability(R(Max)),
+                    Ability(E(Max)),
+                    Ability(W(Void)),
+                    Ability(Q(Max)),
+                    Attack,
+                ],
+                &[
+                    Ability(R(Max)),
+                    Ability(W(Void)),
+                    Attack,
+                    Ability(Q(Max)),
+                    Attack,
+                    Ability(E(Max)),
+                ],
+                &[
+                    Ability(Q(Min)),
+                    Attack,
+                    Ability(W(Void)),
+                    Ability(R(Max)),
+                    Attack,
+                    Ability(E(Max)),
+                    Attack,
+                    Ability(Q(Min)),
+                    Attack,
+                ],
+                &[
+                    Ability(Q(Min)),
+                    Attack,
+                    Ability(W(Void)),
+                    Attack,
+                    Ability(E(Max)),
+                    Attack,
+                    Attack,
+                    Ability(Q(Min)),
+                    Attack,
+                ],
+                &[Attack, Ability(W(Void)), Attack, Ability(Q(Max)), Attack],
             ])?
-            .combo([
-                Ability(R(Max)),
-                Ability(E(Max)),
-                Ability(W(Void)),
-                Ability(Q(Max)),
-                Attack,
-            ])?
-            .combo([
-                Ability(R(Max)),
-                Ability(W(Void)),
-                Attack,
-                Ability(Q(Max)),
-                Attack,
-                Ability(E(Max)),
-            ])?
-            .combo([
-                Ability(Q(Min)),
-                Attack,
-                Ability(W(Void)),
-                Ability(R(Max)),
-                Attack,
-                Ability(E(Max)),
-                Attack,
-                Ability(Q(Min)),
-                Attack,
-            ])?
-            .combo([
-                Ability(Q(Min)),
-                Attack,
-                Ability(W(Void)),
-                Attack,
-                Ability(E(Max)),
-                Attack,
-                Attack,
-                Ability(Q(Min)),
-                Attack,
-            ])?
-            .combo([Attack, Ability(W(Void)), Attack, Ability(Q(Max)), Attack])?
             .end()
     }
 }

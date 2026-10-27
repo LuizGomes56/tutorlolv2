@@ -21,38 +21,40 @@ impl Generator for Ivern {
                     damage: f![70 + 30 * (RLevel - 1) + 0.15 * AbilityPower],
                 },
             )
-            .combo([
-                Ability(W(_1)),
-                Ability(R(Void)),
-                Ability(E(Void)),
-                Attack,
-                Attack,
-                Ability(Q(Void)),
-                Attack,
-                Attack,
+            .combos([
+                &[
+                    Ability(W(_1)),
+                    Ability(R(Void)),
+                    Ability(E(Void)),
+                    Attack,
+                    Attack,
+                    Ability(Q(Void)),
+                    Attack,
+                    Attack,
+                ],
+                &[Ability(W(_1)), Ability(Q(Void)), Attack, Attack],
+                &[
+                    Ability(Q(Void)),
+                    Ability(W(_1)),
+                    Ability(R(Void)),
+                    Ability(E(Void)),
+                    Attack,
+                    Attack,
+                    Attack,
+                ],
+                &[Ability(R(Void)), Ability(E(Void)), Ability(Q(Void))],
+                &[Ability(E(Void)), Attack, Ability(Q(Void)), Attack],
+                &[
+                    Ability(R(Void)),
+                    Ability(Q(Void)),
+                    Ability(E(Void)),
+                    Attack,
+                    Attack,
+                    Attack,
+                ],
+                &[Ability(E(Void)), Ability(Q(Void)), Attack],
+                &[Ability(W(_1)), Attack, Ability(Q(Void)), Attack],
             ])?
-            .combo([Ability(W(_1)), Ability(Q(Void)), Attack, Attack])?
-            .combo([
-                Ability(Q(Void)),
-                Ability(W(_1)),
-                Ability(R(Void)),
-                Ability(E(Void)),
-                Attack,
-                Attack,
-                Attack,
-            ])?
-            .combo([Ability(R(Void)), Ability(E(Void)), Ability(Q(Void))])?
-            .combo([Ability(E(Void)), Attack, Ability(Q(Void)), Attack])?
-            .combo([
-                Ability(R(Void)),
-                Ability(Q(Void)),
-                Ability(E(Void)),
-                Attack,
-                Attack,
-                Attack,
-            ])?
-            .combo([Ability(E(Void)), Ability(Q(Void)), Attack])?
-            .combo([Ability(W(_1)), Attack, Ability(Q(Void)), Attack])?
             .end()
     }
 }

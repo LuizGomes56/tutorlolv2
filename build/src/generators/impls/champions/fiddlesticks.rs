@@ -32,27 +32,29 @@ impl Generator for Fiddlesticks {
                 (1, Max), /* Total Magic Damage */
             ],
         )
-        .combo([
-            Ability(R(Max)),
-            Ability(Q(Max)),
-            Ability(E(Void)),
-            Ability(W(Max)),
-        ])?
-        .combo([Ability(Q(Max)), Ability(W(Max)), Ability(E(Void)), Attack])?
-        .combo([
-            Ability(E(Void)),
-            Ability(R(Max)),
-            Ability(Q(Max)),
-            Ability(W(Max)),
-        ])?
-        .combo([Ability(Q(Max)), Ability(E(Void)), Ability(W(Max))])?
-        .combo([Ability(E(Void)), Ability(Q(Max)), Ability(W(Max))])?
-        .combo([
-            Ability(R(Max)),
-            Ability(Q(Max)),
-            Ability(W(Max)),
-            Ability(E(Void)),
-            Attack,
+        .combos([
+            &[
+                Ability(R(Max)),
+                Ability(Q(Max)),
+                Ability(E(Void)),
+                Ability(W(Max)),
+            ],
+            &[Ability(Q(Max)), Ability(W(Max)), Ability(E(Void)), Attack],
+            &[
+                Ability(E(Void)),
+                Ability(R(Max)),
+                Ability(Q(Max)),
+                Ability(W(Max)),
+            ],
+            &[Ability(Q(Max)), Ability(E(Void)), Ability(W(Max))],
+            &[Ability(E(Void)), Ability(Q(Max)), Ability(W(Max))],
+            &[
+                Ability(R(Max)),
+                Ability(Q(Max)),
+                Ability(W(Max)),
+                Ability(E(Void)),
+                Attack,
+            ],
         ])?
         .end()
     }

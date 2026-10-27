@@ -11,8 +11,10 @@ impl Generator for Bard {
         )
         .merge_sum([P(_1), P(_2)], P(Void))?
         .ability(Key::Q, [(1, Void) /* Magic Damage */])
-        .combo([Ability(Q(Void)), Attack])?
-        .combo([Attack, Ability(Q(Void)), Attack])?
+        .combos([
+            &[Ability(Q(Void)), Attack],
+            &[Attack, Ability(Q(Void)), Attack],
+        ])?
         .end()
     }
 }

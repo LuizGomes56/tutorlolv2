@@ -17,35 +17,37 @@ impl Generator for Gangplank {
                 ],
             )
             .damage_type(R(_2), True)?
-            .combo([
-                Ability(E(Void)),
-                Ability(E(Void)),
-                Ability(Q(Void)),
-                Ability(E(Void)),
+            .combos([
+                &[
+                    Ability(E(Void)),
+                    Ability(E(Void)),
+                    Ability(Q(Void)),
+                    Ability(E(Void)),
+                ],
+                &[Ability(E(Void)), Attack, Ability(E(Void)), Attack],
+                &[Ability(E(Void)), Ability(Q(Void)), Ability(E(Void))],
+                &[
+                    Ability(R(Max)),
+                    Ability(E(Void)),
+                    Attack,
+                    Attack,
+                    Ability(Q(Void)),
+                    Attack,
+                    Attack,
+                ],
+                &[Ability(Q(Void)), Attack],
+                &[
+                    Ability(E(Void)),
+                    Ability(Q(Void)),
+                    Attack,
+                    Attack,
+                    Attack,
+                    Attack,
+                    Ability(Q(Void)),
+                    Attack,
+                ],
+                &[Ability(E(Void)), Attack, Attack, Ability(Q(Void)), Attack],
             ])?
-            .combo([Ability(E(Void)), Attack, Ability(E(Void)), Attack])?
-            .combo([Ability(E(Void)), Ability(Q(Void)), Ability(E(Void))])?
-            .combo([
-                Ability(R(Max)),
-                Ability(E(Void)),
-                Attack,
-                Attack,
-                Ability(Q(Void)),
-                Attack,
-                Attack,
-            ])?
-            .combo([Ability(Q(Void)), Attack])?
-            .combo([
-                Ability(E(Void)),
-                Ability(Q(Void)),
-                Attack,
-                Attack,
-                Attack,
-                Attack,
-                Ability(Q(Void)),
-                Attack,
-            ])?
-            .combo([Ability(E(Void)), Attack, Attack, Ability(Q(Void)), Attack])?
             .end()
     }
 }

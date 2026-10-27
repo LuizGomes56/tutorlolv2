@@ -22,56 +22,58 @@ impl Generator for Riven {
                 ],
             )
             .damage_types([P(Void), Q(Min), Q(Max), W(Void), R(Min), R(Max)], Physical)?
-            .combo([
-                Attack,
-                Ability(W(Void)),
-                Ability(Q(Min)),
-                Attack,
-                Ability(Q(Min)),
-                Attack,
-                Ability(Q(Min)),
-                Attack,
+            .combos([
+                &[
+                    Attack,
+                    Ability(W(Void)),
+                    Ability(Q(Min)),
+                    Attack,
+                    Ability(Q(Min)),
+                    Attack,
+                    Ability(Q(Min)),
+                    Attack,
+                ],
+                &[
+                    Ability(R(Min)),
+                    Attack,
+                    Ability(W(Void)),
+                    Ability(Q(Min)),
+                    Attack,
+                    Ability(R(Min)),
+                    Ability(Q(Min)),
+                ],
+                &[
+                    Ability(Q(Min)),
+                    Ability(Q(Min)),
+                    Ability(R(Min)),
+                    Ability(Q(Min)),
+                    Attack,
+                    Ability(R(Min)),
+                    Ability(W(Void)),
+                ],
+                &[
+                    Attack,
+                    Ability(Q(Min)),
+                    Attack,
+                    Ability(Q(Min)),
+                    Attack,
+                    Ability(Q(Min)),
+                    Attack,
+                    Ability(W(Void)),
+                ],
+                &[
+                    Attack,
+                    Ability(Q(Min)),
+                    Attack,
+                    Ability(Q(Min)),
+                    Attack,
+                    Ability(Q(Min)),
+                    Attack,
+                ],
+                &[Ability(W(Void)), Ability(Q(Max))],
+                &[Ability(R(Max)), Ability(Q(Max))],
+                &[Ability(R(Max)), Ability(W(Void))],
             ])?
-            .combo([
-                Ability(R(Min)),
-                Attack,
-                Ability(W(Void)),
-                Ability(Q(Min)),
-                Attack,
-                Ability(R(Min)),
-                Ability(Q(Min)),
-            ])?
-            .combo([
-                Ability(Q(Min)),
-                Ability(Q(Min)),
-                Ability(R(Min)),
-                Ability(Q(Min)),
-                Attack,
-                Ability(R(Min)),
-                Ability(W(Void)),
-            ])?
-            .combo([
-                Attack,
-                Ability(Q(Min)),
-                Attack,
-                Ability(Q(Min)),
-                Attack,
-                Ability(Q(Min)),
-                Attack,
-                Ability(W(Void)),
-            ])?
-            .combo([
-                Attack,
-                Ability(Q(Min)),
-                Attack,
-                Ability(Q(Min)),
-                Attack,
-                Ability(Q(Min)),
-                Attack,
-            ])?
-            .combo([Ability(W(Void)), Ability(Q(Max))])?
-            .combo([Ability(R(Max)), Ability(Q(Max))])?
-            .combo([Ability(R(Max)), Ability(W(Void))])?
             .end()
     }
 }

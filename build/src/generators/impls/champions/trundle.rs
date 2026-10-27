@@ -11,17 +11,19 @@ impl Generator for Trundle {
                     (5, Max),  /* Total Magic Damage */
                 ],
             )
-            .combo([Ability(R(Void)), Attack, Ability(Q(Void)), Attack])?
-            .combo([
-                Ability(R(Void)),
-                Ability(Q(Void)),
-                Attack,
-                Attack,
-                Attack,
-                Attack,
+            .combos([
+                &[Ability(R(Void)), Attack, Ability(Q(Void)), Attack],
+                &[
+                    Ability(R(Void)),
+                    Ability(Q(Void)),
+                    Attack,
+                    Attack,
+                    Attack,
+                    Attack,
+                ],
+                &[Attack, Ability(Q(Void)), Attack],
+                &[Attack, Ability(Q(Void)), Attack, Attack, Attack],
             ])?
-            .combo([Attack, Ability(Q(Void)), Attack])?
-            .combo([Attack, Ability(Q(Void)), Attack, Attack, Attack])?
             .end()
     }
 }

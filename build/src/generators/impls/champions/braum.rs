@@ -16,11 +16,13 @@ impl Generator for Braum {
         let concussive_blows = self.damage_of(P(Void))?.clone();
 
         self.modify(P(_1), |_| f![0.4 * (concussive_blows)])?
-            .combo([Ability(Q(Void)), Ability(R(Void))])?
-            .combo([Ability(Q(Void)), Attack, Attack, Attack])?
-            .combo([Ability(R(Void)), Ability(Q(Void)), Attack, Attack, Attack])?
-            .combo([Ability(Q(Void)), Attack, Ability(R(Void)), Attack, Attack])?
-            .combo([Attack, Ability(Q(Void)), Attack, Attack])?
+            .combos([
+                &[Ability(Q(Void)), Ability(R(Void))],
+                &[Ability(Q(Void)), Attack, Attack, Attack],
+                &[Ability(R(Void)), Ability(Q(Void)), Attack, Attack, Attack],
+                &[Ability(Q(Void)), Attack, Ability(R(Void)), Attack, Attack],
+                &[Attack, Ability(Q(Void)), Attack, Attack],
+            ])?
             .end()
     }
 }

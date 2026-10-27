@@ -19,48 +19,50 @@ impl Generator for Yasuo {
             ],
         )
         .ability(Key::R, [(0, Void) /* Physical Damage */])
-        .combo([
-            Ability(Q(Min)),
-            Ability(Q(Min)),
-            Ability(E(Max)),
-            Ability(Q(Min)),
-            Attack,
-            Ability(R(Void)),
+        .combos([
+            &[
+                Ability(Q(Min)),
+                Ability(Q(Min)),
+                Ability(E(Max)),
+                Ability(Q(Min)),
+                Attack,
+                Ability(R(Void)),
+            ],
+            &[
+                Ability(Q(Min)),
+                Ability(Q(Min)),
+                Ability(Q(Min)),
+                Ability(E(Max)),
+                Ability(Q(Min)),
+                Ability(R(Void)),
+            ],
+            &[
+                Ability(E(Min)),
+                Ability(Q(Min)),
+                Ability(E(Min)),
+                Ability(Q(Min)),
+                Ability(R(Void)),
+                Attack,
+                Ability(Q(Min)),
+                Attack,
+            ],
+            &[
+                Ability(Q(Min)),
+                Ability(Q(Min)),
+                Ability(E(Max)),
+                Ability(Q(Min)),
+                Attack,
+                Ability(R(Void)),
+                Attack,
+            ],
+            &[
+                Ability(Q(Min)),
+                Ability(Q(Min)),
+                Ability(Q(Min)),
+                Ability(R(Void)),
+            ],
+            &[Ability(E(Min)), Attack, Ability(Q(Max)), Ability(E(Min))],
         ])?
-        .combo([
-            Ability(Q(Min)),
-            Ability(Q(Min)),
-            Ability(Q(Min)),
-            Ability(E(Max)),
-            Ability(Q(Min)),
-            Ability(R(Void)),
-        ])?
-        .combo([
-            Ability(E(Min)),
-            Ability(Q(Min)),
-            Ability(E(Min)),
-            Ability(Q(Min)),
-            Ability(R(Void)),
-            Attack,
-            Ability(Q(Min)),
-            Attack,
-        ])?
-        .combo([
-            Ability(Q(Min)),
-            Ability(Q(Min)),
-            Ability(E(Max)),
-            Ability(Q(Min)),
-            Attack,
-            Ability(R(Void)),
-            Attack,
-        ])?
-        .combo([
-            Ability(Q(Min)),
-            Ability(Q(Min)),
-            Ability(Q(Min)),
-            Ability(R(Void)),
-        ])?
-        .combo([Ability(E(Min)), Attack, Ability(Q(Max)), Ability(E(Min))])?
         .end()
     }
 }

@@ -30,42 +30,44 @@ impl Generator for Jhin {
                     (0, _1Max), /* Maximum Fourth Shot Damage */
                 ],
             )
-            .combo([
-                Attack,
-                Ability(E(Void)),
-                Ability(Q(Max)),
-                Ability(W(Void)),
-                Ability(R(Max)),
-                Ability(R(Max)),
-                Ability(R(Max)),
-                Ability(R(Max)),
-                Ability(R(Max)),
-            ])?
-            .combo([
-                Attack,
-                Ability(E(Void)),
-                Ability(Q(Max)),
-                Ability(W(Void)),
-                Attack,
-            ])?
-            .combo([Ability(Q(Max)), Attack])?
-            .combo([
-                Attack,
-                Ability(E(Void)),
-                Ability(W(Void)),
-                Attack,
-                Attack,
-                Ability(Q(Max)),
-                Attack,
-            ])?
-            .combo([Attack, Attack, Attack, Ability(Q(Max)), Attack])?
-            .combo([
-                Attack,
-                Ability(W(Void)),
-                Attack,
-                Ability(Q(Max)),
-                Attack,
-                Attack,
+            .combos([
+                &[
+                    Attack,
+                    Ability(E(Void)),
+                    Ability(Q(Max)),
+                    Ability(W(Void)),
+                    Ability(R(Max)),
+                    Ability(R(Max)),
+                    Ability(R(Max)),
+                    Ability(R(Max)),
+                    Ability(R(Max)),
+                ],
+                &[
+                    Attack,
+                    Ability(E(Void)),
+                    Ability(Q(Max)),
+                    Ability(W(Void)),
+                    Attack,
+                ],
+                &[Ability(Q(Max)), Attack],
+                &[
+                    Attack,
+                    Ability(E(Void)),
+                    Ability(W(Void)),
+                    Attack,
+                    Attack,
+                    Ability(Q(Max)),
+                    Attack,
+                ],
+                &[Attack, Attack, Attack, Ability(Q(Max)), Attack],
+                &[
+                    Attack,
+                    Ability(W(Void)),
+                    Attack,
+                    Ability(Q(Max)),
+                    Attack,
+                    Attack,
+                ],
             ])?
             .end()
     }

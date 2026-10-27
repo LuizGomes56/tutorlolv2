@@ -45,30 +45,32 @@ impl Generator for Pyke {
             .clone_to(R(Void), R(_1), r)?
             .damage_type(R(Void), Physical)?
             .damage_type(R(_1), True)?
-            .combo([
-                Ability(E(Void)),
-                Ability(R(Void)),
-                Ability(Q(Void)),
-                Attack,
-                Attack,
-                Attack,
+            .combos([
+                &[
+                    Ability(E(Void)),
+                    Ability(R(Void)),
+                    Ability(Q(Void)),
+                    Attack,
+                    Attack,
+                    Attack,
+                ],
+                &[Ability(E(Void)), Ability(Q(Void)), Ability(R(Void))],
+                &[Ability(E(Void)), Ability(R(Void))],
+                &[Ability(Q(Void)), Ability(E(Void)), Ability(R(Void))],
+                &[Ability(E(Void)), Ability(Q(Void)), Attack, Ability(R(Void))],
+                &[Ability(Q(Void)), Ability(R(Void)), Ability(E(Void))],
+                &[
+                    Ability(E(Void)),
+                    Attack,
+                    Ability(Q(Void)),
+                    Attack,
+                    Attack,
+                    Ability(R(Void)),
+                ],
+                &[Ability(Q(Void)), Attack, Ability(E(Void)), Attack, Attack],
+                &[Ability(Q(Void)), Ability(E(Void)), Attack, Attack, Attack],
+                &[Ability(E(Void)), Ability(Q(Void)), Attack, Attack, Attack],
             ])?
-            .combo([Ability(E(Void)), Ability(Q(Void)), Ability(R(Void))])?
-            .combo([Ability(E(Void)), Ability(R(Void))])?
-            .combo([Ability(Q(Void)), Ability(E(Void)), Ability(R(Void))])?
-            .combo([Ability(E(Void)), Ability(Q(Void)), Attack, Ability(R(Void))])?
-            .combo([Ability(Q(Void)), Ability(R(Void)), Ability(E(Void))])?
-            .combo([
-                Ability(E(Void)),
-                Attack,
-                Ability(Q(Void)),
-                Attack,
-                Attack,
-                Ability(R(Void)),
-            ])?
-            .combo([Ability(Q(Void)), Attack, Ability(E(Void)), Attack, Attack])?
-            .combo([Ability(Q(Void)), Ability(E(Void)), Attack, Attack, Attack])?
-            .combo([Ability(E(Void)), Ability(Q(Void)), Attack, Attack, Attack])?
             .end()
     }
 }

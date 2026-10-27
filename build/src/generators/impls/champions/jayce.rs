@@ -30,31 +30,33 @@ impl Generator for Jayce {
         )
         .ability_nth(1, Key::E, [(1, Void) /* Magic Damage */])
         .damage_types([Q(Min), Q(Max), Q(_1), W(_1Min), W(_1Max)], Physical)?
-        .combo([Ability(W(Max)), Attack, Attack, Ability(E(Void)), Attack])?
-        .combo([Ability(Q(Max)), Attack, Ability(E(Void))])?
-        .combo([
-            Ability(Q(Min)),
-            Ability(E(Void)),
-            Attack,
-            Ability(W(Max)),
-            Ability(Q(Min)),
-            Ability(W(Max)),
-            Attack,
-            Ability(E(Void)),
-        ])?
-        .combo([
-            Ability(Q(Min)),
-            Ability(E(Void)),
-            Ability(Q(Min)),
-            Attack,
-            Ability(E(Void)),
-        ])?
-        .combo([
-            Attack,
-            Ability(Q(Min)),
-            Ability(Q(Min)),
-            Attack,
-            Ability(E(Void)),
+        .combos([
+            &[Ability(W(Max)), Attack, Attack, Ability(E(Void)), Attack],
+            &[Ability(Q(Max)), Attack, Ability(E(Void))],
+            &[
+                Ability(Q(Min)),
+                Ability(E(Void)),
+                Attack,
+                Ability(W(Max)),
+                Ability(Q(Min)),
+                Ability(W(Max)),
+                Attack,
+                Ability(E(Void)),
+            ],
+            &[
+                Ability(Q(Min)),
+                Ability(E(Void)),
+                Ability(Q(Min)),
+                Attack,
+                Ability(E(Void)),
+            ],
+            &[
+                Attack,
+                Ability(Q(Min)),
+                Ability(Q(Min)),
+                Attack,
+                Ability(E(Void)),
+            ],
         ])?
         .end()
     }

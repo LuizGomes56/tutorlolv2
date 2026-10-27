@@ -21,46 +21,48 @@ impl Generator for Galio {
             )
             .ability(Key::E, [(0, Void) /* Magic Damage */])
             .ability(Key::R, [(0, Void) /* Magic Damage */])
-            .combo([
-                Attack,
-                Ability(E(Void)),
-                Ability(Q(Void)),
-                Attack,
-                Ability(W(Max)),
-                Attack,
-                Attack,
-            ])?
-            .combo([Ability(W(Max)), Ability(E(Void)), Ability(Q(Void)), Attack])?
-            .combo([
-                Ability(W(Max)),
-                Ability(Q(Void)),
-                Attack,
-                Ability(E(Void)),
-                Attack,
-            ])?
-            .combo([
-                Ability(Q(Void)),
-                Attack,
-                Ability(E(Void)),
-                Ability(W(Max)),
-                Attack,
-            ])?
-            .combo([Ability(E(Void)), Ability(W(Max)), Ability(Q(Void)), Attack])?
-            .combo([Ability(Q(Void)), Attack])?
-            .combo([
-                Ability(E(Void)),
-                Ability(Q(Void)),
-                Attack,
-                Ability(W(Max)),
-                Attack,
-            ])?
-            .combo([Ability(E(Void)), Ability(Q(Void)), Ability(W(Max)), Attack])?
-            .combo([
-                Ability(R(Void)),
-                Ability(W(Max)),
-                Ability(Q(Void)),
-                Ability(E(Void)),
-                Attack,
+            .combos([
+                &[
+                    Attack,
+                    Ability(E(Void)),
+                    Ability(Q(Void)),
+                    Attack,
+                    Ability(W(Max)),
+                    Attack,
+                    Attack,
+                ],
+                &[Ability(W(Max)), Ability(E(Void)), Ability(Q(Void)), Attack],
+                &[
+                    Ability(W(Max)),
+                    Ability(Q(Void)),
+                    Attack,
+                    Ability(E(Void)),
+                    Attack,
+                ],
+                &[
+                    Ability(Q(Void)),
+                    Attack,
+                    Ability(E(Void)),
+                    Ability(W(Max)),
+                    Attack,
+                ],
+                &[Ability(E(Void)), Ability(W(Max)), Ability(Q(Void)), Attack],
+                &[Ability(Q(Void)), Attack],
+                &[
+                    Ability(E(Void)),
+                    Ability(Q(Void)),
+                    Attack,
+                    Ability(W(Max)),
+                    Attack,
+                ],
+                &[Ability(E(Void)), Ability(Q(Void)), Ability(W(Max)), Attack],
+                &[
+                    Ability(R(Void)),
+                    Ability(W(Max)),
+                    Ability(Q(Void)),
+                    Ability(E(Void)),
+                    Attack,
+                ],
             ])?
             .end()
     }

@@ -35,56 +35,58 @@ impl Generator for Corki {
                 (0, Max), /* Big One Physical Damage */
             ],
         )
-        .combo([
-            Ability(W(Max)),
-            Ability(E(Max)),
-            Attack,
-            Ability(Q(Void)),
-            Ability(R(Min)),
-            Ability(W(Max)),
-            Attack,
-            Ability(R(Min)),
-            Attack,
+        .combos([
+            &[
+                Ability(W(Max)),
+                Ability(E(Max)),
+                Attack,
+                Ability(Q(Void)),
+                Ability(R(Min)),
+                Ability(W(Max)),
+                Attack,
+                Ability(R(Min)),
+                Attack,
+            ],
+            &[Ability(Q(Void)), Ability(R(Max)), Attack],
+            &[
+                Ability(Q(Void)),
+                Ability(W(Max)),
+                Ability(E(Max)),
+                Attack,
+                Attack,
+            ],
+            &[
+                Ability(E(Max)),
+                Ability(Q(Void)),
+                Ability(R(Min)),
+                Attack,
+                Attack,
+                Ability(R(Min)),
+                Attack,
+                Attack,
+                Ability(R(Min)),
+            ],
+            &[
+                Ability(W(Max)),
+                Ability(E(Max)),
+                Attack,
+                Ability(R(Min)),
+                Attack,
+                Ability(Q(Void)),
+                Attack,
+                Ability(R(Min)),
+                Attack,
+            ],
+            &[
+                Ability(E(Max)),
+                Attack,
+                Ability(Q(Void)),
+                Attack,
+                Attack,
+                Attack,
+            ],
+            &[Ability(Q(Void)), Ability(E(Max)), Attack, Attack],
         ])?
-        .combo([Ability(Q(Void)), Ability(R(Max)), Attack])?
-        .combo([
-            Ability(Q(Void)),
-            Ability(W(Max)),
-            Ability(E(Max)),
-            Attack,
-            Attack,
-        ])?
-        .combo([
-            Ability(E(Max)),
-            Ability(Q(Void)),
-            Ability(R(Min)),
-            Attack,
-            Attack,
-            Ability(R(Min)),
-            Attack,
-            Attack,
-            Ability(R(Min)),
-        ])?
-        .combo([
-            Ability(W(Max)),
-            Ability(E(Max)),
-            Attack,
-            Ability(R(Min)),
-            Attack,
-            Ability(Q(Void)),
-            Attack,
-            Ability(R(Min)),
-            Attack,
-        ])?
-        .combo([
-            Ability(E(Max)),
-            Attack,
-            Ability(Q(Void)),
-            Attack,
-            Attack,
-            Attack,
-        ])?
-        .combo([Ability(Q(Void)), Ability(E(Max)), Attack, Attack])?
         .end()
     }
 }

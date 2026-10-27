@@ -20,19 +20,21 @@ impl Generator for Urgot {
             .ability(Key::E, [(0, Void) /* Physical Damage */])
             .ability(Key::R, [(0, Void) /* Physical Damage */])
             .damage_type(R(Void), Physical)?
-            .combo([
-                Ability(E(Void)),
-                Ability(Q(Void)),
-                Ability(R(Void)),
-                Attack,
-                Ability(W(Void)),
-            ])?
-            .combo([Ability(E(Void)), Ability(R(Void)), Attack, Ability(W(Void))])?
-            .combo([
-                Ability(E(Void)),
-                Ability(Q(Void)),
-                Ability(W(Void)),
-                Ability(R(Void)),
+            .combos([
+                &[
+                    Ability(E(Void)),
+                    Ability(Q(Void)),
+                    Ability(R(Void)),
+                    Attack,
+                    Ability(W(Void)),
+                ],
+                &[Ability(E(Void)), Ability(R(Void)), Attack, Ability(W(Void))],
+                &[
+                    Ability(E(Void)),
+                    Ability(Q(Void)),
+                    Ability(W(Void)),
+                    Ability(R(Void)),
+                ],
             ])?
             .end()
     }

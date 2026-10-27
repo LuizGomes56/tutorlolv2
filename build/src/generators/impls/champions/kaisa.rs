@@ -31,26 +31,28 @@ impl Generator for Kaisa {
             ],
         )
         .ability(Key::W, [(0, Void) /* Magic Damage */])
-        .combo([Ability(W(Void)), Ability(Q(Max)), Attack, Attack, Attack])?
-        .combo([
-            Attack,
-            Ability(Q(Max)),
-            Attack,
-            Attack,
-            Ability(W(Void)),
-            Attack,
+        .combos([
+            &[Ability(W(Void)), Ability(Q(Max)), Attack, Attack, Attack],
+            &[
+                Attack,
+                Ability(Q(Max)),
+                Attack,
+                Attack,
+                Ability(W(Void)),
+                Attack,
+            ],
+            &[
+                Attack,
+                Attack,
+                Attack,
+                Ability(Q(Max)),
+                Ability(W(Void)),
+                Attack,
+            ],
+            &[Ability(W(Void)), Attack, Ability(Q(Max)), Attack, Attack],
+            &[Attack, Ability(Q(Max)), Attack, Ability(W(Void)), Attack],
+            &[Attack, Ability(W(Void)), Ability(Q(Max)), Attack, Attack],
         ])?
-        .combo([
-            Attack,
-            Attack,
-            Attack,
-            Ability(Q(Max)),
-            Ability(W(Void)),
-            Attack,
-        ])?
-        .combo([Ability(W(Void)), Attack, Ability(Q(Max)), Attack, Attack])?
-        .combo([Attack, Ability(Q(Max)), Attack, Ability(W(Void)), Attack])?
-        .combo([Attack, Ability(W(Void)), Ability(Q(Max)), Attack, Attack])?
         .end()
     }
 }

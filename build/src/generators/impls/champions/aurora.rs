@@ -18,21 +18,23 @@ impl Generator for Aurora {
             )
             .ability(Key::E, [(0, Void) /* Magic Damage */])
             .ability(Key::R, [(0, Void) /* Magic Damage */])
-            .combo([
-                Ability(R(Void)),
-                Ability(Q(Min)),
-                Ability(E(Void)),
-                Ability(Q(Min)),
+            .combos([
+                &[
+                    Ability(R(Void)),
+                    Ability(Q(Min)),
+                    Ability(E(Void)),
+                    Ability(Q(Min)),
+                ],
+                &[
+                    Ability(R(Void)),
+                    Ability(Q(Min)),
+                    Ability(E(Void)),
+                    Attack,
+                    Ability(Q(Min)),
+                ],
+                &[Ability(Q(Min)), Ability(E(Void)), Ability(Q(Min))],
+                &[Ability(Q(Min)), Attack, Ability(E(Void)), Ability(Q(Min))],
             ])?
-            .combo([
-                Ability(R(Void)),
-                Ability(Q(Min)),
-                Ability(E(Void)),
-                Attack,
-                Ability(Q(Min)),
-            ])?
-            .combo([Ability(Q(Min)), Ability(E(Void)), Ability(Q(Min))])?
-            .combo([Ability(Q(Min)), Attack, Ability(E(Void)), Ability(Q(Min))])?
             .end()
     }
 }

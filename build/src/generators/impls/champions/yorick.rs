@@ -29,9 +29,11 @@ impl Generator for Yorick {
                     damage: f![50 + 25 * (RLevel - 1) + 0.3 * BonusAd],
                 },
             )
-            .combo([Attack, Ability(E(Void)), Attack, Ability(Q(Void))])?
-            .combo([Ability(E(Void)), Attack, Ability(Q(Void)), Attack])?
-            .combo([Attack, Ability(Q(Void)), Ability(E(Void))])?
+            .combos([
+                &[Attack, Ability(E(Void)), Attack, Ability(Q(Void))],
+                &[Ability(E(Void)), Attack, Ability(Q(Void)), Attack],
+                &[Attack, Ability(Q(Void)), Ability(E(Void))],
+            ])?
             .end()
     }
 }

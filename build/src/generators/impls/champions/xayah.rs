@@ -13,27 +13,29 @@ impl Generator for Xayah {
         )
         .ability(Key::E, [(1, Void) /* Physical Damage Per Feather */])
         .ability(Key::R, [(0, Void) /* Physical Damage */])
-        .combo([Ability(R(Void)), Ability(E(Void)), Attack, Attack])?
-        .combo([Ability(Q(Max)), Attack, Ability(E(Void))])?
-        .combo([
-            Ability(R(Void)),
-            Ability(E(Void)),
-            Attack,
-            Attack,
-            Attack,
-            Ability(Q(Max)),
-            Attack,
+        .combos([
+            &[Ability(R(Void)), Ability(E(Void)), Attack, Attack],
+            &[Ability(Q(Max)), Attack, Ability(E(Void))],
+            &[
+                Ability(R(Void)),
+                Ability(E(Void)),
+                Attack,
+                Attack,
+                Attack,
+                Ability(Q(Max)),
+                Attack,
+            ],
+            &[
+                Ability(Q(Max)),
+                Attack,
+                Ability(R(Void)),
+                Attack,
+                Ability(E(Void)),
+                Attack,
+            ],
+            &[Attack, Ability(Q(Max)), Attack, Ability(E(Void))],
+            &[Ability(R(Void)), Ability(E(Void))],
         ])?
-        .combo([
-            Ability(Q(Max)),
-            Attack,
-            Ability(R(Void)),
-            Attack,
-            Ability(E(Void)),
-            Attack,
-        ])?
-        .combo([Attack, Ability(Q(Max)), Attack, Ability(E(Void))])?
-        .combo([Ability(R(Void)), Ability(E(Void))])?
         .end()
     }
 }

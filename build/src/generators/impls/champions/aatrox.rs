@@ -27,27 +27,29 @@ impl Generator for Aatrox {
 
         self.clone_to(Q(_1Min), Q(Min), qmin)?
             .clone_to(Q(_1Max), Q(Max), qmax)?
-            .combo([
-                Ability(Q(_1Min)),
-                Ability(P(Void)),
-                Attack,
-                Ability(W(Min)),
-                Ability(Q(_2Min)),
-                Attack,
-                Ability(W(Min)),
-                Ability(Q(_3Min)),
-                Attack,
-            ])?
-            .combo([
-                Ability(Q(_1Max)),
-                Ability(P(Void)),
-                Attack,
-                Ability(W(Min)),
-                Ability(Q(_2Max)),
-                Attack,
-                Ability(W(Min)),
-                Ability(Q(_3Max)),
-                Attack,
+            .combos([
+                &[
+                    Ability(Q(_1Min)),
+                    Ability(P(Void)),
+                    Attack,
+                    Ability(W(Min)),
+                    Ability(Q(_2Min)),
+                    Attack,
+                    Ability(W(Min)),
+                    Ability(Q(_3Min)),
+                    Attack,
+                ],
+                &[
+                    Ability(Q(_1Max)),
+                    Ability(P(Void)),
+                    Attack,
+                    Ability(W(Min)),
+                    Ability(Q(_2Max)),
+                    Attack,
+                    Ability(W(Min)),
+                    Ability(Q(_3Max)),
+                    Attack,
+                ],
             ])?
             .end()
     }
