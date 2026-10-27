@@ -14,7 +14,7 @@ use {
     serde::{Deserialize, Serialize},
     std::{
         collections::BTreeMap,
-        fmt::Write,
+        fmt::{Display, Write},
         ops::{Index, IndexMut},
     },
     tutorlolv2_types::{AttackType, Attrs, CtxVar, DamageIndex, DamageType, Tag},
@@ -236,6 +236,9 @@ pub struct Item {
 pub enum Source {
     Active,
     Passive,
+    Passive2,
+    Passive3,
+    Passive4,
 }
 
 impl TryFrom<WikiItem> for Item {
@@ -292,7 +295,7 @@ impl Item {
         &mut self,
         attack_type: AttackType,
         var: DamageIndex,
-        damage: &impl ToString,
+        damage: impl Display,
     ) -> &mut Self {
         self[attack_type][var] = damage.to_string();
         self
@@ -325,14 +328,14 @@ impl Item {
         Ok(self.assign(attack_type, var, &formula))
     }
 
-    pub fn set_min(&mut self, damage: impl ToString) -> &mut Self {
+    pub fn set_min(&mut self, damage: impl Display) -> &mut Self {
         self.assign(AttackType::Melee, DamageIndex::Min, &damage)
-            .assign(AttackType::Ranged, DamageIndex::Min, &damage)
+            .assign(AttackType::Ranged, DamageIndex::Min, damage)
     }
 
-    pub fn set_max(&mut self, damage: impl ToString) -> &mut Self {
+    pub fn set_max(&mut self, damage: impl Display) -> &mut Self {
         self.assign(AttackType::Melee, DamageIndex::Max, &damage)
-            .assign(AttackType::Ranged, DamageIndex::Max, &damage)
+            .assign(AttackType::Ranged, DamageIndex::Max, damage)
     }
 
     pub fn min(&mut self, index: Source) -> MayFail<&mut Self> {
@@ -390,6 +393,9 @@ impl Index<Source> for Item {
         match index {
             Source::Active => &self.data.effects.act,
             Source::Passive => &self.data.effects.pass,
+            Source::Passive2 => &self.data.effects.pass2,
+            Source::Passive3 => &self.data.effects.pass3,
+            Source::Passive4 => &self.data.effects.pass4,
         }
     }
 }
@@ -399,6 +405,9 @@ impl IndexMut<Source> for Item {
         match index {
             Source::Active => &mut self.data.effects.act,
             Source::Passive => &mut self.data.effects.pass,
+            Source::Passive2 => &mut self.data.effects.pass2,
+            Source::Passive3 => &mut self.data.effects.pass3,
+            Source::Passive4 => &mut self.data.effects.pass4,
         }
     }
 }

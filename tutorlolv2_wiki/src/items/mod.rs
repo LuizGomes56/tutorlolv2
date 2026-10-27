@@ -22,6 +22,12 @@ pub struct ItemEffectsRaw {
     #[serde(default)]
     pub pass: Option<ItemEffectRaw>,
     #[serde(default)]
+    pub pass2: Option<ItemEffectRaw>,
+    #[serde(default)]
+    pub pass3: Option<ItemEffectRaw>,
+    #[serde(default)]
+    pub pass4: Option<ItemEffectRaw>,
+    #[serde(default)]
     pub act: Option<ItemEffectRaw>,
 }
 

@@ -20,6 +20,14 @@ pub struct ItemEffect {
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub struct ItemEffects {
     pub pass: Option<ItemEffect>,
+    /// Items may have up to 4 passives, and the damage is often in a later one,
+    /// such as Statikk Shiv's Electroshock
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub pass2: Option<ItemEffect>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub pass3: Option<ItemEffect>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub pass4: Option<ItemEffect>,
     pub act: Option<ItemEffect>,
 }
 
@@ -161,6 +169,9 @@ pub fn parse_items() -> MayFail {
 
             assign_formula(value.effects.act.as_mut());
             assign_formula(value.effects.pass.as_mut());
+            assign_formula(value.effects.pass2.as_mut());
+            assign_formula(value.effects.pass3.as_mut());
+            assign_formula(value.effects.pass4.as_mut());
 
             let key = name.replace("'s", "s").to_pascal_case();
             value.name = name;
@@ -184,6 +195,9 @@ fn parse_item(raw: ItemRaw) -> WikiItem {
         stats: raw.stats,
         effects: ItemEffects {
             pass: raw.effects.pass.map(parse_item_effect),
+            pass2: raw.effects.pass2.map(parse_item_effect),
+            pass3: raw.effects.pass3.map(parse_item_effect),
+            pass4: raw.effects.pass4.map(parse_item_effect),
             act: raw.effects.act.map(parse_item_effect),
         },
         recipe: raw.recipe,
