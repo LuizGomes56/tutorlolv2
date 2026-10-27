@@ -128,7 +128,12 @@ impl BuildContext {
         Ok(docs)
     }
 
-    fn write_module<T, U>(&self, command: &mut Command, parser: &impl Parser<T, U>) -> MayFail
+    fn write_module<T, U>(
+        &self,
+        command: &mut Command,
+        parser: &impl Parser<T, U>,
+        modules: &mut String,
+    ) -> MayFail
     where
         T: Clone + DeserializeOwned + MapValueExt + Send + Sync + 'static,
         U: TryFrom<T, Error = DynError> + Serialize,
@@ -167,6 +172,8 @@ impl BuildContext {
         tutorlolv2_wiki::write(&path, result)?;
 
         command.arg(path);
+
+        writeln!(modules, "pub mod {dir}_code;\npub mod {dir};")?;
 
         Ok(())
     }
@@ -225,11 +232,15 @@ impl BuildContext {
         let mut command = Command::new("rustfmt");
         command.args(["--edition", "2024", "--config", "max_width=80"]);
 
-        self.write_module(&mut command, &champions)?;
-        self.write_module(&mut command, &items)?;
-        self.write_module(&mut command, &runes)?;
+        let mut modules = String::new();
 
-        run_formatter(&mut command)
+        self.write_module(&mut command, &champions, &mut modules)?;
+        self.write_module(&mut command, &items, &mut modules)?;
+        self.write_module(&mut command, &runes, &mut modules)?;
+
+        run_formatter(&mut command)?;
+
+        tutorlolv2_wiki::write(self.out.join("libgen.rs"), modules)
     }
 
     fn build_docs(&self, docs: &mut [EntityDocs], counts: [u16; 3]) -> MayFail {
