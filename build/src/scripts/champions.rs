@@ -4,7 +4,8 @@ use {
         generators::parser::champions::{Ability, Champion},
         scripts::{
             batch::FormulaDoc,
-            utils::{BakeExt, cast_f32, ctx_param, get_identifiers, probe_ratio, simplify},
+            simplify::simplify,
+            utils::{BakeExt, cast_f32, ctx_param, get_identifiers, probe_ratio},
         },
     },
     heck::{ToShoutySnakeCase, ToSnakeCase},
@@ -108,8 +109,8 @@ impl Build for Champion {
                 adaptive_type: {adaptive_type},
                 attack_type: {attack_type},
                 positions: {positions},
-                stats: {stats:#?},
-                modifiers: {modifiers:#?},
+                stats: {stats},
+                modifiers: {modifiers},
                 metadata: {metadata},
 
                 {ENGINE_CFG}
@@ -124,6 +125,8 @@ impl Build for Champion {
                 {YEW_CFG}
                 identifiers: &[{identifiers}],
             }};"#,
+            stats = cast_f32(&format!("{stats:?}"))?,
+            modifiers = cast_f32(&format!("{modifiers:?}"))?,
             adaptive_type = adaptive_type.bake(),
             attack_type = attack_type.bake(),
             positions = positions.as_slice().bake(),

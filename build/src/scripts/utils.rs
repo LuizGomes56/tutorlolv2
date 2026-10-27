@@ -1,12 +1,15 @@
 use crate::{
     ENGINE_CFG, MayFail,
     generators::parser::{DamageRange, ZERO, items::Item, runes::Rune},
-    scripts::batch::FormulaDoc,
+    scripts::{
+        batch::FormulaDoc,
+        simplify::{Precision, approx_constant, format_number, simplify, simplify_exact},
+    },
 };
 use databake::CrateEnv;
 use heck::{ToPascalCase, ToSnakeCase};
 use rand::{RngExt, SeedableRng, rngs::SmallRng};
-use regex::{Captures, Regex};
+use regex::Regex;
 use serde::Serialize;
 use std::{
     collections::{BTreeSet, HashSet},
@@ -27,118 +30,6 @@ impl<T: databake::Bake + ?Sized> BakeExt for T {
     fn bake(&self) -> String {
         databake::Bake::bake(self, &CrateEnv::default()).to_string()
     }
-}
-
-pub fn simplify(f: &str) -> String {
-    let formula = &f.replace("zero", "0");
-
-    static FLOAT_RE: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"\b\d+\.\d+\b").unwrap());
-
-    static MATCH_RE: LazyLock<Regex> =
-        LazyLock::new(|| Regex::new(r"match\s+[^{]+\{(?:[^{}]|\{[^{}]*\})*\}").unwrap());
-
-    let mut matches = Vec::new();
-
-    let protected = MATCH_RE.replace_all(formula, |caps: &Captures| {
-        let idx = matches.len();
-
-        matches.push(caps[0].to_string());
-
-        format!("__MATCH_{idx}__")
-    });
-
-    let simplified = symb_anafis::simplify(&protected.replace("ctx.", "ctx_"), &[], None)
-        .map(|r| r.replace("ctx_", "ctx."))
-        .unwrap_or_else(|_| protected.into_owned());
-
-    let mut restored = simplified;
-
-    fn match_needs_parens(s: &str, placeholder: &str) -> bool {
-        const BIN_OPS: &[char] = &['+', '-', '*', '/', '%', '&', '|', '^'];
-
-        let Some(pos) = s.find(placeholder) else {
-            return false;
-        };
-
-        let before = s[..pos].trim_end();
-        let after = s[pos + placeholder.len()..].trim_start();
-
-        let preceded_by_op = before.ends_with(BIN_OPS);
-        let followed_by_op = after.starts_with(BIN_OPS);
-
-        preceded_by_op || followed_by_op
-    }
-
-    for (i, match_block) in matches.iter().enumerate() {
-        let placeholder = format!("__MATCH_{i}__");
-        let replacement = if match_needs_parens(&restored, &placeholder) {
-            format!("({match_block})")
-        } else {
-            match_block.clone()
-        };
-        restored = restored.replace(&placeholder, &replacement);
-    }
-
-    let result = FLOAT_RE
-        .replace_all(&restored, |caps: &Captures| {
-            let original = &caps[0];
-
-            let Ok(value) = original.parse::<f64>() else {
-                return original.to_string();
-            };
-
-            let mut s = format!("{value:.12}");
-
-            while s.contains('.') && s.ends_with('0') {
-                s.pop();
-            }
-
-            if s.ends_with('.') {
-                s.pop();
-            }
-
-            let suspicious = s.contains("999999")
-                || s.contains("000000")
-                || s.contains("333333")
-                || s.contains("666666");
-
-            if suspicious {
-                for precision in 2..=6 {
-                    let candidate = format!("{value:.precision$}");
-
-                    let reparsed = candidate.parse::<f64>().unwrap();
-                    let diff = (value - reparsed).abs();
-
-                    if diff < 1e-9 {
-                        return candidate
-                            .trim_end_matches('0')
-                            .trim_end_matches('.')
-                            .to_string();
-                    }
-                }
-            }
-
-            s
-        })
-        .into_owned();
-
-    static POW_RE: LazyLock<Regex> = LazyLock::new(|| {
-        Regex::new(r"(?P<base>\([^()]+\)|[\w.]+)\s*\^\s*(?P<exp>\d+)(?:f32)?").unwrap()
-    });
-
-    POW_RE
-        .replace_all(&result, |caps: &Captures| {
-            let base = &caps["base"];
-            let exp: usize = caps["exp"].parse().unwrap();
-
-            match exp {
-                1 => base.to_string(),
-                2 => format!("({base} * {base})"),
-                3 => format!("({base} * {base} * {base})"),
-                _ => panic!("Unsupported exponent {exp}; maximum supported exponent is 3"),
-            }
-        })
-        .into_owned()
 }
 
 pub fn is_zero(value: &str) -> bool {
@@ -495,13 +386,33 @@ pub fn cast_f32(s: &str) -> MayFail<String> {
         // Patterns, including range bounds, must keep their integer literals.
         fn visit_pat_mut(&mut self, _: &mut syn::Pat) {}
 
+        fn visit_expr_mut(&mut self, expr: &mut Expr) {
+            syn::visit_mut::visit_expr_mut(self, expr);
+
+            // Literals such as `3.14` are denied by `clippy::approx_constant`.
+            if let Expr::Lit(syn::ExprLit {
+                lit: Lit::Float(n), ..
+            }) = expr
+                && let Some(name) = approx_constant(n.base10_digits())
+            {
+                let name = quote::format_ident!("{name}");
+                *expr = syn::parse_quote!(core::f32::consts::#name);
+            }
+        }
+
         fn visit_expr_lit_mut(&mut self, expr: &mut syn::ExprLit) {
             let digits = match &expr.lit {
                 Lit::Int(n) if n.suffix().is_empty() => n.base10_digits(),
                 Lit::Float(n) if n.suffix().is_empty() => n.base10_digits(),
                 _ => return,
             };
-            expr.lit = Lit::Float(syn::LitFloat::new(&format!("{digits}f32"), expr.lit.span()));
+            
+            let Ok(value) = digits.parse::<f64>() else {
+                return;
+            };
+            
+            let literal = format_number(value, Precision::F32);
+            expr.lit = Lit::Float(syn::LitFloat::new(&format!("{literal}f32"), expr.lit.span()));
         }
 
         fn visit_expr_match_mut(&mut self, expr: &mut syn::ExprMatch) {
@@ -551,11 +462,11 @@ pub fn probe_ratio(min_expr: &str, max_expr: &str, all_vars: &[CtxVar]) -> Optio
             max_s = max_s.replace(var.as_var(), &v);
         }
 
-        let Ok(min_v) = simplify(&min_s).trim().parse::<f64>() else {
+        let Ok(min_v) = simplify_exact(&min_s).trim().parse::<f64>() else {
             continue;
         };
 
-        let Ok(max_v) = simplify(&max_s).trim().parse::<f64>() else {
+        let Ok(max_v) = simplify_exact(&max_s).trim().parse::<f64>() else {
             continue;
         };
 
@@ -582,16 +493,5 @@ pub fn probe_ratio(min_expr: &str, max_expr: &str, all_vars: &[CtxVar]) -> Optio
         None
     }
     .flatten()
-    .map(|k| {
-        let r = k.round();
-
-        if (k - r).abs() < 1e-9 {
-            return (r as i64).to_string();
-        }
-
-        format!("{k:.10}")
-            .trim_end_matches('0')
-            .trim_end_matches('.')
-            .to_owned()
-    })
+    .map(|k| format_number(k, Precision::F32))
 }

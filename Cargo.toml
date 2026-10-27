@@ -57,3 +57,7 @@ codegen-units = 1
 # Keep the benchmark launcher on the same optimized settings as release builds.
 [profile.perf]
 inherits = "release"
+
+# [profile.dev.build-override]
+# opt-level = 3
+# debug = false
