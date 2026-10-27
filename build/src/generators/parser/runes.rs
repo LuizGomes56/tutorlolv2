@@ -105,10 +105,15 @@ impl Parser<WikiRune, Rune> for RuneParser {
             );
         };
 
-        customize("Health", 8980);
-        customize("Health Scaling", 8981);
-        customize("Adaptive Force", 8982);
-        customize("Attack Speed", 8983);
+        // Stat shards are missing from `runesReforged.json`, but these are the
+        // ids that riot uses for them in match data
+        customize("Health", 5011);
+        customize("Health Scaling", 5001);
+        customize("Adaptive Force", 5008);
+        customize("Attack Speed", 5005);
+        customize("Ability Haste", 5007);
+        customize("Move Speed", 5010);
+        customize("Tenacity and Slow Resist", 5013);
 
         Ok(Self { data })
     }

@@ -27,6 +27,28 @@ pub enum AppArgs {
     Fetch { function: Fetch },
     #[command(alias = "w")]
     Wiki { function: Wiki },
+    /// Computes recommended items and runes from high elo ranked matches
+    #[command(alias = "s")]
+    Stats {
+        #[arg(default_value = "all")]
+        function: Stats,
+        /// Most recent matches downloaded from each platform
+        #[arg(short, long, default_value_t = stats::DEFAULT_MATCHES)]
+        matches: usize,
+        /// Comma separated platforms whose ladders are sampled, such as `kr,euw1,na1`
+        #[arg(short, long, value_delimiter = ',', default_values = stats::DEFAULT_PLATFORMS)]
+        platforms: Vec<String>,
+    },
+}
+
+#[derive(Clone, Copy, Debug, ValueEnum)]
+pub enum Stats {
+    #[clap(alias = "a")]
+    All,
+    #[clap(alias = "d")]
+    Download,
+    #[clap(alias = "p")]
+    Parse,
 }
 
 #[derive(Clone, Copy, Debug, ValueEnum)]
@@ -73,12 +95,6 @@ pub enum Wiki {
     ScraperParse,
     #[clap(alias = "sc")]
     ScraperConcat,
-    #[clap(alias = "st")]
-    Stats,
-    #[clap(alias = "std")]
-    StatsDownload,
-    #[clap(alias = "stp")]
-    StatsParse,
 }
 
 #[tokio::main]
@@ -144,11 +160,22 @@ async fn main() -> MayFail {
             Wiki::ScraperDownload => scraper::download().await,
             Wiki::ScraperParse => scraper::parse(),
             Wiki::ScraperConcat => scraper::concat(),
-            Wiki::Stats => stats::run().await,
-            Wiki::StatsDownload => stats::download().await,
-            Wiki::StatsParse => stats::parse(),
         }
         .map_err(|e| format!("[wiki] Error: {e:?}"))?,
+        AppArgs::Stats {
+            function,
+            matches,
+            platforms,
+        } => {
+            let config = stats::StatsConfig { platforms, matches };
+
+            match function {
+                Stats::All => stats::run(&config).await,
+                Stats::Download => stats::download(&config).await,
+                Stats::Parse => stats::parse(),
+            }
+            .map_err(|e| format!("[stats] Error: {e:?}"))?
+        }
     }
 
     Ok(())

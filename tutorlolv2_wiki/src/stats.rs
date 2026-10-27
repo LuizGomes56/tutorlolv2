@@ -30,9 +30,61 @@ pub(crate) fn output() -> PathBuf {
     cache().join("data").with_extension("json")
 }
 
-/// Platforms whose high elo ladders are sampled, paired with their regional
-/// routing value used by `match-v5`
-const PLATFORMS: [(&str, &str); 3] = [("kr", "asia"), ("euw1", "europe"), ("na1", "americas")];
+/// Every platform, paired with its regional routing value used by `match-v5`
+pub const PLATFORMS: [(&str, &str); 17] = [
+    ("br1", "americas"),
+    ("la1", "americas"),
+    ("la2", "americas"),
+    ("na1", "americas"),
+    ("eun1", "europe"),
+    ("euw1", "europe"),
+    ("me1", "europe"),
+    ("ru", "europe"),
+    ("tr1", "europe"),
+    ("jp1", "asia"),
+    ("kr", "asia"),
+    ("oc1", "sea"),
+    ("ph2", "sea"),
+    ("sg2", "sea"),
+    ("th2", "sea"),
+    ("tw2", "sea"),
+    ("vn2", "sea"),
+];
+
+pub const DEFAULT_PLATFORMS: [&str; 3] = ["kr", "euw1", "na1"];
+pub const DEFAULT_MATCHES: usize = 10_000;
+
+/// Which ladders are sampled by [`download`], and how many matches
+pub struct StatsConfig {
+    /// Platforms whose high elo ladders are sampled, as listed in [`PLATFORMS`]
+    pub platforms: Vec<String>,
+    /// Most recent matches downloaded from each platform
+    pub matches: usize,
+}
+
+impl Default for StatsConfig {
+    fn default() -> Self {
+        Self {
+            platforms: DEFAULT_PLATFORMS.map(String::from).to_vec(),
+            matches: DEFAULT_MATCHES,
+        }
+    }
+}
+
+impl StatsConfig {
+    /// Resolves every configured platform to its entry in [`PLATFORMS`]
+    fn platforms(&self) -> MayFail<Vec<(&'static str, &'static str)>> {
+        self.platforms
+            .iter()
+            .map(|name| {
+                PLATFORMS
+                    .into_iter()
+                    .find(|(platform, _)| platform.eq_ignore_ascii_case(name))
+                    .ok_or_else(|| format!("[stats] Unknown platform {name:?}").into())
+            })
+            .collect()
+    }
+}
 const LEAGUES: [&str; 3] = ["challengerleagues", "grandmasterleagues", "masterleagues"];
 
 /// Ranked solo/duo queue
@@ -96,11 +148,12 @@ struct RiotApi {
 }
 
 impl RiotApi {
-    fn new() -> MayFail<Self> {
+    fn new(platforms: &[(&'static str, &'static str)]) -> MayFail<Self> {
         Ok(Self {
             key: api_key()?,
-            limiters: PLATFORMS
-                .into_iter()
+            limiters: platforms
+                .iter()
+                .copied()
                 .flat_map(|(platform, region)| [platform, region])
                 .map(|host| (host, Limiter(Mutex::new(Instant::now()))))
                 .collect(),
@@ -255,7 +308,7 @@ where
 }
 
 /// Collects the players of every league in [`LEAGUES`] for a platform
-async fn players(api: &RiotApi, platform: &str) -> MayFail<BTreeSet<String>> {
+async fn players(api: &RiotApi, platform: &str) -> MayFail<Vec<String>> {
     let path = cache()
         .join(platform)
         .join("players")
@@ -263,7 +316,7 @@ async fn players(api: &RiotApi, platform: &str) -> MayFail<BTreeSet<String>> {
 
     if let Ok(true) = std::fs::exists(&path) {
         println!("[exists] {path:?}");
-        return BTreeSet::from_file(path);
+        return Vec::from_file(path);
     }
 
     #[derive(Deserialize)]
@@ -272,20 +325,25 @@ async fn players(api: &RiotApi, platform: &str) -> MayFail<BTreeSet<String>> {
     }
 
     #[derive(Deserialize)]
+    #[serde(rename_all = "camelCase")]
     struct LeagueEntry {
         puuid: String,
+        league_points: u32,
     }
 
-    let mut players = BTreeSet::new();
+    let mut players = Vec::new();
 
     for league in LEAGUES {
         let path = format!("/lol/league/v4/{league}/by-queue/RANKED_SOLO_5x5");
-        let data = api.get::<League>(platform, &path).await?;
+        let mut data = api.get::<League>(platform, &path).await?;
 
         println!(
             "[stats] {platform} {league}: {} players",
             data.entries.len()
         );
+
+        data.entries
+            .sort_by_key(|e| std::cmp::Reverse(e.league_points));
 
         players.extend(data.entries.into_iter().map(|e| e.puuid));
     }
@@ -294,12 +352,14 @@ async fn players(api: &RiotApi, platform: &str) -> MayFail<BTreeSet<String>> {
     Ok(players)
 }
 
-/// Collects the ids of the recent ranked matches of every player
+/// Collects the ids of the recent ranked matches of the players, from the top
+/// of the ladder down, until at least `target` distinct ids are found
 async fn match_ids(
     api: &Arc<RiotApi>,
-    platform: &str,
+    platform: &'static str,
     region: &'static str,
-    players: BTreeSet<String>,
+    players: Vec<String>,
+    target: usize,
 ) -> MayFail<BTreeSet<String>> {
     let path = cache()
         .join(platform)
@@ -307,8 +367,12 @@ async fn match_ids(
         .with_extension("json");
 
     if let Ok(true) = std::fs::exists(&path) {
-        println!("[exists] {path:?}");
-        return BTreeSet::from_file(path);
+        let ids = BTreeSet::from_file(&path)?;
+
+        if ids.len() >= target {
+            println!("[exists] {path:?}");
+            return Ok(ids);
+        }
     }
 
     let start_time = SystemTime::now()
@@ -316,9 +380,12 @@ async fn match_ids(
         .saturating_sub(Duration::from_secs(SAMPLE_DAYS * 24 * 60 * 60))
         .as_secs();
 
-    let total = players.len();
     let done = Arc::new(AtomicUsize::new(0));
     let ids = Arc::new(std::sync::Mutex::new(BTreeSet::new()));
+
+    let found = |ids: &std::sync::Mutex<BTreeSet<String>>| ids.lock().map_or(0, |ids| ids.len());
+
+    let players = players.into_iter().take_while(|_| found(&ids) < target);
 
     for_each_concurrent(players, |puuid| {
         let (api, done, ids) = (api.clone(), done.clone(), ids.clone());
@@ -332,8 +399,8 @@ async fn match_ids(
             let result = api.get::<Vec<String>>(region, &path).await;
             let done = done.fetch_add(1, Ordering::Relaxed) + 1;
 
-            if done % 500 == 0 || done == total {
-                println!("[stats] {region}: match lists {done}/{total}");
+            if done % 500 == 0 {
+                println!("[stats] {platform}: match lists {done}");
             }
 
             ids.lock().map_err(|e| format!("{e:?}"))?.extend(result?);
@@ -357,18 +424,27 @@ fn match_path(match_id: &str) -> PathBuf {
         .with_extension("json")
 }
 
-async fn download_platform(api: Arc<RiotApi>, platform: &str, region: &'static str) -> MayFail {
+async fn download_platform(
+    api: Arc<RiotApi>,
+    platform: &'static str,
+    region: &'static str,
+    target: usize,
+) -> MayFail {
     let players = players(&api, platform).await?;
-    let match_ids = match_ids(&api, platform, region, players)
+
+    // Match ids increase over time, so the greatest ones are the most recent
+    let match_ids = match_ids(&api, platform, region, players, target)
         .await?
         .into_iter()
+        .rev()
+        .take(target)
         .filter(|id| !matches!(std::fs::exists(match_path(id)), Ok(true)))
         .collect::<Vec<_>>();
 
     let total = match_ids.len();
     let done = Arc::new(AtomicUsize::new(0));
 
-    println!("[stats] {region}: {total} matches to download");
+    println!("[stats] {platform}: {total} matches to download");
 
     for_each_concurrent(match_ids, |match_id| {
         let (api, done) = (api.clone(), done.clone());
@@ -380,7 +456,7 @@ async fn download_platform(api: Arc<RiotApi>, platform: &str, region: &'static s
             let done = done.fetch_add(1, Ordering::Relaxed) + 1;
 
             if done % 500 == 0 || done == total {
-                println!("[stats] {region}: matches {done}/{total}");
+                println!("[stats] {platform}: matches {done}/{total}");
             }
 
             // Only the fields declared in `Match` are kept
@@ -392,18 +468,21 @@ async fn download_platform(api: Arc<RiotApi>, platform: &str, region: &'static s
     Ok(())
 }
 
-/// Downloads the recent ranked matches of the high elo players of every
-/// platform in [`PLATFORMS`], concurrently between platforms
-pub async fn download() -> MayFail {
+/// Downloads the most recent ranked matches of the high elo players of every
+/// configured platform, concurrently between platforms
+pub async fn download(config: &StatsConfig) -> MayFail {
     println!("[fn] stats::download");
 
-    let api = Arc::new(RiotApi::new()?);
+    let platforms = config.platforms()?;
+    let api = Arc::new(RiotApi::new(&platforms)?);
     let mut tasks = JoinSet::new();
 
-    for (platform, region) in PLATFORMS {
+    for (platform, region) in platforms {
         let api = api.clone();
+        let target = config.matches;
+
         tasks.spawn(async move {
-            download_platform(api, platform, region)
+            download_platform(api, platform, region, target)
                 .await
                 .map_err(|e| format!("[stats] {platform}: {e:?}"))
         });
@@ -489,18 +568,6 @@ fn recommend_items(
         .collect()
 }
 
-/// Riot ids of the stat shards in match data differ from the ones assigned
-/// to the shards in the rune catalog
-fn stat_shard(riot_id: u32) -> Option<&'static str> {
-    match riot_id {
-        5001 => Some("HealthScaling"),
-        5005 => Some("AttackSpeed"),
-        5008 => Some("AdaptiveForce"),
-        5011 => Some("Health"),
-        _ => None,
-    }
-}
-
 /// Recommends the most common rune page, then the most common choice of
 /// every slot among the games that used that page
 fn recommend_runes(games: &[&Participant], runes: &Catalog) -> BTreeSet<String> {
@@ -543,12 +610,7 @@ fn recommend_runes(games: &[&Participant], runes: &Catalog) -> BTreeSet<String> 
 
     perks
         .into_iter()
-        .filter_map(|id| {
-            runes
-                .get(id)
-                .or_else(|| stat_shard(id).filter(|key| runes.contains(key)))
-                .map(String::from)
-        })
+        .filter_map(|id| runes.get(id).map(String::from))
         .collect()
 }
 
@@ -618,8 +680,8 @@ pub fn parse() -> MayFail {
     crate::write(output(), &json)
 }
 
-pub async fn run() -> MayFail {
-    download().await?;
+pub async fn run(config: &StatsConfig) -> MayFail {
+    download(config).await?;
     parse()?;
     scraper::concat()
 }

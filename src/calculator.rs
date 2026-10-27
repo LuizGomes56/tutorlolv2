@@ -267,7 +267,6 @@ impl PlayerStats {
                     *adaptive_force += 1.8 + 16.2 / 17.0 * (level.get() - 1) as f32
                 }
                 RuneId::Health => self.max_health += 65.0,
-                RuneId::HealthScaling => self.max_health += 10.0 * level.get() as f32,
                 _ => {}
             }
 
@@ -373,6 +372,9 @@ impl PlayerStats {
                     }
                     RuneId::AdaptiveForce => *adaptive_force += 9.0 * stacks as f32,
                     RuneId::AttackSpeed => self.attack_speed += 10.0 * (stacks as f32),
+                    RuneId::HealthScaling => {
+                        self.max_health += 10.0 * (level.get() as u32 * stacks) as f32
+                    }
                     _ => {}
                 }
             }

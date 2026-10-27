@@ -128,10 +128,6 @@ impl Catalog {
         self.by_id.get(&riot_id).map(String::as_str)
     }
 
-    pub(crate) fn contains(&self, key: &str) -> bool {
-        self.keys.contains(key)
-    }
-
     pub(crate) fn items() -> MayFail<Self> {
         #[derive(Deserialize)]
         struct Data {
@@ -175,7 +171,7 @@ impl Catalog {
     }
 
     /// Resolves an `<img>` by the riot id in its `src`, falling back to its
-    /// `alt` text, which is necessary for stat shards since their ids differ
+    /// `alt` text when the image is not named after a riot id
     fn resolve(&self, img: ElementRef) -> Option<String> {
         let riot_id = img
             .attr("src")?
