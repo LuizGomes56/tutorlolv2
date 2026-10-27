@@ -1,29 +1,84 @@
 use super::*;
 
 impl Generator for Irelia {
-    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
-        self.ability(
-            Key::P,
-            [
-                (2, _1), /* Ionian Fervor */
-                (3, _2), /* Ionian Fervor [1] */
-                (4, _3), /* Ionian Fervor [2] */
-                (5, _4), /* Ionian Fervor [3] */
-                (6, _5), /* Ionian Fervor [4] */
-                (7, _6), /* Ionian Fervor [5] */
-            ],
-        )
-        .ability(Key::Q, [(1, _1) /* Physical Damage */])
-        .ability(
-            Key::W,
-            [
-                (0, _1), /* Maximum Physical Damage */
-                (1, _2), /* Minimum Physical Damage */
-            ],
-        )
-        .ability(Key::E, [(0, _1) /* Magic Damage */])
-        .ability(Key::R, [(0, _1) /* Magic Damage */])
-        .end()
+        self.ability(Key::P, [(2, Void) /* Ionian Fervor */])
+            .modify(P(Void), |_| f![10 + 51 / 17 * (Level - 1) + 0.2 * BonusAd])?
+            .comment(P(Void), "Bonus magic damage on-hit at maximum stacks")?
+            .ability(Key::Q, [(1, Void) /* Physical Damage */])
+            .ability(
+                Key::W,
+                [
+                    (0, Max), /* Maximum Physical Damage */
+                    (1, Min), /* Minimum Physical Damage */
+                ],
+            )
+            .ability(Key::E, [(0, Void) /* Magic Damage */])
+            .ability(Key::R, [(0, Void) /* Magic Damage */])
+            .combo([
+                Ability(E(Void)),
+                Ability(R(Void)),
+                Ability(Q(Void)),
+                Ability(E(Void)),
+                Attack,
+                Ability(Q(Void)),
+                Attack,
+                Ability(Q(Void)),
+                Ability(W(Max)),
+            ])?
+            .combo([
+                Ability(R(Void)),
+                Ability(Q(Void)),
+                Attack,
+                Ability(E(Void)),
+                Ability(E(Void)),
+                Attack,
+                Ability(Q(Void)),
+                Attack,
+                Ability(Q(Void)),
+            ])?
+            .combo([
+                Ability(R(Void)),
+                Ability(Q(Void)),
+                Attack,
+                Ability(E(Void)),
+                Ability(E(Void)),
+                Attack,
+                Ability(Q(Void)),
+                Attack,
+                Ability(Q(Void)),
+                Attack,
+            ])?
+            .combo([
+                Ability(E(Void)),
+                Ability(R(Void)),
+                Ability(Q(Void)),
+                Attack,
+                Ability(E(Void)),
+                Ability(Q(Void)),
+                Ability(Q(Void)),
+                Attack,
+            ])?
+            .combo([
+                Ability(E(Void)),
+                Ability(E(Void)),
+                Ability(Q(Void)),
+                Attack,
+                Ability(R(Void)),
+                Attack,
+                Ability(Q(Void)),
+                Attack,
+                Ability(Q(Void)),
+                Attack,
+            ])?
+            .combo([
+                Ability(E(Void)),
+                Ability(E(Void)),
+                Ability(Q(Void)),
+                Attack,
+                Ability(Q(Void)),
+                Attack,
+            ])?
+            .end()
     }
 }

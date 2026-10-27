@@ -1,20 +1,20 @@
 use super::*;
 
 impl Generator for Gnar {
-    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
-        self.ability(
+        self.ability_nth(
+            1,
             Key::Q,
             [
                 (0, Max), /* Physical Damage */
                 (1, Min), /* Reduced Damage */
             ],
         )
-        .ability_nth(1, Key::Q, [(0, Mega) /* Physical Damage */])
-        .ability(Key::W, [(0, Void) /* Bonus Magic Damage */])
-        .ability_nth(1, Key::W, [(0, Mega) /* Physical Damage */])
-        .ability(Key::E, [(1, Void) /* Physical Damage */])
-        .ability_nth(1, Key::E, [(0, Mega) /* Physical Damage */])
+        .ability(Key::Q, [(0, Mega) /* Physical Damage */])
+        .ability_nth(1, Key::W, [(0, Void) /* Bonus Magic Damage */])
+        .ability(Key::W, [(0, Mega) /* Physical Damage */])
+        .ability_nth(1, Key::E, [(1, Void) /* Physical Damage */])
+        .ability(Key::E, [(0, Mega) /* Physical Damage */])
         .ability(
             Key::R,
             [
@@ -22,6 +22,32 @@ impl Generator for Gnar {
                 (3, Min), /* Physical Damage */
             ],
         )
+        .combo([Ability(E(Void)), Ability(R(Max))])?
+        .combo([
+            Ability(E(Void)),
+            Attack,
+            Ability(R(Max)),
+            Attack,
+            Ability(W(Void)),
+            Attack,
+            Ability(Q(Max)),
+            Attack,
+        ])?
+        .combo([
+            Ability(E(Void)),
+            Ability(R(Max)),
+            Attack,
+            Ability(Q(Max)),
+            Attack,
+        ])?
+        .combo([
+            Ability(Q(Max)),
+            Ability(E(Void)),
+            Attack,
+            Ability(W(Void)),
+            Attack,
+        ])?
+        .combo([Attack, Ability(E(Void)), Ability(Q(Max)), Attack])?
         .end()
     }
 }

@@ -13,6 +13,52 @@ impl Generator for KogMaw {
                     (1, Min), /* Minimum Magic Damage */
                 ],
             )
+            .combo([
+                Ability(E(Void)),
+                Ability(Q(Void)),
+                Ability(W(Void)),
+                Attack,
+                Attack,
+                Attack,
+            ])?
+            .combo([
+                Ability(W(Void)),
+                Attack,
+                Ability(E(Void)),
+                Ability(Q(Void)),
+                Ability(R(Min)),
+                Attack,
+                Attack,
+                Attack,
+                Ability(R(Min)),
+            ])?
+            .combo([Ability(E(Void)), Ability(Q(Void)), Ability(R(Max))])?
+            .combo([
+                Ability(E(Void)),
+                Ability(Q(Void)),
+                Ability(R(Max)),
+                Ability(W(Void)),
+                Attack,
+                Attack,
+                Attack,
+            ])?
+            .combo([
+                Ability(Q(Void)),
+                Ability(E(Void)),
+                Ability(W(Void)),
+                Attack,
+                Attack,
+                Attack,
+            ])?
+            .combo([
+                Ability(W(Void)),
+                Attack,
+                Ability(E(Void)),
+                Ability(Q(Void)),
+                Attack,
+                Attack,
+                Attack,
+            ])?
             .end()
     }
 }

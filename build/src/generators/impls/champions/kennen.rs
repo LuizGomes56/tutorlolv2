@@ -18,6 +18,60 @@ impl Generator for Kennen {
                     (2, Max), /* Total Single-Target Damage */
                 ],
             )
+            .combo([
+                Ability(E(Void)),
+                Ability(R(Max)),
+                Ability(W(Void)),
+                Ability(Q(Void)),
+                Ability(E(Void)),
+                Attack,
+            ])?
+            .combo([
+                Ability(E(Void)),
+                Ability(W(Void)),
+                Ability(E(Void)),
+                Attack,
+                Ability(Q(Void)),
+                Attack,
+                Ability(R(Max)),
+                Attack,
+                Attack,
+            ])?
+            .combo([
+                Ability(R(Max)),
+                Attack,
+                Ability(W(Void)),
+                Ability(Q(Void)),
+                Attack,
+                Ability(E(Void)),
+                Ability(E(Void)),
+                Attack,
+            ])?
+            .combo([
+                Ability(E(Void)),
+                Ability(R(Max)),
+                Ability(W(Void)),
+                Ability(E(Void)),
+                Ability(Q(Void)),
+                Attack,
+            ])?
+            .combo([
+                Ability(E(Void)),
+                Ability(E(Void)),
+                Attack,
+                Ability(W(Void)),
+                Ability(Q(Void)),
+                Attack,
+            ])?
+            .combo([Ability(Q(Void)), Attack, Ability(W(Void))])?
+            .combo([Attack, Ability(Q(Void)), Attack, Ability(W(Void)), Attack])?
+            .combo([
+                Ability(E(Void)),
+                Ability(Q(Void)),
+                Ability(W(Void)),
+                Ability(E(Void)),
+                Attack,
+            ])?
             .end()
     }
 }

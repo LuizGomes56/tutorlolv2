@@ -12,7 +12,19 @@ impl Generator for Kalista {
                 ],
             );
 
-        let e_dmg = self.merge_damage([E(_1), E(Void)], |[e1, e]| f![(e) + (e1 * Stacks)])?;
-        self.set_damage(E(Void), e_dmg)?.end()
+        let e_dmg = self.merge_damage([E(_1), E(Void)], |[e1, e]| f![(e) + ((e1) * Stacks)])?;
+        self.set_damage(E(Void), e_dmg)?
+            .combo([
+                Attack,
+                Attack,
+                Attack,
+                Attack,
+                Ability(Q(Void)),
+                Ability(E(Void)),
+            ])?
+            .combo([Attack, Ability(Q(Void)), Ability(E(Void))])?
+            .combo([Ability(Q(Void)), Attack, Ability(E(Void))])?
+            .combo([Attack, Ability(Q(Void)), Attack, Ability(E(Void))])?
+            .end()
     }
 }

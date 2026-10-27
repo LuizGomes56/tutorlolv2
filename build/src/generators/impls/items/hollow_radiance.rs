@@ -1,8 +1,12 @@
 use super::*;
 
 impl Generator for HollowRadiance {
-    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
-        self.damage_type(Magic).end()
+        // Immolate damage per second, and the eruption of Desolate. The other
+        // scalings are Immolate's radius and the eruption against champions
+        self.damage_type(Magic)
+            .min_with(Passive, [0])?
+            .max_with(Passive2, [0])?
+            .end()
     }
 }

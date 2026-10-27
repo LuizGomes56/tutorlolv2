@@ -1,45 +1,79 @@
 use super::*;
 
 impl Generator for Briar {
-    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
-        self.ability(
-            Key::P,
-            [
-                (2, _1),     /* Innate */
-                (3, _2),     /* Innate [10] */
-                (4, _3),     /* Innate [11] */
-                (5, _4),     /* Innate [12] */
-                (6, _5),     /* Innate [13] */
-                (7, _6),     /* Innate [14] */
-                (8, _7),     /* Innate [15] */
-                (9, _8),     /* Innate [16] */
-                (10, _1Min), /* Innate [17] */
-                (11, _2Min), /* Innate [18] */
-                (12, _3Min), /* Innate [1] */
-                (13, _4Min), /* Innate [2] */
-                (14, _5Min), /* Innate [3] */
-                (15, _6Min), /* Innate [4] */
-                (16, _7Min), /* Innate [5] */
-                (17, _8Min), /* Innate [6] */
-                (18, _1Max), /* Innate [7] */
-                (19, _2Max), /* Innate [8] */
-                (20, _3Max), /* Innate [9] */
-            ],
-        )
-        .ability(Key::Q, [(0, Void) /* Physical Damage */])
-        .ability(Key::W, [(2, Void) /* Physical Damage */])
-        .ability_nth(1, Key::W, [(0, Void) /* Bonus Physical Damage */])
-        .ability(
-            Key::E,
-            [
-                (0, _2),    /* Bonus Magic Damage */
-                (3, Max),   /* Maximum Magic Damage */
-                (4, Min),   /* Minimum Magic Damage */
-                (5, _1Max), /* Total Magic Damage */
-            ],
-        )
-        .ability(Key::R, [(2, Void) /* Magic Damage */])
-        .end()
+        self.ability(Key::P, [(2, Void) /* Innate */])
+            .comment(P(Void), "Crimson Curse bleed")?
+            .ability(Key::Q, [(0, Void) /* Physical Damage */])
+            .ability(Key::W, [(0, Void) /* Bonus Physical Damage */])
+            .modify(W(Void), |_| {
+                f![5 + 15 * (WLevel - 1)
+                    + 0.05 * AttackDamage
+                    + (0.09 + 0.00025 * BonusAd) * EnemyMissingHealth]
+            })?
+            .comment(W(Void), "Snack Attack")?
+            .ability_nth(1, Key::W, [(2, _1) /* Physical Damage */])
+            .comment(W(_1), "Blood Frenzy attack")?
+            .ability(
+                Key::E,
+                [
+                    (4, Min), /* Minimum Magic Damage */
+                    (3, Max), /* Maximum Magic Damage */
+                    (0, _1),  /* Bonus Magic Damage */
+                    (5, _2),  /* Total Magic Damage */
+                ],
+            )
+            .ability(Key::R, [(2, Void) /* Magic Damage */])
+            .combo([
+                Ability(R(Void)),
+                Ability(Q(Void)),
+                Ability(W(Void)),
+                Ability(W(Void)),
+                Ability(E(Max)),
+            ])?
+            .combo([Ability(W(Void)), Ability(Q(Void)), Ability(E(Max))])?
+            .combo([
+                Ability(W(Void)),
+                Ability(Q(Void)),
+                Ability(W(Void)),
+                Ability(E(Max)),
+                Ability(R(Void)),
+            ])?
+            .combo([
+                Ability(Q(Void)),
+                Ability(W(Void)),
+                Ability(W(Void)),
+                Ability(E(Max)),
+                Attack,
+                Attack,
+            ])?
+            .combo([
+                Ability(R(Void)),
+                Ability(W(Void)),
+                Ability(Q(Void)),
+                Ability(W(Void)),
+                Ability(E(Max)),
+            ])?
+            .combo([
+                Ability(W(Void)),
+                Ability(W(Void)),
+                Ability(Q(Void)),
+                Ability(E(Max)),
+            ])?
+            .combo([
+                Ability(Q(Void)),
+                Ability(E(Max)),
+                Ability(W(Void)),
+                Ability(W(Void)),
+            ])?
+            .combo([
+                Ability(E(Max)),
+                Ability(Q(Void)),
+                Attack,
+                Ability(W(Void)),
+                Ability(W(Void)),
+                Attack,
+            ])?
+            .end()
     }
 }

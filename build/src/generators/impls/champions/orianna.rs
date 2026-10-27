@@ -17,6 +17,42 @@ impl Generator for Orianna {
             .ability(Key::W, [(0, Void) /* Magic Damage */])
             .ability(Key::E, [(1, Void) /* Magic Damage */])
             .ability(Key::R, [(0, Void) /* Magic Damage */])
+            .combo([
+                Ability(R(Void)),
+                Ability(Q(Max)),
+                Ability(W(Void)),
+                Attack,
+                Ability(E(Void)),
+            ])?
+            .combo([Ability(Q(Max)), Attack, Ability(W(Void))])?
+            .combo([Ability(Q(Min)), Ability(Q(Min)), Ability(W(Void)), Attack])?
+            .combo([
+                Ability(Q(Max)),
+                Ability(R(Void)),
+                Ability(W(Void)),
+                Ability(E(Void)),
+                Attack,
+            ])?
+            .combo([
+                Ability(Q(Min)),
+                Ability(W(Void)),
+                Attack,
+                Ability(R(Void)),
+                Ability(E(Void)),
+                Attack,
+                Attack,
+                Ability(Q(Min)),
+            ])?
+            .combo([
+                Ability(Q(Min)),
+                Ability(R(Void)),
+                Ability(Q(Min)),
+                Ability(W(Void)),
+                Ability(E(Void)),
+                Attack,
+            ])?
+            .combo([Ability(Q(Max)), Ability(W(Void))])?
+            .combo([Ability(Q(Max)), Attack, Ability(W(Void)), Ability(E(Void))])?
             .end()
     }
 }

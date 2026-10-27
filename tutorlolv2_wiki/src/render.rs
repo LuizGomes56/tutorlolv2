@@ -1,7 +1,7 @@
 use crate::{
     MayFail,
     formula::SequencePattern,
-    parser::{Effect, LevelArm, Scaling},
+    parser::{Effect, LevelArm, Scaling, build_level_arms},
 };
 use regex::Regex;
 use std::sync::LazyLock;
@@ -103,15 +103,7 @@ impl Scaling {
                 debug,
             } => {
                 let coeff = render_level_coeff(*level_var, arms);
-
-                // Most BasedOnLevel coefficients below or equal to ~2 are ratios
-                // that should multiply their ctx_var. Larger values are usually
-                // absolute values/caps split out by the parser (for example monster caps),
-                // and should be rendered as their own formula.
-                let target = match based_on_level_is_ratio(arms, debug) {
-                    true => TargetMode::Direct(*ctx_var),
-                    false => TargetMode::None,
-                };
+                let target = level_target(*level_var, *ctx_var, arms, debug);
 
                 Ok(Piece { coeff, target }.to_expr())
             }
@@ -190,11 +182,7 @@ impl Scaling {
                 debug,
             } => Ok(Piece {
                 coeff: render_level_coeff(*level_var, arms),
-                target: if based_on_level_is_ratio(arms, debug) {
-                    TargetMode::Direct(*ctx_var)
-                } else {
-                    TargetMode::None
-                },
+                target: level_target(*level_var, *ctx_var, arms, debug),
             }),
 
             Self::RangePercentAttr {
@@ -245,29 +233,36 @@ impl Scaling {
 }
 
 impl Effect {
-    pub fn load_formula(&mut self, key: Key, champion_id: &str, offset: usize) -> MayFail {
-        self.formula = match champion_id {
-            "Nidalee" if offset > 0 => self.simplify_formula_with_axis(key, Some(CtxVar::RLevel)),
-            _ => self.simplify_formula(key),
-        }?;
+    pub fn load_formula(&mut self, key: Key, champion_id: &str) -> MayFail {
+        // These champions learn their ultimate at level 1 and it has 4 ranks, which
+        // also define the values of their other form's abilities and passives
+        const FOUR_RANK_ULTIMATE: [&str; 5] = ["Elise", "Jayce", "Karma", "Nidalee", "Udyr"];
+
+        self.formula = self.simplify_formula_for(key, FOUR_RANK_ULTIMATE.contains(&champion_id))?;
 
         Ok(())
     }
 
-    fn infer_axis(&self, key: Key) -> Option<CtxVar> {
-        let len = self
-            .base
+    fn series_len(&self) -> Option<usize> {
+        self.base
             .as_ref()
             .map(Vec::len)
             .or_else(|| self.use_values.as_ref().map(Vec::len))
             .or_else(|| self.scalings.iter().find_map(Scaling::try_get_len))
-            .unwrap_or(0);
+    }
 
-        if matches!(len, 18 | 20) {
-            return Some(CtxVar::Level);
+    /// Variable that a series of `len` values of this effect progresses with. Each
+    /// series is checked separately because an effect may mix values based on level
+    /// with values based on rank, like "5 - 145 (based on level) (+ 125 / 200 / 275)"
+    fn series_axis(key: Key, len: Option<usize>, four_rank_ultimate: bool) -> CtxVar {
+        match (key, len) {
+            (_, Some(18 | 20)) => CtxVar::Level,
+            // Basic abilities have 5 ranks, so 3 values come from the ultimate's rank,
+            // like Heimerdinger's abilities upgraded by his ultimate
+            (Key::Q | Key::W | Key::E, Some(3)) => CtxVar::RLevel,
+            (_, Some(4)) if four_rank_ultimate => CtxVar::RLevel,
+            _ => key.as_ctx_var(),
         }
-
-        Some(key.as_ctx_var())
     }
 
     fn use_values_belongs_to_level_scaling(&self, key: Key) -> bool {
@@ -288,20 +283,11 @@ impl Effect {
     }
 
     pub fn simplify_formula(&self, key: Key) -> MayFail<Option<String>> {
-        self.simplify_formula_with_axis(key, None)
+        self.simplify_formula_for(key, false)
     }
 
-    /// Use this for champions/effects whose progression axis is known to be special
-    /// (for example Nidalee cougar abilities that scale with R rank).
-    pub fn simplify_formula_with_axis(
-        &self,
-        key: Key,
-        axis_override: Option<CtxVar>,
-    ) -> MayFail<Option<String>> {
-        let axis = match axis_override.or_else(|| self.infer_axis(key)) {
-            Some(v) => v,
-            None => return Ok(None),
-        };
+    fn simplify_formula_for(&self, key: Key, four_rank_ultimate: bool) -> MayFail<Option<String>> {
+        let axis = |len| Self::series_axis(key, len, four_rank_ultimate);
 
         let mut expr = match self.build_base_expr(key, axis)? {
             Some(v) => v,
@@ -309,7 +295,7 @@ impl Effect {
         };
 
         for scaling in &self.scalings {
-            match scaling.render_scaling_action(axis)? {
+            match scaling.render_scaling_action(axis(scaling.try_get_len()))? {
                 RenderAction::Add(term) => {
                     expr = add_expr(&expr, &term);
                 }
@@ -322,15 +308,24 @@ impl Effect {
         Ok(Some(expr))
     }
 
-    fn build_base_expr(&self, key: Key, axis: CtxVar) -> MayFail<Option<String>> {
+    fn build_base_expr(
+        &self,
+        key: Key,
+        axis: impl Fn(Option<usize>) -> CtxVar,
+    ) -> MayFail<Option<String>> {
         if let Some(use_formula) = &self.use_formula {
+            let axis = axis(self.series_len());
+
             return Ok(Some(use_formula.replace('x', axis.as_var())));
         }
 
         if let Some(base) = &self.base {
+            let axis = axis(Some(base.len()));
+
             if base.len() == 5 && matches!(key, Key::R) {
                 return simplify_series(&[base[0], base[2], base[4]], axis);
             }
+
             return simplify_series(base, axis);
         }
 
@@ -339,7 +334,12 @@ impl Effect {
                 return Ok(None);
             }
 
-            return simplify_series(use_values, axis);
+            if let Some(levels) = &self.use_levels {
+                let arms = build_level_arms(levels, use_values);
+                return Ok(Some(render_level_coeff(CtxVar::Level, &arms)));
+            }
+
+            return simplify_series(use_values, axis(Some(use_values.len())));
         }
 
         Ok(None)
@@ -445,8 +445,19 @@ fn render_range_percent_attr(
 
     add_expr(
         &render_num(min),
-        &format!("{} * ({ctx_var})", render_num(max - min)),
+        &format!("{} * ({})", render_num(max - min), range_progress(ctx_var)),
     )
+}
+
+/// Progress from 0 to 1 of a range "based on" the variable. Critical strike chance
+/// is stored from 0 to 100 and the target's missing health is an absolute amount,
+/// while the champion's own missing health is already a ratio
+fn range_progress(ctx_var: CtxVar) -> String {
+    match ctx_var {
+        CtxVar::CritChance => format!("{ctx_var} * 0.01"),
+        CtxVar::EnemyMissingHealth => format!("{ctx_var} / {}", CtxVar::EnemyMaxHealth),
+        _ => ctx_var.to_string(),
+    }
 }
 
 fn render_range_linear(min: f64, max: f64, axis: CtxVar, denominator: f64) -> String {
@@ -483,27 +494,77 @@ fn simplify_series(values: &[f64], axis: CtxVar) -> MayFail<Option<String>> {
         return Ok(Some(render_num(values[0])));
     }
 
+    // Some tooltips list values for levels that can't be reached in game
+    let values = match axis {
+        CtxVar::Level => &values[..values.len().min(MAX_LEVEL)],
+        _ => values,
+    };
+
     let values = maybe_extend_series(values, axis);
-    let pat = SequencePattern::new(&values);
+
+    // A polynomial keeps growing past the last value, while the series is capped
+    // there, so it is only used when the series covers the whole axis
+    let pat = match values.len() >= axis_len(axis) {
+        true => SequencePattern::new(&values),
+        false => SequencePattern::Unknown,
+    };
 
     let expr = match pat {
         SequencePattern::Linear => render_linear(&values, axis),
-        SequencePattern::Quadratic => render_quadratic(&values, axis),
-        SequencePattern::Cubic => render_cubic(&values, axis),
-        SequencePattern::Unknown | SequencePattern::Inconclusive => {
-            render_exact_match(&values, axis)
+        SequencePattern::Quadratic if polynomial_fits_samples(&values, 2) => {
+            render_quadratic(&values, axis)
         }
+        SequencePattern::Cubic if polynomial_fits_samples(&values, 3) => {
+            render_cubic(&values, axis)
+        }
+        _ => render_exact_match(&values, axis),
     };
 
     Ok(Some(expr))
 }
 
+const MAX_LEVEL: usize = 18;
+
+/// Rounded values can have nearly constant differences without the polynomial
+/// built from their first few entries reproducing the rest of the table.
+fn polynomial_fits_samples(values: &[f64], degree: usize) -> bool {
+    let mut differences = values.to_vec();
+    let mut coefficients = Vec::with_capacity(degree + 1);
+
+    for _ in 0..=degree {
+        coefficients.push(differences[0]);
+        differences = differences.windows(2).map(|v| v[1] - v[0]).collect();
+    }
+
+    for value in values {
+        if (value - coefficients[0]).abs() > 1e-6 {
+            return false;
+        }
+
+        for i in 0..degree {
+            coefficients[i] += coefficients[i + 1];
+        }
+    }
+
+    true
+}
+
+/// Number of values needed to cover every possible value of the axis
+fn axis_len(axis: CtxVar) -> usize {
+    match axis {
+        CtxVar::Level => MAX_LEVEL,
+        CtxVar::QLevel | CtxVar::WLevel | CtxVar::ELevel => 5,
+        CtxVar::RLevel => 3,
+        _ => 0,
+    }
+}
+
 fn render_linear(values: &[f64], axis: CtxVar) -> String {
-    let &[v0, v1, ..] = values else {
+    let &[v0, .., vn] = values else {
         panic!("render_linear requires 2 values: {values:?}");
     };
 
-    let d1 = v1 - v0;
+    let d1 = (vn - v0) / (values.len() - 1) as f64;
     let n = axis_offset(axis);
 
     combine_terms([
@@ -587,6 +648,18 @@ fn render_level_coeff(level_var: CtxVar, arms: &[LevelArm]) -> String {
     render_level_match(level_var, arms)
 }
 
+/// Most BasedOnLevel coefficients below or equal to ~2 are ratios that should
+/// multiply their ctx_var. Larger values are usually absolute values/caps split
+/// out by the parser (for example monster caps), and should be rendered as their
+/// own formula. Scalings whose ctx_var is their own level variable, such as the
+/// ones created with [`Scaling::based_on_level_raw`], are always absolute values
+fn level_target(level_var: CtxVar, ctx_var: CtxVar, arms: &[LevelArm], debug: &str) -> TargetMode {
+    match ctx_var != level_var && based_on_level_is_ratio(arms, debug) {
+        true => TargetMode::Direct(ctx_var),
+        false => TargetMode::None,
+    }
+}
+
 fn based_on_level_is_ratio(arms: &[LevelArm], debug: &str) -> bool {
     if debug.to_ascii_lowercase().contains("capped at") {
         return false;
@@ -603,10 +676,18 @@ fn based_on_level_is_ratio(arms: &[LevelArm], debug: &str) -> bool {
 fn render_level_match(level_var: CtxVar, arms: &[LevelArm]) -> String {
     let mut rendered = Vec::new();
 
-    for arm in arms {
+    for (i, arm) in arms.iter().enumerate() {
+        let last = i + 1 == arms.len();
+
         match arm {
+            LevelArm::To { range, value, .. } if last => {
+                rendered.push(format!("1.. => {}", render_num(*value)))
+            }
             LevelArm::To { range, value, .. } => {
                 rendered.push(format!("{range:?} => {}", render_num(*value)))
+            }
+            LevelArm::Range { range, value, .. } if last => {
+                rendered.push(format!("{}.. => {}", range.start, render_num(*value)))
             }
             LevelArm::Range { range, value, .. } => {
                 let arm = match range.len() == 1 {
@@ -619,16 +700,6 @@ fn render_level_match(level_var: CtxVar, arms: &[LevelArm]) -> String {
                 rendered.push(format!("{range:?} => {}", render_num(*value)))
             }
         }
-    }
-
-    if !rendered.iter().any(|v| v.trim_start().starts_with("_"))
-        && arms
-            .last()
-            .map(|arm| !matches!(arm, LevelArm::From { .. }))
-            .unwrap_or(false)
-    {
-        let fallback = arms.last().map(LevelArm::value).unwrap_or(0.0);
-        rendered.push(format!("_ => {}", render_num(fallback)));
     }
 
     format!("match {level_var} {{ {} }}", rendered.join(", "))
@@ -734,12 +805,10 @@ fn render_exact_match(values: &[f64], axis: CtxVar) -> String {
     format!("match {axis} {{{}}}", arms.join(", "),)
 }
 
+/// Basic abilities have 5 ranks, so 4 values are extended with the 5th one when
+/// they follow a pattern. Ultimates with 4 values already have all of their ranks
 fn maybe_extend_series(values: &[f64], axis: CtxVar) -> Vec<f64> {
-    if matches!(
-        axis,
-        CtxVar::QLevel | CtxVar::WLevel | CtxVar::ELevel | CtxVar::RLevel
-    ) && values.len() == 4
-    {
+    if matches!(axis, CtxVar::QLevel | CtxVar::WLevel | CtxVar::ELevel) && values.len() == 4 {
         let pat = SequencePattern::new(values);
 
         if matches!(

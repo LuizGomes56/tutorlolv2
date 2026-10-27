@@ -5,6 +5,77 @@ impl Generator for Kindred {
         self.ability(Key::Q, [(0, Void) /* Physical Damage */])
             .ability(Key::W, [(0, Void) /* Magic Damage */])
             .ability(Key::E, [(0, Void) /* Additional Physical Damage */])
+            .combo([
+                Attack,
+                Ability(E(Void)),
+                Attack,
+                Attack,
+                Ability(Q(Void)),
+                Attack,
+            ])?
+            .combo([
+                Ability(W(Void)),
+                Ability(E(Void)),
+                Attack,
+                Ability(Q(Void)),
+                Attack,
+                Attack,
+                Attack,
+                Ability(Q(Void)),
+                Attack,
+            ])?
+            .combo([
+                Ability(Q(Void)),
+                Ability(W(Void)),
+                Ability(E(Void)),
+                Attack,
+                Attack,
+                Attack,
+                Ability(Q(Void)),
+                Attack,
+            ])?
+            .combo([
+                Ability(W(Void)),
+                Ability(E(Void)),
+                Ability(Q(Void)),
+                Attack,
+                Attack,
+                Attack,
+                Ability(Q(Void)),
+                Attack,
+            ])?
+            .combo([
+                Ability(W(Void)),
+                Attack,
+                Ability(Q(Void)),
+                Attack,
+                Ability(E(Void)),
+                Attack,
+                Attack,
+                Ability(Q(Void)),
+                Attack,
+            ])?
+            .combo([
+                Ability(E(Void)),
+                Attack,
+                Ability(W(Void)),
+                Ability(Q(Void)),
+                Attack,
+                Attack,
+                Attack,
+                Ability(Q(Void)),
+                Attack,
+            ])?
+            .combo([
+                Ability(W(Void)),
+                Ability(Q(Void)),
+                Ability(E(Void)),
+                Attack,
+                Attack,
+                Attack,
+                Ability(Q(Void)),
+                Attack,
+            ])?
             .end()
     }
 }

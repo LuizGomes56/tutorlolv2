@@ -17,6 +17,18 @@ impl Generator for Sivir {
                 (2, Min), /* Bounce Damage */
             ],
         )
+        .combo([Ability(Q(Void)), Attack, Ability(W(Max)), Attack, Attack])?
+        .combo([Attack, Ability(W(Max)), Ability(Q(Void)), Attack, Attack])?
+        .combo([
+            Attack,
+            Ability(W(Max)),
+            Attack,
+            Ability(Q(Void)),
+            Attack,
+            Attack,
+        ])?
+        .combo([Attack, Ability(W(Max)), Ability(Q(Void))])?
+        .combo([Attack, Ability(Q(Void)), Attack])?
         .end()
     }
 }

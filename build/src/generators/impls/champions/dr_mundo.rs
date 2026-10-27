@@ -24,6 +24,7 @@ impl Generator for DrMundo {
                 (4, Min), /* Minimum Bonus Physical Damage */
             ],
         )
+        .damage_types([E(Min), E(Max)], Physical)?
         .end()
     }
 }

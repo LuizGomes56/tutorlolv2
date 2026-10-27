@@ -14,10 +14,10 @@ use {
     serde::{Deserialize, Serialize},
     std::{
         collections::BTreeMap,
-        fmt::Write,
+        fmt::{Display, Write},
         ops::{Index, IndexMut},
     },
-    tutorlolv2_types::{AttackType, Attrs, CtxVar, DamageIndex, DamageType, Tag},
+    tutorlolv2_types::{AttackType, Attrs, CtxVar, DamageIndex, DamageType, Key, Tag},
     tutorlolv2_wiki::{
         JsonRead,
         items::item_parser::{ItemEffect, WikiItem},
@@ -236,6 +236,9 @@ pub struct Item {
 pub enum Source {
     Active,
     Passive,
+    Passive2,
+    Passive3,
+    Passive4,
 }
 
 impl TryFrom<WikiItem> for Item {
@@ -268,6 +271,108 @@ impl Item {
         }
     }
 
+    /// Effect for the given attack type. Ranged champions use the ranged effect
+    /// when the wiki gives them different values with `{{rd|melee|ranged}}`
+    pub fn effect_for(&self, source: Source, attack_type: AttackType) -> MayFail<&Effect> {
+        match (&self[source], attack_type) {
+            (
+                Some(ItemEffect {
+                    ranged: Some(effect),
+                    ..
+                }),
+                AttackType::Ranged,
+            ) => Ok(effect),
+            _ => self.effect(source),
+        }
+    }
+
+    /// Effect for the alternate text of `{{ft|text|alternate}}`, such as the
+    /// total damage of a burn that the main text describes per tick
+    pub fn flip(&self, source: Source) -> MayFail<&Effect> {
+        self[source]
+            .as_ref()
+            .and_then(|ie| ie.flip.as_ref())
+            .ok_or(format!("No alternate text for its {source:?}").into())
+    }
+
+    /// Effect described after "for a total of"
+    pub fn total(&self, source: Source) -> MayFail<&Effect> {
+        self[source]
+            .as_ref()
+            .and_then(|ie| ie.total.as_ref())
+            .ok_or(format!("No total for its {source:?}").into())
+    }
+
+    /// Formula of any effect of this item, such as [`Self::flip`] or [`Self::total`]
+    pub fn render(&self, effect: &Effect) -> MayFail<String> {
+        match &effect.formula {
+            Some(formula) => Ok(formula.parenthesize()),
+            None => Err(format!("[{}] Effect has no formula", self.data.name).into()),
+        }
+    }
+
+    /// Formula with the base value and only the given scalings of an effect, for
+    /// descriptions that also mention healing, shields or other bonuses
+    pub fn render_with(
+        &self,
+        effect: &Effect,
+        scalings: impl IntoIterator<Item = usize>,
+    ) -> MayFail<String> {
+        let indexes = scalings.into_iter().collect::<Vec<_>>();
+        let mut effect = effect.clone();
+
+        for &index in &indexes {
+            if index >= effect.scalings.len() {
+                return Err(format!(
+                    "[{}] Scaling {index} out of bounds for {:?}",
+                    self.data.name, effect.scalings
+                )
+                .into());
+            }
+        }
+
+        effect.scalings = indexes
+            .into_iter()
+            .map(|index| effect.scalings[index].clone())
+            .collect();
+        effect.formula = effect.simplify_formula(Key::P)?;
+        self.render(&effect)
+    }
+
+    /// Same as [`Self::render_with`] for each attack type, assigned to `var`
+    pub fn assign_with(
+        &mut self,
+        var: DamageIndex,
+        source: Source,
+        scalings: impl IntoIterator<Item = usize>,
+    ) -> MayFail<&mut Self> {
+        let scalings = scalings.into_iter().collect::<Vec<_>>();
+
+        for attack_type in [AttackType::Melee, AttackType::Ranged] {
+            let effect = self.effect_for(source, attack_type)?;
+            let formula = self.render_with(effect, scalings.iter().copied())?;
+            self.assign(attack_type, var, formula);
+        }
+
+        Ok(self)
+    }
+
+    pub fn min_with(
+        &mut self,
+        source: Source,
+        scalings: impl IntoIterator<Item = usize>,
+    ) -> MayFail<&mut Self> {
+        self.assign_with(DamageIndex::Min, source, scalings)
+    }
+
+    pub fn max_with(
+        &mut self,
+        source: Source,
+        scalings: impl IntoIterator<Item = usize>,
+    ) -> MayFail<&mut Self> {
+        self.assign_with(DamageIndex::Max, source, scalings)
+    }
+
     pub fn base(&self, source: Source) -> MayFail<&Vec<f64>> {
         self.effect(source)?
             .base
@@ -276,7 +381,11 @@ impl Item {
     }
 
     pub fn formula(&self, source: Source) -> MayFail<String> {
-        match self.effect(source).ok() {
+        self.formula_for(source, AttackType::Melee)
+    }
+
+    pub fn formula_for(&self, source: Source, attack_type: AttackType) -> MayFail<String> {
+        match self.effect_for(source, attack_type).ok() {
             Some(effect) if let Some(ref formula) = effect.formula => Ok(formula.parenthesize()),
             _ => {
                 println!(
@@ -292,7 +401,7 @@ impl Item {
         &mut self,
         attack_type: AttackType,
         var: DamageIndex,
-        damage: &impl ToString,
+        damage: impl Display,
     ) -> &mut Self {
         self[attack_type][var] = damage.to_string();
         self
@@ -303,9 +412,18 @@ impl Item {
         source: Source,
         indexes: impl IntoIterator<Item = usize>,
     ) -> MayFail<String> {
+        self.scaling_for(source, AttackType::Melee, indexes)
+    }
+
+    pub fn scaling_for(
+        &self,
+        source: Source,
+        attack_type: AttackType,
+        indexes: impl IntoIterator<Item = usize>,
+    ) -> MayFail<String> {
         let filter = indexes.into_iter().collect::<Vec<_>>();
         Ok(self
-            .effect(source)?
+            .effect_for(source, attack_type)?
             .scalings
             .iter()
             .enumerate()
@@ -321,18 +439,18 @@ impl Item {
         var: DamageIndex,
         index: Source,
     ) -> MayFail<&mut Self> {
-        let formula = self.formula(index)?;
+        let formula = self.formula_for(index, attack_type)?;
         Ok(self.assign(attack_type, var, &formula))
     }
 
-    pub fn set_min(&mut self, damage: impl ToString) -> &mut Self {
+    pub fn set_min(&mut self, damage: impl Display) -> &mut Self {
         self.assign(AttackType::Melee, DamageIndex::Min, &damage)
-            .assign(AttackType::Ranged, DamageIndex::Min, &damage)
+            .assign(AttackType::Ranged, DamageIndex::Min, damage)
     }
 
-    pub fn set_max(&mut self, damage: impl ToString) -> &mut Self {
+    pub fn set_max(&mut self, damage: impl Display) -> &mut Self {
         self.assign(AttackType::Melee, DamageIndex::Max, &damage)
-            .assign(AttackType::Ranged, DamageIndex::Max, &damage)
+            .assign(AttackType::Ranged, DamageIndex::Max, damage)
     }
 
     pub fn min(&mut self, index: Source) -> MayFail<&mut Self> {
@@ -390,6 +508,9 @@ impl Index<Source> for Item {
         match index {
             Source::Active => &self.data.effects.act,
             Source::Passive => &self.data.effects.pass,
+            Source::Passive2 => &self.data.effects.pass2,
+            Source::Passive3 => &self.data.effects.pass3,
+            Source::Passive4 => &self.data.effects.pass4,
         }
     }
 }
@@ -399,6 +520,9 @@ impl IndexMut<Source> for Item {
         match index {
             Source::Active => &mut self.data.effects.act,
             Source::Passive => &mut self.data.effects.pass,
+            Source::Passive2 => &mut self.data.effects.pass2,
+            Source::Passive3 => &mut self.data.effects.pass3,
+            Source::Passive4 => &mut self.data.effects.pass4,
         }
     }
 }

@@ -1,8 +1,8 @@
 use super::*;
 
 impl Generator for RavenousHydra {
-    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
+        // Ravenous Crescent
         self.damage_type(Physical).min(Active)?.end()
     }
 }

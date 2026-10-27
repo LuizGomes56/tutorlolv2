@@ -19,6 +19,66 @@ impl Generator for Sett {
                     (1, Min), /* Reduced Damage */
                 ],
             )
+            .damage_types([P(Void), W(Void), R(Min), R(Max)], Physical)?
+            .combo([Ability(Q(Max)), Ability(E(Void)), Ability(R(Max))])?
+            .combo([
+                Ability(R(Max)),
+                Ability(E(Void)),
+                Ability(W(Void)),
+                Ability(Q(Max)),
+                Attack,
+                Attack,
+            ])?
+            .combo([
+                Ability(R(Max)),
+                Ability(E(Void)),
+                Attack,
+                Attack,
+                Ability(Q(Max)),
+                Attack,
+                Attack,
+                Ability(W(Void)),
+            ])?
+            .combo([
+                Ability(E(Void)),
+                Attack,
+                Attack,
+                Ability(Q(Max)),
+                Attack,
+                Attack,
+                Ability(R(Max)),
+                Attack,
+                Attack,
+                Ability(W(Void)),
+            ])?
+            .combo([Attack, Attack, Ability(Q(Max)), Attack, Attack])?
+            .combo([
+                Attack,
+                Attack,
+                Ability(Q(Max)),
+                Attack,
+                Attack,
+                Ability(E(Void)),
+                Attack,
+                Attack,
+                Ability(W(Void)),
+            ])?
+            .combo([
+                Ability(E(Void)),
+                Attack,
+                Attack,
+                Ability(Q(Max)),
+                Attack,
+                Attack,
+                Ability(W(Void)),
+            ])?
+            .combo([
+                Ability(Q(Max)),
+                Ability(E(Void)),
+                Attack,
+                Attack,
+                Ability(W(Void)),
+            ])?
             .end()
     }
 }

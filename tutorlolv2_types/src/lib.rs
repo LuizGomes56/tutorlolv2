@@ -1024,6 +1024,8 @@ create_eval_struct!(
     enemy_magic_resist,
     enemy_max_health,
     enemy_missing_health,
+    // Variables that the wiki parser could not identify, always zero
+    unknown,
 );
 
 impl CtxVar {

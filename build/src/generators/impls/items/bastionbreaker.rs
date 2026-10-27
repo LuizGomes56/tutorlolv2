@@ -1,8 +1,8 @@
 use super::*;
 
 impl Generator for Bastionbreaker {
-    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
-        self.damage_type(True).end()
+        // Shaped Charge: bonus true damage on the next ability hit
+        self.damage_type(True).min(Passive)?.end()
     }
 }

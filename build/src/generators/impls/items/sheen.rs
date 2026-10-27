@@ -1,10 +1,10 @@
 use super::*;
 
 impl Generator for Sheen {
-    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
-        self.attr(OnhitMax)
-            .damage_type(Physical)
+        // Spellblade
+        self.damage_type(Physical)
+            .attr(OnhitMax)
             .min(Passive)?
             .end()
     }

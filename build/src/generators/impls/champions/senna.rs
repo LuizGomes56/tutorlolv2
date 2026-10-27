@@ -5,17 +5,35 @@ impl Generator for Senna {
         self.ability(
             Key::P,
             [
-                (2, _1),   /* Innate - Relic Cannon [1] */
-                (3, Void), /* Innate - Weakened Soul */
+                (1, _1),   /* Innate - Relic Cannon */
+                (2, Void), /* Innate - Weakened Soul */
             ],
         )
-        .modify(P(_1), |dmg| {
-            dmg.replace(&SteelcapsEffect.to_string(), AttackDamage.as_ref())
-        })?
-        .modify(P(Void), |dmg| f![(dmg) * EnemyCurrentHealth])?
+        .modify(P(_1), |_| f![0.2 * AttackDamage])?
+        .modify(P(Void), |dmg| f![(dmg) / 100 * EnemyCurrentHealth])?
         .ability(Key::Q, [(1, Void) /* Physical Damage */])
         .ability(Key::W, [(0, Void) /* Physical Damage */])
         .ability(Key::R, [(0, Void) /* Physical Damage */])
+        .damage_types([P(Void), P(_1), R(Void)], Physical)?
+        .combo([
+            Ability(W(Void)),
+            Attack,
+            Ability(Q(Void)),
+            Ability(R(Void)),
+            Attack,
+        ])?
+        .combo([Ability(R(Void)), Ability(Q(Void))])?
+        .combo([Ability(W(Void)), Ability(Q(Void)), Ability(R(Void))])?
+        .combo([Ability(Q(Void)), Attack])?
+        .combo([
+            Ability(Q(Void)),
+            Attack,
+            Ability(W(Void)),
+            Attack,
+            Ability(R(Void)),
+            Attack,
+        ])?
+        .combo([Ability(W(Void)), Attack, Ability(Q(Void)), Attack])?
         .end()
     }
 }

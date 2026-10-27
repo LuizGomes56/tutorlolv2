@@ -6,10 +6,11 @@ impl Generator for Brand {
             Key::P,
             [
                 (0, Void), /* Ablaze */
-                (3, _1),   /* Description 2 */
+                (1, _1),   /* Description 2 */
             ],
         )
-        .modify(P(_1), |p| f![EnemyMaxHealth * (p)])?
+        // The values based on stacks are the damage cap against monsters
+        .modify(P(Void), |_| f![0.02 * EnemyMaxHealth])?
         .ability(Key::Q, [(0, Void) /* Magic Damage */])
         .ability(
             Key::W,
@@ -26,6 +27,51 @@ impl Generator for Brand {
                 (2, Max), /* Total Single-Target Damage */
             ],
         )
+        .combo([Ability(Q(Void)), Ability(E(Void)), Ability(W(Max))])?
+        .combo([
+            Ability(R(Max)),
+            Ability(Q(Void)),
+            Ability(E(Void)),
+            Ability(W(Max)),
+            Attack,
+        ])?
+        .combo([
+            Ability(E(Void)),
+            Ability(R(Max)),
+            Ability(Q(Void)),
+            Ability(W(Max)),
+        ])?
+        .combo([
+            Ability(E(Void)),
+            Ability(Q(Void)),
+            Ability(W(Max)),
+            Ability(R(Max)),
+            Attack,
+            Attack,
+        ])?
+        .combo([
+            Ability(W(Max)),
+            Ability(Q(Void)),
+            Ability(E(Void)),
+            Ability(R(Max)),
+            Attack,
+        ])?
+        .combo([
+            Ability(Q(Void)),
+            Ability(E(Void)),
+            Ability(W(Max)),
+            Ability(R(Max)),
+            Attack,
+        ])?
+        .combo([
+            Ability(E(Void)),
+            Ability(W(Max)),
+            Ability(R(Max)),
+            Ability(Q(Void)),
+            Attack,
+        ])?
+        .combo([Ability(E(Void)), Ability(Q(Void)), Ability(W(Max))])?
+        .combo([Ability(W(Max)), Ability(E(Void)), Ability(Q(Void))])?
         .end()
     }
 }

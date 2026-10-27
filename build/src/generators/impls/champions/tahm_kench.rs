@@ -12,7 +12,45 @@ impl Generator for TahmKench {
         self.clone_with(Q(Min), Q(Max), |dmg| f![(dmg) + passive])?
             .comment(Q(Max), "Damage Including Passive")?
             .ability(Key::W, [(1, Void) /* Magic Damage */])
-            .ability_nth(1, Key::R, [(0, Void) /* Magic Damage */])
+            .ability(Key::R, [(0, Void) /* Magic Damage */])
+            .combo([Ability(R(Void)), Ability(W(Void))])?
+            .combo([
+                Ability(W(Void)),
+                Ability(R(Void)),
+                Attack,
+                Attack,
+                Attack,
+                Ability(Q(Max)),
+            ])?
+            .combo([
+                Attack,
+                Attack,
+                Attack,
+                Ability(Q(Max)),
+                Ability(W(Void)),
+                Attack,
+            ])?
+            .combo([
+                Ability(Q(Min)),
+                Ability(W(Void)),
+                Attack,
+                Attack,
+                Attack,
+                Ability(R(Void)),
+                Attack,
+                Attack,
+                Attack,
+                Ability(Q(Min)),
+            ])?
+            .combo([
+                Ability(W(Void)),
+                Attack,
+                Attack,
+                Attack,
+                Ability(Q(Max)),
+                Attack,
+            ])?
+            .combo([Attack, Attack, Attack, Ability(Q(Max)), Attack])?
             .end()
     }
 }

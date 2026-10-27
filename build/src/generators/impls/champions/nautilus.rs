@@ -25,6 +25,63 @@ impl Generator for Nautilus {
                     (2, Min), /* Magic Damage */
                 ],
             )
+            .combo([
+                Ability(Q(Void)),
+                Attack,
+                Ability(R(Max)),
+                Attack,
+                Ability(W(Max)),
+                Ability(E(Max)),
+                Attack,
+            ])?
+            .combo([
+                Ability(R(Max)),
+                Ability(Q(Void)),
+                Attack,
+                Ability(E(Max)),
+                Ability(W(Max)),
+                Attack,
+            ])?
+            .combo([
+                Ability(E(Max)),
+                Attack,
+                Ability(W(Max)),
+                Ability(R(Max)),
+                Attack,
+                Ability(Q(Void)),
+                Attack,
+            ])?
+            .combo([
+                Ability(Q(Void)),
+                Ability(E(Max)),
+                Attack,
+                Ability(R(Max)),
+                Attack,
+                Ability(W(Max)),
+            ])?
+            .combo([Attack, Ability(Q(Void)), Ability(E(Max))])?
+            .combo([
+                Ability(Q(Void)),
+                Attack,
+                Ability(W(Max)),
+                Ability(E(Max)),
+                Attack,
+            ])?
+            .combo([
+                Attack,
+                Ability(E(Max)),
+                Ability(Q(Void)),
+                Attack,
+                Ability(W(Max)),
+            ])?
+            .combo([
+                Ability(R(Max)),
+                Ability(Q(Void)),
+                Attack,
+                Ability(W(Max)),
+                Ability(E(Max)),
+                Attack,
+            ])?
             .end()
     }
 }

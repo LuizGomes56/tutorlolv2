@@ -18,6 +18,69 @@ impl Generator for Jax {
                     (5, Void), /* Magic Damage */
                 ],
             )
+            .damage_type(Q(Void), Physical)?
+            .combo([
+                Ability(E(Min)),
+                Attack,
+                Attack,
+                Ability(Q(Void)),
+                Ability(E(Min)),
+                Attack,
+                Ability(W(Void)),
+                Attack,
+            ])?
+            .combo([
+                Ability(E(Min)),
+                Ability(Q(Void)),
+                Ability(E(Min)),
+                Attack,
+                Ability(W(Void)),
+                Attack,
+            ])?
+            .combo([
+                Ability(E(Min)),
+                Ability(E(Min)),
+                Attack,
+                Ability(W(Void)),
+                Ability(Q(Void)),
+                Attack,
+            ])?
+            .combo([
+                Ability(E(Min)),
+                Attack,
+                Attack,
+                Ability(W(Void)),
+                Ability(Q(Void)),
+                Ability(E(Min)),
+            ])?
+            .combo([
+                Attack,
+                Ability(W(Void)),
+                Attack,
+                Ability(E(Min)),
+                Attack,
+                Attack,
+                Ability(Q(Void)),
+                Ability(E(Min)),
+                Attack,
+            ])?
+            .combo([
+                Ability(E(Min)),
+                Attack,
+                Ability(W(Void)),
+                Ability(Q(Void)),
+                Ability(E(Min)),
+                Attack,
+            ])?
+            .combo([Attack, Ability(Q(Void)), Attack, Ability(W(Void))])?
+            .combo([
+                Ability(E(Min)),
+                Ability(Q(Void)),
+                Attack,
+                Ability(W(Void)),
+                Ability(E(Min)),
+                Attack,
+            ])?
             .end()
     }
 }

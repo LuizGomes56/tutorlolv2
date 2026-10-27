@@ -7,7 +7,7 @@ use crate::{
     file_name, is_dir,
     parser::{
         Effect, EffectInner, SUFFIXES, get_cells, parse_base_damage, parse_description_effects,
-        parse_scalings,
+        parse_scalings, tooltip_levels,
     },
     selector,
 };
@@ -111,10 +111,7 @@ pub fn parse() -> MayFail {
                     ability
                         .effects
                         .values_mut()
-                        .enumerate()
-                        .try_for_each(|(i, effect)| {
-                            effect.load_formula(ability.skill, &champion_id, i)
-                        })?;
+                        .try_for_each(|effect| effect.load_formula(ability.skill, &champion_id))?;
 
                     ability.champion_id = champion_id.clone();
 
@@ -231,12 +228,18 @@ fn parse_effects(
             let use_values = tooltip
                 .and_then(|el| el.value().attr("data-bot-values"))
                 .map(|s| {
-                    s.split(';')
+                    // Display options may follow the values, as in "...;20.12|displayMaxColumn=18"
+                    s.split('|')
+                        .next()
+                        .unwrap_or_default()
+                        .split(';')
                         .map(str::trim)
                         .filter(|v| !v.is_empty())
                         .filter_map(|v| v.parse().ok())
-                        .collect()
+                        .collect::<Vec<_>>()
                 });
+
+            let use_levels = tooltip.and_then(|el| tooltip_levels(el, use_values.as_deref()?));
 
             Some((
                 key.replace("–", "-"),
@@ -250,6 +253,7 @@ fn parse_effects(
                     },
                     use_formula,
                     use_values,
+                    use_levels,
                     scalings: parse_scalings(&dd_leveling_raw),
                 },
             ))

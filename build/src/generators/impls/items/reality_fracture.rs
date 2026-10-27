@@ -1,8 +1,8 @@
 use super::*;
 
 impl Generator for RealityFracture {
-    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
-        self.min(Passive)?.end()
+        // ZZ'Rot: damage of each Voidmite attack
+        self.damage_type(Magic).min(Passive)?.end()
     }
 }

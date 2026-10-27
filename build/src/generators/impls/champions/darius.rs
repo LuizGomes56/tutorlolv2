@@ -1,38 +1,49 @@
 use super::*;
 
 impl Generator for Darius {
-    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
-        self.ability(
-            Key::P,
-            [
-                (1, _1),    /* Hemorrhage */
-                (2, _2),    /* Hemorrhage [1] */
-                (3, _3),    /* Hemorrhage [2] */
-                (4, _4),    /* Hemorrhage [3] */
-                (5, _5),    /* Hemorrhage [4] */
-                (6, _6),    /* Hemorrhage [5] */
-                (7, _7),    /* Hemorrhage [6] */
-                (8, _8),    /* Hemorrhage [7] */
-                (9, _1Min), /* Hemorrhage [8] */
-            ],
-        )
-        .ability(
-            Key::Q,
-            [
-                (0, _1), /* Physical Damage (Blade) */
-                (1, _2), /* Reduced Damage (Handle) */
-            ],
-        )
-        .ability(Key::W, [(0, _1) /* Bonus Physical Damage */])
-        .ability(
-            Key::R,
-            [
-                (0, _1), /* Bonus Damage Per Stack */
-                (1, _2), /* Maximum True Damage */
-                (2, _3), /* True Damage */
-            ],
-        )
-        .end()
+        self.ability(Key::P, [(1, Min) /* Hemorrhage */])
+            .modify(P(Min), |_| f![13 + (Level - 1) + 0.3 * BonusAd])?
+            .comment(P(Min), "Hemorrhage total damage per stack")?
+            .clone_with(P(Min), P(Max), |p| f![5 * (p)])?
+            .comment(P(Max), "Hemorrhage total damage at 5 stacks")?
+            .ability(
+                Key::Q,
+                [
+                    (0, Max), /* Physical Damage (Blade) */
+                    (1, Min), /* Reduced Damage (Handle) */
+                ],
+            )
+            .ability(Key::W, [(0, Void) /* Bonus Physical Damage */])
+            .ability(
+                Key::R,
+                [
+                    (2, Min), /* True Damage */
+                    (1, Max), /* Maximum True Damage */
+                ],
+            )
+            .combo([
+                Attack,
+                Ability(W(Void)),
+                Ability(Q(Max)),
+                Attack,
+                Attack,
+                Ability(R(Min)),
+                Attack,
+                Ability(R(Min)),
+            ])?
+            .combo([Ability(Q(Max)), Attack, Ability(W(Void)), Ability(R(Max))])?
+            .combo([Attack, Ability(W(Void)), Ability(Q(Max))])?
+            .combo([
+                Attack,
+                Ability(W(Void)),
+                Ability(Q(Max)),
+                Attack,
+                Attack,
+                Ability(R(Max)),
+            ])?
+            .combo([Ability(W(Void)), Attack, Ability(Q(Max))])?
+            .combo([Ability(Q(Max)), Attack, Ability(W(Void))])?
+            .end()
     }
 }

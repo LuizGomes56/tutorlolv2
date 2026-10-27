@@ -19,6 +19,48 @@ impl Generator for Morgana {
                     (3, Max), /* Total Magic Damage */
                 ],
             )
+            .combo([
+                Ability(Q(Void)),
+                Ability(W(Min)),
+                Ability(R(Max)),
+                Attack,
+                Attack,
+                Ability(W(Min)),
+                Attack,
+            ])?
+            .combo([
+                Ability(R(Max)),
+                Ability(Q(Void)),
+                Ability(W(Max)),
+                Attack,
+                Attack,
+                Attack,
+            ])?
+            .combo([Ability(Q(Void)), Ability(W(Max))])?
+            .combo([
+                Ability(R(Max)),
+                Ability(Q(Void)),
+                Ability(W(Max)),
+                Attack,
+                Attack,
+            ])?
+            .combo([
+                Ability(Q(Void)),
+                Ability(W(Min)),
+                Ability(R(Max)),
+                Attack,
+                Attack,
+                Attack,
+                Ability(W(Min)),
+                Attack,
+            ])?
+            .combo([
+                Ability(R(Max)),
+                Ability(W(Max)),
+                Attack,
+                Ability(Q(Void)),
+                Attack,
+            ])?
             .end()
     }
 }

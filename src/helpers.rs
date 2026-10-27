@@ -1034,6 +1034,7 @@ pub const fn get_eval_ctx(self_state: &SelfState, e_state: &EnemyFullState) -> C
         } else {
             1.0
         },
+        unknown: 0.0,
         stacks,
         life_steal: 0.0,
     }

@@ -1,35 +1,141 @@
 use super::*;
 
 impl Generator for Leblanc {
-    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
         self.ability(
             Key::Q,
             [
-                (0, _1), /* Magic Damage */
-                (1, _2), /* Total Magic Damage */
+                (0, Min), /* Magic Damage */
+                (1, Max), /* Total Magic Damage */
             ],
         )
-        .ability(Key::W, [(0, _1) /* Magic Damage */])
+        .ability(Key::W, [(0, Void) /* Magic Damage */])
         .ability(
             Key::E,
             [
-                (0, _1), /* Fracture Magic Damage */
-                (1, _2), /* Magic Damage */
-                (2, _3), /* Total Damage */
+                (1, Min), /* Magic Damage */
+                (2, Max), /* Total Damage */
+                (0, _1),  /* Fracture Magic Damage */
             ],
         )
         .ability(
             Key::R,
             [
                 (0, _1), /* Application Magic Damage */
-                (1, _2), /* Fracture Magic Damage */
+                (3, _2), /* Mark Magic Damage */
                 (2, _3), /* Magic Damage */
-                (3, _4), /* Mark Magic Damage */
-                (4, _5), /* Orb Magic Damage */
+                (4, _4), /* Orb Magic Damage */
+                (1, _5), /* Fracture Magic Damage */
                 (5, _6), /* Total Magic Damage */
             ],
         )
+        .combo([
+            Ability(R(_1)),
+            Ability(Q(Max)),
+            Ability(W(Void)),
+            Ability(E(Max)),
+            Attack,
+            Attack,
+        ])?
+        .combo([
+            Ability(W(Void)),
+            Ability(R(_1)),
+            Ability(E(Max)),
+            Ability(Q(Max)),
+            Ability(W(Void)),
+            Ability(R(_1)),
+            Attack,
+        ])?
+        .combo([
+            Ability(W(Void)),
+            Ability(R(_1)),
+            Ability(W(Void)),
+            Ability(R(_1)),
+            Ability(Q(Max)),
+            Ability(E(Max)),
+        ])?
+        .combo([
+            Ability(E(Max)),
+            Ability(W(Void)),
+            Ability(Q(Max)),
+            Ability(W(Void)),
+            Attack,
+        ])?
+        .combo([
+            Ability(W(Void)),
+            Ability(E(Max)),
+            Ability(W(Void)),
+            Attack,
+            Ability(R(_1)),
+            Ability(Q(Max)),
+            Attack,
+            Attack,
+        ])?
+        .combo([
+            Ability(W(Void)),
+            Ability(R(_1)),
+            Ability(Q(Max)),
+            Ability(E(Max)),
+            Ability(W(Void)),
+        ])?
+        .combo([
+            Ability(E(Max)),
+            Ability(Q(Max)),
+            Ability(R(_1)),
+            Ability(W(Void)),
+            Ability(W(Void)),
+        ])?
+        .combo([
+            Ability(W(Void)),
+            Ability(R(_1)),
+            Ability(E(Max)),
+            Ability(W(Void)),
+            Ability(R(_1)),
+            Ability(Q(Max)),
+        ])?
+        .combo([
+            Ability(R(_1)),
+            Ability(E(Max)),
+            Ability(W(Void)),
+            Ability(Q(Max)),
+            Ability(W(Void)),
+            Attack,
+        ])?
+        .combo([
+            Ability(Q(Max)),
+            Ability(W(Void)),
+            Ability(E(Max)),
+            Attack,
+            Attack,
+            Ability(W(Void)),
+        ])?
+        .combo([
+            Ability(W(Void)),
+            Ability(E(Max)),
+            Attack,
+            Attack,
+            Ability(R(_1)),
+            Ability(Q(Max)),
+            Attack,
+            Attack,
+        ])?
+        .combo([
+            Ability(W(Void)),
+            Ability(E(Max)),
+            Ability(Q(Max)),
+            Attack,
+            Attack,
+            Ability(W(Void)),
+        ])?
+        .combo([
+            Ability(W(Void)),
+            Ability(Q(Max)),
+            Ability(R(_1)),
+            Ability(E(Max)),
+            Ability(W(Void)),
+        ])?
+        .combo([Ability(W(Void)), Attack, Ability(Q(Max)), Ability(W(Void))])?
+        .combo([Ability(Q(Max)), Ability(W(Void)), Attack, Ability(W(Void))])?
         .end()
     }
 }

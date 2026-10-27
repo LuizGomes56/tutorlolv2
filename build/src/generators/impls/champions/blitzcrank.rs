@@ -14,6 +14,37 @@ impl Generator for Blitzcrank {
                 f![50 + 50 * RLevel + (0.3 + 0.1 * RLevel) * AbilityPower + 0.02 * MaxMana]
             })?
             .comment(R(_1), "R Passive Onhit Damage")?
+            .combo([
+                Ability(Q(Void)),
+                Ability(R(Void)),
+                Ability(E(Void)),
+                Ability(E(Void)),
+                Attack,
+            ])?
+            .combo([Ability(R(Void)), Attack, Ability(E(Void)), Ability(Q(Void))])?
+            .combo([
+                Ability(Q(Void)),
+                Attack,
+                Ability(E(Void)),
+                Attack,
+                Ability(R(Void)),
+            ])?
+            .combo([
+                Ability(R(Void)),
+                Ability(Q(Void)),
+                Ability(E(Void)),
+                Ability(E(Void)),
+                Attack,
+            ])?
+            .combo([Ability(Q(Void)), Attack, Ability(E(Void))])?
+            .combo([
+                Ability(E(Void)),
+                Ability(E(Void)),
+                Attack,
+                Ability(Q(Void)),
+                Attack,
+            ])?
+            .combo([Ability(Q(Void)), Ability(E(Void)), Ability(E(Void)), Attack])?
             .end()
     }
 }

@@ -1,23 +1,30 @@
 use super::*;
 
 impl Generator for Garen {
-    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::P, [(0, _1) /* Description 1 */])
-            .ability(Key::Q, [(0, _1) /* Bonus Physical Damage */])
-            .ability(Key::W, [(0, _1) /* Damage Reduction */])
+        self.ability(Key::Q, [(0, Void) /* Bonus Physical Damage */])
             .ability(
                 Key::E,
                 [
-                    (0, _1), /* Critical Strike Damage Per Spin */
-                    (1, _2), /* IE Damage Per Spin */
-                    (2, _3), /* Increased  IE Damage Per Spin */
-                    (3, _4), /* Increased Critical Strike Damage Per Spin */
-                    (4, _5), /* Increased Damage Per Spin */
-                    (5, _6), /* Physical Damage Per Spin */
+                    (5, Min), /* Physical Damage Per Spin */
+                    (0, _1),  /* Critical Strike Damage Per Spin */
                 ],
             )
-            .ability(Key::R, [(0, _1) /* True Damage */])
+            .clone_with(E(Min), E(Max), |e| f![7 * (e)])?
+            .comment(E(Max), "Total damage of 7 spins")?
+            .ability(Key::R, [(0, Void) /* True Damage */])
+            .combo([
+                Ability(Q(Void)),
+                Ability(E(Max)),
+                Attack,
+                Ability(E(Max)),
+                Attack,
+                Ability(R(Void)),
+            ])?
+            .combo([Ability(Q(Void)), Ability(E(Max)), Attack, Ability(R(Void))])?
+            .combo([Attack, Ability(Q(Void)), Ability(E(Max)), Attack])?
+            .combo([Ability(E(Max)), Attack, Ability(Q(Void)), Ability(R(Void))])?
+            .combo([Attack, Ability(Q(Void)), Attack])?
             .end()
     }
 }

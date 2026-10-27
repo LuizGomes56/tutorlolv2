@@ -19,6 +19,84 @@ impl Generator for Sejuani {
                     (1, Min), /* Magic Damage */
                 ],
             )
+            .combo([
+                Attack,
+                Ability(W(Max)),
+                Attack,
+                Ability(Q(Void)),
+                Ability(E(Void)),
+                Attack,
+                Ability(R(Max)),
+                Attack,
+            ])?
+            .combo([Ability(Q(Void)), Ability(R(Max)), Ability(W(Max)), Attack])?
+            .combo([
+                Ability(R(Max)),
+                Ability(Q(Void)),
+                Ability(W(Max)),
+                Attack,
+                Attack,
+            ])?
+            .combo([
+                Ability(Q(Void)),
+                Ability(R(Max)),
+                Ability(W(Max)),
+                Attack,
+                Attack,
+            ])?
+            .combo([Ability(R(Max)), Ability(W(Max)), Ability(Q(Void)), Attack])?
+            .combo([
+                Ability(E(Void)),
+                Ability(Q(Void)),
+                Attack,
+                Ability(R(Max)),
+                Attack,
+                Ability(W(Max)),
+                Attack,
+            ])?
+            .combo([
+                Ability(Q(Void)),
+                Ability(R(Max)),
+                Attack,
+                Ability(W(Max)),
+                Attack,
+            ])?
+            .combo([
+                Ability(Q(Void)),
+                Attack,
+                Ability(W(Max)),
+                Attack,
+                Ability(E(Void)),
+                Attack,
+                Ability(R(Max)),
+                Attack,
+            ])?
+            .combo([
+                Ability(W(Max)),
+                Attack,
+                Ability(Q(Void)),
+                Attack,
+                Ability(E(Void)),
+                Attack,
+            ])?
+            .combo([
+                Ability(Q(Void)),
+                Ability(W(Max)),
+                Attack,
+                Attack,
+                Ability(E(Void)),
+                Attack,
+                Ability(R(Max)),
+                Attack,
+            ])?
+            .combo([
+                Ability(Q(Void)),
+                Attack,
+                Ability(W(Max)),
+                Attack,
+                Ability(E(Void)),
+                Attack,
+            ])?
             .end()
     }
 }

@@ -35,6 +35,47 @@ impl Generator for Samira {
                     (3, Max), /* Total Physical Damage */
                 ],
             )
+            .combo([
+                Attack,
+                Ability(W(Max)),
+                Ability(E(Void)),
+                Ability(Q(Void)),
+                Attack,
+                Ability(R(Max)),
+            ])?
+            .combo([
+                Attack,
+                Ability(Q(Void)),
+                Ability(E(Void)),
+                Attack,
+                Ability(W(Max)),
+                Attack,
+                Ability(R(Max)),
+                Attack,
+                Ability(Q(Void)),
+                Attack,
+            ])?
+            .combo([
+                Attack,
+                Ability(W(Max)),
+                Ability(E(Void)),
+                Attack,
+                Ability(Q(Void)),
+                Attack,
+                Ability(R(Max)),
+            ])?
+            .combo([
+                Attack,
+                Ability(Q(Void)),
+                Attack,
+                Ability(E(Void)),
+                Ability(W(Max)),
+                Attack,
+                Attack,
+                Ability(Q(Void)),
+                Attack,
+            ])?
+            .combo([Ability(E(Void)), Ability(Q(Void)), Ability(W(Max)), Attack])?
             .end()
     }
 }

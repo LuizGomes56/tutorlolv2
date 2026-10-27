@@ -5,6 +5,77 @@ impl Generator for Rengar {
         self.ability(Key::Q, [(0, Void) /* Additional Physical Damage */])
             .ability(Key::W, [(0, Void) /* Magic Damage */])
             .ability(Key::E, [(0, Void) /* Physical Damage */])
+            .combo([
+                Ability(Q(Void)),
+                Attack,
+                Ability(E(Void)),
+                Ability(W(Void)),
+                Ability(Q(Void)),
+                Attack,
+                Attack,
+                Attack,
+            ])?
+            .combo([
+                Attack,
+                Ability(E(Void)),
+                Ability(W(Void)),
+                Ability(Q(Void)),
+                Attack,
+                Ability(E(Void)),
+                Attack,
+            ])?
+            .combo([
+                Attack,
+                Attack,
+                Ability(E(Void)),
+                Ability(W(Void)),
+                Ability(Q(Void)),
+                Attack,
+                Ability(E(Void)),
+            ])?
+            .combo([
+                Ability(Q(Void)),
+                Ability(E(Void)),
+                Ability(W(Void)),
+                Attack,
+                Ability(E(Void)),
+                Attack,
+                Ability(Q(Void)),
+            ])?
+            .combo([
+                Attack,
+                Ability(E(Void)),
+                Ability(Q(Void)),
+                Ability(W(Void)),
+                Ability(E(Void)),
+                Attack,
+            ])?
+            .combo([
+                Attack,
+                Ability(E(Void)),
+                Ability(W(Void)),
+                Ability(Q(Void)),
+                Ability(Q(Void)),
+                Attack,
+            ])?
+            .combo([
+                Attack,
+                Ability(Q(Void)),
+                Ability(E(Void)),
+                Ability(W(Void)),
+                Attack,
+                Attack,
+                Ability(Q(Void)),
+                Attack,
+            ])?
+            .combo([
+                Ability(E(Void)),
+                Attack,
+                Ability(Q(Void)),
+                Ability(W(Void)),
+                Ability(W(Void)),
+                Attack,
+            ])?
             .end()
     }
 }

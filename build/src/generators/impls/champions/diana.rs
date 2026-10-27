@@ -20,6 +20,95 @@ impl Generator for Diana {
                     (3, Max), /* Total Damage Vs. 5 Champions */
                 ],
             )
+            .combo([
+                Ability(R(Max)),
+                Ability(Q(_1)),
+                Ability(W(Max)),
+                Attack,
+                Ability(E(Void)),
+                Attack,
+                Ability(E(Void)),
+                Attack,
+            ])?
+            .combo([
+                Ability(W(Max)),
+                Ability(E(Void)),
+                Ability(R(Max)),
+                Ability(Q(_1)),
+                Attack,
+            ])?
+            .combo([
+                Ability(Q(_1)),
+                Ability(E(Void)),
+                Attack,
+                Ability(E(Void)),
+                Ability(R(Max)),
+                Attack,
+                Ability(E(Void)),
+                Ability(W(Max)),
+                Attack,
+            ])?
+            .combo([
+                Ability(W(Max)),
+                Attack,
+                Ability(R(Max)),
+                Attack,
+                Ability(E(Void)),
+                Ability(Q(_1)),
+                Attack,
+            ])?
+            .combo([
+                Ability(Q(_1)),
+                Ability(E(Void)),
+                Ability(R(Max)),
+                Ability(W(Max)),
+                Attack,
+                Attack,
+                Ability(E(Void)),
+                Attack,
+            ])?
+            .combo([Ability(W(Max)), Ability(E(Void)), Ability(Q(_1))])?
+            .combo([
+                Ability(E(Void)),
+                Ability(R(Max)),
+                Ability(W(Max)),
+                Ability(Q(_1)),
+                Attack,
+                Attack,
+                Attack,
+            ])?
+            .combo([
+                Ability(Q(_1)),
+                Ability(E(Void)),
+                Ability(W(Max)),
+                Attack,
+                Ability(R(Max)),
+                Attack,
+                Ability(E(Void)),
+                Attack,
+            ])?
+            .combo([
+                Ability(W(Max)),
+                Attack,
+                Attack,
+                Ability(Q(_1)),
+                Ability(E(Void)),
+                Attack,
+                Attack,
+                Attack,
+                Ability(E(Void)),
+                Attack,
+            ])?
+            .combo([
+                Attack,
+                Attack,
+                Ability(Q(_1)),
+                Ability(E(Void)),
+                Attack,
+                Ability(W(Max)),
+                Ability(E(Void)),
+            ])?
+            .combo([Attack, Ability(W(Max)), Ability(Q(_1)), Attack, Attack])?
             .end()
     }
 }

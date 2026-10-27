@@ -19,6 +19,54 @@ impl Generator for Shyvana {
             ],
         )
         .ability(Key::R, [(4, Void) /* Magic Damage */])
+        .damage_type(Q(Void), Physical)?
+        .damage_type(Q(_1), True)?
+        .combo([
+            Ability(R(Void)),
+            Ability(E(Void)),
+            Ability(Q(Void)),
+            Ability(E(Void)),
+            Attack,
+        ])?
+        .combo([
+            Ability(W(Void)),
+            Ability(E(Void)),
+            Ability(Q(Void)),
+            Ability(E(Void)),
+            Attack,
+        ])?
+        .combo([
+            Ability(W(Void)),
+            Attack,
+            Ability(E(Void)),
+            Ability(Q(Void)),
+            Ability(E(Void)),
+            Attack,
+            Attack,
+        ])?
+        .combo([
+            Ability(E(Void)),
+            Ability(W(Void)),
+            Attack,
+            Ability(Q(Void)),
+            Attack,
+        ])?
+        .combo([
+            Ability(W(Void)),
+            Ability(R(Void)),
+            Ability(E(Void)),
+            Ability(Q(Void)),
+            Ability(E(Void)),
+            Attack,
+        ])?
+        .combo([
+            Ability(R(Void)),
+            Ability(E(Void)),
+            Ability(W(Void)),
+            Attack,
+            Ability(Q(Void)),
+            Attack,
+        ])?
         .end()
     }
 }

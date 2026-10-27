@@ -1,7 +1,6 @@
 use super::*;
 
 impl Generator for Nilah {
-    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
         self.ability(
             Key::Q,
@@ -20,6 +19,56 @@ impl Generator for Nilah {
                 (3, Max), /* Total Physical Damage */
             ],
         )
+        .combo([
+            Ability(Q(Min)),
+            Attack,
+            Ability(E(Void)),
+            Ability(R(Max)),
+            Attack,
+            Attack,
+            Ability(Q(Min)),
+            Attack,
+            Ability(E(Void)),
+        ])?
+        .combo([Ability(E(Void)), Ability(R(Max))])?
+        .combo([Ability(E(Void)), Ability(R(Max)), Ability(E(Void))])?
+        .combo([
+            Ability(E(Void)),
+            Ability(E(Void)),
+            Ability(R(Max)),
+            Ability(Q(Max)),
+            Attack,
+            Attack,
+            Attack,
+        ])?
+        .combo([
+            Ability(E(Void)),
+            Ability(Q(Max)),
+            Attack,
+            Ability(R(Max)),
+            Attack,
+            Attack,
+            Ability(E(Void)),
+            Attack,
+        ])?
+        .combo([
+            Ability(E(Void)),
+            Attack,
+            Ability(E(Void)),
+            Ability(Q(Max)),
+            Ability(R(Max)),
+        ])?
+        .combo([
+            Ability(E(Void)),
+            Ability(Q(Min)),
+            Attack,
+            Attack,
+            Attack,
+            Attack,
+            Ability(E(Void)),
+            Ability(Q(Min)),
+        ])?
+        .combo([Ability(E(Void)), Ability(Q(Max)), Attack, Attack, Attack])?
         .end()
     }
 }
