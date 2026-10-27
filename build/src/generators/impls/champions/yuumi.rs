@@ -19,6 +19,8 @@ impl Generator for Yuumi {
                 (4, Max),  /* Total Magic Damage */
             ],
         )
+        .combo([Ability(R(Void)), Ability(Q(Max))])?
+        .combo([Attack, Attack, Ability(Q(Max))])?
         .end()
     }
 }

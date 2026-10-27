@@ -24,6 +24,54 @@ impl Generator for Cassiopeia {
             ],
         )
         .ability(Key::R, [(0, Void) /* Magic Damage */])
+        .combo([
+            Ability(R(Void)),
+            Ability(W(Max)),
+            Ability(E(Min)),
+            Ability(E(Min)),
+            Ability(Q(Max)),
+            Ability(E(Min)),
+            Ability(E(Min)),
+        ])?
+        .combo([
+            Ability(Q(Max)),
+            Ability(E(Min)),
+            Ability(E(Min)),
+            Ability(W(Max)),
+            Ability(E(Min)),
+            Ability(R(Void)),
+            Ability(E(Min)),
+            Ability(Q(Max)),
+            Ability(E(Min)),
+        ])?
+        .combo([
+            Ability(R(Void)),
+            Ability(W(Max)),
+            Ability(E(Min)),
+            Ability(E(Min)),
+            Ability(Q(Max)),
+            Ability(E(Min)),
+            Ability(E(Min)),
+            Ability(E(Min)),
+        ])?
+        .combo([
+            Ability(Q(Max)),
+            Ability(E(Min)),
+            Ability(E(Min)),
+            Ability(W(Max)),
+            Ability(E(Min)),
+            Ability(E(Min)),
+            Ability(Q(Max)),
+            Ability(E(Min)),
+        ])?
+        .combo([
+            Ability(Q(Max)),
+            Ability(E(Min)),
+            Ability(E(Min)),
+            Ability(E(Min)),
+            Ability(E(Min)),
+            Ability(Q(Max)),
+        ])?
         .end()
     }
 }

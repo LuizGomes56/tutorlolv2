@@ -11,6 +11,25 @@ impl Generator for Alistar {
                     (1, Max), /* Total Magic Damage */
                 ],
             )
+            .combo([
+                Ability(W(Void)),
+                Ability(Q(Void)),
+                Ability(E(Max)),
+                Attack,
+                Ability(E(Max)),
+                Attack,
+            ])?
+            .combo([Ability(W(Void)), Ability(Q(Void))])?
+            .combo([Ability(Q(Void)), Ability(W(Void))])?
+            .combo([
+                Ability(Q(Void)),
+                Ability(E(Max)),
+                Attack,
+                Ability(W(Void)),
+                Ability(E(Max)),
+                Attack,
+            ])?
+            .combo([Ability(W(Void)), Attack, Ability(Q(Void)), Attack])?
             .end()
     }
 }

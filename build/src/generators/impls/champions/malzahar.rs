@@ -18,6 +18,48 @@ impl Generator for Malzahar {
                     (1, Max), /* Total Magic Damage */
                 ],
             )
+            .combo([
+                Ability(Q(Void)),
+                Ability(W(Void)),
+                Ability(E(Max)),
+                Ability(R(Max)),
+            ])?
+            .combo([
+                Attack,
+                Ability(E(Max)),
+                Ability(W(Void)),
+                Attack,
+                Ability(Q(Void)),
+                Attack,
+                Ability(R(Max)),
+                Attack,
+            ])?
+            .combo([
+                Ability(E(Max)),
+                Ability(R(Max)),
+                Ability(Q(Void)),
+                Ability(W(Void)),
+                Attack,
+            ])?
+            .combo([
+                Ability(Q(Void)),
+                Ability(W(Void)),
+                Ability(E(Max)),
+                Attack,
+                Attack,
+                Ability(R(Max)),
+                Ability(Q(Void)),
+                Attack,
+                Ability(W(Void)),
+                Attack,
+            ])?
+            .combo([Ability(E(Max)), Ability(Q(Void)), Ability(W(Void)), Attack])?
+            .combo([
+                Ability(E(Max)),
+                Ability(W(Void)),
+                Ability(Q(Void)),
+                Ability(R(Max)),
+            ])?
             .end()
     }
 }

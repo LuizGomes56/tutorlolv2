@@ -32,6 +32,67 @@ impl Generator for Renekton {
                 (2, Max), /* Total Magic Damage */
             ],
         )
+        .combo([
+            Ability(W(Max)),
+            Ability(E(Min)),
+            Attack,
+            Ability(R(Max)),
+            Ability(E(Min)),
+            Attack,
+            Ability(Q(Max)),
+            Attack,
+            Ability(E(Min)),
+        ])?
+        .combo([
+            Ability(W(Max)),
+            Ability(E(Min)),
+            Attack,
+            Ability(R(Max)),
+            Ability(E(Min)),
+            Ability(Q(Max)),
+            Attack,
+            Attack,
+            Ability(E(Min)),
+        ])?
+        .combo([
+            Ability(E(Min)),
+            Ability(E(Min)),
+            Ability(Q(Max)),
+            Ability(W(Max)),
+            Ability(E(Min)),
+            Attack,
+            Attack,
+        ])?
+        .combo([
+            Ability(E(Min)),
+            Attack,
+            Ability(W(Max)),
+            Ability(Q(Max)),
+            Attack,
+            Ability(E(Min)),
+        ])?
+        .combo([
+            Ability(E(Min)),
+            Attack,
+            Ability(W(Max)),
+            Attack,
+            Ability(Q(Max)),
+            Attack,
+            Ability(E(Min)),
+        ])?
+        .combo([
+            Ability(E(Min)),
+            Ability(W(Max)),
+            Ability(E(Min)),
+            Attack,
+            Attack,
+            Ability(Q(Max)),
+            Attack,
+            Ability(E(Min)),
+            Attack,
+        ])?
+        .combo([Attack, Ability(W(Max)), Attack])?
+        .combo([Ability(E(Min)), Attack, Ability(Q(Max)), Ability(E(Min))])?
         .end()
     }
 }

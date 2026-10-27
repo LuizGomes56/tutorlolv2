@@ -1,20 +1,21 @@
 use super::*;
 
 impl Generator for Mordekaiser {
-    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
-        let ap_scaling = &self.scaling(Key::P, 0)?[0].render(Level)?;
-
         self.ability(Key::P, [(1, Void) /* Darkness Rise [1] */])
-            .modify(P(Void), |r| f![5 + ap_scaling + r])?
-            .ability(
-                Key::Q,
-                [
-                    (0, Max), /* Isolated Damage Increase */
-                    (1, Min), /* Magic Damage */
-                ],
-            )
+            .modify(P(Void), |_| {
+                f![5 + 0.3 * AbilityPower + (0.01 + 0.04 / 17 * (Level - 1)) * EnemyMaxHealth]
+            })?
+            .comment(P(Void), "Darkness Rise magic damage per second")?
+            .ability(Key::Q, [(1, Min) /* Magic Damage */])
+            .clone_with(Q(Min), Q(Max), |q| f![(q) * (1.3 + 0.05 * (QLevel - 1))])?
+            .comment(Q(Max), "Isolated target")?
             .ability(Key::E, [(0, Void) /* Magic Damage */])
+            .combo([Ability(E(Void)), Ability(Q(Max)), Attack, Attack])?
+            .combo([Ability(Q(Max)), Attack, Attack, Ability(E(Void)), Attack])?
+            .combo([Ability(E(Void)), Attack, Ability(Q(Max)), Attack])?
+            .combo([Attack, Ability(Q(Max)), Attack])?
+            .combo([Ability(E(Void)), Ability(Q(Max)), Attack])?
             .end()
     }
 }

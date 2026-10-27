@@ -25,6 +25,27 @@ impl Generator for Varus {
         )
         .ability(Key::E, [(0, Void) /* Physical Damage */])
         .ability(Key::R, [(0, Void) /* Magic Damage */])
+        .combo([
+            Ability(R(Void)),
+            Attack,
+            Ability(E(Void)),
+            Attack,
+            Attack,
+            Attack,
+            Attack,
+            Ability(W(Max)),
+            Ability(Q(Max)),
+        ])?
+        .combo([
+            Ability(R(Void)),
+            Ability(Q(Max)),
+            Attack,
+            Ability(E(Void)),
+            Attack,
+        ])?
+        .combo([Ability(E(Void)), Ability(R(Void)), Ability(Q(Max))])?
+        .combo([Attack, Attack, Attack, Ability(E(Void)), Attack])?
+        .combo([Attack, Ability(E(Void)), Attack, Attack, Ability(Q(Max))])?
         .end()
     }
 }

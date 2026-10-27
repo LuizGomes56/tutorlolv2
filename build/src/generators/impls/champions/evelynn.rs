@@ -1,29 +1,95 @@
 use super::*;
 
 impl Generator for Evelynn {
-    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::P, [(1, _1) /* Innate */])
-            .ability(
-                Key::Q,
-                [
-                    (0, _1), /* Bonus Magic Damage */
-                    (1, _2), /* Magic Damage */
-                    (2, _3), /* Maximum Magic Damage */
-                    (3, _4), /* Total Bonus Damage */
-                    (4, _5), /* Total Magic Damage */
-                ],
-            )
-            .ability(Key::W, [(0, _1) /* Bonus Magic Damage */])
-            .ability(Key::E, [(1, _1) /* Magic Damage */])
-            .ability_nth(1, Key::E, [(0, _2) /* Empowered Magic Damage */])
-            .ability(
-                Key::R,
-                [
-                    (0, _1), /* Empowered Damage */
-                    (1, _2), /* Magic Damage */
-                ],
-            )
-            .end()
+        self.ability(
+            Key::Q,
+            [
+                (1, Min), /* Magic Damage */
+                (4, Max), /* Total Magic Damage */
+                (0, _1),  /* Bonus Magic Damage */
+            ],
+        )
+        .ability(Key::W, [(0, Void) /* Bonus Magic Damage */])
+        .ability_nth(1, Key::E, [(1, Void) /* Magic Damage */])
+        .modify(E(Void), |_| {
+            f![60 + 30 * (ELevel - 1) + (0.03 + 0.00015 * AbilityPower) * EnemyMaxHealth]
+        })?
+        .ability(Key::E, [(0, _1) /* Empowered Magic Damage */])
+        .modify(E(_1), |_| {
+            f![80 + 40 * (ELevel - 1) + (0.04 + 0.00025 * AbilityPower) * EnemyMaxHealth]
+        })?
+        .ability(
+            Key::R,
+            [
+                (1, Min), /* Magic Damage */
+                (0, Max), /* Empowered Damage */
+            ],
+        )
+        .combo([
+            Ability(W(Void)),
+            Ability(E(Void)),
+            Ability(Q(Max)),
+            Attack,
+            Ability(R(Max)),
+        ])?
+        .combo([Ability(Q(Max)), Ability(E(Void)), Ability(R(Max))])?
+        .combo([
+            Ability(Q(Min)),
+            Ability(W(Void)),
+            Ability(Q(Min)),
+            Ability(Q(Min)),
+            Ability(E(Void)),
+            Attack,
+            Ability(Q(Min)),
+        ])?
+        .combo([
+            Ability(W(Void)),
+            Ability(R(Max)),
+            Ability(Q(Min)),
+            Ability(Q(Min)),
+            Ability(E(Void)),
+            Attack,
+            Ability(Q(Min)),
+            Ability(Q(Min)),
+        ])?
+        .combo([
+            Ability(Q(Min)),
+            Ability(Q(Min)),
+            Ability(E(Void)),
+            Ability(Q(Min)),
+            Ability(R(Max)),
+        ])?
+        .combo([
+            Ability(W(Void)),
+            Ability(Q(Min)),
+            Ability(Q(Min)),
+            Ability(E(Void)),
+            Ability(Q(Min)),
+            Attack,
+            Ability(Q(Min)),
+            Ability(R(Max)),
+        ])?
+        .combo([
+            Ability(W(Void)),
+            Ability(Q(Min)),
+            Ability(E(Void)),
+            Ability(Q(Min)),
+            Attack,
+            Ability(Q(Min)),
+            Ability(Q(Min)),
+            Attack,
+        ])?
+        .combo([
+            Ability(W(Void)),
+            Ability(E(Void)),
+            Ability(Q(Min)),
+            Attack,
+            Ability(Q(Min)),
+            Ability(Q(Min)),
+            Attack,
+            Ability(Q(Min)),
+        ])?
+        .end()
     }
 }

@@ -1,56 +1,137 @@
 use super::*;
 
 impl Generator for Kled {
-    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::P, [(1, _1) /* Innate */])
-            .ability_nth(
-                1,
-                Key::P,
-                [
-                    (0, _2), /* Description 1 */
-                    (1, _3), /* Description 1 [1] */
-                    (2, _4), /* Description 1 [2] */
-                    (3, _5), /* Description 1 [3] */
-                ],
-            )
-            .ability(
-                Key::Q,
-                [
-                    (1, _1), /* Physical Damage */
-                    (3, _2), /* Total Physical Damage */
-                ],
-            )
-            .ability_nth(
-                1,
-                Key::Q,
-                [
-                    (0, _3), /* Maximum Damage */
-                    (1, _4), /* Physical Damage */
-                    (2, _5), /* Reduced Damage */
-                ],
-            )
-            .ability(
-                Key::W,
-                [
-                    (0, _1), /* Additional Physical Damage */
-                    (1, _2), /* Structure Additional Damage */
-                ],
-            )
-            .ability(
-                Key::E,
-                [
-                    (0, _1), /* Physical Damage */
-                    (1, _2), /* Total Physical Damage */
-                ],
-            )
-            .ability(
-                Key::R,
-                [
-                    (1, _1), /* Maximum Magic Damage */
-                    (2, _2), /* Minimum Magic Damage */
-                ],
-            )
-            .end()
+        self.ability_nth(
+            1,
+            Key::Q,
+            [
+                (1, Min), /* Physical Damage */
+                (3, Max), /* Total Physical Damage */
+            ],
+        )
+        .ability(
+            Key::Q,
+            [
+                (1, _1Min), /* Physical Damage */
+                (0, _1Max), /* Maximum Damage */
+            ],
+        )
+        .comment(Q(_1Min), "Pocket Pistol while dismounted")?
+        .comment(Q(_1Max), "Pocket Pistol while dismounted, maximum damage")?
+        .ability(Key::W, [(0, Void) /* Additional Physical Damage */])
+        .modify(W(Void), |_| {
+            f![20
+                + 10 * (WLevel - 1)
+                + (0.045 + 0.005 * (WLevel - 1) + 0.0002 * BonusAd + 0.00004 * BonusHealth)
+                    * EnemyMaxHealth]
+        })?
+        .ability_nth(
+            1,
+            Key::E,
+            [
+                (0, Min), /* Physical Damage */
+                (1, Max), /* Total Physical Damage */
+            ],
+        )
+        .damage_types(
+            [Q(Min), Q(Max), Q(_1Min), Q(_1Max), W(Void), E(Min), E(Max)],
+            Physical,
+        )?
+        .ability_nth(
+            1,
+            Key::R,
+            [
+                (2, Min), /* Minimum Magic Damage */
+                (1, Max), /* Maximum Magic Damage */
+            ],
+        )
+        .modify(R(Min), |_| {
+            f![(0.04 + 0.01 * (RLevel - 1) + 0.0003 * BonusAd) * EnemyMaxHealth]
+        })?
+        .modify(R(Max), |_| {
+            f![(0.12 + 0.03 * (RLevel - 1) + 0.0009 * BonusAd) * EnemyMaxHealth]
+        })?
+        .damage_types([R(Min), R(Max)], Magic)?
+        .combo([
+            Ability(R(Max)),
+            Ability(E(Min)),
+            Ability(Q(Max)),
+            Attack,
+            Ability(E(Min)),
+            Attack,
+            Attack,
+            Attack,
+        ])?
+        .combo([
+            Ability(E(Min)),
+            Ability(Q(Max)),
+            Attack,
+            Attack,
+            Attack,
+            Ability(E(Min)),
+            Attack,
+        ])?
+        .combo([
+            Ability(Q(Max)),
+            Attack,
+            Ability(E(Min)),
+            Attack,
+            Attack,
+            Ability(E(Min)),
+            Attack,
+        ])?
+        .combo([
+            Ability(E(Min)),
+            Ability(Q(Max)),
+            Attack,
+            Ability(R(Max)),
+            Attack,
+            Attack,
+            Ability(E(Min)),
+            Attack,
+        ])?
+        .combo([
+            Ability(R(Max)),
+            Ability(Q(Max)),
+            Attack,
+            Attack,
+            Attack,
+            Attack,
+            Ability(E(Min)),
+            Attack,
+            Ability(E(Min)),
+            Attack,
+        ])?
+        .combo([
+            Attack,
+            Attack,
+            Attack,
+            Attack,
+            Attack,
+            Ability(Q(Max)),
+            Ability(E(Min)),
+            Attack,
+            Attack,
+            Ability(E(Min)),
+        ])?
+        .combo([
+            Ability(Q(Max)),
+            Ability(E(Min)),
+            Attack,
+            Attack,
+            Attack,
+            Ability(E(Min)),
+            Attack,
+        ])?
+        .combo([
+            Ability(E(Max)),
+            Ability(Q(Max)),
+            Attack,
+            Attack,
+            Attack,
+            Attack,
+        ])?
+        .end()
     }
 }

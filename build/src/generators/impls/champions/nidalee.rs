@@ -1,36 +1,71 @@
 use super::*;
 
 impl Generator for Nidalee {
-    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
-        self.ability(
+        self.ability_nth(
+            1,
             Key::Q,
             [
-                (0, Max), /* Maximum Magic Damage */
                 (1, Min), /* Minimum Magic Damage */
+                (0, Max), /* Maximum Magic Damage */
+            ],
+        )
+        .ability(
+            Key::Q,
+            [
+                (3, _1Min), /* Minimum Magic Damage */
+                (2, _1Max), /* Maximum Magic Damage */
             ],
         )
         .ability_nth(
             1,
-            Key::Q,
-            [
-                (0, _3), /* Increased Damage Modifier */
-                (1, _4), /* Maximum Increased Damage */
-                (2, _5), /* Maximum Magic Damage */
-                (3, _6), /* Minimum Magic Damage */
-                (4, _7), /* Prowl-Enhanced Maximum Damage */
-                (5, _8), /* Prowl-Enhanced Minimum Damage */
-            ],
-        )
-        .ability(
             Key::W,
             [
-                (0, _1), /* Magic Damage Per Tick */
-                (1, _2), /* Total Magic Damage */
+                (1, Void), /* Total Magic Damage */
+                (0, _1),   /* Magic Damage Per Tick */
             ],
         )
-        .ability_nth(1, Key::W, [(0, _3) /* Magic Damage */])
-        .ability_nth(1, Key::E, [(0, _1) /* Magic Damage */])
+        .ability(Key::W, [(0, _2) /* Magic Damage */])
+        .ability(Key::E, [(0, Void) /* Magic Damage */])
+        .combo([
+            Ability(W(Void)),
+            Attack,
+            Ability(E(Void)),
+            Ability(Q(Min)),
+            Ability(E(Void)),
+            Ability(Q(Min)),
+            Attack,
+            Attack,
+        ])?
+        .combo([Attack, Ability(E(Void)), Ability(Q(Max)), Ability(W(Void))])?
+        .combo([Ability(W(Void)), Ability(Q(Max)), Attack])?
+        .combo([Ability(E(Void)), Ability(W(Void)), Ability(Q(Max)), Attack])?
+        .combo([
+            Ability(Q(Min)),
+            Ability(W(Void)),
+            Ability(E(Void)),
+            Ability(Q(Min)),
+            Ability(E(Void)),
+            Attack,
+        ])?
+        .combo([
+            Ability(Q(Min)),
+            Attack,
+            Ability(E(Void)),
+            Attack,
+            Ability(W(Void)),
+            Attack,
+            Ability(E(Void)),
+            Ability(Q(Min)),
+        ])?
+        .combo([
+            Ability(W(Void)),
+            Ability(Q(Max)),
+            Ability(E(Void)),
+            Attack,
+            Ability(E(Void)),
+            Attack,
+        ])?
         .end()
     }
 }

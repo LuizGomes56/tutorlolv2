@@ -17,6 +17,35 @@ impl Generator for Karthus {
             ],
         )
         .ability(Key::R, [(0, Void) /* Magic Damage */])
+        .combo([
+            Ability(Q(Min)),
+            Ability(E(Max)),
+            Ability(Q(Min)),
+            Ability(Q(Min)),
+        ])?
+        .combo([
+            Ability(Q(Min)),
+            Ability(E(Max)),
+            Attack,
+            Ability(Q(Min)),
+            Ability(Q(Min)),
+            Attack,
+        ])?
+        .combo([
+            Ability(Q(Min)),
+            Ability(Q(Min)),
+            Ability(Q(Min)),
+            Ability(R(Void)),
+            Ability(Q(Min)),
+        ])?
+        .combo([Ability(Q(Max)), Ability(R(Void))])?
+        .combo([
+            Ability(E(Max)),
+            Attack,
+            Ability(Q(Min)),
+            Attack,
+            Ability(Q(Min)),
+        ])?
         .end()
     }
 }

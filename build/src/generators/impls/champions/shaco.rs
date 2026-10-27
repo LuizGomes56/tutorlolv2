@@ -26,6 +26,83 @@ impl Generator for Shaco {
                     (2, Min),  /* Modified Magic Damage */
                 ],
             )
+            .damage_type(Q(Void), Physical)?
+            .combo([
+                Ability(R(Void)),
+                Ability(R(Void)),
+                Ability(Q(Void)),
+                Ability(W(Max)),
+                Ability(E(Min)),
+                Attack,
+                Attack,
+                Attack,
+                Ability(E(Min)),
+            ])?
+            .combo([
+                Ability(R(Void)),
+                Ability(R(Void)),
+                Ability(Q(Void)),
+                Ability(E(Min)),
+                Attack,
+                Attack,
+                Ability(W(Max)),
+                Attack,
+                Ability(E(Min)),
+                Attack,
+            ])?
+            .combo([
+                Ability(R(Void)),
+                Ability(R(Void)),
+                Ability(R(Void)),
+                Ability(Q(Void)),
+                Ability(W(Max)),
+                Ability(E(Min)),
+                Attack,
+                Attack,
+                Attack,
+                Ability(E(Min)),
+            ])?
+            .combo([
+                Ability(E(Min)),
+                Attack,
+                Attack,
+                Ability(R(Void)),
+                Ability(Q(Void)),
+                Ability(R(Void)),
+                Ability(W(Max)),
+                Ability(E(Min)),
+                Attack,
+                Attack,
+            ])?
+            .combo([
+                Ability(Q(Void)),
+                Ability(E(Min)),
+                Attack,
+                Ability(R(Void)),
+                Attack,
+                Attack,
+                Ability(E(Min)),
+            ])?
+            .combo([
+                Ability(Q(Void)),
+                Ability(W(Max)),
+                Ability(R(Void)),
+                Ability(E(Min)),
+                Attack,
+                Attack,
+                Attack,
+                Ability(E(Min)),
+            ])?
+            .combo([
+                Ability(Q(Void)),
+                Ability(W(Max)),
+                Ability(E(Min)),
+                Attack,
+                Attack,
+                Attack,
+                Ability(E(Min)),
+            ])?
+            .combo([Ability(E(Min)), Ability(Q(Void)), Ability(E(Min)), Attack])?
             .end()
     }
 }

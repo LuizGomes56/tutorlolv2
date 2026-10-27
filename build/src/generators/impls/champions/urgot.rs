@@ -2,30 +2,38 @@ use super::*;
 
 impl Generator for Urgot {
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::P, [(0, Void) /* Description 1 */])
-            .modify(P(Void), |dmg| {
-                if let Ok(hp_scaling) = Scaling::based_on_level_raw(
-                    Level,
-                    [
-                        LevelArm::new(..4, 0.02),
-                        LevelArm::new(4..=7, 0.03),
-                        LevelArm::new(7..=10, 0.04),
-                        LevelArm::new(10..=13, 0.05),
-                        LevelArm::new(13.., 0.06),
-                    ],
-                )
-                .render(Level)
-                {
-                    f![(dmg * AttackDamage) + hp_scaling * EnemyMaxHealth]
-                } else {
-                    core::hint::cold_path();
-                    f![(dmg)]
-                }
-            })?
+        self.ability(
+            Key::P,
+            [
+                (1, Void), /* Description 1 [2] */
+                (0, _1),   /* Description 1 [1] */
+            ],
+        );
+
+        let echoing_flames = self.sum([P(Void), P(_1)])?;
+
+        self.set_damage(P(Void), echoing_flames)?
+            .delete(P(_1))
+            .comment(P(Void), "Echoing Flames shotgun blast")?
             .ability(Key::Q, [(0, Void) /* Physical Damage */])
             .ability(Key::W, [(0, Void) /* Modified Physical Damage */])
             .ability(Key::E, [(0, Void) /* Physical Damage */])
             .ability(Key::R, [(0, Void) /* Physical Damage */])
+            .damage_type(R(Void), Physical)?
+            .combo([
+                Ability(E(Void)),
+                Ability(Q(Void)),
+                Ability(R(Void)),
+                Attack,
+                Ability(W(Void)),
+            ])?
+            .combo([Ability(E(Void)), Ability(R(Void)), Attack, Ability(W(Void))])?
+            .combo([
+                Ability(E(Void)),
+                Ability(Q(Void)),
+                Ability(W(Void)),
+                Ability(R(Void)),
+            ])?
             .end()
     }
 }

@@ -1,25 +1,65 @@
 use super::*;
 
 impl Generator for MasterYi {
-    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::P, [(3, _1) /* Innate */])
-            .ability(
-                Key::Q,
-                [
-                    (2, _1), /* Maximum Single-Target Damage */
-                    (4, _2), /* Primary Physical Damage */
-                    (5, _3), /* Reduced Damage per hit */
-                ],
-            )
-            .ability(
-                Key::W,
-                [
-                    (4, _1), /* Modified Damage Reduction */
-                    (5, _2), /* Turret Modified Damage Reduction */
-                ],
-            )
-            .ability(Key::E, [(0, _1) /* Bonus True Damage */])
-            .end()
+        self.insert(
+            P(Void),
+            Ability {
+                name: "Double Strike".into(),
+                damage_type: Physical,
+                attributes: Undefined,
+                comment: "Second strike".into(),
+                damage: f![0.5 * AttackDamage],
+            },
+        )
+        .ability(
+            Key::Q,
+            [
+                (7, Min), /* Primary Physical Damage */
+                (5, Max), /* Maximum Single-Target Damage */
+                (8, _1),  /* Reduced Damage per hit */
+            ],
+        )
+        .ability(Key::E, [(0, Void) /* Bonus True Damage */])
+        .combo([
+            Ability(E(Void)),
+            Ability(Q(Max)),
+            Attack,
+            Attack,
+            Attack,
+            Ability(E(Void)),
+            Attack,
+            Attack,
+        ])?
+        .combo([
+            Attack,
+            Ability(E(Void)),
+            Attack,
+            Attack,
+            Ability(Q(Max)),
+            Ability(E(Void)),
+            Attack,
+            Attack,
+        ])?
+        .combo([
+            Ability(E(Void)),
+            Attack,
+            Attack,
+            Attack,
+            Ability(E(Void)),
+            Attack,
+            Ability(Q(Max)),
+            Attack,
+        ])?
+        .combo([
+            Ability(E(Void)),
+            Attack,
+            Attack,
+            Attack,
+            Ability(Q(Max)),
+            Ability(E(Void)),
+            Attack,
+        ])?
+        .end()
     }
 }

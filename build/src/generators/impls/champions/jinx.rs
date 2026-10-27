@@ -15,6 +15,53 @@ impl Generator for Jinx {
                     (3, _1Min), /* Minimum Secondary Damage */
                 ],
             )
+            .combo([
+                Ability(E(Void)),
+                Attack,
+                Ability(W(Void)),
+                Ability(R(Max)),
+                Attack,
+                Attack,
+            ])?
+            .combo([
+                Ability(R(Max)),
+                Ability(E(Void)),
+                Ability(W(Void)),
+                Attack,
+                Attack,
+                Attack,
+            ])?
+            .combo([
+                Attack,
+                Ability(W(Void)),
+                Attack,
+                Attack,
+                Ability(E(Void)),
+                Ability(Q(Void)),
+                Attack,
+                Attack,
+                Attack,
+            ])?
+            .combo([
+                Ability(W(Void)),
+                Ability(E(Void)),
+                Ability(Q(Void)),
+                Attack,
+                Attack,
+                Attack,
+            ])?
+            .combo([Ability(E(Void)), Ability(W(Void)), Attack, Attack, Attack])?
+            .combo([
+                Ability(E(Void)),
+                Attack,
+                Attack,
+                Attack,
+                Ability(W(Void)),
+                Ability(Q(Void)),
+                Attack,
+                Attack,
+                Attack,
+            ])?
             .end()
     }
 }

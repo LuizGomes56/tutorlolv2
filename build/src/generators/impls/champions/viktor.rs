@@ -25,6 +25,42 @@ impl Generator for Viktor {
                 (2, Max),  /* Total Magic Damage */
             ],
         )
+        .combo([
+            Ability(R(Void)),
+            Ability(Q(Void)),
+            Ability(E(Max)),
+            Attack,
+            Attack,
+            Attack,
+        ])?
+        .combo([
+            Ability(Q(Void)),
+            Attack,
+            Ability(E(Max)),
+            Ability(R(Void)),
+            Attack,
+            Attack,
+        ])?
+        .combo([
+            Ability(R(Void)),
+            Ability(Q(Void)),
+            Attack,
+            Ability(E(Max)),
+            Attack,
+            Attack,
+            Attack,
+        ])?
+        .combo([
+            Attack,
+            Ability(Q(Void)),
+            Attack,
+            Ability(E(Max)),
+            Ability(R(Void)),
+            Attack,
+            Attack,
+            Attack,
+        ])?
+        .combo([Ability(Q(Void)), Attack, Ability(E(Max))])?
         .end()
     }
 }

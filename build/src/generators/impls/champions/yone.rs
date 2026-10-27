@@ -2,7 +2,7 @@ use super::*;
 
 impl Generator for Yone {
     fn generate(&mut self) -> MayFail {
-        let mix = |dmg: &str| f![(dmg * MagicMultiplier) + (dmg * PhysicalMultiplier)];
+        let mix = |dmg: &str| f![((dmg) * MagicMultiplier) + ((dmg) * PhysicalMultiplier)];
 
         self.ability(
             Key::Q,
@@ -16,6 +16,52 @@ impl Generator for Yone {
         .ability(Key::R, [(0, Void) /* Magic Damage */])
         .modify(R(Void), mix)?
         .damage_types([W(Void), R(Void)], Mixed)?
+        .combo([
+            Ability(R(Void)),
+            Ability(Q(Min)),
+            Ability(W(Void)),
+            Attack,
+            Attack,
+            Ability(Q(Min)),
+        ])?
+        .combo([
+            Ability(Q(Min)),
+            Attack,
+            Ability(W(Void)),
+            Attack,
+            Attack,
+            Ability(Q(Min)),
+            Ability(R(Void)),
+            Ability(Q(Min)),
+        ])?
+        .combo([
+            Ability(R(Void)),
+            Ability(Q(Min)),
+            Attack,
+            Ability(W(Void)),
+            Attack,
+            Attack,
+            Ability(Q(Min)),
+        ])?
+        .combo([
+            Ability(Q(Min)),
+            Attack,
+            Ability(R(Void)),
+            Attack,
+            Ability(W(Void)),
+            Attack,
+            Ability(Q(Min)),
+            Attack,
+        ])?
+        .combo([
+            Ability(Q(Min)),
+            Ability(Q(Min)),
+            Ability(Q(Min)),
+            Attack,
+            Ability(W(Void)),
+            Attack,
+            Attack,
+        ])?
         .end()
     }
 }

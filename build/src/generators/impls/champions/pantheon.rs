@@ -1,7 +1,6 @@
 use super::*;
 
 impl Generator for Pantheon {
-    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
         self.ability(
             Key::Q,
@@ -15,6 +14,12 @@ impl Generator for Pantheon {
             ],
         )
         .ability(Key::W, [(0, Void) /* Physical Damage */])
+        .modify(W(Void), |_| {
+            f![
+                (0.06 + 0.005 * (WLevel - 1) + 0.00015 * AbilityPower + 0.00004 * BonusHealth)
+                    * EnemyMaxHealth
+            ]
+        })?
         .ability(Key::E, [(0, Void) /* Physical Damage */])
         .ability(
             Key::R,
@@ -31,6 +36,52 @@ impl Generator for Pantheon {
         self.clone_to(R(Min), R(_1), r1)?
             .damage_types([W(Void), E(Void), R(_1)], Physical)?
             .damage_types([R(Min), R(Max)], Magic)?
+            .combo([
+                Ability(R(Max)),
+                Ability(Q(_1Max)),
+                Attack,
+                Ability(W(Void)),
+                Attack,
+                Ability(E(Void)),
+                Attack,
+                Ability(Q(_1Max)),
+            ])?
+            .combo([
+                Ability(R(Max)),
+                Ability(W(Void)),
+                Attack,
+                Ability(Q(_1Max)),
+                Attack,
+                Ability(E(Void)),
+            ])?
+            .combo([
+                Ability(Q(_1Max)),
+                Attack,
+                Ability(W(Void)),
+                Attack,
+                Ability(E(Void)),
+                Attack,
+                Ability(Q(_1Max)),
+            ])?
+            .combo([
+                Ability(W(Void)),
+                Attack,
+                Ability(Q(_1Max)),
+                Attack,
+                Ability(E(Void)),
+            ])?
+            .combo([
+                Ability(W(Void)),
+                Ability(Q(_1Max)),
+                Attack,
+                Ability(E(Void)),
+            ])?
+            .combo([
+                Ability(W(Void)),
+                Attack,
+                Ability(Q(_1Max)),
+                Ability(E(Void)),
+            ])?
             .end()
     }
 }

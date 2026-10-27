@@ -1,26 +1,60 @@
 use super::*;
 
 impl Generator for Yunara {
-    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::P, [(0, Void) /* Innate */])
-            .ability(
-                Key::Q,
-                [
-                    (0, _1), /* Active Bonus Magic Damage */
-                    (3, _2), /* Combined Bonus Magic Damage */
-                    (5, _3), /* Passive Bonus Magic Damage */
-                ],
-            )
-            .ability(
+        self.ability(Key::Q, [(3, Void) /* Passive Bonus Magic Damage */])
+            .damage_type(Q(Void), Magic)?
+            .ability_nth(
+                1,
                 Key::W,
                 [
-                    (0, Min),  /* Initial Magic Damage */
-                    (1, Void), /* Linger Magic Damage per Tick */
-                    (2, Max),  /* Total Expanded Damage */
+                    (0, Void), /* Initial Magic Damage */
+                    (1, _1),   /* Linger Magic Damage per Tick */
+                    (2, _2),   /* Total Expanded Damage */
                 ],
             )
             .ability(Key::R, [(0, Void) /* Arc of Ruin Base Damage */])
+            .damage_type(R(Void), Magic)?
+            .combo([
+                Ability(W(Void)),
+                Attack,
+                Ability(R(Void)),
+                Attack,
+                Attack,
+                Attack,
+                Attack,
+                Ability(W(Void)),
+            ])?
+            .combo([
+                Ability(W(Void)),
+                Attack,
+                Ability(R(Void)),
+                Attack,
+                Attack,
+                Attack,
+                Ability(W(Void)),
+            ])?
+            .combo([
+                Attack,
+                Ability(Q(Void)),
+                Attack,
+                Attack,
+                Attack,
+                Ability(W(Void)),
+                Attack,
+                Attack,
+            ])?
+            .combo([
+                Ability(W(Void)),
+                Attack,
+                Attack,
+                Attack,
+                Attack,
+                Ability(Q(Void)),
+                Attack,
+                Attack,
+                Attack,
+            ])?
             .end()
     }
 }

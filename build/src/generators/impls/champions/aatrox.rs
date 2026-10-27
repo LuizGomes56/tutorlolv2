@@ -2,7 +2,7 @@ use super::*;
 
 impl Generator for Aatrox {
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::P, [(1, _1) /* Innate */, (2, _2) /* Innate [1] */])
+        self.ability(Key::P, [(1, Void) /* Innate */])
             .ability(
                 Key::Q,
                 [
@@ -25,8 +25,7 @@ impl Generator for Aatrox {
         let qmin = self.sum([Q(_1Min), Q(_2Min), Q(_3Min)])?;
         let qmax = self.sum([Q(_1Max), Q(_2Max), Q(_3Max)])?;
 
-        self.merge_sum([P(_1), P(_2)], P(Void))?
-            .clone_to(Q(_1Min), Q(Min), qmin)?
+        self.clone_to(Q(_1Min), Q(Min), qmin)?
             .clone_to(Q(_1Max), Q(Max), qmax)?
             .combo([
                 Ability(Q(_1Min)),

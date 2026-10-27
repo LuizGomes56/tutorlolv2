@@ -18,6 +18,28 @@ impl Generator for Teemo {
                     (4, Max), /* Total Magic Damage */
                 ],
             )
+            .combo([
+                Ability(R(Max)),
+                Ability(R(Max)),
+                Attack,
+                Ability(Q(Void)),
+                Attack,
+                Attack,
+                Attack,
+                Attack,
+            ])?
+            .combo([Attack, Ability(Q(Void))])?
+            .combo([Ability(R(Max)), Ability(Q(Void)), Attack])?
+            .combo([
+                Attack,
+                Ability(R(Max)),
+                Attack,
+                Attack,
+                Ability(Q(Void)),
+                Attack,
+                Attack,
+            ])?
+            .combo([Attack, Attack, Ability(Q(Void)), Attack, Attack])?
             .end()
     }
 }

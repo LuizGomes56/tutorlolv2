@@ -1,38 +1,67 @@
 use super::*;
 
 impl Generator for Galio {
-    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
-        self.ability(
-            Key::P,
-            [
-                (1, _1), /* Description 2 */
-                (2, _2), /* Innate */
-                (3, _3), /* Innate [1] */
-                (4, _4), /* Innate [2] */
-                (5, _5), /* Innate [3] */
-                (6, _6), /* Innate [4] */
-                (7, _7), /* Innate [5] */
-            ],
-        )
-        .ability(Key::Q, [(0, _1) /* Magic Damage */])
-        .ability(
-            Key::W,
-            [
-                (0, _1), /* Magic Damage Reduction */
-                (2, _2), /* Maximum Magic Damage */
-                (3, _3), /* Minimum Magic Damage */
-                (4, _4), /* Physical Damage Reduction */
-            ],
-        )
-        .ability(
-            Key::E,
-            [
-                (0, _1), /* Magic Damage */
-                (1, _2), /* Non-Champion Damage */
-            ],
-        )
-        .ability(Key::R, [(0, _1) /* Magic Damage */])
-        .end()
+        self.ability(Key::P, [(2, Void) /* Innate */])
+            .modify(P(Void), |_| {
+                f![15
+                    + 100 / 17 * (Level - 1)
+                    + AttackDamage
+                    + 0.4 * AbilityPower
+                    + 0.6 * BonusMagicResist]
+            })?
+            .comment(P(Void), "Colossal Smash empowered basic attack")?
+            .ability(Key::Q, [(0, Void) /* Magic Damage */])
+            .ability(
+                Key::W,
+                [
+                    (3, Min), /* Minimum Magic Damage */
+                    (2, Max), /* Maximum Magic Damage */
+                ],
+            )
+            .ability(Key::E, [(0, Void) /* Magic Damage */])
+            .ability(Key::R, [(0, Void) /* Magic Damage */])
+            .combo([
+                Attack,
+                Ability(E(Void)),
+                Ability(Q(Void)),
+                Attack,
+                Ability(W(Max)),
+                Attack,
+                Attack,
+            ])?
+            .combo([Ability(W(Max)), Ability(E(Void)), Ability(Q(Void)), Attack])?
+            .combo([
+                Ability(W(Max)),
+                Ability(Q(Void)),
+                Attack,
+                Ability(E(Void)),
+                Attack,
+            ])?
+            .combo([
+                Ability(Q(Void)),
+                Attack,
+                Ability(E(Void)),
+                Ability(W(Max)),
+                Attack,
+            ])?
+            .combo([Ability(E(Void)), Ability(W(Max)), Ability(Q(Void)), Attack])?
+            .combo([Ability(Q(Void)), Attack])?
+            .combo([
+                Ability(E(Void)),
+                Ability(Q(Void)),
+                Attack,
+                Ability(W(Max)),
+                Attack,
+            ])?
+            .combo([Ability(E(Void)), Ability(Q(Void)), Ability(W(Max)), Attack])?
+            .combo([
+                Ability(R(Void)),
+                Ability(W(Max)),
+                Ability(Q(Void)),
+                Ability(E(Void)),
+                Attack,
+            ])?
+            .end()
     }
 }

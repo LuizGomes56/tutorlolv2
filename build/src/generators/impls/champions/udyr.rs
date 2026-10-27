@@ -17,6 +17,13 @@ impl Generator for Udyr {
                 (3, Max), /* Total Magic Damage */
             ],
         )
+        .modify(Q(Min), |_| {
+            f![(0.03 + 0.01 * (QLevel - 1) + 0.00035 * BonusAd) * EnemyMaxHealth]
+        })?
+        .modify(Q(Max), |_| {
+            f![(0.06 + 0.02 * (QLevel - 1) + 0.0007 * BonusAd) * EnemyMaxHealth]
+        })?
+        .damage_types([Q(Void), Q(Min), Q(Max)], Physical)?
         .end()
     }
 }

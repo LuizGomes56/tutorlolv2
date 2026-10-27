@@ -11,7 +11,7 @@ impl Generator for Smolder {
 
         let q_tier_3 = f![(0.083 * BonusAd / 100 + 0.017 * Stacks / 100) * EnemyMaxHealth];
 
-        let w_dmg = |dmg: &str| f![(dmg * PhysicalMultiplier) + passive_w];
+        let w_dmg = |dmg: &str| f![((dmg) * PhysicalMultiplier) + passive_w];
 
         self.ability(Key::Q, [(0, Min) /* Physical Damage */])
             .ability(
@@ -30,7 +30,7 @@ impl Generator for Smolder {
                 ],
             )
             .modify(Q(Min), |dmg| {
-                f![(dmg * PhysicalMultiplier) + (passive_q) + q_tier_3]
+                f![((dmg) * PhysicalMultiplier) + (passive_q) + q_tier_3]
             })?
             .clone_with(Q(Min), Q(Max), |dmg| f![2 * (dmg)])?
             .modify(W(Void), w_dmg)?
@@ -54,6 +54,54 @@ impl Generator for Smolder {
             })?
             .damage_types([Q(Min), Q(Max), W(Void), W(Min), W(Max)], Mixed)?
             .damage_types([R(Min), R(Max)], Physical)?
+            .combo([
+                Ability(Q(Min)),
+                Ability(W(Void)),
+                Ability(R(Max)),
+                Attack,
+                Attack,
+                Attack,
+                Ability(Q(Min)),
+                Attack,
+            ])?
+            .combo([
+                Ability(R(Max)),
+                Ability(E(Max)),
+                Ability(W(Void)),
+                Ability(Q(Max)),
+                Attack,
+            ])?
+            .combo([
+                Ability(R(Max)),
+                Ability(W(Void)),
+                Attack,
+                Ability(Q(Max)),
+                Attack,
+                Ability(E(Max)),
+            ])?
+            .combo([
+                Ability(Q(Min)),
+                Attack,
+                Ability(W(Void)),
+                Ability(R(Max)),
+                Attack,
+                Ability(E(Max)),
+                Attack,
+                Ability(Q(Min)),
+                Attack,
+            ])?
+            .combo([
+                Ability(Q(Min)),
+                Attack,
+                Ability(W(Void)),
+                Attack,
+                Ability(E(Max)),
+                Attack,
+                Attack,
+                Ability(Q(Min)),
+                Attack,
+            ])?
+            .combo([Attack, Ability(W(Void)), Attack, Ability(Q(Max)), Attack])?
             .end()
     }
 }

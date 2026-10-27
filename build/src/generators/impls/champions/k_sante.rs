@@ -1,37 +1,111 @@
 use super::*;
 
 impl Generator for KSante {
-    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
-        self.ability(
-            Key::P,
-            [
-                (0, _1), /* All Out Bonus */
-                (1, _2), /* Innate */
-                (2, _3), /* Innate [1] */
-                (3, _4), /* Innate [2] */
-                (4, _5), /* Innate [3] */
-                (5, _6), /* Innate [4] */
-            ],
-        )
-        .ability(Key::Q, [(0, _1) /* Physical Damage */])
-        .ability(
-            Key::W,
-            [
-                (0, _1), /* Maximum Bonus True Damage */
-                (1, _2), /* Minimum Bonus True Damage */
-                (3, _3), /* Physical Damage */
-                (4, _4), /* Total Maximum Mixed Damage */
-            ],
-        )
-        .ability(
-            Key::R,
-            [
-                (1, _1), /* Physical Damage */
-                (2, _2), /* Strike Physical Damage */
-                (3, _3), /* Total Physical Damage */
-            ],
-        )
-        .end()
+        self.ability(Key::P, [(1, Void) /* Innate */])
+            .modify(P(Void), |_| {
+                f![12 + (0.01 + 0.01 / 17 * (Level - 1)) * EnemyMaxHealth]
+            })?
+            .damage_type(P(Void), Physical)?
+            .comment(P(Void), "Mark consumption bonus damage")?
+            .ability(Key::Q, [(0, Void) /* Physical Damage */])
+            .ability(
+                Key::W,
+                [
+                    (3, Min), /* Physical Damage */
+                    (4, Max), /* Total Maximum Mixed Damage */
+                ],
+            )
+            .modify(W(Min), |_| {
+                f![45
+                    + 30 * (WLevel - 1)
+                    + (0.08 + 0.0002 * BonusArmor + 0.0002 * BonusMagicResist) * EnemyMaxHealth]
+            })?
+            .modify(W(Max), |_| {
+                f![81
+                    + 54 * (WLevel - 1)
+                    + (0.144 + 0.00036 * BonusArmor + 0.00036 * BonusMagicResist) * EnemyMaxHealth]
+            })?
+            .damage_type(W(Max), Mixed)?
+            .ability(
+                Key::R,
+                [
+                    (2, Min), /* Strike Physical Damage */
+                    (3, Max), /* Total Physical Damage */
+                ],
+            )
+            .combo([
+                Ability(Q(Void)),
+                Attack,
+                Ability(R(Max)),
+                Attack,
+                Ability(W(Max)),
+                Attack,
+                Ability(Q(Void)),
+                Attack,
+            ])?
+            .combo([
+                Ability(R(Max)),
+                Ability(Q(Void)),
+                Attack,
+                Ability(W(Max)),
+                Attack,
+                Ability(Q(Void)),
+            ])?
+            .combo([
+                Ability(Q(Void)),
+                Ability(Q(Void)),
+                Ability(Q(Void)),
+                Ability(R(Max)),
+                Attack,
+                Ability(W(Max)),
+                Attack,
+                Ability(Q(Void)),
+            ])?
+            .combo([
+                Ability(W(Max)),
+                Attack,
+                Ability(Q(Void)),
+                Attack,
+                Ability(R(Max)),
+                Attack,
+                Ability(Q(Void)),
+                Attack,
+            ])?
+            .combo([
+                Attack,
+                Ability(Q(Void)),
+                Attack,
+                Ability(R(Max)),
+                Attack,
+                Ability(W(Max)),
+                Attack,
+                Ability(Q(Void)),
+                Attack,
+            ])?
+            .combo([
+                Ability(Q(Void)),
+                Attack,
+                Attack,
+                Attack,
+                Ability(Q(Void)),
+                Attack,
+                Ability(W(Max)),
+                Attack,
+                Ability(Q(Void)),
+            ])?
+            .combo([
+                Ability(Q(Void)),
+                Attack,
+                Attack,
+                Attack,
+                Ability(Q(Void)),
+                Attack,
+                Attack,
+                Attack,
+                Ability(Q(Void)),
+                Attack,
+            ])?
+            .end()
     }
 }

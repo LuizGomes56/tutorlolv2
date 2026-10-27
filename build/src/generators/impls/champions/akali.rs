@@ -1,7 +1,6 @@
 use super::*;
 
 impl Generator for Akali {
-    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
         self.ability(
             Key::P,
@@ -12,7 +11,6 @@ impl Generator for Akali {
         )
         .merge_sum([P(_1), P(_2)], P(Void))?
         .ability(Key::Q, [(0, Void) /* Magic Damage */])
-        /* Missing first cast damage */
         .ability(
             Key::E,
             [
@@ -28,6 +26,71 @@ impl Generator for Akali {
                 (2, Min), /* Minimum Magic Damage */
             ],
         )
+        .combo([
+            Ability(R(Min)),
+            Ability(E(Min)),
+            Ability(E(Min)),
+            Attack,
+            Ability(Q(Void)),
+            Ability(R(Min)),
+        ])?
+        .combo([
+            Ability(R(Min)),
+            Ability(E(Min)),
+            Ability(Q(Void)),
+            Ability(E(Min)),
+            Attack,
+            Ability(R(Min)),
+        ])?
+        .combo([
+            Ability(R(Min)),
+            Attack,
+            Ability(Q(Void)),
+            Attack,
+            Ability(E(Min)),
+            Ability(E(Min)),
+            Attack,
+            Ability(Q(Void)),
+            Ability(R(Min)),
+        ])?
+        .combo([Ability(E(Min)), Ability(E(Min)), Ability(Q(Void)), Attack])?
+        .combo([
+            Ability(R(Min)),
+            Ability(E(Min)),
+            Attack,
+            Ability(Q(Void)),
+            Ability(E(Min)),
+            Attack,
+            Ability(Q(Void)),
+            Ability(R(Min)),
+        ])?
+        .combo([
+            Ability(Q(Void)),
+            Attack,
+            Ability(E(Min)),
+            Ability(E(Min)),
+            Attack,
+        ])?
+        .combo([
+            Ability(E(Min)),
+            Ability(E(Min)),
+            Attack,
+            Ability(Q(Void)),
+            Attack,
+            Ability(Q(Void)),
+            Attack,
+        ])?
+        .combo([
+            Ability(Q(Void)),
+            Attack,
+            Ability(Q(Void)),
+            Attack,
+            Ability(E(Min)),
+            Ability(E(Min)),
+            Attack,
+            Ability(Q(Void)),
+            Attack,
+        ])?
         .end()
     }
 }

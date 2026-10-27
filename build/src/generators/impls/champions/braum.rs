@@ -12,12 +12,15 @@ impl Generator for Braum {
         .ability(Key::Q, [(0, Void) /* Magic Damage */])
         .ability(Key::R, [(0, Void) /* Magic Damage */]);
 
-        let pmul = self
-            .scaling(Key::P, 0)?
-            .first()
-            .and_then(Scaling::try_get_value)
-            .unwrap_or(0.4);
+        // Bonus magic damage equal to 40% of the Concussive Blows damage
+        let concussive_blows = self.damage_of(P(Void))?.clone();
 
-        self.modify(P(_1), |p| f![pmul * (p)])?.end()
+        self.modify(P(_1), |_| f![0.4 * (concussive_blows)])?
+            .combo([Ability(Q(Void)), Ability(R(Void))])?
+            .combo([Ability(Q(Void)), Attack, Attack, Attack])?
+            .combo([Ability(R(Void)), Ability(Q(Void)), Attack, Attack, Attack])?
+            .combo([Ability(Q(Void)), Attack, Ability(R(Void)), Attack, Attack])?
+            .combo([Attack, Ability(Q(Void)), Attack, Attack])?
+            .end()
     }
 }

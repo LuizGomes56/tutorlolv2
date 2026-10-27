@@ -1,27 +1,38 @@
 use super::*;
 
 impl Generator for Karma {
-    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::Q, [(0, _1) /* Magic Damage */])
-            .ability_nth(
-                1,
+        self.ability_nth(1, Key::Q, [(0, Void) /* Magic Damage */])
+            .ability(
                 Key::Q,
                 [
-                    (0, _2), /* Bonus Magic Damage */
-                    (1, _3), /* Magic Damage */
-                    (2, _4), /* Total Bonus Damage */
-                    (3, _5), /* Total Damage */
-                    (4, _6), /* Total Magic Damage */
+                    (4, _1), /* Total Magic Damage */
+                    (3, _2), /* Total Damage */
                 ],
             )
-            .ability(
+            .comment(Q(_1), "Mantra empowered impact")?
+            .comment(Q(_2), "Mantra empowered impact and Soulflare")?
+            .ability_nth(
+                1,
                 Key::W,
                 [
-                    (0, _1), /* Magic Damage */
-                    (2, _2), /* Total Magic Damage */
+                    (0, Min), /* Magic Damage */
+                    (2, Max), /* Total Magic Damage */
                 ],
             )
+            .combo([Ability(Q(Void)), Ability(W(Max)), Attack, Attack, Attack])?
+            .combo([
+                Ability(W(Max)),
+                Attack,
+                Attack,
+                Ability(Q(Void)),
+                Attack,
+                Attack,
+            ])?
+            .combo([Ability(W(Max)), Attack, Ability(Q(Void)), Attack])?
+            .combo([Ability(W(Max)), Ability(Q(Void))])?
+            .combo([Ability(Q(Void)), Ability(W(Max)), Attack, Attack])?
+            .combo([Attack, Ability(Q(Void)), Attack])?
             .end()
     }
 }

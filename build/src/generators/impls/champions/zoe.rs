@@ -19,6 +19,17 @@ impl Generator for Zoe {
             )
             .ability(Key::E, [(2, Min) /* Magic Damage */])
             .clone_with(E(Min), E(Max), |dmg| f![((dmg) * MagicMultiplier) + dmg])?
+            .combo([Ability(E(Max)), Ability(Q(Min)), Ability(Q(Min))])?
+            .combo([Ability(Q(Min)), Ability(Q(Min)), Attack])?
+            .combo([Ability(Q(Min)), Ability(Q(Min))])?
+            .combo([Ability(Q(Min)), Attack, Ability(Q(Min)), Attack])?
+            .combo([
+                Ability(E(Max)),
+                Attack,
+                Ability(Q(Min)),
+                Ability(Q(Min)),
+                Attack,
+            ])?
             .end()
     }
 }

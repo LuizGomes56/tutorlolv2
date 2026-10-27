@@ -2,8 +2,10 @@ use super::*;
 
 impl Generator for Sion {
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::P, [(0, Void) /* Description 1 */])
-            .modify(P(Void), |dmg| f![dmg / 10])?
+        self.ability_nth(1, Key::P, [(0, Void) /* Description 1 */])
+            .modify(P(Void), |dmg| f![(dmg) / 10])?
+            .damage_type(P(Void), Physical)?
+            .comment(P(Void), "Glory in Death bonus damage on-hit")?
             .ability(
                 Key::Q,
                 [
@@ -20,6 +22,57 @@ impl Generator for Sion {
                     (1, Min), /* Minimum Physical Damage */
                 ],
             )
+            .combo([
+                Ability(R(Max)),
+                Ability(W(Void)),
+                Ability(E(Void)),
+                Ability(Q(Max)),
+                Ability(W(Void)),
+                Attack,
+                Attack,
+            ])?
+            .combo([
+                Ability(W(Void)),
+                Ability(E(Void)),
+                Ability(Q(Max)),
+                Attack,
+                Ability(W(Void)),
+            ])?
+            .combo([
+                Ability(W(Void)),
+                Ability(Q(Max)),
+                Ability(E(Void)),
+                Ability(W(Void)),
+                Attack,
+                Ability(R(Max)),
+                Attack,
+            ])?
+            .combo([
+                Ability(E(Void)),
+                Ability(R(Max)),
+                Ability(W(Void)),
+                Ability(Q(Max)),
+                Ability(W(Void)),
+                Attack,
+                Attack,
+            ])?
+            .combo([
+                Ability(E(Void)),
+                Ability(Q(Max)),
+                Ability(W(Void)),
+                Attack,
+                Attack,
+                Ability(W(Void)),
+            ])?
+            .combo([
+                Ability(E(Void)),
+                Ability(Q(Max)),
+                Ability(W(Void)),
+                Ability(R(Max)),
+                Attack,
+                Attack,
+                Ability(W(Void)),
+            ])?
             .end()
     }
 }

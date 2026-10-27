@@ -1,7 +1,6 @@
 use super::*;
 
 impl Generator for Zaahen {
-    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
         self.ability(
             Key::Q,
@@ -27,6 +26,8 @@ impl Generator for Zaahen {
                 (2, Min),  /* Physical Damage */
             ],
         )
+        .damage_types([E(Min), E(Max)], Physical)?
+        .damage_type(E(Void), Magic)?
         .ability(Key::R, [(2, Void) /* Physical Damage */])
         .end()
     }

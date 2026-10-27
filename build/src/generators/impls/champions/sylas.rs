@@ -15,7 +15,59 @@ impl Generator for Sylas {
                 ],
             )
             .ability(Key::W, [(0, Void) /* Magic Damage */])
-            .ability_nth(1, Key::E, [(0, Void) /* Magic Damage */])
+            .ability(Key::E, [(0, Void) /* Magic Damage */])
+            .combo([Ability(Q(Max)), Ability(W(Void)), Attack, Ability(E(Void))])?
+            .combo([
+                Ability(E(Void)),
+                Ability(E(Void)),
+                Attack,
+                Ability(Q(Max)),
+                Attack,
+                Ability(W(Void)),
+                Attack,
+                Attack,
+            ])?
+            .combo([Ability(E(Void)), Ability(E(Void)), Ability(W(Void)), Attack])?
+            .combo([
+                Ability(E(Void)),
+                Ability(W(Void)),
+                Attack,
+                Ability(E(Void)),
+                Attack,
+                Ability(Q(Max)),
+                Attack,
+                Attack,
+            ])?
+            .combo([
+                Ability(Q(Max)),
+                Ability(E(Void)),
+                Attack,
+                Ability(W(Void)),
+                Attack,
+                Ability(E(Void)),
+                Attack,
+                Attack,
+            ])?
+            .combo([
+                Ability(E(Void)),
+                Ability(Q(Max)),
+                Ability(E(Void)),
+                Attack,
+                Ability(W(Void)),
+                Attack,
+                Attack,
+                Attack,
+            ])?
+            .combo([
+                Ability(E(Void)),
+                Attack,
+                Ability(W(Void)),
+                Attack,
+                Ability(Q(Max)),
+                Attack,
+                Ability(E(Void)),
+                Attack,
+            ])?
             .end()
     }
 }

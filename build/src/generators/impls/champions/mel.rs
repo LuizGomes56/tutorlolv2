@@ -1,50 +1,66 @@
 use super::*;
 
 impl Generator for Mel {
-    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
         self.ability(
-            Key::P,
-            [
-                (0, _1), /* Innate */
-                (1, _2), /* Innate - Searing Brilliance */
-                (2, _3), /* Innate - Searing Brilliance [1] */
-                (3, _4), /* Overwhelm */
-                (4, _5), /* Overwhelm [1] */
-                (5, _6), /* Overwhelm [2] */
-            ],
-        )
-        .ability(
             Key::Q,
             [
-                (0, _1), /* Initial Explosion Magic Damage */
-                (1, _2), /* Magic Damage per Subsequent Explosion */
-                (3, _3), /* Total Magic Damage */
-            ],
-        )
-        .ability(
-            Key::W,
-            [
-                (0, _1), /* Replicated Projectile Magic Damage Modifier */
-                (1, _2), /* Replicated Projectile Physical Damage Modifier */
+                (0, Min), /* Initial Explosion Magic Damage */
+                (3, Max), /* Total Magic Damage */
+                (1, _1),  /* Magic Damage per Subsequent Explosion */
             ],
         )
         .ability(
             Key::E,
             [
-                (0, _1), /* Field Magic Damage per Second */
-                (1, _2), /* Field Magic Damage per Tick */
-                (3, _3), /* Orb Magic Damage */
+                (3, Void), /* Orb Magic Damage */
+                (0, _1),   /* Field Magic Damage per Second */
             ],
         )
-        .ability(
-            Key::R,
-            [
-                (0, _1), /* Increased Stored Damage */
-                (1, _2), /* Magic Damage */
-                (2, _3), /* Stored Damage Increase per Stack */
-            ],
-        )
+        .ability(Key::R, [(1, Void) /* Magic Damage */])
+        .modify(R(Void), |_| {
+            f![125
+                + 37.5 * (RLevel - 1)
+                + 0.3 * AbilityPower
+                + Stacks * (4 + 1.5 * (RLevel - 1) + 0.04 * AbilityPower)]
+        })?
+        .comment(
+            R(Void),
+            "Magic damage, Stacks = Overwhelm stacks on the target",
+        )?
+        .combo([
+            Ability(E(Void)),
+            Attack,
+            Ability(Q(Min)),
+            Attack,
+            Attack,
+            Attack,
+            Attack,
+            Ability(Q(Min)),
+            Ability(R(Void)),
+        ])?
+        .combo([Ability(E(Void)), Ability(Q(Max)), Ability(R(Void))])?
+        .combo([
+            Ability(E(Void)),
+            Attack,
+            Ability(Q(Min)),
+            Attack,
+            Attack,
+            Attack,
+            Ability(Q(Min)),
+            Ability(R(Void)),
+        ])?
+        .combo([
+            Ability(Q(Min)),
+            Attack,
+            Attack,
+            Ability(E(Void)),
+            Attack,
+            Attack,
+            Attack,
+            Ability(Q(Min)),
+            Ability(R(Void)),
+        ])?
         .end()
     }
 }

@@ -24,6 +24,20 @@ impl Generator for Talon {
                     (2, Max), /* Total Physical Damage */
                 ],
             )
+            .combo([Ability(W(Max)), Ability(Q(Max)), Ability(R(Max)), Attack])?
+            .combo([
+                Ability(W(Max)),
+                Ability(Q(Min)),
+                Attack,
+                Attack,
+                Ability(R(Max)),
+                Attack,
+                Ability(Q(Min)),
+                Attack,
+            ])?
+            .combo([Ability(W(Max)), Ability(R(Max)), Ability(Q(Max)), Attack])?
+            .combo([Ability(W(Max)), Attack, Ability(Q(Max)), Attack])?
+            .combo([Ability(W(Max)), Ability(Q(Max)), Attack])?
             .end()
     }
 }
