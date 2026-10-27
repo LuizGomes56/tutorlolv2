@@ -15,6 +15,7 @@ pub mod render;
 pub mod riot;
 pub mod runes;
 pub mod scraper;
+pub mod stats;
 
 pub const DDRAGON_ENDPOINT: &str = "https://ddragon.leagueoflegends.com";
 pub const CANISBACK_ENDPOINT: &str = "https://ddragon.canisback.com/img";

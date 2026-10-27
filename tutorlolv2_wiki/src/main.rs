@@ -1,5 +1,5 @@
 use clap::{Parser, Subcommand, ValueEnum};
-use tutorlolv2_wiki::{HTTP_CLIENT, LOL_VERSION, MayFail, champions, items, runes, scraper};
+use tutorlolv2_wiki::{HTTP_CLIENT, LOL_VERSION, MayFail, champions, items, runes, scraper, stats};
 
 #[derive(Parser, Debug)]
 pub struct Cli {
@@ -71,6 +71,14 @@ pub enum Wiki {
     ScraperDownload,
     #[clap(alias = "sp")]
     ScraperParse,
+    #[clap(alias = "sc")]
+    ScraperConcat,
+    #[clap(alias = "st")]
+    Stats,
+    #[clap(alias = "std")]
+    StatsDownload,
+    #[clap(alias = "stp")]
+    StatsParse,
 }
 
 #[tokio::main]
@@ -135,6 +143,10 @@ async fn main() -> MayFail {
             Wiki::Scraper => scraper::run().await,
             Wiki::ScraperDownload => scraper::download().await,
             Wiki::ScraperParse => scraper::parse(),
+            Wiki::ScraperConcat => scraper::concat(),
+            Wiki::Stats => stats::run().await,
+            Wiki::StatsDownload => stats::download().await,
+            Wiki::StatsParse => stats::parse(),
         }
         .map_err(|e| format!("[wiki] Error: {e:?}"))?,
     }

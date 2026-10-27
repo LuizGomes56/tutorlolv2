@@ -654,7 +654,7 @@ pub enum Position {
     Middle,
     #[strum(to_string = "Bottom", serialize = "BOTTOM")]
     Bottom,
-    #[strum(to_string = "Support", serialize = "SUPPORT")]
+    #[strum(to_string = "Support", serialize = "SUPPORT", serialize = "UTILITY")]
     Support,
 }
 

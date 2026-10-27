@@ -90,6 +90,7 @@ fn position_parsing_preserves_aliases_and_errors() {
         ("BOTTOM", Position::Bottom),
         ("Support", Position::Support),
         ("SUPPORT", Position::Support),
+        ("UTILITY", Position::Support),
     ] {
         assert_eq!(text.parse::<Position>(), Ok(expected));
     }

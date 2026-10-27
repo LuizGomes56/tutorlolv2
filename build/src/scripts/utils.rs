@@ -406,13 +406,16 @@ pub fn cast_f32(s: &str) -> MayFail<String> {
                 Lit::Float(n) if n.suffix().is_empty() => n.base10_digits(),
                 _ => return,
             };
-            
+
             let Ok(value) = digits.parse::<f64>() else {
                 return;
             };
-            
+
             let literal = format_number(value, Precision::F32);
-            expr.lit = Lit::Float(syn::LitFloat::new(&format!("{literal}f32"), expr.lit.span()));
+            expr.lit = Lit::Float(syn::LitFloat::new(
+                &format!("{literal}f32"),
+                expr.lit.span(),
+            ));
         }
 
         fn visit_expr_match_mut(&mut self, expr: &mut syn::ExprMatch) {
