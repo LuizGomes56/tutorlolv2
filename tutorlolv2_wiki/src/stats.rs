@@ -25,6 +25,21 @@ fn cache() -> PathBuf {
     PathBuf::from("cache/stats")
 }
 
+/// Game patch of [`LOL_VERSION`], such as `16.21` for `16.21.1`, which is the
+/// prefix of the game version of the matches played on it
+fn patch() -> &'static str {
+    LOL_VERSION
+        .rsplit_once('.')
+        .map_or(LOL_VERSION, |(patch, _)| patch)
+}
+
+/// Ladders and match lists only describe the patch they were sampled on, so
+/// they are cached per patch. Matches themselves are cached by id in a shared
+/// directory, so interrupted downloads resume without fetching them again
+fn patch_cache(platform: &str) -> PathBuf {
+    cache().join(platform).join(patch())
+}
+
 /// Where [`parse`] saves the recommendations computed from match data
 pub(crate) fn output() -> PathBuf {
     cache().join("data").with_extension("json")
@@ -121,24 +136,55 @@ fn api_key() -> MayFail<String> {
 }
 
 /// Spaces out the requests made to a single host
-struct Limiter(Mutex<Instant>);
+struct Limiter {
+    /// Time at which the next request may be sent
+    next: Mutex<Instant>,
+    /// Requests are held until this time after the host rate limits us
+    paused_until: Mutex<Instant>,
+}
 
 impl Limiter {
-    async fn wait(&self) {
-        let at = {
-            let mut next = self.0.lock().await;
-            let at = (*next).max(Instant::now());
-            *next = at + REQUEST_INTERVAL;
-            at
-        };
+    fn new() -> Self {
+        Self {
+            next: Mutex::new(Instant::now()),
+            paused_until: Mutex::new(Instant::now()),
+        }
+    }
 
-        tokio::time::sleep_until(at).await;
+    async fn wait(&self) {
+        loop {
+            let at = {
+                let mut next = self.next.lock().await;
+                let at = (*next).max(Instant::now());
+
+                *next = at + REQUEST_INTERVAL;
+                at
+            };
+
+            tokio::time::sleep_until(at).await;
+
+            // Requests may have reserved their time before another request was
+            // rate limited, so they wait for the pause and reserve a new time
+            let paused_until = *self.paused_until.lock().await;
+
+            if paused_until <= Instant::now() {
+                return;
+            }
+
+            tokio::time::sleep_until(paused_until).await;
+        }
     }
 
     /// Holds every request to this host until `duration` has elapsed
     async fn pause(&self, duration: Duration) {
-        let mut next = self.0.lock().await;
-        *next = (*next).max(Instant::now() + duration);
+        let until = Instant::now() + duration;
+
+        let mut paused_until = self.paused_until.lock().await;
+        *paused_until = (*paused_until).max(until);
+        drop(paused_until);
+
+        let mut next = self.next.lock().await;
+        *next = (*next).max(until);
     }
 }
 
@@ -155,7 +201,7 @@ impl RiotApi {
                 .iter()
                 .copied()
                 .flat_map(|(platform, region)| [platform, region])
-                .map(|host| (host, Limiter(Mutex::new(Instant::now()))))
+                .map(|host| (host, Limiter::new()))
                 .collect(),
         })
     }
@@ -309,10 +355,7 @@ where
 
 /// Collects the players of every league in [`LEAGUES`] for a platform
 async fn players(api: &RiotApi, platform: &str) -> MayFail<Vec<String>> {
-    let path = cache()
-        .join(platform)
-        .join("players")
-        .with_extension("json");
+    let path = patch_cache(platform).join("players").with_extension("json");
 
     if let Ok(true) = std::fs::exists(&path) {
         println!("[exists] {path:?}");
@@ -361,8 +404,7 @@ async fn match_ids(
     players: Vec<String>,
     target: usize,
 ) -> MayFail<BTreeSet<String>> {
-    let path = cache()
-        .join(platform)
+    let path = patch_cache(platform)
         .join("match_ids")
         .with_extension("json");
 
@@ -628,10 +670,7 @@ pub fn parse() -> MayFail {
         .map(|champion_id| (champion_id.to_lowercase(), champion_id))
         .collect::<HashMap<_, _>>();
 
-    let patch = match LOL_VERSION.rsplit_once('.') {
-        Some((patch, _)) => format!("{patch}."),
-        None => format!("{LOL_VERSION}."),
-    };
+    let patch = format!("{}.", patch());
 
     let matches = crate::read_dir(cache().join("matches"))?
         .par_bridge()
@@ -684,4 +723,33 @@ pub async fn run(config: &StatsConfig) -> MayFail {
     download(config).await?;
     parse()?;
     scraper::concat()
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[tokio::test]
+    async fn queued_requests_wait_for_a_later_pause() {
+        let limiter = Arc::new(Limiter::new());
+        let start = Instant::now();
+
+        // The first request goes out immediately, the second reserves a time
+        // shortly after it and is already sleeping when the host pauses
+        limiter.wait().await;
+
+        let queued = {
+            let limiter = limiter.clone();
+            tokio::spawn(async move {
+                limiter.wait().await;
+                Instant::now()
+            })
+        };
+
+        tokio::time::sleep(Duration::from_millis(5)).await;
+        limiter.pause(Duration::from_millis(200)).await;
+
+        let sent_at = queued.await.unwrap();
+        assert!(sent_at - start >= Duration::from_millis(200));
+    }
 }
