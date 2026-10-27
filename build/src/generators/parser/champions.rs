@@ -5,7 +5,7 @@ use {
             GeneratorExt,
             impls::champions::champion_gen_fn,
             parser::{Parser, ZERO, likely_damages},
-            utils::{RegExtractor, Tag},
+            utils::RegExtractor,
         },
         scripts::utils::is_zero,
     },
@@ -16,7 +16,7 @@ use {
         fmt::Write,
     },
     tutorlolv2_types::{
-        AbilityId, AbilityName, Attrs, ComboElement, DamageType, DevMergeData, Key,
+        AbilityId, AbilityName, Attrs, ComboElement, DamageType, DevMergeData, Key, Tag,
     },
     tutorlolv2_wiki::{
         JsonRead,
@@ -54,9 +54,9 @@ impl Parser<WikiChampion, Champion> for ChampionParser {
     const FN: fn(&str) -> Option<fn(WikiChampion) -> MayFail<Box<dyn GeneratorExt<Champion>>>> =
         champion_gen_fn;
 
-    fn new() -> MayFail<Self> {
+    fn from_root(root: &std::path::Path) -> MayFail<Self> {
         Ok(Self {
-            data: BTreeMap::from_file("cache/wiki/champions/full.json")?,
+            data: BTreeMap::from_file(root.join("cache/wiki/champions/full.json"))?,
         })
     }
 
@@ -160,7 +160,9 @@ impl Champion {
 
     pub fn modify(&mut self, key: AbilityId, f: impl Fn(&str) -> String) -> MayFail<&mut Self> {
         let damage = self.merge_damage([key], |[k]| f(k))?;
+
         self.set_damage(key, damage)?;
+
         Ok(self)
     }
 
@@ -258,6 +260,7 @@ impl Champion {
 
     pub fn comment(&mut self, key: AbilityId, comment: impl ToString) -> MayFail<&mut Self> {
         self.get_mut(key)?.comment = comment.to_string();
+
         Ok(self)
     }
 
@@ -269,6 +272,7 @@ impl Champion {
     ) -> MayFail<&mut Self> {
         assert!(N > 0);
         let damage = self.concat(from, sep)?;
+
         self.clone_to(from[0], into, damage)?;
 
         let comment = from
@@ -373,6 +377,7 @@ impl Champion {
         }
 
         self.combo.push(combo.to_vec());
+
         Ok(self)
     }
 
@@ -383,6 +388,7 @@ impl Champion {
 
     pub fn set_damage(&mut self, key: AbilityId, damage: String) -> MayFail<&mut Self> {
         self.get_mut(key)?.damage = damage;
+
         Ok(self)
     }
 
@@ -393,10 +399,14 @@ impl Champion {
         f: impl Fn(&str) -> String,
     ) -> MayFail<&mut Self> {
         let clone_from = self.get(from)?.clone();
+
         self.insert(into, clone_from);
+
         let ability = self.get_mut(into)?;
+
         ability.damage = f(ability.damage.as_str());
         ability.comment = format!("Modified clone of {from:?}");
+
         Ok(self)
     }
 
@@ -417,11 +427,13 @@ impl Champion {
         for key in keys {
             self.damage_type(key, damage_type)?;
         }
+
         Ok(self)
     }
 
     pub fn damage_type(&mut self, key: AbilityId, damage_type: DamageType) -> MayFail<&mut Self> {
         self.get_mut(key)?.damage_type = damage_type;
+
         Ok(self)
     }
 
@@ -443,8 +455,8 @@ impl Champion {
         assert!(N > 0);
 
         let mut formulas = [ZERO; _];
-
         let mut i = 0;
+
         while i < N {
             formulas[i] = self.get(args[i])?.damage.as_str();
             i += 1;
@@ -463,9 +475,11 @@ impl Champion {
 
         abilities.retain(|key, ability| {
             let zero = is_zero(&ability.damage);
+
             if zero {
                 println!("[{champion_id}] Removing [{key:?}]");
             }
+
             !zero
         });
 
@@ -486,7 +500,6 @@ impl Champion {
         // a warning is emitted to the console and the key is skipped.
         for key in abilities.keys().copied() {
             let index = key.ability_name() as u8;
-
             let make = key.setter();
 
             if (AbilityName::JMP..=((AbilityName::JMP << 1) - 1)).contains(&index) {
@@ -505,12 +518,14 @@ impl Champion {
                 ))?;
 
                 let alias = make(name_alias);
+
                 if abilities.contains_key(&ability_id) {
                     merge.insert(DevMergeData {
                         min: key,
                         max: ability_id,
                         alias,
                     });
+
                     found = true;
                 }
 
@@ -525,12 +540,14 @@ impl Champion {
         // returns a fail and prints a message to the console.
         if !merge.iter().all(|value| {
             let DevMergeData { min, max, .. } = value;
+
             abilities.contains_key(min) && abilities.contains_key(max)
         }) {
             println!(
                 "[{champion_id}]: inconsistent data inserted into merge: {merge:?},\nkeys of abilities: {:?}",
                 abilities.keys().collect::<Vec<_>>()
             );
+
             return Err("Found inconsistent merge vec".into());
         }
 

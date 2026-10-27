@@ -1,143 +1,35 @@
 use crate::{
-    MayFail,
-    generators::{
-        parser::{DamageRange, ZERO, items::Item, runes::Rune},
-        utils::Tag,
+    ENGINE_CFG, MayFail,
+    generators::parser::{DamageRange, ZERO, items::Item, runes::Rune},
+    scripts::{
+        batch::FormulaDoc,
+        simplify::{Precision, approx_constant, format_number, simplify, simplify_exact},
     },
-    scripts::batch::FmtArgs,
 };
-use databake::{Bake, CrateEnv};
+use databake::CrateEnv;
 use heck::{ToPascalCase, ToSnakeCase};
 use rand::{RngExt, SeedableRng, rngs::SmallRng};
-use regex::{Captures, Regex};
+use regex::Regex;
 use serde::Serialize;
-use serde_json::json;
 use std::{
     collections::{BTreeSet, HashSet},
     fmt::{Debug, Write},
     ops::{Index, Range},
     sync::LazyLock,
 };
-use tutorlolv2_types::{AttackType, Attrs, CtxVar, DamageIndex, DamageType};
+use tutorlolv2_types::{AttackType, Attrs, CtxVar, DamageIndex, DamageType, Tag};
 
 pub const ZERO_FN: &str = "crate::libgen::zero";
 
-/// Emit a Rust expression without relying on imports in the generated module.
-pub fn bake(value: &impl Bake) -> String {
-    value.bake(&CrateEnv::default()).to_string()
+pub trait BakeExt {
+    /// Emit a Rust expression without relying on imports in the generated module.
+    fn bake(&self) -> String;
 }
 
-pub fn simplify(f: &str) -> String {
-    let formula = &f.replace("zero", "0");
-
-    static FLOAT_RE: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"\b\d+\.\d+\b").unwrap());
-
-    static MATCH_RE: LazyLock<Regex> =
-        LazyLock::new(|| Regex::new(r"match\s+[^{]+\{(?:[^{}]|\{[^{}]*\})*\}").unwrap());
-
-    let mut matches = Vec::new();
-
-    let protected = MATCH_RE.replace_all(formula, |caps: &Captures| {
-        let idx = matches.len();
-
-        matches.push(caps[0].to_string());
-
-        format!("__MATCH_{idx}__")
-    });
-
-    let simplified = symb_anafis::simplify(&protected.replace("ctx.", "ctx_"), &[], None)
-        .map(|r| r.replace("ctx_", "ctx."))
-        .unwrap_or_else(|_| protected.into_owned());
-
-    let mut restored = simplified;
-
-    fn match_needs_parens(s: &str, placeholder: &str) -> bool {
-        const BIN_OPS: &[char] = &['+', '-', '*', '/', '%', '&', '|', '^'];
-
-        let Some(pos) = s.find(placeholder) else {
-            return false;
-        };
-
-        let before = s[..pos].trim_end();
-        let after = s[pos + placeholder.len()..].trim_start();
-
-        let preceded_by_op = before.ends_with(BIN_OPS);
-        let followed_by_op = after.starts_with(BIN_OPS);
-
-        preceded_by_op || followed_by_op
+impl<T: databake::Bake + ?Sized> BakeExt for T {
+    fn bake(&self) -> String {
+        databake::Bake::bake(self, &CrateEnv::default()).to_string()
     }
-
-    for (i, match_block) in matches.iter().enumerate() {
-        let placeholder = format!("__MATCH_{i}__");
-        let replacement = if match_needs_parens(&restored, &placeholder) {
-            format!("({match_block})")
-        } else {
-            match_block.clone()
-        };
-        restored = restored.replace(&placeholder, &replacement);
-    }
-
-    let result = FLOAT_RE
-        .replace_all(&restored, |caps: &Captures| {
-            let original = &caps[0];
-
-            let Ok(value) = original.parse::<f64>() else {
-                return original.to_string();
-            };
-
-            let mut s = format!("{value:.12}");
-
-            while s.contains('.') && s.ends_with('0') {
-                s.pop();
-            }
-
-            if s.ends_with('.') {
-                s.pop();
-            }
-
-            let suspicious = s.contains("999999")
-                || s.contains("000000")
-                || s.contains("333333")
-                || s.contains("666666");
-
-            if suspicious {
-                for precision in 2..=6 {
-                    let candidate = format!("{value:.precision$}");
-
-                    let reparsed = candidate.parse::<f64>().unwrap();
-
-                    let diff = (value - reparsed).abs();
-
-                    if diff < 1e-9 {
-                        return candidate
-                            .trim_end_matches('0')
-                            .trim_end_matches('.')
-                            .to_string();
-                    }
-                }
-            }
-
-            s
-        })
-        .into_owned();
-
-    static POW_RE: LazyLock<Regex> = LazyLock::new(|| {
-        Regex::new(r"(?P<base>\([^()]+\)|[\w.]+)\s*\^\s*(?P<exp>\d+)(?:f32)?").unwrap()
-    });
-
-    POW_RE
-        .replace_all(&result, |caps: &Captures| {
-            let base = &caps["base"];
-            let exp: usize = caps["exp"].parse().unwrap();
-
-            match exp {
-                1 => base.to_string(),
-                2 => format!("({base} * {base})"),
-                3 => format!("({base} * {base} * {base})"),
-                _ => panic!("Unsupported exponent {exp}; maximum supported exponent is 3"),
-            }
-        })
-        .into_owned()
 }
 
 pub fn is_zero(value: &str) -> bool {
@@ -187,6 +79,13 @@ impl ItemOrRune for Rune {
 impl ItemOrRuneExt for Item {}
 impl ItemOrRuneExt for Rune {}
 
+pub struct ItemFormulaPlan {
+    functions: [String; 4],
+    aliases: [Option<(usize, String)>; 4],
+    formulas: [String; 4],
+    active: [bool; 4],
+}
+
 pub trait ItemOrRuneExt:
     Index<AttackType, Output = DamageRange> + ItemOrRune + Debug + Serialize
 {
@@ -224,8 +123,8 @@ pub trait ItemOrRuneExt:
             }}",
             enum_name = Self::TAG.enum_name(),
             id = self.id(),
-            damage_type = bake(&self.damage_type()),
-            attributes = bake(&self.attributes()),
+            damage_type = self.damage_type().bake(),
+            attributes = self.attributes().bake(),
         )
     }
 
@@ -235,8 +134,8 @@ pub trait ItemOrRuneExt:
         let ranged_fns = functions[2..4].join(",");
 
         format!(
-            "#[cfg(feature = \"engine\")] melee: [{melee_fns}],
-             #[cfg(feature = \"engine\")] ranged: [{ranged_fns}],"
+            "{ENGINE_CFG} melee: [{melee_fns}],
+             {ENGINE_CFG} ranged: [{ranged_fns}],"
         )
     }
 
@@ -253,19 +152,20 @@ pub trait ItemOrRuneExt:
         let functions = self.functions();
 
         let get_arms = |range: Range<_>| {
-            deals_damage[range]
+            deals_damage[range.clone()]
                 .iter()
-                .enumerate()
-                .map(|(i, v)| {
+                .zip(&functions[range])
+                .map(|(v, function)| {
                     let f = match *v {
                         true => &format!(
                             "crate::libgen::{}::{module}::{}",
-                            Self::TAG.plural(),
-                            functions[i]
+                            Self::TAG.as_ref(),
+                            function
                         ),
                         false => ZERO_FN,
                     };
-                    format!("{f}(&ctx)")
+
+                    format!("{f}(ctx)")
                 })
                 .collect::<Vec<_>>()
                 .join(",")
@@ -274,20 +174,21 @@ pub trait ItemOrRuneExt:
         format!(
             "{enum_name}::{id} => {{
                 match attack_type {{
-                    tutorlolv2_types::AttackType::Melee => [{melee_arms}],
-                    tutorlolv2_types::AttackType::Ranged => [{ranged_arms}]
+                    {melee} => [{melee_arms}],
+                    {ranged} => [{ranged_arms}]
                 }}
             }},",
+            melee = AttackType::Melee.bake(),
+            ranged = AttackType::Ranged.bake(),
             enum_name = Self::TAG.enum_name(),
             melee_arms = get_arms(0..2),
             ranged_arms = get_arms(2..4),
         )
     }
 
-    fn build_aliases(&self) -> [Option<(usize, String)>; 4] {
+    fn prepare_formulas(&self) -> ItemFormulaPlan {
         let melee = &self[AttackType::Melee];
         let ranged = &self[AttackType::Ranged];
-
         let raw = [
             &melee.min_dmg,
             &melee.max_dmg,
@@ -295,25 +196,37 @@ pub trait ItemOrRuneExt:
             &ranged.max_dmg,
         ];
 
+        let formulas = core::array::from_fn(|i| simplify(raw[i]));
+
+        ItemFormulaPlan {
+            functions: self.functions(),
+            aliases: self.build_aliases(&formulas),
+            formulas,
+            active: core::array::from_fn(|i| !is_zero(raw[i])),
+        }
+    }
+
+    fn build_aliases(&self, raw: &[String; 4]) -> [Option<(usize, String)>; 4] {
         let all_vars = self.identifiers();
 
         let mut aliases = [None, None, None, None];
 
         for i in 0..4 {
-            if is_zero(raw[i]) {
+            if is_zero(&raw[i]) {
                 continue;
             }
 
             for j in 0..i {
-                if is_zero(raw[j]) {
+                if is_zero(&raw[j]) {
                     continue;
                 }
 
                 let ratio_sym = simplify(&format!("({}) / ({})", raw[i], raw[j]));
+
                 let ratio = if !ratio_sym.contains("ctx") {
                     ratio_sym
                 } else {
-                    let Some(k) = probe_ratio(raw[j], raw[i], &all_vars) else {
+                    let Some(k) = probe_ratio(&raw[j], &raw[i], &all_vars) else {
                         continue;
                     };
 
@@ -328,31 +241,27 @@ pub trait ItemOrRuneExt:
         aliases
     }
 
-    fn closures(&self) -> MayFail<String> {
-        let functions = self.functions();
-        let aliases = self.build_aliases();
+    fn closures(&self, plan: &ItemFormulaPlan) -> MayFail<String> {
+        let functions = &plan.functions;
+        let aliases = &plan.aliases;
 
         let mut seen = HashSet::new();
         let mut rust = String::new();
 
         for i in 0..4 {
-            let attack_type = AttackType::from_repr(i / 2).unwrap();
-            let damage_index = DamageIndex::from_repr(i % 2).unwrap();
-
-            let body = &self[attack_type][damage_index];
+            let body = &plan.formulas[i as usize];
             let f = &functions[i as usize];
 
-            let default = is_zero(body);
-            let formula = simplify(body);
+            let default = !plan.active[i as usize];
 
             let formula_f32 = if default {
                 continue;
             } else if let Some((base_idx, ref ratio)) = aliases[i as usize] {
                 let base_fn = &functions[base_idx];
 
-                cast_f32(&format!("{ratio} * {base_fn}(ctx)"))
+                cast_f32(&format!("{ratio} * {base_fn}(ctx)"))?
             } else {
-                cast_f32(&formula)
+                cast_f32(body)?
             };
 
             if !seen.contains(f) {
@@ -362,7 +271,7 @@ pub trait ItemOrRuneExt:
 
                 write!(
                     rust,
-                    "#[cfg(feature = \"engine\")] pub const fn {f}({param}: &tutorlolv2_types::Ctx) -> f32 {{{formula_f32}}}"
+                    "{ENGINE_CFG} pub const fn {f}({param}: &tutorlolv2_types::Ctx) -> f32 {{{formula_f32}}}"
                 )?;
             }
         }
@@ -370,56 +279,38 @@ pub trait ItemOrRuneExt:
         Ok(rust)
     }
 
-    fn repr_damages(&self) -> String {
-        let melee = &self[AttackType::Melee];
-        let ranged = &self[AttackType::Ranged];
-
-        let aliases = self.build_aliases();
-
-        let raw = [
-            &melee.min_dmg,
-            &melee.max_dmg,
-            &ranged.min_dmg,
-            &ranged.max_dmg,
-        ];
-
-        let mut parts = Vec::new();
-
-        let deals_damage = [melee.deals_damage(), ranged.deals_damage()].concat();
+    fn formula_docs(&self, plan: &ItemFormulaPlan) -> Vec<FormulaDoc> {
         let id = self.id().to_snake_case();
 
-        for i in 0..4 {
-            if !deals_damage[i] {
-                continue;
-            }
-
-            let value = if let Some((j, ref ratio)) = aliases[i] {
-                let function = format!("{id}_f{j}(ctx)").to_lowercase();
-
-                if ratio == "1" {
-                    function.to_string()
-                } else {
-                    format!("{ratio} * {function}")
+        plan.formulas
+            .iter()
+            .enumerate()
+            .filter_map(|(i, formula)| {
+                if !plan.active[i] {
+                    return None;
                 }
-            } else {
-                simplify(raw[i])
-            };
 
-            parts.push(format!(
-                "#[fmt({fmt_args})]
-                fn {id}_f{i}(_: &Ctx) {{
-                    {value}
-                }}",
-                fmt_args = json!(FmtArgs {
-                    target: "formula".into(),
-                    variant: self.id().into(),
-                    meta: i,
-                    default: false
+                let source = if let Some((j, ratio)) = &plan.aliases[i] {
+                    let function = format!("{id}_f{j}(ctx)");
+
+                    if ratio == "1" {
+                        function
+                    } else {
+                        format!("{ratio} * {function}")
+                    }
+                } else {
+                    formula.clone()
+                };
+
+                Some(FormulaDoc {
+                    local: i as u8,
+                    function: format!("{id}_f{i}"),
+                    source,
+                    name: self.id().into(),
+                    comment: String::new(),
                 })
-            ));
-        }
-
-        parts.concat()
+            })
+            .collect()
     }
 
     fn functions(&self) -> [String; 4] {
@@ -485,68 +376,70 @@ pub fn get_identifiers(damage: &str, damage_type: DamageType) -> impl Iterator<I
         })
 }
 
-pub fn fit_str(c: &str) -> String {
-    const CHUNK: usize = 30;
-    let comment = c.replace("  ", " ");
-    if comment.len() <= CHUNK {
-        return format!("{comment:?}");
-    }
-    let mut chunks = Vec::new();
-    let mut current = String::new();
-    for word in comment.split(' ') {
-        if !current.is_empty() && current.len() + 1 + word.len() > CHUNK {
-            chunks.push(format!("{current:?}"));
-            current = word.to_string();
-        } else {
-            if !current.is_empty() {
-                current.push(' ');
+pub fn cast_f32(s: &str) -> MayFail<String> {
+    use quote::ToTokens;
+    use syn::{Expr, Lit, Member, visit_mut::VisitMut};
+
+    struct FloatExpressions;
+
+    impl VisitMut for FloatExpressions {
+        // Patterns, including range bounds, must keep their integer literals.
+        fn visit_pat_mut(&mut self, _: &mut syn::Pat) {}
+
+        fn visit_expr_mut(&mut self, expr: &mut Expr) {
+            syn::visit_mut::visit_expr_mut(self, expr);
+
+            // Literals such as `3.14` are denied by `clippy::approx_constant`.
+            if let Expr::Lit(syn::ExprLit {
+                lit: Lit::Float(n), ..
+            }) = expr
+                && let Some(name) = approx_constant(n.base10_digits())
+            {
+                let name = quote::format_ident!("{name}");
+                *expr = syn::parse_quote!(core::f32::consts::#name);
             }
-            current.push_str(word);
+        }
+
+        fn visit_expr_lit_mut(&mut self, expr: &mut syn::ExprLit) {
+            let digits = match &expr.lit {
+                Lit::Int(n) if n.suffix().is_empty() => n.base10_digits(),
+                Lit::Float(n) if n.suffix().is_empty() => n.base10_digits(),
+                _ => return,
+            };
+
+            let Ok(value) = digits.parse::<f64>() else {
+                return;
+            };
+
+            let literal = format_number(value, Precision::F32);
+            expr.lit = Lit::Float(syn::LitFloat::new(
+                &format!("{literal}f32"),
+                expr.lit.span(),
+            ));
+        }
+
+        fn visit_expr_match_mut(&mut self, expr: &mut syn::ExprMatch) {
+            if let Expr::Field(field) = expr.expr.as_ref()
+                && let Expr::Path(base) = field.base.as_ref()
+                && base.path.is_ident("ctx")
+                && let Member::Named(member) = &field.member
+                && matches!(
+                    member.to_string().as_str(),
+                    "level" | "q_level" | "w_level" | "e_level" | "r_level"
+                )
+            {
+                let discriminant = &expr.expr;
+                expr.expr = syn::parse_quote!(#discriminant as u8);
+            }
+            syn::visit_mut::visit_expr_match_mut(self, expr);
         }
     }
-    if !current.is_empty() {
-        chunks.push(format!("{current:?}"));
-    }
-    format!("concat!({})", chunks.join(", "))
-}
 
-pub fn cast_f32(s: &str) -> String {
-    let mut out = String::with_capacity(s.len());
-    let bytes = s.as_bytes();
-    let mut i = 0;
+    let mut expr = syn::parse_str::<Expr>(s).map_err(|e| format!("Invalid formula {s:?}: {e}"))?;
 
-    while i < s.len() {
-        if bytes[i].is_ascii_digit() {
-            let start = i;
+    FloatExpressions.visit_expr_mut(&mut expr);
 
-            while i < s.len() && (bytes[i].is_ascii_digit() || bytes[i] == b'.') {
-                i += 1;
-            }
-
-            let num = &s[start..i];
-
-            let prev_ok =
-                start == 0 || !matches!(bytes[start - 1], b'a'..=b'z' | b'A'..=b'Z' | b'_');
-            let next_ok = i >= s.len() || !matches!(bytes[i], b'a'..=b'z' | b'A'..=b'Z' | b'_');
-
-            let tail = s[i..].trim_start();
-            let is_pattern = tail.starts_with("=>") || tail.starts_with("..");
-
-            out.push_str(num);
-            if prev_ok && next_ok && !is_pattern {
-                out.push_str("f32");
-            }
-        } else {
-            out.push(bytes[i] as char);
-            i += 1;
-        }
-    }
-
-    out.replace("match ctx.level", "match ctx.level as u8")
-        .replace("match ctx.q_level", "match ctx.q_level as u8")
-        .replace("match ctx.w_level", "match ctx.w_level as u8")
-        .replace("match ctx.e_level", "match ctx.e_level as u8")
-        .replace("match ctx.r_level", "match ctx.r_level as u8")
+    Ok(expr.into_token_stream().to_string())
 }
 
 pub fn ctx_param(s: &str) -> &'static str {
@@ -572,11 +465,11 @@ pub fn probe_ratio(min_expr: &str, max_expr: &str, all_vars: &[CtxVar]) -> Optio
             max_s = max_s.replace(var.as_var(), &v);
         }
 
-        let Ok(min_v) = simplify(&min_s).trim().parse::<f64>() else {
+        let Ok(min_v) = simplify_exact(&min_s).trim().parse::<f64>() else {
             continue;
         };
 
-        let Ok(max_v) = simplify(&max_s).trim().parse::<f64>() else {
+        let Ok(max_v) = simplify_exact(&max_s).trim().parse::<f64>() else {
             continue;
         };
 
@@ -603,15 +496,5 @@ pub fn probe_ratio(min_expr: &str, max_expr: &str, all_vars: &[CtxVar]) -> Optio
         None
     }
     .flatten()
-    .map(|k| {
-        let r = k.round();
-        if (k - r).abs() < 1e-9 {
-            return (r as i64).to_string();
-        }
-
-        format!("{k:.10}")
-            .trim_end_matches('0')
-            .trim_end_matches('.')
-            .to_owned()
-    })
+    .map(|k| format_number(k, Precision::F32))
 }

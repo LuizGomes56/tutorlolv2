@@ -120,6 +120,14 @@ pub struct Item {
 
     #[cfg(feature = "yew")]
     pub identifiers: &'static [CtxVar],
+
+    #[cfg(feature = "yew")]
+    /// Immediate recipe components, preserving quantities as repeated entries.
+    pub builds_from: &'static [ItemId],
+
+    #[cfg(feature = "yew")]
+    /// Immediate upgrades, without duplicate entries.
+    pub builds_into: &'static [ItemId],
 }
 
 #[derive(Clone, Copy, Debug)]

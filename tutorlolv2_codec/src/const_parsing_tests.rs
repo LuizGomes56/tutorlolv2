@@ -38,6 +38,12 @@ const GENERATOR: GeneratorDb<'static> = match GeneratorDb::new(&GENERATOR_BYTES)
     Err(_) => panic!("invalid generator fixture"),
 };
 
+#[test]
+fn codec_lookups_accept_the_shared_entity_kind() {
+    let kind: tutorlolv2_types::EntityKind = EntityKind::Champion;
+    assert!(matches!(GENERATOR.has_generator(kind, 0), Ok(true)));
+}
+
 const _: () = {
     assert!(!core::mem::needs_drop::<ParseError>());
     assert!(FormulaDb::new(&[]).is_err());

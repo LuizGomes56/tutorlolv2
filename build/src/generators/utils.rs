@@ -2,45 +2,7 @@ use heck::ToSnakeCase;
 use regex::Regex;
 use std::{fmt::Display, sync::LazyLock};
 
-#[derive(Copy, Clone, Debug, PartialEq, Ord, PartialOrd, Eq)]
-pub enum Tag {
-    Champions,
-    Items,
-    Runes,
-}
-
-impl Tag {
-    pub const fn repr(&self) -> &'static str {
-        match self {
-            Self::Items => "u16",
-            Self::Champions | Self::Runes => "u8",
-        }
-    }
-
-    pub const fn singular(&self) -> &'static str {
-        match self {
-            Self::Items => "item",
-            Self::Champions => "champion",
-            Self::Runes => "rune",
-        }
-    }
-
-    pub const fn plural(&self) -> &'static str {
-        match self {
-            Self::Items => "items",
-            Self::Champions => "champions",
-            Self::Runes => "runes",
-        }
-    }
-
-    pub const fn enum_name(&self) -> &'static str {
-        match self {
-            Self::Items => "ItemId",
-            Self::Champions => "ChampionId",
-            Self::Runes => "RuneId",
-        }
-    }
-}
+pub use tutorlolv2_types::Tag;
 
 pub trait RegExtractor: Display {
     /// Returns a vector of all the numbers that could be extracted
@@ -149,8 +111,8 @@ pub enum SaveTo<'a> {
 
 impl<'a> SaveTo<'a> {
     pub fn path(&self) -> String {
-        match self {
-            SaveTo::GeneratorDir(tag) => format!("build/src/generators/impls/{}", tag.plural()),
+        let relative: String = match self {
+            SaveTo::GeneratorDir(tag) => format!("build/src/generators/impls/{}", tag.as_ref()),
             SaveTo::GeneratorRaw(tag, s) => {
                 let path = Self::GeneratorDir(*tag).path();
                 let file = s.to_snake_case();
@@ -158,8 +120,13 @@ impl<'a> SaveTo<'a> {
             }
             SaveTo::RiotItems => "cache/riot/items.json".into(),
             SaveTo::RiotRunes => "cache/riot/runes.json".into(),
-            SaveTo::InternalRaw(tag, s) => format!("internal/{}/{s}.json", tag.plural()),
-            SaveTo::InternalDir(tag) => format!("internal/{}", tag.plural()),
-        }
+            SaveTo::InternalRaw(tag, s) => format!("internal/{}/{s}.json", tag.as_ref()),
+            SaveTo::InternalDir(tag) => format!("internal/{}", tag.as_ref()),
+        };
+
+        crate::project_root()
+            .join(relative)
+            .to_string_lossy()
+            .into_owned()
     }
 }

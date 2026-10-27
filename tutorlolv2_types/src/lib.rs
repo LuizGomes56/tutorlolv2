@@ -1,11 +1,10 @@
 #![no_std]
 #![allow(clippy::missing_transmute_annotations)]
 
-#[cfg(feature = "dev")]
 extern crate alloc;
 
-#[cfg(feature = "dev")]
-use alloc::{format, string::String};
+mod entity;
+pub use entity::{EntityKind, Tag};
 
 #[cfg(test)]
 extern crate std;
@@ -166,14 +165,11 @@ impl AbilityId {
             AbilityId::R(v) => *v,
         }
     }
-}
 
-#[cfg(feature = "dev")]
-impl AbilityId {
-    pub fn discriminant(&self) -> String {
+    pub fn discriminant(&self) -> alloc::string::String {
         let letter = self.as_char();
         let ability_name = self.ability_name().short();
-        format!("{letter}{ability_name}")
+        alloc::format!("{letter}{ability_name}")
     }
 }
 
@@ -658,7 +654,7 @@ pub enum Position {
     Middle,
     #[strum(to_string = "Bottom", serialize = "BOTTOM")]
     Bottom,
-    #[strum(to_string = "Support", serialize = "SUPPORT")]
+    #[strum(to_string = "Support", serialize = "SUPPORT", serialize = "UTILITY")]
     Support,
 }
 
@@ -1032,4 +1028,14 @@ create_eval_struct!(
 
 impl CtxVar {
     pub const SKIP: usize = Self::SteelcapsEffect as usize + 1;
+
+    pub const ENEMY_VARS: [Self; 7] = [
+        CtxVar::EnemyArmor,
+        CtxVar::EnemyBonusArmor,
+        CtxVar::EnemyBonusHealth,
+        CtxVar::EnemyBonusMagicResist,
+        CtxVar::EnemyCurrentHealth,
+        CtxVar::EnemyMagicResist,
+        CtxVar::EnemyMaxHealth,
+    ];
 }

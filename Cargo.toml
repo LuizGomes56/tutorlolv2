@@ -1,6 +1,6 @@
 [package]
 name = "tutorlolv2"
-version = "0.7.5"
+version = "0.7.6"
 edition = "2024"
 repository = "https://github.com/LuizGomes56/tutorlolv2"
 description = "League of Legends static library that evaluates damages of abilities, passives, items, and runes"
@@ -57,3 +57,7 @@ codegen-units = 1
 # Keep the benchmark launcher on the same optimized settings as release builds.
 [profile.perf]
 inherits = "release"
+
+# [profile.dev.build-override]
+# opt-level = 3
+# debug = false

@@ -1,14 +1,15 @@
 use crate::{
-    Build, MayFail, OUT_DIR,
-    generators::{parser::runes::Rune, utils::Tag},
-    scripts::utils::{ItemOrRuneExt, bake},
+    Build, BuildContext, BuildOutput, MayFail, YEW_CFG,
+    generators::parser::runes::Rune,
+    scripts::utils::{BakeExt, ItemOrRuneExt},
 };
 use heck::ToShoutySnakeCase;
 use std::fmt::Write;
+use tutorlolv2_types::Tag;
 use tutorlolv2_wiki::runes::WikiRune;
 
 impl Build for Rune {
-    fn build(&mut self) -> MayFail<String> {
+    fn build(&mut self, context: &BuildContext) -> MayFail<BuildOutput> {
         let Self {
             riot_id,
             data:
@@ -22,7 +23,7 @@ impl Build for Rune {
         } = &self;
 
         let mut rust = String::new();
-        let mut docs = String::new();
+        let plan = self.prepare_formulas();
 
         write!(
             rust,
@@ -34,24 +35,29 @@ impl Build for Rune {
                 riot_id: {riot_id},
                 custom: {custom},
 
-                #[cfg(feature = "yew")]
+                {YEW_CFG}
                 identifiers: {identifiers},
             }};"#,
             upper_id = rune_id.to_shouty_snake_case(),
-            identifiers = bake(&self.identifiers().as_slice()),
+            identifiers = self.identifiers().as_slice().bake(),
             deals_damage = self.deals_damage(),
             fn_names = self.function_names(),
             metadata = self.repr_metadata()
         )?;
 
-        docs.push_str(&self.repr_damages());
-        rust.push_str(&self.closures()?);
+        rust.push_str(&self.closures(&plan)?);
 
-        let out = OUT_DIR.join(Tag::Runes.plural()).join(rune_id);
+        let out = context.out.join(Tag::Runes.as_ref()).join(rune_id);
 
         tutorlolv2_wiki::write(out.with_extension("rs"), rust)?;
-        tutorlolv2_wiki::write(out.with_extension("w48"), docs)?;
 
-        Ok(self.eval())
+        Ok(BuildOutput {
+            eval: self.eval(),
+            formulas: if context.docs {
+                self.formula_docs(&plan)
+            } else {
+                Vec::new()
+            },
+        })
     }
 }

@@ -1,11 +1,11 @@
 use crate::{
-    Build, MayFail, OUT_DIR,
-    generators::{parser::items::Item, utils::Tag},
-    scripts::utils::{ItemOrRuneExt, bake},
+    Build, BuildContext, BuildOutput, MayFail, YEW_CFG,
+    generators::parser::items::Item,
+    scripts::utils::{BakeExt, ItemOrRuneExt},
 };
 use heck::ToShoutySnakeCase;
 use std::fmt::Write;
-use tutorlolv2_types::{GameMap, StatName};
+use tutorlolv2_types::{GameMap, StatName, Tag};
 use tutorlolv2_wiki::items::item_parser::WikiItem;
 
 struct ItemExt {
@@ -16,7 +16,7 @@ struct ItemExt {
 }
 
 impl Build for Item {
-    fn build(&mut self) -> MayFail<String> {
+    fn build(&mut self, context: &BuildContext) -> MayFail<BuildOutput> {
         let ItemExt {
             tier,
             price,
@@ -38,7 +38,7 @@ impl Build for Item {
         } = &self;
 
         let mut rust = String::new();
-        let mut docs = String::new();
+        let plan = self.prepare_formulas();
 
         write!(
             rust,
@@ -55,28 +55,51 @@ impl Build for Item {
                 riot_id: {id},
                 custom: {custom},
 
-                #[cfg(feature = "yew")]
+                {YEW_CFG}
                 identifiers: {identifiers},
+
+                {YEW_CFG}
+                builds_from: {builds_from},
+
+                {YEW_CFG}
+                builds_into: {builds_into},
             }};"#,
             upper_id = item_id.to_shouty_snake_case(),
-            identifiers = bake(&self.identifiers().as_slice()),
-            maps = bake(&maps.as_slice()),
+            identifiers = self.identifiers().as_slice().bake(),
+            maps = maps.as_slice().bake(),
             deals_damage = self.deals_damage(),
             fn_names = self.function_names(),
             metadata = self.repr_metadata(),
-            full_stats = bake(&stats.as_slice()),
+            full_stats = stats.as_slice().bake(),
+            builds_from = item_ids(&self.builds_from),
+            builds_into = item_ids(&self.builds_into),
         )?;
 
-        docs.push_str(&self.repr_damages());
-        rust.push_str(&self.closures()?);
+        rust.push_str(&self.closures(&plan)?);
 
-        let out = OUT_DIR.join(Tag::Items.plural()).join(item_id);
+        let out = context.out.join(Tag::Items.as_ref()).join(item_id);
 
         tutorlolv2_wiki::write(out.with_extension("rs"), rust)?;
-        tutorlolv2_wiki::write(out.with_extension("w48"), docs)?;
 
-        Ok(self.eval())
+        Ok(BuildOutput {
+            eval: self.eval(),
+            formulas: if context.docs {
+                self.formula_docs(&plan)
+            } else {
+                Vec::new()
+            },
+        })
     }
+}
+
+fn item_ids(items: &[String]) -> String {
+    let variants = items
+        .iter()
+        .map(|item| format!("crate::libgen::ItemId::{item}"))
+        .collect::<Vec<_>>()
+        .join(",");
+
+    format!("&[{variants}]")
 }
 
 impl Item {

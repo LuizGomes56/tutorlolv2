@@ -23,6 +23,9 @@ pub struct RiotCdnItem {
     pub maps: HashMap<u16, bool>,
     #[serde(default)]
     pub from: Vec<String>,
+
+    #[serde(default)]
+    pub into: Vec<String>,
 }
 
 #[derive(Serialize, Deserialize)]

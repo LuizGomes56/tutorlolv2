@@ -33,11 +33,10 @@ pub async fn links() -> MayFail {
         .await?;
     let html = Html::parse_document(&data);
 
-    let sections_selector =
-        selector("div.mw-category.mw-category-columns > div.mw-category-group a")?;
-
     let sections = html
-        .select(&sections_selector)
+        .select(selector!(
+            "div.mw-category.mw-category-columns > div.mw-category-group a"
+        ))
         .filter_map(|a| {
             let text = a.text().collect::<String>();
             let href = a.attr("href")?.trim_start_matches("/en-us/");

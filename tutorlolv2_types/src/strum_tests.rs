@@ -90,6 +90,7 @@ fn position_parsing_preserves_aliases_and_errors() {
         ("BOTTOM", Position::Bottom),
         ("Support", Position::Support),
         ("SUPPORT", Position::Support),
+        ("UTILITY", Position::Support),
     ] {
         assert_eq!(text.parse::<Position>(), Ok(expected));
     }
@@ -173,4 +174,15 @@ fn numeric_conversions_remain_const() {
     assert_eq!(LAST_ABILITY, Some(AbilityName::MonsterMax));
     assert_eq!(RANGED, Some(AttackType::Ranged));
     assert_eq!(MAX, Some(DamageIndex::Max));
+}
+
+#[test]
+fn ability_discriminants_are_available_without_bake() {
+    for (ability, expected) in [
+        (AbilityId::P(AbilityName::Void), "P"),
+        (AbilityId::Q(AbilityName::_1Min), "Q1min"),
+        (AbilityId::E(AbilityName::Max), "Emax"),
+    ] {
+        assert_eq!(ability.discriminant(), expected);
+    }
 }

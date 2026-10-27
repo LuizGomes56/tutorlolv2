@@ -138,6 +138,7 @@ const DEFENSIVE_ITEM_STATS: [DefensiveItemStats; ItemId::COUNT] = {
 
             if slot < 4 {
                 assert!(result[i].present & (1 << slot) == 0);
+
                 result[i].present |= 1 << slot;
                 result[i].values[slot] = value as f32;
             }
@@ -618,6 +619,12 @@ impl EnemyState<'_> {
                         e_default_stats.magic_resist *= ornn_resist_multiplier;
                         e_default_stats.max_health *= ornn_resist_multiplier;
                     }
+                    ChampionId::Poppy => {
+                        let poppy_w_multiplier = 1.16;
+
+                        e_default_stats.armor *= poppy_w_multiplier;
+                        e_default_stats.magic_resist *= poppy_w_multiplier;
+                    }
                     ChampionId::Malphite => {
                         // W upgrade pattern for malphite by 06/07/2025
                         // #![manual_impl]
@@ -1089,6 +1096,7 @@ const _: () = {
 
     while i < ChampionId::COUNT {
         let champion_id = ChampionId::from_repr(i as _).unwrap();
+
         let Champion {
             metadata, closures, ..
         } = champion_id.data();
@@ -1184,9 +1192,10 @@ impl Damages {
         closures: &[Closure],
     ) -> Box<[i32]> {
         let out_len = closures.len();
-        debug_assert_eq!(out_len, metadata.len() << 1);
-        let mut result = Box::<[i32]>::new_uninit_slice(out_len);
 
+        debug_assert_eq!(out_len, metadata.len() << 1);
+
+        let mut result = Box::<[i32]>::new_uninit_slice(out_len);
         let mut meta_index = 0usize;
         let mut out_index = 0usize;
 
@@ -1251,6 +1260,7 @@ pub(crate) fn get_monster_damages_with_modifiers(
 
         let ctx = get_eval_ctx(self_state, &full_state);
         let modifiers = modifiers.against(&full_state, self_state.adaptive_type);
+
         Damages::new(ctx, eval_data, modifiers)
     })
 }

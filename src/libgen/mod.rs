@@ -4,7 +4,6 @@ pub mod check;
 pub mod globals;
 pub mod impls;
 
-use core::num::NonZeroU8;
 pub use {
     champions_code::ChampionId,
     globals::*,
@@ -13,34 +12,15 @@ pub use {
     runes_code::RuneId,
 };
 
-pub mod champions_code {
-    include!(concat!(env!("OUT_DIR"), "/champions_code.rs"));
-}
-
-pub mod champions {
-    include!(concat!(env!("OUT_DIR"), "/champions.rs"));
-}
-
-pub mod items_code {
-    include!(concat!(env!("OUT_DIR"), "/items_code.rs"));
-}
-
-pub mod items {
-    include!(concat!(env!("OUT_DIR"), "/items.rs"));
-}
-
-pub mod runes_code {
-    include!(concat!(env!("OUT_DIR"), "/runes_code.rs"));
-}
-
-pub mod runes {
-    include!(concat!(env!("OUT_DIR"), "/runes.rs"));
-}
+include!(concat!(env!("OUT_DIR"), "/libgen.rs"));
 
 /// Encodes each id as its `repr` primitive. The bincode derive ignores `repr` and emits
 /// one match arm per variant, which is hundreds of arms per encoder/decoder instance.
 /// The wire format is unchanged under varint encoding while every variant index is
 /// below 251 for `u8` ids, since the derive writes the index as a varint `u32`.
+///
+/// Serde preserves named unit variants using strum's sorted `VARIANTS` table for
+/// serialization and binary-search deserialization instead of per-variant matches.
 macro_rules! impl_repr_codec {
     ($($ty:ty => $repr:ty),* $(,)?) => {$(
         impl bincode::Encode for $ty {
@@ -72,44 +52,7 @@ macro_rules! impl_repr_codec {
         }
 
         bincode::impl_borrow_decode!($ty);
-    )*};
-}
 
-impl_repr_codec!(ChampionId => u8, ItemId => u16, RuneId => u8);
-
-/// Whether `names` is strictly ascending in byte order, the order `binary_search` expects.
-const fn is_sorted(names: &[&str]) -> bool {
-    let mut i = 1;
-
-    while i < names.len() {
-        let (a, b) = (names[i - 1].as_bytes(), names[i].as_bytes());
-        let mut j = 0;
-
-        while j < a.len() && j < b.len() && a[j] == b[j] {
-            j += 1;
-        }
-
-        let ascending = match (j < a.len(), j < b.len()) {
-            (true, true) => a[j] < b[j],
-            (false, true) => true,
-            _ => false,
-        };
-
-        if !ascending {
-            return false;
-        }
-
-        i += 1;
-    }
-
-    true
-}
-
-/// Same wire format as the serde derive (a unit variant named after the variant), but
-/// names are looked up in strum's `VARIANTS` table instead of a `match` with one arm per
-/// variant. `VARIANTS` is sorted because the generator emits variants from a `BTreeMap`.
-macro_rules! impl_name_serde {
-    ($($ty:ty => $repr:ty),* $(,)?) => {$(
         const _: () = assert!(
             is_sorted(<$ty as strum::VariantNames>::VARIANTS),
             concat!(stringify!($ty), "::VARIANTS must be sorted for its serde impl"),
@@ -193,14 +136,42 @@ macro_rules! impl_name_serde {
     )*};
 }
 
-impl_name_serde!(ChampionId => u8, ItemId => u16, RuneId => u8);
+impl_repr_codec!(ChampionId => u8, ItemId => u16, RuneId => u8);
+
+/// Whether `names` is strictly ascending in byte order, the order `binary_search` expects.
+const fn is_sorted(names: &[&str]) -> bool {
+    let mut i = 1;
+
+    while i < names.len() {
+        let (a, b) = (names[i - 1].as_bytes(), names[i].as_bytes());
+        let mut j = 0;
+
+        while j < a.len() && j < b.len() && a[j] == b[j] {
+            j += 1;
+        }
+
+        let ascending = match (j < a.len(), j < b.len()) {
+            (true, true) => a[j] < b[j],
+            (false, true) => true,
+            _ => false,
+        };
+
+        if !ascending {
+            return false;
+        }
+
+        i += 1;
+    }
+
+    true
+}
 
 #[cfg(feature = "engine")]
 pub const fn zero(_: &tutorlolv2_types::Ctx) -> f32 {
     0.0
 }
 
-pub const fn ignite(level: NonZeroU8) -> i32 {
+pub const fn ignite(level: core::num::NonZeroU8) -> i32 {
     let n = level.get() as i32;
     let nth = if n > 4 { n - 4 } else { 0 };
     70 + 20 * n + 5 * nth

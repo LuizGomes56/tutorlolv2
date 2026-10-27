@@ -34,8 +34,7 @@ pub async fn run() -> std::io::Result<()> {
 
     let port = std::env::var("PORT")
         .ok()
-        .map(|v| v.parse().ok())
-        .flatten()
+        .and_then(|v| v.parse().ok())
         .unwrap_or(8082u16);
 
     println!("Starting server on port {port}");

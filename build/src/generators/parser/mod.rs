@@ -1,27 +1,24 @@
 use {
     crate::{
         MayFail,
-        generators::{
-            GeneratorExt, VERSION,
-            utils::{SaveTo, Tag},
-        },
-        scripts::{batch::FmtArgs, utils::is_zero},
+        generators::{GeneratorExt, VERSION, utils::SaveTo},
+        scripts::utils::is_zero,
     },
     heck::{
         ToKebabCase, ToLowerCamelCase, ToPascalCase, ToShoutyKebabCase, ToShoutySnakeCase,
         ToSnakeCase, ToTitleCase, ToTrainCase, ToUpperCamelCase,
     },
-    rayon::iter::{IntoParallelRefIterator, ParallelBridge, ParallelIterator},
+    rayon::iter::{IntoParallelRefIterator, ParallelIterator},
     serde::{Deserialize, Serialize, de::DeserializeOwned},
-    serde_json::{Value, json},
+    serde_json::Value,
     std::{
         collections::{BTreeMap, BTreeSet},
         ops::{Index, IndexMut},
         path::Path,
     },
-    tutorlolv2_types::DamageIndex,
+    tutorlolv2_types::{DamageIndex, Tag},
     tutorlolv2_wiki::{
-        JsonRead, JsonWrite, champions::WikiChampion, items::item_parser::WikiItem, runes::WikiRune,
+        JsonWrite, champions::WikiChampion, items::item_parser::WikiItem, runes::WikiRune,
     },
 };
 
@@ -59,7 +56,7 @@ impl MapValueExt for WikiItem {
 
 impl MapValueExt for WikiRune {
     fn riot_id(&self) -> u32 {
-        runes::riot_rune_id(self)
+        self.riot_id as _
     }
 
     fn name(&self) -> &str {
@@ -79,12 +76,28 @@ where
     const TAG: Tag;
     const FN: fn(&str) -> Option<GeneratorFnSig<T, U>>;
 
-    fn new() -> MayFail<Self>;
+    fn from_root(root: &Path) -> MayFail<Self>;
+
+    fn new() -> MayFail<Self> {
+        Self::from_root(&crate::project_root())
+    }
+
     fn map(&self) -> &BTreeMap<String, T>;
     fn create_methods(&self, result: &mut String, id: &str) -> MayFail<bool>;
 
+    /// Attach catalog-wide metadata after the entity's custom generator has run.
+    fn prepare(&self, _id: &str, _value: &mut U) {}
+
     fn tag(&self) -> Tag {
         Self::TAG
+    }
+
+    fn len(&self) -> usize {
+        self.map().len()
+    }
+
+    fn is_empty(&self) -> bool {
+        self.len() == 0
     }
 
     fn phf(&self, extras: Option<BTreeMap<String, Vec<String>>>) -> String {
@@ -165,12 +178,13 @@ where
 
         format!(
             "pub static {utag}_NAME_TO_ID: phf::Map<&str, {enum_name}> = phf::phf_map!({arguments});",
-            utag = Self::TAG.singular().to_uppercase(),
+            utag = Self::TAG.enum_name().trim_end_matches("Id").to_uppercase(),
         )
     }
 
     fn id_enum(&self) -> String {
         let enum_name = Self::TAG.enum_name();
+
         let riot_id_conv = if !matches!(Self::TAG, Tag::Champions) {
             // Sorted by riot id so `from_riot_id` is a binary search over a table instead
             // of a jump table with one arm per variant. A stable sort plus `dedup_by_key`
@@ -241,43 +255,13 @@ where
         )
     }
 
-    fn generator(id: &str, variant: &str) -> String {
-        let folder = Self::TAG.plural();
-        let mut default = false;
-        let mut generator = tutorlolv2_wiki::read_to_string(format!(
-            "build/src/generators/impls/{folder}/{file_name}.rs",
-            file_name = id.to_snake_case()
-        ))
-        .unwrap_or_else(|_| {
-            default = true;
-            "impl Generator {}".into()
-        });
-
-        if let Some(pos) = generator.find("impl") {
-            generator.drain(..pos);
-        }
-
-        generator.insert_str(
-            0,
-            &format!(
-                "#[fmt({fmt})]",
-                fmt = json!(FmtArgs {
-                    target: "generator".into(),
-                    variant: variant.into(),
-                    meta: (),
-                    default
-                })
-            ),
-        );
-        generator
-    }
-
     fn data_variable(&self) -> String {
-        let vtype = Self::TAG.singular().to_pascal_case();
+        let vtype = Self::TAG.enum_name().trim_end_matches("Id");
         let var = format!("{}S_DATA", vtype.to_uppercase());
 
         let enum_name = Self::TAG.enum_name();
-        let folder = Self::TAG.plural();
+        let folder = Self::TAG.as_ref();
+
         let mut data = format!(
             "pub static {var}: [&crate::libgen::globals::{vtype}; <{enum_name} as strum::EnumCount>::COUNT] = ["
         );
@@ -285,6 +269,7 @@ where
         for id in self.keys() {
             let upper_id = id.to_shouty_snake_case();
             let lower_id = id.to_snake_case();
+
             data.push_str(&format!(
                 "&crate::libgen::{folder}::{lower_id}::{upper_id},"
             ));
@@ -299,7 +284,8 @@ where
     }
 
     fn run_fn(&self, id: &str) -> MayFail<U> {
-        self.map()
+        let mut value = self
+            .map()
             .get(id)
             .map(|data| {
                 let data = data.clone();
@@ -309,44 +295,81 @@ where
                     None => U::try_from(data),
                 }
             })
-            .ok_or_else(|| format!("[WikiFactory::run] {id} not found"))?
+            .ok_or_else(|| format!("[WikiFactory::run] {id} not found"))??;
+
+        self.prepare(id, &mut value);
+
+        Ok(value)
     }
 
-    fn run_all(&self) {
-        self.map().keys().par_bridge().for_each(|key| {
-            let _ = self.run(key);
-        });
-
-        let dir = SaveTo::InternalDir(Self::TAG).path();
-        let path = Path::new(&dir);
-
-        if let Some(parent) = path.parent() {
-            let target = parent.join(Self::TAG.plural()).with_extension("json");
-            let _ = Value::from_dir(dir).map(|r| r.write_file(target));
-        }
+    fn run_all(&self) -> MayFail {
+        self.run_all_in(&crate::project_root())
     }
 
-    fn run(&self, id: &str) -> MayFail {
+    fn run_all_in(&self, root: &Path) -> MayFail {
+        self.map()
+            .keys()
+            .collect::<Vec<_>>()
+            .par_iter()
+            .map(|id| {
+                let data = self.run_fn(id)?;
+                Ok(((*id).clone(), self.export(id, &data, root)?))
+            })
+            .collect::<MayFail<BTreeMap<_, _>>>()?
+            .write_file(
+                root.join("internal")
+                    .join(Self::TAG.as_ref())
+                    .with_extension("json"),
+            )
+    }
+
+    fn export(&self, id: &str, data: &U, root: &Path) -> MayFail<Value> {
         #[derive(Serialize)]
         struct TaskResult<'a, D> {
             #[serde(flatten)]
-            pub data: D,
-            pub version: &'a str,
-            pub stable: bool,
+            data: D,
+            version: &'a str,
+            stable: bool,
         }
 
-        match self.run_fn(id) {
-            Ok(data) => TaskResult {
-                data,
-                version: VERSION,
-                stable: Self::is_stable(id),
-            }
-            .write_file(SaveTo::InternalRaw(Self::TAG, id).path()),
+        let generator_path = root
+            .join("build/src/generators/impls")
+            .join(Self::TAG.as_ref())
+            .join(id.to_snake_case())
+            .with_extension("rs");
+
+        let stable = match std::fs::read_to_string(&generator_path) {
+            Ok(source) => !source.contains("#[warn(unstable_features)]"),
+            Err(e) if e.kind() == std::io::ErrorKind::NotFound => false,
             Err(e) => {
-                println!("Error generating {id:?}: {e:?}");
-                Ok(())
+                return Err(format!("Reading generator status {generator_path:?}: {e}").into());
             }
-        }
+        };
+
+        let value = serde_json::to_value(TaskResult {
+            data,
+            version: VERSION,
+            stable,
+        })?;
+
+        value.write_file(
+            root.join("internal")
+                .join(Self::TAG.as_ref())
+                .join(id)
+                .with_extension("json"),
+        )?;
+
+        Ok(value)
+    }
+
+    fn run(&self, id: &str) -> MayFail {
+        let data = self
+            .run_fn(id)
+            .map_err(|e| format!("Generating {} {id}: {e}", Self::TAG.as_ref()))?;
+
+        self.export(id, &data, &crate::project_root())?;
+
+        Ok(())
     }
 
     fn is_generator(id: &str) -> bool {
@@ -382,7 +405,7 @@ where
         }
 
         let total = stables + unstables;
-        let length = self.map().len();
+        let length = self.len();
 
         let print = |a, b, tag| {
             println!(
@@ -436,7 +459,7 @@ where
         let dir = Path::new(&dir_loc);
 
         let decl = dir.join("mod").with_extension("rs");
-        let module = format_args!("decl_{}", tag.plural());
+        let module = format_args!("decl_{}", tag.as_ref());
 
         keys.par_iter().try_for_each(|key| self.create(key))?;
 
@@ -479,7 +502,7 @@ pub fn likely_damages(text: &str) -> bool {
 }
 
 pub fn infer_damage_type(result: &mut String, description: &str) {
-    if let Some(dtype) = ["physical", "physical", "true"]
+    if let Some(dtype) = ["physical", "magic", "true"]
         .into_iter()
         .find(|d| description.to_lowercase().contains(d))
     {

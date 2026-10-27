@@ -1,5 +1,43 @@
 use strum::{EnumCount, VariantArray};
 
+#[cfg(test)]
+mod entity_kind_tests {
+    use crate::{CastId, ChampionId, EntityKind, ItemId, RuneId};
+    use strum::VariantArray;
+
+    #[test]
+    fn cast_id_default_kind_classifies_every_variant() {
+        fn check<T: CastId + VariantArray>(expected: EntityKind) {
+            for _ in T::VARIANTS {
+                assert_eq!(T::KIND, expected);
+            }
+        }
+        check::<ChampionId>(EntityKind::Champion);
+        check::<ItemId>(EntityKind::Item);
+        check::<RuneId>(EntityKind::Rune);
+    }
+}
+
+#[cfg(all(test, feature = "yew"))]
+mod recipe_tests {
+    use crate::ItemId;
+
+    #[test]
+    fn item_statics_expose_const_recipe_slices() {
+        const COMPONENTS: &[ItemId] = ItemId::BladeOfTheRuinedKing.data().builds_from;
+        assert_eq!(
+            COMPONENTS,
+            &[ItemId::VampiricScepter, ItemId::RecurveBow, ItemId::Pickaxe]
+        );
+
+        const REPEATED: &[ItemId] = ItemId::PhantomDancer.data().builds_from;
+        assert_eq!(REPEATED, &[ItemId::Dagger, ItemId::Zeal, ItemId::Dagger]);
+
+        const UPGRADES: &[ItemId] = ItemId::Dagger.data().builds_into;
+        assert!(UPGRADES.contains(&ItemId::PhantomDancer));
+    }
+}
+
 #[cfg(feature = "engine")]
 const _: () = {
     let mut i = 0;
