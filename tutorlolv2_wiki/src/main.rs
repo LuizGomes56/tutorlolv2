@@ -1,5 +1,5 @@
 use clap::{Parser, Subcommand, ValueEnum};
-use tutorlolv2_wiki::{HTTP_CLIENT, LOL_VERSION, MayFail, champions, items, runes};
+use tutorlolv2_wiki::{HTTP_CLIENT, LOL_VERSION, MayFail, champions, items, runes, scraper};
 
 #[derive(Parser, Debug)]
 pub struct Cli {
@@ -65,6 +65,12 @@ pub enum Wiki {
     RunesParse,
     #[clap(alias = "rc")]
     RunesConcat,
+    #[clap(alias = "s")]
+    Scraper,
+    #[clap(alias = "sd")]
+    ScraperDownload,
+    #[clap(alias = "sp")]
+    ScraperParse,
 }
 
 #[tokio::main]
@@ -86,8 +92,7 @@ async fn main() -> MayFail {
             #[cfg(feature = "avif")]
             tutorlolv2_wiki::avif::img_convert_avif();
 
-            // let _ = HTTP_CLIENT.call_scraper().await;
-            // let _ = HTTP_CLIENT.combo_scraper().await;
+            // scraper::run().await?;
         }
         AppArgs::Avif => {
             #[cfg(feature = "avif")]
@@ -127,6 +132,9 @@ async fn main() -> MayFail {
             Wiki::RunesDownload => runes::download().await,
             Wiki::RunesParse => runes::parse(),
             Wiki::RunesConcat => runes::concat(),
+            Wiki::Scraper => scraper::run().await,
+            Wiki::ScraperDownload => scraper::download().await,
+            Wiki::ScraperParse => scraper::parse(),
         }
         .map_err(|e| format!("[wiki] Error: {e:?}"))?,
     }

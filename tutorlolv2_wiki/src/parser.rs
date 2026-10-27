@@ -39,13 +39,13 @@ impl Effect {
 pub fn get_cells(html: &Html) -> MayFail<BTreeMap<String, String>> {
     let mut cells = BTreeMap::new();
 
-    for tr in html.select(&selector("table.article-table > tbody > tr")?) {
-        let tds = tr.select(&selector("td")?).collect::<Vec<_>>();
+    for tr in html.select(selector!("table.article-table > tbody > tr")) {
+        let tds = tr.select(selector!("td")).collect::<Vec<_>>();
 
         if tds.len() == 3 {
             let first = tds.first().ok_or("Failed to find parameter")?;
             let key = first
-                .select(&selector("code")?)
+                .select(selector!("code"))
                 .next()
                 .map(|element| element.text())
                 .unwrap_or(first.text())
@@ -68,7 +68,7 @@ pub fn get_cells(html: &Html) -> MayFail<BTreeMap<String, String>> {
 
 pub fn parse_lua(text: &str) -> MayFail<String> {
     Ok(Html::parse_document(text)
-        .select(&selector("pre.mw-code.mw-script")?)
+        .select(selector!("pre.mw-code.mw-script"))
         .next()
         .ok_or("Failed to select <pre> tag")?
         .text()
@@ -348,15 +348,10 @@ impl Scaling {
         }
 
         let fragment = Html::parse_fragment(raw);
-        let selector = match selector("span.pp-tooltip") {
-            Ok(v) => v,
-            Err(_) => return Vec::new(),
-        };
-
         let mut out = Vec::new();
         let raw_text = normalize_text(&html_to_text(raw));
 
-        for tooltip in fragment.select(&selector) {
+        for tooltip in fragment.select(selector!("span.pp-tooltip")) {
             let Some(bot_values) = tooltip.value().attr("data-bot-values") else {
                 continue;
             };
@@ -892,7 +887,7 @@ pub fn parse_description_effects(
 ) -> MayFail<Vec<(String, Effect)>> {
     let fragment = Html::parse_fragment(description_raw);
 
-    let tooltip = fragment.select(&selector("span.pp-tooltip")?).next();
+    let tooltip = fragment.select(selector!("span.pp-tooltip")).next();
     let use_formula = tooltip
         .and_then(|el| el.value().attr("data-useformula"))
         .map(str::to_string);
@@ -908,10 +903,10 @@ pub fn parse_description_effects(
         });
 
     let base_key = fragment
-        .select(&selector("span.template_sbc")?)
+        .select(selector!("span.template_sbc"))
         .next()
         .and_then(|node| {
-            node.select(&selector("b").ok()?)
+            node.select(selector!("b"))
                 .next()
                 .map(|b| b.text().collect::<String>())
         })

@@ -1,6 +1,5 @@
 use {
     crate::client::HttpClient,
-    scraper::Selector,
     serde::{Serialize, de::DeserializeOwned},
     std::{collections::BTreeMap, fs::DirEntry, path::Path, sync::LazyLock},
 };
@@ -15,9 +14,11 @@ pub mod parser;
 pub mod render;
 pub mod riot;
 pub mod runes;
+pub mod scraper;
 
 pub const DDRAGON_ENDPOINT: &str = "https://ddragon.leagueoflegends.com";
 pub const CANISBACK_ENDPOINT: &str = "https://ddragon.canisback.com/img";
+pub const MOBALYTICS_ENDPOINT: &str = "https://mobalytics.gg/lol/champions";
 pub const LOL_LANGUAGE: &str = "en_US";
 pub const LOL_VERSION: &str = "16.21.1";
 
@@ -78,9 +79,20 @@ pub trait FileWrite: AsRef<[u8]> {
 
 impl<T> FileWrite for T where T: AsRef<[u8]> {}
 
-pub fn selector(selectors: &str) -> MayFail<Selector> {
-    Selector::parse(selectors)
-        .map_err(|e| format!("[selector] Error parsing selector: {selectors:?}: {e:?}").into())
+/// Parses a CSS selector once and caches it in a static, returning a
+/// `&'static Selector`. Panics on first use if the selector is invalid,
+/// which can only happen for a malformed literal
+#[macro_export]
+macro_rules! selector {
+    ($selectors:literal) => {{
+        static SELECTOR: ::std::sync::LazyLock<::scraper::Selector> =
+            ::std::sync::LazyLock::new(|| {
+                ::scraper::Selector::parse($selectors).unwrap_or_else(|e| {
+                    panic!("[selector] Error parsing selector: {:?}: {e:?}", $selectors)
+                })
+            });
+        &*SELECTOR
+    }};
 }
 
 pub fn write(path: impl AsRef<Path>, data: impl AsRef<[u8]>) -> MayFail {

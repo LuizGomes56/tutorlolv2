@@ -96,7 +96,7 @@ pub fn parse() -> MayFail {
                     let bytes = crate::read_to_string(&path)?;
                     let html = Html::parse_document(&bytes);
 
-                    if let Some(element) = html.select(&selector("div.noarticletext > p")?).next()
+                    if let Some(element) = html.select(selector!("div.noarticletext > p")).next()
                         && element
                             .text()
                             .any(|text| text.contains("There is currently no text in this page"))
@@ -191,10 +191,10 @@ fn parse_effects(
 ) -> MayFail<Vec<(String, Effect)>> {
     let fragment = Html::parse_fragment(leveling_raw);
 
-    let tooltip_selector = selector("span.pp-tooltip")?;
+    let tooltip_selector = selector!("span.pp-tooltip");
 
-    let dts = fragment.select(&selector("dt")?).collect::<Vec<_>>();
-    let dds = fragment.select(&selector("dd")?).collect::<Vec<_>>();
+    let dts = fragment.select(selector!("dt")).collect::<Vec<_>>();
+    let dds = fragment.select(selector!("dd")).collect::<Vec<_>>();
 
     assert!(
         !dts.is_empty() && dts.len() == dds.len(),
@@ -206,7 +206,7 @@ fn parse_effects(
         .zip(dds)
         .filter_map(|(dt, dd)| {
             let key = dt
-                .select(&selector("span.template_lc").ok()?)
+                .select(selector!("span.template_lc"))
                 .next()
                 .map(|e| e.text())
                 .unwrap_or(dt.text())
@@ -222,7 +222,7 @@ fn parse_effects(
 
             let dd_leveling = dd.text().collect::<String>().trim().to_string();
             let dd_leveling_raw = dd.inner_html();
-            let tooltip = dd.select(&tooltip_selector).next();
+            let tooltip = dd.select(tooltip_selector).next();
 
             let use_formula = tooltip
                 .and_then(|el| el.value().attr("data-useformula"))
