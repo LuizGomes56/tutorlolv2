@@ -8906,9 +8906,7 @@
     ],
     "Aftershock": [
       "0: Description 1 (9c5ae5cd)",
-      "1: Passive (6d8de482)",
-      "2: Passive [1] (4256cced)",
-      "3: Passive [2] (4fb04614)"
+      "1: Passive (6bf5727f)"
     ],
     "ApproachVelocity": [
       "0: Description 1 (2617b509)",
@@ -8919,10 +8917,8 @@
       "1: Passive [1] (87c126d0)",
       "2: Passive [2] (47befa9e)",
       "3: Passive [3] (5091ba32)",
-      "4: Passive [4] (ba29ea13)",
-      "5: Passive [5] (04b3af2a)",
-      "6: Passive [6] (3f70e540)",
-      "7: Variable Damage (1d0a2219)"
+      "4: Passive [4] (3f70e540)",
+      "5: Variable Damage (1d0a2219)"
     ],
     "AxiomArcanist": [
       "0: Description 1 (1d0a2219)",
@@ -8983,8 +8979,7 @@
     "DeathfireTouch": [
       "0: Description 0 (067abab6)",
       "1: Description 0 [1] (7482a85f)",
-      "2: Description 0 [2] (55492822)",
-      "3: Description 1 (1d0a2219)"
+      "2: Description 1 (1d0a2219)"
     ],
     "DeepWard": [
       "0: Description 1 (1d0a2219)",
@@ -8997,8 +8992,7 @@
     "Electrocute": [
       "0: Passive (4a37f42d)",
       "1: Passive [1] (87c126d0)",
-      "2: Passive [2] (56240f5e)",
-      "3: Variable Damage (1d0a2219)"
+      "2: Variable Damage (1d0a2219)"
     ],
     "EyeballCollection": [
       "0: Adaptive (1d0a2219)",
@@ -9051,8 +9045,7 @@
     "HailOfBlades": [
       "0: Description 1 (16b6e16a)",
       "1: Description 1 [1] (5091ba32)",
-      "2: Description 1 [2] (6abf8ddf)",
-      "3: Passive (1d0a2219)"
+      "2: Passive (1d0a2219)"
     ],
     "HextechFlashtraption": [
       "0: Active (1d0a2219)",
@@ -9125,9 +9118,7 @@
     "NullifyingOrb": [
       "0: Passive (02075013)",
       "1: Passive [1] (963ab934)",
-      "2: Passive [2] (869e3c10)",
-      "3: Passive [3] (8b1b2215)",
-      "4: Passive [4] (869e3c10)"
+      "2: Passive [2] (8b1b2215)"
     ],
     "Overgrowth": [
       "0: Description 1 (1d0a2219)",
@@ -9135,7 +9126,7 @@
     ],
     "Overheal": [
       "0: Description 1 (7d3dc71a)",
-      "1: Passive (0dfcb71a)"
+      "1: Passive (6cce5761)"
     ],
     "PerfectTiming": [
       "0: Passive (1d0a2219)"
@@ -9147,9 +9138,8 @@
       "0: Active - Predator (12f28fd9)",
       "1: Description 2 (7bad34c2)",
       "2: Description 2 [1] (fc05fd4b)",
-      "3: Description 2 [2] (32abf29d)",
-      "4: Description 3 (324de1d3)",
-      "5: Passive (1d0a2219)"
+      "3: Description 3 (324de1d3)",
+      "4: Passive (1d0a2219)"
     ],
     "PresenceOfMind": [
       "0: Description 1 (c7aba55f)",
@@ -9188,8 +9178,7 @@
       "0: Adaptive Damage (1d0a2219)",
       "1: Passive (68eb2d2e)",
       "2: Passive [1] (2617b509)",
-      "3: Passive [2] (7daae186)",
-      "4: Passive [3] (7daae186)"
+      "3: Passive [2] (7daae186)"
     ],
     "SixthSense": [
       "0: Description 1 (1d0a2219)",
@@ -9206,15 +9195,12 @@
       "1: Description 1 (1d0a2219)",
       "2: Description 2 (1d0a2219)",
       "3: Passive (9038e878)",
-      "4: Passive [1] (87c126d0)",
-      "5: Passive [2] (7c4f50b5)",
-      "6: Passive [3] (ba489e35)"
+      "4: Passive [1] (87c126d0)"
     ],
     "TasteOfBlood": [
       "0: Description 1 (1d0a2219)",
       "1: Passive (2a7205ec)",
-      "2: Passive [1] (87c126d0)",
-      "3: Passive [2] (373ebda0)"
+      "2: Passive [1] (87c126d0)"
     ],
     "TheUltimateHat": [
       "0: Description 1 (1d0a2219)",

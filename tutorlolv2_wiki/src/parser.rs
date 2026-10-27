@@ -659,9 +659,20 @@ impl Scaling {
 
         let caps = PER_CTX_RE.captures(text)?;
         let value = caps.get(1)?.as_str().parse::<f64>().ok()?;
-        let ctx_var = assign_ctx_var(caps.get(2)?.as_str());
+        let target = caps.get(2)?.as_str();
 
-        Some(Self::Simple { value, ctx_var })
+        // "0.3 per 100 bonus health" is 0.3 for every 100 points of that stat
+        if let Some(stat) = target.strip_prefix("100 ") {
+            return Some(Self::Per100 {
+                value,
+                ctx_var: assign_ctx_var(stat),
+            });
+        }
+
+        Some(Self::Simple {
+            value,
+            ctx_var: assign_ctx_var(target),
+        })
     }
 
     pub fn ranked_bare_percent(text: &str) -> Option<Self> {
@@ -991,6 +1002,7 @@ pub fn assign_ctx_var(input: &str) -> CtxVar {
         in "bonus attack speed" => CtxVar::BonusAttackSpeed;
         in "attack speed" => CtxVar::AttackSpeed;
         in "bonus ad" | in "bonus attack damage" => CtxVar::BonusAd;
+        in "base ad" | in "base attack damage" => CtxVar::BaseAd;
         == "ad" | ... " ad" | in " attack damage" => CtxVar::AttackDamage;
         == "ap" | ... " ap" | in "ability power" => CtxVar::AbilityPower;
         in "enchanted target's ad" => CtxVar::SteelcapsEffect;
@@ -2052,5 +2064,24 @@ mod tests {
             CtxVar::BonusAttackSpeed
         );
         assert_eq!(assign_ctx_var("the marked enemy"), CtxVar::Unknown);
+        assert_eq!(assign_ctx_var("150% base AD"), CtxVar::BaseAd);
+    }
+
+    #[test]
+    fn values_per_100_without_percent_are_per_100() {
+        assert_eq!(
+            Scaling::per_ctx("0.3 per 100 bonus health"),
+            Some(Scaling::Per100 {
+                value: 0.3,
+                ctx_var: CtxVar::BonusHealth,
+            })
+        );
+        assert_eq!(
+            Scaling::per_ctx("25 per 1 lethality"),
+            Some(Scaling::Simple {
+                value: 25.0,
+                ctx_var: CtxVar::ArmorPenetrationFlat,
+            })
+        );
     }
 }

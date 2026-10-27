@@ -1,8 +1,12 @@
 use super::*;
 
 impl Generator for PyromancersCloak {
-    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
-        self.end()
+        // Spark: burn per tick, and the total over 3 seconds
+        let tick = self.render(self.flip(Passive)?)?;
+        self.damage_type(Magic)
+            .set_min(tick)
+            .max(Passive)?
+            .end()
     }
 }

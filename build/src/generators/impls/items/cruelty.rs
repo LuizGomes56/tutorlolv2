@@ -1,12 +1,8 @@
 use super::*;
 
 impl Generator for Cruelty {
-    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
-        let scalings = self.scaling(Passive, 0..2)?;
-        self.damage_type(Magic)
-            /* Missing base damage (based on level) */
-            .set_min(scalings)
-            .end()
+        // Watch Them Fall: comet after immobilizing an enemy champion
+        self.damage_type(Magic).min(Passive)?.end()
     }
 }

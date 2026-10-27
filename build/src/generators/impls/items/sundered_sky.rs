@@ -1,8 +1,11 @@
 use super::*;
 
 impl Generator for SunderedSky {
-    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
-        self.end()
+        // Lightshield Strike: bonus damage of the guaranteed critical strike
+        self.damage_type(Physical)
+            .attr(OnhitMax)
+            .set_min(f![0.6 * AttackDamage])
+            .end()
     }
 }

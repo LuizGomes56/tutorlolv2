@@ -1,8 +1,12 @@
 use super::*;
 
 impl Generator for ReapersToll {
-    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
-        self.damage_type(True).end()
+        // Reap: Stacks = Reap stacks on the target. The other scalings are the
+        // health threshold it inflicts
+        self.damage_type(True)
+            .attr(Onhit)
+            .min_with(Passive, [0])?
+            .end()
     }
 }

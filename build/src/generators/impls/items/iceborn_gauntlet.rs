@@ -1,8 +1,11 @@
 use super::*;
 
 impl Generator for IcebornGauntlet {
-    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
-        self.damage_type(Physical).end()
+        // Spellblade
+        self.damage_type(Physical)
+            .attr(OnhitMax)
+            .min(Passive)?
+            .end()
     }
 }

@@ -1,8 +1,8 @@
 use super::*;
 
 impl Generator for HellfireHatchet {
-    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
-        self.damage_type(Physical).end()
+        // Char: burn over 4 seconds, at the maximum health difference of 3000
+        self.damage_type(Physical).min(Passive)?.end()
     }
 }

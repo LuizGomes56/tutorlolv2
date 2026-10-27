@@ -1,8 +1,9 @@
 use super::*;
 
 impl Generator for Eclipse {
-    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
-        self.damage_type(Physical).end()
+        // Ever Rising Moon: bonus physical damage after applying 2 stacks. The
+        // other scaling is its shield
+        self.damage_type(Physical).min_with(Passive, [1])?.end()
     }
 }

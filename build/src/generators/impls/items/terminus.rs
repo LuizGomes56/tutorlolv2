@@ -1,8 +1,8 @@
 use super::*;
 
 impl Generator for Terminus {
-    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
-        self.min(Passive)?.end()
+        // Shadow
+        self.damage_type(Magic).attr(Onhit).min(Passive)?.end()
     }
 }

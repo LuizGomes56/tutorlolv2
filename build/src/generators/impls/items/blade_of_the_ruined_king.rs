@@ -1,12 +1,15 @@
 use super::*;
 
 impl Generator for BladeOfTheRuinedKing {
-    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
-        let melee_ratio = self.effect(Passive)?.scalings[0]
-            .try_get_value()
-            .ok_or("Unknown melee percent scaling")?;
-        let ranged_ratio = f![(melee_ratio / 1.5)];
+        let ratio = |attack_type| -> MayFail<f64> {
+            self.effect_for(Passive, attack_type)?.scalings[0]
+                .try_get_value()
+                .ok_or(format!("Unknown {attack_type:?} percent scaling").into())
+        };
+
+        let melee_ratio = ratio(Melee)?;
+        let ranged_ratio = ratio(Ranged)?;
 
         let damage = |scaling: &dyn Display| {
             let modifier = f![(1 - scaling * PhysicalMultiplier)];
@@ -17,8 +20,8 @@ impl Generator for BladeOfTheRuinedKing {
         };
 
         self.damage_type(Physical)
-            .assign(Melee, Min, &damage(&melee_ratio))
-            .assign(Ranged, Min, &damage(&ranged_ratio))
+            .assign(Melee, Min, damage(&melee_ratio))
+            .assign(Ranged, Min, damage(&ranged_ratio))
             .end()
     }
 }

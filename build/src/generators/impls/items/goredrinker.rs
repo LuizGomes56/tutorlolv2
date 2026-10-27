@@ -1,8 +1,8 @@
 use super::*;
 
 impl Generator for Goredrinker {
-    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
-        self.damage_type(Physical).min(Active)?.end()
+        // Thirsting Slash. The other scalings are its healing
+        self.damage_type(Physical).min_with(Active, [1])?.end()
     }
 }

@@ -1,8 +1,13 @@
 use super::*;
 
 impl Generator for Galeforce {
-    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
-        self.damage_type(Physical).end()
+        // Cloudburst: total damage of the 3 missiles, increased by up to 50%
+        // against targets with missing health
+        let total = self.render(self.total(Active)?)?;
+        self.damage_type(Physical)
+            .set_min(&total)
+            .set_max(f![1.5 * total])
+            .end()
     }
 }

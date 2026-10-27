@@ -1,8 +1,9 @@
 use super::*;
 
 impl Generator for LightningRod {
-    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
-        self.end()
+        // Call Lightning. The other scalings are the damage of a lightning that
+        // strikes you
+        self.damage_type(Magic).min_with(Passive, [0, 1, 2])?.end()
     }
 }

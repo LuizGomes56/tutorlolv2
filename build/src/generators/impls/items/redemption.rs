@@ -1,8 +1,8 @@
 use super::*;
 
 impl Generator for Redemption {
-    #[warn(unstable_features)]
     fn generate(&mut self) -> MayFail {
-        self.damage_type(True).end()
+        // Intervention
+        self.damage_type(True).min(Active)?.end()
     }
 }
