@@ -52,11 +52,13 @@ pub const fn eval_item_damage_const<const N: usize>(
 
     while i < N {
         let item_id = item_ids[i];
+
         let TypeMetadata {
             damage_type,
             attributes,
             kind,
         } = item_id.metadata();
+
         let modifier = modifiers.damages.modifier(damage_type);
         let damages = item_id.eval(ctx, attack_type);
 
@@ -85,9 +87,11 @@ pub const fn eval_rune_damage_const<const N: usize>(
 
     while i < N {
         let rune_id = rune_ids[i];
+
         let TypeMetadata {
             kind, damage_type, ..
         } = rune_id.metadata();
+
         let modifier = modifiers.damages.modifier(damage_type);
         let damages = rune_id.eval(ctx, attack_type);
 
@@ -193,7 +197,6 @@ impl<
         }
 
         let base_stats = BasicStats::base_stats(champion_id, level, is_mega_gnar);
-
         let mut modifiers = Modifiers::default();
 
         let stats = match stats {
@@ -266,7 +269,7 @@ impl<
         let attack_type = champion_id.effective_attack_type(is_mega_gnar);
 
         let enemy = enemy_state.full_state(shred, false);
-        let ctx = get_eval_ctx(&self_state, &enemy);
+        let ctx = self_state.ctx(&enemy);
 
         let modifiers = Modifiers {
             damages: DamageModifiers {
@@ -310,8 +313,10 @@ impl<
 
                 let abilities =
                     eval_abilities_const::<A>(&siml_ctx, &mut onhit, champion_id, modifiers);
+
                 let items =
                     eval_item_damage_const(&siml_ctx, &mut onhit, items, attack_type, modifiers);
+
                 let runes = eval_rune_damage_const(&siml_ctx, runes, attack_type, modifiers);
                 let attacks = Attacks::new(&siml_ctx, onhit, modifiers.damages.physical_mod);
 

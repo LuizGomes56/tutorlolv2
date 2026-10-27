@@ -1,11 +1,11 @@
 use crate::{
     Build, BuildContext, BuildOutput, MayFail, YEW_CFG,
-    generators::{parser::items::Item, utils::Tag},
+    generators::parser::items::Item,
     scripts::utils::{BakeExt, ItemOrRuneExt},
 };
 use heck::ToShoutySnakeCase;
 use std::fmt::Write;
-use tutorlolv2_types::{GameMap, StatName};
+use tutorlolv2_types::{GameMap, StatName, Tag};
 use tutorlolv2_wiki::items::item_parser::WikiItem;
 
 struct ItemExt {

@@ -1,10 +1,8 @@
+use tutorlolv2_types::Tag;
 use {
     crate::{
         ENGINE_CFG, MayFail,
-        generators::{
-            parser::{Parser, champions::ChampionParser},
-            utils::Tag,
-        },
+        generators::parser::{Parser, champions::ChampionParser},
     },
     std::collections::{BTreeMap, BTreeSet},
     tutorlolv2_wiki::JsonRead,

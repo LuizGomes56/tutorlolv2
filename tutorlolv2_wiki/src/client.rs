@@ -41,26 +41,7 @@ pub enum SaveTo<'a> {
     ImgRunes(usize),
 }
 
-#[derive(Copy, Clone, Debug, PartialEq, Eq)]
-pub enum Tag {
-    Items,
-    Champions,
-    Runes,
-}
-
-impl Display for Tag {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(
-            f,
-            "{}",
-            match self {
-                Tag::Items => "items",
-                Tag::Champions => "champions",
-                Tag::Runes => "runes",
-            }
-        )
-    }
-}
+pub use tutorlolv2_types::Tag;
 
 impl<'a> SaveTo<'a> {
     pub fn path(&self) -> String {

@@ -1,13 +1,13 @@
 mod builtin;
 mod ext;
 
-use crate::{AbilityId, AttackType, CastId, ChampionId, CtxVar, DamageIndex, EntityId};
+use crate::{AbilityId, AttackType, CastId, ChampionId, CtxVar, DamageIndex};
 use alloc::{
     borrow::ToOwned,
     boxed::Box,
     string::{String, ToString},
 };
-use tutorlolv2_codec::{DamageSlot, EntityKind, FormulaDb, GeneratorDb, render::FnBuilder};
+use tutorlolv2_codec::{DamageSlot, FormulaDb, GeneratorDb, render::FnBuilder};
 
 pub type MayFail<T = ()> = Result<T, Box<dyn core::error::Error>>;
 
@@ -29,15 +29,10 @@ impl GeneratorRenderer {
         }
     }
 
-    pub fn render(&self, value: impl CastId) -> Option<String> {
+    pub fn render<T: CastId>(&self, value: T) -> Option<String> {
         let index = value.index();
-        let entity = match value.entity() {
-            EntityId::Champion(_) => EntityKind::Champion,
-            EntityId::Item(_) => EntityKind::Item,
-            EntityId::Rune(_) => EntityKind::Rune,
-        };
 
-        unsafe { self.db.render_html(entity, index as _).unwrap_unchecked() }
+        unsafe { self.db.render_html(T::KIND, index as _).unwrap_unchecked() }
     }
 }
 
@@ -88,16 +83,10 @@ impl FormulaRenderer {
             })?)
     }
 
-    pub fn cast_id_formula(&self, id: impl CastId, slot: DamageSlot) -> MayFail<String> {
-        let entity = match id.entity() {
-            EntityId::Champion(_) => EntityKind::Champion,
-            EntityId::Item(_) => EntityKind::Item,
-            EntityId::Rune(_) => EntityKind::Rune,
-        };
-
+    pub fn cast_id_formula<T: CastId>(&self, id: T, slot: DamageSlot) -> MayFail<String> {
         let formula_id = self
             .db
-            .item_or_rune_formula_id(entity, id.index() as _, slot)
+            .item_or_rune_formula_id(T::KIND, id.index() as _, slot)
             .ok_or("Unable to locate formula_id")?;
 
         let fn_struct = id.debug();

@@ -7,7 +7,7 @@ use {
                 DamageRange, GeneratorFnSig, Parser, ZERO, infer_damage_type, likely_damages,
                 model::{RiotCdn, RiotCdnItem, RiotCdnItemGold},
             },
-            utils::{RegExtractor, Tag},
+            utils::RegExtractor,
         },
     },
     heck::ToPascalCase,
@@ -17,7 +17,7 @@ use {
         fmt::Write,
         ops::{Index, IndexMut},
     },
-    tutorlolv2_types::{AttackType, Attrs, CtxVar, DamageIndex, DamageType},
+    tutorlolv2_types::{AttackType, Attrs, CtxVar, DamageIndex, DamageType, Tag},
     tutorlolv2_wiki::{
         JsonRead,
         items::item_parser::{ItemEffect, WikiItem},

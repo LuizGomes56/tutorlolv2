@@ -14,7 +14,7 @@ use serde::{Serialize, de::DeserializeOwned};
 use std::{collections::BTreeMap, fmt::Write, process::Command, str::FromStr};
 use strum::VariantNames;
 use tutorlolv2_codec::{Class, ClassOverride, FormulaDbBuilder, GeneratorDbBuilder};
-use tutorlolv2_types::{AbilityName, AttackType, CtxVar};
+use tutorlolv2_types::{AbilityName, AttackType, CtxVar, Tag};
 
 pub use context::{BuildContext, project_root};
 pub use tutorlolv2_wiki::{DynError, MayFail};
@@ -158,7 +158,7 @@ impl BuildContext {
                 }}"#,
                 model_imports = format_args!(
                     "use crate::libgen::globals::{{{model_ty}, {}}};",
-                    if matches!(parser.tag(), generators::utils::Tag::Champions) {
+                    if matches!(parser.tag(), Tag::Champions) {
                         "WikiStats, WikiModifiers, Stat, Modifier"
                     } else {
                         ""

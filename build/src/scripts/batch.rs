@@ -1,9 +1,10 @@
 //! Typed documentation transport. Metadata never travels inside Rust attributes.
-use crate::{BuildContext, MayFail, context::run_formatter, generators::utils::Tag};
+use crate::{BuildContext, MayFail, context::run_formatter};
 use serde::{Deserialize, Serialize};
 use std::{collections::HashMap, io::ErrorKind, path::Path, process::Command};
 use syn::spanned::Spanned;
 use tutorlolv2_codec::{FormulaDbBuilder, FormulaSource};
+use tutorlolv2_types::Tag;
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct FormulaDoc {

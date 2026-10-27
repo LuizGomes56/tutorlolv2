@@ -1,10 +1,7 @@
 use {
     crate::{
         Build, BuildContext, BuildOutput, ENGINE_CFG, MayFail, YEW_CFG,
-        generators::{
-            parser::champions::{Ability, Champion},
-            utils::Tag,
-        },
+        generators::parser::champions::{Ability, Champion},
         scripts::{
             batch::FormulaDoc,
             utils::{BakeExt, cast_f32, ctx_param, get_identifiers, probe_ratio, simplify},
@@ -16,7 +13,7 @@ use {
         fmt::Write,
         write,
     },
-    tutorlolv2_types::{AbilityId, CtxVar, DevMergeData, MergeData, TypeMetadata},
+    tutorlolv2_types::{AbilityId, CtxVar, DevMergeData, MergeData, Tag, TypeMetadata},
     tutorlolv2_wiki::champions::WikiChampion,
 };
 

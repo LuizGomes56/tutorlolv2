@@ -3,6 +3,9 @@
 
 extern crate alloc;
 
+mod entity;
+pub use entity::{EntityKind, Tag};
+
 #[cfg(test)]
 extern crate std;
 

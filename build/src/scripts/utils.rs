@@ -1,9 +1,6 @@
 use crate::{
     ENGINE_CFG, MayFail,
-    generators::{
-        parser::{DamageRange, ZERO, items::Item, runes::Rune},
-        utils::Tag,
-    },
+    generators::parser::{DamageRange, ZERO, items::Item, runes::Rune},
     scripts::batch::FormulaDoc,
 };
 use databake::CrateEnv;
@@ -17,7 +14,7 @@ use std::{
     ops::{Index, Range},
     sync::LazyLock,
 };
-use tutorlolv2_types::{AttackType, Attrs, CtxVar, DamageIndex, DamageType};
+use tutorlolv2_types::{AttackType, Attrs, CtxVar, DamageIndex, DamageType, Tag};
 
 pub const ZERO_FN: &str = "crate::libgen::zero";
 

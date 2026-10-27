@@ -1,10 +1,11 @@
 use crate::{
     Build, BuildContext, BuildOutput, MayFail, YEW_CFG,
-    generators::{parser::runes::Rune, utils::Tag},
+    generators::parser::runes::Rune,
     scripts::utils::{BakeExt, ItemOrRuneExt},
 };
 use heck::ToShoutySnakeCase;
 use std::fmt::Write;
+use tutorlolv2_types::Tag;
 use tutorlolv2_wiki::runes::WikiRune;
 
 impl Build for Rune {

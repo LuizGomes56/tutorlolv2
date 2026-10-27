@@ -131,13 +131,7 @@ impl fmt::Display for Error {
 
 impl std::error::Error for Error {}
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq, strum::FromRepr)]
-#[repr(u8)]
-pub enum EntityKind {
-    Champion,
-    Item,
-    Rune,
-}
+pub use tutorlolv2_types::EntityKind;
 
 /// Logical formula slot used by both items and runes.
 /// Physical storage is sparse; this is never a physical formula index.

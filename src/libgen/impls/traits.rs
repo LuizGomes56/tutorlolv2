@@ -8,7 +8,7 @@ use {
         fmt::{Debug, Display},
         str::FromStr,
     },
-    tutorlolv2_types::{DamageType, Position, TypeMetadata},
+    tutorlolv2_types::{DamageType, EntityKind, Position, TypeMetadata},
 };
 
 macro_rules! impl_methods {
@@ -43,6 +43,14 @@ macro_rules! impl_methods {
                     }
                 }
 
+                impl TryFrom<u16> for $stru {
+                    type Error = ();
+
+                    fn try_from(value: u16) -> Result<Self, Self::Error> {
+                        Self::from_repr(value as _).ok_or(())
+                    }
+                }
+
                 impl $stru {
                     pub const NAME_TO_ID: &phf::Map<&str, Self> =
                         &$crate::[<$stru:replace("Id", "s"):lower _code>]
@@ -72,6 +80,8 @@ macro_rules! impl_methods {
                 impl Sealed for $stru {}
 
                 impl CastId for $stru {
+                    const KIND: EntityKind = EntityKind::[<$stru:replace("Id", "")>];
+
                     fn entity(&self) -> EntityId {
                         EntityId::[<$stru:replace("Id", "")>](*self)
                     }
@@ -86,10 +96,6 @@ macro_rules! impl_methods {
 
                     fn index(&self) -> usize {
                         self.index()
-                    }
-
-                    fn try_from_u16(v: u16) -> Option<Self> {
-                        Self::from_repr(v as _)
                     }
                 }
             )+
@@ -110,11 +116,12 @@ pub trait CastId
 where
     Self: Any + Copy + Debug + Default + Sealed + Sized + 'static,
 {
+    const KIND: EntityKind;
+
     fn entity(&self) -> EntityId;
     fn name(&self) -> &'static str;
     fn index(&self) -> usize;
     fn debug(&self) -> &'static str;
-    fn try_from_u16(v: u16) -> Option<Self>;
 
     #[cfg(feature = "formula-docs")]
     fn render_generator(&self) -> Option<alloc::string::String> {

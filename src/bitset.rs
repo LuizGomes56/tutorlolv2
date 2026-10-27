@@ -33,7 +33,9 @@ pub const BITSET_EXC_SIZE: usize = {
         bitset_size(crate::bitset!(ItemId::ALLY_EXCEPTIONS => [usize])),
         bitset_size(crate::bitset!(ItemId::ENEMY_EXCEPTIONS => [usize])),
     );
+
     let re = bitset_size(crate::bitset!(RuneId::EXCEPTIONS => [usize]));
+
     max_usize(ie, re)
 };
 

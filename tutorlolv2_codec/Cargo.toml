@@ -7,3 +7,4 @@ edition = "2024"
 heck = "0.5"
 strum = { version = "0.28.0", features = ["derive", "strum_macros"] }
 synoptic = "2.2.9"
+tutorlolv2_types = { path = "../tutorlolv2_types", default-features = false }

@@ -1,3 +1,20 @@
+use tutorlolv2_types::{EntityKind, Tag};
+
+#[test]
+fn shared_tags_work_through_legacy_build_and_wiki_paths() {
+    for (tag, expected) in [
+        (Tag::Champions, "cache/riot/champions/42.json"),
+        (Tag::Items, "cache/riot/items/42.json"),
+        (Tag::Runes, "cache/riot/runes/42.json"),
+    ] {
+        let build_tag: crate::generators::utils::Tag = tag;
+        let wiki_tag: tutorlolv2_wiki::client::Tag = build_tag;
+        assert_eq!(
+            tutorlolv2_wiki::client::SaveTo::RiotCache(wiki_tag, &42).path(),
+            expected
+        );
+    }
+}
 use crate::{
     generators::parser::{Parser, infer_damage_type, items::Item, runes::RuneParser},
     scripts::utils::{ItemOrRuneExt, cast_f32},
@@ -107,7 +124,7 @@ fn numeric_rewriting_leaves_pattern_literals_integral() {
 
 #[test]
 fn optional_generator_files_distinguish_absence_from_invalid_input() {
-    use crate::{generators::utils::Tag, scripts::batch::read_generator};
+    use crate::scripts::batch::read_generator;
     let dir = TestDir::new();
     assert!(
         read_generator(&dir.0, Tag::Items, "Example")
@@ -135,10 +152,9 @@ fn formatter_failures_are_errors() {
 fn documentation_uses_explicit_indices_and_ignores_stale_files() {
     use crate::{
         BuildContext,
-        generators::utils::Tag,
         scripts::batch::{EntityDocs, FormulaDoc},
     };
-    use tutorlolv2_codec::{DamageSlot, EntityKind, FormulaDb};
+    use tutorlolv2_codec::{DamageSlot, FormulaDb};
     let dir = TestDir::new();
     let context = BuildContext::new(&dir.0, "out", true).unwrap();
     tutorlolv2_wiki::write(context.out.join("items/Stale.w48"), "not valid Rust").unwrap();
@@ -184,7 +200,6 @@ fn documentation_uses_explicit_indices_and_ignores_stale_files() {
 fn formatting_recovers_the_complete_nested_match_expression() {
     use crate::{
         BuildContext,
-        generators::utils::Tag,
         scripts::batch::{EntityDocs, FormulaDoc},
     };
     let dir = TestDir::new();
@@ -342,7 +357,6 @@ fn prepared_formulas_keep_functions_that_simplify_to_zero() {
 fn formatting_accepts_formulas_ending_in_line_comments() {
     use crate::{
         BuildContext,
-        generators::utils::Tag,
         scripts::batch::{EntityDocs, FormulaDoc},
     };
     let dir = TestDir::new();

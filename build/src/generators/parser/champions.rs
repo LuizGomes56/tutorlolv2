@@ -5,7 +5,7 @@ use {
             GeneratorExt,
             impls::champions::champion_gen_fn,
             parser::{Parser, ZERO, likely_damages},
-            utils::{RegExtractor, Tag},
+            utils::RegExtractor,
         },
         scripts::utils::is_zero,
     },
@@ -16,7 +16,7 @@ use {
         fmt::Write,
     },
     tutorlolv2_types::{
-        AbilityId, AbilityName, Attrs, ComboElement, DamageType, DevMergeData, Key,
+        AbilityId, AbilityName, Attrs, ComboElement, DamageType, DevMergeData, Key, Tag,
     },
     tutorlolv2_wiki::{
         JsonRead,

@@ -1,10 +1,7 @@
 use {
     crate::{
         MayFail,
-        generators::{
-            GeneratorExt, VERSION,
-            utils::{SaveTo, Tag},
-        },
+        generators::{GeneratorExt, VERSION, utils::SaveTo},
         scripts::utils::is_zero,
     },
     heck::{
@@ -19,7 +16,7 @@ use {
         ops::{Index, IndexMut},
         path::Path,
     },
-    tutorlolv2_types::DamageIndex,
+    tutorlolv2_types::{DamageIndex, Tag},
     tutorlolv2_wiki::{
         JsonWrite, champions::WikiChampion, items::item_parser::WikiItem, runes::WikiRune,
     },
