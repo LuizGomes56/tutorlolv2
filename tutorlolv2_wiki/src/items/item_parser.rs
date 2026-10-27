@@ -218,6 +218,7 @@ fn parse_item_effect(raw: ItemEffectRaw) -> ItemEffect {
             scalings: analysis.scalings,
             use_formula: None,
             use_values: None,
+            use_levels: None,
             base: analysis.base,
         },
         ast,

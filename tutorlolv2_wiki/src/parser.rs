@@ -24,6 +24,9 @@ pub struct Effect {
     pub scalings: Vec<Scaling>,
     pub use_formula: Option<String>,
     pub use_values: Option<Vec<f64>>,
+    /// Levels at which each of `use_values` starts, when they are given by level
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub use_levels: Option<Vec<u8>>,
     pub base: Option<Vec<f64>>,
 }
 
@@ -52,18 +55,65 @@ pub fn get_cells(html: &Html) -> MayFail<BTreeMap<String, String>> {
                 .collect::<String>();
 
             let value = tds.get(1).ok_or("Failed to get value")?;
-            let text = value.text().collect::<String>();
+
+            // Some values have alternative representations that the reader can flip
+            // between, such as damage per second and per tick. Only the first one
+            // is kept, otherwise both are parsed as separate scalings and added
+            let raw = remove_elements_with_class(&value.inner_html(), "flipText2");
+            let text = html_to_text(&raw);
 
             if text.trim().is_empty() {
                 continue;
             }
 
-            cells.insert(key.clone() + "_raw", value.inner_html());
+            cells.insert(key.clone() + "_raw", raw);
             cells.insert(key, clean_text(text.trim()));
         }
     }
 
     Ok(cells)
+}
+
+/// Removes every `<span>` with the given class, including its nested elements
+fn remove_elements_with_class(html: &str, class: &str) -> String {
+    let open = format!("<span class=\"{class}\"");
+    let mut out = String::with_capacity(html.len());
+    let mut rest = html;
+
+    while let Some(start) = rest.find(&open) {
+        out.push_str(&rest[..start]);
+
+        let mut depth = 0usize;
+        let mut i = start;
+
+        loop {
+            let next_open = rest[i..].find("<span").map(|p| p + i);
+            let next_close = rest[i..].find("</span>").map(|p| p + i);
+
+            match (next_open, next_close) {
+                (Some(o), Some(c)) if o < c => {
+                    depth += 1;
+                    i = o + "<span".len();
+                }
+                (_, Some(c)) => {
+                    depth -= 1;
+                    i = c + "</span>".len();
+                    if depth == 0 {
+                        break;
+                    }
+                }
+                _ => {
+                    i = rest.len();
+                    break;
+                }
+            }
+        }
+
+        rest = &rest[i..];
+    }
+
+    out.push_str(rest);
+    out
 }
 
 pub fn parse_lua(text: &str) -> MayFail<String> {
@@ -362,6 +412,9 @@ impl Scaling {
             }
 
             let mut values = bot_values
+                .split('|')
+                .next()
+                .unwrap_or_default()
                 .split(';')
                 .map(str::trim)
                 .filter(|v| !v.is_empty())
@@ -403,10 +456,12 @@ impl Scaling {
                 }
             };
 
-            let debug = local_debug_window(&raw_text, &tooltip_text);
-            let ctx_var = assign_ctx_var(&debug);
+            let debug = following_text(&raw_text, &tooltip_text);
+            let ctx_var = leading_ctx_var(&debug);
 
-            if should_drop_based_on_level_as_base_duplicate(&debug) {
+            // Flat base values are read separately. Looking around the tooltip
+            // for a stat can bind them to an unrelated neighboring scaling.
+            if ctx_var == CtxVar::Unknown {
                 continue;
             }
 
@@ -749,23 +804,105 @@ impl Scaling {
         }
     }
 
-    fn debug_str(&self) -> &str {
-        match self {
-            Scaling::PercentAttr { debug, .. }
-            | Scaling::BasedOnLevel { debug, .. }
-            | Scaling::RangePercentAttr { debug, .. } => debug,
-            Scaling::Nested { raw, .. }
-            | Scaling::Multiplier { raw, .. }
-            | Scaling::Other { raw } => raw,
-            _ => "",
+    /// Whether the scaling's values are `values` multiplied by `factor`
+    pub fn has_values(&self, values: &[f64], factor: f64) -> bool {
+        let own = match self {
+            Self::Ranked { values, .. } | Self::RankedPer100 { values, .. } => values.clone(),
+            Self::BasedOnLevel { arms, .. } => arms.iter().map(LevelArm::value).collect(),
+            Self::Nested { outer, .. } => return outer.has_values(values, factor),
+            _ => return false,
+        };
+
+        own.len() == values.len()
+            && own
+                .iter()
+                .zip(values)
+                .all(|(a, b)| (a - b * factor).abs() < 1e-6)
+    }
+
+    /// Whether both scalings represent the same term, ignoring their debug text
+    pub fn same_term(&self, other: &Self) -> bool {
+        let values_eq = |a: &[f64], b: &[f64]| {
+            a.len() == b.len() && a.iter().zip(b).all(|(x, y)| approx_eq(*x, *y))
+        };
+
+        match (self, other) {
+            (
+                Self::Simple {
+                    value: a,
+                    ctx_var: x,
+                }
+                | Self::Per100 {
+                    value: a,
+                    ctx_var: x,
+                }
+                | Self::PercentAttr {
+                    value: a,
+                    ctx_var: x,
+                    ..
+                },
+                Self::Simple {
+                    value: b,
+                    ctx_var: y,
+                }
+                | Self::Per100 {
+                    value: b,
+                    ctx_var: y,
+                }
+                | Self::PercentAttr {
+                    value: b,
+                    ctx_var: y,
+                    ..
+                },
+            ) => {
+                core::mem::discriminant(self) == core::mem::discriminant(other)
+                    && x == y
+                    && approx_eq(*a, *b)
+            }
+            (
+                Self::Ranked {
+                    values: a,
+                    ctx_var: x,
+                },
+                Self::Ranked {
+                    values: b,
+                    ctx_var: y,
+                },
+            )
+            | (
+                Self::RankedPer100 {
+                    values: a,
+                    ctx_var: x,
+                },
+                Self::RankedPer100 {
+                    values: b,
+                    ctx_var: y,
+                },
+            ) => x == y && values_eq(a, b),
+            (
+                Self::BasedOnLevel {
+                    level_var: a_level,
+                    arms: a,
+                    ctx_var: a_ctx,
+                    ..
+                },
+                Self::BasedOnLevel {
+                    level_var: b_level,
+                    arms: b,
+                    ctx_var: b_ctx,
+                    ..
+                },
+            ) => a_level == b_level && a_ctx == b_ctx && a == b,
+            _ => self == other,
         }
     }
 
     fn is_primary_contextual_scaling(&self) -> bool {
         match &self {
-            Self::BasedOnLevel { ctx_var, .. } => {
-                !matches!(ctx_var, CtxVar::SteelcapsEffect | CtxVar::Stacks)
-            }
+            Self::BasedOnLevel { ctx_var, .. } => !matches!(
+                ctx_var,
+                CtxVar::SteelcapsEffect | CtxVar::Stacks | CtxVar::Unknown
+            ),
             Self::PercentAttr { .. }
             | Self::Ranked { .. }
             | Self::RankedPer100 { .. }
@@ -828,6 +965,12 @@ pub fn assign_ctx_var(input: &str) -> CtxVar {
         ($text:expr, in $pat:literal) => {
             $text.contains($pat)
         };
+        // Whole words only, so that "mark" doesn't match "marked" or "market"
+        ($text:expr, word $pat:literal) => {
+            $text
+                .split(|c: char| !c.is_ascii_alphanumeric())
+                .any(|word| word == $pat)
+        };
     }
 
     macro_rules! check {
@@ -845,39 +988,45 @@ pub fn assign_ctx_var(input: &str) -> CtxVar {
 
     check! {
         text;
+        in "bonus attack speed" => CtxVar::BonusAttackSpeed;
         in "attack speed" => CtxVar::AttackSpeed;
-        in "bonus ad" | in "bonus ad" | in "bonus attack damage" => CtxVar::BonusAd;
+        in "bonus ad" | in "bonus attack damage" => CtxVar::BonusAd;
         == "ad" | ... " ad" | in " attack damage" => CtxVar::AttackDamage;
         == "ap" | ... " ap" | in "ability power" => CtxVar::AbilityPower;
         in "enchanted target's ad" => CtxVar::SteelcapsEffect;
-        in "target's maximum health" | in "of target's maximum health" => CtxVar::EnemyMaxHealth;
-        in "target's current health" | in "of target's current health" => CtxVar::EnemyCurrentHealth;
-        in "target's missing health" | in "of target's missing health" => CtxVar::EnemyMissingHealth;
+        in "target's maximum health" => CtxVar::EnemyMaxHealth;
+        in "target's current health" => CtxVar::EnemyCurrentHealth;
+        in "target's missing health" => CtxVar::EnemyMissingHealth;
         in "primary target's bonus health" => CtxVar::EnemyBonusHealth;
-        in "his current health" | in "of his current health" | in "current health" => CtxVar::CurrentHealth;
+        in "current health" => CtxVar::CurrentHealth;
         in "missing health" => CtxVar::MissingHealth;
         in "movement speed" => CtxVar::BonusMoveSpeed;
+        // Usually the enemies hit, as in "magic damage equal to 5% of their maximum health"
+        in "their maximum health" => CtxVar::EnemyMaxHealth;
+        in "their current health" => CtxVar::EnemyCurrentHealth;
+        in "their missing health" => CtxVar::EnemyMissingHealth;
         in "maximum health" => CtxVar::MaxHealth;
         in "maximum mana" => CtxVar::MaxMana;
-        in "missing mana" => CtxVar::SteelcapsEffect; // Not supported yet
+        // There is no variable for missing mana
+        in "missing mana" => CtxVar::Unknown;
         in "bonus health" => CtxVar::BonusHealth;
         in "bonus armor" => CtxVar::BonusArmor;
         in "bonus magic resistance" => CtxVar::BonusMagicResist;
         in "bonus mana" => CtxVar::BonusMana;
         in "critical strike chance" => CtxVar::CritChance;
         in "life steal" => CtxVar::LifeSteal;
-        in "stacks" | in " stack" | in "overwhelm"
-            | in "stardust" | in "soul collected"
-            | in "feast stack" | in "mist" | in "grit"
-            | in "mark" | in "of damage stored"
-            | in "soul" | in "chimes"
+        word "stack" | word "stacks" | word "overwhelm"
+            | word "stardust" | in "soul collected"
+            | in "feast stack" | word "mist" | word "grit"
+            | word "mark" | word "marks" | in "of damage stored"
+            | word "soul" | word "souls" | word "chimes"
             | in "dragon practice" => CtxVar::Stacks;
-        in "armor" | in "total armor" => CtxVar::Armor;
-        in "magic resist" | in "total magic resist" | in "mr" => CtxVar::MagicResist;
+        in "armor" => CtxVar::Armor;
+        in "magic resist" | word "mr" => CtxVar::MagicResist;
         in "lethality" => CtxVar::ArmorPenetrationFlat
     };
 
-    CtxVar::SteelcapsEffect
+    CtxVar::Unknown
 }
 
 pub fn parse_description_effects(
@@ -887,20 +1036,42 @@ pub fn parse_description_effects(
 ) -> MayFail<Vec<(String, Effect)>> {
     let fragment = Html::parse_fragment(description_raw);
 
+    let text = normalize_text(&html_to_text(description_raw));
     let tooltip = fragment.select(selector!("span.pp-tooltip")).next();
-    let use_formula = tooltip
+
+    let base_tooltip = tooltip.filter(|el| {
+        let value = normalize_text(&el.text().collect::<String>());
+        let before = text.split_once(&value).map_or("", |(before, _)| before);
+        let clause = before
+            .rsplit(['.', ';', ','])
+            .next()
+            .unwrap_or_default()
+            .to_ascii_lowercase();
+
+        // A monster cap is not flat base damage, even when it happens to be
+        // the first tooltip in a passive's description.
+        !clause.contains("capped at")
+    });
+
+    let mut use_formula = base_tooltip
         .and_then(|el| el.value().attr("data-useformula"))
         .map(str::to_string);
 
-    let use_values = tooltip
+    let mut use_values = base_tooltip
         .and_then(|el| el.value().attr("data-bot-values"))
         .map(|s| {
-            s.split(';')
+            // Display options may follow the values, as in "...;20.12|displayMaxColumn=18"
+            s.split('|')
+                .next()
+                .unwrap_or_default()
+                .split(';')
                 .map(str::trim)
                 .filter(|v| !v.is_empty())
                 .filter_map(|v| v.parse().ok())
                 .collect::<Vec<_>>()
         });
+
+    let mut use_levels = base_tooltip.and_then(|el| tooltip_levels(el, use_values.as_deref()?));
 
     let base_key = fragment
         .select(selector!("span.template_sbc"))
@@ -916,22 +1087,26 @@ pub fn parse_description_effects(
 
     let mut results = Vec::new();
     let mut scalings = parse_scalings(description_raw);
-    let base = parse_base_damage(description);
+    let base = parse_base_damage(description).or_else(|| inline_damage_base(description));
+
+    // Percentages already parsed as a stat ratio must not also become a flat
+    // base value or formula.
+    if let (Some(el), Some(values)) = (base_tooltip, &use_values)
+        && el.value().attr("data-bot-key") == Some("%")
+        && scalings.iter().any(|s| s.has_values(values, 0.01))
+    {
+        use_formula = None;
+        use_values = None;
+        use_levels = None;
+    }
 
     let mut main_scalings = Vec::new();
     let mut extras = Vec::new();
-
     let mut kept_primary_contextual = false;
+
     for scaling in scalings.drain(..) {
         if scaling.should_promote_to_separate_effect(description) {
             extras.push(scaling);
-            continue;
-        }
-
-        if (use_formula.is_some() || use_values.is_some())
-            && matches!(scaling, Scaling::BasedOnLevel { .. })
-            && should_drop_based_on_level_as_base_duplicate(scaling.debug_str())
-        {
             continue;
         }
 
@@ -960,6 +1135,7 @@ pub fn parse_description_effects(
         scalings: main_scalings,
         use_formula,
         use_values,
+        use_levels,
         base,
     };
 
@@ -1001,11 +1177,40 @@ pub fn parse_description_effects(
     Ok(results)
 }
 
+/// Flat damage written inside prose, after removing its parenthesized scalings.
+/// This avoids taking an earlier movement-speed table as Mordekaiser's base,
+/// or a later slow table as Bard's base.
+fn inline_damage_base(description: &str) -> Option<Vec<f64>> {
+    static DAMAGE_RE: LazyLock<Regex> = LazyLock::new(|| {
+        Regex::new(r"(?i)\b(?:deals?|dealing|dealt)(?:\s+them)?\s*「?\s*(-?\d+(?:\.\d+)?)\s+(?:(?:bonus|total|additional|modified)\s+)*(?:magic|physical|true)\s+damage\b").unwrap()
+    });
+
+    let text = normalize_text(&remove_nested_scalings(description));
+    let value = DAMAGE_RE.captures(&text)?.get(1)?.as_str().parse().ok()?;
+    Some(vec![value])
+}
+
 pub fn parse_base_damage(text: &str) -> Option<Vec<f64>> {
     static LEADING_VALUES_RE: LazyLock<Regex> =
         LazyLock::new(|| Regex::new(r"^-?\d+(?:\.\d+)?%?(?:\s*/\s*-?\d+(?:\.\d+)?%?)+").unwrap());
 
+    // A single value is only a base when it is followed by its scalings alone,
+    // as in "5 (+ 30% AP)", since numbers also start sentences and durations
+    static SINGLE_VALUE_RE: LazyLock<Regex> =
+        LazyLock::new(|| Regex::new(r"^-?\d+(?:\.\d+)?\s*\(\+").unwrap());
+
     let text = normalize_text(text);
+
+    if !LEADING_VALUES_RE.is_match(&text) && SINGLE_VALUE_RE.is_match(&text) {
+        let (value, rest) = text.split_once(|c: char| c.is_whitespace() || c == '(')?;
+        let rest = strip_leading_non_base_suffixes(&format!("({rest}"));
+
+        return match rest.is_empty() {
+            true => Some(vec![value.parse().ok()?]),
+            false => None,
+        };
+    }
+
     let matched = LEADING_VALUES_RE.find(&text)?;
     let seq = matched.as_str();
     let remainder = strip_leading_non_base_suffixes(text[matched.end()..].trim());
@@ -1172,12 +1377,15 @@ pub fn parse_scalings(input_raw: &str) -> Vec<Scaling> {
 
     for raw in raws {
         let scaling = Scaling::parse(&raw);
+
         if !matches!(scaling, Scaling::Other { .. }) {
             out.push(scaling);
+
             continue;
         }
 
         let fallback = Scaling::from_non_nested(&raw);
+
         if !matches!(fallback, Scaling::Other { .. }) {
             out.push(fallback);
         }
@@ -1187,8 +1395,97 @@ pub fn parse_scalings(input_raw: &str) -> Vec<Scaling> {
     out.extend(Scaling::nested_range_percent_attr_anywhere(&stripped_text));
     out.extend(Scaling::range_percent_attr_anywhere(&stripped_text));
 
+    // Ratios like "6% (+ 3% per 100 AP) of target's maximum health" are split
+    // above into two unrelated terms that get added together. Replace them by
+    // a single nested scaling where the inner terms increase the ratio instead
+    for (nested, parts) in nested_ratio_scalings(input_raw) {
+        out.retain(|scaling| !parts.iter().any(|part| part.same_term(scaling)));
+        out.push(nested);
+    }
+
     vec_dedup(&mut out);
     dedup_scalings_semantic(&mut out);
+    out
+}
+
+/// Finds ratios of a target's health that are increased by scalings placed between
+/// the ratio and its target, outside of any parenthesized group, returning the nested
+/// scaling and the separate terms that the generic parsing produces for it. The ratio
+/// is either given by rank, as in "6 / 7 / 8%", or by level, as in "6% - 12% (based
+/// on level)", whose values per level are read from the tooltip in `raw`
+fn nested_ratio_scalings(raw: &str) -> Vec<(Scaling, Vec<Scaling>)> {
+    static NESTED_RATIO_RE: LazyLock<Regex> = LazyLock::new(|| {
+        Regex::new(
+            r"(?i)(-?\d+(?:\.\d+)?%?\s*-\s*-?\d+(?:\.\d+)?%\s*\(based on level\)|-?\d+(?:\.\d+)?(?:\s*/\s*-?\d+(?:\.\d+)?)*%)\s*((?:\(\+[^()]*\)\s*)+)(of (?:the )?(?:target's|their|its) [a-z ]*?health)",
+        )
+        .unwrap()
+    });
+
+    let text = normalize_text(&html_to_text(raw));
+    let text = text.as_str();
+    let mut out = Vec::new();
+
+    for caps in NESTED_RATIO_RE.captures_iter(text) {
+        let (Some(whole), Some(values), Some(blocks), Some(target)) =
+            (caps.get(0), caps.get(1), caps.get(2), caps.get(3))
+        else {
+            continue;
+        };
+
+        // Matches inside another group are already handled by `Scaling::parse`
+        let depth = text[..whole.start()]
+            .chars()
+            .fold(0i32, |depth, ch| match ch {
+                '(' => depth + 1,
+                ')' => depth - 1,
+                _ => depth,
+            });
+
+        if depth != 0 {
+            continue;
+        }
+
+        let target = target.as_str().replace("their", "target's");
+
+        let outer = match values.as_str().ends_with("(based on level)") {
+            true => match level_tooltip_arms(raw, values.as_str()) {
+                Some(arms) => Scaling::BasedOnLevel {
+                    level_var: CtxVar::Level,
+                    arms,
+                    debug: target.clone(),
+                    ctx_var: assign_ctx_var(&target),
+                },
+                None => continue,
+            },
+            false => Scaling::from_non_nested(&format!("{} {target}", values.as_str())),
+        };
+
+        let inner = find_scaling_blocks(blocks.as_str())
+            .iter()
+            .map(|block| Scaling::parse(block))
+            .collect::<Vec<_>>();
+
+        if matches!(outer, Scaling::Other { .. })
+            || inner.is_empty()
+            || inner.iter().any(|s| matches!(s, Scaling::Other { .. }))
+        {
+            continue;
+        }
+
+        let parts = std::iter::once(outer.clone())
+            .chain(inner.iter().cloned())
+            .collect();
+
+        out.push((
+            Scaling::Nested {
+                raw: whole.as_str().to_string(),
+                outer: Box::new(outer),
+                inner,
+            },
+            parts,
+        ));
+    }
+
     out
 }
 
@@ -1292,49 +1589,92 @@ fn normalize_candidate_list(list: &mut Vec<String>) {
     *list = out;
 }
 
-fn local_debug_window(raw_text: &str, matched_text: &str) -> String {
-    let raw_chars = raw_text.chars().collect::<Vec<_>>();
-    let matched_chars = matched_text.chars().collect::<Vec<_>>();
+/// Variable of the shortest leading phrase of `text` that names one, so that in
+/// "AD bonus physical damage" only "AD" is considered
+fn leading_ctx_var(text: &str) -> CtxVar {
+    let words = text.split_whitespace().take(6).collect::<Vec<_>>();
 
-    let found = raw_chars
-        .windows(matched_chars.len())
-        .position(|w| w == matched_chars.as_slice());
-
-    let Some(pos) = found else {
-        return raw_text.to_string();
-    };
-
-    let start = pos.saturating_sub(80);
-    let end = (pos + matched_chars.len() + 80).min(raw_chars.len());
-    let local = raw_chars[start..end].iter().collect::<String>();
-    normalize_text(&local.replacen(matched_text, "", 1))
+    (1..=words.len())
+        .map(|n| assign_ctx_var(&words[..n].join(" ")))
+        .find(|ctx_var| *ctx_var != CtxVar::Unknown)
+        .unwrap_or(CtxVar::Unknown)
 }
 
-fn debug_has_real_target(debug: &str) -> bool {
-    let text = debug.to_ascii_lowercase();
+/// Text that follows `matched_text`, after skipping parenthesized groups. The
+/// variable of a value is usually written right after it, as in
+/// "60% / 70% / 80% (based on level) (+ 0% - 80% (based on ...)) AD"
+/// Values per level of the "based on level" tooltip whose text is `tooltip_text`,
+/// as ratios when the tooltip shows percentages
+fn level_tooltip_arms(raw: &str, tooltip_text: &str) -> Option<Vec<LevelArm>> {
+    let fragment = Html::parse_fragment(raw);
+    let wanted = normalize_text(tooltip_text);
 
-    [
-        "maximum health",
-        "current health",
-        "missing health",
-        "missing mana",
-        "ability power",
-        "attack damage",
-        "bonus ad",
-        "bonus attack damage",
-        "bonus movement speed",
-        "bonus attack speed",
-        "critical strike chance",
-        "armor",
-        "magic resist",
-        "magic resistance",
-        "of target",
-        "of the target",
-        "against monsters",
-        "against minions",
-    ]
-    .iter()
-    .any(|pat| text.contains(pat))
+    let tooltip = fragment
+        .select(selector!("span.pp-tooltip"))
+        .find(|el| normalize_text(&clean_text(&el.text().collect::<String>())) == wanted)?;
+
+    let factor = match tooltip.value().attr("data-bot-key") {
+        Some("%") => 0.01,
+        _ => 1.0,
+    };
+
+    // Display options may follow the values, as in "...;20.12|displayMaxColumn=18"
+    let values = tooltip
+        .value()
+        .attr("data-bot-values")?
+        .split('|')
+        .next()?
+        .split(';')
+        .map(|v| v.trim().parse::<f64>().ok().map(|v| v * factor))
+        .collect::<Option<Vec<_>>>()?;
+
+    let starts = match tooltip_levels(tooltip, &values) {
+        Some(levels) => levels,
+        None => (1..=values.len() as u8).collect(),
+    };
+
+    Some(build_level_arms(&starts, &values))
+}
+
+fn following_text(raw_text: &str, matched_text: &str) -> String {
+    let Some(pos) = raw_text.find(matched_text) else {
+        return String::new();
+    };
+
+    let mut rest = raw_text[pos + matched_text.len()..].trim_start();
+
+    loop {
+        rest = rest.trim_start_matches(['「', '」', ' ']).trim_start();
+
+        if !rest.starts_with('(') {
+            break;
+        }
+
+        let mut depth = 0usize;
+        let mut end = rest.len();
+
+        for (i, ch) in rest.char_indices() {
+            match ch {
+                '(' => depth += 1,
+                ')' => {
+                    depth -= 1;
+                    if depth == 0 {
+                        end = i + 1;
+                        break;
+                    }
+                }
+                _ => {}
+            }
+        }
+
+        rest = &rest[end..];
+    }
+
+    rest.split(['.', ',', ';', '(', ')'])
+        .next()
+        .unwrap_or_default()
+        .trim()
+        .to_string()
 }
 
 fn should_drop_range_percent_attr(debug: &str) -> bool {
@@ -1342,15 +1682,11 @@ fn should_drop_range_percent_attr(debug: &str) -> bool {
     text == "based on level" || text.trim().is_empty()
 }
 
-fn should_drop_based_on_level_as_base_duplicate(debug: &str) -> bool {
-    !debug_has_real_target(debug)
-}
-
 fn dedup_scalings_semantic(list: &mut Vec<Scaling>) {
     let mut out = Vec::<Scaling>::new();
 
     for scaling in std::mem::take(list) {
-        if out.contains(&scaling) {
+        if out.iter().any(|existing| existing.same_term(&scaling)) {
             continue;
         }
 
@@ -1480,7 +1816,26 @@ fn remove_nested_scalings(input: &str) -> String {
     out
 }
 
-fn build_level_arms(starts: &[u8], values: &[f64]) -> Vec<LevelArm> {
+/// Levels at which each value of a tooltip starts, if the tooltip is based on
+/// level and gives one starting level per value
+pub fn tooltip_levels(tooltip: scraper::ElementRef, values: &[f64]) -> Option<Vec<u8>> {
+    let text = tooltip.text().collect::<String>().to_ascii_lowercase();
+
+    if !text.contains("based on level") {
+        return None;
+    }
+
+    let levels = tooltip
+        .value()
+        .attr("data-top-values")?
+        .split(';')
+        .map(|v| v.trim().parse::<u8>().ok())
+        .collect::<Option<Vec<_>>>()?;
+
+    (levels.len() == values.len() && levels.len() > 1).then_some(levels)
+}
+
+pub fn build_level_arms(starts: &[u8], values: &[f64]) -> Vec<LevelArm> {
     let mut out = Vec::new();
 
     for (i, (&start, &value)) in starts.iter().zip(values.iter()).enumerate() {
@@ -1524,3 +1879,178 @@ pub fn vec_dedup<T: PartialEq>(list: &mut Vec<T>) {
 }
 
 pub const SUFFIXES: [&str; 10] = ["", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn level_scalings_bind_to_the_stat_inside_their_group() {
+        let raw = r#"deals <span class="pp-tooltip" data-bot-values="68;72;77" data-top-values="1;2;3">68 - 77 (based on level)</span> (+ 60% bonus AD) (+ <span class="pp-tooltip" data-bot-values="70;80;90;100" data-top-values="1;6;11;16" data-bot-key="%">70% / 80% / 90% / 100% (based on level)</span> AP) magic damage"#;
+        let scalings = parse_scalings(raw);
+
+        let levels = scalings
+            .iter()
+            .filter_map(|scaling| match scaling {
+                Scaling::BasedOnLevel { arms, ctx_var, .. } => Some((arms, ctx_var)),
+                _ => None,
+            })
+            .collect::<Vec<_>>();
+
+        assert_eq!(levels.len(), 1, "{scalings:?}");
+        assert_eq!(*levels[0].1, CtxVar::AbilityPower);
+        assert_eq!(
+            levels[0].0.iter().map(LevelArm::value).collect::<Vec<_>>(),
+            [0.7, 0.8, 0.9, 1.0]
+        );
+        assert!(scalings.iter().any(|s| matches!(
+            s,
+            Scaling::Simple {
+                value: 0.6,
+                ctx_var: CtxVar::BonusAd
+            }
+        )));
+
+        let effects = parse_description_effects(0, &html_to_text(raw), raw).unwrap();
+        assert!(
+            effects
+                .iter()
+                .flat_map(|(_, e)| &e.scalings)
+                .any(|s| matches!(
+                    s,
+                    Scaling::BasedOnLevel {
+                        ctx_var: CtxVar::AbilityPower,
+                        ..
+                    }
+                )),
+            "{effects:?}"
+        );
+    }
+
+    #[test]
+    fn level_scalings_are_not_duplicated_by_other_scaling_blocks() {
+        let raw = r#"gains <span class="pp-tooltip" data-bot-values="3;6;9" data-top-values="1;6;11" data-bot-key="%">3% / 6% / 9% (based on level)</span> bonus movement speed and deals 5 (+ 30% AP) magic damage"#;
+        let scalings = parse_scalings(raw);
+
+        assert_eq!(
+            scalings
+                .iter()
+                .filter(|s| matches!(s, Scaling::BasedOnLevel { .. }))
+                .count(),
+            1,
+            "{scalings:?}"
+        );
+    }
+
+    #[test]
+    fn monster_caps_are_not_used_as_passive_base_damage() {
+        let raw = r#"deals 1% (+ 2.7% per 100 AP) of the target's maximum health, capped at <span class="pp-tooltip" data-useformula="90+10*x" data-bot-values="100;110;120">100 - 120 (based on level)</span> against monsters"#;
+        let effects = parse_description_effects(0, &html_to_text(raw), raw).unwrap();
+
+        assert!(effects[0].1.use_formula.is_none(), "{effects:?}");
+        assert!(effects[0].1.use_values.is_none(), "{effects:?}");
+        assert!(
+            effects[0]
+                .1
+                .scalings
+                .iter()
+                .any(|s| matches!(s, Scaling::Nested { .. }))
+        );
+    }
+
+    #[test]
+    fn movement_speed_tooltips_are_not_used_as_passive_base_damage() {
+        let raw = r#"gains <span class="pp-tooltip" data-bot-values="3;6;9" data-top-values="1;6;11" data-bot-key="%">3% / 6% / 9% (based on level)</span> bonus movement speed and deals 5 (+ 30% AP) magic damage"#;
+        let effects = parse_description_effects(0, &html_to_text(raw), raw).unwrap();
+
+        assert!(effects[0].1.use_values.is_none(), "{effects:?}");
+        assert_eq!(effects[0].1.base, Some(vec![5.0]));
+    }
+
+    #[test]
+    fn per_100_scalings_increase_the_ratio_they_belong_to() {
+        let raw = "7 / 7.5 / 8 / 8.5 / 9% <span>(+ 2.5% per 100 <b>bonus</b> AD)</span> of target's <b>maximum</b> health";
+        let scalings = parse_scalings(raw);
+
+        assert_eq!(scalings.len(), 1, "{scalings:?}");
+        let Scaling::Nested { outer, inner, .. } = &scalings[0] else {
+            panic!("expected a nested scaling: {scalings:?}");
+        };
+
+        assert!(matches!(
+            outer.as_ref(),
+            Scaling::Ranked {
+                ctx_var: CtxVar::EnemyMaxHealth,
+                ..
+            }
+        ));
+        assert!(matches!(
+            inner.as_slice(),
+            [Scaling::Per100 {
+                ctx_var: CtxVar::BonusAd,
+                ..
+            }]
+        ));
+    }
+
+    #[test]
+    fn level_ratios_use_the_tooltip_values_per_level() {
+        let raw = r#"equal to <span class="pp-tooltip" data-bot-values="6;9;12" data-top-values="1;7;13" data-bot-key="%">6% – 12% (based on level)</span> <span>(+ 2% per 100 AP)</span> of their maximum health"#;
+        let scalings = parse_scalings(raw);
+
+        let [Scaling::Nested { outer, inner, .. }] = scalings.as_slice() else {
+            panic!("expected a single nested scaling: {scalings:?}");
+        };
+
+        let Scaling::BasedOnLevel { arms, ctx_var, .. } = outer.as_ref() else {
+            panic!("expected a level ratio: {outer:?}");
+        };
+
+        assert_eq!(*ctx_var, CtxVar::EnemyMaxHealth);
+        assert_eq!(
+            arms.iter().map(LevelArm::value).collect::<Vec<_>>(),
+            [0.06, 0.09, 0.12]
+        );
+        assert!(matches!(
+            inner.as_slice(),
+            [Scaling::Per100 {
+                ctx_var: CtxVar::AbilityPower,
+                ..
+            }]
+        ));
+    }
+
+    #[test]
+    fn ratios_inside_groups_are_left_to_the_group() {
+        let text = "50 / 80 (+ 8% (+ 3% per 100 AP) of target's missing health)";
+        assert!(nested_ratio_scalings(text).is_empty());
+    }
+
+    #[test]
+    fn alternative_representations_are_removed() {
+        let html = r#"a<span class="flipText1 active">「 x <span>1</span> 」</span><span class="flipText2">「 y <span>2</span> 」</span>b"#;
+        let cleaned = remove_elements_with_class(html, "flipText2");
+
+        assert!(cleaned.contains("x <span>1</span>"));
+        assert!(!cleaned.contains('y'));
+        assert!(cleaned.ends_with('b'));
+    }
+
+    #[test]
+    fn variables_come_from_the_text_after_the_value() {
+        let text = "deal 60% / 70% / 80% (based on level) (+ 0% - 80% (based on critical strike chance)) AD bonus physical damage";
+        let following = following_text(text, "60% / 70% / 80% (based on level)");
+
+        assert_eq!(leading_ctx_var(&following), CtxVar::AttackDamage);
+    }
+
+    #[test]
+    fn unknown_variables_are_explicit() {
+        assert_eq!(assign_ctx_var("of target's missing mana"), CtxVar::Unknown);
+        assert_eq!(
+            assign_ctx_var("bonus attack speed"),
+            CtxVar::BonusAttackSpeed
+        );
+        assert_eq!(assign_ctx_var("the marked enemy"), CtxVar::Unknown);
+    }
+}

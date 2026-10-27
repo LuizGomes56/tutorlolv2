@@ -10,6 +10,7 @@ pub mod champions;
 pub mod client;
 pub mod formula;
 pub mod items;
+pub mod lock;
 pub mod parser;
 pub mod render;
 pub mod riot;
@@ -156,5 +157,6 @@ pub fn remove_file(path: impl AsRef<Path>) {
 pub async fn run() -> MayFail {
     champions::run().await?;
     items::run().await?;
-    runes::run().await
+    runes::run().await?;
+    lock::write()
 }
