@@ -234,6 +234,14 @@ impl ItemId {
         self.data().maps
     }
 
+    pub const fn builds_from(&self) -> &'static [Self] {
+        self.data().builds_from
+    }
+
+    pub const fn builds_into(&self) -> &'static [Self] {
+        self.data().builds_into
+    }
+
     pub const fn has_map(&self, game_map: GameMap) -> bool {
         let maps = self.maps();
         let mut i = 0;

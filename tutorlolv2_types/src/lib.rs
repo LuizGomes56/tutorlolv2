@@ -667,16 +667,6 @@ impl Position {
         *self as _
     }
 
-    pub const fn name(&self) -> &'static str {
-        match self {
-            Position::Top => "Top",
-            Position::Jungle => "Jungle",
-            Position::Middle => "Mid",
-            Position::Bottom => "Adc / Bottom",
-            Position::Support => "Support",
-        }
-    }
-
     pub const fn role(&self) -> &'static str {
         match self {
             Position::Top => "top",
@@ -861,6 +851,7 @@ pub enum Attrs {
 
 impl FromStr for DamageType {
     type Err = Infallible;
+
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match s {
             "PHYSICAL_DAMAGE" | "Physical" => Ok(DamageType::Physical),

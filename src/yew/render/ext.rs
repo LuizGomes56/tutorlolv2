@@ -3,8 +3,8 @@ use crate::{
     yew::render::{FORMULA_RENDERER, FormulaRenderer, MayFail},
 };
 use alloc::{format, string::String};
-use tutorlolv2_codec::{Class, Highlighter};
-use tutorlolv2_types::AttackType;
+use tutorlolv2_codec::{Bracket, Class, Highlighter};
+use tutorlolv2_types::{AttackType, ComboElement};
 
 pub const TYPE_INDEX: [(AttackType, DamageIndex); 4] = [
     (AttackType::Melee, DamageIndex::Min),
@@ -27,6 +27,26 @@ impl ChampionId {
             let name = metadata.kind.discriminant().to_lowercase();
             let damage = FORMULA_RENDERER.champion_formula(*self, metadata.kind)?;
             h.html_field(&name, &damage);
+        }
+
+        for (i, combo) in self.combos().iter().enumerate() {
+            let values = combo.iter().map(|c| match c {
+                ComboElement::Ability(ability_id) => {
+                    let mut h = Highlighter::new();
+
+                    h.push(Class::Type, ability_id.as_char())
+                        .bracket(Bracket::LParen)
+                        .push(Class::Constant, ability_id.ability_name())
+                        .bracket(Bracket::RParen);
+
+                    h.into_fragment()
+                }
+                ComboElement::Attack => Highlighter::span(Class::Constant, "Attack"),
+            });
+
+            let name = format!("combo_{}", i + 1);
+
+            h.array_field(&name, Class::Constant, values);
         }
 
         h.finish_struct();
@@ -89,7 +109,9 @@ impl ItemId {
             .tuple_field("stats", Class::Number, self.stats())
             .field("tier", Class::Number, self.tier())
             .field("purchasable", Class::Boolean, self.purchasable())
-            .array_field("maps", Class::Constant, self.maps());
+            .array_field("maps", Class::Constant, self.maps())
+            .array_field("recipe", Class::Constant, self.builds_from())
+            .array_field("builds", Class::Constant, self.builds_into());
 
         if self.deals_damage() {
             h.field("damage_type", Class::Constant, self.damage_type());

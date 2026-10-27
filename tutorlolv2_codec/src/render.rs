@@ -859,12 +859,26 @@ impl Highlighter {
             .field_end()
     }
 
-    pub fn array_field<T: Display>(&mut self, name: &str, class: Class, values: &[T]) -> &mut Self {
-        let values = values.iter().map(ToString::to_string).collect::<Vec<_>>();
+    pub fn array_field<T: Display>(
+        &mut self,
+        name: &str,
+        class: Class,
+        values: impl IntoIterator<Item = T>,
+    ) -> &mut Self {
+        let values = values
+            .into_iter()
+            .map(|v| v.to_string())
+            .collect::<Vec<_>>();
+
         let width = values.iter().map(|v| v.chars().count()).sum();
 
         self.list_field(name, &values, width, |h, value| {
-            h.push(class, value);
+            // If the field already has Html tags, we render as raw
+            if value.contains("</span>") {
+                h.raw(value);
+            } else {
+                h.push(class, value);
+            }
         })
     }
 
