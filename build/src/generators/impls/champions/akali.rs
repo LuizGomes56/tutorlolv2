@@ -27,7 +27,7 @@ impl Generator for Akali {
             ],
         )
         .combo([
-            Ability(R(Min)),
+            Ability(R(_1)),
             Ability(E(Min)),
             Ability(E(Min)),
             Attack,
@@ -35,7 +35,7 @@ impl Generator for Akali {
             Ability(R(Min)),
         ])?
         .combo([
-            Ability(R(Min)),
+            Ability(R(_1)),
             Ability(E(Min)),
             Ability(Q(Void)),
             Ability(E(Min)),
@@ -43,7 +43,7 @@ impl Generator for Akali {
             Ability(R(Min)),
         ])?
         .combo([
-            Ability(R(Min)),
+            Ability(R(_1)),
             Attack,
             Ability(Q(Void)),
             Attack,
@@ -55,7 +55,7 @@ impl Generator for Akali {
         ])?
         .combo([Ability(E(Min)), Ability(E(Min)), Ability(Q(Void)), Attack])?
         .combo([
-            Ability(R(Min)),
+            Ability(R(_1)),
             Ability(E(Min)),
             Attack,
             Ability(Q(Void)),

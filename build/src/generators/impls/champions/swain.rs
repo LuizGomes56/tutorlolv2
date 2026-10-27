@@ -21,7 +21,7 @@ impl Generator for Swain {
             Ability(R(Void)),
             Ability(E(Void)),
             Attack,
-            Ability(R(Void)),
+            Ability(R(_1)),
         ])?
         .combo([
             Ability(E(Void)),
@@ -31,7 +31,7 @@ impl Generator for Swain {
             Ability(Q(Void)),
             Attack,
             Attack,
-            Ability(R(Void)),
+            Ability(R(_1)),
         ])?
         .combo([
             Ability(R(Void)),
@@ -41,7 +41,7 @@ impl Generator for Swain {
             Attack,
             Ability(Q(Void)),
             Attack,
-            Ability(R(Void)),
+            Ability(R(_1)),
         ])?
         .combo([
             Ability(W(Void)),
@@ -51,7 +51,7 @@ impl Generator for Swain {
             Ability(Q(Void)),
             Attack,
             Attack,
-            Ability(R(Void)),
+            Ability(R(_1)),
             Attack,
             Ability(Q(Void)),
         ])?

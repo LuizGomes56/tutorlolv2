@@ -29,27 +29,27 @@ impl Generator for Gwen {
                 Ability(R(Min)),
                 Attack,
                 Attack,
-                Ability(R(Min)),
+                Ability(R(_1)),
                 Ability(Q(Max)),
                 Attack,
-                Ability(R(Min)),
+                Ability(R(_2)),
             ])?
             .combo([Attack, Attack, Attack, Attack, Ability(Q(Max)), Attack])?
             .combo([
                 Ability(R(Min)),
                 Attack,
-                Ability(R(Min)),
+                Ability(R(_1)),
                 Attack,
-                Ability(R(Min)),
+                Ability(R(_2)),
             ])?
             .combo([
                 Ability(R(Min)),
                 Attack,
                 Attack,
-                Ability(R(Min)),
+                Ability(R(_1)),
                 Attack,
                 Attack,
-                Ability(R(Min)),
+                Ability(R(_2)),
                 Ability(Q(Max)),
                 Attack,
             ])?
