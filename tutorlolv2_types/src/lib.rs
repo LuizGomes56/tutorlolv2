@@ -191,6 +191,7 @@ impl AbilityId {
     Serialize,
     Deserialize,
     EnumCount,
+    strum::Display,
     strum::EnumIter,
     strum::VariantNames,
     strum::FromRepr,
@@ -260,42 +261,6 @@ impl FromStr for StatName {
     }
 }
 
-impl StatName {
-    pub const fn name(&self) -> &'static str {
-        match self {
-            Self::AbilityHaste => "Ability Haste",
-            Self::AbilityPower => "Ability Power",
-            Self::AdaptiveForce => "Adaptive Force",
-            Self::Armor => "Armor",
-            Self::ArmorPenetration => "Armor Penetration",
-            Self::AttackDamage => "Attack Damage",
-            Self::AttackSpeed => "Attack Speed",
-            Self::BaseHealthRegen => "Base Health Regen",
-            Self::BaseManaRegen => "Base Mana Regen",
-            Self::CritChance => "Crit Chance",
-            Self::CritDamage => "Crit Damage",
-            Self::GoldPer10Seconds => "Gold / 10s",
-            Self::HealAndShieldPower => "Heal & Shield Power",
-            Self::Health => "Health",
-            Self::Lethality => "Lethality",
-            Self::LifeSteal => "Life Steal",
-            Self::MagicPenetration | Self::MagicPenetrationPercent => "Magic Penetration",
-            Self::MagicResist => "Magic Resist",
-            Self::Mana => "Mana",
-            Self::MoveSpeed | Self::MoveSpeedPercent => "Move Speed",
-            Self::Omnivamp => "Omnivamp",
-            Self::Tenacity => "Tenacity",
-        }
-    }
-}
-
-impl Display for StatName {
-    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
-        let value = self.name();
-        write!(f, "{value}")
-    }
-}
-
 #[derive(Clone, Copy, Debug, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize)]
 #[cfg_attr(feature = "bake", derive(databake::Bake))]
 #[cfg_attr(feature = "bake", databake(path = tutorlolv2_types))]
@@ -318,41 +283,6 @@ pub struct DevMergeData {
 pub enum ComboElement {
     Ability(AbilityId),
     Attack,
-}
-
-impl AbilityName {
-    pub const fn display(&self) -> Option<&'static str> {
-        match self {
-            AbilityName::_1 => Some("1"),
-            AbilityName::_2 => Some("2"),
-            AbilityName::_3 => Some("3"),
-            AbilityName::_4 => Some("4"),
-            AbilityName::_5 => Some("5"),
-            AbilityName::_6 => Some("6"),
-            AbilityName::_7 => Some("7"),
-            AbilityName::_8 => Some("8"),
-            AbilityName::Min => Some("MIN"),
-            AbilityName::Max => Some("MAX"),
-            AbilityName::Mega => Some("MEGA"),
-            AbilityName::_1Min => Some("1-MIN"),
-            AbilityName::_2Min => Some("2-MIN"),
-            AbilityName::_3Min => Some("3-MIN"),
-            AbilityName::_4Min => Some("4-MIN"),
-            AbilityName::_5Min => Some("5-MIN"),
-            AbilityName::_6Min => Some("6-MIN"),
-            AbilityName::_7Min => Some("7-MIN"),
-            AbilityName::_8Min => Some("8-MIN"),
-            AbilityName::_1Max => Some("1-MAX"),
-            AbilityName::_2Max => Some("2-MAX"),
-            AbilityName::_3Max => Some("3-MAX"),
-            AbilityName::_4Max => Some("4-MAX"),
-            AbilityName::_5Max => Some("5-MAX"),
-            AbilityName::_6Max => Some("6-MAX"),
-            AbilityName::_7Max => Some("7-MAX"),
-            AbilityName::_8Max => Some("8-MAX"),
-            _ => None,
-        }
-    }
 }
 
 #[derive(
@@ -520,7 +450,7 @@ pub enum AttackType {
 }
 
 impl AttackType {
-    fn parse_error(_: &str) -> &'static str {
+    const fn parse_error(_: &str) -> &'static str {
         "No matches when calling AttackType::from_str"
     }
 }
@@ -587,7 +517,7 @@ pub enum AdaptiveType {
 }
 
 impl AdaptiveType {
-    fn parse_error(_: &str) -> &'static str {
+    const fn parse_error(_: &str) -> &'static str {
         "No matches when calling AdaptiveType::from_str"
     }
 
@@ -659,7 +589,7 @@ pub enum Position {
 }
 
 impl Position {
-    fn parse_error(_: &str) -> &'static str {
+    const fn parse_error(_: &str) -> &'static str {
         "No matches when calling Position::from_str"
     }
 
@@ -906,12 +836,12 @@ macro_rules! create_eval_struct {
             }
 
             impl CtxVar {
-                fn parse_error(_: &str) -> &'static str {
+                const fn parse_error(_: &str) -> &'static str {
                     "CtxVar::from_str: Invalid variable provided"
                 }
 
-                pub fn to_snake_case(&self) -> &'static str {
-                    &self.as_var()[4..]
+                pub const fn to_snake_case(&self) -> &'static str {
+                    self.as_var().split_at(4).1
                 }
 
                 pub const fn as_var(&self) -> &'static str {
@@ -931,6 +861,7 @@ macro_rules! create_eval_struct {
 
             impl Index<CtxVar> for Ctx {
                 type Output = f32;
+
                 fn index(&self, index: CtxVar) -> &Self::Output {
                     match index {
                         $(CtxVar::[<$value:camel>] => &self.$value),*

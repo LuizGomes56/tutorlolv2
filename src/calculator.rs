@@ -69,7 +69,6 @@ pub const fn infer_champion_stats(data: InferStats<'_>) -> PlayerStats {
     let data = champion_id.data();
 
     let mut adaptive_force = 0.0;
-
     let mut stat_modifiers = Modifiers::default();
 
     bonus_stats.get_item_bonus_stats(items, &mut stat_modifiers, &mut adaptive_force);
@@ -281,6 +280,7 @@ impl PlayerStats {
         }
 
         let mut i = 0;
+
         while i < exceptions.len() {
             let item_exception = exceptions[i];
             let stacks = item_exception.stacks();
@@ -397,6 +397,7 @@ impl PlayerStats {
                     let r = ability_levels.r;
                     let min = 0;
                     let max = 3;
+
                     (if r < min {
                         min
                     } else if r > max {
