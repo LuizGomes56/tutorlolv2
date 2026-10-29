@@ -17,11 +17,11 @@ pub fn state(pool: PgPool) -> Data<AppState> {
 }
 
 pub fn encode<T: bincode::Encode>(value: T) -> Vec<u8> {
-    bincode::encode_to_vec(value, bincode::config::standard()).unwrap()
+    bincode::encode_to_vec(value, tutorlolv2_types::BINCODE_CONFIG).unwrap()
 }
 
 pub fn decode<T: bincode::Decode<()>>(bytes: &[u8]) -> T {
-    let (value, used) = bincode::decode_from_slice(bytes, bincode::config::standard()).unwrap();
+    let (value, used) = bincode::decode_from_slice(bytes, tutorlolv2_types::BINCODE_CONFIG).unwrap();
     assert_eq!(used, bytes.len());
     value
 }

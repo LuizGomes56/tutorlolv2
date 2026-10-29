@@ -96,7 +96,7 @@ pub fn derive_chunk(
         return Err(invalid("X-Content-Sha256 doesn't match the chunk"));
     }
 
-    let config = bincode::config::standard().with_limit::<MAX_CHUNK_DECOMPRESSED>();
+    let config = tutorlolv2_types::BINCODE_CONFIG.with_limit::<MAX_CHUNK_DECOMPRESSED>();
     let (chunk, used): (RawChunk, _) = bincode::decode_from_slice(&raw, config).map_err(invalid)?;
 
     if used != raw.len() {
@@ -160,7 +160,7 @@ fn derive_frames(chunk: &RawChunk) -> Option<Vec<u8>> {
                 format: FRAMES_FORMAT,
                 frames,
             },
-            bincode::config::standard(),
+            tutorlolv2_types::BINCODE_CONFIG,
         )
         .ok()
     }

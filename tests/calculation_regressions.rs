@@ -551,7 +551,7 @@ fn every_simulated_purchase_has_one_extra_item_pair() {
 
 #[test]
 fn backend_decoding_rejects_zero_level_but_accepts_255() {
-    let config = bincode::config::standard();
+    let config = tutorlolv2_types::BINCODE_CONFIG;
     // OwnedInputMinData's wire order, with a raw byte for an invalid level.
     let zero = (
         None::<PlayerStats>,

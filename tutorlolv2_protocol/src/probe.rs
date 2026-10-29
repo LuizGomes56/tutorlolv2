@@ -80,7 +80,7 @@ pub fn fingerprint(p: &Probe) -> [u8; 32] {
 
     let bytes = bincode::encode_to_vec(
         (&p.game_mode, p.map_number, &roster),
-        bincode::config::standard(),
+        tutorlolv2_types::BINCODE_CONFIG,
     )
     .expect("encoding into a Vec cannot fail");
 

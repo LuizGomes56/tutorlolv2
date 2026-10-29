@@ -177,7 +177,7 @@ const PRIVATE: ShareState = ShareState {
 };
 
 fn decode_probe(bytes: &[u8]) -> Option<Probe> {
-    bincode::decode_from_slice(bytes, bincode::config::standard())
+    bincode::decode_from_slice(bytes, tutorlolv2_types::BINCODE_CONFIG)
         .ok()
         .map(|(probe, _)| probe)
 }
@@ -188,7 +188,7 @@ async fn insert_recording(
     request: &StartSession,
 ) -> sqlx::Result<Uuid> {
     let probe = &request.probe;
-    let probe_bytes = bincode::encode_to_vec(probe, bincode::config::standard())
+    let probe_bytes = bincode::encode_to_vec(probe, tutorlolv2_types::BINCODE_CONFIG)
         .expect("encoding into a Vec cannot fail");
 
     let champion = probe
@@ -406,7 +406,7 @@ pub async fn upload_chunk(
     }
 
     let last = &derived.last;
-    let last_probe = bincode::encode_to_vec(&last.probe, bincode::config::standard())
+    let last_probe = bincode::encode_to_vec(&last.probe, tutorlolv2_types::BINCODE_CONFIG)
         .map_err(ErrorInternalServerError)?;
 
     let coverage = (derived.last_game_time - derived.first_game_time + 1.0).round() as i32;

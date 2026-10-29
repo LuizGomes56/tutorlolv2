@@ -1,5 +1,5 @@
 //! Request and response bodies of the recording endpoints (spec §10.2).
-//! Every body is bincode with `bincode::config::standard()`.
+//! Every body is bincode with `tutorlolv2_types::BINCODE_CONFIG`.
 
 use crate::{EndReason, GameResult, Probe, Region, ShareMode};
 use alloc::string::String;

@@ -10,11 +10,11 @@ pub type Response = actix_web::Result<HttpResponse>;
 pub const OCTET_STREAM: &str = "application/octet-stream";
 
 pub fn request_config() -> impl Config {
-    bincode::config::standard().with_limit::<1_048_576>()
+    tutorlolv2_types::BINCODE_CONFIG.with_limit::<1_048_576>()
 }
 
 pub fn respond(data: impl Encode) -> Response {
-    let bytes = bincode::encode_to_vec(data, bincode::config::standard())
+    let bytes = bincode::encode_to_vec(data, tutorlolv2_types::BINCODE_CONFIG)
         .map_err(ErrorInternalServerError)?;
 
     Ok(HttpResponse::Ok().content_type(OCTET_STREAM).body(bytes))

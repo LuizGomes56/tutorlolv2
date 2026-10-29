@@ -161,9 +161,9 @@ mod tests {
             .into_boxed_slice(),
             ..Default::default()
         };
-        let bytes = bincode::encode_to_vec(&request, bincode::config::standard()).unwrap();
+        let bytes = bincode::encode_to_vec(&request, tutorlolv2_types::BINCODE_CONFIG).unwrap();
         let (decoded, consumed): (OwnedInputGame, _) =
-            bincode::decode_from_slice(&bytes, bincode::config::standard()).unwrap();
+            bincode::decode_from_slice(&bytes, tutorlolv2_types::BINCODE_CONFIG).unwrap();
         assert_eq!(consumed, bytes.len());
         let prepared = decoded.prepare();
         let output = crate::calculator::calculator(prepared.as_input());

@@ -9,7 +9,7 @@ fn open_enum_roundtrips_known_and_unknown() {
         let json = serde_json::to_string(&mode).unwrap();
         assert_eq!(serde_json::from_str::<GameMode>(&json).unwrap(), mode);
 
-        let config = bincode::config::standard();
+        let config = tutorlolv2_types::BINCODE_CONFIG;
         let bytes = bincode::encode_to_vec(&mode, config).unwrap();
         let (decoded, used): (GameMode, _) = bincode::decode_from_slice(&bytes, config).unwrap();
         assert_eq!((decoded, used), (mode, bytes.len()));
@@ -19,7 +19,7 @@ fn open_enum_roundtrips_known_and_unknown() {
 
 #[test]
 fn open_enum_bincode_is_the_string() {
-    let config = bincode::config::standard();
+    let config = tutorlolv2_types::BINCODE_CONFIG;
     assert_eq!(
         bincode::encode_to_vec(GameMode::Kiwi, config).unwrap(),
         bincode::encode_to_vec(String::from("KIWI"), config).unwrap()

@@ -18,7 +18,7 @@ fn chunk(seq: u32, snapshots: &[(i64, f32)]) -> RawChunk {
 #[test]
 fn raw_chunk_roundtrips_through_bincode() {
     let original = chunk(7, &[(1000, 1.0), (2000, 2.0)]);
-    let config = bincode::config::standard();
+    let config = tutorlolv2_types::BINCODE_CONFIG;
     let bytes = bincode::encode_to_vec(&original, config).unwrap();
     let (decoded, used): (RawChunk, _) = bincode::decode_from_slice(&bytes, config).unwrap();
     assert_eq!(used, bytes.len());

@@ -3,6 +3,9 @@
 
 extern crate alloc;
 
+/// Shared binary serialization settings; callers may add decoding size limits.
+pub const BINCODE_CONFIG: bincode::config::Configuration = bincode::config::standard();
+
 mod entity;
 pub use entity::{EntityKind, Tag};
 

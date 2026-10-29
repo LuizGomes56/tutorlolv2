@@ -134,7 +134,7 @@ fn derive_builds_decodable_frames() {
 
     let mut frames = Vec::new();
     brotli::Decompressor::new(&derived.frames_br[..], 4096).read_to_end(&mut frames).unwrap();
-    let (decoded, used): (FrameChunk, _) = bincode::borrow_decode_from_slice(&frames, bincode::config::standard()).unwrap();
+    let (decoded, used): (FrameChunk, _) = bincode::borrow_decode_from_slice(&frames, tutorlolv2_types::BINCODE_CONFIG).unwrap();
     assert_eq!(used, frames.len());
     assert_eq!(decoded.format, FRAMES_FORMAT);
     assert_eq!(decoded.frames.len(), 5);
@@ -301,7 +301,7 @@ async fn escaped_riot_ids_are_ingested_with_frames(pool: PgPool) {
     assert_eq!(row.frames_format, FRAMES_FORMAT as i16);
     let mut frames = Vec::new();
     brotli::Decompressor::new(&row.frames[..], 4096).read_to_end(&mut frames).unwrap();
-    let (decoded, _): (FrameChunk, _) = bincode::borrow_decode_from_slice(&frames, bincode::config::standard()).unwrap();
+    let (decoded, _): (FrameChunk, _) = bincode::borrow_decode_from_slice(&frames, tutorlolv2_types::BINCODE_CONFIG).unwrap();
     assert_eq!(decoded.frames[0].1.active_player.riot_id, "深海à#002");
 }
 

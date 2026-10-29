@@ -73,7 +73,7 @@ async fn calculator_accepts_bincode_borrowed_input_and_returns_decodable_output(
         enemy_players: &enemies,
         ..Default::default()
     };
-    let bytes = bincode::encode_to_vec(input, bincode::config::standard()).unwrap();
+    let bytes = bincode::encode_to_vec(input, tutorlolv2_types::BINCODE_CONFIG).unwrap();
     let response = test::call_service(
         &app,
         test::TestRequest::post()
@@ -89,7 +89,7 @@ async fn calculator_accepts_bincode_borrowed_input_and_returns_decodable_output(
     );
     let body = test::read_body(response).await;
     let (output, used): (OutputGame, _) =
-        bincode::decode_from_slice(&body, bincode::config::standard()).unwrap();
+        bincode::decode_from_slice(&body, tutorlolv2_types::BINCODE_CONFIG).unwrap();
     assert_eq!(used, body.len());
     assert_eq!(output.enemies.len(), 1);
     assert_eq!(output.enemies[0].champion_id, ChampionId::Aatrox);
@@ -98,7 +98,7 @@ async fn calculator_accepts_bincode_borrowed_input_and_returns_decodable_output(
 #[actix_web::test]
 async fn realtime_accepts_bincode_and_returns_borrowable_output() {
     let app = test::init_service(App::new().service(realtime_handler)).await;
-    let bytes = bincode::encode_to_vec(live_game(), bincode::config::standard()).unwrap();
+    let bytes = bincode::encode_to_vec(live_game(), tutorlolv2_types::BINCODE_CONFIG).unwrap();
     let response = test::call_service(
         &app,
         test::TestRequest::post()
@@ -110,7 +110,7 @@ async fn realtime_accepts_bincode_and_returns_borrowable_output() {
     assert_eq!(response.status(), StatusCode::OK);
     let body = test::read_body(response).await;
     let (output, used): (Realtime<'_>, _) =
-        bincode::borrow_decode_from_slice(&body, bincode::config::standard()).unwrap();
+        bincode::borrow_decode_from_slice(&body, tutorlolv2_types::BINCODE_CONFIG).unwrap();
     assert_eq!(used, body.len());
     assert_eq!(output.enemies.len(), 1);
     assert_eq!(output.current_player.riot_id, "self");
@@ -126,9 +126,9 @@ async fn malformed_and_trailing_bytes_return_bad_request_for_both_endpoints() {
     )
     .await;
     let mut calc =
-        bincode::encode_to_vec(InputGame::default(), bincode::config::standard()).unwrap();
+        bincode::encode_to_vec(InputGame::default(), tutorlolv2_types::BINCODE_CONFIG).unwrap();
     calc.push(0);
-    let mut live = bincode::encode_to_vec(live_game(), bincode::config::standard()).unwrap();
+    let mut live = bincode::encode_to_vec(live_game(), tutorlolv2_types::BINCODE_CONFIG).unwrap();
     live.push(0);
     for (path, bytes) in [
         ("/calculator", vec![255]),
