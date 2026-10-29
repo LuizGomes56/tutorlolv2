@@ -1,0 +1,6 @@
+[macros.type-overrides]
+'end_reason' = "tutorlolv2_protocol::EndReason"
+'game_result' = "tutorlolv2_protocol::GameResult"
+'share_mode' = "tutorlolv2_protocol::CodeMode"
+'riot_game_source' = "crate::server::db_enums::RiotGameSource"
+'share_delete_reason' = "crate::server::db_enums::ShareDeleteReason"

@@ -86,8 +86,7 @@ pub async fn serve_docs(
         == Some(Encoding::brotli());
 
     if accepts_brotli {
-        let page = NamedFile::open_async(file)
-            .await?
+        let page = NamedFile::open(file)?
             .set_content_type(ContentType::html().0)
             .set_content_encoding(ContentEncoding::Brotli)
             .disable_content_disposition()
