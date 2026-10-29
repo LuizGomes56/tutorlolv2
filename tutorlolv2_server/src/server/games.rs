@@ -1,4 +1,4 @@
-use super::codec::{Response, decode_request, request_config, respond};
+use super::codec::{Bincode, Response, request_config, respond};
 use actix_web::{error::ErrorBadRequest, post, web::Bytes};
 use tutorlolv2::{calculator, model::OwnedInputGame, riot::RiotRealtime};
 
@@ -18,8 +18,7 @@ pub async fn realtime_handler(body: Bytes) -> Response {
 }
 
 #[post("/calculator")]
-pub async fn calculator_handler(body: Bytes) -> Response {
-    let request = decode_request::<OwnedInputGame>(&body)?;
+pub async fn calculator_handler(Bincode(request): Bincode<OwnedInputGame>) -> Response {
     let prepared = request.prepare();
 
     respond(calculator::calculator(prepared.as_input()))

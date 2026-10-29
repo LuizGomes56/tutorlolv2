@@ -41,7 +41,12 @@ fn snap(active: &str, players: &[(&str, &str, &str, &str)], events: &str) -> Val
 fn one_player() -> Value {
     snap(
         "Me#BR1",
-        &[("Me#BR1", "Ahri", "game_character_displayname_Ahri", "game_character_displayname_Ahri")],
+        &[(
+            "Me#BR1",
+            "Ahri",
+            "game_character_displayname_Ahri",
+            "game_character_displayname_Ahri",
+        )],
         r#"[{"EventID":0,"EventName":"GameStart","EventTime":0.0276}]"#,
     )
 }
@@ -52,11 +57,26 @@ fn inspect_value(v: &Value) -> Result<Snapshot, SnapshotError> {
 
 #[test]
 fn champion_key_cases() {
-    assert_eq!(champion_key("game_character_skin_displayname_Neeko_22", "Renata Glasc"), "neeko");
-    assert_eq!(champion_key("game_character_displayname_Neeko", "Maokai"), "neeko");
-    assert_eq!(champion_key("game_character_displayname_Gnar", "Mega Gnar"), "gnar");
-    assert_eq!(champion_key("game_character_displayname_FiddleSticks", "Fiddlesticks"), "fiddlesticks");
-    assert_eq!(champion_key("game_character_displayname_MonkeyKing", "Wukong"), "monkeyking");
+    assert_eq!(
+        champion_key("game_character_skin_displayname_Neeko_22", "Renata Glasc"),
+        "neeko"
+    );
+    assert_eq!(
+        champion_key("game_character_displayname_Neeko", "Maokai"),
+        "neeko"
+    );
+    assert_eq!(
+        champion_key("game_character_displayname_Gnar", "Mega Gnar"),
+        "gnar"
+    );
+    assert_eq!(
+        champion_key("game_character_displayname_FiddleSticks", "Fiddlesticks"),
+        "fiddlesticks"
+    );
+    assert_eq!(
+        champion_key("game_character_displayname_MonkeyKing", "Wukong"),
+        "monkeyking"
+    );
     assert_eq!(champion_key("", "Ahri"), "ahri");
 }
 
@@ -70,12 +90,16 @@ fn fnv1a32_known_values() {
 fn inspect_rejects_replay_error_object() {
     let mut v = one_player();
     v["activePlayer"] = json!({ "error": "Spectator mode doesn't currently support this feature" });
-    assert_eq!(inspect_value(&v).unwrap_err(), SnapshotError::NoActivePlayer);
+    assert_eq!(
+        inspect_value(&v).unwrap_err(),
+        SnapshotError::NoActivePlayer
+    );
 }
 
 #[test]
 fn inspect_rejects_404_body() {
-    let body = br#"{"errorCode":"RESOURCE_NOT_FOUND","httpStatus":404,"message":"Invalid URI format"}"#;
+    let body =
+        br#"{"errorCode":"RESOURCE_NOT_FOUND","httpStatus":404,"message":"Invalid URI format"}"#;
     assert_eq!(inspect(body).unwrap_err(), SnapshotError::NoActivePlayer);
 }
 
@@ -88,7 +112,10 @@ fn inspect_rejects_non_json() {
 fn inspect_rejects_active_player_missing_from_roster() {
     let mut v = one_player();
     v["activePlayer"]["riotId"] = json!("Someone#Else");
-    assert_eq!(inspect_value(&v).unwrap_err(), SnapshotError::ActivePlayerNotInRoster);
+    assert_eq!(
+        inspect_value(&v).unwrap_err(),
+        SnapshotError::ActivePlayerNotInRoster
+    );
 }
 
 #[test]
@@ -129,11 +156,22 @@ fn inspect_builds_probe() {
     );
     assert_eq!(
         s.probe.events,
-        vec![EventKey { id: 0, name_hash: fnv1a32(b"GameStart"), time_bits: 0.0276f32.to_bits() }]
+        vec![EventKey {
+            id: 0,
+            name_hash: fnv1a32(b"GameStart"),
+            time_bits: 0.0276f32.to_bits()
+        }]
     );
     assert_eq!(
         s.summary,
-        Summary { champion: "ahri".into(), kills: 3, deaths: 1, assists: 7, creep_score: 42, level: 1 }
+        Summary {
+            champion: "ahri".into(),
+            kills: 3,
+            deaths: 1,
+            assists: 7,
+            creep_score: 42,
+            level: 1
+        }
     );
 }
 
@@ -141,11 +179,20 @@ fn inspect_builds_probe() {
 fn inspect_sorts_roster() {
     let v = snap(
         "B#1",
-        &[("B#1", "Ahri", "", "game_character_displayname_Ahri"), ("A#1", "Lux", "", "game_character_displayname_Lux")],
+        &[
+            ("B#1", "Ahri", "", "game_character_displayname_Ahri"),
+            ("A#1", "Lux", "", "game_character_displayname_Lux"),
+        ],
         "[]",
     );
     let roster = inspect_value(&v).unwrap().probe.roster;
-    assert_eq!(roster.iter().map(|e| e.riot_id.as_str()).collect::<Vec<_>>(), ["A#1", "B#1"]);
+    assert_eq!(
+        roster
+            .iter()
+            .map(|e| e.riot_id.as_str())
+            .collect::<Vec<_>>(),
+        ["A#1", "B#1"]
+    );
 }
 
 #[test]
@@ -158,7 +205,10 @@ fn inspect_extracts_game_end() {
     let s = inspect_value(&v).unwrap();
     assert_eq!(
         s.game_end,
-        Some(GameEnd { event_time: 1020.364501953125f64 as f32, result: Some(GameResult::Lose) })
+        Some(GameEnd {
+            event_time: 1020.364501953125f64 as f32,
+            result: Some(GameResult::Lose)
+        })
     );
 }
 
@@ -174,8 +224,13 @@ fn inspect_accepts_null_runes() {
 #[test]
 fn inspect_accepts_escaped_unicode_riot_id() {
     let v = one_player();
-    let text = serde_json::to_string(&v).unwrap().replace("Me#BR1", "\\u6df1\\u6d77\\u00e0#002");
-    assert!(text.contains(r"\u6df1\u6d77\u00e0"), "the JSON must carry real escapes");
+    let text = serde_json::to_string(&v)
+        .unwrap()
+        .replace("Me#BR1", "\\u6df1\\u6d77\\u00e0#002");
+    assert!(
+        text.contains(r"\u6df1\u6d77\u00e0"),
+        "the JSON must carry real escapes"
+    );
     let s = inspect(text.as_bytes()).unwrap();
     assert_eq!(s.probe.active_riot_id, "深海à#002");
 }
@@ -184,7 +239,12 @@ fn inspect_accepts_escaped_unicode_riot_id() {
 fn summary_corrects_disguised_neeko_level() {
     let mut v = snap(
         "Me#BR1",
-        &[("Me#BR1", "Blue Sentinel", "game_character_displayname_SRUBlue", "game_character_skin_displayname_Neeko_1")],
+        &[(
+            "Me#BR1",
+            "Blue Sentinel",
+            "game_character_displayname_SRUBlue",
+            "game_character_skin_displayname_Neeko_1",
+        )],
         "[]",
     );
     for (k, level) in [("Q", 5), ("W", 5), ("E", 5), ("R", 3)] {
@@ -199,7 +259,12 @@ fn summary_corrects_disguised_neeko_level() {
 fn summary_keeps_jayce_level() {
     let mut v = snap(
         "Me#BR1",
-        &[("Me#BR1", "Jayce", "game_character_displayname_Jayce", "game_character_displayname_Jayce")],
+        &[(
+            "Me#BR1",
+            "Jayce",
+            "game_character_displayname_Jayce",
+            "game_character_displayname_Jayce",
+        )],
         "[]",
     );
     v["activePlayer"]["abilities"]["Q"]["abilityLevel"] = json!(1);
@@ -219,7 +284,9 @@ fn is_practice_from_game_mode() {
 }
 
 fn captures(dir: &str) -> Vec<PathBuf> {
-    let root = Path::new(env!("CARGO_MANIFEST_DIR")).join("../captures").join(dir);
+    let root = Path::new(env!("CARGO_MANIFEST_DIR"))
+        .join("../captures")
+        .join(dir);
     let mut files: Vec<_> = std::fs::read_dir(&root)
         .unwrap_or_else(|e| panic!("{}: {e}", root.display()))
         .map(|e| e.unwrap().path())
@@ -233,24 +300,47 @@ fn captures(dir: &str) -> Vec<PathBuf> {
 #[test]
 #[ignore = "needs local captures"]
 fn champion_keys_of_all_transformation_captures() {
-    for (dir, key) in [("neeko", "neeko"), ("gnar", "gnar"), ("kayn", "kayn"), ("wukong", "monkeyking")] {
+    for (dir, key) in [
+        ("neeko", "neeko"),
+        ("gnar", "gnar"),
+        ("kayn", "kayn"),
+        ("wukong", "monkeyking"),
+    ] {
         for file in captures(dir) {
             let s = inspect(&std::fs::read(&file).unwrap()).unwrap();
             assert_eq!(s.summary.champion, key, "{}", file.display());
         }
     }
-    let kayn = inspect(&std::fs::read(Path::new(env!("CARGO_MANIFEST_DIR")).join("../captures/kayn/regular.json")).unwrap()).unwrap();
-    assert!(kayn.probe.roster.iter().any(|e| e.champion == "fiddlesticks"));
+    let kayn = inspect(
+        &std::fs::read(Path::new(env!("CARGO_MANIFEST_DIR")).join("../captures/kayn/regular.json"))
+            .unwrap(),
+    )
+    .unwrap();
+    assert!(
+        kayn.probe
+            .roster
+            .iter()
+            .any(|e| e.champion == "fiddlesticks")
+    );
 }
 
 #[test]
 #[ignore = "needs local captures"]
 fn replay_capture_is_rejected_and_aram_capture_accepted() {
     for file in captures("replay-20261029-103710/live") {
-        assert_eq!(inspect(&std::fs::read(&file).unwrap()).unwrap_err(), SnapshotError::NoActivePlayer, "{}", file.display());
+        assert_eq!(
+            inspect(&std::fs::read(&file).unwrap()).unwrap_err(),
+            SnapshotError::NoActivePlayer,
+            "{}",
+            file.display()
+        );
     }
     for file in captures("aram-20261029-101315/live") {
-        assert!(inspect(&std::fs::read(&file).unwrap()).is_ok(), "{}", file.display());
+        assert!(
+            inspect(&std::fs::read(&file).unwrap()).is_ok(),
+            "{}",
+            file.display()
+        );
     }
 }
 
@@ -262,5 +352,11 @@ fn inspect_tolerates_unknown_game_end_result() {
         {"EventID":9,"EventName":"GameEnd","EventTime":900.5,"Result":"Draw"}
     ]);
     let s = inspect_value(&v).expect("an unknown result must not reject the snapshot");
-    assert_eq!(s.game_end, Some(GameEnd { event_time: 900.5, result: None }));
+    assert_eq!(
+        s.game_end,
+        Some(GameEnd {
+            event_time: 900.5,
+            result: None
+        })
+    );
 }

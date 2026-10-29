@@ -2,7 +2,7 @@
 
 use super::{
     auth::{DeviceAuth, secret_hash},
-    codec::{Response, decode_request, respond},
+    codec::{Bincode, Response, respond},
     db_enums::{RiotGameSource, ShareDeleteReason},
     ingest::{IngestError, derive_chunk, hex},
     riot_api::{EnrichJob, log_unmapped_region},
@@ -25,8 +25,10 @@ use tutorlolv2_protocol::{
 };
 use uuid::Uuid;
 
-pub async fn register_device(state: Data<AppState>, body: Bytes) -> Response {
-    let request = decode_request::<RegisterDevice>(&body)?;
+pub async fn register_device(
+    state: Data<AppState>,
+    Bincode(request): Bincode<RegisterDevice>,
+) -> Response {
     let mut device_secret = [0u8; 32];
 
     getrandom::fill(&mut device_secret).map_err(ErrorInternalServerError)?;
@@ -53,8 +55,11 @@ pub async fn register_device(state: Data<AppState>, body: Bytes) -> Response {
 /// Start-or-resume (spec §8.3): resumes the device's recording of the same
 /// match when there is one, otherwise ends the device's open recordings as
 /// superseded and creates a new one.
-pub async fn start_session(state: Data<AppState>, auth: DeviceAuth, body: Bytes) -> Response {
-    let request = decode_request::<StartSession>(&body)?;
+pub async fn start_session(
+    state: Data<AppState>,
+    auth: DeviceAuth,
+    Bincode(request): Bincode<StartSession>,
+) -> Response {
     let mut tx = state.db.begin().await.map_err(ErrorInternalServerError)?;
     let now = Utc::now();
 
@@ -560,10 +565,9 @@ pub async fn end(
     state: Data<AppState>,
     auth: DeviceAuth,
     path: Path<Uuid>,
-    body: Bytes,
+    Bincode(request): Bincode<EndRecording>,
 ) -> Response {
     let id = path.into_inner();
-    let request = decode_request::<EndRecording>(&body)?;
 
     if request.reason == EndReason::Timeout {
         return Err(ErrorUnprocessableEntity(
@@ -604,10 +608,9 @@ pub async fn set_result(
     state: Data<AppState>,
     auth: DeviceAuth,
     path: Path<Uuid>,
-    body: Bytes,
+    Bincode(request): Bincode<RecordingResult>,
 ) -> Response {
     let id = path.into_inner();
-    let request: RecordingResult = decode_request(&body)?;
 
     owned(&state.db, id, auth.device_id).await?;
 

@@ -44,7 +44,11 @@ fn display_inserts_dash() {
 
 #[test]
 fn alphabet_matches_db_check() {
-    assert!(CODE_ALPHABET.iter().all(|&b| matches_db_check(&(b as char).to_string().repeat(8))));
+    assert!(
+        CODE_ALPHABET
+            .iter()
+            .all(|&b| matches_db_check(&(b as char).to_string().repeat(8)))
+    );
 }
 
 #[test]
@@ -57,6 +61,9 @@ fn generated_codes_match_db_check() {
         let bytes: [u8; 5] = state.to_le_bytes()[..5].try_into().unwrap();
         let code = code_from_random(bytes);
         assert!(matches_db_check(&code), "{code}");
-        assert_eq!(normalize_code(&display_code(&code)).as_deref(), Some(code.as_str()));
+        assert_eq!(
+            normalize_code(&display_code(&code)).as_deref(),
+            Some(code.as_str())
+        );
     }
 }

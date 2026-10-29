@@ -52,43 +52,75 @@ fn brotli(data: &[u8]) -> Vec<u8> {
 }
 
 fn sha_hex(data: &[u8]) -> String {
-    Sha256::digest(data).iter().map(|b| format!("{b:02x}")).collect()
+    Sha256::digest(data)
+        .iter()
+        .map(|b| format!("{b:02x}"))
+        .collect()
 }
 
 /// `(brotli body, X-Content-Sha256)` of a chunk of `snapshots` = `(captured_at_ms, json)`.
 fn encode_chunk(seq: u32, snapshots: Vec<(i64, Vec<u8>)>) -> (Vec<u8>, String) {
-    let chunk = RawChunk {
-        format: RAW_CHUNK_FORMAT,
-        seq,
-        snapshots: snapshots
-            .into_iter()
-            .map(|(captured_at_ms, json)| {
-                let game_time = serde_json::from_slice::<serde_json::Value>(&json).unwrap()["gameData"]["gameTime"].as_f64().unwrap() as f32;
-                RawSnapshot { captured_at_ms, game_time, json }
-            })
-            .collect(),
-    };
+    let chunk =
+        RawChunk {
+            format: RAW_CHUNK_FORMAT,
+            seq,
+            snapshots:
+                snapshots
+                    .into_iter()
+                    .map(|(captured_at_ms, json)| {
+                        let game_time = serde_json::from_slice::<serde_json::Value>(&json).unwrap()
+                            ["gameData"]["gameTime"]
+                            .as_f64()
+                            .unwrap() as f32;
+                        RawSnapshot {
+                            captured_at_ms,
+                            game_time,
+                            json,
+                        }
+                    })
+                    .collect(),
+        };
     let bincode = encode(&chunk);
     (brotli(&bincode), sha_hex(&bincode))
 }
 
 /// Snapshots every second from `from` to `to` (inclusive) of the match that started at `start_time`.
 fn seconds(from: u32, to: u32, start_time: f64) -> Vec<(i64, Vec<u8>)> {
-    (from..=to).map(|t| (1_800_000_000_000 + t as i64 * 1000, snapshot_json(t as f32, start_time, "Ahri", (t / 60) as u8))).collect()
+    (from..=to)
+        .map(|t| {
+            (
+                1_800_000_000_000 + t as i64 * 1000,
+                snapshot_json(t as f32, start_time, "Ahri", (t / 60) as u8),
+            )
+        })
+        .collect()
 }
 
 macro_rules! app {
     ($pool:expr) => {
         http::init_service(
-            App::new().app_data(state($pool.clone())).service(devices(None)).service(recordings(None)),
+            App::new()
+                .app_data(state($pool.clone()))
+                .service(devices(None))
+                .service(recordings(None)),
         )
         .await
     };
 }
 
-async fn upload(app: &impl TestApp, device: &DeviceCredentials, id: [u8; 16], seq: u32, body: Vec<u8>, sha: &str) -> StatusCode {
+async fn upload(
+    app: &impl TestApp,
+    device: &DeviceCredentials,
+    id: [u8; 16],
+    seq: u32,
+    body: Vec<u8>,
+    sha: &str,
+) -> StatusCode {
     let request = http::TestRequest::post()
-        .uri(&format!("/recordings/{}/chunks/{seq}", Uuid::from_bytes(id)))
+        .uri(&format!(
+            "/recordings/{}/chunks/{seq}",
+            Uuid::from_bytes(id)
+        ))
         .insert_header(("Authorization", auth_header(device)))
         .insert_header(("X-Content-Sha256", sha))
         .set_payload(body)
@@ -109,19 +141,39 @@ fn derive_rejects_zip_bomb() {
     let zeros = vec![0u8; 17 << 20];
     let body = brotli(&zeros);
     assert!(body.len() < MAX_CHUNK_BYTES);
-    assert!(matches!(derive_chunk(&body, 0, &sha_hex(&zeros)), Err(IngestError::TooLarge)));
+    assert!(matches!(
+        derive_chunk(&body, 0, &sha_hex(&zeros)),
+        Err(IngestError::TooLarge)
+    ));
 }
 
 #[test]
 fn derive_rejects_bad_sha_and_trailing_bytes() {
     let (body, sha) = encode_chunk(0, seconds(60, 62, 0.0276));
-    assert!(matches!(derive_chunk(&body, 0, "00"), Err(IngestError::Invalid(_))));
-    assert!(matches!(derive_chunk(&body, 1, &sha), Err(IngestError::Invalid(_))), "wrong seq");
+    assert!(matches!(
+        derive_chunk(&body, 0, "00"),
+        Err(IngestError::Invalid(_))
+    ));
+    assert!(
+        matches!(derive_chunk(&body, 1, &sha), Err(IngestError::Invalid(_))),
+        "wrong seq"
+    );
 
-    let chunk = RawChunk { format: RAW_CHUNK_FORMAT, seq: 0, snapshots: vec![RawSnapshot { captured_at_ms: 1, game_time: 60.0, json: snapshot_json(60.0, 0.0276, "Ahri", 0) }] };
+    let chunk = RawChunk {
+        format: RAW_CHUNK_FORMAT,
+        seq: 0,
+        snapshots: vec![RawSnapshot {
+            captured_at_ms: 1,
+            game_time: 60.0,
+            json: snapshot_json(60.0, 0.0276, "Ahri", 0),
+        }],
+    };
     let mut trailing = encode(&chunk);
     trailing.push(0);
-    assert!(matches!(derive_chunk(&brotli(&trailing), 0, &sha_hex(&trailing)), Err(IngestError::Invalid(_))));
+    assert!(matches!(
+        derive_chunk(&brotli(&trailing), 0, &sha_hex(&trailing)),
+        Err(IngestError::Invalid(_))
+    ));
 }
 
 #[test]
@@ -129,12 +181,18 @@ fn derive_builds_decodable_frames() {
     let (body, sha) = encode_chunk(4, seconds(60, 64, 0.0276));
     let derived = derive_chunk(&body, 4, &sha).unwrap();
     assert_eq!(derived.snapshot_count, 5);
-    assert_eq!((derived.first_game_time, derived.last_game_time), (60.0, 64.0));
+    assert_eq!(
+        (derived.first_game_time, derived.last_game_time),
+        (60.0, 64.0)
+    );
     assert_eq!(derived.last.summary.champion, "ahri");
 
     let mut frames = Vec::new();
-    brotli::Decompressor::new(&derived.frames_br[..], 4096).read_to_end(&mut frames).unwrap();
-    let (decoded, used): (FrameChunk, _) = bincode::borrow_decode_from_slice(&frames, tutorlolv2_types::BINCODE_CONFIG).unwrap();
+    brotli::Decompressor::new(&derived.frames_br[..], 4096)
+        .read_to_end(&mut frames)
+        .unwrap();
+    let (decoded, used): (FrameChunk, _) =
+        bincode::borrow_decode_from_slice(&frames, tutorlolv2_types::BINCODE_CONFIG).unwrap();
     assert_eq!(used, frames.len());
     assert_eq!(decoded.format, FRAMES_FORMAT);
     assert_eq!(decoded.frames.len(), 5);
@@ -146,10 +204,19 @@ async fn chunk_201_then_identical_200_then_different_409(pool: PgPool) {
     let app = app!(pool);
     let (device, id) = recording(&app, 0.0276).await;
     let (body, sha) = encode_chunk(0, seconds(60, 70, 0.0276));
-    assert_eq!(upload(&app, &device, id, 0, body.clone(), &sha).await, StatusCode::CREATED);
-    assert_eq!(upload(&app, &device, id, 0, body, &sha).await, StatusCode::OK);
+    assert_eq!(
+        upload(&app, &device, id, 0, body.clone(), &sha).await,
+        StatusCode::CREATED
+    );
+    assert_eq!(
+        upload(&app, &device, id, 0, body, &sha).await,
+        StatusCode::OK
+    );
     let (other, other_sha) = encode_chunk(0, seconds(60, 71, 0.0276));
-    assert_eq!(upload(&app, &device, id, 0, other, &other_sha).await, StatusCode::CONFLICT);
+    assert_eq!(
+        upload(&app, &device, id, 0, other, &other_sha).await,
+        StatusCode::CONFLICT
+    );
 
     let row = sqlx::query!(
         r#"SELECT (SELECT count(*) FROM recording_chunks WHERE recording_id = r.id) AS "chunks!", kills, coverage_s
@@ -167,7 +234,10 @@ async fn chunk_from_other_match_is_409(pool: PgPool) {
     let app = app!(pool);
     let (device, id) = recording(&app, 0.0276).await;
     let (body, sha) = encode_chunk(0, seconds(60, 62, 0.0312));
-    assert_eq!(upload(&app, &device, id, 0, body, &sha).await, StatusCode::CONFLICT);
+    assert_eq!(
+        upload(&app, &device, id, 0, body, &sha).await,
+        StatusCode::CONFLICT
+    );
 }
 
 #[sqlx::test(migrations = "./migrations")]
@@ -176,17 +246,31 @@ async fn chunk_of_other_device_is_404(pool: PgPool) {
     let (_, id) = recording(&app, 0.0276).await;
     let stranger = register(&app).await;
     let (body, sha) = encode_chunk(0, seconds(60, 62, 0.0276));
-    assert_eq!(upload(&app, &stranger, id, 0, body, &sha).await, StatusCode::NOT_FOUND);
+    assert_eq!(
+        upload(&app, &stranger, id, 0, body, &sha).await,
+        StatusCode::NOT_FOUND
+    );
 }
 
 #[sqlx::test(migrations = "./migrations")]
 async fn invalid_snapshot_is_422(pool: PgPool) {
     let app = app!(pool);
     let (device, id) = recording(&app, 0.0276).await;
-    let mut replay: serde_json::Value = serde_json::from_slice(&snapshot_json(61.0, 0.0276, "Ahri", 0)).unwrap();
-    replay["activePlayer"] = json!({"error": "Spectator mode doesn't currently support this feature"});
-    let (body, sha) = encode_chunk(0, vec![(1, snapshot_json(60.0, 0.0276, "Ahri", 0)), (2, serde_json::to_vec(&replay).unwrap())]);
-    assert_eq!(upload(&app, &device, id, 0, body, &sha).await, StatusCode::UNPROCESSABLE_ENTITY);
+    let mut replay: serde_json::Value =
+        serde_json::from_slice(&snapshot_json(61.0, 0.0276, "Ahri", 0)).unwrap();
+    replay["activePlayer"] =
+        json!({"error": "Spectator mode doesn't currently support this feature"});
+    let (body, sha) = encode_chunk(
+        0,
+        vec![
+            (1, snapshot_json(60.0, 0.0276, "Ahri", 0)),
+            (2, serde_json::to_vec(&replay).unwrap()),
+        ],
+    );
+    assert_eq!(
+        upload(&app, &device, id, 0, body, &sha).await,
+        StatusCode::UNPROCESSABLE_ENTITY
+    );
 }
 
 #[sqlx::test(migrations = "./migrations")]
@@ -194,7 +278,10 @@ async fn oversized_body_is_413(pool: PgPool) {
     let app = app!(pool);
     let (device, id) = recording(&app, 0.0276).await;
     let body = vec![0u8; MAX_CHUNK_BYTES + 1];
-    assert_eq!(upload(&app, &device, id, 0, body, "00").await, StatusCode::PAYLOAD_TOO_LARGE);
+    assert_eq!(
+        upload(&app, &device, id, 0, body, "00").await,
+        StatusCode::PAYLOAD_TOO_LARGE
+    );
 }
 
 #[sqlx::test(migrations = "./migrations")]
@@ -203,8 +290,14 @@ async fn late_older_chunk_keeps_newest_summary(pool: PgPool) {
     let (device, id) = recording(&app, 0.0276).await;
     let (newer, newer_sha) = encode_chunk(1, seconds(120, 180, 0.0276));
     let (older, older_sha) = encode_chunk(0, seconds(60, 119, 0.0276));
-    assert_eq!(upload(&app, &device, id, 1, newer, &newer_sha).await, StatusCode::CREATED);
-    assert_eq!(upload(&app, &device, id, 0, older, &older_sha).await, StatusCode::CREATED);
+    assert_eq!(
+        upload(&app, &device, id, 1, newer, &newer_sha).await,
+        StatusCode::CREATED
+    );
+    assert_eq!(
+        upload(&app, &device, id, 0, older, &older_sha).await,
+        StatusCode::CREATED
+    );
 
     let row = sqlx::query!(
         r#"SELECT last_game_time, first_game_time, kills,
@@ -215,7 +308,15 @@ async fn late_older_chunk_keeps_newest_summary(pool: PgPool) {
     .fetch_one(&pool)
     .await
     .unwrap();
-    assert_eq!((row.last_game_time, row.first_game_time, row.kills, row.chunks), (180.0, 60.0, 3, 2));
+    assert_eq!(
+        (
+            row.last_game_time,
+            row.first_game_time,
+            row.kills,
+            row.chunks
+        ),
+        (180.0, 60.0, 3, 2)
+    );
 }
 
 #[sqlx::test(migrations = "./migrations")]
@@ -228,14 +329,20 @@ async fn chunk_after_end_is_accepted_and_does_not_reopen(pool: PgPool) {
         EndReason::GameEndEvent as EndReason,
     )
     .execute(&pool)
-        .await
-        .unwrap();
+    .await
+    .unwrap();
     let (body, sha) = encode_chunk(0, seconds(60, 62, 0.0276));
-    assert_eq!(upload(&app, &device, id, 0, body, &sha).await, StatusCode::CREATED);
-    let ended = sqlx::query_scalar!(r#"SELECT ended_at IS NOT NULL AS "ended!" FROM recordings WHERE id = $1"#, Uuid::from_bytes(id))
-        .fetch_one(&pool)
-        .await
-        .unwrap();
+    assert_eq!(
+        upload(&app, &device, id, 0, body, &sha).await,
+        StatusCode::CREATED
+    );
+    let ended = sqlx::query_scalar!(
+        r#"SELECT ended_at IS NOT NULL AS "ended!" FROM recordings WHERE id = $1"#,
+        Uuid::from_bytes(id)
+    )
+    .fetch_one(&pool)
+    .await
+    .unwrap();
     assert!(ended);
 }
 
@@ -243,45 +350,83 @@ async fn chunk_after_end_is_accepted_and_does_not_reopen(pool: PgPool) {
 async fn chunk_with_skewed_host_clock_is_accepted(pool: PgPool) {
     let app = app!(pool);
     let (device, id) = recording(&app, 0.0276).await;
-    let (past, past_sha) = encode_chunk(0, vec![(1, snapshot_json(60.0, 0.0276, "Ahri", 0)), (2, snapshot_json(61.0, 0.0276, "Ahri", 0))]);
+    let (past, past_sha) = encode_chunk(
+        0,
+        vec![
+            (1, snapshot_json(60.0, 0.0276, "Ahri", 0)),
+            (2, snapshot_json(61.0, 0.0276, "Ahri", 0)),
+        ],
+    );
     let year_2100 = 4_102_444_800_000;
-    let (future, future_sha) = encode_chunk(1, vec![(year_2100, snapshot_json(62.0, 0.0276, "Ahri", 0))]);
-    assert_eq!(upload(&app, &device, id, 0, past, &past_sha).await, StatusCode::CREATED);
-    assert_eq!(upload(&app, &device, id, 1, future, &future_sha).await, StatusCode::CREATED);
+    let (future, future_sha) =
+        encode_chunk(1, vec![(year_2100, snapshot_json(62.0, 0.0276, "Ahri", 0))]);
+    assert_eq!(
+        upload(&app, &device, id, 0, past, &past_sha).await,
+        StatusCode::CREATED
+    );
+    assert_eq!(
+        upload(&app, &device, id, 1, future, &future_sha).await,
+        StatusCode::CREATED
+    );
 }
 
 #[sqlx::test(migrations = "./migrations")]
 #[ignore = "needs local captures"]
 async fn whole_aram_capture_ingests(pool: PgPool) {
-    let dir = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../captures/aram-20261029-101315/live");
-    let mut files: Vec<_> = std::fs::read_dir(&dir).unwrap().map(|e| e.unwrap().path()).filter(|p| p.extension().is_some_and(|x| x == "json")).collect();
+    let dir = std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
+        .join("../captures/aram-20261029-101315/live");
+    let mut files: Vec<_> = std::fs::read_dir(&dir)
+        .unwrap()
+        .map(|e| e.unwrap().path())
+        .filter(|p| p.extension().is_some_and(|x| x == "json"))
+        .collect();
     files.sort();
     let snapshots: Vec<(i64, Vec<u8>)> = files
         .iter()
         .enumerate()
-        .map(|(i, f)| (1_800_000_000_000 + i as i64 * 1000, std::fs::read(f).unwrap()))
+        .map(|(i, f)| {
+            (
+                1_800_000_000_000 + i as i64 * 1000,
+                std::fs::read(f).unwrap(),
+            )
+        })
         .collect();
 
     let app = app!(pool);
     let device = register(&app).await;
-    let started = start(&app, &device, session(inspect(&snapshots[0].1).unwrap().probe)).await;
+    let started = start(
+        &app,
+        &device,
+        session(inspect(&snapshots[0].1).unwrap().probe),
+    )
+    .await;
     let mut total = 0;
     for (seq, chunk) in snapshots.chunks(60).enumerate() {
         let (body, sha) = encode_chunk(seq as u32, chunk.to_vec());
         total += body.len();
-        assert_eq!(upload(&app, &device, started.recording_id, seq as u32, body, &sha).await, StatusCode::CREATED, "seq {seq}");
+        assert_eq!(
+            upload(&app, &device, started.recording_id, seq as u32, body, &sha).await,
+            StatusCode::CREATED,
+            "seq {seq}"
+        );
     }
     assert!(total < 300_000, "{total} bytes");
-    let last = sqlx::query_scalar!("SELECT last_game_time FROM recordings WHERE id = $1", Uuid::from_bytes(started.recording_id))
-        .fetch_one(&pool)
-        .await
-        .unwrap();
+    let last = sqlx::query_scalar!(
+        "SELECT last_game_time FROM recordings WHERE id = $1",
+        Uuid::from_bytes(started.recording_id)
+    )
+    .fetch_one(&pool)
+    .await
+    .unwrap();
     assert!(last > 1020.0, "{last}");
 }
 
 /// The same snapshot with the active player's Riot ID written as JSON `\u` escapes.
 fn escaped(json: Vec<u8>) -> Vec<u8> {
-    String::from_utf8(json).unwrap().replace(ME, "\\u6df1\\u6d77\\u00e0#002").into_bytes()
+    String::from_utf8(json)
+        .unwrap()
+        .replace(ME, "\\u6df1\\u6d77\\u00e0#002")
+        .into_bytes()
 }
 
 #[sqlx::test(migrations = "./migrations")]
@@ -290,18 +435,34 @@ async fn escaped_riot_ids_are_ingested_with_frames(pool: PgPool) {
     let device = register(&app).await;
     let first = escaped(snapshot_json(60.0, 0.0276, "Ahri", 0));
     let started = start(&app, &device, session(inspect(&first).unwrap().probe)).await;
-    let snapshots = (60..=62).map(|t| (1_800_000_000_000 + t as i64 * 1000, escaped(snapshot_json(t as f32, 0.0276, "Ahri", 0)))).collect();
+    let snapshots = (60..=62)
+        .map(|t| {
+            (
+                1_800_000_000_000 + t as i64 * 1000,
+                escaped(snapshot_json(t as f32, 0.0276, "Ahri", 0)),
+            )
+        })
+        .collect();
     let (body, sha) = encode_chunk(0, snapshots);
-    assert_eq!(upload(&app, &device, started.recording_id, 0, body, &sha).await, StatusCode::CREATED);
+    assert_eq!(
+        upload(&app, &device, started.recording_id, 0, body, &sha).await,
+        StatusCode::CREATED
+    );
 
-    let row = sqlx::query!("SELECT frames_format, frames FROM recording_chunks WHERE recording_id = $1", Uuid::from_bytes(started.recording_id))
-        .fetch_one(&pool)
-        .await
-        .unwrap();
+    let row = sqlx::query!(
+        "SELECT frames_format, frames FROM recording_chunks WHERE recording_id = $1",
+        Uuid::from_bytes(started.recording_id)
+    )
+    .fetch_one(&pool)
+    .await
+    .unwrap();
     assert_eq!(row.frames_format, FRAMES_FORMAT as i16);
     let mut frames = Vec::new();
-    brotli::Decompressor::new(&row.frames[..], 4096).read_to_end(&mut frames).unwrap();
-    let (decoded, _): (FrameChunk, _) = bincode::borrow_decode_from_slice(&frames, tutorlolv2_types::BINCODE_CONFIG).unwrap();
+    brotli::Decompressor::new(&row.frames[..], 4096)
+        .read_to_end(&mut frames)
+        .unwrap();
+    let (decoded, _): (FrameChunk, _) =
+        bincode::borrow_decode_from_slice(&frames, tutorlolv2_types::BINCODE_CONFIG).unwrap();
     assert_eq!(decoded.frames[0].1.active_player.riot_id, "深海à#002");
 }
 
@@ -310,12 +471,19 @@ async fn raw_data_is_kept_when_frames_cannot_be_derived(pool: PgPool) {
     let app = app!(pool);
     let (device, id) = recording(&app, 0.0276).await;
     let without_stats = |t: f32| {
-        let mut v: serde_json::Value = serde_json::from_slice(&snapshot_json(t, 0.0276, "Ahri", 0)).unwrap();
-        v["activePlayer"].as_object_mut().unwrap().remove("championStats");
+        let mut v: serde_json::Value =
+            serde_json::from_slice(&snapshot_json(t, 0.0276, "Ahri", 0)).unwrap();
+        v["activePlayer"]
+            .as_object_mut()
+            .unwrap()
+            .remove("championStats");
         serde_json::to_vec(&v).unwrap()
     };
     let (body, sha) = encode_chunk(0, vec![(1, without_stats(60.0)), (2, without_stats(61.0))]);
-    assert_eq!(upload(&app, &device, id, 0, body.clone(), &sha).await, StatusCode::CREATED);
+    assert_eq!(
+        upload(&app, &device, id, 0, body.clone(), &sha).await,
+        StatusCode::CREATED
+    );
     let row = sqlx::query!("SELECT frames_format, length(frames) AS frames_len, raw FROM recording_chunks WHERE recording_id = $1", Uuid::from_bytes(id))
         .fetch_one(&pool)
         .await

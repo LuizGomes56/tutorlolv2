@@ -50,6 +50,7 @@ impl KeyExtractor for ClientKey {
         }
 
         let info = req.connection_info();
+
         let ip = if self.trusted_proxy {
             info.realip_remote_addr()
         } else {

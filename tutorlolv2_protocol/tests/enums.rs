@@ -50,6 +50,12 @@ fn game_type_matched() {
 
 #[test]
 fn game_result_reads_riot_casing() {
-    assert_eq!(serde_json::from_str::<GameResult>("\"Win\"").unwrap(), GameResult::Win);
-    assert_eq!(serde_json::from_str::<GameResult>("\"Lose\"").unwrap(), GameResult::Lose);
+    assert_eq!(
+        serde_json::from_str::<GameResult>("\"Win\"").unwrap(),
+        GameResult::Win
+    );
+    assert_eq!(
+        serde_json::from_str::<GameResult>("\"Lose\"").unwrap(),
+        GameResult::Lose
+    );
 }

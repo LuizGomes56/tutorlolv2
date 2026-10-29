@@ -14,7 +14,11 @@ fn config_defaults() {
     let c = Config::from_lookup(only_database_url).unwrap();
     assert_eq!(c.database_url, "postgres://x");
     assert_eq!(
-        (c.db_max_connections, c.recording_timeout_secs, c.trusted_proxy),
+        (
+            c.db_max_connections,
+            c.recording_timeout_secs,
+            c.trusted_proxy
+        ),
         (10, 900, false)
     );
     assert_eq!((c.riot_api_key, c.riot_api_base_override), (None, None));
@@ -34,9 +38,19 @@ fn config_reads_every_variable() {
         })
     })
     .unwrap();
-    assert_eq!((c.db_max_connections, c.recording_timeout_secs, c.trusted_proxy), (3, 60, true));
+    assert_eq!(
+        (
+            c.db_max_connections,
+            c.recording_timeout_secs,
+            c.trusted_proxy
+        ),
+        (3, 60, true)
+    );
     assert_eq!(c.riot_api_key.as_deref(), Some("RGAPI-test"));
-    assert_eq!(c.riot_api_base_override.as_deref(), Some("http://127.0.0.1:1"));
+    assert_eq!(
+        c.riot_api_base_override.as_deref(),
+        Some("http://127.0.0.1:1")
+    );
 }
 
 #[test]
@@ -56,7 +70,15 @@ fn config_rejects_bad_numbers() {
 
 #[sqlx::test(migrations = "./migrations")]
 async fn migration_creates_tables(pool: PgPool) {
-    let tables: Vec<String> = ["devices", "recordings", "recording_chunks", "share_codes", "riot_id_cache"].map(String::from).to_vec();
+    let tables: Vec<String> = [
+        "devices",
+        "recordings",
+        "recording_chunks",
+        "share_codes",
+        "riot_id_cache",
+    ]
+    .map(String::from)
+    .to_vec();
     let count = sqlx::query_scalar!(
         r#"SELECT count(*) AS "count!" FROM information_schema.tables WHERE table_schema = 'public' AND table_name = ANY($1)"#,
         &tables[..],
@@ -71,33 +93,82 @@ async fn migration_creates_tables(pool: PgPool) {
 macro_rules! roundtrip {
     ($pool:expr, $sql:literal, $ty:ty, $value:expr) => {{
         let value: $ty = $value;
-        let back = sqlx::query_scalar!($sql, value.clone() as $ty).fetch_one($pool).await.unwrap();
+        let back = sqlx::query_scalar!($sql, value.clone() as $ty)
+            .fetch_one($pool)
+            .await
+            .unwrap();
         assert_eq!(back, value);
     }};
 }
 
 #[sqlx::test(migrations = "./migrations")]
 async fn rust_enums_match_pg_enums(pool: PgPool) {
-    for v in [EndReason::GameEndEvent, EndReason::LcuEndOfGame, EndReason::LcuLeftGame, EndReason::Superseded, EndReason::Timeout] {
-        roundtrip!(&pool, r#"SELECT $1::end_reason AS "v!: EndReason""#, EndReason, v);
+    for v in [
+        EndReason::GameEndEvent,
+        EndReason::LcuEndOfGame,
+        EndReason::LcuLeftGame,
+        EndReason::Superseded,
+        EndReason::Timeout,
+    ] {
+        roundtrip!(
+            &pool,
+            r#"SELECT $1::end_reason AS "v!: EndReason""#,
+            EndReason,
+            v
+        );
     }
-    for v in [GameResult::Win, GameResult::Lose, GameResult::Remake, GameResult::Unknown] {
-        roundtrip!(&pool, r#"SELECT $1::game_result AS "v!: GameResult""#, GameResult, v);
+    for v in [
+        GameResult::Win,
+        GameResult::Lose,
+        GameResult::Remake,
+        GameResult::Unknown,
+    ] {
+        roundtrip!(
+            &pool,
+            r#"SELECT $1::game_result AS "v!: GameResult""#,
+            GameResult,
+            v
+        );
     }
     for v in [CodeMode::Live, CodeMode::Public] {
-        roundtrip!(&pool, r#"SELECT $1::share_mode AS "v!: CodeMode""#, CodeMode, v);
+        roundtrip!(
+            &pool,
+            r#"SELECT $1::share_mode AS "v!: CodeMode""#,
+            CodeMode,
+            v
+        );
     }
     for v in [RiotGameSource::Lcu, RiotGameSource::Spectator] {
-        roundtrip!(&pool, r#"SELECT $1::riot_game_source AS "v!: RiotGameSource""#, RiotGameSource, v);
+        roundtrip!(
+            &pool,
+            r#"SELECT $1::riot_game_source AS "v!: RiotGameSource""#,
+            RiotGameSource,
+            v
+        );
     }
     for v in [ShareDeleteReason::GameEnded, ShareDeleteReason::Revoked] {
-        roundtrip!(&pool, r#"SELECT $1::share_delete_reason AS "v!: ShareDeleteReason""#, ShareDeleteReason, v);
+        roundtrip!(
+            &pool,
+            r#"SELECT $1::share_delete_reason AS "v!: ShareDeleteReason""#,
+            ShareDeleteReason,
+            v
+        );
     }
 }
 
 #[sqlx::test(migrations = "./migrations")]
 async fn open_enums_are_stored_as_text(pool: PgPool) {
     use tutorlolv2_protocol::{GameMode, Platform};
-    roundtrip!(&pool, r#"SELECT $1::text AS "v!: Platform""#, Platform, Platform::Na1);
-    roundtrip!(&pool, r#"SELECT $1::text AS "v!: GameMode""#, GameMode, GameMode::from("NEWMODE"));
+    roundtrip!(
+        &pool,
+        r#"SELECT $1::text AS "v!: Platform""#,
+        Platform,
+        Platform::Na1
+    );
+    roundtrip!(
+        &pool,
+        r#"SELECT $1::text AS "v!: GameMode""#,
+        GameMode,
+        GameMode::from("NEWMODE")
+    );
 }

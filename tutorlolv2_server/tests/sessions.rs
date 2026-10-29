@@ -15,15 +15,24 @@ const CODE: &str = "ABCDEFGH";
 
 macro_rules! app {
     ($pool:expr) => {
-        http::init_service(App::new().app_data(state($pool.clone())).service(devices(None)).service(recordings(None))).await
+        http::init_service(
+            App::new()
+                .app_data(state($pool.clone()))
+                .service(devices(None))
+                .service(recordings(None)),
+        )
+        .await
     };
 }
 
 async fn open_count(pool: &PgPool, device: Uuid) -> i64 {
-    sqlx::query_scalar!(r#"SELECT count(*) AS "count!" FROM recordings WHERE device_id = $1 AND ended_at IS NULL"#, device)
-        .fetch_one(pool)
-        .await
-        .unwrap()
+    sqlx::query_scalar!(
+        r#"SELECT count(*) AS "count!" FROM recordings WHERE device_id = $1 AND ended_at IS NULL"#,
+        device
+    )
+    .fetch_one(pool)
+    .await
+    .unwrap()
 }
 
 #[sqlx::test(migrations = "./migrations")]
@@ -33,7 +42,11 @@ async fn first_session_creates_recording(pool: PgPool) {
     let mut request = session(probe(120.0, 0.0276, "ahri"));
     request.probe.game_mode = GameMode::PracticeTool;
     request.region = Some(Region::Na);
-    request.lcu = Some(LcuGame { game_id: 5669549208, queue_id: Some(3140), is_custom: Some(true) });
+    request.lcu = Some(LcuGame {
+        game_id: 5669549208,
+        queue_id: Some(3140),
+        is_custom: Some(true),
+    });
     let started = start(&app, &device, request).await;
     assert!(!started.resumed);
     assert_eq!(started.next_chunk_seq, 0);
@@ -54,7 +67,10 @@ async fn first_session_creates_recording(pool: PgPool) {
     assert!(row.is_practice);
     assert_eq!(row.active_riot_id, ME);
     assert_eq!(row.platform_id, Some(Platform::Na1));
-    assert_eq!((row.riot_game_id, row.queue_id, row.is_custom), (Some(5669549208), Some(3140), Some(true)));
+    assert_eq!(
+        (row.riot_game_id, row.queue_id, row.is_custom),
+        (Some(5669549208), Some(3140), Some(true))
+    );
     assert_eq!(row.first_game_time, 120.0);
     assert_eq!(row.riot_game_source, Some(RiotGameSource::Lcu));
 }
@@ -101,8 +117,14 @@ async fn different_match_supersedes_open_one(pool: PgPool) {
     .fetch_one(&pool)
     .await
     .unwrap();
-    assert_eq!((old_row.ended, old_row.end_reason), (true, Some(EndReason::Superseded)));
-    assert_eq!(open_count(&pool, Uuid::from_bytes(device.device_id)).await, 1);
+    assert_eq!(
+        (old_row.ended, old_row.end_reason),
+        (true, Some(EndReason::Superseded))
+    );
+    assert_eq!(
+        open_count(&pool, Uuid::from_bytes(device.device_id)).await,
+        1
+    );
 }
 
 #[sqlx::test(migrations = "./migrations")]
@@ -163,8 +185,8 @@ async fn live_code_is_soft_deleted_on_supersede(pool: PgPool) {
         CodeMode::Live as CodeMode,
     )
     .execute(&pool)
-        .await
-        .unwrap();
+    .await
+    .unwrap();
     start(&app, &device, session(probe(40.0, 0.0312, "zoe"))).await;
     let code = sqlx::query!(
         r#"SELECT deleted_at IS NOT NULL AS "deleted!", delete_reason AS "delete_reason: ShareDeleteReason"
@@ -174,7 +196,10 @@ async fn live_code_is_soft_deleted_on_supersede(pool: PgPool) {
     .fetch_one(&pool)
     .await
     .unwrap();
-    assert_eq!((code.deleted, code.delete_reason), (true, Some(ShareDeleteReason::GameEnded)));
+    assert_eq!(
+        (code.deleted, code.delete_reason),
+        (true, Some(ShareDeleteReason::GameEnded))
+    );
 }
 
 #[sqlx::test(migrations = "./migrations")]
@@ -192,6 +217,12 @@ async fn other_devices_recordings_are_never_matched(pool: PgPool) {
 #[sqlx::test(migrations = "./migrations")]
 async fn session_requires_device_auth(pool: PgPool) {
     let app = app!(pool);
-    let request = http::TestRequest::post().uri("/recordings/sessions").set_payload(encode(session(probe(1.0, 0.0276, "ahri")))).to_request();
-    assert_eq!(http::call_service(&app, request).await.status(), actix_web::http::StatusCode::UNAUTHORIZED);
+    let request = http::TestRequest::post()
+        .uri("/recordings/sessions")
+        .set_payload(encode(session(probe(1.0, 0.0276, "ahri"))))
+        .to_request();
+    assert_eq!(
+        http::call_service(&app, request).await.status(),
+        actix_web::http::StatusCode::UNAUTHORIZED
+    );
 }
