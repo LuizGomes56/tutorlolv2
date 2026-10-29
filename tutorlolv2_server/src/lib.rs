@@ -6,13 +6,9 @@ use actix_web::{
     dev::HttpServiceFactory,
     http::header,
     middleware::DefaultHeaders,
-    web::{
-        self,
-        // Data,
-        scope,
-    },
+    web::{self, Data, scope},
 };
-use server::{embed::*, games::*};
+use server::{games::*, statics::*};
 // use sqlx::{Pool, Postgres, postgres::PgPoolOptions};
 
 // pub struct AppState {
@@ -37,7 +33,10 @@ pub async fn run() -> std::io::Result<()> {
         .and_then(|v| v.parse().ok())
         .unwrap_or(8082u16);
 
+    let statics = Data::new(StaticDir::from_env()?);
+
     println!("Starting server on port {port}");
+    println!("Serving static files from {}", statics.path().display());
 
     // let dsn = std::env::var("DATABASE_URL").expect("DATABASE_URL is not set");
     // let pool = PgPoolOptions::new()
@@ -59,29 +58,18 @@ pub async fn run() -> std::io::Result<()> {
             .wrap(cors)
             .wrap(actix_web::middleware::Logger::default())
             // .app_data(Data::new(AppState { db: pool.clone() }))
+            .app_data(statics.clone())
             .service(api_scope())
             .service(
                 scope("")
-                    // .service(
-                    //     scope("/docs")
-                    //         .service(serve_champions_docs)
-                    //         .service(serve_items_docs)
-                    //         .service(serve_runes_docs),
-                    // )
+                    .service(scope("/docs").service(serve_docs))
                     .service(
                         scope("/img")
                             .wrap(DefaultHeaders::new().add((
                                 header::CACHE_CONTROL,
                                 "public, max-age=31536000, immutable",
                             )))
-                            .service(serve_dyn_centered())
-                            .service(serve_dyn_splash())
-                            .service(serve_dyn_other())
-                            .service(serve_abilities)
-                            .service(serve_champions)
-                            .service(serve_items)
-                            .service(serve_runes)
-                            .service(serve_stats),
+                            .service(statics.images()),
                     ),
             )
             .default_service(web::route().to(|| async {

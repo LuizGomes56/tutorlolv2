@@ -234,10 +234,12 @@ impl ItemId {
         self.data().maps
     }
 
+    #[cfg(feature = "yew")]
     pub const fn builds_from(&self) -> &'static [Self] {
         self.data().builds_from
     }
 
+    #[cfg(feature = "yew")]
     pub const fn builds_into(&self) -> &'static [Self] {
         self.data().builds_into
     }
