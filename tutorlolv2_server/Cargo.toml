@@ -12,15 +12,33 @@ actix-web = { version = "4.17.0", default-features = false, features = [
 ] }
 bincode = "2.0.1"
 brotli-decompressor = "6.2.0"
-# sqlx = { version = "0.8.6", features = [
-#     "runtime-tokio-rustls",
-#     "postgres",
-#     "macros",
-# ], default-features = false }
 dotenvy = "0.15.7"
 serde_json = "1.0.154"
-tokio = { version = "1.54.1", default-features = false, features = ["macros", "rt-multi-thread"] }
+tokio = { version = "1.54.1", default-features = false, features = ["macros", "rt-multi-thread", "sync", "time"] }
 tutorlolv2 = { path = "../", default-features = false, features = ["engine"] }
+tutorlolv2_protocol = { path = "../tutorlolv2_protocol", features = ["sqlx"] }
+sqlx = { version = "0.8.6", default-features = false, features = [
+    "runtime-tokio-rustls",
+    "postgres",
+    "macros",
+    "migrate",
+    "uuid",
+    "chrono",
+] }
+uuid = { version = "1", features = ["serde"] }
+chrono = { version = "0.4", default-features = false, features = ["clock", "std"] }
+sha2 = "0.10"
+subtle = "2"
+base64 = "0.22"
+getrandom = "0.3"
+brotli = "9.1.1"
+actix-governor = "0.8"
+reqwest = { version = "0.12", default-features = false, features = ["rustls-tls", "json"] }
+serde = { version = "1.0", features = ["derive"] }
+
+[dev-dependencies]
+actix-http = "3"
+wiremock = "0.6"
 
 # The build script renders the formula docs of every champion, item and rune
 [build-dependencies]

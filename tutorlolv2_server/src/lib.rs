@@ -1,29 +1,20 @@
-mod server;
+pub mod server;
 
 use actix_cors::Cors;
 use actix_web::{
     App, HttpResponse, HttpServer,
-    dev::HttpServiceFactory,
     http::header,
     middleware::DefaultHeaders,
     web::{self, Data, scope},
 };
-use server::{games::*, statics::*};
-// use sqlx::{Pool, Postgres, postgres::PgPoolOptions};
-
-// pub struct AppState {
-//     pub db: Pool<Postgres>,
-// }
-
-fn api_scope() -> impl HttpServiceFactory + 'static {
-    scope("/api").service(
-        scope("/games")
-            .service(realtime_handler)
-            .service(calculator_handler),
-        // .service(create_game_handler),
-        // .service(get_by_code_handler),
-    )
-}
+use server::{
+    config::Config,
+    janitor,
+    routes::{RateLimits, api},
+    state::AppState,
+    statics::*,
+};
+use sqlx::postgres::PgPoolOptions;
 
 pub async fn run() -> std::io::Result<()> {
     dotenvy::dotenv().ok();
@@ -34,32 +25,43 @@ pub async fn run() -> std::io::Result<()> {
         .unwrap_or(8082u16);
 
     let statics = Data::new(StaticDir::from_env()?);
+    let config = Config::from_env().map_err(std::io::Error::other)?;
+
+    let db = PgPoolOptions::new()
+        .max_connections(config.db_max_connections)
+        .connect(&config.database_url)
+        .await
+        .map_err(std::io::Error::other)?;
+
+    sqlx::migrate!("./migrations")
+        .run(&db)
+        .await
+        .map_err(std::io::Error::other)?;
+
+    // Built once: every worker's App shares the same counters
+    let limits = RateLimits::new(config.trusted_proxy);
+    let state = Data::new(AppState::new(db, config));
+
+    janitor::spawn(state.clone());
 
     println!("Starting server on port {port}");
     println!("Serving static files from {}", statics.path().display());
-
-    // let dsn = std::env::var("DATABASE_URL").expect("DATABASE_URL is not set");
-    // let pool = PgPoolOptions::new()
-    //     .max_connections(5)
-    //     .connect(&dsn)
-    //     .await
-    //     .expect("Error while attempting to connect to the database");
 
     HttpServer::new(move || {
         let cors = Cors::default()
             .allow_any_origin()
             // #![todo] Allow only frontend to send requests to this server.
             // .allowed_origin("http://localhost:8080")
-            .allowed_methods(["GET", "POST"])
+            .allowed_methods(["GET", "POST", "PATCH"])
             .allowed_headers([header::AUTHORIZATION, header::CONTENT_TYPE])
             .max_age(3600);
 
         App::new()
             .wrap(cors)
             .wrap(actix_web::middleware::Logger::default())
-            // .app_data(Data::new(AppState { db: pool.clone() }))
+            .app_data(state.clone())
             .app_data(statics.clone())
-            .service(api_scope())
+            .service(api(Some(limits.clone())))
             .service(
                 scope("")
                     .service(scope("/docs").service(serve_docs))

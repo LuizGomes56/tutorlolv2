@@ -1,2 +1,12 @@
+pub mod auth;
+pub mod codec;
+pub mod config;
+pub mod db_enums;
 pub mod games;
+pub mod ingest;
+pub mod janitor;
+pub mod recordings;
+pub mod riot_api;
+pub mod routes;
+pub mod state;
 pub mod statics;

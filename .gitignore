@@ -20,5 +20,5 @@ archives
 **/conv
 build_output
 perf/
-tests/
+/captures/
 docs/

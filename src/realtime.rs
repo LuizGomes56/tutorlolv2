@@ -13,7 +13,7 @@
 use {
     crate::{ChampionId, ItemId, RuneId, helpers::*, model::*, riot::*},
     alloc::boxed::Box,
-    core::str::FromStr,
+    core::{num::NonZeroU8, str::FromStr},
     strum::{EnumCount, VariantArray},
     tutorlolv2_types::{AdaptiveType, AttackType, GameMap, Position},
 };
@@ -109,20 +109,24 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
         .find(|player| player.riot_id == riot_id)
         .ok_or(RealtimeError::UnrecognizedCurrentPlayer(riot_id))?;
 
-    // If Neeko is disguised as a non-champion entity, the champion name changes
-    // to the entity's name. Instead of tracking all possible entities, just make
-    // her the default if the champion name is not recognized. Note that
-    // [`ChampionId::default`] has a different value
-    let current_player_champion_id = current_player
-        .champion_name
-        .parse()
-        .unwrap_or(ChampionId::Neeko);
-
+    // Neeko's disguises and Gnar's forms change `champion_name`, while
+    // `raw_skin_name` keeps the real champion
+    let current_player_champion_id = current_player.champion_id();
     let current_player_cache = current_player_champion_id.data();
+    let is_mega_gnar = current_player.is_mega_gnar(current_player_champion_id);
 
-    // When Gnar is Mega, the current API changes `champion_name`, previously we
-    // had to infer it from his attack range
-    let is_mega_gnar = current_player.champion_name == "Mega Gnar";
+    // Disguised as a non-champion entity, Neeko reports the entity's level. Her
+    // ability points can't exceed her real level, so they give a lower bound
+    let level = if current_player.is_disguised_neeko(current_player_champion_id) {
+        let RiotAbilities { q, w, e, r } = abilities;
+        let points = [q, w, e, r].iter().fold(0u8, |sum, ability| {
+            sum.saturating_add(ability.ability_level)
+        });
+
+        NonZeroU8::new(points).map_or(level, |points| level.max(points))
+    } else {
+        level
+    };
 
     let current_player_base_stats =
         BasicStats::base_stats(current_player_champion_id, level, is_mega_gnar);
@@ -261,14 +265,14 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
                         assists,
                         creep_score,
                     },
-                champion_name: e_champion_name,
                 team: e_team,
+                ..
             } = *player;
 
-            // Similarly, if Neeko is disguised the champion name might change, causing mismatches. The loop cannot
-            // return until the scoreboard is fully populated, otherwise we will cause undefined behavior or have to
-            // reallocate it at the end
-            let e_champion_id = e_champion_name.parse().unwrap_or(ChampionId::Neeko);
+            // Same champion resolution as the current player's. The loop cannot return until the scoreboard is
+            // fully populated, otherwise we will cause undefined behavior or have to reallocate it at the end
+            let e_champion_id = player.champion_id();
+            let e_is_mega_gnar = player.is_mega_gnar(e_champion_id);
             let team = e_team.parse().unwrap_or_default();
 
             let e_position = e_raw_position
@@ -301,7 +305,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
 
             // Works the same as the current player basic stats inference, but with less fields
             // since the other ones are unnecessary
-            let e_base_stats = SimpleStats::base_stats(e_champion_id, e_level, false);
+            let e_base_stats = e_champion_id.base_stats(e_level, e_is_mega_gnar).simple();
 
             // Holds a collection of more detailed information about this enemy player
             let full_state = EnemyState {

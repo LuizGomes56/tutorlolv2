@@ -1,7 +1,7 @@
 //! This module only have structs related to Riot's port 2999 endpoint,
 //! which can be used to deserialize the JSON data to this library's
 //! own data types
-use crate::model::*;
+use crate::{ChampionId, model::*};
 use alloc::boxed::Box;
 use bincode::{BorrowDecode, Decode, Encode};
 use core::num::NonZeroU8;
@@ -117,6 +117,14 @@ pub struct RiotItems {
 pub struct RiotAllPlayers<'a> {
     #[serde(borrow)]
     pub champion_name: &'a str,
+    /// Not localized, but follows Neeko's disguise and Gnar's form, e.g.
+    /// `game_character_displayname_GnarBig` for Mega Gnar
+    #[serde(borrow, default)]
+    pub raw_champion_name: &'a str,
+    /// Keeps the real champion in every form and disguise, e.g.
+    /// `game_character_skin_displayname_Neeko_22` while disguised
+    #[serde(borrow, default)]
+    pub raw_skin_name: &'a str,
     pub items: Box<[RiotItems]>,
     pub level: NonZeroU8,
     #[serde(borrow)]
@@ -174,6 +182,74 @@ pub struct RiotRealtime<'a> {
     #[serde(borrow)]
     pub events: RiotRealtimeEvents<'a>,
     pub game_data: RiotRealtimeGameData,
+}
+
+const SKIN_PREFIX: &str = "game_character_skin_displayname_";
+const DISPLAY_PREFIX: &str = "game_character_displayname_";
+const NEEKO_SKIN_KEY: &str = "Neeko";
+const NEEKO_RAW_CHAMPION: &str = "game_character_displayname_Neeko";
+const MEGA_GNAR_RAW_CHAMPION: &str = "game_character_displayname_GnarBig";
+
+/// Internal champion key of `rawSkinName`: `game_character_skin_displayname_<Key>_<digits>`
+/// or `game_character_displayname_<Key>`. Same rules as `tutorlolv2_protocol::champion_key`,
+/// without lowercasing
+fn raw_skin_key(raw_skin_name: &str) -> Option<&str> {
+    if let Some(rest) = raw_skin_name.strip_prefix(SKIN_PREFIX) {
+        let (key, skin) = rest.rsplit_once('_')?;
+        (!key.is_empty() && !skin.is_empty() && skin.bytes().all(|b| b.is_ascii_digit()))
+            .then_some(key)
+    } else {
+        raw_skin_name
+            .strip_prefix(DISPLAY_PREFIX)
+            .filter(|key| !key.is_empty())
+    }
+}
+
+/// Parses an internal key, retrying in lowercase because the game's casing
+/// is not consistent (`FiddleSticks`)
+fn parse_key(key: &str) -> Option<ChampionId> {
+    if let Ok(id) = key.parse() {
+        return Some(id);
+    }
+    let mut buffer = [0u8; 32];
+    let lower = buffer.get_mut(..key.len())?;
+
+    lower.copy_from_slice(key.as_bytes());
+    lower.make_ascii_lowercase();
+
+    core::str::from_utf8(lower).ok()?.parse().ok()
+}
+
+impl RiotAllPlayers<'_> {
+    /// The real champion. Extra work happens only for the champions that can
+    /// transform: Neeko can wear another champion's name, which would parse
+    /// successfully as the wrong champion, and names like `"Mega Gnar"` don't
+    /// parse at all
+    pub fn champion_id(&self) -> ChampionId {
+        let skin_key = raw_skin_key(self.raw_skin_name);
+
+        if skin_key == Some(NEEKO_SKIN_KEY) {
+            return ChampionId::Neeko;
+        }
+
+        self.champion_name
+            .parse()
+            .ok()
+            .or_else(|| skin_key.and_then(parse_key))
+            // Unknown entity names used to mean a Neeko disguise
+            .unwrap_or(ChampionId::Neeko)
+    }
+
+    /// Whether this Gnar is in Mega form, in any client language
+    pub fn is_mega_gnar(&self, id: ChampionId) -> bool {
+        id == ChampionId::Gnar && self.raw_champion_name == MEGA_GNAR_RAW_CHAMPION
+    }
+
+    /// Whether this Neeko is disguised. Disguised as a non-champion, the API
+    /// reports the disguise's level instead of hers
+    pub fn is_disguised_neeko(&self, id: ChampionId) -> bool {
+        id == ChampionId::Neeko && self.raw_champion_name != NEEKO_RAW_CHAMPION
+    }
 }
 
 #[cfg(feature = "engine")]

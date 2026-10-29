@@ -1,0 +1,17 @@
+[package]
+name = "tutorlolv2_protocol"
+version = "0.1.0"
+edition = "2024"
+description = "Types and rules shared by the TutorLoL desktop app, server and web app for game recording and sharing"
+
+[dependencies]
+bincode = { version = "2.0.1", default-features = false, features = ["alloc", "derive"] }
+serde = { version = "1.0", default-features = false, features = ["alloc", "derive"] }
+serde_json = { version = "1.0", default-features = false, features = ["alloc"] }
+sha2 = { version = "0.10", default-features = false }
+sqlx = { version = "0.8.6", default-features = false, features = ["postgres", "derive"], optional = true }
+
+[features]
+default = []
+std = []
+sqlx = ["dep:sqlx", "std"]
