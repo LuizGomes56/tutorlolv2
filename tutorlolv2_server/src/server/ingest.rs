@@ -1,7 +1,6 @@
 //! Validation of uploaded chunks and derivation of viewer frames (spec §10.3).
 //! CPU-bound: call from `web::block`.
 
-use bincode::{BorrowDecode, Encode};
 use sha2::{Digest, Sha256};
 use std::io::{Read, Write};
 use tutorlolv2::riot::RiotRealtime;
@@ -12,12 +11,7 @@ use tutorlolv2_protocol::{
 
 /// Server-derived frames of one chunk, stored brotli-compressed and served
 /// with `Content-Encoding: br`.
-#[derive(Encode, BorrowDecode)]
-pub struct FrameChunk<'a> {
-    pub format: u16,
-    /// `(captured_at_ms, frame)`
-    pub frames: Vec<(i64, RiotRealtime<'a>)>,
-}
+pub use tutorlolv2::riot::FrameChunk;
 
 #[derive(Debug)]
 pub enum IngestError {

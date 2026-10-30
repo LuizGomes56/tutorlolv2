@@ -5,6 +5,8 @@ const DEFAULT_RECORDING_TIMEOUT_SECS: i64 = 900;
 
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct Config {
+    pub public_base_url: String,
+    pub max_viewers_per_code: usize,
     pub database_url: String,
     pub db_max_connections: u32,
     /// Riot enrichment is disabled without a key.
@@ -33,6 +35,11 @@ impl Config {
         }
 
         Ok(Config {
+            public_base_url: get("PUBLIC_BASE_URL")
+                .unwrap_or_else(|| "http://127.0.0.1:8000".into())
+                .trim_end_matches('/')
+                .to_owned(),
+            max_viewers_per_code: number::<usize>(&get, "MAX_VIEWERS_PER_CODE", 200)?.max(1),
             database_url: get("DATABASE_URL").ok_or("DATABASE_URL is not set")?,
             db_max_connections: number(&get, "DB_MAX_CONNECTIONS", DEFAULT_DB_MAX_CONNECTIONS)?,
             riot_api_key: get("RIOT_API_KEY"),

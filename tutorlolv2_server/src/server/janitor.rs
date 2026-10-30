@@ -12,6 +12,10 @@ const INTERVAL: Duration = Duration::from_secs(60);
 /// (`ended_at` = the last time it was heard from) and expires their Live codes.
 /// Returns how many recordings were ended.
 pub async fn expire_stale(db: &PgPool, timeout_secs: i64) -> sqlx::Result<u64> {
+    Ok(expire_stale_ids(db, timeout_secs).await?.len() as u64)
+}
+
+async fn expire_stale_ids(db: &PgPool, timeout_secs: i64) -> sqlx::Result<Vec<uuid::Uuid>> {
     let mut tx = db.begin().await?;
 
     let ended = sqlx::query_scalar!(
@@ -44,7 +48,7 @@ pub async fn expire_stale(db: &PgPool, timeout_secs: i64) -> sqlx::Result<u64> {
 
     tx.commit().await?;
 
-    Ok(ended.len() as u64)
+    Ok(ended)
 }
 
 /// Runs [`expire_stale`] every minute for the lifetime of the server.
@@ -55,9 +59,16 @@ pub fn spawn(state: Data<AppState>) {
         loop {
             interval.tick().await;
 
-            match expire_stale(&state.db, state.config.recording_timeout_secs).await {
-                Ok(0) => {}
-                Ok(n) => println!("Janitor ended {n} idle recording(s)"),
+            match expire_stale_ids(&state.db, state.config.recording_timeout_secs).await {
+                Ok(ids) => {
+                    for id in &ids {
+                        state.live.close(*id);
+                    }
+
+                    if !ids.is_empty() {
+                        println!("Janitor ended {} idle recording(s)", ids.len());
+                    }
+                }
                 Err(e) => eprintln!("Janitor failed: {e}"),
             }
         }

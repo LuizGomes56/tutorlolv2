@@ -52,8 +52,13 @@ pub async fn run() -> std::io::Result<()> {
             .allow_any_origin()
             // #![todo] Allow only frontend to send requests to this server.
             // .allowed_origin("http://localhost:8080")
-            .allowed_methods(["GET", "POST", "PATCH"])
-            .allowed_headers([header::AUTHORIZATION, header::CONTENT_TYPE])
+            .allowed_methods(["GET", "POST", "PATCH", "PUT"])
+            .allowed_headers([
+                header::AUTHORIZATION,
+                header::CONTENT_TYPE,
+                header::HeaderName::from_static("x-content-sha256"),
+            ])
+            .expose_headers(["X-Frame-Seq", "X-Captured-At", "X-Game-Time"])
             .max_age(3600);
 
         App::new()

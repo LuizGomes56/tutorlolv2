@@ -1,5 +1,6 @@
 //! Mounting of the `/api` routes with their body and rate limits (spec §10.5).
 
+use super::sharing;
 use super::{
     auth::parse_device_header,
     games::{calculator_handler, realtime_handler},
@@ -31,6 +32,15 @@ pub struct ClientKey {
     per_device: bool,
 }
 
+impl ClientKey {
+    pub fn address(raw: &str) -> Option<std::net::IpAddr> {
+        raw.parse::<std::net::SocketAddr>()
+            .map(|addr| addr.ip())
+            .ok()
+            .or_else(|| raw.parse().ok())
+    }
+}
+
 impl KeyExtractor for ClientKey {
     type Key = String;
     type KeyExtractionError = SimpleKeyExtractionError<&'static str>;
@@ -57,7 +67,8 @@ impl KeyExtractor for ClientKey {
             info.peer_addr()
         };
 
-        ip.map(|ip| format!("ip:{ip}"))
+        ip.and_then(Self::address)
+            .map(|ip| format!("ip:{ip}"))
             .ok_or_else(|| SimpleKeyExtractionError::new("Could not identify the client"))
     }
 }
@@ -90,6 +101,8 @@ pub struct RateLimits {
     sessions: Limit,
     /// Heartbeat, end and result together: 30/min.
     control: Limit,
+    live: Limit,
+    viewers: Limit,
 }
 
 impl RateLimits {
@@ -100,6 +113,8 @@ impl RateLimits {
             chunks: limit(trusted_proxy, true, Duration::from_secs(6), 30),
             sessions: limit(trusted_proxy, true, Duration::from_secs(2), 30),
             control: limit(trusted_proxy, true, Duration::from_secs(2), 30),
+            live: limit(trusted_proxy, true, Duration::from_millis(500), 5),
+            viewers: limit(trusted_proxy, false, Duration::from_millis(500), 120),
         }
     }
 }
@@ -129,6 +144,20 @@ pub fn recordings(limits: Option<RateLimits>) -> Scope {
     let limits = limits.unwrap_or_else(|| RateLimits::new(false));
 
     web::scope("/recordings")
+        .service(guarded!(
+            web::resource("/{id}/share")
+                .route(web::get().to(sharing::owner_share))
+                .route(web::put().to(sharing::set_share)),
+            enabled,
+            &limits.sessions
+        ))
+        .service(guarded!(
+            web::resource("/{id}/live")
+                .app_data(PayloadConfig::new(sharing::MAX_LIVE_BYTES))
+                .route(web::put().to(sharing::push_live)),
+            enabled,
+            &limits.live
+        ))
         .service(guarded!(
             web::resource("/sessions").route(web::post().to(start_session)),
             enabled,
@@ -160,7 +189,11 @@ pub fn recordings(limits: Option<RateLimits>) -> Scope {
 
 /// Everything under `/api`.
 pub fn api(limits: Option<RateLimits>) -> Scope {
+    let enabled = limits.is_some();
+    let viewer_limits = limits.clone().unwrap_or_else(|| RateLimits::new(false));
+
     web::scope("/api")
+        .app_data(sharing::ViewerPolicy(enabled))
         .app_data(PayloadConfig::new(DEFAULT_BODY_LIMIT))
         .service(
             web::scope("/games")
@@ -169,4 +202,12 @@ pub fn api(limits: Option<RateLimits>) -> Scope {
         )
         .service(devices(limits.clone()))
         .service(recordings(limits))
+        .service(guarded!(
+            web::scope("/share")
+                .route("/{code}", web::get().to(sharing::info))
+                .route("/{code}/live", web::get().to(sharing::live))
+                .route("/{code}/frames/{seq}", web::get().to(sharing::frames)),
+            enabled,
+            &viewer_limits.viewers
+        ))
 }

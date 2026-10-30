@@ -324,7 +324,8 @@ pub enum GameResult {
 }
 
 /// Visibility of a recording as the API reports it (no code when `Private`).
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, Encode, Decode)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, Encode, Decode, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case")]
 pub enum ShareMode {
     Private,
     Live,
