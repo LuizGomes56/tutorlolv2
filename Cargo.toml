@@ -8,6 +8,7 @@ description = "League of Legends static library that evaluates damages of abilit
 [workspace]
 members = [
     "perf",
+    "perf/runner",
     "tutorlolv2_codec",
     "tutorlolv2_protocol",
     "tutorlolv2_server",

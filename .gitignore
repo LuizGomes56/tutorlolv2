@@ -19,6 +19,8 @@ cache
 archives
 **/conv
 build_output
-perf/
+/perf/fixtures/
+/perf/results/
+/perf/__pycache__/
 /captures/
 docs/

@@ -96,6 +96,7 @@ fn seconds(from: u32, to: u32, start_time: f64) -> Vec<(i64, Vec<u8>)> {
         .collect()
 }
 
+
 macro_rules! app {
     ($pool:expr) => {
         http::init_service(
@@ -491,4 +492,52 @@ async fn raw_data_is_kept_when_frames_cannot_be_derived(pool: PgPool) {
     assert_eq!(row.frames_format, 0, "frames are flagged as not derived");
     assert_eq!(row.frames_len, Some(0));
     assert_eq!(row.raw, body, "the raw chunk is stored as uploaded");
+}
+
+#[sqlx::test(migrations = "./migrations")]
+async fn uploaded_chunks_preserve_riot_identity_for_resume(pool: PgPool) {
+    let app = app!(pool);
+    let device = register(&app).await;
+    let mut probe = inspect(&snapshot_json(60.0, 0.0276, "Ahri", 0))
+        .unwrap()
+        .probe;
+    let identity = RiotGameRef {
+        region: Region::Na,
+        game_id: 123,
+    };
+    probe.riot_game = Some(identity.clone());
+    let mut request = session(probe);
+    request.region = Some(Region::Na);
+    request.lcu = Some(LcuGame {
+        game_id: 123,
+        queue_id: Some(420),
+        is_custom: Some(false),
+    });
+    let started = start(&app, &device, request.clone()).await;
+    let (body, sha) = encode_chunk(0, seconds(61, 62, 0.0276));
+    assert_eq!(
+        upload(&app, &device, started.recording_id, 0, body, &sha).await,
+        StatusCode::CREATED
+    );
+
+    let stored = sqlx::query_scalar!(
+        "SELECT probe FROM recordings WHERE id = $1",
+        Uuid::from_bytes(started.recording_id)
+    )
+    .fetch_one(&pool)
+    .await
+    .unwrap();
+    let stored: Probe = decode(&stored);
+    assert_eq!(stored.game_time, 62.0);
+    assert_eq!(stored.riot_game, Some(identity));
+
+    request.probe.game_time = 63.0;
+    request.probe.riot_game.as_mut().unwrap().game_id = 456;
+    request.lcu.as_mut().unwrap().game_id = 456;
+    let next = start(&app, &device, request).await;
+    assert!(
+        !next.resumed,
+        "Different Riot ids must not fall back to matching roster/time"
+    );
+    assert_ne!(next.recording_id, started.recording_id);
 }

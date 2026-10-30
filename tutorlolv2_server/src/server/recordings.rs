@@ -411,7 +411,11 @@ pub async fn upload_chunk(
     }
 
     let last = &derived.last;
-    let last_probe = bincode::encode_to_vec(&last.probe, tutorlolv2_types::BINCODE_CONFIG)
+    // Live-client JSON has no LCU identity. Keep the session's known Riot id
+    // when advancing the snapshot fields used by subsequent resume checks.
+    let mut latest_probe = last.probe.clone();
+    latest_probe.riot_game = stored.riot_game;
+    let last_probe = bincode::encode_to_vec(&latest_probe, tutorlolv2_types::BINCODE_CONFIG)
         .map_err(ErrorInternalServerError)?;
 
     let coverage = (derived.last_game_time - derived.first_game_time + 1.0).round() as i32;
