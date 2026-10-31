@@ -4,6 +4,7 @@
 
 extern crate alloc;
 
+pub mod accounts;
 pub mod api;
 pub mod code;
 pub mod enums;
@@ -12,6 +13,7 @@ pub mod history;
 pub mod probe;
 pub mod snapshot;
 
+pub use accounts::*;
 pub use api::*;
 pub use code::*;
 pub use enums::*;
