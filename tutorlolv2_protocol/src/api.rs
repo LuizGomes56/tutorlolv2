@@ -74,7 +74,7 @@ pub struct SetShareMode {
     pub mode: ShareMode,
 }
 
-#[derive(Clone, Debug, PartialEq, Encode, Decode)]
+#[derive(Clone, Debug, PartialEq, Encode, Decode, Serialize, Deserialize)]
 pub struct ChunkInfo {
     pub seq: u32,
     pub first_game_time: f32,
@@ -83,7 +83,7 @@ pub struct ChunkInfo {
     pub frames_format: u16,
 }
 
-#[derive(Clone, Debug, PartialEq, Encode, Decode)]
+#[derive(Clone, Debug, PartialEq, Encode, Decode, Serialize, Deserialize)]
 pub struct RecordingSummary {
     pub id: Id16,
     pub champion: String,

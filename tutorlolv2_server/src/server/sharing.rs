@@ -148,7 +148,7 @@ impl AppState {
         })
     }
 
-    fn code_state(&self, code: &str, mode: CodeMode) -> ShareState {
+    pub(super) fn code_state(&self, code: &str, mode: CodeMode) -> ShareState {
         let code = display_code(code);
 
         ShareState {
@@ -186,7 +186,23 @@ pub async fn set_share(
     id: Path<Uuid>,
     Bincode(request): Bincode<SetShareMode>,
 ) -> Response {
-    let id = id.into_inner();
+    change_share(&state, auth, id.into_inner(), request, false).await
+}
+
+/// Both owner surfaces serialize lifecycle changes on the recording row.
+pub(super) async fn change_share(
+    state: &AppState,
+    auth: DeviceAuth,
+    id: Uuid,
+    request: SetShareMode,
+    finished_only: bool,
+) -> Response {
+    if finished_only && request.mode == ShareMode::Live {
+        return Err(actix_web::error::ErrorBadRequest(
+            "Live is unavailable in history",
+        ));
+    }
+
     let mut tx = state.db.begin().await.map_err(ErrorInternalServerError)?;
     let recording = sqlx::query!(
         "
@@ -198,6 +214,12 @@ pub async fn set_share(
         WHERE id = $1
             AND device_id = $2
             AND deleted_at IS NULL
+            AND EXISTS (
+                SELECT 1
+                FROM devices
+                WHERE devices.id = recordings.device_id
+                    AND devices.deleted_at IS NULL
+            )
         FOR UPDATE
         ",
         id,
@@ -207,6 +229,10 @@ pub async fn set_share(
     .await
     .map_err(ErrorInternalServerError)?
     .ok_or_else(|| ErrorNotFound("Unknown recording"))?;
+
+    if finished_only && recording.ended_at.is_none() {
+        return Err(ErrorConflict("The recording is still active"));
+    }
 
     if request.mode == ShareMode::Public
         && (recording.is_practice || recording.is_custom != Some(false))
