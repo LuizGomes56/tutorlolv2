@@ -643,6 +643,17 @@ async fn janitor_wakes_poll_and_resume_does_not_revive_live_code(pool: PgPool) {
 #[sqlx::test(migrations = "./migrations")]
 async fn unknown_code_lookups_have_separate_anti_enumeration_budget(pool: PgPool) {
     use tutorlolv2_server::server::routes::RateLimits;
+    let owner_app = app!(pool);
+    let (device, id) = recording(&owner_app, Some(false), false).await;
+    let revoked = share(&owner_app, &device, id, ShareMode::Live)
+        .await
+        .code
+        .unwrap();
+    share(&owner_app, &device, id, ShareMode::Private).await;
+    let valid = share(&owner_app, &device, id, ShareMode::Live)
+        .await
+        .code
+        .unwrap();
     let app = http::init_service(
         App::new()
             .app_data(state(pool))
@@ -671,5 +682,23 @@ async fn unknown_code_lookups_have_separate_anti_enumeration_budget(pool: PgPool
             "unknown lookup {}",
             attempt + 1
         );
+    }
+    for code in [valid, revoked, "invalid".into()] {
+        for suffix in ["", "/live?after=0", "/frames/0"] {
+            let response = http::call_service(
+                &app,
+                http::TestRequest::get()
+                    .uri(&format!("/api/share/{code}{suffix}"))
+                    .peer_addr(([127, 0, 0, 1], 23456).into())
+                    .to_request(),
+            )
+            .await;
+            assert_eq!(
+                response.status(),
+                StatusCode::TOO_MANY_REQUESTS,
+                "exhausted clients must not distinguish existing or revoked codes"
+            );
+            assert_eq!(response.headers().get("Retry-After").unwrap(), "60");
+        }
     }
 }

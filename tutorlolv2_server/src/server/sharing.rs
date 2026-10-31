@@ -40,7 +40,7 @@ pub struct ViewerPolicy(pub bool);
 pub struct MissingCodes(Mutex<HashMap<String, VecDeque<Instant>>>);
 
 impl MissingCodes {
-    fn allow(&self, key: String) -> bool {
+    fn allow(&self, key: String, record_miss: bool) -> bool {
         let now = Instant::now();
         let mut clients = self.0.lock().unwrap();
 
@@ -62,13 +62,16 @@ impl MissingCodes {
             return false;
         }
 
-        hits.push_back(now);
+        if record_miss {
+            hits.push_back(now);
+        }
+
         true
     }
 }
 
 impl AppState {
-    fn missing_code(&self, req: &HttpRequest) -> actix_web::Error {
+    fn check_lookup_budget(&self, req: &HttpRequest, record_miss: bool) -> actix_web::Result<()> {
         let info = req.connection_info();
         let raw = if self.config.trusted_proxy {
             info.realip_remote_addr()
@@ -80,17 +83,25 @@ impl AppState {
             .and_then(super::routes::ClientKey::address)
             .map_or_else(|| "unknown".into(), |ip| ip.to_string());
 
-        if req.app_data::<ViewerPolicy>().is_none_or(|p| p.0) && !self.missing_codes.allow(key) {
-            return actix_web::error::InternalError::from_response(
+        if req.app_data::<ViewerPolicy>().is_none_or(|p| p.0)
+            && !self.missing_codes.allow(key, record_miss)
+        {
+            return Err(actix_web::error::InternalError::from_response(
                 "Too many unknown code lookups",
                 HttpResponse::TooManyRequests()
                     .insert_header(("Retry-After", "60"))
                     .body("Too many unknown code lookups"),
             )
-            .into();
+            .into());
         }
 
-        ErrorNotFound("Code not found")
+        Ok(())
+    }
+
+    fn missing_code(&self, req: &HttpRequest) -> actix_web::Error {
+        self.check_lookup_budget(req, true)
+            .err()
+            .unwrap_or_else(|| ErrorNotFound("Code not found"))
     }
 
     async fn capability(
@@ -98,6 +109,7 @@ impl AppState {
         input: &str,
         req: &HttpRequest,
     ) -> actix_web::Result<(String, Capability)> {
+        self.check_lookup_budget(req, false)?;
         let code = normalize_code(input).ok_or_else(|| self.missing_code(req))?;
 
         match Capability::load(&self.db, &code).await {
@@ -111,6 +123,7 @@ impl AppState {
             Err(error) => Err(error),
         }
     }
+
     pub async fn share_state(&self, id: Uuid) -> actix_web::Result<ShareState> {
         let row = sqlx::query!(
             "
