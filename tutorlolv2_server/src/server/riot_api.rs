@@ -281,7 +281,7 @@ pub async fn enrich_one(db: &PgPool, riot: &RiotClient, job: &EnrichJob) -> Enri
                     platform_id = $3,
                     riot_game_source = $4,
                     queue_id = coalesce($5, queue_id),
-                    is_custom = $6,
+                    is_custom = coalesce(is_custom, $6),
                     active_puuid = $7
                 WHERE id = $1
                 ",

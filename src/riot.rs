@@ -184,6 +184,13 @@ pub struct RiotRealtime<'a> {
     pub game_data: RiotRealtimeGameData,
 }
 
+/// A derived replay chunk. Strings borrow from the decoded Bincode buffer.
+#[derive(Encode, BorrowDecode)]
+pub struct FrameChunk<'a> {
+    pub format: u16,
+    pub frames: alloc::vec::Vec<(i64, RiotRealtime<'a>)>,
+}
+
 const SKIN_PREFIX: &str = "game_character_skin_displayname_";
 const DISPLAY_PREFIX: &str = "game_character_displayname_";
 const NEEKO_SKIN_KEY: &str = "Neeko";

@@ -104,7 +104,7 @@ pub async fn start_session(
             .map_err(ErrorInternalServerError)?;
     }
 
-    let started = match same {
+    let mut started = match same {
         Some(found) => {
             if !found.open {
                 sqlx::query!(
@@ -156,6 +156,17 @@ pub async fn start_session(
     };
 
     tx.commit().await.map_err(ErrorInternalServerError)?;
+
+    for other in candidates
+        .iter()
+        .filter(|c| c.open && Some(c.id) != same.map(|s| s.id))
+    {
+        state.live.close(other.id);
+    }
+
+    started.share = state
+        .share_state(Uuid::from_bytes(started.recording_id))
+        .await?;
 
     if !started.resumed
         && let Some(region) = &request.region
@@ -602,6 +613,7 @@ pub async fn end(
     .map_err(ErrorInternalServerError)?;
 
     tx.commit().await.map_err(ErrorInternalServerError)?;
+    state.live.close(id);
 
     Ok(HttpResponse::NoContent().finish())
 }

@@ -1,3 +1,4 @@
+use super::live::LiveHub;
 use super::{
     auth::AuthCache,
     config::Config,
@@ -7,6 +8,8 @@ use sqlx::PgPool;
 
 /// Shared by every handler through `web::Data`.
 pub struct AppState {
+    pub missing_codes: super::sharing::MissingCodes,
+    pub live: LiveHub,
     pub db: PgPool,
     pub config: Config,
     pub auth_cache: AuthCache,
@@ -26,6 +29,8 @@ impl AppState {
         };
 
         Self {
+            missing_codes: super::sharing::MissingCodes::default(),
+            live: LiveHub::default(),
             db,
             config,
             auth_cache: AuthCache::new(),
