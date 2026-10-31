@@ -8,6 +8,7 @@ pub mod api;
 pub mod code;
 pub mod enums;
 pub mod format;
+pub mod history;
 pub mod probe;
 pub mod snapshot;
 
@@ -15,6 +16,7 @@ pub use api::*;
 pub use code::*;
 pub use enums::*;
 pub use format::*;
+pub use history::*;
 pub use probe::*;
 pub use snapshot::*;
 

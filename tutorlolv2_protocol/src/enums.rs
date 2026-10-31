@@ -293,7 +293,8 @@ impl GameType {
 }
 
 /// Why a recording ended. Postgres type `end_reason`.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, Encode, Decode)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, Encode, Decode, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case")]
 #[cfg_attr(
     feature = "sqlx",
     derive(sqlx::Type),

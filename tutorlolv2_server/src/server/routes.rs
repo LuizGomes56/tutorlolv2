@@ -103,6 +103,8 @@ pub struct RateLimits {
     control: Limit,
     live: Limit,
     viewers: Limit,
+    /// Owner replay reads: 120/min, enough for bounded chunk prefetch/chart extraction.
+    history: Limit,
 }
 
 impl RateLimits {
@@ -114,6 +116,7 @@ impl RateLimits {
             sessions: limit(trusted_proxy, true, Duration::from_secs(2), 30),
             control: limit(trusted_proxy, true, Duration::from_secs(2), 30),
             live: limit(trusted_proxy, true, Duration::from_millis(500), 5),
+            history: limit(trusted_proxy, true, Duration::from_millis(500), 120),
             viewers: limit(trusted_proxy, false, Duration::from_millis(500), 120),
         }
     }
@@ -202,6 +205,13 @@ pub fn api(limits: Option<RateLimits>) -> Scope {
         )
         .service(devices(limits.clone()))
         .service(recordings(limits))
+        .service(guarded!(
+            super::me::scope().wrap(
+                actix_web::middleware::DefaultHeaders::new().add(("Cache-Control", "no-store"))
+            ),
+            enabled,
+            &viewer_limits.history
+        ))
         .service(guarded!(
             web::scope("/share")
                 .route("/{code}", web::get().to(sharing::info))
