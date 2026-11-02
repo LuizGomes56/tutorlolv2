@@ -1,16 +1,8 @@
-#[cfg(feature = "tauri")]
 mod charts;
-#[cfg(feature = "tauri")]
 mod details;
-#[cfg(feature = "tauri")]
 pub(crate) mod list;
-#[cfg(feature = "tauri")]
 pub(crate) mod source;
-#[cfg(not(feature = "tauri"))]
-use crate::Route;
 use yew::prelude::*;
-#[cfg(not(feature = "tauri"))]
-use yew_router::prelude::*;
 #[derive(Properties, PartialEq)]
 pub struct HistoryProps {
     #[prop_or_default]
@@ -18,25 +10,24 @@ pub struct HistoryProps {
 }
 #[component]
 pub fn History(props: &HistoryProps) -> Html {
-    #[cfg(feature = "tauri")]
-    {
-        if props.id.is_empty() {
-            html! { <list::HistoryListView /> }
-        } else {
-            html! { <details::HistoryDetailsView key={props.id.clone()} id={props.id.clone()} /> }
-        }
-    }
-    #[cfg(not(feature = "tauri"))]
-    {
-        let _ = props;
-        html! {
-            <main class={classes!("watch-page")}>
+    let account = use_context::<crate::account::AccountContext>().expect("account provider");
+    if !cfg!(feature = "tauri") && account.state.email.is_none() {
+        return html! {
+            <main class={list::page_classes()}>
                 <h1>{ "Match history" }</h1>
                 <p>
-                    { "Your local match history is available in the desktop app. Website account history is not available yet." }
+                    { if account.loaded {"Sign in with Google to see your games."} else {"Checking account…"} }
                 </p>
-                <Link<Route> to={Route::Watch}>{ "Watch a shared match" }</Link<Route>>
+                <yew_router::components::Link<crate::Route> to={crate::Route::Watch}>
+                    { "Watch a shared match" }
+                </yew_router::components::Link<crate::Route>>
             </main>
-        }
+        };
+    }
+    let key = format!("{:?}:{}", account.state.email, props.id);
+    if props.id.is_empty() {
+        html! { <list::HistoryListView key={key} /> }
+    } else {
+        html! { <details::HistoryDetailsView key={key} id={props.id.clone()} /> }
     }
 }

@@ -3,7 +3,6 @@ pub(crate) mod controller;
 pub(crate) mod extent;
 pub(crate) mod timeline;
 
-#[cfg(feature = "tauri")]
 use {
     crate::livegame::{Game, LivegameView},
     cache::CachedChunk,
@@ -22,7 +21,6 @@ use {
     },
 };
 
-#[cfg(feature = "tauri")]
 #[derive(Properties, PartialEq)]
 pub struct OwnerReplayProps {
     pub id: String,
@@ -31,7 +29,6 @@ pub struct OwnerReplayProps {
     pub selected_time: Option<(f32, u32)>,
 }
 
-#[cfg(feature = "tauri")]
 #[component]
 pub fn OwnerReplay(props: &OwnerReplayProps) -> Html {
     let time = use_state(|| {

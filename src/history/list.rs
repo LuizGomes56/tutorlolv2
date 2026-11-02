@@ -205,7 +205,7 @@ pub fn HistoryListView() -> Html {
             let offset = *offset;
 
             spawn_local(async move {
-                match IpcHistory::list(offset).await {
+                match OwnerHistory::list(offset).await {
                     Ok(value) if running.get() => {
                         page.set(Some(value));
                         error.set(String::new());
@@ -248,7 +248,7 @@ pub fn HistoryListView() -> Html {
             );
 
             spawn_local(async move {
-                let result = IpcHistory::repair().await;
+                let result = OwnerHistory::repair().await;
 
                 if !*lifetime.borrow() {
                     return;
@@ -272,7 +272,9 @@ pub fn HistoryListView() -> Html {
             <h1>{ "Match history" }</h1>
             <div class={classes!("watch-actions")}>
                 <button onclick={retry.clone()}>{ "Refresh" }</button>
-                <button disabled={*busy} onclick={repair}>{ "Repair index" }</button>
+                if cfg!(feature = "tauri") {
+                    <button disabled={*busy} onclick={repair}>{ "Repair index" }</button>
+                }
             </div>
             <p role={"status"}>{ &*notice }</p>
             if !error.is_empty() {
@@ -414,7 +416,7 @@ fn HistoryRow(props: &HistoryRowProps) -> Html {
                 onhidden.clone(),
             );
             spawn_local(async move {
-                let result = IpcHistory::hide(&id).await;
+                let result = OwnerHistory::hide(&id).await;
 
                 if !*active.borrow() {
                     return;
@@ -483,9 +485,11 @@ fn HistoryRow(props: &HistoryRowProps) -> Html {
                 <Link<Route> to={Route::HistoryDetails { id }}>{ "Open replay" }</Link<Route>>
                 if *confirm {
                     <p>
-                        { "Remove only from this device’s history? Sharing and uploads continue." }
+                        { if cfg!(feature = "tauri") {"Remove only from this device’s history? Sharing and uploads continue."} else {"Hide from this browser session? Sharing is unchanged. Refreshing the page restores it."} }
                     </p>
-                    <button disabled={*busy} onclick={hide}>{ "Hide on this device" }</button>
+                    <button disabled={*busy} onclick={hide}>
+                        { if cfg!(feature = "tauri") {"Hide on this device"} else {"Hide for this session"} }
+                    </button>
                     <button disabled={*busy} onclick={cancel}>{ "Cancel" }</button>
                 } else {
                     <button onclick={request_confirmation}>{ "Hide…" }</button>
