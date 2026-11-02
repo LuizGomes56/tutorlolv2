@@ -59,7 +59,7 @@ impl Delivery {
         let _guard = self.sharing_lock.lock().await;
         let api = self.api.read().await.clone();
         let share = api.history_share(id, mode).await?;
-        self.history.check_device(api.device_id)?;
+        self.history.check_device(api.check_owner()?)?;
 
         // History may already see the server end while the local recorder is still active.
         // Update only that matching recorder, including cancellation of an in-flight live push.
@@ -71,7 +71,7 @@ impl Delivery {
             }
             self.sharing_now.notify_one();
         }
-        self.history.share(api.device_id, id, share.clone())?;
+        self.history.share(api.check_owner()?, id, share.clone())?;
         Ok(share)
     }
 
@@ -97,7 +97,9 @@ impl Delivery {
                     return Err("The active recording changed".into());
                 }
 
-                let _ = self.history.share(api.device_id, id, share.clone());
+                if let Ok(owner) = api.check_owner() {
+                    let _ = self.history.share(owner, id, share.clone());
+                }
                 *self.sharing_error.lock().unwrap() = None;
                 *self.sharing_refresh_error.lock().unwrap() = None;
 
@@ -150,7 +152,9 @@ impl Delivery {
                     *self.live_error.lock().unwrap() = None;
                 }
 
-                let _ = self.history.share(api.device_id, *id, share.clone());
+                if let Ok(owner) = api.check_owner() {
+                    let _ = self.history.share(owner, *id, share.clone());
+                }
                 self.recorder.lock().unwrap().set_share(*id, share);
                 *self.sharing_refresh_error.lock().unwrap() = None;
 

@@ -120,6 +120,7 @@ pub fn spawn(app: &AppHandle, latest: LatestSnapshot) -> RecorderHandle {
                     ids.push(s.local_id);
                 }
 
+                let owner = worker.history.identity();
                 let device = worker.store.load_device().map(|d| d.device_id);
                 let locals = ids
                     .into_iter()
@@ -149,11 +150,11 @@ pub fn spawn(app: &AppHandle, latest: LatestSnapshot) -> RecorderHandle {
                     })
                     .collect();
 
-                if let Err(e) = worker.history.reconcile_local(device, locals) {
+                if let Err(e) = worker.history.reconcile_local(owner, locals) {
                     log::warn!("History synchronization failed: {}", e.message);
                 }
 
-                let _ = worker.sync_history_errors(device);
+                let _ = worker.sync_history_errors(owner);
             })
             .await;
 

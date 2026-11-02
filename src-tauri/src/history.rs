@@ -210,7 +210,19 @@ impl History {
         }
     }
 
+    pub fn identity(&self) -> Option<Id16> {
+        self.state.lock().unwrap().index.device_id
+    }
+
+    pub fn bind_owner(&self, id: Option<Id16>) -> Result<(), HistoryError> {
+        self.bind_inner(id, true)
+    }
+
     pub fn bind(&self, id: Option<Id16>) -> Result<(), HistoryError> {
+        self.bind_inner(id, false)
+    }
+
+    fn bind_inner(&self, id: Option<Id16>, preserve_local: bool) -> Result<(), HistoryError> {
         let mut s = self.state.lock().unwrap();
 
         if s.index.device_id == id {
@@ -220,20 +232,43 @@ impl History {
         self.store.archive_history();
         let next = Index {
             device_id: id,
-            entries: vec![],
+            entries: if preserve_local {
+                s.index
+                    .entries
+                    .iter()
+                    .filter(|e| e.local_id.is_some())
+                    .cloned()
+                    .collect()
+            } else {
+                vec![]
+            },
             unavailable: vec![],
-            losses: vec![],
-            legacy_losses: vec![],
+            losses: if preserve_local {
+                s.index.losses.clone()
+            } else {
+                vec![]
+            },
+            legacy_losses: if preserve_local {
+                s.index.legacy_losses.clone()
+            } else {
+                vec![]
+            },
         };
 
-        self.store.save_history(&next).map_err(storage)?;
+        let saved = self.store.save_history(&next).map_err(storage);
+        if !preserve_local && saved.is_err() {
+            return saved;
+        }
 
         s.index = next;
+        s.refreshing = false;
+        s.repair_requested = false;
+        s.error = None;
         s.attempted = None;
         s.details_after = None;
         s.revision += 1;
 
-        Ok(())
+        saved
     }
 
     fn update_for_device(
@@ -639,7 +674,7 @@ impl History {
     }
 
     pub async fn refresh(&self, api: ApiClient, repair: bool) {
-        let device = api.device_id;
+        let device = api.owner_id();
         let mut repair = repair;
 
         loop {
@@ -743,7 +778,7 @@ impl History {
 
                 let mut s = self.state.lock().unwrap();
 
-                if s.index.device_id != device {
+                if api.account_invalid() || s.index.device_id != device {
                     return Err(error(
                         HistoryErrorKind::Unauthorized,
                         "History device changed",
@@ -785,6 +820,9 @@ impl History {
 
             let mut s = self.state.lock().unwrap();
 
+            if api.account_invalid() || s.index.device_id != device {
+                return;
+            }
             s.refreshing = false;
             s.error = result.err().map(|e| e.message);
             s.revision += 1;
@@ -802,5 +840,44 @@ impl History {
 
             break;
         }
+    }
+}
+
+#[cfg(test)]
+mod account_cache_tests {
+    use super::*;
+    #[test]
+    fn owner_changes_drop_remote_metadata_but_preserve_local_hide_and_progress() {
+        let dir = std::env::temp_dir().join(format!("m4-cache-{}", std::process::id()));
+        let history = History::new(Store::new(dir.clone()), Some([1; 16]));
+        history.local([2; 16], Some([3; 16]), 4, true, 2).unwrap();
+        history.hide([3; 16]).unwrap();
+        {
+            let mut state = history.state.lock().unwrap();
+            let mut remote = state.index.entries[0].clone();
+            remote.local_id = None;
+            remote.recording_id = Some([8; 16]);
+            remote.hidden = false;
+            state.index.entries.push(remote);
+        }
+        history.bind_owner(Some([9; 16])).unwrap();
+        assert!(history.check_device(Some([1; 16])).is_err());
+        assert!(history.list(0, 50).entries.is_empty());
+        {
+            let state = history.state.lock().unwrap();
+            assert_eq!(state.index.entries.len(), 1);
+            let row = &state.index.entries[0];
+            assert!(row.hidden);
+            assert_eq!(row.pending_chunks, 4);
+            assert_eq!(row.lost_chunks, 2);
+        }
+        let restored = History::new(Store::new(dir.clone()), Some([9; 16]));
+        assert!(restored.list(0, 50).entries.is_empty());
+        assert_eq!(restored.state.lock().unwrap().index.entries.len(), 1);
+        std::fs::create_dir(dir.join("history.bin.tmp")).unwrap();
+        assert!(history.bind_owner(Some([7; 16])).is_err());
+        assert!(history.check_device(Some([9; 16])).is_err());
+        assert!(history.check_device(Some([7; 16])).is_ok());
+        let _ = std::fs::remove_dir_all(dir);
     }
 }
