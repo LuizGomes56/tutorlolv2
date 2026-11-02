@@ -191,11 +191,12 @@ pub fn recordings(limits: Option<RateLimits>) -> Scope {
 }
 
 /// Everything under `/api`.
-pub fn api(limits: Option<RateLimits>) -> Scope {
+pub fn api(limits: Option<RateLimits>) -> impl HttpServiceFactory {
     let enabled = limits.is_some();
     let viewer_limits = limits.clone().unwrap_or_else(|| RateLimits::new(false));
 
     web::scope("/api")
+        .wrap(actix_web::middleware::from_fn(super::cors::policy))
         .app_data(sharing::ViewerPolicy(enabled))
         .app_data(PayloadConfig::new(DEFAULT_BODY_LIMIT))
         .service(
@@ -203,6 +204,19 @@ pub fn api(limits: Option<RateLimits>) -> Scope {
                 .service(realtime_handler)
                 .service(calculator_handler),
         )
+        .service(guarded!(
+            web::scope("/auth")
+                .wrap(
+                    actix_web::middleware::DefaultHeaders::new().add(("Cache-Control", "no-store"))
+                )
+                .route("/google/start", web::get().to(super::google::start))
+                .route("/google/callback", web::get().to(super::google::callback))
+                .route("/desktop/redeem", web::post().to(super::google::redeem))
+                .route("/logout", web::post().to(super::google::logout)),
+            enabled,
+            &viewer_limits.sessions
+        ))
+        .route("/account", web::get().to(super::google::account))
         .service(devices(limits.clone()))
         .service(recordings(limits))
         .service(guarded!(

@@ -58,6 +58,7 @@ pub fn spawn(state: Data<AppState>) {
 
         loop {
             interval.tick().await;
+            state.google.sweep();
 
             match expire_stale_ids(&state.db, state.config.recording_timeout_secs).await {
                 Ok(ids) => {

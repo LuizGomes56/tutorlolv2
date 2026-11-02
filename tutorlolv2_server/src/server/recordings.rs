@@ -61,6 +61,19 @@ pub async fn start_session(
     Bincode(request): Bincode<StartSession>,
 ) -> Response {
     let mut tx = state.db.begin().await.map_err(ErrorInternalServerError)?;
+    // Serialize ownership with redeem/logout before reading the account link.
+    // A foreign-key lock taken by INSERT is too late: its account subquery may
+    // already have observed the pre-login device row.
+    let device = sqlx::query_scalar::<_, Uuid>(
+        "SELECT id FROM devices WHERE id=$1 AND deleted_at IS NULL FOR UPDATE",
+    )
+    .bind(auth.device_id)
+    .fetch_optional(&mut *tx)
+    .await
+    .map_err(ErrorInternalServerError)?;
+    if device.is_none() {
+        return Err(actix_web::error::ErrorUnauthorized("Device unavailable"));
+    }
     let now = Utc::now();
 
     let candidates = sqlx::query!(
@@ -220,6 +233,7 @@ async fn insert_recording(
         r#"
         INSERT INTO recordings (
             device_id,
+            account_id,
             game_mode,
             map_number,
             fingerprint,
@@ -238,7 +252,7 @@ async fn insert_recording(
             app_version
         )
         VALUES (
-            $1, $2, $3, $4,
+            $1, (SELECT d.account_id FROM devices d LEFT JOIN accounts a ON a.id=d.account_id WHERE d.id=$1 AND d.deleted_at IS NULL AND a.deleted_at IS NULL), $2, $3, $4,
             $5, $6, $7, $8,
             $9, $10, $11, $12,
             $13, now() - $14 * interval '1 second',

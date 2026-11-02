@@ -17,6 +17,15 @@ pub struct RedeemTicket {
 }
 
 /// Native-only session credential; deliberately lacks Serde and Debug implementations.
+///
+/// A session must not become serializable through a webview IPC response:
+/// ```compile_fail
+/// let session = tutorlolv2_protocol::DesktopSession {
+///     token: "native-only".into(),
+///     email: "player@example.test".into(),
+/// };
+/// let _ = serde_json::to_value(session);
+/// ```
 #[derive(Clone, PartialEq, Eq, Encode, Decode)]
 pub struct DesktopSession {
     pub token: String,

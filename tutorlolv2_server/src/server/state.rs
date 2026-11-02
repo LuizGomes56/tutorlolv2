@@ -8,6 +8,7 @@ use sqlx::PgPool;
 
 /// Shared by every handler through `web::Data`.
 pub struct AppState {
+    pub google: super::google::PendingStore,
     pub missing_codes: super::sharing::MissingCodes,
     pub live: LiveHub,
     pub db: PgPool,
@@ -29,6 +30,7 @@ impl AppState {
         };
 
         Self {
+            google: Default::default(),
             missing_codes: super::sharing::MissingCodes::default(),
             live: LiveHub::default(),
             db,

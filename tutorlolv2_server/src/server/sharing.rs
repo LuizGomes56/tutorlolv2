@@ -186,13 +186,13 @@ pub async fn set_share(
     id: Path<Uuid>,
     Bincode(request): Bincode<SetShareMode>,
 ) -> Response {
-    change_share(&state, auth, id.into_inner(), request, false).await
+    change_share(&state, auth.into(), id.into_inner(), request, false).await
 }
 
 /// Both owner surfaces serialize lifecycle changes on the recording row.
 pub(super) async fn change_share(
     state: &AppState,
-    auth: DeviceAuth,
+    auth: super::google::Owner,
     id: Uuid,
     request: SetShareMode,
     finished_only: bool,
@@ -212,7 +212,7 @@ pub(super) async fn change_share(
             is_practice
         FROM recordings
         WHERE id = $1
-            AND device_id = $2
+            AND ((device_id = $2 AND $2 IS NOT NULL) OR (account_id=$3 AND $3 IS NOT NULL))
             AND deleted_at IS NULL
             AND EXISTS (
                 SELECT 1
@@ -223,7 +223,8 @@ pub(super) async fn change_share(
         FOR UPDATE
         ",
         id,
-        auth.device_id
+        auth.device_id,
+        auth.account_id
     )
     .fetch_optional(&mut *tx)
     .await
