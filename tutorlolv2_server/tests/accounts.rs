@@ -728,10 +728,13 @@ async fn recording_creation_serializes_with_claim_and_logout(pool: PgPool) {
     .fetch_one(&pool)
     .await
     .unwrap();
+    let binding: Uuid=sqlx::query_scalar("INSERT INTO account_sessions(account_id,token_hash,kind,device_id,expires_at) VALUES($1,$2,'desktop',$3,now()+interval '1 day') RETURNING id")
+        .bind(account).bind(vec![3u8;32]).bind(Uuid::from_bytes(d.device_id)).fetch_one(&pool).await.unwrap();
     let mut tx = pool.begin().await.unwrap();
-    sqlx::query("UPDATE devices SET account_id=$1 WHERE id=$2")
+    sqlx::query("UPDATE devices SET account_id=$1,account_session_id=$3 WHERE id=$2")
         .bind(account)
         .bind(Uuid::from_bytes(d.device_id))
+        .bind(binding)
         .execute(&mut *tx)
         .await
         .unwrap();
@@ -940,5 +943,220 @@ async fn google_exchange_rejects_redirects_large_or_malformed_responses(pool: Pg
         let text = String::from_utf8(test::read_body(r).await.to_vec()).unwrap();
         assert!(!text.contains("test-secret"));
         assert_eq!(server.received_requests().await.unwrap().len(), 1);
+    }
+}
+
+#[sqlx::test(migrations = "./migrations")]
+async fn invalid_desktop_binding_cannot_own_future_recordings(pool: PgPool) {
+    let server = MockServer::start().await;
+    let app = test::init_service(
+        App::new()
+            .app_data(state_with(
+                pool.clone(),
+                oauth_config(&format!("{}/token", server.uri())),
+            ))
+            .service(routes::api(None)),
+    )
+    .await;
+    let d = device(&app).await;
+    for (i, invalid) in ["expired", "revoked", "deleted_account"]
+        .into_iter()
+        .enumerate()
+    {
+        let login = desktop_login(&app, &server, &d, &format!("owner{i}")).await;
+        let old = recording(&app, &d, (i * 2 + 1) as f32).await;
+        let old_owner: Option<Uuid> =
+            sqlx::query_scalar("SELECT account_id FROM recordings WHERE id=$1")
+                .bind(old)
+                .fetch_one(&pool)
+                .await
+                .unwrap();
+        assert!(old_owner.is_some());
+        let token_hash = Sha256::digest(B64.decode(&login.token).unwrap()).to_vec();
+        match invalid {
+            "expired" => {
+                sqlx::query("UPDATE account_sessions SET expires_at=now()-interval '1 second' WHERE token_hash=$1").bind(&token_hash).execute(&pool).await.unwrap();
+            }
+            "revoked" => {
+                sqlx::query("UPDATE account_sessions SET revoked_at=now() WHERE token_hash=$1")
+                    .bind(&token_hash)
+                    .execute(&pool)
+                    .await
+                    .unwrap();
+            }
+            _ => {
+                sqlx::query("UPDATE accounts SET deleted_at=now() WHERE id=$1")
+                    .bind(old_owner)
+                    .execute(&pool)
+                    .await
+                    .unwrap();
+            }
+        }
+        assert_eq!(
+            test::call_service(
+                &app,
+                test::TestRequest::get()
+                    .uri("/api/account")
+                    .insert_header(("Authorization", format!("Session {}", login.token)))
+                    .to_request()
+            )
+            .await
+            .status(),
+            401
+        );
+        let new = recording(&app, &d, (i * 2 + 2) as f32).await;
+        let owner: Option<Uuid> =
+            sqlx::query_scalar("SELECT account_id FROM recordings WHERE id=$1")
+                .bind(new)
+                .fetch_one(&pool)
+                .await
+                .unwrap();
+        assert_eq!(
+            owner, None,
+            "{invalid} desktop binding must not attach a new game"
+        );
+        let link: (Option<Uuid>, Option<Uuid>) =
+            sqlx::query_as("SELECT account_id,account_session_id FROM devices WHERE id=$1")
+                .bind(Uuid::from_bytes(d.device_id))
+                .fetch_one(&pool)
+                .await
+                .unwrap();
+        assert_eq!(link, (None, None));
+        let retained: Option<Uuid> =
+            sqlx::query_scalar("SELECT account_id FROM recordings WHERE id=$1")
+                .bind(old)
+                .fetch_one(&pool)
+                .await
+                .unwrap();
+        assert_eq!(retained, old_owner);
+    }
+    // Invalid old sessions must not cause a later, valid binding to be cleared.
+    let fresh = desktop_login(&app, &server, &d, "fresh").await;
+    let new = recording(&app, &d, 8.0).await;
+    let owner: Option<Uuid> = sqlx::query_scalar("SELECT account_id FROM recordings WHERE id=$1")
+        .bind(new)
+        .fetch_one(&pool)
+        .await
+        .unwrap();
+    assert!(owner.is_some());
+    assert_eq!(
+        test::call_service(
+            &app,
+            test::TestRequest::get()
+                .uri("/api/account")
+                .insert_header(("Authorization", format!("Session {}", fresh.token)))
+                .to_request()
+        )
+        .await
+        .status(),
+        200
+    );
+}
+
+#[sqlx::test(migrations = "./migrations")]
+async fn web_day_slide_renews_cookie_only_on_success_and_never_logout(pool: PgPool) {
+    let server = MockServer::start().await;
+    for secure in [false, true] {
+        let mut config = oauth_config(&format!("{}/token", server.uri()));
+        config.cookie_secure = secure;
+        let app = test::init_service(
+            App::new()
+                .app_data(state_with(pool.clone(), config))
+                .service(routes::api(None)),
+        )
+        .await;
+        let cookie = web_login(&app, &server, "alice").await;
+        let hash = Sha256::digest(B64.decode(cookie.value()).unwrap()).to_vec();
+        let age = || {
+            sqlx::query("UPDATE account_sessions SET last_used_at=now()-interval '2 days',expires_at=now()+interval '1 hour' WHERE token_hash=$1").bind(&hash).execute(&pool)
+        };
+        age().await.unwrap();
+        let before: chrono::DateTime<chrono::Utc> =
+            sqlx::query_scalar("SELECT expires_at FROM account_sessions WHERE token_hash=$1")
+                .bind(&hash)
+                .fetch_one(&pool)
+                .await
+                .unwrap();
+        let r = test::call_service(
+            &app,
+            test::TestRequest::get()
+                .uri(&format!("/api/me/recordings/{}", Uuid::nil()))
+                .cookie(cookie.clone())
+                .to_request(),
+        )
+        .await;
+        assert_eq!(r.status(), 404);
+        assert!(!r.headers().contains_key("Set-Cookie"));
+        let unchanged: chrono::DateTime<chrono::Utc> =
+            sqlx::query_scalar("SELECT expires_at FROM account_sessions WHERE token_hash=$1")
+                .bind(&hash)
+                .fetch_one(&pool)
+                .await
+                .unwrap();
+        assert_eq!(
+            before, unchanged,
+            "failed owner reads must not consume the day-slide"
+        );
+        let request = || {
+            test::TestRequest::get()
+                .uri("/api/account")
+                .cookie(cookie.clone())
+                .to_request()
+        };
+        let r = test::call_service(&app, request()).await;
+        assert_eq!(r.status(), 200);
+        let renewed = r
+            .response()
+            .cookies()
+            .find(|c| c.name() == "tl_session")
+            .expect("day-slide must renew the browser cookie");
+        assert_eq!(renewed.value(), cookie.value());
+        assert_eq!(renewed.http_only(), Some(true));
+        assert_eq!(renewed.path(), Some("/api"));
+        assert_eq!(renewed.same_site(), Some(actix_web::cookie::SameSite::Lax));
+        assert_eq!(renewed.secure().unwrap_or(false), secure);
+        assert_eq!(renewed.max_age().unwrap().whole_seconds(), 90 * 86400);
+        let after: chrono::DateTime<chrono::Utc> =
+            sqlx::query_scalar("SELECT expires_at FROM account_sessions WHERE token_hash=$1")
+                .bind(&hash)
+                .fetch_one(&pool)
+                .await
+                .unwrap();
+        assert!(after > chrono::Utc::now() + chrono::Duration::days(89));
+        let r = test::call_service(&app, request()).await;
+        assert_eq!(r.status(), 200);
+        assert!(!r.headers().contains_key("Set-Cookie"));
+        age().await.unwrap();
+        let r = test::call_service(
+            &app,
+            test::TestRequest::post()
+                .uri("/api/auth/logout")
+                .cookie(cookie.clone())
+                .to_request(),
+        )
+        .await;
+        assert_eq!(r.status(), 403);
+        assert!(!r.headers().contains_key("Set-Cookie"));
+        let r = test::call_service(
+            &app,
+            test::TestRequest::post()
+                .uri("/api/auth/logout")
+                .cookie(cookie.clone())
+                .insert_header(("Origin", "http://127.0.0.1:8000"))
+                .insert_header(("Content-Type", "application/octet-stream"))
+                .to_request(),
+        )
+        .await;
+        assert_eq!(r.status(), 204);
+        let cookies: Vec<_> = r
+            .response()
+            .cookies()
+            .filter(|c| c.name() == "tl_session")
+            .collect();
+        assert_eq!(cookies.len(), 1);
+        assert_eq!(cookies[0].max_age().unwrap().whole_seconds(), 0);
+        let r = test::call_service(&app, request()).await;
+        assert_eq!(r.status(), 401);
+        assert!(!r.headers().contains_key("Set-Cookie"));
     }
 }

@@ -6,8 +6,8 @@ use super::{
 };
 use actix_web::cookie::{Cookie, SameSite, time::Duration as CookieDuration};
 use actix_web::{
-    FromRequest, HttpRequest, HttpResponse,
-    dev::Payload,
+    FromRequest, HttpMessage, HttpRequest, HttpResponse,
+    dev::{Payload, ServiceResponse},
     error::*,
     web::{Data, Query},
 };
@@ -196,7 +196,16 @@ pub async fn callback(s: Data<AppState>, r: HttpRequest, q: Query<Callback>) -> 
     let Some(login) = login else {
         return Ok(HttpResponse::BadRequest()
             .content_type("text/html; charset=utf-8")
-            .body(r#"<!doctype html><html lang="en"><meta charset="utf-8"><title>Sign-in expired</title><p>Sign-in expired, try again from TutorLoL.</p></html>"#));
+            .body(
+                r#"
+                <!doctype html>
+                    <html lang="en">
+                        <meta charset="utf-8">
+                        <title>Sign-in expired</title>
+                        <p>Sign-in expired, try again from TutorLoL.</p>
+                    </html>
+                "#,
+            ));
     };
     if matches!(login.target, Target::Web(_))
         && r.cookie("tl_login")
@@ -290,7 +299,21 @@ pub async fn callback(s: Data<AppState>, r: HttpRequest, q: Query<Callback>) -> 
     {
         return Err(ErrorUnauthorized("Invalid identity"));
     }
-    let account:Uuid=sqlx::query_scalar("INSERT INTO accounts(google_sub,email) VALUES($1,$2) ON CONFLICT(google_sub) DO UPDATE SET email=EXCLUDED.email,last_login_at=now() WHERE accounts.deleted_at IS NULL RETURNING id").bind(c.sub).bind(c.email).fetch_optional(&s.db).await.map_err(storage)?.ok_or_else(||ErrorUnauthorized("Account unavailable"))?;
+    let account = sqlx::query_scalar!(
+        "INSERT INTO accounts(google_sub, email)
+        VALUES($1, $2)
+        ON CONFLICT(google_sub)
+        DO UPDATE
+        SET email = EXCLUDED.email, last_login_at = now()
+        WHERE accounts.deleted_at IS NULL
+        RETURNING id",
+        c.sub,
+        c.email
+    )
+    .fetch_optional(&s.db)
+    .await
+    .map_err(storage)?
+    .ok_or_else(|| ErrorUnauthorized("Account unavailable"))?;
     match login.target {
         Target::Web(path) => {
             let mut tx = s.db.begin().await.map_err(storage)?;
@@ -329,7 +352,29 @@ async fn create_session(
     device: Option<Uuid>,
 ) -> actix_web::Result<(String, Uuid)> {
     let t = token()?;
-    let id=sqlx::query_scalar("INSERT INTO account_sessions(account_id,token_hash,kind,device_id,expires_at) VALUES($1,$2,CAST($3 AS session_kind),$4,now()+$5*interval '1 day') RETURNING id").bind(account).bind(hash(&t).unwrap()).bind(if device.is_some(){"desktop"}else{"web"}).bind(device).bind(s.config.session_ttl_days as f64).fetch_one(&mut **tx).await.map_err(storage)?;
+
+    let id = sqlx::query_scalar!(
+        "INSERT INTO account_sessions(
+            account_id,
+            token_hash,
+            kind,
+            device_id,
+            expires_at
+        )
+        VALUES(
+            $1, $2, $3,
+            $4, now() + $5 * interval '1 day'
+        )
+        RETURNING id",
+        account,
+        hash(&t).unwrap(),
+        if device.is_some() { "desktop" } else { "web" } as _,
+        device,
+        s.config.session_ttl_days as f64
+    )
+    .fetch_one(&mut **tx)
+    .await
+    .map_err(storage)?;
     Ok((t, id))
 }
 pub async fn redeem(
@@ -398,6 +443,7 @@ impl FromRequest for AccountAuth {
     type Future = Pin<Box<dyn Future<Output = Result<Self, Self::Error>>>>;
     fn from_request(r: &HttpRequest, _: &mut Payload) -> Self::Future {
         let state = r.app_data::<Data<AppState>>().cloned();
+        let request = r.clone();
         let header = r
             .headers()
             .get("Authorization")
@@ -430,11 +476,73 @@ impl FromRequest for AccountAuth {
                 device_id: row.get("device_id"),
                 cookie,
             };
-            sqlx::query("UPDATE account_sessions SET last_used_at=now(),expires_at=now()+$2*interval '1 day' WHERE id=$1 AND last_used_at<now()-interval '1 day'").bind(auth.session_id).bind(s.config.session_ttl_days as f64).execute(&s.db).await.map_err(storage)?;
+            if cookie {
+                // The response middleware renews both DB expiry and cookie only
+                // after a successful owner response. Failed requests and logout
+                // must neither consume this daily renewal nor resurrect a cookie.
+                request.extensions_mut().insert(WebSessionRenewal {
+                    session_id: auth.session_id,
+                    token: t.unwrap(),
+                });
+            } else {
+                sqlx::query("UPDATE account_sessions SET last_used_at=now(),expires_at=now()+$2*interval '1 day' WHERE id=$1 AND last_used_at<now()-interval '1 day'").bind(auth.session_id).bind(s.config.session_ttl_days as f64).execute(&s.db).await.map_err(storage)?;
+            }
             Ok(auth)
         })
     }
 }
+// This native server-only marker has no Debug/Serde implementation. It never
+// enters a response body or a webview; only the HttpOnly cookie carries it.
+#[derive(Clone)]
+struct WebSessionRenewal {
+    session_id: Uuid,
+    token: String,
+}
+
+pub(super) async fn renew_web_cookie<B>(
+    response: &mut ServiceResponse<B>,
+) -> actix_web::Result<()> {
+    if !response.status().is_success() || response.request().path() == "/api/auth/logout" {
+        return Ok(());
+    }
+    let renewal = response
+        .request()
+        .extensions()
+        .get::<WebSessionRenewal>()
+        .cloned();
+    let Some(renewal) = renewal else {
+        return Ok(());
+    };
+    let state = response
+        .request()
+        .app_data::<Data<AppState>>()
+        .cloned()
+        .ok_or_else(|| ErrorInternalServerError("Account storage unavailable"))?;
+    let updated = sqlx::query(
+        "UPDATE account_sessions s SET last_used_at=now(),expires_at=now()+$2*interval '1 day'
+         WHERE s.id=$1 AND s.kind='web' AND s.revoked_at IS NULL AND s.expires_at>now()
+           AND s.last_used_at<now()-interval '1 day'
+           AND EXISTS (SELECT 1 FROM accounts a WHERE a.id=s.account_id AND a.deleted_at IS NULL)",
+    )
+    .bind(renewal.session_id)
+    .bind(state.config.session_ttl_days as f64)
+    .execute(&state.db)
+    .await
+    .map_err(storage)?;
+    if updated.rows_affected() == 1 {
+        response
+            .response_mut()
+            .add_cookie(&cookie(
+                &state,
+                "tl_session",
+                renewal.token,
+                state.config.session_ttl_days * 86400,
+            ))
+            .map_err(ErrorInternalServerError)?;
+    }
+    Ok(())
+}
+
 pub async fn account(s: Data<AppState>, a: AccountAuth) -> Response {
     let row =
         sqlx::query("SELECT email,created_at FROM accounts WHERE id=$1 AND deleted_at IS NULL")

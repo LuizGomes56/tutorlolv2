@@ -60,6 +60,7 @@ pub async fn policy(
     } else {
         next.call(req).await?.map_into_left_body()
     };
+    super::google::renew_web_cookie(&mut response).await?;
     let headers = response.headers_mut();
     if sensitive {
         headers.insert(header::CACHE_CONTROL, HeaderValue::from_static("no-store"));

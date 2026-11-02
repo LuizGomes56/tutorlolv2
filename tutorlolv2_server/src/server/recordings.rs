@@ -74,6 +74,25 @@ pub async fn start_session(
     if device.is_none() {
         return Err(actix_web::error::ErrorUnauthorized("Device unavailable"));
     }
+    // The native client drops expired credentials, but ingest still uses its
+    // DeviceAuth. A stale link must not silently attach later games to that
+    // signed-out account. Check the current binding under the same device lock
+    // used by redeem/logout so a newer login cannot be unlinked here.
+    sqlx::query(
+        "UPDATE devices d SET account_id=NULL, account_session_id=NULL
+         WHERE d.id=$1 AND (d.account_id IS NOT NULL OR d.account_session_id IS NOT NULL)
+         AND NOT EXISTS (
+             SELECT 1 FROM account_sessions s JOIN accounts a ON a.id=s.account_id
+             WHERE s.id=d.account_session_id AND s.account_id=d.account_id
+               AND s.device_id=d.id AND s.kind='desktop'
+               AND s.revoked_at IS NULL AND s.expires_at>now()
+               AND a.deleted_at IS NULL
+         )",
+    )
+    .bind(auth.device_id)
+    .execute(&mut *tx)
+    .await
+    .map_err(ErrorInternalServerError)?;
     let now = Utc::now();
 
     let candidates = sqlx::query!(
