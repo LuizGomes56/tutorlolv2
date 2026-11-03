@@ -96,20 +96,10 @@ impl ReplaySource {
         abort: &web_sys::AbortController,
     ) -> Result<Rc<CachedChunk>, String> {
         let chunk = match self {
-            Self::Capability(code) => {
-                let response =
-                    crate::watch::api::get(&format!("{code}/frames/{}", metadata.seq), abort)
-                        .await?;
-
-                if !response.ok() {
-                    return Err(crate::watch::api::status_error(response.status()));
-                }
-
-                CachedChunk::decode(
-                    crate::watch::api::bytes(&response).await?,
-                    metadata.frames_format,
-                )?
-            }
+            Self::Capability(code) => CachedChunk::decode(
+                crate::watch::api::WatchApi::frames(code, metadata.seq, abort).await?,
+                metadata.frames_format,
+            )?,
 
             Self::Owner(id) => {
                 use crate::history::source::{HistorySource, OwnerHistory};

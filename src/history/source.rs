@@ -307,84 +307,55 @@ pub fn clear_web_history() {
     WEB_HIDDEN.with(|v| v.borrow_mut().clear());
 }
 
-pub fn owner_api_base() -> String {
-    option_env!("TUTORLOLV2_API_URL")
-        .or(option_env!("TUTORLOL_API_URL"))
-        .unwrap_or("/api")
-        .trim_end_matches('/')
-        .trim_end_matches("/games")
-        .into()
-}
-
-pub async fn http_request(
-    path: &str,
-    method: &str,
-    body: Option<Vec<u8>>,
-) -> Result<web_sys::Response, HistoryError> {
-    let epoch = OWNER_EPOCH.with(|v| v.get());
-    let init = web_sys::RequestInit::new();
-    init.set_method(method);
-    init.set_credentials(web_sys::RequestCredentials::Include);
-    let headers = web_sys::Headers::new().map_err(|_| error("Request unavailable"))?;
-    headers
-        .set("Content-Type", "application/octet-stream")
-        .map_err(|_| error("Request unavailable"))?;
-    init.set_headers(&headers);
-    if let Some(body) = body {
-        init.set_body(&js_sys::Uint8Array::from(body.as_slice()));
+impl HttpHistory {
+    fn base() -> String {
+        option_env!("TUTORLOLV2_API_URL")
+            .or(option_env!("TUTORLOL_API_URL"))
+            .unwrap_or("/api")
+            .trim_end_matches('/')
+            .trim_end_matches("/games")
+            .into()
     }
-    let response = JsFuture::from(
-        web_sys::window()
-            .ok_or_else(|| error("Window unavailable"))?
-            .fetch_with_str_and_init(&format!("{}/{path}", owner_api_base()), &init),
-    )
-    .await
-    .map_err(|_| HistoryError {
-        kind: HistoryErrorKind::Offline,
-        message: "Could not reach your account. Check your connection and retry.".into(),
-        retryable: true,
-    })?
-    .dyn_into()
-    .map_err(|_| error("Invalid server response"))?;
-    if OWNER_EPOCH.with(|v| v.get()) != epoch {
-        return Err(error("Account changed. Refresh history."));
+    pub fn sign_in_url() -> String {
+        use tutorlolv2_api::{Endpoint, GoogleStart, GoogleStartQuery, NoPath};
+        GoogleStart::url(
+            &Self::base(),
+            &NoPath,
+            &GoogleStartQuery {
+                target: "web".into(),
+                return_to: Some("/history".into()),
+                port: None,
+                app_state: None,
+            },
+        )
+        .expect("sign-in query is serializable")
     }
-    Ok(response)
-}
-
-pub async fn http_decode<T: bincode::Decode<()>>(
-    response: web_sys::Response,
-) -> Result<T, HistoryError> {
-    if !response.ok() {
+    pub async fn request<E: tutorlolv2_api::Endpoint>(
+        path: &E::Path,
+        query: &E::Query,
+        headers: &E::Headers,
+        body: &E::Body<'_>,
+    ) -> Result<tutorlolv2_api::ResponseBuffer<E>, HistoryError> {
+        let epoch = OWNER_EPOCH.with(|v| v.get());
+        let response = crate::utils::api::WebClient::new(Self::base())
+            .send::<E>(path, query, headers, body, None)
+            .await
+            .map_err(crate::utils::api::FetchError::history)?;
+        if OWNER_EPOCH.with(|v| v.get()) != epoch {
+            return Err(error("Account changed. Refresh history."));
+        }
+        Ok(response)
+    }
+    pub fn decode<E: tutorlolv2_api::Endpoint>(
+        response: &tutorlolv2_api::ResponseBuffer<E>,
+    ) -> Result<E::Output<'_>, HistoryError> {
         if response.status() == 401 {
             crate::account::invalidate();
         }
-        return Err(HistoryError {
-            kind: if response.status() == 401 {
-                HistoryErrorKind::Unauthorized
-            } else if response.status() == 404 {
-                HistoryErrorKind::NotFound
-            } else {
-                HistoryErrorKind::Other
-            },
-            message: match response.status() {
-                401 => "Your session expired. Sign in again.".into(),
-                403 => "This action is restricted for this recording.".into(),
-                404 => "Recording not found.".into(),
-                status => format!("Account service unavailable (HTTP {status}). Retry."),
-            },
-            retryable: response.status() != 401,
-        });
+        response
+            .decode()
+            .map_err(|e| crate::utils::api::FetchError::response(response.status(), e).history())
     }
-    let bytes = crate::watch::api::bytes(&response)
-        .await
-        .map_err(|e| error(&e))?;
-    let (value, used) = bincode::decode_from_slice(&bytes, crate::utils::BINCODE_CONFIG)
-        .map_err(|_| error("Invalid account response. Retry."))?;
-    if used != bytes.len() {
-        return Err(error("Invalid account response. Retry."));
-    }
-    Ok(value)
 }
 
 fn web_entry(summary: HistorySummary, share: ShareState) -> HistoryEntry {
@@ -408,13 +379,17 @@ impl HistorySource for HttpHistory {
         let before = WEB_CURSORS
             .with(|v| v.borrow().get(&offset).copied())
             .ok_or_else(|| error("Refresh history to restart pagination."))?;
-        let path = format!(
-            "me/recordings?limit=50{}",
-            before
-                .map(|id| format!("&before={}", uuid(id)))
-                .unwrap_or_default()
-        );
-        let page: HistoryPage = http_decode(http_request(&path, "GET", None).await?).await?;
+        let response = Self::request::<tutorlolv2_api::ListRecordings>(
+            &tutorlolv2_api::NoPath,
+            &tutorlolv2_api::Pagination {
+                before: before.map(tutorlolv2_api::Uuid::from_bytes),
+                limit: Some(50),
+            },
+            &tutorlolv2_api::NoHeaders,
+            &tutorlolv2_api::NoBody,
+        )
+        .await?;
+        let page = Self::decode(&response)?;
         if OWNER_EPOCH.with(|v| v.get()) != epoch {
             return Err(error("Account changed. Refresh history."));
         }
@@ -435,8 +410,15 @@ impl HistorySource for HttpHistory {
         })
     }
     async fn details(id: &str) -> Result<HistoryDetails, HistoryError> {
-        let recording: RecordingDetails =
-            http_decode(http_request(&format!("me/recordings/{id}"), "GET", None).await?).await?;
+        let id = tutorlolv2_api::Uuid::try_parse(id).map_err(|_| error("Invalid recording ID"))?;
+        let response = Self::request::<tutorlolv2_api::GetRecording>(
+            &tutorlolv2_api::GetRecordingPath { id },
+            &tutorlolv2_api::NoQuery,
+            &tutorlolv2_api::NoHeaders,
+            &tutorlolv2_api::NoBody,
+        )
+        .await?;
+        let recording = Self::decode(&response)?;
         if recording.frames_format != FRAMES_FORMAT {
             return Err(error("This replay needs a newer viewer."));
         }
@@ -444,25 +426,27 @@ impl HistorySource for HttpHistory {
         Ok(HistoryDetails { recording, entry })
     }
     async fn frames(id: &str, seq: u32) -> Result<Vec<u8>, HistoryError> {
-        let response =
-            http_request(&format!("me/recordings/{id}/frames/{seq}"), "GET", None).await?;
-        if !response.ok() {
-            let _: RecordingDetails = http_decode(response).await?;
-            return Err(error("Invalid frames response"));
-        }
-        // Fetch decodes Content-Encoding: br. The bytes here are already FrameChunk.
-        crate::watch::api::bytes(&response)
-            .await
-            .map_err(|e| error(&e))
+        let id = tutorlolv2_api::Uuid::try_parse(id).map_err(|_| error("Invalid recording ID"))?;
+        let response = Self::request::<tutorlolv2_api::OwnerFrames>(
+            &tutorlolv2_api::OwnerFramesPath { id, seq },
+            &tutorlolv2_api::NoQuery,
+            &tutorlolv2_api::NoHeaders,
+            &tutorlolv2_api::NoBody,
+        )
+        .await?;
+        Self::decode(&response)?;
+        Ok(response.into_bytes())
     }
     async fn share(id: &str, mode: HistoryShareMode) -> Result<ShareState, HistoryError> {
-        let body = bincode::encode_to_vec(
-            SetShareMode { mode: mode.into() },
-            crate::utils::BINCODE_CONFIG,
+        let id = tutorlolv2_api::Uuid::try_parse(id).map_err(|_| error("Invalid recording ID"))?;
+        let response = Self::request::<tutorlolv2_api::SetHistoryShare>(
+            &tutorlolv2_api::SetHistorySharePath { id },
+            &tutorlolv2_api::NoQuery,
+            &tutorlolv2_api::NoHeaders,
+            &SetShareMode { mode: mode.into() },
         )
-        .map_err(|_| error("Invalid share request"))?;
-        http_decode(http_request(&format!("me/recordings/{id}/share"), "PUT", Some(body)).await?)
-            .await
+        .await?;
+        Self::decode(&response)
     }
     async fn hide(id: &str) -> Result<(), HistoryError> {
         WEB_HIDDEN.with(|v| {

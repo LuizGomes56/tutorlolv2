@@ -146,7 +146,7 @@ fn Viewer(props: &ViewerProps) -> Html {
                 let mut initial = true;
 
                 while running.get() {
-                    match api::info(&code, &task_abort).await {
+                    match api::WatchApi::info(&code, &task_abort).await {
                         Ok(info) if running.get() => {
                             if initial {
                                 time.set(
@@ -222,52 +222,24 @@ fn Viewer(props: &ViewerProps) -> Html {
 
                     while enabled && running.get() {
                         let result = async {
-                            let response =
-                                api::get(&format!("{code}/live?after={seq}"), &task_abort).await?;
-
-                            if response.status() == 204 {
+                            let response = api::WatchApi::poll(&code, seq, &task_abort).await?;
+                            let Some(frame) = response.decode().map_err(|e| {
+                                crate::utils::api::FetchError::response(response.status(), e)
+                                    .message()
+                            })?
+                            else {
                                 return Ok(None);
-                            }
-
-                            if response.status() == 410 {
-                                return Err(api::status_error(410));
-                            }
-
-                            if !response.ok() {
-                                return Err(api::status_error(response.status()));
-                            }
-
-                            let header = |name| {
-                                response
-                                    .headers()
-                                    .get(name)
-                                    .map_err(|_| "Missing live metadata".to_string())?
-                                    .ok_or_else(|| "Missing live metadata".to_string())
                             };
-
-                            let next = header("X-Frame-Seq")?
-                                .parse::<u64>()
-                                .map_err(|_| "Invalid live sequence")?;
-
-                            let _captured = header("X-Captured-At")?
-                                .parse::<i64>()
-                                .map_err(|_| "Invalid capture time")?;
-
-                            let _game_time = header("X-Game-Time")?
-                                .parse::<f32>()
-                                .map_err(|_| "Invalid game time")?;
-
-                            if next <= seq {
+                            if frame.seq <= seq {
                                 return Err(
                                     "The live stream returned an old frame. Retry to reconnect."
                                         .to_string(),
                                 );
                             }
-
-                            let bytes = api::bytes(&response).await?;
-                            let game = api::frame(&bytes).await?;
-
-                            seq = next;
+                            let game = crate::utils::transport::realtime_from(&frame.frame)
+                                .await
+                                .map_err(|e| e.to_string())?;
+                            seq = frame.seq;
                             Ok(Some(game))
                         }
                         .await;
@@ -285,7 +257,7 @@ fn Viewer(props: &ViewerProps) -> Html {
                             Err(error) => {
                                 // A live 410 can mean Public ended. Revalidate before clearing replay access.
                                 if error.starts_with("This match") {
-                                    match api::info(&code, &task_abort).await {
+                                    match api::WatchApi::info(&code, &task_abort).await {
                                         Ok(info) if running.get() => {
                                             metadata.set(Some(info));
                                             message.set(String::new());

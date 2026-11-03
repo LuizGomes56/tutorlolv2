@@ -76,9 +76,14 @@ async fn get_account() -> Result<AccountState, String> {
             .await
             .map_err(|e| e.message)
     } else {
-        let response = crate::history::source::http_request("account", "GET", None)
-            .await
-            .map_err(|e| e.message)?;
+        let response = crate::history::source::HttpHistory::request::<tutorlolv2_api::GetAccount>(
+            &tutorlolv2_api::NoPath,
+            &tutorlolv2_api::NoQuery,
+            &tutorlolv2_api::NoHeaders,
+            &tutorlolv2_api::NoBody,
+        )
+        .await
+        .map_err(|e| e.message)?;
         if response.status() == 401 {
             let cancelled = web_sys::window()
                 .and_then(|window| {
@@ -99,9 +104,8 @@ async fn get_account() -> Result<AccountState, String> {
                 ..Default::default()
             });
         }
-        let info: AccountInfo = crate::history::source::http_decode(response)
-            .await
-            .map_err(|e| e.message)?;
+        let info: AccountInfo =
+            crate::history::source::HttpHistory::decode(&response).map_err(|e| e.message)?;
         Ok(AccountState {
             email: Some(info.email),
             ..Default::default()
@@ -231,15 +235,18 @@ pub fn AccountProvider(props: &AccountProviderProps) -> Html {
                         .await
                         .map_err(|e| e.message)
                 } else {
-                    match crate::history::source::http_request("auth/logout", "POST", Some(vec![]))
-                        .await
+                    match crate::history::source::HttpHistory::request::<tutorlolv2_api::Logout>(
+                        &tutorlolv2_api::NoPath,
+                        &tutorlolv2_api::NoQuery,
+                        &tutorlolv2_api::NoHeaders,
+                        &tutorlolv2_api::NoBody,
+                    )
+                    .await
                     {
-                        Ok(response) if response.status() == 204 => Ok(AccountState::default()),
-                        Ok(response) => Err(format!(
-                            "Sign out failed (HTTP {}). Retry.",
-                            response.status()
-                        )),
-                        Err(e) => Err(e.message),
+                        Ok(response) => crate::history::source::HttpHistory::decode(&response)
+                            .map(|_| AccountState::default())
+                            .map_err(|e| e.message),
+                        Err(error) => Err(error.message),
                     }
                 };
                 if !*active.borrow() {
@@ -315,7 +322,7 @@ pub fn AccountWidget() -> Html {
                 <button disabled={account.busy} onclick={sign_in}>{ "Sign in with Google" }</button>
             } else {
                 <a
-                    href={format!("{}/auth/google/start?target=web&return_to=/history", crate::history::source::owner_api_base())}
+                    href={crate::history::source::HttpHistory::sign_in_url()}
                 >
                     { "Sign in with Google" }
                 </a>

@@ -1,96 +1,72 @@
-use crate::utils::BINCODE_CONFIG;
-use tutorlolv2::riot::RiotRealtime;
-use tutorlolv2_protocol::{FRAMES_FORMAT, ShareInfo};
-use wasm_bindgen::{JsCast, JsValue};
-use wasm_bindgen_futures::JsFuture;
-use web_sys::{AbortController, RequestInit, Response, js_sys::Uint8Array};
-
 pub use crate::replay::cache::CachedChunk;
+#[cfg(test)]
+use crate::utils::BINCODE_CONFIG;
+use crate::utils::api::{FetchError, WebClient};
+#[cfg(test)]
+use tutorlolv2::riot::RiotRealtime;
+use tutorlolv2_api::{self as contracts, NoBody, NoHeaders, NoQuery, ResponseBuffer};
+use tutorlolv2_protocol::{FRAMES_FORMAT, ShareInfo};
+use web_sys::AbortController;
 
-pub fn api_base() -> String {
-    if let Some(base) = option_env!("TUTORLOLV2_API_URL") {
-        return base.trim_end_matches('/').into();
+pub struct WatchApi;
+impl WatchApi {
+    pub async fn info(code: &str, abort: &AbortController) -> Result<ShareInfo, String> {
+        let response = WebClient::public()
+            .send::<contracts::ShareInfoEndpoint>(
+                &contracts::ShareInfoEndpointPath { code: code.into() },
+                &NoQuery,
+                &NoHeaders,
+                &NoBody,
+                Some(abort),
+            )
+            .await
+            .map_err(FetchError::message)?;
+        let mut value = response
+            .decode()
+            .map_err(|e| FetchError::response(response.status(), e).message())?;
+        if value.frames_format != FRAMES_FORMAT {
+            return Err("This replay needs a newer viewer. Refresh the app and retry.".into());
+        }
+        value
+            .chunks
+            .sort_by(|a, b| a.first_game_time.total_cmp(&b.first_game_time));
+        Ok(value)
     }
-
-    option_env!("TUTORLOL_API_URL")
-        .unwrap_or("http://127.0.0.1:8082/api/games")
-        .trim_end_matches('/')
-        .trim_end_matches("/games")
-        .into()
-}
-
-fn js_error(_: JsValue) -> String {
-    "Could not reach the sharing service. Check your connection and retry.".into()
-}
-
-pub async fn get(path: &str, abort: &AbortController) -> Result<Response, String> {
-    let options = RequestInit::new();
-
-    options.set_signal(Some(&abort.signal()));
-
-    JsFuture::from(
-        web_sys::window()
-            .ok_or("Browser unavailable")?
-            .fetch_with_str_and_init(&format!("{}/share/{path}", api_base()), &options),
-    )
-    .await
-    .map_err(js_error)?
-    .dyn_into()
-    .map_err(js_error)
-}
-
-pub fn status_error(status: u16) -> String {
-    match status {
-        404 => "Code not found. Check the code and try again.".into(),
-        410 => "This match ended or is no longer shared.".into(),
-        _ => format!("Sharing service unavailable (HTTP {status}). Retry to reconnect."),
+    pub async fn poll(
+        code: &str,
+        after: u64,
+        abort: &AbortController,
+    ) -> Result<ResponseBuffer<contracts::PollLive>, String> {
+        WebClient::public()
+            .send::<contracts::PollLive>(
+                &contracts::PollLivePath { code: code.into() },
+                &contracts::After { after },
+                &NoHeaders,
+                &NoBody,
+                Some(abort),
+            )
+            .await
+            .map_err(FetchError::message)
     }
-}
-
-pub async fn bytes(response: &Response) -> Result<Vec<u8>, String> {
-    let buffer = JsFuture::from(response.array_buffer().map_err(js_error)?)
-        .await
-        .map_err(js_error)?;
-    Ok(Uint8Array::new(&buffer).to_vec())
-}
-
-pub async fn info(code: &str, abort: &AbortController) -> Result<ShareInfo, String> {
-    let response = get(code, abort).await?;
-
-    if !response.ok() {
-        return Err(status_error(response.status()));
+    pub async fn frames(code: &str, seq: u32, abort: &AbortController) -> Result<Vec<u8>, String> {
+        let response = WebClient::public()
+            .send::<contracts::ShareFrames>(
+                &contracts::ShareFramesPath {
+                    code: code.into(),
+                    seq,
+                },
+                &NoQuery,
+                &NoHeaders,
+                &NoBody,
+                Some(abort),
+            )
+            .await
+            .map_err(FetchError::message)?;
+        response
+            .decode()
+            .map_err(|e| FetchError::response(response.status(), e).message())?;
+        Ok(response.into_bytes())
     }
-
-    let bytes = bytes(&response).await?;
-    let (mut value, consumed): (ShareInfo, _) =
-        bincode::decode_from_slice(&bytes, BINCODE_CONFIG).map_err(|e| e.to_string())?;
-
-    if consumed != bytes.len() {
-        return Err("Invalid sharing metadata. Retry to refresh.".into());
-    }
-
-    if value.frames_format != FRAMES_FORMAT {
-        return Err("This replay needs a newer viewer. Refresh the app and retry.".into());
-    }
-
-    value
-        .chunks
-        .sort_by(|a, b| a.first_game_time.total_cmp(&b.first_game_time));
-
-    Ok(value)
-}
-
-pub async fn frame(bytes: &[u8]) -> Result<crate::livegame::Game, String> {
-    let (input, consumed): (RiotRealtime<'_>, _) =
-        bincode::borrow_decode_from_slice(bytes, BINCODE_CONFIG).map_err(|e| e.to_string())?;
-
-    if consumed != bytes.len() {
-        return Err("Invalid live frame".into());
-    }
-
-    crate::utils::transport::realtime_from(&input)
-        .await
-        .map_err(|e| e.to_string())
 }
 
 #[cfg(test)]

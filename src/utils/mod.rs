@@ -1,6 +1,7 @@
 use std::ops::Range;
 use web_sys::js_sys::Math;
 
+pub mod api;
 pub mod glue;
 pub mod hooks;
 pub mod search;
