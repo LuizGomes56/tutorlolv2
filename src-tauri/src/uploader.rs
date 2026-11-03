@@ -2,13 +2,12 @@
 
 use crate::BINCODE_CONFIG;
 use base64::{Engine, engine::general_purpose::URL_SAFE_NO_PAD};
-use bincode::{Decode, Encode};
 use sha2::{Digest, Sha256};
 use std::{
     io::{self, Read, Write},
     time::Duration,
 };
-use tauri_plugin_http::reqwest::{Client, Method, StatusCode};
+use tauri_plugin_http::reqwest::{Client, Method};
 use tutorlolv2_api::{
     self as api, Auth, BodyEncoding, ContractError, Endpoint, NoBody, NoHeaders, NoPath, NoQuery,
     ResponseBuffer, ResponseHeaders, ResponseMode,
@@ -20,7 +19,6 @@ use tutorlolv2_protocol::{
 };
 
 const OCTET_STREAM: &str = "application/octet-stream";
-const CONTENT_SHA256: &str = "X-Content-Sha256";
 const MAX_BACKOFF_MS: u64 = 300_000;
 
 fn sha_hex(bytes: &[u8]) -> String {
@@ -181,6 +179,27 @@ impl ApiFailure {
             },
         }
     }
+    fn into_message(self) -> String {
+        if let Some(remote) = self.remote.as_ref() {
+            log::debug!("API failure: {remote:?}");
+        }
+        match self.status {Some(status)=>format!("{status}: {}",self.message),None=>self.message}
+    }
+    fn into_history(self) -> tutorlolv2_protocol::HistoryError {
+        use tutorlolv2_protocol::HistoryErrorKind as K;
+        let kind = match self.status {
+            None => K::Offline,
+            Some(401) => K::Unauthorized,
+            Some(403) => K::Restricted,
+            Some(404) => K::NotFound,
+            Some(409) => K::Conflict,
+            Some(422) => K::UnsupportedFormat,
+            Some(200..=299) => K::InvalidData,
+            _ => K::Other,
+        };
+        let retryable = self.status.is_none() || self.status.is_some_and(|s| s >= 500 || s == 429);
+        crate::history::error(kind, &self.into_message(), retryable)
+    }
     fn into_account(self) -> tutorlolv2_protocol::AccountError {
         use tutorlolv2_protocol::AccountErrorKind as K;
         let kind = if self.status == Some(401) {
@@ -311,6 +330,16 @@ impl ApiClient {
         headers: &E::Headers,
         body: &E::Body<'_>,
     ) -> Result<ResponseBuffer<E>, ApiFailure> {
+        let _permit = if E::AUTH == Auth::Owner {
+            Some(
+                tokio::time::timeout(Duration::from_secs(10), self.owner_limit.acquire())
+                    .await
+                    .map_err(ApiFailure::transport)?
+                    .map_err(ApiFailure::transport)?,
+            )
+        } else {
+            None
+        };
         let parts = E::request(&self.base, path, query, headers, body)
             .map_err(|e| ApiFailure::contract(None, e))?;
         self.execute::<E>(parts).await
@@ -321,6 +350,7 @@ impl ApiClient {
         mut parts: api::EndpointParts,
     ) -> Result<ResponseBuffer<E>, ApiFailure> {
         if parts.encoding == BodyEncoding::BrotliBincode {
+            if E::PATH==api::PushLive::PATH && parts.body.len()>512*1024 {return Err(ApiFailure::invalid(413,"Live snapshot exceeds size limit"));}
             let mut compressed = Vec::new();
             {
                 let mut writer = brotli::CompressorWriter::new(
@@ -333,6 +363,7 @@ impl ApiClient {
                     .write_all(&parts.body)
                     .map_err(ApiFailure::transport)?;
             }
+            if E::PATH==api::PushLive::PATH && compressed.len()>64*1024 {return Err(ApiFailure::invalid(413,"Compressed live snapshot exceeds size limit"));}
             parts.body = compressed;
         }
         let auth = match parts.auth {
@@ -382,7 +413,12 @@ impl ApiClient {
                 })
                 .collect(),
         );
-        let bound = tutorlolv2_protocol::response::MAX_RESPONSE_BYTES;
+        let bound =
+            if (200..300).contains(&status) && E::RESPONSE_MODE == ResponseMode::BrotliBincode {
+                tutorlolv2_protocol::MAX_CHUNK_BYTES
+            } else {
+                tutorlolv2_protocol::response::MAX_RESPONSE_BYTES
+            };
         if response
             .content_length()
             .is_some_and(|size| size > bound as u64)
@@ -454,225 +490,45 @@ impl ApiClient {
         self.auth.is_some()
     }
 
-    async fn send(
-        &self,
-        method: Method,
-        path: &str,
-        body: Vec<u8>,
-        sha: Option<&str>,
-    ) -> Result<(StatusCode, Option<String>, Vec<u8>), String> {
-        let mut request = self
-            .http
-            .request(method, format!("{}/api{path}", self.base))
-            .header("Content-Type", OCTET_STREAM)
-            .body(body);
-
-        if let Some(auth) = &self.auth {
-            request = request.header("Authorization", auth);
-        }
-
-        if let Some(sha) = sha {
-            request = request.header(CONTENT_SHA256, sha);
-        }
-
-        let response = request.send().await.map_err(|e| e.to_string())?;
-        let status = response.status();
-        let retry_after = response
-            .headers()
-            .get("Retry-After")
-            .and_then(|v| v.to_str().ok())
-            .map(str::to_owned);
-
-        let bytes = response.bytes().await.map_err(|e| e.to_string())?.to_vec();
-
-        Ok((status, retry_after, bytes))
-    }
-
-    async fn call<T: Decode<()>>(
-        &self,
-        method: Method,
-        path: &str,
-        body: impl Encode,
-    ) -> Result<Option<T>, String> {
-        let body = bincode::encode_to_vec(body, BINCODE_CONFIG).map_err(|e| e.to_string())?;
-
-        let (status, _, bytes) = self.send(method, path, body, None).await?;
-
-        if !status.is_success() {
-            return Err(format!("{status}: {}", String::from_utf8_lossy(&bytes)));
-        }
-
-        if status == StatusCode::NO_CONTENT {
-            return Ok(None);
-        }
-
-        bincode::decode_from_slice(&bytes, BINCODE_CONFIG)
-            .map(|(value, _)| Some(value))
-            .map_err(|e| e.to_string())
-    }
-
-    async fn owner_bytes(
-        &self,
-        method: Method,
-        path: &str,
-        body: Vec<u8>,
-        frame: bool,
-    ) -> Result<Vec<u8>, tutorlolv2_protocol::HistoryError> {
-        use crate::history::error;
-        use tutorlolv2_protocol::HistoryErrorKind as K;
-
-        let _permit = tokio::time::timeout(Duration::from_secs(10), self.owner_limit.acquire())
-            .await
-            .map_err(|_| error(K::Offline, "History transport busy; retry", true))?
-            .map_err(|_| error(K::Other, "History transport unavailable", true))?;
-
-        let auth = self
-            .account_auth
-            .as_ref()
-            .or(self.auth.as_ref())
-            .ok_or_else(|| error(K::Unauthorized, "Device registration required", true))?;
-
-        let mut response = self
-            .http
-            .request(method, format!("{}/api/me/recordings{path}", self.base))
-            .header("Authorization", auth)
-            .header("Content-Type", OCTET_STREAM)
-            .body(body)
-            .send()
-            .await
-            .map_err(|_| error(K::Offline, "History server unavailable", true))?;
-
-        let status = response.status().as_u16();
-
-        if status == 401 && self.account_auth.is_some() {
-            self.account_invalid
-                .store(true, std::sync::atomic::Ordering::Release);
-        }
-        if !(200..300).contains(&status) {
-            let kind = match status {
-                401 => K::Unauthorized,
-                403 => K::Restricted,
-                404 => K::NotFound,
-                409 => K::Conflict,
-                422 => K::UnsupportedFormat,
-                _ => K::Other,
-            };
-
-            return Err(error(
-                kind,
-                "History request failed",
-                status >= 500 || status == 429,
-            ));
-        }
-
-        let encoding = response
-            .headers()
-            .get("Content-Encoding")
-            .and_then(|v| v.to_str().ok())
-            .unwrap_or("")
-            .to_owned();
-
-        let bound = if frame {
-            tutorlolv2_protocol::MAX_CHUNK_BYTES
-        } else {
-            16 << 20
-        };
-
-        if response.content_length().is_some_and(|n| n > bound as u64) {
-            return Err(error(
-                K::InvalidData,
-                "History response exceeds limit",
-                false,
-            ));
-        }
-
-        let mut bytes = vec![];
-
-        while let Some(part) = response
-            .chunk()
-            .await
-            .map_err(|_| error(K::Offline, "History response interrupted", true))?
-        {
-            if bytes.len().saturating_add(part.len()) > bound {
-                return Err(error(
-                    K::InvalidData,
-                    "History response exceeds limit",
-                    false,
-                ));
-            }
-
-            bytes.extend_from_slice(&part);
-        }
-
-        if frame {
-            if encoding != "br" {
-                return Err(error(K::InvalidData, "Unsupported replay encoding", false));
-            }
-
-            let raw = decompress(&bytes)
-                .map_err(|_| error(K::InvalidData, "Corrupt replay data", false))?;
-
-            if raw.len() > MAX_CHUNK_DECOMPRESSED {
-                return Err(error(K::InvalidData, "Replay exceeds limit", false));
-            }
-
-            Ok(raw)
-        } else if encoding.is_empty() {
-            Ok(bytes)
-        } else {
-            Err(error(
-                K::InvalidData,
-                "Unsupported metadata encoding",
-                false,
-            ))
-        }
-    }
-
-    async fn owner<T: Decode<()>>(
-        &self,
-        method: Method,
-        path: &str,
-        body: Vec<u8>,
-    ) -> Result<T, tutorlolv2_protocol::HistoryError> {
-        let bytes = self.owner_bytes(method, path, body, false).await?;
-        let (value, used) = bincode::decode_from_slice(&bytes, BINCODE_CONFIG).map_err(|_| {
-            crate::history::error(
-                tutorlolv2_protocol::HistoryErrorKind::InvalidData,
-                "Invalid history metadata",
-                false,
-            )
-        })?;
-
-        if used != bytes.len() {
-            return Err(crate::history::error(
-                tutorlolv2_protocol::HistoryErrorKind::InvalidData,
-                "Trailing metadata bytes",
-                false,
-            ));
-        }
-
-        Ok(value)
-    }
-
     pub async fn history_page(
         &self,
         before: Option<Id16>,
     ) -> Result<tutorlolv2_protocol::HistoryPage, tutorlolv2_protocol::HistoryError> {
-        let path = before
-            .map(|id| format!("?limit=100&before={}", uuid_text(&id)))
-            .unwrap_or("?limit=100".into());
-
-        self.owner(Method::GET, &path, vec![]).await
+        let response = self
+            .request::<api::ListRecordings>(
+                &NoPath,
+                &api::Pagination {
+                    before: before.map(api::Uuid::from_bytes),
+                    limit: Some(100),
+                },
+                &NoHeaders,
+                &NoBody,
+            )
+            .await
+            .map_err(ApiFailure::into_history)?;
+        response
+            .decode()
+            .map_err(|e| ApiFailure::contract(Some(response.status()), e).into_history())
     }
-
     pub async fn history_details(
         &self,
         id: Id16,
     ) -> Result<tutorlolv2_protocol::RecordingDetails, tutorlolv2_protocol::HistoryError> {
-        self.owner(Method::GET, &format!("/{}", uuid_text(&id)), vec![])
+        let response = self
+            .request::<api::GetRecording>(
+                &api::GetRecordingPath {
+                    id: api::Uuid::from_bytes(id),
+                },
+                &NoQuery,
+                &NoHeaders,
+                &NoBody,
+            )
             .await
+            .map_err(ApiFailure::into_history)?;
+        response
+            .decode()
+            .map_err(|e| ApiFailure::contract(Some(response.status()), e).into_history())
     }
-
     pub async fn history_frames(
         &self,
         id: Id16,
@@ -685,141 +541,211 @@ impl ApiClient {
                 false,
             ));
         }
-
-        self.owner_bytes(
-            Method::GET,
-            &format!("/{}/frames/{seq}", uuid_text(&id)),
-            vec![],
-            true,
-        )
-        .await
+        let response = self
+            .request::<api::OwnerFrames>(
+                &api::OwnerFramesPath {
+                    id: api::Uuid::from_bytes(id),
+                    seq,
+                },
+                &NoQuery,
+                &NoHeaders,
+                &NoBody,
+            )
+            .await
+            .map_err(ApiFailure::into_history)?;
+        response
+            .decode()
+            .map_err(|e| ApiFailure::contract(Some(response.status()), e).into_history())?;
+        Ok(response.into_bytes())
     }
-
     pub async fn history_share(
         &self,
         id: Id16,
         mode: tutorlolv2_protocol::HistoryShareMode,
     ) -> Result<ShareState, tutorlolv2_protocol::HistoryError> {
-        let body =
-            bincode::encode_to_vec(SetShareMode { mode: mode.into() }, BINCODE_CONFIG).unwrap();
-
-        self.owner(Method::PUT, &format!("/{}/share", uuid_text(&id)), body)
+        let response = self
+            .request::<api::SetHistoryShare>(
+                &api::SetHistorySharePath {
+                    id: api::Uuid::from_bytes(id),
+                },
+                &NoQuery,
+                &NoHeaders,
+                &SetShareMode { mode: mode.into() },
+            )
             .await
+            .map_err(ApiFailure::into_history)?;
+        response
+            .decode()
+            .map_err(|e| ApiFailure::contract(Some(response.status()), e).into_history())
     }
-
     pub async fn register(&self, app_version: &str) -> Result<DeviceCredentials, String> {
-        self.call(
-            Method::POST,
-            "/devices",
-            RegisterDevice {
-                app_version: app_version.into(),
-            },
-        )
-        .await?
-        .ok_or_else(|| "empty registration response".into())
+        let response = self
+            .request::<api::RegisterDeviceEndpoint>(
+                &NoPath,
+                &NoQuery,
+                &NoHeaders,
+                &RegisterDevice {
+                    app_version: app_version.into(),
+                },
+            )
+            .await
+            .map_err(ApiFailure::into_message)?;
+        response
+            .decode()
+            .map_err(|e| ApiFailure::contract(Some(response.status()), e).into_message())
     }
-
     pub async fn start_session(&self, request: &StartSession) -> Result<SessionStarted, String> {
-        self.call(Method::POST, "/recordings/sessions", request)
-            .await?
-            .ok_or_else(|| "empty session response".into())
+        let response = self
+            .request::<api::StartSessionEndpoint>(&NoPath, &NoQuery, &NoHeaders, request)
+            .await
+            .map_err(ApiFailure::into_message)?;
+        response
+            .decode()
+            .map_err(|e| ApiFailure::contract(Some(response.status()), e).into_message())
     }
-
+    /// Sealed spool data already has a validated bincode/Brotli body and content hash.
+    /// Keep that byte representation intact when retrying; only the declared endpoint owns its path/method.
     pub async fn upload_chunk(
         &self,
-        recording_id: &Id16,
+        id: &Id16,
         seq: u32,
         body: Vec<u8>,
         sha_hex: &str,
     ) -> ChunkOutcome {
-        let path = format!("/recordings/{}/chunks/{seq}", uuid_text(recording_id));
-
-        match self.send(Method::POST, &path, body, Some(sha_hex)).await {
-            Ok((status, retry_after, _)) => chunk_outcome(status.as_u16(), retry_after.as_deref()),
+        let path = api::UploadChunkPath {
+            id: api::Uuid::from_bytes(*id),
+            seq,
+        };
+        let Ok(headers) = api::UploadChunk::headers(&api::ContentHash {
+            sha256: sha_hex.into(),
+        }) else {
+            return ChunkOutcome::Rejected(422);
+        };
+        let Ok(url) = api::UploadChunk::url(&self.base, &path, &NoQuery) else {
+            return ChunkOutcome::Retry { after_ms: None };
+        };
+        let parts = api::EndpointParts {
+            method: api::UploadChunk::METHOD,
+            url,
+            headers,
+            body,
+            encoding: BodyEncoding::None,
+            auth: api::UploadChunk::AUTH,
+        };
+        match self.execute::<api::UploadChunk>(parts).await {
+            Ok(response) => {
+                if (200..300).contains(&response.status()) && response.decode().is_err() {
+                    return ChunkOutcome::Retry { after_ms: None };
+                }
+                chunk_outcome(response.status(), response.headers().get("Retry-After"))
+            }
+            Err(error) if error.status == Some(401) => ChunkOutcome::Unauthorized,
             Err(_) => ChunkOutcome::Retry { after_ms: None },
         }
     }
-
     pub async fn share(&self, id: &Id16) -> Result<ShareState, String> {
-        self.call(
-            Method::GET,
-            &format!("/recordings/{}/share", uuid_text(id)),
-            (),
-        )
-        .await?
-        .ok_or_else(|| "empty share response".into())
-    }
-
-    pub async fn set_share_mode(&self, id: &Id16, mode: ShareMode) -> Result<ShareState, String> {
-        self.call(
-            Method::PUT,
-            &format!("/recordings/{}/share", uuid_text(id)),
-            SetShareMode { mode },
-        )
-        .await?
-        .ok_or_else(|| "empty share response".into())
-    }
-
-    pub async fn upload_live(&self, id: &Id16, snapshot: &RawSnapshot) -> Result<(), String> {
-        let raw = bincode::encode_to_vec(snapshot, BINCODE_CONFIG).map_err(|e| e.to_string())?;
-
-        if raw.len() > 512 * 1024 {
-            return Err("live snapshot exceeds size limit".into());
-        }
-
-        let mut body = Vec::new();
-
-        {
-            let mut writer =
-                brotli::CompressorWriter::new(&mut body, 4096, BROTLI_QUALITY, BROTLI_LGWIN);
-
-            writer.write_all(&raw).map_err(|e| e.to_string())?;
-        }
-
-        if body.len() > 64 * 1024 {
-            return Err("compressed live snapshot exceeds size limit".into());
-        }
-
-        let (status, _, bytes) = self
-            .send(
-                Method::PUT,
-                &format!("/recordings/{}/live", uuid_text(id)),
-                body,
-                None,
+        let response = self
+            .request::<api::GetRecordingShare>(
+                &api::GetRecordingSharePath {
+                    id: api::Uuid::from_bytes(*id),
+                },
+                &NoQuery,
+                &NoHeaders,
+                &NoBody,
             )
-            .await?;
-
-        if status.is_success() {
-            Ok(())
-        } else {
-            Err(format!("{status}: {}", String::from_utf8_lossy(&bytes)))
-        }
-    }
-
-    pub async fn heartbeat(&self, recording_id: &Id16) -> Result<(), String> {
-        let path = format!("/recordings/{}/heartbeat", uuid_text(recording_id));
-
-        self.call::<()>(Method::POST, &path, ()).await.map(drop)
-    }
-
-    pub async fn end(&self, recording_id: &Id16, request: &EndRecording) -> Result<(), String> {
-        let path = format!("/recordings/{}/end", uuid_text(recording_id));
-
-        self.call::<()>(Method::POST, &path, request)
             .await
-            .map(drop)
+            .map_err(ApiFailure::into_message)?;
+        response
+            .decode()
+            .map_err(|e| ApiFailure::contract(Some(response.status()), e).into_message())
     }
-
+    pub async fn set_share_mode(&self, id: &Id16, mode: ShareMode) -> Result<ShareState, String> {
+        let response = self
+            .request::<api::SetRecordingShare>(
+                &api::SetRecordingSharePath {
+                    id: api::Uuid::from_bytes(*id),
+                },
+                &NoQuery,
+                &NoHeaders,
+                &SetShareMode { mode },
+            )
+            .await
+            .map_err(ApiFailure::into_message)?;
+        response
+            .decode()
+            .map_err(|e| ApiFailure::contract(Some(response.status()), e).into_message())
+    }
+    pub async fn upload_live(&self, id: &Id16, snapshot: &RawSnapshot) -> Result<(), String> {
+        let response = self
+            .request::<api::PushLive>(
+                &api::PushLivePath {
+                    id: api::Uuid::from_bytes(*id),
+                },
+                &NoQuery,
+                &NoHeaders,
+                snapshot,
+            )
+            .await
+            .map_err(ApiFailure::into_message)?;
+        response
+            .decode()
+            .map(drop)
+            .map_err(|e| ApiFailure::contract(Some(response.status()), e).into_message())
+    }
+    pub async fn heartbeat(&self, recording_id: &Id16) -> Result<(), String> {
+        let response = self
+            .request::<api::Heartbeat>(
+                &api::HeartbeatPath {
+                    id: api::Uuid::from_bytes(*recording_id),
+                },
+                &NoQuery,
+                &NoHeaders,
+                &NoBody,
+            )
+            .await
+            .map_err(ApiFailure::into_message)?;
+        response
+            .decode()
+            .map(drop)
+            .map_err(|e| ApiFailure::contract(Some(response.status()), e).into_message())
+    }
+    pub async fn end(&self, recording_id: &Id16, request: &EndRecording) -> Result<(), String> {
+        let response = self
+            .request::<api::EndRecordingEndpoint>(
+                &api::EndRecordingEndpointPath {
+                    id: api::Uuid::from_bytes(*recording_id),
+                },
+                &NoQuery,
+                &NoHeaders,
+                request,
+            )
+            .await
+            .map_err(ApiFailure::into_message)?;
+        response
+            .decode()
+            .map(drop)
+            .map_err(|e| ApiFailure::contract(Some(response.status()), e).into_message())
+    }
     pub async fn result(
         &self,
         recording_id: &Id16,
         request: &RecordingResult,
     ) -> Result<(), String> {
-        let path = format!("/recordings/{}/result", uuid_text(recording_id));
-
-        self.call::<()>(Method::PATCH, &path, request)
+        let response = self
+            .request::<api::SetResult>(
+                &api::SetResultPath {
+                    id: api::Uuid::from_bytes(*recording_id),
+                },
+                &NoQuery,
+                &NoHeaders,
+                request,
+            )
             .await
+            .map_err(ApiFailure::into_message)?;
+        response
+            .decode()
             .map(drop)
+            .map_err(|e| ApiFailure::contract(Some(response.status()), e).into_message())
     }
 }
 
@@ -856,7 +782,7 @@ mod account_transport_tests {
         assert!(api.history_page(None).await.is_err());
         assert!(api.account_invalid());
         assert!(matches!(
-            api.upload_chunk(&[3; 16], 0, vec![], "sha").await,
+            api.upload_chunk(&[3; 16], 0, vec![], &"0".repeat(64)).await,
             ChunkOutcome::Unauthorized
         ));
         let requests = server.join().unwrap();
@@ -925,6 +851,70 @@ mod api_response_tests {
         let error = api.account().await.unwrap_err();
         assert_eq!(error.message, "Account service unavailable");
         assert!(error.retryable);
+        server.join().unwrap();
+    }
+}
+
+#[cfg(test)]
+mod metadata_response_tests {
+    use super::*;
+    use tutorlolv2_protocol::{ApiResponse, HistoryPage};
+    #[tokio::test]
+    async fn registration_and_history_use_typed_envelopes_and_separate_auth() {
+        let listener = std::net::TcpListener::bind(("127.0.0.1", 0)).unwrap();
+        let base = format!("http://{}", listener.local_addr().unwrap());
+        let server = std::thread::spawn(move || {
+            let credentials = bincode::encode_to_vec(
+                ApiResponse::new(
+                    200,
+                    Ok(DeviceCredentials {
+                        device_id: [1; 16],
+                        device_secret: [2; 32],
+                    }),
+                )
+                .unwrap(),
+                BINCODE_CONFIG,
+            )
+            .unwrap();
+            let page = bincode::encode_to_vec(
+                ApiResponse::new(
+                    200,
+                    Ok(HistoryPage {
+                        items: vec![],
+                        next_before: None,
+                    }),
+                )
+                .unwrap(),
+                BINCODE_CONFIG,
+            )
+            .unwrap();
+            for (path, body) in [
+                ("post /api/devices ", credentials),
+                ("get /api/me/recordings?limit=100 ", page),
+            ] {
+                let (mut stream, _) = listener.accept().unwrap();
+                stream
+                    .set_read_timeout(Some(Duration::from_secs(3)))
+                    .unwrap();
+                let mut input = [0; 8192];
+                let n = stream.read(&mut input).unwrap();
+                let request = String::from_utf8_lossy(&input[..n]).to_ascii_lowercase();
+                assert!(request.starts_with(path), "{request}");
+                if path.starts_with("get") {
+                    assert!(request.contains("authorization: session owner-token"));
+                } else {
+                    assert!(!request.contains("authorization:"));
+                }
+                write!(stream,"HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: {}\r\nConnection: close\r\n\r\n",body.len()).unwrap();
+                stream.write_all(&body).unwrap();
+            }
+        });
+        let mut api = ApiClient::with_base_url(base, None);
+        let credentials = api.register("test").await.unwrap();
+        assert_eq!(credentials.device_id, [1; 16]);
+        api.set_account(Some("owner-token"), 1);
+        let page = api.history_page(None).await.unwrap();
+        assert!(page.items.is_empty());
         server.join().unwrap();
     }
 }

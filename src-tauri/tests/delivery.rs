@@ -279,7 +279,7 @@ async fn recovery_does_not_reuse_an_older_pending_chunk_sequence() {
             url: None,
         },
     };
-    let response = bincode::encode_to_vec(started, BINCODE_CONFIG).unwrap();
+    let response = bincode::encode_to_vec(ApiResponse::new(200,Ok(started)).unwrap(), BINCODE_CONFIG).unwrap();
     let (base, worker) = server(vec![(200, response), (201, vec![]), (201, vec![])]);
     assert!(driver(&root, base).flush().await);
     assert!(spool.pending().is_empty());
@@ -477,7 +477,7 @@ async fn failed_old_result_does_not_block_a_new_session() {
         (503, vec![]),
         (
             200,
-            bincode::encode_to_vec(started, BINCODE_CONFIG).unwrap(),
+            bincode::encode_to_vec(ApiResponse::new(200,Ok(started)).unwrap(), BINCODE_CONFIG).unwrap(),
         ),
     ]);
     assert!(!driver(&root, base).flush().await);
@@ -500,8 +500,8 @@ async fn registration_storage_recovery(blocked_file: &str) {
         device_id: [7; 16],
         device_secret: [8; 32],
     };
-    let response = bincode::encode_to_vec(&credentials, BINCODE_CONFIG).unwrap();
-    let (base, worker) = server(vec![(201, response)]);
+    let response = bincode::encode_to_vec(ApiResponse::new(200,Ok(&credentials)).unwrap(), BINCODE_CONFIG).unwrap();
+    let (base, worker) = server(vec![(200, response)]);
     let delivery = Arc::new(Delivery::new(
         Recorder::new(None, None, "test".into()),
         ApiClient::with_base_url(base.clone(), None),

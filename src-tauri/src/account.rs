@@ -1,5 +1,6 @@
 //! Native-only account credentials and bounded loopback sign-in.
-use crate::{BINCODE_CONFIG, delivery::Delivery};
+use crate::delivery::Delivery;
+#[cfg(test)] use crate::BINCODE_CONFIG;
 use base64::{Engine, engine::general_purpose::URL_SAFE_NO_PAD};
 use bincode::{Decode, Encode};
 use std::{
