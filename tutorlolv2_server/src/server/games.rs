@@ -1,25 +1,3 @@
-use super::codec::{Bincode, Response, request_config, respond};
-use actix_web::{error::ErrorBadRequest, post, web::Bytes};
-use tutorlolv2::{calculator, model::OwnedInputGame, riot::RiotRealtime};
+pub use super::routes::games::realtime::realtime_handler;
 
-#[post("/realtime")]
-pub async fn realtime_handler(body: Bytes) -> Response {
-    let (game, consumed) =
-        bincode::borrow_decode_from_slice::<RiotRealtime<'_>, _>(&body, request_config())
-            .map_err(ErrorBadRequest)?;
-
-    if consumed != body.len() {
-        return Err(ErrorBadRequest("Unexpected trailing request bytes"));
-    }
-
-    let data = tutorlolv2::realtime::realtime(&game).map_err(|e| ErrorBadRequest(e.to_string()))?;
-
-    respond(data)
-}
-
-#[post("/calculator")]
-pub async fn calculator_handler(Bincode(request): Bincode<OwnedInputGame>) -> Response {
-    let prepared = request.prepare();
-
-    respond(calculator::calculator(prepared.as_input()))
-}
+pub use super::routes::games::calculator::calculator_handler;

@@ -1,17 +1,12 @@
 //! Capability lifecycle, derived replay chunks and latest-only live delivery.
 use super::{
-    auth::DeviceAuth,
-    codec::{Bincode, OCTET_STREAM, Response, respond},
+    codec::{Response, respond},
     db_enums::ShareDeleteReason,
     state::AppState,
 };
 use actix_web::{
     HttpRequest, HttpResponse,
-    error::{
-        ErrorConflict, ErrorForbidden, ErrorGone, ErrorInternalServerError, ErrorNotFound,
-        ErrorPayloadTooLarge, ErrorTooManyRequests, ErrorUnprocessableEntity,
-    },
-    web::{self, Bytes, Data, Path, Query},
+    error::{ErrorConflict, ErrorForbidden, ErrorGone, ErrorInternalServerError, ErrorNotFound},
 };
 use chrono::{DateTime, Utc};
 use serde::Deserialize;
@@ -24,15 +19,14 @@ use std::{
 };
 use tutorlolv2::riot::RiotRealtime;
 use tutorlolv2_protocol::{
-    ChunkInfo, CodeMode, FRAMES_FORMAT, GameMode, RawSnapshot, RecordingSummary, SetShareMode,
-    ShareInfo, ShareMode, ShareState, ShareStatus, code_from_random, display_code, inspect,
-    normalize_code,
+    CodeMode, GameMode, RawSnapshot, RecordingSummary, SetShareMode, ShareMode, ShareState,
+    code_from_random, display_code, inspect, normalize_code,
 };
 use tutorlolv2_types::BINCODE_CONFIG;
 use uuid::Uuid;
 
 pub const MAX_LIVE_BYTES: usize = 64 << 10;
-const MAX_LIVE_DECOMPRESSED: usize = 512 << 10;
+pub(crate) const MAX_LIVE_DECOMPRESSED: usize = 512 << 10;
 
 pub struct ViewerPolicy(pub bool);
 
@@ -40,7 +34,7 @@ pub struct ViewerPolicy(pub bool);
 pub struct MissingCodes(Mutex<HashMap<String, VecDeque<Instant>>>);
 
 impl MissingCodes {
-    fn allow(&self, key: String, record_miss: bool) -> bool {
+    pub(crate) fn allow(&self, key: String, record_miss: bool) -> bool {
         let now = Instant::now();
         let mut clients = self.0.lock().unwrap();
 
@@ -71,7 +65,11 @@ impl MissingCodes {
 }
 
 impl AppState {
-    fn check_lookup_budget(&self, req: &HttpRequest, record_miss: bool) -> actix_web::Result<()> {
+    pub(crate) fn check_lookup_budget(
+        &self,
+        req: &HttpRequest,
+        record_miss: bool,
+    ) -> actix_web::Result<()> {
         let info = req.connection_info();
         let raw = if self.config.trusted_proxy {
             info.realip_remote_addr()
@@ -98,13 +96,13 @@ impl AppState {
         Ok(())
     }
 
-    fn missing_code(&self, req: &HttpRequest) -> actix_web::Error {
+    pub(crate) fn missing_code(&self, req: &HttpRequest) -> actix_web::Error {
         self.check_lookup_budget(req, true)
             .err()
             .unwrap_or_else(|| ErrorNotFound("Code not found"))
     }
 
-    async fn capability(
+    pub(crate) async fn capability(
         &self,
         input: &str,
         req: &HttpRequest,
@@ -149,7 +147,7 @@ impl AppState {
         })
     }
 
-    pub(super) fn code_state(&self, code: &str, mode: CodeMode) -> ShareState {
+    pub(crate) fn code_state(&self, code: &str, mode: CodeMode) -> ShareState {
         let code = display_code(code);
 
         ShareState {
@@ -160,208 +158,18 @@ impl AppState {
     }
 }
 
-pub async fn owner_share(state: Data<AppState>, auth: DeviceAuth, id: Path<Uuid>) -> Response {
-    let exists = sqlx::query_scalar!(
-        r#"
-        SELECT id
-        FROM recordings
-        WHERE id = $1
-            AND device_id = $2
-            AND deleted_at IS NULL
-        "#,
-        *id,
-        auth.device_id,
-    )
-    .fetch_optional(&state.db)
-    .await
-    .map_err(ErrorInternalServerError)?;
-
-    exists.ok_or_else(|| ErrorNotFound("Unknown recording"))?;
-
-    respond(state.share_state(*id).await?)
-}
-
-pub async fn set_share(
-    state: Data<AppState>,
-    auth: DeviceAuth,
-    id: Path<Uuid>,
-    Bincode(request): Bincode<SetShareMode>,
-) -> Response {
-    change_share(&state, auth.into(), id.into_inner(), request, false).await
-}
-
 /// Both owner surfaces serialize lifecycle changes on the recording row.
-pub(super) async fn change_share(
-    state: &AppState,
-    auth: super::google::Owner,
-    id: Uuid,
-    request: SetShareMode,
-    finished_only: bool,
-) -> Response {
-    if finished_only && request.mode == ShareMode::Live {
-        return Err(actix_web::error::ErrorBadRequest(
-            "Live is unavailable in history",
-        ));
-    }
 
-    let mut tx = state.db.begin().await.map_err(ErrorInternalServerError)?;
-    let recording = sqlx::query!(
-        r#"
-        SELECT ended_at,
-               is_custom,
-               is_practice
-        FROM recordings
-        WHERE id = $1
-            AND ((device_id = $2
-                  AND $2 IS NOT NULL)
-                 OR (account_id = $3
-                     AND $3 IS NOT NULL))
-            AND deleted_at IS NULL
-            AND EXISTS
-                (SELECT 1
-                 FROM devices
-                 WHERE devices.id = recordings.device_id
-                     AND devices.deleted_at IS NULL)
-            FOR
-            UPDATE
-        "#,
-        id,
-        auth.device_id,
-        auth.account_id,
-    )
-    .fetch_optional(&mut *tx)
-    .await
-    .map_err(ErrorInternalServerError)?
-    .ok_or_else(|| ErrorNotFound("Unknown recording"))?;
-
-    if finished_only && recording.ended_at.is_none() {
-        return Err(ErrorConflict("The recording is still active"));
-    }
-
-    if request.mode == ShareMode::Public
-        && (recording.is_practice || recording.is_custom != Some(false))
-    {
-        return Err(ErrorForbidden("public_not_allowed"));
-    }
-
-    if request.mode == ShareMode::Live && recording.ended_at.is_some() {
-        return Err(ErrorConflict("The recording has ended"));
-    }
-
-    if request.mode == ShareMode::Private {
-        sqlx::query!(
-            r#"
-            UPDATE share_codes
-            SET deleted_at = now(),
-                delete_reason = $2
-            WHERE recording_id = $1
-                AND deleted_at IS NULL
-            "#,
-            id,
-            ShareDeleteReason::Revoked,
-        )
-        .execute(&mut *tx)
-        .await
-        .map_err(ErrorInternalServerError)?;
-
-        tx.commit().await.map_err(ErrorInternalServerError)?;
-        state.live.close(id);
-
-        return respond(state.share_state(id).await?);
-    }
-
-    let mode = if request.mode == ShareMode::Live {
-        CodeMode::Live
-    } else {
-        CodeMode::Public
-    };
-
-    let existing = sqlx::query!(
-        r#"
-        SELECT id,
-               code
-        FROM share_codes
-        WHERE recording_id = $1
-            AND deleted_at IS NULL
-        "#,
-        id,
-    )
-    .fetch_optional(&mut *tx)
-    .await
-    .map_err(ErrorInternalServerError)?;
-
-    let code = match existing {
-        Some(existing) => {
-            sqlx::query!(
-                r#"
-                UPDATE share_codes
-                SET MODE = $2,
-                           mode_changed_at = now()
-                WHERE id = $1
-                "#,
-                existing.id,
-                mode,
-            )
-            .execute(&mut *tx)
-            .await
-            .map_err(ErrorInternalServerError)?;
-
-            existing.code
-        }
-        None => {
-            let mut chosen = None;
-
-            for _ in 0..5 {
-                let mut random = [0u8; 5];
-
-                getrandom::fill(&mut random).map_err(ErrorInternalServerError)?;
-
-                let code = code_from_random(random);
-                let inserted = sqlx::query_scalar!(
-                    r#"
-                    INSERT INTO share_codes (
-                        recording_id,
-                        code,
-                        MODE
-                    ) VALUES (
-                        $1,
-                        $2,
-                        $3
-                    )
-                    ON CONFLICT(code) DO NOTHING RETURNING code
-                    "#,
-                    id,
-                    code,
-                    mode,
-                )
-                .fetch_optional(&mut *tx)
-                .await
-                .map_err(ErrorInternalServerError)?;
-
-                if inserted.is_some() {
-                    chosen = inserted;
-                    break;
-                }
-            }
-
-            chosen.ok_or_else(|| ErrorInternalServerError("Could not allocate a share code"))?
-        }
-    };
-
-    tx.commit().await.map_err(ErrorInternalServerError)?;
-    respond(state.code_state(&code, mode))
-}
-
-struct Capability {
-    recording: Uuid,
-    mode: CodeMode,
-    ended: Option<DateTime<Utc>>,
-    deleted: bool,
-    summary: RecordingSummary,
+pub(crate) struct Capability {
+    pub(crate) recording: Uuid,
+    pub(crate) mode: CodeMode,
+    pub(crate) ended: Option<DateTime<Utc>>,
+    pub(crate) deleted: bool,
+    pub(crate) summary: RecordingSummary,
 }
 
 impl Capability {
-    async fn load(db: &PgPool, code: &str) -> actix_web::Result<Self> {
+    pub(crate) async fn load(db: &PgPool, code: &str) -> actix_web::Result<Self> {
         let row = sqlx::query!(
             r#"
             SELECT s.recording_id,
@@ -417,7 +225,7 @@ impl Capability {
         Ok(cap)
     }
 
-    fn active(&self) -> actix_web::Result<()> {
+    pub(crate) fn active(&self) -> actix_web::Result<()> {
         if self.mode == CodeMode::Public
             && (self.summary.is_practice || self.summary.is_custom != Some(false))
         {
@@ -432,231 +240,27 @@ impl Capability {
     }
 }
 
-pub async fn info(state: Data<AppState>, code: Path<String>, req: HttpRequest) -> Response {
-    let (code, cap) = state.capability(&code, &req).await?;
-
-    let chunks = sqlx::query!(
-        r#"
-        SELECT seq,
-               first_game_time,
-               last_game_time,
-               snapshot_count,
-               frames_format
-        FROM recording_chunks
-        WHERE recording_id = $1
-        ORDER BY seq
-        "#,
-        cap.recording,
-    )
-    .fetch_all(&state.db)
-    .await
-    .map_err(ErrorInternalServerError)?
-    .into_iter()
-    .map(|row| ChunkInfo {
-        seq: row.seq as u32,
-        first_game_time: row.first_game_time,
-        last_game_time: row.last_game_time,
-        snapshot_count: row.snapshot_count as u16,
-        frames_format: row.frames_format as u16,
-    })
-    .collect();
-
-    // Revalidate after the chunk query, which may have raced with revocation.
-    let cap = Capability::load(&state.db, &code).await?;
-    let status = if cap.ended.is_some() {
-        ShareStatus::Ended {
-            result: cap.summary.result,
-        }
-    } else {
-        match state.live.latest(cap.recording) {
-            Some(frame) if frame.age_ms() <= 10_000 => ShareStatus::Live {
-                last_frame_age_ms: frame.age_ms(),
-            },
-            _ => ShareStatus::HostDisconnected,
-        }
-    };
-
-    respond(ShareInfo {
-        mode: cap.mode.into(),
-        status,
-        summary: cap.summary,
-        chunks,
-        frames_format: FRAMES_FORMAT,
-    })
+pub(crate) struct SelfContainedFrame {
+    pub(crate) captured_at: i64,
+    pub(crate) game_time: f32,
+    pub(crate) probe: tutorlolv2_protocol::Probe,
+    pub(crate) bytes: Vec<u8>,
 }
 
-pub async fn frames(
-    state: Data<AppState>,
-    path: Path<(String, u32)>,
-    req: HttpRequest,
-) -> Response {
-    let (code, seq) = path.into_inner();
-    let (code, cap) = state.capability(&code, &req).await?;
-
-    let chunk = sqlx::query!(
-        r#"
-        SELECT frames,
-               frames_format
-        FROM recording_chunks
-        WHERE recording_id = $1
-            AND seq = $2
-        "#,
-        cap.recording,
-        i32::try_from(seq).map_err(|_| ErrorNotFound("Chunk not found"))?,
-    )
-    .fetch_optional(&state.db)
-    .await
-    .map_err(ErrorInternalServerError)?
-    .ok_or_else(|| ErrorNotFound("Chunk not found"))?;
-
-    if chunk.frames_format != FRAMES_FORMAT as i16 {
-        return Err(ErrorUnprocessableEntity(
-            "Frames unavailable for this chunk",
-        ));
-    }
-
-    let latest = Capability::load(&state.db, &code).await?;
-
-    Ok(HttpResponse::Ok()
-        .content_type(OCTET_STREAM)
-        .insert_header(("Content-Encoding", "br"))
-        .insert_header((
-            "Cache-Control",
-            if latest.mode == CodeMode::Live {
-                "no-store"
-            } else {
-                "private, max-age=300"
-            },
-        ))
-        .body(chunk.frames))
-}
-
-pub async fn push_live(
-    state: Data<AppState>,
-    auth: DeviceAuth,
-    id: Path<Uuid>,
-    body: Bytes,
-) -> Response {
-    let id = id.into_inner();
-
-    if body.len() > MAX_LIVE_BYTES {
-        return Err(ErrorPayloadTooLarge("Live snapshot too large"));
-    }
-
-    // Ownership first, before decompressing any untrusted data.
-    let mut tx = state.db.begin().await.map_err(ErrorInternalServerError)?;
-
-    let recording = sqlx::query!(
-        r#"
-        SELECT ended_at,
-               probe
-        FROM recordings
-        WHERE id = $1
-            AND device_id = $2
-            AND deleted_at IS NULL
-            FOR
-            UPDATE
-        "#,
-        id,
-        auth.device_id,
-    )
-    .fetch_optional(&mut *tx)
-    .await
-    .map_err(ErrorInternalServerError)?
-    .ok_or_else(|| ErrorNotFound("Unknown recording"))?;
-
-    if recording.ended_at.is_some() {
-        return Err(ErrorConflict("The recording has ended"));
-    }
-
-    let shared = sqlx::query_scalar!(
-        r#"
-        SELECT id
-        FROM share_codes
-        WHERE recording_id = $1
-            AND deleted_at IS NULL
-        "#,
-        id,
-    )
-    .fetch_optional(&mut *tx)
-    .await
-    .map_err(ErrorInternalServerError)?
-    .is_some();
-
-    if !shared {
-        return Err(ErrorConflict("The recording is private"));
-    }
-
-    let bytes = body.to_vec();
-    let derived = web::block(move || SelfContainedFrame::decode(&bytes))
-        .await
-        .map_err(ErrorInternalServerError)?
-        .map_err(|e| {
-            if e.too_large {
-                ErrorPayloadTooLarge(e.message)
-            } else {
-                ErrorUnprocessableEntity(e.message)
-            }
-        })?;
-
-    let (stored, _) = bincode::decode_from_slice::<tutorlolv2_protocol::Probe, _>(
-        &recording.probe,
-        BINCODE_CONFIG,
-    )
-    .map_err(ErrorInternalServerError)?;
-
-    if stored.consistent(&derived.probe).is_err() {
-        return Err(ErrorConflict("The snapshot belongs to another match"));
-    }
-
-    sqlx::query!(
-        r#"
-        UPDATE recordings
-        SET last_ingest_at = now()
-        WHERE id = $1
-        "#,
-        id,
-    )
-    .execute(&mut *tx)
-    .await
-    .map_err(ErrorInternalServerError)?;
-
-    // Publish under the same row lock used by end/share mutations. Their
-    // post-commit close cannot race ahead and leave a stale frame behind.
-    state.live.publish(
-        id,
-        derived.captured_at,
-        derived.game_time,
-        derived.bytes,
-        state.config.max_viewers_per_code,
-    );
-
-    tx.commit().await.map_err(ErrorInternalServerError)?;
-
-    Ok(HttpResponse::NoContent().finish())
-}
-
-struct SelfContainedFrame {
-    captured_at: i64,
-    game_time: f32,
-    probe: tutorlolv2_protocol::Probe,
-    bytes: Vec<u8>,
-}
-
-struct LiveDecodeError {
-    too_large: bool,
-    message: String,
+pub(crate) struct LiveDecodeError {
+    pub(crate) too_large: bool,
+    pub(crate) message: String,
 }
 
 impl LiveDecodeError {
-    fn invalid(error: impl std::fmt::Display) -> Self {
+    pub(crate) fn invalid(error: impl std::fmt::Display) -> Self {
         Self {
             too_large: false,
             message: error.to_string(),
         }
     }
 
-    fn large() -> Self {
+    pub(crate) fn large() -> Self {
         Self {
             too_large: true,
             message: "Live snapshot too large once decompressed".into(),
@@ -665,7 +269,7 @@ impl LiveDecodeError {
 }
 
 impl SelfContainedFrame {
-    fn decode(body: &[u8]) -> Result<Self, LiveDecodeError> {
+    pub(crate) fn decode(body: &[u8]) -> Result<Self, LiveDecodeError> {
         let mut raw = Vec::new();
 
         brotli::Decompressor::new(body, 4096)
@@ -720,59 +324,184 @@ impl SelfContainedFrame {
 #[derive(Deserialize)]
 pub struct After {
     #[serde(default)]
-    after: u64,
+    pub(crate) after: u64,
 }
 
-pub async fn live(
-    state: Data<AppState>,
-    code: Path<String>,
-    query: Query<After>,
-    req: HttpRequest,
-) -> Response {
-    let (code, cap) = state.capability(&code, &req).await?;
+pub use super::routes::recordings::share::owner_share;
 
-    if cap.ended.is_some() {
-        return Err(ErrorGone("The match has ended"));
-    }
+pub use super::routes::recordings::share::set_share;
 
-    let (mut receiver, _permit) = state
-        .live
-        .subscribe(cap.recording, state.config.max_viewers_per_code)
-        .ok_or_else(|| ErrorTooManyRequests("Viewer limit reached"))?;
+pub use super::routes::recordings::live::push_live;
 
-    let deadline = tokio::time::Instant::now() + Duration::from_secs(25);
+pub use super::routes::share::info::info;
 
-    loop {
-        let cap = Capability::load(&state.db, &code).await?;
+pub use super::routes::share::live::live;
 
-        if cap.ended.is_some() {
-            return Err(ErrorGone("The match has ended"));
+pub use super::routes::share::frames::frames;
+
+pub(crate) struct SharingService<'a> {
+    pub(crate) state: &'a AppState,
+}
+impl SharingService<'_> {
+    pub(crate) async fn change_share(
+        &self,
+        auth: super::google::Owner,
+        id: Uuid,
+        request: SetShareMode,
+        finished_only: bool,
+    ) -> Response {
+        let state = self.state;
+        if finished_only && request.mode == ShareMode::Live {
+            return Err(actix_web::error::ErrorBadRequest(
+                "Live is unavailable in history",
+            ));
         }
 
-        let latest = receiver.borrow_and_update().clone();
+        let mut tx = state.db.begin().await.map_err(ErrorInternalServerError)?;
+        let recording = sqlx::query!(
+            r#"
+        SELECT ended_at,
+               is_custom,
+               is_practice
+        FROM recordings
+        WHERE id = $1
+            AND ((device_id = $2
+                  AND $2 IS NOT NULL)
+                 OR (account_id = $3
+                     AND $3 IS NOT NULL))
+            AND deleted_at IS NULL
+            AND EXISTS
+                (SELECT 1
+                 FROM devices
+                 WHERE devices.id = recordings.device_id
+                     AND devices.deleted_at IS NULL)
+            FOR
+            UPDATE
+        "#,
+            id,
+            auth.device_id,
+            auth.account_id,
+        )
+        .fetch_optional(&mut *tx)
+        .await
+        .map_err(ErrorInternalServerError)?
+        .ok_or_else(|| ErrorNotFound("Unknown recording"))?;
 
-        if let Some(frame) = latest.filter(|frame| frame.seq > query.after) {
-            return Ok(HttpResponse::Ok()
-                .content_type(OCTET_STREAM)
-                .insert_header(("Cache-Control", "no-store"))
-                .insert_header(("X-Frame-Seq", frame.seq.to_string()))
-                .insert_header(("X-Captured-At", frame.captured_at.to_string()))
-                .insert_header(("X-Game-Time", frame.game_time.to_string()))
-                .body(frame.bytes.clone()));
+        if finished_only && recording.ended_at.is_none() {
+            return Err(ErrorConflict("The recording is still active"));
         }
 
-        tokio::select! {
-            changed = receiver.changed() => if changed.is_err() {
-                let cap = Capability::load(&state.db, &code).await?;
+        if request.mode == ShareMode::Public
+            && (recording.is_practice || recording.is_custom != Some(false))
+        {
+            return Err(ErrorForbidden("public_not_allowed"));
+        }
 
-                if cap.ended.is_some() {
-                    return Err(ErrorGone("The match has ended"));
+        if request.mode == ShareMode::Live && recording.ended_at.is_some() {
+            return Err(ErrorConflict("The recording has ended"));
+        }
+
+        if request.mode == ShareMode::Private {
+            sqlx::query!(
+                r#"
+            UPDATE share_codes
+            SET deleted_at = now(),
+                delete_reason = $2
+            WHERE recording_id = $1
+                AND deleted_at IS NULL
+            "#,
+                id,
+                ShareDeleteReason::Revoked,
+            )
+            .execute(&mut *tx)
+            .await
+            .map_err(ErrorInternalServerError)?;
+
+            tx.commit().await.map_err(ErrorInternalServerError)?;
+            state.live.close(id);
+
+            return respond(state.share_state(id).await?);
+        }
+
+        let mode = if request.mode == ShareMode::Live {
+            CodeMode::Live
+        } else {
+            CodeMode::Public
+        };
+
+        let existing = sqlx::query!(
+            r#"
+        SELECT id,
+               code
+        FROM share_codes
+        WHERE recording_id = $1
+            AND deleted_at IS NULL
+        "#,
+            id,
+        )
+        .fetch_optional(&mut *tx)
+        .await
+        .map_err(ErrorInternalServerError)?;
+
+        let code = match existing {
+            Some(existing) => {
+                sqlx::query!(
+                    r#"
+                UPDATE share_codes
+                SET MODE = $2,
+                           mode_changed_at = now()
+                WHERE id = $1
+                "#,
+                    existing.id,
+                    mode,
+                )
+                .execute(&mut *tx)
+                .await
+                .map_err(ErrorInternalServerError)?;
+
+                existing.code
+            }
+            None => {
+                let mut chosen = None;
+
+                for _ in 0..5 {
+                    let mut random = [0u8; 5];
+
+                    getrandom::fill(&mut random).map_err(ErrorInternalServerError)?;
+
+                    let code = code_from_random(random);
+                    let inserted = sqlx::query_scalar!(
+                        r#"
+                    INSERT INTO share_codes (
+                        recording_id,
+                        code,
+                        MODE
+                    ) VALUES (
+                        $1,
+                        $2,
+                        $3
+                    )
+                    ON CONFLICT(code) DO NOTHING RETURNING code
+                    "#,
+                        id,
+                        code,
+                        mode,
+                    )
+                    .fetch_optional(&mut *tx)
+                    .await
+                    .map_err(ErrorInternalServerError)?;
+
+                    if inserted.is_some() {
+                        chosen = inserted;
+                        break;
+                    }
                 }
 
-                return Ok(HttpResponse::NoContent().finish());
-            },
-            _ = tokio::time::sleep_until(deadline) => return Ok(HttpResponse::NoContent().finish()),
-            _ = tokio::time::sleep(Duration::from_secs(1)) => {},
-        }
+                chosen.ok_or_else(|| ErrorInternalServerError("Could not allocate a share code"))?
+            }
+        };
+
+        tx.commit().await.map_err(ErrorInternalServerError)?;
+        respond(state.code_state(&code, mode))
     }
 }

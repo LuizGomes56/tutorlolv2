@@ -1,16 +1,11 @@
 //! Confidential Google web-client flow. Credentials never leave the server.
-use super::{
-    auth::DeviceAuth,
-    codec::{Bincode, Response, respond},
-    db_enums::SessionKind,
-    state::AppState,
-};
+use super::{auth::DeviceAuth, db_enums::SessionKind, state::AppState};
 use actix_web::cookie::{Cookie, SameSite, time::Duration as CookieDuration};
 use actix_web::{
     FromRequest, HttpMessage, HttpRequest, HttpResponse,
     dev::{Payload, ServiceResponse},
     error::*,
-    web::{Data, Query},
+    web::Data,
 };
 use base64::{Engine, engine::general_purpose::URL_SAFE_NO_PAD as B64};
 use serde::Deserialize;
@@ -22,25 +17,24 @@ use std::{
     sync::Mutex,
     time::{Duration, Instant},
 };
-use tutorlolv2_protocol::{AccountInfo, DesktopSession, RedeemTicket};
 use uuid::Uuid;
 
-const MAX_PENDING: usize = 4096;
-struct Login {
-    target: Target,
-    verifier: String,
-    nonce: String,
-    at: Instant,
+pub(crate) const MAX_PENDING: usize = 4096;
+pub(crate) struct Login {
+    pub(crate) target: Target,
+    pub(crate) verifier: String,
+    pub(crate) nonce: String,
+    pub(crate) at: Instant,
 }
-enum Target {
+pub(crate) enum Target {
     Web(String),
     Desktop(u16, String),
 }
 
 #[derive(Default)]
 pub struct PendingStore {
-    logins: Mutex<HashMap<String, Login>>,
-    tickets: Mutex<HashMap<String, (Uuid, Instant)>>,
+    pub(crate) logins: Mutex<HashMap<String, Login>>,
+    pub(crate) tickets: Mutex<HashMap<String, (Uuid, Instant)>>,
 }
 
 impl PendingStore {
@@ -57,7 +51,7 @@ impl PendingStore {
     }
 }
 
-fn token() -> Result<String, actix_web::Error> {
+pub(crate) fn token() -> Result<String, actix_web::Error> {
     let mut b = [0u8; 32];
 
     getrandom::fill(&mut b).map_err(|_| ErrorInternalServerError("Random source unavailable"))?;
@@ -65,7 +59,7 @@ fn token() -> Result<String, actix_web::Error> {
     Ok(B64.encode(b))
 }
 
-fn hash(s: &str) -> Option<Vec<u8>> {
+pub(crate) fn hash(s: &str) -> Option<Vec<u8>> {
     let b = B64.decode(s).ok()?;
 
     if b.len() != 32 {
@@ -75,18 +69,18 @@ fn hash(s: &str) -> Option<Vec<u8>> {
     Some(Sha256::digest(b).to_vec())
 }
 
-fn storage(_: sqlx::Error) -> actix_web::Error {
+pub(crate) fn storage(_: sqlx::Error) -> actix_web::Error {
     ErrorInternalServerError("Account storage unavailable")
 }
 
-fn enabled(s: &AppState) -> actix_web::Result<(&str, &str)> {
+pub(crate) fn enabled(s: &AppState) -> actix_web::Result<(&str, &str)> {
     match (&s.config.google_client_id, &s.config.google_client_secret) {
         (Some(a), Some(b)) => Ok((a, b)),
         _ => Err(ErrorServiceUnavailable("Google sign-in unavailable")),
     }
 }
 
-fn cookie(s: &AppState, name: &str, value: String, seconds: i64) -> Cookie<'static> {
+pub(crate) fn cookie(s: &AppState, name: &str, value: String, seconds: i64) -> Cookie<'static> {
     Cookie::build(name.to_owned(), value)
         .path("/api")
         .http_only(true)
@@ -96,14 +90,14 @@ fn cookie(s: &AppState, name: &str, value: String, seconds: i64) -> Cookie<'stat
         .finish()
 }
 
-fn redirect(url: String) -> HttpResponse {
+pub(crate) fn redirect(url: String) -> HttpResponse {
     HttpResponse::Found()
         .insert_header(("Location", url))
         .insert_header(("Cache-Control", "no-store"))
         .finish()
 }
 
-fn return_path(p: Option<String>) -> String {
+pub(crate) fn return_path(p: Option<String>) -> String {
     p.filter(|p| {
         p.starts_with('/')
             && !p.starts_with("//")
@@ -115,518 +109,36 @@ fn return_path(p: Option<String>) -> String {
 
 #[derive(Deserialize)]
 pub struct Start {
-    target: String,
-    return_to: Option<String>,
-    port: Option<u16>,
-    app_state: Option<String>,
-}
-
-pub async fn start(s: Data<AppState>, q: Query<Start>) -> Response {
-    let (client, _) = enabled(&s)?;
-    let target = match q.target.as_str() {
-        "web" => Target::Web(return_path(q.return_to.clone())),
-        "desktop" => {
-            let port = q
-                .port
-                .filter(|p| *p >= 1024)
-                .ok_or_else(|| ErrorBadRequest("Invalid callback port"))?;
-
-            let state = q
-                .app_state
-                .clone()
-                .filter(|v| hash(v).is_some())
-                .ok_or_else(|| ErrorBadRequest("Invalid app state"))?;
-
-            Target::Desktop(port, state)
-        }
-        _ => return Err(ErrorBadRequest("Invalid target")),
-    };
-
-    let state = token()?;
-    let nonce = token()?;
-    let verifier = token()?;
-    let mut url = reqwest::Url::parse("https://accounts.google.com/o/oauth2/v2/auth").unwrap();
-
-    url.query_pairs_mut().extend_pairs([
-        ("response_type", "code"),
-        ("client_id", client),
-        (
-            "redirect_uri",
-            &format!("{}/api/auth/google/callback", s.config.api_public_base_url),
-        ),
-        ("scope", "openid email"),
-        ("state", &state),
-        ("nonce", &nonce),
-        (
-            "code_challenge",
-            &B64.encode(Sha256::digest(verifier.as_bytes())),
-        ),
-        ("code_challenge_method", "S256"),
-        ("prompt", "select_account"),
-    ]);
-
-    s.google.sweep();
-
-    let mut pending = s.google.logins.lock().unwrap();
-
-    if pending.len() >= MAX_PENDING {
-        return Err(ErrorTooManyRequests("Sign-in busy"));
-    }
-
-    let web = matches!(target, Target::Web(_));
-
-    pending.insert(
-        state.clone(),
-        Login {
-            target,
-            nonce,
-            verifier,
-            at: Instant::now(),
-        },
-    );
-
-    let mut r = redirect(url.into());
-
-    if web {
-        r.add_cookie(&cookie(&s, "tl_login", state, 600))
-            .map_err(ErrorInternalServerError)?;
-    }
-
-    Ok(r)
+    pub(crate) target: String,
+    pub(crate) return_to: Option<String>,
+    pub(crate) port: Option<u16>,
+    pub(crate) app_state: Option<String>,
 }
 
 #[derive(Deserialize)]
 pub struct Callback {
-    state: String,
-    code: Option<String>,
-    error: Option<String>,
+    pub(crate) state: String,
+    pub(crate) code: Option<String>,
+    pub(crate) error: Option<String>,
 }
 
 #[derive(Deserialize)]
-struct TokenResponse {
-    id_token: String,
+pub(crate) struct TokenResponse {
+    pub(crate) id_token: String,
 }
 
 #[derive(Deserialize)]
-struct Claims {
-    iss: String,
-    aud: String,
-    exp: i64,
-    nonce: String,
-    sub: String,
-    email: String,
+pub(crate) struct Claims {
+    pub(crate) iss: String,
+    pub(crate) aud: String,
+    pub(crate) exp: i64,
+    pub(crate) nonce: String,
+    pub(crate) sub: String,
+    pub(crate) email: String,
 }
 
-pub async fn callback(s: Data<AppState>, r: HttpRequest, q: Query<Callback>) -> Response {
-    let (client, secret) = enabled(&s)?;
-    let login = s
-        .google
-        .logins
-        .lock()
-        .unwrap()
-        .remove(&q.state)
-        .filter(|v| v.at.elapsed() < Duration::from_secs(600));
-
-    let Some(login) = login else {
-        return Ok(HttpResponse::BadRequest()
-            .content_type("text/html; charset=utf-8")
-            .body(
-                r#"
-                <!doctype html>
-                    <html lang="en">
-                        <meta charset="utf-8">
-                        <title>Sign-in expired</title>
-                        <p>Sign-in expired, try again from TutorLoL.</p>
-                    </html>
-                "#,
-            ));
-    };
-
-    if matches!(login.target, Target::Web(_))
-        && r.cookie("tl_login")
-            .map(|c| c.value().to_owned())
-            .as_deref()
-            != Some(&q.state)
-    {
-        return Err(ErrorBadRequest("Sign-in browser mismatch"));
-    }
-
-    if q.error.is_some() {
-        return Ok(match login.target {
-            Target::Web(path) => redirect(format!(
-                "{}{}{}signin=cancelled",
-                s.config.public_base_url,
-                path,
-                if path.contains('?') { "&" } else { "?" }
-            )),
-            Target::Desktop(port, state) => redirect(format!(
-                "http://127.0.0.1:{port}/callback?error=cancelled&app_state={state}"
-            )),
-        });
-    }
-
-    let code = q
-        .code
-        .as_ref()
-        .filter(|v| v.len() <= 4096 && !v.is_empty())
-        .ok_or_else(|| ErrorBadRequest("Missing code"))?;
-
-    let client_http = reqwest::Client::builder()
-        .redirect(reqwest::redirect::Policy::none())
-        .timeout(Duration::from_secs(15))
-        .build()
-        .map_err(|_| ErrorBadGateway("Google unavailable"))?;
-
-    let endpoint = s
-        .config
-        .google_token_endpoint
-        .as_deref()
-        .unwrap_or("https://oauth2.googleapis.com/token");
-
-    let mut response = client_http
-        .post(endpoint)
-        .form(&[
-            ("code", code.as_str()),
-            ("client_id", client),
-            ("client_secret", secret),
-            ("code_verifier", &login.verifier),
-            (
-                "redirect_uri",
-                &format!("{}/api/auth/google/callback", s.config.api_public_base_url),
-            ),
-            ("grant_type", "authorization_code"),
-        ])
-        .send()
-        .await
-        .map_err(|_| ErrorBadGateway("Google unavailable"))?;
-
-    if !response.status().is_success() {
-        return Err(ErrorBadGateway("Google rejected sign-in"));
-    }
-
-    let mut body = Vec::new();
-
-    while let Some(chunk) = response
-        .chunk()
-        .await
-        .map_err(|_| ErrorBadGateway("Google unavailable"))?
-    {
-        if body.len() + chunk.len() > 65536 {
-            return Err(ErrorBadGateway("Invalid Google response"));
-        }
-
-        body.extend_from_slice(&chunk)
-    }
-
-    let tr = serde_json::from_slice::<TokenResponse>(&body)
-        .map_err(|_| ErrorBadGateway("Invalid Google response"))?;
-
-    // This token is accepted only from our confidential server-to-Google HTTPS
-    // exchange, never from a client-supplied JWT. Google's OIDC guide permits
-    // claim verification without JWKS/signature checks at this trust boundary.
-    // The explicit trusted endpoint override exists only for local test servers.
-    let parts = tr.id_token.split('.').collect::<Vec<_>>();
-
-    if parts.len() != 3 {
-        return Err(ErrorUnauthorized("Invalid identity"));
-    }
-
-    let c = serde_json::from_slice::<Claims>(
-        &B64.decode(parts[1])
-            .map_err(|_| ErrorUnauthorized("Invalid identity"))?,
-    )
-    .map_err(|_| ErrorUnauthorized("Invalid identity"))?;
-
-    if !["accounts.google.com", "https://accounts.google.com"].contains(&c.iss.as_str())
-        || c.aud != client
-        || c.exp <= chrono::Utc::now().timestamp()
-        || c.nonce != login.nonce
-        || c.sub.trim().is_empty()
-        || c.email.trim().is_empty()
-        || c.sub.len() > 255
-        || c.email.len() > 320
-    {
-        return Err(ErrorUnauthorized("Invalid identity"));
-    }
-
-    let account = sqlx::query_scalar!(
-        r#"
-        INSERT INTO accounts (
-            google_sub,
-            email
-        ) VALUES (
-            $1,
-            $2
-        )
-        ON CONFLICT(google_sub) DO
-                UPDATE
-                SET email = EXCLUDED.email,
-                    last_login_at = now()
-                WHERE accounts.deleted_at IS NULL RETURNING id
-        "#,
-        c.sub,
-        c.email,
-    )
-    .fetch_optional(&s.db)
-    .await
-    .map_err(storage)?
-    .ok_or_else(|| ErrorUnauthorized("Account unavailable"))?;
-
-    match login.target {
-        Target::Web(path) => {
-            let mut tx = s.db.begin().await.map_err(storage)?;
-            let (t, _) = create_session(&s, &mut tx, account, None).await?;
-
-            tx.commit().await.map_err(storage)?;
-
-            let mut r = redirect(format!("{}{}", s.config.public_base_url, path));
-
-            r.add_cookie(&cookie(
-                &s,
-                "tl_session",
-                t,
-                s.config.session_ttl_days * 86400,
-            ))
-            .map_err(ErrorInternalServerError)?;
-
-            r.add_cookie(&cookie(&s, "tl_login", String::new(), 0))
-                .map_err(ErrorInternalServerError)?;
-
-            Ok(r)
-        }
-        Target::Desktop(port, state) => {
-            s.google.sweep();
-
-            let mut tickets = s.google.tickets.lock().unwrap();
-
-            if tickets.len() >= MAX_PENDING {
-                return Err(ErrorTooManyRequests("Sign-in busy"));
-            }
-
-            let t = token()?;
-            tickets.insert(t.clone(), (account, Instant::now()));
-
-            Ok(redirect(format!(
-                "http://127.0.0.1:{port}/callback?ticket={t}&app_state={state}"
-            )))
-        }
-    }
-}
-
-async fn create_session(
-    s: &AppState,
-    tx: &mut sqlx::Transaction<'_, sqlx::Postgres>,
-    account: Uuid,
-    device: Option<Uuid>,
-) -> actix_web::Result<(String, Uuid)> {
-    let t = token()?;
-
-    let id = sqlx::query_scalar!(
-        r#"
-        INSERT INTO account_sessions (
-            account_id,
-            token_hash,
-            kind,
-            device_id,
-            expires_at
-        ) VALUES (
-            $1,
-            $2,
-            $3,
-            $4,
-            now() + $5 * interval '1 day'
-        )
-        RETURNING id
-        "#,
-        account,
-        hash(&t).unwrap(),
-        if device.is_some() {
-            SessionKind::Desktop
-        } else {
-            SessionKind::Web
-        },
-        device,
-        s.config.session_ttl_days as f64,
-    )
-    .fetch_one(&mut **tx)
-    .await
-    .map_err(storage)?;
-
-    Ok((t, id))
-}
-
-pub async fn redeem(
-    s: Data<AppState>,
-    auth: DeviceAuth,
-    Bincode(q): Bincode<RedeemTicket>,
-) -> Response {
-    enabled(&s)?;
-
-    let (account, at) = s
-        .google
-        .tickets
-        .lock()
-        .unwrap()
-        .remove(&q.ticket)
-        .ok_or_else(|| ErrorGone("Ticket expired or used"))?;
-
-    if at.elapsed() >= Duration::from_secs(120) {
-        return Err(ErrorGone("Ticket expired or used"));
-    }
-
-    let mut tx = s.db.begin().await.map_err(storage)?;
-
-    // NO KEY UPDATE protects deletion/identity changes without blocking the
-    // account FK KEY SHARE taken by a concurrent recording creation. The device
-    // lock below is shared with start_session/logout ownership transitions.
-    let email = sqlx::query_scalar!(
-        r#"
-        SELECT email
-        FROM accounts
-        WHERE id = $1
-            AND deleted_at IS NULL
-            FOR NO KEY
-            UPDATE
-        "#,
-        account,
-    )
-    .fetch_optional(&mut *tx)
-    .await
-    .map_err(storage)?
-    .ok_or_else(|| ErrorUnauthorized("Account unavailable"))?;
-
-    let device = sqlx::query_scalar!(
-        r#"
-        SELECT id
-        FROM devices
-        WHERE id = $1
-            AND deleted_at IS NULL
-            FOR
-            UPDATE
-        "#,
-        auth.device_id,
-    )
-    .fetch_optional(&mut *tx)
-    .await
-    .map_err(storage)?;
-
-    if device.is_none() {
-        return Err(ErrorUnauthorized("Device unavailable"));
-    }
-
-    let (t, id) = create_session(&s, &mut tx, account, Some(auth.device_id)).await?;
-    sqlx::query!(
-        "UPDATE devices
-        SET account_id = $1,
-            account_session_id = $2
-        WHERE id = $3",
-        account,
-        id,
-        auth.device_id,
-    )
-    .execute(&mut *tx)
-    .await
-    .map_err(storage)?;
-
-    sqlx::query!(
-        "UPDATE recordings
-        SET account_id = $1
-        WHERE device_id = $2
-            AND account_id IS NULL",
-        account,
-        auth.device_id,
-    )
-    .execute(&mut *tx)
-    .await
-    .map_err(storage)?;
-
-    tx.commit().await.map_err(storage)?;
-
-    respond(DesktopSession { token: t, email })
-}
 /// Acknowledge durable native credential storage. Device locking serializes
 /// this transition with redeem, logout and recording creation.
-pub async fn confirm_desktop(s: Data<AppState>, a: AccountAuth) -> Response {
-    let device = a
-        .device_id
-        .filter(|_| !a.cookie)
-        .ok_or_else(|| ErrorUnauthorized("Desktop session required"))?;
-
-    let mut tx = s.db.begin().await.map_err(storage)?;
-    let current = sqlx::query_scalar!(
-        r#"
-        SELECT id
-        FROM devices
-        WHERE id = $1
-            AND deleted_at IS NULL
-            FOR
-            UPDATE
-        "#,
-        device,
-    )
-    .fetch_optional(&mut *tx)
-    .await
-    .map_err(storage)?;
-
-    if current.is_none() {
-        return Err(ErrorUnauthorized("Device unavailable"));
-    }
-
-    // Recheck after acquiring the lock: the extractor may have authenticated
-    // before a concurrent login/logout replaced the device binding.
-    let updated = sqlx::query!(
-        r#"
-        UPDATE account_sessions s
-        SET desktop_confirmed_at = COALESCE(s.desktop_confirmed_at, clock_timestamp())
-        WHERE s.id = $1
-            AND s.account_id = $2
-            AND s.device_id = $3
-            AND s.kind = 'Desktop'
-            AND s.revoked_at IS NULL
-            AND s.expires_at > clock_timestamp()
-            AND EXISTS
-                (SELECT 1
-                 FROM devices d
-                 WHERE d.id = $3
-                     AND d.account_session_id = s.id
-                     AND d.account_id = s.account_id
-                     AND d.deleted_at IS NULL)
-            AND EXISTS
-                (SELECT 1
-                 FROM accounts a
-                 WHERE a.id = s.account_id
-                     AND a.deleted_at IS NULL)
-        "#,
-        a.session_id,
-        a.account_id,
-        device,
-    )
-    .execute(&mut *tx)
-    .await
-    .map_err(storage)?;
-
-    if updated.rows_affected() != 1 {
-        return Err(ErrorUnauthorized("Desktop binding changed"));
-    }
-
-    sqlx::query!(
-        r#"
-        UPDATE recordings
-        SET account_id = $1
-        WHERE device_id = $2
-            AND account_id IS NULL
-        "#,
-        a.account_id,
-        device,
-    )
-    .execute(&mut *tx)
-    .await
-    .map_err(storage)?;
-
-    tx.commit().await.map_err(storage)?;
-
-    Ok(HttpResponse::NoContent().finish())
-}
 
 #[derive(Clone, Copy)]
 pub struct AccountAuth {
@@ -742,12 +254,12 @@ impl FromRequest for AccountAuth {
 // This native server-only marker has no Debug/Serde implementation. It never
 // enters a response body or a webview; only the HttpOnly cookie carries it.
 #[derive(Clone)]
-struct WebSessionRenewal {
-    session_id: Uuid,
-    token: String,
+pub(crate) struct WebSessionRenewal {
+    pub(crate) session_id: Uuid,
+    pub(crate) token: String,
 }
 
-pub(super) async fn renew_web_cookie<B>(
+pub(crate) async fn renew_web_cookie<B>(
     response: &mut ServiceResponse<B>,
 ) -> actix_web::Result<()> {
     if !response.status().is_success() || response.request().path() == "/api/auth/logout" {
@@ -808,69 +320,6 @@ pub(super) async fn renew_web_cookie<B>(
     Ok(())
 }
 
-pub async fn account(s: Data<AppState>, a: AccountAuth) -> Response {
-    let row = sqlx::query!(
-        r#"
-        SELECT email, created_at
-        FROM accounts
-        WHERE id = $1
-            AND deleted_at IS NULL
-        "#,
-        a.account_id,
-    )
-    .fetch_one(&s.db)
-    .await
-    .map_err(storage)?;
-
-    respond(AccountInfo {
-        email: row.email,
-        created_at_ms: row.created_at.timestamp_millis(),
-    })
-}
-
-pub async fn logout(s: Data<AppState>, a: AccountAuth) -> Response {
-    let mut tx = s.db.begin().await.map_err(storage)?;
-
-    if let Some(d) = a.device_id {
-        sqlx::query!(
-            r#"
-            UPDATE devices
-            SET account_id = NULL,
-                account_session_id = NULL
-            WHERE id = $1
-                AND account_session_id = $2
-            "#,
-            d,
-            a.session_id,
-        )
-        .execute(&mut *tx)
-        .await
-        .map_err(storage)?;
-    }
-
-    sqlx::query!(
-        r#"
-        UPDATE account_sessions
-        SET revoked_at = now()
-        WHERE id = $1
-        "#,
-        a.session_id,
-    )
-    .execute(&mut *tx)
-    .await
-    .map_err(storage)?;
-
-    tx.commit().await.map_err(storage)?;
-    let mut r = HttpResponse::NoContent().finish();
-
-    if a.cookie {
-        r.add_cookie(&cookie(&s, "tl_session", String::new(), 0))
-            .map_err(ErrorInternalServerError)?;
-    }
-
-    Ok(r)
-}
-
 #[derive(Clone, Copy)]
 pub struct Owner {
     pub device_id: Option<Uuid>,
@@ -914,6 +363,9 @@ impl FromRequest for Owner {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::server::codec::Bincode;
+    use actix_web::web::Query;
+    use tutorlolv2_protocol::RedeemTicket;
     #[test]
     fn pending_states_and_tickets_expire_independently() {
         let store = PendingStore::default();
@@ -1065,5 +517,65 @@ mod tests {
         )
         .await;
         assert_eq!(result.unwrap_err().as_response_error().status_code(), 429);
+    }
+}
+
+pub use super::routes::auth::google_start::start;
+
+pub use super::routes::auth::google_callback::callback;
+
+pub use super::routes::auth::desktop_redeem::redeem;
+
+pub use super::routes::auth::desktop_confirm::confirm_desktop;
+
+pub use super::routes::account::account;
+
+pub use super::routes::auth::logout::logout;
+
+pub(crate) struct GoogleAuthService<'a> {
+    pub(crate) state: &'a AppState,
+}
+impl GoogleAuthService<'_> {
+    pub(crate) async fn create_session(
+        &self,
+        tx: &mut sqlx::Transaction<'_, sqlx::Postgres>,
+        account: Uuid,
+        device: Option<Uuid>,
+    ) -> actix_web::Result<(String, Uuid)> {
+        let s = self.state;
+        let t = token()?;
+
+        let id = sqlx::query_scalar!(
+            r#"
+        INSERT INTO account_sessions (
+            account_id,
+            token_hash,
+            kind,
+            device_id,
+            expires_at
+        ) VALUES (
+            $1,
+            $2,
+            $3,
+            $4,
+            now() + $5 * interval '1 day'
+        )
+        RETURNING id
+        "#,
+            account,
+            hash(&t).unwrap(),
+            if device.is_some() {
+                SessionKind::Desktop
+            } else {
+                SessionKind::Web
+            },
+            device,
+            s.config.session_ttl_days as f64,
+        )
+        .fetch_one(&mut **tx)
+        .await
+        .map_err(storage)?;
+
+        Ok((t, id))
     }
 }
