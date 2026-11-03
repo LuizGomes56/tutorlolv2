@@ -93,9 +93,10 @@ async fn calculator_accepts_bincode_borrowed_input_and_returns_decodable_output(
         OCTET_STREAM
     );
     let body = test::read_body(response).await;
-    let (output, used): (OutputGame, _) =
-        bincode::decode_from_slice(&body, tutorlolv2_types::BINCODE_CONFIG).unwrap();
-    assert_eq!(used, body.len());
+    let output = tutorlolv2_protocol::ApiResponse::<OutputGame>::decode(&body, 200)
+        .unwrap()
+        .result
+        .unwrap();
     assert_eq!(output.enemies.len(), 1);
     assert_eq!(output.enemies[0].champion_id, ChampionId::Aatrox);
 }
@@ -120,9 +121,10 @@ async fn realtime_accepts_bincode_and_returns_borrowable_output() {
     .await;
     assert_eq!(response.status(), StatusCode::OK);
     let body = test::read_body(response).await;
-    let (output, used): (Realtime<'_>, _) =
-        bincode::borrow_decode_from_slice(&body, tutorlolv2_types::BINCODE_CONFIG).unwrap();
-    assert_eq!(used, body.len());
+    let output = tutorlolv2_protocol::ApiResponse::<Realtime<'_>>::borrow_decode(&body, 200)
+        .unwrap()
+        .result
+        .unwrap();
     assert_eq!(output.enemies.len(), 1);
     assert_eq!(output.current_player.riot_id, "self");
     assert_eq!(output.siml_damages(0, 0).items.len(), 2);

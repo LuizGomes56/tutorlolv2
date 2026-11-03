@@ -1,19 +1,23 @@
-use crate::server::codec::{Response, request_config, respond};
-use actix_web::{error::ErrorBadRequest, web::Bytes};
+use crate::server::{
+    codec::request_config,
+    endpoint::EndpointExt,
+    response::{AppError, AppResult, Trace},
+};
+use actix_web::{HttpResponse, http::StatusCode, web::Bytes};
 use tutorlolv2::riot::RiotRealtime;
 
-pub async fn realtime_handler(body: Bytes) -> Response {
+pub async fn realtime_handler(body: Bytes) -> AppResult<HttpResponse> {
     let (game, consumed) =
         bincode::borrow_decode_from_slice::<RiotRealtime<'_>, _>(&body, request_config())
-            .map_err(ErrorBadRequest)?;
+            .trace_ctx(("Invalid realtime request", StatusCode::BAD_REQUEST))?;
 
     if consumed != body.len() {
-        return Err(ErrorBadRequest("Unexpected trailing request bytes"));
+        return Err(AppError::bad_request("Unexpected trailing request bytes"));
     }
 
-    let data = tutorlolv2::realtime::realtime(&game).map_err(|e| ErrorBadRequest(e.to_string()))?;
+    let data = tutorlolv2::realtime::realtime(&game).trace()?;
 
-    respond(data)
+    Ok(tutorlolv2_api::Realtime::reply(data).into_response())
 }
 
 api_endpoint! {

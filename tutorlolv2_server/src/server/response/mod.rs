@@ -113,8 +113,8 @@ fn encode_error_with(
 ) -> HttpResponse {
     // A tuple has the same ordered bincode fields as ApiResponse, without cloning unbounded metadata.
     let envelope = (error.http_status.as_u16(), Err(&error.api));
-    let (status, bytes) = match encode(&envelope) {
-        Ok(bytes) if bytes.len() <= 65536 => (error.http_status, bytes),
+    let (status, bytes, metadata) = match encode(&envelope) {
+        Ok(bytes) if bytes.len() <= 65536 => (error.http_status, bytes, error.api.clone()),
         _ => {
             // Independent, bounded encoder; never re-enter ResponseError on failure.
             let fallback = ApiResponse::<()> {
@@ -123,26 +123,43 @@ fn encode_error_with(
                     code: tutorlolv2_protocol::ErrorCode::Internal,
                     message: "Error response encoding failed".into(),
                     details: None,
-                    traces: Vec::new(),
+                    traces: vec![tutorlolv2_protocol::ErrorTrace {
+                        file: "tutorlolv2_server/src/server/response/mod.rs".into(),
+                        line: line!(),
+                        column: column!(),
+                        message: None,
+                    }],
                 }),
             };
+            let metadata = fallback.result.as_ref().unwrap_err().clone();
             let mut buffer = [0u8; 256];
             let length =
                 bincode::encode_into_slice(fallback, &mut buffer, tutorlolv2_types::BINCODE_CONFIG)
                     .expect("fixed fallback fits bounded buffer");
-            (StatusCode::INTERNAL_SERVER_ERROR, buffer[..length].to_vec())
+            (
+                StatusCode::INTERNAL_SERVER_ERROR,
+                buffer[..length].to_vec(),
+                metadata,
+            )
         }
     };
     let mut response = HttpResponse::build(status);
+    for (name, value) in &error.headers {
+        response.insert_header((name.clone(), value.clone()));
+    }
     if error.no_store {
         response.insert_header((CACHE_CONTROL, "no-store"));
     }
     if let Some(seconds) = error.retry_after_seconds {
         response.insert_header((RETRY_AFTER, seconds.to_string()));
     }
-    response
+    let mut response = response
         .content_type(super::codec::OCTET_STREAM)
-        .body(bytes)
+        .body(bytes);
+    // Only clone bounded, successfully encoded metadata. Browser middleware can
+    // render pre-handler errors without buffering or decoding response bodies.
+    response.extensions_mut().insert(metadata);
+    response
 }
 
 #[cfg(test)]

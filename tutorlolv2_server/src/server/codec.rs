@@ -1,11 +1,8 @@
 use super::response::Trace;
 // Bincode request/response helpers shared by every `/api` handler.
 
-use actix_web::{
-    FromRequest, HttpRequest, HttpResponse, dev::Payload, error::ErrorInternalServerError,
-    web::Bytes,
-};
-use bincode::{Decode, Encode, config::Config};
+use actix_web::{FromRequest, HttpRequest, dev::Payload, web::Bytes};
+use bincode::{Decode, config::Config};
 use std::{
     future::Future,
     ops::{Deref, DerefMut},
@@ -47,18 +44,10 @@ impl<T: Decode<()> + 'static> FromRequest for Bincode<T> {
     }
 }
 
-pub type Response = actix_web::Result<HttpResponse>;
 pub const OCTET_STREAM: &str = "application/octet-stream";
 
 pub fn request_config() -> impl Config {
     tutorlolv2_types::BINCODE_CONFIG.with_limit::<1_048_576>()
-}
-
-pub fn respond(data: impl Encode) -> Response {
-    let bytes = bincode::encode_to_vec(data, tutorlolv2_types::BINCODE_CONFIG)
-        .map_err(ErrorInternalServerError)?;
-
-    Ok(HttpResponse::Ok().content_type(OCTET_STREAM).body(bytes))
 }
 
 fn decode_request<T: Decode<()>>(body: &[u8]) -> super::response::AppResult<T> {

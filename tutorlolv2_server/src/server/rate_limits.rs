@@ -1,9 +1,14 @@
 //! Shared API rate-limit configuration.
+use super::response::{AppError, Trace};
 use super::{auth::parse_device_header, state::AppState};
-use actix_governor::{
-    GovernorConfig, GovernorConfigBuilder, KeyExtractor, SimpleKeyExtractionError,
+use actix_governor::governor::{
+    NotUntil,
+    clock::{Clock, DefaultClock, QuantaInstant},
 };
-use actix_web::{dev::ServiceRequest, http::header, web::Data};
+use actix_governor::{GovernorConfig, GovernorConfigBuilder, KeyExtractor};
+use actix_web::{
+    HttpResponse, HttpResponseBuilder, ResponseError, dev::ServiceRequest, http::header, web::Data,
+};
 use std::time::Duration;
 
 /// Rate-limit key: the device for authenticated routes once its credentials
@@ -26,8 +31,27 @@ impl ClientKey {
 
 impl KeyExtractor for ClientKey {
     type Key = String;
-    type KeyExtractionError = SimpleKeyExtractionError<&'static str>;
+    type KeyExtractionError = AppError;
 
+    fn exceed_rate_limit_response(
+        &self,
+        negative: &NotUntil<QuantaInstant>,
+        mut builder: HttpResponseBuilder,
+    ) -> HttpResponse {
+        let seconds = negative
+            .wait_time_from(DefaultClock::default().now())
+            .as_secs()
+            .max(1);
+        let mut response = AppError::rate_limited("Too many requests")
+            .retry_after(seconds)
+            .error_response();
+        for (name, value) in builder.finish().headers() {
+            if name != header::RETRY_AFTER {
+                response.headers_mut().insert(name.clone(), value.clone());
+            }
+        }
+        response
+    }
     fn extract(&self, req: &ServiceRequest) -> Result<Self::Key, Self::KeyExtractionError> {
         if self.per_device
             && let Some((device, secret)) = req
@@ -52,7 +76,7 @@ impl KeyExtractor for ClientKey {
 
         ip.and_then(Self::address)
             .map(|ip| format!("ip:{ip}"))
-            .ok_or_else(|| SimpleKeyExtractionError::new("Could not identify the client"))
+            .trace_ctx("Could not identify the client")
     }
 }
 

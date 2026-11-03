@@ -1,8 +1,12 @@
-//! Route-specific browser policy. Native clients do not send Origin.
-use super::state::AppState;
+use tutorlolv2_api::Endpoint;
+// Route-specific browser policy. Native clients do not send Origin.
+use super::{
+    response::{AppError, BrowserError},
+    state::AppState,
+};
 use actix_web::{
-    Error, HttpResponse,
-    body::{EitherBody, MessageBody},
+    Error, HttpResponse, ResponseError,
+    body::{BoxBody, EitherBody, MessageBody},
     dev::{ServiceRequest, ServiceResponse},
     http::{
         Method,
@@ -17,6 +21,9 @@ pub async fn policy(
     next: Next<impl MessageBody>,
 ) -> Result<ServiceResponse<EitherBody<impl MessageBody>>, Error> {
     let path = req.path();
+    let browser =
+        path == tutorlolv2_api::GoogleStart::PATH || path == tutorlolv2_api::GoogleCallback::PATH;
+    let head = req.method() == Method::HEAD;
     let private = path == "/api/account"
         || path == "/api/auth/logout"
         || path == "/api/me"
@@ -59,16 +66,115 @@ pub async fn policy(
         });
 
     let mut response = if !allowed || preflight && !valid_preflight {
-        req.into_response(HttpResponse::Forbidden().finish())
-            .map_into_right_body()
+        req.into_response(
+            AppError::forbidden("Origin or preflight is not allowed").error_response(),
+        )
+        .map_into_right_body()
     } else if preflight {
         req.into_response(HttpResponse::NoContent().finish())
             .map_into_right_body()
     } else {
-        next.call(req).await?.map_into_left_body()
+        // Keep HttpRequest uniquely owned while Actix's router mutates match data.
+        let response = next.call(req).await.map_err(|error| {
+            let mut error = AppError::from(error)
+                .trace()
+                .header(header::VARY, HeaderValue::from_static("Origin"));
+            if sensitive {
+                error = error.no_store();
+            }
+            if allowed && let Some(origin) = origin.clone() {
+                error = error.header(
+                    header::ACCESS_CONTROL_ALLOW_ORIGIN,
+                    if private {
+                        origin
+                    } else {
+                        HeaderValue::from_static("*")
+                    },
+                );
+                if private {
+                    error = error.header(
+                        header::ACCESS_CONTROL_ALLOW_CREDENTIALS,
+                        HeaderValue::from_static("true"),
+                    );
+                }
+            }
+            Error::from(error)
+        })?;
+        {
+            let content_type = response
+                .headers()
+                .get(header::CONTENT_TYPE)
+                .and_then(|v| v.to_str().ok())
+                .unwrap_or("");
+            let failure =
+                response.status().is_client_error() || response.status().is_server_error();
+            let already_correct = if browser {
+                content_type.starts_with("text/html")
+            } else {
+                content_type == super::codec::OCTET_STREAM
+            };
+            if failure && !already_correct {
+                let status = response.status();
+                let metadata = response
+                    .response()
+                    .extensions()
+                    .get::<tutorlolv2_protocol::ApiError>()
+                    .cloned();
+                let error = metadata
+                    .map(|api| AppError::from_wire(status, api))
+                    .unwrap_or_else(|| {
+                        AppError::new(
+                            status,
+                            response
+                                .response()
+                                .error()
+                                .map(ToString::to_string)
+                                .unwrap_or_else(|| {
+                                    status.canonical_reason().unwrap_or("API error").into()
+                                }),
+                        )
+                        .trace()
+                    });
+                let mut replacement = if browser {
+                    BrowserError(error).error_response()
+                } else {
+                    error.error_response()
+                };
+                for (name, value) in response.headers() {
+                    if ![
+                        header::CONTENT_TYPE,
+                        header::CONTENT_LENGTH,
+                        header::CONTENT_ENCODING,
+                    ]
+                    .contains(name)
+                    {
+                        replacement
+                            .headers_mut()
+                            .insert(name.clone(), value.clone());
+                    }
+                }
+                ServiceResponse::new(response.request().clone(), replacement).map_into_right_body()
+            } else {
+                response.map_into_left_body()
+            }
+        }
     };
 
-    super::google::renew_web_cookie(&mut response).await?;
+    if let Err(error) = super::google::renew_web_cookie(&mut response).await {
+        let replacement = if browser {
+            BrowserError(error).error_response()
+        } else {
+            error.error_response()
+        };
+        response =
+            ServiceResponse::new(response.request().clone(), replacement).map_into_right_body();
+    }
+    if head {
+        response = response.map_body(|head, _| {
+            head.headers.remove(header::CONTENT_LENGTH);
+            EitherBody::right(BoxBody::new(()))
+        });
+    }
 
     let headers = response.headers_mut();
 
@@ -109,7 +215,7 @@ pub async fn policy(
 
         headers.insert(
             header::ACCESS_CONTROL_EXPOSE_HEADERS,
-            HeaderValue::from_static("X-Frame-Seq, X-Captured-At, X-Game-Time"),
+            HeaderValue::from_static("X-Frame-Seq, X-Captured-At, X-Game-Time, Retry-After, Allow"),
         );
 
         if preflight {

@@ -89,3 +89,32 @@ fn borrowed_raw_response_is_retained_and_trailing_bytes_rejected() {
             .is_err()
     );
 }
+
+#[test]
+fn browser_error_pages_remain_html_and_redirects_require_location() {
+    let response = ResponseBuffer::<GoogleCallback>::new(
+        400,
+        ResponseHeaders::default(),
+        b"<h1>Retry sign-in</h1>".to_vec(),
+    )
+    .unwrap();
+    let page = response.decode().unwrap();
+    assert_eq!(page.status, 400);
+    assert_eq!(page.body, b"<h1>Retry sign-in</h1>");
+    assert!(
+        ResponseBuffer::<GoogleStart>::new(302, ResponseHeaders::default(), vec![])
+            .unwrap()
+            .decode()
+            .is_err()
+    );
+}
+
+#[test]
+fn calculator_borrowed_view_matches_the_owned_server_request() {
+    let input = tutorlolv2::model::InputGame::default();
+    let bytes = Calculator::encode_body(&input).unwrap();
+    let (owned, used): (tutorlolv2::model::OwnedInputGame, _) =
+        bincode::decode_from_slice(&bytes, tutorlolv2_types::BINCODE_CONFIG).unwrap();
+    assert_eq!(used, bytes.len());
+    assert_eq!(owned.prepare().as_input(), input);
+}

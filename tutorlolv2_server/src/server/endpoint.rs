@@ -1,5 +1,5 @@
 //! Actix registration consumes the same method/path metadata as Rust clients.
-use actix_web::{Resource, Route, http::Method, web};
+use actix_web::{Resource, ResponseError, Route, guard, http::Method, web};
 use tutorlolv2_api::Endpoint;
 
 pub trait EndpointExt: Endpoint {
@@ -15,12 +15,40 @@ pub trait EndpointExt: Endpoint {
             .strip_prefix(prefix)
             .filter(|suffix| suffix.is_empty() || suffix.starts_with('/'))
             .expect("endpoint must belong to its declared mounting scope");
-        web::resource(path)
+        let mut methods = Vec::new();
+        for (method, pattern) in tutorlolv2_api::ROUTES {
+            if *pattern == Self::PATH {
+                methods.push(method.as_str());
+                if *method == tutorlolv2_api::Method::GET {
+                    methods.push("HEAD");
+                }
+            }
+        }
+        let allow = methods.join(", ");
+        web::resource(path).default_service(web::route().to(move || {
+            let allow = allow.clone();
+            async move {
+                let mut response =
+                    super::response::AppError::method_not_allowed("Method not allowed")
+                        .error_response();
+                response.headers_mut().insert(
+                    actix_web::http::header::ALLOW,
+                    actix_web::http::header::HeaderValue::from_str(&allow)
+                        .expect("declared methods"),
+                );
+                response
+            }
+        }))
     }
     fn route() -> Route {
-        web::method(
-            Method::from_bytes(Self::METHOD.as_str().as_bytes()).expect("known endpoint method"),
-        )
+        if Self::METHOD == tutorlolv2_api::Method::GET {
+            web::route().guard(guard::Any(guard::Get()).or(guard::Head()))
+        } else {
+            web::method(
+                Method::from_bytes(Self::METHOD.as_str().as_bytes())
+                    .expect("known endpoint method"),
+            )
+        }
     }
 }
 impl<E: Endpoint> EndpointExt for E {}

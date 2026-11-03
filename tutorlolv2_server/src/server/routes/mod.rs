@@ -18,7 +18,7 @@ pub use crate::server::rate_limits::{ClientKey, RateLimits};
 use crate::server::{endpoint::EndpointExt, sharing};
 use actix_governor::Governor;
 use actix_web::{
-    Scope,
+    ResponseError, Scope,
     dev::HttpServiceFactory,
     middleware::Condition,
     web::{self, PayloadConfig},
@@ -114,6 +114,19 @@ pub fn api(limits: Option<RateLimits>) -> impl HttpServiceFactory {
     let viewer_limits = limits.clone().unwrap_or_else(|| RateLimits::new(false));
 
     web::scope("/api")
+        .app_data(
+            web::PathConfig::default().error_handler(|error, _| {
+                crate::server::response::AppError::bad_request(error).into()
+            }),
+        )
+        .app_data(
+            web::QueryConfig::default().error_handler(|error, _| {
+                crate::server::response::AppError::bad_request(error).into()
+            }),
+        )
+        .default_service(web::route().to(|| async {
+            crate::server::response::AppError::not_found("Unknown API route").error_response()
+        }))
         .wrap(actix_web::middleware::from_fn(crate::server::cors::policy))
         .app_data(sharing::ViewerPolicy(enabled))
         .app_data(PayloadConfig::new(DEFAULT_BODY_LIMIT))
@@ -230,7 +243,8 @@ pub mod devices;
 pub fn me_scope() -> Scope {
     web::scope("/me/recordings")
         .app_data(web::PathConfig::default().error_handler(|_, _| {
-            actix_web::error::ErrorBadRequest("Invalid recording ID or sequence")
+            crate::server::response::AppError::bad_request("Invalid recording ID or sequence")
+                .into()
         }))
         .service(
             api::ListRecordings::resource("/api/me/recordings")

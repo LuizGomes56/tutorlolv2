@@ -172,6 +172,7 @@ fn valid_type(ty: &Type, locals: &BTreeSet<String>) -> Result<()> {
     }
     if [
         "tutorlolv2::model::OwnedInputGame",
+        "tutorlolv2::model::InputGame<'wire>",
         "tutorlolv2::model::OutputGame",
         "tutorlolv2::model::Realtime<'wire>",
         "tutorlolv2::riot::RiotRealtime<'wire>",
@@ -332,7 +333,7 @@ fn render(d: &Declaration, locals: &BTreeSet<String>) -> Result<TokenStream> {
         "browser" => (
             quote!(BrowserResponse<'a>),
             quote!(ResponseMode::Browser),
-            quote! { Ok(BrowserResponse { status, body: bytes }) },
+            quote! { let location=if (300..400).contains(&status){Some(headers.required("Location")?.to_owned())}else{None}; Ok(BrowserResponse { status, body: bytes, location }) },
         ),
         "envelope" | "borrowed_envelope" => {
             let ty = wire_type(&d.response);
@@ -388,9 +389,14 @@ fn render(d: &Declaration, locals: &BTreeSet<String>) -> Result<TokenStream> {
         "browser" => quote!(Auth::Browser),
         _ => return Err("unknown auth policy".into()),
     };
+    let precheck = if d.response.name == "browser" {
+        quote! {if !Self::SUCCESS.contains(&status) && !(400..600).contains(&status) {return Err(ContractError::UnexpectedStatus(status))}}
+    } else {
+        quote! {check_status::<Self>(status,bytes)?;}
+    };
     let literal = &d.path;
     Ok(
-        quote! {#path_definition #[derive(Clone,Copy,Debug)] pub struct #marker; #[allow(unused_variables)] impl Endpoint for #marker { type Path=#path_type; type Query=#query_ty; type Headers=#headers_ty; type Body<'a>=#body_ty; type Output<'a>=#output_ty; const METHOD:Method=Method::#method; const PATH:&'static str=#literal; const SUCCESS:&'static[u16]=&[#(#statuses),*]; const RESPONSE_MODE:ResponseMode=#mode; const BODY_ENCODING:BodyEncoding=#encoding; const AUTH:Auth=#auth; const REQUEST_HEADERS:&'static[&'static str]=&[#(#request_headers),*]; const RESPONSE_HEADERS:&'static[&'static str]=&[#(#response_headers),*]; fn path(path:&Self::Path)->String{#path_expr} fn query(query:&Self::Query)->Result<String,ContractError>{#query_expr} fn headers(headers:&Self::Headers)->Result<Vec<(String,String)>,ContractError>{#headers_expr} fn encode_body(body:&Self::Body<'_>)->Result<Vec<u8>,ContractError>{#body_expr} fn decode<'a>(status:u16,headers:&ResponseHeaders,bytes:&'a[u8])->Result<Self::Output<'a>,ContractError>{check_status::<Self>(status,bytes)?; #decode} } },
+        quote! {#path_definition #[derive(Clone,Copy,Debug)] pub struct #marker; #[allow(unused_variables)] impl Endpoint for #marker { type Path=#path_type; type Query=#query_ty; type Headers=#headers_ty; type Body<'a>=#body_ty; type Output<'a>=#output_ty; const METHOD:Method=Method::#method; const PATH:&'static str=#literal; const SUCCESS:&'static[u16]=&[#(#statuses),*]; const RESPONSE_MODE:ResponseMode=#mode; const BODY_ENCODING:BodyEncoding=#encoding; const AUTH:Auth=#auth; const REQUEST_HEADERS:&'static[&'static str]=&[#(#request_headers),*]; const RESPONSE_HEADERS:&'static[&'static str]=&[#(#response_headers),*]; fn path(path:&Self::Path)->String{#path_expr} fn query(query:&Self::Query)->Result<String,ContractError>{#query_expr} fn headers(headers:&Self::Headers)->Result<Vec<(String,String)>,ContractError>{#headers_expr} fn encode_body(body:&Self::Body<'_>)->Result<Vec<u8>,ContractError>{#body_expr} fn decode<'a>(status:u16,headers:&ResponseHeaders,bytes:&'a[u8])->Result<Self::Output<'a>,ContractError>{ #precheck #decode} } },
     )
 }
 
@@ -407,8 +413,13 @@ pub fn generate_sources(sources: &[(&str, &str)]) -> Result<String> {
             let Item::Macro(item) = item else { continue };
             let name = item.mac.path.segments.last().unwrap().ident.to_string();
             if name == "api_endpoint" {
-                let declaration: Declaration =
-                    syn::parse2(item.mac.tokens).map_err(|e| format!("{filename}: {e}"))?;
+                let declaration: Declaration = syn::parse2(item.mac.tokens).map_err(|e| {
+                    format!(
+                        "{filename}:{}:{}: {e}",
+                        e.span().start().line,
+                        e.span().start().column + 1
+                    )
+                })?;
                 paths.insert(declaration.path.value());
                 declarations.push((filename, declaration));
             } else if name == "api_contract" {
@@ -445,7 +456,7 @@ pub fn generate_sources(sources: &[(&str, &str)]) -> Result<String> {
             pub seq: u64, pub captured_at: i64, pub game_time: f32,
             pub frame: tutorlolv2::riot::RiotRealtime<'a>,
         }
-        #[derive(Debug)] pub struct BrowserResponse<'a> { pub status: u16, pub body: &'a [u8] }
+        #[derive(Debug)] pub struct BrowserResponse<'a> { pub status: u16, pub body: &'a [u8], pub location: Option<String> }
     };
     for (_, definition) in definitions {
         let syn::Fields::Named(fields) = &definition.fields else {
@@ -473,7 +484,13 @@ pub fn generate_sources(sources: &[(&str, &str)]) -> Result<String> {
         if d.handler.to_string().is_empty() {
             return Err("missing handler".into());
         }
-        output.extend(render(d, &locals).map_err(|e| format!("{filename}: {e}"))?);
+        output.extend(render(d, &locals).map_err(|e| {
+            format!(
+                "{filename}:{}:{}: {e}",
+                d.marker.span().start().line,
+                d.marker.span().start().column + 1
+            )
+        })?);
     }
     let count = declarations.len();
     let names = declarations.iter().map(|(_, d)| {

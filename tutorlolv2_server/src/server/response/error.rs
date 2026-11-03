@@ -9,6 +9,10 @@ pub struct AppError {
     pub(crate) retry_after_seconds: Option<u64>,
     pub(crate) no_store: bool,
     source: Option<Box<dyn Error + Send + Sync>>,
+    pub(crate) headers: Vec<(
+        actix_web::http::header::HeaderName,
+        actix_web::http::header::HeaderValue,
+    )>,
 }
 macro_rules! status_methods {
     ($($name:ident = $status:ident),* $(,)?) => {$(
@@ -45,6 +49,17 @@ impl AppError {
             retry_after_seconds: None,
             no_store: false,
             source: None,
+            headers: Vec::new(),
+        }
+    }
+    pub(crate) fn from_wire(status: StatusCode, api: ApiError) -> Self {
+        Self {
+            http_status: status,
+            api,
+            retry_after_seconds: None,
+            no_store: true,
+            source: None,
+            headers: Vec::new(),
         }
     }
     #[track_caller]
@@ -63,6 +78,14 @@ impl AppError {
     }
     pub fn code(mut self, code: ErrorCode) -> Self {
         self.api.code = code;
+        self
+    }
+    pub fn header(
+        mut self,
+        name: actix_web::http::header::HeaderName,
+        value: actix_web::http::header::HeaderValue,
+    ) -> Self {
+        self.headers.push((name, value));
         self
     }
     pub fn no_store(mut self) -> Self {
@@ -307,6 +330,13 @@ mod tests {
 // at this boundary rather than retaining a non-Send runtime error in AppError.
 impl From<actix_web::Error> for AppError {
     fn from(error: actix_web::Error) -> Self {
+        if let Some(original) = error.as_error::<AppError>() {
+            let mut value = Self::from_wire(original.http_status, original.api.clone());
+            value.retry_after_seconds = original.retry_after_seconds;
+            value.no_store = original.no_store;
+            value.headers = original.headers.clone();
+            return value;
+        }
         let status = error.as_response_error().status_code();
         let mut value = Self::new(status, error.to_string());
         value.api.details = Some(error.to_string());
@@ -324,5 +354,12 @@ impl From<crate::server::ingest::IngestError> for AppError {
             Invalid(reason) => Self::new(StatusCode::UNPROCESSABLE_ENTITY, reason),
             Mismatch(reason) => Self::new(StatusCode::CONFLICT, reason),
         }
+    }
+}
+
+impl From<tutorlolv2::realtime::RealtimeError<'_>> for AppError {
+    fn from(error: tutorlolv2::realtime::RealtimeError<'_>) -> Self {
+        // The source borrows the request buffer; retain its owned diagnostic before it drops.
+        Self::new(StatusCode::BAD_REQUEST, error.to_string())
     }
 }

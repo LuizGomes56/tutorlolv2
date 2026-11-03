@@ -14,6 +14,7 @@ pub struct LiveFrame<'a> {
 pub struct BrowserResponse<'a> {
     pub status: u16,
     pub body: &'a [u8],
+    pub location: Option<String>,
 }
 #[derive(Clone, Debug, Default, serde::Serialize, serde::Deserialize)]
 pub struct After {
@@ -209,10 +210,18 @@ impl Endpoint for GoogleCallback {
         headers: &ResponseHeaders,
         bytes: &'a [u8],
     ) -> Result<Self::Output<'a>, ContractError> {
-        check_status::<Self>(status, bytes)?;
+        if !Self::SUCCESS.contains(&status) && !(400..600).contains(&status) {
+            return Err(ContractError::UnexpectedStatus(status));
+        }
+        let location = if (300..400).contains(&status) {
+            Some(headers.required("Location")?.to_owned())
+        } else {
+            None
+        };
         Ok(BrowserResponse {
             status,
             body: bytes,
+            location,
         })
     }
 }
@@ -254,10 +263,18 @@ impl Endpoint for GoogleStart {
         headers: &ResponseHeaders,
         bytes: &'a [u8],
     ) -> Result<Self::Output<'a>, ContractError> {
-        check_status::<Self>(status, bytes)?;
+        if !Self::SUCCESS.contains(&status) && !(400..600).contains(&status) {
+            return Err(ContractError::UnexpectedStatus(status));
+        }
+        let location = if (300..400).contains(&status) {
+            Some(headers.required("Location")?.to_owned())
+        } else {
+            None
+        };
         Ok(BrowserResponse {
             status,
             body: bytes,
+            location,
         })
     }
 }
@@ -355,7 +372,7 @@ impl Endpoint for Calculator {
     type Path = NoPath;
     type Query = NoQuery;
     type Headers = NoHeaders;
-    type Body<'a> = tutorlolv2::model::OwnedInputGame;
+    type Body<'a> = tutorlolv2::model::InputGame<'a>;
     type Output<'a> = tutorlolv2::model::OutputGame;
     const METHOD: Method = Method::POST;
     const PATH: &'static str = "/api/games/calculator";
