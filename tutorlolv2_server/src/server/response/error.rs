@@ -10,7 +10,24 @@ pub struct AppError {
     pub(crate) no_store: bool,
     source: Option<Box<dyn Error + Send + Sync>>,
 }
+macro_rules! status_methods {
+    ($($name:ident = $status:ident),* $(,)?) => {$(
+        #[track_caller]
+        pub fn $name(message: impl fmt::Display) -> Self {
+            Self::new(StatusCode::$status, message.to_string()).trace()
+        }
+    )*};
+}
 impl AppError {
+    status_methods! {
+        bad_request = BAD_REQUEST, unauthorized = UNAUTHORIZED, forbidden = FORBIDDEN,
+        not_found = NOT_FOUND, gone = GONE, conflict = CONFLICT,
+        payload_too_large = PAYLOAD_TOO_LARGE, rate_limited = TOO_MANY_REQUESTS,
+        unprocessable = UNPROCESSABLE_ENTITY, internal = INTERNAL_SERVER_ERROR,
+        bad_gateway = BAD_GATEWAY, unavailable = SERVICE_UNAVAILABLE,
+        method_not_allowed = METHOD_NOT_ALLOWED,
+    }
+
     #[track_caller]
     pub fn new(status: StatusCode, message: impl Into<String>) -> Self {
         Self {
@@ -100,6 +117,7 @@ impl AppError {
     }
     fn from_source(error: impl Error + Send + Sync + 'static) -> Self {
         let mut value = Self::new(StatusCode::INTERNAL_SERVER_ERROR, "Internal server error");
+        value.api.details = Some(error.to_string());
         value.source = Some(Box::new(error));
         value
     }
@@ -151,7 +169,9 @@ source_from!(
     std::num::ParseIntError,
     std::num::TryFromIntError,
     getrandom::Error,
-    tokio::task::JoinError
+    tokio::task::JoinError,
+    base64::DecodeError,
+    actix_web::error::HttpError
 );
 
 pub struct ErrorContext {

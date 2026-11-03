@@ -1,10 +1,14 @@
-use crate::server::{codec::Response, state::AppState};
-use actix_web::{HttpResponse, error::*, web::Data};
+use crate::server::response::{AppResult, Trace};
+use crate::server::state::AppState;
+use actix_web::{HttpResponse, web::Data};
 
 use crate::server::google::*;
 
-pub async fn logout(s: Data<AppState>, a: AccountAuth) -> Response {
-    let mut tx = s.db.begin().await.map_err(storage)?;
+pub async fn logout(s: Data<AppState>, a: AccountAuth) -> AppResult<HttpResponse> {
+    let mut tx =
+        s.db.begin()
+            .await
+            .trace_ctx("Account storage unavailable")?;
 
     if let Some(d) = a.device_id {
         sqlx::query!(
@@ -20,7 +24,7 @@ pub async fn logout(s: Data<AppState>, a: AccountAuth) -> Response {
         )
         .execute(&mut *tx)
         .await
-        .map_err(storage)?;
+        .trace_ctx("Account storage unavailable")?;
     }
 
     sqlx::query!(
@@ -33,14 +37,14 @@ pub async fn logout(s: Data<AppState>, a: AccountAuth) -> Response {
     )
     .execute(&mut *tx)
     .await
-    .map_err(storage)?;
+    .trace_ctx("Account storage unavailable")?;
 
-    tx.commit().await.map_err(storage)?;
+    tx.commit().await.trace_ctx("Account storage unavailable")?;
     let mut r = HttpResponse::NoContent().finish();
 
     if a.cookie {
         r.add_cookie(&cookie(&s, "tl_session", String::new(), 0))
-            .map_err(ErrorInternalServerError)?;
+            .trace()?;
     }
 
     Ok(r)

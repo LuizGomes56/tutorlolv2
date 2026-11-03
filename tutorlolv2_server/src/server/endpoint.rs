@@ -3,6 +3,13 @@ use actix_web::{Resource, Route, http::Method, web};
 use tutorlolv2_api::Endpoint;
 
 pub trait EndpointExt: Endpoint {
+    fn reply<'a>(value: Self::Output<'a>) -> super::response::ApiReply<Self::Output<'a>>
+    where
+        Self::Output<'a>: bincode::Encode,
+    {
+        super::response::ApiReply::ok(value)
+    }
+
     fn resource(prefix: &str) -> Resource {
         let path = Self::PATH
             .strip_prefix(prefix)

@@ -1,9 +1,8 @@
-use crate::server::{
-    auth::DeviceAuth,
-    codec::{Bincode, Response, respond},
-    state::AppState,
-};
-use actix_web::{error::*, web::Data};
+use crate::server::endpoint::EndpointExt;
+use crate::server::response::{AppError, Trace};
+use crate::server::{auth::DeviceAuth, codec::Bincode, state::AppState};
+use actix_web::http::StatusCode;
+use actix_web::web::Data;
 use std::time::Duration;
 use tutorlolv2_protocol::{DesktopSession, RedeemTicket};
 
@@ -13,7 +12,7 @@ pub async fn redeem(
     s: Data<AppState>,
     auth: DeviceAuth,
     Bincode(q): Bincode<RedeemTicket>,
-) -> Response {
+) -> crate::server::response::ApiResult<DesktopSession> {
     enabled(&s)?;
 
     let (account, at) = s
@@ -22,13 +21,16 @@ pub async fn redeem(
         .lock()
         .unwrap()
         .remove(&q.ticket)
-        .ok_or_else(|| ErrorGone("Ticket expired or used"))?;
+        .trace_ctx(("Ticket expired or used", StatusCode::GONE))?;
 
     if at.elapsed() >= Duration::from_secs(120) {
-        return Err(ErrorGone("Ticket expired or used"));
+        return Err(AppError::gone("Ticket expired or used"));
     }
 
-    let mut tx = s.db.begin().await.map_err(storage)?;
+    let mut tx =
+        s.db.begin()
+            .await
+            .trace_ctx("Account storage unavailable")?;
 
     // NO KEY UPDATE protects deletion/identity changes without blocking the
     // account FK KEY SHARE taken by a concurrent recording creation. The device
@@ -46,8 +48,8 @@ pub async fn redeem(
     )
     .fetch_optional(&mut *tx)
     .await
-    .map_err(storage)?
-    .ok_or_else(|| ErrorUnauthorized("Account unavailable"))?;
+    .trace_ctx("Account storage unavailable")?
+    .trace_ctx(("Account unavailable", StatusCode::UNAUTHORIZED))?;
 
     let device = sqlx::query_scalar!(
         r#"
@@ -62,10 +64,10 @@ pub async fn redeem(
     )
     .fetch_optional(&mut *tx)
     .await
-    .map_err(storage)?;
+    .trace_ctx("Account storage unavailable")?;
 
     if device.is_none() {
-        return Err(ErrorUnauthorized("Device unavailable"));
+        return Err(AppError::unauthorized("Device unavailable"));
     }
 
     let (t, id) = (GoogleAuthService { state: &s })
@@ -82,7 +84,7 @@ pub async fn redeem(
     )
     .execute(&mut *tx)
     .await
-    .map_err(storage)?;
+    .trace_ctx("Account storage unavailable")?;
 
     sqlx::query!(
         "UPDATE recordings
@@ -94,11 +96,14 @@ pub async fn redeem(
     )
     .execute(&mut *tx)
     .await
-    .map_err(storage)?;
+    .trace_ctx("Account storage unavailable")?;
 
-    tx.commit().await.map_err(storage)?;
+    tx.commit().await.trace_ctx("Account storage unavailable")?;
 
-    respond(DesktopSession { token: t, email })
+    Ok(tutorlolv2_api::RedeemDesktop::reply(DesktopSession {
+        token: t,
+        email,
+    }))
 }
 
 api_endpoint! {

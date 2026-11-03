@@ -1,9 +1,8 @@
-//! Device authentication (spec §13.1): `Authorization: Device <id>.<base64url(secret)>`.
+use crate::server::response::{AppError, Trace};
+// Device authentication (spec §13.1): `Authorization: Device <id>.<base64url(secret)>`.
 
 use super::state::AppState;
-use actix_web::{
-    FromRequest, HttpRequest, dev::Payload, error::ErrorUnauthorized, http::header, web::Data,
-};
+use actix_web::{FromRequest, HttpRequest, dev::Payload, http::header, web::Data};
 use base64::{Engine, engine::general_purpose::URL_SAFE_NO_PAD};
 use sha2::{Digest, Sha256};
 use sqlx::PgPool;
@@ -107,7 +106,7 @@ impl AuthCache {
 }
 
 impl FromRequest for DeviceAuth {
-    type Error = actix_web::Error;
+    type Error = AppError;
     type Future = Pin<Box<dyn Future<Output = Result<Self, Self::Error>>>>;
 
     fn from_request(req: &HttpRequest, _: &mut Payload) -> Self::Future {
@@ -121,13 +120,20 @@ impl FromRequest for DeviceAuth {
 
         Box::pin(async move {
             let (Some((id, secret)), Some(state)) = (credentials, state) else {
-                return Err(ErrorUnauthorized("Missing or malformed device credentials"));
+                return Err(AppError::unauthorized(
+                    "Missing or malformed device credentials",
+                ));
             };
 
-            match state.auth_cache.verify(&state.db, id, &secret).await {
-                Ok(true) => Ok(DeviceAuth { device_id: id }),
-                Ok(false) => Err(ErrorUnauthorized("Unknown device or wrong secret")),
-                Err(e) => Err(actix_web::error::ErrorInternalServerError(e)),
+            if state
+                .auth_cache
+                .verify(&state.db, id, &secret)
+                .await
+                .trace()?
+            {
+                Ok(DeviceAuth { device_id: id })
+            } else {
+                Err(AppError::unauthorized("Unknown device or wrong secret"))
             }
         })
     }

@@ -1,10 +1,11 @@
-//! Confidential Google web-client flow. Credentials never leave the server.
+use crate::server::response::{AppError, AppResult, Trace};
+use actix_web::http::StatusCode;
+// Confidential Google web-client flow. Credentials never leave the server.
 use super::{auth::DeviceAuth, db_enums::SessionKind, state::AppState};
 use actix_web::cookie::{Cookie, SameSite, time::Duration as CookieDuration};
 use actix_web::{
     FromRequest, HttpMessage, HttpRequest, HttpResponse,
     dev::{Payload, ServiceResponse},
-    error::*,
     web::Data,
 };
 use base64::{Engine, engine::general_purpose::URL_SAFE_NO_PAD as B64};
@@ -51,10 +52,13 @@ impl PendingStore {
     }
 }
 
-pub(crate) fn token() -> Result<String, actix_web::Error> {
+pub(crate) fn token() -> AppResult<String> {
     let mut b = [0u8; 32];
 
-    getrandom::fill(&mut b).map_err(|_| ErrorInternalServerError("Random source unavailable"))?;
+    getrandom::fill(&mut b).trace_ctx((
+        "Random source unavailable",
+        StatusCode::INTERNAL_SERVER_ERROR,
+    ))?;
 
     Ok(B64.encode(b))
 }
@@ -69,14 +73,10 @@ pub(crate) fn hash(s: &str) -> Option<Vec<u8>> {
     Some(Sha256::digest(b).to_vec())
 }
 
-pub(crate) fn storage(_: sqlx::Error) -> actix_web::Error {
-    ErrorInternalServerError("Account storage unavailable")
-}
-
-pub(crate) fn enabled(s: &AppState) -> actix_web::Result<(&str, &str)> {
+pub(crate) fn enabled(s: &AppState) -> AppResult<(&str, &str)> {
     match (&s.config.google_client_id, &s.config.google_client_secret) {
         (Some(a), Some(b)) => Ok((a, b)),
-        _ => Err(ErrorServiceUnavailable("Google sign-in unavailable")),
+        _ => Err(AppError::unavailable("Google sign-in unavailable")),
     }
 }
 
@@ -149,7 +149,7 @@ pub struct AccountAuth {
 }
 
 impl FromRequest for AccountAuth {
-    type Error = actix_web::Error;
+    type Error = AppError;
     type Future = Pin<Box<dyn Future<Output = Result<Self, Self::Error>>>>;
 
     fn from_request(r: &HttpRequest, _: &mut Payload) -> Self::Future {
@@ -175,14 +175,16 @@ impl FromRequest for AccountAuth {
                     == Some("application/octet-stream"));
 
         Box::pin(async move {
-            let s = state.ok_or_else(|| ErrorUnauthorized("Signed out"))?;
+            let s = state.trace_ctx(("Signed out", StatusCode::UNAUTHORIZED))?;
             let hash = t
                 .as_deref()
                 .and_then(hash)
-                .ok_or_else(|| ErrorUnauthorized("Signed out"))?;
+                .trace_ctx(("Signed out", StatusCode::UNAUTHORIZED))?;
 
             if !csrf {
-                return Err(ErrorForbidden("Invalid request origin or content type"));
+                return Err(AppError::forbidden(
+                    "Invalid request origin or content type",
+                ));
             }
 
             let row = sqlx::query!(
@@ -211,8 +213,8 @@ impl FromRequest for AccountAuth {
             )
             .fetch_optional(&s.db)
             .await
-            .map_err(storage)?
-            .ok_or_else(|| ErrorUnauthorized("Session expired"))?;
+            .trace_ctx("Account storage unavailable")?
+            .trace_ctx(("Session expired", StatusCode::UNAUTHORIZED))?;
 
             let auth = AccountAuth {
                 account_id: row.account_id,
@@ -243,7 +245,7 @@ impl FromRequest for AccountAuth {
                 )
                 .execute(&s.db)
                 .await
-                .map_err(storage)?;
+                .trace_ctx("Account storage unavailable")?;
             }
 
             Ok(auth)
@@ -259,9 +261,7 @@ pub(crate) struct WebSessionRenewal {
     pub(crate) token: String,
 }
 
-pub(crate) async fn renew_web_cookie<B>(
-    response: &mut ServiceResponse<B>,
-) -> actix_web::Result<()> {
+pub(crate) async fn renew_web_cookie<B>(response: &mut ServiceResponse<B>) -> AppResult<()> {
     if !response.status().is_success() || response.request().path() == "/api/auth/logout" {
         return Ok(());
     }
@@ -280,7 +280,10 @@ pub(crate) async fn renew_web_cookie<B>(
         .request()
         .app_data::<Data<AppState>>()
         .cloned()
-        .ok_or_else(|| ErrorInternalServerError("Account storage unavailable"))?;
+        .trace_ctx((
+            "Account storage unavailable",
+            StatusCode::INTERNAL_SERVER_ERROR,
+        ))?;
 
     let updated = sqlx::query!(
         r#"
@@ -303,7 +306,7 @@ pub(crate) async fn renew_web_cookie<B>(
     )
     .execute(&state.db)
     .await
-    .map_err(storage)?;
+    .trace_ctx("Account storage unavailable")?;
 
     if updated.rows_affected() == 1 {
         response
@@ -314,7 +317,7 @@ pub(crate) async fn renew_web_cookie<B>(
                 renewal.token,
                 state.config.session_ttl_days * 86400,
             ))
-            .map_err(ErrorInternalServerError)?;
+            .trace()?;
     }
 
     Ok(())
@@ -336,7 +339,7 @@ impl From<DeviceAuth> for Owner {
 }
 
 impl FromRequest for Owner {
-    type Error = actix_web::Error;
+    type Error = AppError;
     type Future = Pin<Box<dyn Future<Output = Result<Self, Self::Error>>>>;
 
     fn from_request(r: &HttpRequest, p: &mut Payload) -> Self::Future {
@@ -363,6 +366,7 @@ impl FromRequest for Owner {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use actix_web::ResponseError;
     use crate::server::codec::Bincode;
     use actix_web::web::Query;
     use tutorlolv2_protocol::RedeemTicket;
@@ -494,7 +498,7 @@ mod tests {
             }),
         )
         .await;
-        assert_eq!(result.unwrap_err().as_response_error().status_code(), 410);
+        assert_eq!(result.err().unwrap().status_code(), 410);
         for i in 0..MAX_PENDING {
             s.google.logins.lock().unwrap().insert(
                 format!("{i}"),
@@ -516,7 +520,7 @@ mod tests {
             }),
         )
         .await;
-        assert_eq!(result.unwrap_err().as_response_error().status_code(), 429);
+        assert_eq!(result.err().unwrap().status_code(), 429);
     }
 }
 
@@ -541,7 +545,7 @@ impl GoogleAuthService<'_> {
         tx: &mut sqlx::Transaction<'_, sqlx::Postgres>,
         account: Uuid,
         device: Option<Uuid>,
-    ) -> actix_web::Result<(String, Uuid)> {
+    ) -> AppResult<(String, Uuid)> {
         let s = self.state;
         let t = token()?;
 
@@ -574,7 +578,7 @@ impl GoogleAuthService<'_> {
         )
         .fetch_one(&mut **tx)
         .await
-        .map_err(storage)?;
+        .trace_ctx("Account storage unavailable")?;
 
         Ok((t, id))
     }

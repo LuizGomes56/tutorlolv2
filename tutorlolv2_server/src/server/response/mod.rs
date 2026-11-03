@@ -224,3 +224,58 @@ mod tests {
         );
     }
 }
+
+/// Human-facing OAuth navigation cannot decode a binary API error response.
+#[derive(Debug)]
+pub struct BrowserError(pub AppError);
+impl std::fmt::Display for BrowserError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        self.0.fmt(f)
+    }
+}
+impl std::error::Error for BrowserError {}
+impl From<AppError> for BrowserError {
+    fn from(error: AppError) -> Self {
+        Self(error)
+    }
+}
+impl ResponseError for BrowserError {
+    fn status_code(&self) -> StatusCode {
+        self.0.status_code()
+    }
+    fn error_response(&self) -> HttpResponse {
+        let escape = |value: &str| {
+            value
+                .replace('&', "&amp;")
+                .replace('<', "&lt;")
+                .replace('>', "&gt;")
+                .replace('"', "&quot;")
+                .replace('\'', "&#39;")
+        };
+        let error = self.0.as_api_error();
+        let mut details = error.details.clone().unwrap_or_default();
+        for trace in &error.traces {
+            use std::fmt::Write;
+            let _ = writeln!(
+                details,
+                "\n{}:{}:{} {}",
+                trace.file,
+                trace.line,
+                trace.column,
+                trace.message.as_deref().unwrap_or("")
+            );
+        }
+        HttpResponse::build(self.status_code())
+            .insert_header((CACHE_CONTROL,"no-store"))
+            .content_type("text/html; charset=utf-8")
+            .body(format!("<!doctype html><title>Sign-in error</title><h1>{}</h1><p>Return to the app and retry sign-in.</p><pre>{}</pre>",escape(&error.message),escape(&details)))
+    }
+}
+pub trait BrowserContext<T> {
+    fn browser(self) -> Result<T, BrowserError>;
+}
+impl<T> BrowserContext<T> for AppResult<T> {
+    fn browser(self) -> Result<T, BrowserError> {
+        self.map_err(BrowserError::from)
+    }
+}

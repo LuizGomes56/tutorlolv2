@@ -1,15 +1,20 @@
-use crate::server::{codec::Response, state::AppState};
-use actix_web::{HttpResponse, error::*, web::Data};
+use crate::server::response::{AppError, AppResult, Trace};
+use crate::server::state::AppState;
+use actix_web::http::StatusCode;
+use actix_web::{HttpResponse, web::Data};
 
 use crate::server::google::*;
 
-pub async fn confirm_desktop(s: Data<AppState>, a: AccountAuth) -> Response {
+pub async fn confirm_desktop(s: Data<AppState>, a: AccountAuth) -> AppResult<HttpResponse> {
     let device = a
         .device_id
         .filter(|_| !a.cookie)
-        .ok_or_else(|| ErrorUnauthorized("Desktop session required"))?;
+        .trace_ctx(("Desktop session required", StatusCode::UNAUTHORIZED))?;
 
-    let mut tx = s.db.begin().await.map_err(storage)?;
+    let mut tx =
+        s.db.begin()
+            .await
+            .trace_ctx("Account storage unavailable")?;
     let current = sqlx::query_scalar!(
         r#"
         SELECT id
@@ -23,10 +28,10 @@ pub async fn confirm_desktop(s: Data<AppState>, a: AccountAuth) -> Response {
     )
     .fetch_optional(&mut *tx)
     .await
-    .map_err(storage)?;
+    .trace_ctx("Account storage unavailable")?;
 
     if current.is_none() {
-        return Err(ErrorUnauthorized("Device unavailable"));
+        return Err(AppError::unauthorized("Device unavailable"));
     }
 
     // Recheck after acquiring the lock: the extractor may have authenticated
@@ -60,10 +65,10 @@ pub async fn confirm_desktop(s: Data<AppState>, a: AccountAuth) -> Response {
     )
     .execute(&mut *tx)
     .await
-    .map_err(storage)?;
+    .trace_ctx("Account storage unavailable")?;
 
     if updated.rows_affected() != 1 {
-        return Err(ErrorUnauthorized("Desktop binding changed"));
+        return Err(AppError::unauthorized("Desktop binding changed"));
     }
 
     sqlx::query!(
@@ -78,9 +83,9 @@ pub async fn confirm_desktop(s: Data<AppState>, a: AccountAuth) -> Response {
     )
     .execute(&mut *tx)
     .await
-    .map_err(storage)?;
+    .trace_ctx("Account storage unavailable")?;
 
-    tx.commit().await.map_err(storage)?;
+    tx.commit().await.trace_ctx("Account storage unavailable")?;
 
     Ok(HttpResponse::NoContent().finish())
 }

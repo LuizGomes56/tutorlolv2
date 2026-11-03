@@ -138,7 +138,10 @@ async fn desktop_redeem(
     };
     let r = test::call_service(app, request()).await;
     assert_eq!(r.status(), 200);
-    let session = decode(&test::read_body(r).await);
+    let session = ApiResponse::<DesktopSession>::decode(&test::read_body(r).await, 200)
+        .unwrap()
+        .result
+        .unwrap();
     assert_eq!(test::call_service(app, request()).await.status(), 410);
     session
 }
@@ -299,7 +302,11 @@ async fn web_session_cookie_kind_csrf_and_logout(pool: PgPool) {
     .await;
     assert_eq!(r.status(), 200);
     assert_eq!(
-        decode::<AccountInfo>(&test::read_body(r).await).email,
+        ApiResponse::<AccountInfo>::decode(&test::read_body(r).await, 200)
+            .unwrap()
+            .result
+            .unwrap()
+            .email,
         "alice@example.test"
     );
     let hash = sqlx::query_scalar!(
@@ -1600,5 +1607,31 @@ async fn confirmation_rechecks_binding_after_waiting_for_device_lock(pool: PgPoo
     assert_eq!(
         owner, None,
         "rejected confirmation cannot claim interim games"
+    );
+}
+
+#[sqlx::test(migrations = "./migrations")]
+async fn account_errors_use_traced_bincode_envelopes(pool: PgPool) {
+    let app = test::init_service(App::new().app_data(state(pool)).service(routes::api(None))).await;
+    let response = test::call_service(
+        &app,
+        test::TestRequest::get().uri("/api/account").to_request(),
+    )
+    .await;
+    assert_eq!(response.status(), 401);
+    assert_eq!(
+        response.headers().get("content-type").unwrap(),
+        "application/octet-stream"
+    );
+    let response =
+        ApiResponse::<AccountInfo>::decode(&test::read_body(response).await, 401).unwrap();
+    let error = response.result.unwrap_err();
+    assert_eq!(error.code, ErrorCode::Unauthorized);
+    assert!(!error.traces.is_empty());
+    assert!(
+        error
+            .traces
+            .iter()
+            .all(|frame| frame.line > 0 && frame.column > 0)
     );
 }

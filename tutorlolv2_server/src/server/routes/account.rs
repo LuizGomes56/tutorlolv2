@@ -1,13 +1,15 @@
-use crate::server::{
-    codec::{Response, respond},
-    state::AppState,
-};
+use crate::server::endpoint::EndpointExt;
+use crate::server::response::Trace;
+use crate::server::state::AppState;
 use actix_web::web::Data;
 use tutorlolv2_protocol::AccountInfo;
 
 use crate::server::google::*;
 
-pub async fn account(s: Data<AppState>, a: AccountAuth) -> Response {
+pub async fn account(
+    s: Data<AppState>,
+    a: AccountAuth,
+) -> crate::server::response::ApiResult<AccountInfo> {
     let row = sqlx::query!(
         r#"
         SELECT email, created_at
@@ -19,12 +21,12 @@ pub async fn account(s: Data<AppState>, a: AccountAuth) -> Response {
     )
     .fetch_one(&s.db)
     .await
-    .map_err(storage)?;
+    .trace_ctx("Account storage unavailable")?;
 
-    respond(AccountInfo {
+    Ok(tutorlolv2_api::GetAccount::reply(AccountInfo {
         email: row.email,
         created_at_ms: row.created_at.timestamp_millis(),
-    })
+    }))
 }
 
 api_endpoint! {
