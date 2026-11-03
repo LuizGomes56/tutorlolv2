@@ -23,6 +23,37 @@ pub fn invalidate() {
     });
 }
 
+/// Pending UI work has its own lifetime: identity invalidation can cancel an
+/// action while its transport is still in flight.
+#[derive(Default)]
+struct PendingAction {
+    sequence: u64,
+    current: Option<u64>,
+}
+
+impl PendingAction {
+    fn begin(&mut self) -> Option<u64> {
+        if self.current.is_some() {
+            return None;
+        }
+        self.sequence = self.sequence.wrapping_add(1);
+        self.current = Some(self.sequence);
+        self.current
+    }
+
+    fn finish(&mut self, id: u64) -> bool {
+        if self.current != Some(id) {
+            return false;
+        }
+        self.current = None;
+        true
+    }
+
+    fn cancel(&mut self) {
+        self.current = None;
+    }
+}
+
 #[derive(Clone, PartialEq)]
 pub struct AccountContext {
     pub state: AccountState,
@@ -83,16 +114,24 @@ pub fn AccountProvider(props: &AccountProviderProps) -> Html {
     let state = use_state(AccountState::default);
     let loaded = use_state(|| false);
     let busy = use_state(|| false);
+    let pending = use_mut_ref(PendingAction::default);
     let revision = use_state(|| 0u32);
     let revision_counter = use_mut_ref(|| 0u32);
     let generation = use_mut_ref(|| 0u64);
     let active = use_mut_ref(|| true);
     {
-        let (state, generation) = (state.clone(), generation.clone());
+        let (state, generation, busy, pending) = (
+            state.clone(),
+            generation.clone(),
+            busy.clone(),
+            pending.clone(),
+        );
         use_effect_with((), move |_| {
             INVALIDATE.with(|v| {
                 *v.borrow_mut() = Some(Callback::from(move |_| {
                     *generation.borrow_mut() += 1;
+                    pending.borrow_mut().cancel();
+                    busy.set(false);
                     crate::history::source::clear_web_history();
                     state.set(AccountState {
                         last_error: Some("Your session expired. Sign in again.".into()),
@@ -164,24 +203,26 @@ pub fn AccountProvider(props: &AccountProviderProps) -> Html {
         })
     };
     let action = |command: Command| {
-        let (state, busy, active, generation) = (
+        let (state, busy, active, generation, pending) = (
             state.clone(),
             busy.clone(),
             active.clone(),
             generation.clone(),
+            pending.clone(),
         );
         Callback::from(move |_| {
-            if *busy {
+            let Some(action_id) = pending.borrow_mut().begin() else {
                 return;
-            }
+            };
             busy.set(true);
             *generation.borrow_mut() += 1;
             let before = *generation.borrow();
-            let (state, busy, active, generation) = (
+            let (state, busy, active, generation, pending) = (
                 state.clone(),
                 busy.clone(),
                 active.clone(),
                 generation.clone(),
+                pending.clone(),
             );
             spawn_local(async move {
                 let result = if cfg!(feature = "tauri") {
@@ -201,11 +242,18 @@ pub fn AccountProvider(props: &AccountProviderProps) -> Html {
                         Err(e) => Err(e.message),
                     }
                 };
-                if !*active.borrow() || before != *generation.borrow() {
+                if !*active.borrow() {
+                    return;
+                }
+                // Only this action may release its busy state. Expiry can cancel
+                // it and allow a newer action before this response arrives.
+                if pending.borrow_mut().finish(action_id) {
+                    busy.set(false);
+                }
+                if before != *generation.borrow() {
                     return;
                 }
                 *generation.borrow_mut() += 1;
-                busy.set(false);
                 match result {
                     Ok(value) => {
                         crate::history::source::clear_web_history();
@@ -282,5 +330,36 @@ pub fn AccountWidget() -> Html {
                 </p>
             }
         </section>
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::PendingAction;
+
+    #[test]
+    fn expiry_releases_busy_and_old_completion_cannot_release_a_new_action() {
+        let mut pending = PendingAction::default();
+        let logout = pending.begin().unwrap();
+        assert!(pending.begin().is_none());
+        pending.cancel(); // owner401 invalidates identity while logout is in flight
+        let newer = pending
+            .begin()
+            .expect("expiry must release the busy action");
+        assert!(!pending.finish(logout));
+        assert!(
+            pending.begin().is_none(),
+            "old completion must not clear newer busy state"
+        );
+        assert!(pending.finish(newer));
+        assert!(pending.begin().is_some());
+    }
+
+    #[test]
+    fn completed_action_releases_its_own_busy_state_once() {
+        let mut pending = PendingAction::default();
+        let action = pending.begin().unwrap();
+        assert!(pending.finish(action));
+        assert!(!pending.finish(action));
     }
 }
