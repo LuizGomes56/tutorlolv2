@@ -158,8 +158,7 @@ async fn list_history(
         ));
     }
     let shared = state.recorder.shared.clone();
-    let _ = shared.account_state().await;
-    let cached = shared.history.list(offset, limit);
+    let cached = shared.cached_history(offset, limit).await?;
 
     queue_history(shared, window.app_handle().clone(), false);
 

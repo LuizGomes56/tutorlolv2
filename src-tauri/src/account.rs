@@ -182,6 +182,38 @@ pub fn receive(
     Err(error(K::Cancelled, "Sign-in timed out", true))
 }
 impl Delivery {
+    pub(crate) async fn cached_history(
+        self: &Arc<Self>,
+        offset: u32,
+        limit: u32,
+    ) -> Result<tutorlolv2_protocol::HistoryList, tutorlolv2_protocol::HistoryError> {
+        // A known 401 must invalidate cached identity before returning rows.
+        // Never wait for an in-flight network validation or identity transition.
+        if self.api.read().await.account_invalid() {
+            let _guard = self.account.transition.try_lock().map_err(|_| {
+                crate::history::error(
+                    tutorlolv2_protocol::HistoryErrorKind::Unauthorized,
+                    "Account identity is changing",
+                    true,
+                )
+            })?;
+            if self.api.read().await.account_invalid() {
+                self.clear_account().await.map_err(|e| {
+                    crate::history::error(
+                        tutorlolv2_protocol::HistoryErrorKind::Storage,
+                        &e.message,
+                        e.retryable,
+                    )
+                })?;
+            }
+        }
+        let cached = self.history.list(offset, limit);
+        let shared = self.clone();
+        tauri::async_runtime::spawn(async move {
+            let _ = shared.account_state().await;
+        });
+        Ok(cached)
+    }
     pub async fn account_state(&self) -> Result<AccountState, AccountError> {
         let Ok(_guard) = self.account.transition.try_lock() else {
             return Ok(self.account.state());
@@ -713,6 +745,54 @@ mod credential_transition_tests {
         assert_ne!(d.api.read().await.owner_id(), old_owner);
         assert_eq!(d.api.read().await.owner_id(), d.history.identity());
         worker.join().unwrap();
+        let _ = std::fs::remove_dir_all(dir);
+    }
+    #[tokio::test]
+    async fn cached_history_does_not_wait_for_offline_account_validation() {
+        let dir = std::env::temp_dir().join(format!("m4-cache-offline-{}", std::process::id()));
+        crate::store::Store::new(dir.clone())
+            .save_account(Some(&credential("durable-token", "owner@example.invalid")))
+            .unwrap();
+        let listener = TcpListener::bind(("127.0.0.1", 0)).unwrap();
+        let base = format!("http://{}", listener.local_addr().unwrap());
+        let worker = std::thread::spawn(move || {
+            let (mut stream, _) = listener.accept().unwrap();
+            let mut buf = [0; 4096];
+            stream.read(&mut buf).unwrap();
+            std::thread::sleep(Duration::from_millis(350));
+            let _ = stream.write_all(
+                b"HTTP/1.1 503 Unavailable\r\nContent-Length: 0\r\nConnection: close\r\n\r\n",
+            );
+        });
+        let d = Arc::new(delivery(dir.clone(), base));
+        d.history.local([3; 16], Some([4; 16]), 1, true, 0).unwrap();
+        let result =
+            tokio::time::timeout(Duration::from_millis(100), d.cached_history(0, 50)).await;
+        tokio::task::spawn_blocking(move || worker.join().unwrap())
+            .await
+            .unwrap();
+        let cached = result
+            .expect("cached history must not wait for validation network timeout")
+            .unwrap();
+        assert_eq!(cached.entries.len(), 1);
+        let _ = std::fs::remove_dir_all(dir);
+    }
+
+    #[tokio::test]
+    async fn cached_history_clears_known_invalid_identity_before_listing() {
+        let dir = std::env::temp_dir().join(format!("m4-cache-invalid-{}", std::process::id()));
+        crate::store::Store::new(dir.clone())
+            .save_account(Some(&credential("expired-token", "owner@example.invalid")))
+            .unwrap();
+        let (base, worker) = account_server(dir.clone(), vec![(401, vec![])]);
+        let d = Arc::new(delivery(dir.clone(), base));
+        let api = d.api.read().await.clone();
+        let old_owner = api.owner_id();
+        assert!(api.history_page(None).await.is_err());
+        worker.join().unwrap();
+        d.cached_history(0, 50).await.unwrap();
+        assert!(d.account.state().email.is_none());
+        assert_ne!(d.history.identity(), old_owner);
         let _ = std::fs::remove_dir_all(dir);
     }
 }
