@@ -74,11 +74,14 @@ pub async fn policy(
             ),
         );
     }
-    if allowed && origin.is_some() && (!preflight || valid_preflight) {
+    if allowed
+        && let Some(origin) = origin
+        && (!preflight || valid_preflight)
+    {
         headers.insert(
             header::ACCESS_CONTROL_ALLOW_ORIGIN,
             if private {
-                origin.unwrap()
+                origin
             } else {
                 HeaderValue::from_static("*")
             },
