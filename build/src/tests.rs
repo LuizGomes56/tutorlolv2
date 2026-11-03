@@ -629,3 +629,28 @@ fn recipes_use_the_riot_record_selected_by_name_when_wiki_ids_are_stale() {
         ["Finished"]
     );
 }
+
+#[test]
+fn formatter_formats_large_generated_file_sets() {
+    let dir = TestDir::new();
+    let folder = dir.0.join("long_generated_path".repeat(7));
+    std::fs::create_dir_all(&folder).unwrap();
+    let mut command = std::process::Command::new("rustfmt");
+    command.args(["--edition", "2024"]);
+    let files = (0..180)
+        .map(|i| {
+            let path = folder.join(format!("generated_model_{i}.rs"));
+            std::fs::write(&path, "pub fn value()->u32{42}").unwrap();
+            command.arg(&path);
+            path
+        })
+        .collect::<Vec<_>>();
+    crate::context::run_formatter(&mut command).unwrap();
+    for file in files {
+        assert!(
+            std::fs::read_to_string(file)
+                .unwrap()
+                .contains("pub fn value() -> u32 {")
+        );
+    }
+}

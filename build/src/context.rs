@@ -79,6 +79,38 @@ impl BuildContext {
 }
 
 pub(crate) fn run_formatter(command: &mut Command) -> MayFail {
+    // Windows has a small command-line budget; generated files have long UNC paths.
+    // Keep options intact and format file batches without changing their order.
+    let args = command
+        .get_args()
+        .map(std::ffi::OsStr::to_owned)
+        .collect::<Vec<_>>();
+    let first_file = args
+        .iter()
+        .position(|arg| Path::new(arg).extension().is_some_and(|ext| ext == "rs"));
+    if let Some(first_file) = first_file {
+        for files in args[first_file..].chunks(32) {
+            let mut batch = Command::new(command.get_program());
+            batch.args(&args[..first_file]).args(files);
+            if let Some(dir) = command.get_current_dir() {
+                batch.current_dir(dir);
+            }
+            for (key, value) in command.get_envs() {
+                if let Some(value) = value {
+                    batch.env(key, value);
+                } else {
+                    batch.env_remove(key);
+                }
+            }
+            run_formatter_once(&mut batch)?;
+        }
+        Ok(())
+    } else {
+        run_formatter_once(command)
+    }
+}
+
+fn run_formatter_once(command: &mut Command) -> MayFail {
     let output = command
         .output()
         .map_err(|e| format!("Failed to start rustfmt: {e}"))?;
