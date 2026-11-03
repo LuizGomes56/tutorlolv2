@@ -35,6 +35,7 @@ impl HistoryOperationError {
 }
 
 pub struct Delivery {
+    pub(crate) account: crate::account::Account,
     pub history: crate::history::History,
     history_errors:
         Mutex<std::collections::BTreeMap<(tutorlolv2_protocol::Id16, u64), HistoryOperationError>>,
@@ -57,8 +58,11 @@ pub struct Delivery {
 }
 
 impl Delivery {
-    pub fn new(recorder: Recorder, api: ApiClient, spool: Spool, store: Store) -> Self {
-        let history = crate::history::History::new(store.clone(), api.device_id);
+    pub fn new(recorder: Recorder, mut api: ApiClient, spool: Spool, store: Store) -> Self {
+        let credential = store.load_account(api.device_id);
+        api.set_account(credential.as_ref().map(|c| c.token.as_str()), 0);
+        let account = crate::account::Account::new(credential.as_ref());
+        let history = crate::history::History::new(store.clone(), api.owner_id());
 
         // Adopt legacy spool ownership only while the original loaded credential exists.
         for local in spool.local_sessions() {
@@ -66,6 +70,7 @@ impl Delivery {
         }
 
         Self {
+            account,
             history,
             history_errors: Mutex::new(std::collections::BTreeMap::new()),
             recorder: Mutex::new(recorder),
@@ -185,7 +190,13 @@ impl Delivery {
             };
 
             if persisted {
-                *self.api.write().await = ApiClient::new(Some(&credentials));
+                let _transition = self.account.transition.lock().await;
+                let _ = self.store.save_account(None);
+                self.account.reset();
+                let mut api = self.api.write().await;
+                let generation = api.owner_generation.wrapping_add(1);
+                api.set_account(None, generation);
+                *api = ApiClient::new(Some(&credentials));
                 self.outbox_now.notify_one();
                 self.upload_now.notify_one();
                 return;
@@ -198,7 +209,14 @@ impl Delivery {
 
     /// The server no longer knows these credentials: forget them and register again.
     async fn credentials_rejected(&self) {
-        *self.api.write().await = ApiClient::new(None);
+        let _transition = self.account.transition.lock().await;
+        let _ = self.store.save_account(None);
+        self.account.reset();
+        let mut api = self.api.write().await;
+        let generation = api.owner_generation.wrapping_add(1);
+        api.set_account(None, generation);
+        let _ = self.history.bind_owner(None);
+        *api = ApiClient::new(None);
         self.register_now.notify_one();
     }
 

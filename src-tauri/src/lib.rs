@@ -17,6 +17,7 @@ pub struct AppState {
     recorder: RecorderHandle,
 }
 
+pub mod account;
 pub mod delivery;
 pub mod history;
 pub mod lcu;
@@ -88,6 +89,39 @@ async fn set_share_mode(
     result
 }
 
+#[tauri::command]
+async fn get_account(
+    window: tauri::WebviewWindow,
+    state: State<'_, AppState>,
+) -> Result<tutorlolv2_protocol::AccountState, tutorlolv2_protocol::AccountError> {
+    account::authorize(window.label())?;
+    state.recorder.shared.account_state().await
+}
+#[tauri::command]
+async fn sign_in(
+    window: tauri::WebviewWindow,
+    state: State<'_, AppState>,
+) -> Result<tutorlolv2_protocol::AccountState, tutorlolv2_protocol::AccountError> {
+    account::authorize(window.label())?;
+    state
+        .recorder
+        .shared
+        .sign_in(window.app_handle().clone())
+        .await
+}
+#[tauri::command]
+async fn sign_out(
+    window: tauri::WebviewWindow,
+    state: State<'_, AppState>,
+) -> Result<tutorlolv2_protocol::AccountState, tutorlolv2_protocol::AccountError> {
+    use tauri::Emitter;
+    account::authorize(window.label())?;
+    let result = state.recorder.shared.sign_out().await?;
+    let _ = window.app_handle().emit("account-changed", &result);
+    let _ = window.app_handle().emit("history-changed", ());
+    Ok(result)
+}
+
 fn history_auth(window: &tauri::WebviewWindow) -> Result<(), tutorlolv2_protocol::HistoryError> {
     history::authorize(window.label())
 }
@@ -100,13 +134,16 @@ fn queue_history(shared: std::sync::Arc<delivery::Delivery>, app: AppHandle, rep
     tauri::async_runtime::spawn(async move {
         use tauri::Emitter;
         let api = shared.api.read().await.clone();
-        shared.history.refresh(api, repair).await;
+        shared.history.refresh(api.clone(), repair).await;
+        if api.account_invalid() {
+            let _ = shared.account_state().await;
+        }
         let _ = app.emit("history-changed", ());
     });
 }
 
 #[tauri::command]
-fn list_history(
+async fn list_history(
     window: tauri::WebviewWindow,
     state: State<'_, AppState>,
     offset: u32,
@@ -121,7 +158,7 @@ fn list_history(
         ));
     }
     let shared = state.recorder.shared.clone();
-    let cached = shared.history.list(offset, limit);
+    let cached = shared.cached_history(offset, limit).await?;
 
     queue_history(shared, window.app_handle().clone(), false);
 
@@ -140,9 +177,8 @@ async fn get_history_details(
     let shared = &state.recorder.shared;
     let api = shared.api.read().await.clone();
 
-    shared
-        .history
-        .details(api.device_id, api.history_details(id).await?)
+    let details = api.history_details(id).await?;
+    shared.history.details(api.check_owner()?, details)
 }
 
 #[tauri::command]
@@ -158,7 +194,11 @@ async fn get_history_frames(
     let api = state.recorder.shared.api.read().await.clone();
     let bytes = api.history_frames(id, seq).await?;
 
-    state.recorder.shared.history.check_device(api.device_id)?;
+    state
+        .recorder
+        .shared
+        .history
+        .check_device(api.check_owner()?)?;
     Ok(InvokeResponseBody::Raw(bytes))
 }
 
@@ -222,6 +262,9 @@ pub fn run() {
     tauri::Builder::default()
         .manage(overlay::OverlayState::default())
         .invoke_handler(tauri::generate_handler![
+            get_account,
+            sign_in,
+            sign_out,
             list_history,
             get_history_details,
             get_history_frames,

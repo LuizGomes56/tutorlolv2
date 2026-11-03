@@ -146,6 +146,9 @@ pub struct ApiClient {
     http: Client,
     base: String,
     auth: Option<String>,
+    account_auth: Option<String>,
+    account_invalid: std::sync::Arc<std::sync::atomic::AtomicBool>,
+    pub owner_generation: u64,
     pub device_id: Option<Id16>,
     owner_limit: std::sync::Arc<tokio::sync::Semaphore>,
 }
@@ -177,9 +180,132 @@ impl ApiClient {
             http,
             base,
             auth,
+            account_auth: None,
+            account_invalid: Default::default(),
+            owner_generation: 0,
             device_id: credentials.map(|c| c.device_id),
             owner_limit: std::sync::Arc::new(tokio::sync::Semaphore::new(4)),
         }
+    }
+
+    pub fn set_account(&mut self, token: Option<&str>, generation: u64) {
+        self.account_invalid
+            .store(true, std::sync::atomic::Ordering::Release);
+        self.account_invalid = Default::default();
+        self.account_auth = token.map(|token| format!("Session {token}"));
+        self.owner_generation = generation;
+    }
+
+    pub fn account_invalid(&self) -> bool {
+        self.account_invalid
+            .load(std::sync::atomic::Ordering::Acquire)
+    }
+
+    pub fn check_owner(&self) -> Result<Option<Id16>, tutorlolv2_protocol::HistoryError> {
+        if self.account_invalid() {
+            return Err(crate::history::error(
+                tutorlolv2_protocol::HistoryErrorKind::Unauthorized,
+                "History account changed or expired",
+                true,
+            ));
+        }
+        Ok(self.owner_id())
+    }
+
+    /// Effective cache owner. Credentials never leave native code.
+    pub fn owner_id(&self) -> Option<Id16> {
+        use sha2::Digest;
+        if self.account_invalid() {
+            return None;
+        }
+        self.account_auth
+            .as_ref()
+            .map(|token| {
+                let hash = sha2::Sha256::digest(token.as_bytes());
+                let mut id = [0; 16];
+                id.copy_from_slice(&hash[..16]);
+                id
+            })
+            .or(self.device_id)
+    }
+
+    pub fn login_url(&self, port: u16, state: &str) -> String {
+        format!(
+            "{}/api/auth/google/start?target=desktop&port={port}&app_state={state}",
+            self.base
+        )
+    }
+
+    pub async fn account_request<T: Decode<()>>(
+        &self,
+        path: &str,
+        body: Option<Vec<u8>>,
+        device: bool,
+    ) -> Result<Option<T>, tutorlolv2_protocol::AccountError> {
+        use tutorlolv2_protocol::AccountErrorKind as K;
+        let auth = if device {
+            self.auth.as_ref()
+        } else {
+            self.account_auth.as_ref()
+        }
+        .ok_or_else(|| crate::account::error(K::Unauthorized, "Authentication required", true))?;
+        let mut response = self
+            .http
+            .request(
+                if body.is_some() {
+                    Method::POST
+                } else {
+                    Method::GET
+                },
+                format!("{}/api{path}", self.base),
+            )
+            .header("Authorization", auth)
+            .header("Content-Type", OCTET_STREAM)
+            .body(body.unwrap_or_default())
+            .send()
+            .await
+            .map_err(|_| {
+                crate::account::error(K::Unavailable, "Account server unavailable", true)
+            })?;
+        let status = response.status().as_u16();
+        if status == 204 {
+            return Ok(None);
+        }
+        if status != 200 {
+            return Err(crate::account::error(
+                if status == 401 {
+                    K::Unauthorized
+                } else {
+                    K::Unavailable
+                },
+                "Account request failed",
+                status != 401,
+            ));
+        }
+        let mut bytes = Vec::new();
+        while let Some(chunk) = response.chunk().await.map_err(|_| {
+            crate::account::error(K::Unavailable, "Account response interrupted", true)
+        })? {
+            if bytes.len() + chunk.len() > 16384 {
+                return Err(crate::account::error(
+                    K::InvalidData,
+                    "Account response too large",
+                    false,
+                ));
+            }
+            bytes.extend_from_slice(&chunk);
+        }
+        let (value, used) = bincode::decode_from_slice(&bytes, BINCODE_CONFIG).map_err(|_| {
+            crate::account::error(K::InvalidData, "Invalid account response", false)
+        })?;
+        if used != bytes.len() {
+            return Err(crate::account::error(
+                K::InvalidData,
+                "Invalid account response",
+                false,
+            ));
+        }
+        Ok(Some(value))
     }
 
     pub fn authenticated(&self) -> bool {
@@ -259,8 +385,9 @@ impl ApiClient {
             .map_err(|_| error(K::Other, "History transport unavailable", true))?;
 
         let auth = self
-            .auth
+            .account_auth
             .as_ref()
+            .or(self.auth.as_ref())
             .ok_or_else(|| error(K::Unauthorized, "Device registration required", true))?;
 
         let mut response = self
@@ -275,6 +402,10 @@ impl ApiClient {
 
         let status = response.status().as_u16();
 
+        if status == 401 && self.account_auth.is_some() {
+            self.account_invalid
+                .store(true, std::sync::atomic::Ordering::Release);
+        }
         if !(200..300).contains(&status) {
             let kind = match status {
                 401 => K::Unauthorized,
@@ -547,5 +678,48 @@ impl ApiClient {
         self.call::<()>(Method::PATCH, &path, request)
             .await
             .map(drop)
+    }
+}
+
+#[cfg(test)]
+mod account_transport_tests {
+    use super::*;
+    #[tokio::test]
+    async fn session_auth_is_only_used_for_owner_calls() {
+        use std::io::{Read, Write};
+        let listener = std::net::TcpListener::bind(("127.0.0.1", 0)).unwrap();
+        let base = format!("http://{}", listener.local_addr().unwrap());
+        let server = std::thread::spawn(move || {
+            let mut requests = vec![];
+            for _ in 0..2 {
+                let (mut stream, _) = listener.accept().unwrap();
+                stream
+                    .set_read_timeout(Some(Duration::from_secs(3)))
+                    .unwrap();
+                let mut buf = [0; 8192];
+                let n = stream.read(&mut buf).unwrap();
+                requests.push(String::from_utf8_lossy(&buf[..n]).to_ascii_lowercase());
+                stream.write_all(b"HTTP/1.1 401 Unauthorized\r\nContent-Length: 0\r\nConnection: close\r\n\r\n").unwrap();
+            }
+            requests
+        });
+        let mut api = ApiClient::with_base_url(
+            base,
+            Some(&DeviceCredentials {
+                device_id: [1; 16],
+                device_secret: [2; 32],
+            }),
+        );
+        api.set_account(Some("native-only-token"), 1);
+        assert!(api.history_page(None).await.is_err());
+        assert!(api.account_invalid());
+        assert!(matches!(
+            api.upload_chunk(&[3; 16], 0, vec![], "sha").await,
+            ChunkOutcome::Unauthorized
+        ));
+        let requests = server.join().unwrap();
+        assert!(requests[0].contains("authorization: session native-only-token"));
+        assert!(requests[1].contains("authorization: device "));
+        assert!(!requests[1].contains("native-only-token"));
     }
 }

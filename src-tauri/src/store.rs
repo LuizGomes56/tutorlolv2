@@ -24,6 +24,7 @@ enum Kind {
     Device = 1,
     Session = 2,
     History = 3,
+    Account = 4,
 }
 
 /// `device.bin` payload: the secret is encrypted for the current Windows user.
@@ -78,6 +79,27 @@ impl Store {
         };
 
         self.save(DEVICE_FILE, Kind::Device, &record)
+    }
+
+    pub fn load_account(&self, device: Option<Id16>) -> Option<crate::account::Credential> {
+        self.load("account.bin", Kind::Account, |payload| {
+            let protected: Vec<u8> = decode(payload)?;
+            let raw = unprotect(&protected).ok()?;
+            let credential: crate::account::Credential = decode(&raw)?;
+            (Some(credential.device_id) == device).then_some(credential)
+        })
+    }
+
+    pub fn save_account(&self, credential: Option<&crate::account::Credential>) -> io::Result<()> {
+        if let Some(credential) = credential {
+            let raw = bincode::encode_to_vec(credential, BINCODE_CONFIG).map_err(io::Error::other)?;
+            self.save("account.bin", Kind::Account, &protect(&raw)?)
+        } else {
+            match fs::remove_file(self.dir.join("account.bin")) {
+                Err(e) if e.kind() == io::ErrorKind::NotFound => Ok(()),
+                result => result,
+            }
+        }
     }
 
     pub fn load_session(&self) -> Option<SessionFile> {
