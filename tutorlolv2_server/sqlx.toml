@@ -4,3 +4,5 @@
 'share_mode' = "tutorlolv2_protocol::CodeMode"
 'riot_game_source' = "crate::server::db_enums::RiotGameSource"
 'share_delete_reason' = "crate::server::db_enums::ShareDeleteReason"
+
+'session_kind' = "crate::server::db_enums::SessionKind"

@@ -206,13 +206,13 @@ async fn puuid(
     riot_id: &str,
 ) -> Option<String> {
     let cached = sqlx::query_scalar!(
-        "
+        r#"
         SELECT puuid
         FROM riot_id_cache
         WHERE riot_id = $1
             AND resolved_at > now() - interval '24 hours'
-        ",
-        riot_id
+        "#,
+        riot_id,
     )
     .fetch_optional(db)
     .await
@@ -229,15 +229,21 @@ async fn puuid(
     let account = serde_json::from_slice::<AccountDto>(&body).ok()?;
 
     sqlx::query!(
-        "
-        INSERT INTO riot_id_cache (riot_id, puuid)
-        VALUES ($1, $2)
-        ON CONFLICT (riot_id)
-        DO UPDATE
-        SET puuid = excluded.puuid, resolved_at = now()
-        ",
+        r#"
+        INSERT INTO riot_id_cache (
+            riot_id,
+            puuid
+        ) VALUES (
+            $1,
+            $2
+        )
+        ON CONFLICT(riot_id) DO
+                UPDATE
+                SET puuid = excluded.puuid,
+                    resolved_at = now()
+        "#,
         riot_id,
-        account.puuid
+        account.puuid,
     )
     .execute(db)
     .await
@@ -275,7 +281,7 @@ pub async fn enrich_one(db: &PgPool, riot: &RiotClient, job: &EnrichJob) -> Enri
             }
 
             let updated = sqlx::query!(
-                "
+                r#"
                 UPDATE recordings
                 SET riot_game_id = $2,
                     platform_id = $3,
@@ -284,7 +290,7 @@ pub async fn enrich_one(db: &PgPool, riot: &RiotClient, job: &EnrichJob) -> Enri
                     is_custom = coalesce(is_custom, $6),
                     active_puuid = $7
                 WHERE id = $1
-                ",
+                "#,
                 job.recording_id,
                 game.game_id as i64,
                 game.platform_id.as_str(),
@@ -315,12 +321,13 @@ async fn is_same_game(db: &PgPool, recording_id: Uuid, game: &ActiveGameDto) -> 
     let row = sqlx::query!(
         r#"
         SELECT riot_game_id,
-            riot_game_source,
-            (extract(epoch FROM started_at_estimate) * 1000)::bigint AS "started_ms!"
+               riot_game_source,
+               (extract(epoch
+                        FROM started_at_estimate) * 1000)::bigint AS "started_ms!"
         FROM recordings
         WHERE id = $1
         "#,
-        recording_id
+        recording_id,
     )
     .fetch_one(db)
     .await
@@ -346,13 +353,13 @@ async fn store_puuid(
     outcome: EnrichOutcome,
 ) -> EnrichOutcome {
     match sqlx::query!(
-        "
+        r#"
         UPDATE recordings
         SET active_puuid = $2
         WHERE id = $1
-        ",
+        "#,
         recording_id,
-        puuid
+        puuid,
     )
     .execute(db)
     .await

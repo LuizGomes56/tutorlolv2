@@ -295,11 +295,7 @@ impl GameType {
 /// Why a recording ended. Postgres type `end_reason`.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, Encode, Decode, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
-#[cfg_attr(
-    feature = "sqlx",
-    derive(sqlx::Type),
-    sqlx(type_name = "end_reason", rename_all = "snake_case")
-)]
+#[cfg_attr(feature = "sqlx", derive(sqlx::Type), sqlx(type_name = "end_reason"))]
 pub enum EndReason {
     GameEndEvent,
     LcuEndOfGame,
@@ -312,11 +308,7 @@ pub enum EndReason {
 /// Deserializes from Riot's `"Win"` / `"Lose"` (`GameEnd.Result`).
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, Encode, Decode, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
-#[cfg_attr(
-    feature = "sqlx",
-    derive(sqlx::Type),
-    sqlx(type_name = "game_result", rename_all = "snake_case")
-)]
+#[cfg_attr(feature = "sqlx", derive(sqlx::Type), sqlx(type_name = "game_result"))]
 pub enum GameResult {
     Win,
     Lose,
@@ -335,11 +327,7 @@ pub enum ShareMode {
 
 /// Mode of an existing share code. Postgres type `share_mode`.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, Encode, Decode)]
-#[cfg_attr(
-    feature = "sqlx",
-    derive(sqlx::Type),
-    sqlx(type_name = "share_mode", rename_all = "snake_case")
-)]
+#[cfg_attr(feature = "sqlx", derive(sqlx::Type), sqlx(type_name = "share_mode"))]
 pub enum CodeMode {
     Live,
     Public,

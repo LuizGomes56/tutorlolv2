@@ -2,7 +2,7 @@ use sqlx::PgPool;
 use tutorlolv2_protocol::{CodeMode, EndReason, GameResult};
 use tutorlolv2_server::server::{
     config::Config,
-    db_enums::{RiotGameSource, ShareDeleteReason},
+    db_enums::{RiotGameSource, SessionKind, ShareDeleteReason},
 };
 
 fn only_database_url(key: &str) -> Option<String> {
@@ -80,7 +80,12 @@ async fn migration_creates_tables(pool: PgPool) {
     .map(String::from)
     .to_vec();
     let count = sqlx::query_scalar!(
-        r#"SELECT count(*) AS "count!" FROM information_schema.tables WHERE table_schema = 'public' AND table_name = ANY($1)"#,
+        r#"
+        SELECT count(*) AS "count!"
+        FROM information_schema.tables
+        WHERE table_schema = 'public'
+            AND TABLE_NAME = ANY($1)
+        "#,
         &tables[..],
     )
     .fetch_one(&pool)
@@ -146,6 +151,14 @@ async fn rust_enums_match_pg_enums(pool: PgPool) {
             v
         );
     }
+    for v in [SessionKind::Web, SessionKind::Desktop] {
+        roundtrip!(
+            &pool,
+            r#"SELECT $1::session_kind AS "v!: SessionKind""#,
+            SessionKind,
+            v
+        );
+    }
     for v in [ShareDeleteReason::GameEnded, ShareDeleteReason::Revoked] {
         roundtrip!(
             &pool,
@@ -207,4 +220,40 @@ fn account_config_defaults_bounds_and_secret_redaction() {
     let debug = format!("{c:?}");
     assert!(!debug.contains("secret-should-stay-hidden"));
     assert!(!debug.contains("postgres://x"));
+}
+
+#[sqlx::test(migrations = "./migrations")]
+async fn database_enum_labels_use_rust_variant_names(pool: PgPool) {
+    for (name, expected) in [
+        (
+            "end_reason",
+            vec![
+                "GameEndEvent",
+                "LcuEndOfGame",
+                "LcuLeftGame",
+                "Superseded",
+                "Timeout",
+            ],
+        ),
+        ("game_result", vec!["Win", "Lose", "Remake", "Unknown"]),
+        ("riot_game_source", vec!["Lcu", "Spectator"]),
+        ("share_mode", vec!["Live", "Public"]),
+        ("share_delete_reason", vec!["GameEnded", "Revoked"]),
+        ("session_kind", vec!["Web", "Desktop"]),
+    ] {
+        let labels = sqlx::query_scalar!(
+            r#"
+            SELECT e.enumlabel::text AS "label!"
+            FROM pg_enum e
+            JOIN pg_type t ON t.oid = e.enumtypid
+            WHERE t.typname = $1
+            ORDER BY e.enumsortorder
+            "#,
+            name,
+        )
+        .fetch_all(&pool)
+        .await
+        .unwrap();
+        assert_eq!(labels, expected, "{name}");
+    }
 }

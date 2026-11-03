@@ -74,8 +74,12 @@ async fn register_then_authenticate(pool: PgPool) {
     );
 
     let stored = sqlx::query_scalar!(
-        "SELECT secret_hash FROM devices WHERE id = $1",
-        Uuid::from_bytes(credentials.device_id)
+        r#"
+        SELECT secret_hash
+        FROM devices
+        WHERE id = $1
+        "#,
+        Uuid::from_bytes(credentials.device_id),
     )
     .fetch_one(&pool)
     .await
@@ -103,8 +107,12 @@ async fn wrong_secret_and_soft_deleted_device_are_401(pool: PgPool) {
 
     let deleted = register(&app).await;
     sqlx::query!(
-        "UPDATE devices SET deleted_at = now() WHERE id = $1",
-        Uuid::from_bytes(deleted.device_id)
+        r#"
+        UPDATE devices
+        SET deleted_at = now()
+        WHERE id = $1
+        "#,
+        Uuid::from_bytes(deleted.device_id),
     )
     .execute(&pool)
     .await

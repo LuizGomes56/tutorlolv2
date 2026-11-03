@@ -47,8 +47,12 @@ async fn heartbeat_updates_last_ingest(pool: PgPool) {
     let app = app!(pool);
     let (device, id) = recording(&app).await;
     sqlx::query!(
-        "UPDATE recordings SET last_ingest_at = now() - interval '5 minutes' WHERE id = $1",
-        id
+        r#"
+        UPDATE recordings
+        SET last_ingest_at = now() - interval '5 minutes'
+        WHERE id = $1
+        "#,
+        id,
     )
     .execute(&pool)
     .await
@@ -61,10 +65,17 @@ async fn heartbeat_updates_last_ingest(pool: PgPool) {
     )
     .await;
     assert_eq!(status, StatusCode::NO_CONTENT);
-    let fresh = sqlx::query_scalar!(r#"SELECT last_ingest_at > now() - interval '5 seconds' AS "fresh!" FROM recordings WHERE id = $1"#, id)
-        .fetch_one(&pool)
-        .await
-        .unwrap();
+    let fresh = sqlx::query_scalar!(
+        r#"
+        SELECT last_ingest_at > now() - interval '5 seconds' AS "fresh!"
+        FROM recordings
+        WHERE id = $1
+        "#,
+        id,
+    )
+    .fetch_one(&pool)
+    .await
+    .unwrap();
     assert!(fresh);
 }
 
@@ -73,9 +84,14 @@ async fn heartbeat_reopens_timed_out_recording(pool: PgPool) {
     let app = app!(pool);
     let (device, id) = recording(&app).await;
     sqlx::query!(
-        "UPDATE recordings SET ended_at = now(), end_reason = $2 WHERE id = $1",
+        r#"
+        UPDATE recordings
+        SET ended_at = now(),
+            end_reason = $2
+        WHERE id = $1
+        "#,
         id,
-        EndReason::Timeout as EndReason
+        EndReason::Timeout as EndReason,
     )
     .execute(&pool)
     .await
@@ -88,10 +104,18 @@ async fn heartbeat_reopens_timed_out_recording(pool: PgPool) {
     )
     .await;
     assert_eq!(status, StatusCode::NO_CONTENT);
-    let open = sqlx::query_scalar!(r#"SELECT ended_at IS NULL AND end_reason IS NULL AS "open!" FROM recordings WHERE id = $1"#, id)
-        .fetch_one(&pool)
-        .await
-        .unwrap();
+    let open = sqlx::query_scalar!(
+        r#"
+        SELECT ended_at IS NULL
+        AND end_reason IS NULL AS "open!"
+        FROM recordings
+        WHERE id = $1
+        "#,
+        id,
+    )
+    .fetch_one(&pool)
+    .await
+    .unwrap();
     assert!(open);
 }
 
@@ -100,9 +124,14 @@ async fn heartbeat_does_not_reopen_when_another_recording_is_open(pool: PgPool) 
     let app = app!(pool);
     let (device, old) = recording(&app).await;
     sqlx::query!(
-        "UPDATE recordings SET ended_at = now(), end_reason = $2 WHERE id = $1",
+        r#"
+        UPDATE recordings
+        SET ended_at = now(),
+            end_reason = $2
+        WHERE id = $1
+        "#,
         old,
-        EndReason::Timeout as EndReason
+        EndReason::Timeout as EndReason,
     )
     .execute(&pool)
     .await
@@ -149,10 +178,20 @@ async fn end_is_idempotent_and_expires_live_code(pool: PgPool) {
     let app = app!(pool);
     let (device, id) = recording(&app).await;
     sqlx::query!(
-        "INSERT INTO share_codes (recording_id, code, mode) VALUES ($1, $2, $3)",
+        r#"
+        INSERT INTO share_codes (
+            recording_id,
+            code,
+            MODE
+        ) VALUES (
+            $1,
+            $2,
+            $3
+        )
+        "#,
         id,
         "ABCDEFGH",
-        CodeMode::Live as CodeMode
+        CodeMode::Live as CodeMode,
     )
     .execute(&pool)
     .await
@@ -182,8 +221,13 @@ async fn end_is_idempotent_and_expires_live_code(pool: PgPool) {
     );
 
     let row = sqlx::query!(
-        r#"SELECT end_reason AS "end_reason: EndReason", result AS "result: GameResult" FROM recordings WHERE id = $1"#,
-        id
+        r#"
+        SELECT end_reason AS "end_reason: EndReason",
+               RESULT AS "result: GameResult"
+        FROM recordings
+        WHERE id = $1
+        "#,
+        id,
     )
     .fetch_one(&pool)
     .await
@@ -200,8 +244,12 @@ async fn end_is_idempotent_and_expires_live_code(pool: PgPool) {
     );
 
     let reason = sqlx::query_scalar!(
-        r#"SELECT delete_reason AS "r: ShareDeleteReason" FROM share_codes WHERE code = $1"#,
-        "ABCDEFGH"
+        r#"
+        SELECT delete_reason AS "r: ShareDeleteReason"
+        FROM share_codes
+        WHERE code = $1
+        "#,
+        "ABCDEFGH",
     )
     .fetch_one(&pool)
     .await
@@ -238,10 +286,17 @@ async fn end_stores_game_length_from_final_game_time(pool: PgPool) {
             .0,
         StatusCode::NO_CONTENT
     );
-    let length = sqlx::query_scalar!("SELECT game_length_s FROM recordings WHERE id = $1", id)
-        .fetch_one(&pool)
-        .await
-        .unwrap();
+    let length = sqlx::query_scalar!(
+        r#"
+        SELECT game_length_s
+        FROM recordings
+        WHERE id = $1
+        "#,
+        id,
+    )
+    .fetch_one(&pool)
+    .await
+    .unwrap();
     assert_eq!(length, Some(1020));
 }
 
@@ -284,7 +339,14 @@ async fn result_does_not_override_spectator_ids(pool: PgPool) {
     let app = app!(pool);
     let (device, id) = recording(&app).await;
     sqlx::query!(
-        "UPDATE recordings SET riot_game_id = 5669550383, queue_id = 2400, is_custom = false, riot_game_source = $2 WHERE id = $1",
+        r#"
+        UPDATE recordings
+        SET riot_game_id = 5669550383,
+            queue_id = 2400,
+            is_custom = FALSE,
+                        riot_game_source = $2
+        WHERE id = $1
+        "#,
         id,
         RiotGameSource::Spectator as RiotGameSource,
     )
@@ -305,8 +367,16 @@ async fn result_does_not_override_spectator_ids(pool: PgPool) {
         StatusCode::NO_CONTENT
     );
     let row = sqlx::query!(
-        r#"SELECT result AS "result: GameResult", game_length_s, riot_game_id, queue_id, is_custom FROM recordings WHERE id = $1"#,
-        id
+        r#"
+        SELECT RESULT AS "result: GameResult",
+                         game_length_s,
+                         riot_game_id,
+                         queue_id,
+                         is_custom
+        FROM recordings
+        WHERE id = $1
+        "#,
+        id,
     )
     .fetch_one(&pool)
     .await
@@ -337,8 +407,13 @@ async fn result_fills_lcu_ids_when_not_verified(pool: PgPool) {
         StatusCode::NO_CONTENT
     );
     let row = sqlx::query!(
-        r#"SELECT riot_game_id, riot_game_source AS "source: RiotGameSource" FROM recordings WHERE id = $1"#,
-        id
+        r#"
+        SELECT riot_game_id,
+               riot_game_source AS "source: RiotGameSource"
+        FROM recordings
+        WHERE id = $1
+        "#,
+        id,
     )
     .fetch_one(&pool)
     .await
@@ -375,8 +450,14 @@ async fn result_with_only_game_id_keeps_known_queue(pool: PgPool) {
         StatusCode::NO_CONTENT
     );
     let row = sqlx::query!(
-        "SELECT riot_game_id, queue_id, is_custom FROM recordings WHERE id = $1",
-        id
+        r#"
+        SELECT riot_game_id,
+               queue_id,
+               is_custom
+        FROM recordings
+        WHERE id = $1
+        "#,
+        id,
     )
     .fetch_one(&pool)
     .await
@@ -394,18 +475,32 @@ async fn heartbeat_racing_an_end_never_reopens(pool: PgPool) {
 
     // Hold the row so the heartbeat's UPDATE waits while an end commits underneath it
     let mut tx = pool.begin().await.unwrap();
-    sqlx::query!("SELECT id FROM recordings WHERE id = $1 FOR UPDATE", id)
-        .fetch_one(&mut *tx)
-        .await
-        .unwrap();
+    sqlx::query!(
+        r#"
+        SELECT id
+        FROM recordings
+        WHERE id = $1
+            FOR
+            UPDATE
+        "#,
+        id,
+    )
+    .fetch_one(&mut *tx)
+    .await
+    .unwrap();
     let uri = format!("/recordings/{id}/heartbeat");
     let heartbeat = post_as(&app, &device, &uri, vec![]);
     let ender = async {
         tokio::time::sleep(std::time::Duration::from_millis(300)).await;
         sqlx::query!(
-            "UPDATE recordings SET ended_at = now(), end_reason = $2 WHERE id = $1",
+            r#"
+            UPDATE recordings
+            SET ended_at = now(),
+                end_reason = $2
+            WHERE id = $1
+            "#,
             id,
-            EndReason::GameEndEvent as EndReason
+            EndReason::GameEndEvent as EndReason,
         )
         .execute(&mut *tx)
         .await
@@ -415,10 +510,18 @@ async fn heartbeat_racing_an_end_never_reopens(pool: PgPool) {
     let ((status, _), ()) = tokio::join!(heartbeat, ender);
 
     assert_eq!(status, StatusCode::CONFLICT);
-    let row = sqlx::query!(r#"SELECT ended_at IS NOT NULL AS "ended!", end_reason AS "reason: EndReason" FROM recordings WHERE id = $1"#, id)
-        .fetch_one(&pool)
-        .await
-        .unwrap();
+    let row = sqlx::query!(
+        r#"
+        SELECT ended_at IS NOT NULL AS "ended!",
+                                       end_reason AS "reason: EndReason"
+        FROM recordings
+        WHERE id = $1
+        "#,
+        id,
+    )
+    .fetch_one(&pool)
+    .await
+    .unwrap();
     assert_eq!(
         (row.ended, row.reason),
         (true, Some(EndReason::GameEndEvent))

@@ -34,11 +34,16 @@ pub async fn register_device(
     getrandom::fill(&mut device_secret).map_err(ErrorInternalServerError)?;
 
     let device_id = sqlx::query_scalar!(
-        "
-        INSERT INTO devices (secret_hash, app_version)
-        VALUES ($1, $2)
+        r#"
+        INSERT INTO devices (
+            secret_hash,
+            app_version
+        ) VALUES (
+            $1,
+            $2
+        )
         RETURNING id
-        ",
+        "#,
         &secret_hash(&device_secret),
         request.app_version,
     )
@@ -64,10 +69,17 @@ pub async fn start_session(
     // Serialize ownership with redeem/logout before reading the account link.
     // A foreign-key lock taken by INSERT is too late: its account subquery may
     // already have observed the pre-login device row.
-    let device = sqlx::query_scalar::<_, Uuid>(
-        "SELECT id FROM devices WHERE id=$1 AND deleted_at IS NULL FOR UPDATE",
+    let device = sqlx::query_scalar!(
+        r#"
+        SELECT id
+        FROM devices
+        WHERE id = $1
+            AND deleted_at IS NULL
+            FOR
+            UPDATE
+        "#,
+        auth.device_id,
     )
-    .bind(auth.device_id)
     .fetch_optional(&mut *tx)
     .await
     .map_err(ErrorInternalServerError)?;
@@ -78,18 +90,28 @@ pub async fn start_session(
     // DeviceAuth. A stale link must not silently attach later games to that
     // signed-out account. Check the current binding under the same device lock
     // used by redeem/logout so a newer login cannot be unlinked here.
-    sqlx::query(
-        "UPDATE devices d SET account_id=NULL, account_session_id=NULL
-         WHERE d.id=$1 AND (d.account_id IS NOT NULL OR d.account_session_id IS NOT NULL)
-         AND NOT EXISTS (
-             SELECT 1 FROM account_sessions s JOIN accounts a ON a.id=s.account_id
-             WHERE s.id=d.account_session_id AND s.account_id=d.account_id
-               AND s.device_id=d.id AND s.kind='desktop'
-               AND s.revoked_at IS NULL AND s.expires_at>now()
-               AND a.deleted_at IS NULL
-         )",
+    sqlx::query!(
+        r#"
+        UPDATE devices d
+        SET account_id = NULL,
+            account_session_id = NULL
+        WHERE d.id = $1
+            AND (d.account_id IS NOT NULL
+                 OR d.account_session_id IS NOT NULL)
+            AND NOT EXISTS
+                (SELECT 1
+                 FROM account_sessions s
+                 JOIN accounts a ON a.id = s.account_id
+                 WHERE s.id = d.account_session_id
+                     AND s.account_id = d.account_id
+                     AND s.device_id = d.id
+                     AND s.kind = 'Desktop'
+                     AND s.revoked_at IS NULL
+                     AND s.expires_at > now()
+                     AND a.deleted_at IS NULL)
+        "#,
+        auth.device_id,
     )
-    .bind(auth.device_id)
     .execute(&mut *tx)
     .await
     .map_err(ErrorInternalServerError)?;
@@ -98,15 +120,15 @@ pub async fn start_session(
     let candidates = sqlx::query!(
         r#"
         SELECT id,
-            probe,
-            last_ingest_at,
-            ended_at IS NULL AS "open!"
+               probe,
+               last_ingest_at,
+               ended_at IS NULL AS "open!"
         FROM recordings
         WHERE device_id = $1
             AND deleted_at IS NULL
-            AND (ended_at IS NULL OR (
-                end_reason = $2 AND ended_at > now() - $3 * interval '1 second')
-            )
+            AND (ended_at IS NULL
+                 OR (end_reason = $2
+                     AND ended_at > now() - $3 * interval '1 second'))
         ORDER BY last_ingest_at DESC
         "#,
         auth.device_id,
@@ -140,14 +162,14 @@ pub async fn start_session(
         Some(found) => {
             if !found.open {
                 sqlx::query!(
-                    "
+                    r#"
                     UPDATE recordings
                     SET ended_at = NULL,
                         end_reason = NULL,
                         last_ingest_at = now()
                     WHERE id = $1
-                    ",
-                    found.id
+                    "#,
+                    found.id,
                 )
                 .execute(&mut *tx)
                 .await
@@ -155,12 +177,12 @@ pub async fn start_session(
             }
 
             let last_seq = sqlx::query_scalar!(
-                "
+                r#"
                 SELECT max(seq)
                 FROM recording_chunks
                 WHERE recording_id = $1
-                ",
-                found.id
+                "#,
+                found.id,
             )
             .fetch_one(&mut *tx)
             .await
@@ -269,19 +291,38 @@ async fn insert_recording(
             first_game_time,
             last_game_time,
             app_version
-        )
-        VALUES (
-            $1, (SELECT d.account_id FROM devices d
-                JOIN accounts a ON a.id=d.account_id
-                JOIN account_sessions s ON s.id=d.account_session_id
-                WHERE d.id=$1 AND d.deleted_at IS NULL AND a.deleted_at IS NULL
-                  AND s.account_id=d.account_id AND s.device_id=d.id AND s.kind='desktop'
-                  AND s.desktop_confirmed_at IS NOT NULL
-                  AND s.revoked_at IS NULL AND s.expires_at>clock_timestamp()), $2, $3, $4,
-            $5, $6, $7, $8,
-            $9, $10, $11, $12,
-            $13, now() - $14 * interval '1 second',
-            $15, $15, $16
+        ) VALUES (
+            $1,
+
+                (SELECT d.account_id
+                 FROM devices d
+                 JOIN accounts a ON a.id = d.account_id
+                 JOIN account_sessions s ON s.id = d.account_session_id
+                 WHERE d.id = $1
+                     AND d.deleted_at IS NULL
+                     AND a.deleted_at IS NULL
+                     AND s.account_id = d.account_id
+                     AND s.device_id = d.id
+                     AND s.kind = 'Desktop'
+                     AND s.desktop_confirmed_at IS NOT NULL
+                     AND s.revoked_at IS NULL
+                     AND s.expires_at > clock_timestamp()),
+            $2,
+            $3,
+            $4,
+            $5,
+            $6,
+            $7,
+            $8,
+            $9,
+            $10,
+            $11,
+            $12,
+            $13,
+            now() - $14 * interval '1 second',
+            $15,
+            $15,
+            $16
         )
         RETURNING id
         "#,
@@ -315,12 +356,13 @@ pub async fn end_recording_tx(
     ended_at: DateTime<Utc>,
 ) -> sqlx::Result<bool> {
     let ended = sqlx::query!(
-        "
+        r#"
         UPDATE recordings
-        SET ended_at = $2, end_reason = $3
+        SET ended_at = $2,
+            end_reason = $3
         WHERE id = $1
             AND ended_at IS NULL
-        ",
+        "#,
         id,
         ended_at,
         reason,
@@ -331,13 +373,14 @@ pub async fn end_recording_tx(
         == 1;
 
     sqlx::query!(
-        "
+        r#"
         UPDATE share_codes
-        SET deleted_at = now(), delete_reason = $2
+        SET deleted_at = now(),
+            delete_reason = $2
         WHERE recording_id = $1
-            AND mode = $3
+            AND MODE = $3
             AND deleted_at IS NULL
-        ",
+        "#,
         id,
         ShareDeleteReason::GameEnded,
         CodeMode::Live,
@@ -369,13 +412,14 @@ pub async fn upload_chunk(
         .ok_or_else(|| ErrorUnprocessableEntity("Missing X-Content-Sha256"))?;
 
     let recording = sqlx::query!(
-        "
-        SELECT probe, active_riot_id
+        r#"
+        SELECT probe,
+               active_riot_id
         FROM recordings
         WHERE id = $1
             AND device_id = $2
             AND deleted_at IS NULL
-        ",
+        "#,
         id,
         auth.device_id,
     )
@@ -410,7 +454,7 @@ pub async fn upload_chunk(
     let mut tx = state.db.begin().await.map_err(ErrorInternalServerError)?;
 
     let inserted = sqlx::query!(
-        "
+        r#"
         INSERT INTO recording_chunks (
             recording_id,
             seq,
@@ -420,17 +464,24 @@ pub async fn upload_chunk(
             raw_format,
             raw_sha256,
             raw_size,
-            raw,
+            RAW,
             frames_format,
             frames
+        ) VALUES (
+            $1,
+            $2,
+            $3,
+            $4,
+            $5,
+            $6,
+            $7,
+            $8,
+            $9,
+            $10,
+            $11
         )
-        VALUES (
-            $1, $2, $3, $4,
-            $5, $6, $7, $8,
-            $9, $10, $11
-        )
-        ON CONFLICT (recording_id, seq)
-        DO NOTHING",
+        ON CONFLICT(recording_id, seq) DO NOTHING
+        "#,
         id,
         seq as i32,
         derived.first_game_time,
@@ -472,21 +523,42 @@ pub async fn upload_chunk(
 
     // SET expressions read the row as it was, so every CASE compares against the old last_game_time
     sqlx::query!(
-        "
-        UPDATE recordings SET
-            last_ingest_at = now(),
+        r#"
+        UPDATE recordings
+        SET last_ingest_at = now(),
             coverage_s = coverage_s + $2,
             first_game_time = least(first_game_time, $3),
             last_game_time = greatest(last_game_time, $4),
-            probe = CASE WHEN $4 > last_game_time THEN $5 ELSE probe END,
-            kills = CASE WHEN $4 > last_game_time THEN $6 ELSE kills END,
-            deaths = CASE WHEN $4 > last_game_time THEN $7 ELSE deaths END,
-            assists = CASE WHEN $4 > last_game_time THEN $8 ELSE assists END,
-            creep_score = CASE WHEN $4 > last_game_time THEN $9 ELSE creep_score END,
-            level = CASE WHEN $4 > last_game_time THEN $10 ELSE level END,
-            champion = CASE WHEN $4 > last_game_time THEN $11 ELSE champion END
+            probe = CASE
+                        WHEN $4 > last_game_time THEN $5
+                        ELSE probe
+                    END,
+                    kills = CASE
+                                WHEN $4 > last_game_time THEN $6
+                                ELSE kills
+                            END,
+                            deaths = CASE
+                                         WHEN $4 > last_game_time THEN $7
+                                         ELSE deaths
+                                     END,
+                                     assists = CASE
+                                                   WHEN $4 > last_game_time THEN $8
+                                                   ELSE assists
+                                               END,
+                                               creep_score = CASE
+                                                                 WHEN $4 > last_game_time THEN $9
+                                                                 ELSE creep_score
+                                                             END,
+                                                             LEVEL = CASE
+                                                                         WHEN $4 > last_game_time THEN $10
+                                                                         ELSE LEVEL
+                                                                     END,
+                                                                     champion = CASE
+                                                                                    WHEN $4 > last_game_time THEN $11
+                                                                                    ELSE champion
+                                                                                END
         WHERE id = $1
-        ",
+        "#,
         id,
         coverage,
         derived.first_game_time,
@@ -516,12 +588,12 @@ async fn existing_chunk(
     sha_hex: &str,
 ) -> actix_web::Result<Option<HttpResponse>> {
     let stored = sqlx::query_scalar!(
-        "
+        r#"
         SELECT raw_sha256
         FROM recording_chunks
         WHERE recording_id = $1
             AND seq = $2
-        ",
+        "#,
         id,
         seq as i32,
     )
@@ -570,7 +642,7 @@ pub async fn heartbeat(state: Data<AppState>, auth: DeviceAuth, path: Path<Uuid>
     // One statement, so an end committing meanwhile is re-checked by Postgres
     // instead of being overwritten
     let alive = sqlx::query!(
-        "
+        r#"
         UPDATE recordings
         SET last_ingest_at = now(),
             ended_at = NULL,
@@ -579,16 +651,15 @@ pub async fn heartbeat(state: Data<AppState>, auth: DeviceAuth, path: Path<Uuid>
             AND device_id = $2
             AND deleted_at IS NULL
             AND (ended_at IS NULL
-                OR (end_reason = $3
-                    AND NOT EXISTS (
-                        SELECT 1 FROM recordings other
-                        WHERE other.device_id = $2
-                            AND other.id <> $1
-                            AND other.ended_at IS NULL
-                            AND other.deleted_at IS NULL
-                    )
-                )
-            )",
+                 OR (end_reason = $3
+                     AND NOT EXISTS
+                         (SELECT 1
+                          FROM recordings other
+                          WHERE other.device_id = $2
+                              AND other.id <> $1
+                              AND other.ended_at IS NULL
+                              AND other.deleted_at IS NULL)))
+        "#,
         id,
         auth.device_id,
         EndReason::Timeout,
@@ -638,11 +709,12 @@ pub async fn end(
         .map_err(ErrorInternalServerError)?;
 
     sqlx::query!(
-        "
+        r#"
         UPDATE recordings
-        SET result = coalesce(result, $2),
-            game_length_s = coalesce(game_length_s, $3)
-        WHERE id = $1",
+        SET RESULT = coalesce(RESULT, $2),
+                     game_length_s = coalesce(game_length_s, $3)
+        WHERE id = $1
+        "#,
         id,
         request.result,
         request.final_game_time.map(|t| t.round() as i32),
@@ -672,28 +744,36 @@ pub async fn set_result(
     let lcu = request.riot_game.as_ref();
 
     sqlx::query!(
-        "
-        UPDATE recordings SET
-            result = $2,
-            game_length_s = coalesce($3, game_length_s),
-            riot_game_id = CASE WHEN $4::bigint IS NOT NULL
-                AND riot_game_source IS DISTINCT FROM $7
-                THEN $4
-                ELSE riot_game_id END,
-            queue_id = CASE WHEN $4::bigint IS NOT NULL
-                AND riot_game_source IS DISTINCT FROM $7
-                THEN coalesce($5, queue_id)
-                ELSE queue_id END,
-            is_custom = CASE WHEN $4::bigint IS NOT NULL
-                AND riot_game_source IS DISTINCT FROM $7
-                THEN coalesce($6, is_custom)
-                ELSE is_custom END,
-            riot_game_source = CASE WHEN $4::bigint IS NOT NULL
-                AND riot_game_source IS DISTINCT FROM $7
-                THEN $8
-                ELSE riot_game_source END
+        r#"
+        UPDATE recordings
+        SET RESULT = $2,
+                     game_length_s = coalesce($3, game_length_s),
+                     riot_game_id = CASE
+                                        WHEN $4::bigint IS NOT NULL
+                                             AND riot_game_source IS DISTINCT
+                                             FROM $7 THEN $4
+                                        ELSE riot_game_id
+                                    END,
+                                    queue_id = CASE
+                                                   WHEN $4::bigint IS NOT NULL
+                                                        AND riot_game_source IS DISTINCT
+                                                        FROM $7 THEN coalesce($5, queue_id)
+                                                   ELSE queue_id
+                                               END,
+                                               is_custom = CASE
+                                                               WHEN $4::bigint IS NOT NULL
+                                                                    AND riot_game_source IS DISTINCT
+                                                                    FROM $7 THEN coalesce($6, is_custom)
+                                                               ELSE is_custom
+                                                           END,
+                                                           riot_game_source = CASE
+                                                                                  WHEN $4::bigint IS NOT NULL
+                                                                                       AND riot_game_source IS DISTINCT
+                                                                                       FROM $7 THEN $8
+                                                                                  ELSE riot_game_source
+                                                                              END
         WHERE id = $1
-        ",
+        "#,
         id,
         request.result,
         request.game_length_s.map(|s| s as i32),

@@ -126,13 +126,14 @@ impl AppState {
 
     pub async fn share_state(&self, id: Uuid) -> actix_web::Result<ShareState> {
         let row = sqlx::query!(
-            "
-            SELECT code, mode
+            r#"
+            SELECT code,
+                   MODE
             FROM share_codes
             WHERE recording_id = $1
                 AND deleted_at IS NULL
-            ",
-            id
+            "#,
+            id,
         )
         .fetch_optional(&self.db)
         .await
@@ -161,15 +162,15 @@ impl AppState {
 
 pub async fn owner_share(state: Data<AppState>, auth: DeviceAuth, id: Path<Uuid>) -> Response {
     let exists = sqlx::query_scalar!(
-        "
+        r#"
         SELECT id
         FROM recordings
         WHERE id = $1
             AND device_id = $2
             AND deleted_at IS NULL
-        ",
+        "#,
         *id,
-        auth.device_id
+        auth.device_id,
     )
     .fetch_optional(&state.db)
     .await
@@ -205,26 +206,28 @@ pub(super) async fn change_share(
 
     let mut tx = state.db.begin().await.map_err(ErrorInternalServerError)?;
     let recording = sqlx::query!(
-        "
-        SELECT
-            ended_at,
-            is_custom,
-            is_practice
+        r#"
+        SELECT ended_at,
+               is_custom,
+               is_practice
         FROM recordings
         WHERE id = $1
-            AND ((device_id = $2 AND $2 IS NOT NULL) OR (account_id=$3 AND $3 IS NOT NULL))
+            AND ((device_id = $2
+                  AND $2 IS NOT NULL)
+                 OR (account_id = $3
+                     AND $3 IS NOT NULL))
             AND deleted_at IS NULL
-            AND EXISTS (
-                SELECT 1
-                FROM devices
-                WHERE devices.id = recordings.device_id
-                    AND devices.deleted_at IS NULL
-            )
-        FOR UPDATE
-        ",
+            AND EXISTS
+                (SELECT 1
+                 FROM devices
+                 WHERE devices.id = recordings.device_id
+                     AND devices.deleted_at IS NULL)
+            FOR
+            UPDATE
+        "#,
         id,
         auth.device_id,
-        auth.account_id
+        auth.account_id,
     )
     .fetch_optional(&mut *tx)
     .await
@@ -247,14 +250,15 @@ pub(super) async fn change_share(
 
     if request.mode == ShareMode::Private {
         sqlx::query!(
-            "
+            r#"
             UPDATE share_codes
-            SET deleted_at = now(), delete_reason = $2
+            SET deleted_at = now(),
+                delete_reason = $2
             WHERE recording_id = $1
                 AND deleted_at IS NULL
-            ",
+            "#,
             id,
-            ShareDeleteReason::Revoked
+            ShareDeleteReason::Revoked,
         )
         .execute(&mut *tx)
         .await
@@ -273,13 +277,14 @@ pub(super) async fn change_share(
     };
 
     let existing = sqlx::query!(
-        "
-        SELECT id, code
+        r#"
+        SELECT id,
+               code
         FROM share_codes
         WHERE recording_id = $1
             AND deleted_at IS NULL
-        ",
-        id
+        "#,
+        id,
     )
     .fetch_optional(&mut *tx)
     .await
@@ -288,9 +293,14 @@ pub(super) async fn change_share(
     let code = match existing {
         Some(existing) => {
             sqlx::query!(
-                "UPDATE share_codes SET mode = $2, mode_changed_at = now() WHERE id = $1",
+                r#"
+                UPDATE share_codes
+                SET MODE = $2,
+                           mode_changed_at = now()
+                WHERE id = $1
+                "#,
                 existing.id,
-                mode
+                mode,
             )
             .execute(&mut *tx)
             .await
@@ -308,20 +318,21 @@ pub(super) async fn change_share(
 
                 let code = code_from_random(random);
                 let inserted = sqlx::query_scalar!(
-                    "
+                    r#"
                     INSERT INTO share_codes (
                         recording_id,
                         code,
-                        mode
+                        MODE
+                    ) VALUES (
+                        $1,
+                        $2,
+                        $3
                     )
-                    VALUES ($1, $2, $3)
-                    ON CONFLICT (code)
-                    DO NOTHING
-                    RETURNING code
-                    ",
+                    ON CONFLICT(code) DO NOTHING RETURNING code
+                    "#,
                     id,
                     code,
-                    mode
+                    mode,
                 )
                 .fetch_optional(&mut *tx)
                 .await
@@ -353,28 +364,27 @@ impl Capability {
     async fn load(db: &PgPool, code: &str) -> actix_web::Result<Self> {
         let row = sqlx::query!(
             r#"
-            SELECT
-                s.recording_id,
-                s.mode,
-                s.deleted_at AS code_deleted,
-                r.deleted_at AS recording_deleted,
-                r.ended_at,
-                r.champion,
-                r.game_mode,
-                r.queue_id,
-                r.active_riot_id,
-                r.started_at_estimate,
-                r.first_game_time,
-                r.last_game_time,
-                r.game_length_s,
-                r.result,
-                r.is_custom,
-                r.is_practice
+            SELECT s.recording_id,
+                   s.mode,
+                   s.deleted_at AS code_deleted,
+                   r.deleted_at AS recording_deleted,
+                   r.ended_at,
+                   r.champion,
+                   r.game_mode,
+                   r.queue_id,
+                   r.active_riot_id,
+                   r.started_at_estimate,
+                   r.first_game_time,
+                   r.last_game_time,
+                   r.game_length_s,
+                   r.result,
+                   r.is_custom,
+                   r.is_practice
             FROM share_codes s
             JOIN recordings r ON r.id = s.recording_id
             WHERE s.code = $1
             "#,
-            code
+            code,
         )
         .fetch_optional(db)
         .await
@@ -426,17 +436,17 @@ pub async fn info(state: Data<AppState>, code: Path<String>, req: HttpRequest) -
     let (code, cap) = state.capability(&code, &req).await?;
 
     let chunks = sqlx::query!(
-        "
+        r#"
         SELECT seq,
-            first_game_time,
-            last_game_time,
-            snapshot_count,
-            frames_format
+               first_game_time,
+               last_game_time,
+               snapshot_count,
+               frames_format
         FROM recording_chunks
         WHERE recording_id = $1
         ORDER BY seq
-        ",
-        cap.recording
+        "#,
+        cap.recording,
     )
     .fetch_all(&state.db)
     .await
@@ -484,14 +494,15 @@ pub async fn frames(
     let (code, cap) = state.capability(&code, &req).await?;
 
     let chunk = sqlx::query!(
-        "
-        SELECT frames, frames_format
+        r#"
+        SELECT frames,
+               frames_format
         FROM recording_chunks
         WHERE recording_id = $1
             AND seq = $2
-        ",
+        "#,
         cap.recording,
-        i32::try_from(seq).map_err(|_| ErrorNotFound("Chunk not found"))?
+        i32::try_from(seq).map_err(|_| ErrorNotFound("Chunk not found"))?,
     )
     .fetch_optional(&state.db)
     .await
@@ -536,16 +547,18 @@ pub async fn push_live(
     let mut tx = state.db.begin().await.map_err(ErrorInternalServerError)?;
 
     let recording = sqlx::query!(
-        "
-        SELECT ended_at, probe
+        r#"
+        SELECT ended_at,
+               probe
         FROM recordings
         WHERE id = $1
             AND device_id = $2
             AND deleted_at IS NULL
-        FOR UPDATE
-        ",
+            FOR
+            UPDATE
+        "#,
         id,
-        auth.device_id
+        auth.device_id,
     )
     .fetch_optional(&mut *tx)
     .await
@@ -557,13 +570,13 @@ pub async fn push_live(
     }
 
     let shared = sqlx::query_scalar!(
-        "
+        r#"
         SELECT id
         FROM share_codes
         WHERE recording_id = $1
             AND deleted_at IS NULL
-        ",
-        id
+        "#,
+        id,
     )
     .fetch_optional(&mut *tx)
     .await
@@ -597,12 +610,12 @@ pub async fn push_live(
     }
 
     sqlx::query!(
-        "
+        r#"
         UPDATE recordings
         SET last_ingest_at = now()
         WHERE id = $1
-        ",
-        id
+        "#,
+        id,
     )
     .execute(&mut *tx)
     .await

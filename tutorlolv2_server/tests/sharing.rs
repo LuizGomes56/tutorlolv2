@@ -585,8 +585,12 @@ async fn janitor_wakes_poll_and_resume_does_not_revive_live_code(pool: PgPool) {
         .code
         .unwrap();
     sqlx::query!(
-        "UPDATE recordings SET last_ingest_at = now() - interval '20 minutes' WHERE id = $1",
-        Uuid::from_bytes(id)
+        r#"
+        UPDATE recordings
+        SET last_ingest_at = now() - interval '20 minutes'
+        WHERE id = $1
+        "#,
+        Uuid::from_bytes(id),
     )
     .execute(&pool)
     .await

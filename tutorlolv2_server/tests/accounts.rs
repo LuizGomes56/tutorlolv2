@@ -302,10 +302,15 @@ async fn web_session_cookie_kind_csrf_and_logout(pool: PgPool) {
         decode::<AccountInfo>(&test::read_body(r).await).email,
         "alice@example.test"
     );
-    let hash: Vec<u8> = sqlx::query_scalar("SELECT token_hash FROM account_sessions")
-        .fetch_one(&pool)
-        .await
-        .unwrap();
+    let hash = sqlx::query_scalar!(
+        r#"
+        SELECT token_hash
+        FROM account_sessions
+        "#,
+    )
+    .fetch_one(&pool)
+    .await
+    .unwrap();
     assert_eq!(
         hash,
         Sha256::digest(B64.decode(cookie.value()).unwrap()).as_slice()
@@ -389,22 +394,40 @@ async fn desktop_claims_only_anonymous_history_and_keeps_ingest_device_only(pool
     let d = device(&app).await;
     let first = recording(&app, &d, 1.0).await;
     let alice = desktop_login(&app, &server, &d, "alice").await;
-    let alice_id: Uuid = sqlx::query_scalar("SELECT id FROM accounts WHERE google_sub='alice'")
-        .fetch_one(&pool)
-        .await
-        .unwrap();
-    let owner: Option<Uuid> = sqlx::query_scalar("SELECT account_id FROM recordings WHERE id=$1")
-        .bind(first)
-        .fetch_one(&pool)
-        .await
-        .unwrap();
+    let alice_id = sqlx::query_scalar!(
+        r#"
+        SELECT id
+        FROM accounts
+        WHERE google_sub = 'alice'
+        "#,
+    )
+    .fetch_one(&pool)
+    .await
+    .unwrap();
+    let owner = sqlx::query_scalar!(
+        r#"
+        SELECT account_id
+        FROM recordings
+        WHERE id = $1
+        "#,
+        first,
+    )
+    .fetch_one(&pool)
+    .await
+    .unwrap();
     assert_eq!(owner, Some(alice_id));
     let second = recording(&app, &d, 2.0).await;
-    let owner: Option<Uuid> = sqlx::query_scalar("SELECT account_id FROM recordings WHERE id=$1")
-        .bind(second)
-        .fetch_one(&pool)
-        .await
-        .unwrap();
+    let owner = sqlx::query_scalar!(
+        r#"
+        SELECT account_id
+        FROM recordings
+        WHERE id = $1
+        "#,
+        second,
+    )
+    .fetch_one(&pool)
+    .await
+    .unwrap();
     assert_eq!(owner, Some(alice_id));
     let header = format!("Session {}", alice.token);
     // Session auth never authorizes an upload/live control endpoint.
@@ -465,15 +488,27 @@ async fn desktop_claims_only_anonymous_history_and_keeps_ingest_device_only(pool
         204
     );
     let third = recording(&app, &d, 3.0).await;
-    let bob_id: Uuid = sqlx::query_scalar("SELECT id FROM accounts WHERE google_sub='bob'")
-        .fetch_one(&pool)
-        .await
-        .unwrap();
-    let owner: Option<Uuid> = sqlx::query_scalar("SELECT account_id FROM recordings WHERE id=$1")
-        .bind(third)
-        .fetch_one(&pool)
-        .await
-        .unwrap();
+    let bob_id = sqlx::query_scalar!(
+        r#"
+        SELECT id
+        FROM accounts
+        WHERE google_sub = 'bob'
+        "#,
+    )
+    .fetch_one(&pool)
+    .await
+    .unwrap();
+    let owner = sqlx::query_scalar!(
+        r#"
+        SELECT account_id
+        FROM recordings
+        WHERE id = $1
+        "#,
+        third,
+    )
+    .fetch_one(&pool)
+    .await
+    .unwrap();
     assert_eq!(owner, Some(bob_id));
     let r = test::call_service(
         &app,
@@ -513,11 +548,17 @@ async fn desktop_claims_only_anonymous_history_and_keeps_ingest_device_only(pool
         204
     );
     let fourth = recording(&app, &d, 4.0).await;
-    let owner: Option<Uuid> = sqlx::query_scalar("SELECT account_id FROM recordings WHERE id=$1")
-        .bind(fourth)
-        .fetch_one(&pool)
-        .await
-        .unwrap();
+    let owner = sqlx::query_scalar!(
+        r#"
+        SELECT account_id
+        FROM recordings
+        WHERE id = $1
+        "#,
+        fourth,
+    )
+    .fetch_one(&pool)
+    .await
+    .unwrap();
     assert_eq!(owner, None);
     // The recording device retains access independently of claims.
     assert_eq!(
@@ -548,11 +589,16 @@ async fn desktop_claims_only_anonymous_history_and_keeps_ingest_device_only(pool
             .is_empty()
     );
     let _carol = desktop_login(&app, &server, &d, "carol").await;
-    let owners: Vec<Option<Uuid>> =
-        sqlx::query_scalar("SELECT account_id FROM recordings ORDER BY id")
-            .fetch_all(&pool)
-            .await
-            .unwrap();
+    let owners = sqlx::query_scalar!(
+        r#"
+        SELECT account_id
+        FROM recordings
+        ORDER BY id
+        "#,
+    )
+    .fetch_all(&pool)
+    .await
+    .unwrap();
     assert_eq!(owners[0], Some(alice_id));
     assert_eq!(owners[1], Some(alice_id));
     assert_eq!(owners[2], Some(bob_id));
@@ -614,10 +660,15 @@ async fn oauth_rejects_bad_claims_state_and_browser_binding(pool: PgPool) {
         400
     );
     assert_eq!(
-        sqlx::query_scalar::<_, i64>("SELECT count(*) FROM accounts")
-            .fetch_one(&pool)
-            .await
-            .unwrap(),
+        sqlx::query_scalar!(
+            r#"
+            SELECT count(*) AS "count!"
+            FROM accounts
+            "#,
+        )
+        .fetch_one(&pool)
+        .await
+        .unwrap(),
         0
     );
     for target in [
@@ -683,43 +734,85 @@ async fn sessions_slide_and_reject_deleted_or_expired_owners(pool: PgPool) {
             .insert_header(("Authorization", format!("Session {}", native.token)))
             .to_request()
     };
-    sqlx::query("UPDATE account_sessions SET last_used_at=now()-interval '2 days',expires_at=now()+interval '1 hour'").execute(&pool).await.unwrap();
+    sqlx::query!(
+        r#"
+        UPDATE account_sessions
+        SET last_used_at = now() - interval '2 days',
+            expires_at = now() + interval '1 hour'
+        "#,
+    )
+    .execute(&pool)
+    .await
+    .unwrap();
     assert_eq!(test::call_service(&app, request()).await.status(), 200);
-    let expires: chrono::DateTime<chrono::Utc> =
-        sqlx::query_scalar("SELECT expires_at FROM account_sessions")
-            .fetch_one(&pool)
-            .await
-            .unwrap();
+    let expires = sqlx::query_scalar!(
+        r#"
+        SELECT expires_at
+        FROM account_sessions
+        "#,
+    )
+    .fetch_one(&pool)
+    .await
+    .unwrap();
     assert!(expires > chrono::Utc::now() + chrono::Duration::days(89));
     assert_eq!(test::call_service(&app, request()).await.status(), 200);
-    let same: chrono::DateTime<chrono::Utc> =
-        sqlx::query_scalar("SELECT expires_at FROM account_sessions")
-            .fetch_one(&pool)
-            .await
-            .unwrap();
+    let same = sqlx::query_scalar!(
+        r#"
+        SELECT expires_at
+        FROM account_sessions
+        "#,
+    )
+    .fetch_one(&pool)
+    .await
+    .unwrap();
     assert_eq!(expires, same);
-    sqlx::query("UPDATE account_sessions SET expires_at=now()-interval '1 second'")
-        .execute(&pool)
-        .await
-        .unwrap();
+    sqlx::query!(
+        r#"
+        UPDATE account_sessions
+        SET expires_at = now() - interval '1 second'
+        "#,
+    )
+    .execute(&pool)
+    .await
+    .unwrap();
     assert_eq!(test::call_service(&app, request()).await.status(), 401);
-    sqlx::query("UPDATE account_sessions SET expires_at=now()+interval '1 day'")
-        .execute(&pool)
-        .await
-        .unwrap();
-    sqlx::query("UPDATE accounts SET deleted_at=now()")
-        .execute(&pool)
-        .await
-        .unwrap();
+    sqlx::query!(
+        r#"
+        UPDATE account_sessions
+        SET expires_at = now() + interval '1 day'
+        "#,
+    )
+    .execute(&pool)
+    .await
+    .unwrap();
+    sqlx::query!(
+        r#"
+        UPDATE accounts
+        SET deleted_at = now()
+        "#,
+    )
+    .execute(&pool)
+    .await
+    .unwrap();
     assert_eq!(test::call_service(&app, request()).await.status(), 401);
-    sqlx::query("UPDATE accounts SET deleted_at=NULL")
-        .execute(&pool)
-        .await
-        .unwrap();
-    sqlx::query("UPDATE devices SET deleted_at=now()")
-        .execute(&pool)
-        .await
-        .unwrap();
+    sqlx::query!(
+        r#"
+        UPDATE accounts
+        SET deleted_at = NULL
+        "#,
+    )
+    .execute(&pool)
+    .await
+    .unwrap();
+    sqlx::query!(
+        r#"
+        UPDATE devices
+        SET deleted_at = now()
+        "#,
+    )
+    .execute(&pool)
+    .await
+    .unwrap();
     assert_eq!(test::call_service(&app, request()).await.status(), 401);
 }
 
@@ -744,22 +837,62 @@ async fn recording_creation_serializes_with_claim_and_logout(pool: PgPool) {
         .status(),
         200
     );
-    let account: Uuid = sqlx::query_scalar(
-        "INSERT INTO accounts(google_sub,email) VALUES('racer','racer@example.test') RETURNING id",
+    let account = sqlx::query_scalar!(
+        r#"
+        INSERT INTO accounts (
+            google_sub,
+            email
+        ) VALUES (
+            'racer',
+            'racer@example.test'
+        )
+        RETURNING id
+        "#,
     )
     .fetch_one(&pool)
     .await
     .unwrap();
-    let binding: Uuid=sqlx::query_scalar("INSERT INTO account_sessions(account_id,token_hash,kind,device_id,expires_at,desktop_confirmed_at) VALUES($1,$2,'desktop',$3,now()+interval '1 day',now()) RETURNING id")
-        .bind(account).bind(vec![3u8;32]).bind(Uuid::from_bytes(d.device_id)).fetch_one(&pool).await.unwrap();
+    let binding = sqlx::query_scalar!(
+        r#"
+        INSERT INTO account_sessions (
+            account_id,
+            token_hash,
+            kind,
+            device_id,
+            expires_at,
+            desktop_confirmed_at
+        ) VALUES (
+            $1,
+            $2,
+            'Desktop',
+            $3,
+            now() + interval '1 day',
+            now()
+        )
+        RETURNING id
+        "#,
+        account,
+        vec![3u8; 32],
+        Uuid::from_bytes(d.device_id),
+    )
+    .fetch_one(&pool)
+    .await
+    .unwrap();
     let mut tx = pool.begin().await.unwrap();
-    sqlx::query("UPDATE devices SET account_id=$1,account_session_id=$3 WHERE id=$2")
-        .bind(account)
-        .bind(Uuid::from_bytes(d.device_id))
-        .bind(binding)
-        .execute(&mut *tx)
-        .await
-        .unwrap();
+    sqlx::query!(
+        r#"
+        UPDATE devices
+        SET account_id = $1,
+            account_session_id = $3
+        WHERE id = $2
+        "#,
+        account,
+        Uuid::from_bytes(d.device_id),
+        binding,
+    )
+    .execute(&mut *tx)
+    .await
+    .unwrap();
     let request = test::TestRequest::post()
         .uri("/api/recordings/sessions")
         .insert_header(("Authorization", auth_header(&d)))
@@ -777,11 +910,17 @@ async fn recording_creation_serializes_with_claim_and_logout(pool: PgPool) {
     let r = future.await;
     assert_eq!(r.status(), 200);
     let started = decode::<SessionStarted>(&test::read_body(r).await);
-    let actual: Option<Uuid> = sqlx::query_scalar("SELECT account_id FROM recordings WHERE id=$1")
-        .bind(Uuid::from_bytes(started.recording_id))
-        .fetch_one(&pool)
-        .await
-        .unwrap();
+    let actual = sqlx::query_scalar!(
+        r#"
+        SELECT account_id
+        FROM recordings
+        WHERE id = $1
+        "#,
+        Uuid::from_bytes(started.recording_id),
+    )
+    .fetch_one(&pool)
+    .await
+    .unwrap();
     assert_eq!(actual, Some(account));
 }
 
@@ -832,7 +971,41 @@ async fn account_owner_replays_other_device_and_shares_finished_only(pool: PgPoo
     let d2 = device(&app).await;
     let second = desktop_login(&app, &server, &d2, "alice").await;
     let cookie = web_login(&app, &server, "alice").await;
-    sqlx::query("INSERT INTO recording_chunks (recording_id,seq,first_game_time,last_game_time,snapshot_count,raw_format,raw_sha256,raw_size,raw,frames_format,frames) VALUES ($1,0,30,40,1,1,decode(repeat('00',32),'hex'),2,decode('7b7d','hex'),$2,$3)").bind(id).bind(FRAMES_FORMAT as i16).bind(vec![1u8,2,3]).execute(&pool).await.unwrap();
+    sqlx::query!(
+        r#"
+        INSERT INTO recording_chunks (
+            recording_id,
+            seq,
+            first_game_time,
+            last_game_time,
+            snapshot_count,
+            raw_format,
+            raw_sha256,
+            raw_size,
+            RAW,
+            frames_format,
+            frames
+        ) VALUES (
+            $1,
+            0,
+            30,
+            40,
+            1,
+            1,
+            decode(repeat('00', 32), 'hex'),
+            2,
+            decode('7b7d', 'hex'),
+            $2,
+            $3
+        )
+        "#,
+        id,
+        FRAMES_FORMAT as i16,
+        vec![1u8, 2, 3],
+    )
+    .execute(&pool)
+    .await
+    .unwrap();
     for suffix in [format!("/{id}"), format!("/{id}/frames/0")] {
         let uri = format!("/api/me/recordings{suffix}");
         let r = test::call_service(
@@ -882,10 +1055,16 @@ async fn account_owner_replays_other_device_and_shares_finished_only(pool: PgPoo
             .to_request()
     };
     assert_eq!(test::call_service(&app, share()).await.status(), 409);
-    sqlx::query(
-        "UPDATE recordings SET ended_at=now(),end_reason='timeout',is_custom=false WHERE id=$1",
+    sqlx::query!(
+        r#"
+        UPDATE recordings
+        SET ended_at = now(),
+            end_reason = 'Timeout',
+            is_custom = FALSE
+        WHERE id = $1
+        "#,
+        id,
     )
-    .bind(id)
     .execute(&pool)
     .await
     .unwrap();
@@ -987,31 +1166,58 @@ async fn invalid_desktop_binding_cannot_own_future_recordings(pool: PgPool) {
     {
         let login = desktop_login(&app, &server, &d, &format!("owner{i}")).await;
         let old = recording(&app, &d, (i * 2 + 1) as f32).await;
-        let old_owner: Option<Uuid> =
-            sqlx::query_scalar("SELECT account_id FROM recordings WHERE id=$1")
-                .bind(old)
-                .fetch_one(&pool)
-                .await
-                .unwrap();
+        let old_owner = sqlx::query_scalar!(
+            r#"
+            SELECT account_id
+            FROM recordings
+            WHERE id = $1
+            "#,
+            old,
+        )
+        .fetch_one(&pool)
+        .await
+        .unwrap();
         assert!(old_owner.is_some());
         let token_hash = Sha256::digest(B64.decode(&login.token).unwrap()).to_vec();
         match invalid {
             "expired" => {
-                sqlx::query("UPDATE account_sessions SET expires_at=now()-interval '1 second' WHERE token_hash=$1").bind(&token_hash).execute(&pool).await.unwrap();
+                sqlx::query!(
+                    r#"
+                    UPDATE account_sessions
+                    SET expires_at = now() - interval '1 second'
+                    WHERE token_hash = $1
+                    "#,
+                    &token_hash,
+                )
+                .execute(&pool)
+                .await
+                .unwrap();
             }
             "revoked" => {
-                sqlx::query("UPDATE account_sessions SET revoked_at=now() WHERE token_hash=$1")
-                    .bind(&token_hash)
-                    .execute(&pool)
-                    .await
-                    .unwrap();
+                sqlx::query!(
+                    r#"
+                    UPDATE account_sessions
+                    SET revoked_at = now()
+                    WHERE token_hash = $1
+                    "#,
+                    &token_hash,
+                )
+                .execute(&pool)
+                .await
+                .unwrap();
             }
             _ => {
-                sqlx::query("UPDATE accounts SET deleted_at=now() WHERE id=$1")
-                    .bind(old_owner)
-                    .execute(&pool)
-                    .await
-                    .unwrap();
+                sqlx::query!(
+                    r#"
+                    UPDATE accounts
+                    SET deleted_at = now()
+                    WHERE id = $1
+                    "#,
+                    old_owner,
+                )
+                .execute(&pool)
+                .await
+                .unwrap();
             }
         }
         assert_eq!(
@@ -1027,39 +1233,61 @@ async fn invalid_desktop_binding_cannot_own_future_recordings(pool: PgPool) {
             401
         );
         let new = recording(&app, &d, (i * 2 + 2) as f32).await;
-        let owner: Option<Uuid> =
-            sqlx::query_scalar("SELECT account_id FROM recordings WHERE id=$1")
-                .bind(new)
-                .fetch_one(&pool)
-                .await
-                .unwrap();
+        let owner = sqlx::query_scalar!(
+            r#"
+            SELECT account_id
+            FROM recordings
+            WHERE id = $1
+            "#,
+            new,
+        )
+        .fetch_one(&pool)
+        .await
+        .unwrap();
         assert_eq!(
             owner, None,
             "{invalid} desktop binding must not attach a new game"
         );
-        let link: (Option<Uuid>, Option<Uuid>) =
-            sqlx::query_as("SELECT account_id,account_session_id FROM devices WHERE id=$1")
-                .bind(Uuid::from_bytes(d.device_id))
-                .fetch_one(&pool)
-                .await
-                .unwrap();
-        assert_eq!(link, (None, None));
-        let retained: Option<Uuid> =
-            sqlx::query_scalar("SELECT account_id FROM recordings WHERE id=$1")
-                .bind(old)
-                .fetch_one(&pool)
-                .await
-                .unwrap();
+        let link = sqlx::query!(
+            r#"
+            SELECT account_id,
+                   account_session_id
+            FROM devices
+            WHERE id = $1
+            "#,
+            Uuid::from_bytes(d.device_id),
+        )
+        .fetch_one(&pool)
+        .await
+        .unwrap();
+        assert_eq!((link.account_id, link.account_session_id), (None, None));
+        let retained = sqlx::query_scalar!(
+            r#"
+            SELECT account_id
+            FROM recordings
+            WHERE id = $1
+            "#,
+            old,
+        )
+        .fetch_one(&pool)
+        .await
+        .unwrap();
         assert_eq!(retained, old_owner);
     }
     // Invalid old sessions must not cause a later, valid binding to be cleared.
     let fresh = desktop_login(&app, &server, &d, "fresh").await;
     let new = recording(&app, &d, 8.0).await;
-    let owner: Option<Uuid> = sqlx::query_scalar("SELECT account_id FROM recordings WHERE id=$1")
-        .bind(new)
-        .fetch_one(&pool)
-        .await
-        .unwrap();
+    let owner = sqlx::query_scalar!(
+        r#"
+        SELECT account_id
+        FROM recordings
+        WHERE id = $1
+        "#,
+        new,
+    )
+    .fetch_one(&pool)
+    .await
+    .unwrap();
     assert!(owner.is_some());
     assert_eq!(
         test::call_service(
@@ -1090,15 +1318,29 @@ async fn web_day_slide_renews_cookie_only_on_success_and_never_logout(pool: PgPo
         let cookie = web_login(&app, &server, "alice").await;
         let hash = Sha256::digest(B64.decode(cookie.value()).unwrap()).to_vec();
         let age = || {
-            sqlx::query("UPDATE account_sessions SET last_used_at=now()-interval '2 days',expires_at=now()+interval '1 hour' WHERE token_hash=$1").bind(&hash).execute(&pool)
+            sqlx::query!(
+                r#"
+                UPDATE account_sessions
+                SET last_used_at = now() - interval '2 days',
+                    expires_at = now() + interval '1 hour'
+                WHERE token_hash = $1
+                "#,
+                &hash,
+            )
+            .execute(&pool)
         };
         age().await.unwrap();
-        let before: chrono::DateTime<chrono::Utc> =
-            sqlx::query_scalar("SELECT expires_at FROM account_sessions WHERE token_hash=$1")
-                .bind(&hash)
-                .fetch_one(&pool)
-                .await
-                .unwrap();
+        let before = sqlx::query_scalar!(
+            r#"
+            SELECT expires_at
+            FROM account_sessions
+            WHERE token_hash = $1
+            "#,
+            &hash,
+        )
+        .fetch_one(&pool)
+        .await
+        .unwrap();
         let r = test::call_service(
             &app,
             test::TestRequest::get()
@@ -1109,12 +1351,17 @@ async fn web_day_slide_renews_cookie_only_on_success_and_never_logout(pool: PgPo
         .await;
         assert_eq!(r.status(), 404);
         assert!(!r.headers().contains_key("Set-Cookie"));
-        let unchanged: chrono::DateTime<chrono::Utc> =
-            sqlx::query_scalar("SELECT expires_at FROM account_sessions WHERE token_hash=$1")
-                .bind(&hash)
-                .fetch_one(&pool)
-                .await
-                .unwrap();
+        let unchanged = sqlx::query_scalar!(
+            r#"
+            SELECT expires_at
+            FROM account_sessions
+            WHERE token_hash = $1
+            "#,
+            &hash,
+        )
+        .fetch_one(&pool)
+        .await
+        .unwrap();
         assert_eq!(
             before, unchanged,
             "failed owner reads must not consume the day-slide"
@@ -1138,12 +1385,17 @@ async fn web_day_slide_renews_cookie_only_on_success_and_never_logout(pool: PgPo
         assert_eq!(renewed.same_site(), Some(actix_web::cookie::SameSite::Lax));
         assert_eq!(renewed.secure().unwrap_or(false), secure);
         assert_eq!(renewed.max_age().unwrap().whole_seconds(), 90 * 86400);
-        let after: chrono::DateTime<chrono::Utc> =
-            sqlx::query_scalar("SELECT expires_at FROM account_sessions WHERE token_hash=$1")
-                .bind(&hash)
-                .fetch_one(&pool)
-                .await
-                .unwrap();
+        let after = sqlx::query_scalar!(
+            r#"
+            SELECT expires_at
+            FROM account_sessions
+            WHERE token_hash = $1
+            "#,
+            &hash,
+        )
+        .fetch_one(&pool)
+        .await
+        .unwrap();
         assert!(after > chrono::Utc::now() + chrono::Duration::days(89));
         let r = test::call_service(&app, request()).await;
         assert_eq!(r.status(), 200);
@@ -1200,19 +1452,30 @@ async fn unconfirmed_orphan_cannot_attach_future_games_and_confirmation_claims_i
     let d = device(&app).await;
     let prior = recording(&app, &d, 1.0).await;
     let pending = desktop_redeem(&app, &server, &d, "alice").await;
-    let owner: Option<Uuid> = sqlx::query_scalar("SELECT account_id FROM recordings WHERE id=$1")
-        .bind(prior)
-        .fetch_one(&pool)
-        .await
-        .unwrap();
+    let owner = sqlx::query_scalar!(
+        r#"
+        SELECT account_id
+        FROM recordings
+        WHERE id = $1
+        "#,
+        prior,
+    )
+    .fetch_one(&pool)
+    .await
+    .unwrap();
     assert!(owner.is_some(), "redeem still claims existing history");
     let interim = recording(&app, &d, 2.0).await;
-    let interim_owner: Option<Uuid> =
-        sqlx::query_scalar("SELECT account_id FROM recordings WHERE id=$1")
-            .bind(interim)
-            .fetch_one(&pool)
-            .await
-            .unwrap();
+    let interim_owner = sqlx::query_scalar!(
+        r#"
+        SELECT account_id
+        FROM recordings
+        WHERE id = $1
+        "#,
+        interim,
+    )
+    .fetch_one(&pool)
+    .await
+    .unwrap();
     assert_eq!(
         interim_owner, None,
         "orphan credential must not own future uploads"
@@ -1221,12 +1484,17 @@ async fn unconfirmed_orphan_cannot_attach_future_games_and_confirmation_claims_i
     assert_eq!(confirm(&app, &pending).await, 204);
     let future = recording(&app, &d, 3.0).await;
     for id in [interim, future] {
-        let actual: Option<Uuid> =
-            sqlx::query_scalar("SELECT account_id FROM recordings WHERE id=$1")
-                .bind(id)
-                .fetch_one(&pool)
-                .await
-                .unwrap();
+        let actual = sqlx::query_scalar!(
+            r#"
+            SELECT account_id
+            FROM recordings
+            WHERE id = $1
+            "#,
+            id,
+        )
+        .fetch_one(&pool)
+        .await
+        .unwrap();
         assert_eq!(actual, owner);
     }
     let newer = desktop_redeem(&app, &server, &d, "bob").await;
@@ -1236,17 +1504,28 @@ async fn unconfirmed_orphan_cannot_attach_future_games_and_confirmation_claims_i
         "stale session cannot activate new binding"
     );
     let anonymous = recording(&app, &d, 4.0).await;
-    let actual: Option<Uuid> = sqlx::query_scalar("SELECT account_id FROM recordings WHERE id=$1")
-        .bind(anonymous)
-        .fetch_one(&pool)
-        .await
-        .unwrap();
+    let actual = sqlx::query_scalar!(
+        r#"
+        SELECT account_id
+        FROM recordings
+        WHERE id = $1
+        "#,
+        anonymous,
+    )
+    .fetch_one(&pool)
+    .await
+    .unwrap();
     assert_eq!(actual, None);
     assert_eq!(confirm(&app, &newer).await, 204);
-    sqlx::query("UPDATE account_sessions SET expires_at=now()-interval '1 second'")
-        .execute(&pool)
-        .await
-        .unwrap();
+    sqlx::query!(
+        r#"
+        UPDATE account_sessions
+        SET expires_at = now() - interval '1 second'
+        "#,
+    )
+    .execute(&pool)
+    .await
+    .unwrap();
     assert_eq!(confirm(&app, &newer).await, 401);
     let web = web_login(&app, &server, "alice").await;
     assert_eq!(
@@ -1281,11 +1560,18 @@ async fn confirmation_rechecks_binding_after_waiting_for_device_lock(pool: PgPoo
     let pending = desktop_redeem(&app, &server, &d, "alice").await;
     let interim = recording(&app, &d, 1.0).await;
     let mut tx = pool.begin().await.unwrap();
-    sqlx::query("UPDATE devices SET account_id=NULL,account_session_id=NULL WHERE id=$1")
-        .bind(Uuid::from_bytes(d.device_id))
-        .execute(&mut *tx)
-        .await
-        .unwrap();
+    sqlx::query!(
+        r#"
+        UPDATE devices
+        SET account_id = NULL,
+            account_session_id = NULL
+        WHERE id = $1
+        "#,
+        Uuid::from_bytes(d.device_id),
+    )
+    .execute(&mut *tx)
+    .await
+    .unwrap();
     let future = confirm(&app, &pending);
     tokio::pin!(future);
     assert!(
@@ -1300,11 +1586,17 @@ async fn confirmation_rechecks_binding_after_waiting_for_device_lock(pool: PgPoo
         401,
         "authenticated session lost its binding while waiting"
     );
-    let owner: Option<Uuid> = sqlx::query_scalar("SELECT account_id FROM recordings WHERE id=$1")
-        .bind(interim)
-        .fetch_one(&pool)
-        .await
-        .unwrap();
+    let owner = sqlx::query_scalar!(
+        r#"
+        SELECT account_id
+        FROM recordings
+        WHERE id = $1
+        "#,
+        interim,
+    )
+    .fetch_one(&pool)
+    .await
+    .unwrap();
     assert_eq!(
         owner, None,
         "rejected confirmation cannot claim interim games"

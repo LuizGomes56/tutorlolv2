@@ -19,13 +19,14 @@ async fn expire_stale_ids(db: &PgPool, timeout_secs: i64) -> sqlx::Result<Vec<uu
     let mut tx = db.begin().await?;
 
     let ended = sqlx::query_scalar!(
-        "
-        UPDATE recordings SET ended_at = last_ingest_at, end_reason = $2
+        r#"
+        UPDATE recordings
+        SET ended_at = last_ingest_at,
+            end_reason = $2
         WHERE ended_at IS NULL
             AND deleted_at IS NULL
-            AND last_ingest_at < now() - $1 * interval '1 second'
-        RETURNING id
-        ",
+            AND last_ingest_at < now() - $1 * interval '1 second' RETURNING id
+        "#,
         timeout_secs as f64,
         EndReason::Timeout,
     )
@@ -33,12 +34,14 @@ async fn expire_stale_ids(db: &PgPool, timeout_secs: i64) -> sqlx::Result<Vec<uu
     .await?;
 
     sqlx::query!(
-        "
-        UPDATE share_codes SET deleted_at = now(), delete_reason = $2
+        r#"
+        UPDATE share_codes
+        SET deleted_at = now(),
+            delete_reason = $2
         WHERE recording_id = ANY($1)
-            AND mode = $3
+            AND MODE = $3
             AND deleted_at IS NULL
-        ",
+        "#,
         &ended,
         ShareDeleteReason::GameEnded,
         CodeMode::Live,

@@ -1,7 +1,6 @@
 pub mod server;
 
 use actix_cors::Cors;
-
 use actix_web::{
     App, HttpResponse, HttpServer,
     http::header,

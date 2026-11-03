@@ -3,7 +3,7 @@
 
 /// Postgres type `riot_game_source`.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, sqlx::Type)]
-#[sqlx(type_name = "riot_game_source", rename_all = "snake_case")]
+#[sqlx(type_name = "riot_game_source")]
 pub enum RiotGameSource {
     Lcu,
     Spectator,
@@ -11,8 +11,16 @@ pub enum RiotGameSource {
 
 /// Postgres type `share_delete_reason`.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, sqlx::Type)]
-#[sqlx(type_name = "share_delete_reason", rename_all = "snake_case")]
+#[sqlx(type_name = "share_delete_reason")]
 pub enum ShareDeleteReason {
     GameEnded,
     Revoked,
+}
+
+/// Postgres type `session_kind`.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, sqlx::Type)]
+#[sqlx(type_name = "session_kind")]
+pub enum SessionKind {
+    Web,
+    Desktop,
 }

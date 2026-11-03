@@ -146,9 +146,17 @@ async fn spectator_200_marks_recording_verified(pool: PgPool) {
     );
 
     let row = sqlx::query!(
-        r#"SELECT riot_game_id, platform_id AS "platform_id: Platform", riot_game_source AS "source: RiotGameSource",
-                  queue_id, is_custom, active_puuid FROM recordings WHERE id = $1"#,
-        id
+        r#"
+        SELECT riot_game_id,
+               platform_id AS "platform_id: Platform",
+               riot_game_source AS "source: RiotGameSource",
+               queue_id,
+               is_custom,
+               active_puuid
+        FROM recordings
+        WHERE id = $1
+        "#,
+        id,
     )
     .fetch_one(&pool)
     .await
@@ -179,8 +187,14 @@ async fn spectator_404_keeps_lcu_values(pool: PgPool) {
         EnrichOutcome::NotSpectatable
     );
     let row = sqlx::query!(
-        r#"SELECT riot_game_id, riot_game_source AS "source: RiotGameSource", active_puuid FROM recordings WHERE id = $1"#,
-        id
+        r#"
+        SELECT riot_game_id,
+               riot_game_source AS "source: RiotGameSource",
+               active_puuid
+        FROM recordings
+        WHERE id = $1
+        "#,
+        id,
     )
     .fetch_one(&pool)
     .await
@@ -313,8 +327,12 @@ async fn new_session_enqueues_enrichment(pool: PgPool) {
 
     for _ in 0..50 {
         let source = sqlx::query_scalar!(
-            r#"SELECT riot_game_source AS "s: RiotGameSource" FROM recordings WHERE id = $1"#,
-            id
+            r#"
+            SELECT riot_game_source AS "s: RiotGameSource"
+            FROM recordings
+            WHERE id = $1
+            "#,
+            id,
         )
         .fetch_one(&pool)
         .await
@@ -328,10 +346,18 @@ async fn new_session_enqueues_enrichment(pool: PgPool) {
 }
 
 async fn source_and_game(pool: &PgPool, id: Uuid) -> (Option<RiotGameSource>, Option<i64>) {
-    let row = sqlx::query!(r#"SELECT riot_game_source AS "source: RiotGameSource", riot_game_id FROM recordings WHERE id = $1"#, id)
-        .fetch_one(pool)
-        .await
-        .unwrap();
+    let row = sqlx::query!(
+        r#"
+        SELECT riot_game_source AS "source: RiotGameSource",
+               riot_game_id
+        FROM recordings
+        WHERE id = $1
+        "#,
+        id,
+    )
+    .fetch_one(pool)
+    .await
+    .unwrap();
     (row.source, row.riot_game_id)
 }
 

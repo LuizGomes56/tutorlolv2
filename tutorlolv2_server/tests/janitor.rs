@@ -19,9 +19,13 @@ async fn recording_idle_for(app: &impl TestApp, pool: &PgPool, minutes: f64) -> 
             .recording_id,
     );
     sqlx::query!(
-        "UPDATE recordings SET last_ingest_at = now() - $2 * interval '1 minute' WHERE id = $1",
+        r#"
+        UPDATE recordings
+        SET last_ingest_at = now() - $2 * interval '1 minute'
+        WHERE id = $1
+        "#,
         id,
-        minutes
+        minutes,
     )
     .execute(pool)
     .await
@@ -42,17 +46,26 @@ async fn expires_only_stale_open_recordings(pool: PgPool) {
     let fresh = recording_idle_for(&app, &pool, 1.0).await;
     let ended = recording_idle_for(&app, &pool, 30.0).await;
     sqlx::query!(
-        "UPDATE recordings SET ended_at = now(), end_reason = $2 WHERE id = $1",
+        r#"
+        UPDATE recordings
+        SET ended_at = now(),
+            end_reason = $2
+        WHERE id = $1
+        "#,
         ended,
-        EndReason::GameEndEvent as EndReason
+        EndReason::GameEndEvent as EndReason,
     )
     .execute(&pool)
     .await
     .unwrap();
     let deleted = recording_idle_for(&app, &pool, 30.0).await;
     sqlx::query!(
-        "UPDATE recordings SET deleted_at = now() WHERE id = $1",
-        deleted
+        r#"
+        UPDATE recordings
+        SET deleted_at = now()
+        WHERE id = $1
+        "#,
+        deleted,
     )
     .execute(&pool)
     .await
@@ -61,8 +74,13 @@ async fn expires_only_stale_open_recordings(pool: PgPool) {
     assert_eq!(expire_stale(&pool, 900).await.unwrap(), 1);
 
     let row = sqlx::query!(
-        r#"SELECT ended_at = last_ingest_at AS "at_last_ingest!", end_reason AS "end_reason: EndReason" FROM recordings WHERE id = $1"#,
-        stale
+        r#"
+        SELECT ended_at = last_ingest_at AS "at_last_ingest!",
+               end_reason AS "end_reason: EndReason"
+        FROM recordings
+        WHERE id = $1
+        "#,
+        stale,
     )
     .fetch_one(&pool)
     .await
@@ -72,8 +90,12 @@ async fn expires_only_stale_open_recordings(pool: PgPool) {
 
     for (id, open) in [(fresh, true), (ended, false), (deleted, true)] {
         let is_open = sqlx::query_scalar!(
-            r#"SELECT ended_at IS NULL AS "open!" FROM recordings WHERE id = $1"#,
-            id
+            r#"
+            SELECT ended_at IS NULL AS "open!"
+            FROM recordings
+            WHERE id = $1
+            "#,
+            id,
         )
         .fetch_one(&pool)
         .await
@@ -99,10 +121,20 @@ async fn expiring_soft_deletes_live_code_but_not_public(pool: PgPool) {
         (public, "BBBB0000", CodeMode::Public),
     ] {
         sqlx::query!(
-            "INSERT INTO share_codes (recording_id, code, mode) VALUES ($1, $2, $3)",
+            r#"
+            INSERT INTO share_codes (
+                recording_id,
+                code,
+                MODE
+            ) VALUES (
+                $1,
+                $2,
+                $3
+            )
+            "#,
             id,
             code,
-            mode as CodeMode
+            mode as CodeMode,
         )
         .execute(&pool)
         .await
@@ -116,8 +148,12 @@ async fn expiring_soft_deletes_live_code_but_not_public(pool: PgPool) {
         ("BBBB0000", None),
     ] {
         let reason = sqlx::query_scalar!(
-            r#"SELECT delete_reason AS "r: ShareDeleteReason" FROM share_codes WHERE code = $1"#,
-            code
+            r#"
+            SELECT delete_reason AS "r: ShareDeleteReason"
+            FROM share_codes
+            WHERE code = $1
+            "#,
+            code,
         )
         .fetch_one(&pool)
         .await

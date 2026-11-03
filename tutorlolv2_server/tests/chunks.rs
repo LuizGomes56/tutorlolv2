@@ -217,8 +217,16 @@ async fn chunk_201_then_identical_200_then_different_409(pool: PgPool) {
     );
 
     let row = sqlx::query!(
-        r#"SELECT (SELECT count(*) FROM recording_chunks WHERE recording_id = r.id) AS "chunks!", kills, coverage_s
-           FROM recordings r WHERE id = $1"#,
+        r#"
+        SELECT
+            (SELECT count(*)
+             FROM recording_chunks
+             WHERE recording_id = r.id) AS "chunks!",
+               kills,
+               coverage_s
+        FROM recordings r
+        WHERE id = $1
+        "#,
         Uuid::from_bytes(id),
     )
     .fetch_one(&pool)
@@ -298,9 +306,17 @@ async fn late_older_chunk_keeps_newest_summary(pool: PgPool) {
     );
 
     let row = sqlx::query!(
-        r#"SELECT last_game_time, first_game_time, kills,
-                  (SELECT count(*) FROM recording_chunks WHERE recording_id = r.id) AS "chunks!"
-           FROM recordings r WHERE id = $1"#,
+        r#"
+        SELECT last_game_time,
+               first_game_time,
+               kills,
+
+            (SELECT count(*)
+             FROM recording_chunks
+             WHERE recording_id = r.id) AS "chunks!"
+        FROM recordings r
+        WHERE id = $1
+        "#,
         Uuid::from_bytes(id),
     )
     .fetch_one(&pool)
@@ -322,7 +338,12 @@ async fn chunk_after_end_is_accepted_and_does_not_reopen(pool: PgPool) {
     let app = app!(pool);
     let (device, id) = recording(&app, 0.0276).await;
     sqlx::query!(
-        "UPDATE recordings SET ended_at = now(), end_reason = $2 WHERE id = $1",
+        r#"
+        UPDATE recordings
+        SET ended_at = now(),
+            end_reason = $2
+        WHERE id = $1
+        "#,
         Uuid::from_bytes(id),
         EndReason::GameEndEvent as EndReason,
     )
@@ -335,8 +356,12 @@ async fn chunk_after_end_is_accepted_and_does_not_reopen(pool: PgPool) {
         StatusCode::CREATED
     );
     let ended = sqlx::query_scalar!(
-        r#"SELECT ended_at IS NOT NULL AS "ended!" FROM recordings WHERE id = $1"#,
-        Uuid::from_bytes(id)
+        r#"
+        SELECT ended_at IS NOT NULL AS "ended!"
+        FROM recordings
+        WHERE id = $1
+        "#,
+        Uuid::from_bytes(id),
     )
     .fetch_one(&pool)
     .await
@@ -410,8 +435,12 @@ async fn whole_aram_capture_ingests(pool: PgPool) {
     }
     assert!(total < 300_000, "{total} bytes");
     let last = sqlx::query_scalar!(
-        "SELECT last_game_time FROM recordings WHERE id = $1",
-        Uuid::from_bytes(started.recording_id)
+        r#"
+        SELECT last_game_time
+        FROM recordings
+        WHERE id = $1
+        "#,
+        Uuid::from_bytes(started.recording_id),
     )
     .fetch_one(&pool)
     .await
@@ -448,8 +477,13 @@ async fn escaped_riot_ids_are_ingested_with_frames(pool: PgPool) {
     );
 
     let row = sqlx::query!(
-        "SELECT frames_format, frames FROM recording_chunks WHERE recording_id = $1",
-        Uuid::from_bytes(started.recording_id)
+        r#"
+        SELECT frames_format,
+               frames
+        FROM recording_chunks
+        WHERE recording_id = $1
+        "#,
+        Uuid::from_bytes(started.recording_id),
     )
     .fetch_one(&pool)
     .await
@@ -482,10 +516,19 @@ async fn raw_data_is_kept_when_frames_cannot_be_derived(pool: PgPool) {
         upload(&app, &device, id, 0, body.clone(), &sha).await,
         StatusCode::CREATED
     );
-    let row = sqlx::query!("SELECT frames_format, length(frames) AS frames_len, raw FROM recording_chunks WHERE recording_id = $1", Uuid::from_bytes(id))
-        .fetch_one(&pool)
-        .await
-        .unwrap();
+    let row = sqlx::query!(
+        r#"
+        SELECT frames_format,
+               length(frames) AS frames_len,
+               RAW
+        FROM recording_chunks
+        WHERE recording_id = $1
+        "#,
+        Uuid::from_bytes(id),
+    )
+    .fetch_one(&pool)
+    .await
+    .unwrap();
     assert_eq!(row.frames_format, 0, "frames are flagged as not derived");
     assert_eq!(row.frames_len, Some(0));
     assert_eq!(row.raw, body, "the raw chunk is stored as uploaded");
@@ -518,8 +561,12 @@ async fn uploaded_chunks_preserve_riot_identity_for_resume(pool: PgPool) {
     );
 
     let stored = sqlx::query_scalar!(
-        "SELECT probe FROM recordings WHERE id = $1",
-        Uuid::from_bytes(started.recording_id)
+        r#"
+        SELECT probe
+        FROM recordings
+        WHERE id = $1
+        "#,
+        Uuid::from_bytes(started.recording_id),
     )
     .fetch_one(&pool)
     .await

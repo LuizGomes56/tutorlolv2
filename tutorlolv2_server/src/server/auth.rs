@@ -71,13 +71,13 @@ impl AuthCache {
         }
 
         let stored = sqlx::query_scalar!(
-            "
+            r#"
             SELECT secret_hash
             FROM devices
             WHERE id = $1
                 AND deleted_at IS NULL
-            ",
-            id
+            "#,
+            id,
         )
         .fetch_optional(db)
         .await?;
@@ -86,12 +86,12 @@ impl AuthCache {
 
         if valid {
             sqlx::query!(
-                "
+                r#"
                 UPDATE devices
                 SET last_seen_at = now()
                 WHERE id = $1
-                ",
-                id
+                "#,
+                id,
             )
             .execute(db)
             .await?;

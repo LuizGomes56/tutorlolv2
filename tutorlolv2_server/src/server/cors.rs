@@ -21,36 +21,43 @@ pub async fn policy(
         || path == "/api/auth/logout"
         || path == "/api/me"
         || path.starts_with("/api/me/");
+
     let sensitive = private
         || path.starts_with("/api/auth/")
         || path.starts_with("/api/recordings/") && path.ends_with("/share");
+
     let origin = req.headers().get(header::ORIGIN).cloned();
     let allowed = !private
         || origin.as_ref().is_none_or(|origin| {
             req.app_data::<Data<AppState>>()
                 .is_some_and(|s| origin.as_bytes() == s.config.public_base_url.as_bytes())
         });
+
     let preflight = req.method() == Method::OPTIONS
         && origin.is_some()
         && req
             .headers()
             .contains_key(header::ACCESS_CONTROL_REQUEST_METHOD);
+
     let requested_method = req
         .headers()
         .get(header::ACCESS_CONTROL_REQUEST_METHOD)
         .and_then(|v| v.to_str().ok())
         .unwrap_or("");
+
     let requested_headers = req
         .headers()
         .get(header::ACCESS_CONTROL_REQUEST_HEADERS)
         .and_then(|v| v.to_str().ok())
         .unwrap_or("");
+
     let valid_preflight = ["GET", "POST", "PATCH", "PUT"].contains(&requested_method)
         && requested_headers.split(',').all(|v| {
             v.trim().is_empty()
                 || ["authorization", "content-type", "x-content-sha256"]
                     .contains(&v.trim().to_ascii_lowercase().as_str())
         });
+
     let mut response = if !allowed || preflight && !valid_preflight {
         req.into_response(HttpResponse::Forbidden().finish())
             .map_into_right_body()
@@ -60,12 +67,17 @@ pub async fn policy(
     } else {
         next.call(req).await?.map_into_left_body()
     };
+
     super::google::renew_web_cookie(&mut response).await?;
+
     let headers = response.headers_mut();
+
     if sensitive {
         headers.insert(header::CACHE_CONTROL, HeaderValue::from_static("no-store"));
     }
+
     headers.append(header::VARY, HeaderValue::from_static("Origin"));
+
     if preflight {
         headers.append(
             header::VARY,
@@ -74,6 +86,7 @@ pub async fn policy(
             ),
         );
     }
+
     if allowed
         && let Some(origin) = origin
         && (!preflight || valid_preflight)
@@ -86,16 +99,19 @@ pub async fn policy(
                 HeaderValue::from_static("*")
             },
         );
+
         if private {
             headers.insert(
                 header::ACCESS_CONTROL_ALLOW_CREDENTIALS,
                 HeaderValue::from_static("true"),
             );
         }
+
         headers.insert(
             header::ACCESS_CONTROL_EXPOSE_HEADERS,
             HeaderValue::from_static("X-Frame-Seq, X-Captured-At, X-Game-Time"),
         );
+
         if preflight {
             headers.insert(
                 header::ACCESS_CONTROL_ALLOW_METHODS,
@@ -111,5 +127,6 @@ pub async fn policy(
             );
         }
     }
+
     Ok(response)
 }

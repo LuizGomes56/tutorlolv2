@@ -27,8 +27,13 @@ macro_rules! app {
 
 async fn open_count(pool: &PgPool, device: Uuid) -> i64 {
     sqlx::query_scalar!(
-        r#"SELECT count(*) AS "count!" FROM recordings WHERE device_id = $1 AND ended_at IS NULL"#,
-        device
+        r#"
+        SELECT count(*) AS "count!"
+        FROM recordings
+        WHERE device_id = $1
+            AND ended_at IS NULL
+        "#,
+        device,
     )
     .fetch_one(pool)
     .await
@@ -53,10 +58,20 @@ async fn first_session_creates_recording(pool: PgPool) {
     assert_eq!(started.share.mode, ShareMode::Private);
 
     let row = sqlx::query!(
-        r#"SELECT champion, game_mode AS "game_mode: GameMode", is_practice, active_riot_id,
-                  platform_id AS "platform_id: Platform", riot_game_id, queue_id, is_custom, first_game_time,
-                  riot_game_source AS "riot_game_source: RiotGameSource"
-           FROM recordings WHERE id = $1"#,
+        r#"
+        SELECT champion,
+               game_mode AS "game_mode: GameMode",
+               is_practice,
+               active_riot_id,
+               platform_id AS "platform_id: Platform",
+               riot_game_id,
+               queue_id,
+               is_custom,
+               first_game_time,
+               riot_game_source AS "riot_game_source: RiotGameSource"
+        FROM recordings
+        WHERE id = $1
+        "#,
         Uuid::from_bytes(started.recording_id),
     )
     .fetch_one(&pool)
@@ -83,9 +98,33 @@ async fn same_match_resumes_with_next_seq(pool: PgPool) {
     let id = Uuid::from_bytes(first.recording_id);
     for seq in 0..=2 {
         sqlx::query!(
-            "INSERT INTO recording_chunks (recording_id, seq, first_game_time, last_game_time, snapshot_count,
-             raw_format, raw_sha256, raw_size, raw, frames_format, frames)
-             VALUES ($1, $2, 0, 1, 1, 1, $3, 1, $4, 1, $4)",
+            r#"
+            INSERT INTO recording_chunks (
+                recording_id,
+                seq,
+                first_game_time,
+                last_game_time,
+                snapshot_count,
+                raw_format,
+                raw_sha256,
+                raw_size,
+                RAW,
+                frames_format,
+                frames
+            ) VALUES (
+                $1,
+                $2,
+                0,
+                1,
+                1,
+                1,
+                $3,
+                1,
+                $4,
+                1,
+                $4
+            )
+            "#,
             id,
             seq,
             &[0u8; 32][..],
@@ -111,7 +150,12 @@ async fn different_match_supersedes_open_one(pool: PgPool) {
     assert!(!new.resumed);
 
     let old_row = sqlx::query!(
-        r#"SELECT ended_at IS NOT NULL AS "ended!", end_reason AS "end_reason: EndReason" FROM recordings WHERE id = $1"#,
+        r#"
+        SELECT ended_at IS NOT NULL AS "ended!",
+                                       end_reason AS "end_reason: EndReason"
+        FROM recordings
+        WHERE id = $1
+        "#,
         Uuid::from_bytes(old.recording_id),
     )
     .fetch_one(&pool)
@@ -134,8 +178,13 @@ async fn timed_out_recording_is_reopened_when_same(pool: PgPool) {
     let first = start(&app, &device, session(probe(120.0, 0.0276, "ahri"))).await;
     let id = Uuid::from_bytes(first.recording_id);
     sqlx::query!(
-        "UPDATE recordings SET last_ingest_at = now() - interval '20 minutes',
-         ended_at = now() - interval '20 minutes', end_reason = $2 WHERE id = $1",
+        r#"
+        UPDATE recordings
+        SET last_ingest_at = now() - interval '20 minutes',
+            ended_at = now() - interval '20 minutes',
+            end_reason = $2
+        WHERE id = $1
+        "#,
         id,
         EndReason::Timeout as EndReason,
     )
@@ -146,10 +195,18 @@ async fn timed_out_recording_is_reopened_when_same(pool: PgPool) {
     let again = start(&app, &device, session(probe(1320.0, 0.0276, "ahri"))).await;
     assert_eq!(again.recording_id, first.recording_id);
     assert!(again.resumed);
-    let open = sqlx::query_scalar!(r#"SELECT ended_at IS NULL AND end_reason IS NULL AS "open!" FROM recordings WHERE id = $1"#, id)
-        .fetch_one(&pool)
-        .await
-        .unwrap();
+    let open = sqlx::query_scalar!(
+        r#"
+        SELECT ended_at IS NULL
+        AND end_reason IS NULL AS "open!"
+        FROM recordings
+        WHERE id = $1
+        "#,
+        id,
+    )
+    .fetch_one(&pool)
+    .await
+    .unwrap();
     assert!(open);
 
     // the next janitor tick must not end it again before any chunk arrives
@@ -162,13 +219,19 @@ async fn old_timed_out_recording_is_not_reopened(pool: PgPool) {
     let device = register(&app).await;
     let first = start(&app, &device, session(probe(120.0, 0.0276, "ahri"))).await;
     sqlx::query!(
-        "UPDATE recordings SET last_ingest_at = now() - interval '7 hours', ended_at = now() - interval '7 hours', end_reason = $2 WHERE id = $1",
+        r#"
+        UPDATE recordings
+        SET last_ingest_at = now() - interval '7 hours',
+            ended_at = now() - interval '7 hours',
+            end_reason = $2
+        WHERE id = $1
+        "#,
         Uuid::from_bytes(first.recording_id),
         EndReason::Timeout as EndReason,
     )
     .execute(&pool)
-        .await
-        .unwrap();
+    .await
+    .unwrap();
     let again = start(&app, &device, session(probe(25_320.0, 0.0276, "ahri"))).await;
     assert_ne!(again.recording_id, first.recording_id);
 }
@@ -179,7 +242,17 @@ async fn live_code_is_soft_deleted_on_supersede(pool: PgPool) {
     let device = register(&app).await;
     let old = start(&app, &device, session(probe(1500.0, 0.0276, "ahri"))).await;
     sqlx::query!(
-        "INSERT INTO share_codes (recording_id, code, mode) VALUES ($1, $2, $3)",
+        r#"
+        INSERT INTO share_codes (
+            recording_id,
+            code,
+            MODE
+        ) VALUES (
+            $1,
+            $2,
+            $3
+        )
+        "#,
         Uuid::from_bytes(old.recording_id),
         CODE,
         CodeMode::Live as CodeMode,
@@ -189,8 +262,12 @@ async fn live_code_is_soft_deleted_on_supersede(pool: PgPool) {
     .unwrap();
     start(&app, &device, session(probe(40.0, 0.0312, "zoe"))).await;
     let code = sqlx::query!(
-        r#"SELECT deleted_at IS NOT NULL AS "deleted!", delete_reason AS "delete_reason: ShareDeleteReason"
-           FROM share_codes WHERE code = $1"#,
+        r#"
+        SELECT deleted_at IS NOT NULL AS "deleted!",
+                                         delete_reason AS "delete_reason: ShareDeleteReason"
+        FROM share_codes
+        WHERE code = $1
+        "#,
         CODE,
     )
     .fetch_one(&pool)
