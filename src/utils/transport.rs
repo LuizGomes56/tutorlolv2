@@ -7,7 +7,9 @@ use tutorlolv2::{
 };
 
 #[cfg(not(feature = "local-calculation"))]
-use {tutorlolv2::model::Realtime, web_sys::js_sys::Uint8Array};
+use crate::utils::api::WebClient;
+#[cfg(not(feature = "local-calculation"))]
+use tutorlolv2_api::{self as api, NoHeaders, NoPath, NoQuery};
 
 pub type Error = Box<dyn core::error::Error>;
 
@@ -44,18 +46,10 @@ pub async fn calculator(input: InputGame<'_>) -> Result<OutputGame, Error> {
 
     #[cfg(not(feature = "local-calculation"))]
     {
-        let body = {
-            let bytes = bincode::encode_to_vec(input, BINCODE_CONFIG)?;
-            Uint8Array::from(bytes.as_slice())
-        };
-
-        let response = post("calculator", body).await?;
-
-        let (output, consumed) = bincode::decode_from_slice(&response, BINCODE_CONFIG)?;
-
-        consume_all(consumed, response.len())?;
-
-        Ok(output)
+        let response = WebClient::public()
+            .send::<api::Calculator>(&NoPath, &NoQuery, &NoHeaders, &input, None)
+            .await?;
+        Ok(response.decode()?)
     }
 }
 
@@ -80,93 +74,17 @@ pub async fn realtime(
 
     #[cfg(not(feature = "local-calculation"))]
     {
-        let bytes = {
-            #[cfg(not(feature = "tauri"))]
-            {
-                #[cfg(debug_assertions)]
-                let _ = decode_realtime_input(bytes)?;
-
-                Uint8Array::from(bytes)
-            }
-
-            #[cfg(feature = "tauri")]
-            {
-                #[cfg(debug_assertions)]
-                let _ = decode_realtime_input(&bytes.to_vec())?;
-
-                bytes
-            }
-        };
-
-        let response = post("realtime", bytes).await?;
-
-        let (output, consumed) =
-            bincode::borrow_decode_from_slice::<Realtime<'_>, _>(&response, BINCODE_CONFIG)?;
-
-        consume_all(consumed, response.len())?;
-
+        #[cfg(feature = "tauri")]
+        let buffer = bytes.to_vec();
+        #[cfg(feature = "tauri")]
+        let bytes = buffer.as_slice();
+        let input = decode_realtime_input(bytes)?;
+        let response = WebClient::public()
+            .send::<api::Realtime>(&NoPath, &NoQuery, &NoHeaders, &input, None)
+            .await?;
+        let output = response.decode()?;
         Ok(output.into())
     }
-}
-
-#[cfg(not(feature = "local-calculation"))]
-async fn post(endpoint: &str, body: Uint8Array) -> Result<Vec<u8>, Error> {
-    use wasm_bindgen::JsCast;
-    use wasm_bindgen_futures::JsFuture;
-    use web_sys::{Request, RequestInit, Response};
-
-    let base = option_env!("TUTORLOL_API_URL").unwrap_or("http://127.0.0.1:8082/api/games");
-    let url = format!("{}/{endpoint}", base.trim_end_matches('/'));
-
-    let options = RequestInit::new();
-
-    options.set_method("POST");
-    options.set_body(body.as_ref());
-
-    let request = Request::new_with_str_and_init(&url, &options).map_err(js_error)?;
-
-    request
-        .headers()
-        .set("Content-Type", "application/octet-stream")
-        .map_err(js_error)?;
-
-    request
-        .headers()
-        .set("Accept", "application/octet-stream")
-        .map_err(js_error)?;
-
-    let window = web_sys::window().ok_or("Browser window is unavailable")?;
-
-    let response: Response = JsFuture::from(window.fetch_with_request(&request))
-        .await
-        .map_err(js_error)?
-        .dyn_into()
-        .map_err(js_error)?;
-
-    if !response.ok() {
-        let detail = JsFuture::from(response.text().map_err(js_error)?)
-            .await
-            .map_err(js_error)?
-            .as_string()
-            .unwrap_or_default();
-
-        return Err(format!(
-            "Calculation request failed (HTTP {}): {detail}",
-            response.status()
-        )
-        .into());
-    }
-
-    let bytes = JsFuture::from(response.array_buffer().map_err(js_error)?)
-        .await
-        .map_err(js_error)?;
-
-    Ok(Uint8Array::new(&bytes).to_vec())
-}
-
-#[cfg(not(feature = "local-calculation"))]
-fn js_error(value: wasm_bindgen::JsValue) -> Error {
-    format!("Calculation service request failed: {value:?}").into()
 }
 
 /// Calculate an already decoded viewer frame without serializing it locally.
@@ -180,13 +98,10 @@ pub async fn realtime_from(input: &RiotRealtime<'_>) -> Result<crate::livegame::
 
     #[cfg(not(feature = "local-calculation"))]
     {
-        let bytes = bincode::encode_to_vec(input, super::BINCODE_CONFIG)?;
-        let response = post("realtime", Uint8Array::from(bytes.as_slice())).await?;
-        let (output, consumed) =
-            bincode::borrow_decode_from_slice::<Realtime<'_>, _>(&response, super::BINCODE_CONFIG)?;
-
-        consume_all(consumed, response.len())?;
-
+        let response = WebClient::public()
+            .send::<api::Realtime>(&NoPath, &NoQuery, &NoHeaders, input, None)
+            .await?;
+        let output = response.decode()?;
         Ok(output.into())
     }
 }
