@@ -15,7 +15,9 @@
 //! want to do it, you can use the [`crate::const_eval`] module to
 //! do it
 
+use crate::AbilityBatch;
 use core::num::NonZeroU8;
+
 use {
     crate::{
         ChampionId, ItemId, RuneId, WikiModifiers,
@@ -1116,22 +1118,48 @@ impl DamageTable {
         data: &DamageEvalData,
         modifiers: Modifiers,
     ) -> DamagesMut<'_> {
-        self.ctxs[r] = ctx;
+        self.fill_with_batch(r, ctx, data, modifiers, None)
+    }
 
-        let row = self.row_mut(r);
-        let mut onhit = RangeDamage::default();
+    /// Batch specialization: one indirect call for the whole champion.
+    pub(crate) fn fill_batch(
+        &mut self,
+        r: usize,
+        ctx: Ctx,
+        data: &DamageEvalData,
+        modifiers: Modifiers,
+        batch: AbilityBatch,
+    ) -> DamagesMut<'_> {
+        self.fill_with_batch(r, ctx, data, modifiers, Some(batch))
+    }
+
+    fn fill_with_batch(
+        &mut self,
+        r: usize,
+        ctx: Ctx,
+        data: &DamageEvalData,
+        modifiers: Modifiers,
+        batch: Option<AbilityBatch>,
+    ) -> DamagesMut<'_> {
+        self.ctxs[r] = ctx;
 
         // excludes the reserved candidate pair
         let n_items = data.items.closures.len();
+        let row = self.row_mut(r);
+        let mut onhit = RangeDamage::default();
 
-        Self::eval_abilities(
-            &ctx,
-            &mut onhit,
-            modifiers,
-            data.abilities.metadata,
-            data.abilities.closures,
-            row.abilities,
-        );
+        if let Some(batch) = batch {
+            batch(&ctx, modifiers, &mut onhit, row.abilities);
+        } else {
+            Self::eval_abilities(
+                &ctx,
+                &mut onhit,
+                modifiers,
+                data.abilities.metadata,
+                data.abilities.closures,
+                row.abilities,
+            );
+        }
 
         Self::eval(
             &ctx,
@@ -1152,13 +1180,13 @@ impl DamageTable {
         );
 
         let a = Attacks::new(&ctx, onhit, modifiers.damages.physical_mod);
+
         *row.attacks = [
             a.basic_attack,
             a.critical_strike,
             a.onhit_damage.minimum_damage,
             a.onhit_damage.maximum_damage,
         ];
-
         row
     }
 
@@ -1168,6 +1196,7 @@ impl DamageTable {
         eval_data: &DamageEvalData,
         shred: ResistShred,
         modifiers: Modifiers,
+        batch: AbilityBatch,
     ) {
         for (i, &(armor, magic_resist)) in RiotFormulas::MONSTER_RESISTS.iter().enumerate() {
             let full_state = EnemyState {
@@ -1183,7 +1212,7 @@ impl DamageTable {
             let ctx = self_state.ctx(&full_state);
             let modifiers = modifiers.against(&full_state, self_state.adaptive_type);
 
-            self.fill(i, ctx, eval_data, modifiers);
+            self.fill_batch(i, ctx, eval_data, modifiers, batch);
         }
     }
 

@@ -8,7 +8,7 @@
 //! so all the function inputs have to be obtained through your
 //! own mechanism
 
-use crate::L_MSTR;
+use crate::{Ctx, L_MSTR};
 use core::num::NonZeroU8;
 
 use {
@@ -579,10 +579,11 @@ pub fn calculator(game: InputGame<'_>) -> OutputGame {
 
     let layout = DamageLayout::new(&eval_data, false);
     let mut damages = DamageTable::zeroed(layout, L_MSTR + enemy_players.len());
+    let ability_batch = current_player_cache.ability_batch;
 
-    damages.fill_monster_damages(&self_state, &eval_data, shred, modifiers);
+    damages.fill_monster_damages(&self_state, &eval_data, shred, modifiers, ability_batch);
 
-    let enemies = get_calculator_enemies(
+    let enemies = get_calculator_enemies_with(
         &mut damages,
         enemy_players,
         &self_state,
@@ -590,6 +591,9 @@ pub fn calculator(game: InputGame<'_>) -> OutputGame {
         modifiers,
         shred,
         game.dragons.enemy_earth_dragons,
+        |damages, r, ctx, eval_data, modifiers| {
+            damages.fill_batch(r, ctx, eval_data, modifiers, ability_batch);
+        },
     );
 
     OutputGame {
@@ -617,6 +621,32 @@ pub fn get_calculator_enemies(
     modifiers: Modifiers,
     shred: ResistShred,
     enemy_earth_dragons: u16,
+) -> Box<[OutputEnemy]> {
+    get_calculator_enemies_with(
+        damages,
+        enemy_players,
+        self_state,
+        eval_data,
+        modifiers,
+        shred,
+        enemy_earth_dragons,
+        |damages, r, ctx, eval_data, modifiers| {
+            damages.fill(r, ctx, eval_data, modifiers);
+        },
+    )
+}
+
+/// Specialize row dispatch once at the call site; the public wrapper retains legacy evaluation.
+#[allow(clippy::too_many_arguments)]
+fn get_calculator_enemies_with(
+    damages: &mut DamageTable,
+    enemy_players: &[InputMinData<'_, EnemyStats>],
+    self_state: &SelfState,
+    eval_data: &DamageEvalData,
+    modifiers: Modifiers,
+    shred: ResistShred,
+    enemy_earth_dragons: u16,
+    mut fill_row: impl FnMut(&mut DamageTable, usize, Ctx, &DamageEvalData, Modifiers),
 ) -> Box<[OutputEnemy]> {
     enemy_players
         .iter()
@@ -662,7 +692,7 @@ pub fn get_calculator_enemies(
                 ..modifiers
             };
 
-            damages.fill(L_MSTR + e, ctx, eval_data, modifiers);
+            fill_row(damages, L_MSTR + e, ctx, eval_data, modifiers);
 
             OutputEnemy {
                 current_stats: full_state.current_stats,
@@ -674,5 +704,123 @@ pub fn get_calculator_enemies(
                 level: e_level,
             }
         })
-        .collect::<Box<[OutputEnemy]>>()
+        .collect()
+}
+
+#[cfg(test)]
+mod batch_routing_tests {
+    use super::*;
+    use strum::EnumCount;
+
+    #[test]
+    fn calculator_batch_matches_legacy_enemy_and_monster_rows() {
+        let level = NonZeroU8::new(18).unwrap();
+        let enemy_players = [InputMinData {
+            stats: Some(EnemyStats {
+                armor: 125.0,
+                magic_resist: 85.0,
+                max_health: 2500.0,
+                current_health: 1200.0,
+                missing_health: 0.0,
+            }),
+            items: &[],
+            item_exceptions: &[],
+            stacks: 0,
+            level,
+            champion_id: ChampionId::Ornn,
+            is_mega_gnar: false,
+        }];
+
+        for index in 0..ChampionId::COUNT {
+            let champion_id = ChampionId::from_repr(index as _).unwrap();
+            let champion = champion_id.data();
+            let base_stats = champion_id.base_stats(level, false);
+            let self_state = SelfState {
+                level,
+                stacks: 150.0,
+                ability_levels: AbilityLevels {
+                    q: 5,
+                    w: 5,
+                    e: 5,
+                    r: 3,
+                },
+                current_stats: PlayerStats {
+                    max_health: 3000.0,
+                    current_health: 1700.0,
+                    max_mana: 1500.0,
+                    attack_damage: 200.0,
+                    ability_power: 180.0,
+                    ..PlayerStats::default()
+                },
+                base_stats,
+                bonus_stats: BasicStats::default(),
+                adaptive_type: champion.adaptive_type,
+            };
+            let eval_data = DamageEvalData {
+                abilities: StaticDamageKind {
+                    metadata: champion.metadata,
+                    closures: champion.closures,
+                },
+                items: DamageKind::items(&crate::bitset::BitSet::EMPTY, AttackType::Melee),
+                runes: DamageKind::runes(&crate::bitset::BitSet::EMPTY, AttackType::Melee),
+            };
+            let modifiers = Modifiers::default();
+            // Flat penetration exercises the monsters' negative-resistance path.
+            let shred = ResistShred {
+                armor_penetration_flat: 100.0,
+                magic_penetration_flat: 100.0,
+                ..ResistShred::default()
+            };
+            let layout = DamageLayout::new(&eval_data, false);
+            let mut legacy = DamageTable::zeroed(layout, L_MSTR + enemy_players.len());
+            let mut batched = legacy.clone();
+            for (i, &(armor, magic_resist)) in RiotFormulas::MONSTER_RESISTS.iter().enumerate() {
+                let full_state = EnemyState {
+                    base_stats: SimpleStats {
+                        armor,
+                        magic_resist,
+                        max_health: 1000.0,
+                    },
+                    ..Default::default()
+                }
+                .full_state(shred, true);
+                legacy.fill(
+                    i,
+                    self_state.ctx(&full_state),
+                    &eval_data,
+                    modifiers.against(&full_state, self_state.adaptive_type),
+                );
+            }
+            batched.fill_monster_damages(
+                &self_state,
+                &eval_data,
+                shred,
+                modifiers,
+                champion.ability_batch,
+            );
+            let legacy_enemies = get_calculator_enemies(
+                &mut legacy,
+                &enemy_players,
+                &self_state,
+                &eval_data,
+                modifiers,
+                shred,
+                2,
+            );
+            let batch_enemies = get_calculator_enemies_with(
+                &mut batched,
+                &enemy_players,
+                &self_state,
+                &eval_data,
+                modifiers,
+                shred,
+                2,
+                |damages, r, ctx, data, modifiers| {
+                    damages.fill_batch(r, ctx, data, modifiers, champion.ability_batch);
+                },
+            );
+            assert_eq!(legacy_enemies, batch_enemies, "{champion_id:?}");
+            assert_eq!(legacy, batched, "{champion_id:?}");
+        }
+    }
 }

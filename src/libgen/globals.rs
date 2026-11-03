@@ -39,6 +39,10 @@ impl EntityId {
 #[cfg(feature = "engine")]
 pub type Closure = fn(&tutorlolv2_types::Ctx) -> f32;
 
+#[cfg(feature = "engine")]
+pub type AbilityBatch =
+    fn(&tutorlolv2_types::Ctx, crate::model::Modifiers, &mut crate::model::RangeDamage, &mut [i32]);
+
 #[derive(Clone, Copy, Debug)]
 pub struct Champion {
     pub name: &'static str,
@@ -60,6 +64,9 @@ pub struct Champion {
 
     #[cfg(feature = "engine")]
     pub closures: &'static [Closure],
+
+    #[cfg(feature = "engine")]
+    pub ability_batch: AbilityBatch,
 }
 
 #[derive(Clone, Copy, Debug)]

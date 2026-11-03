@@ -329,7 +329,13 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
 
                 let modifiers = modifiers.against(&full_state, adaptive_type);
 
-                damages.fill(base_row, self_state.ctx(&full_state), &eval_data, modifiers);
+                damages.fill_batch(
+                    base_row,
+                    self_state.ctx(&full_state),
+                    &eval_data,
+                    modifiers,
+                    current_player_champion_id.data().ability_batch,
+                );
             }
 
             for (k, (state, shred, buffs, extra_item)) in simulated_candidates.iter().enumerate() {
@@ -340,7 +346,13 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
                 buffs.damages.global_mod *= map_mod;
 
                 let modifiers = buffs.against(&target, state.adaptive_type);
-                let mut row = damages.fill(base_row + 1 + k, ctx, &eval_data, modifiers);
+                let mut row = damages.fill_batch(
+                    base_row + 1 + k,
+                    ctx,
+                    &eval_data,
+                    modifiers,
+                    current_player_champion_id.data().ability_batch,
+                );
 
                 // Write the candidate pair in place without realloc
                 if let Some((metadata, closures)) = extra_item {
