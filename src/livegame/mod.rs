@@ -7,7 +7,8 @@ use {
     tutorlolv2::{
         AdaptiveType, ChampionId, GameMap, ItemId, Position, RuneId, TypeMetadata,
         model::{
-            AbilityLevels, BasicStats, Damages, Dragons, EnemyStats, PlayerStats, SimpleStats, Team,
+            AbilityLevels, BasicStats, DamageTable, Damages, Dragons, EnemyStats, PlayerStats,
+            SimpleStats, Team,
         },
     },
     yew::{html::IntoPropValue, prelude::*},
@@ -23,6 +24,7 @@ pub use page::{Livegame, LivegameView};
 pub struct Game {
     pub current_player: CurrentPlayer,
     pub enemies: Rc<[Enemy]>,
+    pub damages: Rc<DamageTable>,
     pub scoreboard: Rc<[Scoreboard]>,
     pub items_meta: Rc<[TypeMetadata<ItemId>]>,
     pub runes_meta: Rc<[TypeMetadata<RuneId>]>,
@@ -149,8 +151,6 @@ impl From<&Scoreboard> for Html {
 #[derive(Debug, PartialEq)]
 pub struct Enemy {
     pub riot_id: Rc<str>,
-    pub damages: Damages,
-    pub siml_items: [Damages; ItemId::L_SIML],
     pub base_stats: SimpleStats,
     pub bonus_stats: SimpleStats,
     pub current_stats: EnemyStats,
@@ -162,14 +162,23 @@ pub struct Enemy {
     pub position: Position,
 }
 
-impl Enemy {
-    pub fn total_damage(&self) -> i32 {
-        self.damages.sum()
+impl Game {
+    pub const ROWS_PER_ENEMY: usize = tutorlolv2::model::Realtime::ROWS_PER_ENEMY;
+
+    pub fn enemy_damages(&self, e: usize) -> Damages<'_> {
+        self.damages.row(e * Self::ROWS_PER_ENEMY)
     }
 
-    pub fn item_scores(&self) -> [(i32, ItemId); ItemId::L_SIML] {
-        let mut list = core::array::from_fn(|i| (self.siml_items[i].sum(), ItemId::SIML[i]));
+    pub fn siml_damages(&self, e: usize, i: usize) -> Damages<'_> {
+        self.damages.row(e * Self::ROWS_PER_ENEMY + 1 + i)
+    }
 
+    pub fn total_damage(&self, e: usize) -> i32 {
+        self.enemy_damages(e).sum()
+    }
+
+    pub fn item_scores(&self, e: usize) -> [(i32, ItemId); ItemId::L_SIML] {
+        let mut list = core::array::from_fn(|i| (self.siml_damages(e, i).sum(), ItemId::SIML[i]));
         list.sort_unstable_by(|left, right| right.cmp(left));
         list
     }
@@ -190,13 +199,12 @@ impl From<tutorlolv2::model::Realtime<'_>> for Game {
                 champion_id: data.current_player.champion_id,
                 game_map: data.current_player.game_map,
             },
+            damages: Rc::new(data.damages),
             enemies: data
                 .enemies
                 .into_iter()
                 .map(|enemy| Enemy {
                     riot_id: enemy.riot_id.into(),
-                    damages: enemy.damages,
-                    siml_items: enemy.siml_items,
                     base_stats: enemy.base_stats,
                     bonus_stats: enemy.bonus_stats,
                     current_stats: enemy.current_stats,
@@ -227,6 +235,38 @@ impl From<tutorlolv2::model::Realtime<'_>> for Game {
             game_time: data.game_time,
             ability_levels: data.ability_levels,
             dragons: data.dragons,
+        }
+    }
+}
+
+#[cfg(all(test, feature = "local-calculation"))]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn converted_live_game_keeps_enemy_and_purchase_rows_aligned() {
+        let bytes = include_bytes!(concat!(env!("CARGO_MANIFEST_DIR"), "/example.bincode"));
+        let (input, _): (tutorlolv2::riot::RiotRealtime<'_>, _) =
+            bincode::borrow_decode_from_slice(bytes, crate::utils::BINCODE_CONFIG).unwrap();
+        let output = tutorlolv2::realtime::realtime(&input).unwrap();
+        assert!(output.enemies.len() > 1);
+        let game = Game::from(output.clone());
+        let cloned = game.clone();
+        assert!(Rc::ptr_eq(&game.damages, &cloned.damages));
+        for (e, enemy) in output.enemies.iter().enumerate() {
+            assert_eq!(&*game.enemies[e].riot_id, enemy.riot_id);
+            assert_eq!(game.enemy_damages(e), output.enemy_damages(e));
+            assert_eq!(game.total_damage(e), output.enemy_damages(e).sum());
+            let mut expected: Vec<_> = ItemId::SIML
+                .iter()
+                .enumerate()
+                .map(|(i, &id)| {
+                    assert_eq!(game.siml_damages(e, i), output.siml_damages(e, i));
+                    (output.siml_damages(e, i).sum(), id)
+                })
+                .collect();
+            expected.sort_unstable_by(|a, b| b.cmp(a));
+            assert_eq!(game.item_scores(e).as_slice(), expected);
         }
     }
 }
