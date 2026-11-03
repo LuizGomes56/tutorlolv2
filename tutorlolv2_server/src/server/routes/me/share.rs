@@ -31,3 +31,12 @@ pub async fn set_share(
             }
         })
 }
+
+api_endpoint! {
+    pub SetHistoryShare {
+        handler: set_share, method: PUT, path: "/api/me/recordings/{id}/share",
+        path_params: { id: Uuid }, query: none, body: bincode(tutorlolv2_protocol::SetShareMode),
+        response: envelope(tutorlolv2_protocol::ShareState), success: [200], auth: owner,
+        request_headers: [], response_headers: ["Cache-Control"],
+    }
+}

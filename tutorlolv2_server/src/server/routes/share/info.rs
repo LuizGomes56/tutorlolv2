@@ -63,3 +63,12 @@ pub async fn info(state: Data<AppState>, code: Path<String>, req: HttpRequest) -
         frames_format: FRAMES_FORMAT,
     })
 }
+
+api_endpoint! {
+    pub ShareInfoEndpoint {
+        handler: info, method: GET, path: "/api/share/{code}",
+        path_params: { code: String }, query: none, body: none,
+        response: envelope(tutorlolv2_protocol::ShareInfo), success: [200], auth: capability,
+        request_headers: [], response_headers: ["Cache-Control"],
+    }
+}

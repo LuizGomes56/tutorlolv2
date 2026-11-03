@@ -206,3 +206,14 @@ pub async fn callback(s: Data<AppState>, r: HttpRequest, q: Query<Callback>) -> 
         }
     }
 }
+
+api_contract! { pub struct GoogleCallbackQuery { pub state: String, pub code: Option<String>, pub error: Option<String> } }
+
+api_endpoint! {
+    pub GoogleCallback {
+        handler: callback, method: GET, path: "/api/auth/google/callback",
+        path_params: {  }, query: form(GoogleCallbackQuery), body: none,
+        response: browser, success: [200,302,400], auth: browser,
+        request_headers: [], response_headers: ["Location", "Set-Cookie", "Cache-Control"],
+    }
+}

@@ -37,3 +37,12 @@ pub async fn register_device(
         device_secret,
     })
 }
+
+api_endpoint! {
+    pub RegisterDeviceEndpoint {
+        handler: register_device, method: POST, path: "/api/devices",
+        path_params: {  }, query: none, body: bincode(tutorlolv2_protocol::RegisterDevice),
+        response: envelope(tutorlolv2_protocol::DeviceCredentials), success: [200], auth: anonymous,
+        request_headers: [], response_headers: ["Cache-Control"],
+    }
+}

@@ -116,3 +116,12 @@ pub async fn push_live(
 
     Ok(HttpResponse::NoContent().finish())
 }
+
+api_endpoint! {
+    pub PushLive {
+        handler: push_live, method: PUT, path: "/api/recordings/{id}/live",
+        path_params: { id: Uuid }, query: none, body: brotli_bincode(tutorlolv2_protocol::RawSnapshot),
+        response: empty, success: [204], auth: device,
+        request_headers: [], response_headers: ["Cache-Control"],
+    }
+}

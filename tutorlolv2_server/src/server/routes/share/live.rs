@@ -64,3 +64,14 @@ pub async fn live(
         }
     }
 }
+
+api_contract! { pub struct After { #[serde(default)] pub after: u64 } }
+
+api_endpoint! {
+    pub PollLive {
+        handler: live, method: GET, path: "/api/share/{code}/live",
+        path_params: { code: String }, query: form(After), body: none,
+        response: live(tutorlolv2::riot::RiotRealtime<'wire>), success: [200,204], auth: capability,
+        request_headers: [], response_headers: ["X-Frame-Seq", "X-Captured-At", "X-Game-Time", "Cache-Control"],
+    }
+}

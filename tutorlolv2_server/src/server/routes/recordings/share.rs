@@ -43,3 +43,21 @@ pub async fn set_share(
         .change_share(auth.into(), id.into_inner(), request, false)
         .await
 }
+
+api_endpoint! {
+    pub GetRecordingShare {
+        handler: owner_share, method: GET, path: "/api/recordings/{id}/share",
+        path_params: { id: Uuid }, query: none, body: none,
+        response: envelope(tutorlolv2_protocol::ShareState), success: [200], auth: device,
+        request_headers: [], response_headers: ["Cache-Control"],
+    }
+}
+
+api_endpoint! {
+    pub SetRecordingShare {
+        handler: set_share, method: PUT, path: "/api/recordings/{id}/share",
+        path_params: { id: Uuid }, query: none, body: bincode(tutorlolv2_protocol::SetShareMode),
+        response: envelope(tutorlolv2_protocol::ShareState), success: [200], auth: device,
+        request_headers: [], response_headers: ["Cache-Control"],
+    }
+}

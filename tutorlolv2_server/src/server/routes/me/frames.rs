@@ -57,3 +57,12 @@ pub async fn frames(state: Data<AppState>, auth: Owner, path: Path<(Uuid, u32)>)
         .insert_header(("Content-Encoding", "br"))
         .body(row.frames))
 }
+
+api_endpoint! {
+    pub OwnerFrames {
+        handler: frames, method: GET, path: "/api/me/recordings/{id}/frames/{seq}",
+        path_params: { id: Uuid, seq: u32 }, query: none, body: none,
+        response: brotli_bincode(tutorlolv2::riot::FrameChunk<'wire>), success: [200], auth: owner,
+        request_headers: [], response_headers: ["Content-Encoding", "Cache-Control"],
+    }
+}

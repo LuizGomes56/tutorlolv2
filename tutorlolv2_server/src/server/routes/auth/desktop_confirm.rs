@@ -84,3 +84,12 @@ pub async fn confirm_desktop(s: Data<AppState>, a: AccountAuth) -> Response {
 
     Ok(HttpResponse::NoContent().finish())
 }
+
+api_endpoint! {
+    pub ConfirmDesktop {
+        handler: confirm_desktop, method: POST, path: "/api/auth/desktop/confirm",
+        path_params: {  }, query: none, body: none,
+        response: empty, success: [204], auth: account,
+        request_headers: [], response_headers: ["Cache-Control"],
+    }
+}

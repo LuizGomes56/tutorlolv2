@@ -82,3 +82,14 @@ pub async fn start(s: Data<AppState>, q: Query<Start>) -> Response {
 
     Ok(r)
 }
+
+api_contract! { pub struct GoogleStartQuery { pub target: String, pub return_to: Option<String>, pub port: Option<u16>, pub app_state: Option<String> } }
+
+api_endpoint! {
+    pub GoogleStart {
+        handler: start, method: GET, path: "/api/auth/google/start",
+        path_params: {  }, query: form(GoogleStartQuery), body: none,
+        response: browser, success: [302], auth: browser,
+        request_headers: [], response_headers: ["Location", "Set-Cookie", "Cache-Control"],
+    }
+}

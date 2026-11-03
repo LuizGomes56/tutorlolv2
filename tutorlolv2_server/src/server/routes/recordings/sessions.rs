@@ -188,3 +188,12 @@ pub async fn start_session(
 
     respond(started)
 }
+
+api_endpoint! {
+    pub StartSessionEndpoint {
+        handler: start_session, method: POST, path: "/api/recordings/sessions",
+        path_params: {  }, query: none, body: bincode(tutorlolv2_protocol::StartSession),
+        response: envelope(tutorlolv2_protocol::SessionStarted), success: [200], auth: device,
+        request_headers: [], response_headers: ["Cache-Control"],
+    }
+}

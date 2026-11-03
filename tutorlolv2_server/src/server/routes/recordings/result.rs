@@ -74,3 +74,12 @@ pub async fn set_result(
 
     Ok(HttpResponse::NoContent().finish())
 }
+
+api_endpoint! {
+    pub SetResult {
+        handler: set_result, method: PATCH, path: "/api/recordings/{id}/result",
+        path_params: { id: Uuid }, query: none, body: bincode(tutorlolv2_protocol::RecordingResult),
+        response: empty, success: [204], auth: device,
+        request_headers: [], response_headers: ["Cache-Control"],
+    }
+}

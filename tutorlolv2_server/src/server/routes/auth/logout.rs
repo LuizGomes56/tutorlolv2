@@ -45,3 +45,12 @@ pub async fn logout(s: Data<AppState>, a: AccountAuth) -> Response {
 
     Ok(r)
 }
+
+api_endpoint! {
+    pub Logout {
+        handler: logout, method: POST, path: "/api/auth/logout",
+        path_params: {  }, query: none, body: none,
+        response: empty, success: [204], auth: account,
+        request_headers: [], response_headers: ["Cache-Control"],
+    }
+}

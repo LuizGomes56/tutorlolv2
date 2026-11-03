@@ -100,3 +100,12 @@ pub async fn redeem(
 
     respond(DesktopSession { token: t, email })
 }
+
+api_endpoint! {
+    pub RedeemDesktop {
+        handler: redeem, method: POST, path: "/api/auth/desktop/redeem",
+        path_params: {  }, query: none, body: bincode(tutorlolv2_protocol::RedeemTicket),
+        response: envelope(tutorlolv2_protocol::DesktopSession), success: [200], auth: device,
+        request_headers: [], response_headers: ["Cache-Control"],
+    }
+}

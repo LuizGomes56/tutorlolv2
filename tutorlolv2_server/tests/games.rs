@@ -1,6 +1,8 @@
 use actix_web::{App, http::StatusCode, test};
 use std::num::NonZeroU8;
 use tutorlolv2::{ChampionId, model::*, riot::*};
+use tutorlolv2_api::{Calculator, Realtime as RealtimeEndpoint};
+use tutorlolv2_server::server::endpoint::EndpointExt;
 use tutorlolv2_server::server::{codec::OCTET_STREAM, games::*};
 
 fn live_game() -> RiotRealtime<'static> {
@@ -64,7 +66,10 @@ fn live_game() -> RiotRealtime<'static> {
 
 #[actix_web::test]
 async fn calculator_accepts_bincode_borrowed_input_and_returns_decodable_output() {
-    let app = test::init_service(App::new().service(calculator_handler)).await;
+    let app = test::init_service(App::new().service(
+        Calculator::resource("/api/games").route(Calculator::route().to(calculator_handler)),
+    ))
+    .await;
     let enemies = [InputMinData {
         champion_id: ChampionId::Aatrox,
         ..Default::default()
@@ -97,7 +102,13 @@ async fn calculator_accepts_bincode_borrowed_input_and_returns_decodable_output(
 
 #[actix_web::test]
 async fn realtime_accepts_bincode_and_returns_borrowable_output() {
-    let app = test::init_service(App::new().service(realtime_handler)).await;
+    let app = test::init_service(
+        App::new().service(
+            RealtimeEndpoint::resource("/api/games")
+                .route(RealtimeEndpoint::route().to(realtime_handler)),
+        ),
+    )
+    .await;
     let bytes = bincode::encode_to_vec(live_game(), tutorlolv2_types::BINCODE_CONFIG).unwrap();
     let response = test::call_service(
         &app,
@@ -121,8 +132,14 @@ async fn realtime_accepts_bincode_and_returns_borrowable_output() {
 async fn malformed_and_trailing_bytes_return_bad_request_for_both_endpoints() {
     let app = test::init_service(
         App::new()
-            .service(calculator_handler)
-            .service(realtime_handler),
+            .service(
+                Calculator::resource("/api/games")
+                    .route(Calculator::route().to(calculator_handler)),
+            )
+            .service(
+                RealtimeEndpoint::resource("/api/games")
+                    .route(RealtimeEndpoint::route().to(realtime_handler)),
+            ),
     )
     .await;
     let mut calc =

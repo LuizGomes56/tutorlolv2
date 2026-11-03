@@ -58,3 +58,12 @@ pub async fn end(
 
     Ok(HttpResponse::NoContent().finish())
 }
+
+api_endpoint! {
+    pub EndRecordingEndpoint {
+        handler: end, method: POST, path: "/api/recordings/{id}/end",
+        path_params: { id: Uuid }, query: none, body: bincode(tutorlolv2_protocol::EndRecording),
+        response: empty, success: [204], auth: device,
+        request_headers: [], response_headers: ["Cache-Control"],
+    }
+}

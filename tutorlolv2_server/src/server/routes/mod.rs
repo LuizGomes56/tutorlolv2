@@ -1,7 +1,21 @@
-//! Mounting of the `/api` routes with their body and rate limits (spec §10.5).
+// Explicit declarations are parsed by the Rust contract generator. The compile-time
+// marker/handler references prevent a declaration from naming a missing item.
+macro_rules! api_endpoint {
+    (pub $marker:ident { handler: $handler:ident, $($metadata:tt)* }) => {
+        const _: () = {
+            let _ = $handler;
+            let _: core::marker::PhantomData<tutorlolv2_api::$marker> = core::marker::PhantomData;
+        };
+    };
+}
+macro_rules! api_contract {
+    ($($definition:tt)*) => {};
+}
+
+// Mounting of the `/api` routes with their body and rate limits (spec §10.5).
 
 pub use crate::server::rate_limits::{ClientKey, RateLimits};
-use crate::server::sharing;
+use crate::server::{endpoint::EndpointExt, sharing};
 use actix_governor::Governor;
 use actix_web::{
     Scope,
@@ -15,6 +29,7 @@ use recordings::{
     chunk::upload_chunk, end::end, heartbeat::heartbeat, result::set_result,
     sessions::start_session,
 };
+use tutorlolv2_api as api;
 use tutorlolv2_protocol::MAX_CHUNK_BYTES;
 
 /// Body limit of every `/api` route except chunk uploads.
@@ -33,7 +48,8 @@ pub fn devices(limits: Option<RateLimits>) -> impl HttpServiceFactory + 'static 
     let limits = limits.unwrap_or_else(|| RateLimits::new(false));
 
     guarded!(
-        web::resource("/devices").route(web::post().to(register_device)),
+        api::RegisterDeviceEndpoint::resource("/api")
+            .route(api::RegisterDeviceEndpoint::route().to(register_device)),
         enabled,
         &limits.devices
     )
@@ -46,43 +62,47 @@ pub fn recordings(limits: Option<RateLimits>) -> Scope {
 
     web::scope("/recordings")
         .service(guarded!(
-            web::resource("/{id}/share")
-                .route(web::get().to(recordings::share::owner_share))
-                .route(web::put().to(recordings::share::set_share)),
+            api::GetRecordingShare::resource("/api/recordings")
+                .route(api::GetRecordingShare::route().to(recordings::share::owner_share))
+                .route(api::SetRecordingShare::route().to(recordings::share::set_share)),
             enabled,
             &limits.sessions
         ))
         .service(guarded!(
-            web::resource("/{id}/live")
+            api::PushLive::resource("/api/recordings")
                 .app_data(PayloadConfig::new(sharing::MAX_LIVE_BYTES))
-                .route(web::put().to(recordings::live::push_live)),
+                .route(api::PushLive::route().to(recordings::live::push_live)),
             enabled,
             &limits.live
         ))
         .service(guarded!(
-            web::resource("/sessions").route(web::post().to(start_session)),
+            api::StartSessionEndpoint::resource("/api/recordings")
+                .route(api::StartSessionEndpoint::route().to(start_session)),
             enabled,
             &limits.sessions
         ))
         .service(guarded!(
-            web::resource("/{id}/chunks/{seq}")
+            api::UploadChunk::resource("/api/recordings")
                 .app_data(PayloadConfig::new(MAX_CHUNK_BYTES))
-                .route(web::post().to(upload_chunk)),
+                .route(api::UploadChunk::route().to(upload_chunk)),
             enabled,
             &limits.chunks
         ))
         .service(guarded!(
-            web::resource("/{id}/heartbeat").route(web::post().to(heartbeat)),
+            api::Heartbeat::resource("/api/recordings")
+                .route(api::Heartbeat::route().to(heartbeat)),
             enabled,
             &limits.control
         ))
         .service(guarded!(
-            web::resource("/{id}/end").route(web::post().to(end)),
+            api::EndRecordingEndpoint::resource("/api/recordings")
+                .route(api::EndRecordingEndpoint::route().to(end)),
             enabled,
             &limits.control
         ))
         .service(guarded!(
-            web::resource("/{id}/result").route(web::patch().to(set_result)),
+            api::SetResult::resource("/api/recordings")
+                .route(api::SetResult::route().to(set_result)),
             enabled,
             &limits.control
         ))
@@ -99,32 +119,47 @@ pub fn api(limits: Option<RateLimits>) -> impl HttpServiceFactory {
         .app_data(PayloadConfig::new(DEFAULT_BODY_LIMIT))
         .service(
             web::scope("/games")
-                .service(realtime_handler)
-                .service(calculator_handler),
+                .service(
+                    api::Realtime::resource("/api/games")
+                        .route(api::Realtime::route().to(realtime_handler)),
+                )
+                .service(
+                    api::Calculator::resource("/api/games")
+                        .route(api::Calculator::route().to(calculator_handler)),
+                ),
         )
         .service(guarded!(
             web::scope("/auth")
                 .wrap(
                     actix_web::middleware::DefaultHeaders::new().add(("Cache-Control", "no-store"))
                 )
-                .route("/google/start", web::get().to(auth::google_start::start))
-                .route(
-                    "/google/callback",
-                    web::get().to(auth::google_callback::callback)
+                .service(
+                    api::GoogleStart::resource("/api/auth")
+                        .route(api::GoogleStart::route().to(auth::google_start::start))
                 )
-                .route(
-                    "/desktop/redeem",
-                    web::post().to(auth::desktop_redeem::redeem)
+                .service(
+                    api::GoogleCallback::resource("/api/auth")
+                        .route(api::GoogleCallback::route().to(auth::google_callback::callback))
                 )
-                .route(
-                    "/desktop/confirm",
-                    web::post().to(auth::desktop_confirm::confirm_desktop)
+                .service(
+                    api::RedeemDesktop::resource("/api/auth")
+                        .route(api::RedeemDesktop::route().to(auth::desktop_redeem::redeem))
                 )
-                .route("/logout", web::post().to(auth::logout::logout)),
+                .service(
+                    api::ConfirmDesktop::resource("/api/auth").route(
+                        api::ConfirmDesktop::route().to(auth::desktop_confirm::confirm_desktop)
+                    )
+                )
+                .service(
+                    api::Logout::resource("/api/auth")
+                        .route(api::Logout::route().to(auth::logout::logout))
+                ),
             enabled,
             &viewer_limits.sessions
         ))
-        .route("/account", web::get().to(account::account))
+        .service(
+            api::GetAccount::resource("/api").route(api::GetAccount::route().to(account::account)),
+        )
         .service(devices(limits.clone()))
         .service(recordings(limits))
         .service(guarded!(
@@ -136,9 +171,18 @@ pub fn api(limits: Option<RateLimits>) -> impl HttpServiceFactory {
         ))
         .service(guarded!(
             web::scope("/share")
-                .route("/{code}", web::get().to(share::info::info))
-                .route("/{code}/live", web::get().to(share::live::live))
-                .route("/{code}/frames/{seq}", web::get().to(share::frames::frames)),
+                .service(
+                    api::ShareInfoEndpoint::resource("/api/share")
+                        .route(api::ShareInfoEndpoint::route().to(share::info::info))
+                )
+                .service(
+                    api::PollLive::resource("/api/share")
+                        .route(api::PollLive::route().to(share::live::live))
+                )
+                .service(
+                    api::ShareFrames::resource("/api/share")
+                        .route(api::ShareFrames::route().to(share::frames::frames))
+                ),
             enabled,
             &viewer_limits.viewers
         ))
@@ -188,8 +232,20 @@ pub fn me_scope() -> Scope {
         .app_data(web::PathConfig::default().error_handler(|_, _| {
             actix_web::error::ErrorBadRequest("Invalid recording ID or sequence")
         }))
-        .route("", web::get().to(me::recordings::list))
-        .route("/{id}", web::get().to(me::recording::details))
-        .route("/{id}/frames/{seq}", web::get().to(me::frames::frames))
-        .route("/{id}/share", web::put().to(me::share::set_share))
+        .service(
+            api::ListRecordings::resource("/api/me/recordings")
+                .route(api::ListRecordings::route().to(me::recordings::list)),
+        )
+        .service(
+            api::GetRecording::resource("/api/me/recordings")
+                .route(api::GetRecording::route().to(me::recording::details)),
+        )
+        .service(
+            api::OwnerFrames::resource("/api/me/recordings")
+                .route(api::OwnerFrames::route().to(me::frames::frames)),
+        )
+        .service(
+            api::SetHistoryShare::resource("/api/me/recordings")
+                .route(api::SetHistoryShare::route().to(me::share::set_share)),
+        )
 }

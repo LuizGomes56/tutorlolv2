@@ -58,3 +58,12 @@ pub async fn heartbeat(state: Data<AppState>, auth: DeviceAuth, path: Path<Uuid>
         Err(ErrorConflict("The recording has ended"))
     }
 }
+
+api_endpoint! {
+    pub Heartbeat {
+        handler: heartbeat, method: POST, path: "/api/recordings/{id}/heartbeat",
+        path_params: { id: Uuid }, query: none, body: none,
+        response: empty, success: [204], auth: device,
+        request_headers: [], response_headers: ["Cache-Control"],
+    }
+}

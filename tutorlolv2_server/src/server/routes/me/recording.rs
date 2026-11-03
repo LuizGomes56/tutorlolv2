@@ -116,3 +116,12 @@ pub async fn details(state: Data<AppState>, auth: Owner, id: Path<Uuid>) -> Resp
     })
     .map(no_store)
 }
+
+api_endpoint! {
+    pub GetRecording {
+        handler: details, method: GET, path: "/api/me/recordings/{id}",
+        path_params: { id: Uuid }, query: none, body: none,
+        response: envelope(tutorlolv2_protocol::RecordingDetails), success: [200], auth: owner,
+        request_headers: [], response_headers: ["Cache-Control"],
+    }
+}

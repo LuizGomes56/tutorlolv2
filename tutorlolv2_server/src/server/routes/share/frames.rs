@@ -56,3 +56,12 @@ pub async fn frames(
         ))
         .body(chunk.frames))
 }
+
+api_endpoint! {
+    pub ShareFrames {
+        handler: frames, method: GET, path: "/api/share/{code}/frames/{seq}",
+        path_params: { code: String, seq: u32 }, query: none, body: none,
+        response: brotli_bincode(tutorlolv2::riot::FrameChunk<'wire>), success: [200], auth: capability,
+        request_headers: [], response_headers: ["Content-Encoding", "Cache-Control"],
+    }
+}

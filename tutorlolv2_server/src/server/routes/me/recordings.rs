@@ -85,3 +85,14 @@ pub async fn list(state: Data<AppState>, auth: Owner, query: Query<Pagination>) 
 
     respond(HistoryPage { items, next_before }).map(no_store)
 }
+
+api_contract! { pub struct Pagination { pub before: Option<Uuid>, pub limit: Option<u32> } }
+
+api_endpoint! {
+    pub ListRecordings {
+        handler: list, method: GET, path: "/api/me/recordings",
+        path_params: {  }, query: form(Pagination), body: none,
+        response: envelope(tutorlolv2_protocol::HistoryPage), success: [200], auth: owner,
+        request_headers: [], response_headers: ["Cache-Control"],
+    }
+}

@@ -204,3 +204,12 @@ pub async fn upload_chunk(
 
     Ok(HttpResponse::Created().finish())
 }
+
+api_endpoint! {
+    pub UploadChunk {
+        handler: upload_chunk, method: POST, path: "/api/recordings/{id}/chunks/{seq}",
+        path_params: { id: Uuid, seq: u32 }, query: none, body: brotli_bincode(tutorlolv2_protocol::RawChunk),
+        response: empty, success: [200,201], auth: device,
+        request_headers: ["X-Content-Sha256"], response_headers: ["Cache-Control"],
+    }
+}

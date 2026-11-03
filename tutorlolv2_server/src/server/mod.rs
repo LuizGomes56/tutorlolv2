@@ -19,3 +19,5 @@ pub mod statics;
 pub mod google;
 
 pub mod response;
+
+pub mod endpoint;
