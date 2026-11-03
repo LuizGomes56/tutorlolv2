@@ -172,3 +172,39 @@ async fn open_enums_are_stored_as_text(pool: PgPool) {
         GameMode::from("NEWMODE")
     );
 }
+
+#[test]
+fn account_config_defaults_bounds_and_secret_redaction() {
+    let c = Config::from_lookup(only_database_url).unwrap();
+    assert_eq!(c.api_public_base_url, "http://127.0.0.1:8082");
+    assert_eq!(c.session_ttl_days, 90);
+    assert!(c.cookie_secure);
+    assert!(c.google_client_id.is_none());
+    assert!(c.google_client_secret.is_none());
+    for days in ["0", "-1", "366", "invalid"] {
+        assert!(
+            Config::from_lookup(|key| if key == "SESSION_TTL_DAYS" {
+                Some(days.into())
+            } else {
+                only_database_url(key)
+            })
+            .is_err()
+        );
+    }
+    let c = Config::from_lookup(|key| match key {
+        "GOOGLE_CLIENT_ID" => Some("example-client-id".into()),
+        "GOOGLE_CLIENT_SECRET" => Some("secret-should-stay-hidden".into()),
+        "GOOGLE_TOKEN_ENDPOINT_TRUSTED_OVERRIDE" => Some("http://127.0.0.1:8096/token".into()),
+        "COOKIE_SECURE" => Some("false".into()),
+        "SESSION_TTL_DAYS" => Some("7".into()),
+        "API_PUBLIC_BASE_URL" => Some("https://api.example.test/".into()),
+        _ => only_database_url(key),
+    })
+    .unwrap();
+    assert!(!c.cookie_secure);
+    assert_eq!(c.session_ttl_days, 7);
+    assert_eq!(c.api_public_base_url, "https://api.example.test");
+    let debug = format!("{c:?}");
+    assert!(!debug.contains("secret-should-stay-hidden"));
+    assert!(!debug.contains("postgres://x"));
+}

@@ -1,6 +1,7 @@
 pub mod auth;
 pub mod codec;
 pub mod config;
+pub mod cors;
 pub mod db_enums;
 pub mod games;
 pub mod ingest;
@@ -13,3 +14,5 @@ pub mod routes;
 pub mod sharing;
 pub mod state;
 pub mod statics;
+
+pub mod google;

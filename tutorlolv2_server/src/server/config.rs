@@ -3,9 +3,15 @@
 const DEFAULT_DB_MAX_CONNECTIONS: u32 = 10;
 const DEFAULT_RECORDING_TIMEOUT_SECS: i64 = 900;
 
-#[derive(Clone, Debug, PartialEq, Eq)]
+#[derive(Clone, PartialEq, Eq)]
 pub struct Config {
     pub public_base_url: String,
+    pub api_public_base_url: String,
+    pub google_client_id: Option<String>,
+    pub google_client_secret: Option<String>,
+    pub google_token_endpoint: Option<String>,
+    pub session_ttl_days: i64,
+    pub cookie_secure: bool,
     pub max_viewers_per_code: usize,
     pub database_url: String,
     pub db_max_connections: u32,
@@ -34,7 +40,20 @@ impl Config {
             }
         }
 
+        let session_ttl_days = number::<i64>(&get, "SESSION_TTL_DAYS", 90)?;
+        if !(1..=365).contains(&session_ttl_days) {
+            return Err("SESSION_TTL_DAYS must be 1..365".into());
+        }
         Ok(Config {
+            api_public_base_url: get("API_PUBLIC_BASE_URL")
+                .unwrap_or_else(|| "http://127.0.0.1:8082".into())
+                .trim_end_matches('/')
+                .into(),
+            google_client_id: get("GOOGLE_CLIENT_ID").filter(|s| !s.is_empty()),
+            google_client_secret: get("GOOGLE_CLIENT_SECRET").filter(|s| !s.is_empty()),
+            google_token_endpoint: get("GOOGLE_TOKEN_ENDPOINT_TRUSTED_OVERRIDE"),
+            session_ttl_days,
+            cookie_secure: get("COOKIE_SECURE").as_deref() != Some("false"),
             public_base_url: get("PUBLIC_BASE_URL")
                 .unwrap_or_else(|| "http://127.0.0.1:8000".into())
                 .trim_end_matches('/')
@@ -55,5 +74,14 @@ impl Config {
 
     pub fn from_env() -> Result<Config, String> {
         Self::from_lookup(|key| std::env::var(key).ok())
+    }
+}
+
+impl std::fmt::Debug for Config {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("Config")
+            .field("public_base_url", &self.public_base_url)
+            .field("credentials", &"[REDACTED]")
+            .finish_non_exhaustive()
     }
 }

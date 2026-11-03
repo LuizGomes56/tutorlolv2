@@ -884,7 +884,6 @@ macro_rules! create_eval_struct {
                 PartialOrd,
                 Serialize
             )]
-            #[repr(C)]
             pub struct Ctx {
                 $(pub $value: f32,)*
             }

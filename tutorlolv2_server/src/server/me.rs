@@ -1,7 +1,7 @@
 //! Device-owned metadata and derived replay access. Never mints capabilities on reads.
 use super::{
-    auth::DeviceAuth,
     codec::{Bincode, OCTET_STREAM, Response, respond},
+    google::Owner,
     sharing,
     state::AppState,
 };
@@ -37,7 +37,7 @@ pub struct Pagination {
 // Deliberately excludes probe/raw/frame payloads and player identifiers beyond the host Riot ID.
 // SQL composition below uses only these fixed fragments; all request data is bound.
 const COLUMNS: &str = "r.id, r.champion, r.game_mode, r.queue_id, r.active_riot_id, r.started_at_estimate, r.first_game_time, r.last_game_time, r.game_length_s, r.result, r.is_custom, r.is_practice, r.ended_at, r.end_reason, r.coverage_s, r.kills, r.deaths, r.assists, r.creep_score, r.level, s.code, s.mode";
-const OWNER: &str = "r.device_id=$1 AND r.deleted_at IS NULL AND EXISTS (SELECT 1 FROM devices d WHERE d.id=r.device_id AND d.deleted_at IS NULL)";
+const OWNER: &str = "((r.device_id=$1 AND $1 IS NOT NULL) OR (r.account_id=$4 AND $4 IS NOT NULL)) AND r.deleted_at IS NULL AND EXISTS (SELECT 1 FROM devices d WHERE d.id=r.device_id AND d.deleted_at IS NULL)";
 const JOIN: &str =
     "FROM recordings r LEFT JOIN share_codes s ON s.recording_id=r.id AND s.deleted_at IS NULL";
 
@@ -107,7 +107,7 @@ fn no_store(mut response: HttpResponse) -> HttpResponse {
     response
 }
 
-pub async fn list(state: Data<AppState>, auth: DeviceAuth, query: Query<Pagination>) -> Response {
+pub async fn list(state: Data<AppState>, auth: Owner, query: Query<Pagination>) -> Response {
     let limit = query.limit.unwrap_or(50);
 
     if !(1..=100).contains(&limit) {
@@ -115,7 +115,7 @@ pub async fn list(state: Data<AppState>, auth: DeviceAuth, query: Query<Paginati
     }
 
     let rows = sqlx::query(sqlx::AssertSqlSafe(format!("SELECT {COLUMNS} {JOIN} WHERE {OWNER} AND ($2::uuid IS NULL OR r.id < $2) ORDER BY r.id DESC LIMIT $3")))
-        .bind(auth.device_id).bind(query.before).bind(i64::from(limit)+1).fetch_all(&state.db).await.map_err(internal)?;
+        .bind(auth.device_id).bind(query.before).bind(i64::from(limit)+1).bind(auth.account_id).fetch_all(&state.db).await.map_err(internal)?;
 
     let more = rows.len() > limit as usize;
     let items: Vec<_> = rows
@@ -133,19 +133,21 @@ pub async fn list(state: Data<AppState>, auth: DeviceAuth, query: Query<Paginati
     respond(HistoryPage { items, next_before }).map(no_store)
 }
 
-pub async fn details(state: Data<AppState>, auth: DeviceAuth, id: Path<Uuid>) -> Response {
+pub async fn details(state: Data<AppState>, auth: Owner, id: Path<Uuid>) -> Response {
     let row = sqlx::query(sqlx::AssertSqlSafe(format!(
-        "SELECT {COLUMNS} {JOIN} WHERE {OWNER} AND r.id = $2"
+        "SELECT {COLUMNS} {JOIN} WHERE {OWNER} AND r.id = $2 AND $3::integer IS NULL"
     )))
     .bind(auth.device_id)
     .bind(*id)
+    .bind(Option::<i32>::None)
+    .bind(auth.account_id)
     .fetch_optional(&state.db)
     .await
     .map_err(internal)?
     .ok_or_else(|| ErrorNotFound("Unknown recording"))?;
 
-    let chunks = sqlx::query(sqlx::AssertSqlSafe(format!("SELECT c.seq,c.first_game_time,c.last_game_time,c.snapshot_count,c.frames_format FROM recording_chunks c JOIN recordings r ON r.id=c.recording_id WHERE {OWNER} AND r.id=$2 ORDER BY c.first_game_time,c.seq")))
-        .bind(auth.device_id).bind(*id).fetch_all(&state.db).await.map_err(internal)?.iter().map(|r|ChunkInfo {seq:r.get::<i32,_>("seq") as u32, first_game_time:r.get("first_game_time"), last_game_time:r.get("last_game_time"), snapshot_count:r.get::<i16,_>("snapshot_count") as u16, frames_format:r.get::<i16,_>("frames_format") as u16}).collect();
+    let chunks = sqlx::query(sqlx::AssertSqlSafe(format!("SELECT c.seq,c.first_game_time,c.last_game_time,c.snapshot_count,c.frames_format FROM recording_chunks c JOIN recordings r ON r.id=c.recording_id WHERE {OWNER} AND r.id=$2 AND $3::integer IS NULL ORDER BY c.first_game_time,c.seq")))
+        .bind(auth.device_id).bind(*id).bind(Option::<i32>::None).bind(auth.account_id).fetch_all(&state.db).await.map_err(internal)?.iter().map(|r|ChunkInfo {seq:r.get::<i32,_>("seq") as u32, first_game_time:r.get("first_game_time"), last_game_time:r.get("last_game_time"), snapshot_count:r.get::<i16,_>("snapshot_count") as u16, frames_format:r.get::<i16,_>("frames_format") as u16}).collect();
 
     let item = item(&state, &row)?;
 
@@ -157,11 +159,11 @@ pub async fn details(state: Data<AppState>, auth: DeviceAuth, id: Path<Uuid>) ->
     })
     .map(no_store)
 }
-pub async fn frames(state: Data<AppState>, auth: DeviceAuth, path: Path<(Uuid, u32)>) -> Response {
+pub async fn frames(state: Data<AppState>, auth: Owner, path: Path<(Uuid, u32)>) -> Response {
     let (id, seq) = path.into_inner();
     let seq = i32::try_from(seq).map_err(|_| ErrorNotFound("Chunk not found"))?;
     let row=sqlx::query(sqlx::AssertSqlSafe(format!("SELECT c.frames,c.frames_format FROM recording_chunks c JOIN recordings r ON r.id=c.recording_id WHERE {OWNER} AND r.id=$2 AND c.seq=$3")))
-        .bind(auth.device_id).bind(id).bind(seq).fetch_optional(&state.db).await.map_err(internal)?.ok_or_else(||ErrorNotFound("Chunk not found"))?;
+        .bind(auth.device_id).bind(id).bind(seq).bind(auth.account_id).fetch_optional(&state.db).await.map_err(internal)?.ok_or_else(||ErrorNotFound("Chunk not found"))?;
 
     if row.get::<i16, _>("frames_format") != FRAMES_FORMAT as i16 {
         return Err(ErrorUnprocessableEntity(
@@ -178,7 +180,7 @@ pub async fn frames(state: Data<AppState>, auth: DeviceAuth, path: Path<(Uuid, u
 
 pub async fn set_share(
     state: Data<AppState>,
-    auth: DeviceAuth,
+    auth: Owner,
     id: Path<Uuid>,
     Bincode(request): Bincode<SetShareMode>,
 ) -> Response {

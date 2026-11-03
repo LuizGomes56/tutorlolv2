@@ -1,6 +1,7 @@
 pub mod server;
 
 use actix_cors::Cors;
+
 use actix_web::{
     App, HttpResponse, HttpServer,
     http::header,
@@ -48,27 +49,19 @@ pub async fn run() -> std::io::Result<()> {
     println!("Serving static files from {}", statics.path().display());
 
     HttpServer::new(move || {
-        let cors = Cors::default()
-            .allow_any_origin()
-            // #![todo] Allow only frontend to send requests to this server.
-            // .allowed_origin("http://localhost:8080")
-            .allowed_methods(["GET", "POST", "PATCH", "PUT"])
-            .allowed_headers([
-                header::AUTHORIZATION,
-                header::CONTENT_TYPE,
-                header::HeaderName::from_static("x-content-sha256"),
-            ])
-            .expose_headers(["X-Frame-Seq", "X-Captured-At", "X-Game-Time"])
-            .max_age(3600);
-
         App::new()
-            .wrap(cors)
             .wrap(actix_web::middleware::Logger::default())
             .app_data(state.clone())
             .app_data(statics.clone())
             .service(api(Some(limits.clone())))
             .service(
                 scope("")
+                    .wrap(
+                        Cors::default()
+                            .allow_any_origin()
+                            .allowed_methods(["GET"])
+                            .max_age(3600),
+                    )
                     .service(scope("/docs").service(serve_docs))
                     .service(
                         scope("/img")

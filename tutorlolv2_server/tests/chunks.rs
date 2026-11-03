@@ -60,26 +60,24 @@ fn sha_hex(data: &[u8]) -> String {
 
 /// `(brotli body, X-Content-Sha256)` of a chunk of `snapshots` = `(captured_at_ms, json)`.
 fn encode_chunk(seq: u32, snapshots: Vec<(i64, Vec<u8>)>) -> (Vec<u8>, String) {
-    let chunk =
-        RawChunk {
-            format: RAW_CHUNK_FORMAT,
-            seq,
-            snapshots:
-                snapshots
-                    .into_iter()
-                    .map(|(captured_at_ms, json)| {
-                        let game_time = serde_json::from_slice::<serde_json::Value>(&json).unwrap()
+    let chunk = RawChunk {
+        format: RAW_CHUNK_FORMAT,
+        seq,
+        snapshots: snapshots
+            .into_iter()
+            .map(|(captured_at_ms, json)| {
+                let game_time = serde_json::from_slice::<serde_json::Value>(&json).unwrap()
                             ["gameData"]["gameTime"]
                             .as_f64()
                             .unwrap() as f32;
-                        RawSnapshot {
-                            captured_at_ms,
-                            game_time,
-                            json,
-                        }
-                    })
-                    .collect(),
-        };
+                RawSnapshot {
+                    captured_at_ms,
+                    game_time,
+                    json,
+                }
+            })
+            .collect(),
+    };
     let bincode = encode(&chunk);
     (brotli(&bincode), sha_hex(&bincode))
 }
@@ -95,7 +93,6 @@ fn seconds(from: u32, to: u32, start_time: f64) -> Vec<(i64, Vec<u8>)> {
         })
         .collect()
 }
-
 
 macro_rules! app {
     ($pool:expr) => {

@@ -114,7 +114,7 @@ async fn realtime_accepts_bincode_and_returns_borrowable_output() {
     assert_eq!(used, body.len());
     assert_eq!(output.enemies.len(), 1);
     assert_eq!(output.current_player.riot_id, "self");
-    assert_eq!(output.enemies[0].siml_items[0].items.len(), 2);
+    assert_eq!(output.siml_damages(0, 0).items.len(), 2);
 }
 
 #[actix_web::test]

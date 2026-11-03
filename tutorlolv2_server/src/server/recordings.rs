@@ -61,6 +61,38 @@ pub async fn start_session(
     Bincode(request): Bincode<StartSession>,
 ) -> Response {
     let mut tx = state.db.begin().await.map_err(ErrorInternalServerError)?;
+    // Serialize ownership with redeem/logout before reading the account link.
+    // A foreign-key lock taken by INSERT is too late: its account subquery may
+    // already have observed the pre-login device row.
+    let device = sqlx::query_scalar::<_, Uuid>(
+        "SELECT id FROM devices WHERE id=$1 AND deleted_at IS NULL FOR UPDATE",
+    )
+    .bind(auth.device_id)
+    .fetch_optional(&mut *tx)
+    .await
+    .map_err(ErrorInternalServerError)?;
+    if device.is_none() {
+        return Err(actix_web::error::ErrorUnauthorized("Device unavailable"));
+    }
+    // The native client drops expired credentials, but ingest still uses its
+    // DeviceAuth. A stale link must not silently attach later games to that
+    // signed-out account. Check the current binding under the same device lock
+    // used by redeem/logout so a newer login cannot be unlinked here.
+    sqlx::query(
+        "UPDATE devices d SET account_id=NULL, account_session_id=NULL
+         WHERE d.id=$1 AND (d.account_id IS NOT NULL OR d.account_session_id IS NOT NULL)
+         AND NOT EXISTS (
+             SELECT 1 FROM account_sessions s JOIN accounts a ON a.id=s.account_id
+             WHERE s.id=d.account_session_id AND s.account_id=d.account_id
+               AND s.device_id=d.id AND s.kind='desktop'
+               AND s.revoked_at IS NULL AND s.expires_at>now()
+               AND a.deleted_at IS NULL
+         )",
+    )
+    .bind(auth.device_id)
+    .execute(&mut *tx)
+    .await
+    .map_err(ErrorInternalServerError)?;
     let now = Utc::now();
 
     let candidates = sqlx::query!(
@@ -220,6 +252,7 @@ async fn insert_recording(
         r#"
         INSERT INTO recordings (
             device_id,
+            account_id,
             game_mode,
             map_number,
             fingerprint,
@@ -238,7 +271,13 @@ async fn insert_recording(
             app_version
         )
         VALUES (
-            $1, $2, $3, $4,
+            $1, (SELECT d.account_id FROM devices d
+                JOIN accounts a ON a.id=d.account_id
+                JOIN account_sessions s ON s.id=d.account_session_id
+                WHERE d.id=$1 AND d.deleted_at IS NULL AND a.deleted_at IS NULL
+                  AND s.account_id=d.account_id AND s.device_id=d.id AND s.kind='desktop'
+                  AND s.desktop_confirmed_at IS NOT NULL
+                  AND s.revoked_at IS NULL AND s.expires_at>clock_timestamp()), $2, $3, $4,
             $5, $6, $7, $8,
             $9, $10, $11, $12,
             $13, now() - $14 * interval '1 second',

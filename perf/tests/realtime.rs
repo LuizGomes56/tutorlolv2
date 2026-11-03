@@ -51,6 +51,10 @@ fn seeded_live_workloads_have_exact_teams_and_roundtrip_ids() {
         for game in &corpus.games {
             let result = realtime(game).unwrap();
             assert_eq!(result.enemies.len(), enemies);
+            assert_eq!(
+                result.damages.rows(),
+                enemies * tutorlolv2::model::Realtime::ROWS_PER_ENEMY
+            );
             assert_eq!(result.scoreboard.len(), enemies + 5);
             assert_eq!(result.current_player.riot_id, game.active_player.riot_id);
             assert!(
@@ -101,10 +105,13 @@ fn live_stats_use_remaining_fraction_penetration() {
         50.0
     );
     assert!(game.game_data.game_time > 0.0);
-    for enemy in &result.enemies {
-        assert_eq!(enemy.siml_items.len(), ItemId::L_SIML);
+    assert_eq!(
+        result.damages.rows(),
+        result.enemies.len() * tutorlolv2::model::Realtime::ROWS_PER_ENEMY
+    );
+    for e in 0..result.enemies.len() {
         assert_eq!(
-            enemy.damages.ctx.missing_health,
+            result.enemy_damages(e).ctx.missing_health,
             RiotFormulas::missing_health(
                 game.active_player.champion_stats.current_health,
                 game.active_player.champion_stats.max_health
@@ -144,7 +151,7 @@ fn missing_rune_page_and_zero_allies_use_supported_live_paths() {
     assert_eq!(output.scoreboard.len(), 2);
     assert_eq!(output.enemies.len(), 1);
     assert!(output.runes_meta.is_empty());
-    assert!(output.enemies[0].damages.runes.is_empty());
+    assert!(output.enemy_damages(0).runes.is_empty());
 }
 
 #[test]

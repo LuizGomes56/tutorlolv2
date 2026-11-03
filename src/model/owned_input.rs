@@ -169,5 +169,22 @@ mod tests {
         let output = crate::calculator::calculator(prepared.as_input());
         assert_eq!(output.enemies.len(), 1);
         assert_eq!(output.enemies[0].champion_id, ChampionId::Aatrox);
+        assert_eq!(output.damages.rows(), crate::L_MSTR + 1);
+        assert_eq!(
+            output.enemy_damages(0).abilities.len(),
+            decoded.active_player.data.champion_id.number_of_abilities()
+        );
+
+        // Owned requests and the table-backed response both cross the transport
+        // boundary without retaining any borrowed views in the encoded data.
+        let bytes = bincode::encode_to_vec(&output, tutorlolv2_types::BINCODE_CONFIG).unwrap();
+        let (roundtrip, consumed): (OutputGame, _) =
+            bincode::decode_from_slice(&bytes, tutorlolv2_types::BINCODE_CONFIG).unwrap();
+        assert_eq!(consumed, bytes.len());
+        assert_eq!(roundtrip, output);
+        assert_eq!(roundtrip.enemy_damages(0), output.enemy_damages(0));
+        for m in 0..crate::L_MSTR {
+            assert_eq!(roundtrip.monster_damages(m), output.monster_damages(m));
+        }
     }
 }
