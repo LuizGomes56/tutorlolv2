@@ -33,7 +33,7 @@ pub fn Sidebar() -> Html {
     let desktop_settings = buttons([("History", Route::History), ("Settings", Route::Settings)]);
 
     #[cfg(not(feature = "tauri"))]
-    let desktop_settings = Html::default();
+    let desktop_settings = buttons([("History", Route::History)]);
 
     html! {
         <aside

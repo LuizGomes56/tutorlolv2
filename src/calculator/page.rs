@@ -254,7 +254,7 @@ pub fn Calculator() -> Html {
     let data = match game_data.as_ref() {
         Some(data) => {
             let Game {
-                monster_damages,
+                damages: damage_table,
                 current_player,
                 enemies,
                 tower_damages,
@@ -275,7 +275,7 @@ pub fn Calculator() -> Html {
                                 {
                                     enemies.iter().enumerate().map(|(i, enemy)| {
                                         let damages = DamageRenderer::new(
-                                            &enemy.damages,
+                                            damage_table.row(tutorlolv2::L_MSTR + i),
                                             current_player.champion_id,
                                             current_player.adaptive_type,
                                             items_meta,
@@ -290,7 +290,7 @@ pub fn Calculator() -> Html {
                                                 <td
                                                     data_idents={hover::encode_idents(
                                                         &CtxVar::ENEMY_VARS,
-                                                        &enemy.damages.ctx,
+                                                        damage_table.row(tutorlolv2::L_MSTR + i).ctx,
                                                     )}
                                                     data_docs={Docs::global(enemy_id).encode()}
                                                     class={classes!("w-12")}
@@ -332,7 +332,8 @@ pub fn Calculator() -> Html {
                             />
                             <tbody>
                                 {
-                                    monster_damages.iter().enumerate().map(|(i, damage)| {
+                                    (0..tutorlolv2::L_MSTR).map(|i| {
+                                        let damage = damage_table.row(i);
                                         let damages = DamageRenderer::new(
                                             damage,
                                             current_player.champion_id,
@@ -407,6 +408,8 @@ pub fn Calculator() -> Html {
                             />
                             <div class={classes!("overflow-auto")}>
                                 <StackTable<OutputEnemy>
+                                    damages={damage_table}
+                                    row_offset={tutorlolv2::L_MSTR}
                                     callback={{
                                         let enemy_index = enemy_index.clone();
 

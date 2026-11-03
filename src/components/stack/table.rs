@@ -5,12 +5,17 @@ use crate::components::{
 };
 use crate::hover::Docs;
 use std::{num::NonZeroU8, rc::Rc};
-use tutorlolv2::ignite;
+use tutorlolv2::{ignite, model::DamageTable};
 use yew::prelude::*;
 
 #[derive(PartialEq, Properties)]
 pub struct StackTableProps<T: Victim + PartialEq + 'static> {
     pub enemies: Rc<[T]>,
+    pub damages: Rc<DamageTable>,
+    #[prop_or_default]
+    pub row_offset: usize,
+    #[prop_or(1)]
+    pub row_stride: usize,
     pub stack: Stack,
     pub level: NonZeroU8,
 
@@ -26,6 +31,9 @@ pub fn StackTable<T: Victim + PartialEq + 'static>(props: &StackTableProps<T>) -
     let StackTableProps {
         ref callback,
         ref enemies,
+        ref damages,
+        row_offset,
+        row_stride,
         ref stack,
         index,
         level,
@@ -57,7 +65,7 @@ pub fn StackTable<T: Victim + PartialEq + 'static>(props: &StackTableProps<T>) -
                             return None;
                         }
 
-                        let damages = enemy.damages();
+                        let damages = damages.row(row_offset + i * row_stride);
                         let enemy_id = enemy.champion_id();
                         let max_health = enemy.max_health();
 

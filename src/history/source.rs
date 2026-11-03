@@ -13,6 +13,9 @@ pub enum Command {
     SetHistoryShareMode,
     HideHistoryEntry,
     RepairHistory,
+    GetAccount,
+    SignIn,
+    SignOut,
 }
 
 #[derive(Clone, Copy, strum::IntoStaticStr)]
@@ -72,8 +75,15 @@ impl Command {
         let value = JsFuture::from(Promise::resolve(&result))
             .await
             .map_err(|value| {
-                decode::<HistoryError>(&value)
-                    .unwrap_or_else(|_| error("Desktop request failed. Retry."))
+                decode::<HistoryError>(&value).unwrap_or_else(|_| {
+                    decode::<AccountError>(&value)
+                        .map(|account| HistoryError {
+                            kind: HistoryErrorKind::Other,
+                            message: account.message,
+                            retryable: account.retryable,
+                        })
+                        .unwrap_or_else(|_| error("Desktop request failed. Retry."))
+                })
             })?;
 
         Ok(value)
@@ -155,6 +165,32 @@ mod tests {
         assert_eq!(event, "history-changed");
     }
     #[test]
+    fn owner_change_resets_pagination_and_hidden_rows() {
+        let before = OWNER_EPOCH.with(|v| v.get());
+        WEB_CURSORS.with(|v| {
+            v.borrow_mut().insert(50, Some([7; 16]));
+        });
+        WEB_HIDDEN.with(|v| {
+            v.borrow_mut().insert("old-owner".into());
+        });
+        clear_web_history();
+        assert_eq!(OWNER_EPOCH.with(|v| v.get()), before.wrapping_add(1));
+        assert_eq!(
+            WEB_CURSORS.with(|v| v.borrow().clone()),
+            BTreeMap::from([(0, None)])
+        );
+        assert!(WEB_HIDDEN.with(|v| v.borrow().is_empty()));
+    }
+    #[test]
+    fn safe_account_commands_are_typed() {
+        let commands: [&str; 3] = [
+            Command::GetAccount.into(),
+            Command::SignIn.into(),
+            Command::SignOut.into(),
+        ];
+        assert_eq!(commands, ["get_account", "sign_in", "sign_out"]);
+    }
+    #[test]
     fn uuid_is_canonical() {
         assert_eq!(uuid([0; 16]), "00000000-0000-0000-0000-000000000000");
     }
@@ -168,7 +204,7 @@ struct FrameRequest {
 }
 
 thread_local! {
-    static FRAME_REQUESTS: RefCell<BTreeMap<(String, u32), Weak<RefCell<FrameRequest>>>> = const {
+    static FRAME_REQUESTS: RefCell<BTreeMap<(u64, String, u32), Weak<RefCell<FrameRequest>>>> = const {
         RefCell::new(BTreeMap::new())
     };
 }
@@ -196,7 +232,7 @@ impl Future for FrameFuture {
 }
 
 async fn owner_frames(id: &str, seq: u32) -> Result<Vec<u8>, HistoryError> {
-    let key = (id.to_owned(), seq);
+    let key = (OWNER_EPOCH.with(|v| v.get()), id.to_owned(), seq);
     let (request, start) = FRAME_REQUESTS.with(|requests| {
         let mut requests = requests.borrow_mut();
 
@@ -219,7 +255,7 @@ async fn owner_frames(id: &str, seq: u32) -> Result<Vec<u8>, HistoryError> {
         yew::platform::spawn_local(async move {
             let result = async {
                 let value = Command::GetHistoryFrames
-                    .invoke_raw(serde_json::json!({"recordingId":key.0,"seq":seq}))
+                    .invoke_raw(serde_json::json!({"recordingId":key.1,"seq":seq}))
                     .await?;
 
                 if value.is_instance_of::<js_sys::ArrayBuffer>()
@@ -256,4 +292,232 @@ async fn owner_frames(id: &str, seq: u32) -> Result<Vec<u8>, HistoryError> {
     }
 
     FrameFuture(request).await
+}
+
+thread_local! {
+    static OWNER_EPOCH: std::cell::Cell<u64> = const { std::cell::Cell::new(0) };
+    static WEB_CURSORS: RefCell<BTreeMap<u32, Option<Id16>>> = RefCell::new(BTreeMap::from([(0,None)]));
+    static WEB_HIDDEN: RefCell<std::collections::BTreeSet<String>> = const { RefCell::new(std::collections::BTreeSet::new()) };
+}
+
+pub fn clear_web_history() {
+    OWNER_EPOCH.with(|v| v.set(v.get().wrapping_add(1)));
+    FRAME_REQUESTS.with(|v| v.borrow_mut().clear());
+    WEB_CURSORS.with(|v| *v.borrow_mut() = BTreeMap::from([(0, None)]));
+    WEB_HIDDEN.with(|v| v.borrow_mut().clear());
+}
+
+pub fn owner_api_base() -> String {
+    option_env!("TUTORLOLV2_API_URL")
+        .or(option_env!("TUTORLOL_API_URL"))
+        .unwrap_or("/api")
+        .trim_end_matches('/')
+        .trim_end_matches("/games")
+        .into()
+}
+
+pub async fn http_request(
+    path: &str,
+    method: &str,
+    body: Option<Vec<u8>>,
+) -> Result<web_sys::Response, HistoryError> {
+    let epoch = OWNER_EPOCH.with(|v| v.get());
+    let init = web_sys::RequestInit::new();
+    init.set_method(method);
+    init.set_credentials(web_sys::RequestCredentials::Include);
+    let headers = web_sys::Headers::new().map_err(|_| error("Request unavailable"))?;
+    headers
+        .set("Content-Type", "application/octet-stream")
+        .map_err(|_| error("Request unavailable"))?;
+    init.set_headers(&headers);
+    if let Some(body) = body {
+        init.set_body(&js_sys::Uint8Array::from(body.as_slice()));
+    }
+    let response = JsFuture::from(
+        web_sys::window()
+            .ok_or_else(|| error("Window unavailable"))?
+            .fetch_with_str_and_init(&format!("{}/{path}", owner_api_base()), &init),
+    )
+    .await
+    .map_err(|_| HistoryError {
+        kind: HistoryErrorKind::Offline,
+        message: "Could not reach your account. Check your connection and retry.".into(),
+        retryable: true,
+    })?
+    .dyn_into()
+    .map_err(|_| error("Invalid server response"))?;
+    if OWNER_EPOCH.with(|v| v.get()) != epoch {
+        return Err(error("Account changed. Refresh history."));
+    }
+    Ok(response)
+}
+
+pub async fn http_decode<T: bincode::Decode<()>>(
+    response: web_sys::Response,
+) -> Result<T, HistoryError> {
+    if !response.ok() {
+        if response.status() == 401 {
+            crate::account::invalidate();
+        }
+        return Err(HistoryError {
+            kind: if response.status() == 401 {
+                HistoryErrorKind::Unauthorized
+            } else if response.status() == 404 {
+                HistoryErrorKind::NotFound
+            } else {
+                HistoryErrorKind::Other
+            },
+            message: match response.status() {
+                401 => "Your session expired. Sign in again.".into(),
+                403 => "This action is restricted for this recording.".into(),
+                404 => "Recording not found.".into(),
+                status => format!("Account service unavailable (HTTP {status}). Retry."),
+            },
+            retryable: response.status() != 401,
+        });
+    }
+    let bytes = crate::watch::api::bytes(&response)
+        .await
+        .map_err(|e| error(&e))?;
+    let (value, used) = bincode::decode_from_slice(&bytes, crate::utils::BINCODE_CONFIG)
+        .map_err(|_| error("Invalid account response. Retry."))?;
+    if used != bytes.len() {
+        return Err(error("Invalid account response. Retry."));
+    }
+    Ok(value)
+}
+
+fn web_entry(summary: HistorySummary, share: ShareState) -> HistoryEntry {
+    HistoryEntry {
+        local_id: None,
+        recording_id: Some(summary.recording.id),
+        summary: Some(summary),
+        share,
+        pending_chunks: 0,
+        pending_control: false,
+        lost_chunks: 0,
+        last_error: None,
+        hidden: false,
+    }
+}
+
+pub struct HttpHistory;
+impl HistorySource for HttpHistory {
+    async fn list(offset: u32) -> Result<HistoryList, HistoryError> {
+        let epoch = OWNER_EPOCH.with(|v| v.get());
+        let before = WEB_CURSORS
+            .with(|v| v.borrow().get(&offset).copied())
+            .ok_or_else(|| error("Refresh history to restart pagination."))?;
+        let path = format!(
+            "me/recordings?limit=50{}",
+            before
+                .map(|id| format!("&before={}", uuid(id)))
+                .unwrap_or_default()
+        );
+        let page: HistoryPage = http_decode(http_request(&path, "GET", None).await?).await?;
+        if OWNER_EPOCH.with(|v| v.get()) != epoch {
+            return Err(error("Account changed. Refresh history."));
+        }
+        WEB_CURSORS.with(|v| {
+            v.borrow_mut().insert(offset + 50, page.next_before);
+        });
+        let entries = page
+            .items
+            .into_iter()
+            .map(|v| web_entry(v.summary, v.share))
+            .filter(|v| WEB_HIDDEN.with(|h| !h.borrow().contains(&identity(v))))
+            .collect();
+        Ok(HistoryList {
+            entries,
+            has_more: page.next_before.is_some(),
+            refreshing: false,
+            refresh_error: None,
+        })
+    }
+    async fn details(id: &str) -> Result<HistoryDetails, HistoryError> {
+        let recording: RecordingDetails =
+            http_decode(http_request(&format!("me/recordings/{id}"), "GET", None).await?).await?;
+        if recording.frames_format != FRAMES_FORMAT {
+            return Err(error("This replay needs a newer viewer."));
+        }
+        let entry = web_entry(recording.summary.clone(), recording.share.clone());
+        Ok(HistoryDetails { recording, entry })
+    }
+    async fn frames(id: &str, seq: u32) -> Result<Vec<u8>, HistoryError> {
+        let response =
+            http_request(&format!("me/recordings/{id}/frames/{seq}"), "GET", None).await?;
+        if !response.ok() {
+            let _: RecordingDetails = http_decode(response).await?;
+            return Err(error("Invalid frames response"));
+        }
+        // Fetch decodes Content-Encoding: br. The bytes here are already FrameChunk.
+        crate::watch::api::bytes(&response)
+            .await
+            .map_err(|e| error(&e))
+    }
+    async fn share(id: &str, mode: HistoryShareMode) -> Result<ShareState, HistoryError> {
+        let body = bincode::encode_to_vec(
+            SetShareMode { mode: mode.into() },
+            crate::utils::BINCODE_CONFIG,
+        )
+        .map_err(|_| error("Invalid share request"))?;
+        http_decode(http_request(&format!("me/recordings/{id}/share"), "PUT", Some(body)).await?)
+            .await
+    }
+    async fn hide(id: &str) -> Result<(), HistoryError> {
+        WEB_HIDDEN.with(|v| {
+            v.borrow_mut().insert(id.into());
+        });
+        Ok(())
+    }
+    async fn repair() -> Result<(), HistoryError> {
+        Err(error("Index repair is available in the desktop app."))
+    }
+}
+
+/// Build-selected owner transport. Public capability Watch remains independent.
+pub struct OwnerHistory;
+impl HistorySource for OwnerHistory {
+    async fn list(offset: u32) -> Result<HistoryList, HistoryError> {
+        if cfg!(feature = "tauri") {
+            IpcHistory::list(offset).await
+        } else {
+            HttpHistory::list(offset).await
+        }
+    }
+    async fn details(id: &str) -> Result<HistoryDetails, HistoryError> {
+        if cfg!(feature = "tauri") {
+            IpcHistory::details(id).await
+        } else {
+            HttpHistory::details(id).await
+        }
+    }
+    async fn frames(id: &str, seq: u32) -> Result<Vec<u8>, HistoryError> {
+        if cfg!(feature = "tauri") {
+            IpcHistory::frames(id, seq).await
+        } else {
+            HttpHistory::frames(id, seq).await
+        }
+    }
+    async fn share(id: &str, mode: HistoryShareMode) -> Result<ShareState, HistoryError> {
+        if cfg!(feature = "tauri") {
+            IpcHistory::share(id, mode).await
+        } else {
+            HttpHistory::share(id, mode).await
+        }
+    }
+    async fn hide(id: &str) -> Result<(), HistoryError> {
+        if cfg!(feature = "tauri") {
+            IpcHistory::hide(id).await
+        } else {
+            HttpHistory::hide(id).await
+        }
+    }
+    async fn repair() -> Result<(), HistoryError> {
+        if cfg!(feature = "tauri") {
+            IpcHistory::repair().await
+        } else {
+            HttpHistory::repair().await
+        }
+    }
 }

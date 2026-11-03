@@ -54,7 +54,7 @@ pub fn HistoryDetailsView(props: &HistoryDetailsViewProps) -> Html {
                 while running.get() {
                     let before = *mutation_revision.borrow();
 
-                    match IpcHistory::details(&id).await {
+                    match OwnerHistory::details(&id).await {
                         Ok(value) if running.get() => {
                             let ongoing = value.recording.summary.ended_at_ms.is_none();
 
@@ -229,7 +229,7 @@ fn ShareControls(props: &ShareControlsProps) -> Html {
             );
 
             spawn_local(async move {
-                let result = IpcHistory::share(&id, mode).await;
+                let result = OwnerHistory::share(&id, mode).await;
 
                 if !*mounted.borrow() {
                     return;

@@ -142,19 +142,25 @@ pub fn Overlay() -> Html {
             let Game {
                 current_player,
                 enemies,
+                damages: damage_table,
                 items_meta,
                 runes_meta,
                 ..
             } = data;
 
             let champion_id = current_player.champion_id;
-            let enemy = enemies.get(*enemy_index).or_else(|| enemies.first());
+            let selected_index = if *enemy_index < enemies.len() {
+                *enemy_index
+            } else {
+                0
+            };
+            let enemy = enemies.get(selected_index);
 
             let damages = || {
                 enemy
                     .map(|enemy| {
                         let damages = DamageRenderer::new(
-                            &enemy.damages,
+                            data.enemy_damages(selected_index),
                             champion_id,
                             current_player.adaptive_type,
                             items_meta,
@@ -169,7 +175,7 @@ pub fn Overlay() -> Html {
                                 <td
                                     data_idents={hover::encode_idents(
                                         &CtxVar::ENEMY_VARS,
-                                        &enemy.damages.ctx,
+                                        data.enemy_damages(selected_index).ctx,
                                     )}
                                     data_docs={Docs::global(enemy_id).encode()}
                                     class={classes!("w-12")}
@@ -184,11 +190,10 @@ pub fn Overlay() -> Html {
             };
 
             let recommendation = || {
-                enemy.map(|enemy| {
-                    let base = enemy.total_damage();
+                enemy.map(|_| {
+                    let base = data.total_damage(selected_index);
 
-                    enemy
-                        .item_scores()
+                    data.item_scores(selected_index)
                         .into_iter()
                         .map(|(damage, item)| {
                             html! {
@@ -285,6 +290,8 @@ pub fn Overlay() -> Html {
                         >
                             <div class={classes!("min-h-fit", "min-w-min")}>
                                 <StackTable<Enemy>
+                                    damages={damage_table}
+                                    row_stride={Game::ROWS_PER_ENEMY}
                                     index={*enemy_index}
                                     {enemies}
                                     stack={stack.reconcile(champion_id, items_meta, runes_meta)}

@@ -20,6 +20,7 @@ mod overlay;
 mod desktop;
 
 mod about;
+mod account;
 mod calculator;
 mod components;
 mod formulas;
@@ -96,7 +97,7 @@ fn App() -> Html {
                     _ => html!(<Calculator />),
                 };
                 html! {
-                    <>
+                    <account::AccountProvider>
                         <div class={classes!("bg-std-900")}>
                             <div class={classes!(
                                 "flex", "max-h-screen", "h-full"
@@ -106,12 +107,13 @@ fn App() -> Html {
                                     "flex-1", "overflow-y-auto",
                                     "overflow-x-hidden"
                                 )}>
+                                    <account::AccountWidget />
                                     {component}
                                 </div>
                             </div>
                         </div>
                         <HoverDocs />
-                    </>
+                    </account::AccountProvider>
                 }
             }}
             />

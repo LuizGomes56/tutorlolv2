@@ -86,7 +86,6 @@ pub fn selected_index(times: &[f32], time: f32, next_chunk: Option<f32>) -> Opti
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub enum ReplaySource {
     Capability(String),
-    #[cfg(feature = "tauri")]
     Owner(String),
 }
 
@@ -112,12 +111,11 @@ impl ReplaySource {
                 )?
             }
 
-            #[cfg(feature = "tauri")]
             Self::Owner(id) => {
-                use crate::history::source::{HistorySource, IpcHistory};
+                use crate::history::source::{HistorySource, OwnerHistory};
 
                 CachedChunk::decode(
-                    IpcHistory::frames(id, metadata.seq)
+                    OwnerHistory::frames(id, metadata.seq)
                         .await
                         .map_err(|e| e.message)?,
                     metadata.frames_format,
@@ -245,7 +243,6 @@ mod tests {
         assert_eq!(store.timeline(&[changed], 99.).1, 100.);
     }
 
-    #[cfg(feature = "tauri")]
     #[test]
     fn sources_do_not_share_identity() {
         assert_ne!(

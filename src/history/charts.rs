@@ -1,4 +1,4 @@
-use super::source::{HistorySource, IpcHistory};
+use super::source::{HistorySource, OwnerHistory};
 use crate::replay::cache::CachedChunk;
 use std::{
     cell::{Cell, RefCell},
@@ -203,7 +203,7 @@ pub fn Charts(props: &ChartsProps) -> Html {
                         let points = if let Some(points) = cached {
                             points
                         } else {
-                            match IpcHistory::frames(&id, metadata.seq).await {
+                            match OwnerHistory::frames(&id, metadata.seq).await {
                                 Ok(bytes) => {
                                     match CachedChunk::decode(bytes, metadata.frames_format) {
                                         Ok(chunk) if chunk.validate(&metadata).is_ok() => chunk

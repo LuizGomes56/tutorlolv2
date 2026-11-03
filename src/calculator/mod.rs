@@ -5,8 +5,8 @@ use {
     },
     std::{num::NonZeroU8, rc::Rc},
     tutorlolv2::{
-        ChampionId, ItemId, L_MSTR, L_TWRD, RuneId, TypeMetadata,
-        model::{AbilityLevels, Damages, OutputCurrentPlayer, OutputEnemy, PlayerStats},
+        ChampionId, ItemId, L_TWRD, RuneId, TypeMetadata,
+        model::{AbilityLevels, DamageTable, OutputCurrentPlayer, OutputEnemy, PlayerStats},
     },
 };
 
@@ -95,7 +95,7 @@ impl<T: Default> Default for PlayerData<T> {
 
 #[derive(Clone, Debug, PartialEq)]
 pub struct Game {
-    pub monster_damages: [Damages; L_MSTR],
+    pub damages: Rc<DamageTable>,
     pub current_player: OutputCurrentPlayer,
     pub enemies: Rc<[OutputEnemy]>,
     pub tower_damages: [i32; L_TWRD],
@@ -106,7 +106,7 @@ pub struct Game {
 impl From<tutorlolv2::model::OutputGame> for Game {
     fn from(output: tutorlolv2::model::OutputGame) -> Self {
         Self {
-            monster_damages: output.monster_damages,
+            damages: Rc::new(output.damages),
             current_player: output.current_player,
             enemies: output.enemies.into(),
             tower_damages: output.tower_damages,

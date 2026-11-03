@@ -25,7 +25,7 @@ use yew::{
 fn simulated_items_meta<'a>(
     owned: &Rc<[TypeMetadata<ItemId>]>,
     candidate: ItemId,
-    damages: impl IntoIterator<Item = &'a Damages>,
+    damages: impl IntoIterator<Item = Damages<'a>>,
 ) -> Rc<[TypeMetadata<ItemId>]> {
     let offset = owned.len() * 2;
     let visible = damages.into_iter().any(|damage| {
@@ -108,6 +108,7 @@ pub fn LivegameView(props: &LivegameViewProps) -> Html {
             let Game {
                 ref current_player,
                 ref enemies,
+                damages: ref damage_table,
                 ref scoreboard,
                 ref items_meta,
                 ref runes_meta,
@@ -176,7 +177,7 @@ pub fn LivegameView(props: &LivegameViewProps) -> Html {
             let siml_items_meta = simulated_items_meta(
                 items_meta,
                 *siml_item,
-                enemies.iter().map(|enemy| &enemy.siml_items[siml_index]),
+                (0..enemies.len()).map(|e| data.siml_damages(e, siml_index)),
             );
 
             let get_damages = |enemy_id, damages, ctx| {
@@ -196,18 +197,19 @@ pub fn LivegameView(props: &LivegameViewProps) -> Html {
 
             let damages = enemies
                 .iter()
-                .map(|enemy| {
+                .enumerate()
+                .map(|(e, enemy)| {
                     get_damages(
                         enemy.champion_id,
                         DamageRenderer::new(
-                            &enemy.damages,
+                            data.enemy_damages(e),
                             champion_id,
                             current_player.adaptive_type,
                             items_meta,
                             runes_meta,
                             None,
                         ),
-                        &enemy.damages.ctx,
+                        data.enemy_damages(e).ctx,
                     )
                 })
                 .collect::<Html>();
@@ -215,18 +217,19 @@ pub fn LivegameView(props: &LivegameViewProps) -> Html {
             let siml_damages = |i: usize| {
                 enemies
                     .iter()
-                    .map(|enemy| {
+                    .enumerate()
+                    .map(|(e, enemy)| {
                         get_damages(
                             enemy.champion_id,
                             DamageRenderer::new(
-                                &enemy.siml_items[i],
+                                data.siml_damages(e, i),
                                 champion_id,
                                 current_player.adaptive_type,
                                 &siml_items_meta,
                                 runes_meta,
-                                Some(&enemy.damages),
+                                Some(data.enemy_damages(e)),
                             ),
-                            &enemy.damages.ctx,
+                            data.enemy_damages(e).ctx,
                         )
                     })
                     .collect::<Html>()
@@ -234,7 +237,8 @@ pub fn LivegameView(props: &LivegameViewProps) -> Html {
 
             let enemy_rows = enemies
                 .iter()
-                .map(|enemy| (enemy.champion_id, enemy.total_damage(), enemy.item_scores()))
+                .enumerate()
+                .map(|(e, enemy)| (enemy.champion_id, data.total_damage(e), data.item_scores(e)))
                 .collect::<Vec<_>>();
 
             let mut seen = BitSet::EMPTY;
@@ -360,6 +364,8 @@ pub fn LivegameView(props: &LivegameViewProps) -> Html {
                                 />
                                 <div class={classes!("overflow-auto")}>
                                     <StackTable<Enemy>
+                                        damages={damage_table}
+                                        row_stride={Game::ROWS_PER_ENEMY}
                                         {enemies}
                                         stack={stack.reconcile(champion_id, items_meta, runes_meta)}
                                         level={current_player.level}
@@ -421,15 +427,16 @@ pub fn LivegameView(props: &LivegameViewProps) -> Html {
 #[cfg(test)]
 mod purchase_tests {
     use super::*;
+    use crate::components::tables::body::empty_damages;
 
     #[test]
     fn selected_purchase_appends_metadata_after_owned_columns() {
         let owned: Rc<[_]> = vec![ItemId::NashorsTooth.data().metadata].into();
         let damage = Damages {
-            items: vec![10, 20, 7, 0].into_boxed_slice(),
-            ..Default::default()
+            items: &[10, 20, 7, 0],
+            ..empty_damages()
         };
-        let selected = simulated_items_meta(&owned, ItemId::BladeOfTheRuinedKing, [&damage]);
+        let selected = simulated_items_meta(&owned, ItemId::BladeOfTheRuinedKing, [damage]);
         assert_eq!(
             selected.iter().map(|m| m.kind).collect::<Vec<_>>(),
             vec![ItemId::NashorsTooth, ItemId::BladeOfTheRuinedKing]
@@ -437,11 +444,11 @@ mod purchase_tests {
         assert_eq!(owned.len(), 1);
         let empty: Rc<[_]> = Rc::from([]);
         let damage = Damages {
-            items: vec![0, 7].into_boxed_slice(),
-            ..Default::default()
+            items: &[0, 7],
+            ..empty_damages()
         };
         assert_eq!(
-            simulated_items_meta(&empty, ItemId::NashorsTooth, [&damage])[0].kind,
+            simulated_items_meta(&empty, ItemId::NashorsTooth, [damage])[0].kind,
             ItemId::NashorsTooth
         );
     }
@@ -450,11 +457,11 @@ mod purchase_tests {
     fn all_zero_candidate_column_is_hidden_despite_owned_damage() {
         let owned: Rc<[_]> = vec![ItemId::NashorsTooth.data().metadata].into();
         let damage = Damages {
-            items: vec![50, 60, 0, 0].into_boxed_slice(),
-            ..Default::default()
+            items: &[50, 60, 0, 0],
+            ..empty_damages()
         };
         for candidate in [ItemId::NashorsTooth, ItemId::SapphireCrystal] {
-            let selected = simulated_items_meta(&owned, candidate, [&damage, &damage]);
+            let selected = simulated_items_meta(&owned, candidate, [damage, damage]);
             assert!(Rc::ptr_eq(&selected, &owned));
         }
         assert!(Rc::ptr_eq(
@@ -467,15 +474,15 @@ mod purchase_tests {
     fn any_nonzero_enemy_keeps_candidate_column_for_every_row() {
         let owned: Rc<[_]> = vec![ItemId::NashorsTooth.data().metadata].into();
         let zero = Damages {
-            items: vec![50, 60, 0, 0].into_boxed_slice(),
-            ..Default::default()
+            items: &[50, 60, 0, 0],
+            ..empty_damages()
         };
         for pair in [[0, 12], [15, 0]] {
             let nonzero = Damages {
-                items: vec![50, 60, pair[0], pair[1]].into_boxed_slice(),
-                ..Default::default()
+                items: &[50, 60, pair[0], pair[1]],
+                ..empty_damages()
             };
-            for rows in [[&zero, &nonzero], [&nonzero, &zero]] {
+            for rows in [[zero, nonzero], [nonzero, zero]] {
                 let selected = simulated_items_meta(&owned, ItemId::BladeOfTheRuinedKing, rows);
                 assert_eq!(selected.len(), 2);
                 assert_eq!(selected[1].kind, ItemId::BladeOfTheRuinedKing);

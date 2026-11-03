@@ -13,7 +13,6 @@ use yew::prelude::*;
 pub trait Victim {
     fn max_health(&self) -> i32;
     fn champion_id(&self) -> ChampionId;
-    fn damages(&self) -> &Damages;
 }
 
 impl Victim for OutputEnemy {
@@ -24,19 +23,11 @@ impl Victim for OutputEnemy {
     fn max_health(&self) -> i32 {
         self.current_stats.max_health as _
     }
-
-    fn damages(&self) -> &Damages {
-        &self.damages
-    }
 }
 
 impl Victim for Enemy {
     fn champion_id(&self) -> ChampionId {
         self.champion_id
-    }
-
-    fn damages(&self) -> &Damages {
-        &self.damages
     }
 
     fn max_health(&self) -> i32 {
@@ -128,23 +119,23 @@ impl Cell {
 }
 
 pub struct DamageRenderer<'a> {
-    pub damages: &'a Damages,
+    pub damages: Damages<'a>,
     pub champion_id: ChampionId,
     pub adaptive_type: AdaptiveType,
     pub items_meta: &'a [TypeMetadata<ItemId>],
     pub runes_meta: &'a [TypeMetadata<RuneId>],
-    pub other: Option<&'a Damages>,
+    pub other: Option<Damages<'a>>,
     pub cells: Vec<Cell>,
 }
 
 impl<'a> DamageRenderer<'a> {
     pub fn new(
-        damages: &'a Damages,
+        damages: Damages<'a>,
         champion_id: ChampionId,
         adaptive_type: AdaptiveType,
         items_meta: &'a [TypeMetadata<ItemId>],
         runes_meta: &'a [TypeMetadata<RuneId>],
-        other: Option<&'a Damages>,
+        other: Option<Damages<'a>>,
     ) -> Self {
         let merge_data = champion_id.merge_data();
         let abilities_meta = champion_id.abilities();
@@ -391,7 +382,7 @@ impl<'a> DamageRenderer<'a> {
 
         cells
             .into_iter()
-            .map(|cell| cell.render(&damages.ctx, adaptive_type))
+            .map(|cell| cell.render(damages.ctx, adaptive_type))
             .collect::<Html>()
     }
 }
@@ -477,12 +468,12 @@ mod purchase_tests {
     #[test]
     fn new_purchase_row_uses_zero_baseline_and_keeps_owned_diffs() {
         let damage = Damages {
-            items: vec![30, 40, 50, 60].into_boxed_slice(),
-            ..Default::default()
+            items: &[30, 40, 50, 60],
+            ..empty_damages()
         };
         let baseline = Damages {
-            items: vec![10, 20].into_boxed_slice(),
-            ..Default::default()
+            items: &[10, 20],
+            ..empty_damages()
         };
         let metadata = [
             ItemId::NashorsTooth.data().metadata,
@@ -490,12 +481,12 @@ mod purchase_tests {
         ];
 
         let mut renderer = DamageRenderer::new(
-            &damage,
+            damage,
             Default::default(),
             Default::default(),
             &metadata,
             Default::default(),
-            Some(&baseline),
+            Some(baseline),
         );
 
         renderer.value_damage(&metadata);
@@ -516,12 +507,12 @@ mod purchase_tests {
     fn zero_candidate_pair_renders_for_owned_and_non_damaging_purchases() {
         for candidate in [ItemId::NashorsTooth, ItemId::VoidStaff] {
             let damage = Damages {
-                items: vec![30, 40, 0, 0].into_boxed_slice(),
-                ..Default::default()
+                items: &[30, 40, 0, 0],
+                ..empty_damages()
             };
             let baseline = Damages {
-                items: vec![10, 20].into_boxed_slice(),
-                ..Default::default()
+                items: &[10, 20],
+                ..empty_damages()
             };
             let metadata = [
                 ItemId::NashorsTooth.data().metadata,
@@ -529,12 +520,12 @@ mod purchase_tests {
             ];
 
             let mut renderer = DamageRenderer::new(
-                &damage,
+                damage,
                 Default::default(),
                 Default::default(),
                 &metadata,
                 Default::default(),
-                Some(&baseline),
+                Some(baseline),
             );
 
             renderer.value_damage(&metadata);
@@ -553,26 +544,26 @@ mod purchase_tests {
     #[test]
     fn hidden_zero_candidate_preserves_owned_cells_and_rune_alignment() {
         let damage = Damages {
-            items: vec![30, 40, 0, 0].into_boxed_slice(),
-            runes: vec![8, 12].into_boxed_slice(),
-            ..Default::default()
+            items: &[30, 40, 0, 0],
+            runes: &[8, 12],
+            ..empty_damages()
         };
         let baseline = Damages {
-            items: vec![10, 20].into_boxed_slice(),
-            runes: vec![3, 4].into_boxed_slice(),
-            ..Default::default()
+            items: &[10, 20],
+            runes: &[3, 4],
+            ..empty_damages()
         };
 
         let items_meta = &[ItemId::NashorsTooth.data().metadata];
         let runes_meta = &[RuneId::Electrocute.data().metadata];
 
         let mut renderer = DamageRenderer::new(
-            &damage,
+            damage,
             Default::default(),
             Default::default(),
             items_meta,
             runes_meta,
-            Some(&baseline),
+            Some(baseline),
         );
 
         renderer.value_damage(items_meta);
@@ -591,19 +582,19 @@ mod purchase_tests {
     #[test]
     fn purchase_with_no_owned_damage_still_renders_its_pair() {
         let damage = Damages {
-            items: vec![0, 70].into_boxed_slice(),
-            ..Default::default()
+            items: &[0, 70],
+            ..empty_damages()
         };
-        let baseline = Damages::default();
+        let baseline = empty_damages();
         let metadata = [ItemId::NashorsTooth.data().metadata];
 
         let mut renderer = DamageRenderer::new(
-            &damage,
+            damage,
             Default::default(),
             Default::default(),
             &metadata,
             Default::default(),
-            Some(&baseline),
+            Some(baseline),
         );
 
         renderer.value_damage(&metadata);
@@ -633,23 +624,28 @@ mod ability_diff_tests {
                     .any(|m| m.min as usize == i || m.max as usize == i)
             })
             .unwrap();
+        let baseline_abilities = vec![100; len];
         let baseline = Damages {
-            abilities: vec![100; len].into_boxed_slice(),
-            ..Default::default()
+            abilities: &baseline_abilities,
+            ..empty_damages()
         };
-        let mut damage = baseline.clone();
+        let mut abilities = baseline.abilities.to_vec();
 
-        damage.abilities[merge.min as usize] = 125;
-        damage.abilities[merge.max as usize] = 90;
-        damage.abilities[single] = 130;
+        abilities[merge.min as usize] = 125;
+        abilities[merge.max as usize] = 90;
+        abilities[single] = 130;
+        let damage = Damages {
+            abilities: &abilities,
+            ..baseline
+        };
 
         let mut renderer = DamageRenderer::new(
-            &damage,
+            damage,
             champion,
             Default::default(),
             Default::default(),
             Default::default(),
-            Some(&baseline),
+            Some(baseline),
         );
 
         renderer.attack_cells();
@@ -666,7 +662,7 @@ mod ability_diff_tests {
         assert_eq!(cells[indexes[single]].diff, Some((30, None)));
 
         let mut renderer2 = DamageRenderer::new(
-            &damage,
+            damage,
             champion,
             Default::default(),
             Default::default(),
@@ -691,5 +687,17 @@ mod ability_diff_tests {
         }
         assert!(Cell::render_range(0, None).is_none());
         assert!(Cell::render_range(0, Some(0)).is_none());
+    }
+}
+
+#[cfg(test)]
+pub(crate) fn empty_damages() -> Damages<'static> {
+    static CTX: std::sync::LazyLock<Ctx> = std::sync::LazyLock::new(Ctx::default);
+    Damages {
+        attacks: Attacks::default(),
+        abilities: &[],
+        items: &[],
+        runes: &[],
+        ctx: &CTX,
     }
 }
