@@ -16,3 +16,5 @@ pub mod state;
 pub mod statics;
 
 pub mod google;
+
+pub mod response;
