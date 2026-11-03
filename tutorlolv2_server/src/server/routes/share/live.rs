@@ -1,10 +1,8 @@
-use crate::server::{
-    codec::{OCTET_STREAM, Response},
-    state::AppState,
-};
+use crate::server::response::{AppError, AppResult, Trace};
+use crate::server::{codec::OCTET_STREAM, state::AppState};
+use actix_web::http::StatusCode;
 use actix_web::{
     HttpRequest, HttpResponse,
-    error::{ErrorGone, ErrorTooManyRequests},
     web::{Data, Path, Query},
 };
 use std::time::Duration;
@@ -16,17 +14,17 @@ pub async fn live(
     code: Path<String>,
     query: Query<After>,
     req: HttpRequest,
-) -> Response {
+) -> AppResult<HttpResponse> {
     let (code, cap) = state.capability(&code, &req).await?;
 
     if cap.ended.is_some() {
-        return Err(ErrorGone("The match has ended"));
+        return Err(AppError::gone("The match has ended"));
     }
 
     let (mut receiver, _permit) = state
         .live
         .subscribe(cap.recording, state.config.max_viewers_per_code)
-        .ok_or_else(|| ErrorTooManyRequests("Viewer limit reached"))?;
+        .trace_ctx(("Viewer limit reached", StatusCode::TOO_MANY_REQUESTS))?;
 
     let deadline = tokio::time::Instant::now() + Duration::from_secs(25);
 
@@ -34,7 +32,7 @@ pub async fn live(
         let cap = Capability::load(&state.db, &code).await?;
 
         if cap.ended.is_some() {
-            return Err(ErrorGone("The match has ended"));
+            return Err(AppError::gone("The match has ended"));
         }
 
         let latest = receiver.borrow_and_update().clone();
@@ -54,7 +52,7 @@ pub async fn live(
                 let cap = Capability::load(&state.db, &code).await?;
 
                 if cap.ended.is_some() {
-                    return Err(ErrorGone("The match has ended"));
+                    return Err(AppError::gone("The match has ended"));
                 }
 
                 return Ok(HttpResponse::NoContent().finish());

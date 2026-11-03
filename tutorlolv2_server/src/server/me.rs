@@ -1,26 +1,13 @@
-//! Device-owned metadata and derived replay access. Never mints capabilities on reads.
+use crate::server::response::{AppError, AppResult, Trace};
+// Device-owned metadata and derived replay access. Never mints capabilities on reads.
 use super::state::AppState;
-use actix_web::{HttpResponse, error::ErrorInternalServerError};
 use chrono::{DateTime, Utc};
-use serde::Deserialize;
 use tutorlolv2_protocol::*;
 use uuid::Uuid;
 
-#[derive(Deserialize)]
-pub struct Pagination {
-    pub(crate) before: Option<Uuid>,
-    pub(crate) limit: Option<u32>,
-}
+pub use tutorlolv2_api::Pagination as Pagination;
 
 // Deliberately excludes probe/raw/frame payloads and player identifiers beyond the host Riot ID.
-
-pub(crate) fn internal(_: sqlx::Error) -> actix_web::Error {
-    ErrorInternalServerError("History storage unavailable")
-}
-
-pub(crate) fn checked<T, U: TryFrom<T>>(value: T) -> actix_web::Result<U> {
-    U::try_from(value).map_err(|_| ErrorInternalServerError("Invalid stored history metadata"))
-}
 
 pub(crate) struct HistoryRow {
     pub(crate) id: Uuid,
@@ -47,14 +34,6 @@ pub(crate) struct HistoryRow {
     pub(crate) mode: Option<CodeMode>,
 }
 
-pub(crate) fn no_store(mut response: HttpResponse) -> HttpResponse {
-    response.headers_mut().insert(
-        actix_web::http::header::CACHE_CONTROL,
-        actix_web::http::header::HeaderValue::from_static("no-store"),
-    );
-    response
-}
-
 pub use super::routes::me::recordings::list;
 
 pub use super::routes::me::recording::details;
@@ -67,7 +46,14 @@ pub(crate) struct HistoryService<'a> {
     pub(crate) state: &'a AppState,
 }
 impl HistoryService<'_> {
-    pub(crate) fn item(&self, row: &HistoryRow) -> actix_web::Result<HistoryListItem> {
+    fn checked<T, U: TryFrom<T>>(value: T) -> AppResult<U>
+    where
+        U::Error: Into<AppError>,
+    {
+        U::try_from(value).trace_ctx("Invalid stored history metadata")
+    }
+
+    pub(crate) fn item(&self, row: &HistoryRow) -> AppResult<HistoryListItem> {
         let state = self.state;
         let code = row.code.clone();
         let mode = row.mode;
@@ -78,24 +64,24 @@ impl HistoryService<'_> {
                     id: row.id.into_bytes(),
                     champion: row.champion.clone(),
                     game_mode: GameMode::from(row.game_mode.clone()),
-                    queue_id: row.queue_id.map(checked).transpose()?,
+                    queue_id: row.queue_id.map(Self::checked).transpose()?,
                     active_riot_id: row.active_riot_id.clone(),
                     started_at_ms: row.started_at_estimate.timestamp_millis(),
                     first_game_time: row.first_game_time,
                     last_game_time: row.last_game_time,
-                    game_length_s: row.game_length_s.map(checked).transpose()?,
+                    game_length_s: row.game_length_s.map(Self::checked).transpose()?,
                     result: row.result,
                     is_custom: row.is_custom,
                     is_practice: row.is_practice,
                 },
                 ended_at_ms: row.ended_at.map(|v| v.timestamp_millis()),
                 end_reason: row.end_reason,
-                coverage_s: checked(row.coverage_s)?,
-                kills: checked(row.kills)?,
-                deaths: checked(row.deaths)?,
-                assists: checked(row.assists)?,
-                creep_score: checked(row.creep_score)?,
-                level: checked(row.level)?,
+                coverage_s: Self::checked(row.coverage_s)?,
+                kills: Self::checked(row.kills)?,
+                deaths: Self::checked(row.deaths)?,
+                assists: Self::checked(row.assists)?,
+                creep_score: Self::checked(row.creep_score)?,
+                level: Self::checked(row.level)?,
             },
             share: match (code, mode) {
                 (Some(c), Some(m)) => state.code_state(&c, m),

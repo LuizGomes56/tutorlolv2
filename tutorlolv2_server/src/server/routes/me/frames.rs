@@ -1,21 +1,20 @@
-use crate::server::{
-    codec::{OCTET_STREAM, Response},
-    google::Owner,
-    state::AppState,
-};
+use crate::server::response::{AppError, AppResult, Trace};
+use crate::server::{codec::OCTET_STREAM, google::Owner, state::AppState};
+use actix_web::http::StatusCode;
 use actix_web::{
     HttpResponse,
-    error::{ErrorNotFound, ErrorUnprocessableEntity},
     web::{Data, Path},
 };
 use tutorlolv2_protocol::*;
 use uuid::Uuid;
 
-use crate::server::me::*;
-
-pub async fn frames(state: Data<AppState>, auth: Owner, path: Path<(Uuid, u32)>) -> Response {
+pub async fn frames(
+    state: Data<AppState>,
+    auth: Owner,
+    path: Path<(Uuid, u32)>,
+) -> AppResult<HttpResponse> {
     let (id, seq) = path.into_inner();
-    let seq = i32::try_from(seq).map_err(|_| ErrorNotFound("Chunk not found"))?;
+    let seq = i32::try_from(seq).trace_ctx(("Chunk not found", StatusCode::NOT_FOUND))?;
     let row = sqlx::query!(
         r#"
         SELECT c.frames,
@@ -42,13 +41,11 @@ pub async fn frames(state: Data<AppState>, auth: Owner, path: Path<(Uuid, u32)>)
     )
     .fetch_optional(&state.db)
     .await
-    .map_err(internal)?
-    .ok_or_else(|| ErrorNotFound("Chunk not found"))?;
+    .trace_ctx("History storage unavailable")?
+    .trace_ctx(("Chunk not found", StatusCode::NOT_FOUND))?;
 
     if row.frames_format != FRAMES_FORMAT as i16 {
-        return Err(ErrorUnprocessableEntity(
-            "Frames unavailable for this chunk",
-        ));
+        return Err(AppError::unprocessable("Frames unavailable for this chunk"));
     }
 
     Ok(HttpResponse::Ok()

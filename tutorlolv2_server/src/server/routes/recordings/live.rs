@@ -1,10 +1,8 @@
-use crate::server::{auth::DeviceAuth, codec::Response, state::AppState};
+use crate::server::response::{AppError, AppResult, Trace};
+use crate::server::{auth::DeviceAuth, state::AppState};
+use actix_web::http::StatusCode;
 use actix_web::{
     HttpResponse,
-    error::{
-        ErrorConflict, ErrorInternalServerError, ErrorNotFound, ErrorPayloadTooLarge,
-        ErrorUnprocessableEntity,
-    },
     web::{self, Bytes, Data, Path},
 };
 use tutorlolv2_types::BINCODE_CONFIG;
@@ -17,15 +15,15 @@ pub async fn push_live(
     auth: DeviceAuth,
     id: Path<Uuid>,
     body: Bytes,
-) -> Response {
+) -> AppResult<HttpResponse> {
     let id = id.into_inner();
 
     if body.len() > MAX_LIVE_BYTES {
-        return Err(ErrorPayloadTooLarge("Live snapshot too large"));
+        return Err(AppError::payload_too_large("Live snapshot too large"));
     }
 
     // Ownership first, before decompressing any untrusted data.
-    let mut tx = state.db.begin().await.map_err(ErrorInternalServerError)?;
+    let mut tx = state.db.begin().await.trace()?;
 
     let recording = sqlx::query!(
         r#"
@@ -43,11 +41,11 @@ pub async fn push_live(
     )
     .fetch_optional(&mut *tx)
     .await
-    .map_err(ErrorInternalServerError)?
-    .ok_or_else(|| ErrorNotFound("Unknown recording"))?;
+    .trace()?
+    .trace_ctx(("Unknown recording", StatusCode::NOT_FOUND))?;
 
     if recording.ended_at.is_some() {
-        return Err(ErrorConflict("The recording has ended"));
+        return Err(AppError::conflict("The recording has ended"));
     }
 
     let shared = sqlx::query_scalar!(
@@ -61,33 +59,27 @@ pub async fn push_live(
     )
     .fetch_optional(&mut *tx)
     .await
-    .map_err(ErrorInternalServerError)?
+    .trace()?
     .is_some();
 
     if !shared {
-        return Err(ErrorConflict("The recording is private"));
+        return Err(AppError::conflict("The recording is private"));
     }
 
     let bytes = body.to_vec();
     let derived = web::block(move || SelfContainedFrame::decode(&bytes))
         .await
-        .map_err(ErrorInternalServerError)?
-        .map_err(|e| {
-            if e.too_large {
-                ErrorPayloadTooLarge(e.message)
-            } else {
-                ErrorUnprocessableEntity(e.message)
-            }
-        })?;
+        .trace()?
+        .trace()?;
 
     let (stored, _) = bincode::decode_from_slice::<tutorlolv2_protocol::Probe, _>(
         &recording.probe,
         BINCODE_CONFIG,
     )
-    .map_err(ErrorInternalServerError)?;
+    .trace()?;
 
     if stored.consistent(&derived.probe).is_err() {
-        return Err(ErrorConflict("The snapshot belongs to another match"));
+        return Err(AppError::conflict("The snapshot belongs to another match"));
     }
 
     sqlx::query!(
@@ -100,7 +92,7 @@ pub async fn push_live(
     )
     .execute(&mut *tx)
     .await
-    .map_err(ErrorInternalServerError)?;
+    .trace()?;
 
     // Publish under the same row lock used by end/share mutations. Their
     // post-commit close cannot race ahead and leave a stale frame behind.
@@ -112,7 +104,7 @@ pub async fn push_live(
         state.config.max_viewers_per_code,
     );
 
-    tx.commit().await.map_err(ErrorInternalServerError)?;
+    tx.commit().await.trace()?;
 
     Ok(HttpResponse::NoContent().finish())
 }

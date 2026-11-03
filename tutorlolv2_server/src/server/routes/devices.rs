@@ -1,18 +1,16 @@
-use crate::server::{
-    auth::secret_hash,
-    codec::{Bincode, Response, respond},
-    state::AppState,
-};
-use actix_web::{error::ErrorInternalServerError, web::Data};
+use crate::server::endpoint::EndpointExt;
+use crate::server::response::Trace;
+use crate::server::{auth::secret_hash, codec::Bincode, state::AppState};
+use actix_web::web::Data;
 use tutorlolv2_protocol::{DeviceCredentials, RegisterDevice};
 
 pub async fn register_device(
     state: Data<AppState>,
     Bincode(request): Bincode<RegisterDevice>,
-) -> Response {
+) -> crate::server::response::ApiResult<DeviceCredentials> {
     let mut device_secret = [0u8; 32];
 
-    getrandom::fill(&mut device_secret).map_err(ErrorInternalServerError)?;
+    getrandom::fill(&mut device_secret).trace()?;
 
     let device_id = sqlx::query_scalar!(
         r#"
@@ -30,12 +28,14 @@ pub async fn register_device(
     )
     .fetch_one(&state.db)
     .await
-    .map_err(ErrorInternalServerError)?;
+    .trace()?;
 
-    respond(DeviceCredentials {
-        device_id: device_id.into_bytes(),
-        device_secret,
-    })
+    Ok(tutorlolv2_api::RegisterDeviceEndpoint::reply(
+        DeviceCredentials {
+            device_id: device_id.into_bytes(),
+            device_secret,
+        },
+    ))
 }
 
 api_endpoint! {

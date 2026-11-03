@@ -571,7 +571,7 @@ async fn uploaded_chunks_preserve_riot_identity_for_resume(pool: PgPool) {
     .fetch_one(&pool)
     .await
     .unwrap();
-    let stored: Probe = decode(&stored);
+    let stored: Probe = decode_raw(&stored);
     assert_eq!(stored.game_time, 62.0);
     assert_eq!(stored.riot_game, Some(identity));
 

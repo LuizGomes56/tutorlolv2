@@ -171,7 +171,8 @@ source_from!(
     getrandom::Error,
     tokio::task::JoinError,
     base64::DecodeError,
-    actix_web::error::HttpError
+    actix_web::error::HttpError,
+    actix_web::error::BlockingError
 );
 
 pub struct ErrorContext {
@@ -299,5 +300,29 @@ mod tests {
             .trace()
             .unwrap_err();
         assert_eq!(error.api.traces[0].line, line);
+    }
+}
+
+// Actix extractor errors are thread-local; preserve their status and diagnostics
+// at this boundary rather than retaining a non-Send runtime error in AppError.
+impl From<actix_web::Error> for AppError {
+    fn from(error: actix_web::Error) -> Self {
+        let status = error.as_response_error().status_code();
+        let mut value = Self::new(status, error.to_string());
+        value.api.details = Some(error.to_string());
+        value
+    }
+}
+impl From<crate::server::ingest::IngestError> for AppError {
+    fn from(error: crate::server::ingest::IngestError) -> Self {
+        use crate::server::ingest::IngestError::*;
+        match error {
+            TooLarge => Self::new(
+                StatusCode::PAYLOAD_TOO_LARGE,
+                "Chunk too large once decompressed",
+            ),
+            Invalid(reason) => Self::new(StatusCode::UNPROCESSABLE_ENTITY, reason),
+            Mismatch(reason) => Self::new(StatusCode::CONFLICT, reason),
+        }
     }
 }

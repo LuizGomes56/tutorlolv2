@@ -22,6 +22,13 @@ pub fn encode<T: bincode::Encode>(value: T) -> Vec<u8> {
 }
 
 pub fn decode<T: bincode::Decode<()>>(bytes: &[u8]) -> T {
+    tutorlolv2_protocol::ApiResponse::<T>::decode(bytes, 200)
+        .unwrap()
+        .result
+        .unwrap()
+}
+
+pub fn decode_raw<T: bincode::Decode<()>>(bytes: &[u8]) -> T {
     let (value, used) =
         bincode::decode_from_slice(bytes, tutorlolv2_types::BINCODE_CONFIG).unwrap();
     assert_eq!(used, bytes.len());

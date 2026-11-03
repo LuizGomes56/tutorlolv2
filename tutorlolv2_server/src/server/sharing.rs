@@ -1,15 +1,9 @@
-//! Capability lifecycle, derived replay chunks and latest-only live delivery.
-use super::{
-    codec::{Response, respond},
-    db_enums::ShareDeleteReason,
-    state::AppState,
-};
-use actix_web::{
-    HttpRequest, HttpResponse,
-    error::{ErrorConflict, ErrorForbidden, ErrorGone, ErrorInternalServerError, ErrorNotFound},
-};
+use crate::server::response::{AppError, AppResult, Trace};
+use actix_web::http::StatusCode;
+// Capability lifecycle, derived replay chunks and latest-only live delivery.
+use super::{db_enums::ShareDeleteReason, state::AppState};
+use actix_web::HttpRequest;
 use chrono::{DateTime, Utc};
-use serde::Deserialize;
 use sqlx::PgPool;
 use std::{
     collections::{HashMap, VecDeque},
@@ -69,7 +63,7 @@ impl AppState {
         &self,
         req: &HttpRequest,
         record_miss: bool,
-    ) -> actix_web::Result<()> {
+    ) -> AppResult<()> {
         let info = req.connection_info();
         let raw = if self.config.trusted_proxy {
             info.realip_remote_addr()
@@ -84,45 +78,36 @@ impl AppState {
         if req.app_data::<ViewerPolicy>().is_none_or(|p| p.0)
             && !self.missing_codes.allow(key, record_miss)
         {
-            return Err(actix_web::error::InternalError::from_response(
-                "Too many unknown code lookups",
-                HttpResponse::TooManyRequests()
-                    .insert_header(("Retry-After", "60"))
-                    .body("Too many unknown code lookups"),
-            )
-            .into());
+            return Err(AppError::rate_limited("Too many unknown code lookups").retry_after(60));
         }
 
         Ok(())
     }
 
-    pub(crate) fn missing_code(&self, req: &HttpRequest) -> actix_web::Error {
+    pub(crate) fn missing_code(&self, req: &HttpRequest) -> AppError {
         self.check_lookup_budget(req, true)
             .err()
-            .unwrap_or_else(|| ErrorNotFound("Code not found"))
+            .unwrap_or_else(|| AppError::not_found("Code not found"))
     }
 
     pub(crate) async fn capability(
         &self,
         input: &str,
         req: &HttpRequest,
-    ) -> actix_web::Result<(String, Capability)> {
+    ) -> AppResult<(String, Capability)> {
         self.check_lookup_budget(req, false)?;
         let code = normalize_code(input).ok_or_else(|| self.missing_code(req))?;
 
         match Capability::load(&self.db, &code).await {
             Ok(cap) => Ok((code, cap)),
-            Err(error)
-                if error.as_response_error().status_code()
-                    == actix_web::http::StatusCode::NOT_FOUND =>
-            {
+            Err(error) if error.status_code() == actix_web::http::StatusCode::NOT_FOUND => {
                 Err(self.missing_code(req))
             }
             Err(error) => Err(error),
         }
     }
 
-    pub async fn share_state(&self, id: Uuid) -> actix_web::Result<ShareState> {
+    pub async fn share_state(&self, id: Uuid) -> AppResult<ShareState> {
         let row = sqlx::query!(
             r#"
             SELECT code,
@@ -135,7 +120,7 @@ impl AppState {
         )
         .fetch_optional(&self.db)
         .await
-        .map_err(ErrorInternalServerError)?;
+        .trace()?;
 
         Ok(match row {
             Some(row) => self.code_state(&row.code, row.mode),
@@ -169,7 +154,7 @@ pub(crate) struct Capability {
 }
 
 impl Capability {
-    pub(crate) async fn load(db: &PgPool, code: &str) -> actix_web::Result<Self> {
+    pub(crate) async fn load(db: &PgPool, code: &str) -> AppResult<Self> {
         let row = sqlx::query!(
             r#"
             SELECT s.recording_id,
@@ -196,8 +181,8 @@ impl Capability {
         )
         .fetch_optional(db)
         .await
-        .map_err(ErrorInternalServerError)?
-        .ok_or_else(|| ErrorNotFound("Code not found"))?;
+        .trace()?
+        .trace_ctx(("Code not found", StatusCode::NOT_FOUND))?;
 
         let cap = Self {
             recording: row.recording_id,
@@ -225,15 +210,15 @@ impl Capability {
         Ok(cap)
     }
 
-    pub(crate) fn active(&self) -> actix_web::Result<()> {
+    pub(crate) fn active(&self) -> AppResult<()> {
         if self.mode == CodeMode::Public
             && (self.summary.is_practice || self.summary.is_custom != Some(false))
         {
-            return Err(ErrorGone("public_not_allowed"));
+            return Err(AppError::gone("public_not_allowed"));
         }
 
         if self.deleted || (self.mode == CodeMode::Live && self.ended.is_some()) {
-            Err(ErrorGone("This match is no longer shared"))
+            Err(AppError::gone("This match is no longer shared"))
         } else {
             Ok(())
         }
@@ -321,11 +306,7 @@ impl SelfContainedFrame {
     }
 }
 
-#[derive(Deserialize)]
-pub struct After {
-    #[serde(default)]
-    pub(crate) after: u64,
-}
+pub use tutorlolv2_api::After as After;
 
 pub use super::routes::recordings::share::owner_share;
 
@@ -349,15 +330,13 @@ impl SharingService<'_> {
         id: Uuid,
         request: SetShareMode,
         finished_only: bool,
-    ) -> Response {
+    ) -> AppResult<ShareState> {
         let state = self.state;
         if finished_only && request.mode == ShareMode::Live {
-            return Err(actix_web::error::ErrorBadRequest(
-                "Live is unavailable in history",
-            ));
+            return Err(AppError::bad_request("Live is unavailable in history"));
         }
 
-        let mut tx = state.db.begin().await.map_err(ErrorInternalServerError)?;
+        let mut tx = state.db.begin().await.trace()?;
         let recording = sqlx::query!(
             r#"
         SELECT ended_at,
@@ -384,21 +363,21 @@ impl SharingService<'_> {
         )
         .fetch_optional(&mut *tx)
         .await
-        .map_err(ErrorInternalServerError)?
-        .ok_or_else(|| ErrorNotFound("Unknown recording"))?;
+        .trace()?
+        .trace_ctx(("Unknown recording", StatusCode::NOT_FOUND))?;
 
         if finished_only && recording.ended_at.is_none() {
-            return Err(ErrorConflict("The recording is still active"));
+            return Err(AppError::conflict("The recording is still active"));
         }
 
         if request.mode == ShareMode::Public
             && (recording.is_practice || recording.is_custom != Some(false))
         {
-            return Err(ErrorForbidden("public_not_allowed"));
+            return Err(AppError::forbidden("public_not_allowed"));
         }
 
         if request.mode == ShareMode::Live && recording.ended_at.is_some() {
-            return Err(ErrorConflict("The recording has ended"));
+            return Err(AppError::conflict("The recording has ended"));
         }
 
         if request.mode == ShareMode::Private {
@@ -415,12 +394,12 @@ impl SharingService<'_> {
             )
             .execute(&mut *tx)
             .await
-            .map_err(ErrorInternalServerError)?;
+            .trace()?;
 
-            tx.commit().await.map_err(ErrorInternalServerError)?;
+            tx.commit().await.trace()?;
             state.live.close(id);
 
-            return respond(state.share_state(id).await?);
+            return state.share_state(id).await.trace();
         }
 
         let mode = if request.mode == ShareMode::Live {
@@ -441,7 +420,7 @@ impl SharingService<'_> {
         )
         .fetch_optional(&mut *tx)
         .await
-        .map_err(ErrorInternalServerError)?;
+        .trace()?;
 
         let code = match existing {
             Some(existing) => {
@@ -457,7 +436,7 @@ impl SharingService<'_> {
                 )
                 .execute(&mut *tx)
                 .await
-                .map_err(ErrorInternalServerError)?;
+                .trace()?;
 
                 existing.code
             }
@@ -467,7 +446,7 @@ impl SharingService<'_> {
                 for _ in 0..5 {
                     let mut random = [0u8; 5];
 
-                    getrandom::fill(&mut random).map_err(ErrorInternalServerError)?;
+                    getrandom::fill(&mut random).trace()?;
 
                     let code = code_from_random(random);
                     let inserted = sqlx::query_scalar!(
@@ -489,7 +468,7 @@ impl SharingService<'_> {
                     )
                     .fetch_optional(&mut *tx)
                     .await
-                    .map_err(ErrorInternalServerError)?;
+                    .trace()?;
 
                     if inserted.is_some() {
                         chosen = inserted;
@@ -497,11 +476,27 @@ impl SharingService<'_> {
                     }
                 }
 
-                chosen.ok_or_else(|| ErrorInternalServerError("Could not allocate a share code"))?
+                chosen.trace_ctx((
+                    "Could not allocate a share code",
+                    StatusCode::INTERNAL_SERVER_ERROR,
+                ))?
             }
         };
 
-        tx.commit().await.map_err(ErrorInternalServerError)?;
-        respond(state.code_state(&code, mode))
+        tx.commit().await.trace()?;
+        Ok(state.code_state(&code, mode))
+    }
+}
+
+impl From<LiveDecodeError> for AppError {
+    fn from(error: LiveDecodeError) -> Self {
+        AppError::new(
+            if error.too_large {
+                StatusCode::PAYLOAD_TOO_LARGE
+            } else {
+                StatusCode::UNPROCESSABLE_ENTITY
+            },
+            error.message,
+        )
     }
 }

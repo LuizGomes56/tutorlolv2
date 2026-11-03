@@ -1,11 +1,7 @@
-use crate::server::{
-    auth::DeviceAuth,
-    codec::{Bincode, Response},
-    state::AppState,
-};
+use crate::server::response::{AppError, AppResult, Trace};
+use crate::server::{auth::DeviceAuth, codec::Bincode, state::AppState};
 use actix_web::{
     HttpResponse,
-    error::{ErrorInternalServerError, ErrorUnprocessableEntity},
     web::{Data, Path},
 };
 use chrono::Utc;
@@ -19,11 +15,11 @@ pub async fn end(
     auth: DeviceAuth,
     path: Path<Uuid>,
     Bincode(request): Bincode<EndRecording>,
-) -> Response {
+) -> AppResult<HttpResponse> {
     let id = path.into_inner();
 
     if request.reason == EndReason::Timeout {
-        return Err(ErrorUnprocessableEntity(
+        return Err(AppError::unprocessable(
             "Only the server ends recordings by timeout",
         ));
     }
@@ -32,11 +28,11 @@ pub async fn end(
         .owned(id, auth.device_id)
         .await?;
 
-    let mut tx = state.db.begin().await.map_err(ErrorInternalServerError)?;
+    let mut tx = state.db.begin().await.trace()?;
 
     RecordingService::end_recording_tx(&mut tx, id, request.reason, Utc::now())
         .await
-        .map_err(ErrorInternalServerError)?;
+        .trace()?;
 
     sqlx::query!(
         r#"
@@ -51,9 +47,9 @@ pub async fn end(
     )
     .execute(&mut *tx)
     .await
-    .map_err(ErrorInternalServerError)?;
+    .trace()?;
 
-    tx.commit().await.map_err(ErrorInternalServerError)?;
+    tx.commit().await.trace()?;
     state.live.close(id);
 
     Ok(HttpResponse::NoContent().finish())

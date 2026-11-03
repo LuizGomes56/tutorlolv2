@@ -1,10 +1,8 @@
-use crate::server::{
-    codec::{OCTET_STREAM, Response},
-    state::AppState,
-};
+use crate::server::response::{AppError, AppResult, Trace};
+use crate::server::{codec::OCTET_STREAM, state::AppState};
+use actix_web::http::StatusCode;
 use actix_web::{
     HttpRequest, HttpResponse,
-    error::{ErrorInternalServerError, ErrorNotFound, ErrorUnprocessableEntity},
     web::{Data, Path},
 };
 use tutorlolv2_protocol::{CodeMode, FRAMES_FORMAT};
@@ -15,7 +13,7 @@ pub async fn frames(
     state: Data<AppState>,
     path: Path<(String, u32)>,
     req: HttpRequest,
-) -> Response {
+) -> AppResult<HttpResponse> {
     let (code, seq) = path.into_inner();
     let (code, cap) = state.capability(&code, &req).await?;
 
@@ -28,17 +26,15 @@ pub async fn frames(
             AND seq = $2
         "#,
         cap.recording,
-        i32::try_from(seq).map_err(|_| ErrorNotFound("Chunk not found"))?,
+        i32::try_from(seq).trace_ctx(("Chunk not found", StatusCode::NOT_FOUND))?,
     )
     .fetch_optional(&state.db)
     .await
-    .map_err(ErrorInternalServerError)?
-    .ok_or_else(|| ErrorNotFound("Chunk not found"))?;
+    .trace()?
+    .trace_ctx(("Chunk not found", StatusCode::NOT_FOUND))?;
 
     if chunk.frames_format != FRAMES_FORMAT as i16 {
-        return Err(ErrorUnprocessableEntity(
-            "Frames unavailable for this chunk",
-        ));
+        return Err(AppError::unprocessable("Frames unavailable for this chunk"));
     }
 
     let latest = Capability::load(&state.db, &code).await?;

@@ -265,7 +265,8 @@ async fn public_policy_rejects_custom_practice_and_unknown(pool: PgPool) {
         )
         .await;
         assert_eq!(response.status(), StatusCode::FORBIDDEN);
-        assert_eq!(&http::read_body(response).await[..], b"public_not_allowed");
+        let envelope = ApiResponse::<()>::decode(&http::read_body(response).await, 403).unwrap();
+        assert_eq!(envelope.result.unwrap_err().message, "public_not_allowed");
         assert!(
             share(&app, &device, id, ShareMode::Live)
                 .await

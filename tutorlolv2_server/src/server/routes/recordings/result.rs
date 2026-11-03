@@ -1,12 +1,7 @@
-use crate::server::{
-    auth::DeviceAuth,
-    codec::{Bincode, Response},
-    db_enums::RiotGameSource,
-    state::AppState,
-};
+use crate::server::response::{AppResult, Trace};
+use crate::server::{auth::DeviceAuth, codec::Bincode, db_enums::RiotGameSource, state::AppState};
 use actix_web::{
     HttpResponse,
-    error::ErrorInternalServerError,
     web::{Data, Path},
 };
 use tutorlolv2_protocol::RecordingResult;
@@ -19,7 +14,7 @@ pub async fn set_result(
     auth: DeviceAuth,
     path: Path<Uuid>,
     Bincode(request): Bincode<RecordingResult>,
-) -> Response {
+) -> AppResult<HttpResponse> {
     let id = path.into_inner();
 
     (RecordingService { db: &state.db })
@@ -70,7 +65,7 @@ pub async fn set_result(
     )
     .execute(&state.db)
     .await
-    .map_err(ErrorInternalServerError)?;
+    .trace()?;
 
     Ok(HttpResponse::NoContent().finish())
 }

@@ -1,21 +1,20 @@
-use crate::server::{
-    codec::{Response, respond},
-    google::Owner,
-    state::AppState,
-};
-use actix_web::{
-    error::ErrorBadRequest,
-    web::{Data, Query},
-};
+use crate::server::endpoint::EndpointExt;
+use crate::server::response::{AppError, AppResult, Trace};
+use crate::server::{google::Owner, state::AppState};
+use actix_web::web::{Data, Query};
 use tutorlolv2_protocol::*;
 
 use crate::server::me::*;
 
-pub async fn list(state: Data<AppState>, auth: Owner, query: Query<Pagination>) -> Response {
+pub async fn list(
+    state: Data<AppState>,
+    auth: Owner,
+    query: Query<Pagination>,
+) -> crate::server::response::ApiResult<HistoryPage> {
     let limit = query.limit.unwrap_or(50);
 
     if !(1..=100).contains(&limit) {
-        return Err(ErrorBadRequest("limit must be between 1 and 100"));
+        return Err(AppError::bad_request("limit must be between 1 and 100"));
     }
 
     let rows = sqlx::query_as!(
@@ -68,14 +67,14 @@ pub async fn list(state: Data<AppState>, auth: Owner, query: Query<Pagination>) 
     )
     .fetch_all(&state.db)
     .await
-    .map_err(internal)?;
+    .trace_ctx("History storage unavailable")?;
 
     let more = rows.len() > limit as usize;
     let items: Vec<_> = rows
         .iter()
         .take(limit as usize)
         .map(|row| (HistoryService { state: &state }).item(row))
-        .collect::<actix_web::Result<Vec<_>>>()?;
+        .collect::<AppResult<Vec<_>>>()?;
 
     let next_before = if more {
         items.last().map(|v| v.summary.recording.id)
@@ -83,7 +82,11 @@ pub async fn list(state: Data<AppState>, auth: Owner, query: Query<Pagination>) 
         None
     };
 
-    respond(HistoryPage { items, next_before }).map(no_store)
+    Ok(tutorlolv2_api::ListRecordings::reply(HistoryPage {
+        items,
+        next_before,
+    }))
+    .map(|reply| reply.no_store())
 }
 
 api_contract! { pub struct Pagination { pub before: Option<Uuid>, pub limit: Option<u32> } }

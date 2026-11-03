@@ -1,15 +1,12 @@
+use crate::server::response::{AppError, AppResult, Trace};
 use crate::server::{
     auth::DeviceAuth,
-    codec::Response,
-    ingest::{IngestError, derive_chunk, hex},
+    ingest::{derive_chunk, hex},
     state::AppState,
 };
+use actix_web::http::StatusCode;
 use actix_web::{
     HttpRequest, HttpResponse,
-    error::{
-        ErrorConflict, ErrorInternalServerError, ErrorNotFound, ErrorPayloadTooLarge,
-        ErrorUnprocessableEntity,
-    },
     web::{self, Bytes, Data, Path},
 };
 use tutorlolv2_protocol::RAW_CHUNK_FORMAT;
@@ -23,14 +20,14 @@ pub async fn upload_chunk(
     path: Path<(Uuid, u32)>,
     req: HttpRequest,
     body: Bytes,
-) -> Response {
+) -> AppResult<HttpResponse> {
     let (id, seq) = path.into_inner();
     let sha_header = req
         .headers()
         .get(CONTENT_SHA256)
         .and_then(|value| value.to_str().ok())
         .map(str::to_owned)
-        .ok_or_else(|| ErrorUnprocessableEntity("Missing X-Content-Sha256"))?;
+        .trace_ctx(("Missing X-Content-Sha256", StatusCode::UNPROCESSABLE_ENTITY))?;
 
     let recording = sqlx::query!(
         r#"
@@ -46,8 +43,8 @@ pub async fn upload_chunk(
     )
     .fetch_optional(&state.db)
     .await
-    .map_err(ErrorInternalServerError)?
-    .ok_or_else(|| ErrorNotFound("Unknown recording"))?;
+    .trace()?
+    .trace_ctx(("Unknown recording", StatusCode::NOT_FOUND))?;
 
     if let Some(response) = (RecordingService { db: &state.db })
         .existing_chunk(id, seq, &sha_header)
@@ -59,23 +56,21 @@ pub async fn upload_chunk(
     let compressed = body.clone();
     let derived = web::block(move || derive_chunk(&compressed, seq, &sha_header))
         .await
-        .map_err(ErrorInternalServerError)?
-        .map_err(|e| match e {
-            IngestError::TooLarge => ErrorPayloadTooLarge("Chunk too large once decompressed"),
-            IngestError::Invalid(reason) => ErrorUnprocessableEntity(reason),
-            IngestError::Mismatch(reason) => ErrorConflict(reason),
-        })?;
+        .trace()?
+        .trace()?;
 
-    let stored = RecordingService::decode_probe(&recording.probe)
-        .ok_or_else(|| ErrorInternalServerError("Stored probe is unreadable"))?;
+    let stored = RecordingService::decode_probe(&recording.probe).trace_ctx((
+        "Stored probe is unreadable",
+        StatusCode::INTERNAL_SERVER_ERROR,
+    ))?;
 
     if derived.first.probe.active_riot_id != recording.active_riot_id
         || stored.consistent(&derived.first.probe).is_err()
     {
-        return Err(ErrorConflict("The chunk belongs to another match"));
+        return Err(AppError::conflict("The chunk belongs to another match"));
     }
 
-    let mut tx = state.db.begin().await.map_err(ErrorInternalServerError)?;
+    let mut tx = state.db.begin().await.trace()?;
 
     let inserted = sqlx::query!(
         r#"
@@ -120,7 +115,7 @@ pub async fn upload_chunk(
     )
     .execute(&mut *tx)
     .await
-    .map_err(ErrorInternalServerError)?
+    .trace()?
     .rows_affected()
         == 1;
 
@@ -133,7 +128,7 @@ pub async fn upload_chunk(
         return (RecordingService { db: &state.db })
             .existing_chunk(id, seq, &sha)
             .await?
-            .ok_or_else(|| ErrorInternalServerError("Chunk vanished"));
+            .trace_ctx(("Chunk vanished", StatusCode::INTERNAL_SERVER_ERROR));
     }
 
     let last = &derived.last;
@@ -141,8 +136,8 @@ pub async fn upload_chunk(
     // when advancing the snapshot fields used by subsequent resume checks.
     let mut latest_probe = last.probe.clone();
     latest_probe.riot_game = stored.riot_game;
-    let last_probe = bincode::encode_to_vec(&latest_probe, tutorlolv2_types::BINCODE_CONFIG)
-        .map_err(ErrorInternalServerError)?;
+    let last_probe =
+        bincode::encode_to_vec(&latest_probe, tutorlolv2_types::BINCODE_CONFIG).trace()?;
 
     let coverage = (derived.last_game_time - derived.first_game_time + 1.0).round() as i32;
 
@@ -198,9 +193,9 @@ pub async fn upload_chunk(
     )
     .execute(&mut *tx)
     .await
-    .map_err(ErrorInternalServerError)?;
+    .trace()?;
 
-    tx.commit().await.map_err(ErrorInternalServerError)?;
+    tx.commit().await.trace()?;
 
     Ok(HttpResponse::Created().finish())
 }

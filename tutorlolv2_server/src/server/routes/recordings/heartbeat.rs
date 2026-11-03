@@ -1,7 +1,7 @@
-use crate::server::{auth::DeviceAuth, codec::Response, state::AppState};
+use crate::server::response::{AppError, AppResult, Trace};
+use crate::server::{auth::DeviceAuth, state::AppState};
 use actix_web::{
     HttpResponse,
-    error::{ErrorConflict, ErrorInternalServerError},
     web::{Data, Path},
 };
 use tutorlolv2_protocol::EndReason;
@@ -9,7 +9,11 @@ use uuid::Uuid;
 
 use crate::server::recordings::*;
 
-pub async fn heartbeat(state: Data<AppState>, auth: DeviceAuth, path: Path<Uuid>) -> Response {
+pub async fn heartbeat(
+    state: Data<AppState>,
+    auth: DeviceAuth,
+    path: Path<Uuid>,
+) -> AppResult<HttpResponse> {
     let id = path.into_inner();
 
     // One statement, so an end committing meanwhile is re-checked by Postgres
@@ -39,7 +43,7 @@ pub async fn heartbeat(state: Data<AppState>, auth: DeviceAuth, path: Path<Uuid>
     )
     .execute(&state.db)
     .await
-    .map_err(ErrorInternalServerError)?
+    .trace()?
     .rows_affected()
         == 1;
 
@@ -53,9 +57,11 @@ pub async fn heartbeat(state: Data<AppState>, auth: DeviceAuth, path: Path<Uuid>
         .await?;
 
     if recording.end_reason == Some(EndReason::Timeout) {
-        Err(ErrorConflict("Another recording of this device is open"))
+        Err(AppError::conflict(
+            "Another recording of this device is open",
+        ))
     } else {
-        Err(ErrorConflict("The recording has ended"))
+        Err(AppError::conflict("The recording has ended"))
     }
 }
 

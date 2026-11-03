@@ -1,10 +1,12 @@
+use crate::server::endpoint::EndpointExt;
+use crate::server::response::{AppError, Trace};
 use crate::server::{
     auth::DeviceAuth,
-    codec::{Bincode, Response, respond},
+    codec::Bincode,
     riot_api::{EnrichJob, log_unmapped_region},
     state::AppState,
 };
-use actix_web::{error::ErrorInternalServerError, web::Data};
+use actix_web::web::Data;
 use chrono::Utc;
 use tutorlolv2_protocol::{EndReason, MatchDecision, SessionStarted, StartSession};
 use uuid::Uuid;
@@ -15,8 +17,8 @@ pub async fn start_session(
     state: Data<AppState>,
     auth: DeviceAuth,
     Bincode(request): Bincode<StartSession>,
-) -> Response {
-    let mut tx = state.db.begin().await.map_err(ErrorInternalServerError)?;
+) -> crate::server::response::ApiResult<SessionStarted> {
+    let mut tx = state.db.begin().await.trace()?;
     // Serialize ownership with redeem/logout before reading the account link.
     // A foreign-key lock taken by INSERT is too late: its account subquery may
     // already have observed the pre-login device row.
@@ -33,9 +35,9 @@ pub async fn start_session(
     )
     .fetch_optional(&mut *tx)
     .await
-    .map_err(ErrorInternalServerError)?;
+    .trace()?;
     if device.is_none() {
-        return Err(actix_web::error::ErrorUnauthorized("Device unavailable"));
+        return Err(AppError::unauthorized("Device unavailable"));
     }
     // The native client drops expired credentials, but ingest still uses its
     // DeviceAuth. A stale link must not silently attach later games to that
@@ -65,7 +67,7 @@ pub async fn start_session(
     )
     .execute(&mut *tx)
     .await
-    .map_err(ErrorInternalServerError)?;
+    .trace()?;
     let now = Utc::now();
 
     let candidates = sqlx::query!(
@@ -88,7 +90,7 @@ pub async fn start_session(
     )
     .fetch_all(&mut *tx)
     .await
-    .map_err(ErrorInternalServerError)?;
+    .trace()?;
 
     let same = candidates.iter().find(|c| {
         RecordingService::decode_probe(&c.probe).is_some_and(|stored| {
@@ -106,7 +108,7 @@ pub async fn start_session(
     {
         RecordingService::end_recording_tx(&mut tx, other.id, EndReason::Superseded, now)
             .await
-            .map_err(ErrorInternalServerError)?;
+            .trace()?;
     }
 
     let mut started = match same {
@@ -124,7 +126,7 @@ pub async fn start_session(
                 )
                 .execute(&mut *tx)
                 .await
-                .map_err(ErrorInternalServerError)?;
+                .trace()?;
             }
 
             let last_seq = sqlx::query_scalar!(
@@ -137,7 +139,7 @@ pub async fn start_session(
             )
             .fetch_one(&mut *tx)
             .await
-            .map_err(ErrorInternalServerError)?;
+            .trace()?;
 
             SessionStarted {
                 recording_id: found.id.into_bytes(),
@@ -149,7 +151,7 @@ pub async fn start_session(
         None => {
             let id = RecordingService::insert_recording(&mut tx, auth.device_id, &request)
                 .await
-                .map_err(ErrorInternalServerError)?;
+                .trace()?;
 
             SessionStarted {
                 recording_id: id.into_bytes(),
@@ -160,7 +162,7 @@ pub async fn start_session(
         }
     };
 
-    tx.commit().await.map_err(ErrorInternalServerError)?;
+    tx.commit().await.trace()?;
 
     for other in candidates
         .iter()
@@ -186,7 +188,7 @@ pub async fn start_session(
         }
     }
 
-    respond(started)
+    Ok(tutorlolv2_api::StartSessionEndpoint::reply(started))
 }
 
 api_endpoint! {

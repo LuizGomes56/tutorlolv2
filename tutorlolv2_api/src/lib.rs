@@ -3,6 +3,8 @@ pub use tutorlolv2_protocol as protocol;
 pub use tutorlolv2_protocol::endpoint::*;
 mod generated;
 pub use generated::*;
+pub use uuid::Uuid;
+pub use tutorlolv2::riot::{FrameChunk, RiotRealtime};
 
 /// Endpoint inputs are tied to their marker; callers cannot choose another payload.
 /// ```compile_fail

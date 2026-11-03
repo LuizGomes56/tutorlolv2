@@ -107,20 +107,9 @@ pub(crate) fn return_path(p: Option<String>) -> String {
     .unwrap_or_else(|| "/history".into())
 }
 
-#[derive(Deserialize)]
-pub struct Start {
-    pub(crate) target: String,
-    pub(crate) return_to: Option<String>,
-    pub(crate) port: Option<u16>,
-    pub(crate) app_state: Option<String>,
-}
+pub use tutorlolv2_api::GoogleStartQuery as Start;
 
-#[derive(Deserialize)]
-pub struct Callback {
-    pub(crate) state: String,
-    pub(crate) code: Option<String>,
-    pub(crate) error: Option<String>,
-}
+pub use tutorlolv2_api::GoogleCallbackQuery as Callback;
 
 #[derive(Deserialize)]
 pub(crate) struct TokenResponse {

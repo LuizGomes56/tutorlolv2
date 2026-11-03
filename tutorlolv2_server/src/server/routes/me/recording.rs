@@ -1,18 +1,18 @@
-use crate::server::{
-    codec::{Response, respond},
-    google::Owner,
-    state::AppState,
-};
-use actix_web::{
-    error::ErrorNotFound,
-    web::{Data, Path},
-};
+use crate::server::endpoint::EndpointExt;
+use crate::server::response::Trace;
+use crate::server::{google::Owner, state::AppState};
+use actix_web::http::StatusCode;
+use actix_web::web::{Data, Path};
 use tutorlolv2_protocol::*;
 use uuid::Uuid;
 
 use crate::server::me::*;
 
-pub async fn details(state: Data<AppState>, auth: Owner, id: Path<Uuid>) -> Response {
+pub async fn details(
+    state: Data<AppState>,
+    auth: Owner,
+    id: Path<Uuid>,
+) -> crate::server::response::ApiResult<RecordingDetails> {
     let row = sqlx::query_as!(
         HistoryRow,
         r#"
@@ -61,8 +61,8 @@ pub async fn details(state: Data<AppState>, auth: Owner, id: Path<Uuid>) -> Resp
     )
     .fetch_optional(&state.db)
     .await
-    .map_err(internal)?
-    .ok_or_else(|| ErrorNotFound("Unknown recording"))?;
+    .trace_ctx("History storage unavailable")?
+    .trace_ctx(("Unknown recording", StatusCode::NOT_FOUND))?;
 
     let chunks = sqlx::query!(
         r#"
@@ -95,7 +95,7 @@ pub async fn details(state: Data<AppState>, auth: Owner, id: Path<Uuid>) -> Resp
     )
     .fetch_all(&state.db)
     .await
-    .map_err(internal)?
+    .trace_ctx("History storage unavailable")?
     .iter()
     .map(|r| ChunkInfo {
         seq: r.seq as u32,
@@ -108,13 +108,13 @@ pub async fn details(state: Data<AppState>, auth: Owner, id: Path<Uuid>) -> Resp
 
     let item = (HistoryService { state: &state }).item(&row)?;
 
-    respond(RecordingDetails {
+    Ok(tutorlolv2_api::GetRecording::reply(RecordingDetails {
         summary: item.summary,
         share: item.share,
         chunks,
         frames_format: FRAMES_FORMAT,
-    })
-    .map(no_store)
+    }))
+    .map(|reply| reply.no_store())
 }
 
 api_endpoint! {

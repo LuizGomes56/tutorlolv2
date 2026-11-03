@@ -1,13 +1,12 @@
-//! Device registration and recording control (spec §10.2).
+use crate::server::response::{AppError, AppResult, Trace};
+use actix_web::http::StatusCode;
+// Device registration and recording control (spec §10.2).
 
 use super::{
     db_enums::{RiotGameSource, ShareDeleteReason},
     ingest::hex,
 };
-use actix_web::{
-    HttpResponse,
-    error::{ErrorConflict, ErrorInternalServerError, ErrorNotFound},
-};
+use actix_web::HttpResponse;
 use chrono::{DateTime, Utc};
 use sqlx::{PgConnection, PgPool};
 use tutorlolv2_protocol::{
@@ -173,7 +172,7 @@ impl RecordingService<'_> {
         id: Uuid,
         seq: u32,
         sha_hex: &str,
-    ) -> actix_web::Result<Option<HttpResponse>> {
+    ) -> AppResult<Option<HttpResponse>> {
         let db = self.db;
         let stored = sqlx::query_scalar!(
             r#"
@@ -187,17 +186,17 @@ impl RecordingService<'_> {
         )
         .fetch_optional(db)
         .await
-        .map_err(ErrorInternalServerError)?;
+        .trace()?;
 
         match stored {
             None => Ok(None),
             Some(stored) if hex(&stored).eq_ignore_ascii_case(sha_hex) => {
                 Ok(Some(HttpResponse::Ok().finish()))
             }
-            Some(_) => Err(ErrorConflict("Another chunk is stored under this seq")),
+            Some(_) => Err(AppError::conflict("Another chunk is stored under this seq")),
         }
     }
-    pub(crate) async fn owned(&self, id: Uuid, device_id: Uuid) -> actix_web::Result<Owned> {
+    pub(crate) async fn owned(&self, id: Uuid, device_id: Uuid) -> AppResult<Owned> {
         let db = self.db;
         sqlx::query_as!(
             Owned,
@@ -213,8 +212,8 @@ impl RecordingService<'_> {
         )
         .fetch_optional(db)
         .await
-        .map_err(ErrorInternalServerError)?
-        .ok_or_else(|| ErrorNotFound("Unknown recording"))
+        .trace()?
+        .trace_ctx(("Unknown recording", StatusCode::NOT_FOUND))
     }
     pub async fn end_recording_tx(
         tx: &mut PgConnection,

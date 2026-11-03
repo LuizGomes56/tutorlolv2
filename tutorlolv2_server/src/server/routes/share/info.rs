@@ -1,17 +1,19 @@
-use crate::server::{
-    codec::{Response, respond},
-    state::AppState,
-};
+use crate::server::endpoint::EndpointExt;
+use crate::server::response::Trace;
+use crate::server::state::AppState;
 use actix_web::{
     HttpRequest,
-    error::ErrorInternalServerError,
     web::{Data, Path},
 };
 use tutorlolv2_protocol::{ChunkInfo, FRAMES_FORMAT, ShareInfo, ShareStatus};
 
 use crate::server::sharing::*;
 
-pub async fn info(state: Data<AppState>, code: Path<String>, req: HttpRequest) -> Response {
+pub async fn info(
+    state: Data<AppState>,
+    code: Path<String>,
+    req: HttpRequest,
+) -> crate::server::response::ApiResult<ShareInfo> {
     let (code, cap) = state.capability(&code, &req).await?;
 
     let chunks = sqlx::query!(
@@ -29,7 +31,7 @@ pub async fn info(state: Data<AppState>, code: Path<String>, req: HttpRequest) -
     )
     .fetch_all(&state.db)
     .await
-    .map_err(ErrorInternalServerError)?
+    .trace()?
     .into_iter()
     .map(|row| ChunkInfo {
         seq: row.seq as u32,
@@ -55,13 +57,13 @@ pub async fn info(state: Data<AppState>, code: Path<String>, req: HttpRequest) -
         }
     };
 
-    respond(ShareInfo {
+    Ok(tutorlolv2_api::ShareInfoEndpoint::reply(ShareInfo {
         mode: cap.mode.into(),
         status,
         summary: cap.summary,
         chunks,
         frames_format: FRAMES_FORMAT,
-    })
+    }))
 }
 
 api_endpoint! {
