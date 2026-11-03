@@ -20,7 +20,7 @@ use {
     crate::{
         ChampionId, ItemId, RuneId, WikiModifiers,
         bitset::BitSet,
-        libgen::{Champion, Closure, L_MSTR, L_TWRD, Stat, WikiStats},
+        libgen::{Champion, Closure, L_TWRD, Stat, WikiStats},
         model::*,
     },
     alloc::boxed::Box,
@@ -1107,79 +1107,84 @@ const _: () = {
     }
 };
 
-impl Damages {
-    /// Constructs a new [`Damages`] struct that holds all the damage values against some entity
-    /// that could be calculated. This function will cause undefined behavior if any
-    /// metadata of closures vectors do not have the same length
-    pub fn new(ctx: Ctx, data: &DamageEvalData, modifiers: Modifiers) -> Self {
+impl DamageTable {
+    /// Evaluates one row. The caller may add the candidate pair afterwards via the returned view.
+    pub fn fill(
+        &mut self,
+        r: usize,
+        ctx: Ctx,
+        data: &DamageEvalData,
+        modifiers: Modifiers,
+    ) -> DamagesMut<'_> {
+        self.ctxs[r] = ctx;
+
+        let row = self.row_mut(r);
         let mut onhit = RangeDamage::default();
 
-        let abilities = Self::eval_abilities(
+        // excludes the reserved candidate pair
+        let n_items = data.items.closures.len();
+
+        Self::eval_abilities(
             &ctx,
             &mut onhit,
             modifiers,
             data.abilities.metadata,
             data.abilities.closures,
+            row.abilities,
         );
 
-        let items = Self::eval(
+        Self::eval(
             &ctx,
             &mut onhit,
             modifiers,
             &data.items.metadata,
             &data.items.closures,
+            &mut row.items[..n_items],
         );
 
-        let runes = Self::eval(
+        Self::eval(
             &ctx,
             &mut onhit,
             modifiers,
             &data.runes.metadata,
             &data.runes.closures,
+            row.runes,
         );
 
-        let attacks = Attacks::new(&ctx, onhit, modifiers.damages.physical_mod);
+        let a = Attacks::new(&ctx, onhit, modifiers.damages.physical_mod);
+        *row.attacks = [
+            a.basic_attack,
+            a.critical_strike,
+            a.onhit_damage.minimum_damage,
+            a.onhit_damage.maximum_damage,
+        ];
 
-        Self {
-            abilities,
-            items,
-            runes,
-            attacks,
-            ctx,
-        }
+        row
     }
 
-    /// Evaluates the damage of all provided metadata of [`AbilityId`]. This function
-    /// already multiplies the final damage result by the appropriate armor, or magic
-    /// resist multiplier of the enemy, and considers global and local damage modifiers
-    /// This function will cause `Undefined Behavior` if the length of `closures` and
-    /// `metadata` are not equal.
-    pub fn eval_abilities(
-        ctx: &Ctx,
-        onhit: &mut RangeDamage,
+    pub(crate) fn fill_monster_damages(
+        &mut self,
+        self_state: &SelfState,
+        eval_data: &DamageEvalData,
+        shred: ResistShred,
         modifiers: Modifiers,
-        metadata: &[TypeMetadata<AbilityId>],
-        closures: &[Closure],
-    ) -> Box<[i32]> {
-        let len = metadata.len();
-        debug_assert_eq!(len, closures.len());
+    ) {
+        for (i, &(armor, magic_resist)) in RiotFormulas::MONSTER_RESISTS.iter().enumerate() {
+            let full_state = EnemyState {
+                base_stats: SimpleStats {
+                    armor,
+                    max_health: 1000.0,
+                    magic_resist,
+                },
+                ..Default::default()
+            }
+            .full_state(shred, true);
 
-        (0..len)
-            .map(|i| {
-                let TypeMetadata {
-                    kind,
-                    damage_type,
-                    attributes,
-                } = metadata[i];
+            let ctx = self_state.ctx(&full_state);
+            let modifiers = modifiers.against(&full_state, self_state.adaptive_type);
 
-                let closure = unsafe { closures.get_unchecked(i) };
-                let modifier = ability_id_mod(kind, damage_type, modifiers);
-                let damage = (modifier * closure(ctx)) as i32;
-
-                onhit.inc_attr(attributes, damage);
-                damage
-            })
-            .collect()
+            self.fill(i, ctx, eval_data, modifiers);
+        }
     }
 
     /// Evaluates the damages of all requested items or runes. This function causes
@@ -1191,12 +1196,12 @@ impl Damages {
         modifiers: Modifiers,
         metadata: &[TypeMetadata<T>],
         closures: &[Closure],
-    ) -> Box<[i32]> {
+        result: &mut [i32],
+    ) {
         let out_len = closures.len();
 
         debug_assert_eq!(out_len, metadata.len() << 1);
 
-        let mut result = Box::<[i32]>::new_uninit_slice(out_len);
         let mut meta_index = 0usize;
         let mut out_index = 0usize;
 
@@ -1213,57 +1218,56 @@ impl Damages {
             while j < 2 {
                 let closure = unsafe { closures.get_unchecked((meta_index << 1) + j) };
                 let damage = (modifier * closure(ctx)) as i32;
+
                 onhit.inc_attr(attributes, damage);
-
-                unsafe {
-                    result.get_unchecked_mut(out_index).write(damage);
-                }
-
+                result[out_index] = damage;
                 out_index += 1;
                 j += 1;
             }
+
             meta_index += 1;
         }
 
         debug_assert_eq!(out_index, out_len);
-        unsafe { result.assume_init() }
     }
-}
 
-/// Returns the damage against monsters with different amounts of armor and magic resists.
-/// We assume no runes can damage jungle monsters, which is why they're not included in the
-/// [`MonsterDamage`] struct
-pub fn get_monster_damages(
-    self_state: &SelfState,
-    eval_data: &DamageEvalData,
-    shred: ResistShred,
-) -> [Damages; L_MSTR] {
-    get_monster_damages_with_modifiers(self_state, eval_data, shred, Modifiers::default())
-}
+    /// Evaluates the damage of all provided metadata of [`AbilityId`]. This function
+    /// already multiplies the final damage result by the appropriate armor, or magic
+    /// resist multiplier of the enemy, and considers global and local damage modifiers
+    /// This function will cause `Undefined Behavior` if the length of `closures` and
+    /// `metadata` are not equal.
+    pub fn eval_abilities(
+        ctx: &Ctx,
+        onhit: &mut RangeDamage,
+        modifiers: Modifiers,
+        metadata: &[TypeMetadata<AbilityId>],
+        closures: &[Closure],
+        out: &mut [i32],
+    ) {
+        let len = metadata.len();
 
-pub(crate) fn get_monster_damages_with_modifiers(
-    self_state: &SelfState,
-    eval_data: &DamageEvalData,
-    shred: ResistShred,
-    modifiers: Modifiers,
-) -> [Damages; L_MSTR] {
-    core::array::from_fn(|i| {
-        let (armor, magic_resist) = RiotFormulas::MONSTER_RESISTS[i];
-        let full_state = EnemyState {
-            base_stats: SimpleStats {
-                armor,
-                max_health: 1000.0,
-                magic_resist,
-            },
-            ..Default::default()
+        debug_assert_eq!(len, closures.len());
+        debug_assert_eq!(len, out.len());
+
+        let mut i = 0;
+
+        while i < len {
+            let TypeMetadata {
+                kind,
+                damage_type,
+                attributes,
+            } = metadata[i];
+
+            let closure = unsafe { closures.get_unchecked(i) };
+            let modifier = ability_id_mod(kind, damage_type, modifiers);
+            let damage = (modifier * closure(ctx)) as i32;
+
+            onhit.inc_attr(attributes, damage);
+            out[i] = damage;
+
+            i += 1;
         }
-        .full_state(shred, true);
-
-        let ctx = get_eval_ctx(self_state, &full_state);
-        let modifiers = modifiers.against(&full_state, self_state.adaptive_type);
-
-        Damages::new(ctx, eval_data, modifiers)
-    })
+    }
 }
 
 /// Returns an array with the damage against turrets of different plates.

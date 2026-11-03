@@ -2,8 +2,8 @@
 
 use core::num::NonZeroU8;
 use tutorlolv2::{
-    AttackType, ChampionId, ItemId, RuneId, calculator::calculator, helpers::get_stacks, model::*,
-    realtime::realtime, riot::*,
+    AttackType, ChampionId, ItemId, L_MSTR, RuneId, calculator::calculator, helpers::get_stacks,
+    model::*, realtime::realtime, riot::*,
 };
 
 fn close(actual: f32, expected: f32) {
@@ -67,28 +67,6 @@ fn purchase_and_context_helpers_are_const_callable() {
     close(SELF_CTX.max_health, 2050.4);
     close(SELF_CTX.bonus_health, 1050.4);
     assert_eq!(SELF_CTX, ENEMY_CTX);
-}
-
-#[test]
-fn damage_sum_is_const_callable_without_changing_aggregation() {
-    const fn sum(damage: &Damages) -> i32 {
-        damage.sum()
-    }
-    let damage = Damages {
-        attacks: Attacks {
-            onhit_damage: RangeDamage {
-                minimum_damage: 2,
-                maximum_damage: 4,
-            },
-            ..Default::default()
-        },
-        abilities: vec![3, 7].into_boxed_slice(),
-        items: vec![5].into_boxed_slice(),
-        runes: vec![11].into_boxed_slice(),
-        ..Default::default()
-    };
-    assert_eq!(sum(&damage), 32);
-    assert_eq!(sum(&Damages::default()), 0);
 }
 
 #[test]
@@ -306,8 +284,16 @@ fn explicit_stats_keep_item_and_rune_damage_modifiers() {
     let inferred = calculator(input);
     input.active_player.data.stats = Some(inferred.current_player.current_stats);
     let explicit = calculator(input);
-    assert_eq!(explicit.enemies[0].damages, inferred.enemies[0].damages);
-    assert_eq!(explicit.monster_damages, inferred.monster_damages);
+
+    assert_eq!(explicit.enemy_damages(0), inferred.enemy_damages(0));
+
+    for m in 0..L_MSTR {
+        assert_eq!(
+            explicit.monster_damages(m),
+            inferred.monster_damages(m),
+            "monster row {m}"
+        );
+    }
 }
 
 #[test]
@@ -320,8 +306,8 @@ fn mega_gnar_uses_melee_item_damage() {
     let mut input = game(&[ItemId::BladeOfTheRuinedKing], &[], &enemies);
     input.active_player.data.is_mega_gnar = true;
     let output = calculator(input);
-    let damage = &output.enemies[0].damages;
-    let raw = ItemId::BladeOfTheRuinedKing.eval(&damage.ctx, AttackType::Melee);
+    let damage = &&output.enemy_damages(0);
+    let raw = ItemId::BladeOfTheRuinedKing.eval(damage.ctx, AttackType::Melee);
     let modifier = damage.ctx.physical_multiplier;
     assert_eq!(damage.items[0], (raw[0] * modifier) as i32);
 }
@@ -400,8 +386,10 @@ fn sim_index(item: ItemId) -> usize {
 fn simulated_ad_updates_bonus_scaling() {
     let input = live_game();
     let out = realtime(&input).unwrap();
-    let original = &out.enemies[0].damages.ctx;
-    let sim = &out.enemies[0].siml_items[sim_index(ItemId::SpearOfShojin)].ctx;
+
+    let original = out.enemy_damages(0).ctx;
+    let sim = out.siml_damages(0, sim_index(ItemId::SpearOfShojin)).ctx;
+
     assert!(sim.attack_damage > original.attack_damage);
     close(
         sim.bonus_ad - original.bonus_ad,
@@ -413,11 +401,16 @@ fn simulated_ad_updates_bonus_scaling() {
 fn simulated_penetration_changes_resistance_multipliers() {
     let input = live_game();
     let out = realtime(&input).unwrap();
+
     let enemy = &out.enemies[0];
-    let armor_sim = &enemy.siml_items[sim_index(ItemId::YoumuusGhostblade)].ctx;
-    let magic_sim = &enemy.siml_items[sim_index(ItemId::VoidStaff)].ctx;
-    assert!(armor_sim.physical_multiplier > enemy.damages.ctx.physical_multiplier);
-    assert!(magic_sim.magic_multiplier > enemy.damages.ctx.magic_multiplier);
+    let base = out.enemy_damages(0).ctx;
+    let armor_sim = out
+        .siml_damages(0, sim_index(ItemId::YoumuusGhostblade))
+        .ctx;
+    let magic_sim = out.siml_damages(0, sim_index(ItemId::VoidStaff)).ctx;
+
+    assert!(armor_sim.physical_multiplier > base.physical_multiplier);
+    assert!(magic_sim.magic_multiplier > base.magic_multiplier);
     close(
         armor_sim.physical_multiplier,
         100.0 / (100.0 + (enemy.current_stats.armor - armor_sim.armor_penetration_flat).max(0.0)),
@@ -435,30 +428,9 @@ fn simulated_penetration_changes_resistance_multipliers() {
 fn simulated_purchase_adds_item_damage() {
     let input = live_game();
     let out = realtime(&input).unwrap();
-    let sim = &out.enemies[0].siml_items[sim_index(ItemId::NashorsTooth)];
+    let sim = &out.siml_damages(0, sim_index(ItemId::NashorsTooth));
     assert_eq!(sim.items.len(), 2);
     assert!(sim.items[0] > 0);
-}
-
-#[test]
-fn simulated_purchase_applies_ability_modifiers() {
-    let input = live_game();
-    let out = realtime(&input).unwrap();
-    let enemy = &out.enemies[0];
-    let sim = &enemy.siml_items[sim_index(ItemId::SpearOfShojin)];
-    let without_buff = tutorlolv2::model::Damages::eval_abilities(
-        &sim.ctx,
-        &mut RangeDamage::default(),
-        Modifiers::new(&sim.ctx, out.current_player.adaptive_type),
-        ChampionId::Gnar.metadata(),
-        ChampionId::Gnar.data().closures,
-    );
-    assert!(
-        sim.abilities
-            .iter()
-            .zip(&without_buff)
-            .any(|(actual, plain)| actual > plain)
-    );
 }
 
 #[test]
@@ -471,10 +443,36 @@ fn level_255_with_waterwalking_does_not_overflow() {
 }
 
 #[test]
+fn simulated_purchase_applies_ability_modifiers() {
+    let input = live_game();
+    let out = realtime(&input).unwrap();
+    let sim = out.siml_damages(0, sim_index(ItemId::SpearOfShojin));
+
+    let metadata = ChampionId::Gnar.metadata();
+    let mut without_buff = vec![0; metadata.len()];
+
+    tutorlolv2::model::DamageTable::eval_abilities(
+        sim.ctx,
+        &mut RangeDamage::default(),
+        Modifiers::new(sim.ctx, out.current_player.adaptive_type),
+        metadata,
+        ChampionId::Gnar.data().closures,
+        &mut without_buff,
+    );
+
+    assert!(
+        sim.abilities
+            .iter()
+            .zip(&without_buff)
+            .any(|(actual, plain)| actual > plain)
+    );
+}
+
+#[test]
 fn simulated_purchase_applies_stat_conversion_and_attack_speed_units() {
     let input = live_game();
     let out = realtime(&input).unwrap();
-    let enemy = &out.enemies[0];
+
     // Deathcap is currently excluded by generated SIML tier filtering; exercise
     // the same purchase helper directly rather than changing that item selection.
     let player = &out.current_player;
@@ -487,6 +485,7 @@ fn simulated_purchase_applies_stat_conversion_and_attack_speed_units() {
         level: player.level,
         stacks: 0.0,
     };
+
     let cap = state.simulated_purchase(
         ItemId::RabadonsDeathcap,
         &[],
@@ -494,10 +493,12 @@ fn simulated_purchase_applies_stat_conversion_and_attack_speed_units() {
         out.dragons,
     );
     close(cap.current_stats.ability_power, 299.0); // (100 live AP + 130 item AP) * 1.3
+
     let warmog =
         state.simulated_purchase(ItemId::WarmogsArmor, &[], player.champion_id, out.dragons);
     close(warmog.current_stats.max_health, 3360.0); // (2000 live HP + 1000 item HP) * 1.12
-    let nashor = &enemy.siml_items[sim_index(ItemId::NashorsTooth)];
+
+    let nashor = out.siml_damages(0, sim_index(ItemId::NashorsTooth));
     close(nashor.ctx.attack_speed, 1.3125); // 1 live AS + .625 ratio * 50%
     assert_eq!(
         nashor.attacks.onhit_damage.minimum_damage,
@@ -509,41 +510,60 @@ fn simulated_purchase_applies_stat_conversion_and_attack_speed_units() {
 fn candidate_pair_is_always_appended_without_duplicating_owned_effects() {
     let mut input = live_game();
     input.all_players[0].items = vec![RiotItems { item_id: 3115 }].into_boxed_slice();
+
     let out = realtime(&input).unwrap();
     assert_eq!(out.items_meta[0].kind, ItemId::NashorsTooth);
-    let owned_sim = &out.enemies[0].siml_items[sim_index(ItemId::NashorsTooth)];
+
+    let owned_sim = out.siml_damages(0, sim_index(ItemId::NashorsTooth));
     assert_eq!(owned_sim.items.len(), 4);
     assert_eq!(&owned_sim.items[2..], &[0, 0]);
     assert_eq!(
         owned_sim.attacks.onhit_damage.minimum_damage,
         owned_sim.attacks.basic_attack + owned_sim.items[0]
     );
-    let new_sim = &out.enemies[0].siml_items[sim_index(ItemId::BladeOfTheRuinedKing)];
+
+    let new_sim = out.siml_damages(0, sim_index(ItemId::BladeOfTheRuinedKing));
     assert_eq!(new_sim.items.len(), 4);
     assert!(new_sim.items[0] > 0);
     assert!(new_sim.items[2] > 0);
 }
 
 #[test]
-fn every_simulated_purchase_has_one_extra_item_pair() {
+fn every_row_has_one_extra_item_pair() {
     for owned in [None, Some(ItemId::NashorsTooth)] {
         let mut input = live_game();
+
         if let Some(item) = owned {
             input.all_players[0].items = vec![RiotItems {
                 item_id: item.riot_id(),
             }]
             .into_boxed_slice();
         }
+
         let out = realtime(&input).unwrap();
         let base_len = out.items_meta.len() * 2;
-        for enemy in &out.enemies {
-            assert_eq!(enemy.damages.items.len(), base_len);
-            for (candidate, damage) in ItemId::SIML.iter().zip(&enemy.siml_items) {
+        let runes_len = out.runes_meta.len() * 2;
+
+        assert_eq!(
+            out.damages.rows(),
+            out.enemies.len() * Realtime::ROWS_PER_ENEMY
+        );
+
+        for e in 0..out.enemies.len() {
+            // Uniform stride: the base row also reserves the pair, always zero
+            let base = out.enemy_damages(e);
+            assert_eq!(base.items.len(), base_len + 2);
+            assert_eq!(&base.items[base_len..], &[0, 0]);
+            assert_eq!(base.runes.len(), runes_len);
+
+            for (k, candidate) in ItemId::SIML.iter().enumerate() {
+                let damage = out.siml_damages(e, k);
+
                 assert_eq!(damage.items.len(), base_len + 2, "{candidate:?}");
                 if !candidate.deals_damage() || Some(*candidate) == owned {
                     assert_eq!(&damage.items[base_len..], &[0, 0], "{candidate:?}");
                 }
-                assert_eq!(damage.runes.len(), out.runes_meta.len() * 2);
+                assert_eq!(damage.runes.len(), runes_len, "{candidate:?}");
             }
         }
     }

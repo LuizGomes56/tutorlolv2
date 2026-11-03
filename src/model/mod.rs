@@ -75,6 +75,10 @@ pub struct Realtime<'a> {
     /// how much damage they will take for each item, rune, or ability of the current player
     pub enemies: Box<[Enemy<'a>]>,
 
+    /// Holds a contiguous table with all the damages that have been calculated,
+    /// for each enemy, including the simulated purchases and evaluation context
+    pub damages: DamageTable,
+
     /// The game's scoreboard. Contains meaningful information about each champion
     /// in both teams, including the current player. This data is not guaranteed
     /// to be ordered based on team. Sorting this vector has to be done by the caller
@@ -98,6 +102,18 @@ pub struct Realtime<'a> {
     /// Only `Earth`, `Fire` and `Chemtech` dragons are considered,
     /// since the others doesn't give any damage-related bonus
     pub dragons: Dragons,
+}
+
+impl Realtime<'_> {
+    pub const ROWS_PER_ENEMY: usize = 1 + ItemId::L_SIML;
+
+    pub fn enemy_damages(&self, e: usize) -> Damages<'_> {
+        self.damages.row(e * Self::ROWS_PER_ENEMY)
+    }
+
+    pub fn siml_damages(&self, e: usize, i: usize) -> Damages<'_> {
+        self.damages.row(e * Self::ROWS_PER_ENEMY + 1 + i)
+    }
 }
 
 #[derive(
@@ -184,18 +200,6 @@ pub struct DamageEvalData {
 pub struct Enemy<'a> {
     #[serde(borrow)]
     pub riot_id: &'a str,
-    pub damages: Damages,
-
-    /// Candidate purchases in ItemId::SIML order. Each Damages.items starts with
-    /// the owned pairs in Realtime.items_meta order, followed by the candidate pair.
-    /// Its length is always 2 * items_meta.len() + 2, including for non-damaging
-    /// or already-owned candidates, whose appended pair is [0, 0]. Owned effects
-    /// remain in their original pairs and are not duplicated in the extra pair.
-    /// The extra pair uses ItemId::SIML[i].data().metadata and has a zero baseline
-    /// when compared with the owned build. Rune metadata and ordering are unchanged.
-    #[serde(with = "serde_arrays")]
-    pub siml_items: [Damages; ItemId::L_SIML],
-
     pub base_stats: SimpleStats,
     pub bonus_stats: SimpleStats,
     pub current_stats: EnemyStats,
@@ -327,46 +331,142 @@ impl ResistShred {
     }
 }
 
-#[derive(Clone, Debug, Default, Decode, Deserialize, Encode, PartialEq, PartialOrd, Serialize)]
-pub struct Damages {
-    pub attacks: Attacks,
-    pub abilities: Box<[i32]>,
-    pub items: Box<[i32]>,
-    pub runes: Box<[i32]>,
-    pub ctx: Ctx,
+#[derive(Clone, Copy, Debug, PartialEq, PartialOrd, Eq, Encode, Decode, Serialize, Deserialize)]
+pub struct DamageLayout {
+    pub abilities: u16,
+    pub items: u16,
+    pub runes: u16,
 }
 
-impl Damages {
-    pub const fn sum(&self) -> i32 {
-        let mut abilities = 0;
-        let mut items = 0;
-        let mut runes = 0;
-        let mut i = 0;
+impl DamageLayout {
+    /// Basic attack, crit damage, onhit minimum and maximum variants
+    pub const ATTACKS: usize = 4;
 
-        while i < self.abilities.len() {
-            abilities += self.abilities[i];
-            i += 1;
+    /// `extra_pair` reserves the simulated purchase pair (old siml_item rows)
+    #[cfg(feature = "engine")]
+    pub fn new(data: &DamageEvalData, extra_pair: bool) -> Self {
+        Self {
+            abilities: data.abilities.closures.len() as _,
+            items: (data.items.closures.len() + if extra_pair { 2 } else { 0 }) as _,
+            runes: data.runes.closures.len() as _,
         }
+    }
 
-        i = 0;
+    pub const fn stride(&self) -> usize {
+        Self::ATTACKS + self.abilities as usize + self.items as usize + self.runes as usize
+    }
+}
 
-        while i < self.items.len() {
-            items += self.items[i];
-            i += 1;
+#[derive(Clone, Debug, PartialEq, Encode, PartialOrd, Decode, Serialize, Deserialize)]
+pub struct DamageTable {
+    pub(crate) layout: DamageLayout,
+
+    /// Size is rows * stride, row-major ordered
+    pub(crate) values: Box<[i32]>,
+
+    /// One Ctx struct per row; rows == ctxs.len()
+    pub(crate) ctxs: Box<[Ctx]>,
+}
+
+/// View type over the `damages` each holds. One single allocation
+/// and what consumers used to get from `&Damages`
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub struct Damages<'a> {
+    pub attacks: Attacks,
+    pub abilities: &'a [i32],
+    pub items: &'a [i32],
+    pub runes: &'a [i32],
+    pub ctx: &'a Ctx,
+}
+
+/// Write view used while filling a row
+pub struct DamagesMut<'a> {
+    pub attacks: &'a mut [i32; 4],
+    pub abilities: &'a mut [i32],
+    pub items: &'a mut [i32],
+    pub runes: &'a mut [i32],
+}
+
+impl DamagesMut<'_> {
+    /// Same semantics as `RangeDamage::inc_attr`, applied to the stored onhit pair
+    pub fn inc_onhit(&mut self, attr: Attrs, damage: i32) {
+        // Indexes 2 and 3 are constants reserved for onhit damage
+        let mut onhit = RangeDamage {
+            minimum_damage: self.attacks[2],
+            maximum_damage: self.attacks[3],
+        };
+
+        onhit.inc_attr(attr, damage);
+
+        self.attacks[2] = onhit.minimum_damage;
+        self.attacks[3] = onhit.maximum_damage;
+    }
+}
+
+impl DamageTable {
+    pub fn zeroed(layout: DamageLayout, rows: usize) -> Self {
+        Self {
+            layout,
+            values: unsafe { Box::new_zeroed_slice(rows * layout.stride()).assume_init() },
+            ctxs: unsafe { Box::new_zeroed_slice(rows).assume_init() },
         }
+    }
 
-        i = 0;
+    pub const fn rows(&self) -> usize {
+        self.ctxs.len()
+    }
 
-        while i < self.runes.len() {
-            runes += self.runes[i];
-            i += 1;
+    pub const fn layout(&self) -> DamageLayout {
+        self.layout
+    }
+
+    pub fn row(&self, r: usize) -> Damages<'_> {
+        let s = self.layout.stride();
+        let row = &self.values[r * s..(r + 1) * s];
+        let (attacks, rest) = row.split_at(DamageLayout::ATTACKS);
+        let (abilities, rest) = rest.split_at(self.layout.abilities as usize);
+        let (items, runes) = rest.split_at(self.layout.items as usize);
+
+        Damages {
+            attacks: Attacks {
+                basic_attack: attacks[0],
+                critical_strike: attacks[1],
+                onhit_damage: RangeDamage {
+                    minimum_damage: attacks[2],
+                    maximum_damage: attacks[3],
+                },
+            },
+            abilities,
+            items,
+            runes,
+            ctx: &self.ctxs[r],
         }
+    }
 
+    pub fn row_mut(&mut self, r: usize) -> DamagesMut<'_> {
+        let s = self.layout.stride();
+        let row = &mut self.values[r * s..(r + 1) * s];
+        let (attacks, rest) = row.split_at_mut(DamageLayout::ATTACKS);
+        let (abilities, rest) = rest.split_at_mut(self.layout.abilities as usize);
+        let (items, runes) = rest.split_at_mut(self.layout.items as usize);
+
+        DamagesMut {
+            // We're sure that the length is always 4 in this case
+            attacks: unsafe { attacks.try_into().unwrap_unchecked() },
+            abilities,
+            items,
+            runes,
+        }
+    }
+}
+
+impl Damages<'_> {
+    pub fn sum(&self) -> i32 {
         self.attacks.onhit_damage.minimum_damage
             + self.attacks.onhit_damage.maximum_damage
-            + abilities
-            + items
-            + runes
+            + self.abilities.iter().sum::<i32>()
+            + self.items.iter().sum::<i32>()
+            + self.runes.iter().sum::<i32>()
     }
 }
 
@@ -503,9 +603,8 @@ pub struct InputMinData<'a, T> {
 }
 
 /// Returned data by the function [`crate::calculator::calculator`]
-#[derive(Clone, Debug, Decode, Deserialize, Encode, PartialEq, PartialOrd, Serialize)]
+#[derive(Copy, Clone, Debug, Decode, Deserialize, Encode, PartialEq, PartialOrd, Serialize)]
 pub struct OutputEnemy {
-    pub damages: Damages,
     pub base_stats: SimpleStats,
     pub bonus_stats: SimpleStats,
     pub current_stats: EnemyStats,
@@ -604,12 +703,30 @@ pub struct OutputCurrentPlayer {
 
 #[derive(Clone, Debug, Decode, Deserialize, Encode, PartialEq, PartialOrd, Serialize)]
 pub struct OutputGame {
-    pub monster_damages: [Damages; L_MSTR],
+    pub damages: DamageTable,
     pub current_player: OutputCurrentPlayer,
     pub enemies: Box<[OutputEnemy]>,
     pub tower_damages: [i32; L_TWRD],
     pub items_meta: Box<[TypeMetadata<ItemId>]>,
     pub runes_meta: Box<[TypeMetadata<RuneId>]>,
+}
+
+impl OutputGame {
+    pub fn monster_rows(&self) -> impl Iterator<Item = Damages<'_>> + '_ {
+        (0..L_MSTR).map(|m| self.damages.row(m))
+    }
+
+    pub fn enemy_rows(&self) -> impl Iterator<Item = Damages<'_>> + '_ {
+        (0..self.enemies.len()).map(|e| self.damages.row(L_MSTR + e))
+    }
+
+    pub fn monster_damages(&self, m: usize) -> Damages<'_> {
+        self.damages.row(m)
+    }
+
+    pub fn enemy_damages(&self, e: usize) -> Damages<'_> {
+        self.damages.row(L_MSTR + e)
+    }
 }
 
 /// Holds the levels of the abilities of a champion

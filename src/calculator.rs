@@ -8,7 +8,9 @@
 //! so all the function inputs have to be obtained through your
 //! own mechanism
 
+use crate::L_MSTR;
 use core::num::NonZeroU8;
+
 use {
     crate::{ChampionId, ItemId, RuneId, helpers::*, model::*},
     alloc::boxed::Box,
@@ -575,10 +577,13 @@ pub fn calculator(game: InputGame<'_>) -> OutputGame {
         runes: DamageKind::runes(&current_player_runes, attack_type),
     };
 
-    let monster_damages =
-        get_monster_damages_with_modifiers(&self_state, &eval_data, shred, modifiers);
+    let layout = DamageLayout::new(&eval_data, false);
+    let mut damages = DamageTable::zeroed(layout, L_MSTR + enemy_players.len());
+
+    damages.fill_monster_damages(&self_state, &eval_data, shred, modifiers);
 
     let enemies = get_calculator_enemies(
+        &mut damages,
         enemy_players,
         &self_state,
         &eval_data,
@@ -596,15 +601,16 @@ pub fn calculator(game: InputGame<'_>) -> OutputGame {
             adaptive_type,
             level,
         },
+        damages,
         items_meta: eval_data.items.metadata,
         runes_meta: eval_data.runes.metadata,
-        monster_damages,
         tower_damages,
         enemies,
     }
 }
 
 pub fn get_calculator_enemies(
+    damages: &mut DamageTable,
     enemy_players: &[InputMinData<'_, EnemyStats>],
     self_state: &SelfState,
     eval_data: &DamageEvalData,
@@ -614,7 +620,8 @@ pub fn get_calculator_enemies(
 ) -> Box<[OutputEnemy]> {
     enemy_players
         .iter()
-        .map(|player| {
+        .enumerate()
+        .map(|(e, player)| {
             let InputMinData {
                 items: e_items,
                 stacks: e_stacks,
@@ -655,8 +662,7 @@ pub fn get_calculator_enemies(
                 ..modifiers
             };
 
-            // The only non-const function
-            let damages = Damages::new(ctx, eval_data, modifiers);
+            damages.fill(L_MSTR + e, ctx, eval_data, modifiers);
 
             OutputEnemy {
                 current_stats: full_state.current_stats,
@@ -666,7 +672,6 @@ pub fn get_calculator_enemies(
                 real_armor: full_state.armor_values.real as _,
                 champion_id: e_champion_id,
                 level: e_level,
-                damages,
             }
         })
         .collect::<Box<[OutputEnemy]>>()
