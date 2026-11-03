@@ -93,7 +93,7 @@ async fn web_login(
     assert_eq!(session.path(), Some("/api"));
     session
 }
-async fn desktop_login(
+async fn desktop_redeem(
     app: &impl TestApp,
     server: &MockServer,
     device: &DeviceCredentials,
@@ -140,6 +140,28 @@ async fn desktop_login(
     assert_eq!(r.status(), 200);
     let session = decode(&test::read_body(r).await);
     assert_eq!(test::call_service(app, request()).await.status(), 410);
+    session
+}
+async fn confirm(app: &impl TestApp, session: &DesktopSession) -> u16 {
+    test::call_service(
+        app,
+        test::TestRequest::post()
+            .uri("/api/auth/desktop/confirm")
+            .insert_header(("Authorization", format!("Session {}", session.token)))
+            .to_request(),
+    )
+    .await
+    .status()
+    .as_u16()
+}
+async fn desktop_login(
+    app: &impl TestApp,
+    server: &MockServer,
+    device: &DeviceCredentials,
+    sub: &str,
+) -> DesktopSession {
+    let session = desktop_redeem(app, server, device, sub).await;
+    assert_eq!(confirm(app, &session).await, 204);
     session
 }
 async fn device(app: &impl TestApp) -> DeviceCredentials {
@@ -728,7 +750,7 @@ async fn recording_creation_serializes_with_claim_and_logout(pool: PgPool) {
     .fetch_one(&pool)
     .await
     .unwrap();
-    let binding: Uuid=sqlx::query_scalar("INSERT INTO account_sessions(account_id,token_hash,kind,device_id,expires_at) VALUES($1,$2,'desktop',$3,now()+interval '1 day') RETURNING id")
+    let binding: Uuid=sqlx::query_scalar("INSERT INTO account_sessions(account_id,token_hash,kind,device_id,expires_at,desktop_confirmed_at) VALUES($1,$2,'desktop',$3,now()+interval '1 day',now()) RETURNING id")
         .bind(account).bind(vec![3u8;32]).bind(Uuid::from_bytes(d.device_id)).fetch_one(&pool).await.unwrap();
     let mut tx = pool.begin().await.unwrap();
     sqlx::query("UPDATE devices SET account_id=$1,account_session_id=$3 WHERE id=$2")
@@ -1159,4 +1181,132 @@ async fn web_day_slide_renews_cookie_only_on_success_and_never_logout(pool: PgPo
         assert_eq!(r.status(), 401);
         assert!(!r.headers().contains_key("Set-Cookie"));
     }
+}
+
+#[sqlx::test(migrations = "./migrations")]
+async fn unconfirmed_orphan_cannot_attach_future_games_and_confirmation_claims_interim(
+    pool: PgPool,
+) {
+    let server = MockServer::start().await;
+    let app = test::init_service(
+        App::new()
+            .app_data(state_with(
+                pool.clone(),
+                oauth_config(&format!("{}/token", server.uri())),
+            ))
+            .service(routes::api(None)),
+    )
+    .await;
+    let d = device(&app).await;
+    let prior = recording(&app, &d, 1.0).await;
+    let pending = desktop_redeem(&app, &server, &d, "alice").await;
+    let owner: Option<Uuid> = sqlx::query_scalar("SELECT account_id FROM recordings WHERE id=$1")
+        .bind(prior)
+        .fetch_one(&pool)
+        .await
+        .unwrap();
+    assert!(owner.is_some(), "redeem still claims existing history");
+    let interim = recording(&app, &d, 2.0).await;
+    let interim_owner: Option<Uuid> =
+        sqlx::query_scalar("SELECT account_id FROM recordings WHERE id=$1")
+            .bind(interim)
+            .fetch_one(&pool)
+            .await
+            .unwrap();
+    assert_eq!(
+        interim_owner, None,
+        "orphan credential must not own future uploads"
+    );
+    assert_eq!(confirm(&app, &pending).await, 204);
+    assert_eq!(confirm(&app, &pending).await, 204);
+    let future = recording(&app, &d, 3.0).await;
+    for id in [interim, future] {
+        let actual: Option<Uuid> =
+            sqlx::query_scalar("SELECT account_id FROM recordings WHERE id=$1")
+                .bind(id)
+                .fetch_one(&pool)
+                .await
+                .unwrap();
+        assert_eq!(actual, owner);
+    }
+    let newer = desktop_redeem(&app, &server, &d, "bob").await;
+    assert_eq!(
+        confirm(&app, &pending).await,
+        401,
+        "stale session cannot activate new binding"
+    );
+    let anonymous = recording(&app, &d, 4.0).await;
+    let actual: Option<Uuid> = sqlx::query_scalar("SELECT account_id FROM recordings WHERE id=$1")
+        .bind(anonymous)
+        .fetch_one(&pool)
+        .await
+        .unwrap();
+    assert_eq!(actual, None);
+    assert_eq!(confirm(&app, &newer).await, 204);
+    sqlx::query("UPDATE account_sessions SET expires_at=now()-interval '1 second'")
+        .execute(&pool)
+        .await
+        .unwrap();
+    assert_eq!(confirm(&app, &newer).await, 401);
+    let web = web_login(&app, &server, "alice").await;
+    assert_eq!(
+        test::call_service(
+            &app,
+            test::TestRequest::post()
+                .uri("/api/auth/desktop/confirm")
+                .cookie(web)
+                .insert_header(("Origin", "http://127.0.0.1:8000"))
+                .insert_header(("Content-Type", "application/octet-stream"))
+                .to_request()
+        )
+        .await
+        .status(),
+        401
+    );
+}
+
+#[sqlx::test(migrations = "./migrations")]
+async fn confirmation_rechecks_binding_after_waiting_for_device_lock(pool: PgPool) {
+    let server = MockServer::start().await;
+    let app = test::init_service(
+        App::new()
+            .app_data(state_with(
+                pool.clone(),
+                oauth_config(&format!("{}/token", server.uri())),
+            ))
+            .service(routes::api(None)),
+    )
+    .await;
+    let d = device(&app).await;
+    let pending = desktop_redeem(&app, &server, &d, "alice").await;
+    let interim = recording(&app, &d, 1.0).await;
+    let mut tx = pool.begin().await.unwrap();
+    sqlx::query("UPDATE devices SET account_id=NULL,account_session_id=NULL WHERE id=$1")
+        .bind(Uuid::from_bytes(d.device_id))
+        .execute(&mut *tx)
+        .await
+        .unwrap();
+    let future = confirm(&app, &pending);
+    tokio::pin!(future);
+    assert!(
+        tokio::time::timeout(std::time::Duration::from_millis(100), &mut future)
+            .await
+            .is_err(),
+        "confirmation must wait for the ownership transition lock"
+    );
+    tx.commit().await.unwrap();
+    assert_eq!(
+        future.await,
+        401,
+        "authenticated session lost its binding while waiting"
+    );
+    let owner: Option<Uuid> = sqlx::query_scalar("SELECT account_id FROM recordings WHERE id=$1")
+        .bind(interim)
+        .fetch_one(&pool)
+        .await
+        .unwrap();
+    assert_eq!(
+        owner, None,
+        "rejected confirmation cannot claim interim games"
+    );
 }

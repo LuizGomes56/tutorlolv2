@@ -271,7 +271,13 @@ async fn insert_recording(
             app_version
         )
         VALUES (
-            $1, (SELECT d.account_id FROM devices d LEFT JOIN accounts a ON a.id=d.account_id WHERE d.id=$1 AND d.deleted_at IS NULL AND a.deleted_at IS NULL), $2, $3, $4,
+            $1, (SELECT d.account_id FROM devices d
+                JOIN accounts a ON a.id=d.account_id
+                JOIN account_sessions s ON s.id=d.account_session_id
+                WHERE d.id=$1 AND d.deleted_at IS NULL AND a.deleted_at IS NULL
+                  AND s.account_id=d.account_id AND s.device_id=d.id AND s.kind='desktop'
+                  AND s.desktop_confirmed_at IS NOT NULL
+                  AND s.revoked_at IS NULL AND s.expires_at>clock_timestamp()), $2, $3, $4,
             $5, $6, $7, $8,
             $9, $10, $11, $12,
             $13, now() - $14 * interval '1 second',

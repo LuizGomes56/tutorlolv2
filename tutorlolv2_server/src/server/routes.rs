@@ -212,6 +212,10 @@ pub fn api(limits: Option<RateLimits>) -> impl HttpServiceFactory {
                 .route("/google/start", web::get().to(super::google::start))
                 .route("/google/callback", web::get().to(super::google::callback))
                 .route("/desktop/redeem", web::post().to(super::google::redeem))
+                .route(
+                    "/desktop/confirm",
+                    web::post().to(super::google::confirm_desktop)
+                )
                 .route("/logout", web::post().to(super::google::logout)),
             enabled,
             &viewer_limits.sessions
