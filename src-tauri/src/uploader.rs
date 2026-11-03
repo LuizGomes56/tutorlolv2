@@ -9,6 +9,10 @@ use std::{
     time::Duration,
 };
 use tauri_plugin_http::reqwest::{Client, Method, StatusCode};
+use tutorlolv2_api::{
+    self as api, Auth, BodyEncoding, ContractError, Endpoint, NoBody, NoHeaders, NoPath, NoQuery,
+    ResponseBuffer, ResponseHeaders, ResponseMode,
+};
 use tutorlolv2_protocol::{
     BROTLI_LGWIN, BROTLI_QUALITY, DeviceCredentials, EndRecording, Id16, MAX_CHUNK_DECOMPRESSED,
     RawChunk, RawSnapshot, RecordingResult, RegisterDevice, SessionStarted, SetShareMode,
@@ -141,6 +145,62 @@ pub fn chunk_outcome(status: u16, retry_after: Option<&str>) -> ChunkOutcome {
     }
 }
 
+/// Keeps remote diagnostics distinct from network/protocol failures until the UI/IPC boundary.
+#[derive(Debug)]
+struct ApiFailure {
+    status: Option<u16>,
+    message: String,
+    remote: Option<tutorlolv2_protocol::ApiError>,
+}
+impl ApiFailure {
+    fn transport(error: impl std::fmt::Display) -> Self {
+        Self {
+            status: None,
+            message: error.to_string(),
+            remote: None,
+        }
+    }
+    fn invalid(status: u16, message: &str) -> Self {
+        Self {
+            status: Some(status),
+            message: message.into(),
+            remote: None,
+        }
+    }
+    fn contract(status: Option<u16>, error: ContractError) -> Self {
+        match error {
+            ContractError::Remote { status, error } => Self {
+                status: Some(status),
+                message: error.message.clone(),
+                remote: Some(error),
+            },
+            error => Self {
+                status,
+                message: error.to_string(),
+                remote: None,
+            },
+        }
+    }
+    fn into_account(self) -> tutorlolv2_protocol::AccountError {
+        use tutorlolv2_protocol::AccountErrorKind as K;
+        let kind = if self.status == Some(401) {
+            K::Unauthorized
+        } else if self.status.is_none() || self.status.is_some_and(|s| s >= 500 || s == 429) {
+            K::Unavailable
+        } else {
+            K::InvalidData
+        };
+        if let Some(remote) = self.remote.as_ref() {
+            log::debug!("API failure: {remote:?}");
+        }
+        crate::account::error(
+            kind,
+            &self.message,
+            self.status.is_none() || self.status.is_some_and(|s| s >= 500 || s == 429),
+        )
+    }
+}
+
 #[derive(Clone)]
 pub struct ApiClient {
     http: Client,
@@ -230,82 +290,164 @@ impl ApiClient {
     }
 
     pub fn login_url(&self, port: u16, state: &str) -> String {
-        format!(
-            "{}/api/auth/google/start?target=desktop&port={port}&app_state={state}",
-            self.base
+        api::GoogleStart::url(
+            &self.base,
+            &NoPath,
+            &api::GoogleStartQuery {
+                target: "desktop".into(),
+                return_to: None,
+                port: Some(port),
+                app_state: Some(state.into()),
+            },
         )
+        .expect("desktop sign-in query is serializable")
     }
 
-    pub async fn account_request<T: Decode<()>>(
+    /// Executes a declared endpoint. Success and failure bodies remain available for typed decoding.
+    async fn request<E: Endpoint>(
         &self,
-        path: &str,
-        body: Option<Vec<u8>>,
-        device: bool,
-    ) -> Result<Option<T>, tutorlolv2_protocol::AccountError> {
-        use tutorlolv2_protocol::AccountErrorKind as K;
-        let auth = if device {
-            self.auth.as_ref()
-        } else {
-            self.account_auth.as_ref()
+        path: &E::Path,
+        query: &E::Query,
+        headers: &E::Headers,
+        body: &E::Body<'_>,
+    ) -> Result<ResponseBuffer<E>, ApiFailure> {
+        let parts = E::request(&self.base, path, query, headers, body)
+            .map_err(|e| ApiFailure::contract(None, e))?;
+        self.execute::<E>(parts).await
+    }
+
+    async fn execute<E: Endpoint>(
+        &self,
+        mut parts: api::EndpointParts,
+    ) -> Result<ResponseBuffer<E>, ApiFailure> {
+        if parts.encoding == BodyEncoding::BrotliBincode {
+            let mut compressed = Vec::new();
+            {
+                let mut writer = brotli::CompressorWriter::new(
+                    &mut compressed,
+                    4096,
+                    BROTLI_QUALITY,
+                    BROTLI_LGWIN,
+                );
+                writer
+                    .write_all(&parts.body)
+                    .map_err(ApiFailure::transport)?;
+            }
+            parts.body = compressed;
         }
-        .ok_or_else(|| crate::account::error(K::Unauthorized, "Authentication required", true))?;
-        let mut response = self
+        let auth = match parts.auth {
+            Auth::Device => self.auth.as_ref(),
+            Auth::Account => self.account_auth.as_ref(),
+            Auth::Owner => self.account_auth.as_ref().or(self.auth.as_ref()),
+            _ => None,
+        };
+        if matches!(parts.auth, Auth::Device | Auth::Account | Auth::Owner) && auth.is_none() {
+            return Err(ApiFailure {
+                status: Some(401),
+                message: "Authentication required".into(),
+                remote: None,
+            });
+        }
+        let method =
+            Method::from_bytes(parts.method.as_str().as_bytes()).expect("declared HTTP method");
+        let mut request = self
             .http
-            .request(
-                if body.is_some() {
-                    Method::POST
-                } else {
-                    Method::GET
-                },
-                format!("{}/api{path}", self.base),
-            )
-            .header("Authorization", auth)
+            .request(method, parts.url)
             .header("Content-Type", OCTET_STREAM)
-            .body(body.unwrap_or_default())
-            .send()
-            .await
-            .map_err(|_| {
-                crate::account::error(K::Unavailable, "Account server unavailable", true)
-            })?;
-        let status = response.status().as_u16();
-        if status == 204 {
-            return Ok(None);
+            .body(parts.body);
+        if let Some(auth) = auth {
+            request = request.header("Authorization", auth);
         }
-        if status != 200 {
-            return Err(crate::account::error(
-                if status == 401 {
-                    K::Unauthorized
-                } else {
-                    K::Unavailable
-                },
-                "Account request failed",
-                status != 401,
-            ));
+        for (name, value) in parts.headers {
+            request = request.header(name, value);
+        }
+        let mut response = request.send().await.map_err(ApiFailure::transport)?;
+        let status = response.status().as_u16();
+        if status == 401
+            && matches!(parts.auth, Auth::Account | Auth::Owner)
+            && self.account_auth.is_some()
+        {
+            self.account_invalid
+                .store(true, std::sync::atomic::Ordering::Release);
+        }
+        let headers = ResponseHeaders(
+            response
+                .headers()
+                .iter()
+                .filter_map(|(name, value)| {
+                    value
+                        .to_str()
+                        .ok()
+                        .map(|v| (name.as_str().into(), v.into()))
+                })
+                .collect(),
+        );
+        let bound = tutorlolv2_protocol::response::MAX_RESPONSE_BYTES;
+        if response
+            .content_length()
+            .is_some_and(|size| size > bound as u64)
+        {
+            return Err(ApiFailure::invalid(status, "API response exceeds limit"));
         }
         let mut bytes = Vec::new();
-        while let Some(chunk) = response.chunk().await.map_err(|_| {
-            crate::account::error(K::Unavailable, "Account response interrupted", true)
-        })? {
-            if bytes.len() + chunk.len() > 16384 {
-                return Err(crate::account::error(
-                    K::InvalidData,
-                    "Account response too large",
-                    false,
-                ));
+        while let Some(part) = response.chunk().await.map_err(ApiFailure::transport)? {
+            if bytes.len().saturating_add(part.len()) > bound {
+                return Err(ApiFailure::invalid(status, "API response exceeds limit"));
             }
-            bytes.extend_from_slice(&chunk);
+            bytes.extend_from_slice(&part);
         }
-        let (value, used) = bincode::decode_from_slice(&bytes, BINCODE_CONFIG).map_err(|_| {
-            crate::account::error(K::InvalidData, "Invalid account response", false)
-        })?;
-        if used != bytes.len() {
-            return Err(crate::account::error(
-                K::InvalidData,
-                "Invalid account response",
-                false,
-            ));
+        if (200..300).contains(&status) && E::RESPONSE_MODE == ResponseMode::BrotliBincode {
+            if headers.get("Content-Encoding") != Some("br") {
+                return Err(ApiFailure::invalid(status, "Unsupported replay encoding"));
+            }
+            bytes = decompress(&bytes).map_err(ApiFailure::transport)?;
         }
-        Ok(Some(value))
+        ResponseBuffer::new(status, headers, bytes)
+            .map_err(|e| ApiFailure::contract(Some(status), e))
+    }
+
+    pub async fn account(
+        &self,
+    ) -> Result<tutorlolv2_protocol::AccountInfo, tutorlolv2_protocol::AccountError> {
+        let response = self
+            .request::<api::GetAccount>(&NoPath, &NoQuery, &NoHeaders, &NoBody)
+            .await
+            .map_err(ApiFailure::into_account)?;
+        response
+            .decode()
+            .map_err(|e| ApiFailure::contract(Some(response.status()), e).into_account())
+    }
+    pub async fn confirm_desktop(&self) -> Result<(), tutorlolv2_protocol::AccountError> {
+        let response = self
+            .request::<api::ConfirmDesktop>(&NoPath, &NoQuery, &NoHeaders, &NoBody)
+            .await
+            .map_err(ApiFailure::into_account)?;
+        response
+            .decode()
+            .map(drop)
+            .map_err(|e| ApiFailure::contract(Some(response.status()), e).into_account())
+    }
+    pub async fn logout(&self) -> Result<(), tutorlolv2_protocol::AccountError> {
+        let response = self
+            .request::<api::Logout>(&NoPath, &NoQuery, &NoHeaders, &NoBody)
+            .await
+            .map_err(ApiFailure::into_account)?;
+        response
+            .decode()
+            .map(drop)
+            .map_err(|e| ApiFailure::contract(Some(response.status()), e).into_account())
+    }
+    pub async fn redeem(
+        &self,
+        ticket: tutorlolv2_protocol::RedeemTicket,
+    ) -> Result<tutorlolv2_protocol::DesktopSession, tutorlolv2_protocol::AccountError> {
+        let response = self
+            .request::<api::RedeemDesktop>(&NoPath, &NoQuery, &NoHeaders, &ticket)
+            .await
+            .map_err(ApiFailure::into_account)?;
+        response
+            .decode()
+            .map_err(|e| ApiFailure::contract(Some(response.status()), e).into_account())
     }
 
     pub fn authenticated(&self) -> bool {
@@ -721,5 +863,68 @@ mod account_transport_tests {
         assert!(requests[0].contains("authorization: session native-only-token"));
         assert!(requests[1].contains("authorization: device "));
         assert!(!requests[1].contains("native-only-token"));
+    }
+}
+
+#[cfg(test)]
+mod api_response_tests {
+    use super::*;
+    use tutorlolv2_protocol::{AccountInfo, ApiError, ApiResponse, ErrorCode};
+
+    // Catches regressions that decode the envelope as a bare DTO or discard a remote error body.
+    #[tokio::test]
+    async fn account_decodes_bincode_success_and_remote_failure() {
+        let listener = std::net::TcpListener::bind(("127.0.0.1", 0)).unwrap();
+        let base = format!("http://{}", listener.local_addr().unwrap());
+        let server = std::thread::spawn(move || {
+            let success = bincode::encode_to_vec(
+                ApiResponse::new(
+                    200,
+                    Ok(AccountInfo {
+                        email: "player@example.test".into(),
+                        created_at_ms: 42,
+                    }),
+                )
+                .unwrap(),
+                BINCODE_CONFIG,
+            )
+            .unwrap();
+            let failure = bincode::encode_to_vec(
+                ApiResponse::<()>::new(
+                    503,
+                    Err(ApiError {
+                        code: ErrorCode::Upstream,
+                        message: "Account service unavailable".into(),
+                        details: None,
+                        traces: vec![],
+                    }),
+                )
+                .unwrap(),
+                BINCODE_CONFIG,
+            )
+            .unwrap();
+            for (status, bytes) in [("200 OK", success), ("503 Service Unavailable", failure)] {
+                let (mut stream, _) = listener.accept().unwrap();
+                stream
+                    .set_read_timeout(Some(Duration::from_secs(3)))
+                    .unwrap();
+                let mut request = [0; 4096];
+                let n = stream.read(&mut request).unwrap();
+                let request = String::from_utf8_lossy(&request[..n]).to_ascii_lowercase();
+                assert!(request.starts_with("get /api/account "));
+                assert!(request.contains("authorization: session test-token"));
+                write!(stream, "HTTP/1.1 {status}\r\nContent-Type: application/octet-stream\r\nContent-Length: {}\r\nConnection: close\r\n\r\n", bytes.len()).unwrap();
+                stream.write_all(&bytes).unwrap();
+            }
+        });
+        let mut api = ApiClient::with_base_url(base, None);
+        api.set_account(Some("test-token"), 1);
+        let account = api.account().await.unwrap();
+        assert_eq!(account.email, "player@example.test");
+        assert_eq!(account.created_at_ms, 42);
+        let error = api.account().await.unwrap_err();
+        assert_eq!(error.message, "Account service unavailable");
+        assert!(error.retryable);
+        server.join().unwrap();
     }
 }

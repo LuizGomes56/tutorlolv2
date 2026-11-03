@@ -245,28 +245,22 @@ impl Delivery {
                 }
                 return Ok(self.account.state());
             }
-            match api
-                .account_request::<tutorlolv2_protocol::AccountInfo>("/account", None, false)
-                .await
-            {
+            match api.account().await {
                 Err(e) if e.kind == K::Unauthorized => self.clear_account().await?,
-                Ok(Some(info)) => self.account.set(Some(info.email), false, None),
+                Ok(info) => self.account.set(Some(info.email), false, None),
                 _ => {}
             }
         }
         Ok(self.account.state())
     }
     async fn confirm_account(&self, api: &crate::uploader::ApiClient) -> Result<(), AccountError> {
-        api.account_request::<()>("/auth/desktop/confirm", Some(vec![]), false)
-            .await
-            .map(|_| ())
-            .map_err(|e| {
-                error(
-                    e.kind,
-                    "Account saved; confirmation pending. Retry when connected",
-                    true,
-                )
-            })
+        api.confirm_desktop().await.map(|_| ()).map_err(|e| {
+            error(
+                e.kind,
+                "Account saved; confirmation pending. Retry when connected",
+                true,
+            )
+        })
     }
 
     pub(crate) async fn clear_account(&self) -> Result<(), AccountError> {
@@ -286,8 +280,7 @@ impl Delivery {
         let _guard = self.account.transition.lock().await;
         if self.account.state().email.is_some() {
             let api = self.api.read().await.clone();
-            api.account_request::<()>("/auth/logout", Some(vec![]), false)
-                .await?;
+            api.logout().await?;
             self.clear_account().await?;
         }
         Ok(self.account.state())
@@ -310,9 +303,7 @@ impl Delivery {
             drop(current);
             // Best-effort revoke the provisional session. Even if offline, it
             // remains unconfirmed and cannot assign subsequent recordings.
-            let _ = next
-                .account_request::<()>("/auth/logout", Some(vec![]), false)
-                .await;
+            let _ = next.logout().await;
             // Do not expose the unsaved token to account polling: it must never
             // confirm a credential that would disappear on restart.
             self.clear_account().await?;
@@ -380,11 +371,7 @@ impl Delivery {
             })
             .await
             .map_err(|_| error(K::Other, "Sign-in interrupted", true))??;
-            let body = bincode::encode_to_vec(RedeemTicket { ticket }, BINCODE_CONFIG).unwrap();
-            let session: DesktopSession = api
-                .account_request("/auth/desktop/redeem", Some(body), true)
-                .await?
-                .ok_or_else(|| error(K::InvalidData, "Missing account session", false))?;
+            let session: DesktopSession = api.redeem(RedeemTicket { ticket }).await?;
             if URL_SAFE_NO_PAD
                 .decode(&session.token)
                 .ok()
@@ -712,10 +699,14 @@ mod credential_transition_tests {
         assert!(worker.join().unwrap()[0].starts_with("post /api/auth/desktop/confirm "));
         drop(d);
         let info = bincode::encode_to_vec(
-            tutorlolv2_protocol::AccountInfo {
-                email: "owner@example.invalid".into(),
-                created_at_ms: 1,
-            },
+            tutorlolv2_protocol::ApiResponse::new(
+                200,
+                Ok(tutorlolv2_protocol::AccountInfo {
+                    email: "owner@example.invalid".into(),
+                    created_at_ms: 1,
+                }),
+            )
+            .unwrap(),
             BINCODE_CONFIG,
         )
         .unwrap();
