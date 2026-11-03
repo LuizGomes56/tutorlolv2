@@ -226,6 +226,14 @@ impl History {
         let mut s = self.state.lock().unwrap();
 
         if s.index.device_id == id {
+            if preserve_local {
+                // A replacement API client invalidates the previous refresh,
+                // including when rollback returns to the same anonymous owner.
+                s.refreshing = false;
+                s.repair_requested = false;
+                s.attempted = None;
+                s.revision += 1;
+            }
             return Ok(());
         }
 
@@ -846,6 +854,18 @@ impl History {
 #[cfg(test)]
 mod account_cache_tests {
     use super::*;
+    #[test]
+    fn rebinding_owner_cancels_invalidated_refresh_even_when_identity_is_unchanged() {
+        let dir = std::env::temp_dir().join(format!("m4-cache-rebind-{}", std::process::id()));
+        let history = History::new(Store::new(dir.clone()), Some([1; 16]));
+        assert!(history.begin(false));
+        history.bind_owner(Some([1; 16])).unwrap();
+        assert!(
+            history.begin(false),
+            "replacement client must be able to refresh after rollback"
+        );
+        let _ = std::fs::remove_dir_all(dir);
+    }
     #[test]
     fn owner_changes_drop_remote_metadata_but_preserve_local_hide_and_progress() {
         let dir = std::env::temp_dir().join(format!("m4-cache-{}", std::process::id()));

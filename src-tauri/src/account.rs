@@ -203,6 +203,16 @@ impl Delivery {
             && self.account.state().email.is_some()
         {
             let api = self.api.read().await.clone();
+            // Confirm only a credential already loaded from DPAPI or persisted by install.
+            if let Err(e) = self.confirm_account(&api).await {
+                if e.kind == K::Unauthorized {
+                    self.clear_account().await?;
+                } else {
+                    self.account
+                        .set(self.account.state().email, false, Some(e.message));
+                }
+                return Ok(self.account.state());
+            }
             match api
                 .account_request::<tutorlolv2_protocol::AccountInfo>("/account", None, false)
                 .await
@@ -214,6 +224,19 @@ impl Delivery {
         }
         Ok(self.account.state())
     }
+    async fn confirm_account(&self, api: &crate::uploader::ApiClient) -> Result<(), AccountError> {
+        api.account_request::<()>("/auth/desktop/confirm", Some(vec![]), false)
+            .await
+            .map(|_| ())
+            .map_err(|e| {
+                error(
+                    e.kind,
+                    "Account saved; confirmation pending. Retry when connected",
+                    true,
+                )
+            })
+    }
+
     pub(crate) async fn clear_account(&self) -> Result<(), AccountError> {
         let removed = self
             .store
@@ -237,7 +260,8 @@ impl Delivery {
         }
         Ok(self.account.state())
     }
-    // Called under the transition lock, after ticket redemption has linked the device.
+    // Called under the transition lock. Redemption is provisional until a saved
+    // credential is confirmed; an orphan redemption cannot own future recordings.
     async fn install_account(&self, credential: Credential) -> Result<(), AccountError> {
         let mut current = self.api.write().await;
         if current.device_id != Some(credential.device_id) {
@@ -250,38 +274,34 @@ impl Delivery {
         let generation = current.owner_generation.wrapping_add(1);
         let mut next = current.clone();
         next.set_account(Some(&credential.token), generation);
-        let persisted = self.store.save_account(Some(&credential));
-        if persisted.is_err() {
+        if self.store.save_account(Some(&credential)).is_err() {
             drop(current);
-            // Redeem has already changed the server device link. Undo it before
-            // dropping the only new token, and never restore the old account link.
-            if next
+            // Best-effort revoke the provisional session. Even if offline, it
+            // remains unconfirmed and cannot assign subsequent recordings.
+            let _ = next
                 .account_request::<()>("/auth/logout", Some(vec![]), false)
-                .await
-                .is_ok()
-            {
-                self.clear_account().await?;
-                return Err(error(
-                    K::Storage,
-                    "Could not save account credential; retry sign-in",
-                    true,
-                ));
-            }
-            // Keep a failed rollback token native in memory so sign_out can retry.
-            *self.api.write().await = next.clone();
-            self.account.set(Some(credential.email), false, None);
-            let _ = self.history.bind_owner(next.owner_id());
+                .await;
+            // Do not expose the unsaved token to account polling: it must never
+            // confirm a credential that would disappear on restart.
+            self.clear_account().await?;
             return Err(error(
                 K::Storage,
-                "Could not save account credential; sign out and retry",
+                "Could not save account credential; retry sign-in",
                 true,
             ));
         }
-        *current = next;
+        *current = next.clone();
         self.account.set(Some(credential.email), false, None);
-        self.history
-            .bind_owner(current.owner_id())
-            .map_err(|_| error(K::Storage, "Could not save account history", true))
+        let history_saved = self.history.bind_owner(current.owner_id());
+        drop(current);
+        history_saved.map_err(|_| error(K::Storage, "Could not save account history", true))?;
+        if let Err(e) = self.confirm_account(&next).await {
+            if e.kind == K::Unauthorized {
+                self.clear_account().await?;
+            }
+            return Err(e);
+        }
+        Ok(())
     }
 
     pub async fn sign_in(
@@ -529,8 +549,45 @@ mod credential_transition_tests {
             email: email.into(),
         }
     }
+    fn account_server(
+        dir: std::path::PathBuf,
+        responses: Vec<(u16, Vec<u8>)>,
+    ) -> (String, std::thread::JoinHandle<Vec<String>>) {
+        let listener = TcpListener::bind(("127.0.0.1", 0)).unwrap();
+        let base = format!("http://{}", listener.local_addr().unwrap());
+        let worker = std::thread::spawn(move || {
+            let mut requests = vec![];
+            for (status, body) in responses {
+                let (mut stream, _) = listener.accept().unwrap();
+                stream
+                    .set_read_timeout(Some(Duration::from_secs(3)))
+                    .unwrap();
+                let mut buf = [0; 4096];
+                let n = stream.read(&mut buf).unwrap();
+                let request = String::from_utf8_lossy(&buf[..n]).to_ascii_lowercase();
+                if request.starts_with("post /api/auth/desktop/confirm ") {
+                    assert!(
+                        crate::store::Store::new(dir.clone())
+                            .load_account(Some([1; 16]))
+                            .is_some(),
+                        "confirm must follow durable DPAPI persistence"
+                    );
+                }
+                requests.push(request);
+                write!(
+                    stream,
+                    "HTTP/1.1 {status} Response\r\nContent-Length: {}\r\nConnection: close\r\n\r\n",
+                    body.len()
+                )
+                .unwrap();
+                stream.write_all(&body).unwrap();
+            }
+            requests
+        });
+        (base, worker)
+    }
     #[tokio::test]
-    async fn failed_credential_persistence_revokes_new_session_or_keeps_native_recovery() {
+    async fn failed_save_and_rollback_never_restore_an_unsaved_owner_after_restart() {
         for status in [204, 503] {
             let dir =
                 std::env::temp_dir().join(format!("m4-rollback-{status}-{}", std::process::id()));
@@ -563,27 +620,30 @@ mod credential_transition_tests {
             let request = server.join().unwrap();
             assert!(request.starts_with("post /api/auth/logout "));
             assert!(request.contains("authorization: session new-native-token"));
-            if status == 204 {
-                assert!(d.account.state().email.is_none());
-                assert!(!dir.join("account.bin").exists());
-            } else {
-                assert_eq!(
-                    d.account.state().email.as_deref(),
-                    Some("new@example.invalid")
-                );
-                assert!(d.sign_out().await.is_err());
-                assert!(d.account.state().email.is_some());
-            }
+            // Neither a failed save nor failed rollback may expose an unsaved owner.
+            assert!(d.account.state().email.is_none());
+            assert!(!dir.join("account.bin").exists());
+            drop(d);
+            let restored = delivery(dir.clone(), "http://127.0.0.1:1".into());
+            assert!(restored.account_state().await.unwrap().email.is_none());
+            assert_eq!(
+                restored.api.read().await.owner_id(),
+                restored.history.identity()
+            );
             let _ = std::fs::remove_dir_all(dir);
         }
     }
     #[tokio::test]
     async fn persisted_account_restores_native_owner_and_offline_email() {
         let dir = std::env::temp_dir().join(format!("m4-account-restart-{}", std::process::id()));
-        let d = delivery(dir.clone(), "http://127.0.0.1:1".into());
+        let (base, worker) = account_server(dir.clone(), vec![(204, vec![])]);
+        let d = delivery(dir.clone(), base);
         d.install_account(credential("native-session", "owner@example.invalid"))
             .await
             .unwrap();
+        let requests = worker.join().unwrap();
+        assert!(requests[0].starts_with("post /api/auth/desktop/confirm "));
+        assert!(requests[0].contains("authorization: session native-session"));
         let owner = d.api.read().await.owner_id();
         drop(d);
         let restored = delivery(dir.clone(), "http://127.0.0.1:1".into());
@@ -593,6 +653,66 @@ mod credential_transition_tests {
             restored.account.state().email.as_deref(),
             Some("owner@example.invalid")
         );
+        let _ = std::fs::remove_dir_all(dir);
+    }
+    #[tokio::test]
+    async fn failed_confirmation_keeps_persisted_owner_and_recovers_after_restart() {
+        let dir = std::env::temp_dir().join(format!("m4-confirm-restart-{}", std::process::id()));
+        let (base, worker) = account_server(dir.clone(), vec![(503, vec![])]);
+        let d = delivery(dir.clone(), base);
+        assert!(
+            d.install_account(credential(
+                "pending-native-session",
+                "owner@example.invalid"
+            ))
+            .await
+            .is_err()
+        );
+        assert_eq!(
+            d.account.state().email.as_deref(),
+            Some("owner@example.invalid")
+        );
+        assert!(
+            crate::store::Store::new(dir.clone())
+                .load_account(Some([1; 16]))
+                .is_some()
+        );
+        assert!(worker.join().unwrap()[0].starts_with("post /api/auth/desktop/confirm "));
+        drop(d);
+        let info = bincode::encode_to_vec(
+            tutorlolv2_protocol::AccountInfo {
+                email: "owner@example.invalid".into(),
+                created_at_ms: 1,
+            },
+            BINCODE_CONFIG,
+        )
+        .unwrap();
+        let (base, worker) = account_server(dir.clone(), vec![(204, vec![]), (200, info)]);
+        let restored = delivery(dir.clone(), base);
+        assert_eq!(
+            restored.account_state().await.unwrap().email.as_deref(),
+            Some("owner@example.invalid")
+        );
+        let requests = worker.join().unwrap();
+        assert!(requests[0].starts_with("post /api/auth/desktop/confirm "));
+        assert!(requests[1].starts_with("get /api/account "));
+        let _ = std::fs::remove_dir_all(dir);
+    }
+    #[tokio::test]
+    async fn expired_confirmation_clears_durable_credential_and_owner_immediately() {
+        let dir = std::env::temp_dir().join(format!("m4-confirm-expired-{}", std::process::id()));
+        let store = crate::store::Store::new(dir.clone());
+        store
+            .save_account(Some(&credential("expired-session", "old@example.invalid")))
+            .unwrap();
+        let (base, worker) = account_server(dir.clone(), vec![(401, vec![])]);
+        let d = delivery(dir.clone(), base);
+        let old_owner = d.api.read().await.owner_id();
+        assert!(d.account_state().await.unwrap().email.is_none());
+        assert!(store.load_account(Some([1; 16])).is_none());
+        assert_ne!(d.api.read().await.owner_id(), old_owner);
+        assert_eq!(d.api.read().await.owner_id(), d.history.identity());
+        worker.join().unwrap();
         let _ = std::fs::remove_dir_all(dir);
     }
 }
