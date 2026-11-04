@@ -73,7 +73,6 @@ impl<T: Default> Default for PlayerData<T> {
         let champion_id = ChampionId::random();
         let recommended_items = champion_id.recommended_items(champion_id.main_position());
         let mut items = Tray::with_capacity(recommended_items.len());
-
         let mut item_exceptions = ExceptionMap::default();
 
         for &item in recommended_items {

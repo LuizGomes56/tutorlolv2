@@ -4,10 +4,10 @@ const SAMPLING_GAP_S: f32 = 2.;
 
 /// Coverage is expressed in game seconds, including missing beginnings.
 pub fn gaps(chunks: &[ChunkInfo], end: f32) -> Vec<(f32, f32)> {
-    let mut ranges: Vec<_> = chunks
+    let mut ranges = chunks
         .iter()
         .map(|c| (c.first_game_time, c.last_game_time))
-        .collect();
+        .collect::<Vec<_>>();
 
     ranges.sort_by(|a, b| a.0.total_cmp(&b.0));
 

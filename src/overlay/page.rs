@@ -44,6 +44,7 @@ impl yew::Reducible for Panel {
             PanelAction::KeepVisible(widget, value) => panel.keep_visible[widget.index()] = value,
             PanelAction::All(value) => panel.enabled = [value; 5],
         }
+
         new
     }
 }
@@ -154,6 +155,7 @@ pub fn Overlay() -> Html {
             } else {
                 0
             };
+
             let enemy = enemies.get(selected_index);
 
             let damages = || {

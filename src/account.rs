@@ -1,10 +1,11 @@
 //! Shared safe identity state. Browser cookies and native session credentials never enter storage.
-use crate::history::source::Command;
+use crate::history::source::{Command, HttpHistory};
 use std::{
     cell::{Cell, RefCell},
     rc::Rc,
     time::Duration,
 };
+use tutorlolv2_api::{GetAccount, Logout, NoBody, NoHeaders, NoPath, NoQuery};
 use tutorlolv2_protocol::{AccountInfo, AccountState};
 use yew::{
     platform::{spawn_local, time::sleep},
@@ -36,6 +37,7 @@ impl PendingAction {
         if self.current.is_some() {
             return None;
         }
+
         self.sequence = self.sequence.wrapping_add(1);
         self.current = Some(self.sequence);
         self.current
@@ -45,6 +47,7 @@ impl PendingAction {
         if self.current != Some(id) {
             return false;
         }
+
         self.current = None;
         true
     }
@@ -76,19 +79,16 @@ async fn get_account() -> Result<AccountState, String> {
             .await
             .map_err(|e| e.message)
     } else {
-        let response = crate::history::source::HttpHistory::request::<tutorlolv2_api::GetAccount>(
-            &tutorlolv2_api::NoPath,
-            &tutorlolv2_api::NoQuery,
-            &tutorlolv2_api::NoHeaders,
-            &tutorlolv2_api::NoBody,
-        )
-        .await
-        .map_err(|e| e.message)?;
+        let response = HttpHistory::request::<GetAccount>(&NoPath, &NoQuery, &NoHeaders, &NoBody)
+            .await
+            .map_err(|e| e.message)?;
+
         if response.status() == 401 {
             let cancelled = web_sys::window()
                 .and_then(|window| {
                     let location =
                         crate::history::source::member(&window.into(), "location").ok()?;
+
                     crate::history::source::member(&location, "search")
                         .ok()?
                         .as_string()
@@ -99,13 +99,15 @@ async fn get_account() -> Result<AccountState, String> {
                         .split('&')
                         .any(|part| part == "signin=cancelled")
                 });
+
             return Ok(AccountState {
                 last_error: cancelled.then(|| "Sign in cancelled. You can try again.".into()),
                 ..Default::default()
             });
         }
-        let info: AccountInfo =
-            crate::history::source::HttpHistory::decode(&response).map_err(|e| e.message)?;
+
+        let info: AccountInfo = HttpHistory::decode(&response).map_err(|e| e.message)?;
+
         Ok(AccountState {
             email: Some(info.email),
             ..Default::default()
@@ -136,7 +138,9 @@ pub fn AccountProvider(props: &AccountProviderProps) -> Html {
                     *generation.borrow_mut() += 1;
                     pending.borrow_mut().cancel();
                     busy.set(false);
+
                     crate::history::source::clear_web_history();
+
                     state.set(AccountState {
                         last_error: Some("Your session expired. Sign in again.".into()),
                         ..Default::default()
@@ -235,15 +239,10 @@ pub fn AccountProvider(props: &AccountProviderProps) -> Html {
                         .await
                         .map_err(|e| e.message)
                 } else {
-                    match crate::history::source::HttpHistory::request::<tutorlolv2_api::Logout>(
-                        &tutorlolv2_api::NoPath,
-                        &tutorlolv2_api::NoQuery,
-                        &tutorlolv2_api::NoHeaders,
-                        &tutorlolv2_api::NoBody,
-                    )
-                    .await
+                    match HttpHistory::request::<Logout>(&NoPath, &NoQuery, &NoHeaders, &NoBody)
+                        .await
                     {
-                        Ok(response) => crate::history::source::HttpHistory::decode(&response)
+                        Ok(response) => HttpHistory::decode(&response)
                             .map(|_| AccountState::default())
                             .map_err(|e| e.message),
                         Err(error) => Err(error.message),
@@ -322,7 +321,7 @@ pub fn AccountWidget() -> Html {
                 <button disabled={account.busy} onclick={sign_in}>{ "Sign in with Google" }</button>
             } else {
                 <a
-                    href={crate::history::source::HttpHistory::sign_in_url()}
+                    href={HttpHistory::sign_in_url()}
                 >
                     { "Sign in with Google" }
                 </a>

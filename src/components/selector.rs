@@ -50,9 +50,7 @@ where
 
     let is_open = use_state(|| false);
     let query = use_state(AttrValue::default);
-
     let close_callback = use_callback(is_open.clone(), move |_, is_open| is_open.set(false));
-
     let dropdown_ref = use_node_ref();
     let label_ref = use_clickout(close_callback.clone(), [dropdown_ref.clone()]);
 

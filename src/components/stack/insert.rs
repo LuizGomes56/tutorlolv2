@@ -138,7 +138,6 @@ pub fn StackInsert(props: &StackInsertProps) -> Html {
                     move |(i, metadata)| {
                         let item_id = metadata.kind;
                         let has_max = item_id.deals_max_damage();
-
                         let base = i * 2;
 
                         let onclick = |j: usize| {

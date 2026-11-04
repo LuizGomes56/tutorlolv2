@@ -92,6 +92,7 @@ pub fn use_replay_controller(
                         if extents.borrow_mut().observe_chunk(metadata, &chunk) {
                             on_extent.emit(());
                         }
+
                         cache.borrow_mut().insert(seq, chunk.clone());
 
                         if seq != current {

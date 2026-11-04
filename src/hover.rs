@@ -53,7 +53,6 @@ impl Docs {
 
     pub fn encode(self) -> String {
         let mut bytes = [0_u8; Self::MAX_ENCODED_BYTES];
-
         let length = bincode::encode_into_slice(self, &mut bytes, BINCODE_CONFIG)
             .expect("Docs payload exceeded its documented encoded-size bound");
 
@@ -104,6 +103,7 @@ impl Docs {
         html.push_str("<pre>");
         html.push_str(&body);
         html.push_str("</pre>");
+
         Ok(())
     }
 }
@@ -134,6 +134,7 @@ impl ImageType {
             ImageType::Ignite => Docs::Builtin(Builtin::Ignite, DocView::Global),
             _ => return None,
         };
+
         Some(docs.encode())
     }
 }

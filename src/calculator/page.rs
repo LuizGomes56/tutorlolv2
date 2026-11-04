@@ -1,7 +1,3 @@
-use crate::{
-    components::tables::body::DamageRenderer,
-    hover::{self, Builtin, DocView, Docs},
-};
 use implicit_clone::ImplicitClone;
 use tutorlolv2::CtxVar;
 use {
@@ -17,8 +13,11 @@ use {
         components::{
             image::{DragonImage, Image, ImageType, MinionImage, MonsterImage, OtherImage},
             stack::{Stack, StackInsert, StackRemover, StackTable},
-            tables::{empty::EmptyTable, header::TableHeader, turret::TurretTable},
+            tables::{
+                body::DamageRenderer, empty::EmptyTable, header::TableHeader, turret::TurretTable,
+            },
         },
+        hover::{self, Builtin, DocView, Docs},
         utils::{ClassCast, transport},
     },
     std::{cell::RefCell, rc::Rc},
@@ -76,9 +75,11 @@ const MONSTER_COUNT: usize = {
 
     while i < L_MSTR {
         let len = MONSTER_HEADERS[i].len();
+
         if len > max {
             max = len;
         }
+
         i += 1;
     }
 
@@ -242,6 +243,7 @@ pub fn Calculator() -> Html {
                         game_data.set(Some(data));
                     });
                 }
+
                 move || {
                     if *cleanup_generation.borrow() == generation {
                         cleanup_generation.replace(generation.wrapping_add(1));

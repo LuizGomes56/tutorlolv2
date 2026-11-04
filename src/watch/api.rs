@@ -1,19 +1,22 @@
 pub use crate::replay::cache::CachedChunk;
-#[cfg(test)]
-use crate::utils::BINCODE_CONFIG;
+
 use crate::utils::api::{FetchError, WebClient};
-#[cfg(test)]
-use tutorlolv2::riot::RiotRealtime;
-use tutorlolv2_api::{self as contracts, NoBody, NoHeaders, NoQuery, ResponseBuffer};
+use tutorlolv2_api::{
+    After, NoBody, NoHeaders, NoQuery, PollLive, PollLivePath, ResponseBuffer, ShareFrames,
+    ShareFramesPath, ShareInfoEndpoint, ShareInfoEndpointPath,
+};
 use tutorlolv2_protocol::{FRAMES_FORMAT, ShareInfo};
 use web_sys::AbortController;
+
+#[cfg(test)]
+use {crate::utils::BINCODE_CONFIG, tutorlolv2::riot::RiotRealtime};
 
 pub struct WatchApi;
 impl WatchApi {
     pub async fn info(code: &str, abort: &AbortController) -> Result<ShareInfo, String> {
         let response = WebClient::public()
-            .send::<contracts::ShareInfoEndpoint>(
-                &contracts::ShareInfoEndpointPath { code: code.into() },
+            .send::<ShareInfoEndpoint>(
+                &ShareInfoEndpointPath { code: code.into() },
                 &NoQuery,
                 &NoHeaders,
                 &NoBody,
@@ -21,26 +24,31 @@ impl WatchApi {
             )
             .await
             .map_err(FetchError::message)?;
+
         let mut value = response
             .decode()
             .map_err(|e| FetchError::response(response.status(), e).message())?;
+
         if value.frames_format != FRAMES_FORMAT {
             return Err("This replay needs a newer viewer. Refresh the app and retry.".into());
         }
+
         value
             .chunks
             .sort_by(|a, b| a.first_game_time.total_cmp(&b.first_game_time));
+
         Ok(value)
     }
+
     pub async fn poll(
         code: &str,
         after: u64,
         abort: &AbortController,
-    ) -> Result<ResponseBuffer<contracts::PollLive>, String> {
+    ) -> Result<ResponseBuffer<PollLive>, String> {
         WebClient::public()
-            .send::<contracts::PollLive>(
-                &contracts::PollLivePath { code: code.into() },
-                &contracts::After { after },
+            .send::<PollLive>(
+                &PollLivePath { code: code.into() },
+                &After { after },
                 &NoHeaders,
                 &NoBody,
                 Some(abort),
@@ -48,10 +56,11 @@ impl WatchApi {
             .await
             .map_err(FetchError::message)
     }
+
     pub async fn frames(code: &str, seq: u32, abort: &AbortController) -> Result<Vec<u8>, String> {
         let response = WebClient::public()
-            .send::<contracts::ShareFrames>(
-                &contracts::ShareFramesPath {
+            .send::<ShareFrames>(
+                &ShareFramesPath {
                     code: code.into(),
                     seq,
                 },
@@ -62,9 +71,11 @@ impl WatchApi {
             )
             .await
             .map_err(FetchError::message)?;
+
         response
             .decode()
             .map_err(|e| FetchError::response(response.status(), e).message())?;
+
         Ok(response.into_bytes())
     }
 }
@@ -73,6 +84,7 @@ impl WatchApi {
 mod tests {
     use super::*;
     use tutorlolv2::riot::FrameChunk;
+
     #[test]
     fn borrowed_chunk_keeps_its_buffer_and_rejects_wrong_format_or_trailing_bytes() {
         let fixture = include_bytes!(concat!(env!("CARGO_MANIFEST_DIR"), "/example.bincode"));

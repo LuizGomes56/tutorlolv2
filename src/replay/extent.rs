@@ -30,10 +30,12 @@ impl ExtentStore {
         if chunk.validate(metadata).is_err() {
             return false;
         }
+
         let frames = &chunk.borrow_dependent().frames;
         let (Some((_, first)), Some((_, last))) = (frames.first(), frames.last()) else {
             return false;
         };
+
         self.observe(ObservedExtent {
             metadata: metadata.clone(),
             first: first.game_data.game_time,
@@ -57,10 +59,11 @@ impl ExtentStore {
     }
 
     pub(crate) fn timeline(&self, chunks: &[ChunkInfo], end: f32) -> (Vec<ChunkInfo>, f32) {
-        let ranges: Vec<_> = chunks
+        let ranges = chunks
             .iter()
             .map(|metadata| {
                 let mut range = metadata.clone();
+
                 range.first_game_time = metadata.first_game_time.min(metadata.last_game_time);
                 range.last_game_time = metadata.first_game_time.max(metadata.last_game_time);
 
@@ -75,7 +78,8 @@ impl ExtentStore {
 
                 range
             })
-            .collect();
+            .collect::<Vec<_>>();
+
         let end = ranges
             .iter()
             .fold(end, |end, range| end.max(range.last_game_time));

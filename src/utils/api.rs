@@ -17,10 +17,12 @@ pub enum FetchError {
     Contract(ContractError),
     Response { status: u16, error: ContractError },
 }
+
 impl FetchError {
     pub fn response(status: u16, error: ContractError) -> Self {
         Self::Response { status, error }
     }
+
     fn status(&self) -> Option<u16> {
         match self {
             Self::Response { status, .. }
@@ -29,12 +31,14 @@ impl FetchError {
             _ => None,
         }
     }
+
     pub fn message(self) -> String {
         match self.status() {
             Some(404) => return "Code not found. Check the code and try again.".into(),
             Some(410) => return "This match ended or is no longer shared.".into(),
             _ => {}
         }
+
         match self {
             Self::Contract(ContractError::Remote { error, .. })
             | Self::Response {
@@ -44,6 +48,7 @@ impl FetchError {
             error => error.to_string(),
         }
     }
+
     pub fn history(self) -> HistoryError {
         let status = self.status();
         let (kind, retryable) = match status {
@@ -56,27 +61,32 @@ impl FetchError {
             _ if matches!(self, Self::Transport(_)) => (HistoryErrorKind::Offline, true),
             _ => (HistoryErrorKind::InvalidData, false),
         };
+
         let message = match status {
             Some(401) => "Your session expired. Sign in again.".into(),
             Some(403) => "This action is restricted for this recording.".into(),
             Some(404) => "Recording not found.".into(),
             _ => self.message(),
         };
+
         HistoryError {
             kind,
             message,
             retryable,
         }
     }
+
     fn js(value: JsValue) -> Self {
         Self::Transport(format!("API connection failed: {value:?}"))
     }
 }
+
 impl From<ContractError> for FetchError {
     fn from(error: ContractError) -> Self {
         Self::Contract(error)
     }
 }
+
 impl fmt::Display for FetchError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
@@ -86,15 +96,18 @@ impl fmt::Display for FetchError {
         }
     }
 }
+
 impl std::error::Error for FetchError {}
 
 pub struct WebClient {
     base: String,
 }
+
 impl WebClient {
     pub fn new(base: String) -> Self {
         Self { base }
     }
+
     pub fn public() -> Self {
         Self::new(
             option_env!("TUTORLOLV2_API_URL")
@@ -105,6 +118,7 @@ impl WebClient {
                 .into(),
         )
     }
+
     pub async fn send<E: Endpoint>(
         &self,
         path: &E::Path,
@@ -116,12 +130,16 @@ impl WebClient {
         if E::RESPONSE_MODE == ResponseMode::Browser {
             return Err(ContractError::BrowserOnly.into());
         }
+
         let mut parts = E::request(&self.base, path, query, headers, body)?;
+
         if parts.body.len() > MAX_RESPONSE_BYTES {
             return Err(tutorlolv2_protocol::ProtocolError::Oversized.into());
         }
+
         if parts.encoding == BodyEncoding::BrotliBincode {
             let mut compressed = Vec::new();
+
             {
                 let mut writer = brotli::CompressorWriter::new(
                     &mut compressed,
@@ -129,36 +147,48 @@ impl WebClient {
                     tutorlolv2_protocol::BROTLI_QUALITY,
                     tutorlolv2_protocol::BROTLI_LGWIN,
                 );
+
                 writer
                     .write_all(&parts.body)
                     .map_err(|e| FetchError::Transport(e.to_string()))?;
             }
+
             parts.body = compressed;
         }
+
         let init = RequestInit::new();
+
         init.set_method(parts.method.as_str());
         init.set_credentials(if matches!(parts.auth, Auth::Account | Auth::Owner) {
             RequestCredentials::Include
         } else {
             RequestCredentials::Omit
         });
+
         if let Some(abort) = abort {
             init.set_signal(Some(&abort.signal()));
         }
+
         let headers = web_sys::Headers::new().map_err(FetchError::js)?;
+
         headers
             .set("Content-Type", "application/octet-stream")
             .map_err(FetchError::js)?;
+
         headers
             .set("Accept", "application/octet-stream")
             .map_err(FetchError::js)?;
+
         for (name, value) in parts.headers {
             headers.set(&name, &value).map_err(FetchError::js)?;
         }
+
         init.set_headers(&headers);
+
         if parts.encoding != BodyEncoding::None {
             init.set_body(&Uint8Array::from(parts.body.as_slice()));
         }
+
         let response: Response = JsFuture::from(
             web_sys::window()
                 .ok_or_else(|| FetchError::Transport("Browser unavailable".into()))?
@@ -168,8 +198,10 @@ impl WebClient {
         .map_err(FetchError::js)?
         .dyn_into()
         .map_err(FetchError::js)?;
+
         let status = response.status();
         let mut headers = ResponseHeaders::default();
+
         for name in E::RESPONSE_HEADERS
             .iter()
             .copied()
@@ -179,23 +211,29 @@ impl WebClient {
                 headers.0.push((name.into(), value));
             }
         }
+
         // Fetch transparently decompresses Content-Encoding. Bound the resulting bytes.
         let bytes = Self::read(response).await?;
         ResponseBuffer::new(status, headers, bytes).map_err(|e| FetchError::response(status, e))
     }
+
     async fn read(response: Response) -> Result<Vec<u8>, FetchError> {
         let Some(stream) = response.body() else {
             return Ok(vec![]);
         };
+
         let reader: ReadableStreamDefaultReader = stream
             .get_reader()
             .dyn_into()
             .map_err(|value: web_sys::js_sys::Object| FetchError::js(value.into()))?;
+
         let mut bytes = Vec::new();
+
         loop {
             let part = JsFuture::from(reader.read())
                 .await
                 .map_err(FetchError::js)?;
+
             if Reflect::get(&part, &"done".into())
                 .map_err(FetchError::js)?
                 .as_bool()
@@ -203,19 +241,24 @@ impl WebClient {
             {
                 break;
             }
+
             let value = Reflect::get(&part, &"value".into()).map_err(FetchError::js)?;
             let chunk = Uint8Array::new(&value);
+
             if bytes.len().saturating_add(chunk.length() as usize) > MAX_RESPONSE_BYTES {
                 let _ = reader.cancel();
                 return Err(
                     ContractError::Protocol(tutorlolv2_protocol::ProtocolError::Oversized).into(),
                 );
             }
+
             bytes.extend_from_slice(&chunk.to_vec());
         }
+
         Ok(bytes)
     }
 }
+
 impl From<tutorlolv2_protocol::ProtocolError> for FetchError {
     fn from(error: tutorlolv2_protocol::ProtocolError) -> Self {
         Self::Contract(ContractError::Protocol(error))

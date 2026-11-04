@@ -23,7 +23,9 @@ pub(crate) fn encode_record(kind: u8, value: &impl Encode) -> Option<String> {
         kind,
         value,
     };
+
     let bytes = bincode::encode_to_vec(record, BINCODE_CONFIG).ok()?;
+
     (bytes.len() <= MAX_RECORD_BYTES).then(|| BASE64.encode(bytes))
 }
 

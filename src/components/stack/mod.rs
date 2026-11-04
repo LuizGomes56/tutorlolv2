@@ -124,7 +124,6 @@ impl Reducible for Stack {
         let new_mut = Rc::make_mut(&mut new);
 
         action.apply(new_mut);
-
         new
     }
 }

@@ -38,6 +38,7 @@ pub fn OwnerReplay(props: &OwnerReplayProps) -> Html {
             .first()
             .map_or(0., |c| c.first_game_time)
     });
+
     let playing = use_state(|| false);
     let speed = use_state(|| 1u32);
     let retry = use_state(|| 0u32);
@@ -59,6 +60,7 @@ pub fn OwnerReplay(props: &OwnerReplayProps) -> Html {
 
     let (extents, on_extent) = extent::use_extents(cache::ReplaySource::Owner(props.id.clone()));
     let mut chunks = props.recording.chunks.clone();
+
     chunks.sort_by(|a, b| a.first_game_time.total_cmp(&b.first_game_time));
 
     let end = props
@@ -178,10 +180,26 @@ pub fn OwnerReplay(props: &OwnerReplayProps) -> Html {
             tabindex={"0"}
         >
             <label for={"owner-time"}>
-                { format!("Replay {} / {}",crate::history::list::duration(*time),crate::history::list::duration(end)) }
+                {
+                    format!(
+                        "Replay {} / {}",
+                        crate::history::list::duration(*time),
+                        crate::history::list::duration(end)
+                    )
+                }
             </label>
             <div class={classes!("watch-coverage")}>
-                { for timeline::gaps(&ranges,end).iter().map(|(a,b)|html!{<span class={classes!("watch-gap")} style={format!("left:{}%;width:{}%",a/end.max(1.)*100.,(b-a)/end.max(1.)*100.)} title={format!("Missing capture {a:.0}–{b:.0}s")}/>}) }
+                for (a, b) in timeline::gaps(&ranges,end) {
+                    <span
+                        class={classes!("watch-gap")}
+                        style={format!(
+                            "left:{}%;width:{}%",
+                            a / end.max(1.0) * 100.0,
+                            (b - a) / end.max(1.0) * 100.0
+                        )}
+                        title={format!("Missing capture {a:.0}–{b:.0}s")}
+                    />
+                }
             </div>
             <input
                 id={"owner-time"}
@@ -196,25 +214,44 @@ pub fn OwnerReplay(props: &OwnerReplayProps) -> Html {
             <div class={classes!("watch-actions")}>
                 <button
                     disabled={chunks.is_empty()}
-                    onclick={{let playing=playing.clone();Callback::from(move |_|playing.set(!*playing))}}
+                    onclick={{
+                        let playing=playing.clone();
+
+                        Callback::from(move |_| playing.set(!*playing))
+                    }}
                 >
-                    { if *playing{"Pause"}else{"Play"} }
+                    { if *playing{ "Pause" } else { "Play" } }
                 </button>
-                { for [1,4,16].into_iter().map(|value|{let speed=speed.clone();html!{<button aria-pressed={(*speed==value).to_string()} onclick={Callback::from(move |_|speed.set(value))}>{format!("{value}×")}</button>}}) }
+                for value in [1,4,16] {
+                    <button
+                        aria-pressed={(*speed == value).to_string()}
+                        onclick={{
+                            let speed = speed.clone();
+                            Callback::from(move |_| speed.set(value))
+                        }}
+                    >
+                        {format!("{value}×")}
+                    </button>
+                }
             </div>
             <p>
                 { "← / → seek 10 seconds. Hatched regions and gaps between samples were not captured." }
             </p>
+
             if !error.is_empty() {
                 <p role={"status"}>
                     { &*error }
                     <button
-                        onclick={{let retry=retry.clone();Callback::from(move |_|retry.set(*retry+1))}}
+                        onclick={{
+                            let retry = retry.clone();
+                            Callback::from(move |_| retry.set(*retry + 1))
+                        }}
                     >
                         { "Retry replay" }
                     </button>
                 </p>
             }
+
             <LivegameView
                 data={(*game).clone()}
                 error={String::new()}

@@ -94,7 +94,6 @@ impl Cell {
         };
 
         let main_line = Self::render_range(min_dmg, max_dmg).unwrap_or_else(|| Html::from(min_dmg));
-
         let diff_line = diff.map(|(diff_min, diff_max)| {
             html! {
                 <span class={classes!("text-std-400", "text-xs")}>
@@ -139,7 +138,6 @@ impl<'a> DamageRenderer<'a> {
     ) -> Self {
         let merge_data = champion_id.merge_data();
         let abilities_meta = champion_id.abilities();
-
         let len = Self::BASE_CELLS + abilities_meta.len() - merge_data.len()
             + items_meta.len()
             + runes_meta.len();
@@ -162,12 +160,10 @@ impl<'a> DamageRenderer<'a> {
 
         let merge_data = champion_id.merge_data();
         let abilities_meta = champion_id.abilities();
-
         let len = abilities_meta.len();
 
         let mut indexes = vec![usize::MAX; len];
         let mut max_iterator = merge_data.iter().map(|m| m.max as usize).peekable();
-
         let mut pos = Self::BASE_CELLS;
 
         (0..len).for_each(|i| match max_iterator.peek() {
@@ -243,14 +239,11 @@ impl<'a> DamageRenderer<'a> {
         } = *self;
 
         let damages = &damages.abilities;
-
         let abilities_meta = champion_id.abilities();
         let merge_data = champion_id.merge_data();
         let ability_cell_index = self.ability_cell_index();
         let ability_idents = champion_id.identifiers();
-
         let meta_len = abilities_meta.len();
-
         let cells = &mut self.cells;
 
         debug_assert_eq!(damages.len(), meta_len);
@@ -262,7 +255,6 @@ impl<'a> DamageRenderer<'a> {
             if md_end < merge_data.len() && (merge_data[md_end].max as usize) == i {
                 let md = &merge_data[md_end];
                 let min_i = md.min as usize;
-
                 let target = ability_cell_index[min_i];
 
                 debug_assert!(target != usize::MAX);

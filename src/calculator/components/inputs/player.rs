@@ -1,5 +1,3 @@
-use std::num::NonZeroU8;
-
 use crate::{
     calculator::{
         components::inputs::{
@@ -18,6 +16,7 @@ use crate::{
         selector::SelectorButton,
     },
 };
+use std::num::NonZeroU8;
 use tutorlolv2::{
     ChampionId, ItemId, RuneId,
     model::{Dragons, PlayerStats},

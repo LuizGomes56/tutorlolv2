@@ -1,5 +1,8 @@
 //! Persistence and JavaScript callbacks for draggable overlay panels.
-use crate::utils::storage::{RecordStorage, encode_record, local_storage, read_record};
+use crate::{
+    overlay::model::Panel,
+    utils::storage::{RecordStorage, encode_record, local_storage, read_record},
+};
 use bincode::{Decode, Encode};
 use wasm_bindgen::{JsCast, JsValue, prelude::*};
 use web_sys::js_sys::{Array, Function};
@@ -56,13 +59,13 @@ pub(super) fn initialize_panel_events() {
 const WIDGET_KIND: u8 = 3;
 const WIDGET_KEY: &str = "overlay-widget-preferences:v1";
 
-pub(super) fn load_widgets() -> super::model::Panel {
+pub(super) fn load_widgets() -> Panel {
     local_storage()
         .and_then(|mut storage| read_record(&mut storage, WIDGET_KEY, WIDGET_KIND))
         .unwrap_or_default()
 }
 
-impl super::model::Panel {
+impl Panel {
     pub(super) fn save(&self) -> bool {
         if let Some(mut storage) = local_storage()
             && let Some(record) = encode_record(WIDGET_KIND, self)

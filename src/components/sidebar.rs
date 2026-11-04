@@ -30,10 +30,10 @@ pub fn Sidebar() -> Html {
     }
 
     #[cfg(feature = "tauri")]
-    let desktop_settings = buttons([("History", Route::History), ("Settings", Route::Settings)]);
+    let desktop_settings = buttons([("Settings", Route::Settings)]);
 
     #[cfg(not(feature = "tauri"))]
-    let desktop_settings = buttons([("History", Route::History)]);
+    let desktop_settings = Html::default();
 
     html! {
         <aside
@@ -60,6 +60,7 @@ pub fn Sidebar() -> Html {
                 <div class={classes!("flex", "flex-col", "gap-2")}>
                     { desktop_settings }
                     { buttons([
+                        ("History",     Route::History),
                         ("Formulas",    Route::Formulas),
                         ("Help & FAQ",  Route::Formulas),
                         ("About",       Route::About),

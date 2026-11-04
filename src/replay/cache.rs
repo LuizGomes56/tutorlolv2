@@ -1,5 +1,9 @@
 //! Shared replay buffer and source boundary. Native frames are already decompressed.
-use crate::utils::BINCODE_CONFIG;
+use crate::{
+    history::source::{HistorySource, OwnerHistory},
+    utils::BINCODE_CONFIG,
+    watch::api::WatchApi,
+};
 use std::{collections::BTreeMap, rc::Rc};
 use tutorlolv2::riot::FrameChunk;
 use tutorlolv2_protocol::{ChunkInfo, FRAMES_FORMAT};
@@ -97,20 +101,16 @@ impl ReplaySource {
     ) -> Result<Rc<CachedChunk>, String> {
         let chunk = match self {
             Self::Capability(code) => CachedChunk::decode(
-                crate::watch::api::WatchApi::frames(code, metadata.seq, abort).await?,
+                WatchApi::frames(code, metadata.seq, abort).await?,
                 metadata.frames_format,
             )?,
 
-            Self::Owner(id) => {
-                use crate::history::source::{HistorySource, OwnerHistory};
-
-                CachedChunk::decode(
-                    OwnerHistory::frames(id, metadata.seq)
-                        .await
-                        .map_err(|e| e.message)?,
-                    metadata.frames_format,
-                )?
-            }
+            Self::Owner(id) => CachedChunk::decode(
+                OwnerHistory::frames(id, metadata.seq)
+                    .await
+                    .map_err(|e| e.message)?,
+                metadata.frames_format,
+            )?,
         };
 
         chunk.validate(metadata)?;

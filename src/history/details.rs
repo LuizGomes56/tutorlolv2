@@ -97,7 +97,11 @@ pub fn HistoryDetailsView(props: &HistoryDetailsViewProps) -> Html {
             }
             if let Some(value)=details.as_ref() {
                 <h2>
-                    { format!("{} · {}",value.recording.summary.recording.champion,value.recording.summary.recording.active_riot_id) }
+                    {format!(
+                        "{} · {}",
+                        value.recording.summary.recording.champion,
+                        value.recording.summary.recording.active_riot_id
+                    )}
                 </h2>
                 <p>{ upload(&value.entry) }</p>
                 if let Some(e)=&value.entry.last_error {
@@ -120,6 +124,7 @@ pub fn HistoryDetailsView(props: &HistoryDetailsViewProps) -> Html {
 
                             Callback::from(move |share: ShareState| {
                                 *mutation_revision.borrow_mut() += 1;
+
                                 if let Some(mut value) = latest.borrow().clone() {
                                     value.recording.share = share.clone();
                                     value.entry.share = share;
@@ -297,13 +302,15 @@ fn ShareControls(props: &ShareControlsProps) -> Html {
         <>
             <div class={classes!("watch-actions")}>{ for modes }{ for copy_buttons }</div>
             <p role={"status"} aria-live={"polite"}>
-                { if *busy {
+                {
+                    if *busy {
                         "Updating sharing..."
                     } else if !notice.is_empty() {
                         &*notice
                     } else {
                         "Owner access remains available with Private sharing."
-                    } }
+                    }
+                }
             </p>
             if !error.is_empty() {
                 <p role={"alert"}>{ &*error }</p>

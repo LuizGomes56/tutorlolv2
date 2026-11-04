@@ -30,6 +30,7 @@ pub fn use_history_revision() -> UseStateHandle<u32> {
             let callback = Rc::new(Closure::<dyn FnMut(JsValue)>::new(move |_| {
                 changed.set(true)
             }));
+
             let callback_task = callback.clone();
             let listener_active = active.clone();
 
@@ -277,22 +278,27 @@ pub fn HistoryListView() -> Html {
                 }
             </div>
             <p role={"status"}>{ &*notice }</p>
+
             if !error.is_empty() {
                 <p role={"alert"}>
                     { &*error }
                     <button onclick={retry}>{ "Retry" }</button>
                 </p>
             }
+
             if let Some(page)=page.as_ref() {
                 if page.refreshing {
                     <p role={"status"}>{ "Refreshing cached history…" }</p>
                 }
+
                 if let Some(error)=&page.refresh_error {
                     <p role={"status"}>{ format!("Showing cached metadata. Refresh: {error}") }</p>
                 }
+
                 if page.entries.is_empty() {
                     <p>{ "No recorded matches on this page." }</p>
                 }
+
                 <div
                     class={classes!("history-rows", "grid", "gap-3", "my-4")}
                 >

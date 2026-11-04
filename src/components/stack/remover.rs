@@ -125,6 +125,7 @@ pub fn StackRemover(props: &StackRemoverProps) -> Html {
             }
         });
     }
+
     let len = safe_stack.len();
 
     let remover = safe_stack

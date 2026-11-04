@@ -1,6 +1,6 @@
-pub(crate) mod api;
+use crate::replay::cache::ReplaySource;
+use crate::replay::controller::ReplayRequest;
 use crate::replay::timeline;
-
 use crate::{
     Route,
     livegame::{Game, LivegameView},
@@ -20,6 +20,8 @@ use yew::{
 };
 use yew_router::prelude::*;
 
+pub(crate) mod api;
+
 #[derive(Properties, PartialEq)]
 pub struct WatchProps {
     #[prop_or_default]
@@ -34,6 +36,7 @@ pub fn Watch(props: &WatchProps) -> Html {
     {
         let input = input.clone();
         let invalid = invalid.clone();
+
         use_effect_with(props.code.clone(), move |code| {
             input.set(code.clone());
             invalid.set(false);
@@ -48,6 +51,7 @@ pub fn Watch(props: &WatchProps) -> Html {
 
         Callback::from(move |event: SubmitEvent| {
             event.prevent_default();
+
             if let Some(code) = normalize_code(&input) {
                 invalid.set(false);
                 navigator.push(&Route::WatchCode { code });
@@ -230,15 +234,18 @@ fn Viewer(props: &ViewerProps) -> Html {
                             else {
                                 return Ok(None);
                             };
+
                             if frame.seq <= seq {
                                 return Err(
                                     "The live stream returned an old frame. Retry to reconnect."
                                         .to_string(),
                                 );
                             }
+
                             let game = crate::utils::transport::realtime_from(&frame.frame)
                                 .await
                                 .map_err(|e| e.to_string())?;
+
                             seq = frame.seq;
                             Ok(Some(game))
                         }
@@ -298,13 +305,14 @@ fn Viewer(props: &ViewerProps) -> Html {
         .map_or(0., |m| m.summary.last_game_time)
         .max(live.as_ref().map_or(0., |g| g.game_time as f32));
 
-    let (extents, on_extent) = crate::replay::extent::use_extents(
-        crate::replay::cache::ReplaySource::Capability(props.code.clone()),
-    );
+    let (extents, on_extent) =
+        crate::replay::extent::use_extents(ReplaySource::Capability(props.code.clone()));
+
     let chunks = metadata
         .as_ref()
         .map(|m| m.chunks.as_slice())
         .unwrap_or_default();
+
     let (ranges, end) = extents.borrow().timeline(chunks, end);
     let viewing_live = *follow && !ended;
 
@@ -326,9 +334,10 @@ fn Viewer(props: &ViewerProps) -> Html {
             cache.borrow_mut().clear();
         })
     };
+
     crate::replay::controller::use_replay_controller(
-        crate::replay::controller::ReplayRequest {
-            source: crate::replay::cache::ReplaySource::Capability(props.code.clone()),
+        ReplayRequest {
+            source: ReplaySource::Capability(props.code.clone()),
             chunks: metadata
                 .as_ref()
                 .map(|value| value.chunks.clone())
@@ -488,7 +497,8 @@ fn Viewer(props: &ViewerProps) -> Html {
                 style={format!(
                     "left:{}%;width:{}%",
                     first / end.max(1.0) * 100.0,
-                    (last - first) / end.max(1.0) * 100.0)}
+                    (last - first) / end.max(1.0) * 100.0
+                )}
                 title={format!("Not recorded: {first:.0}–{last:.0} s")}
             />
         }
@@ -516,7 +526,8 @@ fn Viewer(props: &ViewerProps) -> Html {
                         { format!("{} · {}",info.summary.champion, info.summary.active_riot_id) }
                     </span>
                     <strong>
-                        { match &info.status {
+                        {
+                            match &info.status {
                                 ShareStatus::Live { .. } => {
                                     if viewing_live {
                                         "● LIVE"
@@ -526,30 +537,34 @@ fn Viewer(props: &ViewerProps) -> Html {
                                 }
                                 ShareStatus::HostDisconnected => "Waiting for host",
                                 ShareStatus::Ended { .. } => "Match ended · replay",
-                            } }
+                            }
+                        }
                     </strong>
                 }
             </div>
+
             if !message.is_empty() {
                 <div class={classes!("watch-status")} role={"status"}>
                     { &*message }
                     <button onclick={retry_click.clone()}>{ "Retry" }</button>
                 </div>
             }
+
             if !live_message.is_empty() {
                 <div class={classes!("watch-status")} role={"status"}>
                     { &*live_message }
                     <button onclick={retry_click.clone()}>{ "Retry" }</button>
                 </div>
             }
+
             if metadata.is_some() && !*fatal {
                 <div class={classes!("watch-timeline")} onkeydown={onkey}>
                     <label for={"replay-time"}>
-                        { format!(
-                                "Replay time: {:.0} / {:.0} s",
-                                if viewing_live { end } else { *time },
-                                end
-                            ) }
+                        {format!(
+                            "Replay time: {:.0} / {:.0} s",
+                            if viewing_live { end } else { *time },
+                            end
+                        )}
                     </label>
                     <div class={classes!("watch-coverage")} aria-label={"Recording coverage"}>
                         { for coverage_markers }
@@ -581,9 +596,11 @@ fn Viewer(props: &ViewerProps) -> Html {
                     <p id={"timeline-help"}>
                         { "← / → seek 10 seconds. Hatched areas were not recorded. Sealed replay may trail live by up to a minute." }
                     </p>
+
                     if !viewing_live && !replay_message.is_empty() {
                         <p role={"status"}>{ &*replay_message }</p>
                     }
+
                     if !coverage.is_empty() {
                         <p class={classes!("watch-gap-text")}>
                             { "Missing coverage: " }

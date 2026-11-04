@@ -40,12 +40,12 @@ pub fn TableHeader(props: &TableHeaderProps) -> Html {
     {
         let meta_len = abilities_meta.len();
         let merge_len = abilities_to_merge.len();
-
         let mut i = 0;
 
         'outer: while i < meta_len {
             let metadata = abilities_meta[i];
             let kind = metadata.kind;
+
             let mut ability_kind = AbilityKind::Normal(kind);
             let mut j = 0;
 
