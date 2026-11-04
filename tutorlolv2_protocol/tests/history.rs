@@ -133,15 +133,15 @@ fn owner_details_roundtrip_preserves_wide_scores_unknown_modes_and_coverage() {
 fn history_ipc_modes_and_errors_have_typed_external_names() {
     assert_eq!(
         serde_json::to_string(&HistoryShareMode::Public).unwrap(),
-        "\"public\""
+        "\"Public\""
     );
-    assert!(serde_json::from_str::<HistoryShareMode>("\"live\"").is_err());
+    assert!(serde_json::from_str::<HistoryShareMode>("\"Live\"").is_err());
     let error = HistoryError {
         kind: HistoryErrorKind::UnsupportedFormat,
         message: "Update to view this recording".into(),
         retryable: false,
     };
     let json = serde_json::to_value(&error).unwrap();
-    assert_eq!(json["kind"], "unsupported_format");
+    assert_eq!(json["kind"], "UnsupportedFormat");
     assert_eq!(serde_json::from_value::<HistoryError>(json).unwrap(), error);
 }

@@ -15,6 +15,3 @@ pub use generator::{
     GeneratorStats,
 };
 pub use render::{Bracket, Class, FormulaDb, Highlighter};
-
-#[cfg(test)]
-mod const_parsing_tests;

@@ -173,7 +173,8 @@ pub async fn start_session(
 
     started.share = state
         .share_state(Uuid::from_bytes(started.recording_id))
-        .await?;
+        .await
+        .trace()?;
 
     if !started.resumed
         && let Some(region) = &request.region

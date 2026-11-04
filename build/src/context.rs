@@ -78,7 +78,7 @@ impl BuildContext {
     }
 }
 
-pub(crate) fn run_formatter(command: &mut Command) -> MayFail {
+pub fn run_formatter(command: &mut Command) -> MayFail {
     // Windows has a small command-line budget; generated files have long UNC paths.
     // Keep options intact and format file batches without changing their order.
     let args = command

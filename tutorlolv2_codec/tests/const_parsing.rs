@@ -1,4 +1,4 @@
-use crate::{EntityKind, Error, FormulaDb, GeneratorDb, ParseError};
+use tutorlolv2_codec::{EntityKind, Error, FormulaDb, GeneratorDb, ParseError};
 
 // One champion with a formula encoding the constant 42.
 const FORMULA_BYTES: [u8; 40] = {

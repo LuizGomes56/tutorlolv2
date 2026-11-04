@@ -74,7 +74,8 @@ pub async fn list(
         .iter()
         .take(limit as usize)
         .map(|row| (HistoryService { state: &state }).item(row))
-        .collect::<AppResult<Vec<_>>>()?;
+        .collect::<AppResult<Vec<_>>>()
+        .trace()?;
 
     let next_before = if more {
         items.last().map(|v| v.summary.recording.id)

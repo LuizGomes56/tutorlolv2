@@ -1,8 +1,9 @@
-use crate::server::response::{AppError, AppResult, Trace};
-use actix_web::http::StatusCode;
-// Capability lifecycle, derived replay chunks and latest-only live delivery.
+//! Capability lifecycle, derived replay chunks and latest-only live delivery.
+
 use super::{db_enums::ShareDeleteReason, state::AppState};
+use crate::server::response::{AppError, AppResult, Trace};
 use actix_web::HttpRequest;
+use actix_web::http::StatusCode;
 use chrono::{DateTime, Utc};
 use sqlx::PgPool;
 use std::{
@@ -18,6 +19,12 @@ use tutorlolv2_protocol::{
 };
 use tutorlolv2_types::BINCODE_CONFIG;
 use uuid::Uuid;
+
+pub use super::routes::{
+    recordings::{live::push_live, share::owner_share, share::set_share},
+    share::{frames::frames, info::info, live::live},
+};
+pub use tutorlolv2_api::After;
 
 pub const MAX_LIVE_BYTES: usize = 64 << 10;
 pub(crate) const MAX_LIVE_DECOMPRESSED: usize = 512 << 10;
@@ -95,7 +102,7 @@ impl AppState {
         input: &str,
         req: &HttpRequest,
     ) -> AppResult<(String, Capability)> {
-        self.check_lookup_budget(req, false)?;
+        self.check_lookup_budget(req, false).trace()?;
         let code = normalize_code(input).ok_or_else(|| self.missing_code(req))?;
 
         match Capability::load(&self.db, &code).await {
@@ -110,8 +117,7 @@ impl AppState {
     pub async fn share_state(&self, id: Uuid) -> AppResult<ShareState> {
         let row = sqlx::query!(
             r#"
-            SELECT code,
-                   MODE
+            SELECT code, MODE
             FROM share_codes
             WHERE recording_id = $1
                 AND deleted_at IS NULL
@@ -144,7 +150,6 @@ impl AppState {
 }
 
 /// Both owner surfaces serialize lifecycle changes on the recording row.
-
 pub(crate) struct Capability {
     pub(crate) recording: Uuid,
     pub(crate) mode: CodeMode,
@@ -158,21 +163,21 @@ impl Capability {
         let row = sqlx::query!(
             r#"
             SELECT s.recording_id,
-                   s.mode,
-                   s.deleted_at AS code_deleted,
-                   r.deleted_at AS recording_deleted,
-                   r.ended_at,
-                   r.champion,
-                   r.game_mode,
-                   r.queue_id,
-                   r.active_riot_id,
-                   r.started_at_estimate,
-                   r.first_game_time,
-                   r.last_game_time,
-                   r.game_length_s,
-                   r.result,
-                   r.is_custom,
-                   r.is_practice
+                s.mode,
+                s.deleted_at AS code_deleted,
+                r.deleted_at AS recording_deleted,
+                r.ended_at,
+                r.champion,
+                r.game_mode,
+                r.queue_id,
+                r.active_riot_id,
+                r.started_at_estimate,
+                r.first_game_time,
+                r.last_game_time,
+                r.game_length_s,
+                r.result,
+                r.is_custom,
+                r.is_practice
             FROM share_codes s
             JOIN recordings r ON r.id = s.recording_id
             WHERE s.code = $1
@@ -205,7 +210,7 @@ impl Capability {
             },
         };
 
-        cap.active()?;
+        cap.active().trace()?;
 
         Ok(cap)
     }
@@ -306,23 +311,10 @@ impl SelfContainedFrame {
     }
 }
 
-pub use tutorlolv2_api::After as After;
-
-pub use super::routes::recordings::share::owner_share;
-
-pub use super::routes::recordings::share::set_share;
-
-pub use super::routes::recordings::live::push_live;
-
-pub use super::routes::share::info::info;
-
-pub use super::routes::share::live::live;
-
-pub use super::routes::share::frames::frames;
-
 pub(crate) struct SharingService<'a> {
     pub(crate) state: &'a AppState,
 }
+
 impl SharingService<'_> {
     pub(crate) async fn change_share(
         &self,
@@ -332,6 +324,7 @@ impl SharingService<'_> {
         finished_only: bool,
     ) -> AppResult<ShareState> {
         let state = self.state;
+
         if finished_only && request.mode == ShareMode::Live {
             return Err(AppError::bad_request("Live is unavailable in history"));
         }
@@ -339,24 +332,24 @@ impl SharingService<'_> {
         let mut tx = state.db.begin().await.trace()?;
         let recording = sqlx::query!(
             r#"
-        SELECT ended_at,
-               is_custom,
-               is_practice
-        FROM recordings
-        WHERE id = $1
-            AND ((device_id = $2
-                  AND $2 IS NOT NULL)
-                 OR (account_id = $3
-                     AND $3 IS NOT NULL))
-            AND deleted_at IS NULL
-            AND EXISTS
-                (SELECT 1
-                 FROM devices
-                 WHERE devices.id = recordings.device_id
-                     AND devices.deleted_at IS NULL)
-            FOR
-            UPDATE
-        "#,
+            SELECT ended_at,
+                is_custom,
+                is_practice
+            FROM recordings
+            WHERE id = $1
+                AND ((device_id = $2
+                        AND $2 IS NOT NULL)
+                        OR (account_id = $3
+                            AND $3 IS NOT NULL))
+                AND deleted_at IS NULL
+                AND EXISTS (
+                    SELECT 1
+                    FROM devices
+                    WHERE devices.id = recordings.device_id
+                        AND devices.deleted_at IS NULL
+                )
+            FOR UPDATE
+            "#,
             id,
             auth.device_id,
             auth.account_id,
@@ -383,12 +376,12 @@ impl SharingService<'_> {
         if request.mode == ShareMode::Private {
             sqlx::query!(
                 r#"
-            UPDATE share_codes
-            SET deleted_at = now(),
-                delete_reason = $2
-            WHERE recording_id = $1
-                AND deleted_at IS NULL
-            "#,
+                UPDATE share_codes
+                SET deleted_at = now(),
+                    delete_reason = $2
+                WHERE recording_id = $1
+                    AND deleted_at IS NULL
+                "#,
                 id,
                 ShareDeleteReason::Revoked,
             )
@@ -410,12 +403,11 @@ impl SharingService<'_> {
 
         let existing = sqlx::query!(
             r#"
-        SELECT id,
-               code
-        FROM share_codes
-        WHERE recording_id = $1
-            AND deleted_at IS NULL
-        "#,
+            SELECT id, code
+            FROM share_codes
+            WHERE recording_id = $1
+                AND deleted_at IS NULL
+            "#,
             id,
         )
         .fetch_optional(&mut *tx)
@@ -426,11 +418,10 @@ impl SharingService<'_> {
             Some(existing) => {
                 sqlx::query!(
                     r#"
-                UPDATE share_codes
-                SET MODE = $2,
-                           mode_changed_at = now()
-                WHERE id = $1
-                "#,
+                    UPDATE share_codes
+                    SET MODE = $2, mode_changed_at = now()
+                    WHERE id = $1
+                    "#,
                     existing.id,
                     mode,
                 )
@@ -451,17 +442,17 @@ impl SharingService<'_> {
                     let code = code_from_random(random);
                     let inserted = sqlx::query_scalar!(
                         r#"
-                    INSERT INTO share_codes (
-                        recording_id,
-                        code,
-                        MODE
-                    ) VALUES (
-                        $1,
-                        $2,
-                        $3
-                    )
-                    ON CONFLICT(code) DO NOTHING RETURNING code
-                    "#,
+                        INSERT INTO share_codes (
+                            recording_id,
+                            code,
+                            MODE
+                        ) VALUES (
+                            $1,
+                            $2,
+                            $3
+                        )
+                        ON CONFLICT(code) DO NOTHING RETURNING code
+                        "#,
                         id,
                         code,
                         mode,

@@ -15,31 +15,40 @@ pub trait EndpointExt: Endpoint {
             .strip_prefix(prefix)
             .filter(|suffix| suffix.is_empty() || suffix.starts_with('/'))
             .expect("endpoint must belong to its declared mounting scope");
+
         let mut methods = Vec::new();
+
         for (method, pattern) in tutorlolv2_api::ROUTES {
             if *pattern == Self::PATH {
                 methods.push(method.as_str());
+
                 if *method == tutorlolv2_api::Method::GET {
                     methods.push("HEAD");
                 }
             }
         }
+
         let allow = methods.join(", ");
+
         web::resource(path).default_service(web::route().to(move || {
             let allow = allow.clone();
+
             async move {
                 let mut response =
                     super::response::AppError::method_not_allowed("Method not allowed")
                         .error_response();
+
                 response.headers_mut().insert(
                     actix_web::http::header::ALLOW,
                     actix_web::http::header::HeaderValue::from_str(&allow)
                         .expect("declared methods"),
                 );
+
                 response
             }
         }))
     }
+
     fn route() -> Route {
         if Self::METHOD == tutorlolv2_api::Method::GET {
             web::route().guard(guard::Any(guard::Get()).or(guard::Head()))
@@ -51,4 +60,5 @@ pub trait EndpointExt: Endpoint {
         }
     }
 }
+
 impl<E: Endpoint> EndpointExt for E {}

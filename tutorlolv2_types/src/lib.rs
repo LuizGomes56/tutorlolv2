@@ -9,15 +9,6 @@ pub const BINCODE_CONFIG: bincode::config::Configuration = bincode::config::stan
 mod entity;
 pub use entity::{EntityKind, Tag};
 
-#[cfg(test)]
-extern crate std;
-
-#[cfg(all(test, feature = "bake"))]
-mod bake_tests;
-
-#[cfg(test)]
-mod strum_tests;
-
 use bincode::{Decode, Encode};
 use core::{convert::Infallible, fmt::Display, ops::Index, str::FromStr};
 use serde::{Deserialize, Serialize};

@@ -15,7 +15,7 @@ pub async fn live(
     query: Query<After>,
     req: HttpRequest,
 ) -> AppResult<HttpResponse> {
-    let (code, cap) = state.capability(&code, &req).await?;
+    let (code, cap) = state.capability(&code, &req).await.trace()?;
 
     if cap.ended.is_some() {
         return Err(AppError::gone("The match has ended"));
@@ -29,7 +29,7 @@ pub async fn live(
     let deadline = tokio::time::Instant::now() + Duration::from_secs(25);
 
     loop {
-        let cap = Capability::load(&state.db, &code).await?;
+        let cap = Capability::load(&state.db, &code).await.trace()?;
 
         if cap.ended.is_some() {
             return Err(AppError::gone("The match has ended"));
@@ -49,7 +49,7 @@ pub async fn live(
 
         tokio::select! {
             changed = receiver.changed() => if changed.is_err() {
-                let cap = Capability::load(&state.db, &code).await?;
+                let cap = Capability::load(&state.db, &code).await.trace()?;
 
                 if cap.ended.is_some() {
                     return Err(AppError::gone("The match has ended"));

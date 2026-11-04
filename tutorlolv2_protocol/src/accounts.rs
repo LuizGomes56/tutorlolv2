@@ -41,7 +41,6 @@ pub struct AccountState {
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[serde(rename_all = "snake_case")]
 pub enum AccountErrorKind {
     Unavailable,
     Cancelled,

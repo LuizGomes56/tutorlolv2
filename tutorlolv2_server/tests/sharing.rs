@@ -707,3 +707,26 @@ async fn unknown_code_lookups_have_separate_anti_enumeration_budget(pool: PgPool
         }
     }
 }
+
+#[sqlx::test(migrations = "./migrations")]
+async fn unknown_code_error_traces_service_then_handler(pool: PgPool) {
+    let app = app!(pool);
+    let response = request(&app, Method::GET, "/api/share/unknown", None, vec![]).await;
+    assert_eq!(response.status(), StatusCode::NOT_FOUND);
+    let error = ApiResponse::<()>::decode(&http::read_body(response).await, 404)
+        .unwrap()
+        .result
+        .unwrap_err();
+    let files = error
+        .traces
+        .iter()
+        .map(|frame| frame.file.as_str())
+        .collect::<Vec<_>>();
+    assert_eq!(
+        files,
+        [
+            "tutorlolv2_server/src/server/sharing.rs",
+            "tutorlolv2_server/src/server/routes/share/info.rs",
+        ],
+    );
+}

@@ -15,7 +15,7 @@ pub async fn frames(
     req: HttpRequest,
 ) -> AppResult<HttpResponse> {
     let (code, seq) = path.into_inner();
-    let (code, cap) = state.capability(&code, &req).await?;
+    let (code, cap) = state.capability(&code, &req).await.trace()?;
 
     let chunk = sqlx::query!(
         r#"
@@ -37,7 +37,7 @@ pub async fn frames(
         return Err(AppError::unprocessable("Frames unavailable for this chunk"));
     }
 
-    let latest = Capability::load(&state.db, &code).await?;
+    let latest = Capability::load(&state.db, &code).await.trace()?;
 
     Ok(HttpResponse::Ok()
         .content_type(OCTET_STREAM)

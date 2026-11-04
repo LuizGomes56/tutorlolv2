@@ -43,7 +43,7 @@ pub async fn logout(s: Data<AppState>, a: AccountAuth) -> AppResult<HttpResponse
     let mut r = HttpResponse::NoContent().finish();
 
     if a.cookie {
-        r.add_cookie(&cookie(&s, "tl_session", String::new(), 0))
+        r.add_cookie(&s.auth_cookie("tl_session", String::new(), 0))
             .trace()?;
     }
 

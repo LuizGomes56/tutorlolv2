@@ -14,7 +14,7 @@ pub async fn info(
     code: Path<String>,
     req: HttpRequest,
 ) -> crate::server::response::ApiResult<ShareInfo> {
-    let (code, cap) = state.capability(&code, &req).await?;
+    let (code, cap) = state.capability(&code, &req).await.trace()?;
 
     let chunks = sqlx::query!(
         r#"
@@ -43,7 +43,7 @@ pub async fn info(
     .collect();
 
     // Revalidate after the chunk query, which may have raced with revocation.
-    let cap = Capability::load(&state.db, &code).await?;
+    let cap = Capability::load(&state.db, &code).await.trace()?;
     let status = if cap.ended.is_some() {
         ShareStatus::Ended {
             result: cap.summary.result,

@@ -23,9 +23,6 @@ pub mod context;
 pub mod generators;
 pub mod scripts;
 
-#[cfg(test)]
-mod tests;
-
 pub const ENGINE_CFG: &str = r#"#[cfg(feature = "engine")]"#;
 pub const YEW_CFG: &str = r#"#[cfg(feature = "yew")]"#;
 pub const FORMULA_DOCS_ENV: &str = "CARGO_FEATURE_FORMULA_DOCS";
@@ -243,7 +240,7 @@ impl BuildContext {
         tutorlolv2_wiki::write(self.out.join("libgen.rs"), modules)
     }
 
-    fn build_docs(&self, docs: &mut [EntityDocs], counts: [u16; 3]) -> MayFail {
+    pub fn build_docs(&self, docs: &mut [EntityDocs], counts: [u16; 3]) -> MayFail {
         self.format_formulas(docs)?;
 
         let overrides = [AttackType::VARIANTS, AbilityName::VARIANTS]

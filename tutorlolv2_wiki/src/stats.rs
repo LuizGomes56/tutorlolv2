@@ -27,7 +27,7 @@ fn cache() -> PathBuf {
 
 /// Game patch of [`LOL_VERSION`], such as `16.21` for `16.21.1`, which is the
 /// prefix of the game version of the matches played on it
-fn patch() -> &'static str {
+pub fn patch() -> &'static str {
     LOL_VERSION
         .rsplit_once('.')
         .map_or(LOL_VERSION, |(patch, _)| patch)
@@ -36,7 +36,7 @@ fn patch() -> &'static str {
 /// Ladders and match lists only describe the patch they were sampled on, so
 /// they are cached per patch. Matches themselves are cached by id in a shared
 /// directory, so interrupted downloads resume without fetching them again
-fn patch_cache(platform: &str) -> PathBuf {
+pub fn patch_cache(platform: &str) -> PathBuf {
     cache().join(platform).join(patch())
 }
 
@@ -111,8 +111,8 @@ const MIN_GAME_DURATION: u32 = 600;
 
 /// The application rate limit is 500 requests every 10 seconds per host,
 /// so requests are spaced to stay slightly below it
-const REQUEST_INTERVAL: Duration = Duration::from_millis(22);
-const CONCURRENCY: usize = 32;
+pub const REQUEST_INTERVAL: Duration = Duration::from_millis(22);
+pub const CONCURRENCY: usize = 32;
 const MAX_RETRIES: u32 = 5;
 
 /// Champion positions with fewer games than this are not recommended
@@ -136,7 +136,7 @@ fn api_key() -> MayFail<String> {
 }
 
 /// Spaces out the requests made to a single host
-struct Limiter {
+pub struct Limiter {
     /// Time at which the next request may be sent
     next: Mutex<Instant>,
     /// Requests are held until this time after the host rate limits us
@@ -144,14 +144,14 @@ struct Limiter {
 }
 
 impl Limiter {
-    fn new() -> Self {
+    pub fn new() -> Self {
         Self {
             next: Mutex::new(Instant::now()),
             paused_until: Mutex::new(Instant::now()),
         }
     }
 
-    async fn wait(&self) {
+    pub async fn wait(&self) {
         loop {
             let at = {
                 let mut next = self.next.lock().await;
@@ -176,7 +176,7 @@ impl Limiter {
     }
 
     /// Holds every request to this host until `duration` has elapsed
-    async fn pause(&self, duration: Duration) {
+    pub async fn pause(&self, duration: Duration) {
         let until = Instant::now() + duration;
 
         let mut paused_until = self.paused_until.lock().await;
@@ -188,9 +188,15 @@ impl Limiter {
     }
 }
 
-struct RiotApi {
-    key: String,
-    limiters: HashMap<&'static str, Limiter>,
+impl Default for Limiter {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
+pub struct RiotApi {
+    pub key: String,
+    pub limiters: HashMap<&'static str, Limiter>,
 }
 
 impl RiotApi {
@@ -353,192 +359,202 @@ where
     }
 }
 
-/// Collects the players of every league in [`LEAGUES`] for a platform
-async fn players(api: &RiotApi, platform: &str) -> MayFail<Vec<String>> {
-    let path = patch_cache(platform).join("players").with_extension("json");
+impl RiotApi {
+    /// Collects the players of every league in [`LEAGUES`] for a platform
+    async fn players(&self, platform: &str) -> MayFail<Vec<String>> {
+        let path = patch_cache(platform).join("players").with_extension("json");
 
-    if let Ok(true) = std::fs::exists(&path) {
-        println!("[exists] {path:?}");
-        return Vec::from_file(path);
-    }
-
-    #[derive(Deserialize)]
-    struct League {
-        entries: Vec<LeagueEntry>,
-    }
-
-    #[derive(Deserialize)]
-    #[serde(rename_all = "camelCase")]
-    struct LeagueEntry {
-        puuid: String,
-        league_points: u32,
-    }
-
-    let mut players = Vec::new();
-
-    for league in LEAGUES {
-        let path = format!("/lol/league/v4/{league}/by-queue/RANKED_SOLO_5x5");
-        let mut data = api.get::<League>(platform, &path).await?;
-
-        println!(
-            "[stats] {platform} {league}: {} players",
-            data.entries.len()
-        );
-
-        data.entries
-            .sort_by_key(|e| std::cmp::Reverse(e.league_points));
-
-        players.extend(data.entries.into_iter().map(|e| e.puuid));
-    }
-
-    crate::write(path, serde_json::to_string(&players)?)?;
-    Ok(players)
-}
-
-/// Collects the ids of the recent ranked matches of the players, from the top
-/// of the ladder down, until at least `target` distinct ids are found
-async fn match_ids(
-    api: &Arc<RiotApi>,
-    platform: &'static str,
-    region: &'static str,
-    players: Vec<String>,
-    target: usize,
-) -> MayFail<BTreeSet<String>> {
-    let path = patch_cache(platform)
-        .join("match_ids")
-        .with_extension("json");
-
-    if let Ok(true) = std::fs::exists(&path) {
-        let ids = BTreeSet::from_file(&path)?;
-
-        if ids.len() >= target {
+        if let Ok(true) = std::fs::exists(&path) {
             println!("[exists] {path:?}");
-            return Ok(ids);
+            return Vec::from_file(path);
         }
-    }
 
-    let start_time = SystemTime::now()
-        .duration_since(UNIX_EPOCH)?
-        .saturating_sub(Duration::from_secs(SAMPLE_DAYS * 24 * 60 * 60))
-        .as_secs();
+        #[derive(Deserialize)]
+        struct League {
+            entries: Vec<LeagueEntry>,
+        }
 
-    let done = Arc::new(AtomicUsize::new(0));
-    let ids = Arc::new(std::sync::Mutex::new(BTreeSet::new()));
+        #[derive(Deserialize)]
+        #[serde(rename_all = "camelCase")]
+        struct LeagueEntry {
+            puuid: String,
+            league_points: u32,
+        }
 
-    let found = |ids: &std::sync::Mutex<BTreeSet<String>>| ids.lock().map_or(0, |ids| ids.len());
+        let mut players = Vec::new();
 
-    let players = players.into_iter().take_while(|_| found(&ids) < target);
+        for league in LEAGUES {
+            let path = format!("/lol/league/v4/{league}/by-queue/RANKED_SOLO_5x5");
+            let mut data = self.get::<League>(platform, &path).await?;
 
-    for_each_concurrent(players, |puuid| {
-        let (api, done, ids) = (api.clone(), done.clone(), ids.clone());
-
-        async move {
-            let path = format!(
-                "/lol/match/v5/matches/by-puuid/{puuid}/ids\
-                ?queue={QUEUE}&type=ranked&startTime={start_time}&count={MATCHES_PER_PLAYER}"
+            println!(
+                "[stats] {platform} {league}: {} players",
+                data.entries.len()
             );
 
-            let result = api.get::<Vec<String>>(region, &path).await;
-            let done = done.fetch_add(1, Ordering::Relaxed) + 1;
+            data.entries
+                .sort_by_key(|e| std::cmp::Reverse(e.league_points));
 
-            if done % 500 == 0 {
-                println!("[stats] {platform}: match lists {done}");
-            }
-
-            ids.lock().map_err(|e| format!("{e:?}"))?.extend(result?);
-
-            Ok(())
+            players.extend(data.entries.into_iter().map(|e| e.puuid));
         }
-    })
-    .await;
 
-    let ids = std::mem::take(&mut *ids.lock().map_err(|e| format!("{e:?}"))?);
-
-    crate::write(path, serde_json::to_string(&ids)?)?;
-
-    Ok(ids)
+        crate::write(path, serde_json::to_string(&players)?)?;
+        Ok(players)
+    }
 }
 
-fn match_path(match_id: &str) -> PathBuf {
+impl RiotApi {
+    /// Collects the ids of the recent ranked matches of the players, from the top
+    /// of the ladder down, until at least `target` distinct ids are found
+    async fn match_ids(
+        self: &Arc<Self>,
+        platform: &'static str,
+        region: &'static str,
+        players: Vec<String>,
+        target: usize,
+    ) -> MayFail<BTreeSet<String>> {
+        let path = patch_cache(platform)
+            .join("match_ids")
+            .with_extension("json");
+
+        if let Ok(true) = std::fs::exists(&path) {
+            let ids = BTreeSet::from_file(&path)?;
+
+            if ids.len() >= target {
+                println!("[exists] {path:?}");
+                return Ok(ids);
+            }
+        }
+
+        let start_time = SystemTime::now()
+            .duration_since(UNIX_EPOCH)?
+            .saturating_sub(Duration::from_secs(SAMPLE_DAYS * 24 * 60 * 60))
+            .as_secs();
+
+        let done = Arc::new(AtomicUsize::new(0));
+        let ids = Arc::new(std::sync::Mutex::new(BTreeSet::new()));
+
+        let found =
+            |ids: &std::sync::Mutex<BTreeSet<String>>| ids.lock().map_or(0, |ids| ids.len());
+
+        let players = players.into_iter().take_while(|_| found(&ids) < target);
+
+        for_each_concurrent(players, |puuid| {
+            let (api, done, ids) = (self.clone(), done.clone(), ids.clone());
+
+            async move {
+                let path = format!(
+                    "/lol/match/v5/matches/by-puuid/{puuid}/ids\
+                    ?queue={QUEUE}&type=ranked&startTime={start_time}&count={MATCHES_PER_PLAYER}"
+                );
+
+                let result = api.get::<Vec<String>>(region, &path).await;
+                let done = done.fetch_add(1, Ordering::Relaxed) + 1;
+
+                if done % 500 == 0 {
+                    println!("[stats] {platform}: match lists {done}");
+                }
+
+                ids.lock().map_err(|e| format!("{e:?}"))?.extend(result?);
+
+                Ok(())
+            }
+        })
+        .await;
+
+        let ids = std::mem::take(&mut *ids.lock().map_err(|e| format!("{e:?}"))?);
+
+        crate::write(path, serde_json::to_string(&ids)?)?;
+
+        Ok(ids)
+    }
+}
+
+pub fn match_path(match_id: &str) -> PathBuf {
     cache()
         .join("matches")
         .join(match_id)
         .with_extension("json")
 }
 
-async fn download_platform(
-    api: Arc<RiotApi>,
-    platform: &'static str,
-    region: &'static str,
-    target: usize,
-) -> MayFail {
-    let players = players(&api, platform).await?;
+impl RiotApi {
+    pub async fn download_platform(
+        self: Arc<Self>,
+        platform: &'static str,
+        region: &'static str,
+        target: usize,
+    ) -> MayFail {
+        let players = self.players(platform).await?;
 
-    // Match ids increase over time, so the greatest ones are the most recent
-    let match_ids = match_ids(&api, platform, region, players, target)
-        .await?
-        .into_iter()
-        .rev()
-        .take(target)
-        .filter(|id| !matches!(std::fs::exists(match_path(id)), Ok(true)))
-        .collect::<Vec<_>>();
+        // Match ids increase over time, so the greatest ones are the most recent
+        let match_ids = self
+            .match_ids(platform, region, players, target)
+            .await?
+            .into_iter()
+            .rev()
+            .take(target)
+            .filter(|id| !matches!(std::fs::exists(match_path(id)), Ok(true)))
+            .collect::<Vec<_>>();
 
-    let total = match_ids.len();
-    let done = Arc::new(AtomicUsize::new(0));
+        let total = match_ids.len();
+        let done = Arc::new(AtomicUsize::new(0));
 
-    println!("[stats] {platform}: {total} matches to download");
+        println!("[stats] {platform}: {total} matches to download");
 
-    for_each_concurrent(match_ids, |match_id| {
-        let (api, done) = (api.clone(), done.clone());
+        for_each_concurrent(match_ids, |match_id| {
+            let (api, done) = (self.clone(), done.clone());
 
-        async move {
-            let path = format!("/lol/match/v5/matches/{match_id}");
-            let result = api.get::<Match>(region, &path).await;
+            async move {
+                let path = format!("/lol/match/v5/matches/{match_id}");
+                let result = api.get::<Match>(region, &path).await;
 
-            let done = done.fetch_add(1, Ordering::Relaxed) + 1;
+                let done = done.fetch_add(1, Ordering::Relaxed) + 1;
 
-            if done % 500 == 0 || done == total {
-                println!("[stats] {platform}: matches {done}/{total}");
+                if done % 500 == 0 || done == total {
+                    println!("[stats] {platform}: matches {done}/{total}");
+                }
+
+                // Only the fields declared in `Match` are kept
+                crate::write(match_path(&match_id), serde_json::to_string(&result?)?)
             }
+        })
+        .await;
 
-            // Only the fields declared in `Match` are kept
-            crate::write(match_path(&match_id), serde_json::to_string(&result?)?)
-        }
-    })
-    .await;
-
-    Ok(())
+        Ok(())
+    }
 }
 
-/// Downloads the most recent ranked matches of the high elo players of every
-/// configured platform, concurrently between platforms
-pub async fn download(config: &StatsConfig) -> MayFail {
-    println!("[fn] stats::download");
+impl StatsConfig {
+    /// Downloads the most recent ranked matches of the high elo players of every
+    /// configured platform, concurrently between platforms
+    pub async fn download(&self) -> MayFail {
+        println!("[fn] stats::download");
 
-    let platforms = config.platforms()?;
-    let api = Arc::new(RiotApi::new(&platforms)?);
-    let mut tasks = JoinSet::new();
+        let platforms = self.platforms()?;
+        let api = Arc::new(RiotApi::new(&platforms)?);
+        let mut tasks = JoinSet::new();
 
-    for (platform, region) in platforms {
-        let api = api.clone();
-        let target = config.matches;
+        for (platform, region) in platforms {
+            let api = api.clone();
+            let target = self.matches;
 
-        tasks.spawn(async move {
-            download_platform(api, platform, region, target)
-                .await
-                .map_err(|e| format!("[stats] {platform}: {e:?}"))
-        });
-    }
-
-    while let Some(result) = tasks.join_next().await {
-        match result {
-            Ok(Ok(())) => {}
-            Ok(Err(e)) => println!("[error] {e}"),
-            Err(e) => println!("[error] Joining future: {e:?}"),
+            tasks.spawn(async move {
+                api.download_platform(platform, region, target)
+                    .await
+                    .map_err(|e| format!("[stats] {platform}: {e:?}"))
+            });
         }
-    }
 
-    Ok(())
+        while let Some(result) = tasks.join_next().await {
+            match result {
+                Ok(Ok(())) => {}
+                Ok(Err(e)) => println!("[error] {e}"),
+                Err(e) => println!("[error] Joining future: {e:?}"),
+            }
+        }
+
+        Ok(())
+    }
 }
 
 /// Most common value, with ties broken by the smallest value so that the
@@ -719,130 +735,10 @@ pub fn parse() -> MayFail {
     crate::write(output(), &json)
 }
 
-pub async fn run(config: &StatsConfig) -> MayFail {
-    download(config).await?;
-    parse()?;
-    scraper::concat()
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[tokio::test(start_paused = true)]
-    async fn queued_requests_wait_for_a_later_pause() {
-        let limiter = Arc::new(Limiter::new());
-        limiter.wait().await;
-
-        let mut queued = JoinSet::new();
-        for _ in 0..CONCURRENCY {
-            let limiter = limiter.clone();
-            queued.spawn(async move {
-                limiter.wait().await;
-                Instant::now()
-            });
-        }
-
-        // Let every task reserve a slot before the 429 arrives.
-        tokio::task::yield_now().await;
-        let resume_at = Instant::now() + Duration::from_secs(1);
-        limiter.pause(Duration::from_secs(1)).await;
-
-        let mut sent = Vec::new();
-        while let Some(result) = queued.join_next().await {
-            sent.push(result.unwrap());
-        }
-        sent.sort();
-        assert!(sent.iter().all(|at| *at >= resume_at));
-        assert!(
-            sent.windows(2)
-                .all(|pair| pair[1] - pair[0] >= REQUEST_INTERVAL)
-        );
-    }
-
-    #[tokio::test(start_paused = true)]
-    async fn queued_requests_observe_an_extended_pause() {
-        let limiter = Arc::new(Limiter::new());
-        limiter.wait().await;
-        let queued = {
-            let limiter = limiter.clone();
-            tokio::spawn(async move {
-                limiter.wait().await;
-                Instant::now()
-            })
-        };
-        tokio::task::yield_now().await;
-        limiter.pause(Duration::from_millis(200)).await;
-        tokio::time::advance(Duration::from_millis(100)).await;
-        let resume_at = Instant::now() + Duration::from_millis(300);
-        limiter.pause(Duration::from_millis(300)).await;
-
-        assert!(queued.await.unwrap() >= resume_at);
-    }
-
-    #[test]
-    fn match_lists_are_refreshed_for_a_new_patch() {
-        // Use a child test process so relative cache paths stay isolated without
-        // changing the working directory of concurrently running tests.
-        const CHILD: &str = "TUTORLOLV2_STATS_CACHE_TEST_CHILD";
-        if std::env::var_os(CHILD).is_some() {
-            let api = Arc::new(RiotApi {
-                key: String::new(),
-                limiters: HashMap::new(),
-            });
-            tokio::runtime::Runtime::new()
-                .unwrap()
-                .block_on(download_platform(api, "kr", "asia", 1))
-                .unwrap();
-            let ids =
-                BTreeSet::<String>::from_file(patch_cache("kr").join("match_ids.json")).unwrap();
-            assert!(
-                ids.is_empty(),
-                "reused matches from an older patch: {ids:?}"
-            );
-            assert_eq!(
-                crate::read_to_string(match_path("KR_1")).unwrap(),
-                "cached match"
-            );
-            return;
-        }
-
-        let unique = SystemTime::now()
-            .duration_since(UNIX_EPOCH)
-            .unwrap()
-            .as_nanos();
-        let root =
-            std::env::temp_dir().join(format!("tutorlolv2-stats-{}-{unique}", std::process::id()));
-        for dir in [
-            "cache/stats/kr".to_string(),
-            "cache/stats/kr/0.0".into(),
-            format!("cache/stats/kr/{}", patch()),
-        ] {
-            std::fs::create_dir_all(root.join(&dir)).unwrap();
-            std::fs::write(root.join(&dir).join("players.json"), "[]").unwrap();
-        }
-        for dir in ["cache/stats/kr", "cache/stats/kr/0.0"] {
-            std::fs::write(root.join(dir).join("match_ids.json"), r#"["KR_1"]"#).unwrap();
-        }
-        std::fs::create_dir_all(root.join("cache/stats/matches")).unwrap();
-        std::fs::write(root.join("cache/stats/matches/KR_1.json"), "cached match").unwrap();
-
-        let output = std::process::Command::new(std::env::current_exe().unwrap())
-            .args([
-                "--exact",
-                "stats::tests::match_lists_are_refreshed_for_a_new_patch",
-                "--nocapture",
-            ])
-            .env(CHILD, "1")
-            .current_dir(&root)
-            .output()
-            .unwrap();
-        std::fs::remove_dir_all(root).unwrap();
-        assert!(
-            output.status.success(),
-            "{}\n{}",
-            String::from_utf8_lossy(&output.stdout),
-            String::from_utf8_lossy(&output.stderr)
-        );
+impl StatsConfig {
+    pub async fn run(&self) -> MayFail {
+        self.download().await?;
+        parse()?;
+        scraper::concat()
     }
 }

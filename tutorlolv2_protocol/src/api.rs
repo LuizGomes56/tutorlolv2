@@ -116,7 +116,6 @@ pub struct ShareInfo {
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Encode, Decode, Serialize, Deserialize)]
-#[serde(rename_all = "snake_case")]
 pub enum RecordingStatus {
     Idle,
     Starting,

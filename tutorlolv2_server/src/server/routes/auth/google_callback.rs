@@ -17,7 +17,7 @@ pub async fn callback(
 ) -> Result<HttpResponse, crate::server::response::BrowserError> {
     use crate::server::response::BrowserContext;
     let outcome: AppResult<HttpResponse> = async move {
-        let (client, secret) = enabled(&s)?;
+        let (client, secret) = s.google_credentials().trace()?;
         let login = s
             .google
             .logins
@@ -179,21 +179,17 @@ pub async fn callback(
                         .trace_ctx("Account storage unavailable")?;
                 let (t, _) = (GoogleAuthService { state: &s })
                     .create_session(&mut tx, account, None)
-                    .await?;
+                    .await
+                    .trace()?;
 
                 tx.commit().await.trace_ctx("Account storage unavailable")?;
 
                 let mut r = redirect(format!("{}{}", s.config.public_base_url, path));
 
-                r.add_cookie(&cookie(
-                    &s,
-                    "tl_session",
-                    t,
-                    s.config.session_ttl_days * 86400,
-                ))
-                .trace()?;
+                r.add_cookie(&s.auth_cookie("tl_session", t, s.config.session_ttl_days * 86400))
+                    .trace()?;
 
-                r.add_cookie(&cookie(&s, "tl_login", String::new(), 0))
+                r.add_cookie(&s.auth_cookie("tl_login", String::new(), 0))
                     .trace()?;
 
                 Ok(r)
@@ -207,7 +203,7 @@ pub async fn callback(
                     return Err(AppError::rate_limited("Sign-in busy"));
                 }
 
-                let t = token()?;
+                let t = token().trace()?;
                 tickets.insert(t.clone(), (account, Instant::now()));
 
                 Ok(redirect(format!(

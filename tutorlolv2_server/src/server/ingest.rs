@@ -23,6 +23,13 @@ pub enum IngestError {
     Mismatch(String),
 }
 
+impl IngestError {
+    /// Classifies a malformed chunk (bad compression, hash, encoding or payload) as 422.
+    pub fn invalid(error: impl std::fmt::Display) -> Self {
+        Self::Invalid(error.to_string())
+    }
+}
+
 /// What a valid chunk contributes to its recording.
 #[derive(Debug)]
 pub struct Derived {
@@ -64,10 +71,6 @@ pub fn brotli_compress(data: &[u8]) -> Vec<u8> {
     out
 }
 
-fn invalid(e: impl std::fmt::Display) -> IngestError {
-    IngestError::Invalid(e.to_string())
-}
-
 pub fn derive_chunk(
     body: &[u8],
     expected_seq: u32,
@@ -78,7 +81,7 @@ pub fn derive_chunk(
     brotli::Decompressor::new(body, 4096)
         .take(MAX_CHUNK_DECOMPRESSED as u64 + 1)
         .read_to_end(&mut raw)
-        .map_err(invalid)?;
+        .map_err(IngestError::invalid)?;
 
     if raw.len() > MAX_CHUNK_DECOMPRESSED {
         return Err(IngestError::TooLarge);
@@ -87,24 +90,27 @@ pub fn derive_chunk(
     let raw_sha256: [u8; 32] = Sha256::digest(&raw).into();
 
     if !header_sha_hex.eq_ignore_ascii_case(&hex(&raw_sha256)) {
-        return Err(invalid("X-Content-Sha256 doesn't match the chunk"));
+        return Err(IngestError::invalid(
+            "X-Content-Sha256 doesn't match the chunk",
+        ));
     }
 
     let config = tutorlolv2_types::BINCODE_CONFIG.with_limit::<MAX_CHUNK_DECOMPRESSED>();
-    let (chunk, used): (RawChunk, _) = bincode::decode_from_slice(&raw, config).map_err(invalid)?;
+    let (chunk, used) =
+        bincode::decode_from_slice::<RawChunk, _>(&raw, config).map_err(IngestError::invalid)?;
 
     if used != raw.len() {
-        return Err(invalid("Unexpected trailing chunk bytes"));
+        return Err(IngestError::invalid("Unexpected trailing chunk bytes"));
     }
 
     chunk
         .validate(expected_seq)
-        .map_err(|e| invalid(format!("{e:?}")))?;
+        .map_err(|e| IngestError::invalid(format!("{e:?}")))?;
 
     let snapshots = chunk
         .snapshots
         .iter()
-        .map(|s| inspect(&s.json).map_err(|e| invalid(format!("{e:?}"))))
+        .map(|s| inspect(&s.json).map_err(|e| IngestError::invalid(format!("{e:?}"))))
         .collect::<Result<Vec<Snapshot>, _>>()?;
 
     let first = snapshots

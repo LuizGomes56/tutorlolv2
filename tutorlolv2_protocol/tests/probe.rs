@@ -312,9 +312,9 @@ fn fingerprint_ignores_time_and_events_and_order() {
     let a = probe(100.0, &[START]);
     let mut b = probe(900.0, &[START, MINIONS, KILL]);
     b.roster.reverse();
-    assert_eq!(fingerprint(&a), fingerprint(&b));
+    assert_eq!(a.fingerprint(), b.fingerprint());
 
     let mut c = probe(100.0, &[START]);
     c.roster[0].skin_id = 7;
-    assert_ne!(fingerprint(&a), fingerprint(&c));
+    assert_ne!(a.fingerprint(), c.fingerprint());
 }

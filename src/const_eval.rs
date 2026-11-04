@@ -3,7 +3,7 @@ use {
     crate::{
         ChampionId, ItemId, RuneId,
         calculator::InferStats,
-        helpers::{ability_id_mod, get_eval_ctx},
+        helpers::ability_id_mod,
         model::{
             AbilityLevels, Attacks, BasicStats, DamageModifiers, Dragons, EnemyState, EnemyStats,
             Modifiers, PlayerStats, RangeDamage, ResistShred, SelfState, SimpleStats,
@@ -301,13 +301,11 @@ impl<
 
             while i < ItemId::L_SIML {
                 let siml_stat = siml_stats[i];
-                let siml_ctx = get_eval_ctx(
-                    &SelfState {
-                        current_stats: siml_stat,
-                        ..self_state
-                    },
-                    &enemy,
-                );
+                let siml_ctx = SelfState {
+                    current_stats: siml_stat,
+                    ..self_state
+                }
+                .ctx(&enemy);
 
                 let mut onhit = RangeDamage::default();
 

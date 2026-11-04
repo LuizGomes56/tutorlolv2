@@ -238,9 +238,9 @@ async fn puuid(
             $2
         )
         ON CONFLICT(riot_id) DO
-                UPDATE
-                SET puuid = excluded.puuid,
-                    resolved_at = now()
+        UPDATE
+        SET puuid = excluded.puuid,
+            resolved_at = now()
         "#,
         riot_id,
         account.puuid,
@@ -321,9 +321,8 @@ async fn is_same_game(db: &PgPool, recording_id: Uuid, game: &ActiveGameDto) -> 
     let row = sqlx::query!(
         r#"
         SELECT riot_game_id,
-               riot_game_source,
-               (extract(epoch
-                        FROM started_at_estimate) * 1000)::bigint AS "started_ms!"
+            riot_game_source,
+            (extract(epoch FROM started_at_estimate) * 1000)::bigint AS "started_ms!"
         FROM recordings
         WHERE id = $1
         "#,

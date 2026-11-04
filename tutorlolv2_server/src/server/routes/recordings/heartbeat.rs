@@ -54,7 +54,8 @@ pub async fn heartbeat(
     // Explain why: unknown recording, a real end, or another open recording
     let recording = (RecordingService { db: &state.db })
         .owned(id, auth.device_id)
-        .await?;
+        .await
+        .trace()?;
 
     if recording.end_reason == Some(EndReason::Timeout) {
         Err(AppError::conflict(

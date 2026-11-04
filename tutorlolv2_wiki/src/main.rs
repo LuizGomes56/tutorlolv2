@@ -175,8 +175,8 @@ async fn main() -> MayFail {
             let config = stats::StatsConfig { platforms, matches };
 
             match function {
-                Stats::All => stats::run(&config).await,
-                Stats::Download => stats::download(&config).await,
+                Stats::All => config.run().await,
+                Stats::Download => config.download().await,
                 Stats::Parse => stats::parse(),
             }
             .map_err(|e| format!("[stats] Error: {e:?}"))?

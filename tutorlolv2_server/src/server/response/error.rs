@@ -14,21 +14,32 @@ pub struct AppError {
         actix_web::http::header::HeaderValue,
     )>,
 }
+
 macro_rules! status_methods {
-    ($($name:ident = $status:ident),* $(,)?) => {$(
-        #[track_caller]
-        pub fn $name(message: impl fmt::Display) -> Self {
-            Self::new(StatusCode::$status, message.to_string()).trace()
-        }
-    )*};
+    ($($name:ident = $status:ident),* $(,)?) => {
+        $(
+            #[track_caller]
+            pub fn $name(message: impl fmt::Display) -> Self {
+                Self::new(StatusCode::$status, message.to_string()).trace()
+            }
+        )*
+    };
 }
+
 impl AppError {
     status_methods! {
-        bad_request = BAD_REQUEST, unauthorized = UNAUTHORIZED, forbidden = FORBIDDEN,
-        not_found = NOT_FOUND, gone = GONE, conflict = CONFLICT,
-        payload_too_large = PAYLOAD_TOO_LARGE, rate_limited = TOO_MANY_REQUESTS,
-        unprocessable = UNPROCESSABLE_ENTITY, internal = INTERNAL_SERVER_ERROR,
-        bad_gateway = BAD_GATEWAY, unavailable = SERVICE_UNAVAILABLE,
+        bad_request = BAD_REQUEST,
+        unauthorized = UNAUTHORIZED,
+        forbidden = FORBIDDEN,
+        not_found = NOT_FOUND,
+        gone = GONE,
+        conflict = CONFLICT,
+        payload_too_large = PAYLOAD_TOO_LARGE,
+        rate_limited = TOO_MANY_REQUESTS,
+        unprocessable = UNPROCESSABLE_ENTITY,
+        internal = INTERNAL_SERVER_ERROR,
+        bad_gateway = BAD_GATEWAY,
+        unavailable = SERVICE_UNAVAILABLE,
         method_not_allowed = METHOD_NOT_ALLOWED,
     }
 
@@ -52,6 +63,7 @@ impl AppError {
             headers: Vec::new(),
         }
     }
+
     pub(crate) fn from_wire(status: StatusCode, api: ApiError) -> Self {
         Self {
             http_status: status,
@@ -62,6 +74,7 @@ impl AppError {
             headers: Vec::new(),
         }
     }
+
     #[track_caller]
     pub fn status(mut self, status: StatusCode) -> Self {
         self.http_status = if status.is_client_error() || status.is_server_error() {
@@ -69,17 +82,21 @@ impl AppError {
         } else {
             StatusCode::INTERNAL_SERVER_ERROR
         };
+
         self.api.code = code_for(self.http_status);
         self
     }
+
     pub fn message(mut self, message: impl Into<String>) -> Self {
         self.api.message = message.into();
         self
     }
+
     pub fn code(mut self, code: ErrorCode) -> Self {
         self.api.code = code;
         self
     }
+
     pub fn header(
         mut self,
         name: actix_web::http::header::HeaderName,
@@ -88,49 +105,61 @@ impl AppError {
         self.headers.push((name, value));
         self
     }
+
     pub fn no_store(mut self) -> Self {
         self.no_store = true;
         self
     }
+
     pub fn retry_after(mut self, seconds: u64) -> Self {
         self.retry_after_seconds = Some(seconds);
         self
     }
+
     pub fn status_code(&self) -> StatusCode {
         self.http_status
     }
+
     pub fn as_api_error(&self) -> &ApiError {
         &self.api
     }
+
     #[track_caller]
     pub fn trace(self) -> Self {
         self.push_trace(Location::caller(), None)
     }
+
     #[track_caller]
     pub fn trace_ctx(self, context: impl Into<ErrorContext>) -> Self {
         self.with_context(Location::caller(), context.into())
     }
+
     fn push_trace(mut self, location: &'static Location<'static>, message: Option<String>) -> Self {
         let file = location
             .file()
             .strip_prefix(concat!(env!("CARGO_MANIFEST_DIR"), "/../"))
             .unwrap_or(location.file());
+
         self.api.traces.push(ErrorTrace {
             file: file.into(),
             line: location.line(),
             column: location.column(),
             message,
         });
+
         self
     }
+
     fn with_context(self, location: &'static Location<'static>, context: ErrorContext) -> Self {
         let error = if let Some(status) = context.status {
             self.status(status).message(context.message.clone())
         } else {
             self
         };
+
         error.push_trace(location, Some(context.message))
     }
+
     /// Request boundaries deliberately classify malformed input as 400. Stored data uses From's 500.
     #[track_caller]
     pub fn request_decode(error: bincode::error::DecodeError) -> Self {
@@ -138,13 +167,16 @@ impl AppError {
             .status(StatusCode::BAD_REQUEST)
             .message("Invalid request body")
     }
+
     fn from_source(error: impl Error + Send + Sync + 'static) -> Self {
         let mut value = Self::new(StatusCode::INTERNAL_SERVER_ERROR, "Internal server error");
+
         value.api.details = Some(error.to_string());
         value.source = Some(Box::new(error));
         value
     }
 }
+
 fn code_for(status: StatusCode) -> ErrorCode {
     match status.as_u16() {
         400 | 422 => ErrorCode::InvalidRequest,
@@ -160,27 +192,42 @@ fn code_for(status: StatusCode) -> ErrorCode {
         _ => ErrorCode::Internal,
     }
 }
+
 impl fmt::Display for AppError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "{}: {}", self.http_status, self.api.message)
     }
 }
+
 impl Error for AppError {
     fn source(&self) -> Option<&(dyn Error + 'static)> {
         self.source.as_deref().map(|e| e as _)
     }
 }
+
 impl ResponseError for AppError {
     fn status_code(&self) -> StatusCode {
         self.http_status
     }
+
     fn error_response(&self) -> HttpResponse {
-        super::encode_error(self)
+        self.encode_response()
     }
 }
+
 macro_rules! source_from {
-    ($($ty:ty),* $(,)?) => {$ (impl From<$ty> for AppError {#[track_caller] fn from(error: $ty) -> Self {Self::from_source(error)}})*};
+    ($($ty:ty),* $(,)?) => {
+        $(
+            impl From<$ty> for AppError {
+                #[track_caller]
+                fn from(error: $ty) -> Self {
+                    Self::from_source(error)
+                }
+            }
+        )*
+    };
 }
+
 source_from!(
     sqlx::Error,
     bincode::error::EncodeError,
@@ -202,6 +249,7 @@ pub struct ErrorContext {
     message: String,
     status: Option<StatusCode>,
 }
+
 impl From<&str> for ErrorContext {
     fn from(message: &str) -> Self {
         Self {
@@ -210,6 +258,7 @@ impl From<&str> for ErrorContext {
         }
     }
 }
+
 impl From<String> for ErrorContext {
     fn from(message: String) -> Self {
         Self {
@@ -218,6 +267,7 @@ impl From<String> for ErrorContext {
         }
     }
 }
+
 impl<M: Into<String>> From<(M, StatusCode)> for ErrorContext {
     fn from((message, status): (M, StatusCode)) -> Self {
         Self {
@@ -230,21 +280,25 @@ impl<M: Into<String>> From<(M, StatusCode)> for ErrorContext {
 pub trait Trace<T>: Sized {
     #[track_caller]
     fn trace(self) -> Result<T, AppError>;
+
     #[track_caller]
     fn trace_ctx(self, context: impl Into<ErrorContext>) -> Result<T, AppError>;
 }
+
 impl<T, E: Into<AppError>> Trace<T> for Result<T, E> {
     #[track_caller]
     fn trace(self) -> Result<T, AppError> {
         let location = Location::caller();
         self.map_err(|error| error.into().push_trace(location, None))
     }
+
     #[track_caller]
     fn trace_ctx(self, context: impl Into<ErrorContext>) -> Result<T, AppError> {
         let location = Location::caller();
         self.map_err(|error| error.into().with_context(location, context.into()))
     }
 }
+
 impl<T> Trace<T> for Option<T> {
     #[track_caller]
     fn trace(self) -> Result<T, AppError> {
@@ -254,6 +308,7 @@ impl<T> Trace<T> for Option<T> {
                 .push_trace(location, None)
         })
     }
+
     #[track_caller]
     fn trace_ctx(self, context: impl Into<ErrorContext>) -> Result<T, AppError> {
         let location = Location::caller();
@@ -264,88 +319,32 @@ impl<T> Trace<T> for Option<T> {
     }
 }
 
-#[cfg(test)]
-mod tests {
-    use super::*;
-    #[test]
-    fn traces_preserve_caller_source_status_and_order() {
-        let expected = (line!() + 2, 14);
-        let error = Err::<(), _>(std::io::Error::other("db"))
-            .trace()
-            .unwrap_err();
-        assert_eq!(
-            (error.api.traces[0].line, error.api.traces[0].column),
-            expected
-        );
-        let error = error.status(StatusCode::CONFLICT);
-        let line = line!() + 1;
-        let error = Err::<(), _>(error).trace_ctx("outer").unwrap_err();
-        assert_eq!(error.http_status, StatusCode::CONFLICT);
-        assert_eq!(error.api.traces.len(), 2);
-        assert_eq!(error.api.traces[1].line, line);
-        assert_eq!(error.api.traces[1].message.as_deref(), Some("outer"));
-        assert_eq!(error.source().unwrap().to_string(), "db");
-    }
-    #[test]
-    fn deliberate_error_traces_once_at_each_explicit_call() {
-        let error = AppError::new(StatusCode::GONE, "ended");
-        assert!(error.api.traces.is_empty());
-        let line = line!() + 1;
-        let error = error.trace();
-        assert_eq!(error.api.traces.len(), 1);
-        assert_eq!(error.api.traces[0].line, line);
-        assert_eq!(error.api.traces[0].file, file!());
-        let line = line!() + 1;
-        let error = error.trace_ctx("read capability");
-        assert_eq!(error.api.traces.len(), 2);
-        assert_eq!(error.api.traces[1].line, line);
-        assert_eq!(error.http_status, StatusCode::GONE);
-    }
-    #[test]
-    fn option_absence_requires_explicit_domain_status() {
-        assert_eq!(
-            None::<()>.trace().unwrap_err().http_status,
-            StatusCode::INTERNAL_SERVER_ERROR
-        );
-        let line = line!() + 2;
-        let error = None::<()>
-            .trace_ctx(("missing", StatusCode::NOT_FOUND))
-            .unwrap_err();
-        assert_eq!(error.http_status, StatusCode::NOT_FOUND);
-        assert_eq!(error.api.traces.len(), 1);
-        assert_eq!(error.api.traces[0].line, line);
-    }
-    #[actix_web::test]
-    async fn completed_async_result_captures_await_site() {
-        let line = line!() + 3;
-        let error = async { Err::<(), _>(std::io::Error::other("async")) }
-            .await
-            .trace()
-            .unwrap_err();
-        assert_eq!(error.api.traces[0].line, line);
-    }
-}
-
 // Actix extractor errors are thread-local; preserve their status and diagnostics
 // at this boundary rather than retaining a non-Send runtime error in AppError.
 impl From<actix_web::Error> for AppError {
     fn from(error: actix_web::Error) -> Self {
         if let Some(original) = error.as_error::<AppError>() {
             let mut value = Self::from_wire(original.http_status, original.api.clone());
+
             value.retry_after_seconds = original.retry_after_seconds;
             value.no_store = original.no_store;
             value.headers = original.headers.clone();
+
             return value;
         }
+
         let status = error.as_response_error().status_code();
         let mut value = Self::new(status, error.to_string());
+
         value.api.details = Some(error.to_string());
         value
     }
 }
+
 impl From<crate::server::ingest::IngestError> for AppError {
     fn from(error: crate::server::ingest::IngestError) -> Self {
         use crate::server::ingest::IngestError::*;
+
         match error {
             TooLarge => Self::new(
                 StatusCode::PAYLOAD_TOO_LARGE,

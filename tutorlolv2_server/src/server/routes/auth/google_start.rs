@@ -17,7 +17,7 @@ pub async fn start(
 ) -> Result<HttpResponse, crate::server::response::BrowserError> {
     use crate::server::response::BrowserContext;
     let outcome: AppResult<HttpResponse> = async move {
-        let (client, _) = enabled(&s)?;
+        let (client, _) = s.google_credentials().trace()?;
         let target = match q.target.as_str() {
             "web" => Target::Web(return_path(q.return_to.clone())),
             "desktop" => {
@@ -37,9 +37,9 @@ pub async fn start(
             _ => return Err(AppError::bad_request("Invalid target")),
         };
 
-        let state = token()?;
-        let nonce = token()?;
-        let verifier = token()?;
+        let state = token().trace()?;
+        let nonce = token().trace()?;
+        let verifier = token().trace()?;
         let mut url = reqwest::Url::parse("https://accounts.google.com/o/oauth2/v2/auth").unwrap();
 
         url.query_pairs_mut().extend_pairs([
@@ -83,7 +83,8 @@ pub async fn start(
         let mut r = redirect(url.into());
 
         if web {
-            r.add_cookie(&cookie(&s, "tl_login", state, 600)).trace()?;
+            r.add_cookie(&s.auth_cookie("tl_login", state, 600))
+                .trace()?;
         }
 
         Ok(r)

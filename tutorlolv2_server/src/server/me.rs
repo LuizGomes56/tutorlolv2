@@ -1,11 +1,16 @@
-use crate::server::response::{AppError, AppResult, Trace};
-// Device-owned metadata and derived replay access. Never mints capabilities on reads.
+//! Device-owned metadata and derived replay access. Never mints capabilities on reads.
+
 use super::state::AppState;
+use crate::server::response::{AppError, AppResult, Trace};
 use chrono::{DateTime, Utc};
 use tutorlolv2_protocol::*;
 use uuid::Uuid;
 
-pub use tutorlolv2_api::Pagination as Pagination;
+pub use super::routes::{
+    me::{frames::frames, recording::details, recordings::list, share::set_share},
+    me_scope as scope,
+};
+pub use tutorlolv2_api::Pagination;
 
 // Deliberately excludes probe/raw/frame payloads and player identifiers beyond the host Riot ID.
 
@@ -34,17 +39,10 @@ pub(crate) struct HistoryRow {
     pub(crate) mode: Option<CodeMode>,
 }
 
-pub use super::routes::me::recordings::list;
-
-pub use super::routes::me::recording::details;
-
-pub use super::routes::me::frames::frames;
-
-pub use super::routes::me::share::set_share;
-
 pub(crate) struct HistoryService<'a> {
     pub(crate) state: &'a AppState,
 }
+
 impl HistoryService<'_> {
     fn checked<T, U: TryFrom<T>>(value: T) -> AppResult<U>
     where
@@ -94,5 +92,3 @@ impl HistoryService<'_> {
         })
     }
 }
-
-pub use super::routes::me_scope as scope;

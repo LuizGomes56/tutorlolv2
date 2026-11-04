@@ -212,12 +212,15 @@ fn build_override_map(values: &[ClassOverride]) -> OverrideMap {
     result
 }
 
-fn override_class(overrides: &OverrideMap, text: &str, original: Class) -> Class {
-    // Never let an identifier override recolor string/comment contents.
-    if matches!(original, Class::String | Class::Comment) {
-        original
-    } else {
-        overrides.get(text).copied().unwrap_or(original)
+impl Class {
+    /// The class configured for `text`, keeping string/comment classes untouched.
+    fn overridden(self, overrides: &OverrideMap, text: &str) -> Class {
+        // Never let an identifier override recolor string/comment contents.
+        if matches!(self, Class::String | Class::Comment) {
+            self
+        } else {
+            overrides.get(text).copied().unwrap_or(self)
+        }
     }
 }
 
@@ -284,11 +287,13 @@ fn scan_styled(
             let spacing = &before_paren[name.len()..];
 
             if !name.is_empty() {
-                sink.text(Some(override_class(overrides, name, Class::Function)), name)?;
+                sink.text(Some(Class::Function.overridden(overrides, name)), name)?;
             }
+
             if !spacing.is_empty() {
                 sink.text(None, spacing)?;
             }
+
             sink.bracket(b'(')?;
         }
 
@@ -297,10 +302,7 @@ fn scan_styled(
             sink.text(None, "::")?;
             let value = &text[2..];
             if !value.is_empty() {
-                sink.text(
-                    Some(override_class(overrides, value, Class::Constant)),
-                    value,
-                )?;
+                sink.text(Some(Class::Constant.overridden(overrides, value)), value)?;
             }
         }
 
@@ -329,7 +331,7 @@ fn scan_styled(
 
         Class::Comment => sink.text(Some(Class::Comment), text)?,
 
-        _ => sink.text(Some(override_class(overrides, text, class)), text)?,
+        _ => sink.text(Some(class.overridden(overrides, text)), text)?,
     }
 
     Ok(())
@@ -687,16 +689,14 @@ impl GeneratorDbBuilder {
         }
 
         writer.bytes(&dictionary_data);
-
         writer
             .bytes(&champion_index.presence)
             .bytes(&item_index.presence)
             .bytes(&rune_index.presence);
 
-        write_owner_offsets(&mut writer, &champion_index.offsets, wide_owner_offsets);
-        write_owner_offsets(&mut writer, &item_index.offsets, wide_owner_offsets);
-        write_owner_offsets(&mut writer, &rune_index.offsets, wide_owner_offsets);
-
+        writer.owner_offsets(&champion_index.offsets, wide_owner_offsets);
+        writer.owner_offsets(&item_index.offsets, wide_owner_offsets);
+        writer.owner_offsets(&rune_index.offsets, wide_owner_offsets);
         writer.bytes(&stream_data);
 
         let bytes = writer.finish();
@@ -776,6 +776,7 @@ impl AtomPool {
                 }
 
                 let candidate = AtomCandidate::new(Atom { style, text }, count)?;
+
                 if candidate.direct_saving > 0 || candidate.extended_saving > 0 {
                     candidates.push(candidate);
                 }
@@ -1009,6 +1010,7 @@ const fn bitmap_rank(bitmap: &[u8], index: usize) -> usize {
 
     let mut rank = 0;
     let mut i = 0;
+
     while i < full_bytes {
         rank += bitmap[i].count_ones() as usize;
         i += 1;
@@ -1020,19 +1022,6 @@ const fn bitmap_rank(bitmap: &[u8], index: usize) -> usize {
     }
 
     rank
-}
-
-fn write_owner_offsets(writer: &mut BinWriter, offsets: &[u32], wide: bool) {
-    if wide {
-        for &offset in offsets {
-            writer.u32(offset);
-        }
-    } else {
-        for &offset in offsets {
-            debug_assert!(offset <= u16::MAX as u32);
-            writer.u16(offset as u16);
-        }
-    }
 }
 
 // ============================================================================
@@ -1078,6 +1067,7 @@ impl<'a> GeneratorDb<'a> {
         if bytes.len() < HEADER_LEN {
             return Err(GeneratorError::Corrupt("buffer is shorter than header"));
         }
+
         if bytes[0] != GENERATOR_MAGIC[0]
             || bytes[1] != GENERATOR_MAGIC[1]
             || bytes[2] != GENERATOR_MAGIC[2]
@@ -1085,16 +1075,19 @@ impl<'a> GeneratorDb<'a> {
         {
             return Err(GeneratorError::Corrupt("bad generator magic"));
         }
+
         if bytes[4] != GENERATOR_VERSION {
             return Err(GeneratorError::Corrupt("unsupported generator version"));
         }
 
         let flags = bytes[5];
+
         if flags & !FLAG_WIDE_OWNER_OFFSETS != 0 {
             return Err(GeneratorError::Corrupt("unknown generator flags"));
         }
 
         let header_len = const_try!(read_u16_at(bytes, 6)) as usize;
+
         if header_len != HEADER_LEN {
             return Err(GeneratorError::Corrupt(
                 "unexpected generator header length",
@@ -1115,6 +1108,7 @@ impl<'a> GeneratorDb<'a> {
         if direct_atoms as usize > DIRECT_ATOM_LIMIT || direct_atoms as u16 > atoms {
             return Err(GeneratorError::Corrupt("invalid direct atom count"));
         }
+
         if champion_present > champion_count
             || item_present > item_count
             || rune_present > rune_count
@@ -1141,10 +1135,11 @@ impl<'a> GeneratorDb<'a> {
             champion_presence,
             bitmap_len(champion_count as usize)
         ));
-        let rune_presence = const_try!(checked_add(item_presence, bitmap_len(item_count as usize)));
 
+        let rune_presence = const_try!(checked_add(item_presence, bitmap_len(item_count as usize)));
         let champion_offsets =
             const_try!(checked_add(rune_presence, bitmap_len(rune_count as usize)));
+
         let item_offsets = const_try!(checked_add(
             champion_offsets,
             const_try!(checked_mul(
@@ -1152,14 +1147,17 @@ impl<'a> GeneratorDb<'a> {
                 owner_offset_width
             )),
         ));
+
         let rune_offsets = const_try!(checked_add(
             item_offsets,
             const_try!(checked_mul(item_present as usize + 1, owner_offset_width)),
         ));
+
         let stream_data = const_try!(checked_add(
             rune_offsets,
             const_try!(checked_mul(rune_present as usize + 1, owner_offset_width)),
         ));
+
         let end = const_try!(checked_add(stream_data, stream_data_len as usize));
 
         if end != bytes.len() {
@@ -1440,9 +1438,11 @@ impl<'a> GeneratorDb<'a> {
         let champion_last = const_try!(
             self.owner_offset(self.layout.champion, self.layout.champion.present as usize)
         );
+
         let item_first = const_try!(self.owner_offset(self.layout.item, 0));
         let item_last =
             const_try!(self.owner_offset(self.layout.item, self.layout.item.present as usize));
+
         let rune_first = const_try!(self.owner_offset(self.layout.rune, 0));
         let rune_last =
             const_try!(self.owner_offset(self.layout.rune, self.layout.rune.present as usize));
@@ -1463,8 +1463,10 @@ impl<'a> GeneratorDb<'a> {
     const fn validate_atom_offsets(&self) -> Result<(), GeneratorError> {
         let mut last = 0u16;
         let mut index = 0usize;
+
         while index <= self.atoms as usize {
             let offset = const_try!(self.atom_offset(index as u16));
+
             if offset < last || offset > self.dictionary_data_len {
                 return Err(GeneratorError::Corrupt("non-monotonic atom offsets"));
             }
@@ -1477,20 +1479,23 @@ impl<'a> GeneratorDb<'a> {
                 "atom offsets do not end at dictionary end",
             ));
         }
+
         Ok(())
     }
 
     const fn validate_owner_table(&self, table: OwnerTableLayout) -> Result<(), GeneratorError> {
         let bitmap = const_try!(self.owner_bitmap(table));
-
         let mut actual_present = 0;
         let mut index = 0;
+
         while index < table.count as usize {
             if bitmap_get(bitmap, index) {
                 actual_present += 1;
             }
+
             index += 1;
         }
+
         if actual_present != table.present as usize {
             return Err(GeneratorError::Corrupt(
                 "presence bitmap count does not match header",
@@ -1499,8 +1504,10 @@ impl<'a> GeneratorDb<'a> {
 
         // Unused high bits in the final byte must be zero.
         let remaining = table.count as usize & 7;
+
         if remaining != 0 && !bitmap.is_empty() {
             let valid_mask = ((1u16 << remaining) - 1) as u8;
+
             if bitmap[bitmap.len() - 1] & !valid_mask != 0 {
                 return Err(GeneratorError::Corrupt(
                     "presence bitmap contains bits outside owner range",
@@ -1509,10 +1516,11 @@ impl<'a> GeneratorDb<'a> {
         }
 
         let mut last = None;
-
         let mut ordinal = 0;
+
         while ordinal <= table.present as usize {
             let offset = const_try!(self.owner_offset(table, ordinal));
+
             if offset > self.stream_data_len {
                 return Err(GeneratorError::Corrupt(
                     "owner offset exceeds stream length",
@@ -1562,6 +1570,7 @@ impl GeneratorRenderer<'_, '_, '_> {
                 if opcode >= self.db.direct_atoms {
                     return Err(GeneratorError::Corrupt("direct atom id out of range"));
                 }
+
                 self.atom(opcode as u16, out)?;
                 continue;
             }
@@ -1649,6 +1658,7 @@ impl<'a> GeneratorCursor<'a> {
         let value = *self.bytes.get(self.pos).ok_or(GeneratorError::Corrupt(
             "unexpected end of generator stream",
         ))?;
+
         self.pos += 1;
         Ok(value)
     }
@@ -1663,12 +1673,14 @@ impl<'a> GeneratorCursor<'a> {
             .pos
             .checked_add(len)
             .ok_or(GeneratorError::Corrupt("generator cursor overflow"))?;
+
         let result = self
             .bytes
             .get(self.pos..end)
             .ok_or(GeneratorError::Corrupt(
                 "unexpected end of generator stream",
             ))?;
+
         self.pos = end;
         Ok(result)
     }
@@ -1683,6 +1695,19 @@ struct BinWriter {
 }
 
 impl BinWriter {
+    fn owner_offsets(&mut self, offsets: &[u32], wide: bool) {
+        if wide {
+            for &offset in offsets {
+                self.u32(offset);
+            }
+        } else {
+            for &offset in offsets {
+                debug_assert!(offset <= u16::MAX as u32);
+                self.u16(offset as u16);
+            }
+        }
+    }
+
     fn with_capacity(capacity: usize) -> Self {
         Self {
             bytes: Vec::with_capacity(capacity),
@@ -1723,9 +1748,11 @@ const fn read_u16_at(bytes: &[u8], pos: usize) -> Result<u16, GeneratorError> {
         Some(end) => end,
         None => return Err(GeneratorError::Corrupt("u16 offset overflow")),
     };
+
     if end > bytes.len() {
         return Err(GeneratorError::Corrupt("u16 out of bounds"));
     }
+
     Ok(u16::from_le_bytes([bytes[pos], bytes[pos + 1]]))
 }
 
@@ -1734,9 +1761,11 @@ const fn read_u32_at(bytes: &[u8], pos: usize) -> Result<u32, GeneratorError> {
         Some(end) => end,
         None => return Err(GeneratorError::Corrupt("u32 offset overflow")),
     };
+
     if end > bytes.len() {
         return Err(GeneratorError::Corrupt("u32 out of bounds"));
     }
+
     Ok(u32::from_le_bytes([
         bytes[pos],
         bytes[pos + 1],

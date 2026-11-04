@@ -10,31 +10,11 @@
 
 use crate::{Ctx, L_MSTR};
 use core::num::NonZeroU8;
-
 use {
     crate::{ChampionId, ItemId, RuneId, helpers::*, model::*},
     alloc::boxed::Box,
     tutorlolv2_types::{AdaptiveType, AttackType, StatName},
 };
-
-pub const fn get_item_bonus_stats(
-    stats: &mut PlayerStats,
-    items: &[ItemId],
-    modifiers: &mut Modifiers,
-    adaptive_force: &mut f32,
-) {
-    stats.get_item_bonus_stats(items, modifiers, adaptive_force);
-}
-
-pub const fn get_rune_bonus_stats(
-    stats: &mut PlayerStats,
-    runes: &[RuneId],
-    modifiers: &mut Modifiers,
-    level: NonZeroU8,
-    adaptive_force: &mut f32,
-) {
-    stats.get_rune_bonus_stats(runes, modifiers, adaptive_force, level);
-}
 
 #[derive(Debug)]
 pub struct InferStats<'a> {
@@ -51,142 +31,141 @@ pub struct InferStats<'a> {
     pub is_mega_gnar: bool,
 }
 
-pub const fn infer_champion_stats(data: InferStats<'_>) -> PlayerStats {
-    let InferStats {
-        item_exceptions,
-        rune_exceptions,
-        items,
-        runes,
-        modifiers,
-        dragons,
-        ability_levels,
-        stacks,
-        level,
-        champion_id,
-        is_mega_gnar,
-    } = data;
+impl InferStats<'_> {
+    pub const fn infer(self) -> PlayerStats {
+        let InferStats {
+            item_exceptions,
+            rune_exceptions,
+            items,
+            runes,
+            modifiers,
+            dragons,
+            ability_levels,
+            stacks,
+            level,
+            champion_id,
+            is_mega_gnar,
+        } = self;
 
-    let mut bonus_stats = PlayerStats::default();
+        let mut bonus_stats = const { PlayerStats::default() };
 
-    let data = champion_id.data();
+        let data = champion_id.data();
+        let mut adaptive_force = 0.0;
+        let mut stat_modifiers = const { Modifiers::default() };
 
-    let mut adaptive_force = 0.0;
-    let mut stat_modifiers = Modifiers::default();
+        bonus_stats.get_item_bonus_stats(items, &mut stat_modifiers, &mut adaptive_force);
+        bonus_stats.get_rune_bonus_stats(runes, &mut stat_modifiers, &mut adaptive_force, level);
 
-    bonus_stats.get_item_bonus_stats(items, &mut stat_modifiers, &mut adaptive_force);
-    bonus_stats.get_rune_bonus_stats(runes, &mut stat_modifiers, &mut adaptive_force, level);
+        let cached_stats = data.stats;
+        let base_stats = champion_id.base_stats(level, is_mega_gnar);
 
-    let cached_stats = data.stats;
-    let base_stats = champion_id.base_stats(level, is_mega_gnar);
-
-    let mut stats = PlayerStats {
-        armor: base_stats.armor,
-        attack_damage: base_stats.attack_damage,
-        crit_damage: cached_stats.crit_base * cached_stats.crit_modifier,
-        current_health: base_stats.max_health,
-        magic_resist: base_stats.magic_resist,
-        max_health: base_stats.max_health,
-        max_mana: base_stats.max_mana,
-        current_mana: base_stats.max_mana,
-        ability_power: 0.0,
-        attack_speed: 0.0,
-        armor_penetration_flat: 0.0,
-        armor_penetration_percent: 0.0,
-        magic_penetration_flat: 0.0,
-        magic_penetration_percent: 0.0,
-        crit_chance: 0.0,
-    };
-
-    stats.ability_power += bonus_stats.ability_power;
-    stats.armor += bonus_stats.armor;
-    stats.armor_penetration_flat += bonus_stats.armor_penetration_flat;
-    stats.armor_penetration_percent += bonus_stats.armor_penetration_percent;
-    stats.attack_damage += bonus_stats.attack_damage;
-    stats.attack_speed += bonus_stats.attack_speed;
-    stats.crit_chance += bonus_stats.crit_chance;
-    stats.crit_damage += bonus_stats.crit_damage;
-    stats.current_health += bonus_stats.current_health;
-    stats.magic_penetration_flat += bonus_stats.magic_penetration_flat;
-    stats.magic_penetration_percent += bonus_stats.magic_penetration_percent;
-    stats.magic_resist += bonus_stats.magic_resist;
-    stats.max_health += bonus_stats.max_health;
-    stats.max_mana += bonus_stats.max_mana;
-    stats.current_mana += bonus_stats.current_mana;
-
-    stats.assign_rune_exceptions(
-        rune_exceptions,
-        &mut adaptive_force,
-        champion_id.effective_attack_type(is_mega_gnar),
-        level,
-    );
-
-    let adaptive_type =
-        match AdaptiveType::try_infer(bonus_stats.attack_damage, bonus_stats.ability_power) {
-            Some(x) => x,
-            None => data.adaptive_type,
+        let mut stats = PlayerStats {
+            armor: base_stats.armor,
+            attack_damage: base_stats.attack_damage,
+            crit_damage: cached_stats.crit_base * cached_stats.crit_modifier,
+            current_health: base_stats.max_health,
+            magic_resist: base_stats.magic_resist,
+            max_health: base_stats.max_health,
+            max_mana: base_stats.max_mana,
+            current_mana: base_stats.max_mana,
+            ability_power: 0.0,
+            attack_speed: 0.0,
+            armor_penetration_flat: 0.0,
+            armor_penetration_percent: 0.0,
+            magic_penetration_flat: 0.0,
+            magic_penetration_percent: 0.0,
+            crit_chance: 0.0,
         };
 
-    match adaptive_type {
-        AdaptiveType::Magic => stats.ability_power += adaptive_force,
-        AdaptiveType::Physical => stats.attack_damage += 0.6 * adaptive_force,
-    }
+        stats.ability_power += bonus_stats.ability_power;
+        stats.armor += bonus_stats.armor;
+        stats.armor_penetration_flat += bonus_stats.armor_penetration_flat;
+        stats.armor_penetration_percent += bonus_stats.armor_penetration_percent;
+        stats.attack_damage += bonus_stats.attack_damage;
+        stats.attack_speed += bonus_stats.attack_speed;
+        stats.crit_chance += bonus_stats.crit_chance;
+        stats.crit_damage += bonus_stats.crit_damage;
+        stats.current_health += bonus_stats.current_health;
+        stats.magic_penetration_flat += bonus_stats.magic_penetration_flat;
+        stats.magic_penetration_percent += bonus_stats.magic_penetration_percent;
+        stats.magic_resist += bonus_stats.magic_resist;
+        stats.max_health += bonus_stats.max_health;
+        stats.max_mana += bonus_stats.max_mana;
+        stats.current_mana += bonus_stats.current_mana;
 
-    stats.assign_item_exceptions(item_exceptions);
-    stats.assign_champion_exceptions(champion_id, ability_levels, stacks);
+        stats.assign_rune_exceptions(
+            rune_exceptions,
+            &mut adaptive_force,
+            champion_id.effective_attack_type(is_mega_gnar),
+            level,
+        );
 
-    stats.attack_speed = cached_stats.attack_speed(stats.attack_speed, level);
+        let adaptive_type =
+            match AdaptiveType::try_infer(bonus_stats.attack_damage, bonus_stats.ability_power) {
+                Some(x) => x,
+                None => data.adaptive_type,
+            };
 
-    let mut i = 0;
-
-    while i < items.len() {
-        match items[i] {
-            ItemId::OverlordsBloodmail => {
-                stats.attack_damage += 0.025 * bonus_stats.max_health;
-            }
-            ItemId::Riftmaker => {
-                stats.ability_power += 0.02 * (bonus_stats.max_health + stats.max_health);
-            }
-            ItemId::ArchangelsStaff => stats.ability_power += 0.01 * bonus_stats.max_mana,
-            ItemId::SeraphsEmbrace => stats.ability_power += 0.02 * bonus_stats.max_mana,
-            ItemId::DemonicEmbrace => {
-                stats.ability_power += 0.02 * (bonus_stats.max_health + stats.max_health)
-            }
-            ItemId::Manamune | ItemId::Muramana => {
-                stats.attack_damage += 0.025 * bonus_stats.max_mana;
-            }
-            ItemId::WintersApproach | ItemId::Fimbulwinter => {
-                stats.max_health += 0.15 * bonus_stats.max_mana;
-            }
-            ItemId::JuiceOfVitality => stats.max_health += 300.0 + 0.1 * stats.max_health,
-            ItemId::RabadonsDeathcap => stats.ability_power *= 1.3,
-            ItemId::WoogletsWitchcap => stats.ability_power *= 1.5,
-            ItemId::WarmogsArmor => stats.max_health *= 1.12,
-            ItemId::JuiceOfPower => {
-                stats.attack_damage += 18.0 + 0.1 * stats.attack_damage;
-                stats.ability_power += 30.0 + 0.1 * stats.ability_power;
-            }
-            _ => {}
+        match adaptive_type {
+            AdaptiveType::Magic => stats.ability_power += adaptive_force,
+            AdaptiveType::Physical => stats.attack_damage += 0.6 * adaptive_force,
         }
-        i += 1;
+
+        stats.assign_item_exceptions(item_exceptions);
+        stats.assign_champion_exceptions(champion_id, ability_levels, stacks);
+
+        stats.attack_speed = cached_stats.attack_speed(stats.attack_speed, level);
+
+        let mut i = 0;
+
+        while i < items.len() {
+            match items[i] {
+                ItemId::OverlordsBloodmail => {
+                    stats.attack_damage += 0.025 * bonus_stats.max_health;
+                }
+                ItemId::Riftmaker => {
+                    stats.ability_power += 0.02 * (bonus_stats.max_health + stats.max_health);
+                }
+                ItemId::ArchangelsStaff => stats.ability_power += 0.01 * bonus_stats.max_mana,
+                ItemId::SeraphsEmbrace => stats.ability_power += 0.02 * bonus_stats.max_mana,
+                ItemId::DemonicEmbrace => {
+                    stats.ability_power += 0.02 * (bonus_stats.max_health + stats.max_health)
+                }
+                ItemId::Manamune | ItemId::Muramana => {
+                    stats.attack_damage += 0.025 * bonus_stats.max_mana;
+                }
+                ItemId::WintersApproach | ItemId::Fimbulwinter => {
+                    stats.max_health += 0.15 * bonus_stats.max_mana;
+                }
+                ItemId::JuiceOfVitality => stats.max_health += 300.0 + 0.1 * stats.max_health,
+                ItemId::RabadonsDeathcap => stats.ability_power *= 1.3,
+                ItemId::WoogletsWitchcap => stats.ability_power *= 1.5,
+                ItemId::WarmogsArmor => stats.max_health *= 1.12,
+                ItemId::JuiceOfPower => {
+                    stats.attack_damage += 18.0 + 0.1 * stats.attack_damage;
+                    stats.ability_power += 30.0 + 0.1 * stats.ability_power;
+                }
+                _ => {}
+            }
+            i += 1;
+        }
+
+        let fire = RiotFormulas::get_fire_multiplier(dragons.ally_fire_dragons);
+        let earth = RiotFormulas::get_earth_multiplier(dragons.ally_earth_dragons);
+
+        stats.ability_power *= fire;
+        stats.attack_damage *= fire;
+        stats.magic_resist *= earth;
+        stats.armor *= earth;
+        stats.crit_chance = stats.crit_chance.clamp(0.0, 100.0);
+        modifiers.apply_loadout(items, runes, &stats);
+        stats
     }
-
-    let fire = RiotFormulas::get_fire_multiplier(dragons.ally_fire_dragons);
-    let earth = RiotFormulas::get_earth_multiplier(dragons.ally_earth_dragons);
-
-    stats.ability_power *= fire;
-    stats.attack_damage *= fire;
-    stats.magic_resist *= earth;
-    stats.armor *= earth;
-
-    stats.crit_chance = stats.crit_chance.clamp(0.0, 100.0);
-    modifiers.apply_loadout(items, runes, &stats);
-
-    stats
 }
 
 impl PlayerStats {
     pub const fn infer(data: InferStats<'_>) -> Self {
-        infer_champion_stats(data)
+        data.infer()
     }
 
     pub const fn get_item_bonus_stats(
@@ -197,7 +176,6 @@ impl PlayerStats {
     ) {
         let mut armor_pen_mult = 1.0;
         let mut magic_pen_mult = 1.0;
-
         let mut i = 0;
 
         while i < items.len() {
@@ -207,7 +185,6 @@ impl PlayerStats {
 
             let mut armor_pen = 0.0;
             let mut magic_pen = 0.0;
-
             let mut j = 0;
 
             while j < item_stats.len() {
@@ -447,17 +424,19 @@ pub struct ChampionExceptionData<'a> {
     pub stacks: u32,
 }
 
-/// Receives basic information about the current player ability levels and its identifier,
-/// and modifies the current stats based on the number of stacks. Note that depending on the
-/// value of the enum [`ChampionId`], this function might do nothing
-pub const fn assign_champion_exceptions(data: ChampionExceptionData, champion_id: ChampionId) {
-    let ChampionExceptionData {
-        stats,
-        ability_levels,
-        stacks,
-    } = data;
+impl ChampionExceptionData<'_> {
+    /// Receives basic information about the current player ability levels and its identifier,
+    /// and modifies the current stats based on the number of stacks. Note that depending on the
+    /// value of the enum [`ChampionId`], this function might do nothing
+    pub const fn assign(self, champion_id: ChampionId) {
+        let ChampionExceptionData {
+            stats,
+            ability_levels,
+            stacks,
+        } = self;
 
-    stats.assign_champion_exceptions(champion_id, ability_levels, stacks);
+        stats.assign_champion_exceptions(champion_id, ability_levels, stacks);
+    }
 }
 
 pub struct RuneExceptionData<'a> {
@@ -506,8 +485,7 @@ pub fn calculator(game: InputGame<'_>) -> OutputGame {
         enemy_players,
     } = game;
 
-    let mut modifiers = Modifiers::default();
-
+    let mut modifiers = const { Modifiers::default() };
     let current_player_cache = current_player_champion_id.data();
     let current_player_base_stats = current_player_champion_id.base_stats(level, is_mega_gnar);
 
@@ -516,7 +494,7 @@ pub fn calculator(game: InputGame<'_>) -> OutputGame {
             modifiers.apply_loadout(current_player_raw_items, current_player_raw_runes, &stats);
             stats
         }
-        None => infer_champion_stats(InferStats {
+        None => InferStats {
             item_exceptions,
             rune_exceptions,
             items: current_player_raw_items,
@@ -528,7 +506,8 @@ pub fn calculator(game: InputGame<'_>) -> OutputGame {
             level,
             champion_id: current_player_champion_id,
             is_mega_gnar,
-        }),
+        }
+        .infer(),
     };
 
     let current_player_bonus_stats = champion_stats.bonus_stats(current_player_base_stats);
@@ -583,8 +562,7 @@ pub fn calculator(game: InputGame<'_>) -> OutputGame {
 
     damages.fill_monster_damages(&self_state, &eval_data, shred, modifiers, ability_batch);
 
-    let enemies = get_calculator_enemies_with(
-        &mut damages,
+    let enemies = damages.calculator_enemies_with(
         enemy_players,
         &self_state,
         &eval_data,
@@ -613,214 +591,99 @@ pub fn calculator(game: InputGame<'_>) -> OutputGame {
     }
 }
 
-pub fn get_calculator_enemies(
-    damages: &mut DamageTable,
-    enemy_players: &[InputMinData<'_, EnemyStats>],
-    self_state: &SelfState,
-    eval_data: &DamageEvalData,
-    modifiers: Modifiers,
-    shred: ResistShred,
-    enemy_earth_dragons: u16,
-) -> Box<[OutputEnemy]> {
-    get_calculator_enemies_with(
-        damages,
-        enemy_players,
-        self_state,
-        eval_data,
-        modifiers,
-        shred,
-        enemy_earth_dragons,
-        |damages, r, ctx, eval_data, modifiers| {
-            damages.fill(r, ctx, eval_data, modifiers);
-        },
-    )
+impl DamageTable {
+    pub fn calculator_enemies(
+        &mut self,
+        enemy_players: &[InputMinData<'_, EnemyStats>],
+        self_state: &SelfState,
+        eval_data: &DamageEvalData,
+        modifiers: Modifiers,
+        shred: ResistShred,
+        enemy_earth_dragons: u16,
+    ) -> Box<[OutputEnemy]> {
+        self.calculator_enemies_with(
+            enemy_players,
+            self_state,
+            eval_data,
+            modifiers,
+            shred,
+            enemy_earth_dragons,
+            |damages, r, ctx, eval_data, modifiers| {
+                damages.fill(r, ctx, eval_data, modifiers);
+            },
+        )
+    }
 }
 
-/// Specialize row dispatch once at the call site; the public wrapper retains legacy evaluation.
-#[allow(clippy::too_many_arguments)]
-fn get_calculator_enemies_with(
-    damages: &mut DamageTable,
-    enemy_players: &[InputMinData<'_, EnemyStats>],
-    self_state: &SelfState,
-    eval_data: &DamageEvalData,
-    modifiers: Modifiers,
-    shred: ResistShred,
-    enemy_earth_dragons: u16,
-    mut fill_row: impl FnMut(&mut DamageTable, usize, Ctx, &DamageEvalData, Modifiers),
-) -> Box<[OutputEnemy]> {
-    enemy_players
-        .iter()
-        .enumerate()
-        .map(|(e, player)| {
-            let InputMinData {
-                items: e_items,
-                stacks: e_stacks,
-                stats: e_stats,
-                level: e_level,
-                champion_id: e_champion_id,
-                is_mega_gnar: e_is_mega_gnar,
-                item_exceptions: e_item_exceptions,
-            } = *player;
+impl DamageTable {
+    /// Specialize row dispatch once at the call site; the public wrapper retains legacy evaluation.
+    #[allow(clippy::too_many_arguments)]
+    pub fn calculator_enemies_with(
+        &mut self,
+        enemy_players: &[InputMinData<'_, EnemyStats>],
+        self_state: &SelfState,
+        eval_data: &DamageEvalData,
+        modifiers: Modifiers,
+        shred: ResistShred,
+        enemy_earth_dragons: u16,
+        mut fill_row: impl FnMut(&mut DamageTable, usize, Ctx, &DamageEvalData, Modifiers),
+    ) -> Box<[OutputEnemy]> {
+        enemy_players
+            .iter()
+            .enumerate()
+            .map(|(e, player)| {
+                let InputMinData {
+                    items: e_items,
+                    stacks: e_stacks,
+                    stats: e_stats,
+                    level: e_level,
+                    champion_id: e_champion_id,
+                    is_mega_gnar: e_is_mega_gnar,
+                    item_exceptions: e_item_exceptions,
+                } = *player;
 
-            let e_base_stats = e_champion_id.base_stats(e_level, e_is_mega_gnar).simple();
-            let full_state = EnemyState {
-                current_stats: e_stats,
-                base_stats: e_base_stats,
-                items: e_items,
-                stacks: e_stacks,
-                champion_id: e_champion_id,
-                level: e_level,
-                item_exceptions: e_item_exceptions,
-                earth_dragons: enemy_earth_dragons,
-            }
-            .full_state(shred, false);
-
-            let ctx = full_state.ctx(self_state);
-
-            let modifiers = Modifiers {
-                damages: DamageModifiers {
-                    adaptive_type: self_state.adaptive_type,
-                    physical_mod: modifiers.damages.physical_mod
-                        * full_state.armor_values.modifier
-                        * full_state.modifiers.physical_mod,
-                    magic_mod: modifiers.damages.magic_mod
-                        * full_state.magic_values.modifier
-                        * full_state.modifiers.magic_mod,
-                    true_mod: modifiers.damages.true_mod * full_state.modifiers.true_mod,
-                    global_mod: modifiers.damages.global_mod * full_state.modifiers.global_mod,
-                },
-                ..modifiers
-            };
-
-            fill_row(damages, L_MSTR + e, ctx, eval_data, modifiers);
-
-            OutputEnemy {
-                current_stats: full_state.current_stats,
-                bonus_stats: full_state.bonus_stats,
-                base_stats: e_base_stats,
-                real_magic_resist: full_state.magic_values.real as _,
-                real_armor: full_state.armor_values.real as _,
-                champion_id: e_champion_id,
-                level: e_level,
-            }
-        })
-        .collect()
-}
-
-#[cfg(test)]
-mod batch_routing_tests {
-    use super::*;
-    use strum::EnumCount;
-
-    #[test]
-    fn calculator_batch_matches_legacy_enemy_and_monster_rows() {
-        let level = NonZeroU8::new(18).unwrap();
-        let enemy_players = [InputMinData {
-            stats: Some(EnemyStats {
-                armor: 125.0,
-                magic_resist: 85.0,
-                max_health: 2500.0,
-                current_health: 1200.0,
-                missing_health: 0.0,
-            }),
-            items: &[],
-            item_exceptions: &[],
-            stacks: 0,
-            level,
-            champion_id: ChampionId::Ornn,
-            is_mega_gnar: false,
-        }];
-
-        for index in 0..ChampionId::COUNT {
-            let champion_id = ChampionId::from_repr(index as _).unwrap();
-            let champion = champion_id.data();
-            let base_stats = champion_id.base_stats(level, false);
-            let self_state = SelfState {
-                level,
-                stacks: 150.0,
-                ability_levels: AbilityLevels {
-                    q: 5,
-                    w: 5,
-                    e: 5,
-                    r: 3,
-                },
-                current_stats: PlayerStats {
-                    max_health: 3000.0,
-                    current_health: 1700.0,
-                    max_mana: 1500.0,
-                    attack_damage: 200.0,
-                    ability_power: 180.0,
-                    ..PlayerStats::default()
-                },
-                base_stats,
-                bonus_stats: BasicStats::default(),
-                adaptive_type: champion.adaptive_type,
-            };
-            let eval_data = DamageEvalData {
-                abilities: StaticDamageKind {
-                    metadata: champion.metadata,
-                    closures: champion.closures,
-                },
-                items: DamageKind::items(&crate::bitset::BitSet::EMPTY, AttackType::Melee),
-                runes: DamageKind::runes(&crate::bitset::BitSet::EMPTY, AttackType::Melee),
-            };
-            let modifiers = Modifiers::default();
-            // Flat penetration exercises the monsters' negative-resistance path.
-            let shred = ResistShred {
-                armor_penetration_flat: 100.0,
-                magic_penetration_flat: 100.0,
-                ..ResistShred::default()
-            };
-            let layout = DamageLayout::new(&eval_data, false);
-            let mut legacy = DamageTable::zeroed(layout, L_MSTR + enemy_players.len());
-            let mut batched = legacy.clone();
-            for (i, &(armor, magic_resist)) in RiotFormulas::MONSTER_RESISTS.iter().enumerate() {
+                let e_base_stats = e_champion_id.base_stats(e_level, e_is_mega_gnar).simple();
                 let full_state = EnemyState {
-                    base_stats: SimpleStats {
-                        armor,
-                        magic_resist,
-                        max_health: 1000.0,
-                    },
-                    ..Default::default()
+                    current_stats: e_stats,
+                    base_stats: e_base_stats,
+                    items: e_items,
+                    stacks: e_stacks,
+                    champion_id: e_champion_id,
+                    level: e_level,
+                    item_exceptions: e_item_exceptions,
+                    earth_dragons: enemy_earth_dragons,
                 }
-                .full_state(shred, true);
-                legacy.fill(
-                    i,
-                    self_state.ctx(&full_state),
-                    &eval_data,
-                    modifiers.against(&full_state, self_state.adaptive_type),
-                );
-            }
-            batched.fill_monster_damages(
-                &self_state,
-                &eval_data,
-                shred,
-                modifiers,
-                champion.ability_batch,
-            );
-            let legacy_enemies = get_calculator_enemies(
-                &mut legacy,
-                &enemy_players,
-                &self_state,
-                &eval_data,
-                modifiers,
-                shred,
-                2,
-            );
-            let batch_enemies = get_calculator_enemies_with(
-                &mut batched,
-                &enemy_players,
-                &self_state,
-                &eval_data,
-                modifiers,
-                shred,
-                2,
-                |damages, r, ctx, data, modifiers| {
-                    damages.fill_batch(r, ctx, data, modifiers, champion.ability_batch);
-                },
-            );
-            assert_eq!(legacy_enemies, batch_enemies, "{champion_id:?}");
-            assert_eq!(legacy, batched, "{champion_id:?}");
-        }
+                .full_state(shred, false);
+
+                let ctx = full_state.ctx(self_state);
+
+                let modifiers = Modifiers {
+                    damages: DamageModifiers {
+                        adaptive_type: self_state.adaptive_type,
+                        physical_mod: modifiers.damages.physical_mod
+                            * full_state.armor_values.modifier
+                            * full_state.modifiers.physical_mod,
+                        magic_mod: modifiers.damages.magic_mod
+                            * full_state.magic_values.modifier
+                            * full_state.modifiers.magic_mod,
+                        true_mod: modifiers.damages.true_mod * full_state.modifiers.true_mod,
+                        global_mod: modifiers.damages.global_mod * full_state.modifiers.global_mod,
+                    },
+                    ..modifiers
+                };
+
+                fill_row(self, L_MSTR + e, ctx, eval_data, modifiers);
+
+                OutputEnemy {
+                    current_stats: full_state.current_stats,
+                    bonus_stats: full_state.bonus_stats,
+                    base_stats: e_base_stats,
+                    real_magic_resist: full_state.magic_values.real as _,
+                    real_armor: full_state.armor_values.real as _,
+                    champion_id: e_champion_id,
+                    level: e_level,
+                }
+            })
+            .collect()
     }
 }

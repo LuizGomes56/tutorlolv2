@@ -106,7 +106,7 @@ pub async fn details(
     })
     .collect();
 
-    let item = (HistoryService { state: &state }).item(&row)?;
+    let item = (HistoryService { state: &state }).item(&row).trace()?;
 
     Ok(tutorlolv2_api::GetRecording::reply(RecordingDetails {
         summary: item.summary,

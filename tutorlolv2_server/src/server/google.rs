@@ -20,22 +20,34 @@ use std::{
 };
 use uuid::Uuid;
 
-pub(crate) const MAX_PENDING: usize = 4096;
-pub(crate) struct Login {
-    pub(crate) target: Target,
-    pub(crate) verifier: String,
-    pub(crate) nonce: String,
-    pub(crate) at: Instant,
+pub use super::routes::{
+    account::account,
+    auth::{
+        desktop_confirm::confirm_desktop, desktop_redeem::redeem, google_callback::callback,
+        google_start::start, logout::logout,
+    },
+};
+pub use tutorlolv2_api::GoogleCallbackQuery as Callback;
+pub use tutorlolv2_api::GoogleStartQuery as Start;
+
+pub const MAX_PENDING: usize = 4096;
+
+pub struct Login {
+    pub target: Target,
+    pub verifier: String,
+    pub nonce: String,
+    pub at: Instant,
 }
-pub(crate) enum Target {
+
+pub enum Target {
     Web(String),
     Desktop(u16, String),
 }
 
 #[derive(Default)]
 pub struct PendingStore {
-    pub(crate) logins: Mutex<HashMap<String, Login>>,
-    pub(crate) tickets: Mutex<HashMap<String, (Uuid, Instant)>>,
+    pub logins: Mutex<HashMap<String, Login>>,
+    pub tickets: Mutex<HashMap<String, (Uuid, Instant)>>,
 }
 
 impl PendingStore {
@@ -52,7 +64,7 @@ impl PendingStore {
     }
 }
 
-pub(crate) fn token() -> AppResult<String> {
+pub fn token() -> AppResult<String> {
     let mut b = [0u8; 32];
 
     getrandom::fill(&mut b).trace_ctx((
@@ -63,7 +75,7 @@ pub(crate) fn token() -> AppResult<String> {
     Ok(B64.encode(b))
 }
 
-pub(crate) fn hash(s: &str) -> Option<Vec<u8>> {
+pub fn hash(s: &str) -> Option<Vec<u8>> {
     let b = B64.decode(s).ok()?;
 
     if b.len() != 32 {
@@ -73,21 +85,28 @@ pub(crate) fn hash(s: &str) -> Option<Vec<u8>> {
     Some(Sha256::digest(b).to_vec())
 }
 
-pub(crate) fn enabled(s: &AppState) -> AppResult<(&str, &str)> {
-    match (&s.config.google_client_id, &s.config.google_client_secret) {
-        (Some(a), Some(b)) => Ok((a, b)),
-        _ => Err(AppError::unavailable("Google sign-in unavailable")),
+impl AppState {
+    /// The configured Google OAuth client id and secret, or 503 when sign-in is disabled.
+    pub(crate) fn google_credentials(&self) -> AppResult<(&str, &str)> {
+        match (
+            &self.config.google_client_id,
+            &self.config.google_client_secret,
+        ) {
+            (Some(a), Some(b)) => Ok((a, b)),
+            _ => Err(AppError::unavailable("Google sign-in unavailable")),
+        }
     }
-}
 
-pub(crate) fn cookie(s: &AppState, name: &str, value: String, seconds: i64) -> Cookie<'static> {
-    Cookie::build(name.to_owned(), value)
-        .path("/api")
-        .http_only(true)
-        .secure(s.config.cookie_secure)
-        .same_site(SameSite::Lax)
-        .max_age(CookieDuration::seconds(seconds))
-        .finish()
+    /// An HTTP-only `/api` cookie honouring the configured `Secure` policy.
+    pub(crate) fn auth_cookie(&self, name: &str, value: String, seconds: i64) -> Cookie<'static> {
+        Cookie::build(name.to_owned(), value)
+            .path("/api")
+            .http_only(true)
+            .secure(self.config.cookie_secure)
+            .same_site(SameSite::Lax)
+            .max_age(CookieDuration::seconds(seconds))
+            .finish()
+    }
 }
 
 pub(crate) fn redirect(url: String) -> HttpResponse {
@@ -97,7 +116,7 @@ pub(crate) fn redirect(url: String) -> HttpResponse {
         .finish()
 }
 
-pub(crate) fn return_path(p: Option<String>) -> String {
+pub fn return_path(p: Option<String>) -> String {
     p.filter(|p| {
         p.starts_with('/')
             && !p.starts_with("//")
@@ -106,10 +125,6 @@ pub(crate) fn return_path(p: Option<String>) -> String {
     })
     .unwrap_or_else(|| "/history".into())
 }
-
-pub use tutorlolv2_api::GoogleStartQuery as Start;
-
-pub use tutorlolv2_api::GoogleCallbackQuery as Callback;
 
 #[derive(Deserialize)]
 pub(crate) struct TokenResponse {
@@ -179,8 +194,8 @@ impl FromRequest for AccountAuth {
             let row = sqlx::query!(
                 r#"
                 SELECT s.id,
-                       s.account_id,
-                       s.device_id
+                    s.account_id,
+                    s.device_id
                 FROM account_sessions s
                 JOIN accounts a ON a.id = s.account_id
                 LEFT JOIN devices d ON d.id = s.device_id
@@ -300,8 +315,7 @@ pub(crate) async fn renew_web_cookie<B>(response: &mut ServiceResponse<B>) -> Ap
     if updated.rows_affected() == 1 {
         response
             .response_mut()
-            .add_cookie(&cookie(
-                &state,
+            .add_cookie(&state.auth_cookie(
                 "tl_session",
                 renewal.token,
                 state.config.session_ttl_days * 86400,
@@ -342,7 +356,7 @@ impl FromRequest for Owner {
         } else {
             let f = AccountAuth::from_request(r, p);
             Box::pin(async move {
-                let a = f.await?;
+                let a = f.await.trace()?;
                 Ok(Self {
                     device_id: None,
                     account_id: Some(a.account_id),
@@ -352,182 +366,10 @@ impl FromRequest for Owner {
     }
 }
 
-#[cfg(test)]
-mod tests {
-    use super::*;
-    use actix_web::ResponseError;
-    use crate::server::codec::Bincode;
-    use actix_web::web::Query;
-    use tutorlolv2_protocol::RedeemTicket;
-    #[test]
-    fn pending_states_and_tickets_expire_independently() {
-        let store = PendingStore::default();
-        let now = Instant::now();
-        let login = |at| Login {
-            target: Target::Web("/history".into()),
-            verifier: "test".into(),
-            nonce: "test".into(),
-            at,
-        };
-        store
-            .logins
-            .lock()
-            .unwrap()
-            .insert("expired".into(), login(now - Duration::from_secs(601)));
-        store
-            .logins
-            .lock()
-            .unwrap()
-            .insert("current".into(), login(now));
-        store.tickets.lock().unwrap().insert(
-            "expired".into(),
-            (Uuid::nil(), now - Duration::from_secs(121)),
-        );
-        store
-            .tickets
-            .lock()
-            .unwrap()
-            .insert("current".into(), (Uuid::nil(), now));
-        store.sweep();
-        assert_eq!(
-            store
-                .logins
-                .lock()
-                .unwrap()
-                .keys()
-                .cloned()
-                .collect::<Vec<_>>(),
-            vec!["current"]
-        );
-        assert_eq!(
-            store
-                .tickets
-                .lock()
-                .unwrap()
-                .keys()
-                .cloned()
-                .collect::<Vec<_>>(),
-            vec!["current"]
-        );
-    }
-    #[test]
-    fn session_hashes_decode_exactly_thirty_two_random_bytes() {
-        let a = token().unwrap();
-        let b = token().unwrap();
-        assert_ne!(a, b);
-        assert_eq!(
-            hash(&a),
-            Some(Sha256::digest(B64.decode(&a).unwrap()).to_vec())
-        );
-        for invalid in ["", "malformed!", &B64.encode([1; 31]), &B64.encode([1; 33])] {
-            assert!(hash(invalid).is_none());
-        }
-    }
-    #[test]
-    fn return_destinations_stay_on_the_website() {
-        for invalid in [
-            "https://evil.test",
-            "//evil.test",
-            "/\\evil.test",
-            "/%2f%2fevil.test",
-            "/\nLocation:evil",
-            "/\0",
-            "/\u{7f}",
-        ] {
-            assert_eq!(return_path(Some(invalid.into())), "/history");
-        }
-        assert_eq!(
-            return_path(Some("/history?before=123".into())),
-            "/history?before=123"
-        );
-    }
-    #[actix_web::test]
-    async fn expired_or_over_capacity_logins_do_not_reach_google_or_storage() {
-        let pool = sqlx::postgres::PgPoolOptions::new()
-            .connect_lazy("postgres://unused:unused@127.0.0.1/unused")
-            .unwrap();
-        let mut config = super::super::config::Config::from_lookup(|key| {
-            (key == "DATABASE_URL").then(|| "unused".into())
-        })
-        .unwrap();
-        config.google_client_id = Some("test".into());
-        config.google_client_secret = Some("test".into());
-        let s = Data::new(AppState::new(pool, config));
-        s.google.logins.lock().unwrap().insert(
-            "expired".into(),
-            Login {
-                target: Target::Web("/history".into()),
-                verifier: "test".into(),
-                nonce: "test".into(),
-                at: Instant::now() - Duration::from_secs(601),
-            },
-        );
-        let result = callback(
-            s.clone(),
-            actix_web::test::TestRequest::get().to_http_request(),
-            Query(Callback {
-                state: "expired".into(),
-                code: Some("code".into()),
-                error: None,
-            }),
-        )
-        .await;
-        assert_eq!(result.unwrap().status(), 400);
-        s.google.tickets.lock().unwrap().insert(
-            "expired".into(),
-            (Uuid::nil(), Instant::now() - Duration::from_secs(121)),
-        );
-        let result = redeem(
-            s.clone(),
-            DeviceAuth {
-                device_id: Uuid::nil(),
-            },
-            Bincode(RedeemTicket {
-                ticket: "expired".into(),
-            }),
-        )
-        .await;
-        assert_eq!(result.err().unwrap().status_code(), 410);
-        for i in 0..MAX_PENDING {
-            s.google.logins.lock().unwrap().insert(
-                format!("{i}"),
-                Login {
-                    target: Target::Web("/history".into()),
-                    verifier: "test".into(),
-                    nonce: "test".into(),
-                    at: Instant::now(),
-                },
-            );
-        }
-        let result = start(
-            s,
-            Query(Start {
-                target: "web".into(),
-                return_to: None,
-                port: None,
-                app_state: None,
-            }),
-        )
-        .await;
-        assert_eq!(result.err().unwrap().status_code(), 429);
-    }
-}
-
-pub use super::routes::auth::google_start::start;
-
-pub use super::routes::auth::google_callback::callback;
-
-pub use super::routes::auth::desktop_redeem::redeem;
-
-pub use super::routes::auth::desktop_confirm::confirm_desktop;
-
-pub use super::routes::account::account;
-
-pub use super::routes::auth::logout::logout;
-
 pub(crate) struct GoogleAuthService<'a> {
     pub(crate) state: &'a AppState,
 }
+
 impl GoogleAuthService<'_> {
     pub(crate) async fn create_session(
         &self,
@@ -536,25 +378,25 @@ impl GoogleAuthService<'_> {
         device: Option<Uuid>,
     ) -> AppResult<(String, Uuid)> {
         let s = self.state;
-        let t = token()?;
+        let t = token().trace()?;
 
         let id = sqlx::query_scalar!(
             r#"
-        INSERT INTO account_sessions (
-            account_id,
-            token_hash,
-            kind,
-            device_id,
-            expires_at
-        ) VALUES (
-            $1,
-            $2,
-            $3,
-            $4,
-            now() + $5 * interval '1 day'
-        )
-        RETURNING id
-        "#,
+            INSERT INTO account_sessions (
+                account_id,
+                token_hash,
+                kind,
+                device_id,
+                expires_at
+            ) VALUES (
+                $1,
+                $2,
+                $3,
+                $4,
+                now() + $5 * interval '1 day'
+            )
+            RETURNING id
+            "#,
             account,
             hash(&t).unwrap(),
             if device.is_some() {

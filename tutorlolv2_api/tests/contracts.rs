@@ -118,3 +118,17 @@ fn calculator_borrowed_view_matches_the_owned_server_request() {
     assert_eq!(used, bytes.len());
     assert_eq!(owned.prepare().as_input(), input);
 }
+
+#[test]
+fn generated_contract_dtos_support_bincode() {
+    let query = Pagination {
+        before: Some(uuid::Uuid::from_u128(42)),
+        limit: Some(25),
+    };
+    let bytes = bincode::encode_to_vec(&query, tutorlolv2_types::BINCODE_CONFIG).unwrap();
+    let (decoded, used): (Pagination, _) =
+        bincode::decode_from_slice(&bytes, tutorlolv2_types::BINCODE_CONFIG).unwrap();
+    assert_eq!(used, bytes.len());
+    assert_eq!(decoded.before, query.before);
+    assert_eq!(decoded.limit, query.limit);
+}

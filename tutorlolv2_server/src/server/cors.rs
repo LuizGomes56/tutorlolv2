@@ -1,4 +1,4 @@
-use tutorlolv2_api::Endpoint;
+use tutorlolv2_api::{Endpoint, GoogleCallback, GoogleStart};
 // Route-specific browser policy. Native clients do not send Origin.
 use super::{
     response::{AppError, BrowserError},
@@ -21,8 +21,7 @@ pub async fn policy(
     next: Next<impl MessageBody>,
 ) -> Result<ServiceResponse<EitherBody<impl MessageBody>>, Error> {
     let path = req.path();
-    let browser =
-        path == tutorlolv2_api::GoogleStart::PATH || path == tutorlolv2_api::GoogleCallback::PATH;
+    let browser = path == GoogleStart::PATH || path == GoogleCallback::PATH;
     let head = req.method() == Method::HEAD;
     let private = path == "/api/account"
         || path == "/api/auth/logout"
@@ -79,9 +78,11 @@ pub async fn policy(
             let mut error = AppError::from(error)
                 .trace()
                 .header(header::VARY, HeaderValue::from_static("Origin"));
+
             if sensitive {
                 error = error.no_store();
             }
+
             if allowed && let Some(origin) = origin.clone() {
                 error = error.header(
                     header::ACCESS_CONTROL_ALLOW_ORIGIN,
@@ -91,6 +92,7 @@ pub async fn policy(
                         HeaderValue::from_static("*")
                     },
                 );
+
                 if private {
                     error = error.header(
                         header::ACCESS_CONTROL_ALLOW_CREDENTIALS,
@@ -98,6 +100,7 @@ pub async fn policy(
                     );
                 }
             }
+
             Error::from(error)
         })?;
         {
@@ -106,13 +109,16 @@ pub async fn policy(
                 .get(header::CONTENT_TYPE)
                 .and_then(|v| v.to_str().ok())
                 .unwrap_or("");
+
             let failure =
                 response.status().is_client_error() || response.status().is_server_error();
+
             let already_correct = if browser {
                 content_type.starts_with("text/html")
             } else {
                 content_type == super::codec::OCTET_STREAM
             };
+
             if failure && !already_correct {
                 let status = response.status();
                 let metadata = response
@@ -120,6 +126,7 @@ pub async fn policy(
                     .extensions()
                     .get::<tutorlolv2_protocol::ApiError>()
                     .cloned();
+
                 let error = metadata
                     .map(|api| AppError::from_wire(status, api))
                     .unwrap_or_else(|| {
@@ -135,11 +142,13 @@ pub async fn policy(
                         )
                         .trace()
                     });
+
                 let mut replacement = if browser {
                     BrowserError(error).error_response()
                 } else {
                     error.error_response()
                 };
+
                 for (name, value) in response.headers() {
                     if ![
                         header::CONTENT_TYPE,
@@ -153,6 +162,7 @@ pub async fn policy(
                             .insert(name.clone(), value.clone());
                     }
                 }
+
                 ServiceResponse::new(response.request().clone(), replacement).map_into_right_body()
             } else {
                 response.map_into_left_body()
@@ -166,9 +176,11 @@ pub async fn policy(
         } else {
             error.error_response()
         };
+
         response =
             ServiceResponse::new(response.request().clone(), replacement).map_into_right_body();
     }
+
     if head {
         response = response.map_body(|head, _| {
             head.headers.remove(header::CONTENT_LENGTH);

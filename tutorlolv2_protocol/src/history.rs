@@ -39,7 +39,6 @@ pub struct RecordingDetails {
 
 /// IPC-only subset. HTTP uses the existing SetShareMode encoding, not this enum's ordinal.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[serde(rename_all = "snake_case")]
 pub enum HistoryShareMode {
     Private,
     Public,
@@ -82,7 +81,6 @@ pub struct HistoryDetails {
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[serde(rename_all = "snake_case")]
 pub enum HistoryErrorKind {
     Offline,
     Unauthorized,

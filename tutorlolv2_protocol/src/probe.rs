@@ -71,23 +71,23 @@ pub enum MatchDecision {
     Different(DifferentReason),
 }
 
-/// SHA-256 over the parts of a probe that never change during a match. Used
-/// as an index key, never as the sole same/different decision.
-pub fn fingerprint(p: &Probe) -> [u8; 32] {
-    let mut roster = p.roster.clone();
-
-    roster.sort();
-
-    let bytes = bincode::encode_to_vec(
-        (&p.game_mode, p.map_number, &roster),
-        tutorlolv2_types::BINCODE_CONFIG,
-    )
-    .expect("encoding into a Vec cannot fail");
-
-    Sha256::digest(bytes).into()
-}
-
 impl Probe {
+    /// SHA-256 over the parts of a probe that never change during a match. Used
+    /// as an index key, never as the sole same/different decision.
+    pub fn fingerprint(&self) -> [u8; 32] {
+        let mut roster = self.roster.clone();
+
+        roster.sort();
+
+        let bytes = bincode::encode_to_vec(
+            (&self.game_mode, self.map_number, &roster),
+            tutorlolv2_types::BINCODE_CONFIG,
+        )
+        .expect("encoding into a Vec cannot fail");
+
+        Sha256::digest(bytes).into()
+    }
+
     /// `next` is the newer probe of the same observer; `prev_seen_ms` and `now_ms`
     /// are that observer's wall clock (spec §8.3, rules 1–7 in order).
     pub fn same_match(&self, prev_seen_ms: i64, next: &Self, now_ms: i64) -> MatchDecision {

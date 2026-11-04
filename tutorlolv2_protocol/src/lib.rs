@@ -22,6 +22,7 @@ pub use enums::*;
 pub use format::*;
 pub use history::*;
 pub use probe::*;
+pub use response::*;
 pub use snapshot::*;
 
 #[doc(hidden)]
@@ -30,5 +31,3 @@ pub mod __private {
     pub use bincode;
     pub use serde;
 }
-
-pub use response::*;

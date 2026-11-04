@@ -1,7 +1,7 @@
-use crate::server::response::{AppError, Trace};
-// Device authentication (spec §13.1): `Authorization: Device <id>.<base64url(secret)>`.
+//! Device authentication (spec §13.1): `Authorization: Device <id>.<base64url(secret)>`.
 
 use super::state::AppState;
+use crate::server::response::{AppError, Trace};
 use actix_web::{FromRequest, HttpRequest, dev::Payload, http::header, web::Data};
 use base64::{Engine, engine::general_purpose::URL_SAFE_NO_PAD};
 use sha2::{Digest, Sha256};
@@ -70,12 +70,12 @@ impl AuthCache {
         }
 
         let stored = sqlx::query_scalar!(
-            r#"
+            "
             SELECT secret_hash
             FROM devices
             WHERE id = $1
                 AND deleted_at IS NULL
-            "#,
+            ",
             id,
         )
         .fetch_optional(db)
@@ -85,11 +85,11 @@ impl AuthCache {
 
         if valid {
             sqlx::query!(
-                r#"
+                "
                 UPDATE devices
                 SET last_seen_at = now()
                 WHERE id = $1
-                "#,
+                ",
                 id,
             )
             .execute(db)

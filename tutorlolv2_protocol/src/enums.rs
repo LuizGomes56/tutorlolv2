@@ -294,7 +294,6 @@ impl GameType {
 
 /// Why a recording ended. Postgres type `end_reason`.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, Encode, Decode, Serialize, Deserialize)]
-#[serde(rename_all = "snake_case")]
 #[cfg_attr(feature = "sqlx", derive(sqlx::Type), sqlx(type_name = "end_reason"))]
 pub enum EndReason {
     GameEndEvent,
@@ -307,7 +306,6 @@ pub enum EndReason {
 /// Outcome of a game for the recording's player. Postgres type `game_result`.
 /// Deserializes from Riot's `"Win"` / `"Lose"` (`GameEnd.Result`).
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, Encode, Decode, Serialize, Deserialize)]
-#[serde(rename_all = "PascalCase")]
 #[cfg_attr(feature = "sqlx", derive(sqlx::Type), sqlx(type_name = "game_result"))]
 pub enum GameResult {
     Win,
@@ -318,7 +316,6 @@ pub enum GameResult {
 
 /// Visibility of a recording as the API reports it (no code when `Private`).
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, Encode, Decode, Serialize, Deserialize)]
-#[serde(rename_all = "snake_case")]
 pub enum ShareMode {
     Private,
     Live,

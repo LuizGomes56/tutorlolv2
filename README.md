@@ -417,3 +417,47 @@ The sibling frontend defaults to `local-calculation`; build it with
 `--no-default-features` to use this HTTP service. Its API base defaults to
 `http://127.0.0.1:8082/api/games` and can be overridden at build time using
 `TUTORLOL_API_URL`.
+
+## API endpoint contracts
+
+Every `/api` endpoint is declared next to its handler in
+`tutorlolv2_server/src/server/routes`, one file per full URL path, with
+`api_endpoint!` (method, path, path params, query, body, response mode, success
+statuses, auth, and request/response headers). Shared named DTOs are declared with
+`api_contract!`; their fields must be public and may only carry `#[serde(default)]`.
+`tutorlolv2_api_codegen` turns these declarations into `tutorlolv2_api/src/generated.rs`,
+which the server, the web app and the desktop app all use. Clients pick an endpoint
+marker and supply its `Path`/`Query`/`Headers`/`Body`; they cannot choose another
+input or output type.
+
+Response modes:
+
+- `envelope(T)` / `borrowed_envelope(T)`: bincode `ApiResponse<T>`; the borrowed form
+  decodes from a retained `ResponseBuffer`.
+- `empty`: an acknowledgement with no body (for example 204).
+- `brotli_bincode` / `live`: raw compressed frame bytes plus frame headers, without an
+  envelope; `live` uses 204 for "no new frame".
+- `browser`: OAuth redirects and HTML error pages (`BrowserError`).
+
+Failures always use the common `ApiError` envelope (HTML for `browser` routes).
+Propagate errors with `.trace()?`, or `.trace_ctx("operation")?` to add context, so
+every hop records its file/line/column. For expected absence, use
+`option.trace_ctx(("Not found", StatusCode::NOT_FOUND))?`. Keep domain classification
+(conflicts, expired capabilities, invalid chunks, retry-after) on service or domain
+error methods rather than handler-local `map_err`. Never put credentials, cookies or
+authorization values in trace context.
+
+`tutorlolv2_api`'s build script regenerates `generated.rs` whenever a file under
+`server/routes` changes, so building the server (or anything that depends on
+`tutorlolv2_api`) keeps it current; it only rewrites the file when its contents
+change. The generator can also be run by hand:
+
+    > cargo run -p tutorlolv2_api_codegen -- generate
+    > cargo run -p tutorlolv2_api_codegen -- check
+    > cargo test -p tutorlolv2_api_codegen -p tutorlolv2_protocol -p tutorlolv2_api -p tutorlolv2_server
+
+Commit `generated.rs` together with the declarations. The generated file is excluded
+from rustfmt (it is formatted by the generator itself). CI (`api-contracts.yml`) checks
+formatting, that the committed generated file is current, declaration grammar, that
+registered routes match the declared ones, and the protocol tests. It needs neither the
+game-data cache nor a database.

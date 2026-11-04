@@ -26,7 +26,8 @@ pub async fn end(
 
     (RecordingService { db: &state.db })
         .owned(id, auth.device_id)
-        .await?;
+        .await
+        .trace()?;
 
     let mut tx = state.db.begin().await.trace()?;
 

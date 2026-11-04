@@ -871,10 +871,6 @@ impl SelfState {
             ..*self
         }
     }
-
-    pub const fn ctx(&self, e_state: &EnemyFullState) -> Ctx {
-        get_eval_ctx(self, e_state)
-    }
 }
 
 impl EnemyFullState {
@@ -897,148 +893,150 @@ impl EnemyFullState {
     }
 
     pub const fn ctx(&self, self_state: &SelfState) -> Ctx {
-        get_eval_ctx(self_state, self)
+        self_state.ctx(self)
     }
 }
 
-/// Construct a new [`Ctx`] type that can be used to evaluate any champion's
-/// closures and get their intermediary damage values, before applying the reductions
-/// from armor and magic resist. See [`Closure`] for more details about those
-/// functions
-pub const fn get_eval_ctx(self_state: &SelfState, e_state: &EnemyFullState) -> Ctx {
-    let SelfState {
-        stacks,
-        ability_levels,
-        current_stats:
-            PlayerStats {
-                ability_power,
-                armor,
-                armor_penetration_flat,
-                armor_penetration_percent,
-                attack_damage,
-                attack_speed,
-                crit_chance,
-                crit_damage,
-                current_health,
-                magic_penetration_flat,
-                magic_penetration_percent,
-                magic_resist,
-                max_health,
-                max_mana,
-                current_mana,
-            },
-        bonus_stats:
-            BasicStats {
-                attack_damage: bonus_ad,
-                armor: bonus_armor,
-                magic_resist: bonus_magic_resist,
-                max_health: bonus_health,
-                max_mana: bonus_mana,
-                attack_speed: bonus_attack_speed,
-            },
-        base_stats:
-            BasicStats {
-                armor: base_armor,
-                max_health: base_health,
-                attack_damage: base_ad,
-                magic_resist: base_magic_resist,
-                max_mana: base_mana,
-                attack_speed: base_attack_speed,
-            },
-        level,
-        adaptive_type,
-    } = *self_state;
+impl SelfState {
+    /// Construct a new [`Ctx`] type that can be used to evaluate any champion's
+    /// closures and get their intermediary damage values, before applying the reductions
+    /// from armor and magic resist. See [`Closure`] for more details about those
+    /// functions
+    pub const fn ctx(&self, e_state: &EnemyFullState) -> Ctx {
+        let SelfState {
+            stacks,
+            ability_levels,
+            current_stats:
+                PlayerStats {
+                    ability_power,
+                    armor,
+                    armor_penetration_flat,
+                    armor_penetration_percent,
+                    attack_damage,
+                    attack_speed,
+                    crit_chance,
+                    crit_damage,
+                    current_health,
+                    magic_penetration_flat,
+                    magic_penetration_percent,
+                    magic_resist,
+                    max_health,
+                    max_mana,
+                    current_mana,
+                },
+            bonus_stats:
+                BasicStats {
+                    attack_damage: bonus_ad,
+                    armor: bonus_armor,
+                    magic_resist: bonus_magic_resist,
+                    max_health: bonus_health,
+                    max_mana: bonus_mana,
+                    attack_speed: bonus_attack_speed,
+                },
+            base_stats:
+                BasicStats {
+                    armor: base_armor,
+                    max_health: base_health,
+                    attack_damage: base_ad,
+                    magic_resist: base_magic_resist,
+                    max_mana: base_mana,
+                    attack_speed: base_attack_speed,
+                },
+            level,
+            adaptive_type,
+        } = *self;
 
-    let EnemyFullState {
-        current_stats:
-            EnemyStats {
-                armor: enemy_armor,
-                current_health: enemy_current_health,
-                magic_resist: enemy_magic_resist,
-                max_health: enemy_max_health,
-                missing_health: enemy_missing_health,
-            },
-        bonus_stats:
-            SimpleStats {
-                max_health: enemy_bonus_health,
-                armor: enemy_bonus_armor,
-                magic_resist: enemy_bonus_magic_resist,
-            },
-        armor_values,
-        magic_values,
-        steelcaps,
-        rocksolid,
-        randuin,
-        ..
-    } = *e_state;
+        let EnemyFullState {
+            current_stats:
+                EnemyStats {
+                    armor: enemy_armor,
+                    current_health: enemy_current_health,
+                    magic_resist: enemy_magic_resist,
+                    max_health: enemy_max_health,
+                    missing_health: enemy_missing_health,
+                },
+            bonus_stats:
+                SimpleStats {
+                    max_health: enemy_bonus_health,
+                    armor: enemy_bonus_armor,
+                    magic_resist: enemy_bonus_magic_resist,
+                },
+            armor_values,
+            magic_values,
+            steelcaps,
+            rocksolid,
+            randuin,
+            ..
+        } = *e_state;
 
-    Ctx {
-        q_level: ability_levels.q as _,
-        w_level: ability_levels.w as _,
-        e_level: ability_levels.e as _,
-        r_level: ability_levels.r as _,
-        level: level.get() as _,
-        physical_multiplier: armor_values.modifier,
-        magic_multiplier: magic_values.modifier,
-        enemy_bonus_health,
-        enemy_bonus_armor,
-        enemy_bonus_magic_resist,
-        enemy_armor,
-        enemy_current_health,
-        enemy_max_health,
-        enemy_missing_health,
-        enemy_magic_resist,
-        base_health,
-        base_ad,
-        base_armor,
-        base_attack_speed,
-        base_magic_resist,
-        base_mana,
-        bonus_ad,
-        bonus_armor,
-        bonus_attack_speed,
-        bonus_magic_resist,
-        bonus_health,
-        bonus_mana,
-        bonus_move_speed: 1.0,
-        armor_penetration_flat,
-        armor_penetration_percent,
-        magic_penetration_flat,
-        magic_penetration_percent,
-        max_mana,
-        current_mana,
-        max_health,
-        current_health,
-        armor,
-        magic_resist,
-        crit_chance,
-        crit_damage,
-        attack_speed,
-        missing_health: RiotFormulas::missing_health(current_health, max_health),
-        ability_power,
-        attack_damage,
-        adaptive_damage: match adaptive_type {
-            AdaptiveType::Physical => armor_values.modifier,
-            AdaptiveType::Magic => magic_values.modifier,
-        },
-        steelcaps_effect: if steelcaps {
-            RiotFormulas::STEEL_CAPS_PROTECTION
-        } else {
-            1.0
-        },
-        randuin_effect: if randuin {
-            RiotFormulas::RANDUIN_CRIT_PROTECTION
-        } else {
-            1.0
-        },
-        rocksolid_effect: if rocksolid {
-            RiotFormulas::ROCKSOLID_PROTECTION
-        } else {
-            1.0
-        },
-        unknown: 0.0,
-        stacks,
-        life_steal: 0.0,
+        Ctx {
+            q_level: ability_levels.q as _,
+            w_level: ability_levels.w as _,
+            e_level: ability_levels.e as _,
+            r_level: ability_levels.r as _,
+            level: level.get() as _,
+            physical_multiplier: armor_values.modifier,
+            magic_multiplier: magic_values.modifier,
+            enemy_bonus_health,
+            enemy_bonus_armor,
+            enemy_bonus_magic_resist,
+            enemy_armor,
+            enemy_current_health,
+            enemy_max_health,
+            enemy_missing_health,
+            enemy_magic_resist,
+            base_health,
+            base_ad,
+            base_armor,
+            base_attack_speed,
+            base_magic_resist,
+            base_mana,
+            bonus_ad,
+            bonus_armor,
+            bonus_attack_speed,
+            bonus_magic_resist,
+            bonus_health,
+            bonus_mana,
+            bonus_move_speed: 1.0,
+            armor_penetration_flat,
+            armor_penetration_percent,
+            magic_penetration_flat,
+            magic_penetration_percent,
+            max_mana,
+            current_mana,
+            max_health,
+            current_health,
+            armor,
+            magic_resist,
+            crit_chance,
+            crit_damage,
+            attack_speed,
+            missing_health: RiotFormulas::missing_health(current_health, max_health),
+            ability_power,
+            attack_damage,
+            adaptive_damage: match adaptive_type {
+                AdaptiveType::Physical => armor_values.modifier,
+                AdaptiveType::Magic => magic_values.modifier,
+            },
+            steelcaps_effect: if steelcaps {
+                RiotFormulas::STEEL_CAPS_PROTECTION
+            } else {
+                1.0
+            },
+            randuin_effect: if randuin {
+                RiotFormulas::RANDUIN_CRIT_PROTECTION
+            } else {
+                1.0
+            },
+            rocksolid_effect: if rocksolid {
+                RiotFormulas::ROCKSOLID_PROTECTION
+            } else {
+                1.0
+            },
+            unknown: 0.0,
+            stacks,
+            life_steal: 0.0,
+        }
     }
 }
 
@@ -1122,7 +1120,7 @@ impl DamageTable {
     }
 
     /// Batch specialization: one indirect call for the whole champion.
-    pub(crate) fn fill_batch(
+    pub fn fill_batch(
         &mut self,
         r: usize,
         ctx: Ctx,
@@ -1190,7 +1188,7 @@ impl DamageTable {
         row
     }
 
-    pub(crate) fn fill_monster_damages(
+    pub fn fill_monster_damages(
         &mut self,
         self_state: &SelfState,
         eval_data: &DamageEvalData,

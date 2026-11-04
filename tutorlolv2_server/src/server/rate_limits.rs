@@ -42,16 +42,20 @@ impl KeyExtractor for ClientKey {
             .wait_time_from(DefaultClock::default().now())
             .as_secs()
             .max(1);
+
         let mut response = AppError::rate_limited("Too many requests")
             .retry_after(seconds)
             .error_response();
+
         for (name, value) in builder.finish().headers() {
             if name != header::RETRY_AFTER {
                 response.headers_mut().insert(name.clone(), value.clone());
             }
         }
+
         response
     }
+
     fn extract(&self, req: &ServiceRequest) -> Result<Self::Key, Self::KeyExtractionError> {
         if self.per_device
             && let Some((device, secret)) = req

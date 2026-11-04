@@ -1,9 +1,8 @@
+use crate::server::google::*;
 use crate::server::response::{AppError, AppResult, Trace};
 use crate::server::state::AppState;
 use actix_web::http::StatusCode;
 use actix_web::{HttpResponse, web::Data};
-
-use crate::server::google::*;
 
 pub async fn confirm_desktop(s: Data<AppState>, a: AccountAuth) -> AppResult<HttpResponse> {
     let device = a

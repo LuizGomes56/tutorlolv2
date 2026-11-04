@@ -102,26 +102,28 @@ impl SplitMix64 {
     }
 }
 
-fn random_player<T>(rng: &mut SplitMix64, items: &[ItemId]) -> OwnedInputMinData<T> {
-    let champion_id = ChampionId::VARIANTS[rng.index(ChampionId::VARIANTS.len())];
-    let count = rng.index(7).min(items.len());
-    let mut inventory = Vec::with_capacity(count);
+impl SplitMix64 {
+    fn random_player<T>(&mut self, items: &[ItemId]) -> OwnedInputMinData<T> {
+        let champion_id = ChampionId::VARIANTS[self.index(ChampionId::VARIANTS.len())];
+        let count = self.index(7).min(items.len());
+        let mut inventory = Vec::with_capacity(count);
 
-    while inventory.len() < count {
-        let item = items[rng.index(items.len())];
+        while inventory.len() < count {
+            let item = items[self.index(items.len())];
 
-        if !inventory.contains(&item) {
-            inventory.push(item);
+            if !inventory.contains(&item) {
+                inventory.push(item);
+            }
         }
-    }
 
-    OwnedInputMinData {
-        champion_id,
-        level: NonZeroU8::new(6 + rng.index(13) as u8).unwrap(),
-        items: inventory.into_boxed_slice(),
-        stacks: rng.index(101) as u32,
-        is_mega_gnar: matches!(champion_id, ChampionId::Gnar) && rng.next() & 1 == 0,
-        ..Default::default()
+        OwnedInputMinData {
+            champion_id,
+            level: NonZeroU8::new(6 + self.index(13) as u8).unwrap(),
+            items: inventory.into_boxed_slice(),
+            stacks: self.index(101) as u32,
+            is_mega_gnar: matches!(champion_id, ChampionId::Gnar) && self.next() & 1 == 0,
+            ..Default::default()
+        }
     }
 }
 
@@ -155,7 +157,7 @@ pub fn generate(
     let mut result = Vec::with_capacity(games);
 
     for _ in 0..games {
-        let mut data = random_player::<PlayerStats>(&mut rng, &items);
+        let mut data = rng.random_player::<PlayerStats>(&items);
         let level = data.level.get();
         let r = match level {
             16.. => 3,
@@ -235,7 +237,7 @@ pub fn generate(
         let mut enemy_players = Vec::with_capacity(enemies);
 
         for _ in 0..enemies {
-            let mut enemy = random_player::<EnemyStats>(&mut rng, &items);
+            let mut enemy = rng.random_player::<EnemyStats>(&items);
 
             if rng.explicit(stats_mode) {
                 let state = EnemyState {

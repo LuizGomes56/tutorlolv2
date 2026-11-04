@@ -13,7 +13,7 @@ pub async fn redeem(
     auth: DeviceAuth,
     Bincode(q): Bincode<RedeemTicket>,
 ) -> crate::server::response::ApiResult<DesktopSession> {
-    enabled(&s)?;
+    s.google_credentials().trace()?;
 
     let (account, at) = s
         .google
@@ -72,7 +72,8 @@ pub async fn redeem(
 
     let (t, id) = (GoogleAuthService { state: &s })
         .create_session(&mut tx, account, Some(auth.device_id))
-        .await?;
+        .await
+        .trace()?;
     sqlx::query!(
         "UPDATE devices
         SET account_id = $1,

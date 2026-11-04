@@ -16,27 +16,69 @@ pub struct BrowserResponse<'a> {
     pub body: &'a [u8],
     pub location: Option<String>,
 }
-#[derive(Clone, Debug, Default, serde::Serialize, serde::Deserialize)]
+#[derive(
+    Clone,
+    Debug,
+    Default,
+    serde::Serialize,
+    serde::Deserialize,
+    bincode::Encode,
+    bincode::Decode
+)]
 pub struct After {
     #[serde(default)]
+    #[bincode(with_serde)]
     pub after: u64,
 }
-#[derive(Clone, Debug, Default, serde::Serialize, serde::Deserialize)]
+#[derive(
+    Clone,
+    Debug,
+    Default,
+    serde::Serialize,
+    serde::Deserialize,
+    bincode::Encode,
+    bincode::Decode
+)]
 pub struct GoogleCallbackQuery {
+    #[bincode(with_serde)]
     pub state: String,
+    #[bincode(with_serde)]
     pub code: Option<String>,
+    #[bincode(with_serde)]
     pub error: Option<String>,
 }
-#[derive(Clone, Debug, Default, serde::Serialize, serde::Deserialize)]
+#[derive(
+    Clone,
+    Debug,
+    Default,
+    serde::Serialize,
+    serde::Deserialize,
+    bincode::Encode,
+    bincode::Decode
+)]
 pub struct GoogleStartQuery {
+    #[bincode(with_serde)]
     pub target: String,
+    #[bincode(with_serde)]
     pub return_to: Option<String>,
+    #[bincode(with_serde)]
     pub port: Option<u16>,
+    #[bincode(with_serde)]
     pub app_state: Option<String>,
 }
-#[derive(Clone, Debug, Default, serde::Serialize, serde::Deserialize)]
+#[derive(
+    Clone,
+    Debug,
+    Default,
+    serde::Serialize,
+    serde::Deserialize,
+    bincode::Encode,
+    bincode::Decode
+)]
 pub struct Pagination {
+    #[bincode(with_serde)]
     pub before: Option<Uuid>,
+    #[bincode(with_serde)]
     pub limit: Option<u32>,
 }
 #[derive(Clone, Copy, Debug)]
@@ -56,6 +98,7 @@ impl Endpoint for GetAccount {
     const AUTH: Auth = Auth::Account;
     const REQUEST_HEADERS: &'static [&'static str] = &[];
     const RESPONSE_HEADERS: &'static [&'static str] = &["Cache-Control"];
+    #[allow(clippy::single_char_add_str, clippy::needless_borrows_for_generic_args)]
     fn path(path: &Self::Path) -> String {
         String::from("/api/account")
     }
@@ -102,6 +145,7 @@ impl Endpoint for ConfirmDesktop {
     const AUTH: Auth = Auth::Account;
     const REQUEST_HEADERS: &'static [&'static str] = &[];
     const RESPONSE_HEADERS: &'static [&'static str] = &["Cache-Control"];
+    #[allow(clippy::single_char_add_str, clippy::needless_borrows_for_generic_args)]
     fn path(path: &Self::Path) -> String {
         String::from("/api/auth/desktop/confirm")
     }
@@ -143,6 +187,7 @@ impl Endpoint for RedeemDesktop {
     const AUTH: Auth = Auth::Device;
     const REQUEST_HEADERS: &'static [&'static str] = &[];
     const RESPONSE_HEADERS: &'static [&'static str] = &["Cache-Control"];
+    #[allow(clippy::single_char_add_str, clippy::needless_borrows_for_generic_args)]
     fn path(path: &Self::Path) -> String {
         String::from("/api/auth/desktop/redeem")
     }
@@ -193,6 +238,7 @@ impl Endpoint for GoogleCallback {
         "Set-Cookie",
         "Cache-Control",
     ];
+    #[allow(clippy::single_char_add_str, clippy::needless_borrows_for_generic_args)]
     fn path(path: &Self::Path) -> String {
         String::from("/api/auth/google/callback")
     }
@@ -246,6 +292,7 @@ impl Endpoint for GoogleStart {
         "Set-Cookie",
         "Cache-Control",
     ];
+    #[allow(clippy::single_char_add_str, clippy::needless_borrows_for_generic_args)]
     fn path(path: &Self::Path) -> String {
         String::from("/api/auth/google/start")
     }
@@ -295,6 +342,7 @@ impl Endpoint for Logout {
     const AUTH: Auth = Auth::Account;
     const REQUEST_HEADERS: &'static [&'static str] = &[];
     const RESPONSE_HEADERS: &'static [&'static str] = &["Cache-Control"];
+    #[allow(clippy::single_char_add_str, clippy::needless_borrows_for_generic_args)]
     fn path(path: &Self::Path) -> String {
         String::from("/api/auth/logout")
     }
@@ -336,6 +384,7 @@ impl Endpoint for RegisterDeviceEndpoint {
     const AUTH: Auth = Auth::Anonymous;
     const REQUEST_HEADERS: &'static [&'static str] = &[];
     const RESPONSE_HEADERS: &'static [&'static str] = &["Cache-Control"];
+    #[allow(clippy::single_char_add_str, clippy::needless_borrows_for_generic_args)]
     fn path(path: &Self::Path) -> String {
         String::from("/api/devices")
     }
@@ -382,6 +431,7 @@ impl Endpoint for Calculator {
     const AUTH: Auth = Auth::Anonymous;
     const REQUEST_HEADERS: &'static [&'static str] = &[];
     const RESPONSE_HEADERS: &'static [&'static str] = &["Cache-Control"];
+    #[allow(clippy::single_char_add_str, clippy::needless_borrows_for_generic_args)]
     fn path(path: &Self::Path) -> String {
         String::from("/api/games/calculator")
     }
@@ -428,6 +478,7 @@ impl Endpoint for Realtime {
     const AUTH: Auth = Auth::Anonymous;
     const REQUEST_HEADERS: &'static [&'static str] = &[];
     const RESPONSE_HEADERS: &'static [&'static str] = &["Cache-Control"];
+    #[allow(clippy::single_char_add_str, clippy::needless_borrows_for_generic_args)]
     fn path(path: &Self::Path) -> String {
         String::from("/api/games/realtime")
     }
@@ -474,6 +525,7 @@ impl Endpoint for ListRecordings {
     const AUTH: Auth = Auth::Owner;
     const REQUEST_HEADERS: &'static [&'static str] = &[];
     const RESPONSE_HEADERS: &'static [&'static str] = &["Cache-Control"];
+    #[allow(clippy::single_char_add_str, clippy::needless_borrows_for_generic_args)]
     fn path(path: &Self::Path) -> String {
         String::from("/api/me/recordings")
     }
@@ -524,6 +576,7 @@ impl Endpoint for GetRecording {
     const AUTH: Auth = Auth::Owner;
     const REQUEST_HEADERS: &'static [&'static str] = &[];
     const RESPONSE_HEADERS: &'static [&'static str] = &["Cache-Control"];
+    #[allow(clippy::single_char_add_str, clippy::needless_borrows_for_generic_args)]
     fn path(path: &Self::Path) -> String {
         {
             let mut out = String::new();
@@ -591,6 +644,7 @@ impl Endpoint for OwnerFrames {
         "Content-Encoding",
         "Cache-Control",
     ];
+    #[allow(clippy::single_char_add_str, clippy::needless_borrows_for_generic_args)]
     fn path(path: &Self::Path) -> String {
         {
             let mut out = String::new();
@@ -650,6 +704,7 @@ impl Endpoint for SetHistoryShare {
     const AUTH: Auth = Auth::Owner;
     const REQUEST_HEADERS: &'static [&'static str] = &[];
     const RESPONSE_HEADERS: &'static [&'static str] = &["Cache-Control"];
+    #[allow(clippy::single_char_add_str, clippy::needless_borrows_for_generic_args)]
     fn path(path: &Self::Path) -> String {
         {
             let mut out = String::new();
@@ -711,6 +766,7 @@ impl Endpoint for StartSessionEndpoint {
     const AUTH: Auth = Auth::Device;
     const REQUEST_HEADERS: &'static [&'static str] = &[];
     const RESPONSE_HEADERS: &'static [&'static str] = &["Cache-Control"];
+    #[allow(clippy::single_char_add_str, clippy::needless_borrows_for_generic_args)]
     fn path(path: &Self::Path) -> String {
         String::from("/api/recordings/sessions")
     }
@@ -762,6 +818,7 @@ impl Endpoint for UploadChunk {
     const AUTH: Auth = Auth::Device;
     const REQUEST_HEADERS: &'static [&'static str] = &["X-Content-Sha256"];
     const RESPONSE_HEADERS: &'static [&'static str] = &["Cache-Control"];
+    #[allow(clippy::single_char_add_str, clippy::needless_borrows_for_generic_args)]
     fn path(path: &Self::Path) -> String {
         {
             let mut out = String::new();
@@ -827,6 +884,7 @@ impl Endpoint for EndRecordingEndpoint {
     const AUTH: Auth = Auth::Device;
     const REQUEST_HEADERS: &'static [&'static str] = &[];
     const RESPONSE_HEADERS: &'static [&'static str] = &["Cache-Control"];
+    #[allow(clippy::single_char_add_str, clippy::needless_borrows_for_generic_args)]
     fn path(path: &Self::Path) -> String {
         {
             let mut out = String::new();
@@ -885,6 +943,7 @@ impl Endpoint for Heartbeat {
     const AUTH: Auth = Auth::Device;
     const REQUEST_HEADERS: &'static [&'static str] = &[];
     const RESPONSE_HEADERS: &'static [&'static str] = &["Cache-Control"];
+    #[allow(clippy::single_char_add_str, clippy::needless_borrows_for_generic_args)]
     fn path(path: &Self::Path) -> String {
         {
             let mut out = String::new();
@@ -943,6 +1002,7 @@ impl Endpoint for PushLive {
     const AUTH: Auth = Auth::Device;
     const REQUEST_HEADERS: &'static [&'static str] = &[];
     const RESPONSE_HEADERS: &'static [&'static str] = &["Cache-Control"];
+    #[allow(clippy::single_char_add_str, clippy::needless_borrows_for_generic_args)]
     fn path(path: &Self::Path) -> String {
         {
             let mut out = String::new();
@@ -1001,6 +1061,7 @@ impl Endpoint for SetResult {
     const AUTH: Auth = Auth::Device;
     const REQUEST_HEADERS: &'static [&'static str] = &[];
     const RESPONSE_HEADERS: &'static [&'static str] = &["Cache-Control"];
+    #[allow(clippy::single_char_add_str, clippy::needless_borrows_for_generic_args)]
     fn path(path: &Self::Path) -> String {
         {
             let mut out = String::new();
@@ -1059,6 +1120,7 @@ impl Endpoint for GetRecordingShare {
     const AUTH: Auth = Auth::Device;
     const REQUEST_HEADERS: &'static [&'static str] = &[];
     const RESPONSE_HEADERS: &'static [&'static str] = &["Cache-Control"];
+    #[allow(clippy::single_char_add_str, clippy::needless_borrows_for_generic_args)]
     fn path(path: &Self::Path) -> String {
         {
             let mut out = String::new();
@@ -1122,6 +1184,7 @@ impl Endpoint for SetRecordingShare {
     const AUTH: Auth = Auth::Device;
     const REQUEST_HEADERS: &'static [&'static str] = &[];
     const RESPONSE_HEADERS: &'static [&'static str] = &["Cache-Control"];
+    #[allow(clippy::single_char_add_str, clippy::needless_borrows_for_generic_args)]
     fn path(path: &Self::Path) -> String {
         {
             let mut out = String::new();
@@ -1185,6 +1248,7 @@ impl Endpoint for ShareInfoEndpoint {
     const AUTH: Auth = Auth::Capability;
     const REQUEST_HEADERS: &'static [&'static str] = &[];
     const RESPONSE_HEADERS: &'static [&'static str] = &["Cache-Control"];
+    #[allow(clippy::single_char_add_str, clippy::needless_borrows_for_generic_args)]
     fn path(path: &Self::Path) -> String {
         {
             let mut out = String::new();
@@ -1250,6 +1314,7 @@ impl Endpoint for ShareFrames {
         "Content-Encoding",
         "Cache-Control",
     ];
+    #[allow(clippy::single_char_add_str, clippy::needless_borrows_for_generic_args)]
     fn path(path: &Self::Path) -> String {
         {
             let mut out = String::new();
@@ -1312,6 +1377,7 @@ impl Endpoint for PollLive {
         "X-Game-Time",
         "Cache-Control",
     ];
+    #[allow(clippy::single_char_add_str, clippy::needless_borrows_for_generic_args)]
     fn path(path: &Self::Path) -> String {
         {
             let mut out = String::new();

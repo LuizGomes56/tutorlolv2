@@ -1,6 +1,5 @@
-use crate::*;
-use std::string::ToString;
 use strum::{IntoEnumIterator, VariantNames};
+use tutorlolv2_types::*;
 
 #[test]
 fn statname_parsing_preserves_aliases_and_errors() {

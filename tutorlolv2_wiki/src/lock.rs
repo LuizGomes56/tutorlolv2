@@ -93,7 +93,7 @@ pub fn build() -> MayFail<WikiLock> {
 
 /// Compares two lists of effects, returning the entries whose index or name
 /// changed, and how many effects kept their index and name but not their formula
-fn compare(old: &[String], new: &[String]) -> (Vec<String>, usize) {
+pub fn compare(old: &[String], new: &[String]) -> (Vec<String>, usize) {
     let names = |list: &[String]| -> Vec<String> {
         list.iter()
             .map(|entry| split_entry(entry).0.to_string())
@@ -135,65 +135,68 @@ fn compare(old: &[String], new: &[String]) -> (Vec<String>, usize) {
     (lines, formulas)
 }
 
-fn report(old: &WikiLock, new: &WikiLock) -> Vec<String> {
-    let mut out = Vec::new();
-    let mut formulas = BTreeMap::<String, usize>::new();
-    let empty = BTreeMap::new();
+impl WikiLock {
+    fn report(&self, new: &WikiLock) -> Vec<String> {
+        let mut out = Vec::new();
+        let mut formulas = BTreeMap::<String, usize>::new();
+        let empty = BTreeMap::new();
 
-    for (champion_id, abilities) in &new.champions {
-        let old_abilities = old.champions.get(champion_id).unwrap_or(&empty);
+        for (champion_id, abilities) in &new.champions {
+            let old_abilities = self.champions.get(champion_id).unwrap_or(&empty);
 
-        for (key, list) in abilities {
-            for (nth, ability) in list.iter().enumerate() {
-                let old_effects = old_abilities
-                    .get(key)
-                    .and_then(|list| list.get(nth))
-                    .map(|ability| ability.effects.as_slice())
-                    .unwrap_or_default();
+            for (key, list) in abilities {
+                for (nth, ability) in list.iter().enumerate() {
+                    let old_effects = old_abilities
+                        .get(key)
+                        .and_then(|list| list.get(nth))
+                        .map(|ability| ability.effects.as_slice())
+                        .unwrap_or_default();
 
-                let (lines, changed) = compare(old_effects, &ability.effects);
+                    let (lines, changed) = compare(old_effects, &ability.effects);
 
-                if !lines.is_empty() {
-                    out.push(format!(
-                        "  {champion_id} {key:?}[{nth}] {}: effect indexes changed",
-                        ability.name
-                    ));
+                    if !lines.is_empty() {
+                        out.push(format!(
+                            "  {champion_id} {key:?}[{nth}] {}: effect indexes changed",
+                            ability.name
+                        ));
 
-                    out.extend(lines);
+                        out.extend(lines);
+                    }
+
+                    *formulas.entry(champion_id.clone()).or_default() += changed;
                 }
-
-                *formulas.entry(champion_id.clone()).or_default() += changed;
             }
         }
-    }
 
-    for (rune_id, effects) in &new.runes {
-        let old_effects = old
-            .runes
-            .get(rune_id)
-            .map(Vec::as_slice)
-            .unwrap_or_default();
-        let (lines, changed) = compare(old_effects, effects);
+        for (rune_id, effects) in &new.runes {
+            let old_effects = self
+                .runes
+                .get(rune_id)
+                .map(Vec::as_slice)
+                .unwrap_or_default();
 
-        if !lines.is_empty() {
-            out.push(format!("  {rune_id}: effect indexes changed"));
-            out.extend(lines);
+            let (lines, changed) = compare(old_effects, effects);
+
+            if !lines.is_empty() {
+                out.push(format!("  {rune_id}: effect indexes changed"));
+                out.extend(lines);
+            }
+
+            *formulas.entry(rune_id.clone()).or_default() += changed;
         }
 
-        *formulas.entry(rune_id.clone()).or_default() += changed;
+        let changed = formulas
+            .into_iter()
+            .filter(|(_, n)| *n > 0)
+            .map(|(id, n)| format!("{id} ({n})"))
+            .collect::<Vec<_>>();
+
+        if !changed.is_empty() {
+            out.push(format!("  Formulas changed: {}", changed.join(", ")));
+        }
+
+        out
     }
-
-    let changed = formulas
-        .into_iter()
-        .filter(|(_, n)| *n > 0)
-        .map(|(id, n)| format!("{id} ({n})"))
-        .collect::<Vec<_>>();
-
-    if !changed.is_empty() {
-        out.push(format!("  Formulas changed: {}", changed.join(", ")));
-    }
-
-    out
 }
 
 /// Regenerates the lock file from the parsed wiki data, printing what changed
@@ -204,7 +207,7 @@ pub fn write() -> MayFail {
     let new = build()?;
 
     if let Ok(old) = WikiLock::from_file(path()) {
-        let report = report(&old, &new);
+        let report = old.report(&new);
 
         match report.is_empty() {
             true => println!("[lock] No changes"),
@@ -221,33 +224,4 @@ pub fn write() -> MayFail {
 
     let json = serde_json::to_string_pretty(&new)?;
     crate::write(path(), json + "\n")
-}
-
-#[cfg(test)]
-mod tests {
-    use super::compare;
-
-    fn entries(list: &[&str]) -> Vec<String> {
-        list.iter().map(|s| s.to_string()).collect()
-    }
-
-    #[test]
-    fn reports_shifted_indexes_and_formula_changes() {
-        let old = entries(&["0: A (1)", "1: B (2)", "2: C (3)"]);
-        let new = entries(&["0: A (9)", "1: C (3)"]);
-
-        let (lines, formulas) = compare(&old, &new);
-
-        assert_eq!(
-            lines,
-            ["    - 1: B", "    - 2: C", "    + 1: C"].map(String::from)
-        );
-        assert_eq!(formulas, 1);
-    }
-
-    #[test]
-    fn identical_lists_report_nothing() {
-        let list = entries(&["0: A (1)", "1: B (2)"]);
-        assert_eq!(compare(&list, &list), (Vec::new(), 0));
-    }
 }

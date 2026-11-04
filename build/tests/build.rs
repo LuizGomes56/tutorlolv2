@@ -2,7 +2,7 @@ use tutorlolv2_types::{EntityKind, Tag};
 
 #[test]
 fn batch_combos_preserve_order_and_stop_at_the_first_invalid_ability() {
-    use crate::generators::parser::champions::Champion;
+    use tutorlolv2_build_dep::generators::parser::champions::Champion;
     use tutorlolv2_types::{
         AbilityId::Q,
         AbilityName::Void,
@@ -49,7 +49,7 @@ fn shared_tags_work_through_legacy_build_and_wiki_paths() {
         (Tag::Items, "cache/riot/items/42.json"),
         (Tag::Runes, "cache/riot/runes/42.json"),
     ] {
-        let build_tag: crate::generators::utils::Tag = tag;
+        let build_tag: tutorlolv2_build_dep::generators::utils::Tag = tag;
         let wiki_tag: tutorlolv2_wiki::client::Tag = build_tag;
         assert_eq!(
             tutorlolv2_wiki::client::SaveTo::RiotCache(wiki_tag, &42).path(),
@@ -57,7 +57,7 @@ fn shared_tags_work_through_legacy_build_and_wiki_paths() {
         );
     }
 }
-use crate::{
+use tutorlolv2_build_dep::{
     generators::parser::{Parser, infer_damage_type, items::Item, runes::RuneParser},
     scripts::utils::{ItemOrRuneExt, cast_f32},
 };
@@ -112,7 +112,8 @@ fn exporting_an_unknown_entity_returns_an_error() {
 fn generator_documentation_preserves_braces_in_strings_and_comments() {
     let source = r##"impl Generator for Test { fn generate(&mut self) { let text = "}"; /* } */ do_something(); } }"##;
     let parsed =
-        crate::scripts::batch::generator_impl(&format!("use super::*;\n{source}")).unwrap();
+        tutorlolv2_build_dep::scripts::batch::generator_impl(&format!("use super::*;\n{source}"))
+            .unwrap();
     assert_eq!(parsed, source);
 }
 
@@ -166,7 +167,7 @@ fn numeric_rewriting_leaves_pattern_literals_integral() {
 
 #[test]
 fn optional_generator_files_distinguish_absence_from_invalid_input() {
-    use crate::scripts::batch::read_generator;
+    use tutorlolv2_build_dep::scripts::batch::read_generator;
     let dir = TestDir::new();
     assert!(
         read_generator(&dir.0, Tag::Items, "Example")
@@ -186,13 +187,15 @@ fn formatter_failures_are_errors() {
     let dir = TestDir::new();
     let path = dir.0.join("invalid.rs");
     std::fs::write(&path, "fn broken( {").unwrap();
-    let result = crate::context::run_formatter(std::process::Command::new("rustfmt").arg(path));
+    let result = tutorlolv2_build_dep::context::run_formatter(
+        std::process::Command::new("rustfmt").arg(path),
+    );
     assert!(result.unwrap_err().to_string().contains("rustfmt failed"));
 }
 
 #[test]
 fn documentation_uses_explicit_indices_and_ignores_stale_files() {
-    use crate::{
+    use tutorlolv2_build_dep::{
         BuildContext,
         scripts::batch::{EntityDocs, FormulaDoc},
     };
@@ -240,7 +243,7 @@ fn documentation_uses_explicit_indices_and_ignores_stale_files() {
 
 #[test]
 fn formatting_recovers_the_complete_nested_match_expression() {
-    use crate::{
+    use tutorlolv2_build_dep::{
         BuildContext,
         scripts::batch::{EntityDocs, FormulaDoc},
     };
@@ -313,7 +316,7 @@ fn recommendation_rows(source: &str) -> Vec<Vec<Vec<String>>> {
 
 #[test]
 fn recommendations_follow_champion_and_position_order_with_empty_defaults() {
-    use crate::scripts::finish::{Recommendations, recommendations_code};
+    use tutorlolv2_build_dep::scripts::finish::{Recommendations, recommendations_code};
     let data: Recommendations =
         serde_json::from_str(r#"{"Zed":{"adc":[["RangedItem"],[]],"top":[["MeleeItem"],[]]}}"#)
             .unwrap();
@@ -334,7 +337,7 @@ fn recommendations_follow_champion_and_position_order_with_empty_defaults() {
 
 #[test]
 fn recommendations_reject_malformed_optional_files() {
-    use crate::generators::parser::champions::ChampionParser;
+    use tutorlolv2_build_dep::generators::parser::champions::ChampionParser;
     let dir = TestDir::new();
     let parser = ChampionParser {
         data: Default::default(),
@@ -397,7 +400,7 @@ fn prepared_formulas_keep_functions_that_simplify_to_zero() {
 
 #[test]
 fn formatting_accepts_formulas_ending_in_line_comments() {
-    use crate::{
+    use tutorlolv2_build_dep::{
         BuildContext,
         scripts::batch::{EntityDocs, FormulaDoc},
     };
@@ -424,7 +427,7 @@ fn formatting_accepts_formulas_ending_in_line_comments() {
 fn missing_recommendations_watch_the_existing_parent_then_the_file() {
     let dir = TestDir::new();
     std::fs::create_dir(dir.0.join("internal")).unwrap();
-    let context = crate::BuildContext::new(&dir.0, "out", false).unwrap();
+    let context = tutorlolv2_build_dep::BuildContext::new(&dir.0, "out", false).unwrap();
     assert!(context.inputs().contains(&dir.0.join("internal")));
     tutorlolv2_wiki::write(dir.0.join("internal/scraper/data.json"), "{}").unwrap();
     assert!(
@@ -457,7 +460,10 @@ fn riot_item(name: &str, from: &[&str], into: &[&str]) -> serde_json::Value {
 fn recipe_fixture(
     wiki: Vec<tutorlolv2_wiki::items::item_parser::WikiItem>,
     riot: serde_json::Value,
-) -> (TestDir, crate::generators::parser::items::ItemParser) {
+) -> (
+    TestDir,
+    tutorlolv2_build_dep::generators::parser::items::ItemParser,
+) {
     let dir = TestDir::new();
     let wiki = wiki
         .into_iter()
@@ -473,7 +479,8 @@ fn recipe_fixture(
         serde_json::to_vec(&serde_json::json!({"data": riot})).unwrap(),
     )
     .unwrap();
-    let parser = crate::generators::parser::items::ItemParser::from_root(&dir.0).unwrap();
+    let parser =
+        tutorlolv2_build_dep::generators::parser::items::ItemParser::from_root(&dir.0).unwrap();
     (dir, parser)
 }
 
@@ -645,7 +652,7 @@ fn formatter_formats_large_generated_file_sets() {
             path
         })
         .collect::<Vec<_>>();
-    crate::context::run_formatter(&mut command).unwrap();
+    tutorlolv2_build_dep::context::run_formatter(&mut command).unwrap();
     for file in files {
         assert!(
             std::fs::read_to_string(file)
