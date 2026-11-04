@@ -1,6 +1,6 @@
 use {
     crate::{
-        HTTP_CLIENT, JsonRead, LOL_VERSION, MayFail,
+        HTTP_CLIENT, JsonRead, MayFail,
         riot::RiotCdn,
         scraper::{self, Catalog, Recommendations},
     },
@@ -25,12 +25,11 @@ fn cache() -> PathBuf {
     PathBuf::from("cache/stats")
 }
 
-/// Game patch of [`LOL_VERSION`], such as `16.21` for `16.21.1`, which is the
-/// prefix of the game version of the matches played on it
+/// Game patch of [`crate::lol_version`], such as `16.21` for `16.21.1`, which
+/// is the prefix of the game version of the matches played on it
 pub fn patch() -> &'static str {
-    LOL_VERSION
-        .rsplit_once('.')
-        .map_or(LOL_VERSION, |(patch, _)| patch)
+    let version = crate::lol_version();
+    version.rsplit_once('.').map_or(version, |(patch, _)| patch)
 }
 
 /// Ladders and match lists only describe the patch they were sampled on, so
@@ -121,20 +120,6 @@ const MAX_ITEMS: usize = 9;
 /// Minimum fraction of the games in which an item must be completed
 const MIN_ITEM_RATE: f64 = 0.1;
 
-fn api_key() -> MayFail<String> {
-    if let Ok(key) = std::env::var("RIOT_API_KEY") {
-        return Ok(key);
-    }
-
-    crate::read_to_string(".env")?
-        .lines()
-        .find_map(|line| {
-            let key = line.trim().strip_prefix("RIOT_API_KEY=")?;
-            Some(key.trim().trim_matches('"').to_string())
-        })
-        .ok_or_else(|| "[stats] RIOT_API_KEY is not set in the environment or in .env".into())
-}
-
 /// Spaces out the requests made to a single host
 pub struct Limiter {
     /// Time at which the next request may be sent
@@ -202,7 +187,7 @@ pub struct RiotApi {
 impl RiotApi {
     fn new(platforms: &[(&'static str, &'static str)]) -> MayFail<Self> {
         Ok(Self {
-            key: api_key()?,
+            key: crate::env_var("RIOT_API_KEY")?,
             limiters: platforms
                 .iter()
                 .copied()

@@ -1,6 +1,6 @@
 use clap::{Parser, Subcommand, ValueEnum};
 use tutorlolv2_wiki::{
-    HTTP_CLIENT, LOL_VERSION, MayFail, champions, items, lock, runes, scraper, stats,
+    HTTP_CLIENT, MayFail, champions, items, lock, lol_version, runes, scraper, stats, version,
 };
 
 #[derive(Parser, Debug)]
@@ -109,6 +109,7 @@ async fn main() -> MayFail {
 
     match args {
         AppArgs::Update => {
+            version::check().await?;
             tutorlolv2_wiki::run().await?;
 
             HTTP_CLIENT.update_riot_cache().await?;
@@ -136,9 +137,11 @@ async fn main() -> MayFail {
             Fetch::Cache => HTTP_CLIENT.update_riot_cache().await?,
             Fetch::Version => {
                 let gamev = HTTP_CLIENT.fetch_version().await?;
-                match gamev == LOL_VERSION {
+                let current = lol_version();
+
+                match gamev == current {
                     true => println!("App is up to date with game version"),
-                    false => println!("App is outdated: Expected {gamev}, found: {LOL_VERSION}"),
+                    false => println!("App is outdated: Expected {gamev}, found: {current}"),
                 }
             }
         },

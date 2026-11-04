@@ -8,7 +8,7 @@ impl Generator for Maokai {
                 Key::E,
                 [
                     (0, Min), /* Magic Damage */
-                    (4, Max), /* Total Magic Damage */
+                    (2, Max), /* Non-Minion Total Magic Damage */
                 ],
             )
             .ability(Key::R, [(1, Void) /* Magic Damage */])

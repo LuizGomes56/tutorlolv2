@@ -62,6 +62,8 @@ fn match_lists_are_refreshed_for_a_new_patch() {
     // Use a child test process so relative cache paths stay isolated without
     // changing the working directory of concurrently running tests.
     const CHILD: &str = "TUTORLOLV2_STATS_CACHE_TEST_CHILD";
+    const VERSION: &str = "16.21.1";
+    const PATCH: &str = "16.21";
     if std::env::var_os(CHILD).is_some() {
         let api = Arc::new(RiotApi {
             key: String::new(),
@@ -89,7 +91,7 @@ fn match_lists_are_refreshed_for_a_new_patch() {
     for dir in [
         "cache/stats/kr".to_string(),
         "cache/stats/kr/0.0".into(),
-        format!("cache/stats/kr/{}", patch()),
+        format!("cache/stats/kr/{PATCH}"),
     ] {
         std::fs::create_dir_all(root.join(&dir)).unwrap();
         std::fs::write(root.join(&dir).join("players.json"), "[]").unwrap();
@@ -107,6 +109,7 @@ fn match_lists_are_refreshed_for_a_new_patch() {
             "--nocapture",
         ])
         .env(CHILD, "1")
+        .env("LOL_VERSION", VERSION)
         .current_dir(&root)
         .output()
         .unwrap();

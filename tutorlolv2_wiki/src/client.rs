@@ -1,7 +1,7 @@
 use {
     crate::{
         CANISBACK_ENDPOINT, DDRAGON_ENDPOINT, FileWrite, JsonRead, JsonWrite, LOL_LANGUAGE,
-        LOL_VERSION, MayFail,
+        MayFail, lol_version,
         riot::{RiotCdn, RiotCdnChampion, RiotCdnRune},
     },
     reqwest::{
@@ -84,21 +84,23 @@ pub enum DDragon<'a> {
 impl<'a> DDragon<'a> {
     pub fn url(&self) -> String {
         let path_a = format_args!("{DDRAGON_ENDPOINT}/cdn");
-        let path_b = format_args!("{path_a}/{LOL_VERSION}/img");
+        // Read only by the urls that depend on it, since the newest version is
+        // fetched before the one in use is decided
+        let path_b = || format!("{path_a}/{}/img", lol_version());
 
         match self {
-            DDragon::Champion(s) => format!("{path_b}/champion/{s}"),
-            DDragon::Passive(s) => format!("{path_b}/passive/{s}"),
-            DDragon::Spell(s) => format!("{path_b}/spell/{s}"),
-            DDragon::Item(s) => format!("{path_b}/item/{s}.png"),
+            DDragon::Champion(s) => format!("{}/champion/{s}", path_b()),
+            DDragon::Passive(s) => format!("{}/passive/{s}", path_b()),
+            DDragon::Spell(s) => format!("{}/spell/{s}", path_b()),
+            DDragon::Item(s) => format!("{}/item/{s}.png", path_b()),
             DDragon::Rune(s) => format!("{CANISBACK_ENDPOINT}/{s}"),
             DDragon::Centered(s, n) => format!("{path_a}/img/champion/centered/{s}_{n}.jpg"),
             DDragon::Splash(s, n) => format!("{path_a}/img/champion/splash/{s}_{n}.jpg"),
             DDragon::Version => format!("{DDRAGON_ENDPOINT}/api/versions.json"),
             DDragon::Riot(endpoint, language) => {
                 let language = language.unwrap_or(LOL_LANGUAGE);
-                let path = format_args!("{DDRAGON_ENDPOINT}/cdn/{LOL_VERSION}");
-                format!("{path}/data/{language}/{endpoint}.json")
+                let version = lol_version();
+                format!("{path_a}/{version}/data/{language}/{endpoint}.json")
             }
         }
     }
@@ -418,7 +420,7 @@ impl HttpClient {
             .to_owned())
     }
 
-    /// Updates files in `cache/riot` with the corresponding ones in the patch determined by `LOL_VERSION`
+    /// Updates files in `cache/riot` with the corresponding ones in the patch determined by [`lol_version`]
     pub async fn update_riot_cache(&self) -> MayFail {
         self.download(
             DDragon::Riot("champion", None).url(),

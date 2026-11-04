@@ -4,9 +4,7 @@
 //! its index and a hash of its formula, so these changes show up in its diff and
 //! in the report printed when it is regenerated
 
-use crate::{
-    JsonRead, LOL_VERSION, MayFail, champions::WikiChampion, parser::Effect, runes::WikiRune,
-};
+use crate::{JsonRead, MayFail, champions::WikiChampion, parser::Effect, runes::WikiRune};
 use serde::{Deserialize, Serialize};
 use std::{
     collections::{BTreeMap, BTreeSet},
@@ -85,7 +83,7 @@ pub fn build() -> MayFail<WikiLock> {
         .collect();
 
     Ok(WikiLock {
-        version: LOL_VERSION.to_string(),
+        version: crate::lol_version().to_string(),
         champions,
         runes,
     })
@@ -209,13 +207,13 @@ pub fn write() -> MayFail {
     if let Ok(old) = WikiLock::from_file(path()) {
         let report = old.report(&new);
 
+        if old.version != new.version {
+            println!("[lock] Version {} -> {}", old.version, new.version);
+        }
+
         match report.is_empty() {
             true => println!("[lock] No changes"),
             false => {
-                if old.version != new.version {
-                    println!("[lock] Version {} -> {}", old.version, new.version);
-                }
-
                 println!("[lock] Changes since the previous lock file:");
                 report.iter().for_each(|line| println!("{line}"));
             }

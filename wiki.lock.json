@@ -1,5 +1,5 @@
 {
-  "version": "16.21.1",
+  "version": "16.22.1",
   "champions": {
     "Aatrox": {
       "P": [
@@ -576,7 +576,7 @@
         {
           "name": "Cosmic Creator",
           "effects": [
-            "0: Innate (b38b53b4)"
+            "0: Innate (1d0a2219)"
           ]
         }
       ],
@@ -606,8 +606,8 @@
         {
           "name": "Singularity",
           "effects": [
-            "0: Magic Damage per Tick (773797f3)",
-            "1: Total Magic Damage (12043b21)"
+            "0: Magic Damage per Tick (4c75b411)",
+            "1: Total Magic Damage (c5f1bfad)"
           ]
         }
       ],
@@ -1282,8 +1282,8 @@
         {
           "name": "Missile Barrage",
           "effects": [
-            "0: Big One Physical Damage (61ab2dd3)",
-            "1: Physical Damage (e4b8e71f)"
+            "0: Big One Physical Damage (cc7ba459)",
+            "1: Physical Damage (7c036050)"
           ]
         }
       ]
@@ -3944,10 +3944,10 @@
           "effects": [
             "0: Magic Damage per Nail (abbb34c1)",
             "1: Maximum Nail Damage (b3a206d0)",
-            "2: Maximum Total Magic Damage (25a23019)",
-            "3: One Stack Bonus Damage (d4b2694f)",
-            "4: Three Stacks Bonus Damage (9c4dc652)",
-            "5: Two Stacks Bonus Damage (885be48d)"
+            "2: Maximum Total Magic Damage (8ea424f2)",
+            "3: One Stack Bonus Damage (fcf2db35)",
+            "4: Three Stacks Bonus Damage (ec8c1bc4)",
+            "5: Two Stacks Bonus Damage (3540211e)"
           ]
         }
       ],
@@ -4213,8 +4213,8 @@
           "name": "Bramble Smash",
           "effects": [
             "0: Bonus Monster Damage (37388061)",
-            "1: Magic Damage (22acf34e)",
-            "2: Total Monster Damage (a9e7a2f8)"
+            "1: Magic Damage (bc292c65)",
+            "2: Total Monster Damage (c353ff23)"
           ]
         }
       ],
@@ -4233,9 +4233,8 @@
           "effects": [
             "0: Magic Damage (bb754d6a)",
             "1: Magic Damage per Instance (a9ceee98)",
-            "2: Minion Damage (bb754d6a)",
-            "3: Total Attached Sapling Damage (f40ef3ed)",
-            "4: Total Magic Damage (6c5d5484)"
+            "2: Non-Minion Total Magic Damage (6c5d5484)",
+            "3: Total Attached Sapling Damage (f40ef3ed)"
           ]
         }
       ],
@@ -4618,7 +4617,7 @@
           "name": "Darkin Daggers",
           "effects": [
             "0: Bleed Physical Damage per Tick (427d16d1)",
-            "1: Heal (b4c94aaf)",
+            "1: Heal (7f338c1f)",
             "2: Initial Physical Damage (7e7f13af)",
             "3: Maximum Bonus Physical Damage (3df114de)",
             "4: Maximum Total Physical Damage (4cad6598)",
@@ -5964,9 +5963,9 @@
         {
           "name": "The Equalizer",
           "effects": [
-            "0: Magic Damage per Second (29059f3b)",
-            "1: Magic Damage per Tick (3c465b8d)",
-            "2: Maximum Magic Damage (bd249477)"
+            "0: Magic Damage per Second (1a16fbbb)",
+            "1: Magic Damage per Tick (0c980d66)",
+            "2: Maximum Magic Damage (a143d5ce)"
           ]
         }
       ]
@@ -6329,7 +6328,7 @@
           "effects": [
             "0: Bonus Magic Damage (fe02435a)",
             "1: Increased Bonus Damage (f46d6f29)",
-            "2: Maximum Monster Damage (bea49b7c)",
+            "2: Maximum Monster Damage (bdaba21f)",
             "3: Slow (7bdb5da6)",
             "4: Total Increased Damage (09bcf981)",
             "5: Total Magic Damage (d25cd1fa)"
@@ -6650,9 +6649,9 @@
         {
           "name": "Achooo!",
           "effects": [
-            "0: Explosion Physical Damage (c787e826)",
+            "0: Explosion Physical Damage (0239c40e)",
             "1: Glob Physical Damage (54248c9b)",
-            "2: Total Physical Damage On Champion Hit (7735a55e)"
+            "2: Total Physical Damage On Champion Hit (efdaf166)"
           ]
         }
       ],
@@ -7208,7 +7207,7 @@
         {
           "name": "The Box",
           "effects": [
-            "0: Magic Damage (32abee00)"
+            "0: Magic Damage (2bd958b1)"
           ]
         }
       ]
@@ -7562,7 +7561,7 @@
           "name": "Living Vengeance",
           "effects": [
             "0: Description 1 (69c5133c)",
-            "1: Innate (3164bdc8)"
+            "1: Innate (9457de11)"
           ]
         }
       ],
@@ -7570,10 +7569,10 @@
         {
           "name": "Piercing Arrow",
           "effects": [
-            "0: Maximum Physical Damage (86649edd)",
-            "1: Maximum Reduced Damage (b70b8d6b)",
-            "2: Minimum Physical Damage (49bb691e)",
-            "3: Minimum Reduced Damage (9dcce4a0)"
+            "0: Maximum Physical Damage (e929dc74)",
+            "1: Maximum Reduced Damage (e158b50e)",
+            "2: Minimum Physical Damage (92c82850)",
+            "3: Minimum Reduced Damage (cdc01d62)"
           ]
         }
       ],
@@ -7933,9 +7932,9 @@
         {
           "name": "Arcane Storm",
           "effects": [
-            "0: Magic Damage (275ef6c6)",
+            "0: Magic Damage (39fc196b)",
             "1: Magic Damage Per Tick (f8214d91)",
-            "2: Total Magic Damage (3d685d08)"
+            "2: Total Magic Damage (be059cc7)"
           ]
         }
       ]
@@ -8256,7 +8255,7 @@
           "name": "Steel Tempest",
           "effects": [
             "0: Critical Strike Damage (2299df93)",
-            "1: Physical Damage (a453fa4a)"
+            "1: Physical Damage (95c0b219)"
           ]
         }
       ],
