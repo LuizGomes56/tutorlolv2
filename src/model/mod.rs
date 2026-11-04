@@ -157,6 +157,7 @@ pub struct EnemyState<'a> {
     pub earth_dragons: u16,
     pub level: NonZeroU8,
     pub item_exceptions: &'a [ValueException],
+    pub game_map: GameMap,
 }
 
 /// Defines the state of the current player, that will be used
@@ -581,6 +582,9 @@ pub struct InputGame<'a> {
     pub active_player: InputActivePlayer<'a>,
     pub enemy_players: &'a [InputMinData<'a, EnemyStats>],
     pub dragons: Dragons,
+    /// Selects the damage modifiers and the stats granted by the map.
+    /// [`GameMap::Unknown`] behaves as [`GameMap::SummonersRift`]
+    pub game_map: GameMap,
 }
 
 #[derive(Copy, Clone, Debug, Default, Encode, PartialEq, PartialOrd, Serialize)]
@@ -589,6 +593,9 @@ pub struct InputActivePlayer<'a> {
     pub rune_exceptions: &'a [ValueException],
     pub abilities: AbilityLevels,
     pub data: InputMinData<'a, PlayerStats>,
+    /// Missing health in percent, from 0 to 100, used when the stats are
+    /// inferred. Supplied stats carry their own current health
+    pub missing_health: u8,
 }
 
 #[derive(Copy, Clone, Debug, Encode, PartialEq, PartialOrd, Serialize)]
@@ -807,6 +814,22 @@ impl RiotFormulas {
         1.0 - (current_health / max_health.max(1.0))
     }
 
+    /// Ratio of attack damage from other sources that [`ItemId::OverlordsBloodmail`]
+    /// grants with its passive Retribution: 1% for every 7% missing health, up to
+    /// 10% at 70% missing health. `missing_health` is a ratio, see [`Self::missing_health`]
+    pub const fn get_bloodmail_retribution(missing_health: f32) -> f32 {
+        // Small offset so that exact steps such as 14% are not lost to rounding
+        let steps = (missing_health.clamp(0.0, 1.0) * 100.0 / 7.0 + 1e-4) as u32;
+        (if steps > 10 { 10 } else { steps }) as f32 / 100.0
+    }
+
+    /// Ability power that [`ItemId::DemonicEmbrace`] grants with its passive
+    /// Sinister Pact: 0 to 45, growing every 125 missing health up to 3000
+    pub const fn get_sinister_pact(missing_health: f32) -> f32 {
+        let steps = (missing_health / 125.0 + 1e-4) as u32;
+        45.0 * (if steps > 24 { 24 } else { steps }) as f32 / 24.0
+    }
+
     /// Formula to get the bonus damage of the rune [`RuneId::LastStand`], where
     /// missing health is a ratio of the current health and the maximum health.
     /// ```rs
@@ -1014,6 +1037,7 @@ impl Default for EnemyState<'_> {
             earth_dragons: 0,
             level: NonZeroU8::MIN,
             item_exceptions: &[],
+            game_map: GameMap::Unknown,
         }
     }
 }

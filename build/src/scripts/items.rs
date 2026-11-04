@@ -131,23 +131,34 @@ impl Item {
                     (stat, *v as _)
                 })
                 .collect(),
-            maps: data
-                .modes
-                .iter()
-                .filter(|(_, v)| **v)
-                .filter_map(|(k, _)| {
-                    k.parse::<u8>()
-                        .ok()
-                        .map(GameMap::from_code)
-                        .or(match k.as_str() {
-                            "ar" => Some(GameMap::Arena),
-                            "aram" => Some(GameMap::Aram),
-                            "classic sr 5v5" => Some(GameMap::SummonersRift),
-                            "nb" => Some(GameMap::NexusBlitz),
-                            _ => None,
-                        })
-                })
-                .collect(),
+            maps: {
+                let mut maps = data
+                    .modes
+                    .iter()
+                    .filter(|(_, v)| **v)
+                    .filter_map(|(k, _)| {
+                        k.parse::<u8>()
+                            .ok()
+                            .map(GameMap::from_code)
+                            .or(match k.as_str() {
+                                "ar" => Some(GameMap::Arena),
+                                "aram" => Some(GameMap::Aram),
+                                "mayhem" => Some(GameMap::AramMayhem),
+                                "classic sr 5v5" => Some(GameMap::SummonersRift),
+                                "nb" => Some(GameMap::NexusBlitz),
+                                _ => None,
+                            })
+                    })
+                    .collect::<Vec<_>>();
+
+                // The wiki lists Mayhem only for the few items where it differs
+                // from ARAM, so every other item follows its ARAM availability
+                if !data.modes.contains_key("mayhem") && maps.contains(&GameMap::Aram) {
+                    maps.push(GameMap::AramMayhem);
+                }
+
+                maps
+            },
         }
     }
 }

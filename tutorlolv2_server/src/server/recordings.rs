@@ -2,15 +2,16 @@
 
 use super::{
     db_enums::{RiotGameSource, ShareDeleteReason},
-    ingest::hex,
+    ingest::{hex, rederive_frames},
 };
 use crate::server::response::{AppError, AppResult, Trace};
-use actix_web::HttpResponse;
 use actix_web::http::StatusCode;
+use actix_web::{HttpResponse, web};
 use chrono::{DateTime, Utc};
 use sqlx::{PgConnection, PgPool};
 use tutorlolv2_protocol::{
-    CodeMode, EndReason, GameMode, Platform, Probe, Region, ShareMode, ShareState, StartSession,
+    CodeMode, EndReason, FRAMES_FORMAT, GameMode, Platform, Probe, Region, ShareMode, ShareState,
+    StartSession,
 };
 use uuid::Uuid;
 
@@ -152,6 +153,67 @@ impl RecordingService<'_> {
         )
         .fetch_one(tx)
         .await
+    }
+
+    /// Frames of a chunk in the current [`FRAMES_FORMAT`]. Frames stored with
+    /// another format are derived again from the raw chunk, which is kept
+    /// verbatim, and stored so later requests serve them directly
+    pub(crate) async fn current_frames(
+        &self,
+        id: Uuid,
+        seq: i32,
+        frames: Vec<u8>,
+        frames_format: i16,
+    ) -> AppResult<Vec<u8>> {
+        if frames_format == FRAMES_FORMAT as i16 {
+            return Ok(frames);
+        }
+
+        let db = self.db;
+        let raw = sqlx::query_scalar!(
+            r#"
+            SELECT RAW
+            FROM recording_chunks
+            WHERE recording_id = $1
+                AND seq = $2
+            "#,
+            id,
+            seq,
+        )
+        .fetch_optional(db)
+        .await
+        .trace()?
+        .trace_ctx(("Chunk not found", StatusCode::NOT_FOUND))?;
+
+        let frames = web::block(move || rederive_frames(&raw))
+            .await
+            .trace()?
+            .trace_ctx((
+                "Frames unavailable for this chunk",
+                StatusCode::UNPROCESSABLE_ENTITY,
+            ))?;
+
+        // Matching the old format keeps a concurrent upgrade from being overwritten
+        sqlx::query!(
+            r#"
+            UPDATE recording_chunks
+            SET frames = $3,
+                frames_format = $4
+            WHERE recording_id = $1
+                AND seq = $2
+                AND frames_format = $5
+            "#,
+            id,
+            seq,
+            &frames,
+            FRAMES_FORMAT as i16,
+            frames_format,
+        )
+        .execute(db)
+        .await
+        .trace()?;
+
+        Ok(frames)
     }
 
     pub(crate) async fn existing_chunk(

@@ -6,6 +6,8 @@ pub struct OwnedInputGame {
     pub active_player: OwnedInputActivePlayer,
     pub enemy_players: Box<[OwnedInputMinData<EnemyStats>]>,
     pub dragons: Dragons,
+    #[serde(default)]
+    pub game_map: GameMap,
 }
 
 #[derive(Clone, Debug, Default, Encode, Decode, Serialize, Deserialize, PartialEq, PartialOrd)]
@@ -14,6 +16,8 @@ pub struct OwnedInputActivePlayer {
     pub rune_exceptions: Box<[ValueException]>,
     pub abilities: AbilityLevels,
     pub data: OwnedInputMinData<PlayerStats>,
+    #[serde(default)]
+    pub missing_health: u8,
 }
 
 #[derive(Clone, Debug, Encode, Decode, Serialize, Deserialize, PartialEq, PartialOrd)]
@@ -68,6 +72,7 @@ impl OwnedInputActivePlayer {
             rune_exceptions: &self.rune_exceptions,
             abilities: self.abilities,
             data: self.data.as_input(),
+            missing_health: self.missing_health,
         }
     }
 }
@@ -85,6 +90,7 @@ pub struct PreparedInputGame<'a> {
     active_player: InputActivePlayer<'a>,
     enemy_players: Box<[InputMinData<'a, EnemyStats>]>,
     dragons: Dragons,
+    game_map: GameMap,
 }
 
 impl OwnedInputGame {
@@ -97,6 +103,7 @@ impl OwnedInputGame {
                 .map(OwnedInputMinData::as_input)
                 .collect(),
             dragons: self.dragons,
+            game_map: self.game_map,
         }
     }
 }
@@ -107,6 +114,7 @@ impl PreparedInputGame<'_> {
             active_player: self.active_player,
             enemy_players: &self.enemy_players,
             dragons: self.dragons,
+            game_map: self.game_map,
         }
     }
 }

@@ -2,7 +2,7 @@
 
 use core::num::NonZeroU8;
 use strum::EnumCount;
-use tutorlolv2::{AttackType, ChampionId, L_MSTR, model::*};
+use tutorlolv2::{AttackType, ChampionId, L_MSTR, calculator::EnemyMap, model::*};
 
 #[test]
 fn calculator_batch_matches_legacy_enemy_and_monster_rows() {
@@ -90,8 +90,15 @@ fn calculator_batch_matches_legacy_enemy_and_monster_rows() {
             modifiers,
             champion.ability_batch,
         );
-        let legacy_enemies =
-            legacy.calculator_enemies(&enemy_players, &self_state, &eval_data, modifiers, shred, 2);
+        let legacy_enemies = legacy.calculator_enemies(
+            &enemy_players,
+            &self_state,
+            &eval_data,
+            modifiers,
+            shred,
+            2,
+            EnemyMap::default(),
+        );
         let batch_enemies = batched.calculator_enemies_with(
             &enemy_players,
             &self_state,
@@ -99,6 +106,7 @@ fn calculator_batch_matches_legacy_enemy_and_monster_rows() {
             modifiers,
             shred,
             2,
+            EnemyMap::default(),
             |damages, r, ctx, data, modifiers| {
                 damages.fill_batch(r, ctx, data, modifiers, champion.ability_batch);
             },

@@ -150,6 +150,28 @@ pub fn derive_chunk(
     })
 }
 
+/// Derives the frames of a stored chunk again from its raw upload, as stored in
+/// `recording_chunks.raw`, for chunks whose frames have an older
+/// [`FRAMES_FORMAT`] or couldn't be derived when they were uploaded (D18).
+/// Returns them brotli-compressed, or `None` if the raw chunk is unreadable
+pub fn rederive_frames(raw_br: &[u8]) -> Option<Vec<u8>> {
+    let mut raw = Vec::new();
+
+    brotli::Decompressor::new(raw_br, 4096)
+        .take(MAX_CHUNK_DECOMPRESSED as u64 + 1)
+        .read_to_end(&mut raw)
+        .ok()?;
+
+    if raw.len() > MAX_CHUNK_DECOMPRESSED {
+        return None;
+    }
+
+    let config = tutorlolv2_types::BINCODE_CONFIG.with_limit::<MAX_CHUNK_DECOMPRESSED>();
+    let (chunk, _) = bincode::decode_from_slice::<RawChunk, _>(&raw, config).ok()?;
+
+    derive_frames(&chunk).map(|frames| brotli_compress(&frames))
+}
+
 /// Bincode `FrameChunk`, best effort: raw data is never rejected because of
 /// frames (D18). `RiotRealtime` borrows its strings, so JSON with `\u`
 /// escapes is first re-encoded as plain UTF-8.

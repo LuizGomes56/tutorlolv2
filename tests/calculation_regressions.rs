@@ -2,8 +2,8 @@
 
 use core::num::NonZeroU8;
 use tutorlolv2::{
-    AttackType, ChampionId, ItemId, L_MSTR, RuneId, calculator::calculator, helpers::get_stacks,
-    model::*, realtime::realtime, riot::*,
+    AttackType, ChampionId, GameMap, ItemId, L_MSTR, RuneId, calculator::calculator,
+    helpers::get_stacks, model::*, realtime::realtime, riot::*,
 };
 
 fn close(actual: f32, expected: f32) {
@@ -112,6 +112,7 @@ fn supplied_enemy_stats_skip_inference_in_const_context() {
         stacks: u32::MAX,
         earth_dragons: 3,
         level: NonZeroU8::MIN,
+        game_map: GameMap::Unknown,
     }
     .full_state(
         ResistShred {

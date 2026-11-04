@@ -9,7 +9,7 @@ use std::io::{Read, Write};
 use tutorlolv2_protocol::*;
 use tutorlolv2_server::server::{
     ingest::*,
-    routes::{devices, recordings},
+    routes::{api, devices, recordings},
 };
 use uuid::Uuid;
 
@@ -195,6 +195,72 @@ fn derive_builds_decodable_frames() {
     assert_eq!(decoded.format, FRAMES_FORMAT);
     assert_eq!(decoded.frames.len(), 5);
     assert_eq!(decoded.frames[0].1.active_player.riot_id, ME);
+}
+
+#[test]
+fn rederived_frames_match_the_frames_of_the_upload() {
+    let (body, sha) = encode_chunk(4, seconds(60, 64, 0.0276));
+    let derived = derive_chunk(&body, 4, &sha).unwrap();
+
+    assert_eq!(rederive_frames(&body), Some(derived.frames_br));
+    assert_eq!(rederive_frames(b"not brotli"), None);
+}
+
+#[sqlx::test(migrations = "./migrations")]
+async fn outdated_frames_are_derived_again_from_the_raw_chunk(pool: PgPool) {
+    let app = http::init_service(
+        App::new()
+            .app_data(state(pool.clone()))
+            .service(devices(None))
+            .service(recordings(None))
+            .service(api(None)),
+    )
+    .await;
+    let (device, id) = recording(&app, 0.0276).await;
+    let (body, sha) = encode_chunk(0, seconds(60, 62, 0.0276));
+    assert_eq!(
+        upload(&app, &device, id, 0, body, &sha).await,
+        StatusCode::CREATED
+    );
+
+    let id = Uuid::from_bytes(id);
+    let current = sqlx::query_scalar!(
+        "SELECT frames FROM recording_chunks WHERE recording_id = $1",
+        id
+    )
+    .fetch_one(&pool)
+    .await
+    .unwrap();
+
+    // As if the frames were stored by an older version of the server
+    sqlx::query!(
+        "UPDATE recording_chunks SET frames_format = 0, frames = '' WHERE recording_id = $1",
+        id
+    )
+    .execute(&pool)
+    .await
+    .unwrap();
+
+    let res = http::call_service(
+        &app,
+        http::TestRequest::get()
+            .uri(&format!("/api/me/recordings/{id}/frames/0"))
+            .insert_header(("Authorization", auth_header(&device)))
+            .to_request(),
+    )
+    .await;
+    assert_eq!(res.status(), StatusCode::OK);
+    assert_eq!(http::read_body(res).await, current);
+
+    let row = sqlx::query!(
+        "SELECT frames_format, frames FROM recording_chunks WHERE recording_id = $1",
+        id
+    )
+    .fetch_one(&pool)
+    .await
+    .unwrap();
+    assert_eq!(row.frames_format, FRAMES_FORMAT as i16);
+    assert_eq!(row.frames, current);
 }
 
 #[sqlx::test(migrations = "./migrations")]

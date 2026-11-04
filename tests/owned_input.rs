@@ -19,6 +19,7 @@ fn prepared_views_borrow_nested_collections_without_layout_casts() {
         }]
         .into_boxed_slice(),
         dragons: Dragons::default(),
+        game_map: GameMap::Unknown,
     };
     let prepared = request.prepare();
     let input = prepared.as_input();

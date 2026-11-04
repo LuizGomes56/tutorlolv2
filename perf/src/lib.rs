@@ -228,6 +228,8 @@ pub fn generate(
                 level: data.level,
                 champion_id: data.champion_id,
                 is_mega_gnar: data.is_mega_gnar,
+                missing_health: 0,
+                game_map: GameMap::Unknown,
             });
 
             stats.current_health = stats.max_health * (0.25 + rng.index(76) as f32 / 100.0);
@@ -272,9 +274,11 @@ pub fn generate(
                 abilities,
                 runes: runes.into_boxed_slice(),
                 rune_exceptions: Box::new([]),
+                missing_health: 0,
             },
             enemy_players: enemy_players.into_boxed_slice(),
             dragons,
+            game_map: GameMap::Unknown,
         });
     }
 
@@ -300,6 +304,7 @@ impl PreparedGame<'_> {
             active_player: self.active_player,
             enemy_players: self.enemy_players.as_slice(),
             dragons: self.dragons,
+            game_map: GameMap::Unknown,
         }
     }
 }

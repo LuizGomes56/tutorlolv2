@@ -648,9 +648,44 @@ pub enum GameMap {
     OneForAll,
     UnsealedSpellbook,
     SwiftPlay,
+    /// ARAM: Mayhem, played on the ARAM map with its own code. Appended so
+    /// the encoding of every other variant is kept
+    AramMayhem,
 }
 
 impl GameMap {
+    /// Value that grows linearly from `min` at level 1 to `max` at level 18
+    const fn by_level(min: f32, max: f32, level: u8) -> f32 {
+        let level = match level {
+            0 => 1,
+            19.. => 18,
+            level => level,
+        };
+        min + (max - min) * (level - 1) as f32 / 17.0
+    }
+
+    /// Base health that this map grants to every champion
+    pub const fn base_health(self, attack_type: AttackType, level: u8) -> f32 {
+        match (self, attack_type) {
+            (Self::AramMayhem, AttackType::Melee) => Self::by_level(20.0, 600.0, level),
+            (Self::AramMayhem, AttackType::Ranged) => Self::by_level(20.0, 400.0, level),
+            _ => 0.0,
+        }
+    }
+
+    /// Bonus armor and magic resistance that this map grants to every champion
+    pub const fn bonus_resists(self, attack_type: AttackType, level: u8) -> (f32, f32) {
+        match (self, attack_type) {
+            (Self::Aram, AttackType::Melee) => (0.0, 15.0),
+            (Self::AramMayhem, AttackType::Melee) => (15.0, 15.0),
+            (Self::AramMayhem, AttackType::Ranged) => {
+                let value = Self::by_level(2.0, 25.0, level);
+                (value, value)
+            }
+            _ => (0.0, 0.0),
+        }
+    }
+
     /// Constant conversion of a [`u8`] into a [`GameMap`] enum,
     /// where the byte represents the code of the current map
     pub const fn from_code(value: u8) -> Self {
@@ -659,7 +694,8 @@ impl GameMap {
             4 | 10 => GameMap::TwistedTreeline,
             8 => GameMap::Dominion,
             11 => GameMap::SummonersRift,
-            12 | 14 => GameMap::Aram,
+            12 => GameMap::AramMayhem,
+            14 => GameMap::Aram,
             13 => GameMap::Invasion,
             16 => GameMap::DarkStar,
             18 => GameMap::StarGuardian,

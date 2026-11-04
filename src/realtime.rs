@@ -128,8 +128,10 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
         level
     };
 
+    // Health granted by the map is base health, so bonus health scalings
+    // exclude it from the observed health
     let current_player_base_stats =
-        BasicStats::base_stats(current_player_champion_id, level, is_mega_gnar);
+        current_player_champion_id.map_base_stats(level, is_mega_gnar, game_map);
 
     // This is the difference between the current stats and the base values
     let current_player_bonus_stats = current_player_stats.bonus_stats(current_player_base_stats);
@@ -315,6 +317,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
                 champion_id: e_champion_id,
                 level: e_level,
                 earth_dragons: enemy_earth_dragons,
+                game_map,
                 ..Default::default()
             }
             .full_state(shred, false);

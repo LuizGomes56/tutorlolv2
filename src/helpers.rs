@@ -261,6 +261,20 @@ impl ChampionId {
         }
     }
 
+    /// Base stats including the base health that `game_map` grants
+    pub const fn map_base_stats(
+        &self,
+        level: NonZeroU8,
+        is_mega_gnar: bool,
+        game_map: GameMap,
+    ) -> BasicStats {
+        let mut stats = self.base_stats(level, is_mega_gnar);
+        let attack_type = self.effective_attack_type(is_mega_gnar);
+
+        stats.max_health += game_map.base_health(attack_type, level.get());
+        stats
+    }
+
     pub const fn map_damage_modifier(&self, enemy_id: &Self, game_map: GameMap) -> f32 {
         let WikiModifiers {
             ofa,
@@ -285,7 +299,7 @@ impl ChampionId {
         match game_map {
             GameMap::OneForAll => ofa.damage_dealt * e_ofa.damage_taken,
             GameMap::UnsealedSpellbook => usb.damage_dealt * e_usb.damage_taken,
-            GameMap::Aram => aram.damage_dealt * e_aram.damage_taken,
+            GameMap::Aram | GameMap::AramMayhem => aram.damage_dealt * e_aram.damage_taken,
             GameMap::Arena => ar.damage_dealt * e_ar.damage_taken,
             GameMap::NexusBlitz => nb.damage_dealt * e_nb.damage_taken,
             GameMap::SwiftPlay => swift.damage_dealt * e_swift.damage_taken,
@@ -531,7 +545,14 @@ impl EnemyState<'_> {
             earth_dragons,
             level,
             item_exceptions,
+            game_map,
         } = *self;
+
+        // Health granted by the map is base health, so it is part of the base
+        // stats whether the totals are supplied or inferred
+        let attack_type = champion_id.data().attack_type;
+        let mut base_stats = base_stats;
+        base_stats.max_health += game_map.base_health(attack_type, level.get());
 
         let ResistShred {
             armor_penetration_flat,
@@ -555,6 +576,12 @@ impl EnemyState<'_> {
             },
             None => {
                 let mut e_default_stats = base_stats;
+                let (mode_armor, mode_magic_resist) =
+                    game_map.bonus_resists(attack_type, level.get());
+
+                e_default_stats.armor += mode_armor;
+                e_default_stats.magic_resist += mode_magic_resist;
+
                 let bonus_mana = e_default_stats.infer_stats(items, earth_dragons);
 
                 let mut i = 0;
@@ -794,6 +821,7 @@ impl SelfState {
         let health_delta = stats.max_health - current.max_health;
         let mut added_ap = 0.0;
         let mut added_ad = 0.0;
+        let mut owns_bloodmail = false;
 
         i = 0;
 
@@ -801,11 +829,14 @@ impl SelfState {
             let existing = owned[i];
 
             match existing {
-                ItemId::Riftmaker | ItemId::DemonicEmbrace => added_ap += 0.02 * health_delta,
+                ItemId::Riftmaker => added_ap += 0.02 * health_delta,
                 ItemId::ArchangelsStaff => added_ap += 0.01 * added_mana,
                 ItemId::SeraphsEmbrace => added_ap += 0.02 * added_mana,
                 ItemId::Manamune | ItemId::Muramana => added_ad += 0.025 * added_mana,
-                ItemId::OverlordsBloodmail => added_ad += 0.025 * health_delta,
+                ItemId::OverlordsBloodmail => {
+                    owns_bloodmail = true;
+                    added_ad += 0.025 * health_delta
+                }
                 _ => {}
             }
 
@@ -817,7 +848,13 @@ impl SelfState {
             let bonus_mana = stats.max_mana - self.base_stats.max_mana;
 
             match item {
-                ItemId::Riftmaker | ItemId::DemonicEmbrace => added_ap += 0.02 * bonus_health,
+                ItemId::Riftmaker => added_ap += 0.02 * bonus_health,
+                // Purchases do not change the flat missing health, so an owned
+                // Demonic Embrace keeps the ability power already observed
+                ItemId::DemonicEmbrace => {
+                    added_ap +=
+                        RiotFormulas::get_sinister_pact(current.max_health - current.current_health)
+                }
                 ItemId::ArchangelsStaff => added_ap += 0.01 * bonus_mana,
                 ItemId::SeraphsEmbrace => added_ap += 0.02 * bonus_mana,
                 ItemId::Manamune | ItemId::Muramana => added_ad += 0.025 * bonus_mana,
@@ -828,6 +865,27 @@ impl SelfState {
 
         stats.ability_power += added_ap * fire;
         stats.attack_damage += added_ad * fire;
+
+        // Retribution grants a ratio of the attack damage from other sources.
+        // Observed attack damage already includes it when Bloodmail is owned,
+        // so only the attack damage added by the purchase is amplified
+        if owns_bloodmail || matches!(item, ItemId::OverlordsBloodmail) {
+            core::hint::cold_path();
+
+            let retribution = 1.0
+                + RiotFormulas::get_bloodmail_retribution(RiotFormulas::missing_health(
+                    current.current_health,
+                    current.max_health,
+                ));
+
+            stats.attack_damage = match owns_bloodmail {
+                true => {
+                    current.attack_damage
+                        + (stats.attack_damage - current.attack_damage) * retribution
+                }
+                false => stats.attack_damage * retribution,
+            };
+        }
 
         // The observed AP already includes owned amplifiers; only amplify the delta.
         let ap_delta = stats.ability_power - current.ability_power;

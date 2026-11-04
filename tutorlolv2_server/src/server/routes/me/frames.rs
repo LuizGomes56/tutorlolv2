@@ -1,11 +1,11 @@
-use crate::server::response::{AppError, AppResult, Trace};
+use crate::server::recordings::RecordingService;
+use crate::server::response::{AppResult, Trace};
 use crate::server::{codec::OCTET_STREAM, google::Owner, state::AppState};
 use actix_web::http::StatusCode;
 use actix_web::{
     HttpResponse,
     web::{Data, Path},
 };
-use tutorlolv2_protocol::*;
 use uuid::Uuid;
 
 pub async fn frames(
@@ -44,15 +44,15 @@ pub async fn frames(
     .trace_ctx("History storage unavailable")?
     .trace_ctx(("Chunk not found", StatusCode::NOT_FOUND))?;
 
-    if row.frames_format != FRAMES_FORMAT as i16 {
-        return Err(AppError::unprocessable("Frames unavailable for this chunk"));
-    }
+    let frames = (RecordingService { db: &state.db })
+        .current_frames(id, seq, row.frames, row.frames_format)
+        .await?;
 
     Ok(HttpResponse::Ok()
         .content_type(OCTET_STREAM)
         .insert_header(("Cache-Control", "no-store"))
         .insert_header(("Content-Encoding", "br"))
-        .body(row.frames))
+        .body(frames))
 }
 
 api_endpoint! {

@@ -11,7 +11,7 @@ pub mod check;
 use crate::{
     JsonRead, MayFail,
     champions::WikiChampion,
-    items::item_parser::{ItemEffect, WikiItem},
+    items::item_parser::WikiItem,
     parser::{Effect, Scaling},
     runes::WikiRune,
 };

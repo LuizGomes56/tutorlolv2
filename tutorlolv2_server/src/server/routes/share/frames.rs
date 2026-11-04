@@ -1,13 +1,13 @@
-use crate::server::response::{AppError, AppResult, Trace};
+use crate::server::recordings::RecordingService;
+use crate::server::response::{AppResult, Trace};
+use crate::server::sharing::*;
 use crate::server::{codec::OCTET_STREAM, state::AppState};
 use actix_web::http::StatusCode;
 use actix_web::{
     HttpRequest, HttpResponse,
     web::{Data, Path},
 };
-use tutorlolv2_protocol::{CodeMode, FRAMES_FORMAT};
-
-use crate::server::sharing::*;
+use tutorlolv2_protocol::CodeMode;
 
 pub async fn frames(
     state: Data<AppState>,
@@ -16,6 +16,7 @@ pub async fn frames(
 ) -> AppResult<HttpResponse> {
     let (code, seq) = path.into_inner();
     let (code, cap) = state.capability(&code, &req).await.trace()?;
+    let seq = i32::try_from(seq).trace_ctx(("Chunk not found", StatusCode::NOT_FOUND))?;
 
     let chunk = sqlx::query!(
         r#"
@@ -26,16 +27,16 @@ pub async fn frames(
             AND seq = $2
         "#,
         cap.recording,
-        i32::try_from(seq).trace_ctx(("Chunk not found", StatusCode::NOT_FOUND))?,
+        seq,
     )
     .fetch_optional(&state.db)
     .await
     .trace()?
     .trace_ctx(("Chunk not found", StatusCode::NOT_FOUND))?;
 
-    if chunk.frames_format != FRAMES_FORMAT as i16 {
-        return Err(AppError::unprocessable("Frames unavailable for this chunk"));
-    }
+    let frames = (RecordingService { db: &state.db })
+        .current_frames(cap.recording, seq, chunk.frames, chunk.frames_format)
+        .await?;
 
     let latest = Capability::load(&state.db, &code).await.trace()?;
 
@@ -50,7 +51,7 @@ pub async fn frames(
                 "private, max-age=300"
             },
         ))
-        .body(chunk.frames))
+        .body(frames))
 }
 
 api_endpoint! {

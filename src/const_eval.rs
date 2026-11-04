@@ -1,7 +1,7 @@
 use core::num::NonZeroU8;
 use {
     crate::{
-        ChampionId, ItemId, RuneId,
+        ChampionId, GameMap, ItemId, RuneId,
         calculator::InferStats,
         helpers::ability_id_mod,
         model::{
@@ -216,6 +216,9 @@ impl<
                 level,
                 champion_id,
                 is_mega_gnar,
+                // The compile-time input has no game map nor missing health yet
+                missing_health: 0,
+                game_map: GameMap::Unknown,
             }),
         };
 
@@ -263,6 +266,8 @@ impl<
                 earth_dragons: dragons.enemy_earth_dragons,
                 level,
                 item_exceptions: &ValueException::pack_items(&item_exceptions),
+                // The compile-time input has no game map yet
+                game_map: GameMap::Unknown,
             }
         };
 

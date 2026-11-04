@@ -11,7 +11,7 @@
 use crate::{Ctx, L_MSTR};
 use core::num::NonZeroU8;
 use {
-    crate::{ChampionId, ItemId, RuneId, helpers::*, model::*},
+    crate::{ChampionId, GameMap, ItemId, RuneId, helpers::*, model::*},
     alloc::boxed::Box,
     tutorlolv2_types::{AdaptiveType, AttackType, StatName},
 };
@@ -29,6 +29,9 @@ pub struct InferStats<'a> {
     pub level: NonZeroU8,
     pub champion_id: ChampionId,
     pub is_mega_gnar: bool,
+    /// Missing health in percent, from 0 to 100
+    pub missing_health: u8,
+    pub game_map: GameMap,
 }
 
 impl InferStats<'_> {
@@ -45,11 +48,20 @@ impl InferStats<'_> {
             level,
             champion_id,
             is_mega_gnar,
+            missing_health,
+            game_map,
         } = self;
 
-        let mut bonus_stats = const { PlayerStats::default() };
+        let missing_health = (if missing_health > 100 {
+            100
+        } else {
+            missing_health
+        }) as f32
+            / 100.0;
 
+        let attack_type = champion_id.effective_attack_type(is_mega_gnar);
         let data = champion_id.data();
+        let mut bonus_stats = const { PlayerStats::default() };
         let mut adaptive_force = 0.0;
         let mut stat_modifiers = const { Modifiers::default() };
 
@@ -57,7 +69,7 @@ impl InferStats<'_> {
         bonus_stats.get_rune_bonus_stats(runes, &mut stat_modifiers, &mut adaptive_force, level);
 
         let cached_stats = data.stats;
-        let base_stats = champion_id.base_stats(level, is_mega_gnar);
+        let base_stats = champion_id.map_base_stats(level, is_mega_gnar, game_map);
 
         let mut stats = PlayerStats {
             armor: base_stats.armor,
@@ -93,12 +105,11 @@ impl InferStats<'_> {
         stats.max_mana += bonus_stats.max_mana;
         stats.current_mana += bonus_stats.current_mana;
 
-        stats.assign_rune_exceptions(
-            rune_exceptions,
-            &mut adaptive_force,
-            champion_id.effective_attack_type(is_mega_gnar),
-            level,
-        );
+        let (map_armor, map_magic_resist) = game_map.bonus_resists(attack_type, level.get());
+        stats.armor += map_armor;
+        stats.magic_resist += map_magic_resist;
+
+        stats.assign_rune_exceptions(rune_exceptions, &mut adaptive_force, attack_type, level);
 
         let adaptive_type =
             match AdaptiveType::try_infer(bonus_stats.attack_damage, bonus_stats.ability_power) {
@@ -116,21 +127,22 @@ impl InferStats<'_> {
 
         stats.attack_speed = cached_stats.attack_speed(stats.attack_speed, level);
 
+        let mut has_bloodmail = false;
+        let mut has_demonic_embrace = false;
+        // Amplifies ability power granted after the loop
+        let mut ap_amplifier = 1.0;
         let mut i = 0;
 
         while i < items.len() {
             match items[i] {
                 ItemId::OverlordsBloodmail => {
+                    has_bloodmail = true;
                     stats.attack_damage += 0.025 * bonus_stats.max_health;
                 }
-                ItemId::Riftmaker => {
-                    stats.ability_power += 0.02 * (bonus_stats.max_health + stats.max_health);
-                }
+                ItemId::Riftmaker => stats.ability_power += 0.02 * bonus_stats.max_health,
                 ItemId::ArchangelsStaff => stats.ability_power += 0.01 * bonus_stats.max_mana,
                 ItemId::SeraphsEmbrace => stats.ability_power += 0.02 * bonus_stats.max_mana,
-                ItemId::DemonicEmbrace => {
-                    stats.ability_power += 0.02 * (bonus_stats.max_health + stats.max_health)
-                }
+                ItemId::DemonicEmbrace => has_demonic_embrace = true,
                 ItemId::Manamune | ItemId::Muramana => {
                     stats.attack_damage += 0.025 * bonus_stats.max_mana;
                 }
@@ -138,8 +150,14 @@ impl InferStats<'_> {
                     stats.max_health += 0.15 * bonus_stats.max_mana;
                 }
                 ItemId::JuiceOfVitality => stats.max_health += 300.0 + 0.1 * stats.max_health,
-                ItemId::RabadonsDeathcap => stats.ability_power *= 1.3,
-                ItemId::WoogletsWitchcap => stats.ability_power *= 1.5,
+                ItemId::RabadonsDeathcap => {
+                    stats.ability_power *= 1.3;
+                    ap_amplifier *= 1.3;
+                }
+                ItemId::WoogletsWitchcap => {
+                    stats.ability_power *= 1.5;
+                    ap_amplifier *= 1.5;
+                }
                 ItemId::WarmogsArmor => stats.max_health *= 1.12,
                 ItemId::JuiceOfPower => {
                     stats.attack_damage += 18.0 + 0.1 * stats.attack_damage;
@@ -150,6 +168,37 @@ impl InferStats<'_> {
             i += 1;
         }
 
+        // Sinister Pact depends on the flat missing health, so it waits for the
+        // maximum health to be complete
+        if has_demonic_embrace {
+            core::hint::cold_path();
+
+            let flat_missing_health = stats.max_health * missing_health;
+            stats.ability_power +=
+                ap_amplifier * RiotFormulas::get_sinister_pact(flat_missing_health);
+        }
+
+        // Retribution scales with the attack damage from every other source, so
+        // it is applied last
+        if has_bloodmail {
+            core::hint::cold_path();
+            stats.attack_damage *= 1.0 + RiotFormulas::get_bloodmail_retribution(missing_health);
+        }
+
+        if let GameMap::AramMayhem = game_map {
+            core::hint::cold_path();
+
+            // Every 1% critical strike chance above 100% grants adaptive force
+            let excess_crit = stats.crit_chance - 100.0;
+
+            if excess_crit > 0.0 {
+                match adaptive_type {
+                    AdaptiveType::Physical => stats.attack_damage += 0.45 * excess_crit,
+                    AdaptiveType::Magic => stats.ability_power += 0.75 * excess_crit,
+                }
+            }
+        }
+
         let fire = RiotFormulas::get_fire_multiplier(dragons.ally_fire_dragons);
         let earth = RiotFormulas::get_earth_multiplier(dragons.ally_earth_dragons);
 
@@ -158,6 +207,7 @@ impl InferStats<'_> {
         stats.magic_resist *= earth;
         stats.armor *= earth;
         stats.crit_chance = stats.crit_chance.clamp(0.0, 100.0);
+        stats.current_health = stats.max_health * (1.0 - missing_health);
         modifiers.apply_loadout(items, runes, &stats);
         stats
     }
@@ -470,6 +520,7 @@ pub fn calculator(game: InputGame<'_>) -> OutputGame {
                 abilities: ability_levels,
                 runes: current_player_raw_runes,
                 rune_exceptions,
+                missing_health,
                 data:
                     InputMinData {
                         stats: champion_raw_stats,
@@ -483,11 +534,13 @@ pub fn calculator(game: InputGame<'_>) -> OutputGame {
             },
         dragons,
         enemy_players,
+        game_map,
     } = game;
 
     let mut modifiers = const { Modifiers::default() };
     let current_player_cache = current_player_champion_id.data();
-    let current_player_base_stats = current_player_champion_id.base_stats(level, is_mega_gnar);
+    let current_player_base_stats =
+        current_player_champion_id.map_base_stats(level, is_mega_gnar, game_map);
 
     let champion_stats = match champion_raw_stats {
         Some(stats) => {
@@ -506,6 +559,8 @@ pub fn calculator(game: InputGame<'_>) -> OutputGame {
             level,
             champion_id: current_player_champion_id,
             is_mega_gnar,
+            missing_health,
+            game_map,
         }
         .infer(),
     };
@@ -569,6 +624,10 @@ pub fn calculator(game: InputGame<'_>) -> OutputGame {
         modifiers,
         shred,
         game.dragons.enemy_earth_dragons,
+        EnemyMap {
+            champion_id: current_player_champion_id,
+            game_map,
+        },
         |damages, r, ctx, eval_data, modifiers| {
             damages.fill_batch(r, ctx, eval_data, modifiers, ability_batch);
         },
@@ -591,7 +650,16 @@ pub fn calculator(game: InputGame<'_>) -> OutputGame {
     }
 }
 
+/// Map of the game and the current player's champion, which together select
+/// the damage modifier against each enemy and the stats the map grants them
+#[derive(Clone, Copy, Debug, Default)]
+pub struct EnemyMap {
+    pub champion_id: ChampionId,
+    pub game_map: GameMap,
+}
+
 impl DamageTable {
+    #[allow(clippy::too_many_arguments)]
     pub fn calculator_enemies(
         &mut self,
         enemy_players: &[InputMinData<'_, EnemyStats>],
@@ -600,6 +668,7 @@ impl DamageTable {
         modifiers: Modifiers,
         shred: ResistShred,
         enemy_earth_dragons: u16,
+        enemy_map: EnemyMap,
     ) -> Box<[OutputEnemy]> {
         self.calculator_enemies_with(
             enemy_players,
@@ -608,6 +677,7 @@ impl DamageTable {
             modifiers,
             shred,
             enemy_earth_dragons,
+            enemy_map,
             |damages, r, ctx, eval_data, modifiers| {
                 damages.fill(r, ctx, eval_data, modifiers);
             },
@@ -626,8 +696,14 @@ impl DamageTable {
         modifiers: Modifiers,
         shred: ResistShred,
         enemy_earth_dragons: u16,
+        enemy_map: EnemyMap,
         mut fill_row: impl FnMut(&mut DamageTable, usize, Ctx, &DamageEvalData, Modifiers),
     ) -> Box<[OutputEnemy]> {
+        let EnemyMap {
+            champion_id,
+            game_map,
+        } = enemy_map;
+
         enemy_players
             .iter()
             .enumerate()
@@ -652,10 +728,12 @@ impl DamageTable {
                     level: e_level,
                     item_exceptions: e_item_exceptions,
                     earth_dragons: enemy_earth_dragons,
+                    game_map,
                 }
                 .full_state(shred, false);
 
                 let ctx = full_state.ctx(self_state);
+                let map_mod = champion_id.map_damage_modifier(&e_champion_id, game_map);
 
                 let modifiers = Modifiers {
                     damages: DamageModifiers {
@@ -667,7 +745,9 @@ impl DamageTable {
                             * full_state.magic_values.modifier
                             * full_state.modifiers.magic_mod,
                         true_mod: modifiers.damages.true_mod * full_state.modifiers.true_mod,
-                        global_mod: modifiers.damages.global_mod * full_state.modifiers.global_mod,
+                        global_mod: modifiers.damages.global_mod
+                            * full_state.modifiers.global_mod
+                            * map_mod,
                     },
                     ..modifiers
                 };
