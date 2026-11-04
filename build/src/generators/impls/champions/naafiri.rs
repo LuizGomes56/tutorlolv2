@@ -15,23 +15,23 @@ impl Generator for Naafiri {
         .ability(
             Key::Q,
             [
-                (6, Min), /* Minimum Total Physical Damage */
-                (4, Max), /* Maximum Total Physical Damage */
-                (7, _1),  /* Total Bleed Physical Damage */
+                ("Minimum Total Physical Damage", Min),
+                ("Maximum Total Physical Damage", Max),
+                ("Total Bleed Physical Damage", _1),
             ],
         )
         .ability(
             Key::E,
             [
-                (0, Min), /* Dash Physical Damage */
-                (2, Max), /* Total Physical Damage */
+                ("Dash Physical Damage", Min),
+                ("Total Physical Damage", Max),
             ],
         )
         .ability(
             Key::R,
             [
-                (0, Void), /* Physical Damage */
-                (1, _1),   /* Physical Damage per Packmate */
+                ("Physical Damage", Void),
+                ("Physical Damage per  Packmate", _1),
             ],
         )
         .combos([

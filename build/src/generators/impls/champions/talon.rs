@@ -2,26 +2,26 @@ use super::*;
 
 impl Generator for Talon {
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::P, [(0, Void) /* Description 1 */])
+        self.ability(Key::P, [("Description 1", Void)])
             .ability(
                 Key::Q,
                 [
-                    (0, Max), /* Critical Physical Damage */
-                    (1, Min), /* Physical Damage */
+                    ("Critical Physical Damage", Max),
+                    ("Physical Damage", Min),
                 ],
             )
             .ability(
                 Key::W,
                 [
-                    (0, Min), /* Physical Damage */
-                    (2, Max), /* Total Physical Damage */
+                    ("Physical Damage", Min),
+                    ("Total Physical Damage", Max),
                 ],
             )
             .ability(
                 Key::R,
                 [
-                    (1, Min), /* Physical Damage */
-                    (2, Max), /* Total Physical Damage */
+                    ("Physical Damage", Min),
+                    ("Total Physical Damage", Max),
                 ],
             )
             .combos([

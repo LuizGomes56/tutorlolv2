@@ -2,8 +2,8 @@ use super::*;
 
 impl Generator for Yorick {
     fn generate(&mut self) -> MayFail {
-        self.ability_nth(1, Key::Q, [(0, Void) /* Bonus Physical Damage */])
-            .ability(Key::E, [(3, Void) /* Magic Damage */])
+        self.ability_nth(1, Key::Q, [("Bonus Physical Damage", Void)])
+            .ability(Key::E, [("Magic Damage", Void)])
             .modify(E(Void), |_| {
                 f![(0.06 + 0.005 * (ELevel - 1) + 0.0003 * AbilityPower) * EnemyMaxHealth]
             })?

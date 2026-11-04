@@ -5,9 +5,9 @@ impl Generator for Lulu {
         self.ability(
             Key::Q,
             [
-                (0, Min), /* Magic Damage */
-                (4, Max), /* Total Magic Damage */
-                (2, _1),  /* Reduced Damage */
+                ("Magic Damage", Min),
+                ("Total Magic Damage", Max),
+                ("Reduced Damage", _1),
             ],
         )
         .insert(

@@ -2,21 +2,21 @@ use super::*;
 
 impl Generator for Sett {
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::P, [(0, Void) /* Description 2 */])
+        self.ability(Key::P, [("Description 2", Void)])
             .ability(
                 Key::Q,
                 [
-                    (0, Min), /* Bonus Physical Damage */
-                    (1, Max), /* Total Bonus Physical Damage */
+                    ("Bonus Physical Damage", Min),
+                    ("Total Bonus Physical Damage", Max),
                 ],
             )
-            .ability(Key::W, [(0, Void) /* Damage */])
-            .ability(Key::E, [(0, Void) /* Physical Damage */])
+            .ability(Key::W, [("Damage", Void)])
+            .ability(Key::E, [("Physical Damage", Void)])
             .ability(
                 Key::R,
                 [
-                    (0, Max), /* Physical Damage */
-                    (1, Min), /* Reduced Damage */
+                    ("Physical Damage", Max),
+                    ("Reduced Damage", Min),
                 ],
             )
             .damage_types([P(Void), W(Void), R(Min), R(Max)], Physical)?

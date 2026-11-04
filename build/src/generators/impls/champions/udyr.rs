@@ -5,16 +5,16 @@ impl Generator for Udyr {
         self.ability(
             Key::Q,
             [
-                (1, Min),  /* Bonus Physical Damage */
-                (2, Void), /* Bonus Physical Damage On-Hit */
-                (3, Max),  /* Total Physical Damage */
+                ("Bonus Physical Damage", Min),
+                ("Bonus Physical Damage On-Hit", Void),
+                ("Total Physical Damage", Max),
             ],
         )
         .ability(
             Key::R,
             [
-                (1, Min), /* Magic Damage per Tick */
-                (3, Max), /* Total Magic Damage */
+                ("Magic Damage per Tick", Min),
+                ("Total Magic Damage", Max),
             ],
         )
         .modify(Q(Min), |_| {

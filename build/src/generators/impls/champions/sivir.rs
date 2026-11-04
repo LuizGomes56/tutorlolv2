@@ -5,16 +5,16 @@ impl Generator for Sivir {
         self.ability(
             Key::Q,
             [
-                (0, Min),  /* Minimum Damage */
-                (1, Void), /* Physical Damage */
-                (2, Max),  /* Total Maximum Champion Damage */
+                ("Minimum Damage", Min),
+                ("Physical Damage", Void),
+                ("Total Maximum Champion Damage", Max),
             ],
         )
         .ability(
             Key::W,
             [
-                (1, Max), /* Bounce Critical Damage */
-                (2, Min), /* Bounce Damage */
+                ("Bounce Critical Damage", Max),
+                ("Bounce Damage", Min),
             ],
         )
         .combos([

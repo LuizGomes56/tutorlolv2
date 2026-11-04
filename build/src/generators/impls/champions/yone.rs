@@ -7,13 +7,13 @@ impl Generator for Yone {
         self.ability(
             Key::Q,
             [
-                (0, Max), /* Critical Strike Damage */
-                (1, Min), /* Physical Damage */
+                ("Critical Strike Damage", Max),
+                ("Physical Damage", Min),
             ],
         )
-        .ability(Key::W, [(0, Void) /* Magic Damage */])
+        .ability(Key::W, [("Magic Damage", Void)])
         .modify(W(Void), mix)?
-        .ability(Key::R, [(0, Void) /* Magic Damage */])
+        .ability(Key::R, [("Magic Damage", Void)])
         .modify(R(Void), mix)?
         .damage_types([W(Void), R(Void)], Mixed)?
         .combos([

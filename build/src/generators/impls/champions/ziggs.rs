@@ -2,22 +2,22 @@ use super::*;
 
 impl Generator for Ziggs {
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::P, [(1, Void) /* Innate */])
-            .ability(Key::Q, [(0, Void) /* Magic Damage */])
-            .ability(Key::W, [(1, Void) /* Magic Damage */])
+        self.ability(Key::P, [("Innate", Void)])
+            .ability(Key::Q, [("Magic Damage", Void)])
+            .ability(Key::W, [("Magic Damage", Void)])
             .ability(
                 Key::E,
                 [
-                    (0, Void), /* Magic Damage per Mine */
-                    (1, Max),  /* Maximum Total Magic Damage */
-                    (2, Min),  /* Reduced Damage per Mine */
+                    ("Magic Damage per Mine", Void),
+                    ("Maximum Total Magic Damage", Max),
+                    ("Reduced Damage per Mine", Min),
                 ],
             )
             .ability(
                 Key::R,
                 [
-                    (0, Max), /* Epicenter Magic Damage */
-                    (1, Min), /* Reduced Damage */
+                    ("Epicenter Magic Damage", Max),
+                    ("Reduced Damage", Min),
                 ],
             )
             .combos([

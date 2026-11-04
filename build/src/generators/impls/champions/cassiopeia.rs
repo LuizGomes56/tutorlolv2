@@ -5,25 +5,25 @@ impl Generator for Cassiopeia {
         self.ability(
             Key::Q,
             [
-                (1, Min), /* Magic Damage Per Tick */
-                (2, Max), /* Total Magic Damage */
+                ("Magic Damage Per Tick", Min),
+                ("Total Magic Damage", Max),
             ],
         )
         .ability(
             Key::W,
             [
-                (0, Min), /* Magic Damage Per Second */
-                (2, Max), /* Total Magic Damage */
+                ("Magic Damage Per Second", Min),
+                ("Total Magic Damage", Max),
             ],
         )
         .ability(
             Key::E,
             [
-                (0, Min), /* Bonus Magic Damage */
-                (3, Max), /* Total Enhanced Damage */
+                ("Bonus Magic Damage", Min),
+                ("Total Enhanced Damage", Max),
             ],
         )
-        .ability(Key::R, [(0, Void) /* Magic Damage */])
+        .ability(Key::R, [("Magic Damage", Void)])
         .combos([
             &[
                 Ability(R(Void)),

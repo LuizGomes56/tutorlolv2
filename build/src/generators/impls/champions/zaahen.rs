@@ -5,30 +5,30 @@ impl Generator for Zaahen {
         self.ability(
             Key::Q,
             [
-                (0, Min),  /* Bonus Physical Damage */
-                (3, Void), /* Physical Damage per Hit */
-                (4, Max),  /* Total Physical Damage */
+                ("Bonus Physical Damage", Min),
+                ("Physical Damage per Hit", Void),
+                ("Total Physical Damage", Max),
             ],
         )
         .ability(
             Key::W,
             [
-                (0, Min),  /* Initial Physical Damage */
-                (1, Void), /* Subsequent Physical Damage */
-                (2, Max),  /* Total Physical Damage */
+                ("Initial Physical Damage", Min),
+                ("Subsequent Physical Damage", Void),
+                ("Total Physical Damage", Max),
             ],
         )
         .ability(
             Key::E,
             [
-                (0, Void), /* Bonus Magic Damage */
-                (1, Max),  /* Increased Physical Damage */
-                (2, Min),  /* Physical Damage */
+                ("Bonus Magic Damage", Void),
+                ("Increased Physical Damage", Max),
+                ("Physical Damage", Min),
             ],
         )
         .damage_types([E(Min), E(Max)], Physical)?
         .damage_type(E(Void), Magic)?
-        .ability(Key::R, [(2, Void) /* Physical Damage */])
+        .ability(Key::R, [("Physical Damage", Void)])
         .end()
     }
 }

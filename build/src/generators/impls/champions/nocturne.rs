@@ -12,15 +12,15 @@ impl Generator for Nocturne {
                 damage: f![1.2 * AttackDamage],
             },
         )
-        .ability(Key::Q, [(2, Void) /* Physical damage */])
+        .ability(Key::Q, [("Physical damage", Void)])
         .ability(
             Key::E,
             [
-                (1, Min), /* Magic Damage per Tick */
-                (2, Max), /* Total Magic Damage */
+                ("Magic Damage per Tick", Min),
+                ("Total Magic Damage", Max),
             ],
         )
-        .ability(Key::R, [(0, Void) /* Physical Damage */])
+        .ability(Key::R, [("Physical Damage", Void)])
         .combos([
             &[
                 Ability(R(Void)),

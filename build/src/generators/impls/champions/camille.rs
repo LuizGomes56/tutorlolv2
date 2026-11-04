@@ -5,19 +5,19 @@ impl Generator for Camille {
         self.ability(
             Key::Q,
             [
-                (1, Min), /* Bonus Physical Damage */
-                (2, Max), /* Increased Mixed Damage */
+                ("Bonus Physical Damage", Min),
+                ("Increased Mixed Damage", Max),
             ],
         )
         .damage_type(Q(Min), Physical)?
         .damage_type(Q(Max), Mixed)?
-        .ability(Key::W, [(3, Min) /* Physical Damage */])
+        .ability(Key::W, [("Physical Damage", Min)])
         .clone_with(W(Min), W(Max), |w| {
             f![(w) + (0.07 + 0.005 * (WLevel - 1) + 0.00025 * BonusAd) * EnemyMaxHealth]
         })?
         .comment(W(Max), "Outer cone damage")?
-        .ability(Key::E, [(1, Void) /* Physical Damage */])
-        .ability(Key::R, [(0, Void) /* Bonus Magic Damage */])
+        .ability(Key::E, [("Physical Damage", Void)])
+        .ability(Key::R, [("Bonus Magic Damage", Void)])
         .combos([
             &[
                 Ability(E(Void)),

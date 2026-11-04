@@ -2,20 +2,20 @@ use super::*;
 
 impl Generator for LeeSin {
     fn generate(&mut self) -> MayFail {
-        self.ability_nth(1, Key::Q, [(0, _1) /* Physical Damage */])
+        self.ability_nth(1, Key::Q, [("Physical Damage", _1)])
             .ability(
                 Key::Q,
                 [
-                    (0, Max), /* Maximum Physical Damage */
-                    (1, Min), /* Minimum Physical Damage */
+                    ("Maximum Physical Damage", Max),
+                    ("Minimum Physical Damage", Min),
                 ],
             )
-            .ability_nth(1, Key::E, [(0, Void) /* Magic Damage */])
+            .ability_nth(1, Key::E, [("Magic Damage", Void)])
             .ability(
                 Key::R,
                 [
-                    (0, Max), /* Collision Physical Damage */
-                    (1, Min), /* Physical Damage */
+                    ("Collision Physical Damage", Max),
+                    ("Physical Damage", Min),
                 ],
             )
             .combos([

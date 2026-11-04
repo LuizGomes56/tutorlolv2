@@ -38,9 +38,9 @@ impl Generator for Pyke {
         .collect::<MayFail<Vec<_>>>()?
         .join(" + ");
 
-        self.ability(Key::Q, [(0, Void) /* Physical Damage */])
-            .ability(Key::E, [(0, Void) /* Physical Damage */])
-            .ability(Key::R, [(0, Void)])
+        self.ability(Key::Q, [("Physical Damage", Void)])
+            .ability(Key::E, [("Physical Damage", Void)])
+            .ability_placeholder(Key::R, [Void])
             .modify(R(Void), |_| f![(r) / 2])?
             .clone_to(R(Void), R(_1), r)?
             .damage_type(R(Void), Physical)?

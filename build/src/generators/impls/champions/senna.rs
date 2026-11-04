@@ -5,15 +5,15 @@ impl Generator for Senna {
         self.ability(
             Key::P,
             [
-                (1, _1),   /* Innate - Relic Cannon */
-                (2, Void), /* Innate - Weakened Soul */
+                ("Innate - Relic Cannon", _1),
+                ("Innate - Weakened Soul", Void),
             ],
         )
         .modify(P(_1), |_| f![0.2 * AttackDamage])?
         .modify(P(Void), |dmg| f![(dmg) / 100 * EnemyCurrentHealth])?
-        .ability(Key::Q, [(1, Void) /* Physical Damage */])
-        .ability(Key::W, [(0, Void) /* Physical Damage */])
-        .ability(Key::R, [(0, Void) /* Physical Damage */])
+        .ability(Key::Q, [("Physical Damage", Void)])
+        .ability(Key::W, [("Physical Damage", Void)])
+        .ability(Key::R, [("Physical Damage", Void)])
         .damage_types([P(Void), P(_1), R(Void)], Physical)?
         .combos([
             &[

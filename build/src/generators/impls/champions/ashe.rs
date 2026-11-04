@@ -15,12 +15,12 @@ impl Generator for Ashe {
         .ability(
             Key::Q,
             [
-                (1, Min), /* Physical Damage Per Arrow */
-                (2, Max), /* Total Damage Per Flurry */
+                ("Physical Damage Per Arrow", Min),
+                ("Total Damage Per Flurry", Max),
             ],
         )
-        .ability(Key::W, [(1, Void) /* Physical Damage */])
-        .ability(Key::R, [(0, Void) /* Magic Damage */])
+        .ability(Key::W, [("Physical Damage", Void)])
+        .ability(Key::R, [("Magic Damage", Void)])
         .combos([
             &[
                 Attack,

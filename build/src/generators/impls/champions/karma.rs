@@ -2,12 +2,12 @@ use super::*;
 
 impl Generator for Karma {
     fn generate(&mut self) -> MayFail {
-        self.ability_nth(1, Key::Q, [(0, Void) /* Magic Damage */])
+        self.ability_nth(1, Key::Q, [("Magic Damage", Void)])
             .ability(
                 Key::Q,
                 [
-                    (4, _1), /* Total Magic Damage */
-                    (3, _2), /* Total Damage */
+                    ("Total Magic Damage", _1),
+                    ("Total Damage", _2),
                 ],
             )
             .comment(Q(_1), "Mantra empowered impact")?
@@ -16,8 +16,8 @@ impl Generator for Karma {
                 1,
                 Key::W,
                 [
-                    (0, Min), /* Magic Damage */
-                    (2, Max), /* Total Magic Damage */
+                    ("Magic Damage", Min),
+                    ("Total Magic Damage", Max),
                 ],
             )
             .combos([

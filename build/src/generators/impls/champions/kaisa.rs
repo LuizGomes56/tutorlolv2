@@ -5,8 +5,8 @@ impl Generator for Kaisa {
         self.ability(
             Key::P,
             [
-                (0, Void), /* Innate - Caustic Wounds */
-                (3, _1),   /* Innate - Caustic Wounds [3] */
+                ("Innate - Caustic Wounds", Void),
+                ("Innate - Caustic Wounds [3]", _1),
             ],
         )
         .modify(P(Void), |_| {
@@ -25,12 +25,12 @@ impl Generator for Kaisa {
         .ability(
             Key::Q,
             [
-                (0, Min), /* Physical Damage Per Missile */
-                (3, Max), /* Total Single-Target Damage */
-                (2, _1),  /* Total Evolved Single-Target Damage */
+                ("Physical Damage Per Missile", Min),
+                ("Total Single-Target Damage", Max),
+                ("Total Evolved Single-Target Damage", _1),
             ],
         )
-        .ability(Key::W, [(0, Void) /* Magic Damage */])
+        .ability(Key::W, [("Magic Damage", Void)])
         .combos([
             &[Ability(W(Void)), Ability(Q(Max)), Attack, Attack, Attack],
             &[

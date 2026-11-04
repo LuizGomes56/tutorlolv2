@@ -5,28 +5,28 @@ impl Generator for Leblanc {
         self.ability(
             Key::Q,
             [
-                (0, Min), /* Magic Damage */
-                (1, Max), /* Total Magic Damage */
+                ("Magic Damage", Min),
+                ("Total Magic Damage", Max),
             ],
         )
-        .ability(Key::W, [(0, Void) /* Magic Damage */])
+        .ability(Key::W, [("Magic Damage", Void)])
         .ability(
             Key::E,
             [
-                (1, Min), /* Magic Damage */
-                (2, Max), /* Total Damage */
-                (0, _1),  /* Fracture Magic Damage */
+                ("Magic Damage", Min),
+                ("Total Damage", Max),
+                ("Fracture Magic Damage", _1),
             ],
         )
         .ability(
             Key::R,
             [
-                (0, _1), /* Application Magic Damage */
-                (3, _2), /* Mark Magic Damage */
-                (2, _3), /* Magic Damage */
-                (4, _4), /* Orb Magic Damage */
-                (1, _5), /* Fracture Magic Damage */
-                (5, _6), /* Total Magic Damage */
+                ("Application Magic Damage", _1),
+                ("Mark Magic Damage", _2),
+                ("Magic Damage", _3),
+                ("Orb Magic Damage", _4),
+                ("Fracture Magic Damage", _5),
+                ("Total Magic Damage", _6),
             ],
         )
         .combos([

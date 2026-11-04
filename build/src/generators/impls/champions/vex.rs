@@ -2,15 +2,15 @@ use super::*;
 
 impl Generator for Vex {
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::P, [(0, Void) /* Description 2 */])
-            .ability(Key::Q, [(0, Void) /* Magic Damage */])
-            .ability(Key::W, [(0, Void) /* Magic Damage */])
-            .ability(Key::E, [(0, Void) /* Magic Damage */])
+        self.ability(Key::P, [("Description 2", Void)])
+            .ability(Key::Q, [("Magic Damage", Void)])
+            .ability(Key::W, [("Magic Damage", Void)])
+            .ability(Key::E, [("Magic Damage", Void)])
             .ability(
                 Key::R,
                 [
-                    (0, Min), /* Magic Damage */
-                    (1, Max), /* Total Magic Damage */
+                    ("Magic Damage", Min),
+                    ("Total Magic Damage", Max),
                 ],
             )
             .combos([

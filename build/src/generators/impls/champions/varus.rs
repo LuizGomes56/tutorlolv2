@@ -5,26 +5,26 @@ impl Generator for Varus {
         self.ability(
             Key::Q,
             [
-                (0, Max),   /* Maximum Physical Damage */
-                (1, _1Max), /* Maximum Reduced Damage */
-                (2, Min),   /* Minimum Physical Damage */
-                (3, _1Min), /* Minimum Reduced Damage */
+                ("Maximum Physical Damage", Max),
+                ("Maximum Reduced Damage", _1Max),
+                ("Minimum Physical Damage", Min),
+                ("Minimum Reduced Damage", _1Min),
             ],
         )
         .ability(
             Key::W,
             [
-                (0, Max),   /* Active Maximum Magic Damage */
-                (1, Min),   /* Active Minimum Magic Damage */
-                (2, _1Min), /* Bonus Magic Damage */
-                // (3, _2Min), /* Bonus Magic Damage at Max Stacks */
-                // (4, _3), /* Bonus Magic Damage per Stack */
-                (5, _1Max), /* Maximum Bonus Magic Damage at Max Stacks */
-                            // (6, _2Max), /* Maximum Bonus Magic Damage per Stack */
+                ("Active Maximum Magic Damage", Max),
+                ("Active Minimum Magic Damage", Min),
+                ("Bonus Magic Damage", _1Min),
+                // ("Bonus Magic Damage at Max Stacks", _2Min),
+                // ("Bonus Magic Damage per Stack", _3),
+                ("Maximum Bonus Magic Damage at Max Stacks", _1Max),
+                            // ("Maximum Bonus Magic Damage per Stack", _2Max),
             ],
         )
-        .ability(Key::E, [(0, Void) /* Physical Damage */])
-        .ability(Key::R, [(0, Void) /* Magic Damage */])
+        .ability(Key::E, [("Physical Damage", Void)])
+        .ability(Key::R, [("Magic Damage", Void)])
         .combos([
             &[
                 Ability(R(Void)),

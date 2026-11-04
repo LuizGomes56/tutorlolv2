@@ -5,20 +5,20 @@ impl Generator for Yasuo {
         self.ability(
             Key::Q,
             [
-                (0, Max), /* Critical Strike Damage */
-                (1, Min), /* Physical Damage */
+                ("Critical Strike Damage", Max),
+                ("Physical Damage", Min),
             ],
         )
         .ability(
             Key::E,
             [
-                (0, _1Min), /* Bonus Damage per Stack */
-                (1, Min),   /* Magic Damage */
-                (2, _1Max), /* Maximum Bonus Damage */
-                (3, Max),   /* Total Combined Damage */
+                ("Bonus Damage per Stack", _1Min),
+                ("Magic Damage", Min),
+                ("Maximum Bonus Damage", _1Max),
+                ("Total Combined Damage", Max),
             ],
         )
-        .ability(Key::R, [(0, Void) /* Physical Damage */])
+        .ability(Key::R, [("Physical Damage", Void)])
         .combos([
             &[
                 Ability(Q(Min)),

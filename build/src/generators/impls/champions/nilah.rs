@@ -5,18 +5,18 @@ impl Generator for Nilah {
         self.ability(
             Key::Q,
             [
-                (0, Max), /* Maximum Physical Damage */
-                (1, Min), /* Minimum Physical Damage */
+                ("Maximum Physical Damage", Max),
+                ("Minimum Physical Damage", Min),
             ],
         )
-        .ability(Key::E, [(0, Void) /* Physical Damage */])
+        .ability(Key::E, [("Physical Damage", Void)])
         .ability(
             Key::R,
             [
-                (0, _2),  /* Burst Physical Damage */
-                (1, _1),  /* Maximum Total Physical Damage */
-                (2, Min), /* Physical Damage per Tick */
-                (3, Max), /* Total Physical Damage */
+                ("Burst Physical Damage", _2),
+                ("Maximum Total Physical Damage", _1),
+                ("Physical Damage per Tick", Min),
+                ("Total Physical Damage", Max),
             ],
         )
         .combos([

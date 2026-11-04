@@ -5,14 +5,14 @@ impl Generator for Neeko {
         self.ability(
             Key::Q,
             [
-                (1, Min), /* Initial Magic Damage */
-                (2, _1),  /* Subsequent Magic Damage */
-                (3, Max), /* Total Maximum Magic Damage */
+                ("Initial Magic Damage", Min),
+                ("Subsequent Magic Damage", _1),
+                ("Total Maximum Magic Damage", Max),
             ],
         )
-        .ability(Key::W, [(0, Void) /* Bonus Magic Damage */])
-        .ability(Key::E, [(1, Void) /* Magic Damage */])
-        .ability(Key::R, [(0, Void) /* Magic Damage */])
+        .ability(Key::W, [("Bonus Magic Damage", Void)])
+        .ability(Key::E, [("Magic Damage", Void)])
+        .ability(Key::R, [("Magic Damage", Void)])
         .combos([
             &[
                 Ability(E(Void)),

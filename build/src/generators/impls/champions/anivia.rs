@@ -5,22 +5,22 @@ impl Generator for Anivia {
         self.ability(
             Key::Q,
             [
-                (0, Min), /* Magic Damage */
-                (2, Max), /* Total Magic Damage */
+                ("Magic Damage", Min),
+                ("Total Magic Damage", Max),
             ],
         )
         .ability(
             Key::E,
             [
-                (0, Max), /* Enhanced Damage */
-                (1, Min), /* Magic Damage */
+                ("Enhanced Damage", Max),
+                ("Magic Damage", Min),
             ],
         )
         .ability(
             Key::R,
             [
-                (0, Max), /* Empowered Damage per Tick */
-                (2, Min), /* Magic Damage per Tick */
+                ("Empowered Damage per Tick", Max),
+                ("Magic Damage per Tick", Min),
             ],
         )
         .combos([

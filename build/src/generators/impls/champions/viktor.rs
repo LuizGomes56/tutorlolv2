@@ -5,24 +5,24 @@ impl Generator for Viktor {
         self.ability(
             Key::Q,
             [
-                (0, Min),  /* Magic Damage */
-                (1, Void), /* Modified Magic Damage */
-                (2, Max),  /* Total Magic Damage */
+                ("Magic Damage", Min),
+                ("Modified Magic Damage", Void),
+                ("Total Magic Damage", Max),
             ],
         )
         .ability(
             Key::E,
             [
-                (0, Min), /* Magic Damage */
-                (1, Max), /* Total Magic Damage */
+                ("Magic Damage", Min),
+                ("Total Magic Damage", Max),
             ],
         )
         .ability(
             Key::R,
             [
-                (0, Void), /* Magic Damage */
-                (1, Min),  /* Magic Damage Per Tick */
-                (2, Max),  /* Total Magic Damage */
+                ("Magic Damage", Void),
+                ("Magic Damage Per Tick", Min),
+                ("Total Magic Damage", Max),
             ],
         )
         .combos([

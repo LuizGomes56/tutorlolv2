@@ -5,8 +5,8 @@ impl Generator for Urgot {
         self.ability(
             Key::P,
             [
-                (1, Void), /* Description 1 [2] */
-                (0, _1),   /* Description 1 [1] */
+                ("Description 1 [2]", Void),
+                ("Description 1 [1]", _1),
             ],
         );
 
@@ -15,10 +15,10 @@ impl Generator for Urgot {
         self.set_damage(P(Void), echoing_flames)?
             .delete(P(_1))
             .comment(P(Void), "Echoing Flames shotgun blast")?
-            .ability(Key::Q, [(0, Void) /* Physical Damage */])
-            .ability(Key::W, [(0, Void) /* Modified Physical Damage */])
-            .ability(Key::E, [(0, Void) /* Physical Damage */])
-            .ability(Key::R, [(0, Void) /* Physical Damage */])
+            .ability(Key::Q, [("Physical Damage", Void)])
+            .ability(Key::W, [("Modified Physical Damage", Void)])
+            .ability(Key::E, [("Physical Damage", Void)])
+            .ability(Key::R, [("Physical Damage", Void)])
             .damage_type(R(Void), Physical)?
             .combos([
                 &[

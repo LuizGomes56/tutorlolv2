@@ -10,20 +10,20 @@ impl Generator for Katarina {
             16.. => 1,
         });
 
-        self.ability(Key::P, [(2, Void) /* Innate - Sinister Steel */])
+        self.ability(Key::P, [("Innate - Sinister Steel", Void)])
             .modify(P(Void), |p| {
                 f![(p) + 0.6 * BonusAd + (ap_ratio) * AbilityPower]
             })?
             .comment(P(Void), "Dagger pickup slash")?
-            .ability(Key::Q, [(0, Void) /* Magic Damage */])
-            .ability(Key::E, [(0, Void) /* Magic Damage */])
+            .ability(Key::Q, [("Magic Damage", Void)])
+            .ability(Key::E, [("Magic Damage", Void)])
             .ability(
                 Key::R,
                 [
-                    (0, Min),   /* Magic Damage Per Dagger */
-                    (1, Max),   /* Maximum Magic Damage */
-                    (4, _1Min), /* Physical Damage Per Dagger */
-                    (2, _1Max), /* Maximum Physical Damage */
+                    ("Magic Damage Per Dagger", Min),
+                    ("Maximum Magic Damage", Max),
+                    ("Physical Damage Per Dagger", _1Min),
+                    ("Maximum Physical Damage", _1Max),
                 ],
             )
             .modify(R(_1Min), |_| {

@@ -2,16 +2,16 @@ use super::*;
 
 impl Generator for Chogath {
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::Q, [(0, Void) /* Magic damage */])
-            .ability(Key::W, [(0, Void) /* Magic damage */])
+        self.ability(Key::Q, [("Magic damage", Void)])
+            .ability(Key::W, [("Magic damage", Void)])
             .ability(
                 Key::E,
                 [
-                    (0, Min), /* Magic Damage */
-                    (3, Max), /* Total Magic Damage */
+                    ("Magic Damage", Min),
+                    ("Total Magic Damage", Max),
                 ],
             )
-            .ability(Key::R, [(3, Void) /* Champion True Damage */])
+            .ability(Key::R, [("Champion True Damage", Void)])
             .combos([
                 &[
                     Ability(W(Void)),

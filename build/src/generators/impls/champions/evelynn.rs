@@ -5,25 +5,25 @@ impl Generator for Evelynn {
         self.ability(
             Key::Q,
             [
-                (1, Min), /* Magic Damage */
-                (4, Max), /* Total Magic Damage */
-                (0, _1),  /* Bonus Magic Damage */
+                ("Magic Damage", Min),
+                ("Total Magic Damage", Max),
+                ("Bonus Magic Damage", _1),
             ],
         )
-        .ability(Key::W, [(0, Void) /* Bonus Magic Damage */])
-        .ability_nth(1, Key::E, [(1, Void) /* Magic Damage */])
+        .ability(Key::W, [("Bonus Magic Damage", Void)])
+        .ability_nth(1, Key::E, [("Magic Damage", Void)])
         .modify(E(Void), |_| {
             f![60 + 30 * (ELevel - 1) + (0.03 + 0.00015 * AbilityPower) * EnemyMaxHealth]
         })?
-        .ability(Key::E, [(0, _1) /* Empowered Magic Damage */])
+        .ability(Key::E, [("Empowered Magic Damage", _1)])
         .modify(E(_1), |_| {
             f![80 + 40 * (ELevel - 1) + (0.04 + 0.00025 * AbilityPower) * EnemyMaxHealth]
         })?
         .ability(
             Key::R,
             [
-                (1, Min), /* Magic Damage */
-                (0, Max), /* Empowered Damage */
+                ("Magic Damage", Min),
+                ("Empowered Damage", Max),
             ],
         )
         .combos([

@@ -5,12 +5,12 @@ impl Generator for Braum {
         self.ability(
             Key::P,
             [
-                (0, Void), /* Description 1 */
-                (1, _1),   /* Description 2 */
+                ("Description 1", Void),
+                ("Description 2", _1),
             ],
         )
-        .ability(Key::Q, [(0, Void) /* Magic Damage */])
-        .ability(Key::R, [(0, Void) /* Magic Damage */]);
+        .ability(Key::Q, [("Magic Damage", Void)])
+        .ability(Key::R, [("Magic Damage", Void)]);
 
         // Bonus magic damage equal to 40% of the Concussive Blows damage
         let concussive_blows = self.damage_of(P(Void))?.clone();

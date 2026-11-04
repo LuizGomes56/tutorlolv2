@@ -2,16 +2,16 @@ use super::*;
 
 impl Generator for Thresh {
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::Q, [(0, Void) /* Magic Damage */])
+        self.ability(Key::Q, [("Magic Damage", Void)])
             .ability(
                 Key::E,
                 [
-                    (0, Void),  /* Magic Damage */
-                    (1, _1Max), /* Maximum Bonus Magic Damage */
-                    (2, _1Min), /* Minimum Bonus Magic Damage */
+                    ("Magic Damage", Void),
+                    ("Maximum Bonus Magic Damage", _1Max),
+                    ("Minimum Bonus Magic Damage", _1Min),
                 ],
             )
-            .ability(Key::R, [(0, Void) /* Magic Damage */])
+            .ability(Key::R, [("Magic Damage", Void)])
             .combos([
                 &[
                     Ability(Q(Void)),

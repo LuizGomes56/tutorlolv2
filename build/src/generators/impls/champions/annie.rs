@@ -2,10 +2,10 @@ use super::*;
 
 impl Generator for Annie {
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::Q, [(0, Void) /* Magic Damage */])
-            .ability(Key::W, [(0, Void) /* Magic Damage */])
-            .ability(Key::E, [(0, Void) /* Magic Damage */])
-            .ability(Key::R, [(0, Void) /* Initial Magic Damage */])
+        self.ability(Key::Q, [("Magic Damage", Void)])
+            .ability(Key::W, [("Magic Damage", Void)])
+            .ability(Key::E, [("Magic Damage", Void)])
+            .ability(Key::R, [("Initial Magic Damage", Void)])
             .insert(
                 R(_1),
                 Ability {

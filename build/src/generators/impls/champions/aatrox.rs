@@ -2,23 +2,23 @@ use super::*;
 
 impl Generator for Aatrox {
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::P, [(1, Void) /* Innate */])
+        self.ability(Key::P, [("Innate", Void)])
             .ability(
                 Key::Q,
                 [
-                    (0, _1Min), /* First Cast Damage */
-                    (1, _1Max), /* First Sweetspot Damage */
-                    (4, _2Min), /* Second Cast Damage */
-                    (5, _2Max), /* Second Sweetspot Damage */
-                    (6, _3Min), /* Third Cast Damage */
-                    (7, _3Max), /* Third Sweetspot Damage */
+                    ("First Cast Damage", _1Min),
+                    ("First Sweetspot Damage", _1Max),
+                    ("Second Cast Damage", _2Min),
+                    ("Second Sweetspot Damage", _2Max),
+                    ("Third Cast Damage", _3Min),
+                    ("Third Sweetspot Damage", _3Max),
                 ],
             )
             .ability(
                 Key::W,
                 [
-                    (1, Min), /* Physical Damage */
-                    (3, Max), /* Total Damage */
+                    ("Physical Damage", Min),
+                    ("Total Damage", Max),
                 ],
             );
 

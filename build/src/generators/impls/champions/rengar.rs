@@ -2,9 +2,9 @@ use super::*;
 
 impl Generator for Rengar {
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::Q, [(0, Void) /* Additional Physical Damage */])
-            .ability(Key::W, [(0, Void) /* Magic Damage */])
-            .ability(Key::E, [(0, Void) /* Physical Damage */])
+        self.ability(Key::Q, [("Additional Physical Damage", Void)])
+            .ability(Key::W, [("Magic Damage", Void)])
+            .ability(Key::E, [("Physical Damage", Void)])
             .combos([
                 &[
                     Ability(Q(Void)),

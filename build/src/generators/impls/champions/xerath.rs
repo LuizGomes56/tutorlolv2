@@ -2,21 +2,21 @@ use super::*;
 
 impl Generator for Xerath {
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::Q, [(0, Void) /* Magic Damage */])
+        self.ability(Key::Q, [("Magic Damage", Void)])
             .ability(
                 Key::W,
                 [
-                    (0, Max), /* Increased Damage */
-                    (2, Min), /* Magic Damage */
+                    ("Increased Damage", Max),
+                    ("Magic Damage", Min),
                 ],
             )
-            .ability(Key::E, [(0, Void) /* Magic Damage */])
+            .ability(Key::E, [("Magic Damage", Void)])
             .ability(
                 Key::R,
                 [
-                    (1, Void), /* Increased Damage per Stack */
-                    (2, Min),  /* Magic Damage */
-                    (5, Max),  /* Total Magic Damage */
+                    ("Increased Damage per Stack", Void),
+                    ("Magic Damage", Min),
+                    ("Total Magic Damage", Max),
                 ],
             )
             .combos([

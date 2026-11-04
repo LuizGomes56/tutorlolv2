@@ -2,13 +2,13 @@ use super::*;
 
 impl Generator for Veigar {
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::Q, [(0, Void) /* Magic Damage */])
-            .ability(Key::W, [(0, Void) /* Magic Damage */])
+        self.ability(Key::Q, [("Magic Damage", Void)])
+            .ability(Key::W, [("Magic Damage", Void)])
             .ability(
                 Key::R,
                 [
-                    (0, Max), /* Maximum Magic Damage */
-                    (1, Min), /* Minimum Magic Damage */
+                    ("Maximum Magic Damage", Max),
+                    ("Minimum Magic Damage", Min),
                 ],
             )
             .combos([

@@ -73,7 +73,7 @@ impl Parser<WikiChampion, Champion> for ChampionParser {
             let mut counter = 1usize;
 
             for (i, ability) in abilities.iter().enumerate() {
-                for (j, (name, effect)) in ability.effects.iter().enumerate() {
+                for (name, effect) in &ability.effects {
                     let tag = name.to_lowercase();
 
                     if (effect.formula.is_some()
@@ -83,10 +83,7 @@ impl Parser<WikiChampion, Champion> for ChampionParser {
                         && !tag.contains("non-champion")
                         || (*key == Key::P && likely_damages(&effect.inner.description))
                     {
-                        groups
-                            .entry((*key, i))
-                            .or_default()
-                            .push((j, counter, name));
+                        groups.entry((*key, i)).or_default().push((counter, name));
 
                         counter += 1;
                     }
@@ -97,14 +94,14 @@ impl Parser<WikiChampion, Champion> for ChampionParser {
         for ((key, i), entries) in groups {
             let args = entries
                 .into_iter()
-                .map(|(j, k, comment)| {
+                .map(|(k, comment)| {
                     let (index, alias) = match k {
                         v @ ..9 => (v, ""),
                         v @ 9..17 => (v - 8, "Min"),
                         v @ 17..25 => (v - 16, "Max"),
                         _ => panic!("[{id}] Too many abilities found"),
                     };
-                    format!("({j}, _{index}{alias}) /* {comment} */")
+                    format!("({comment:?}, _{index}{alias})")
                 })
                 .collect::<Vec<_>>()
                 .join(", ");
@@ -141,8 +138,8 @@ impl TryFrom<WikiChampion> for Champion {
 impl Champion {
     fn modify_pattern<const N: usize>(
         key: Key,
-        pattern: [(usize, AbilityName); N],
-    ) -> [(usize, AbilityId); N] {
+        pattern: [(&str, AbilityName); N],
+    ) -> [(&str, AbilityId); N] {
         core::array::from_fn(|i| {
             let (a, b) = pattern[i];
             let f = AbilityId::from_key_fn(key);
@@ -150,10 +147,12 @@ impl Champion {
         })
     }
 
+    /// Selects the effects of the first ability of `key` by their names in the
+    /// wiki, assigning each one to its [`AbilityName`]
     pub fn ability<const N: usize>(
         &mut self,
         key: Key,
-        pattern: [(usize, AbilityName); N],
+        pattern: [(&str, AbilityName); N],
     ) -> &mut Self {
         self.ability_nth(0, key, pattern)
     }
@@ -175,23 +174,18 @@ impl Champion {
             .as_slice())
     }
 
-    pub fn effect_nth(&self, key: Key, nth_ability: usize, nth_effect: usize) -> MayFail<&Effect> {
+    pub fn effect_nth(&self, key: Key, nth_ability: usize, effect: &str) -> MayFail<&Effect> {
         self.effect_map(key, nth_ability)?
-            .values()
-            .nth(nth_effect)
-            .ok_or_else(|| format!("Failed to get effect for key: {key:?}[{nth_effect}]").into())
+            .get(effect)
+            .ok_or_else(|| format!("Failed to get effect for key: {key:?}[{effect:?}]").into())
     }
 
-    pub fn effect(&self, key: Key, nth_effect: usize) -> MayFail<&Effect> {
-        self.effect_nth(key, 0, nth_effect)
+    pub fn effect(&self, key: Key, effect: &str) -> MayFail<&Effect> {
+        self.effect_nth(key, 0, effect)
     }
 
-    pub fn formula(&self, key: Key, nth_effect: usize) -> MayFail<&str> {
-        Ok(self
-            .effect(key, nth_effect)?
-            .formula
-            .as_deref()
-            .unwrap_or("0"))
+    pub fn formula(&self, key: Key, effect: &str) -> MayFail<&str> {
+        Ok(self.effect(key, effect)?.formula.as_deref().unwrap_or("0"))
     }
 
     pub fn effect_map(&self, key: Key, nth_ability: usize) -> MayFail<&BTreeMap<String, Effect>> {
@@ -204,29 +198,24 @@ impl Champion {
             .effects)
     }
 
-    pub fn scaling_nth(
-        &self,
-        key: Key,
-        nth_ability: usize,
-        nth_effect: usize,
-    ) -> MayFail<&[Scaling]> {
+    pub fn scaling_nth(&self, key: Key, nth_ability: usize, effect: &str) -> MayFail<&[Scaling]> {
         Ok(self
-            .effect_nth(key, nth_ability, nth_effect)?
+            .effect_nth(key, nth_ability, effect)?
             .scalings
             .as_slice())
     }
 
-    pub fn scaling(&self, key: Key, nth_effect: usize) -> MayFail<&[Scaling]> {
-        self.scaling_nth(key, 0, nth_effect)
+    pub fn scaling(&self, key: Key, effect: &str) -> MayFail<&[Scaling]> {
+        self.scaling_nth(key, 0, effect)
     }
 
     pub fn ability_nth<const N: usize>(
         &mut self,
         nth: usize,
         key: Key,
-        pattern: [(usize, AbilityName); N],
+        pattern: [(&str, AbilityName); N],
     ) -> &mut Self {
-        for (i, ability_id) in Self::modify_pattern(key, pattern) {
+        for (effect_name, ability_id) in Self::modify_pattern(key, pattern) {
             if let Some(abilities) = self.wiki_ability(key).ok()
                 && let Some(ability) = abilities.get(nth)
             {
@@ -238,15 +227,47 @@ impl Champion {
                     damage: ZERO.into(),
                 };
 
-                if let Some((comment, effect)) = ability.effects.iter().nth(i) {
-                    value.comment = comment.clone();
+                match ability.effects.get(effect_name) {
+                    Some(effect) => {
+                        value.comment = effect_name.to_string();
 
-                    if let Some(formula) = &effect.formula {
-                        value.damage = formula.clone();
+                        if let Some(formula) = &effect.formula {
+                            value.damage = formula.clone();
+                        }
                     }
+                    None => println!(
+                        "cargo:warning=[{}] {key:?}[{nth}] has no effect named {effect_name:?}",
+                        self.champion_id
+                    ),
                 }
 
                 self.insert(ability_id, value);
+            }
+        }
+
+        self
+    }
+
+    /// Creates abilities of `key` with no damage, for abilities whose effects the
+    /// wiki does not list, so their damage must be set afterwards
+    pub fn ability_placeholder<const N: usize>(
+        &mut self,
+        key: Key,
+        names: [AbilityName; N],
+    ) -> &mut Self {
+        let f = AbilityId::from_key_fn(key);
+
+        for name in names {
+            if let Some(ability) = self.wiki_ability(key).ok().and_then(|list| list.first()) {
+                let value = Ability {
+                    name: ability.name.clone(),
+                    damage_type: ability.damage_type,
+                    attributes: Attrs::Undefined,
+                    comment: "Unknown".into(),
+                    damage: ZERO.into(),
+                };
+
+                self.insert(f(name), value);
             }
         }
 

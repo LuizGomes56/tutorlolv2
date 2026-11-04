@@ -2,23 +2,23 @@ use super::*;
 
 impl Generator for Riven {
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::P, [(1, Void) /* Innate */])
+        self.ability(Key::P, [("Innate", Void)])
             .modify(P(Void), |_| {
                 f![(30 + 15 / 17 * (Level - 1)) / 100 * AttackDamage]
             })?
             .ability(
                 Key::Q,
                 [
-                    (0, Min), /* Physical Damage */
-                    (1, Max), /* Total Physical Damage */
+                    ("Physical Damage", Min),
+                    ("Total Physical Damage", Max),
                 ],
             )
-            .ability(Key::W, [(0, Void) /* Physical Damage */])
+            .ability(Key::W, [("Physical Damage", Void)])
             .ability(
                 Key::R,
                 [
-                    (0, Max), /* Maximum Physical Damage */
-                    (1, Min), /* Minimum Physical Damage */
+                    ("Maximum Physical Damage", Max),
+                    ("Minimum Physical Damage", Min),
                 ],
             )
             .damage_types([P(Void), Q(Min), Q(Max), W(Void), R(Min), R(Max)], Physical)?

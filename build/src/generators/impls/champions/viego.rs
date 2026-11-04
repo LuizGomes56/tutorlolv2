@@ -5,13 +5,13 @@ impl Generator for Viego {
         self.ability(
             Key::Q,
             [
-                (0, Void), /* Bonus Physical Damage */
-                (2, Min),  /* Minimum Bonus Damage */
-                (3, Max),  /* Physical Damage */
+                ("Bonus Physical Damage", Void),
+                ("Minimum Bonus Damage", Min),
+                ("Physical Damage", Max),
             ],
         )
-        .ability(Key::W, [(0, Void) /* Magic Damage */])
-        .ability(Key::R, [(0, Void) /* Physical Damage */])
+        .ability(Key::W, [("Magic Damage", Void)])
+        .ability(Key::R, [("Physical Damage", Void)])
         .combos([
             &[
                 Ability(W(Void)),

@@ -2,27 +2,27 @@ use super::*;
 
 impl Generator for Qiyana {
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::P, [(1, _1) /* Innate */, (2, _2) /* Innate [1] */])
+        self.ability(Key::P, [("Innate", _1), ("Innate [1]", _2)])
             .merge_sum([P(_1), P(_2)], P(Void))?
             .ability_nth(
                 1,
                 Key::Q,
                 [
-                    (0, Min), /* Physical Damage */
-                    (1, _1),  /* Reduced Damage */
+                    ("Physical Damage", Min),
+                    ("Reduced Damage", _1),
                 ],
             )
             .ability(
                 Key::Q,
                 [
-                    (0, Max), /* Increased Damage */
-                    (1, _2),  /* Physical Damage */
-                    (3, _3),  /* Subsequent Increased Damage */
+                    ("Increased Damage", Max),
+                    ("Physical Damage", _2),
+                    ("Subsequent Increased Damage", _3),
                 ],
             )
-            .ability(Key::W, [(1, Void) /* Bonus Magic Damage */])
-            .ability(Key::E, [(0, Void) /* Physical Damage */])
-            .ability(Key::R, [(1, Void) /* Physical Damage */])
+            .ability(Key::W, [("Bonus Magic Damage", Void)])
+            .ability(Key::E, [("Physical Damage", Void)])
+            .ability(Key::R, [("Physical Damage", Void)])
             .damage_types([P(Void), E(Void), R(Void)], Physical)?
             .combos([
                 &[

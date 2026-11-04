@@ -5,12 +5,12 @@ impl Generator for Kayn {
         self.ability(
             Key::Q,
             [
-                (2, Min), /* Physical Damage */
-                (5, Max), /* Total Physical Damage */
+                ("Physical Damage", Min),
+                ("Total Physical Damage", Max),
             ],
         )
-        .ability(Key::W, [(0, Void) /* Physical Damage */])
-        .ability(Key::R, [(0, Void) /* Physical Damage */])
+        .ability(Key::W, [("Physical Damage", Void)])
+        .ability(Key::R, [("Physical Damage", Void)])
         .combos([
             &[Ability(W(Void)), Ability(Q(Max))],
             &[

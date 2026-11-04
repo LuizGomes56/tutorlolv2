@@ -99,6 +99,9 @@ pub enum Wiki {
     ScraperConcat,
     #[clap(alias = "l")]
     Lock,
+    /// Checks the generators against the lock file of the latest archived version
+    #[clap(alias = "lc")]
+    LockCheck,
 }
 
 #[tokio::main]
@@ -168,6 +171,7 @@ async fn main() -> MayFail {
             Wiki::ScraperParse => scraper::parse(),
             Wiki::ScraperConcat => scraper::concat(),
             Wiki::Lock => lock::write(),
+            Wiki::LockCheck => lock::check(),
         }
         .map_err(|e| format!("[wiki] Error: {e:?}"))?,
         AppArgs::Stats {

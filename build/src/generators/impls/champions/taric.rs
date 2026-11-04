@@ -2,8 +2,8 @@ use super::*;
 
 impl Generator for Taric {
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::P, [(0, Void) /* Innate */])
-            .ability(Key::E, [(0, Void) /* Magic Damage */])
+        self.ability(Key::P, [("Innate", Void)])
+            .ability(Key::E, [("Magic Damage", Void)])
             .combos([
                 &[Ability(E(Void)), Attack, Attack, Attack, Attack],
                 &[

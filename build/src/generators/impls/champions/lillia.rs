@@ -2,7 +2,7 @@ use super::*;
 
 impl Generator for Lillia {
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::P, [(2, Void) /* Innate */])
+        self.ability(Key::P, [("Innate", Void)])
             .modify(P(Void), |_| {
                 f![(0.05 + 0.000125 * AbilityPower) * EnemyMaxHealth]
             })?
@@ -10,20 +10,20 @@ impl Generator for Lillia {
             .ability(
                 Key::Q,
                 [
-                    (1, Min), /* Magic Damage */
-                    (3, Max), /* Total Mixed Damage */
+                    ("Magic Damage", Min),
+                    ("Total Mixed Damage", Max),
                 ],
             )
             .damage_type(Q(Min), Magic)?
             .ability(
                 Key::W,
                 [
-                    (2, Min), /* Magic Damage */
-                    (0, Max), /* Increased Damage */
+                    ("Magic Damage", Min),
+                    ("Increased Damage", Max),
                 ],
             )
-            .ability(Key::E, [(0, Void) /* Magic Damage */])
-            .ability(Key::R, [(0, Void) /* Magic Damage */])
+            .ability(Key::E, [("Magic Damage", Void)])
+            .ability(Key::R, [("Magic Damage", Void)])
             .combos([
                 &[
                     Ability(E(Void)),

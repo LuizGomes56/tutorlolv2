@@ -2,7 +2,7 @@ use super::*;
 
 impl Generator for Galio {
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::P, [(2, Void) /* Innate */])
+        self.ability(Key::P, [("Innate", Void)])
             .modify(P(Void), |_| {
                 f![15
                     + 100 / 17 * (Level - 1)
@@ -11,16 +11,16 @@ impl Generator for Galio {
                     + 0.6 * BonusMagicResist]
             })?
             .comment(P(Void), "Colossal Smash empowered basic attack")?
-            .ability(Key::Q, [(0, Void) /* Magic Damage */])
+            .ability(Key::Q, [("Magic Damage", Void)])
             .ability(
                 Key::W,
                 [
-                    (3, Min), /* Minimum Magic Damage */
-                    (2, Max), /* Maximum Magic Damage */
+                    ("Minimum Magic Damage", Min),
+                    ("Maximum Magic Damage", Max),
                 ],
             )
-            .ability(Key::E, [(0, Void) /* Magic Damage */])
-            .ability(Key::R, [(0, Void) /* Magic Damage */])
+            .ability(Key::E, [("Magic Damage", Void)])
+            .ability(Key::R, [("Magic Damage", Void)])
             .combos([
                 &[
                     Attack,

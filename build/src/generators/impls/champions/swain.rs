@@ -5,15 +5,15 @@ impl Generator for Swain {
         self.ability(
             Key::Q,
             [
-                (0, Void), /* Bonus Damage Per Bolt */
-                (1, Min),  /* Magic Damage */
-                (2, Max),  /* Total Damage */
+                ("Bonus Damage Per Bolt", Void),
+                ("Magic Damage", Min),
+                ("Total Damage", Max),
             ],
         )
-        .ability(Key::W, [(0, Void) /* Magic Damage */])
-        .ability(Key::E, [(0, Void) /* Magic Damage */])
-        .ability_nth(1, Key::R, [(1, Void) /* Magic Damage per Tick */])
-        .ability(Key::R, [(0, _1) /* Magic Damage */])
+        .ability(Key::W, [("Magic Damage", Void)])
+        .ability(Key::E, [("Magic Damage", Void)])
+        .ability_nth(1, Key::R, [("Magic Damage per Tick", Void)])
+        .ability(Key::R, [("Magic Damage", _1)])
         .combos([
             &[
                 Ability(Q(Void)),

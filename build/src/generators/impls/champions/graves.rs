@@ -5,16 +5,16 @@ impl Generator for Graves {
         self.ability(
             Key::Q,
             [
-                (0, Min), /* Physical Damage */
-                (1, Max), /* Total Physical Damage */
+                ("Physical Damage", Min),
+                ("Total Physical Damage", Max),
             ],
         )
-        .ability(Key::W, [(0, Void) /* Magic Damage */])
+        .ability(Key::W, [("Magic Damage", Void)])
         .ability(
             Key::R,
             [
-                (0, Void), /* Physical Damage */
-                (1, _1),   /* Reduced Damage */
+                ("Physical Damage", Void),
+                ("Reduced Damage", _1),
             ],
         )
         .combos([

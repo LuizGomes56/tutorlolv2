@@ -9,17 +9,17 @@ impl Generator for Zed {
             17.. => 0.1,
         });
 
-        self.ability(Key::P, [(2, Void) /* Innate */])
+        self.ability(Key::P, [("Innate", Void)])
             .modify(P(Void), |_| f![(ratio) * EnemyMaxHealth])?
             .ability(
                 Key::Q,
                 [
-                    (0, Max), /* Physical Damage */
-                    (1, Min), /* Reduced Damage */
+                    ("Physical Damage", Max),
+                    ("Reduced Damage", Min),
                 ],
             )
-            .ability(Key::E, [(1, Void) /* Physical Damage */])
-            .ability(Key::R, [(0, Void) /* Physical Damage */])
+            .ability(Key::E, [("Physical Damage", Void)])
+            .ability(Key::R, [("Physical Damage", Void)])
             .combos([
                 &[
                     Ability(R(Void)),

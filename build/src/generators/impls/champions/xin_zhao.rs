@@ -10,7 +10,7 @@ impl Generator for XinZhao {
             16.. => 4,
         });
 
-        self.ability(Key::P, [(0, Void) /* Innate */])
+        self.ability(Key::P, [("Innate", Void)])
             .modify(P(Void), |_| {
                 f![(tier) * (0.15 * AttackDamage + 0.05 * AbilityPower)]
             })?
@@ -18,20 +18,20 @@ impl Generator for XinZhao {
             .ability(
                 Key::Q,
                 [
-                    (0, Min), /* Bonus Physical Damage */
-                    (1, Max), /* Total Bonus Physical Damage */
+                    ("Bonus Physical Damage", Min),
+                    ("Total Bonus Physical Damage", Max),
                 ],
             )
             .ability(
                 Key::W,
                 [
-                    (1, Min), /* Slash Total Physical Damage */
-                    (3, Max), /* Total Physical Damage */
-                    (2, _1),  /* Thrust Physical Damage */
+                    ("Slash Total Physical Damage", Min),
+                    ("Total Physical Damage", Max),
+                    ("Thrust Physical Damage", _1),
                 ],
             )
-            .ability(Key::E, [(1, Void) /* Magic Damage */])
-            .ability(Key::R, [(0, Void) /* Physical Damage */])
+            .ability(Key::E, [("Magic Damage", Void)])
+            .ability(Key::R, [("Physical Damage", Void)])
             .combos([
                 &[
                     Ability(R(Void)),

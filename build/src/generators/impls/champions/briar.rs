@@ -2,28 +2,28 @@ use super::*;
 
 impl Generator for Briar {
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::P, [(2, Void) /* Innate */])
+        self.ability(Key::P, [("Innate", Void)])
             .comment(P(Void), "Crimson Curse bleed")?
-            .ability(Key::Q, [(0, Void) /* Physical Damage */])
-            .ability(Key::W, [(0, Void) /* Bonus Physical Damage */])
+            .ability(Key::Q, [("Physical Damage", Void)])
+            .ability(Key::W, [("Bonus Physical Damage", Void)])
             .modify(W(Void), |_| {
                 f![5 + 15 * (WLevel - 1)
                     + 0.05 * AttackDamage
                     + (0.09 + 0.00025 * BonusAd) * EnemyMissingHealth]
             })?
             .comment(W(Void), "Snack Attack")?
-            .ability_nth(1, Key::W, [(2, _1) /* Physical Damage */])
+            .ability_nth(1, Key::W, [("Physical Damage", _1)])
             .comment(W(_1), "Blood Frenzy attack")?
             .ability(
                 Key::E,
                 [
-                    (4, Min), /* Minimum Magic Damage */
-                    (3, Max), /* Maximum Magic Damage */
-                    (0, _1),  /* Bonus Magic Damage */
-                    (5, _2),  /* Total Magic Damage */
+                    ("Minimum Magic Damage", Min),
+                    ("Maximum Magic Damage", Max),
+                    ("Bonus Magic Damage", _1),
+                    ("Total Magic Damage", _2),
                 ],
             )
-            .ability(Key::R, [(2, Void) /* Magic Damage */])
+            .ability(Key::R, [("Magic Damage", Void)])
             .combos([
                 &[
                     Ability(R(Void)),

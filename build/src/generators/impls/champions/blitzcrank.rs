@@ -2,11 +2,11 @@ use super::*;
 
 impl Generator for Blitzcrank {
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::Q, [(0, Void) /* Magic Damage */])
-            .ability(Key::E, [(0, Void)])
+        self.ability(Key::Q, [("Magic Damage", Void)])
+            .ability_placeholder(Key::E, [Void])
             .modify(E(Void), |_| f![AttackDamage + 0.25 * AbilityPower])?
-            .ability(Key::R, [(0, Void) /* Magic Damage */])
-            .ability(Key::R, [(0, _1)])
+            .ability(Key::R, [("Magic Damage", Void)])
+            .ability(Key::R, [("Magic Damage", _1)])
             .modify(R(_1), |_| {
                 /* 50 / 100 / 150 */
                 /* (+ 30 / 40 / 50% AP) */

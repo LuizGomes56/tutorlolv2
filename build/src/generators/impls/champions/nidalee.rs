@@ -6,27 +6,27 @@ impl Generator for Nidalee {
             1,
             Key::Q,
             [
-                (1, Min), /* Minimum Magic Damage */
-                (0, Max), /* Maximum Magic Damage */
+                ("Minimum Magic Damage", Min),
+                ("Maximum Magic Damage", Max),
             ],
         )
         .ability(
             Key::Q,
             [
-                (3, _1Min), /* Minimum Magic Damage */
-                (2, _1Max), /* Maximum Magic Damage */
+                ("Minimum Magic Damage", _1Min),
+                ("Maximum Magic Damage", _1Max),
             ],
         )
         .ability_nth(
             1,
             Key::W,
             [
-                (1, Void), /* Total Magic Damage */
-                (0, _1),   /* Magic Damage Per Tick */
+                ("Total Magic Damage", Void),
+                ("Magic Damage Per Tick", _1),
             ],
         )
-        .ability(Key::W, [(0, _2) /* Magic Damage */])
-        .ability(Key::E, [(0, Void) /* Magic Damage */])
+        .ability(Key::W, [("Magic Damage", _2)])
+        .ability(Key::E, [("Magic Damage", Void)])
         .combos([
             &[
                 Ability(W(Void)),

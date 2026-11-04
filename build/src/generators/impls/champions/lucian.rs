@@ -5,14 +5,14 @@ impl Generator for Lucian {
         self.ability(
             Key::P,
             [
-                (1, Void), /* Innate */
-                (2, _1),   /* Innate - Vigilance */
+                ("Innate", Void),
+                ("Innate - Vigilance", _1),
             ],
         )
         .damage_type(P(_1), Magic)?
-        .ability(Key::Q, [(0, Void) /* Physical Damage */])
-        .ability(Key::W, [(1, Void) /* Magic Damage */])
-        .ability(Key::R, [(1, Min) /* Physical Damage Per Shot */])
+        .ability(Key::Q, [("Physical Damage", Void)])
+        .ability(Key::W, [("Magic Damage", Void)])
+        .ability(Key::R, [("Physical Damage Per Shot", Min)])
         .clone_with(R(Min), R(Max), |dmg| {
             let shots = f![2.2222 * CritChance / 100];
             /* Maybe include IE bonus shots in the future */

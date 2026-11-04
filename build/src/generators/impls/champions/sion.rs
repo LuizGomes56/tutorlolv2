@@ -2,24 +2,24 @@ use super::*;
 
 impl Generator for Sion {
     fn generate(&mut self) -> MayFail {
-        self.ability_nth(1, Key::P, [(0, Void) /* Description 1 */])
+        self.ability_nth(1, Key::P, [("Description 1", Void)])
             .modify(P(Void), |dmg| f![(dmg) / 10])?
             .damage_type(P(Void), Physical)?
             .comment(P(Void), "Glory in Death bonus damage on-hit")?
             .ability(
                 Key::Q,
                 [
-                    (3, Max), /* Maximum Physical Damage */
-                    (6, Min), /* Minimum Physical Damage */
+                    ("Maximum Physical Damage", Max),
+                    ("Minimum Physical Damage", Min),
                 ],
             )
-            .ability(Key::W, [(0, Void) /* Magic Damage */])
-            .ability(Key::E, [(0, Void) /* Magic Damage */])
+            .ability(Key::W, [("Magic Damage", Void)])
+            .ability(Key::E, [("Magic Damage", Void)])
             .ability(
                 Key::R,
                 [
-                    (0, Max), /* Maximum Physical Damage */
-                    (1, Min), /* Minimum Physical Damage */
+                    ("Maximum Physical Damage", Max),
+                    ("Minimum Physical Damage", Min),
                 ],
             )
             .combos([

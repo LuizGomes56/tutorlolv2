@@ -2,10 +2,10 @@ use super::*;
 
 impl Generator for Warwick {
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::P, [(0, _1) /* Innate */, (1, _2) /* Innate [1] */])
+        self.ability(Key::P, [("Innate", _1), ("Innate [1]", _2)])
             .merge_sum([P(_1), P(_2)], P(Void))?
-            .ability(Key::Q, [(2, Void) /* Magic Damage */])
-            .ability(Key::R, [(0, Void) /* Total Magic Damage */])
+            .ability(Key::Q, [("Magic Damage", Void)])
+            .ability(Key::R, [("Total Magic Damage", Void)])
             .combos([
                 &[Ability(Q(Void)), Attack, Ability(R(Void))],
                 &[

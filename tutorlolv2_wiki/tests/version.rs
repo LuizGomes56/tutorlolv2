@@ -42,7 +42,10 @@ fn archive_moves_cache_and_copies_stats() {
         std::fs::write(path, data).unwrap();
     }
 
-    archive(&cache, "16.21.1").unwrap();
+    let lock_file = cache.with_extension("lock.json");
+    std::fs::write(&lock_file, "lock").unwrap();
+
+    archive(&cache, "16.21.1", &lock_file).unwrap();
 
     let archived = cache.join("16.21.1");
     let read = |path: PathBuf| read_to_string(path).unwrap();
@@ -54,9 +57,12 @@ fn archive_moves_cache_and_copies_stats() {
     assert!(!cache.join("riot").exists());
     assert!(!cache.join("wiki").exists());
     assert!(!archived.join("16.20.1").exists());
+    assert_eq!(read(archived.join("wiki.lock.json")), "lock");
+    assert_eq!(read(lock_file.clone()), "lock");
 
-    let again = archive(&cache, "16.21.1");
+    let again = archive(&cache, "16.21.1", &lock_file);
     std::fs::remove_dir_all(&cache).unwrap();
+    std::fs::remove_file(&lock_file).unwrap();
     assert!(
         again.is_err(),
         "an existing archive must not be overwritten"
@@ -66,7 +72,7 @@ fn archive_moves_cache_and_copies_stats() {
 #[test]
 fn archive_without_cache_does_nothing() {
     let cache = temp_cache("missing");
-    archive(&cache, "16.21.1").unwrap();
+    archive(&cache, "16.21.1", cache.join("wiki.lock.json")).unwrap();
     assert!(!cache.exists());
 }
 

@@ -5,19 +5,19 @@ impl Generator for Mel {
         self.ability(
             Key::Q,
             [
-                (0, Min), /* Initial Explosion Magic Damage */
-                (3, Max), /* Total Magic Damage */
-                (1, _1),  /* Magic Damage per Subsequent Explosion */
+                ("Initial Explosion Magic Damage", Min),
+                ("Total Magic Damage", Max),
+                ("Magic Damage per Subsequent Explosion", _1),
             ],
         )
         .ability(
             Key::E,
             [
-                (3, Void), /* Orb Magic Damage */
-                (0, _1),   /* Field Magic Damage per Second */
+                ("Orb Magic Damage", Void),
+                ("Field Magic Damage per Second", _1),
             ],
         )
-        .ability(Key::R, [(1, Void) /* Magic Damage */])
+        .ability(Key::R, [("Magic Damage", Void)])
         .modify(R(Void), |_| {
             f![125
                 + 37.5 * (RLevel - 1)

@@ -5,18 +5,18 @@ impl Generator for Karthus {
         self.ability(
             Key::Q,
             [
-                (0, Max), /* Isolated Enhanced Damage */
-                (1, Min), /* Magic Damage */
+                ("Isolated Enhanced Damage", Max),
+                ("Magic Damage", Min),
             ],
         )
         .ability(
             Key::E,
             [
-                (0, Max), /* Damage Per Second */
-                (1, Min), /* Magic Damage Per Tick */
+                ("Damage Per Second", Max),
+                ("Magic Damage Per Tick", Min),
             ],
         )
-        .ability(Key::R, [(0, Void) /* Magic Damage */])
+        .ability(Key::R, [("Magic Damage", Void)])
         .combos([
             &[
                 Ability(Q(Min)),

@@ -2,16 +2,16 @@ use super::*;
 
 impl Generator for Maokai {
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::Q, [(1, Void) /* Magic Damage */])
-            .ability(Key::W, [(0, Void) /* Magic Damage */])
+        self.ability(Key::Q, [("Magic Damage", Void)])
+            .ability(Key::W, [("Magic Damage", Void)])
             .ability(
                 Key::E,
                 [
-                    (0, Min), /* Magic Damage */
-                    (2, Max), /* Non-Minion Total Magic Damage */
+                    ("Magic Damage", Min),
+                    ("Non-Minion Total Magic Damage", Max),
                 ],
             )
-            .ability(Key::R, [(1, Void) /* Magic Damage */])
+            .ability(Key::R, [("Magic Damage", Void)])
             .combos([
                 &[
                     Ability(R(Void)),

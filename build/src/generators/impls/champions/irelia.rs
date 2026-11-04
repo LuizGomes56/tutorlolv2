@@ -2,19 +2,19 @@ use super::*;
 
 impl Generator for Irelia {
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::P, [(2, Void) /* Ionian Fervor */])
+        self.ability(Key::P, [("Ionian Fervor", Void)])
             .modify(P(Void), |_| f![10 + 51 / 17 * (Level - 1) + 0.2 * BonusAd])?
             .comment(P(Void), "Bonus magic damage on-hit at maximum stacks")?
-            .ability(Key::Q, [(1, Void) /* Physical Damage */])
+            .ability(Key::Q, [("Physical Damage", Void)])
             .ability(
                 Key::W,
                 [
-                    (0, Max), /* Maximum Physical Damage */
-                    (1, Min), /* Minimum Physical Damage */
+                    ("Maximum Physical Damage", Max),
+                    ("Minimum Physical Damage", Min),
                 ],
             )
-            .ability(Key::E, [(0, Void) /* Magic Damage */])
-            .ability(Key::R, [(0, Void) /* Magic Damage */])
+            .ability(Key::E, [("Magic Damage", Void)])
+            .ability(Key::R, [("Magic Damage", Void)])
             .combos([
                 &[
                     Ability(E(Void)),

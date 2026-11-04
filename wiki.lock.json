@@ -9247,5 +9247,2677 @@
       "2: Description 3 (1d0a2219)",
       "3: Passive (1d0a2219)"
     ]
+  },
+  "items": {
+    "AbyssalMask": {
+      "pass": {
+        "formula": "bb04db0a",
+        "scalings": [
+          "0: Simple Unknown (d7ad1c90)"
+        ]
+      }
+    },
+    "Actualizer": {
+      "act": {
+        "formula": "a49e5af5",
+        "scalings": [
+          "0: Per100 BonusMana (916bbf48)"
+        ]
+      }
+    },
+    "AnathemasChains": {
+      "act": {
+        "formula": "1d0a2219",
+        "scalings": []
+      },
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "AntiTowerSocks": {
+      "pass": {
+        "formula": "db2ced22",
+        "scalings": [
+          "0: PercentAttr MaxHealth (817b238b)"
+        ]
+      },
+      "pass2": {
+        "formula": "89602771",
+        "scalings": [
+          "0: PercentAttr EnemyCurrentHealth (7ca75210)"
+        ]
+      }
+    },
+    "ArcaneSweeperTrinket": {
+      "act": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "ArchangelsStaff": {
+      "pass": {
+        "formula": "34d8c537",
+        "scalings": [
+          "0: Simple BonusMana (e9ce88ae)"
+        ]
+      },
+      "pass2": {
+        "formula": "1d0a2219",
+        "scalings": []
+      },
+      "pass3": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "ArdentCenser": {
+      "pass": {
+        "formula": "69e5cb9f",
+        "scalings": [
+          "0: Simple BonusAttackSpeed (49daec26)"
+        ]
+      }
+    },
+    "ArmoredAdvance": {
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      },
+      "pass2": {
+        "formula": "5946c2b5",
+        "scalings": [
+          "0: Simple BonusHealth (835793e0)"
+        ]
+      }
+    },
+    "AtmasReckoning": {
+      "pass": {
+        "formula": "e64d059a",
+        "scalings": [
+          "0: Simple Unknown (4decf5f8)"
+        ]
+      }
+    },
+    "AxiomArc": {
+      "pass": {
+        "formula": "171d8dc3",
+        "scalings": [
+          "0: Simple ArmorPenetrationFlat (6d8fc89b)"
+        ]
+      }
+    },
+    "BamisCinder": {
+      "pass": {
+        "formula": "b9da1321",
+        "scalings": [
+          "0: Simple Unknown (bf362a1e)"
+        ]
+      }
+    },
+    "Bandlepipes": {
+      "pass": {
+        "formula": "69c5133c",
+        "scalings": [
+          "0: Simple BonusAttackSpeed (c99f5e78)"
+        ]
+      },
+      "pass.ranged": {
+        "formula": "1f20061f",
+        "scalings": [
+          "0: Simple BonusAttackSpeed (cd5528c7)"
+        ]
+      }
+    },
+    "BansheesVeil": {
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "BaseTurretReinforcedArmorTurretItem": {
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      },
+      "pass2": {
+        "formula": "1d0a2219",
+        "scalings": []
+      },
+      "pass3": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "Bastionbreaker": {
+      "pass": {
+        "formula": "bf26f6cb",
+        "scalings": [
+          "0: Simple ArmorPenetrationFlat (cfce4c2e)"
+        ]
+      },
+      "pass.ranged": {
+        "formula": "4278f55f",
+        "scalings": [
+          "0: Simple ArmorPenetrationFlat (38a53126)"
+        ]
+      },
+      "pass2": {
+        "formula": "ef873c5f",
+        "scalings": [
+          "0: Simple ArmorPenetrationFlat (66f74d83)"
+        ]
+      },
+      "pass2.ranged": {
+        "formula": "5fed184b",
+        "scalings": [
+          "0: Simple ArmorPenetrationFlat (617f49cc)"
+        ]
+      }
+    },
+    "BlackCleaver": {
+      "pass": {
+        "formula": "566aa568",
+        "scalings": [
+          "0: Simple Armor (48e31870)",
+          "1: Simple Unknown (4decf5f8)"
+        ]
+      },
+      "pass2": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "BlackHoleGauntlet": {
+      "act": {
+        "formula": "2586fda5",
+        "scalings": [
+          "0: Per100 BonusHealth (33cf3ed3)",
+          "1: PercentAttr MaxHealth (99d63087)"
+        ]
+      },
+      "pass": {
+        "formula": "ae964f06",
+        "scalings": [
+          "0: Simple Unknown (437b3a12)",
+          "1: Simple Unknown (041ebc92)"
+        ]
+      }
+    },
+    "BlackSpear": {
+      "act": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "BlackfireTorch": {
+      "pass": {
+        "formula": "e22342d2",
+        "scalings": [
+          "0: Simple AbilityPower (62e88b75)"
+        ]
+      },
+      "pass.total": {
+        "formula": "0ea88d4c",
+        "scalings": [
+          "0: Simple AbilityPower (7b759700)"
+        ]
+      },
+      "pass2": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "BladeOfTheRuinedKing": {
+      "pass": {
+        "formula": "bad30eb5",
+        "scalings": [
+          "0: PercentAttr EnemyCurrentHealth (8e90e6bc)"
+        ]
+      },
+      "pass.ranged": {
+        "formula": "7ae351b8",
+        "scalings": [
+          "0: PercentAttr EnemyCurrentHealth (76022831)"
+        ]
+      },
+      "pass2": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "BloodlettersCurse": {
+      "pass": {
+        "formula": "2fef79b9",
+        "scalings": [
+          "0: Simple MagicResist (8453c230)",
+          "1: Simple Unknown (4decf5f8)"
+        ]
+      }
+    },
+    "Bloodsong": {
+      "act": {
+        "formula": "1d0a2219",
+        "scalings": []
+      },
+      "pass": {
+        "formula": "0ac7ff45",
+        "scalings": [
+          "0: Simple BaseAd (6b208b78)"
+        ]
+      }
+    },
+    "Bloodthirster": {
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "BootsOfSwiftness": {
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "BountyOfWorlds": {
+      "act": {
+        "formula": "1d0a2219",
+        "scalings": []
+      },
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "BrambleVest": {
+      "pass": {
+        "formula": "f8716a8a",
+        "scalings": []
+      }
+    },
+    "CatalystOfAeons": {
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "CelestialOpposition": {
+      "act": {
+        "formula": "1d0a2219",
+        "scalings": []
+      },
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "ChainlacedCrushers": {
+      "pass": {
+        "formula": "5946c2b5",
+        "scalings": [
+          "0: Simple BonusHealth (835793e0)"
+        ]
+      }
+    },
+    "ChempunkChainsword": {
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "CloakOfStarryNight": {
+      "pass": {
+        "formula": "62c904f3",
+        "scalings": [
+          "0: Simple Unknown (51a2c047)"
+        ]
+      }
+    },
+    "CosmicDrive": {
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "CrimsonLucidity": {
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      },
+      "pass2": {
+        "formula": "635fca7b",
+        "scalings": [
+          "0: Simple BonusMoveSpeed (bfa647eb)"
+        ]
+      },
+      "pass2.ranged": {
+        "formula": "72a2a6ca",
+        "scalings": [
+          "0: Simple BonusMoveSpeed (2c6796f0)"
+        ]
+      }
+    },
+    "CrownOfTheShatteredQueen": {
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "Cruelty": {
+      "pass": {
+        "formula": "9a30d642",
+        "scalings": [
+          "0: Simple AbilityPower (f08a394a)",
+          "1: PercentAttr MaxHealth (bf505dd2)"
+        ]
+      }
+    },
+    "Cryptbloom": {
+      "pass": {
+        "formula": "ae48b1e9",
+        "scalings": [
+          "0: Simple AbilityPower (e630ea84)"
+        ]
+      }
+    },
+    "CrystallineOvergrowth": {
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "Cull": {
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "DarkSeal": {
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "DarksteelTalons": {
+      "pass": {
+        "formula": "64068363",
+        "scalings": [
+          "0: Simple BonusArmor (e1f2a1d2)"
+        ]
+      },
+      "pass.ranged": {
+        "formula": "039b4f63",
+        "scalings": [
+          "0: Simple BonusArmor (d4be8e23)"
+        ]
+      }
+    },
+    "Dawncore": {
+      "pass": {
+        "formula": "590f2af1",
+        "scalings": [
+          "0: Simple Unknown (41e3a821)",
+          "1: Simple Unknown (bf362a1e)"
+        ]
+      }
+    },
+    "DeadMansPlate": {
+      "pass": {
+        "formula": "531c710c",
+        "scalings": [
+          "0: Simple BaseAd (6b208b78)"
+        ]
+      },
+      "pass2": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "DeathsDance": {
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      },
+      "pass2": {
+        "formula": "076be482",
+        "scalings": [
+          "0: Simple BonusAd (cc37f2f3)"
+        ]
+      }
+    },
+    "DeathsDaughter": {
+      "pass": {
+        "formula": "8572886c",
+        "scalings": [
+          "0: Simple AbilityPower (ecc9ddd3)"
+        ]
+      }
+    },
+    "Decapitator": {
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "DemonKingsCrown": {
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "DemonicEmbrace": {
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "DetonationOrb": {
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "DiademOfSongs": {
+      "pass": {
+        "formula": "3222b681",
+        "scalings": [
+          "0: Simple BonusMana (5f4af2c0)"
+        ]
+      },
+      "pass2": {
+        "formula": "e4b2c641",
+        "scalings": [
+          "0: PercentAttr MaxMana (dd812520)"
+        ]
+      }
+    },
+    "DiamondTippedSpear": {
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      },
+      "pass2": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "DivineSunderer": {
+      "pass": {
+        "formula": "e7f88132",
+        "scalings": [
+          "0: PercentAttr EnemyMaxHealth (2cc012bc)",
+          "1: PercentAttr EnemyMaxHealth (9c393fdc)",
+          "2: Simple BaseAd (446bec20)",
+          "3: Simple BaseAd (61876764)"
+        ]
+      },
+      "pass.flip": {
+        "formula": "b83df16a",
+        "scalings": [
+          "0: PercentAttr EnemyMaxHealth (2cc012bc)",
+          "1: Simple BaseAd (446bec20)"
+        ]
+      },
+      "pass.ranged": {
+        "formula": "1f3ec930",
+        "scalings": [
+          "0: PercentAttr EnemyMaxHealth (224e56d6)",
+          "1: PercentAttr EnemyMaxHealth (68b453b4)",
+          "2: Simple BaseAd (446bec20)",
+          "3: Simple BaseAd (61876764)"
+        ]
+      }
+    },
+    "DoransHelm": {
+      "pass": {
+        "formula": "04d3013e",
+        "scalings": []
+      }
+    },
+    "DoransRing": {
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      },
+      "pass2": {
+        "formula": "04d3013e",
+        "scalings": []
+      }
+    },
+    "DoransShield": {
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      },
+      "pass2": {
+        "formula": "04d3013e",
+        "scalings": []
+      }
+    },
+    "Dragonheart": {
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "DreamMaker": {
+      "act": {
+        "formula": "1d0a2219",
+        "scalings": []
+      },
+      "pass": {
+        "formula": "04a0c215",
+        "scalings": []
+      }
+    },
+    "DuskAndDawn": {
+      "pass": {
+        "formula": "ed50f832",
+        "scalings": [
+          "0: Simple AbilityPower (e26ee9a5)",
+          "1: Simple BonusHealth (a64be559)",
+          "2: Simple BaseAd (3d19cd25)"
+        ]
+      }
+    },
+    "DuskbladeOfDraktharr": {
+      "pass": {
+        "formula": "44a6fb90",
+        "scalings": [
+          "0: Simple Unknown (fc15a966)"
+        ]
+      },
+      "pass.ranged": {
+        "formula": "92a69133",
+        "scalings": [
+          "0: Simple Unknown (19016e9f)"
+        ]
+      }
+    },
+    "EchoesOfHelia": {
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "Eclipse": {
+      "pass": {
+        "formula": "47b8d95b",
+        "scalings": [
+          "0: Simple BonusAd (3bf66b55)",
+          "1: PercentAttr EnemyMaxHealth (bdbdf2ce)"
+        ]
+      },
+      "pass.ranged": {
+        "formula": "26be0930",
+        "scalings": [
+          "0: Simple BonusAd (5b1c6a2f)",
+          "1: PercentAttr EnemyMaxHealth (fd0be1d9)"
+        ]
+      }
+    },
+    "EdgeOfNight": {
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "EleisasMiracle": {
+      "pass": {
+        "formula": "",
+        "scalings": [
+          "0: RankedPer100 CurrentHealth (c030eaee)",
+          "1: Simple Unknown (e11b4dec)"
+        ]
+      }
+    },
+    "EmpyreanPromise": {
+      "act": {
+        "formula": "1bb9c99a",
+        "scalings": [
+          "0: PercentAttr AbilityPower (d2fa4255)",
+          "1: PercentAttr BonusHealth (5f17e729)"
+        ]
+      }
+    },
+    "EndlessHunger": {
+      "pass": {
+        "formula": "a60caa4e",
+        "scalings": [
+          "0: Simple BonusAd (5a8b3457)"
+        ]
+      },
+      "pass.ranged": {
+        "formula": "e52f3737",
+        "scalings": [
+          "0: Simple BonusAd (4a11bafa)"
+        ]
+      },
+      "pass2": {
+        "formula": "2617b509",
+        "scalings": [
+          "0: Simple Unknown (bf201105)"
+        ]
+      }
+    },
+    "EssenceReaver": {
+      "pass": {
+        "formula": "",
+        "scalings": [
+          "0: Other (bbc42e37)",
+          "1: Simple BaseAd (5dc71985)"
+        ]
+      },
+      "pass.flip": {
+        "formula": "",
+        "scalings": [
+          "0: Other (bbc42e37)",
+          "1: Other (a5c4b67b)",
+          "2: Simple BaseAd (5dc71985)",
+          "3: Simple BaseAd (8236528c)"
+        ]
+      }
+    },
+    "Everfrost": {
+      "act": {
+        "formula": "5f5648b8",
+        "scalings": [
+          "0: Simple AbilityPower (00ec50c9)"
+        ]
+      }
+    },
+    "ExecutionersCalling": {
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "ExperimentalHexplate": {
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      },
+      "pass2": {
+        "formula": "4340d508",
+        "scalings": [
+          "0: Simple BonusAttackSpeed (aa60e4e6)",
+          "1: Simple BonusMoveSpeed (b17ec1b6)"
+        ]
+      },
+      "pass2.ranged": {
+        "formula": "d3794ebf",
+        "scalings": [
+          "0: Simple BonusAttackSpeed (49daec26)",
+          "1: Simple BonusMoveSpeed (bfa647eb)"
+        ]
+      }
+    },
+    "FarsightAlteration": {
+      "act": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "FatedAshes": {
+      "pass": {
+        "formula": "27cd511c",
+        "scalings": []
+      },
+      "pass.total": {
+        "formula": "ea4fff9d",
+        "scalings": []
+      }
+    },
+    "FiendhunterBolts": {
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      },
+      "pass2": {
+        "formula": "73271b9a",
+        "scalings": [
+          "0: Simple BonusAttackSpeed (aa60e4e6)"
+        ]
+      },
+      "pass2.flip": {
+        "formula": "d8a3f707",
+        "scalings": [
+          "0: Simple BonusAttackSpeed (aa60e4e6)",
+          "1: Simple Unknown (20932cc1)",
+          "2: Simple Unknown (bf362a1e)"
+        ]
+      }
+    },
+    "Fimbulwinter": {
+      "pass": {
+        "formula": "510403f6",
+        "scalings": [
+          "0: Simple BonusMana (873c47fb)"
+        ]
+      },
+      "pass2": {
+        "formula": "07be6c8c",
+        "scalings": [
+          "0: Simple Unknown (98a46b52)"
+        ]
+      },
+      "pass2.flip": {
+        "formula": "43f7ab76",
+        "scalings": [
+          "0: Simple Unknown (98a46b52)",
+          "1: Simple Unknown (535df7b2)"
+        ]
+      }
+    },
+    "FireAtWill": {
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "Flesheater": {
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      },
+      "pass2": {
+        "formula": "d835aac6",
+        "scalings": [
+          "0: PercentAttr EnemyMaxHealth (d5f5fd33)"
+        ]
+      }
+    },
+    "ForceOfEntropy": {
+      "pass": {
+        "formula": "c1d19269",
+        "scalings": [
+          "0: PercentAttr Unknown (276627cc)"
+        ]
+      }
+    },
+    "ForceOfNature": {
+      "pass": {
+        "formula": "439c0d98",
+        "scalings": [
+          "0: Simple BonusMoveSpeed (36c298b6)"
+        ]
+      }
+    },
+    "FortificationAram": {
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "FrozenHeart": {
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "Fulmination": {
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      },
+      "pass2": {
+        "formula": "1d0a2219",
+        "scalings": []
+      },
+      "pass3": {
+        "formula": "a943db02",
+        "scalings": [
+          "0: PercentAttr EnemyCurrentHealth (86b706c3)"
+        ]
+      }
+    },
+    "Galeforce": {
+      "act": {
+        "formula": "555b0f83",
+        "scalings": [
+          "0: Simple BonusAd (c1f081cf)"
+        ]
+      },
+      "act.total": {
+        "formula": "ed877527",
+        "scalings": [
+          "0: Simple BonusAd (7777c859)"
+        ]
+      }
+    },
+    "GamblersBlade": {
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "GargoyleStoneplate": {
+      "act": {
+        "formula": "fb35711c",
+        "scalings": [
+          "0: Simple BonusHealth (385b56cf)"
+        ]
+      }
+    },
+    "Ghostcrawlers": {
+      "act": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "GluttonousGreaves": {
+      "pass": {
+        "formula": "9f4997af",
+        "scalings": [
+          "0: Simple Unknown (3a643713)"
+        ]
+      },
+      "pass.total": {
+        "formula": "7a416119",
+        "scalings": [
+          "0: Simple Unknown (2d16ea75)"
+        ]
+      }
+    },
+    "Goredrinker": {
+      "act": {
+        "formula": "d6458e39",
+        "scalings": [
+          "0: PercentAttr MissingHealth (05770c67)",
+          "1: Simple BaseAd (3be5fb48)",
+          "2: Simple AttackDamage (2cc616ec)"
+        ]
+      }
+    },
+    "GuardianAngel": {
+      "pass": {
+        "formula": "95c0c58e",
+        "scalings": [
+          "0: PercentAttr Unknown (f90c431f)",
+          "1: PercentAttr MaxMana (b361b3f2)"
+        ]
+      }
+    },
+    "GuardiansAmulet": {
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "GuardiansDirk": {
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "GuardiansHorn": {
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "GuardiansOrb": {
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "GuinsoosRageblade": {
+      "pass": {
+        "formula": "428a2d08",
+        "scalings": []
+      },
+      "pass2": {
+        "formula": "c180c8a7",
+        "scalings": [
+          "0: Simple BonusAttackSpeed (a31acd27)"
+        ]
+      },
+      "pass2.total": {
+        "formula": "fa06fd4a",
+        "scalings": [
+          "0: Simple BonusAttackSpeed (65019436)"
+        ]
+      }
+    },
+    "Gusto": {
+      "pass": {
+        "formula": "3e22902d",
+        "scalings": [
+          "0: PercentAttr MaxHealth (9a49ed7c)"
+        ]
+      },
+      "pass2": {
+        "formula": "d37a7a44",
+        "scalings": [
+          "0: PercentAttr EnemyCurrentHealth (641a4685)"
+        ]
+      }
+    },
+    "GustwalkerHatchling": {
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      },
+      "pass2": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "Hamstringer": {
+      "pass": {
+        "formula": "e4c636ec",
+        "scalings": []
+      },
+      "pass.flip": {
+        "formula": "e96c2e2a",
+        "scalings": []
+      }
+    },
+    "HauntingGuise": {
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      },
+      "pass.total": {
+        "formula": "7a416119",
+        "scalings": [
+          "0: Simple Unknown (2d16ea75)"
+        ]
+      }
+    },
+    "Heartsteel": {
+      "pass": {
+        "formula": "a90f57de",
+        "scalings": [
+          "0: Simple MaxHealth (3a8b0e4b)"
+        ]
+      },
+      "pass.flip": {
+        "formula": "77224c2c",
+        "scalings": [
+          "0: Simple MaxHealth (3a8b0e4b)",
+          "1: Simple MaxHealth (d3b9cde5)"
+        ]
+      },
+      "pass2": {
+        "formula": "e64d059a",
+        "scalings": [
+          "0: Simple Unknown (4decf5f8)"
+        ]
+      }
+    },
+    "HellfireHatchet": {
+      "pass": {
+        "formula": "3f69b919",
+        "scalings": [
+          "0: Nested (03507f6e)"
+        ]
+      },
+      "pass.flip": {
+        "formula": "8cbc91ce",
+        "scalings": [
+          "0: Nested (cb88e2f6)"
+        ]
+      }
+    },
+    "HemomancersHelm": {
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "HexboltCompanion": {
+      "pass": {
+        "formula": "98cd862e",
+        "scalings": []
+      },
+      "pass2": {
+        "formula": "1d0a2219",
+        "scalings": []
+      },
+      "pass3": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "Hexdrinker": {
+      "pass": {
+        "formula": "54e23e4d",
+        "scalings": [
+          "0: PercentAttr MaxHealth (78e8c907)"
+        ]
+      },
+      "pass.ranged": {
+        "formula": "5670ea64",
+        "scalings": [
+          "0: PercentAttr MaxHealth (78e8c907)"
+        ]
+      }
+    },
+    "HexopticsC44": {
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      },
+      "pass2": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "HextechAlternator": {
+      "pass": {
+        "formula": "87f3607a",
+        "scalings": []
+      }
+    },
+    "HextechGunblade": {
+      "act": {
+        "formula": "aa062b92",
+        "scalings": [
+          "0: Simple AbilityPower (ecc9ddd3)"
+        ]
+      }
+    },
+    "HextechRocketbelt": {
+      "act": {
+        "formula": "4576aaa7",
+        "scalings": [
+          "0: Simple AbilityPower (6050a1f0)"
+        ]
+      }
+    },
+    "HollowRadiance": {
+      "pass": {
+        "formula": "46c1a7eb",
+        "scalings": [
+          "0: Simple BonusHealth (b0a6d987)",
+          "1: Simple Unknown (bf362a1e)"
+        ]
+      },
+      "pass2": {
+        "formula": "ad8a91b8",
+        "scalings": [
+          "0: Simple BonusHealth (a27f5352)",
+          "1: Simple BonusHealth (9824518c)"
+        ]
+      },
+      "pass2.flip": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "HorizonFocus": {
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      },
+      "pass2": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "Hubris": {
+      "pass": {
+        "formula": "690043d5",
+        "scalings": [
+          "0: Simple Stacks (744b6281)"
+        ]
+      },
+      "pass.ranged": {
+        "formula": "71e58452",
+        "scalings": [
+          "0: Simple Stacks (a35eee86)"
+        ]
+      }
+    },
+    "Hullbreaker": {
+      "pass": {
+        "formula": "8e7b694e",
+        "scalings": [
+          "0: Simple MaxHealth (2c638816)",
+          "1: Simple MaxHealth (0b3366a8)",
+          "2: Simple BaseAd (60aecf92)",
+          "3: Simple BaseAd (6a86f102)"
+        ]
+      },
+      "pass.ranged": {
+        "formula": "7c4c0194",
+        "scalings": [
+          "0: Simple MaxHealth (fe712a07)",
+          "1: Simple MaxHealth (36d543fc)",
+          "2: Simple BaseAd (f2a7fe19)",
+          "3: Simple BaseAd (de8412f6)"
+        ]
+      },
+      "pass2": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "IcebornGauntlet": {
+      "pass": {
+        "formula": "0164a3dc",
+        "scalings": [
+          "0: Simple BaseAd (5cee741b)"
+        ]
+      }
+    },
+    "ImmortalPath": {
+      "pass": {
+        "formula": "9f4997af",
+        "scalings": [
+          "0: Simple Unknown (3a643713)"
+        ]
+      },
+      "pass.total": {
+        "formula": "7a416119",
+        "scalings": [
+          "0: Simple Unknown (2d16ea75)"
+        ]
+      },
+      "pass2": {
+        "formula": "64335b83",
+        "scalings": [
+          "0: PercentAttr MaxHealth (59c1172d)"
+        ]
+      }
+    },
+    "ImmortalShieldbow": {
+      "pass": {
+        "formula": "8b1b2215",
+        "scalings": [
+          "0: PercentAttr MaxHealth (78e8c907)"
+        ]
+      }
+    },
+    "ImperialMandate": {
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      },
+      "pass2": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "InnervatingLocket": {
+      "pass": {
+        "formula": "3ffa71c8",
+        "scalings": [
+          "0: Simple BonusMoveSpeed (b964414a)"
+        ]
+      }
+    },
+    "IonianBootsOfLucidity": {
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "JakShoTheProtean": {
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "JarvanIs": {
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      },
+      "pass2": {
+        "formula": "1d0a2219",
+        "scalings": []
+      },
+      "pass3": {
+        "formula": "1d0a2219",
+        "scalings": []
+      },
+      "pass4": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "KaenicRookern": {
+      "pass": {
+        "formula": "e8ce62e8",
+        "scalings": [
+          "0: PercentAttr MaxHealth (7f7adc21)"
+        ]
+      }
+    },
+    "KinkouJitte": {
+      "pass": {
+        "formula": "a744391a",
+        "scalings": [
+          "0: Nested (a345c8be)",
+          "1: Simple BonusMoveSpeed (d4715297)"
+        ]
+      }
+    },
+    "KnightsVow": {
+      "act": {
+        "formula": "1d0a2219",
+        "scalings": []
+      },
+      "pass": {
+        "formula": "8b1b2215",
+        "scalings": [
+          "0: PercentAttr MaxHealth (78e8c907)"
+        ]
+      }
+    },
+    "KrakenSlayer": {
+      "pass": {
+        "formula": "dee1b5de",
+        "scalings": []
+      },
+      "pass.ranged": {
+        "formula": "ea56b888",
+        "scalings": []
+      }
+    },
+    "LiandrysTorment": {
+      "pass": {
+        "formula": "70e9c604",
+        "scalings": [
+          "0: PercentAttr EnemyMaxHealth (26df919e)"
+        ]
+      },
+      "pass.flip": {
+        "formula": "ceeb9c79",
+        "scalings": [
+          "0: PercentAttr EnemyMaxHealth (49d2227f)"
+        ]
+      },
+      "pass2": {
+        "formula": "1d0a2219",
+        "scalings": []
+      },
+      "pass2.total": {
+        "formula": "7a416119",
+        "scalings": [
+          "0: Simple Unknown (2d16ea75)"
+        ]
+      }
+    },
+    "LichBane": {
+      "pass": {
+        "formula": "1a725a50",
+        "scalings": [
+          "0: Simple AbilityPower (a9069b0d)",
+          "1: Simple BonusAttackSpeed (aa60e4e6)",
+          "2: Simple BaseAd (3d19cd25)"
+        ]
+      }
+    },
+    "Lifeline": {
+      "act": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "LightningRod": {
+      "pass": {
+        "formula": "b0a45248",
+        "scalings": [
+          "0: Simple BonusAd (548376e0)",
+          "1: Simple AbilityPower (f4587e51)",
+          "2: PercentAttr EnemyMaxHealth (d2d25ce1)",
+          "3: Simple AbilityPower (dcc509ce)",
+          "4: PercentAttr MaxHealth (7f728de3)"
+        ]
+      },
+      "pass2": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "LocketOfTheIronSolari": {
+      "act": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "LordDominiksRegards": {
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "LostChapter": {
+      "pass": {
+        "formula": "84b58c8b",
+        "scalings": [
+          "0: PercentAttr MaxMana (1aa5d25b)"
+        ]
+      }
+    },
+    "LudensEcho": {
+      "pass": {
+        "formula": "4c6ce47f",
+        "scalings": [
+          "0: Simple AbilityPower (77b54921)"
+        ]
+      },
+      "pass.total": {
+        "formula": "f5f12825",
+        "scalings": [
+          "0: Simple AbilityPower (e26ee9a5)"
+        ]
+      }
+    },
+    "Malignance": {
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      },
+      "pass2": {
+        "formula": "d9815f84",
+        "scalings": [
+          "0: Simple AbilityPower (cdd71b00)"
+        ]
+      },
+      "pass2.flip": {
+        "formula": "8b8410af",
+        "scalings": [
+          "0: Simple AbilityPower (6050a1f0)"
+        ]
+      }
+    },
+    "Manamune": {
+      "pass": {
+        "formula": "faaeee21",
+        "scalings": [
+          "0: Simple MaxMana (e0f10a3a)"
+        ]
+      },
+      "pass2": {
+        "formula": "1d0a2219",
+        "scalings": []
+      },
+      "pass3": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "MawOfMalmortius": {
+      "pass": {
+        "formula": "09762926",
+        "scalings": [
+          "0: Simple BonusAd (987004b9)",
+          "1: PercentAttr MaxHealth (78e8c907)",
+          "2: Simple Unknown (437b3a12)"
+        ]
+      },
+      "pass.ranged": {
+        "formula": "f6b32633",
+        "scalings": [
+          "0: Simple BonusAd (67c2c678)",
+          "1: PercentAttr MaxHealth (78e8c907)",
+          "2: Simple Unknown (437b3a12)"
+        ]
+      }
+    },
+    "MejaisSoulstealer": {
+      "pass": {
+        "formula": "635fca7b",
+        "scalings": [
+          "0: Simple BonusMoveSpeed (bfa647eb)"
+        ]
+      }
+    },
+    "MercurialScimitar": {
+      "act": {
+        "formula": "4d2420f7",
+        "scalings": [
+          "0: Simple BonusMoveSpeed (d4715297)"
+        ]
+      }
+    },
+    "MikaelsBlessing": {
+      "act": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "MirageBlade": {
+      "pass": {
+        "formula": "",
+        "scalings": [
+          "0: Ranked Unknown (14f77f63)"
+        ]
+      }
+    },
+    "MoonflairSpellblade": {
+      "pass": {
+        "formula": "1512eb16",
+        "scalings": [
+          "0: Simple BonusAttackSpeed (9879033a)"
+        ]
+      }
+    },
+    "MoonstoneRenewer": {
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "Morellonomicon": {
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "MortalReminder": {
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "MosstomperSeedling": {
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      },
+      "pass2": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "Multitool": {
+      "act": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "Muramana": {
+      "pass": {
+        "formula": "faaeee21",
+        "scalings": [
+          "0: Simple MaxMana (e0f10a3a)"
+        ]
+      },
+      "pass2": {
+        "formula": "a1d96086",
+        "scalings": [
+          "0: Simple MaxMana (7b89afdf)"
+        ]
+      }
+    },
+    "NashorsTooth": {
+      "pass": {
+        "formula": "b17d082c",
+        "scalings": [
+          "0: Simple AbilityPower (6050a1f0)"
+        ]
+      }
+    },
+    "NavoriFlickerblade": {
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "NightHarvester": {
+      "pass": {
+        "formula": "f6d9e81f",
+        "scalings": [
+          "0: Simple AbilityPower (f08a394a)",
+          "1: Simple BonusMoveSpeed (cdd85f48)"
+        ]
+      }
+    },
+    "OblivionOrb": {
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "OhmwreckerTurretItem": {
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      },
+      "pass2": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "OracleLens": {
+      "act": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "Overcharged": {
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "OverlordsBloodmail": {
+      "pass": {
+        "formula": "8c81a262",
+        "scalings": [
+          "0: Simple BonusHealth (bc33a0c5)"
+        ]
+      },
+      "pass2": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "Perplexity": {
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "Phage": {
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "PhantomDancer": {
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "PhreakishGusto": {
+      "pass": {
+        "formula": "9bc9a809",
+        "scalings": [
+          "0: PercentAttr MaxHealth (264970d0)"
+        ]
+      },
+      "pass2": {
+        "formula": "02bb9548",
+        "scalings": [
+          "0: PercentAttr EnemyCurrentHealth (cde48681)"
+        ]
+      }
+    },
+    "PlatedSteelcaps": {
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "ProfaneHydra": {
+      "act": {
+        "formula": "0f708e1f",
+        "scalings": [
+          "0: Simple AttackDamage (57490458)"
+        ]
+      },
+      "pass": {
+        "formula": "75c830e3",
+        "scalings": [
+          "0: Simple AttackDamage (1bc7a754)"
+        ]
+      },
+      "pass.ranged": {
+        "formula": "f9529d9d",
+        "scalings": [
+          "0: Simple AttackDamage (2622a91a)"
+        ]
+      }
+    },
+    "ProtoplasmHarness": {
+      "pass": {
+        "formula": "0d72477b",
+        "scalings": [
+          "0: Simple BonusArmor (395391f2)",
+          "1: Simple BonusMagicResist (85c5f478)",
+          "2: PercentAttr MaxHealth (78e8c907)",
+          "3: Simple BonusMoveSpeed (bfa647eb)"
+        ]
+      }
+    },
+    "ProwlersClaw": {
+      "act": {
+        "formula": "f3bb015f",
+        "scalings": [
+          "0: Nested (5f900093)"
+        ]
+      }
+    },
+    "Puppeteer": {
+      "pass": {
+        "formula": "235f5721",
+        "scalings": [
+          "0: PercentAttr Unknown (55476a19)",
+          "1: Simple Unknown (2eae7c66)",
+          "2: Simple BonusMoveSpeed (cdd85f48)"
+        ]
+      },
+      "pass2": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "PyromancersCloak": {
+      "pass": {
+        "formula": "6fc4d3cc",
+        "scalings": []
+      },
+      "pass.flip": {
+        "formula": "ad4c4af6",
+        "scalings": []
+      },
+      "pass2": {
+        "formula": "1fbea4bc",
+        "scalings": [
+          "0: Simple BonusMoveSpeed (b17ec1b6)",
+          "1: Simple BonusMoveSpeed (4134549c)"
+        ]
+      }
+    },
+    "QuicksilverSash": {
+      "act": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "RabadonsDeathcap": {
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "RadiantVirtue": {
+      "pass": {
+        "formula": "675738d4",
+        "scalings": [
+          "0: PercentAttr MaxHealth (2082201f)",
+          "1: PercentAttr MaxHealth (87012e61)"
+        ]
+      }
+    },
+    "RaiseMorale": {
+      "pass": {
+        "formula": "4eccb118",
+        "scalings": [
+          "0: Simple BonusMoveSpeed (cdd85f48)"
+        ]
+      }
+    },
+    "RanduinsOmen": {
+      "act": {
+        "formula": "1d0a2219",
+        "scalings": []
+      },
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "RapidFirecannon": {
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      },
+      "pass2": {
+        "formula": "93725e4f",
+        "scalings": []
+      }
+    },
+    "RavenousHydra": {
+      "act": {
+        "formula": "0f708e1f",
+        "scalings": [
+          "0: Simple AttackDamage (57490458)"
+        ]
+      },
+      "pass": {
+        "formula": "75c830e3",
+        "scalings": [
+          "0: Simple AttackDamage (1bc7a754)"
+        ]
+      },
+      "pass.ranged": {
+        "formula": "f9529d9d",
+        "scalings": [
+          "0: Simple AttackDamage (2622a91a)"
+        ]
+      }
+    },
+    "RealityFracture": {
+      "pass": {
+        "formula": "2832c6bf",
+        "scalings": [
+          "0: PercentAttr AttackDamage (7f9f8c90)",
+          "1: PercentAttr AbilityPower (71b760ea)"
+        ]
+      }
+    },
+    "ReapersToll": {
+      "pass": {
+        "formula": "5ba12409",
+        "scalings": [
+          "0: Nested (e6157ea2)",
+          "1: PercentAttr EnemyMaxHealth (196467c6)",
+          "2: PercentAttr EnemyMaxHealth (d1b78c0e)"
+        ]
+      },
+      "pass.ranged": {
+        "formula": "43c957b3",
+        "scalings": [
+          "0: Nested (cb14b75c)",
+          "1: PercentAttr EnemyMaxHealth (196467c6)",
+          "2: PercentAttr EnemyMaxHealth (d1b78c0e)"
+        ]
+      },
+      "pass2": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "RecurveBow": {
+      "pass": {
+        "formula": "ea4fff9d",
+        "scalings": []
+      }
+    },
+    "Redemption": {
+      "act": {
+        "formula": "26c12e7e",
+        "scalings": [
+          "0: PercentAttr EnemyMaxHealth (e28fd2cd)"
+        ]
+      }
+    },
+    "RefillablePotion": {
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "Regicide": {
+      "pass": {
+        "formula": "f8716a8a",
+        "scalings": []
+      }
+    },
+    "ReinforcedArmorTurretItem": {
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      },
+      "pass2": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "Reverberation": {
+      "pass": {
+        "formula": "370063bc",
+        "scalings": [
+          "0: Simple BonusAttackSpeed (75cb8780)"
+        ]
+      },
+      "pass2": {
+        "formula": "7ea99ecd",
+        "scalings": [
+          "0: PercentAttr BonusHealth (63690e60)"
+        ]
+      },
+      "pass3": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "Riftmaker": {
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      },
+      "pass.total": {
+        "formula": "357358eb",
+        "scalings": [
+          "0: Simple Unknown (72f33ba7)"
+        ]
+      },
+      "pass2": {
+        "formula": "dc422d5f",
+        "scalings": [
+          "0: Simple BonusHealth (a27f5352)"
+        ]
+      }
+    },
+    "RiteOfRuin": {
+      "pass": {
+        "formula": "405bd9b8",
+        "scalings": [
+          "0: Simple CritChance (6a360a3a)",
+          "1: Simple Unknown (51a2c047)"
+        ]
+      },
+      "pass2": {
+        "formula": "c3f68a6a",
+        "scalings": [
+          "0: Simple BonusAd (72051a3e)",
+          "1: Simple AbilityPower (6050a1f0)"
+        ]
+      }
+    },
+    "RodOfAges": {
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      },
+      "pass2": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "RunaansHurricane": {
+      "pass": {
+        "formula": "f0abe7c9",
+        "scalings": [
+          "0: Simple AttackDamage (1155eb6e)"
+        ]
+      }
+    },
+    "Runecarver": {
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      },
+      "pass2": {
+        "formula": "1d0a2219",
+        "scalings": []
+      },
+      "pass3": {
+        "formula": "30fb8889",
+        "scalings": [
+          "0: Simple BonusAd (53136929)",
+          "1: Simple AbilityPower (85d098c6)",
+          "2: Per100 BonusHealth (29744aa5)"
+        ]
+      }
+    },
+    "RunicCompass": {
+      "act": {
+        "formula": "1d0a2219",
+        "scalings": []
+      },
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      },
+      "pass2": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "RylaisCrystalScepter": {
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "SanguineGift": {
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "ScarecrowEffigy": {
+      "act": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "ScorchclawPup": {
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      },
+      "pass2": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "ScoutingAhead": {
+      "act": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "ScoutsSlingshot": {
+      "pass": {
+        "formula": "93725e4f",
+        "scalings": []
+      }
+    },
+    "SeekersArmguard": {
+      "act": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "SeraphsEmbrace": {
+      "pass": {
+        "formula": "a776019a",
+        "scalings": [
+          "0: Simple BonusMana (f7f60ee3)"
+        ]
+      },
+      "pass2": {
+        "formula": "eb025093",
+        "scalings": [
+          "0: PercentAttr MaxHealth (78e8c907)",
+          "1: Simple MaxMana (b7af1285)"
+        ]
+      }
+    },
+    "SerpentsFang": {
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "SeryldasGrudge": {
+      "pass": {
+        "formula": "50a6716a",
+        "scalings": [
+          "0: PercentAttr EnemyMaxHealth (d1b78c0e)"
+        ]
+      }
+    },
+    "Shadowflame": {
+      "pass": {
+        "formula": "715af52e",
+        "scalings": [
+          "0: Simple Unknown (c9a7e604)"
+        ]
+      }
+    },
+    "Sheen": {
+      "pass": {
+        "formula": "0ac7ff45",
+        "scalings": [
+          "0: Simple BaseAd (6b208b78)"
+        ]
+      }
+    },
+    "ShieldOfMoltenStone": {
+      "pass": {
+        "formula": "62c904f3",
+        "scalings": [
+          "0: Simple Unknown (51a2c047)"
+        ]
+      }
+    },
+    "ShurelyasBattlesong": {
+      "act": {
+        "formula": "b974e9d1",
+        "scalings": [
+          "0: Simple BonusMoveSpeed (b54b53bd)"
+        ]
+      }
+    },
+    "SlightlyMagicalBoots": {
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "SolsticeSleigh": {
+      "act": {
+        "formula": "1d0a2219",
+        "scalings": []
+      },
+      "pass": {
+        "formula": "70f1c3f2",
+        "scalings": [
+          "0: Simple BonusMoveSpeed (b17ec1b6)"
+        ]
+      }
+    },
+    "SpearOfShojin": {
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      },
+      "pass2": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "SpectralCutlass": {
+      "act": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "SpiritVisage": {
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "StaffOfFlowingWater": {
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "StatikkShiv": {
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      },
+      "pass2": {
+        "formula": "1d0a2219",
+        "scalings": []
+      },
+      "pass3": {
+        "formula": "79d1f58d",
+        "scalings": []
+      }
+    },
+    "StealthWard": {
+      "act": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "SteraksGage": {
+      "pass": {
+        "formula": "9a369be5",
+        "scalings": [
+          "0: Simple BaseAd (d628f998)"
+        ]
+      },
+      "pass2": {
+        "formula": "743ba6ce",
+        "scalings": [
+          "0: PercentAttr MaxHealth (78e8c907)",
+          "1: PercentAttr BonusHealth (46f97b4f)"
+        ]
+      }
+    },
+    "Stormrazor": {
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      },
+      "pass2": {
+        "formula": "0955f623",
+        "scalings": [
+          "0: Simple BonusMoveSpeed (28d07f27)"
+        ]
+      }
+    },
+    "Stormsurge": {
+      "pass": {
+        "formula": "0babbd02",
+        "scalings": [
+          "0: PercentAttr EnemyMaxHealth (d1ca527e)"
+        ]
+      },
+      "pass2": {
+        "formula": "634c5d85",
+        "scalings": [
+          "0: Simple AbilityPower (e26ee9a5)"
+        ]
+      }
+    },
+    "Stridebreaker": {
+      "act": {
+        "formula": "f8a8dc59",
+        "scalings": [
+          "0: Simple AttackDamage (57490458)",
+          "1: Simple BonusMoveSpeed (71260758)"
+        ]
+      },
+      "pass": {
+        "formula": "75c830e3",
+        "scalings": [
+          "0: Simple AttackDamage (1bc7a754)"
+        ]
+      },
+      "pass.ranged": {
+        "formula": "f9529d9d",
+        "scalings": [
+          "0: Simple AttackDamage (2622a91a)"
+        ]
+      }
+    },
+    "SunderedSky": {
+      "pass": {
+        "formula": "04553c29",
+        "scalings": [
+          "0: PercentAttr MissingHealth (4dd59cbe)",
+          "1: Simple BaseAd (9aa79c94)"
+        ]
+      },
+      "pass.flip": {
+        "formula": "45775f52",
+        "scalings": [
+          "0: PercentAttr MissingHealth (4dd59cbe)",
+          "1: Simple Unknown (20932cc1)",
+          "2: Simple BaseAd (9aa79c94)"
+        ]
+      },
+      "pass.ranged": {
+        "formula": "ad90250d",
+        "scalings": [
+          "0: PercentAttr MissingHealth (4dd59cbe)",
+          "1: Simple BaseAd (97ad16c6)"
+        ]
+      }
+    },
+    "SunfireAegis": {
+      "pass": {
+        "formula": "a674e1b8",
+        "scalings": [
+          "0: Simple BonusHealth (16c6ea66)",
+          "1: Simple Unknown (bf362a1e)"
+        ]
+      }
+    },
+    "SuperMechArmor": {
+      "pass": {
+        "formula": "b1819c03",
+        "scalings": [
+          "0: PercentAttr MaxHealth (5e86dfaa)"
+        ]
+      }
+    },
+    "SuperMechPowerField": {
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "Swiftmarch": {
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      },
+      "pass2": {
+        "formula": "cb7c561d",
+        "scalings": [
+          "0: PercentAttr BonusMoveSpeed (e2e8ecce)"
+        ]
+      }
+    },
+    "SwordOfBlossomingDawn": {
+      "pass": {
+        "formula": "b5d0c6ca",
+        "scalings": [
+          "0: Simple BonusAttackSpeed (1a9f956e)"
+        ]
+      },
+      "pass2": {
+        "formula": "bbde364d",
+        "scalings": [
+          "0: Simple BonusAd (4a11bafa)",
+          "1: Simple AbilityPower (82103d4f)"
+        ]
+      }
+    },
+    "SwordOfTheDivine": {
+      "pass": {
+        "formula": "b6825ac3",
+        "scalings": [
+          "0: PercentAttr CritChance (fb90c8e0)"
+        ]
+      }
+    },
+    "TalismanOfAscension": {
+      "act": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "TearOfTheGoddess": {
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      },
+      "pass2": {
+        "formula": "04d3013e",
+        "scalings": []
+      }
+    },
+    "Terminus": {
+      "pass": {
+        "formula": "7f85dbcb",
+        "scalings": [
+          "0: Simple BonusAd (4a11bafa)",
+          "1: Simple AbilityPower (e26ee9a5)"
+        ]
+      },
+      "pass2": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "TheCollector": {
+      "pass": {
+        "formula": "79b3d7e0",
+        "scalings": [
+          "0: PercentAttr EnemyMaxHealth (898c188c)"
+        ]
+      },
+      "pass2": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "TheGoldenSpatula": {
+      "pass": {
+        "formula": "02c703f0",
+        "scalings": [
+          "0: Simple BonusMoveSpeed (44ea1eeb)",
+          "1: Simple Unknown (51a2c047)",
+          "2: Simple BonusAttackSpeed (cd5528c7)"
+        ]
+      }
+    },
+    "Thornmail": {
+      "pass": {
+        "formula": "ff40a1e6",
+        "scalings": [
+          "0: Simple BonusArmor (c69707ee)"
+        ]
+      }
+    },
+    "Tiamat": {
+      "act": {
+        "formula": "ebaa01c9",
+        "scalings": [
+          "0: Simple AttackDamage (fb731200)"
+        ]
+      },
+      "pass": {
+        "formula": "75c830e3",
+        "scalings": [
+          "0: Simple AttackDamage (1bc7a754)"
+        ]
+      },
+      "pass.ranged": {
+        "formula": "f9529d9d",
+        "scalings": [
+          "0: Simple AttackDamage (2622a91a)"
+        ]
+      }
+    },
+    "TitanicHydra": {
+      "act": {
+        "formula": "ef942247",
+        "scalings": [
+          "0: Simple MaxHealth (3031cd1d)",
+          "1: Simple MaxHealth (17987d6a)"
+        ]
+      },
+      "act.ranged": {
+        "formula": "b082ba61",
+        "scalings": [
+          "0: Simple MaxHealth (4f57cbf7)",
+          "1: Simple MaxHealth (43e38938)"
+        ]
+      },
+      "pass": {
+        "formula": "1bf38564",
+        "scalings": [
+          "0: Simple MaxHealth (3e4d1cc2)",
+          "1: Simple MaxHealth (48bed8a8)"
+        ]
+      },
+      "pass.ranged": {
+        "formula": "02d851b5",
+        "scalings": [
+          "0: Simple MaxHealth (da5ef7c4)",
+          "1: Simple MaxHealth (eee075f5)"
+        ]
+      }
+    },
+    "TowerPowerUp": {
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      },
+      "pass2": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "TrinityForce": {
+      "pass": {
+        "formula": "8d38d966",
+        "scalings": [
+          "0: Simple BaseAd (e250a4fd)"
+        ]
+      },
+      "pass2": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "TurboChemtank": {
+      "act": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "TurretPlating": {
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "TwilightsEdge": {
+      "pass": {
+        "formula": "6bc2180b",
+        "scalings": [
+          "0: Simple BonusAttackSpeed (aa60e4e6)"
+        ]
+      }
+    },
+    "TwinMask": {
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "UltraHydra": {
+      "act": {
+        "formula": "95f45a83",
+        "scalings": [
+          "0: Simple AttackDamage (97d89101)",
+          "1: Simple MaxHealth (3a8b0e4b)",
+          "2: Simple MaxHealth (0b3366a8)"
+        ]
+      },
+      "pass": {
+        "formula": "0e72fd97",
+        "scalings": [
+          "0: Simple MaxHealth (4f57cbf7)",
+          "1: Simple AttackDamage (57490458)"
+        ]
+      }
+    },
+    "UmbralGlaive": {
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      },
+      "pass2": {
+        "formula": "27cd4c03",
+        "scalings": []
+      },
+      "pass2.ranged": {
+        "formula": "182e1cd2",
+        "scalings": []
+      },
+      "pass3": {
+        "formula": "6a53fdae",
+        "scalings": [
+          "0: Simple ArmorPenetrationFlat (cfce4c2e)"
+        ]
+      }
+    },
+    "UnendingDespair": {
+      "pass": {
+        "formula": "988630d8",
+        "scalings": [
+          "0: PercentAttr BonusHealth (2adfe621)"
+        ]
+      }
+    },
+    "VeigarsTalismanOfAscension": {
+      "pass": {
+        "formula": "5ed902d0",
+        "scalings": [
+          "0: Simple Unknown (bf362a1e)"
+        ]
+      }
+    },
+    "VerdantBarrier": {
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "VoidImmolation": {
+      "pass": {
+        "formula": "aa2f79e2",
+        "scalings": [
+          "0: PercentAttr BonusHealth (c22588be)",
+          "1: Simple Unknown (bf362a1e)"
+        ]
+      },
+      "pass2": {
+        "formula": "660639f0",
+        "scalings": [
+          "0: Simple BonusHealth (a27f5352)"
+        ]
+      }
+    },
+    "VoltaicCyclosword": {
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      },
+      "pass2": {
+        "formula": "1d0a2219",
+        "scalings": []
+      },
+      "pass3": {
+        "formula": "bad30eb5",
+        "scalings": [
+          "0: PercentAttr EnemyCurrentHealth (8e90e6bc)"
+        ]
+      },
+      "pass3.ranged": {
+        "formula": "0ded5f1b",
+        "scalings": [
+          "0: PercentAttr EnemyCurrentHealth (7235962a)"
+        ]
+      }
+    },
+    "WardensEye": {
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "WardensMail": {
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "WarmogsArmor": {
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      },
+      "pass2": {
+        "formula": "521cdf7a",
+        "scalings": [
+          "0: Simple MaxHealth (eee075f5)"
+        ]
+      },
+      "pass2.flip": {
+        "formula": "e8ce62e8",
+        "scalings": [
+          "0: Simple MaxHealth (6a7e7407)"
+        ]
+      },
+      "pass3": {
+        "formula": "76660cfe",
+        "scalings": [
+          "0: Simple BonusHealth (09b0b9c3)"
+        ]
+      }
+    },
+    "WhisperingCirclet": {
+      "pass": {
+        "formula": "3222b681",
+        "scalings": [
+          "0: Simple BonusMana (5f4af2c0)"
+        ]
+      },
+      "pass2": {
+        "formula": "1d0a2219",
+        "scalings": []
+      },
+      "pass3": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "WintersApproach": {
+      "pass": {
+        "formula": "510403f6",
+        "scalings": [
+          "0: Simple BonusMana (873c47fb)"
+        ]
+      },
+      "pass2": {
+        "formula": "1d0a2219",
+        "scalings": []
+      },
+      "pass3": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "WitsEnd": {
+      "pass": {
+        "formula": "a193c93c",
+        "scalings": []
+      }
+    },
+    "WoogletsWitchcap": {
+      "act": {
+        "formula": "1d0a2219",
+        "scalings": []
+      },
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "WordlessPromise": {
+      "act": {
+        "formula": "1d0a2219",
+        "scalings": []
+      },
+      "pass": {
+        "formula": "40b13a0c",
+        "scalings": [
+          "0: PercentAttr AbilityPower (b17e2384)",
+          "1: PercentAttr Unknown (1226c6a3)"
+        ]
+      }
+    },
+    "WorldAtlas": {
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      },
+      "pass2": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "YoumuusGhostblade": {
+      "act": {
+        "formula": "70f1c3f2",
+        "scalings": [
+          "0: Simple BonusMoveSpeed (b17ec1b6)"
+        ]
+      },
+      "act.ranged": {
+        "formula": "3ffa71c8",
+        "scalings": [
+          "0: Simple BonusMoveSpeed (b964414a)"
+        ]
+      },
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "YunTalWildarrows": {
+      "pass": {
+        "formula": "7166f26f",
+        "scalings": [
+          "0: Simple CritChance (25abe797)",
+          "1: Simple CritChance (14402c40)"
+        ]
+      },
+      "pass.ranged": {
+        "formula": "8cab70cd",
+        "scalings": [
+          "0: Simple CritChance (0685e8bd)",
+          "1: Simple CritChance (14402c40)"
+        ]
+      },
+      "pass2": {
+        "formula": "69c5133c",
+        "scalings": [
+          "0: Simple BonusAttackSpeed (c99f5e78)"
+        ]
+      }
+    },
+    "ZazZaksRealmspike": {
+      "act": {
+        "formula": "1d0a2219",
+        "scalings": []
+      },
+      "pass": {
+        "formula": "2e3368b5",
+        "scalings": [
+          "0: Simple AbilityPower (6050a1f0)",
+          "1: PercentAttr EnemyMaxHealth (48ebfd5a)"
+        ]
+      }
+    },
+    "ZekesConvergence": {
+      "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      },
+      "pass2": {
+        "formula": "0f3961c7",
+        "scalings": []
+      },
+      "pass2.flip": {
+        "formula": "9235f477",
+        "scalings": []
+      }
+    },
+    "Zephyr": {
+      "pass": {
+        "formula": "cb7c561d",
+        "scalings": [
+          "0: Simple BonusMoveSpeed (44ea1eeb)"
+        ]
+      },
+      "pass.total": {
+        "formula": "b89e3c48",
+        "scalings": [
+          "0: Simple Unknown (19b35aa6)"
+        ]
+      }
+    },
+    "ZhonyasHourglass": {
+      "act": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    }
   }
 }

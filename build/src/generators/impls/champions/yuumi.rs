@@ -5,18 +5,18 @@ impl Generator for Yuumi {
         self.ability(
             Key::Q,
             [
-                (1, Max),   /* Increased Damage */
-                (2, Min),   /* Magic Damage */
-                (3, _1Max), /* Maximum Bonus Magic Damage On-Hit */
-                (4, _1Min), /* Minimum Bonus Magic Damage On-Hit */
+                ("Increased Damage", Max),
+                ("Magic Damage", Min),
+                ("Maximum Bonus Magic Damage On-Hit", _1Max),
+                ("Minimum Bonus Magic Damage On-Hit", _1Min),
             ],
         )
         .ability(
             Key::R,
             [
-                (1, Void), /* Magic Damage per Hit */
-                (2, Min),  /* Reduced Damage per Hit */
-                (4, Max),  /* Total Magic Damage */
+                ("Magic Damage per Hit", Void),
+                ("Reduced Damage per Hit", Min),
+                ("Total Magic Damage", Max),
             ],
         )
         .combos([

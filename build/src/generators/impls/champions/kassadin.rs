@@ -2,16 +2,16 @@ use super::*;
 
 impl Generator for Kassadin {
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::Q, [(0, Void) /* Magic Damage */])
-            .ability(Key::W, [(0, Void) /* Increased Bonus Magic Damage */])
-            .ability(Key::E, [(0, Void) /* Magic Damage */])
+        self.ability(Key::Q, [("Magic Damage", Void)])
+            .ability(Key::W, [("Increased Bonus Magic Damage", Void)])
+            .ability(Key::E, [("Magic Damage", Void)])
             .ability(
                 Key::R,
                 [
-                    (0, _1Min), /* Bonus Damage Per Stack */
-                    (1, Min),   /* Magic Damage */
-                    (2, _1Max), /* Maximum Bonus Damage */
-                    (3, Max),   /* Maximum Magic Damage */
+                    ("Bonus Damage Per Stack", _1Min),
+                    ("Magic Damage", Min),
+                    ("Maximum Bonus Damage", _1Max),
+                    ("Maximum Magic Damage", Max),
                 ],
             )
             .combos([

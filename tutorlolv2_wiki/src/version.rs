@@ -30,9 +30,12 @@ pub fn is_version(name: &str) -> bool {
 
 /// Moves every entry of `cache` into `cache/{version}`, except previously
 /// archived versions. `stats` is copied instead of moved, since `update` does
-/// not rebuild it and it is only refreshed by calling `stats` manually
-pub fn archive(cache: impl AsRef<Path>, version: &str) -> MayFail {
+/// not rebuild it and it is only refreshed by calling `stats` manually. The
+/// lock file is copied as well, so the generators can be checked against it
+/// with `wiki lock-check` after the update
+pub fn archive(cache: impl AsRef<Path>, version: &str, lock_file: impl AsRef<Path>) -> MayFail {
     let cache = cache.as_ref();
+    let lock_file = lock_file.as_ref();
     let target = cache.join(version);
 
     if target.try_exists()? {
@@ -64,6 +67,13 @@ pub fn archive(cache: impl AsRef<Path>, version: &str) -> MayFail {
                     .map_err(|e| format!("[version] Error moving {from:?} to {to:?}: {e:?}"))?;
             }
         }
+    }
+
+    if lock_file.try_exists()? {
+        let to = target.join(crate::lock::FILE_NAME);
+        println!("[copy] {lock_file:?} -> {to:?}");
+        std::fs::copy(lock_file, &to)
+            .map_err(|e| format!("[version] Error copying {lock_file:?} to {to:?}: {e:?}"))?;
     }
 
     Ok(())
@@ -116,7 +126,7 @@ pub async fn check() -> MayFail {
             "[version] Version {latest} is available, found {current}. Update?"
         ))? {
             true => {
-                archive(PathBuf::from("cache"), &current)?;
+                archive(PathBuf::from("cache"), &current, crate::lock::path())?;
                 crate::set_env_var(ENV_VAR, &latest)?;
                 println!("[version] {current} -> {latest}");
                 latest
