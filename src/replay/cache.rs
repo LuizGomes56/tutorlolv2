@@ -220,7 +220,7 @@ mod tests {
         let mut store = super::super::extent::ExtentStore::default();
         store.observe_chunk(&metadata, &decoded);
         drop(decoded);
-        let (ranges, end) = store.timeline(&[metadata.clone()], 99.);
+        let (ranges, end) = store.timeline(std::slice::from_ref(&metadata), 99.);
         assert_eq!(end, 102.);
         assert_eq!(
             super::super::timeline::current_index(&ranges, 102.),

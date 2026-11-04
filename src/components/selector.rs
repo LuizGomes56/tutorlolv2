@@ -4,7 +4,7 @@ use crate::{
     utils::{EnumCast, hooks::use_clickout, search::contains_ascii_case_insensitive},
 };
 use strum::VariantArray;
-use tutorlolv2::{CastId, GameMap, ItemId};
+use tutorlolv2::CastId;
 use web_sys::HtmlInputElement;
 use yew::prelude::*;
 
@@ -217,12 +217,4 @@ pub fn SelectorButton(props: &SelectorButtonProps) -> Html {
             </div>
         </button>
     }
-}
-
-pub const fn item_filter(item: ItemId) -> bool {
-    let cache = item.data();
-    item.has_map(GameMap::SummonersRift)
-        && cache.purchasable
-        && !cache.stats.is_empty()
-        && cache.riot_id < 100000
 }

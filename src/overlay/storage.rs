@@ -62,14 +62,16 @@ pub(super) fn load_widgets() -> super::model::Panel {
         .unwrap_or_default()
 }
 
-pub(super) fn save_widgets(panels: &super::model::Panel) -> bool {
-    if let Some(mut storage) = local_storage()
-        && let Some(record) = encode_record(WIDGET_KIND, panels)
-    {
-        return storage.put(WIDGET_KEY, &record);
-    }
+impl super::model::Panel {
+    pub(super) fn save(&self) -> bool {
+        if let Some(mut storage) = local_storage()
+            && let Some(record) = encode_record(WIDGET_KIND, self)
+        {
+            return storage.put(WIDGET_KEY, &record);
+        }
 
-    false
+        false
+    }
 }
 
 #[cfg(test)]

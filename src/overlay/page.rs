@@ -13,7 +13,7 @@ use {
         overlay::{
             model::{Panel, Widget},
             panel::PanelManager,
-            storage::{initialize_panel_events, load_widgets, save_widgets},
+            storage::{initialize_panel_events, load_widgets},
         },
         utils::{Loading, Print, glue::get_desktop_data},
     },
@@ -68,7 +68,7 @@ pub fn Overlay() -> Html {
         let widget_save_error = widget_save_error.clone();
 
         use_effect_with(panel_manager.clone(), move |panels| {
-            widget_save_error.set(!save_widgets(panels));
+            widget_save_error.set(!panels.save());
         });
     }
 

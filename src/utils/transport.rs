@@ -8,6 +8,7 @@ use tutorlolv2::{
 
 #[cfg(not(feature = "local-calculation"))]
 use crate::utils::api::WebClient;
+
 #[cfg(not(feature = "local-calculation"))]
 use tutorlolv2_api::{self as api, NoHeaders, NoPath, NoQuery};
 
@@ -76,13 +77,17 @@ pub async fn realtime(
     {
         #[cfg(feature = "tauri")]
         let buffer = bytes.to_vec();
+
         #[cfg(feature = "tauri")]
         let bytes = buffer.as_slice();
         let input = decode_realtime_input(bytes)?;
+
         let response = WebClient::public()
             .send::<api::Realtime>(&NoPath, &NoQuery, &NoHeaders, &input, None)
             .await?;
+
         let output = response.decode()?;
+
         Ok(output.into())
     }
 }
@@ -101,6 +106,7 @@ pub async fn realtime_from(input: &RiotRealtime<'_>) -> Result<crate::livegame::
         let response = WebClient::public()
             .send::<api::Realtime>(&NoPath, &NoQuery, &NoHeaders, input, None)
             .await?;
+
         let output = response.decode()?;
         Ok(output.into())
     }

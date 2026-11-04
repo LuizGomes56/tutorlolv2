@@ -22,6 +22,7 @@ pub struct ReplayRequest {
 }
 
 #[hook]
+#[allow(clippy::too_many_arguments)]
 pub fn use_replay_controller(
     request: ReplayRequest,
     cache: Rc<RefCell<ChunkCache>>,
