@@ -18,11 +18,11 @@ use {
             },
         },
         hover::{self, Builtin, DocView, Docs},
-        utils::{ClassCast, transport},
+        utils::transport,
     },
     std::{cell::RefCell, rc::Rc},
     tutorlolv2::{
-        L_MSTR, L_TWRD,
+        GameMap, L_MSTR, L_TWRD,
         model::{Dragons, EnemyStats, InputActivePlayer, InputGame, InputMinData, OutputEnemy},
     },
     yew::{platform::spawn_local, prelude::*},
@@ -96,6 +96,7 @@ async fn game_fetch(
     player: &UseReducerHandle<Player>,
     enemies: &UseReducerHandle<Enemies>,
     dragons: &UseReducerHandle<Dragons>,
+    game_map: &UseStateHandle<GameMap>,
 ) -> Result<Game, transport::Error> {
     let output = transport::calculator(InputGame {
         active_player: InputActivePlayer {
@@ -111,6 +112,7 @@ async fn game_fetch(
                 champion_id: player.data.champion_id,
                 is_mega_gnar: player.data.is_mega_gnar,
             },
+            current_health: player.current_health,
         },
         enemy_players: &enemies
             .iter()
@@ -125,6 +127,8 @@ async fn game_fetch(
             })
             .collect::<Box<_>>(),
         dragons: **dragons,
+        // Summoner's Rift until the page lets players pick a map
+        game_map: **game_map,
     })
     .await?;
 
@@ -138,6 +142,7 @@ pub fn Calculator() -> Html {
     let dragons = use_reducer(Dragons::default);
     let enemy_index = use_state(|| 0);
     let stack = use_reducer(Stack::default);
+    let game_map = use_state(|| GameMap::SummonersRift);
     let stack_push = Stack::use_push(&stack);
 
     let game_data = use_state(|| None::<Game>);
@@ -177,8 +182,13 @@ pub fn Calculator() -> Html {
         let last_action = last_action.clone();
 
         use_effect_with(
-            (player.clone(), enemies.clone(), dragons.clone()),
-            move |(player, enemies, dragons)| {
+            (
+                player.clone(),
+                enemies.clone(),
+                dragons.clone(),
+                game_map.clone(),
+            ),
+            move |(player, enemies, dragons, game_map)| {
                 let generation = request_generation.borrow().wrapping_add(1);
 
                 request_generation.replace(generation);
@@ -192,12 +202,13 @@ pub fn Calculator() -> Html {
                     let player = player.clone();
                     let enemies = enemies.clone();
                     let dragons = dragons.clone();
+                    let game_map = game_map.clone();
 
                     request_error.set(None);
                     request_pending.set(true);
 
                     spawn_local(async move {
-                        let result = game_fetch(&player, &enemies, &dragons).await;
+                        let result = game_fetch(&player, &enemies, &dragons, &game_map).await;
 
                         if *request_generation.borrow() != generation {
                             return;
@@ -292,7 +303,7 @@ pub fn Calculator() -> Html {
                                                 <td
                                                     data_idents={hover::encode_idents(
                                                         &CtxVar::ENEMY_VARS,
-                                                        damage_table.row(tutorlolv2::L_MSTR + i).ctx,
+                                                        &damage_table.row(tutorlolv2::L_MSTR + i).ctx,
                                                     )}
                                                     data_docs={Docs::global(enemy_id).encode()}
                                                     class={classes!("w-12")}
@@ -380,7 +391,7 @@ pub fn Calculator() -> Html {
                                     html! {
                                         <td
                                             data_docs={Docs::Builtin(Builtin::Tower, DocView::Function).encode()}
-                                            class={classes!(current_player.adaptive_type.class())}
+                                            class={classes!(current_player.adaptive_type)}
                                         >
                                             {tower_damages[i]}
                                         </td>

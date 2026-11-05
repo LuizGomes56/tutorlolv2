@@ -120,7 +120,6 @@ pub fn LivegameView(props: &LivegameViewProps) -> Html {
             let player_idents = {
                 let CurrentPlayer {
                     base_stats,
-                    bonus_stats,
                     current_stats,
                     level,
                     ..
@@ -134,13 +133,7 @@ pub fn LivegameView(props: &LivegameViewProps) -> Html {
                     base_health: base_stats.max_health,
                     base_mana: base_stats.max_mana,
 
-                    bonus_armor: bonus_stats.armor,
-                    bonus_ad: bonus_stats.attack_damage,
-                    bonus_attack_speed: bonus_stats.attack_speed,
-                    bonus_magic_resist: bonus_stats.magic_resist,
-                    bonus_health: bonus_stats.max_health,
-                    bonus_mana: bonus_stats.max_mana,
-
+                    // Bonus stats are derived from the base and current stats
                     ability_power: current_stats.ability_power,
                     armor: current_stats.armor,
                     armor_penetration_flat: current_stats.armor_penetration_flat,
@@ -162,7 +155,7 @@ pub fn LivegameView(props: &LivegameViewProps) -> Html {
                 };
 
                 let idents = CtxVar::iter()
-                    .filter(|var| hover::ident_display_value(*var, ctx[*var]) != 0.0)
+                    .filter(|var| hover::ident_display_value(*var, ctx.get(*var)) != 0.0)
                     .collect::<Box<[_]>>();
 
                 hover::encode_idents(&idents, &ctx)
@@ -184,7 +177,7 @@ pub fn LivegameView(props: &LivegameViewProps) -> Html {
                 html! {
                     <tr>
                         <td
-                            data_idents={hover::encode_idents(&CtxVar::ENEMY_VARS, ctx)}
+                            data_idents={hover::encode_idents(&CtxVar::ENEMY_VARS, &ctx)}
                             data_docs={Docs::global(enemy_id).encode()}
                             class={classes!("w-12")}
                         >

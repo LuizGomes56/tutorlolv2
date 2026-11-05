@@ -10,7 +10,7 @@ use std::{num::NonZeroU8, rc::Rc};
 use tutorlolv2::{
     ChampionId, ItemId, RuneId,
     model::{EnemyStats, PlayerStats},
-    yew::{ReduceApply, ability_levels::AbilityLevelsAction},
+    yew::{ReduceApply, ability_levels::AbilityLevelsAction, stats::PlayerStatsAction},
 };
 use yew::Reducible;
 
@@ -95,6 +95,11 @@ impl Reducible for Player {
                 new_mut.rune_exceptions.insert(rune_id, stacks);
             }
             Self::Action::Data(v) => {
+                // Inferred replies overwrite the stats, so the typed health is kept apart
+                if let DataAction::Stats(PlayerStatsAction::CurrentHealth(health)) = v {
+                    new_mut.current_health = health as _;
+                }
+
                 new_mut.data.reduce_mut(true, v);
             }
         }

@@ -1,5 +1,9 @@
 use crate::components::image::{Image, ImageType};
-use tutorlolv2::{ChampionId, model::AbilityLevels, yew::ReduceApply};
+use tutorlolv2::{
+    ChampionId,
+    model::AbilityLevels,
+    yew::{ReduceApply, ability_levels::AbilityLevelsAction},
+};
 use web_sys::HtmlInputElement;
 use yew::prelude::*;
 
@@ -23,7 +27,7 @@ pub fn Abilities(props: &AbilitiesProps) -> Html {
         .enumerate()
         .map(|(i, key)| {
             let value = ability_levels[key];
-            let prototype = AbilityLevels::ACTIONS[i];
+            let prototype = AbilityLevelsAction::ALL[i];
             let id = AttrValue::from(key.as_char().to_string());
             let value = AttrValue::from(value.to_string());
 

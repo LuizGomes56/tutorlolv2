@@ -114,6 +114,9 @@ impl_stat_display!(EnemyStats {
 #[derive(PartialEq, Properties)]
 pub struct StatsProps<T: ReduceApply> {
     pub infer: bool,
+    /// Keeps the current health editable while the stats are inferred
+    #[prop_or_default]
+    pub health_editable: bool,
     pub stats: T,
     pub callback: Callback<T::Action>,
 }
@@ -121,6 +124,7 @@ pub struct StatsProps<T: ReduceApply> {
 #[component]
 pub fn Stats<T: StatDisplay>(props: &StatsProps<T>) -> Html {
     let infer = props.infer;
+    let health_editable = props.health_editable;
     let stats = props.stats;
     let callback = &props.callback;
 
@@ -131,7 +135,7 @@ pub fn Stats<T: StatDisplay>(props: &StatsProps<T>) -> Html {
                 <StatCell
                     image_type={ImageType::Stats(stat)}
                     name={stat.name()}
-                    disabled={infer}
+                    disabled={infer && !(health_editable && stat == PlayerStatsField::CurrentHealth)}
                     placeholder={0}
                     value={stats[stat]}
                     oninput={{

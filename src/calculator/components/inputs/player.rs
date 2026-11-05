@@ -209,6 +209,7 @@ pub fn PlayerInput(props: &PlayerInputProps) -> Html {
                 />
                 <Stats<PlayerStats>
                     infer={data.infer_stats}
+                    health_editable={true}
                     stats={data.stats}
                     callback={stats_cb}
                 />

@@ -1,7 +1,7 @@
 use crate::{components::image::ImageType, utils::random_u64};
 use std::fmt::Debug;
 use strum::EnumCount;
-use tutorlolv2::{AdaptiveType, CastId, ChampionId, DamageType, ItemId, RuneId};
+use tutorlolv2::{CastId, ChampionId, ItemId, RuneId};
 
 pub trait EnumCast
 where
@@ -22,32 +22,6 @@ where
 impl EnumCast for ChampionId {}
 impl EnumCast for ItemId {}
 impl EnumCast for RuneId {}
-
-pub trait ClassCast {
-    fn class(&self) -> &'static str;
-}
-
-impl ClassCast for DamageType {
-    fn class(&self) -> &'static str {
-        match self {
-            DamageType::Physical => "text-orange-500",
-            DamageType::Magic => "text-sky-500",
-            DamageType::Mixed => "text-indigo-500",
-            DamageType::True => "text-white",
-            DamageType::Adaptive => "text-purple-500",
-            DamageType::Unspecified => "text-std-300",
-        }
-    }
-}
-
-impl ClassCast for AdaptiveType {
-    fn class(&self) -> &'static str {
-        match self {
-            Self::Magic => DamageType::Magic.class(),
-            Self::Physical => DamageType::Physical.class(),
-        }
-    }
-}
 
 pub trait Print: Debug {
     fn log(&self) {

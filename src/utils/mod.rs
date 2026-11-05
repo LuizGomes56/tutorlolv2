@@ -12,7 +12,7 @@ pub mod tray;
 
 pub use {
     hooks::use_setter,
-    traits::{ClassCast, EnumCast, Print},
+    traits::{EnumCast, Print},
 };
 
 /// Shared wire format for calculation payloads, hover docs, and stored records.

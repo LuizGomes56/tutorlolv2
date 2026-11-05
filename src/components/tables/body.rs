@@ -1,7 +1,6 @@
 use crate::{
     hover::{self, Builtin, DocView, Docs},
     livegame::Enemy,
-    utils::ClassCast,
 };
 use tutorlolv2::{
     AdaptiveType, ChampionId, Ctx, CtxVar, DamageType, EntityId, EntityKind, ItemId, RuneId,
@@ -89,8 +88,8 @@ impl Cell {
         let data_idents = hover::encode_idents(idents, ctx);
         let data_docs = docs.encode();
         let damage_class = match damage_type {
-            DamageType::Adaptive => adaptive_type.class(),
-            _ => damage_type.class(),
+            DamageType::Adaptive => Classes::from(adaptive_type),
+            _ => Classes::from(damage_type),
         };
 
         let main_line = Self::render_range(min_dmg, max_dmg).unwrap_or_else(|| Html::from(min_dmg));
@@ -374,7 +373,7 @@ impl<'a> DamageRenderer<'a> {
 
         cells
             .into_iter()
-            .map(|cell| cell.render(damages.ctx, adaptive_type))
+            .map(|cell| cell.render(&damages.ctx, adaptive_type))
             .collect::<Html>()
     }
 }
@@ -690,6 +689,6 @@ pub(crate) fn empty_damages() -> Damages<'static> {
         abilities: &[],
         items: &[],
         runes: &[],
-        ctx: &CTX,
+        ctx: *CTX,
     }
 }

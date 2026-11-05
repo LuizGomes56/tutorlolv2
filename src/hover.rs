@@ -149,7 +149,7 @@ pub fn encode_idents(idents: &[CtxVar], ctx: &Ctx) -> Option<String> {
 
     for &ident in idents {
         bytes.push(ident as u8);
-        bytes.extend_from_slice(&ctx[ident].to_le_bytes());
+        bytes.extend_from_slice(&ctx.get(ident).to_le_bytes());
     }
 
     Some(STANDARD_NO_PAD.encode(bytes))
@@ -166,7 +166,7 @@ pub fn ident_display_value(ident: CtxVar, value: f32) -> f32 {
         | CtxVar::SteelcapsEffect
         | CtxVar::ArmorPenetrationPercent
         | CtxVar::MagicPenetrationPercent
-        | CtxVar::EnemyMissingHealth
+        | CtxVar::MissingHealthRatio
         | CtxVar::RanduinEffect
         | CtxVar::RocksolidEffect => (value * 100.0).round() / 100.0 + 0.0,
         // Adding zero normalizes rounded negative zero for display.
@@ -421,10 +421,11 @@ mod tests {
         let ctx = Ctx {
             attack_damage: 123.25,
             ability_power: 778.69995,
-            bonus_magic_resist: 0.0000038146973,
+            // Without base magic resist, all of it is bonus magic resist
+            magic_resist: 0.0000038146973,
+            // Bonus attack speed is the difference, about 0.4221
             attack_speed: 1.44575,
             base_attack_speed: 1.02365,
-            bonus_attack_speed: 0.42209995,
             ..Default::default()
         };
 

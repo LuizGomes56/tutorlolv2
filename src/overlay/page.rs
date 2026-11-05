@@ -177,7 +177,7 @@ pub fn Overlay() -> Html {
                                 <td
                                     data_idents={hover::encode_idents(
                                         &CtxVar::ENEMY_VARS,
-                                        data.enemy_damages(selected_index).ctx,
+                                        &data.enemy_damages(selected_index).ctx,
                                     )}
                                     data_docs={Docs::global(enemy_id).encode()}
                                     class={classes!("w-12")}

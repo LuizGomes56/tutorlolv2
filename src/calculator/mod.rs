@@ -23,6 +23,8 @@ pub struct Player {
     pub runes: Tray<RuneId>,
     pub rune_exceptions: ExceptionMap<RuneId>,
     pub abilities: AbilityLevels,
+    /// Current health sent while the stats are inferred. Zero means full health
+    pub current_health: f32,
     pub data: PlayerData<PlayerStats>,
 }
 
@@ -44,6 +46,7 @@ impl Default for Player {
                 e: 5,
                 r: 3,
             },
+            current_health: 0.0,
             data,
         }
     }
