@@ -1,5 +1,6 @@
 //! Assets embedded into the binary. Paths mirror the web app's `public/` layout,
-//! so `svgs/sidebar/Homepage.svg` here is `/svgs/sidebar/Homepage.svg` there.
+//! so `svgs/sidebar/Homepage.svg` here is `/svgs/sidebar/Homepage.svg` there. `other/` holds
+//! the position icons from `tutorlolv2/img/other`.
 use gpui::{AssetSource, Result, SharedString};
 use rust_embed::RustEmbed;
 use std::borrow::Cow;
@@ -7,6 +8,7 @@ use std::borrow::Cow;
 #[derive(RustEmbed)]
 #[folder = "assets"]
 #[include = "svgs/**/*.svg"]
+#[include = "other/*.svg"]
 pub struct Assets;
 
 impl AssetSource for Assets {

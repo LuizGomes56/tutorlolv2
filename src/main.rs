@@ -5,12 +5,16 @@ use gpui::{
 
 mod assets;
 mod components;
+mod formulas;
+mod random;
 mod route;
 mod shell;
 mod theme;
 
 fn main() {
     Application::new().with_assets(Assets).run(|cx: &mut App| {
+        components::text_input::bind_keys(cx);
+
         let bounds = Bounds::centered(None, size(px(1280.0), px(800.0)), cx);
 
         cx.open_window(

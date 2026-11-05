@@ -12,6 +12,10 @@ bincode = { version = "2.0.1", default-features = false, features = [
 ] }
 gpui = "0.2.2"
 rust-embed = "8"
+# The library lives in WSL; these paths are for the Windows toolchain.
+tutorlolv2 = { path = '\\wsl.localhost\Ubuntu\home\luizg\Projects\tutorlolv2', default-features = false, features = ["formula-docs"] }
+tutorlolv2_codec = { path = '\\wsl.localhost\Ubuntu\home\luizg\Projects\tutorlolv2\tutorlolv2_codec' }
+unicode-segmentation = "1"
 serde = { version = "1.0", default-features = false, features = [
     "alloc",
     "derive",

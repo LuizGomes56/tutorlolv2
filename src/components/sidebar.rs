@@ -1,8 +1,8 @@
 //! Port of the web app's `components/sidebar.rs`.
-use crate::{route::Route, shell::Shell, theme};
+use crate::{components::box_shadow, route::Route, shell::Shell, theme};
 use gpui::{
-    App, BoxShadow, FontWeight, IntoElement, ParentElement, RenderOnce, Styled, WeakEntity, Window,
-    div, point, prelude::*, px, rgb, svg,
+    App, FontWeight, IntoElement, ParentElement, RenderOnce, Styled, WeakEntity, Window, div,
+    prelude::*, px, rgb, svg,
 };
 
 /// Label, icon asset path and target route of one sidebar link.
@@ -110,12 +110,7 @@ impl RenderOnce for Sidebar {
             // gpui paints shadows under the element too; CSS only paints them outside.
             // The opaque background keeps the sidebar the same color as the web app.
             .bg(rgb(theme::STD_900))
-            .shadow(vec![BoxShadow {
-                color: rgb(theme::BOX_SHADOW).into(),
-                offset: point(px(0.0), px(0.0)),
-                blur_radius: px(10.0),
-                spread_radius: px(2.5),
-            }])
+            .shadow(box_shadow())
             .child(top)
             .child(bottom);
 
