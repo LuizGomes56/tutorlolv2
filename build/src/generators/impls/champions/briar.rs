@@ -9,7 +9,7 @@ impl Generator for Briar {
             .modify(W(Void), |_| {
                 f![5 + 15 * (WLevel - 1)
                     + 0.05 * AttackDamage
-                    + (0.09 + 0.00025 * BonusAd) * EnemyMissingHealth]
+                    + (0.09 + 0.00025 * BonusAd) * EnemyMissingHealthFlat]
             })?
             .comment(W(Void), "Snack Attack")?
             .ability_nth(1, Key::W, [("Physical Damage", _1)])

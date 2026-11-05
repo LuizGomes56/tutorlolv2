@@ -111,11 +111,9 @@ impl FormulaRenderer {
     }
 
     fn ctx_name(ctx: u8) -> String {
-        let raw = CtxVar::from_repr(ctx)
-            .map(|value| value.as_var())
-            .unwrap_or("ctx.unknown");
-
-        raw.strip_prefix("ctx.").unwrap_or(raw).to_owned()
+        CtxVar::from_repr(ctx)
+            .map_or("unknown", |value| value.to_snake_case())
+            .to_owned()
     }
 
     const fn damage_slot(attack_type: AttackType, damage_index: DamageIndex) -> DamageSlot {

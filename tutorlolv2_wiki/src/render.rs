@@ -455,7 +455,7 @@ fn render_range_percent_attr(
 fn range_progress(ctx_var: CtxVar) -> String {
     match ctx_var {
         CtxVar::CritChance => format!("{ctx_var} * 0.01"),
-        CtxVar::EnemyMissingHealth => format!("{ctx_var} / {}", CtxVar::EnemyMaxHealth),
+        CtxVar::EnemyMissingHealthFlat => format!("{ctx_var} / {}", CtxVar::EnemyMaxHealth),
         _ => ctx_var.to_string(),
     }
 }

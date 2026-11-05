@@ -16,7 +16,7 @@ impl Generator for Kayle {
                 ],
             )
             .modify(E(Void), |_| {
-                f![(0.08 + 0.005 * (ELevel - 1) + 0.00015 * AbilityPower) * EnemyMissingHealth]
+                f![(0.08 + 0.005 * (ELevel - 1) + 0.00015 * AbilityPower) * EnemyMissingHealthFlat]
             })?
             .ability(Key::R, [("Magic Damage", Void)])
             .combos([

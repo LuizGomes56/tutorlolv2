@@ -26,11 +26,6 @@ fn purchase_and_context_helpers_are_const_callable() {
             max_mana: 100.0,
             ..BasicStats::default()
         },
-        bonus_stats: BasicStats {
-            max_health: 1000.0,
-            max_mana: 900.0,
-            ..BasicStats::default()
-        },
         level: NonZeroU8::MIN,
         adaptive_type: tutorlolv2::AdaptiveType::Physical,
     };
@@ -46,7 +41,6 @@ fn purchase_and_context_helpers_are_const_callable() {
             current_health: 1000.0,
             magic_resist: 50.0,
             max_health: 1000.0,
-            missing_health: 1.0,
         },
         bonus_stats: SimpleStats::default(),
         modifiers: DamageModifiers::default(),
@@ -61,11 +55,12 @@ fn purchase_and_context_helpers_are_const_callable() {
         steelcaps: false,
         rocksolid: false,
         randuin: false,
+        accept_negatives: false,
     };
     const SELF_CTX: tutorlolv2::Ctx = PURCHASE.ctx(&ENEMY);
     const ENEMY_CTX: tutorlolv2::Ctx = ENEMY.ctx(&PURCHASE);
     close(SELF_CTX.max_health, 2050.4);
-    close(SELF_CTX.bonus_health, 1050.4);
+    close(SELF_CTX.bonus_health(), 1050.4);
     assert_eq!(SELF_CTX, ENEMY_CTX);
 }
 
@@ -96,7 +91,6 @@ fn supplied_enemy_stats_skip_inference_in_const_context() {
         magic_resist: 80.0,
         max_health: 2000.0,
         current_health: 1500.0,
-        missing_health: 99.0,
     };
     // Swain's inferred 12 * stacks would overflow at compile time if evaluated.
     const FULL: EnemyFullState = EnemyState {
@@ -123,13 +117,8 @@ fn supplied_enemy_stats_skip_inference_in_const_context() {
         },
         false,
     );
-    assert_eq!(
-        FULL.current_stats,
-        EnemyStats {
-            missing_health: 0.25,
-            ..SUPPLIED
-        }
-    );
+    assert_eq!(FULL.current_stats, SUPPLIED);
+    assert_eq!(FULL.current_stats.missing_health_ratio(), 0.25);
     assert_eq!(
         FULL.bonus_stats,
         SimpleStats {
@@ -308,8 +297,8 @@ fn mega_gnar_uses_melee_item_damage() {
     input.active_player.data.is_mega_gnar = true;
     let output = calculator(input);
     let damage = &&output.enemy_damages(0);
-    let raw = ItemId::BladeOfTheRuinedKing.eval(damage.ctx, AttackType::Melee);
-    let modifier = damage.ctx.physical_multiplier;
+    let raw = ItemId::BladeOfTheRuinedKing.eval(&damage.ctx, AttackType::Melee);
+    let modifier = damage.ctx.physical_multiplier();
     assert_eq!(damage.items[0], (raw[0] * modifier) as i32);
 }
 
@@ -393,7 +382,7 @@ fn simulated_ad_updates_bonus_scaling() {
 
     assert!(sim.attack_damage > original.attack_damage);
     close(
-        sim.bonus_ad - original.bonus_ad,
+        sim.bonus_ad() - original.bonus_ad(),
         sim.attack_damage - original.attack_damage,
     );
 }
@@ -410,14 +399,14 @@ fn simulated_penetration_changes_resistance_multipliers() {
         .ctx;
     let magic_sim = out.siml_damages(0, sim_index(ItemId::VoidStaff)).ctx;
 
-    assert!(armor_sim.physical_multiplier > base.physical_multiplier);
-    assert!(magic_sim.magic_multiplier > base.magic_multiplier);
+    assert!(armor_sim.physical_multiplier() > base.physical_multiplier());
+    assert!(magic_sim.magic_multiplier() > base.magic_multiplier());
     close(
-        armor_sim.physical_multiplier,
+        armor_sim.physical_multiplier(),
         100.0 / (100.0 + (enemy.current_stats.armor - armor_sim.armor_penetration_flat).max(0.0)),
     );
     close(
-        magic_sim.magic_multiplier,
+        magic_sim.magic_multiplier(),
         100.0
             / (100.0
                 + enemy.current_stats.magic_resist
@@ -453,9 +442,9 @@ fn simulated_purchase_applies_ability_modifiers() {
     let mut without_buff = vec![0; metadata.len()];
 
     tutorlolv2::model::DamageTable::eval_abilities(
-        sim.ctx,
+        &sim.ctx,
         &mut RangeDamage::default(),
-        Modifiers::new(sim.ctx, out.current_player.adaptive_type),
+        Modifiers::new(&sim.ctx, out.current_player.adaptive_type),
         metadata,
         ChampionId::Gnar.data().closures,
         &mut without_buff,
@@ -479,7 +468,6 @@ fn simulated_purchase_applies_stat_conversion_and_attack_speed_units() {
     let player = &out.current_player;
     let state = SelfState {
         current_stats: player.current_stats,
-        bonus_stats: player.bonus_stats,
         base_stats: player.base_stats,
         adaptive_type: player.adaptive_type,
         ability_levels: out.ability_levels,
@@ -714,11 +702,6 @@ fn owned_warmog_amplifies_health_converted_from_new_mana() {
         base_stats: BasicStats {
             max_health: 1000.0,
             max_mana: 100.0,
-            ..BasicStats::default()
-        },
-        bonus_stats: BasicStats {
-            max_health: 1000.0,
-            max_mana: 900.0,
             ..BasicStats::default()
         },
         level: NonZeroU8::new(18).unwrap(),

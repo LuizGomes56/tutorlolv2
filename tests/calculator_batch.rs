@@ -13,7 +13,6 @@ fn calculator_batch_matches_legacy_enemy_and_monster_rows() {
             magic_resist: 85.0,
             max_health: 2500.0,
             current_health: 1200.0,
-            missing_health: 0.0,
         }),
         items: &[],
         item_exceptions: &[],
@@ -45,7 +44,6 @@ fn calculator_batch_matches_legacy_enemy_and_monster_rows() {
                 ..PlayerStats::default()
             },
             base_stats,
-            bonus_stats: BasicStats::default(),
             adaptive_type: champion.adaptive_type,
         };
         let eval_data = DamageEvalData {
@@ -64,7 +62,7 @@ fn calculator_batch_matches_legacy_enemy_and_monster_rows() {
             ..ResistShred::default()
         };
         let layout = DamageLayout::new(&eval_data, false);
-        let mut legacy = DamageTable::zeroed(layout, L_MSTR + enemy_players.len());
+        let mut legacy = DamageTable::zeroed(layout, L_MSTR + enemy_players.len(), 1);
         let mut batched = legacy.clone();
         for (i, &(armor, magic_resist)) in RiotFormulas::MONSTER_RESISTS.iter().enumerate() {
             let full_state = EnemyState {

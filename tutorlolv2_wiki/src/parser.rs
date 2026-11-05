@@ -1008,15 +1008,15 @@ pub fn assign_ctx_var(input: &str) -> CtxVar {
         in "enchanted target's ad" => CtxVar::SteelcapsEffect;
         in "target's maximum health" => CtxVar::EnemyMaxHealth;
         in "target's current health" => CtxVar::EnemyCurrentHealth;
-        in "target's missing health" => CtxVar::EnemyMissingHealth;
+        in "target's missing health" => CtxVar::EnemyMissingHealthFlat;
         in "primary target's bonus health" => CtxVar::EnemyBonusHealth;
         in "current health" => CtxVar::CurrentHealth;
-        in "missing health" => CtxVar::MissingHealth;
+        in "missing health" => CtxVar::MissingHealthRatio;
         in "movement speed" => CtxVar::BonusMoveSpeed;
         // Usually the enemies hit, as in "magic damage equal to 5% of their maximum health"
         in "their maximum health" => CtxVar::EnemyMaxHealth;
         in "their current health" => CtxVar::EnemyCurrentHealth;
-        in "their missing health" => CtxVar::EnemyMissingHealth;
+        in "their missing health" => CtxVar::EnemyMissingHealthFlat;
         in "maximum health" => CtxVar::MaxHealth;
         in "maximum mana" => CtxVar::MaxMana;
         // There is no variable for missing mana

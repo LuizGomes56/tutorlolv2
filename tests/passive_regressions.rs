@@ -5,16 +5,22 @@ use tutorlolv2::{
     AbilityName::{_1, Void},
     ChampionId,
 };
-use tutorlolv2_types::Ctx;
+use tutorlolv2_types::{AbilityLevels, Ctx};
 
 #[test]
 fn reparsed_passives_preserve_their_damage_components() {
     let ctx = Ctx {
         level: 18.0,
-        w_level: 1.0,
+        ability_levels: AbilityLevels {
+            w: 1,
+            ..AbilityLevels::default()
+        },
         attack_damage: 200.0,
+        // No bonus attack damage
+        base_ad: 200.0,
         ability_power: 100.0,
-        bonus_armor: 100.0,
+        // No base armor, so all of it is bonus armor
+        armor: 100.0,
         enemy_max_health: 2000.0,
         stacks: 10.0,
         ..Default::default()

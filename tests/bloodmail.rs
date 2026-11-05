@@ -23,7 +23,7 @@ fn retribution_grows_one_percent_every_seven_percent_missing_health() {
     }
 }
 
-fn infer_attack_damage(missing_health: u8) -> f32 {
+fn infer(current_health: f32) -> PlayerStats {
     let mut modifiers = Modifiers::default();
 
     InferStats {
@@ -38,21 +38,25 @@ fn infer_attack_damage(missing_health: u8) -> f32 {
         level: NonZeroU8::new(18).unwrap(),
         champion_id: ChampionId::Garen,
         is_mega_gnar: false,
-        missing_health,
+        current_health,
         game_map: GameMap::SummonersRift,
     }
     .infer()
-    .attack_damage
+}
+
+/// Bloodmail adds no health, so the maximum health at full health is final
+fn infer_attack_damage(missing_percent: f32) -> f32 {
+    let max_health = infer(0.0).max_health;
+    infer(max_health * (1.0 - missing_percent / 100.0)).attack_damage
 }
 
 #[test]
 fn calculator_applies_retribution_from_the_missing_health() {
-    let full = infer_attack_damage(0);
+    let full = infer_attack_damage(0.0);
 
-    close(infer_attack_damage(70), full * 1.10);
-    close(infer_attack_damage(20), full * 1.02);
-    // Values above 100 are clamped
-    close(infer_attack_damage(255), full * 1.10);
+    close(infer_attack_damage(70.0), full * 1.10);
+    close(infer_attack_damage(20.0), full * 1.02);
+    close(infer_attack_damage(99.0), full * 1.10);
 }
 
 fn state(current_health: f32) -> SelfState {
@@ -66,11 +70,6 @@ fn state(current_health: f32) -> SelfState {
             ..PlayerStats::default()
         },
         base_stats: BasicStats {
-            attack_damage: 100.0,
-            max_health: 1000.0,
-            ..BasicStats::default()
-        },
-        bonus_stats: BasicStats {
             attack_damage: 100.0,
             max_health: 1000.0,
             ..BasicStats::default()

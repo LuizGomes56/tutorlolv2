@@ -228,7 +228,7 @@ pub fn generate(
                 level: data.level,
                 champion_id: data.champion_id,
                 is_mega_gnar: data.is_mega_gnar,
-                missing_health: 0,
+                current_health: 0.0,
                 game_map: GameMap::Unknown,
             });
 
@@ -259,8 +259,6 @@ pub fn generate(
                 let mut stats = state.current_stats;
 
                 stats.current_health = stats.max_health * (0.25 + rng.index(76) as f32 / 100.0);
-                stats.missing_health =
-                    RiotFormulas::missing_health(stats.current_health, stats.max_health);
 
                 enemy.stats = Some(stats);
             }
@@ -274,7 +272,7 @@ pub fn generate(
                 abilities,
                 runes: runes.into_boxed_slice(),
                 rune_exceptions: Box::new([]),
-                missing_health: 0,
+                current_health: 0.0,
             },
             enemy_players: enemy_players.into_boxed_slice(),
             dragons,

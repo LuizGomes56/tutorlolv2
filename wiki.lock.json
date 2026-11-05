@@ -10123,7 +10123,7 @@
       "act": {
         "formula": "d6458e39",
         "scalings": [
-          "0: PercentAttr MissingHealth (05770c67)",
+          "0: PercentAttr MissingHealthRatio (05770c67)",
           "1: Simple BaseAd (3be5fb48)",
           "2: Simple AttackDamage (2cc616ec)"
         ]
@@ -11394,14 +11394,14 @@
       "pass": {
         "formula": "04553c29",
         "scalings": [
-          "0: PercentAttr MissingHealth (4dd59cbe)",
+          "0: PercentAttr MissingHealthRatio (4dd59cbe)",
           "1: Simple BaseAd (9aa79c94)"
         ]
       },
       "pass.flip": {
         "formula": "45775f52",
         "scalings": [
-          "0: PercentAttr MissingHealth (4dd59cbe)",
+          "0: PercentAttr MissingHealthRatio (4dd59cbe)",
           "1: Simple Unknown (20932cc1)",
           "2: Simple BaseAd (9aa79c94)"
         ]
@@ -11409,7 +11409,7 @@
       "pass.ranged": {
         "formula": "ad90250d",
         "scalings": [
-          "0: PercentAttr MissingHealth (4dd59cbe)",
+          "0: PercentAttr MissingHealthRatio (4dd59cbe)",
           "1: Simple BaseAd (97ad16c6)"
         ]
       }

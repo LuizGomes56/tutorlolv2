@@ -10,7 +10,7 @@ impl Generator for Jhin {
         });
 
         self.ability(Key::P, [("Description 1 [1]", Void)])
-            .modify(P(Void), |_| f![(missing_health) * EnemyMissingHealth])?
+            .modify(P(Void), |_| f![(missing_health) * EnemyMissingHealthFlat])?
             .comment(P(Void), "Fourth shot bonus damage")?
             .ability(
                 Key::Q,

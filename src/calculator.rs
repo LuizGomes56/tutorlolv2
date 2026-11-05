@@ -8,10 +8,9 @@
 //! so all the function inputs have to be obtained through your
 //! own mechanism
 
-use crate::{Ctx, L_MSTR};
 use core::num::NonZeroU8;
 use {
-    crate::{ChampionId, GameMap, ItemId, RuneId, helpers::*, model::*},
+    crate::{ChampionId, Ctx, GameMap, ItemId, L_MSTR, RuneId, helpers::*, model::*},
     alloc::boxed::Box,
     tutorlolv2_types::{AdaptiveType, AttackType, StatName},
 };
@@ -29,8 +28,8 @@ pub struct InferStats<'a> {
     pub level: NonZeroU8,
     pub champion_id: ChampionId,
     pub is_mega_gnar: bool,
-    /// Missing health in percent, from 0 to 100
-    pub missing_health: u8,
+    /// Clamped to the inferred maximum health. Zero or less means full health
+    pub current_health: f32,
     pub game_map: GameMap,
 }
 
@@ -48,16 +47,9 @@ impl InferStats<'_> {
             level,
             champion_id,
             is_mega_gnar,
-            missing_health,
+            current_health,
             game_map,
         } = self;
-
-        let missing_health = (if missing_health > 100 {
-            100
-        } else {
-            missing_health
-        }) as f32
-            / 100.0;
 
         let attack_type = champion_id.effective_attack_type(is_mega_gnar);
         let data = champion_id.data();
@@ -168,20 +160,28 @@ impl InferStats<'_> {
             i += 1;
         }
 
+        // The maximum health is complete here. NaN also falls back to full health
+        stats.current_health = match current_health > 0.0 && current_health < stats.max_health {
+            true => current_health,
+            false => stats.max_health,
+        };
+
+        let missing_health = stats.missing_health_ratio();
+
         // Sinister Pact depends on the flat missing health, so it waits for the
         // maximum health to be complete
         if has_demonic_embrace {
             core::hint::cold_path();
 
-            let flat_missing_health = stats.max_health * missing_health;
-            stats.ability_power +=
-                ap_amplifier * RiotFormulas::get_sinister_pact(flat_missing_health);
+            stats.ability_power += ap_amplifier
+                * RiotFormulas::get_sinister_pact(stats.max_health - stats.current_health);
         }
 
         // Retribution scales with the attack damage from every other source, so
         // it is applied last
         if has_bloodmail {
             core::hint::cold_path();
+
             stats.attack_damage *= 1.0 + RiotFormulas::get_bloodmail_retribution(missing_health);
         }
 
@@ -207,7 +207,6 @@ impl InferStats<'_> {
         stats.magic_resist *= earth;
         stats.armor *= earth;
         stats.crit_chance = stats.crit_chance.clamp(0.0, 100.0);
-        stats.current_health = stats.max_health * (1.0 - missing_health);
         modifiers.apply_loadout(items, runes, &stats);
         stats
     }
@@ -520,7 +519,7 @@ pub fn calculator(game: InputGame<'_>) -> OutputGame {
                 abilities: ability_levels,
                 runes: current_player_raw_runes,
                 rune_exceptions,
-                missing_health,
+                current_health,
                 data:
                     InputMinData {
                         stats: champion_raw_stats,
@@ -559,7 +558,7 @@ pub fn calculator(game: InputGame<'_>) -> OutputGame {
             level,
             champion_id: current_player_champion_id,
             is_mega_gnar,
-            missing_health,
+            current_health,
             game_map,
         }
         .infer(),
@@ -590,7 +589,6 @@ pub fn calculator(game: InputGame<'_>) -> OutputGame {
     let self_state = SelfState {
         stacks: stacks as _,
         current_stats: champion_stats,
-        bonus_stats: current_player_bonus_stats,
         base_stats: current_player_base_stats,
         adaptive_type,
         ability_levels,
@@ -612,7 +610,7 @@ pub fn calculator(game: InputGame<'_>) -> OutputGame {
     };
 
     let layout = DamageLayout::new(&eval_data, false);
-    let mut damages = DamageTable::zeroed(layout, L_MSTR + enemy_players.len());
+    let mut damages = DamageTable::zeroed(layout, L_MSTR + enemy_players.len(), 1);
     let ability_batch = current_player_cache.ability_batch;
 
     damages.fill_monster_damages(&self_state, &eval_data, shred, modifiers, ability_batch);

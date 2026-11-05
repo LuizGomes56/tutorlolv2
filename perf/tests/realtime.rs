@@ -1,4 +1,4 @@
-use tutorlolv2::{ItemId, model::RiotFormulas, realtime::realtime};
+use tutorlolv2::{ItemId, realtime::realtime};
 use tutorlolv2_perf::{
     Settings,
     realtime::{RealtimeWorkload, generate_realtime, run_realtime},
@@ -111,11 +111,8 @@ fn live_stats_use_remaining_fraction_penetration() {
     );
     for e in 0..result.enemies.len() {
         assert_eq!(
-            result.enemy_damages(e).ctx.missing_health,
-            RiotFormulas::missing_health(
-                game.active_player.champion_stats.current_health,
-                game.active_player.champion_stats.max_health
-            )
+            result.enemy_damages(e).ctx.missing_health_ratio(),
+            game.active_player.champion_stats.missing_health_ratio()
         );
     }
 }

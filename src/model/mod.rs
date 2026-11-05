@@ -19,8 +19,8 @@ use {
     serde::{Deserialize, Serialize},
     strum::EnumCount,
     tutorlolv2_types::{
-        AbilityId, AbilityName, AdaptiveType, Attrs, Ctx, DamageType, GameMap, Position,
-        TypeMetadata,
+        AbilityId, AbilityName, AdaptiveType, Attrs, Ctx, CtxAttacker, CtxTarget, DamageType,
+        GameMap, Position, TypeMetadata,
     },
 };
 
@@ -28,7 +28,15 @@ use {
 use crate::libgen::Closure;
 
 mod owned_input;
+
 pub use owned_input::*;
+pub use tutorlolv2_types::AbilityLevels;
+/// Holds the real resistence that a enemy has, after applying the appropriate
+/// armor or magic penetrations that the current player has, and other buffs or
+/// penalties applied. Field `modifier` is a value between `0.0` and `1.0` that
+/// represents the number that will be multiplied by the raw damage to obtain
+/// the precise final damage
+pub use tutorlolv2_types::ResistValue;
 
 /// Holds the compile-time known metadata and closures of the current champion,
 /// obtained from the static variable [`CHAMPION_CACHE`]. Note that
@@ -168,7 +176,7 @@ pub struct SelfState {
     pub stacks: f32,
     pub ability_levels: AbilityLevels,
     pub current_stats: PlayerStats,
-    pub bonus_stats: BasicStats,
+    /// Bonus stats are the difference to `current_stats`, see [`Ctx`]
     pub base_stats: BasicStats,
     pub level: NonZeroU8,
     pub adaptive_type: AdaptiveType,
@@ -187,6 +195,8 @@ pub struct EnemyFullState {
     pub steelcaps: bool,
     pub rocksolid: bool,
     pub randuin: bool,
+    /// Resists may go below zero after penetration, as for monsters
+    pub accept_negatives: bool,
 }
 
 #[cfg(feature = "engine")]
@@ -365,8 +375,12 @@ pub struct DamageTable {
     /// Size is rows * stride, row-major ordered
     pub(crate) values: Box<[i32]>,
 
-    /// One Ctx struct per row; rows == ctxs.len()
-    pub(crate) ctxs: Box<[Ctx]>,
+    /// Each target has one row per attacker state, so row `r` is evaluated by
+    /// `attackers[r % attackers.len()]` against `targets[r / attackers.len()]`.
+    /// A purchase only changes the attacker's part of the [`Ctx`], so storing
+    /// each part once keeps every value that differs between rows
+    pub(crate) attackers: Box<[CtxAttacker]>,
+    pub(crate) targets: Box<[CtxTarget]>,
 }
 
 /// View type over the `damages` each holds. One single allocation
@@ -377,7 +391,7 @@ pub struct Damages<'a> {
     pub abilities: &'a [i32],
     pub items: &'a [i32],
     pub runes: &'a [i32],
-    pub ctx: &'a Ctx,
+    pub ctx: Ctx,
 }
 
 /// Write view used while filling a row
@@ -405,16 +419,51 @@ impl DamagesMut<'_> {
 }
 
 impl DamageTable {
-    pub fn zeroed(layout: DamageLayout, rows: usize) -> Self {
+    /// Table with `rows_per_target` rows for each target, one per attacker state.
+    /// `rows_per_target` must not be zero
+    pub fn zeroed(layout: DamageLayout, targets: usize, rows_per_target: usize) -> Self {
+        let rows = targets * rows_per_target;
+
         Self {
             layout,
             values: unsafe { Box::new_zeroed_slice(rows * layout.stride()).assume_init() },
-            ctxs: unsafe { Box::new_zeroed_slice(rows).assume_init() },
+            attackers: unsafe { Box::new_zeroed_slice(rows_per_target).assume_init() },
+            targets: unsafe { Box::new_zeroed_slice(targets).assume_init() },
         }
     }
 
     pub const fn rows(&self) -> usize {
-        self.ctxs.len()
+        self.targets.len() * self.attackers.len()
+    }
+
+    /// Indexes of the attacker state and the target of a row
+    const fn parts(&self, r: usize) -> (usize, usize) {
+        let attackers = self.attackers.len();
+        (r % attackers, r / attackers)
+    }
+
+    /// Context the row was evaluated with
+    pub fn ctx(&self, r: usize) -> Ctx {
+        let (attacker, target) = self.parts(r);
+        Ctx::new(&self.attackers[attacker], &self.targets[target])
+    }
+
+    /// Stores the parts of the context of a row. Rows must be filled with the
+    /// first target first, and each target with its first attacker state
+    /// first: each part is written at its first row only
+    #[cfg(feature = "engine")]
+    pub(crate) fn set_ctx(&mut self, r: usize, ctx: &Ctx) {
+        let (attacker, target) = self.parts(r);
+
+        if target == 0 {
+            self.attackers[attacker] = ctx.attacker();
+        }
+
+        if attacker == 0 {
+            self.targets[target] = ctx.target();
+        }
+
+        debug_assert!(self.ctx(r) == *ctx, "row {r} would not keep its context");
     }
 
     pub const fn layout(&self) -> DamageLayout {
@@ -440,7 +489,7 @@ impl DamageTable {
             abilities,
             items,
             runes,
-            ctx: &self.ctxs[r],
+            ctx: self.ctx(r),
         }
     }
 
@@ -593,9 +642,10 @@ pub struct InputActivePlayer<'a> {
     pub rune_exceptions: &'a [ValueException],
     pub abilities: AbilityLevels,
     pub data: InputMinData<'a, PlayerStats>,
-    /// Missing health in percent, from 0 to 100, used when the stats are
-    /// inferred. Supplied stats carry their own current health
-    pub missing_health: u8,
+    /// Current health used when the stats are inferred, clamped to the inferred
+    /// maximum health. Zero or less means full health. Supplied stats carry
+    /// their own current health
+    pub current_health: f32,
 }
 
 #[derive(Copy, Clone, Debug, Encode, PartialEq, PartialOrd, Serialize)]
@@ -661,8 +711,8 @@ impl Modifiers {
         Self {
             damages: DamageModifiers {
                 adaptive_type,
-                physical_mod: ctx.physical_multiplier,
-                magic_mod: ctx.magic_multiplier,
+                physical_mod: ctx.physical_multiplier(),
+                magic_mod: ctx.magic_multiplier(),
                 true_mod: 1.0,
                 global_mod: 1.0,
             },
@@ -736,30 +786,6 @@ impl OutputGame {
     }
 }
 
-/// Holds the levels of the abilities of a champion
-#[derive(
-    Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize,
-)]
-pub struct AbilityLevels {
-    pub q: u8,
-    pub w: u8,
-    pub e: u8,
-    pub r: u8,
-}
-
-/// Holds the real resistence that a enemy has, after applying the appropriate
-/// armor or magic penetrations that the current player has, and other buffs or
-/// penalties applied. Field `modifier` is a value between `0.0` and `1.0` that
-/// represents the number that will be multiplied by the raw damage to obtain
-/// the precise final damage
-#[derive(
-    Copy, Clone, Debug, Default, Decode, Deserialize, Encode, PartialEq, PartialOrd, Serialize,
-)]
-pub struct ResistValue {
-    pub real: f32,
-    pub modifier: f32,
-}
-
 /// ZST with constant methods to calculate some values for the game
 /// League of Legends. These formulas may change over time
 pub struct RiotFormulas;
@@ -777,13 +803,13 @@ impl RiotFormulas {
     pub const FIRE_DRAGON_MULTIPLIER: f32 = 0.03;
 
     /// Item [`ItemId::PlatedSteelcaps`] gives 12% damage reduction for basic attacks
-    pub const STEEL_CAPS_PROTECTION: f32 = 0.88;
+    pub const STEEL_CAPS_PROTECTION: f32 = Ctx::STEEL_CAPS_PROTECTION;
 
     /// Item [`ItemId::RanduinsOmen`] gives 30% damage reduction against critical hits
-    pub const RANDUIN_CRIT_PROTECTION: f32 = 0.7;
+    pub const RANDUIN_CRIT_PROTECTION: f32 = Ctx::RANDUIN_CRIT_PROTECTION;
 
     /// Items with Rocksolid passive give 20% damage reduction in some cases
-    pub const ROCKSOLID_PROTECTION: f32 = 0.8;
+    pub const ROCKSOLID_PROTECTION: f32 = Ctx::ROCKSOLID_PROTECTION;
 
     pub const SHOJIN_BONUS_DAMAGE: f32 = 1.12;
     pub const SHADOWFLAME_BONUS_DAMAGE: f32 = 1.2;
@@ -810,13 +836,16 @@ impl RiotFormulas {
         (100f32, -30f32),
     ];
 
-    pub const fn missing_health(current_health: f32, max_health: f32) -> f32 {
-        1.0 - (current_health / max_health.max(1.0))
+    /// Ratio of the maximum health that is missing, from `0.0` at full health
+    /// to `1.0` at zero health. The maximum health is at least `1.0` to avoid
+    /// division by zero
+    pub const fn missing_health_ratio(current_health: f32, max_health: f32) -> f32 {
+        (1.0 - (current_health / max_health.max(1.0))).clamp(0.0, 1.0)
     }
 
     /// Ratio of attack damage from other sources that [`ItemId::OverlordsBloodmail`]
     /// grants with its passive Retribution: 1% for every 7% missing health, up to
-    /// 10% at 70% missing health. `missing_health` is a ratio, see [`Self::missing_health`]
+    /// 10% at 70% missing health. `missing_health` is a ratio, see [`Self::missing_health_ratio`]
     pub const fn get_bloodmail_retribution(missing_health: f32) -> f32 {
         // Small offset so that exact steps such as 14% are not lost to rounding
         let steps = (missing_health.clamp(0.0, 1.0) * 100.0 / 7.0 + 1e-4) as u32;
@@ -901,13 +930,7 @@ impl RiotFormulas {
         resist: f32,
         accept_negatives: bool,
     ) -> ResistValue {
-        let real = ((1.0 - percent_pen / 100.0) * resist - flat_pen).max(if accept_negatives {
-            f32::NEG_INFINITY
-        } else {
-            0.0
-        });
-        let modifier = 100.0 / (100.0 + real);
-        ResistValue { real, modifier }
+        ResistValue::new(percent_pen, flat_pen, resist, accept_negatives)
     }
 
     /// Returns an [`i32`] that represents the damage against some turret
@@ -939,7 +962,6 @@ pub struct EnemyStats {
     pub current_health: f32,
     pub magic_resist: f32,
     pub max_health: f32,
-    pub missing_health: f32,
 }
 
 #[derive(Copy, Clone, Debug, Decode, Deserialize, Encode, PartialEq, PartialOrd, Serialize)]
@@ -1010,7 +1032,6 @@ impl_default!(AbilityModifiers, 1, f32);
 impl_default!(Modifiers, 1, f32);
 impl_default!(Dragons, 0, u8);
 impl_default!(RangeDamage, 0, i32);
-impl_default!(AbilityLevels, 0, u8);
 
 impl<T> Default for InputMinData<'_, T> {
     fn default() -> Self {

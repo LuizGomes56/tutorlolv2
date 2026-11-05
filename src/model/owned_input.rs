@@ -17,7 +17,7 @@ pub struct OwnedInputActivePlayer {
     pub abilities: AbilityLevels,
     pub data: OwnedInputMinData<PlayerStats>,
     #[serde(default)]
-    pub missing_health: u8,
+    pub current_health: f32,
 }
 
 #[derive(Clone, Debug, Encode, Decode, Serialize, Deserialize, PartialEq, PartialOrd)]
@@ -72,7 +72,7 @@ impl OwnedInputActivePlayer {
             rune_exceptions: &self.rune_exceptions,
             abilities: self.abilities,
             data: self.data.as_input(),
-            missing_health: self.missing_health,
+            current_health: self.current_health,
         }
     }
 }

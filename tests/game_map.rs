@@ -99,7 +99,7 @@ fn infer(game_map: GameMap, item_exceptions: &[ValueException]) -> PlayerStats {
         level: level(),
         champion_id: ChampionId::Garen,
         is_mega_gnar: false,
-        missing_health: 0,
+        current_health: 0.0,
         game_map,
     }
     .infer()

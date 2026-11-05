@@ -216,8 +216,9 @@ impl<
                 level,
                 champion_id,
                 is_mega_gnar,
-                // The compile-time input has no game map nor missing health yet
-                missing_health: 0,
+                // The compile-time input has no game map nor current health yet,
+                // so the champion is at full health
+                current_health: 0.0,
                 game_map: GameMap::Unknown,
             }),
         };
@@ -234,7 +235,6 @@ impl<
             stacks: stacks as _,
             ability_levels,
             current_stats: stats,
-            bonus_stats,
             base_stats,
             level,
             adaptive_type,

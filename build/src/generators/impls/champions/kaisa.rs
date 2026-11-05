@@ -19,7 +19,7 @@ impl Generator for Kaisa {
             "Caustic Wounds on-hit damage, Stacks = Plasma stacks",
         )?
         .modify(P(_1), |_| {
-            f![(0.15 + 0.0006 * AbilityPower) * EnemyMissingHealth]
+            f![(0.15 + 0.0006 * AbilityPower) * EnemyMissingHealthFlat]
         })?
         .comment(P(_1), "Plasma detonation at 5 stacks")?
         .ability(

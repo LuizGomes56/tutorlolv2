@@ -178,7 +178,6 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
 
     let self_state = SelfState {
         current_stats: current_player_stats,
-        bonus_stats: current_player_bonus_stats,
         base_stats: current_player_base_stats,
         adaptive_type,
         ability_levels,
@@ -275,7 +274,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
         .collect::<Box<[_]>>();
 
     let layout = DamageLayout::new(&eval_data, true);
-    let mut damages = DamageTable::zeroed(layout, enemy_idx.len() * Realtime::ROWS_PER_ENEMY);
+    let mut damages = DamageTable::zeroed(layout, enemy_idx.len(), Realtime::ROWS_PER_ENEMY);
     // candidate simulated purchase pair lives at [n_items..n_items + 2]
     let n_items = eval_data.items.closures.len();
 

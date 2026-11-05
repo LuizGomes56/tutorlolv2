@@ -14,7 +14,6 @@ pub enum EnemyStatsAction {
     CurrentHealth(i32),
     MagicResist(i32),
     MaxHealth(i32),
-    MissingHealth(i32),
 }
 
 impl ReduceApply for EnemyStats {
@@ -26,7 +25,6 @@ impl ReduceApply for EnemyStats {
             Self::Action::CurrentHealth(value) => self.current_health = value as _,
             Self::Action::MagicResist(value) => self.magic_resist = value as _,
             Self::Action::MaxHealth(value) => self.max_health = value as _,
-            Self::Action::MissingHealth(value) => self.missing_health = value as _,
         }
     }
 }

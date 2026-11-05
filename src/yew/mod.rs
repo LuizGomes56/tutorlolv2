@@ -6,11 +6,4 @@ pub mod stats;
 #[cfg(feature = "formula-docs")]
 pub mod render;
 
-pub trait ReduceApply
-where
-    Self: Copy + PartialEq + 'static,
-    Self::Action: PartialEq + Copy,
-{
-    type Action;
-    fn apply(&mut self, action: Self::Action);
-}
+pub use tutorlolv2_types::yew::ReduceApply;
