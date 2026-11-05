@@ -3,7 +3,7 @@ use crate::{
     components::{
         code::{Code, Highlighted},
         h2,
-        hover_docs::global_docs,
+        hover_docs::HoverDocsExt,
         image::{Entry, image, position_image},
         paragraph, section,
         selector::{Selected, Selector},
@@ -155,7 +155,7 @@ fn column<T: Entry>(
                 .gap_3()
                 .overflow_hidden()
                 .when(compact, |entry| entry.justify_center())
-                .hoverable_tooltip(global_docs(entry))
+                .hover_docs(entry)
                 .child(image(entry.image_source()).size_7().flex_none())
                 .when(!compact, |row| {
                     row.child(

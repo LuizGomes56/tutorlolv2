@@ -1,7 +1,7 @@
 //! Searchable champion/item/rune picker: the web app's `components/selector.rs`.
 use crate::{
     components::{
-        hover_docs::global_docs,
+        hover_docs::HoverDocsExt,
         image::{Entry, image},
         text_input::{TextInput, TextInputEvent},
     },
@@ -103,7 +103,7 @@ impl<T: Entry> Selector<T> {
                             .gap_2()
                             .h(px(OPTION_HEIGHT))
                             .cursor_pointer()
-                            .hoverable_tooltip(global_docs(entry))
+                            .hover_docs(entry)
                             .on_click(cx.listener(move |this, _, _, cx| this.select(entry, cx)))
                             .child(image(entry.image_source()).size_6().flex_none())
                             .child(div().truncate().child(entry.name()))
@@ -141,7 +141,7 @@ impl<T: Entry> Render for Selector<T> {
                 div()
                     .id("selector-image")
                     .flex_none()
-                    .hoverable_tooltip(global_docs(value))
+                    .hover_docs(value)
                     .child(image(value.image_source()).size_12()),
             )
             .child(

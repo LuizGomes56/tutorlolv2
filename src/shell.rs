@@ -1,9 +1,14 @@
 //! The application layout from the web app's `App` component and `index.html`:
 //! a sidebar next to a scrollable page area.
-use crate::{components::sidebar::Sidebar, formulas::Formulas, route::Route, theme};
+use crate::{
+    components::{hover_docs, sidebar::Sidebar},
+    formulas::Formulas,
+    route::Route,
+    theme,
+};
 use gpui::{
-    AnyView, AppContext, Context, FocusHandle, IntoElement, ParentElement, Render, Styled, Window,
-    div, prelude::*, px, rgb,
+    AnyView, AppContext, Context, FocusHandle, IntoElement, KeyDownEvent, ParentElement, Render,
+    Styled, Subscription, Window, div, prelude::*, px, rgb,
 };
 
 /// Tailwind's `md` breakpoint. Below it the web sidebar is `hidden`.
@@ -15,8 +20,9 @@ pub struct Shell {
     /// so their state (such as the random initial selection) starts fresh each visit.
     page: Option<AnyView>,
     /// Keeps the shell on the keyboard dispatch path while no input is focused, so it sees
-    /// modifier changes (see `on_modifiers_changed` below).
+    /// Shift and Escape for the documentation tooltips.
     focus_handle: FocusHandle,
+    _activation: Subscription,
 }
 
 impl Shell {
@@ -24,10 +30,18 @@ impl Shell {
         let focus_handle = cx.focus_handle();
         window.focus(&focus_handle);
 
+        // `hover.js` hides the tooltip on `blur`.
+        let activation = cx.observe_window_activation(window, |_, window, cx| {
+            if !window.is_window_active() {
+                hover_docs::hide(window, cx);
+            }
+        });
+
         Self {
             route: Route::Homepage,
             page: None,
             focus_handle,
+            _activation: activation,
         }
     }
 
@@ -65,8 +79,12 @@ impl Render for Shell {
             .track_focus(&self.focus_handle)
             .bg(rgb(theme::STD_900))
             .text_color(rgb(theme::TEXT))
-            // Lets Shift-gated tooltips (`HoverDocs`) react to modifier changes.
-            .on_modifiers_changed(|_, window, _| window.refresh())
+            .on_modifiers_changed(hover_docs::modifiers_changed)
+            .on_key_down(|event: &KeyDownEvent, window, cx| {
+                if event.keystroke.key == "escape" {
+                    hover_docs::hide(window, cx);
+                }
+            })
             .when(show_sidebar, |shell| {
                 shell.child(Sidebar::new(cx.entity().downgrade()))
             })
@@ -80,5 +98,6 @@ impl Render for Shell {
                     .overflow_y_scroll()
                     .child(page),
             )
+            .child(hover_docs::layer())
     }
 }
