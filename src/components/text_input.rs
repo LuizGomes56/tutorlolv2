@@ -18,13 +18,21 @@ actions!(
     [
         Backspace,
         Delete,
+        DeleteWordLeft,
+        DeleteWordRight,
         Left,
         Right,
+        WordLeft,
+        WordRight,
         SelectLeft,
         SelectRight,
+        SelectWordLeft,
+        SelectWordRight,
         SelectAll,
         Home,
         End,
+        SelectHome,
+        SelectEnd,
         Paste,
         Cut,
         Copy,
@@ -38,16 +46,24 @@ pub fn bind_keys(cx: &mut App) {
     cx.bind_keys([
         KeyBinding::new("backspace", Backspace, Some(CONTEXT)),
         KeyBinding::new("delete", Delete, Some(CONTEXT)),
+        KeyBinding::new("ctrl-backspace", DeleteWordLeft, Some(CONTEXT)),
+        KeyBinding::new("ctrl-delete", DeleteWordRight, Some(CONTEXT)),
         KeyBinding::new("left", Left, Some(CONTEXT)),
         KeyBinding::new("right", Right, Some(CONTEXT)),
+        KeyBinding::new("ctrl-left", WordLeft, Some(CONTEXT)),
+        KeyBinding::new("ctrl-right", WordRight, Some(CONTEXT)),
         KeyBinding::new("shift-left", SelectLeft, Some(CONTEXT)),
         KeyBinding::new("shift-right", SelectRight, Some(CONTEXT)),
+        KeyBinding::new("ctrl-shift-left", SelectWordLeft, Some(CONTEXT)),
+        KeyBinding::new("ctrl-shift-right", SelectWordRight, Some(CONTEXT)),
         KeyBinding::new("secondary-a", SelectAll, Some(CONTEXT)),
         KeyBinding::new("secondary-v", Paste, Some(CONTEXT)),
         KeyBinding::new("secondary-c", Copy, Some(CONTEXT)),
         KeyBinding::new("secondary-x", Cut, Some(CONTEXT)),
         KeyBinding::new("home", Home, Some(CONTEXT)),
         KeyBinding::new("end", End, Some(CONTEXT)),
+        KeyBinding::new("shift-home", SelectHome, Some(CONTEXT)),
+        KeyBinding::new("shift-end", SelectEnd, Some(CONTEXT)),
     ]);
 }
 
@@ -128,6 +144,30 @@ impl TextInput {
         self.select_to(self.next_boundary(self.cursor_offset()), cx);
     }
 
+    fn word_left(&mut self, _: &WordLeft, _: &mut Window, cx: &mut Context<Self>) {
+        self.move_to(self.previous_word_boundary(self.cursor_offset()), cx);
+    }
+
+    fn word_right(&mut self, _: &WordRight, _: &mut Window, cx: &mut Context<Self>) {
+        self.move_to(self.next_word_boundary(self.cursor_offset()), cx);
+    }
+
+    fn select_word_left(&mut self, _: &SelectWordLeft, _: &mut Window, cx: &mut Context<Self>) {
+        self.select_to(self.previous_word_boundary(self.cursor_offset()), cx);
+    }
+
+    fn select_word_right(&mut self, _: &SelectWordRight, _: &mut Window, cx: &mut Context<Self>) {
+        self.select_to(self.next_word_boundary(self.cursor_offset()), cx);
+    }
+
+    fn select_home(&mut self, _: &SelectHome, _: &mut Window, cx: &mut Context<Self>) {
+        self.select_to(0, cx);
+    }
+
+    fn select_end(&mut self, _: &SelectEnd, _: &mut Window, cx: &mut Context<Self>) {
+        self.select_to(self.content.len(), cx);
+    }
+
     fn select_all(&mut self, _: &SelectAll, _: &mut Window, cx: &mut Context<Self>) {
         self.move_to(0, cx);
         self.select_to(self.content.len(), cx)
@@ -152,6 +192,32 @@ impl TextInput {
     fn delete(&mut self, _: &Delete, window: &mut Window, cx: &mut Context<Self>) {
         if self.selected_range.is_empty() {
             self.select_to(self.next_boundary(self.cursor_offset()), cx)
+        }
+
+        self.replace_text_in_range(None, "", window, cx)
+    }
+
+    fn delete_word_left(
+        &mut self,
+        _: &DeleteWordLeft,
+        window: &mut Window,
+        cx: &mut Context<Self>,
+    ) {
+        if self.selected_range.is_empty() {
+            self.select_to(self.previous_word_boundary(self.cursor_offset()), cx)
+        }
+
+        self.replace_text_in_range(None, "", window, cx)
+    }
+
+    fn delete_word_right(
+        &mut self,
+        _: &DeleteWordRight,
+        window: &mut Window,
+        cx: &mut Context<Self>,
+    ) {
+        if self.selected_range.is_empty() {
+            self.select_to(self.next_word_boundary(self.cursor_offset()), cx)
         }
 
         self.replace_text_in_range(None, "", window, cx)
@@ -311,6 +377,16 @@ impl TextInput {
             .grapheme_indices(true)
             .find_map(|(idx, _)| (idx > offset).then_some(idx))
             .unwrap_or(self.content.len())
+    }
+
+    /// Start of the word before `offset`, skipping whitespace first (browser `Ctrl+Left`).
+    fn previous_word_boundary(&self, offset: usize) -> usize {
+        previous_word_boundary(&self.content, offset)
+    }
+
+    /// End of the word after `offset`, skipping whitespace first.
+    fn next_word_boundary(&self, offset: usize) -> usize {
+        next_word_boundary(&self.content, offset)
     }
 
     fn set_content(&mut self, content: String, cx: &mut Context<Self>) {
@@ -640,13 +716,21 @@ impl Render for TextInput {
             .cursor(CursorStyle::IBeam)
             .on_action(cx.listener(Self::backspace))
             .on_action(cx.listener(Self::delete))
+            .on_action(cx.listener(Self::delete_word_left))
+            .on_action(cx.listener(Self::delete_word_right))
             .on_action(cx.listener(Self::left))
             .on_action(cx.listener(Self::right))
+            .on_action(cx.listener(Self::word_left))
+            .on_action(cx.listener(Self::word_right))
             .on_action(cx.listener(Self::select_left))
             .on_action(cx.listener(Self::select_right))
+            .on_action(cx.listener(Self::select_word_left))
+            .on_action(cx.listener(Self::select_word_right))
             .on_action(cx.listener(Self::select_all))
             .on_action(cx.listener(Self::home))
             .on_action(cx.listener(Self::end))
+            .on_action(cx.listener(Self::select_home))
+            .on_action(cx.listener(Self::select_end))
             .on_action(cx.listener(Self::paste))
             .on_action(cx.listener(Self::cut))
             .on_action(cx.listener(Self::copy))
@@ -661,5 +745,46 @@ impl Render for TextInput {
 impl Focusable for TextInput {
     fn focus_handle(&self, _: &App) -> FocusHandle {
         self.focus_handle.clone()
+    }
+}
+
+/// Word segments per UAX #29, ignoring whitespace-only segments.
+fn words(text: &str) -> impl DoubleEndedIterator<Item = Range<usize>> + '_ {
+    text.split_word_bound_indices()
+        .filter(|(_, segment)| !segment.trim().is_empty())
+        .map(|(start, segment)| start..start + segment.len())
+}
+
+fn previous_word_boundary(text: &str, offset: usize) -> usize {
+    words(text)
+        .rev()
+        .find(|word| word.start < offset)
+        .map_or(0, |word| word.start)
+}
+
+fn next_word_boundary(text: &str, offset: usize) -> usize {
+    words(text)
+        .find(|word| word.end > offset)
+        .map_or(text.len(), |word| word.end)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::{next_word_boundary, previous_word_boundary};
+
+    #[test]
+    fn word_boundaries_skip_whitespace() {
+        let text = "Nashor's Tooth  ab";
+
+        assert_eq!(previous_word_boundary(text, text.len()), 16);
+        assert_eq!(previous_word_boundary(text, 16), 9);
+        assert_eq!(previous_word_boundary(text, 11), 9);
+        assert_eq!(previous_word_boundary(text, 9), 0);
+        assert_eq!(previous_word_boundary(text, 0), 0);
+
+        assert_eq!(next_word_boundary(text, 0), 8);
+        assert_eq!(next_word_boundary(text, 8), 14);
+        assert_eq!(next_word_boundary(text, 14), text.len());
+        assert_eq!(next_word_boundary(text, text.len()), text.len());
     }
 }

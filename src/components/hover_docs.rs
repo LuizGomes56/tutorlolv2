@@ -10,10 +10,26 @@ use gpui::{
 use tutorlolv2::CastId;
 use tutorlolv2_codec::Spans;
 
-pub struct HoverDocs(Highlighted);
+/// Documentation shown only while Shift is held, so hovering alone does not cover the page.
+///
+/// gpui builds the tooltip after the hover delay regardless; until Shift is pressed the view is
+/// empty (zero-sized). Modifier events only travel along the focus path, which never includes a
+/// tooltip, so [`Shell`](crate::shell::Shell) refreshes the window when they change and this view
+/// reads [`Window::modifiers`]. Once revealed it stays visible after Shift is released, so the
+/// pointer can move into it and scroll.
+pub struct HoverDocs {
+    docs: Highlighted,
+    revealed: bool,
+}
 
 impl Render for HoverDocs {
-    fn render(&mut self, _: &mut Window, _: &mut Context<Self>) -> impl IntoElement {
+    fn render(&mut self, window: &mut Window, _: &mut Context<Self>) -> impl IntoElement {
+        self.revealed |= window.modifiers().shift;
+
+        if !self.revealed {
+            return div().into_any_element();
+        }
+
         // `sm:max-w-md sm:max-h-96 p-2 leading-6 text-base border border-std-800 bg-std-900`
         let tooltip = div()
             .id("hover-docs")
@@ -26,15 +42,21 @@ impl Render for HoverDocs {
             .border_color(rgb(theme::STD_800))
             .bg(rgb(theme::STD_900));
 
-        code_text(tooltip).child(self.0.styled_text())
+        code_text(tooltip)
+            .child(self.docs.styled_text())
+            .into_any_element()
     }
 }
 
-/// Tooltip builder with the global definition of a champion, item or rune
+/// Shift-gated tooltip builder with the global definition of a champion, item or rune
 /// (`Docs::ChampionGlobal`, `ItemGlobal`, `RuneGlobal` on the web).
 pub fn global_docs<T: CastId>(id: T) -> impl Fn(&mut Window, &mut App) -> AnyView + 'static {
     move |_, cx| {
         let docs = Highlighted::from(id.render_global_markup::<Spans>());
-        cx.new(|_| HoverDocs(docs)).into()
+        cx.new(|_| HoverDocs {
+            docs,
+            revealed: false,
+        })
+        .into()
     }
 }

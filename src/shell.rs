@@ -2,8 +2,8 @@
 //! a sidebar next to a scrollable page area.
 use crate::{components::sidebar::Sidebar, formulas::Formulas, route::Route, theme};
 use gpui::{
-    AnyView, AppContext, Context, IntoElement, ParentElement, Render, Styled, Window, div,
-    prelude::*, px, rgb,
+    AnyView, AppContext, Context, FocusHandle, IntoElement, ParentElement, Render, Styled, Window,
+    div, prelude::*, px, rgb,
 };
 
 /// Tailwind's `md` breakpoint. Below it the web sidebar is `hidden`.
@@ -14,13 +14,20 @@ pub struct Shell {
     /// The current page. Pages are created on navigation, like a route change on the web,
     /// so their state (such as the random initial selection) starts fresh each visit.
     page: Option<AnyView>,
+    /// Keeps the shell on the keyboard dispatch path while no input is focused, so it sees
+    /// modifier changes (see `on_modifiers_changed` below).
+    focus_handle: FocusHandle,
 }
 
 impl Shell {
-    pub fn new() -> Self {
+    pub fn new(window: &mut Window, cx: &mut Context<Self>) -> Self {
+        let focus_handle = cx.focus_handle();
+        window.focus(&focus_handle);
+
         Self {
             route: Route::Homepage,
             page: None,
+            focus_handle,
         }
     }
 
@@ -55,8 +62,11 @@ impl Render for Shell {
         div()
             .flex()
             .size_full()
+            .track_focus(&self.focus_handle)
             .bg(rgb(theme::STD_900))
             .text_color(rgb(theme::TEXT))
+            // Lets Shift-gated tooltips (`HoverDocs`) react to modifier changes.
+            .on_modifiers_changed(|_, window, _| window.refresh())
             .when(show_sidebar, |shell| {
                 shell.child(Sidebar::new(cx.entity().downgrade()))
             })

@@ -27,7 +27,7 @@ fn main() {
                 app_id: Some("tutorlolv2".into()),
                 ..Default::default()
             },
-            |_, cx| cx.new(|_| Shell::new()),
+            |window, cx| cx.new(|cx| Shell::new(window, cx)),
         )
         .expect("failed to open the main window");
 
