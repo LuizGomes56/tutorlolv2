@@ -10,6 +10,7 @@ mod formulas;
 mod random;
 mod route;
 mod shell;
+mod storage;
 mod theme;
 
 fn main() {

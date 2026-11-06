@@ -63,6 +63,20 @@ impl<T: Copy> Tray<T> {
         self.ids.clear();
         self.values.clear();
     }
+
+    /// Keeps the values for which `keep` is true, with their ids.
+    pub fn retain(&mut self, mut keep: impl FnMut(T) -> bool) {
+        let mut index = 0;
+
+        while index < self.values.len() {
+            if keep(self.values[index]) {
+                index += 1;
+            } else {
+                self.ids.remove(index);
+                self.values.remove(index);
+            }
+        }
+    }
 }
 
 impl<T: Copy> FromIterator<T> for Tray<T> {

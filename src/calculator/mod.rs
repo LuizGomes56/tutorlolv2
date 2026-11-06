@@ -9,6 +9,7 @@ mod docs;
 mod panels;
 mod picker;
 mod results;
+mod stack;
 mod state;
 mod tables;
 mod widgets;
@@ -78,6 +79,11 @@ pub struct Calculator {
     /// The last request's error. Kept until the next reply, like the tables, so the page does
     /// not change while a calculation runs.
     error: Option<SharedString>,
+    /// The last successful result, also held by the tables view.
+    game: Option<Rc<OutputGame>>,
+    stack: stack::Stack,
+    /// Why the stack could not be saved.
+    stack_error: Option<SharedString>,
     /// Replaced by each new calculation, which cancels the previous one.
     _calculation: Option<Task<()>>,
 
@@ -124,6 +130,9 @@ impl Calculator {
             enemy_index: 0,
             game_map: GameMap::SummonersRift,
             error: None,
+            game: None,
+            stack: stack::Stack::default(),
+            stack_error: None,
             _calculation: None,
             player_selector,
             enemy_selector,
@@ -170,6 +179,7 @@ impl Calculator {
                 }
 
                 self.error = None;
+                self.stack.sync(&game);
                 Some(Rc::new(game))
             }
             Err(error) => {
@@ -178,6 +188,7 @@ impl Calculator {
             }
         };
 
+        self.game = game.clone();
         self.tables
             .update(cx, |tables, cx| tables.set_game(game, cx));
 
@@ -446,7 +457,16 @@ impl Render for Calculator {
             .gap_4()
             .p_2()
             .children(self.error.clone().map(error_box))
-            .child(DamageTables::view(&self.tables, cx));
+            .child(DamageTables::view(&self.tables, cx))
+            .child(match self.game.clone() {
+                Some(game) => self.stack_box(&game, window, cx),
+                // `box h-96`, where the stack will be.
+                None => div()
+                    .h_96()
+                    .bg(rgb(theme::STD_900))
+                    .shadow(box_shadow())
+                    .into_any_element(),
+            });
 
         let rendered = std::mem::take(&mut self.rendered_fields);
         self.fields.retain(|field, _| rendered.contains(field));

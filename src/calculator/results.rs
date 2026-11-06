@@ -28,8 +28,6 @@ use tutorlolv2::{
 
 /// `gap-4` between the tables.
 const GAP: f32 = 16.0;
-/// `h-96`: the enemy table's placeholder.
-const PLACEHOLDER_HEIGHT: f32 = 384.0;
 
 /// `MONSTER_HEADERS`: the monsters of each monster row. Only the row count and the widest row
 /// matter until their images exist.
@@ -73,12 +71,12 @@ impl DamageTables {
         let table = |rows: usize| (rows + 1) as f32 * ROW_HEIGHT;
         let monsters = table(L_MSTR);
         let turrets = table(1);
-        let enemies = match &self.game {
-            Some(game) => table(game.enemies.len()),
-            None => PLACEHOLDER_HEIGHT,
-        };
 
-        px(enemies + monsters + turrets + 2.0 * GAP)
+        // Before the first result only the monster and turret placeholders are shown.
+        match &self.game {
+            Some(game) => px(table(game.enemies.len()) + monsters + turrets + 2.0 * GAP),
+            None => px(monsters + turrets + GAP),
+        }
     }
 
     /// The tables as an element that is redrawn only after [`Self::set_game`].
@@ -95,11 +93,6 @@ impl DamageTables {
             return vec![
                 table_box(empty_table("monsters-empty", MONSTER_HEADERS.len())),
                 table_box(empty_table("turrets-empty", 1)),
-                div()
-                    .h(px(PLACEHOLDER_HEIGHT))
-                    .bg(rgb(theme::STD_900))
-                    .shadow(box_shadow())
-                    .into_any_element(),
             ];
         };
 

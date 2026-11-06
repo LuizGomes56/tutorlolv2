@@ -27,6 +27,7 @@ pub enum Builtin {
     BasicAttack,
     CriticalStrike,
     Onhit,
+    Ignite,
 }
 
 #[derive(Clone, Copy, Debug, PartialEq)]
@@ -65,6 +66,8 @@ impl Docs {
             (Builtin::BasicAttack, DocView::Global) => {
                 FormulaRenderer::basic_attack_global_markup()
             }
+            // Ignite has only its function, which the web shows for both views.
+            (Builtin::Ignite, _) => FormulaRenderer::ignite_fn_markup(),
         }
     }
 
