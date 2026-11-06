@@ -18,17 +18,22 @@
 //! - [`layer`], rendered once by the shell, draws the active tooltip above everything else.
 //!   It is drawn after every other deferred element (such as the selector dropdown, whose options
 //!   have docs too), so the bounds recorded by anchors in this frame are already known.
+//!
+//! A view drawn with [`cached_view`] skips prepaint while gpui reuses its last frame, so its
+//! anchors record nothing. The layer then keeps the anchor's last bounds, which are still right:
+//! gpui only reuses a view whose bounds did not change.
 use crate::{
     components::code::{Highlighted, code_text},
     theme,
 };
 use gpui::{
-    App, AppContext, AvailableSpace, Bounds, Context, Element, ElementId, Entity, Global,
-    GlobalElementId, Hitbox, HitboxBehavior, InspectorElementId, IntoElement, LayoutId, Length,
-    ModifiersChangedEvent, MouseExitEvent, MouseMoveEvent, ParentElement, Pixels, Position, Render,
-    Stateful, Style, Styled, Window, deferred, div, point, prelude::*, px, rems, rgb,
+    AnyView, App, AppContext, AvailableSpace, Bounds, Context, Element, ElementId, Entity,
+    EntityId, Global, GlobalElementId, Hitbox, HitboxBehavior, InspectorElementId, IntoElement,
+    LayoutId, Length, ModifiersChangedEvent, MouseExitEvent, MouseMoveEvent, ParentElement, Pixels,
+    Position, Render, Stateful, Style, StyleRefinement, Styled, Window, deferred, div, point,
+    prelude::*, px, rems, rgb,
 };
-use std::rc::Rc;
+use std::{collections::HashSet, rc::Rc};
 use tutorlolv2::CastId;
 use tutorlolv2_codec::Spans;
 
@@ -47,6 +52,10 @@ struct HoverDocsState {
     /// The anchor under the pointer, kept so pressing Shift can show its docs.
     hovered: Option<(AnchorId, BuildDocs)>,
     active: Option<Active>,
+    /// Views placed with [`cached_view`] in this frame.
+    cached_views: HashSet<EntityId>,
+    /// Those of them that were rendered again, rather than reused.
+    rendered_views: HashSet<EntityId>,
 }
 
 impl Global for HoverDocsState {}
@@ -56,8 +65,43 @@ struct Active {
     view: Entity<HoverDocs>,
     tooltip_hovered: bool,
     /// The anchor's bounds in the current frame. `None` when it was not drawn (its element
-    /// was removed, like a dropdown option after closing), which hides the tooltip.
+    /// was removed, like a dropdown option after closing), which hides the tooltip, unless its
+    /// view was reused from the last frame.
     anchor_bounds: Option<Bounds<Pixels>>,
+    /// The anchor's view and bounds when it was last drawn.
+    last_drawn: Option<(EntityId, Bounds<Pixels>)>,
+}
+
+impl Active {
+    /// Where to show the tooltip in this frame, or `None` if the anchor is gone.
+    fn bounds(
+        &mut self,
+        cached: &HashSet<EntityId>,
+        rendered: &HashSet<EntityId>,
+    ) -> Option<Bounds<Pixels>> {
+        if let Some(bounds) = self.anchor_bounds.take() {
+            return Some(bounds);
+        }
+
+        let (view, bounds) = self.last_drawn?;
+        let reused = cached.contains(&view) && !rendered.contains(&view);
+
+        reused.then_some(bounds)
+    }
+}
+
+/// Draws `view` as a cached element: gpui reuses its last layout and paint until it notifies.
+/// `style` must size it, since a cached view is laid out without its children. The view must
+/// call [`view_rendered`] in its `render`, so tooltips of its elements survive reused frames.
+pub fn cached_view<V: Render>(view: &Entity<V>, style: StyleRefinement, cx: &mut App) -> AnyView {
+    state(cx).cached_views.insert(view.entity_id());
+
+    AnyView::from(view.clone()).cached(style)
+}
+
+/// Tells the tooltip layer that a view drawn with [`cached_view`] was rendered in this frame.
+pub fn view_rendered(view: EntityId, cx: &mut App) {
+    state(cx).rendered_views.insert(view);
 }
 
 fn state(cx: &mut App) -> &mut HoverDocsState {
@@ -81,6 +125,7 @@ fn show(anchor: AnchorId, build: &BuildDocs, window: &mut Window, cx: &mut App) 
         view,
         tooltip_hovered: false,
         anchor_bounds: None,
+        last_drawn: None,
     });
 
     window.refresh();
@@ -212,6 +257,7 @@ impl Element for Anchor {
             && active.anchor == anchor
         {
             active.anchor_bounds = Some(bounds);
+            active.last_drawn = Some((window.current_view(), bounds));
         }
 
         // `Normal` does not change how the parent and its children handle the mouse.
@@ -326,13 +372,17 @@ impl Element for Layer {
         window: &mut Window,
         cx: &mut App,
     ) {
-        let Some(active) = &mut state(cx).active else {
+        let state = state(cx);
+        let cached = std::mem::take(&mut state.cached_views);
+        let rendered = std::mem::take(&mut state.rendered_views);
+
+        let Some(active) = &mut state.active else {
             return;
         };
 
-        // Reset for the next frame, where the anchor records its bounds again.
-        let Some(anchor) = active.anchor_bounds.take() else {
-            state(cx).active = None;
+        // Resets the bounds for the next frame, where the anchor records them again.
+        let Some(anchor) = active.bounds(&cached, &rendered) else {
+            state.active = None;
             return;
         };
 

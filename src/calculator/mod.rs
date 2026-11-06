@@ -7,6 +7,8 @@
 mod backend;
 mod docs;
 mod panels;
+mod picker;
+mod results;
 mod state;
 mod tables;
 mod widgets;
@@ -22,18 +24,18 @@ use crate::{
 use backend::Snapshot;
 use gpui::{
     AppContext, Context, Entity, FontWeight, IntoElement, ParentElement, Render, SharedString,
-    Styled, Subscription, Task, Window, div, prelude::*, px, rgb,
+    Styled, Subscription, Task, Window, div, px, rgb,
 };
+use results::{DamageTables, SelectEnemy};
 use state::{Enemy, Player, StatField, Stats, default_enemies};
 use std::{
     collections::{HashMap, HashSet},
     num::NonZeroU8,
     rc::Rc,
 };
-use tables::{Cell, Column, damage_columns, empty_table, table, turret_columns};
 use tutorlolv2::{
-    ChampionId, CtxVar, GameMap, ItemId, Key, L_MSTR, RuneId,
-    model::{Damages, Dragons, OutputGame},
+    ChampionId, GameMap, ItemId, Key, RuneId,
+    model::{Dragons, OutputGame},
 };
 
 /// Tailwind's `xl` breakpoint: the tables move between the two panels.
@@ -73,18 +75,21 @@ pub struct Calculator {
     enemy_index: usize,
     game_map: GameMap,
 
-    game: Option<Rc<OutputGame>>,
+    /// The last request's error. Kept until the next reply, like the tables, so the page does
+    /// not change while a calculation runs.
     error: Option<SharedString>,
-    pending: bool,
     /// Replaced by each new calculation, which cancels the previous one.
     _calculation: Option<Task<()>>,
 
     player_selector: Entity<Selector<ChampionId>>,
     enemy_selector: Entity<Selector<ChampionId>>,
+    tables: Entity<DamageTables>,
+    /// The open item or rune picker.
+    picker: Option<picker::Picker>,
     fields: HashMap<Field, NumberField>,
     /// Fields rendered this frame. Others are dropped after rendering.
     rendered_fields: HashSet<Field>,
-    _selections: [Subscription; 2],
+    _subscriptions: [Subscription; 3],
 }
 
 impl Calculator {
@@ -94,8 +99,12 @@ impl Calculator {
 
         let player_selector = cx.new(|cx| Selector::banner(player.data.champion_id, cx));
         let enemy_selector = cx.new(|cx| Selector::banner(enemies[0].champion_id, cx));
+        let tables = cx.new(|_| DamageTables::default());
 
-        let selections = [
+        let subscriptions = [
+            cx.subscribe(&tables, |this, _, SelectEnemy(index), cx| {
+                this.select_enemy(*index, cx)
+            }),
             cx.subscribe(&player_selector, |this, _, Selected(id), cx| {
                 this.player.data.champion_id = *id;
                 this.recalculate(cx);
@@ -114,15 +123,15 @@ impl Calculator {
             dragons: Dragons::default(),
             enemy_index: 0,
             game_map: GameMap::SummonersRift,
-            game: None,
             error: None,
-            pending: true,
             _calculation: None,
             player_selector,
             enemy_selector,
+            tables,
+            picker: None,
             fields: HashMap::new(),
             rendered_fields: HashSet::new(),
-            _selections: selections,
+            _subscriptions: subscriptions,
         };
 
         calculator.recalculate(cx);
@@ -133,8 +142,7 @@ impl Calculator {
     fn recalculate(&mut self, cx: &mut Context<Self>) {
         let snapshot = Snapshot::new(&self.player, &self.enemies, self.dragons, self.game_map);
 
-        self.pending = true;
-        self.error = None;
+        // The previous result stays on screen until this one arrives.
         self._calculation = Some(cx.spawn(async move |this, cx| {
             let result = cx
                 .background_spawn(async move { snapshot.calculate() })
@@ -143,13 +151,12 @@ impl Calculator {
             this.update(cx, |this, cx| this.finish(result, cx)).ok();
         }));
 
+        // The panels show the new input now; the tables view is not redrawn until the reply.
         cx.notify();
     }
 
     fn finish(&mut self, result: Result<OutputGame, backend::Error>, cx: &mut Context<Self>) {
-        self.pending = false;
-
-        match result {
+        let game = match result {
             Ok(game) => {
                 // Every reply is a full snapshot: write back all inferred stats.
                 if self.player.data.infer_stats {
@@ -162,13 +169,17 @@ impl Calculator {
                     }
                 }
 
-                self.game = Some(Rc::new(game));
+                self.error = None;
+                Some(Rc::new(game))
             }
             Err(error) => {
                 self.error = Some(error.to_string().into());
-                self.game = None;
+                None
             }
-        }
+        };
+
+        self.tables
+            .update(cx, |tables, cx| tables.set_game(game, cx));
 
         cx.notify();
     }
@@ -356,128 +367,6 @@ impl Calculator {
             self.recalculate(cx);
         }
     }
-
-    /// The enemy, monster and turret tables, or their placeholders.
-    fn tables(&self, cx: &mut Context<Self>) -> Vec<gpui::AnyElement> {
-        let Some(game) = self.game.clone() else {
-            return vec![
-                table_box(empty_table("monsters-empty", MONSTER_HEADERS.len())),
-                table_box(empty_table("turrets-empty", 1)),
-                div()
-                    .h_96()
-                    .bg(rgb(theme::STD_900))
-                    .shadow(box_shadow())
-                    .into_any_element(),
-            ];
-        };
-
-        let player = &game.current_player;
-        let damages = &game.damages;
-        let enemy_rows = (0..game.enemies.len())
-            .map(|i| damages.row(L_MSTR + i))
-            .collect::<Vec<Damages<'_>>>();
-
-        let mut enemy_columns = damage_columns(
-            &enemy_rows,
-            player.champion_id,
-            player.adaptive_type,
-            &game.items_meta,
-            &game.runes_meta,
-        );
-
-        // The first column: each enemy's portrait, which selects it in the enemy panel.
-        let portraits = game
-            .enemies
-            .iter()
-            .zip(&enemy_rows)
-            .enumerate()
-            .map(|(i, (enemy, damages))| {
-                let champion = enemy.champion_id;
-                let ctx = damages.ctx;
-
-                Cell::new(
-                    div()
-                        .id(("enemy-portrait", i))
-                        .cursor_pointer()
-                        .on_click(cx.listener(move |this, _, _, cx| this.select_enemy(i, cx)))
-                        .child(
-                            crate::components::image::image(
-                                crate::components::image::Entry::image_source(&champion),
-                            )
-                            .size(px(32.)),
-                        ),
-                )
-                .docs(move || {
-                    docs::cell_blocks(&CtxVar::ENEMY_VARS, &ctx, docs::Docs::global(champion))
-                })
-            })
-            .collect();
-
-        enemy_columns.insert(
-            0,
-            Column {
-                header: Cell::empty(),
-                cells: portraits,
-            },
-        );
-
-        let monster_rows = (0..L_MSTR).map(|i| damages.row(i)).collect::<Vec<_>>();
-        let mut monster_columns = damage_columns(
-            &monster_rows,
-            player.champion_id,
-            player.adaptive_type,
-            &game.items_meta,
-            &game.runes_meta,
-        );
-
-        // Monster portraits exist only as AVIF: their columns stay empty for now.
-        for _ in 0..MONSTER_COUNT {
-            monster_columns.insert(
-                0,
-                Column {
-                    header: Cell::empty(),
-                    cells: (0..L_MSTR).map(|_| Cell::empty()).collect(),
-                },
-            );
-        }
-
-        vec![
-            table_box(table("enemy-damages", enemy_columns)),
-            table_box(table("monster-damages", monster_columns)),
-            table_box(table(
-                "turret-damages",
-                turret_columns(&game.tower_damages, player.adaptive_type),
-            )),
-        ]
-    }
-}
-
-/// `MONSTER_HEADERS`: the monsters of each monster row. Only the row count and the widest row
-/// matter until their images exist.
-const MONSTER_HEADERS: [usize; L_MSTR] = [4, 4, 4, 2, 1, 1, 1];
-
-const MONSTER_COUNT: usize = {
-    let mut i = 0;
-    let mut max = 0;
-
-    while i < L_MSTR {
-        if MONSTER_HEADERS[i] > max {
-            max = MONSTER_HEADERS[i];
-        }
-
-        i += 1;
-    }
-
-    max
-};
-
-/// `box overflow-auto` around a table.
-fn table_box(table: impl IntoElement) -> gpui::AnyElement {
-    div()
-        .bg(rgb(theme::STD_900))
-        .shadow(box_shadow())
-        .child(table)
-        .into_any_element()
 }
 
 /// `errorlog`: the request error, with hints.
@@ -556,18 +445,8 @@ impl Render for Calculator {
             .min_w_0()
             .gap_4()
             .p_2()
-            .when(self.pending, |middle| {
-                middle.child(
-                    div()
-                        .px_2()
-                        .py_1()
-                        .text_sm()
-                        .text_color(rgb(theme::STD_400))
-                        .child("Calculating..."),
-                )
-            })
             .children(self.error.clone().map(error_box))
-            .children(self.tables(cx));
+            .child(DamageTables::view(&self.tables, cx));
 
         let rendered = std::mem::take(&mut self.rendered_fields);
         self.fields.retain(|field, _| rendered.contains(field));
@@ -578,12 +457,14 @@ impl Render for Calculator {
         let wide = window.viewport_size().width >= px(XL_BREAKPOINT);
         let page = div().flex().flex_wrap().w_full().px_2().mt_2().pb_96();
 
-        match wide {
+        let page = match wide {
             true => page.child(player).child(middle).child(enemies),
             false => page
                 .child(player)
                 .child(enemies)
                 .child(div().w_full().flex().child(middle)),
-        }
+        };
+
+        page.children(self.picker(window, cx))
     }
 }

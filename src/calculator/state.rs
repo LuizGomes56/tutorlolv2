@@ -46,6 +46,23 @@ impl<T: Copy> Tray<T> {
         self.ids.push(NEXT_ID.fetch_add(1, Ordering::Relaxed));
         self.values.push(value);
     }
+
+    /// Each value with its id, in insertion order.
+    pub fn iter(&self) -> impl Iterator<Item = (u64, T)> + '_ {
+        self.ids.iter().copied().zip(self.values.iter().copied())
+    }
+
+    pub fn remove_by_id(&mut self, id: u64) {
+        if let Some(index) = self.ids.iter().position(|&other| other == id) {
+            self.ids.remove(index);
+            self.values.remove(index);
+        }
+    }
+
+    pub fn clear(&mut self) {
+        self.ids.clear();
+        self.values.clear();
+    }
 }
 
 impl<T: Copy> FromIterator<T> for Tray<T> {
@@ -136,6 +153,25 @@ pub struct PlayerData<T> {
     pub infer_stats: bool,
 }
 
+impl<T> PlayerData<T> {
+    /// Adds an item. Items with stacks start at zero stacks, which shows their input.
+    pub fn insert_item(&mut self, item: ItemId, ally: bool) {
+        let items = &mut self.items;
+
+        self.item_exceptions
+            .push_item(item, item_exceptions(ally), |item| items.push(item));
+    }
+
+    /// Replaces the items, as a click on a position's recommendations does.
+    pub fn replace_items(&mut self, items: &[ItemId], ally: bool) {
+        self.items.clear();
+
+        for &item in items {
+            self.insert_item(item, ally);
+        }
+    }
+}
+
 impl<T: Default> PlayerData<T> {
     /// A random champion with the recommended items of its main position.
     pub fn random(ally: bool) -> Self {
@@ -143,23 +179,22 @@ impl<T: Default> PlayerData<T> {
     }
 
     pub fn new(champion_id: ChampionId, ally: bool) -> Self {
-        let mut items = Tray::default();
-        let mut exceptions = ExceptionMap::default();
-
-        for &item in champion_id.recommended_items(champion_id.main_position()) {
-            exceptions.push_item(item, item_exceptions(ally), |item| items.push(item));
-        }
-
-        Self {
+        let mut data = Self {
             stats: T::default(),
-            items,
-            item_exceptions: exceptions,
+            items: Tray::default(),
+            item_exceptions: ExceptionMap::default(),
             stacks: 0,
             level: const { NonZeroU8::new(18).unwrap() },
             champion_id,
             is_mega_gnar: false,
             infer_stats: true,
-        }
+        };
+
+        data.replace_items(
+            champion_id.recommended_items(champion_id.main_position()),
+            ally,
+        );
+        data
     }
 }
 

@@ -233,7 +233,7 @@ impl<T: Entry> Render for Selector<T> {
 }
 
 /// Match the web app's ASCII-only search (`utils/search.rs`).
-fn contains_ascii_case_insensitive(name: &str, query: &str) -> bool {
+pub fn contains_ascii_case_insensitive(name: &str, query: &str) -> bool {
     query.is_empty()
         || name
             .as_bytes()

@@ -23,8 +23,9 @@ use tutorlolv2::{
     model::{Attacks, Damages},
 };
 
-/// `table tr { height: 48px }`.
-const ROW_HEIGHT: f32 = 48.0;
+/// `table tr { height: 48px }`. Rows are exactly this tall, so the cached tables view can
+/// compute its height (see `results.rs`).
+pub const ROW_HEIGHT: f32 = 48.0;
 /// `table.data-table img { height: 32px }`.
 const ICON_SIZE: f32 = 32.0;
 
@@ -102,7 +103,7 @@ fn cell_frame(id: (&'static str, usize), cell: Cell) -> gpui::Stateful<gpui::Div
         .flex()
         .items_center()
         .justify_center()
-        .min_h(px(ROW_HEIGHT))
+        .h(px(ROW_HEIGHT))
         // `table th, table td { padding: 0 8px }`
         .px_2()
         .whitespace_nowrap();

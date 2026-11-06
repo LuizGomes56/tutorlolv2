@@ -13,6 +13,7 @@ pub const STD_700: u32 = 0x3f3f46;
 pub const STD_800: u32 = 0x27272a;
 /// Application shell background (`bg-std-900`).
 pub const STD_900: u32 = 0x18181b;
+pub const STD_950: u32 = 0x09090b;
 
 /// `body { color }`.
 pub const TEXT: u32 = 0xffffff;
@@ -36,6 +37,7 @@ pub const VIOLET_600: u32 = 0x7c3aed;
 
 /// Selector button counters: `text-sky-300 bg-sky-500/15 border-sky-500/20` (the last two RGBA).
 pub const SKY_300: u32 = 0x7dd3fc;
+pub const CYAN_400: u32 = 0x22d3ee;
 pub const SKY_BADGE: u32 = 0x0ea5e926;
 pub const SKY_BADGE_BORDER: u32 = 0x0ea5e933;
 

@@ -3,6 +3,7 @@
 use crate::{
     calculator::{
         Calculator, Field, Target,
+        picker::PickerKind,
         state::{ExceptionMap, StatField, Tray, item_exceptions},
         tables::ability_icon,
         widgets::{checkbox, input_row, selector_button, small_button},
@@ -294,18 +295,21 @@ impl Calculator {
                     .gap_2()
                     .my_2()
                     .w_full()
-                    // The item and rune pickers come in the next pass.
                     .child(selector_button(
                         "player-items",
                         "Items",
                         item_count,
-                        |_, _, _| {},
+                        cx.listener(|this, _, window, cx| {
+                            this.open_picker(PickerKind::Items, Target::Player, window, cx)
+                        }),
                     ))
                     .child(selector_button(
                         "player-runes",
                         "Runes",
                         rune_count,
-                        |_, _, _| {},
+                        cx.listener(|this, _, window, cx| {
+                            this.open_picker(PickerKind::Runes, Target::Player, window, cx)
+                        }),
                     )),
             )
             .children(input_grid(rows))
@@ -406,7 +410,9 @@ impl Calculator {
                 "enemy-items",
                 "Items",
                 items.len(),
-                |_, _, _| {},
+                cx.listener(move |this, _, window, cx| {
+                    this.open_picker(PickerKind::Items, Target::Enemy(index), window, cx)
+                }),
             )))
             .children(input_grid(rows))
             .when(champion == ChampionId::Gnar, |panel| {
