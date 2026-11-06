@@ -90,16 +90,7 @@ pub fn upload(entry: &HistoryEntry) -> String {
 
 /// `uuid`: the canonical text form of a recording id.
 pub fn uuid(id: [u8; 16]) -> String {
-    let s = id.iter().map(|v| format!("{v:02x}")).collect::<String>();
-
-    format!(
-        "{}-{}-{}-{}-{}",
-        &s[..8],
-        &s[8..12],
-        &s[12..16],
-        &s[16..20],
-        &s[20..]
-    )
+    tutorlolv2_api::Uuid::from_bytes(id).hyphenated().to_string()
 }
 
 /// `identity`: server id, or the local id while the recording waits for one.

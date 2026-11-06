@@ -11,6 +11,7 @@ use std::{
     time::{Duration, SystemTime},
 };
 use tutorlolv2_protocol::{EndRecording, Id16, RecordingResult, StartSession};
+use uuid::Uuid;
 
 const CHUNK_EXT: &str = "chunk";
 const TARGET_FILE: &str = "target.bin";
@@ -70,32 +71,23 @@ pub struct Spool {
 
 /// Time-ordered local session id with the UUIDv7 layout, so folder names sort by age.
 pub fn new_local_id(now_ms: i64, random: [u8; 10]) -> Id16 {
-    let mut id = [0u8; 16];
-
-    id[..6].copy_from_slice(&(now_ms as u64).to_be_bytes()[2..]);
-    id[6] = 0x70 | (random[0] & 0x0F);
-    id[7] = random[1];
-    id[8] = 0x80 | (random[2] & 0x3F);
-    id[9..].copy_from_slice(&random[3..]);
-    id
+    uuid::Builder::from_unix_timestamp_millis(now_ms as u64, &random)
+        .into_uuid()
+        .into_bytes()
 }
 
+/// Folder name: the id as 32 lowercase hex digits.
 fn hex(id: &Id16) -> String {
-    id.iter().map(|b| format!("{b:02x}")).collect()
+    Uuid::from_bytes(*id).simple().to_string()
 }
 
 fn parse_hex(name: &str) -> Option<Id16> {
+    // Only the 32-digit form; `try_parse` would also take hyphens, braces or a URN.
     if name.len() != 32 {
         return None;
     }
 
-    let mut id = [0u8; 16];
-
-    for (i, byte) in id.iter_mut().enumerate() {
-        *byte = u8::from_str_radix(name.get(i * 2..i * 2 + 2)?, 16).ok()?;
-    }
-
-    Some(id)
+    Uuid::try_parse(name).ok().map(Uuid::into_bytes)
 }
 
 impl Spool {

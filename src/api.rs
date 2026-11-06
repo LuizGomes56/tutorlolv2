@@ -1,6 +1,6 @@
 //! Requests to the HTTP API, for builds without `local-calculation` (the web app's
 //! `WebClient::public`). Blocking: callers run them on a background thread.
-use std::io::Read;
+use std::{io::Read, sync::LazyLock};
 use tutorlolv2_api::{
     Endpoint, NoHeaders, NoPath, NoQuery, ResponseBuffer, ResponseHeaders,
     protocol::response::MAX_RESPONSE_BYTES,
@@ -17,6 +17,10 @@ fn base() -> &'static str {
         .trim_end_matches("/games")
 }
 
+/// Shared so requests reuse connections. No decompression features: these
+/// endpoints answer with raw bincode.
+static CLIENT: LazyLock<reqwest::blocking::Client> = LazyLock::new(reqwest::blocking::Client::new);
+
 /// Posts `body` to `E` and returns the response, ready to decode.
 pub fn send<E>(body: &E::Body<'_>) -> Result<ResponseBuffer<E>, Error>
 where
@@ -24,14 +28,14 @@ where
 {
     let parts = E::request(base(), &NoPath, &NoQuery, &NoHeaders, body)?;
 
-    let mut response = ureq::post(&parts.url)
+    // Error statuses are not errors here: they carry an encoded `ApiError`, decoded
+    // by the contract.
+    let response = CLIENT
+        .post(&parts.url)
         .header("Content-Type", "application/octet-stream")
         .header("Accept", "application/octet-stream")
-        .config()
-        // Error statuses carry an encoded `ApiError`, decoded by the contract.
-        .http_status_as_error(false)
-        .build()
-        .send(&parts.body)?;
+        .body(parts.body)
+        .send()?;
 
     let status = response.status().as_u16();
     let mut headers = ResponseHeaders::default();
@@ -42,12 +46,9 @@ where
         }
     }
 
-    // ureq decodes `Content-Encoding` (gzip and Brotli).
     let mut bytes = Vec::new();
 
     response
-        .body_mut()
-        .as_reader()
         .take(MAX_RESPONSE_BYTES as u64 + 1)
         .read_to_end(&mut bytes)?;
 

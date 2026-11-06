@@ -74,25 +74,11 @@ pub fn renumber(body: &[u8], new_seq: u32) -> io::Result<(Vec<u8>, String)> {
     Ok(encode_chunk(&chunk))
 }
 
-/// Hyphenated lowercase UUID text, as the server's routes expect.
-fn uuid_text(id: &Id16) -> String {
-    let hex = id.iter().map(|b| format!("{b:02x}")).collect::<String>();
-
-    format!(
-        "{}-{}-{}-{}-{}",
-        &hex[..8],
-        &hex[8..12],
-        &hex[12..16],
-        &hex[16..20],
-        &hex[20..]
-    )
-}
-
 /// `Device <uuid-hyphenated>.<base64url-nopad(secret)>` (spec §13.1).
 pub fn device_auth_header(device_id: &Id16, secret: &[u8; 32]) -> String {
     format!(
         "Device {}.{}",
-        uuid_text(device_id),
+        api::Uuid::from_bytes(*device_id).hyphenated(),
         URL_SAFE_NO_PAD.encode(secret)
     )
 }

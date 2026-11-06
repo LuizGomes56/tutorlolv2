@@ -19,8 +19,6 @@ tutorlolv2 = { path = '\\wsl.localhost\Ubuntu\home\luizg\Projects\tutorlolv2', d
 tutorlolv2_codec = { path = '\\wsl.localhost\Ubuntu\home\luizg\Projects\tutorlolv2\tutorlolv2_codec' }
 tutorlolv2_api = { path = '\\wsl.localhost\Ubuntu\home\luizg\Projects\tutorlolv2\tutorlolv2_api' }
 tutorlolv2_protocol = { path = '\\wsl.localhost\Ubuntu\home\luizg\Projects\tutorlolv2\tutorlolv2_protocol' }
-# Only for the `api` calculation feature.
-ureq = { version = "3", default-features = false, features = ["rustls", "gzip", "brotli"], optional = true }
 unicode-segmentation = "1"
 serde = { version = "1.0", default-features = false, features = [
     "alloc",
@@ -37,11 +35,14 @@ reqwest = { version = "0.12", default-features = false, features = ["http2", "ru
 serde_json = "1.0"
 sha2 = "0.10"
 tokio = { version = "1", features = ["rt-multi-thread", "time", "sync", "fs", "macros"] }
+# Already in gpui's dependency tree; `Builder` lays out the local UUIDv7 ids.
+uuid = { version = "1", default-features = false }
 
 [target.'cfg(windows)'.dependencies]
 # The overlay's HWND (already in gpui's dependency tree).
 raw-window-handle = "0.6"
-windows = { version = "0.62.2", features = [
+# gpui's version, so the windows crates are compiled once.
+windows = { version = "0.61", features = [
     "Foundation",
     "Win32_Foundation",
     "Win32_System_LibraryLoader",
@@ -60,7 +61,7 @@ default = ["local-calculation"]
 # Run the damage calculator in process, like the web app's `local-calculation`.
 local-calculation = ["tutorlolv2/engine"]
 # Without `local-calculation`, send calculations to the HTTP API (`TUTORLOLV2_API_URL`).
-api = ["dep:ureq"]
+api = ["reqwest/blocking"]
 
 [profile.release]
 opt-level = 3
