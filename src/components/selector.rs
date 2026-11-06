@@ -20,6 +20,16 @@ const DROPDOWN_MAX_HEIGHT: f32 = 288.0;
 /// Emitted when the user picks an entry.
 pub struct Selected<T>(pub T);
 
+/// The web passes different classes per use; these are the two in use.
+#[derive(Clone, Copy, PartialEq)]
+enum Variant {
+    /// The formulas page: a large name next to a large image.
+    Page,
+    /// Champion banners in the calculator: `gap-2 p-2`, a `w-8` image and
+    /// `font-bold text-lg text-std-400 placeholder:text-white`.
+    Banner,
+}
+
 pub struct Selector<T: Entry> {
     value: T,
     input: Entity<TextInput>,
@@ -27,6 +37,7 @@ pub struct Selector<T: Entry> {
     options: Vec<T>,
     open: bool,
     dropdown_hovered: bool,
+    variant: Variant,
     _input_events: Subscription,
 }
 
@@ -34,7 +45,32 @@ impl<T: Entry> EventEmitter<Selected<T>> for Selector<T> {}
 
 impl<T: Entry> Selector<T> {
     pub fn new(value: T, cx: &mut Context<Self>) -> Self {
-        let input = cx.new(|cx| TextInput::new(value.name(), cx));
+        Self::with_variant(value, Variant::Page, cx)
+    }
+
+    pub fn banner(value: T, cx: &mut Context<Self>) -> Self {
+        Self::with_variant(value, Variant::Banner, cx)
+    }
+
+    /// Shows another value without emitting [`Selected`].
+    pub fn set_value(&mut self, value: T, cx: &mut Context<Self>) {
+        if self.value != value {
+            self.value = value;
+            self.input
+                .update(cx, |input, cx| input.set_placeholder(value.name(), cx));
+            cx.notify();
+        }
+    }
+
+    fn with_variant(value: T, variant: Variant, cx: &mut Context<Self>) -> Self {
+        let input = cx.new(|cx| {
+            let input = TextInput::new(value.name(), cx);
+
+            match variant {
+                Variant::Page => input,
+                Variant::Banner => input.placeholder_color(rgb(theme::TEXT)),
+            }
+        });
 
         let input_events = cx.subscribe(&input, |this, _, event, cx| {
             match event {
@@ -54,6 +90,7 @@ impl<T: Entry> Selector<T> {
             options: T::VARIANTS.to_vec(),
             open: false,
             dropdown_hovered: false,
+            variant,
             _input_events: input_events,
         }
     }
@@ -98,6 +135,8 @@ impl<T: Entry> Selector<T> {
                     .map(|&entry| {
                         div()
                             .id(entry.index())
+                            // List items size to their content: make the whole row clickable.
+                            .w_full()
                             .flex()
                             .items_center()
                             .gap_2()
@@ -119,7 +158,12 @@ impl<T: Entry> Selector<T> {
             .mt_2()
             .px_1p5()
             .py_1()
-            .w_96()
+            .map(|dropdown| match self.variant {
+                Variant::Page => dropdown.w_96(),
+                // `w-full` of the banner. An anchored element has no width of its own, so
+                // a relative width would be zero: use the panel's `w-64`.
+                Variant::Banner => dropdown.w_64(),
+            })
             .bg(rgb(theme::DROPDOWN))
             .border_1()
             .border_color(rgb(theme::STD_800))
@@ -133,26 +177,41 @@ impl<T: Entry> Render for Selector<T> {
     fn render(&mut self, _: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
         let value = self.value;
 
+        let banner = self.variant == Variant::Banner;
         let label = div()
             .flex()
             .items_center()
-            .gap_4()
+            .map(|label| match banner {
+                true => label.gap_2().p_2().overflow_hidden(),
+                false => label.gap_4(),
+            })
             .child(
                 div()
                     .id("selector-image")
                     .flex_none()
                     .hover_docs(value)
-                    .child(image(value.image_source()).size_12()),
+                    .child(image(value.image_source()).map(|image| match banner {
+                        true => image.size_8(),
+                        false => image.size_12(),
+                    })),
             )
             .child(
-                // `text-std-200 placeholder:text-std-500 text-3xl font-medium w-full`
                 div()
                     .flex_1()
                     .min_w_0()
-                    .text_3xl()
-                    .line_height(rems(2.25))
-                    .font_weight(FontWeight::MEDIUM)
-                    .text_color(rgb(theme::STD_200))
+                    .map(|input| match banner {
+                        // `font-bold text-lg text-std-400`
+                        true => input
+                            .text_lg()
+                            .font_weight(FontWeight::BOLD)
+                            .text_color(rgb(theme::STD_400)),
+                        // `text-std-200 text-3xl font-medium`
+                        false => input
+                            .text_3xl()
+                            .line_height(rems(2.25))
+                            .font_weight(FontWeight::MEDIUM)
+                            .text_color(rgb(theme::STD_200)),
+                    })
                     .child(self.input.clone()),
             )
             .on_mouse_down_out(cx.listener(|this, _, _, cx| {

@@ -8,7 +8,7 @@ use std::{
     sync::{Arc, OnceLock},
 };
 use strum::VariantArray;
-use tutorlolv2::{CastId, ChampionId, ItemId, Position, RuneId};
+use tutorlolv2::{AbilityId, AbilityName, CastId, ChampionId, ItemId, Position, RuneId};
 
 /// `tutorlolv2/raw_img` in WSL, as seen from the Windows toolchain.
 const DEFAULT_RAW_IMG: &str = r"\\wsl.localhost\Ubuntu\home\luizg\Projects\tutorlolv2\raw_img";
@@ -53,6 +53,29 @@ impl Entry for RuneId {
     fn image_source(&self) -> ImageSource {
         raw_img(format!("runes/{}.png", self.riot_id()))
     }
+}
+
+/// The champion's splash art, cropped to the center (`ImageType::Centered`).
+pub fn centered_image(champion: ChampionId) -> Img {
+    image(raw_img(format!("centered/{champion:?}_0.jpg")))
+}
+
+/// An ability icon (`ImageType::Ability`). Mega Gnar's abilities use their own icons.
+pub fn ability_image(champion: ChampionId, ability: AbilityId) -> Img {
+    let suffix = match ability.ability_name() {
+        AbilityName::Mega => "Mega",
+        _ => "",
+    };
+
+    image(raw_img(format!(
+        "abilities/{champion:?}{}{suffix}.png",
+        ability.as_char()
+    )))
+}
+
+/// An embedded image (`assets/`), such as `stats/armor.svg`.
+pub fn asset_image(path: &'static str) -> Img {
+    image(path.into())
 }
 
 /// Embedded position icon (`assets/other`).

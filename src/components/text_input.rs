@@ -5,7 +5,7 @@
 use crate::theme;
 use gpui::{
     App, Bounds, ClipboardItem, Context, CursorStyle, ElementId, ElementInputHandler, Entity,
-    EntityInputHandler, EventEmitter, FocusHandle, Focusable, GlobalElementId, KeyBinding,
+    EntityInputHandler, EventEmitter, FocusHandle, Focusable, GlobalElementId, Hsla, KeyBinding,
     LayoutId, MouseButton, MouseDownEvent, MouseMoveEvent, MouseUpEvent, PaintQuad, Pixels, Point,
     ShapedLine, SharedString, Style, TextRun, UTF16Selection, UnderlineStyle, Window, actions, div,
     fill, point, prelude::*, px, relative, rgb, rgba, size,
@@ -80,8 +80,14 @@ pub struct TextInput {
     selection_reversed: bool,
     marked_range: Option<Range<usize>>,
     last_layout: Option<ShapedLine>,
+    /// Bounds of the shaped text, which are offset from the element when centered.
     last_bounds: Option<Bounds<Pixels>>,
     is_selecting: bool,
+    centered: bool,
+    disabled: bool,
+    placeholder_color: Hsla,
+    /// Characters that can be typed or pasted; others are dropped.
+    filter: Option<fn(char) -> bool>,
 }
 
 impl EventEmitter<TextInputEvent> for TextInput {}
@@ -98,6 +104,72 @@ impl TextInput {
             last_layout: None,
             last_bounds: None,
             is_selecting: false,
+            centered: false,
+            disabled: false,
+            placeholder_color: rgb(theme::STD_500).into(),
+            filter: None,
+        }
+    }
+
+    /// Centers the text horizontally (`text-center`).
+    pub fn centered(mut self) -> Self {
+        self.centered = true;
+        self
+    }
+
+    /// Only accept characters for which `filter` returns true.
+    pub fn filter(mut self, filter: fn(char) -> bool) -> Self {
+        self.filter = Some(filter);
+        self
+    }
+
+    pub fn placeholder_color(mut self, color: impl Into<Hsla>) -> Self {
+        self.placeholder_color = color.into();
+        self
+    }
+
+    /// A disabled input cannot be focused or edited.
+    pub fn set_disabled(&mut self, disabled: bool, window: &mut Window, cx: &mut Context<Self>) {
+        if self.disabled == disabled {
+            return;
+        }
+
+        self.disabled = disabled;
+
+        if disabled && self.focus_handle.is_focused(window) {
+            window.blur();
+        }
+
+        cx.notify();
+    }
+
+    pub fn is_focused(&self, window: &Window) -> bool {
+        self.focus_handle.is_focused(window)
+    }
+
+    /// Replaces the text without emitting [`TextInputEvent::Changed`], keeping the cursor at
+    /// the end.
+    pub fn set_text(&mut self, text: impl Into<SharedString>, cx: &mut Context<Self>) {
+        let text = text.into();
+
+        if self.content == text {
+            return;
+        }
+
+        self.content = text;
+        self.selected_range = self.content.len()..self.content.len();
+        self.selection_reversed = false;
+        self.marked_range = None;
+
+        cx.notify();
+    }
+
+    fn filtered<'a>(&self, text: &'a str) -> std::borrow::Cow<'a, str> {
+        match self.filter {
+            Some(filter) if !text.chars().all(filter) => {
+                text.chars().filter(|&c| filter(c)).collect()
+            }
+            _ => text.into(),
         }
     }
 
@@ -250,6 +322,10 @@ impl TextInput {
         window: &mut Window,
         cx: &mut Context<Self>,
     ) {
+        if self.disabled {
+            return;
+        }
+
         if !self.focus_handle.is_focused(window) {
             window.focus(&self.focus_handle);
         }
@@ -439,6 +515,11 @@ impl EntityInputHandler for TextInput {
         _: &mut Window,
         cx: &mut Context<Self>,
     ) {
+        if self.disabled {
+            return;
+        }
+
+        let new_text = &*self.filtered(new_text);
         let range = range_utf16
             .as_ref()
             .map(|range_utf16| self.range_from_utf16(range_utf16))
@@ -461,6 +542,11 @@ impl EntityInputHandler for TextInput {
         _: &mut Window,
         cx: &mut Context<Self>,
     ) {
+        if self.disabled {
+            return;
+        }
+
+        let new_text = &*self.filtered(new_text);
         let range = range_utf16
             .as_ref()
             .map(|range_utf16| self.range_from_utf16(range_utf16))
@@ -492,6 +578,7 @@ impl EntityInputHandler for TextInput {
     ) -> Option<Bounds<Pixels>> {
         let last_layout = self.last_layout.as_ref()?;
         let range = self.range_from_utf16(&range_utf16);
+        let bounds = self.last_bounds.unwrap_or(bounds);
 
         Some(Bounds::from_corners(
             point(
@@ -525,6 +612,8 @@ struct TextElement {
 
 struct PrepaintState {
     line: Option<ShapedLine>,
+    /// Where the text is drawn: `bounds`, moved right when centered.
+    text_bounds: Bounds<Pixels>,
     cursor: Option<PaintQuad>,
     selection: Option<PaintQuad>,
 }
@@ -580,7 +669,7 @@ impl Element for TextElement {
         let style = window.text_style();
 
         let (display_text, text_color) = if content.is_empty() {
-            (input.placeholder.clone(), rgb(theme::STD_500).into())
+            (input.placeholder.clone(), input.placeholder_color)
         } else {
             (content, style.color)
         };
@@ -625,6 +714,12 @@ impl Element for TextElement {
             .text_system()
             .shape_line(display_text, font_size, &runs, None);
 
+        let mut bounds = bounds;
+
+        if input.centered {
+            bounds.origin.x += ((bounds.size.width - line.width) / 2.).max(px(0.));
+        }
+
         // The placeholder is not editable text: the cursor stays at its start.
         let cursor_x = if input.content.is_empty() {
             px(0.)
@@ -660,6 +755,7 @@ impl Element for TextElement {
 
         PrepaintState {
             line: Some(line),
+            text_bounds: bounds,
             cursor,
             selection,
         }
@@ -691,7 +787,8 @@ impl Element for TextElement {
             return;
         };
 
-        let _ = line.paint(bounds.origin, window.line_height(), window, cx);
+        let text_bounds = prepaint.text_bounds;
+        let _ = line.paint(text_bounds.origin, window.line_height(), window, cx);
 
         if focus_handle.is_focused(window)
             && let Some(cursor) = prepaint.cursor.take()
@@ -701,7 +798,7 @@ impl Element for TextElement {
 
         self.input.update(cx, |input, _| {
             input.last_layout = Some(line);
-            input.last_bounds = Some(bounds);
+            input.last_bounds = Some(text_bounds);
         });
     }
 }
@@ -713,7 +810,7 @@ impl Render for TextInput {
             .w_full()
             .key_context(CONTEXT)
             .track_focus(&self.focus_handle(cx))
-            .cursor(CursorStyle::IBeam)
+            .when(!self.disabled, |input| input.cursor(CursorStyle::IBeam))
             .on_action(cx.listener(Self::backspace))
             .on_action(cx.listener(Self::delete))
             .on_action(cx.listener(Self::delete_word_left))

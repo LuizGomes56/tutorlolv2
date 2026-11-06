@@ -13,14 +13,24 @@ bincode = { version = "2.0.1", default-features = false, features = [
 gpui = "0.2.2"
 rust-embed = "8"
 # The library lives in WSL; these paths are for the Windows toolchain.
-tutorlolv2 = { path = '\\wsl.localhost\Ubuntu\home\luizg\Projects\tutorlolv2', default-features = false, features = ["formula-docs"] }
+tutorlolv2 = { path = '\\wsl.localhost\Ubuntu\home\luizg\Projects\tutorlolv2', default-features = false, features = ["client-data", "formula-docs"] }
 tutorlolv2_codec = { path = '\\wsl.localhost\Ubuntu\home\luizg\Projects\tutorlolv2\tutorlolv2_codec' }
+# Only for the `api` feature.
+tutorlolv2_api = { path = '\\wsl.localhost\Ubuntu\home\luizg\Projects\tutorlolv2\tutorlolv2_api', optional = true }
+ureq = { version = "3", default-features = false, features = ["rustls", "gzip", "brotli"], optional = true }
 unicode-segmentation = "1"
 serde = { version = "1.0", default-features = false, features = [
     "alloc",
     "derive",
 ] }
 strum = { version = "0.28.0", default-features = false, features = ["derive"] }
+
+[features]
+default = ["local-calculation"]
+# Run the damage calculator in process, like the web app's `local-calculation`.
+local-calculation = ["tutorlolv2/engine"]
+# Without `local-calculation`, send calculations to the HTTP API (`TUTORLOLV2_API_URL`).
+api = ["dep:tutorlolv2_api", "dep:ureq"]
 
 [profile.release]
 opt-level = 3

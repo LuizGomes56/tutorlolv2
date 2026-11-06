@@ -4,6 +4,7 @@ use gpui::{
 };
 
 mod assets;
+mod calculator;
 mod components;
 mod formulas;
 mod random;

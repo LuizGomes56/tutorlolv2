@@ -37,7 +37,8 @@ const WINDOW_MARGIN: Pixels = px(8.);
 /// Above the selector dropdown (priority 1).
 const LAYER_PRIORITY: usize = 2;
 
-type BuildDocs = Rc<dyn Fn() -> Highlighted>;
+/// Builds the tooltip's blocks, shown top to bottom. Called when the tooltip opens.
+type BuildDocs = Rc<dyn Fn() -> Vec<Highlighted>>;
 /// The anchor's [`GlobalElementId`], which is unique within the window.
 type AnchorId = Rc<[ElementId]>;
 
@@ -129,14 +130,27 @@ pub trait HoverDocsExt: ParentElement + Sized {
     /// Shows the global definition of a champion, item or rune when this element is hovered
     /// with Shift held (`Docs::ChampionGlobal`, `ItemGlobal`, `RuneGlobal` on the web).
     fn hover_docs<T: CastId>(self, id: T) -> Self {
+        self.docs(move || vec![Highlighted::from(id.render_global_markup::<Spans>())])
+    }
+
+    /// Shows the blocks returned by `build` when this element is hovered with Shift held.
+    fn docs(self, build: impl Fn() -> Vec<Highlighted> + 'static) -> Self {
         self.child(Anchor {
-            build: Rc::new(move || Highlighted::from(id.render_global_markup::<Spans>())),
+            build: Rc::new(build),
         })
     }
 }
 
 /// The element needs an id: the anchor is identified by its path of element ids.
 impl<E: ParentElement> HoverDocsExt for Stateful<E> {}
+
+/// Whether `inner` belongs to an element inside the parent of `outer`. An anchor's path ends
+/// with its own id, after the path of the element it covers.
+fn contains(outer: &[ElementId], inner: &[ElementId]) -> bool {
+    let host = &outer[..outer.len() - 1];
+
+    inner.len() > outer.len() && inner.starts_with(host)
+}
 
 /// Covers its parent, without taking part in its layout.
 struct Anchor {
@@ -232,6 +246,17 @@ impl Element for Anchor {
                 .is_some_and(|(hovered, _)| *hovered == anchor);
 
             if hovered && !was_hovered {
+                // Nested elements with docs: the innermost one wins, as with `closest()` in
+                // `hover.js`. Listeners run innermost first, so an outer anchor must not take
+                // over from an anchor inside its element.
+                if state
+                    .hovered
+                    .as_ref()
+                    .is_some_and(|(hovered, _)| contains(&anchor, hovered))
+                {
+                    return;
+                }
+
                 state.hovered = Some((anchor.clone(), build.clone()));
             } else if !hovered && was_hovered {
                 state.hovered = None;
@@ -351,7 +376,7 @@ impl Element for Layer {
     }
 }
 
-struct HoverDocs(Highlighted);
+struct HoverDocs(Vec<Highlighted>);
 
 impl HoverDocs {
     fn hovered(&mut self, hovered: &bool, window: &mut Window, cx: &mut Context<Self>) {
@@ -383,6 +408,8 @@ impl Render for HoverDocs {
             .occlude()
             .on_hover(cx.listener(Self::hovered));
 
-        code_text(tooltip).child(self.0.styled_text())
+        // `#hoverdocs_code`: `flex flex-col gap-2`.
+        code_text(tooltip.flex().flex_col().gap_2())
+            .children(self.0.iter().map(|block| block.styled_text()))
     }
 }

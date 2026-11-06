@@ -1,6 +1,7 @@
 //! The application layout from the web app's `App` component and `index.html`:
 //! a sidebar next to a scrollable page area.
 use crate::{
+    calculator::Calculator,
     components::{hover_docs, sidebar::Sidebar},
     formulas::Formulas,
     route::Route,
@@ -52,6 +53,7 @@ impl Shell {
 
         self.page = match route {
             Route::Formulas => Some(cx.new(Formulas::new).into()),
+            Route::Calculator => Some(cx.new(Calculator::new).into()),
             _ => None,
         };
         self.route = route;
