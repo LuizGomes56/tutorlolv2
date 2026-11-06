@@ -111,65 +111,9 @@ impl Snapshot {
 
         #[cfg(all(not(feature = "local-calculation"), feature = "api"))]
         {
-            self.with_input(|input| api::calculator(&input))
+            self.with_input(|input| {
+                Ok(crate::api::send::<tutorlolv2_api::Calculator>(&input)?.decode()?)
+            })
         }
-    }
-}
-
-#[cfg(all(not(feature = "local-calculation"), feature = "api"))]
-mod api {
-    use super::Error;
-    use std::io::Read;
-    use tutorlolv2::model::{InputGame, OutputGame};
-    use tutorlolv2_api::{
-        self as contracts, BodyEncoding, Endpoint, NoHeaders, NoPath, NoQuery, ResponseBuffer,
-        ResponseHeaders, protocol::response::MAX_RESPONSE_BYTES,
-    };
-
-    /// `WebClient::public`: the API origin, set at compile time.
-    fn base() -> &'static str {
-        option_env!("TUTORLOLV2_API_URL")
-            .or(option_env!("TUTORLOL_API_URL"))
-            .unwrap_or("http://127.0.0.1:8082")
-            .trim_end_matches('/')
-            .trim_end_matches("/games")
-    }
-
-    pub fn calculator(input: &InputGame<'_>) -> Result<OutputGame, Error> {
-        let parts = contracts::Calculator::request(base(), &NoPath, &NoQuery, &NoHeaders, input)?;
-
-        // The calculator body is plain Bincode; Brotli request bodies are not needed here.
-        debug_assert_eq!(parts.encoding, BodyEncoding::Bincode);
-
-        let mut response = ureq::post(&parts.url)
-            .header("Content-Type", "application/octet-stream")
-            .header("Accept", "application/octet-stream")
-            .config()
-            // Error statuses carry an encoded `ApiError`, decoded by the contract.
-            .http_status_as_error(false)
-            .build()
-            .send(&parts.body)?;
-
-        let status = response.status().as_u16();
-        let mut headers = ResponseHeaders::default();
-
-        for name in contracts::Calculator::RESPONSE_HEADERS {
-            if let Some(value) = response.headers().get(*name).and_then(|v| v.to_str().ok()) {
-                headers.0.push(((*name).into(), value.into()));
-            }
-        }
-
-        // ureq decodes `Content-Encoding` (gzip and Brotli).
-        let mut bytes = Vec::new();
-
-        response
-            .body_mut()
-            .as_reader()
-            .take(MAX_RESPONSE_BYTES as u64 + 1)
-            .read_to_end(&mut bytes)?;
-
-        let buffer = ResponseBuffer::<contracts::Calculator>::new(status, headers, bytes)?;
-
-        Ok(buffer.decode()?)
     }
 }

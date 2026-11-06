@@ -1,9 +1,16 @@
+pub mod cached_table;
 pub mod code;
+pub mod docs;
 pub mod hover_docs;
 pub mod image;
 pub mod selector;
 pub mod sidebar;
+pub mod slider;
+pub mod stack;
+pub mod tables;
 pub mod text_input;
+pub mod tray;
+pub mod ui;
 
 use crate::theme;
 use gpui::{

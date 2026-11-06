@@ -4,9 +4,9 @@
 //! cell, and every cell has the same height, so rows stay aligned. Rows get their background
 //! and borders cell by cell (`tbody tr:nth-child(odd|even)` in `main.css`).
 use crate::{
-    calculator::docs::{Builtin, DocView, Docs, cell_blocks},
     components::{
         code::Highlighted,
+        docs::{Builtin, DocView, Docs, cell_blocks},
         hover_docs::HoverDocsExt,
         image::{Entry, ability_image, asset_image, image},
     },
@@ -14,7 +14,7 @@ use crate::{
 };
 use gpui::{
     AnyElement, ElementId, FontWeight, IntoElement, ParentElement, SharedString, Styled, div,
-    prelude::*, px, rgb,
+    prelude::*, px, rems, rgb,
 };
 use std::rc::Rc;
 use tutorlolv2::{
@@ -308,20 +308,40 @@ impl Damage {
         }
     }
 
-    /// `Cell::render_range`, falling back to the minimum like `Cell::render`.
-    fn text(min: i32, max: Option<i32>) -> String {
+    /// `Cell::render_range`: `None` for a zero value.
+    fn range(min: i32, max: Option<i32>) -> Option<String> {
         match max {
             Some(max) if max != 0 && max > min => {
-                format!("{} - {}", Self::value(min), Self::value(max))
+                Some(format!("{} - {}", Self::value(min), Self::value(max)))
             }
             Some(max) if max != 0 && max < min => {
-                format!("{} - {}", Self::value(max), Self::value(min))
+                Some(format!("{} - {}", Self::value(max), Self::value(min)))
             }
-            _ => min.to_string(),
+            Some(max) if max == min && min != 0 => Some(min.to_string()),
+            Some(0) | None if min != 0 => Some(min.to_string()),
+            _ => None,
         }
     }
 
-    fn cell(self, damages: &Damages<'_>, adaptive_type: AdaptiveType) -> Cell {
+    /// The main line, falling back to the minimum like `Cell::render`.
+    fn text(min: i32, max: Option<i32>) -> String {
+        Self::range(min, max).unwrap_or_else(|| min.to_string())
+    }
+
+    /// The difference from the same cell of another row, as the simulated item table shows.
+    fn diff(&self, base: &Self) -> (i32, Option<i32>) {
+        (
+            self.min - base.min,
+            self.max.map(|max| max - base.max.unwrap_or(0)),
+        )
+    }
+
+    fn cell(
+        self,
+        damages: &Damages<'_>,
+        adaptive_type: AdaptiveType,
+        diff: Option<(i32, Option<i32>)>,
+    ) -> Cell {
         let color = match self.damage_type {
             DamageType::Adaptive => theme::adaptive_color(adaptive_type),
             damage_type => theme::damage_color(damage_type),
@@ -329,14 +349,32 @@ impl Damage {
 
         let ctx = damages.ctx;
         let Self { idents, docs, .. } = self;
+        let diff = diff.and_then(|(min, max)| Self::range(min, max));
 
+        // `flex flex-col items-center leading-tight`, the difference in `text-std-400 text-xs`.
         Cell::new(
             div()
+                .flex()
+                .flex_col()
+                .items_center()
+                .line_height(rems(1.25))
                 .text_color(rgb(color))
-                .child(Self::text(self.min, self.max)),
+                .child(Self::text(self.min, self.max))
+                .children(diff.map(|diff| {
+                    div()
+                        .text_xs()
+                        .line_height(rems(1.))
+                        .text_color(rgb(theme::STD_400))
+                        .child(diff)
+                })),
         )
         .docs(move || cell_blocks(idents, &ctx, docs))
     }
+}
+
+/// A damage by index, zero when the row has no such column: a new purchase has no baseline.
+fn at(values: &[i32], index: usize) -> i32 {
+    values.get(index).copied().unwrap_or(0)
 }
 
 /// Damage cells of one row, in header order: `DamageRenderer`.
@@ -387,7 +425,7 @@ fn damage_row(
             let min = merge.min as usize;
             let cell = &mut cells[cell_of[min]];
 
-            cell.max = Some(damages.abilities[i]);
+            cell.max = Some(at(damages.abilities, i));
             cell.docs = Docs::ChampionMerged(champion_id, abilities[min].kind, meta.kind);
             continue;
         }
@@ -395,7 +433,7 @@ fn damage_row(
         cell_of[i] = cells.len();
         cells.push(Damage {
             damage_type: meta.damage_type,
-            min: damages.abilities[i],
+            min: at(damages.abilities, i),
             max: None,
             idents: identifiers[i],
             docs: Docs::Champion(champion_id, meta.kind),
@@ -414,8 +452,8 @@ fn damage_row(
 
             cells.push(Damage {
                 damage_type: meta.damage_type,
-                min: damages[k * 2],
-                max: Some(damages[k * 2 + 1]),
+                min: at(damages, k * 2),
+                max: Some(at(damages, k * 2 + 1)),
                 idents: idents(id),
                 docs: match id.entity() {
                     EntityId::Item(item) => Docs::Item(item),
@@ -439,6 +477,26 @@ pub fn damage_columns(
     items_meta: &[TypeMetadata<ItemId>],
     runes_meta: &[TypeMetadata<RuneId>],
 ) -> Vec<Column> {
+    damage_columns_with_diff(
+        rows,
+        None,
+        champion_id,
+        adaptive_type,
+        items_meta,
+        runes_meta,
+    )
+}
+
+/// [`damage_columns`], with each cell's difference from the same cell of `bases` (one per row)
+/// below it, like `DamageRenderer::new(.., Some(other))`.
+pub fn damage_columns_with_diff(
+    rows: &[Damages<'_>],
+    bases: Option<&[Damages<'_>]>,
+    champion_id: ChampionId,
+    adaptive_type: AdaptiveType,
+    items_meta: &[TypeMetadata<ItemId>],
+    runes_meta: &[TypeMetadata<RuneId>],
+) -> Vec<Column> {
     let mut columns = Header::list(champion_id, items_meta, runes_meta)
         .into_iter()
         .map(|header| Column {
@@ -447,13 +505,17 @@ pub fn damage_columns(
         })
         .collect::<Vec<_>>();
 
-    for damages in rows {
+    for (row, damages) in rows.iter().enumerate() {
         let cells = damage_row(damages, champion_id, items_meta, runes_meta);
+        let base = bases
+            .and_then(|bases| bases.get(row))
+            .map(|base| damage_row(base, champion_id, items_meta, runes_meta));
 
         debug_assert_eq!(cells.len(), columns.len());
 
-        for (column, cell) in columns.iter_mut().zip(cells) {
-            column.cells.push(cell.cell(damages, adaptive_type));
+        for (i, (column, cell)) in columns.iter_mut().zip(cells).enumerate() {
+            let diff = base.as_ref().map(|base| cell.diff(&base[i]));
+            column.cells.push(cell.cell(damages, adaptive_type, diff));
         }
     }
 

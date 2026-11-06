@@ -1,15 +1,20 @@
 //! The application layout from the web app's `App` component and `index.html`:
 //! a sidebar next to a scrollable page area.
 use crate::{
+    account::AccountBar,
     calculator::Calculator,
     components::{hover_docs, sidebar::Sidebar},
     formulas::Formulas,
+    history::{HistoryDetails, HistoryList},
+    livegame::Livegame,
     route::Route,
+    settings::Settings,
     theme,
+    watch::Watch,
 };
 use gpui::{
-    AnyView, AppContext, Context, FocusHandle, IntoElement, KeyDownEvent, ParentElement, Render,
-    Styled, Subscription, Window, div, prelude::*, px, rgb,
+    AnyView, AppContext, Context, Entity, FocusHandle, IntoElement, KeyDownEvent, ParentElement,
+    Render, Styled, Subscription, Window, div, prelude::*, px, rgb,
 };
 
 /// Tailwind's `md` breakpoint. Below it the web sidebar is `hidden`.
@@ -23,6 +28,7 @@ pub struct Shell {
     /// Keeps the shell on the keyboard dispatch path while no input is focused, so it sees
     /// Shift and Escape for the documentation tooltips.
     focus_handle: FocusHandle,
+    account: Entity<AccountBar>,
     _activation: Subscription,
 }
 
@@ -30,6 +36,7 @@ impl Shell {
     pub fn new(window: &mut Window, cx: &mut Context<Self>) -> Self {
         let focus_handle = cx.focus_handle();
         window.focus(&focus_handle);
+        crate::route::set_navigator(cx.entity().downgrade(), cx);
 
         // `hover.js` hides the tooltip on `blur`.
         let activation = cx.observe_window_activation(window, |_, window, cx| {
@@ -42,6 +49,7 @@ impl Shell {
             route: Route::Homepage,
             page: None,
             focus_handle,
+            account: cx.new(AccountBar::new),
             _activation: activation,
         }
     }
@@ -54,6 +62,18 @@ impl Shell {
         self.page = match route {
             Route::Formulas => Some(cx.new(Formulas::new).into()),
             Route::Calculator => Some(cx.new(Calculator::new).into()),
+            Route::Livegame => Some(cx.new(Livegame::new).into()),
+            Route::History => Some(cx.new(HistoryList::new).into()),
+            Route::Settings => Some(cx.new(Settings::new).into()),
+            Route::Watch => Some(cx.new(|cx| Watch::new(None, cx)).into()),
+            Route::WatchCode { ref code } => {
+                let code = code.clone();
+                Some(cx.new(|cx| Watch::new(Some(code), cx)).into())
+            }
+            Route::HistoryDetails { ref id } => {
+                let id = id.clone();
+                Some(cx.new(|cx| HistoryDetails::new(id, cx)).into())
+            }
             _ => None,
         };
         self.route = route;
@@ -92,13 +112,21 @@ impl Render for Shell {
             })
             .child(
                 div()
-                    .id("page")
+                    .flex()
+                    .flex_col()
                     .flex_1()
                     // Flex items default to their content width; let the page shrink instead.
                     .min_w_0()
                     .h_full()
-                    .overflow_y_scroll()
-                    .child(page),
+                    .child(self.account.clone())
+                    .child(
+                        div()
+                            .id("page")
+                            .flex_1()
+                            .min_h_0()
+                            .overflow_y_scroll()
+                            .child(page),
+                    ),
             )
             .child(hover_docs::layer())
     }

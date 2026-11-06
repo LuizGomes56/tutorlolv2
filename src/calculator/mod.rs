@@ -5,19 +5,17 @@
 //! request. Here every input handler updates the state and calls [`Calculator::recalculate`]
 //! explicitly, so replies can write the inferred stats directly.
 mod backend;
-mod docs;
 mod panels;
 mod picker;
 mod results;
-mod stack;
 mod state;
-mod tables;
-mod widgets;
+pub(crate) mod widgets;
 
 use crate::{
     components::{
         box_shadow,
         selector::{Selected, Selector},
+        stack::{SelectTarget, StackGame, StackPanel},
         text_input::{TextInput, TextInputEvent},
     },
     theme,
@@ -81,9 +79,7 @@ pub struct Calculator {
     error: Option<SharedString>,
     /// The last successful result, also held by the tables view.
     game: Option<Rc<OutputGame>>,
-    stack: stack::Stack,
-    /// Why the stack could not be saved.
-    stack_error: Option<SharedString>,
+    stack: Entity<StackPanel>,
     /// Replaced by each new calculation, which cancels the previous one.
     _calculation: Option<Task<()>>,
 
@@ -95,7 +91,7 @@ pub struct Calculator {
     fields: HashMap<Field, NumberField>,
     /// Fields rendered this frame. Others are dropped after rendering.
     rendered_fields: HashSet<Field>,
-    _subscriptions: [Subscription; 3],
+    _subscriptions: [Subscription; 4],
 }
 
 impl Calculator {
@@ -106,9 +102,13 @@ impl Calculator {
         let player_selector = cx.new(|cx| Selector::banner(player.data.champion_id, cx));
         let enemy_selector = cx.new(|cx| Selector::banner(enemies[0].champion_id, cx));
         let tables = cx.new(|_| DamageTables::default());
+        let stack = cx.new(|_| StackPanel::new(true));
 
         let subscriptions = [
             cx.subscribe(&tables, |this, _, SelectEnemy(index), cx| {
+                this.select_enemy(*index, cx)
+            }),
+            cx.subscribe(&stack, |this, _, SelectTarget(index), cx| {
                 this.select_enemy(*index, cx)
             }),
             cx.subscribe(&player_selector, |this, _, Selected(id), cx| {
@@ -131,8 +131,7 @@ impl Calculator {
             game_map: GameMap::SummonersRift,
             error: None,
             game: None,
-            stack: stack::Stack::default(),
-            stack_error: None,
+            stack,
             _calculation: None,
             player_selector,
             enemy_selector,
@@ -179,7 +178,6 @@ impl Calculator {
                 }
 
                 self.error = None;
-                self.stack.sync(&game);
                 Some(Rc::new(game))
             }
             Err(error) => {
@@ -189,6 +187,10 @@ impl Calculator {
         };
 
         self.game = game.clone();
+        self.stack.update(cx, |stack, cx| {
+            stack.set_game(game.clone().map(|game| game as Rc<dyn StackGame>), cx)
+        });
+
         self.tables
             .update(cx, |tables, cx| tables.set_game(game, cx));
 
@@ -458,15 +460,7 @@ impl Render for Calculator {
             .p_2()
             .children(self.error.clone().map(error_box))
             .child(DamageTables::view(&self.tables, cx))
-            .child(match self.game.clone() {
-                Some(game) => self.stack_box(&game, window, cx),
-                // `box h-96`, where the stack will be.
-                None => div()
-                    .h_96()
-                    .bg(rgb(theme::STD_900))
-                    .shadow(box_shadow())
-                    .into_any_element(),
-            });
+            .child(self.stack.clone());
 
         let rendered = std::mem::take(&mut self.rendered_fields);
         self.fields.retain(|field, _| rendered.contains(field));
@@ -486,5 +480,38 @@ impl Render for Calculator {
         };
 
         page.children(self.picker(window, cx))
+    }
+}
+
+/// The stack's totals use the enemy rows, after the monster rows.
+impl StackGame for OutputGame {
+    fn champion_id(&self) -> ChampionId {
+        self.current_player.champion_id
+    }
+
+    fn level(&self) -> NonZeroU8 {
+        self.current_player.level
+    }
+
+    fn items_meta(&self) -> &[tutorlolv2::TypeMetadata<ItemId>] {
+        &self.items_meta
+    }
+
+    fn runes_meta(&self) -> &[tutorlolv2::TypeMetadata<RuneId>] {
+        &self.runes_meta
+    }
+
+    fn targets(&self) -> Vec<(ChampionId, f32, tutorlolv2::model::Damages<'_>)> {
+        self.enemies
+            .iter()
+            .enumerate()
+            .map(|(i, enemy)| {
+                (
+                    enemy.champion_id,
+                    enemy.current_stats.max_health,
+                    self.damages.row(tutorlolv2::L_MSTR + i),
+                )
+            })
+            .collect()
     }
 }

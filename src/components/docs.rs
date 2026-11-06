@@ -90,7 +90,7 @@ impl Docs {
 }
 
 /// Numeric value shown in identifier tooltips (`hover::ident_display_value`).
-fn display_value(ident: CtxVar, value: f32) -> f32 {
+pub fn display_value(ident: CtxVar, value: f32) -> f32 {
     match ident {
         CtxVar::AttackSpeed
         | CtxVar::BaseAttackSpeed

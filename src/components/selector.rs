@@ -28,11 +28,15 @@ enum Variant {
     /// Champion banners in the calculator: `gap-2 p-2`, a `w-8` image and
     /// `font-bold text-lg text-std-400 placeholder:text-white`.
     Banner,
+    /// The live game's simulated item: a `w-10` image and `text-xl font-medium`.
+    Compact,
 }
 
 pub struct Selector<T: Entry> {
     value: T,
     input: Entity<TextInput>,
+    /// Every entry that can be picked.
+    all: &'static [T],
     /// Entries matching the current query, in enum order.
     options: Vec<T>,
     open: bool,
@@ -52,6 +56,15 @@ impl<T: Entry> Selector<T> {
         Self::with_variant(value, Variant::Banner, cx)
     }
 
+    /// A smaller selector limited to `options`.
+    pub fn compact(value: T, options: &'static [T], cx: &mut Context<Self>) -> Self {
+        let mut selector = Self::with_variant(value, Variant::Compact, cx);
+
+        selector.all = options;
+        selector.filter("");
+        selector
+    }
+
     /// Shows another value without emitting [`Selected`].
     pub fn set_value(&mut self, value: T, cx: &mut Context<Self>) {
         if self.value != value {
@@ -67,7 +80,7 @@ impl<T: Entry> Selector<T> {
             let input = TextInput::new(value.name(), cx);
 
             match variant {
-                Variant::Page => input,
+                Variant::Page | Variant::Compact => input,
                 Variant::Banner => input.placeholder_color(rgb(theme::TEXT)),
             }
         });
@@ -87,6 +100,7 @@ impl<T: Entry> Selector<T> {
         Self {
             value,
             input,
+            all: T::VARIANTS,
             options: T::VARIANTS.to_vec(),
             open: false,
             dropdown_hovered: false,
@@ -96,7 +110,8 @@ impl<T: Entry> Selector<T> {
     }
 
     fn filter(&mut self, query: &str) {
-        self.options = T::VARIANTS
+        self.options = self
+            .all
             .iter()
             .copied()
             .filter(|entry| contains_ascii_case_insensitive(entry.name(), query))
@@ -159,7 +174,7 @@ impl<T: Entry> Selector<T> {
             .px_1p5()
             .py_1()
             .map(|dropdown| match self.variant {
-                Variant::Page => dropdown.w_96(),
+                Variant::Page | Variant::Compact => dropdown.w_96(),
                 // `w-full` of the banner. An anchored element has no width of its own, so
                 // a relative width would be zero: use the panel's `w-64`.
                 Variant::Banner => dropdown.w_64(),
@@ -177,36 +192,42 @@ impl<T: Entry> Render for Selector<T> {
     fn render(&mut self, _: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
         let value = self.value;
 
-        let banner = self.variant == Variant::Banner;
+        let variant = self.variant;
         let label = div()
             .flex()
             .items_center()
-            .map(|label| match banner {
-                true => label.gap_2().p_2().overflow_hidden(),
-                false => label.gap_4(),
+            .map(|label| match variant {
+                Variant::Banner => label.gap_2().p_2().overflow_hidden(),
+                Variant::Page | Variant::Compact => label.gap_4(),
             })
             .child(
                 div()
                     .id("selector-image")
                     .flex_none()
                     .hover_docs(value)
-                    .child(image(value.image_source()).map(|image| match banner {
-                        true => image.size_8(),
-                        false => image.size_12(),
+                    .child(image(value.image_source()).map(|image| match variant {
+                        Variant::Banner => image.size_8(),
+                        Variant::Compact => image.size_10(),
+                        Variant::Page => image.size_12(),
                     })),
             )
             .child(
                 div()
                     .flex_1()
                     .min_w_0()
-                    .map(|input| match banner {
+                    .map(|input| match variant {
                         // `font-bold text-lg text-std-400`
-                        true => input
+                        Variant::Banner => input
                             .text_lg()
                             .font_weight(FontWeight::BOLD)
                             .text_color(rgb(theme::STD_400)),
+                        // `text-xl font-medium`
+                        Variant::Compact => input
+                            .text_xl()
+                            .font_weight(FontWeight::MEDIUM)
+                            .text_color(rgb(theme::STD_200)),
                         // `text-std-200 text-3xl font-medium`
-                        false => input
+                        Variant::Page => input
                             .text_3xl()
                             .line_height(rems(2.25))
                             .font_weight(FontWeight::MEDIUM)

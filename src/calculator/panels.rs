@@ -5,13 +5,13 @@ use crate::{
         Calculator, Field, Target,
         picker::PickerKind,
         state::{ExceptionMap, StatField, Tray, item_exceptions},
-        tables::ability_icon,
         widgets::{checkbox, input_row, selector_button, small_button},
     },
     components::{
         box_shadow,
         hover_docs::HoverDocsExt,
         image::{Entry, asset_image, centered_image, image},
+        tables::ability_icon,
     },
     theme,
 };

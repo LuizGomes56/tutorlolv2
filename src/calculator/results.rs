@@ -6,13 +6,10 @@
 //! therefore a separate view that the calculator draws with [`hover_docs::cached_view`]: gpui
 //! reuses the previous frame's layout and paint until [`DamageTables::set_game`] notifies it.
 use crate::{
-    calculator::{
-        docs,
-        tables::{Cell, Column, ROW_HEIGHT, damage_columns, empty_table, table, turret_columns},
-    },
     components::{
-        box_shadow, hover_docs,
+        box_shadow, docs, hover_docs,
         image::{Entry, image},
+        tables::{Cell, Column, ROW_HEIGHT, damage_columns, empty_table, table, turret_columns},
     },
     theme,
 };

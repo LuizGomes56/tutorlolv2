@@ -143,6 +143,11 @@ impl TextInput {
         cx.notify();
     }
 
+    /// The current text.
+    pub fn text(&self) -> &SharedString {
+        &self.content
+    }
+
     pub fn is_focused(&self, window: &Window) -> bool {
         self.focus_handle.is_focused(window)
     }

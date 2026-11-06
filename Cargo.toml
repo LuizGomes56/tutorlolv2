@@ -1,5 +1,5 @@
 [package]
-name = "tutorlolv2"
+name = "tutorlolv2_native"
 version = "0.0.0"
 edition = "2024"
 repository = "https://github.com/LuizGomes56/tutorlolv2_native"
@@ -17,8 +17,9 @@ rust-embed = "8"
 # The library lives in WSL; these paths are for the Windows toolchain.
 tutorlolv2 = { path = '\\wsl.localhost\Ubuntu\home\luizg\Projects\tutorlolv2', default-features = false, features = ["client-data", "formula-docs"] }
 tutorlolv2_codec = { path = '\\wsl.localhost\Ubuntu\home\luizg\Projects\tutorlolv2\tutorlolv2_codec' }
-# Only for the `api` feature.
-tutorlolv2_api = { path = '\\wsl.localhost\Ubuntu\home\luizg\Projects\tutorlolv2\tutorlolv2_api', optional = true }
+tutorlolv2_api = { path = '\\wsl.localhost\Ubuntu\home\luizg\Projects\tutorlolv2\tutorlolv2_api' }
+tutorlolv2_protocol = { path = '\\wsl.localhost\Ubuntu\home\luizg\Projects\tutorlolv2\tutorlolv2_protocol' }
+# Only for the `api` calculation feature.
 ureq = { version = "3", default-features = false, features = ["rustls", "gzip", "brotli"], optional = true }
 unicode-segmentation = "1"
 serde = { version = "1.0", default-features = false, features = [
@@ -27,12 +28,39 @@ serde = { version = "1.0", default-features = false, features = [
 ] }
 strum = { version = "0.28.0", default-features = false, features = ["derive"] }
 
+# The backend (`src/backend`), copied from the desktop app with the same versions.
+base64 = "0.22"
+brotli = "9.1.1"
+getrandom = "0.3"
+log = "0.4"
+reqwest = { version = "0.12", default-features = false, features = ["http2", "rustls-tls"] }
+serde_json = "1.0"
+sha2 = "0.10"
+tokio = { version = "1", features = ["rt-multi-thread", "time", "sync", "fs", "macros"] }
+
+[target.'cfg(windows)'.dependencies]
+# The overlay's HWND (already in gpui's dependency tree).
+raw-window-handle = "0.6"
+windows = { version = "0.62.2", features = [
+    "Foundation",
+    "Win32_Foundation",
+    "Win32_System_LibraryLoader",
+    "Win32_Storage_FileSystem",
+    "Win32_UI_Input_KeyboardAndMouse",
+    "Win32_UI_WindowsAndMessaging",
+    "Win32_Security_Cryptography",
+    "Win32_System_Diagnostics_ToolHelp",
+    "Win32_System_Threading",
+    "Win32_System_Memory",
+    "Win32_System_Time",
+] }
+
 [features]
 default = ["local-calculation"]
 # Run the damage calculator in process, like the web app's `local-calculation`.
 local-calculation = ["tutorlolv2/engine"]
 # Without `local-calculation`, send calculations to the HTTP API (`TUTORLOLV2_API_URL`).
-api = ["dep:tutorlolv2_api", "dep:ureq"]
+api = ["dep:ureq"]
 
 [profile.release]
 opt-level = 3
