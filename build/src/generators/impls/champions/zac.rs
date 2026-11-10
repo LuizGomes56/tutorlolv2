@@ -5,18 +5,18 @@ impl Generator for Zac {
         self.ability(
             Key::Q,
             [
-                (0, Min), /* Magic Damage */
-                (1, Max), /* Total Magic Damage */
+                ("Magic Damage", Min),
+                ("Total Magic Damage", Max),
             ],
         )
-        .ability(Key::W, [(1, Void) /* Magic Damage */])
-        .ability(Key::E, [(0, Void) /* Magic Damage */])
+        .ability(Key::W, [("Magic Damage", Void)])
+        .ability(Key::E, [("Magic Damage", Void)])
         .ability(
             Key::R,
             [
-                (0, Min),  /* Magic Damage Per Hit */
-                (1, Void), /* Reduced Damage Per Hit */
-                (2, Max),  /* Total Magic Damage */
+                ("Magic Damage Per Hit", Min),
+                ("Reduced Damage Per Hit", Void),
+                ("Total Magic Damage", Max),
             ],
         )
         .combos([

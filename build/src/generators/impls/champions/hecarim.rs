@@ -2,7 +2,7 @@ use super::*;
 
 impl Generator for Hecarim {
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::Q, [(1, Void) /* Physical Damage */])
+        self.ability(Key::Q, [("Physical Damage", Void)])
             .modify(Q(Void), |dmg| {
                 /* Rampage bonus damage per stack */
                 f![(dmg) * Stacks * (1.03 + 0.03 * BonusAd / 100)]
@@ -10,18 +10,18 @@ impl Generator for Hecarim {
             .ability(
                 Key::W,
                 [
-                    (2, Min), /* Magic Damage Per Tick */
-                    (3, Max), /* Total Magic Damage */
+                    ("Magic Damage Per Tick", Min),
+                    ("Total Magic Damage", Max),
                 ],
             )
             .ability(
                 Key::E,
                 [
-                    (0, Max), /* Maximum Physical Damage */
-                    (1, Min), /* Minimum Physical Damage */
+                    ("Maximum Physical Damage", Max),
+                    ("Minimum Physical Damage", Min),
                 ],
             )
-            .ability(Key::R, [(0, Void) /* Magic damage */])
+            .ability(Key::R, [("Magic damage", Void)])
             .combos([
                 &[
                     Ability(E(Min)),

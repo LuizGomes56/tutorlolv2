@@ -10,25 +10,25 @@ impl Generator for Akshan {
             16.. => 150,
         });
 
-        self.ability(Key::P, [(1, Void) /* Innate */])
+        self.ability(Key::P, [("Innate", Void)])
             .modify(P(Void), |_| f![(dirty_fighting) + 0.6 * AbilityPower])?
             .damage_type(P(Void), Magic)?
             .comment(P(Void), "Dirty Fighting third stack bonus magic damage")?
             .ability(
                 Key::Q,
                 [
-                    (1, Min), /* Physical Damage */
-                    (2, Max), /* Total Physical Damage */
+                    ("Physical Damage", Min),
+                    ("Total Physical Damage", Max),
                 ],
             )
-            .ability(Key::E, [(0, Void) /* Physical Damage per Shot */])
+            .ability(Key::E, [("Physical Damage per Shot", Void)])
             .ability(
                 Key::R,
                 [
-                    (1, _1Max), /* Damage to target on 67% missing hp */
-                    (3, Max),   /* Maximum Physical Damage per Bullet */
-                    (4, _1Min), /* Minimum Charged Physical Damage */
-                    (5, Min),   /* Minimum Physical Damage per Bullet */
+                    ("Damage to target on 67% missing hp", _1Max),
+                    ("Maximum Physical Damage per Bullet", Max),
+                    ("Minimum Charged Physical Damage", _1Min),
+                    ("Minimum Physical Damage per Bullet", Min),
                 ],
             )
             .combos([

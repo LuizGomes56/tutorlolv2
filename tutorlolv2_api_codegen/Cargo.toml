@@ -1,0 +1,10 @@
+[package]
+name = "tutorlolv2_api_codegen"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+syn = { version = "3", features = ["full", "extra-traits", "parsing", "visit"] }
+quote = "1"
+proc-macro2 = { version = "1", features = ["span-locations"] }
+prettyplease = "0.3"

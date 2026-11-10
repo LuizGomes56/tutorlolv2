@@ -1,9 +1,9 @@
 use core::num::NonZeroU8;
 use {
     crate::{
-        ChampionId, ItemId, RuneId,
+        ChampionId, GameMap, ItemId, RuneId,
         calculator::InferStats,
-        helpers::{ability_id_mod, get_eval_ctx},
+        helpers::ability_id_mod,
         model::{
             AbilityLevels, Attacks, BasicStats, DamageModifiers, Dragons, EnemyState, EnemyStats,
             Modifiers, PlayerStats, RangeDamage, ResistShred, SelfState, SimpleStats,
@@ -216,6 +216,10 @@ impl<
                 level,
                 champion_id,
                 is_mega_gnar,
+                // The compile-time input has no game map nor current health yet,
+                // so the champion is at full health
+                current_health: 0.0,
+                game_map: GameMap::Unknown,
             }),
         };
 
@@ -231,7 +235,6 @@ impl<
             stacks: stacks as _,
             ability_levels,
             current_stats: stats,
-            bonus_stats,
             base_stats,
             level,
             adaptive_type,
@@ -263,6 +266,8 @@ impl<
                 earth_dragons: dragons.enemy_earth_dragons,
                 level,
                 item_exceptions: &ValueException::pack_items(&item_exceptions),
+                // The compile-time input has no game map yet
+                game_map: GameMap::Unknown,
             }
         };
 
@@ -301,13 +306,11 @@ impl<
 
             while i < ItemId::L_SIML {
                 let siml_stat = siml_stats[i];
-                let siml_ctx = get_eval_ctx(
-                    &SelfState {
-                        current_stats: siml_stat,
-                        ..self_state
-                    },
-                    &enemy,
-                );
+                let siml_ctx = SelfState {
+                    current_stats: siml_stat,
+                    ..self_state
+                }
+                .ctx(&enemy);
 
                 let mut onhit = RangeDamage::default();
 

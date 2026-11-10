@@ -16,8 +16,8 @@ impl Generator for Azir {
             18.. => 72,
         });
 
-        self.ability(Key::Q, [(0, Void) /* Magic Damage */])
-            .ability(Key::W, [(0, Void) /* Magic Damage */])
+        self.ability(Key::Q, [("Magic Damage", Void)])
+            .ability(Key::W, [("Magic Damage", Void)])
             .modify(W(Void), |_| {
                 f![(level_bonus)
                     + 50
@@ -25,8 +25,8 @@ impl Generator for Azir {
                     + (0.35 + 0.075 * (WLevel - 1)) * AbilityPower]
             })?
             .comment(W(Void), "Sand Soldier attack")?
-            .ability(Key::E, [(0, Void) /* Magic Damage */])
-            .ability(Key::R, [(0, Void) /* Magic Damage */])
+            .ability(Key::E, [("Magic Damage", Void)])
+            .ability(Key::R, [("Magic Damage", Void)])
             .combos([
                 &[Ability(E(Void)), Ability(Q(Void)), Ability(R(Void))],
                 &[Ability(W(Void)), Ability(E(Void)), Ability(Q(Void)), Attack],

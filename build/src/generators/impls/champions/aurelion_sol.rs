@@ -5,25 +5,25 @@ impl Generator for AurelionSol {
         self.ability(
             Key::Q,
             [
-                (2, Min), /* Magic Damage per Tick */
-                (6, Max), /* Total Maximum Magic Damage */
-                (1, _1),  /* Magic Damage per Second */
-                (0, _2),  /* Bonus Magic Damage */
+                ("Magic Damage per Tick", Min),
+                ("Total Maximum Magic Damage", Max),
+                ("Magic Damage per Second", _1),
+                ("Bonus Magic Damage", _2),
             ],
         )
         .ability(
             Key::E,
             [
-                (0, Min), /* Magic Damage per Tick */
-                (1, Max), /* Total Magic Damage */
+                ("Magic Damage per Tick", Min),
+                ("Total Magic Damage", Max),
             ],
         )
-        .ability_nth(1, Key::R, [(0, Void) /* Magic Damage */])
+        .ability_nth(1, Key::R, [("Magic Damage", Void)])
         .ability(
             Key::R,
             [
-                (1, _1), /* Magic Damage */
-                (0, _2), /* Empowered Magic Damage */
+                ("Magic Damage", _1),
+                ("Empowered Magic Damage", _2),
             ],
         )
         .comment(R(_1), "The Skies Descend")?

@@ -2,15 +2,15 @@ use super::*;
 
 impl Generator for MonkeyKing {
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::Q, [(1, Void) /* Bonus Physical Damage */])
-            .ability(Key::W, [(0, Void) /* Clone Outgoing Damage */])
-            .ability(Key::E, [(1, Void) /* Magic Damage */])
+        self.ability(Key::Q, [("Bonus Physical Damage", Void)])
+            .ability(Key::W, [("Clone Outgoing Damage", Void)])
+            .ability(Key::E, [("Magic Damage", Void)])
             .ability(
                 Key::R,
                 [
-                    (0, _1Max), /* Maximum Total Physical Damage (Recast) */
-                    (1, Min),   /* Physical Damage Per Tick */
-                    (2, Max),   /* Total Physical Damage */
+                    ("Maximum Total Physical Damage", _1Max),
+                    ("Physical Damage Per Tick", Min),
+                    ("Total Physical Damage", Max),
                 ],
             )
             .damage_types([W(Void), R(Min), R(Max), R(_1Max)], Physical)?

@@ -1,0 +1,33 @@
+//! Types and rules shared by the desktop app, the server and the web app for
+//! recording, uploading and sharing games. See `docs/game-recording-and-sharing-spec.md`.
+#![cfg_attr(not(feature = "std"), no_std)]
+
+extern crate alloc;
+
+pub mod accounts;
+pub mod api;
+pub mod code;
+pub mod endpoint;
+pub mod enums;
+pub mod format;
+pub mod history;
+pub mod probe;
+pub mod response;
+pub mod snapshot;
+
+pub use accounts::*;
+pub use api::*;
+pub use code::*;
+pub use enums::*;
+pub use format::*;
+pub use history::*;
+pub use probe::*;
+pub use response::*;
+pub use snapshot::*;
+
+#[doc(hidden)]
+pub mod __private {
+    pub use alloc::string::String;
+    pub use bincode;
+    pub use serde;
+}

@@ -5,20 +5,20 @@ impl Generator for Shyvana {
         self.ability(
             Key::Q,
             [
-                (0, Void), /* Area Physical Damage */
-                (1, _1),   /* True Damage */
+                ("Area Physical Damage", Void),
+                ("True Damage", _1),
             ],
         )
-        .ability(Key::W, [(1, Void) /* Magic Damage */])
+        .ability(Key::W, [("Magic Damage", Void)])
         .ability(
             Key::E,
             [
-                (0, Max),  /* Increased/Explosion Magic Damage */
-                (1, Void), /* Magic Damage */
-                (2, Min),  /* Subsequent Explosion Damage */
+                ("Increased/Explosion Magic Damage", Max),
+                ("Magic Damage", Void),
+                ("Subsequent Explosion Damage", Min),
             ],
         )
-        .ability(Key::R, [(4, Void) /* Magic Damage */])
+        .ability(Key::R, [("Magic Damage", Void)])
         .damage_type(Q(Void), Physical)?
         .damage_type(Q(_1), True)?
         .combos([

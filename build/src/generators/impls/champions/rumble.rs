@@ -2,7 +2,7 @@ use super::*;
 
 impl Generator for Rumble {
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::P, [(2, Void) /* Overheated */])
+        self.ability(Key::P, [("Overheated", Void)])
             .modify(P(Void), |_| {
                 f![5 + 39.12 / 17 * (Level - 1) + 0.25 * AbilityPower + 0.04 * EnemyMaxHealth]
             })?
@@ -10,26 +10,26 @@ impl Generator for Rumble {
             .ability(
                 Key::Q,
                 [
-                    (12, Min),   /* Minimum Magic Damage */
-                    (8, Max),    /* Maximum Magic Damage */
-                    (10, _1Min), /* Minimum Enhanced Damage */
-                    (6, _1Max),  /* Maximum Enhanced Damage */
+                    ("Minimum Magic Damage", Min),
+                    ("Maximum Magic Damage", Max),
+                    ("Minimum Enhanced Damage", _1Min),
+                    ("Maximum Enhanced Damage", _1Max),
                 ],
             )
             .ability(
                 Key::E,
                 [
-                    (3, Min),   /* Magic Damage */
-                    (10, Max),  /* Total Magic Damage */
-                    (0, _1Min), /* Enhanced Damage */
-                    (6, _1Max), /* Total Enhanced Damage */
+                    ("Magic Damage", Min),
+                    ("Total Magic Damage", Max),
+                    ("Enhanced Damage", _1Min),
+                    ("Total Enhanced Damage", _1Max),
                 ],
             )
             .ability(
                 Key::R,
                 [
-                    (0, Min), /* Magic Damage per Second */
-                    (2, Max), /* Maximum Magic Damage */
+                    ("Magic Damage per Second", Min),
+                    ("Maximum Magic Damage", Max),
                 ],
             )
             .combos([

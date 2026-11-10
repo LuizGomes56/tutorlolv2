@@ -5,12 +5,12 @@ impl Generator for Singed {
         self.ability(
             Key::Q,
             [
-                (0, Min),  /* Magic Damage per Second */
-                (1, Max),  /* Magic Damage per Tick */
-                (2, Void), /* Minimum Magic Damage */
+                ("Magic Damage per Second", Min),
+                ("Magic Damage per Tick", Max),
+                ("Minimum Magic Damage", Void),
             ],
         )
-        .ability(Key::E, [(0, Void) /* Magic Damage */])
+        .ability(Key::E, [("Magic Damage", Void)])
         .combos([
             &[Ability(Q(Void)), Attack, Ability(E(Void)), Attack],
             &[Ability(Q(Void)), Ability(E(Void)), Attack, Attack],

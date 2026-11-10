@@ -12,27 +12,27 @@ impl Generator for Corki {
                 damage: f![0.2 * AttackDamage],
             },
         )
-        .ability(Key::Q, [(0, Void) /* Magic Damage */])
+        .ability(Key::Q, [("Magic Damage", Void)])
         .ability(
             Key::W,
             [
-                (0, Min), /* Magic Damage Per Tick */
-                (1, Max), /* Total Magic Damage */
+                ("Magic Damage Per Tick", Min),
+                ("Total Magic Damage", Max),
             ],
         )
         .ability(
             Key::E,
             [
-                (0, Min), /* Physical Damage Per Tick */
-                (2, Max), /* Total Physical Damage */
+                ("Physical Damage Per Tick", Min),
+                ("Total Physical Damage", Max),
             ],
         )
         .damage_types([E(Min), E(Max)], Physical)?
         .ability(
             Key::R,
             [
-                (1, Min), /* Physical Damage */
-                (0, Max), /* Big One Physical Damage */
+                ("Physical Damage", Min),
+                ("Big One Physical Damage", Max),
             ],
         )
         .combos([

@@ -2,17 +2,17 @@ use super::*;
 
 impl Generator for Garen {
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::Q, [(0, Void) /* Bonus Physical Damage */])
+        self.ability(Key::Q, [("Bonus Physical Damage", Void)])
             .ability(
                 Key::E,
                 [
-                    (5, Min), /* Physical Damage Per Spin */
-                    (0, _1),  /* Critical Strike Damage Per Spin */
+                    ("Physical Damage Per Spin", Min),
+                    ("Critical Strike Damage Per Spin", _1),
                 ],
             )
             .clone_with(E(Min), E(Max), |e| f![7 * (e)])?
             .comment(E(Max), "Total damage of 7 spins")?
-            .ability(Key::R, [(0, Void) /* True Damage */])
+            .ability(Key::R, [("True Damage", Void)])
             .combos([
                 &[
                     Ability(Q(Void)),

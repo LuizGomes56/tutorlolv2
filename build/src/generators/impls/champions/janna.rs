@@ -2,16 +2,16 @@ use super::*;
 
 impl Generator for Janna {
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::P, [(0, Void) /* Description 1 */])
+        self.ability(Key::P, [("Description 1", Void)])
             .ability(
                 Key::Q,
                 [
-                    (0, _1),  /* Bonus Damage Per Second */
-                    (1, Max), /* Maximum Magic Damage */
-                    (2, Min), /* Minimum Magic Damage */
+                    ("Bonus Damage Per Second", _1),
+                    ("Maximum Magic Damage", Max),
+                    ("Minimum Magic Damage", Min),
                 ],
             )
-            .ability(Key::W, [(1, Void) /* Magic Damage */])
+            .ability(Key::W, [("Magic Damage", Void)])
             .damage_type(P(Void), Magic)?
             .combos([
                 &[Ability(Q(Min)), Ability(Q(Min)), Ability(W(Void))],

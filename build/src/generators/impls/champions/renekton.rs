@@ -5,31 +5,31 @@ impl Generator for Renekton {
         self.ability(
             Key::Q,
             [
-                (2, Max), /* Enhanced Damage */
-                (7, Min), /* Physical Damage */
+                ("Enhanced Damage", Max),
+                ("Physical Damage", Min),
             ],
         )
         .ability(
             Key::W,
             [
-                (0, Min), /* Physical Damage Per Hit */
-                (1, Max), /* Total Physical Damage */
+                ("Physical Damage Per Hit", Min),
+                ("Total Physical Damage", Max),
             ],
         )
         .ability(
             Key::E,
             [
-                (1, _1Min), /* Enhanced Physical Damage */
-                (2, Min),   /* Physical Damage */
-                (3, _1Max), /* Total Enhanced Damage */
-                (4, Max),   /* Total Physical Damage */
+                ("Enhanced Physical Damage", _1Min),
+                ("Physical Damage", Min),
+                ("Total Enhanced Damage", _1Max),
+                ("Total Physical Damage", Max),
             ],
         )
         .ability(
             Key::R,
             [
-                (1, Min), /* Magic Damage Per Tick */
-                (2, Max), /* Total Magic Damage */
+                ("Magic Damage Per Tick", Min),
+                ("Total Magic Damage", Max),
             ],
         )
         .combos([

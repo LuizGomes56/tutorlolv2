@@ -9,7 +9,7 @@ impl Generator for Caitlyn {
             13.. => 0.8,
         });
 
-        self.ability(Key::P, [(1, Void) /* Headshot */])
+        self.ability(Key::P, [("Headshot", Void)])
             .modify(P(Void), |_| {
                 f![((headshot) + 0.8 * CritChance / 100) * AttackDamage]
             })?
@@ -17,15 +17,15 @@ impl Generator for Caitlyn {
             .ability(
                 Key::Q,
                 [
-                    (0, Max), /* Physical Damage */
-                    (1, Min), /* Reduced Damage */
+                    ("Physical Damage", Max),
+                    ("Reduced Damage", Min),
                 ],
             )
-            .ability(Key::W, [(0, Void) /* Headshot Damage Increase */])
+            .ability(Key::W, [("Headshot Damage Increase", Void)])
             .damage_type(W(Void), Physical)?
             .comment(W(Void), "Bonus Headshot damage against trapped enemies")?
-            .ability(Key::E, [(0, Void) /* Magic Damage */])
-            .ability(Key::R, [(0, Void) /* Physical damage */])
+            .ability(Key::E, [("Magic Damage", Void)])
+            .ability(Key::R, [("Physical damage", Void)])
             .combos([
                 &[
                     Ability(W(Void)),

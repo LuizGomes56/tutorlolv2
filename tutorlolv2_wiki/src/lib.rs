@@ -17,12 +17,14 @@ pub mod riot;
 pub mod runes;
 pub mod scraper;
 pub mod stats;
+pub mod version;
 
 pub const DDRAGON_ENDPOINT: &str = "https://ddragon.leagueoflegends.com";
 pub const CANISBACK_ENDPOINT: &str = "https://ddragon.canisback.com/img";
 pub const MOBALYTICS_ENDPOINT: &str = "https://mobalytics.gg/lol/champions";
 pub const LOL_LANGUAGE: &str = "en_US";
-pub const LOL_VERSION: &str = "16.21.1";
+
+pub use version::lol_version;
 
 pub static HTTP_CLIENT: LazyLock<HttpClient> = LazyLock::new(HttpClient::new);
 
@@ -132,6 +134,49 @@ pub fn create_dir_all(path: impl AsRef<Path>) -> MayFail {
     let path = path.as_ref();
     std::fs::create_dir_all(path)
         .map_err(|e| format!("[create_dir_all] Error creating directory: {path:?}: {e:?}").into())
+}
+
+/// Reads a variable from the environment, falling back to the `.env` file
+pub fn env_var(name: &str) -> MayFail<String> {
+    if let Ok(value) = std::env::var(name) {
+        return Ok(value);
+    }
+
+    let prefix = format!("{name}=");
+
+    read_to_string(".env")?
+        .lines()
+        .find_map(|line| {
+            let value = line.trim().strip_prefix(&prefix)?;
+            Some(value.trim().trim_matches('"').to_string())
+        })
+        .ok_or_else(|| format!("{name} is not set in the environment or in .env").into())
+}
+
+/// Sets a variable in the `.env` file, replacing its line if it already exists
+/// and appending it otherwise. Every other line is kept unchanged
+pub fn set_env_var(name: &str, value: &str) -> MayFail {
+    let prefix = format!("{name}=");
+    let line = format!("{prefix}{value}");
+    let contents = read_to_string(".env").unwrap_or_default();
+
+    let mut found = false;
+    let mut lines = contents
+        .lines()
+        .map(|current| match current.trim().starts_with(&prefix) {
+            true => {
+                found = true;
+                line.clone()
+            }
+            false => current.to_string(),
+        })
+        .collect::<Vec<_>>();
+
+    if !found {
+        lines.push(line);
+    }
+
+    write(".env", lines.join("\n") + "\n")
 }
 
 pub fn is_dir(entry: &DirEntry) -> bool {

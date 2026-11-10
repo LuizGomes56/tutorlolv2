@@ -2,7 +2,7 @@ use super::*;
 
 impl Generator for Darius {
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::P, [(1, Min) /* Hemorrhage */])
+        self.ability(Key::P, [("Hemorrhage", Min)])
             .modify(P(Min), |_| f![13 + (Level - 1) + 0.3 * BonusAd])?
             .comment(P(Min), "Hemorrhage total damage per stack")?
             .clone_with(P(Min), P(Max), |p| f![5 * (p)])?
@@ -10,16 +10,16 @@ impl Generator for Darius {
             .ability(
                 Key::Q,
                 [
-                    (0, Max), /* Physical Damage (Blade) */
-                    (1, Min), /* Reduced Damage (Handle) */
+                    ("Physical Damage (Blade)", Max),
+                    ("Reduced Damage (Handle)", Min),
                 ],
             )
-            .ability(Key::W, [(0, Void) /* Bonus Physical Damage */])
+            .ability(Key::W, [("Bonus Physical Damage", Void)])
             .ability(
                 Key::R,
                 [
-                    (2, Min), /* True Damage */
-                    (1, Max), /* Maximum True Damage */
+                    ("True Damage", Min),
+                    ("Maximum True Damage", Max),
                 ],
             )
             .combos([

@@ -2,22 +2,22 @@ use super::*;
 
 impl Generator for Nami {
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::Q, [(0, Void) /* Magic Damage */])
+        self.ability(Key::Q, [("Magic Damage", Void)])
             .ability(
                 Key::W,
                 [
-                    (1, Max), /* Magic Damage */
-                    (2, Min), /* Minimum Damage */
+                    ("Magic Damage", Max),
+                    ("Minimum Damage", Min),
                 ],
             )
             .ability(
                 Key::E,
                 [
-                    (0, Min), /* Bonus Magic Damage Per Hit */
-                    (2, Max), /* Total Bonus Magic Damage */
+                    ("Bonus Magic Damage Per Hit", Min),
+                    ("Total Bonus Magic Damage", Max),
                 ],
             )
-            .ability(Key::R, [(0, Void) /* Magic Damage */])
+            .ability(Key::R, [("Magic Damage", Void)])
             .combos([
                 &[
                     Ability(W(Max)),

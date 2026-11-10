@@ -5,9 +5,9 @@ impl Generator for Zeri {
         self.ability(
             Key::P,
             [
-                (0, Min), /* Basic Attack */
-                (2, Max), /* Description 2 */
-                (3, _1),  /* Description 2 [1] */
+                ("Basic Attack", Min),
+                ("Description 2", Max),
+                ("Description 2 [1]", _1),
             ],
         );
 
@@ -20,20 +20,20 @@ impl Generator for Zeri {
             .ability(
                 Key::Q,
                 [
-                    (2, Min), /* Physical Damage per Hit */
-                    (5, Max), /* Total Physical Damage */
-                    (3, _1),  /* Total Critical Strike Damage */
+                    ("Physical Damage per Hit", Min),
+                    ("Total Physical Damage", Max),
+                    ("Total Critical Strike Damage", _1),
                 ],
             )
             .ability(
                 Key::W,
                 [
-                    (2, Void), /* Physical Damage */
-                    (0, _1),   /* Critical Strike Damage */
+                    ("Physical Damage", Void),
+                    ("Critical Strike Damage", _1),
                 ],
             )
-            .ability(Key::E, [(0, Void) /* Burst Fire Bonus Magic Damage */])
-            .ability(Key::R, [(0, Void) /* Magic Damage */])
+            .ability(Key::E, [("Burst Fire Bonus Magic Damage", Void)])
+            .ability(Key::R, [("Magic Damage", Void)])
             .damage_type(R(Void), Magic)?
             .combos([
                 &[

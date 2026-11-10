@@ -5,14 +5,14 @@ impl Generator for Xayah {
         self.ability(
             Key::Q,
             [
-                (0, Min),   /* Physical Damage Per Hit */
-                (1, _1Min), /* Reduced Damage per Hit */
-                (2, Max),   /* Total Physical Damage */
-                (3, _1Max), /* Total Reduced Damage */
+                ("Physical Damage Per Hit", Min),
+                ("Reduced Damage per Hit", _1Min),
+                ("Total Physical Damage", Max),
+                ("Total Reduced Damage", _1Max),
             ],
         )
-        .ability(Key::E, [(1, Void) /* Physical Damage Per Feather */])
-        .ability(Key::R, [(0, Void) /* Physical Damage */])
+        .ability(Key::E, [("Physical Damage Per Feather", Void)])
+        .ability(Key::R, [("Physical Damage", Void)])
         .combos([
             &[Ability(R(Void)), Ability(E(Void)), Attack, Attack],
             &[Ability(Q(Max)), Attack, Ability(E(Void))],

@@ -84,7 +84,7 @@ impl RuneId {
         mmax || rmax
     }
 
-    #[cfg(feature = "yew")]
+    #[cfg(feature = "client-data")]
     pub const EXCEPTIONS: [Self; 14] = [
         Self::AbsorbLife,
         Self::Conqueror,
@@ -102,12 +102,12 @@ impl RuneId {
         Self::ZombieWard,
     ];
 
-    #[cfg(feature = "yew")]
+    #[cfg(feature = "client-data")]
     pub const fn identifiers(&self) -> &'static [tutorlolv2_types::CtxVar] {
         self.data().identifiers
     }
 
-    #[cfg(feature = "yew")]
+    #[cfg(feature = "client-data")]
     pub const fn exceptions() -> BitSetExc {
         bitset!(RuneId::EXCEPTIONS)
     }

@@ -2,10 +2,10 @@ use super::*;
 
 impl Generator for Quinn {
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::P, [(0, Void) /* Description 1 */])
-            .ability(Key::Q, [(0, Void) /* Physical Damage */])
-            .ability(Key::E, [(0, Void) /* Physical damage */])
-            .ability(Key::R, [(0, Void) /* Physical Damage */])
+        self.ability(Key::P, [("Description 1", Void)])
+            .ability(Key::Q, [("Physical Damage", Void)])
+            .ability(Key::E, [("Physical damage", Void)])
+            .ability(Key::R, [("Physical Damage", Void)])
             .combos([
                 &[
                     Ability(R(Void)),

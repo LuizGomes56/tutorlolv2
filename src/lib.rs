@@ -39,7 +39,11 @@ let _ = |rune: tutorlolv2::Rune| rune.ranged;
 
 extern crate alloc;
 
-#[cfg(feature = "yew")]
+/// Highlighted documentation of every formula, in any [`tutorlolv2_codec::Markup`].
+#[cfg(feature = "formula-docs")]
+pub mod formula_docs;
+
+#[cfg(any(feature = "yew", feature = "formula-docs"))]
 pub mod yew;
 
 #[cfg(feature = "engine")]
@@ -64,7 +68,8 @@ pub use tutorlolv2_types::*;
 
 #[allow(dead_code)]
 #[cfg(feature = "engine")]
-mod test {
+#[doc(hidden)]
+pub mod test {
     use crate::{
         AbilityId, ChampionId, Ctx, ItemId, RuneId,
         const_eval::{ConstDamage, ConstDamages, ConstEnemy, ConstInput, ConstOutput},
@@ -72,7 +77,7 @@ mod test {
     };
 
     const CHAMPION_ID: ChampionId = ChampionId::Neeko;
-    const OUT: ConstOutput<{ CHAMPION_ID.number_of_abilities() }, 6, 1> = ConstInput {
+    pub const OUT: ConstOutput<{ CHAMPION_ID.number_of_abilities() }, 6, 1> = ConstInput {
         champion_id: CHAMPION_ID,
         items: [
             ItemId::NashorsTooth,

@@ -5,30 +5,30 @@ impl Generator for Jayce {
         self.ability(
             Key::Q,
             [
-                (1, Min), /* Physical Damage */
-                (0, Max), /* Increased Damage */
+                ("Physical Damage", Min),
+                ("Increased Damage", Max),
             ],
         )
         .comment(Q(Min), "Shock Blast")?
         .comment(Q(Max), "Shock Blast through Acceleration Gate")?
-        .ability_nth(1, Key::Q, [(0, _1) /* Physical Damage */])
+        .ability_nth(1, Key::Q, [("Physical Damage", _1)])
         .comment(Q(_1), "To the Skies!")?
         .ability_nth(
             1,
             Key::W,
             [
-                (0, Min), /* Magic Damage Per Tick */
-                (2, Max), /* Total Magic Damage */
+                ("Magic Damage Per Tick", Min),
+                ("Total Magic Damage", Max),
             ],
         )
         .ability(
             Key::W,
             [
-                (0, _1Min), /* Physical Damage */
-                (1, _1Max), /* Total Physical Damage */
+                ("Physical Damage", _1Min),
+                ("Total Physical Damage", _1Max),
             ],
         )
-        .ability_nth(1, Key::E, [(1, Void) /* Magic Damage */])
+        .ability_nth(1, Key::E, [("Magic Damage", Void)])
         .damage_types([Q(Min), Q(Max), Q(_1), W(_1Min), W(_1Max)], Physical)?
         .combos([
             &[Ability(W(Max)), Attack, Attack, Ability(E(Void)), Attack],

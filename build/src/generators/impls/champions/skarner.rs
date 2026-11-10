@@ -2,7 +2,7 @@ use super::*;
 
 impl Generator for Skarner {
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::P, [(0, Void) /* Innate [1] */])
+        self.ability(Key::P, [("Innate [1]", Void)])
             .modify(P(Void), |_| {
                 f![(0.05 + 0.04 / 17 * (Level - 1)) * EnemyMaxHealth]
             })?
@@ -10,14 +10,14 @@ impl Generator for Skarner {
                 1,
                 Key::Q,
                 [
-                    (1, Min), /* Bonus Physical Damage per Hit */
-                    (3, Max), /* Total Bonus Physical Damage */
+                    ("Bonus Physical Damage per Hit", Min),
+                    ("Total Bonus Physical Damage", Max),
                 ],
             )
-            .ability(Key::Q, [(1, Void) /* Physical Damage */])
-            .ability(Key::W, [(0, Void) /* Magic Damage */])
-            .ability(Key::E, [(0, Void) /* Physical Damage */])
-            .ability(Key::R, [(0, Void) /* Magic Damage */])
+            .ability(Key::Q, [("Physical Damage", Void)])
+            .ability(Key::W, [("Magic Damage", Void)])
+            .ability(Key::E, [("Physical Damage", Void)])
+            .ability(Key::R, [("Magic Damage", Void)])
             .damage_type(W(Void), Magic)?
             .combos([
                 &[Ability(R(Void)), Ability(W(Void))],

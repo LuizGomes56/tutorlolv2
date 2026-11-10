@@ -2,9 +2,9 @@ use super::*;
 
 impl Generator for Zyra {
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::Q, [(0, Void) /* Magic Damage */])
-            .ability(Key::E, [(0, Void) /* Magic Damage */])
-            .ability(Key::R, [(0, Void) /* Magic Damage */])
+        self.ability(Key::Q, [("Magic Damage", Void)])
+            .ability(Key::E, [("Magic Damage", Void)])
+            .ability(Key::R, [("Magic Damage", Void)])
             .insert(
                 P(Void),
                 Ability {

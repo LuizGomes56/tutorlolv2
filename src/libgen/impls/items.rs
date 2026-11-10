@@ -234,12 +234,12 @@ impl ItemId {
         self.data().maps
     }
 
-    #[cfg(feature = "yew")]
+    #[cfg(any(feature = "yew", feature = "formula-docs"))]
     pub const fn builds_from(&self) -> &'static [Self] {
         self.data().builds_from
     }
 
-    #[cfg(feature = "yew")]
+    #[cfg(any(feature = "yew", feature = "formula-docs"))]
     pub const fn builds_into(&self) -> &'static [Self] {
         self.data().builds_into
     }
@@ -258,7 +258,7 @@ impl ItemId {
         false
     }
 
-    #[cfg(feature = "yew")]
+    #[cfg(feature = "client-data")]
     pub const ALLY_EXCEPTIONS: [Self; 8] = [
         Self::DarkSeal,
         Self::Dragonheart,
@@ -270,17 +270,17 @@ impl ItemId {
         Self::BlackCleaver,
     ];
 
-    #[cfg(feature = "yew")]
+    #[cfg(feature = "client-data")]
     pub const ENEMY_EXCEPTIONS: [Self; 3] =
         [Self::Dragonheart, Self::DemonKingsCrown, Self::BlackCleaver];
 
-    #[cfg(feature = "yew")]
+    #[cfg(feature = "client-data")]
     pub const SIZE_OF_EXCEPTIONS: usize = max_usize(
         bitset_size(bitset!(ItemId::ALLY_EXCEPTIONS => [usize])),
         bitset_size(bitset!(ItemId::ENEMY_EXCEPTIONS => [usize])),
     );
 
-    #[cfg(feature = "yew")]
+    #[cfg(feature = "client-data")]
     pub const fn exceptions(ally: bool) -> BitSetExc {
         match ally {
             true => bitset!(ItemId::ALLY_EXCEPTIONS),
@@ -288,7 +288,7 @@ impl ItemId {
         }
     }
 
-    #[cfg(feature = "yew")]
+    #[cfg(feature = "client-data")]
     pub const fn identifiers(&self) -> &'static [tutorlolv2_types::CtxVar] {
         self.data().identifiers
     }

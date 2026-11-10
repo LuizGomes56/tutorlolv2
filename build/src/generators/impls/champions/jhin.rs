@@ -9,25 +9,25 @@ impl Generator for Jhin {
             11.. => 0.25,
         });
 
-        self.ability(Key::P, [(0, Void) /* Description 1 [1] */])
-            .modify(P(Void), |_| f![(missing_health) * EnemyMissingHealth])?
+        self.ability(Key::P, [("Description 1 [1]", Void)])
+            .modify(P(Void), |_| f![(missing_health) * EnemyMissingHealthFlat])?
             .comment(P(Void), "Fourth shot bonus damage")?
             .ability(
                 Key::Q,
                 [
-                    (2, Min), /* Physical Damage */
-                    (1, Max), /* Maximum Final Bounce Physical Damage */
+                    ("Physical Damage", Min),
+                    ("Maximum Final Bounce Physical Damage", Max),
                 ],
             )
-            .ability(Key::W, [(1, Void) /* Physical Damage */])
-            .ability(Key::E, [(0, Void) /* Magic Damage */])
+            .ability(Key::W, [("Physical Damage", Void)])
+            .ability(Key::E, [("Magic Damage", Void)])
             .ability(
                 Key::R,
                 [
-                    (3, Min),   /* Minimum Physical Damage per Bullet */
-                    (1, Max),   /* Maximum Physical Damage per Bullet */
-                    (2, _1Min), /* Minimum Fourth Shot Damage */
-                    (0, _1Max), /* Maximum Fourth Shot Damage */
+                    ("Minimum Physical Damage per Bullet", Min),
+                    ("Maximum Physical Damage per Bullet", Max),
+                    ("Minimum Fourth Shot Damage", _1Min),
+                    ("Maximum Fourth Shot Damage", _1Max),
                 ],
             )
             .combos([

@@ -2,11 +2,11 @@ use super::*;
 
 impl Generator for Lissandra {
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::P, [(0, Void) /* Innate */])
-            .ability(Key::Q, [(0, Void) /* Magic Damage */])
-            .ability(Key::W, [(0, Void) /* Magic Damage */])
-            .ability(Key::E, [(0, Void) /* Magic Damage */])
-            .ability(Key::R, [(0, Void) /* Magic Damage */])
+        self.ability(Key::P, [("Innate", Void)])
+            .ability(Key::Q, [("Magic Damage", Void)])
+            .ability(Key::W, [("Magic Damage", Void)])
+            .ability(Key::E, [("Magic Damage", Void)])
+            .ability(Key::R, [("Magic Damage", Void)])
             .combos([
                 &[
                     Ability(E(Void)),

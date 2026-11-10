@@ -2,17 +2,17 @@ use super::*;
 
 impl Generator for Khazix {
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::P, [(0, Void) /* Innate */])
+        self.ability(Key::P, [("Innate", Void)])
             .ability_nth(
                 1,
                 Key::Q,
                 [
-                    (0, Max), /* Isolated Target Physical Damage */
-                    (1, Min), /* Physical Damage */
+                    ("Isolated Target Physical Damage", Max),
+                    ("Physical Damage", Min),
                 ],
             )
-            .ability_nth(1, Key::W, [(1, Void) /* Physical Damage */])
-            .ability_nth(1, Key::E, [(0, Void) /* Physical Damage */])
+            .ability_nth(1, Key::W, [("Physical Damage", Void)])
+            .ability_nth(1, Key::E, [("Physical Damage", Void)])
             .damage_types([W(Void), E(Void)], Physical)?
             .combos([
                 &[

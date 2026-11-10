@@ -1,5 +1,5 @@
 use crate::{
-    Build, BuildContext, BuildOutput, MayFail, YEW_CFG,
+    Build, BuildContext, BuildOutput, CLIENT_CFG, DOCS_CFG, MayFail,
     generators::parser::items::Item,
     scripts::utils::{BakeExt, ItemOrRuneExt},
 };
@@ -55,13 +55,13 @@ impl Build for Item {
                 riot_id: {id},
                 custom: {custom},
 
-                {YEW_CFG}
+                {CLIENT_CFG}
                 identifiers: {identifiers},
 
-                {YEW_CFG}
+                {DOCS_CFG}
                 builds_from: {builds_from},
 
-                {YEW_CFG}
+                {DOCS_CFG}
                 builds_into: {builds_into},
             }};"#,
             upper_id = item_id.to_shouty_snake_case(),
@@ -131,23 +131,34 @@ impl Item {
                     (stat, *v as _)
                 })
                 .collect(),
-            maps: data
-                .modes
-                .iter()
-                .filter(|(_, v)| **v)
-                .filter_map(|(k, _)| {
-                    k.parse::<u8>()
-                        .ok()
-                        .map(GameMap::from_code)
-                        .or(match k.as_str() {
-                            "ar" => Some(GameMap::Arena),
-                            "aram" => Some(GameMap::Aram),
-                            "classic sr 5v5" => Some(GameMap::SummonersRift),
-                            "nb" => Some(GameMap::NexusBlitz),
-                            _ => None,
-                        })
-                })
-                .collect(),
+            maps: {
+                let mut maps = data
+                    .modes
+                    .iter()
+                    .filter(|(_, v)| **v)
+                    .filter_map(|(k, _)| {
+                        k.parse::<u8>()
+                            .ok()
+                            .map(GameMap::from_code)
+                            .or(match k.as_str() {
+                                "ar" => Some(GameMap::Arena),
+                                "aram" => Some(GameMap::Aram),
+                                "mayhem" => Some(GameMap::AramMayhem),
+                                "classic sr 5v5" => Some(GameMap::SummonersRift),
+                                "nb" => Some(GameMap::NexusBlitz),
+                                _ => None,
+                            })
+                    })
+                    .collect::<Vec<_>>();
+
+                // The wiki lists Mayhem only for the few items where it differs
+                // from ARAM, so every other item follows its ARAM availability
+                if !data.modes.contains_key("mayhem") && maps.contains(&GameMap::Aram) {
+                    maps.push(GameMap::AramMayhem);
+                }
+
+                maps
+            },
         }
     }
 }

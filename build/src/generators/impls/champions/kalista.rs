@@ -2,13 +2,13 @@ use super::*;
 
 impl Generator for Kalista {
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::Q, [(0, Void) /* Physical Damage */])
-            .ability(Key::W, [(0, Void) /* Bonus Magic Damage */])
+        self.ability(Key::Q, [("Physical Damage", Void)])
+            .ability(Key::W, [("Bonus Magic Damage", Void)])
             .ability(
                 Key::E,
                 [
-                    (0, _1),   /* Bonus Damage per Additional Stack */
-                    (2, Void), /* Physical Damage */
+                    ("Bonus Damage per Additional Stack", _1),
+                    ("Physical Damage", Void),
                 ],
             );
 

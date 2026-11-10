@@ -26,19 +26,19 @@ impl Generator for Heimerdinger {
             1,
             Key::W,
             [
-                (2, Min), /* Initial Rocket Magic Damage */
-                (1, Max), /* Combined Total Non-Minion Damage */
+                ("Initial Rocket Magic Damage", Min),
+                ("Combined Total Non-Minion Damage", Max),
             ],
         )
         .ability(
             Key::W,
             [
-                (2, _1Min), /* Initial Rocket Damage */
-                (1, _1Max), /* Combined Total Non-Minion Damage */
+                ("Initial Rocket Damage", _1Min),
+                ("Combined Total Non-Minion Damage", _1Max),
             ],
         )
-        .ability_nth(1, Key::E, [(0, Void) /* Magic Damage */])
-        .ability(Key::E, [(0, _1) /* Magic Damage */])
+        .ability_nth(1, Key::E, [("Magic Damage", Void)])
+        .ability(Key::E, [("Magic Damage", _1)])
         .combos([
             &[
                 Ability(Q(Void)),

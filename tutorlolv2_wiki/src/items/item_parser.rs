@@ -169,7 +169,7 @@ pub fn parse_items() -> MayFail {
     let result = data
         .into_iter()
         .map(|(name, raw)| {
-            let mut value = parse_item(raw);
+            let mut value = raw.parse();
 
             let assign_formula = |v: Option<&mut ItemEffect>| {
                 if let Some(ie) = v
@@ -216,94 +216,98 @@ pub fn parse_items() -> MayFail {
     crate::write(cache().join("full").with_extension("json"), &json)
 }
 
-fn parse_item(raw: ItemRaw) -> WikiItem {
-    // Variables defined in one effect may be used by another, like Hollow Radiance's
-    // eruption that deals 200% of the damage defined by its burn
-    let mut vars = BTreeMap::new();
+impl ItemRaw {
+    fn parse(self) -> WikiItem {
+        // Variables defined in one effect may be used by another, like Hollow Radiance's
+        // eruption that deals 200% of the damage defined by its burn
+        let mut vars = BTreeMap::new();
 
-    for effect in [
-        &raw.effects.pass,
-        &raw.effects.pass2,
-        &raw.effects.pass3,
-        &raw.effects.pass4,
-        &raw.effects.act,
-    ]
-    .into_iter()
-    .flatten()
-    {
-        if let Some(description) = &effect.description {
-            resolve_markup(description, Variant::default(), &mut vars, &mut Vec::new());
+        for effect in [
+            &self.effects.pass,
+            &self.effects.pass2,
+            &self.effects.pass3,
+            &self.effects.pass4,
+            &self.effects.act,
+        ]
+        .into_iter()
+        .flatten()
+        {
+            if let Some(description) = &effect.description {
+                resolve_markup(description, Variant::default(), &mut vars, &mut Vec::new());
+            }
         }
-    }
 
-    let parse = |raw| parse_item_effect(raw, &vars);
+        let parse = |raw: ItemEffectRaw| raw.parse(&vars);
 
-    WikiItem {
-        item_id: raw.name.replace("'s", "s").to_pascal_case(),
-        name: raw.name,
-        id: raw.id,
-        tier: raw.tier,
-        modes: raw.modes,
-        stats: raw.stats,
-        effects: ItemEffects {
-            pass: raw.effects.pass.map(parse),
-            pass2: raw.effects.pass2.map(parse),
-            pass3: raw.effects.pass3.map(parse),
-            pass4: raw.effects.pass4.map(parse),
-            act: raw.effects.act.map(parse),
-        },
-        recipe: raw.recipe,
-        buy: raw.buy,
-        purchasable: false,
-        custom: false,
+        WikiItem {
+            item_id: self.name.replace("'s", "s").to_pascal_case(),
+            name: self.name,
+            id: self.id,
+            tier: self.tier,
+            modes: self.modes,
+            stats: self.stats,
+            effects: ItemEffects {
+                pass: self.effects.pass.map(parse),
+                pass2: self.effects.pass2.map(parse),
+                pass3: self.effects.pass3.map(parse),
+                pass4: self.effects.pass4.map(parse),
+                act: self.effects.act.map(parse),
+            },
+            recipe: self.recipe,
+            buy: self.buy,
+            purchasable: false,
+            custom: false,
+        }
     }
 }
 
-fn parse_item_effect(raw: ItemEffectRaw, vars: &BTreeMap<String, String>) -> ItemEffect {
-    let description = raw.description.clone().unwrap_or_default();
-    let ast = parse_markup(&description);
+impl ItemEffectRaw {
+    fn parse(self, vars: &BTreeMap<String, String>) -> ItemEffect {
+        let description = self.description.clone().unwrap_or_default();
+        let ast = parse_markup(&description);
 
-    let (effect, total) = analyze_effect(&description, Variant::default(), vars);
+        let (effect, total) = analyze_effect(&description, Variant::default(), vars);
 
-    let variant = |variant| {
-        let (other, _) = analyze_effect(&description, variant, vars);
-        (other != effect).then_some(other)
-    };
+        let variant = |variant| {
+            let (other, _) = analyze_effect(&description, variant, vars);
+            (other != effect).then_some(other)
+        };
 
-    let ranged = variant(Variant {
-        ranged: true,
-        flip: false,
-    });
+        let ranged = variant(Variant {
+            ranged: true,
+            flip: false,
+        });
 
-    let flip = variant(Variant {
-        ranged: false,
-        flip: true,
-    });
+        let flip = variant(Variant {
+            ranged: false,
+            flip: true,
+        });
 
-    ItemEffect {
-        name: raw.name,
-        unique: raw.unique,
-        raw_description: raw.description,
-        effect,
-        ranged,
-        flip,
-        total,
-        ast,
+        ItemEffect {
+            name: self.name,
+            unique: self.unique,
+            raw_description: self.description,
+            effect,
+            ranged,
+            flip,
+            total,
+            ast,
+        }
     }
 }
 
 /// Which text of the description is parsed
 #[derive(Clone, Copy, Debug, Default)]
-struct Variant {
+pub struct Variant {
     /// Values for ranged champions, from `{{rd|melee|ranged}}`
-    ranged: bool,
+    pub ranged: bool,
     /// Alternate text of `{{ft|text|alternate}}`
-    flip: bool,
+    pub flip: bool,
 }
 
 /// Parses the description after resolving the templates that compute values.
 /// The text after "for a total of" is parsed separately, as the second effect
-fn analyze_effect(
+pub fn analyze_effect(
     description: &str,
     variant: Variant,
     vars: &BTreeMap<String, String>,
@@ -765,42 +769,44 @@ fn flatten_nodes(nodes: &[MarkupNode]) -> String {
             MarkupNode::Link { label, target } => {
                 out.push_str(label.as_deref().unwrap_or(target));
             }
-            MarkupNode::Template(template) => out.push_str(&flatten_template(template)),
+            MarkupNode::Template(template) => out.push_str(&template.flatten()),
         }
     }
 
     normalize_whitespace(&out)
 }
 
-fn flatten_template(template: &TemplateNode) -> String {
-    match template {
-        TemplateNode::As { positional, .. }
-        | TemplateNode::Pp { positional, .. }
-        | TemplateNode::Ap { positional, .. }
-        | TemplateNode::Fd { positional, .. }
-        | TemplateNode::Ft { positional, .. }
-        | TemplateNode::Tip { positional, .. }
-        | TemplateNode::Tt { positional, .. }
-        | TemplateNode::Sti { positional, .. }
-        | TemplateNode::Ii { positional, .. }
-        | TemplateNode::Ais { positional, .. }
-        | TemplateNode::Ui { positional, .. } => positional
-            .iter()
-            .map(|v| flatten_nodes(v))
-            .collect::<Vec<_>>()
-            .join(" "),
-        TemplateNode::Rd { melee, ranged, .. } => {
-            format!("{} | {}", flatten_nodes(melee), flatten_nodes(ranged))
-        }
-        TemplateNode::Generic {
-            name, positional, ..
-        } => {
-            let inner = positional
+impl TemplateNode {
+    fn flatten(&self) -> String {
+        match self {
+            TemplateNode::As { positional, .. }
+            | TemplateNode::Pp { positional, .. }
+            | TemplateNode::Ap { positional, .. }
+            | TemplateNode::Fd { positional, .. }
+            | TemplateNode::Ft { positional, .. }
+            | TemplateNode::Tip { positional, .. }
+            | TemplateNode::Tt { positional, .. }
+            | TemplateNode::Sti { positional, .. }
+            | TemplateNode::Ii { positional, .. }
+            | TemplateNode::Ais { positional, .. }
+            | TemplateNode::Ui { positional, .. } => positional
                 .iter()
                 .map(|v| flatten_nodes(v))
                 .collect::<Vec<_>>()
-                .join(" | ");
-            format!("{name}({inner})")
+                .join(" "),
+            TemplateNode::Rd { melee, ranged, .. } => {
+                format!("{} | {}", flatten_nodes(melee), flatten_nodes(ranged))
+            }
+            TemplateNode::Generic {
+                name, positional, ..
+            } => {
+                let inner = positional
+                    .iter()
+                    .map(|v| flatten_nodes(v))
+                    .collect::<Vec<_>>()
+                    .join(" | ");
+                format!("{name}({inner})")
+            }
         }
     }
 }
@@ -1290,8 +1296,8 @@ fn join_nonempty(parts: [String; 2]) -> String {
 /// Values of a `{{pp}}` progression by level, which replaced the template with
 /// its first value in the resolved markup
 #[derive(Clone, Debug)]
-struct LevelSeries {
-    values: Vec<f64>,
+pub struct LevelSeries {
+    pub values: Vec<f64>,
     levels: Vec<u8>,
     /// Whether the progression is colored as damage
     damage: bool,
@@ -1495,7 +1501,7 @@ fn parse_levels(spec: &str) -> Option<Vec<u8>> {
 /// for 13|levels=1;9 to 20}}`, or `{{pp|0 to 40 for 11|0 to 100|type=Momentum}}`
 /// over some other quantity. Progressions by level are replaced by their first value
 /// and saved in `series`, while other ones are replaced by their last value
-fn resolve_pp(
+pub fn resolve_pp(
     args: &[String],
     named: &BTreeMap<String, String>,
     series: &mut Vec<LevelSeries>,
@@ -1569,10 +1575,10 @@ fn resolve_pp(
     format_value(values[0]) + suffix
 }
 
-const MAX_LEVEL: usize = 18;
+pub const MAX_LEVEL: usize = 18;
 
 /// Evaluates arithmetic with `+ - * / ^` and parentheses
-fn eval_expr(input: &str) -> Option<f64> {
+pub fn eval_expr(input: &str) -> Option<f64> {
     struct Parser<'a> {
         chars: std::iter::Peekable<std::str::Chars<'a>>,
     }
@@ -1676,114 +1682,4 @@ fn eval_expr(input: &str) -> Option<f64> {
 
     parser.skip();
     parser.chars.next().is_none().then_some(value)
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    fn effect(description: &str, variant: Variant) -> (Effect, Option<Effect>) {
-        analyze_effect(description, variant, &BTreeMap::new())
-    }
-
-    fn formula(effect: &Effect) -> String {
-        effect.simplify_formula(Key::P).unwrap().unwrap_or_default()
-    }
-
-    const RANGED: Variant = Variant {
-        ranged: true,
-        flip: false,
-    };
-
-    const FLIP: Variant = Variant {
-        ranged: false,
-        flip: true,
-    };
-
-    #[test]
-    fn evaluates_expressions() {
-        assert_eq!(eval_expr("60/6"), Some(10.0));
-        assert_eq!(eval_expr("(60/6)+10"), Some(20.0));
-        assert_eq!(eval_expr("150 + 5*(2-1)"), Some(155.0));
-        assert_eq!(eval_expr("2^3 - -1"), Some(9.0));
-        assert_eq!(eval_expr("10 *"), None);
-    }
-
-    #[test]
-    fn resolves_level_progressions() {
-        let mut series = Vec::new();
-        let named = BTreeMap::new();
-
-        assert_eq!(resolve_pp(&["50 to 150".into()], &named, &mut series), "50");
-        assert_eq!(series[0].values.len(), MAX_LEVEL);
-        assert_eq!(series[0].values[MAX_LEVEL - 1], 150.0);
-
-        // Values of other axes are replaced by their last value
-        let named = BTreeMap::from([("type".into(), "Momentum".into())]);
-        assert_eq!(
-            resolve_pp(&["0 to 40 for 11".into()], &named, &mut series),
-            "40"
-        );
-        assert_eq!(series.len(), 1);
-    }
-
-    #[test]
-    fn resolves_ranged_and_level_values() {
-        let description = "deals {{as|{{rd|20 to 40|10 to 20|pp=true}}|true damage}} \
-            {{as|(+ {{rd|25%|20%}} '''bonus''' armor)|armor}} {{as|'''bonus''' true damage}}.";
-
-        let (melee, _) = effect(description, Variant::default());
-        let (ranged, _) = effect(description, RANGED);
-
-        assert_eq!(melee.use_values.as_ref().unwrap()[0], 20.0);
-        assert_eq!(ranged.use_values.as_ref().unwrap()[MAX_LEVEL - 1], 20.0);
-        assert!(formula(&melee).contains("(0.25) * ctx.bonus_armor"));
-        assert!(formula(&ranged).contains("(0.2) * ctx.bonus_armor"));
-    }
-
-    #[test]
-    fn splits_flipped_text_and_totals() {
-        let description = "take{{ft|{{as|1% of the target's '''maximum''' health}} every \
-            {{fd|0.5}} seconds|{{as|6% of the target's '''maximum''' health}} total}}.";
-
-        assert_eq!(
-            formula(&effect(description, Variant::default()).0),
-            "(0.01) * ctx.enemy_max_health"
-        );
-        assert_eq!(
-            formula(&effect(description, FLIP).0),
-            "(0.06) * ctx.enemy_max_health"
-        );
-
-        let description = "take {{as|{{ap|60/6}} {{as|(+ {{ap|6/6}}% AP)}} magic damage}} \
-            every {{fd|0.5}} seconds over 3 seconds, for a total of {{as|60|magic damage}} \
-            {{as|(+ 6% AP)}}. Against monsters, deal {{as|10 '''bonus''' magic damage}}.";
-
-        let (tick, total) = effect(description, Variant::default());
-        assert_eq!(formula(&tick), "(10.0) + ((0.01) * ctx.ability_power)");
-        assert_eq!(
-            formula(&total.unwrap()),
-            "(60.0) + ((0.06) * ctx.ability_power)"
-        );
-    }
-
-    #[test]
-    fn nests_ratios_of_the_target_health() {
-        let description = "deal {{as|12% {{as|(+ 5% per 100 '''bonus''' AD)}} of target's \
-            '''maximum''' health}} {{as|'''bonus''' physical damage}}";
-
-        assert_eq!(
-            formula(&effect(description, Variant::default()).0),
-            "((0.12) + ((0.05) * (ctx.bonus_ad * 0.01))) * ctx.enemy_max_health"
-        );
-
-        let description = "deal {{as|'''bonus''' true damage}} equal to {{as|{{rd|{{fd|0.7}}%|\
-            {{fd|0.5}}%}} (+ {{fd|0.1}}% per target's ''Reap'' stack) of the target's \
-            '''maximum''' health}}";
-
-        assert_eq!(
-            formula(&effect(description, RANGED).0),
-            "((0.005) + ((0.001) * ctx.stacks)) * ctx.enemy_max_health"
-        );
-    }
 }

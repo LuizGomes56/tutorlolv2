@@ -5,13 +5,13 @@ impl Generator for Shen {
         self.ability(
             Key::Q,
             [
-                (0, Min),   /* Bonus Magic Damage */
-                (1, _1Min), /* Increased Bonus Damage */
-                (4, _1Max), /* Total Increased Damage */
-                (5, Max),   /* Total Magic Damage */
+                ("Bonus Magic Damage", Min),
+                ("Increased Bonus Damage", _1Min),
+                ("Total Increased Damage", _1Max),
+                ("Total Magic Damage", Max),
             ],
         )
-        .ability(Key::E, [(0, Void) /* Physical Damage */])
+        .ability(Key::E, [("Physical Damage", Void)])
         .combos([
             &[Ability(E(Void)), Ability(Q(Max)), Attack, Attack, Attack],
             &[

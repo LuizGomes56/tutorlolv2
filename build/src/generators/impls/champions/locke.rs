@@ -2,7 +2,7 @@ use super::*;
 
 impl Generator for Locke {
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::P, [(0, Min) /* Innate */])
+        self.ability(Key::P, [("Innate", Min)])
             .modify(P(Min), |_| {
                 f![5 + 35 / 17 * (Level - 1) + 0.1 * AbilityPower]
             })?
@@ -15,19 +15,19 @@ impl Generator for Locke {
             .ability(
                 Key::Q,
                 [
-                    (0, Min), /* Magic Damage per Nail */
-                    (2, Max), /* Maximum Total Magic Damage */
+                    ("Magic Damage per Nail", Min),
+                    ("Maximum Total Magic Damage", Max),
                 ],
             )
             .ability(
                 Key::E,
                 [
-                    (1, Min), /* Dash Magic Damage */
-                    (2, Max), /* Total Magic Damage */
-                    (0, _1),  /* Blink Magic Damage */
+                    ("Dash Magic Damage", Min),
+                    ("Total Magic Damage", Max),
+                    ("Blink Magic Damage", _1),
                 ],
             )
-            .ability(Key::R, [(1, Void) /* Magic Damage */])
+            .ability(Key::R, [("Magic Damage", Void)])
             .damage_type(R(Void), Magic)?
             .end()
     }

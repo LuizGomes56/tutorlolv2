@@ -2,22 +2,22 @@ use super::*;
 
 impl Generator for Diana {
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::P, [(1, Void) /* Innate - Moonsilver Blade */])
-            .ability(Key::Q, [(0, _1) /* Magic Damage */])
+        self.ability(Key::P, [("Innate - Moonsilver Blade", Void)])
+            .ability(Key::Q, [("Magic Damage", _1)])
             .ability(
                 Key::W,
                 [
-                    (0, Min), /* Magic Damage per Orb */
-                    (3, Max), /* Total Magic Damage */
+                    ("Magic Damage per Orb", Min),
+                    ("Total Magic Damage", Max),
                 ],
             )
-            .ability(Key::E, [(0, Void) /* Magic Damage */])
+            .ability(Key::E, [("Magic Damage", Void)])
             .ability(
                 Key::R,
                 [
-                    (0, _1),  /* Bonus Damage Per Champion */
-                    (1, Min), /* Magic Damage */
-                    (3, Max), /* Total Damage Vs. 5 Champions */
+                    ("Bonus Damage Per Champion", _1),
+                    ("Magic Damage", Min),
+                    ("Total Damage Vs. 5 Champions", Max),
                 ],
             )
             .combos([

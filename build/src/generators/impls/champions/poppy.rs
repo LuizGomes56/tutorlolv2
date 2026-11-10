@@ -2,27 +2,27 @@ use super::*;
 
 impl Generator for Poppy {
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::P, [(1, Void) /* Innate */])
+        self.ability(Key::P, [("Innate", Void)])
             .ability(
                 Key::Q,
                 [
-                    (2, Min), /* Physical Damage */
-                    (5, Max), /* Total Physical Damage */
+                    ("Physical Damage", Min),
+                    ("Total Physical Damage", Max),
                 ],
             )
-            .ability(Key::W, [(0, Void) /* Magic Damage */])
+            .ability(Key::W, [("Magic Damage", Void)])
             .ability(
                 Key::E,
                 [
-                    (0, Min), /* Physical Damage */
-                    (2, Max), /* Total Physical Damage */
+                    ("Physical Damage", Min),
+                    ("Total Physical Damage", Max),
                 ],
             )
             .ability(
                 Key::R,
                 [
-                    (0, Min), /* Increased Damage */
-                    (1, Max), /* Physical Damage */
+                    ("Increased Damage", Min),
+                    ("Physical Damage", Max),
                 ],
             )
             .combos([

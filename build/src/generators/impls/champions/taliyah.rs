@@ -5,18 +5,18 @@ impl Generator for Taliyah {
         self.ability(
             Key::Q,
             [
-                (3, Min), /* Magic Damage */
-                (7, Max), /* Total Magic Damage */
-                (2, _1),  /* Empowered Damage */
-                (4, _2),  /* Reduced Damage */
+                ("Magic Damage", Min),
+                ("Total Magic Damage", Max),
+                ("Empowered Damage", _1),
+                ("Reduced Damage", _2),
             ],
         )
         .ability(
             Key::E,
             [
-                (1, Void), /* Magic Damage */
-                (0, _1),   /* Detonation Magic Damage */
-                (2, _2),   /* Total Maximum Detonation Damage */
+                ("Magic Damage", Void),
+                ("Detonation Magic Damage", _1),
+                ("Total Maximum Detonation Damage", _2),
             ],
         )
         .end()

@@ -389,6 +389,20 @@ pub fn cast_f32(s: &str) -> MayFail<String> {
         fn visit_expr_mut(&mut self, expr: &mut Expr) {
             syn::visit_mut::visit_expr_mut(self, expr);
 
+            // Formulas read derived variables as fields, `Ctx` computes them
+            if let Expr::Field(field) = expr
+                && let Expr::Path(base) = field.base.as_ref()
+                && base.path.is_ident("ctx")
+                && let Member::Named(member) = &field.member
+                && member
+                    .to_string()
+                    .parse::<CtxVar>()
+                    .is_ok_and(|var| var.is_method())
+            {
+                let member = member.clone();
+                return *expr = syn::parse_quote!(ctx.#member());
+            }
+
             // Literals such as `3.14` are denied by `clippy::approx_constant`.
             if let Expr::Lit(syn::ExprLit {
                 lit: Lit::Float(n), ..
@@ -423,13 +437,22 @@ pub fn cast_f32(s: &str) -> MayFail<String> {
                 && let Expr::Path(base) = field.base.as_ref()
                 && base.path.is_ident("ctx")
                 && let Member::Named(member) = &field.member
-                && matches!(
-                    member.to_string().as_str(),
-                    "level" | "q_level" | "w_level" | "e_level" | "r_level"
-                )
             {
-                let discriminant = &expr.expr;
-                expr.expr = syn::parse_quote!(#discriminant as u8);
+                // Ability levels are stored as integers, so their arms match them directly
+                let ability = match member.to_string().as_str() {
+                    "q_level" => Some(quote::format_ident!("q")),
+                    "w_level" => Some(quote::format_ident!("w")),
+                    "e_level" => Some(quote::format_ident!("e")),
+                    "r_level" => Some(quote::format_ident!("r")),
+                    _ => None,
+                };
+
+                if let Some(ability) = ability {
+                    expr.expr = syn::parse_quote!(ctx.ability_levels.#ability);
+                } else if member == "level" {
+                    let discriminant = &expr.expr;
+                    expr.expr = syn::parse_quote!(#discriminant as u8);
+                }
             }
             syn::visit_mut::visit_expr_match_mut(self, expr);
         }

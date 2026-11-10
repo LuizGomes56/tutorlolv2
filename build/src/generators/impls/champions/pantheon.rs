@@ -5,27 +5,27 @@ impl Generator for Pantheon {
         self.ability(
             Key::Q,
             [
-                (0, _1Max), /* Hurl Physical Damage */
-                (1, _1Min), /* Hurl Secondary Physical Damage */
-                (2, _2Max), /* Increased Hurl Damage */
-                (3, _2Min), /* Increased Hurl Secondary Damage */
-                (4, _3Max), /* Increased Thrust Damage */
-                (5, _3Min), /* Thrust Physical Damage */
+                ("Hurl Physical Damage", _1Max),
+                ("Hurl Secondary Physical Damage", _1Min),
+                ("Increased Hurl Damage", _2Max),
+                ("Increased Hurl Secondary Damage", _2Min),
+                ("Increased Thrust Damage", _3Max),
+                ("Thrust Physical Damage", _3Min),
             ],
         )
-        .ability(Key::W, [(0, Void) /* Physical Damage */])
+        .ability(Key::W, [("Physical Damage", Void)])
         .modify(W(Void), |_| {
             f![
                 (0.06 + 0.005 * (WLevel - 1) + 0.00015 * AbilityPower + 0.00004 * BonusHealth)
                     * EnemyMaxHealth
             ]
         })?
-        .ability(Key::E, [(0, Void) /* Physical Damage */])
+        .ability(Key::E, [("Physical Damage", Void)])
         .ability(
             Key::R,
             [
-                (1, Max), /* Magic Damage */
-                (2, Min), /* Reduced Damage */
+                ("Magic Damage", Max),
+                ("Reduced Damage", Min),
             ],
         );
 

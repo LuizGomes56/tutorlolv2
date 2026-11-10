@@ -2,7 +2,7 @@ use super::*;
 
 impl Generator for Illaoi {
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::P, [(0, Void) /* Description 1 */])
+        self.ability(Key::P, [("Description 1", Void)])
             .modify(P(Void), |_| {
                 f![9 + 171 / 17 * (Level - 1) + 1.1 * AttackDamage + 0.4 * AbilityPower]
             })?
@@ -12,14 +12,14 @@ impl Generator for Illaoi {
             .ability(
                 Key::W,
                 [
-                    (0, Max), /* Additional Physical Damage */
-                    (1, Min), /* Minimum Physical Damage */
+                    ("Additional Physical Damage", Max),
+                    ("Minimum Physical Damage", Min),
                 ],
             )
             .modify(W(Max), |_| {
                 f![(0.03 + 0.005 * (WLevel - 1) + 0.00035 * AttackDamage) * EnemyMaxHealth]
             })?
-            .ability(Key::R, [(0, Void) /* Physical Damage */])
+            .ability(Key::R, [("Physical Damage", Void)])
             .combos([
                 &[
                     Ability(R(Void)),

@@ -2,10 +2,10 @@ use super::*;
 
 impl Generator for Ezreal {
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::Q, [(0, Void) /* Physical Damage */])
-            .ability(Key::W, [(0, Void) /* Bonus Magic Damage */])
-            .ability(Key::E, [(0, Void) /* Magic Damage */])
-            .ability(Key::R, [(0, Void) /* Magic Damage */])
+        self.ability(Key::Q, [("Physical Damage", Void)])
+            .ability(Key::W, [("Bonus Magic Damage", Void)])
+            .ability(Key::E, [("Magic Damage", Void)])
+            .ability(Key::R, [("Magic Damage", Void)])
             .combos([
                 &[
                     Ability(E(Void)),

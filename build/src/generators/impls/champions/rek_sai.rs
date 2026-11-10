@@ -6,23 +6,23 @@ impl Generator for RekSai {
             1,
             Key::Q,
             [
-                (0, Min), /* Bonus Physical Damage */
-                (1, Max), /* Total Bonus Physical Damage */
+                ("Bonus Physical Damage", Min),
+                ("Total Bonus Physical Damage", Max),
             ],
         )
-        .ability(Key::Q, [(0, _1) /* Magic Damage */])
+        .ability(Key::Q, [("Magic Damage", _1)])
         .comment(Q(_1), "Prey Seeker while burrowed")?
-        .ability(Key::W, [(0, Void) /* Magic Damage */])
+        .ability(Key::W, [("Magic Damage", Void)])
         .ability_nth(
             1,
             Key::E,
             [
-                (0, Void), /* Physical Damage */
-                (1, _1),   /* True Damage */
+                ("Physical Damage", Void),
+                ("True Damage", _1),
             ],
         )
         .damage_type(E(_1), True)?
-        .ability(Key::R, [(0, Void) /* Physical Damage */])
+        .ability(Key::R, [("Physical Damage", Void)])
         .combos([
             &[
                 Ability(E(Void)),

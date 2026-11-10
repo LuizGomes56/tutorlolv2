@@ -1,16 +1,25 @@
-//! Tracks the effects that generators select by index. Effects are stored in maps
-//! sorted by name, so whenever the wiki adds, removes or renames an effect, the
-//! index of every effect after it changes. The lock file lists every effect with
-//! its index and a hash of its formula, so these changes show up in its diff and
-//! in the report printed when it is regenerated
+//! Tracks the wiki data that generators depend on. Champion generators select
+//! effects by name, while rune and item generators select effects and scalings
+//! by index. Effects are stored in maps sorted by name, so whenever the wiki
+//! adds, removes or renames an effect, the index of every effect after it
+//! changes. The lock file lists every effect with its index and a hash of its
+//! formula, and the scalings of every item effect, so these changes show up in
+//! its diff and in the report of [`check`] printed when it is regenerated
+
+pub mod check;
 
 use crate::{
-    JsonRead, LOL_VERSION, MayFail, champions::WikiChampion, parser::Effect, runes::WikiRune,
+    JsonRead, MayFail,
+    champions::WikiChampion,
+    items::item_parser::WikiItem,
+    parser::{Effect, Scaling},
+    runes::WikiRune,
 };
 use serde::{Deserialize, Serialize};
+use serde_json::Value;
 use std::{
     collections::{BTreeMap, BTreeSet},
-    path::PathBuf,
+    path::{Path, PathBuf},
 };
 use tutorlolv2_types::Key;
 
@@ -18,11 +27,20 @@ pub fn path() -> PathBuf {
     PathBuf::from("wiki.lock.json")
 }
 
+/// Name of the lock file inside the archive of a previous version
+pub const FILE_NAME: &str = "wiki.lock.json";
+
+/// Directory with the generators of every champion, rune and item
+pub const GENERATORS: &str = "build/src/generators/impls";
+
 #[derive(Debug, Default, Deserialize, Serialize)]
 pub struct WikiLock {
     pub version: String,
     pub champions: BTreeMap<String, BTreeMap<Key, Vec<LockedAbility>>>,
     pub runes: BTreeMap<String, Vec<String>>,
+    /// Effects of every item by slot, such as `pass`, `pass2.ranged` or `act`
+    #[serde(default)]
+    pub items: BTreeMap<String, BTreeMap<String, LockedItemEffect>>,
 }
 
 #[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
@@ -30,6 +48,14 @@ pub struct LockedAbility {
     pub name: String,
     /// Effects as `"index: name (formula hash)"`
     pub effects: Vec<String>,
+}
+
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+pub struct LockedItemEffect {
+    /// Hash of the formula, empty if the effect has none
+    pub formula: String,
+    /// Scalings as `"index: kind variable (hash)"`
+    pub scalings: Vec<String>,
 }
 
 /// 64-bit FNV-1a, used because the standard library's hasher is not guaranteed
@@ -40,19 +66,105 @@ fn fnv1a(data: &str) -> u64 {
     })
 }
 
+pub(crate) fn hash(data: &str) -> String {
+    format!("{:08x}", fnv1a(data) as u32)
+}
+
 fn lock_effects<'a>(effects: impl Iterator<Item = (&'a String, &'a Effect)>) -> Vec<String> {
     effects
         .enumerate()
         .map(|(i, (name, effect))| {
             let formula = effect.formula.as_deref().unwrap_or_default();
-            format!("{i}: {name} ({:08x})", fnv1a(formula) as u32)
+            format!("{i}: {name} ({})", hash(formula))
         })
         .collect()
 }
 
+/// Describes each scaling by its kind and variable, such as `Simple BaseAd`,
+/// followed by a hash of its values
+fn lock_scalings(scalings: &[Scaling]) -> Vec<String> {
+    scalings
+        .iter()
+        .enumerate()
+        .map(|(i, scaling)| {
+            let value = serde_json::to_value(scaling).unwrap_or_default();
+            let (kind, fields) = match &value {
+                Value::Object(map) => map
+                    .iter()
+                    .next()
+                    .map_or(("Unknown", None), |(k, v)| (k.as_str(), Some(v))),
+                Value::String(kind) => (kind.as_str(), None),
+                _ => ("Unknown", None),
+            };
+
+            let var = fields
+                .and_then(|f| f.get("ctx_var").or_else(|| f.get("level_var")))
+                .and_then(Value::as_str)
+                .map(|v| format!(" {v}"))
+                .unwrap_or_default();
+
+            format!("{i}: {kind}{var} ({})", hash(&value.to_string()))
+        })
+        .collect()
+}
+
+impl LockedItemEffect {
+    fn new(effect: &Effect) -> Option<Self> {
+        if effect.formula.is_none() && effect.scalings.is_empty() {
+            return None;
+        }
+
+        Some(Self {
+            formula: effect.formula.as_deref().map(hash).unwrap_or_default(),
+            scalings: lock_scalings(&effect.scalings),
+        })
+    }
+}
+
+fn lock_item(item: &WikiItem) -> BTreeMap<String, LockedItemEffect> {
+    let effects = &item.effects;
+    let slots = [
+        ("pass", &effects.pass),
+        ("pass2", &effects.pass2),
+        ("pass3", &effects.pass3),
+        ("pass4", &effects.pass4),
+        ("act", &effects.act),
+    ];
+
+    let mut result = BTreeMap::new();
+
+    for (slot, item_effect) in slots {
+        let Some(item_effect) = item_effect else {
+            continue;
+        };
+
+        let variants = [
+            ("", Some(&item_effect.effect)),
+            (".ranged", item_effect.ranged.as_ref()),
+            (".flip", item_effect.flip.as_ref()),
+            (".total", item_effect.total.as_ref()),
+        ];
+
+        for (suffix, effect) in variants {
+            if let Some(locked) = effect.and_then(LockedItemEffect::new) {
+                result.insert(format!("{slot}{suffix}"), locked);
+            }
+        }
+    }
+
+    result
+}
+
 /// Splits `"index: name (hash)"` into `"index: name"` and its hash
-fn split_entry(entry: &str) -> (&str, &str) {
+pub(crate) fn split_entry(entry: &str) -> (&str, &str) {
     entry.rsplit_once(" (").unwrap_or((entry, ""))
+}
+
+/// Name and formula hash of an entry `"index: name (hash)"`
+pub(crate) fn entry_name(entry: &str) -> (&str, &str) {
+    let (left, hash) = split_entry(entry);
+    let name = left.split_once(": ").map_or(left, |(_, name)| name);
+    (name, hash.trim_end_matches(')'))
 }
 
 pub fn build() -> MayFail<WikiLock> {
@@ -84,16 +196,23 @@ pub fn build() -> MayFail<WikiLock> {
         .map(|(rune_id, rune)| (rune_id, lock_effects(rune.effects.iter())))
         .collect();
 
+    let items = BTreeMap::<String, WikiItem>::from_file("cache/wiki/items/full.json")?
+        .into_iter()
+        .map(|(item_id, item)| (item_id, lock_item(&item)))
+        .filter(|(_, slots)| !slots.is_empty())
+        .collect();
+
     Ok(WikiLock {
-        version: LOL_VERSION.to_string(),
+        version: crate::lol_version().to_string(),
         champions,
         runes,
+        items,
     })
 }
 
-/// Compares two lists of effects, returning the entries whose index or name
-/// changed, and how many effects kept their index and name but not their formula
-fn compare(old: &[String], new: &[String]) -> (Vec<String>, usize) {
+/// Compares two lists of entries, returning the ones whose index or name
+/// changed, and how many kept their index and name but not their hash
+pub fn compare(old: &[String], new: &[String]) -> (Vec<String>, usize) {
     let names = |list: &[String]| -> Vec<String> {
         list.iter()
             .map(|entry| split_entry(entry).0.to_string())
@@ -135,119 +254,58 @@ fn compare(old: &[String], new: &[String]) -> (Vec<String>, usize) {
     (lines, formulas)
 }
 
-fn report(old: &WikiLock, new: &WikiLock) -> Vec<String> {
-    let mut out = Vec::new();
-    let mut formulas = BTreeMap::<String, usize>::new();
-    let empty = BTreeMap::new();
+/// Lock file of the most recent version archived in `cache`, other than
+/// `current`, which is what [`check`] compares against when it runs on its own
+pub fn latest_archive(cache: impl AsRef<Path>, current: &str) -> Option<PathBuf> {
+    let parse = |v: &str| -> Vec<u32> { v.split('.').filter_map(|p| p.parse().ok()).collect() };
 
-    for (champion_id, abilities) in &new.champions {
-        let old_abilities = old.champions.get(champion_id).unwrap_or(&empty);
-
-        for (key, list) in abilities {
-            for (nth, ability) in list.iter().enumerate() {
-                let old_effects = old_abilities
-                    .get(key)
-                    .and_then(|list| list.get(nth))
-                    .map(|ability| ability.effects.as_slice())
-                    .unwrap_or_default();
-
-                let (lines, changed) = compare(old_effects, &ability.effects);
-
-                if !lines.is_empty() {
-                    out.push(format!(
-                        "  {champion_id} {key:?}[{nth}] {}: effect indexes changed",
-                        ability.name
-                    ));
-
-                    out.extend(lines);
-                }
-
-                *formulas.entry(champion_id.clone()).or_default() += changed;
-            }
-        }
-    }
-
-    for (rune_id, effects) in &new.runes {
-        let old_effects = old
-            .runes
-            .get(rune_id)
-            .map(Vec::as_slice)
-            .unwrap_or_default();
-        let (lines, changed) = compare(old_effects, effects);
-
-        if !lines.is_empty() {
-            out.push(format!("  {rune_id}: effect indexes changed"));
-            out.extend(lines);
-        }
-
-        *formulas.entry(rune_id.clone()).or_default() += changed;
-    }
-
-    let changed = formulas
-        .into_iter()
-        .filter(|(_, n)| *n > 0)
-        .map(|(id, n)| format!("{id} ({n})"))
-        .collect::<Vec<_>>();
-
-    if !changed.is_empty() {
-        out.push(format!("  Formulas changed: {}", changed.join(", ")));
-    }
-
-    out
+    crate::read_dir(cache.as_ref())
+        .ok()?
+        .filter_map(|entry| entry.file_name().into_string().ok())
+        .filter(|name| crate::version::is_version(name) && name != current)
+        .map(|name| cache.as_ref().join(&name).join(FILE_NAME))
+        .filter(|path| path.is_file())
+        .max_by_key(|path| {
+            path.parent()
+                .and_then(Path::file_name)
+                .and_then(|name| name.to_str())
+                .map(parse)
+                .unwrap_or_default()
+        })
 }
 
-/// Regenerates the lock file from the parsed wiki data, printing what changed
-/// since the previous one
+/// Regenerates the lock file from the parsed wiki data, then checks the
+/// generators against what changed since the previous one
 pub fn write() -> MayFail {
     println!("[fn] lock::write");
 
     let new = build()?;
-
-    if let Ok(old) = WikiLock::from_file(path()) {
-        let report = report(&old, &new);
-
-        match report.is_empty() {
-            true => println!("[lock] No changes"),
-            false => {
-                if old.version != new.version {
-                    println!("[lock] Version {} -> {}", old.version, new.version);
-                }
-
-                println!("[lock] Changes since the previous lock file:");
-                report.iter().for_each(|line| println!("{line}"));
-            }
-        }
-    }
+    let old = WikiLock::from_file(path()).ok();
 
     let json = serde_json::to_string_pretty(&new)?;
-    crate::write(path(), json + "\n")
+    crate::write(path(), json + "\n")?;
+
+    new.check(old.as_ref(), GENERATORS)?.print();
+    Ok(())
 }
 
-#[cfg(test)]
-mod tests {
-    use super::compare;
+/// Checks the generators against the current lock file, comparing it with the
+/// lock file of the most recent archived version, if there is one
+pub fn check() -> MayFail {
+    println!("[fn] lock::check");
 
-    fn entries(list: &[&str]) -> Vec<String> {
-        list.iter().map(|s| s.to_string()).collect()
-    }
+    let new = WikiLock::from_file(path())?;
+    let old = match latest_archive("cache", &new.version) {
+        Some(path) => {
+            println!("[lock] Comparing with {path:?}");
+            Some(WikiLock::from_file(path)?)
+        }
+        None => {
+            println!("[lock] No archived lock file, only checking effect names");
+            None
+        }
+    };
 
-    #[test]
-    fn reports_shifted_indexes_and_formula_changes() {
-        let old = entries(&["0: A (1)", "1: B (2)", "2: C (3)"]);
-        let new = entries(&["0: A (9)", "1: C (3)"]);
-
-        let (lines, formulas) = compare(&old, &new);
-
-        assert_eq!(
-            lines,
-            ["    - 1: B", "    - 2: C", "    + 1: C"].map(String::from)
-        );
-        assert_eq!(formulas, 1);
-    }
-
-    #[test]
-    fn identical_lists_report_nothing() {
-        let list = entries(&["0: A (1)", "1: B (2)"]);
-        assert_eq!(compare(&list, &list), (Vec::new(), 0));
-    }
+    new.check(old.as_ref(), GENERATORS)?.print();
+    Ok(())
 }

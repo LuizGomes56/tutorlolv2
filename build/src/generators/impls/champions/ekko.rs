@@ -2,17 +2,17 @@ use super::*;
 
 impl Generator for Ekko {
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::P, [(1, Void) /* Innate - Resonance */])
+        self.ability(Key::P, [("Innate - Resonance", Void)])
             .ability(
                 Key::Q,
                 [
-                    (0, _1Min), /* Initial Magic Damage */
-                    (1, _1Max), /* Return Magic Damage */
-                    (3, Max),   /* Total Magic Damage */
+                    ("Initial Magic Damage", _1Min),
+                    ("Return Magic Damage", _1Max),
+                    ("Total Magic Damage", Max),
                 ],
             )
-            .ability(Key::E, [(0, Void) /* Bonus Magic Damage */])
-            .ability(Key::R, [(0, Void) /* Magic Damage */])
+            .ability(Key::E, [("Bonus Magic Damage", Void)])
+            .ability(Key::R, [("Magic Damage", Void)])
             .combos([
                 &[
                     Ability(E(Void)),

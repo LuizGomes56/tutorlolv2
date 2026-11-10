@@ -2,18 +2,18 @@ use super::*;
 
 impl Generator for KSante {
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::P, [(1, Void) /* Innate */])
+        self.ability(Key::P, [("Innate", Void)])
             .modify(P(Void), |_| {
                 f![12 + (0.01 + 0.01 / 17 * (Level - 1)) * EnemyMaxHealth]
             })?
             .damage_type(P(Void), Physical)?
             .comment(P(Void), "Mark consumption bonus damage")?
-            .ability(Key::Q, [(0, Void) /* Physical Damage */])
+            .ability(Key::Q, [("Physical Damage", Void)])
             .ability(
                 Key::W,
                 [
-                    (3, Min), /* Physical Damage */
-                    (4, Max), /* Total Maximum Mixed Damage */
+                    ("Physical Damage", Min),
+                    ("Total Maximum Mixed Damage", Max),
                 ],
             )
             .modify(W(Min), |_| {
@@ -30,8 +30,8 @@ impl Generator for KSante {
             .ability(
                 Key::R,
                 [
-                    (2, Min), /* Strike Physical Damage */
-                    (3, Max), /* Total Physical Damage */
+                    ("Strike Physical Damage", Min),
+                    ("Total Physical Damage", Max),
                 ],
             )
             .combos([

@@ -10,8 +10,10 @@ bincode = { version = "2.0.1", default-features = false, features = ["derive"] }
 pastey = "0.2.3"
 serde = { version = "1.0", default-features = false, features = ["derive"] }
 strum = { version = "0.28.0", features = ["derive", "strum_macros"] }
+yew = { version = "0.23.0", default-features = false, optional = true }
 
 [features]
 default = []
 dev = []
 bake = ["dep:databake"]
+yew = ["dep:yew"]

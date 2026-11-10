@@ -2,27 +2,27 @@ use super::*;
 
 impl Generator for Nautilus {
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::P, [(1, Void) /* Innate */])
-            .ability(Key::Q, [(0, Void) /* Magic Damage */])
+        self.ability(Key::P, [("Innate", Void)])
+            .ability(Key::Q, [("Magic Damage", Void)])
             .ability(
                 Key::W,
                 [
-                    (0, Min), /* Magic Damage per Instance */
-                    (2, Max), /* Total Magic Damage */
+                    ("Magic Damage per Instance", Min),
+                    ("Total Magic Damage", Max),
                 ],
             )
             .ability(
                 Key::E,
                 [
-                    (0, Min), /* Magic Damage */
-                    (1, Max), /* Maximum Total Damage */
+                    ("Magic Damage", Min),
+                    ("Maximum Total Damage", Max),
                 ],
             )
             .ability(
                 Key::R,
                 [
-                    (0, Max), /* Increased Damage */
-                    (2, Min), /* Magic Damage */
+                    ("Increased Damage", Max),
+                    ("Magic Damage", Min),
                 ],
             )
             .combos([

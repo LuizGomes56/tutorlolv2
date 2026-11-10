@@ -5,11 +5,11 @@ pub mod globals;
 pub mod impls;
 
 pub use {
-    champions_code::ChampionId,
+    champions_code::{CHAMPION_NAME_TO_ID, ChampionId},
     globals::*,
     impls::traits::{CastId, ValueId},
-    items_code::ItemId,
-    runes_code::RuneId,
+    items_code::{ITEM_NAME_TO_ID, ItemId},
+    runes_code::{RUNE_NAME_TO_ID, RuneId},
 };
 
 include!(concat!(env!("OUT_DIR"), "/libgen.rs"));

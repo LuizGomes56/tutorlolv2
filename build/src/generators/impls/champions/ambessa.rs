@@ -2,38 +2,38 @@ use super::*;
 
 impl Generator for Ambessa {
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::P, [(1, Void) /* Medarda Maxim */])
+        self.ability(Key::P, [("Medarda Maxim", Void)])
             .damage_type(P(Void), Physical)?
             .ability_nth(
                 1,
                 Key::Q,
                 [
-                    (1, Min), /* Physical Damage */
-                    (0, Max), /* Increased Physical Damage */
+                    ("Physical Damage", Min),
+                    ("Increased Physical Damage", Max),
                 ],
             )
             .ability(
                 Key::Q,
                 [
-                    (1, _1Min), /* Physical Damage */
-                    (0, _1Max), /* Increased Physical Damage */
+                    ("Physical Damage", _1Min),
+                    ("Increased Physical Damage", _1Max),
                 ],
             )
             .ability(
                 Key::W,
                 [
-                    (1, Min), /* Physical Damage */
-                    (0, Max), /* Increased Physical Damage */
+                    ("Physical Damage", Min),
+                    ("Increased Physical Damage", Max),
                 ],
             )
             .ability(
                 Key::E,
                 [
-                    (0, Min), /* Physical Damage */
-                    (1, Max), /* Total Physical Damage */
+                    ("Physical Damage", Min),
+                    ("Total Physical Damage", Max),
                 ],
             )
-            .ability(Key::R, [(2, Void) /* Physical Damage */])
+            .ability(Key::R, [("Physical Damage", Void)])
             .combos([
                 &[
                     Ability(Q(Min)),

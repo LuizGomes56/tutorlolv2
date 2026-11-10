@@ -2,7 +2,7 @@ use super::*;
 
 impl Generator for Aurora {
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::P, [(2, Void) /* Innate */])
+        self.ability(Key::P, [("Innate", Void)])
             .modify(P(Void), |_| {
                 f![(0.01 + 0.00027 * AbilityPower) * EnemyMaxHealth]
             })?
@@ -10,14 +10,14 @@ impl Generator for Aurora {
             .ability(
                 Key::Q,
                 [
-                    (1, Max),   /* Maximum Magic Damage */
-                    (2, Min),   /* Minimum Magic Damage */
-                    (3, _1Max), /* Subsequent Bolt Maximum Magic Damage */
-                    (4, _1Min), /* Subsequent Bolt Minimum Magic Damage */
+                    ("Maximum Magic Damage", Max),
+                    ("Minimum Magic Damage", Min),
+                    ("Subsequent Bolt Maximum Magic Damage", _1Max),
+                    ("Subsequent Bolt Minimum Magic Damage", _1Min),
                 ],
             )
-            .ability(Key::E, [(0, Void) /* Magic Damage */])
-            .ability(Key::R, [(0, Void) /* Magic Damage */])
+            .ability(Key::E, [("Magic Damage", Void)])
+            .ability(Key::R, [("Magic Damage", Void)])
             .combos([
                 &[
                     Ability(R(Void)),

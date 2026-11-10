@@ -2,18 +2,18 @@ use super::*;
 
 impl Generator for Yunara {
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::Q, [(3, Void) /* Passive Bonus Magic Damage */])
+        self.ability(Key::Q, [("Passive Bonus Magic Damage", Void)])
             .damage_type(Q(Void), Magic)?
             .ability_nth(
                 1,
                 Key::W,
                 [
-                    (0, Void), /* Initial Magic Damage */
-                    (1, _1),   /* Linger Magic Damage per Tick */
-                    (2, _2),   /* Total Expanded Damage */
+                    ("Initial Magic Damage", Void),
+                    ("Linger Magic Damage per Tick", _1),
+                    ("Total Expanded Damage", _2),
                 ],
             )
-            .ability(Key::R, [(0, Void) /* Arc of Ruin Base Damage */])
+            .ability(Key::R, [("Arc of Ruin Base Damage", Void)])
             .damage_type(R(Void), Magic)?
             .combos([
                 &[

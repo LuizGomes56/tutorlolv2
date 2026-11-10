@@ -2,7 +2,7 @@ use super::*;
 
 impl Generator for Tryndamere {
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::E, [(0, Void) /* Physical Damage */])
+        self.ability(Key::E, [("Physical Damage", Void)])
             .damage_type(E(Void), Physical)?
             .combos([
                 &[Ability(E(Void)), Attack],

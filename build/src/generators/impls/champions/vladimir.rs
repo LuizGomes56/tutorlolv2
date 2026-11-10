@@ -5,25 +5,25 @@ impl Generator for Vladimir {
         self.ability(
             Key::Q,
             [
-                (1, Max), /* Increased Damage */
-                (2, Min), /* Magic Damage */
+                ("Increased Damage", Max),
+                ("Magic Damage", Min),
             ],
         )
         .ability(
             Key::W,
             [
-                (0, Min), /* Magic Damage Per Tick */
-                (1, Max), /* Total Magic Damage */
+                ("Magic Damage Per Tick", Min),
+                ("Total Magic Damage", Max),
             ],
         )
         .ability(
             Key::E,
             [
-                (0, Max), /* Maximum Magic Damage */
-                (1, Min), /* Minimum Magic Damage */
+                ("Maximum Magic Damage", Max),
+                ("Minimum Magic Damage", Min),
             ],
         )
-        .ability(Key::R, [(1, Void) /* Magic damage */])
+        .ability(Key::R, [("Magic damage", Void)])
         .combos([
             &[
                 Ability(E(Max)),

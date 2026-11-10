@@ -2,20 +2,20 @@ use super::*;
 
 impl Generator for Belveth {
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::Q, [(0, Void) /* Physical Damage */])
-            .ability(Key::W, [(1, Void) /* Magic Damage */])
+        self.ability(Key::Q, [("Physical Damage", Void)])
+            .ability(Key::W, [("Magic Damage", Void)])
             .ability(
                 Key::E,
                 [
-                    (3, Max), /* Maximum Physical Damage per hit */
-                    (5, Min), /* Minimum Physical Damage per hit */
+                    ("Maximum Physical Damage per hit", Max),
+                    ("Minimum Physical Damage per hit", Min),
                 ],
             )
             .ability(
                 Key::R,
                 [
-                    (2, _1),   /* Bonus True Damage */
-                    (7, Void), /* True Damage */
+                    ("Bonus True Damage", _1),
+                    ("True Damage", Void),
                 ],
             )
             .combos([

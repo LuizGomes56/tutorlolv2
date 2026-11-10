@@ -2,22 +2,22 @@ use super::*;
 
 impl Generator for Zoe {
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::P, [(0, Void) /* Innate */])
+        self.ability(Key::P, [("Innate", Void)])
             .ability(
                 Key::Q,
                 [
-                    (0, Max), /* Maximum Magic Damage */
-                    (1, Min), /* Minimum Magic Damage */
+                    ("Maximum Magic Damage", Max),
+                    ("Minimum Magic Damage", Min),
                 ],
             )
             .ability(
                 Key::W,
                 [
-                    (2, Min), /* Magic Damage Per Bolt */
-                    (3, Max), /* Total Magic Damage */
+                    ("Magic Damage Per Bolt", Min),
+                    ("Total Magic Damage", Max),
                 ],
             )
-            .ability(Key::E, [(2, Min) /* Magic Damage */])
+            .ability(Key::E, [("Magic Damage", Min)])
             .clone_with(E(Min), E(Max), |dmg| f![((dmg) * MagicMultiplier) + dmg])?
             .combos([
                 &[Ability(E(Max)), Ability(Q(Min)), Ability(Q(Min))],

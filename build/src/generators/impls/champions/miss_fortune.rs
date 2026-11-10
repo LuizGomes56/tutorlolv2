@@ -2,24 +2,24 @@ use super::*;
 
 impl Generator for MissFortune {
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::P, [(0, Void) /* Innate */])
+        self.ability(Key::P, [("Innate", Void)])
             .modify(P(Void), |_| {
                 f![(0.5 + 0.5 / 17 * (Level - 1)) * AttackDamage]
             })?
             .comment(P(Void), "Love Tap bonus damage against unmarked enemies")?
-            .ability(Key::Q, [(0, Void) /* Physical Damage */])
+            .ability(Key::Q, [("Physical Damage", Void)])
             .ability(
                 Key::E,
                 [
-                    (0, Min), /* Magic Damage Per Tick */
-                    (1, Max), /* Total Magic Damage */
+                    ("Magic Damage Per Tick", Min),
+                    ("Total Magic Damage", Max),
                 ],
             )
             .ability(
                 Key::R,
                 [
-                    (0, Max), /* Maximum Total Physical Damage */
-                    (1, Min), /* Physical Damage per Wave */
+                    ("Maximum Total Physical Damage", Max),
+                    ("Physical Damage per Wave", Min),
                 ],
             )
             .combos([

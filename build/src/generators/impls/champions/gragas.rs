@@ -5,13 +5,13 @@ impl Generator for Gragas {
         self.ability(
             Key::Q,
             [
-                (0, Max), /* Maximum Magic Damage */
-                (3, Min), /* Minimum Magic Damage */
+                ("Maximum Magic Damage", Max),
+                ("Minimum Magic Damage", Min),
             ],
         )
-        .ability(Key::W, [(0, Void) /* Bonus Magic Damage */])
-        .ability(Key::E, [(0, Void) /* Magic Damage */])
-        .ability(Key::R, [(0, Void) /* Magic Damage */])
+        .ability(Key::W, [("Bonus Magic Damage", Void)])
+        .ability(Key::E, [("Magic Damage", Void)])
+        .ability(Key::R, [("Magic Damage", Void)])
         .combos([
             &[
                 Ability(W(Void)),

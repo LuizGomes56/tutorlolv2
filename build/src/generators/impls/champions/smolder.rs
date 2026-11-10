@@ -3,30 +3,30 @@ use super::*;
 impl Generator for Smolder {
     fn generate(&mut self) -> MayFail {
         let passive_q = self
-            .formula(Key::P, 4)?
+            .formula(Key::P, "Innate [4]")?
             .times(Stacks)
             .times(MagicMultiplier);
-        let passive_w = self.formula(Key::P, 2)?.times(MagicMultiplier);
-        let passive_e = self.formula(Key::P, 3)?.times(MagicMultiplier);
+        let passive_w = self.formula(Key::P, "Innate [2]")?.times(MagicMultiplier);
+        let passive_e = self.formula(Key::P, "Innate [3]")?.times(MagicMultiplier);
 
         let q_tier_3 = f![(0.083 * BonusAd / 100 + 0.017 * Stacks / 100) * EnemyMaxHealth];
 
         let w_dmg = |dmg: &str| f![((dmg) * PhysicalMultiplier) + passive_w];
 
-        self.ability(Key::Q, [(0, Min) /* Physical Damage */])
+        self.ability(Key::Q, [("Physical Damage", Min)])
             .ability(
                 Key::W,
                 [
-                    (0, Void), /* Explosion Physical Damage */
-                    (1, Min),  /* Glob Physical Damage */
-                    (2, Max),  /* Total Physical Damage On Champion Hit */
+                    ("Explosion Physical Damage", Void),
+                    ("Glob Physical Damage", Min),
+                    ("Total Physical Damage On Champion Hit", Max),
                 ],
             )
             .ability(
                 Key::R,
                 [
-                    (0, Max), /* Increased Physical Damage */
-                    (1, Min), /* Physical Damage */
+                    ("Increased Physical Damage", Max),
+                    ("Physical Damage", Min),
                 ],
             )
             .modify(Q(Min), |dmg| {

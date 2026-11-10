@@ -6,20 +6,20 @@ impl Generator for Kled {
             1,
             Key::Q,
             [
-                (1, Min), /* Physical Damage */
-                (3, Max), /* Total Physical Damage */
+                ("Physical Damage", Min),
+                ("Total Physical Damage", Max),
             ],
         )
         .ability(
             Key::Q,
             [
-                (1, _1Min), /* Physical Damage */
-                (0, _1Max), /* Maximum Damage */
+                ("Physical Damage", _1Min),
+                ("Maximum Damage", _1Max),
             ],
         )
         .comment(Q(_1Min), "Pocket Pistol while dismounted")?
         .comment(Q(_1Max), "Pocket Pistol while dismounted, maximum damage")?
-        .ability(Key::W, [(0, Void) /* Additional Physical Damage */])
+        .ability(Key::W, [("Additional Physical Damage", Void)])
         .modify(W(Void), |_| {
             f![20
                 + 10 * (WLevel - 1)
@@ -30,8 +30,8 @@ impl Generator for Kled {
             1,
             Key::E,
             [
-                (0, Min), /* Physical Damage */
-                (1, Max), /* Total Physical Damage */
+                ("Physical Damage", Min),
+                ("Total Physical Damage", Max),
             ],
         )
         .damage_types(
@@ -42,8 +42,8 @@ impl Generator for Kled {
             1,
             Key::R,
             [
-                (2, Min), /* Minimum Magic Damage */
-                (1, Max), /* Maximum Magic Damage */
+                ("Minimum Magic Damage", Min),
+                ("Maximum Magic Damage", Max),
             ],
         )
         .modify(R(Min), |_| {

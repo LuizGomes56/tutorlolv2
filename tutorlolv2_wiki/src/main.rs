@@ -1,6 +1,6 @@
 use clap::{Parser, Subcommand, ValueEnum};
 use tutorlolv2_wiki::{
-    HTTP_CLIENT, LOL_VERSION, MayFail, champions, items, lock, runes, scraper, stats,
+    HTTP_CLIENT, MayFail, champions, items, lock, lol_version, runes, scraper, stats, version,
 };
 
 #[derive(Parser, Debug)]
@@ -99,6 +99,9 @@ pub enum Wiki {
     ScraperConcat,
     #[clap(alias = "l")]
     Lock,
+    /// Checks the generators against the lock file of the latest archived version
+    #[clap(alias = "lc")]
+    LockCheck,
 }
 
 #[tokio::main]
@@ -109,6 +112,7 @@ async fn main() -> MayFail {
 
     match args {
         AppArgs::Update => {
+            version::check().await?;
             tutorlolv2_wiki::run().await?;
 
             HTTP_CLIENT.update_riot_cache().await?;
@@ -136,9 +140,11 @@ async fn main() -> MayFail {
             Fetch::Cache => HTTP_CLIENT.update_riot_cache().await?,
             Fetch::Version => {
                 let gamev = HTTP_CLIENT.fetch_version().await?;
-                match gamev == LOL_VERSION {
+                let current = lol_version();
+
+                match gamev == current {
                     true => println!("App is up to date with game version"),
-                    false => println!("App is outdated: Expected {gamev}, found: {LOL_VERSION}"),
+                    false => println!("App is outdated: Expected {gamev}, found: {current}"),
                 }
             }
         },
@@ -165,6 +171,7 @@ async fn main() -> MayFail {
             Wiki::ScraperParse => scraper::parse(),
             Wiki::ScraperConcat => scraper::concat(),
             Wiki::Lock => lock::write(),
+            Wiki::LockCheck => lock::check(),
         }
         .map_err(|e| format!("[wiki] Error: {e:?}"))?,
         AppArgs::Stats {
@@ -175,8 +182,8 @@ async fn main() -> MayFail {
             let config = stats::StatsConfig { platforms, matches };
 
             match function {
-                Stats::All => stats::run(&config).await,
-                Stats::Download => stats::download(&config).await,
+                Stats::All => config.run().await,
+                Stats::Download => config.download().await,
                 Stats::Parse => stats::parse(),
             }
             .map_err(|e| format!("[stats] Error: {e:?}"))?

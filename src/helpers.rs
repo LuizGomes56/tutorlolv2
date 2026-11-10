@@ -15,12 +15,14 @@
 //! want to do it, you can use the [`crate::const_eval`] module to
 //! do it
 
+use crate::AbilityBatch;
 use core::num::NonZeroU8;
+
 use {
     crate::{
         ChampionId, ItemId, RuneId, WikiModifiers,
         bitset::BitSet,
-        libgen::{Champion, Closure, L_MSTR, L_TWRD, Stat, WikiStats},
+        libgen::{Champion, Closure, L_TWRD, Stat, WikiStats},
         model::*,
     },
     alloc::boxed::Box,
@@ -28,7 +30,8 @@ use {
     core::mem::MaybeUninit,
     strum::EnumCount,
     tutorlolv2_types::{
-        AbilityId, AdaptiveType, AttackType, Ctx, DamageType, GameMap, StatName, TypeMetadata,
+        AbilityId, AdaptiveType, AttackType, Ctx, CtxAttacker, CtxFlags, CtxTarget, DamageType,
+        GameMap, StatName, TypeMetadata,
     },
 };
 
@@ -71,9 +74,8 @@ impl Modifiers {
                 self.damages.global_mod *= RiotFormulas::COUP_DE_GRACE_AND_CUTDOWN_BONUS_DAMAGE
             }
             RuneId::LastStand => {
-                self.damages.global_mod *= RiotFormulas::get_last_stand(
-                    RiotFormulas::missing_health(stats.current_health, stats.max_health),
-                )
+                self.damages.global_mod *=
+                    RiotFormulas::get_last_stand(stats.missing_health_ratio())
             }
             _ => {}
         }
@@ -259,6 +261,20 @@ impl ChampionId {
         }
     }
 
+    /// Base stats including the base health that `game_map` grants
+    pub const fn map_base_stats(
+        &self,
+        level: NonZeroU8,
+        is_mega_gnar: bool,
+        game_map: GameMap,
+    ) -> BasicStats {
+        let mut stats = self.base_stats(level, is_mega_gnar);
+        let attack_type = self.effective_attack_type(is_mega_gnar);
+
+        stats.max_health += game_map.base_health(attack_type, level.get());
+        stats
+    }
+
     pub const fn map_damage_modifier(&self, enemy_id: &Self, game_map: GameMap) -> f32 {
         let WikiModifiers {
             ofa,
@@ -283,7 +299,7 @@ impl ChampionId {
         match game_map {
             GameMap::OneForAll => ofa.damage_dealt * e_ofa.damage_taken,
             GameMap::UnsealedSpellbook => usb.damage_dealt * e_usb.damage_taken,
-            GameMap::Aram => aram.damage_dealt * e_aram.damage_taken,
+            GameMap::Aram | GameMap::AramMayhem => aram.damage_dealt * e_aram.damage_taken,
             GameMap::Arena => ar.damage_dealt * e_ar.damage_taken,
             GameMap::NexusBlitz => nb.damage_dealt * e_nb.damage_taken,
             GameMap::SwiftPlay => swift.damage_dealt * e_swift.damage_taken,
@@ -321,6 +337,11 @@ impl BasicStats {
 }
 
 impl EnemyStats {
+    /// Ratio of the maximum health that is missing, see [`RiotFormulas::missing_health_ratio`]
+    pub const fn missing_health_ratio(&self) -> f32 {
+        RiotFormulas::missing_health_ratio(self.current_health, self.max_health)
+    }
+
     pub const fn bonus_stats(&self, base_stats: SimpleStats) -> SimpleStats {
         SimpleStats {
             armor: self.armor - base_stats.armor,
@@ -331,6 +352,11 @@ impl EnemyStats {
 }
 
 impl PlayerStats {
+    /// Ratio of the maximum health that is missing, see [`RiotFormulas::missing_health_ratio`]
+    pub const fn missing_health_ratio(&self) -> f32 {
+        RiotFormulas::missing_health_ratio(self.current_health, self.max_health)
+    }
+
     /// Returns a new struct [`Stats`] with the same original values except the ones
     /// that involve percent penetration, which are resolved and converted to the
     /// `0..100` range used in this library
@@ -529,7 +555,14 @@ impl EnemyState<'_> {
             earth_dragons,
             level,
             item_exceptions,
+            game_map,
         } = *self;
+
+        // Health granted by the map is base health, so it is part of the base
+        // stats whether the totals are supplied or inferred
+        let attack_type = champion_id.data().attack_type;
+        let mut base_stats = base_stats;
+        base_stats.max_health += game_map.base_health(attack_type, level.get());
 
         let ResistShred {
             armor_penetration_flat,
@@ -547,14 +580,16 @@ impl EnemyState<'_> {
         // Supplied totals already include stat passives and dragons. Keep inference
         // confined to None; defensive modifiers and item flags apply to both paths.
         let e_current_stats = match current_stats {
-            Some(s) => EnemyStats {
-                missing_health: RiotFormulas::missing_health(s.current_health, s.max_health),
-                ..s
-            },
+            Some(s) => s,
             None => {
                 let mut e_default_stats = base_stats;
-                let bonus_mana = e_default_stats.infer_stats(items, earth_dragons);
+                let (mode_armor, mode_magic_resist) =
+                    game_map.bonus_resists(attack_type, level.get());
 
+                e_default_stats.armor += mode_armor;
+                e_default_stats.magic_resist += mode_magic_resist;
+
+                let bonus_mana = e_default_stats.infer_stats(items, earth_dragons);
                 let mut i = 0;
 
                 while i < item_exceptions.len() {
@@ -647,7 +682,6 @@ impl EnemyState<'_> {
                     current_health: e_default_stats.max_health,
                     magic_resist: e_default_stats.magic_resist,
                     max_health: e_default_stats.max_health,
-                    missing_health: 1.0,
                 }
             }
         };
@@ -692,11 +726,86 @@ impl EnemyState<'_> {
                 ],
             ),
             randuin: has_item(&origin, [ItemId::RanduinsOmen]),
+            accept_negatives,
         }
     }
 }
 
 impl SelfState {
+    /// Construct a new [`Ctx`] type that can be used to evaluate any champion's
+    /// closures and get their intermediary damage values, before applying the reductions
+    /// from armor and magic resist. See [`Closure`] for more details about those
+    /// functions
+    pub const fn ctx(&self, e_state: &EnemyFullState) -> Ctx {
+        Ctx::new(&self.ctx_attacker(), &e_state.ctx_target())
+    }
+
+    /// Part of [`Ctx`] that comes from this state, the same against every target
+    pub const fn ctx_attacker(&self) -> CtxAttacker {
+        let SelfState {
+            stacks,
+            ability_levels,
+            current_stats:
+                PlayerStats {
+                    ability_power,
+                    armor,
+                    armor_penetration_flat,
+                    armor_penetration_percent,
+                    attack_damage,
+                    attack_speed,
+                    crit_chance,
+                    crit_damage,
+                    current_health,
+                    magic_penetration_flat,
+                    magic_penetration_percent,
+                    magic_resist,
+                    max_health,
+                    max_mana,
+                    current_mana,
+                },
+            base_stats:
+                BasicStats {
+                    armor: base_armor,
+                    max_health: base_health,
+                    attack_damage: base_ad,
+                    magic_resist: base_magic_resist,
+                    max_mana: base_mana,
+                    attack_speed: base_attack_speed,
+                },
+            level,
+            adaptive_type,
+            ..
+        } = *self;
+
+        CtxAttacker {
+            ability_levels,
+            level: level.get() as _,
+            base_health,
+            base_ad,
+            base_armor,
+            base_attack_speed,
+            base_magic_resist,
+            base_mana,
+            armor_penetration_flat,
+            armor_penetration_percent,
+            magic_penetration_flat,
+            magic_penetration_percent,
+            max_mana,
+            current_mana,
+            max_health,
+            current_health,
+            armor,
+            magic_resist,
+            crit_chance,
+            crit_damage,
+            attack_speed,
+            ability_power,
+            attack_damage,
+            stacks,
+            flags: CtxFlags::attacker(adaptive_type),
+        }
+    }
+
     /// Estimate a purchase from observed live stats rather than replacing them
     /// with inferred totals. Unknown stacks and temporary effects remain observed.
     pub const fn simulated_purchase(
@@ -754,6 +863,8 @@ impl SelfState {
 
             match existing {
                 ItemId::WintersApproach | ItemId::Fimbulwinter => {
+                    core::hint::cold_path();
+
                     stats.max_health += 0.15 * added_mana
                 }
                 _ => {}
@@ -765,6 +876,8 @@ impl SelfState {
         if !already_owned {
             match item {
                 ItemId::WintersApproach | ItemId::Fimbulwinter => {
+                    core::hint::cold_path();
+
                     stats.max_health += 0.15 * (stats.max_mana - self.base_stats.max_mana)
                 }
                 _ => {}
@@ -778,6 +891,8 @@ impl SelfState {
             let existing = owned[i];
 
             if matches!(existing, ItemId::WarmogsArmor) {
+                core::hint::cold_path();
+
                 stats.max_health =
                     current.max_health + (stats.max_health - current.max_health) * 1.12;
             }
@@ -792,6 +907,7 @@ impl SelfState {
         let health_delta = stats.max_health - current.max_health;
         let mut added_ap = 0.0;
         let mut added_ad = 0.0;
+        let mut owns_bloodmail = false;
 
         i = 0;
 
@@ -799,11 +915,14 @@ impl SelfState {
             let existing = owned[i];
 
             match existing {
-                ItemId::Riftmaker | ItemId::DemonicEmbrace => added_ap += 0.02 * health_delta,
+                ItemId::Riftmaker => added_ap += 0.02 * health_delta,
                 ItemId::ArchangelsStaff => added_ap += 0.01 * added_mana,
                 ItemId::SeraphsEmbrace => added_ap += 0.02 * added_mana,
                 ItemId::Manamune | ItemId::Muramana => added_ad += 0.025 * added_mana,
-                ItemId::OverlordsBloodmail => added_ad += 0.025 * health_delta,
+                ItemId::OverlordsBloodmail => {
+                    owns_bloodmail = true;
+                    added_ad += 0.025 * health_delta
+                }
                 _ => {}
             }
 
@@ -815,17 +934,47 @@ impl SelfState {
             let bonus_mana = stats.max_mana - self.base_stats.max_mana;
 
             match item {
-                ItemId::Riftmaker | ItemId::DemonicEmbrace => added_ap += 0.02 * bonus_health,
+                ItemId::Riftmaker => added_ap += 0.02 * bonus_health,
+                // Purchases do not change the flat missing health, so an owned
+                // Demonic Embrace keeps the ability power already observed
+                ItemId::DemonicEmbrace => {
+                    core::hint::cold_path();
+
+                    added_ap +=
+                        RiotFormulas::get_sinister_pact(current.max_health - current.current_health)
+                }
                 ItemId::ArchangelsStaff => added_ap += 0.01 * bonus_mana,
                 ItemId::SeraphsEmbrace => added_ap += 0.02 * bonus_mana,
                 ItemId::Manamune | ItemId::Muramana => added_ad += 0.025 * bonus_mana,
-                ItemId::OverlordsBloodmail => added_ad += 0.025 * bonus_health,
+                ItemId::OverlordsBloodmail => {
+                    core::hint::cold_path();
+
+                    added_ad += 0.025 * bonus_health
+                }
                 _ => {}
             }
         }
 
         stats.ability_power += added_ap * fire;
         stats.attack_damage += added_ad * fire;
+
+        // Retribution grants a ratio of the attack damage from other sources.
+        // Observed attack damage already includes it when Bloodmail is owned,
+        // so only the attack damage added by the purchase is amplified
+        if owns_bloodmail || matches!(item, ItemId::OverlordsBloodmail) {
+            core::hint::cold_path();
+
+            let retribution =
+                1.0 + RiotFormulas::get_bloodmail_retribution(current.missing_health_ratio());
+
+            stats.attack_damage = match owns_bloodmail {
+                true => {
+                    current.attack_damage
+                        + (stats.attack_damage - current.attack_damage) * retribution
+                }
+                false => stats.attack_damage * retribution,
+            };
+        }
 
         // The observed AP already includes owned amplifiers; only amplify the delta.
         let ap_delta = stats.ability_power - current.ability_power;
@@ -838,7 +987,10 @@ impl SelfState {
 
             match existing {
                 ItemId::RabadonsDeathcap => ap_multiplier *= 1.3,
-                ItemId::WoogletsWitchcap => ap_multiplier *= 1.5,
+                ItemId::WoogletsWitchcap => {
+                    core::hint::cold_path();
+                    ap_multiplier *= 1.5
+                }
                 _ => {}
             }
 
@@ -864,14 +1016,9 @@ impl SelfState {
 
         Self {
             current_stats: stats,
-            bonus_stats,
             adaptive_type,
             ..*self
         }
-    }
-
-    pub const fn ctx(&self, e_state: &EnemyFullState) -> Ctx {
-        get_eval_ctx(self, e_state)
     }
 }
 
@@ -891,152 +1038,49 @@ impl EnemyFullState {
             accept_negatives,
         );
 
+        self.accept_negatives = accept_negatives;
         self
     }
 
     pub const fn ctx(&self, self_state: &SelfState) -> Ctx {
-        get_eval_ctx(self_state, self)
+        self_state.ctx(self)
     }
 }
 
-/// Construct a new [`Ctx`] type that can be used to evaluate any champion's
-/// closures and get their intermediary damage values, before applying the reductions
-/// from armor and magic resist. See [`Closure`] for more details about those
-/// functions
-pub const fn get_eval_ctx(self_state: &SelfState, e_state: &EnemyFullState) -> Ctx {
-    let SelfState {
-        stacks,
-        ability_levels,
-        current_stats:
-            PlayerStats {
-                ability_power,
-                armor,
-                armor_penetration_flat,
-                armor_penetration_percent,
-                attack_damage,
-                attack_speed,
-                crit_chance,
-                crit_damage,
-                current_health,
-                magic_penetration_flat,
-                magic_penetration_percent,
-                magic_resist,
-                max_health,
-                max_mana,
-                current_mana,
-            },
-        bonus_stats:
-            BasicStats {
-                attack_damage: bonus_ad,
-                armor: bonus_armor,
-                magic_resist: bonus_magic_resist,
-                max_health: bonus_health,
-                max_mana: bonus_mana,
-                attack_speed: bonus_attack_speed,
-            },
-        base_stats:
-            BasicStats {
-                armor: base_armor,
-                max_health: base_health,
-                attack_damage: base_ad,
-                magic_resist: base_magic_resist,
-                max_mana: base_mana,
-                attack_speed: base_attack_speed,
-            },
-        level,
-        adaptive_type,
-    } = *self_state;
+impl EnemyFullState {
+    /// Part of [`Ctx`] that comes from this target, the same for every attacker state
+    pub const fn ctx_target(&self) -> CtxTarget {
+        let EnemyFullState {
+            current_stats:
+                EnemyStats {
+                    armor: enemy_armor,
+                    current_health: enemy_current_health,
+                    magic_resist: enemy_magic_resist,
+                    max_health: enemy_max_health,
+                },
+            bonus_stats:
+                SimpleStats {
+                    max_health: enemy_bonus_health,
+                    armor: enemy_bonus_armor,
+                    magic_resist: enemy_bonus_magic_resist,
+                },
+            steelcaps,
+            rocksolid,
+            randuin,
+            accept_negatives,
+            ..
+        } = *self;
 
-    let EnemyFullState {
-        current_stats:
-            EnemyStats {
-                armor: enemy_armor,
-                current_health: enemy_current_health,
-                magic_resist: enemy_magic_resist,
-                max_health: enemy_max_health,
-                missing_health: enemy_missing_health,
-            },
-        bonus_stats:
-            SimpleStats {
-                max_health: enemy_bonus_health,
-                armor: enemy_bonus_armor,
-                magic_resist: enemy_bonus_magic_resist,
-            },
-        armor_values,
-        magic_values,
-        steelcaps,
-        rocksolid,
-        randuin,
-        ..
-    } = *e_state;
-
-    Ctx {
-        q_level: ability_levels.q as _,
-        w_level: ability_levels.w as _,
-        e_level: ability_levels.e as _,
-        r_level: ability_levels.r as _,
-        level: level.get() as _,
-        physical_multiplier: armor_values.modifier,
-        magic_multiplier: magic_values.modifier,
-        enemy_bonus_health,
-        enemy_bonus_armor,
-        enemy_bonus_magic_resist,
-        enemy_armor,
-        enemy_current_health,
-        enemy_max_health,
-        enemy_missing_health,
-        enemy_magic_resist,
-        base_health,
-        base_ad,
-        base_armor,
-        base_attack_speed,
-        base_magic_resist,
-        base_mana,
-        bonus_ad,
-        bonus_armor,
-        bonus_attack_speed,
-        bonus_magic_resist,
-        bonus_health,
-        bonus_mana,
-        bonus_move_speed: 1.0,
-        armor_penetration_flat,
-        armor_penetration_percent,
-        magic_penetration_flat,
-        magic_penetration_percent,
-        max_mana,
-        current_mana,
-        max_health,
-        current_health,
-        armor,
-        magic_resist,
-        crit_chance,
-        crit_damage,
-        attack_speed,
-        missing_health: RiotFormulas::missing_health(current_health, max_health),
-        ability_power,
-        attack_damage,
-        adaptive_damage: match adaptive_type {
-            AdaptiveType::Physical => armor_values.modifier,
-            AdaptiveType::Magic => magic_values.modifier,
-        },
-        steelcaps_effect: if steelcaps {
-            RiotFormulas::STEEL_CAPS_PROTECTION
-        } else {
-            1.0
-        },
-        randuin_effect: if randuin {
-            RiotFormulas::RANDUIN_CRIT_PROTECTION
-        } else {
-            1.0
-        },
-        rocksolid_effect: if rocksolid {
-            RiotFormulas::ROCKSOLID_PROTECTION
-        } else {
-            1.0
-        },
-        unknown: 0.0,
-        stacks,
-        life_steal: 0.0,
+        CtxTarget {
+            enemy_bonus_health,
+            enemy_bonus_armor,
+            enemy_bonus_magic_resist,
+            enemy_armor,
+            enemy_current_health,
+            enemy_max_health,
+            enemy_magic_resist,
+            flags: CtxFlags::target(steelcaps, randuin, rocksolid, accept_negatives),
+        }
     }
 }
 
@@ -1107,79 +1151,111 @@ const _: () = {
     }
 };
 
-impl Damages {
-    /// Constructs a new [`Damages`] struct that holds all the damage values against some entity
-    /// that could be calculated. This function will cause undefined behavior if any
-    /// metadata of closures vectors do not have the same length
-    pub fn new(ctx: Ctx, data: &DamageEvalData, modifiers: Modifiers) -> Self {
-        let mut onhit = RangeDamage::default();
+impl DamageTable {
+    /// Evaluates one row. The caller may add the candidate pair afterwards via the returned view.
+    pub fn fill(
+        &mut self,
+        r: usize,
+        ctx: Ctx,
+        data: &DamageEvalData,
+        modifiers: Modifiers,
+    ) -> DamagesMut<'_> {
+        self.fill_with_batch(r, ctx, data, modifiers, None)
+    }
 
-        let abilities = Self::eval_abilities(
-            &ctx,
-            &mut onhit,
-            modifiers,
-            data.abilities.metadata,
-            data.abilities.closures,
-        );
+    /// Batch specialization: one indirect call for the whole champion.
+    pub fn fill_batch(
+        &mut self,
+        r: usize,
+        ctx: Ctx,
+        data: &DamageEvalData,
+        modifiers: Modifiers,
+        batch: AbilityBatch,
+    ) -> DamagesMut<'_> {
+        self.fill_with_batch(r, ctx, data, modifiers, Some(batch))
+    }
 
-        let items = Self::eval(
+    fn fill_with_batch(
+        &mut self,
+        r: usize,
+        ctx: Ctx,
+        data: &DamageEvalData,
+        modifiers: Modifiers,
+        batch: Option<AbilityBatch>,
+    ) -> DamagesMut<'_> {
+        self.set_ctx(r, &ctx);
+
+        // excludes the reserved candidate pair
+        let n_items = data.items.closures.len();
+        let row = self.row_mut(r);
+        let mut onhit = const { RangeDamage::default() };
+
+        if let Some(batch) = batch {
+            batch(&ctx, modifiers, &mut onhit, row.abilities);
+        } else {
+            Self::eval_abilities(
+                &ctx,
+                &mut onhit,
+                modifiers,
+                data.abilities.metadata,
+                data.abilities.closures,
+                row.abilities,
+            );
+        }
+
+        Self::eval(
             &ctx,
             &mut onhit,
             modifiers,
             &data.items.metadata,
             &data.items.closures,
+            &mut row.items[..n_items],
         );
 
-        let runes = Self::eval(
+        Self::eval(
             &ctx,
             &mut onhit,
             modifiers,
             &data.runes.metadata,
             &data.runes.closures,
+            row.runes,
         );
 
-        let attacks = Attacks::new(&ctx, onhit, modifiers.damages.physical_mod);
+        let a = Attacks::new(&ctx, onhit, modifiers.damages.physical_mod);
 
-        Self {
-            abilities,
-            items,
-            runes,
-            attacks,
-            ctx,
-        }
+        *row.attacks = [
+            a.basic_attack,
+            a.critical_strike,
+            a.onhit_damage.minimum_damage,
+            a.onhit_damage.maximum_damage,
+        ];
+        row
     }
 
-    /// Evaluates the damage of all provided metadata of [`AbilityId`]. This function
-    /// already multiplies the final damage result by the appropriate armor, or magic
-    /// resist multiplier of the enemy, and considers global and local damage modifiers
-    /// This function will cause `Undefined Behavior` if the length of `closures` and
-    /// `metadata` are not equal.
-    pub fn eval_abilities(
-        ctx: &Ctx,
-        onhit: &mut RangeDamage,
+    pub fn fill_monster_damages(
+        &mut self,
+        self_state: &SelfState,
+        eval_data: &DamageEvalData,
+        shred: ResistShred,
         modifiers: Modifiers,
-        metadata: &[TypeMetadata<AbilityId>],
-        closures: &[Closure],
-    ) -> Box<[i32]> {
-        let len = metadata.len();
-        debug_assert_eq!(len, closures.len());
+        batch: AbilityBatch,
+    ) {
+        for (i, &(armor, magic_resist)) in RiotFormulas::MONSTER_RESISTS.iter().enumerate() {
+            let full_state = EnemyState {
+                base_stats: SimpleStats {
+                    armor,
+                    max_health: 1000.0,
+                    magic_resist,
+                },
+                ..Default::default()
+            }
+            .full_state(shred, true);
 
-        (0..len)
-            .map(|i| {
-                let TypeMetadata {
-                    kind,
-                    damage_type,
-                    attributes,
-                } = metadata[i];
+            let ctx = self_state.ctx(&full_state);
+            let modifiers = modifiers.against(&full_state, self_state.adaptive_type);
 
-                let closure = unsafe { closures.get_unchecked(i) };
-                let modifier = ability_id_mod(kind, damage_type, modifiers);
-                let damage = (modifier * closure(ctx)) as i32;
-
-                onhit.inc_attr(attributes, damage);
-                damage
-            })
-            .collect()
+            self.fill_batch(i, ctx, eval_data, modifiers, batch);
+        }
     }
 
     /// Evaluates the damages of all requested items or runes. This function causes
@@ -1191,12 +1267,12 @@ impl Damages {
         modifiers: Modifiers,
         metadata: &[TypeMetadata<T>],
         closures: &[Closure],
-    ) -> Box<[i32]> {
+        result: &mut [i32],
+    ) {
         let out_len = closures.len();
 
         debug_assert_eq!(out_len, metadata.len() << 1);
 
-        let mut result = Box::<[i32]>::new_uninit_slice(out_len);
         let mut meta_index = 0usize;
         let mut out_index = 0usize;
 
@@ -1213,57 +1289,56 @@ impl Damages {
             while j < 2 {
                 let closure = unsafe { closures.get_unchecked((meta_index << 1) + j) };
                 let damage = (modifier * closure(ctx)) as i32;
+
                 onhit.inc_attr(attributes, damage);
-
-                unsafe {
-                    result.get_unchecked_mut(out_index).write(damage);
-                }
-
+                result[out_index] = damage;
                 out_index += 1;
                 j += 1;
             }
+
             meta_index += 1;
         }
 
         debug_assert_eq!(out_index, out_len);
-        unsafe { result.assume_init() }
     }
-}
 
-/// Returns the damage against monsters with different amounts of armor and magic resists.
-/// We assume no runes can damage jungle monsters, which is why they're not included in the
-/// [`MonsterDamage`] struct
-pub fn get_monster_damages(
-    self_state: &SelfState,
-    eval_data: &DamageEvalData,
-    shred: ResistShred,
-) -> [Damages; L_MSTR] {
-    get_monster_damages_with_modifiers(self_state, eval_data, shred, Modifiers::default())
-}
+    /// Evaluates the damage of all provided metadata of [`AbilityId`]. This function
+    /// already multiplies the final damage result by the appropriate armor, or magic
+    /// resist multiplier of the enemy, and considers global and local damage modifiers
+    /// This function will cause `Undefined Behavior` if the length of `closures` and
+    /// `metadata` are not equal.
+    pub fn eval_abilities(
+        ctx: &Ctx,
+        onhit: &mut RangeDamage,
+        modifiers: Modifiers,
+        metadata: &[TypeMetadata<AbilityId>],
+        closures: &[Closure],
+        out: &mut [i32],
+    ) {
+        let len = metadata.len();
 
-pub(crate) fn get_monster_damages_with_modifiers(
-    self_state: &SelfState,
-    eval_data: &DamageEvalData,
-    shred: ResistShred,
-    modifiers: Modifiers,
-) -> [Damages; L_MSTR] {
-    core::array::from_fn(|i| {
-        let (armor, magic_resist) = RiotFormulas::MONSTER_RESISTS[i];
-        let full_state = EnemyState {
-            base_stats: SimpleStats {
-                armor,
-                max_health: 1000.0,
-                magic_resist,
-            },
-            ..Default::default()
+        debug_assert_eq!(len, closures.len());
+        debug_assert_eq!(len, out.len());
+
+        let mut i = 0;
+
+        while i < len {
+            let TypeMetadata {
+                kind,
+                damage_type,
+                attributes,
+            } = metadata[i];
+
+            let closure = unsafe { closures.get_unchecked(i) };
+            let modifier = ability_id_mod(kind, damage_type, modifiers);
+            let damage = (modifier * closure(ctx)) as i32;
+
+            onhit.inc_attr(attributes, damage);
+            out[i] = damage;
+
+            i += 1;
         }
-        .full_state(shred, true);
-
-        let ctx = get_eval_ctx(self_state, &full_state);
-        let modifiers = modifiers.against(&full_state, self_state.adaptive_type);
-
-        Damages::new(ctx, eval_data, modifiers)
-    })
+    }
 }
 
 /// Returns an array with the damage against turrets of different plates.

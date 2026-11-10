@@ -2,13 +2,13 @@ use super::*;
 
 impl Generator for Alistar {
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::Q, [(0, Void) /* Magic Damage */])
-            .ability(Key::W, [(0, Void) /* Magic Damage */])
+        self.ability(Key::Q, [("Magic Damage", Void)])
+            .ability(Key::W, [("Magic Damage", Void)])
             .ability(
                 Key::E,
                 [
-                    (0, Min), /* Magic Damage Per Tick */
-                    (1, Max), /* Total Magic Damage */
+                    ("Magic Damage Per Tick", Min),
+                    ("Total Magic Damage", Max),
                 ],
             )
             .combos([

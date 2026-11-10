@@ -5,8 +5,8 @@ impl Generator for Fiddlesticks {
         self.ability(
             Key::Q,
             [
-                (3, Min), /* Magic Damage */
-                (1, Max), /* Increased Magic Damage */
+                ("Magic Damage", Min),
+                ("Increased Magic Damage", Max),
             ],
         )
         .modify(Q(Min), |_| {
@@ -19,17 +19,17 @@ impl Generator for Fiddlesticks {
         .ability(
             Key::W,
             [
-                (1, Min), /* Damage per Instance */
-                (7, Max), /* Total Magic Damage */
-                (3, _1),  /* Last Tick of Damage */
+                ("Damage per Instance", Min),
+                ("Total Magic Damage", Max),
+                ("Last Tick of Damage", _1),
             ],
         )
-        .ability(Key::E, [(0, Void) /* Magic Damage */])
+        .ability(Key::E, [("Magic Damage", Void)])
         .ability(
             Key::R,
             [
-                (0, Min), /* Magic Damage per Tick */
-                (1, Max), /* Total Magic Damage */
+                ("Magic Damage per Tick", Min),
+                ("Total Magic Damage", Max),
             ],
         )
         .combos([

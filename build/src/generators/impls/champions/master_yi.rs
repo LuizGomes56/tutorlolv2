@@ -15,12 +15,12 @@ impl Generator for MasterYi {
         .ability(
             Key::Q,
             [
-                (7, Min), /* Primary Physical Damage */
-                (5, Max), /* Maximum Single-Target Damage */
-                (8, _1),  /* Reduced Damage per hit */
+                ("Primary Physical Damage", Min),
+                ("Maximum Single-Target Damage", Max),
+                ("Reduced Damage per hit", _1),
             ],
         )
-        .ability(Key::E, [(0, Void) /* Bonus True Damage */])
+        .ability(Key::E, [("Bonus True Damage", Void)])
         .combos([
             &[
                 Ability(E(Void)),

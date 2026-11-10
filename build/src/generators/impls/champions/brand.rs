@@ -5,26 +5,26 @@ impl Generator for Brand {
         self.ability(
             Key::P,
             [
-                (0, Void), /* Ablaze */
-                (1, _1),   /* Description 2 */
+                ("Ablaze", Void),
+                ("Description 2", _1),
             ],
         )
         // The values based on stacks are the damage cap against monsters
         .modify(P(Void), |_| f![0.02 * EnemyMaxHealth])?
-        .ability(Key::Q, [(0, Void) /* Magic Damage */])
+        .ability(Key::Q, [("Magic Damage", Void)])
         .ability(
             Key::W,
             [
-                (0, Max), /* Increased Damage */
-                (1, Min), /* Magic Damage */
+                ("Increased Damage", Max),
+                ("Magic Damage", Min),
             ],
         )
-        .ability(Key::E, [(0, Void) /* Magic Damage */])
+        .ability(Key::E, [("Magic Damage", Void)])
         .ability(
             Key::R,
             [
-                (0, Min), /* Magic Damage */
-                (2, Max), /* Total Single-Target Damage */
+                ("Magic Damage", Min),
+                ("Total Single-Target Damage", Max),
             ],
         )
         .combos([

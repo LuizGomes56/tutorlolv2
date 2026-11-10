@@ -6,20 +6,20 @@ impl Generator for Gnar {
             1,
             Key::Q,
             [
-                (0, Max), /* Physical Damage */
-                (1, Min), /* Reduced Damage */
+                ("Physical Damage", Max),
+                ("Reduced Damage", Min),
             ],
         )
-        .ability(Key::Q, [(0, Mega) /* Physical Damage */])
-        .ability_nth(1, Key::W, [(0, Void) /* Bonus Magic Damage */])
-        .ability(Key::W, [(0, Mega) /* Physical Damage */])
-        .ability_nth(1, Key::E, [(1, Void) /* Physical Damage */])
-        .ability(Key::E, [(0, Mega) /* Physical Damage */])
+        .ability(Key::Q, [("Physical Damage", Mega)])
+        .ability_nth(1, Key::W, [("Bonus Magic Damage", Void)])
+        .ability(Key::W, [("Physical Damage", Mega)])
+        .ability_nth(1, Key::E, [("Physical Damage", Void)])
+        .ability(Key::E, [("Physical Damage", Mega)])
         .ability(
             Key::R,
             [
-                (2, Max), /* Increased Damage */
-                (3, Min), /* Physical Damage */
+                ("Increased Damage", Max),
+                ("Physical Damage", Min),
             ],
         )
         .combos([

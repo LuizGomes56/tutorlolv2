@@ -1,6 +1,6 @@
 use {
     crate::{
-        Build, BuildContext, BuildOutput, ENGINE_CFG, MayFail, YEW_CFG,
+        Build, BuildContext, BuildOutput, CLIENT_CFG, DOCS_CFG, ENGINE_CFG, MayFail,
         generators::parser::champions::{Ability, Champion},
         scripts::{
             batch::FormulaDoc,
@@ -14,7 +14,10 @@ use {
         fmt::Write,
         write,
     },
-    tutorlolv2_types::{AbilityId, CtxVar, DevMergeData, MergeData, Tag, TypeMetadata},
+    tutorlolv2_types::{
+        AbilityId, AbilityName, Attrs, CtxVar, DamageType, DevMergeData, MergeData, Tag,
+        TypeMetadata,
+    },
     tutorlolv2_wiki::champions::WikiChampion,
 };
 
@@ -101,6 +104,7 @@ impl Build for Champion {
             .collect::<Vec<_>>();
 
         let upper_id = champion_id.to_shouty_snake_case();
+        let batch_name = format!("{}_batch", champion_id.to_snake_case());
 
         write!(
             rust,
@@ -116,13 +120,16 @@ impl Build for Champion {
                 {ENGINE_CFG}
                 closures: &[{fn_names}],
 
-                {YEW_CFG}
+                {ENGINE_CFG}
+                ability_batch: {batch_name},
+
+                {DOCS_CFG}
                 combos: &[{combos}],
 
-                {YEW_CFG}
+                {CLIENT_CFG}
                 merge_data: {merge_data},
 
-                {YEW_CFG}
+                {CLIENT_CFG}
                 identifiers: &[{identifiers}],
             }};"#,
             stats = cast_f32(&format!("{stats:?}"))?,
@@ -178,6 +185,68 @@ impl Build for Champion {
                 });
             }
         }
+
+        // Emit one direct-call sequence in precisely the metadata/closure order.
+        // Keep the multiplication grouping and per-ability integer cast unchanged.
+        write!(
+            rust,
+            "{ENGINE_CFG} pub const fn {batch_name}(
+                ctx: &tutorlolv2_types::Ctx,
+                modifiers: crate::model::Modifiers,
+                onhit: &mut crate::model::RangeDamage,
+                out: &mut [i32]
+            ) {{
+                debug_assert!(out.len() == {});
+            ",
+            functions.len()
+        )?;
+
+        for (i, (function, meta)) in functions.iter().zip(&metadata).enumerate() {
+            let damage_mod = match meta.damage_type {
+                DamageType::Physical => "modifiers.damages.physical_mod",
+                DamageType::Magic => "modifiers.damages.magic_mod",
+                DamageType::True => "modifiers.damages.true_mod",
+                DamageType::Adaptive => {
+                    "match modifiers.damages.adaptive_type {
+                        tutorlolv2_types::AdaptiveType::Physical => modifiers.damages.physical_mod,
+                        tutorlolv2_types::AdaptiveType::Magic => modifiers.damages.magic_mod
+                    }"
+                }
+                _ => "1.0",
+            };
+
+            let ability_mod = match meta.kind {
+                AbilityId::Q(v) if v as u8 <= AbilityName::Mega as u8 => "modifiers.abilities.q",
+                AbilityId::W(v) if v as u8 <= AbilityName::Mega as u8 => "modifiers.abilities.w",
+                AbilityId::E(v) if v as u8 <= AbilityName::Mega as u8 => "modifiers.abilities.e",
+                AbilityId::R(v) if v as u8 <= AbilityName::Mega as u8 => "modifiers.abilities.r",
+                _ => "1.0",
+            };
+
+            write!(
+                rust,
+                "let modifier = (modifiers.damages.global_mod * ({damage_mod})) * {ability_mod};
+                let damage = (modifier * {function}(ctx)) as i32;"
+            )?;
+
+            match meta.attributes {
+                Attrs::OnhitMin | Attrs::AreaOnhitMin => {
+                    write!(rust, "onhit.minimum_damage += damage;")?
+                }
+                Attrs::OnhitMax | Attrs::AreaOnhitMax => {
+                    write!(rust, "onhit.maximum_damage += damage;")?
+                }
+                Attrs::Onhit | Attrs::AreaOnhit => write!(
+                    rust,
+                    "onhit.minimum_damage += damage; onhit.maximum_damage += damage;"
+                )?,
+                _ => {}
+            }
+
+            write!(rust, "out[{i}] = damage;")?;
+        }
+
+        write!(rust, "}}")?;
 
         let out = context.out.join(Tag::Champions.as_ref()).join(champion_id);
 

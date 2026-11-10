@@ -19,8 +19,8 @@ use {
     serde::{Deserialize, Serialize},
     strum::EnumCount,
     tutorlolv2_types::{
-        AbilityId, AbilityName, AdaptiveType, Attrs, Ctx, DamageType, GameMap, Position,
-        TypeMetadata,
+        AbilityId, AbilityName, AdaptiveType, Attrs, Ctx, CtxAttacker, CtxTarget, DamageType,
+        GameMap, Position, TypeMetadata,
     },
 };
 
@@ -28,7 +28,15 @@ use {
 use crate::libgen::Closure;
 
 mod owned_input;
+
 pub use owned_input::*;
+pub use tutorlolv2_types::AbilityLevels;
+/// Holds the real resistence that a enemy has, after applying the appropriate
+/// armor or magic penetrations that the current player has, and other buffs or
+/// penalties applied. Field `modifier` is a value between `0.0` and `1.0` that
+/// represents the number that will be multiplied by the raw damage to obtain
+/// the precise final damage
+pub use tutorlolv2_types::ResistValue;
 
 /// Holds the compile-time known metadata and closures of the current champion,
 /// obtained from the static variable [`CHAMPION_CACHE`]. Note that
@@ -75,6 +83,10 @@ pub struct Realtime<'a> {
     /// how much damage they will take for each item, rune, or ability of the current player
     pub enemies: Box<[Enemy<'a>]>,
 
+    /// Holds a contiguous table with all the damages that have been calculated,
+    /// for each enemy, including the simulated purchases and evaluation context
+    pub damages: DamageTable,
+
     /// The game's scoreboard. Contains meaningful information about each champion
     /// in both teams, including the current player. This data is not guaranteed
     /// to be ordered based on team. Sorting this vector has to be done by the caller
@@ -98,6 +110,18 @@ pub struct Realtime<'a> {
     /// Only `Earth`, `Fire` and `Chemtech` dragons are considered,
     /// since the others doesn't give any damage-related bonus
     pub dragons: Dragons,
+}
+
+impl Realtime<'_> {
+    pub const ROWS_PER_ENEMY: usize = 1 + ItemId::L_SIML;
+
+    pub fn enemy_damages(&self, e: usize) -> Damages<'_> {
+        self.damages.row(e * Self::ROWS_PER_ENEMY)
+    }
+
+    pub fn siml_damages(&self, e: usize, i: usize) -> Damages<'_> {
+        self.damages.row(e * Self::ROWS_PER_ENEMY + 1 + i)
+    }
 }
 
 #[derive(
@@ -141,6 +165,7 @@ pub struct EnemyState<'a> {
     pub earth_dragons: u16,
     pub level: NonZeroU8,
     pub item_exceptions: &'a [ValueException],
+    pub game_map: GameMap,
 }
 
 /// Defines the state of the current player, that will be used
@@ -151,7 +176,7 @@ pub struct SelfState {
     pub stacks: f32,
     pub ability_levels: AbilityLevels,
     pub current_stats: PlayerStats,
-    pub bonus_stats: BasicStats,
+    /// Bonus stats are the difference to `current_stats`, see [`Ctx`]
     pub base_stats: BasicStats,
     pub level: NonZeroU8,
     pub adaptive_type: AdaptiveType,
@@ -170,6 +195,8 @@ pub struct EnemyFullState {
     pub steelcaps: bool,
     pub rocksolid: bool,
     pub randuin: bool,
+    /// Resists may go below zero after penetration, as for monsters
+    pub accept_negatives: bool,
 }
 
 #[cfg(feature = "engine")]
@@ -184,18 +211,6 @@ pub struct DamageEvalData {
 pub struct Enemy<'a> {
     #[serde(borrow)]
     pub riot_id: &'a str,
-    pub damages: Damages,
-
-    /// Candidate purchases in ItemId::SIML order. Each Damages.items starts with
-    /// the owned pairs in Realtime.items_meta order, followed by the candidate pair.
-    /// Its length is always 2 * items_meta.len() + 2, including for non-damaging
-    /// or already-owned candidates, whose appended pair is [0, 0]. Owned effects
-    /// remain in their original pairs and are not duplicated in the extra pair.
-    /// The extra pair uses ItemId::SIML[i].data().metadata and has a zero baseline
-    /// when compared with the owned build. Rune metadata and ordering are unchanged.
-    #[serde(with = "serde_arrays")]
-    pub siml_items: [Damages; ItemId::L_SIML],
-
     pub base_stats: SimpleStats,
     pub bonus_stats: SimpleStats,
     pub current_stats: EnemyStats,
@@ -327,46 +342,181 @@ impl ResistShred {
     }
 }
 
-#[derive(Clone, Debug, Default, Decode, Deserialize, Encode, PartialEq, PartialOrd, Serialize)]
-pub struct Damages {
+#[derive(Clone, Copy, Debug, PartialEq, PartialOrd, Eq, Encode, Decode, Serialize, Deserialize)]
+pub struct DamageLayout {
+    pub abilities: u16,
+    pub items: u16,
+    pub runes: u16,
+}
+
+impl DamageLayout {
+    /// Basic attack, crit damage, onhit minimum and maximum variants
+    pub const ATTACKS: usize = 4;
+
+    /// `extra_pair` reserves the simulated purchase pair (old siml_item rows)
+    #[cfg(feature = "engine")]
+    pub fn new(data: &DamageEvalData, extra_pair: bool) -> Self {
+        Self {
+            abilities: data.abilities.closures.len() as _,
+            items: (data.items.closures.len() + if extra_pair { 2 } else { 0 }) as _,
+            runes: data.runes.closures.len() as _,
+        }
+    }
+
+    pub const fn stride(&self) -> usize {
+        Self::ATTACKS + self.abilities as usize + self.items as usize + self.runes as usize
+    }
+}
+
+#[derive(Clone, Debug, PartialEq, Encode, PartialOrd, Decode, Serialize, Deserialize)]
+pub struct DamageTable {
+    pub(crate) layout: DamageLayout,
+
+    /// Size is rows * stride, row-major ordered
+    pub(crate) values: Box<[i32]>,
+
+    /// Each target has one row per attacker state, so row `r` is evaluated by
+    /// `attackers[r % attackers.len()]` against `targets[r / attackers.len()]`.
+    /// A purchase only changes the attacker's part of the [`Ctx`], so storing
+    /// each part once keeps every value that differs between rows
+    pub(crate) attackers: Box<[CtxAttacker]>,
+    pub(crate) targets: Box<[CtxTarget]>,
+}
+
+/// View type over the `damages` each holds. One single allocation
+/// and what consumers used to get from `&Damages`
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub struct Damages<'a> {
     pub attacks: Attacks,
-    pub abilities: Box<[i32]>,
-    pub items: Box<[i32]>,
-    pub runes: Box<[i32]>,
+    pub abilities: &'a [i32],
+    pub items: &'a [i32],
+    pub runes: &'a [i32],
     pub ctx: Ctx,
 }
 
-impl Damages {
-    pub const fn sum(&self) -> i32 {
-        let mut abilities = 0;
-        let mut items = 0;
-        let mut runes = 0;
-        let mut i = 0;
+/// Write view used while filling a row
+pub struct DamagesMut<'a> {
+    pub attacks: &'a mut [i32; 4],
+    pub abilities: &'a mut [i32],
+    pub items: &'a mut [i32],
+    pub runes: &'a mut [i32],
+}
 
-        while i < self.abilities.len() {
-            abilities += self.abilities[i];
-            i += 1;
+impl DamagesMut<'_> {
+    /// Same semantics as `RangeDamage::inc_attr`, applied to the stored onhit pair
+    pub fn inc_onhit(&mut self, attr: Attrs, damage: i32) {
+        // Indexes 2 and 3 are constants reserved for onhit damage
+        let mut onhit = RangeDamage {
+            minimum_damage: self.attacks[2],
+            maximum_damage: self.attacks[3],
+        };
+
+        onhit.inc_attr(attr, damage);
+
+        self.attacks[2] = onhit.minimum_damage;
+        self.attacks[3] = onhit.maximum_damage;
+    }
+}
+
+impl DamageTable {
+    /// Table with `rows_per_target` rows for each target, one per attacker state.
+    /// `rows_per_target` must not be zero
+    pub fn zeroed(layout: DamageLayout, targets: usize, rows_per_target: usize) -> Self {
+        let rows = targets * rows_per_target;
+
+        Self {
+            layout,
+            values: unsafe { Box::new_zeroed_slice(rows * layout.stride()).assume_init() },
+            attackers: unsafe { Box::new_zeroed_slice(rows_per_target).assume_init() },
+            targets: unsafe { Box::new_zeroed_slice(targets).assume_init() },
+        }
+    }
+
+    pub const fn rows(&self) -> usize {
+        self.targets.len() * self.attackers.len()
+    }
+
+    /// Indexes of the attacker state and the target of a row
+    const fn parts(&self, r: usize) -> (usize, usize) {
+        let attackers = self.attackers.len();
+        (r % attackers, r / attackers)
+    }
+
+    /// Context the row was evaluated with
+    pub fn ctx(&self, r: usize) -> Ctx {
+        let (attacker, target) = self.parts(r);
+        Ctx::new(&self.attackers[attacker], &self.targets[target])
+    }
+
+    /// Stores the parts of the context of a row. Rows must be filled with the
+    /// first target first, and each target with its first attacker state
+    /// first: each part is written at its first row only
+    #[cfg(feature = "engine")]
+    pub(crate) fn set_ctx(&mut self, r: usize, ctx: &Ctx) {
+        let (attacker, target) = self.parts(r);
+
+        if target == 0 {
+            self.attackers[attacker] = ctx.attacker();
         }
 
-        i = 0;
-
-        while i < self.items.len() {
-            items += self.items[i];
-            i += 1;
+        if attacker == 0 {
+            self.targets[target] = ctx.target();
         }
 
-        i = 0;
+        debug_assert!(self.ctx(r) == *ctx, "row {r} would not keep its context");
+    }
 
-        while i < self.runes.len() {
-            runes += self.runes[i];
-            i += 1;
+    pub const fn layout(&self) -> DamageLayout {
+        self.layout
+    }
+
+    pub fn row(&self, r: usize) -> Damages<'_> {
+        let s = self.layout.stride();
+        let row = &self.values[r * s..(r + 1) * s];
+        let (attacks, rest) = row.split_at(DamageLayout::ATTACKS);
+        let (abilities, rest) = rest.split_at(self.layout.abilities as usize);
+        let (items, runes) = rest.split_at(self.layout.items as usize);
+
+        Damages {
+            attacks: Attacks {
+                basic_attack: attacks[0],
+                critical_strike: attacks[1],
+                onhit_damage: RangeDamage {
+                    minimum_damage: attacks[2],
+                    maximum_damage: attacks[3],
+                },
+            },
+            abilities,
+            items,
+            runes,
+            ctx: self.ctx(r),
         }
+    }
 
+    pub fn row_mut(&mut self, r: usize) -> DamagesMut<'_> {
+        let s = self.layout.stride();
+        let row = &mut self.values[r * s..(r + 1) * s];
+        let (attacks, rest) = row.split_at_mut(DamageLayout::ATTACKS);
+        let (abilities, rest) = rest.split_at_mut(self.layout.abilities as usize);
+        let (items, runes) = rest.split_at_mut(self.layout.items as usize);
+
+        DamagesMut {
+            // We're sure that the length is always 4 in this case
+            attacks: unsafe { attacks.try_into().unwrap_unchecked() },
+            abilities,
+            items,
+            runes,
+        }
+    }
+}
+
+impl Damages<'_> {
+    pub fn sum(&self) -> i32 {
         self.attacks.onhit_damage.minimum_damage
             + self.attacks.onhit_damage.maximum_damage
-            + abilities
-            + items
-            + runes
+            + self.abilities.iter().sum::<i32>()
+            + self.items.iter().sum::<i32>()
+            + self.runes.iter().sum::<i32>()
     }
 }
 
@@ -481,6 +631,9 @@ pub struct InputGame<'a> {
     pub active_player: InputActivePlayer<'a>,
     pub enemy_players: &'a [InputMinData<'a, EnemyStats>],
     pub dragons: Dragons,
+    /// Selects the damage modifiers and the stats granted by the map.
+    /// [`GameMap::Unknown`] behaves as [`GameMap::SummonersRift`]
+    pub game_map: GameMap,
 }
 
 #[derive(Copy, Clone, Debug, Default, Encode, PartialEq, PartialOrd, Serialize)]
@@ -489,6 +642,10 @@ pub struct InputActivePlayer<'a> {
     pub rune_exceptions: &'a [ValueException],
     pub abilities: AbilityLevels,
     pub data: InputMinData<'a, PlayerStats>,
+    /// Current health used when the stats are inferred, clamped to the inferred
+    /// maximum health. Zero or less means full health. Supplied stats carry
+    /// their own current health
+    pub current_health: f32,
 }
 
 #[derive(Copy, Clone, Debug, Encode, PartialEq, PartialOrd, Serialize)]
@@ -503,9 +660,8 @@ pub struct InputMinData<'a, T> {
 }
 
 /// Returned data by the function [`crate::calculator::calculator`]
-#[derive(Clone, Debug, Decode, Deserialize, Encode, PartialEq, PartialOrd, Serialize)]
+#[derive(Copy, Clone, Debug, Decode, Deserialize, Encode, PartialEq, PartialOrd, Serialize)]
 pub struct OutputEnemy {
-    pub damages: Damages,
     pub base_stats: SimpleStats,
     pub bonus_stats: SimpleStats,
     pub current_stats: EnemyStats,
@@ -555,8 +711,8 @@ impl Modifiers {
         Self {
             damages: DamageModifiers {
                 adaptive_type,
-                physical_mod: ctx.physical_multiplier,
-                magic_mod: ctx.magic_multiplier,
+                physical_mod: ctx.physical_multiplier(),
+                magic_mod: ctx.magic_multiplier(),
                 true_mod: 1.0,
                 global_mod: 1.0,
             },
@@ -604,7 +760,7 @@ pub struct OutputCurrentPlayer {
 
 #[derive(Clone, Debug, Decode, Deserialize, Encode, PartialEq, PartialOrd, Serialize)]
 pub struct OutputGame {
-    pub monster_damages: [Damages; L_MSTR],
+    pub damages: DamageTable,
     pub current_player: OutputCurrentPlayer,
     pub enemies: Box<[OutputEnemy]>,
     pub tower_damages: [i32; L_TWRD],
@@ -612,28 +768,22 @@ pub struct OutputGame {
     pub runes_meta: Box<[TypeMetadata<RuneId>]>,
 }
 
-/// Holds the levels of the abilities of a champion
-#[derive(
-    Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize,
-)]
-pub struct AbilityLevels {
-    pub q: u8,
-    pub w: u8,
-    pub e: u8,
-    pub r: u8,
-}
+impl OutputGame {
+    pub fn monster_rows(&self) -> impl Iterator<Item = Damages<'_>> + '_ {
+        (0..L_MSTR).map(|m| self.damages.row(m))
+    }
 
-/// Holds the real resistence that a enemy has, after applying the appropriate
-/// armor or magic penetrations that the current player has, and other buffs or
-/// penalties applied. Field `modifier` is a value between `0.0` and `1.0` that
-/// represents the number that will be multiplied by the raw damage to obtain
-/// the precise final damage
-#[derive(
-    Copy, Clone, Debug, Default, Decode, Deserialize, Encode, PartialEq, PartialOrd, Serialize,
-)]
-pub struct ResistValue {
-    pub real: f32,
-    pub modifier: f32,
+    pub fn enemy_rows(&self) -> impl Iterator<Item = Damages<'_>> + '_ {
+        (0..self.enemies.len()).map(|e| self.damages.row(L_MSTR + e))
+    }
+
+    pub fn monster_damages(&self, m: usize) -> Damages<'_> {
+        self.damages.row(m)
+    }
+
+    pub fn enemy_damages(&self, e: usize) -> Damages<'_> {
+        self.damages.row(L_MSTR + e)
+    }
 }
 
 /// ZST with constant methods to calculate some values for the game
@@ -653,13 +803,13 @@ impl RiotFormulas {
     pub const FIRE_DRAGON_MULTIPLIER: f32 = 0.03;
 
     /// Item [`ItemId::PlatedSteelcaps`] gives 12% damage reduction for basic attacks
-    pub const STEEL_CAPS_PROTECTION: f32 = 0.88;
+    pub const STEEL_CAPS_PROTECTION: f32 = Ctx::STEEL_CAPS_PROTECTION;
 
     /// Item [`ItemId::RanduinsOmen`] gives 30% damage reduction against critical hits
-    pub const RANDUIN_CRIT_PROTECTION: f32 = 0.7;
+    pub const RANDUIN_CRIT_PROTECTION: f32 = Ctx::RANDUIN_CRIT_PROTECTION;
 
     /// Items with Rocksolid passive give 20% damage reduction in some cases
-    pub const ROCKSOLID_PROTECTION: f32 = 0.8;
+    pub const ROCKSOLID_PROTECTION: f32 = Ctx::ROCKSOLID_PROTECTION;
 
     pub const SHOJIN_BONUS_DAMAGE: f32 = 1.12;
     pub const SHADOWFLAME_BONUS_DAMAGE: f32 = 1.2;
@@ -686,8 +836,27 @@ impl RiotFormulas {
         (100f32, -30f32),
     ];
 
-    pub const fn missing_health(current_health: f32, max_health: f32) -> f32 {
-        1.0 - (current_health / max_health.max(1.0))
+    /// Ratio of the maximum health that is missing, from `0.0` at full health
+    /// to `1.0` at zero health. The maximum health is at least `1.0` to avoid
+    /// division by zero
+    pub const fn missing_health_ratio(current_health: f32, max_health: f32) -> f32 {
+        (1.0 - (current_health / max_health.max(1.0))).clamp(0.0, 1.0)
+    }
+
+    /// Ratio of attack damage from other sources that [`ItemId::OverlordsBloodmail`]
+    /// grants with its passive Retribution: 1% for every 7% missing health, up to
+    /// 10% at 70% missing health. `missing_health` is a ratio, see [`Self::missing_health_ratio`]
+    pub const fn get_bloodmail_retribution(missing_health: f32) -> f32 {
+        // Small offset so that exact steps such as 14% are not lost to rounding
+        let steps = (missing_health.clamp(0.0, 1.0) * 100.0 / 7.0 + 1e-4) as u32;
+        (if steps > 10 { 10 } else { steps }) as f32 / 100.0
+    }
+
+    /// Ability power that [`ItemId::DemonicEmbrace`] grants with its passive
+    /// Sinister Pact: 0 to 45, growing every 125 missing health up to 3000
+    pub const fn get_sinister_pact(missing_health: f32) -> f32 {
+        let steps = (missing_health / 125.0 + 1e-4) as u32;
+        45.0 * (if steps > 24 { 24 } else { steps }) as f32 / 24.0
     }
 
     /// Formula to get the bonus damage of the rune [`RuneId::LastStand`], where
@@ -761,13 +930,7 @@ impl RiotFormulas {
         resist: f32,
         accept_negatives: bool,
     ) -> ResistValue {
-        let real = ((1.0 - percent_pen / 100.0) * resist - flat_pen).max(if accept_negatives {
-            f32::NEG_INFINITY
-        } else {
-            0.0
-        });
-        let modifier = 100.0 / (100.0 + real);
-        ResistValue { real, modifier }
+        ResistValue::new(percent_pen, flat_pen, resist, accept_negatives)
     }
 
     /// Returns an [`i32`] that represents the damage against some turret
@@ -799,7 +962,6 @@ pub struct EnemyStats {
     pub current_health: f32,
     pub magic_resist: f32,
     pub max_health: f32,
-    pub missing_health: f32,
 }
 
 #[derive(Copy, Clone, Debug, Decode, Deserialize, Encode, PartialEq, PartialOrd, Serialize)]
@@ -870,7 +1032,6 @@ impl_default!(AbilityModifiers, 1, f32);
 impl_default!(Modifiers, 1, f32);
 impl_default!(Dragons, 0, u8);
 impl_default!(RangeDamage, 0, i32);
-impl_default!(AbilityLevels, 0, u8);
 
 impl<T> Default for InputMinData<'_, T> {
     fn default() -> Self {
@@ -897,6 +1058,7 @@ impl Default for EnemyState<'_> {
             earth_dragons: 0,
             level: NonZeroU8::MIN,
             item_exceptions: &[],
+            game_map: GameMap::Unknown,
         }
     }
 }

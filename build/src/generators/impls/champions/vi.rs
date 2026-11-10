@@ -5,13 +5,13 @@ impl Generator for Vi {
         self.ability(
             Key::Q,
             [
-                (0, Max), /* Maximum Physical Damage */
-                (1, Min), /* Minimum Physical Damage */
+                ("Maximum Physical Damage", Max),
+                ("Minimum Physical Damage", Min),
             ],
         )
-        .ability(Key::W, [(1, Void) /* Bonus Physical Damage */])
-        .ability(Key::E, [(0, Void) /* Physical Damage */])
-        .ability(Key::R, [(0, Void) /* Physical Damage */])
+        .ability(Key::W, [("Bonus Physical Damage", Void)])
+        .ability(Key::E, [("Physical Damage", Void)])
+        .ability(Key::R, [("Physical Damage", Void)])
         .damage_types([Q(Min), Q(Max), E(Void)], Physical)?
         .combos([
             &[

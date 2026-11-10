@@ -2,15 +2,15 @@ use super::*;
 
 impl Generator for Ivern {
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::Q, [(0, Void) /* Magic Damage */])
+        self.ability(Key::Q, [("Magic Damage", Void)])
             .ability(
                 Key::W,
                 [
-                    (0, _1), /* Additional Magic Damage */
-                    (1, _2), /* Ally Additional Magic Damage */
+                    ("Additional Magic Damage", _1),
+                    ("Ally Additional Magic Damage", _2),
                 ],
             )
-            .ability(Key::E, [(0, Void) /* Magic Damage */])
+            .ability(Key::E, [("Magic Damage", Void)])
             .insert(
                 R(Void),
                 Ability {
