@@ -76,6 +76,7 @@ impl Build for Item {
         )?;
 
         rust.push_str(&self.closures(&plan)?);
+        rust.push_str(&self.constants.bake());
 
         let out = context.out.join(Tag::Items.as_ref()).join(item_id);
 

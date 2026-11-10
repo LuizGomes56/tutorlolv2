@@ -2,6 +2,7 @@ use {
     crate::{
         DynError, MayFail,
         generators::{
+            constants::{Constants, WithConstants},
             impls::items::item_gen_fn,
             parser::{
                 DamageRange, GeneratorFnSig, Parser, ZERO, infer_damage_type, likely_damages,
@@ -230,6 +231,8 @@ pub struct Item {
     pub ranged: DamageRange,
     pub melee: DamageRange,
     pub attributes: Attrs,
+    #[serde(default, skip_serializing_if = "Constants::is_empty")]
+    pub constants: Constants,
 }
 
 #[derive(Copy, Clone, Debug)]
@@ -252,6 +255,7 @@ impl TryFrom<WikiItem> for Item {
             ranged: Default::default(),
             melee: Default::default(),
             attributes: Attrs::Undefined,
+            constants: Default::default(),
             data,
         })
     }
@@ -262,6 +266,17 @@ impl Item {
     pub fn damage_type(&mut self, damage_type: DamageType) -> &mut Self {
         self.damage_type = damage_type;
         self
+    }
+
+    /// Wikitext description of an effect, as written in the wiki
+    pub fn description(&self, source: Source) -> MayFail<&str> {
+        self[source]
+            .as_ref()
+            .and_then(|effect| effect.raw_description.as_deref())
+            .ok_or_else(|| {
+                let item_id = &self.data.item_id;
+                format!("{item_id} has no description for {source:?}").into()
+            })
     }
 
     pub fn effect(&self, source: Source) -> MayFail<&Effect> {
@@ -524,5 +539,11 @@ impl IndexMut<Source> for Item {
             Source::Passive3 => &mut self.data.effects.pass3,
             Source::Passive4 => &mut self.data.effects.pass4,
         }
+    }
+}
+
+impl WithConstants for Item {
+    fn constants_mut(&mut self) -> &mut Constants {
+        &mut self.constants
     }
 }

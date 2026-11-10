@@ -19,7 +19,7 @@ use {
     crate::{
         AbilityBatch, ChampionId, ItemId, RuneId, WikiModifiers,
         bitset::BitSet,
-        libgen::{Champion, Closure, L_TWRD, Stat, WikiStats},
+        libgen::{Champion, Closure, L_TWRD, Stat, WikiStats, champions},
         model::*,
     },
     alloc::boxed::Box,
@@ -67,9 +67,10 @@ impl Modifiers {
     pub const fn apply_rune(&mut self, rune: RuneId, stats: &PlayerStats) {
         match rune {
             RuneId::AxiomArcanist => self.abilities.r *= RiotFormulas::AXIOM_ARCANIST_BONUS_DAMAGE,
-            RuneId::CoupDeGrace | RuneId::CutDown => {
-                self.damages.global_mod *= RiotFormulas::COUP_DE_GRACE_AND_CUTDOWN_BONUS_DAMAGE
+            RuneId::CoupDeGrace => {
+                self.damages.global_mod *= RiotFormulas::COUP_DE_GRACE_BONUS_DAMAGE
             }
+            RuneId::CutDown => self.damages.global_mod *= RiotFormulas::CUT_DOWN_BONUS_DAMAGE,
             RuneId::LastStand => {
                 self.damages.global_mod *=
                     RiotFormulas::get_last_stand(stats.missing_health_ratio())
@@ -569,7 +570,7 @@ impl EnemyState<'_> {
         } = shred;
 
         if matches!(champion_id, ChampionId::Kassadin) {
-            e_modifiers.magic_mod *= 0.9;
+            e_modifiers.magic_mod *= 1.0 - champions::kassadin::VOID_STONE_MAGIC_REDUCTION;
         }
 
         // Supplied totals already include stat passives and dragons. Keep inference
@@ -618,37 +619,51 @@ impl EnemyState<'_> {
 
                 match champion_id {
                     ChampionId::Swain => {
-                        let stack_hp = 12 * stacks;
-                        e_default_stats.max_health += stack_hp as f32;
+                        e_default_stats.max_health +=
+                            champions::swain::SOUL_FRAGMENT_HEALTH * stacks as f32;
                     }
                     ChampionId::Chogath => {
-                        let stack_hp = stacks * 80
-                            + 40 * match level.get() {
-                                ..6 => 0,
-                                6..11 => 1,
-                                11..16 => 2,
-                                16.. => 3,
-                            };
-                        e_default_stats.max_health += stack_hp as f32;
+                        // Feast grants bonus health per stack based on its rank
+                        let hp_per_stack = match level.get() {
+                            ..6 => 0.0,
+                            6..11 => champions::chogath::FEAST_HEALTH_PER_STACK[0],
+                            11..16 => champions::chogath::FEAST_HEALTH_PER_STACK[1],
+                            16.. => champions::chogath::FEAST_HEALTH_PER_STACK[2],
+                        };
+
+                        e_default_stats.max_health += stacks as f32 * hp_per_stack;
                     }
                     ChampionId::Sion => {
                         e_default_stats.max_health += stacks as f32;
                     }
                     ChampionId::Ornn => {
-                        // Starts game with +10% armor/mr/hp already
-                        // After level 13, player will start upgrading items
-                        // At level 18, the maximum bonus must have been reached
-                        // For every upgrade, a +4% resist is applied.
-                        // #![manual_impl]
-                        let ornn_resist_multiplier = match level.get() {
-                            ..13 => 1.1,
-                            13..18 => 1.1 + (level.get() - 12) as f32 * 0.04,
-                            18.. => 1.3,
+                        use champions::ornn::{
+                            MASTER_CRAFTSMAN_BASE_BONUS, MASTER_CRAFTSMAN_MAX_BONUS,
+                            MASTER_CRAFTSMAN_UPGRADE_BONUS,
                         };
 
-                        e_default_stats.armor *= ornn_resist_multiplier;
-                        e_default_stats.magic_resist *= ornn_resist_multiplier;
-                        e_default_stats.max_health *= ornn_resist_multiplier;
+                        // Starts game with +10% bonus armor/mr/hp already
+                        // After level 13, player will start upgrading items
+                        // At level 18, the maximum bonus must have been reached
+                        // For every upgrade, a +4% bonus is applied.
+                        // #![manual_impl]
+                        let upgrades = level.get().saturating_sub(12) as f32;
+                        let ornn_resist_multiplier = 1.0
+                            + (MASTER_CRAFTSMAN_BASE_BONUS
+                                + upgrades * MASTER_CRAFTSMAN_UPGRADE_BONUS)
+                                .min(MASTER_CRAFTSMAN_MAX_BONUS);
+
+                        // Master Craftsman only scales bonus stats
+                        e_default_stats.armor = base_stats.armor
+                            + (e_default_stats.armor - base_stats.armor) * ornn_resist_multiplier;
+
+                        e_default_stats.magic_resist = base_stats.magic_resist
+                            + (e_default_stats.magic_resist - base_stats.magic_resist)
+                                * ornn_resist_multiplier;
+
+                        e_default_stats.max_health = base_stats.max_health
+                            + (e_default_stats.max_health - base_stats.max_health)
+                                * ornn_resist_multiplier;
                     }
                     ChampionId::Poppy => {
                         const POPPY_W_MULTIPLIER: f32 = 1.16;
@@ -657,15 +672,20 @@ impl EnemyState<'_> {
                         e_default_stats.magic_resist *= POPPY_W_MULTIPLIER;
                     }
                     ChampionId::Malphite => {
-                        // W upgrade pattern for malphite by 06/07/2025
+                        // W rank by level, assuming it is maxed last
                         // #![manual_impl]
-                        let malphite_resist_multiplier = match level.get() {
-                            ..3 => 1.0,
-                            3..14 => 1.1,
-                            14 => 1.15,
-                            15..17 => 1.2,
-                            17 => 1.25,
-                            18.. => 1.3,
+                        let w_rank = match level.get() {
+                            ..3 => 0,
+                            3..14 => 1,
+                            14 => 2,
+                            15..17 => 3,
+                            17 => 4,
+                            18.. => 5,
+                        };
+
+                        let malphite_resist_multiplier = match w_rank {
+                            0 => 1.0,
+                            _ => 1.0 + champions::malphite::THUNDERCLAP_BONUS_ARMOR[w_rank - 1],
                         };
 
                         e_default_stats.armor *= malphite_resist_multiplier;
@@ -712,14 +732,7 @@ impl EnemyState<'_> {
             armor_values,
             magic_values,
             steelcaps: has_item(&origin, [ItemId::PlatedSteelcaps, ItemId::ArmoredAdvance]),
-            rocksolid: has_item(
-                &origin,
-                [
-                    ItemId::RanduinsOmen,
-                    ItemId::FrozenHeart,
-                    ItemId::WardensMail,
-                ],
-            ),
+            rocksolid: has_item(&origin, [ItemId::WardensMail]),
             randuin: has_item(&origin, [ItemId::RanduinsOmen]),
             accept_negatives,
         }

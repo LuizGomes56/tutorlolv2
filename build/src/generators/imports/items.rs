@@ -2,6 +2,7 @@ pub use crate::{
     MayFail, formula as f,
     generators::{
         Generator, GeneratorExt,
+        constants::WithConstants,
         parser::items::{Item, Source::*},
         utils::RegExtractor,
     },

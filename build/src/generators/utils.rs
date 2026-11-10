@@ -1,3 +1,4 @@
+use crate::MayFail;
 use heck::ToSnakeCase;
 use regex::Regex;
 use std::{fmt::Display, sync::LazyLock};
@@ -17,6 +18,31 @@ pub trait RegExtractor: Display {
             .find_iter(&text)
             .filter_map(|m| m.as_str().parse().ok())
             .collect()
+    }
+
+    /// Numbers matched by the `N` capture groups of `pattern`, in order. Fails
+    /// when the text no longer matches, so a wiki change can't go unnoticed
+    fn capture<const N: usize>(&self, pattern: &str) -> MayFail<[f64; N]> {
+        let text = self.to_string();
+        let captures = Regex::new(pattern)?
+            .captures(&text)
+            .ok_or_else(|| format!("Pattern {pattern:?} did not match {text:?}"))?;
+
+        let values = captures
+            .iter()
+            .skip(1)
+            .map(|group| -> MayFail<f64> {
+                let group =
+                    group.ok_or_else(|| format!("Pattern {pattern:?} has an empty group"))?;
+                Ok(group.as_str().parse()?)
+            })
+            .collect::<MayFail<Vec<_>>>()?;
+
+        let len = values.len();
+
+        values
+            .try_into()
+            .map_err(|_| format!("Pattern {pattern:?} has {len} groups, expected {N}").into())
     }
 
     fn parenthesize(&self) -> String {

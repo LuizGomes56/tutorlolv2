@@ -64,23 +64,84 @@ fn purchase_and_context_helpers_are_const_callable() {
     assert_eq!(SELF_CTX, ENEMY_CTX);
 }
 
+/// Inferred enemy stats for `champion_id` holding `items`, without any
+/// penetration so the totals can be compared against a control champion
+fn inferred_stats(champion_id: ChampionId, level: u8, stacks: u32, items: &[ItemId]) -> EnemyStats {
+    EnemyState {
+        champion_id,
+        level: NonZeroU8::new(level).unwrap(),
+        stacks,
+        items,
+        base_stats: SimpleStats {
+            armor: 100.0,
+            magic_resist: 100.0,
+            max_health: 1000.0,
+        },
+        ..Default::default()
+    }
+    .full_state(ResistShred::new(&PlayerStats::default()), false)
+    .current_stats
+}
+
 #[test]
-fn ornn_upgrade_estimate_preserves_baseline() {
+fn ornn_upgrades_scale_only_bonus_stats() {
+    const ITEMS: &[ItemId] = &[ItemId::SunfireAegis, ItemId::ForceOfNature];
+
     for (level, multiplier) in [(12, 1.10), (13, 1.14), (16, 1.26), (17, 1.30), (18, 1.30)] {
-        let state = EnemyState {
-            champion_id: ChampionId::Ornn,
-            level: NonZeroU8::new(level).unwrap(),
-            base_stats: SimpleStats {
-                armor: 100.0,
-                magic_resist: 100.0,
-                max_health: 1000.0,
-            },
-            ..Default::default()
-        }
-        .full_state(ResistShred::new(&PlayerStats::default()), false);
-        close(state.current_stats.armor, 100.0 * multiplier);
-        close(state.current_stats.magic_resist, 100.0 * multiplier);
-        close(state.current_stats.max_health, 1000.0 * multiplier);
+        // Garen has no stat special case, so it holds the same bonus stats unscaled
+        let control = inferred_stats(ChampionId::Garen, level, 0, ITEMS);
+        let ornn = inferred_stats(ChampionId::Ornn, level, 0, ITEMS);
+
+        assert!(control.armor > 100.0 && control.magic_resist > 100.0);
+        close(ornn.armor, 100.0 + (control.armor - 100.0) * multiplier);
+        close(
+            ornn.magic_resist,
+            100.0 + (control.magic_resist - 100.0) * multiplier,
+        );
+        close(
+            ornn.max_health - 1000.0,
+            (control.max_health - 1000.0) * multiplier,
+        );
+    }
+
+    // Without bonus stats there is nothing to upgrade
+    let bare = inferred_stats(ChampionId::Ornn, 18, 0, &[]);
+    let control = inferred_stats(ChampionId::Garen, 18, 0, &[]);
+    close(bare.armor, control.armor);
+    close(bare.max_health, control.max_health);
+}
+
+#[test]
+fn chogath_feast_health_per_stack_follows_r_rank() {
+    for (level, per_stack) in [(5, 0.0), (6, 80.0), (10, 80.0), (11, 120.0), (16, 160.0)] {
+        let control = inferred_stats(ChampionId::Garen, level, 10, &[]);
+        let chogath = inferred_stats(ChampionId::Chogath, level, 10, &[]);
+
+        close(chogath.max_health - control.max_health, 10.0 * per_stack);
+    }
+}
+
+#[test]
+fn swain_soul_fragments_grant_health_per_stack() {
+    // Ashe is a ranged control without stat special cases
+    let control = inferred_stats(ChampionId::Ashe, 11, 10, &[]);
+    let swain = inferred_stats(ChampionId::Swain, 11, 10, &[]);
+
+    close(swain.max_health - control.max_health, 150.0);
+}
+
+#[test]
+fn last_stand_only_applies_below_60_percent_health() {
+    for (missing, expected) in [
+        (0.0, 1.0),
+        (0.2, 1.0),
+        (0.39, 1.0),
+        (0.4, 1.05),
+        (0.55, 1.08),
+        (0.7, 1.11),
+        (1.0, 1.11),
+    ] {
+        close(RiotFormulas::get_last_stand(missing), expected);
     }
 }
 
@@ -100,7 +161,7 @@ fn supplied_enemy_stats_skip_inference_in_const_context() {
             magic_resist: 30.0,
             max_health: 1000.0,
         },
-        items: &[ItemId::WarmogsArmor, ItemId::FrozenHeart],
+        items: &[ItemId::WarmogsArmor, ItemId::WardensMail],
         item_exceptions: &[ValueException::pack_item_id(ItemId::WarmogsArmor, 0)],
         champion_id: ChampionId::Swain,
         stacks: u32::MAX,
@@ -138,13 +199,14 @@ fn supplied_and_inferred_enemies_keep_defensive_effects_and_item_flags() {
         (&[][..], false, false, false),
         (&[ItemId::PlatedSteelcaps][..], true, false, false),
         (&[ItemId::ArmoredAdvance][..], true, false, false),
-        (&[ItemId::FrozenHeart][..], false, true, false),
+        // Only Warden's Mail still has the Rock Solid passive
+        (&[ItemId::FrozenHeart][..], false, false, false),
         (&[ItemId::WardensMail][..], false, true, false),
-        (&[ItemId::RanduinsOmen][..], false, true, true),
+        (&[ItemId::RanduinsOmen][..], false, false, true),
         (
             &[ItemId::PlatedSteelcaps, ItemId::RanduinsOmen][..],
             true,
-            true,
+            false,
             true,
         ),
     ] {

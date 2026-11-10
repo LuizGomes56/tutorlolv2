@@ -2,6 +2,7 @@ use {
     crate::{
         DynError, MayFail,
         generators::{
+            constants::{Constants, WithConstants},
             impls::runes::rune_gen_fn,
             parser::{
                 DamageRange, GeneratorFnSig, Parser, infer_damage_type, likely_damages,
@@ -36,6 +37,8 @@ pub struct Rune {
     pub damage_type: DamageType,
     pub ranged: DamageRange,
     pub melee: DamageRange,
+    #[serde(default, skip_serializing_if = "Constants::is_empty")]
+    pub constants: Constants,
 }
 
 impl Parser<WikiRune, Rune> for RuneParser {
@@ -130,6 +133,7 @@ impl TryFrom<WikiRune> for Rune {
             damage_type: Default::default(),
             ranged: Default::default(),
             melee: Default::default(),
+            constants: Default::default(),
             data,
         })
     }
@@ -270,5 +274,11 @@ impl IndexMut<AttackType> for Rune {
             AttackType::Melee => &mut self.melee,
             AttackType::Ranged => &mut self.ranged,
         }
+    }
+}
+
+impl WithConstants for Rune {
+    fn constants_mut(&mut self) -> &mut Constants {
+        &mut self.constants
     }
 }
