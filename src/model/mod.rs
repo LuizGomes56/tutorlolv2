@@ -27,7 +27,10 @@ use {
 #[cfg(feature = "engine")]
 use crate::libgen::Closure;
 
+mod damage_table;
 mod owned_input;
+
+pub use damage_table::DamageTableMut;
 
 pub use owned_input::*;
 pub use tutorlolv2_types::AbilityLevels;
@@ -415,98 +418,6 @@ impl DamagesMut<'_> {
 
         self.attacks[2] = onhit.minimum_damage;
         self.attacks[3] = onhit.maximum_damage;
-    }
-}
-
-impl DamageTable {
-    /// Table with `rows_per_target` rows for each target, one per attacker state.
-    /// `rows_per_target` must not be zero
-    pub fn zeroed(layout: DamageLayout, targets: usize, rows_per_target: usize) -> Self {
-        let rows = targets * rows_per_target;
-
-        Self {
-            layout,
-            values: unsafe { Box::new_zeroed_slice(rows * layout.stride()).assume_init() },
-            attackers: unsafe { Box::new_zeroed_slice(rows_per_target).assume_init() },
-            targets: unsafe { Box::new_zeroed_slice(targets).assume_init() },
-        }
-    }
-
-    pub const fn rows(&self) -> usize {
-        self.targets.len() * self.attackers.len()
-    }
-
-    /// Indexes of the attacker state and the target of a row
-    const fn parts(&self, r: usize) -> (usize, usize) {
-        let attackers = self.attackers.len();
-        (r % attackers, r / attackers)
-    }
-
-    /// Context the row was evaluated with
-    pub fn ctx(&self, r: usize) -> Ctx {
-        let (attacker, target) = self.parts(r);
-        Ctx::new(&self.attackers[attacker], &self.targets[target])
-    }
-
-    /// Stores the parts of the context of a row. Rows must be filled with the
-    /// first target first, and each target with its first attacker state
-    /// first: each part is written at its first row only
-    #[cfg(feature = "engine")]
-    pub(crate) fn set_ctx(&mut self, r: usize, ctx: &Ctx) {
-        let (attacker, target) = self.parts(r);
-
-        if target == 0 {
-            self.attackers[attacker] = ctx.attacker();
-        }
-
-        if attacker == 0 {
-            self.targets[target] = ctx.target();
-        }
-
-        debug_assert!(self.ctx(r) == *ctx, "row {r} would not keep its context");
-    }
-
-    pub const fn layout(&self) -> DamageLayout {
-        self.layout
-    }
-
-    pub fn row(&self, r: usize) -> Damages<'_> {
-        let s = self.layout.stride();
-        let row = &self.values[r * s..(r + 1) * s];
-        let (attacks, rest) = row.split_at(DamageLayout::ATTACKS);
-        let (abilities, rest) = rest.split_at(self.layout.abilities as usize);
-        let (items, runes) = rest.split_at(self.layout.items as usize);
-
-        Damages {
-            attacks: Attacks {
-                basic_attack: attacks[0],
-                critical_strike: attacks[1],
-                onhit_damage: RangeDamage {
-                    minimum_damage: attacks[2],
-                    maximum_damage: attacks[3],
-                },
-            },
-            abilities,
-            items,
-            runes,
-            ctx: self.ctx(r),
-        }
-    }
-
-    pub fn row_mut(&mut self, r: usize) -> DamagesMut<'_> {
-        let s = self.layout.stride();
-        let row = &mut self.values[r * s..(r + 1) * s];
-        let (attacks, rest) = row.split_at_mut(DamageLayout::ATTACKS);
-        let (abilities, rest) = rest.split_at_mut(self.layout.abilities as usize);
-        let (items, runes) = rest.split_at_mut(self.layout.items as usize);
-
-        DamagesMut {
-            // We're sure that the length is always 4 in this case
-            attacks: unsafe { attacks.try_into().unwrap_unchecked() },
-            abilities,
-            items,
-            runes,
-        }
     }
 }
 

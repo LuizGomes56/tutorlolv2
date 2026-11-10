@@ -1,6 +1,7 @@
 use crate::{ChampionId, ItemId, RuneId};
-pub use const_sized_bit_set::{self, prelude::BitSetArray};
 use strum::EnumCount;
+
+pub use const_sized_bit_set::{self, prelude::BitSetArray};
 
 pub const fn max_usize(a: usize, b: usize) -> usize {
     if a > b { a } else { b }
@@ -45,16 +46,17 @@ pub type BitSetExc = BitSetArray<{ BITSET_EXC_SIZE }>;
 pub const fn make_bitset<const N: usize, const L: usize>(values: [u32; L]) -> BitSetArray<N> {
     let mut array = BitSetArray::EMPTY;
     let mut i = 0;
+
     while i < L {
         array.insert_const(values[i]);
         i += 1;
     }
+
     array
 }
 
 pub const fn unmake_bitset<const N: usize, const L: usize>(bitset: BitSetArray<N>) -> [u32; L] {
     let mut result = [0; L];
-
     let mut iter = bitset.iter_const();
     let mut i = 0;
 
@@ -77,12 +79,14 @@ macro_rules! bitset {
             let array = $crate::unmake_bitset::<_, LEN>($bitset);
             let mut i = 0;
             let mut result: [$enum; LEN] = unsafe { core::mem::zeroed() };
+
             while i < array.len() {
                 unsafe {
                     result[i] = <$enum>::from_u32(array[i]).unwrap();
                 }
                 i += 1;
             }
+
             result
         }
     };
@@ -91,10 +95,12 @@ macro_rules! bitset {
             const LEN: usize = $array.len();
             let mut array = [0 as $ty; LEN];
             let mut i = 0;
+
             while i < LEN {
                 array[i] = $array[i] as $ty;
                 i += 1;
             }
+
             array
         }
     };
