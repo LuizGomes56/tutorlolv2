@@ -355,7 +355,7 @@ impl DamageLayout {
 
     /// `extra_pair` reserves the simulated purchase pair (old siml_item rows)
     #[cfg(feature = "engine")]
-    pub fn new(data: &DamageEvalData, extra_pair: bool) -> Self {
+    pub const fn new(data: &DamageEvalData, extra_pair: bool) -> Self {
         Self {
             abilities: data.abilities.closures.len() as _,
             items: (data.items.closures.len() + if extra_pair { 2 } else { 0 }) as _,
@@ -404,7 +404,7 @@ pub struct DamagesMut<'a> {
 
 impl DamagesMut<'_> {
     /// Same semantics as `RangeDamage::inc_attr`, applied to the stored onhit pair
-    pub fn inc_onhit(&mut self, attr: Attrs, damage: i32) {
+    pub const fn inc_onhit(&mut self, attr: Attrs, damage: i32) {
         // Indexes 2 and 3 are constants reserved for onhit damage
         let mut onhit = RangeDamage {
             minimum_damage: self.attacks[2],
@@ -511,12 +511,24 @@ impl DamageTable {
 }
 
 impl Damages<'_> {
-    pub fn sum(&self) -> i32 {
+    pub const fn sum(&self) -> i32 {
+        const fn sum_slice(slice: &[i32]) -> i32 {
+            let mut count = 0;
+            let mut i = 0;
+
+            while i < slice.len() {
+                count += slice[i];
+                i += 1;
+            }
+
+            count
+        }
+
         self.attacks.onhit_damage.minimum_damage
             + self.attacks.onhit_damage.maximum_damage
-            + self.abilities.iter().sum::<i32>()
-            + self.items.iter().sum::<i32>()
-            + self.runes.iter().sum::<i32>()
+            + sum_slice(self.abilities)
+            + sum_slice(self.items)
+            + sum_slice(self.runes)
     }
 }
 
