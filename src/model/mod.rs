@@ -31,7 +31,6 @@ mod damage_table;
 mod owned_input;
 
 pub use damage_table::DamageTableMut;
-
 pub use owned_input::*;
 pub use tutorlolv2_types::AbilityLevels;
 /// Holds the real resistence that a enemy has, after applying the appropriate
@@ -518,22 +517,26 @@ impl ValueException {
     pub const fn pack_items<const N: usize>(items: &[(ItemId, u32); N]) -> [Self; N] {
         let mut result: [Self; N] = unsafe { core::mem::zeroed() };
         let mut i = 0;
+
         while i < N {
             let (item_id, v) = items[i];
             result[i] = Self::pack_item_id(item_id, v);
             i += 1;
         }
+
         result
     }
 
     pub const fn pack_runes<const N: usize>(runes: &[(RuneId, u32); N]) -> [Self; N] {
         let mut result: [Self; N] = unsafe { core::mem::zeroed() };
         let mut i = 0;
+
         while i < N {
             let (rune_id, v) = runes[i];
             result[i] = Self::pack_rune_id(rune_id, v);
             i += 1;
         }
+
         result
     }
 }
@@ -870,9 +873,11 @@ impl RiotFormulas {
             true => 0.0,
             false => -25.0 + 50.0 * (plates as f32 - 1.0),
         };
+
         let raw_resist = 40.0 + bonus_resist;
         let resist = raw_resist * (1.0 - pen_percent / 100.0) - pen_flat;
         let mult = 100.0 / (100.0 + resist);
+
         (base * mult) as _
     }
 }
@@ -931,17 +936,19 @@ macro_rules! impl_default {
     ($ty:ty, $init:literal, $typedef:ty) => {
         impl $ty {
             pub const fn default() -> Self {
-                unsafe {
-                    core::mem::transmute(
-                        [$init as $typedef; size_of::<$ty>() / size_of::<$typedef>()],
-                    )
+                const {
+                    unsafe {
+                        core::mem::transmute(
+                            [$init as $typedef; size_of::<$ty>() / size_of::<$typedef>()],
+                        )
+                    }
                 }
             }
         }
 
         impl Default for $ty {
             fn default() -> Self {
-                <$ty>::default()
+                const { <$ty>::default() }
             }
         }
     };
@@ -958,30 +965,34 @@ impl_default!(RangeDamage, 0, i32);
 
 impl<T> Default for InputMinData<'_, T> {
     fn default() -> Self {
-        Self {
-            stats: None,
-            items: &[],
-            item_exceptions: &[],
-            stacks: 0,
-            level: NonZeroU8::MIN,
-            champion_id: ChampionId::default(),
-            is_mega_gnar: false,
+        const {
+            Self {
+                stats: None,
+                items: &[],
+                item_exceptions: &[],
+                stacks: 0,
+                level: NonZeroU8::MIN,
+                champion_id: ChampionId::default(),
+                is_mega_gnar: false,
+            }
         }
     }
 }
 
 impl Default for EnemyState<'_> {
     fn default() -> Self {
-        Self {
-            current_stats: None,
-            base_stats: SimpleStats::default(),
-            items: &[],
-            stacks: 0,
-            champion_id: ChampionId::default(),
-            earth_dragons: 0,
-            level: NonZeroU8::MIN,
-            item_exceptions: &[],
-            game_map: GameMap::Unknown,
+        const {
+            Self {
+                current_stats: None,
+                base_stats: SimpleStats::default(),
+                items: &[],
+                stacks: 0,
+                champion_id: ChampionId::default(),
+                earth_dragons: 0,
+                level: NonZeroU8::MIN,
+                item_exceptions: &[],
+                game_map: GameMap::Unknown,
+            }
         }
     }
 }

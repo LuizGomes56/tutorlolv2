@@ -15,19 +15,16 @@
 //! want to do it, you can use the [`crate::const_eval`] module to
 //! do it
 
-use crate::AbilityBatch;
-use core::num::NonZeroU8;
-
 use {
     crate::{
-        ChampionId, ItemId, RuneId, WikiModifiers,
+        AbilityBatch, ChampionId, ItemId, RuneId, WikiModifiers,
         bitset::BitSet,
         libgen::{Champion, Closure, L_TWRD, Stat, WikiStats},
         model::*,
     },
     alloc::boxed::Box,
     const_sized_bit_set::bit_set_array::BitSetArray,
-    core::mem::MaybeUninit,
+    core::{mem::MaybeUninit, num::NonZeroU8},
     strum::EnumCount,
     tutorlolv2_types::{
         AbilityId, AdaptiveType, AttackType, Ctx, CtxAttacker, CtxFlags, CtxTarget, DamageType,
@@ -234,7 +231,6 @@ impl WikiStats {
         gnar_stats.attack_damage.base += 6.0;
         gnar_stats.attack_damage.per_level += 2.5;
         gnar_stats.attack_speed.per_level = 0.5;
-
         gnar_stats.base_stats(level)
     }
 }
@@ -454,15 +450,14 @@ impl<T> DamageKind<T> {
         f: impl Fn(u32, AttackType) -> (TypeMetadata<T>, [Closure; 2]),
     ) -> Self {
         let count = bitset.count_const() as usize;
-
         let mut metadata = Box::new_uninit_slice(count);
         let mut closures = Box::new_uninit_slice(count << 1);
 
         unsafe {
             for (i, j) in bitset.iter_const().enumerate() {
                 let (meta, slice) = f(j, attack_type);
-
                 let base = i << 1;
+
                 closures.get_unchecked_mut(base).write(slice[0]);
                 closures.get_unchecked_mut(base + 1).write(slice[1]);
                 metadata.get_unchecked_mut(i).write(meta);
@@ -562,6 +557,8 @@ impl EnemyState<'_> {
         // stats whether the totals are supplied or inferred
         let attack_type = champion_id.data().attack_type;
         let mut base_stats = base_stats;
+        let mut e_modifiers = const { DamageModifiers::default() };
+
         base_stats.max_health += game_map.base_health(attack_type, level.get());
 
         let ResistShred {
@@ -570,8 +567,6 @@ impl EnemyState<'_> {
             magic_penetration_flat,
             magic_penetration_percent,
         } = shred;
-
-        let mut e_modifiers = DamageModifiers::default();
 
         if matches!(champion_id, ChampionId::Kassadin) {
             e_modifiers.magic_mod *= 0.9;
@@ -650,15 +645,16 @@ impl EnemyState<'_> {
                             13..18 => 1.1 + (level.get() - 12) as f32 * 0.04,
                             18.. => 1.3,
                         };
+
                         e_default_stats.armor *= ornn_resist_multiplier;
                         e_default_stats.magic_resist *= ornn_resist_multiplier;
                         e_default_stats.max_health *= ornn_resist_multiplier;
                     }
                     ChampionId::Poppy => {
-                        let poppy_w_multiplier = 1.16;
+                        const POPPY_W_MULTIPLIER: f32 = 1.16;
 
-                        e_default_stats.armor *= poppy_w_multiplier;
-                        e_default_stats.magic_resist *= poppy_w_multiplier;
+                        e_default_stats.armor *= POPPY_W_MULTIPLIER;
+                        e_default_stats.magic_resist *= POPPY_W_MULTIPLIER;
                     }
                     ChampionId::Malphite => {
                         // W upgrade pattern for malphite by 06/07/2025
@@ -701,7 +697,6 @@ impl EnemyState<'_> {
         );
 
         let e_bonus_stats = e_current_stats.bonus_stats(base_stats);
-
         let mut origin = BitSet::EMPTY;
         let mut i = 0;
 
@@ -1229,6 +1224,7 @@ impl DamageTable {
             a.onhit_damage.minimum_damage,
             a.onhit_damage.maximum_damage,
         ];
+
         row
     }
 
@@ -1316,11 +1312,10 @@ impl DamageTable {
         out: &mut [i32],
     ) {
         let len = metadata.len();
+        let mut i = 0;
 
         debug_assert_eq!(len, closures.len());
         debug_assert_eq!(len, out.len());
-
-        let mut i = 0;
 
         while i < len {
             let TypeMetadata {

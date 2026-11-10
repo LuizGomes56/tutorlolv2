@@ -12,24 +12,26 @@ fn convert_to_avif(
     destination: &PathBuf,
 ) -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
     const QUALITY: f32 = 80.0;
+    const SPEED: u8 = 1;
 
     println!("Converting {source:?} to {destination:?}");
     let img = ImageReader::open(source)?
         .with_guessed_format()?
         .decode()?
         .to_rgba8();
+
     let width = img.width();
     let height = img.height();
     let pixels = img.into_raw();
 
-    let pixels_rgba: Vec<RGBA8> = pixels
+    let pixels_rgba = pixels
         .chunks_exact(4)
         .map(|chunk| RGBA8::new(chunk[0], chunk[1], chunk[2], chunk[3]))
-        .collect();
+        .collect::<Vec<RGBA8>>();
 
     let res = ravif::Encoder::new()
         .with_quality(QUALITY)
-        .with_speed(1)
+        .with_speed(SPEED)
         .encode_rgba(ravif::Img::new(
             &pixels_rgba,
             width as usize,
@@ -38,6 +40,7 @@ fn convert_to_avif(
 
     let file = fs::File::create(destination)?;
     let mut buf = std::io::BufWriter::new(file);
+
     buf.write_all(&res.avif_file)?;
     buf.flush()?;
 
@@ -78,9 +81,7 @@ fn to_img_path(path: &Path) -> PathBuf {
 }
 
 pub fn convert_folder_avif(folder: &str) -> Result<(), Box<dyn std::error::Error>> {
-    let entries = fs::read_dir(folder)?;
-
-    entries
+    fs::read_dir(folder)?
         .into_iter()
         .filter_map(Result::ok)
         .par_bridge()
@@ -107,6 +108,7 @@ pub fn convert_folder(folder: &str) -> Result<(), Box<dyn std::error::Error>> {
         Ok(_) => println!("Convertion of {folder:?} finished"),
         Err(e) => eprintln!("Error converting {folder:?}: {e:#?}"),
     }
+
     Ok(())
 }
 

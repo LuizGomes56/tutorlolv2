@@ -155,9 +155,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
     // If we don't know his team, put in team `Team::default()`, which by now is `Team::Blue`.
     // Note that it may lead to incorrect results, but it is better than not giving any results
     let current_player_team = current_player.team.parse().unwrap_or_default();
-
     let dragons = get_dragons(events, all_players, current_player_team);
-
     let enemy_earth_dragons = dragons.enemy_earth_dragons;
 
     // Get an array of stats as if the player had bought all of these items. It is not limited to
@@ -192,7 +190,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
         .collect::<Box<[_]>>();
 
     let current_player_runes = get_damaging_runes(&owned_runes);
-    let mut base_modifiers = Modifiers::default();
+    let mut base_modifiers = const { Modifiers::default() };
 
     base_modifiers.apply_loadout(&owned_items, &owned_runes, &current_player_stats);
 
