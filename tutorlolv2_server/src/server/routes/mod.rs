@@ -8,6 +8,7 @@ macro_rules! api_endpoint {
         };
     };
 }
+
 macro_rules! api_contract {
     ($($definition:tt)*) => {};
 }

@@ -357,6 +357,58 @@ async fn oversized_body_is_413(pool: PgPool) {
 }
 
 #[sqlx::test(migrations = "./migrations")]
+async fn probe_timestamp_advances_only_with_a_newer_chunk(pool: PgPool) {
+    let app = app!(pool);
+    let (device, id) = recording(&app, 0.0276).await;
+    let recording_id = Uuid::from_bytes(id);
+    let old_time = sqlx::query_scalar!(
+        "UPDATE recordings SET probe_observed_at = now() - interval '50 seconds'
+         WHERE id = $1 RETURNING probe_observed_at",
+        recording_id,
+    )
+    .fetch_one(&pool)
+    .await
+    .unwrap();
+
+    let (newer, newer_sha) = encode_chunk(1, seconds(120, 180, 0.0276));
+    assert_eq!(
+        upload(&app, &device, id, 1, newer.clone(), &newer_sha).await,
+        StatusCode::CREATED
+    );
+    let observed = sqlx::query_scalar!(
+        "SELECT probe_observed_at FROM recordings WHERE id = $1",
+        recording_id,
+    )
+    .fetch_one(&pool)
+    .await
+    .unwrap();
+    assert!(observed > old_time);
+
+    // Retrying the newest chunk and uploading an older chunk must preserve
+    // both the latest probe and the timestamp paired with it.
+    assert_eq!(
+        upload(&app, &device, id, 1, newer, &newer_sha).await,
+        StatusCode::OK
+    );
+    let (older, older_sha) = encode_chunk(0, seconds(60, 119, 0.0276));
+    assert_eq!(
+        upload(&app, &device, id, 0, older, &older_sha).await,
+        StatusCode::CREATED
+    );
+    let row = sqlx::query!(
+        "SELECT probe, probe_observed_at FROM recordings WHERE id = $1",
+        recording_id,
+    )
+    .fetch_one(&pool)
+    .await
+    .unwrap();
+    assert_eq!(row.probe_observed_at, observed);
+    let (stored, _): (Probe, _) =
+        bincode::decode_from_slice(&row.probe, tutorlolv2_types::BINCODE_CONFIG).unwrap();
+    assert_eq!(stored.game_time, 180.0);
+}
+
+#[sqlx::test(migrations = "./migrations")]
 async fn late_older_chunk_keeps_newest_summary(pool: PgPool) {
     let app = app!(pool);
     let (device, id) = recording(&app, 0.0276).await;

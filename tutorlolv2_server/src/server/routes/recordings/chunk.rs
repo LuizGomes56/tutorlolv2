@@ -1,3 +1,4 @@
+use crate::server::recordings::*;
 use crate::server::response::{AppError, AppResult, Trace};
 use crate::server::{
     auth::DeviceAuth,
@@ -11,8 +12,6 @@ use actix_web::{
 };
 use tutorlolv2_protocol::RAW_CHUNK_FORMAT;
 use uuid::Uuid;
-
-use crate::server::recordings::*;
 
 pub async fn upload_chunk(
     state: Data<AppState>,
@@ -135,7 +134,9 @@ pub async fn upload_chunk(
     // Live-client JSON has no LCU identity. Keep the session's known Riot id
     // when advancing the snapshot fields used by subsequent resume checks.
     let mut latest_probe = last.probe.clone();
+
     latest_probe.riot_game = stored.riot_game;
+
     let last_probe =
         bincode::encode_to_vec(&latest_probe, tutorlolv2_types::BINCODE_CONFIG).trace()?;
 
@@ -150,33 +151,37 @@ pub async fn upload_chunk(
             first_game_time = least(first_game_time, $3),
             last_game_time = greatest(last_game_time, $4),
             probe = CASE
-                        WHEN $4 > last_game_time THEN $5
-                        ELSE probe
-                    END,
-                    kills = CASE
-                                WHEN $4 > last_game_time THEN $6
-                                ELSE kills
-                            END,
-                            deaths = CASE
-                                         WHEN $4 > last_game_time THEN $7
-                                         ELSE deaths
-                                     END,
-                                     assists = CASE
-                                                   WHEN $4 > last_game_time THEN $8
-                                                   ELSE assists
-                                               END,
-                                               creep_score = CASE
-                                                                 WHEN $4 > last_game_time THEN $9
-                                                                 ELSE creep_score
-                                                             END,
-                                                             LEVEL = CASE
-                                                                         WHEN $4 > last_game_time THEN $10
-                                                                         ELSE LEVEL
-                                                                     END,
-                                                                     champion = CASE
-                                                                                    WHEN $4 > last_game_time THEN $11
-                                                                                    ELSE champion
-                                                                                END
+                WHEN $4 > last_game_time THEN $5
+                ELSE probe
+            END,
+            probe_observed_at = CASE
+                WHEN $4 > last_game_time THEN now()
+                ELSE probe_observed_at
+            END,
+            kills = CASE
+                WHEN $4 > last_game_time THEN $6
+                ELSE kills
+            END,
+            deaths = CASE
+                WHEN $4 > last_game_time THEN $7
+                ELSE deaths
+            END,
+            assists = CASE
+                WHEN $4 > last_game_time THEN $8
+                ELSE assists
+            END,
+            creep_score = CASE
+                WHEN $4 > last_game_time THEN $9
+                ELSE creep_score
+            END,
+            LEVEL = CASE
+                WHEN $4 > last_game_time THEN $10
+                ELSE LEVEL
+            END,
+            champion = CASE
+                WHEN $4 > last_game_time THEN $11
+                ELSE champion
+            END
         WHERE id = $1
         "#,
         id,
@@ -202,9 +207,16 @@ pub async fn upload_chunk(
 
 api_endpoint! {
     pub UploadChunk {
-        handler: upload_chunk, method: POST, path: "/api/recordings/{id}/chunks/{seq}",
-        path_params: { id: Uuid, seq: u32 }, query: none, body: brotli_bincode(tutorlolv2_protocol::RawChunk),
-        response: empty, success: [200,201], auth: device,
-        request_headers: ["X-Content-Sha256"], response_headers: ["Cache-Control"],
+        handler: upload_chunk,
+        method: POST,
+        path: "/api/recordings/{id}/chunks/{seq}",
+        path_params: { id: Uuid, seq: u32 },
+        query: none,
+        body: brotli_bincode(tutorlolv2_protocol::RawChunk),
+        response: empty,
+        success: [200,201],
+        auth: device,
+        request_headers: ["X-Content-Sha256"],
+        response_headers: ["Cache-Control"],
     }
 }

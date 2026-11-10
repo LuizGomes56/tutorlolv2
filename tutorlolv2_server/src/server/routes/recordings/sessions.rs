@@ -74,7 +74,7 @@ pub async fn start_session(
         r#"
         SELECT id,
                probe,
-               last_ingest_at,
+               probe_observed_at,
                ended_at IS NULL AS "open!"
         FROM recordings
         WHERE device_id = $1
@@ -95,7 +95,7 @@ pub async fn start_session(
     let same = candidates.iter().find(|c| {
         RecordingService::decode_probe(&c.probe).is_some_and(|stored| {
             stored.same_match(
-                c.last_ingest_at.timestamp_millis(),
+                c.probe_observed_at.timestamp_millis(),
                 &request.probe,
                 now.timestamp_millis(),
             ) == MatchDecision::Same

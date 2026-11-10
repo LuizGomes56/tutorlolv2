@@ -334,6 +334,38 @@ async fn owner_auth_invalid_codes_and_live_body_limits(pool: PgPool) {
 }
 
 #[sqlx::test(migrations = "./migrations")]
+async fn same_match_resumes_after_live_upload_without_a_new_probe(pool: PgPool) {
+    let app = app!(pool);
+    let (device, id) = recording(&app, None, false).await;
+    share(&app, &device, id, ShareMode::Live).await;
+    sqlx::query(
+        "UPDATE recordings SET probe_observed_at = now() - interval '50 seconds',
+         last_ingest_at = now() - interval '50 seconds' WHERE id = $1",
+    )
+    .bind(Uuid::from_bytes(id))
+    .execute(&pool)
+    .await
+    .unwrap();
+    assert_eq!(push(&app, &device, id, 110.0).await, StatusCode::NO_CONTENT);
+
+    let probe = inspect(&snapshot_json(110.0, 0.0276, "Ahri", 1))
+        .unwrap()
+        .probe;
+    let response = request(
+        &app,
+        Method::POST,
+        "/api/recordings/sessions",
+        Some(&device),
+        encode(session(probe)),
+    )
+    .await;
+    assert_eq!(response.status(), StatusCode::OK);
+    let resumed: SessionStarted = decode(&http::read_body(response).await);
+    assert!(resumed.resumed);
+    assert_eq!(resumed.recording_id, id);
+}
+
+#[sqlx::test(migrations = "./migrations")]
 async fn live_poll_receives_new_frame_and_revocation_or_end_wakes_waiters(pool: PgPool) {
     let app = app!(pool);
     let (device, id) = recording(&app, Some(false), false).await;

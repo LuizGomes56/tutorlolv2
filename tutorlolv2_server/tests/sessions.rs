@@ -141,6 +141,40 @@ async fn same_match_resumes_with_next_seq(pool: PgPool) {
 }
 
 #[sqlx::test(migrations = "./migrations")]
+async fn same_match_resumes_after_heartbeats_without_a_new_probe(pool: PgPool) {
+    let app = app!(pool);
+    let device = register(&app).await;
+    let first = start(&app, &device, session(probe(120.0, 0.0276, "ahri"))).await;
+    let id = Uuid::from_bytes(first.recording_id);
+    // Fifty seconds pass without a sealed chunk. A heartbeat keeps the
+    // recording alive, but the stored probe still describes game time 120.
+    sqlx::query(
+        "UPDATE recordings SET probe_observed_at = now() - interval '50 seconds',
+         last_ingest_at = now() - interval '50 seconds' WHERE id = $1",
+    )
+    .bind(id)
+    .execute(&pool)
+    .await
+    .unwrap();
+    let (status, _) = post_as(
+        &app,
+        &device,
+        &format!("/recordings/{id}/heartbeat"),
+        vec![],
+    )
+    .await;
+    assert_eq!(status, actix_web::http::StatusCode::NO_CONTENT);
+
+    let again = start(&app, &device, session(probe(170.0, 0.0276, "ahri"))).await;
+    assert!(again.resumed);
+    assert_eq!(again.recording_id, first.recording_id);
+    assert_eq!(
+        open_count(&pool, Uuid::from_bytes(device.device_id)).await,
+        1
+    );
+}
+
+#[sqlx::test(migrations = "./migrations")]
 async fn different_match_supersedes_open_one(pool: PgPool) {
     let app = app!(pool);
     let device = register(&app).await;
@@ -181,6 +215,7 @@ async fn timed_out_recording_is_reopened_when_same(pool: PgPool) {
         r#"
         UPDATE recordings
         SET last_ingest_at = now() - interval '20 minutes',
+            probe_observed_at = now() - interval '20 minutes',
             ended_at = now() - interval '20 minutes',
             end_reason = $2
         WHERE id = $1
@@ -222,6 +257,7 @@ async fn old_timed_out_recording_is_not_reopened(pool: PgPool) {
         r#"
         UPDATE recordings
         SET last_ingest_at = now() - interval '7 hours',
+            probe_observed_at = now() - interval '7 hours',
             ended_at = now() - interval '7 hours',
             end_reason = $2
         WHERE id = $1
