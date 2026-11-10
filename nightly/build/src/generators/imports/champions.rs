@@ -1,0 +1,74 @@
+pub use crate::{
+    MayFail, formula as f,
+    generators::{
+        Generator, GeneratorExt,
+        parser::champions::{Ability, Champion},
+        utils::RegExtractor,
+    },
+};
+pub use tutorlolv2_types::{
+    AbilityId, AbilityId::*, AbilityName::*, Attrs::*, ComboElement::*, CtxVar::*, DamageType::*,
+    Key,
+};
+pub use tutorlolv2_wiki::{
+    champions::WikiChampion,
+    parser::{LevelArm, Scaling},
+};
+
+#[macro_export]
+macro_rules! decl_champions {
+    (inner $Name:ident) => {
+        pastey::paste! {
+            pub mod [<$Name:snake:lower:replace("jarvan_i_v", "jarvan_iv")>];
+        }
+    };
+    ($($Name:ident),*$(,)*) => {
+        $(
+            $crate::decl_champions!(inner $Name);
+
+            #[derive(derive_more::Deref, derive_more::DerefMut)]
+            pub struct $Name {
+                #[deref]
+                #[deref_mut]
+                pub inner: Champion
+            }
+
+            impl $Name {
+                pub fn try_from(data: WikiChampion) -> MayFail<Box<dyn GeneratorExt<Champion>>> {
+                    Ok(Box::new(Self {
+                        inner: Champion::try_from(data)?
+                    }))
+                }
+            }
+
+            impl GeneratorExt<Champion> for $Name {
+                fn end(self: Box<Self>) -> MayFail<Champion> {
+                    Ok(self.inner)
+                }
+            }
+
+            impl ::core::ops::Index<AbilityId> for $Name {
+                type Output = Ability;
+
+                fn index(&self, index: AbilityId) -> &Self::Output {
+                    self.get(index).unwrap()
+                }
+            }
+
+            impl ::core::ops::IndexMut<AbilityId> for $Name {
+                fn index_mut(&mut self, index: AbilityId) -> &mut Self::Output {
+                    self.get_mut(index).unwrap()
+                }
+            }
+        )*
+
+        pub fn champion_gen_fn(champion_id: &str) -> Option<
+            fn(WikiChampion) -> MayFail<Box<dyn GeneratorExt<Champion>>>
+        > {
+            match champion_id {
+                $(stringify!($Name) => Some($Name::try_from),)*
+                _ => None,
+            }
+        }
+    };
+}

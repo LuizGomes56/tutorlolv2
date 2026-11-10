@@ -1,0 +1,52 @@
+use super::*;
+
+impl Generator for Blitzcrank {
+    fn generate(&mut self) -> MayFail {
+        self.ability(Key::Q, [("Magic Damage", Void)])
+            .ability_placeholder(Key::E, [Void])
+            .modify(E(Void), |_| f![AttackDamage + 0.25 * AbilityPower])?
+            .ability(Key::R, [("Magic Damage", Void)])
+            .ability(Key::R, [("Magic Damage", _1)])
+            .modify(R(_1), |_| {
+                /* 50 / 100 / 150 */
+                /* (+ 30 / 40 / 50% AP) */
+                /* (+ 2% maximum mana) */
+                f![50 + 50 * RLevel + (0.3 + 0.1 * RLevel) * AbilityPower + 0.02 * MaxMana]
+            })?
+            .comment(R(_1), "R Passive Onhit Damage")?
+            .combos([
+                &[
+                    Ability(Q(Void)),
+                    Ability(R(Void)),
+                    Ability(E(Void)),
+                    Ability(E(Void)),
+                    Attack,
+                ],
+                &[Ability(R(Void)), Attack, Ability(E(Void)), Ability(Q(Void))],
+                &[
+                    Ability(Q(Void)),
+                    Attack,
+                    Ability(E(Void)),
+                    Attack,
+                    Ability(R(Void)),
+                ],
+                &[
+                    Ability(R(Void)),
+                    Ability(Q(Void)),
+                    Ability(E(Void)),
+                    Ability(E(Void)),
+                    Attack,
+                ],
+                &[Ability(Q(Void)), Attack, Ability(E(Void))],
+                &[
+                    Ability(E(Void)),
+                    Ability(E(Void)),
+                    Attack,
+                    Ability(Q(Void)),
+                    Attack,
+                ],
+                &[Ability(Q(Void)), Ability(E(Void)), Ability(E(Void)), Attack],
+            ])?
+            .end()
+    }
+}

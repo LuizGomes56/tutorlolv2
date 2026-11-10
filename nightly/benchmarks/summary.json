@@ -1,0 +1,155 @@
+{
+  "compiler": "rustc 1.102.0-nightly (ac8310ba6 2026-11-09)\nbinary: rustc\ncommit-hash: ac8310ba643a3796cbe77d2e06944d7c8513999f\ncommit-date: 2026-11-09\nhost: x86_64-unknown-linux-gnu\nrelease: 1.102.0-nightly\nLLVM version: 23.1.5",
+  "cpu": "AMD Ryzen 9 8940HX",
+  "kernel": "6.18.33.2-microsoft-standard-WSL2",
+  "cpu_affinity": 4,
+  "date": "2026-11-10",
+  "binary_sha256": "cb29531cbfaa16f4d65d0da8a18a89f8250fe6529aa3a8d61cec8813ac6cf83d",
+  "git_base": "0f4f5f26",
+  "summary": [
+    {
+      "workload": "formulas_grouped",
+      "pointer_median_ns": 5.76302268683274,
+      "enum_median_ns": 7.1285378669928825,
+      "paired_ratio_median": 1.235063691619242,
+      "run_ratio_min": 1.2269284645099807,
+      "run_ratio_max": 1.2377484360413968,
+      "samples": 63
+    },
+    {
+      "workload": "batches_grouped",
+      "pointer_median_ns": 10.943900224101338,
+      "enum_median_ns": 10.751158609555636,
+      "paired_ratio_median": 0.9591873045469617,
+      "run_ratio_min": 0.899265609600202,
+      "run_ratio_max": 1.229635898706527,
+      "samples": 63
+    },
+    {
+      "workload": "ability_rows_grouped",
+      "pointer_median_ns": 29.952096222453036,
+      "enum_median_ns": 34.90330620032515,
+      "paired_ratio_median": 1.1343110279217439,
+      "run_ratio_min": 1.1267933955656866,
+      "run_ratio_max": 1.2192464453624563,
+      "samples": 63
+    },
+    {
+      "workload": "calculator_grouped",
+      "pointer_median_ns": 481.36558435693644,
+      "enum_median_ns": 547.7132631864163,
+      "paired_ratio_median": 1.1478476243783562,
+      "run_ratio_min": 1.1323938188908471,
+      "run_ratio_max": 1.1834810938281237,
+      "samples": 63
+    },
+    {
+      "workload": "formulas_shuffled",
+      "pointer_median_ns": 6.910412206683718,
+      "enum_median_ns": 7.821221988990214,
+      "paired_ratio_median": 1.1358873895605817,
+      "run_ratio_min": 1.1219618554048618,
+      "run_ratio_max": 1.1426595034080653,
+      "samples": 63
+    },
+    {
+      "workload": "batches_shuffled",
+      "pointer_median_ns": 11.445199955405528,
+      "enum_median_ns": 10.817070580631322,
+      "paired_ratio_median": 0.9119002199872089,
+      "run_ratio_min": 0.869594282853561,
+      "run_ratio_max": 1.243171234184375,
+      "samples": 63
+    },
+    {
+      "workload": "ability_rows_shuffled",
+      "pointer_median_ns": 30.39156769328035,
+      "enum_median_ns": 35.35363840092124,
+      "paired_ratio_median": 1.1633043003909105,
+      "run_ratio_min": 1.1406391616672813,
+      "run_ratio_max": 1.1851438481090795,
+      "samples": 63
+    },
+    {
+      "workload": "calculator_shuffled",
+      "pointer_median_ns": 488.6336253612717,
+      "enum_median_ns": 554.4935648482659,
+      "paired_ratio_median": 1.1482346526473186,
+      "run_ratio_min": 1.1318223772458105,
+      "run_ratio_max": 1.1903674640728599,
+      "samples": 63
+    },
+    {
+      "workload": "formulas_neeko",
+      "pointer_median_ns": 1.9267008781433106,
+      "enum_median_ns": 2.17828311920166,
+      "paired_ratio_median": 1.1505616062796247,
+      "run_ratio_min": 1.1070616107671756,
+      "run_ratio_max": 1.1641389373867077,
+      "samples": 63
+    },
+    {
+      "workload": "batches_neeko",
+      "pointer_median_ns": 9.677107810974121,
+      "enum_median_ns": 11.0281982421875,
+      "paired_ratio_median": 1.137345051305714,
+      "run_ratio_min": 1.1043103620056105,
+      "run_ratio_max": 1.1480801147612418,
+      "samples": 63
+    },
+    {
+      "workload": "ability_rows_neeko",
+      "pointer_median_ns": 18.57603883743286,
+      "enum_median_ns": 20.8759822845459,
+      "paired_ratio_median": 1.1219445258354042,
+      "run_ratio_min": 0.9149723466955972,
+      "run_ratio_max": 1.151531575791729,
+      "samples": 63
+    },
+    {
+      "workload": "calculator_neeko",
+      "pointer_median_ns": 451.1190643310547,
+      "enum_median_ns": 500.67932128906244,
+      "paired_ratio_median": 1.1182978847849916,
+      "run_ratio_min": 1.1081340047277586,
+      "run_ratio_max": 1.1721000514403292,
+      "samples": 63
+    },
+    {
+      "workload": "formulas_leblanc",
+      "pointer_median_ns": 1.8013347387313843,
+      "enum_median_ns": 2.236189842224121,
+      "paired_ratio_median": 1.2450846816403194,
+      "run_ratio_min": 1.2280284551057925,
+      "run_ratio_max": 1.249686953462309,
+      "samples": 63
+    },
+    {
+      "workload": "batches_leblanc",
+      "pointer_median_ns": 12.63444709777832,
+      "enum_median_ns": 13.876494407653809,
+      "paired_ratio_median": 1.0929811254857051,
+      "run_ratio_min": 1.0690162800619514,
+      "run_ratio_max": 1.0985714012534713,
+      "samples": 63
+    },
+    {
+      "workload": "ability_rows_leblanc",
+      "pointer_median_ns": 33.311532974243164,
+      "enum_median_ns": 41.42664909362793,
+      "paired_ratio_median": 1.2391161806510531,
+      "run_ratio_min": 1.0236429314720432,
+      "run_ratio_max": 1.2492236027077495,
+      "samples": 63
+    },
+    {
+      "workload": "calculator_leblanc",
+      "pointer_median_ns": 469.21307373046875,
+      "enum_median_ns": 521.5946350097656,
+      "paired_ratio_median": 1.1074353887872355,
+      "run_ratio_min": 1.09791972330332,
+      "run_ratio_max": 1.1111687766932048,
+      "samples": 63
+    }
+  ]
+}
