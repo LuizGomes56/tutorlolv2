@@ -6,8 +6,11 @@ use {
     },
 };
 
-#[cfg(feature = "yew")]
-use tutorlolv2_types::{ComboElement, CtxVar, MergeData};
+#[cfg(feature = "client-data")]
+use tutorlolv2_types::{CtxVar, MergeData};
+
+#[cfg(any(feature = "yew", feature = "formula-docs"))]
+use tutorlolv2_types::ComboElement;
 
 #[derive(Copy, Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub enum EntityId {
@@ -53,13 +56,13 @@ pub struct Champion {
     pub modifiers: WikiModifiers,
     pub metadata: &'static [TypeMetadata<AbilityId>],
 
-    #[cfg(feature = "yew")]
+    #[cfg(any(feature = "yew", feature = "formula-docs"))]
     pub combos: &'static [&'static [ComboElement]],
 
-    #[cfg(feature = "yew")]
+    #[cfg(feature = "client-data")]
     pub merge_data: &'static [MergeData],
 
-    #[cfg(feature = "yew")]
+    #[cfg(feature = "client-data")]
     pub identifiers: &'static [&'static [CtxVar]],
 
     #[cfg(feature = "engine")]
@@ -125,14 +128,14 @@ pub struct Item {
     #[cfg(feature = "engine")]
     pub melee: [Closure; 2],
 
-    #[cfg(feature = "yew")]
+    #[cfg(feature = "client-data")]
     pub identifiers: &'static [CtxVar],
 
-    #[cfg(feature = "yew")]
+    #[cfg(any(feature = "yew", feature = "formula-docs"))]
     /// Immediate recipe components, preserving quantities as repeated entries.
     pub builds_from: &'static [ItemId],
 
-    #[cfg(feature = "yew")]
+    #[cfg(any(feature = "yew", feature = "formula-docs"))]
     /// Immediate upgrades, without duplicate entries.
     pub builds_into: &'static [ItemId],
 }
@@ -151,7 +154,7 @@ pub struct Rune {
     #[cfg(feature = "engine")]
     pub melee: [Closure; 2],
 
-    #[cfg(feature = "yew")]
+    #[cfg(feature = "client-data")]
     pub identifiers: &'static [CtxVar],
 }
 

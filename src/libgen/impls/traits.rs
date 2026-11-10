@@ -121,15 +121,29 @@ where
 
     #[cfg(feature = "formula-docs")]
     fn render_generator(&self) -> Option<alloc::string::String> {
-        crate::yew::render::GENERATOR_RENDERER.render(*self)
+        crate::formula_docs::GENERATOR_RENDERER.render(*self)
     }
 
     #[cfg(feature = "formula-docs")]
-    fn render_global(&self) -> crate::yew::render::MayFail<alloc::string::String> {
+    fn render_generator_markup<M: tutorlolv2_codec::Markup>(&self) -> Option<M> {
+        crate::formula_docs::GENERATOR_RENDERER.render_markup(*self)
+    }
+
+    #[cfg(feature = "formula-docs")]
+    fn render_global(&self) -> crate::formula_docs::MayFail<alloc::string::String> {
         match self.entity() {
             EntityId::Champion(v) => v.render_global(),
             EntityId::Item(v) => v.render_global(),
             EntityId::Rune(v) => v.render_global(),
+        }
+    }
+
+    #[cfg(feature = "formula-docs")]
+    fn render_global_markup<M: tutorlolv2_codec::Markup>(&self) -> crate::formula_docs::MayFail<M> {
+        match self.entity() {
+            EntityId::Champion(v) => v.render_global_markup(),
+            EntityId::Item(v) => v.render_global_markup(),
+            EntityId::Rune(v) => v.render_global_markup(),
         }
     }
 
@@ -155,14 +169,17 @@ pub trait ValueId: CastId {
     fn pack_exc(&self, v: u32) -> ValueException;
     fn recommendations(champion_id: ChampionId, position: Position) -> &'static [Self];
 
-    #[cfg(feature = "yew")]
+    #[cfg(feature = "client-data")]
     fn exceptions(ally: bool) -> crate::bitset::BitSetExc;
 
-    #[cfg(feature = "yew")]
+    #[cfg(feature = "client-data")]
     fn identifiers(&self) -> &'static [tutorlolv2_types::CtxVar];
 
     #[cfg(feature = "formula-docs")]
-    fn render_fn(&self) -> crate::yew::render::MayFail<alloc::string::String>;
+    fn render_fn(&self) -> crate::formula_docs::MayFail<alloc::string::String>;
+
+    #[cfg(feature = "formula-docs")]
+    fn render_fn_markup<M: tutorlolv2_codec::Markup>(&self) -> crate::formula_docs::MayFail<M>;
 
     fn damage_type(&self) -> DamageType {
         self.metadata().damage_type
@@ -174,16 +191,21 @@ impl ValueId for ItemId {
     const DAMAGING_IDS: &[Self] = &Self::DAMAGING_IDS;
 
     #[cfg(feature = "formula-docs")]
-    fn render_fn(&self) -> crate::yew::render::MayFail<alloc::string::String> {
+    fn render_fn(&self) -> crate::formula_docs::MayFail<alloc::string::String> {
         self.render_fn()
     }
 
-    #[cfg(feature = "yew")]
+    #[cfg(feature = "formula-docs")]
+    fn render_fn_markup<M: tutorlolv2_codec::Markup>(&self) -> crate::formula_docs::MayFail<M> {
+        self.render_fn_markup()
+    }
+
+    #[cfg(feature = "client-data")]
     fn exceptions(ally: bool) -> crate::bitset::BitSetExc {
         ItemId::exceptions(ally)
     }
 
-    #[cfg(feature = "yew")]
+    #[cfg(feature = "client-data")]
     fn identifiers(&self) -> &'static [tutorlolv2_types::CtxVar] {
         self.identifiers()
     }
@@ -210,16 +232,21 @@ impl ValueId for RuneId {
     const DAMAGING_IDS: &[Self] = &Self::DAMAGING_IDS;
 
     #[cfg(feature = "formula-docs")]
-    fn render_fn(&self) -> crate::yew::render::MayFail<alloc::string::String> {
+    fn render_fn(&self) -> crate::formula_docs::MayFail<alloc::string::String> {
         self.render_fn()
     }
 
-    #[cfg(feature = "yew")]
+    #[cfg(feature = "formula-docs")]
+    fn render_fn_markup<M: tutorlolv2_codec::Markup>(&self) -> crate::formula_docs::MayFail<M> {
+        self.render_fn_markup()
+    }
+
+    #[cfg(feature = "client-data")]
     fn exceptions(_: bool) -> crate::bitset::BitSetExc {
         RuneId::exceptions()
     }
 
-    #[cfg(feature = "yew")]
+    #[cfg(feature = "client-data")]
     fn identifiers(&self) -> &'static [tutorlolv2_types::CtxVar] {
         self.identifiers()
     }

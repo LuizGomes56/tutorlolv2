@@ -16,7 +16,8 @@
 use crate::common::const_try;
 use crate::{
     common::EntityKind,
-    render::{Class, Highlighter as HtmlHighlighter},
+    markup::{Html, Markup},
+    render::Class,
 };
 use std::{
     collections::HashMap,
@@ -1295,16 +1296,27 @@ impl<'a> GeneratorDb<'a> {
         kind: EntityKind,
         owner_index: u16,
     ) -> Result<Option<String>, GeneratorError> {
+        self.render_markup::<Html>(kind, owner_index)
+            .map(|html| html.map(Html::into_string))
+    }
+
+    /// Renders a generator into any [`Markup`], such as [`Html`] or [`crate::Spans`].
+    pub fn render_markup<M: Markup>(
+        &self,
+        kind: EntityKind,
+        owner_index: u16,
+    ) -> Result<Option<M>, GeneratorError> {
         let Some(bytes) = self.entity_bytes(kind, owner_index)? else {
             return Ok(None);
         };
 
-        let mut emit = |out: &mut String, class: Option<Class>, text: &str| match class {
-            Some(class) => HtmlHighlighter::push_span(out, class, text),
-            None => HtmlHighlighter::push_escaped(out, text),
-        };
+        let mut markup = M::default();
+        // The renderer threads a `String` through; this sink ignores it and writes `markup`.
+        let mut emit = |_: &mut String, class: Option<Class>, text: &str| markup.push(class, text);
 
-        self.render_with(bytes, &mut emit).map(Some)
+        self.render_with(bytes, &mut emit)?;
+
+        Ok(Some(markup))
     }
 
     fn render_with(

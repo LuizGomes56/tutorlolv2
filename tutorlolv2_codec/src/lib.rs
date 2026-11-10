@@ -6,6 +6,7 @@
 pub mod build;
 mod common;
 pub mod generator;
+pub mod markup;
 pub mod render;
 
 pub use build::{BuilderStats, CtxResolver, FormulaDbBuilder, FormulaSource};
@@ -14,4 +15,5 @@ pub use generator::{
     ClassOverride, GeneratorBuildOutput, GeneratorDb, GeneratorDbBuilder, GeneratorError,
     GeneratorStats,
 };
-pub use render::{Bracket, Class, FormulaDb, Highlighter};
+pub use markup::{Html, Markup, Span, Spans};
+pub use render::{Bracket, Class, FormulaDb, GenericHighlighter, Highlighter};

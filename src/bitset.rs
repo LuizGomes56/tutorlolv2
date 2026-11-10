@@ -27,7 +27,7 @@ pub const BITSET_SIZE: usize =
 
 pub type BitSet = BitSetArray<{ sizeof_bitset(BITSET_SIZE) }>;
 
-#[cfg(feature = "yew")]
+#[cfg(feature = "client-data")]
 pub const BITSET_EXC_SIZE: usize = {
     let ie = max_usize(
         bitset_size(crate::bitset!(ItemId::ALLY_EXCEPTIONS => [usize])),
@@ -39,7 +39,7 @@ pub const BITSET_EXC_SIZE: usize = {
     max_usize(ie, re)
 };
 
-#[cfg(feature = "yew")]
+#[cfg(feature = "client-data")]
 pub type BitSetExc = BitSetArray<{ BITSET_EXC_SIZE }>;
 
 pub const fn make_bitset<const N: usize, const L: usize>(values: [u32; L]) -> BitSetArray<N> {

@@ -1,11 +1,11 @@
 use super::FormulaRenderer;
 use alloc::string::String;
-use tutorlolv2_codec::{Bracket, Class, Highlighter};
+use tutorlolv2_codec::{Bracket, Class, GenericHighlighter, Html, Markup};
 use tutorlolv2_types::{AdaptiveType, CtxVar};
 
 impl FormulaRenderer {
-    pub fn ignite_fn() -> String {
-        let mut h = Highlighter::new();
+    pub fn ignite_fn_markup<M: Markup>() -> M {
+        let mut h = GenericHighlighter::<M>::new();
 
         h.push(Class::Keyword, "fn")
             .text(" ")
@@ -52,11 +52,11 @@ impl FormulaRenderer {
             .text("\n")
             .bracket(Bracket::RCurly);
 
-        h.into_fragment()
+        h.into_markup()
     }
 
-    pub fn onhit_effect_global() -> String {
-        let mut h = Highlighter::new();
+    pub fn onhit_effect_global_markup<M: Markup>() -> M {
+        let mut h = GenericHighlighter::<M>::new();
 
         h.push(Class::Control, "intrinsic")
             .text(" ")
@@ -82,11 +82,11 @@ impl FormulaRenderer {
             .bracket(Bracket::RCurly)
             .text(";");
 
-        h.into_fragment()
+        h.into_markup()
     }
 
-    pub fn onhit_effect_fn() -> String {
-        let mut h = Highlighter::new();
+    pub fn onhit_effect_fn_markup<M: Markup>() -> M {
+        let mut h = GenericHighlighter::<M>::new();
 
         h.push(Class::Keyword, "fn")
             .text(" ")
@@ -102,11 +102,11 @@ impl FormulaRenderer {
             .text("\n")
             .bracket(Bracket::RCurly);
 
-        h.into_fragment()
+        h.into_markup()
     }
 
-    pub fn critical_strike_global() -> String {
-        let mut h = Highlighter::new();
+    pub fn critical_strike_global_markup<M: Markup>() -> M {
+        let mut h = GenericHighlighter::<M>::new();
 
         h.push(Class::Control, "intrinsic")
             .text(" ")
@@ -133,11 +133,11 @@ impl FormulaRenderer {
             .bracket(Bracket::RCurly)
             .text(";");
 
-        h.into_fragment()
+        h.into_markup()
     }
 
-    pub fn critical_strike_fn() -> String {
-        let mut h = Highlighter::new();
+    pub fn critical_strike_fn_markup<M: Markup>() -> M {
+        let mut h = GenericHighlighter::<M>::new();
 
         h.push(Class::Keyword, "fn")
             .text(" ")
@@ -159,11 +159,11 @@ impl FormulaRenderer {
             .text("\n")
             .bracket(Bracket::RCurly);
 
-        h.into_fragment()
+        h.into_markup()
     }
 
-    pub fn basic_attack_global() -> String {
-        let mut h = Highlighter::new();
+    pub fn basic_attack_global_markup<M: Markup>() -> M {
+        let mut h = GenericHighlighter::<M>::new();
 
         h.push(Class::Control, "intrinsic")
             .text(" ")
@@ -188,11 +188,11 @@ impl FormulaRenderer {
             .bracket(Bracket::RCurly)
             .text(";");
 
-        h.into_fragment()
+        h.into_markup()
     }
 
-    pub fn basic_attack_fn() -> String {
-        let mut h = Highlighter::new();
+    pub fn basic_attack_fn_markup<M: Markup>() -> M {
+        let mut h = GenericHighlighter::<M>::new();
 
         h.push(Class::Keyword, "fn")
             .text(" ")
@@ -210,15 +210,15 @@ impl FormulaRenderer {
             .text("\n")
             .bracket(Bracket::RCurly);
 
-        h.into_fragment()
+        h.into_markup()
     }
 
-    pub fn tower_global() -> String {
-        let mut h = Highlighter::new();
+    pub fn tower_global_markup<M: Markup>() -> M {
+        let mut h = GenericHighlighter::<M>::new();
 
         h.global_struct("Tower")
-            .html_field("damage_type", &{
-                let mut h = Highlighter::new();
+            .fragment_field("damage_type", &{
+                let mut h = GenericHighlighter::<M>::new();
 
                 h.push(Class::Control, "match")
                     .raw(" ")
@@ -253,15 +253,15 @@ impl FormulaRenderer {
                     .raw(",\n\t")
                     .bracket(Bracket::RCurly);
 
-                h.into_fragment()
+                h.into_markup()
             })
             .finish_struct();
 
-        h.into_fragment()
+        h.into_markup()
     }
 
-    pub fn tower_fn() -> String {
-        let mut h = Highlighter::new();
+    pub fn tower_fn_markup<M: Markup>() -> M {
+        let mut h = GenericHighlighter::<M>::new();
 
         h.push(Class::Keyword, "fn")
             .raw(" ")
@@ -354,6 +354,44 @@ impl FormulaRenderer {
             .raw("\n")
             .bracket(Bracket::RCurly);
 
-        h.into_fragment()
+        h.into_markup()
+    }
+
+    // HTML strings, as used by the web frontend.
+
+    pub fn ignite_fn() -> String {
+        Self::ignite_fn_markup::<Html>().into_string()
+    }
+
+    pub fn onhit_effect_global() -> String {
+        Self::onhit_effect_global_markup::<Html>().into_string()
+    }
+
+    pub fn onhit_effect_fn() -> String {
+        Self::onhit_effect_fn_markup::<Html>().into_string()
+    }
+
+    pub fn critical_strike_global() -> String {
+        Self::critical_strike_global_markup::<Html>().into_string()
+    }
+
+    pub fn critical_strike_fn() -> String {
+        Self::critical_strike_fn_markup::<Html>().into_string()
+    }
+
+    pub fn basic_attack_global() -> String {
+        Self::basic_attack_global_markup::<Html>().into_string()
+    }
+
+    pub fn basic_attack_fn() -> String {
+        Self::basic_attack_fn_markup::<Html>().into_string()
+    }
+
+    pub fn tower_global() -> String {
+        Self::tower_global_markup::<Html>().into_string()
+    }
+
+    pub fn tower_fn() -> String {
+        Self::tower_fn_markup::<Html>().into_string()
     }
 }

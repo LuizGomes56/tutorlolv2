@@ -137,7 +137,7 @@ impl ChampionId {
         ability_const_eval(*self, ctx, kind)
     }
 
-    #[cfg(feature = "yew")]
+    #[cfg(feature = "client-data")]
     pub const fn exceptions(&self, ally: bool) -> Option<tutorlolv2_types::Key> {
         use tutorlolv2_types::Key;
 
@@ -170,17 +170,17 @@ impl ChampionId {
         }
     }
 
-    #[cfg(feature = "yew")]
+    #[cfg(feature = "client-data")]
     pub const fn identifiers(&self) -> &'static [&'static [tutorlolv2_types::CtxVar]] {
         self.data().identifiers
     }
 
-    #[cfg(feature = "yew")]
+    #[cfg(any(feature = "yew", feature = "formula-docs"))]
     pub const fn combos(&self) -> &'static [&'static [tutorlolv2_types::ComboElement]] {
         self.data().combos
     }
 
-    #[cfg(feature = "yew")]
+    #[cfg(feature = "client-data")]
     pub const fn merge_data(&self) -> &'static [tutorlolv2_types::MergeData] {
         self.data().merge_data
     }

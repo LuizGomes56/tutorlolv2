@@ -42,11 +42,14 @@ serde_json = "1.0"
 tutorlolv2_build_dep = { path = "build" }
 
 [features]
-default = ["engine", "formula-docs"]
+default = ["engine", "formula-docs", "yew"]
 engine = []
-client = ["formula-docs"]
-formula-docs = ["yew", "dep:tutorlolv2_codec"]
-yew = ["dep:yew", "tutorlolv2_types/dev", "tutorlolv2_types/yew"]
+client = ["formula-docs", "yew"]
+# Highlighted formula docs in any `tutorlolv2_codec::Markup`. Does not require yew.
+formula-docs = ["dep:tutorlolv2_codec"]
+# Client metadata (ability merge data, context identifiers, stack exceptions). Does not require yew.
+client-data = []
+yew = ["dep:yew", "client-data", "tutorlolv2_types/dev", "tutorlolv2_types/yew"]
 
 # Optimize the final binaries across the entire workspace.
 [profile.release]

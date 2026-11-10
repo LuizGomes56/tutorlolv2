@@ -1,6 +1,6 @@
 use {
     crate::{
-        Build, BuildContext, BuildOutput, ENGINE_CFG, MayFail, YEW_CFG,
+        Build, BuildContext, BuildOutput, DOCS_CFG, ENGINE_CFG, MayFail, CLIENT_CFG,
         generators::parser::champions::{Ability, Champion},
         scripts::{
             batch::FormulaDoc,
@@ -123,13 +123,13 @@ impl Build for Champion {
                 {ENGINE_CFG}
                 ability_batch: {batch_name},
 
-                {YEW_CFG}
+                {DOCS_CFG}
                 combos: &[{combos}],
 
-                {YEW_CFG}
+                {CLIENT_CFG}
                 merge_data: {merge_data},
 
-                {YEW_CFG}
+                {CLIENT_CFG}
                 identifiers: &[{identifiers}],
             }};"#,
             stats = cast_f32(&format!("{stats:?}"))?,

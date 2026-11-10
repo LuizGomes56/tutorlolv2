@@ -39,7 +39,11 @@ let _ = |rune: tutorlolv2::Rune| rune.ranged;
 
 extern crate alloc;
 
-#[cfg(feature = "yew")]
+/// Highlighted documentation of every formula, in any [`tutorlolv2_codec::Markup`].
+#[cfg(feature = "formula-docs")]
+pub mod formula_docs;
+
+#[cfg(any(feature = "yew", feature = "formula-docs"))]
 pub mod yew;
 
 #[cfg(feature = "engine")]

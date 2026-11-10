@@ -1,5 +1,5 @@
 use crate::{
-    Build, BuildContext, BuildOutput, MayFail, YEW_CFG,
+    Build, BuildContext, BuildOutput, DOCS_CFG, MayFail, CLIENT_CFG,
     generators::parser::items::Item,
     scripts::utils::{BakeExt, ItemOrRuneExt},
 };
@@ -55,13 +55,13 @@ impl Build for Item {
                 riot_id: {id},
                 custom: {custom},
 
-                {YEW_CFG}
+                {CLIENT_CFG}
                 identifiers: {identifiers},
 
-                {YEW_CFG}
+                {DOCS_CFG}
                 builds_from: {builds_from},
 
-                {YEW_CFG}
+                {DOCS_CFG}
                 builds_into: {builds_into},
             }};"#,
             upper_id = item_id.to_shouty_snake_case(),

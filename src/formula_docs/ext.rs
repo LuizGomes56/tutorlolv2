@@ -1,9 +1,9 @@
 use crate::{
     AbilityId, CastId, ChampionId, DamageIndex, ItemId, RuneId,
-    yew::render::{FORMULA_RENDERER, FormulaRenderer, MayFail},
+    formula_docs::{FORMULA_RENDERER, FormulaRenderer, MayFail},
 };
 use alloc::{format, string::String};
-use tutorlolv2_codec::{Bracket, Class, Highlighter};
+use tutorlolv2_codec::{Bracket, Class, GenericHighlighter, Html, Markup};
 use tutorlolv2_types::{AttackType, ComboElement};
 
 pub const TYPE_INDEX: [(AttackType, DamageIndex); 4] = [
@@ -14,8 +14,8 @@ pub const TYPE_INDEX: [(AttackType, DamageIndex); 4] = [
 ];
 
 impl ChampionId {
-    pub fn render_global(&self) -> MayFail<String> {
-        let mut h = Highlighter::new();
+    pub fn render_global_markup<M: Markup>(&self) -> MayFail<M> {
+        let mut h = GenericHighlighter::<M>::new();
 
         h.global_struct(self.debug())
             .field("name", Class::String, self.name())
@@ -25,64 +25,66 @@ impl ChampionId {
 
         for metadata in self.abilities() {
             let name = metadata.kind.discriminant().to_lowercase();
-            let damage = FORMULA_RENDERER.champion_formula(*self, metadata.kind)?;
-            h.html_field(&name, &damage);
+            let damage = FORMULA_RENDERER.champion_formula_markup(*self, metadata.kind)?;
+            h.fragment_field(&name, &damage);
         }
 
         for (i, combo) in self.combos().iter().enumerate() {
             let values = combo.iter().map(|c| match c {
                 ComboElement::Ability(ability_id) => {
-                    let mut h = Highlighter::new();
+                    let mut h = GenericHighlighter::<M>::new();
 
                     h.push(Class::Type, ability_id.as_char())
                         .bracket(Bracket::LParen)
                         .push(Class::Constant, ability_id.ability_name())
                         .bracket(Bracket::RParen);
 
-                    h.into_fragment()
+                    h.into_markup()
                 }
-                ComboElement::Attack => Highlighter::span(Class::Constant, "Attack"),
+                ComboElement::Attack => {
+                    GenericHighlighter::<M>::span_markup(Class::Constant, "Attack")
+                }
             });
 
             let name = format!("combo_{}", i + 1);
 
-            h.array_field(&name, Class::Constant, values);
+            h.fragment_array_field(&name, values);
         }
 
         h.finish_struct();
 
-        Ok(h.into_fragment())
+        Ok(h.into_markup())
     }
 
-    pub fn render_fn(&self, ability_id: AbilityId) -> MayFail<String> {
-        let mut h = Highlighter::new();
+    pub fn render_fn_markup<M: Markup>(&self, ability_id: AbilityId) -> MayFail<M> {
+        let mut h = GenericHighlighter::<M>::new();
 
-        let body = FORMULA_RENDERER.champion_formula(*self, ability_id)?;
+        let body = FORMULA_RENDERER.champion_formula_markup(*self, ability_id)?;
 
-        h.function(
+        h.function_fragment(
             self.debug(),
             ability_id.as_char(),
             ability_id.ability_name(),
             &body,
         );
 
-        Ok(h.into_fragment())
+        Ok(h.into_markup())
     }
 }
 
 impl ItemId {
-    pub fn render_fn(&self) -> MayFail<String> {
-        let mut h = Highlighter::new();
+    pub fn render_fn_markup<M: Markup>(&self) -> MayFail<M> {
+        let mut h = GenericHighlighter::<M>::new();
 
         if !self.deals_damage() {
-            h.function(
+            h.function_fragment(
                 self.debug(),
                 "Type",
                 "Tag",
-                &Highlighter::span(Class::Comment, "No damage"),
+                &GenericHighlighter::<M>::span_markup(Class::Comment, "No damage"),
             );
 
-            return Ok(h.into_fragment());
+            return Ok(h.into_markup());
         }
 
         for (attack_type, damage_index) in TYPE_INDEX {
@@ -91,17 +93,17 @@ impl ItemId {
             }
 
             let slot = FormulaRenderer::damage_slot(attack_type, damage_index);
-            let body = FORMULA_RENDERER.cast_id_formula(*self, slot)?;
+            let body = FORMULA_RENDERER.cast_id_formula_markup(*self, slot)?;
 
-            h.function(self.debug(), attack_type, damage_index, &body)
+            h.function_fragment(self.debug(), attack_type, damage_index, &body)
                 .raw("\n\n");
         }
 
-        Ok(h.into_fragment())
+        Ok(h.into_markup())
     }
 
-    pub fn render_global(&self) -> MayFail<String> {
-        let mut h = Highlighter::new();
+    pub fn render_global_markup<M: Markup>(&self) -> MayFail<M> {
+        let mut h = GenericHighlighter::<M>::new();
 
         h.global_struct(self.debug())
             .field("name", Class::String, self.name())
@@ -121,9 +123,9 @@ impl ItemId {
 
                 let slot = FormulaRenderer::damage_slot(attack_type, damage_index);
                 let name = format!("{attack_type:?}_{damage_index:?}").to_lowercase();
-                let damage = FORMULA_RENDERER.cast_id_formula(*self, slot)?;
+                let damage = FORMULA_RENDERER.cast_id_formula_markup(*self, slot)?;
 
-                h.html_field(&name, &damage);
+                h.fragment_field(&name, &damage);
             }
         }
 
@@ -139,23 +141,23 @@ impl ItemId {
         )
         .finish_struct();
 
-        Ok(h.into_fragment())
+        Ok(h.into_markup())
     }
 }
 
 impl RuneId {
-    pub fn render_fn(&self) -> MayFail<String> {
-        let mut h = Highlighter::new();
+    pub fn render_fn_markup<M: Markup>(&self) -> MayFail<M> {
+        let mut h = GenericHighlighter::<M>::new();
 
         if !self.deals_damage() {
-            h.function(
+            h.function_fragment(
                 self.debug(),
                 "Type",
                 "Tag",
-                &Highlighter::span(Class::Comment, "No damage"),
+                &GenericHighlighter::<M>::span_markup(Class::Comment, "No damage"),
             );
 
-            return Ok(h.into_fragment());
+            return Ok(h.into_markup());
         }
 
         for (attack_type, damage_index) in TYPE_INDEX {
@@ -164,17 +166,17 @@ impl RuneId {
             }
 
             let slot = FormulaRenderer::damage_slot(attack_type, damage_index);
-            let body = FORMULA_RENDERER.cast_id_formula(*self, slot)?;
+            let body = FORMULA_RENDERER.cast_id_formula_markup(*self, slot)?;
 
-            h.function(self.debug(), attack_type, damage_index, &body)
+            h.function_fragment(self.debug(), attack_type, damage_index, &body)
                 .raw("\n\n");
         }
 
-        Ok(h.into_fragment())
+        Ok(h.into_markup())
     }
 
-    pub fn render_global(&self) -> MayFail<String> {
-        let mut h = Highlighter::new();
+    pub fn render_global_markup<M: Markup>(&self) -> MayFail<M> {
+        let mut h = GenericHighlighter::<M>::new();
 
         h.global_struct(self.debug())
             .field("name", Class::String, self.name())
@@ -190,14 +192,47 @@ impl RuneId {
 
                 let slot = FormulaRenderer::damage_slot(attack_type, damage_index);
                 let name = format!("{attack_type:?}_{damage_index:?}").to_lowercase();
-                let damage = FORMULA_RENDERER.cast_id_formula(*self, slot)?;
+                let damage = FORMULA_RENDERER.cast_id_formula_markup(*self, slot)?;
 
-                h.html_field(&name, &damage);
+                h.fragment_field(&name, &damage);
             }
         }
 
         h.finish_struct();
 
-        Ok(h.into_fragment())
+        Ok(h.into_markup())
+    }
+}
+
+// HTML strings, as used by the web frontend.
+
+impl ChampionId {
+    pub fn render_global(&self) -> MayFail<String> {
+        self.render_global_markup::<Html>().map(Html::into_string)
+    }
+
+    pub fn render_fn(&self, ability_id: AbilityId) -> MayFail<String> {
+        self.render_fn_markup::<Html>(ability_id)
+            .map(Html::into_string)
+    }
+}
+
+impl ItemId {
+    pub fn render_fn(&self) -> MayFail<String> {
+        self.render_fn_markup::<Html>().map(Html::into_string)
+    }
+
+    pub fn render_global(&self) -> MayFail<String> {
+        self.render_global_markup::<Html>().map(Html::into_string)
+    }
+}
+
+impl RuneId {
+    pub fn render_fn(&self) -> MayFail<String> {
+        self.render_fn_markup::<Html>().map(Html::into_string)
+    }
+
+    pub fn render_global(&self) -> MayFail<String> {
+        self.render_global_markup::<Html>().map(Html::into_string)
     }
 }

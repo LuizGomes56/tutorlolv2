@@ -7,7 +7,7 @@ use alloc::{
     boxed::Box,
     string::{String, ToString},
 };
-use tutorlolv2_codec::{DamageSlot, FormulaDb, GeneratorDb, render::FnBuilder};
+use tutorlolv2_codec::{DamageSlot, FormulaDb, GeneratorDb, Html, Markup, render::FnBuilder};
 
 pub type MayFail<T = ()> = Result<T, Box<dyn core::error::Error>>;
 
@@ -30,9 +30,17 @@ impl GeneratorRenderer {
     }
 
     pub fn render<T: CastId>(&self, value: T) -> Option<String> {
+        self.render_markup::<Html, T>(value).map(Html::into_string)
+    }
+
+    pub fn render_markup<M: Markup, T: CastId>(&self, value: T) -> Option<M> {
         let index = value.index();
 
-        unsafe { self.db.render_html(T::KIND, index as _).unwrap_unchecked() }
+        unsafe {
+            self.db
+                .render_markup(T::KIND, index as _)
+                .unwrap_unchecked()
+        }
     }
 }
 
@@ -61,6 +69,15 @@ impl FormulaRenderer {
     }
 
     pub fn champion_formula(&self, champion: ChampionId, ability_id: AbilityId) -> MayFail<String> {
+        self.champion_formula_markup::<Html>(champion, ability_id)
+            .map(Html::into_string)
+    }
+
+    pub fn champion_formula_markup<M: Markup>(
+        &self,
+        champion: ChampionId,
+        ability_id: AbilityId,
+    ) -> MayFail<M> {
         let local = champion
             .index_of_ability(ability_id)
             .ok_or("Unable to locate ability_id")? as u8;
@@ -72,7 +89,7 @@ impl FormulaRenderer {
 
         Ok(self
             .db
-            .render_formula_html(formula_id, Self::ctx_name, |local| {
+            .render_formula_markup(formula_id, Self::ctx_name, |local| {
                 let ability = &champion.abilities()[local as usize].kind;
 
                 FnBuilder {
@@ -84,6 +101,15 @@ impl FormulaRenderer {
     }
 
     pub fn cast_id_formula<T: CastId>(&self, id: T, slot: DamageSlot) -> MayFail<String> {
+        self.cast_id_formula_markup::<Html, T>(id, slot)
+            .map(Html::into_string)
+    }
+
+    pub fn cast_id_formula_markup<M: Markup, T: CastId>(
+        &self,
+        id: T,
+        slot: DamageSlot,
+    ) -> MayFail<M> {
         let formula_id = self
             .db
             .item_or_rune_formula_id(T::KIND, id.index() as _, slot)
@@ -93,7 +119,7 @@ impl FormulaRenderer {
 
         Ok(self
             .db
-            .render_formula_html(formula_id, Self::ctx_name, |local| {
+            .render_formula_markup(formula_id, Self::ctx_name, |local| {
                 let (fn_type, fn_tag) = match DamageSlot::from_u8(local) {
                     Some(DamageSlot::MeleeMin) => ("Melee", "Min"),
                     Some(DamageSlot::MeleeMax) => ("Melee", "Max"),
