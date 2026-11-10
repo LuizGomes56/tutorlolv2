@@ -1,5 +1,5 @@
 use crate::{
-    Build, BuildContext, BuildOutput, DOCS_CFG, MayFail, CLIENT_CFG,
+    Build, BuildContext, BuildOutput, CLIENT_CFG, DOCS_CFG, MayFail,
     generators::parser::items::Item,
     scripts::utils::{BakeExt, ItemOrRuneExt},
 };

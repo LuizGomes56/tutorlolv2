@@ -1,6 +1,6 @@
 use {
     crate::{
-        Build, BuildContext, BuildOutput, DOCS_CFG, ENGINE_CFG, MayFail, CLIENT_CFG,
+        Build, BuildContext, BuildOutput, CLIENT_CFG, DOCS_CFG, ENGINE_CFG, MayFail,
         generators::parser::champions::{Ability, Champion},
         scripts::{
             batch::FormulaDoc,

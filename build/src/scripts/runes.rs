@@ -1,5 +1,5 @@
 use crate::{
-    Build, BuildContext, BuildOutput, MayFail, CLIENT_CFG,
+    Build, BuildContext, BuildOutput, CLIENT_CFG, MayFail,
     generators::parser::runes::Rune,
     scripts::utils::{BakeExt, ItemOrRuneExt},
 };
