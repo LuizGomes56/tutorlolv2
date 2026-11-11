@@ -4,7 +4,7 @@ impl Generator for Swain {
     fn generate(&mut self) -> MayFail {
         let [fragment_health] = self
             .description(Key::P, "Innate")?
-            .capture(r"Swain gains (\d+) bonus health")?;
+            .capture(regex!(r"Swain gains (\d+) bonus health"))?;
 
         self.constant("SOUL_FRAGMENT_HEALTH", fragment_health)?
             .ability(

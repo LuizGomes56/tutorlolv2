@@ -19,7 +19,7 @@ use {
     crate::{
         AbilityBatch, ChampionId, ItemId, RuneId, WikiModifiers,
         bitset::BitSet,
-        libgen::{Champion, Closure, L_TWRD, Stat, WikiStats, champions},
+        libgen::{Champion, Closure, L_TWRD, Stat, WikiStats, champions, items},
         model::*,
     },
     alloc::boxed::Box,
@@ -584,6 +584,8 @@ impl EnemyState<'_> {
                 e_default_stats.magic_resist += mode_magic_resist;
 
                 let bonus_mana = e_default_stats.infer_stats(items, earth_dragons);
+                // Warmog's Vitality only scales the health granted by items
+                let item_health = e_default_stats.max_health - base_stats.max_health;
                 let mut i = 0;
 
                 while i < item_exceptions.len() {
@@ -592,22 +594,37 @@ impl EnemyState<'_> {
 
                     if let Some(item_id) = item_exception.get_item_id() {
                         match item_id {
-                            ItemId::WintersApproach | ItemId::Fimbulwinter => {
-                                e_default_stats.max_health += 0.15 * bonus_mana
+                            ItemId::WintersApproach => {
+                                e_default_stats.max_health +=
+                                    items::winters_approach::AWE_BONUS_MANA_RATIO * bonus_mana
+                            }
+                            ItemId::Fimbulwinter => {
+                                e_default_stats.max_health +=
+                                    items::fimbulwinter::AWE_BONUS_MANA_RATIO * bonus_mana
                             }
                             ItemId::Dragonheart => {
-                                let modifier = 1.0 + 0.04 * stacks as f32;
+                                // Unbounded, although the game caps it at 7 souls
+                                let modifier = 1.0
+                                    + items::dragonheart::INNER_FLAME_STATS_PER_SOUL
+                                        * stacks as f32;
+
                                 e_default_stats.max_health *= modifier;
                                 e_default_stats.armor *= modifier;
                                 e_default_stats.magic_resist *= modifier
                             }
                             ItemId::DemonKingsCrown => {
+                                // The stacks are the percentage of the bonus
                                 let modifier = 1.0 + 0.01 * stacks as f32;
+
                                 e_default_stats.max_health *= modifier;
                                 e_default_stats.armor *= modifier;
                                 e_default_stats.magic_resist *= modifier
                             }
-                            ItemId::WarmogsArmor => e_default_stats.max_health *= 1.12,
+                            ItemId::WarmogsArmor => {
+                                e_default_stats.max_health +=
+                                    items::warmogs_armor::WARMOGS_VITALITY_BONUS_HEALTH_RATIO
+                                        * item_health
+                            }
                             _ => {}
                         }
                     }
@@ -870,10 +887,15 @@ impl SelfState {
             let existing = owned[i];
 
             match existing {
-                ItemId::WintersApproach | ItemId::Fimbulwinter => {
+                ItemId::WintersApproach => {
                     core::hint::cold_path();
 
-                    stats.max_health += 0.15 * added_mana
+                    stats.max_health += items::winters_approach::AWE_BONUS_MANA_RATIO * added_mana
+                }
+                ItemId::Fimbulwinter => {
+                    core::hint::cold_path();
+
+                    stats.max_health += items::fimbulwinter::AWE_BONUS_MANA_RATIO * added_mana
                 }
                 _ => {}
             }
@@ -883,10 +905,17 @@ impl SelfState {
 
         if !already_owned {
             match item {
-                ItemId::WintersApproach | ItemId::Fimbulwinter => {
+                ItemId::WintersApproach => {
                     core::hint::cold_path();
 
-                    stats.max_health += 0.15 * (stats.max_mana - self.base_stats.max_mana)
+                    stats.max_health += items::winters_approach::AWE_BONUS_MANA_RATIO
+                        * (stats.max_mana - self.base_stats.max_mana)
+                }
+                ItemId::Fimbulwinter => {
+                    core::hint::cold_path();
+
+                    stats.max_health += items::fimbulwinter::AWE_BONUS_MANA_RATIO
+                        * (stats.max_mana - self.base_stats.max_mana)
                 }
                 _ => {}
             }
@@ -901,15 +930,18 @@ impl SelfState {
             if matches!(existing, ItemId::WarmogsArmor) {
                 core::hint::cold_path();
 
-                stats.max_health =
-                    current.max_health + (stats.max_health - current.max_health) * 1.12;
+                stats.max_health += items::warmogs_armor::WARMOGS_VITALITY_BONUS_HEALTH_RATIO
+                    * (stats.max_health - current.max_health);
             }
 
             i += 1;
         }
 
+        // Observed health doesn't tell which part came from items, so the whole
+        // bonus health is amplified
         if !already_owned && matches!(item, ItemId::WarmogsArmor) {
-            stats.max_health *= 1.12;
+            stats.max_health += items::warmogs_armor::WARMOGS_VITALITY_BONUS_HEALTH_RATIO
+                * (stats.max_health - self.base_stats.max_health);
         }
 
         let health_delta = stats.max_health - current.max_health;
@@ -923,13 +955,21 @@ impl SelfState {
             let existing = owned[i];
 
             match existing {
-                ItemId::Riftmaker => added_ap += 0.02 * health_delta,
-                ItemId::ArchangelsStaff => added_ap += 0.01 * added_mana,
-                ItemId::SeraphsEmbrace => added_ap += 0.02 * added_mana,
-                ItemId::Manamune | ItemId::Muramana => added_ad += 0.025 * added_mana,
+                ItemId::Riftmaker => {
+                    added_ap += items::riftmaker::VOID_INFUSION_BONUS_HEALTH_RATIO * health_delta
+                }
+                ItemId::ArchangelsStaff => {
+                    added_ap += items::archangels_staff::AWE_BONUS_MANA_RATIO * added_mana
+                }
+                ItemId::SeraphsEmbrace => {
+                    added_ap += items::seraphs_embrace::AWE_BONUS_MANA_RATIO * added_mana
+                }
+                ItemId::Manamune => added_ad += items::manamune::AWE_MAX_MANA_RATIO * added_mana,
+                ItemId::Muramana => added_ad += items::muramana::AWE_MAX_MANA_RATIO * added_mana,
                 ItemId::OverlordsBloodmail => {
                     owns_bloodmail = true;
-                    added_ad += 0.025 * health_delta
+                    added_ad +=
+                        items::overlords_bloodmail::TYRANNY_BONUS_HEALTH_RATIO * health_delta
                 }
                 _ => {}
             }
@@ -942,7 +982,9 @@ impl SelfState {
             let bonus_mana = stats.max_mana - self.base_stats.max_mana;
 
             match item {
-                ItemId::Riftmaker => added_ap += 0.02 * bonus_health,
+                ItemId::Riftmaker => {
+                    added_ap += items::riftmaker::VOID_INFUSION_BONUS_HEALTH_RATIO * bonus_health
+                }
                 // Purchases do not change the flat missing health, so an owned
                 // Demonic Embrace keeps the ability power already observed
                 ItemId::DemonicEmbrace => {
@@ -951,13 +993,23 @@ impl SelfState {
                     added_ap +=
                         RiotFormulas::get_sinister_pact(current.max_health - current.current_health)
                 }
-                ItemId::ArchangelsStaff => added_ap += 0.01 * bonus_mana,
-                ItemId::SeraphsEmbrace => added_ap += 0.02 * bonus_mana,
-                ItemId::Manamune | ItemId::Muramana => added_ad += 0.025 * bonus_mana,
+                ItemId::ArchangelsStaff => {
+                    added_ap += items::archangels_staff::AWE_BONUS_MANA_RATIO * bonus_mana
+                }
+                ItemId::SeraphsEmbrace => {
+                    added_ap += items::seraphs_embrace::AWE_BONUS_MANA_RATIO * bonus_mana
+                }
+                ItemId::Manamune => {
+                    added_ad += items::manamune::AWE_MAX_MANA_RATIO * stats.max_mana
+                }
+                ItemId::Muramana => {
+                    added_ad += items::muramana::AWE_MAX_MANA_RATIO * stats.max_mana
+                }
                 ItemId::OverlordsBloodmail => {
                     core::hint::cold_path();
 
-                    added_ad += 0.025 * bonus_health
+                    added_ad +=
+                        items::overlords_bloodmail::TYRANNY_BONUS_HEALTH_RATIO * bonus_health
                 }
                 _ => {}
             }
@@ -985,6 +1037,9 @@ impl SelfState {
         }
 
         // The observed AP already includes owned amplifiers; only amplify the delta.
+        const RABADONS_AMPLIFIER: f32 = 1.0 + items::rabadons_deathcap::MAGICAL_OPUS_AP_AMPLIFIER;
+        const WOOGLETS_AMPLIFIER: f32 = 1.0 + items::wooglets_witchcap::MAGICAL_OPUS_AP_AMPLIFIER;
+
         let ap_delta = stats.ability_power - current.ability_power;
         let mut ap_multiplier = 1.0;
 
@@ -994,10 +1049,10 @@ impl SelfState {
             let existing = owned[i];
 
             match existing {
-                ItemId::RabadonsDeathcap => ap_multiplier *= 1.3,
+                ItemId::RabadonsDeathcap => ap_multiplier *= RABADONS_AMPLIFIER,
                 ItemId::WoogletsWitchcap => {
                     core::hint::cold_path();
-                    ap_multiplier *= 1.5
+                    ap_multiplier *= WOOGLETS_AMPLIFIER
                 }
                 _ => {}
             }
@@ -1009,8 +1064,8 @@ impl SelfState {
 
         if !already_owned {
             match item {
-                ItemId::RabadonsDeathcap => stats.ability_power *= 1.3,
-                ItemId::WoogletsWitchcap => stats.ability_power *= 1.5,
+                ItemId::RabadonsDeathcap => stats.ability_power *= RABADONS_AMPLIFIER,
+                ItemId::WoogletsWitchcap => stats.ability_power *= WOOGLETS_AMPLIFIER,
                 _ => {}
             }
         }
@@ -1066,7 +1121,7 @@ impl EnemyFullState {
             max_health,
             ..
         } = self.current_stats;
-      
+
         let health_ratio = (current_health / max_health.max(1.0)).clamp(0.0, 1.0);
         let mut modifier = 1.0;
         let mut i = 0;

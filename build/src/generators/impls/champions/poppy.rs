@@ -4,7 +4,7 @@ impl Generator for Poppy {
     fn generate(&mut self) -> MayFail {
         let [bonus, low_health_bonus, low_health_threshold] = self
             .exception("Stubborn to a Fault")?
-            .capture(r"by (\d+)%, doubled to (\d+)% while she is below (\d+)% maximum health")?;
+            .capture(regex!(r"by (\d+)%, doubled to (\d+)% while she is below (\d+)% maximum health"))?;
 
         self.constant("STUBBORN_TO_A_FAULT_RESISTS", bonus / 100.0)?
             .constant(

@@ -5,7 +5,7 @@ impl Generator for ArmoredAdvance {
         // Plating
         let [plating_reduction] = self
             .description(Passive)?
-            .capture(r"basic damage\}\} by (\d+)%")?;
+            .capture(regex!(r"basic damage\}\} by (\d+)%"))?;
 
         self.constant("PLATING_REDUCTION", plating_reduction / 100.0)?;
 

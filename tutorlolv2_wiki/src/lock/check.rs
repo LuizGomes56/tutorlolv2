@@ -10,35 +10,14 @@ use crate::{
     MayFail,
     champions::exceptions::{EXCEPTIONS, Exception},
 };
-use regex::Regex;
+use lazy_regex::regex;
 use serde_json::Value;
 use std::{
     collections::{BTreeMap, BTreeSet},
     ops::Range,
     path::{Path, PathBuf},
-    sync::LazyLock,
 };
 use tutorlolv2_types::Key;
-
-/// Matches `impl Generator for Name`, which identifies the generator of a file
-static IMPL: LazyLock<Regex> =
-    LazyLock::new(|| Regex::new(r"impl\s+Generator\s+for\s+(\w+)").unwrap());
-
-/// Matches the start of `.ability(Key::Q, [` and `.ability_nth(1, Key::Q, [`
-static CALL: LazyLock<Regex> = LazyLock::new(|| {
-    Regex::new(r"\.ability(?:_nth\(\s*(\d+)\s*,|\()\s*Key::([PQWER])\s*,\s*\[").unwrap()
-});
-
-/// Matches `.formula(Key::Q, "name"`, as well as `effect` and `scaling`, and
-/// `.effect_nth(Key::Q, 1, "name"` as well as `scaling_nth`
-static DIRECT: LazyLock<Regex> = LazyLock::new(|| {
-    Regex::new(
-        r#"\.(?:formula|scaling|effect|effect_nth|scaling_nth)\(\s*Key::([PQWER])\s*,\s*(?:(\d+)\s*,\s*)?("(?:[^"\\]|\\.)*")"#,
-    )
-    .unwrap()
-});
-
-static STRING: LazyLock<Regex> = LazyLock::new(|| Regex::new(r#""(?:[^"\\]|\\.)*""#).unwrap());
 
 #[derive(Debug, Default)]
 pub struct Report {
@@ -106,7 +85,8 @@ impl GeneratorFile {
 
             let source = crate::read_to_string(&path)?;
 
-            if let Some(captures) = IMPL.captures(&source) {
+            // Matches `impl Generator for Name`, which identifies the generator of a file
+            if let Some(captures) = regex!(r"impl\s+Generator\s+for\s+(\w+)").captures(&source) {
                 files.push(Self {
                     id: captures[1].to_string(),
                     path,
@@ -124,7 +104,10 @@ impl GeneratorFile {
         let source = &self.source;
         let mut refs = Vec::new();
 
-        for captures in CALL.captures_iter(source) {
+        // Matches the start of `.ability(Key::Q, [` and `.ability_nth(1, Key::Q, [`
+        for captures in regex!(r"\.ability(?:_nth\(\s*(\d+)\s*,|\()\s*Key::([PQWER])\s*,\s*\[")
+            .captures_iter(source)
+        {
             let nth = captures
                 .get(1)
                 .and_then(|m| m.as_str().parse().ok())
@@ -134,13 +117,15 @@ impl GeneratorFile {
             let start = captures.get(0).map_or(0, |m| m.end());
             let end = self.closing_bracket(start);
 
-            for literal in STRING.find_iter(&source[start..end]) {
+            for literal in regex!(r#""(?:[^"\\]|\\.)*""#).find_iter(&source[start..end]) {
                 let span = start + literal.start()..start + literal.end();
                 self.push_ref(&mut refs, key, nth, span);
             }
         }
 
-        for captures in DIRECT.captures_iter(source) {
+        // Matches `.formula(Key::Q, "name"`, as well as `effect` and `scaling`, and
+        // `.effect_nth(Key::Q, 1, "name"` as well as `scaling_nth`
+        for captures in regex!(r#"\.(?:formula|scaling|effect|effect_nth|scaling_nth)\(\s*Key::([PQWER])\s*,\s*(?:(\d+)\s*,\s*)?("(?:[^"\\]|\\.)*")"#).captures_iter(source) {
             let nth = captures
                 .get(2)
                 .and_then(|m| m.as_str().parse().ok())

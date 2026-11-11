@@ -1,7 +1,8 @@
 use crate::MayFail;
 use heck::ToSnakeCase;
+use lazy_regex::regex;
 use regex::Regex;
-use std::{fmt::Display, sync::LazyLock};
+use std::fmt::Display;
 
 pub use tutorlolv2_types::Tag;
 
@@ -9,12 +10,9 @@ pub trait RegExtractor: Display {
     /// Returns a vector of all the numbers that could be extracted
     /// from some string, preserving the order that they were found
     fn capture_numbers(&self) -> Vec<f64> {
-        static CAPTURE_NUMBERS_RE: LazyLock<Regex> =
-            LazyLock::new(|| Regex::new(r"\d+(?:\.\d+)?").unwrap());
-
         let text = self.to_string();
 
-        CAPTURE_NUMBERS_RE
+        regex!(r"\d+(?:\.\d+)?")
             .find_iter(&text)
             .filter_map(|m| m.as_str().parse().ok())
             .collect()
@@ -22,18 +20,21 @@ pub trait RegExtractor: Display {
 
     /// Numbers matched by the `N` capture groups of `pattern`, in order. Fails
     /// when the text no longer matches, so a wiki change can't go unnoticed
-    fn capture<const N: usize>(&self, pattern: &str) -> MayFail<[f64; N]> {
+    /// `pattern` is usually built with [`regex!`](lazy_regex::regex), which checks
+    /// it at compile time
+    fn capture<const N: usize>(&self, pattern: &Regex) -> MayFail<[f64; N]> {
         let text = self.to_string();
-        let captures = Regex::new(pattern)?
+        let source = pattern.as_str();
+        let captures = pattern
             .captures(&text)
-            .ok_or_else(|| format!("Pattern {pattern:?} did not match {text:?}"))?;
+            .ok_or_else(|| format!("Pattern {source:?} did not match {text:?}"))?;
 
         let values = captures
             .iter()
             .skip(1)
             .map(|group| -> MayFail<f64> {
                 let group =
-                    group.ok_or_else(|| format!("Pattern {pattern:?} has an empty group"))?;
+                    group.ok_or_else(|| format!("Pattern {source:?} has an empty group"))?;
                 Ok(group.as_str().parse()?)
             })
             .collect::<MayFail<Vec<_>>>()?;
@@ -42,7 +43,7 @@ pub trait RegExtractor: Display {
 
         values
             .try_into()
-            .map_err(|_| format!("Pattern {pattern:?} has {len} groups, expected {N}").into())
+            .map_err(|_| format!("Pattern {source:?} has {len} groups, expected {N}").into())
     }
 
     fn parenthesize(&self) -> String {

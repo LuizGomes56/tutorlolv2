@@ -5,7 +5,7 @@ impl Generator for Shadowflame {
         // Cinderbloom
         let [cinderbloom_crit_damage, cinderbloom_health_threshold] =
             self.description(Passive)?.capture(
-                r"\{\{as\|(\d+)%\|critical damage\}\} damage against enemies \{\{as\|below (\d+)%",
+                regex!(r"\{\{as\|(\d+)%\|critical damage\}\} damage against enemies \{\{as\|below (\d+)%"),
             )?;
 
         self.constant("CINDERBLOOM_CRIT_DAMAGE", cinderbloom_crit_damage / 100.0)?

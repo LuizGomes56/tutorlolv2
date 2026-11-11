@@ -4,9 +4,9 @@ use crate::{
     parser::{Effect, EffectInner, Scaling, assign_ctx_var, vec_dedup},
 };
 use heck::ToPascalCase;
-use regex::Regex;
+use lazy_regex::regex;
 use serde::{Deserialize, Serialize};
-use std::{collections::BTreeMap, sync::LazyLock};
+use std::collections::BTreeMap;
 use tutorlolv2_types::{CtxVar, Key};
 
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
@@ -41,6 +41,9 @@ pub struct ItemEffects {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub pass4: Option<ItemEffect>,
     pub act: Option<ItemEffect>,
+    /// Effect of consumables, such as the juices of Arena
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub consume: Option<ItemEffect>,
 }
 
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
@@ -197,12 +200,14 @@ pub fn parse_items() -> MayFail {
             assign_other_formulas(value.effects.pass2.as_mut());
             assign_other_formulas(value.effects.pass3.as_mut());
             assign_other_formulas(value.effects.pass4.as_mut());
+            assign_other_formulas(value.effects.consume.as_mut());
 
             assign_formula(value.effects.act.as_mut());
             assign_formula(value.effects.pass.as_mut());
             assign_formula(value.effects.pass2.as_mut());
             assign_formula(value.effects.pass3.as_mut());
             assign_formula(value.effects.pass4.as_mut());
+            assign_formula(value.effects.consume.as_mut());
 
             let key = name.replace("'s", "s").to_pascal_case();
             value.name = name;
@@ -228,6 +233,7 @@ impl ItemRaw {
             &self.effects.pass3,
             &self.effects.pass4,
             &self.effects.act,
+            &self.effects.consume,
         ]
         .into_iter()
         .flatten()
@@ -252,6 +258,7 @@ impl ItemRaw {
                 pass3: self.effects.pass3.map(parse),
                 pass4: self.effects.pass4.map(parse),
                 act: self.effects.act.map(parse),
+                consume: self.effects.consume.map(parse),
             },
             recipe: self.recipe,
             buy: self.buy,
@@ -404,29 +411,19 @@ fn build_effect(description: &str, resolved: &str, series: &[LevelSeries]) -> Ef
 /// may also increase per point of a stat or per stack, as in "0.7% (+ 0.1% per
 /// target's Reap stack) of the target's maximum health"
 fn nest_per100_ratios(text: &str, scalings: &mut Vec<Scaling>) {
-    // `{{as|3%|hp}}` is flattened with its color as "3% hp", so each value may be
-    // followed by a word, which may also be the "of" before the target
-    static NESTED_RE: LazyLock<Regex> = LazyLock::new(|| {
-        Regex::new(
-            r"(?i)(\d+(?:\.\d+)?)%(?:\s+[a-z]+)?\s*((?:\([^()]*\)(?:\s+[a-z]+)?\s*)+)((?:of )?(?:the )?target's (?:maximum|current) health)",
-        )
-        .unwrap()
-    });
-
-    static INNER_RE: LazyLock<Regex> = LazyLock::new(|| {
-        Regex::new(r"(?i)\(\+\s*(\d+(?:\.\d+)?)%\s+per\s+(100\s+|1\s+)?([^)]+)\)").unwrap()
-    });
-
     let text = text.replace("'''", "");
 
-    let Some(caps) = NESTED_RE.captures(&text) else {
+    // `{{as|3%|hp}}` is flattened with its color as "3% hp", so each value may be
+    // followed by a word, which may also be the "of" before the target
+    let Some(caps) = regex!(r"(?i)(\d+(?:\.\d+)?)%(?:\s+[a-z]+)?\s*((?:\([^()]*\)(?:\s+[a-z]+)?\s*)+)((?:of )?(?:the )?target's (?:maximum|current) health)").captures(&text) else {
         return;
     };
+
     let Ok(value) = caps[1].parse::<f64>() else {
         return;
     };
 
-    let inner = INNER_RE
+    let inner = regex!(r"(?i)\(\+\s*(\d+(?:\.\d+)?)%\s+per\s+(100\s+|1\s+)?([^)]+)\)")
         .captures_iter(&caps[2])
         .filter_map(|inner| {
             let value = inner[1].parse::<f64>().ok()? / 100.0;

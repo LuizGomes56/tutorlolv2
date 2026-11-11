@@ -7,6 +7,7 @@ edition = "2024"
 databake = "0.2.1"
 derive_more = { version = "2.1.1", features = ["deref", "deref_mut"] }
 heck = "0.5.0"
+lazy-regex = "3.6.2"
 pastey = "0.2.3"
 proc-macro2 = { version = "1.0", features = ["span-locations"] }
 quote = "1.0"

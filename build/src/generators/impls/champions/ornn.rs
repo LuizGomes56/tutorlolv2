@@ -6,7 +6,7 @@ impl Generator for Ornn {
         let [base, per_upgrade, max] = self
             .description(Key::P, "Innate - Master Craftsman")?
             .capture(
-                r"by (\d+)% from all sources, further increased by (\d+)% each time .*total increase of (\d+)%",
+                regex!(r"by (\d+)% from all sources, further increased by (\d+)% each time .*total increase of (\d+)%"),
             )?;
 
         self.constant("MASTER_CRAFTSMAN_BASE_BONUS", base / 100.0)?

@@ -242,6 +242,7 @@ pub enum Source {
     Passive2,
     Passive3,
     Passive4,
+    Consume,
 }
 
 impl TryFrom<WikiItem> for Item {
@@ -526,6 +527,7 @@ impl Index<Source> for Item {
             Source::Passive2 => &self.data.effects.pass2,
             Source::Passive3 => &self.data.effects.pass3,
             Source::Passive4 => &self.data.effects.pass4,
+            Source::Consume => &self.data.effects.consume,
         }
     }
 }
@@ -538,6 +540,7 @@ impl IndexMut<Source> for Item {
             Source::Passive2 => &mut self.data.effects.pass2,
             Source::Passive3 => &mut self.data.effects.pass3,
             Source::Passive4 => &mut self.data.effects.pass4,
+            Source::Consume => &mut self.data.effects.consume,
         }
     }
 }

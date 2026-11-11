@@ -547,7 +547,11 @@ fn simulated_purchase_applies_stat_conversion_and_attack_speed_units() {
 
     let warmog =
         state.simulated_purchase(ItemId::WarmogsArmor, &[], player.champion_id, out.dragons);
-    close(warmog.current_stats.max_health, 3360.0); // (2000 live HP + 1000 item HP) * 1.12
+    // Warmog's Vitality grants 12% of the bonus health, not of the base health
+    close(
+        warmog.current_stats.max_health,
+        3000.0 + 0.12 * (3000.0 - player.base_stats.max_health),
+    ); // 2000 live HP + 1000 item HP
 
     let nashor = out.siml_damages(0, sim_index(ItemId::NashorsTooth));
     close(nashor.ctx.attack_speed, 1.3125); // 1 live AS + .625 ratio * 50%
@@ -816,7 +820,10 @@ fn coup_de_grace_and_cut_down_depend_on_enemy_health() {
     ] {
         let state = enemy(health_ratio);
 
-        close(state.rune_damage_modifier(&[RuneId::CoupDeGrace]), coup_de_grace);
+        close(
+            state.rune_damage_modifier(&[RuneId::CoupDeGrace]),
+            coup_de_grace,
+        );
         close(state.rune_damage_modifier(&[RuneId::CutDown]), cut_down);
         close(state.rune_damage_modifier(BOTH), coup_de_grace * cut_down);
     }
@@ -839,10 +846,9 @@ fn health_dependent_runes_no_longer_buff_every_target() {
 #[test]
 fn mega_gnar_gains_its_wiki_stat_increases() {
     // Level 1 and level 18 increases from the Mega Gnar template of the wiki
-    for (level, health, attack_damage, armor, magic_resist) in [
-        (1, 100.0, 6.0, 3.5, 3.5),
-        (18, 831.0, 48.5, 54.5, 63.0),
-    ] {
+    for (level, health, attack_damage, armor, magic_resist) in
+        [(1, 100.0, 6.0, 3.5, 3.5), (18, 831.0, 48.5, 54.5, 63.0)]
+    {
         let level = NonZeroU8::new(level).unwrap();
         let mini = BasicStats::base_stats(ChampionId::Gnar, level, false);
         let mega = BasicStats::base_stats(ChampionId::Gnar, level, true);
@@ -861,4 +867,65 @@ fn poppy_steadfast_presence_increases_total_resists() {
 
     close(poppy.armor, control.armor * 1.16);
     close(poppy.magic_resist, control.magic_resist * 1.16);
+}
+
+fn player_stats(items: &[ItemId], item_exceptions: &[ValueException], mega: bool) -> PlayerStats {
+    let mut input = game(items, &[], &[]);
+    input.active_player.data.item_exceptions = item_exceptions;
+    input.active_player.data.is_mega_gnar = mega;
+    calculator(input).current_player.current_stats
+}
+
+#[test]
+fn manamune_awe_scales_with_maximum_mana() {
+    let without = player_stats(&[], &[], false);
+    let with = player_stats(&[ItemId::Manamune], &[], false);
+
+    // 35 attack damage from its stats, plus 2% of the maximum mana
+    close(
+        with.attack_damage - without.attack_damage,
+        35.0 + 0.02 * with.max_mana,
+    );
+}
+
+#[test]
+fn warmogs_vitality_scales_only_health_from_items() {
+    let without = player_stats(&[], &[], false);
+    let with = player_stats(&[ItemId::WarmogsArmor], &[], false);
+
+    close(with.max_health - without.max_health, 1000.0 * 1.12);
+}
+
+#[test]
+fn hubris_eminence_depends_on_the_attack_type() {
+    let stacks = [ValueException::pack_item_id(ItemId::Hubris, 5)];
+
+    for (mega, attack_damage) in [(false, 10.0 + 2.0 * 5.0), (true, 15.0 + 3.0 * 5.0)] {
+        let without = player_stats(&[], &[], mega);
+        let with = player_stats(&[], &stacks, mega);
+
+        close(with.attack_damage - without.attack_damage, attack_damage);
+    }
+}
+
+#[test]
+fn juice_of_power_grants_only_the_adaptive_stat() {
+    let without = player_stats(&[], &[], false);
+    let with = player_stats(&[ItemId::JuiceOfPower], &[], false);
+
+    // Gnar is physical, so it only gains attack damage
+    close(
+        with.attack_damage - without.attack_damage,
+        18.0 + 0.1 * without.attack_damage,
+    );
+    close(with.ability_power, without.ability_power);
+}
+
+#[test]
+fn demon_kings_crown_stacks_are_the_percentage() {
+    let stacks = [ValueException::pack_item_id(ItemId::DemonKingsCrown, 25)];
+    let without = player_stats(&[], &[], false);
+    let with = player_stats(&[], &stacks, false);
+
+    close(with.armor, without.armor * 1.25);
 }

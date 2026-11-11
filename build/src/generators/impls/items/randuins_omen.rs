@@ -5,7 +5,7 @@ impl Generator for RanduinsOmen {
         // Resilience
         let [resilience_reduction] = self
             .description(Passive)?
-            .capture(r"critical strikes\}\} by (\d+)%")?;
+            .capture(regex!(r"critical strikes\}\} by (\d+)%"))?;
 
         self.constant("RESILIENCE_REDUCTION", resilience_reduction / 100.0)?;
 

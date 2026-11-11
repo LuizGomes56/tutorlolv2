@@ -335,7 +335,9 @@ fn changed_and_missing_exceptions_are_reported() {
     assert!(changed.warnings[0].contains("Gnar exception \"Mega Gnar\": the text changed"));
 
     // Lock files written before exceptions were tracked have none to compare
-    let untracked = lock(Some("701997b6")).check(Some(&lock(None)), &dir).unwrap();
+    let untracked = lock(Some("701997b6"))
+        .check(Some(&lock(None)), &dir)
+        .unwrap();
     assert!(untracked.warnings.is_empty());
 
     // An exception missing from the lock file can't be read by its generator

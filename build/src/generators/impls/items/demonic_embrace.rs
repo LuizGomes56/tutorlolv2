@@ -9,7 +9,7 @@ impl Generator for DemonicEmbrace {
             sinister_pact_health_step,
         ] = self
             .description(Passive)?
-            .capture(r"\{\{pp\|0 to (\d+)\|0 to (\d+) by (\d+)\|")?;
+            .capture(regex!(r"\{\{pp\|0 to (\d+)\|0 to (\d+) by (\d+)\|"))?;
 
         self.constant("SINISTER_PACT_MAX_AP", sinister_pact_max_ap)?
             .constant(

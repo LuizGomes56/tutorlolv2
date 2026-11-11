@@ -2,10 +2,17 @@ use super::*;
 
 impl Generator for OverlordsBloodmail {
     fn generate(&mut self) -> MayFail {
+        // Tyranny
+        let [tyranny] = self
+            .formula(Passive)?
+            .capture(regex!(r"^\(\(([\d.]+)\) \* ctx\.bonus_health\)$"))?;
+
+        self.constant("TYRANNY_BONUS_HEALTH_RATIO", tyranny)?;
+
         // Retribution
         let [retribution_max_bonus, retribution_max_missing_health] =
             self.description(Passive2)?
-                .capture(r"\{\{pp\|0 to (\d+) by 1\|0 to (\d+)\|")?;
+                .capture(regex!(r"\{\{pp\|0 to (\d+) by 1\|0 to (\d+)\|"))?;
 
         self.constant("RETRIBUTION_MAX_BONUS", retribution_max_bonus / 100.0)?
             .constant(

@@ -9289,6 +9289,12 @@
         ]
       }
     },
+    "AnvilVoucher": {
+      "consume": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
     "ArcaneSweeperTrinket": {
       "act": {
         "formula": "1d0a2219",
@@ -9535,6 +9541,18 @@
         "scalings": []
       }
     },
+    "BraveryVoucher": {
+      "consume": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "CappaJuice": {
+      "consume": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
     "CatalystOfAeons": {
       "pass": {
         "formula": "1d0a2219",
@@ -9571,6 +9589,12 @@
         "scalings": [
           "0: Simple Unknown (51a2c047)"
         ]
+      }
+    },
+    "ControlWard": {
+      "consume": {
+        "formula": "1d0a2219",
+        "scalings": []
       }
     },
     "CosmicDrive": {
@@ -9871,6 +9895,44 @@
         ]
       }
     },
+    "ElixirOfAvarice": {
+      "consume": {
+        "formula": "04d3013e",
+        "scalings": []
+      }
+    },
+    "ElixirOfForce": {
+      "consume": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "ElixirOfIron": {
+      "consume": {
+        "formula": "3ffa71c8",
+        "scalings": [
+          "0: Simple BonusMoveSpeed (b964414a)"
+        ]
+      }
+    },
+    "ElixirOfSkill": {
+      "consume": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "ElixirOfSorcery": {
+      "consume": {
+        "formula": "1ca20e0e",
+        "scalings": []
+      }
+    },
+    "ElixirOfWrath": {
+      "consume": {
+        "formula": "428a2d08",
+        "scalings": []
+      }
+    },
     "EmpyreanPromise": {
       "act": {
         "formula": "1bb9c99a",
@@ -9898,6 +9960,12 @@
         "scalings": [
           "0: Simple Unknown (bf201105)"
         ]
+      }
+    },
+    "EnhancedLuckyDice": {
+      "consume": {
+        "formula": "1d0a2219",
+        "scalings": []
       }
     },
     "EssenceReaver": {
@@ -9950,6 +10018,12 @@
           "0: Simple BonusAttackSpeed (49daec26)",
           "1: Simple BonusMoveSpeed (bfa647eb)"
         ]
+      }
+    },
+    "EyeOfTheHerald": {
+      "consume": {
+        "formula": "1d0a2219",
+        "scalings": []
       }
     },
     "FarsightAlteration": {
@@ -10119,6 +10193,12 @@
         ]
       }
     },
+    "GoldStatAnvilVoucher": {
+      "consume": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
     "Goredrinker": {
       "act": {
         "formula": "c471a491",
@@ -10224,6 +10304,12 @@
         "scalings": [
           "0: Simple Unknown (2d16ea75)"
         ]
+      }
+    },
+    "HealthPotion": {
+      "consume": {
+        "formula": "1d0a2219",
+        "scalings": []
       }
     },
     "Heartsteel": {
@@ -10479,6 +10565,31 @@
         "scalings": []
       }
     },
+    "JuiceOfHaste": {
+      "consume": {
+        "formula": "2617b509",
+        "scalings": [
+          "0: Simple Unknown (bf201105)"
+        ]
+      }
+    },
+    "JuiceOfPower": {
+      "consume": {
+        "formula": "5df00526",
+        "scalings": [
+          "0: Simple AttackDamage (344a2f4f)",
+          "1: Simple AbilityPower (e26ee9a5)"
+        ]
+      }
+    },
+    "JuiceOfVitality": {
+      "consume": {
+        "formula": "e474545f",
+        "scalings": [
+          "0: Simple MaxHealth (0b3366a8)"
+        ]
+      }
+    },
     "KaenicRookern": {
       "pass": {
         "formula": "e8ce62e8",
@@ -10515,6 +10626,42 @@
       },
       "pass.ranged": {
         "formula": "ea56b888",
+        "scalings": []
+      }
+    },
+    "LegendaryAssassinItem": {
+      "consume": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "LegendaryFighterItem": {
+      "consume": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "LegendaryMageItem": {
+      "consume": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "LegendaryMarksmanItem": {
+      "consume": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "LegendarySupportItem": {
+      "consume": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "LegendaryTankItem": {
+      "consume": {
+        "formula": "1d0a2219",
         "scalings": []
       }
     },
@@ -10592,6 +10739,12 @@
         "scalings": [
           "0: PercentAttr MaxMana (1aa5d25b)"
         ]
+      }
+    },
+    "LuckyDice": {
+      "consume": {
+        "formula": "1d0a2219",
+        "scalings": []
       }
     },
     "LudensEcho": {
@@ -10847,6 +11000,24 @@
         "scalings": []
       }
     },
+    "PoroSnax": {
+      "consume": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "PrismaticItem": {
+      "consume": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "PrismaticStatVoucher": {
+      "consume": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
     "ProfaneHydra": {
       "act": {
         "formula": "0f708e1f",
@@ -11032,6 +11203,10 @@
       }
     },
     "RefillablePotion": {
+      "consume": {
+        "formula": "1d0a2219",
+        "scalings": []
+      },
       "pass": {
         "formula": "1d0a2219",
         "scalings": []
@@ -11304,6 +11479,18 @@
     },
     "StaffOfFlowingWater": {
       "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "StatBonusAramMayhem": {
+      "consume": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "StatBonusArena": {
+      "consume": {
         "formula": "1d0a2219",
         "scalings": []
       }
@@ -11581,6 +11768,22 @@
         ]
       }
     },
+    "TotalBiscuitOfEverlastingWill": {
+      "consume": {
+        "formula": "27a0d321",
+        "scalings": [
+          "0: PercentAttr MaxHealth (946c3608)",
+          "1: PercentAttr MaxHealth (b8ab265b)"
+        ]
+      },
+      "consume.flip": {
+        "formula": "2828020f",
+        "scalings": [
+          "0: PercentAttr MaxHealth (fe28fce8)",
+          "1: PercentAttr MaxHealth (a15f13bb)"
+        ]
+      }
+    },
     "TowerPowerUp": {
       "pass": {
         "formula": "1d0a2219",
@@ -11846,6 +12049,12 @@
         ]
       },
       "pass": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "YourCut": {
+      "consume": {
         "formula": "1d0a2219",
         "scalings": []
       }

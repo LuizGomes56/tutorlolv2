@@ -8,10 +8,12 @@
 //! so all the function inputs have to be obtained through your
 //! own mechanism
 
-use core::num::NonZeroU8;
 use {
-    crate::{ChampionId, Ctx, GameMap, ItemId, L_MSTR, RuneId, helpers::*, model::*},
+    crate::{
+        ChampionId, Ctx, GameMap, ItemId, L_MSTR, RuneId, helpers::*, libgen::items, model::*,
+    },
     alloc::boxed::Box,
+    core::num::NonZeroU8,
     tutorlolv2_types::{AdaptiveType, AttackType, StatName},
 };
 
@@ -58,6 +60,10 @@ impl InferStats<'_> {
         let mut stat_modifiers = const { Modifiers::default() };
 
         bonus_stats.get_item_bonus_stats(items, &mut stat_modifiers, &mut adaptive_force);
+
+        // Warmog's Vitality only scales the health granted by items
+        let item_health = bonus_stats.max_health;
+
         bonus_stats.get_rune_bonus_stats(runes, &mut stat_modifiers, &mut adaptive_force, level);
 
         let cached_stats = data.stats;
@@ -114,9 +120,8 @@ impl InferStats<'_> {
             AdaptiveType::Physical => stats.attack_damage += 0.6 * adaptive_force,
         }
 
-        stats.assign_item_exceptions(item_exceptions);
+        stats.assign_item_exceptions(item_exceptions, attack_type);
         stats.assign_champion_exceptions(champion_id, ability_levels, stacks);
-
         stats.attack_speed = cached_stats.attack_speed(stats.attack_speed, level);
 
         let mut has_bloodmail = false;
@@ -129,31 +134,73 @@ impl InferStats<'_> {
             match items[i] {
                 ItemId::OverlordsBloodmail => {
                     has_bloodmail = true;
-                    stats.attack_damage += 0.025 * bonus_stats.max_health;
+                    stats.attack_damage += items::overlords_bloodmail::TYRANNY_BONUS_HEALTH_RATIO
+                        * bonus_stats.max_health;
                 }
-                ItemId::Riftmaker => stats.ability_power += 0.02 * bonus_stats.max_health,
-                ItemId::ArchangelsStaff => stats.ability_power += 0.01 * bonus_stats.max_mana,
-                ItemId::SeraphsEmbrace => stats.ability_power += 0.02 * bonus_stats.max_mana,
+                ItemId::Riftmaker => {
+                    stats.ability_power +=
+                        items::riftmaker::VOID_INFUSION_BONUS_HEALTH_RATIO * bonus_stats.max_health
+                }
+                ItemId::ArchangelsStaff => {
+                    stats.ability_power +=
+                        items::archangels_staff::AWE_BONUS_MANA_RATIO * bonus_stats.max_mana
+                }
+                ItemId::SeraphsEmbrace => {
+                    stats.ability_power +=
+                        items::seraphs_embrace::AWE_BONUS_MANA_RATIO * bonus_stats.max_mana
+                }
                 ItemId::DemonicEmbrace => has_demonic_embrace = true,
-                ItemId::Manamune | ItemId::Muramana => {
-                    stats.attack_damage += 0.025 * bonus_stats.max_mana;
+                ItemId::Manamune => {
+                    stats.attack_damage += items::manamune::AWE_MAX_MANA_RATIO * stats.max_mana;
                 }
-                ItemId::WintersApproach | ItemId::Fimbulwinter => {
-                    stats.max_health += 0.15 * bonus_stats.max_mana;
+                ItemId::Muramana => {
+                    stats.attack_damage += items::muramana::AWE_MAX_MANA_RATIO * stats.max_mana;
                 }
-                ItemId::JuiceOfVitality => stats.max_health += 300.0 + 0.1 * stats.max_health,
+                ItemId::WintersApproach => {
+                    stats.max_health +=
+                        items::winters_approach::AWE_BONUS_MANA_RATIO * bonus_stats.max_mana;
+                }
+                ItemId::Fimbulwinter => {
+                    stats.max_health +=
+                        items::fimbulwinter::AWE_BONUS_MANA_RATIO * bonus_stats.max_mana;
+                }
+                ItemId::JuiceOfVitality => {
+                    use items::juice_of_vitality::{HEALTH, MAX_HEALTH_RATIO};
+
+                    stats.max_health += HEALTH + MAX_HEALTH_RATIO * stats.max_health
+                }
                 ItemId::RabadonsDeathcap => {
-                    stats.ability_power *= 1.3;
-                    ap_amplifier *= 1.3;
+                    const AMPLIFIER: f32 =
+                        1.0 + items::rabadons_deathcap::MAGICAL_OPUS_AP_AMPLIFIER;
+
+                    stats.ability_power *= AMPLIFIER;
+                    ap_amplifier *= AMPLIFIER;
                 }
                 ItemId::WoogletsWitchcap => {
-                    stats.ability_power *= 1.5;
-                    ap_amplifier *= 1.5;
+                    const AMPLIFIER: f32 =
+                        1.0 + items::wooglets_witchcap::MAGICAL_OPUS_AP_AMPLIFIER;
+
+                    stats.ability_power *= AMPLIFIER;
+                    ap_amplifier *= AMPLIFIER;
                 }
-                ItemId::WarmogsArmor => stats.max_health *= 1.12,
+                ItemId::WarmogsArmor => {
+                    stats.max_health +=
+                        items::warmogs_armor::WARMOGS_VITALITY_BONUS_HEALTH_RATIO * item_health
+                }
                 ItemId::JuiceOfPower => {
-                    stats.attack_damage += 18.0 + 0.1 * stats.attack_damage;
-                    stats.ability_power += 30.0 + 0.1 * stats.ability_power;
+                    use items::juice_of_power::*;
+
+                    // Grants only the adaptive stat
+                    match adaptive_type {
+                        AdaptiveType::Physical => {
+                            stats.attack_damage +=
+                                ATTACK_DAMAGE + ATTACK_DAMAGE_RATIO * stats.attack_damage
+                        }
+                        AdaptiveType::Magic => {
+                            stats.ability_power +=
+                                ABILITY_POWER + ABILITY_POWER_RATIO * stats.ability_power
+                        }
+                    }
                 }
                 _ => {}
             }
@@ -189,6 +236,8 @@ impl InferStats<'_> {
             core::hint::cold_path();
 
             // Every 1% critical strike chance above 100% grants adaptive force
+            // #![manual_impl]: the wiki archive has no ARAM: Mayhem rules, only its
+            // items, so these ratios can't be extracted
             let excess_crit = stats.crit_chance - 100.0;
 
             if excess_crit > 0.0 {
@@ -264,7 +313,7 @@ impl PlayerStats {
             magic_pen_mult *= 1.0 - (magic_pen.clamp(0.0, 100.0) * 0.01);
 
             if matches!(item_id, ItemId::ElixirOfIron) {
-                self.max_health += 300.0;
+                self.max_health += items::elixir_of_iron::BONUS_HEALTH;
             }
 
             modifiers.apply_item(item_id);
@@ -302,7 +351,11 @@ impl PlayerStats {
         }
     }
 
-    pub const fn assign_item_exceptions(&mut self, exceptions: &[ValueException]) {
+    pub const fn assign_item_exceptions(
+        &mut self,
+        exceptions: &[ValueException],
+        attack_type: AttackType,
+    ) {
         if exceptions.is_empty() {
             return;
         }
@@ -311,13 +364,17 @@ impl PlayerStats {
 
         while i < exceptions.len() {
             let item_exception = exceptions[i];
-            let stacks = item_exception.stacks();
+            let stacks = item_exception.stacks() as f32;
 
             if let Some(item_id) = item_exception.get_item_id() {
                 match item_id {
-                    ItemId::DarkSeal => self.ability_power += (stacks << 2) as f32,
+                    ItemId::DarkSeal => {
+                        self.ability_power += items::dark_seal::GLORY_AP_PER_STACK * stacks
+                    }
                     ItemId::Dragonheart => {
-                        let modifier = 1.0 + 0.04 * stacks as f32;
+                        // Unbounded, although the game caps it at 7 souls
+                        let modifier =
+                            1.0 + items::dragonheart::INNER_FLAME_STATS_PER_SOUL * stacks;
                         self.ability_power *= modifier;
                         self.attack_speed *= modifier;
                         self.attack_damage *= modifier;
@@ -326,7 +383,10 @@ impl PlayerStats {
                         self.magic_resist *= modifier;
                     }
                     ItemId::DemonKingsCrown => {
-                        let modifier = 1.0 + 0.01 * stacks as f32;
+                        // Its bonus depends on the rounds won and lost, so the
+                        // stacks are the percentage itself
+                        let modifier = 1.0 + 0.01 * stacks;
+
                         self.ability_power *= modifier;
                         self.attack_speed *= modifier;
                         self.attack_damage *= modifier;
@@ -334,21 +394,38 @@ impl PlayerStats {
                         self.armor *= modifier;
                         self.magic_resist *= modifier;
                     }
-                    ItemId::RiteOfRuin => self.crit_chance += stacks as f32 * 2.5,
-                    ItemId::MejaisSoulstealer => self.ability_power += (5 * stacks) as f32,
+                    ItemId::RiteOfRuin => {
+                        self.crit_chance +=
+                            items::rite_of_ruin::WRATH_AND_RUIN_CRIT_CHANCE_PER_STACK * stacks
+                    }
+                    ItemId::MejaisSoulstealer => {
+                        self.ability_power += items::mejais_soulstealer::GLORY_AP_PER_STACK * stacks
+                    }
                     ItemId::BlackCleaver => {
                         self.armor_penetration_percent = RiotFormulas::combine_percentage(
                             self.armor_penetration_percent,
-                            (6 * stacks) as f32,
+                            items::black_cleaver::CARVE_ARMOR_REDUCTION_PER_STACK * stacks,
                         )
                     }
                     ItemId::BloodlettersCurse => {
                         self.magic_penetration_percent = RiotFormulas::combine_percentage(
                             self.magic_penetration_percent,
-                            7.5 * stacks as f32,
+                            items::bloodletters_curse::VILE_DECAY_MAGIC_REDUCTION_PER_STACK
+                                * stacks,
                         )
                     }
-                    ItemId::Hubris => self.attack_damage += (15 + (stacks << 1)) as f32,
+                    ItemId::Hubris => {
+                        use items::hubris::*;
+
+                        self.attack_damage += match attack_type {
+                            AttackType::Melee => {
+                                EMINENCE_MELEE_AD + EMINENCE_MELEE_AD_PER_STACK * stacks
+                            }
+                            AttackType::Ranged => {
+                                EMINENCE_RANGED_AD + EMINENCE_RANGED_AD_PER_STACK * stacks
+                            }
+                        }
+                    }
                     _ => {}
                 }
             }

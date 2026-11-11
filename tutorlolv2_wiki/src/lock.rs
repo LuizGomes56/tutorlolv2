@@ -133,6 +133,7 @@ fn lock_item(item: &WikiItem) -> BTreeMap<String, LockedItemEffect> {
         ("pass3", &effects.pass3),
         ("pass4", &effects.pass4),
         ("act", &effects.act),
+        ("consume", &effects.consume),
     ];
 
     let mut result = BTreeMap::new();

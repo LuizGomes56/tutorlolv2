@@ -1,3 +1,4 @@
+use lazy_regex::regex;
 use tutorlolv2_build_dep::generators::{constants::Constants, utils::RegExtractor};
 
 #[test]
@@ -5,7 +6,7 @@ fn capture_returns_each_group_in_order() {
     let text = "Deal 5% increased damage while below 60% maximum health";
 
     let [damage, health] = text
-        .capture(r"Deal (\d+)% increased damage while below (\d+)%")
+        .capture(regex!(r"Deal (\d+)% increased damage while below (\d+)%"))
         .unwrap();
 
     assert_eq!((damage, health), (5.0, 60.0));
@@ -15,9 +16,12 @@ fn capture_returns_each_group_in_order() {
 fn capture_fails_when_the_wiki_text_changes() {
     let text = "Reduces all incoming basic damage by 10%";
 
-    assert!(text.capture::<1>(r"critical strikes by (\d+)%").is_err());
+    assert!(
+        text.capture::<1>(regex!(r"critical strikes by (\d+)%"))
+            .is_err()
+    );
     // A pattern with a different number of groups than expected is an error
-    assert!(text.capture::<2>(r"by (\d+)%").is_err());
+    assert!(text.capture::<2>(regex!(r"by (\d+)%")).is_err());
 }
 
 #[test]

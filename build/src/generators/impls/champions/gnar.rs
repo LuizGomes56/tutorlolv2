@@ -6,21 +6,33 @@ impl Generator for Gnar {
         // `per_level * 17` up to level 18, so their growth is the range over 17
         let mega_gnar = self.exception("Mega Gnar")?.to_string();
 
-        for (name, stat) in [
-            ("HEALTH", "base health"),
-            ("ATTACK_DAMAGE", "base attack damage"),
-            ("ARMOR", "base armor"),
-            ("MAGIC_RESIST", "base magic resistance"),
+        for (name, pattern) in [
+            (
+                "HEALTH",
+                regex!(r"([\d.]+) - ([\d.]+) \(based on level\) base health\b"),
+            ),
+            (
+                "ATTACK_DAMAGE",
+                regex!(r"([\d.]+) - ([\d.]+) \(based on level\) base attack damage\b"),
+            ),
+            (
+                "ARMOR",
+                regex!(r"([\d.]+) - ([\d.]+) \(based on level\) base armor\b"),
+            ),
+            (
+                "MAGIC_RESIST",
+                regex!(r"([\d.]+) - ([\d.]+) \(based on level\) base magic resistance\b"),
+            ),
         ] {
-            let [min, max] =
-                mega_gnar.capture(&format!(r"([\d.]+) - ([\d.]+) \(based on level\) {stat}\b"))?;
+            let [min, max] = mega_gnar.capture(pattern)?;
 
             self.constant(&format!("MEGA_{name}_BASE"), min)?
                 .constant(&format!("MEGA_{name}_PER_LEVEL"), (max - min) / 17.0)?;
         }
 
-        let [min, max] = mega_gnar
-            .capture(r"loses ([\d.]+)% - ([\d.]+)% \(based on level\) bonus attack speed")?;
+        let [min, max] = mega_gnar.capture(regex!(
+            r"loses ([\d.]+)% - ([\d.]+)% \(based on level\) bonus attack speed"
+        ))?;
 
         self.constant("MEGA_ATTACK_SPEED_LOSS_PER_LEVEL", (max - min) / 17.0)?
             .ability_nth(
