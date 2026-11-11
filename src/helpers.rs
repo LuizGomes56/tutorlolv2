@@ -67,10 +67,6 @@ impl Modifiers {
     pub const fn apply_rune(&mut self, rune: RuneId, stats: &PlayerStats) {
         match rune {
             RuneId::AxiomArcanist => self.abilities.r *= RiotFormulas::AXIOM_ARCANIST_BONUS_DAMAGE,
-            RuneId::CoupDeGrace => {
-                self.damages.global_mod *= RiotFormulas::COUP_DE_GRACE_BONUS_DAMAGE
-            }
-            RuneId::CutDown => self.damages.global_mod *= RiotFormulas::CUT_DOWN_BONUS_DAMAGE,
             RuneId::LastStand => {
                 self.damages.global_mod *=
                     RiotFormulas::get_last_stand(stats.missing_health_ratio())
@@ -221,17 +217,19 @@ impl WikiStats {
     }
 
     pub const fn mega_gnar_base_stats(&self, level: NonZeroU8) -> BasicStats {
+        use champions::gnar::*;
+
         let mut gnar_stats = *ChampionId::Gnar.stats();
 
-        gnar_stats.health.base += 100.0;
-        gnar_stats.health.per_level += 43.0;
-        gnar_stats.armor.base += 3.5;
-        gnar_stats.armor.per_level += 3.0;
-        gnar_stats.magic_resist.base += 3.5;
-        gnar_stats.magic_resist.per_level += 3.5;
-        gnar_stats.attack_damage.base += 6.0;
-        gnar_stats.attack_damage.per_level += 2.5;
-        gnar_stats.attack_speed.per_level = 0.5;
+        gnar_stats.health.base += MEGA_HEALTH_BASE;
+        gnar_stats.health.per_level += MEGA_HEALTH_PER_LEVEL;
+        gnar_stats.armor.base += MEGA_ARMOR_BASE;
+        gnar_stats.armor.per_level += MEGA_ARMOR_PER_LEVEL;
+        gnar_stats.magic_resist.base += MEGA_MAGIC_RESIST_BASE;
+        gnar_stats.magic_resist.per_level += MEGA_MAGIC_RESIST_PER_LEVEL;
+        gnar_stats.attack_damage.base += MEGA_ATTACK_DAMAGE_BASE;
+        gnar_stats.attack_damage.per_level += MEGA_ATTACK_DAMAGE_PER_LEVEL;
+        gnar_stats.attack_speed.per_level -= MEGA_ATTACK_SPEED_LOSS_PER_LEVEL;
         gnar_stats.base_stats(level)
     }
 }
@@ -666,10 +664,12 @@ impl EnemyState<'_> {
                                 * ornn_resist_multiplier;
                     }
                     ChampionId::Poppy => {
-                        const POPPY_W_MULTIPLIER: f32 = 1.16;
+                        // Inferred enemies are at full health, so the bonus is
+                        // never doubled by her being at low health
+                        const MULTIPLIER: f32 = 1.0 + champions::poppy::STUBBORN_TO_A_FAULT_RESISTS;
 
-                        e_default_stats.armor *= POPPY_W_MULTIPLIER;
-                        e_default_stats.magic_resist *= POPPY_W_MULTIPLIER;
+                        e_default_stats.armor *= MULTIPLIER;
+                        e_default_stats.magic_resist *= MULTIPLIER;
                     }
                     ChampionId::Malphite => {
                         // W rank by level, assuming it is maxed last
@@ -1052,6 +1052,40 @@ impl EnemyFullState {
 
     pub const fn ctx(&self, self_state: &SelfState) -> Ctx {
         self_state.ctx(self)
+    }
+
+    /// Multiplier of the attacker's runes that depend on the health of this enemy
+    /// champion: [`RuneId::CoupDeGrace`] below its health threshold and
+    /// [`RuneId::CutDown`] above it. Monsters are not affected by these runes
+    pub const fn rune_damage_modifier(&self, owned_runes: &[RuneId]) -> f32 {
+        use crate::libgen::runes::{coup_de_grace, cut_down};
+
+        // Computed directly so that exact thresholds such as 60% are not lost to rounding
+        let EnemyStats {
+            current_health,
+            max_health,
+            ..
+        } = self.current_stats;
+      
+        let health_ratio = (current_health / max_health.max(1.0)).clamp(0.0, 1.0);
+        let mut modifier = 1.0;
+        let mut i = 0;
+
+        while i < owned_runes.len() {
+            match owned_runes[i] {
+                RuneId::CoupDeGrace if health_ratio < coup_de_grace::HEALTH_THRESHOLD => {
+                    modifier *= RiotFormulas::COUP_DE_GRACE_BONUS_DAMAGE
+                }
+                RuneId::CutDown if health_ratio > cut_down::HEALTH_THRESHOLD => {
+                    modifier *= RiotFormulas::CUT_DOWN_BONUS_DAMAGE
+                }
+                _ => {}
+            }
+
+            i += 1;
+        }
+
+        modifier
     }
 }
 

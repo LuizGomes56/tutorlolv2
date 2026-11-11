@@ -2,28 +2,32 @@ use super::*;
 
 impl Generator for Poppy {
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::P, [("Innate", Void)])
+        let [bonus, low_health_bonus, low_health_threshold] = self
+            .exception("Stubborn to a Fault")?
+            .capture(r"by (\d+)%, doubled to (\d+)% while she is below (\d+)% maximum health")?;
+
+        self.constant("STUBBORN_TO_A_FAULT_RESISTS", bonus / 100.0)?
+            .constant(
+                "STUBBORN_TO_A_FAULT_LOW_HEALTH_RESISTS",
+                low_health_bonus / 100.0,
+            )?
+            .constant(
+                "STUBBORN_TO_A_FAULT_HEALTH_THRESHOLD",
+                low_health_threshold / 100.0,
+            )?
+            .ability(Key::P, [("Innate", Void)])
             .ability(
                 Key::Q,
-                [
-                    ("Physical Damage", Min),
-                    ("Total Physical Damage", Max),
-                ],
+                [("Physical Damage", Min), ("Total Physical Damage", Max)],
             )
             .ability(Key::W, [("Magic Damage", Void)])
             .ability(
                 Key::E,
-                [
-                    ("Physical Damage", Min),
-                    ("Total Physical Damage", Max),
-                ],
+                [("Physical Damage", Min), ("Total Physical Damage", Max)],
             )
             .ability(
                 Key::R,
-                [
-                    ("Increased Damage", Min),
-                    ("Physical Damage", Max),
-                ],
+                [("Increased Damage", Min), ("Physical Damage", Max)],
             )
             .combos([
                 &[

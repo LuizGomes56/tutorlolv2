@@ -625,6 +625,7 @@ pub fn calculator(game: InputGame<'_>) -> OutputGame {
         EnemyMap {
             champion_id: current_player_champion_id,
             game_map,
+            runes: current_player_raw_runes,
         },
         |damages, r, ctx, eval_data, modifiers| {
             damages.fill_batch(r, ctx, eval_data, modifiers, ability_batch);
@@ -651,9 +652,11 @@ pub fn calculator(game: InputGame<'_>) -> OutputGame {
 /// Map of the game and the current player's champion, which together select
 /// the damage modifier against each enemy and the stats the map grants them
 #[derive(Clone, Copy, Debug, Default)]
-pub struct EnemyMap {
+pub struct EnemyMap<'a> {
     pub champion_id: ChampionId,
     pub game_map: GameMap,
+    /// Runes of the current player, some of which depend on each enemy's health
+    pub runes: &'a [RuneId],
 }
 
 impl DamageTable {
@@ -666,7 +669,7 @@ impl DamageTable {
         modifiers: Modifiers,
         shred: ResistShred,
         enemy_earth_dragons: u16,
-        enemy_map: EnemyMap,
+        enemy_map: EnemyMap<'_>,
     ) -> Box<[OutputEnemy]> {
         self.calculator_enemies_with(
             enemy_players,
@@ -694,12 +697,13 @@ impl DamageTable {
         modifiers: Modifiers,
         shred: ResistShred,
         enemy_earth_dragons: u16,
-        enemy_map: EnemyMap,
+        enemy_map: EnemyMap<'_>,
         mut fill_row: impl FnMut(&mut DamageTable, usize, Ctx, &DamageEvalData, Modifiers),
     ) -> Box<[OutputEnemy]> {
         let EnemyMap {
             champion_id,
             game_map,
+            runes,
         } = enemy_map;
 
         enemy_players
@@ -745,6 +749,7 @@ impl DamageTable {
                         true_mod: modifiers.damages.true_mod * full_state.modifiers.true_mod,
                         global_mod: modifiers.damages.global_mod
                             * full_state.modifiers.global_mod
+                            * full_state.rune_damage_modifier(runes)
                             * map_mod,
                     },
                     ..modifiers

@@ -188,6 +188,16 @@ impl Champion {
         self.effect_nth(key, 0, effect)
     }
 
+    /// Text of one of the champion's wiki exceptions, which are not parsed into
+    /// abilities. See [`tutorlolv2_wiki::champions::exceptions`]
+    pub fn exception(&self, name: &str) -> MayFail<&str> {
+        self.data
+            .exceptions
+            .get(name)
+            .map(String::as_str)
+            .ok_or_else(|| format!("{} has no exception {name:?}", self.champion_id).into())
+    }
+
     /// Description of an effect of the first ability of `key`
     pub fn description(&self, key: Key, effect: &str) -> MayFail<&str> {
         Ok(&self.effect(key, effect)?.inner.description)

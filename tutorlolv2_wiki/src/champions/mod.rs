@@ -12,6 +12,7 @@ use std::{collections::BTreeMap, path::PathBuf};
 use tutorlolv2_types::{AdaptiveType, AttackType, Key, Position};
 
 pub mod abilities;
+pub mod exceptions;
 pub mod full;
 pub mod template;
 
@@ -26,6 +27,8 @@ pub async fn run() -> MayFail {
     template::parse()?;
     abilities::download().await?;
     abilities::parse()?;
+    exceptions::download().await?;
+    exceptions::parse()?;
     concat()
 }
 
@@ -39,6 +42,9 @@ pub struct WikiChampion {
     pub stats: WikiStats,
     pub modifiers: WikiModifiers,
     pub wiki_abilities: BTreeMap<Key, Vec<WikiAbility>>,
+    /// Texts of [`exceptions::EXCEPTIONS`] by their name
+    #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
+    pub exceptions: BTreeMap<String, String>,
 }
 
 #[derive(Clone, Copy, Debug, Default, Deserialize, Serialize)]
@@ -225,6 +231,7 @@ pub fn concat() -> MayFail {
                     },
                 },
                 wiki_abilities,
+                exceptions: exceptions::read(&champion_id)?,
             };
 
             let bytes = serde_json::to_string_pretty(&wiki_champion)?;

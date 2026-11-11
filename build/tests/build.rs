@@ -18,6 +18,7 @@ fn batch_combos_preserve_order_and_stop_at_the_first_invalid_ability() {
         stats: Default::default(),
         modifiers: Default::default(),
         wiki_abilities: Default::default(),
+        exceptions: Default::default(),
     })
     .unwrap();
     champion.combo([Attack]).unwrap();

@@ -67,12 +67,16 @@ pub enum Wiki {
     ChampionsDownloadTemplates,
     #[clap(alias = "cda")]
     ChampionsDownloadAbilities,
+    #[clap(alias = "cde")]
+    ChampionsDownloadExceptions,
     #[clap(alias = "cpf")]
     ChampionsParseFull,
     #[clap(alias = "cpt")]
     ChampionsParseTemplates,
     #[clap(alias = "cpa")]
     ChampionsParseAbilities,
+    #[clap(alias = "cpe")]
+    ChampionsParseExceptions,
     #[clap(alias = "i")]
     Items,
     #[clap(alias = "id")]
@@ -158,6 +162,8 @@ async fn main() -> MayFail {
             Wiki::ChampionsParseTemplates => champions::template::parse(),
             Wiki::ChampionsDownloadAbilities => champions::abilities::download().await,
             Wiki::ChampionsParseAbilities => champions::abilities::parse(),
+            Wiki::ChampionsDownloadExceptions => champions::exceptions::download().await,
+            Wiki::ChampionsParseExceptions => champions::exceptions::parse(),
             Wiki::Items => items::run().await,
             Wiki::ItemsDownload => items::download().await.map(|_| ()),
             Wiki::ItemsParse => items::parse().map(|_| ()),

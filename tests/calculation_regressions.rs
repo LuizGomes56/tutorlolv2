@@ -789,3 +789,76 @@ fn owned_warmog_amplifies_health_converted_from_new_mana() {
     );
     close(sim.current_stats.max_health, 2935.2); // 2000 + (550 + 1900 * .15) * 1.12
 }
+
+#[test]
+fn coup_de_grace_and_cut_down_depend_on_enemy_health() {
+    let enemy = |health_ratio: f32| {
+        EnemyState {
+            current_stats: Some(EnemyStats {
+                armor: 50.0,
+                current_health: 1000.0 * health_ratio,
+                magic_resist: 50.0,
+                max_health: 1000.0,
+            }),
+            ..Default::default()
+        }
+        .full_state(ResistShred::new(&PlayerStats::default()), false)
+    };
+
+    const BOTH: &[RuneId] = &[RuneId::CoupDeGrace, RuneId::CutDown];
+
+    for (health_ratio, coup_de_grace, cut_down) in [
+        (0.2, 1.08, 1.0),
+        (0.4, 1.0, 1.0),
+        (0.5, 1.0, 1.0),
+        (0.6, 1.0, 1.0),
+        (1.0, 1.0, 1.08),
+    ] {
+        let state = enemy(health_ratio);
+
+        close(state.rune_damage_modifier(&[RuneId::CoupDeGrace]), coup_de_grace);
+        close(state.rune_damage_modifier(&[RuneId::CutDown]), cut_down);
+        close(state.rune_damage_modifier(BOTH), coup_de_grace * cut_down);
+    }
+
+    close(enemy(0.2).rune_damage_modifier(&[RuneId::LastStand]), 1.0);
+}
+
+#[test]
+fn health_dependent_runes_no_longer_buff_every_target() {
+    let mut modifiers = Modifiers::default();
+    modifiers.apply_loadout(
+        &[],
+        &[RuneId::CoupDeGrace, RuneId::CutDown],
+        &PlayerStats::default(),
+    );
+
+    close(modifiers.damages.global_mod, 1.0);
+}
+
+#[test]
+fn mega_gnar_gains_its_wiki_stat_increases() {
+    // Level 1 and level 18 increases from the Mega Gnar template of the wiki
+    for (level, health, attack_damage, armor, magic_resist) in [
+        (1, 100.0, 6.0, 3.5, 3.5),
+        (18, 831.0, 48.5, 54.5, 63.0),
+    ] {
+        let level = NonZeroU8::new(level).unwrap();
+        let mini = BasicStats::base_stats(ChampionId::Gnar, level, false);
+        let mega = BasicStats::base_stats(ChampionId::Gnar, level, true);
+
+        close(mega.max_health - mini.max_health, health);
+        close(mega.attack_damage - mini.attack_damage, attack_damage);
+        close(mega.armor - mini.armor, armor);
+        close(mega.magic_resist - mini.magic_resist, magic_resist);
+    }
+}
+
+#[test]
+fn poppy_steadfast_presence_increases_total_resists() {
+    let control = inferred_stats(ChampionId::Garen, 11, 0, &[]);
+    let poppy = inferred_stats(ChampionId::Poppy, 11, 0, &[]);
+
+    close(poppy.armor, control.armor * 1.16);
+    close(poppy.magic_resist, control.magic_resist * 1.16);
+}

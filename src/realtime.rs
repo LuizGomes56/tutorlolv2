@@ -325,7 +325,8 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
             {
                 let mut modifiers = base_modifiers;
 
-                modifiers.damages.global_mod *= map_mod;
+                modifiers.damages.global_mod *=
+                    map_mod * full_state.rune_damage_modifier(&owned_runes);
 
                 let modifiers = modifiers.against(&full_state, adaptive_type);
 
@@ -343,7 +344,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
                 let ctx = state.ctx(&target);
                 let mut buffs = *buffs;
 
-                buffs.damages.global_mod *= map_mod;
+                buffs.damages.global_mod *= map_mod * target.rune_damage_modifier(&owned_runes);
 
                 let modifiers = buffs.against(&target, state.adaptive_type);
                 let mut row = damages.fill_batch(

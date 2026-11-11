@@ -41,6 +41,10 @@ pub struct WikiLock {
     /// Effects of every item by slot, such as `pass`, `pass2.ranged` or `act`
     #[serde(default)]
     pub items: BTreeMap<String, BTreeMap<String, LockedItemEffect>>,
+    /// Hash of the text of every champion exception by its name, see
+    /// [`crate::champions::exceptions`]
+    #[serde(default)]
+    pub exceptions: BTreeMap<String, BTreeMap<String, String>>,
 }
 
 #[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
@@ -168,7 +172,23 @@ pub(crate) fn entry_name(entry: &str) -> (&str, &str) {
 }
 
 pub fn build() -> MayFail<WikiLock> {
-    let champions = BTreeMap::<String, WikiChampion>::from_file("cache/wiki/champions/full.json")?
+    let champions = BTreeMap::<String, WikiChampion>::from_file("cache/wiki/champions/full.json")?;
+
+    let exceptions = champions
+        .iter()
+        .filter(|(_, champion)| !champion.exceptions.is_empty())
+        .map(|(champion_id, champion)| {
+            let texts = champion
+                .exceptions
+                .iter()
+                .map(|(name, text)| (name.clone(), hash(text)))
+                .collect();
+
+            (champion_id.clone(), texts)
+        })
+        .collect();
+
+    let champions = champions
         .into_iter()
         .map(|(champion_id, champion)| {
             let abilities = champion
@@ -207,6 +227,7 @@ pub fn build() -> MayFail<WikiLock> {
         champions,
         runes,
         items,
+        exceptions,
     })
 }
 

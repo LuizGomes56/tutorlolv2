@@ -6,7 +6,10 @@
 //! reported as warnings
 
 use super::{LockedAbility, WikiLock, compare, entry_name, hash};
-use crate::MayFail;
+use crate::{
+    MayFail,
+    champions::exceptions::{EXCEPTIONS, Exception},
+};
 use regex::Regex;
 use serde_json::Value;
 use std::{
@@ -306,6 +309,7 @@ impl WikiLock {
         let mut report = Report::default();
 
         self.check_champions(old, &generators.join("champions"), &mut report)?;
+        self.check_exceptions(old, &mut report);
 
         if let Some(old) = old {
             self.check_runes(old, &generators.join("runes"), &mut report)?;
@@ -465,6 +469,45 @@ impl WikiLock {
         }
 
         Ok(())
+    }
+
+    /// Exceptions are only read by text patterns in their generators, so a changed
+    /// text is a warning to review them, and a missing one breaks the build
+    fn check_exceptions(&self, old: Option<&WikiLock>, report: &mut Report) {
+        let empty = BTreeMap::new();
+
+        for Exception {
+            champion_id, name, ..
+        } in EXCEPTIONS
+        {
+            // Champions that are not in the lock file have no generator to read it
+            if !self.champions.contains_key(*champion_id) {
+                continue;
+            }
+
+            let label = format!("{champion_id} exception {name:?}");
+            let texts = self.exceptions.get(*champion_id).unwrap_or(&empty);
+
+            let Some(new) = texts.get(*name) else {
+                report.errors.push(format!(
+                    "{label}: missing from the lock file, its generator can't read it"
+                ));
+                continue;
+            };
+
+            // Lock files written before exceptions were tracked have none to compare
+            let Some(old) = old.and_then(|old| old.exceptions.get(*champion_id)) else {
+                continue;
+            };
+
+            match old.get(*name) {
+                Some(old) if old != new => report.warnings.push(format!(
+                    "{label}: the text changed, check the values its generator captures"
+                )),
+                Some(_) => {}
+                None => report.warnings.push(format!("{label}: new exception")),
+            }
+        }
     }
 
     fn check_runes(&self, old: &WikiLock, dir: &Path, report: &mut Report) -> MayFail {
