@@ -15,13 +15,18 @@ use {
     std::{
         collections::{BTreeMap, BTreeSet},
         fmt::Write,
+        sync::OnceLock,
     },
     tutorlolv2_types::{
-        AbilityId, AbilityName, Attrs, ComboElement, DamageType, DevMergeData, Key, Tag,
+        AbilityId, AbilityName, Attrs, ComboElement, DamageType, DevMergeData, GameMap, Key, Tag,
     },
     tutorlolv2_wiki::{
         JsonRead,
         champions::{WikiChampion, abilities::WikiAbility},
+        map_changes::{
+            self, MapChanges,
+            overrides::{ChampionOverrides, SelectedEffect},
+        },
         parser::{Effect, Scaling},
     },
 };
@@ -29,6 +34,10 @@ use {
 pub struct ChampionParser {
     pub data: BTreeMap<String, WikiChampion>,
 }
+
+/// Changes of every game mode, by the code of its module. Loaded once by
+/// [`ChampionParser`], and empty when the cache has none, as in tests
+static MAP_CHANGES: OnceLock<BTreeMap<String, MapChanges>> = OnceLock::new();
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct Ability {
@@ -50,6 +59,13 @@ pub struct Champion {
     pub abilities: BTreeMap<AbilityId, Ability>,
     #[serde(default, skip_serializing_if = "Constants::is_empty")]
     pub constants: Constants,
+    /// Effect that each ability was selected from with [`Self::ability_nth`]
+    #[serde(skip)]
+    pub sources: BTreeMap<AbilityId, SelectedEffect>,
+    /// Formulas of the abilities that game modes change, with the maps of each
+    #[serde_as(as = "Seq<(_, _)>")]
+    #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
+    pub map_damages: BTreeMap<AbilityId, Vec<(Vec<GameMap>, String)>>,
 }
 
 impl Parser<WikiChampion, Champion> for ChampionParser {
@@ -58,6 +74,18 @@ impl Parser<WikiChampion, Champion> for ChampionParser {
         champion_gen_fn;
 
     fn from_root(root: &std::path::Path) -> MayFail<Self> {
+        let map_changes = match root.join(map_changes::full_path()) {
+            path if path.exists() => BTreeMap::from_file(path)?,
+            _ => {
+                println!(
+                    "cargo:warning=No map changes in the cache, every map uses the same formulas"
+                );
+                BTreeMap::new()
+            }
+        };
+
+        let _ = MAP_CHANGES.set(map_changes);
+
         Ok(Self {
             data: BTreeMap::from_file(root.join("cache/wiki/champions/full.json"))?,
         })
@@ -133,6 +161,8 @@ impl TryFrom<WikiChampion> for Champion {
             merge: Default::default(),
             combo: Default::default(),
             constants: Default::default(),
+            sources: Default::default(),
+            map_damages: Default::default(),
             data,
         })
     }
@@ -266,6 +296,15 @@ impl Champion {
                         if let Some(formula) = &effect.formula {
                             value.damage = formula.clone();
                         }
+
+                        self.sources.insert(
+                            ability_id,
+                            SelectedEffect {
+                                key,
+                                nth,
+                                name: effect_name.to_string(),
+                            },
+                        );
                     }
                     None => println!(
                         "cargo:warning=[{}] {key:?}[{nth}] has no effect named {effect_name:?}",
@@ -528,6 +567,8 @@ impl Champion {
     }
 
     pub fn end(&mut self) -> MayFail {
+        self.apply_map_changes();
+
         let Self {
             data: WikiChampion { champion_id, .. },
             abilities,
@@ -614,6 +655,74 @@ impl Champion {
         }
 
         Ok(())
+    }
+}
+
+impl Champion {
+    /// Formulas of the selected effects that game modes change, for the abilities
+    /// whose damage is still the formula of their effect. Abilities a generator
+    /// changed are skipped, since the change may not apply to them anymore
+    fn apply_map_changes(&mut self) {
+        let selected = self
+            .sources
+            .values()
+            .cloned()
+            .collect::<BTreeSet<_>>()
+            .into_iter()
+            .collect::<Vec<_>>();
+
+        for changes in MAP_CHANGES.get().into_iter().flat_map(BTreeMap::values) {
+            let overrides = ChampionOverrides::new(&self.data, changes, &selected);
+
+            for (effect, changed) in &overrides.effects {
+                let original = self
+                    .data
+                    .wiki_abilities
+                    .get(&effect.key)
+                    .and_then(|list| list.get(effect.nth))
+                    .and_then(|ability| ability.effects.get(&effect.name))
+                    .and_then(|effect| effect.formula.as_ref());
+
+                let (Some(original), Some(formula)) = (original, &changed.formula) else {
+                    continue;
+                };
+
+                let mut applied = false;
+
+                for (ability_id, source) in &self.sources {
+                    let Some(ability) = self.abilities.get(ability_id) else {
+                        continue;
+                    };
+
+                    if source != effect {
+                        continue;
+                    }
+
+                    if ability.damage != *original {
+                        println!(
+                            "cargo:warning=[{}] {ability_id:?}: its generator changed the damage, so the changes of {:?} are not applied",
+                            self.champion_id, changes.maps
+                        );
+                        continue;
+                    }
+
+                    self.map_damages
+                        .entry(*ability_id)
+                        .or_default()
+                        .push((changes.maps.clone(), formula.clone()));
+
+                    applied = true;
+                }
+
+                // As when the generator merged the abilities of the effect into another
+                if !applied {
+                    println!(
+                        "cargo:warning=[{}] {:?}[{}] {:?}: no ability keeps the formula of this effect, so the changes of {:?} are not applied",
+                        self.champion_id, effect.key, effect.nth, effect.name, changes.maps
+                    );
+                }
+            }
+        }
     }
 }
 

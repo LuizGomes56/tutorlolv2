@@ -55,6 +55,7 @@ impl BuildContext {
             "cache/wiki/champions/full.json",
             "cache/wiki/items/full.json",
             "cache/wiki/runes/full.json",
+            "cache/wiki/map_changes/full.json",
             "cache/riot/items.json",
             "cache/riot/runes.json",
             "cache/riot/champion_languages.json",
@@ -65,8 +66,11 @@ impl BuildContext {
             let mut path = self.root.join(path);
 
             // Cargo repeatedly rebuilds for nonexistent paths. Watch the nearest
-            // existing parent until the optional recommendations file appears.
-            if path.ends_with("internal/scraper/data.json") {
+            // existing parent until the optional recommendations and map changes
+            // files appear.
+            if path.ends_with("internal/scraper/data.json")
+                || path.ends_with("cache/wiki/map_changes/full.json")
+            {
                 while !path.exists() && path != self.root {
                     path.pop();
                 }

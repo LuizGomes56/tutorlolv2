@@ -3,11 +3,13 @@ use {crate::champions_code::ability_const_eval, tutorlolv2_types::Ctx};
 
 use {
     crate::{
-        ChampionId, ItemId, RuneId, WikiStats,
+        ChampionId, ItemId, MapStats, RuneId, WikiStats,
         champions_code::{RECOMMENDED_ITEMS, RECOMMENDED_RUNES},
     },
     strum::{EnumCount, VariantArray},
-    tutorlolv2_types::{AbilityId, AbilityName, AdaptiveType, AttackType, Position, TypeMetadata},
+    tutorlolv2_types::{
+        AbilityId, AbilityName, AdaptiveType, AttackType, GameMap, Position, TypeMetadata,
+    },
 };
 
 impl ChampionId {
@@ -70,6 +72,35 @@ impl ChampionId {
 
     pub const fn stats(&self) -> &'static WikiStats {
         &self.data().stats
+    }
+
+    /// Stats that `game_map` changes. Summoner's Rift changes none, and nearly
+    /// every game is played there, so the search is cold
+    pub const fn map_stats(&self, game_map: GameMap) -> Option<&'static MapStats> {
+        if matches!(game_map, GameMap::SummonersRift) {
+            return None;
+        }
+
+        core::hint::cold_path();
+
+        let list = self.data().map_stats;
+        let mut i = 0;
+
+        while i < list.len() {
+            let mut j = 0;
+
+            while j < list[i].maps.len() {
+                if list[i].maps[j] as u8 == game_map as u8 {
+                    return Some(&list[i]);
+                }
+
+                j += 1;
+            }
+
+            i += 1;
+        }
+
+        None
     }
 
     pub const fn number_of_abilities(&self) -> usize {

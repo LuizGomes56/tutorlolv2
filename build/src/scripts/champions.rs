@@ -15,7 +15,7 @@ use {
         write,
     },
     tutorlolv2_types::{
-        AbilityId, AbilityName, Attrs, CtxVar, DamageType, DevMergeData, MergeData, Tag,
+        AbilityId, AbilityName, Attrs, CtxVar, DamageType, DevMergeData, MapMode, MergeData, Tag,
         TypeMetadata,
     },
     tutorlolv2_wiki::champions::WikiChampion,
@@ -49,12 +49,15 @@ impl Build for Champion {
                     positions,
                     stats,
                     modifiers,
+                    map_stats,
                     ..
                 },
             combo,
             abilities,
             merge,
             constants,
+            map_damages,
+            ..
         } = &self;
 
         let mut rust = String::new();
@@ -68,6 +71,11 @@ impl Build for Champion {
         let mut damage_override = BTreeMap::<AbilityId, String>::new();
 
         for merge in merge {
+            // The ratio between the two is only known on Summoner's Rift
+            if map_damages.contains_key(&merge.min) || map_damages.contains_key(&merge.max) {
+                continue;
+            }
+
             let min = self.get(merge.min)?;
             let max = self.get(merge.max)?;
             let min_i = self.indexof(merge.min)?;
@@ -116,6 +124,7 @@ impl Build for Champion {
                 positions: {positions},
                 stats: {stats},
                 modifiers: {modifiers},
+                map_stats: &[{map_stats}],
                 metadata: {metadata},
 
                 {ENGINE_CFG}
@@ -134,6 +143,22 @@ impl Build for Champion {
                 identifiers: &[{identifiers}],
             }};"#,
             stats = cast_f32(&format!("{stats:?}"))?,
+            map_stats = map_stats
+                .iter()
+                .map(|stats| {
+                    format!(
+                        "crate::libgen::globals::MapStats {{ maps: &[{}], total_attack_speed: {:?}f32 }}",
+                        stats
+                            .maps
+                            .iter()
+                            .map(|map| format!("tutorlolv2_types::GameMap::{map:?}"))
+                            .collect::<Vec<_>>()
+                            .join(", "),
+                        stats.total_attack_speed
+                    )
+                })
+                .collect::<Vec<_>>()
+                .join(", "),
             modifiers = cast_f32(&format!("{modifiers:?}"))?,
             adaptive_type = adaptive_type.bake(),
             attack_type = attack_type.bake(),
@@ -168,6 +193,36 @@ impl Build for Champion {
                 println!("[{champion_id}]: ZeroFormula[{ability_id:?}]; Body = {body:?}");
 
                 rust_formula = "0.0".to_string();
+            }
+
+            // Formulas that game modes change branch on the map. Nearly every game is
+            // on Summoner's Rift, so the other arms are cold
+            if let Some(map_damage) = map_damages.get(ability_id) {
+                let mut arms = String::new();
+
+                for (maps, formula) in map_damage {
+                    // Closures read the mode of the map, which every map of a
+                    // module must share
+                    let modes = maps.iter().map(|map| map.mode()).collect::<BTreeSet<_>>();
+
+                    let [mode] = modes.into_iter().collect::<Vec<_>>()[..] else {
+                        return Err(
+                            format!("[{champion_id}] Maps {maps:?} have different modes").into(),
+                        );
+                    };
+
+                    if mode == MapMode::Default {
+                        return Err(format!("[{champion_id}] Maps {maps:?} have no mode").into());
+                    }
+
+                    write!(
+                        arms,
+                        "tutorlolv2_types::MapMode::{mode:?} => {{ core::hint::cold_path(); {} }}",
+                        cast_f32(&simplify(formula))?
+                    )?;
+                }
+
+                rust_formula = format!("match ctx.map {{ {arms} _ => {{ {rust_formula} }} }}");
             }
 
             write!(

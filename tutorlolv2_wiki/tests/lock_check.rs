@@ -387,7 +387,7 @@ fn map_changes_are_warnings() {
     assert_eq!(
         report.warnings,
         [
-            "aram: 2 damage-relevant changes are not applied, see `wiki map-changes-report`",
+            "aram: 2 damage-relevant changes, see `wiki map-changes-report` for the ones that are not applied",
             "aram Akali Q: 1 changes edited",
             "aram Hubris: changes removed",
             "aram Teemo R: new changes",

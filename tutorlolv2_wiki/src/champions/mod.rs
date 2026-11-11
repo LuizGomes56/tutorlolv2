@@ -9,7 +9,7 @@ use crate::{
 use rayon::iter::{ParallelBridge, ParallelIterator};
 use serde::{Deserialize, Serialize};
 use std::{collections::BTreeMap, path::PathBuf};
-use tutorlolv2_types::{AdaptiveType, AttackType, Key, Position};
+use tutorlolv2_types::{AdaptiveType, AttackType, GameMap, Key, Position};
 
 pub mod abilities;
 pub mod exceptions;
@@ -45,6 +45,33 @@ pub struct WikiChampion {
     /// Texts of [`exceptions::EXCEPTIONS`] by their name
     #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
     pub exceptions: BTreeMap<String, String>,
+    /// Stats that game modes change, only for the modes that change them
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub map_stats: Vec<WikiMapStats>,
+}
+
+/// Stats of a champion that a game mode changes, from `Module:ChampionData`
+#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
+pub struct WikiMapStats {
+    pub maps: Vec<GameMap>,
+    /// Multiplier of the total attack speed
+    pub total_attack_speed: f32,
+}
+
+impl WikiMapStats {
+    /// Stats that ARAM changes, if any
+    fn aram(total_attack_speed: f32) -> Option<Self> {
+        let maps = crate::map_changes::MAPS
+            .iter()
+            .find(|source| source.code == "aram")?
+            .maps
+            .to_vec();
+
+        (total_attack_speed != 1.0).then_some(Self {
+            maps,
+            total_attack_speed,
+        })
+    }
 }
 
 #[derive(Clone, Copy, Debug, Default, Deserialize, Serialize)]
@@ -127,6 +154,7 @@ pub fn concat() -> MayFail {
                         usb_dmg_taken,
                         aram_dmg_dealt,
                         aram_dmg_taken,
+                        aram_total_as,
                         ar_dmg_dealt,
                         ar_dmg_taken,
                         nb_dmg_dealt,
@@ -232,6 +260,7 @@ pub fn concat() -> MayFail {
                 },
                 wiki_abilities,
                 exceptions: exceptions::read(&champion_id)?,
+                map_stats: WikiMapStats::aram(aram_total_as).into_iter().collect(),
             };
 
             let bytes = serde_json::to_string_pretty(&wiki_champion)?;

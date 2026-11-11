@@ -168,6 +168,7 @@ impl ChampionTemplate {
             usb_dmg_taken,
             aram_dmg_dealt,
             aram_dmg_taken,
+            aram_total_as,
             ar_dmg_dealt,
             ar_dmg_taken,
             nb_dmg_dealt,
@@ -220,6 +221,8 @@ pub struct ModeStats {
     pub usb_dmg_taken: f32,
     pub aram_dmg_dealt: f32,
     pub aram_dmg_taken: f32,
+    /// Multiplier of the total attack speed
+    pub aram_total_as: f32,
     pub ar_dmg_dealt: f32,
     pub ar_dmg_taken: f32,
     pub nb_dmg_dealt: f32,

@@ -57,8 +57,8 @@ fn purchase_and_context_helpers_are_const_callable() {
         randuin: false,
         accept_negatives: false,
     };
-    const SELF_CTX: tutorlolv2::Ctx = PURCHASE.ctx(&ENEMY);
-    const ENEMY_CTX: tutorlolv2::Ctx = ENEMY.ctx(&PURCHASE);
+    const SELF_CTX: tutorlolv2::Ctx = PURCHASE.ctx(&ENEMY, GameMap::SummonersRift);
+    const ENEMY_CTX: tutorlolv2::Ctx = ENEMY.ctx(&PURCHASE, GameMap::SummonersRift);
     close(SELF_CTX.max_health, 2050.4);
     close(SELF_CTX.bonus_health(), 1050.4);
     assert_eq!(SELF_CTX, ENEMY_CTX);
@@ -244,7 +244,7 @@ fn supplied_and_inferred_enemies_keep_defensive_effects_and_item_flags() {
 #[test]
 fn estimated_stacks_grow_with_elapsed_time() {
     for (champion, average) in [
-        (ChampionId::Nasus, 450.0),
+        (ChampionId::Nasus, 600.0),
         (ChampionId::AurelionSol, 190.0),
         (ChampionId::Kindred, 5.0),
     ] {
@@ -1034,4 +1034,52 @@ fn inferred_dragonheart_multiplies_health_after_warmogs_vitality() {
             (1000.0 + 1000.0 * 1.12) * 1.25,
         );
     }
+}
+
+#[test]
+fn aram_changes_apply_to_their_closures_only_on_aram() {
+    let ctx = |map| tutorlolv2::Ctx {
+        ability_power: 100.0,
+        ability_levels: AbilityLevels {
+            q: 1,
+            w: 1,
+            e: 1,
+            r: 1,
+        },
+        map: GameMap::mode(map),
+        ..Default::default()
+    };
+
+    // 45 base damage (ignoring AD), with 60% AP on Summoner's Rift and 70% in ARAM
+    let akali_q = |map| tutorlolv2::libgen::champions::akali::akali_q(&ctx(map));
+    close(akali_q(GameMap::SummonersRift), 45.0 + 60.0);
+    close(akali_q(GameMap::Unknown), 45.0 + 60.0);
+    close(akali_q(GameMap::Aram), 45.0 + 70.0);
+    close(akali_q(GameMap::AramMayhem), 45.0 + 70.0);
+
+    // Both the base damage and the ratio of Kassadin's E change
+    let kassadin_e = |map| tutorlolv2::libgen::champions::kassadin::kassadin_e(&ctx(map));
+    close(kassadin_e(GameMap::SummonersRift), 70.0 + 70.0);
+    close(kassadin_e(GameMap::Aram), 80.0 + 75.0);
+}
+
+#[test]
+fn aram_multiplies_the_total_attack_speed_of_some_champions() {
+    let attack_speed = |champion_id, game_map| {
+        let mut input = game(&[], &[], &[]);
+        input.active_player.data.champion_id = champion_id;
+        input.game_map = game_map;
+        calculator(input).current_player.current_stats.attack_speed
+    };
+
+    let rift = attack_speed(ChampionId::Xayah, GameMap::SummonersRift);
+    close(attack_speed(ChampionId::Xayah, GameMap::Aram), rift * 1.03);
+    close(
+        attack_speed(ChampionId::Xayah, GameMap::AramMayhem),
+        rift * 1.03,
+    );
+
+    // Champions without the change keep it
+    let akali = attack_speed(ChampionId::Akali, GameMap::SummonersRift);
+    close(attack_speed(ChampionId::Akali, GameMap::Aram), akali);
 }

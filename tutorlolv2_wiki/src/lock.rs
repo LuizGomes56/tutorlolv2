@@ -50,6 +50,10 @@ pub struct WikiLock {
     /// `"index: kind (hash)"`, see [`crate::map_changes`]
     #[serde(default)]
     pub map_changes: BTreeMap<String, BTreeMap<String, Vec<String>>>,
+    /// Hash of the stats that game modes change, by champion, see
+    /// [`crate::champions::WikiChampion::map_stats`]
+    #[serde(default)]
+    pub map_stats: BTreeMap<String, String>,
 }
 
 #[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
@@ -180,6 +184,16 @@ pub(crate) fn entry_name(entry: &str) -> (&str, &str) {
 pub fn build() -> MayFail<WikiLock> {
     let champions = BTreeMap::<String, WikiChampion>::from_file("cache/wiki/champions/full.json")?;
 
+    let map_stats = champions
+        .iter()
+        .filter(|(_, champion)| !champion.map_stats.is_empty())
+        .map(|(champion_id, champion)| {
+            let json = serde_json::to_string(&champion.map_stats)?;
+
+            Ok((champion_id.clone(), hash(&json)))
+        })
+        .collect::<MayFail<_>>()?;
+
     let exceptions = champions
         .iter()
         .filter(|(_, champion)| !champion.exceptions.is_empty())
@@ -259,6 +273,7 @@ pub fn build() -> MayFail<WikiLock> {
         items,
         exceptions,
         map_changes,
+        map_stats,
     })
 }
 

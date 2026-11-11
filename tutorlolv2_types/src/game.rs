@@ -116,7 +116,45 @@ pub enum GameMap {
     AramMayhem,
 }
 
+/// Set of game mode changes that closures apply, as stored in [`Ctx`]. Several
+/// maps share one, as ARAM and ARAM: Mayhem. The first variant is zero, so a
+/// zeroed context, as the rows of an output table before they are written,
+/// behaves as Summoner's Rift
+#[derive(
+    Clone,
+    Copy,
+    Debug,
+    Default,
+    Eq,
+    Hash,
+    Ord,
+    PartialEq,
+    PartialOrd,
+    Encode,
+    Decode,
+    Serialize,
+    Deserialize,
+)]
+#[repr(u8)]
+#[cfg_attr(feature = "bake", derive(databake::Bake))]
+#[cfg_attr(feature = "bake", databake(path = tutorlolv2_types))]
+pub enum MapMode {
+    /// No changes, as on Summoner's Rift
+    #[default]
+    Default,
+    /// `Module:MapChanges/data/aram`
+    Aram,
+}
+
 impl GameMap {
+    /// Changes that closures apply on this map
+    pub const fn mode(self) -> MapMode {
+        match self {
+            Self::Aram | Self::AramMayhem => MapMode::Aram,
+            _ => MapMode::Default,
+        }
+    }
+
     /// Value that grows linearly from `min` at level 1 to `max` at level 18
     const fn by_level(min: f32, max: f32, level: u8) -> f32 {
         let level = match level {

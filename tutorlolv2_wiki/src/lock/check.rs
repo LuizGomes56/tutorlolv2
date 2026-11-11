@@ -297,6 +297,7 @@ impl WikiLock {
         self.check_champions(old, &generators.join("champions"), &mut report)?;
         self.check_exceptions(old, &mut report);
         self.check_map_changes(old, &mut report);
+        self.check_map_stats(old, &mut report);
 
         if let Some(old) = old {
             self.check_runes(old, &generators.join("runes"), &mut report)?;
@@ -458,9 +459,38 @@ impl WikiLock {
         Ok(())
     }
 
-    /// Changes of the game modes are not applied yet, so every change is a
-    /// warning: the damage-relevant ones are counted, and the ones that were
-    /// added, edited or removed since the old lock file are listed
+    /// Stats that game modes change are read from data, so their changes are
+    /// warnings to review
+    fn check_map_stats(&self, old: Option<&WikiLock>, report: &mut Report) {
+        // Lock files written before map stats were tracked have none to compare
+        let Some(old) = old.map(|old| &old.map_stats).filter(|old| !old.is_empty()) else {
+            return;
+        };
+
+        for champion_id in old
+            .keys()
+            .chain(self.map_stats.keys())
+            .collect::<BTreeSet<_>>()
+        {
+            match (old.get(champion_id), self.map_stats.get(champion_id)) {
+                (Some(a), Some(b)) if a != b => report.warnings.push(format!(
+                    "{champion_id}: the stats that game modes change changed"
+                )),
+                (Some(_), None) => report.warnings.push(format!(
+                    "{champion_id}: game modes no longer change its stats"
+                )),
+                (None, Some(_)) => report
+                    .warnings
+                    .push(format!("{champion_id}: game modes now change its stats")),
+                _ => {}
+            }
+        }
+    }
+
+    /// Changes of the game modes are only warnings: the damage-relevant ones
+    /// are counted, and the ones that were added, edited or removed since the
+    /// old lock file are listed. Which ones are applied depends on the
+    /// generators, so the report lists them
     fn check_map_changes(&self, old: Option<&WikiLock>, report: &mut Report) {
         let empty = Vec::new();
 
@@ -473,7 +503,7 @@ impl WikiLock {
 
             if relevant > 0 {
                 report.warnings.push(format!(
-                    "{code}: {relevant} damage-relevant changes are not applied, see `wiki map-changes-report`"
+                    "{code}: {relevant} damage-relevant changes, see `wiki map-changes-report` for the ones that are not applied"
                 ));
             }
 

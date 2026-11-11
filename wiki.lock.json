@@ -12664,5 +12664,15 @@
         "0: Ignored (e4a0ae11)"
       ]
     }
+  },
+  "map_stats": {
+    "Azir": "1535db12",
+    "Gnar": "1535db12",
+    "Kaisa": "1535db12",
+    "Kindred": "1535db12",
+    "Quinn": "1535db12",
+    "Xayah": "579a9754",
+    "Yasuo": "1535db12",
+    "Yone": "1535db12"
   }
 }

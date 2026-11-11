@@ -3,16 +3,24 @@
 //! `docs/map-formula-overrides-spec.md`
 
 pub mod change;
+pub mod overrides;
 
 use crate::{
-    HTTP_CLIENT, JsonRead, MayFail, champions::WikiChampion, items::item_parser::WikiItem,
-    parser::Effect, runes::WikiRune,
+    HTTP_CLIENT, JsonRead, MayFail,
+    champions::WikiChampion,
+    items::item_parser::WikiItem,
+    lock::{self, check::GeneratorFile},
+    runes::WikiRune,
 };
 use change::{ChangeKind, MapChange};
 use mlua::{Lua, LuaSerdeExt, Value};
+use overrides::{ChampionOverrides, Outcome, SelectedEffect};
 use serde::{Deserialize, Serialize};
-use std::{collections::BTreeMap, path::PathBuf};
-use tutorlolv2_types::{CtxVar, GameMap, Key};
+use std::{
+    collections::BTreeMap,
+    path::{Path, PathBuf},
+};
+use tutorlolv2_types::{GameMap, Key};
 
 /// A data module of `Module:MapChanges` and the maps it applies to
 pub struct MapSource {
@@ -217,7 +225,9 @@ impl Targets {
                 continue;
             };
 
-            let key = match rest {
+            // The last word is the key, also when the module uses a longer name of
+            // the champion, as "Nunu & Willump W" for Nunu
+            let key = match rest.rsplit(' ').next().unwrap_or(rest) {
                 "I" | "P" => Some(Key::P),
                 "Q" => Some(Key::Q),
                 "W" => Some(Key::W),
@@ -245,11 +255,92 @@ impl Targets {
     }
 }
 
-/// Prints, for each mode, what its changes are and which ones may change a
-/// damage. Nothing is applied yet, so every damage-relevant change is listed
+/// Effects that each champion generator selects by name, read from its source
+/// as `lock-check` does. The build knows them exactly; the report uses this to
+/// run the same rules without building
+fn selected_effects() -> MayFail<BTreeMap<String, Vec<SelectedEffect>>> {
+    let dir = Path::new(lock::GENERATORS).join("champions");
+
+    Ok(GeneratorFile::read_dir(dir)?
+        .into_iter()
+        .map(|file| {
+            let selected = file
+                .effect_refs()
+                .into_iter()
+                .filter_map(|r| {
+                    let key = match r.key.as_str() {
+                        "P" => Key::P,
+                        "Q" => Key::Q,
+                        "W" => Key::W,
+                        "E" => Key::E,
+                        "R" => Key::R,
+                        _ => return None,
+                    };
+
+                    Some(SelectedEffect {
+                        key,
+                        nth: r.nth,
+                        name: r.name,
+                    })
+                })
+                .collect();
+
+            (file.id, selected)
+        })
+        .collect())
+}
+
+/// Outcome of every change of a mode, by key and index of the change
+pub fn outcomes(
+    changes: &MapChanges,
+    code: &str,
+    champions: &BTreeMap<String, WikiChampion>,
+    items: &BTreeMap<String, WikiItem>,
+    selected: &BTreeMap<String, Vec<SelectedEffect>>,
+) -> BTreeMap<(String, usize), Outcome> {
+    let mut outcomes = BTreeMap::new();
+
+    for champion in champions.values() {
+        let selected = selected
+            .get(&champion.champion_id)
+            .map(Vec::as_slice)
+            .unwrap_or_default();
+
+        for (key, i, outcome) in ChampionOverrides::new(champion, changes, selected).outcomes {
+            outcomes.insert((key, i), outcome);
+        }
+    }
+
+    for (key, entry) in &changes.entries {
+        for (i, change) in entry.changes.iter().enumerate() {
+            let relevant = ChangeKind::is_damage_relevant(change.kind.name());
+            let outcome = match &entry.target {
+                ChangeTarget::Item { item_id } if let Some(item) = items.get(item_id) => {
+                    overrides::item_outcome(change, item, code)
+                }
+                ChangeTarget::Champion { .. }
+                | ChangeTarget::Ability { .. }
+                | ChangeTarget::NamedAbility { .. } => continue,
+                _ if !relevant => Outcome::NotRelevant,
+                ChangeTarget::Rune { .. } => Outcome::Manual("runes need a generator"),
+                ChangeTarget::SummonerSpell => Outcome::NotRelevant,
+                _ => Outcome::Manual("its key names nothing known"),
+            };
+
+            outcomes.insert((key.clone(), i), outcome);
+        }
+    }
+
+    outcomes
+}
+
+/// Prints, for each mode, what its changes are, which ones are applied, and
+/// why the others are not
 pub fn report() -> MayFail {
     let full = BTreeMap::<String, MapChanges>::from_file(full_path())?;
-    let effects = Effects::load()?;
+    let champions = BTreeMap::<String, WikiChampion>::from_file("cache/wiki/champions/full.json")?;
+    let items = BTreeMap::<String, WikiItem>::from_file("cache/wiki/items/full.json")?;
+    let selected = selected_effects()?;
 
     for (code, changes) in &full {
         let all = changes
@@ -291,35 +382,52 @@ pub fn report() -> MayFail {
             println!("   unresolved keys: {unresolved:?}");
         }
 
-        let relevant = all
-            .iter()
-            .filter(|(_, _, c)| ChangeKind::is_damage_relevant(c.kind.name()))
-            .collect::<Vec<_>>();
+        let outcomes = outcomes(changes, code, &champions, &items, &selected);
+        let mut summary = BTreeMap::<String, usize>::new();
+        let mut lines = BTreeMap::<String, Vec<String>>::new();
 
-        let mut candidates = BTreeMap::<String, usize>::new();
-
-        println!(
-            "   -- {} damage-relevant changes, none applied yet",
-            relevant.len()
-        );
-
-        for (key, entry, change) in &relevant {
-            let label = match effects.candidates(&entry.target, &change.kind) {
-                Some(0) => "no candidate".to_string(),
-                Some(1) => "1 candidate".to_string(),
-                Some(n) => format!("{n} candidates"),
-                None => "review".to_string(),
+        for ((key, i), outcome) in &outcomes {
+            let change = &changes.entries[key].changes[*i];
+            let (group, detail) = match outcome {
+                Outcome::Applied(effects) => (
+                    "applied".to_string(),
+                    effects
+                        .iter()
+                        .map(|e| format!("{:?}[{}] {:?}", e.key, e.nth, e.name))
+                        .collect::<Vec<_>>()
+                        .join(", "),
+                ),
+                Outcome::AlreadyApplied(reason) => {
+                    ("already applied".to_string(), reason.to_string())
+                }
+                Outcome::Manual(reason) => (format!("not applied: {reason}"), String::new()),
+                Outcome::NotRelevant => {
+                    *summary.entry("not relevant".into()).or_default() += 1;
+                    continue;
+                }
             };
 
-            *candidates.entry(label.clone()).or_default() += 1;
-            println!(
-                "      {key} [{}] {} ({label})",
+            *summary.entry(group.clone()).or_default() += 1;
+            lines.entry(group).or_default().push(format!(
+                "{key} [{}] {}{}",
                 change.kind.name(),
-                change.text
-            );
+                change.text,
+                match detail.is_empty() {
+                    true => String::new(),
+                    false => format!(" -> {detail}"),
+                }
+            ));
         }
 
-        println!("   by candidates: {candidates:?}");
+        println!("   outcomes: {summary:?}");
+
+        for (group, lines) in lines {
+            println!("   -- {group} ({})", lines.len());
+
+            for line in lines {
+                println!("      {line}");
+            }
+        }
 
         for (key, _, change) in all.iter().filter(|(_, _, c)| c.kind == ChangeKind::Unknown) {
             println!("   unknown: {key}: {}", change.text);
@@ -327,102 +435,4 @@ pub fn report() -> MayFail {
     }
 
     Ok(())
-}
-
-/// Effects of every champion ability, item and rune, to count which effects a
-/// ratio or base damage change could apply to
-struct Effects {
-    champions: BTreeMap<String, WikiChampion>,
-    items: BTreeMap<String, WikiItem>,
-    runes: BTreeMap<String, WikiRune>,
-}
-
-impl Effects {
-    fn load() -> MayFail<Self> {
-        Ok(Self {
-            champions: BTreeMap::from_file("cache/wiki/champions/full.json")?,
-            items: BTreeMap::from_file("cache/wiki/items/full.json")?,
-            runes: BTreeMap::from_file("cache/wiki/runes/full.json")?,
-        })
-    }
-
-    fn of(&self, target: &ChangeTarget) -> Vec<&Effect> {
-        let abilities = |champion_id: &str, key: Option<Key>| {
-            self.champions
-                .get(champion_id)
-                .into_iter()
-                .flat_map(|c| &c.wiki_abilities)
-                .filter(move |(k, _)| key.is_none_or(|key| **k == key))
-                .flat_map(|(_, abilities)| abilities)
-                .flat_map(|a| a.effects.values())
-                .collect::<Vec<_>>()
-        };
-
-        match target {
-            ChangeTarget::Ability { champion_id, key } => abilities(champion_id, Some(*key)),
-            ChangeTarget::NamedAbility {
-                champion_id,
-                key: Some(key),
-                ..
-            } => abilities(champion_id, Some(*key)),
-            ChangeTarget::Item { item_id } => self
-                .items
-                .get(item_id)
-                .into_iter()
-                .flat_map(|item| {
-                    let e = &item.effects;
-                    [&e.pass, &e.pass2, &e.pass3, &e.pass4, &e.act, &e.consume]
-                })
-                .flatten()
-                .flat_map(|ie| {
-                    [
-                        Some(&ie.effect),
-                        ie.ranged.as_ref(),
-                        ie.flip.as_ref(),
-                        ie.total.as_ref(),
-                    ]
-                })
-                .flatten()
-                .collect(),
-            ChangeTarget::Rune { rune_id } => self
-                .runes
-                .get(rune_id)
-                .into_iter()
-                .flat_map(|rune| rune.effects.values())
-                .collect(),
-            _ => Vec::new(),
-        }
-    }
-
-    /// Effects that a ratio could replace a scaling of, or a base damage change
-    /// the base of. `None` for kinds that need a generator to tell
-    fn candidates(&self, target: &ChangeTarget, kind: &ChangeKind) -> Option<usize> {
-        let effects = self.of(target);
-
-        match kind {
-            ChangeKind::Ratio { scaling, .. } => {
-                let ctx_var = scaling.ctx_var().filter(|v| *v != CtxVar::Unknown)?;
-
-                Some(
-                    effects
-                        .iter()
-                        .filter(|e| e.scalings.iter().any(|s| s.ctx_var() == Some(ctx_var)))
-                        .count(),
-                )
-            }
-            // Effects that repeat the same base count once
-            ChangeKind::Base { .. } => {
-                let mut bases = Vec::new();
-
-                for base in effects.iter().filter_map(|e| e.base.as_ref()) {
-                    if !bases.contains(&base) {
-                        bases.push(base);
-                    }
-                }
-
-                Some(bases.len())
-            }
-            _ => None,
-        }
-    }
 }

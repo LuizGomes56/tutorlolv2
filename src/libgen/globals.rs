@@ -54,6 +54,8 @@ pub struct Champion {
     pub positions: &'static [Position],
     pub stats: WikiStats,
     pub modifiers: WikiModifiers,
+    /// Stats that game modes change, see [`ChampionId::map_stats`]
+    pub map_stats: &'static [MapStats],
     pub metadata: &'static [TypeMetadata<AbilityId>],
 
     #[cfg(any(feature = "yew", feature = "formula-docs"))]
@@ -96,6 +98,14 @@ pub struct Stat {
 pub struct Modifier {
     pub damage_dealt: f32,
     pub damage_taken: f32,
+}
+
+/// Stats of a champion that the game modes in `maps` change
+#[derive(Clone, Copy, Debug)]
+pub struct MapStats {
+    pub maps: &'static [GameMap],
+    /// Multiplier of the total attack speed
+    pub total_attack_speed: f32,
 }
 
 #[derive(Clone, Copy, Debug)]

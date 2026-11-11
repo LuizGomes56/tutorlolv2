@@ -138,6 +138,9 @@ macro_rules! create_eval_struct {
                 pub ability_levels: AbilityLevels,
                 /// Branches of the derived multipliers, see [`CtxFlags`]
                 pub flags: CtxFlags,
+                /// Changes of the game mode, read by the closures it changes. It
+                /// fits in the padding after `flags`, so the size is unchanged
+                pub map: MapMode,
             }
 
             /// Part of [`Ctx`] that comes from the attacker's state. A purchase
@@ -159,6 +162,8 @@ macro_rules! create_eval_struct {
                 pub ability_levels: AbilityLevels,
                 /// Only the bits of [`CtxFlags::ATTACKER`]
                 pub flags: CtxFlags,
+                /// The map is the same for the whole game, so it comes with the attacker
+                pub map: MapMode,
             }
 
             /// Part of [`Ctx`] that comes from the target
@@ -188,6 +193,7 @@ macro_rules! create_eval_struct {
                         $($target: target.$target,)*
                         ability_levels: attacker.ability_levels,
                         flags: attacker.flags.union(target.flags),
+                        map: attacker.map,
                     }
                 }
 
@@ -196,6 +202,7 @@ macro_rules! create_eval_struct {
                         $($attacker: self.$attacker,)*
                         ability_levels: self.ability_levels,
                         flags: self.flags.intersection(CtxFlags::ATTACKER),
+                        map: self.map,
                     }
                 }
 

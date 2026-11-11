@@ -335,7 +335,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
 
                 damages.fill_batch(
                     base_row,
-                    self_state.ctx(&full_state),
+                    self_state.ctx(&full_state, game_map),
                     &eval_data,
                     modifiers,
                     current_player_champion_id.data().ability_batch,
@@ -344,7 +344,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
 
             for (k, (state, shred, buffs, extra_item)) in simulated_candidates.iter().enumerate() {
                 let target = full_state.with_shred(*shred, false);
-                let ctx = state.ctx(&target);
+                let ctx = state.ctx(&target, game_map);
                 let mut buffs = *buffs;
 
                 buffs.damages.global_mod *= map_mod * target.rune_damage_modifier(&owned_runes);

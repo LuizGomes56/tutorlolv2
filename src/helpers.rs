@@ -780,12 +780,13 @@ impl SelfState {
     /// closures and get their intermediary damage values, before applying the reductions
     /// from armor and magic resist. See [`Closure`] for more details about those
     /// functions
-    pub const fn ctx(&self, e_state: &EnemyFullState) -> Ctx {
-        Ctx::new(&self.ctx_attacker(), &e_state.ctx_target())
+    pub const fn ctx(&self, e_state: &EnemyFullState, game_map: GameMap) -> Ctx {
+        Ctx::new(&self.ctx_attacker(game_map), &e_state.ctx_target())
     }
 
-    /// Part of [`Ctx`] that comes from this state, the same against every target
-    pub const fn ctx_attacker(&self) -> CtxAttacker {
+    /// Part of [`Ctx`] that comes from this state, the same against every target.
+    /// `game_map` selects the closures that a game mode changes
+    pub const fn ctx_attacker(&self, game_map: GameMap) -> CtxAttacker {
         let SelfState {
             stacks,
             ability_levels,
@@ -847,6 +848,7 @@ impl SelfState {
             attack_damage,
             stacks,
             flags: CtxFlags::attacker(adaptive_type),
+            map: game_map.mode(),
         }
     }
 
@@ -1134,8 +1136,8 @@ impl EnemyFullState {
         self
     }
 
-    pub const fn ctx(&self, self_state: &SelfState) -> Ctx {
-        self_state.ctx(self)
+    pub const fn ctx(&self, self_state: &SelfState, game_map: GameMap) -> Ctx {
+        self_state.ctx(self, game_map)
     }
 
     /// Multiplier of the attacker's runes that depend on the health of this enemy
@@ -1375,6 +1377,7 @@ impl DamageTable {
         shred: ResistShred,
         modifiers: Modifiers,
         batch: AbilityBatch,
+        game_map: GameMap,
     ) {
         for (i, &(armor, magic_resist)) in RiotFormulas::MONSTER_RESISTS.iter().enumerate() {
             let full_state = EnemyState {
@@ -1387,7 +1390,7 @@ impl DamageTable {
             }
             .full_state(shred, true);
 
-            let ctx = self_state.ctx(&full_state);
+            let ctx = self_state.ctx(&full_state, game_map);
             let modifiers = modifiers.against(&full_state, self_state.adaptive_type);
 
             self.fill_batch(i, ctx, eval_data, modifiers, batch);

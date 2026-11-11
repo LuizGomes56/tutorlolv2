@@ -274,7 +274,7 @@ impl<
         let attack_type = champion_id.effective_attack_type(is_mega_gnar);
 
         let enemy = enemy_state.full_state(shred, false);
-        let ctx = self_state.ctx(&enemy);
+        let ctx = self_state.ctx(&enemy, GameMap::Unknown);
 
         let modifiers = Modifiers {
             damages: DamageModifiers {
@@ -312,7 +312,7 @@ impl<
                     current_stats: siml_stat,
                     ..self_state
                 }
-                .ctx(&enemy);
+                .ctx(&enemy, GameMap::Unknown);
 
                 let mut onhit = RangeDamage::default();
 

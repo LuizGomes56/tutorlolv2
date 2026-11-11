@@ -125,6 +125,11 @@ impl InferStats<'_> {
         stats.assign_champion_exceptions(champion_id, ability_levels, stacks);
         stats.attack_speed = cached_stats.attack_speed(stats.attack_speed, level);
 
+        // Game modes may multiply the total attack speed of some champions
+        if let Some(map_stats) = champion_id.map_stats(game_map) {
+            stats.attack_speed *= map_stats.total_attack_speed;
+        }
+
         let mut has_bloodmail = false;
         let mut has_demonic_embrace = false;
         let mut has_warmogs = false;
@@ -721,7 +726,14 @@ pub fn calculator(game: InputGame<'_>) -> OutputGame {
     let mut damages = DamageTable::zeroed(layout, L_MSTR + enemy_players.len(), 1);
     let ability_batch = current_player_cache.ability_batch;
 
-    damages.fill_monster_damages(&self_state, &eval_data, shred, modifiers, ability_batch);
+    damages.fill_monster_damages(
+        &self_state,
+        &eval_data,
+        shred,
+        modifiers,
+        ability_batch,
+        game_map,
+    );
 
     let enemies = damages.calculator_enemies_with(
         enemy_players,
@@ -842,7 +854,7 @@ impl DamageTable {
                 }
                 .full_state(shred, false);
 
-                let ctx = full_state.ctx(self_state);
+                let ctx = full_state.ctx(self_state, game_map);
                 let map_mod = champion_id.map_damage_modifier(&e_champion_id, game_map);
 
                 let modifiers = Modifiers {
