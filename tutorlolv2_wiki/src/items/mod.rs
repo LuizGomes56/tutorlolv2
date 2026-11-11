@@ -29,6 +29,34 @@ pub struct ItemEffectsRaw {
     pub pass4: Option<ItemEffectRaw>,
     #[serde(default)]
     pub act: Option<ItemEffectRaw>,
+    /// Effect of consumables, which Module:ItemData usually writes as a bare
+    /// description rather than a table
+    #[serde(default, deserialize_with = "ItemEffectRaw::from_text_or_table")]
+    pub consume: Option<ItemEffectRaw>,
+}
+
+impl ItemEffectRaw {
+    fn from_text_or_table<'de, D>(deserializer: D) -> Result<Option<Self>, D::Error>
+    where
+        D: serde::Deserializer<'de>,
+    {
+        #[derive(Deserialize)]
+        #[serde(untagged)]
+        enum TextOrTable {
+            Text(String),
+            Table(ItemEffectRaw),
+        }
+
+        Ok(
+            Option::<TextOrTable>::deserialize(deserializer)?.map(|value| match value {
+                TextOrTable::Text(description) => Self {
+                    description: Some(description),
+                    ..Default::default()
+                },
+                TextOrTable::Table(effect) => effect,
+            }),
+        )
+    }
 }
 
 #[derive(Debug, Clone, Deserialize, Serialize, Default)]

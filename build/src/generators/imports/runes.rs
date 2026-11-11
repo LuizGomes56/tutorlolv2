@@ -1,7 +1,10 @@
 pub use crate::{
     MayFail, formula as f,
-    generators::{Generator, GeneratorExt, parser::runes::Rune, utils::RegExtractor},
+    generators::{
+        Generator, GeneratorExt, constants::WithConstants, parser::runes::Rune, utils::RegExtractor,
+    },
 };
+pub use lazy_regex::regex;
 pub use tutorlolv2_types::{AttackType::*, CtxVar::*, DamageIndex::*, DamageType::*};
 pub use tutorlolv2_wiki::runes::WikiRune;
 

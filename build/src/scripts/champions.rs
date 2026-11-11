@@ -54,6 +54,7 @@ impl Build for Champion {
             combo,
             abilities,
             merge,
+            constants,
         } = &self;
 
         let mut rust = String::new();
@@ -186,6 +187,22 @@ impl Build for Champion {
             }
         }
 
+        // Champions without onhit abilities never write to it
+        let onhit = match metadata.iter().any(|meta| {
+            matches!(
+                meta.attributes,
+                Attrs::Onhit
+                    | Attrs::OnhitMin
+                    | Attrs::OnhitMax
+                    | Attrs::AreaOnhit
+                    | Attrs::AreaOnhitMin
+                    | Attrs::AreaOnhitMax
+            )
+        }) {
+            true => "onhit",
+            false => "_onhit",
+        };
+
         // Emit one direct-call sequence in precisely the metadata/closure order.
         // Keep the multiplication grouping and per-ability integer cast unchanged.
         write!(
@@ -193,7 +210,7 @@ impl Build for Champion {
             "{ENGINE_CFG} pub const fn {batch_name}(
                 ctx: &tutorlolv2_types::Ctx,
                 modifiers: crate::model::Modifiers,
-                onhit: &mut crate::model::RangeDamage,
+                {onhit}: &mut crate::model::RangeDamage,
                 out: &mut [i32]
             ) {{
                 debug_assert!(out.len() == {});
@@ -247,6 +264,8 @@ impl Build for Champion {
         }
 
         write!(rust, "}}")?;
+
+        rust.push_str(&constants.bake());
 
         let out = context.out.join(Tag::Champions.as_ref()).join(champion_id);
 

@@ -6,36 +6,18 @@
 //! reported as warnings
 
 use super::{LockedAbility, WikiLock, compare, entry_name, hash};
-use crate::MayFail;
-use regex::Regex;
+use crate::{
+    MayFail,
+    champions::exceptions::{EXCEPTIONS, Exception},
+};
+use lazy_regex::regex;
 use serde_json::Value;
 use std::{
     collections::{BTreeMap, BTreeSet},
     ops::Range,
     path::{Path, PathBuf},
-    sync::LazyLock,
 };
 use tutorlolv2_types::Key;
-
-/// Matches `impl Generator for Name`, which identifies the generator of a file
-static IMPL: LazyLock<Regex> =
-    LazyLock::new(|| Regex::new(r"impl\s+Generator\s+for\s+(\w+)").unwrap());
-
-/// Matches the start of `.ability(Key::Q, [` and `.ability_nth(1, Key::Q, [`
-static CALL: LazyLock<Regex> = LazyLock::new(|| {
-    Regex::new(r"\.ability(?:_nth\(\s*(\d+)\s*,|\()\s*Key::([PQWER])\s*,\s*\[").unwrap()
-});
-
-/// Matches `.formula(Key::Q, "name"`, as well as `effect` and `scaling`, and
-/// `.effect_nth(Key::Q, 1, "name"` as well as `scaling_nth`
-static DIRECT: LazyLock<Regex> = LazyLock::new(|| {
-    Regex::new(
-        r#"\.(?:formula|scaling|effect|effect_nth|scaling_nth)\(\s*Key::([PQWER])\s*,\s*(?:(\d+)\s*,\s*)?("(?:[^"\\]|\\.)*")"#,
-    )
-    .unwrap()
-});
-
-static STRING: LazyLock<Regex> = LazyLock::new(|| Regex::new(r#""(?:[^"\\]|\\.)*""#).unwrap());
 
 #[derive(Debug, Default)]
 pub struct Report {
@@ -103,7 +85,8 @@ impl GeneratorFile {
 
             let source = crate::read_to_string(&path)?;
 
-            if let Some(captures) = IMPL.captures(&source) {
+            // Matches `impl Generator for Name`, which identifies the generator of a file
+            if let Some(captures) = regex!(r"impl\s+Generator\s+for\s+(\w+)").captures(&source) {
                 files.push(Self {
                     id: captures[1].to_string(),
                     path,
@@ -121,7 +104,10 @@ impl GeneratorFile {
         let source = &self.source;
         let mut refs = Vec::new();
 
-        for captures in CALL.captures_iter(source) {
+        // Matches the start of `.ability(Key::Q, [` and `.ability_nth(1, Key::Q, [`
+        for captures in regex!(r"\.ability(?:_nth\(\s*(\d+)\s*,|\()\s*Key::([PQWER])\s*,\s*\[")
+            .captures_iter(source)
+        {
             let nth = captures
                 .get(1)
                 .and_then(|m| m.as_str().parse().ok())
@@ -131,13 +117,15 @@ impl GeneratorFile {
             let start = captures.get(0).map_or(0, |m| m.end());
             let end = self.closing_bracket(start);
 
-            for literal in STRING.find_iter(&source[start..end]) {
+            for literal in regex!(r#""(?:[^"\\]|\\.)*""#).find_iter(&source[start..end]) {
                 let span = start + literal.start()..start + literal.end();
                 self.push_ref(&mut refs, key, nth, span);
             }
         }
 
-        for captures in DIRECT.captures_iter(source) {
+        // Matches `.formula(Key::Q, "name"`, as well as `effect` and `scaling`, and
+        // `.effect_nth(Key::Q, 1, "name"` as well as `scaling_nth`
+        for captures in regex!(r#"\.(?:formula|scaling|effect|effect_nth|scaling_nth)\(\s*Key::([PQWER])\s*,\s*(?:(\d+)\s*,\s*)?("(?:[^"\\]|\\.)*")"#).captures_iter(source) {
             let nth = captures
                 .get(2)
                 .and_then(|m| m.as_str().parse().ok())
@@ -306,6 +294,7 @@ impl WikiLock {
         let mut report = Report::default();
 
         self.check_champions(old, &generators.join("champions"), &mut report)?;
+        self.check_exceptions(old, &mut report);
 
         if let Some(old) = old {
             self.check_runes(old, &generators.join("runes"), &mut report)?;
@@ -465,6 +454,45 @@ impl WikiLock {
         }
 
         Ok(())
+    }
+
+    /// Exceptions are only read by text patterns in their generators, so a changed
+    /// text is a warning to review them, and a missing one breaks the build
+    fn check_exceptions(&self, old: Option<&WikiLock>, report: &mut Report) {
+        let empty = BTreeMap::new();
+
+        for Exception {
+            champion_id, name, ..
+        } in EXCEPTIONS
+        {
+            // Champions that are not in the lock file have no generator to read it
+            if !self.champions.contains_key(*champion_id) {
+                continue;
+            }
+
+            let label = format!("{champion_id} exception {name:?}");
+            let texts = self.exceptions.get(*champion_id).unwrap_or(&empty);
+
+            let Some(new) = texts.get(*name) else {
+                report.errors.push(format!(
+                    "{label}: missing from the lock file, its generator can't read it"
+                ));
+                continue;
+            };
+
+            // Lock files written before exceptions were tracked have none to compare
+            let Some(old) = old.and_then(|old| old.exceptions.get(*champion_id)) else {
+                continue;
+            };
+
+            match old.get(*name) {
+                Some(old) if old != new => report.warnings.push(format!(
+                    "{label}: the text changed, check the values its generator captures"
+                )),
+                Some(_) => {}
+                None => report.warnings.push(format!("{label}: new exception")),
+            }
+        }
     }
 
     fn check_runes(&self, old: &WikiLock, dir: &Path, report: &mut Report) -> MayFail {

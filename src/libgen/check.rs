@@ -1,5 +1,47 @@
 use strum::{EnumCount, VariantArray};
 
+/// Damage reductions of [`tutorlolv2_types::Ctx`] can't read the wiki from its
+/// crate, so they're checked against the values extracted by the generators
+const _: () = {
+    use {crate::libgen::items::*, tutorlolv2_types::Ctx};
+
+    const fn same(a: f32, b: f32) -> bool {
+        (a - b).abs() < 1e-6
+    }
+
+    assert!(
+        same(
+            Ctx::STEEL_CAPS_PROTECTION,
+            1.0 - plated_steelcaps::PLATING_REDUCTION
+        ),
+        "Ctx::STEEL_CAPS_PROTECTION differs from Plated Steelcaps in the wiki"
+    );
+
+    assert!(
+        same(
+            Ctx::STEEL_CAPS_PROTECTION,
+            1.0 - armored_advance::PLATING_REDUCTION
+        ),
+        "Ctx::STEEL_CAPS_PROTECTION differs from Armored Advance in the wiki"
+    );
+
+    assert!(
+        same(
+            Ctx::RANDUIN_CRIT_PROTECTION,
+            1.0 - randuins_omen::RESILIENCE_REDUCTION
+        ),
+        "Ctx::RANDUIN_CRIT_PROTECTION differs from Randuin's Omen in the wiki"
+    );
+
+    assert!(
+        same(
+            Ctx::ROCKSOLID_PROTECTION,
+            1.0 - wardens_mail::ROCK_SOLID_MAX_REDUCTION
+        ),
+        "Ctx::ROCKSOLID_PROTECTION differs from Warden's Mail in the wiki"
+    );
+};
+
 #[cfg(feature = "engine")]
 const _: () = {
     let mut i = 0;

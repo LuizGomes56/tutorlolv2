@@ -826,7 +826,7 @@
             "4: Increased Size (cbf1b55b)",
             "5: Increased Total Attack Speed (b1480ee2)",
             "6: Maximum Monster Damage (a4495605)",
-            "7: True Damage (c83048dc)"
+            "7: True Damage (b9247628)"
           ]
         }
       ]
@@ -976,8 +976,8 @@
         {
           "name": "Crimson Curse",
           "effects": [
-            "0: Description 1 (865a399f)",
-            "1: Description 1 [1] (fcec1c6c)",
+            "0: Description 1 (32ed9feb)",
+            "1: Description 1 [1] (7d73f34c)",
             "2: Innate (f4b4ec24)",
             "3: Innate [1] (7cd95cde)",
             "4: Innate [2] (265d4b81)",
@@ -1001,9 +1001,9 @@
         {
           "name": "Snack Attack",
           "effects": [
-            "0: Bonus Physical Damage (96d24456)",
+            "0: Bonus Physical Damage (88ceae2e)",
             "1: Heal Percentage (5eef39cc)",
-            "2: Non-Champion Bonus Damage (a19e9812)"
+            "2: Non-Champion Bonus Damage (fdd25bc2)"
           ]
         },
         {
@@ -1439,7 +1439,7 @@
             "0: Bonus Health Regeneration (6f1c9a22)",
             "1: Bonus Movement Speed (799a9fce)",
             "2: Health Regenerated per 0.5 Seconds (ef9e5d18)",
-            "3: Increased Base Health (eb8aaa4b)",
+            "3: Increased Base Health (a6b94337)",
             "4: Total Health Regenerated (99eb7e75)"
           ]
         }
@@ -1560,7 +1560,7 @@
           "name": "Venomous Bite",
           "effects": [
             "0: Capped Monster Damage (387419bb)",
-            "1: Magic Damage (10e3ca49)"
+            "1: Magic Damage (c447c483)"
           ]
         },
         {
@@ -1738,11 +1738,11 @@
             "0: Champion Heal Portion (a87a12c7)",
             "1: Damage per Instance (da6840fe)",
             "2: Damage per second (0b905e5b)",
-            "3: Last Tick of Damage (20b39b36)",
-            "4: Total Heal per Champion (39a2739c)",
-            "5: Total Heal per Minion (ac27ec89)",
-            "6: Total Heal per Monster (fcca8277)",
-            "7: Total Magic Damage (f7a0c0c5)"
+            "3: Last Tick of Damage (c27bdc4e)",
+            "4: Total Heal per Champion (bef562e8)",
+            "5: Total Heal per Minion (a6a802c3)",
+            "6: Total Heal per Monster (47cbc375)",
+            "7: Total Magic Damage (3d819997)"
           ]
         }
       ],
@@ -1943,7 +1943,7 @@
         {
           "name": "Remove Scurvy",
           "effects": [
-            "0: Heal (fbba4e7e)"
+            "0: Heal (108424c2)"
           ]
         }
       ],
@@ -2017,7 +2017,7 @@
         {
           "name": "Demacian Justice",
           "effects": [
-            "0: True Damage (e0cccf7a)"
+            "0: True Damage (c6b915ba)"
           ]
         }
       ]
@@ -2478,7 +2478,7 @@
             "0: Description 1 (ad9893a9)",
             "1: Description 1 [1] (1d4ad31b)",
             "2: Description 1 [2] (9ae824da)",
-            "3: Description 2 (5759343b)",
+            "3: Description 2 (b6c4dbc7)",
             "4: Description 3 (1d0a2219)",
             "5: Innate (1d0a2219)"
           ]
@@ -2825,7 +2825,7 @@
         {
           "name": "Whisper",
           "effects": [
-            "0: Description 1 [1] (1e76173b)",
+            "0: Description 1 [1] (a7dcfaf3)",
             "1: Description 3 (17fe1d5f)",
             "2: Innate - Death In 4 Acts (1d0a2219)",
             "3: Innate - Every Moment Matters (311fcd11)"
@@ -2916,10 +2916,10 @@
         {
           "name": "Super Mega Death Rocket!",
           "effects": [
-            "0: Maximum Physical Damage (668cad97)",
-            "1: Maximum Secondary Damage (7e836117)",
-            "2: Minimum Physical Damage (8a045253)",
-            "3: Minimum Secondary Damage (00fe31f7)"
+            "0: Maximum Physical Damage (302f3055)",
+            "1: Maximum Secondary Damage (7f699ad5)",
+            "2: Minimum Physical Damage (c98825b9)",
+            "3: Minimum Secondary Damage (f6f3a1f5)"
           ]
         }
       ]
@@ -2982,7 +2982,7 @@
             "0: Innate - Caustic Wounds (d4c87393)",
             "1: Innate - Caustic Wounds [1] (cb55cfb2)",
             "2: Innate - Caustic Wounds [2] (f1741f43)",
-            "3: Innate - Caustic Wounds [3] (40579280)",
+            "3: Innate - Caustic Wounds [3] (32deb992)",
             "4: Innate - Living Weapon (1d0a2219)",
             "5: Innate - Plasma (1d0a2219)"
           ]
@@ -3324,7 +3324,7 @@
         {
           "name": "Starfire Spellblade",
           "effects": [
-            "0: Bonus Magic Damage (7c5b6b2a)",
+            "0: Bonus Magic Damage (f9b416e8)",
             "1: Passive Damage (9ad5e853)"
           ]
         }
@@ -3525,7 +3525,7 @@
         {
           "name": "Mounting Dread",
           "effects": [
-            "0: Additional Physical Damage (c349a917)"
+            "0: Additional Physical Damage (69e772d5)"
           ]
         }
       ],
@@ -3933,8 +3933,8 @@
           "effects": [
             "0: Innate (97ea1905)",
             "1: Innate [1] (ae48b1e9)",
-            "2: Innate [2] (9b465b8f)",
-            "3: Innate [3] (b12c82ea)"
+            "2: Innate [2] (280cd31f)",
+            "3: Innate [3] (f3dfc322)"
           ]
         }
       ],
@@ -5090,9 +5090,9 @@
           "name": "Berserker Rage",
           "effects": [
             "0: Innate (8c33c9c6)",
-            "1: Innate [1] (7ad2375a)",
+            "1: Innate [1] (c6f328da)",
             "2: Innate [2] (f00300f1)",
-            "3: Innate [3] (f6934b25)"
+            "3: Innate [3] (8080c77d)"
           ]
         }
       ],
@@ -5112,7 +5112,7 @@
           "name": "Tough It Out",
           "effects": [
             "0: Bonus Attack Speed (90c3a513)",
-            "1: Shield Strength (82fa5bf7)"
+            "1: Shield Strength (3e2859b3)"
           ]
         }
       ],
@@ -6023,8 +6023,8 @@
             "2: Description 5 (1d0a2219)",
             "3: Innate (1b9b4679)",
             "4: Innate [1] (bb754824)",
-            "5: Innate [2] (9b465b8f)",
-            "6: Innate [3] (b12c82ea)",
+            "5: Innate [2] (280cd31f)",
+            "6: Innate [3] (f3dfc322)",
             "7: Style (13318973)"
           ]
         }
@@ -6186,7 +6186,7 @@
         {
           "name": "Surround Sound",
           "effects": [
-            "0: Heal (d985b2d8)",
+            "0: Heal (3fb7563a)",
             "1: Shield Strength (cd413365)"
           ]
         }
@@ -6217,7 +6217,7 @@
           "name": "Pit Grit",
           "effects": [
             "0: Description 2 (c617c9cc)",
-            "1: Innate - Heart of the Half-Beast (07343ae3)",
+            "1: Innate - Heart of the Half-Beast (813b9337)",
             "2: Innate - Heavy Hands (1d0a2219)"
           ]
         }
@@ -6937,7 +6937,7 @@
         {
           "name": "Tongue Lash",
           "effects": [
-            "0: Heal (aaa8682f)",
+            "0: Heal (7789d61b)",
             "1: Magic Damage (4724f69e)"
           ]
         }
@@ -7580,8 +7580,8 @@
         {
           "name": "Blighted Quiver",
           "effects": [
-            "0: Active Maximum Magic Damage (15e7b245)",
-            "1: Active Minimum Magic Damage (917f5285)",
+            "0: Active Maximum Magic Damage (20dac389)",
+            "1: Active Minimum Magic Damage (6adf35c9)",
             "2: Bonus Magic Damage (09460f3a)",
             "3: Bonus Magic Damage at Max Stacks (deb7d613)",
             "4: Bonus Magic Damage per Stack (08b904f2)",
@@ -7886,7 +7886,7 @@
         {
           "name": "Heartbreaker",
           "effects": [
-            "0: Physical Damage (3f50c117)"
+            "0: Physical Damage (470b5e97)"
           ]
         }
       ]
@@ -8015,8 +8015,8 @@
         {
           "name": "Frenzied Maul",
           "effects": [
-            "0: Heal (d6e2f068)",
-            "1: Minion Heal (7a61c39a)",
+            "0: Heal (ca5ba750)",
+            "1: Minion Heal (0785f5d6)",
             "2: Physical Damage (ab4746a4)"
           ]
         }
@@ -8357,8 +8357,8 @@
           "name": "Last Rites",
           "effects": [
             "0: Bonus Physical Damage (36bca851)",
-            "1: Heal (62e5d088)",
-            "2: Non-Champion Heal (b1ecae58)"
+            "1: Heal (a623c7b0)",
+            "2: Non-Champion Heal (b6696d20)"
           ]
         }
       ],
@@ -9171,7 +9171,7 @@
       "0: Passive (b9a025bf)"
     ],
     "SecondWind": [
-      "0: Passive (ccee8df4)"
+      "0: Passive (9d332238)"
     ],
     "ShieldBash": [
       "0: Adaptive Damage (1d0a2219)",
@@ -9222,7 +9222,7 @@
       "1: Passive (1d0a2219)"
     ],
     "Triumph": [
-      "0: Passive (101be1b8)"
+      "0: Passive (129e9958)"
     ],
     "UltimateHunter": [
       "0: Description 0 (30115fb7)",
@@ -9287,6 +9287,12 @@
         "scalings": [
           "0: PercentAttr EnemyCurrentHealth (7ca75210)"
         ]
+      }
+    },
+    "AnvilVoucher": {
+      "consume": {
+        "formula": "1d0a2219",
+        "scalings": []
       }
     },
     "ArcaneSweeperTrinket": {
@@ -9535,6 +9541,18 @@
         "scalings": []
       }
     },
+    "BraveryVoucher": {
+      "consume": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "CappaJuice": {
+      "consume": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
     "CatalystOfAeons": {
       "pass": {
         "formula": "1d0a2219",
@@ -9571,6 +9589,12 @@
         "scalings": [
           "0: Simple Unknown (51a2c047)"
         ]
+      }
+    },
+    "ControlWard": {
+      "consume": {
+        "formula": "1d0a2219",
+        "scalings": []
       }
     },
     "CosmicDrive": {
@@ -9871,6 +9895,44 @@
         ]
       }
     },
+    "ElixirOfAvarice": {
+      "consume": {
+        "formula": "04d3013e",
+        "scalings": []
+      }
+    },
+    "ElixirOfForce": {
+      "consume": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "ElixirOfIron": {
+      "consume": {
+        "formula": "3ffa71c8",
+        "scalings": [
+          "0: Simple BonusMoveSpeed (b964414a)"
+        ]
+      }
+    },
+    "ElixirOfSkill": {
+      "consume": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "ElixirOfSorcery": {
+      "consume": {
+        "formula": "1ca20e0e",
+        "scalings": []
+      }
+    },
+    "ElixirOfWrath": {
+      "consume": {
+        "formula": "428a2d08",
+        "scalings": []
+      }
+    },
     "EmpyreanPromise": {
       "act": {
         "formula": "1bb9c99a",
@@ -9898,6 +9960,12 @@
         "scalings": [
           "0: Simple Unknown (bf201105)"
         ]
+      }
+    },
+    "EnhancedLuckyDice": {
+      "consume": {
+        "formula": "1d0a2219",
+        "scalings": []
       }
     },
     "EssenceReaver": {
@@ -9950,6 +10018,12 @@
           "0: Simple BonusAttackSpeed (49daec26)",
           "1: Simple BonusMoveSpeed (bfa647eb)"
         ]
+      }
+    },
+    "EyeOfTheHerald": {
+      "consume": {
+        "formula": "1d0a2219",
+        "scalings": []
       }
     },
     "FarsightAlteration": {
@@ -10119,11 +10193,17 @@
         ]
       }
     },
+    "GoldStatAnvilVoucher": {
+      "consume": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
     "Goredrinker": {
       "act": {
-        "formula": "d6458e39",
+        "formula": "c471a491",
         "scalings": [
-          "0: PercentAttr MissingHealthRatio (05770c67)",
+          "0: PercentAttr MissingHealthRatio (4090e766)",
           "1: Simple BaseAd (3be5fb48)",
           "2: Simple AttackDamage (2cc616ec)"
         ]
@@ -10224,6 +10304,12 @@
         "scalings": [
           "0: Simple Unknown (2d16ea75)"
         ]
+      }
+    },
+    "HealthPotion": {
+      "consume": {
+        "formula": "1d0a2219",
+        "scalings": []
       }
     },
     "Heartsteel": {
@@ -10479,6 +10565,31 @@
         "scalings": []
       }
     },
+    "JuiceOfHaste": {
+      "consume": {
+        "formula": "2617b509",
+        "scalings": [
+          "0: Simple Unknown (bf201105)"
+        ]
+      }
+    },
+    "JuiceOfPower": {
+      "consume": {
+        "formula": "5df00526",
+        "scalings": [
+          "0: Simple AttackDamage (344a2f4f)",
+          "1: Simple AbilityPower (e26ee9a5)"
+        ]
+      }
+    },
+    "JuiceOfVitality": {
+      "consume": {
+        "formula": "e474545f",
+        "scalings": [
+          "0: Simple MaxHealth (0b3366a8)"
+        ]
+      }
+    },
     "KaenicRookern": {
       "pass": {
         "formula": "e8ce62e8",
@@ -10515,6 +10626,42 @@
       },
       "pass.ranged": {
         "formula": "ea56b888",
+        "scalings": []
+      }
+    },
+    "LegendaryAssassinItem": {
+      "consume": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "LegendaryFighterItem": {
+      "consume": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "LegendaryMageItem": {
+      "consume": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "LegendaryMarksmanItem": {
+      "consume": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "LegendarySupportItem": {
+      "consume": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "LegendaryTankItem": {
+      "consume": {
+        "formula": "1d0a2219",
         "scalings": []
       }
     },
@@ -10592,6 +10739,12 @@
         "scalings": [
           "0: PercentAttr MaxMana (1aa5d25b)"
         ]
+      }
+    },
+    "LuckyDice": {
+      "consume": {
+        "formula": "1d0a2219",
+        "scalings": []
       }
     },
     "LudensEcho": {
@@ -10847,6 +11000,24 @@
         "scalings": []
       }
     },
+    "PoroSnax": {
+      "consume": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "PrismaticItem": {
+      "consume": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "PrismaticStatVoucher": {
+      "consume": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
     "ProfaneHydra": {
       "act": {
         "formula": "0f708e1f",
@@ -11032,6 +11203,10 @@
       }
     },
     "RefillablePotion": {
+      "consume": {
+        "formula": "1d0a2219",
+        "scalings": []
+      },
       "pass": {
         "formula": "1d0a2219",
         "scalings": []
@@ -11308,6 +11483,18 @@
         "scalings": []
       }
     },
+    "StatBonusAramMayhem": {
+      "consume": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
+    "StatBonusArena": {
+      "consume": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
     "StatikkShiv": {
       "pass": {
         "formula": "1d0a2219",
@@ -11392,24 +11579,24 @@
     },
     "SunderedSky": {
       "pass": {
-        "formula": "04553c29",
+        "formula": "6b452b91",
         "scalings": [
-          "0: PercentAttr MissingHealthRatio (4dd59cbe)",
+          "0: PercentAttr MissingHealthRatio (21a9e3df)",
           "1: Simple BaseAd (9aa79c94)"
         ]
       },
       "pass.flip": {
-        "formula": "45775f52",
+        "formula": "a90159fe",
         "scalings": [
-          "0: PercentAttr MissingHealthRatio (4dd59cbe)",
+          "0: PercentAttr MissingHealthRatio (21a9e3df)",
           "1: Simple Unknown (20932cc1)",
           "2: Simple BaseAd (9aa79c94)"
         ]
       },
       "pass.ranged": {
-        "formula": "ad90250d",
+        "formula": "1445c1b5",
         "scalings": [
-          "0: PercentAttr MissingHealthRatio (4dd59cbe)",
+          "0: PercentAttr MissingHealthRatio (21a9e3df)",
           "1: Simple BaseAd (97ad16c6)"
         ]
       }
@@ -11578,6 +11765,22 @@
         "scalings": [
           "0: Simple MaxHealth (da5ef7c4)",
           "1: Simple MaxHealth (eee075f5)"
+        ]
+      }
+    },
+    "TotalBiscuitOfEverlastingWill": {
+      "consume": {
+        "formula": "27a0d321",
+        "scalings": [
+          "0: PercentAttr MaxHealth (946c3608)",
+          "1: PercentAttr MaxHealth (b8ab265b)"
+        ]
+      },
+      "consume.flip": {
+        "formula": "2828020f",
+        "scalings": [
+          "0: PercentAttr MaxHealth (fe28fce8)",
+          "1: PercentAttr MaxHealth (a15f13bb)"
         ]
       }
     },
@@ -11850,6 +12053,12 @@
         "scalings": []
       }
     },
+    "YourCut": {
+      "consume": {
+        "formula": "1d0a2219",
+        "scalings": []
+      }
+    },
     "YunTalWildarrows": {
       "pass": {
         "formula": "7166f26f",
@@ -11918,6 +12127,14 @@
         "formula": "1d0a2219",
         "scalings": []
       }
+    }
+  },
+  "exceptions": {
+    "Gnar": {
+      "Mega Gnar": "701997b6"
+    },
+    "Poppy": {
+      "Stubborn to a Fault": "3bed06b0"
     }
   }
 }

@@ -2,7 +2,12 @@ use super::*;
 
 impl Generator for Kassadin {
     fn generate(&mut self) -> MayFail {
-        self.ability(Key::Q, [("Magic Damage", Void)])
+        let [reduction] = self
+            .description(Key::P, "Innate")?
+            .capture(regex!(r"takes (\d+)% reduced\s+magic damage"))?;
+
+        self.constant("VOID_STONE_MAGIC_REDUCTION", reduction / 100.0)?
+            .ability(Key::Q, [("Magic Damage", Void)])
             .ability(Key::W, [("Increased Bonus Magic Damage", Void)])
             .ability(Key::E, [("Magic Damage", Void)])
             .ability(

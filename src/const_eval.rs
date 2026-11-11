@@ -286,7 +286,9 @@ impl<
                     * enemy.magic_values.modifier
                     * enemy.modifiers.magic_mod,
                 true_mod: modifiers.damages.true_mod * enemy.modifiers.true_mod,
-                global_mod: modifiers.damages.global_mod * enemy.modifiers.global_mod,
+                global_mod: modifiers.damages.global_mod
+                    * enemy.modifiers.global_mod
+                    * enemy.rune_damage_modifier(&runes),
             },
             ..modifiers
         };

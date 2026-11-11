@@ -2,10 +2,12 @@ pub use crate::{
     MayFail, formula as f,
     generators::{
         Generator, GeneratorExt,
+        constants::WithConstants,
         parser::champions::{Ability, Champion},
         utils::RegExtractor,
     },
 };
+pub use lazy_regex::regex;
 pub use tutorlolv2_types::{
     AbilityId, AbilityId::*, AbilityName::*, Attrs::*, ComboElement::*, CtxVar::*, DamageType::*,
     Key,

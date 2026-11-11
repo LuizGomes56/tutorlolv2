@@ -1,11 +1,11 @@
 use crate::{MayFail, selector};
+use lazy_regex::{Lazy, lazy_regex, regex};
 use regex::Regex;
 use scraper::Html;
 use serde::{Deserialize, Serialize};
 use std::{
     collections::BTreeMap,
     ops::{Bound, Range, RangeBounds, RangeFrom, RangeTo},
-    sync::LazyLock,
 };
 use tutorlolv2_types::CtxVar;
 
@@ -296,10 +296,7 @@ impl Scaling {
     }
 
     pub fn simple(text: &str) -> Option<Self> {
-        static SIMPLE_PERCENT_TAIL_RE: LazyLock<Regex> =
-            LazyLock::new(|| Regex::new(r"(?i)^(-?\d+(?:\.\d+)?)%\s+(.+)$").unwrap());
-
-        let caps = SIMPLE_PERCENT_TAIL_RE.captures(text)?;
+        let caps = regex!(r"(?i)^(-?\d+(?:\.\d+)?)%\s+(.+)$").captures(text)?;
         let value = caps.get(1)?.as_str().parse::<f64>().ok()? / 100.0;
         let ctx_var = assign_ctx_var(caps.get(2)?.as_str());
 
@@ -307,11 +304,8 @@ impl Scaling {
     }
 
     pub fn ranked(text: &str) -> Option<Self> {
-        static RANKED_PERCENT_TAIL_RE: LazyLock<Regex> = LazyLock::new(|| {
-            Regex::new(r"(?i)^(-?\d+(?:\.\d+)?(?:\s*/\s*-?\d+(?:\.\d+)?)+)%\s+(.+)$").unwrap()
-        });
-
-        let caps = RANKED_PERCENT_TAIL_RE.captures(text)?;
+        let caps =
+            regex!(r"(?i)^(-?\d+(?:\.\d+)?(?:\s*/\s*-?\d+(?:\.\d+)?)+)%\s+(.+)$").captures(text)?;
         let values = parse_slash_f64s(caps.get(1)?.as_str())
             .into_iter()
             .map(|v| v / 100.0)
@@ -322,11 +316,8 @@ impl Scaling {
     }
 
     pub fn ranked_percent_attr(text: &str) -> Option<Self> {
-        static RANKED_PERCENT_ATTR_RE: LazyLock<Regex> = LazyLock::new(|| {
-            Regex::new(r"(?i)^(-?\d+(?:\.\d+)?(?:\s*/\s*-?\d+(?:\.\d+)?)+)%\s+(of .+)$").unwrap()
-        });
-
-        let caps = RANKED_PERCENT_ATTR_RE.captures(text)?;
+        let caps = regex!(r"(?i)^(-?\d+(?:\.\d+)?(?:\s*/\s*-?\d+(?:\.\d+)?)+)%\s+(of .+)$")
+            .captures(text)?;
         let values = parse_slash_f64s(caps.get(1)?.as_str())
             .into_iter()
             .map(|v| v / 100.0)
@@ -337,10 +328,7 @@ impl Scaling {
     }
 
     pub fn per100(text: &str) -> Option<Self> {
-        static SIMPLE_PER100_RE: LazyLock<Regex> =
-            LazyLock::new(|| Regex::new(r"(?i)^(-?\d+(?:\.\d+)?)%\s+per\s+100%?\s+(.+)$").unwrap());
-
-        let caps = SIMPLE_PER100_RE.captures(text)?;
+        let caps = regex!(r"(?i)^(-?\d+(?:\.\d+)?)%\s+per\s+100%?\s+(.+)$").captures(text)?;
         let value = caps.get(1)?.as_str().parse::<f64>().ok()? / 100.0;
         let ctx_var = assign_ctx_var(caps.get(2)?.as_str());
 
@@ -348,12 +336,9 @@ impl Scaling {
     }
 
     pub fn ranked_per100(text: &str) -> Option<Self> {
-        static RANKED_PER100_RE: LazyLock<Regex> = LazyLock::new(|| {
-            Regex::new(r"(?i)^(-?\d+(?:\.\d+)?(?:\s*/\s*-?\d+(?:\.\d+)?)+)%\s+per\s+100%?\s+(.+)$")
-                .unwrap()
-        });
-
-        let caps = RANKED_PER100_RE.captures(text)?;
+        let caps =
+            regex!(r"(?i)^(-?\d+(?:\.\d+)?(?:\s*/\s*-?\d+(?:\.\d+)?)+)%\s+per\s+100%?\s+(.+)$")
+                .captures(text)?;
         let values = parse_slash_f64s(caps.get(1)?.as_str())
             .into_iter()
             .map(|v| v / 100.0)
@@ -364,10 +349,7 @@ impl Scaling {
     }
 
     pub fn percent_attr(text: &str) -> Option<Self> {
-        static PERCENT_ATTR_RE: LazyLock<Regex> =
-            LazyLock::new(|| Regex::new(r"(?i)^(-?\d+(?:\.\d+)?)%\s+(of .+)$").unwrap());
-
-        let caps = PERCENT_ATTR_RE.captures(text)?;
+        let caps = regex!(r"(?i)^(-?\d+(?:\.\d+)?)%\s+(of .+)$").captures(text)?;
         let value = caps.get(1)?.as_str().parse::<f64>().ok()? / 100.0;
         let debug = caps.get(2)?.as_str().trim().to_string();
         let ctx_var = assign_ctx_var(&debug);
@@ -478,12 +460,9 @@ impl Scaling {
     }
 
     pub fn range_percent_attr(text: &str) -> Option<Self> {
-        static RANGE_PERCENT_ATTR_RE: LazyLock<Regex> = LazyLock::new(|| {
-            Regex::new(r"(?i)^(-?\d+(?:\.\d+)?)%\s*-\s*(-?\d+(?:\.\d+)?)%\s*\(based on ([^)]+)\)$")
-                .unwrap()
-        });
-
-        let caps = RANGE_PERCENT_ATTR_RE.captures(text)?;
+        let caps =
+            regex!(r"(?i)^(-?\d+(?:\.\d+)?)%\s*-\s*(-?\d+(?:\.\d+)?)%\s*\(based on ([^)]+)\)$")
+                .captures(text)?;
         let min = caps.get(1)?.as_str().parse::<f64>().ok()? / 100.0;
         let max = caps.get(2)?.as_str().parse::<f64>().ok()? / 100.0;
         let based_on = caps.get(3)?.as_str().trim();
@@ -499,14 +478,12 @@ impl Scaling {
     }
 
     pub fn range_percent_attr_anywhere(text: &str) -> Vec<Self> {
-        static RANGE_PERCENT_ATTR_ANYWHERE_RE: LazyLock<Regex> = LazyLock::new(|| {
-            Regex::new(r"(?i)(-?\d+(?:\.\d+)?)%\s*-\s*(-?\d+(?:\.\d+)?)%\s*\(based on ([^)]+)\)")
-                .unwrap()
-        });
-
         let mut out = Vec::new();
 
-        for caps in RANGE_PERCENT_ATTR_ANYWHERE_RE.captures_iter(text) {
+        for caps in
+            regex!(r"(?i)(-?\d+(?:\.\d+)?)%\s*-\s*(-?\d+(?:\.\d+)?)%\s*\(based on ([^)]+)\)")
+                .captures_iter(text)
+        {
             let Some(min) = caps.get(1).and_then(|v| v.as_str().parse::<f64>().ok()) else {
                 continue;
             };
@@ -541,16 +518,9 @@ impl Scaling {
     }
 
     pub fn nested_range_percent_attr_anywhere(text: &str) -> Vec<Self> {
-        static NESTED_RANGE_PERCENT_ATTR_ANYWHERE_RE: LazyLock<Regex> = LazyLock::new(|| {
-            Regex::new(
-                r"(?i)(-?\d+(?:\.\d+)?)%\s*-\s*(-?\d+(?:\.\d+)?)%\s*\(\+\s*(-?\d+(?:\.\d+)?)%\s*-\s*(-?\d+(?:\.\d+)?)%\)\s*\(based on ([^)]+)\)"
-            )
-            .unwrap()
-        });
-
         let mut out = Vec::new();
 
-        for caps in NESTED_RANGE_PERCENT_ATTR_ANYWHERE_RE.captures_iter(text) {
+        for caps in regex!(r"(?i)(-?\d+(?:\.\d+)?)%\s*-\s*(-?\d+(?:\.\d+)?)%\s*\(\+\s*(-?\d+(?:\.\d+)?)%\s*-\s*(-?\d+(?:\.\d+)?)%\)\s*\(based on ([^)]+)\)").captures_iter(text) {
             let capture = |i| caps.get(i).and_then(|v| v.as_str().parse::<f64>().ok());
 
             let Some(outer_min) = capture(1) else {
@@ -601,11 +571,8 @@ impl Scaling {
     }
 
     pub fn multiplier_group(text: &str) -> Option<Self> {
-        static MULTIPLIER_RE: LazyLock<Regex> = LazyLock::new(|| {
-            Regex::new(r"(?i)^1\s*\+\s*(-?\d+(?:\.\d+)?)\s+per\s+100%?\s+(.+)$").unwrap()
-        });
-
-        let caps = MULTIPLIER_RE.captures(text)?;
+        let caps =
+            regex!(r"(?i)^1\s*\+\s*(-?\d+(?:\.\d+)?)\s+per\s+100%?\s+(.+)$").captures(text)?;
         let value = caps.get(1)?.as_str().parse::<f64>().ok()? / 100.0;
         let ctx_var = assign_ctx_var(caps.get(2)?.as_str());
 
@@ -617,10 +584,7 @@ impl Scaling {
     }
 
     pub fn nested_percent_attr(text: &str) -> Option<Self> {
-        static NESTED_PERCENT_ATTR_RE: LazyLock<Regex> =
-            LazyLock::new(|| Regex::new(r"(?i)^\((.+)\)%\s+(of .+)$").unwrap());
-
-        let caps = NESTED_PERCENT_ATTR_RE.captures(text)?;
+        let caps = regex!(r"(?i)^\((.+)\)%\s+(of .+)$").captures(text)?;
         let inner_raw = caps.get(1)?.as_str().trim();
         let debug = caps.get(2)?.as_str().trim().to_string();
         let ctx_var = assign_ctx_var(&debug);
@@ -642,11 +606,8 @@ impl Scaling {
     }
 
     pub fn ranked_per_ctx(text: &str) -> Option<Self> {
-        static RANKED_PER_CTX_RE: LazyLock<Regex> = LazyLock::new(|| {
-            Regex::new(r"(?i)^(-?\d+(?:\.\d+)?(?:\s*/\s*-?\d+(?:\.\d+)?)+)\s+per\s+(.+)$").unwrap()
-        });
-
-        let caps = RANKED_PER_CTX_RE.captures(text)?;
+        let caps = regex!(r"(?i)^(-?\d+(?:\.\d+)?(?:\s*/\s*-?\d+(?:\.\d+)?)+)\s+per\s+(.+)$")
+            .captures(text)?;
         let values = parse_slash_f64s(caps.get(1)?.as_str());
         let ctx_var = assign_ctx_var(caps.get(2)?.as_str());
 
@@ -654,10 +615,7 @@ impl Scaling {
     }
 
     pub fn per_ctx(text: &str) -> Option<Self> {
-        static PER_CTX_RE: LazyLock<Regex> =
-            LazyLock::new(|| Regex::new(r"(?i)^(-?\d+(?:\.\d+)?)\s+per\s+(.+)$").unwrap());
-
-        let caps = PER_CTX_RE.captures(text)?;
+        let caps = regex!(r"(?i)^(-?\d+(?:\.\d+)?)\s+per\s+(.+)$").captures(text)?;
         let value = caps.get(1)?.as_str().parse::<f64>().ok()?;
         let target = caps.get(2)?.as_str();
 
@@ -676,11 +634,7 @@ impl Scaling {
     }
 
     pub fn ranked_bare_percent(text: &str) -> Option<Self> {
-        static RANKED_BARE_PERCENT_RE: LazyLock<Regex> = LazyLock::new(|| {
-            Regex::new(r"(?i)^(-?\d+(?:\.\d+)?(?:\s*/\s*-?\d+(?:\.\d+)?)+)%$").unwrap()
-        });
-
-        let caps = RANKED_BARE_PERCENT_RE.captures(text)?;
+        let caps = regex!(r"(?i)^(-?\d+(?:\.\d+)?(?:\s*/\s*-?\d+(?:\.\d+)?)+)%$").captures(text)?;
         let values = parse_slash_f64s(caps.get(1)?.as_str())
             .into_iter()
             .map(|v| v / 100.0)
@@ -690,10 +644,7 @@ impl Scaling {
     }
 
     pub fn bare_percent(text: &str) -> Option<Self> {
-        static BARE_PERCENT_RE: LazyLock<Regex> =
-            LazyLock::new(|| Regex::new(r"(?i)^(-?\d+(?:\.\d+)?)%$").unwrap());
-
-        let caps = BARE_PERCENT_RE.captures(text)?;
+        let caps = regex!(r"(?i)^(-?\d+(?:\.\d+)?)%$").captures(text)?;
         let value = caps.get(1)?.as_str().parse::<f64>().ok()? / 100.0;
 
         Some(Self::Flat {
@@ -702,10 +653,7 @@ impl Scaling {
     }
 
     pub fn flat(text: &str) -> Option<Self> {
-        static RANKED_VALUES_ONLY_RE: LazyLock<Regex> =
-            LazyLock::new(|| Regex::new(r"^-?\d+(?:\.\d+)?(?:\s*/\s*-?\d+(?:\.\d+)?)+$").unwrap());
-
-        if !RANKED_VALUES_ONLY_RE.is_match(text) {
+        if !regex!(r"^-?\d+(?:\.\d+)?(?:\s*/\s*-?\d+(?:\.\d+)?)+$").is_match(text) {
             return None;
         }
 
@@ -1193,27 +1141,20 @@ pub fn parse_description_effects(
 /// This avoids taking an earlier movement-speed table as Mordekaiser's base,
 /// or a later slow table as Bard's base.
 fn inline_damage_base(description: &str) -> Option<Vec<f64>> {
-    static DAMAGE_RE: LazyLock<Regex> = LazyLock::new(|| {
-        Regex::new(r"(?i)\b(?:deals?|dealing|dealt)(?:\s+them)?\s*「?\s*(-?\d+(?:\.\d+)?)\s+(?:(?:bonus|total|additional|modified)\s+)*(?:magic|physical|true)\s+damage\b").unwrap()
-    });
-
     let text = normalize_text(&remove_nested_scalings(description));
-    let value = DAMAGE_RE.captures(&text)?.get(1)?.as_str().parse().ok()?;
+    let value = regex!(r"(?i)\b(?:deals?|dealing|dealt)(?:\s+them)?\s*「?\s*(-?\d+(?:\.\d+)?)\s+(?:(?:bonus|total|additional|modified)\s+)*(?:magic|physical|true)\s+damage\b").captures(&text)?.get(1)?.as_str().parse().ok()?;
     Some(vec![value])
 }
 
 pub fn parse_base_damage(text: &str) -> Option<Vec<f64>> {
-    static LEADING_VALUES_RE: LazyLock<Regex> =
-        LazyLock::new(|| Regex::new(r"^-?\d+(?:\.\d+)?%?(?:\s*/\s*-?\d+(?:\.\d+)?%?)+").unwrap());
-
-    // A single value is only a base when it is followed by its scalings alone,
-    // as in "5 (+ 30% AP)", since numbers also start sentences and durations
-    static SINGLE_VALUE_RE: LazyLock<Regex> =
-        LazyLock::new(|| Regex::new(r"^-?\d+(?:\.\d+)?\s*\(\+").unwrap());
+    static LEADING_VALUES_RE: Lazy<Regex> =
+        lazy_regex!(r"^-?\d+(?:\.\d+)?%?(?:\s*/\s*-?\d+(?:\.\d+)?%?)+");
 
     let text = normalize_text(text);
 
-    if !LEADING_VALUES_RE.is_match(&text) && SINGLE_VALUE_RE.is_match(&text) {
+    // A single value is only a base when it is followed by its scalings alone,
+    // as in "5 (+ 30% AP)", since numbers also start sentences and durations
+    if !LEADING_VALUES_RE.is_match(&text) && regex!(r"^-?\d+(?:\.\d+)?\s*\(\+").is_match(&text) {
         let (value, rest) = text.split_once(|c: char| c.is_whitespace() || c == '(')?;
         let rest = strip_leading_non_base_suffixes(&format!("({rest}"));
 
@@ -1426,18 +1367,11 @@ pub fn parse_scalings(input_raw: &str) -> Vec<Scaling> {
 /// is either given by rank, as in "6 / 7 / 8%", or by level, as in "6% - 12% (based
 /// on level)", whose values per level are read from the tooltip in `raw`
 pub fn nested_ratio_scalings(raw: &str) -> Vec<(Scaling, Vec<Scaling>)> {
-    static NESTED_RATIO_RE: LazyLock<Regex> = LazyLock::new(|| {
-        Regex::new(
-            r"(?i)(-?\d+(?:\.\d+)?%?\s*-\s*-?\d+(?:\.\d+)?%\s*\(based on level\)|-?\d+(?:\.\d+)?(?:\s*/\s*-?\d+(?:\.\d+)?)*%)\s*((?:\(\+[^()]*\)\s*)+)(of (?:the )?(?:target's|their|its) [a-z ]*?health)",
-        )
-        .unwrap()
-    });
-
     let text = normalize_text(&html_to_text(raw));
     let text = text.as_str();
     let mut out = Vec::new();
 
-    for caps in NESTED_RATIO_RE.captures_iter(text) {
+    for caps in regex!(r"(?i)(-?\d+(?:\.\d+)?%?\s*-\s*-?\d+(?:\.\d+)?%\s*\(based on level\)|-?\d+(?:\.\d+)?(?:\s*/\s*-?\d+(?:\.\d+)?)*%)\s*((?:\(\+[^()]*\)\s*)+)(of (?:the )?(?:target's|their|its) [a-z ]*?health)").captures_iter(text) {
         let (Some(whole), Some(values), Some(blocks), Some(target)) =
             (caps.get(0), caps.get(1), caps.get(2), caps.get(3))
         else {
@@ -1521,24 +1455,22 @@ fn looks_like_scaling_candidate(text: &str) -> bool {
 }
 
 fn find_inline_scaling_candidates(text: &str) -> Vec<String> {
-    static INLINE_SCALING_RES: LazyLock<Vec<Regex>> = LazyLock::new(|| {
-        vec![
-            Regex::new(r"(?i)-?\d+(?:\.\d+)?(?:\s*/\s*-?\d+(?:\.\d+)?)+%\s+of\s+[^,.;)]+").unwrap(),
-            Regex::new(r"(?i)-?\d+(?:\.\d+)?%\s+of\s+[^,.;)]+").unwrap(),
-            Regex::new(r"(?i)-?\d+(?:\.\d+)?(?:\s*/\s*-?\d+(?:\.\d+)?)+%\s+per\s+100%?\s+[^,.;)]+").unwrap(),
-            Regex::new(r"(?i)-?\d+(?:\.\d+)?%\s+per\s+100%?\s+[^,.;)]+").unwrap(),
-            Regex::new(r"(?i)-?\d+(?:\.\d+)?(?:\s*/\s*-?\d+(?:\.\d+)?)+\s+per\s+[^,.;)]+").unwrap(),
-            Regex::new(r"(?i)-?\d+(?:\.\d+)?\s+per\s+[^,.;)]+").unwrap(),
-            Regex::new(r"(?i)-?\d+(?:\.\d+)?%\s+[a-z][^,.;)]*").unwrap(),
-            Regex::new(r"(?i)-?\d+(?:\.\d+)?%\s*-\s*-?\d+(?:\.\d+)?%\s*\(\s*based on [^)]+\)").unwrap(),
-            Regex::new(r"(?i)-?\d+(?:\.\d+)?%\s*-\s*-?\d+(?:\.\d+)?%\s*\(\+\s*-?\d+(?:\.\d+)?%\s*-\s*-?\d+(?:\.\d+)?%\)\s*\(\s*based on [^)]+\)").unwrap(),
-            Regex::new(r"(?i)1\s*\+\s*-?\d+(?:\.\d+)?\s+per\s+100%?\s+[^,.;)]+").unwrap(),
-        ]
-    });
-
     let mut out = Vec::new();
 
-    for re in INLINE_SCALING_RES.iter() {
+    for re in [
+        regex!(r"(?i)-?\d+(?:\.\d+)?(?:\s*/\s*-?\d+(?:\.\d+)?)+%\s+of\s+[^,.;)]+"),
+        regex!(r"(?i)-?\d+(?:\.\d+)?%\s+of\s+[^,.;)]+"),
+        regex!(r"(?i)-?\d+(?:\.\d+)?(?:\s*/\s*-?\d+(?:\.\d+)?)+%\s+per\s+100%?\s+[^,.;)]+"),
+        regex!(r"(?i)-?\d+(?:\.\d+)?%\s+per\s+100%?\s+[^,.;)]+"),
+        regex!(r"(?i)-?\d+(?:\.\d+)?(?:\s*/\s*-?\d+(?:\.\d+)?)+\s+per\s+[^,.;)]+"),
+        regex!(r"(?i)-?\d+(?:\.\d+)?\s+per\s+[^,.;)]+"),
+        regex!(r"(?i)-?\d+(?:\.\d+)?%\s+[a-z][^,.;)]*"),
+        regex!(r"(?i)-?\d+(?:\.\d+)?%\s*-\s*-?\d+(?:\.\d+)?%\s*\(\s*based on [^)]+\)"),
+        regex!(
+            r"(?i)-?\d+(?:\.\d+)?%\s*-\s*-?\d+(?:\.\d+)?%\s*\(\+\s*-?\d+(?:\.\d+)?%\s*-\s*-?\d+(?:\.\d+)?%\)\s*\(\s*based on [^)]+\)"
+        ),
+        regex!(r"(?i)1\s*\+\s*-?\d+(?:\.\d+)?\s+per\s+100%?\s+[^,.;)]+"),
+    ] {
         for m in re.find_iter(text) {
             let candidate = m.as_str().trim().to_string();
             if is_important_candidate(&candidate) {

@@ -19,7 +19,7 @@ use {
     crate::{
         AbilityBatch, ChampionId, ItemId, RuneId, WikiModifiers,
         bitset::BitSet,
-        libgen::{Champion, Closure, L_TWRD, Stat, WikiStats},
+        libgen::{Champion, Closure, L_TWRD, Stat, WikiStats, champions, items},
         model::*,
     },
     alloc::boxed::Box,
@@ -67,9 +67,6 @@ impl Modifiers {
     pub const fn apply_rune(&mut self, rune: RuneId, stats: &PlayerStats) {
         match rune {
             RuneId::AxiomArcanist => self.abilities.r *= RiotFormulas::AXIOM_ARCANIST_BONUS_DAMAGE,
-            RuneId::CoupDeGrace | RuneId::CutDown => {
-                self.damages.global_mod *= RiotFormulas::COUP_DE_GRACE_AND_CUTDOWN_BONUS_DAMAGE
-            }
             RuneId::LastStand => {
                 self.damages.global_mod *=
                     RiotFormulas::get_last_stand(stats.missing_health_ratio())
@@ -220,17 +217,19 @@ impl WikiStats {
     }
 
     pub const fn mega_gnar_base_stats(&self, level: NonZeroU8) -> BasicStats {
+        use champions::gnar::*;
+
         let mut gnar_stats = *ChampionId::Gnar.stats();
 
-        gnar_stats.health.base += 100.0;
-        gnar_stats.health.per_level += 43.0;
-        gnar_stats.armor.base += 3.5;
-        gnar_stats.armor.per_level += 3.0;
-        gnar_stats.magic_resist.base += 3.5;
-        gnar_stats.magic_resist.per_level += 3.5;
-        gnar_stats.attack_damage.base += 6.0;
-        gnar_stats.attack_damage.per_level += 2.5;
-        gnar_stats.attack_speed.per_level = 0.5;
+        gnar_stats.health.base += MEGA_HEALTH_BASE;
+        gnar_stats.health.per_level += MEGA_HEALTH_PER_LEVEL;
+        gnar_stats.armor.base += MEGA_ARMOR_BASE;
+        gnar_stats.armor.per_level += MEGA_ARMOR_PER_LEVEL;
+        gnar_stats.magic_resist.base += MEGA_MAGIC_RESIST_BASE;
+        gnar_stats.magic_resist.per_level += MEGA_MAGIC_RESIST_PER_LEVEL;
+        gnar_stats.attack_damage.base += MEGA_ATTACK_DAMAGE_BASE;
+        gnar_stats.attack_damage.per_level += MEGA_ATTACK_DAMAGE_PER_LEVEL;
+        gnar_stats.attack_speed.per_level -= MEGA_ATTACK_SPEED_LOSS_PER_LEVEL;
         gnar_stats.base_stats(level)
     }
 }
@@ -239,6 +238,7 @@ impl ChampionId {
     /// Mega Gnar uses melee item and rune effects; other forms use cached data.
     pub const fn effective_attack_type(self, is_mega_gnar: bool) -> AttackType {
         if matches!(self, ChampionId::Gnar) && is_mega_gnar {
+            core::hint::cold_path();
             AttackType::Melee
         } else {
             self.data().attack_type
@@ -293,13 +293,25 @@ impl ChampionId {
         } = enemy_id.data().modifiers;
 
         match game_map {
-            GameMap::OneForAll => ofa.damage_dealt * e_ofa.damage_taken,
-            GameMap::UnsealedSpellbook => usb.damage_dealt * e_usb.damage_taken,
+            GameMap::OneForAll => {
+                core::hint::cold_path();
+                ofa.damage_dealt * e_ofa.damage_taken
+            }
+            GameMap::UnsealedSpellbook => {
+                core::hint::cold_path();
+                usb.damage_dealt * e_usb.damage_taken
+            }
             GameMap::Aram | GameMap::AramMayhem => aram.damage_dealt * e_aram.damage_taken,
             GameMap::Arena => ar.damage_dealt * e_ar.damage_taken,
-            GameMap::NexusBlitz => nb.damage_dealt * e_nb.damage_taken,
+            GameMap::NexusBlitz => {
+                core::hint::cold_path();
+                nb.damage_dealt * e_nb.damage_taken
+            }
             GameMap::SwiftPlay => swift.damage_dealt * e_swift.damage_taken,
-            GameMap::Urf => urf.damage_dealt * e_urf.damage_taken,
+            GameMap::Urf => {
+                core::hint::cold_path();
+                urf.damage_dealt * e_urf.damage_taken
+            }
             _ => 1.0,
         }
     }
@@ -569,7 +581,7 @@ impl EnemyState<'_> {
         } = shred;
 
         if matches!(champion_id, ChampionId::Kassadin) {
-            e_modifiers.magic_mod *= 0.9;
+            e_modifiers.magic_mod *= 1.0 - champions::kassadin::VOID_STONE_MAGIC_REDUCTION;
         }
 
         // Supplied totals already include stat passives and dragons. Keep inference
@@ -585,30 +597,37 @@ impl EnemyState<'_> {
                 e_default_stats.magic_resist += mode_magic_resist;
 
                 let bonus_mana = e_default_stats.infer_stats(items, earth_dragons);
+                // Warmog's Vitality only scales the health granted by items, which
+                // also includes the health that Awe converts from mana below
+                let mut item_health = e_default_stats.max_health - base_stats.max_health;
+                let mut has_warmogs = false;
                 let mut i = 0;
 
                 while i < item_exceptions.len() {
-                    let item_exception = item_exceptions[i];
-                    let stacks = item_exception.stacks();
-
-                    if let Some(item_id) = item_exception.get_item_id() {
+                    if let Some(item_id) = item_exceptions[i].get_item_id() {
                         match item_id {
-                            ItemId::WintersApproach | ItemId::Fimbulwinter => {
-                                e_default_stats.max_health += 0.15 * bonus_mana
+                            ItemId::WintersApproach => {
+                                core::hint::cold_path();
+
+                                let awe =
+                                    items::winters_approach::AWE_BONUS_MANA_RATIO * bonus_mana;
+
+                                e_default_stats.max_health += awe;
+                                item_health += awe;
                             }
-                            ItemId::Dragonheart => {
-                                let modifier = 1.0 + 0.04 * stacks as f32;
-                                e_default_stats.max_health *= modifier;
-                                e_default_stats.armor *= modifier;
-                                e_default_stats.magic_resist *= modifier
+                            ItemId::Fimbulwinter => {
+                                core::hint::cold_path();
+
+                                let awe = items::fimbulwinter::AWE_BONUS_MANA_RATIO * bonus_mana;
+
+                                e_default_stats.max_health += awe;
+                                item_health += awe;
                             }
-                            ItemId::DemonKingsCrown => {
-                                let modifier = 1.0 + 0.01 * stacks as f32;
-                                e_default_stats.max_health *= modifier;
-                                e_default_stats.armor *= modifier;
-                                e_default_stats.magic_resist *= modifier
+                            ItemId::WarmogsArmor => {
+                                core::hint::cold_path();
+
+                                has_warmogs = true
                             }
-                            ItemId::WarmogsArmor => e_default_stats.max_health *= 1.12,
                             _ => {}
                         }
                     }
@@ -616,56 +635,93 @@ impl EnemyState<'_> {
                     i += 1;
                 }
 
+                // Warmog's waits for every conversion of Awe, in any order
+                if has_warmogs {
+                    core::hint::cold_path();
+
+                    e_default_stats.max_health +=
+                        items::warmogs_armor::WARMOGS_VITALITY_BONUS_HEALTH_RATIO * item_health;
+                }
+
+                // Dragonheart and Demon King's Crown increase the total stats,
+                // so they apply after Warmog's
+                let total_stats_modifier = ValueException::total_stats_modifier(item_exceptions);
+
+                e_default_stats.max_health *= total_stats_modifier;
+                e_default_stats.armor *= total_stats_modifier;
+                e_default_stats.magic_resist *= total_stats_modifier;
+
                 match champion_id {
                     ChampionId::Swain => {
-                        let stack_hp = 12 * stacks;
-                        e_default_stats.max_health += stack_hp as f32;
+                        e_default_stats.max_health +=
+                            champions::swain::SOUL_FRAGMENT_HEALTH * stacks as f32;
                     }
                     ChampionId::Chogath => {
-                        let stack_hp = stacks * 80
-                            + 40 * match level.get() {
-                                ..6 => 0,
-                                6..11 => 1,
-                                11..16 => 2,
-                                16.. => 3,
-                            };
-                        e_default_stats.max_health += stack_hp as f32;
+                        // Feast grants bonus health per stack based on its rank
+                        let hp_per_stack = match level.get() {
+                            ..6 => 0.0,
+                            6..11 => champions::chogath::FEAST_HEALTH_PER_STACK[0],
+                            11..16 => champions::chogath::FEAST_HEALTH_PER_STACK[1],
+                            16.. => champions::chogath::FEAST_HEALTH_PER_STACK[2],
+                        };
+
+                        e_default_stats.max_health += stacks as f32 * hp_per_stack;
                     }
                     ChampionId::Sion => {
                         e_default_stats.max_health += stacks as f32;
                     }
                     ChampionId::Ornn => {
-                        // Starts game with +10% armor/mr/hp already
-                        // After level 13, player will start upgrading items
-                        // At level 18, the maximum bonus must have been reached
-                        // For every upgrade, a +4% resist is applied.
-                        // #![manual_impl]
-                        let ornn_resist_multiplier = match level.get() {
-                            ..13 => 1.1,
-                            13..18 => 1.1 + (level.get() - 12) as f32 * 0.04,
-                            18.. => 1.3,
+                        use champions::ornn::{
+                            MASTER_CRAFTSMAN_BASE_BONUS, MASTER_CRAFTSMAN_MAX_BONUS,
+                            MASTER_CRAFTSMAN_UPGRADE_BONUS,
                         };
 
-                        e_default_stats.armor *= ornn_resist_multiplier;
-                        e_default_stats.magic_resist *= ornn_resist_multiplier;
-                        e_default_stats.max_health *= ornn_resist_multiplier;
+                        // Starts game with +10% bonus armor/mr/hp already
+                        // After level 13, player will start upgrading items
+                        // At level 18, the maximum bonus must have been reached
+                        // For every upgrade, a +4% bonus is applied.
+                        // #![manual_impl]
+                        let upgrades = level.get().saturating_sub(12) as f32;
+                        let ornn_resist_multiplier = 1.0
+                            + (MASTER_CRAFTSMAN_BASE_BONUS
+                                + upgrades * MASTER_CRAFTSMAN_UPGRADE_BONUS)
+                                .min(MASTER_CRAFTSMAN_MAX_BONUS);
+
+                        // Master Craftsman only scales bonus stats
+                        e_default_stats.armor = base_stats.armor
+                            + (e_default_stats.armor - base_stats.armor) * ornn_resist_multiplier;
+
+                        e_default_stats.magic_resist = base_stats.magic_resist
+                            + (e_default_stats.magic_resist - base_stats.magic_resist)
+                                * ornn_resist_multiplier;
+
+                        e_default_stats.max_health = base_stats.max_health
+                            + (e_default_stats.max_health - base_stats.max_health)
+                                * ornn_resist_multiplier;
                     }
                     ChampionId::Poppy => {
-                        const POPPY_W_MULTIPLIER: f32 = 1.16;
+                        // Inferred enemies are at full health, so the bonus is
+                        // never doubled by her being at low health
+                        const MULTIPLIER: f32 = 1.0 + champions::poppy::STUBBORN_TO_A_FAULT_RESISTS;
 
-                        e_default_stats.armor *= POPPY_W_MULTIPLIER;
-                        e_default_stats.magic_resist *= POPPY_W_MULTIPLIER;
+                        e_default_stats.armor *= MULTIPLIER;
+                        e_default_stats.magic_resist *= MULTIPLIER;
                     }
                     ChampionId::Malphite => {
-                        // W upgrade pattern for malphite by 06/07/2025
+                        // W rank by level, assuming it is maxed last
                         // #![manual_impl]
-                        let malphite_resist_multiplier = match level.get() {
-                            ..3 => 1.0,
-                            3..14 => 1.1,
-                            14 => 1.15,
-                            15..17 => 1.2,
-                            17 => 1.25,
-                            18.. => 1.3,
+                        let w_rank = match level.get() {
+                            ..3 => 0,
+                            3..14 => 1,
+                            14 => 2,
+                            15..17 => 3,
+                            17 => 4,
+                            18.. => 5,
+                        };
+
+                        let malphite_resist_multiplier = match w_rank {
+                            0 => 1.0,
+                            _ => 1.0 + champions::malphite::THUNDERCLAP_BONUS_ARMOR[w_rank - 1],
                         };
 
                         e_default_stats.armor *= malphite_resist_multiplier;
@@ -712,14 +768,7 @@ impl EnemyState<'_> {
             armor_values,
             magic_values,
             steelcaps: has_item(&origin, [ItemId::PlatedSteelcaps, ItemId::ArmoredAdvance]),
-            rocksolid: has_item(
-                &origin,
-                [
-                    ItemId::RanduinsOmen,
-                    ItemId::FrozenHeart,
-                    ItemId::WardensMail,
-                ],
-            ),
+            rocksolid: has_item(&origin, [ItemId::WardensMail]),
             randuin: has_item(&origin, [ItemId::RanduinsOmen]),
             accept_negatives,
         }
@@ -857,10 +906,15 @@ impl SelfState {
             let existing = owned[i];
 
             match existing {
-                ItemId::WintersApproach | ItemId::Fimbulwinter => {
+                ItemId::WintersApproach => {
                     core::hint::cold_path();
 
-                    stats.max_health += 0.15 * added_mana
+                    stats.max_health += items::winters_approach::AWE_BONUS_MANA_RATIO * added_mana
+                }
+                ItemId::Fimbulwinter => {
+                    core::hint::cold_path();
+
+                    stats.max_health += items::fimbulwinter::AWE_BONUS_MANA_RATIO * added_mana
                 }
                 _ => {}
             }
@@ -870,10 +924,17 @@ impl SelfState {
 
         if !already_owned {
             match item {
-                ItemId::WintersApproach | ItemId::Fimbulwinter => {
+                ItemId::WintersApproach => {
                     core::hint::cold_path();
 
-                    stats.max_health += 0.15 * (stats.max_mana - self.base_stats.max_mana)
+                    stats.max_health += items::winters_approach::AWE_BONUS_MANA_RATIO
+                        * (stats.max_mana - self.base_stats.max_mana)
+                }
+                ItemId::Fimbulwinter => {
+                    core::hint::cold_path();
+
+                    stats.max_health += items::fimbulwinter::AWE_BONUS_MANA_RATIO
+                        * (stats.max_mana - self.base_stats.max_mana)
                 }
                 _ => {}
             }
@@ -888,15 +949,20 @@ impl SelfState {
             if matches!(existing, ItemId::WarmogsArmor) {
                 core::hint::cold_path();
 
-                stats.max_health =
-                    current.max_health + (stats.max_health - current.max_health) * 1.12;
+                stats.max_health += items::warmogs_armor::WARMOGS_VITALITY_BONUS_HEALTH_RATIO
+                    * (stats.max_health - current.max_health);
             }
 
             i += 1;
         }
 
+        // Observed health doesn't tell which part came from items, so the whole
+        // bonus health is amplified
         if !already_owned && matches!(item, ItemId::WarmogsArmor) {
-            stats.max_health *= 1.12;
+            core::hint::cold_path();
+
+            stats.max_health += items::warmogs_armor::WARMOGS_VITALITY_BONUS_HEALTH_RATIO
+                * (stats.max_health - self.base_stats.max_health);
         }
 
         let health_delta = stats.max_health - current.max_health;
@@ -910,13 +976,23 @@ impl SelfState {
             let existing = owned[i];
 
             match existing {
-                ItemId::Riftmaker => added_ap += 0.02 * health_delta,
-                ItemId::ArchangelsStaff => added_ap += 0.01 * added_mana,
-                ItemId::SeraphsEmbrace => added_ap += 0.02 * added_mana,
-                ItemId::Manamune | ItemId::Muramana => added_ad += 0.025 * added_mana,
+                ItemId::Riftmaker => {
+                    added_ap += items::riftmaker::VOID_INFUSION_BONUS_HEALTH_RATIO * health_delta
+                }
+                ItemId::ArchangelsStaff => {
+                    added_ap += items::archangels_staff::AWE_BONUS_MANA_RATIO * added_mana
+                }
+                ItemId::SeraphsEmbrace => {
+                    added_ap += items::seraphs_embrace::AWE_BONUS_MANA_RATIO * added_mana
+                }
+                ItemId::Manamune => added_ad += items::manamune::AWE_MAX_MANA_RATIO * added_mana,
+                ItemId::Muramana => added_ad += items::muramana::AWE_MAX_MANA_RATIO * added_mana,
                 ItemId::OverlordsBloodmail => {
+                    core::hint::cold_path();
+
                     owns_bloodmail = true;
-                    added_ad += 0.025 * health_delta
+                    added_ad +=
+                        items::overlords_bloodmail::TYRANNY_BONUS_HEALTH_RATIO * health_delta
                 }
                 _ => {}
             }
@@ -929,7 +1005,9 @@ impl SelfState {
             let bonus_mana = stats.max_mana - self.base_stats.max_mana;
 
             match item {
-                ItemId::Riftmaker => added_ap += 0.02 * bonus_health,
+                ItemId::Riftmaker => {
+                    added_ap += items::riftmaker::VOID_INFUSION_BONUS_HEALTH_RATIO * bonus_health
+                }
                 // Purchases do not change the flat missing health, so an owned
                 // Demonic Embrace keeps the ability power already observed
                 ItemId::DemonicEmbrace => {
@@ -938,13 +1016,23 @@ impl SelfState {
                     added_ap +=
                         RiotFormulas::get_sinister_pact(current.max_health - current.current_health)
                 }
-                ItemId::ArchangelsStaff => added_ap += 0.01 * bonus_mana,
-                ItemId::SeraphsEmbrace => added_ap += 0.02 * bonus_mana,
-                ItemId::Manamune | ItemId::Muramana => added_ad += 0.025 * bonus_mana,
+                ItemId::ArchangelsStaff => {
+                    added_ap += items::archangels_staff::AWE_BONUS_MANA_RATIO * bonus_mana
+                }
+                ItemId::SeraphsEmbrace => {
+                    added_ap += items::seraphs_embrace::AWE_BONUS_MANA_RATIO * bonus_mana
+                }
+                ItemId::Manamune => {
+                    added_ad += items::manamune::AWE_MAX_MANA_RATIO * stats.max_mana
+                }
+                ItemId::Muramana => {
+                    added_ad += items::muramana::AWE_MAX_MANA_RATIO * stats.max_mana
+                }
                 ItemId::OverlordsBloodmail => {
                     core::hint::cold_path();
 
-                    added_ad += 0.025 * bonus_health
+                    added_ad +=
+                        items::overlords_bloodmail::TYRANNY_BONUS_HEALTH_RATIO * bonus_health
                 }
                 _ => {}
             }
@@ -972,6 +1060,9 @@ impl SelfState {
         }
 
         // The observed AP already includes owned amplifiers; only amplify the delta.
+        const RABADONS_AMPLIFIER: f32 = 1.0 + items::rabadons_deathcap::MAGICAL_OPUS_AP_AMPLIFIER;
+        const WOOGLETS_AMPLIFIER: f32 = 1.0 + items::wooglets_witchcap::MAGICAL_OPUS_AP_AMPLIFIER;
+
         let ap_delta = stats.ability_power - current.ability_power;
         let mut ap_multiplier = 1.0;
 
@@ -981,10 +1072,10 @@ impl SelfState {
             let existing = owned[i];
 
             match existing {
-                ItemId::RabadonsDeathcap => ap_multiplier *= 1.3,
+                ItemId::RabadonsDeathcap => ap_multiplier *= RABADONS_AMPLIFIER,
                 ItemId::WoogletsWitchcap => {
                     core::hint::cold_path();
-                    ap_multiplier *= 1.5
+                    ap_multiplier *= WOOGLETS_AMPLIFIER
                 }
                 _ => {}
             }
@@ -996,8 +1087,14 @@ impl SelfState {
 
         if !already_owned {
             match item {
-                ItemId::RabadonsDeathcap => stats.ability_power *= 1.3,
-                ItemId::WoogletsWitchcap => stats.ability_power *= 1.5,
+                ItemId::RabadonsDeathcap => {
+                    core::hint::cold_path();
+                    stats.ability_power *= RABADONS_AMPLIFIER
+                }
+                ItemId::WoogletsWitchcap => {
+                    core::hint::cold_path();
+                    stats.ability_power *= WOOGLETS_AMPLIFIER
+                }
                 _ => {}
             }
         }
@@ -1040,6 +1137,40 @@ impl EnemyFullState {
     pub const fn ctx(&self, self_state: &SelfState) -> Ctx {
         self_state.ctx(self)
     }
+
+    /// Multiplier of the attacker's runes that depend on the health of this enemy
+    /// champion: [`RuneId::CoupDeGrace`] below its health threshold and
+    /// [`RuneId::CutDown`] above it. Monsters are not affected by these runes
+    pub const fn rune_damage_modifier(&self, owned_runes: &[RuneId]) -> f32 {
+        use crate::libgen::runes::{coup_de_grace, cut_down};
+
+        // Computed directly so that exact thresholds such as 60% are not lost to rounding
+        let EnemyStats {
+            current_health,
+            max_health,
+            ..
+        } = self.current_stats;
+
+        let health_ratio = (current_health / max_health.max(1.0)).clamp(0.0, 1.0);
+        let mut modifier = 1.0;
+        let mut i = 0;
+
+        while i < owned_runes.len() {
+            match owned_runes[i] {
+                RuneId::CoupDeGrace if health_ratio < coup_de_grace::HEALTH_THRESHOLD => {
+                    modifier *= RiotFormulas::COUP_DE_GRACE_BONUS_DAMAGE
+                }
+                RuneId::CutDown if health_ratio > cut_down::HEALTH_THRESHOLD => {
+                    modifier *= RiotFormulas::CUT_DOWN_BONUS_DAMAGE
+                }
+                _ => {}
+            }
+
+            i += 1;
+        }
+
+        modifier
+    }
 }
 
 impl EnemyFullState {
@@ -1080,15 +1211,24 @@ impl EnemyFullState {
 }
 
 pub const fn get_stacks(champion_id: ChampionId, game_time: f32) -> f32 {
+    // 30 minutes per game is the average
     const AVERAGE_GAME_TIME: u32 = 60 * 30;
 
     pub const fn time(game_time: f32, average: u32) -> f32 {
         average as f32 * game_time / AVERAGE_GAME_TIME as f32
     }
 
+    // We don't know how many stacks the player has at that moment, so
+    // the best we can do is to guess how much he would have at 30 minutes,
+    // and calculate the average per minute so we can add. Obviously it will
+    // grow linearly, while in game it is more common to get more stacks
+    // towards late-game
+    //
+    // Note: These values might be outdated, and they come from my personal
+    // experience playing the game, not a concrete set of data
     match champion_id {
         ChampionId::Chogath => time(game_time, 12),
-        ChampionId::Nasus => time(game_time, 450),
+        ChampionId::Nasus => time(game_time, 600),
         ChampionId::Smolder => time(game_time, 120),
         ChampionId::AurelionSol => time(game_time, 190),
         ChampionId::Thresh => time(game_time, 150),

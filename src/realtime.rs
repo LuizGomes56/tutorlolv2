@@ -22,6 +22,7 @@ use {
 /// access does not cause a panic or undefined behavior
 const _: () = {
     let mut i = 0;
+
     while i < ChampionId::COUNT {
         let champion_id = ChampionId::VARIANTS[i];
         assert!(!champion_id.positions().is_empty());
@@ -118,6 +119,8 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
     // Disguised as a non-champion entity, Neeko reports the entity's level. Her
     // ability points can't exceed her real level, so they give a lower bound
     let level = if current_player.is_disguised_neeko(current_player_champion_id) {
+        core::hint::cold_path();
+
         let RiotAbilities { q, w, e, r } = abilities;
         let points = [q, w, e, r].iter().fold(0u8, |sum, ability| {
             sum.saturating_add(ability.ability_level)
@@ -325,7 +328,8 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
             {
                 let mut modifiers = base_modifiers;
 
-                modifiers.damages.global_mod *= map_mod;
+                modifiers.damages.global_mod *=
+                    map_mod * full_state.rune_damage_modifier(&owned_runes);
 
                 let modifiers = modifiers.against(&full_state, adaptive_type);
 
@@ -343,7 +347,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
                 let ctx = state.ctx(&target);
                 let mut buffs = *buffs;
 
-                buffs.damages.global_mod *= map_mod;
+                buffs.damages.global_mod *= map_mod * target.rune_damage_modifier(&owned_runes);
 
                 let modifiers = buffs.against(&target, state.adaptive_type);
                 let mut row = damages.fill_batch(

@@ -2,11 +2,13 @@ pub use crate::{
     MayFail, formula as f,
     generators::{
         Generator, GeneratorExt,
+        constants::WithConstants,
         parser::items::{Item, Source::*},
         utils::RegExtractor,
     },
 };
 pub use core::fmt::Display;
+pub use lazy_regex::regex;
 pub use tutorlolv2_types::{AttackType::*, Attrs::*, CtxVar::*, DamageIndex::*, DamageType::*};
 pub use tutorlolv2_wiki::items::item_parser::WikiItem;
 

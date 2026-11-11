@@ -376,13 +376,16 @@ impl ResistValue {
 }
 
 impl Ctx {
-    /// Item Plated Steelcaps gives 12% damage reduction for basic attacks
-    pub const STEEL_CAPS_PROTECTION: f32 = 0.88;
+    // These are checked against the values extracted from the wiki in
+    // `tutorlolv2::libgen::check`, so the build fails if the wiki changes them
+
+    /// Item Plated Steelcaps gives 10% damage reduction for basic attacks
+    pub const STEEL_CAPS_PROTECTION: f32 = 0.9;
 
     /// Item Randuin's Omen gives 30% damage reduction against critical hits
     pub const RANDUIN_CRIT_PROTECTION: f32 = 0.7;
 
-    /// Items with Rocksolid passive give 20% damage reduction in some cases
+    /// Items with Rock Solid passive give up to 20% damage reduction
     pub const ROCKSOLID_PROTECTION: f32 = 0.8;
 
     const fn select(&self, flag: u8, value: f32) -> f32 {

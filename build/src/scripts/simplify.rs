@@ -1,5 +1,5 @@
-use regex::{Captures, Regex};
-use std::sync::LazyLock;
+use lazy_regex::regex;
+use regex::Captures;
 use syn::{BinOp, Expr};
 
 /// Relative cost of a division compared to an addition or multiplication.
@@ -27,9 +27,7 @@ pub fn simplify_exact(f: &str) -> String {
 }
 
 pub fn simplify_with(f: &str, precision: Precision) -> String {
-    static ZERO_RE: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"\bzero\b").unwrap());
-
-    let formula = ZERO_RE.replace_all(f.trim(), "0");
+    let formula = regex!(r"\bzero\b").replace_all(f.trim(), "0");
     let (protected, matches) = protect_matches(&formula, precision);
 
     let original = finish(&protected, &matches, precision);
@@ -226,13 +224,11 @@ fn placeholder(i: usize) -> String {
 /// Replaces every top-level `match` block with a placeholder symbol the symbolic engine can
 /// handle, simplifying the body of each arm on the way.
 fn protect_matches(formula: &str, precision: Precision) -> (String, Vec<String>) {
-    static MATCH_RE: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"\bmatch\b").unwrap());
-
     let mut protected = String::new();
     let mut matches = Vec::new();
     let mut rest = formula;
 
-    while let Some(keyword) = MATCH_RE.find(rest) {
+    while let Some(keyword) = regex!(r"\bmatch\b").find(rest) {
         let Some(open) = rest[keyword.end()..].find('{').map(|i| i + keyword.end()) else {
             break;
         };
@@ -267,10 +263,7 @@ fn protect_matches(formula: &str, precision: Precision) -> (String, Vec<String>)
 }
 
 fn restore_matches(formula: &str, matches: &[String]) -> String {
-    static PLACEHOLDER_RE: LazyLock<Regex> =
-        LazyLock::new(|| Regex::new(r"__MATCH_(\d+)__").unwrap());
-
-    PLACEHOLDER_RE
+    regex!(r"__MATCH_(\d+)__")
         .replace_all(formula, |caps: &Captures| {
             let whole = caps.get(0).unwrap();
             let block = &matches[caps[1].parse::<usize>().unwrap()];
@@ -291,10 +284,7 @@ fn restore_matches(formula: &str, matches: &[String]) -> String {
 }
 
 fn format_numbers(formula: &str, precision: Precision) -> String {
-    static NUMBER_RE: LazyLock<Regex> =
-        LazyLock::new(|| Regex::new(r"\b\d+(?:\.\d+)?(?:[eE][+-]?\d+)?\b").unwrap());
-
-    NUMBER_RE
+    regex!(r"\b\d+(?:\.\d+)?(?:[eE][+-]?\d+)?\b")
         .replace_all(formula, |caps: &Captures| {
             let original = &caps[0];
 

@@ -306,3 +306,48 @@ fn latest_archive_is_the_highest_other_version() {
     assert_eq!(latest, Some(dir.join("16.21.1/wiki.lock.json")));
     assert_eq!(none, None);
 }
+
+#[test]
+fn changed_and_missing_exceptions_are_reported() {
+    let dir = temp_dir("exceptions");
+
+    let lock = |hash: Option<&str>| WikiLock {
+        champions: BTreeMap::from([("Gnar".to_string(), BTreeMap::new())]),
+        exceptions: match hash {
+            Some(hash) => BTreeMap::from([(
+                "Gnar".to_string(),
+                BTreeMap::from([("Mega Gnar".to_string(), hash.to_string())]),
+            )]),
+            None => BTreeMap::new(),
+        },
+        ..Default::default()
+    };
+
+    let unchanged = lock(Some("701997b6"))
+        .check(Some(&lock(Some("701997b6"))), &dir)
+        .unwrap();
+    assert!(unchanged.warnings.is_empty() && unchanged.errors.is_empty());
+
+    let changed = lock(Some("00000000"))
+        .check(Some(&lock(Some("701997b6"))), &dir)
+        .unwrap();
+    assert_eq!(changed.warnings.len(), 1);
+    assert!(changed.warnings[0].contains("Gnar exception \"Mega Gnar\": the text changed"));
+
+    // Lock files written before exceptions were tracked have none to compare
+    let untracked = lock(Some("701997b6"))
+        .check(Some(&lock(None)), &dir)
+        .unwrap();
+    assert!(untracked.warnings.is_empty());
+
+    // An exception missing from the lock file can't be read by its generator
+    let missing = lock(None).check(None, &dir).unwrap();
+    assert_eq!(missing.errors.len(), 1);
+    assert!(missing.errors[0].contains("Gnar exception \"Mega Gnar\": missing"));
+
+    // Champions that are not in the lock file are not checked
+    let unrelated = WikiLock::default().check(None, &dir).unwrap();
+    assert!(unrelated.errors.is_empty());
+
+    std::fs::remove_dir_all(dir).unwrap();
+}

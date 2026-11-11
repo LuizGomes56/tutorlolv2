@@ -11,7 +11,7 @@
 use {
     crate::{
         ChampionId, ItemId, RuneId,
-        libgen::{L_MSTR, L_TWRD},
+        libgen::{L_MSTR, L_TWRD, items, runes},
     },
     alloc::boxed::Box,
     bincode::{BorrowDecode, Decode, Encode},
@@ -496,6 +496,38 @@ impl ValueException {
         ItemId::from_repr(self.enum_id() as _)
     }
 
+    /// Multiplier of the total stats from [`ItemId::Dragonheart`] and
+    /// [`ItemId::DemonKingsCrown`], applied once every other stat is added
+    pub const fn total_stats_modifier(exceptions: &[Self]) -> f32 {
+        let mut modifier = 1.0;
+        let mut i = 0;
+
+        while i < exceptions.len() {
+            let stacks = exceptions[i].stacks() as f32;
+
+            match exceptions[i].get_item_id() {
+                // Unbounded, although the game caps it at 7 souls
+                Some(ItemId::Dragonheart) => {
+                    core::hint::cold_path();
+
+                    modifier *= 1.0 + items::dragonheart::INNER_FLAME_STATS_PER_SOUL * stacks
+                }
+                // Its bonus depends on the rounds won and lost, so the stacks
+                // are the percentage itself
+                Some(ItemId::DemonKingsCrown) => {
+                    core::hint::cold_path();
+
+                    modifier *= 1.0 + 0.01 * stacks
+                }
+                _ => {}
+            }
+
+            i += 1;
+        }
+
+        modifier
+    }
+
     /// If the value to be stored is greater than [`Self::VAL_MASK`],
     /// the value is truncated
     const fn truncate_value(v: u32) -> u32 {
@@ -717,10 +749,10 @@ impl OutputGame {
 pub struct RiotFormulas;
 
 impl RiotFormulas {
-    /// Rune [`RuneId::AxiomArcanist`] gives +12% bonus damage to `R`
-    /// if it deals single target damage. The -3% penalty is not yet
-    /// supported for area-damaging ultimates
-    pub const AXIOM_ARCANIST_BONUS_DAMAGE: f32 = 1.12;
+    /// Rune [`RuneId::AxiomArcanist`] bonus damage to `R` if it deals single
+    /// target damage. The reduced bonus for area-damaging ultimates is not
+    /// yet supported
+    pub const AXIOM_ARCANIST_BONUS_DAMAGE: f32 = 1.0 + runes::axiom_arcanist::ULTIMATE_BONUS_DAMAGE;
 
     /// By 06/07/2025 Earth dragons give +5% resists
     pub const EARTH_DRAGON_MULTIPLIER: f32 = 0.05;
@@ -728,19 +760,30 @@ impl RiotFormulas {
     /// By 06/07/2025 Fire dragons give +3% bonus attack stats
     pub const FIRE_DRAGON_MULTIPLIER: f32 = 0.03;
 
-    /// Item [`ItemId::PlatedSteelcaps`] gives 12% damage reduction for basic attacks
+    /// Item [`ItemId::PlatedSteelcaps`] damage reduction for basic attacks
     pub const STEEL_CAPS_PROTECTION: f32 = Ctx::STEEL_CAPS_PROTECTION;
 
-    /// Item [`ItemId::RanduinsOmen`] gives 30% damage reduction against critical hits
+    /// Item [`ItemId::RanduinsOmen`] damage reduction against critical hits
     pub const RANDUIN_CRIT_PROTECTION: f32 = Ctx::RANDUIN_CRIT_PROTECTION;
 
-    /// Items with Rocksolid passive give 20% damage reduction in some cases
+    /// Items with the Rock Solid passive reduce basic damage by a flat amount,
+    /// up to this maximum percentage, which is the only part that is modeled
     pub const ROCKSOLID_PROTECTION: f32 = Ctx::ROCKSOLID_PROTECTION;
 
-    pub const SHOJIN_BONUS_DAMAGE: f32 = 1.12;
-    pub const SHADOWFLAME_BONUS_DAMAGE: f32 = 1.2;
-    pub const RIFTMAKER_BONUS_DAMAGE: f32 = 1.08;
-    pub const COUP_DE_GRACE_AND_CUTDOWN_BONUS_DAMAGE: f32 = 1.08;
+    /// Item [`ItemId::SpearOfShojin`] bonus damage to abilities at maximum stacks
+    pub const SHOJIN_BONUS_DAMAGE: f32 = 1.0 + items::spear_of_shojin::FOCUSED_WILL_MAX_DAMAGE;
+
+    /// Item [`ItemId::Shadowflame`] critical strike damage of magic and true damage
+    pub const SHADOWFLAME_BONUS_DAMAGE: f32 = items::shadowflame::CINDERBLOOM_CRIT_DAMAGE;
+
+    /// Item [`ItemId::Riftmaker`] bonus damage at maximum stacks
+    pub const RIFTMAKER_BONUS_DAMAGE: f32 = 1.0 + items::riftmaker::VOID_CORRUPTION_MAX_DAMAGE;
+
+    /// Rune [`RuneId::CoupDeGrace`] bonus damage against low health champions
+    pub const COUP_DE_GRACE_BONUS_DAMAGE: f32 = 1.0 + runes::coup_de_grace::BONUS_DAMAGE;
+
+    /// Rune [`RuneId::CutDown`] bonus damage against high health champions
+    pub const CUT_DOWN_BONUS_DAMAGE: f32 = 1.0 + runes::cut_down::BONUS_DAMAGE;
 
     /// Constant array containing the armor and magic resistences of jungle monsters.
     /// Note that there's no specific name to each monster since the damage against
@@ -770,19 +813,36 @@ impl RiotFormulas {
     }
 
     /// Ratio of attack damage from other sources that [`ItemId::OverlordsBloodmail`]
-    /// grants with its passive Retribution: 1% for every 7% missing health, up to
-    /// 10% at 70% missing health. `missing_health` is a ratio, see [`Self::missing_health_ratio`]
+    /// grants with its passive Retribution: 1% per step of missing health, up to
+    /// its maximum, such as 10% at 70% missing health. `missing_health` is a ratio,
+    /// see [`Self::missing_health_ratio`]
     pub const fn get_bloodmail_retribution(missing_health: f32) -> f32 {
+        use items::overlords_bloodmail::{RETRIBUTION_MAX_BONUS, RETRIBUTION_MAX_MISSING_HEALTH};
+
+        // Each step grants 1%, so the number of steps is the maximum percentage
+        const MAX_STEPS: u32 = (RETRIBUTION_MAX_BONUS * 100.0 + 0.5) as u32;
+        let step = RETRIBUTION_MAX_MISSING_HEALTH / MAX_STEPS as f32;
+
         // Small offset so that exact steps such as 14% are not lost to rounding
-        let steps = (missing_health.clamp(0.0, 1.0) * 100.0 / 7.0 + 1e-4) as u32;
-        (if steps > 10 { 10 } else { steps }) as f32 / 100.0
+        let steps = (missing_health.clamp(0.0, 1.0) / step + 1e-4) as u32;
+        (if steps > MAX_STEPS { MAX_STEPS } else { steps }) as f32 / 100.0
     }
 
     /// Ability power that [`ItemId::DemonicEmbrace`] grants with its passive
-    /// Sinister Pact: 0 to 45, growing every 125 missing health up to 3000
+    /// Sinister Pact, growing with each step of flat missing health up to its
+    /// maximum, such as 0 to 45 every 125 missing health up to 3000
     pub const fn get_sinister_pact(missing_health: f32) -> f32 {
-        let steps = (missing_health / 125.0 + 1e-4) as u32;
-        45.0 * (if steps > 24 { 24 } else { steps }) as f32 / 24.0
+        use items::demonic_embrace::{
+            SINISTER_PACT_HEALTH_STEP, SINISTER_PACT_MAX_AP, SINISTER_PACT_MAX_MISSING_HEALTH,
+        };
+
+        const MAX_STEPS: u32 =
+            (SINISTER_PACT_MAX_MISSING_HEALTH / SINISTER_PACT_HEALTH_STEP + 0.5) as u32;
+
+        let steps = (missing_health / SINISTER_PACT_HEALTH_STEP + 1e-4) as u32;
+
+        SINISTER_PACT_MAX_AP * (if steps > MAX_STEPS { MAX_STEPS } else { steps }) as f32
+            / MAX_STEPS as f32
     }
 
     /// Formula to get the bonus damage of the rune [`RuneId::LastStand`], where
@@ -803,10 +863,24 @@ impl RiotFormulas {
     /// Check the formula
     /// `1.0 - (800.0 / 1000.0) = 0.2`
     ///
-    /// Also, this formula has a range from 1.0 to 1.11, since in game the
-    /// maximum damage increase is of `11%`
+    /// The rune does nothing above 60% health, deals 5% increased damage at
+    /// 60% health, and grows linearly up to the maximum of `11%` at 30% health
     pub const fn get_last_stand(missing_health: f32) -> f32 {
-        1.0 + (0.05 + 0.2 * (missing_health - 0.4)).clamp(0.0, 0.11)
+        use runes::last_stand::{
+            MAX_BONUS_DAMAGE, MAX_HEALTH_THRESHOLD, MIN_BONUS_DAMAGE, MIN_HEALTH_THRESHOLD,
+        };
+
+        let min_missing_health = 1.0 - MIN_HEALTH_THRESHOLD;
+
+        if missing_health < min_missing_health {
+            return 1.0;
+        }
+
+        let slope =
+            (MAX_BONUS_DAMAGE - MIN_BONUS_DAMAGE) / (MIN_HEALTH_THRESHOLD - MAX_HEALTH_THRESHOLD);
+
+        1.0 + (MIN_BONUS_DAMAGE + slope * (missing_health - min_missing_health))
+            .min(MAX_BONUS_DAMAGE)
     }
 
     /// Receives the number of Mountain dragons and returns a multiplier that will

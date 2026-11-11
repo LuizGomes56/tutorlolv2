@@ -8,14 +8,13 @@ use crate::{
 };
 use databake::CrateEnv;
 use heck::{ToPascalCase, ToSnakeCase};
+use lazy_regex::regex;
 use rand::{RngExt, SeedableRng, rngs::SmallRng};
-use regex::Regex;
 use serde::Serialize;
 use std::{
     collections::{BTreeSet, HashSet},
     fmt::{Debug, Write},
     ops::{Index, Range},
-    sync::LazyLock,
 };
 use tutorlolv2_types::{AttackType, Attrs, CtxVar, DamageIndex, DamageType, Tag};
 
@@ -363,10 +362,7 @@ pub trait ItemOrRuneExt:
 }
 
 pub fn get_identifiers(damage: &str, damage_type: DamageType) -> impl Iterator<Item = CtxVar> + '_ {
-    static RE_IDENTS: LazyLock<Regex> =
-        LazyLock::new(|| Regex::new(r"ctx\.([a-z_][a-z0-9_]*)").unwrap());
-
-    RE_IDENTS
+    regex!(r"ctx\.([a-z_][a-z0-9_]*)")
         .captures_iter(damage)
         .filter_map(|cap| cap[1].to_pascal_case().parse().ok())
         .chain(match damage_type {

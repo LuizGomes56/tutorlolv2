@@ -3,8 +3,7 @@ use crate::{
     formula::SequencePattern,
     parser::{Effect, LevelArm, Scaling, build_level_arms},
 };
-use regex::Regex;
-use std::sync::LazyLock;
+use lazy_regex::regex;
 use tutorlolv2_types::{CtxVar, Key};
 
 #[derive(Clone, Debug)]
@@ -376,11 +375,7 @@ fn render_multiplier(axis: CtxVar, raw: &str, base: f64, inner: &[Scaling]) -> M
 }
 
 fn render_multiplier_from_raw(raw: &str, inner: &[Scaling]) -> Option<String> {
-    static MULT_RE: LazyLock<Regex> = LazyLock::new(|| {
-        Regex::new(r"(?i)^\s*1\s*\+\s*(-?\d+(?:\.\d+)?)\s+per\s+100%?\s+").unwrap()
-    });
-
-    let caps = MULT_RE.captures(raw)?;
+    let caps = regex!(r"(?i)^\s*1\s*\+\s*(-?\d+(?:\.\d+)?)\s+per\s+100%?\s+").captures(raw)?;
     let value = caps.get(1)?.as_str().parse::<f64>().ok()?;
     let ctx_var = first_ctx_var(inner)?;
 

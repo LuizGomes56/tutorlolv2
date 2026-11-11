@@ -1,5 +1,6 @@
 use crate::MayFail;
 use heck::ToPascalCase;
+use lazy_regex::regex;
 use regex::Regex;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
@@ -56,19 +57,16 @@ impl RiotCdnItem {
     /// Depends on Riot API `item.json` and requires manual maintainance if a new XML tag is added
     pub fn pretiffy_stats(&self) -> MayFail<BTreeMap<StatName, u16>> {
         static TAGS: [&str; 4] = ["buffedStat", "nerfedStat", "attention", "ornnBonus"];
-        static RE_LINE: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"(.*?)<br>").unwrap());
         static RE_TAG: LazyLock<Regex> = LazyLock::new(|| {
             let tags = TAGS.join("|");
             Regex::new(&format!(r#"<({tags})>(.*?)<\/({tags})>"#)).unwrap()
         });
-        static RE_PERCENT_PREFIX: LazyLock<Regex> =
-            LazyLock::new(|| Regex::new(r"^\s*\d+\s*%?\s*").unwrap());
-        static RE_TAG_STRIP: LazyLock<Regex> =
-            LazyLock::new(|| Regex::new(r"<\/?[^>]+(>|$)").unwrap());
 
         let mut result = BTreeMap::<_, _>::default();
 
-        let lines = RE_LINE.captures_iter(&self.description).collect::<Vec<_>>();
+        let lines = regex!(r"(.*?)<br>")
+            .captures_iter(&self.description)
+            .collect::<Vec<_>>();
         let mut line_index = 0usize;
 
         for caps in RE_TAG.captures_iter(&self.description) {
@@ -77,8 +75,9 @@ impl RiotCdnItem {
             let mut n = None;
 
             if line_index < lines.len() {
-                let tag_strip = RE_TAG_STRIP.replace_all(&lines[line_index][1], "");
+                let tag_strip = regex!(r"<\/?[^>]+(>|$)").replace_all(&lines[line_index][1], "");
                 let cleaned = tag_strip.trim();
+
                 if !cleaned.is_empty() {
                     n = Some(cleaned.to_string());
                 }
@@ -89,7 +88,7 @@ impl RiotCdnItem {
             if TAGS.contains(&t)
                 && let Some(n_val) = &n
             {
-                let percent_prefix = RE_PERCENT_PREFIX.replace(n_val, "");
+                let percent_prefix = regex!(r"^\s*\d+\s*%?\s*").replace(n_val, "");
                 let j = percent_prefix.trim();
 
                 if let Ok(num) = v.parse::<u16>()

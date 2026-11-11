@@ -2,17 +2,21 @@ use crate::generators::imports::runes::*;
 crate::decl_runes!(
     Aftershock,
     ArcaneComet,
+    AxiomArcanist,
     CheapShot,
+    CoupDeGrace,
+    CutDown,
     DarkHarvest,
     DeathfireTouch,
     Electrocute,
     GraspOfTheUndying,
     HailOfBlades,
+    LastStand,
     LethalTempo,
     Predator,
     PressTheAttack,
     Scorch,
     ShieldBash,
     SuddenImpact,
-    SummonAery
+    SummonAery,
 );

@@ -8,10 +8,12 @@
 //! so all the function inputs have to be obtained through your
 //! own mechanism
 
-use core::num::NonZeroU8;
 use {
-    crate::{ChampionId, Ctx, GameMap, ItemId, L_MSTR, RuneId, helpers::*, model::*},
+    crate::{
+        ChampionId, Ctx, GameMap, ItemId, L_MSTR, RuneId, helpers::*, libgen::items, model::*,
+    },
     alloc::boxed::Box,
+    core::num::NonZeroU8,
     tutorlolv2_types::{AdaptiveType, AttackType, StatName},
 };
 
@@ -58,6 +60,11 @@ impl InferStats<'_> {
         let mut stat_modifiers = const { Modifiers::default() };
 
         bonus_stats.get_item_bonus_stats(items, &mut stat_modifiers, &mut adaptive_force);
+
+        // Warmog's Vitality only scales the health granted by items, which also
+        // includes the health that Awe converts from mana in the loop below
+        let mut item_health = bonus_stats.max_health;
+
         bonus_stats.get_rune_bonus_stats(runes, &mut stat_modifiers, &mut adaptive_force, level);
 
         let cached_stats = data.stats;
@@ -114,13 +121,14 @@ impl InferStats<'_> {
             AdaptiveType::Physical => stats.attack_damage += 0.6 * adaptive_force,
         }
 
-        stats.assign_item_exceptions(item_exceptions);
+        stats.assign_item_exceptions(item_exceptions, attack_type);
         stats.assign_champion_exceptions(champion_id, ability_levels, stacks);
-
         stats.attack_speed = cached_stats.attack_speed(stats.attack_speed, level);
 
         let mut has_bloodmail = false;
         let mut has_demonic_embrace = false;
+        let mut has_warmogs = false;
+        let mut has_juice_of_vitality = false;
         // Amplifies ability power granted after the loop
         let mut ap_amplifier = 1.0;
         let mut i = 0;
@@ -128,36 +136,124 @@ impl InferStats<'_> {
         while i < items.len() {
             match items[i] {
                 ItemId::OverlordsBloodmail => {
+                    core::hint::cold_path();
+
                     has_bloodmail = true;
-                    stats.attack_damage += 0.025 * bonus_stats.max_health;
+                    stats.attack_damage += items::overlords_bloodmail::TYRANNY_BONUS_HEALTH_RATIO
+                        * bonus_stats.max_health;
                 }
-                ItemId::Riftmaker => stats.ability_power += 0.02 * bonus_stats.max_health,
-                ItemId::ArchangelsStaff => stats.ability_power += 0.01 * bonus_stats.max_mana,
-                ItemId::SeraphsEmbrace => stats.ability_power += 0.02 * bonus_stats.max_mana,
-                ItemId::DemonicEmbrace => has_demonic_embrace = true,
-                ItemId::Manamune | ItemId::Muramana => {
-                    stats.attack_damage += 0.025 * bonus_stats.max_mana;
+                ItemId::Riftmaker => {
+                    stats.ability_power +=
+                        items::riftmaker::VOID_INFUSION_BONUS_HEALTH_RATIO * bonus_stats.max_health
                 }
-                ItemId::WintersApproach | ItemId::Fimbulwinter => {
-                    stats.max_health += 0.15 * bonus_stats.max_mana;
+                ItemId::ArchangelsStaff => {
+                    stats.ability_power +=
+                        items::archangels_staff::AWE_BONUS_MANA_RATIO * bonus_stats.max_mana
                 }
-                ItemId::JuiceOfVitality => stats.max_health += 300.0 + 0.1 * stats.max_health,
+                ItemId::SeraphsEmbrace => {
+                    stats.ability_power +=
+                        items::seraphs_embrace::AWE_BONUS_MANA_RATIO * bonus_stats.max_mana
+                }
+                ItemId::DemonicEmbrace => {
+                    core::hint::cold_path();
+                    has_demonic_embrace = true
+                }
+                ItemId::Manamune => {
+                    stats.attack_damage += items::manamune::AWE_MAX_MANA_RATIO * stats.max_mana;
+                }
+                ItemId::Muramana => {
+                    stats.attack_damage += items::muramana::AWE_MAX_MANA_RATIO * stats.max_mana;
+                }
+                ItemId::WintersApproach => {
+                    core::hint::cold_path();
+
+                    let awe = items::winters_approach::AWE_BONUS_MANA_RATIO * bonus_stats.max_mana;
+
+                    stats.max_health += awe;
+                    item_health += awe;
+                }
+                ItemId::Fimbulwinter => {
+                    core::hint::cold_path();
+
+                    let awe = items::fimbulwinter::AWE_BONUS_MANA_RATIO * bonus_stats.max_mana;
+
+                    stats.max_health += awe;
+                    item_health += awe;
+                }
+                ItemId::JuiceOfVitality => {
+                    core::hint::cold_path();
+                    has_juice_of_vitality = true
+                }
                 ItemId::RabadonsDeathcap => {
-                    stats.ability_power *= 1.3;
-                    ap_amplifier *= 1.3;
+                    const AMPLIFIER: f32 =
+                        1.0 + items::rabadons_deathcap::MAGICAL_OPUS_AP_AMPLIFIER;
+
+                    stats.ability_power *= AMPLIFIER;
+                    ap_amplifier *= AMPLIFIER;
                 }
                 ItemId::WoogletsWitchcap => {
-                    stats.ability_power *= 1.5;
-                    ap_amplifier *= 1.5;
+                    core::hint::cold_path();
+
+                    const AMPLIFIER: f32 =
+                        1.0 + items::wooglets_witchcap::MAGICAL_OPUS_AP_AMPLIFIER;
+
+                    stats.ability_power *= AMPLIFIER;
+                    ap_amplifier *= AMPLIFIER;
                 }
-                ItemId::WarmogsArmor => stats.max_health *= 1.12,
+                ItemId::WarmogsArmor => {
+                    core::hint::cold_path();
+                    has_warmogs = true
+                }
                 ItemId::JuiceOfPower => {
-                    stats.attack_damage += 18.0 + 0.1 * stats.attack_damage;
-                    stats.ability_power += 30.0 + 0.1 * stats.ability_power;
+                    use items::juice_of_power::*;
+                    core::hint::cold_path();
+
+                    // Grants only the adaptive stat
+                    match adaptive_type {
+                        AdaptiveType::Physical => {
+                            stats.attack_damage +=
+                                ATTACK_DAMAGE + ATTACK_DAMAGE_RATIO * stats.attack_damage
+                        }
+                        AdaptiveType::Magic => {
+                            stats.ability_power +=
+                                ABILITY_POWER + ABILITY_POWER_RATIO * stats.ability_power
+                        }
+                    }
                 }
                 _ => {}
             }
             i += 1;
+        }
+
+        // Warmog's waits for every conversion of Awe, wherever it is in the build
+        if has_warmogs {
+            core::hint::cold_path();
+
+            stats.max_health +=
+                items::warmogs_armor::WARMOGS_VITALITY_BONUS_HEALTH_RATIO * item_health;
+        }
+
+        // Juice of Vitality scales the maximum health, so it is applied after Warmog's
+        if has_juice_of_vitality {
+            use items::juice_of_vitality::{HEALTH, MAX_HEALTH_RATIO};
+            core::hint::cold_path();
+
+            stats.max_health += HEALTH + MAX_HEALTH_RATIO * stats.max_health;
+        }
+
+        // Dragonheart and Demon King's Crown increase the total stats, so they
+        // apply after the health of Warmog's and Juice of Vitality
+        let total_stats_modifier = ValueException::total_stats_modifier(item_exceptions);
+
+        if total_stats_modifier != 1.0 {
+            core::hint::cold_path();
+
+            stats.ability_power *= total_stats_modifier;
+            stats.attack_speed *= total_stats_modifier;
+            stats.attack_damage *= total_stats_modifier;
+            stats.max_health *= total_stats_modifier;
+            stats.armor *= total_stats_modifier;
+            stats.magic_resist *= total_stats_modifier;
         }
 
         // The maximum health is complete here. NaN also falls back to full health
@@ -189,6 +285,8 @@ impl InferStats<'_> {
             core::hint::cold_path();
 
             // Every 1% critical strike chance above 100% grants adaptive force
+            // #![manual_impl]: the wiki archive has no ARAM: Mayhem rules, only its
+            // items, so these ratios can't be extracted
             let excess_crit = stats.crit_chance - 100.0;
 
             if excess_crit > 0.0 {
@@ -264,7 +362,8 @@ impl PlayerStats {
             magic_pen_mult *= 1.0 - (magic_pen.clamp(0.0, 100.0) * 0.01);
 
             if matches!(item_id, ItemId::ElixirOfIron) {
-                self.max_health += 300.0;
+                core::hint::cold_path();
+                self.max_health += items::elixir_of_iron::BONUS_HEALTH;
             }
 
             modifiers.apply_item(item_id);
@@ -288,6 +387,7 @@ impl PlayerStats {
         while i < runes.len() {
             match runes[i] {
                 RuneId::Waterwalking => {
+                    core::hint::cold_path();
                     *adaptive_force += 12.0 + level.get() as f32;
                 }
                 RuneId::AbsoluteFocus => {
@@ -302,7 +402,11 @@ impl PlayerStats {
         }
     }
 
-    pub const fn assign_item_exceptions(&mut self, exceptions: &[ValueException]) {
+    pub const fn assign_item_exceptions(
+        &mut self,
+        exceptions: &[ValueException],
+        attack_type: AttackType,
+    ) {
         if exceptions.is_empty() {
             return;
         }
@@ -311,44 +415,48 @@ impl PlayerStats {
 
         while i < exceptions.len() {
             let item_exception = exceptions[i];
-            let stacks = item_exception.stacks();
+            let stacks = item_exception.stacks() as f32;
 
             if let Some(item_id) = item_exception.get_item_id() {
                 match item_id {
-                    ItemId::DarkSeal => self.ability_power += (stacks << 2) as f32,
-                    ItemId::Dragonheart => {
-                        let modifier = 1.0 + 0.04 * stacks as f32;
-                        self.ability_power *= modifier;
-                        self.attack_speed *= modifier;
-                        self.attack_damage *= modifier;
-                        self.max_health *= modifier;
-                        self.armor *= modifier;
-                        self.magic_resist *= modifier;
+                    ItemId::DarkSeal => {
+                        self.ability_power += items::dark_seal::GLORY_AP_PER_STACK * stacks
                     }
-                    ItemId::DemonKingsCrown => {
-                        let modifier = 1.0 + 0.01 * stacks as f32;
-                        self.ability_power *= modifier;
-                        self.attack_speed *= modifier;
-                        self.attack_damage *= modifier;
-                        self.max_health *= modifier;
-                        self.armor *= modifier;
-                        self.magic_resist *= modifier;
+                    ItemId::RiteOfRuin => {
+                        self.crit_chance +=
+                            items::rite_of_ruin::WRATH_AND_RUIN_CRIT_CHANCE_PER_STACK * stacks
                     }
-                    ItemId::RiteOfRuin => self.crit_chance += stacks as f32 * 2.5,
-                    ItemId::MejaisSoulstealer => self.ability_power += (5 * stacks) as f32,
+                    ItemId::MejaisSoulstealer => {
+                        core::hint::cold_path();
+                        self.ability_power += items::mejais_soulstealer::GLORY_AP_PER_STACK * stacks
+                    }
                     ItemId::BlackCleaver => {
                         self.armor_penetration_percent = RiotFormulas::combine_percentage(
                             self.armor_penetration_percent,
-                            (6 * stacks) as f32,
+                            items::black_cleaver::CARVE_ARMOR_REDUCTION_PER_STACK * stacks,
                         )
                     }
                     ItemId::BloodlettersCurse => {
+                        core::hint::cold_path();
+
                         self.magic_penetration_percent = RiotFormulas::combine_percentage(
                             self.magic_penetration_percent,
-                            7.5 * stacks as f32,
+                            items::bloodletters_curse::VILE_DECAY_MAGIC_REDUCTION_PER_STACK
+                                * stacks,
                         )
                     }
-                    ItemId::Hubris => self.attack_damage += (15 + (stacks << 1)) as f32,
+                    ItemId::Hubris => {
+                        use items::hubris::*;
+
+                        self.attack_damage += match attack_type {
+                            AttackType::Melee => {
+                                EMINENCE_MELEE_AD + EMINENCE_MELEE_AD_PER_STACK * stacks
+                            }
+                            AttackType::Ranged => {
+                                EMINENCE_RANGED_AD + EMINENCE_RANGED_AD_PER_STACK * stacks
+                            }
+                        }
+                    }
                     _ => {}
                 }
             }
@@ -625,6 +733,7 @@ pub fn calculator(game: InputGame<'_>) -> OutputGame {
         EnemyMap {
             champion_id: current_player_champion_id,
             game_map,
+            runes: current_player_raw_runes,
         },
         |damages, r, ctx, eval_data, modifiers| {
             damages.fill_batch(r, ctx, eval_data, modifiers, ability_batch);
@@ -651,9 +760,11 @@ pub fn calculator(game: InputGame<'_>) -> OutputGame {
 /// Map of the game and the current player's champion, which together select
 /// the damage modifier against each enemy and the stats the map grants them
 #[derive(Clone, Copy, Debug, Default)]
-pub struct EnemyMap {
+pub struct EnemyMap<'a> {
     pub champion_id: ChampionId,
     pub game_map: GameMap,
+    /// Runes of the current player, some of which depend on each enemy's health
+    pub runes: &'a [RuneId],
 }
 
 impl DamageTable {
@@ -666,7 +777,7 @@ impl DamageTable {
         modifiers: Modifiers,
         shred: ResistShred,
         enemy_earth_dragons: u16,
-        enemy_map: EnemyMap,
+        enemy_map: EnemyMap<'_>,
     ) -> Box<[OutputEnemy]> {
         self.calculator_enemies_with(
             enemy_players,
@@ -694,12 +805,13 @@ impl DamageTable {
         modifiers: Modifiers,
         shred: ResistShred,
         enemy_earth_dragons: u16,
-        enemy_map: EnemyMap,
+        enemy_map: EnemyMap<'_>,
         mut fill_row: impl FnMut(&mut DamageTable, usize, Ctx, &DamageEvalData, Modifiers),
     ) -> Box<[OutputEnemy]> {
         let EnemyMap {
             champion_id,
             game_map,
+            runes,
         } = enemy_map;
 
         enemy_players
@@ -745,6 +857,7 @@ impl DamageTable {
                         true_mod: modifiers.damages.true_mod * full_state.modifiers.true_mod,
                         global_mod: modifiers.damages.global_mod
                             * full_state.modifiers.global_mod
+                            * full_state.rune_damage_modifier(runes)
                             * map_mod,
                     },
                     ..modifiers

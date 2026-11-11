@@ -46,6 +46,7 @@ impl Build for Rune {
         )?;
 
         rust.push_str(&self.closures(&plan)?);
+        rust.push_str(&self.constants.bake());
 
         let out = context.out.join(Tag::Runes.as_ref()).join(rune_id);
 

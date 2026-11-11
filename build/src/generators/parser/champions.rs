@@ -3,6 +3,7 @@ use {
         DynError, MayFail,
         generators::{
             GeneratorExt,
+            constants::{Constants, WithConstants},
             impls::champions::champion_gen_fn,
             parser::{Parser, ZERO, likely_damages},
             utils::RegExtractor,
@@ -47,6 +48,8 @@ pub struct Champion {
     pub combo: Vec<Vec<ComboElement>>,
     #[serde_as(as = "Seq<(_, _)>")]
     pub abilities: BTreeMap<AbilityId, Ability>,
+    #[serde(default, skip_serializing_if = "Constants::is_empty")]
+    pub constants: Constants,
 }
 
 impl Parser<WikiChampion, Champion> for ChampionParser {
@@ -129,6 +132,7 @@ impl TryFrom<WikiChampion> for Champion {
             abilities: Default::default(),
             merge: Default::default(),
             combo: Default::default(),
+            constants: Default::default(),
             data,
         })
     }
@@ -182,6 +186,34 @@ impl Champion {
 
     pub fn effect(&self, key: Key, effect: &str) -> MayFail<&Effect> {
         self.effect_nth(key, 0, effect)
+    }
+
+    /// Text of one of the champion's wiki exceptions, which are not parsed into
+    /// abilities. See [`tutorlolv2_wiki::champions::exceptions`]
+    pub fn exception(&self, name: &str) -> MayFail<&str> {
+        self.data
+            .exceptions
+            .get(name)
+            .map(String::as_str)
+            .ok_or_else(|| format!("{} has no exception {name:?}", self.champion_id).into())
+    }
+
+    /// Description of an effect of the first ability of `key`
+    pub fn description(&self, key: Key, effect: &str) -> MayFail<&str> {
+        Ok(&self.effect(key, effect)?.inner.description)
+    }
+
+    /// Values of an effect for each rank of the first ability of `key`, read
+    /// from its leveling text. The wiki lists ultimates with 5 values, and only
+    /// the 1st, 3rd and 5th are ranks, the same that formulas take
+    pub fn ranks(&self, key: Key, effect: &str) -> MayFail<Vec<f64>> {
+        let values = self.effect(key, effect)?.inner.leveling.capture_numbers();
+
+        match (key, values.len()) {
+            (_, 0) => Err(format!("No rank values for {key:?}[{effect:?}]").into()),
+            (Key::R, 5) => Ok(vec![values[0], values[2], values[4]]),
+            _ => Ok(values),
+        }
     }
 
     pub fn formula(&self, key: Key, effect: &str) -> MayFail<&str> {
@@ -582,5 +614,11 @@ impl Champion {
         }
 
         Ok(())
+    }
+}
+
+impl WithConstants for Champion {
+    fn constants_mut(&mut self) -> &mut Constants {
+        &mut self.constants
     }
 }

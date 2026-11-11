@@ -64,23 +64,84 @@ fn purchase_and_context_helpers_are_const_callable() {
     assert_eq!(SELF_CTX, ENEMY_CTX);
 }
 
+/// Inferred enemy stats for `champion_id` holding `items`, without any
+/// penetration so the totals can be compared against a control champion
+fn inferred_stats(champion_id: ChampionId, level: u8, stacks: u32, items: &[ItemId]) -> EnemyStats {
+    EnemyState {
+        champion_id,
+        level: NonZeroU8::new(level).unwrap(),
+        stacks,
+        items,
+        base_stats: SimpleStats {
+            armor: 100.0,
+            magic_resist: 100.0,
+            max_health: 1000.0,
+        },
+        ..Default::default()
+    }
+    .full_state(ResistShred::new(&PlayerStats::default()), false)
+    .current_stats
+}
+
 #[test]
-fn ornn_upgrade_estimate_preserves_baseline() {
+fn ornn_upgrades_scale_only_bonus_stats() {
+    const ITEMS: &[ItemId] = &[ItemId::SunfireAegis, ItemId::ForceOfNature];
+
     for (level, multiplier) in [(12, 1.10), (13, 1.14), (16, 1.26), (17, 1.30), (18, 1.30)] {
-        let state = EnemyState {
-            champion_id: ChampionId::Ornn,
-            level: NonZeroU8::new(level).unwrap(),
-            base_stats: SimpleStats {
-                armor: 100.0,
-                magic_resist: 100.0,
-                max_health: 1000.0,
-            },
-            ..Default::default()
-        }
-        .full_state(ResistShred::new(&PlayerStats::default()), false);
-        close(state.current_stats.armor, 100.0 * multiplier);
-        close(state.current_stats.magic_resist, 100.0 * multiplier);
-        close(state.current_stats.max_health, 1000.0 * multiplier);
+        // Garen has no stat special case, so it holds the same bonus stats unscaled
+        let control = inferred_stats(ChampionId::Garen, level, 0, ITEMS);
+        let ornn = inferred_stats(ChampionId::Ornn, level, 0, ITEMS);
+
+        assert!(control.armor > 100.0 && control.magic_resist > 100.0);
+        close(ornn.armor, 100.0 + (control.armor - 100.0) * multiplier);
+        close(
+            ornn.magic_resist,
+            100.0 + (control.magic_resist - 100.0) * multiplier,
+        );
+        close(
+            ornn.max_health - 1000.0,
+            (control.max_health - 1000.0) * multiplier,
+        );
+    }
+
+    // Without bonus stats there is nothing to upgrade
+    let bare = inferred_stats(ChampionId::Ornn, 18, 0, &[]);
+    let control = inferred_stats(ChampionId::Garen, 18, 0, &[]);
+    close(bare.armor, control.armor);
+    close(bare.max_health, control.max_health);
+}
+
+#[test]
+fn chogath_feast_health_per_stack_follows_r_rank() {
+    for (level, per_stack) in [(5, 0.0), (6, 80.0), (10, 80.0), (11, 120.0), (16, 160.0)] {
+        let control = inferred_stats(ChampionId::Garen, level, 10, &[]);
+        let chogath = inferred_stats(ChampionId::Chogath, level, 10, &[]);
+
+        close(chogath.max_health - control.max_health, 10.0 * per_stack);
+    }
+}
+
+#[test]
+fn swain_soul_fragments_grant_health_per_stack() {
+    // Ashe is a ranged control without stat special cases
+    let control = inferred_stats(ChampionId::Ashe, 11, 10, &[]);
+    let swain = inferred_stats(ChampionId::Swain, 11, 10, &[]);
+
+    close(swain.max_health - control.max_health, 150.0);
+}
+
+#[test]
+fn last_stand_only_applies_below_60_percent_health() {
+    for (missing, expected) in [
+        (0.0, 1.0),
+        (0.2, 1.0),
+        (0.39, 1.0),
+        (0.4, 1.05),
+        (0.55, 1.08),
+        (0.7, 1.11),
+        (1.0, 1.11),
+    ] {
+        close(RiotFormulas::get_last_stand(missing), expected);
     }
 }
 
@@ -100,7 +161,7 @@ fn supplied_enemy_stats_skip_inference_in_const_context() {
             magic_resist: 30.0,
             max_health: 1000.0,
         },
-        items: &[ItemId::WarmogsArmor, ItemId::FrozenHeart],
+        items: &[ItemId::WarmogsArmor, ItemId::WardensMail],
         item_exceptions: &[ValueException::pack_item_id(ItemId::WarmogsArmor, 0)],
         champion_id: ChampionId::Swain,
         stacks: u32::MAX,
@@ -138,13 +199,14 @@ fn supplied_and_inferred_enemies_keep_defensive_effects_and_item_flags() {
         (&[][..], false, false, false),
         (&[ItemId::PlatedSteelcaps][..], true, false, false),
         (&[ItemId::ArmoredAdvance][..], true, false, false),
-        (&[ItemId::FrozenHeart][..], false, true, false),
+        // Only Warden's Mail still has the Rock Solid passive
+        (&[ItemId::FrozenHeart][..], false, false, false),
         (&[ItemId::WardensMail][..], false, true, false),
-        (&[ItemId::RanduinsOmen][..], false, true, true),
+        (&[ItemId::RanduinsOmen][..], false, false, true),
         (
             &[ItemId::PlatedSteelcaps, ItemId::RanduinsOmen][..],
             true,
-            true,
+            false,
             true,
         ),
     ] {
@@ -485,7 +547,11 @@ fn simulated_purchase_applies_stat_conversion_and_attack_speed_units() {
 
     let warmog =
         state.simulated_purchase(ItemId::WarmogsArmor, &[], player.champion_id, out.dragons);
-    close(warmog.current_stats.max_health, 3360.0); // (2000 live HP + 1000 item HP) * 1.12
+    // Warmog's Vitality grants 12% of the bonus health, not of the base health
+    close(
+        warmog.current_stats.max_health,
+        3000.0 + 0.12 * (3000.0 - player.base_stats.max_health),
+    ); // 2000 live HP + 1000 item HP
 
     let nashor = out.siml_damages(0, sim_index(ItemId::NashorsTooth));
     close(nashor.ctx.attack_speed, 1.3125); // 1 live AS + .625 ratio * 50%
@@ -726,4 +792,246 @@ fn owned_warmog_amplifies_health_converted_from_new_mana() {
         Dragons::default(),
     );
     close(sim.current_stats.max_health, 2935.2); // 2000 + (550 + 1900 * .15) * 1.12
+}
+
+#[test]
+fn coup_de_grace_and_cut_down_depend_on_enemy_health() {
+    let enemy = |health_ratio: f32| {
+        EnemyState {
+            current_stats: Some(EnemyStats {
+                armor: 50.0,
+                current_health: 1000.0 * health_ratio,
+                magic_resist: 50.0,
+                max_health: 1000.0,
+            }),
+            ..Default::default()
+        }
+        .full_state(ResistShred::new(&PlayerStats::default()), false)
+    };
+
+    const BOTH: &[RuneId] = &[RuneId::CoupDeGrace, RuneId::CutDown];
+
+    for (health_ratio, coup_de_grace, cut_down) in [
+        (0.2, 1.08, 1.0),
+        (0.4, 1.0, 1.0),
+        (0.5, 1.0, 1.0),
+        (0.6, 1.0, 1.0),
+        (1.0, 1.0, 1.08),
+    ] {
+        let state = enemy(health_ratio);
+
+        close(
+            state.rune_damage_modifier(&[RuneId::CoupDeGrace]),
+            coup_de_grace,
+        );
+        close(state.rune_damage_modifier(&[RuneId::CutDown]), cut_down);
+        close(state.rune_damage_modifier(BOTH), coup_de_grace * cut_down);
+    }
+
+    close(enemy(0.2).rune_damage_modifier(&[RuneId::LastStand]), 1.0);
+}
+
+#[test]
+fn health_dependent_runes_no_longer_buff_every_target() {
+    let mut modifiers = Modifiers::default();
+    modifiers.apply_loadout(
+        &[],
+        &[RuneId::CoupDeGrace, RuneId::CutDown],
+        &PlayerStats::default(),
+    );
+
+    close(modifiers.damages.global_mod, 1.0);
+}
+
+#[test]
+fn mega_gnar_gains_its_wiki_stat_increases() {
+    // Level 1 and level 18 increases from the Mega Gnar template of the wiki
+    for (level, health, attack_damage, armor, magic_resist) in
+        [(1, 100.0, 6.0, 3.5, 3.5), (18, 831.0, 48.5, 54.5, 63.0)]
+    {
+        let level = NonZeroU8::new(level).unwrap();
+        let mini = BasicStats::base_stats(ChampionId::Gnar, level, false);
+        let mega = BasicStats::base_stats(ChampionId::Gnar, level, true);
+
+        close(mega.max_health - mini.max_health, health);
+        close(mega.attack_damage - mini.attack_damage, attack_damage);
+        close(mega.armor - mini.armor, armor);
+        close(mega.magic_resist - mini.magic_resist, magic_resist);
+    }
+}
+
+#[test]
+fn poppy_steadfast_presence_increases_total_resists() {
+    let control = inferred_stats(ChampionId::Garen, 11, 0, &[]);
+    let poppy = inferred_stats(ChampionId::Poppy, 11, 0, &[]);
+
+    close(poppy.armor, control.armor * 1.16);
+    close(poppy.magic_resist, control.magic_resist * 1.16);
+}
+
+fn player_stats(items: &[ItemId], item_exceptions: &[ValueException], mega: bool) -> PlayerStats {
+    let mut input = game(items, &[], &[]);
+    input.active_player.data.item_exceptions = item_exceptions;
+    input.active_player.data.is_mega_gnar = mega;
+    calculator(input).current_player.current_stats
+}
+
+#[test]
+fn manamune_awe_scales_with_maximum_mana() {
+    let without = player_stats(&[], &[], false);
+    let with = player_stats(&[ItemId::Manamune], &[], false);
+
+    // 35 attack damage from its stats, plus 2% of the maximum mana
+    close(
+        with.attack_damage - without.attack_damage,
+        35.0 + 0.02 * with.max_mana,
+    );
+}
+
+#[test]
+fn warmogs_vitality_scales_only_health_from_items() {
+    let without = player_stats(&[], &[], false);
+    let with = player_stats(&[ItemId::WarmogsArmor], &[], false);
+
+    close(with.max_health - without.max_health, 1000.0 * 1.12);
+}
+
+#[test]
+fn hubris_eminence_depends_on_the_attack_type() {
+    let stacks = [ValueException::pack_item_id(ItemId::Hubris, 5)];
+
+    for (mega, attack_damage) in [(false, 10.0 + 2.0 * 5.0), (true, 15.0 + 3.0 * 5.0)] {
+        let without = player_stats(&[], &[], mega);
+        let with = player_stats(&[], &stacks, mega);
+
+        close(with.attack_damage - without.attack_damage, attack_damage);
+    }
+}
+
+#[test]
+fn juice_of_power_grants_only_the_adaptive_stat() {
+    let without = player_stats(&[], &[], false);
+    let with = player_stats(&[ItemId::JuiceOfPower], &[], false);
+
+    // Gnar is physical, so it only gains attack damage
+    close(
+        with.attack_damage - without.attack_damage,
+        18.0 + 0.1 * without.attack_damage,
+    );
+    close(with.ability_power, without.ability_power);
+}
+
+#[test]
+fn demon_kings_crown_stacks_are_the_percentage() {
+    let stacks = [ValueException::pack_item_id(ItemId::DemonKingsCrown, 25)];
+    let without = player_stats(&[], &[], false);
+    let with = player_stats(&[], &stacks, false);
+
+    close(with.armor, without.armor * 1.25);
+}
+
+#[test]
+fn warmogs_vitality_amplifies_health_converted_by_awe() {
+    let base = player_stats(&[], &[], false).max_health;
+    let fimbulwinter = player_stats(&[ItemId::Fimbulwinter], &[], false).max_health;
+
+    // Warmog's adds 1000 health and amplifies it with the health of Fimbulwinter,
+    // including the health Awe converts from mana, whatever the order of the items
+    for items in [
+        &[ItemId::WarmogsArmor, ItemId::Fimbulwinter][..],
+        &[ItemId::Fimbulwinter, ItemId::WarmogsArmor][..],
+    ] {
+        close(
+            player_stats(items, &[], false).max_health - base,
+            (fimbulwinter - base + 1000.0) * 1.12,
+        );
+    }
+}
+
+#[test]
+fn inferred_warmogs_vitality_amplifies_health_converted_by_awe() {
+    let enemy = |items: &[ItemId]| {
+        let exceptions = items
+            .iter()
+            .map(|&item_id| ValueException::pack_item_id(item_id, 0))
+            .collect::<Vec<_>>();
+
+        EnemyState {
+            champion_id: ChampionId::Garen,
+            level: NonZeroU8::new(18).unwrap(),
+            items,
+            item_exceptions: &exceptions,
+            base_stats: SimpleStats {
+                armor: 100.0,
+                magic_resist: 100.0,
+                max_health: 1000.0,
+            },
+            ..Default::default()
+        }
+        .full_state(ResistShred::new(&PlayerStats::default()), false)
+        .current_stats
+        .max_health
+    };
+
+    let fimbulwinter = enemy(&[ItemId::Fimbulwinter]);
+
+    for items in [
+        &[ItemId::WarmogsArmor, ItemId::Fimbulwinter][..],
+        &[ItemId::Fimbulwinter, ItemId::WarmogsArmor][..],
+    ] {
+        close(
+            enemy(items) - 1000.0,
+            (fimbulwinter - 1000.0 + 1000.0) * 1.12,
+        );
+    }
+}
+
+#[test]
+fn dragonheart_multiplies_health_after_warmogs_vitality() {
+    let souls = [ValueException::pack_item_id(ItemId::Dragonheart, 3)];
+    let warmogs = player_stats(&[ItemId::WarmogsArmor], &[], false);
+    let with_souls = player_stats(&[ItemId::WarmogsArmor], &souls, false);
+
+    // 3 souls increase the total health by 12%, including Warmog's bonus
+    close(with_souls.max_health, warmogs.max_health * 1.12);
+    close(with_souls.attack_damage, warmogs.attack_damage * 1.12);
+}
+
+#[test]
+fn inferred_dragonheart_multiplies_health_after_warmogs_vitality() {
+    let enemy = |exceptions: &[ValueException]| {
+        EnemyState {
+            champion_id: ChampionId::Garen,
+            level: NonZeroU8::new(18).unwrap(),
+            items: &[ItemId::WarmogsArmor],
+            item_exceptions: exceptions,
+            base_stats: SimpleStats {
+                armor: 100.0,
+                magic_resist: 100.0,
+                max_health: 1000.0,
+            },
+            ..Default::default()
+        }
+        .full_state(ResistShred::new(&PlayerStats::default()), false)
+        .current_stats
+    };
+
+    let warmogs = ValueException::pack_item_id(ItemId::WarmogsArmor, 0);
+
+    // In either order, 25% from Demon King's Crown applies to Warmog's bonus too
+    for exceptions in [
+        [
+            ValueException::pack_item_id(ItemId::DemonKingsCrown, 25),
+            warmogs,
+        ],
+        [
+            warmogs,
+            ValueException::pack_item_id(ItemId::DemonKingsCrown, 25),
+        ],
+    ] {
+        close(
+            enemy(&exceptions).max_health,
+            (1000.0 + 1000.0 * 1.12) * 1.25,
+        );
+    }
 }
