@@ -2,7 +2,7 @@ use {
     crate::{ChampionId, ItemId, RuneId, impls::traits::CastId},
     core::fmt::Debug,
     tutorlolv2_types::{
-        AbilityId, AdaptiveType, AttackType, GameMap, Position, StatName, TypeMetadata,
+        AbilityId, AdaptiveType, AttackType, GameMap, MapMode, Position, StatName, TypeMetadata,
     },
 };
 
@@ -106,6 +106,8 @@ pub struct MapStats {
     pub maps: &'static [GameMap],
     /// Multiplier of the total attack speed
     pub total_attack_speed: f32,
+    /// Every stat on these maps, with the ones the mode changes replaced
+    pub stats: WikiStats,
 }
 
 #[derive(Clone, Copy, Debug)]
@@ -125,6 +127,8 @@ pub struct Item {
     pub tier: u8,
     pub price: u16,
     pub stats: &'static [(StatName, u16)],
+    /// Stats on the modes that change them, see [`ItemId::stats_on`]
+    pub map_stats: &'static [(MapMode, &'static [(StatName, u16)])],
     pub maps: &'static [GameMap],
     pub metadata: TypeMetadata<ItemId>,
     pub deals_damage: [bool; 4],

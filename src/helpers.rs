@@ -28,7 +28,7 @@ use {
     strum::EnumCount,
     tutorlolv2_types::{
         AbilityId, AdaptiveType, AttackType, Ctx, CtxAttacker, CtxFlags, CtxTarget, DamageType,
-        GameMap, StatName, TypeMetadata,
+        GameMap, MapMode, StatName, TypeMetadata,
     },
 };
 
@@ -111,15 +111,25 @@ struct DefensiveItemStats {
 // Each item has at most one entry per relevant stat. Retain presence separately
 // so an absent stat does not introduce a floating-point addition of zero.
 const DEFENSIVE_ITEM_STATS: [DefensiveItemStats; ItemId::COUNT] = {
-    let mut result = [DefensiveItemStats {
-        values: [0.0; 4],
-        present: 0,
-    }; ItemId::COUNT];
-
+    let mut result = [DefensiveItemStats::NONE; ItemId::COUNT];
     let mut i = 0;
 
     while i < ItemId::COUNT {
-        let stats = ItemId::from_repr(i as _).unwrap().stats();
+        result[i] = DefensiveItemStats::new(ItemId::from_repr(i as _).unwrap().stats());
+        i += 1;
+    }
+
+    result
+};
+
+impl DefensiveItemStats {
+    const NONE: Self = Self {
+        values: [0.0; 4],
+        present: 0,
+    };
+
+    const fn new(stats: &[(StatName, u16)]) -> Self {
+        let mut result = Self::NONE;
         let mut j = 0;
 
         while j < stats.len() {
@@ -133,20 +143,35 @@ const DEFENSIVE_ITEM_STATS: [DefensiveItemStats; ItemId::COUNT] = {
             };
 
             if slot < 4 {
-                assert!(result[i].present & (1 << slot) == 0);
+                assert!(result.present & (1 << slot) == 0);
 
-                result[i].present |= 1 << slot;
-                result[i].values[slot] = value as f32;
+                result.present |= 1 << slot;
+                result.values[slot] = value as f32;
             }
 
             j += 1;
         }
 
-        i += 1;
+        result
     }
 
-    result
-};
+    /// Stats of `item` on `game_map`, from the table unless its mode changes them
+    #[inline(always)]
+    const fn of(item: ItemId, game_map: GameMap) -> Self {
+        match game_map.mode() {
+            MapMode::Default => DEFENSIVE_ITEM_STATS[item as usize],
+            _ => Self::of_mode(item, game_map),
+        }
+    }
+
+    /// Stats of `item` on a map whose mode may change them, kept out of line
+    /// so that [`Self::of`] inlines into the loop over items
+    #[cold]
+    #[inline(never)]
+    const fn of_mode(item: ItemId, game_map: GameMap) -> Self {
+        Self::new(item.stats_on(game_map))
+    }
+}
 
 impl SimpleStats {
     pub const fn base_stats(champion_id: ChampionId, level: NonZeroU8, is_mega_gnar: bool) -> Self {
@@ -157,12 +182,17 @@ impl SimpleStats {
     /// In general, information about the enemy's mana is useless, but there are some items
     /// that increase their HP based on this stat. Because of that, having information about
     /// the bonus mana allows a better estimate about the enemy's current HP
-    pub const fn infer_stats(&mut self, items: &[ItemId], earth_dragons: u16) -> f32 {
+    pub const fn infer_stats(
+        &mut self,
+        items: &[ItemId],
+        earth_dragons: u16,
+        game_map: GameMap,
+    ) -> f32 {
         let mut bonus_mana = 0.0;
         let mut i = 0;
 
         while i < items.len() {
-            let stats = DEFENSIVE_ITEM_STATS[items[i] as usize];
+            let stats = DefensiveItemStats::of(items[i], game_map);
 
             if stats.present & 1 != 0 {
                 self.armor += stats.values[0];
@@ -219,7 +249,7 @@ impl WikiStats {
     pub const fn mega_gnar_base_stats(&self, level: NonZeroU8) -> BasicStats {
         use champions::gnar::*;
 
-        let mut gnar_stats = *ChampionId::Gnar.stats();
+        let mut gnar_stats = *self;
 
         gnar_stats.health.base += MEGA_HEALTH_BASE;
         gnar_stats.health.per_level += MEGA_HEALTH_PER_LEVEL;
@@ -246,9 +276,45 @@ impl ChampionId {
     }
 
     pub const fn base_stats(&self, level: NonZeroU8, is_mega_gnar: bool) -> BasicStats {
-        let stats = self.stats();
+        Self::base_stats_of(self.stats(), *self, level, is_mega_gnar)
+    }
 
-        match self {
+    /// Base stats of the level on `game_map`, whose mode may change them
+    #[inline(always)]
+    pub const fn base_stats_on(
+        &self,
+        level: NonZeroU8,
+        is_mega_gnar: bool,
+        game_map: GameMap,
+    ) -> BasicStats {
+        // Every enemy reads its base stats, so Summoner's Rift keeps the same code
+        // as when maps had no stats of their own
+        if game_map.mode() as u8 == MapMode::Default as u8 {
+            return self.base_stats(level, is_mega_gnar);
+        }
+
+        self.map_base_stats_cold(level, is_mega_gnar, game_map)
+    }
+
+    /// [`Self::base_stats_on`] on a map whose mode may change the stats
+    #[cold]
+    #[inline(never)]
+    const fn map_base_stats_cold(
+        &self,
+        level: NonZeroU8,
+        is_mega_gnar: bool,
+        game_map: GameMap,
+    ) -> BasicStats {
+        Self::base_stats_of(self.stats_on(game_map), *self, level, is_mega_gnar)
+    }
+
+    const fn base_stats_of(
+        stats: &WikiStats,
+        champion_id: ChampionId,
+        level: NonZeroU8,
+        is_mega_gnar: bool,
+    ) -> BasicStats {
+        match champion_id {
             ChampionId::Gnar if is_mega_gnar => {
                 core::hint::cold_path();
                 stats.mega_gnar_base_stats(level)
@@ -264,7 +330,7 @@ impl ChampionId {
         is_mega_gnar: bool,
         game_map: GameMap,
     ) -> BasicStats {
-        let mut stats = self.base_stats(level, is_mega_gnar);
+        let mut stats = self.base_stats_on(level, is_mega_gnar, game_map);
         let attack_type = self.effective_attack_type(is_mega_gnar);
 
         stats.max_health += game_map.base_health(attack_type, level.get());
@@ -382,7 +448,11 @@ impl PlayerStats {
     /// of stats as if the player owned the qualified item, defined in the constant
     /// [`SIMULATED_ITEMS_ENUM`]. The qualified items are defined by their tier, gold, and if
     /// they're purchasable in the standard gamemode [`GameMap::SummonersRift`].
-    pub const fn get_simulated_stats(&self, dragons: Dragons) -> [Self; ItemId::L_SIML] {
+    pub const fn get_simulated_stats(
+        &self,
+        dragons: Dragons,
+        game_map: GameMap,
+    ) -> [Self; ItemId::L_SIML] {
         let fire = RiotFormulas::get_fire_multiplier(dragons.ally_fire_dragons);
         let earth = RiotFormulas::get_earth_multiplier(dragons.ally_earth_dragons);
 
@@ -390,7 +460,8 @@ impl PlayerStats {
         let mut i = 0;
 
         while i < ItemId::L_SIML {
-            result[i] = self.with_item_stats_with_multipliers(ItemId::SIML[i], fire, earth);
+            result[i] =
+                self.with_item_stats_with_multipliers(ItemId::SIML[i], fire, earth, game_map);
             i += 1;
         }
 
@@ -398,11 +469,12 @@ impl PlayerStats {
     }
 
     /// Add raw item stats to live totals, applying dragons only to new stats.
-    pub const fn with_item_stats(&self, item: ItemId, dragons: Dragons) -> Self {
+    pub const fn with_item_stats(&self, item: ItemId, dragons: Dragons, game_map: GameMap) -> Self {
         self.with_item_stats_with_multipliers(
             item,
             RiotFormulas::get_fire_multiplier(dragons.ally_fire_dragons),
             RiotFormulas::get_earth_multiplier(dragons.ally_earth_dragons),
+            game_map,
         )
     }
 
@@ -412,10 +484,11 @@ impl PlayerStats {
         item: ItemId,
         fire: f32,
         earth: f32,
+        game_map: GameMap,
     ) -> Self {
         let mut added = PlayerStats::default();
 
-        added.get_item_bonus_stats(&[item], &mut Modifiers::default(), &mut 0.0);
+        added.get_item_bonus_stats(&[item], &mut Modifiers::default(), &mut 0.0, game_map);
 
         Self {
             ability_power: self.ability_power + added.ability_power * fire,
@@ -596,7 +669,7 @@ impl EnemyState<'_> {
                 e_default_stats.armor += mode_armor;
                 e_default_stats.magic_resist += mode_magic_resist;
 
-                let bonus_mana = e_default_stats.infer_stats(items, earth_dragons);
+                let bonus_mana = e_default_stats.infer_stats(items, earth_dragons, game_map);
                 // Warmog's Vitality only scales the health granted by items, which
                 // also includes the health that Awe converts from mana below
                 let mut item_health = e_default_stats.max_health - base_stats.max_health;
@@ -610,7 +683,8 @@ impl EnemyState<'_> {
                                 core::hint::cold_path();
 
                                 let awe =
-                                    items::winters_approach::AWE_BONUS_MANA_RATIO * bonus_mana;
+                                    items::winters_approach::awe_bonus_mana_ratio(game_map.mode())
+                                        * bonus_mana;
 
                                 e_default_stats.max_health += awe;
                                 item_health += awe;
@@ -618,7 +692,9 @@ impl EnemyState<'_> {
                             ItemId::Fimbulwinter => {
                                 core::hint::cold_path();
 
-                                let awe = items::fimbulwinter::AWE_BONUS_MANA_RATIO * bonus_mana;
+                                let awe =
+                                    items::fimbulwinter::awe_bonus_mana_ratio(game_map.mode())
+                                        * bonus_mana;
 
                                 e_default_stats.max_health += awe;
                                 item_health += awe;
@@ -860,6 +936,7 @@ impl SelfState {
         owned: &[ItemId],
         champion: ChampionId,
         dragons: Dragons,
+        game_map: GameMap,
     ) -> Self {
         self.simulated_purchase_with_multipliers(
             item,
@@ -867,6 +944,7 @@ impl SelfState {
             champion,
             RiotFormulas::get_fire_multiplier(dragons.ally_fire_dragons),
             RiotFormulas::get_earth_multiplier(dragons.ally_earth_dragons),
+            game_map,
         )
     }
 
@@ -878,14 +956,17 @@ impl SelfState {
         champion: ChampionId,
         fire: f32,
         earth: f32,
+        game_map: GameMap,
     ) -> Self {
         let current = self.current_stats;
-        let mut stats = current.with_item_stats_with_multipliers(item, fire, earth);
+        let mut stats = current.with_item_stats_with_multipliers(item, fire, earth, game_map);
         let data = champion.data();
 
         // Item attack speed is a percent bonus, while live attack_speed is attacks/sec.
         stats.attack_speed = current.attack_speed
-            + data.stats.attack_speed_ratio * (stats.attack_speed - current.attack_speed) / 100.0;
+            + champion.stats_on(game_map).attack_speed_ratio
+                * (stats.attack_speed - current.attack_speed)
+                / 100.0;
 
         let mut already_owned = false;
         let mut i = 0;
@@ -911,12 +992,14 @@ impl SelfState {
                 ItemId::WintersApproach => {
                     core::hint::cold_path();
 
-                    stats.max_health += items::winters_approach::AWE_BONUS_MANA_RATIO * added_mana
+                    stats.max_health +=
+                        items::winters_approach::awe_bonus_mana_ratio(game_map.mode()) * added_mana
                 }
                 ItemId::Fimbulwinter => {
                     core::hint::cold_path();
 
-                    stats.max_health += items::fimbulwinter::AWE_BONUS_MANA_RATIO * added_mana
+                    stats.max_health +=
+                        items::fimbulwinter::awe_bonus_mana_ratio(game_map.mode()) * added_mana
                 }
                 _ => {}
             }
@@ -929,13 +1012,14 @@ impl SelfState {
                 ItemId::WintersApproach => {
                     core::hint::cold_path();
 
-                    stats.max_health += items::winters_approach::AWE_BONUS_MANA_RATIO
-                        * (stats.max_mana - self.base_stats.max_mana)
+                    stats.max_health +=
+                        items::winters_approach::awe_bonus_mana_ratio(game_map.mode())
+                            * (stats.max_mana - self.base_stats.max_mana)
                 }
                 ItemId::Fimbulwinter => {
                     core::hint::cold_path();
 
-                    stats.max_health += items::fimbulwinter::AWE_BONUS_MANA_RATIO
+                    stats.max_health += items::fimbulwinter::awe_bonus_mana_ratio(game_map.mode())
                         * (stats.max_mana - self.base_stats.max_mana)
                 }
                 _ => {}
@@ -982,10 +1066,12 @@ impl SelfState {
                     added_ap += items::riftmaker::VOID_INFUSION_BONUS_HEALTH_RATIO * health_delta
                 }
                 ItemId::ArchangelsStaff => {
-                    added_ap += items::archangels_staff::AWE_BONUS_MANA_RATIO * added_mana
+                    added_ap +=
+                        items::archangels_staff::awe_bonus_mana_ratio(game_map.mode()) * added_mana
                 }
                 ItemId::SeraphsEmbrace => {
-                    added_ap += items::seraphs_embrace::AWE_BONUS_MANA_RATIO * added_mana
+                    added_ap +=
+                        items::seraphs_embrace::awe_bonus_mana_ratio(game_map.mode()) * added_mana
                 }
                 ItemId::Manamune => added_ad += items::manamune::AWE_MAX_MANA_RATIO * added_mana,
                 ItemId::Muramana => added_ad += items::muramana::AWE_MAX_MANA_RATIO * added_mana,
@@ -994,7 +1080,8 @@ impl SelfState {
 
                     owns_bloodmail = true;
                     added_ad +=
-                        items::overlords_bloodmail::TYRANNY_BONUS_HEALTH_RATIO * health_delta
+                        items::overlords_bloodmail::tyranny_bonus_health_ratio(game_map.mode())
+                            * health_delta
                 }
                 _ => {}
             }
@@ -1019,10 +1106,12 @@ impl SelfState {
                         RiotFormulas::get_sinister_pact(current.max_health - current.current_health)
                 }
                 ItemId::ArchangelsStaff => {
-                    added_ap += items::archangels_staff::AWE_BONUS_MANA_RATIO * bonus_mana
+                    added_ap +=
+                        items::archangels_staff::awe_bonus_mana_ratio(game_map.mode()) * bonus_mana
                 }
                 ItemId::SeraphsEmbrace => {
-                    added_ap += items::seraphs_embrace::AWE_BONUS_MANA_RATIO * bonus_mana
+                    added_ap +=
+                        items::seraphs_embrace::awe_bonus_mana_ratio(game_map.mode()) * bonus_mana
                 }
                 ItemId::Manamune => {
                     added_ad += items::manamune::AWE_MAX_MANA_RATIO * stats.max_mana
@@ -1034,7 +1123,8 @@ impl SelfState {
                     core::hint::cold_path();
 
                     added_ad +=
-                        items::overlords_bloodmail::TYRANNY_BONUS_HEALTH_RATIO * bonus_health
+                        items::overlords_bloodmail::tyranny_bonus_health_ratio(game_map.mode())
+                            * bonus_health
                 }
                 _ => {}
             }
@@ -1049,8 +1139,8 @@ impl SelfState {
         if owns_bloodmail || matches!(item, ItemId::OverlordsBloodmail) {
             core::hint::cold_path();
 
-            let retribution =
-                1.0 + RiotFormulas::get_bloodmail_retribution(current.missing_health_ratio());
+            let retribution = 1.0
+                + RiotFormulas::get_bloodmail_retribution(current.missing_health_ratio(), game_map);
 
             stats.attack_damage = match owns_bloodmail {
                 true => {

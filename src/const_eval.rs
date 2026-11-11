@@ -303,7 +303,7 @@ impl<
 
         let siml = {
             let mut result = unsafe { core::mem::zeroed::<[_; ItemId::L_SIML]>() };
-            let siml_stats = stats.get_simulated_stats(dragons);
+            let siml_stats = stats.get_simulated_stats(dragons, GameMap::Unknown);
             let mut i = 0;
 
             while i < ItemId::L_SIML {

@@ -4,6 +4,7 @@ impl Generator for Qiyana {
     fn generate(&mut self) -> MayFail {
         self.ability(Key::P, [("Innate", _1), ("Innate [1]", _2)])
             .merge_sum([P(_1), P(_2)], P(Void))?
+            .map_sum(P(Void), [(Key::P, "Innate"), (Key::P, "Innate [1]")])?
             .ability_nth(
                 1,
                 Key::Q,

@@ -389,6 +389,9 @@ impl Ctx {
     /// Item Plated Steelcaps gives 10% damage reduction for basic attacks
     pub const STEEL_CAPS_PROTECTION: f32 = 0.9;
 
+    /// Plated Steelcaps gives 14% damage reduction in Arena
+    pub const STEEL_CAPS_PROTECTION_ARENA: f32 = 0.86;
+
     /// Item Randuin's Omen gives 30% damage reduction against critical hits
     pub const RANDUIN_CRIT_PROTECTION: f32 = 0.7;
 
@@ -403,8 +406,19 @@ impl Ctx {
         }
     }
 
+    /// [`Self::STEEL_CAPS_PROTECTION`] on the map of `mode`, as Arena changes it
+    pub const fn steel_caps_protection(mode: MapMode) -> f32 {
+        match mode {
+            MapMode::Arena => {
+                core::hint::cold_path();
+                Self::STEEL_CAPS_PROTECTION_ARENA
+            }
+            _ => Self::STEEL_CAPS_PROTECTION,
+        }
+    }
+
     pub const fn steelcaps_effect(&self) -> f32 {
-        self.select(CtxFlags::STEELCAPS, Self::STEEL_CAPS_PROTECTION)
+        self.select(CtxFlags::STEELCAPS, Self::steel_caps_protection(self.map))
     }
 
     pub const fn randuin_effect(&self) -> f32 {

@@ -5,7 +5,10 @@ use {
             GeneratorExt,
             constants::{Constants, WithConstants},
             impls::champions::champion_gen_fn,
-            parser::{Parser, ZERO, likely_damages},
+            parser::{
+                Parser, WithMapChanges, ZERO, likely_damages, load_map_changes, map_changes,
+                single_mode,
+            },
             utils::RegExtractor,
         },
         scripts::utils::is_zero,
@@ -14,17 +17,18 @@ use {
     serde_with::{Seq, serde_as},
     std::{
         collections::{BTreeMap, BTreeSet},
-        fmt::Write,
-        sync::OnceLock,
+        fmt::{Display, Write},
     },
     tutorlolv2_types::{
-        AbilityId, AbilityName, Attrs, ComboElement, DamageType, DevMergeData, GameMap, Key, Tag,
+        AbilityId, AbilityName, Attrs, ComboElement, DamageType, DevMergeData, Key, MapMode,
+        StatName, Tag,
     },
     tutorlolv2_wiki::{
         JsonRead,
-        champions::{WikiChampion, abilities::WikiAbility},
+        champions::{WikiChampion, WikiMapStats, abilities::WikiAbility},
         map_changes::{
-            self, MapChanges,
+            ChangeTarget,
+            change::{ChangeKind, Values},
             overrides::{ChampionOverrides, SelectedEffect},
         },
         parser::{Effect, Scaling},
@@ -34,10 +38,6 @@ use {
 pub struct ChampionParser {
     pub data: BTreeMap<String, WikiChampion>,
 }
-
-/// Changes of every game mode, by the code of its module. Loaded once by
-/// [`ChampionParser`], and empty when the cache has none, as in tests
-static MAP_CHANGES: OnceLock<BTreeMap<String, MapChanges>> = OnceLock::new();
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct Ability {
@@ -65,7 +65,7 @@ pub struct Champion {
     /// Formulas of the abilities that game modes change, with the maps of each
     #[serde_as(as = "Seq<(_, _)>")]
     #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
-    pub map_damages: BTreeMap<AbilityId, Vec<(Vec<GameMap>, String)>>,
+    pub map_damages: BTreeMap<AbilityId, Vec<(MapMode, String)>>,
 }
 
 impl Parser<WikiChampion, Champion> for ChampionParser {
@@ -74,17 +74,7 @@ impl Parser<WikiChampion, Champion> for ChampionParser {
         champion_gen_fn;
 
     fn from_root(root: &std::path::Path) -> MayFail<Self> {
-        let map_changes = match root.join(map_changes::full_path()) {
-            path if path.exists() => BTreeMap::from_file(path)?,
-            _ => {
-                println!(
-                    "cargo:warning=No map changes in the cache, every map uses the same formulas"
-                );
-                BTreeMap::new()
-            }
-        };
-
-        let _ = MAP_CHANGES.set(map_changes);
+        load_map_changes(root)?;
 
         Ok(Self {
             data: BTreeMap::from_file(root.join("cache/wiki/champions/full.json"))?,
@@ -567,7 +557,7 @@ impl Champion {
     }
 
     pub fn end(&mut self) -> MayFail {
-        self.apply_map_changes();
+        self.apply_map_changes()?;
 
         let Self {
             data: WikiChampion { champion_id, .. },
@@ -659,20 +649,187 @@ impl Champion {
 }
 
 impl Champion {
-    /// Formulas of the selected effects that game modes change, for the abilities
-    /// whose damage is still the formula of their effect. Abilities a generator
-    /// changed are skipped, since the change may not apply to them anymore
-    fn apply_map_changes(&mut self) {
-        let selected = self
-            .sources
+    /// Stats that game modes change: the ones of `Module:ChampionData`, plus the
+    /// base stats that the changes of each mode add, as Arena's "passively gains
+    /// {{pp|0 to 187}} increased base health". A progression from level 1 to 18
+    /// adds its first value to the base, and its growth over 17 levels per level
+    pub fn map_stats(&self) -> Vec<WikiMapStats> {
+        let mut list = self.data.map_stats.clone();
+
+        for changes in map_changes() {
+            for entry in changes.entries.values() {
+                if entry.target
+                    != (ChangeTarget::Champion {
+                        champion_id: self.champion_id.clone(),
+                    })
+                {
+                    continue;
+                }
+
+                for change in &entry.changes {
+                    let ChangeKind::BaseStat { stat, amount } = &change.kind else {
+                        continue;
+                    };
+
+                    let (first, last) = match &amount.values {
+                        Values::ByLevel { values, .. } if values.len() > 1 => {
+                            (values[0], values[values.len() - 1])
+                        }
+                        Values::Scalar(value) => (*value, *value),
+                        _ => continue,
+                    };
+
+                    let index = match list.iter().position(|m| m.maps == changes.maps) {
+                        Some(index) => index,
+                        None => {
+                            list.push(WikiMapStats {
+                                maps: changes.maps.clone(),
+                                total_attack_speed: 1.0,
+                                stats: self.data.stats,
+                            });
+                            list.len() - 1
+                        }
+                    };
+
+                    let stats = &mut list[index].stats;
+                    let target = match stat {
+                        StatName::Health => &mut stats.health,
+                        StatName::Armor => &mut stats.armor,
+                        StatName::MagicResist => &mut stats.magic_resist,
+                        StatName::AttackDamage => &mut stats.attack_damage,
+                        _ => continue,
+                    };
+
+                    target.base += first as f32;
+                    target.per_level += (last - first) as f32 / 17.0;
+                }
+            }
+        }
+
+        list
+    }
+
+    /// Effect `name` of `key` on each mode that changes it, by the same rules as
+    /// the damages, for generators that build a damage from it, as with `merge_sum`
+    pub fn map_effect(&self, key: Key, name: &str) -> MayFail<Vec<(MapMode, Effect)>> {
+        let selected = self.selected_effects();
+        let effect = selected
+            .iter()
+            .find(|s| s.key == key && s.name == name)
+            .ok_or_else(|| format!("[{}] {key:?} {name:?} is not selected", self.champion_id))?;
+
+        let mut result = Vec::new();
+
+        for changes in map_changes() {
+            let overrides = ChampionOverrides::new(&self.data, changes, &selected);
+
+            if let Some(changed) = overrides.effects.get(effect) {
+                result.push((
+                    single_mode(&changes.maps, &self.champion_id)?,
+                    changed.clone(),
+                ));
+            }
+        }
+
+        Ok(result)
+    }
+
+    /// Sets the damage of `ability` on `mode`, for generators that build it
+    /// themselves. Abilities with a damage on a mode aren't changed automatically
+    pub fn map_damage(
+        &mut self,
+        mode: MapMode,
+        ability: AbilityId,
+        damage: impl Display,
+    ) -> &mut Self {
+        self.map_damages
+            .entry(ability)
+            .or_default()
+            .push((mode, damage.to_string()));
+
+        self
+    }
+
+    /// Damage of `into` on each mode that changes any of `effects`, as their sum
+    /// with [`Self::merge_sum`], whose result doesn't follow their changes
+    pub fn map_sum<const N: usize>(
+        &mut self,
+        into: AbilityId,
+        effects: [(Key, &str); N],
+    ) -> MayFail<&mut Self> {
+        let mut originals = Vec::new();
+
+        for (key, name) in effects {
+            originals.push(self.formula(key, name)?.parenthesize());
+        }
+
+        let mut by_mode = BTreeMap::<MapMode, Vec<String>>::new();
+
+        for (i, (key, name)) in effects.into_iter().enumerate() {
+            for (mode, effect) in self.map_effect(key, name)? {
+                let formula = effect
+                    .formula
+                    .ok_or(format!("{key:?} {name:?} has no formula"))?;
+
+                by_mode.entry(mode).or_insert_with(|| originals.clone())[i] =
+                    formula.parenthesize();
+            }
+        }
+
+        for (mode, parts) in by_mode {
+            self.map_damage(mode, into, parts.join(" + "));
+        }
+
+        Ok(self)
+    }
+
+    /// Damage of `ability` on each mode that changes the effect `name` of `key`,
+    /// through `f`, the same closure that [`Self::modify`] gave it
+    pub fn map_modify(
+        &mut self,
+        ability: AbilityId,
+        key: Key,
+        name: &str,
+        f: impl Fn(&str) -> String,
+    ) -> MayFail<&mut Self> {
+        for (mode, effect) in self.map_effect(key, name)? {
+            let formula = effect
+                .formula
+                .ok_or(format!("{key:?} {name:?} has no formula"))?;
+
+            self.map_damage(mode, ability, f(&formula));
+        }
+
+        Ok(self)
+    }
+
+    /// Distinct effects that the abilities were selected from
+    fn selected_effects(&self) -> Vec<SelectedEffect> {
+        self.sources
             .values()
             .cloned()
             .collect::<BTreeSet<_>>()
             .into_iter()
-            .collect::<Vec<_>>();
+            .collect()
+    }
 
-        for changes in MAP_CHANGES.get().into_iter().flat_map(BTreeMap::values) {
+    /// Formulas of the selected effects that game modes change, for the abilities
+    /// whose damage is still the formula of their effect. Abilities a generator
+    /// changed are skipped, since the change may not apply to them anymore
+    fn apply_map_changes(&mut self) -> MayFail {
+        let selected = self.selected_effects();
+
+        for changes in map_changes() {
+            let mode = single_mode(&changes.maps, &self.champion_id)?;
             let overrides = ChampionOverrides::new(&self.data, changes, &selected);
+
+            // Abilities whose damage on this mode the generator set itself
+            let manual = self
+                .map_damages
+                .iter()
+                .filter(|(_, damages)| damages.iter().any(|(m, _)| *m == mode))
+                .map(|(id, _)| *id)
+                .collect::<BTreeSet<_>>();
 
             for (effect, changed) in &overrides.effects {
                 let original = self
@@ -688,17 +845,19 @@ impl Champion {
                 };
 
                 let mut applied = false;
+                let mut changed = false;
 
                 for (ability_id, source) in &self.sources {
                     let Some(ability) = self.abilities.get(ability_id) else {
                         continue;
                     };
 
-                    if source != effect {
+                    if source != effect || manual.contains(ability_id) {
                         continue;
                     }
 
                     if ability.damage != *original {
+                        changed = true;
                         println!(
                             "cargo:warning=[{}] {ability_id:?}: its generator changed the damage, so the changes of {:?} are not applied",
                             self.champion_id, changes.maps
@@ -709,19 +868,35 @@ impl Champion {
                     self.map_damages
                         .entry(*ability_id)
                         .or_default()
-                        .push((changes.maps.clone(), formula.clone()));
+                        .push((mode, formula.clone()));
 
                     applied = true;
                 }
 
-                // As when the generator merged the abilities of the effect into another
-                if !applied {
+                // As when the generator merged the abilities of the effect into another,
+                // unless it set the damage of an ability of the same key itself
+                let handled = manual.iter().any(|id| id.as_key() == effect.key);
+
+                if !applied && !changed && !handled {
                     println!(
                         "cargo:warning=[{}] {:?}[{}] {:?}: no ability keeps the formula of this effect, so the changes of {:?} are not applied",
                         self.champion_id, effect.key, effect.nth, effect.name, changes.maps
                     );
                 }
             }
+        }
+
+        Ok(())
+    }
+}
+
+impl WithMapChanges for Champion {
+    fn is_map_target(&self, target: &ChangeTarget) -> bool {
+        match target {
+            ChangeTarget::Champion { champion_id }
+            | ChangeTarget::Ability { champion_id, .. }
+            | ChangeTarget::NamedAbility { champion_id, .. } => *champion_id == self.champion_id,
+            _ => false,
         }
     }
 }

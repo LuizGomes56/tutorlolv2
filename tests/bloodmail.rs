@@ -19,7 +19,10 @@ fn retribution_grows_one_percent_every_seven_percent_missing_health() {
         (0.7, 0.1),
         (1.0, 0.1),
     ] {
-        close(RiotFormulas::get_bloodmail_retribution(missing), expected);
+        close(
+            RiotFormulas::get_bloodmail_retribution(missing, GameMap::SummonersRift),
+            expected,
+        );
     }
 }
 
@@ -88,6 +91,7 @@ fn owned_bloodmail_amplifies_only_the_purchased_attack_damage() {
                 &[ItemId::OverlordsBloodmail],
                 ChampionId::Garen,
                 Dragons::default(),
+                GameMap::SummonersRift,
             )
             .current_stats
             .attack_damage
@@ -107,6 +111,7 @@ fn purchased_bloodmail_amplifies_all_attack_damage() {
                 &[],
                 ChampionId::Garen,
                 Dragons::default(),
+                GameMap::SummonersRift,
             )
             .current_stats
             .attack_damage

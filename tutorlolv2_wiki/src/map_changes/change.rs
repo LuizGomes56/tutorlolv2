@@ -266,7 +266,33 @@ impl ChangeKind {
     }
 }
 
+impl ChangeKind {
+    /// The part and values of a change that names a value, as "Eminence base
+    /// bonus attack" of a Base change
+    pub fn part_amount(&self) -> Option<(&str, &Amount)> {
+        match self {
+            Self::Base { part, amount }
+            | Self::Modifier { part, amount }
+            | Self::Named { part, amount } => Some((part, amount)),
+            _ => None,
+        }
+    }
+}
+
 impl Amount {
+    /// The single value for melee or ranged champions, if it is one
+    pub fn single(&self, ranged: bool) -> Option<f64> {
+        let values = match (ranged, &self.ranged) {
+            (true, Some(ranged)) => ranged,
+            _ => &self.values,
+        };
+
+        match values {
+            Values::Scalar(value) => Some(*value),
+            _ => None,
+        }
+    }
+
     /// Values at the start of `value`, by level when a `{{pp}}` progression starts
     /// with them, and the ranged ones when they differ
     fn parse(

@@ -15,7 +15,7 @@ use {
         write,
     },
     tutorlolv2_types::{
-        AbilityId, AbilityName, Attrs, CtxVar, DamageType, DevMergeData, MapMode, MergeData, Tag,
+        AbilityId, AbilityName, Attrs, CtxVar, DamageType, DevMergeData, MergeData, Tag,
         TypeMetadata,
     },
     tutorlolv2_wiki::champions::WikiChampion,
@@ -49,7 +49,6 @@ impl Build for Champion {
                     positions,
                     stats,
                     modifiers,
-                    map_stats,
                     ..
                 },
             combo,
@@ -69,13 +68,10 @@ impl Build for Champion {
             .collect::<Vec<_>>();
 
         let mut damage_override = BTreeMap::<AbilityId, String>::new();
+        // Merges add arms to the maximum, so they get their own copy
+        let mut map_damages = map_damages.clone();
 
         for merge in merge {
-            // The ratio between the two is only known on Summoner's Rift
-            if map_damages.contains_key(&merge.min) || map_damages.contains_key(&merge.max) {
-                continue;
-            }
-
             let min = self.get(merge.min)?;
             let max = self.get(merge.max)?;
             let min_i = self.indexof(merge.min)?;
@@ -102,7 +98,33 @@ impl Build for Champion {
                 k
             };
 
+            // The ratio between the two is only known on Summoner's Rift, so the
+            // maximum keeps its own formula on every mode that changes either
+            let modes = [merge.min, merge.max]
+                .iter()
+                .filter_map(|id| map_damages.get(id))
+                .flatten()
+                .map(|(mode, _)| *mode)
+                .collect::<BTreeSet<_>>();
+
+            let max_arms = modes
+                .into_iter()
+                .map(|mode| {
+                    let formula = map_damages
+                        .get(&merge.max)
+                        .and_then(|arms| arms.iter().find(|(m, _)| *m == mode))
+                        .map_or_else(|| simplified[max_i].clone(), |(_, f)| f.clone());
+
+                    (mode, formula)
+                })
+                .collect::<Vec<_>>();
+
+            if !max_arms.is_empty() {
+                map_damages.insert(merge.max, max_arms);
+            }
+
             let min_fn = &functions[min_i];
+
             damage_override.insert(merge.max, format!("{ratio} * {min_fn}(ctx)"));
         }
 
@@ -143,21 +165,23 @@ impl Build for Champion {
                 identifiers: &[{identifiers}],
             }};"#,
             stats = cast_f32(&format!("{stats:?}"))?,
-            map_stats = map_stats
+            map_stats = self
+                .map_stats()
                 .iter()
-                .map(|stats| {
-                    format!(
-                        "crate::libgen::globals::MapStats {{ maps: &[{}], total_attack_speed: {:?}f32 }}",
+                .map(|stats| -> MayFail<String> {
+                    Ok(format!(
+                        "crate::libgen::globals::MapStats {{ maps: &[{}], total_attack_speed: {:?}f32, stats: {} }}",
                         stats
                             .maps
                             .iter()
                             .map(|map| format!("tutorlolv2_types::GameMap::{map:?}"))
                             .collect::<Vec<_>>()
                             .join(", "),
-                        stats.total_attack_speed
-                    )
+                        stats.total_attack_speed,
+                        cast_f32(&format!("{:?}", stats.stats))?
+                    ))
                 })
-                .collect::<Vec<_>>()
+                .collect::<MayFail<Vec<_>>>()?
                 .join(", "),
             modifiers = cast_f32(&format!("{modifiers:?}"))?,
             adaptive_type = adaptive_type.bake(),
@@ -200,21 +224,7 @@ impl Build for Champion {
             if let Some(map_damage) = map_damages.get(ability_id) {
                 let mut arms = String::new();
 
-                for (maps, formula) in map_damage {
-                    // Closures read the mode of the map, which every map of a
-                    // module must share
-                    let modes = maps.iter().map(|map| map.mode()).collect::<BTreeSet<_>>();
-
-                    let [mode] = modes.into_iter().collect::<Vec<_>>()[..] else {
-                        return Err(
-                            format!("[{champion_id}] Maps {maps:?} have different modes").into(),
-                        );
-                    };
-
-                    if mode == MapMode::Default {
-                        return Err(format!("[{champion_id}] Maps {maps:?} have no mode").into());
-                    }
-
+                for (mode, formula) in map_damage {
                     write!(
                         arms,
                         "tutorlolv2_types::MapMode::{mode:?} => {{ core::hint::cold_path(); {} }}",

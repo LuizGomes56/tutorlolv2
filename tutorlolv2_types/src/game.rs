@@ -144,6 +144,8 @@ pub enum MapMode {
     Default,
     /// `Module:MapChanges/data/aram`
     Aram,
+    /// `Module:MapChanges/data/ar`
+    Arena,
 }
 
 impl GameMap {
@@ -151,6 +153,7 @@ impl GameMap {
     pub const fn mode(self) -> MapMode {
         match self {
             Self::Aram | Self::AramMayhem => MapMode::Aram,
+            Self::Arena => MapMode::Arena,
             _ => MapMode::Default,
         }
     }

@@ -171,6 +171,7 @@ impl ChampionTemplate {
             aram_total_as,
             ar_dmg_dealt,
             ar_dmg_taken,
+            ar_total_as,
             nb_dmg_dealt,
             nb_dmg_taken,
             swift_dmg_dealt,
@@ -178,6 +179,23 @@ impl ChampionTemplate {
             urf_dmg_dealt,
             urf_dmg_taken
         );
+
+        // Stats that a mode changes, as `ar_hp_lvl`. The cell is empty when the mode
+        // keeps the stat, and has the resulting value otherwise
+        for source in crate::map_changes::MAPS {
+            let stats = MODE_STAT_KEYS
+                .iter()
+                .filter_map(|key| {
+                    let value = parse_f32(cells, &format!("{}_{key}", source.code))?;
+                    Some((key.to_string(), value))
+                })
+                .collect::<BTreeMap<_, _>>();
+
+            if !stats.is_empty() {
+                self.modes.stats.insert(source.code.to_string(), stats);
+            }
+        }
+
         self
     }
 }
@@ -213,6 +231,14 @@ pub struct Stats {
     pub ms: f32,
 }
 
+/// Keys of the stats that a mode may change, see [`WikiMapStats::new`]
+///
+/// [`WikiMapStats::new`]: crate::champions::WikiMapStats
+pub const MODE_STAT_KEYS: &[&str] = &[
+    "hp_base", "hp_lvl", "mp_base", "mp_lvl", "arm_base", "arm_lvl", "mr_base", "mr_lvl",
+    "dam_base", "dam_lvl", "as_base", "as_lvl", "as_ratio",
+];
+
 #[derive(Clone, Debug, Default, Serialize, Deserialize)]
 pub struct ModeStats {
     pub ofa_dmg_dealt: f32,
@@ -223,6 +249,11 @@ pub struct ModeStats {
     pub aram_dmg_taken: f32,
     /// Multiplier of the total attack speed
     pub aram_total_as: f32,
+    pub ar_total_as: f32,
+    /// Stats that each mode changes, by the code of its module and the key of the
+    /// stat, as `hp_lvl`
+    #[serde(default)]
+    pub stats: BTreeMap<String, BTreeMap<String, f32>>,
     pub ar_dmg_dealt: f32,
     pub ar_dmg_taken: f32,
     pub nb_dmg_dealt: f32,

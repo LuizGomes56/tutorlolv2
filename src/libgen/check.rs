@@ -27,6 +27,14 @@ const _: () = {
 
     assert!(
         same(
+            Ctx::steel_caps_protection(tutorlolv2_types::MapMode::Arena),
+            1.0 - plated_steelcaps::plating_reduction(tutorlolv2_types::MapMode::Arena)
+        ),
+        "Ctx::STEEL_CAPS_PROTECTION_ARENA differs from Plated Steelcaps in the wiki"
+    );
+
+    assert!(
+        same(
             Ctx::RANDUIN_CRIT_PROTECTION,
             1.0 - randuins_omen::RESILIENCE_REDUCTION
         ),

@@ -5,8 +5,8 @@ use {
             constants::{Constants, WithConstants},
             impls::runes::rune_gen_fn,
             parser::{
-                DamageRange, GeneratorFnSig, Parser, infer_damage_type, likely_damages,
-                model::RiotCdnRune,
+                DamageRange, EffectRead, GeneratorFnSig, Parser, WithMapChanges,
+                effect_map_damages, infer_damage_type, likely_damages, model::RiotCdnRune,
             },
             utils::RegExtractor,
         },
@@ -14,13 +14,15 @@ use {
     heck::ToPascalCase,
     serde::{Deserialize, Serialize},
     std::{
+        cell::RefCell,
         collections::BTreeMap,
         fmt::Write,
         ops::{Index, IndexMut},
     },
-    tutorlolv2_types::{AttackType, CtxVar, DamageIndex, DamageType, Tag},
+    tutorlolv2_types::{AttackType, CtxVar, DamageIndex, DamageType, MapMode, Tag},
     tutorlolv2_wiki::{
         JsonRead,
+        map_changes::ChangeTarget,
         parser::Effect,
         runes::{RuneKeystone, RuneSlot, WikiRune},
     },
@@ -39,6 +41,14 @@ pub struct Rune {
     pub melee: DamageRange,
     #[serde(default, skip_serializing_if = "Constants::is_empty")]
     pub constants: Constants,
+    /// Effects whose formula the generator read, by that formula, or by the sum
+    /// of formulas that `compose` returned
+    #[serde(skip)]
+    pub reads: RefCell<BTreeMap<String, Vec<EffectRead>>>,
+    /// Formulas on each mode that changes them, for melee minimum and maximum,
+    /// then ranged. Serialized, since the build reads the generator's output
+    #[serde(default, skip_serializing_if = "super::no_map_damages")]
+    pub map_damages: [Vec<(MapMode, String)>; 4],
 }
 
 impl Parser<WikiRune, Rune> for RuneParser {
@@ -69,6 +79,8 @@ impl Parser<WikiRune, Rune> for RuneParser {
     }
 
     fn from_root(root: &std::path::Path) -> MayFail<Self> {
+        super::load_map_changes(root)?;
+
         let mut data =
             BTreeMap::<String, WikiRune>::from_file(root.join("cache/wiki/runes/full.json"))?;
 
@@ -122,6 +134,12 @@ impl Parser<WikiRune, Rune> for RuneParser {
     }
 }
 
+impl WithMapChanges for Rune {
+    fn is_map_target(&self, target: &ChangeTarget) -> bool {
+        matches!(target, ChangeTarget::Rune { rune_id } if *rune_id == self.data.rune_id)
+    }
+}
+
 impl TryFrom<WikiRune> for Rune {
     type Error = DynError;
 
@@ -134,6 +152,8 @@ impl TryFrom<WikiRune> for Rune {
             ranged: Default::default(),
             melee: Default::default(),
             constants: Default::default(),
+            reads: Default::default(),
+            map_damages: Default::default(),
             data,
         })
     }
@@ -147,11 +167,32 @@ impl Rune {
     }
 
     pub fn formula(&self, index: usize) -> MayFail<String> {
-        self.effect(index).and_then(|v| {
+        let formula = self.effect(index).and_then(|v| {
             v.formula
                 .as_ref()
                 .ok_or_else(|| format!("No formula string found for effect {index}").into())
                 .map(RegExtractor::parenthesize)
+        })?;
+
+        let read = self.read(index)?;
+        self.reads.borrow_mut().insert(formula.clone(), vec![read]);
+
+        Ok(formula)
+    }
+
+    /// The effect at `index`, as the changes of game modes name it
+    fn read(&self, index: usize) -> MayFail<EffectRead> {
+        let (name, effect) = self
+            .data
+            .effects
+            .iter()
+            .nth(index)
+            .ok_or_else(|| format!("No effect found at index {index}"))?;
+
+        Ok(EffectRead {
+            key: name.clone(),
+            name: name.clone(),
+            effect: effect.clone(),
         })
     }
 
@@ -221,7 +262,16 @@ impl Rune {
             result[i] = formula;
         }
 
-        Ok(result.join(" + "))
+        let reads = indexes
+            .into_iter()
+            .map(|index| self.read(index))
+            .collect::<MayFail<Vec<_>>>()?;
+
+        let formula = result.join(" + ");
+
+        self.reads.borrow_mut().insert(formula.clone(), reads);
+
+        Ok(formula)
     }
 
     pub fn assign_min(&mut self, damage: impl AsRef<str>) -> &mut Self {
@@ -252,6 +302,20 @@ impl Rune {
             );
             // return Err("Unknown damage type for this rune".into());
         }
+
+        self.map_damages = effect_map_damages(
+            &ChangeTarget::Rune {
+                rune_id: self.data.rune_id.clone(),
+            },
+            &self.data.rune_id,
+            [
+                &self.melee.min_dmg,
+                &self.melee.max_dmg,
+                &self.ranged.min_dmg,
+                &self.ranged.max_dmg,
+            ],
+            &self.reads.borrow(),
+        )?;
 
         Ok(())
     }

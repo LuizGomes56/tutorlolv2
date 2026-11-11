@@ -10,6 +10,10 @@ impl Generator for Bard {
             ],
         )
         .merge_sum([P(_1), P(_2)], P(Void))?
+        .map_sum(
+            P(Void),
+            [(Key::P, "Innate - Meeps"), (Key::P, "Innate - Meeps [2]")],
+        )?
         .ability(Key::Q, [("Magic Damage", Void)])
         .combos([
             &[Ability(Q(Void)), Attack],

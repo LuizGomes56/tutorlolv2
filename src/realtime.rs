@@ -209,6 +209,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
             current_player_champion_id,
             fire,
             earth,
+            game_map,
         );
 
         let shred = ResistShred::new(&state.current_stats);
@@ -308,7 +309,9 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
 
             // Works the same as the current player basic stats inference, but with less fields
             // since the other ones are unnecessary
-            let e_base_stats = e_champion_id.base_stats(e_level, e_is_mega_gnar).simple();
+            let e_base_stats = e_champion_id
+                .base_stats_on(e_level, e_is_mega_gnar, game_map)
+                .simple();
 
             // Holds a collection of more detailed information about this enemy player
             let full_state = EnemyState {

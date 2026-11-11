@@ -16,7 +16,7 @@ use std::{
     fmt::{Debug, Write},
     ops::{Index, Range},
 };
-use tutorlolv2_types::{AttackType, Attrs, CtxVar, DamageIndex, DamageType, Tag};
+use tutorlolv2_types::{AttackType, Attrs, CtxVar, DamageIndex, DamageType, MapMode, Tag};
 
 pub const ZERO_FN: &str = "crate::libgen::zero";
 
@@ -41,6 +41,9 @@ pub trait ItemOrRune {
     fn id(&self) -> &str;
     fn damage_type(&self) -> DamageType;
     fn attributes(&self) -> Attrs;
+    /// Formulas on each mode that changes them, for melee minimum and maximum,
+    /// then ranged
+    fn map_damages(&self) -> &[Vec<(MapMode, String)>; 4];
 }
 
 impl ItemOrRune for Item {
@@ -57,6 +60,10 @@ impl ItemOrRune for Item {
     fn attributes(&self) -> Attrs {
         self.attributes
     }
+
+    fn map_damages(&self) -> &[Vec<(MapMode, String)>; 4] {
+        &self.map_damages
+    }
 }
 
 impl ItemOrRune for Rune {
@@ -72,6 +79,10 @@ impl ItemOrRune for Rune {
 
     fn attributes(&self) -> Attrs {
         Attrs::Undefined
+    }
+
+    fn map_damages(&self) -> &[Vec<(MapMode, String)>; 4] {
+        &self.map_damages
     }
 }
 
@@ -210,6 +221,8 @@ pub trait ItemOrRuneExt:
 
         let mut aliases = [None, None, None, None];
 
+        // The ratio between two formulas is only known on Summoner's Rift. Other
+        // modes keep their own formula, see `map_arms`
         for i in 0..4 {
             if is_zero(&raw[i]) {
                 continue;
@@ -240,6 +253,33 @@ pub trait ItemOrRuneExt:
         aliases
     }
 
+    /// Formulas of slot `i` on each mode that changes it. An alias multiplies its
+    /// base by a ratio only known on Summoner's Rift, so it keeps its own formula
+    /// on every mode that changes either of them
+    fn map_arms(&self, plan: &ItemFormulaPlan, i: usize) -> Vec<(MapMode, String)> {
+        let map = self.map_damages();
+
+        let Some((j, _)) = plan.aliases[i] else {
+            return map[i].clone();
+        };
+
+        map[i]
+            .iter()
+            .chain(&map[j])
+            .map(|(mode, _)| *mode)
+            .collect::<std::collections::BTreeSet<_>>()
+            .into_iter()
+            .map(|mode| {
+                let formula = map[i]
+                    .iter()
+                    .find(|(m, _)| *m == mode)
+                    .map_or_else(|| plan.formulas[i].clone(), |(_, f)| f.clone());
+
+                (mode, formula)
+            })
+            .collect()
+    }
+
     fn closures(&self, plan: &ItemFormulaPlan) -> MayFail<String> {
         let functions = &plan.functions;
         let aliases = &plan.aliases;
@@ -253,7 +293,7 @@ pub trait ItemOrRuneExt:
 
             let default = !plan.active[i as usize];
 
-            let formula_f32 = if default {
+            let mut formula_f32 = if default {
                 continue;
             } else if let Some((base_idx, ref ratio)) = aliases[i as usize] {
                 let base_fn = &functions[base_idx];
@@ -262,6 +302,24 @@ pub trait ItemOrRuneExt:
             } else {
                 cast_f32(body)?
             };
+
+            // Formulas that game modes change branch on the map. Nearly every game
+            // is on Summoner's Rift, so the other arms are cold
+            let map_damage = self.map_arms(plan, i as usize);
+
+            if !map_damage.is_empty() {
+                let mut arms = String::new();
+
+                for (mode, formula) in &map_damage {
+                    write!(
+                        arms,
+                        "tutorlolv2_types::MapMode::{mode:?} => {{ core::hint::cold_path(); {} }}",
+                        cast_f32(&simplify(formula))?
+                    )?;
+                }
+
+                formula_f32 = format!("match ctx.map {{ {arms} _ => {{ {formula_f32} }} }}");
+            }
 
             if !seen.contains(f) {
                 seen.insert(f);
@@ -324,8 +382,10 @@ pub trait ItemOrRuneExt:
 
         let has_max = !is_zero(&melee[max]) || !is_zero(&ranged[max]);
 
-        let min_shared = !is_zero(&melee[min]) && melee[min] == ranged[min];
-        let max_shared = !is_zero(&melee[max]) && melee[max] == ranged[max];
+        // Melee and ranged share a function when every map gives them one formula
+        let map = self.map_damages();
+        let min_shared = !is_zero(&melee[min]) && melee[min] == ranged[min] && map[0] == map[2];
+        let max_shared = !is_zero(&melee[max]) && melee[max] == ranged[max] && map[1] == map[3];
         let min_suffix = if has_max { "_min" } else { "" };
 
         [

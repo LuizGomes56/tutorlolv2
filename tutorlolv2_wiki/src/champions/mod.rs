@@ -56,25 +56,61 @@ pub struct WikiMapStats {
     pub maps: Vec<GameMap>,
     /// Multiplier of the total attack speed
     pub total_attack_speed: f32,
+    /// Every stat on these maps, with the ones the mode changes replaced
+    pub stats: WikiStats,
 }
 
 impl WikiMapStats {
-    /// Stats that ARAM changes, if any
-    fn aram(total_attack_speed: f32) -> Option<Self> {
+    /// Stats that the mode of `code` changes, if any. `values` are the stats the
+    /// template gives for the mode, as `hp_lvl`, which replace the ones of `stats`
+    pub fn new(
+        code: &str,
+        total_attack_speed: f32,
+        values: &BTreeMap<String, f32>,
+        stats: &WikiStats,
+    ) -> Option<Self> {
+        if total_attack_speed == 1.0 && values.is_empty() {
+            return None;
+        }
+
         let maps = crate::map_changes::MAPS
             .iter()
-            .find(|source| source.code == "aram")?
+            .find(|source| source.code == code)?
             .maps
             .to_vec();
 
-        (total_attack_speed != 1.0).then_some(Self {
+        let mut stats = *stats;
+
+        for (key, value) in values {
+            let stat = match key.as_str() {
+                "hp_base" => &mut stats.health.base,
+                "hp_lvl" => &mut stats.health.per_level,
+                "mp_base" => &mut stats.mana.base,
+                "mp_lvl" => &mut stats.mana.per_level,
+                "arm_base" => &mut stats.armor.base,
+                "arm_lvl" => &mut stats.armor.per_level,
+                "mr_base" => &mut stats.magic_resist.base,
+                "mr_lvl" => &mut stats.magic_resist.per_level,
+                "dam_base" => &mut stats.attack_damage.base,
+                "dam_lvl" => &mut stats.attack_damage.per_level,
+                "as_base" => &mut stats.attack_speed.base,
+                "as_lvl" => &mut stats.attack_speed.per_level,
+                "as_ratio" => &mut stats.attack_speed_ratio,
+                _ => continue,
+            };
+
+            *stat = *value;
+        }
+
+        Some(Self {
             maps,
             total_attack_speed,
+            stats,
         })
     }
 }
 
-#[derive(Clone, Copy, Debug, Default, Deserialize, Serialize)]
+#[derive(Clone, Copy, Debug, Default, Deserialize, PartialEq, Serialize)]
 pub struct WikiStats {
     pub health: Stat,
     pub mana: Stat,
@@ -88,7 +124,7 @@ pub struct WikiStats {
     pub move_speed: f32,
 }
 
-#[derive(Clone, Copy, Debug, Default, Deserialize, Serialize)]
+#[derive(Clone, Copy, Debug, Default, Deserialize, PartialEq, Serialize)]
 pub struct Stat {
     pub base: f32,
     pub per_level: f32,
@@ -155,6 +191,8 @@ pub fn concat() -> MayFail {
                         aram_dmg_dealt,
                         aram_dmg_taken,
                         aram_total_as,
+                        ar_total_as,
+                        stats: mode_stats,
                         ar_dmg_dealt,
                         ar_dmg_taken,
                         nb_dmg_dealt,
@@ -189,7 +227,7 @@ pub fn concat() -> MayFail {
                 .values_mut()
                 .for_each(|values| values.dedup_by(|a, b| a.effects == b.effects));
 
-            let wiki_champion = WikiChampion {
+            let mut wiki_champion = WikiChampion {
                 name,
                 positions: positions
                     .into_iter()
@@ -260,8 +298,18 @@ pub fn concat() -> MayFail {
                 },
                 wiki_abilities,
                 exceptions: exceptions::read(&champion_id)?,
-                map_stats: WikiMapStats::aram(aram_total_as).into_iter().collect(),
+                map_stats: Vec::new(),
             };
+
+            let empty = BTreeMap::new();
+
+            wiki_champion.map_stats = [("aram", aram_total_as), ("ar", ar_total_as)]
+                .into_iter()
+                .filter_map(|(code, total_as)| {
+                    let stats = mode_stats.get(code).unwrap_or(&empty);
+                    WikiMapStats::new(code, total_as, stats, &wiki_champion.stats)
+                })
+                .collect();
 
             let bytes = serde_json::to_string_pretty(&wiki_champion)?;
             crate::write(path.join("data").with_extension("json"), bytes)?;

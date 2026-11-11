@@ -1,3 +1,4 @@
+pub use crate::generators::parser::WithMapChanges;
 pub use crate::{
     MayFail, formula as f,
     generators::{
@@ -9,6 +10,7 @@ pub use crate::{
 };
 pub use core::fmt::Display;
 pub use lazy_regex::regex;
+pub use tutorlolv2_types::MapMode;
 pub use tutorlolv2_types::{AttackType::*, Attrs::*, CtxVar::*, DamageIndex::*, DamageType::*};
 pub use tutorlolv2_wiki::items::item_parser::WikiItem;
 

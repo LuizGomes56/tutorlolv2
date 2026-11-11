@@ -816,16 +816,21 @@ impl RiotFormulas {
     /// grants with its passive Retribution: 1% per step of missing health, up to
     /// its maximum, such as 10% at 70% missing health. `missing_health` is a ratio,
     /// see [`Self::missing_health_ratio`]
-    pub const fn get_bloodmail_retribution(missing_health: f32) -> f32 {
-        use items::overlords_bloodmail::{RETRIBUTION_MAX_BONUS, RETRIBUTION_MAX_MISSING_HEALTH};
+    pub const fn get_bloodmail_retribution(missing_health: f32, game_map: GameMap) -> f32 {
+        use items::overlords_bloodmail::{
+            retribution_max_bonus, retribution_max_missing_health, retribution_steps,
+        };
 
-        // Each step grants 1%, so the number of steps is the maximum percentage
-        const MAX_STEPS: u32 = (RETRIBUTION_MAX_BONUS * 100.0 + 0.5) as u32;
-        let step = RETRIBUTION_MAX_MISSING_HEALTH / MAX_STEPS as f32;
+        let mode = game_map.mode();
+        let max_bonus = retribution_max_bonus(mode);
+        let max_steps = (retribution_steps(mode) + 0.5) as u32;
+        let step = retribution_max_missing_health(mode) / max_steps as f32;
 
         // Small offset so that exact steps such as 14% are not lost to rounding
         let steps = (missing_health.clamp(0.0, 1.0) / step + 1e-4) as u32;
-        (if steps > MAX_STEPS { MAX_STEPS } else { steps }) as f32 / 100.0
+        let steps = if steps > max_steps { max_steps } else { steps };
+
+        max_bonus * steps as f32 / max_steps as f32
     }
 
     /// Ability power that [`ItemId::DemonicEmbrace`] grants with its passive

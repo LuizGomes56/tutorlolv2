@@ -8,7 +8,7 @@ use {
     crate::{ItemId, bitset, bitset::*},
     core::mem::MaybeUninit,
     strum::{EnumCount, VariantArray},
-    tutorlolv2_types::{DamageType, GameMap, StatName, TypeMetadata},
+    tutorlolv2_types::{DamageType, GameMap, MapMode, StatName, TypeMetadata},
 };
 
 impl ItemId {
@@ -216,6 +216,38 @@ impl ItemId {
 
     pub const fn stats(&self) -> &'static [(StatName, u16)] {
         self.data().stats
+    }
+
+    /// Stats of this item on `game_map`. Summoner's Rift changes none, and nearly
+    /// every game is played there, so the search is cold
+    #[inline(always)]
+    pub const fn stats_on(&self, game_map: GameMap) -> &'static [(StatName, u16)] {
+        let mode = game_map.mode();
+
+        if mode as u8 == MapMode::Default as u8 {
+            return self.stats();
+        }
+
+        self.find_map_stats(mode)
+    }
+
+    /// Search of [`Self::stats_on`], kept out of line so that the check of
+    /// Summoner's Rift inlines into the loops over items
+    #[cold]
+    #[inline(never)]
+    const fn find_map_stats(&self, mode: MapMode) -> &'static [(StatName, u16)] {
+        let list = self.data().map_stats;
+        let mut i = 0;
+
+        while i < list.len() {
+            if list[i].0 as u8 == mode as u8 {
+                return list[i].1;
+            }
+
+            i += 1;
+        }
+
+        self.stats()
     }
 
     pub const fn price(&self) -> u16 {

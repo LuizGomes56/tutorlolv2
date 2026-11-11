@@ -12138,6 +12138,2518 @@
     }
   },
   "map_changes": {
+    "ar": {
+      "Aatrox R": [
+        "0: Ratio (7b7532c0)"
+      ],
+      "Abyssal Mask": [
+        "0: ItemStat (1e911e9b)"
+      ],
+      "Ahri E": [
+        "0: Ignored (189c040b)"
+      ],
+      "Ahri R": [
+        "0: Named (ae9a6974)"
+      ],
+      "Akali E": [
+        "0: Ignored (8303a08d)"
+      ],
+      "Akali Q": [
+        "0: Base (6934431d)",
+        "1: Ratio (abc9a16a)"
+      ],
+      "Akali R": [
+        "0: Ratio (fdf0b5d2)",
+        "1: Ignored (8d9e9b54)"
+      ],
+      "Akali W": [
+        "0: Ignored (904ec82a)",
+        "1: Ignored (1bec5622)",
+        "2: Ignored (9b9f9161)"
+      ],
+      "Akshan E": [
+        "0: Ratio (0cd84170)",
+        "1: Ratio (3e3dfc12)",
+        "2: Ignored (158dea56)",
+        "3: Ignored (29f0977b)"
+      ],
+      "Akshan Q": [
+        "0: Base (68051e0a)",
+        "1: Ratio (06435df0)",
+        "2: Ignored (54eaca26)"
+      ],
+      "Akshan R": [
+        "0: Ratio (f8b18a44)",
+        "1: Ignored (1b8ab1ef)"
+      ],
+      "Akshan W": [
+        "0: Ignored (425a7ce4)",
+        "1: NewEffect (653049b7)",
+        "2: Ignored (49144168)",
+        "3: Ratio (153a5a7e)"
+      ],
+      "Alistar E": [
+        "0: Ratio (ed5770cf)"
+      ],
+      "Alistar Q": [
+        "0: Ignored (520e8aa6)"
+      ],
+      "Alistar R": [
+        "0: Modifier (2dbcbcf2)",
+        "1: Ignored (6000cc83)"
+      ],
+      "Alistar W": [
+        "0: Ignored (56f225fb)"
+      ],
+      "Ambessa Cunning Sweep": [
+        "0: Ignored (1d17f95a)",
+        "1: Ratio (64ce887c)",
+        "2: Ratio (eaaaf59b)"
+      ],
+      "Ambessa Repudiation": [
+        "0: Ignored (ca0cb5e9)"
+      ],
+      "Ambessa Sundering Slam": [
+        "0: Ratio (64ce887c)",
+        "1: Ratio (61ac3eab)"
+      ],
+      "Anivia I": [
+        "0: Ignored (07971f8f)"
+      ],
+      "Annie I": [
+        "0: Ignored (1694f727)"
+      ],
+      "Annie Q": [
+        "0: Base (08626ee0)",
+        "1: Ratio (254c0b95)"
+      ],
+      "Annie R": [
+        "0: Named (ea3ae709)",
+        "1: Base (fbfd573b)",
+        "2: Base (5c832e9f)",
+        "3: Ratio (0ce06611)",
+        "4: Base (95c07ae0)"
+      ],
+      "Annie W": [
+        "0: Base (d74f17aa)",
+        "1: Ratio (abc9a16a)"
+      ],
+      "Aphelios I": [
+        "0: Ignored (9f2d064a)",
+        "1: Ignored (85ee5450)"
+      ],
+      "Archangel's Staff": [
+        "0: ItemStat (6af0c9b1)",
+        "1: Ratio (53001e66)",
+        "2: NewEffect (0d35de5e)",
+        "3: Removed (b6c7a5bd)"
+      ],
+      "Ardent Censer": [
+        "0: ItemStat (70269bb3)",
+        "1: Ignored (73e4edd6)",
+        "2: Ignored (7c6380cd)",
+        "3: ItemStat (bc52a55d)",
+        "4: Named (66c07226)",
+        "5: Base (c27270da)"
+      ],
+      "Ashe I": [
+        "0: Ignored (24db5414)"
+      ],
+      "Ashe R": [
+        "0: Ratio (6366fd8c)",
+        "1: Ignored (fedc8c12)"
+      ],
+      "Ashe W": [
+        "0: Base (64a1cf59)",
+        "1: Ratio (3905e1fd)",
+        "2: Ignored (76771784)"
+      ],
+      "Aurelion Sol E": [
+        "0: Ignored (cc9b155e)"
+      ],
+      "Aurelion Sol I": [
+        "0: NewEffect (ecde4153)"
+      ],
+      "Aurelion Sol Q": [
+        "0: Ratio (ee44d65c)",
+        "1: Ratio (d118bf4d)",
+        "2: Named (7f8f170b)"
+      ],
+      "Aurelion Sol W": [
+        "0: Ignored (35d2c30f)",
+        "1: Unknown (e8369704)"
+      ],
+      "Aurora E": [
+        "0: Unknown (5f4f5874)",
+        "1: Unknown (8260c619)"
+      ],
+      "Aurora R": [
+        "0: Unknown (5f4f5874)",
+        "1: Unknown (8260c619)"
+      ],
+      "Axiom Arc": [
+        "0: ItemStat (782e06a4)",
+        "1: NewEffect (7ba39081)",
+        "2: Removed (1c758a95)"
+      ],
+      "Azir": [
+        "0: BaseStat (a3e527ac)"
+      ],
+      "Azir E": [
+        "0: Ignored (7ff5b067)",
+        "1: Ignored (1d17f95a)"
+      ],
+      "Azir Q": [
+        "0: Ignored (e298a391)"
+      ],
+      "Azir R": [
+        "0: Ignored (def87941)"
+      ],
+      "Azir W": [
+        "0: Ignored (89e46b74)",
+        "1: Named (a06fa52c)",
+        "2: Base (df1e8e9e)",
+        "3: Ratio (04af68e8)"
+      ],
+      "Bandlepipes": [
+        "0: Named (a7e227c7)",
+        "1: Ignored (7a9ed718)"
+      ],
+      "Banshee's Veil": [
+        "0: ItemStat (836a5a07)"
+      ],
+      "Bard E": [
+        "0: Ignored (7fd2e99d)",
+        "1: Ignored (1bc3b06f)"
+      ],
+      "Bard I": [
+        "0: Ignored (b59a49d1)",
+        "1: Named (642b5d0a)",
+        "2: Ratio (70276d11)"
+      ],
+      "Bard W": [
+        "0: Ignored (c22fab84)",
+        "1: Named (5e5d97bc)",
+        "2: Ignored (06e641d6)"
+      ],
+      "Bastionbreaker": [
+        "0: Disabled (65adb89e)"
+      ],
+      "Bel'Veth I": [
+        "0: NewEffect (60cdd3da)"
+      ],
+      "Bel'Veth R": [
+        "0: Named (96908b7c)"
+      ],
+      "Bel'Veth W": [
+        "0: Ignored (007d71e0)"
+      ],
+      "Berserker's Greaves": [
+        "0: ItemStat (3240ef7e)",
+        "1: Ignored (775e13cc)"
+      ],
+      "Black Cleaver": [
+        "0: ItemStat (7825b585)",
+        "1: ItemStat (895b634e)"
+      ],
+      "Blackfire Torch": [
+        "0: ItemStat (65fa4009)",
+        "1: ItemStat (e4268b73)",
+        "2: Base (0380c75a)",
+        "3: Ratio (b0ad1e0c)",
+        "4: Removed (247e2fd7)",
+        "5: Unknown (463e1e5d)"
+      ],
+      "Blade of the Ruined King": [
+        "0: ItemStat (90adb5a8)",
+        "1: ItemStat (c0e7ddcc)",
+        "2: Ratio (8c50003f)",
+        "3: Ignored (77a05704)"
+      ],
+      "Blitzcrank I": [
+        "0: Ignored (4f0ffc2f)",
+        "1: Ignored (4c1091c2)"
+      ],
+      "Blitzcrank Q": [
+        "0: Ratio (2bbfc0f0)",
+        "1: Ignored (c7da2f87)"
+      ],
+      "Blitzcrank R": [
+        "0: Base (41228c8d)",
+        "1: Ratio (1a345d0e)",
+        "2: Ratio (2f213086)"
+      ],
+      "Blitzcrank W": [
+        "0: Ignored (e2f3dd9a)",
+        "1: Ignored (d01b9063)",
+        "2: Named (34be5a2d)"
+      ],
+      "Bloodletter's Curse": [
+        "0: ItemStat (65fa4009)",
+        "1: ItemStat (895b634e)",
+        "2: Named (c367d5bf)",
+        "3: Named (70d21435)"
+      ],
+      "Bloodthirster": [
+        "0: ItemStat (7d6a2db4)",
+        "1: ItemStat (cae3f12d)"
+      ],
+      "Boots": [
+        "0: Disabled (65adb89e)"
+      ],
+      "Boots of Swiftness": [
+        "0: Ignored (818254b7)",
+        "1: Ignored (e7571e29)"
+      ],
+      "Brand E": [
+        "0: Ratio (a4373b77)"
+      ],
+      "Brand I": [
+        "0: Ratio (1479db43)"
+      ],
+      "Brand Q": [
+        "0: Ignored (b487df0c)"
+      ],
+      "Brand R": [
+        "0: Base (0c634260)",
+        "1: Ratio (baea397c)",
+        "2: Ignored (6ff9e9e7)"
+      ],
+      "Brand W": [
+        "0: Base (31ca6298)",
+        "1: Ratio (70276d11)",
+        "2: Ignored (a3fc1de0)"
+      ],
+      "Braum I": [
+        "0: Named (42f3180a)"
+      ],
+      "Braum Q": [
+        "0: Ratio (2e390ed5)"
+      ],
+      "Braum R": [
+        "0: Base (ca3c5079)",
+        "1: Ignored (30e74061)"
+      ],
+      "Braum W": [
+        "0: Named (0918d647)",
+        "1: Ratio (9e83eaba)",
+        "2: Ratio (ea5bf152)",
+        "3: Ratio (cb71b228)",
+        "4: Ratio (3f471b0c)"
+      ],
+      "Briar I": [
+        "0: Ignored (52fcad61)"
+      ],
+      "Briar Q": [
+        "0: Base (6a9a4d2f)",
+        "1: Named (8d0c7e09)"
+      ],
+      "Briar R": [
+        "0: Base (7ce309c7)",
+        "1: Ratio (47d16360)",
+        "2: Ratio (aa901b53)"
+      ],
+      "Briar W": [
+        "0: Named (c212a6bb)"
+      ],
+      "Camille E": [
+        "0: Ignored (f04c69eb)"
+      ],
+      "Camille I": [
+        "0: Ignored (fc558232)"
+      ],
+      "Camille W": [
+        "0: Ratio (8019f456)"
+      ],
+      "Cassiopeia E": [
+        "0: Ratio (b75d2020)",
+        "1: Ignored (d0fde299)"
+      ],
+      "Cassiopeia R": [
+        "0: Base (406bc1f3)",
+        "1: Ratio (fdf0b5d2)"
+      ],
+      "Cassiopeia W": [
+        "0: Ignored (4dd8b396)"
+      ],
+      "Chempunk Chainsword": [
+        "0: ItemStat (d61f2a8f)",
+        "1: ItemStat (782e06a4)",
+        "2: ItemStat (5fd94d25)",
+        "3: NewEffect (2a40a87c)"
+      ],
+      "Cho'Gath E": [
+        "0: Base (33a26a97)",
+        "1: Ignored (ccdb1427)"
+      ],
+      "Cho'Gath Q": [
+        "0: Base (c741122a)",
+        "1: Ignored (78fbd6fa)",
+        "2: Ignored (b9d38b32)"
+      ],
+      "Cho'Gath R": [
+        "0: NewEffect (86daa91f)",
+        "1: Base (7b9afabb)",
+        "2: Named (7638a070)",
+        "3: Ignored (d58955eb)"
+      ],
+      "Conqueror": [
+        "0: Unknown (f8b66399)"
+      ],
+      "Corki R": [
+        "0: Base (ad367831)"
+      ],
+      "Corki W": [
+        "0: Ratio (ea58bf71)",
+        "1: Ignored (1d17f95a)"
+      ],
+      "Cosmic Drive": [
+        "0: ItemStat (def0b971)",
+        "1: ItemStat (65ebc970)",
+        "2: Ignored (9b812c4c)"
+      ],
+      "Cryptbloom": [
+        "0: ItemStat (d61f2a8f)",
+        "1: ItemStat (65fa4009)",
+        "2: Ignored (4cb44c80)",
+        "3: Ratio (a00935ed)"
+      ],
+      "Darius I": [
+        "0: Unknown (42a823fc)"
+      ],
+      "Darius Q": [
+        "0: Ratio (eb0d7dc9)",
+        "1: Ignored (776db252)",
+        "2: Ignored (35d2c30f)"
+      ],
+      "Darius W": [
+        "0: Ignored (7d2f5379)"
+      ],
+      "Dark Harvest": [
+        "0: Unknown (efa09e5a)"
+      ],
+      "Dawncore": [
+        "0: ItemStat (70185b7a)",
+        "1: Ignored (5384c5a2)",
+        "2: ItemStat (cf505989)",
+        "3: Ignored (7532c308)",
+        "4: Ignored (f7d8aee5)"
+      ],
+      "Dead Man's Plate": [
+        "0: ItemStat (7aff5215)",
+        "1: ItemStat (52d12873)",
+        "2: Ignored (815c3ce6)",
+        "3: Ignored (2a06551c)",
+        "4: Named (c52d0a64)",
+        "5: Ratio (39354c67)",
+        "6: NewEffect (6a6eef44)",
+        "7: Ignored (5af63508)"
+      ],
+      "Death's Dance": [
+        "0: ItemStat (d6277bae)",
+        "1: ItemStat (52c2e83a)",
+        "2: ItemStat (82ae764f)",
+        "3: Ignored (0d568114)",
+        "4: Named (fc7323af)",
+        "5: NewEffect (b120358c)"
+      ],
+      "Diana E": [
+        "0: Ignored (7fd2e99d)"
+      ],
+      "Diana I": [
+        "0: Ratio (7145bd5b)"
+      ],
+      "Diana R": [
+        "0: Base (0ef2a8cd)"
+      ],
+      "Diana W": [
+        "0: Ignored (ffcbc5ad)"
+      ],
+      "Draven I": [
+        "0: Named (ab44087f)",
+        "1: Named (29588419)",
+        "2: NewEffect (3ef15e56)"
+      ],
+      "Draven Q": [
+        "0: Ratio (73f6bc97)"
+      ],
+      "Echoes of Helia": [
+        "0: ItemStat (70269bb3)",
+        "1: ItemStat (dee242d8)",
+        "2: ItemStat (7aff5215)",
+        "3: Ignored (73e4edd6)",
+        "4: Ignored (e9776c6f)"
+      ],
+      "Eclipse": [
+        "0: ItemStat (72e16cea)",
+        "1: ItemStat (d6277bae)",
+        "2: Ratio (16951d23)",
+        "3: Ignored (2068f166)",
+        "4: Ignored (8397467f)"
+      ],
+      "Edge of Night": [
+        "0: ItemStat (782e06a4)",
+        "1: ItemStat (93963591)",
+        "2: ItemStat (2d0553bf)",
+        "3: Ignored (50946cc4)"
+      ],
+      "Ekko I": [
+        "0: Base (700dc657)"
+      ],
+      "Ekko Q": [
+        "0: Base (56326f0b)",
+        "1: Base (7e429735)"
+      ],
+      "Ekko W": [
+        "0: Ratio (5ff49049)",
+        "1: Ignored (85692d8a)"
+      ],
+      "Electrocute": [
+        "0: Unknown (4f2b8461)"
+      ],
+      "Elise Cocoon": [
+        "0: Ignored (eae676cc)"
+      ],
+      "Elise I": [
+        "0: Base (7b485cba)",
+        "1: Named (76403b14)"
+      ],
+      "Elise Rappel": [
+        "0: Ignored (f993e202)"
+      ],
+      "Essence Reaver": [
+        "0: ItemStat (e4268b73)",
+        "1: ItemStat (72e16cea)",
+        "2: Ignored (4a3422cc)"
+      ],
+      "Evelynn E": [
+        "0: Ratio (0033f3e7)",
+        "1: Ratio (121413c2)"
+      ],
+      "Evelynn Q": [
+        "0: Base (c494f0bb)",
+        "1: Ratio (73dc9b3b)",
+        "2: Base (08d7d7b9)",
+        "3: Ratio (29aff9ed)"
+      ],
+      "Evelynn R": [
+        "0: Ignored (8d9e9b54)"
+      ],
+      "Evelynn W": [
+        "0: Ignored (8303a08d)"
+      ],
+      "Experimental Hexplate": [
+        "0: ItemStat (41b7e8d1)",
+        "1: Named (927d2af9)",
+        "2: Ignored (a100cb87)"
+      ],
+      "Ezreal E": [
+        "0: Base (ea6db9b4)",
+        "1: Ratio (ba532ded)",
+        "2: Ignored (70741236)"
+      ],
+      "Ezreal I": [
+        "0: Ignored (5872d957)",
+        "1: Named (0599137a)"
+      ],
+      "Ezreal Q": [
+        "0: Base (3725ddc2)",
+        "1: Ratio (45162e19)",
+        "2: Ratio (70276d11)"
+      ],
+      "Ezreal R": [
+        "0: Ratio (ccbeaca4)",
+        "1: Ignored (b90dfb4f)"
+      ],
+      "Ezreal W": [
+        "0: Base (7e29f8fc)"
+      ],
+      "Fiendhunter Bolts": [
+        "0: Ignored (8ad3cd85)"
+      ],
+      "Fimbulwinter": [
+        "0: ItemStat (6e355e5e)",
+        "1: ItemStat (309da8c2)",
+        "2: ItemStat (d61f2a8f)",
+        "3: Ratio (f2182fa8)",
+        "4: Ignored (6a8efe98)",
+        "5: Ignored (44da56df)"
+      ],
+      "Fiora I": [
+        "0: Ratio (ff256add)",
+        "1: Ratio (02dac29b)"
+      ],
+      "Fiora Q": [
+        "0: Base (00d63b8c)",
+        "1: Ratio (230902de)"
+      ],
+      "Fiora W": [
+        "0: Ignored (4dd8b396)"
+      ],
+      "First Strike": [
+        "0: Unknown (efa09e5a)"
+      ],
+      "Fizz E": [
+        "0: Ignored (06c2a0d8)",
+        "1: Ignored (f586c477)"
+      ],
+      "Fizz R": [
+        "0: Ignored (71ce7656)"
+      ],
+      "Fizz W": [
+        "0: Base (eb9a1df9)"
+      ],
+      "Fleet Footwork": [
+        "0: Unknown (4a83671f)"
+      ],
+      "Force of Nature": [
+        "0: ItemStat (1e911e9b)",
+        "1: Named (203b2513)",
+        "2: Named (a14e4455)",
+        "3: Ignored (b338e1e4)"
+      ],
+      "Frozen Heart": [
+        "0: ItemStat (d61f2a8f)",
+        "1: ItemStat (612d39ac)",
+        "2: ItemStat (7d8d7ba4)",
+        "3: Ignored (f853382e)"
+      ],
+      "Galio Q": [
+        "0: Base (00b741c2)"
+      ],
+      "Galio R": [
+        "0: Base (6206095c)",
+        "1: Ignored (efef1ec4)"
+      ],
+      "Galio W": [
+        "0: Ignored (509c390a)",
+        "1: Ignored (47cd9616)",
+        "2: Ignored (fed41668)"
+      ],
+      "Gangplank I": [
+        "0: Ignored (189c040b)"
+      ],
+      "Gangplank Q": [
+        "0: NewEffect (29c01d26)",
+        "1: NewEffect (a63fcc74)"
+      ],
+      "Gangplank R": [
+        "0: Ignored (943686d2)"
+      ],
+      "Garen W": [
+        "0: NewEffect (b4a80b25)",
+        "1: Modifier (7b469afe)"
+      ],
+      "Gnar": [
+        "0: BaseStat (1116a56d)"
+      ],
+      "Gnar E": [
+        "0: Ignored (aa2f17f3)",
+        "1: Ignored (b08135b2)"
+      ],
+      "Gnar I": [
+        "0: Named (625b4fdf)",
+        "1: Ignored (7a1bfc7d)"
+      ],
+      "Gnar Q": [
+        "0: Ignored (4d6e53d9)",
+        "1: Base (555c382c)",
+        "2: Ignored (bfce7bc0)",
+        "3: Ignored (b4c7e347)",
+        "4: Ignored (aa329516)"
+      ],
+      "Gnar W": [
+        "0: Ignored (0286ae4f)",
+        "1: Base (7d568900)"
+      ],
+      "Gragas E": [
+        "0: Base (21c42aec)",
+        "1: Ignored (bf9df5b8)",
+        "2: Ignored (4ec8600f)"
+      ],
+      "Gragas I": [
+        "0: Ignored (06c4bb65)",
+        "1: Ignored (2ae33f4a)"
+      ],
+      "Gragas W": [
+        "0: Ratio (c320c5a5)"
+      ],
+      "Grasp of the Undying": [
+        "0: Unknown (4a83671f)"
+      ],
+      "Guardian Angel": [
+        "0: Ignored (4261c4df)"
+      ],
+      "Guardian's Blade": [
+        "0: ItemStat (95e3514a)",
+        "1: ItemStat (16121aa7)"
+      ],
+      "Guardian's Hammer": [
+        "0: ItemStat (95e3514a)",
+        "1: ItemStat (3240ef7e)",
+        "2: ItemStat (bd6c7ce2)",
+        "3: ItemStat (97eceda5)"
+      ],
+      "Guardian's Horn": [
+        "0: ItemStat (7aff5215)",
+        "1: Modifier (258b0f77)"
+      ],
+      "Guardian's Orb": [
+        "0: ItemStat (6af0c9b1)",
+        "1: ItemStat (e4184b3a)",
+        "2: ItemStat (bd6c7ce2)"
+      ],
+      "Guinsoo's Rageblade": [
+        "0: ItemStat (526310d4)",
+        "1: ItemStat (95f1fe43)"
+      ],
+      "Gwen Q": [
+        "0: Base (38bb04ab)",
+        "1: Ratio (2a65e0af)"
+      ],
+      "Gwen R": [
+        "0: Base (10666e90)"
+      ],
+      "Gwen W": [
+        "0: Ignored (729fb84e)"
+      ],
+      "Hail of Blades": [
+        "0: Unknown (68b52b2c)"
+      ],
+      "Heartsteel": [
+        "0: ItemStat (d31d87b1)",
+        "1: Ignored (b9a860a9)",
+        "2: Base (8519148f)",
+        "3: Ratio (b7cab590)",
+        "4: Named (fbb04992)"
+      ],
+      "Hecarim E": [
+        "0: Base (a6132fb7)",
+        "1: Base (76bc668f)",
+        "2: Ratio (c43377b8)",
+        "3: Ratio (350d1db9)"
+      ],
+      "Hecarim Q": [
+        "0: Base (90b29585)"
+      ],
+      "Hecarim R": [
+        "0: Ratio (67ddd54e)"
+      ],
+      "Hecarim W": [
+        "0: Ignored (714a7d4a)",
+        "1: Ignored (bd1bcd29)",
+        "2: Ratio (2f54e7b7)"
+      ],
+      "Heimerdinger Q": [
+        "0: Named (257f55ef)",
+        "1: Base (39b346ff)",
+        "2: Ratio (8cb1a4a1)",
+        "3: Base (3f4f1494)",
+        "4: Ratio (495d3533)"
+      ],
+      "Heimerdinger R": [
+        "0: Base (65184fdd)",
+        "1: Base (afe7b377)"
+      ],
+      "Heimerdinger W": [
+        "0: Ratio (965620a0)",
+        "1: Ignored (35d2c30f)"
+      ],
+      "Hexoptics C44": [
+        "0: Ignored (12843688)",
+        "1: Ignored (21f52722)"
+      ],
+      "Hextech Gunblade": [
+        "0: ItemStat (782e06a4)",
+        "1: ItemStat (7e82acec)",
+        "2: ItemStat (482072da)",
+        "3: Ignored (148e9c12)"
+      ],
+      "Hextech Rocketbelt": [
+        "0: ItemStat (e4268b73)",
+        "1: ItemStat (7e79b8ad)",
+        "2: ItemStat (6e355e5e)",
+        "3: Ignored (e9f06e1c)"
+      ],
+      "Hollow Radiance": [
+        "0: ItemStat (5fd94d25)",
+        "1: Ignored (b9a860a9)",
+        "2: Base (88a0d7aa)",
+        "3: Ratio (a87dabf6)",
+        "4: Unknown (6849a058)",
+        "5: Named (87605b78)"
+      ],
+      "Horizon Focus": [
+        "0: ItemStat (7e82acec)"
+      ],
+      "Hubris": [
+        "0: ItemStat (d6277bae)",
+        "1: ItemStat (72e16cea)",
+        "2: Ignored (5480dd55)"
+      ],
+      "Hullbreaker": [
+        "0: ItemStat (7825b585)",
+        "1: ItemStat (ed0ea6f3)",
+        "2: NewEffect (05f689ca)"
+      ],
+      "Hwei Subject: Serenity": [
+        "0: Ignored (a3fc1de0)"
+      ],
+      "Hwei Subject: Torment": [
+        "0: Ignored (a3fc1de0)"
+      ],
+      "Iceborn Gauntlet": [
+        "0: ItemStat (d6277bae)",
+        "1: ItemStat (52c2e83a)"
+      ],
+      "Illaoi I": [
+        "0: Ignored (462403d7)"
+      ],
+      "Illaoi Q": [
+        "0: Base (ee4d3029)"
+      ],
+      "Illaoi W": [
+        "0: Ignored (cea0e4e8)"
+      ],
+      "Imperial Mandate": [
+        "0: ItemStat (def0b971)"
+      ],
+      "Infinity Edge": [
+        "0: ItemStat (7d610315)",
+        "1: Base (758c6ea8)"
+      ],
+      "Ionian Boots of Lucidity": [
+        "0: ItemStat (c65aaf75)"
+      ],
+      "Irelia I": [
+        "0: Base (55cea699)"
+      ],
+      "Irelia R": [
+        "0: Ignored (edc925b7)",
+        "1: Ignored (1b8ab1ef)",
+        "2: Ratio (44150e0b)"
+      ],
+      "Irelia W": [
+        "0: Ignored (1d17f95a)",
+        "1: Modifier (cc3485ba)"
+      ],
+      "Ivern E": [
+        "0: Ignored (a2e42500)",
+        "1: Ignored (3a84a91a)",
+        "2: Base (e4be8c31)",
+        "3: Ratio (2f5e2eab)",
+        "4: Ignored (ccdb1427)"
+      ],
+      "Ivern Q": [
+        "0: Ignored (85692d8a)"
+      ],
+      "Jak'Sho, The Protean": [
+        "0: ItemStat (895b634e)",
+        "1: ItemStat (3140d893)",
+        "2: ItemStat (023ef1dc)",
+        "3: Named (235974e8)"
+      ],
+      "Janna I": [
+        "0: Ignored (4e8cda23)",
+        "1: Ignored (51651b97)"
+      ],
+      "Janna Q": [
+        "0: Base (c577a87e)",
+        "1: Ratio (006d2b13)"
+      ],
+      "Jarvan IV E": [
+        "0: Ratio (7737cc37)"
+      ],
+      "Jax": [
+        "0: BaseStat (2193290f)"
+      ],
+      "Jax E": [
+        "0: Ignored (06156a1f)"
+      ],
+      "Jax R": [
+        "0: Base (584fca29)",
+        "1: Base (d4ffc02b)"
+      ],
+      "Jax W": [
+        "0: Base (5dd9e98f)"
+      ],
+      "Jhin E": [
+        "0: Ignored (ec20c7f8)"
+      ],
+      "Jhin I": [
+        "0: Ignored (eba46d6e)"
+      ],
+      "Jhin Q": [
+        "0: Base (ecf4c43e)",
+        "1: Ratio (b2e26963)"
+      ],
+      "Jhin R": [
+        "0: Base (a0687ce2)",
+        "1: Ratio (03fe8f46)",
+        "2: Ignored (7ba72792)"
+      ],
+      "Jhin W": [
+        "0: Base (971fd356)",
+        "1: Ignored (009e5960)"
+      ],
+      "Jinx R": [
+        "0: Ignored (b90dfb4f)"
+      ],
+      "Jinx W": [
+        "0: Base (eb9078e0)",
+        "1: Ratio (3cc365dc)"
+      ],
+      "K'Sante E": [
+        "0: Ignored (89cf84b4)"
+      ],
+      "K'Sante I": [
+        "0: Ratio (a1b78543)",
+        "1: Ratio (e6ae3c10)"
+      ],
+      "K'Sante Q": [
+        "0: Base (d491210e)",
+        "1: Ignored (f9a691bd)"
+      ],
+      "K'Sante R": [
+        "0: Named (9612a500)",
+        "1: Ignored (8d9e9b54)"
+      ],
+      "Kaenic Rookern": [
+        "0: ItemStat (895b634e)",
+        "1: Ignored (b9a860a9)"
+      ],
+      "Kai'Sa I": [
+        "0: Base (d5832e6f)",
+        "1: Ratio (d6651891)",
+        "2: Unknown (c9e4a1c1)"
+      ],
+      "Kai'Sa Q": [
+        "0: Ratio (d6ba9be6)",
+        "1: Ratio (a5488d57)"
+      ],
+      "Kalista E": [
+        "0: Ratio (8d5e1299)"
+      ],
+      "Kalista I": [
+        "0: NewEffect (a2c7f2ec)",
+        "1: NewEffect (9f7d4f9c)",
+        "2: Ignored (d39770ce)"
+      ],
+      "Kalista Q": [
+        "0: Ratio (c9285f3e)"
+      ],
+      "Karthus": [
+        "0: BaseStat (cf2b9f02)"
+      ],
+      "Karthus Q": [
+        "0: Ratio (e9fda956)"
+      ],
+      "Karthus R": [
+        "0: Base (0ef2a8cd)",
+        "1: Ratio (ba532ded)",
+        "2: Ignored (82d0480a)"
+      ],
+      "Karthus W": [
+        "0: Ignored (848c9639)"
+      ],
+      "Kassadin E": [
+        "0: Ratio (254c0b95)",
+        "1: Ignored (e2c50551)"
+      ],
+      "Kassadin Q": [
+        "0: Base (6e47ead8)"
+      ],
+      "Kassadin R": [
+        "0: Base (6675a4fb)",
+        "1: Base (aa5318aa)"
+      ],
+      "Kassadin W": [
+        "0: Base (5b817c10)",
+        "1: Ignored (3176154b)"
+      ],
+      "Katarina E": [
+        "0: Base (294e7c41)",
+        "1: Ratio (154ba009)",
+        "2: Ratio (fdf0b5d2)"
+      ],
+      "Katarina I": [
+        "0: Ignored (48277245)",
+        "1: Ratio (bc549ec5)"
+      ],
+      "Katarina Q": [
+        "0: Base (1f2609c3)",
+        "1: Ratio (04af68e8)"
+      ],
+      "Katarina R": [
+        "0: Base (1f91f5ad)",
+        "1: Ratio (5f73df47)"
+      ],
+      "Kayle E": [
+        "0: Base (141c0c8b)",
+        "1: Ratio (ff6455d1)",
+        "2: Ratio (dee40202)",
+        "3: Ratio (5f96cd98)"
+      ],
+      "Kayle I": [
+        "0: Ratio (5970a4a8)",
+        "1: Ratio (772db733)"
+      ],
+      "Kayle R": [
+        "0: Base (ad726cbc)",
+        "1: Ignored (21166417)"
+      ],
+      "Kayn E": [
+        "0: Ignored (b9b59b3a)",
+        "1: Ignored (2c19471b)"
+      ],
+      "Kayn I": [
+        "0: NewEffect (27b8e658)",
+        "1: Ignored (bdf7f347)",
+        "2: Ignored (2d2ae291)",
+        "3: Base (866e3b57)",
+        "4: Ignored (ebd05321)"
+      ],
+      "Kayn Q": [
+        "0: Ratio (58f952ce)",
+        "1: Ratio (e5adc1ee)"
+      ],
+      "Kayn R": [
+        "0: Ratio (fc5b7af0)",
+        "1: Ratio (e356699d)",
+        "2: Ignored (4d4a652d)",
+        "3: Ignored (703254be)",
+        "4: Ignored (8a9fbf3a)"
+      ],
+      "Kayn W": [
+        "0: Ignored (35d2c30f)"
+      ],
+      "Kennen R": [
+        "0: Named (65eaf0a2)",
+        "1: Base (b415b3c2)",
+        "2: Ratio (59f882cd)"
+      ],
+      "Kennen W": [
+        "0: Base (e4be8c31)",
+        "1: Ratio (65dcbf2a)",
+        "2: Ratio (04af68e8)"
+      ],
+      "Kha'Zix E": [
+        "0: Ignored (aa2f17f3)",
+        "1: Ignored (427cea01)",
+        "2: Unknown (39a448eb)"
+      ],
+      "Kha'Zix I": [
+        "0: Ratio (b162f46c)",
+        "1: Ignored (58b34e69)"
+      ],
+      "Kha'Zix Q": [
+        "0: Ratio (40c7f0fb)",
+        "1: Ignored (847e46da)"
+      ],
+      "Kha'Zix R": [
+        "0: Named (113c542c)",
+        "1: Ignored (f555cbf4)",
+        "2: Named (5893c3e3)"
+      ],
+      "Kha'Zix W": [
+        "0: Ignored (e8e6c059)",
+        "1: Ignored (09a20b27)"
+      ],
+      "Kindred E": [
+        "0: Ratio (7e299f33)"
+      ],
+      "Kindred I": [
+        "0: NewEffect (612e86bc)"
+      ],
+      "Kindred W": [
+        "0: Base (e8b621ae)",
+        "1: Ratio (4df16139)",
+        "2: Ratio (b2947304)",
+        "3: Base (a41174f7)"
+      ],
+      "Kled": [
+        "0: BaseStat (1a1b3b69)"
+      ],
+      "Kled I": [
+        "0: Unknown (e7a7251d)",
+        "1: Unknown (936d9e60)",
+        "2: Ignored (e72d9daa)",
+        "3: Named (16ecb374)",
+        "4: NewEffect (b160f608)"
+      ],
+      "Kled Q": [
+        "0: Ignored (a68705c1)"
+      ],
+      "Kled R": [
+        "0: Unknown (b6883354)",
+        "1: Ignored (157efd36)",
+        "2: Ignored (1913610b)",
+        "3: Ignored (92e9a9e0)",
+        "4: Ignored (afbfbc21)",
+        "5: Unknown (e9189a9a)"
+      ],
+      "Knight's Vow": [
+        "0: ItemStat (d61f2a8f)",
+        "1: ItemStat (4d8cdfd8)",
+        "2: Ignored (b9a860a9)",
+        "3: ItemStat (6e355e5e)",
+        "4: Ignored (4375fea2)"
+      ],
+      "Kog'Maw E": [
+        "0: Ratio (44150e0b)",
+        "1: Ignored (697a960d)"
+      ],
+      "Kog'Maw Q": [
+        "0: Named (48f390dd)",
+        "1: Ratio (44150e0b)"
+      ],
+      "Kog'Maw R": [
+        "0: Ratio (16135720)"
+      ],
+      "Kog'Maw W": [
+        "0: Ratio (44a60032)"
+      ],
+      "Kraken Slayer": [
+        "0: ItemStat (7825b585)",
+        "1: ItemStat (3240ef7e)",
+        "2: Ignored (815c3ce6)"
+      ],
+      "LeBlanc E": [
+        "0: Base (54c0977c)"
+      ],
+      "LeBlanc I": [
+        "0: Ignored (189c040b)"
+      ],
+      "LeBlanc Q": [
+        "0: Base (59b24275)",
+        "1: Ignored (98286698)"
+      ],
+      "LeBlanc R": [
+        "0: Unknown (17d4f1e5)",
+        "1: Unknown (0b35216b)"
+      ],
+      "LeBlanc W": [
+        "0: Ratio (a25dd5ee)",
+        "1: Ignored (aa2f17f3)"
+      ],
+      "Lee Sin E": [
+        "0: Base (7d8846fd)",
+        "1: Ignored (71738c25)"
+      ],
+      "Lee Sin Q": [
+        "0: Ignored (0986c042)"
+      ],
+      "Lee Sin W": [
+        "0: Ignored (6314cb3b)",
+        "1: Named (db7726f3)"
+      ],
+      "Leona R": [
+        "0: Ratio (44150e0b)"
+      ],
+      "Lethal Tempo": [
+        "0: Unknown (f8b66399)"
+      ],
+      "Liandry's Torment": [
+        "0: ItemStat (6ae25318)",
+        "1: ItemStat (16121aa7)",
+        "2: Unknown (bc6e0ca5)"
+      ],
+      "Lich Bane": [
+        "0: ItemStat (e4268b73)",
+        "1: ItemStat (836a5a07)",
+        "2: Ignored (82b6c01a)",
+        "3: Ratio (01c69964)"
+      ],
+      "Lillia I": [
+        "0: Ratio (e437ee94)"
+      ],
+      "Lillia Q": [
+        "0: Ratio (28b9a6e3)",
+        "1: Ignored (5eb80f57)"
+      ],
+      "Locke E": [
+        "0: Ignored (cc9b155e)",
+        "1: Ratio (254c0b95)"
+      ],
+      "Locke Q": [
+        "0: Ignored (0986c042)"
+      ],
+      "Locke R": [
+        "0: Ignored (8d9e9b54)"
+      ],
+      "Locket of the Iron Solari": [
+        "0: ItemStat (350d9d94)",
+        "1: ItemStat (6e355e5e)",
+        "2: ItemStat (023ef1dc)",
+        "3: ItemStat (e4184b3a)",
+        "4: Ignored (01871f5f)",
+        "5: Ignored (9d89687f)",
+        "6: Ignored (d0272139)",
+        "7: Removed (06b828c0)"
+      ],
+      "Lord Dominik's Regards": [
+        "0: ItemStat (90adb5a8)",
+        "1: ItemStat (2f6a2c0d)",
+        "2: Removed (e1f88cee)"
+      ],
+      "Luden's Echo": [
+        "0: ItemStat (83734e46)",
+        "1: ItemStat (e4184b3a)",
+        "2: Base (fc75a9a5)",
+        "3: Base (9e3bc06f)",
+        "4: Ignored (136938d9)",
+        "5: NewEffect (7b53c54b)"
+      ],
+      "Lulu E": [
+        "0: Ratio (04af68e8)"
+      ],
+      "Lulu I": [
+        "0: Ratio (9824fc54)"
+      ],
+      "Lulu Q": [
+        "0: Base (8bb1b26a)"
+      ],
+      "Lux E": [
+        "0: Ignored (0549d64c)"
+      ],
+      "Lux I": [
+        "0: Ratio (70276d11)"
+      ],
+      "Lux Q": [
+        "0: Base (b4917c97)",
+        "1: Ratio (254c0b95)"
+      ],
+      "Lux R": [
+        "0: Ignored (02094dcf)"
+      ],
+      "Lux W": [
+        "0: Ignored (aae5e83f)",
+        "1: Ratio (a4373b77)"
+      ],
+      "Malignance": [
+        "0: ItemStat (62278bee)",
+        "1: ItemStat (e4268b73)",
+        "2: Base (20fb0864)",
+        "3: Named (66fd066e)",
+        "4: Unknown (0777585e)"
+      ],
+      "Malzahar W": [
+        "0: Ratio (e21ed838)"
+      ],
+      "Manamune": [
+        "0: ItemStat (7825b585)",
+        "1: ItemStat (7c242cf1)",
+        "2: NewEffect (c7362a30)",
+        "3: Removed (b6c7a5bd)"
+      ],
+      "Maokai I": [
+        "0: Ignored (0ca942e3)"
+      ],
+      "Maokai Q": [
+        "0: Ratio (04af68e8)"
+      ],
+      "Master Yi E": [
+        "0: Base (b40b996e)",
+        "1: Ratio (815faa1c)"
+      ],
+      "Master Yi Q": [
+        "0: Base (c6c66d2d)",
+        "1: Ratio (a40ff242)",
+        "2: Ignored (4284377d)"
+      ],
+      "Master Yi R": [
+        "0: Ignored (593c7d5b)",
+        "1: Ignored (467d24f1)",
+        "2: Ignored (c432961b)"
+      ],
+      "Master Yi W": [
+        "0: Ignored (848c9639)"
+      ],
+      "Maw of Malmortius": [
+        "0: ItemStat (72e16cea)",
+        "1: Ignored (9fa67631)",
+        "2: Named (7eeefb4a)",
+        "3: Ignored (f5b17ff7)"
+      ],
+      "Mejai's Soulstealer": [
+        "0: Disabled (65adb89e)"
+      ],
+      "Mel I": [
+        "0: Base (6d210c72)"
+      ],
+      "Mel W": [
+        "0: Ignored (e533f25b)"
+      ],
+      "Mercurial Scimitar": [
+        "0: ItemStat (782e06a4)",
+        "1: Ignored (9190015b)"
+      ],
+      "Mercury's Treads": [
+        "0: ItemStat (02366a5d)",
+        "1: Ignored (9521d50b)",
+        "2: Ignored (62a0d11f)"
+      ],
+      "Mikael's Blessing": [
+        "0: ItemStat (ab2af623)",
+        "1: ItemStat (6e355e5e)",
+        "2: ItemStat (cf505989)",
+        "3: Ignored (bd2b48ef)",
+        "4: Ignored (0f60e9a4)"
+      ],
+      "Milio I": [
+        "0: Base (9ab0ea8d)"
+      ],
+      "Milio Q": [
+        "0: Ignored (cc9b155e)"
+      ],
+      "Milio R": [
+        "0: Ignored (ea788951)"
+      ],
+      "Miss Fortune E": [
+        "0: Ratio (52be4ce6)"
+      ],
+      "Miss Fortune Q": [
+        "0: Ratio (974a78dc)"
+      ],
+      "Miss Fortune R": [
+        "0: Ratio (f2003af0)"
+      ],
+      "Moonstone Renewer": [
+        "0: ItemStat (dee242d8)",
+        "1: ItemStat (4e964bd3)",
+        "2: ItemStat (246d1c00)",
+        "3: Ignored (e12f5bdf)",
+        "4: Ignored (9d69b502)",
+        "5: NewEffect (15e52a6a)",
+        "6: NewEffect (50c906ed)"
+      ],
+      "Mordekaiser R": [
+        "0: Unknown (7b225ef9)",
+        "1: Unknown (2625b152)",
+        "2: Unknown (1e682b1b)",
+        "3: Unknown (a1e7dc85)",
+        "4: Unknown (3fc49ff4)",
+        "5: Unknown (c8290a00)",
+        "6: Unknown (43fa4816)"
+      ],
+      "Morellonomicon": [
+        "0: ItemStat (7e82acec)",
+        "1: ItemStat (16121aa7)",
+        "2: NewEffect (2a40a87c)"
+      ],
+      "Morgana Q": [
+        "0: Ignored (848c9639)"
+      ],
+      "Mortal Reminder": [
+        "0: ItemStat (90adb5a8)",
+        "1: ItemStat (806e3aa6)",
+        "2: NewEffect (2a40a87c)"
+      ],
+      "Muramana": [
+        "0: ItemStat (7825b585)",
+        "1: ItemStat (309da8c2)",
+        "2: Ratio (cd5dad81)"
+      ],
+      "Naafiri E": [
+        "0: Base (d6532d92)",
+        "1: Ratio (317682a7)",
+        "2: Base (38e6fc01)",
+        "3: Ratio (99fd36e0)"
+      ],
+      "Naafiri I": [
+        "0: Ratio (e4394d54)",
+        "1: Ignored (63e7884e)"
+      ],
+      "Naafiri Q": [
+        "0: Base (14e47e04)",
+        "1: Base (29dd820a)",
+        "2: Base (0333b5bd)",
+        "3: Ratio (1e42b261)",
+        "4: Ignored (2eae1e69)",
+        "5: Ignored (7952b3c4)"
+      ],
+      "Naafiri R": [
+        "0: Ignored (6601ea4b)"
+      ],
+      "Naafiri W": [
+        "0: Ignored (1d17f95a)"
+      ],
+      "Nami Q": [
+        "0: Ratio (46bf370f)"
+      ],
+      "Nami W": [
+        "0: Base (0658ae02)",
+        "1: Ratio (a919775c)",
+        "2: Ignored (29b73420)",
+        "3: Ignored (c3668127)"
+      ],
+      "Nashor's Tooth": [
+        "0: ItemStat (d6277bae)",
+        "1: ItemStat (62278bee)",
+        "2: ItemStat (8eba441d)",
+        "3: Ratio (5b2dc75f)"
+      ],
+      "Nasus Q": [
+        "0: NewEffect (9d577cf9)"
+      ],
+      "Nautilus I": [
+        "0: Ignored (80c04bc4)"
+      ],
+      "Nautilus W": [
+        "0: Base (de2977c9)",
+        "1: Ratio (371b0a15)",
+        "2: Ignored (e05ca02f)",
+        "3: Ignored (2b2d4dd5)"
+      ],
+      "Navori Flickerblade": [
+        "0: ItemStat (3240ef7e)"
+      ],
+      "Needlessly Large Rod": [
+        "0: Unknown (891db4a2)"
+      ],
+      "Neeko": [
+        "0: BaseStat (8f888220)"
+      ],
+      "Neeko E": [
+        "0: Ignored (cd582567)"
+      ],
+      "Neeko I": [
+        "0: Unknown (1db9a145)",
+        "1: Unknown (c4f86266)"
+      ],
+      "Neeko Q": [
+        "0: Base (6a14454f)",
+        "1: Base (8e3021d0)"
+      ],
+      "Neeko W": [
+        "0: Base (03f2538b)",
+        "1: Ratio (5a6f4a0a)",
+        "2: Ignored (aa2f17f3)"
+      ],
+      "Nidalee Bushwhack": [
+        "0: Named (62e12fae)"
+      ],
+      "Nidalee Javelin Toss": [
+        "0: Named (1aab0259)"
+      ],
+      "Nidalee Primal Surge": [
+        "0: Ignored (ae5a7e6e)"
+      ],
+      "Nidalee Prowl": [
+        "0: Ignored (8316b088)"
+      ],
+      "Nidalee Swipe": [
+        "0: Ratio (92fde1a9)",
+        "1: Ratio (abc9a16a)"
+      ],
+      "Nidalee Takedown": [
+        "0: Ratio (6b07d68d)",
+        "1: Ratio (e9fabefe)"
+      ],
+      "Nocturne I": [
+        "0: Ignored (6201c13f)"
+      ],
+      "Nocturne W": [
+        "0: Ignored (70741236)"
+      ],
+      "Nunu Q": [
+        "0: Ignored (ef1c8989)",
+        "1: Ignored (3144fd89)",
+        "2: Base (f511611b)",
+        "3: Ratio (4961bf90)",
+        "4: Ratio (324849d9)",
+        "5: Ignored (175686c2)"
+      ],
+      "Nunu R": [
+        "0: Base (e00aa239)",
+        "1: Ignored (900b56d5)",
+        "2: Ignored (fbe824c5)"
+      ],
+      "Nunu W": [
+        "0: Base (56cf08b3)",
+        "1: Ratio (b4e3db21)"
+      ],
+      "Opportunity": [
+        "0: Base (72e16cea)",
+        "1: Named (2d027762)",
+        "2: Ignored (84df33a5)",
+        "3: Named (3a7b1ef5)"
+      ],
+      "Orianna R": [
+        "0: Ignored (ab3ef9d7)"
+      ],
+      "Orianna W": [
+        "0: Ratio (04af68e8)"
+      ],
+      "Ornn E": [
+        "0: Ratio (f9279fe1)",
+        "1: Ratio (13b503bb)"
+      ],
+      "Ornn I": [
+        "0: Named (df10834f)",
+        "1: NewEffect (266b66f1)"
+      ],
+      "Ornn R": [
+        "0: Ignored (def87941)"
+      ],
+      "Ornn W": [
+        "0: Ignored (189c040b)"
+      ],
+      "Overlord's Bloodmail": [
+        "0: ItemStat (7825b585)",
+        "1: ItemStat (6e355e5e)",
+        "2: Ratio (14bd1811)",
+        "3: Ratio (f23b6b98)"
+      ],
+      "Pantheon R": [
+        "0: Ratio (2bbfc0f0)",
+        "1: Ignored (d58955eb)"
+      ],
+      "Pantheon W": [
+        "0: Ratio (ae86fd14)",
+        "1: Ignored (158dea56)"
+      ],
+      "Phantom Dancer": [
+        "0: ItemStat (f0a79610)",
+        "1: Ignored (5ef366cf)"
+      ],
+      "Phase Rush": [
+        "0: Unknown (4f2b8461)"
+      ],
+      "Plated Steelcaps": [
+        "0: ItemStat (350d9d94)",
+        "1: Ignored (9521d50b)",
+        "2: Modifier (acf95111)"
+      ],
+      "Poppy E": [
+        "0: Ignored (90e3913b)"
+      ],
+      "Poppy Q": [
+        "0: Ratio (ee95b5af)"
+      ],
+      "Poppy W": [
+        "0: Named (70745111)",
+        "1: Ignored (56f225fb)"
+      ],
+      "Press the Attack": [
+        "0: Unknown (68b52b2c)"
+      ],
+      "Profane Hydra": [
+        "0: ItemStat (d61f2a8f)",
+        "1: ItemStat (72e16cea)"
+      ],
+      "Protoplasm Harness": [
+        "0: Ignored (62941ecc)",
+        "1: Ignored (592dec14)"
+      ],
+      "Pyke": [
+        "0: BaseStat (72ac4912)"
+      ],
+      "Pyke E": [
+        "0: Ignored (8303a08d)",
+        "1: Unknown (39565c6e)"
+      ],
+      "Pyke I": [
+        "0: Unknown (4056db44)",
+        "1: Unknown (d33cd837)",
+        "2: Unknown (17ef6648)",
+        "3: Named (9da82405)",
+        "4: Named (e0998c38)"
+      ],
+      "Pyke Q": [
+        "0: Base (c8996ddc)",
+        "1: Ignored (89cf84b4)",
+        "2: Unknown (829edf03)"
+      ],
+      "Pyke R": [
+        "0: Named (45d4e0c5)",
+        "1: Ignored (7e0ce95a)",
+        "2: NewEffect (d9a436a4)",
+        "3: Unknown (0fba930d)"
+      ],
+      "Pyke W": [
+        "0: Ignored (aa2f17f3)"
+      ],
+      "Qiyana E": [
+        "0: Base (c556da2c)"
+      ],
+      "Qiyana I": [
+        "0: Ratio (2fe0f255)",
+        "1: Ratio (70276d11)"
+      ],
+      "Qiyana Q": [
+        "0: Ignored (9d2d8682)",
+        "1: Ignored (bcf2847b)"
+      ],
+      "Qiyana R": [
+        "0: Ignored (9b84de8c)",
+        "1: Base (6206095c)"
+      ],
+      "Qiyana W": [
+        "0: Named (29d7d0e5)",
+        "1: Ignored (018ae515)",
+        "2: Ratio (c52f5f97)",
+        "3: Ratio (39ba3b6d)"
+      ],
+      "Quinn E": [
+        "0: Ignored (35d2c30f)"
+      ],
+      "Quinn I": [
+        "0: Base (9ce7f1dd)",
+        "1: Ratio (5c4d51ab)",
+        "2: Ignored (25b841af)"
+      ],
+      "Quinn Q": [
+        "0: Ratio (cc47d283)",
+        "1: Ratio (abc9a16a)"
+      ],
+      "Quinn R": [
+        "0: Ratio (070e135b)"
+      ],
+      "Quinn W": [
+        "0: Named (4335cfae)",
+        "1: Ignored (85692d8a)"
+      ],
+      "Rabadon's Deathcap": [
+        "0: ItemStat (65ebc970)"
+      ],
+      "Rakan I": [
+        "0: Ignored (cfdd6733)"
+      ],
+      "Rakan Q": [
+        "0: Base (4806aaec)",
+        "1: Ratio (2f5e2eab)",
+        "2: Ignored (c0297a94)"
+      ],
+      "Rammus E": [
+        "0: Ignored (f30a46cb)"
+      ],
+      "Rammus Q": [
+        "0: Ignored (c0cd4204)",
+        "1: Ratio (2bbfc0f0)",
+        "2: Ignored (4100aa53)"
+      ],
+      "Rammus R": [
+        "0: Ratio (44150e0b)",
+        "1: Ignored (12067160)"
+      ],
+      "Randuin's Omen": [
+        "0: ItemStat (7aff5215)"
+      ],
+      "Rapid Firecannon": [
+        "0: ItemStat (41b7e8d1)",
+        "1: Base (72579edc)",
+        "2: Named (8d1149be)",
+        "3: Named (38af1585)"
+      ],
+      "Ravenous Hydra": [
+        "0: ItemStat (7d6a2db4)",
+        "1: ItemStat (bcdf65da)",
+        "2: Ratio (af67d361)",
+        "3: NewEffect (d8fd4fdd)"
+      ],
+      "Redemption": [
+        "0: ItemStat (cf505989)",
+        "1: Ratio (a68e8e8d)",
+        "2: Ignored (bc7e160c)",
+        "3: Ignored (1d2dd982)",
+        "4: Removed (c5e50471)"
+      ],
+      "Rek'Sai Q": [
+        "0: Base (c556da2c)",
+        "1: Ratio (49be26b7)",
+        "2: Ratio (67ddd54e)",
+        "3: Named (4cbc1cc8)"
+      ],
+      "Rek'Sai W": [
+        "0: Ignored (1534e301)",
+        "1: Base (2fe452fb)",
+        "2: Ratio (3324cd4b)"
+      ],
+      "Renata Glasc E": [
+        "0: Ignored (aa2f17f3)",
+        "1: Ignored (92f71101)"
+      ],
+      "Renata Glasc Q": [
+        "0: Ratio (ba532ded)",
+        "1: Ignored (189c040b)"
+      ],
+      "Renata Glasc R": [
+        "0: Ignored (23fa3b90)"
+      ],
+      "Renata Glasc W": [
+        "0: Ignored (12a48852)"
+      ],
+      "Renekton W": [
+        "0: Ignored (70741236)"
+      ],
+      "Rengar Q": [
+        "0: Base (d491210e)",
+        "1: Ratio (b49c1f32)",
+        "2: Ratio (e46bb8da)"
+      ],
+      "Rengar R": [
+        "0: Ignored (e9f736e1)",
+        "1: Ignored (c155532f)"
+      ],
+      "Rengar W": [
+        "0: Base (d74f17aa)",
+        "1: Ratio (32c31de0)",
+        "2: Ratio (da68b1b0)",
+        "3: Named (8dd565ac)"
+      ],
+      "Riftmaker": [
+        "0: ItemStat (65fa4009)",
+        "1: Named (fefb430e)",
+        "2: Unknown (3b2411d2)"
+      ],
+      "Rod of Ages": [
+        "0: ItemStat (65fa4009)",
+        "1: ItemStat (cd73c140)",
+        "2: Ignored (75f2bd87)",
+        "3: Ignored (6066c561)"
+      ],
+      "Runaan's Hurricane": [
+        "0: ItemStat (8eba441d)",
+        "1: Ratio (5d676abf)",
+        "2: NewEffect (b03aeb0d)"
+      ],
+      "Rylai's Crystal Scepter": [
+        "0: ItemStat (65fa4009)",
+        "1: ItemStat (895b634e)"
+      ],
+      "Ryze I": [
+        "0: Ratio (0babdfbd)"
+      ],
+      "Ryze Q": [
+        "0: Ignored (9032f782)",
+        "1: Base (74fb959e)"
+      ],
+      "Ryze W": [
+        "0: Ignored (f837d9bd)",
+        "1: Ignored (9e20a533)"
+      ],
+      "Samira R": [
+        "0: Base (692e117e)"
+      ],
+      "Sejuani E": [
+        "0: Named (c056d8d5)"
+      ],
+      "Sejuani I": [
+        "0: Ratio (c98d909e)"
+      ],
+      "Sejuani Q": [
+        "0: Base (7e29f8fc)",
+        "1: Ratio (ccbeaca4)",
+        "2: Ignored (374d5d08)"
+      ],
+      "Sejuani R": [
+        "0: Ignored (c155532f)"
+      ],
+      "Senna E": [
+        "0: Ignored (721ef045)"
+      ],
+      "Senna I": [
+        "0: NewEffect (373b1221)",
+        "1: Unknown (fab89b5a)",
+        "2: Unknown (cee406ea)"
+      ],
+      "Senna Q": [
+        "0: Ignored (9294c722)",
+        "1: Ignored (99784229)"
+      ],
+      "Senna R": [
+        "0: Ignored (794731c2)"
+      ],
+      "Seraph's Embrace": [
+        "0: ItemStat (65fa4009)",
+        "1: ItemStat (a41e9220)",
+        "2: Ratio (d82d2ca4)",
+        "3: NewEffect (6c13aeed)",
+        "4: Ignored (ebed8e85)",
+        "5: Ignored (b93c7463)"
+      ],
+      "Seraphine Q": [
+        "0: Ratio (254c0b95)"
+      ],
+      "Seraphine R": [
+        "0: Ignored (25e275e6)"
+      ],
+      "Serpent's Fang": [
+        "0: ItemStat (2cf6dd26)",
+        "1: Ignored (617b1166)"
+      ],
+      "Serylda's Grudge": [
+        "0: ItemStat (d6277bae)",
+        "1: ItemStat (7825b585)",
+        "2: ItemStat (2f6a2c0d)"
+      ],
+      "Sett R": [
+        "0: Unknown (c68e1b7d)"
+      ],
+      "Shaco I": [
+        "0: Ratio (0cd6c8c6)"
+      ],
+      "Shaco Q": [
+        "0: Base (f253bd75)",
+        "1: Ignored (075b3a1c)"
+      ],
+      "Shaco W": [
+        "0: Named (6287afaa)",
+        "1: Ignored (26a7779e)"
+      ],
+      "Shadowflame": [
+        "0: ItemStat (7e82acec)",
+        "1: Named (478f26c0)",
+        "2: Base (5b38f0dc)",
+        "3: NewEffect (85b4b393)"
+      ],
+      "Shen": [
+        "0: BaseStat (a3e527ac)"
+      ],
+      "Shen R": [
+        "0: Ignored (ff32ad4d)"
+      ],
+      "Shurelya's Battlesong": [
+        "0: ItemStat (6af0c9b1)",
+        "1: Ignored (73e4edd6)",
+        "2: Ignored (7c6380cd)",
+        "3: Ignored (3c03aa9a)",
+        "4: Ignored (115498f9)"
+      ],
+      "Shyvana E": [
+        "0: Ratio (401c2e04)",
+        "1: Ratio (ad76e1d2)",
+        "2: Ratio (e5e00503)"
+      ],
+      "Shyvana I": [
+        "0: Unknown (baa74bdf)",
+        "1: Named (bd8ae229)"
+      ],
+      "Shyvana Q": [
+        "0: Ratio (65e1559b)"
+      ],
+      "Singed Q": [
+        "0: Ratio (b7bc4633)"
+      ],
+      "Singed R": [
+        "0: Named (acde1970)"
+      ],
+      "Sion E": [
+        "0: Base (1f2609c3)",
+        "1: Ratio (a25dd5ee)",
+        "2: Named (a15da551)",
+        "3: Ignored (4e8b684f)"
+      ],
+      "Sion Q": [
+        "0: Base (db864699)",
+        "1: Ratio (829d2a05)",
+        "2: Base (dbc0b930)",
+        "3: Ratio (403b4c02)",
+        "4: Ignored (3981555d)"
+      ],
+      "Sion R": [
+        "0: Base (9c814d3a)",
+        "1: Base (f677429f)"
+      ],
+      "Sion W": [
+        "0: Named (96286873)",
+        "1: Ignored (92f71101)",
+        "2: Ratio (81f66b91)",
+        "3: NewEffect (b386b37e)"
+      ],
+      "Sivir E": [
+        "0: Ratio (04725b4d)"
+      ],
+      "Sivir Q": [
+        "0: Ratio (cc8827e3)",
+        "1: Ratio (a25dd5ee)"
+      ],
+      "Skarner E": [
+        "0: Ignored (85692d8a)",
+        "1: Base (c263c05d)",
+        "2: Named (132216f5)"
+      ],
+      "Skarner Q": [
+        "0: Base (846309cf)",
+        "1: Base (63fa85a1)",
+        "2: Ratio (2c95c319)"
+      ],
+      "Skarner R": [
+        "0: Base (708bc9ff)",
+        "1: Ignored (299e1ae4)"
+      ],
+      "Smolder I": [
+        "0: NewEffect (3af168e1)"
+      ],
+      "Sona I": [
+        "0: NewEffect (b947fd03)"
+      ],
+      "Soraka Q": [
+        "0: Ignored (67e16c16)",
+        "1: Ignored (a8e34919)",
+        "2: Ignored (175686c2)"
+      ],
+      "Sorcerer's Shoes": [
+        "0: ItemStat (bebbb5ea)",
+        "1: Ignored (775e13cc)"
+      ],
+      "Spear of Shojin": [
+        "0: ItemStat (7825b585)",
+        "1: ItemStat (895b634e)"
+      ],
+      "Spectral Cutlass": [
+        "0: ItemStat (72ef4063)",
+        "1: ItemStat (1eb88bd3)",
+        "2: Ignored (3bbd0254)",
+        "3: Ignored (8bc2d8d6)",
+        "4: Ignored (5cc69182)"
+      ],
+      "Spirit Visage": [
+        "0: ItemStat (7aff5215)",
+        "1: ItemStat (1abe3420)",
+        "2: Ignored (b9a860a9)",
+        "3: Named (d6d9a4c9)"
+      ],
+      "Staff of Flowing Water": [
+        "0: ItemStat (65ebc970)",
+        "1: ItemStat (d61f2a8f)",
+        "2: Ignored (73e4edd6)",
+        "3: ItemStat (c6229be7)",
+        "4: Ignored (183c9c18)",
+        "5: Named (8e2ebf13)"
+      ],
+      "Statikk Shiv": [
+        "0: ItemStat (a73bef32)",
+        "1: Named (2f04f4e9)",
+        "2: Ignored (b03ce31f)",
+        "3: Ignored (c17225ce)",
+        "4: Base (a7185067)",
+        "5: NewEffect (dacaffb4)",
+        "6: NewEffect (5b265b09)"
+      ],
+      "Sterak's Gage": [
+        "0: ItemStat (7aff5215)",
+        "1: Ignored (f5b17ff7)",
+        "2: Ignored (fcb60a8f)",
+        "3: Ratio (458a188c)"
+      ],
+      "Stormrazor": [
+        "0: ItemStat (72e16cea)",
+        "1: ItemStat (c0e7ddcc)",
+        "2: Named (8d1149be)",
+        "3: Named (38af1585)"
+      ],
+      "Stormsurge": [
+        "0: ItemStat (7e82acec)",
+        "1: Ignored (71f1be1b)",
+        "2: Base (e804f595)",
+        "3: Unknown (0a7ed6bb)"
+      ],
+      "Stridebreaker": [
+        "0: ItemStat (72fe85b0)",
+        "1: ItemStat (93963591)",
+        "2: Ratio (a0e2641b)",
+        "3: Ignored (5129552a)",
+        "4: Ignored (e3df4b79)",
+        "5: NewEffect (abedb827)"
+      ],
+      "Summon Aery": [
+        "0: Unknown (70c427a7)"
+      ],
+      "Sundered Sky": [
+        "0: ItemStat (7825b585)",
+        "1: ItemStat (895b634e)",
+        "2: Ignored (95ddb428)",
+        "3: Ratio (5f54e645)",
+        "4: Named (41136b52)",
+        "5: Ignored (bf6387a6)"
+      ],
+      "Sunfire Aegis": [
+        "0: ItemStat (52d12873)",
+        "1: ItemStat (895b634e)",
+        "2: Base (7ab0081e)",
+        "3: Ratio (a87dabf6)",
+        "4: Unknown (6849a058)"
+      ],
+      "Swain I": [
+        "0: NewEffect (6db5cbf4)",
+        "1: Named (19c5ecc9)"
+      ],
+      "Swain R": [
+        "0: Ignored (6cc3ad90)",
+        "1: Base (1b7564c7)",
+        "2: Named (4a1d54c4)",
+        "3: Named (cfc0c1e0)",
+        "4: Named (6e304112)"
+      ],
+      "Sylas R": [
+        "0: Unknown (7720134a)",
+        "1: Ignored (ac694fae)",
+        "2: Unknown (7710a2ff)"
+      ],
+      "Sylas W": [
+        "0: Ignored (b279c070)",
+        "1: Ignored (e03048a7)"
+      ],
+      "Symbiotic Soles": [
+        "0: Disabled (65adb89e)"
+      ],
+      "Synchronized Souls": [
+        "0: Unknown (d2b6eb1c)"
+      ],
+      "Syndra I": [
+        "0: NewEffect (317d2c08)"
+      ],
+      "Taliyah E": [
+        "0: Ignored (848c9639)"
+      ],
+      "Taliyah Q": [
+        "0: Base (e3ef3360)",
+        "1: Ratio (19f8b3c1)"
+      ],
+      "Taliyah R": [
+        "0: Ignored (b90dfb4f)",
+        "1: Ignored (2aad41bc)"
+      ],
+      "Taliyah W": [
+        "0: Ignored (f958ef45)"
+      ],
+      "Talon E": [
+        "0: Ignored (030ec188)"
+      ],
+      "Talon I": [
+        "0: Ratio (debc4c9e)"
+      ],
+      "Talon Q": [
+        "0: Ratio (40c7f0fb)"
+      ],
+      "Talon R": [
+        "0: Ignored (571608de)",
+        "1: Ignored (c155532f)"
+      ],
+      "Talon W": [
+        "0: Base (a1271ae5)",
+        "1: Base (77b93185)",
+        "2: Ignored (f586c477)"
+      ],
+      "Taric E": [
+        "0: Ignored (a3f41014)"
+      ],
+      "Taric I": [
+        "0: Ratio (4a353f77)"
+      ],
+      "Taric Q": [
+        "0: Ignored (56748586)",
+        "1: Ignored (cab6fc15)",
+        "2: Ignored (f755a317)"
+      ],
+      "Taric R": [
+        "0: Ignored (b8bfef80)"
+      ],
+      "Taric W": [
+        "0: Named (3352a0b8)"
+      ],
+      "Teemo Q": [
+        "0: Base (31ca6298)",
+        "1: Ratio (46bf370f)",
+        "2: Ignored (87dabceb)"
+      ],
+      "Teemo R": [
+        "0: Base (1ac65969)",
+        "1: Ratio (caf64851)",
+        "2: Ignored (ca278f66)"
+      ],
+      "Terminus": [
+        "0: ItemStat (90adb5a8)",
+        "1: ItemStat (ced5d7c7)",
+        "2: Named (7d0aaf7b)",
+        "3: Named (bf71394a)"
+      ],
+      "The Collector": [
+        "0: ItemStat (782e06a4)",
+        "1: ItemStat (2d170ca9)",
+        "2: Ignored (be057ffe)"
+      ],
+      "Thornmail": [
+        "0: ItemStat (48a4ccc9)",
+        "1: ItemStat (7aff5215)",
+        "2: Base (67fab58d)",
+        "3: NewEffect (c65f9cdc)",
+        "4: NewEffect (2a40a87c)"
+      ],
+      "Thresh E": [
+        "0: Ratio (ba532ded)",
+        "1: Ratio (7ebbbb8a)"
+      ],
+      "Thresh I": [
+        "0: NewEffect (feca569c)"
+      ],
+      "Thresh Q": [
+        "0: Ratio (67ddd54e)",
+        "1: Ignored (c7da2f87)"
+      ],
+      "Thresh R": [
+        "0: Ratio (67ddd54e)"
+      ],
+      "Titanic Hydra": [
+        "0: ItemStat (7825b585)",
+        "1: ItemStat (6e355e5e)"
+      ],
+      "Trailblazer": [
+        "0: Disabled (65adb89e)"
+      ],
+      "Trinity Force": [
+        "0: ItemStat (e4268b73)",
+        "1: ItemStat (90bc2c41)",
+        "2: ItemStat (ced5d7c7)"
+      ],
+      "Tristana E": [
+        "0: Ratio (a2c382d9)",
+        "1: Ratio (a69c1f94)",
+        "2: Ratio (b2b8bd61)"
+      ],
+      "Tristana I": [
+        "0: Ignored (6fe9214b)"
+      ],
+      "Tristana Q": [
+        "0: Named (0b09d8aa)"
+      ],
+      "Tristana R": [
+        "0: Ratio (2bbfc0f0)"
+      ],
+      "Tristana W": [
+        "0: Ratio (a25dd5ee)"
+      ],
+      "Trundle R": [
+        "0: Ratio (72bbd8ff)"
+      ],
+      "Tryndamere I": [
+        "0: Named (625b4fdf)"
+      ],
+      "Tryndamere Q": [
+        "0: Ignored (43569062)",
+        "1: Ignored (382635fd)",
+        "2: Ignored (885b6351)",
+        "3: Ignored (5483459e)"
+      ],
+      "Twisted Fate E": [
+        "0: Base (98261b48)"
+      ],
+      "Twisted Fate I": [
+        "0: NewEffect (8993b9b3)"
+      ],
+      "Twisted Fate Q": [
+        "0: Base (c556da2c)",
+        "1: Ratio (44150e0b)"
+      ],
+      "Twitch E": [
+        "0: Ratio (56914a75)",
+        "1: Ratio (df13a655)"
+      ],
+      "Twitch I": [
+        "0: Ratio (c38a56ec)"
+      ],
+      "Twitch R": [
+        "0: Base (5001ae70)"
+      ],
+      "Udyr E": [
+        "0: Ignored (3ff5f9a6)"
+      ],
+      "Udyr I": [
+        "0: Unknown (a11bc321)"
+      ],
+      "Udyr Q": [
+        "0: Ratio (eb59e376)",
+        "1: Ratio (efe8197e)",
+        "2: Ratio (6bb012d2)",
+        "3: Named (78eb868c)"
+      ],
+      "Udyr R": [
+        "0: Base (f05a6b78)",
+        "1: Ratio (9efd7344)"
+      ],
+      "Udyr W": [
+        "0: Ignored (b81911da)",
+        "1: Ignored (1af846dc)",
+        "2: Ignored (03002e8d)",
+        "3: Ignored (3d749606)"
+      ],
+      "Umbral Glaive": [
+        "0: Disabled (65adb89e)"
+      ],
+      "Unending Despair": [
+        "0: ItemStat (895b634e)",
+        "1: ItemStat (d6277bae)",
+        "2: NewEffect (c1fc1dc8)",
+        "3: Ratio (2b400c51)"
+      ],
+      "Urgot E": [
+        "0: Ignored (1e7256ba)"
+      ],
+      "Urgot W": [
+        "0: Base (34b75b84)",
+        "1: NewEffect (81693c38)"
+      ],
+      "Varus E": [
+        "0: Ratio (e9b0a9da)"
+      ],
+      "Varus I": [
+        "0: Named (7cab7220)",
+        "1: Named (add5e418)",
+        "2: Named (a3a56792)"
+      ],
+      "Varus Q": [
+        "0: Ignored (8303a08d)"
+      ],
+      "Vayne Q": [
+        "0: Ratio (762b7e7a)"
+      ],
+      "Vayne R": [
+        "0: Base (31238391)"
+      ],
+      "Vayne W": [
+        "0: Ratio (8fab8aa8)"
+      ],
+      "Veigar E": [
+        "0: Ignored (bb0fd3cb)"
+      ],
+      "Veigar I": [
+        "0: NewEffect (2345dd27)"
+      ],
+      "Veigar Q": [
+        "0: Ratio (486481fc)"
+      ],
+      "Vel'Koz R": [
+        "0: Ignored (c155532f)"
+      ],
+      "Vex E": [
+        "0: Ignored (189c040b)",
+        "1: Ignored (8e182fac)"
+      ],
+      "Vex Q": [
+        "0: Base (67c412b2)",
+        "1: Ratio (46bf370f)"
+      ],
+      "Vex R": [
+        "0: Ignored (29b472b6)"
+      ],
+      "Vex W": [
+        "0: Ignored (617a3b9c)"
+      ],
+      "Vi E": [
+        "0: Ratio (070e135b)"
+      ],
+      "Vi Q": [
+        "0: Ratio (36db6da7)",
+        "1: Ignored (e03048a7)"
+      ],
+      "Vi R": [
+        "0: Base (2d6048c2)",
+        "1: Ratio (2cccdd48)"
+      ],
+      "Viego E": [
+        "0: Ratio (662912bb)"
+      ],
+      "Viego Q": [
+        "0: Ratio (2e133c81)"
+      ],
+      "Viego W": [
+        "0: Ratio (2bbfc0f0)"
+      ],
+      "Viktor E": [
+        "0: Ratio (d184b203)",
+        "1: Ignored (8303a08d)"
+      ],
+      "Viktor I": [
+        "0: NewEffect (0e2f25f5)"
+      ],
+      "Viktor Q": [
+        "0: Base (f80fb004)",
+        "1: Ratio (e468807f)",
+        "2: Base (33027596)",
+        "3: Ratio (fa153241)"
+      ],
+      "Viktor R": [
+        "0: Base (cccb4bf6)",
+        "1: Ignored (25e275e6)"
+      ],
+      "Vladimir Q": [
+        "0: Ignored (35d2c30f)",
+        "1: Ignored (f62f2b60)"
+      ],
+      "Void Staff": [
+        "0: ItemStat (65ebc970)"
+      ],
+      "Volibear E": [
+        "0: Base (be4a8e35)",
+        "1: Ratio (0fbfb452)",
+        "2: Ratio (4db241ac)",
+        "3: Ignored (fae73d4c)",
+        "4: Ignored (185f45c2)"
+      ],
+      "Volibear I": [
+        "0: Ratio (38d2c124)"
+      ],
+      "Volibear Q": [
+        "0: Ratio (2cccdd48)",
+        "1: Ignored (1d17f95a)"
+      ],
+      "Volibear W": [
+        "0: Ratio (89121000)",
+        "1: Ignored (70989c69)",
+        "2: Ignored (37b5a044)"
+      ],
+      "Voltaic Cyclosword": [
+        "0: ItemStat (72e16cea)",
+        "1: ItemStat (e4268b73)",
+        "2: Named (8d1149be)",
+        "3: Named (38af1585)"
+      ],
+      "Warmog's Armor": [
+        "0: Unknown (68498fba)"
+      ],
+      "Warwick Blood Hunt": [
+        "0: Ignored (bfba0e7c)"
+      ],
+      "Warwick Primal Howl": [
+        "0: Ignored (158dea56)"
+      ],
+      "Whispering Circlet": [
+        "0: NewEffect (4cf3a621)",
+        "1: Removed (4d716718)"
+      ],
+      "Winter's Approach": [
+        "0: ItemStat (6e355e5e)",
+        "1: ItemStat (7c242cf1)",
+        "2: Ratio (f2182fa8)",
+        "3: NewEffect (71b27aae)",
+        "4: Removed (b6c7a5bd)"
+      ],
+      "Wit's End": [
+        "0: ItemStat (b40ca4b7)",
+        "1: ItemStat (1abe3420)"
+      ],
+      "Wukong Q": [
+        "0: Base (3f6ea30c)",
+        "1: Ratio (130ecc3a)"
+      ],
+      "Wukong R": [
+        "0: Ratio (d68154d2)",
+        "1: Ratio (2082aee1)"
+      ],
+      "Wukong W": [
+        "0: Ignored (50e91589)"
+      ],
+      "Xayah E": [
+        "0: Base (ac964538)",
+        "1: Ratio (7666bf90)"
+      ],
+      "Xayah Q": [
+        "0: Ignored (6c6ca7e4)"
+      ],
+      "Xayah W": [
+        "0: Base (66846510)"
+      ],
+      "Xerath": [
+        "0: BaseStat (f12e9262)"
+      ],
+      "Xerath E": [
+        "0: Ignored (729e5c2d)",
+        "1: Ignored (773b5f80)",
+        "2: Ignored (c7da2f87)"
+      ],
+      "Xerath I": [
+        "0: Named (76e87c31)"
+      ],
+      "Xerath Q": [
+        "0: Base (a632dbd5)"
+      ],
+      "Xerath R": [
+        "0: Base (4b379604)",
+        "1: Base (eaada73d)",
+        "2: Ignored (71ce7656)"
+      ],
+      "Xerath W": [
+        "0: Base (e34f3546)",
+        "1: Ignored (66b2cdb7)",
+        "2: Ignored (798c6372)"
+      ],
+      "Xin Zhao E": [
+        "0: Ratio (1c3d6ac4)",
+        "1: Named (f64775a3)",
+        "2: Ignored (f41446a8)"
+      ],
+      "Xin Zhao I": [
+        "0: Ignored (a7448e47)"
+      ],
+      "Xin Zhao Q": [
+        "0: Ratio (7ad87546)",
+        "1: Ignored (83709182)"
+      ],
+      "Yasuo": [
+        "0: BaseStat (16f98e99)"
+      ],
+      "Yasuo E": [
+        "0: Ignored (6c758321)"
+      ],
+      "Yone E": [
+        "0: Ignored (70741236)"
+      ],
+      "Yone R": [
+        "0: Ignored (6601ea4b)"
+      ],
+      "Yone W": [
+        "0: Ignored (cb47706b)"
+      ],
+      "Yorick I": [
+        "0: NewEffect (d4397b72)",
+        "1: Ratio (ea7ae7e0)",
+        "2: Named (e101ff74)"
+      ],
+      "Yorick Q": [
+        "0: Ignored (7b7762f0)"
+      ],
+      "Yorick R": [
+        "0: Named (1ca8d5c1)"
+      ],
+      "Youmuu's Ghostblade": [
+        "0: ItemStat (1ebb97c4)",
+        "1: Ignored (fca90b85)",
+        "2: Ignored (b0fca415)",
+        "3: Ignored (187231f9)"
+      ],
+      "Yun Tal Wildarrows": [
+        "0: ItemStat (782e06a4)",
+        "1: ItemStat (a73bef32)"
+      ],
+      "Yuumi E": [
+        "0: Ignored (eedf2ce7)",
+        "1: Ratio (fdf0b5d2)"
+      ],
+      "Yuumi Q": [
+        "0: Base (ecbd732b)",
+        "1: Ratio (01173efa)",
+        "2: Ignored (3176154b)"
+      ],
+      "Yuumi W": [
+        "0: Ignored (3008fdb8)"
+      ],
+      "Zaahen E": [
+        "0: Ignored (a3fc1de0)"
+      ],
+      "Zaahen I": [
+        "0: Ratio (2cbdfa14)",
+        "1: Ignored (bf3a33ff)",
+        "2: Ignored (07971f8f)"
+      ],
+      "Zaahen Q": [
+        "0: Ratio (98fddb74)",
+        "1: Ignored (b8da3803)"
+      ],
+      "Zaahen R": [
+        "0: Base (68794716)",
+        "1: Ratio (f02c7b36)",
+        "2: Named (e32c2744)"
+      ],
+      "Zac I": [
+        "0: Ignored (07971f8f)",
+        "1: Unknown (d0cc61f8)"
+      ],
+      "Zac R": [
+        "0: Ignored (a05edaf3)"
+      ],
+      "Zac W": [
+        "0: Ignored (cea0e4e8)"
+      ],
+      "Zed P": [
+        "0: Ignored (02f975db)"
+      ],
+      "Zed Q": [
+        "0: Base (0e71a216)",
+        "1: Ratio (e9b0a9da)"
+      ],
+      "Zed W": [
+        "0: Ignored (e4ee990f)"
+      ],
+      "Zeke's Convergence": [
+        "0: ItemStat (d61f2a8f)",
+        "1: ItemStat (02366a5d)",
+        "2: Ignored (9cabebbd)",
+        "3: Base (916c351c)",
+        "4: NewEffect (337d78d2)",
+        "5: NewEffect (39f75058)",
+        "6: Unknown (e78e2a3a)"
+      ],
+      "Zeri E": [
+        "0: Ignored (6d114920)",
+        "1: Ratio (28b9a6e3)"
+      ],
+      "Zeri Q": [
+        "0: Named (7f1c584c)"
+      ],
+      "Zeri R": [
+        "0: Ignored (6e3b0ad5)",
+        "1: Ignored (6ebeec87)"
+      ],
+      "Zeri W": [
+        "0: Ratio (44150e0b)"
+      ],
+      "Zhonya's Hourglass": [
+        "0: ItemStat (836a5a07)"
+      ],
+      "Ziggs E": [
+        "0: Unknown (ff3151b1)",
+        "1: Ignored (ddef9fa6)"
+      ],
+      "Ziggs I": [
+        "0: Ratio (abc9a16a)"
+      ],
+      "Ziggs Q": [
+        "0: Base (3f9e6840)",
+        "1: Ratio (a25dd5ee)"
+      ],
+      "Ziggs R": [
+        "0: Base (404ea79e)",
+        "1: Ratio (7145bd5b)",
+        "2: Base (17503dee)",
+        "3: Ratio (06533a0d)",
+        "4: Ignored (6601ea4b)"
+      ],
+      "Ziggs W": [
+        "0: Ignored (f958ef45)"
+      ],
+      "Zilean": [
+        "0: BaseStat (8f888220)"
+      ],
+      "Zilean I": [
+        "0: Ignored (381d03b3)",
+        "1: NewEffect (4dd1b12d)",
+        "2: NewEffect (9dc54b93)"
+      ],
+      "Zilean Q": [
+        "0: Base (d2fab87b)",
+        "1: Ratio (ba532ded)"
+      ],
+      "Zoe I": [
+        "0: Ratio (fdf0b5d2)"
+      ],
+      "Zoe Q": [
+        "0: Ignored (a4411ca2)",
+        "1: Ratio (32a3b062)"
+      ],
+      "Zoe R": [
+        "0: Ignored (ed5cfe85)"
+      ],
+      "Zoe W": [
+        "0: Unknown (33f6e875)",
+        "1: Base (75e6e1e6)"
+      ],
+      "Zyra I": [
+        "0: Ratio (be37e262)",
+        "1: Ignored (0cddf4d4)"
+      ]
+    },
     "aram": {
       "Akali I": [
         "0: Ratio (254c0b95)"
@@ -12666,13 +15178,54 @@
     }
   },
   "map_stats": {
-    "Azir": "1535db12",
-    "Gnar": "1535db12",
-    "Kaisa": "1535db12",
-    "Kindred": "1535db12",
-    "Quinn": "1535db12",
-    "Xayah": "579a9754",
-    "Yasuo": "1535db12",
-    "Yone": "1535db12"
+    "Akali": "8f8e8206",
+    "Akshan": "740c1495",
+    "Annie": "f0d17c3c",
+    "Azir": "55b7ab80",
+    "Belveth": "71175dee",
+    "Blitzcrank": "053f25c0",
+    "Braum": "d85c36b7",
+    "Briar": "6f6f5f08",
+    "Cassiopeia": "91af3ff9",
+    "Ekko": "12628372",
+    "Fiora": "f9cbdd83",
+    "Fizz": "55c466eb",
+    "Galio": "f71ebaab",
+    "Gnar": "005541d7",
+    "Illaoi": "fe3d3281",
+    "Irelia": "8b2d85f1",
+    "Jax": "9ca06763",
+    "Jinx": "f6ba1065",
+    "KSante": "68c97d9b",
+    "Kaisa": "4989e8f3",
+    "Kalista": "93deab23",
+    "Kassadin": "f281df7e",
+    "Kindred": "0eec1445",
+    "KogMaw": "7b80d308",
+    "Leblanc": "7ba00ea9",
+    "LeeSin": "429a295c",
+    "Lux": "d6b24148",
+    "MasterYi": "cf07205e",
+    "MissFortune": "d4325ff7",
+    "Naafiri": "bcc43535",
+    "Orianna": "7da53134",
+    "Pantheon": "bbff284c",
+    "Pyke": "79b7b408",
+    "Quinn": "e6fc889c",
+    "Rammus": "7d414e4f",
+    "RekSai": "db773a80",
+    "Samira": "0cd420c2",
+    "Sejuani": "f0573327",
+    "Shyvana": "5e71adff",
+    "Thresh": "f1e02498",
+    "Tryndamere": "803c7ffd",
+    "Vayne": "d5b99ce5",
+    "Vex": "55fe39f7",
+    "Volibear": "f3d7eb45",
+    "Xayah": "6de11c88",
+    "Yasuo": "4f4c874e",
+    "Yone": "caa79151",
+    "Ziggs": "f42e3e19",
+    "Zoe": "29d0ee3c"
   }
 }

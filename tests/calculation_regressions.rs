@@ -34,6 +34,7 @@ fn purchase_and_context_helpers_are_const_callable() {
         &[ItemId::WarmogsArmor, ItemId::Fimbulwinter],
         ChampionId::Gnar,
         Dragons::default(),
+        GameMap::SummonersRift,
     );
     const ENEMY: EnemyFullState = EnemyFullState {
         current_stats: EnemyStats {
@@ -263,12 +264,15 @@ fn simulated_dragons_only_multiply_new_item_stats() {
         magic_resist: 90.0,
         ..PlayerStats::default()
     };
-    let plain = stats.get_simulated_stats(Dragons::default());
-    let buffed = stats.get_simulated_stats(Dragons {
-        ally_fire_dragons: 2,
-        ally_earth_dragons: 2,
-        ..Dragons::default()
-    });
+    let plain = stats.get_simulated_stats(Dragons::default(), GameMap::SummonersRift);
+    let buffed = stats.get_simulated_stats(
+        Dragons {
+            ally_fire_dragons: 2,
+            ally_earth_dragons: 2,
+            ..Dragons::default()
+        },
+        GameMap::SummonersRift,
+    );
     for (plain, buffed) in plain.iter().zip(&buffed) {
         close(
             buffed.attack_damage,
@@ -542,11 +546,17 @@ fn simulated_purchase_applies_stat_conversion_and_attack_speed_units() {
         &[],
         player.champion_id,
         out.dragons,
+        GameMap::SummonersRift,
     );
     close(cap.current_stats.ability_power, 299.0); // (100 live AP + 130 item AP) * 1.3
 
-    let warmog =
-        state.simulated_purchase(ItemId::WarmogsArmor, &[], player.champion_id, out.dragons);
+    let warmog = state.simulated_purchase(
+        ItemId::WarmogsArmor,
+        &[],
+        player.champion_id,
+        out.dragons,
+        GameMap::SummonersRift,
+    );
     // Warmog's Vitality grants 12% of the bonus health, not of the base health
     close(
         warmog.current_stats.max_health,
@@ -782,6 +792,7 @@ fn owned_warmog_amplifies_health_converted_from_new_mana() {
             owned,
             ChampionId::Gnar,
             Dragons::default(),
+            GameMap::SummonersRift,
         );
         close(sim.current_stats.max_health, 2050.4); // 2000 + 300 * .15 * 1.12
     }
@@ -790,6 +801,7 @@ fn owned_warmog_amplifies_health_converted_from_new_mana() {
         &[ItemId::WarmogsArmor],
         ChampionId::Gnar,
         Dragons::default(),
+        GameMap::SummonersRift,
     );
     close(sim.current_stats.max_health, 2935.2); // 2000 + (550 + 1900 * .15) * 1.12
 }
@@ -1082,4 +1094,103 @@ fn aram_multiplies_the_total_attack_speed_of_some_champions() {
     // Champions without the change keep it
     let akali = attack_speed(ChampionId::Akali, GameMap::SummonersRift);
     close(attack_speed(ChampionId::Akali, GameMap::Aram), akali);
+}
+
+fn player_stats_on(
+    items: &[ItemId],
+    item_exceptions: &[ValueException],
+    map: GameMap,
+) -> PlayerStats {
+    let mut input = game(items, &[], &[]);
+    input.active_player.data.item_exceptions = item_exceptions;
+    input.game_map = map;
+    calculator(input).current_player.current_stats
+}
+
+#[test]
+fn arena_changes_base_stats_from_champion_data_and_its_changes() {
+    let level = NonZeroU8::new(18).unwrap();
+    let health = |champion: ChampionId, map| champion.map_base_stats(level, false, map).max_health;
+
+    // Akali grows 2 more health per level in Arena, over 17 levels
+    close(
+        health(ChampionId::Akali, GameMap::Arena)
+            - health(ChampionId::Akali, GameMap::SummonersRift),
+        2.0 * 17.0,
+    );
+    // Azir passively gains {{pp|0 to 187}} base health
+    close(
+        health(ChampionId::Azir, GameMap::Arena) - health(ChampionId::Azir, GameMap::SummonersRift),
+        187.0,
+    );
+    // ARAM keeps them
+    close(
+        health(ChampionId::Akali, GameMap::Aram),
+        health(ChampionId::Akali, GameMap::SummonersRift),
+    );
+}
+
+#[test]
+fn arena_changes_item_stats() {
+    let ad = |map| {
+        player_stats_on(&[ItemId::BladeOfTheRuinedKing], &[], map).attack_damage
+            - player_stats_on(&[], &[], map).attack_damage
+    };
+
+    // 40 attack damage, and 30 in Arena
+    close(ad(GameMap::SummonersRift), 40.0);
+    close(ad(GameMap::Arena), 30.0);
+    close(ad(GameMap::Aram), 40.0);
+}
+
+#[test]
+fn aram_changes_hubris_eminence_through_its_constants() {
+    let stacks = [ValueException::pack_item_id(ItemId::Hubris, 5)];
+    let eminence = |map| {
+        player_stats_on(&[], &stacks, map).attack_damage
+            - player_stats_on(&[], &[], map).attack_damage
+    };
+
+    // Gnar is ranged: 10 + 2 per stack, and 10 + 1 per stack in ARAM
+    close(eminence(GameMap::SummonersRift), 10.0 + 2.0 * 5.0);
+    close(eminence(GameMap::Aram), 10.0 + 1.0 * 5.0);
+    close(eminence(GameMap::AramMayhem), 10.0 + 1.0 * 5.0);
+}
+
+#[test]
+fn arena_changes_retribution_and_plating() {
+    let retribution = |missing, map| RiotFormulas::get_bloodmail_retribution(missing, map);
+
+    // 1% per 7% missing health up to 10%, and 1.25% per 5% up to 17.5% in Arena
+    close(retribution(0.35, GameMap::SummonersRift), 0.05);
+    close(retribution(0.7, GameMap::SummonersRift), 0.1);
+    close(retribution(0.35, GameMap::Arena), 0.0875);
+    close(retribution(0.7, GameMap::Arena), 0.175);
+
+    let plating = |map: GameMap| {
+        tutorlolv2::Ctx {
+            flags: tutorlolv2::CtxFlags::target(true, false, false, false),
+            map: map.mode(),
+            ..Default::default()
+        }
+        .steelcaps_effect()
+    };
+
+    close(plating(GameMap::SummonersRift), 0.9);
+    close(plating(GameMap::Arena), 0.86);
+}
+
+#[test]
+fn aram_changes_rune_closures() {
+    let ctx = |map: GameMap| tutorlolv2::Ctx {
+        ability_power: 100.0,
+        level: 1.0,
+        map: map.mode(),
+        ..Default::default()
+    };
+
+    // 70 at level 1, with 5% AP, and 10% AP in ARAM
+    let electrocute = |map| tutorlolv2::libgen::runes::electrocute::electrocute(&ctx(map));
+    close(electrocute(GameMap::SummonersRift), 70.0 + 5.0);
+    close(electrocute(GameMap::Aram), 70.0 + 10.0);
 }

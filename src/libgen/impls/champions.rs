@@ -8,7 +8,7 @@ use {
     },
     strum::{EnumCount, VariantArray},
     tutorlolv2_types::{
-        AbilityId, AbilityName, AdaptiveType, AttackType, GameMap, Position, TypeMetadata,
+        AbilityId, AbilityName, AdaptiveType, AttackType, GameMap, MapMode, Position, TypeMetadata,
     },
 };
 
@@ -74,15 +74,32 @@ impl ChampionId {
         &self.data().stats
     }
 
-    /// Stats that `game_map` changes. Summoner's Rift changes none, and nearly
-    /// every game is played there, so the search is cold
+    /// Stats of this champion on `game_map`
+    #[inline(always)]
+    pub const fn stats_on(&self, game_map: GameMap) -> &'static WikiStats {
+        match self.map_stats(game_map) {
+            Some(map_stats) => &map_stats.stats,
+            None => self.stats(),
+        }
+    }
+
+    /// Stats that `game_map` changes. Maps without a mode change none, and nearly
+    /// every game is on Summoner's Rift, so the search is cold
+    #[inline(always)]
     pub const fn map_stats(&self, game_map: GameMap) -> Option<&'static MapStats> {
-        if matches!(game_map, GameMap::SummonersRift) {
+        // Maps without a mode, as Summoner's Rift and unknown maps, change nothing
+        if game_map.mode() as u8 == MapMode::Default as u8 {
             return None;
         }
 
-        core::hint::cold_path();
+        self.find_map_stats(game_map)
+    }
 
+    /// Search of [`Self::map_stats`], kept out of line so that the check of
+    /// Summoner's Rift inlines into the callers of every enemy
+    #[cold]
+    #[inline(never)]
+    const fn find_map_stats(&self, game_map: GameMap) -> Option<&'static MapStats> {
         let list = self.data().map_stats;
         let mut i = 0;
 

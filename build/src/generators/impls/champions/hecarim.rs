@@ -2,11 +2,12 @@ use super::*;
 
 impl Generator for Hecarim {
     fn generate(&mut self) -> MayFail {
+        /* Rampage bonus damage per stack */
+        let rampage = |dmg: &str| f![(dmg) * Stacks * (1.03 + 0.03 * BonusAd / 100)];
+
         self.ability(Key::Q, [("Physical Damage", Void)])
-            .modify(Q(Void), |dmg| {
-                /* Rampage bonus damage per stack */
-                f![(dmg) * Stacks * (1.03 + 0.03 * BonusAd / 100)]
-            })?
+            .modify(Q(Void), rampage)?
+            .map_modify(Q(Void), Key::Q, "Physical Damage", rampage)?
             .ability(
                 Key::W,
                 [

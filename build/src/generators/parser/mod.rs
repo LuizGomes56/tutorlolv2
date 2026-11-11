@@ -1,7 +1,10 @@
 use {
     crate::{
         MayFail,
-        generators::{GeneratorExt, VERSION, utils::SaveTo},
+        generators::{
+            GeneratorExt, VERSION,
+            utils::{RegExtractor, SaveTo},
+        },
         scripts::utils::is_zero,
     },
     heck::{
@@ -15,10 +18,16 @@ use {
         collections::{BTreeMap, BTreeSet},
         ops::{Index, IndexMut},
         path::Path,
+        sync::OnceLock,
     },
-    tutorlolv2_types::{DamageIndex, Tag},
+    tutorlolv2_types::{DamageIndex, GameMap, MapMode, Tag},
     tutorlolv2_wiki::{
-        JsonWrite, champions::WikiChampion, items::item_parser::WikiItem, runes::WikiRune,
+        JsonRead, JsonWrite,
+        champions::WikiChampion,
+        items::item_parser::WikiItem,
+        map_changes::{self, ChangeTarget, MapChanges, change::Amount, overrides::EffectOverrides},
+        parser::Effect,
+        runes::WikiRune,
     },
 };
 
@@ -28,6 +37,198 @@ pub mod model;
 pub mod runes;
 
 pub const ZERO: &str = "zero";
+
+/// Changes of every game mode, by the code of its module. Loaded once from the
+/// cache by whichever parser runs first, and empty when the cache has none, as
+/// in tests
+static MAP_CHANGES: OnceLock<BTreeMap<String, MapChanges>> = OnceLock::new();
+
+/// Loads [`MAP_CHANGES`] from `root`, once
+pub fn load_map_changes(root: &Path) -> MayFail {
+    if MAP_CHANGES.get().is_some() {
+        return Ok(());
+    }
+
+    let map_changes = match root.join(map_changes::full_path()) {
+        path if path.exists() => BTreeMap::from_file(path)?,
+        _ => {
+            println!("cargo:warning=No map changes in the cache, every map uses the same formulas");
+            BTreeMap::new()
+        }
+    };
+
+    let _ = MAP_CHANGES.set(map_changes);
+
+    Ok(())
+}
+
+/// Every mode's changes, empty until [`load_map_changes`] runs
+pub fn map_changes() -> impl Iterator<Item = &'static MapChanges> {
+    MAP_CHANGES.get().into_iter().flat_map(BTreeMap::values)
+}
+
+/// The mode that every map of a module shares, which closures branch on
+pub fn single_mode(maps: &[GameMap], id: &str) -> MayFail<MapMode> {
+    match maps
+        .iter()
+        .map(|map| map.mode())
+        .collect::<BTreeSet<_>>()
+        .into_iter()
+        .collect::<Vec<_>>()[..]
+    {
+        [MapMode::Default] => Err(format!("[{id}] Maps {maps:?} have no mode").into()),
+        [mode] => Ok(mode),
+        _ => Err(format!("[{id}] Maps {maps:?} have different modes").into()),
+    }
+}
+
+/// Entities whose generators read the changes of game modes, to give constants
+/// their values on each mode
+pub trait WithMapChanges {
+    /// Whether a change of `target` is a change of this entity
+    fn is_map_target(&self, target: &ChangeTarget) -> bool;
+
+    /// Values of the changes of this entity named `part` on each mode, as the
+    /// "Eminence base bonus attack" of "Eminence base bonus attack damage changed
+    /// to {{rd|15|10}}". Fails when the modes no longer name it, as the wiki
+    /// changed, unless there are no changes at all, as in tests
+    fn map_values(&self, part: &str) -> MayFail<Vec<(MapMode, Amount)>> {
+        let mut result = Vec::new();
+        let mut any = false;
+
+        for changes in map_changes() {
+            any = true;
+
+            for entry in changes
+                .entries
+                .values()
+                .filter(|e| self.is_map_target(&e.target))
+            {
+                for change in &entry.changes {
+                    if let Some((name, amount)) = change.kind.part_amount()
+                        && name.eq_ignore_ascii_case(part)
+                    {
+                        result.push((single_mode(&changes.maps, part)?, amount.clone()));
+                    }
+                }
+            }
+        }
+
+        if any && result.is_empty() {
+            return Err(format!("No game mode changes {part:?} anymore").into());
+        }
+
+        Ok(result)
+    }
+
+    /// Changes of this entity on each mode whose text matches `pattern`, to
+    /// capture values from as from descriptions. Fails like [`Self::map_values`]
+    fn map_texts(&self, pattern: &lazy_regex::Regex) -> MayFail<Vec<(MapMode, String)>> {
+        let mut result = Vec::new();
+        let mut any = false;
+
+        for changes in map_changes() {
+            any = true;
+
+            for entry in changes
+                .entries
+                .values()
+                .filter(|e| self.is_map_target(&e.target))
+            {
+                for change in entry.changes.iter().filter(|c| pattern.is_match(&c.text)) {
+                    let mode = single_mode(&changes.maps, pattern.as_str())?;
+                    result.push((mode, change.text.clone()));
+                }
+            }
+        }
+
+        if any && result.is_empty() {
+            return Err(
+                format!("No game mode change matches {:?} anymore", pattern.as_str()).into(),
+            );
+        }
+
+        Ok(result)
+    }
+}
+
+/// Whether an item or rune has no formula that game modes change
+pub fn no_map_damages(map_damages: &[Vec<(MapMode, String)>; 4]) -> bool {
+    map_damages.iter().all(Vec::is_empty)
+}
+
+/// An effect of an item or rune whose formula a generator read
+#[derive(Clone, Debug)]
+pub struct EffectRead {
+    /// Key the changes refer to it by, as the slot `pass2` or the name of a rune effect
+    pub key: String,
+    pub name: String,
+    pub effect: Effect,
+}
+
+/// Formulas of an item or rune on each mode that changes them, for each of
+/// `damages` (melee minimum and maximum, then ranged) that is still a formula its
+/// generator read in `reads`, alone or added up with others
+pub fn effect_map_damages(
+    target: &ChangeTarget,
+    id: &str,
+    damages: [&str; 4],
+    reads: &BTreeMap<String, Vec<EffectRead>>,
+) -> MayFail<[Vec<(MapMode, String)>; 4]> {
+    let mut result = <[Vec<_>; 4]>::default();
+
+    for changes in map_changes() {
+        if !changes.entries.values().any(|e| e.target == *target) {
+            continue;
+        }
+
+        let mode = single_mode(&changes.maps, id)?;
+
+        for (ranged, slots) in [(false, [0, 1]), (true, [2, 3])] {
+            let candidates = slots
+                .iter()
+                .filter_map(|&i| reads.get(damages[i]))
+                .flatten()
+                .map(|r| (r.key.clone(), (r.name.clone(), r.effect.clone())))
+                .collect::<BTreeMap<_, _>>();
+
+            if candidates.is_empty() {
+                continue;
+            }
+
+            let overrides = EffectOverrides::new(target, changes, &candidates, ranged);
+
+            for i in slots {
+                let Some(list) = reads.get(damages[i]) else {
+                    continue;
+                };
+
+                if !list.iter().any(|r| overrides.effects.contains_key(&r.key)) {
+                    continue;
+                }
+
+                let formulas = list
+                    .iter()
+                    .map(|r| {
+                        overrides
+                            .effects
+                            .get(&r.key)
+                            .unwrap_or(&r.effect)
+                            .formula
+                            .as_ref()
+                            .map(|f| f.parenthesize())
+                    })
+                    .collect::<Option<Vec<_>>>();
+
+                if let Some(formulas) = formulas {
+                    result[i].push((mode, formulas.join(" + ")));
+                }
+            }
+        }
+    }
+
+    Ok(result)
+}
 
 pub trait MapValueExt {
     fn riot_id(&self) -> u32;

@@ -46,6 +46,33 @@ pub struct ItemEffects {
     pub consume: Option<ItemEffect>,
 }
 
+impl WikiItem {
+    /// Effects of every slot, as `("pass2", name, effect)`. The name is the name
+    /// of the passive or active, or the slot when it has none
+    pub fn slot_effects(&self) -> impl Iterator<Item = (&'static str, String, &Effect)> {
+        let e = &self.effects;
+
+        [
+            ("pass", &e.pass),
+            ("pass2", &e.pass2),
+            ("pass3", &e.pass3),
+            ("pass4", &e.pass4),
+            ("act", &e.act),
+            ("consume", &e.consume),
+        ]
+        .into_iter()
+        .filter_map(|(slot, ie)| {
+            let ie = ie.as_ref()?;
+
+            Some((
+                slot,
+                ie.name.clone().unwrap_or_else(|| slot.into()),
+                &ie.effect,
+            ))
+        })
+    }
+}
+
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub struct WikiItem {
     pub id: u32,
@@ -620,6 +647,9 @@ fn parse_link(content: &str) -> MarkupNode {
 }
 
 fn find_balanced(input: &str, start: usize, open: &str, close: &str) -> Option<usize> {
+    // Bytes, since `i` moves one byte at a time and may be inside a character
+    // such as `–`. The delimiters are ASCII, so every match is at a boundary
+    let (input, open, close) = (input.as_bytes(), open.as_bytes(), close.as_bytes());
     let mut i = start;
     let mut depth = 0usize;
 

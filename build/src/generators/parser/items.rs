@@ -5,8 +5,10 @@ use {
             constants::{Constants, WithConstants},
             impls::items::item_gen_fn,
             parser::{
-                DamageRange, GeneratorFnSig, Parser, ZERO, infer_damage_type, likely_damages,
+                DamageRange, EffectRead, GeneratorFnSig, Parser, WithMapChanges, ZERO,
+                effect_map_damages, infer_damage_type, likely_damages, map_changes,
                 model::{RiotCdn, RiotCdnItem, RiotCdnItemGold},
+                single_mode,
             },
             utils::RegExtractor,
         },
@@ -14,14 +16,16 @@ use {
     heck::ToPascalCase,
     serde::{Deserialize, Serialize},
     std::{
+        cell::RefCell,
         collections::BTreeMap,
         fmt::{Display, Write},
         ops::{Index, IndexMut},
     },
-    tutorlolv2_types::{AttackType, Attrs, CtxVar, DamageIndex, DamageType, Key, Tag},
+    tutorlolv2_types::{AttackType, Attrs, CtxVar, DamageIndex, DamageType, Key, MapMode, Tag},
     tutorlolv2_wiki::{
         JsonRead,
         items::item_parser::{ItemEffect, WikiItem},
+        map_changes::{ChangeTarget, overrides::EffectOverrides},
         parser::Effect,
     },
 };
@@ -82,6 +86,8 @@ impl Parser<WikiItem, Item> for ItemParser {
     }
 
     fn from_root(root: &std::path::Path) -> MayFail<Self> {
+        super::load_map_changes(root)?;
+
         let mut data =
             BTreeMap::<String, WikiItem>::from_file(root.join("cache/wiki/items/full.json"))?;
 
@@ -233,6 +239,13 @@ pub struct Item {
     pub attributes: Attrs,
     #[serde(default, skip_serializing_if = "Constants::is_empty")]
     pub constants: Constants,
+    /// Effects whose formula the generator read, by that formula
+    #[serde(skip)]
+    pub reads: RefCell<BTreeMap<String, Vec<EffectRead>>>,
+    /// Formulas on each mode that changes them, for melee minimum and maximum,
+    /// then ranged. Serialized, since the build reads the generator's output
+    #[serde(default, skip_serializing_if = "super::no_map_damages")]
+    pub map_damages: [Vec<(MapMode, String)>; 4],
 }
 
 #[derive(Copy, Clone, Debug)]
@@ -243,6 +256,91 @@ pub enum Source {
     Passive3,
     Passive4,
     Consume,
+}
+
+impl WithMapChanges for Item {
+    fn is_map_target(&self, target: &ChangeTarget) -> bool {
+        matches!(target, ChangeTarget::Item { item_id } if *item_id == self.data.item_id)
+    }
+}
+
+impl Item {
+    /// Effect of `source` for `attack_type` on each mode that changes it, by the
+    /// same rules as damages, for generators that build their damage from it
+    pub fn map_effects_for(
+        &self,
+        source: Source,
+        attack_type: AttackType,
+    ) -> MayFail<Vec<(MapMode, Effect)>> {
+        let effect = self.effect_for(source, attack_type)?.clone();
+        let name = self[source]
+            .as_ref()
+            .and_then(|ie| ie.name.clone())
+            .unwrap_or_else(|| source.slot().into());
+
+        let candidates = BTreeMap::from([(source.slot().to_string(), (name, effect))]);
+        let target = ChangeTarget::Item {
+            item_id: self.data.item_id.clone(),
+        };
+
+        let ranged = matches!(attack_type, AttackType::Ranged);
+        let mut result = Vec::new();
+
+        for changes in map_changes() {
+            let overrides = EffectOverrides::new(&target, changes, &candidates, ranged);
+
+            if let Some(effect) = overrides.effects.get(source.slot()) {
+                let mode = single_mode(&changes.maps, &self.data.item_id)?;
+                result.push((mode, effect.clone()));
+            }
+        }
+
+        Ok(result)
+    }
+
+    /// Formula of the effect of `source` on each mode that changes it, for
+    /// constants captured from the formula
+    pub fn map_formulas(&self, source: Source) -> MayFail<Vec<(MapMode, String)>> {
+        Ok(self
+            .map_effects_for(source, AttackType::Melee)?
+            .into_iter()
+            .filter_map(|(mode, effect)| Some((mode, effect.formula?.parenthesize())))
+            .collect())
+    }
+
+    /// Sets the damage `var` of `attack_type` on `mode`, for generators that build
+    /// it themselves. The damages a generator sets aren't changed automatically
+    pub fn map_assign(
+        &mut self,
+        mode: MapMode,
+        attack_type: AttackType,
+        var: DamageIndex,
+        damage: impl Display,
+    ) -> &mut Self {
+        let index = match (attack_type, var) {
+            (AttackType::Melee, DamageIndex::Min) => 0,
+            (AttackType::Melee, DamageIndex::Max) => 1,
+            (AttackType::Ranged, DamageIndex::Min) => 2,
+            (AttackType::Ranged, DamageIndex::Max) => 3,
+        };
+
+        self.map_damages[index].push((mode, damage.to_string()));
+        self
+    }
+}
+
+impl Source {
+    /// Key of the slot in `Module:ItemData`, as `pass2`
+    pub fn slot(&self) -> &'static str {
+        match self {
+            Self::Active => "act",
+            Self::Passive => "pass",
+            Self::Passive2 => "pass2",
+            Self::Passive3 => "pass3",
+            Self::Passive4 => "pass4",
+            Self::Consume => "consume",
+        }
+    }
 }
 
 impl TryFrom<WikiItem> for Item {
@@ -257,6 +355,8 @@ impl TryFrom<WikiItem> for Item {
             melee: Default::default(),
             attributes: Attrs::Undefined,
             constants: Default::default(),
+            reads: Default::default(),
+            map_damages: Default::default(),
             data,
         })
     }
@@ -402,7 +502,29 @@ impl Item {
 
     pub fn formula_for(&self, source: Source, attack_type: AttackType) -> MayFail<String> {
         match self.effect_for(source, attack_type).ok() {
-            Some(effect) if let Some(ref formula) = effect.formula => Ok(formula.parenthesize()),
+            Some(effect) if let Some(ref formula) = effect.formula => {
+                let formula = formula.parenthesize();
+                let ranged = self[source].as_ref().and_then(|ie| ie.ranged.as_ref());
+                let name = self[source].as_ref().and_then(|ie| ie.name.clone());
+
+                // The ranged effect of `{{rd}}` is changed apart from the melee one
+                let key = match (attack_type, ranged) {
+                    (AttackType::Ranged, Some(_)) => format!("{}.ranged", source.slot()),
+                    _ => source.slot().to_string(),
+                };
+
+                self.reads
+                    .borrow_mut()
+                    .entry(formula.clone())
+                    .or_default()
+                    .push(EffectRead {
+                        name: name.unwrap_or_else(|| key.clone()),
+                        key,
+                        effect: effect.clone(),
+                    });
+
+                Ok(formula)
+            }
             _ => {
                 println!(
                     "[{name}] No formula for its {source:?}",
@@ -491,6 +613,27 @@ impl Item {
                 item_id = self.data.item_id
             )
             // return Err("Unknown damage type for this item".into());
+        }
+
+        let automatic = effect_map_damages(
+            &ChangeTarget::Item {
+                item_id: self.data.item_id.clone(),
+            },
+            &self.data.item_id,
+            [
+                &self.melee.min_dmg,
+                &self.melee.max_dmg,
+                &self.ranged.min_dmg,
+                &self.ranged.max_dmg,
+            ],
+            &self.reads.borrow(),
+        )?;
+
+        // Damages a generator set with `map_assign` keep its formulas
+        for (damages, automatic) in self.map_damages.iter_mut().zip(automatic) {
+            if damages.is_empty() {
+                *damages = automatic;
+            }
         }
 
         Ok(())
