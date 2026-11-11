@@ -5,7 +5,7 @@ use {
         riot::{RiotCdn, RiotCdnChampion, RiotCdnRune},
     },
     reqwest::{
-        Client,
+        Client, StatusCode,
         header::{ACCEPT, ACCEPT_ENCODING, ACCEPT_LANGUAGE, HeaderMap, HeaderValue, USER_AGENT},
     },
     serde::{Deserialize, de::DeserializeOwned},
@@ -126,9 +126,32 @@ impl core::ops::Deref for HttpClient {
 }
 
 impl HttpClient {
+    /// Downloads a wiki page and saves it to `save_to`, unless it is already cached.
+    /// Unless `link` already requests the raw source, the page source is also
+    /// downloaded with `?action=raw` and saved next to it with the `lua` extension
     pub async fn fetch(&self, save_to: impl AsRef<Path>, link: impl Display) -> MayFail<String> {
         let path = save_to.as_ref();
+        let link = link.to_string();
 
+        if !link.contains("action=raw") {
+            let raw_path = path.with_extension("lua");
+            let separator = if link.contains('?') { '&' } else { '?' };
+            let raw_link = format!("{link}{separator}action=raw");
+
+            // The raw source is only gathered for analysis for now, so a failure
+            // here must not prevent the rendered page from being used
+            if let Err(e) = self.fetch_wiki(&raw_path, &raw_link, true).await {
+                eprintln!("[error] Failed to fetch raw source {raw_link}: {e:?}");
+            }
+        }
+
+        self.fetch_wiki(path, &link, false).await
+    }
+
+    /// Downloads `https://wiki.leagueoflegends.com/en-us/{link}` to `path`, or reads
+    /// `path` if it already exists. If `check_status` is set, error statuses are
+    /// rejected so they never get cached
+    async fn fetch_wiki(&self, path: &Path, link: &str, check_status: bool) -> MayFail<String> {
         if let Ok(this) = std::fs::exists(path)
             && this
         {
@@ -144,15 +167,21 @@ impl HttpClient {
 
         let url = format!("https://wiki.leagueoflegends.com/en-us/{link}");
 
-        let request =
-            async |url: &str| -> MayFail<String> { Ok(self.get(url).send().await?.text().await?) };
+        let request = async |url: &str| -> MayFail<(StatusCode, String)> {
+            let response = self.get(url).send().await?;
+            Ok((response.status(), response.text().await?))
+        };
 
-        let mut bytes = request(&url).await?;
+        let (mut status, mut bytes) = request(&url).await?;
 
-        if bytes.contains("Too many requests") {
+        if status == StatusCode::TOO_MANY_REQUESTS || bytes.contains("Too many requests") {
             eprintln!("[error] Too many requests, trying again in 500ms");
             tokio::time::sleep(std::time::Duration::from_millis(500)).await;
-            bytes = request(&url).await?;
+            (status, bytes) = request(&url).await?;
+        }
+
+        if check_status && !status.is_success() {
+            return Err(format!("[fetch] {link} returned status {status}").into());
         }
 
         println!("[fetch] {link} -> {path:?}");

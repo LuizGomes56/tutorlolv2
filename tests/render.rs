@@ -70,7 +70,8 @@ fn pack_repr_build() -> MayFail {
 
     html += "</pre></body></html>";
 
-    std::fs::write("render.html", html)?;
+    std::fs::create_dir_all("html")?;
+    std::fs::write("html/render.html", html)?;
 
     Ok(())
 }
