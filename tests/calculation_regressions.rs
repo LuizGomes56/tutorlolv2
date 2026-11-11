@@ -929,3 +929,109 @@ fn demon_kings_crown_stacks_are_the_percentage() {
 
     close(with.armor, without.armor * 1.25);
 }
+
+#[test]
+fn warmogs_vitality_amplifies_health_converted_by_awe() {
+    let base = player_stats(&[], &[], false).max_health;
+    let fimbulwinter = player_stats(&[ItemId::Fimbulwinter], &[], false).max_health;
+
+    // Warmog's adds 1000 health and amplifies it with the health of Fimbulwinter,
+    // including the health Awe converts from mana, whatever the order of the items
+    for items in [
+        &[ItemId::WarmogsArmor, ItemId::Fimbulwinter][..],
+        &[ItemId::Fimbulwinter, ItemId::WarmogsArmor][..],
+    ] {
+        close(
+            player_stats(items, &[], false).max_health - base,
+            (fimbulwinter - base + 1000.0) * 1.12,
+        );
+    }
+}
+
+#[test]
+fn inferred_warmogs_vitality_amplifies_health_converted_by_awe() {
+    let enemy = |items: &[ItemId]| {
+        let exceptions = items
+            .iter()
+            .map(|&item_id| ValueException::pack_item_id(item_id, 0))
+            .collect::<Vec<_>>();
+
+        EnemyState {
+            champion_id: ChampionId::Garen,
+            level: NonZeroU8::new(18).unwrap(),
+            items,
+            item_exceptions: &exceptions,
+            base_stats: SimpleStats {
+                armor: 100.0,
+                magic_resist: 100.0,
+                max_health: 1000.0,
+            },
+            ..Default::default()
+        }
+        .full_state(ResistShred::new(&PlayerStats::default()), false)
+        .current_stats
+        .max_health
+    };
+
+    let fimbulwinter = enemy(&[ItemId::Fimbulwinter]);
+
+    for items in [
+        &[ItemId::WarmogsArmor, ItemId::Fimbulwinter][..],
+        &[ItemId::Fimbulwinter, ItemId::WarmogsArmor][..],
+    ] {
+        close(
+            enemy(items) - 1000.0,
+            (fimbulwinter - 1000.0 + 1000.0) * 1.12,
+        );
+    }
+}
+
+#[test]
+fn dragonheart_multiplies_health_after_warmogs_vitality() {
+    let souls = [ValueException::pack_item_id(ItemId::Dragonheart, 3)];
+    let warmogs = player_stats(&[ItemId::WarmogsArmor], &[], false);
+    let with_souls = player_stats(&[ItemId::WarmogsArmor], &souls, false);
+
+    // 3 souls increase the total health by 12%, including Warmog's bonus
+    close(with_souls.max_health, warmogs.max_health * 1.12);
+    close(with_souls.attack_damage, warmogs.attack_damage * 1.12);
+}
+
+#[test]
+fn inferred_dragonheart_multiplies_health_after_warmogs_vitality() {
+    let enemy = |exceptions: &[ValueException]| {
+        EnemyState {
+            champion_id: ChampionId::Garen,
+            level: NonZeroU8::new(18).unwrap(),
+            items: &[ItemId::WarmogsArmor],
+            item_exceptions: exceptions,
+            base_stats: SimpleStats {
+                armor: 100.0,
+                magic_resist: 100.0,
+                max_health: 1000.0,
+            },
+            ..Default::default()
+        }
+        .full_state(ResistShred::new(&PlayerStats::default()), false)
+        .current_stats
+    };
+
+    let warmogs = ValueException::pack_item_id(ItemId::WarmogsArmor, 0);
+
+    // In either order, 25% from Demon King's Crown applies to Warmog's bonus too
+    for exceptions in [
+        [
+            ValueException::pack_item_id(ItemId::DemonKingsCrown, 25),
+            warmogs,
+        ],
+        [
+            warmogs,
+            ValueException::pack_item_id(ItemId::DemonKingsCrown, 25),
+        ],
+    ] {
+        close(
+            enemy(&exceptions).max_health,
+            (1000.0 + 1000.0 * 1.12) * 1.25,
+        );
+    }
+}

@@ -496,6 +496,38 @@ impl ValueException {
         ItemId::from_repr(self.enum_id() as _)
     }
 
+    /// Multiplier of the total stats from [`ItemId::Dragonheart`] and
+    /// [`ItemId::DemonKingsCrown`], applied once every other stat is added
+    pub const fn total_stats_modifier(exceptions: &[Self]) -> f32 {
+        let mut modifier = 1.0;
+        let mut i = 0;
+
+        while i < exceptions.len() {
+            let stacks = exceptions[i].stacks() as f32;
+
+            match exceptions[i].get_item_id() {
+                // Unbounded, although the game caps it at 7 souls
+                Some(ItemId::Dragonheart) => {
+                    core::hint::cold_path();
+
+                    modifier *= 1.0 + items::dragonheart::INNER_FLAME_STATS_PER_SOUL * stacks
+                }
+                // Its bonus depends on the rounds won and lost, so the stacks
+                // are the percentage itself
+                Some(ItemId::DemonKingsCrown) => {
+                    core::hint::cold_path();
+
+                    modifier *= 1.0 + 0.01 * stacks
+                }
+                _ => {}
+            }
+
+            i += 1;
+        }
+
+        modifier
+    }
+
     /// If the value to be stored is greater than [`Self::VAL_MASK`],
     /// the value is truncated
     const fn truncate_value(v: u32) -> u32 {

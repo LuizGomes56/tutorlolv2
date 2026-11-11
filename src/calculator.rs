@@ -61,8 +61,9 @@ impl InferStats<'_> {
 
         bonus_stats.get_item_bonus_stats(items, &mut stat_modifiers, &mut adaptive_force);
 
-        // Warmog's Vitality only scales the health granted by items
-        let item_health = bonus_stats.max_health;
+        // Warmog's Vitality only scales the health granted by items, which also
+        // includes the health that Awe converts from mana in the loop below
+        let mut item_health = bonus_stats.max_health;
 
         bonus_stats.get_rune_bonus_stats(runes, &mut stat_modifiers, &mut adaptive_force, level);
 
@@ -126,6 +127,8 @@ impl InferStats<'_> {
 
         let mut has_bloodmail = false;
         let mut has_demonic_embrace = false;
+        let mut has_warmogs = false;
+        let mut has_juice_of_vitality = false;
         // Amplifies ability power granted after the loop
         let mut ap_amplifier = 1.0;
         let mut i = 0;
@@ -133,6 +136,8 @@ impl InferStats<'_> {
         while i < items.len() {
             match items[i] {
                 ItemId::OverlordsBloodmail => {
+                    core::hint::cold_path();
+
                     has_bloodmail = true;
                     stats.attack_damage += items::overlords_bloodmail::TYRANNY_BONUS_HEALTH_RATIO
                         * bonus_stats.max_health;
@@ -149,7 +154,10 @@ impl InferStats<'_> {
                     stats.ability_power +=
                         items::seraphs_embrace::AWE_BONUS_MANA_RATIO * bonus_stats.max_mana
                 }
-                ItemId::DemonicEmbrace => has_demonic_embrace = true,
+                ItemId::DemonicEmbrace => {
+                    core::hint::cold_path();
+                    has_demonic_embrace = true
+                }
                 ItemId::Manamune => {
                     stats.attack_damage += items::manamune::AWE_MAX_MANA_RATIO * stats.max_mana;
                 }
@@ -157,17 +165,24 @@ impl InferStats<'_> {
                     stats.attack_damage += items::muramana::AWE_MAX_MANA_RATIO * stats.max_mana;
                 }
                 ItemId::WintersApproach => {
-                    stats.max_health +=
-                        items::winters_approach::AWE_BONUS_MANA_RATIO * bonus_stats.max_mana;
+                    core::hint::cold_path();
+
+                    let awe = items::winters_approach::AWE_BONUS_MANA_RATIO * bonus_stats.max_mana;
+
+                    stats.max_health += awe;
+                    item_health += awe;
                 }
                 ItemId::Fimbulwinter => {
-                    stats.max_health +=
-                        items::fimbulwinter::AWE_BONUS_MANA_RATIO * bonus_stats.max_mana;
+                    core::hint::cold_path();
+
+                    let awe = items::fimbulwinter::AWE_BONUS_MANA_RATIO * bonus_stats.max_mana;
+
+                    stats.max_health += awe;
+                    item_health += awe;
                 }
                 ItemId::JuiceOfVitality => {
-                    use items::juice_of_vitality::{HEALTH, MAX_HEALTH_RATIO};
-
-                    stats.max_health += HEALTH + MAX_HEALTH_RATIO * stats.max_health
+                    core::hint::cold_path();
+                    has_juice_of_vitality = true
                 }
                 ItemId::RabadonsDeathcap => {
                     const AMPLIFIER: f32 =
@@ -177,6 +192,8 @@ impl InferStats<'_> {
                     ap_amplifier *= AMPLIFIER;
                 }
                 ItemId::WoogletsWitchcap => {
+                    core::hint::cold_path();
+
                     const AMPLIFIER: f32 =
                         1.0 + items::wooglets_witchcap::MAGICAL_OPUS_AP_AMPLIFIER;
 
@@ -184,11 +201,12 @@ impl InferStats<'_> {
                     ap_amplifier *= AMPLIFIER;
                 }
                 ItemId::WarmogsArmor => {
-                    stats.max_health +=
-                        items::warmogs_armor::WARMOGS_VITALITY_BONUS_HEALTH_RATIO * item_health
+                    core::hint::cold_path();
+                    has_warmogs = true
                 }
                 ItemId::JuiceOfPower => {
                     use items::juice_of_power::*;
+                    core::hint::cold_path();
 
                     // Grants only the adaptive stat
                     match adaptive_type {
@@ -205,6 +223,37 @@ impl InferStats<'_> {
                 _ => {}
             }
             i += 1;
+        }
+
+        // Warmog's waits for every conversion of Awe, wherever it is in the build
+        if has_warmogs {
+            core::hint::cold_path();
+
+            stats.max_health +=
+                items::warmogs_armor::WARMOGS_VITALITY_BONUS_HEALTH_RATIO * item_health;
+        }
+
+        // Juice of Vitality scales the maximum health, so it is applied after Warmog's
+        if has_juice_of_vitality {
+            use items::juice_of_vitality::{HEALTH, MAX_HEALTH_RATIO};
+            core::hint::cold_path();
+
+            stats.max_health += HEALTH + MAX_HEALTH_RATIO * stats.max_health;
+        }
+
+        // Dragonheart and Demon King's Crown increase the total stats, so they
+        // apply after the health of Warmog's and Juice of Vitality
+        let total_stats_modifier = ValueException::total_stats_modifier(item_exceptions);
+
+        if total_stats_modifier != 1.0 {
+            core::hint::cold_path();
+
+            stats.ability_power *= total_stats_modifier;
+            stats.attack_speed *= total_stats_modifier;
+            stats.attack_damage *= total_stats_modifier;
+            stats.max_health *= total_stats_modifier;
+            stats.armor *= total_stats_modifier;
+            stats.magic_resist *= total_stats_modifier;
         }
 
         // The maximum health is complete here. NaN also falls back to full health
@@ -313,6 +362,7 @@ impl PlayerStats {
             magic_pen_mult *= 1.0 - (magic_pen.clamp(0.0, 100.0) * 0.01);
 
             if matches!(item_id, ItemId::ElixirOfIron) {
+                core::hint::cold_path();
                 self.max_health += items::elixir_of_iron::BONUS_HEALTH;
             }
 
@@ -337,6 +387,7 @@ impl PlayerStats {
         while i < runes.len() {
             match runes[i] {
                 RuneId::Waterwalking => {
+                    core::hint::cold_path();
                     *adaptive_force += 12.0 + level.get() as f32;
                 }
                 RuneId::AbsoluteFocus => {
@@ -371,34 +422,12 @@ impl PlayerStats {
                     ItemId::DarkSeal => {
                         self.ability_power += items::dark_seal::GLORY_AP_PER_STACK * stacks
                     }
-                    ItemId::Dragonheart => {
-                        // Unbounded, although the game caps it at 7 souls
-                        let modifier =
-                            1.0 + items::dragonheart::INNER_FLAME_STATS_PER_SOUL * stacks;
-                        self.ability_power *= modifier;
-                        self.attack_speed *= modifier;
-                        self.attack_damage *= modifier;
-                        self.max_health *= modifier;
-                        self.armor *= modifier;
-                        self.magic_resist *= modifier;
-                    }
-                    ItemId::DemonKingsCrown => {
-                        // Its bonus depends on the rounds won and lost, so the
-                        // stacks are the percentage itself
-                        let modifier = 1.0 + 0.01 * stacks;
-
-                        self.ability_power *= modifier;
-                        self.attack_speed *= modifier;
-                        self.attack_damage *= modifier;
-                        self.max_health *= modifier;
-                        self.armor *= modifier;
-                        self.magic_resist *= modifier;
-                    }
                     ItemId::RiteOfRuin => {
                         self.crit_chance +=
                             items::rite_of_ruin::WRATH_AND_RUIN_CRIT_CHANCE_PER_STACK * stacks
                     }
                     ItemId::MejaisSoulstealer => {
+                        core::hint::cold_path();
                         self.ability_power += items::mejais_soulstealer::GLORY_AP_PER_STACK * stacks
                     }
                     ItemId::BlackCleaver => {
@@ -408,6 +437,8 @@ impl PlayerStats {
                         )
                     }
                     ItemId::BloodlettersCurse => {
+                        core::hint::cold_path();
+
                         self.magic_penetration_percent = RiotFormulas::combine_percentage(
                             self.magic_penetration_percent,
                             items::bloodletters_curse::VILE_DECAY_MAGIC_REDUCTION_PER_STACK

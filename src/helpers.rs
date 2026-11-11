@@ -238,6 +238,7 @@ impl ChampionId {
     /// Mega Gnar uses melee item and rune effects; other forms use cached data.
     pub const fn effective_attack_type(self, is_mega_gnar: bool) -> AttackType {
         if matches!(self, ChampionId::Gnar) && is_mega_gnar {
+            core::hint::cold_path();
             AttackType::Melee
         } else {
             self.data().attack_type
@@ -292,13 +293,25 @@ impl ChampionId {
         } = enemy_id.data().modifiers;
 
         match game_map {
-            GameMap::OneForAll => ofa.damage_dealt * e_ofa.damage_taken,
-            GameMap::UnsealedSpellbook => usb.damage_dealt * e_usb.damage_taken,
+            GameMap::OneForAll => {
+                core::hint::cold_path();
+                ofa.damage_dealt * e_ofa.damage_taken
+            }
+            GameMap::UnsealedSpellbook => {
+                core::hint::cold_path();
+                usb.damage_dealt * e_usb.damage_taken
+            }
             GameMap::Aram | GameMap::AramMayhem => aram.damage_dealt * e_aram.damage_taken,
             GameMap::Arena => ar.damage_dealt * e_ar.damage_taken,
-            GameMap::NexusBlitz => nb.damage_dealt * e_nb.damage_taken,
+            GameMap::NexusBlitz => {
+                core::hint::cold_path();
+                nb.damage_dealt * e_nb.damage_taken
+            }
             GameMap::SwiftPlay => swift.damage_dealt * e_swift.damage_taken,
-            GameMap::Urf => urf.damage_dealt * e_urf.damage_taken,
+            GameMap::Urf => {
+                core::hint::cold_path();
+                urf.damage_dealt * e_urf.damage_taken
+            }
             _ => 1.0,
         }
     }
@@ -584,46 +597,36 @@ impl EnemyState<'_> {
                 e_default_stats.magic_resist += mode_magic_resist;
 
                 let bonus_mana = e_default_stats.infer_stats(items, earth_dragons);
-                // Warmog's Vitality only scales the health granted by items
-                let item_health = e_default_stats.max_health - base_stats.max_health;
+                // Warmog's Vitality only scales the health granted by items, which
+                // also includes the health that Awe converts from mana below
+                let mut item_health = e_default_stats.max_health - base_stats.max_health;
+                let mut has_warmogs = false;
                 let mut i = 0;
 
                 while i < item_exceptions.len() {
-                    let item_exception = item_exceptions[i];
-                    let stacks = item_exception.stacks();
-
-                    if let Some(item_id) = item_exception.get_item_id() {
+                    if let Some(item_id) = item_exceptions[i].get_item_id() {
                         match item_id {
                             ItemId::WintersApproach => {
-                                e_default_stats.max_health +=
-                                    items::winters_approach::AWE_BONUS_MANA_RATIO * bonus_mana
+                                core::hint::cold_path();
+
+                                let awe =
+                                    items::winters_approach::AWE_BONUS_MANA_RATIO * bonus_mana;
+
+                                e_default_stats.max_health += awe;
+                                item_health += awe;
                             }
                             ItemId::Fimbulwinter => {
-                                e_default_stats.max_health +=
-                                    items::fimbulwinter::AWE_BONUS_MANA_RATIO * bonus_mana
-                            }
-                            ItemId::Dragonheart => {
-                                // Unbounded, although the game caps it at 7 souls
-                                let modifier = 1.0
-                                    + items::dragonheart::INNER_FLAME_STATS_PER_SOUL
-                                        * stacks as f32;
+                                core::hint::cold_path();
 
-                                e_default_stats.max_health *= modifier;
-                                e_default_stats.armor *= modifier;
-                                e_default_stats.magic_resist *= modifier
-                            }
-                            ItemId::DemonKingsCrown => {
-                                // The stacks are the percentage of the bonus
-                                let modifier = 1.0 + 0.01 * stacks as f32;
+                                let awe = items::fimbulwinter::AWE_BONUS_MANA_RATIO * bonus_mana;
 
-                                e_default_stats.max_health *= modifier;
-                                e_default_stats.armor *= modifier;
-                                e_default_stats.magic_resist *= modifier
+                                e_default_stats.max_health += awe;
+                                item_health += awe;
                             }
                             ItemId::WarmogsArmor => {
-                                e_default_stats.max_health +=
-                                    items::warmogs_armor::WARMOGS_VITALITY_BONUS_HEALTH_RATIO
-                                        * item_health
+                                core::hint::cold_path();
+
+                                has_warmogs = true
                             }
                             _ => {}
                         }
@@ -631,6 +634,22 @@ impl EnemyState<'_> {
 
                     i += 1;
                 }
+
+                // Warmog's waits for every conversion of Awe, in any order
+                if has_warmogs {
+                    core::hint::cold_path();
+
+                    e_default_stats.max_health +=
+                        items::warmogs_armor::WARMOGS_VITALITY_BONUS_HEALTH_RATIO * item_health;
+                }
+
+                // Dragonheart and Demon King's Crown increase the total stats,
+                // so they apply after Warmog's
+                let total_stats_modifier = ValueException::total_stats_modifier(item_exceptions);
+
+                e_default_stats.max_health *= total_stats_modifier;
+                e_default_stats.armor *= total_stats_modifier;
+                e_default_stats.magic_resist *= total_stats_modifier;
 
                 match champion_id {
                     ChampionId::Swain => {
@@ -940,6 +959,8 @@ impl SelfState {
         // Observed health doesn't tell which part came from items, so the whole
         // bonus health is amplified
         if !already_owned && matches!(item, ItemId::WarmogsArmor) {
+            core::hint::cold_path();
+
             stats.max_health += items::warmogs_armor::WARMOGS_VITALITY_BONUS_HEALTH_RATIO
                 * (stats.max_health - self.base_stats.max_health);
         }
@@ -967,6 +988,8 @@ impl SelfState {
                 ItemId::Manamune => added_ad += items::manamune::AWE_MAX_MANA_RATIO * added_mana,
                 ItemId::Muramana => added_ad += items::muramana::AWE_MAX_MANA_RATIO * added_mana,
                 ItemId::OverlordsBloodmail => {
+                    core::hint::cold_path();
+
                     owns_bloodmail = true;
                     added_ad +=
                         items::overlords_bloodmail::TYRANNY_BONUS_HEALTH_RATIO * health_delta
@@ -1064,8 +1087,14 @@ impl SelfState {
 
         if !already_owned {
             match item {
-                ItemId::RabadonsDeathcap => stats.ability_power *= RABADONS_AMPLIFIER,
-                ItemId::WoogletsWitchcap => stats.ability_power *= WOOGLETS_AMPLIFIER,
+                ItemId::RabadonsDeathcap => {
+                    core::hint::cold_path();
+                    stats.ability_power *= RABADONS_AMPLIFIER
+                }
+                ItemId::WoogletsWitchcap => {
+                    core::hint::cold_path();
+                    stats.ability_power *= WOOGLETS_AMPLIFIER
+                }
                 _ => {}
             }
         }
@@ -1182,15 +1211,24 @@ impl EnemyFullState {
 }
 
 pub const fn get_stacks(champion_id: ChampionId, game_time: f32) -> f32 {
+    // 30 minutes per game is the average
     const AVERAGE_GAME_TIME: u32 = 60 * 30;
 
     pub const fn time(game_time: f32, average: u32) -> f32 {
         average as f32 * game_time / AVERAGE_GAME_TIME as f32
     }
 
+    // We don't know how many stacks the player has at that moment, so
+    // the best we can do is to guess how much he would have at 30 minutes,
+    // and calculate the average per minute so we can add. Obviously it will
+    // grow linearly, while in game it is more common to get more stacks
+    // towards late-game
+    //
+    // Note: These values might be outdated, and they come from my personal
+    // experience playing the game, not a concrete set of data
     match champion_id {
         ChampionId::Chogath => time(game_time, 12),
-        ChampionId::Nasus => time(game_time, 450),
+        ChampionId::Nasus => time(game_time, 600),
         ChampionId::Smolder => time(game_time, 120),
         ChampionId::AurelionSol => time(game_time, 190),
         ChampionId::Thresh => time(game_time, 150),

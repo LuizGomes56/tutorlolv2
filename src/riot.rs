@@ -203,6 +203,7 @@ const MEGA_GNAR_RAW_CHAMPION: &str = "game_character_displayname_GnarBig";
 fn raw_skin_key(raw_skin_name: &str) -> Option<&str> {
     if let Some(rest) = raw_skin_name.strip_prefix(SKIN_PREFIX) {
         let (key, skin) = rest.rsplit_once('_')?;
+
         (!key.is_empty() && !skin.is_empty() && skin.bytes().all(|b| b.is_ascii_digit()))
             .then_some(key)
     } else {
@@ -218,6 +219,7 @@ fn parse_key(key: &str) -> Option<ChampionId> {
     if let Ok(id) = key.parse() {
         return Some(id);
     }
+
     let mut buffer = [0u8; 32];
     let lower = buffer.get_mut(..key.len())?;
 
@@ -236,6 +238,7 @@ impl RiotAllPlayers<'_> {
         let skin_key = raw_skin_key(self.raw_skin_name);
 
         if skin_key == Some(NEEKO_SKIN_KEY) {
+            core::hint::cold_path();
             return ChampionId::Neeko;
         }
 
