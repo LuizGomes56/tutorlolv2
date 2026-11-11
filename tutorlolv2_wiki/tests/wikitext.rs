@@ -1,11 +1,8 @@
 use {
     scraper::Html,
     std::path::Path,
-    tutorlolv2_types::Key,
-    tutorlolv2_wiki::{
-        selector,
-        wikitext::{Expr, Nodes, Progression, RawAbility, Scaling, Template, Value, Variables},
-    },
+    tutorlolv2_types::{CtxVar, Key},
+    tutorlolv2_wiki::{selector, wikitext::*},
 };
 
 /// First template of `src`, after expanding its variables
@@ -262,4 +259,377 @@ fn base_values_match_the_rendered_pages() {
     }
 
     assert!(mismatched.is_empty());
+}
+
+#[test]
+fn formula_display_matches_current_style() {
+    use CtxVar::*;
+    let q = Formula::ByRank {
+        rank: QLevel,
+        values: vec![5.0, 45.0, 85.0, 125.0, 165.0],
+    };
+    assert_eq!(q.to_string(), "(5.0) + (40.0 * (ctx.q_level - 1.0))");
+
+    let r = Formula::ByRank {
+        rank: RLevel,
+        values: vec![375.0, 630.0, 945.0],
+    };
+    assert_eq!(
+        r.to_string(),
+        "match ctx.r_level {..=1 => 375.0, 2 => 630.0, 3.. => 945.0}"
+    );
+
+    let t = Formula::Table {
+        var: Level,
+        keys: vec![1, 6, 11, 16],
+        values: vec![0.3, 0.4, 0.5, 0.6],
+    };
+    assert_eq!(
+        t.to_string(),
+        "match ctx.level { ..6 => 0.3, 6..11 => 0.4, 11..16 => 0.5, 16.. => 0.6 }"
+    );
+
+    let sum = q + Formula::Var(AttackDamage).scale(1.25);
+    assert_eq!(
+        sum.to_string(),
+        "((5.0) + (40.0 * (ctx.q_level - 1.0))) + (1.25 * ctx.attack_damage)"
+    );
+}
+
+#[test]
+fn formula_eval() {
+    use CtxVar::*;
+    let sample = Sample(
+        [
+            (QLevel, 3.0),
+            (AbilityPower, 100.0),
+            (Level, 0.0),
+            (RLevel, 0.0),
+        ]
+        .into(),
+    );
+    let f = Formula::ByRank {
+        rank: QLevel,
+        values: vec![10.0, 20.0, 30.0, 40.0, 50.0],
+    } + Formula::Var(AbilityPower) * 0.5;
+    assert_eq!(f.eval(&sample), Some(80.0));
+
+    // Below the first key, as R rank 0 or level 1 with keys starting at 10
+    let t = Formula::Table {
+        var: RLevel,
+        keys: vec![1, 2, 3],
+        values: vec![0.1, 0.4, 0.7],
+    };
+    assert_eq!(t.eval(&sample), Some(0.1));
+
+    let p = Formula::Pow(Box::new(Formula::Var(AbilityPower) * 0.0114), 2);
+    assert!((p.eval(&sample).unwrap() - 1.2996).abs() < 1e-9);
+    assert_eq!(Formula::Raw("ctx.level".into()).eval(&sample), None);
+}
+
+#[test]
+fn lookups_of_champion_and_item_data() {
+    let champions =
+        r#"return { ["Yasuo"] = { ["id"] = 157, ["stats"] = { ["crit_mod"] = 0.95, ["ms"] = 345 } } }"#;
+    let items = r#"return { ["Infinity Edge"] = { ["id"] = 3031, ["stats"] = { ["critdamage"] = 30 } } }"#;
+    let lookup = Lookup::new(champions, items).unwrap();
+
+    assert_eq!(lookup.champion("Yasuo", "crit_mod"), Some(0.95));
+    assert_eq!(lookup.champion("Yasuo", "crit_base"), Some(200.0));
+    assert_eq!(lookup.item("Infinity Edge", "critdamage"), Some(30.0));
+
+    let src = "{{ap|40*(1+{{#invoke:ItemData|get|item=Infinity Edge|datatype=critdamage}}*0.3/100) to 52}} {{ccd|Yasuo|crit_mod}} {{ccd|Yasuo|unknown}}";
+    let expanded = lookup.expand(&Nodes::parse(src)).to_string();
+    assert_eq!(
+        expanded,
+        "{{ap|40*(1+30*0.3/100) to 52}} 0.95 {{ccd|Yasuo|unknown}}"
+    );
+}
+
+fn pp(src: &str) -> PassiveProgression {
+    PassiveProgression::new(&template(src)).unwrap()
+}
+
+#[test]
+fn passive_progressions() {
+    // Aatrox Q: the bottom row fills up to the 4 keys
+    let aatrox = pp("{{pp|55 to 70|key=%|1;6;11;16|formula=55% base}}");
+    assert_eq!(
+        (aatrox.values, aatrox.keys),
+        (vec![55.0, 60.0, 65.0, 70.0], vec![1.0, 6.0, 11.0, 16.0])
+    );
+
+    // Azir W: both rows have an x filling, so both fill up to 18 values
+    let azir = pp("{{pplevel|0; then +8*x|1;10+(x-1)|formula=0 at level 1}}");
+    assert_eq!(azir.values.len(), 18);
+    assert_eq!(&azir.values[..3], &[0.0, 8.0, 16.0]);
+    assert_eq!(&azir.keys[..3], &[1.0, 10.0, 11.0]);
+
+    // Ryze Q's Flux bonus, by the rank of his R
+    let ryze = pp(
+        "{{pp|type=[[File:Realm Warp.png|20px|border]] ''Realm Warp's'' Rank|key=%|10 to 100 for 4|0 to 3}}",
+    );
+    assert_eq!(
+        (ryze.values, ryze.keys),
+        (vec![10.0, 40.0, 70.0, 100.0], vec![0.0, 1.0, 2.0, 3.0])
+    );
+    assert!(ryze.axis.unwrap().contains("Realm Warp's"));
+
+    // Malzahar W: growth formula over 18 levels, rounded to 2 decimals
+    let malzahar = pp("{{pp|5+3.5*(x-1)*(0.7025+0.0175*(x-1))|formula=5 + 10.5 growth}}");
+    assert_eq!(malzahar.values.len(), 18);
+    assert_eq!(malzahar.values[1], 7.52);
+    assert_eq!(malzahar.keys[17], 18.0);
+
+    // Shen Q and Mordekaiser Q: a top row with a range
+    assert_eq!(
+        pp("{{pp|10 to 40 for 6|1 to 16}}").keys,
+        vec![1.0, 4.0, 7.0, 10.0, 13.0, 16.0]
+    );
+    assert_eq!(
+        pp("{{pp|0 + (63-0)/9*(x-1) for 12|1;10 to 20}}").keys[..3],
+        [1.0, 10.0, 11.0]
+    );
+
+    // Cassiopeia E: 18 values by default
+    assert_eq!(pp("{{pp|50 to 120}}").values.len(), 18);
+}
+
+#[test]
+fn squared_and_split_scalings() {
+    let syndra =
+        Scaling::new(&template("{{as|'''(+ {{fd|1.14}}% AP)<sup>2</sup>'''}}"), Key::W).unwrap();
+    assert_eq!(
+        (syndra.ratios.clone(), syndra.power, syndra.stat.as_str()),
+        (vec![1.14], 2, "AP")
+    );
+
+    let nodes = Variables::default().expand(&Nodes::parse(
+        "{{as|(+ {{ap|8*0.8}}%|hp}} {{as|of target's '''maximum''' health)}}",
+    ));
+    let templates = nodes.templates();
+    let (first, second) = (templates[0], templates[2]);
+    let ksante = Scaling::merged(first, second, Key::W).unwrap();
+    assert_eq!(ksante.ratios, vec![6.4]);
+    assert_eq!(ksante.stat, "of target's maximum health");
+    assert_eq!(Scaling::new(first, Key::W), None);
+}
+
+fn page(src: &str) -> AbilityModel {
+    let lookup = Lookup::new("return {}", "return {}").unwrap();
+    let context = PageContext {
+        lookup: &lookup,
+        four_rank_ultimate: false,
+        ability_keys: [("Realm Warp".to_string(), Key::R)].into(),
+    };
+    AbilityModel::new(src, &context).unwrap().unwrap().1
+}
+
+fn data(skill: &str, fields: &str) -> String {
+    format!(
+        "{{{{{{{{{{1<noinclude>|Ability data</noinclude>}}}}}}|Name\n|skill = {skill}\n|damagetype = Magic\n{fields}\n}}}}"
+    )
+}
+
+fn sample(pairs: &[(CtxVar, f64)]) -> Sample {
+    Sample(pairs.iter().copied().collect())
+}
+
+#[test]
+fn effects_are_sums_of_terms() {
+    use CtxVar::*;
+    // Azir W: level table + rank values + ranked AP ratio
+    let azir = page(&data(
+        "W",
+        "|leveling2 = {{st|Magic Damage|{{pplevel|0; then +8*x|1;10+(x-1)}} (+ {{ap|50 to 110}}) {{as|(+ {{ap|35 to 65}}% AP)}}}}",
+    ));
+    let effect = &azir.effects[0];
+    assert_eq!((effect.label.as_str(), effect.section), ("Magic Damage", 1));
+    assert_eq!(azir.damage_type, tutorlolv2_types::DamageType::Magic);
+    let s = sample(&[(Level, 11.0), (WLevel, 2.0), (AbilityPower, 100.0)]);
+    assert!((effect.formula.eval(&s).unwrap() - (16.0 + 65.0 + 42.5)).abs() < 1e-9);
+
+    // Ultimates have 3 ranks by r_level
+    let r = page(&data(
+        "R",
+        "|leveling = {{st|Bonus Movement Speed|{{ap|60 to 100}}%}}",
+    ));
+    assert_eq!(r.effects[0].unit, "%");
+    assert_eq!(
+        r.effects[0].formula,
+        Formula::ByRank {
+            rank: RLevel,
+            values: vec![60.0, 80.0, 100.0]
+        }
+    );
+
+    // Syndra W: the squared term
+    let syndra = page(&data(
+        "W",
+        "|leveling4 = {{st|Bonus True Damage|{{ap|70*0.12 to 190*0.12|round=1}} {{as|'''(+ {{fd|1.14}}% AP)<sup>2</sup>'''}}}}",
+    ));
+    let s = sample(&[(WLevel, 1.0), (AbilityPower, 100.0)]);
+    assert!((syndra.effects[0].formula.eval(&s).unwrap() - (8.4 + 1.2996)).abs() < 1e-9);
+
+    // K'Sante W: the split scaling is merged. Vel'Koz Q: the colored value is a value
+    let ksante = page(&data(
+        "W",
+        "|leveling = {{st|Physical Damage|{{ap|10}} {{as|(+ 8%|hp}} {{as|of target's '''maximum''' health)}}}}",
+    ));
+    assert!(ksante.effects[0].issues.is_empty(), "{:?}", ksante.effects[0].issues);
+    let s = sample(&[(WLevel, 1.0), (EnemyMaxHealth, 1000.0)]);
+    assert_eq!(ksante.effects[0].formula.eval(&s), Some(90.0));
+
+    let colored = page(&data(
+        "Q",
+        "|leveling = {{st|Mana Restored|{{as|{{ap|20 to 30}}|mana}}}}",
+    ));
+    assert_eq!(
+        colored.effects[0].formula.eval(&sample(&[(QLevel, 5.0)])),
+        Some(30.0)
+    );
+}
+
+#[test]
+fn issues_and_extras() {
+    use CtxVar::*;
+    // Non-numeric values and unknown templates are issues, not panics
+    let partial = page(&data(
+        "Q",
+        "|leveling = {{st|Magic Damage|{{ap|10 to 50}} (+ {{ai|Feast|Cho'Gath}})}}",
+    ));
+    assert_eq!(partial.effects[0].issues.len(), 1);
+    assert_eq!(
+        partial.effects[0].formula.eval(&sample(&[(QLevel, 1.0)])),
+        Some(10.0)
+    );
+
+    let text = page(&data(
+        "Q",
+        "|leveling = {{st|Magic Damage|{{ap|1 to 5|10 to 20}}}}",
+    ));
+    assert_eq!(text.effects[0].issues.len(), 1);
+
+    // Ryze Q: the Flux bonus by R rank
+    let ryze = page(&data(
+        "Q",
+        "|description4 = deals {{pp|type=''Realm Warp's'' Rank|key=%|10 to 100 for 4|0 to 3}} increased damage",
+    ));
+    assert_eq!(ryze.extras[0].label, "description4");
+    assert_eq!(
+        ryze.extras[0].formula.eval(&sample(&[(RLevel, 2.0)])),
+        Some(70.0)
+    );
+}
+
+#[test]
+fn champions_are_assembled_by_file_order() {
+    let dir = std::env::temp_dir().join("tutorlolv2_wikitext_assembly");
+    let _ = std::fs::remove_dir_all(&dir);
+    std::fs::create_dir_all(&dir).unwrap();
+
+    let page = |name: &str, skill: &str, label: &str| {
+        format!(
+            "{{{{{{{{{{1<noinclude>|Ability data</noinclude>}}}}}}|{name}\n|skill = {skill}\n|leveling = {{{{st|{label}|{{{{ap|1 to 5}}}}|{label}|{{{{ap|2 to 6}}}}}}}}\n}}}}"
+        )
+    };
+    std::fs::write(dir.join("Q1.lua"), page("Second", "Q", "Magic Damage")).unwrap();
+    std::fs::write(dir.join("Q0.lua"), page("First", "Q", "Magic Damage")).unwrap();
+    std::fs::write(
+        dir.join("W0.lua"),
+        "<noinclude>{{Champion data|Jayce}}</noinclude>",
+    )
+    .unwrap();
+    std::fs::write(
+        dir.join("E0.lua"),
+        page("Bad", "{{Data Jayce/Hextech Capacitor|pst2|skill}}", "X"),
+    )
+    .unwrap();
+
+    let lookup = Lookup::new("return {}", "return {}").unwrap();
+    let (model, skipped) = ChampionModel::from_dir("Jayce", &dir, &lookup);
+
+    let q = &model.abilities[&Key::Q];
+    assert_eq!(
+        (q[0].name.as_str(), q[1].name.as_str()),
+        ("First", "Second")
+    );
+    // A repeated label keeps both effects
+    assert_eq!(q[0].effects.len(), 2);
+    assert!(!model.abilities.contains_key(&Key::W));
+    assert_eq!(skipped.len(), 1);
+    assert!(skipped[0].contains("E0.lua"));
+}
+
+#[test]
+#[ignore = "needs the cache of wiki pages"]
+fn every_cached_champion_parses() {
+    let lookup = Lookup::from_cache_at(Path::new("..")).unwrap();
+    let mut skipped = Vec::new();
+
+    for entry in std::fs::read_dir("../cache/wiki/champions").unwrap().flatten() {
+        let abilities = entry.path().join("abilities");
+
+        if abilities.is_dir() {
+            let id = entry.file_name().into_string().unwrap();
+            skipped.extend(ChampionModel::from_dir(&id, &abilities, &lookup).1);
+        }
+    }
+
+    println!("{skipped:#?}");
+    assert!(skipped.len() < 5, "{} pages skipped", skipped.len());
+}
+
+#[test]
+fn legacy_formulas_compare_by_value() {
+    let samples = Sample::series();
+    let values = |src: &str| -> Vec<f64> {
+        let f = LegacyFormula::parse(src).unwrap();
+        samples.iter().map(|s| f.eval(s)).collect()
+    };
+
+    let a = values("((5.0) + (40.0 * (ctx.q_level - 1.0))) + ((1.25) * ctx.attack_damage)");
+    let b = values("ctx.attack_damage * 1.25 + 5.0 + 40.0 * (ctx.q_level - 1.0)");
+    assert!(Report::equal(&a, &b));
+    assert!(!Report::equal(&a, &values("0.8 * ctx.ability_power")));
+
+    let table = LegacyFormula::parse(
+        "(match ctx.level { ..6 => 0.3, 6..11 => 0.4, 11..16 => 0.5, 16.. => 0.6 }) * ctx.bonus_move_speed",
+    )
+    .unwrap();
+    let s = Sample([(CtxVar::Level, 11.0), (CtxVar::BonusMoveSpeed, 100.0)].into());
+    assert!((table.eval(&s) - 50.0).abs() < 1e-9);
+    let ranks =
+        LegacyFormula::parse("match ctx.r_level {..=1 => 375.0, 2 => 630.0, 3.. => 945.0}").unwrap();
+    assert_eq!(ranks.eval(&Sample([(CtxVar::RLevel, 2.0)].into())), 630.0);
+
+    // Both non-finite at a sample is equal; one finite and one not is different
+    assert!(Report::equal(&[f64::INFINITY], &[f64::NAN]));
+    assert!(!Report::equal(&[1.0], &[f64::INFINITY]));
+
+    // Model formulas print to strings the same reader understands
+    let f = Formula::ByRank {
+        rank: CtxVar::QLevel,
+        values: vec![5.0, 45.0, 85.0, 125.0, 165.0],
+    } + Formula::Var(CtxVar::AttackDamage) * 1.25;
+    let printed = values(&f.to_string());
+    let evaluated = samples.iter().map(|s| f.eval(s).unwrap()).collect::<Vec<_>>();
+    assert!(Report::equal(&printed, &evaluated));
+    assert!(Report::equal(&printed, &a));
+}
+
+#[test]
+#[ignore = "needs the cache of wiki pages and model.json"]
+fn at_least_60_percent_of_formulas_are_equal() {
+    let report = Report::new(Path::new("..")).unwrap();
+    println!(
+        "equal {} different {} unreadable {} only current {} only model {} ({:.1}%)",
+        report.equal,
+        report.different,
+        report.unreadable,
+        report.only_current,
+        report.only_model,
+        report.percent_equal
+    );
+    assert!(report.percent_equal >= 60.0);
 }

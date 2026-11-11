@@ -6,7 +6,7 @@
 //! - `4% of target's maximum health`, without `(+`, when the scaling is the whole value
 
 use {
-    super::{Node, Nodes, Progression, Template},
+    super::{Arg, Node, Nodes, Progression, Template},
     lazy_regex::regex,
     serde::{Deserialize, Serialize},
     tutorlolv2_types::Key,
@@ -24,6 +24,9 @@ pub struct Scaling {
     pub additive: bool,
     /// Scalings of the ratio itself, written right after it
     pub nested: Vec<Scaling>,
+    /// Power of the whole term, written as `(+ 1.14% AP)<sup>2</sup>`, which is
+    /// `(0.0114 * AP)²`. 1 otherwise
+    pub power: u8,
 }
 
 impl Scaling {
@@ -58,6 +61,12 @@ impl Scaling {
         let flat = flat.replace("'''", "").replace("''", "");
         let flat = regex!(r"\s+").replace_all(flat.trim(), " ");
 
+        // The power is written after the closing parenthesis
+        let (flat, power) = match regex!(r"^(.*?) ?<sup>(\d+)</sup>$").captures(&flat) {
+            Some(captures) => (captures[1].to_string(), captures[2].parse().ok()?),
+            None => (flat.into_owned(), 1),
+        };
+
         let captures = regex!(
             r"^(?<additive>\(\+ ?)?(?<ratio>RATIO|-?\d+(?:\.\d+)?)%(?: ?NESTED)*(?: per (?<per>\d+(?:\.\d+)?))? (?<stat>[^()]+?)(?<close>\))?$"
         )
@@ -81,6 +90,26 @@ impl Scaling {
             stat: captures["stat"].trim().to_string(),
             additive,
             nested,
+            power,
         })
+    }
+
+    /// Parses a scaling written across two `{{as}}`, as
+    /// `{{as|(+ 8%|hp}} {{as|of target's maximum health)}}`, where the first one opens
+    /// the parenthesis that the second one closes
+    pub fn merged(first: &Template, second: &Template, skill: Key) -> Option<Self> {
+        let mut text = first.positional(0)?.0.clone();
+        text.push(Node::Text(" ".into()));
+        text.extend(second.positional(0)?.0.iter().cloned());
+
+        let template = Template {
+            name: "as".into(),
+            args: vec![Arg {
+                name: None,
+                value: Nodes(text),
+            }],
+        };
+
+        Self::new(&template, skill)
     }
 }

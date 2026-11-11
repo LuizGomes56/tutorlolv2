@@ -207,5 +207,7 @@ pub async fn run() -> MayFail {
     runes::run().await?;
     // Resolves its keys against the champions, items and runes parsed above
     map_changes::run().await?;
+    // Reads the data modules of champions and items downloaded above
+    wikitext::build::parse_model()?;
     lock::write()
 }

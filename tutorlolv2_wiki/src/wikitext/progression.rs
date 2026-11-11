@@ -221,7 +221,7 @@ impl Builder {
         };
 
         let formula = match formula.contains("to") {
-            true => Formula::from_ranges(&formula).replace("times", &times.to_string()),
+            true => RangeFormula::from_ranges(&formula).replace("times", &times.to_string()),
             false => formula,
         };
 
@@ -240,10 +240,10 @@ impl Builder {
 /// Port of `string_to_formula`, which rewrites every `A to B` of a formula as
 /// `(A)+((B)-(A))/(times-1)*(x-1)`, where `A` is the operand on the left of `to`
 /// up to an unmatched `(`, and `B` the one on the right up to an unmatched `)`
-struct Formula;
+pub(super) struct RangeFormula;
 
-impl Formula {
-    fn from_ranges(formula: &str) -> String {
+impl RangeFormula {
+    pub(super) fn from_ranges(formula: &str) -> String {
         let mut value = formula.replace(' ', "");
 
         while let Some(index) = value.find("to") {

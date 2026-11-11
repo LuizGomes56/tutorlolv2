@@ -1,7 +1,7 @@
 use clap::{Parser, Subcommand, ValueEnum};
 use tutorlolv2_wiki::{
     HTTP_CLIENT, MayFail, champions, items, lock, lol_version, map_changes, runes, scraper, stats,
-    version,
+    version, wikitext,
 };
 
 #[derive(Parser, Debug)]
@@ -78,6 +78,12 @@ pub enum Wiki {
     ChampionsParseAbilities,
     #[clap(alias = "cpe")]
     ChampionsParseExceptions,
+    /// Writes the formula-ready model of every ability to `cache/wiki/champions/model.json`
+    #[clap(alias = "cpm")]
+    ChampionsParseModel,
+    /// Compares `model.json` with the current formulas into `model_report.json`
+    #[clap(alias = "ccm")]
+    ChampionsCompareModel,
     #[clap(alias = "i")]
     Items,
     #[clap(alias = "id")]
@@ -175,6 +181,8 @@ async fn main() -> MayFail {
             Wiki::ChampionsParseAbilities => champions::abilities::parse(),
             Wiki::ChampionsDownloadExceptions => champions::exceptions::download().await,
             Wiki::ChampionsParseExceptions => champions::exceptions::parse(),
+            Wiki::ChampionsParseModel => wikitext::build::parse_model(),
+            Wiki::ChampionsCompareModel => wikitext::compare::compare_model(),
             Wiki::Items => items::run().await,
             Wiki::ItemsDownload => items::download().await.map(|_| ()),
             Wiki::ItemsParse => items::parse().and_then(|_| items::item_parser::parse_items()),

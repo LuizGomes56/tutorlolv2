@@ -11,13 +11,23 @@ use {
 };
 
 pub mod ability;
+pub mod build;
+pub mod compare;
 pub mod expr;
+pub mod lookup;
+pub mod model;
+pub mod passive;
 pub mod progression;
 pub mod scaling;
 
 pub use {
     ability::{RawAbility, SkillTab},
+    build::PageContext,
+    compare::{Difference, LegacyFormula, Report},
     expr::Expr,
+    lookup::Lookup,
+    passive::PassiveProgression,
+    model::{AbilityModel, ChampionModel, EffectModel, Formula, Sample},
     progression::{Progression, Value},
     scaling::Scaling,
 };
