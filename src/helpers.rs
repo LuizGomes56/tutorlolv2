@@ -265,6 +265,33 @@ impl WikiStats {
 }
 
 impl ChampionId {
+    pub const fn avg_stacks(&self, game_time: f32) -> f32 {
+        // 30 minutes per game is the average
+        const AVERAGE_GAME_TIME: u32 = 60 * 30;
+
+        pub const fn time(game_time: f32, average: u32) -> f32 {
+            average as f32 * game_time / AVERAGE_GAME_TIME as f32
+        }
+
+        // We don't know how many stacks the player has at that moment, so
+        // the best we can do is to guess how much he would have at 30 minutes,
+        // and calculate the average per minute so we can add. Obviously it will
+        // grow linearly, while in game it is more common to get more stacks
+        // towards late-game
+        //
+        // Note: These values might be outdated, and they come from my personal
+        // experience playing the game, not a concrete set of data
+        match self {
+            ChampionId::Chogath => time(game_time, 12),
+            ChampionId::Nasus => time(game_time, 600),
+            ChampionId::Smolder => time(game_time, 120),
+            ChampionId::AurelionSol => time(game_time, 190),
+            ChampionId::Thresh => time(game_time, 150),
+            ChampionId::Kindred => time(game_time, 5),
+            _ => 1.0,
+        }
+    }
+
     /// Mega Gnar uses melee item and rune effects; other forms use cached data.
     pub const fn effective_attack_type(self, is_mega_gnar: bool) -> AttackType {
         if matches!(self, ChampionId::Gnar) && is_mega_gnar {
@@ -1302,43 +1329,14 @@ impl EnemyFullState {
     }
 }
 
-pub const fn get_stacks(champion_id: ChampionId, game_time: f32) -> f32 {
-    // 30 minutes per game is the average
-    const AVERAGE_GAME_TIME: u32 = 60 * 30;
+impl Modifiers {
+    /// Inserts ability modifier buffs or debuffs for each individual ability, based on their
+    /// letter discriminant: `P`, `Q`, `W`, `E`, `R`.
+    pub const fn ability_id_mod(&self, ability_id: AbilityId, damage_type: DamageType) -> f32 {
+        let Modifiers { damages, abilities } = self;
 
-    pub const fn time(game_time: f32, average: u32) -> f32 {
-        average as f32 * game_time / AVERAGE_GAME_TIME as f32
+        damages.modifier(damage_type) * abilities.modifier(ability_id)
     }
-
-    // We don't know how many stacks the player has at that moment, so
-    // the best we can do is to guess how much he would have at 30 minutes,
-    // and calculate the average per minute so we can add. Obviously it will
-    // grow linearly, while in game it is more common to get more stacks
-    // towards late-game
-    //
-    // Note: These values might be outdated, and they come from my personal
-    // experience playing the game, not a concrete set of data
-    match champion_id {
-        ChampionId::Chogath => time(game_time, 12),
-        ChampionId::Nasus => time(game_time, 600),
-        ChampionId::Smolder => time(game_time, 120),
-        ChampionId::AurelionSol => time(game_time, 190),
-        ChampionId::Thresh => time(game_time, 150),
-        ChampionId::Kindred => time(game_time, 5),
-        _ => 1.0,
-    }
-}
-
-/// Inserts ability modifier buffs or debuffs for each individual ability, based on their
-/// letter discriminant: `P`, `Q`, `W`, `E`, `R`.
-pub const fn ability_id_mod(
-    ability_id: AbilityId,
-    damage_type: DamageType,
-    modifiers: Modifiers,
-) -> f32 {
-    let Modifiers { damages, abilities } = modifiers;
-
-    damages.modifier(damage_type) * abilities.modifier(ability_id)
 }
 
 impl Attacks {
@@ -1558,7 +1556,7 @@ impl DamageTable {
             } = metadata[i];
 
             let closure = unsafe { closures.get_unchecked(i) };
-            let modifier = ability_id_mod(kind, damage_type, modifiers);
+            let modifier = modifiers.ability_id_mod(kind, damage_type);
             let damage = (modifier * closure(ctx)) as i32;
 
             onhit.inc_attr(attributes, damage);

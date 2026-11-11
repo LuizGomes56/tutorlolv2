@@ -7,7 +7,7 @@ impl Generator for Hecarim {
 
         self.ability(Key::Q, [("Physical Damage", Void)])
             .modify(Q(Void), rampage)?
-            .map_modify(Q(Void), Key::Q, "Physical Damage", rampage)?
+            .map_modify(Q(Void), "Physical Damage", rampage)?
             .ability(
                 Key::W,
                 [

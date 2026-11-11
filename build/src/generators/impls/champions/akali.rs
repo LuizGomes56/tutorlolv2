@@ -12,7 +12,7 @@ impl Generator for Akali {
         .merge_sum([P(_1), P(_2)], P(Void))?
         .map_sum(
             P(Void),
-            [(Key::P, "Swinging Kama"), (Key::P, "Swinging Kama [1]")],
+            ["Swinging Kama", "Swinging Kama [1]"],
         )?
         .ability(Key::Q, [("Magic Damage", Void)])
         .ability(

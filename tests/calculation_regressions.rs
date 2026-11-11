@@ -2,8 +2,8 @@
 
 use core::num::NonZeroU8;
 use tutorlolv2::{
-    AttackType, ChampionId, GameMap, ItemId, L_MSTR, RuneId, calculator::calculator,
-    helpers::get_stacks, model::*, realtime::realtime, riot::*,
+    AttackType, ChampionId, GameMap, ItemId, L_MSTR, RuneId, calculator::calculator, model::*,
+    realtime::realtime, riot::*,
 };
 
 fn close(actual: f32, expected: f32) {
@@ -249,9 +249,9 @@ fn estimated_stacks_grow_with_elapsed_time() {
         (ChampionId::AurelionSol, 190.0),
         (ChampionId::Kindred, 5.0),
     ] {
-        close(get_stacks(champion, 900.0), average / 2.0);
-        close(get_stacks(champion, 1800.0), average);
-        close(get_stacks(champion, 3600.0), average * 2.0);
+        close(champion.avg_stacks(900.0), average / 2.0);
+        close(champion.avg_stacks(1800.0), average);
+        close(champion.avg_stacks(3600.0), average * 2.0);
     }
 }
 

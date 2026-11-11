@@ -183,7 +183,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
         adaptive_type,
         ability_levels,
         level,
-        stacks: get_stacks(current_player_champion_id, game_time),
+        stacks: current_player_champion_id.avg_stacks(game_time),
     };
 
     let owned_runes = general_runes

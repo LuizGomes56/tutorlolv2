@@ -93,110 +93,112 @@ const DESCRIPTIVE: &[&str] = &[
     "current",
 ];
 
-/// Applies a Ratio or Base change to the right ones of `candidates`, the effects
-/// of what the change targets. `key` simplifies the formulas, and `ranged` reads
-/// the values that `{{rd}}` gives ranged champions
-pub fn decide<K: Clone>(
-    kind: &ChangeKind,
-    key: Key,
-    ranged: bool,
-    candidates: Vec<Candidate<K>>,
-) -> Decision<K> {
-    let (part, plan) = match kind {
-        ChangeKind::Ratio {
-            part,
-            scaling,
-            ranged: ranged_scaling,
-        } => {
-            let scaling = match (ranged, ranged_scaling) {
-                (true, Some(ranged)) => ranged,
-                _ => scaling,
-            };
+impl ChangeKind {
+    /// Applies a Ratio or Base change to the right ones of `candidates`, the effects
+    /// of what the change targets. `key` simplifies the formulas, and `ranged` reads
+    /// the values that `{{rd}}` gives ranged champions
+    pub fn decide<K: Clone>(
+        &self,
+        key: Key,
+        ranged: bool,
+        candidates: Vec<Candidate<K>>,
+    ) -> Decision<K> {
+        let (part, plan) = match self {
+            ChangeKind::Ratio {
+                part,
+                scaling,
+                ranged: ranged_scaling,
+            } => {
+                let scaling = match (ranged, ranged_scaling) {
+                    (true, Some(ranged)) => ranged,
+                    _ => scaling,
+                };
 
-            let Some(ctx_var) = scaling.ctx_var().filter(|v| *v != CtxVar::Unknown) else {
-                return Decision::Manual("its scaling has no known variable");
-            };
+                let Some(ctx_var) = scaling.ctx_var().filter(|v| *v != CtxVar::Unknown) else {
+                    return Decision::Manual("its scaling has no known variable");
+                };
 
-            let Some(new) = scaling_values(scaling) else {
-                return Decision::Manual("its scaling is not a ratio");
-            };
+                let Some(new) = scaling.values() else {
+                    return Decision::Manual("its scaling is not a ratio");
+                };
 
-            let mut found = Vec::new();
+                let mut found = Vec::new();
 
-            for candidate in candidates {
-                let indexes = candidate
-                    .effect
-                    .scalings
-                    .iter()
-                    .enumerate()
-                    .filter(|(_, s)| s.ctx_var() == Some(ctx_var))
-                    .map(|(i, _)| i)
+                for candidate in candidates {
+                    let indexes = candidate
+                        .effect
+                        .scalings
+                        .iter()
+                        .enumerate()
+                        .filter(|(_, s)| s.ctx_var() == Some(ctx_var))
+                        .map(|(i, _)| i)
+                        .collect::<Vec<_>>();
+
+                    match indexes.as_slice() {
+                        [] => {}
+                        [index] => match candidate.effect.scalings[*index].values() {
+                            Some(old) => found.push((candidate, Target::Scaling(*index), old)),
+                            None => return Decision::Manual("an effect scales with it by level"),
+                        },
+                        _ => return Decision::Manual("an effect scales with it more than once"),
+                    }
+                }
+
+                if found.is_empty() {
+                    return Decision::Manual("no selected effect scales with it");
+                }
+
+                (
+                    part,
+                    Plan {
+                        found,
+                        new,
+                        scaling: Some(scaling.clone()),
+                    },
+                )
+            }
+            ChangeKind::Base { part, amount } => {
+                if amount.percent {
+                    return Decision::Manual("its values are not a plain base damage");
+                }
+
+                let values = match (ranged, &amount.ranged) {
+                    (true, Some(ranged)) => ranged,
+                    _ => &amount.values,
+                };
+
+                let new = match values {
+                    Values::Scalar(value) => vec![*value],
+                    Values::ByRank(values) => values.clone(),
+                    Values::ByLevel { .. } => return Decision::Manual("its values are by level"),
+                };
+
+                let found = candidates
+                    .into_iter()
+                    .filter_map(|c| {
+                        let old = c.effect.base.clone()?;
+                        Some((c, Target::Base, old))
+                    })
                     .collect::<Vec<_>>();
 
-                match indexes.as_slice() {
-                    [] => {}
-                    [index] => match scaling_values(&candidate.effect.scalings[*index]) {
-                        Some(old) => found.push((candidate, Target::Scaling(*index), old)),
-                        None => return Decision::Manual("an effect scales with it by level"),
-                    },
-                    _ => return Decision::Manual("an effect scales with it more than once"),
+                if found.is_empty() {
+                    return Decision::Manual("no selected effect has a base damage");
                 }
+
+                (
+                    part,
+                    Plan {
+                        found,
+                        new,
+                        scaling: None,
+                    },
+                )
             }
+            _ => return Decision::Manual("it needs a generator"),
+        };
 
-            if found.is_empty() {
-                return Decision::Manual("no selected effect scales with it");
-            }
-
-            (
-                part,
-                Plan {
-                    found,
-                    new,
-                    scaling: Some(scaling.clone()),
-                },
-            )
-        }
-        ChangeKind::Base { part, amount } => {
-            if amount.percent {
-                return Decision::Manual("its values are not a plain base damage");
-            }
-
-            let values = match (ranged, &amount.ranged) {
-                (true, Some(ranged)) => ranged,
-                _ => &amount.values,
-            };
-
-            let new = match values {
-                Values::Scalar(value) => vec![*value],
-                Values::ByRank(values) => values.clone(),
-                Values::ByLevel { .. } => return Decision::Manual("its values are by level"),
-            };
-
-            let found = candidates
-                .into_iter()
-                .filter_map(|c| {
-                    let old = c.effect.base.clone()?;
-                    Some((c, Target::Base, old))
-                })
-                .collect::<Vec<_>>();
-
-            if found.is_empty() {
-                return Decision::Manual("no selected effect has a base damage");
-            }
-
-            (
-                part,
-                Plan {
-                    found,
-                    new,
-                    scaling: None,
-                },
-            )
-        }
-        _ => return Decision::Manual("it needs a generator"),
-    };
-
-    plan.apply(part, key)
+        plan.apply(part, key)
+    }
 }
 
 /// Which value of an effect a change replaces
@@ -324,7 +326,7 @@ impl<K: Clone> Plan<K> {
                     let Some(scaling) = self
                         .scaling
                         .as_ref()
-                        .and_then(|s| with_values(s, values.clone()))
+                        .and_then(|s| s.with_values(values.clone()))
                     else {
                         return Decision::Manual("its scaling can't be scaled");
                     };
@@ -353,43 +355,47 @@ impl<K: Clone> Plan<K> {
     }
 }
 
-/// Values of a scaling that a change can replace
-fn scaling_values(scaling: &Scaling) -> Option<Vec<f64>> {
-    match scaling {
-        Scaling::Simple { value, .. }
-        | Scaling::Per100 { value, .. }
-        | Scaling::PercentAttr { value, .. } => Some(vec![*value]),
-        Scaling::Ranked { values, .. } | Scaling::RankedPer100 { values, .. } => {
-            Some(values.clone())
+impl Scaling {
+    /// Values of a scaling that a change can replace
+    fn values(&self) -> Option<Vec<f64>> {
+        match self {
+            Scaling::Simple { value, .. }
+            | Scaling::Per100 { value, .. }
+            | Scaling::PercentAttr { value, .. } => Some(vec![*value]),
+            Scaling::Ranked { values, .. } | Scaling::RankedPer100 { values, .. } => {
+                Some(values.clone())
+            }
+            _ => None,
         }
-        _ => None,
     }
-}
 
-/// `scaling` with other values, by rank when there are several
-fn with_values(scaling: &Scaling, values: Vec<f64>) -> Option<Scaling> {
-    let ctx_var = scaling.ctx_var()?;
+    /// This scaling with other values, by rank when there are several
+    fn with_values(&self, values: Vec<f64>) -> Option<Self> {
+        let ctx_var = self.ctx_var()?;
 
-    Some(match (scaling, values.as_slice()) {
-        (Scaling::Simple { .. } | Scaling::Ranked { .. }, [value]) => Scaling::Simple {
-            value: *value,
-            ctx_var,
-        },
-        (Scaling::Simple { .. } | Scaling::Ranked { .. }, _) => Scaling::Ranked { values, ctx_var },
-        (Scaling::Per100 { .. } | Scaling::RankedPer100 { .. }, [value]) => Scaling::Per100 {
-            value: *value,
-            ctx_var,
-        },
-        (Scaling::Per100 { .. } | Scaling::RankedPer100 { .. }, _) => {
-            Scaling::RankedPer100 { values, ctx_var }
-        }
-        (Scaling::PercentAttr { debug, .. }, [value]) => Scaling::PercentAttr {
-            value: *value,
-            debug: debug.clone(),
-            ctx_var,
-        },
-        _ => return None,
-    })
+        Some(match (self, values.as_slice()) {
+            (Scaling::Simple { .. } | Scaling::Ranked { .. }, [value]) => Scaling::Simple {
+                value: *value,
+                ctx_var,
+            },
+            (Scaling::Simple { .. } | Scaling::Ranked { .. }, _) => {
+                Scaling::Ranked { values, ctx_var }
+            }
+            (Scaling::Per100 { .. } | Scaling::RankedPer100 { .. }, [value]) => Scaling::Per100 {
+                value: *value,
+                ctx_var,
+            },
+            (Scaling::Per100 { .. } | Scaling::RankedPer100 { .. }, _) => {
+                Scaling::RankedPer100 { values, ctx_var }
+            }
+            (Scaling::PercentAttr { debug, .. }, [value]) => Scaling::PercentAttr {
+                value: *value,
+                debug: debug.clone(),
+                ctx_var,
+            },
+            _ => return None,
+        })
+    }
 }
 
 /// Values of a change for an effect with `len` values. A single value applies
@@ -444,7 +450,7 @@ fn follows<K>(
             let values = |e: &Effect| {
                 e.scalings
                     .iter()
-                    .filter_map(scaling_values)
+                    .filter_map(Scaling::values)
                     .flatten()
                     .collect::<Vec<_>>()
             };
@@ -577,7 +583,7 @@ impl ChampionOverrides {
 
         let ranged = matches!(champion.attack_type, AttackType::Ranged);
 
-        match decide(&change.kind, key, ranged, candidates) {
+        match change.kind.decide(key, ranged, candidates) {
             Decision::Apply { effects, rule } => {
                 let labels = effects
                     .iter()
@@ -597,37 +603,39 @@ impl ChampionOverrides {
     }
 }
 
-/// Outcome of a change of an item that the item data may already have, as
-/// disabled items or stats with the same value. `code` is the code of the module,
-/// which is also the key of the item modes
-pub fn item_outcome(change: &MapChange, item: &WikiItem, code: &str) -> Outcome {
-    match &change.kind {
-        ChangeKind::Disabled => match item.modes.get(code) {
-            Some(false) => Outcome::AlreadyApplied("the item data doesn't sell it on this map"),
-            _ => Outcome::Manual("the item data sells it on this map"),
-        },
-        ChangeKind::ItemStat { stat, amount } => {
-            let current = item
-                .stats
-                .iter()
-                .find(|(name, _)| StatName::from_str(name).ok() == Some(*stat))
-                .map(|(_, value)| *value);
+impl MapChange {
+    /// Outcome of a change of an item that the item data may already have, as
+    /// disabled items or stats with the same value. `code` is the code of the module,
+    /// which is also the key of the item modes
+    pub fn item_outcome(&self, item: &WikiItem, code: &str) -> Outcome {
+        match &self.kind {
+            ChangeKind::Disabled => match item.modes.get(code) {
+                Some(false) => Outcome::AlreadyApplied("the item data doesn't sell it on this map"),
+                _ => Outcome::Manual("the item data sells it on this map"),
+            },
+            ChangeKind::ItemStat { stat, amount } => {
+                let current = item
+                    .stats
+                    .iter()
+                    .find(|(name, _)| StatName::from_str(name).ok() == Some(*stat))
+                    .map(|(_, value)| *value);
 
-            match (&amount.values, current) {
-                (Values::Scalar(value), Some(current)) if *value == current => {
-                    Outcome::AlreadyApplied("the item has the same stat")
+                match (&amount.values, current) {
+                    (Values::Scalar(value), Some(current)) if *value == current => {
+                        Outcome::AlreadyApplied("the item has the same stat")
+                    }
+                    (Values::Scalar(_), _) if amount.ranged.is_none() => Outcome::Applied {
+                        effects: vec!["item stats".into()],
+                        rule: "the stats of the item",
+                    },
+                    _ => Outcome::Manual("its stat is not a single value"),
                 }
-                (Values::Scalar(_), _) if amount.ranged.is_none() => Outcome::Applied {
-                    effects: vec!["item stats".into()],
-                    rule: "the stats of the item",
-                },
-                _ => Outcome::Manual("its stat is not a single value"),
             }
+            kind if ChangeKind::is_damage_relevant(kind.name()) => {
+                Outcome::Manual("items need a generator")
+            }
+            _ => Outcome::NotRelevant,
         }
-        kind if ChangeKind::is_damage_relevant(kind.name()) => {
-            Outcome::Manual("items need a generator")
-        }
-        _ => Outcome::NotRelevant,
     }
 }
 
@@ -688,7 +696,7 @@ impl EffectOverrides {
             .collect();
 
         // Items and runes are simplified as innates
-        match decide(&change.kind, Key::P, ranged, candidates) {
+        match change.kind.decide(Key::P, ranged, candidates) {
             Decision::Apply { effects, rule } => {
                 let labels = effects.iter().map(|(id, _)| id.clone()).collect();
 

@@ -392,137 +392,141 @@ fn selected_effects() -> MayFail<Selected> {
     })
 }
 
-/// Outcome of every change of a mode, by key and index of the change
-pub fn outcomes(
-    changes: &MapChanges,
-    code: &str,
-    champions: &BTreeMap<String, WikiChampion>,
-    items: &BTreeMap<String, WikiItem>,
-    runes: &BTreeMap<String, WikiRune>,
-    selected: &Selected,
-) -> BTreeMap<(String, usize), Outcome> {
-    let mut outcomes = BTreeMap::new();
+impl MapChanges {
+    /// Outcome of every change of a mode, by key and index of the change
+    pub fn outcomes(
+        &self,
+        code: &str,
+        champions: &BTreeMap<String, WikiChampion>,
+        items: &BTreeMap<String, WikiItem>,
+        runes: &BTreeMap<String, WikiRune>,
+        selected: &Selected,
+    ) -> BTreeMap<(String, usize), Outcome> {
+        let mut outcomes = BTreeMap::new();
 
-    for champion in champions.values() {
-        let selected = selected
-            .champions
-            .get(&champion.champion_id)
-            .map(Vec::as_slice)
-            .unwrap_or_default();
+        for champion in champions.values() {
+            let selected = selected
+                .champions
+                .get(&champion.champion_id)
+                .map(Vec::as_slice)
+                .unwrap_or_default();
 
-        for (key, i, outcome) in ChampionOverrides::new(champion, changes, selected).outcomes {
-            outcomes.insert((key, i), outcome);
-        }
-    }
-
-    for (key, entry) in &changes.entries {
-        // Effects of the item slots its generator names, or every rune effect
-        let effects = match &entry.target {
-            ChangeTarget::Item { item_id } if let Some(item) = items.get(item_id) => {
-                let slots = selected
-                    .items
-                    .get(item_id)
-                    .map(Vec::as_slice)
-                    .unwrap_or_default();
-
-                item.slot_effects()
-                    .filter(|(slot, ..)| slots.contains(slot))
-                    .map(|(slot, name, effect)| (slot.to_string(), (name, effect.clone())))
-                    .collect()
+            for (key, i, outcome) in ChampionOverrides::new(champion, self, selected).outcomes {
+                outcomes.insert((key, i), outcome);
             }
-            ChangeTarget::Rune { rune_id } if let Some(rune) = runes.get(rune_id) => rune
-                .effects
-                .iter()
-                .filter(|(_, e)| e.formula.as_deref().is_some_and(|f| f != "0.0"))
-                .map(|(name, e)| (name.clone(), (name.clone(), e.clone())))
-                .collect(),
-            _ => BTreeMap::new(),
-        };
+        }
 
-        let effect_outcomes = EffectOverrides::new(&entry.target, changes, &effects, false)
-            .outcomes
-            .into_iter()
-            .map(|(_, i, outcome)| (i, outcome))
-            .collect::<BTreeMap<_, _>>();
+        for (key, entry) in &self.entries {
+            // Effects of the item slots its generator names, or every rune effect
+            let effects = match &entry.target {
+                ChangeTarget::Item { item_id } if let Some(item) = items.get(item_id) => {
+                    let slots = selected
+                        .items
+                        .get(item_id)
+                        .map(Vec::as_slice)
+                        .unwrap_or_default();
 
-        for (i, change) in entry.changes.iter().enumerate() {
-            let relevant = ChangeKind::is_damage_relevant(change.kind.name());
-            let outcome = match &entry.target {
-                ChangeTarget::Item { item_id }
-                    if let Some(item) = items.get(item_id)
-                        && matches!(
-                            change.kind,
-                            ChangeKind::ItemStat { .. } | ChangeKind::Disabled
-                        ) =>
-                {
-                    overrides::item_outcome(change, item, code)
+                    item.slot_effects()
+                        .filter(|(slot, ..)| slots.contains(slot))
+                        .map(|(slot, name, effect)| (slot.to_string(), (name, effect.clone())))
+                        .collect()
                 }
-                ChangeTarget::Champion { .. }
-                | ChangeTarget::Ability { .. }
-                | ChangeTarget::NamedAbility { .. } => continue,
-                _ if !relevant => Outcome::NotRelevant,
-                ChangeTarget::Item { .. } | ChangeTarget::Rune { .. } => effect_outcomes
-                    .get(&i)
-                    .cloned()
-                    .unwrap_or(Outcome::Manual("it needs a generator")),
-                ChangeTarget::SummonerSpell => Outcome::NotRelevant,
-                _ => Outcome::Manual("its key names nothing known"),
-            };
-
-            outcomes.insert((key.clone(), i), outcome);
-        }
-    }
-
-    // Changes that generators read for their constants
-    for (key, entry) in &changes.entries {
-        let id = match &entry.target {
-            ChangeTarget::Champion { champion_id }
-            | ChangeTarget::Ability { champion_id, .. }
-            | ChangeTarget::NamedAbility { champion_id, .. } => champion_id,
-            ChangeTarget::Item { item_id } => item_id,
-            ChangeTarget::Rune { rune_id } => rune_id,
-            _ => continue,
-        };
-
-        let Some(reads) = selected.generators.get(id) else {
-            continue;
-        };
-
-        for (i, change) in entry.changes.iter().enumerate() {
-            let Some(outcome) = outcomes.get_mut(&(key.clone(), i)) else {
-                continue;
-            };
-
-            if reads.reads(change) {
-                *outcome = Outcome::Applied {
-                    effects: vec!["constants".into()],
-                    rule: "its generator",
-                };
-                continue;
-            }
-
-            // An item that only declares constants applies a slot's changes only
-            // through its constants, read with `map_formulas`
-            if let (ChangeTarget::Item { .. }, Outcome::Applied { effects, .. }) =
-                (&entry.target, &*outcome)
-                && !reads.assigns_damage
-                && !matches!(change.kind, ChangeKind::ItemStat { .. })
-            {
-                *outcome = match effects
+                ChangeTarget::Rune { rune_id } if let Some(rune) = runes.get(rune_id) => rune
+                    .effects
                     .iter()
-                    .all(|slot| reads.formula_slots.contains(&slot.as_str()))
-                {
-                    true => Outcome::Applied {
+                    .filter(|(_, e)| e.formula.as_deref().is_some_and(|f| f != "0.0"))
+                    .map(|(name, e)| (name.clone(), (name.clone(), e.clone())))
+                    .collect(),
+                _ => BTreeMap::new(),
+            };
+
+            let effect_outcomes = EffectOverrides::new(&entry.target, self, &effects, false)
+                .outcomes
+                .into_iter()
+                .map(|(_, i, outcome)| (i, outcome))
+                .collect::<BTreeMap<_, _>>();
+
+            for (i, change) in entry.changes.iter().enumerate() {
+                let relevant = ChangeKind::is_damage_relevant(change.kind.name());
+                let outcome = match &entry.target {
+                    ChangeTarget::Item { item_id }
+                        if let Some(item) = items.get(item_id)
+                            && matches!(
+                                change.kind,
+                                ChangeKind::ItemStat { .. } | ChangeKind::Disabled
+                            ) =>
+                    {
+                        change.item_outcome(item, code)
+                    }
+                    ChangeTarget::Champion { .. }
+                    | ChangeTarget::Ability { .. }
+                    | ChangeTarget::NamedAbility { .. } => continue,
+                    _ if !relevant => Outcome::NotRelevant,
+                    ChangeTarget::Item { .. } | ChangeTarget::Rune { .. } => effect_outcomes
+                        .get(&i)
+                        .cloned()
+                        .unwrap_or(Outcome::Manual("it needs a generator")),
+                    ChangeTarget::SummonerSpell => Outcome::NotRelevant,
+                    _ => Outcome::Manual("its key names nothing known"),
+                };
+
+                outcomes.insert((key.clone(), i), outcome);
+            }
+        }
+
+        // Changes that generators read for their constants
+        for (key, entry) in &self.entries {
+            let id = match &entry.target {
+                ChangeTarget::Champion { champion_id }
+                | ChangeTarget::Ability { champion_id, .. }
+                | ChangeTarget::NamedAbility { champion_id, .. } => champion_id,
+                ChangeTarget::Item { item_id } => item_id,
+                ChangeTarget::Rune { rune_id } => rune_id,
+                _ => continue,
+            };
+
+            let Some(reads) = selected.generators.get(id) else {
+                continue;
+            };
+
+            for (i, change) in entry.changes.iter().enumerate() {
+                let Some(outcome) = outcomes.get_mut(&(key.clone(), i)) else {
+                    continue;
+                };
+
+                if reads.reads(change) {
+                    *outcome = Outcome::Applied {
                         effects: vec!["constants".into()],
                         rule: "its generator",
-                    },
-                    false => Outcome::Manual("its generator reads the slot for a constant only"),
-                };
+                    };
+                    continue;
+                }
+
+                // An item that only declares constants applies a slot's changes only
+                // through its constants, read with `map_formulas`
+                if let (ChangeTarget::Item { .. }, Outcome::Applied { effects, .. }) =
+                    (&entry.target, &*outcome)
+                    && !reads.assigns_damage
+                    && !matches!(change.kind, ChangeKind::ItemStat { .. })
+                {
+                    *outcome = match effects
+                        .iter()
+                        .all(|slot| reads.formula_slots.contains(&slot.as_str()))
+                    {
+                        true => Outcome::Applied {
+                            effects: vec!["constants".into()],
+                            rule: "its generator",
+                        },
+                        false => {
+                            Outcome::Manual("its generator reads the slot for a constant only")
+                        }
+                    };
+                }
             }
         }
-    }
 
-    outcomes
+        outcomes
+    }
 }
 
 /// Prints, for each mode, what its changes are, which ones are applied, and
@@ -574,7 +578,7 @@ pub fn report() -> MayFail {
             println!("   unresolved keys: {unresolved:?}");
         }
 
-        let outcomes = outcomes(changes, code, &champions, &items, &runes, &selected);
+        let outcomes = changes.outcomes(code, &champions, &items, &runes, &selected);
         let mut summary = BTreeMap::<String, usize>::new();
         let mut lines = BTreeMap::<String, Vec<String>>::new();
 

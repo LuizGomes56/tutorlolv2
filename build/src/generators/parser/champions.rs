@@ -750,22 +750,23 @@ impl Champion {
         self
     }
 
-    /// Damage of `into` on each mode that changes any of `effects`, as their sum
-    /// with [`Self::merge_sum`], whose result doesn't follow their changes
+    /// Damage of `into` on each mode that changes any of its `effects`, as their
+    /// sum with [`Self::merge_sum`], whose result doesn't follow their changes
     pub fn map_sum<const N: usize>(
         &mut self,
         into: AbilityId,
-        effects: [(Key, &str); N],
+        effects: [&str; N],
     ) -> MayFail<&mut Self> {
+        let key = into.as_key();
         let mut originals = Vec::new();
 
-        for (key, name) in effects {
+        for name in effects {
             originals.push(self.formula(key, name)?.parenthesize());
         }
 
         let mut by_mode = BTreeMap::<MapMode, Vec<String>>::new();
 
-        for (i, (key, name)) in effects.into_iter().enumerate() {
+        for (i, name) in effects.into_iter().enumerate() {
             for (mode, effect) in self.map_effect(key, name)? {
                 let formula = effect
                     .formula
@@ -783,15 +784,16 @@ impl Champion {
         Ok(self)
     }
 
-    /// Damage of `ability` on each mode that changes the effect `name` of `key`,
-    /// through `f`, the same closure that [`Self::modify`] gave it
+    /// Damage of `ability` on each mode that changes its effect `name`, through
+    /// `f`, the same closure that [`Self::modify`] gave it
     pub fn map_modify(
         &mut self,
         ability: AbilityId,
-        key: Key,
         name: &str,
         f: impl Fn(&str) -> String,
     ) -> MayFail<&mut Self> {
+        let key = ability.as_key();
+
         for (mode, effect) in self.map_effect(key, name)? {
             let formula = effect
                 .formula

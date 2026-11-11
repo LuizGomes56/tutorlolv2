@@ -1,15 +1,14 @@
-use core::num::NonZeroU8;
 use {
     crate::{
         ChampionId, GameMap, ItemId, RuneId,
         calculator::InferStats,
-        helpers::ability_id_mod,
         model::{
             AbilityLevels, Attacks, BasicStats, DamageModifiers, Dragons, EnemyState, EnemyStats,
             Modifiers, PlayerStats, RangeDamage, ResistShred, SelfState, SimpleStats,
             ValueException,
         },
     },
+    core::num::NonZeroU8,
     tutorlolv2_types::{AbilityId, AdaptiveType, AttackType, Ctx, TypeMetadata},
 };
 
@@ -29,7 +28,7 @@ pub const fn eval_abilities_const<const N: usize>(
             attributes,
         } = champion_id.metadata()[i];
 
-        let modifier = ability_id_mod(kind, damage_type, modifiers);
+        let modifier = modifiers.ability_id_mod(kind, damage_type);
         let damage = (modifier * champion_id.eval(ctx, kind)) as i32;
 
         onhit.inc_attr(attributes, damage);
