@@ -13,7 +13,10 @@
 //! 18 values when both have one
 
 use {
-    super::{Expr, Nodes, Template, Value, progression::RangeFormula},
+    super::{
+        Expr, Nodes, Template, Value,
+        progression::{RangeFormula, Round},
+    },
     lazy_regex::regex,
 };
 
@@ -37,11 +40,11 @@ impl PassiveProgression {
         let text = |nodes: &Nodes| nodes.to_string().trim().to_string();
         let named = |name: &str| template.named(name).map(text);
 
-        // 2 decimals unless `round=false`
+        // 2 decimals unless `round=false`, or `ceil`, `floor`, `abs` and `trunc`
         let round = |name: &str| match named(name).as_deref() {
             Some("false") => None,
-            Some(decimals) => decimals.parse().ok().or(Some(2)),
-            None => Some(2),
+            Some(round) => Round::new(round).or(Some(Round::Decimals(2))),
+            None => Some(Round::Decimals(2)),
         };
 
         let bottom = template.positional(0).map(text).unwrap_or_default();
@@ -56,7 +59,11 @@ impl PassiveProgression {
         let lens = rows.each_ref().map(|row| row.values.len());
         let mut fill = lens.map(|len| Self::DEFAULT_SIZE.saturating_sub(len));
 
-        match (lens[0] >= lens[1], rows[0].filling.is_none(), rows[1].filling.is_none()) {
+        match (
+            lens[0] >= lens[1],
+            rows[0].filling.is_none(),
+            rows[1].filling.is_none(),
+        ) {
             (true, true, _) => fill[1] = lens[0] - lens[1],
             (false, _, true) => fill[0] = lens[1] - lens[0],
             _ => {}
@@ -74,6 +81,11 @@ impl PassiveProgression {
 
         if bottom.values.is_empty() {
             return Err(format!("No values in {template}"));
+        }
+
+        // The module shows "Variables are unmatched" for rows of different sizes
+        if keys.len() != bottom.values.len() {
+            return Err(format!("Variables are unmatched in {template}"));
         }
 
         let axis = named("type")
@@ -145,11 +157,11 @@ struct Row {
     values: Vec<f64>,
     /// Index where the filling goes, its kind, and the value before it
     filling: Option<(usize, Filling, Option<f64>)>,
-    round: Option<i32>,
+    round: Option<Round>,
 }
 
 impl Row {
-    fn new(src: &str, round: Option<i32>) -> Result<Self, String> {
+    fn new(src: &str, round: Option<Round>) -> Result<Self, String> {
         let mut row = Self {
             round,
             ..Default::default()
@@ -254,15 +266,8 @@ impl Row {
     }
 
     fn push(&mut self, value: f64) {
-        let value = match self.round {
-            Some(decimals) => {
-                let factor = 10f64.powi(decimals);
-                (value * factor + 0.5).floor() / factor
-            }
-            None => value,
-        };
-
-        self.values.push(value);
+        self.values
+            .push(self.round.map_or(value, |round| round.apply(value)));
     }
 
     /// Only one filling is allowed per row

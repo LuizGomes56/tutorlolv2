@@ -26,8 +26,8 @@ pub use {
     compare::{Difference, LegacyFormula, Report},
     expr::Expr,
     lookup::Lookup,
-    passive::PassiveProgression,
     model::{AbilityModel, ChampionModel, EffectModel, Formula, Sample},
+    passive::PassiveProgression,
     progression::{Progression, Value},
     scaling::Scaling,
 };
@@ -110,12 +110,19 @@ impl Nodes {
     }
 
     /// Text as displayed to readers, approximated by replacing templates with
-    /// their first positional argument and removing bold and italic markup
+    /// their first positional argument (the text of `{{ai}}` icons) and removing
+    /// bold and italic markup
     pub fn plain(&self) -> String {
         self.0
             .iter()
             .map(|node| match node {
                 Node::Text(text) => text.clone(),
+                // `{{ai|Name|Champion|Text}}` displays the icon of `Name` next to `Text`
+                Node::Template(template) if template.name == "ai" => template
+                    .positional(2)
+                    .or(template.positional(0))
+                    .map(Nodes::plain)
+                    .unwrap_or_default(),
                 Node::Template(template) => {
                     template.positional(0).map(Nodes::plain).unwrap_or_default()
                 }

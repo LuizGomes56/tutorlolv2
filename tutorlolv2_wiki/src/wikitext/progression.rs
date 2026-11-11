@@ -46,7 +46,7 @@ impl fmt::Display for Value {
 
 /// Rounding of each value, given by `round=`
 #[derive(Clone, Copy, Debug, PartialEq)]
-enum Round {
+pub(super) enum Round {
     Decimals(i32),
     Abs,
     Floor,
@@ -55,7 +55,7 @@ enum Round {
 }
 
 impl Round {
-    fn new(text: &str) -> Option<Self> {
+    pub(super) fn new(text: &str) -> Option<Self> {
         match text.trim() {
             "abs" => Some(Self::Abs),
             "floor" => Some(Self::Floor),
@@ -65,7 +65,7 @@ impl Round {
         }
     }
 
-    fn apply(self, value: f64) -> f64 {
+    pub(super) fn apply(self, value: f64) -> f64 {
         match self {
             Self::Decimals(decimals) => {
                 let factor = 10f64.powi(decimals);

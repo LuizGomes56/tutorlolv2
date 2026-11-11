@@ -329,14 +329,21 @@ pub struct Difference {
 }
 
 impl Report {
-    /// Whether two series of values are the same, within a relative error of 1e-6.
+    /// Relative error within which two values are the same. The wiki rounds values
+    /// to 2 decimals, as Maokai's 166.67 against 33.3325 per rank, which is far
+    /// below this
+    const TOLERANCE: f64 = 1e-3;
+
+    /// Whether two series of values are the same, within [`Self::TOLERANCE`].
     /// Values that are not finite in both series are the same
     pub fn equal(a: &[f64], b: &[f64]) -> bool {
         a.len() == b.len()
             && a.iter()
                 .zip(b)
                 .all(|(a, b)| match (a.is_finite(), b.is_finite()) {
-                    (true, true) => (a - b).abs() <= 1e-6 * 1f64.max(a.abs()).max(b.abs()),
+                    (true, true) => {
+                        (a - b).abs() <= Self::TOLERANCE * 1f64.max(a.abs()).max(b.abs())
+                    }
                     (false, false) => true,
                     _ => false,
                 })

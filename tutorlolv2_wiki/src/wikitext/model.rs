@@ -53,7 +53,10 @@ pub enum Formula {
     /// `ctx.ability_power`, `ctx.enemy_max_health`, …
     Var(CtxVar),
     /// Values by the rank `rank` (`ctx.q_level` … `ctx.r_level`), from `{{ap}}`
-    ByRank { rank: CtxVar, values: Vec<f64> },
+    ByRank {
+        rank: CtxVar,
+        values: Vec<f64>,
+    },
     /// Values by `var` from `{{pp}}`: `keys[i]` is the value of `var` where
     /// `values[i]` starts. `var` is `ctx.level` unless the template names another
     /// axis, such as the rank of another ability
@@ -87,16 +90,38 @@ impl Formula {
         Formula::Const(factor) * self
     }
 
+    /// Ratio of a value written in percent, as the 6-8% of Yorick's E. Values are
+    /// divided where they are written, so `6%` displays as `0.06`
+    pub fn percent(self) -> Formula {
+        match self {
+            Formula::Const(value) => Formula::Const(value / 100.0),
+            Formula::ByRank { rank, values } => Formula::ByRank {
+                rank,
+                values: values.into_iter().map(|value| value / 100.0).collect(),
+            },
+            Formula::Table { var, keys, values } => Formula::Table {
+                var,
+                keys,
+                values: values.into_iter().map(|value| value / 100.0).collect(),
+            },
+            other => other.scale(0.01),
+        }
+    }
+
     /// Value of the formula at `sample`. `None` for [`Formula::Raw`], which is not
     /// evaluated here
     pub fn eval(&self, sample: &Sample) -> Option<f64> {
         Some(match self {
             Formula::Const(value) => *value,
             Formula::Var(var) => sample.get(*var),
-            Formula::ByRank { rank, values } => {
-                let index = (sample.get(*rank) - 1.0).max(0.0) as usize;
-                *values.get(index.min(values.len().checked_sub(1)?))?
-            }
+            Formula::ByRank { rank, values } => match Self::linear_step(*rank, values) {
+                // As displayed, so the printed formula has the same values
+                Some(step) => values[0] + step * (sample.get(*rank) - 1.0),
+                None => {
+                    let index = (sample.get(*rank) - 1.0).max(0.0) as usize;
+                    *values.get(index.min(values.len().checked_sub(1)?))?
+                }
+            },
             Formula::Table { var, keys, values } => {
                 let value = sample.get(*var);
                 let index = keys
@@ -119,6 +144,25 @@ impl Formula {
         })
     }
 
+    /// Step of `values` when they are linear and list every rank of `rank`, which
+    /// displays as `(a) + (step * (rank - 1.0))`. Fewer values, such as 4 values of
+    /// a Q, display as a `match` that keeps the last value for the ranks after them
+    fn linear_step(rank: CtxVar, values: &[f64]) -> Option<f64> {
+        let ranks = match rank {
+            CtxVar::Level => 18,
+            CtxVar::QLevel | CtxVar::WLevel | CtxVar::ELevel => 5,
+            CtxVar::RLevel => 3,
+            _ => values.len(),
+        };
+
+        let step = values.get(1)? - values.first()?;
+        let linear = values
+            .windows(2)
+            .all(|pair| (pair[1] - pair[0] - step).abs() < 1e-9);
+
+        (linear && values.len() >= ranks).then_some(step)
+    }
+
     /// Whether the formula displays without parentheses around it
     fn is_atom(&self) -> bool {
         matches!(self, Formula::Const(_) | Formula::Var(_))
@@ -132,7 +176,11 @@ impl Formula {
         }
     }
 
-    fn fmt_joined(f: &mut fmt::Formatter<'_>, operands: &[Formula], separator: &str) -> fmt::Result {
+    fn fmt_joined(
+        f: &mut fmt::Formatter<'_>,
+        operands: &[Formula],
+        separator: &str,
+    ) -> fmt::Result {
         for (i, operand) in operands.iter().enumerate() {
             if i != 0 {
                 f.write_str(separator)?;
@@ -160,16 +208,11 @@ impl fmt::Display for Formula {
         match self {
             Formula::Const(value) => write!(f, "{}", Number(*value)),
             Formula::Var(var) => write!(f, "{var}"),
-            Formula::ByRank { values, .. } if values.len() == 1 => {
-                write!(f, "{}", Number(values[0]))
+            Formula::ByRank { values, .. } | Formula::Table { values, .. } if values.len() <= 1 => {
+                write!(f, "{}", Number(values.first().copied().unwrap_or(0.0)))
             }
             Formula::ByRank { rank, values } => {
-                let step = values[1] - values[0];
-                let linear = values
-                    .windows(2)
-                    .all(|pair| (pair[1] - pair[0] - step).abs() < 1e-9);
-
-                if linear {
+                if let Some(step) = Self::linear_step(*rank, values) {
                     return write!(
                         f,
                         "({}) + ({} * ({rank} - 1.0))",
@@ -191,7 +234,8 @@ impl fmt::Display for Formula {
 
                 write!(f, "match {rank} {{{}}}", arms.join(", "))
             }
-            Formula::Table { values, .. } if values.len() == 1 => {
+            // Built only with a key per value, see `PassiveProgression::new`
+            Formula::Table { keys, values, .. } if keys.len() != values.len() => {
                 write!(f, "{}", Number(values[0]))
             }
             Formula::Table { var, keys, values } => {

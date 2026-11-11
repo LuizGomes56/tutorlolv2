@@ -85,7 +85,10 @@ fn formulas_of_nested_ranges() {
     let got = numbers("{{ap|(5 to 80)*(1+(1 to 1.75)) 4}}", Key::Q);
 
     assert_eq!(got.len(), 4);
-    assert!(got.iter().zip(expected).all(|(a, b)| (a - b).abs() < 1e-9), "{got:?}");
+    assert!(
+        got.iter().zip(expected).all(|(a, b)| (a - b).abs() < 1e-9),
+        "{got:?}"
+    );
 }
 
 #[test]
@@ -132,14 +135,21 @@ fn ability_data_pages() {
     assert_eq!(ability.skill, Key::Q);
     assert_eq!(ability.damage_type.as_deref(), Some("Physical"));
 
-    let labels = ability.tabs.iter().map(|tab| tab.label.as_str()).collect::<Vec<_>>();
+    let labels = ability
+        .tabs
+        .iter()
+        .map(|tab| tab.label.as_str())
+        .collect::<Vec<_>>();
     assert_eq!(labels, ["Physical Damage", "Reduced Damage", "Slow"]);
 
     let reduced = &ability.tabs[1];
     assert_eq!(reduced.scalings[0].ratios, [62.5]);
     assert_eq!(ability.tabs[2].unit, "%");
 
-    assert_eq!(RawAbility::new("<noinclude>{{Champion data|Bel'Veth}}</noinclude>"), Ok(None));
+    assert_eq!(
+        RawAbility::new("<noinclude>{{Champion data|Bel'Veth}}</noinclude>"),
+        Ok(None)
+    );
 }
 
 /// Leading `a / b / c` values of a rendered `<dd>`, up to the first value followed
@@ -232,7 +242,10 @@ fn base_values_match_the_rendered_pages() {
                 // Rendered values are rounded for display
                 let same = |rendered: &[f64]| {
                     rendered.len() == base.len()
-                        && rendered.iter().zip(&base).all(|(a, b)| (a - b).abs() < 0.01)
+                        && rendered
+                            .iter()
+                            .zip(&base)
+                            .all(|(a, b)| (a - b).abs() < 0.01)
                 };
 
                 match candidates.iter().any(|(_, rendered)| same(rendered)) {
@@ -247,7 +260,10 @@ fn base_values_match_the_rendered_pages() {
         }
     }
 
-    println!("matched: {matched}, not rendered: {not_rendered}, mismatched: {}", mismatched.len());
+    println!(
+        "matched: {matched}, not rendered: {not_rendered}, mismatched: {}",
+        mismatched.len()
+    );
     println!("scalings: {scalings}, unparsed: {}", unparsed.len());
 
     for raw in &unparsed {
@@ -329,9 +345,9 @@ fn formula_eval() {
 
 #[test]
 fn lookups_of_champion_and_item_data() {
-    let champions =
-        r#"return { ["Yasuo"] = { ["id"] = 157, ["stats"] = { ["crit_mod"] = 0.95, ["ms"] = 345 } } }"#;
-    let items = r#"return { ["Infinity Edge"] = { ["id"] = 3031, ["stats"] = { ["critdamage"] = 30 } } }"#;
+    let champions = r#"return { ["Yasuo"] = { ["id"] = 157, ["stats"] = { ["crit_mod"] = 0.95, ["ms"] = 345 } } }"#;
+    let items =
+        r#"return { ["Infinity Edge"] = { ["id"] = 3031, ["stats"] = { ["critdamage"] = 30 } } }"#;
     let lookup = Lookup::new(champions, items).unwrap();
 
     assert_eq!(lookup.champion("Yasuo", "crit_mod"), Some(0.95));
@@ -397,8 +413,11 @@ fn passive_progressions() {
 
 #[test]
 fn squared_and_split_scalings() {
-    let syndra =
-        Scaling::new(&template("{{as|'''(+ {{fd|1.14}}% AP)<sup>2</sup>'''}}"), Key::W).unwrap();
+    let syndra = Scaling::new(
+        &template("{{as|'''(+ {{fd|1.14}}% AP)<sup>2</sup>'''}}"),
+        Key::W,
+    )
+    .unwrap();
     assert_eq!(
         (syndra.ratios.clone(), syndra.power, syndra.stat.as_str()),
         (vec![1.14], 2, "AP")
@@ -476,7 +495,11 @@ fn effects_are_sums_of_terms() {
         "W",
         "|leveling = {{st|Physical Damage|{{ap|10}} {{as|(+ 8%|hp}} {{as|of target's '''maximum''' health)}}}}",
     ));
-    assert!(ksante.effects[0].issues.is_empty(), "{:?}", ksante.effects[0].issues);
+    assert!(
+        ksante.effects[0].issues.is_empty(),
+        "{:?}",
+        ksante.effects[0].issues
+    );
     let s = sample(&[(WLevel, 1.0), (EnemyMaxHealth, 1000.0)]);
     assert_eq!(ksante.effects[0].formula.eval(&s), Some(90.0));
 
@@ -567,7 +590,10 @@ fn every_cached_champion_parses() {
     let lookup = Lookup::from_cache_at(Path::new("..")).unwrap();
     let mut skipped = Vec::new();
 
-    for entry in std::fs::read_dir("../cache/wiki/champions").unwrap().flatten() {
+    for entry in std::fs::read_dir("../cache/wiki/champions")
+        .unwrap()
+        .flatten()
+    {
         let abilities = entry.path().join("abilities");
 
         if abilities.is_dir() {
@@ -599,8 +625,8 @@ fn legacy_formulas_compare_by_value() {
     .unwrap();
     let s = Sample([(CtxVar::Level, 11.0), (CtxVar::BonusMoveSpeed, 100.0)].into());
     assert!((table.eval(&s) - 50.0).abs() < 1e-9);
-    let ranks =
-        LegacyFormula::parse("match ctx.r_level {..=1 => 375.0, 2 => 630.0, 3.. => 945.0}").unwrap();
+    let ranks = LegacyFormula::parse("match ctx.r_level {..=1 => 375.0, 2 => 630.0, 3.. => 945.0}")
+        .unwrap();
     assert_eq!(ranks.eval(&Sample([(CtxVar::RLevel, 2.0)].into())), 630.0);
 
     // Both non-finite at a sample is equal; one finite and one not is different
@@ -613,7 +639,10 @@ fn legacy_formulas_compare_by_value() {
         values: vec![5.0, 45.0, 85.0, 125.0, 165.0],
     } + Formula::Var(CtxVar::AttackDamage) * 1.25;
     let printed = values(&f.to_string());
-    let evaluated = samples.iter().map(|s| f.eval(s).unwrap()).collect::<Vec<_>>();
+    let evaluated = samples
+        .iter()
+        .map(|s| f.eval(s).unwrap())
+        .collect::<Vec<_>>();
     assert!(Report::equal(&printed, &evaluated));
     assert!(Report::equal(&printed, &a));
 }
@@ -632,4 +661,355 @@ fn at_least_60_percent_of_formulas_are_equal() {
         report.percent_equal
     );
     assert!(report.percent_equal >= 60.0);
+}
+
+#[test]
+fn unmatched_rows_and_empty_values_never_panic() {
+    // The wiki shows "Variables are unmatched" for rows of different sizes
+    assert!(PassiveProgression::new(&template("{{pp|1;2|5}}")).is_err());
+
+    let tables = [
+        Formula::Table {
+            var: CtxVar::Level,
+            keys: vec![1],
+            values: vec![1.0, 2.0],
+        },
+        Formula::Table {
+            var: CtxVar::Level,
+            keys: vec![],
+            values: vec![],
+        },
+        Formula::ByRank {
+            rank: CtxVar::QLevel,
+            values: vec![],
+        },
+    ];
+
+    for formula in tables {
+        let _ = formula.to_string();
+    }
+
+    // `{{ap}}` without arguments has no ratio
+    assert_eq!(
+        Scaling::new(&template("{{as|(+ {{ap}}% AP)}}"), Key::Q),
+        None
+    );
+}
+
+#[test]
+fn plain_number_bases() {
+    use CtxVar::*;
+    // Cho'Gath R: `1200 {{as|(+ 50% AP)}}`
+    let chogath = page(&data(
+        "R",
+        "|leveling = {{st|Non-Champion True Damage|1200 {{as|(+ 50% AP)}}}}",
+    ));
+    let s = sample(&[(RLevel, 1.0), (AbilityPower, 100.0)]);
+    assert_eq!(chogath.effects[0].formula.eval(&s), Some(1250.0));
+    assert!(chogath.effects[0].issues.is_empty());
+
+    // Text that is not a number is an issue
+    let text = page(&data(
+        "R",
+        "|leveling = {{st|Damage|about {{as|(+ 50% AP)}}}}",
+    ));
+    assert_eq!(text.effects[0].issues.len(), 1);
+}
+
+#[test]
+fn printed_formulas_evaluate_as_eval_beyond_the_last_rank() {
+    use CtxVar::*;
+    let formulas = [
+        // Aurelion Sol Q lists 4 values of a 5 rank ability
+        Formula::ByRank {
+            rank: QLevel,
+            values: vec![100.0, 150.0, 200.0, 250.0],
+        },
+        // Aphelios P lists 6 values by level
+        Formula::ByRank {
+            rank: Level,
+            values: vec![4.0, 8.0, 12.0, 16.0, 20.0, 24.0],
+        },
+        Formula::ByRank {
+            rank: RLevel,
+            values: vec![100.0, 200.0, 300.0],
+        },
+    ];
+
+    for formula in formulas {
+        let printed = LegacyFormula::parse(&formula.to_string()).unwrap();
+
+        for rank in 0..=18 {
+            let s = sample(&[
+                (QLevel, rank as f64),
+                (Level, rank as f64),
+                (RLevel, rank as f64),
+            ]);
+            assert_eq!(
+                Some(printed.eval(&s)),
+                formula.eval(&s),
+                "{formula} at {rank}"
+            );
+        }
+    }
+}
+
+#[test]
+fn passive_progressions_round_as_the_module() {
+    // Kai'Sa: `round=ceil`
+    assert_eq!(
+        pp("{{pp|1 to 2 for 3|round=ceil}}").values,
+        vec![1.0, 2.0, 2.0]
+    );
+    assert_eq!(
+        pp("{{pp|1 to 2 for 3|round=floor}}").values,
+        vec![1.0, 1.0, 2.0]
+    );
+}
+
+#[test]
+fn per_percent_scalings() {
+    use CtxVar::*;
+    // Katarina R: 240% (+ 750% per 100% bonus attack speed) bonus AD
+    let katarina = page(&data(
+        "R",
+        "|leveling = {{st|Maximum Physical Damage|{{as|{{ap|16*15}}% {{as|(+ {{ap|50*15}}% per 100% '''bonus''' attack speed)}} '''bonus''' AD}}}}",
+    ));
+    let s = sample(&[(BonusAttackSpeed, 50.0), (BonusAd, 100.0)]);
+    let value = katarina.effects[0].formula.eval(&s).unwrap();
+    assert!((value - (2.4 + 7.5 * 0.5) * 100.0).abs() < 1e-9, "{value}");
+}
+
+#[test]
+fn rounding_of_the_wiki_is_equal() {
+    // Maokai E: 33.3325 per rank against the rounded 166.67
+    assert!(Report::equal(&[166.663], &[166.67]));
+    // Rumble Q: rounded %-health ratios against 1000 maximum health
+    assert!(Report::equal(&[4.67], &[4.67 + 0.003]));
+    // Differences beyond rounding are still different
+    assert!(!Report::equal(&[100.0], &[101.0]));
+    assert!(!Report::equal(&[0.5], &[0.6]));
+}
+
+/// Like `page`, for the champions whose ultimate has 4 ranks, as Karma and Nidalee
+fn four_rank_page(src: &str) -> AbilityModel {
+    let lookup = Lookup::new("return {}", "return {}").unwrap();
+    let context = PageContext {
+        lookup: &lookup,
+        four_rank_ultimate: true,
+        ability_keys: Default::default(),
+    };
+    AbilityModel::new(src, &context).unwrap().unwrap().1
+}
+
+#[test]
+fn trailing_stat_multiplies_the_ratio_before_it() {
+    use CtxVar::*;
+    // Yorick E: 6-8% (+ 3% per 100 AP) of target's maximum health
+    let yorick = page(&data(
+        "E",
+        "|leveling = {{st|Magic Damage|{{as|{{ap|6 to 8}}%|hp}} {{as|(+ 3% per 100 AP)}} {{as|of target's '''maximum''' health}}}}",
+    ));
+    let effect = &yorick.effects[0];
+    assert!(effect.issues.is_empty(), "{:?}", effect.issues);
+    let s = sample(&[
+        (ELevel, 1.0),
+        (AbilityPower, 100.0),
+        (EnemyMaxHealth, 1000.0),
+    ]);
+    assert!((effect.formula.eval(&s).unwrap() - 90.0).abs() < 1e-9);
+}
+
+#[test]
+fn times_multiplies() {
+    use CtxVar::*;
+    // Akshan E: (8-40 (+ 25% AD)) × (1 + 0.3 per 100% bonus attack speed)
+    let akshan = page(&data(
+        "E",
+        "|leveling3 = {{st|Physical Damage per Shot|{{ap|8 to 40}} {{as|(+ 25% AD)}} {{times}} {{as|(1 + {{fd|0.3}} per 100% '''bonus''' attack speed)}}}}",
+    ));
+    let effect = &akshan.effects[0];
+    assert!(effect.issues.is_empty(), "{:?}", effect.issues);
+    let s = sample(&[
+        (ELevel, 1.0),
+        (AttackDamage, 100.0),
+        (BonusAttackSpeed, 50.0),
+    ]);
+    assert!((effect.formula.eval(&s).unwrap() - 33.0 * 1.15).abs() < 1e-9);
+}
+
+#[test]
+fn values_inside_icon_and_tooltip_templates() {
+    use CtxVar::*;
+    // Karma Q: the Mantra bonus by R rank, inside the icon of Mantra
+    let karma = four_rank_page(&data(
+        "Q",
+        "|leveling2 = {{st|Total Damage|{{ap|60 to 260}} (+ {{ai|Mantra|Karma|{{ap|40+40 to 220+310 4}}}}) {{as|(+ {{ap|70+50+30}}% AP)}}}}",
+    ));
+    let effect = &karma.effects[0];
+    assert!(effect.issues.is_empty(), "{:?}", effect.issues);
+    let s = sample(&[(QLevel, 1.0), (RLevel, 2.0), (AbilityPower, 0.0)]);
+    assert_eq!(effect.formula.eval(&s), Some(60.0 + 230.0));
+
+    // Gangplank Q: gold, inside `{{g}}`
+    let gangplank = page(&data(
+        "Q",
+        "|leveling = {{st|Gold Plunder|{{g|{{ap|3 to 7}}}}}}",
+    ));
+    assert_eq!(
+        gangplank.effects[0].formula.eval(&sample(&[(QLevel, 5.0)])),
+        Some(7.0)
+    );
+
+    // Nidalee W: a cooldown inside a tooltip, by the rank of her R
+    let nidalee = four_rank_page(&data(
+        "W",
+        "|leveling = {{st|Reduced Cooldown|{{tt|{{ap|3 to 1.5 4}} seconds|Affected by ability haste}}}}",
+    ));
+    assert_eq!(
+        nidalee.effects[0].formula.eval(&sample(&[(RLevel, 4.0)])),
+        Some(1.5)
+    );
+}
+
+#[test]
+fn values_per_collected_thing_are_by_stacks() {
+    use CtxVar::*;
+    // Thresh E: 1.7 per Soul collected
+    let thresh = page(&data(
+        "E",
+        "|leveling = {{st|Minimum Bonus Magic Damage|{{fd|1.7}} per {{ai|Damnation|Thresh|Soul}} collected {{as|(+ 0% AD)}}}}",
+    ));
+    let effect = &thresh.effects[0];
+    assert!(effect.issues.is_empty(), "{:?}", effect.issues);
+    let s = sample(&[(Stacks, 10.0), (AttackDamage, 100.0)]);
+    assert!((effect.formula.eval(&s).unwrap() - 17.0).abs() < 1e-9);
+}
+
+#[test]
+fn trailing_stat_closes_the_group_its_parenthesis_opened() {
+    use CtxVar::*;
+    // K'Sante W: the base is not multiplied by the target's maximum health
+    let ksante = page(&data(
+        "W",
+        "|leveling = {{st|Physical Damage|{{ap|45 to 165}} {{as|(+ 8%|hp}} {{as|(+ 2% per 100 '''bonus''' armor)}} {{as|(+ 2% per 100 '''bonus''' magic resistance)}} {{as|of target's '''maximum''' health)}}}}",
+    ));
+    let effect = &ksante.effects[0];
+    assert!(effect.issues.is_empty(), "{:?}", effect.issues);
+    let s = sample(&[
+        (WLevel, 1.0),
+        (BonusArmor, 100.0),
+        (BonusMagicResist, 100.0),
+        (EnemyMaxHealth, 1000.0),
+    ]);
+    assert!((effect.formula.eval(&s).unwrap() - (45.0 + 0.12 * 1000.0)).abs() < 1e-9);
+}
+
+#[test]
+fn scalings_and_stacks_inside_icons() {
+    use CtxVar::*;
+    // Gwen Q: a scaling inside the icon of her passive
+    let gwen = page(&data(
+        "Q",
+        "|leveling = {{st|Center Damage per Snip|{{ap|10 to 26}} {{as|(+ 5% AP)}}<br />{{ai|A Thousand Cuts|Gwen|{{as|(+ 1% {{as|(+ {{fd|0.6}}% per 100 AP)}} of the target's '''maximum''' health)}}}}}}",
+    ));
+    let effect = &gwen.effects[0];
+    assert!(effect.issues.is_empty(), "{:?}", effect.issues);
+    let s = sample(&[
+        (QLevel, 1.0),
+        (AbilityPower, 100.0),
+        (EnemyMaxHealth, 1000.0),
+    ]);
+    assert!((effect.formula.eval(&s).unwrap() - (10.0 + 5.0 + 0.016 * 1000.0)).abs() < 1e-9);
+
+    // Thresh W: 2 per Soul collected, written as text
+    let thresh = page(&data(
+        "W",
+        "|leveling = {{st|Shield Strength|{{ap|50 to 130}} (+ 2 per {{ai|Damnation|Thresh|Soul}} collected)}}",
+    ));
+    let effect = &thresh.effects[0];
+    assert!(effect.issues.is_empty(), "{:?}", effect.issues);
+    let s = sample(&[(WLevel, 1.0), (Stacks, 10.0)]);
+    assert_eq!(effect.formula.eval(&s), Some(70.0));
+
+    // Senna R: the icon displays "Mist", her stacks
+    let senna = page(&data(
+        "R",
+        "|leveling = {{st|Shield Strength|{{ap|120 to 200}} {{as|(+ 50% AP)}} {{as|(+ 150% {{ai|Absolution|Senna|Mist}})|mist}}}}",
+    ));
+    let effect = &senna.effects[0];
+    assert!(effect.issues.is_empty(), "{:?}", effect.issues);
+    let s = sample(&[(RLevel, 1.0), (AbilityPower, 0.0), (Stacks, 10.0)]);
+    assert_eq!(effect.formula.eval(&s), Some(135.0));
+}
+
+#[test]
+fn four_values_of_a_basic_ability_extend_to_five_ranks() {
+    use CtxVar::*;
+    // Aurelion Sol Q lists ranks 1-4, the 5th continues the same step
+    let aurelion = page(&data(
+        "Q",
+        "|leveling = {{st|Total Maximum Magic Damage|{{ap|(45/8)*26 to ((45+(105-45)*(3/4))/8)*26 4}}}}",
+    ));
+    let s = sample(&[(QLevel, 5.0)]);
+    assert!((aurelion.effects[0].formula.eval(&s).unwrap() - 341.25).abs() < 1e-9);
+}
+
+#[test]
+fn damage_stored_and_dealt_are_stacks() {
+    use CtxVar::*;
+    // Zed R: 100% AD (+ 25/40/55% of damage stored)
+    let zed = page(&data(
+        "R",
+        "|leveling = {{st|Physical Damage|{{as|100% AD}} (+ {{ap|25|40|55}}% of damage stored)}}",
+    ));
+    let effect = &zed.effects[0];
+    assert!(effect.issues.is_empty(), "{:?}", effect.issues);
+    let s = sample(&[(RLevel, 2.0), (AttackDamage, 100.0), (Stacks, 1000.0)]);
+    assert!((effect.formula.eval(&s).unwrap() - 500.0).abs() < 1e-9);
+
+    // Yone E: 25-35% of damage dealt
+    let yone = page(&data(
+        "E",
+        "|leveling = {{st|Damage Stored|{{ap|25 to 35}}% of damage dealt}}",
+    ));
+    let effect = &yone.effects[0];
+    assert!(effect.issues.is_empty(), "{:?}", effect.issues);
+    let s = sample(&[(ELevel, 1.0), (Stacks, 100.0)]);
+    assert!((effect.formula.eval(&s).unwrap() - 25.0).abs() < 1e-9);
+}
+
+#[test]
+fn expended_grit_is_the_maximum_resource() {
+    use CtxVar::*;
+    // Sett W: (+ 25% (+ 25% per 100 bonus AD) of expended Grit), Grit is his resource
+    let sett = page(&data(
+        "W",
+        "|leveling = {{st|Damage|{{ap|80 to 160}} (+ 25% {{as|(+ 25% per 100 '''bonus''' AD)}} of expended ''Grit'')}}",
+    ));
+    let effect = &sett.effects[0];
+    assert!(effect.issues.is_empty(), "{:?}", effect.issues);
+    let s = sample(&[(WLevel, 1.0), (BonusAd, 100.0), (MaxMana, 340.0)]);
+    assert!((effect.formula.eval(&s).unwrap() - (80.0 + 0.5 * 340.0)).abs() < 1e-9);
+}
+
+#[test]
+fn scalings_grouped_inside_one_as_and_icons_without_values() {
+    use CtxVar::*;
+    // Tahm Kench Q: 75-255 (+ 100% AP) + [icon 5-60 (based on level)
+    // (+ 1.25% AP per 100 bonus health) (+ 4% bonus health)]
+    let tahm = page(&data(
+        "Q",
+        "|leveling = {{st|Magic Damage|{{ap|75 to 255}} {{as|(+ 100% AP)}} + [ {{ai|An Acquired Taste|Tahm Kench|icononly=true}} {{pp|5 to 60 for 12}} {{as|({{as|+ {{fd|1.25}}% AP}} {{as|per 100 '''bonus''' health)|hp}} {{as|(+ 4% '''bonus''' health)}}}} ]}}",
+    ));
+    let effect = &tahm.effects[0];
+    assert!(effect.issues.is_empty(), "{:?}", effect.issues);
+    let s = sample(&[
+        (QLevel, 1.0),
+        (Level, 1.0),
+        (AbilityPower, 100.0),
+        (BonusHealth, 1000.0),
+    ]);
+    let expected = 75.0 + 100.0 + 5.0 + 0.0125 * 100.0 * 1000.0 / 100.0 + 0.04 * 1000.0;
+    assert!((effect.formula.eval(&s).unwrap() - expected).abs() < 1e-9);
 }

@@ -1,9 +1,11 @@
 //! Scalings written with `{{as}}` (`Template:Ability scaling`), which only colors its
 //! text. Their text follows a few shapes, where the ratio may be a number or `{{ap}}`:
 //! - `(+ 45% AP)`, `(+ 140% bonus AD)` or `(+ 8% of her maximum health)`
-//! - `(+ 5% per 100 AP)`, a ratio applied to every 100 of the stat
+//! - `(+ 5% per 100 AP)`, a ratio applied to every 100 of the stat. Stats written
+//!   in percent, as `(+ 750% per 100% bonus attack speed)`, are read the same way
 //! - `6% {{as|(+ 1.5% per 100 AP)}} of target's maximum health`, whose ratio scales too
 //! - `4% of target's maximum health`, without `(+`, when the scaling is the whole value
+//! - `(+ 1.25% AP per 100 bonus health)`, a ratio of a stat that grows with another one
 
 use {
     super::{Arg, Node, Nodes, Progression, Template},
@@ -16,8 +18,12 @@ use {
 pub struct Scaling {
     /// Percentages, one per rank when the ratio levels up with the ability
     pub ratios: Vec<f64>,
-    /// `100` of `per 100 AP`, when the ratio applies to every `per` of the stat
+    /// `100` of `per 100 AP`, when the ratio applies to every `per` of the stat, or
+    /// to every `per` of [`Self::per_stat`] when it is given
     pub per: Option<f64>,
+    /// `bonus health` of `1.25% AP per 100 bonus health`, a ratio of `stat` that
+    /// grows with another stat, as Tahm Kench's Q
+    pub per_stat: Option<String>,
     /// Stat as written, without markup, such as `bonus AD` or `of target's maximum health`
     pub stat: String,
     /// Whether it is written as `(+ ...)`, added to the values before it
@@ -68,7 +74,7 @@ impl Scaling {
         };
 
         let captures = regex!(
-            r"^(?<additive>\(\+ ?)?(?<ratio>RATIO|-?\d+(?:\.\d+)?)%(?: ?NESTED)*(?: per (?<per>\d+(?:\.\d+)?))? (?<stat>[^()]+?)(?<close>\))?$"
+            r"^(?<additive>\(\+ ?)?(?<ratio>RATIO|-?\d+(?:\.\d+)?)%(?: ?NESTED)*(?: per (?<per>\d+(?:\.\d+)?)%?)? (?<stat>[^()]+?)(?: per (?<per2>\d+(?:\.\d+)?)%? (?<per_stat>[^()]+?))?(?<close>\))?$"
         )
         .captures(&flat)?;
 
@@ -80,13 +86,20 @@ impl Scaling {
         }
 
         let ratios = match &captures["ratio"] {
-            "RATIO" => ratios?,
+            // `{{ap}}` without arguments has no ratio
+            "RATIO" => ratios.filter(|ratios| !ratios.is_empty())?,
             ratio => vec![ratio.parse().ok()?],
         };
 
         Some(Self {
             ratios,
-            per: captures.name("per").and_then(|per| per.as_str().parse().ok()),
+            per: captures
+                .name("per")
+                .or(captures.name("per2"))
+                .and_then(|per| per.as_str().parse().ok()),
+            per_stat: captures
+                .name("per_stat")
+                .map(|stat| stat.as_str().trim().to_string()),
             stat: captures["stat"].trim().to_string(),
             additive,
             nested,
