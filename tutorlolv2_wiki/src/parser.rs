@@ -234,6 +234,22 @@ impl LevelArm {
 }
 
 impl Scaling {
+    /// Variable this scaling multiplies, if it has one. Nested scalings use the
+    /// variable of their outer scaling
+    pub fn ctx_var(&self) -> Option<CtxVar> {
+        match self {
+            Self::Simple { ctx_var, .. }
+            | Self::Ranked { ctx_var, .. }
+            | Self::RankedPer100 { ctx_var, .. }
+            | Self::Per100 { ctx_var, .. }
+            | Self::PercentAttr { ctx_var, .. }
+            | Self::BasedOnLevel { ctx_var, .. }
+            | Self::RangePercentAttr { ctx_var, .. } => Some(*ctx_var),
+            Self::Nested { outer, .. } => outer.ctx_var(),
+            Self::Flat { .. } | Self::Multiplier { .. } | Self::Other { .. } => None,
+        }
+    }
+
     pub fn parse(raw_block: &str) -> Self {
         let inner_raw = raw_block
             .trim()

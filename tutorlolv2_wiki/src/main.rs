@@ -1,6 +1,7 @@
 use clap::{Parser, Subcommand, ValueEnum};
 use tutorlolv2_wiki::{
-    HTTP_CLIENT, MayFail, champions, items, lock, lol_version, runes, scraper, stats, version,
+    HTTP_CLIENT, MayFail, champions, items, lock, lol_version, map_changes, runes, scraper, stats,
+    version,
 };
 
 #[derive(Parser, Debug)]
@@ -83,6 +84,16 @@ pub enum Wiki {
     ItemsDownload,
     #[clap(alias = "ip")]
     ItemsParse,
+    /// Downloads and parses the changes of the game modes in `map_changes::MAPS`
+    #[clap(alias = "m")]
+    MapChanges,
+    #[clap(alias = "md")]
+    MapChangesDownload,
+    #[clap(alias = "mp")]
+    MapChangesParse,
+    /// Lists the changes of each game mode that may change a damage
+    #[clap(alias = "mr")]
+    MapChangesReport,
     #[clap(alias = "r")]
     Runes,
     #[clap(alias = "rl")]
@@ -167,6 +178,10 @@ async fn main() -> MayFail {
             Wiki::Items => items::run().await,
             Wiki::ItemsDownload => items::download().await.map(|_| ()),
             Wiki::ItemsParse => items::parse().and_then(|_| items::item_parser::parse_items()),
+            Wiki::MapChanges => map_changes::run().await,
+            Wiki::MapChangesDownload => map_changes::download().await,
+            Wiki::MapChangesParse => map_changes::parse(),
+            Wiki::MapChangesReport => map_changes::report(),
             Wiki::Runes => runes::run().await,
             Wiki::RunesLinks => runes::links().await,
             Wiki::RunesDownload => runes::download().await,

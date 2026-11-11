@@ -1295,9 +1295,18 @@ fn join_nonempty(parts: [String; 2]) -> String {
 #[derive(Clone, Debug)]
 pub struct LevelSeries {
     pub values: Vec<f64>,
-    levels: Vec<u8>,
+    pub levels: Vec<u8>,
     /// Whether the progression is colored as damage
     damage: bool,
+}
+
+/// [`resolve_markup`] for text outside item descriptions, such as the changes of
+/// a game mode, with the progressions by level it found
+pub fn resolve_text(input: &str, variant: Variant) -> (String, Vec<LevelSeries>) {
+    let mut series = Vec::new();
+    let text = resolve_markup(input, variant, &mut BTreeMap::new(), &mut series);
+
+    (text, series)
 }
 
 /// Replaces the templates that compute values with the values themselves, so the

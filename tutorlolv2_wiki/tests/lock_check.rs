@@ -351,3 +351,50 @@ fn changed_and_missing_exceptions_are_reported() {
 
     std::fs::remove_dir_all(dir).unwrap();
 }
+
+#[test]
+fn map_changes_are_warnings() {
+    let dir = temp_dir("map_changes");
+
+    let lock = |entries: &[(&str, &[&str])]| WikiLock {
+        map_changes: BTreeMap::from([(
+            "aram".to_string(),
+            entries
+                .iter()
+                .map(|(key, changes)| {
+                    (
+                        key.to_string(),
+                        changes.iter().map(|c| c.to_string()).collect(),
+                    )
+                })
+                .collect(),
+        )]),
+        ..Default::default()
+    };
+
+    let old = lock(&[
+        ("Akali Q", &["0: Ratio (11111111)"]),
+        ("Hubris", &["0: Ignored (22222222)"]),
+    ]);
+    let new = lock(&[
+        ("Akali Q", &["0: Ratio (33333333)"]),
+        ("Teemo R", &["0: Base (44444444)", "1: Ignored (55555555)"]),
+    ]);
+
+    let report = new.check(Some(&old), &dir).unwrap();
+
+    assert!(report.errors.is_empty());
+    assert_eq!(
+        report.warnings,
+        [
+            "aram: 2 damage-relevant changes are not applied, see `wiki map-changes-report`",
+            "aram Akali Q: 1 changes edited",
+            "aram Hubris: changes removed",
+            "aram Teemo R: new changes",
+        ]
+    );
+
+    // Lock files written before map changes were tracked only get the count
+    let untracked = new.check(Some(&WikiLock::default()), &dir).unwrap();
+    assert_eq!(untracked.warnings.len(), 1);
+}

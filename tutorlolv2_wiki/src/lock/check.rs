@@ -9,6 +9,7 @@ use super::{LockedAbility, WikiLock, compare, entry_name, hash};
 use crate::{
     MayFail,
     champions::exceptions::{EXCEPTIONS, Exception},
+    map_changes::change::ChangeKind,
 };
 use lazy_regex::regex;
 use serde_json::Value;
@@ -295,6 +296,7 @@ impl WikiLock {
 
         self.check_champions(old, &generators.join("champions"), &mut report)?;
         self.check_exceptions(old, &mut report);
+        self.check_map_changes(old, &mut report);
 
         if let Some(old) = old {
             self.check_runes(old, &generators.join("runes"), &mut report)?;
@@ -454,6 +456,61 @@ impl WikiLock {
         }
 
         Ok(())
+    }
+
+    /// Changes of the game modes are not applied yet, so every change is a
+    /// warning: the damage-relevant ones are counted, and the ones that were
+    /// added, edited or removed since the old lock file are listed
+    fn check_map_changes(&self, old: Option<&WikiLock>, report: &mut Report) {
+        let empty = Vec::new();
+
+        for (code, entries) in &self.map_changes {
+            let relevant = entries
+                .values()
+                .flatten()
+                .filter(|entry| ChangeKind::is_damage_relevant(entry_name(entry).0))
+                .count();
+
+            if relevant > 0 {
+                report.warnings.push(format!(
+                    "{code}: {relevant} damage-relevant changes are not applied, see `wiki map-changes-report`"
+                ));
+            }
+
+            // Lock files written before map changes were tracked have none to compare
+            let Some(old_entries) = old.and_then(|old| old.map_changes.get(code)) else {
+                continue;
+            };
+
+            for key in old_entries
+                .keys()
+                .chain(entries.keys())
+                .collect::<BTreeSet<_>>()
+            {
+                let label = format!("{code} {key}");
+
+                match (old_entries.get(key), entries.get(key)) {
+                    (Some(_), None) => report.warnings.push(format!("{label}: changes removed")),
+                    (None, Some(_)) => report.warnings.push(format!("{label}: new changes")),
+                    (old, new) => {
+                        let (lines, edited) = compare(old.unwrap_or(&empty), new.unwrap_or(&empty));
+
+                        if !lines.is_empty() {
+                            report.warnings.push(format!(
+                                "{label}: changes added or removed\n{}",
+                                lines.join("\n")
+                            ));
+                        }
+
+                        if edited > 0 {
+                            report
+                                .warnings
+                                .push(format!("{label}: {edited} changes edited"));
+                        }
+                    }
+                }
+            }
+        }
     }
 
     /// Exceptions are only read by text patterns in their generators, so a changed

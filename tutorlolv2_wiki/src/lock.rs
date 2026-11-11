@@ -12,6 +12,7 @@ use crate::{
     JsonRead, MayFail,
     champions::WikiChampion,
     items::item_parser::WikiItem,
+    map_changes::{self, MapChanges},
     parser::{Effect, Scaling},
     runes::WikiRune,
 };
@@ -45,6 +46,10 @@ pub struct WikiLock {
     /// [`crate::champions::exceptions`]
     #[serde(default)]
     pub exceptions: BTreeMap<String, BTreeMap<String, String>>,
+    /// Changes of every game mode by the code of its module and its key, as
+    /// `"index: kind (hash)"`, see [`crate::map_changes`]
+    #[serde(default)]
+    pub map_changes: BTreeMap<String, BTreeMap<String, Vec<String>>>,
 }
 
 #[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
@@ -223,12 +228,37 @@ pub fn build() -> MayFail<WikiLock> {
         .filter(|(_, slots)| !slots.is_empty())
         .collect();
 
+    let map_changes = BTreeMap::<String, MapChanges>::from_file(map_changes::full_path())?
+        .into_iter()
+        .map(|(code, changes)| {
+            let entries = changes
+                .entries
+                .into_iter()
+                .map(|(key, entry)| {
+                    let changes = entry
+                        .changes
+                        .iter()
+                        .enumerate()
+                        .map(|(i, change)| {
+                            format!("{i}: {} ({})", change.kind.name(), hash(&change.text))
+                        })
+                        .collect();
+
+                    (key, changes)
+                })
+                .collect();
+
+            (code, entries)
+        })
+        .collect();
+
     Ok(WikiLock {
         version: crate::lol_version().to_string(),
         champions,
         runes,
         items,
         exceptions,
+        map_changes,
     })
 }
 

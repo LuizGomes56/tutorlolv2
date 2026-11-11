@@ -11,6 +11,7 @@ pub mod client;
 pub mod formula;
 pub mod items;
 pub mod lock;
+pub mod map_changes;
 pub mod parser;
 pub mod render;
 pub mod riot;
@@ -203,5 +204,7 @@ pub async fn run() -> MayFail {
     champions::run().await?;
     items::run().await?;
     runes::run().await?;
+    // Resolves its keys against the champions, items and runes parsed above
+    map_changes::run().await?;
     lock::write()
 }
