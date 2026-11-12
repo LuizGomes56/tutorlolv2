@@ -3,7 +3,6 @@ use super::*;
 impl GeneratorV2 for Irelia {
     fn generate(&mut self) -> MayFail {
         self.take_nth("Ionian Fervor", 2, P(Void))?
-            .set(P(Void), f![10 + 51 / 17 * (Level - 1) + 0.2 * BonusAd])
             .comment(P(Void), "Bonus magic damage on-hit at maximum stacks")
             .take("Physical Damage", Q(Void))?
             .take("Maximum Physical Damage", W(Max))?

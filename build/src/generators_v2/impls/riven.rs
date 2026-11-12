@@ -3,9 +3,8 @@ use super::*;
 impl GeneratorV2 for Riven {
     fn generate(&mut self) -> MayFail {
         self.take_nth("Innate", 0, P(Void))?
-            .set(P(Void), {
-                f![(30 + 15 / 17 * (Level - 1)) / 100 * AttackDamage]
-            })
+            // Of AD, whose `% AD` the model drops
+            .edit(P(Void), |p| f![p / 100 * AttackDamage])
             .take("Physical Damage", Q(Min))?
             .take("Total Physical Damage", Q(Max))?
             .take("Physical Damage", W(Void))?

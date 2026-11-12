@@ -15,7 +15,6 @@ impl GeneratorV2 for Lucian {
                     attributes: Undefined,
                 },
             )?
-            .damage_type(P(_1), Magic)
             .take("Physical Damage", Q(Void))?
             .take("Magic Damage", W(Void))?
             .take("Physical Damage Per Shot", R(Min))?

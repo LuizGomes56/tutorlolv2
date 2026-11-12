@@ -9,21 +9,11 @@ impl GeneratorV2 for Pantheon {
             .take("Increased Thrust Damage", Q(_3Max))?
             .take("Thrust Physical Damage", Q(_3Min))?
             .take("Physical Damage", W(Void))?
-            .set(W(Void), {
-                f![
-                    (0.06 + 0.005 * (WLevel - 1) + 0.00015 * AbilityPower + 0.00004 * BonusHealth)
-                        * EnemyMaxHealth
-                ]
-            })
             .take("Physical Damage", E(Void))?
             .take("Magic Damage", R(Max))?
-            .take("Reduced Damage", R(Min))?;
-
-        /* 40 - 190 (based on Comet Spear's rank) */
-        /* (+ 115% bonus AD) (+ 50% AP) */
-        let r1 = f![40 + 30 * QLevel + 1.15 * BonusAd + 0.5 * AbilityPower];
-
-        self.derive(R(_1), R(Min), |_| r1)?
+            .take("Reduced Damage", R(Min))?
+            // Comet Spear's thrust while landing, by its rank
+            .take("Active", R(_1))?
             .damage_type(W(Void), Physical)
             .damage_type(E(Void), Physical)
             .damage_type(R(_1), Physical)

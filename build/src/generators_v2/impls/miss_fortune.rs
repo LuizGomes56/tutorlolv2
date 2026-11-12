@@ -3,9 +3,8 @@ use super::*;
 impl GeneratorV2 for MissFortune {
     fn generate(&mut self) -> MayFail {
         self.take_nth("Innate", 0, P(Void))?
-            .set(P(Void), {
-                f![(0.5 + 0.5 / 17 * (Level - 1)) * AttackDamage]
-            })
+            // 50% to 100% of AD by level, whose `% AD` the model drops
+            .edit(P(Void), |p| f![p / 100 * AttackDamage])
             .comment(P(Void), "Love Tap bonus damage against unmarked enemies")
             .take("Physical Damage", Q(Void))?
             .take("Magic Damage Per Tick", E(Min))?

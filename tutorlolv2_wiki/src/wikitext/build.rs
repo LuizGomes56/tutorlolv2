@@ -1045,6 +1045,14 @@ impl ChampionModel {
 
         for (path, src) in &pages {
             match AbilityModel::new(src, &context) {
+                // An alternate page redirects to the main page of its ability, so it
+                // repeats an ability already read from an earlier page
+                Ok(Some((_, ability)))
+                    if model
+                        .abilities
+                        .values()
+                        .flatten()
+                        .any(|read| read.name == ability.name) => {}
                 Ok(Some((key, mut ability))) => {
                     ability.page = path
                         .file_stem()

@@ -7,13 +7,7 @@ impl GeneratorV2 for Evelynn {
             .take("Bonus Magic Damage", Q(_1))?
             .take("Bonus Magic Damage", W(Void))?
             .take("Magic Damage", E(Void))?
-            .set(E(Void), {
-                f![60 + 30 * (ELevel - 1) + (0.03 + 0.00015 * AbilityPower) * EnemyMaxHealth]
-            })
             .take("Empowered Magic Damage", E(_1))?
-            .set(E(_1), {
-                f![80 + 40 * (ELevel - 1) + (0.04 + 0.00025 * AbilityPower) * EnemyMaxHealth]
-            })
             .take("Magic Damage", R(Min))?
             .take("Empowered Damage", R(Max))?
             .combos([

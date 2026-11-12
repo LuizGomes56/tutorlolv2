@@ -2,10 +2,7 @@ use super::*;
 
 impl GeneratorV2 for Rumble {
     fn generate(&mut self) -> MayFail {
-        self.take_nth("Overheated", 0, P(Void))?
-            .set(P(Void), {
-                f![5 + 39.12 / 17 * (Level - 1) + 0.25 * AbilityPower + 0.04 * EnemyMaxHealth]
-            })
+        self.take_nth("Overheated", 1, P(Void))?
             .comment(P(Void), "Overheated bonus magic damage on-hit")
             .take("Minimum Magic Damage", Q(Min))?
             .take("Maximum Magic Damage", Q(Max))?

@@ -2,18 +2,7 @@ use super::*;
 
 impl GeneratorV2 for Zed {
     fn generate(&mut self) -> MayFail {
-        // 5% / 7.5% / 10% at levels 1 / 7 / 17
-        let ratio = Formula::Raw(
-            stringify!(match ctx.level {
-                ..7 => 0.05,
-                7..17 => 0.075,
-                17.. => 0.1,
-            })
-            .into(),
-        );
-
         self.take("Innate", P(Void))?
-            .set(P(Void), f![(ratio) * EnemyMaxHealth])
             .take("Physical Damage", Q(Max))?
             .take("Reduced Damage", Q(Min))?
             .take("Physical Damage", E(Void))?

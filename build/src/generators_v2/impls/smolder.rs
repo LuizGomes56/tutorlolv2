@@ -1,15 +1,17 @@
 use super::*;
 
-/// The abilities v1 edited are written with v1's formulas, to be read from the wiki
+/// The abilities v1 edited are written with v1's formulas, to be read from the wiki.
+/// Q's passive bonus per stack is all of `0.25 + 0.35 * crit chance`, which v1's text
+/// substitution only applied to its second term
 impl GeneratorV2 for Smolder {
     fn generate(&mut self) -> MayFail {
         self.take_nth("Physical Damage", 1, Q(Min))?
-            .set(Q(Min), Formula::Raw("((((30.0) + (5.0 * (ctx.q_level - 1.0))) + ((0.65) * ctx.bonus_ad)) * ctx.physical_multiplier) + ((0.25) + (0.35 * (ctx.crit_chance * 0.01)) * ctx.stacks * ctx.magic_multiplier) + (0.083 * ctx.bonus_ad / 100 + 0.017 * ctx.stacks / 100) * ctx.enemy_max_health".into()))
+            .set(Q(Min), Formula::Raw("((((30.0) + (5.0 * (ctx.q_level - 1.0))) + ((0.65) * ctx.bonus_ad)) * ctx.physical_multiplier) + (((0.25) + (0.35 * (ctx.crit_chance * 0.01))) * ctx.stacks * ctx.magic_multiplier) + (0.083 * ctx.bonus_ad / 100 + 0.017 * ctx.stacks / 100) * ctx.enemy_max_health".into()))
             .damage_type(Q(Min), Mixed)
             .insert(
                 Q(Max),
                 Damage {
-                    formula: Formula::Raw("2 * (((((30.0) + (5.0 * (ctx.q_level - 1.0))) + ((0.65) * ctx.bonus_ad)) * ctx.physical_multiplier) + ((0.25) + (0.35 * (ctx.crit_chance * 0.01)) * ctx.stacks * ctx.magic_multiplier) + (0.083 * ctx.bonus_ad / 100 + 0.017 * ctx.stacks / 100) * ctx.enemy_max_health)".into()),
+                    formula: Formula::Raw("2 * (((((30.0) + (5.0 * (ctx.q_level - 1.0))) + ((0.65) * ctx.bonus_ad)) * ctx.physical_multiplier) + (((0.25) + (0.35 * (ctx.crit_chance * 0.01))) * ctx.stacks * ctx.magic_multiplier) + (0.083 * ctx.bonus_ad / 100 + 0.017 * ctx.stacks / 100) * ctx.enemy_max_health)".into()),
                     name: "Super Scorcher Breath".into(),
                     damage_type: Mixed,
                     comment: String::new(),

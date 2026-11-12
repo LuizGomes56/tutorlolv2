@@ -140,12 +140,51 @@ impl HttpClient {
 
             // The raw source is only gathered for analysis for now, so a failure
             // here must not prevent the rendered page from being used
-            if let Err(e) = self.fetch_wiki(&raw_path, &raw_link, true).await {
+            if let Err(e) = self.fetch_raw(&raw_path, &raw_link).await {
                 eprintln!("[error] Failed to fetch raw source {raw_link}: {e:?}");
             }
         }
 
         self.fetch_wiki(path, &link, false).await
+    }
+
+    /// Downloads the raw source of `link` to `path`. The rendered page follows a
+    /// redirect, but the raw source is only the redirect line, so the source of its
+    /// target is saved in its place, as for pages renamed on the wiki
+    async fn fetch_raw(&self, path: &Path, link: &str) -> MayFail {
+        let src = self.fetch_wiki(path, link, true).await?;
+
+        if let Some(target) = Self::redirect_target(&src) {
+            std::fs::remove_file(path)?;
+            self.fetch_wiki(path, &format!("{target}?action=raw"), true)
+                .await?;
+        }
+
+        Ok(())
+    }
+
+    /// Link of the page a `#REDIRECT [[Page]]` source points to, written as the wiki
+    /// writes its links, such as `Template:Data_Mel/Radiant_Barrage`. `None` for a
+    /// source that does not redirect
+    pub fn redirect_target(src: &str) -> Option<String> {
+        let src = src.trim_start();
+        let rest = src
+            .get(..9)
+            .filter(|start| start.eq_ignore_ascii_case("#redirect"))
+            .map(|_| &src[9..])?;
+
+        let (_, rest) = rest.split_once("[[")?;
+        let (page, _) = rest.split_once("]]")?;
+        let page = page.split(['#', '|']).next()?;
+
+        let link = page
+            .split(':')
+            .map(str::trim)
+            .collect::<Vec<_>>()
+            .join(":")
+            .replace(' ', "_");
+
+        (!link.is_empty()).then_some(link)
     }
 
     /// Downloads `https://wiki.leagueoflegends.com/en-us/{link}` to `path`, or reads

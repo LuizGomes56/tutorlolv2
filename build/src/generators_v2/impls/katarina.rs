@@ -24,12 +24,6 @@ impl GeneratorV2 for Katarina {
             .take("Maximum Magic Damage", R(Max))?
             .take("Physical Damage Per Dagger", R(_1Min))?
             .take("Maximum Physical Damage", R(_1Max))?
-            .set(R(_1Min), {
-                f![(0.16 + 0.5 * BonusAttackSpeed / 100) * BonusAd]
-            })
-            .set(R(_1Max), {
-                f![(2.4 + 7.5 * BonusAttackSpeed / 100) * BonusAd]
-            })
             .damage_type(R(_1Min), Physical)
             .damage_type(R(_1Max), Physical)
             .combos([

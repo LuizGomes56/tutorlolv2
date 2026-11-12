@@ -4,9 +4,6 @@ impl GeneratorV2 for Yorick {
     fn generate(&mut self) -> MayFail {
         self.take("Bonus Physical Damage", Q(Void))?
             .take("Magic Damage", E(Void))?
-            .set(E(Void), {
-                f![(0.06 + 0.005 * (ELevel - 1) + 0.0003 * AbilityPower) * EnemyMaxHealth]
-            })
             .insert(
                 P(Void),
                 Damage {

@@ -4,12 +4,6 @@ impl GeneratorV2 for Fiddlesticks {
     fn generate(&mut self) -> MayFail {
         self.take("Magic Damage", Q(Min))?
             .take("Increased Magic Damage", Q(Max))?
-            .set(Q(Min), {
-                f![(0.04 + 0.005 * (QLevel - 1) + 0.0003 * AbilityPower) * EnemyCurrentHealth]
-            })
-            .set(Q(Max), {
-                f![(0.08 + 0.01 * (QLevel - 1) + 0.0006 * AbilityPower) * EnemyCurrentHealth]
-            })
             .comment(Q(Max), "Against feared or recently feared enemies")
             .take("Damage per Instance", W(Min))?
             .take("Total Magic Damage", W(Max))?

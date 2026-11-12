@@ -11,16 +11,6 @@ impl GeneratorV2 for KSante {
             .take("Physical Damage", Q(Void))?
             .take("Physical Damage", W(Min))?
             .take("Total Maximum Mixed Damage", W(Max))?
-            .set(W(Min), {
-                f![45
-                    + 30 * (WLevel - 1)
-                    + (0.08 + 0.0002 * BonusArmor + 0.0002 * BonusMagicResist) * EnemyMaxHealth]
-            })
-            .set(W(Max), {
-                f![81
-                    + 54 * (WLevel - 1)
-                    + (0.144 + 0.00036 * BonusArmor + 0.00036 * BonusMagicResist) * EnemyMaxHealth]
-            })
             .damage_type(W(Max), Mixed)
             .take("Strike Physical Damage", R(Min))?
             .take("Total Physical Damage", R(Max))?

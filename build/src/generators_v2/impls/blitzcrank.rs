@@ -14,13 +14,7 @@ impl GeneratorV2 for Blitzcrank {
                 },
             )?
             .take_nth("Magic Damage", 1, R(Void))?
-            .take_nth("Magic Damage", 1, R(_1))?
-            .set(R(_1), {
-                /* 50 / 100 / 150 */
-                /* (+ 30 / 40 / 50% AP) */
-                /* (+ 2% maximum mana) */
-                f![50 + 50 * RLevel + (0.3 + 0.1 * RLevel) * AbilityPower + 0.02 * MaxMana]
-            })
+            .take_nth("Magic Damage", 0, R(_1))?
             .comment(R(_1), "R Passive Onhit Damage")
             .combos([
                 &[

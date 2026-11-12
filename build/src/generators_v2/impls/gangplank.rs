@@ -3,7 +3,6 @@ use super::*;
 impl GeneratorV2 for Gangplank {
     fn generate(&mut self) -> MayFail {
         self.take_nth("Innate", 0, P(Void))?
-            .set(P(Void), f![50 + 200 / 17 * (Level - 1) + BonusAd])
             .comment(P(Void), "Trial by Fire true damage over 2.5 seconds")
             .take("Physical Damage", Q(Void))?
             .take("Bonus Champion Damage", E(Void))?

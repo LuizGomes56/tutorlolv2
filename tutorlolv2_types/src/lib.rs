@@ -20,7 +20,7 @@ pub mod yew;
 pub use {ability::*, ctx::*, damage::*, entity::*, game::*, metadata::*, stats::*};
 
 use bincode::{Decode, Encode};
-use core::{convert::Infallible, fmt::Display, str::FromStr};
+use core::{fmt::Display, str::FromStr};
 use serde::{Deserialize, Serialize};
 use strum::EnumCount;
 

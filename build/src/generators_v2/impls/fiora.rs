@@ -10,7 +10,8 @@ impl GeneratorV2 for Fiora {
             .take("Physical Damage", Q(Void))?
             .take("Magic Damage", W(Void))?
             .take("Critical damage", E(Void))?
-            .set(E(Void), f![(1.6 + 0.1 * (ELevel - 1)) * AttackDamage])
+            // 160 / 170 / 180 / 190 / 200% of AD, whose `% AD` the model drops
+            .edit(E(Void), |e| f![e / 100 * AttackDamage])
             .comment(E(Void), "Second basic attack critical strike")
             .derive(R(Void), P(Void), |p| f![4 * (p)])?
             .comment(R(Void), "All 4 Vitals")

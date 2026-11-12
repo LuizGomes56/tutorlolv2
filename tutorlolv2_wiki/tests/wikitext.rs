@@ -190,17 +190,32 @@ fn base_values_match_the_rendered_pages() {
             continue;
         };
 
-        for entry in entries.flatten() {
-            let path = entry.path();
+        // In the model's order, P0 to R9, so an alternate page is read after its main page
+        let mut paths = entries
+            .flatten()
+            .map(|entry| entry.path())
+            .filter(|path| path.extension().is_some_and(|ext| ext == "lua"))
+            .collect::<Vec<_>>();
 
-            if path.extension().is_none_or(|ext| ext != "lua") {
-                continue;
-            }
+        paths.sort_by_key(|path| {
+            let stem = path.file_stem().unwrap().to_string_lossy().into_owned();
+            ("PQWER".find(&stem[..1]), stem[1..].parse::<u32>().ok())
+        });
 
+        let mut names = Vec::new();
+
+        for path in paths {
             let src = std::fs::read_to_string(&path).unwrap();
             let Ok(Some(ability)) = RawAbility::new(&src) else {
                 continue;
             };
+
+            // An alternate page repeats its main page, and the model skips it
+            if names.contains(&ability.name) {
+                continue;
+            }
+
+            names.push(ability.name.clone());
 
             let html = std::fs::read_to_string(path.with_extension("html")).unwrap();
             let html = Html::parse_document(&html);
@@ -1861,4 +1876,50 @@ fn constants_are_written_without_exponents() {
     assert_eq!(Formula::Const(6e-5).rust(), "0.00006");
     assert_eq!(Formula::Const(1.0).to_string(), "1.0");
     assert_eq!(Formula::Const(-0.3).to_string(), "-0.3");
+}
+
+#[test]
+fn replacing_a_variable_keeps_the_rest_of_the_formula() {
+    use CtxVar::*;
+    // Sett W: the Grit term, with current Grit or none at all
+    let haymaker = Formula::Const(80.0)
+        + (Formula::Const(0.25)
+            + Formula::Const(0.25) * Formula::Var(BonusAd) / Formula::Const(100.0))
+            * Formula::Var(MaxMana);
+    let current = haymaker.replace_var(MaxMana, &Formula::Var(CurrentMana));
+    let none = haymaker.replace_var(MaxMana, &Formula::Const(0.0));
+
+    let s = sample(&[(BonusAd, 100.0), (MaxMana, 400.0), (CurrentMana, 200.0)]);
+    assert_eq!(haymaker.eval(&s), Some(80.0 + 0.5 * 400.0));
+    assert_eq!(current.eval(&s), Some(80.0 + 0.5 * 200.0));
+    assert_eq!(none.eval(&s), Some(80.0));
+}
+
+#[test]
+fn pages_repeating_an_earlier_ability_are_skipped() {
+    // Alternate pages, such as Aatrox's Q1 and Q2, redirect to the main page of the
+    // ability, so once the redirect is followed they hold the same source
+    let dir = std::env::temp_dir().join("tutorlolv2_wikitext_repeated_pages");
+    let _ = std::fs::remove_dir_all(&dir);
+    std::fs::create_dir_all(&dir).unwrap();
+
+    let page = |name: &str, label: &str| {
+        format!(
+            "{{{{{{{{{{1<noinclude>|Ability data</noinclude>}}}}}}|{name}\n|skill = Q\n|leveling = {{{{st|{label}|{{{{ap|1 to 5}}}}}}}}\n}}}}"
+        )
+    };
+    std::fs::write(dir.join("Q0.lua"), page("Blade", "Physical Damage")).unwrap();
+    std::fs::write(dir.join("Q1.lua"), page("Blade", "Physical Damage")).unwrap();
+    std::fs::write(dir.join("Q2.lua"), page("Recast", "Magic Damage")).unwrap();
+
+    let lookup = Lookup::new("return {}", "return {}").unwrap();
+    let (model, skipped) = ChampionModel::from_dir("Aatrox", &dir, &lookup);
+
+    let q = &model.abilities[&Key::Q];
+    let pages = q
+        .iter()
+        .map(|a| (a.name.as_str(), a.page.as_str()))
+        .collect::<Vec<_>>();
+    assert_eq!(pages, [("Blade", "Q0"), ("Recast", "Q2")]);
+    assert!(skipped.is_empty(), "{skipped:?}");
 }

@@ -208,18 +208,37 @@ impl ChampionV2 {
     /// Formula of the only effect or description value labeled `label` among the pages
     /// of `key`, without taking it, as Caitlyn R's increase by critical strike chance
     pub fn value(&self, label: &str, key: Key) -> MayFail<Formula> {
+        self.find_value(label, key, None)
+    }
+
+    /// Formula of the `nth` effect or description value labeled `label` among the pages
+    /// of `key`, counted as [`Self::take_nth`], without taking it, as the damage per
+    /// Plasma stack of Kai'Sa's passive
+    pub fn value_nth(&self, label: &str, nth: usize, key: Key) -> MayFail<Formula> {
+        self.find_value(label, key, Some(nth))
+    }
+
+    /// Formula of the only value labeled `label` of `key`, or of the `nth` one
+    fn find_value(&self, label: &str, key: Key, nth: Option<usize>) -> MayFail<Formula> {
         let matches = self
             .effects(key)
             .into_iter()
             .filter(|(_, effect)| effect.label == label)
             .collect::<Vec<_>>();
 
-        match matches[..] {
-            [(_, effect)] => Ok(effect.formula.clone()),
-            _ => Err(format!(
-                "[{}] {key:?}: {} values \"{label}\". Effects of {key:?}:\n{}",
+        let selected = match (nth, &matches[..]) {
+            (None, [(_, effect)]) => Some(effect),
+            (None, _) => None,
+            (Some(n), _) => matches.get(n).map(|(_, effect)| effect),
+        };
+
+        match selected {
+            Some(effect) => Ok(effect.formula.clone()),
+            None => Err(format!(
+                "[{}] {key:?}: {} values \"{label}\"{}. Effects of {key:?}:\n{}",
                 self.champion_id(),
                 matches.len(),
+                nth.map(|n| format!(", none at {n}")).unwrap_or_default(),
                 self.candidates(key)
             )
             .into()),

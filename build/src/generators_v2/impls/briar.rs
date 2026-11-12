@@ -6,11 +6,6 @@ impl GeneratorV2 for Briar {
             .comment(P(Void), "Crimson Curse bleed")
             .take("Physical Damage", Q(Void))?
             .take("Bonus Physical Damage", W(Void))?
-            .set(W(Void), {
-                f![5 + 15 * (WLevel - 1)
-                    + 0.05 * AttackDamage
-                    + (0.09 + 0.00025 * BonusAd) * EnemyMissingHealthFlat]
-            })
             .comment(W(Void), "Snack Attack")
             .take("Physical Damage", W(_1))?
             .comment(W(_1), "Blood Frenzy attack")

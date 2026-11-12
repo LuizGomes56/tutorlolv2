@@ -348,6 +348,32 @@ impl Formula {
         }
     }
 
+    /// The formula with `with` wherever it reads `var`, as Sett's W with his current
+    /// Grit instead of his maximum
+    pub fn replace_var(&self, var: CtxVar, with: &Formula) -> Formula {
+        let go = |formula: &Formula| Box::new(formula.replace_var(var, with));
+        let all =
+            |formulas: &[Formula]| formulas.iter().map(|f| f.replace_var(var, with)).collect();
+
+        match self {
+            Formula::Var(v) if *v == var => with.clone(),
+            Formula::Sum(terms) => Formula::Sum(all(terms)),
+            Formula::Product(factors) => Formula::Product(all(factors)),
+            Formula::Div(lhs, rhs) => Formula::Div(go(lhs), go(rhs)),
+            Formula::Sub(lhs, rhs) => Formula::Sub(go(lhs), go(rhs)),
+            Formula::Neg(value) => Formula::Neg(go(value)),
+            Formula::Pow(base, power) => Formula::Pow(go(base), *power),
+            Formula::ByMap { default, maps } => Formula::ByMap {
+                default: go(default),
+                maps: maps
+                    .iter()
+                    .map(|(mode, value)| (*mode, value.replace_var(var, with)))
+                    .collect(),
+            },
+            other => other.clone(),
+        }
+    }
+
     /// Whether the formula is 0 everywhere, whatever its shape: `{{ap|0 to 0}}`, `0 * AP`,
     /// or values that game modes change to 0 on every mode. `Raw` is never zero
     pub fn is_zero(&self) -> bool {

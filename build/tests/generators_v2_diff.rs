@@ -32,6 +32,10 @@ type GeneratorFn = fn(WikiChampion) -> MayFail<Box<dyn GeneratorExt<Champion>>>;
 /// Champions whose v2 combos fix v1's, as Vex's cast then recast of R
 const COMBOS_CHANGED: &[&str] = &["Vex"];
 
+/// Champions whose v2 abilities differ from v1's on purpose: Ryze's Flux empowered
+/// Overload, and Sett's Haymaker range by Grit
+const IDS_CHANGED: &[&str] = &["Ryze", "Sett"];
+
 /// Modes the formulas are compared on
 const MODES: [MapMode; 3] = [MapMode::Default, MapMode::Aram, MapMode::Arena];
 
@@ -116,7 +120,7 @@ impl ChampionDiff {
             only_v1: ids_v1.difference(&ids_v2).copied().collect(),
             only_v2: ids_v2.difference(&ids_v1).copied().collect(),
             combos_equal: v1.combo == v2.combo || COMBOS_CHANGED.contains(&v1.champion_id.as_str()),
-            merges_equal: v1.merge == v2.merge,
+            merges_equal: v1.merge == v2.merge || IDS_CHANGED.contains(&v1.champion_id.as_str()),
             constants_equal: v1.constants == v2.constants,
         }
     }
@@ -190,8 +194,8 @@ fn v2_generators_match_v1() {
                 && d.merges_equal
                 && d.constants_equal
                 && d.attributes.is_empty()
-                && d.only_v1.is_empty()
-                && d.only_v2.is_empty())
+                && (d.only_v1.is_empty() && d.only_v2.is_empty()
+                    || IDS_CHANGED.contains(&d.champion_id.as_str())))
         })
         .map(|d| d.champion_id.as_str())
         .collect::<Vec<_>>();
@@ -266,4 +270,65 @@ fn aurelion_sol_breath_burst_is_a_percent_of_stardust() {
         "{}",
         burst.eval(&s)
     );
+}
+
+/// v2's damage `id` of `champion_id` at `sample`
+fn v2_value(champion: &Champion, id: AbilityId, sample: &Sample) -> f64 {
+    LegacyFormula::parse(&champion.abilities[&id].damage)
+        .unwrap()
+        .eval(sample)
+}
+
+#[test]
+#[ignore = "needs the cache of wiki pages and model.json"]
+fn ryze_flux_bonus_only_increases_the_empowered_overload() {
+    use tutorlolv2_types::{AbilityName::*, CtxVar::*};
+    let parser = ChampionParser::new().unwrap();
+    let ryze = v2_champion(&parser, "Ryze");
+    let at = |r: f64| Sample::new([(QLevel, 1.0), (RLevel, r)]);
+
+    // Overload's 75 at rank 1, and its Flux bonus of 10 / 40 / 70 / 100% by R rank 0 to 3
+    assert_eq!(v2_value(&ryze, AbilityId::Q(Void), &at(3.0)), 75.0);
+    for (r, bonus) in [(0.0, 1.1), (1.0, 1.4), (3.0, 2.0)] {
+        let empowered = v2_value(&ryze, AbilityId::Q(_1), &at(r));
+        assert!(
+            (empowered - 75.0 * bonus).abs() < 1e-6,
+            "R {r}: {empowered}"
+        );
+    }
+}
+
+#[test]
+#[ignore = "needs the cache of wiki pages and model.json"]
+fn sett_haymaker_reads_current_grit_within_its_range() {
+    use tutorlolv2_types::{AbilityName::*, CtxVar::*};
+    let parser = ChampionParser::new().unwrap();
+    let sett = v2_champion(&parser, "Sett");
+    // Grit is his mana: the maximum is resourceMax and the current one his mana
+    let s = Sample::new([(WLevel, 1.0), (MaxMana, 400.0), (CurrentMana, 200.0)]);
+
+    assert_eq!(v2_value(&sett, AbilityId::W(Void), &s), 80.0 + 0.25 * 200.0);
+    assert_eq!(v2_value(&sett, AbilityId::W(_1Min), &s), 80.0);
+    assert_eq!(
+        v2_value(&sett, AbilityId::W(_1Max), &s),
+        80.0 + 0.25 * 400.0
+    );
+}
+
+#[test]
+#[ignore = "needs the cache of wiki pages and model.json"]
+fn smolder_passive_bonus_multiplies_whole_by_stacks() {
+    use tutorlolv2_types::{AbilityName::*, CtxVar::*};
+    // Q's passive bonus is (0.25 + 0.35 * crit chance) per stack, all of it
+    let parser = ChampionParser::new().unwrap();
+    let smolder = v2_champion(&parser, "Smolder");
+    let s = Sample::new([
+        (QLevel, 1.0),
+        (CritChance, 100.0),
+        (Stacks, 10.0),
+        (PhysicalMultiplier, 1.0),
+        (MagicMultiplier, 1.0),
+    ]);
+    let q = v2_value(&smolder, AbilityId::Q(Min), &s);
+    assert!((q - (30.0 + 0.6 * 10.0)).abs() < 1e-6, "{q}");
 }

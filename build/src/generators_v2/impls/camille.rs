@@ -2,14 +2,14 @@ use super::*;
 
 impl GeneratorV2 for Camille {
     fn generate(&mut self) -> MayFail {
+        let outer_cone = self.value("Outer Cone Bonus Damage", Key::W)?;
+
         self.take("Bonus Physical Damage", Q(Min))?
             .take("Increased Mixed Damage", Q(Max))?
             .damage_type(Q(Min), Physical)
             .damage_type(Q(Max), Mixed)
             .take("Physical Damage", W(Min))?
-            .derive(W(Max), W(Min), |w| {
-                f![(w) + (0.07 + 0.005 * (WLevel - 1) + 0.00025 * BonusAd) * EnemyMaxHealth]
-            })?
+            .derive(W(Max), W(Min), |w| f![w + outer_cone])?
             .comment(W(Max), "Outer cone damage")
             .take("Physical Damage", E(Void))?
             .take("Bonus Magic Damage", R(Void))?

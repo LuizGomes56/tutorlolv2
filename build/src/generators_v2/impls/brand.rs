@@ -9,7 +9,6 @@ impl GeneratorV2 for Brand {
                 f![(0.06 + 0.06 / 17 * (Level - 1) + 0.02 * AbilityPower / 100) * EnemyMaxHealth],
             )
             // The values based on stacks are the damage cap against monsters
-            .set(P(Void), f![0.02 * EnemyMaxHealth])
             .take("Magic Damage", Q(Void))?
             .take("Increased Damage", W(Max))?
             .take("Magic Damage", W(Min))?

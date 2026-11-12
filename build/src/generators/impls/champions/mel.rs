@@ -5,11 +5,13 @@ impl Generator for Mel {
         self.ability(
             Key::Q,
             [
-                ("Initial Explosion Magic Damage", Min),
-                ("Total Magic Damage", Max),
+                ("Maximum Magic Damage", Max),
                 ("Magic Damage per Subsequent Explosion", _1),
             ],
         )
+        // The first explosion is only written in the description
+        .clone_to(Q(_1), Q(Min), f![60 + 0.25 * AbilityPower])?
+        .comment(Q(Min), "Initial Explosion Magic Damage")?
         .ability(
             Key::E,
             [

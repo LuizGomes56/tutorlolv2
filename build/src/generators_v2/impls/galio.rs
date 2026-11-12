@@ -3,13 +3,6 @@ use super::*;
 impl GeneratorV2 for Galio {
     fn generate(&mut self) -> MayFail {
         self.take("Innate", P(Void))?
-            .set(P(Void), {
-                f![15
-                    + 100 / 17 * (Level - 1)
-                    + AttackDamage
-                    + 0.4 * AbilityPower
-                    + 0.6 * BonusMagicResist]
-            })
             .comment(P(Void), "Colossal Smash empowered basic attack")
             .take("Magic Damage", Q(Void))?
             .take("Minimum Magic Damage", W(Min))?

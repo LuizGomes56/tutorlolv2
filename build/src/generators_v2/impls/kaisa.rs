@@ -2,13 +2,11 @@ use super::*;
 
 impl GeneratorV2 for Kaisa {
     fn generate(&mut self) -> MayFail {
+        let per_stack = self.value_nth("Innate - Caustic Wounds", 1, Key::P)?;
+
         self.take_nth("Innate - Caustic Wounds", 0, P(Void))?
             .take_nth("Innate - Caustic Wounds", 0, P(_1))?
-            .set(P(Void), {
-                f![4 + 26 / 17 * (Level - 1)
-                    + 0.12 * AbilityPower
-                    + Stacks * (1 + 7 / 17 * (Level - 1) + 0.03 * AbilityPower)]
-            })
+            .edit(P(Void), |p| f![p + Stacks * (per_stack)])
             .comment(
                 P(Void),
                 "Caustic Wounds on-hit damage, Stacks = Plasma stacks",

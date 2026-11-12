@@ -3,9 +3,6 @@ use super::*;
 impl GeneratorV2 for Locke {
     fn generate(&mut self) -> MayFail {
         self.take_nth("Innate", 0, P(Min))?
-            .set(P(Min), {
-                f![5 + 35 / 17 * (Level - 1) + 0.1 * AbilityPower]
-            })
             .comment(P(Min), "Silver Stake on-hit damage")
             .derive(P(Max), P(Min), |p| f![2 * (p)])?
             .comment(

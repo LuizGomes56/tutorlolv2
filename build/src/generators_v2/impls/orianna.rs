@@ -3,7 +3,8 @@ use super::*;
 impl GeneratorV2 for Orianna {
     fn generate(&mut self) -> MayFail {
         self.take_nth("Innate", 0, P(Min))?
-            .derive(P(Max), P(Min), |p| f![1.4 * p])?
+            // At 2 stacks of Clockwork Winding
+            .take_nth("Innate", 2, P(Max))?
             .take("Magic Damage", Q(Max))?
             .take("Reduced Damage", Q(Min))?
             .take("Magic Damage", W(Void))?
