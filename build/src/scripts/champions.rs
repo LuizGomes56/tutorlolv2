@@ -4,8 +4,8 @@ use {
         generators::parser::champions::{Ability, Champion},
         scripts::{
             batch::FormulaDoc,
-            simplify::simplify,
-            utils::{BakeExt, cast_f32, ctx_param, get_identifiers, probe_ratio},
+            simplify::format_formula,
+            utils::{BakeExt, cast_f32, ctx_param, get_identifiers, map_doc_source, probe_ratio},
         },
     },
     heck::{ToShoutySnakeCase, ToSnakeCase},
@@ -64,7 +64,7 @@ impl Build for Champion {
 
         let simplified = closures
             .iter()
-            .map(|body| simplify(body))
+            .map(|body| format_formula(body))
             .collect::<Vec<_>>();
 
         let mut damage_override = BTreeMap::<AbilityId, String>::new();
@@ -77,14 +77,9 @@ impl Build for Champion {
             let min_i = self.indexof(merge.min)?;
             let max_i = self.indexof(merge.max)?;
 
-            let ratio_sym = simplify(&format!(
-                "({}) / ({})",
-                simplified[max_i], simplified[min_i],
-            ));
-
-            let ratio = if !ratio_sym.contains("ctx") {
-                ratio_sym
-            } else {
+            // Sampled numerically: formulas are not simplified, so their ratio is only
+            // known when it is the same at every sample
+            let ratio = {
                 let all_vars = &identifiers[min_i]
                     .iter()
                     .chain(&identifiers[max_i])
@@ -228,7 +223,7 @@ impl Build for Champion {
                     write!(
                         arms,
                         "tutorlolv2_types::MapMode::{mode:?} => {{ core::hint::cold_path(); {} }}",
-                        cast_f32(&simplify(formula))?
+                        cast_f32(&format_formula(formula))?
                     )?;
                 }
 
@@ -245,7 +240,11 @@ impl Build for Champion {
                 docs.push(FormulaDoc {
                     local: i.try_into()?,
                     function: function.clone(),
-                    source: body.clone(),
+                    // The formula the app runs, with the arms of the modes that change it
+                    source: map_doc_source(
+                        body,
+                        map_damages.get(ability_id).map_or(&[][..], Vec::as_slice),
+                    ),
                     name: name.clone(),
                     comment: comment.clone(),
                 });

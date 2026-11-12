@@ -3,7 +3,7 @@ use crate::{
     generators::parser::{DamageRange, ZERO, items::Item, runes::Rune},
     scripts::{
         batch::FormulaDoc,
-        simplify::{Precision, approx_constant, format_number, simplify, simplify_exact},
+        simplify::{Precision, approx_constant, format_formula, format_formula_exact, format_number},
     },
 };
 use databake::CrateEnv;
@@ -206,7 +206,7 @@ pub trait ItemOrRuneExt:
             &ranged.max_dmg,
         ];
 
-        let formulas = core::array::from_fn(|i| simplify(raw[i]));
+        let formulas = core::array::from_fn(|i| format_formula(raw[i]));
 
         ItemFormulaPlan {
             functions: self.functions(),
@@ -233,16 +233,10 @@ pub trait ItemOrRuneExt:
                     continue;
                 }
 
-                let ratio_sym = simplify(&format!("({}) / ({})", raw[i], raw[j]));
-
-                let ratio = if !ratio_sym.contains("ctx") {
-                    ratio_sym
-                } else {
-                    let Some(k) = probe_ratio(&raw[j], &raw[i], &all_vars) else {
-                        continue;
-                    };
-
-                    k
+                // Sampled numerically: formulas are not simplified, so their ratio is
+                // only known when it is the same at every sample
+                let Some(ratio) = probe_ratio(&raw[j], &raw[i], &all_vars) else {
+                    continue;
                 };
 
                 aliases[i] = Some((j, ratio));
@@ -314,7 +308,7 @@ pub trait ItemOrRuneExt:
                     write!(
                         arms,
                         "tutorlolv2_types::MapMode::{mode:?} => {{ core::hint::cold_path(); {} }}",
-                        cast_f32(&simplify(formula))?
+                        cast_f32(&format_formula(formula))?
                     )?;
                 }
 
@@ -358,6 +352,9 @@ pub trait ItemOrRuneExt:
                 } else {
                     formula.clone()
                 };
+
+                // The formula the app runs, with the arms of the modes that change it
+                let source = map_doc_source(&source, &self.map_arms(plan, i));
 
                 Some(FormulaDoc {
                     local: i as u8,
@@ -525,6 +522,25 @@ pub fn ctx_param(s: &str) -> &'static str {
     if s.contains("ctx") { "ctx" } else { "_" }
 }
 
+/// Formula source the codec renders: `default` with the `arms` of the game modes that
+/// change it, as `match ctx.map { #[cold] Aram => …, _ => … }`. Every arm but the
+/// default is cold, as in the generated code. Without arms, `default` alone
+pub fn map_doc_source(default: &str, arms: &[(MapMode, String)]) -> String {
+    let default = format_formula(default);
+
+    if arms.is_empty() {
+        return default;
+    }
+
+    let arms = arms
+        .iter()
+        .map(|(mode, formula)| format!("#[cold] {mode:?} => {}", format_formula(formula)))
+        .collect::<Vec<_>>()
+        .join(", ");
+
+    format!("match ctx.map {{ {arms}, _ => {default} }}")
+}
+
 pub fn probe_ratio(min_expr: &str, max_expr: &str, all_vars: &[CtxVar]) -> Option<String> {
     const N_PROBES: usize = 20;
     const MIN_VALID: usize = 8;
@@ -544,11 +560,11 @@ pub fn probe_ratio(min_expr: &str, max_expr: &str, all_vars: &[CtxVar]) -> Optio
             max_s = max_s.replace(var.as_var(), &v);
         }
 
-        let Ok(min_v) = simplify_exact(&min_s).trim().parse::<f64>() else {
+        let Ok(min_v) = format_formula_exact(&min_s).trim().parse::<f64>() else {
             continue;
         };
 
-        let Ok(max_v) = simplify_exact(&max_s).trim().parse::<f64>() else {
+        let Ok(max_v) = format_formula_exact(&max_s).trim().parse::<f64>() else {
             continue;
         };
 

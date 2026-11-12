@@ -14,7 +14,7 @@ use serde::{Serialize, de::DeserializeOwned};
 use std::{collections::BTreeMap, fmt::Write, process::Command, str::FromStr};
 use strum::VariantNames;
 use tutorlolv2_codec::{Class, ClassOverride, FormulaDbBuilder, GeneratorDbBuilder};
-use tutorlolv2_types::{AbilityName, AttackType, CtxVar, Tag};
+use tutorlolv2_types::{AbilityName, AttackType, CtxVar, MapMode, Tag};
 
 pub use context::{BuildContext, project_root};
 pub use tutorlolv2_wiki::{DynError, MayFail};
@@ -254,9 +254,13 @@ impl BuildContext {
 
         let mut generators = GeneratorDbBuilder::new(counts[0], counts[1], counts[2], &overrides);
 
-        let mut formulas = FormulaDbBuilder::new(counts[0], counts[1], counts[2], |s| {
-            CtxVar::from_str(s).ok().map(|v| v as u8)
-        });
+        let mut formulas = FormulaDbBuilder::new(
+            counts[0],
+            counts[1],
+            counts[2],
+            |s| CtxVar::from_str(s).ok().map(|v| v as u8),
+            |s| MapMode::from_str(s).ok().map(|m| m as u8),
+        );
 
         for doc in docs.iter() {
             doc.pack_formulas(&mut formulas)?;

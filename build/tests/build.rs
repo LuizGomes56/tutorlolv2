@@ -230,7 +230,7 @@ fn documentation_uses_explicit_indices_and_ignores_stale_files() {
         .item_or_rune_formula_id(EntityKind::Item, 1, DamageSlot::RangedMin)
         .unwrap();
     let rendered = db
-        .render_formula_plain(id, |_| unreachable!(), |_| unreachable!())
+        .render_formula_plain(id, |_| unreachable!(), |_| unreachable!(), |_| unreachable!())
         .unwrap();
     assert_eq!(rendered, "10 + 20");
     let recovered: Vec<EntityDocs> =
@@ -662,4 +662,23 @@ fn formatter_formats_large_generated_file_sets() {
                 .contains("pub fn value() -> u32 {")
         );
     }
+}
+
+#[test]
+fn doc_sources_include_cold_map_arms() {
+    use tutorlolv2_build_dep::scripts::utils::map_doc_source;
+    use tutorlolv2_types::MapMode;
+
+    let source = map_doc_source(
+        "0.6 * ctx.ability_power",
+        &[
+            (MapMode::Aram, "0.65 * ctx.ability_power".into()),
+            (MapMode::Arena, "0.7 * ctx.ability_power".into()),
+        ],
+    );
+    assert_eq!(
+        source,
+        "match ctx.map { #[cold] Aram => 0.65 * ctx.ability_power, #[cold] Arena => 0.7 * ctx.ability_power, _ => 0.6 * ctx.ability_power }"
+    );
+    assert_eq!(map_doc_source("1.0", &[]), "1");
 }

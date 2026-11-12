@@ -5,10 +5,11 @@
 
 use {
     super::{
-        AbilityModel, Arg, ChampionModel, EffectModel, Expr, Formula, Lookup, Node, Nodes,
+        AbilityModel, Arg, ChampionModel, EffectModel, Expr, Formula, Lookup, MapChangesReport,
+        Node, Nodes,
         PassiveProgression, Progression, Scaling, Template, Value, Variables,
     },
-    crate::MayFail,
+    crate::{JsonRead, MayFail, map_changes::MapChanges},
     crate::parser::assign_ctx_var,
     std::{
         collections::BTreeMap,
@@ -17,6 +18,20 @@ use {
     },
     tutorlolv2_types::{CtxVar, DamageType, Key},
 };
+
+/// Variable of a stat as written. Damage stored or dealt can't be computed, so it is
+/// read as stacks, and Sett's Grit is his resource, read as his maximum mana
+pub(crate) fn stat_var(text: &str) -> CtxVar {
+    let lowercase = text.to_lowercase();
+
+    if lowercase.contains("damage stored") || lowercase.contains("damage dealt") {
+        CtxVar::Stacks
+    } else if lowercase.contains("grit") {
+        CtxVar::MaxMana
+    } else {
+        assign_ctx_var(text)
+    }
+}
 
 /// Name of the template that holds the fields of an ability data page
 const ABILITY_DATA: &str = "Ability data";
@@ -427,18 +442,9 @@ impl<'a> Terms<'a> {
         true
     }
 
-    /// Variable of a stat as written. Damage stored or dealt can't be computed, so it
-    /// is read as stacks, and Sett's Grit is his resource, read as his maximum mana
+    /// [`stat_var`] of `text`, recording an issue when it is unknown
     fn stat(&mut self, text: &str) -> CtxVar {
-        let lowercase = text.to_lowercase();
-
-        let var = if lowercase.contains("damage stored") || lowercase.contains("damage dealt") {
-            CtxVar::Stacks
-        } else if lowercase.contains("grit") {
-            CtxVar::MaxMana
-        } else {
-            assign_ctx_var(text)
-        };
+        let var = stat_var(text);
 
         if var == CtxVar::Unknown {
             self.issues.push(format!("Unknown stat {text:?}"));
@@ -896,6 +902,24 @@ pub fn parse_model() -> MayFail {
         champions.len(),
         skipped.len()
     );
+
+    // The changes of the game modes, when `map_changes` has parsed them
+    let changes_path = crate::map_changes::full_path();
+
+    if let Ok(true) = std::fs::exists(&changes_path) {
+        let changes = BTreeMap::<String, MapChanges>::from_file(changes_path)?;
+        let report = MapChangesReport::apply(&mut champions, &changes, &lookup);
+
+        println!(
+            "[model] {} map changes applied, {} not placed",
+            report.applied, report.not_placed
+        );
+
+        crate::write(
+            root.join("model_map_changes.json"),
+            serde_json::to_string_pretty(&report)?,
+        )?;
+    }
 
     crate::write(
         root.join("model.json"),

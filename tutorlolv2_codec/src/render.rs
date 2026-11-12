@@ -1,6 +1,6 @@
 use crate::common::{
     DamageSlot, EntityKind, Error, HEADER_LEN, MAGIC, OP_BIN_BASE, OP_BIN_MAX, OP_CTX, OP_GROUP,
-    OP_MATCH_BLOCK, OP_MATCH_INLINE, OP_NEG, OP_NUM_CONST, OP_NUM_F32, OP_NUM_I8, OP_NUM_U8,
+    OP_MAP_MATCH_BLOCK, OP_MAP_MATCH_INLINE, OP_MATCH_BLOCK, OP_MATCH_INLINE, OP_NEG, OP_NUM_CONST, OP_NUM_F32, OP_NUM_I8, OP_NUM_U8,
     OP_REF_LOCAL, VERSION,
 };
 use crate::common::{ParseError, const_try};
@@ -284,50 +284,70 @@ impl<'a> FormulaDb<'a> {
         )
     }
 
-    pub fn render_formula_plain<FC, FR>(
+    /// Renders a formula as text. `ctx_name` names the `ctx` variables, `map_name` the
+    /// modes of map matches, and `local_ref_name` the formulas a formula refers to
+    pub fn render_formula_plain<FC, FM, FR>(
         &self,
         formula_id: u16,
         mut ctx_name: FC,
+        mut map_name: FM,
         mut local_ref_name: FR,
     ) -> Result<String, Error>
     where
         FC: FnMut(u8) -> String,
+        FM: FnMut(u8) -> String,
         FR: FnMut(u8) -> FnBuilder,
     {
         let mut emit = |out: &mut String, _: Option<Class>, text: &str| out.push_str(text);
-        self.render_formula(formula_id, &mut ctx_name, &mut local_ref_name, &mut emit)
+        self.render_formula(
+            formula_id,
+            &mut ctx_name,
+            &mut map_name,
+            &mut local_ref_name,
+            &mut emit,
+        )
     }
 
-    pub fn render_formula_html<FC, FR>(
+    pub fn render_formula_html<FC, FM, FR>(
         &self,
         formula_id: u16,
         ctx_name: FC,
+        map_name: FM,
         local_ref_name: FR,
     ) -> Result<String, Error>
     where
         FC: FnMut(u8) -> String,
+        FM: FnMut(u8) -> String,
         FR: FnMut(u8) -> FnBuilder,
     {
-        self.render_formula_markup::<Html, _, _>(formula_id, ctx_name, local_ref_name)
+        self.render_formula_markup::<Html, _, _, _>(formula_id, ctx_name, map_name, local_ref_name)
             .map(Html::into_string)
     }
 
     /// Renders a formula into any [`Markup`], such as [`Html`] or [`crate::Spans`].
-    pub fn render_formula_markup<M, FC, FR>(
+    pub fn render_formula_markup<M, FC, FM, FR>(
         &self,
         formula_id: u16,
         mut ctx_name: FC,
+        mut map_name: FM,
         mut local_ref_name: FR,
     ) -> Result<M, Error>
     where
         M: Markup,
         FC: FnMut(u8) -> String,
+        FM: FnMut(u8) -> String,
         FR: FnMut(u8) -> FnBuilder,
     {
         let mut markup = M::default();
         // The renderer threads a `String` through; this sink ignores it and writes `markup`.
         let mut emit = |_: &mut String, class: Option<Class>, text: &str| markup.push(class, text);
-        self.render_formula(formula_id, &mut ctx_name, &mut local_ref_name, &mut emit)?;
+        self.render_formula(
+            formula_id,
+            &mut ctx_name,
+            &mut map_name,
+            &mut local_ref_name,
+            &mut emit,
+        )?;
         Ok(markup)
     }
 
@@ -335,6 +355,7 @@ impl<'a> FormulaDb<'a> {
         &self,
         formula_id: u16,
         ctx_name: &mut dyn FnMut(u8) -> String,
+        map_name: &mut dyn FnMut(u8) -> String,
         local_ref_name: &mut dyn FnMut(u8) -> FnBuilder,
         emit: &mut dyn FnMut(&mut String, Option<Class>, &str),
     ) -> Result<String, Error> {
@@ -348,6 +369,7 @@ impl<'a> FormulaDb<'a> {
         let mut renderer = FormulaRenderer {
             db: self,
             ctx_name,
+            map_name,
             local_ref_name,
             emit,
             bracket_stack: Vec::new(),
@@ -466,6 +488,7 @@ enum MatchRenderLayout {
 struct FormulaRenderer<'db, 'bytes, 'cb> {
     db: &'db FormulaDb<'bytes>,
     ctx_name: &'cb mut dyn FnMut(u8) -> String,
+    map_name: &'cb mut dyn FnMut(u8) -> String,
     local_ref_name: &'cb mut dyn FnMut(u8) -> FnBuilder,
     emit: &'cb mut dyn FnMut(&mut String, Option<Class>, &str),
     bracket_stack: Vec<Class>,
@@ -514,6 +537,19 @@ impl FormulaRenderer<'_, '_, '_> {
                 let close_indent_units = cursor.u8()?;
                 self.render_match(
                     id,
+                    MatchRenderLayout::Block {
+                        arm_indent_units,
+                        close_indent_units,
+                    },
+                    out,
+                )?;
+            }
+            OP_MAP_MATCH_INLINE => self.render_map_match(cursor, MatchRenderLayout::Inline, out)?,
+            OP_MAP_MATCH_BLOCK => {
+                let arm_indent_units = cursor.u8()?;
+                let close_indent_units = cursor.u8()?;
+                self.render_map_match(
+                    cursor,
                     MatchRenderLayout::Block {
                         arm_indent_units,
                         close_indent_units,
@@ -626,6 +662,96 @@ impl FormulaRenderer<'_, '_, '_> {
         if !cursor.is_eof() {
             return Err(Error::Corrupt("match has trailing bytes"));
         }
+        Ok(())
+    }
+
+    /// `match map { #[cold] Aram => …, _ => … }`. Every arm but the default is cold, so
+    /// each one is marked `#[cold]`
+    fn render_map_match(
+        &mut self,
+        cursor: &mut Cursor<'_>,
+        layout: MatchRenderLayout,
+        out: &mut String,
+    ) -> Result<(), Error> {
+        let arm_count = cursor.u8()?;
+
+        self.styled(out, Class::Control, "match");
+        self.raw(out, " ");
+        self.styled(out, Class::Variable, "map");
+        self.raw(out, " ");
+        self.open_bracket(out, "{");
+
+        // Each arm, and the default after them
+        for index in 0..=arm_count {
+            match layout {
+                MatchRenderLayout::Inline if index == 0 => self.raw(out, " "),
+                MatchRenderLayout::Inline => self.raw(out, ", "),
+                MatchRenderLayout::Block {
+                    arm_indent_units, ..
+                } => {
+                    self.raw(out, "\n");
+                    self.indent(out, arm_indent_units);
+                }
+            }
+
+            if index < arm_count {
+                let name = (self.map_name)(cursor.u8()?);
+                self.styled(out, Class::Macro, "#[cold]");
+
+                // As rustfmt writes it, on its own line in a block
+                match layout {
+                    MatchRenderLayout::Inline => self.raw(out, " "),
+                    MatchRenderLayout::Block {
+                        arm_indent_units, ..
+                    } => {
+                        self.raw(out, "\n");
+                        self.indent(out, arm_indent_units);
+                    }
+                }
+
+                self.styled(out, Class::Constant, &name);
+            } else {
+                self.raw(out, "_");
+            }
+
+            self.raw(out, " => ");
+
+            match cursor.u8()? {
+                0 => {
+                    self.expr(cursor, out)?;
+
+                    if let MatchRenderLayout::Block { .. } = layout {
+                        self.raw(out, ",");
+                    }
+                }
+                1 => {
+                    let body_indent_units = cursor.u8()?;
+                    let close_indent_units = cursor.u8()?;
+
+                    // A block has no comma after it
+                    self.open_bracket(out, "{");
+                    self.raw(out, "\n");
+                    self.indent(out, body_indent_units);
+                    self.expr(cursor, out)?;
+                    self.raw(out, "\n");
+                    self.indent(out, close_indent_units);
+                    self.close_bracket(out, "}");
+                }
+                _ => return Err(Error::Corrupt("unknown map arm body")),
+            }
+        }
+
+        match layout {
+            MatchRenderLayout::Inline => self.raw(out, " "),
+            MatchRenderLayout::Block {
+                close_indent_units, ..
+            } => {
+                self.raw(out, "\n");
+                self.indent(out, close_indent_units);
+            }
+        }
+
+        self.close_bracket(out, "}");
         Ok(())
     }
 

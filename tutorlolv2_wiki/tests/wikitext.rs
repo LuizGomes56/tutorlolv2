@@ -1,7 +1,7 @@
 use {
     scraper::Html,
     std::path::Path,
-    tutorlolv2_types::{CtxVar, Key},
+    tutorlolv2_types::{CtxVar, Key, MapMode},
     tutorlolv2_wiki::{selector, wikitext::*},
 };
 
@@ -315,15 +315,12 @@ fn formula_display_matches_current_style() {
 #[test]
 fn formula_eval() {
     use CtxVar::*;
-    let sample = Sample(
-        [
-            (QLevel, 3.0),
-            (AbilityPower, 100.0),
-            (Level, 0.0),
-            (RLevel, 0.0),
-        ]
-        .into(),
-    );
+    let sample = Sample::new([
+        (QLevel, 3.0),
+        (AbilityPower, 100.0),
+        (Level, 0.0),
+        (RLevel, 0.0),
+    ]);
     let f = Formula::ByRank {
         rank: QLevel,
         values: vec![10.0, 20.0, 30.0, 40.0, 50.0],
@@ -451,7 +448,7 @@ fn data(skill: &str, fields: &str) -> String {
 }
 
 fn sample(pairs: &[(CtxVar, f64)]) -> Sample {
-    Sample(pairs.iter().copied().collect())
+    Sample::new(pairs.iter().copied())
 }
 
 #[test]
@@ -623,11 +620,11 @@ fn legacy_formulas_compare_by_value() {
         "(match ctx.level { ..6 => 0.3, 6..11 => 0.4, 11..16 => 0.5, 16.. => 0.6 }) * ctx.bonus_move_speed",
     )
     .unwrap();
-    let s = Sample([(CtxVar::Level, 11.0), (CtxVar::BonusMoveSpeed, 100.0)].into());
+    let s = Sample::new([(CtxVar::Level, 11.0), (CtxVar::BonusMoveSpeed, 100.0)]);
     assert!((table.eval(&s) - 50.0).abs() < 1e-9);
     let ranks = LegacyFormula::parse("match ctx.r_level {..=1 => 375.0, 2 => 630.0, 3.. => 945.0}")
         .unwrap();
-    assert_eq!(ranks.eval(&Sample([(CtxVar::RLevel, 2.0)].into())), 630.0);
+    assert_eq!(ranks.eval(&Sample::new([(CtxVar::RLevel, 2.0)])), 630.0);
 
     // Both non-finite at a sample is equal; one finite and one not is different
     assert!(Report::equal(&[f64::INFINITY], &[f64::NAN]));
@@ -1012,4 +1009,452 @@ fn scalings_grouped_inside_one_as_and_icons_without_values() {
     ]);
     let expected = 75.0 + 100.0 + 5.0 + 0.0125 * 100.0 * 1000.0 / 100.0 + 0.04 * 1000.0;
     assert!((effect.formula.eval(&s).unwrap() - expected).abs() < 1e-9);
+}
+
+#[test]
+fn values_by_map() {
+    use CtxVar::*;
+    let ratio = Formula::ByRank {
+        rank: RLevel,
+        values: vec![0.2, 0.3, 0.4],
+    }
+    .with_map(
+        MapMode::Arena,
+        Formula::ByRank {
+            rank: RLevel,
+            values: vec![0.3, 0.425, 0.55],
+        },
+    )
+    .with_map(MapMode::Aram, Formula::Const(0.5));
+    let f = ratio.clone() * Formula::Var(AttackDamage);
+
+    let s = Sample::new([(RLevel, 2.0), (AttackDamage, 100.0)]);
+    assert_eq!(f.eval(&s), Some(30.0));
+    assert_eq!(f.eval(&s.clone().on(MapMode::Arena)), Some(42.5));
+    assert_eq!(f.eval(&s.on(MapMode::Aram)), Some(50.0));
+
+    // One `ByMap` with an arm per mode, not nested ones
+    let Formula::ByMap { maps, .. } = &ratio else {
+        panic!()
+    };
+    assert_eq!(maps.len(), 2);
+
+    assert_eq!(
+        ratio.to_string(),
+        "match ctx.map { #[cold] Aram => 0.5, #[cold] Arena => (0.3) + (0.125 * (ctx.r_level - 1.0)), _ => (0.2) + (0.1 * (ctx.r_level - 1.0)) }"
+    );
+    assert_eq!(ratio.default_values(), Some(vec![0.2, 0.3, 0.4]));
+}
+
+fn change(text: &str, kind: &str) -> tutorlolv2_wiki::map_changes::change::MapChange {
+    let change = tutorlolv2_wiki::map_changes::change::MapChange::parse(text, false);
+    assert!(
+        format!("{:?}", change.kind).starts_with(kind),
+        "{:?}",
+        change.kind
+    );
+    change
+}
+
+#[test]
+fn map_values_are_read_with_the_target_key() {
+    use CtxVar::*;
+    let lookup = Lookup::new("return {}", "return {}").unwrap();
+
+    // Aatrox R in Arena, with an explicit count
+    let aatrox = change(
+        "Bonus attack damage changed to {{as|{{ap|30 to 55 3}}% AD}}.",
+        "Ratio",
+    );
+    let Some(MapValue::Ratio { stat, ratio }) = MapValue::new(&aatrox, Key::R, &lookup) else {
+        panic!()
+    };
+    assert_eq!(stat, AttackDamage);
+    assert_eq!(ratio.default_values(), Some(vec![0.3, 0.425, 0.55]));
+
+    // An R without a count has 3 values, not 5
+    let r = change("AP ratio changed to {{as|{{ap|60 to 100}}% AP}}.", "Ratio");
+    let Some(MapValue::Ratio { ratio, .. }) = MapValue::new(&r, Key::R, &lookup) else {
+        panic!()
+    };
+    assert_eq!(ratio.default_values(), Some(vec![0.6, 0.8, 1.0]));
+
+    let base = change("Base damage changed to {{ap|70 to 190}}.", "Base");
+    let Some(MapValue::Base(values)) = MapValue::new(&base, Key::Q, &lookup) else {
+        panic!()
+    };
+    assert_eq!(
+        values.default_values(),
+        Some(vec![70.0, 100.0, 130.0, 160.0, 190.0])
+    );
+
+    let cooldown = change("Cooldown changed to {{ap|18 to 14}} seconds.", "Ignored");
+    assert_eq!(MapValue::new(&cooldown, Key::W, &lookup), None);
+}
+
+/// Model of a champion with `pages`, built in its own folder named `name`
+fn champion(name: &str, pages: &[(&str, &str)]) -> ChampionModel {
+    let dir = std::env::temp_dir().join(format!("tutorlolv2_map_{name}"));
+    let _ = std::fs::remove_dir_all(&dir);
+    std::fs::create_dir_all(&dir).unwrap();
+
+    for (page, src) in pages {
+        std::fs::write(dir.join(format!("{page}.lua")), src).unwrap();
+    }
+
+    let lookup = Lookup::new("return {}", "return {}").unwrap();
+    ChampionModel::from_dir("Test", &dir, &lookup).0
+}
+
+#[test]
+fn ratio_changes_wrap_only_the_ratio_and_multiples() {
+    use CtxVar::*;
+    // A hit and a total of 3 hits, as Vex R
+    let mut model = champion(
+        "vex",
+        &[(
+            "R0",
+            &data(
+                "R",
+                "|leveling = {{st|Magic Damage|{{ap|75 to 175}} {{as|(+ 20% AP)}}|Total Magic Damage|{{ap|225 to 525}} {{as|(+ 60% AP)}}}}",
+            ),
+        )],
+    );
+    let value = MapValue::Ratio {
+        stat: AbilityPower,
+        ratio: Formula::Const(0.3),
+    };
+
+    let Placement::Applied(placed) = model.apply_map_change(Key::R, None, "AP", MapMode::Aram, &value)
+    else {
+        panic!()
+    };
+    assert_eq!(placed.len(), 2);
+
+    let effects = &model.abilities[&Key::R][0].effects;
+    let s = Sample::new([(RLevel, 1.0), (AbilityPower, 100.0)]);
+    assert_eq!(effects[0].formula.eval(&s), Some(95.0));
+    assert_eq!(
+        effects[0].formula.eval(&s.clone().on(MapMode::Aram)),
+        Some(105.0)
+    );
+    assert_eq!(
+        effects[1].formula.eval(&s.on(MapMode::Aram)),
+        Some(225.0 + 90.0)
+    );
+}
+
+#[test]
+fn qualifiers_bases_and_unplaced_changes() {
+    use CtxVar::*;
+    let mut model = champion(
+        "dashes",
+        &[(
+            "Q0",
+            &data(
+                "Q",
+                "|leveling = {{st|First Dash Damage|{{ap|30 to 110}} {{as|(+ 60% AP)}}|Second Dash Damage|{{ap|60 to 220}} {{as|(+ 30% AP)}}}}",
+            ),
+        )],
+    );
+    let ratio = MapValue::Ratio {
+        stat: AbilityPower,
+        ratio: Formula::Const(0.4),
+    };
+
+    let Placement::Applied(placed) =
+        model.apply_map_change(Key::Q, None, "First dash AP", MapMode::Arena, &ratio)
+    else {
+        panic!()
+    };
+    assert_eq!(placed.len(), 1);
+    assert_eq!(placed[0].label, "First Dash Damage");
+
+    let base = MapValue::Base(Formula::ByRank {
+        rank: QLevel,
+        values: vec![40.0, 80.0, 120.0, 160.0, 200.0],
+    });
+    assert!(matches!(
+        model.apply_map_change(Key::Q, None, "Base", MapMode::Arena, &base),
+        Placement::Applied(_)
+    ));
+
+    assert!(matches!(
+        model.apply_map_change(Key::Q, None, "Third slash AP", MapMode::Arena, &ratio),
+        Placement::NotPlaced(_)
+    ));
+
+    let health = MapValue::Ratio {
+        stat: BonusHealth,
+        ratio: Formula::Const(0.1),
+    };
+    assert!(matches!(
+        model.apply_map_change(Key::Q, None, "Health", MapMode::Arena, &health),
+        Placement::NotPlaced(_)
+    ));
+
+    // A stat in a term with a second stat (Tahm Kench's AP × health) is not placed
+    let mut tahm = champion(
+        "tahm",
+        &[(
+            "Q0",
+            &data(
+                "Q",
+                "|leveling = {{st|Magic Damage|{{ap|75 to 255}} {{as|(+ 1.25% AP per 100 '''bonus''' health)}}}}",
+            ),
+        )],
+    );
+    let tahm_ratio = MapValue::Ratio {
+        stat: AbilityPower,
+        ratio: Formula::Const(0.02),
+    };
+    assert!(matches!(
+        tahm.apply_map_change(Key::Q, None, "AP", MapMode::Aram, &tahm_ratio),
+        Placement::NotPlaced(_)
+    ));
+}
+
+#[test]
+fn map_changes_of_a_module_are_applied_by_mode() {
+    use tutorlolv2_wiki::map_changes::{ChangeTarget, MapChanges, MapEntry};
+
+    let mut models = [(
+        "Test".to_string(),
+        champion(
+            "module",
+            &[(
+                "R0",
+                &data(
+                    "R",
+                    "|leveling = {{st|Magic Damage|{{ap|75 to 175}} {{as|(+ 20% AP)}}}}",
+                ),
+            )],
+        ),
+    )]
+    .into();
+
+    let entry = MapEntry {
+        target: ChangeTarget::Ability {
+            champion_id: "Test".into(),
+            key: Key::R,
+        },
+        changes: vec![
+            change("AP ratio changed to {{as|30% AP}}.", "Ratio"),
+            change("Cooldown changed to 80 seconds.", "Ignored"),
+        ],
+    };
+    let changes = [(
+        "aram".to_string(),
+        MapChanges {
+            maps: vec![
+                tutorlolv2_types::GameMap::Aram,
+                tutorlolv2_types::GameMap::AramMayhem,
+            ],
+            entries: [("Test R".to_string(), entry)].into(),
+        },
+    )]
+    .into();
+
+    let lookup = Lookup::new("return {}", "return {}").unwrap();
+    let report = MapChangesReport::apply(&mut models, &changes, &lookup);
+
+    assert_eq!((report.applied, report.not_placed), (1, 0));
+    assert_eq!(report.entries[0].mode, MapMode::Aram);
+    assert_eq!(report.ignored.values().sum::<usize>(), 1);
+
+    let formula = &models["Test"].abilities[&Key::R][0].effects[0].formula;
+    let s = Sample::new([(CtxVar::RLevel, 1.0), (CtxVar::AbilityPower, 100.0)]);
+    assert_eq!(formula.eval(&s.on(MapMode::Aram)), Some(105.0));
+}
+
+#[test]
+#[ignore = "needs the cache of wiki pages"]
+fn every_damage_change_is_applied_or_explained() {
+    let lookup = Lookup::from_cache_at(Path::new("..")).unwrap();
+    let mut models = std::collections::BTreeMap::new();
+
+    for entry in std::fs::read_dir("../cache/wiki/champions")
+        .unwrap()
+        .flatten()
+    {
+        let abilities = entry.path().join("abilities");
+
+        if abilities.is_dir() {
+            let id = entry.file_name().into_string().unwrap();
+            models.insert(id.clone(), ChampionModel::from_dir(&id, &abilities, &lookup).0);
+        }
+    }
+
+    let changes =
+        serde_json::from_slice(&std::fs::read("../cache/wiki/map_changes/full.json").unwrap())
+            .unwrap();
+    let report = MapChangesReport::apply(&mut models, &changes, &lookup);
+
+    println!(
+        "applied {} not placed {}",
+        report.applied, report.not_placed
+    );
+
+    for entry in report
+        .entries
+        .iter()
+        .filter(|e| matches!(e.placement, Placement::NotPlaced(_)))
+    {
+        println!(
+            "{} {:?} {:?}: {} -> {:?}",
+            entry.champion_id, entry.key, entry.mode, entry.text, entry.placement
+        );
+    }
+
+    assert_eq!(report.applied + report.not_placed, report.entries.len());
+    assert!(report.applied > 0);
+}
+
+#[test]
+fn changes_to_abilities_without_effects_say_what_is_missing() {
+    use CtxVar::*;
+    // Bard's passive has no `{{st}}`, so there is no AP ratio to change
+    let mut bard = champion("bard", &[("P0", &data("I", "|description = Chimes."))]);
+    let ratio = MapValue::Ratio {
+        stat: AbilityPower,
+        ratio: Formula::Const(0.5),
+    };
+
+    let Placement::NotPlaced(reason) = bard.apply_map_change(Key::P, None, "AP", MapMode::Aram, &ratio)
+    else {
+        panic!()
+    };
+    assert!(reason.contains("ratio"), "{reason}");
+}
+
+#[test]
+fn named_ability_changes_apply_only_to_that_ability() {
+    use CtxVar::*;
+    // Ambessa: two Q pages, each with its own Arena change
+    let mut model = champion(
+        "ambessa",
+        &[
+            (
+                "Q0",
+                &data("Q", "|leveling = {{st|Physical Damage|{{ap|40 to 100}} {{as|(+ 40% '''bonus''' AD)}}}}")
+                    .replace("|Name", "|Cunning Sweep"),
+            ),
+            (
+                "Q1",
+                &data("Q", "|leveling = {{st|Physical Damage|{{ap|40 to 100}} {{as|(+ 60% '''bonus''' AD)}}}}")
+                    .replace("|Name", "|Sundering Slam"),
+            ),
+        ],
+    );
+
+    for (name, ratio) in [("Cunning Sweep", 0.45), ("Sundering Slam", 0.7)] {
+        let value = MapValue::Ratio {
+            stat: BonusAd,
+            ratio: Formula::Const(ratio),
+        };
+        let placement = model.apply_map_change(Key::Q, Some(name), "Bonus AD", MapMode::Arena, &value);
+        assert!(matches!(placement, Placement::Applied(ref p) if p.len() == 1), "{placement:?}");
+    }
+
+    let s = Sample::new([(QLevel, 1.0), (BonusAd, 100.0)]).on(MapMode::Arena);
+    let q = &model.abilities[&Key::Q];
+    assert_eq!(q[0].effects[0].formula.eval(&s), Some(85.0));
+    assert_eq!(q[1].effects[0].formula.eval(&s), Some(110.0));
+}
+
+#[test]
+fn qualified_changes_are_placed_before_unqualified_ones() {
+    use tutorlolv2_wiki::map_changes::{ChangeTarget, MapChanges, MapEntry};
+    use CtxVar::*;
+
+    // Kassadin R: an unqualified base change and a qualified one, in the module's order
+    let mut models = [(
+        "Test".to_string(),
+        champion(
+            "kassadin",
+            &[(
+                "R0",
+                &data(
+                    "R",
+                    "|leveling = {{st|Magic Damage|{{ap|80 to 110}}|Bonus Damage Per Stack|{{ap|35 to 55}}}}",
+                ),
+            )],
+        ),
+    )]
+    .into();
+
+    let entry = MapEntry {
+        target: ChangeTarget::Ability {
+            champion_id: "Test".into(),
+            key: Key::R,
+        },
+        changes: vec![
+            change("Base damage changed to {{ap|100 to 140}}.", "Base"),
+            change("Bonus damage per stack changed to {{ap|40 to 60}}.", "Base"),
+        ],
+    };
+    let changes = [(
+        "ar".to_string(),
+        MapChanges {
+            maps: vec![tutorlolv2_types::GameMap::Arena],
+            entries: [("Test R".to_string(), entry)].into(),
+        },
+    )]
+    .into();
+
+    let lookup = Lookup::new("return {}", "return {}").unwrap();
+    let report = MapChangesReport::apply(&mut models, &changes, &lookup);
+    assert_eq!((report.applied, report.not_placed), (2, 0), "{report:?}");
+
+    let effects = &models["Test"].abilities[&Key::R][0].effects;
+    let s = Sample::new([(RLevel, 1.0)]).on(MapMode::Arena);
+    assert_eq!(effects[0].formula.eval(&s), Some(100.0));
+    assert_eq!(effects[1].formula.eval(&s), Some(40.0));
+}
+
+#[test]
+fn bases_starting_at_zero_and_rank_bases_beside_level_tables() {
+    use CtxVar::*;
+    // Gnar W: a base that starts at 0 is still the primary
+    let mut gnar = champion(
+        "gnar",
+        &[("W0", &data("W", "|leveling = {{st|Bonus Magic Damage|{{ap|0 to 40}}}}"))],
+    );
+    let base = MapValue::Base(Formula::ByRank {
+        rank: WLevel,
+        values: vec![5.0, 15.0, 25.0, 35.0, 45.0],
+    });
+    assert!(matches!(
+        gnar.apply_map_change(Key::W, None, "Base", MapMode::Arena, &base),
+        Placement::Applied(ref p) if p.len() == 1
+    ));
+
+    // Azir W: the base by rank, not the level table before it
+    let mut azir = champion(
+        "azir",
+        &[(
+            "W0",
+            &data("W", "|leveling = {{st|Magic Damage|{{pplevel|0; then +8*x|1;10+(x-1)}} (+ {{ap|50 to 110}})}}"),
+        )],
+    );
+    let rank_base = MapValue::Base(Formula::ByRank {
+        rank: WLevel,
+        values: vec![60.0, 75.0, 90.0, 105.0, 120.0],
+    });
+    assert!(matches!(
+        azir.apply_map_change(Key::W, None, "Base", MapMode::Arena, &rank_base),
+        Placement::Applied(_)
+    ));
+    let s = Sample::new([(Level, 1.0), (WLevel, 1.0)]).on(MapMode::Arena);
+    assert_eq!(azir.abilities[&Key::W][0].effects[0].formula.eval(&s), Some(60.0));
+
+    // Nothing placed is never counted as applied
+    let mut empty = champion(
+        "empty",
+        &[("W0", &data("W", "|leveling = {{st|Damage|{{ap|0 to 0}}}}"))],
+    );
+    assert!(matches!(
+        empty.apply_map_change(Key::W, None, "Base", MapMode::Arena, &base),
+        Placement::Applied(ref p) if p.len() == 1
+    ));
 }

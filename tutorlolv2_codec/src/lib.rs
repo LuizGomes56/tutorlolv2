@@ -9,7 +9,7 @@ pub mod generator;
 pub mod markup;
 pub mod render;
 
-pub use build::{BuilderStats, CtxResolver, FormulaDbBuilder, FormulaSource};
+pub use build::{BuilderStats, CtxResolver, FormulaDbBuilder, FormulaSource, MapResolver};
 pub use common::{DamageSlot, EntityKind, Error, MAGIC, ParseError, VERSION};
 pub use generator::{
     ClassOverride, GeneratorBuildOutput, GeneratorDb, GeneratorDbBuilder, GeneratorError,

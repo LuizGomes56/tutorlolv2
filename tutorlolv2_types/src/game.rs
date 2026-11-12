@@ -134,6 +134,9 @@ pub enum GameMap {
     Decode,
     Serialize,
     Deserialize,
+    strum::EnumString,
+    strum::FromRepr,
+    strum::IntoStaticStr,
 )]
 #[repr(u8)]
 #[cfg_attr(feature = "bake", derive(databake::Bake))]

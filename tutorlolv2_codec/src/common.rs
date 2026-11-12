@@ -34,7 +34,7 @@ impl From<ParseError> for Error {
 use std::fmt;
 
 pub const MAGIC: [u8; 4] = *b"FBC1";
-pub const VERSION: u8 = 2;
+pub const VERSION: u8 = 3;
 pub(crate) const HEADER_LEN: usize = 24;
 
 // Number opcodes.
@@ -50,6 +50,12 @@ pub(crate) const OP_MATCH_INLINE: u8 = 0x12;
 pub(crate) const OP_GROUP: u8 = 0x13;
 pub(crate) const OP_NEG: u8 = 0x14;
 pub(crate) const OP_MATCH_BLOCK: u8 = 0x15;
+/// `match ctx.map { #[cold] Aram => <expr>, _ => <expr> }` on one line: arm count, each
+/// arm's mode and value, then the default's value. A value is a body byte, 0 for an
+/// expression or 1 for a block (with its body and closing indents), then the expression
+pub(crate) const OP_MAP_MATCH_INLINE: u8 = 0x16;
+/// [`OP_MAP_MATCH_INLINE`] with one arm per line, after the arm and closing indents
+pub(crate) const OP_MAP_MATCH_BLOCK: u8 = 0x17;
 
 // 0x20..=0x2b are binary operators.
 // low 2 bits: operator  (0 +, 1 -, 2 *, 3 /)
@@ -65,6 +71,7 @@ pub enum Error {
         message: String,
     },
     UnknownCtxVar(String),
+    UnknownMapMode(String),
     UnknownFunction(String),
     OwnerOutOfRange {
         kind: EntityKind,
@@ -98,6 +105,7 @@ impl fmt::Display for Error {
                 message,
             } => write!(f, "parse error at {line}:{column}: {message}"),
             Self::UnknownCtxVar(v) => write!(f, "unknown ctx variable: {v}"),
+            Self::UnknownMapMode(v) => write!(f, "unknown map mode: {v}"),
             Self::UnknownFunction(v) => write!(f, "unknown local function reference: {v}"),
             Self::OwnerOutOfRange { kind, owner, count } => {
                 write!(

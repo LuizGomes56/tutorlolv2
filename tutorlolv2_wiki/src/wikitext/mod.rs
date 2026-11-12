@@ -15,6 +15,7 @@ pub mod build;
 pub mod compare;
 pub mod expr;
 pub mod lookup;
+pub mod map;
 pub mod model;
 pub mod passive;
 pub mod progression;
@@ -26,6 +27,7 @@ pub use {
     compare::{Difference, LegacyFormula, Report},
     expr::Expr,
     lookup::Lookup,
+    map::{MapChangeEntry, MapChangesReport, MapValue, PlacedEffect, Placement},
     model::{AbilityModel, ChampionModel, EffectModel, Formula, Sample},
     passive::PassiveProgression,
     progression::{Progression, Value},

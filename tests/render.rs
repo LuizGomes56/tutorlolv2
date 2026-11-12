@@ -92,3 +92,39 @@ fn builtin_comments_are_highlighted_without_delimiters() {
         assert!(!html.contains("*/"));
     }
 }
+
+#[test]
+fn formulas_changed_by_game_modes_render_their_map_branches() -> MayFail {
+    let mut branches = Vec::new();
+
+    for champion_id in ChampionId::VARIANTS {
+        for metadata in champion_id.abilities() {
+            let html = champion_id.render_fn(metadata.kind)?;
+
+            if html.contains("#[cold]") {
+                branches.push(html);
+            }
+        }
+    }
+
+    for item_id in ItemId::VARIANTS {
+        if let EntityId::Item(item) = item_id.entity() {
+            let html = item.render_fn()?;
+
+            if html.contains("#[cold]") {
+                branches.push(html);
+            }
+        }
+    }
+
+    assert!(!branches.is_empty(), "No formula renders a map branch");
+
+    for html in &branches {
+        assert!(html.contains("match"), "{html}");
+        assert!(html.contains("Aram") || html.contains("Arena"), "{html}");
+        assert!(!html.contains("cold_path"), "{html}");
+        assert!(!html.contains("tutorlolv2_types"), "{html}");
+    }
+
+    Ok(())
+}

@@ -71,7 +71,7 @@ pub struct Candidate<K> {
 
 /// Words of a part that only describe the value, as "AP" or "bonus", rather
 /// than naming a piece of the ability
-const DESCRIPTIVE: &[&str] = &[
+pub(crate) const DESCRIPTIVE: &[&str] = &[
     "ap",
     "ad",
     "bonus",

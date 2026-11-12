@@ -3,8 +3,8 @@
 //! at every [`Sample::series`], so the order of their terms does not matter
 
 use {
-    super::{ChampionModel, Sample},
-    crate::{MayFail, champions::abilities::WikiAbility},
+    super::{ChampionModel, MapChangesReport, Sample},
+    crate::{JsonRead, MayFail, champions::abilities::WikiAbility},
     serde::Serialize,
     std::{collections::BTreeMap, path::Path, str::FromStr},
     strum::VariantArray,
@@ -276,7 +276,7 @@ impl Sample {
 
         (0..Self::SERIES_LEN)
             .map(|_| {
-                Sample(
+                Sample::new(
                     CtxVar::VARIANTS
                         .iter()
                         .map(|&var| {
@@ -292,7 +292,7 @@ impl Sample {
 
                             (var, value)
                         })
-                        .collect(),
+                        .collect::<Vec<_>>(),
                 )
             })
             .collect()
@@ -313,6 +313,8 @@ pub struct Report {
     /// Equal effects among the ones present in both
     pub percent_equal: f64,
     pub differences: Vec<Difference>,
+    /// What happened to the changes of the game modes, from `model_map_changes.json`
+    pub map_changes: MapChangesReport,
 }
 
 /// An effect whose formulas differ
@@ -459,6 +461,12 @@ impl Report {
             _ => report.equal as f64 / compared as f64 * 100.0,
         };
 
+        let map_changes = champions.join("model_map_changes.json");
+
+        if let Ok(true) = std::fs::exists(&map_changes) {
+            report.map_changes = MapChangesReport::from_file(map_changes)?;
+        }
+
         Ok(report)
     }
 }
@@ -477,6 +485,11 @@ pub fn compare_model() -> MayFail {
         report.only_current,
         report.only_model,
         report.percent_equal
+    );
+
+    println!(
+        "[report] map changes: {} applied, {} not placed",
+        report.map_changes.applied, report.map_changes.not_placed
     );
 
     crate::write(

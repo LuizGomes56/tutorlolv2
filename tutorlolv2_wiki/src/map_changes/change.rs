@@ -83,6 +83,20 @@ pub enum Values {
 }
 
 impl MapChange {
+    /// What a Ratio or Base change changes, as "Bonus damage per stack": the bullet's
+    /// text before "changed", which has more than the kind's part, "Bonus" for a Base
+    /// change. `None` for other kinds
+    pub fn subject(&self) -> Option<&str> {
+        let part = match &self.kind {
+            ChangeKind::Ratio { part, .. } | ChangeKind::Base { part, .. } => part.as_str(),
+            _ => return None,
+        };
+
+        let subject = self.text.find(" changed").map(|end| self.text[..end].trim());
+
+        Some(subject.filter(|subject| !subject.is_empty()).unwrap_or(part))
+    }
+
     /// Parses the bulleted list of one key. `is_item` reads changes of stats, as
     /// "Attack damage changed to 55", which are only stats on items
     pub fn parse_list(body: &str, is_item: bool) -> Vec<Self> {

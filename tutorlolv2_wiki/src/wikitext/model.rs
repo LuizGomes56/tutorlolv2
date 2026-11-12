@@ -9,7 +9,7 @@ use {
         fmt,
         ops::{Add, Div, Mul},
     },
-    tutorlolv2_types::{CtxVar, DamageType, Key},
+    tutorlolv2_types::{CtxVar, DamageType, Key, MapMode},
 };
 
 /// Abilities of a champion, by key. The `Vec` is ordered by the page files
@@ -71,16 +71,38 @@ pub enum Formula {
     Pow(Box<Formula>, u8),
     /// Expression kept as written, from a `f![...]` override
     Raw(String),
+    /// A value that game modes change: `default` everywhere else, and each arm's
+    /// formula on its mode, at most one arm per mode
+    ByMap {
+        default: Box<Formula>,
+        maps: Vec<(MapMode, Formula)>,
+    },
 }
 
-/// Values of the variables a [`Formula`] is evaluated with
+/// Values of the variables a [`Formula`] is evaluated with, and the map
 #[derive(Clone, Debug, Default, PartialEq)]
-pub struct Sample(pub BTreeMap<CtxVar, f64>);
+pub struct Sample {
+    pub vars: BTreeMap<CtxVar, f64>,
+    pub map: MapMode,
+}
 
 impl Sample {
+    /// Sample with `vars`, on the default map
+    pub fn new(vars: impl IntoIterator<Item = (CtxVar, f64)>) -> Self {
+        Self {
+            vars: vars.into_iter().collect(),
+            map: MapMode::Default,
+        }
+    }
+
+    /// The same sample on `map`
+    pub fn on(self, map: MapMode) -> Self {
+        Self { map, ..self }
+    }
+
     /// Value of `var`, or 0 if the sample does not have it
     pub fn get(&self, var: CtxVar) -> f64 {
-        self.0.get(&var).copied().unwrap_or(0.0)
+        self.vars.get(&var).copied().unwrap_or(0.0)
     }
 }
 
@@ -90,22 +112,121 @@ impl Formula {
         Formula::Const(factor) * self
     }
 
+    /// `self`, with `value` on `mode`. A [`Formula::ByMap`] gets an arm for `mode`, or
+    /// its arm replaced, so both modes changing a value share one branch
+    pub fn with_map(self, mode: MapMode, value: Formula) -> Formula {
+        let (default, mut maps) = match self {
+            Formula::ByMap { default, maps } => (default, maps),
+            other => (Box::new(other), Vec::new()),
+        };
+
+        maps.retain(|(arm, _)| *arm != mode);
+        maps.push((mode, value));
+        maps.sort_by_key(|(arm, _)| *arm);
+
+        Formula::ByMap { default, maps }
+    }
+
+    /// Values of a constant, of values by rank or of a table. For a value that game
+    /// modes change, the values everywhere else
+    pub fn default_values(&self) -> Option<Vec<f64>> {
+        match self {
+            Formula::Const(value) => Some(vec![*value]),
+            Formula::ByRank { values, .. } | Formula::Table { values, .. } => Some(values.clone()),
+            Formula::ByMap { default, .. } => default.default_values(),
+            _ => None,
+        }
+    }
+
     /// Ratio of a value written in percent, as the 6-8% of Yorick's E. Values are
     /// divided where they are written, so `6%` displays as `0.06`
     pub fn percent(self) -> Formula {
+        self.times(0.01)
+    }
+
+    /// The formula multiplied by `factor`, applied to the values themselves when it
+    /// has them, so `0.2` times 3 displays as `0.6` rather than `3.0 * 0.2`
+    pub fn times(self, factor: f64) -> Formula {
+        let scale = |values: Vec<f64>| values.into_iter().map(|value| value * factor).collect();
+
         match self {
-            Formula::Const(value) => Formula::Const(value / 100.0),
+            Formula::Const(value) => Formula::Const(value * factor),
             Formula::ByRank { rank, values } => Formula::ByRank {
                 rank,
-                values: values.into_iter().map(|value| value / 100.0).collect(),
+                values: scale(values),
             },
             Formula::Table { var, keys, values } => Formula::Table {
                 var,
                 keys,
-                values: values.into_iter().map(|value| value / 100.0).collect(),
+                values: scale(values),
             },
-            other => other.scale(0.01),
+            Formula::ByMap { default, maps } => Formula::ByMap {
+                default: Box::new(default.times(factor)),
+                maps: maps
+                    .into_iter()
+                    .map(|(mode, value)| (mode, value.times(factor)))
+                    .collect(),
+            },
+            other => other.scale(factor),
         }
+    }
+
+    /// Top-level terms: the operands of a sum, or the formula itself
+    fn terms_mut(&mut self) -> Vec<&mut Formula> {
+        match self {
+            Formula::Sum(terms) => terms.iter_mut().collect(),
+            other => vec![other],
+        }
+    }
+
+    /// Ratio of each top-level term `ratio × stat`, or `ratio × stat / constant`, as
+    /// `(+ 5% per 100 AP)`. Terms with another factor, as a ratio of a stat that
+    /// grows with a second stat, have none
+    pub fn stat_ratio_mut(&mut self, stat: CtxVar) -> Vec<&mut Formula> {
+        self.terms_mut()
+            .into_iter()
+            .filter_map(|term| {
+                // `ratio × stat / constant`, as `per 100`
+                let term = match term {
+                    Formula::Div(lhs, rhs) => match **rhs {
+                        Formula::Const(_) => lhs.as_mut(),
+                        _ => return None,
+                    },
+                    term => term,
+                };
+
+                match term {
+                    Formula::Product(factors)
+                        if factors.len() == 2 && factors[1] == Formula::Var(stat) =>
+                    {
+                        factors.first_mut()
+                    }
+                    _ => None,
+                }
+            })
+            .collect()
+    }
+
+    /// Top-level term that is the base: the first values by rank, or else the first
+    /// constant or table, or one of them that game modes change. Values by rank come
+    /// first, as Azir's W rank base after its level table
+    pub fn base_mut(&mut self) -> Option<&mut Formula> {
+        let base = |term: &Formula| match term {
+            Formula::ByMap { default, .. } => default.as_ref().clone(),
+            term => term.clone(),
+        };
+
+        let terms = self.terms_mut();
+        let index = terms
+            .iter()
+            .position(|term| matches!(base(term), Formula::ByRank { .. }))
+            .or_else(|| {
+                terms.iter().position(|term| {
+                    matches!(base(term), Formula::Const(_) | Formula::Table { .. })
+                })
+            })?;
+
+        terms.into_iter().nth(index)
     }
 
     /// Value of the formula at `sample`. `None` for [`Formula::Raw`], which is not
@@ -141,6 +262,11 @@ impl Formula {
             Formula::Div(lhs, rhs) => lhs.eval(sample)? / rhs.eval(sample)?,
             Formula::Pow(base, power) => base.eval(sample)?.powi(i32::from(*power)),
             Formula::Raw(_) => return None,
+            Formula::ByMap { default, maps } => maps
+                .iter()
+                .find(|(mode, _)| *mode == sample.map)
+                .map_or(default.as_ref(), |(_, value)| value)
+                .eval(sample)?,
         })
     }
 
@@ -260,6 +386,15 @@ impl fmt::Display for Formula {
                 Self::fmt_joined(f, &factors, " * ")
             }
             Formula::Raw(text) => write!(f, "({text})"),
+            Formula::ByMap { default, maps } => {
+                f.write_str("match ctx.map { ")?;
+
+                for (mode, value) in maps {
+                    write!(f, "#[cold] {mode:?} => {value}, ")?;
+                }
+
+                write!(f, "_ => {default} }}")
+            }
         }
     }
 }

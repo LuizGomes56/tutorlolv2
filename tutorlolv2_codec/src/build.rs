@@ -1,12 +1,15 @@
 use crate::common::{
     DamageSlot, EntityKind, Error, HEADER_LEN, MAGIC, OP_BIN_BASE, OP_CTX, OP_GROUP,
-    OP_MATCH_BLOCK, OP_MATCH_INLINE, OP_NEG, OP_NUM_CONST, OP_NUM_F32, OP_NUM_I8, OP_NUM_U8,
+    OP_MAP_MATCH_BLOCK, OP_MAP_MATCH_INLINE, OP_MATCH_BLOCK, OP_MATCH_INLINE, OP_NEG, OP_NUM_CONST, OP_NUM_F32, OP_NUM_I8, OP_NUM_U8,
     OP_REF_LOCAL, VERSION,
 };
 use std::collections::HashMap;
 use std::convert::TryFrom;
 
 pub type CtxResolver = fn(&str) -> Option<u8>;
+
+/// Resolves the name of a game mode, as `Aram`, to the id the renderer gets back
+pub type MapResolver = fn(&str) -> Option<u8>;
 
 #[derive(Debug, Clone, Copy)]
 pub struct FormulaSource<'a> {
@@ -31,6 +34,48 @@ enum Ast {
         id: u8,
         layout: MatchLayout,
     },
+    /// `match ctx.map { #[cold] Aram => …, _ => … }`, an arm per mode and the default
+    MapMatch {
+        arms: Vec<(u8, MapArm)>,
+        default: Box<MapArm>,
+        layout: MatchLayout,
+    },
+}
+
+/// Value of an arm of a map match
+#[derive(Debug, Clone)]
+struct MapArm {
+    value: Ast,
+    body: ArmBody,
+}
+
+/// How the value of an arm is written. rustfmt puts values that don't fit on a line
+/// in a block, `Arena => { … }`, which has no comma after it
+#[derive(Debug, Clone, Copy)]
+enum ArmBody {
+    Plain,
+    Braced {
+        body_indent_units: u8,
+        close_indent_units: u8,
+    },
+}
+
+impl MapArm {
+    fn encode(&self, constants: &ConstantPool, out: &mut Vec<u8>) {
+        match self.body {
+            ArmBody::Plain => out.push(0),
+            ArmBody::Braced {
+                body_indent_units,
+                close_indent_units,
+            } => {
+                out.push(1);
+                out.push(body_indent_units);
+                out.push(close_indent_units);
+            }
+        }
+
+        self.value.encode(constants, out);
+    }
 }
 
 impl Ast {
@@ -42,6 +87,13 @@ impl Ast {
                 right.count_numbers(freq);
             }
             Self::Group(inner) | Self::Neg(inner) => inner.count_numbers(freq),
+            Self::MapMatch { arms, default, .. } => {
+                for (_, arm) in arms {
+                    arm.value.count_numbers(freq);
+                }
+
+                default.value.count_numbers(freq);
+            }
             Self::Ctx(_) | Self::RefLocal(_) | Self::Match { .. } => {}
         }
     }
@@ -76,6 +128,32 @@ impl Ast {
                 out.push(*id);
                 out.push(*arm_indent_units);
                 out.push(*close_indent_units);
+            }
+            Self::MapMatch {
+                arms,
+                default,
+                layout,
+            } => {
+                match layout {
+                    MatchLayout::Inline => out.push(OP_MAP_MATCH_INLINE),
+                    MatchLayout::Block {
+                        arm_indent_units,
+                        close_indent_units,
+                    } => {
+                        out.push(OP_MAP_MATCH_BLOCK);
+                        out.push(*arm_indent_units);
+                        out.push(*close_indent_units);
+                    }
+                }
+
+                out.push(arms.len() as u8);
+
+                for (mode, arm) in arms {
+                    out.push(*mode);
+                    arm.encode(constants, out);
+                }
+
+                default.encode(constants, out);
             }
             Self::Group(inner) => {
                 out.push(OP_GROUP);
@@ -252,17 +330,25 @@ pub struct FormulaDbBuilder {
     items: Vec<Option<SparsePending>>,
     runes: Vec<Option<SparsePending>>,
     ctx_resolver: CtxResolver,
+    map_resolver: MapResolver,
     match_defs: Vec<MatchDef>,
     match_ids: HashMap<MatchDef, u8>,
 }
 
 impl FormulaDbBuilder {
-    pub fn new(cc: u16, ic: u16, rc: u16, ctx_resolver: CtxResolver) -> Self {
+    pub fn new(
+        cc: u16,
+        ic: u16,
+        rc: u16,
+        ctx_resolver: CtxResolver,
+        map_resolver: MapResolver,
+    ) -> Self {
         Self {
             champions: (0..cc).map(|_| None).collect(),
             items: (0..ic).map(|_| None).collect(),
             runes: (0..rc).map(|_| None).collect(),
             ctx_resolver,
+            map_resolver,
             match_defs: Vec::new(),
             match_ids: HashMap::new(),
         }
@@ -414,6 +500,7 @@ impl FormulaDbBuilder {
             tokens,
             pos: 0,
             ctx_resolver: self.ctx_resolver,
+            map_resolver: self.map_resolver,
             refs,
             match_defs: &mut self.match_defs,
             match_ids: &mut self.match_ids,
@@ -684,6 +771,8 @@ enum TokenKind {
     Range,
     RangeEq,
     FatArrow,
+    /// `#[cold]`, before each arm of a map match but the default
+    Cold,
 }
 
 #[derive(Debug, Clone)]
@@ -767,6 +856,9 @@ impl<'a> Lexer<'a> {
                 b'.' => self.dot(),
                 b'=' if self.bytes.get(self.index + 1) == Some(&b'>') => {
                     self.push(TokenKind::FatArrow, 2)
+                }
+                b'#' if self.source[self.index..].starts_with("#[cold]") => {
+                    self.push(TokenKind::Cold, "#[cold]".len())
                 }
                 other => {
                     return Err(Error::Parse {
@@ -900,6 +992,7 @@ struct Parser<'a> {
     tokens: Vec<Token>,
     pos: usize,
     ctx_resolver: CtxResolver,
+    map_resolver: MapResolver,
     refs: &'a HashMap<String, u8>,
     match_defs: &'a mut Vec<MatchDef>,
     match_ids: &'a mut HashMap<MatchDef, u8>,
@@ -1110,6 +1203,10 @@ impl Parser<'_> {
             _ => return Err(field_token.error("expected ctx field identifier")),
         };
 
+        if field == "map" {
+            return self.parse_map_match(start);
+        }
+
         let ctx = (self.ctx_resolver)(&field).ok_or_else(|| Error::UnknownCtxVar(field.clone()))?;
 
         let mut cast_u8 = false;
@@ -1186,6 +1283,116 @@ impl Parser<'_> {
             start_line: start.line,
             start_col: start.column,
             end_line: close.line,
+        })
+    }
+
+    /// `match ctx.map { #[cold] Aram => <expr>, #[cold] Arena => <expr>, _ => <expr> }`,
+    /// after `match ctx.map`. Every arm but the last is a mode marked `#[cold]`, and the
+    /// last is the default `_`
+    fn parse_map_match(&mut self, start: Token) -> Result<Parsed, Error> {
+        let open = self.expect(TokenKind::LBrace, "expected `{` after `ctx.map`")?;
+        let first_arm = self.peek().cloned();
+        let mut arms = Vec::new();
+
+        let default = loop {
+            let token = self
+                .bump()
+                .ok_or_else(|| start.error("unterminated map match"))?;
+
+            match &token.kind {
+                TokenKind::Ident(name) if name == "_" => {
+                    self.expect(TokenKind::FatArrow, "expected `=>` after `_`")?;
+                    break self.parse_map_arm()?;
+                }
+                TokenKind::RBrace => {
+                    return Err(token.error("map match needs a default `_` arm"));
+                }
+                TokenKind::Cold => {}
+                _ => {
+                    return Err(token.error("map arms other than `_` are cold, as `#[cold] Aram`"));
+                }
+            }
+
+            let variant = self
+                .bump()
+                .ok_or_else(|| token.error("expected a map mode after `#[cold]`"))?;
+
+            let TokenKind::Ident(name) = &variant.kind else {
+                return Err(variant.error("expected a map mode after `#[cold]`"));
+            };
+
+            let mode =
+                (self.map_resolver)(name).ok_or_else(|| Error::UnknownMapMode(name.clone()))?;
+
+            self.expect(TokenKind::FatArrow, "expected `=>` in map arm")?;
+            let arm = self.parse_map_arm()?;
+
+            // A braced value ends the arm without a comma
+            if let ArmBody::Plain = arm.body {
+                self.expect(TokenKind::Comma, "expected `,` after map arm")?;
+            } else if matches!(self.peek().map(|t| &t.kind), Some(TokenKind::Comma)) {
+                self.bump();
+            }
+
+            arms.push((mode, arm));
+
+            if arms.len() >= u8::MAX as usize {
+                return Err(Error::TooManyMatchArms);
+            }
+        };
+
+        if matches!(self.peek().map(|t| &t.kind), Some(TokenKind::Comma)) {
+            self.bump();
+        }
+
+        let close = self.expect(TokenKind::RBrace, "expected `}` after the `_` arm")?;
+
+        let layout = if close.line > open.line {
+            let arm = first_arm.ok_or_else(|| start.error("empty match is unsupported"))?;
+            MatchLayout::Block {
+                arm_indent_units: arm.indent_units()?,
+                close_indent_units: close.indent_units()?,
+            }
+        } else {
+            MatchLayout::Inline
+        };
+
+        Ok(Parsed {
+            ast: Ast::MapMatch {
+                arms,
+                default: Box::new(default),
+                layout,
+            },
+            start_line: start.line,
+            start_col: start.column,
+            end_line: close.line,
+        })
+    }
+
+    /// Value of a map arm, after its `=>`: an expression, or one in a block as
+    /// rustfmt writes the ones that don't fit on a line
+    fn parse_map_arm(&mut self) -> Result<MapArm, Error> {
+        if !matches!(self.peek().map(|t| &t.kind), Some(TokenKind::LBrace)) {
+            return Ok(MapArm {
+                value: self.parse_expression(0)?.ast,
+                body: ArmBody::Plain,
+            });
+        }
+
+        let open = self.expect(TokenKind::LBrace, "expected `{`")?;
+        let first = self
+            .peek()
+            .cloned()
+            .ok_or_else(|| open.error("unterminated map arm"))?;
+        let value = self.parse_expression(0)?.ast;
+        let close = self.expect(TokenKind::RBrace, "expected `}` after the arm's value")?;
+
+        Ok(MapArm {
+            value,
+            body: ArmBody::Braced {
+                body_indent_units: first.indent_units()?,
+                close_indent_units: close.indent_units()?,
+            },
         })
     }
 

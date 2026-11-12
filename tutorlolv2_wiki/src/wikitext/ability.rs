@@ -57,6 +57,7 @@ impl RawAbility {
             data.named(name)
                 .map(|value| value.plain().trim().to_string())
         };
+
         let skill = field("skill").ok_or("Ability data without a skill field")?;
         let skill = match skill.chars().collect::<Vec<_>>()[..] {
             [c] => Key::try_from(c)?,

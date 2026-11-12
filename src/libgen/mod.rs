@@ -1,4 +1,7 @@
 #![allow(unreachable_patterns)]
+// Formulas keep the shape the wiki writes them in, as Samira's `(19 - 2) / 17`, which
+// clippy reads as a value divided by itself
+#![allow(clippy::eq_op)]
 
 pub mod check;
 pub mod globals;
