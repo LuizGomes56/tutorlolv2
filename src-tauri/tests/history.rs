@@ -106,8 +106,19 @@ fn server(
     let handle = std::thread::spawn(move || {
         let mut requests = vec![];
         for (status, extra, bytes) in responses {
-            let deadline=std::time::Instant::now()+std::time::Duration::from_secs(5);
-            let (mut stream,_)=loop {match listener.accept(){Ok(value)=>break value,Err(error) if error.kind()==std::io::ErrorKind::WouldBlock && std::time::Instant::now()<deadline=>std::thread::sleep(std::time::Duration::from_millis(5)),Err(error)=>panic!("Expected request: {error}")}};
+            let deadline = std::time::Instant::now() + std::time::Duration::from_secs(5);
+            let (mut stream, _) = loop {
+                match listener.accept() {
+                    Ok(value) => break value,
+                    Err(error)
+                        if error.kind() == std::io::ErrorKind::WouldBlock
+                            && std::time::Instant::now() < deadline =>
+                    {
+                        std::thread::sleep(std::time::Duration::from_millis(5))
+                    }
+                    Err(error) => panic!("Expected request: {error}"),
+                }
+            };
             stream.set_nonblocking(false).unwrap();
             stream
                 .set_read_timeout(Some(std::time::Duration::from_secs(3)))
@@ -134,7 +145,14 @@ fn api(base: String) -> tutorlolv2_desktop_app::uploader::ApiClient {
 #[tokio::test]
 async fn owner_frame_transport_decompresses_exactly_once_and_keeps_auth_native() {
     use std::io::Write;
-    let raw=bincode::encode_to_vec(tutorlolv2_api::FrameChunk {format:tutorlolv2_protocol::FRAMES_FORMAT,frames:vec![]},tutorlolv2_desktop_app::BINCODE_CONFIG).unwrap();
+    let raw = bincode::encode_to_vec(
+        tutorlolv2_api::FrameChunk {
+            format: tutorlolv2_protocol::FRAMES_FORMAT,
+            frames: vec![],
+        },
+        tutorlolv2_desktop_app::BINCODE_CONFIG,
+    )
+    .unwrap();
     let mut compressed = vec![];
     {
         let mut writer = brotli::CompressorWriter::new(&mut compressed, 4096, 4, 22);
@@ -158,10 +176,14 @@ async fn owner_metadata_rejects_trailing_bytes_and_returns_typed_missing() {
     use tutorlolv2_desktop_app::BINCODE_CONFIG;
     use tutorlolv2_protocol::*;
     let mut body = bincode::encode_to_vec(
-        tutorlolv2_protocol::ApiResponse::new(200,Ok(HistoryPage {
-            items: vec![],
-            next_before: None,
-        })).unwrap(),
+        tutorlolv2_protocol::ApiResponse::new(
+            200,
+            Ok(HistoryPage {
+                items: vec![],
+                next_before: None,
+            }),
+        )
+        .unwrap(),
         BINCODE_CONFIG,
     )
     .unwrap();
@@ -232,10 +254,14 @@ async fn repair_traverses_every_page_preserves_hidden_and_never_publishes_partia
     use tutorlolv2_protocol::*;
     let page = |id, next| {
         bincode::encode_to_vec(
-            tutorlolv2_protocol::ApiResponse::new(200,Ok(HistoryPage {
-                items: vec![item(id)],
-                next_before: next,
-            })).unwrap(),
+            tutorlolv2_protocol::ApiResponse::new(
+                200,
+                Ok(HistoryPage {
+                    items: vec![item(id)],
+                    next_before: next,
+                }),
+            )
+            .unwrap(),
             BINCODE_CONFIG,
         )
         .unwrap()
@@ -310,10 +336,14 @@ async fn explicit_repair_is_queued_behind_an_active_normal_refresh() {
     use tutorlolv2_protocol::*;
     let page = |id, next| {
         bincode::encode_to_vec(
-            tutorlolv2_protocol::ApiResponse::new(200,Ok(HistoryPage {
-                items: vec![item(id)],
-                next_before: next,
-            })).unwrap(),
+            tutorlolv2_protocol::ApiResponse::new(
+                200,
+                Ok(HistoryPage {
+                    items: vec![item(id)],
+                    next_before: next,
+                }),
+            )
+            .unwrap(),
             BINCODE_CONFIG,
         )
         .unwrap()
@@ -396,10 +426,14 @@ async fn bounded_unknown_result_refresh_does_not_starve_later_recordings() {
     use tutorlolv2_desktop_app::BINCODE_CONFIG;
     use tutorlolv2_protocol::*;
     let empty = bincode::encode_to_vec(
-        tutorlolv2_protocol::ApiResponse::new(200,Ok(HistoryPage {
-            items: vec![],
-            next_before: None,
-        })).unwrap(),
+        tutorlolv2_protocol::ApiResponse::new(
+            200,
+            Ok(HistoryPage {
+                items: vec![],
+                next_before: None,
+            }),
+        )
+        .unwrap(),
         BINCODE_CONFIG,
     )
     .unwrap();
@@ -413,12 +447,16 @@ async fn bounded_unknown_result_refresh_does_not_starve_later_recordings() {
             let mut source = item(id);
             source.summary.recording.result = None;
             let body = bincode::encode_to_vec(
-                tutorlolv2_protocol::ApiResponse::new(200,Ok(RecordingDetails {
-                    summary: source.summary,
-                    share: source.share,
-                    chunks: vec![],
-                    frames_format: 1,
-                })).unwrap(),
+                tutorlolv2_protocol::ApiResponse::new(
+                    200,
+                    Ok(RecordingDetails {
+                        summary: source.summary,
+                        share: source.share,
+                        chunks: vec![],
+                        frames_format: 1,
+                    }),
+                )
+                .unwrap(),
                 BINCODE_CONFIG,
             )
             .unwrap();
@@ -458,22 +496,30 @@ async fn stale_details_404_does_not_poison_refresh_and_unavailability_survives_w
     use tutorlolv2_desktop_app::BINCODE_CONFIG;
     use tutorlolv2_protocol::*;
     let page = bincode::encode_to_vec(
-        tutorlolv2_protocol::ApiResponse::new(200,Ok(HistoryPage {
-            items: vec![item(3)],
-            next_before: None,
-        })).unwrap(),
+        tutorlolv2_protocol::ApiResponse::new(
+            200,
+            Ok(HistoryPage {
+                items: vec![item(3)],
+                next_before: None,
+            }),
+        )
+        .unwrap(),
         BINCODE_CONFIG,
     )
     .unwrap();
     let details = |id| {
         let source = item(id);
         bincode::encode_to_vec(
-            tutorlolv2_protocol::ApiResponse::new(200,Ok(RecordingDetails {
-                summary: source.summary,
-                share: source.share,
-                chunks: vec![],
-                frames_format: 1,
-            })).unwrap(),
+            tutorlolv2_protocol::ApiResponse::new(
+                200,
+                Ok(RecordingDetails {
+                    summary: source.summary,
+                    share: source.share,
+                    chunks: vec![],
+                    frames_format: 1,
+                }),
+            )
+            .unwrap(),
             BINCODE_CONFIG,
         )
         .unwrap()
@@ -560,10 +606,14 @@ async fn transient_details_failure_keeps_valid_newest_page_and_reports_refresh_e
     use tutorlolv2_desktop_app::BINCODE_CONFIG;
     use tutorlolv2_protocol::*;
     let page = bincode::encode_to_vec(
-        tutorlolv2_protocol::ApiResponse::new(200,Ok(HistoryPage {
-            items: vec![item(3)],
-            next_before: None,
-        })).unwrap(),
+        tutorlolv2_protocol::ApiResponse::new(
+            200,
+            Ok(HistoryPage {
+                items: vec![item(3)],
+                next_before: None,
+            }),
+        )
+        .unwrap(),
         BINCODE_CONFIG,
     )
     .unwrap();
@@ -622,10 +672,14 @@ async fn adopting_server_history_attaches_local_id_without_collapsing_unrelated_
     use tutorlolv2_desktop_app::BINCODE_CONFIG;
     use tutorlolv2_protocol::*;
     let page = bincode::encode_to_vec(
-        tutorlolv2_protocol::ApiResponse::new(200,Ok(HistoryPage {
-            items: vec![item(10), item(11), item(12)],
-            next_before: None,
-        })).unwrap(),
+        tutorlolv2_protocol::ApiResponse::new(
+            200,
+            Ok(HistoryPage {
+                items: vec![item(10), item(11), item(12)],
+                next_before: None,
+            }),
+        )
+        .unwrap(),
         BINCODE_CONFIG,
     )
     .unwrap();
@@ -714,10 +768,14 @@ async fn full_repair_checks_all_newly_missing_completed_cached_recordings() {
     use tutorlolv2_protocol::*;
     let page = |items| {
         bincode::encode_to_vec(
-            tutorlolv2_protocol::ApiResponse::new(200,Ok(HistoryPage {
-                items,
-                next_before: None,
-            })).unwrap(),
+            tutorlolv2_protocol::ApiResponse::new(
+                200,
+                Ok(HistoryPage {
+                    items,
+                    next_before: None,
+                }),
+            )
+            .unwrap(),
             BINCODE_CONFIG,
         )
         .unwrap()
@@ -823,10 +881,14 @@ async fn removed_resumed_local_loss_survives_while_current_loss_decreases() {
         .unwrap();
     assert_eq!(history.list(0, 50).entries[0].lost_chunks, 5);
     let page = bincode::encode_to_vec(
-        tutorlolv2_protocol::ApiResponse::new(200,Ok(tutorlolv2_protocol::HistoryPage {
-            items: vec![item(4)],
-            next_before: None,
-        })).unwrap(),
+        tutorlolv2_protocol::ApiResponse::new(
+            200,
+            Ok(tutorlolv2_protocol::HistoryPage {
+                items: vec![item(4)],
+                next_before: None,
+            }),
+        )
+        .unwrap(),
         tutorlolv2_desktop_app::BINCODE_CONFIG,
     )
     .unwrap();

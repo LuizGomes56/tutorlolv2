@@ -35,21 +35,21 @@ impl HistoryOperationError {
 }
 
 pub struct Delivery {
-    pub(crate) account: crate::account::Account,
+    pub account: crate::account::Account,
     pub history: crate::history::History,
     history_errors:
         Mutex<std::collections::BTreeMap<(tutorlolv2_protocol::Id16, u64), HistoryOperationError>>,
-    pub(crate) recorder: Mutex<Recorder>,
-    pub(crate) api: RwLock<ApiClient>,
+    pub recorder: Mutex<Recorder>,
+    pub api: RwLock<ApiClient>,
     pub(crate) spool: Spool,
     pub(crate) store: Store,
     pub(crate) upload_now: Notify,
     pub(crate) outbox_now: Notify,
     pub(crate) register_now: Notify,
     pub(crate) sharing_now: Notify,
-    pub(crate) sharing_error: Mutex<Option<(tutorlolv2_protocol::Id16, String)>>,
+    pub sharing_error: Mutex<Option<(tutorlolv2_protocol::Id16, String)>>,
     pub(crate) sharing_refresh_error: Mutex<Option<String>>,
-    pub(crate) live_error: Mutex<Option<String>>,
+    pub live_error: Mutex<Option<String>>,
     pub(crate) control_error: Mutex<Option<String>>,
     pub(crate) delivery_error: Mutex<Option<String>>,
     pub(crate) sharing_lock: tokio::sync::Mutex<()>,

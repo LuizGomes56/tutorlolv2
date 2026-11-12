@@ -92,7 +92,8 @@ impl Store {
 
     pub fn save_account(&self, credential: Option<&crate::account::Credential>) -> io::Result<()> {
         if let Some(credential) = credential {
-            let raw = bincode::encode_to_vec(credential, BINCODE_CONFIG).map_err(io::Error::other)?;
+            let raw =
+                bincode::encode_to_vec(credential, BINCODE_CONFIG).map_err(io::Error::other)?;
             self.save("account.bin", Kind::Account, &protect(&raw)?)
         } else {
             match fs::remove_file(self.dir.join("account.bin")) {

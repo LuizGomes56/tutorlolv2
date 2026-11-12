@@ -26,7 +26,7 @@ mod overlay;
 pub mod recorder;
 mod recorder_task;
 pub mod sharing;
-mod shortcut;
+pub mod shortcut;
 mod shortcut_commands;
 pub mod spool;
 pub mod store;

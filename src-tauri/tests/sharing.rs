@@ -100,7 +100,11 @@ async fn native_transport_refreshes_changes_and_uploads_brotli_raw_snapshot() {
         code: Some("abcdefgh".into()),
         url: Some("https://example.test/watch/abcdefgh".into()),
     };
-    let response = bincode::encode_to_vec(ApiResponse::new(200,Ok(&expected)).unwrap(), BINCODE_CONFIG).unwrap();
+    let response = bincode::encode_to_vec(
+        ApiResponse::new(200, Ok(&expected)).unwrap(),
+        BINCODE_CONFIG,
+    )
+    .unwrap();
     let snapshot = RawSnapshot {
         captured_at_ms: 1234,
         game_time: 4.5,
@@ -321,7 +325,8 @@ async fn failed_share_refresh_preserves_last_known_access_and_pauses_publication
     let listener = std::net::TcpListener::bind("127.0.0.1:0").unwrap();
     let (delivery, snapshot, share) =
         publisher(format!("http://{}", listener.local_addr().unwrap()));
-    let response = bincode::encode_to_vec(ApiResponse::new(200,Ok(&share)).unwrap(), BINCODE_CONFIG).unwrap();
+    let response =
+        bincode::encode_to_vec(ApiResponse::new(200, Ok(&share)).unwrap(), BINCODE_CONFIG).unwrap();
     let worker = std::thread::spawn(move || {
         for (method, status, body) in [
             ("GET", 500, b"unavailable".as_slice()),
@@ -369,7 +374,8 @@ async fn live_upload_error_survives_share_lookup_until_publication_succeeds() {
     let listener = std::net::TcpListener::bind("127.0.0.1:0").unwrap();
     let (delivery, snapshot, share) =
         publisher(format!("http://{}", listener.local_addr().unwrap()));
-    let response = bincode::encode_to_vec(ApiResponse::new(200,Ok(&share)).unwrap(), BINCODE_CONFIG).unwrap();
+    let response =
+        bincode::encode_to_vec(ApiResponse::new(200, Ok(&share)).unwrap(), BINCODE_CONFIG).unwrap();
     let worker = std::thread::spawn(move || {
         for (method, status, body) in [
             ("PUT", 500, b"upload failed".as_slice()),
@@ -458,7 +464,8 @@ async fn rejected_live_upload_refreshes_expired_code_to_private_without_republis
             &mut stream,
             200,
             &bincode::encode_to_vec(
-                ApiResponse::new(200,Ok(tutorlolv2_desktop_app::sharing::private_share())).unwrap(),
+                ApiResponse::new(200, Ok(tutorlolv2_desktop_app::sharing::private_share()))
+                    .unwrap(),
                 BINCODE_CONFIG,
             )
             .unwrap(),
@@ -517,7 +524,8 @@ async fn private_transition_cancels_live_request(history: bool) {
             &mut control,
             200,
             &bincode::encode_to_vec(
-                ApiResponse::new(200,Ok(tutorlolv2_desktop_app::sharing::private_share())).unwrap(),
+                ApiResponse::new(200, Ok(tutorlolv2_desktop_app::sharing::private_share()))
+                    .unwrap(),
                 BINCODE_CONFIG,
             )
             .unwrap(),
@@ -571,7 +579,8 @@ async fn history_share_response_updates_only_the_matching_active_recorder() {
             respond(
                 &mut stream,
                 200,
-                &bincode::encode_to_vec(ApiResponse::new(200,Ok(share)).unwrap(), BINCODE_CONFIG).unwrap(),
+                &bincode::encode_to_vec(ApiResponse::new(200, Ok(share)).unwrap(), BINCODE_CONFIG)
+                    .unwrap(),
             );
         }
     });
