@@ -5,7 +5,8 @@
 
 use {
     super::{
-        ChampionModel, Formula, Lookup, Nodes, Progression, Scaling, Variables, build::stat_var,
+        AbilityModel, ChampionModel, EffectModel, Formula, Lookup, Nodes, Progression, Scaling,
+        Variables, build::stat_var,
     },
     crate::map_changes::{
         ChangeTarget, MapChanges,
@@ -164,13 +165,27 @@ struct Candidate {
     effect: usize,
     target: usize,
     values: Vec<f64>,
+    /// Whether the effect's label names a damage
+    damage: bool,
+}
+
+impl AbilityModel {
+    /// Effects a change of a game mode may apply to: the `{{st}}` effects, or the
+    /// values of the description of a page without them, as Akali's passive
+    fn placeable_mut(&mut self) -> &mut Vec<EffectModel> {
+        match self.effects.is_empty() {
+            true => &mut self.extras,
+            false => &mut self.effects,
+        }
+    }
 }
 
 impl ChampionModel {
     /// Applies the change of `part`, as "First dash AP", to the effects of the
     /// abilities of `key` on `mode`, or only of the one named `ability` when the change
     /// names it. Words of `part` that name something keep only the effects whose label
-    /// has them. The candidate with the smallest value takes `value`, and the
+    /// has them. The candidate whose value is closest to `value` takes it, since modes
+    /// change values by a margin, not to another magnitude, and the
     /// candidates that are a constant multiple of it take the same multiple of `value`.
     /// The others keep their value, and so do the values an earlier change of `mode`
     /// already changed
@@ -202,7 +217,7 @@ impl ChampionModel {
                 continue;
             }
 
-            for (e, effect) in model.effects.iter_mut().enumerate() {
+            for (e, effect) in model.placeable_mut().iter_mut().enumerate() {
                 if !named(&effect.label) {
                     continue;
                 }
@@ -224,6 +239,7 @@ impl ChampionModel {
                             effect: e,
                             target: t,
                             values,
+                            damage: effect.label.to_lowercase().contains("damage"),
                         });
                     }
                 }
@@ -241,11 +257,20 @@ impl ChampionModel {
             ));
         }
 
-        let mean = |values: &[f64]| values.iter().sum::<f64>() / values.len() as f64;
+        let mean = |values: &[f64]| values.iter().sum::<f64>() / values.len().max(1) as f64;
+        let new = mean(&value.value().default_values().unwrap_or_default());
+        // How far a candidate is from the new value
+        let distance = |values: &[f64]| (mean(values) - new).abs();
 
+        // A change is a damage change unless it names another effect, so a damage
+        // takes it before a closer shield or heal, as Kassadin's Q
         let Some(primary) = candidates
             .iter()
-            .min_by(|a, b| mean(&a.values).total_cmp(&mean(&b.values)))
+            .min_by(|a, b| {
+                (!a.damage, distance(&a.values))
+                    .partial_cmp(&(!b.damage, distance(&b.values)))
+                    .unwrap_or(std::cmp::Ordering::Equal)
+            })
             .map(|candidate| candidate.values.clone())
         else {
             return Placement::NotPlaced(value.missing());
@@ -265,7 +290,8 @@ impl ChampionModel {
             };
 
             let ability = &mut abilities[candidate.ability];
-            let effect = &mut ability.effects[candidate.effect];
+            let page = ability.page.clone();
+            let effect = &mut ability.placeable_mut()[candidate.effect];
             let new = value.value().clone().times(factor);
 
             if let Some(target) = value
@@ -278,7 +304,7 @@ impl ChampionModel {
             }
 
             placed.push(PlacedEffect {
-                page: ability.page.clone(),
+                page,
                 label: effect.label.clone(),
                 before: candidate.values,
                 after: new.default_values().unwrap_or_default(),

@@ -5,9 +5,9 @@
 use {
     serde::{Deserialize, Serialize},
     std::{
-        collections::BTreeMap,
+        collections::{BTreeMap, BTreeSet},
         fmt,
-        ops::{Add, Div, Mul},
+        ops::{Add, Div, Mul, Neg, Sub},
     },
     tutorlolv2_types::{CtxVar, DamageType, Key, MapMode},
 };
@@ -68,6 +68,10 @@ pub enum Formula {
     Sum(Vec<Formula>),
     Product(Vec<Formula>),
     Div(Box<Formula>, Box<Formula>),
+    /// `a - b`, as written in `f![…]`
+    Sub(Box<Formula>, Box<Formula>),
+    /// `-a`, as written in `f![…]`
+    Neg(Box<Formula>),
     Pow(Box<Formula>, u8),
     /// Expression kept as written, from a `f![...]` override
     Raw(String),
@@ -135,6 +139,21 @@ impl Formula {
             Formula::ByRank { values, .. } | Formula::Table { values, .. } => Some(values.clone()),
             Formula::ByMap { default, .. } => default.default_values(),
             _ => None,
+        }
+    }
+
+    /// `f` of the formula. When all of it is a [`Formula::ByMap`], `f` applies to its
+    /// value everywhere and to each mode's, so it changes every branch alike
+    pub fn edit_arms(self, f: impl Fn(Formula) -> Formula) -> Formula {
+        match self {
+            Formula::ByMap { default, maps } => Formula::ByMap {
+                default: Box::new(f(*default)),
+                maps: maps
+                    .into_iter()
+                    .map(|(mode, value)| (mode, f(value)))
+                    .collect(),
+            },
+            other => f(other),
         }
     }
 
@@ -260,6 +279,8 @@ impl Formula {
                 .map(|factor| factor.eval(sample))
                 .product::<Option<f64>>()?,
             Formula::Div(lhs, rhs) => lhs.eval(sample)? / rhs.eval(sample)?,
+            Formula::Sub(lhs, rhs) => lhs.eval(sample)? - rhs.eval(sample)?,
+            Formula::Neg(value) => -value.eval(sample)?,
             Formula::Pow(base, power) => base.eval(sample)?.powi(i32::from(*power)),
             Formula::Raw(_) => return None,
             Formula::ByMap { default, maps } => maps
@@ -294,43 +315,98 @@ impl Formula {
         matches!(self, Formula::Const(_) | Formula::Var(_))
     }
 
-    /// Writes the formula, in parentheses unless it is a constant or a variable
-    fn fmt_operand(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        match self.is_atom() {
-            true => write!(f, "{self}"),
-            false => write!(f, "({self})"),
+    /// The formula written as the generated code evaluates it: as [`fmt::Display`],
+    /// with game mode branches written in Rust, `tutorlolv2_types::MapMode::Aram =>
+    /// { core::hint::cold_path(); … }`
+    pub fn rust(&self) -> String {
+        Written {
+            formula: self,
+            syntax: Syntax::Rust,
+        }
+        .to_string()
+    }
+
+    /// The formula on `mode`: each value that game modes change is its value on
+    /// `mode`, or the one everywhere else
+    pub fn on(&self, mode: MapMode) -> Formula {
+        let on = |formula: &Formula| Box::new(formula.on(mode));
+        let all = |formulas: &[Formula]| formulas.iter().map(|f| f.on(mode)).collect();
+
+        match self {
+            Formula::ByMap { default, maps } => maps
+                .iter()
+                .find(|(arm, _)| *arm == mode)
+                .map_or(default.as_ref(), |(_, value)| value)
+                .on(mode),
+            Formula::Sum(terms) => Formula::Sum(all(terms)),
+            Formula::Product(factors) => Formula::Product(all(factors)),
+            Formula::Div(lhs, rhs) => Formula::Div(on(lhs), on(rhs)),
+            Formula::Sub(lhs, rhs) => Formula::Sub(on(lhs), on(rhs)),
+            Formula::Neg(value) => Formula::Neg(on(value)),
+            Formula::Pow(base, power) => Formula::Pow(on(base), *power),
+            other => other.clone(),
         }
     }
 
-    fn fmt_joined(
+    /// Modes of every value that game modes change, anywhere in the formula
+    pub fn modes(&self) -> BTreeSet<MapMode> {
+        let mut modes = BTreeSet::new();
+        self.collect_modes(&mut modes);
+        modes
+    }
+
+    fn collect_modes(&self, modes: &mut BTreeSet<MapMode>) {
+        match self {
+            Formula::ByMap { default, maps } => {
+                default.collect_modes(modes);
+
+                for (mode, value) in maps {
+                    modes.insert(*mode);
+                    value.collect_modes(modes);
+                }
+            }
+            Formula::Sum(formulas) | Formula::Product(formulas) => {
+                formulas.iter().for_each(|f| f.collect_modes(modes))
+            }
+            Formula::Div(lhs, rhs) | Formula::Sub(lhs, rhs) => {
+                lhs.collect_modes(modes);
+                rhs.collect_modes(modes);
+            }
+            Formula::Neg(value) | Formula::Pow(value, _) => value.collect_modes(modes),
+            _ => {}
+        }
+    }
+
+    /// Writes the formula in `syntax`, in parentheses unless it is an atom
+    fn write_operand(&self, f: &mut fmt::Formatter<'_>, syntax: Syntax) -> fmt::Result {
+        match self.is_atom() {
+            true => self.write(f, syntax),
+            false => {
+                f.write_str("(")?;
+                self.write(f, syntax)?;
+                f.write_str(")")
+            }
+        }
+    }
+
+    fn write_joined(
         f: &mut fmt::Formatter<'_>,
         operands: &[Formula],
         separator: &str,
+        syntax: Syntax,
     ) -> fmt::Result {
         for (i, operand) in operands.iter().enumerate() {
             if i != 0 {
                 f.write_str(separator)?;
             }
 
-            operand.fmt_operand(f)?;
+            operand.write_operand(f, syntax)?;
         }
 
         Ok(())
     }
-}
 
-/// Number as written in formulas, such as `5.0` or `0.065`, without the noise of
-/// float arithmetic, as in 0.30000000000000004
-struct Number(f64);
-
-impl fmt::Display for Number {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{:?}", (self.0 * 1e10).round() / 1e10)
-    }
-}
-
-impl fmt::Display for Formula {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+    fn write(&self, f: &mut fmt::Formatter<'_>, syntax: Syntax) -> fmt::Result {
         match self {
             Formula::Const(value) => write!(f, "{}", Number(*value)),
             Formula::Var(var) => write!(f, "{var}"),
@@ -378,24 +454,92 @@ impl fmt::Display for Formula {
 
                 write!(f, "match {var} {{ {} }}", arms.join(", "))
             }
-            Formula::Sum(terms) => Self::fmt_joined(f, terms, " + "),
-            Formula::Product(factors) => Self::fmt_joined(f, factors, " * "),
-            Formula::Div(lhs, rhs) => write!(f, "({lhs}) / ({rhs})"),
+            Formula::Sum(terms) => Self::write_joined(f, terms, " + ", syntax),
+            Formula::Product(factors) => Self::write_joined(f, factors, " * ", syntax),
+            Formula::Div(lhs, rhs) => {
+                f.write_str("(")?;
+                lhs.write(f, syntax)?;
+                f.write_str(") / (")?;
+                rhs.write(f, syntax)?;
+                f.write_str(")")
+            }
+            Formula::Sub(lhs, rhs) => {
+                lhs.write_operand(f, syntax)?;
+                f.write_str(" - ")?;
+                rhs.write_operand(f, syntax)
+            }
+            Formula::Neg(value) => {
+                f.write_str("-")?;
+                value.write_operand(f, syntax)
+            }
             Formula::Pow(base, power) => {
                 let factors = vec![base.as_ref().clone(); usize::from(*power)];
-                Self::fmt_joined(f, &factors, " * ")
+                Self::write_joined(f, &factors, " * ", syntax)
             }
             Formula::Raw(text) => write!(f, "({text})"),
             Formula::ByMap { default, maps } => {
                 f.write_str("match ctx.map { ")?;
 
                 for (mode, value) in maps {
-                    write!(f, "#[cold] {mode:?} => {value}, ")?;
+                    match syntax {
+                        Syntax::Doc => write!(f, "#[cold] {mode:?} => ")?,
+                        Syntax::Rust => write!(
+                            f,
+                            "tutorlolv2_types::MapMode::{mode:?} => {{ core::hint::cold_path(); "
+                        )?,
+                    }
+
+                    value.write(f, syntax)?;
+
+                    match syntax {
+                        Syntax::Doc => f.write_str(", ")?,
+                        Syntax::Rust => f.write_str(" } ")?,
+                    }
                 }
 
-                write!(f, "_ => {default} }}")
+                f.write_str("_ => ")?;
+                default.write(f, syntax)?;
+                f.write_str(" }")
             }
         }
+    }
+}
+
+/// Syntax a [`Formula`] is written in
+#[derive(Clone, Copy)]
+enum Syntax {
+    /// The codec's, as `match ctx.map { #[cold] Aram => …, _ => … }`
+    Doc,
+    /// The generated code's
+    Rust,
+}
+
+/// A [`Formula`] written in a [`Syntax`]
+struct Written<'a> {
+    formula: &'a Formula,
+    syntax: Syntax,
+}
+
+impl fmt::Display for Written<'_> {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        self.formula.write(f, self.syntax)
+    }
+}
+
+/// Number as written in formulas, such as `5.0` or `0.065`, without the noise of
+/// float arithmetic, as in 0.30000000000000004
+struct Number(f64);
+
+impl fmt::Display for Number {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "{:?}", (self.0 * 1e10).round() / 1e10)
+    }
+}
+
+impl fmt::Display for Formula {
+    /// Writes the formula in the codec's syntax
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        self.write(f, Syntax::Doc)
     }
 }
 
@@ -466,5 +610,58 @@ impl Div<f64> for Formula {
 
     fn div(self, rhs: f64) -> Formula {
         self / Formula::Const(rhs)
+    }
+}
+
+impl Sub for Formula {
+    type Output = Formula;
+
+    fn sub(self, rhs: Formula) -> Formula {
+        Formula::Sub(Box::new(self), Box::new(rhs))
+    }
+}
+
+impl Sub<f64> for Formula {
+    type Output = Formula;
+
+    fn sub(self, rhs: f64) -> Formula {
+        self - Formula::Const(rhs)
+    }
+}
+
+impl Neg for Formula {
+    type Output = Formula;
+
+    fn neg(self) -> Formula {
+        Formula::Neg(Box::new(self))
+    }
+}
+
+/// Values that are a [`Formula`] in `f![…]`: numbers, variables and formulas
+pub trait IntoFormula {
+    fn to_formula(&self) -> Formula;
+}
+
+impl IntoFormula for f64 {
+    fn to_formula(&self) -> Formula {
+        Formula::Const(*self)
+    }
+}
+
+impl IntoFormula for i32 {
+    fn to_formula(&self) -> Formula {
+        Formula::Const(f64::from(*self))
+    }
+}
+
+impl IntoFormula for CtxVar {
+    fn to_formula(&self) -> Formula {
+        Formula::Var(*self)
+    }
+}
+
+impl IntoFormula for Formula {
+    fn to_formula(&self) -> Formula {
+        self.clone()
     }
 }

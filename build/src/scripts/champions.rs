@@ -240,11 +240,14 @@ impl Build for Champion {
                 docs.push(FormulaDoc {
                     local: i.try_into()?,
                     function: function.clone(),
-                    // The formula the app runs, with the arms of the modes that change it
-                    source: map_doc_source(
-                        body,
-                        map_damages.get(ability_id).map_or(&[][..], Vec::as_slice),
-                    ),
+                    // The formula the app runs, with the arms of the modes that change it.
+                    // v2 generators write it from the same tree as the damage
+                    source: self.docs.get(ability_id).cloned().unwrap_or_else(|| {
+                        map_doc_source(
+                            body,
+                            map_damages.get(ability_id).map_or(&[][..], Vec::as_slice),
+                        )
+                    }),
                     name: name.clone(),
                     comment: comment.clone(),
                 });

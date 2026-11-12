@@ -53,6 +53,7 @@ impl BuildContext {
             "build/src/generators/impls/items",
             "build/src/generators/impls/runes",
             "cache/wiki/champions/full.json",
+            "cache/wiki/champions/model.json",
             "cache/wiki/items/full.json",
             "cache/wiki/runes/full.json",
             "cache/wiki/map_changes/full.json",

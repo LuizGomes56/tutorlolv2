@@ -8,7 +8,7 @@ use {
     serde::Serialize,
     std::{collections::BTreeMap, path::Path, str::FromStr},
     strum::VariantArray,
-    tutorlolv2_types::{CtxVar, Key},
+    tutorlolv2_types::{CtxVar, Key, MapMode},
 };
 
 /// A formula of the current output, such as
@@ -21,6 +21,8 @@ enum Expr {
     Neg(Box<Expr>),
     Binary(char, Box<Expr>, Box<Expr>),
     Match(CtxVar, Vec<(Pattern, Expr)>),
+    /// `match ctx.map { … }`: the arm of each mode, and the default
+    MapMatch(Vec<(MapMode, Expr)>, Box<Expr>),
 }
 
 /// Arm of a `match`: `..=a`, `..a`, `a..b`, `a..=b`, `a` or `a..`
@@ -74,6 +76,11 @@ impl Expr {
                     _ => lhs / rhs,
                 }
             }
+            Expr::MapMatch(arms, default) => arms
+                .iter()
+                .find(|(mode, _)| *mode == sample.map)
+                .map_or(default.as_ref(), |(_, value)| value)
+                .eval(sample),
             Expr::Match(var, arms) => {
                 let value = sample.get(*var);
 
@@ -197,6 +204,11 @@ impl Parser<'_> {
             return None;
         }
 
+        if self.rest().starts_with("map") {
+            self.pos += "map".len();
+            return self.map_matching();
+        }
+
         let var = self.var()?;
 
         if !self.eat("{") {
@@ -217,6 +229,65 @@ impl Parser<'_> {
         }
 
         Some(Expr::Match(var, arms))
+    }
+
+    /// Arms of `match ctx.map { … }`, after `match ctx.map`, as the generated code
+    /// writes them (`tutorlolv2_types::MapMode::Aram => { core::hint::cold_path(); … }`)
+    /// or as the codec does (`#[cold] Aram => …`)
+    fn map_matching(&mut self) -> Option<Expr> {
+        if !self.eat("{") {
+            return None;
+        }
+
+        let mut arms = Vec::new();
+        let mut default = None;
+
+        while !self.eat("}") {
+            self.eat("#[cold]");
+
+            if self.eat("_") {
+                if !self.eat("=>") {
+                    return None;
+                }
+
+                default = Some(self.map_arm()?);
+                self.eat(",");
+                continue;
+            }
+
+            self.eat("tutorlolv2_types::");
+            self.eat("MapMode::");
+            self.skip();
+
+            let name = self
+                .rest()
+                .split(|c: char| !c.is_ascii_alphanumeric())
+                .next()?;
+
+            let mode = MapMode::from_str(name).ok()?;
+            self.pos += name.len();
+
+            if !self.eat("=>") {
+                return None;
+            }
+
+            arms.push((mode, self.map_arm()?));
+            self.eat(",");
+        }
+
+        Some(Expr::MapMatch(arms, Box::new(default?)))
+    }
+
+    /// Value of a map arm: an expression, or a block that may start with
+    /// `core::hint::cold_path();`
+    fn map_arm(&mut self) -> Option<Expr> {
+        if !self.eat("{") {
+            return self.sum();
+        }
+
+        self.eat("core::hint::cold_path();");
+        let value = self.sum()?;
+        self.eat("}").then_some(value)
     }
 
     fn pattern(&mut self) -> Option<Pattern> {

@@ -90,6 +90,30 @@ impl Lookup {
         }
     }
 
+    /// Critical damage of the champion `champion_id` without items, in percent: its
+    /// `crit_base` times its `crit_mod`, as Ashe's 200 * 0.5. Ids are names without
+    /// spaces or punctuation, as `MasterYi` of "Master Yi"
+    pub fn base_crit_damage(&self, champion_id: &str) -> f64 {
+        let id = |name: &str| {
+            name.chars()
+                .filter(|c| c.is_alphanumeric())
+                .collect::<String>()
+                .to_lowercase()
+        };
+
+        let name = self
+            .champions
+            .keys()
+            .find(|name| id(name) == id(champion_id))
+            .map_or(champion_id, String::as_str);
+
+        let base = self
+            .champion(name, "crit_base")
+            .unwrap_or(Self::DEFAULT_CRIT_BASE);
+
+        base * self.champion(name, "crit_mod").unwrap_or(1.0)
+    }
+
     /// `stat` of the item `name`, as `{{#invoke:ItemData|get|item=name|datatype=stat}}` reads it
     pub fn item(&self, name: &str, stat: &str) -> Option<f64> {
         self.items.get(name)?.get(stat).copied()

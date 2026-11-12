@@ -6,11 +6,10 @@
 use {
     super::{
         AbilityModel, Arg, ChampionModel, EffectModel, Expr, Formula, Lookup, MapChangesReport,
-        Node, Nodes,
-        PassiveProgression, Progression, Scaling, Template, Value, Variables,
+        Node, Nodes, PassiveProgression, Progression, Scaling, Template, Value, Variables,
     },
-    crate::{JsonRead, MayFail, map_changes::MapChanges},
     crate::parser::assign_ctx_var,
+    crate::{JsonRead, MayFail, map_changes::MapChanges},
     std::{
         collections::BTreeMap,
         path::{Path, PathBuf},
@@ -45,6 +44,9 @@ pub struct PageContext<'a> {
     /// Key of every ability of the champion by name, to resolve a `{{pp}}` by the
     /// rank of another ability, as `type=Realm Warp's Rank`
     pub ability_keys: BTreeMap<String, Key>,
+    /// The champion's critical damage without items, in percent: 200 times its
+    /// modifier, as Ashe's 100. A `critScaling` share grows with what items add to it
+    pub crit_damage: f64,
 }
 
 impl AbilityModel {
@@ -87,6 +89,8 @@ impl AbilityModel {
             extras: Vec::new(),
         };
 
+        let mut heading = None::<String>;
+
         for arg in &data.args {
             let Some(name) = arg.name.as_deref() else {
                 continue;
@@ -111,13 +115,18 @@ impl AbilityModel {
                 }
             }
 
+            // Values of the description, under the heading of their field, as Darius's
+            // "Hemorrhage". A field without one continues the previous field
             if name.starts_with("description") {
-                for pp in arg.value.templates() {
-                    if matches!(pp.name.as_str(), "pp" | "pplevel") {
-                        let mut terms = Terms::new(context, key);
-                        let unit = terms.table(pp).unwrap_or_default();
-                        model.extras.push(terms.finish(name, 0, unit));
-                    }
+                if let Some(found) = arg.value.heading() {
+                    heading = Some(found);
+                }
+
+                let label = heading.as_deref().unwrap_or(name);
+
+                for value in arg.value.description_values() {
+                    let terms = Terms::new(context, key);
+                    model.extras.push(terms.effect(label, 0, &value));
                 }
             }
         }
@@ -133,6 +142,98 @@ impl AbilityModel {
             Some(first) => first.to_uppercase().chain(chars).collect(),
             None => String::new(),
         }
+    }
+}
+
+impl Nodes {
+    /// Text of the first `{{sbc|…:}}`, as `Hemorrhage` of `{{sbc|Hemorrhage:}}`
+    fn heading(&self) -> Option<String> {
+        self.0.iter().find_map(|node| match node {
+            Node::Template(sbc) if sbc.name == "sbc" => {
+                let text = sbc.positional(0)?.plain();
+                let text = text.trim().trim_end_matches(':').trim();
+                (!text.is_empty()).then(|| text.to_string())
+            }
+            _ => None,
+        })
+    }
+
+    /// Each value of a description with the scalings written right after it, as
+    /// `{{pp|…}} {{as|(+ 25% AP)}}`, in the shape of a `{{st}}` value. A value colored
+    /// by a keyword, as `{{as|{{pplevel|13 to 30}}|physical damage}}`, or of a stat, as
+    /// `{{as|{{pplevel|key=%|4 to 10}} of the target's maximum health}}`, is its inner
+    /// value. Both branches of a `{{ft}}` are read
+    fn description_values(&self) -> Vec<Nodes> {
+        let mut values = Vec::new();
+        let nodes = &self.0;
+
+        for (i, node) in nodes.iter().enumerate() {
+            let Node::Template(template) = node else {
+                continue;
+            };
+
+            let mut value = match template.name.as_str() {
+                "ap" | "pp" | "pplevel" | "critical damage" => vec![node.clone()],
+                "ft" => {
+                    values.extend(template.positionals().flat_map(Nodes::description_values));
+                    continue;
+                }
+                "as" => match template.positional(0).and_then(Nodes::wrapped_value) {
+                    Some(value) => value,
+                    None => continue,
+                },
+                _ => continue,
+            };
+
+            // The scalings right after it, up to anything else
+            value.extend(
+                nodes[i + 1..]
+                    .iter()
+                    .take_while(|node| match node {
+                        Node::Text(text) => text.trim().is_empty(),
+                        Node::Template(next) => {
+                            next.name == "as"
+                                && next.positional(0).is_some_and(|inner| {
+                                    matches!(inner.0.first(), Some(Node::Text(text)) if text.trim_start().starts_with("(+"))
+                                })
+                        }
+                    })
+                    .cloned(),
+            );
+
+            values.push(Nodes(value));
+        }
+
+        values
+    }
+
+    /// The value inside an `{{as}}`, when it starts with one, and the text after it. A
+    /// value in percent, `key=%`, keeps its `%` before that text, as a `{{st}}` value
+    /// writes `{{ap|6 to 8}}% of …`
+    fn wrapped_value(&self) -> Option<Vec<Node>> {
+        let mut nodes = self
+            .0
+            .iter()
+            .skip_while(|node| matches!(node, Node::Text(text) if text.trim().is_empty()));
+
+        let value = match nodes.next()? {
+            node @ Node::Template(t) if matches!(t.name.as_str(), "ap" | "pp" | "pplevel") => node,
+            _ => return None,
+        };
+
+        let percent = matches!(value, Node::Template(t)
+            if t.named("key").is_some_and(|key| key.plain().trim() == "%"));
+
+        let mut out = vec![value.clone()];
+
+        match nodes.next() {
+            Some(Node::Text(text)) if percent => out.push(Node::Text(format!("%{text}"))),
+            Some(node) => out.push(node.clone()),
+            None => {}
+        }
+
+        out.extend(nodes.cloned());
+        Some(out)
     }
 }
 
@@ -181,6 +282,16 @@ impl<'a> Terms<'a> {
 
         // The base, with the unit written right after it
         match rest {
+            // A share of the damage by critical strike chance, as Caitlyn's R's
+            // "increased by {{critical damage|0 to 30|critScaling=true}}"
+            [Node::Template(first), tail @ ..] if first.name == "critical damage" => {
+                match self.critical_share(first) {
+                    Some(share) => self.terms.push(share),
+                    None => self.issues.push(first.to_string()),
+                }
+
+                rest = tail;
+            }
             [Node::Template(first), tail @ ..]
                 if matches!(first.name.as_str(), "ap" | "pp" | "pplevel" | "fd") =>
             {
@@ -312,6 +423,10 @@ impl<'a> Terms<'a> {
                 continue;
             }
 
+            if self.critical_damage(template) {
+                continue;
+            }
+
             if let Some(scaling) = Scaling::new(template, self.key) {
                 self.scaling(&scaling);
                 continue;
@@ -408,7 +523,7 @@ impl<'a> Terms<'a> {
             .0
             .iter()
             .any(|node| matches!(node, Node::Template(inner) if inner.name == "as"));
-      
+
         let has_value = text
             .0
             .iter()
@@ -514,6 +629,92 @@ impl<'a> Terms<'a> {
         }
 
         self.percents.clear();
+    }
+
+    /// `{{as|(+ {{as|{{critical damage|…|105|mod=0.95}}|critical damage}} AD)}}`, a
+    /// share of the critical damage, as Yasuo's Q (100%) and Yone's (105%). Its first
+    /// argument is the champion's base times the share, and `mod` its modifier, which
+    /// `ctx.crit_damage` already has. Other forms, as Caitlyn's `critScaling=true` by
+    /// critical strike chance, are not the critical damage, and stay issues
+    fn critical_damage(&mut self, template: &Template) -> bool {
+        let Some(text) = template.positional(0) else {
+            return false;
+        };
+
+        let Some(critical) = text
+            .templates()
+            .into_iter()
+            .find(|inner| inner.name == "critical damage")
+        else {
+            return false;
+        };
+
+        let ratio = match self.critical_share(critical) {
+            Some(share) => share,
+            None => {
+                if critical.named("mod").is_none() {
+                    return false;
+                }
+
+                let Some(share) = critical
+                    .positional(1)
+                    .and_then(|share| Expr::new(share.plain().trim()).eval())
+                else {
+                    return false;
+                };
+
+                Formula::Var(CtxVar::CritDamage) * Formula::Const(share / 100.0 / 100.0)
+            }
+        };
+
+        // Both the share and `ctx.crit_damage` are written in percent. The stat after
+        // the ratio, as `AD)`
+        let stat = text
+            .0
+            .iter()
+            .filter_map(|node| match node {
+                Node::Text(text) => Some(text.as_str()),
+                _ => None,
+            })
+            .collect::<String>();
+        let stat = stat
+            .trim()
+            .trim_start_matches("(+")
+            .trim_end_matches(')')
+            .trim();
+        let stat = self.stat(stat);
+
+        self.terms.push(ratio * Formula::Var(stat));
+        true
+    }
+
+    /// `{{critical damage|0 to 30|critScaling=true}}`, a share that grows with the
+    /// critical strike chance, from 0 to 30% at 100% chance, as Caitlyn's R. What items
+    /// add to the champion's critical damage grows it by a second share, as Ashe's
+    /// `0 to 100|0 to 100`, or by the same one: Infinity Edge's +30% makes Caitlyn's
+    /// 0 to 30% grow by 0 to 9%. `None` for other forms
+    fn critical_share(&self, critical: &Template) -> Option<Formula> {
+        critical.named("critScaling")?;
+
+        // `0 to 30`, the share at 100% chance
+        let share = |range: &Nodes| {
+            let range = range.plain();
+            let (low, high) = range.split_once(" to ")?;
+            let low = Expr::new(low.trim()).eval()?;
+            (low == 0.0).then(|| Expr::new(high.trim()).eval())?
+        };
+
+        let (base, items) = match critical.positionals().collect::<Vec<_>>()[..] {
+            [base] => (share(base)?, share(base)?),
+            [base, items] => (share(base)?, share(items)?),
+            _ => return None,
+        };
+
+        let chance = Formula::Var(CtxVar::CritChance) / Formula::Const(100.0);
+        let added = Formula::Var(CtxVar::CritDamage) - Formula::Const(self.context.crit_damage);
+        let items = Formula::Const(items / 100.0) * added / Formula::Const(100.0);
+
+        Some(chance * (Formula::Const(base / 100.0) + items))
     }
 
     /// `{{as|of target's maximum health}}`, the stat of the ratio written before it,
@@ -793,10 +994,12 @@ impl ChampionModel {
         let pages = Self::pages(abilities);
 
         // Names of the abilities, so a `{{pp}}` can name the rank of another one
+        let crit_damage = lookup.base_crit_damage(champion_id);
         let names = PageContext {
             lookup,
             four_rank_ultimate: false,
             ability_keys: BTreeMap::new(),
+            crit_damage,
         };
         let ability_keys = pages
             .iter()
@@ -808,6 +1011,7 @@ impl ChampionModel {
             lookup,
             four_rank_ultimate: Self::FOUR_RANK_ULTIMATE.contains(&champion_id),
             ability_keys,
+            crit_damage,
         };
 
         let mut model = Self {

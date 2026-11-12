@@ -437,6 +437,7 @@ fn page(src: &str) -> AbilityModel {
         lookup: &lookup,
         four_rank_ultimate: false,
         ability_keys: [("Realm Warp".to_string(), Key::R)].into(),
+        crit_damage: 200.0,
     };
     AbilityModel::new(src, &context).unwrap().unwrap().1
 }
@@ -795,6 +796,7 @@ fn four_rank_page(src: &str) -> AbilityModel {
         lookup: &lookup,
         four_rank_ultimate: true,
         ability_keys: Default::default(),
+        crit_damage: 200.0,
     };
     AbilityModel::new(src, &context).unwrap().unwrap().1
 }
@@ -1125,7 +1127,8 @@ fn ratio_changes_wrap_only_the_ratio_and_multiples() {
         ratio: Formula::Const(0.3),
     };
 
-    let Placement::Applied(placed) = model.apply_map_change(Key::R, None, "AP", MapMode::Aram, &value)
+    let Placement::Applied(placed) =
+        model.apply_map_change(Key::R, None, "AP", MapMode::Aram, &value)
     else {
         panic!()
     };
@@ -1281,7 +1284,10 @@ fn every_damage_change_is_applied_or_explained() {
 
         if abilities.is_dir() {
             let id = entry.file_name().into_string().unwrap();
-            models.insert(id.clone(), ChampionModel::from_dir(&id, &abilities, &lookup).0);
+            models.insert(
+                id.clone(),
+                ChampionModel::from_dir(&id, &abilities, &lookup).0,
+            );
         }
     }
 
@@ -1320,7 +1326,8 @@ fn changes_to_abilities_without_effects_say_what_is_missing() {
         ratio: Formula::Const(0.5),
     };
 
-    let Placement::NotPlaced(reason) = bard.apply_map_change(Key::P, None, "AP", MapMode::Aram, &ratio)
+    let Placement::NotPlaced(reason) =
+        bard.apply_map_change(Key::P, None, "AP", MapMode::Aram, &ratio)
     else {
         panic!()
     };
@@ -1352,8 +1359,12 @@ fn named_ability_changes_apply_only_to_that_ability() {
             stat: BonusAd,
             ratio: Formula::Const(ratio),
         };
-        let placement = model.apply_map_change(Key::Q, Some(name), "Bonus AD", MapMode::Arena, &value);
-        assert!(matches!(placement, Placement::Applied(ref p) if p.len() == 1), "{placement:?}");
+        let placement =
+            model.apply_map_change(Key::Q, Some(name), "Bonus AD", MapMode::Arena, &value);
+        assert!(
+            matches!(placement, Placement::Applied(ref p) if p.len() == 1),
+            "{placement:?}"
+        );
     }
 
     let s = Sample::new([(QLevel, 1.0), (BonusAd, 100.0)]).on(MapMode::Arena);
@@ -1364,8 +1375,8 @@ fn named_ability_changes_apply_only_to_that_ability() {
 
 #[test]
 fn qualified_changes_are_placed_before_unqualified_ones() {
-    use tutorlolv2_wiki::map_changes::{ChangeTarget, MapChanges, MapEntry};
     use CtxVar::*;
+    use tutorlolv2_wiki::map_changes::{ChangeTarget, MapChanges, MapEntry};
 
     // Kassadin R: an unqualified base change and a qualified one, in the module's order
     let mut models = [(
@@ -1418,7 +1429,10 @@ fn bases_starting_at_zero_and_rank_bases_beside_level_tables() {
     // Gnar W: a base that starts at 0 is still the primary
     let mut gnar = champion(
         "gnar",
-        &[("W0", &data("W", "|leveling = {{st|Bonus Magic Damage|{{ap|0 to 40}}}}"))],
+        &[(
+            "W0",
+            &data("W", "|leveling = {{st|Bonus Magic Damage|{{ap|0 to 40}}}}"),
+        )],
     );
     let base = MapValue::Base(Formula::ByRank {
         rank: WLevel,
@@ -1434,7 +1448,10 @@ fn bases_starting_at_zero_and_rank_bases_beside_level_tables() {
         "azir",
         &[(
             "W0",
-            &data("W", "|leveling = {{st|Magic Damage|{{pplevel|0; then +8*x|1;10+(x-1)}} (+ {{ap|50 to 110}})}}"),
+            &data(
+                "W",
+                "|leveling = {{st|Magic Damage|{{pplevel|0; then +8*x|1;10+(x-1)}} (+ {{ap|50 to 110}})}}",
+            ),
         )],
     );
     let rank_base = MapValue::Base(Formula::ByRank {
@@ -1446,7 +1463,10 @@ fn bases_starting_at_zero_and_rank_bases_beside_level_tables() {
         Placement::Applied(_)
     ));
     let s = Sample::new([(Level, 1.0), (WLevel, 1.0)]).on(MapMode::Arena);
-    assert_eq!(azir.abilities[&Key::W][0].effects[0].formula.eval(&s), Some(60.0));
+    assert_eq!(
+        azir.abilities[&Key::W][0].effects[0].formula.eval(&s),
+        Some(60.0)
+    );
 
     // Nothing placed is never counted as applied
     let mut empty = champion(
@@ -1457,4 +1477,300 @@ fn bases_starting_at_zero_and_rank_bases_beside_level_tables() {
         empty.apply_map_change(Key::W, None, "Base", MapMode::Arena, &base),
         Placement::Applied(ref p) if p.len() == 1
     ));
+}
+
+#[test]
+fn formulas_for_generators() {
+    use CtxVar::*;
+    let f = Formula::Const(13.0)
+        + (Level.to_formula() - 1.to_formula())
+        + 0.3.to_formula() * BonusAd.to_formula();
+    let s = Sample::new([(Level, 3.0), (BonusAd, 100.0)]);
+    assert_eq!(f.eval(&s), Some(45.0));
+    assert_eq!((-Formula::Var(Level)).eval(&s), Some(-3.0));
+    assert!(f.to_string().contains("ctx.level - 1"), "{f}");
+
+    let branch = Formula::Const(0.6).with_map(MapMode::Aram, Formula::Const(0.65))
+        * Formula::Var(AbilityPower);
+    assert_eq!(
+        branch.rust(),
+        "(match ctx.map { tutorlolv2_types::MapMode::Aram => { core::hint::cold_path(); 0.65 } _ => 0.6 }) * ctx.ability_power"
+    );
+    assert_eq!(
+        branch.on(MapMode::Aram),
+        Formula::Const(0.65) * Formula::Var(AbilityPower)
+    );
+    assert_eq!(
+        branch.on(MapMode::Arena),
+        Formula::Const(0.6) * Formula::Var(AbilityPower)
+    );
+}
+
+#[test]
+fn legacy_formulas_read_map_branches() {
+    let rust = "(match ctx.map { tutorlolv2_types::MapMode::Aram => { core::hint::cold_path(); 0.65 } _ => 0.6 }) * ctx.ability_power";
+    let doc = "(match ctx.map { #[cold] Aram => 0.65, _ => 0.6 }) * ctx.ability_power";
+    let s = Sample::new([(CtxVar::AbilityPower, 100.0)]);
+
+    for src in [rust, doc] {
+        let f = LegacyFormula::parse(src).unwrap();
+        assert!((f.eval(&s) - 60.0).abs() < 1e-9, "{src}");
+        assert!(
+            (f.eval(&s.clone().on(MapMode::Aram)) - 65.0).abs() < 1e-9,
+            "{src}"
+        );
+    }
+}
+
+#[test]
+fn the_closest_value_takes_a_change_and_smaller_multiples_follow() {
+    use CtxVar::*;
+    // Darius Q: the handle is 35% of the blade, and Arena changes the blade's ratio
+    let mut model = champion(
+        "darius",
+        &[(
+            "Q0",
+            &data(
+                "Q",
+                "|leveling = {{st|Physical Damage (Blade)|{{ap|50 to 170}} {{as|(+ {{ap|100 to 140}}% AD)}}|Reduced Damage (Handle)|{{ap|50*0.35 to 170*0.35}} {{as|(+ {{ap|100*0.35 to 140*0.35}}% AD)}}}}",
+            ),
+        )],
+    );
+    let value = MapValue::Ratio {
+        stat: AttackDamage,
+        ratio: Formula::ByRank {
+            rank: QLevel,
+            values: vec![0.8, 0.9, 1.0, 1.1, 1.2],
+        },
+    };
+
+    let Placement::Applied(placed) =
+        model.apply_map_change(Key::Q, None, "AD", MapMode::Arena, &value)
+    else {
+        panic!()
+    };
+    assert_eq!(placed.len(), 2);
+
+    let effects = &model.abilities[&Key::Q][0].effects;
+    let s = Sample::new([(QLevel, 1.0), (AttackDamage, 100.0)]).on(MapMode::Arena);
+    assert_eq!(effects[0].formula.eval(&s), Some(50.0 + 80.0));
+    let handle = effects[1].formula.eval(&s).unwrap();
+    assert!((handle - (17.5 + 28.0)).abs() < 1e-9, "{handle}");
+}
+
+#[test]
+fn description_values_keep_their_scalings_under_the_heading() {
+    use CtxVar::*;
+    let label = |model: &AbilityModel, i: usize| model.extras[i].label.clone();
+    let at = |level: f64| sample(&[(Level, level), (BonusAd, 100.0), (AbilityPower, 100.0)]);
+
+    // Darius: values colored by `{{as|…|physical damage}}`, in both branches of `{{ft}}`
+    let darius = page(&data(
+        "P",
+        "|description2 = {{sbc|Hemorrhage:}} For each stack, the target is dealt{{ft|{{as|{{pplevel|13 to 30}}|physical damage}} {{as|(+ 30% '''bonus''' AD)}} {{as|'''total''' physical damage}} over the duration,|{{as|{{pplevel|3.25 to 7.5}}|physical damage}} {{as|(+ {{fd|7.5}}% '''bonus''' AD)}} {{as|physical damage}} every {{fd|1.25}} seconds,}}up to a maximum of{{ft|{{as|{{pplevel|13*5 to 30*5}}|physical damage}} {{as|(+ 150% '''bonus''' AD)}} {{as|'''total''' physical damage}}.|{{as|{{pplevel|3.25*5 to 7.5*5}}|physical damage}} {{as|(+ {{fd|37.5}}% '''bonus''' AD)}} {{as|physical damage}}.}}",
+    ));
+    assert_eq!(darius.extras.len(), 4);
+    assert_eq!(label(&darius, 0), "Hemorrhage");
+    assert_eq!(darius.extras[0].formula.eval(&at(1.0)), Some(13.0 + 30.0));
+    assert_eq!(
+        darius.extras[2].formula.eval(&at(18.0)),
+        Some(150.0 + 150.0)
+    );
+    assert!(
+        darius.extras.iter().all(|e| e.issues.is_empty()),
+        "{:?}",
+        darius.extras
+    );
+
+    // Akali: two scalings after the value, then a colored keyword that ends it
+    let akali = page(&data(
+        "P",
+        "|description3 = {{sbc|Swinging Kama:}} deal {{pplevel|35 to 53 for 7; then + 9*x for 6; then + 15*x|formula=+3 per level|color=magic damage}} {{as|(+ 60% '''bonus''' AD)}} {{as|(+ 55% AP)}} {{as|'''bonus''' magic damage}}.",
+    ));
+    assert_eq!(label(&akali, 0), "Swinging Kama");
+    assert_eq!(
+        akali.extras[0].formula.eval(&at(1.0)),
+        Some(35.0 + 60.0 + 55.0)
+    );
+
+    // Vex: a field without a heading continues the previous one
+    let vex = page(&data(
+        "P",
+        "|description2 = {{sbc|Innate - Gloom:}} Nearby enemies are marked.\n|description3 = ''Gloom's'' detonation deals {{pp|40 + (150-40)/17*(x-1) for 20|color=magic damage}} {{as|(+ 25% AP)}} {{ccs|{{as|'''bonus''' magic damage}}|magic}}.",
+    ));
+    assert_eq!(label(&vex, 0), "Innate - Gloom");
+    assert_eq!(vex.extras[0].formula.eval(&at(1.0)), Some(40.0 + 25.0));
+
+    // Aatrox: a percent of a stat, written inside `{{as}}`
+    let aatrox = page(&data(
+        "P",
+        "|description = {{sbc|Innate:}} deal {{as|'''bonus''' magic damage}} equal to {{as|{{pplevel|key=%|4 to 10}} of the target's '''maximum''' health}}, capped at {{pplevel|100 to 320}} against monsters.",
+    ));
+    assert_eq!(label(&aatrox, 0), "Innate");
+    let health = sample(&[(Level, 1.0), (EnemyMaxHealth, 1000.0)]);
+    assert_eq!(aatrox.extras[0].formula.eval(&health), Some(40.0));
+    assert_eq!(aatrox.extras[1].formula.eval(&health), Some(100.0));
+}
+
+#[test]
+fn changes_of_a_key_without_effects_apply_to_its_description_values() {
+    use CtxVar::*;
+    // Akali's passive is only written in its description, and ARAM changes its AP ratio
+    let mut akali = champion(
+        "akali",
+        &[(
+            "P0",
+            &data(
+                "P",
+                "|description3 = {{sbc|Swinging Kama:}} deal {{pplevel|35 to 182}} {{as|(+ 60% '''bonus''' AD)}} {{as|(+ 55% AP)}} {{as|'''bonus''' magic damage}}.",
+            ),
+        )],
+    );
+    let value = MapValue::Ratio {
+        stat: AbilityPower,
+        ratio: Formula::Const(0.65),
+    };
+
+    let placement = akali.apply_map_change(Key::P, None, "AP", MapMode::Aram, &value);
+    assert!(matches!(placement, Placement::Applied(_)), "{placement:?}");
+
+    let kama = &akali.abilities[&Key::P][0].extras[0].formula;
+    let s = Sample::new([(Level, 1.0), (AbilityPower, 100.0)]);
+    assert_eq!(kama.eval(&s), Some(35.0 + 55.0));
+    assert_eq!(kama.eval(&s.on(MapMode::Aram)), Some(35.0 + 65.0));
+}
+
+#[test]
+fn critical_damage_ratios_scale_with_the_critical_damage_stat() {
+    use CtxVar::*;
+    // Yasuo Q: a crit deals the critical damage of his AD. `ctx.crit_damage` already
+    // has his modifier of 0.95, so the formula doesn't apply it again
+    let yasuo = page(&data(
+        "Q",
+        "|leveling = {{st|Critical Strike Damage|{{ap|20 to 120}} {{as|(+ {{as|{{critical damage|200*(100/100)|100|mod=0.95}}|critical damage}} AD)|ad}}}}",
+    ));
+    let crit = &yasuo.effects[0];
+    assert!(crit.issues.is_empty(), "{:?}", crit.issues);
+    let s = sample(&[(QLevel, 1.0), (AttackDamage, 100.0), (CritDamage, 175.0)]);
+    let value = crit.formula.eval(&s).unwrap();
+    assert!((value - (20.0 + 1.75 * 100.0)).abs() < 1e-9, "{value}");
+}
+
+#[test]
+fn a_change_of_damage_prefers_damage_effects_over_closer_ones() {
+    use CtxVar::*;
+    // Kassadin Q: Arena's base 100 to 210 is closer to the shield, but it is the damage
+    let mut kassadin = champion(
+        "kassadin",
+        &[(
+            "Q0",
+            &data(
+                "Q",
+                "|leveling = {{st|Magic Damage|{{ap|65 to 185}} {{as|(+ 80% AP)}}}}\n|leveling2 = {{st|Magic Shield Strength|{{ap|80 to 200}} {{as|(+ 30% AP)}}}}",
+            ),
+        )],
+    );
+    let base = MapValue::Base(Formula::ByRank {
+        rank: QLevel,
+        values: vec![100.0, 127.5, 155.0, 182.5, 210.0],
+    });
+
+    let Placement::Applied(placed) =
+        kassadin.apply_map_change(Key::Q, None, "Base", MapMode::Arena, &base)
+    else {
+        panic!()
+    };
+    assert_eq!(placed[0].label, "Magic Damage");
+
+    let effects = &kassadin.abilities[&Key::Q][0].effects;
+    let s = Sample::new([(QLevel, 1.0)]).on(MapMode::Arena);
+    assert_eq!(effects[0].formula.eval(&s), Some(100.0));
+    assert_eq!(effects[1].formula.eval(&s), Some(80.0));
+}
+
+#[test]
+fn critical_damage_reads_its_share_and_leaves_other_forms_unread() {
+    use CtxVar::*;
+    let s = sample(&[(QLevel, 1.0), (AttackDamage, 100.0), (CritDamage, 190.0)]);
+
+    // Yone Q: 105% of the critical damage
+    let yone = page(&data(
+        "Q",
+        "|leveling = {{st|Critical Strike Damage|{{ap|25 to 125}} {{as|(+ {{as|{{critical damage|200*1.05|105|mod=0.95}}|critical damage}} AD)|ad}}}}",
+    ));
+    let value = yone.effects[0].formula.eval(&s).unwrap();
+    assert!((value - (25.0 + 1.05 * 190.0)).abs() < 1e-9, "{value}");
+}
+
+#[test]
+fn critical_scaling_shares_grow_with_chance_and_infinity_edge() {
+    use CtxVar::*;
+    // A real game, Caitlyn R at rank 1: 300 with no items, 0% chance and 200% critical
+    // damage. Infinity Edge (75 AD, 25% chance, +30% critical damage) makes it 412:
+    // (300 + 75) * (1 + 30% * 25% * (230 - 100) / 100)
+    let caitlyn = page(&data(
+        "R",
+        "|description = She fires a bullet that deals {{as|physical damage}}, increased by {{critical damage|0 to 30|critScaling=true}}.\n|leveling = {{st|Physical damage|{{ap|300 to 650 3}} {{as|(+ 100% '''bonus''' AD)}}}}",
+    ));
+    let damage = &caitlyn.effects[0].formula;
+    let increase = &caitlyn.extras[0].formula;
+    assert!(
+        caitlyn.extras[0].issues.is_empty(),
+        "{:?}",
+        caitlyn.extras[0].issues
+    );
+
+    let r = |s: &Sample| damage.eval(s).unwrap() * (1.0 + increase.eval(s).unwrap());
+    let none = sample(&[(RLevel, 1.0), (CritChance, 0.0), (CritDamage, 200.0)]);
+    let edge = sample(&[
+        (RLevel, 1.0),
+        (BonusAd, 75.0),
+        (CritChance, 25.0),
+        (CritDamage, 230.0),
+    ]);
+    assert_eq!(r(&none), 300.0);
+    assert_eq!(r(&edge).round(), 412.0);
+
+    // Caitlyn P: a ratio of AD by chance, 80% at 100% chance without Infinity Edge
+    let headshot = page(&data(
+        "P",
+        "|leveling = {{st|Bonus Damage|{{pp|key=%|60 to 80 for 3|1 to 13}} {{as|(+ {{critical damage|0 to 80|critScaling=true}}) AD}}}}",
+    ));
+    let effect = &headshot.effects[0];
+    assert!(effect.issues.is_empty(), "{:?}", effect.issues);
+    let full = sample(&[
+        (Level, 1.0),
+        (AttackDamage, 100.0),
+        (CritChance, 100.0),
+        (CritDamage, 200.0),
+    ]);
+    let value = effect.formula.eval(&full).unwrap();
+    assert!((value - (60.0 + 80.0)).abs() < 1e-9, "{value}");
+}
+
+#[test]
+fn critical_scaling_counts_infinity_edge_from_the_champion_base() {
+    use CtxVar::*;
+    // A real game: Ashe's critical damage is 100 (200 * 0.5) and 130 with Infinity Edge
+    // (+30%, 25% chance), and Frost Shot shows 133%: 25% * (100 + 100 * 30 / 100) = 32.5
+    let lookup = Lookup::new("return {}", "return {}").unwrap();
+    let context = PageContext {
+        lookup: &lookup,
+        four_rank_ultimate: false,
+        ability_keys: Default::default(),
+        crit_damage: 100.0,
+    };
+    let src = data(
+        "P",
+        "|description = {{sbc|Innate:}} '''Ashe's''' {{tip|basic attacks}} deal {{as|'''bonus''' physical damage}} equal to {{critical damage|0 to 100|0 to 100|critScaling=true}} of the {{as|attack's damage}}.",
+    );
+    let ashe = AbilityModel::new(&src, &context).unwrap().unwrap().1;
+    let frost = &ashe.extras[0];
+    assert!(frost.issues.is_empty(), "{:?}", frost.issues);
+
+    let none = sample(&[(CritChance, 0.0), (CritDamage, 100.0)]);
+    let edge = sample(&[(CritChance, 25.0), (CritDamage, 130.0)]);
+    assert_eq!(frost.formula.eval(&none), Some(0.0));
+    let value = frost.formula.eval(&edge).unwrap();
+    assert!((value - 0.325).abs() < 1e-9, "{value}");
 }

@@ -1194,3 +1194,42 @@ fn aram_changes_rune_closures() {
     close(electrocute(GameMap::SummonersRift), 70.0 + 5.0);
     close(electrocute(GameMap::Aram), 70.0 + 10.0);
 }
+
+#[test]
+fn item_critical_damage_adds_to_the_champion_base_unscaled() {
+    // A real game: Ashe's critical damage is 100 (200 * 0.5) and 130 with Infinity Edge
+    let enemies = [InputMinData {
+        champion_id: ChampionId::Aatrox,
+        level: NonZeroU8::new(18).unwrap(),
+        ..Default::default()
+    }];
+    let mut input = game(&[ItemId::InfinityEdge], &[], &enemies);
+    input.active_player.data.champion_id = ChampionId::Ashe;
+    let output = calculator(input);
+
+    close(output.current_player.current_stats.crit_damage, 130.0);
+}
+
+#[test]
+fn simulated_critical_damage_adds_unscaled() {
+    let state = SelfState {
+        stacks: 0.0,
+        ability_levels: AbilityLevels::default(),
+        current_stats: PlayerStats {
+            crit_damage: 100.0,
+            ..PlayerStats::default()
+        },
+        base_stats: BasicStats::default(),
+        level: NonZeroU8::MIN,
+        adaptive_type: tutorlolv2::AdaptiveType::Physical,
+    };
+    let purchase = state.simulated_purchase(
+        ItemId::InfinityEdge,
+        &[],
+        ChampionId::Ashe,
+        Dragons::default(),
+        GameMap::SummonersRift,
+    );
+
+    close(purchase.current_stats.crit_damage, 130.0);
+}

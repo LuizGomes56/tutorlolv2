@@ -265,7 +265,7 @@ impl MapValueExt for WikiRune {
     }
 }
 
-type GeneratorFnSig<T, U> = fn(T) -> MayFail<Box<dyn GeneratorExt<U>>>;
+pub type GeneratorFnSig<T, U> = fn(T) -> MayFail<Box<dyn GeneratorExt<U>>>;
 
 #[allow(dead_code)]
 pub trait Parser<T, U>

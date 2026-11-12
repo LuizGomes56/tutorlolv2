@@ -6,8 +6,8 @@ use {
             constants::{Constants, WithConstants},
             impls::champions::champion_gen_fn,
             parser::{
-                Parser, WithMapChanges, ZERO, likely_damages, load_map_changes, map_changes,
-                single_mode,
+                GeneratorFnSig, Parser, WithMapChanges, ZERO, likely_damages, load_map_changes,
+                map_changes, single_mode,
             },
             utils::RegExtractor,
         },
@@ -66,12 +66,17 @@ pub struct Champion {
     #[serde_as(as = "Seq<(_, _)>")]
     #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
     pub map_damages: BTreeMap<AbilityId, Vec<(MapMode, String)>>,
+    /// Codec source of the abilities of a v2 generator, written from the same tree as
+    /// their damage. The other abilities' source is written from their damage
+    #[serde_as(as = "Seq<(_, _)>")]
+    #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
+    pub docs: BTreeMap<AbilityId, String>,
 }
 
 impl Parser<WikiChampion, Champion> for ChampionParser {
     const TAG: Tag = Tag::Champions;
     const FN: fn(&str) -> Option<fn(WikiChampion) -> MayFail<Box<dyn GeneratorExt<Champion>>>> =
-        champion_gen_fn;
+        champion_generator;
 
     fn from_root(root: &std::path::Path) -> MayFail<Self> {
         load_map_changes(root)?;
@@ -141,6 +146,12 @@ impl Parser<WikiChampion, Champion> for ChampionParser {
     }
 }
 
+/// Generator of `champion_id`: its v2 generator once it is ported, else its v1
+fn champion_generator(champion_id: &str) -> Option<GeneratorFnSig<WikiChampion, Champion>> {
+    crate::generators_v2::impls::champion_gen_fn_v2(champion_id)
+        .or_else(|| champion_gen_fn(champion_id))
+}
+
 impl TryFrom<WikiChampion> for Champion {
     type Error = DynError;
 
@@ -153,6 +164,7 @@ impl TryFrom<WikiChampion> for Champion {
             constants: Default::default(),
             sources: Default::default(),
             map_damages: Default::default(),
+            docs: Default::default(),
             data,
         })
     }

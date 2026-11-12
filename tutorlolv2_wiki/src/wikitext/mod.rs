@@ -28,7 +28,7 @@ pub use {
     expr::Expr,
     lookup::Lookup,
     map::{MapChangeEntry, MapChangesReport, MapValue, PlacedEffect, Placement},
-    model::{AbilityModel, ChampionModel, EffectModel, Formula, Sample},
+    model::{AbilityModel, ChampionModel, EffectModel, Formula, IntoFormula, Sample},
     passive::PassiveProgression,
     progression::{Progression, Value},
     scaling::Scaling,
