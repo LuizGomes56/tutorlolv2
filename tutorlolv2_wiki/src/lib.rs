@@ -21,6 +21,8 @@ pub mod stats;
 pub mod version;
 pub mod wikitext;
 
+/// Text of a formula that is 0 everywhere, the only one any formula is written as
+pub const ZERO: &str = "0";
 pub const DDRAGON_ENDPOINT: &str = "https://ddragon.leagueoflegends.com";
 pub const CANISBACK_ENDPOINT: &str = "https://ddragon.canisback.com/img";
 pub const MOBALYTICS_ENDPOINT: &str = "https://mobalytics.gg/lol/champions";

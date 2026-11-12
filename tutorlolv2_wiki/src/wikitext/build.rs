@@ -178,7 +178,24 @@ impl Nodes {
                     values.extend(template.positionals().flat_map(Nodes::description_values));
                     continue;
                 }
-                "as" => match template.positional(0).and_then(Nodes::wrapped_value) {
+                "as" => match template.positional(0) {
+                    Some(text) if text.is_percent_of_stat() => vec![node.clone()],
+                    Some(text) => match text.wrapped_value() {
+                        Some(value) => value,
+                        None => continue,
+                    },
+                    None => continue,
+                },
+                // `{{sti|true damage|{{as|{{pplevel|35 to 205}}|true damage}}}}`, a value
+                // inside the icon of its damage type
+                "sti" => match template.positionals().last().and_then(|text| {
+                    text.0.iter().find_map(|inner| match inner {
+                        Node::Template(inner) if inner.name == "as" => {
+                            inner.positional(0)?.wrapped_value()
+                        }
+                        _ => None,
+                    })
+                }) {
                     Some(value) => value,
                     None => continue,
                 },
@@ -205,6 +222,12 @@ impl Nodes {
         }
 
         values
+    }
+
+    /// `8% of the target's current health`, a percent of a stat written as text, as
+    /// Jarvan IV's passive. `6% bonus movement speed`, without `of`, is a buff
+    fn is_percent_of_stat(&self) -> bool {
+        lazy_regex::regex!(r"^\d+(?:\.\d+)?% of \S").is_match(self.plain().trim())
     }
 
     /// The value inside an `{{as}}`, when it starts with one, and the text after it. A

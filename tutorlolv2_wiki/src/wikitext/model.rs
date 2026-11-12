@@ -348,6 +348,25 @@ impl Formula {
         }
     }
 
+    /// Whether the formula is 0 everywhere, whatever its shape: `{{ap|0 to 0}}`, `0 * AP`,
+    /// or values that game modes change to 0 on every mode. `Raw` is never zero
+    pub fn is_zero(&self) -> bool {
+        match self {
+            Formula::Const(value) => *value == 0.0,
+            Formula::ByRank { values, .. } | Formula::Table { values, .. } => {
+                values.iter().all(|value| *value == 0.0)
+            }
+            Formula::Sum(terms) => terms.iter().all(Formula::is_zero),
+            Formula::Product(factors) => factors.iter().any(Formula::is_zero),
+            Formula::Div(lhs, _) | Formula::Neg(lhs) | Formula::Pow(lhs, _) => lhs.is_zero(),
+            Formula::Sub(lhs, rhs) => lhs.is_zero() && rhs.is_zero(),
+            Formula::ByMap { default, maps } => {
+                default.is_zero() && maps.iter().all(|(_, value)| value.is_zero())
+            }
+            Formula::Var(_) | Formula::Raw(_) => false,
+        }
+    }
+
     /// Modes of every value that game modes change, anywhere in the formula
     pub fn modes(&self) -> BTreeSet<MapMode> {
         let mut modes = BTreeSet::new();
@@ -531,8 +550,15 @@ impl fmt::Display for Written<'_> {
 struct Number(f64);
 
 impl fmt::Display for Number {
+    /// Rounded to 10 decimals and written without an exponent, as `0.00006`, with a
+    /// `.0` on whole numbers so the generated code reads it as a float
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{:?}", (self.0 * 1e10).round() / 1e10)
+        let text = ((self.0 * 1e10).round() / 1e10).to_string();
+
+        match text.contains('.') {
+            true => f.write_str(&text),
+            false => write!(f, "{text}.0"),
+        }
     }
 }
 
@@ -632,8 +658,13 @@ impl Sub<f64> for Formula {
 impl Neg for Formula {
     type Output = Formula;
 
+    /// `-a`, with constants and double negations folded: `-(-0.3)` is `0.3`
     fn neg(self) -> Formula {
-        Formula::Neg(Box::new(self))
+        match self {
+            Formula::Const(value) => Formula::Const(-value),
+            Formula::Neg(value) => *value,
+            other => Formula::Neg(Box::new(other)),
+        }
     }
 }
 

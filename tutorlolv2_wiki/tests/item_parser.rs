@@ -106,3 +106,13 @@ fn nests_ratios_of_the_target_health() {
         "((0.005) + ((0.001) * ctx.stacks)) * ctx.enemy_max_health"
     );
 }
+
+#[test]
+fn effects_without_values_render_as_the_zero() {
+    let empty = tutorlolv2_wiki::parser::Effect::default();
+    assert_eq!(
+        empty.simplify_formula(Key::P).unwrap().as_deref(),
+        Some(tutorlolv2_wiki::ZERO)
+    );
+    assert_eq!(tutorlolv2_wiki::ZERO, "0");
+}

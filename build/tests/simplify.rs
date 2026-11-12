@@ -11,7 +11,10 @@ fn literals_keep_only_the_precision_f32_can_represent() {
         format_formula("0.016666666667 * ctx.ap"),
         "0.016666668 * ctx.ap"
     );
-    assert_eq!(format_formula("1.4285714286 * ctx.ap"), "1.4285715 * ctx.ap");
+    assert_eq!(
+        format_formula("1.4285714286 * ctx.ap"),
+        "1.4285715 * ctx.ap"
+    );
     assert_eq!(format_formula_exact("0.1 + 0.2"), "0.30000000000000004");
     assert_eq!(format_formula("0.1 + 0.2"), "0.3");
     assert_eq!(format_formula("2.0000000000001 * ctx.ap"), "2 * ctx.ap");
@@ -35,7 +38,10 @@ fn formulas_keep_their_shape() {
     );
     assert_eq!(format_formula("ctx.ap * 0.5 * 2"), "ctx.ap * 0.5 * 2");
     assert_eq!(format_formula("ctx.ap + zero"), "ctx.ap + 0");
-    assert_eq!(format_formula("10 + 5 * ctx.q_level"), "10 + 5 * ctx.q_level");
+    assert_eq!(
+        format_formula("10 + 5 * ctx.q_level"),
+        "10 + 5 * ctx.q_level"
+    );
 }
 
 #[test]
@@ -141,7 +147,20 @@ fn formulas_with_matches_are_normalized_around_them() {
     );
     // Two matches, and one inside a product
     assert_eq!(
-        format_formula("((0.5) * (match ctx.level { 1 => 2, _ => 3 })) + (match ctx.q_level { 1 => 4, _ => 5 })"),
+        format_formula(
+            "((0.5) * (match ctx.level { 1 => 2, _ => 3 })) + (match ctx.q_level { 1 => 4, _ => 5 })"
+        ),
         "0.5 * (match ctx.level { 1 => 2, _ => 3 }) + (match ctx.q_level { 1 => 4, _ => 5 })"
+    );
+}
+
+#[test]
+fn a_match_after_a_statement_is_not_parenthesized() {
+    // A map arm whose value is a table by rank, as Ezreal's Q on Arena
+    let arm = "match ctx.map { tutorlolv2_types::MapMode::Arena => { core::hint::cold_path(); match ctx.q_level { ..=1 => 30.0, 2.. => 60.0 } } _ => 1.0 }";
+    let formatted = format_formula(arm).replace(char::is_whitespace, "");
+    assert!(
+        formatted.contains("cold_path();matchctx.q_level"),
+        "{formatted}"
     );
 }

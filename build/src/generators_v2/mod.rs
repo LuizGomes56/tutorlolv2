@@ -29,7 +29,7 @@ use {
             parser::champions::{Ability, Champion},
         },
     },
-    std::{collections::BTreeMap, sync::LazyLock},
+    std::{collections::BTreeMap, path::Path, sync::LazyLock},
     tutorlolv2_types::{AbilityId, Attrs, ComboElement, DamageType, Key, MapMode},
     tutorlolv2_wiki::{
         JsonRead,
@@ -83,18 +83,25 @@ impl ChampionV2 {
         }
     }
 
+    /// Models of every champion in `path`, as `cache/wiki/champions/model.json`
+    pub fn load_models(path: &Path) -> MayFail<BTreeMap<String, ChampionModel>> {
+        BTreeMap::from_file(path).map_err(|e| {
+            format!(
+                "Can't read the champion models at {path:?}: {e}. Run `cargo run -- wiki cpm` in tutorlolv2_wiki"
+            )
+            .into()
+        })
+    }
+
     /// Models of every champion, read once from `cache/wiki/champions/model.json`
-    pub fn models() -> &'static BTreeMap<String, ChampionModel> {
-        static MODELS: LazyLock<BTreeMap<String, ChampionModel>> = LazyLock::new(|| {
-            let path = crate::project_root().join("cache/wiki/champions/model.json");
+    pub fn models() -> MayFail<&'static BTreeMap<String, ChampionModel>> {
+        static MODELS: LazyLock<Result<BTreeMap<String, ChampionModel>, String>> =
+            LazyLock::new(|| {
+                let path = crate::project_root().join("cache/wiki/champions/model.json");
+                ChampionV2::load_models(&path).map_err(|e| e.to_string())
+            });
 
-            BTreeMap::from_file(&path).unwrap_or_else(|e| {
-                println!("cargo:warning=No champion models in {path:?}: {e}");
-                BTreeMap::new()
-            })
-        });
-
-        &MODELS
+        MODELS.as_ref().map_err(|e| e.clone().into())
     }
 
     fn champion_id(&self) -> &str {
@@ -198,6 +205,27 @@ impl ChampionV2 {
         Ok(self)
     }
 
+    /// Formula of the only effect or description value labeled `label` among the pages
+    /// of `key`, without taking it, as Caitlyn R's increase by critical strike chance
+    pub fn value(&self, label: &str, key: Key) -> MayFail<Formula> {
+        let matches = self
+            .effects(key)
+            .into_iter()
+            .filter(|(_, effect)| effect.label == label)
+            .collect::<Vec<_>>();
+
+        match matches[..] {
+            [(_, effect)] => Ok(effect.formula.clone()),
+            _ => Err(format!(
+                "[{}] {key:?}: {} values \"{label}\". Effects of {key:?}:\n{}",
+                self.champion_id(),
+                matches.len(),
+                self.candidates(key)
+            )
+            .into()),
+        }
+    }
+
     /// Takes the only effect labeled `label` among every page of `id`'s key
     pub fn take(&mut self, label: &str, id: AbilityId) -> MayFail<&mut Self> {
         self.select(id, label, None, None)
@@ -213,6 +241,17 @@ impl ChampionV2 {
     /// tab order, as the cast and recast of Vex's R
     pub fn take_nth(&mut self, label: &str, nth: usize, id: AbilityId) -> MayFail<&mut Self> {
         self.select(id, label, None, Some(nth))
+    }
+
+    /// Adds `id` with `damage`, written by the generator: a damage no effect has, as
+    /// the attack of Annie's Tibbers
+    pub fn insert(&mut self, id: AbilityId, damage: Damage) -> MayFail<&mut Self> {
+        if self.damages.contains_key(&id) {
+            return Err(format!("[{}] {id:?}: taken already", self.champion_id()).into());
+        }
+
+        self.damages.insert(id, damage);
+        Ok(self)
     }
 
     /// Damage `id`, which a generator must have taken before
@@ -291,6 +330,12 @@ impl ChampionV2 {
             .ok_or_else(|| format!("[{}] {id:?} was never taken", self.champion_id()).into())
     }
 
+    /// Description of the effect `effect` of `key` in v1's data, as v1's, for the
+    /// constants generators read from it
+    pub fn description(&self, key: Key, effect: &str) -> MayFail<&str> {
+        self.inner.description(key, effect)
+    }
+
     /// Text of one of the champion's wiki exceptions, as v1's
     pub fn exception(&self, name: &str) -> MayFail<&str> {
         self.inner.exception(name)
@@ -332,6 +377,12 @@ impl ChampionV2 {
                 comment,
                 attributes,
             } = damage;
+
+            // v1 removes them in its `end`, from their text
+            if formula.is_zero() {
+                println!("[{}] Removing [{id:?}]", self.inner.champion_id);
+                continue;
+            }
 
             let rust = match self.style {
                 MapStyle::Value => {

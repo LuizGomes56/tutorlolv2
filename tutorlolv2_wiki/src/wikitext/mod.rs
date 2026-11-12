@@ -341,12 +341,14 @@ impl<'a> Parser<'a> {
 
 impl Arg {
     /// Arguments are named when their text before any template has a `=`, in which
-    /// case the name and value are trimmed, as the wiki does
+    /// case the name and value are trimmed, as the wiki does. A name has no link, so
+    /// the `=` of `[[File:Icon.png|link=]]` does not name its argument
     fn new(value: Nodes) -> Self {
         let mut nodes = value.0;
 
         if let Some(Node::Text(text)) = nodes.first()
             && let Some((name, rest)) = text.split_once('=')
+            && !name.contains("[[")
         {
             let name = name.trim().to_string();
             nodes[0] = Node::Text(rest.trim_start().to_string());

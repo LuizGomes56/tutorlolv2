@@ -1,0 +1,100 @@
+use super::*;
+
+impl GeneratorV2 for Fiora {
+    fn generate(&mut self) -> MayFail {
+        let vital = f![(0.03 + 0.0004 * BonusAd) * EnemyMaxHealth];
+
+        self.take_nth("Innate", 0, P(Void))?
+            .set(P(Void), vital.clone())
+            .comment(P(Void), "Vital true damage")
+            .take("Physical Damage", Q(Void))?
+            .take("Magic Damage", W(Void))?
+            .take("Critical damage", E(Void))?
+            .set(E(Void), f![(1.6 + 0.1 * (ELevel - 1)) * AttackDamage])
+            .comment(E(Void), "Second basic attack critical strike")
+            .derive(R(Void), P(Void), |p| f![4 * (p)])?
+            .comment(R(Void), "All 4 Vitals")
+            .combos([
+                &[
+                    Ability(R(Void)),
+                    Attack,
+                    Ability(E(Void)),
+                    Ability(Q(Void)),
+                    Ability(E(Void)),
+                    Attack,
+                ],
+                &[
+                    Ability(R(Void)),
+                    Ability(W(Void)),
+                    Attack,
+                    Ability(E(Void)),
+                    Ability(Q(Void)),
+                ],
+                &[
+                    Ability(Q(Void)),
+                    Ability(R(Void)),
+                    Ability(W(Void)),
+                    Attack,
+                    Ability(E(Void)),
+                    Ability(E(Void)),
+                    Attack,
+                    Attack,
+                    Ability(Q(Void)),
+                    Attack,
+                ],
+                &[
+                    Attack,
+                    Ability(E(Void)),
+                    Ability(E(Void)),
+                    Attack,
+                    Ability(R(Void)),
+                    Ability(W(Void)),
+                    Attack,
+                    Ability(Q(Void)),
+                    Attack,
+                ],
+                &[
+                    Ability(R(Void)),
+                    Ability(Q(Void)),
+                    Attack,
+                    Attack,
+                    Ability(E(Void)),
+                    Ability(E(Void)),
+                    Attack,
+                ],
+                &[
+                    Attack,
+                    Ability(E(Void)),
+                    Ability(Q(Void)),
+                    Ability(W(Void)),
+                    Ability(E(Void)),
+                    Attack,
+                ],
+                &[
+                    Attack,
+                    Ability(Q(Void)),
+                    Ability(E(Void)),
+                    Ability(E(Void)),
+                    Attack,
+                ],
+                &[
+                    Ability(Q(Void)),
+                    Attack,
+                    Ability(W(Void)),
+                    Attack,
+                    Ability(E(Void)),
+                    Ability(E(Void)),
+                    Attack,
+                ],
+                &[
+                    Ability(Q(Void)),
+                    Attack,
+                    Ability(E(Void)),
+                    Ability(W(Void)),
+                    Ability(E(Void)),
+                    Attack,
+                ],
+            ])?
+            .end()
+    }
+}

@@ -110,7 +110,8 @@ fn parenthesize_matches(formula: &str) -> String {
         let before = out.trim_end();
         let after = rest[close + 1..].trim_start();
 
-        let standalone = (before.is_empty() || before.ends_with(['(', ',', '>', '{']))
+        // After `;`, as `cold_path();` in a map arm, the match is the block's value
+        let standalone = (before.is_empty() || before.ends_with(['(', ',', '>', '{', ';']))
             && (after.is_empty() || after.starts_with([')', ',', '}']));
 
         match standalone {

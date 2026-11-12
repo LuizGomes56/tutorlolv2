@@ -304,7 +304,11 @@ impl Effect {
             }
         }
 
-        Ok(Some(expr))
+        // Every zero is written the same way, so the build checks it by text
+        match matches!(expr.trim(), "0" | "0.0" | "(0)" | "(0.0)") {
+            true => Ok(Some(crate::ZERO.to_string())),
+            false => Ok(Some(expr)),
+        }
     }
 
     fn build_base_expr(

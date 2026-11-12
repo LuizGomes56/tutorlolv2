@@ -434,7 +434,7 @@ impl MapChanges {
                 ChangeTarget::Rune { rune_id } if let Some(rune) = runes.get(rune_id) => rune
                     .effects
                     .iter()
-                    .filter(|(_, e)| e.formula.as_deref().is_some_and(|f| f != "0.0"))
+                    .filter(|(_, e)| e.formula.as_deref().is_some_and(|f| f != crate::ZERO))
                     .map(|(name, e)| (name.clone(), (name.clone(), e.clone())))
                     .collect(),
                 _ => BTreeMap::new(),

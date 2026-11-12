@@ -31,10 +31,6 @@ impl<T: databake::Bake + ?Sized> BakeExt for T {
     }
 }
 
-pub fn is_zero(value: &str) -> bool {
-    value == ZERO || value == "0" || value == "0.0" || value == "(0.0)" || value == "(0)"
-}
-
 pub trait ItemOrRune {
     const TAG: Tag;
 
@@ -212,7 +208,7 @@ pub trait ItemOrRuneExt:
             functions: self.functions(),
             aliases: self.build_aliases(&formulas),
             formulas,
-            active: core::array::from_fn(|i| !is_zero(raw[i])),
+            active: core::array::from_fn(|i| raw[i] != ZERO),
         }
     }
 
@@ -224,12 +220,12 @@ pub trait ItemOrRuneExt:
         // The ratio between two formulas is only known on Summoner's Rift. Other
         // modes keep their own formula, see `map_arms`
         for i in 0..4 {
-            if is_zero(&raw[i]) {
+            if raw[i] == ZERO {
                 continue;
             }
 
             for j in 0..i {
-                if is_zero(&raw[j]) {
+                if raw[j] == ZERO {
                     continue;
                 }
 
@@ -377,37 +373,37 @@ pub trait ItemOrRuneExt:
         let min = DamageIndex::Min;
         let max = DamageIndex::Max;
 
-        let has_max = !is_zero(&melee[max]) || !is_zero(&ranged[max]);
+        let has_max = melee[max] != ZERO || ranged[max] != ZERO;
 
         // Melee and ranged share a function when every map gives them one formula
         let map = self.map_damages();
-        let min_shared = !is_zero(&melee[min]) && melee[min] == ranged[min] && map[0] == map[2];
-        let max_shared = !is_zero(&melee[max]) && melee[max] == ranged[max] && map[1] == map[3];
+        let min_shared = melee[min] != ZERO && melee[min] == ranged[min] && map[0] == map[2];
+        let max_shared = melee[max] != ZERO && melee[max] == ranged[max] && map[1] == map[3];
         let min_suffix = if has_max { "_min" } else { "" };
 
         [
-            if is_zero(&melee[min]) {
+            if melee[min] == ZERO {
                 ZERO_FN.into()
             } else if min_shared {
                 format!("{id}{min_suffix}")
             } else {
                 format!("{id}_melee{min_suffix}")
             },
-            if is_zero(&melee[max]) {
+            if melee[max] == ZERO {
                 ZERO_FN.into()
             } else if max_shared {
                 format!("{id}_max")
             } else {
                 format!("{id}_melee_max")
             },
-            if is_zero(&ranged[min]) {
+            if ranged[min] == ZERO {
                 ZERO_FN.into()
             } else if min_shared {
                 format!("{id}{min_suffix}")
             } else {
                 format!("{id}_ranged{min_suffix}")
             },
-            if is_zero(&ranged[max]) {
+            if ranged[max] == ZERO {
                 ZERO_FN.into()
             } else if max_shared {
                 format!("{id}_max")

@@ -208,12 +208,6 @@ impl Build for Champion {
             let body = &damages[i];
             let mut rust_formula = cast_f32(body)?;
 
-            if crate::scripts::utils::is_zero(&rust_formula) {
-                println!("[{champion_id}]: ZeroFormula[{ability_id:?}]; Body = {body:?}");
-
-                rust_formula = "0.0".to_string();
-            }
-
             // Formulas that game modes change branch on the map. Nearly every game is
             // on Summoner's Rift, so the other arms are cold
             if let Some(map_damage) = map_damages.get(ability_id) {

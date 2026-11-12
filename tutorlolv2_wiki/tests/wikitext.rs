@@ -1774,3 +1774,91 @@ fn critical_scaling_counts_infinity_edge_from_the_champion_base() {
     let value = frost.formula.eval(&edge).unwrap();
     assert!((value - 0.325).abs() < 1e-9, "{value}");
 }
+
+#[test]
+fn negating_constants_folds_them() {
+    assert_eq!((-Formula::Const(-0.3)).to_string(), "0.3");
+    assert_eq!(-(-Formula::Var(CtxVar::Level)), Formula::Var(CtxVar::Level));
+    assert_eq!((-Formula::Const(0.3)).rust(), "-0.3");
+}
+
+#[test]
+fn zero_formulas_in_any_shape() {
+    use CtxVar::*;
+    let zero_ranks = Formula::ByRank {
+        rank: QLevel,
+        values: vec![0.0; 5],
+    };
+    let zero_table = Formula::Table {
+        var: Level,
+        keys: vec![1],
+        values: vec![0.0],
+    };
+    assert!(zero_ranks.is_zero());
+    assert!((Formula::Const(0.0) * Formula::Var(AbilityPower)).is_zero());
+    assert!((Formula::Const(0.0) + zero_table).is_zero());
+    assert!(
+        !Formula::Const(0.0)
+            .with_map(MapMode::Aram, Formula::Const(5.0))
+            .is_zero()
+    );
+    assert!(!Formula::Raw("0".into()).is_zero());
+}
+
+#[test]
+fn description_values_written_as_text_or_inside_sti() {
+    use CtxVar::*;
+    // Jarvan IV: a percent of a stat, as text inside `{{as}}`
+    let jarvan = page(&data(
+        "P",
+        "|description = {{sbc|Innate:}} deal {{as|'''bonus''' physical damage}} equal to {{as|8% of the target's '''current''' health}}, with a minimum of 20.",
+    ));
+    let health = sample(&[(EnemyCurrentHealth, 1000.0)]);
+    assert_eq!(jarvan.extras.len(), 1, "{:?}", jarvan.extras);
+    assert_eq!(jarvan.extras[0].formula.eval(&health), Some(80.0));
+
+    // Vel'Koz: a value inside `{{sti}}`, with the scaling after it
+    let velkoz = page(&data(
+        "P",
+        "|description2 = The third stack deals {{sti|true damage|{{as|{{pplevel|35 to 205}}|true damage}}}} {{as|(+ 65% AP)}} {{as|'''bonus''' true damage}}.",
+    ));
+    let s = sample(&[(Level, 1.0), (AbilityPower, 100.0)]);
+    assert_eq!(velkoz.extras[0].formula.eval(&s), Some(35.0 + 65.0));
+    assert!(
+        velkoz.extras[0].issues.is_empty(),
+        "{:?}",
+        velkoz.extras[0].issues
+    );
+
+    // A buff without "of" is not a percent of a stat
+    let janna = page(&data(
+        "P",
+        "|description = {{sbc|Innate:}} grants {{as|6% '''bonus''' movement speed}} to allies.",
+    ));
+    assert!(janna.extras.is_empty(), "{:?}", janna.extras);
+}
+
+#[test]
+fn links_with_pipes_do_not_split_template_arguments() {
+    // Yunara R: an icon link before the label
+    let yunara = page(&data(
+        "R",
+        "|leveling = {{st|[[File: Yunara Arc of Ruin.png|20px|border|link=]] Arc of Ruin Base Damage|{{ap|160 to 480}}}}",
+    ));
+    assert_eq!(yunara.effects.len(), 1, "{:?}", yunara.effects);
+    assert!(yunara.effects[0].label.ends_with("Arc of Ruin Base Damage"));
+    assert_eq!(
+        yunara.effects[0]
+            .formula
+            .eval(&sample(&[(CtxVar::RLevel, 3.0)])),
+        Some(480.0)
+    );
+}
+
+#[test]
+fn constants_are_written_without_exponents() {
+    assert_eq!(Formula::Const(6e-5).to_string(), "0.00006");
+    assert_eq!(Formula::Const(6e-5).rust(), "0.00006");
+    assert_eq!(Formula::Const(1.0).to_string(), "1.0");
+    assert_eq!(Formula::Const(-0.3).to_string(), "-0.3");
+}

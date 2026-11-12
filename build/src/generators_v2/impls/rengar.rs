@@ -1,0 +1,83 @@
+use super::*;
+
+impl GeneratorV2 for Rengar {
+    fn generate(&mut self) -> MayFail {
+        self.take("Additional Physical Damage", Q(Void))?
+            .take("Magic Damage", W(Void))?
+            .take("Physical Damage", E(Void))?
+            .combos([
+                &[
+                    Ability(Q(Void)),
+                    Attack,
+                    Ability(E(Void)),
+                    Ability(W(Void)),
+                    Ability(Q(Void)),
+                    Attack,
+                    Attack,
+                    Attack,
+                ],
+                &[
+                    Attack,
+                    Ability(E(Void)),
+                    Ability(W(Void)),
+                    Ability(Q(Void)),
+                    Attack,
+                    Ability(E(Void)),
+                    Attack,
+                ],
+                &[
+                    Attack,
+                    Attack,
+                    Ability(E(Void)),
+                    Ability(W(Void)),
+                    Ability(Q(Void)),
+                    Attack,
+                    Ability(E(Void)),
+                ],
+                &[
+                    Ability(Q(Void)),
+                    Ability(E(Void)),
+                    Ability(W(Void)),
+                    Attack,
+                    Ability(E(Void)),
+                    Attack,
+                    Ability(Q(Void)),
+                ],
+                &[
+                    Attack,
+                    Ability(E(Void)),
+                    Ability(Q(Void)),
+                    Ability(W(Void)),
+                    Ability(E(Void)),
+                    Attack,
+                ],
+                &[
+                    Attack,
+                    Ability(E(Void)),
+                    Ability(W(Void)),
+                    Ability(Q(Void)),
+                    Ability(Q(Void)),
+                    Attack,
+                ],
+                &[
+                    Attack,
+                    Ability(Q(Void)),
+                    Ability(E(Void)),
+                    Ability(W(Void)),
+                    Attack,
+                    Attack,
+                    Ability(Q(Void)),
+                    Attack,
+                ],
+                &[
+                    Ability(E(Void)),
+                    Attack,
+                    Ability(Q(Void)),
+                    Ability(W(Void)),
+                    Ability(W(Void)),
+                    Attack,
+                ],
+            ])?
+            .end()
+    }
+}

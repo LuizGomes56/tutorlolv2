@@ -5,7 +5,6 @@ use {
             GeneratorExt, VERSION,
             utils::{RegExtractor, SaveTo},
         },
-        scripts::utils::is_zero,
     },
     heck::{
         ToKebabCase, ToLowerCamelCase, ToPascalCase, ToShoutyKebabCase, ToShoutySnakeCase,
@@ -36,7 +35,8 @@ pub mod items;
 pub mod model;
 pub mod runes;
 
-pub const ZERO: &str = "zero";
+/// Text of a formula that is 0 everywhere
+pub use tutorlolv2_wiki::ZERO;
 
 /// Changes of every game mode, by the code of its module. Loaded once from the
 /// cache by whichever parser runs first, and empty when the cache has none, as
@@ -725,7 +725,7 @@ pub struct DamageRange {
 
 impl DamageRange {
     pub fn deals_damage(&self) -> [bool; 2] {
-        [!is_zero(&self.min_dmg), !is_zero(&self.max_dmg)]
+        [self.min_dmg != ZERO, self.max_dmg != ZERO]
     }
 }
 

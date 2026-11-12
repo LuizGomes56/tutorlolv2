@@ -295,3 +295,80 @@ fn a_champion_whose_damages_were_never_written_fails() {
     let error = c.into_champion().unwrap_err().to_string();
     assert!(error.contains("end()"), "{error}");
 }
+
+#[test]
+fn zero_damages_in_any_shape_are_removed() {
+    let mut c = champion_v2(
+        "ZeroRanks",
+        &[(
+            "Q0",
+            data_named(
+                "Q",
+                "Spell",
+                "|leveling = {{st|Magic Damage|{{ap|0 to 0}}}}{{st|Bonus Damage|{{ap|10}}}}",
+            ),
+        )],
+    );
+    c.take("Magic Damage", Q(Min))
+        .unwrap()
+        .take("Bonus Damage", Q(Max))
+        .unwrap();
+    let champion = c.finish().unwrap();
+    assert!(!champion.abilities.contains_key(&Q(Min)));
+    assert!(!champion.docs.contains_key(&Q(Min)));
+    assert!(champion.abilities.contains_key(&Q(Max)));
+}
+
+#[test]
+fn load_models_names_the_path_and_the_command() {
+    let path = std::env::temp_dir().join("tutorlolv2_no_such_model.json");
+    let error = ChampionV2::load_models(&path).unwrap_err().to_string();
+    assert!(error.contains("tutorlolv2_no_such_model.json"), "{error}");
+    assert!(error.contains("wiki cpm"), "{error}");
+}
+
+#[test]
+fn value_reads_a_description_value_without_taking_it() {
+    use tutorlolv2_types::Key;
+    // Caitlyn R: the increase by critical strike chance, in the description
+    let mut c = champion_v2(
+        "Value",
+        &[(
+            "R0",
+            data_named(
+                "R",
+                "Ace in the Hole",
+                "|description = {{sbc|Active:}} She fires a bullet, increased by {{critical damage|0 to 30|critScaling=true}}.\n|leveling = {{st|Physical damage|{{ap|300 to 650 3}}}}",
+            ),
+        )],
+    );
+    let increase = c.value("Active", Key::R).unwrap();
+    let s = Sample::new([(CritChance, 25.0), (CritDamage, 230.0)]);
+    assert!((increase.eval(&s).unwrap() - 0.0975).abs() < 1e-9);
+
+    c.take("Physical damage", R(Void)).unwrap();
+    assert!(c.value("Nothing", Key::R).is_err());
+}
+
+#[test]
+fn insert_adds_a_damage_no_effect_has() {
+    use tutorlolv2_build_dep::generators_v2::Damage;
+    use tutorlolv2_types::{Attrs, DamageType};
+    // Annie R: Tibbers' attack, a pet the wiki only describes
+    let mut c = champion_v2(
+        "Insert",
+        &[("R0", data_named("R", "Summon: Tibbers", "|leveling = {{st|Initial Magic Damage|{{ap|150 to 350}}}}"))],
+    );
+    let tibbers = Damage {
+        formula: f![30 + 15 * (RLevel - 1) + 0.1 * AbilityPower],
+        name: "Tibbers".into(),
+        damage_type: DamageType::Magic,
+        comment: "Pet: Tibbers basic attack".into(),
+        attributes: Attrs::Undefined,
+    };
+    c.insert(R(_1), tibbers.clone()).unwrap();
+    assert!(c.insert(R(_1), tibbers).is_err());
+
+    let champion = c.finish().unwrap();
+    assert_eq!(champion.abilities[&R(_1)].name, "Tibbers");
+}

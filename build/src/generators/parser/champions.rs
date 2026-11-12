@@ -11,7 +11,6 @@ use {
             },
             utils::RegExtractor,
         },
-        scripts::utils::is_zero,
     },
     serde::{Deserialize, Serialize},
     serde_with::{Seq, serde_as},
@@ -579,7 +578,7 @@ impl Champion {
         } = self;
 
         abilities.retain(|key, ability| {
-            let zero = is_zero(&ability.damage);
+            let zero = ability.damage == ZERO;
 
             if zero {
                 println!("[{champion_id}] Removing [{key:?}]");

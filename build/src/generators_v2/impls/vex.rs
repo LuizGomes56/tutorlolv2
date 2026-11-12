@@ -14,7 +14,7 @@ impl GeneratorV2 for Vex {
             .combos([
                 &[
                     Ability(R(Min)),
-                    Ability(R(Min)),
+                    Ability(R(Max)),
                     Ability(W(Void)),
                     Attack,
                     Ability(E(Void)),
@@ -25,7 +25,7 @@ impl GeneratorV2 for Vex {
                     Ability(E(Void)),
                     Ability(Q(Void)),
                     Ability(R(Min)),
-                    Ability(R(Min)),
+                    Ability(R(Max)),
                     Ability(W(Void)),
                 ],
                 &[
@@ -33,12 +33,12 @@ impl GeneratorV2 for Vex {
                     Ability(E(Void)),
                     Ability(R(Min)),
                     Ability(Q(Void)),
-                    Ability(R(Min)),
+                    Ability(R(Max)),
                     Attack,
                 ],
                 &[
                     Ability(R(Min)),
-                    Ability(R(Min)),
+                    Ability(R(Max)),
                     Ability(W(Void)),
                     Ability(E(Void)),
                     Ability(Q(Void)),
@@ -49,7 +49,7 @@ impl GeneratorV2 for Vex {
                     Ability(R(Min)),
                     Ability(Q(Void)),
                     Attack,
-                    Ability(R(Min)),
+                    Ability(R(Max)),
                     Attack,
                     Ability(W(Void)),
                     Attack,

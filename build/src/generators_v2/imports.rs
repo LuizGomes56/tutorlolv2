@@ -7,7 +7,7 @@ pub use crate::{
         Generator, GeneratorExt, constants::WithConstants, parser::champions::Champion,
         utils::RegExtractor,
     },
-    generators_v2::{ChampionV2, GeneratorV2, MapStyle},
+    generators_v2::{ChampionV2, Damage, GeneratorV2, MapStyle},
 };
 pub use lazy_regex::regex;
 pub use tutorlolv2_types::{
@@ -43,7 +43,7 @@ macro_rules! decl_champions_v2 {
 
             impl $Name {
                 pub fn try_from(data: WikiChampion) -> MayFail<Box<dyn GeneratorExt<Champion>>> {
-                    let model = ChampionV2::models()
+                    let model = ChampionV2::models()?
                         .get(&data.champion_id)
                         .cloned()
                         .ok_or_else(|| format!("[{}] has no model in model.json", data.champion_id))?;
