@@ -27,8 +27,8 @@ use {
     core::{mem::MaybeUninit, num::NonZeroU8},
     strum::EnumCount,
     tutorlolv2_types::{
-        AbilityId, AdaptiveType, AttackType, Ctx, CtxAttacker, CtxFlags, CtxTarget, DamageType,
-        GameMap, MapMode, StatName, TypeMetadata,
+        AbilityId, AdaptiveType, AttackSpeedRatio, AttackType, Ctx, CtxAttacker, CtxFlags,
+        CtxTarget, DamageType, GameMap, MapMode, StatName, TypeMetadata,
     },
 };
 
@@ -223,6 +223,21 @@ impl SimpleStats {
 }
 
 impl WikiStats {
+    /// Recover total bonus attack speed from attacks per second and the champion ratio.
+    /// Observed attack speed cannot reveal bonuses hidden by the game's attack speed cap;
+    /// callers with the true bonus can supply it directly through the context.
+    pub const fn bonus_attack_speed_ratio(&self, attack_speed: f32) -> AttackSpeedRatio {
+        if !attack_speed.is_finite()
+            || !self.attack_speed.base.is_finite()
+            || !self.attack_speed_ratio.is_finite()
+            || self.attack_speed_ratio <= 0.0
+        {
+            return AttackSpeedRatio::new(0.0);
+        }
+
+        AttackSpeedRatio::new((attack_speed - self.attack_speed.base) / self.attack_speed_ratio)
+    }
+
     pub const fn attack_speed(&self, bonus: f32, level: NonZeroU8) -> f32 {
         self.attack_speed.base
             + self.attack_speed_ratio
@@ -892,6 +907,7 @@ impl SelfState {
     pub const fn ctx_attacker(&self, game_map: GameMap) -> CtxAttacker {
         let SelfState {
             stacks,
+            bonus_attack_speed_ratio,
             ability_levels,
             current_stats:
                 PlayerStats {
@@ -926,6 +942,7 @@ impl SelfState {
         } = *self;
 
         CtxAttacker {
+            bonus_attack_speed_ratio,
             ability_levels,
             level: level.get() as _,
             base_health,
@@ -1226,6 +1243,9 @@ impl SelfState {
             };
 
         Self {
+            bonus_attack_speed_ratio: champion
+                .stats_on(game_map)
+                .bonus_attack_speed_ratio(stats.attack_speed),
             current_stats: stats,
             adaptive_type,
             ..*self

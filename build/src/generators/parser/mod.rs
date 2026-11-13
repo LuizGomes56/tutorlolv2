@@ -16,19 +16,21 @@ use {
         path::Path,
         sync::OnceLock,
     },
-    tutorlolv2_types::{DamageIndex, GameMap, MapMode, Tag},
+    tutorlolv2_types::{AttackType, DamageIndex, GameMap, MapMode, Tag},
     tutorlolv2_wiki::{
         JsonRead, JsonWrite,
         champions::WikiChampion,
         items::item_parser::WikiItem,
         map_changes::{self, ChangeTarget, MapChanges, change::Amount},
         runes::WikiRune,
+        wikitext::Formula,
     },
 };
 
 pub mod champions;
 pub mod items;
 pub mod model;
+pub mod native_maps;
 pub mod runes;
 
 /// Text of a formula that is 0 everywhere
@@ -83,6 +85,26 @@ pub fn single_mode(maps: &[GameMap], id: &str) -> MayFail<MapMode> {
 pub trait WithMapChanges {
     /// Whether a change of `target` is a change of this entity
     fn is_map_target(&self, target: &ChangeTarget) -> bool;
+
+    fn mapped_formula(&self, effect: &str, attack: AttackType, formula: Formula) -> MayFail<Formula>
+    where
+        Self: Sized,
+    {
+        native_maps::map_formula(self, effect, attack, formula)
+    }
+
+    fn mapped_formula_with(
+        &self,
+        effect: &str,
+        attack: AttackType,
+        formula: Formula,
+        options: native_maps::MapOptions<'_>,
+    ) -> MayFail<Formula>
+    where
+        Self: Sized,
+    {
+        native_maps::map_formula_with(self, effect, attack, formula, options)
+    }
 
     /// Values of the changes of this entity named `part` on each mode, as the
     /// "Eminence base bonus attack" of "Eminence base bonus attack damage changed

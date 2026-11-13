@@ -64,6 +64,7 @@ fn calculator_applies_retribution_from_the_missing_health() {
 
 fn state(current_health: f32) -> SelfState {
     SelfState {
+        bonus_attack_speed_ratio: tutorlolv2_types::AttackSpeedRatio::new(0.0),
         stacks: 0.0,
         ability_levels: AbilityLevels::default(),
         current_stats: PlayerStats {

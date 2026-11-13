@@ -1,5 +1,5 @@
 //! Validates structured champion label selections and reports changes to the
-//! item/rune effect indices and shared wiki metadata.
+//! named item/rune raw sources and shared wiki metadata.
 
 use super::{LockedAbility, WikiLock, compare, entry_name};
 use crate::{
@@ -146,6 +146,7 @@ impl WikiLock {
         self.check_exceptions(old, &mut report);
         self.check_map_changes(old, &mut report);
         self.check_map_stats(old, &mut report);
+        self.check_native_sources(old, &mut report);
 
         if let Some(old) = old {
             self.check_runes(old, &generators.join("runes"), &mut report)?;
@@ -153,6 +154,50 @@ impl WikiLock {
         }
 
         Ok(report)
+    }
+
+    fn check_native_sources(&self, old: Option<&WikiLock>, report: &mut Report) {
+        let Some(old) = old else { return };
+
+        if !old.rune_sources.is_empty() {
+            for id in old
+                .rune_sources
+                .keys()
+                .chain(self.rune_sources.keys())
+                .collect::<BTreeSet<_>>()
+            {
+                if old.rune_sources.get(id) != self.rune_sources.get(id) {
+                    report
+                        .warnings
+                        .push(format!("[runes] {id}: raw source changed"));
+                }
+            }
+        }
+
+        if !old.item_sources.is_empty() {
+            for id in old
+                .item_sources
+                .keys()
+                .chain(self.item_sources.keys())
+                .collect::<BTreeSet<_>>()
+            {
+                let before = old.item_sources.get(id);
+                let after = self.item_sources.get(id);
+                let names = before
+                    .into_iter()
+                    .chain(after)
+                    .flat_map(BTreeMap::keys)
+                    .collect::<BTreeSet<_>>();
+
+                for name in names {
+                    if before.and_then(|map| map.get(name)) != after.and_then(|map| map.get(name)) {
+                        report
+                            .warnings
+                            .push(format!("[items] {id}/{name}: raw source changed"));
+                    }
+                }
+            }
+        }
     }
 
     fn check_champions(&self, old: Option<&WikiLock>, dir: &Path, report: &mut Report) -> MayFail {

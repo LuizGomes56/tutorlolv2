@@ -141,6 +141,9 @@ macro_rules! create_eval_struct {
                 /// Changes of the game mode, read by the closures it changes. It
                 /// fits in the padding after `flags`, so the size is unchanged
                 pub map: MapMode,
+                /// Bonus attack speed ratio, packed into the existing two-byte padding.
+                #[serde(default)]
+                pub bonus_attack_speed_ratio: AttackSpeedRatio,
             }
 
             /// Part of [`Ctx`] that comes from the attacker's state. A purchase
@@ -164,6 +167,9 @@ macro_rules! create_eval_struct {
                 pub flags: CtxFlags,
                 /// The map is the same for the whole game, so it comes with the attacker
                 pub map: MapMode,
+                /// Bonus attack speed ratio, packed into the existing two-byte padding.
+                #[serde(default)]
+                pub bonus_attack_speed_ratio: AttackSpeedRatio,
             }
 
             /// Part of [`Ctx`] that comes from the target
@@ -194,6 +200,7 @@ macro_rules! create_eval_struct {
                         ability_levels: attacker.ability_levels,
                         flags: attacker.flags.union(target.flags),
                         map: attacker.map,
+                        bonus_attack_speed_ratio: attacker.bonus_attack_speed_ratio,
                     }
                 }
 
@@ -203,6 +210,7 @@ macro_rules! create_eval_struct {
                         ability_levels: self.ability_levels,
                         flags: self.flags.intersection(CtxFlags::ATTACKER),
                         map: self.map,
+                        bonus_attack_speed_ratio: self.bonus_attack_speed_ratio,
                     }
                 }
 
@@ -280,6 +288,7 @@ create_eval_struct!(
         steelcaps_effect,
         unknown,
         w_level,
+        bonus_attack_speed_ratio,
     }
 );
 
@@ -475,6 +484,11 @@ impl Ctx {
 
     pub const fn bonus_attack_speed(&self) -> f32 {
         self.attack_speed - self.base_attack_speed
+    }
+
+    /// Bonus attack speed as a ratio, independent of absolute attacks per second.
+    pub const fn bonus_attack_speed_ratio(&self) -> f32 {
+        self.bonus_attack_speed_ratio.get()
     }
 
     pub const fn bonus_health(&self) -> f32 {

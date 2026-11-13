@@ -108,6 +108,23 @@ impl Scaling {
             });
         }
 
+        // Named collected units, as Dark Harvest's `(+ 11 per Soul)`.
+        if let Some(captures) =
+            regex!(r"^\(\+ ?(?<ratio>-?\d+(?:\.\d+)?) per (?<stat>[A-Za-z ]+)\)$").captures(&flat)
+            && super::build::stat_var(captures["stat"].trim()) == tutorlolv2_types::CtxVar::Stacks
+        {
+            return Some(Self {
+                ratios: vec![captures["ratio"].parse::<f64>().ok()? * 100.0],
+                per: None,
+                per_stat: None,
+                stat: captures["stat"].trim().into(),
+                additive: true,
+                nested,
+                power,
+                table: None,
+            });
+        }
+
         let captures = regex!(
             r"^(?<additive>\(\+ ?)?(?<ratio>RATIO|-?\d+(?:\.\d+)?)%(?: ?NESTED)*(?: per (?<per>\d+(?:\.\d+)?)%?)? (?<stat>[^()]+?)(?: per (?<per2>\d+(?:\.\d+)?)%? (?<per_stat>[^()]+?))?(?<close>\))?$"
         )

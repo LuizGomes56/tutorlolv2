@@ -384,6 +384,7 @@ fn aggregate_exports_only_contain_current_entities() {
     let dir = TestDir::new();
     tutorlolv2_wiki::write(dir.0.join("internal/runes/Stale.json"), "{}").unwrap();
     let rune = WikiRune {
+        raw_source: String::new(),
         name: "Example".into(),
         rune_id: "Example".into(),
         riot_id: 42,
@@ -490,11 +491,38 @@ fn recipe_fixture(
         .into_iter()
         .map(|item| (item.item_id.clone(), item))
         .collect::<std::collections::BTreeMap<_, _>>();
+
+    // Recipe fixtures use the same raw module boundary as production.
+    let records = wiki
+        .values()
+        .map(|item| {
+            let recipe = item
+                .recipe
+                .iter()
+                .map(|name| format!("{name:?}"))
+                .collect::<Vec<_>>()
+                .join(",");
+
+            format!(
+                "[{:?}] = {{ id = {} {} }}",
+                item.name,
+                item.id,
+                if recipe.is_empty() {
+                    String::new()
+                } else {
+                    format!(", recipe = {{ {recipe} }}")
+                }
+            )
+        })
+        .collect::<Vec<_>>()
+        .join(",");
+
     tutorlolv2_wiki::write(
-        dir.0.join("cache/wiki/items/full.json"),
-        serde_json::to_vec(&wiki).unwrap(),
+        dir.0.join("cache/wiki/items/data.lua"),
+        format!("return {{ {records} }}"),
     )
     .unwrap();
+
     tutorlolv2_wiki::write(
         dir.0.join("cache/riot/items.json"),
         serde_json::to_vec(&serde_json::json!({"data": riot})).unwrap(),

@@ -66,7 +66,10 @@ fn normalize_around_matches(formula: &str) -> Option<String> {
     Some(
         regex!(r"__match_(\d+)__")
             .replace_all(&normalized, |caps: &Captures| {
-                caps[1].parse::<usize>().map_or("", |i| blocks[i]).to_owned()
+                caps[1]
+                    .parse::<usize>()
+                    .map_or("", |i| blocks[i])
+                    .to_owned()
             })
             .into_owned(),
     )

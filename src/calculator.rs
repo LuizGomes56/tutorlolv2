@@ -11,6 +11,7 @@
 use {
     crate::{
         ChampionId, Ctx, GameMap, ItemId, L_MSTR, RuneId, helpers::*, libgen::items, model::*,
+        runes,
     },
     alloc::boxed::Box,
     core::num::NonZeroU8,
@@ -109,7 +110,13 @@ impl InferStats<'_> {
         stats.armor += map_armor;
         stats.magic_resist += map_magic_resist;
 
-        stats.assign_rune_exceptions(rune_exceptions, &mut adaptive_force, attack_type, level);
+        stats.assign_rune_exceptions_on(
+            rune_exceptions,
+            &mut adaptive_force,
+            attack_type,
+            level,
+            game_map,
+        );
 
         let adaptive_type =
             match AdaptiveType::try_infer(bonus_stats.attack_damage, bonus_stats.ability_power) {
@@ -483,6 +490,23 @@ impl PlayerStats {
         attack_type: AttackType,
         level: NonZeroU8,
     ) {
+        self.assign_rune_exceptions_on(
+            exceptions,
+            adaptive_force,
+            attack_type,
+            level,
+            GameMap::Unknown,
+        );
+    }
+
+    pub const fn assign_rune_exceptions_on(
+        &mut self,
+        exceptions: &[ValueException],
+        adaptive_force: &mut f32,
+        attack_type: AttackType,
+        level: NonZeroU8,
+        game_map: GameMap,
+    ) {
         if exceptions.is_empty() {
             return;
         }
@@ -495,16 +519,23 @@ impl PlayerStats {
 
             if let Some(rune_id) = rune_exception.get_rune_id() {
                 match rune_id {
-                    RuneId::LethalTempo => match attack_type {
-                        AttackType::Melee => {
-                            self.attack_speed +=
-                                (stacks as f32) * (5.0 + 11.0 / 17.0 * (level.get() - 1) as f32);
-                        }
-                        AttackType::Ranged => {
-                            self.attack_speed +=
-                                (stacks as f32) * (3.6 + 4.4 / 17.0 * (level.get() - 1) as f32);
-                        }
-                    },
+                    RuneId::LethalTempo => {
+                        let values = match attack_type {
+                            AttackType::Melee => {
+                                runes::lethal_tempo::melee_attack_speed_per_stack(game_map.mode())
+                            }
+                            AttackType::Ranged => {
+                                runes::lethal_tempo::ranged_attack_speed_per_stack(game_map.mode())
+                            }
+                        };
+
+                        self.attack_speed += stacks as f32
+                            * values[if level.get() as usize > values.len() {
+                                values.len() - 1
+                            } else {
+                                level.get() as usize - 1
+                            }];
+                    }
                     RuneId::Conqueror => {
                         *adaptive_force +=
                             (stacks as f32) * (1.8 + 2.2 / 17.0 * (level.get() - 1) as f32)
@@ -526,6 +557,7 @@ impl PlayerStats {
                     _ => {}
                 }
             }
+
             i += 1;
         }
     }
@@ -707,6 +739,9 @@ pub fn calculator(game: InputGame<'_>) -> OutputGame {
     let current_player_items = get_damaging_items(current_player_raw_items);
 
     let self_state = SelfState {
+        bonus_attack_speed_ratio: current_player_champion_id
+            .stats_on(game_map)
+            .bonus_attack_speed_ratio(champion_stats.attack_speed),
         stacks: stacks as _,
         current_stats: champion_stats,
         base_stats: current_player_base_stats,

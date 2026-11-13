@@ -41,9 +41,7 @@ pub trait Build {
 }
 
 pub fn run() -> MayFail {
-    let ctx = BuildContext::from_env()?;
-
-    ctx.run()
+    BuildContext::from_env()?.run()
 }
 
 impl BuildContext {
@@ -171,7 +169,6 @@ impl BuildContext {
         let path = self.out.join(&dir).with_extension("rs");
 
         tutorlolv2_wiki::write(&path, result)?;
-
         command.arg(path);
 
         writeln!(modules, "pub mod {dir}_code;\npub mod {dir};")?;
@@ -236,6 +233,7 @@ impl BuildContext {
         }
 
         let mut command = Command::new("rustfmt");
+
         command.args(["--edition", "2024", "--config", "max_width=80"]);
 
         let mut modules = String::new();
@@ -264,7 +262,6 @@ impl BuildContext {
             .collect::<Vec<_>>();
 
         let mut generators = GeneratorDbBuilder::new(counts[0], counts[1], counts[2], &overrides);
-
         let mut formulas = FormulaDbBuilder::new(
             counts[0],
             counts[1],

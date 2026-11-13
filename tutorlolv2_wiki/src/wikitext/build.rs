@@ -23,8 +23,13 @@ use {
 pub(crate) fn stat_var(text: &str) -> CtxVar {
     let lowercase = text.to_lowercase();
 
-    if lowercase.contains("damage stored") || lowercase.contains("damage dealt") {
+    if lowercase.contains("damage stored")
+        || lowercase.contains("damage dealt")
+        || lowercase == "shield amount"
+    {
         CtxVar::Stacks
+    } else if lowercase == "bonus health from items" {
+        CtxVar::BonusHealth
     } else if lowercase.contains("grit") {
         CtxVar::MaxMana
     } else if lowercase.ends_with(" stacks") {
@@ -158,6 +163,11 @@ impl AbilityModel {
 }
 
 impl Nodes {
+    /// Parse a source value directly from its wikitext nodes.
+    pub fn effect_model(&self, context: &PageContext, key: Key, label: &str) -> EffectModel {
+        Terms::new(context, key).effect(label, 0, self)
+    }
+
     /// Text of the first `{{sbc|…:}}`, as `Hemorrhage` of `{{sbc|Hemorrhage:}}`
     fn heading(&self) -> Option<String> {
         self.0.iter().find_map(|node| match node {
@@ -176,6 +186,13 @@ impl Nodes {
     /// `{{as|{{pplevel|key=%|4 to 10}} of the target's maximum health}}`, is its inner
     /// value. Both branches of a `{{ft}}` are read
     fn description_values(&self, key: Key) -> Vec<Nodes> {
+        self.description_values_at(key)
+            .into_iter()
+            .map(|(_, _, value)| value)
+            .collect()
+    }
+
+    pub(crate) fn description_values_at(&self, key: Key) -> Vec<(usize, usize, Nodes)> {
         let mut values = Vec::new();
         let nodes = &self.0;
         // Nodes before it belong to the previous value
@@ -196,7 +213,8 @@ impl Nodes {
                     values.extend(
                         template
                             .positionals()
-                            .flat_map(|value| value.description_values(key)),
+                            .flat_map(|value| value.description_values(key))
+                            .map(|value| (i, i + 1, value)),
                     );
                     continue;
                 }
@@ -274,7 +292,7 @@ impl Nodes {
 
             next = i + 1 + Self::value_tail(&nodes[i + 1..]);
             value.extend(nodes[i + 1..next].iter().cloned());
-            values.push(Nodes(value));
+            values.push((i, next, Nodes(value)));
         }
 
         values
@@ -284,7 +302,7 @@ impl Nodes {
     /// scalings `{{as|(+ 25% AP)}}`, the stat `{{as|of the target's maximum health}}`
     /// they are of, and groups written as text, as Bard's
     /// `(''+ {{as|6|magic damage}} per 5 {{as|Chimes|buzzword2}} collected'')`
-    fn value_tail(nodes: &[Node]) -> usize {
+    pub(crate) fn value_tail(nodes: &[Node]) -> usize {
         let mut taken = 0;
 
         while let Some(node) = nodes.get(taken) {
@@ -613,6 +631,20 @@ impl<'a> Terms<'a> {
                 continue;
             }
 
+            if template.name == "as"
+                && let Some(inner) = template.positional(0)
+            {
+                let flat = inner.plain();
+
+                if flat.trim().starts_with("(+")
+                    && flat.contains("based on critical strike chance")
+                    && let Some(progression) =
+                        inner.templates().into_iter().find(|t| t.name == "pp")
+                {
+                    self.table(progression);
+                    continue;
+                }
+            }
             if let Some(scaling) = Scaling::new(template, self.key) {
                 self.scaling(&scaling);
                 continue;
@@ -1314,10 +1346,71 @@ impl<'a> Terms<'a> {
             }
         };
 
+        let axis_name = progression
+            .axis
+            .as_deref()
+            .unwrap_or("")
+            .to_ascii_lowercase();
+
+        let numeric_axis = match axis_name.as_str() {
+            "critical strike chance" => Some(Formula::Var(CtxVar::CritChance)),
+            "missing health" => Some(Formula::Var(CtxVar::MissingHealthRatio).times(100.0)),
+            "target's missing health" | "target missing health" => Some(
+                (Formula::Var(CtxVar::EnemyMissingHealthFlat)
+                    / Formula::Var(CtxVar::EnemyMaxHealth))
+                .times(100.0),
+            ),
+            "bonus health" => Some(Formula::Var(CtxVar::BonusHealth)),
+            "maximum health" | "max health" => Some(Formula::Var(CtxVar::MaxHealth)),
+            "momentum" => Some(Formula::Var(CtxVar::Stacks)),
+            "maximum health difference" => {
+                Some(Formula::Var(CtxVar::EnemyMaxHealth) - Formula::Var(CtxVar::MaxHealth))
+            }
+            _ => None,
+        };
+
+        if let Some(axis) = numeric_axis {
+            if progression.keys.iter().any(|key| !key.is_finite())
+                || progression.values.iter().any(|value| !value.is_finite())
+                || progression.keys.windows(2).any(|pair| pair[0] >= pair[1])
+            {
+                self.issues
+                    .push(format!("Invalid numeric progression domain: {template}"));
+                return None;
+            }
+
+            // Explicit 'by' progressions are steps; continuous stat-axis ranges
+            // interpolate between knots and retain both source bounds.
+            let stepped = template
+                .positional(0)
+                .is_some_and(|v| v.to_string().contains(" by "));
+
+            return Some((
+                Formula::NumericTable {
+                    axis: Box::new(axis),
+                    keys: progression.keys,
+                    values: progression.values,
+                    interpolated: !stepped,
+                },
+                progression.key,
+            ));
+        }
+
         let var = self.axis(progression.axis.as_deref());
 
         if var == CtxVar::Unknown {
             self.issues.push(template.to_string());
+        }
+
+        if progression
+            .keys
+            .iter()
+            .any(|key| *key < 0.0 || *key > 255.0 || key.fract() != 0.0)
+        {
+            self.issues
+                .push(format!("Unsupported numeric progression axis: {template}"));
+
+            return None;
         }
 
         let table = Formula::Table {

@@ -55,7 +55,9 @@ impl BuildContext {
             "cache/wiki/champions/full.json",
             "cache/wiki/champions/model.json",
             "cache/wiki/items/full.json",
+            "cache/wiki/items/data.lua",
             "cache/wiki/runes/full.json",
+            "cache/wiki/runes",
             "cache/wiki/spells/full.json",
             "cache/wiki/map_changes/full.json",
             "cache/riot/items.json",
@@ -91,16 +93,21 @@ pub fn run_formatter(command: &mut Command) -> MayFail {
         .get_args()
         .map(std::ffi::OsStr::to_owned)
         .collect::<Vec<_>>();
+
     let first_file = args
         .iter()
         .position(|arg| Path::new(arg).extension().is_some_and(|ext| ext == "rs"));
+
     if let Some(first_file) = first_file {
         for files in args[first_file..].chunks(32) {
             let mut batch = Command::new(command.get_program());
+
             batch.args(&args[..first_file]).args(files);
+
             if let Some(dir) = command.get_current_dir() {
                 batch.current_dir(dir);
             }
+
             for (key, value) in command.get_envs() {
                 if let Some(value) = value {
                     batch.env(key, value);
@@ -108,8 +115,10 @@ pub fn run_formatter(command: &mut Command) -> MayFail {
                     batch.env_remove(key);
                 }
             }
+
             run_formatter_once(&mut batch)?;
         }
+
         Ok(())
     } else {
         run_formatter_once(command)

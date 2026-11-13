@@ -1,6 +1,7 @@
 //! Standalone regression tests of the structured champion generators.
 use tutorlolv2_build_dep::{
     MayFail,
+    generators::champions::{CHAMPIONS, champion_gen_fn},
     generators::{
         GeneratorExt,
         parser::{
@@ -8,7 +9,6 @@ use tutorlolv2_build_dep::{
             champions::{Champion, ChampionParser},
         },
     },
-    generators::champions::{CHAMPIONS, champion_gen_fn},
 };
 use tutorlolv2_types::{AbilityId, MapMode};
 use tutorlolv2_wiki::{

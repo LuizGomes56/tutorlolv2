@@ -3,7 +3,9 @@ use crate::{
     generators::parser::{DamageRange, ZERO, items::Item, runes::Rune},
     scripts::{
         batch::FormulaDoc,
-        simplify::{Precision, approx_constant, format_formula, format_formula_exact, format_number},
+        simplify::{
+            Precision, approx_constant, format_formula, format_formula_exact, format_number,
+        },
     },
 };
 use databake::CrateEnv;
@@ -214,7 +216,6 @@ pub trait ItemOrRuneExt:
 
     fn build_aliases(&self, raw: &[String; 4]) -> [Option<(usize, String)>; 4] {
         let all_vars = self.identifiers();
-
         let mut aliases = [None, None, None, None];
 
         // The ratio between two formulas is only known on Summoner's Rift. Other
@@ -280,7 +281,6 @@ pub trait ItemOrRuneExt:
         for i in 0..4 {
             let body = &plan.formulas[i as usize];
             let f = &functions[i as usize];
-
             let default = !plan.active[i as usize];
 
             let mut formula_f32 = if default {
@@ -367,12 +367,9 @@ pub trait ItemOrRuneExt:
         let value_id = self.id();
         let melee = &self[AttackType::Melee];
         let ranged = &self[AttackType::Ranged];
-
         let id = value_id.to_snake_case();
-
         let min = DamageIndex::Min;
         let max = DamageIndex::Max;
-
         let has_max = melee[max] != ZERO || ranged[max] != ZERO;
 
         // Melee and ranged share a function when every map gives them one formula
@@ -475,6 +472,7 @@ pub fn cast_f32(s: &str) -> MayFail<String> {
             };
 
             let literal = format_number(value, Precision::F32);
+
             expr.lit = Lit::Float(syn::LitFloat::new(
                 &format!("{literal}f32"),
                 expr.lit.span(),

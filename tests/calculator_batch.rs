@@ -27,6 +27,7 @@ fn calculator_batch_matches_legacy_enemy_and_monster_rows() {
         let champion = champion_id.data();
         let base_stats = champion_id.base_stats(level, false);
         let self_state = SelfState {
+            bonus_attack_speed_ratio: tutorlolv2_types::AttackSpeedRatio::new(0.0),
             level,
             stacks: 150.0,
             ability_levels: AbilityLevels {

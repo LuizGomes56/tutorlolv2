@@ -1,7 +1,7 @@
 use crate::common::{
-    DamageSlot, EntityKind, Error, HEADER_LEN, MAGIC, OP_BIN_BASE, OP_CTX, OP_GROUP,
-    OP_MAP_MATCH_BLOCK, OP_MAP_MATCH_INLINE, OP_MATCH_BLOCK, OP_MATCH_INLINE, OP_NEG, OP_NUM_CONST, OP_NUM_F32, OP_NUM_I8, OP_NUM_U8,
-    OP_REF_LOCAL, VERSION,
+    DamageSlot, EntityKind, Error, HEADER_LEN, MAGIC, OP_AXIS, OP_BIN_BASE, OP_CTX, OP_GROUP,
+    OP_MAP_MATCH_BLOCK, OP_MAP_MATCH_INLINE, OP_MATCH_BLOCK, OP_MATCH_INLINE, OP_MAX_ZERO, OP_NEG,
+    OP_NUM_CONST, OP_NUM_F32, OP_NUM_I8, OP_NUM_U8, OP_NUMERIC_TABLE, OP_REF_LOCAL, VERSION,
 };
 use std::collections::HashMap;
 use std::convert::TryFrom;
@@ -19,6 +19,13 @@ pub struct FormulaSource<'a> {
 
 #[derive(Debug, Clone)]
 enum Ast {
+    NumericTable {
+        axis: Box<Ast>,
+        arms: Vec<(Ast, Ast)>,
+        cap: Box<Ast>,
+    },
+    Axis,
+    MaxZero(Box<Ast>),
     Number(u32),
     Ctx(u8),
     RefLocal(u8),
@@ -54,6 +61,7 @@ struct MapArm {
 #[derive(Debug, Clone, Copy)]
 enum ArmBody {
     Plain,
+    BlockExpression,
     Braced {
         body_indent_units: u8,
         close_indent_units: u8,
@@ -64,6 +72,7 @@ impl MapArm {
     fn encode(&self, constants: &ConstantPool, out: &mut Vec<u8>) {
         match self.body {
             ArmBody::Plain => out.push(0),
+            ArmBody::BlockExpression => out.push(2),
             ArmBody::Braced {
                 body_indent_units,
                 close_indent_units,
@@ -81,6 +90,18 @@ impl MapArm {
 impl Ast {
     fn count_numbers(&self, freq: &mut HashMap<u32, u32>) {
         match self {
+            Self::NumericTable { axis, arms, cap } => {
+                axis.count_numbers(freq);
+
+                for (key, value) in arms {
+                    key.count_numbers(freq);
+                    value.count_numbers(freq);
+                }
+
+                cap.count_numbers(freq);
+            }
+            Self::MaxZero(inner) => inner.count_numbers(freq),
+            Self::Axis => {}
             Self::Number(bits) => *freq.entry(*bits).or_default() += 1,
             Self::Binary { left, right, .. } => {
                 left.count_numbers(freq);
@@ -100,6 +121,23 @@ impl Ast {
 
     fn encode(&self, constants: &ConstantPool, out: &mut Vec<u8>) {
         match self {
+            Self::NumericTable { axis, arms, cap } => {
+                out.push(OP_NUMERIC_TABLE);
+                out.push(arms.len() as u8);
+                axis.encode(constants, out);
+
+                for (key, value) in arms {
+                    key.encode(constants, out);
+                    value.encode(constants, out);
+                }
+
+                cap.encode(constants, out);
+            }
+            Self::Axis => out.push(OP_AXIS),
+            Self::MaxZero(inner) => {
+                out.push(OP_MAX_ZERO);
+                inner.encode(constants, out);
+            }
             Self::Number(bits) => constants.encode_number(*bits, out),
             Self::Ctx(id) => {
                 out.push(OP_CTX);
@@ -499,6 +537,7 @@ impl FormulaDbBuilder {
         let mut parser = Parser {
             tokens,
             pos: 0,
+            axis_scope: false,
             ctx_resolver: self.ctx_resolver,
             map_resolver: self.map_resolver,
             refs,
@@ -773,6 +812,10 @@ enum TokenKind {
     FatArrow,
     /// `#[cold]`, before each arm of a map match but the default
     Cold,
+    Colon,
+    Semi,
+    Equal,
+    Less,
 }
 
 #[derive(Debug, Clone)]
@@ -848,6 +891,12 @@ impl<'a> Lexer<'a> {
                 b'-' => self.single(TokenKind::Minus),
                 b'*' => self.single(TokenKind::Star),
                 b'/' => self.single(TokenKind::Slash),
+                b':' => self.single(TokenKind::Colon),
+                b';' => self.single(TokenKind::Semi),
+                b'<' => self.single(TokenKind::Less),
+                b'=' if self.bytes.get(self.index + 1) != Some(&b'>') => {
+                    self.single(TokenKind::Equal)
+                }
                 b'(' => self.single(TokenKind::LParen),
                 b')' => self.single(TokenKind::RParen),
                 b'{' => self.single(TokenKind::LBrace),
@@ -991,6 +1040,7 @@ struct Parsed {
 struct Parser<'a> {
     tokens: Vec<Token>,
     pos: usize,
+    axis_scope: bool,
     ctx_resolver: CtxResolver,
     map_resolver: MapResolver,
     refs: &'a HashMap<String, u8>,
@@ -1090,7 +1140,25 @@ impl Parser<'_> {
             return self.parse_unary();
         }
 
-        self.parse_primary()
+        let mut value = self.parse_primary()?;
+
+        if self.axis_scope && matches!(self.peek().map(|t| &t.kind), Some(TokenKind::Dot)) {
+            self.bump();
+            self.expect_ident("max")?;
+            self.expect(TokenKind::LParen, "expected `(`")?;
+
+            let zero = self.bump().ok_or(Error::Corrupt("missing max argument"))?;
+
+            if !matches!(&zero.kind, TokenKind::Number(n) if Self::parse_f32(n).ok() == Some(0.0)) {
+                return Err(zero.error("only max(0.0) is supported"));
+            }
+
+            let close = self.expect(TokenKind::RParen, "expected `)`")?;
+
+            value.ast = Ast::MaxZero(Box::new(value.ast));
+            value.end_line = close.line;
+        }
+        Ok(value)
     }
 
     fn parse_primary(&mut self) -> Result<Parsed, Error> {
@@ -1114,6 +1182,13 @@ impl Parser<'_> {
                     end_line: token.line,
                 })
             }
+            TokenKind::LBrace => self.parse_numeric_table(token),
+            TokenKind::Ident(ref value) if value == "axis" && self.axis_scope => Ok(Parsed {
+                ast: Ast::Axis,
+                start_line: token.line,
+                start_col: token.column,
+                end_line: token.line,
+            }),
             TokenKind::LParen => {
                 let inner = self.parse_expression(0)?;
                 let close = self.expect(TokenKind::RParen, "expected `)`")?;
@@ -1131,6 +1206,73 @@ impl Parser<'_> {
                 "expected number, ctx field, function call, match, or parenthesized expression",
             )),
         }
+    }
+
+    fn expect_ident(&mut self, name: &str) -> Result<(), Error> {
+        self.expect(TokenKind::Ident(name.into()), "unexpected identifier")?;
+        Ok(())
+    }
+
+    fn parse_numeric_table(&mut self, start: Token) -> Result<Parsed, Error> {
+        if self.axis_scope {
+            return Err(start.error("nested axis binding is unsupported"));
+        }
+
+        self.expect_ident("let")?;
+        self.expect_ident("axis")?;
+        self.expect(TokenKind::Colon, "expected `:`")?;
+        self.expect_ident("f32")?;
+        self.expect(TokenKind::Equal, "expected `=`")?;
+
+        let axis = self.parse_expression(0)?.ast;
+
+        self.expect(TokenKind::Semi, "expected `;`")?;
+        self.axis_scope = true;
+
+        let mut arms = Vec::new();
+
+        while matches!(self.peek().map(|t| &t.kind), Some(TokenKind::Ident(n)) if n == "if") {
+            self.bump();
+            self.expect_ident("axis")?;
+            self.expect(TokenKind::Less, "expected `<`")?;
+
+            let key = self.parse_unary()?.ast;
+
+            if !matches!(key, Ast::Number(_)) {
+                return Err(start.error("table key must be numeric"));
+            }
+
+            self.expect(TokenKind::LBrace, "expected `{`")?;
+
+            let value = self.parse_expression(0)?.ast;
+
+            self.expect(TokenKind::RBrace, "expected `}`")?;
+            self.expect_ident("else")?;
+            arms.push((key, value));
+
+            if arms.len() > 255 {
+                return Err(start.error("too many numeric table arms"));
+            }
+        }
+
+        self.expect(TokenKind::LBrace, "expected cap block")?;
+
+        let cap = self.parse_expression(0)?.ast;
+        self.expect(TokenKind::RBrace, "expected `}`")?;
+
+        let close = self.expect(TokenKind::RBrace, "expected `}`")?;
+        self.axis_scope = false;
+
+        Ok(Parsed {
+            ast: Ast::NumericTable {
+                axis: Box::new(axis),
+                arms,
+                cap: Box::new(cap),
+            },
+            start_line: start.line,
+            start_col: start.column,
+            end_line: close.line,
+        })
     }
 
     fn parse_ctx(&mut self, start: Token) -> Result<Parsed, Error> {
@@ -1372,11 +1514,19 @@ impl Parser<'_> {
     /// Value of a map arm, after its `=>`: an expression, or one in a block as
     /// rustfmt writes the ones that don't fit on a line
     fn parse_map_arm(&mut self) -> Result<MapArm, Error> {
-        if !matches!(self.peek().map(|t| &t.kind), Some(TokenKind::LBrace)) {
-            return Ok(MapArm {
-                value: self.parse_expression(0)?.ast,
-                body: ArmBody::Plain,
-            });
+        if !matches!(self.peek().map(|t| &t.kind), Some(TokenKind::LBrace))
+            || matches!(self.tokens.get(self.pos + 1).map(|t| &t.kind), Some(TokenKind::Ident(n)) if n == "let")
+        {
+            let value = self.parse_expression(0)?.ast;
+            let body = if matches!(value, Ast::NumericTable { .. })
+                && !matches!(self.peek().map(|t| &t.kind), Some(TokenKind::Comma))
+            {
+                ArmBody::BlockExpression
+            } else {
+                ArmBody::Plain
+            };
+
+            return Ok(MapArm { value, body });
         }
 
         let open = self.expect(TokenKind::LBrace, "expected `{`")?;

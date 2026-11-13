@@ -3,29 +3,32 @@ use {
         DynError, MayFail,
         generators::{
             constants::{Constants, WithConstants},
-            impls::items::item_gen_fn,
+            items::item_gen_fn,
             parser::{
                 DamageRange, GeneratorFnSig, Parser, WithMapChanges, infer_damage_type,
-                likely_damages, map_changes,
+                likely_damages,
                 model::{RiotCdn, RiotCdnItem, RiotCdnItemGold},
-                single_mode,
             },
+            utils::RegExtractor,
         },
     },
     heck::ToPascalCase,
+    lazy_regex::regex,
     serde::{Deserialize, Serialize},
     std::{
         collections::BTreeMap,
         fmt::Write,
         ops::{Index, IndexMut},
     },
-    tutorlolv2_types::{AttackType, Attrs, CtxVar, DamageIndex, DamageType, MapMode, Tag},
+    tutorlolv2_types::{AttackType, Attrs, CtxVar, DamageIndex, DamageType, Key, MapMode, Tag},
     tutorlolv2_wiki::{
         JsonRead,
         items::item_parser::{ItemEffect, WikiItem},
-        map_changes::{ChangeTarget, overrides::EffectOverrides},
-        parser::Effect,
-        wikitext::{Formula, IntoFormula},
+        map_changes::{ChangeTarget, change::MapChange},
+        wikitext::{
+            Formula, IntoFormula, Lookup, MapValue, Nodes, PageContext, Sample, SourceDocument,
+            SourceForm, SourceRole, SourceVariant, Variables,
+        },
     },
 };
 
@@ -87,8 +90,18 @@ impl Parser<WikiItem, Item> for ItemParser {
     fn from_root(root: &std::path::Path) -> MayFail<Self> {
         super::load_map_changes(root)?;
 
-        let mut data =
-            BTreeMap::<String, WikiItem>::from_file(root.join("cache/wiki/items/full.json"))?;
+        let raw = tutorlolv2_wiki::items::parse_module(&std::fs::read_to_string(
+            root.join("cache/wiki/items/data.lua"),
+        )?)?;
+
+        let mut data = raw
+            .into_values()
+            .map(|raw| {
+                let item = raw.into_native();
+
+                (item.item_id.clone(), item)
+            })
+            .collect::<BTreeMap<_, _>>();
 
         let riot_items =
             RiotCdn::<u32, RiotCdnItem>::from_file(root.join("cache/riot/items.json"))?;
@@ -252,6 +265,21 @@ pub enum Source {
     Passive3,
     Passive4,
     Consume,
+    Named(&'static str),
+    Event(&'static str, ItemEvent),
+}
+
+#[derive(Copy, Clone, Debug)]
+pub enum ItemEvent {
+    PrimaryTarget,
+    AttackTarget,
+    NonChampionDeath,
+    InitialHit,
+    Spellblade,
+    FogDamage,
+    CriticalBleed,
+    BaseProc,
+    MaximumProc,
 }
 
 impl WithMapChanges for Item {
@@ -261,55 +289,6 @@ impl WithMapChanges for Item {
 }
 
 impl Item {
-    /// Effect of `source` for `attack_type` on each mode that changes it, by the
-    /// same rules as damages, for generators that build their damage from it
-    pub fn map_effects_for(
-        &self,
-        source: Source,
-        attack_type: AttackType,
-    ) -> MayFail<Vec<(MapMode, Effect)>> {
-        let effect = self.effect_for(source, attack_type)?.clone();
-        let name = self[source]
-            .as_ref()
-            .and_then(|ie| ie.name.clone())
-            .unwrap_or_else(|| source.slot().into());
-
-        let candidates = BTreeMap::from([(source.slot().to_string(), (name, effect))]);
-        let target = ChangeTarget::Item {
-            item_id: self.data.item_id.clone(),
-        };
-
-        let ranged = matches!(attack_type, AttackType::Ranged);
-        let mut result = Vec::new();
-
-        for changes in map_changes() {
-            let overrides = EffectOverrides::new(&target, changes, &candidates, ranged);
-
-            if let Some(effect) = overrides.effects.get(source.slot()) {
-                let mode = single_mode(&changes.maps, &self.data.item_id)?;
-                result.push((mode, effect.clone()));
-            }
-        }
-
-        Ok(result)
-    }
-
-    /// Formula of the effect of `source` on each mode that changes it, for
-    /// constants captured from the formula
-    pub fn map_formulas(&self, source: Source) -> MayFail<Vec<(MapMode, Formula)>> {
-        self.map_effects_for(source, AttackType::Melee)?
-            .into_iter()
-            .map(|(mode, effect)| {
-                Ok((
-                    mode,
-                    effect
-                        .to_formula(CtxVar::Level)?
-                        .ok_or("Item effect has no formula")?,
-                ))
-            })
-            .collect()
-    }
-
     /// Sets the damage `var` of `attack_type` on `mode`, for generators that build
     /// it themselves. The damages a generator sets aren't changed automatically
     pub fn map_assign(
@@ -341,6 +320,7 @@ impl Source {
             Self::Passive3 => "pass3",
             Self::Passive4 => "pass4",
             Self::Consume => "consume",
+            Self::Named(name) | Self::Event(name, _) => name,
         }
     }
 }
@@ -370,162 +350,242 @@ impl Item {
         self
     }
 
-    /// Wikitext description of an effect, as written in the wiki
-    pub fn description(&self, source: Source) -> MayFail<&str> {
+    fn checked_effect(&self, source: Source) -> MayFail<&ItemEffect> {
+        if let Source::Named(name) | Source::Event(name, _) = source {
+            let matches = [
+                Source::Passive,
+                Source::Passive2,
+                Source::Passive3,
+                Source::Passive4,
+                Source::Active,
+                Source::Consume,
+            ]
+            .into_iter()
+            .filter_map(|slot| self[slot].as_ref())
+            .filter(|effect| effect.name.as_deref() == Some(name))
+            .collect::<Vec<_>>();
+
+            return match matches.as_slice() {
+                [effect] => Ok(effect),
+                _ => Err(format!(
+                    "{} expected exactly one effect {name:?}, found {}",
+                    self.data.item_id,
+                    matches.len()
+                )
+                .into()),
+            };
+        }
+
         self[source]
             .as_ref()
-            .and_then(|effect| effect.raw_description.as_deref())
+            .ok_or_else(|| format!("{} missing {source:?}", self.data.item_id).into())
+    }
+
+    /// Wikitext description of an effect, as written in the wiki
+    pub fn description(&self, source: Source) -> MayFail<&str> {
+        self.checked_effect(source)?
+            .raw_description
+            .as_deref()
             .ok_or_else(|| {
                 let item_id = &self.data.item_id;
                 format!("{item_id} has no description for {source:?}").into()
             })
     }
 
-    pub fn effect(&self, source: Source) -> MayFail<&Effect> {
-        match &self[source] {
-            Some(ie) => Ok(&ie.effect),
-            _ => Err(format!("No source for its {source:?}").into()),
-        }
-    }
-
-    /// Effect for the given attack type. Ranged champions use the ranged effect
-    /// when the wiki gives them different values with `{{rd|melee|ranged}}`
-    pub fn effect_for(&self, source: Source, attack_type: AttackType) -> MayFail<&Effect> {
-        match (&self[source], attack_type) {
-            (
-                Some(ItemEffect {
-                    ranged: Some(effect),
-                    ..
-                }),
-                AttackType::Ranged,
-            ) => Ok(effect),
-            _ => self.effect(source),
-        }
-    }
-
-    /// Effect for the alternate text of `{{ft|text|alternate}}`, such as the
-    /// total damage of a burn that the main text describes per tick
-    pub fn flip(&self, source: Source) -> MayFail<&Effect> {
-        self[source]
-            .as_ref()
-            .and_then(|ie| ie.flip.as_ref())
-            .ok_or(format!("No alternate text for its {source:?}").into())
-    }
-
-    /// Effect described after "for a total of"
-    pub fn total(&self, source: Source) -> MayFail<&Effect> {
-        self[source]
-            .as_ref()
-            .and_then(|ie| ie.total.as_ref())
-            .ok_or(format!("No total for its {source:?}").into())
-    }
-
-    /// Formula of any effect of this item, such as [`Self::flip`] or [`Self::total`]
-    pub fn render(&self, effect: &Effect) -> MayFail<Formula> {
-        effect
-            .to_formula(CtxVar::Level)?
-            .ok_or_else(|| "Item effect has no formula".into())
-    }
-
-    /// Formula with the base value and only the given scalings of an effect, for
-    /// descriptions that also mention healing, shields or other bonuses
-    pub fn render_with(
+    pub fn native_document(
         &self,
-        effect: &Effect,
-        scalings: impl IntoIterator<Item = usize>,
-    ) -> MayFail<Formula> {
-        let indexes = scalings.into_iter().collect::<Vec<_>>();
-        let mut formula = self.render_selected(effect, &indexes)?;
+        source: Source,
+        attack_type: AttackType,
+        alternate: bool,
+    ) -> MayFail<SourceDocument> {
+        let lookup = Lookup::new("return {}", "return {}")?;
+        let context = PageContext {
+            lookup: &lookup,
+            four_rank_ultimate: false,
+            ability_keys: Default::default(),
+            crit_damage: 200.0,
+        };
 
-        for source in [
-            Source::Active,
+        let variant = SourceVariant {
+            ranged: matches!(attack_type, AttackType::Ranged),
+            alternate,
+        };
+
+        let selected_effect = self.checked_effect(source)?;
+        let mut variables = Variables::default();
+
+        for slot in [
             Source::Passive,
             Source::Passive2,
             Source::Passive3,
             Source::Passive4,
+            Source::Active,
             Source::Consume,
         ] {
-            for attack_type in [AttackType::Melee, AttackType::Ranged] {
-                if self
-                    .effect_for(source, attack_type)
-                    .is_ok_and(|candidate| std::ptr::eq(candidate, effect))
-                {
-                    for (mode, effect) in self.map_effects_for(source, attack_type)? {
-                        formula = formula.with_map(mode, self.render_selected(&effect, &indexes)?);
-                    }
-                    return Ok(formula);
+            if let Some(effect) = &self[slot] {
+                let nodes = Nodes::parse(
+                    effect
+                        .raw_description
+                        .as_deref()
+                        .ok_or("Missing raw item description")?,
+                )
+                .for_variant(variant)?;
+
+                let nodes = variables.expand(&context.lookup.expand(&nodes));
+
+                if std::ptr::eq(effect, selected_effect) {
+                    return SourceDocument::from_nodes(
+                        effect.name.as_deref().unwrap_or(slot.slot()),
+                        &nodes,
+                        &context,
+                        variant,
+                    )
+                    .map_err(Into::into);
                 }
             }
         }
-        Ok(formula)
+
+        Err("Missing native effect".into())
     }
 
-    fn render_selected(&self, effect: &Effect, indexes: &[usize]) -> MayFail<Formula> {
-        let mut effect = effect.clone();
-
-        for &index in indexes {
-            if index >= effect.scalings.len() {
-                return Err(format!(
-                    "[{}] Scaling {index} out of bounds for {:?}",
-                    self.data.name, effect.scalings
-                )
-                .into());
-            }
-        }
-
-        effect.scalings = indexes
-            .iter()
-            .map(|&index| effect.scalings[index].clone())
-            .collect();
-
-        effect.formula = None;
-        self.render(&effect)
-    }
-
-    /// Same as [`Self::render_with`] for each attack type, assigned to `var`
-    pub fn assign_with(
-        &mut self,
-        var: DamageIndex,
+    pub fn native_formula(
+        &self,
         source: Source,
-        scalings: impl IntoIterator<Item = usize>,
-    ) -> MayFail<&mut Self> {
-        let scalings = scalings.into_iter().collect::<Vec<_>>();
+        attack_type: AttackType,
+        alternate: bool,
+        form: SourceForm,
+    ) -> MayFail<Formula> {
+        let document = self.native_document(source, attack_type, alternate)?;
 
-        for attack_type in [AttackType::Melee, AttackType::Ranged] {
-            let effect = self.effect_for(source, attack_type)?;
-            let mut formula = self.render_selected(effect, &scalings)?;
+        let value = document.select_where(SourceRole::Damage, form, |value| {
+            let context = value.context.to_ascii_lowercase();
 
-            for (mode, effect) in self.map_effects_for(source, attack_type)? {
-                formula = formula.with_map(mode, self.render_selected(&effect, &scalings)?);
+            if context.contains("against monsters") {
+                return false;
             }
 
-            self.assign(attack_type, var, formula);
+            match source {
+                Source::Event(_, ItemEvent::PrimaryTarget) => value
+                    .following
+                    .trim_start()
+                    .starts_with("bonus physical damage to the"),
+                Source::Event(_, ItemEvent::AttackTarget) => value
+                    .following
+                    .trim_start()
+                    .starts_with("bonus physical damage to the attack target"),
+                Source::Event(_, ItemEvent::NonChampionDeath) => {
+                    !context.contains("scoring a takedown")
+                }
+                Source::Event(_, ItemEvent::Spellblade) => {
+                    !context.ends_with("for a minimum of ") && !context.contains("slow")
+                }
+                Source::Event(_, ItemEvent::InitialHit) if form == SourceForm::Base => {
+                    !context.contains("deal an additional")
+                }
+                Source::Event(_, ItemEvent::CriticalBleed) => {
+                    !value.following.starts_with("% of the")
+                }
+                Source::Event(_, ItemEvent::BaseProc) => context.ends_with("to deal "),
+                Source::Event(_, ItemEvent::MaximumProc) => context.ends_with("for up to "),
+                Source::Event(_, ItemEvent::FogDamage) => {
+                    !value.raw.contains("ultimate's damage instance")
+                }
+                _ => true,
+            }
+        })?;
+
+        let mut options = super::native_maps::MapOptions::default();
+
+        if self.data.item_id == "KrakenSlayer" && document.name == "Bring It Down" {
+            options.amplification_subject = Some("Bring It Down bonus damage");
         }
 
-        Ok(self)
+        options.ignore_secondary = self.data.item_id == "LudensEcho" && document.name == "Echo";
+
+        if matches!(
+            document.name.as_str(),
+            "Baleful Blaze" | "Hatefog" | "Torment"
+        ) {
+            let (interval, duration) = self.damage_timing(source, attack_type)?;
+            options.timing = Some((
+                if alternate || form == SourceForm::Total {
+                    duration
+                } else {
+                    interval
+                },
+                interval,
+            ));
+        }
+
+        if self.data.item_id == "LiandrysTorment" && document.name == "Torment" {
+            options.alias = Some("Suffering");
+        }
+
+        if self.data.item_id == "Heartsteel" && document.name == "Colossal Consumption" {
+            options.replace_stat = Some((CtxVar::MaxHealth, CtxVar::BonusHealth));
+        }
+
+        self.mapped_formula_with(
+            &document.name,
+            attack_type,
+            value.formula()?.clone(),
+            options,
+        )
     }
 
-    pub fn min_with(
-        &mut self,
-        source: Source,
-        scalings: impl IntoIterator<Item = usize>,
-    ) -> MayFail<&mut Self> {
-        self.assign_with(DamageIndex::Min, source, scalings)
+    pub fn echo_total(&self) -> MayFail<Formula> {
+        use crate::formula as f;
+
+        let source = Source::Event("Echo", ItemEvent::InitialHit);
+        let primary = self.formula(source)?;
+        let document = self.native_document(source, AttackType::Melee, true)?;
+        let [stacks] = document
+            .source
+            .capture(regex!(r"Gain ([\d.]+) ''Echo'' stacks"))?;
+
+        let [percent] = document
+            .source
+            .capture(regex!(r"deal an additional ([\d.]+)% damage"))?;
+
+        let remaining = stacks - 1.0;
+        let factor = 1.0 + remaining * percent / 100.0;
+        let mut total = f![primary * factor];
+
+        for (mode, text) in self.map_texts(regex!(r"Echo secondary damage changed to"))? {
+            let [percent] = text.capture(regex!(r"changed to ([\d.]+)% of primary damage"))?;
+
+            let primary = self.formula(source)?.on(mode);
+            let factor = 1.0 + remaining * percent / 100.0;
+
+            total = total.with_map(mode, f![primary * factor]);
+        }
+
+        Ok(total)
     }
 
-    pub fn max_with(
-        &mut self,
-        source: Source,
-        scalings: impl IntoIterator<Item = usize>,
-    ) -> MayFail<&mut Self> {
-        self.assign_with(DamageIndex::Max, source, scalings)
-    }
+    /// Read the source's primary presentation so totals and ticks share one clock.
+    fn damage_timing(&self, source: Source, attack: AttackType) -> MayFail<(f64, f64)> {
+        let document = self.native_document(source, attack, false)?;
+        let interval = regex!(r"every (?:\{\{fd\|)?([\d.]+)(?:\}\})? seconds")
+            .captures_iter(&document.source)
+            .map(|capture| capture[1].parse::<f64>())
+            .collect::<Result<Vec<_>, _>>()?;
 
-    pub fn base(&self, source: Source) -> MayFail<&Vec<f64>> {
-        self.effect(source)?
-            .base
-            .as_ref()
-            .ok_or(format!("No base damage for its {source:?}").into())
+        let durations = regex!(r"(?:over|for) ([\d.]+) seconds")
+            .captures_iter(&document.source)
+            .map(|capture| capture[1].parse::<f64>())
+            .collect::<Result<Vec<_>, _>>()?;
+
+        match (interval.as_slice(), durations.as_slice()) {
+            ([interval], [duration]) if *interval > 0.0 && *duration >= *interval => {
+                Ok((*interval, *duration))
+            }
+            _ => Err(format!(
+                "Expected one damage interval and duration for {}: {:?}, {:?}",
+                document.name, interval, durations
+            )
+            .into()),
+        }
     }
 
     pub fn formula(&self, source: Source) -> MayFail<Formula> {
@@ -533,21 +593,199 @@ impl Item {
     }
 
     pub fn formula_for(&self, source: Source, attack_type: AttackType) -> MayFail<Formula> {
-        let mut formula = self
-            .effect_for(source, attack_type)?
-            .to_formula(CtxVar::Level)?
-            .unwrap_or(Formula::Const(0.0));
-
-        for (mode, effect) in self.map_effects_for(source, attack_type)? {
-            formula = formula.with_map(
-                mode,
-                effect
-                    .to_formula(CtxVar::Level)?
-                    .ok_or("Item effect has no formula")?,
-            );
+        self.native_formula(source, attack_type, false, SourceForm::Base)
+    }
+    /// Resolve a supported maximum presentation using the source's own caps.
+    pub fn maximum_damage(&mut self, source: Source) -> MayFail<&mut Self> {
+        for attack_type in [AttackType::Melee, AttackType::Ranged] {
+            let formula = Self::maximum_axes(self.formula_for(source, attack_type)?);
+            self.assign(attack_type, DamageIndex::Min, formula);
         }
 
-        Ok(formula)
+        Ok(self)
+    }
+    fn maximum_axes(formula: Formula) -> Formula {
+        match formula {
+            Formula::Table {
+                var: CtxVar::Stacks,
+                values,
+                ..
+            }
+            | Formula::NumericTable { values, .. } => {
+                Formula::Const(*values.last().expect("nonempty source progression"))
+            }
+            Formula::Sum(values) => {
+                Formula::Sum(values.into_iter().map(Self::maximum_axes).collect())
+            }
+            Formula::Product(values) => {
+                Formula::Product(values.into_iter().map(Self::maximum_axes).collect())
+            }
+            Formula::Div(a, b) => Formula::Div(
+                Box::new(Self::maximum_axes(*a)),
+                Box::new(Self::maximum_axes(*b)),
+            ),
+            Formula::ByMap { default, maps } => Formula::ByMap {
+                default: Box::new(Self::maximum_axes(*default)),
+                maps: maps
+                    .into_iter()
+                    .map(|(mode, formula)| (mode, Self::maximum_axes(formula)))
+                    .collect(),
+            },
+            other => other,
+        }
+    }
+
+    pub fn maximum_amplification(&self, source: Source) -> MayFail<f64> {
+        let document = self.native_document(source, AttackType::Melee, false)?;
+        let values = document
+            .values
+            .iter()
+            .filter(|value| value.context.ends_with("increased by "))
+            .collect::<Vec<_>>();
+
+        let [value] = values.as_slice() else {
+            return Err("Expected one increased damage progression".into());
+        };
+
+        let [progression] = value.progressions.as_slice() else {
+            return Err("Expected one amplification progression".into());
+        };
+
+        progression
+            .values
+            .last()
+            .map(|value| value / 100.0)
+            .ok_or_else(|| "Empty amplification progression".into())
+    }
+
+    /// Percent amplification is a distinct selection from the proc's flat base.
+    pub fn maximum_amplification_formula(&self, source: Source) -> MayFail<Formula> {
+        let mut result = Formula::Const(self.maximum_amplification(source)?);
+        let document = self.native_document(source, AttackType::Melee, false)?;
+        let subject = format!("{} bonus damage", document.name);
+        let lookup = Lookup::new("return {}", "return {}")?;
+
+        for changes in super::map_changes() {
+            for entry in changes
+                .entries
+                .values()
+                .filter(|entry| self.is_map_target(&entry.target))
+            {
+                for change in entry.changes.iter().flat_map(|change| {
+                    std::iter::once(change.clone()).chain(
+                        change
+                            .notes
+                            .iter()
+                            .map(|text| MapChange::parse(text, false)),
+                    )
+                }) {
+                    if change.subject() != Some(subject.as_str()) {
+                        continue;
+                    }
+
+                    // This annotation selects the bounded percentage progression
+                    // by target missing-health percentage, not damage points.
+                    if !change.text.contains("key=%")
+                        || !change.text.contains("missing")
+                        || !change.text.contains("health")
+                    {
+                        return Err(format!(
+                            "Expected percent missing-health amplification: {}",
+                            change.text
+                        )
+                        .into());
+                    }
+
+                    let Some(MapValue::Base(Formula::NumericTable { keys, values, .. })) =
+                        MapValue::new(&change, Key::P, &lookup)
+                    else {
+                        return Err(format!(
+                            "Expected bounded amplification progression: {}",
+                            change.text
+                        )
+                        .into());
+                    };
+
+                    if keys.last() != Some(&100.0) || values.is_empty() {
+                        return Err("Expected amplification cap at 100% missing health".into());
+                    }
+
+                    let maximum = values.last().unwrap() / 100.0;
+
+                    result = result.with_map(
+                        super::single_mode(&changes.maps, &subject)?,
+                        Formula::Const(maximum),
+                    );
+                }
+            }
+        }
+
+        Ok(result)
+    }
+
+    pub fn critical_instance_ratio(&self, source: Source) -> MayFail<f64> {
+        let document = self.native_document(source, AttackType::Melee, true)?;
+        let [ratio] = document.source.capture(regex!(r"plus ([\d.]+)% of the"))?;
+
+        Ok(ratio / 100.0)
+    }
+
+    pub fn critical_bonus(&self, source: Source) -> MayFail<Formula> {
+        let document = self.native_document(source, AttackType::Melee, false)?;
+        let value = document
+            .values
+            .iter()
+            .filter(|value| value.context.ends_with("critical strike for"))
+            .collect::<Vec<_>>();
+
+        match value.as_slice() {
+            [value] => Ok(value.formula()?.clone()),
+            _ => Err("Expected one critical strike bonus".into()),
+        }
+    }
+
+    pub fn alternate_formula(&self, source: Source) -> MayFail<Formula> {
+        self.native_formula(source, AttackType::Melee, true, SourceForm::Base)
+    }
+
+    pub fn total_formula(&self, source: Source) -> MayFail<Formula> {
+        self.native_formula(source, AttackType::Melee, false, SourceForm::Total)
+            .map(Self::maximum_axes)
+    }
+
+    pub fn map_stat_ratios(&self, source: Source) -> MayFail<Vec<(MapMode, f64)>> {
+        let document = self.native_document(source, AttackType::Melee, false)?;
+        let formula = document
+            .select(SourceRole::Stat, SourceForm::Base)?
+            .formula()?
+            .clone();
+
+        let formula = self.mapped_formula(&document.name, AttackType::Melee, formula)?;
+
+        formula
+            .modes()
+            .into_iter()
+            .map(|mode| Ok((mode, Self::ratio_value(&formula.on(mode))?)))
+            .collect()
+    }
+
+    fn ratio_value(formula: &Formula) -> MayFail<f64> {
+        let vars = [CtxVar::BonusMana, CtxVar::MaxMana, CtxVar::BonusHealth]
+            .into_iter()
+            .map(|var| (var, 1.0));
+
+        formula
+            .eval(&Sample::new(vars))
+            .ok_or_else(|| "Expected stat ratio".into())
+    }
+
+    pub fn stat_ratio(&self, source: Source) -> MayFail<f64> {
+        let document = self.native_document(source, AttackType::Melee, false)?;
+        let formula = document
+            .select(SourceRole::Stat, SourceForm::Base)?
+            .formula()?;
+
+        Self::ratio_value(formula)
     }
 
     pub fn assign(
@@ -564,42 +802,6 @@ impl Item {
 
         self[attack_type][var] = damage.on(MapMode::Default).rust();
         self
-    }
-
-    pub fn scaling(
-        &self,
-        source: Source,
-        indexes: impl IntoIterator<Item = usize>,
-    ) -> MayFail<Formula> {
-        self.scaling_for(source, AttackType::Melee, indexes)
-    }
-
-    pub fn scaling_for(
-        &self,
-        source: Source,
-        attack_type: AttackType,
-        indexes: impl IntoIterator<Item = usize>,
-    ) -> MayFail<Formula> {
-        let filter = indexes.into_iter().collect::<Vec<_>>();
-        let selected = |effect: &Effect| -> MayFail<Formula> {
-            Ok(Formula::Sum(
-                effect
-                    .scalings
-                    .iter()
-                    .enumerate()
-                    .filter(|(i, _)| filter.contains(i))
-                    .map(|(_, scaling)| scaling.to_formula(CtxVar::Level))
-                    .collect::<MayFail<Vec<_>>>()?,
-            ))
-        };
-
-        let mut formula = selected(self.effect_for(source, attack_type)?)?;
-
-        for (mode, effect) in self.map_effects_for(source, attack_type)? {
-            formula = formula.with_map(mode, selected(&effect)?);
-        }
-
-        Ok(formula)
     }
 
     pub fn damage(
@@ -685,19 +887,21 @@ impl Index<Source> for Item {
             Source::Passive3 => &self.data.effects.pass3,
             Source::Passive4 => &self.data.effects.pass4,
             Source::Consume => &self.data.effects.consume,
-        }
-    }
-}
-
-impl IndexMut<Source> for Item {
-    fn index_mut(&mut self, index: Source) -> &mut Self::Output {
-        match index {
-            Source::Active => &mut self.data.effects.act,
-            Source::Passive => &mut self.data.effects.pass,
-            Source::Passive2 => &mut self.data.effects.pass2,
-            Source::Passive3 => &mut self.data.effects.pass3,
-            Source::Passive4 => &mut self.data.effects.pass4,
-            Source::Consume => &mut self.data.effects.consume,
+            Source::Named(name) | Source::Event(name, _) => [
+                &self.data.effects.pass,
+                &self.data.effects.pass2,
+                &self.data.effects.pass3,
+                &self.data.effects.pass4,
+                &self.data.effects.act,
+                &self.data.effects.consume,
+            ]
+            .into_iter()
+            .find(|effect| {
+                effect
+                    .as_ref()
+                    .is_some_and(|effect| effect.name.as_deref() == Some(name))
+            })
+            .unwrap_or(&None),
         }
     }
 }

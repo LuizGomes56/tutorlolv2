@@ -231,6 +231,9 @@ impl<
             };
 
         let self_state = SelfState {
+            bonus_attack_speed_ratio: champion_id
+                .stats_on(GameMap::Unknown)
+                .bonus_attack_speed_ratio(stats.attack_speed),
             stacks: stacks as _,
             ability_levels,
             current_stats: stats,
@@ -302,16 +305,18 @@ impl<
 
         let siml = {
             let mut result = unsafe { core::mem::zeroed::<[_; ItemId::L_SIML]>() };
-            let siml_stats = stats.get_simulated_stats(dragons, GameMap::Unknown);
             let mut i = 0;
 
             while i < ItemId::L_SIML {
-                let siml_stat = siml_stats[i];
-                let siml_ctx = SelfState {
-                    current_stats: siml_stat,
-                    ..self_state
-                }
-                .ctx(&enemy, GameMap::Unknown);
+                let siml_ctx = self_state
+                    .simulated_purchase(
+                        ItemId::SIML[i],
+                        &items,
+                        champion_id,
+                        dragons,
+                        GameMap::Unknown,
+                    )
+                    .ctx(&enemy, GameMap::Unknown);
 
                 let mut onhit = RangeDamage::default();
 

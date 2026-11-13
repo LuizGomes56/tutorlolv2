@@ -1,4 +1,4 @@
-use crate::{HTTP_CLIENT, MayFail, parser::parse_lua};
+use crate::{HTTP_CLIENT, MayFail};
 use mlua::{Lua, LuaSerdeExt, Value};
 use serde::{Deserialize, Serialize};
 use serde_json::{Value as JsonValue, json};
@@ -78,15 +78,13 @@ pub struct ItemRaw {
 pub async fn download() -> MayFail<String> {
     println!("[fn] items::full::download");
 
-    let text = HTTP_CLIENT
-        .fetch(
-            cache().join("data").with_extension("html"),
-            "Module:ItemData/data",
-        )
-        .await?;
-    let pre = parse_lua(&text)?;
+    let path = cache().join("data.lua");
 
-    crate::write(cache().join("lua").with_extension("txt"), &pre)?;
+    HTTP_CLIENT
+        .fetch_raw(&path, "Module:ItemData/data?action=raw")
+        .await?;
+
+    let pre = crate::read_to_string(&path)?;
 
     Ok(pre)
 }
@@ -94,11 +92,22 @@ pub async fn download() -> MayFail<String> {
 pub fn parse() -> MayFail<BTreeMap<String, ItemRaw>> {
     println!("[fn] items::full::parse");
 
-    let src = crate::read_to_string(cache().join("lua").with_extension("txt"))?;
+    let src = crate::read_to_string(cache().join("data.lua"))?;
+    let map = parse_module(&src)?;
+
+    crate::write(
+        cache().join("data.json"),
+        serde_json::to_string_pretty(&map)?,
+    )?;
+
+    Ok(map)
+}
+
+pub fn parse_module(src: &str) -> MayFail<BTreeMap<String, ItemRaw>> {
     let lua = Lua::new();
 
     let value = lua
-        .load(&src)
+        .load(src)
         .eval::<Value>()
         .map_err(|e| format!("[error] Failed to load and eval item lua: {e:?}"))?;
 
@@ -146,11 +155,6 @@ pub fn parse() -> MayFail<BTreeMap<String, ItemRaw>> {
     }
 
     let map = serde_json::from_value(raw_map)?;
-
-    crate::write(
-        cache().join("data").with_extension("json"),
-        serde_json::to_string_pretty(&map)?,
-    )?;
 
     Ok(map)
 }

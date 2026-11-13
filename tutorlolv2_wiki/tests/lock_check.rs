@@ -314,3 +314,39 @@ fn structured_formula_changes_warn_without_rewriting_labels() {
     assert!(stable.warnings.is_empty());
     std::fs::remove_dir_all(dir).unwrap();
 }
+
+#[test]
+fn native_source_changes_are_reported_without_scaling_indices() {
+    let dir = temp_dir("native-source");
+    let old = WikiLock {
+        rune_sources: BTreeMap::from([("GraspOfTheUndying".into(), "old".into())]),
+        item_sources: BTreeMap::from([(
+            "Heartsteel".into(),
+            BTreeMap::from([("Colossal Consumption".into(), "old".into())]),
+        )]),
+        ..Default::default()
+    };
+    let new = WikiLock {
+        rune_sources: BTreeMap::from([("GraspOfTheUndying".into(), "new".into())]),
+        item_sources: BTreeMap::from([(
+            "Heartsteel".into(),
+            BTreeMap::from([("Colossal Consumption".into(), "new".into())]),
+        )]),
+        ..Default::default()
+    };
+    let report = new.check(Some(&old), &dir).unwrap();
+    assert!(
+        report
+            .warnings
+            .iter()
+            .any(|line| line.contains("GraspOfTheUndying") && line.contains("source"))
+    );
+    assert!(
+        report
+            .warnings
+            .iter()
+            .any(|line| line.contains("Heartsteel") && line.contains("Colossal Consumption"))
+    );
+    assert!(report.errors.is_empty());
+    std::fs::remove_dir_all(dir).unwrap();
+}

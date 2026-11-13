@@ -13,6 +13,7 @@ fn close(actual: f32, expected: f32) {
 #[test]
 fn purchase_and_context_helpers_are_const_callable() {
     const STATE: SelfState = SelfState {
+        bonus_attack_speed_ratio: tutorlolv2_types::AttackSpeedRatio::new(0.0),
         stacks: 0.0,
         ability_levels: AbilityLevels::default(),
         current_stats: PlayerStats {
@@ -533,6 +534,7 @@ fn simulated_purchase_applies_stat_conversion_and_attack_speed_units() {
     // the same purchase helper directly rather than changing that item selection.
     let player = &out.current_player;
     let state = SelfState {
+        bonus_attack_speed_ratio: tutorlolv2_types::AttackSpeedRatio::new(0.0),
         current_stats: player.current_stats,
         base_stats: player.base_stats,
         adaptive_type: player.adaptive_type,
@@ -692,11 +694,11 @@ fn mega_gnar_uses_melee_rune_stat_scaling() {
     let mini = calculator(input);
     input.active_player.data.is_mega_gnar = true;
     let mega = calculator(input);
-    // At level 18: 6 * 16% melee versus 6 * 8% ranged, .625 AS ratio.
+    // Source grants 6% melee versus 4.8% ranged per stack, .625 AS ratio.
     close(
         mega.current_player.current_stats.attack_speed
             - mini.current_player.current_stats.attack_speed,
-        0.3,
+        0.045,
     );
 }
 
@@ -768,6 +770,7 @@ fn const_evaluation_preserves_modifiers_with_explicit_stats() {
 #[test]
 fn owned_warmog_amplifies_health_converted_from_new_mana() {
     let state = SelfState {
+        bonus_attack_speed_ratio: tutorlolv2_types::AttackSpeedRatio::new(0.0),
         stacks: 0.0,
         ability_levels: AbilityLevels::default(),
         current_stats: PlayerStats {
@@ -1213,6 +1216,7 @@ fn item_critical_damage_adds_to_the_champion_base_unscaled() {
 #[test]
 fn simulated_critical_damage_adds_unscaled() {
     let state = SelfState {
+        bonus_attack_speed_ratio: tutorlolv2_types::AttackSpeedRatio::new(0.0),
         stacks: 0.0,
         ability_levels: AbilityLevels::default(),
         current_stats: PlayerStats {
@@ -1232,4 +1236,102 @@ fn simulated_critical_damage_adds_unscaled() {
     );
 
     close(purchase.current_stats.crit_damage, 130.0);
+}
+
+#[test]
+fn bonus_attack_speed_uses_champion_ratio_and_includes_level_growth() {
+    for champion in [ChampionId::Caitlyn, ChampionId::Gnar] {
+        for level in [1, 18] {
+            let mut input = game(&[], &[], &[]);
+            input.active_player.data.champion_id = champion;
+            input.active_player.data.level = NonZeroU8::new(level).unwrap();
+            let out = calculator(input);
+            let ctx = out.monster_rows().next().unwrap().ctx;
+            let wiki = champion.stats_on(GameMap::Unknown);
+            let growth = wiki.attack_speed.per_level * if level == 1 { 0.0 } else { 17.0 };
+            close(ctx.bonus_attack_speed_ratio.get(), growth / 100.0);
+            close(
+                ctx.attack_speed,
+                wiki.attack_speed.base + wiki.attack_speed_ratio * growth / 100.0,
+            );
+        }
+    }
+}
+
+#[test]
+fn live_and_simulated_bonus_attack_speed_use_flat_base_and_ratio() {
+    let mut input = live_game();
+    input.all_players[0].champion_name = "Caitlyn";
+    let wiki = ChampionId::Caitlyn.stats_on(GameMap::SummonersRift);
+    assert!((wiki.attack_speed.base - wiki.attack_speed_ratio).abs() > 0.01);
+    let observed = wiki.attack_speed.base + 1.25 * wiki.attack_speed_ratio;
+    input.active_player.champion_stats.attack_speed = observed;
+    let out = realtime(&input).unwrap();
+    let original = out.enemy_damages(0).ctx;
+    close(original.bonus_attack_speed_ratio.get(), 1.25);
+    assert!((original.base_attack_speed - wiki.attack_speed.base).abs() > 0.01);
+    let purchased = out.siml_damages(0, sim_index(ItemId::NashorsTooth)).ctx;
+    close(purchased.bonus_attack_speed_ratio.get(), 1.75);
+    close(
+        purchased.attack_speed,
+        observed + 0.5 * wiki.attack_speed_ratio,
+    );
+}
+
+#[test]
+fn invalid_attack_speed_ratio_inputs_have_no_bonus() {
+    let original = *ChampionId::Caitlyn.stats_on(GameMap::Unknown);
+    for ratio in [0.0, -1.0, f32::NAN, f32::INFINITY] {
+        let wiki = tutorlolv2::libgen::WikiStats {
+            attack_speed_ratio: ratio,
+            ..original
+        };
+        close(wiki.bonus_attack_speed_ratio(1.0).get(), 0.0);
+    }
+    for observed in [f32::NAN, f32::INFINITY, f32::NEG_INFINITY] {
+        close(original.bonus_attack_speed_ratio(observed).get(), 0.0);
+    }
+    close(
+        original
+            .bonus_attack_speed_ratio(
+                original.attack_speed.base - 0.25 * original.attack_speed_ratio,
+            )
+            .get(),
+        -0.25,
+    );
+}
+
+#[test]
+fn inferred_lethal_tempo_stacks_feed_the_damage_amplification_on_each_map() {
+    let exceptions = [ValueException::pack_rune_id(RuneId::LethalTempo, 6)];
+    for (champion, mega, attack, normal, arena, damage) in [
+        (ChampionId::Gnar, true, AttackType::Melee, 0.36, 1.08, 30.0),
+        (
+            ChampionId::Caitlyn,
+            false,
+            AttackType::Ranged,
+            0.288,
+            0.72,
+            20.01,
+        ),
+    ] {
+        for (map, extra) in [(GameMap::SummonersRift, normal), (GameMap::Arena, arena)] {
+            let mut input = game(&[], &[RuneId::LethalTempo], &[]);
+            input.active_player.data.champion_id = champion;
+            input.active_player.data.is_mega_gnar = mega;
+            input.game_map = map;
+            let baseline = calculator(input).monster_rows().next().unwrap().ctx;
+            input.active_player.rune_exceptions = &exceptions;
+            let out = calculator(input);
+            let ctx = out.monster_rows().next().unwrap().ctx;
+            close(
+                ctx.bonus_attack_speed_ratio.get() - baseline.bonus_attack_speed_ratio.get(),
+                extra,
+            );
+            close(
+                RuneId::LethalTempo.eval(&ctx, attack)[0],
+                damage * (1.0 + ctx.bonus_attack_speed_ratio.get()),
+            );
+        }
+    }
 }

@@ -92,9 +92,16 @@ impl MapChange {
             _ => return None,
         };
 
-        let subject = self.text.find(" changed").map(|end| self.text[..end].trim());
+        let subject = self
+            .text
+            .find(" changed")
+            .map(|end| self.text[..end].trim());
 
-        Some(subject.filter(|subject| !subject.is_empty()).unwrap_or(part))
+        Some(
+            subject
+                .filter(|subject| !subject.is_empty())
+                .unwrap_or(part),
+        )
     }
 
     /// Parses the bulleted list of one key. `is_item` reads changes of stats, as

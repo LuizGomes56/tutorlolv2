@@ -68,6 +68,13 @@ pub enum Formula {
         keys: Vec<u8>,
         values: Vec<f64>,
     },
+    /// Bounded numeric axis. Keys retain their original units and precision.
+    NumericTable {
+        axis: Box<Formula>,
+        keys: Vec<f64>,
+        values: Vec<f64>,
+        interpolated: bool,
+    },
     Sum(Vec<Formula>),
     Product(Vec<Formula>),
     Div(Box<Formula>, Box<Formula>),
@@ -139,7 +146,9 @@ impl Formula {
     pub fn default_values(&self) -> Option<Vec<f64>> {
         match self {
             Formula::Const(value) => Some(vec![*value]),
-            Formula::ByRank { values, .. } | Formula::Table { values, .. } => Some(values.clone()),
+            Formula::ByRank { values, .. }
+            | Formula::Table { values, .. }
+            | Formula::NumericTable { values, .. } => Some(values.clone()),
             Formula::ByMap { default, .. } => default.default_values(),
             _ => None,
         }
@@ -181,6 +190,17 @@ impl Formula {
                 var,
                 keys,
                 values: scale(values),
+            },
+            Formula::NumericTable {
+                axis,
+                keys,
+                values,
+                interpolated,
+            } => Formula::NumericTable {
+                axis,
+                keys,
+                values: scale(values),
+                interpolated,
             },
             Formula::ByMap { default, maps } => Formula::ByMap {
                 default: Box::new(default.times(factor)),
@@ -244,7 +264,10 @@ impl Formula {
             .position(|term| matches!(base(term), Formula::ByRank { .. }))
             .or_else(|| {
                 terms.iter().position(|term| {
-                    matches!(base(term), Formula::Const(_) | Formula::Table { .. })
+                    matches!(
+                        base(term),
+                        Formula::Const(_) | Formula::Table { .. } | Formula::NumericTable { .. }
+                    )
                 })
             })?;
 
@@ -272,6 +295,22 @@ impl Formula {
                     .rposition(|key| f64::from(*key) <= value)
                     .unwrap_or(0);
                 *values.get(index)?
+            }
+            Formula::NumericTable {
+                axis,
+                keys,
+                values,
+                interpolated,
+            } => {
+                let x = axis.eval(sample)?;
+                let i = keys.iter().rposition(|key| *key <= x).unwrap_or(0);
+                let a = *values.get(i)?;
+
+                if *interpolated && x > keys[i] && i + 1 < keys.len() {
+                    a + (values[i + 1] - a) * (x - keys[i]) / (keys[i + 1] - keys[i])
+                } else {
+                    a
+                }
             }
             Formula::Sum(terms) => terms
                 .iter()
@@ -341,6 +380,17 @@ impl Formula {
                 .find(|(arm, _)| *arm == mode)
                 .map_or(default.as_ref(), |(_, value)| value)
                 .on(mode),
+            Formula::NumericTable {
+                axis,
+                keys,
+                values,
+                interpolated,
+            } => Formula::NumericTable {
+                axis: on(axis),
+                keys: keys.clone(),
+                values: values.clone(),
+                interpolated: *interpolated,
+            },
             Formula::Sum(terms) => Formula::Sum(all(terms)),
             Formula::Product(factors) => Formula::Product(all(factors)),
             Formula::Div(lhs, rhs) => Formula::Div(on(lhs), on(rhs)),
@@ -360,6 +410,41 @@ impl Formula {
 
         match self {
             Formula::Var(v) if *v == var => with.clone(),
+            Formula::Table {
+                var: axis,
+                keys,
+                values,
+            } if *axis == var => Formula::NumericTable {
+                axis: Box::new(with.clone()),
+                keys: keys.iter().map(|key| f64::from(*key)).collect(),
+                values: values.clone(),
+                interpolated: false,
+            },
+            Formula::ByRank { rank, values } if *rank == var => {
+                if let Formula::Const(value) = with {
+                    self.eval(&Sample::new([(var, *value)]))
+                        .map(Formula::Const)
+                        .unwrap_or_else(|| self.clone())
+                } else {
+                    Formula::NumericTable {
+                        axis: Box::new(with.clone()),
+                        keys: (1..=values.len()).map(|i| i as f64).collect(),
+                        values: values.clone(),
+                        interpolated: Self::linear_step(*rank, values).is_some(),
+                    }
+                }
+            }
+            Formula::NumericTable {
+                axis,
+                keys,
+                values,
+                interpolated,
+            } => Formula::NumericTable {
+                axis: go(axis),
+                keys: keys.clone(),
+                values: values.clone(),
+                interpolated: *interpolated,
+            },
             Formula::Sum(terms) => Formula::Sum(all(terms)),
             Formula::Product(factors) => Formula::Product(all(factors)),
             Formula::Div(lhs, rhs) => Formula::Div(go(lhs), go(rhs)),
@@ -382,9 +467,9 @@ impl Formula {
     pub fn is_zero(&self) -> bool {
         match self {
             Formula::Const(value) => *value == 0.0,
-            Formula::ByRank { values, .. } | Formula::Table { values, .. } => {
-                values.iter().all(|value| *value == 0.0)
-            }
+            Formula::ByRank { values, .. }
+            | Formula::Table { values, .. }
+            | Formula::NumericTable { values, .. } => values.iter().all(|value| *value == 0.0),
             Formula::Sum(terms) => terms.iter().all(Formula::is_zero),
             Formula::Product(factors) => factors.iter().any(Formula::is_zero),
             Formula::Div(lhs, _) | Formula::Neg(lhs) | Formula::Pow(lhs, _) => lhs.is_zero(),
@@ -420,7 +505,9 @@ impl Formula {
                 lhs.collect_modes(modes);
                 rhs.collect_modes(modes);
             }
-            Formula::Neg(value) | Formula::Pow(value, _) => value.collect_modes(modes),
+            Formula::Neg(value)
+            | Formula::Pow(value, _)
+            | Formula::NumericTable { axis: value, .. } => value.collect_modes(modes),
             _ => {}
         }
     }
@@ -458,7 +545,11 @@ impl Formula {
         match self {
             Formula::Const(value) => write!(f, "{}", Number(*value)),
             Formula::Var(var) => write!(f, "{var}"),
-            Formula::ByRank { values, .. } | Formula::Table { values, .. } if values.len() <= 1 => {
+            Formula::ByRank { values, .. }
+            | Formula::Table { values, .. }
+            | Formula::NumericTable { values, .. }
+                if values.len() <= 1 =>
+            {
                 write!(f, "{}", Number(values.first().copied().unwrap_or(0.0)))
             }
             Formula::ByRank { rank, values } => {
@@ -501,6 +592,41 @@ impl Formula {
                     .collect::<Vec<_>>();
 
                 write!(f, "match {var} {{ {} }}", arms.join(", "))
+            }
+            Formula::NumericTable {
+                axis,
+                keys,
+                values,
+                interpolated,
+            } => {
+                f.write_str("{ let axis: f32 = ")?;
+                axis.write(f, syntax)?;
+                f.write_str("; ")?;
+
+                for i in 0..values.len().saturating_sub(1) {
+                    write!(f, "if axis < {} {{ ", Number(keys[i + 1]))?;
+
+                    if *interpolated {
+                        write!(
+                            f,
+                            "{} + {} * (axis - {}).max(0.0) / {}",
+                            Number(values[i]),
+                            Number(values[i + 1] - values[i]),
+                            Number(keys[i]),
+                            Number(keys[i + 1] - keys[i])
+                        )?;
+                    } else {
+                        write!(f, "{}", Number(values[i]))?;
+                    }
+
+                    f.write_str(" } else ")?;
+                }
+
+                write!(
+                    f,
+                    "{{ {} }} }}",
+                    Number(values.last().copied().unwrap_or(0.0))
+                )
             }
             Formula::Sum(terms) => Self::write_joined(f, terms, " + ", syntax),
             Formula::Product(factors) => Self::write_joined(f, factors, " * ", syntax),

@@ -1,10 +1,6 @@
-//! Tracks the wiki data that generators depend on. Champion generators select
-//! effects by name, while rune and item generators select effects and scalings
-//! by index. Effects are stored in maps sorted by name, so whenever the wiki
-//! adds, removes or renames an effect, the index of every effect after it
-//! changes. The lock file lists every effect with its index and a hash of its
-//! formula, and the scalings of every item effect, so these changes show up in
-//! its diff and in the report of [`check`] printed when it is regenerated
+//! Tracks structured champion selections and named raw item/rune sources.
+//! Legacy indexed hashes remain readable for archived lock comparisons; native
+//! item/rune generators no longer depend on captured-value positions.
 
 pub mod check;
 
@@ -44,6 +40,12 @@ pub struct WikiLock {
     /// Effects of every item by slot, such as `pass`, `pass2.ranged` or `act`
     #[serde(default)]
     pub items: BTreeMap<String, BTreeMap<String, LockedItemEffect>>,
+    /// Raw descriptions by named item effect. Independent of captured-value order.
+    #[serde(default)]
+    pub item_sources: BTreeMap<String, BTreeMap<String, String>>,
+    /// Raw rune templates, including conditions and values not used as damage.
+    #[serde(default)]
+    pub rune_sources: BTreeMap<String, String>,
     /// Hash of the text of every champion exception by its name, see
     /// [`crate::champions::exceptions`]
     #[serde(default)]
@@ -184,8 +186,44 @@ pub(crate) fn entry_name(entry: &str) -> (&str, &str) {
 }
 
 pub fn build() -> MayFail<WikiLock> {
-    let champions = BTreeMap::<String, WikiChampion>::from_file("cache/wiki/champions/full.json")?;
+    let item_sources =
+        crate::items::parse_module(&crate::read_to_string("cache/wiki/items/data.lua")?)?
+            .into_values()
+            .map(|item| {
+                let id = item.clone().into_native().item_id;
+                let effects = [
+                    ("pass", item.effects.pass),
+                    ("pass2", item.effects.pass2),
+                    ("pass3", item.effects.pass3),
+                    ("pass4", item.effects.pass4),
+                    ("act", item.effects.act),
+                    ("consume", item.effects.consume),
+                ]
+                .into_iter()
+                .filter_map(|(slot, effect)| effect.map(|effect| (slot, effect)))
+                .filter_map(|(slot, effect)| {
+                    effect
+                        .description
+                        .map(|source| (effect.name.unwrap_or_else(|| slot.into()), hash(&source)))
+                })
+                .collect();
 
+                (id, effects)
+            })
+            .collect();
+
+    let mut rune_sources = BTreeMap::new();
+
+    for entry in crate::read_dir("cache/wiki/runes")? {
+        let path = entry.path().join("data.lua");
+
+        if path.is_file() {
+            let id = entry.file_name().to_string_lossy().into_owned();
+            rune_sources.insert(id, hash(&crate::read_to_string(path)?));
+        }
+    }
+
+    let champions = BTreeMap::<String, WikiChampion>::from_file("cache/wiki/champions/full.json")?;
     let map_stats = champions
         .iter()
         .filter(|(_, champion)| !champion.map_stats.is_empty())
@@ -287,6 +325,8 @@ pub fn build() -> MayFail<WikiLock> {
         champions,
         runes,
         items,
+        item_sources,
+        rune_sources,
         exceptions,
         map_changes,
         map_stats,

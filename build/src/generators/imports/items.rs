@@ -4,7 +4,7 @@ pub use crate::{
     generators::{
         Generator, GeneratorExt,
         constants::WithConstants,
-        parser::items::{Item, Source::*},
+        parser::items::{Item, ItemEvent::*, Source::*},
         utils::RegExtractor,
     },
 };

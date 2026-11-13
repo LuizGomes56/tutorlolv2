@@ -12,6 +12,7 @@ use {
 
 pub mod ability;
 pub mod build;
+pub mod catalog;
 pub mod compare;
 pub mod expr;
 pub mod lookup;
@@ -20,6 +21,7 @@ pub mod model;
 pub mod passive;
 pub mod progression;
 pub mod scaling;
+pub mod variants;
 
 pub use {
     ability::{RawAbility, SkillTab},
@@ -32,6 +34,7 @@ pub use {
     passive::PassiveProgression,
     progression::{Progression, Value},
     scaling::Scaling,
+    variants::SourceVariant,
 };
 
 /// Piece of wikitext, either plain text or a template call
@@ -456,3 +459,6 @@ impl Variables {
         Nodes(merged)
     }
 }
+
+pub mod source;
+pub use source::{SourceDocument, SourceForm, SourceProgression, SourceRole, SourceValue};

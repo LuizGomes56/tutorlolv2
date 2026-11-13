@@ -57,8 +57,29 @@ impl MapValue {
                 })
             }
             ChangeKind::Base { .. } => {
-                let progression = Progression::new(first("ap")?, key).ok()?;
-                Some(Self::Base(Self::by_rank(key, progression.numbers()?)?))
+                if let Some(template) = first("ap") {
+                    let progression = Progression::new(template, key).ok()?;
+                    return Some(Self::Base(Self::by_rank(key, progression.numbers()?)?));
+                }
+
+                let raw = change
+                    .text
+                    .split_once("changed to ")?
+                    .1
+                    .trim()
+                    .trim_end_matches('.');
+
+                let context = super::PageContext {
+                    lookup,
+                    four_rank_ultimate: false,
+                    ability_keys: BTreeMap::new(),
+                    crit_damage: 200.0,
+                };
+
+                let value = Variables::default().expand(&lookup.expand(&Nodes::parse(raw)));
+                let model = value.effect_model(&context, key, "Map base");
+
+                model.issues.is_empty().then_some(Self::Base(model.formula))
             }
             _ => None,
         }

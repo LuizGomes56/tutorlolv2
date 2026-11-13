@@ -3,11 +3,8 @@ use {
         DynError, MayFail,
         generators::{
             constants::{Constants, WithConstants},
-            impls::runes::rune_gen_fn,
-            parser::{
-                DamageRange, GeneratorFnSig, Parser, WithMapChanges, infer_damage_type,
-                likely_damages, model::RiotCdnRune,
-            },
+            parser::{DamageRange, GeneratorFnSig, Parser, WithMapChanges, model::RiotCdnRune},
+            runes::rune_gen_fn,
         },
     },
     heck::ToPascalCase,
@@ -17,13 +14,15 @@ use {
         fmt::Write,
         ops::{Index, IndexMut},
     },
-    tutorlolv2_types::{AttackType, CtxVar, DamageIndex, DamageType, MapMode, Tag},
+    tutorlolv2_types::{AttackType, DamageIndex, DamageType, Key, MapMode, Tag},
     tutorlolv2_wiki::{
         JsonRead,
-        map_changes::{ChangeTarget, overrides::EffectOverrides},
-        parser::Effect,
+        map_changes::ChangeTarget,
         runes::{RuneKeystone, RuneSlot, WikiRune},
-        wikitext::{Formula, IntoFormula},
+        wikitext::{
+            Formula, IntoFormula, Lookup, Node, Nodes, PageContext, Scaling, SourceDocument,
+            SourceForm, SourceRole, SourceVariant,
+        },
     },
 };
 
@@ -57,18 +56,11 @@ impl Parser<WikiRune, Rune> for RuneParser {
     fn create_methods(&self, result: &mut String, id: &str) -> MayFail<bool> {
         let data = &self.data[id];
 
-        for description in &data.descriptions {
-            match likely_damages(description) {
-                true => infer_damage_type(result, description),
-                false => return Ok(false),
-            }
-        }
-
-        for (i, (key, effect)) in data.effects.iter().enumerate() {
-            if effect.formula.is_some() {
-                write!(result, ".min({i})? /* {key} */")?;
-            }
-        }
+        write!(
+            result,
+            "/* native source selection required for {} */",
+            data.rune_id
+        )?;
 
         Ok(true)
     }
@@ -82,6 +74,12 @@ impl Parser<WikiRune, Rune> for RuneParser {
         let cdn = Vec::<RiotCdnRune>::from_file(root.join("cache/riot/runes.json"))?;
 
         for rune in data.values_mut() {
+            rune.raw_source = std::fs::read_to_string(
+                root.join("cache/wiki/runes")
+                    .join(&rune.rune_id)
+                    .join("data.lua"),
+            )?;
+
             let matches = |name: &str| name.eq_ignore_ascii_case(&rune.name);
 
             if let Some(id) = cdn.iter().find_map(|tree| {
@@ -103,6 +101,7 @@ impl Parser<WikiRune, Rune> for RuneParser {
             data.insert(
                 rune_id.clone(),
                 WikiRune {
+                    raw_source: String::new(),
                     name: format!("{name} Shard"),
                     rune_id,
                     effects: Default::default(),
@@ -160,137 +159,135 @@ impl Rune {
         self
     }
 
-    pub fn formula(&self, index: usize) -> MayFail<Formula> {
-        self.formula_for(index, AttackType::Melee)
-    }
-
-    pub fn formula_for(&self, index: usize, attack_type: AttackType) -> MayFail<Formula> {
-        self.compose_effects(&[index], attack_type, |effect| {
-            effect
-                .to_formula(CtxVar::Level)?
-                .ok_or_else(|| "No formula found for effect".into())
-        })
-    }
-
-    /// Attach mode overrides before custom generators compose or scale the values.
-    fn compose_effects(
-        &self,
-        indexes: &[usize],
-        attack_type: AttackType,
-        read: impl Fn(&Effect) -> MayFail<Formula>,
-    ) -> MayFail<Formula> {
-        let effects = indexes
-            .iter()
-            .map(|&index| {
-                let (name, effect) = self
-                    .data
-                    .effects
-                    .iter()
-                    .nth(index)
-                    .ok_or_else(|| format!("No effect found at index {index}"))?;
-
-                Ok((name.clone(), (name.clone(), effect.clone())))
-            })
-            .collect::<MayFail<BTreeMap<_, _>>>()?;
-
-        let sum = |overrides: &BTreeMap<String, Effect>| {
-            indexes
-                .iter()
-                .map(|&index| {
-                    let (name, effect) = self.data.effects.iter().nth(index).unwrap();
-                    read(overrides.get(name).unwrap_or(effect))
-                })
-                .collect::<MayFail<Vec<_>>>()
-                .map(Formula::Sum)
+    /// Select a unique damage event from a named raw description field.
+    pub fn native(&self, section: &str, attack: AttackType, form: SourceForm) -> MayFail<Formula> {
+        let lookup = Lookup::new("return {}", "return {}")?;
+        let context = PageContext {
+            lookup: &lookup,
+            four_rank_ultimate: false,
+            ability_keys: BTreeMap::new(),
+            crit_damage: 200.0,
         };
 
-        let mut formula = sum(&BTreeMap::new())?;
-        let target = ChangeTarget::Rune {
-            rune_id: self.data.rune_id.clone(),
+        let documents = SourceDocument::rune_descriptions(
+            &self.data.raw_source,
+            &context,
+            SourceVariant {
+                ranged: attack == AttackType::Ranged,
+                alternate: false,
+            },
+        )?;
+
+        let document = documents
+            .get(section)
+            .ok_or_else(|| format!("{} missing {section}", self.data.rune_id))?;
+
+        let value = document
+            .select(SourceRole::Damage, form)
+            .map_err(|error| format!("{} / {section}: {error}", self.data.rune_id))?;
+
+        self.mapped_formula(&self.data.name, attack, value.formula()?.clone())
+    }
+
+    /// Bonus attack speed explicitly granted for each stack, including map notes.
+    pub fn attack_speed_per_stack(&self, attack: AttackType) -> MayFail<Formula> {
+        let lookup = Lookup::new("return {}", "return {}")?;
+        let context = PageContext {
+            lookup: &lookup,
+            four_rank_ultimate: false,
+            ability_keys: BTreeMap::new(),
+            crit_damage: 200.0,
         };
+
+        let variant = SourceVariant {
+            ranged: attack == AttackType::Ranged,
+            alternate: false,
+        };
+
+        let nodes = Nodes::parse(&self.data.raw_source);
+        let template = nodes
+            .templates()
+            .into_iter()
+            .find(|t| t.named("description").is_some())
+            .ok_or("Missing rune data")?;
+
+        let description = template
+            .named("description")
+            .ok_or("Missing description")?
+            .for_variant(variant)?;
+
+        let mut selected = Vec::new();
+
+        for pair in description.0.windows(2) {
+            if let (Node::Template(template), Node::Text(after)) = (&pair[0], &pair[1])
+                && template.name == "as"
+                && after.trim_start().starts_with("for each stack")
+            {
+                let scaling = Scaling::new(template, Key::P).ok_or("Unreadable per-stack stat")?;
+
+                if scaling.stat != "bonus attack speed" || scaling.ratios.len() != 1 {
+                    return Err("Expected one per-stack bonus attack speed".into());
+                }
+
+                selected.push(Formula::Const(scaling.ratios[0]));
+            }
+        }
+
+        let [mut formula] =
+            <[_; 1]>::try_from(selected).map_err(|_| "Expected unique per-stack attack speed")?;
 
         for changes in super::map_changes() {
-            if !changes.entries.values().any(|entry| entry.target == target) {
-                continue;
-            }
+            for entry in changes
+                .entries
+                .values()
+                .filter(|e| self.is_map_target(&e.target))
+            {
+                for change in entry.changes.iter().flat_map(|c| {
+                    std::iter::once(c.text.as_str()).chain(c.notes.iter().map(String::as_str))
+                }) {
+                    if !change
+                        .to_ascii_lowercase()
+                        .contains("bonus attack speed per stack changed to")
+                    {
+                        continue;
+                    }
 
-            let mode = super::single_mode(&changes.maps, &self.data.rune_id)?;
-            let overrides = EffectOverrides::new(
-                &target,
-                changes,
-                &effects,
-                attack_type == AttackType::Ranged,
-            );
+                    let (_, value) = change
+                        .split_once("changed to")
+                        .ok_or("Missing per-stack map replacement")?;
 
-            if !overrides.effects.is_empty() {
-                formula = formula.with_map(mode, sum(&overrides.effects)?);
+                    let document = SourceDocument::parse(
+                        "bonus attack speed per stack",
+                        &format!("Gain {value}"),
+                        &context,
+                        variant,
+                    )?;
+
+                    let value = document.select(SourceRole::Stat, SourceForm::Base)?;
+
+                    formula = formula.with_map(
+                        super::single_mode(&changes.maps, "bonus attack speed per stack")?,
+                        value.formula()?.clone(),
+                    );
+                }
             }
         }
 
         Ok(formula)
     }
 
-    pub fn effect(&self, index: usize) -> MayFail<&Effect> {
-        self.data
-            .effects
-            .values()
-            .nth(index)
-            .ok_or_else(|| format!("No effect found at index {index}").into())
-    }
+    pub fn description(&self, section: &str) -> MayFail<String> {
+        let nodes = Nodes::parse(&self.data.raw_source);
+        let template = nodes
+            .templates()
+            .into_iter()
+            .find(|t| t.named("description").is_some())
+            .ok_or("Missing raw Rune data template")?;
 
-    pub fn use_formula(&self, index: usize) -> MayFail<Formula> {
-        self.use_formula_for(index, AttackType::Melee)
-    }
-
-    pub fn use_formula_for(&self, index: usize, attack_type: AttackType) -> MayFail<Formula> {
-        self.compose_effects(&[index], attack_type, |effect| {
-            effect.use_formula_tree(CtxVar::Level)
-        })
-    }
-
-    pub fn description(&self, index: usize) -> MayFail<&String> {
-        Ok(self
-            .data
-            .descriptions
-            .get(index)
-            .ok_or_else(|| format!("No description found at index {index}"))?)
-    }
-
-    pub fn scaling(&self, n: usize, indexes: impl Iterator<Item = usize>) -> MayFail<Formula> {
-        self.scaling_for(n, indexes, AttackType::Melee)
-    }
-
-    pub fn scaling_for(
-        &self,
-        n: usize,
-        indexes: impl Iterator<Item = usize>,
-        attack_type: AttackType,
-    ) -> MayFail<Formula> {
-        let indexes = indexes.collect::<Vec<_>>();
-
-        self.compose_effects(&[n], attack_type, |effect| {
-            indexes
-                .iter()
-                .map(|&index| {
-                    effect
-                        .scalings
-                        .get(index)
-                        .ok_or_else(|| format!("No scaling found at index {index}").into())
-                        .and_then(|scaling| scaling.to_formula(CtxVar::Level))
-                })
-                .collect::<MayFail<Vec<_>>>()
-                .map(Formula::Sum)
-        })
-    }
-
-    pub fn damage(
-        &mut self,
-        attack_type: AttackType,
-        var: DamageIndex,
-        index: usize,
-    ) -> MayFail<&mut Self> {
-        let formula = self.formula_for(index, attack_type)?;
-        Ok(self.assign(attack_type, var, formula))
+        Ok(template
+            .named(section)
+            .ok_or("Missing named rune description")?
+            .plain())
     }
 
     pub fn assign(
@@ -317,22 +314,6 @@ impl Rune {
         self
     }
 
-    pub fn compose<const N: usize>(&mut self, indexes: [usize; N]) -> MayFail<Formula> {
-        self.compose_for(indexes, AttackType::Melee)
-    }
-
-    pub fn compose_for<const N: usize>(
-        &self,
-        indexes: [usize; N],
-        attack_type: AttackType,
-    ) -> MayFail<Formula> {
-        self.compose_effects(&indexes, attack_type, |effect| {
-            effect
-                .to_formula(CtxVar::Level)?
-                .ok_or_else(|| "No formula found for effect".into())
-        })
-    }
-
     pub fn assign_min(&mut self, damage: impl IntoFormula) -> &mut Self {
         self.assign(AttackType::Melee, DamageIndex::Min, &damage)
             .assign(AttackType::Ranged, DamageIndex::Min, damage)
@@ -341,16 +322,6 @@ impl Rune {
     pub fn assign_max(&mut self, damage: impl IntoFormula) -> &mut Self {
         self.assign(AttackType::Melee, DamageIndex::Max, &damage)
             .assign(AttackType::Ranged, DamageIndex::Max, damage)
-    }
-
-    pub fn min(&mut self, index: usize) -> MayFail<&mut Self> {
-        self.damage(AttackType::Melee, DamageIndex::Min, index)?;
-        self.damage(AttackType::Ranged, DamageIndex::Min, index)
-    }
-
-    pub fn max(&mut self, index: usize) -> MayFail<&mut Self> {
-        self.damage(AttackType::Melee, DamageIndex::Max, index)?;
-        self.damage(AttackType::Ranged, DamageIndex::Max, index)
     }
 
     pub fn end(&mut self) -> MayFail {

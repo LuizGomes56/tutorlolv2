@@ -1,6 +1,7 @@
 use crate::common::{
-    DamageSlot, EntityKind, Error, HEADER_LEN, MAGIC, OP_BIN_BASE, OP_BIN_MAX, OP_CTX, OP_GROUP,
-    OP_MAP_MATCH_BLOCK, OP_MAP_MATCH_INLINE, OP_MATCH_BLOCK, OP_MATCH_INLINE, OP_NEG, OP_NUM_CONST, OP_NUM_F32, OP_NUM_I8, OP_NUM_U8,
+    DamageSlot, EntityKind, Error, HEADER_LEN, MAGIC, OP_AXIS, OP_BIN_BASE, OP_BIN_MAX, OP_CTX,
+    OP_GROUP, OP_MAP_MATCH_BLOCK, OP_MAP_MATCH_INLINE, OP_MATCH_BLOCK, OP_MATCH_INLINE,
+    OP_MAX_ZERO, OP_NEG, OP_NUM_CONST, OP_NUM_F32, OP_NUM_I8, OP_NUM_U8, OP_NUMERIC_TABLE,
     OP_REF_LOCAL, VERSION,
 };
 use crate::common::{ParseError, const_try};
@@ -373,6 +374,7 @@ impl<'a> FormulaDb<'a> {
             local_ref_name,
             emit,
             bracket_stack: Vec::new(),
+            axis_scope: false,
         };
 
         renderer.expr(&mut cursor, &mut out)?;
@@ -492,6 +494,7 @@ struct FormulaRenderer<'db, 'bytes, 'cb> {
     local_ref_name: &'cb mut dyn FnMut(u8) -> FnBuilder,
     emit: &'cb mut dyn FnMut(&mut String, Option<Class>, &str),
     bracket_stack: Vec<Class>,
+    axis_scope: bool,
 }
 
 impl FormulaRenderer<'_, '_, '_> {
@@ -513,6 +516,66 @@ impl FormulaRenderer<'_, '_, '_> {
             OP_NUM_F32 => {
                 let value = f32::from_bits(cursor.u32()?);
                 self.styled(out, Class::Number, &Self::format_f32(value));
+            }
+            OP_AXIS => {
+                if !self.axis_scope {
+                    return Err(Error::Corrupt("axis outside numeric table"));
+                }
+
+                self.styled(out, Class::Variable, "axis");
+            }
+            OP_MAX_ZERO => {
+                self.expr(cursor, out)?;
+                self.raw(out, ".");
+                self.styled(out, Class::Function, "max");
+                self.open_bracket(out, "(");
+                self.styled(out, Class::Number, "0.0");
+                self.close_bracket(out, ")");
+            }
+            OP_NUMERIC_TABLE => {
+                if self.axis_scope {
+                    return Err(Error::Corrupt("nested numeric table"));
+                }
+
+                let count = cursor.u8()?;
+
+                self.open_bracket(out, "{");
+                self.raw(out, " ");
+                self.styled(out, Class::Keyword, "let");
+                self.raw(out, " ");
+                self.styled(out, Class::Variable, "axis");
+                self.raw(out, ": ");
+                self.styled(out, Class::Primitive, "f32");
+                self.raw(out, " = ");
+                self.expr(cursor, out)?;
+                self.raw(out, "; ");
+                self.axis_scope = true;
+
+                for _ in 0..count {
+                    self.styled(out, Class::Control, "if");
+                    self.raw(out, " ");
+                    self.styled(out, Class::Variable, "axis");
+                    self.raw(out, " < ");
+                    self.expr(cursor, out)?;
+                    self.raw(out, " ");
+                    self.open_bracket(out, "{");
+                    self.raw(out, " ");
+                    self.expr(cursor, out)?;
+                    self.raw(out, " ");
+                    self.close_bracket(out, "}");
+                    self.raw(out, " ");
+                    self.styled(out, Class::Control, "else");
+                    self.raw(out, " ");
+                }
+
+                self.open_bracket(out, "{");
+                self.raw(out, " ");
+                self.expr(cursor, out)?;
+                self.raw(out, " ");
+                self.close_bracket(out, "}");
+                self.raw(out, " ");
+                self.close_bracket(out, "}");
+                self.axis_scope = false;
             }
             OP_CTX => {
                 let name = (self.ctx_name)(cursor.u8()?);
@@ -724,6 +787,7 @@ impl FormulaRenderer<'_, '_, '_> {
                         self.raw(out, ",");
                     }
                 }
+                2 => self.expr(cursor, out)?,
                 1 => {
                     let body_indent_units = cursor.u8()?;
                     let close_indent_units = cursor.u8()?;

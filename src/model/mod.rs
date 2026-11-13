@@ -19,8 +19,8 @@ use {
     serde::{Deserialize, Serialize},
     strum::EnumCount,
     tutorlolv2_types::{
-        AbilityId, AbilityName, AdaptiveType, Attrs, Ctx, CtxAttacker, CtxTarget, DamageType,
-        GameMap, Position, TypeMetadata,
+        AbilityId, AbilityName, AdaptiveType, AttackSpeedRatio, Attrs, Ctx, CtxAttacker, CtxTarget,
+        DamageType, GameMap, Position, TypeMetadata,
     },
 };
 
@@ -175,6 +175,11 @@ pub struct EnemyState<'a> {
 /// player. This struct should be the same used for all champions
 #[derive(Clone, Copy, Debug, PartialEq, PartialOrd, Encode, Decode, Serialize, Deserialize)]
 pub struct SelfState {
+    /// Total bonus attack speed as a ratio, including growth and temporary effects.
+    /// When reconstructed from observed attacks/sec, this cannot recover bonuses
+    /// hidden by an attack speed cap in the live API.
+    #[serde(default)]
+    pub bonus_attack_speed_ratio: AttackSpeedRatio,
     pub stacks: f32,
     pub ability_levels: AbilityLevels,
     pub current_stats: PlayerStats,

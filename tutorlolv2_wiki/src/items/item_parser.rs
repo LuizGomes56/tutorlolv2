@@ -7,7 +7,7 @@ use heck::ToPascalCase;
 use lazy_regex::regex;
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
-use tutorlolv2_types::{CtxVar, Key};
+use tutorlolv2_types::CtxVar;
 
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub struct ItemEffect {
@@ -195,48 +195,12 @@ impl EffectAnalysis {
 pub fn parse_items() -> MayFail {
     let bytes = crate::read(cache().join("data").with_extension("json"))?;
     let data = serde_json::from_slice::<BTreeMap<String, ItemRaw>>(&bytes)?;
-
     let result = data
         .into_iter()
         .map(|(name, raw)| {
-            let mut value = raw.parse();
-
-            let assign_formula = |v: Option<&mut ItemEffect>| {
-                if let Some(ie) = v
-                    && let Ok(formula) = ie.effect.simplify_formula(Key::P)
-                {
-                    ie.effect.formula = formula;
-                }
-            };
-
-            let assign_other_formulas = |v: Option<&mut ItemEffect>| {
-                if let Some(ie) = v {
-                    for effect in [&mut ie.ranged, &mut ie.flip, &mut ie.total]
-                        .into_iter()
-                        .flatten()
-                    {
-                        if let Ok(formula) = effect.simplify_formula(Key::P) {
-                            effect.formula = formula;
-                        }
-                    }
-                }
-            };
-
-            assign_other_formulas(value.effects.act.as_mut());
-            assign_other_formulas(value.effects.pass.as_mut());
-            assign_other_formulas(value.effects.pass2.as_mut());
-            assign_other_formulas(value.effects.pass3.as_mut());
-            assign_other_formulas(value.effects.pass4.as_mut());
-            assign_other_formulas(value.effects.consume.as_mut());
-
-            assign_formula(value.effects.act.as_mut());
-            assign_formula(value.effects.pass.as_mut());
-            assign_formula(value.effects.pass2.as_mut());
-            assign_formula(value.effects.pass3.as_mut());
-            assign_formula(value.effects.pass4.as_mut());
-            assign_formula(value.effects.consume.as_mut());
-
+            let mut value = raw.into_native();
             let key = name.replace("'s", "s").to_pascal_case();
+
             value.name = name;
             value.item_id = key.clone();
 
@@ -245,32 +209,18 @@ pub fn parse_items() -> MayFail {
         .collect::<BTreeMap<_, _>>();
 
     let json = serde_json::to_string_pretty(&result)?;
+
     crate::write(cache().join("full").with_extension("json"), &json)
 }
 
 impl ItemRaw {
-    fn parse(self) -> WikiItem {
-        // Variables defined in one effect may be used by another, like Hollow Radiance's
-        // eruption that deals 200% of the damage defined by its burn
-        let mut vars = BTreeMap::new();
-
-        for effect in [
-            &self.effects.pass,
-            &self.effects.pass2,
-            &self.effects.pass3,
-            &self.effects.pass4,
-            &self.effects.act,
-            &self.effects.consume,
-        ]
-        .into_iter()
-        .flatten()
-        {
-            if let Some(description) = &effect.description {
-                resolve_markup(description, Variant::default(), &mut vars, &mut Vec::new());
-            }
-        }
-
-        let parse = |raw: ItemEffectRaw| raw.parse(&vars);
+    pub fn into_native(self) -> WikiItem {
+        let parse = |raw: ItemEffectRaw| ItemEffect {
+            name: raw.name,
+            unique: raw.unique,
+            raw_description: raw.description,
+            ..Default::default()
+        };
 
         WikiItem {
             item_id: self.name.replace("'s", "s").to_pascal_case(),
@@ -291,41 +241,6 @@ impl ItemRaw {
             buy: self.buy,
             purchasable: false,
             custom: false,
-        }
-    }
-}
-
-impl ItemEffectRaw {
-    fn parse(self, vars: &BTreeMap<String, String>) -> ItemEffect {
-        let description = self.description.clone().unwrap_or_default();
-        let ast = parse_markup(&description);
-
-        let (effect, total) = analyze_effect(&description, Variant::default(), vars);
-
-        let variant = |variant| {
-            let (other, _) = analyze_effect(&description, variant, vars);
-            (other != effect).then_some(other)
-        };
-
-        let ranged = variant(Variant {
-            ranged: true,
-            flip: false,
-        });
-
-        let flip = variant(Variant {
-            ranged: false,
-            flip: true,
-        });
-
-        ItemEffect {
-            name: self.name,
-            unique: self.unique,
-            raw_description: self.description,
-            effect,
-            ranged,
-            flip,
-            total,
-            ast,
         }
     }
 }

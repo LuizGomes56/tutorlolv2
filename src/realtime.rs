@@ -178,6 +178,9 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
     let shred = ResistShred::new(&current_player_stats);
 
     let self_state = SelfState {
+        bonus_attack_speed_ratio: current_player_champion_id
+            .stats_on(game_map)
+            .bonus_attack_speed_ratio(current_player_stats.attack_speed),
         current_stats: current_player_stats,
         base_stats: current_player_base_stats,
         adaptive_type,
