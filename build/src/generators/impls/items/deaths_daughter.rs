@@ -6,7 +6,8 @@ impl Generator for DeathsDaughter {
         // increases with the rank of his ultimate
         let damage = self
             .formula(Passive)?
-            .replace(Level.as_var(), RLevel.as_var());
+            .replace_var(Level, &Formula::Var(RLevel));
+
         self.damage_type(True).set_min(damage).end()
     }
 }

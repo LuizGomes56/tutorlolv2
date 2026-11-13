@@ -3,17 +3,20 @@ use super::*;
 impl Generator for WintersApproach {
     fn generate(&mut self) -> MayFail {
         // Awe
-        let [awe] = self
-            .formula(Passive)?
-            .capture(regex!(r"^\(\(([\d.]+)\) \* ctx\.bonus_mana\)$"))?;
+        let awe = self.effect(Passive)?.scalings[0]
+            .try_get_value()
+            .ok_or("Expected a constant stat scaling")?;
 
         self.constant("AWE_BONUS_MANA_RATIO", awe)?;
 
         // Awe on the modes that change it
         let mut awe = Vec::new();
 
-        for (mode, formula) in self.map_formulas(Passive)? {
-            let [value] = formula.capture(regex!(r"^\(\(([\d.]+)\) \* ctx\.bonus_mana\)$"))?;
+        for (mode, effect) in self.map_effects_for(Passive, Melee)? {
+            let value = effect.scalings[0]
+                .try_get_value()
+                .ok_or("Expected a constant map stat scaling")?;
+
             awe.push((mode, value));
         }
 

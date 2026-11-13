@@ -2,6 +2,7 @@ use crate::{
     MayFail,
     formula::SequencePattern,
     parser::{Effect, LevelArm, Scaling, build_level_arms},
+    wikitext::Formula,
 };
 use lazy_regex::regex;
 use tutorlolv2_types::{CtxVar, Key};
@@ -118,7 +119,7 @@ impl Scaling {
                 Ok(render_multiplier(axis, raw, *base, inner)?)
             }
 
-            Self::Nested { outer, inner, .. } => render_nested(axis, outer, inner),
+            Self::Nested { outer, inner, .. } => outer.render_nested(axis, inner),
 
             Self::Other { raw } => {
                 Err(format!("[formula] Unsupported Scaling::Other: {raw}").into())
@@ -200,7 +201,7 @@ impl Scaling {
             }),
 
             Self::Nested { outer, inner, .. } => Ok(Piece {
-                coeff: render_nested(axis, outer, inner)?,
+                coeff: outer.render_nested(axis, inner)?,
                 target: TargetMode::None,
             }),
 
@@ -349,15 +350,15 @@ impl Effect {
     }
 }
 
-fn render_nested(axis: CtxVar, outer: &Scaling, inner: &[Scaling]) -> MayFail<String> {
-    let Piece { mut coeff, target } = outer.render_piece(axis)?;
-
-    for child in inner {
-        let child_piece = child.render_piece(axis)?;
-        coeff = add_expr(&coeff, &child_piece.to_expr());
+impl Scaling {
+    fn render_nested(&self, axis: CtxVar, inner: &[Scaling]) -> MayFail<String> {
+        let Piece { mut coeff, target } = self.render_piece(axis)?;
+        for child in inner {
+            let child_piece = child.render_piece(axis)?;
+            coeff = add_expr(&coeff, &child_piece.to_expr());
+        }
+        Ok(Piece { coeff, target }.to_expr())
     }
-
-    Ok(Piece { coeff, target }.to_expr())
 }
 
 fn render_multiplier(axis: CtxVar, raw: &str, base: f64, inner: &[Scaling]) -> MayFail<String> {
@@ -850,4 +851,220 @@ fn render_num(v: f64) -> String {
     }
 
     s
+}
+
+impl Effect {
+    /// Structured equivalent of the parsed effect, with series progressing on `axis`.
+    pub fn to_formula(&self, axis: CtxVar) -> MayFail<Option<Formula>> {
+        let mut value = if self.use_formula.is_some() {
+            Some(self.use_formula_tree(axis)?)
+        } else if let Some(base) = &self.base {
+            series_tree(base, axis)?
+        } else if let Some(values) = &self.use_values {
+            if let Some(levels) = &self.use_levels {
+                Some(level_tree(
+                    CtxVar::Level,
+                    &build_level_arms(levels, values),
+                )?)
+            } else {
+                series_tree(values, axis)?
+            }
+        } else {
+            None
+        };
+        for scaling in &self.scalings {
+            let term = scaling.to_formula(axis)?;
+            value = Some(match (value, scaling) {
+                (Some(base), Scaling::Multiplier { .. }) => base * term,
+                (Some(base), _) if !base.is_zero() => base + term,
+                _ => term,
+            });
+        }
+        Ok(value)
+    }
+
+    /// Explicit parser override, with its standalone `x` variable bound to `axis`.
+    pub fn use_formula_tree(&self, axis: CtxVar) -> MayFail<Formula> {
+        let source = self
+            .use_formula
+            .as_ref()
+            .ok_or("[formula] Missing use_formula")?;
+        let source = regex!(r"\bx\b").replace_all(source, axis.as_var());
+        Formula::parse_expression(&source)
+    }
+}
+
+impl Scaling {
+    /// Converts parsed scaling metadata without rendering or reparsing expressions.
+    pub fn to_formula(&self, axis: CtxVar) -> MayFail<Formula> {
+        let (coefficient, target) = self.formula_piece(axis)?;
+        Ok(match target {
+            TargetMode::None => coefficient,
+            TargetMode::Direct(var) => coefficient * Formula::Var(var),
+            TargetMode::Per100(var) => coefficient * (Formula::Var(var) * 0.01),
+        })
+    }
+
+    fn formula_piece(&self, axis: CtxVar) -> MayFail<(Formula, TargetMode)> {
+        let direct = |value, var| (Formula::Const(value), TargetMode::Direct(var));
+        Ok(match self {
+            Self::Simple { value, ctx_var } | Self::PercentAttr { value, ctx_var, .. } => {
+                direct(*value, *ctx_var)
+            }
+            Self::Per100 { value, ctx_var } => {
+                (Formula::Const(*value), TargetMode::Per100(*ctx_var))
+            }
+            Self::Flat { values } => (
+                series_tree(values, axis)?.ok_or("[formula] Empty flat scaling")?,
+                TargetMode::None,
+            ),
+            Self::Ranked { values, ctx_var } | Self::RankedPer100 { values, ctx_var } => (
+                series_tree(values, axis)?.ok_or("[formula] Empty ranked scaling")?,
+                if matches!(self, Self::RankedPer100 { .. }) {
+                    TargetMode::Per100(*ctx_var)
+                } else {
+                    TargetMode::Direct(*ctx_var)
+                },
+            ),
+            Self::BasedOnLevel {
+                level_var,
+                arms,
+                ctx_var,
+                debug,
+            } => (
+                level_tree(*level_var, arms)?,
+                level_target(*level_var, *ctx_var, arms, debug),
+            ),
+            Self::Nested { outer, inner, .. } => {
+                let (mut coefficient, target) = outer.formula_piece(axis)?;
+                for child in inner {
+                    coefficient = coefficient + child.to_formula(axis)?;
+                }
+                (coefficient, target)
+            }
+            Self::Multiplier { raw, base, inner } => {
+                let mut value = Formula::Const(*base);
+                if let Some(caps) =
+                    regex!(r"(?i)^\s*1\s*\+\s*(-?\d+(?:\.\d+)?)\s+per\s+100%?\s+").captures(raw)
+                    && let Some(var) = first_ctx_var(inner)
+                {
+                    value = Formula::Const(1.0)
+                        + Formula::Const(caps[1].parse()?) * (Formula::Var(var) * 0.01);
+                } else {
+                    for child in inner {
+                        value = value + child.to_formula(axis)?;
+                    }
+                }
+                (value, TargetMode::None)
+            }
+            Self::RangePercentAttr {
+                min,
+                max,
+                debug,
+                ctx_var,
+            } => {
+                let lower = debug.to_ascii_lowercase();
+                let progress = if lower.contains("level") {
+                    let var = if lower.contains("rank") {
+                        axis
+                    } else {
+                        CtxVar::Level
+                    };
+                    (Formula::Var(var) - 1.0) / range_denominator_for_axis(var)
+                } else {
+                    match ctx_var {
+                        CtxVar::CritChance => Formula::Var(*ctx_var) * 0.01,
+                        CtxVar::EnemyMissingHealthFlat => {
+                            Formula::Var(*ctx_var) / Formula::Var(CtxVar::EnemyMaxHealth)
+                        }
+                        _ => Formula::Var(*ctx_var),
+                    }
+                };
+                (
+                    Formula::Const(*min) + Formula::Const(max - min) * progress,
+                    TargetMode::None,
+                )
+            }
+            Self::Other { raw } => {
+                return Err(format!("[formula] Unsupported Scaling::Other: {raw}").into());
+            }
+        })
+    }
+}
+
+fn series_tree(values: &[f64], axis: CtxVar) -> MayFail<Option<Formula>> {
+    if values.is_empty() {
+        return Ok(None);
+    }
+    let values = if axis == CtxVar::Level {
+        &values[..values.len().min(MAX_LEVEL)]
+    } else {
+        values
+    };
+    let values = maybe_extend_series(values, axis);
+    if values.len() == 1 {
+        return Ok(Some(Formula::Const(values[0])));
+    }
+    let pattern = if values.len() >= axis_len(axis) {
+        SequencePattern::new(&values)
+    } else {
+        SequencePattern::Unknown
+    };
+    let degree = match pattern {
+        SequencePattern::Linear => 1,
+        SequencePattern::Quadratic if polynomial_fits_samples(&values, 2) => 2,
+        SequencePattern::Cubic if polynomial_fits_samples(&values, 3) => 3,
+        _ => return Ok(Some(Formula::ByRank { rank: axis, values })),
+    };
+    let n = Formula::Var(axis) - 1.0;
+    if degree == 1 {
+        let step = (values[values.len() - 1] - values[0]) / (values.len() - 1) as f64;
+        return Ok(Some(if approx_zero(step) {
+            Formula::Const(values[0])
+        } else {
+            Formula::Const(values[0]) + n.scale(step)
+        }));
+    }
+    let mut output = Formula::Const(values[0]);
+    let mut differences = values;
+    let mut basis = Formula::Const(1.0);
+    for order in 1..=degree {
+        differences = differences
+            .windows(2)
+            .map(|pair| pair[1] - pair[0])
+            .collect();
+        basis = basis * (n.clone() - (order - 1) as f64) / order as f64;
+        if !approx_zero(differences[0]) {
+            output = output + basis.clone().scale(differences[0]);
+        }
+    }
+    Ok(Some(output))
+}
+
+fn level_tree(var: CtxVar, arms: &[LevelArm]) -> MayFail<Formula> {
+    if arms.is_empty() {
+        return Err("[formula] Empty level table".into());
+    }
+    if let Some(values) = level_arm_values(arms)
+        && values.len() > 1
+        && matches!(
+            SequencePattern::new(&values),
+            SequencePattern::Linear | SequencePattern::Quadratic | SequencePattern::Cubic
+        )
+    {
+        return series_tree(&values, var)?.ok_or_else(|| "[formula] Empty level table".into());
+    }
+    let keys = arms
+        .iter()
+        .map(|arm| match arm {
+            LevelArm::To { .. } => 1,
+            LevelArm::Range { range, .. } => range.start,
+            LevelArm::From { range, .. } => range.start,
+        })
+        .collect();
+    Ok(Formula::Table {
+        var,
+        keys,
+        values: arms.iter().map(LevelArm::value).collect(),
+    })
 }

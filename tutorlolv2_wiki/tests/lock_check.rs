@@ -232,8 +232,8 @@ fn structured_generator_selections_are_checked_across_pages() {
     let dir = temp_dir("champions-v2");
     write(
         &dir,
-        "champions_v2/maokai.rs",
-        r#"impl GeneratorV2 for Maokai {
+        "champions/maokai.rs",
+        r#"impl Generator for Maokai {
         fn generate(&mut self) -> MayFail {
             self.take("Magic Damage", E(Void))?
                 .take_nth("Magic Damage", 1, E(Min))?
@@ -259,7 +259,7 @@ fn structured_generator_selections_are_checked_across_pages() {
 #[test]
 fn repeated_labels_require_occurrence_or_ability_name() {
     let dir = temp_dir("ambiguous-v2");
-    let source = r#"impl GeneratorV2 for Maokai {
+    let source = r#"impl Generator for Maokai {
         fn generate(&mut self) -> MayFail {
             self.take("Magic Damage", E(Void))?
                 .take_nth("Magic Damage", 1, E(Min))?
@@ -268,7 +268,7 @@ fn repeated_labels_require_occurrence_or_ability_name() {
             let _ = self.value_nth("Magic Damage", 0, Key::E)?;
         }
     }"#;
-    write(&dir, "champions_v2/maokai.rs", source);
+    write(&dir, "champions/maokai.rs", source);
     let mut lock = champion_lock(&["0: Magic Damage (a)"]);
     lock.champions
         .get_mut("Maokai")
@@ -288,7 +288,7 @@ fn repeated_labels_require_occurrence_or_ability_name() {
             .all(|s| s.contains("matches 2 effects"))
     );
     assert_eq!(
-        std::fs::read_to_string(dir.join("champions_v2/maokai.rs")).unwrap(),
+        std::fs::read_to_string(dir.join("champions/maokai.rs")).unwrap(),
         source
     );
     std::fs::remove_dir_all(dir).unwrap();
@@ -299,8 +299,8 @@ fn structured_formula_changes_warn_without_rewriting_labels() {
     let dir = temp_dir("formula-v2");
     write(
         &dir,
-        "champions_v2/maokai.rs",
-        r#"impl GeneratorV2 for Maokai {
+        "champions/maokai.rs",
+        r#"impl Generator for Maokai {
         fn generate(&mut self) -> MayFail { self.take("Magic Damage", E(Void))?; }
     }"#,
     );

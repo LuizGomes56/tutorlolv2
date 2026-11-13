@@ -23,7 +23,7 @@ fn batch_combos_preserve_order_and_stop_at_the_first_invalid_ability() {
     })
     .unwrap();
 
-    let mut champion = tutorlolv2_build_dep::generators_v2::ChampionV2::new(
+    let mut champion = tutorlolv2_build_dep::generators::champions::ChampionGenerator::new(
         champion,
         tutorlolv2_wiki::wikitext::ChampionModel {
             champion_id: "ComboTest".into(),
@@ -706,12 +706,12 @@ fn doc_sources_include_cold_map_arms() {
 fn champion_documentation_reads_the_structured_generator_source() {
     use tutorlolv2_build_dep::scripts::batch::read_generator;
     let dir = TestDir::new();
-    let active = dir.0.join("build/src/generators_v2/impls/example.rs");
+    let active = dir.0.join("build/src/generators/champions/example.rs");
     let old = dir
         .0
         .join("build/src/generators/impls/champions/example.rs");
     let source =
-        "impl GeneratorV2 for Example { fn generate(&mut self) { /* structured source */ } }";
+        "impl Generator for Example { fn generate(&mut self) { /* structured source */ } }";
     tutorlolv2_wiki::write(active, source).unwrap();
     tutorlolv2_wiki::write(
         old,

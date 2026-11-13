@@ -13,9 +13,9 @@ impl Generator for Riftmaker {
         )?;
 
         // Void Infusion
-        let [void_infusion] = self
-            .formula(Passive2)?
-            .capture(regex!(r"^\(\(([\d.]+)\) \* ctx\.bonus_health\)$"))?;
+        let void_infusion = self.effect(Passive2)?.scalings[0]
+            .try_get_value()
+            .ok_or("Expected a constant stat scaling")?;
 
         self.constant("VOID_INFUSION_BONUS_HEALTH_RATIO", void_infusion)?;
 

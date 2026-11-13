@@ -34,7 +34,7 @@ pub fn generator_impl(source: &str) -> MayFail<String> {
         .find(|item| {
             matches!(item,
                 syn::Item::Impl(item) if item.trait_.as_ref().is_some_and(|(path, _)|
-                    path.segments.last().is_some_and(|s| s.ident == "Generator" || s.ident == "GeneratorV2"))
+                    path.segments.last().is_some_and(|s| s.ident == "Generator"))
             )
         })
         .ok_or("Generator source has no generator implementation block")?;

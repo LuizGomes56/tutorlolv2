@@ -53,3 +53,5 @@ macro_rules! decl_runes {
         }
     };
 }
+
+pub use tutorlolv2_wiki::wikitext::{Formula, IntoFormula};

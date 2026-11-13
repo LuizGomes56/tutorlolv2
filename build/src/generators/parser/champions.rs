@@ -59,7 +59,7 @@ pub struct Champion {
 impl Parser<WikiChampion, Champion> for ChampionParser {
     const TAG: Tag = Tag::Champions;
     const FN: fn(&str) -> Option<fn(WikiChampion) -> MayFail<Box<dyn GeneratorExt<Champion>>>> =
-        crate::generators_v2::impls::champion_gen_fn;
+        crate::generators::champions::champion_gen_fn;
 
     fn from_root(root: &std::path::Path) -> MayFail<Self> {
         load_map_changes(root)?;
@@ -73,16 +73,8 @@ impl Parser<WikiChampion, Champion> for ChampionParser {
         &self.data
     }
 
-    fn generator_trait() -> &'static str {
-        "GeneratorV2"
-    }
-
-    fn generator_declarations(modules: &str) -> String {
-        format!("use crate::generators_v2::imports::*;\ncrate::decl_champions_v2!(\n{modules}\n);")
-    }
-
     fn create_methods(&self, result: &mut String, id: &str) -> MayFail<bool> {
-        let models = crate::generators_v2::ChampionV2::models()?;
+        let models = crate::generators::champions::ChampionGenerator::models()?;
         let model = models
             .get(id)
             .ok_or_else(|| format!("[{id}] has no structured champion model"))?;

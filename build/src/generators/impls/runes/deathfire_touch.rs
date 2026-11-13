@@ -3,12 +3,13 @@ use super::*;
 impl Generator for DeathfireTouch {
     fn generate(&mut self) -> MayFail {
         // Burn damage per tick, increased by 75% after lingering for 3 seconds
-        let min_tick = self.compose([0, 1])?;
-        let max_tick = f!(1.75 * (min_tick));
+        for attack_type in [Melee, Ranged] {
+            let damage = self.compose_for([0, 1], attack_type)?;
 
-        self.assign_min(&min_tick)
-            .assign_max(&max_tick)
-            .damage_type(Adaptive)
-            .end()
+            self.assign(attack_type, Min, &damage);
+            self.assign(attack_type, Max, f![1.75 * damage]);
+        }
+
+        self.damage_type(Adaptive).end()
     }
 }

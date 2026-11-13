@@ -139,10 +139,10 @@ impl WikiLock {
         let v2 = if generators == Path::new(super::GENERATORS) {
             PathBuf::from(super::CHAMPION_GENERATORS)
         } else {
-            generators.join("champions_v2")
+            generators.join("champions")
         };
 
-        self.check_champions_v2(old, &v2, &mut report)?;
+        self.check_champions(old, &v2, &mut report)?;
         self.check_exceptions(old, &mut report);
         self.check_map_changes(old, &mut report);
         self.check_map_stats(old, &mut report);
@@ -155,12 +155,7 @@ impl WikiLock {
         Ok(report)
     }
 
-    fn check_champions_v2(
-        &self,
-        old: Option<&WikiLock>,
-        dir: &Path,
-        report: &mut Report,
-    ) -> MayFail {
+    fn check_champions(&self, old: Option<&WikiLock>, dir: &Path, report: &mut Report) -> MayFail {
         for file in GeneratorFile::read_dir(dir)? {
             let Some(abilities) = self.champions.get(&file.id) else {
                 report.errors.push(format!(

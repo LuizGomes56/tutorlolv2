@@ -5,28 +5,27 @@ use {
             constants::{Constants, WithConstants},
             impls::items::item_gen_fn,
             parser::{
-                DamageRange, EffectRead, GeneratorFnSig, Parser, WithMapChanges, ZERO,
-                effect_map_damages, infer_damage_type, likely_damages, map_changes,
+                DamageRange, GeneratorFnSig, Parser, WithMapChanges, infer_damage_type,
+                likely_damages, map_changes,
                 model::{RiotCdn, RiotCdnItem, RiotCdnItemGold},
                 single_mode,
             },
-            utils::RegExtractor,
         },
     },
     heck::ToPascalCase,
     serde::{Deserialize, Serialize},
     std::{
-        cell::RefCell,
         collections::BTreeMap,
-        fmt::{Display, Write},
+        fmt::Write,
         ops::{Index, IndexMut},
     },
-    tutorlolv2_types::{AttackType, Attrs, CtxVar, DamageIndex, DamageType, Key, MapMode, Tag},
+    tutorlolv2_types::{AttackType, Attrs, CtxVar, DamageIndex, DamageType, MapMode, Tag},
     tutorlolv2_wiki::{
         JsonRead,
         items::item_parser::{ItemEffect, WikiItem},
         map_changes::{ChangeTarget, overrides::EffectOverrides},
         parser::Effect,
+        wikitext::{Formula, IntoFormula},
     },
 };
 
@@ -239,9 +238,6 @@ pub struct Item {
     pub attributes: Attrs,
     #[serde(default, skip_serializing_if = "Constants::is_empty")]
     pub constants: Constants,
-    /// Effects whose formula the generator read, by that formula
-    #[serde(skip)]
-    pub reads: RefCell<BTreeMap<String, Vec<EffectRead>>>,
     /// Formulas on each mode that changes them, for melee minimum and maximum,
     /// then ranged. Serialized, since the build reads the generator's output
     #[serde(default, skip_serializing_if = "super::no_map_damages")]
@@ -300,12 +296,18 @@ impl Item {
 
     /// Formula of the effect of `source` on each mode that changes it, for
     /// constants captured from the formula
-    pub fn map_formulas(&self, source: Source) -> MayFail<Vec<(MapMode, String)>> {
-        Ok(self
-            .map_effects_for(source, AttackType::Melee)?
+    pub fn map_formulas(&self, source: Source) -> MayFail<Vec<(MapMode, Formula)>> {
+        self.map_effects_for(source, AttackType::Melee)?
             .into_iter()
-            .filter_map(|(mode, effect)| Some((mode, effect.formula?.parenthesize())))
-            .collect())
+            .map(|(mode, effect)| {
+                Ok((
+                    mode,
+                    effect
+                        .to_formula(CtxVar::Level)?
+                        .ok_or("Item effect has no formula")?,
+                ))
+            })
+            .collect()
     }
 
     /// Sets the damage `var` of `attack_type` on `mode`, for generators that build
@@ -315,7 +317,7 @@ impl Item {
         mode: MapMode,
         attack_type: AttackType,
         var: DamageIndex,
-        damage: impl Display,
+        damage: impl IntoFormula,
     ) -> &mut Self {
         let index = match (attack_type, var) {
             (AttackType::Melee, DamageIndex::Min) => 0,
@@ -324,7 +326,7 @@ impl Item {
             (AttackType::Ranged, DamageIndex::Max) => 3,
         };
 
-        self.map_damages[index].push((mode, damage.to_string()));
+        self.map_damages[index].push((mode, damage.to_formula().rust()));
         self
     }
 }
@@ -355,7 +357,6 @@ impl TryFrom<WikiItem> for Item {
             melee: Default::default(),
             attributes: Attrs::Undefined,
             constants: Default::default(),
-            reads: Default::default(),
             map_damages: Default::default(),
             data,
         })
@@ -420,11 +421,10 @@ impl Item {
     }
 
     /// Formula of any effect of this item, such as [`Self::flip`] or [`Self::total`]
-    pub fn render(&self, effect: &Effect) -> MayFail<String> {
-        match &effect.formula {
-            Some(formula) => Ok(formula.parenthesize()),
-            None => Err(format!("[{}] Effect has no formula", self.data.name).into()),
-        }
+    pub fn render(&self, effect: &Effect) -> MayFail<Formula> {
+        effect
+            .to_formula(CtxVar::Level)?
+            .ok_or_else(|| "Item effect has no formula".into())
     }
 
     /// Formula with the base value and only the given scalings of an effect, for
@@ -433,11 +433,37 @@ impl Item {
         &self,
         effect: &Effect,
         scalings: impl IntoIterator<Item = usize>,
-    ) -> MayFail<String> {
+    ) -> MayFail<Formula> {
         let indexes = scalings.into_iter().collect::<Vec<_>>();
+        let mut formula = self.render_selected(effect, &indexes)?;
+
+        for source in [
+            Source::Active,
+            Source::Passive,
+            Source::Passive2,
+            Source::Passive3,
+            Source::Passive4,
+            Source::Consume,
+        ] {
+            for attack_type in [AttackType::Melee, AttackType::Ranged] {
+                if self
+                    .effect_for(source, attack_type)
+                    .is_ok_and(|candidate| std::ptr::eq(candidate, effect))
+                {
+                    for (mode, effect) in self.map_effects_for(source, attack_type)? {
+                        formula = formula.with_map(mode, self.render_selected(&effect, &indexes)?);
+                    }
+                    return Ok(formula);
+                }
+            }
+        }
+        Ok(formula)
+    }
+
+    fn render_selected(&self, effect: &Effect, indexes: &[usize]) -> MayFail<Formula> {
         let mut effect = effect.clone();
 
-        for &index in &indexes {
+        for &index in indexes {
             if index >= effect.scalings.len() {
                 return Err(format!(
                     "[{}] Scaling {index} out of bounds for {:?}",
@@ -448,10 +474,11 @@ impl Item {
         }
 
         effect.scalings = indexes
-            .into_iter()
-            .map(|index| effect.scalings[index].clone())
+            .iter()
+            .map(|&index| effect.scalings[index].clone())
             .collect();
-        effect.formula = effect.simplify_formula(Key::P)?;
+
+        effect.formula = None;
         self.render(&effect)
     }
 
@@ -466,7 +493,12 @@ impl Item {
 
         for attack_type in [AttackType::Melee, AttackType::Ranged] {
             let effect = self.effect_for(source, attack_type)?;
-            let formula = self.render_with(effect, scalings.iter().copied())?;
+            let mut formula = self.render_selected(effect, &scalings)?;
+
+            for (mode, effect) in self.map_effects_for(source, attack_type)? {
+                formula = formula.with_map(mode, self.render_selected(&effect, &scalings)?);
+            }
+
             self.assign(attack_type, var, formula);
         }
 
@@ -496,52 +528,41 @@ impl Item {
             .ok_or(format!("No base damage for its {source:?}").into())
     }
 
-    pub fn formula(&self, source: Source) -> MayFail<String> {
+    pub fn formula(&self, source: Source) -> MayFail<Formula> {
         self.formula_for(source, AttackType::Melee)
     }
 
-    pub fn formula_for(&self, source: Source, attack_type: AttackType) -> MayFail<String> {
-        match self.effect_for(source, attack_type).ok() {
-            Some(effect) if let Some(ref formula) = effect.formula => {
-                let formula = formula.parenthesize();
-                let ranged = self[source].as_ref().and_then(|ie| ie.ranged.as_ref());
-                let name = self[source].as_ref().and_then(|ie| ie.name.clone());
+    pub fn formula_for(&self, source: Source, attack_type: AttackType) -> MayFail<Formula> {
+        let mut formula = self
+            .effect_for(source, attack_type)?
+            .to_formula(CtxVar::Level)?
+            .unwrap_or(Formula::Const(0.0));
 
-                // The ranged effect of `{{rd}}` is changed apart from the melee one
-                let key = match (attack_type, ranged) {
-                    (AttackType::Ranged, Some(_)) => format!("{}.ranged", source.slot()),
-                    _ => source.slot().to_string(),
-                };
-
-                self.reads
-                    .borrow_mut()
-                    .entry(formula.clone())
-                    .or_default()
-                    .push(EffectRead {
-                        name: name.unwrap_or_else(|| key.clone()),
-                        key,
-                        effect: effect.clone(),
-                    });
-
-                Ok(formula)
-            }
-            _ => {
-                println!(
-                    "[{name}] No formula for its {source:?}",
-                    name = self.data.name
-                );
-                Ok(ZERO.into())
-            }
+        for (mode, effect) in self.map_effects_for(source, attack_type)? {
+            formula = formula.with_map(
+                mode,
+                effect
+                    .to_formula(CtxVar::Level)?
+                    .ok_or("Item effect has no formula")?,
+            );
         }
+
+        Ok(formula)
     }
 
     pub fn assign(
         &mut self,
         attack_type: AttackType,
         var: DamageIndex,
-        damage: impl Display,
+        damage: impl IntoFormula,
     ) -> &mut Self {
-        self[attack_type][var] = damage.to_string();
+        let damage = damage.to_formula();
+
+        for mode in damage.modes() {
+            self.map_assign(mode, attack_type, var, damage.on(mode));
+        }
+
+        self[attack_type][var] = damage.on(MapMode::Default).rust();
         self
     }
 
@@ -549,7 +570,7 @@ impl Item {
         &self,
         source: Source,
         indexes: impl IntoIterator<Item = usize>,
-    ) -> MayFail<String> {
+    ) -> MayFail<Formula> {
         self.scaling_for(source, AttackType::Melee, indexes)
     }
 
@@ -558,17 +579,27 @@ impl Item {
         source: Source,
         attack_type: AttackType,
         indexes: impl IntoIterator<Item = usize>,
-    ) -> MayFail<String> {
+    ) -> MayFail<Formula> {
         let filter = indexes.into_iter().collect::<Vec<_>>();
-        Ok(self
-            .effect_for(source, attack_type)?
-            .scalings
-            .iter()
-            .enumerate()
-            .filter(|(i, _)| filter.contains(i))
-            .filter_map(|(_, scaling)| scaling.render(CtxVar::Level).ok())
-            .collect::<Vec<_>>()
-            .join(" + "))
+        let selected = |effect: &Effect| -> MayFail<Formula> {
+            Ok(Formula::Sum(
+                effect
+                    .scalings
+                    .iter()
+                    .enumerate()
+                    .filter(|(i, _)| filter.contains(i))
+                    .map(|(_, scaling)| scaling.to_formula(CtxVar::Level))
+                    .collect::<MayFail<Vec<_>>>()?,
+            ))
+        };
+
+        let mut formula = selected(self.effect_for(source, attack_type)?)?;
+
+        for (mode, effect) in self.map_effects_for(source, attack_type)? {
+            formula = formula.with_map(mode, selected(&effect)?);
+        }
+
+        Ok(formula)
     }
 
     pub fn damage(
@@ -581,12 +612,16 @@ impl Item {
         Ok(self.assign(attack_type, var, &formula))
     }
 
-    pub fn set_min(&mut self, damage: impl Display) -> &mut Self {
+    pub fn set_min(&mut self, damage: impl IntoFormula) -> &mut Self {
+        let damage = damage.to_formula();
+
         self.assign(AttackType::Melee, DamageIndex::Min, &damage)
             .assign(AttackType::Ranged, DamageIndex::Min, damage)
     }
 
-    pub fn set_max(&mut self, damage: impl Display) -> &mut Self {
+    pub fn set_max(&mut self, damage: impl IntoFormula) -> &mut Self {
+        let damage = damage.to_formula();
+
         self.assign(AttackType::Melee, DamageIndex::Max, &damage)
             .assign(AttackType::Ranged, DamageIndex::Max, damage)
     }
@@ -613,27 +648,6 @@ impl Item {
                 item_id = self.data.item_id
             )
             // return Err("Unknown damage type for this item".into());
-        }
-
-        let automatic = effect_map_damages(
-            &ChangeTarget::Item {
-                item_id: self.data.item_id.clone(),
-            },
-            &self.data.item_id,
-            [
-                &self.melee.min_dmg,
-                &self.melee.max_dmg,
-                &self.ranged.min_dmg,
-                &self.ranged.max_dmg,
-            ],
-            &self.reads.borrow(),
-        )?;
-
-        // Damages a generator set with `map_assign` keep its formulas
-        for (damages, automatic) in self.map_damages.iter_mut().zip(automatic) {
-            if damages.is_empty() {
-                *damages = automatic;
-            }
         }
 
         Ok(())

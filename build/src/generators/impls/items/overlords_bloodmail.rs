@@ -3,16 +3,19 @@ use super::*;
 impl Generator for OverlordsBloodmail {
     fn generate(&mut self) -> MayFail {
         // Tyranny
-        let [tyranny] = self
-            .formula(Passive)?
-            .capture(regex!(r"^\(\(([\d.]+)\) \* ctx\.bonus_health\)$"))?;
+        let tyranny = self.effect(Passive)?.scalings[0]
+            .try_get_value()
+            .ok_or("Expected a constant stat scaling")?;
 
         self.constant("TYRANNY_BONUS_HEALTH_RATIO", tyranny)?;
 
         let mut tyranny = Vec::new();
 
-        for (mode, formula) in self.map_formulas(Passive)? {
-            let [value] = formula.capture(regex!(r"^\(\(([\d.]+)\) \* ctx\.bonus_health\)$"))?;
+        for (mode, effect) in self.map_effects_for(Passive, Melee)? {
+            let value = effect.scalings[0]
+                .try_get_value()
+                .ok_or("Expected a constant map stat scaling")?;
+
             tyranny.push((mode, value));
         }
 
@@ -32,7 +35,8 @@ impl Generator for OverlordsBloodmail {
 
         // Arena reaches a larger bonus at the same missing health, growing every
         // few percent of missing health instead
-        let (mut max_bonus, mut max_missing_health, mut steps) = (Vec::new(), Vec::new(), Vec::new());
+        let (mut max_bonus, mut max_missing_health, mut steps) =
+            (Vec::new(), Vec::new(), Vec::new());
 
         for (mode, text) in self.map_texts(regex!(r"^Retribution health ratio changed to"))? {
             let [bonus, missing_health, step] =

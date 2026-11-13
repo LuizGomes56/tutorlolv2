@@ -1,7 +1,7 @@
 //! Evaluates generated Rust formula expressions for validation.
 
 use {
-    super::Sample,
+    super::{Formula, Sample},
     std::str::FromStr,
     strum::VariantArray,
     tutorlolv2_types::{CtxVar, MapMode},
@@ -53,6 +53,48 @@ impl LegacyFormula {
 
     pub fn eval(&self, sample: &Sample) -> f64 {
         self.0.eval(sample)
+    }
+}
+
+impl Formula {
+    /// Reads the same expression syntax as legacy validation, rejecting constructs
+    /// which cannot be represented faithfully by the structured formula model.
+    pub fn parse_expression(source: &str) -> crate::MayFail<Self> {
+        LegacyFormula::parse(source)
+            .ok_or_else(|| format!("[formula] Unsupported expression: {source}"))?
+            .0
+            .into_formula()
+            .ok_or_else(|| format!("[formula] Unsupported expression tree: {source}").into())
+    }
+}
+
+impl Expr {
+    fn into_formula(self) -> Option<Formula> {
+        Some(match self {
+            Self::Number(value) => Formula::Const(value),
+            Self::Var(var) => Formula::Var(var),
+            Self::Neg(value) => -value.into_formula()?,
+            Self::Binary(op, lhs, rhs) => {
+                let (lhs, rhs) = (lhs.into_formula()?, rhs.into_formula()?);
+                match op {
+                    '+' => lhs + rhs,
+                    '-' => lhs - rhs,
+                    '*' => lhs * rhs,
+                    '/' => lhs / rhs,
+                    _ => return None,
+                }
+            }
+            Self::MapMatch(arms, default) => Formula::ByMap {
+                default: Box::new(default.into_formula()?),
+                maps: arms
+                    .into_iter()
+                    .map(|(mode, value)| Some((mode, value.into_formula()?)))
+                    .collect::<Option<_>>()?,
+            },
+            // A Table is contiguous with constant arms. General expression matches
+            // are not representable by it, and must not silently become raw code.
+            Self::Match(_, _) => return None,
+        })
     }
 }
 

@@ -8,7 +8,7 @@ pub use tutorlolv2_types::Tag;
 
 pub const fn generator_directory(tag: Tag) -> &'static str {
     match tag {
-        Tag::Champions => "build/src/generators_v2/impls",
+        Tag::Champions => "build/src/generators/champions",
         Tag::Items => "build/src/generators/impls/items",
         Tag::Runes => "build/src/generators/impls/runes",
     }
@@ -77,59 +77,6 @@ pub trait RegExtractor: Display {
     fn div<T: Display>(&self, value: T) -> String {
         self.sep('/', value)
     }
-}
-
-#[macro_export]
-macro_rules! formula {
-    (($($inner:tt)*)) => {
-        $crate::formula!($($inner)*).parenthesize()
-    };
-    ($first:tt $($rest:tt)*) => {
-        $crate::formula_impl!($crate::formula_atom!($first); $($rest)*)
-    };
-}
-
-#[doc(hidden)]
-#[macro_export]
-macro_rules! formula_atom {
-    (($($inner:tt)*)) => {
-        $crate::formula!($($inner)*).parenthesize()
-    };
-    ($value:tt) => {
-        &$value
-    };
-}
-
-#[doc(hidden)]
-#[macro_export]
-macro_rules! formula_impl {
-    ($acc:expr;) => {
-        $acc
-    };
-    ($acc:expr; + $rhs:tt $($rest:tt)*) => {
-        $crate::formula_impl!(
-            $acc.plus($crate::formula_atom!($rhs));
-            $($rest)*
-        )
-    };
-    ($acc:expr; - $rhs:tt $($rest:tt)*) => {
-        $crate::formula_impl!(
-            $acc.minus($crate::formula_atom!($rhs));
-            $($rest)*
-        )
-    };
-    ($acc:expr; * $rhs:tt $($rest:tt)*) => {
-        $crate::formula_impl!(
-            $acc.times($crate::formula_atom!($rhs));
-            $($rest)*
-        )
-    };
-    ($acc:expr; / $rhs:tt $($rest:tt)*) => {
-        $crate::formula_impl!(
-            $acc.div($crate::formula_atom!($rhs));
-            $($rest)*
-        )
-    };
 }
 
 impl<T: Display + ?Sized> RegExtractor for T {}

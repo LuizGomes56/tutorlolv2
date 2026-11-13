@@ -11,7 +11,7 @@ impl Generator for BladeOfTheRuinedKing {
         let melee_ratio = ratio(Melee)?;
         let ranged_ratio = ratio(Ranged)?;
 
-        let damage = |scaling: &dyn Display| {
+        let damage = |scaling: f64| {
             let modifier = f![(1 - scaling * PhysicalMultiplier)];
             f![EnemyCurrentHealth
                 - ((scaling * EnemyCurrentHealth * modifier - AttackDamage
@@ -28,7 +28,7 @@ impl Generator for BladeOfTheRuinedKing {
                     "Unknown {attack_type:?} percent scaling on {mode:?}"
                 ))?;
 
-                map_damages.push((mode, attack_type, damage(&ratio)));
+                map_damages.push((mode, attack_type, damage(ratio)));
             }
         }
 
@@ -37,8 +37,8 @@ impl Generator for BladeOfTheRuinedKing {
         }
 
         self.damage_type(Physical)
-            .assign(Melee, Min, damage(&melee_ratio))
-            .assign(Ranged, Min, damage(&ranged_ratio))
+            .assign(Melee, Min, damage(melee_ratio))
+            .assign(Ranged, Min, damage(ranged_ratio))
             .end()
     }
 }

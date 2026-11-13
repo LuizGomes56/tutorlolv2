@@ -1,6 +1,8 @@
 use crate::MayFail;
 
+pub mod champions;
 pub mod constants;
+pub mod formula;
 pub mod impls;
 pub mod imports;
 pub mod parser;

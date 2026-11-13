@@ -5,16 +5,14 @@ use {
             constants::{Constants, WithConstants},
             impls::runes::rune_gen_fn,
             parser::{
-                DamageRange, EffectRead, GeneratorFnSig, Parser, WithMapChanges,
-                effect_map_damages, infer_damage_type, likely_damages, model::RiotCdnRune,
+                DamageRange, GeneratorFnSig, Parser, WithMapChanges, infer_damage_type,
+                likely_damages, model::RiotCdnRune,
             },
-            utils::RegExtractor,
         },
     },
     heck::ToPascalCase,
     serde::{Deserialize, Serialize},
     std::{
-        cell::RefCell,
         collections::BTreeMap,
         fmt::Write,
         ops::{Index, IndexMut},
@@ -22,9 +20,10 @@ use {
     tutorlolv2_types::{AttackType, CtxVar, DamageIndex, DamageType, MapMode, Tag},
     tutorlolv2_wiki::{
         JsonRead,
-        map_changes::ChangeTarget,
+        map_changes::{ChangeTarget, overrides::EffectOverrides},
         parser::Effect,
         runes::{RuneKeystone, RuneSlot, WikiRune},
+        wikitext::{Formula, IntoFormula},
     },
 };
 
@@ -41,10 +40,6 @@ pub struct Rune {
     pub melee: DamageRange,
     #[serde(default, skip_serializing_if = "Constants::is_empty")]
     pub constants: Constants,
-    /// Effects whose formula the generator read, by that formula, or by the sum
-    /// of formulas that `compose` returned
-    #[serde(skip)]
-    pub reads: RefCell<BTreeMap<String, Vec<EffectRead>>>,
     /// Formulas on each mode that changes them, for melee minimum and maximum,
     /// then ranged. Serialized, since the build reads the generator's output
     #[serde(default, skip_serializing_if = "super::no_map_damages")]
@@ -152,7 +147,6 @@ impl TryFrom<WikiRune> for Rune {
             ranged: Default::default(),
             melee: Default::default(),
             constants: Default::default(),
-            reads: Default::default(),
             map_damages: Default::default(),
             data,
         })
@@ -166,34 +160,74 @@ impl Rune {
         self
     }
 
-    pub fn formula(&self, index: usize) -> MayFail<String> {
-        let formula = self.effect(index).and_then(|v| {
-            v.formula
-                .as_ref()
-                .ok_or_else(|| format!("No formula string found for effect {index}").into())
-                .map(RegExtractor::parenthesize)
-        })?;
-
-        let read = self.read(index)?;
-        self.reads.borrow_mut().insert(formula.clone(), vec![read]);
-
-        Ok(formula)
+    pub fn formula(&self, index: usize) -> MayFail<Formula> {
+        self.formula_for(index, AttackType::Melee)
     }
 
-    /// The effect at `index`, as the changes of game modes name it
-    fn read(&self, index: usize) -> MayFail<EffectRead> {
-        let (name, effect) = self
-            .data
-            .effects
-            .iter()
-            .nth(index)
-            .ok_or_else(|| format!("No effect found at index {index}"))?;
-
-        Ok(EffectRead {
-            key: name.clone(),
-            name: name.clone(),
-            effect: effect.clone(),
+    pub fn formula_for(&self, index: usize, attack_type: AttackType) -> MayFail<Formula> {
+        self.compose_effects(&[index], attack_type, |effect| {
+            effect
+                .to_formula(CtxVar::Level)?
+                .ok_or_else(|| "No formula found for effect".into())
         })
+    }
+
+    /// Attach mode overrides before custom generators compose or scale the values.
+    fn compose_effects(
+        &self,
+        indexes: &[usize],
+        attack_type: AttackType,
+        read: impl Fn(&Effect) -> MayFail<Formula>,
+    ) -> MayFail<Formula> {
+        let effects = indexes
+            .iter()
+            .map(|&index| {
+                let (name, effect) = self
+                    .data
+                    .effects
+                    .iter()
+                    .nth(index)
+                    .ok_or_else(|| format!("No effect found at index {index}"))?;
+
+                Ok((name.clone(), (name.clone(), effect.clone())))
+            })
+            .collect::<MayFail<BTreeMap<_, _>>>()?;
+
+        let sum = |overrides: &BTreeMap<String, Effect>| {
+            indexes
+                .iter()
+                .map(|&index| {
+                    let (name, effect) = self.data.effects.iter().nth(index).unwrap();
+                    read(overrides.get(name).unwrap_or(effect))
+                })
+                .collect::<MayFail<Vec<_>>>()
+                .map(Formula::Sum)
+        };
+
+        let mut formula = sum(&BTreeMap::new())?;
+        let target = ChangeTarget::Rune {
+            rune_id: self.data.rune_id.clone(),
+        };
+
+        for changes in super::map_changes() {
+            if !changes.entries.values().any(|entry| entry.target == target) {
+                continue;
+            }
+
+            let mode = super::single_mode(&changes.maps, &self.data.rune_id)?;
+            let overrides = EffectOverrides::new(
+                &target,
+                changes,
+                &effects,
+                attack_type == AttackType::Ranged,
+            );
+
+            if !overrides.effects.is_empty() {
+                formula = formula.with_map(mode, sum(&overrides.effects)?);
+            }
+        }
+
+        Ok(formula)
     }
 
     pub fn effect(&self, index: usize) -> MayFail<&Effect> {
@@ -204,12 +238,14 @@ impl Rune {
             .ok_or_else(|| format!("No effect found at index {index}").into())
     }
 
-    pub fn use_formula(&self, index: usize) -> MayFail<String> {
-        self.effect(index)?
-            .use_formula
-            .as_deref()
-            .map(|v| v.replace("x", &format!("{level}", level = CtxVar::Level)))
-            .ok_or_else(|| format!("No use formula found at index {index}").into())
+    pub fn use_formula(&self, index: usize) -> MayFail<Formula> {
+        self.use_formula_for(index, AttackType::Melee)
+    }
+
+    pub fn use_formula_for(&self, index: usize, attack_type: AttackType) -> MayFail<Formula> {
+        self.compose_effects(&[index], attack_type, |effect| {
+            effect.use_formula_tree(CtxVar::Level)
+        })
     }
 
     pub fn description(&self, index: usize) -> MayFail<&String> {
@@ -220,18 +256,31 @@ impl Rune {
             .ok_or_else(|| format!("No description found at index {index}"))?)
     }
 
-    pub fn scaling(&self, n: usize, indexes: impl Iterator<Item = usize>) -> MayFail<String> {
-        let filter = indexes.collect::<Vec<_>>();
+    pub fn scaling(&self, n: usize, indexes: impl Iterator<Item = usize>) -> MayFail<Formula> {
+        self.scaling_for(n, indexes, AttackType::Melee)
+    }
 
-        Ok(self
-            .effect(n)?
-            .scalings
-            .iter()
-            .enumerate()
-            .filter(|(i, _)| filter.contains(i))
-            .filter_map(|(_, scaling)| scaling.render(CtxVar::Level).ok())
-            .collect::<Vec<_>>()
-            .join(" + "))
+    pub fn scaling_for(
+        &self,
+        n: usize,
+        indexes: impl Iterator<Item = usize>,
+        attack_type: AttackType,
+    ) -> MayFail<Formula> {
+        let indexes = indexes.collect::<Vec<_>>();
+
+        self.compose_effects(&[n], attack_type, |effect| {
+            indexes
+                .iter()
+                .map(|&index| {
+                    effect
+                        .scalings
+                        .get(index)
+                        .ok_or_else(|| format!("No scaling found at index {index}").into())
+                        .and_then(|scaling| scaling.to_formula(CtxVar::Level))
+                })
+                .collect::<MayFail<Vec<_>>>()
+                .map(Formula::Sum)
+        })
     }
 
     pub fn damage(
@@ -240,7 +289,7 @@ impl Rune {
         var: DamageIndex,
         index: usize,
     ) -> MayFail<&mut Self> {
-        let formula = self.formula(index)?;
+        let formula = self.formula_for(index, attack_type)?;
         Ok(self.assign(attack_type, var, formula))
     }
 
@@ -248,38 +297,48 @@ impl Rune {
         &mut self,
         attack_type: AttackType,
         var: DamageIndex,
-        damage: impl AsRef<str>,
+        damage: impl IntoFormula,
     ) -> &mut Self {
-        self[attack_type][var] = damage.as_ref().to_string();
+        let formula = damage.to_formula();
+        let slot = match (attack_type, var) {
+            (AttackType::Melee, DamageIndex::Min) => 0,
+            (AttackType::Melee, DamageIndex::Max) => 1,
+            (AttackType::Ranged, DamageIndex::Min) => 2,
+            (AttackType::Ranged, DamageIndex::Max) => 3,
+        };
+
+        self.map_damages[slot] = formula
+            .modes()
+            .into_iter()
+            .map(|mode| (mode, formula.on(mode).rust()))
+            .collect();
+
+        self[attack_type][var] = formula.on(MapMode::Default).rust();
         self
     }
 
-    pub fn compose<const N: usize>(&mut self, indexes: [usize; N]) -> MayFail<String> {
-        let mut result = [const { String::new() }; N];
-
-        for (i, index) in indexes.into_iter().enumerate() {
-            let formula = self.formula(index)?;
-            result[i] = formula;
-        }
-
-        let reads = indexes
-            .into_iter()
-            .map(|index| self.read(index))
-            .collect::<MayFail<Vec<_>>>()?;
-
-        let formula = result.join(" + ");
-
-        self.reads.borrow_mut().insert(formula.clone(), reads);
-
-        Ok(formula)
+    pub fn compose<const N: usize>(&mut self, indexes: [usize; N]) -> MayFail<Formula> {
+        self.compose_for(indexes, AttackType::Melee)
     }
 
-    pub fn assign_min(&mut self, damage: impl AsRef<str>) -> &mut Self {
+    pub fn compose_for<const N: usize>(
+        &self,
+        indexes: [usize; N],
+        attack_type: AttackType,
+    ) -> MayFail<Formula> {
+        self.compose_effects(&indexes, attack_type, |effect| {
+            effect
+                .to_formula(CtxVar::Level)?
+                .ok_or_else(|| "No formula found for effect".into())
+        })
+    }
+
+    pub fn assign_min(&mut self, damage: impl IntoFormula) -> &mut Self {
         self.assign(AttackType::Melee, DamageIndex::Min, &damage)
             .assign(AttackType::Ranged, DamageIndex::Min, damage)
     }
 
-    pub fn assign_max(&mut self, damage: impl AsRef<str>) -> &mut Self {
+    pub fn assign_max(&mut self, damage: impl IntoFormula) -> &mut Self {
         self.assign(AttackType::Melee, DamageIndex::Max, &damage)
             .assign(AttackType::Ranged, DamageIndex::Max, damage)
     }
@@ -302,20 +361,6 @@ impl Rune {
             );
             // return Err("Unknown damage type for this rune".into());
         }
-
-        self.map_damages = effect_map_damages(
-            &ChangeTarget::Rune {
-                rune_id: self.data.rune_id.clone(),
-            },
-            &self.data.rune_id,
-            [
-                &self.melee.min_dmg,
-                &self.melee.max_dmg,
-                &self.ranged.min_dmg,
-                &self.ranged.max_dmg,
-            ],
-            &self.reads.borrow(),
-        )?;
 
         Ok(())
     }

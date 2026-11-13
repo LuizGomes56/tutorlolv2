@@ -6,8 +6,8 @@ impl Generator for GraspOfTheUndying {
             return Err("No numbers [melee, ranged] at self[0, 4..6]".into());
         };
 
-        self.assign(Melee, Min, melee.times(MaxHealth))
-            .assign(Ranged, Min, ranged.times(MaxHealth))
+        self.assign(Melee, Min, f![melee * MaxHealth])
+            .assign(Ranged, Min, f![ranged * MaxHealth])
             .damage_type(Magic)
             .end()
     }

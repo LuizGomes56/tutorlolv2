@@ -2,8 +2,11 @@ use super::*;
 
 impl Generator for DarkHarvest {
     fn generate(&mut self) -> MayFail {
-        let scalings = self.scaling(2, 0..3)?;
-        let damage = f![30 + scalings];
-        self.assign_min(damage).damage_type(Adaptive).end()
+        for attack_type in [Melee, Ranged] {
+            let scalings = self.scaling_for(2, 0..3, attack_type)?;
+            self.assign(attack_type, Min, f![30 + scalings]);
+        }
+
+        self.damage_type(Adaptive).end()
     }
 }

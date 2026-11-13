@@ -725,3 +725,9 @@ impl IntoFormula for Formula {
         self.clone()
     }
 }
+
+impl<T: IntoFormula + ?Sized> IntoFormula for &T {
+    fn to_formula(&self) -> Formula {
+        T::to_formula(*self)
+    }
+}

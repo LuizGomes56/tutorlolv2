@@ -8,7 +8,7 @@ use tutorlolv2_build_dep::{
             champions::{Champion, ChampionParser},
         },
     },
-    generators_v2::impls::{CHAMPIONS, champion_gen_fn},
+    generators::champions::{CHAMPIONS, champion_gen_fn},
 };
 use tutorlolv2_types::{AbilityId, MapMode};
 use tutorlolv2_wiki::{
@@ -144,7 +144,7 @@ fn mel_and_twitch_use_the_complete_wiki_formulas() {
 #[test]
 #[ignore = "needs the cache of wiki pages and model.json"]
 fn hecarim_wiki_increase_matches_the_manual_reference_on_every_map() {
-    use tutorlolv2_build_dep::formula_v2 as f;
+    use tutorlolv2_build_dep::formula as f;
     use tutorlolv2_types::{AbilityName::Void, CtxVar::*};
     let parser = ChampionParser::new().unwrap();
     let hecarim = v2_champion(&parser, "Hecarim");

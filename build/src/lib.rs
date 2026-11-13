@@ -22,7 +22,6 @@ pub use tutorlolv2_wiki::{DynError, MayFail};
 
 pub mod context;
 pub mod generators;
-pub mod generators_v2;
 pub mod scripts;
 
 pub const ENGINE_CFG: &str = r#"#[cfg(feature = "engine")]"#;
