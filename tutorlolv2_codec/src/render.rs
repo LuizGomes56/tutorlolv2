@@ -1,8 +1,8 @@
 use crate::common::{
     DamageSlot, EntityKind, Error, HEADER_LEN, MAGIC, OP_AXIS, OP_BIN_BASE, OP_BIN_MAX, OP_CTX,
-    OP_GROUP, OP_MAP_MATCH_BLOCK, OP_MAP_MATCH_INLINE, OP_MATCH_BLOCK, OP_MATCH_INLINE,
-    OP_MAX_ZERO, OP_NEG, OP_NUM_CONST, OP_NUM_F32, OP_NUM_I8, OP_NUM_U8, OP_NUMERIC_TABLE,
-    OP_REF_LOCAL, VERSION,
+    OP_EXPR_MATCH_BLOCK, OP_EXPR_MATCH_INLINE, OP_GROUP, OP_MAP_MATCH_BLOCK, OP_MAP_MATCH_INLINE,
+    OP_MATCH_BLOCK, OP_MATCH_INLINE, OP_MAX_ZERO, OP_NEG, OP_NUM_CONST, OP_NUM_F32, OP_NUM_I8,
+    OP_NUM_U8, OP_NUMERIC_TABLE, OP_REF_LOCAL, VERSION,
 };
 use crate::common::{ParseError, const_try};
 use crate::markup::{Html, Markup};
@@ -607,10 +607,27 @@ impl FormulaRenderer<'_, '_, '_> {
                     out,
                 )?;
             }
+            OP_EXPR_MATCH_INLINE => {
+                self.render_expr_match(cursor, MatchRenderLayout::Inline, out)?
+            }
+            OP_EXPR_MATCH_BLOCK => {
+                let arm_indent_units = cursor.u8()?;
+                let close_indent_units = cursor.u8()?;
+
+                self.render_expr_match(
+                    cursor,
+                    MatchRenderLayout::Block {
+                        arm_indent_units,
+                        close_indent_units,
+                    },
+                    out,
+                )?;
+            }
             OP_MAP_MATCH_INLINE => self.render_map_match(cursor, MatchRenderLayout::Inline, out)?,
             OP_MAP_MATCH_BLOCK => {
                 let arm_indent_units = cursor.u8()?;
                 let close_indent_units = cursor.u8()?;
+
                 self.render_map_match(
                     cursor,
                     MatchRenderLayout::Block {
@@ -637,10 +654,11 @@ impl FormulaRenderer<'_, '_, '_> {
                     3 => "/",
                     _ => unreachable!(),
                 };
+
                 let break_kind = (opcode >> 2) & 0x03;
                 let indent = if break_kind == 0 { 0 } else { cursor.u8()? };
-
                 self.expr(cursor, out)?;
+
                 match break_kind {
                     0 => {
                         self.raw(out, " ");
@@ -682,6 +700,7 @@ impl FormulaRenderer<'_, '_, '_> {
 
         self.styled(out, Class::Control, "match");
         self.raw(out, " ");
+
         let name = (self.ctx_name)(ctx);
         self.styled(out, Class::Variable, &name);
 
@@ -716,15 +735,18 @@ impl FormulaRenderer<'_, '_, '_> {
                     self.render_match_arm(&mut cursor, out)?;
                     self.raw(out, ",");
                 }
+
                 self.raw(out, "\n");
                 self.indent(out, close_indent_units);
             }
         }
 
         self.close_bracket(out, "}");
+
         if !cursor.is_eof() {
             return Err(Error::Corrupt("match has trailing bytes"));
         }
+
         Ok(())
     }
 
@@ -782,31 +804,110 @@ impl FormulaRenderer<'_, '_, '_> {
             }
 
             self.raw(out, " => ");
+            self.render_expression_arm(cursor, layout, out)?;
+        }
 
-            match cursor.u8()? {
-                0 => {
-                    self.expr(cursor, out)?;
-
-                    if let MatchRenderLayout::Block { .. } = layout {
-                        self.raw(out, ",");
-                    }
-                }
-                2 => self.expr(cursor, out)?,
-                1 => {
-                    let body_indent_units = cursor.u8()?;
-                    let close_indent_units = cursor.u8()?;
-
-                    // A block has no comma after it
-                    self.open_bracket(out, "{");
-                    self.raw(out, "\n");
-                    self.indent(out, body_indent_units);
-                    self.expr(cursor, out)?;
-                    self.raw(out, "\n");
-                    self.indent(out, close_indent_units);
-                    self.close_bracket(out, "}");
-                }
-                _ => return Err(Error::Corrupt("unknown map arm body")),
+        match layout {
+            MatchRenderLayout::Inline => self.raw(out, " "),
+            MatchRenderLayout::Block {
+                close_indent_units, ..
+            } => {
+                self.raw(out, "\n");
+                self.indent(out, close_indent_units);
             }
+        }
+
+        self.close_bracket(out, "}");
+
+        Ok(())
+    }
+
+    fn render_expression_arm(
+        &mut self,
+        cursor: &mut Cursor<'_>,
+        layout: MatchRenderLayout,
+        out: &mut String,
+    ) -> Result<(), Error> {
+        match cursor.u8()? {
+            0 => {
+                self.expr(cursor, out)?;
+
+                if let MatchRenderLayout::Block { .. } = layout {
+                    self.raw(out, ",");
+                }
+            }
+            2 => self.expr(cursor, out)?,
+            1 => {
+                let body_indent_units = cursor.u8()?;
+                let close_indent_units = cursor.u8()?;
+
+                // A block has no comma after it
+                self.open_bracket(out, "{");
+                self.raw(out, "\n");
+                self.indent(out, body_indent_units);
+                self.expr(cursor, out)?;
+                self.raw(out, "\n");
+                self.indent(out, close_indent_units);
+                self.close_bracket(out, "}");
+            }
+            _ => return Err(Error::Corrupt("unknown expression arm body")),
+        }
+        Ok(())
+    }
+
+    fn render_expr_match(
+        &mut self,
+        cursor: &mut Cursor<'_>,
+        layout: MatchRenderLayout,
+        out: &mut String,
+    ) -> Result<(), Error> {
+        let ctx = cursor.u8()?;
+        let flags = cursor.u8()?;
+
+        if flags > 1 {
+            return Err(Error::Corrupt("unknown expression match flags"));
+        }
+
+        let count = cursor.u8()?;
+
+        if count == 0 {
+            return Err(Error::Corrupt("empty expression match"));
+        }
+
+        self.styled(out, Class::Control, "match");
+        self.raw(out, " ");
+
+        let name = (self.ctx_name)(ctx);
+
+        self.styled(out, Class::Variable, &name);
+
+        if flags == 1 {
+            self.raw(out, " ");
+            self.styled(out, Class::Keyword, "as");
+            self.raw(out, " ");
+            self.styled(out, Class::Primitive, "u8");
+        }
+
+        self.raw(out, " ");
+        self.open_bracket(out, "{");
+
+        for index in 0..count {
+            match layout {
+                MatchRenderLayout::Inline if index == 0 => self.raw(out, " "),
+                MatchRenderLayout::Inline => self.raw(out, ", "),
+                MatchRenderLayout::Block {
+                    arm_indent_units, ..
+                } => {
+                    self.raw(out, "\n");
+                    self.indent(out, arm_indent_units);
+                }
+            }
+
+            let pattern = cursor.u8()?;
+
+            self.render_pattern(cursor, out, pattern)?;
+            self.raw(out, " => ");
+            self.render_expression_arm(cursor, layout, out)?;
         }
 
         match layout {
@@ -884,7 +985,9 @@ impl FormulaRenderer<'_, '_, '_> {
             OP_NUM_F32 => Self::format_f32(f32::from_bits(cursor.u32()?)),
             _ => return Err(Error::Corrupt("match RHS is not a number opcode")),
         };
+
         self.styled(out, Class::Number, &text);
+
         Ok(())
     }
 

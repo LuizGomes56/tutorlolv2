@@ -34,7 +34,7 @@ impl From<ParseError> for Error {
 use std::fmt;
 
 pub const MAGIC: [u8; 4] = *b"FBC1";
-pub const VERSION: u8 = 4;
+pub const VERSION: u8 = 5;
 pub(crate) const HEADER_LEN: usize = 24;
 
 // Number opcodes.
@@ -59,6 +59,8 @@ pub(crate) const OP_MAP_MATCH_BLOCK: u8 = 0x17;
 pub(crate) const OP_NUMERIC_TABLE: u8 = 0x18;
 pub(crate) const OP_AXIS: u8 = 0x19;
 pub(crate) const OP_MAX_ZERO: u8 = 0x1a;
+pub(crate) const OP_EXPR_MATCH_INLINE: u8 = 0x1b;
+pub(crate) const OP_EXPR_MATCH_BLOCK: u8 = 0x1c;
 
 // 0x20..=0x2b are binary operators.
 // low 2 bits: operator  (0 +, 1 -, 2 *, 3 /)

@@ -1,7 +1,8 @@
 use crate::common::{
-    DamageSlot, EntityKind, Error, HEADER_LEN, MAGIC, OP_AXIS, OP_BIN_BASE, OP_CTX, OP_GROUP,
-    OP_MAP_MATCH_BLOCK, OP_MAP_MATCH_INLINE, OP_MATCH_BLOCK, OP_MATCH_INLINE, OP_MAX_ZERO, OP_NEG,
-    OP_NUM_CONST, OP_NUM_F32, OP_NUM_I8, OP_NUM_U8, OP_NUMERIC_TABLE, OP_REF_LOCAL, VERSION,
+    DamageSlot, EntityKind, Error, HEADER_LEN, MAGIC, OP_AXIS, OP_BIN_BASE, OP_CTX,
+    OP_EXPR_MATCH_BLOCK, OP_EXPR_MATCH_INLINE, OP_GROUP, OP_MAP_MATCH_BLOCK, OP_MAP_MATCH_INLINE,
+    OP_MATCH_BLOCK, OP_MATCH_INLINE, OP_MAX_ZERO, OP_NEG, OP_NUM_CONST, OP_NUM_F32, OP_NUM_I8,
+    OP_NUM_U8, OP_NUMERIC_TABLE, OP_REF_LOCAL, VERSION,
 };
 use std::collections::HashMap;
 use std::convert::TryFrom;
@@ -41,6 +42,12 @@ enum Ast {
         id: u8,
         layout: MatchLayout,
     },
+    ExprMatch {
+        ctx: u8,
+        cast_u8: bool,
+        arms: Vec<(MatchPattern, MapArm)>,
+        layout: MatchLayout,
+    },
     /// `match ctx.map { #[cold] Aram => …, _ => … }`, an arm per mode and the default
     MapMatch {
         arms: Vec<(u8, MapArm)>,
@@ -49,7 +56,7 @@ enum Ast {
     },
 }
 
-/// Value of an arm of a map match
+/// Typed value of a numeric or map match arm
 #[derive(Debug, Clone)]
 struct MapArm {
     value: Ast,
@@ -108,6 +115,11 @@ impl Ast {
                 right.count_numbers(freq);
             }
             Self::Group(inner) | Self::Neg(inner) => inner.count_numbers(freq),
+            Self::ExprMatch { arms, .. } => {
+                for (_, arm) in arms {
+                    arm.value.count_numbers(freq);
+                }
+            }
             Self::MapMatch { arms, default, .. } => {
                 for (_, arm) in arms {
                     arm.value.count_numbers(freq);
@@ -167,6 +179,31 @@ impl Ast {
                 out.push(*arm_indent_units);
                 out.push(*close_indent_units);
             }
+            Self::ExprMatch {
+                ctx,
+                cast_u8,
+                arms,
+                layout,
+            } => {
+                match layout {
+                    MatchLayout::Inline => out.push(OP_EXPR_MATCH_INLINE),
+                    MatchLayout::Block {
+                        arm_indent_units,
+                        close_indent_units,
+                    } => {
+                        out.push(OP_EXPR_MATCH_BLOCK);
+                        out.push(*arm_indent_units);
+                        out.push(*close_indent_units);
+                    }
+                }
+
+                out.extend([*ctx, u8::from(*cast_u8), arms.len() as u8]);
+
+                for (pattern, arm) in arms {
+                    pattern.encode(out);
+                    arm.encode(constants, out);
+                }
+            }
             Self::MapMatch {
                 arms,
                 default,
@@ -208,10 +245,13 @@ impl Ast {
                 right,
             } => {
                 let opcode = OP_BIN_BASE | ((*op as u8) & 0x03) | ((layout.kind as u8) << 2);
+
                 out.push(opcode);
+
                 if layout.kind != BreakKind::Inline {
                     out.push(layout.indent_units);
                 }
+
                 left.encode(constants, out);
                 right.encode(constants, out);
             }
@@ -441,9 +481,11 @@ impl FormulaDbBuilder {
         }
 
         let mut parsed = Vec::with_capacity(formulas.len());
+
         for formula in formulas {
             parsed.push((formula.local, self.parse_formula(formula.source, refs)?));
         }
+
         parsed.sort_by_key(|(local, _)| *local);
 
         for (index, (local, _)) in parsed.iter().enumerate() {
@@ -546,6 +588,7 @@ impl FormulaDbBuilder {
         };
 
         let expr = parser.parse_expression(0)?;
+
         if !parser.is_eof() {
             let token = parser.peek().unwrap();
             return Err(token.error("unexpected token after end of formula"));
@@ -558,6 +601,7 @@ impl FormulaDbBuilder {
     pub fn finish(self) -> Result<Vec<u8>, Error> {
         let champion_count =
             u16::try_from(self.champions.len()).map_err(|_| Error::TooManyOwners)?;
+
         let item_count = u16::try_from(self.items.len()).map_err(|_| Error::TooManyOwners)?;
         let rune_count = u16::try_from(self.runes.len()).map_err(|_| Error::TooManyOwners)?;
 
@@ -666,21 +710,27 @@ impl FormulaDbBuilder {
         for bits in constants.values {
             out.push_u32_le(bits);
         }
+
         for offset in match_offsets {
             out.push_u32_le(offset);
         }
+
         for base in champion_bases {
             out.push_u16_le(base);
         }
+
         for entry in item_entries {
             entry.encode(&mut out);
         }
+
         for entry in rune_entries {
             entry.encode(&mut out);
         }
+
         for offset in formula_offsets {
             out.push_u32_le(offset);
         }
+
         out.extend_from_slice(&match_data);
         out.extend_from_slice(&formula_data);
 
@@ -769,9 +819,11 @@ impl ImmediateNumber {
         if !value.is_finite() || value.fract() != 0.0 {
             return None;
         }
+
         if (0.0..=255.0).contains(&value) {
             return Some(Self::U8(value as u8));
         }
+
         if (-128.0..0.0).contains(&value) {
             return Some(Self::I8(value as i8));
         }
@@ -841,6 +893,7 @@ impl Token {
                 column: self.column,
             });
         }
+
         Ok((self.column / 2) as u8)
     }
 }
@@ -1059,9 +1112,11 @@ impl Parser<'_> {
 
     fn bump(&mut self) -> Option<Token> {
         let token = self.tokens.get(self.pos).cloned();
+
         if token.is_some() {
             self.pos += 1;
         }
+
         token
     }
 
@@ -1299,6 +1354,7 @@ impl Parser<'_> {
 
     fn parse_function_call(&mut self, start: Token, name: String) -> Result<Parsed, Error> {
         self.expect(TokenKind::LParen, "expected `(` after function name")?;
+
         let argument = self
             .bump()
             .ok_or_else(|| start.error("expected function argument"))?;
@@ -1350,10 +1406,11 @@ impl Parser<'_> {
         }
 
         let ctx = (self.ctx_resolver)(&field).ok_or_else(|| Error::UnknownCtxVar(field.clone()))?;
-
         let mut cast_u8 = false;
+
         if matches!(self.peek().map(|t| &t.kind), Some(TokenKind::Ident(value)) if value == "as") {
             self.bump();
+
             let ty = self
                 .bump()
                 .ok_or_else(|| field_token.error("expected `u8` after `as`"))?;
@@ -1375,12 +1432,13 @@ impl Parser<'_> {
             }
 
             let pattern = self.parse_match_pattern()?;
+
             self.expect(TokenKind::FatArrow, "expected `=>` in match arm")?;
-            let value = self.parse_match_rhs_number()?;
-            arms.push(MatchArm {
-                pattern,
-                value: value.to_bits(),
-            });
+
+            let arm = self.parse_map_arm()?;
+            let plain = matches!(arm.body, ArmBody::Plain);
+
+            arms.push((pattern, arm));
 
             if arms.len() > u8::MAX as usize {
                 return Err(Error::TooManyMatchArms);
@@ -1388,7 +1446,7 @@ impl Parser<'_> {
 
             if matches!(self.peek().map(|t| &t.kind), Some(TokenKind::Comma)) {
                 self.bump();
-            } else if !matches!(self.peek().map(|t| &t.kind), Some(TokenKind::RBrace)) {
+            } else if plain && !matches!(self.peek().map(|t| &t.kind), Some(TokenKind::RBrace)) {
                 return Err(self
                     .peek()
                     .unwrap()
@@ -1406,6 +1464,37 @@ impl Parser<'_> {
         } else {
             MatchLayout::Inline
         };
+
+        if arms.is_empty() {
+            return Err(start.error("empty match is unsupported"));
+        }
+
+        if !arms
+            .iter()
+            .all(|(_, arm)| matches!((&arm.value, arm.body), (Ast::Number(_), ArmBody::Plain)))
+        {
+            return Ok(Parsed {
+                ast: Ast::ExprMatch {
+                    ctx,
+                    cast_u8,
+                    arms,
+                    layout,
+                },
+                start_line: start.line,
+                start_col: start.column,
+                end_line: close.line,
+            });
+        }
+
+        let arms = arms
+            .into_iter()
+            .map(|(pattern, arm)| {
+                let Ast::Number(value) = arm.value else {
+                    unreachable!()
+                };
+                MatchArm { pattern, value }
+            })
+            .collect();
 
         let definition = MatchDef { ctx, cast_u8, arms };
         let id = if let Some(&id) = self.match_ids.get(&definition) {
@@ -1518,8 +1607,13 @@ impl Parser<'_> {
             || matches!(self.tokens.get(self.pos + 1).map(|t| &t.kind), Some(TokenKind::Ident(n)) if n == "let")
         {
             let value = self.parse_expression(0)?.ast;
-            let body = if matches!(value, Ast::NumericTable { .. })
-                && !matches!(self.peek().map(|t| &t.kind), Some(TokenKind::Comma))
+            let body = if matches!(
+                value,
+                Ast::NumericTable { .. }
+                    | Ast::Match { .. }
+                    | Ast::ExprMatch { .. }
+                    | Ast::MapMatch { .. }
+            ) && !matches!(self.peek().map(|t| &t.kind), Some(TokenKind::Comma))
             {
                 ArmBody::BlockExpression
             } else {
@@ -1608,35 +1702,6 @@ impl Parser<'_> {
             column: token.column,
             message,
         })
-    }
-
-    fn parse_match_rhs_number(&mut self) -> Result<f32, Error> {
-        let negative = matches!(self.peek().map(|t| &t.kind), Some(TokenKind::Minus));
-        if negative {
-            self.bump();
-        }
-
-        let token = self.bump().ok_or_else(|| Error::Parse {
-            line: 1,
-            column: 0,
-            message: "expected numeric match RHS".into(),
-        })?;
-
-        let source = match &token.kind {
-            TokenKind::Number(source) => source,
-            _ => return Err(token.error("match RHS must be a number")),
-        };
-
-        let mut value = Self::parse_f32(source).map_err(|message| Error::Parse {
-            line: token.line,
-            column: token.column,
-            message,
-        })?;
-
-        if negative {
-            value = -value;
-        }
-        Ok(value)
     }
 
     fn expect(&mut self, expected: TokenKind, message: &str) -> Result<Token, Error> {

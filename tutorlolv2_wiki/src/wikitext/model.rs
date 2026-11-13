@@ -105,6 +105,13 @@ pub struct Sample {
     pub map: MapMode,
 }
 
+/// An exclusive slice of level samples sharing one constant or growth rule.
+struct LevelRun {
+    start: usize,
+    end: usize,
+    step: Option<f64>,
+}
+
 impl Sample {
     /// Sample with `vars`, on the default map
     pub fn new(vars: impl IntoIterator<Item = (CtxVar, f64)>) -> Self {
@@ -303,7 +310,13 @@ impl Formula {
                 }
                 None => {
                     let index = (sample.get(*rank) - 1.0).max(0.0) as usize;
-                    *values.get(index.min(values.len().checked_sub(1)?))?
+                    let index = index.min(values.len().checked_sub(1)?);
+
+                    if let Some((keys, runs)) = Self::rank_runs(*rank, values) {
+                        return Self::eval_runs(&keys, values, &runs, index, sample.get(*rank));
+                    }
+
+                    *values.get(index)?
                 }
             },
             Formula::Table { var, keys, values } => {
@@ -317,6 +330,11 @@ impl Formula {
                     .iter()
                     .rposition(|key| f64::from(*key) <= value)
                     .unwrap_or(0);
+
+                if let Some(runs) = Self::level_runs(*var, keys, values) {
+                    return Self::eval_runs(keys, values, &runs, index, value);
+                }
+
                 *values.get(index)?
             }
             Formula::NumericTable {
@@ -489,6 +507,146 @@ impl Formula {
         }
 
         Self::arithmetic_step(values)
+    }
+
+    fn rank_runs(rank: CtxVar, values: &[f64]) -> Option<(Vec<u8>, Vec<LevelRun>)> {
+        if !Self::is_level_axis(rank) || values.len() > u8::MAX as usize {
+            return None;
+        }
+
+        let keys = (1..=values.len()).map(|key| key as u8).collect::<Vec<_>>();
+        let runs = Self::level_runs(rank, &keys, values)?;
+
+        Some((keys, runs))
+    }
+
+    fn level_runs(var: CtxVar, keys: &[u8], values: &[f64]) -> Option<Vec<LevelRun>> {
+        if !Self::is_level_axis(var)
+            || keys.len() != values.len()
+            || values.len() < 2
+            || values.iter().any(|value| !value.is_finite())
+            || !keys
+                .windows(2)
+                .all(|pair| u16::from(pair[1]) == u16::from(pair[0]) + 1)
+        {
+            return None;
+        }
+
+        let mut runs = Vec::new();
+        let mut start = 0;
+
+        while start < values.len() {
+            let mut end = start + 1;
+            let mut step = None;
+
+            if values.get(end) == Some(&values[start]) {
+                while values.get(end) == Some(&values[start]) {
+                    end += 1;
+                }
+            } else if start + 4 <= values.len()
+                && let Some(growth) = Self::arithmetic_step(&values[start..start + 4])
+            {
+                // Four samples ensure useful compression and avoid fitting a
+                // short accidental straight stretch of an otherwise curved row.
+                end = start + 4;
+                step = Some(growth);
+
+                while end < values.len() {
+                    let Some(growth) = Self::arithmetic_step(&values[start..end + 1]) else {
+                        break;
+                    };
+
+                    step = Some(growth);
+                    end += 1;
+                }
+            }
+
+            runs.push(LevelRun { start, end, step });
+            start = end;
+        }
+
+        (runs.len() < values.len()).then_some(runs)
+    }
+
+    fn eval_runs(
+        keys: &[u8],
+        values: &[f64],
+        runs: &[LevelRun],
+        index: usize,
+        axis: f64,
+    ) -> Option<f64> {
+        let run = runs
+            .iter()
+            .find(|run| index >= run.start && index < run.end)?;
+
+        let base = *values.get(run.start)?;
+
+        Some(match run.step {
+            Some(step) => {
+                let offset = axis - f64::from(keys[run.start]);
+
+                base + step
+                    * if run.start == 0 {
+                        offset.max(0.0)
+                    } else {
+                        offset
+                    }
+            }
+            None => base,
+        })
+    }
+
+    fn write_runs(
+        var: CtxVar,
+        keys: &[u8],
+        values: &[f64],
+        runs: &[LevelRun],
+        f: &mut fmt::Formatter<'_>,
+    ) -> fmt::Result {
+        if runs.len() == 1 && runs[0].step.is_none() {
+            return write!(f, "{}", Number(values[0]));
+        }
+
+        write!(f, "match {var} {{ ")?;
+
+        for (index, run) in runs.iter().enumerate() {
+            if index > 0 {
+                f.write_str(", ")?;
+            }
+
+            if index == 0 {
+                write!(f, "..{} => ", keys[runs[index + 1].start])?;
+            } else if index + 1 == runs.len() {
+                write!(f, "{}.. => ", keys[run.start])?;
+            } else {
+                write!(
+                    f,
+                    "{}..{} => ",
+                    keys[run.start],
+                    keys[runs[index + 1].start]
+                )?;
+            }
+
+            match run.step {
+                Some(step) if run.start == 0 => write!(
+                    f,
+                    "({}) + ({} * (({var} - {}).max(0.0)))",
+                    Number(values[run.start]),
+                    Number(step),
+                    Number(f64::from(keys[run.start]))
+                )?,
+                Some(step) => write!(
+                    f,
+                    "({}) + ({} * ({var} - {}))",
+                    Number(values[run.start]),
+                    Number(step),
+                    Number(f64::from(keys[run.start]))
+                )?,
+                None => write!(f, "{}", Number(values[run.start]))?,
+            }
+        }
+
+        f.write_str(" }")
     }
 
     /// Whether the formula displays without parentheses around it
@@ -709,6 +867,10 @@ impl Formula {
                     );
                 }
 
+                if let Some((keys, runs)) = Self::rank_runs(*rank, values) {
+                    return Self::write_runs(*rank, &keys, values, &runs, f);
+                }
+
                 let last = values.len();
                 let arms = values
                     .iter()
@@ -736,6 +898,11 @@ impl Formula {
                         Number(f64::from(keys[0]))
                     );
                 }
+
+                if let Some(runs) = Self::level_runs(*var, keys, values) {
+                    return Self::write_runs(*var, keys, values, &runs, f);
+                }
+
                 let last = values.len() - 1;
                 let arms = values
                     .iter()
@@ -758,6 +925,7 @@ impl Formula {
                 if let Some(step) = Self::numeric_level_step(axis, keys, values) {
                     write!(f, "({}) + ({} * ((", Number(values[0]), Number(step))?;
                     axis.write(f, syntax)?;
+
                     return write!(f, " - {}).max(0.0)))", Number(keys[0]));
                 }
 
