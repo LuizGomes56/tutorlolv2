@@ -133,8 +133,29 @@ fn structured_ranges_and_multipliers_preserve_metadata_rules() {
 
 #[test]
 fn multiplier_without_base_does_not_create_damage() {
-    let mut effect = Effect { scalings: vec![Scaling::Multiplier { raw: String::new(), base: 2.0, inner: vec![] }], ..Default::default() };
-    assert_eq!(effect.to_formula(CtxVar::Level).unwrap().unwrap().eval(&Sample::default()), Some(0.0));
+    let mut effect = Effect {
+        scalings: vec![Scaling::Multiplier {
+            raw: String::new(),
+            base: 2.0,
+            inner: vec![],
+        }],
+        ..Default::default()
+    };
+    assert_eq!(
+        effect
+            .to_formula(CtxVar::Level)
+            .unwrap()
+            .unwrap()
+            .eval(&Sample::default()),
+        Some(0.0)
+    );
     effect.scalings.push(Scaling::Flat { values: vec![7.0] });
-    assert_eq!(effect.to_formula(CtxVar::Level).unwrap().unwrap().eval(&Sample::default()), Some(7.0));
+    assert_eq!(
+        effect
+            .to_formula(CtxVar::Level)
+            .unwrap()
+            .unwrap()
+            .eval(&Sample::default()),
+        Some(7.0)
+    );
 }

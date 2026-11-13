@@ -53,30 +53,6 @@ pub trait RegExtractor: Display {
             .try_into()
             .map_err(|_| format!("Pattern {source:?} has {len} groups, expected {N}").into())
     }
-
-    fn parenthesize(&self) -> String {
-        format!("({self})")
-    }
-
-    fn sep<T: Display>(&self, sep: char, value: T) -> String {
-        format!("{self} {sep} {value}")
-    }
-
-    fn times<T: Display>(&self, value: T) -> String {
-        self.sep('*', value)
-    }
-
-    fn plus<T: Display>(&self, value: T) -> String {
-        self.sep('+', value)
-    }
-
-    fn minus<T: Display>(&self, value: T) -> String {
-        self.sep('-', value)
-    }
-
-    fn div<T: Display>(&self, value: T) -> String {
-        self.sep('/', value)
-    }
 }
 
 impl<T: Display + ?Sized> RegExtractor for T {}

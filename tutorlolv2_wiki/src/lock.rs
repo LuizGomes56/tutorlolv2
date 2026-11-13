@@ -32,7 +32,7 @@ pub fn path() -> PathBuf {
 pub const FILE_NAME: &str = "wiki.lock.json";
 
 /// Directory with the generators of every champion, rune and item
-pub const CHAMPION_GENERATORS: &str = "build/src/generators_v2/impls";
+pub const CHAMPION_GENERATORS: &str = "build/src/generators/champions";
 
 pub const GENERATORS: &str = "build/src/generators/impls";
 

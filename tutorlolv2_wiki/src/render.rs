@@ -876,6 +876,7 @@ impl Effect {
             let term = scaling.to_formula(axis)?;
             value = Some(match (value, scaling) {
                 (Some(base), Scaling::Multiplier { .. }) => base * term,
+                (None, Scaling::Multiplier { .. }) => Formula::Const(0.0),
                 (Some(base), _) if !base.is_zero() => base + term,
                 _ => term,
             });
