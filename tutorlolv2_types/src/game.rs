@@ -168,6 +168,7 @@ impl GameMap {
             19.. => 18,
             level => level,
         };
+
         min + (max - min) * (level - 1) as f32 / 17.0
     }
 

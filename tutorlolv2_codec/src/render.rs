@@ -759,7 +759,11 @@ impl FormulaRenderer<'_, '_, '_> {
 
             if index < arm_count {
                 let name = (self.map_name)(cursor.u8()?);
-                self.styled(out, Class::Macro, "#[cold]");
+
+                self.raw(out, "#");
+                self.open_bracket(out, "[");
+                self.styled(out, Class::Function, "cold");
+                self.close_bracket(out, "]");
 
                 // As rustfmt writes it, on its own line in a block
                 match layout {
@@ -816,11 +820,13 @@ impl FormulaRenderer<'_, '_, '_> {
         }
 
         self.close_bracket(out, "}");
+
         Ok(())
     }
 
     fn render_match_arm(&mut self, cursor: &mut Cursor<'_>, out: &mut String) -> Result<(), Error> {
         let pattern = cursor.u8()?;
+
         self.render_pattern(cursor, out, pattern)?;
         self.raw(out, " => ");
         self.render_encoded_number(cursor, out)
@@ -850,12 +856,14 @@ impl FormulaRenderer<'_, '_, '_> {
             3 | 4 => {
                 let start = cursor.u8()?;
                 let end = cursor.u8()?;
+
                 self.styled(out, Class::Number, &start.to_string());
                 self.raw(out, if pattern == 3 { ".." } else { "..=" });
                 self.styled(out, Class::Number, &end.to_string());
             }
             5 => {
                 let value = cursor.u8()?;
+
                 self.styled(out, Class::Number, &value.to_string());
                 self.raw(out, "..");
             }
@@ -890,6 +898,7 @@ impl FormulaRenderer<'_, '_, '_> {
 
     fn open_bracket(&mut self, out: &mut String, text: &str) {
         let class = Class::bracket(self.bracket_stack.len());
+
         self.bracket_stack.push(class);
         self.styled(out, class, text);
     }
@@ -929,7 +938,9 @@ impl<'a> Cursor<'a> {
             .bytes
             .get(self.pos)
             .ok_or(Error::Corrupt("unexpected end of bytecode"))?;
+
         self.pos += 1;
+
         Ok(value)
     }
 
@@ -938,11 +949,14 @@ impl<'a> Cursor<'a> {
             .pos
             .checked_add(4)
             .ok_or(Error::Corrupt("offset overflow"))?;
+
         let slice = self
             .bytes
             .get(self.pos..end)
             .ok_or(Error::Corrupt("unexpected end of bytecode"))?;
+
         self.pos = end;
+
         Ok(u32::from_le_bytes(slice.try_into().unwrap()))
     }
 }
@@ -1015,6 +1029,7 @@ impl<M: Markup> GenericHighlighter<M> {
     /// Builds one standalone highlighted fragment, such as a comment body.
     pub fn span_markup(class: Class, value: impl Display) -> M {
         let mut out = M::default();
+
         out.push(Some(class), &value.to_string());
         out
     }
@@ -1049,6 +1064,7 @@ impl<M: Markup> GenericHighlighter<M> {
         } else {
             self.bracket_stack.pop().unwrap_or(Class::Bracket1)
         };
+
         self.push(class, bracket)
     }
 

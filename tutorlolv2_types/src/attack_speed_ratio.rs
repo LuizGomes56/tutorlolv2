@@ -18,6 +18,7 @@ impl AttackSpeedRatio {
         let sign = ((bits >> 16) & 0x8000) as u16;
         let exponent = ((bits >> 23) & 0xff) as i32;
         let fraction = bits & 0x7f_ffff;
+
         if exponent == 255 {
             // Keep NaNs distinct from infinity even when their payload is tiny.
             return Self(
@@ -29,29 +30,36 @@ impl AttackSpeedRatio {
                     },
             );
         }
+
         let half_exponent = exponent - 127 + 15;
+
         if half_exponent >= 31 {
             return Self(sign | 0x7c00);
         }
+
         if half_exponent < -10 {
             return Self(sign);
         }
+
         let (significand, shift) = if half_exponent <= 0 {
             (fraction | 0x80_0000, (14 - half_exponent) as u32)
         } else {
             (fraction, 13)
         };
+
         let truncated = significand >> shift;
         let remainder = significand & ((1 << shift) - 1);
         let midpoint = 1 << (shift - 1);
         let rounded = truncated
             + (remainder > midpoint || (remainder == midpoint && truncated & 1 != 0)) as u32;
+
         // Addition carries into the exponent at a rounded mantissa boundary.
         let magnitude = if half_exponent <= 0 {
             rounded
         } else {
             ((half_exponent as u32) << 10) + rounded
         };
+
         Self(sign | magnitude as u16)
     }
 
@@ -64,10 +72,12 @@ impl AttackSpeedRatio {
                 0
             } else {
                 let mut exponent = 113_u32;
+
                 while fraction & 0x0400 == 0 {
                     fraction <<= 1;
                     exponent -= 1;
                 }
+
                 (exponent << 23) | ((fraction & 0x03ff) << 13)
             }
         } else if exponent == 31 {
@@ -75,6 +85,7 @@ impl AttackSpeedRatio {
         } else {
             (((exponent as u32) + 112) << 23) | (fraction << 13)
         };
+
         f32::from_bits(sign | magnitude)
     }
 }

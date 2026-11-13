@@ -5,6 +5,7 @@ use tutorlolv2::{
     CastId, ChampionId, EntityId, ItemId, RuneId,
     yew::render::{FormulaRenderer, MayFail},
 };
+use tutorlolv2_codec::{Class, Spans};
 
 static CSS: &str = include_str!("../style.css");
 
@@ -99,31 +100,44 @@ fn formulas_changed_by_game_modes_render_their_map_branches() -> MayFail {
 
     for champion_id in ChampionId::VARIANTS {
         for metadata in champion_id.abilities() {
-            let html = champion_id.render_fn(metadata.kind)?;
+            let rendered = champion_id.render_fn_markup::<Spans>(metadata.kind)?;
 
-            if html.contains("#[cold]") {
-                branches.push(html);
+            if rendered.text.contains("#[cold]") {
+                branches.push(rendered);
             }
         }
     }
 
     for item_id in ItemId::VARIANTS {
         if let EntityId::Item(item) = item_id.entity() {
-            let html = item.render_fn()?;
+            let rendered = item.render_fn_markup::<Spans>()?;
 
-            if html.contains("#[cold]") {
-                branches.push(html);
+            if rendered.text.contains("#[cold]") {
+                branches.push(rendered);
             }
         }
     }
 
     assert!(!branches.is_empty(), "No formula renders a map branch");
 
-    for html in &branches {
-        assert!(html.contains("match"), "{html}");
-        assert!(html.contains("Aram") || html.contains("Arena"), "{html}");
-        assert!(!html.contains("cold_path"), "{html}");
-        assert!(!html.contains("tutorlolv2_types"), "{html}");
+    for rendered in &branches {
+        let text = &rendered.text;
+        assert!(text.contains("match"), "{text}");
+        assert!(text.contains("Aram") || text.contains("Arena"), "{text}");
+        assert!(!text.contains("cold_path"), "{text}");
+        assert!(!text.contains("tutorlolv2_types"), "{text}");
+
+        for (offset, _) in text.match_indices("#[cold]") {
+            let cold = offset + 2..offset + 6;
+            assert!(
+                rendered.runs().any(|(range, class)| {
+                    class == Some(Class::Function)
+                        && range.start <= cold.start
+                        && range.end >= cold.end
+                }),
+                "cold attribute must use function highlighting: {text}"
+            );
+        }
     }
 
     Ok(())
