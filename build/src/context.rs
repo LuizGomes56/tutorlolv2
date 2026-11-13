@@ -49,7 +49,7 @@ impl BuildContext {
 
     pub fn inputs(&self) -> Vec<PathBuf> {
         [
-            "build/src/generators/impls/champions",
+            "build/src/generators_v2",
             "build/src/generators/impls/items",
             "build/src/generators/impls/runes",
             "cache/wiki/champions/full.json",

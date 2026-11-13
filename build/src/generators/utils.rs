@@ -6,6 +6,14 @@ use std::fmt::Display;
 
 pub use tutorlolv2_types::Tag;
 
+pub const fn generator_directory(tag: Tag) -> &'static str {
+    match tag {
+        Tag::Champions => "build/src/generators_v2/impls",
+        Tag::Items => "build/src/generators/impls/items",
+        Tag::Runes => "build/src/generators/impls/runes",
+    }
+}
+
 pub trait RegExtractor: Display {
     /// Returns a vector of all the numbers that could be extracted
     /// from some string, preserving the order that they were found
@@ -139,7 +147,7 @@ pub enum SaveTo<'a> {
 impl<'a> SaveTo<'a> {
     pub fn path(&self) -> String {
         let relative: String = match self {
-            SaveTo::GeneratorDir(tag) => format!("build/src/generators/impls/{}", tag.as_ref()),
+            SaveTo::GeneratorDir(tag) => generator_directory(*tag).to_owned(),
             SaveTo::GeneratorRaw(tag, s) => {
                 let path = Self::GeneratorDir(*tag).path();
                 let file = s.to_snake_case();

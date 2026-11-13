@@ -19,20 +19,9 @@ use super::{
     ChangeTarget, MapChanges,
     change::{ChangeKind, MapChange, Values},
 };
-use crate::{
-    champions::WikiChampion, items::item_parser::WikiItem, parser::Effect, parser::Scaling,
-};
+use crate::{items::item_parser::WikiItem, parser::Effect, parser::Scaling};
 use std::{collections::BTreeMap, str::FromStr};
-use tutorlolv2_types::{AttackType, CtxVar, Key, StatName};
-
-/// An effect of a champion ability, as a generator selects it with
-/// `.ability_nth(nth, key, [(name, …)])`
-#[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd)]
-pub struct SelectedEffect {
-    pub key: Key,
-    pub nth: usize,
-    pub name: String,
-}
+use tutorlolv2_types::{CtxVar, Key, StatName};
 
 /// What happens to one change
 #[derive(Clone, Debug, PartialEq)]
@@ -479,128 +468,6 @@ fn multiple(values: &[f64], of: &[f64]) -> Option<f64> {
         .zip(of)
         .all(|(v, o)| (v / o - factor).abs() <= 0.01 * factor.abs())
         .then_some(factor)
-}
-
-/// Effects of a champion as changed by one game mode, and what happened to
-/// each of its changes, in the order of the module
-#[derive(Debug, Default)]
-pub struct ChampionOverrides {
-    /// New effects, with their formula simplified again
-    pub effects: BTreeMap<SelectedEffect, Effect>,
-    /// Outcome of each change of the champion, by key and index of the change
-    pub outcomes: Vec<(String, usize, Outcome)>,
-}
-
-impl ChampionOverrides {
-    /// Applies the changes of `changes` that target `champion`, one after
-    /// another, to the effects in `selected`
-    pub fn new(champion: &WikiChampion, changes: &MapChanges, selected: &[SelectedEffect]) -> Self {
-        let mut this = Self::default();
-
-        for (key, entry) in &changes.entries {
-            let champion_id = match &entry.target {
-                ChangeTarget::Champion { champion_id }
-                | ChangeTarget::Ability { champion_id, .. }
-                | ChangeTarget::NamedAbility { champion_id, .. } => champion_id,
-                _ => continue,
-            };
-
-            if *champion_id != champion.champion_id {
-                continue;
-            }
-
-            for (i, change) in entry.changes.iter().enumerate() {
-                let outcome = this.apply(champion, &entry.target, change, selected);
-                this.outcomes.push((key.clone(), i, outcome));
-            }
-        }
-
-        this
-    }
-
-    /// Current effect of `selected`, with the changes applied so far
-    fn effect(&self, champion: &WikiChampion, selected: &SelectedEffect) -> Option<Effect> {
-        if let Some(effect) = self.effects.get(selected) {
-            return Some(effect.clone());
-        }
-
-        champion
-            .wiki_abilities
-            .get(&selected.key)?
-            .get(selected.nth)?
-            .effects
-            .get(&selected.name)
-            .cloned()
-    }
-
-    fn apply(
-        &mut self,
-        champion: &WikiChampion,
-        target: &ChangeTarget,
-        change: &MapChange,
-        selected: &[SelectedEffect],
-    ) -> Outcome {
-        if !ChangeKind::is_damage_relevant(change.kind.name()) {
-            return Outcome::NotRelevant;
-        }
-
-        // Base stats are applied with the stats of the champion, see `WikiMapStats`
-        if let ChangeKind::BaseStat { .. } = change.kind {
-            return Outcome::Applied {
-                effects: vec!["base stats".into()],
-                rule: "the stats of the champion",
-            };
-        }
-
-        let key = match target {
-            ChangeTarget::Ability { key, .. }
-            | ChangeTarget::NamedAbility { key: Some(key), .. } => *key,
-            ChangeTarget::NamedAbility { key: None, .. } => {
-                return Outcome::Manual("its ability name matches no ability");
-            }
-            _ => return Outcome::Manual("it changes the champion, not an ability"),
-        };
-
-        match &change.kind {
-            ChangeKind::Named { .. } => {
-                return Outcome::Manual("only a generator can tell its value");
-            }
-            ChangeKind::Modifier { .. } => return Outcome::Manual("it is a damage modifier"),
-            _ => {}
-        }
-
-        let candidates = selected
-            .iter()
-            .filter(|s| s.key == key)
-            .filter_map(|s| {
-                Some(Candidate {
-                    id: s.clone(),
-                    name: s.name.clone(),
-                    effect: self.effect(champion, s)?,
-                })
-            })
-            .collect();
-
-        let ranged = matches!(champion.attack_type, AttackType::Ranged);
-
-        match change.kind.decide(key, ranged, candidates) {
-            Decision::Apply { effects, rule } => {
-                let labels = effects
-                    .iter()
-                    .map(|(s, _)| format!("{:?}[{}] {:?}", s.key, s.nth, s.name))
-                    .collect();
-
-                self.effects.extend(effects);
-
-                Outcome::Applied {
-                    effects: labels,
-                    rule,
-                }
-            }
-            Decision::AlreadyApplied(reason) => Outcome::AlreadyApplied(reason),
-            Decision::Manual(reason) => Outcome::Manual(reason),
-        }
-    }
 }
 
 impl MapChange {

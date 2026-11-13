@@ -1,6 +1,5 @@
 use super::*;
 
-/// The abilities v1 edited are written with v1's formulas, to be read from the wiki
 impl GeneratorV2 for Zeri {
     fn generate(&mut self) -> MayFail {
         self.take_nth("Innate", 0, P(Min))?

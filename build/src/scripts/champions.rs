@@ -5,7 +5,7 @@ use {
         scripts::{
             batch::FormulaDoc,
             simplify::format_formula,
-            utils::{BakeExt, cast_f32, ctx_param, get_identifiers, map_doc_source, probe_ratio},
+            utils::{BakeExt, cast_f32, ctx_param, get_identifiers, probe_ratio},
         },
     },
     heck::{ToShoutySnakeCase, ToSnakeCase},
@@ -55,7 +55,6 @@ impl Build for Champion {
             abilities,
             merge,
             constants,
-            map_damages,
             ..
         } = &self;
 
@@ -68,8 +67,6 @@ impl Build for Champion {
             .collect::<Vec<_>>();
 
         let mut damage_override = BTreeMap::<AbilityId, String>::new();
-        // Merges add arms to the maximum, so they get their own copy
-        let mut map_damages = map_damages.clone();
 
         for merge in merge {
             let min = self.get(merge.min)?;
@@ -92,31 +89,6 @@ impl Build for Champion {
 
                 k
             };
-
-            // The ratio between the two is only known on Summoner's Rift, so the
-            // maximum keeps its own formula on every mode that changes either
-            let modes = [merge.min, merge.max]
-                .iter()
-                .filter_map(|id| map_damages.get(id))
-                .flatten()
-                .map(|(mode, _)| *mode)
-                .collect::<BTreeSet<_>>();
-
-            let max_arms = modes
-                .into_iter()
-                .map(|mode| {
-                    let formula = map_damages
-                        .get(&merge.max)
-                        .and_then(|arms| arms.iter().find(|(m, _)| *m == mode))
-                        .map_or_else(|| simplified[max_i].clone(), |(_, f)| f.clone());
-
-                    (mode, formula)
-                })
-                .collect::<Vec<_>>();
-
-            if !max_arms.is_empty() {
-                map_damages.insert(merge.max, max_arms);
-            }
 
             let min_fn = &functions[min_i];
 
@@ -206,23 +178,7 @@ impl Build for Champion {
             let Ability { name, comment, .. } = ability;
 
             let body = &damages[i];
-            let mut rust_formula = cast_f32(body)?;
-
-            // Formulas that game modes change branch on the map. Nearly every game is
-            // on Summoner's Rift, so the other arms are cold
-            if let Some(map_damage) = map_damages.get(ability_id) {
-                let mut arms = String::new();
-
-                for (mode, formula) in map_damage {
-                    write!(
-                        arms,
-                        "tutorlolv2_types::MapMode::{mode:?} => {{ core::hint::cold_path(); {} }}",
-                        cast_f32(&format_formula(formula))?
-                    )?;
-                }
-
-                rust_formula = format!("match ctx.map {{ {arms} _ => {{ {rust_formula} }} }}");
-            }
+            let rust_formula = cast_f32(body)?;
 
             write!(
                 rust,
@@ -236,12 +192,11 @@ impl Build for Champion {
                     function: function.clone(),
                     // The formula the app runs, with the arms of the modes that change it.
                     // v2 generators write it from the same tree as the damage
-                    source: self.docs.get(ability_id).cloned().unwrap_or_else(|| {
-                        map_doc_source(
-                            body,
-                            map_damages.get(ability_id).map_or(&[][..], Vec::as_slice),
-                        )
-                    }),
+                    source: self
+                        .docs
+                        .get(ability_id)
+                        .cloned()
+                        .unwrap_or_else(|| body.clone()),
                     name: name.clone(),
                     comment: comment.clone(),
                 });

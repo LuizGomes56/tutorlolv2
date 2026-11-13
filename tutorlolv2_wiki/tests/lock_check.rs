@@ -4,14 +4,7 @@ use std::{
     time::{SystemTime, UNIX_EPOCH},
 };
 use tutorlolv2_types::Key;
-use tutorlolv2_wiki::{
-    lock::{
-        LockedAbility, LockedItemEffect, WikiLock,
-        check::{AbilityDiff, GeneratorFile},
-        latest_archive,
-    },
-    read_to_string,
-};
+use tutorlolv2_wiki::lock::{LockedAbility, LockedItemEffect, WikiLock, latest_archive};
 
 fn temp_dir(name: &str) -> PathBuf {
     let unique = SystemTime::now()
@@ -49,15 +42,6 @@ fn champion_lock(effects: &[&str]) -> WikiLock {
     }
 }
 
-/// Effects of Maokai's E in 16.21.1 and 16.22.1, where `Total Magic Damage`
-/// was renamed and `Minion Damage` was removed
-const OLD_E: [&str; 5] = [
-    "0: Magic Damage (bb754d6a)",
-    "1: Magic Damage per Instance (a9ceee98)",
-    "2: Minion Damage (bb754d6a)",
-    "3: Total Attached Sapling Damage (f40ef3ed)",
-    "4: Total Magic Damage (6c5d5484)",
-];
 const NEW_E: [&str; 5] = [
     "0: Magic Damage (bb754d6a)",
     "1: Magic Damage per Instance (a9ceee98)",
@@ -65,162 +49,6 @@ const NEW_E: [&str; 5] = [
     "3: Total Attached Sapling Damage (f40ef3ed)",
     "4: Root Duration (84222325)",
 ];
-
-#[test]
-fn diff_matches_renames_by_unique_formula() {
-    let diff = ability(&OLD_E).diff(&ability(&NEW_E));
-
-    assert_eq!(
-        diff,
-        AbilityDiff {
-            renames: BTreeMap::from([(
-                "Total Magic Damage".into(),
-                "Non-Minion Total Magic Damage".into()
-            )]),
-            removed: vec!["Minion Damage".into()],
-            added: vec!["Root Duration".into()],
-            formulas: 0,
-        }
-    );
-}
-
-#[test]
-fn diff_does_not_rename_effects_without_formulas() {
-    // `84222325` is the hash of an empty formula
-    let old = ability(&["0: Duration (84222325)"]);
-    let new = ability(&["0: Slow (84222325)"]);
-    let diff = old.diff(&new);
-
-    assert!(diff.renames.is_empty());
-    assert_eq!(diff.removed, ["Duration"]);
-    assert_eq!(diff.added, ["Slow"]);
-}
-
-#[test]
-fn diff_does_not_rename_when_the_formula_is_ambiguous() {
-    let old = ability(&["0: A (11111111)"]);
-    let new = ability(&["0: B (11111111)", "1: C (11111111)"]);
-    let diff = old.diff(&new);
-
-    assert!(diff.renames.is_empty());
-    assert_eq!(diff.removed, ["A"]);
-}
-
-#[test]
-fn effect_refs_are_read_from_every_selection() {
-    let source = r#"impl Generator for Smolder {
-    fn generate(&mut self) -> MayFail {
-        let p = self.formula(Key::P, "Innate [4]")?;
-        let s = self.scaling_nth(Key::R, 1, "Bonus")?;
-        self.ability(Key::Q, [("Physical Damage", Min), ("Say \"hi\"", Max)])
-            .ability_nth(
-                1,
-                Key::E,
-                [
-                    ("Magic Damage", Void),
-                    // ("Unused Damage", _1),
-                ],
-            )
-            .end()
-    }
-}"#;
-
-    let file = GeneratorFile {
-        path: PathBuf::new(),
-        id: "Smolder".into(),
-        source: source.into(),
-    };
-
-    let refs = file
-        .effect_refs()
-        .into_iter()
-        .map(|r| {
-            assert_eq!(&source[r.span.clone()][..1], "\"");
-            (r.key, r.nth, r.name)
-        })
-        .collect::<Vec<_>>();
-
-    assert_eq!(
-        refs,
-        [
-            ("P".to_string(), 0, "Innate [4]".to_string()),
-            ("R".into(), 1, "Bonus".into()),
-            ("Q".into(), 0, "Physical Damage".into()),
-            ("Q".into(), 0, "Say \"hi\"".into()),
-            ("E".into(), 1, "Magic Damage".into()),
-        ]
-    );
-}
-
-#[test]
-fn renamed_effects_are_fixed_and_removed_ones_reported() {
-    let dir = temp_dir("champions");
-    let generator = r#"impl Generator for Maokai {
-    fn generate(&mut self) -> MayFail {
-        self.ability(
-            Key::E,
-            [
-                ("Magic Damage", Min),
-                ("Total Magic Damage", Max),
-                ("Minion Damage", _1),
-            ],
-        )
-        .end()
-    }
-}"#;
-    write(&dir, "champions/maokai.rs", generator);
-
-    let old = champion_lock(&OLD_E);
-    let new = champion_lock(&NEW_E);
-    let report = new.check(Some(&old), &dir).unwrap();
-    let fixed = read_to_string(dir.join("champions/maokai.rs")).unwrap();
-
-    // Running again after the fix only reports the effect that was removed
-    let again = new.check(Some(&old), &dir).unwrap();
-    std::fs::remove_dir_all(&dir).unwrap();
-
-    assert_eq!(
-        fixed,
-        generator.replace(
-            "\"Total Magic Damage\"",
-            "\"Non-Minion Total Magic Damage\""
-        )
-    );
-    assert_eq!(report.fixes.len(), 1, "{report:?}");
-    assert_eq!(report.errors.len(), 1, "{report:?}");
-    assert!(report.errors[0].contains("\"Minion Damage\" no longer exists"));
-    assert_eq!(
-        report.warnings,
-        ["Maokai E[0]: new effect \"Root Duration\""]
-    );
-    assert!(again.fixes.is_empty());
-    assert_eq!(again.errors, report.errors);
-}
-
-#[test]
-fn without_an_old_lock_only_missing_names_are_reported() {
-    let dir = temp_dir("no-old");
-    write(
-        &dir,
-        "champions/maokai.rs",
-        r#"impl Generator for Maokai {
-    fn generate(&mut self) -> MayFail {
-        self.ability(Key::E, [("Magic Damage", Min), ("Total Magic Damage", Max)])
-            .ability(Key::R, [("Magic Damage", Void)])
-            .end()
-    }
-}"#,
-    );
-
-    let report = champion_lock(&NEW_E).check(None, &dir).unwrap();
-    std::fs::remove_dir_all(&dir).unwrap();
-
-    assert!(report.fixes.is_empty());
-    assert!(report.warnings.is_empty());
-    assert_eq!(report.errors.len(), 2, "{report:?}");
-    assert!(report.errors[0].contains("\"Total Magic Damage\" no longer exists"));
-    assert!(report.errors[1].contains("Maokai R[0]: the ability no longer exists"));
-}
 
 #[test]
 fn rune_and_item_changes_are_warnings() {
@@ -279,7 +107,7 @@ fn rune_and_item_changes_are_warnings() {
     let silent = new.check(Some(&untracked), &dir).unwrap();
     std::fs::remove_dir_all(&dir).unwrap();
 
-    assert!(report.errors.is_empty() && report.fixes.is_empty());
+    assert!(report.errors.is_empty());
     assert_eq!(report.warnings.len(), 3, "{report:?}");
     assert!(report.warnings[0].starts_with("Aftershock: rune effect indexes changed"));
     assert!(report.warnings[0].contains("    + 0: Bonus Resistances"));
@@ -397,4 +225,92 @@ fn map_changes_are_warnings() {
     // Lock files written before map changes were tracked only get the count
     let untracked = new.check(Some(&WikiLock::default()), &dir).unwrap();
     assert_eq!(untracked.warnings.len(), 1);
+}
+
+#[test]
+fn structured_generator_selections_are_checked_across_pages() {
+    let dir = temp_dir("champions-v2");
+    write(
+        &dir,
+        "champions_v2/maokai.rs",
+        r#"impl GeneratorV2 for Maokai {
+        fn generate(&mut self) -> MayFail {
+            self.take("Magic Damage", E(Void))?
+                .take_nth("Magic Damage", 1, E(Min))?
+                .take_in("Sapling Toss", "Missing", E(Max))?;
+            let _ = self.value("Magic Damage", Key::E)?;
+            let _ = self.value_nth("Magic Damage", 0, Key::E)?;
+            // self.take("Commented", E(Void))?;
+        }
+    }"#,
+    );
+    let report = champion_lock(&NEW_E).check(None, &dir).unwrap();
+    assert_eq!(report.errors.len(), 2, "{:?}", report.errors);
+    assert!(
+        report
+            .errors
+            .iter()
+            .any(|s| s.contains("requested occurrence 1"))
+    );
+    assert!(report.errors.iter().any(|s| s.contains("Missing")));
+    std::fs::remove_dir_all(dir).unwrap();
+}
+
+#[test]
+fn repeated_labels_require_occurrence_or_ability_name() {
+    let dir = temp_dir("ambiguous-v2");
+    let source = r#"impl GeneratorV2 for Maokai {
+        fn generate(&mut self) -> MayFail {
+            self.take("Magic Damage", E(Void))?
+                .take_nth("Magic Damage", 1, E(Min))?
+                .take_in("Sapling Toss", "Magic Damage", E(Max))?;
+            let _ = self.value("Magic Damage", Key::E)?;
+            let _ = self.value_nth("Magic Damage", 0, Key::E)?;
+        }
+    }"#;
+    write(&dir, "champions_v2/maokai.rs", source);
+    let mut lock = champion_lock(&["0: Magic Damage (a)"]);
+    lock.champions
+        .get_mut("Maokai")
+        .unwrap()
+        .get_mut(&Key::E)
+        .unwrap()
+        .push(LockedAbility {
+            name: "Other Form".into(),
+            effects: vec!["0: Magic Damage (b)".into()],
+        });
+    let report = lock.check(None, &dir).unwrap();
+    assert_eq!(report.errors.len(), 2, "{:?}", report.errors);
+    assert!(
+        report
+            .errors
+            .iter()
+            .all(|s| s.contains("matches 2 effects"))
+    );
+    assert_eq!(
+        std::fs::read_to_string(dir.join("champions_v2/maokai.rs")).unwrap(),
+        source
+    );
+    std::fs::remove_dir_all(dir).unwrap();
+}
+
+#[test]
+fn structured_formula_changes_warn_without_rewriting_labels() {
+    let dir = temp_dir("formula-v2");
+    write(
+        &dir,
+        "champions_v2/maokai.rs",
+        r#"impl GeneratorV2 for Maokai {
+        fn generate(&mut self) -> MayFail { self.take("Magic Damage", E(Void))?; }
+    }"#,
+    );
+    let old = champion_lock(&["0: Magic Damage (aaaaaaaa)"]);
+    let changed = champion_lock(&["0: Magic Damage (bbbbbbbb)"]);
+    let report = changed.check(Some(&old), &dir).unwrap();
+    assert!(report.errors.is_empty());
+    assert_eq!(report.warnings, ["Maokai: 1 champion formulas changed"]);
+    let stable = changed.check(Some(&changed), &dir).unwrap();
+    assert!(stable.errors.is_empty());
+    assert!(stable.warnings.is_empty());
+    std::fs::remove_dir_all(dir).unwrap();
 }

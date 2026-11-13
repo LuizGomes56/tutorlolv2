@@ -32,6 +32,8 @@ pub fn path() -> PathBuf {
 pub const FILE_NAME: &str = "wiki.lock.json";
 
 /// Directory with the generators of every champion, rune and item
+pub const CHAMPION_GENERATORS: &str = "build/src/generators_v2/impls";
+
 pub const GENERATORS: &str = "build/src/generators/impls";
 
 #[derive(Debug, Default, Deserialize, Serialize)]
@@ -208,28 +210,42 @@ pub fn build() -> MayFail<WikiLock> {
         })
         .collect();
 
-    let champions = champions
-        .into_iter()
-        .map(|(champion_id, champion)| {
-            let abilities = champion
-                .wiki_abilities
-                .into_iter()
-                .map(|(key, abilities)| {
-                    let abilities = abilities
-                        .into_iter()
-                        .map(|ability| LockedAbility {
-                            name: ability.name,
-                            effects: lock_effects(ability.effects.iter()),
-                        })
-                        .collect();
+    let champions = BTreeMap::<String, crate::wikitext::ChampionModel>::from_file(
+        "cache/wiki/champions/model.json",
+    )?
+    .into_iter()
+    .map(|(id, model)| {
+        let abilities = model
+            .abilities
+            .into_iter()
+            .map(|(key, abilities)| {
+                let abilities = abilities
+                    .into_iter()
+                    .map(|ability| LockedAbility {
+                        name: ability.name,
+                        effects: ability
+                            .effects
+                            .iter()
+                            .chain(ability.extras.iter())
+                            .enumerate()
+                            .map(|(i, effect)| {
+                                format!(
+                                    "{i}: {} ({})",
+                                    effect.label,
+                                    hash(&effect.formula.to_string())
+                                )
+                            })
+                            .collect(),
+                    })
+                    .collect();
 
-                    (key, abilities)
-                })
-                .collect();
+                (key, abilities)
+            })
+            .collect();
 
-            (champion_id, abilities)
-        })
-        .collect();
+        (id, abilities)
+    })
+    .collect();
 
     let runes = BTreeMap::<String, WikiRune>::from_file("cache/wiki/runes/full.json")?
         .into_iter()
@@ -304,7 +320,6 @@ pub fn compare(old: &[String], new: &[String]) -> (Vec<String>, usize) {
 
         removed.sort_by_key(|e| index(e));
         added.sort_by_key(|e| index(e));
-
         lines.extend(removed.into_iter().map(|e| format!("    - {e}")));
         lines.extend(added.into_iter().map(|e| format!("    + {e}")));
     }
@@ -374,5 +389,6 @@ pub fn check() -> MayFail {
     };
 
     new.check(old.as_ref(), GENERATORS)?.print();
+
     Ok(())
 }

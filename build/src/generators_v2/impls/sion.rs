@@ -1,6 +1,5 @@
 use super::*;
 
-/// The abilities v1 edited are written with v1's formulas, to be read from the wiki
 impl GeneratorV2 for Sion {
     fn generate(&mut self) -> MayFail {
         self.take_nth("Innate", 3, P(Void))?

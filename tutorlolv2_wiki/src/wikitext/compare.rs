@@ -1,14 +1,10 @@
-//! Compares the formulas of [`ChampionModel`] with the current ones, parsed from the
-//! rendered html into `abilities/<page>.json`. Two formulas are equal when they agree
-//! at every [`Sample::series`], so the order of their terms does not matter
+//! Evaluates generated Rust formula expressions for validation.
 
 use {
-    super::{ChampionModel, MapChangesReport, Sample},
-    crate::{JsonRead, MayFail, champions::abilities::WikiAbility},
-    serde::Serialize,
-    std::{collections::BTreeMap, path::Path, str::FromStr},
+    super::Sample,
+    std::str::FromStr,
     strum::VariantArray,
-    tutorlolv2_types::{CtxVar, Key, MapMode},
+    tutorlolv2_types::{CtxVar, MapMode},
 };
 
 /// A formula of the current output, such as
@@ -374,201 +370,14 @@ impl Sample {
     }
 }
 
-/// How the model compares to the current formulas
-#[derive(Debug, Default, Serialize)]
-pub struct Report {
-    pub equal: usize,
-    pub different: usize,
-    /// Current formulas that are missing or can't be read
-    pub unreadable: usize,
-    /// Effects of the current output that the model does not have
-    pub only_current: usize,
-    /// Effects of the model that the current output does not have
-    pub only_model: usize,
-    /// Equal effects among the ones present in both
-    pub percent_equal: f64,
-    pub differences: Vec<Difference>,
-    /// What happened to the changes of the game modes, from `model_map_changes.json`
-    pub map_changes: MapChangesReport,
-}
-
-/// An effect whose formulas differ
-#[derive(Debug, Serialize)]
-pub struct Difference {
-    pub champion_id: String,
-    pub key: Key,
-    /// Page file the ability comes from, such as `Q1`
-    pub page: String,
-    pub label: String,
-    pub current: String,
-    pub model: String,
-    pub issues: Vec<String>,
-}
-
-impl Report {
-    /// Relative error within which two values are the same. The wiki rounds values
-    /// to 2 decimals, as Maokai's 166.67 against 33.3325 per rank, which is far
-    /// below this
-    const TOLERANCE: f64 = 1e-3;
-
-    /// Whether two series of values are the same, within [`Self::TOLERANCE`].
-    /// Values that are not finite in both series are the same
-    pub fn equal(a: &[f64], b: &[f64]) -> bool {
-        a.len() == b.len()
-            && a.iter()
-                .zip(b)
-                .all(|(a, b)| match (a.is_finite(), b.is_finite()) {
-                    (true, true) => {
-                        (a - b).abs() <= Self::TOLERANCE * 1f64.max(a.abs()).max(b.abs())
-                    }
-                    (false, false) => true,
-                    _ => false,
-                })
-    }
-
-    /// Labels are compared without the en dash the current parser replaces
-    fn normalize(label: &str) -> String {
-        label.replace('–', "-")
-    }
-
-    /// Pairs every effect of `<root>/cache/wiki/champions/<id>/abilities/<page>.json`
-    /// with the first effect of the same label of the same page in `model.json`
-    pub fn new(root: &Path) -> MayFail<Self> {
-        let champions = root.join("cache/wiki/champions");
-        let models = serde_json::from_slice::<BTreeMap<String, ChampionModel>>(&crate::read(
-            champions.join("model.json"),
-        )?)?;
-
-        let samples = Sample::series();
-        let mut report = Report::default();
-
-        for (champion_id, model) in &models {
-            let pages = model
-                .abilities
-                .iter()
-                .flat_map(|(key, abilities)| abilities.iter().map(move |ability| (key, ability)))
-                .map(|(key, ability)| (ability.page.as_str(), (*key, ability)))
-                .collect::<BTreeMap<_, _>>();
-
-            let dir = champions.join(champion_id).join("abilities");
-
-            for entry in crate::read_dir(&dir)? {
-                let path = entry.path();
-
-                if path.extension().is_none_or(|ext| ext != "json") {
-                    continue;
-                }
-
-                let page = path
-                    .file_stem()
-                    .unwrap_or_default()
-                    .to_string_lossy()
-                    .into_owned();
-                let current = serde_json::from_slice::<WikiAbility>(&crate::read(&path)?)?;
-
-                let Some((key, ability)) = pages.get(page.as_str()) else {
-                    report.only_current += current.effects.len();
-                    continue;
-                };
-
-                let find = |label: &str| {
-                    ability
-                        .effects
-                        .iter()
-                        .find(|effect| Self::normalize(&effect.label) == Self::normalize(label))
-                };
-
-                report.only_model += ability
-                    .effects
-                    .iter()
-                    .filter(|effect| {
-                        !current
-                            .effects
-                            .keys()
-                            .any(|label| Self::normalize(label) == Self::normalize(&effect.label))
-                    })
-                    .count();
-
-                for (label, effect) in &current.effects {
-                    let Some(new) = find(label) else {
-                        report.only_current += 1;
-                        continue;
-                    };
-
-                    let Some(old) = effect.formula.as_deref().and_then(LegacyFormula::parse) else {
-                        report.unreadable += 1;
-                        continue;
-                    };
-
-                    let old_values = samples.iter().map(|s| old.eval(s)).collect::<Vec<_>>();
-                    let new_values = samples
-                        .iter()
-                        .map(|s| new.formula.eval(s).unwrap_or(f64::NAN))
-                        .collect::<Vec<_>>();
-
-                    if Self::equal(&old_values, &new_values) {
-                        report.equal += 1;
-                        continue;
-                    }
-
-                    report.different += 1;
-                    report.differences.push(Difference {
-                        champion_id: champion_id.clone(),
-                        key: *key,
-                        page: page.clone(),
-                        label: label.clone(),
-                        current: effect.formula.clone().unwrap_or_default(),
-                        model: new.formula.to_string(),
-                        issues: new.issues.clone(),
-                    });
-                }
-            }
-        }
-
-        report.differences.sort_by(|a, b| {
-            (&a.champion_id, &a.page, &a.label).cmp(&(&b.champion_id, &b.page, &b.label))
-        });
-
-        let compared = report.equal + report.different;
-
-        report.percent_equal = match compared {
-            0 => 0.0,
-            _ => report.equal as f64 / compared as f64 * 100.0,
-        };
-
-        let map_changes = champions.join("model_map_changes.json");
-
-        if let Ok(true) = std::fs::exists(&map_changes) {
-            report.map_changes = MapChangesReport::from_file(map_changes)?;
-        }
-
-        Ok(report)
-    }
-}
-
-/// Writes `cache/wiki/champions/model_report.json` and prints its counts
-pub fn compare_model() -> MayFail {
-    println!("[fn] wikitext::compare::compare_model");
-
-    let report = Report::new(Path::new(""))?;
-
-    println!(
-        "[report] equal {}, different {}, unreadable {}, only current {}, only model {} ({:.1}% equal)",
-        report.equal,
-        report.different,
-        report.unreadable,
-        report.only_current,
-        report.only_model,
-        report.percent_equal
-    );
-
-    println!(
-        "[report] map changes: {} applied, {} not placed",
-        report.map_changes.applied, report.map_changes.not_placed
-    );
-
-    crate::write(
-        "cache/wiki/champions/model_report.json",
-        serde_json::to_string_pretty(&report)?,
-    )
+/// Whether sampled values agree within wiki rounding precision.
+pub fn equal(a: &[f64], b: &[f64]) -> bool {
+    a.len() == b.len()
+        && a.iter()
+            .zip(b)
+            .all(|(a, b)| match (a.is_finite(), b.is_finite()) {
+                (true, true) => (a - b).abs() <= 1e-3 * 1f64.max(a.abs()).max(b.abs()),
+                (false, false) => true,
+                _ => false,
+            })
 }

@@ -24,7 +24,7 @@ pub mod scaling;
 pub use {
     ability::{RawAbility, SkillTab},
     build::PageContext,
-    compare::{Difference, LegacyFormula, Report},
+    compare::{LegacyFormula, equal},
     expr::Expr,
     lookup::Lookup,
     map::{MapChangeEntry, MapChangesReport, MapValue, PlacedEffect, Placement},

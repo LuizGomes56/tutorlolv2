@@ -1,8 +1,5 @@
 use super::*;
 
-/// The abilities v1 edited are written with v1's formulas, to be read from the wiki.
-/// Q's passive bonus per stack is all of `0.25 + 0.35 * crit chance`, which v1's text
-/// substitution only applied to its second term
 impl GeneratorV2 for Smolder {
     fn generate(&mut self) -> MayFail {
         // Bonus magic damage of each basic ability by Dragon Practice stacks, from the

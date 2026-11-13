@@ -65,7 +65,7 @@ fn champion_v2(id: &str, pages: &[(&str, String)]) -> ChampionV2 {
         positions: Vec::new(),
         stats: Default::default(),
         modifiers: Default::default(),
-        wiki_abilities: Default::default(),
+
         exceptions: Default::default(),
         map_stats: Vec::new(),
     };
@@ -177,8 +177,6 @@ fn edits_apply_to_every_map_arm() {
     );
 }
 
-use tutorlolv2_build_dep::generators_v2::MapStyle;
-
 #[test]
 fn finish_writes_rust_and_doc_from_one_tree() {
     let mut c = champion_v2(
@@ -211,37 +209,8 @@ fn finish_writes_rust_and_doc_from_one_tree() {
         "{}",
         champion.docs[&Q(Void)]
     );
-    assert!(champion.map_damages.is_empty());
     assert_eq!(q.name, "Spell");
     assert_eq!(q.comment, "Magic Damage");
-}
-
-#[test]
-fn whole_style_writes_one_formula_per_mode() {
-    let mut c = champion_v2(
-        "Whole",
-        &[(
-            "Q0",
-            data_named(
-                "Q",
-                "Spell",
-                "|leveling = {{st|Magic Damage|{{ap|50 to 90}}}}",
-            ),
-        )],
-    );
-    c.take("Magic Damage", Q(Void)).unwrap();
-    let branch = c
-        .damage(Q(Void))
-        .unwrap()
-        .with_map(MapMode::Arena, Formula::Const(1.0));
-    c.set(Q(Void), branch).map_style(MapStyle::Whole);
-
-    let champion = c.finish().unwrap();
-    assert!(!champion.abilities[&Q(Void)].damage.contains("match"));
-    assert_eq!(
-        champion.map_damages[&Q(Void)],
-        vec![(MapMode::Arena, "1.0".to_string())]
-    );
 }
 
 #[test]
@@ -357,7 +326,14 @@ fn insert_adds_a_damage_no_effect_has() {
     // Annie R: Tibbers' attack, a pet the wiki only describes
     let mut c = champion_v2(
         "Insert",
-        &[("R0", data_named("R", "Summon: Tibbers", "|leveling = {{st|Initial Magic Damage|{{ap|150 to 350}}}}"))],
+        &[(
+            "R0",
+            data_named(
+                "R",
+                "Summon: Tibbers",
+                "|leveling = {{st|Initial Magic Damage|{{ap|150 to 350}}}}",
+            ),
+        )],
     );
     let tibbers = Damage {
         formula: f![30 + 15 * (RLevel - 1) + 0.1 * AbilityPower],

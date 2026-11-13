@@ -80,6 +80,7 @@ impl AbilityModel {
 
         let mut model = Self {
             page: String::new(),
+            descriptions: BTreeMap::new(),
             name: data
                 .positional(0)
                 .map(|name| name.plain().trim().to_string())
@@ -126,6 +127,14 @@ impl AbilityModel {
                 }
 
                 let label = heading.as_deref().unwrap_or(name);
+                let text = crate::parser::clean_text(&arg.value.plain());
+                let description = model.descriptions.entry(label.to_string()).or_default();
+
+                if !description.is_empty() {
+                    description.push(' ');
+                }
+
+                description.push_str(&text);
 
                 for value in arg.value.description_values(key) {
                     let terms = Terms::new(context, key);

@@ -1,7 +1,7 @@
 //! Champion generators v2: they select effects of the wikitext model
 //! (`cache/wiki/champions/model.json`) by label and edit their [`Formula`] trees, from
-//! which both the generated code and the codec's source are written. A champion uses
-//! its v2 generator once it is ported, and its v1 generator until then
+//! which both the generated code and the codec's source are written. The registry
+//! covers every supported champion.
 //!
 //! ```ignore
 //! impl GeneratorV2 for Darius {
@@ -30,26 +30,16 @@ use {
         },
     },
     std::{collections::BTreeMap, path::Path, sync::LazyLock},
-    tutorlolv2_types::{AbilityId, Attrs, ComboElement, DamageType, Key, MapMode},
+    tutorlolv2_types::{AbilityId, Attrs, ComboElement, DamageType, Key},
     tutorlolv2_wiki::{
         JsonRead,
         wikitext::{AbilityModel, ChampionModel, EffectModel, Formula},
     },
 };
 
-/// A v2 champion generator, written on `self` as v1's
+/// A champion generator operating on structured wiki formulas.
 pub trait GeneratorV2 {
     fn generate(&mut self) -> MayFail;
-}
-
-/// How the formulas that game modes change are written in the generated code
-#[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
-pub enum MapStyle {
-    /// A branch on each value that a mode changes, inside the formula
-    #[default]
-    Value,
-    /// One whole formula per mode, as v1 writes them
-    Whole,
 }
 
 /// A damage of a champion, as it is taken from an effect and edited
@@ -64,13 +54,12 @@ pub struct Damage {
     pub attributes: Attrs,
 }
 
-/// What a v2 generator edits: the damages it takes from the model, and v1's
-/// [`Champion`] for combos, constants, exceptions and the checks of its `end`
+/// Damages selected from the structured model, with the shared [`Champion`]
+/// output for combos, constants, exceptions and final consistency checks.
 pub struct ChampionV2 {
     pub inner: Champion,
     pub model: ChampionModel,
     damages: BTreeMap<AbilityId, Damage>,
-    style: MapStyle,
 }
 
 impl ChampionV2 {
@@ -79,7 +68,6 @@ impl ChampionV2 {
             inner,
             model,
             damages: BTreeMap::new(),
-            style: MapStyle::default(),
         }
     }
 
@@ -335,12 +323,6 @@ impl ChampionV2 {
         self
     }
 
-    /// How the formulas that game modes change are written, see [`MapStyle`]
-    pub fn map_style(&mut self, style: MapStyle) -> &mut Self {
-        self.style = style;
-        self
-    }
-
     /// A copy of the formula of `id`, for use in `f![…]`
     pub fn damage(&self, id: AbilityId) -> MayFail<Formula> {
         self.damages
@@ -349,18 +331,36 @@ impl ChampionV2 {
             .ok_or_else(|| format!("[{}] {id:?} was never taken", self.champion_id()).into())
     }
 
-    /// Description of the effect `effect` of `key` in v1's data, as v1's, for the
-    /// constants generators read from it
-    pub fn description(&self, key: Key, effect: &str) -> MayFail<&str> {
-        self.inner.description(key, effect)
+    /// Text of a description section, grouped by its wiki heading.
+    pub fn description(&self, key: Key, heading: &str) -> MayFail<&str> {
+        let pages = self
+            .model
+            .abilities
+            .get(&key)
+            .ok_or_else(|| format!("[{}] has no {key:?} pages", self.champion_id()))?;
+
+        let matches = pages
+            .iter()
+            .filter_map(|page| page.descriptions.get(heading))
+            .collect::<Vec<_>>();
+
+        match matches.as_slice() {
+            [text] => Ok(text.as_str()),
+            _ => Err(format!(
+                "[{}] {key:?} has {} descriptions named {heading:?}",
+                self.champion_id(),
+                matches.len()
+            )
+            .into()),
+        }
     }
 
-    /// Text of one of the champion's wiki exceptions, as v1's
+    /// Text of one of the champion's wiki exceptions, from the cached metadata
     pub fn exception(&self, name: &str) -> MayFail<&str> {
         self.inner.exception(name)
     }
 
-    /// Adds `combos`, as v1. Every ability of a combo must have been taken before
+    /// Adds `combos`, Every ability of a combo must have been taken before
     pub fn combos<const N: usize>(&mut self, combos: [&[ComboElement]; N]) -> MayFail<&mut Self> {
         for combo in combos {
             for element in combo {
@@ -383,10 +383,9 @@ impl ChampionV2 {
         Ok(self)
     }
 
-    /// Writes each damage into the abilities of [`Self::inner`], then runs v1's checks
+    /// Writes each damage into the abilities of [`Self::inner`], then checks the output consistency
     /// of `end`: zero damages are removed, unknown damage types warned and merges made.
-    /// Under [`MapStyle::Value`], the damage and the codec's source are written from
-    /// one tree. Under [`MapStyle::Whole`], each mode gets its whole formula, as v1
+    /// Writes Rust code and documentation from the same structured formula tree.
     pub fn end(&mut self) -> MayFail {
         for (id, damage) in std::mem::take(&mut self.damages) {
             let Damage {
@@ -397,33 +396,15 @@ impl ChampionV2 {
                 attributes,
             } = damage;
 
-            // v1 removes them in its `end`, from their text
+            // Structured zero damage has no generated ability.
             if formula.is_zero() {
                 println!("[{}] Removing [{id:?}]", self.inner.champion_id);
                 continue;
             }
 
-            let rust = match self.style {
-                MapStyle::Value => {
-                    self.inner.docs.insert(id, formula.to_string());
-                    formula.rust()
-                }
-                MapStyle::Whole => {
-                    let modes = formula.modes();
+            self.inner.docs.insert(id, formula.to_string());
 
-                    if !modes.is_empty() {
-                        let arms = modes
-                            .into_iter()
-                            .map(|mode| (mode, formula.on(mode).rust()))
-                            .collect();
-
-                        self.inner.map_damages.insert(id, arms);
-                    }
-
-                    formula.on(MapMode::Default).rust()
-                }
-            };
-
+            let rust = formula.rust();
             let ability = Ability {
                 name,
                 damage_type,
@@ -460,7 +441,7 @@ impl ChampionV2 {
         }
     }
 
-    /// [`Self::end`], returning the champion, for tests and the diff
+    /// [`Self::end`], returning the champion for callers that need the output directly.
     pub fn finish(mut self) -> MayFail<Champion> {
         self.end()?;
         self.into_champion()

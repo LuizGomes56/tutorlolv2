@@ -70,6 +70,7 @@ pub enum Wiki {
     ChampionsDownloadFull,
     #[clap(alias = "cdt")]
     ChampionsDownloadTemplates,
+    /// Downloads raw ability sources for the structured champion model.
     #[clap(alias = "cda")]
     ChampionsDownloadAbilities,
     #[clap(alias = "cde")]
@@ -78,16 +79,12 @@ pub enum Wiki {
     ChampionsParseFull,
     #[clap(alias = "cpt")]
     ChampionsParseTemplates,
-    #[clap(alias = "cpa")]
-    ChampionsParseAbilities,
     #[clap(alias = "cpe")]
     ChampionsParseExceptions,
     /// Writes the formula-ready model of every ability to `cache/wiki/champions/model.json`
     #[clap(alias = "cpm")]
     ChampionsParseModel,
-    /// Compares `model.json` with the current formulas into `model_report.json`
-    #[clap(alias = "ccm")]
-    ChampionsCompareModel,
+
     #[clap(alias = "i")]
     Items,
     #[clap(alias = "id")]
@@ -184,12 +181,10 @@ async fn main() -> MayFail {
             Wiki::ChampionsParseFull => champions::full::parse().map(|_| ()),
             Wiki::ChampionsDownloadTemplates => champions::template::download().await,
             Wiki::ChampionsParseTemplates => champions::template::parse(),
-            Wiki::ChampionsDownloadAbilities => champions::abilities::download().await,
-            Wiki::ChampionsParseAbilities => champions::abilities::parse(),
+            Wiki::ChampionsDownloadAbilities => champions::download_ability_sources().await,
             Wiki::ChampionsDownloadExceptions => champions::exceptions::download().await,
             Wiki::ChampionsParseExceptions => champions::exceptions::parse(),
             Wiki::ChampionsParseModel => wikitext::build::parse_model(),
-            Wiki::ChampionsCompareModel => wikitext::compare::compare_model(),
             Wiki::Items => items::run().await,
             Wiki::ItemsDownload => items::download().await.map(|_| ()),
             Wiki::ItemsParse => items::parse().and_then(|_| items::item_parser::parse_items()),

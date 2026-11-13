@@ -629,8 +629,8 @@ fn legacy_formulas_compare_by_value() {
 
     let a = values("((5.0) + (40.0 * (ctx.q_level - 1.0))) + ((1.25) * ctx.attack_damage)");
     let b = values("ctx.attack_damage * 1.25 + 5.0 + 40.0 * (ctx.q_level - 1.0)");
-    assert!(Report::equal(&a, &b));
-    assert!(!Report::equal(&a, &values("0.8 * ctx.ability_power")));
+    assert!(equal(&a, &b));
+    assert!(!equal(&a, &values("0.8 * ctx.ability_power")));
 
     let table = LegacyFormula::parse(
         "(match ctx.level { ..6 => 0.3, 6..11 => 0.4, 11..16 => 0.5, 16.. => 0.6 }) * ctx.bonus_move_speed",
@@ -643,8 +643,8 @@ fn legacy_formulas_compare_by_value() {
     assert_eq!(ranks.eval(&Sample::new([(CtxVar::RLevel, 2.0)])), 630.0);
 
     // Both non-finite at a sample is equal; one finite and one not is different
-    assert!(Report::equal(&[f64::INFINITY], &[f64::NAN]));
-    assert!(!Report::equal(&[1.0], &[f64::INFINITY]));
+    assert!(equal(&[f64::INFINITY], &[f64::NAN]));
+    assert!(!equal(&[1.0], &[f64::INFINITY]));
 
     // Model formulas print to strings the same reader understands
     let f = Formula::ByRank {
@@ -656,24 +656,8 @@ fn legacy_formulas_compare_by_value() {
         .iter()
         .map(|s| f.eval(s).unwrap())
         .collect::<Vec<_>>();
-    assert!(Report::equal(&printed, &evaluated));
-    assert!(Report::equal(&printed, &a));
-}
-
-#[test]
-#[ignore = "needs the cache of wiki pages and model.json"]
-fn at_least_60_percent_of_formulas_are_equal() {
-    let report = Report::new(Path::new("..")).unwrap();
-    println!(
-        "equal {} different {} unreadable {} only current {} only model {} ({:.1}%)",
-        report.equal,
-        report.different,
-        report.unreadable,
-        report.only_current,
-        report.only_model,
-        report.percent_equal
-    );
-    assert!(report.percent_equal >= 60.0);
+    assert!(equal(&printed, &evaluated));
+    assert!(equal(&printed, &a));
 }
 
 #[test]
@@ -796,12 +780,12 @@ fn per_percent_scalings() {
 #[test]
 fn rounding_of_the_wiki_is_equal() {
     // Maokai E: 33.3325 per rank against the rounded 166.67
-    assert!(Report::equal(&[166.663], &[166.67]));
+    assert!(equal(&[166.663], &[166.67]));
     // Rumble Q: rounded %-health ratios against 1000 maximum health
-    assert!(Report::equal(&[4.67], &[4.67 + 0.003]));
+    assert!(equal(&[4.67], &[4.67 + 0.003]));
     // Differences beyond rounding are still different
-    assert!(!Report::equal(&[100.0], &[101.0]));
-    assert!(!Report::equal(&[0.5], &[0.6]));
+    assert!(!equal(&[100.0], &[101.0]));
+    assert!(!equal(&[0.5], &[0.6]));
 }
 
 /// Like `page`, for the champions whose ultimate has 4 ranks, as Karma and Nidalee
@@ -2225,4 +2209,14 @@ fn flat_critical_scaling_shot_counts_keep_the_base_and_continuous_scaling() {
         let printed = lucian.extras[0].formula.rust();
         assert!((LegacyFormula::parse(&printed).unwrap().eval(&s) - shots).abs() < 1e-9);
     }
+}
+
+#[test]
+fn descriptions_keep_heading_text_and_continuations() {
+    let model = page(
+        "{{Ability data|Test|skill=P|description={{sbc|Innate:}} Swain gains {{as|12 bonus health}}.|description2=Additional '''text'''.}}",
+    );
+    let text = &model.descriptions["Innate"];
+    assert!(text.contains("Swain gains 12 bonus health"), "{text}");
+    assert!(text.contains("Additional text."), "{text}");
 }

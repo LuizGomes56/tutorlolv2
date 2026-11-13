@@ -112,6 +112,21 @@ impl<'a> DDragon<'a> {
 #[repr(transparent)]
 pub struct HttpClient(Client);
 
+/// An unsuccessful wiki response, kept distinct from transport failures.
+#[derive(Debug)]
+pub(crate) struct WikiStatusError {
+    pub link: String,
+    pub status: StatusCode,
+}
+
+impl std::fmt::Display for WikiStatusError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "[fetch] {} returned status {}", self.link, self.status)
+    }
+}
+
+impl std::error::Error for WikiStatusError {}
+
 impl From<Client> for HttpClient {
     fn from(value: Client) -> Self {
         Self(value)
@@ -220,7 +235,11 @@ impl HttpClient {
         }
 
         if check_status && !status.is_success() {
-            return Err(format!("[fetch] {link} returned status {status}").into());
+            return Err(WikiStatusError {
+                link: link.to_string(),
+                status,
+            }
+            .into());
         }
 
         println!("[fetch] {link} -> {path:?}");

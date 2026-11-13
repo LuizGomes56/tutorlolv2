@@ -286,6 +286,15 @@ where
     fn map(&self) -> &BTreeMap<String, T>;
     fn create_methods(&self, result: &mut String, id: &str) -> MayFail<bool>;
 
+    fn generator_trait() -> &'static str {
+        "Generator"
+    }
+
+    fn generator_declarations(modules: &str) -> String {
+        let tag = Self::TAG.as_ref();
+        format!("use crate::generators::imports::{tag}::*;\ncrate::decl_{tag}!(\n{modules}\n);")
+    }
+
     /// Attach catalog-wide metadata after the entity's custom generator has run.
     fn prepare(&self, _id: &str, _value: &mut U) {}
 
@@ -633,9 +642,10 @@ where
         let mut result = format!(
             "use super::*;
 
-            impl Generator for {id} {{
+            impl {generator_trait} for {id} {{
                 #[warn(unstable_features)]
-                fn generate(&mut self) -> MayFail {{ self"
+                fn generate(&mut self) -> MayFail {{ self",
+            generator_trait = Self::generator_trait(),
         );
 
         let path = SaveTo::GeneratorRaw(Self::TAG, id).path();
@@ -660,7 +670,6 @@ where
         let dir = Path::new(&dir_loc);
 
         let decl = dir.join("mod").with_extension("rs");
-        let module = format_args!("decl_{}", tag.as_ref());
 
         keys.par_iter().try_for_each(|key| self.create(key))?;
 
@@ -674,9 +683,7 @@ where
             .collect::<Vec<_>>()
             .join(",\n\t");
 
-        let decl_content = format!(
-            "use crate::generators::imports::{module}::*;\ncrate::{module}!(\n\t{modules}\n);",
-        );
+        let decl_content = Self::generator_declarations(&modules);
 
         tutorlolv2_wiki::write(&decl, decl_content)?;
 

@@ -15,7 +15,7 @@ use crate::{
 use change::{ChangeKind, MapChange};
 use lazy_regex::regex;
 use mlua::{Lua, LuaSerdeExt, Value};
-use overrides::{ChampionOverrides, EffectOverrides, Outcome, SelectedEffect};
+use overrides::{EffectOverrides, Outcome};
 use serde::{Deserialize, Serialize};
 use std::{
     collections::BTreeMap,
@@ -170,6 +170,7 @@ pub fn parse() -> MayFail {
 struct Targets {
     /// Longest names first, so "Aurelion Sol" is tried before shorter names
     champions: Vec<(String, WikiChampion)>,
+    models: BTreeMap<String, crate::wikitext::ChampionModel>,
     items: BTreeMap<String, String>,
     runes: BTreeMap<String, String>,
 }
@@ -194,7 +195,10 @@ impl Targets {
             .map(|rune| (rune.name, rune.rune_id))
             .collect();
 
+        let models = BTreeMap::from_file("cache/wiki/champions/model.json")?;
+
         Ok(Self {
+            models,
             champions,
             items,
             runes,
@@ -246,11 +250,13 @@ impl Targets {
             return match key {
                 Some(key) => ChangeTarget::Ability { champion_id, key },
                 None => ChangeTarget::NamedAbility {
-                    key: champion.wiki_abilities.iter().find_map(|(key, abilities)| {
-                        abilities
-                            .iter()
-                            .any(|a| a.name.eq_ignore_ascii_case(rest))
-                            .then_some(*key)
+                    key: self.models.get(&champion_id).and_then(|model| {
+                        model.abilities.iter().find_map(|(key, abilities)| {
+                            abilities
+                                .iter()
+                                .any(|a| a.name.eq_ignore_ascii_case(rest))
+                                .then_some(*key)
+                        })
                     }),
                     name: rest.to_string(),
                     champion_id,
@@ -267,8 +273,6 @@ impl Targets {
 /// rules without building
 #[derive(Debug, Default)]
 pub struct Selected {
-    /// Effects of each champion, by name
-    pub champions: BTreeMap<String, Vec<SelectedEffect>>,
     /// Slots of each item, as `pass2`
     pub items: BTreeMap<String, Vec<&'static str>>,
     /// What each generator reads of the changes, by the id of its entity
@@ -355,41 +359,7 @@ fn selected_effects() -> MayFail<Selected> {
         })
         .collect();
 
-    let dir = Path::new(lock::GENERATORS).join("champions");
-
-    let champions = GeneratorFile::read_dir(dir)?
-        .into_iter()
-        .map(|file| {
-            let selected = file
-                .effect_refs()
-                .into_iter()
-                .filter_map(|r| {
-                    let key = match r.key.as_str() {
-                        "P" => Key::P,
-                        "Q" => Key::Q,
-                        "W" => Key::W,
-                        "E" => Key::E,
-                        "R" => Key::R,
-                        _ => return None,
-                    };
-
-                    Some(SelectedEffect {
-                        key,
-                        nth: r.nth,
-                        name: r.name,
-                    })
-                })
-                .collect();
-
-            (file.id, selected)
-        })
-        .collect();
-
-    Ok(Selected {
-        champions,
-        items,
-        generators,
-    })
+    Ok(Selected { items, generators })
 }
 
 impl MapChanges {
@@ -397,24 +367,12 @@ impl MapChanges {
     pub fn outcomes(
         &self,
         code: &str,
-        champions: &BTreeMap<String, WikiChampion>,
+        _champions: &BTreeMap<String, WikiChampion>,
         items: &BTreeMap<String, WikiItem>,
         runes: &BTreeMap<String, WikiRune>,
         selected: &Selected,
     ) -> BTreeMap<(String, usize), Outcome> {
         let mut outcomes = BTreeMap::new();
-
-        for champion in champions.values() {
-            let selected = selected
-                .champions
-                .get(&champion.champion_id)
-                .map(Vec::as_slice)
-                .unwrap_or_default();
-
-            for (key, i, outcome) in ChampionOverrides::new(champion, self, selected).outcomes {
-                outcomes.insert((key, i), outcome);
-            }
-        }
 
         for (key, entry) in &self.entries {
             // Effects of the item slots its generator names, or every rune effect
@@ -460,7 +418,9 @@ impl MapChanges {
                     }
                     ChangeTarget::Champion { .. }
                     | ChangeTarget::Ability { .. }
-                    | ChangeTarget::NamedAbility { .. } => continue,
+                    | ChangeTarget::NamedAbility { .. } => {
+                        Outcome::Manual("see structured model map changes report")
+                    }
                     _ if !relevant => Outcome::NotRelevant,
                     ChangeTarget::Item { .. } | ChangeTarget::Rune { .. } => effect_outcomes
                         .get(&i)
@@ -626,4 +586,74 @@ pub fn report() -> MayFail {
     }
 
     Ok(())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::champions::{WikiModifiers, WikiStats};
+    use crate::wikitext::{AbilityModel, ChampionModel};
+
+    #[test]
+    fn named_targets_use_structured_ability_names_and_old_metadata_still_loads() {
+        let champion = WikiChampion {
+            name: "Nidalee".into(),
+            champion_id: "Nidalee".into(),
+            adaptive_type: Default::default(),
+            attack_type: Default::default(),
+            positions: vec![],
+            stats: WikiStats::default(),
+            modifiers: WikiModifiers::default(),
+            exceptions: BTreeMap::new(),
+            map_stats: vec![],
+        };
+        let mut cached = serde_json::to_value(&champion).unwrap();
+        // Old cached ability payloads must be ignored, even when they cannot be parsed.
+        cached["wiki_abilities"] = serde_json::json!({"Q": "retired payload"});
+        let champion: WikiChampion = serde_json::from_value(cached).unwrap();
+        assert!(
+            serde_json::to_value(&champion)
+                .unwrap()
+                .get("wiki_abilities")
+                .is_none()
+        );
+        let targets = Targets {
+            champions: vec![(champion.name.clone(), champion)],
+            models: BTreeMap::from([(
+                "Nidalee".into(),
+                ChampionModel {
+                    champion_id: "Nidalee".into(),
+                    abilities: BTreeMap::from([(
+                        Key::Q,
+                        vec![AbilityModel {
+                            page: "Q1".into(),
+                            descriptions: BTreeMap::new(),
+                            name: "Takedown".into(),
+                            damage_type: tutorlolv2_types::DamageType::Magic,
+                            effects: vec![],
+                            extras: vec![],
+                        }],
+                    )]),
+                },
+            )]),
+            items: BTreeMap::new(),
+            runes: BTreeMap::new(),
+        };
+        assert_eq!(
+            targets.resolve("Nidalee takedown"),
+            ChangeTarget::NamedAbility {
+                champion_id: "Nidalee".into(),
+                name: "takedown".into(),
+                key: Some(Key::Q),
+            }
+        );
+        assert_eq!(
+            targets.resolve("Nidalee Unrecognized"),
+            ChangeTarget::NamedAbility {
+                champion_id: "Nidalee".into(),
+                name: "Unrecognized".into(),
+                key: None,
+            }
+        );
+    }
 }

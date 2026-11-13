@@ -13,7 +13,7 @@ use {
 };
 
 /// Abilities of a champion, by key. The `Vec` is ordered by the page files
-/// (`Q0`, `Q1`, …), so its index is the same `nth` that v1 generators use
+/// (`Q0`, `Q1`, …), preserving source order for repeated label selections.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 pub struct ChampionModel {
     pub champion_id: String,
@@ -26,6 +26,9 @@ pub struct AbilityModel {
     pub page: String,
     pub name: String,
     pub damage_type: DamageType,
+    /// Visible description text by heading, including continuation fields.
+    #[serde(default)]
+    pub descriptions: BTreeMap<String, String>,
     /// One per `{{st}}` label and value of the `leveling*` fields, in order
     pub effects: Vec<EffectModel>,
     /// Tables written with `{{pp}}` in the `description*` fields, such as the

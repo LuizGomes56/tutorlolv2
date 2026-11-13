@@ -7,7 +7,7 @@ pub use crate::{
         Generator, GeneratorExt, constants::WithConstants, parser::champions::Champion,
         utils::RegExtractor,
     },
-    generators_v2::{ChampionV2, Damage, GeneratorV2, MapStyle},
+    generators_v2::{ChampionV2, Damage, GeneratorV2},
 };
 pub use lazy_regex::regex;
 pub use tutorlolv2_types::{
@@ -20,9 +20,8 @@ pub use tutorlolv2_wiki::{
 };
 
 /// Declares the champions that have a v2 generator: for each one, its module, a
-/// struct that wraps a [`ChampionV2`] and dereferences to it, and the v1 traits the
-/// build calls. Also `champion_gen_fn_v2`, which the build tries before v1's, and
-/// `PORTED`, the champions it knows
+/// struct that wraps a [`ChampionV2`] and dereferences to it, and the shared generator traits the
+/// build calls. The registry covers every supported champion.
 #[macro_export]
 macro_rules! decl_champions_v2 {
     (inner $Name:ident) => {
@@ -67,7 +66,7 @@ macro_rules! decl_champions_v2 {
             }
         )*
 
-        pub fn champion_gen_fn_v2(champion_id: &str) -> Option<
+        pub fn champion_gen_fn(champion_id: &str) -> Option<
             fn(WikiChampion) -> MayFail<Box<dyn GeneratorExt<Champion>>>
         > {
             match champion_id {
@@ -76,7 +75,7 @@ macro_rules! decl_champions_v2 {
             }
         }
 
-        /// Champions that have a v2 generator
-        pub const PORTED: &[&str] = &[$(stringify!($Name)),*];
+        /// Supported champions
+        pub const CHAMPIONS: &[&str] = &[$(stringify!($Name)),*];
     };
 }

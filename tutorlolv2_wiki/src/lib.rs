@@ -209,6 +209,8 @@ pub async fn run() -> MayFail {
     items::run().await?;
     runes::run().await?;
     spells::run().await?;
+    // Named ability targets resolve against the structured model.
+    wikitext::build::parse_model()?;
     // Resolves its keys against the champions, items and runes parsed above
     map_changes::run().await?;
     // Reads the data modules of champions and items downloaded above
