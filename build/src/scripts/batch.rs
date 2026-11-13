@@ -70,7 +70,8 @@ impl BuildContext {
             .flat_map(|doc| &doc.formulas)
             .enumerate()
             .map(|(i, formula)| {
-                source.push_str(&format!("fn __formula_{i}() {{\n{}\n}}\n", formula.source));
+                let body = super::parentheses::remove_redundant_parentheses(&formula.source);
+                source.push_str(&format!("fn __formula_{i}() {{\n{body}\n}}\n"));
             })
             .count();
 

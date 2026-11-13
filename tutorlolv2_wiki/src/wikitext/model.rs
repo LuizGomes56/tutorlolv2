@@ -3,6 +3,7 @@
 //! combine structurally, and that displays as the `ctx.*` expressions of today
 
 use {
+    crate::formula::SequencePattern,
     serde::{Deserialize, Serialize},
     std::{
         collections::{BTreeMap, BTreeSet},
@@ -55,20 +56,24 @@ pub enum Formula {
     Const(f64),
     /// `ctx.ability_power`, `ctx.enemy_max_health`, …
     Var(CtxVar),
-    /// Values by the rank `rank` (`ctx.q_level` … `ctx.r_level`), from `{{ap}}`
+    /// Values by the rank `rank` (`ctx.q_level` … `ctx.r_level`), from `{{ap}}`.
+    /// Clear arithmetic progressions continue beyond their listed ranks.
     ByRank {
         rank: CtxVar,
         values: Vec<f64>,
     },
     /// Values by `var` from `{{pp}}`: `keys[i]` is the value of `var` where
     /// `values[i]` starts. `var` is `ctx.level` unless the template names another
-    /// axis, such as the rank of another ability
+    /// axis, such as the rank of another ability. Consecutive arithmetic level
+    /// tables become growth expressions; threshold tables keep their matches.
     Table {
         var: CtxVar,
         keys: Vec<u8>,
         values: Vec<f64>,
     },
     /// Bounded numeric axis. Keys retain their original units and precision.
+    /// Only direct, integral, consecutive level axes are eligible for inferred
+    /// growth; stat axes such as crit chance retain their explicit caps.
     NumericTable {
         axis: Box<Formula>,
         keys: Vec<f64>,
@@ -121,6 +126,10 @@ impl Sample {
 }
 
 impl Formula {
+    /// Per-point relative error allowed when recognizing wiki-rounded growth.
+    /// `0.001` is 0.1%; this never permits plateaus or gaps in a stepped level table.
+    pub const LINEAR_RELATIVE_TOLERANCE: f64 = 0.001;
+
     /// Multiplies the formula by `factor`, written before it
     pub fn scale(self, factor: f64) -> Formula {
         Formula::Const(factor) * self
@@ -282,7 +291,16 @@ impl Formula {
             Formula::Var(var) => sample.get(*var),
             Formula::ByRank { rank, values } => match Self::linear_step(*rank, values) {
                 // As displayed, so the printed formula has the same values
-                Some(step) => values[0] + step * (sample.get(*rank) - 1.0),
+                Some(step) => {
+                    let offset = sample.get(*rank) - 1.0;
+                    let offset = if Self::rank_had_lower_bound(*rank, values) {
+                        offset.max(0.0)
+                    } else {
+                        offset
+                    };
+
+                    values[0] + step * offset
+                }
                 None => {
                     let index = (sample.get(*rank) - 1.0).max(0.0) as usize;
                     *values.get(index.min(values.len().checked_sub(1)?))?
@@ -290,6 +308,11 @@ impl Formula {
             },
             Formula::Table { var, keys, values } => {
                 let value = sample.get(*var);
+
+                if let Some(step) = Self::level_table_step(*var, keys, values) {
+                    return Some(values[0] + step * (value - f64::from(keys[0])).max(0.0));
+                }
+
                 let index = keys
                     .iter()
                     .rposition(|key| f64::from(*key) <= value)
@@ -303,6 +326,11 @@ impl Formula {
                 interpolated,
             } => {
                 let x = axis.eval(sample)?;
+
+                if let Some(step) = Self::numeric_level_step(axis, keys, values) {
+                    return Some(values[0] + step * (x - keys[0]).max(0.0));
+                }
+
                 let i = keys.iter().rposition(|key| *key <= x).unwrap_or(0);
                 let a = *values.get(i)?;
 
@@ -333,10 +361,37 @@ impl Formula {
         })
     }
 
-    /// Step of `values` when they are linear and list every rank of `rank`, which
-    /// displays as `(a) + (step * (rank - 1.0))`. Fewer values, such as 4 values of
-    /// a Q, display as a `match` that keeps the last value for the ranks after them
+    /// Infer only a near-arithmetic progression, never a general polynomial.
+    /// Endpoint slope avoids accumulating the error of a rounded first difference.
     fn linear_step(rank: CtxVar, values: &[f64]) -> Option<f64> {
+        if Self::is_level_axis(rank) {
+            if values.len() < 3 {
+                return None;
+            }
+
+            let inferred = Self::arithmetic_step(values)?;
+            // Already-linear full-rank formulas keep their original coefficient
+            // and floating-point evaluation order; only lookups need inference.
+            Some(if Self::rank_had_lower_bound(rank, values) {
+                inferred
+            } else {
+                values[1] - values[0]
+            })
+        } else {
+            // Existing non-level rank expressions keep their exact detection;
+            // no new extrapolation policy for capped stats is inferred here.
+            let step = values.get(1)? - values.first()?;
+
+            values
+                .windows(2)
+                .all(|pair| (pair[1] - pair[0] - step).abs() < 1e-9)
+                .then_some(step)
+        }
+    }
+
+    /// Keep lower clamping for ranks which previously needed a lookup. Existing
+    /// exact full-rank affine expressions retain their established behavior.
+    fn rank_had_lower_bound(rank: CtxVar, values: &[f64]) -> bool {
         let ranks = match rank {
             CtxVar::Level => 18,
             CtxVar::QLevel | CtxVar::WLevel | CtxVar::ELevel => 5,
@@ -344,12 +399,96 @@ impl Formula {
             _ => values.len(),
         };
 
-        let step = values.get(1)? - values.first()?;
-        let linear = values
-            .windows(2)
-            .all(|pair| (pair[1] - pair[0] - step).abs() < 1e-9);
+        values.len() < ranks
+            || values
+                .windows(2)
+                .any(|pair| (pair[1] - pair[0] - (values[1] - values[0])).abs() >= 1e-9)
+    }
 
-        (linear && values.len() >= ranks).then_some(step)
+    fn is_level_axis(var: CtxVar) -> bool {
+        matches!(
+            var,
+            CtxVar::Level | CtxVar::QLevel | CtxVar::WLevel | CtxVar::ELevel | CtxVar::RLevel
+        )
+    }
+
+    fn arithmetic_step(values: &[f64]) -> Option<f64> {
+        if values.len() < 2 || values.iter().any(|value| !value.is_finite()) {
+            return None;
+        }
+
+        let step = (values.last()? - values[0]) / (values.len() - 1) as f64;
+
+        if !step.is_finite() {
+            return None;
+        }
+
+        if step == 0.0 {
+            return values
+                .iter()
+                .all(|value| *value == values[0])
+                .then_some(0.0);
+        }
+
+        // Classify the variation independently of the base and units. Otherwise
+        // a large base or tiny percentage could hide genuine curvature.
+        let span = (values.last()? - values[0]).abs();
+        let scale = 10f64.powf(span.log10().floor()).max(f64::MIN_POSITIVE);
+        let variation = values
+            .iter()
+            .map(|value| (value - values[0]) / scale)
+            .collect::<Vec<_>>();
+
+        if SequencePattern::new(&variation) != SequencePattern::Linear
+            || values.windows(2).any(|pair| {
+                let difference = pair[1] - pair[0];
+                !difference.is_finite() || difference == 0.0 || difference.signum() != step.signum()
+            })
+        {
+            return None;
+        }
+
+        values
+            .iter()
+            .enumerate()
+            .all(|(index, value)| {
+                let predicted = values[0] + step * index as f64;
+                let scale = value.abs().max(predicted.abs()).max(step.abs());
+                (value - predicted).abs()
+                    <= scale * (Self::LINEAR_RELATIVE_TOLERANCE + 16.0 * f64::EPSILON)
+            })
+            .then_some(step)
+    }
+
+    fn level_table_step(var: CtxVar, keys: &[u8], values: &[f64]) -> Option<f64> {
+        if !Self::is_level_axis(var)
+            || keys.len() != values.len()
+            || keys.len() < 3
+            || !keys
+                .windows(2)
+                .all(|pair| u16::from(pair[1]) == u16::from(pair[0]) + 1)
+        {
+            return None;
+        }
+
+        Self::arithmetic_step(values)
+    }
+
+    fn numeric_level_step(axis: &Formula, keys: &[f64], values: &[f64]) -> Option<f64> {
+        let Formula::Var(var) = axis else { return None };
+
+        if !Self::is_level_axis(*var)
+            || keys.len() != values.len()
+            || keys.len() < 3
+            || keys
+                .iter()
+                .any(|key| !key.is_finite() || key.fract() != 0.0)
+            || !keys.windows(2).all(|pair| pair[1] - pair[0] == 1.0)
+        {
+            return None;
+        }
+
+        Self::arithmetic_step(values)
     }
 
     /// Whether the formula displays without parentheses around it
@@ -554,6 +693,14 @@ impl Formula {
             }
             Formula::ByRank { rank, values } => {
                 if let Some(step) = Self::linear_step(*rank, values) {
+                    if Self::rank_had_lower_bound(*rank, values) {
+                        return write!(
+                            f,
+                            "({}) + ({} * (({rank} - 1.0).max(0.0)))",
+                            Number(values[0]),
+                            Number(step)
+                        );
+                    }
                     return write!(
                         f,
                         "({}) + ({} * ({rank} - 1.0))",
@@ -580,6 +727,15 @@ impl Formula {
                 write!(f, "{}", Number(values[0]))
             }
             Formula::Table { var, keys, values } => {
+                if let Some(step) = Self::level_table_step(*var, keys, values) {
+                    return write!(
+                        f,
+                        "({}) + ({} * (({var} - {}).max(0.0)))",
+                        Number(values[0]),
+                        Number(step),
+                        Number(f64::from(keys[0]))
+                    );
+                }
                 let last = values.len() - 1;
                 let arms = values
                     .iter()
@@ -599,6 +755,12 @@ impl Formula {
                 values,
                 interpolated,
             } => {
+                if let Some(step) = Self::numeric_level_step(axis, keys, values) {
+                    write!(f, "({}) + ({} * ((", Number(values[0]), Number(step))?;
+                    axis.write(f, syntax)?;
+                    return write!(f, " - {}).max(0.0)))", Number(keys[0]));
+                }
+
                 f.write_str("{ let axis: f32 = ")?;
                 axis.write(f, syntax)?;
                 f.write_str("; ")?;

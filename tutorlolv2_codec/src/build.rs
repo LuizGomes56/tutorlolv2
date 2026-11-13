@@ -1142,7 +1142,7 @@ impl Parser<'_> {
 
         let mut value = self.parse_primary()?;
 
-        if self.axis_scope && matches!(self.peek().map(|t| &t.kind), Some(TokenKind::Dot)) {
+        if matches!(self.peek().map(|t| &t.kind), Some(TokenKind::Dot)) {
             self.bump();
             self.expect_ident("max")?;
             self.expect(TokenKind::LParen, "expected `(`")?;

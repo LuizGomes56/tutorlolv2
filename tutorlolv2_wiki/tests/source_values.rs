@@ -1,6 +1,6 @@
 use tutorlolv2_types::CtxVar;
 use tutorlolv2_wiki::wikitext::{
-    Lookup, PageContext, Sample, SourceDocument, SourceForm, SourceRole, SourceVariant,
+    Formula, Lookup, PageContext, Sample, SourceDocument, SourceForm, SourceRole, SourceVariant,
 };
 
 fn document(source: &str, ranged: bool) -> SourceDocument {
@@ -278,7 +278,7 @@ fn cached_rune_sources_match_independent_damage_expectations() {
                 .eval(&sample)
                 .unwrap();
             assert!(
-                (actual - expected).abs() < 1e-8,
+                (actual - expected).abs() <= expected.abs() * Formula::LINEAR_RELATIVE_TOLERANCE,
                 "{id} ranged={ranged}: {actual} vs {expected}"
             );
         }

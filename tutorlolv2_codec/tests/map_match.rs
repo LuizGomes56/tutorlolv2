@@ -165,3 +165,16 @@ fn numeric_table_map_arm_does_not_require_a_comma() {
     assert_eq!(render(source).unwrap(), source.replace("ctx.", ""));
     assert!(render("match ctx.map { #[cold] Arena => 5 _ => 1 }").is_err());
 }
+
+#[test]
+fn affine_level_lower_bounds_round_trip_outside_numeric_table_blocks() {
+    let expression = "10 + 3 * (ctx.level - 1).max(0.0)";
+    for source in [
+        expression.to_string(),
+        format!("match ctx.map {{ #[cold] Arena => {expression}, _ => 10 }}"),
+    ] {
+        assert_eq!(render(&source).unwrap(), source.replace("ctx.", ""));
+    }
+    assert!(render("(ctx.level - 1).max(2)").is_err());
+    assert!(render("axis.max(0.0)").is_err());
+}

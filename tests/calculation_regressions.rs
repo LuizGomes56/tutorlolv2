@@ -1328,9 +1328,12 @@ fn inferred_lethal_tempo_stacks_feed_the_damage_amplification_on_each_map() {
                 ctx.bonus_attack_speed_ratio.get() - baseline.bonus_attack_speed_ratio.get(),
                 extra,
             );
-            close(
-                RuneId::LethalTempo.eval(&ctx, attack)[0],
-                damage * (1.0 + ctx.bonus_attack_speed_ratio.get()),
+            let actual = RuneId::LethalTempo.eval(&ctx, attack)[0];
+            let expected = damage * (1.0 + ctx.bonus_attack_speed_ratio.get());
+            // Rounded wiki samples may become an inferred growth expression.
+            assert!(
+                (actual - expected).abs() <= expected.abs() * 0.001,
+                "{actual} != {expected}"
             );
         }
     }

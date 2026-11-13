@@ -768,3 +768,37 @@ fn champion_documentation_reads_the_structured_generator_source() {
         );
     }
 }
+
+#[test]
+fn documentation_removes_only_unnecessary_grouping_before_packing() {
+    use tutorlolv2_build_dep::{
+        BuildContext,
+        scripts::batch::{EntityDocs, FormulaDoc},
+    };
+    let dir = TestDir::new();
+    let context = BuildContext::new(&dir.0, &dir.0, true).unwrap();
+    let input = "((49) + (49 * (ctx.e_level - 1))) + (0.7 * ctx.attack_damage) + (0.77 * ctx.ability_power)";
+    let mut docs = vec![EntityDocs {
+        tag: Tag::Champions,
+        index: 0,
+        variant: "Test".into(),
+        generator: None,
+        formulas: vec![FormulaDoc {
+            local: 0,
+            function: "test".into(),
+            source: input.into(),
+            name: "emin".into(),
+            comment: String::new(),
+        }],
+    }];
+    context.format_formulas(&mut docs).unwrap();
+    let result = docs[0].formulas[0]
+        .source
+        .split_whitespace()
+        .collect::<Vec<_>>()
+        .join(" ");
+    assert_eq!(
+        result,
+        "49 + 49 * (ctx.e_level - 1) + 0.7 * ctx.attack_damage + 0.77 * ctx.ability_power"
+    );
+}

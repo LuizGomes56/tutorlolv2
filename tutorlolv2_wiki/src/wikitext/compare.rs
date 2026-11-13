@@ -15,6 +15,7 @@ enum Expr {
     Number(f64),
     Var(CtxVar),
     Neg(Box<Expr>),
+    MaxZero(Box<Expr>),
     Binary(char, Box<Expr>, Box<Expr>),
     Match(CtxVar, Vec<(Pattern, Expr)>),
     /// `match ctx.map { … }`: the arm of each mode, and the default
@@ -42,11 +43,13 @@ impl Pattern {
 }
 
 impl LegacyFormula {
-    /// Reads numbers, `ctx.*` variables, `+ - * /`, parentheses and `match` tables.
+    /// Reads numbers, `ctx.*` variables, `+ - * /`, parentheses, `match` tables
+    /// and the lower-bound `.max(0.0)` used by inferred level growth.
     /// `None` for anything else
     pub fn parse(src: &str) -> Option<Self> {
         let mut parser = Parser { src, pos: 0 };
         let expr = parser.sum()?;
+
         parser.skip();
         (parser.pos == src.len()).then_some(Self(expr))
     }
@@ -93,7 +96,7 @@ impl Expr {
             },
             // A Table is contiguous with constant arms. General expression matches
             // are not representable by it, and must not silently become raw code.
-            Self::Match(_, _) => return None,
+            Self::Match(_, _) | Self::MaxZero(_) => return None,
         })
     }
 }
@@ -104,6 +107,7 @@ impl Expr {
             Expr::Number(value) => *value,
             Expr::Var(var) => sample.get(*var),
             Expr::Neg(expr) => -expr.eval(sample),
+            Expr::MaxZero(expr) => expr.eval(sample).max(0.0),
             Expr::Binary(op, lhs, rhs) => {
                 let (lhs, rhs) = (lhs.eval(sample), rhs.eval(sample));
 
@@ -189,20 +193,26 @@ impl Parser<'_> {
             return Some(Expr::Neg(Box::new(self.unary()?)));
         }
 
-        if self.eat("(") {
+        let mut value = if self.eat("(") {
             let expr = self.sum()?;
-            return self.eat(")").then_some(expr);
+            self.eat(")").then_some(expr)?
+        } else if self.eat("match") {
+            self.matching()?
+        } else if self.eat("ctx.") {
+            Expr::Var(self.var()?)
+        } else {
+            Expr::Number(self.number()?)
+        };
+
+        while self.eat(".max") {
+            if !self.eat("(") || self.number()? != 0.0 || !self.eat(")") {
+                return None;
+            }
+
+            value = Expr::MaxZero(Box::new(value));
         }
 
-        if self.eat("match") {
-            return self.matching();
-        }
-
-        if self.eat("ctx.") {
-            return Some(Expr::Var(self.var()?));
-        }
-
-        self.number().map(Expr::Number)
+        Some(value)
     }
 
     fn var(&mut self) -> Option<CtxVar> {
@@ -213,6 +223,7 @@ impl Parser<'_> {
 
         let var = CtxVar::from_str(name).ok()?;
         self.pos += name.len();
+
         Some(var)
     }
 
@@ -233,6 +244,7 @@ impl Parser<'_> {
 
         let value = rest[..end].parse().ok()?;
         self.pos += end;
+
         Some(value)
     }
 
