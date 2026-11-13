@@ -2,7 +2,7 @@ use super::*;
 
 impl GeneratorV2 for Akshan {
     fn generate(&mut self) -> MayFail {
-        self.take_nth("Innate", 1, P(Void))?
+        self.take_nth("Innate", 3, P(Void))?
             .damage_type(P(Void), Magic)
             .comment(P(Void), "Dirty Fighting third stack bonus magic damage")
             .take("Physical Damage", Q(Min))?

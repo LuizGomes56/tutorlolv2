@@ -3,8 +3,11 @@ use super::*;
 impl GeneratorV2 for Hecarim {
     fn generate(&mut self) -> MayFail {
         self.take("Physical Damage", Q(Void))?
-            // Rampage bonus damage per stack, on every mode
-            .edit(Q(Void), |q| f![q * Stacks * (1.03 + 0.03 * BonusAd / 100)])
+            // Each Rampage stack increases the damage by 3% (+ 3% per 100 bonus AD), which
+            // its description writes as text
+            .edit(Q(Void), |q| {
+                f![q * (1 + Stacks * (0.03 + 0.03 * BonusAd / 100))]
+            })
             .take("Magic Damage Per Tick", W(Min))?
             .take("Total Magic Damage", W(Max))?
             .take("Maximum Physical Damage", E(Max))?

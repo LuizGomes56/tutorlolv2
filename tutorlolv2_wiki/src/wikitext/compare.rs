@@ -358,6 +358,10 @@ impl Sample {
                                 CtxVar::Level => integer(18.0),
                                 CtxVar::QLevel | CtxVar::WLevel | CtxVar::ELevel => integer(5.0),
                                 CtxVar::RLevel => integer(3.0),
+                                // In game ranges, as a share of the critical strike chance
+                                // grows with what items add to the critical damage
+                                CtxVar::CritChance => random() * 100.0,
+                                CtxVar::CritDamage => 200.0 + random() * 150.0,
                                 _ => random() * 1000.0,
                             };
 

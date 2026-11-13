@@ -2,9 +2,8 @@ use super::*;
 
 impl GeneratorV2 for Senna {
     fn generate(&mut self) -> MayFail {
-        self.take("Innate - Relic Cannon", P(_1))?
+        self.take_nth("Innate - Relic Cannon", 0, P(_1))?
             .take("Innate - Weakened Soul", P(Void))?
-            .set(P(_1), f![0.2 * AttackDamage])
             .take("Physical Damage", Q(Void))?
             .take("Physical Damage", W(Void))?
             .take("Physical Damage", R(Void))?

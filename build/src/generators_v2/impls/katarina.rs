@@ -2,21 +2,7 @@ use super::*;
 
 impl GeneratorV2 for Katarina {
     fn generate(&mut self) -> MayFail {
-        // 70% / 80% / 90% / 100% AP at levels 1 / 6 / 11 / 16
-        let ap_ratio = Formula::Raw(
-            stringify!(match ctx.level {
-                ..6 => 0.7,
-                6..11 => 0.8,
-                11..16 => 0.9,
-                16.. => 1,
-            })
-            .into(),
-        );
-
         self.take_nth("Innate - Sinister Steel", 0, P(Void))?
-            .edit(P(Void), |p| {
-                f![(p) + 0.6 * BonusAd + (ap_ratio) * AbilityPower]
-            })
             .comment(P(Void), "Dagger pickup slash")
             .take("Magic Damage", Q(Void))?
             .take("Magic Damage", E(Void))?

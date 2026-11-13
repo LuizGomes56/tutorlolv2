@@ -2,7 +2,7 @@ use super::*;
 
 impl GeneratorV2 for Galio {
     fn generate(&mut self) -> MayFail {
-        self.take("Innate", P(Void))?
+        self.take_nth("Innate", 0, P(Void))?
             .comment(P(Void), "Colossal Smash empowered basic attack")
             .take("Magic Damage", Q(Void))?
             .take("Minimum Magic Damage", W(Min))?

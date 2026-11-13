@@ -33,6 +33,10 @@ pub struct Scaling {
     /// Power of the whole term, written as `(+ 1.14% AP)<sup>2</sup>`, which is
     /// `(0.0114 * AP)²`. 1 otherwise
     pub power: u8,
+    /// `{{pp}}` of a ratio by level, as Xin Zhao's `(+ {{pp|5 to 20 for 4|…|key=%}} AP)`,
+    /// in place of [`Self::ratios`]
+    #[serde(skip)]
+    pub table: Option<Template>,
 }
 
 impl Scaling {
@@ -42,6 +46,7 @@ impl Scaling {
         let text = template.positional(0)?;
 
         let mut ratios = None;
+        let mut table = None;
         let mut nested = Vec::new();
         let mut flat = String::new();
 
@@ -50,9 +55,20 @@ impl Scaling {
             match node {
                 Node::Text(text) => flat.push_str(text),
                 Node::Template(inner) => match inner.name.as_str() {
-                    "ap" if ratios.is_none() => {
+                    "ap" if ratios.is_none() && table.is_none() => {
                         ratios = Some(Progression::new(inner, skill).ok()?.numbers()?);
                         flat.push_str("RATIO");
+                    }
+                    // A `{{pp}}` in percent, whose `%` is its `key=`
+                    "pp" | "pplevel"
+                        if ratios.is_none()
+                            && table.is_none()
+                            && inner
+                                .named("key")
+                                .is_some_and(|key| key.plain().trim() == "%") =>
+                    {
+                        table = Some(inner.clone());
+                        flat.push_str("RATIO%");
                     }
                     "as" => {
                         nested.push(Self::new(inner, skill)?);
@@ -73,6 +89,25 @@ impl Scaling {
             None => (flat.into_owned(), 1),
         };
 
+        // `(+ 1.5 per 1 Lethality)`, a ratio of each point of the stat, as Pyke's R
+        if let Some(captures) = regex!(
+            r"^\(\+ ?(?<ratio>-?\d+(?:\.\d+)?) per (?<per>\d+(?:\.\d+)?) (?<stat>[^()%]+?)\)$"
+        )
+        .captures(&flat)
+            && nested.is_empty()
+        {
+            return Some(Self {
+                ratios: vec![captures["ratio"].parse::<f64>().ok()? * 100.0],
+                per: Some(captures["per"].parse().ok()?),
+                per_stat: None,
+                stat: captures["stat"].trim().to_string(),
+                additive: true,
+                nested,
+                power,
+                table: None,
+            });
+        }
+
         let captures = regex!(
             r"^(?<additive>\(\+ ?)?(?<ratio>RATIO|-?\d+(?:\.\d+)?)%(?: ?NESTED)*(?: per (?<per>\d+(?:\.\d+)?)%?)? (?<stat>[^()]+?)(?: per (?<per2>\d+(?:\.\d+)?)%? (?<per_stat>[^()]+?))?(?<close>\))?$"
         )
@@ -86,6 +121,7 @@ impl Scaling {
         }
 
         let ratios = match &captures["ratio"] {
+            "RATIO" if table.is_some() => Vec::new(),
             // `{{ap}}` without arguments has no ratio
             "RATIO" => ratios.filter(|ratios| !ratios.is_empty())?,
             ratio => vec![ratio.parse().ok()?],
@@ -104,6 +140,7 @@ impl Scaling {
             additive,
             nested,
             power,
+            table,
         })
     }
 

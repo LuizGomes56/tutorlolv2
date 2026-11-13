@@ -2,11 +2,8 @@ use super::*;
 
 impl GeneratorV2 for Elise {
     fn generate(&mut self) -> MayFail {
-        self.take_nth("Innate - Spider Form", 0, P(Void))?
-            .set(P(Void), {
-                f![14 + 10 * (RLevel - 1) + 0.15 * AbilityPower]
-            })
-            .take_in("Venomous Bite", "Magic Damage", Q(_1))?
+        // Spider Queen's innates were removed from the game
+        self.take_in("Venomous Bite", "Magic Damage", Q(_1))?
             .take_in("Neurotoxin", "Magic Damage", Q(_2))?
             .take("Magic Damage", W(Void))?
             .insert(

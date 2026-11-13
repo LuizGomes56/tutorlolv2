@@ -2,8 +2,7 @@ use super::*;
 
 impl GeneratorV2 for Jinx {
     fn generate(&mut self) -> MayFail {
-        self.take("Attack Speed per Subsequent Stack", Q(Void))?
-            .set(Q(Void), f![1.1 * AttackDamage])
+        self.take("Fishbones", Q(Void))?
             .take("Physical Damage", W(Void))?
             .take("Magic Damage", E(Void))?
             .take("Maximum Physical Damage", R(Max))?

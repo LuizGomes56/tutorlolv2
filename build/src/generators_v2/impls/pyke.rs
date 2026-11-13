@@ -5,9 +5,7 @@ impl GeneratorV2 for Pyke {
         self.take("Physical Damage", Q(Void))?
             .take("Physical Damage", E(Void))?
             .take_nth("Active", 1, R(Void))?
-            .edit(R(Void), |r| f![r + 0.75 * ArmorPenetrationFlat])
             .take_nth("Active", 0, R(_1))?
-            .edit(R(_1), |r| f![r + 1.5 * ArmorPenetrationFlat])
             .damage_type(R(Void), Physical)
             .damage_type(R(_1), True)
             .combos([

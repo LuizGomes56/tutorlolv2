@@ -2,18 +2,7 @@ use super::*;
 
 impl GeneratorV2 for Jhin {
     fn generate(&mut self) -> MayFail {
-        // 15% / 20% / 25% at levels 1 / 6 / 11
-        let missing_health = Formula::Raw(
-            stringify!(match ctx.level {
-                ..6 => 0.15,
-                6..11 => 0.2,
-                11.. => 0.25,
-            })
-            .into(),
-        );
-
         self.take("Innate - Death In 4 Acts", P(Void))?
-            .set(P(Void), f![(missing_health) * EnemyMissingHealthFlat])
             .comment(P(Void), "Fourth shot bonus damage")
             .take("Physical Damage", Q(Min))?
             .take("Maximum Final Bounce Physical Damage", Q(Max))?

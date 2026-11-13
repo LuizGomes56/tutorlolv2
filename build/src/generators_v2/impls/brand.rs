@@ -2,13 +2,9 @@ use super::*;
 
 impl GeneratorV2 for Brand {
     fn generate(&mut self) -> MayFail {
+        // The values based on stacks are the damage cap against monsters
         self.take_nth("Ablaze", 0, P(Void))?
             .take_nth("Ablaze", 6, P(_1))?
-            .set(
-                P(_1),
-                f![(0.06 + 0.06 / 17 * (Level - 1) + 0.02 * AbilityPower / 100) * EnemyMaxHealth],
-            )
-            // The values based on stacks are the damage cap against monsters
             .take("Magic Damage", Q(Void))?
             .take("Increased Damage", W(Max))?
             .take("Magic Damage", W(Min))?

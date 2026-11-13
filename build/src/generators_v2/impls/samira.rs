@@ -4,38 +4,15 @@ use super::*;
 impl GeneratorV2 for Samira {
     fn generate(&mut self) -> MayFail {
         self.take_nth("Innate", 0, P(Min))?
-            .set(P(Min), Formula::Raw("(2 + (19-2)/17*(ctx.level-1)) + (((0.035) + (0.004117647 * (ctx.level - 1.0))) * ctx.attack_damage)".into()))
+            // Increased by the target's missing health, up to twice the damage
+            .take_nth("Innate", 2, P(Max))?
             .damage_type(P(Min), Magic)
-            .insert(
-                P(_1Min),
-                Damage {
-                    formula: Formula::Raw("(0.17) * ctx.attack_damage".into()),
-                    name: "Daredevil Impulse".into(),
-                    damage_type: Magic,
-                    comment: String::new(),
-                    attributes: Undefined,
-                },
-            )?
-            .insert(
-                P(Max),
-                Damage {
-                    formula: Formula::Raw("((2 + (19-2)/17*(ctx.level-1)) + (((0.035) + (0.004117647 * (ctx.level - 1.0))) * ctx.attack_damage)) * 2".into()),
-                    name: "Daredevil Impulse".into(),
-                    damage_type: Magic,
-                    comment: String::new(),
-                    attributes: Undefined,
-                },
-            )?
-            .insert(
-                P(_1Max),
-                Damage {
-                    formula: Formula::Raw("((0.17) * ctx.attack_damage) * 6".into()),
-                    name: "Daredevil Impulse".into(),
-                    damage_type: Magic,
-                    comment: String::new(),
-                    attributes: Undefined,
-                },
-            )?
+            .damage_type(P(Max), Magic)
+            // Each of the 6 bolts against an immobilized target
+            .take_nth("Innate", 3, P(_1Min))?
+            .derive(P(_1Max), P(_1Min), |bolt| f![6 * bolt])?
+            .damage_type(P(_1Min), Physical)
+            .damage_type(P(_1Max), Physical)
             .take("Physical Damage", Q(Void))?
             .take("Physical Damage per Hit", W(Min))?
             .take("Total Physical Damage", W(Max))?

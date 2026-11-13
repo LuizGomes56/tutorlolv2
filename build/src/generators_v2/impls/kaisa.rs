@@ -5,15 +5,12 @@ impl GeneratorV2 for Kaisa {
         let per_stack = self.value_nth("Innate - Caustic Wounds", 1, Key::P)?;
 
         self.take_nth("Innate - Caustic Wounds", 0, P(Void))?
-            .take_nth("Innate - Caustic Wounds", 0, P(_1))?
+            .take_nth("Innate - Caustic Wounds", 3, P(_1))?
             .edit(P(Void), |p| f![p + Stacks * (per_stack)])
             .comment(
                 P(Void),
                 "Caustic Wounds on-hit damage, Stacks = Plasma stacks",
             )
-            .set(P(_1), {
-                f![(0.15 + 0.0006 * AbilityPower) * EnemyMissingHealthFlat]
-            })
             .comment(P(_1), "Plasma detonation at 5 stacks")
             .take("Physical Damage Per Missile", Q(Min))?
             .take("Total Single-Target Damage", Q(Max))?

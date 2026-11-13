@@ -33,8 +33,9 @@ type GeneratorFn = fn(WikiChampion) -> MayFail<Box<dyn GeneratorExt<Champion>>>;
 const COMBOS_CHANGED: &[&str] = &["Vex"];
 
 /// Champions whose v2 abilities differ from v1's on purpose: Ryze's Flux empowered
-/// Overload, and Sett's Haymaker range by Grit
-const IDS_CHANGED: &[&str] = &["Ryze", "Sett"];
+/// Overload, Sett's Haymaker range by Grit, Lulu's Pix, whose page v1 never read, and
+/// Elise's Spider Form innate, removed from the game
+const IDS_CHANGED: &[&str] = &["Ryze", "Sett", "Lulu", "Elise"];
 
 /// Modes the formulas are compared on
 const MODES: [MapMode; 3] = [MapMode::Default, MapMode::Aram, MapMode::Arena];
@@ -319,16 +320,18 @@ fn sett_haymaker_reads_current_grit_within_its_range() {
 #[ignore = "needs the cache of wiki pages and model.json"]
 fn smolder_passive_bonus_multiplies_whole_by_stacks() {
     use tutorlolv2_types::{AbilityName::*, CtxVar::*};
-    // Q's passive bonus is (0.25 + 0.35 * crit chance) per stack, all of it
+    // Q's passive bonus is (0.25 + 0.35 * crit chance) per stack, all of it, and its
+    // 60 physical damage is increased by 75% at 100% crit chance
     let parser = ChampionParser::new().unwrap();
     let smolder = v2_champion(&parser, "Smolder");
     let s = Sample::new([
         (QLevel, 1.0),
         (CritChance, 100.0),
+        (CritDamage, 200.0),
         (Stacks, 10.0),
         (PhysicalMultiplier, 1.0),
         (MagicMultiplier, 1.0),
     ]);
     let q = v2_value(&smolder, AbilityId::Q(Min), &s);
-    assert!((q - (30.0 + 0.6 * 10.0)).abs() < 1e-6, "{q}");
+    assert!((q - (60.0 * 1.75 + 0.6 * 10.0)).abs() < 1e-6, "{q}");
 }

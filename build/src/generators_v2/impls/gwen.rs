@@ -3,9 +3,6 @@ use super::*;
 impl GeneratorV2 for Gwen {
     fn generate(&mut self) -> MayFail {
         self.take_nth("Innate", 0, P(Void))?
-            .set(P(Void), {
-                f![(0.01 + 0.00006 * AbilityPower) * EnemyMaxHealth]
-            })
             .comment(P(Void), "A Thousand Cuts on-hit magic damage")
             .take("Minimum Center Damage", Q(Min))?
             .take("Maximum Center Damage", Q(Max))?

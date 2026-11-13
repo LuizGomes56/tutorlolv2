@@ -2,20 +2,7 @@ use super::*;
 
 impl GeneratorV2 for Caitlyn {
     fn generate(&mut self) -> MayFail {
-        // 60% / 70% / 80% AD at levels 1 / 7 / 13
-        let headshot = Formula::Raw(
-            stringify!(match ctx.level {
-                ..7 => 0.6,
-                7..13 => 0.7,
-                13.. => 0.8,
-            })
-            .into(),
-        );
-
         self.take("Headshot", P(Void))?
-            .set(P(Void), {
-                f![((headshot) + 0.8 * CritChance / 100) * AttackDamage]
-            })
             .comment(P(Void), "Headshot bonus physical damage")
             .take("Physical Damage", Q(Max))?
             .take("Reduced Damage", Q(Min))?

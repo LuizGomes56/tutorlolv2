@@ -2,15 +2,12 @@ use super::*;
 
 impl GeneratorV2 for Fiora {
     fn generate(&mut self) -> MayFail {
-        let vital = f![(0.03 + 0.0004 * BonusAd) * EnemyMaxHealth];
-
         self.take_nth("Innate", 0, P(Void))?
-            .set(P(Void), vital.clone())
             .comment(P(Void), "Vital true damage")
             .take("Physical Damage", Q(Void))?
             .take("Magic Damage", W(Void))?
             .take("Critical damage", E(Void))?
-            // 160 / 170 / 180 / 190 / 200% of AD, whose `% AD` the model drops
+            // A critical strike of 160 / 170 / 180 / 190 / 200% of AD
             .edit(E(Void), |e| f![e / 100 * AttackDamage])
             .comment(E(Void), "Second basic attack critical strike")
             .derive(R(Void), P(Void), |p| f![4 * (p)])?

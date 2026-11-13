@@ -130,14 +130,14 @@ impl ChampionTemplate {
             ($($field:ident)*) => {
                 $(
                     self.skills.$field = cells.get(stringify!($field))
-                        .ok_or(concat!("Failed to get skill: ", stringify!($field)))?
-                        .split(',')
-                        .map(String::from)
-                        .collect::<Vec<_>>();
+                        .map(|text| SkillSet::names(text))
+                        .ok_or(concat!("Failed to get skill: ", stringify!($field)))?;
                 )*
             };
         }
+
         parse!(skill_i skill_q skill_w skill_e skill_r);
+
         Ok(self)
     }
 
@@ -207,6 +207,26 @@ pub struct SkillSet {
     pub skill_w: Vec<String>,
     pub skill_e: Vec<String>,
     pub skill_r: Vec<String>,
+}
+
+impl SkillSet {
+    /// Names of the skills of one key, written as `Hop,Crunch`. A comma followed by a
+    /// space is part of a name, as Lulu's `Help, Pix!` or Smolder's `Flap, Flap, Flap`
+    pub fn names(text: &str) -> Vec<String> {
+        let mut names = Vec::<String>::new();
+
+        for piece in text.split(',') {
+            match names.last_mut() {
+                Some(name) if piece.starts_with(' ') => {
+                    name.push(',');
+                    name.push_str(piece);
+                }
+                _ => names.push(piece.to_string()),
+            }
+        }
+
+        names
+    }
 }
 
 #[derive(Clone, Debug, Default, Serialize, Deserialize)]

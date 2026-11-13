@@ -3,9 +3,6 @@ use super::*;
 impl GeneratorV2 for Lillia {
     fn generate(&mut self) -> MayFail {
         self.take_nth("Innate", 0, P(Void))?
-            .set(P(Void), {
-                f![(0.05 + 0.000125 * AbilityPower) * EnemyMaxHealth]
-            })
             .comment(P(Void), "Dream Dust total magic damage over 3 seconds")
             .take("Magic Damage", Q(Min))?
             .take("Total Mixed Damage", Q(Max))?

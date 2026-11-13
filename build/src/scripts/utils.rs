@@ -498,7 +498,9 @@ pub fn cast_f32(s: &str) -> MayFail<String> {
 
                 if let Some(ability) = ability {
                     expr.expr = syn::parse_quote!(ctx.ability_levels.#ability);
-                } else if member == "level" {
+                } else if member == "level" || member == "stacks" {
+                    // Stacks, as Aphelios's Chakrams, count up to far less than 255, and
+                    // casting saturates beyond it
                     let discriminant = &expr.expr;
                     expr.expr = syn::parse_quote!(#discriminant as u8);
                 }

@@ -1923,3 +1923,236 @@ fn pages_repeating_an_earlier_ability_are_skipped() {
     assert_eq!(pages, [("Blade", "Q0"), ("Recast", "Q2")]);
     assert!(skipped.is_empty(), "{skipped:?}");
 }
+
+/// Value of the only extra of `page` labeled `label` on `pairs`
+fn extra(page: &AbilityModel, label: &str, pairs: &[(CtxVar, f64)]) -> f64 {
+    let extras = page
+        .extras
+        .iter()
+        .filter(|extra| extra.label == label)
+        .collect::<Vec<_>>();
+    assert_eq!(extras.len(), 1, "{:#?}", page.extras);
+    assert!(extras[0].issues.is_empty(), "{:?}", extras[0].issues);
+    extras[0].formula.eval(&sample(pairs)).unwrap()
+}
+
+#[test]
+fn percents_of_a_damage_stat_are_ratios_of_it() {
+    use CtxVar::*;
+    // Miss Fortune P: `{{pp|key=%|…}} AD` inside its `{{as}}`
+    let love_tap = page(&data(
+        "P",
+        "|description = {{sbc|Innate:}} deals {{as|{{pp|key=%|50 to 100 for 6|1;4;7 to 13}} AD}} {{as|'''bonus''' physical damage}}",
+    ));
+    let at = |level| {
+        extra(
+            &love_tap,
+            "Innate",
+            &[(Level, level), (AttackDamage, 200.0)],
+        )
+    };
+    assert!((at(1.0) - 100.0).abs() < 1e-9);
+    assert!((at(13.0) - 200.0).abs() < 1e-9);
+
+    // A buff in percent is not a ratio of its stat
+    let gangplank = page(&data(
+        "P",
+        "|description = {{sbc|Innate:}} gains {{as|{{pplevel|15 to 30|key=%}} '''bonus''' movement speed}}",
+    ));
+    assert_eq!(
+        gangplank.extras[0].formula.eval(&sample(&[(Level, 1.0)])),
+        Some(15.0)
+    );
+}
+
+#[test]
+fn description_ratios_and_colored_numbers() {
+    use CtxVar::*;
+    // Corki P: a ratio alone. Blitzcrank E: with a scaling after it
+    let corki = page(&data(
+        "P",
+        "|description = {{sbc|Innate:}} deal {{sti|{{as|'''bonus''' true damage}}}} equal to {{as|20% AD}}.",
+    ));
+    assert!((extra(&corki, "Innate", &[(AttackDamage, 100.0)]) - 20.0).abs() < 1e-9);
+
+    let blitzcrank = page(&data(
+        "E",
+        "|description = {{sbc|Active:}} deal {{as|100% AD}} {{as|(+ 25% AP)}} {{as|'''bonus''' physical damage}}",
+    ));
+    let s = [(AttackDamage, 100.0), (AbilityPower, 100.0)];
+    assert!((extra(&blitzcrank, "Active", &s) - 125.0).abs() < 1e-9);
+
+    // Rammus W: a number colored by its damage type, with its scalings
+    let rammus = page(&data(
+        "W",
+        "|description = {{sbc|Active:}} are dealt {{as|15|magic damage}} {{as|(+ 10% '''total''' armor)}} {{as|(+ 10% '''total''' magic resistance)}} {{as|magic damage}}.",
+    ));
+    let s = [(Armor, 100.0), (MagicResist, 50.0)];
+    assert!((extra(&rammus, "Active", &s) - 30.0).abs() < 1e-9);
+
+    // A number colored by something else is not a value
+    let bard = page(&data(
+        "P",
+        "|description = {{sbc|Innate:}} At {{as|5 chimes|buzzword2}}, Meeps slow",
+    ));
+    assert!(bard.extras.is_empty(), "{:?}", bard.extras);
+}
+
+#[test]
+fn description_percents_of_a_stat_with_nested_scalings() {
+    use CtxVar::*;
+    // Gwen P
+    let gwen = page(&data(
+        "P",
+        "|description = {{sbc|Innate:}} deal {{as|'''bonus''' magic damage}} equal to {{as|1% {{as|(+ {{fd|0.6}}% per 100 AP)}} of the target's '''maximum''' health}}.",
+    ));
+    let s = [(AbilityPower, 100.0), (EnemyMaxHealth, 1000.0)];
+    assert!((extra(&gwen, "Innate", &s) - 16.0).abs() < 1e-9);
+
+    // Brand P: the percent and the stat inside one `{{as}}`, around a scaling
+    let brand = page(&data(
+        "P",
+        "|description = {{sbc|Ablaze:}} dealt {{as|magic damage}} equal to {{as|{{pplevel|6 to 12|key=%}} {{as|(+ 2% per 100 AP)}} of their '''maximum''' health}}, capped",
+    ));
+    let s = [
+        (Level, 1.0),
+        (AbilityPower, 100.0),
+        (EnemyMaxHealth, 1000.0),
+    ];
+    assert!((extra(&brand, "Ablaze", &s) - 80.0).abs() < 1e-9);
+
+    // Renata P: the stat in a later `{{as}}`
+    let renata = page(&data(
+        "P",
+        "|description = {{sbc|Innate:}} deals {{as|'''bonus''' magic damage}} equal to {{as|{{pp|key=%|1 to 2 for 9}}|health}} {{as|(+ 2% per 100 AP)}} {{as|of the target's '''maximum''' health}}.",
+    ));
+    let s = [
+        (Level, 1.0),
+        (AbilityPower, 100.0),
+        (EnemyMaxHealth, 1000.0),
+    ];
+    assert!((extra(&renata, "Innate", &s) - 30.0).abs() < 1e-9);
+}
+
+#[test]
+fn stats_written_with_an_icon() {
+    use CtxVar::*;
+    // Hecarim P
+    let hecarim = page(&data(
+        "P",
+        "|description = {{sbc|Innate:}} gains AD equal to {{as|{{pp|key=%|12 to 24 for 7|1;3 to 18}} of his {{sti|'''bonus''' movement speed}}}}.",
+    ));
+    let s = [(Level, 1.0), (BonusMoveSpeed, 100.0)];
+    assert!((extra(&hecarim, "Innate", &s) - 12.0).abs() < 1e-9);
+}
+
+#[test]
+fn passive_progressions_as_ratios_of_scalings() {
+    use CtxVar::*;
+    // Xin Zhao P
+    let xin = page(&data(
+        "P",
+        "|description = {{sbc|Innate:}} deals {{as|{{pp|15 to 60 for 4|key=%|1 to 16}} AD}} {{as|(+ {{pp|5 to 20 for 4|1;6;11;16|key=%}} AP)}} {{as|'''bonus''' physical damage}}",
+    ));
+    let s = [(Level, 6.0), (AttackDamage, 100.0), (AbilityPower, 100.0)];
+    assert!((extra(&xin, "Innate", &s) - 40.0).abs() < 1e-9);
+
+    // Mordekaiser P: of a stat
+    let mordekaiser = page(&data(
+        "P",
+        "|description = {{sbc|Darkness Rise:}} deals {{as|5|magic damage}} {{as|(+ 30% AP)}} {{as|(+ {{pplevel|key=%|1 to 5}} of target's '''maximum''' health)}} {{as|magic damage}} every second",
+    ));
+    let s = [
+        (Level, 1.0),
+        (AbilityPower, 100.0),
+        (EnemyMaxHealth, 1000.0),
+    ];
+    assert!((extra(&mordekaiser, "Darkness Rise", &s) - 45.0).abs() < 1e-9);
+}
+
+#[test]
+fn ratios_per_point_of_a_stat() {
+    use CtxVar::*;
+    // Pyke R
+    let pyke = page(&data(
+        "R",
+        "|leveling = {{st|Damage|{{ap|100}} {{as|(+ {{fd|1.5}} per 1 Lethality)}}}}",
+    ));
+    assert!(
+        pyke.effects[0].issues.is_empty(),
+        "{:?}",
+        pyke.effects[0].issues
+    );
+    let s = [(RLevel, 1.0), (ArmorPenetrationFlat, 10.0)];
+    assert_eq!(pyke.effects[0].formula.eval(&sample(&s)), Some(115.0));
+}
+
+#[test]
+fn values_per_stack_inside_parentheses() {
+    use CtxVar::*;
+    // Mel R
+    let mel = page(&data(
+        "R",
+        "|leveling2 = {{st|Magic Damage|{{ap|125 to 275}} {{as|(+ 30% AP)}} (+ {{ap|4 to 10}} {{as|(+ 4% AP)}} per [[File:Searing Brilliance.png|20px|link=]] ''Overwhelm'' stack on the target)}}",
+    ));
+    assert!(
+        mel.effects[0].issues.is_empty(),
+        "{:?}",
+        mel.effects[0].issues
+    );
+    let s = [(RLevel, 1.0), (AbilityPower, 100.0), (Stacks, 10.0)];
+    assert_eq!(
+        mel.effects[0].formula.eval(&sample(&s)),
+        Some(155.0 + 10.0 * 8.0)
+    );
+
+    // Bard P: per 5 collected
+    let bard = page(&data(
+        "P",
+        "|description2 = {{sbc|Innate - Meeps:}} deal {{as|30|magic damage}} (''+ {{as|6|magic damage}} per 5 {{as|Chimes|buzzword2}} collected'') {{as|(+ 40% AP)}} {{as|'''bonus''' magic damage}}.",
+    ));
+    let s = [(AbilityPower, 100.0), (Stacks, 10.0)];
+    assert!((extra(&bard, "Innate - Meeps", &s) - (30.0 + 12.0 + 40.0)).abs() < 1e-9);
+}
+
+#[test]
+fn critical_shares_that_start_above_zero() {
+    use CtxVar::*;
+    // Smolder P on Q: 25% of stacks, growing to 60% at 100% critical strike chance
+    let smolder = page(&data(
+        "P",
+        "|description = {{sbc|Innate:}} His abilities deal damage.\n* Q: Deals {{as|'''bonus''' magic damage}} equal to {{critical damage|25 to 60|0 to 35|critScaling=true}} {{as|of ''Dragon Practice'' stacks|buzzword3}}.",
+    ));
+    let at = |chance| {
+        extra(
+            &smolder,
+            "Innate",
+            &[(CritChance, chance), (CritDamage, 200.0), (Stacks, 100.0)],
+        )
+    };
+    assert!((at(0.0) - 25.0).abs() < 1e-9);
+    assert!((at(100.0) - 60.0).abs() < 1e-9);
+}
+
+#[test]
+fn scalings_split_across_templates_inside_a_bare_parenthesis() {
+    use CtxVar::*;
+    // Tahm Kench P
+    let tahm = page(&data(
+        "P",
+        "|description = {{sbc|Innate:}} deal {{as|{{pp|5 to 60 for 12}}|magic damage}} ({{as|+ {{fd|1.25}}% AP}} {{as|per 100 '''bonus''' health}}) {{as|(+ 4% of his '''bonus''' health)}} {{as|'''bonus''' magic damage}}",
+    ));
+    let s = [(Level, 1.0), (AbilityPower, 100.0), (BonusHealth, 1000.0)];
+    assert!((extra(&tahm, "Innate", &s) - (5.0 + 12.5 + 40.0)).abs() < 1e-9);
+}
+
+#[test]
+fn tables_by_a_number_of_things_are_by_stacks() {
+    use CtxVar::*;
+    // Aphelios's Crescendum and Bard's Meeps
+    let bard = page(&data(
+        "P",
+        "|description3 = Bard can have up to {{pp|type = number of Chimes|1 to 9 for 9|0;10;30;50;65;80;90;95;100}} Meeps at a time.",
+    ));
+    assert!((extra(&bard, "description3", &[(Stacks, 30.0)]) - 3.0).abs() < 1e-9);
+}

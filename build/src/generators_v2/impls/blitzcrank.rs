@@ -3,16 +3,8 @@ use super::*;
 impl GeneratorV2 for Blitzcrank {
     fn generate(&mut self) -> MayFail {
         self.take("Magic Damage", Q(Void))?
-            .insert(
-                E(Void),
-                Damage {
-                    formula: f![AttackDamage + 0.25 * AbilityPower],
-                    name: "Power Fist".into(),
-                    damage_type: Physical,
-                    comment: String::new(),
-                    attributes: Undefined,
-                },
-            )?
+            .take("Active", E(Void))?
+            .damage_type(E(Void), Physical)
             .take_nth("Magic Damage", 1, R(Void))?
             .take_nth("Magic Damage", 0, R(_1))?
             .comment(R(_1), "R Passive Onhit Damage")

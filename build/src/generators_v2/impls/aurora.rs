@@ -3,9 +3,6 @@ use super::*;
 impl GeneratorV2 for Aurora {
     fn generate(&mut self) -> MayFail {
         self.take_nth("Innate", 0, P(Void))?
-            .set(P(Void), {
-                f![(0.01 + 0.00027 * AbilityPower) * EnemyMaxHealth]
-            })
             .comment(P(Void), "Third stack bonus magic damage")
             .take("Maximum Magic Damage", Q(Max))?
             .take("Minimum Magic Damage", Q(Min))?

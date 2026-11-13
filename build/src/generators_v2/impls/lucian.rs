@@ -2,24 +2,16 @@ use super::*;
 
 impl GeneratorV2 for Lucian {
     fn generate(&mut self) -> MayFail {
-        self.take("Innate", P(Void))?
-            // 50 / 55 / 60% of AD, whose `% AD` the model drops
-            .edit(P(Void), |p| f![p / 100 * AttackDamage])
-            .insert(
-                P(_1),
-                Damage {
-                    formula: f![5 + 0.15 * AttackDamage],
-                    name: "Lightslinger".into(),
-                    damage_type: Magic,
-                    comment: "Innate - Vigilance".into(),
-                    attributes: Undefined,
-                },
-            )?
+        self.take_nth("Innate", 0, P(Void))?
+            .take("Innate - Vigilance", P(_1))?
+            .damage_type(P(_1), Magic)
             .take("Physical Damage", Q(Void))?
             .take("Magic Damage", W(Void))?
             .take("Physical Damage Per Shot", R(Min))?
             .derive(R(Max), R(Min), |dmg| {
-                let shots = f![2.2222 * CritChance / 100];
+                // 22 (+ 22.222 per 100% critical strike chance) shots, as its
+                // description writes
+                let shots = f![22 + 22.222 * CritChance / 100];
                 /* Maybe include IE bonus shots in the future */
                 f![(dmg) * shots]
             })?

@@ -26,13 +26,15 @@ fn reparsed_passives_preserve_their_damage_components() {
         ..Default::default()
     };
     for (champion, ability, expected) in [
-        (ChampionId::Bard, P(Void), 130.0),
+        // 30 (+ 6 per 5 Chimes, as stacks) (+ 40% AP)
+        (ChampionId::Bard, P(Void), 82.0),
         (ChampionId::Lucian, P(Void), 120.0),
         (ChampionId::Lucian, P(_1), 35.0),
         (ChampionId::Taric, P(Void), 108.0),
         (ChampionId::Urgot, P(Void), 320.0),
         (ChampionId::Brand, P(_1), 280.0),
-        (ChampionId::Milio, P(Void), 50.0),
+        // 15% AD, then the burn's 50 (+ 20% AP)
+        (ChampionId::Milio, P(Void), 100.0),
         (
             ChampionId::Samira,
             tutorlolv2::AbilityId::P(tutorlolv2::AbilityName::Min),

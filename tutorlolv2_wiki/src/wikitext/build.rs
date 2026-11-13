@@ -27,6 +27,9 @@ pub(crate) fn stat_var(text: &str) -> CtxVar {
         CtxVar::Stacks
     } else if lowercase.contains("grit") {
         CtxVar::MaxMana
+    } else if lowercase.ends_with(" stacks") {
+        // `of Dragon Practice stacks`, as Smolder's passive
+        CtxVar::Stacks
     } else {
         assign_ctx_var(text)
     }
@@ -166,11 +169,17 @@ impl Nodes {
     fn description_values(&self) -> Vec<Nodes> {
         let mut values = Vec::new();
         let nodes = &self.0;
+        // Nodes before it belong to the previous value
+        let mut next = 0;
 
         for (i, node) in nodes.iter().enumerate() {
             let Node::Template(template) = node else {
                 continue;
             };
+
+            if i < next {
+                continue;
+            }
 
             let mut value = match template.name.as_str() {
                 "ap" | "pp" | "pplevel" | "critical damage" => vec![node.clone()],
@@ -178,14 +187,35 @@ impl Nodes {
                     values.extend(template.positionals().flat_map(Nodes::description_values));
                     continue;
                 }
-                "as" => match template.positional(0) {
-                    Some(text) if text.is_percent_of_stat() => vec![node.clone()],
-                    Some(text) => match text.wrapped_value() {
-                        Some(value) => value,
-                        None => continue,
-                    },
-                    None => continue,
-                },
+                "as" => {
+                    let Some(text) = template.positional(0) else {
+                        continue;
+                    };
+
+                    if text.is_percent_of_stat() || text.is_damage_ratio() {
+                        vec![node.clone()]
+                    } else if let Some(number) = Terms::colored_number(template) {
+                        // `{{as|15|magic damage}}`, a number colored by its damage type
+                        vec![Node::Text(number.to_string())]
+                    } else {
+                        let Some(mut value) = text.wrapped_value() else {
+                            continue;
+                        };
+
+                        // `{{as|{{pp|key=%|60 to 80 for 3|1 to 13}}|ad}}`, a percent colored
+                        // by the stat it is of, as Caitlyn's P
+                        let color = template.positional(1).map(|color| color.plain());
+
+                        if let [_, Node::Text(last)] = &mut value[..]
+                            && last.trim() == "%"
+                            && let Some(stat @ ("ad" | "ap")) = color.as_deref().map(str::trim)
+                        {
+                            *last = format!("% {}", stat.to_uppercase());
+                        }
+
+                        value
+                    }
+                }
                 // `{{sti|true damage|{{as|{{pplevel|35 to 205}}|true damage}}}}`, a value
                 // inside the icon of its damage type
                 "sti" => match template.positionals().last().and_then(|text| {
@@ -202,32 +232,77 @@ impl Nodes {
                 _ => continue,
             };
 
-            // The scalings right after it, up to anything else
-            value.extend(
-                nodes[i + 1..]
-                    .iter()
-                    .take_while(|node| match node {
-                        Node::Text(text) => text.trim().is_empty(),
-                        Node::Template(next) => {
-                            next.name == "as"
-                                && next.positional(0).is_some_and(|inner| {
-                                    matches!(inner.0.first(), Some(Node::Text(text)) if text.trim_start().starts_with("(+"))
-                                })
-                        }
-                    })
-                    .cloned(),
-            );
-
+            next = i + 1 + Self::value_tail(&nodes[i + 1..]);
+            value.extend(nodes[i + 1..next].iter().cloned());
             values.push(Nodes(value));
         }
 
         values
     }
 
+    /// How many of `nodes`, which follow a description value, are still part of it: the
+    /// scalings `{{as|(+ 25% AP)}}`, the stat `{{as|of the target's maximum health}}`
+    /// they are of, and groups written as text, as Bard's
+    /// `(''+ {{as|6|magic damage}} per 5 {{as|Chimes|buzzword2}} collected'')`
+    fn value_tail(nodes: &[Node]) -> usize {
+        let mut taken = 0;
+
+        while let Some(node) = nodes.get(taken) {
+            match node {
+                Node::Text(text) if text.trim().is_empty() => taken += 1,
+                Node::Template(next) if next.name == "as" => {
+                    let starts = |prefix: &str| {
+                        next.positional(0).is_some_and(|inner| {
+                            matches!(inner.0.first(), Some(Node::Text(text)) if text.trim_start().starts_with(prefix))
+                        })
+                    };
+
+                    if !(starts("(+") || starts("of ")) {
+                        break;
+                    }
+
+                    taken += 1;
+                }
+                Node::Text(text) if matches!(text.replace("''", "").trim(), "(+" | "(") => {
+                    let Some(close) = nodes[taken + 1..]
+                        .iter()
+                        .position(|node| matches!(node, Node::Text(text) if text.contains(')')))
+                    else {
+                        break;
+                    };
+
+                    taken += close + 2;
+                }
+                _ => break,
+            }
+        }
+
+        taken
+    }
+
     /// `8% of the target's current health`, a percent of a stat written as text, as
-    /// Jarvan IV's passive. `6% bonus movement speed`, without `of`, is a buff
+    /// Jarvan IV's passive, also with the scalings of its ratio inside, as Gwen's
+    /// `1% {{as|(+ 0.6% per 100 AP)}} of the target's maximum health`. `6% bonus
+    /// movement speed`, without `of`, is a buff
     fn is_percent_of_stat(&self) -> bool {
-        lazy_regex::regex!(r"^\d+(?:\.\d+)?% of \S").is_match(self.plain().trim())
+        let text = self
+            .0
+            .iter()
+            .map(|node| match node {
+                Node::Text(text) => text.as_str(),
+                Node::Template(_) => " ",
+            })
+            .collect::<String>();
+
+        let text = lazy_regex::regex!(r"\s+").replace_all(text.trim(), " ");
+
+        lazy_regex::regex!(r"^\d+(?:\.\d+)?% of \S").is_match(&text)
+    }
+
+    /// `20% AD`, a ratio of attack damage or ability power alone, as Corki's passive
+    fn is_damage_ratio(&self) -> bool {
+        lazy_regex::regex!(r"^\d+(?:\.\d+)?% (?:bonus |total )?(?:AD|AP)$")
+            .is_match(self.plain().trim())
     }
 
     /// The value inside an `{{as}}`, when it starts with one, and the text after it. A
@@ -252,6 +327,8 @@ impl Nodes {
         match nodes.next() {
             Some(Node::Text(text)) if percent => out.push(Node::Text(format!("%{text}"))),
             Some(node) => out.push(node.clone()),
+            // `{{as|{{pp|key=%|1 to 2 for 9}}|health}}`, whose stat follows it
+            None if percent => out.push(Node::Text("%".into())),
             None => {}
         }
 
@@ -294,6 +371,7 @@ impl<'a> Terms<'a> {
     }
 
     fn effect(mut self, label: &str, section: u8, value: &Nodes) -> EffectModel {
+        let value = Self::icons_as_text(value);
         let nodes = value
             .0
             .iter()
@@ -302,6 +380,8 @@ impl<'a> Terms<'a> {
 
         let mut unit = String::new();
         let mut rest = &nodes[..];
+        // Text after a plain number base, as the `(''+` of Bard's `30 (''+ …`
+        let mut leftover = None;
 
         // The base, with the unit written right after it
         match rest {
@@ -350,6 +430,9 @@ impl<'a> Terms<'a> {
                     Some(value) => {
                         self.terms.push(Formula::Const(value));
                         unit = words.next().unwrap_or_default().trim().to_string();
+                        leftover = text
+                            .find('(')
+                            .map(|open| Node::Text(text[open..].to_string()));
                     }
                     None if !head.is_empty() => self.issues.push(head.to_string()),
                     None => {}
@@ -371,9 +454,15 @@ impl<'a> Terms<'a> {
             stack_icon = true;
         }
 
-        // A base that is a percent of a stat, as Yone's `{{ap|25 to 35}}% of damage dealt`
+        // A base that is a percent of a stat, as Yone's `{{ap|25 to 35}}% of damage dealt`,
+        // or of a damage stat, as Miss Fortune's `{{pp|key=%|50 to 100 for 6|…}} AD`. A
+        // buff in percent, as `15% bonus movement speed`, keeps its unit
         if let Some(stat) = unit.strip_prefix('%').map(str::trim)
-            && stat.starts_with("of ")
+            && (stat.starts_with("of ")
+                || matches!(
+                    stat_var(stat),
+                    CtxVar::AttackDamage | CtxVar::BonusAd | CtxVar::AbilityPower
+                ))
             && let Some(base) = self.terms.pop()
         {
             let stat = self.stat(stat);
@@ -381,7 +470,18 @@ impl<'a> Terms<'a> {
             unit = String::new();
         }
 
-        self.read(rest, &mut stack_icon);
+        // A base in percent whose stat is written after its scalings, as Renata's
+        // `{{pp|key=%|1 to 2 for 9}} {{as|(+ 2% per 100 AP)}} {{as|of …}}`
+        if unit == "%" && !self.terms.is_empty() {
+            self.percents.push(self.terms.len() - 1);
+        }
+
+        let rest = leftover
+            .iter()
+            .chain(rest.iter().copied())
+            .collect::<Vec<_>>();
+
+        self.read(&rest, &mut stack_icon);
         self.finish(label, section, unit)
     }
 
@@ -407,6 +507,13 @@ impl<'a> Terms<'a> {
                         index += 1;
                     } else if let Some(end) = self.text_scaling(text, &nodes[index..]) {
                         index += end;
+                    } else if let Some(end) = self.per_stack(text, &nodes[index..]) {
+                        index += end;
+                    } else if text.trim().starts_with("of ") {
+                        // The stat of the terms before it, written as text inside the
+                        // `{{as}}` of its value, as Brand's `{{pplevel|…|key=%}} {{as|…}} of
+                        // their maximum health`
+                        self.of_stat(text.trim());
                     }
 
                     continue;
@@ -435,6 +542,11 @@ impl<'a> Terms<'a> {
 
                     continue;
                 }
+            }
+
+            if let Some(number) = Self::colored_number(template) {
+                self.terms.push(Formula::Const(number));
+                continue;
             }
 
             if let Some((value, percent)) = Self::colored_value(template) {
@@ -488,7 +600,16 @@ impl<'a> Terms<'a> {
     /// `text` has the `(+` and `after` are the nodes after it. Returns how many of
     /// `after` it took, up to the one with the last closing parenthesis it read
     fn text_scaling(&mut self, text: &str, after: &[&Node]) -> Option<usize> {
-        let open = text.find("(+")?;
+        // `(` before `{{as|+ 1.25% AP}}`, as Tahm Kench's passive, whose `+` is inside
+        let bare = text.trim_end().ends_with('(')
+            && matches!(after.first(), Some(Node::Template(next)) if next.name == "as"
+                && next.positional(0).is_some_and(|inner| inner.plain().trim_start().starts_with('+')));
+
+        let open = match bare {
+            true => text.trim_end().len() - 1,
+            false => text.find("(+")?,
+        };
+
         let mut group = Vec::new();
 
         // Text after the closing parenthesis, which may open another scaling, with the
@@ -505,7 +626,28 @@ impl<'a> Terms<'a> {
                     .position(|node| matches!(node, Node::Text(text) if text.contains(')')))?;
 
                 group.push(Node::Text(text[open..].to_string()));
-                group.extend(after[..close].iter().map(|node| (*node).clone()));
+
+                // The pieces of a scaling split across `{{as}}`, as Tahm Kench's
+                // `{{as|+ 1.25% AP}} {{as|per 100 bonus health}}`, are read as text. A
+                // scaling of the ratio, as Sett's `{{as|(+ 25% per 100 bonus AD)}}`, stays
+                for node in &after[..close] {
+                    match node {
+                        Node::Template(inner)
+                            if inner.name == "as"
+                                && inner.positional(0).is_some_and(|text| {
+                                    !text.plain().trim_start().starts_with('(')
+                                }) =>
+                        {
+                            group.extend(
+                                inner
+                                    .positional(0)
+                                    .into_iter()
+                                    .flat_map(|text| text.0.clone()),
+                            );
+                        }
+                        node => group.push((*node).clone()),
+                    }
+                }
 
                 let Node::Text(closing) = after[close] else {
                     return None;
@@ -532,6 +674,101 @@ impl<'a> Terms<'a> {
         // (+ 4% bonus health)` once the `{{as}}` around them is removed
         let more = self.text_scaling(remainder, rest).unwrap_or(0);
         Some(taken + more)
+    }
+
+    /// Values per stack written as text around templates, as Mel's R
+    /// `(+ {{ap|4 to 10}} {{as|(+ 4% AP)}} per [[File:…]] ''Overwhelm'' stack on the target)`
+    /// or Bard's `(''+ {{as|6|magic damage}} per 5 {{as|Chimes|buzzword2}} collected'')`,
+    /// by every 5 stacks. `text` has the `(+`, and `after` the nodes after it. Returns how
+    /// many of `after` it took, up to the one with the closing parenthesis
+    fn per_stack(&mut self, text: &str, after: &[&Node]) -> Option<usize> {
+        let text = text.replace("''", "");
+        let open = text.rfind("(+")?;
+
+        if !text[open + 2..].trim().is_empty() {
+            return None;
+        }
+
+        let is_text_with =
+            |node: &&Node, part: &str| matches!(node, Node::Text(text) if text.contains(part));
+
+        let close = after.iter().position(|node| is_text_with(node, ")"))?;
+        let per = after[..=close]
+            .iter()
+            .position(|node| is_text_with(node, " per "))?;
+
+        let words = Nodes(
+            after[per..=close]
+                .iter()
+                .map(|node| (*node).clone())
+                .collect(),
+        )
+        .plain();
+
+        let words = words.split(')').next().unwrap_or_default();
+        let captures = lazy_regex::regex!(r"\bper (?:(?<every>\d+(?:\.\d+)?) )?(?<what>.+)$")
+            .captures(words)?;
+
+        if !(captures["what"].contains("stack") || captures["what"].contains("collected")) {
+            return None;
+        }
+
+        let mut inner = Terms::new(self.context, self.key);
+        inner.read(&after[..per], &mut false);
+
+        let sum = inner.take_sum()?;
+        self.issues.append(&mut inner.issues);
+
+        let mut term = sum * Formula::Var(CtxVar::Stacks);
+
+        if let Some(every) = captures
+            .name("every")
+            .and_then(|every| every.as_str().parse().ok())
+        {
+            term = term / Formula::Const(every);
+        }
+
+        self.terms.push(term);
+        Some(close + 1)
+    }
+
+    /// `value` with each `{{sti}}` that only shows a stat replaced by its text, as
+    /// Hecarim's `of his {{sti|bonus movement speed}}`, so the stat reads as text
+    fn icons_as_text(value: &Nodes) -> Nodes {
+        let mut nodes = Vec::<Node>::new();
+
+        for node in &value.0 {
+            let node = match node {
+                Node::Template(sti) if sti.name == "sti" => match sti.positionals().last() {
+                    Some(text)
+                        if !text.templates().iter().any(|inner| {
+                            matches!(inner.name.as_str(), "ap" | "pp" | "pplevel" | "fd")
+                        }) =>
+                    {
+                        Node::Text(text.plain())
+                    }
+                    _ => node.clone(),
+                },
+                node => node.clone(),
+            };
+
+            match (nodes.last_mut(), node) {
+                (Some(Node::Text(last)), Node::Text(text)) => last.push_str(&text),
+                (_, node) => nodes.push(node),
+            }
+        }
+
+        Nodes(nodes)
+    }
+
+    /// `{{as|15|magic damage}}`, a number colored by the damage type it deals, as
+    /// Rammus's W. Other colors, as `{{as|5 chimes|buzzword2}}`, are not values
+    pub(crate) fn colored_number(template: &Template) -> Option<f64> {
+        if template.name != "as" || !template.positional(1)?.plain().contains("damage") {
+            return None;
+        }
+
+        template.positional(0)?.plain().trim().parse().ok()
     }
 
     /// `{{as}}` that only groups other `{{as}}`, as Tahm Kench's
@@ -712,32 +949,45 @@ impl<'a> Terms<'a> {
     }
 
     /// `{{critical damage|0 to 30|critScaling=true}}`, a share that grows with the
-    /// critical strike chance, from 0 to 30% at 100% chance, as Caitlyn's R. What items
-    /// add to the champion's critical damage grows it by a second share, as Ashe's
-    /// `0 to 100|0 to 100`, or by the same one: Infinity Edge's +30% makes Caitlyn's
-    /// 0 to 30% grow by 0 to 9%. `None` for other forms
+    /// critical strike chance, from 0 to 30% at 100% chance, as Caitlyn's R, or from a
+    /// share without chance, as Smolder's 25 to 60%. What items add to the champion's
+    /// critical damage grows it by a second share, as Ashe's `0 to 100|0 to 100`, or by
+    /// the same one: Infinity Edge's +30% makes Caitlyn's 0 to 30% grow by 0 to 9%.
+    /// `None` for other forms
     fn critical_share(&self, critical: &Template) -> Option<Formula> {
         critical.named("critScaling")?;
 
-        // `0 to 30`, the share at 100% chance
-        let share = |range: &Nodes| {
+        // `25 to 60`, the share without chance and at 100% chance
+        let range = |range: &Nodes| {
             let range = range.plain();
             let (low, high) = range.split_once(" to ")?;
-            let low = Expr::new(low.trim()).eval()?;
-            (low == 0.0).then(|| Expr::new(high.trim()).eval())?
+
+            Some((
+                Expr::new(low.trim()).eval()?,
+                Expr::new(high.trim()).eval()?,
+            ))
         };
 
-        let (base, items) = match critical.positionals().collect::<Vec<_>>()[..] {
-            [base] => (share(base)?, share(base)?),
-            [base, items] => (share(base)?, share(items)?),
+        let ((low, high), items) = match critical.positionals().collect::<Vec<_>>()[..] {
+            [base] => (range(base)?, range(base)?),
+            [base, items] => (range(base)?, range(items)?),
             _ => return None,
+        };
+
+        let items = match items {
+            (0.0, items) => items,
+            (low, high) => high - low,
         };
 
         let chance = Formula::Var(CtxVar::CritChance) / Formula::Const(100.0);
         let added = Formula::Var(CtxVar::CritDamage) - Formula::Const(self.context.crit_damage);
         let items = Formula::Const(items / 100.0) * added / Formula::Const(100.0);
+        let grows = chance * (Formula::Const((high - low) / 100.0) + items);
 
-        Some(chance * (Formula::Const(base / 100.0) + items))
+        Some(match low {
+            0.0 => grows,
+            low => Formula::Const(low / 100.0) + grows,
+        })
     }
 
     /// `{{as|of target's maximum health}}`, the stat of the ratio written before it,
@@ -747,8 +997,12 @@ impl<'a> Terms<'a> {
             return false;
         };
 
-        let text = text.trim();
+        self.of_stat(text.trim())
+    }
 
+    /// `of target's maximum health`, the stat that multiplies the ratio before it, see
+    /// [`Self::trailing_stat`]. Its percents become ratios
+    fn of_stat(&mut self, text: &str) -> bool {
         if !text.starts_with("of ") || text.contains('%') || self.terms.is_empty() {
             return false;
         }
@@ -929,6 +1183,13 @@ impl<'a> Terms<'a> {
 
     /// Adds the table of a `{{pp}}`, returning its `key=`
     fn table(&mut self, template: &Template) -> Option<String> {
+        let (table, key) = self.table_formula(template)?;
+        self.terms.push(table);
+        Some(key)
+    }
+
+    /// Table of a `{{pp}}`, with its `key=`
+    fn table_formula(&mut self, template: &Template) -> Option<(Formula, String)> {
         let progression = match PassiveProgression::new(template) {
             Ok(progression) => progression,
             Err(e) => {
@@ -943,13 +1204,13 @@ impl<'a> Terms<'a> {
             self.issues.push(template.to_string());
         }
 
-        self.terms.push(Formula::Table {
+        let table = Formula::Table {
             var,
             keys: progression.keys.iter().map(|key| *key as u8).collect(),
             values: progression.values,
-        });
+        };
 
-        Some(progression.key)
+        Some((table, progression.key))
     }
 
     /// Variable of a `{{pp}}` axis: the champion level by default, or the rank of
@@ -963,6 +1224,11 @@ impl<'a> Terms<'a> {
 
         if lowercase.contains("level") {
             return CtxVar::Level;
+        }
+
+        // `number of Chimes`, as Bard's, or `''Ablaze'' stacks`, as Brand's
+        if lowercase.starts_with("number of") || lowercase.ends_with("stacks") {
+            return CtxVar::Stacks;
         }
 
         self.context
@@ -981,7 +1247,15 @@ impl<'a> Terms<'a> {
     /// to the power
     fn scaling_term(&mut self, scaling: &Scaling) -> Formula {
         let ratios = scaling.ratios.iter().map(|ratio| ratio / 100.0).collect();
-        let mut ratio = self.by_rank(ratios);
+
+        // A ratio by level, as Xin Zhao's `(+ {{pp|5 to 20 for 4|1;6;11;16|key=%}} AP)`
+        let table = scaling
+            .table
+            .as_ref()
+            .and_then(|table| self.table_formula(table))
+            .map(|(table, _)| table.percent());
+
+        let mut ratio = table.unwrap_or_else(|| self.by_rank(ratios));
 
         for nested in &scaling.nested {
             ratio = ratio + self.scaling_term(nested);

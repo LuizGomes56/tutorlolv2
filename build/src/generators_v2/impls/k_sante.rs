@@ -3,9 +3,6 @@ use super::*;
 impl GeneratorV2 for KSante {
     fn generate(&mut self) -> MayFail {
         self.take_nth("Innate", 0, P(Void))?
-            .set(P(Void), {
-                f![12 + (0.01 + 0.01 / 17 * (Level - 1)) * EnemyMaxHealth]
-            })
             .damage_type(P(Void), Physical)
             .comment(P(Void), "Mark consumption bonus damage")
             .take("Physical Damage", Q(Void))?

@@ -5,48 +5,47 @@ use super::*;
 /// substitution only applied to its second term
 impl GeneratorV2 for Smolder {
     fn generate(&mut self) -> MayFail {
-        self.take_nth("Physical Damage", 1, Q(Min))?
-            .set(Q(Min), Formula::Raw("((((30.0) + (5.0 * (ctx.q_level - 1.0))) + ((0.65) * ctx.bonus_ad)) * ctx.physical_multiplier) + (((0.25) + (0.35 * (ctx.crit_chance * 0.01))) * ctx.stacks * ctx.magic_multiplier) + (0.083 * ctx.bonus_ad / 100 + 0.017 * ctx.stacks / 100) * ctx.enemy_max_health".into()))
+        // Bonus magic damage of each basic ability by Dragon Practice stacks, from the
+        // passive's page: Q's grows with critical strike chance, as E's
+        let q_passive = self.value_nth("Innate", 0, Key::P)?;
+        let w_passive = self.value_nth("Innate", 1, Key::P)?;
+        let e_passive = self.value_nth("Innate", 2, Key::P)?;
+
+        // Q's physical damage increase by critical strike chance, its Tier 2 bolts'
+        // share of the damage and its Tier 3 burn
+        let critical = self.value("Active", Key::Q)?;
+        let bolts = self.value("Tier 2 - 125 stacks", Key::Q)?;
+        let burn = self.value_nth("Tier 3 - 225 stacks", 0, Key::Q)?;
+
+        self.take_nth("Physical Damage", 0, Q(Min))?
+            .edit(Q(Min), |q| {
+                f![q * (1 + critical) * PhysicalMultiplier + q_passive * MagicMultiplier]
+            })
+            // With the 2 bolts of Tier 2, which deal a share of the same damage
+            .derive(Q(Max), Q(Min), |q| f![q * (1 + 2 * bolts / 100) + burn])?
+            .edit(Q(Min), |q| f![q + burn])
             .damage_type(Q(Min), Mixed)
-            .insert(
-                Q(Max),
-                Damage {
-                    formula: Formula::Raw("2 * (((((30.0) + (5.0 * (ctx.q_level - 1.0))) + ((0.65) * ctx.bonus_ad)) * ctx.physical_multiplier) + (((0.25) + (0.35 * (ctx.crit_chance * 0.01))) * ctx.stacks * ctx.magic_multiplier) + (0.083 * ctx.bonus_ad / 100 + 0.017 * ctx.stacks / 100) * ctx.enemy_max_health)".into()),
-                    name: "Super Scorcher Breath".into(),
-                    damage_type: Mixed,
-                    comment: String::new(),
-                    attributes: Undefined,
-                },
-            )?
+            .damage_type(Q(Max), Mixed)
             .take("Explosion Physical Damage", W(Void))?
-            .set(W(Void), Formula::Raw("(((((25.0) + (25.0 * (ctx.w_level - 1.0))) + ((0.5) * ctx.bonus_ad)) + ((0.8) * ctx.ability_power)) * ctx.physical_multiplier) + (0.08) * ctx.crit_chance * ctx.magic_multiplier".into()))
+            .edit(W(Void), |w| {
+                f![w * PhysicalMultiplier + w_passive * MagicMultiplier]
+            })
             .damage_type(W(Void), Mixed)
             .take("Glob Physical Damage", W(Min))?
-            .set(W(Min), Formula::Raw("((((60.0) + (10.0 * (ctx.w_level - 1.0))) + ((0.6) * ctx.bonus_ad)) * ctx.physical_multiplier) + (0.08) * ctx.crit_chance * ctx.magic_multiplier".into()))
-            .damage_type(W(Min), Mixed)
+            .damage_type(W(Min), Physical)
             .take("Total Physical Damage On Champion Hit", W(Max))?
-            .set(W(Max), Formula::Raw("(((((85.0) + (35.0 * (ctx.w_level - 1.0))) + ((1.1) * ctx.bonus_ad)) + ((0.8) * ctx.ability_power)) * ctx.physical_multiplier) + (0.08) * ctx.crit_chance * ctx.magic_multiplier".into()))
+            .edit(W(Max), |w| {
+                f![w * PhysicalMultiplier + w_passive * MagicMultiplier]
+            })
             .damage_type(W(Max), Mixed)
-            .insert(
-                E(Min),
-                Damage {
-                    formula: Formula::Raw("(10 + 5 * ctx.e_level + 0.3 * ctx.attack_damage) * ctx.physical_multiplier + ((0.55) * ctx.stacks * ctx.magic_multiplier)".into()),
-                    name: "Flap, Flap, Flap".into(),
-                    damage_type: Mixed,
-                    comment: String::new(),
-                    attributes: Undefined,
-                },
-            )?
-            .insert(
-                E(Max),
-                Damage {
-                    formula: Formula::Raw("((10 + 5 * ctx.e_level + 0.3 * ctx.attack_damage) * ctx.physical_multiplier + ((0.55) * ctx.stacks * ctx.magic_multiplier)) * (5 + ctx.stacks / 100)".into()),
-                    name: "Flap, Flap, Flap".into(),
-                    damage_type: Mixed,
-                    comment: String::new(),
-                    attributes: Undefined,
-                },
-            )?
+            .take("Physical Damage per Hit", E(Min))?
+            .edit(E(Min), |e| {
+                f![e * PhysicalMultiplier + e_passive * MagicMultiplier]
+            })
+            // 5 (+ 1 per 100 stacks) bolts, as its description writes
+            .derive(E(Max), E(Min), |e| f![e * (5 + Stacks / 100)])?
+            .damage_type(E(Min), Mixed)
+            .damage_type(E(Max), Mixed)
             .take("Physical Damage", R(Min))?
             .take("Increased Physical Damage", R(Max))?
             .combos([

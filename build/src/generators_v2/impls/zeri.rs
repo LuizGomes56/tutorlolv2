@@ -5,7 +5,6 @@ impl GeneratorV2 for Zeri {
     fn generate(&mut self) -> MayFail {
         self.take_nth("Innate", 0, P(Min))?
             .take_nth("Innate", 2, P(Max))?
-            .set(P(Max), Formula::Raw("((75 + (160-75)/17*(ctx.level-1)) + ((1.1) * ctx.ability_power)) + (((0.01) + (0.005882353 * (ctx.level - 1.0))) * ctx.enemy_max_health)".into()))
             .damage_type(P(Max), Magic)
             .take("Total Critical Strike Damage", Q(_1))?
             .take("Physical Damage per Hit", Q(Min))?
