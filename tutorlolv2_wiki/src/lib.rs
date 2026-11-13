@@ -17,6 +17,7 @@ pub mod render;
 pub mod riot;
 pub mod runes;
 pub mod scraper;
+pub mod spells;
 pub mod stats;
 pub mod version;
 pub mod wikitext;
@@ -207,6 +208,7 @@ pub async fn run() -> MayFail {
     champions::run().await?;
     items::run().await?;
     runes::run().await?;
+    spells::run().await?;
     // Resolves its keys against the champions, items and runes parsed above
     map_changes::run().await?;
     // Reads the data modules of champions and items downloaded above

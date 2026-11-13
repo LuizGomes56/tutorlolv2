@@ -151,7 +151,7 @@ impl HttpClient {
     /// Downloads the raw source of `link` to `path`. The rendered page follows a
     /// redirect, but the raw source is only the redirect line, so the source of its
     /// target is saved in its place, as for pages renamed on the wiki
-    async fn fetch_raw(&self, path: &Path, link: &str) -> MayFail {
+    pub(crate) async fn fetch_raw(&self, path: &Path, link: &str) -> MayFail {
         let src = self.fetch_wiki(path, link, true).await?;
 
         if let Some(target) = Self::redirect_target(&src) {

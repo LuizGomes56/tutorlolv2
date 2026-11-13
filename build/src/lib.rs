@@ -15,6 +15,7 @@ use std::{collections::BTreeMap, fmt::Write, process::Command, str::FromStr};
 use strum::VariantNames;
 use tutorlolv2_codec::{Class, ClassOverride, FormulaDbBuilder, GeneratorDbBuilder};
 use tutorlolv2_types::{AbilityName, AttackType, CtxVar, MapMode, Tag};
+use tutorlolv2_wiki::JsonRead;
 
 pub use context::{BuildContext, project_root};
 pub use tutorlolv2_wiki::{DynError, MayFail};
@@ -186,6 +187,11 @@ impl BuildContext {
 
         println!("cargo:rerun-if-env-changed={FORMULA_DOCS_ENV}");
 
+        let spells_path = self.root.join(tutorlolv2_wiki::spells::FULL_PATH);
+        let spells = tutorlolv2_wiki::spells::SpellData::from_file(&spells_path)
+            .map_err(|e| format!("Reading {spells_path:?}: {e}. Run `cargo run -- wiki spells` from tutorlolv2_wiki first."))?;
+
+        let spells_code = scripts::spells::spells_code(&spells)?;
         let (champions, (items, runes)) = rayon::join(
             || ChampionParser::from_root(&self.root),
             || {
@@ -234,6 +240,11 @@ impl BuildContext {
         command.args(["--edition", "2024", "--config", "max_width=80"]);
 
         let mut modules = String::new();
+        let spells_path = self.out.join("spells.rs");
+
+        tutorlolv2_wiki::write(&spells_path, spells_code)?;
+        command.arg(spells_path);
+        modules.push_str("include!(concat!(env!(\"OUT_DIR\"), \"/spells.rs\"));\n");
 
         self.write_module(&mut command, &champions, &mut modules)?;
         self.write_module(&mut command, &items, &mut modules)?;

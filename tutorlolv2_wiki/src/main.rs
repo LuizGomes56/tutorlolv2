@@ -1,7 +1,7 @@
 use clap::{Parser, Subcommand, ValueEnum};
 use tutorlolv2_wiki::{
-    HTTP_CLIENT, MayFail, champions, items, lock, lol_version, map_changes, runes, scraper, stats,
-    version, wikitext,
+    HTTP_CLIENT, MayFail, champions, items, lock, lol_version, map_changes, runes, scraper, spells,
+    stats, version, wikitext,
 };
 
 #[derive(Parser, Debug)]
@@ -56,6 +56,10 @@ pub enum Stats {
 
 #[derive(Clone, Copy, Debug, ValueEnum)]
 pub enum Wiki {
+    /// Downloads and parses the summoner spell module used by Ignite.
+    Spells,
+    SpellsDownload,
+    SpellsParse,
     #[clap(alias = "a")]
     All,
     #[clap(alias = "c")]
@@ -171,6 +175,9 @@ async fn main() -> MayFail {
         },
         AppArgs::Wiki { function } => match function {
             Wiki::All => tutorlolv2_wiki::run().await,
+            Wiki::Spells => spells::run().await,
+            Wiki::SpellsDownload => spells::download().await,
+            Wiki::SpellsParse => spells::parse(),
             Wiki::Champions => champions::run().await,
             Wiki::ChampionsConcat => champions::concat(),
             Wiki::ChampionsDownloadFull => champions::full::download().await.map(|_| ()),
