@@ -4,9 +4,6 @@ impl GeneratorV2 for AurelionSol {
     fn generate(&mut self) -> MayFail {
         self.take("Magic Damage per Second", Q(_1))?
             .take("Bonus Magic Damage", Q(_2))?
-            // (3.1% Stardust)% of maximum health, inside the icon of Cosmic Creator, that the
-            // model can't read: 100 Stardust is 3.1%
-            .edit(Q(_2), |q| f![q + 0.031 * Stacks / 100 * EnemyMaxHealth])
             .take("Magic Damage per Tick", Q(Min))?
             .take("Total Maximum Magic Damage", Q(Max))?
             .take("Magic Damage per Tick", E(Min))?

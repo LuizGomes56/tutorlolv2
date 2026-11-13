@@ -335,3 +335,78 @@ fn smolder_passive_bonus_multiplies_whole_by_stacks() {
     let q = v2_value(&smolder, AbilityId::Q(Min), &s);
     assert!((q - (60.0 * 1.75 + 0.6 * 10.0)).abs() < 1e-6, "{q}");
 }
+
+#[test]
+#[ignore = "needs the cache of wiki pages and model.json"]
+fn mel_and_twitch_use_the_complete_wiki_formulas() {
+    use tutorlolv2_types::{AbilityName::*, CtxVar::*};
+    let parser = ChampionParser::new().unwrap();
+    let mel = v2_champion(&parser, "Mel");
+    for (rank, expected) in [(1.0, 235.0), (2.0, 340.0), (3.0, 445.0)] {
+        let s = Sample::new([(RLevel, rank), (AbilityPower, 100.0), (Stacks, 10.0)]);
+        assert!((v2_value(&mel, AbilityId::R(Void), &s) - expected).abs() < 1e-6);
+    }
+    let twitch = v2_champion(&parser, "Twitch");
+    for level in [1.0, 5.0, 18.0] {
+        let s = Sample::new([(Level, level), (AbilityPower, 100.0)]);
+        let tick = v2_value(&twitch, AbilityId::P(Min), &s);
+        for (id, times) in [(Max, 6.0), (_1Min, 6.0), (_1Max, 36.0)] {
+            assert!((v2_value(&twitch, AbilityId::P(id), &s) - tick * times).abs() < 1e-6);
+        }
+    }
+}
+
+#[test]
+#[ignore = "needs the cache of wiki pages and model.json"]
+fn hecarim_wiki_increase_matches_the_manual_reference_on_every_map() {
+    use tutorlolv2_build_dep::formula_v2 as f;
+    use tutorlolv2_types::{AbilityName::Void, CtxVar::*};
+    let parser = ChampionParser::new().unwrap();
+    let hecarim = v2_champion(&parser, "Hecarim");
+    for map in MODES {
+        for rank in 1..=5 {
+            for ad in [0.0, 100.0, 350.0] {
+                for stacks in [0.0, 1.0, 2.0, 3.0] {
+                    let s = Sample::new([(QLevel, rank as f64), (BonusAd, ad), (Stacks, stacks)])
+                        .on(map);
+                    let base = match map {
+                        MapMode::Arena => 80.0 + 25.0 * (rank - 1) as f64,
+                        _ => 60.0 + 30.0 * (rank - 1) as f64,
+                    };
+                    let q = base + 0.9 * ad;
+                    let expected = f![q * (1 + Stacks * (0.03 + 0.03 * BonusAd / 100))];
+                    assert!(
+                        (v2_value(&hecarim, AbilityId::Q(Void), &s) - expected.eval(&s).unwrap())
+                            .abs()
+                            < 1e-6,
+                        "{map:?}, rank {rank}, AD {ad}, stacks {stacks}"
+                    );
+                }
+            }
+        }
+    }
+}
+
+#[test]
+#[ignore = "needs the cache of wiki pages and model.json"]
+fn lucian_shots_come_from_the_wiki_with_critical_damage_scaling() {
+    use tutorlolv2_types::{AbilityName::*, CtxVar::*};
+    let parser = ChampionParser::new().unwrap();
+    let lucian = v2_champion(&parser, "Lucian");
+    for (chance, crit, shots) in [
+        (0.0, 200.0, 22.0),
+        (25.0, 200.0, 27.5555),
+        (100.0, 200.0, 44.222),
+        (100.0, 230.0, 50.8886),
+    ] {
+        let s = Sample::new([
+            (RLevel, 1.0),
+            (AttackDamage, 100.0),
+            (AbilityPower, 100.0),
+            (CritChance, chance),
+            (CritDamage, crit),
+        ]);
+        let shot = v2_value(&lucian, AbilityId::R(Min), &s);
+        assert!((v2_value(&lucian, AbilityId::R(Max), &s) - shot * shots).abs() < 1e-6);
+    }
+}

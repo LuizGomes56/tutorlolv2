@@ -127,7 +127,7 @@ impl AbilityModel {
 
                 let label = heading.as_deref().unwrap_or(name);
 
-                for value in arg.value.description_values() {
+                for value in arg.value.description_values(key) {
                     let terms = Terms::new(context, key);
                     model.extras.push(terms.effect(label, 0, &value));
                 }
@@ -166,7 +166,7 @@ impl Nodes {
     /// by a keyword, as `{{as|{{pplevel|13 to 30}}|physical damage}}`, or of a stat, as
     /// `{{as|{{pplevel|key=%|4 to 10}} of the target's maximum health}}`, is its inner
     /// value. Both branches of a `{{ft}}` are read
-    fn description_values(&self) -> Vec<Nodes> {
+    fn description_values(&self, key: Key) -> Vec<Nodes> {
         let mut values = Vec::new();
         let nodes = &self.0;
         // Nodes before it belong to the previous value
@@ -184,36 +184,67 @@ impl Nodes {
             let mut value = match template.name.as_str() {
                 "ap" | "pp" | "pplevel" | "critical damage" => vec![node.clone()],
                 "ft" => {
-                    values.extend(template.positionals().flat_map(Nodes::description_values));
+                    values.extend(
+                        template
+                            .positionals()
+                            .flat_map(|value| value.description_values(key)),
+                    );
                     continue;
                 }
                 "as" => {
-                    let Some(text) = template.positional(0) else {
-                        continue;
-                    };
-
-                    if text.is_percent_of_stat() || text.is_damage_ratio() {
-                        vec![node.clone()]
-                    } else if let Some(number) = Terms::colored_number(template) {
-                        // `{{as|15|magic damage}}`, a number colored by its damage type
-                        vec![Node::Text(number.to_string())]
+                    // A plain shot count followed by a flat critical scaling,
+                    // as Lucian R. Keep the base together with its bonus.
+                    if Terms::flat_critical(template).is_some()
+                        && let Some(Node::Text(before)) = i.checked_sub(1).map(|j| &nodes[j])
+                        && let Some(base) =
+                            lazy_regex::regex!(r"(?:^|\s)(\d+)\s+$").captures(before)
+                        && matches!(nodes.get(i + 1), Some(Node::Text(after)) if after.trim_start().starts_with("shots"))
+                    {
+                        vec![Node::Text(base[1].to_string()), node.clone()]
                     } else {
-                        let Some(mut value) = text.wrapped_value() else {
-                            continue;
-                        };
-
-                        // `{{as|{{pp|key=%|60 to 80 for 3|1 to 13}}|ad}}`, a percent colored
-                        // by the stat it is of, as Caitlyn's P
-                        let color = template.positional(1).map(|color| color.plain());
-
-                        if let [_, Node::Text(last)] = &mut value[..]
-                            && last.trim() == "%"
-                            && let Some(stat @ ("ad" | "ap")) = color.as_deref().map(str::trim)
+                        // Plain-text damage increases immediately before their scaling,
+                        // as Hecarim Q. Store the whole increase as a ratio.
+                        if let Some(Node::Text(before)) = i.checked_sub(1).map(|j| &nodes[j])
+                            && let Some(base) =
+                                lazy_regex::regex!(r"damage by (\d+(?:\.\d+)?)%\s*$")
+                                    .captures(before)
+                            && template
+                                .positional(0)
+                                .is_some_and(|text| text.plain().trim().starts_with("(+"))
+                            && Scaling::new(template, key).is_some()
                         {
-                            *last = format!("% {}", stat.to_uppercase());
-                        }
+                            let base: f64 = base[1].parse().unwrap();
+                            vec![Node::Text((base / 100.0).to_string()), node.clone()]
+                        } else {
+                            let Some(text) = template.positional(0) else {
+                                continue;
+                            };
 
-                        value
+                            if text.is_percent_of_stat() || text.is_damage_ratio() {
+                                vec![node.clone()]
+                            } else if let Some(number) = Terms::colored_number(template) {
+                                // `{{as|15|magic damage}}`, a number colored by its damage type
+                                vec![Node::Text(number.to_string())]
+                            } else {
+                                let Some(mut value) = text.wrapped_value() else {
+                                    continue;
+                                };
+
+                                // `{{as|{{pp|key=%|60 to 80 for 3|1 to 13}}|ad}}`, a percent colored
+                                // by the stat it is of, as Caitlyn's P
+                                let color = template.positional(1).map(|color| color.plain());
+
+                                if let [_, Node::Text(last)] = &mut value[..]
+                                    && last.trim() == "%"
+                                    && let Some(stat @ ("ad" | "ap")) =
+                                        color.as_deref().map(str::trim)
+                                {
+                                    *last = format!("% {}", stat.to_uppercase());
+                                }
+
+                                value
+                            }
+                        }
                     }
                 }
                 // `{{sti|true damage|{{as|{{pplevel|35 to 205}}|true damage}}}}`, a value
@@ -467,7 +498,7 @@ impl<'a> Terms<'a> {
         {
             let stat = self.stat(stat);
             self.terms.push(base.percent() * Formula::Var(stat));
-            unit = String::new();
+            unit.clear();
         }
 
         // A base in percent whose stat is written after its scalings, as Renata's
@@ -532,6 +563,10 @@ impl<'a> Terms<'a> {
                 "ai" if template.named("icononly").is_some() => continue,
                 "as" => {}
                 _ => {
+                    if let Some(term) = Self::nested_percent(template) {
+                        self.terms.push(term);
+                        continue;
+                    }
                     // A scaling inside an icon, as Gwen's `{{ai|A Thousand Cuts|Gwen|{{as|…}}}}`
                     match Self::wrapped_scaling(template)
                         .and_then(|inner| Scaling::new(inner, self.key))
@@ -542,6 +577,13 @@ impl<'a> Terms<'a> {
 
                     continue;
                 }
+            }
+
+            if let Some(critical) = Self::flat_critical(template)
+                && let Some(count) = self.critical_share(critical)
+            {
+                self.terms.push(count);
+                continue;
             }
 
             if let Some(number) = Self::colored_number(template) {
@@ -984,10 +1026,48 @@ impl<'a> Terms<'a> {
         let items = Formula::Const(items / 100.0) * added / Formula::Const(100.0);
         let grows = chance * (Formula::Const((high - low) / 100.0) + items);
 
-        Some(match low {
+        let share = match low {
             0.0 => grows,
             low => Formula::Const(low / 100.0) + grows,
-        })
+        };
+
+        if critical
+            .named("flat")
+            .is_some_and(|flat| flat.plain().trim() == "true")
+        {
+            // `flat=true` expresses a number of shots instead of a percentage.
+            // Keep continuous arithmetic, intentionally omitting `round=` from
+            // generated formulas.
+            return Some(share * Formula::Const(100.0));
+        }
+
+        Some(share)
+    }
+
+    /// Only the additive flat count form, without any surrounding stat or text.
+    fn flat_critical(template: &Template) -> Option<&Template> {
+        if template.name != "as" {
+            return None;
+        }
+
+        let text = template.positional(0)?;
+
+        match &text.0[..] {
+            [
+                Node::Text(open),
+                Node::Template(critical),
+                Node::Text(close),
+            ] if open.trim() == "(+"
+                && close.trim() == ")"
+                && critical.name == "critical damage"
+                && critical
+                    .named("flat")
+                    .is_some_and(|flat| flat.plain().trim() == "true") =>
+            {
+                Some(critical)
+            }
+            _ => None,
+        }
     }
 
     /// `{{as|of target's maximum health}}`, the stat of the ratio written before it,
@@ -1100,6 +1180,33 @@ impl<'a> Terms<'a> {
                 _ => None,
             })
         })
+    }
+
+    /// A percent of a stat used as a percentage of another stat, split across
+    /// colored pieces inside an icon, as Aurelion Sol's Stardust burst.
+    fn nested_percent(template: &Template) -> Option<Formula> {
+        if !Self::WRAPPERS.contains(&template.name.as_str()) {
+            return None;
+        }
+
+        let text = Nodes(vec![Node::Template(template.clone())]).plain();
+        let text = lazy_regex::regex!(r"\s+").replace_all(text.trim(), " ");
+        let parts = lazy_regex::regex!(r"^\(\+ \((\d+(?:\.\d+)?)% ([^()%]+)\)% (of [^()%]+)\)$")
+            .captures(&text)?;
+
+        let inner = stat_var(&parts[2]);
+        let outer = stat_var(&parts[3]);
+
+        if inner == CtxVar::Unknown || outer == CtxVar::Unknown {
+            return None;
+        }
+
+        let ratio = parts[1].parse::<f64>().ok()?;
+
+        Some(
+            Formula::Const(ratio).percent() * Formula::Var(inner) / Formula::Const(100.0)
+                * Formula::Var(outer),
+        )
     }
 
     /// `{{ap}}` or `{{pp}}` of a template in [`Self::WRAPPERS`]

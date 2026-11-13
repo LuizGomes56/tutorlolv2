@@ -3,9 +3,9 @@ use super::*;
 impl GeneratorV2 for Twitch {
     fn generate(&mut self) -> MayFail {
         self.take_nth("Deadly Venom", 0, P(Min))?
-            .derive(P(Max), P(Min), |dmg| f![(dmg) * 6])?
-            .derive(P(_1Min), P(Max), |dmg| f![(dmg) * 6])?
-            .derive(P(_1Max), P(_1Min), |dmg| f![(dmg) * 6])?
+            .take_nth("Deadly Venom", 1, P(Max))?
+            .take_nth("Deadly Venom", 2, P(_1Min))?
+            .take_nth("Deadly Venom", 3, P(_1Max))?
             .take("Base Physical Damage", E(Void))?
             .take("Maximum Mixed Damage", E(Max))?
             .take("Minimum Mixed Damage", E(Min))?

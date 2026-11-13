@@ -2156,3 +2156,73 @@ fn tables_by_a_number_of_things_are_by_stacks() {
     ));
     assert!((extra(&bard, "description3", &[(Stacks, 30.0)]) - 3.0).abs() < 1e-9);
 }
+
+#[test]
+fn nested_percent_of_a_stack_stat_inside_an_icon() {
+    use CtxVar::*;
+    let p = page(&data(
+        "Q",
+        "|leveling2 = {{st|Bonus Magic Damage|{{ap|60 to 100}} {{as|(+ 30% AP)}} {{ai|Cosmic Creator|Aurelion Sol|{{as|(+|hp}} {{as|({{fd|3.1}}% Stardust)}}{{as|%|hp}} {{as|of target's '''maximum''' health)}}|hp}}}}",
+    ));
+    assert!(p.effects[0].issues.is_empty(), "{:?}", p.effects[0].issues);
+    for stacks in [0.0, 1.0, 100.0, 500.0] {
+        let s = sample(&[
+            (QLevel, 1.0),
+            (AbilityPower, 100.0),
+            (Stacks, stacks),
+            (EnemyMaxHealth, 2000.0),
+        ]);
+        assert!(
+            (p.effects[0].formula.eval(&s).unwrap() - (90.0 + 0.031 * stacks / 100.0 * 2000.0))
+                .abs()
+                < 1e-9
+        );
+    }
+}
+
+#[test]
+fn damage_increases_written_as_plain_percent_with_a_scaling() {
+    use CtxVar::*;
+    let p = page(&data(
+        "Q",
+        "|description = {{sbc|Active:}} Swings his weapon.\n|description2 = Each stack increases ''Rampage's'' damage by 3% {{as|(+ 3% per 100 '''bonus''' AD)}} and reduces its cooldown, up to a 9% {{as|(+ 9% per 100 '''bonus''' AD)}} damage increase.",
+    ));
+    for ad in [0.0, 100.0, 250.0] {
+        assert!((extra(&p, "Active", &[(BonusAd, ad)]) - (0.03 + 0.03 * ad / 100.0)).abs() < 1e-9);
+    }
+    let other = page(&data(
+        "Q",
+        "|description = Movement speed increased by 3% {{as|(+ 3% per 100 '''bonus''' AD)}}.",
+    ));
+    assert!(other.extras.is_empty(), "{:?}", other.extras);
+}
+
+#[test]
+fn flat_critical_scaling_shot_counts_keep_the_base_and_continuous_scaling() {
+    use CtxVar::*;
+    let lucian = page(&data(
+        "R",
+        "|description = {{sbc|Active:}} He rapidly fires up to 22 {{as|(+ {{critical damage|0 to 22.222|flat=true|round=floor|critScaling=true}})|crit chance}} shots in the target direction.",
+    ));
+    for (chance, crit, shots) in [
+        (0.0, 200.0, 22.0),
+        (4.0, 200.0, 22.88888),
+        (4.6, 200.0, 23.022212),
+        (25.0, 200.0, 27.5555),
+        (100.0, 200.0, 44.222),
+        (100.0, 230.0, 50.8886),
+    ] {
+        let s = sample(&[(CritChance, chance), (CritDamage, crit)]);
+        assert!(
+            (extra(
+                &lucian,
+                "Active",
+                &[(CritChance, chance), (CritDamage, crit)]
+            ) - shots)
+                .abs()
+                < 1e-9
+        );
+        let printed = lucian.extras[0].formula.rust();
+        assert!((LegacyFormula::parse(&printed).unwrap().eval(&s) - shots).abs() < 1e-9);
+    }
+}

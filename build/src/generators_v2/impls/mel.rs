@@ -10,12 +10,6 @@ impl GeneratorV2 for Mel {
             .take("Orb Magic Damage", E(Void))?
             .take_nth("Field Magic Damage per Second", 1, E(_1))?
             .take("Magic Damage", R(Void))?
-            .set(R(Void), {
-                f![125
-                    + 37.5 * (RLevel - 1)
-                    + 0.3 * AbilityPower
-                    + Stacks * (4 + 1.5 * (RLevel - 1) + 0.04 * AbilityPower)]
-            })
             .comment(
                 R(Void),
                 "Magic damage, Stacks = Overwhelm stacks on the target",
