@@ -2,6 +2,13 @@ use super::*;
 
 impl Generator for Sett {
     fn generate(&mut self) -> MayFail {
+        // A value written in a shape map changes can't read, by the position of its
+        // numbers, as {{fd|3}}% of "3% per 100 bonus AD"
+        let (mode, numbers) = self.map_numbers(Key::W, "Damage base Grit ratio")?;
+        let [grit, ..] = numbers[..] else {
+            return Err("[Sett] W: no number in \"Damage base Grit ratio\"".into());
+        };
+
         self.take("Innate - Heavy Hands", P(Void))?
             // The bonus of Knuckle Down's attacks, without the attack itself
             .take("Physical Damage Per Hit", Q(Min))?
@@ -11,6 +18,7 @@ impl Generator for Sett {
             // Haymaker by Grit, his mana: the actual damage with his current Grit, and its
             // range from none to resourceMax
             .take("Damage", W(_1Max))?
+            .map_ratio(W(_1Max), mode, &[MaxMana], grit / 100.0)?
             .derive(W(Void), W(_1Max), |w| {
                 w.replace_var(MaxMana, &Formula::Var(CurrentMana))
             })?

@@ -2,6 +2,29 @@ use super::*;
 
 impl Generator for Annie {
     fn generate(&mut self) -> MayFail {
+        // Tibbers' attack and aura, by rank so map changes replace their bases
+        let attack = Formula::ByRank {
+            rank: RLevel,
+            values: vec![30.0, 45.0, 60.0],
+        };
+
+        let attack = f![attack + 0.1 * AbilityPower];
+        let attack = self.map_changed(Key::R, "Tibbers base attack damage", attack)?;
+        let attack = self.map_changed(Key::R, "Tibbers attack damage AP ratio", attack)?;
+        let aura = Formula::ByRank {
+            rank: RLevel,
+            values: vec![2.0, 3.0, 4.0],
+        };
+
+        let mut aura = f![aura + 0.01 * AbilityPower];
+
+        // Arena's aura damage is per second, and the aura ticks every 0.25 seconds
+        let (mode, per_second) = self.map_value(Key::R, "Tibbers aura base damage")?;
+
+        if let Some(base) = aura.base_mut() {
+            *base = base.clone().with_map(mode, per_second.times(0.25));
+        }
+
         self.take("Magic Damage", Q(Void))?
             .take("Magic Damage", W(Void))?
             .take("Magic Damage", E(Void))?
@@ -13,7 +36,7 @@ impl Generator for Annie {
                     damage_type: Magic,
                     attributes: Undefined,
                     comment: "Pet: Tibbers basic attack".into(),
-                    formula: f![30 + 15 * (RLevel - 1) + 0.1 * AbilityPower],
+                    formula: attack,
                 },
             )?
             .insert(
@@ -23,7 +46,7 @@ impl Generator for Annie {
                     damage_type: Magic,
                     attributes: Undefined,
                     comment: "Pet: Tibbers Flame Aura per 0.25 seconds".into(),
-                    formula: f![2 + RLevel - 1 + 0.01 * AbilityPower],
+                    formula: aura,
                 },
             )?
             .combos([

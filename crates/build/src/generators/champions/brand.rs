@@ -4,6 +4,7 @@ impl Generator for Brand {
     fn generate(&mut self) -> MayFail {
         // The values based on stacks are the damage cap against monsters
         self.take_nth("Ablaze", 0, P(Void))?
+            .map_change(P(Void), "Total damage over time")?
             .take_nth("Ablaze", 6, P(_1))?
             .take("Magic Damage", Q(Void))?
             .take("Increased Damage", W(Max))?

@@ -5,7 +5,15 @@ impl Generator for Tristana {
         self.take("Magic Damage", W(Void))?
             .take("Magic Damage", E(Void))?
             .take("Minimum Physical Damage", E(Min))?
+            .map_change(E(Min), "Minimum bonus AD ratio")?
+            .map_change(E(Min), "Bomb AP ratio")?
             .take("Full Stack Physical Damage", E(Max))?
+            .map_change(E(Max), "Maximum bomb AP ratio")?;
+
+        // 4 stacks of 25% double the charge's minimum
+        let (mode, minimum) = self.map_value(Key::E, "Minimum bonus AD ratio")?;
+
+        self.map_ratio(E(Max), mode, &[BonusAd], minimum.times(2.0))?
             .take("Magic Damage", R(Void))?
             .comment(E(Void), "Passive explosion damage on kill")
             .combos([

@@ -3,7 +3,9 @@ use super::*;
 impl Generator for Kayn {
     fn generate(&mut self) -> MayFail {
         self.take("Physical Damage", Q(Min))?
+            .map_change(Q(Min), "Bonus AD ratio per hit")?
             .take("Total Physical Damage", Q(Max))?
+            .map_change(Q(Max), "Total bonus AD ratio")?
             .take("Physical Damage", W(Void))?
             .take("Physical Damage", R(Void))?
             .combos([

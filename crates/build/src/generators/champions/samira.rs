@@ -17,8 +17,14 @@ impl Generator for Samira {
             .take("Total Physical Damage", W(Max))?
             .take("Magic Damage", E(Void))?
             .take("Physical Damage Per Shot", R(Min))?
+            .map_change(R(Min), "Base damage per tick")?
             .take("Total Physical Damage", R(Max))?
-            .comment(P(_1Min), "Passive against immobilized targets")
+            .comment(P(_1Min), "Passive against immobilized targets");
+
+        let shot = self.damage(R(Min))?;
+
+        // Up to 10 shots per enemy
+        self.set(R(Max), f![10 * shot])
             .combos([
                 &[
                     Attack,

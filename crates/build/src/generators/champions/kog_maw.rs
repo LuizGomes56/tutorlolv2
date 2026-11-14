@@ -4,8 +4,12 @@ impl Generator for KogMaw {
     fn generate(&mut self) -> MayFail {
         self.take("Innate", P(Void))?
             .take("Magic Damage", Q(Void))?
+            .map_change(Q(Void), "AP ratio")?
             .take("Bonus Magic Damage", W(Void))?
+            .map_change(W(Void), "Base damage")?
+            .map_change(W(Void), "Target health ratio")?
             .take("Magic Damage", E(Void))?
+            .map_change(E(Void), "AP ratio")?
             .take("Minimum Magic Damage", R(Min))?
             .take("Maximum Magic Damage", R(Max))?
             .combos([

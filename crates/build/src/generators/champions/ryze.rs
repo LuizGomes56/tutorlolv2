@@ -7,6 +7,15 @@ impl Generator for Ryze {
         // be a `set` of this formula
         let flux = self.value("Flux Bonus", Key::Q)?;
 
+        // Arena's "Spell Flux bonus damage changed to {{pp|type=… 20px …|10 to 70 for
+        // 4|0 to 3}}" by Realm Warp's rank, by the position of its numbers
+        let (mode, numbers) = self.map_numbers(Key::Q, "{{ai|Spell Flux|Ryze}} bonus damage")?;
+        let [_, first, last, ranks, ..] = numbers[..] else {
+            return Err("[Ryze] Q: no values in its Spell Flux change".into());
+        };
+
+        let flux = flux.with_map(mode, f![first + (last - first) / (ranks - 1) * RLevel]);
+
         self.take("Magic Damage", Q(Void))?
             .derive(Q(_1), Q(Void), |q| f![q * (1 + flux / 100)])?
             .comment(Q(_1), "Flux empowered damage")

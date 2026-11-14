@@ -4,6 +4,7 @@ impl Generator for Lillia {
     fn generate(&mut self) -> MayFail {
         self.take_nth("Innate", 0, P(Void))?
             .comment(P(Void), "Dream Dust total magic damage over 3 seconds")
+            .map_change(P(Void), "Total base damage health ratio")?
             .take("Magic Damage", Q(Min))?
             .take("Total Mixed Damage", Q(Max))?
             .damage_type(Q(Min), Magic)

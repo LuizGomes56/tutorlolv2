@@ -4,6 +4,7 @@ impl Generator for Katarina {
     fn generate(&mut self) -> MayFail {
         self.take_nth("Innate - Sinister Steel", 0, P(Void))?
             .comment(P(Void), "Dagger pickup slash")
+            .map_change(P(Void), "Dagger bonus AD ratio")?
             .take("Magic Damage", Q(Void))?
             .take("Magic Damage", E(Void))?
             .take("Magic Damage Per Dagger", R(Min))?

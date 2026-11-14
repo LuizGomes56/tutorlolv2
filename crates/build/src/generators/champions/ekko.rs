@@ -3,9 +3,17 @@ use super::*;
 impl Generator for Ekko {
     fn generate(&mut self) -> MayFail {
         self.take("Innate - Resonance", P(Void))?
+            .map_change(P(Void), "Base damage")?
             .take("Initial Magic Damage", Q(_1Min))?
+            .map_change(Q(_1Min), "Initial base damage")?
             .take("Total Magic Damage", Q(Max))?
             .take("Return Magic Damage", Q(_1Max))?
+            .map_change(Q(_1Max), "Secondary base damage")?;
+
+        let initial = self.damage(Q(_1Min))?;
+        let secondary = self.damage(Q(_1Max))?;
+
+        self.set(Q(Max), f![initial + secondary])
             .take("Bonus Magic Damage", E(Void))?
             .take("Magic Damage", R(Void))?
             .combos([

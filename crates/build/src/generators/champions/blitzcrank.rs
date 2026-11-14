@@ -6,7 +6,10 @@ impl Generator for Blitzcrank {
             .take("Active", E(Void))?
             .damage_type(E(Void), Physical)
             .take_nth("Magic Damage", 1, R(Void))?
+            .map_change(R(Void), "Active AP ratio")?
             .take_nth("Magic Damage", 0, R(_1))?
+            .map_change(R(_1), "Passive base damage")?
+            .map_change(R(_1), "Passive AP ratio")?
             .comment(R(_1), "R Passive Onhit Damage")
             .combos([
                 &[
