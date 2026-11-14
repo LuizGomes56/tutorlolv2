@@ -195,3 +195,84 @@ fn lucian_shots_come_from_the_wiki_with_critical_damage_scaling() {
         assert!((v2_value(&lucian, AbilityId::R(Max), &s) - shot * shots).abs() < 1e-6);
     }
 }
+
+#[test]
+#[ignore = "needs the cache of wiki pages and model.json"]
+fn neeko_qiyana_taliyah_map_damage_overrides() {
+    use types::{AbilityName::*, CtxVar::*};
+    let parser = ChampionParser::new().unwrap();
+    for champion_id in ["Neeko", "Qiyana", "Taliyah"] {
+        let champion = v2_champion(&parser, champion_id);
+        for map in MODES {
+            for rank in 1..=5 {
+                for ap in [0.0, 200.0] {
+                    let arena = map == MapMode::Arena;
+                    let r = (rank - 1) as f64;
+                    let sample = Sample::new([
+                        (QLevel, rank as f64),
+                        (WLevel, rank as f64),
+                        (AbilityPower, ap),
+                        (BonusAd, 100.0),
+                    ])
+                    .on(map);
+                    let cases = match champion_id {
+                        "Neeko" => {
+                            let initial = if arena {
+                                90.0 + 50.0 * r
+                            } else {
+                                60.0 + 50.0 * r
+                            } + 0.6 * ap;
+                            let subsequent = if arena {
+                                75.0 + 25.0 * r
+                            } else {
+                                35.0 + 25.0 * r
+                            } + 0.25 * ap;
+                            vec![
+                                (AbilityId::Q(Min), initial),
+                                (AbilityId::Q(_1), subsequent),
+                                (AbilityId::Q(Max), initial + 2.0 * subsequent),
+                                (
+                                    AbilityId::W(Void),
+                                    if arena {
+                                        70.0 + 35.0 * r + 0.7 * ap
+                                    } else {
+                                        30.0 + 35.0 * r + 0.6 * ap
+                                    },
+                                ),
+                            ]
+                        }
+                        "Qiyana" => vec![(
+                            AbilityId::W(Void),
+                            8.0 + 8.0 * r
+                                + if arena {
+                                    35.0 + 0.55 * ap
+                                } else {
+                                    20.0 + 0.45 * ap
+                                },
+                        )],
+                        _ => {
+                            let initial = if arena {
+                                70.0 + 20.0 * r + 0.6 * ap
+                            } else {
+                                55.0 + 17.5 * r + 0.5 * ap
+                            };
+                            vec![
+                                (AbilityId::Q(Min), initial),
+                                (AbilityId::Q(_2), 0.4 * initial),
+                                (AbilityId::Q(Max), 2.6 * initial),
+                                (AbilityId::Q(_1), 1.8 * initial),
+                            ]
+                        }
+                    };
+                    for (id, expected) in cases {
+                        let actual = v2_value(&champion, id, &sample);
+                        assert!(
+                            (actual - expected).abs() < 1e-6,
+                            "{champion_id} {id:?} {map:?} rank {rank} AP {ap}: {actual} != {expected}"
+                        );
+                    }
+                }
+            }
+        }
+    }
+}

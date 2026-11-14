@@ -9,6 +9,8 @@ impl Generator for Qiyana {
             .take_in("Elemental Wrath", "Physical Damage", Q(_2))?
             .take("Subsequent Increased Damage", Q(_3))?
             .take("Bonus Magic Damage", W(Void))?
+            .map_change(W(Void), "On-hit bonus AD ratio")?
+            .map_change(W(Void), "On-hit AP ratio")?
             .take("Physical Damage", E(Void))?
             .take("Physical Damage", R(Void))?
             .damage_type(P(Void), Physical)

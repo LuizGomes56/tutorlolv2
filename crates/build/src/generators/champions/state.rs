@@ -261,6 +261,66 @@ impl ChampionGenerator {
             .unwrap_or_else(|| panic!("[{champion_id}] {id:?} was never taken"))
     }
 
+    /// Applies one explicitly named map change to a selected damage. Matching the
+    /// ability key prevents identical subjects on other abilities from leaking in.
+    pub fn map_change(&mut self, id: AbilityId, subject: &str) -> MayFail<&mut Self> {
+        use crate::generators::parser::{map_changes, single_mode};
+        use wiki::{
+            map_changes::ChangeTarget,
+            wikitext::{Lookup, MapValue},
+        };
+
+        let lookup = Lookup::new("return {}", "return {}")?;
+
+        for module in map_changes() {
+            for entry in module.entries.values() {
+                if entry.target
+                    != (ChangeTarget::Ability {
+                        champion_id: self.champion_id().to_string(),
+                        key: id.as_key(),
+                    })
+                {
+                    continue;
+                }
+
+                for change in &entry.changes {
+                    if !change
+                        .subject()
+                        .is_some_and(|part| part.eq_ignore_ascii_case(subject))
+                    {
+                        continue;
+                    }
+
+                    let value = MapValue::new(change, id.as_key(), &lookup)
+                        .ok_or_else(|| format!("Unreadable map change: {}", change.text))?;
+
+                    let formula = &mut self.damage_mut(id).formula;
+                    let (targets, replacement) = match value {
+                        MapValue::Base(value) => {
+                            (formula.base_mut().into_iter().collect::<Vec<_>>(), value)
+                        }
+                        MapValue::Ratio { stat, ratio } => (formula.stat_ratio_mut(stat), ratio),
+                    };
+
+                    if targets.len() != 1 {
+                        return Err(format!(
+                            "Expected one term for map change {subject:?} on {id:?}"
+                        )
+                        .into());
+                    }
+
+                    let target = targets.into_iter().next().unwrap();
+
+                    *target = target
+                        .clone()
+                        .with_map(single_mode(&module.maps, subject)?, replacement);
+                }
+            }
+        }
+
+        Ok(self)
+    }
+
     /// Replaces the formula of `id`
     pub fn set(&mut self, id: AbilityId, formula: Formula) -> &mut Self {
         self.damage_mut(id).formula = formula;
