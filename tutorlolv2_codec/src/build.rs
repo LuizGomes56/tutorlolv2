@@ -1,12 +1,16 @@
 use crate::common::{
-    DamageSlot, EntityKind, Error, HEADER_LEN, MAGIC, OP_BIN_BASE, OP_CTX, OP_GROUP,
-    OP_MATCH_BLOCK, OP_MATCH_INLINE, OP_NEG, OP_NUM_CONST, OP_NUM_F32, OP_NUM_I8, OP_NUM_U8,
-    OP_REF_LOCAL, VERSION,
+    DamageSlot, EntityKind, Error, HEADER_LEN, MAGIC, OP_AXIS, OP_BIN_BASE, OP_CTX,
+    OP_EXPR_MATCH_BLOCK, OP_EXPR_MATCH_INLINE, OP_GROUP, OP_MAP_MATCH_BLOCK, OP_MAP_MATCH_INLINE,
+    OP_MATCH_BLOCK, OP_MATCH_INLINE, OP_MAX_ZERO, OP_NEG, OP_NUM_CONST, OP_NUM_F32, OP_NUM_I8,
+    OP_NUM_U8, OP_NUMERIC_TABLE, OP_REF_LOCAL, VERSION,
 };
 use std::collections::HashMap;
 use std::convert::TryFrom;
 
 pub type CtxResolver = fn(&str) -> Option<u8>;
+
+/// Resolves the name of a game mode, as `Aram`, to the id the renderer gets back
+pub type MapResolver = fn(&str) -> Option<u8>;
 
 #[derive(Debug, Clone, Copy)]
 pub struct FormulaSource<'a> {
@@ -16,6 +20,13 @@ pub struct FormulaSource<'a> {
 
 #[derive(Debug, Clone)]
 enum Ast {
+    NumericTable {
+        axis: Box<Ast>,
+        arms: Vec<(Ast, Ast)>,
+        cap: Box<Ast>,
+    },
+    Axis,
+    MaxZero(Box<Ast>),
     Number(u32),
     Ctx(u8),
     RefLocal(u8),
@@ -31,23 +42,114 @@ enum Ast {
         id: u8,
         layout: MatchLayout,
     },
+    ExprMatch {
+        ctx: u8,
+        cast_u8: bool,
+        arms: Vec<(MatchPattern, MapArm)>,
+        layout: MatchLayout,
+    },
+    /// `match ctx.map { #[cold] Aram => …, _ => … }`, an arm per mode and the default
+    MapMatch {
+        arms: Vec<(u8, MapArm)>,
+        default: Box<MapArm>,
+        layout: MatchLayout,
+    },
+}
+
+/// Typed value of a numeric or map match arm
+#[derive(Debug, Clone)]
+struct MapArm {
+    value: Ast,
+    body: ArmBody,
+}
+
+/// How the value of an arm is written. rustfmt puts values that don't fit on a line
+/// in a block, `Arena => { … }`, which has no comma after it
+#[derive(Debug, Clone, Copy)]
+enum ArmBody {
+    Plain,
+    BlockExpression,
+    Braced {
+        body_indent_units: u8,
+        close_indent_units: u8,
+    },
+}
+
+impl MapArm {
+    fn encode(&self, constants: &ConstantPool, out: &mut Vec<u8>) {
+        match self.body {
+            ArmBody::Plain => out.push(0),
+            ArmBody::BlockExpression => out.push(2),
+            ArmBody::Braced {
+                body_indent_units,
+                close_indent_units,
+            } => {
+                out.push(1);
+                out.push(body_indent_units);
+                out.push(close_indent_units);
+            }
+        }
+
+        self.value.encode(constants, out);
+    }
 }
 
 impl Ast {
     fn count_numbers(&self, freq: &mut HashMap<u32, u32>) {
         match self {
+            Self::NumericTable { axis, arms, cap } => {
+                axis.count_numbers(freq);
+
+                for (key, value) in arms {
+                    key.count_numbers(freq);
+                    value.count_numbers(freq);
+                }
+
+                cap.count_numbers(freq);
+            }
+            Self::MaxZero(inner) => inner.count_numbers(freq),
+            Self::Axis => {}
             Self::Number(bits) => *freq.entry(*bits).or_default() += 1,
             Self::Binary { left, right, .. } => {
                 left.count_numbers(freq);
                 right.count_numbers(freq);
             }
             Self::Group(inner) | Self::Neg(inner) => inner.count_numbers(freq),
+            Self::ExprMatch { arms, .. } => {
+                for (_, arm) in arms {
+                    arm.value.count_numbers(freq);
+                }
+            }
+            Self::MapMatch { arms, default, .. } => {
+                for (_, arm) in arms {
+                    arm.value.count_numbers(freq);
+                }
+
+                default.value.count_numbers(freq);
+            }
             Self::Ctx(_) | Self::RefLocal(_) | Self::Match { .. } => {}
         }
     }
 
     fn encode(&self, constants: &ConstantPool, out: &mut Vec<u8>) {
         match self {
+            Self::NumericTable { axis, arms, cap } => {
+                out.push(OP_NUMERIC_TABLE);
+                out.push(arms.len() as u8);
+                axis.encode(constants, out);
+
+                for (key, value) in arms {
+                    key.encode(constants, out);
+                    value.encode(constants, out);
+                }
+
+                cap.encode(constants, out);
+            }
+            Self::Axis => out.push(OP_AXIS),
+            Self::MaxZero(inner) => {
+                out.push(OP_MAX_ZERO);
+                inner.encode(constants, out);
+            }
             Self::Number(bits) => constants.encode_number(*bits, out),
             Self::Ctx(id) => {
                 out.push(OP_CTX);
@@ -77,6 +179,57 @@ impl Ast {
                 out.push(*arm_indent_units);
                 out.push(*close_indent_units);
             }
+            Self::ExprMatch {
+                ctx,
+                cast_u8,
+                arms,
+                layout,
+            } => {
+                match layout {
+                    MatchLayout::Inline => out.push(OP_EXPR_MATCH_INLINE),
+                    MatchLayout::Block {
+                        arm_indent_units,
+                        close_indent_units,
+                    } => {
+                        out.push(OP_EXPR_MATCH_BLOCK);
+                        out.push(*arm_indent_units);
+                        out.push(*close_indent_units);
+                    }
+                }
+
+                out.extend([*ctx, u8::from(*cast_u8), arms.len() as u8]);
+
+                for (pattern, arm) in arms {
+                    pattern.encode(out);
+                    arm.encode(constants, out);
+                }
+            }
+            Self::MapMatch {
+                arms,
+                default,
+                layout,
+            } => {
+                match layout {
+                    MatchLayout::Inline => out.push(OP_MAP_MATCH_INLINE),
+                    MatchLayout::Block {
+                        arm_indent_units,
+                        close_indent_units,
+                    } => {
+                        out.push(OP_MAP_MATCH_BLOCK);
+                        out.push(*arm_indent_units);
+                        out.push(*close_indent_units);
+                    }
+                }
+
+                out.push(arms.len() as u8);
+
+                for (mode, arm) in arms {
+                    out.push(*mode);
+                    arm.encode(constants, out);
+                }
+
+                default.encode(constants, out);
+            }
             Self::Group(inner) => {
                 out.push(OP_GROUP);
                 inner.encode(constants, out);
@@ -92,10 +245,13 @@ impl Ast {
                 right,
             } => {
                 let opcode = OP_BIN_BASE | ((*op as u8) & 0x03) | ((layout.kind as u8) << 2);
+
                 out.push(opcode);
+
                 if layout.kind != BreakKind::Inline {
                     out.push(layout.indent_units);
                 }
+
                 left.encode(constants, out);
                 right.encode(constants, out);
             }
@@ -252,17 +408,25 @@ pub struct FormulaDbBuilder {
     items: Vec<Option<SparsePending>>,
     runes: Vec<Option<SparsePending>>,
     ctx_resolver: CtxResolver,
+    map_resolver: MapResolver,
     match_defs: Vec<MatchDef>,
     match_ids: HashMap<MatchDef, u8>,
 }
 
 impl FormulaDbBuilder {
-    pub fn new(cc: u16, ic: u16, rc: u16, ctx_resolver: CtxResolver) -> Self {
+    pub fn new(
+        cc: u16,
+        ic: u16,
+        rc: u16,
+        ctx_resolver: CtxResolver,
+        map_resolver: MapResolver,
+    ) -> Self {
         Self {
             champions: (0..cc).map(|_| None).collect(),
             items: (0..ic).map(|_| None).collect(),
             runes: (0..rc).map(|_| None).collect(),
             ctx_resolver,
+            map_resolver,
             match_defs: Vec::new(),
             match_ids: HashMap::new(),
         }
@@ -317,9 +481,11 @@ impl FormulaDbBuilder {
         }
 
         let mut parsed = Vec::with_capacity(formulas.len());
+
         for formula in formulas {
             parsed.push((formula.local, self.parse_formula(formula.source, refs)?));
         }
+
         parsed.sort_by_key(|(local, _)| *local);
 
         for (index, (local, _)) in parsed.iter().enumerate() {
@@ -413,13 +579,16 @@ impl FormulaDbBuilder {
         let mut parser = Parser {
             tokens,
             pos: 0,
+            axis_scope: false,
             ctx_resolver: self.ctx_resolver,
+            map_resolver: self.map_resolver,
             refs,
             match_defs: &mut self.match_defs,
             match_ids: &mut self.match_ids,
         };
 
         let expr = parser.parse_expression(0)?;
+
         if !parser.is_eof() {
             let token = parser.peek().unwrap();
             return Err(token.error("unexpected token after end of formula"));
@@ -432,6 +601,7 @@ impl FormulaDbBuilder {
     pub fn finish(self) -> Result<Vec<u8>, Error> {
         let champion_count =
             u16::try_from(self.champions.len()).map_err(|_| Error::TooManyOwners)?;
+
         let item_count = u16::try_from(self.items.len()).map_err(|_| Error::TooManyOwners)?;
         let rune_count = u16::try_from(self.runes.len()).map_err(|_| Error::TooManyOwners)?;
 
@@ -540,21 +710,27 @@ impl FormulaDbBuilder {
         for bits in constants.values {
             out.push_u32_le(bits);
         }
+
         for offset in match_offsets {
             out.push_u32_le(offset);
         }
+
         for base in champion_bases {
             out.push_u16_le(base);
         }
+
         for entry in item_entries {
             entry.encode(&mut out);
         }
+
         for entry in rune_entries {
             entry.encode(&mut out);
         }
+
         for offset in formula_offsets {
             out.push_u32_le(offset);
         }
+
         out.extend_from_slice(&match_data);
         out.extend_from_slice(&formula_data);
 
@@ -643,9 +819,11 @@ impl ImmediateNumber {
         if !value.is_finite() || value.fract() != 0.0 {
             return None;
         }
+
         if (0.0..=255.0).contains(&value) {
             return Some(Self::U8(value as u8));
         }
+
         if (-128.0..0.0).contains(&value) {
             return Some(Self::I8(value as i8));
         }
@@ -684,6 +862,12 @@ enum TokenKind {
     Range,
     RangeEq,
     FatArrow,
+    /// `#[cold]`, before each arm of a map match but the default
+    Cold,
+    Colon,
+    Semi,
+    Equal,
+    Less,
 }
 
 #[derive(Debug, Clone)]
@@ -709,6 +893,7 @@ impl Token {
                 column: self.column,
             });
         }
+
         Ok((self.column / 2) as u8)
     }
 }
@@ -759,6 +944,12 @@ impl<'a> Lexer<'a> {
                 b'-' => self.single(TokenKind::Minus),
                 b'*' => self.single(TokenKind::Star),
                 b'/' => self.single(TokenKind::Slash),
+                b':' => self.single(TokenKind::Colon),
+                b';' => self.single(TokenKind::Semi),
+                b'<' => self.single(TokenKind::Less),
+                b'=' if self.bytes.get(self.index + 1) != Some(&b'>') => {
+                    self.single(TokenKind::Equal)
+                }
                 b'(' => self.single(TokenKind::LParen),
                 b')' => self.single(TokenKind::RParen),
                 b'{' => self.single(TokenKind::LBrace),
@@ -767,6 +958,9 @@ impl<'a> Lexer<'a> {
                 b'.' => self.dot(),
                 b'=' if self.bytes.get(self.index + 1) == Some(&b'>') => {
                     self.push(TokenKind::FatArrow, 2)
+                }
+                b'#' if self.source[self.index..].starts_with("#[cold]") => {
+                    self.push(TokenKind::Cold, "#[cold]".len())
                 }
                 other => {
                     return Err(Error::Parse {
@@ -899,7 +1093,9 @@ struct Parsed {
 struct Parser<'a> {
     tokens: Vec<Token>,
     pos: usize,
+    axis_scope: bool,
     ctx_resolver: CtxResolver,
+    map_resolver: MapResolver,
     refs: &'a HashMap<String, u8>,
     match_defs: &'a mut Vec<MatchDef>,
     match_ids: &'a mut HashMap<MatchDef, u8>,
@@ -916,9 +1112,11 @@ impl Parser<'_> {
 
     fn bump(&mut self) -> Option<Token> {
         let token = self.tokens.get(self.pos).cloned();
+
         if token.is_some() {
             self.pos += 1;
         }
+
         token
     }
 
@@ -997,7 +1195,25 @@ impl Parser<'_> {
             return self.parse_unary();
         }
 
-        self.parse_primary()
+        let mut value = self.parse_primary()?;
+
+        if matches!(self.peek().map(|t| &t.kind), Some(TokenKind::Dot)) {
+            self.bump();
+            self.expect_ident("max")?;
+            self.expect(TokenKind::LParen, "expected `(`")?;
+
+            let zero = self.bump().ok_or(Error::Corrupt("missing max argument"))?;
+
+            if !matches!(&zero.kind, TokenKind::Number(n) if Self::parse_f32(n).ok() == Some(0.0)) {
+                return Err(zero.error("only max(0.0) is supported"));
+            }
+
+            let close = self.expect(TokenKind::RParen, "expected `)`")?;
+
+            value.ast = Ast::MaxZero(Box::new(value.ast));
+            value.end_line = close.line;
+        }
+        Ok(value)
     }
 
     fn parse_primary(&mut self) -> Result<Parsed, Error> {
@@ -1021,6 +1237,13 @@ impl Parser<'_> {
                     end_line: token.line,
                 })
             }
+            TokenKind::LBrace => self.parse_numeric_table(token),
+            TokenKind::Ident(ref value) if value == "axis" && self.axis_scope => Ok(Parsed {
+                ast: Ast::Axis,
+                start_line: token.line,
+                start_col: token.column,
+                end_line: token.line,
+            }),
             TokenKind::LParen => {
                 let inner = self.parse_expression(0)?;
                 let close = self.expect(TokenKind::RParen, "expected `)`")?;
@@ -1038,6 +1261,73 @@ impl Parser<'_> {
                 "expected number, ctx field, function call, match, or parenthesized expression",
             )),
         }
+    }
+
+    fn expect_ident(&mut self, name: &str) -> Result<(), Error> {
+        self.expect(TokenKind::Ident(name.into()), "unexpected identifier")?;
+        Ok(())
+    }
+
+    fn parse_numeric_table(&mut self, start: Token) -> Result<Parsed, Error> {
+        if self.axis_scope {
+            return Err(start.error("nested axis binding is unsupported"));
+        }
+
+        self.expect_ident("let")?;
+        self.expect_ident("axis")?;
+        self.expect(TokenKind::Colon, "expected `:`")?;
+        self.expect_ident("f32")?;
+        self.expect(TokenKind::Equal, "expected `=`")?;
+
+        let axis = self.parse_expression(0)?.ast;
+
+        self.expect(TokenKind::Semi, "expected `;`")?;
+        self.axis_scope = true;
+
+        let mut arms = Vec::new();
+
+        while matches!(self.peek().map(|t| &t.kind), Some(TokenKind::Ident(n)) if n == "if") {
+            self.bump();
+            self.expect_ident("axis")?;
+            self.expect(TokenKind::Less, "expected `<`")?;
+
+            let key = self.parse_unary()?.ast;
+
+            if !matches!(key, Ast::Number(_)) {
+                return Err(start.error("table key must be numeric"));
+            }
+
+            self.expect(TokenKind::LBrace, "expected `{`")?;
+
+            let value = self.parse_expression(0)?.ast;
+
+            self.expect(TokenKind::RBrace, "expected `}`")?;
+            self.expect_ident("else")?;
+            arms.push((key, value));
+
+            if arms.len() > 255 {
+                return Err(start.error("too many numeric table arms"));
+            }
+        }
+
+        self.expect(TokenKind::LBrace, "expected cap block")?;
+
+        let cap = self.parse_expression(0)?.ast;
+        self.expect(TokenKind::RBrace, "expected `}`")?;
+
+        let close = self.expect(TokenKind::RBrace, "expected `}`")?;
+        self.axis_scope = false;
+
+        Ok(Parsed {
+            ast: Ast::NumericTable {
+                axis: Box::new(axis),
+                arms,
+                cap: Box::new(cap),
+            },
+            start_line: start.line,
+            start_col: start.column,
+            end_line: close.line,
+        })
     }
 
     fn parse_ctx(&mut self, start: Token) -> Result<Parsed, Error> {
@@ -1064,6 +1354,7 @@ impl Parser<'_> {
 
     fn parse_function_call(&mut self, start: Token, name: String) -> Result<Parsed, Error> {
         self.expect(TokenKind::LParen, "expected `(` after function name")?;
+
         let argument = self
             .bump()
             .ok_or_else(|| start.error("expected function argument"))?;
@@ -1110,11 +1401,16 @@ impl Parser<'_> {
             _ => return Err(field_token.error("expected ctx field identifier")),
         };
 
-        let ctx = (self.ctx_resolver)(&field).ok_or_else(|| Error::UnknownCtxVar(field.clone()))?;
+        if field == "map" {
+            return self.parse_map_match(start);
+        }
 
+        let ctx = (self.ctx_resolver)(&field).ok_or_else(|| Error::UnknownCtxVar(field.clone()))?;
         let mut cast_u8 = false;
+
         if matches!(self.peek().map(|t| &t.kind), Some(TokenKind::Ident(value)) if value == "as") {
             self.bump();
+
             let ty = self
                 .bump()
                 .ok_or_else(|| field_token.error("expected `u8` after `as`"))?;
@@ -1136,12 +1432,13 @@ impl Parser<'_> {
             }
 
             let pattern = self.parse_match_pattern()?;
+
             self.expect(TokenKind::FatArrow, "expected `=>` in match arm")?;
-            let value = self.parse_match_rhs_number()?;
-            arms.push(MatchArm {
-                pattern,
-                value: value.to_bits(),
-            });
+
+            let arm = self.parse_map_arm()?;
+            let plain = matches!(arm.body, ArmBody::Plain);
+
+            arms.push((pattern, arm));
 
             if arms.len() > u8::MAX as usize {
                 return Err(Error::TooManyMatchArms);
@@ -1149,7 +1446,7 @@ impl Parser<'_> {
 
             if matches!(self.peek().map(|t| &t.kind), Some(TokenKind::Comma)) {
                 self.bump();
-            } else if !matches!(self.peek().map(|t| &t.kind), Some(TokenKind::RBrace)) {
+            } else if plain && !matches!(self.peek().map(|t| &t.kind), Some(TokenKind::RBrace)) {
                 return Err(self
                     .peek()
                     .unwrap()
@@ -1167,6 +1464,37 @@ impl Parser<'_> {
         } else {
             MatchLayout::Inline
         };
+
+        if arms.is_empty() {
+            return Err(start.error("empty match is unsupported"));
+        }
+
+        if !arms
+            .iter()
+            .all(|(_, arm)| matches!((&arm.value, arm.body), (Ast::Number(_), ArmBody::Plain)))
+        {
+            return Ok(Parsed {
+                ast: Ast::ExprMatch {
+                    ctx,
+                    cast_u8,
+                    arms,
+                    layout,
+                },
+                start_line: start.line,
+                start_col: start.column,
+                end_line: close.line,
+            });
+        }
+
+        let arms = arms
+            .into_iter()
+            .map(|(pattern, arm)| {
+                let Ast::Number(value) = arm.value else {
+                    unreachable!()
+                };
+                MatchArm { pattern, value }
+            })
+            .collect();
 
         let definition = MatchDef { ctx, cast_u8, arms };
         let id = if let Some(&id) = self.match_ids.get(&definition) {
@@ -1186,6 +1514,129 @@ impl Parser<'_> {
             start_line: start.line,
             start_col: start.column,
             end_line: close.line,
+        })
+    }
+
+    /// `match ctx.map { #[cold] Aram => <expr>, #[cold] Arena => <expr>, _ => <expr> }`,
+    /// after `match ctx.map`. Every arm but the last is a mode marked `#[cold]`, and the
+    /// last is the default `_`
+    fn parse_map_match(&mut self, start: Token) -> Result<Parsed, Error> {
+        let open = self.expect(TokenKind::LBrace, "expected `{` after `ctx.map`")?;
+        let first_arm = self.peek().cloned();
+        let mut arms = Vec::new();
+
+        let default = loop {
+            let token = self
+                .bump()
+                .ok_or_else(|| start.error("unterminated map match"))?;
+
+            match &token.kind {
+                TokenKind::Ident(name) if name == "_" => {
+                    self.expect(TokenKind::FatArrow, "expected `=>` after `_`")?;
+                    break self.parse_map_arm()?;
+                }
+                TokenKind::RBrace => {
+                    return Err(token.error("map match needs a default `_` arm"));
+                }
+                TokenKind::Cold => {}
+                _ => {
+                    return Err(token.error("map arms other than `_` are cold, as `#[cold] Aram`"));
+                }
+            }
+
+            let variant = self
+                .bump()
+                .ok_or_else(|| token.error("expected a map mode after `#[cold]`"))?;
+
+            let TokenKind::Ident(name) = &variant.kind else {
+                return Err(variant.error("expected a map mode after `#[cold]`"));
+            };
+
+            let mode =
+                (self.map_resolver)(name).ok_or_else(|| Error::UnknownMapMode(name.clone()))?;
+
+            self.expect(TokenKind::FatArrow, "expected `=>` in map arm")?;
+            let arm = self.parse_map_arm()?;
+
+            // A braced value ends the arm without a comma
+            if let ArmBody::Plain = arm.body {
+                self.expect(TokenKind::Comma, "expected `,` after map arm")?;
+            } else if matches!(self.peek().map(|t| &t.kind), Some(TokenKind::Comma)) {
+                self.bump();
+            }
+
+            arms.push((mode, arm));
+
+            if arms.len() >= u8::MAX as usize {
+                return Err(Error::TooManyMatchArms);
+            }
+        };
+
+        if matches!(self.peek().map(|t| &t.kind), Some(TokenKind::Comma)) {
+            self.bump();
+        }
+
+        let close = self.expect(TokenKind::RBrace, "expected `}` after the `_` arm")?;
+
+        let layout = if close.line > open.line {
+            let arm = first_arm.ok_or_else(|| start.error("empty match is unsupported"))?;
+            MatchLayout::Block {
+                arm_indent_units: arm.indent_units()?,
+                close_indent_units: close.indent_units()?,
+            }
+        } else {
+            MatchLayout::Inline
+        };
+
+        Ok(Parsed {
+            ast: Ast::MapMatch {
+                arms,
+                default: Box::new(default),
+                layout,
+            },
+            start_line: start.line,
+            start_col: start.column,
+            end_line: close.line,
+        })
+    }
+
+    /// Value of a map arm, after its `=>`: an expression, or one in a block as
+    /// rustfmt writes the ones that don't fit on a line
+    fn parse_map_arm(&mut self) -> Result<MapArm, Error> {
+        if !matches!(self.peek().map(|t| &t.kind), Some(TokenKind::LBrace))
+            || matches!(self.tokens.get(self.pos + 1).map(|t| &t.kind), Some(TokenKind::Ident(n)) if n == "let")
+        {
+            let value = self.parse_expression(0)?.ast;
+            let body = if matches!(
+                value,
+                Ast::NumericTable { .. }
+                    | Ast::Match { .. }
+                    | Ast::ExprMatch { .. }
+                    | Ast::MapMatch { .. }
+            ) && !matches!(self.peek().map(|t| &t.kind), Some(TokenKind::Comma))
+            {
+                ArmBody::BlockExpression
+            } else {
+                ArmBody::Plain
+            };
+
+            return Ok(MapArm { value, body });
+        }
+
+        let open = self.expect(TokenKind::LBrace, "expected `{`")?;
+        let first = self
+            .peek()
+            .cloned()
+            .ok_or_else(|| open.error("unterminated map arm"))?;
+        let value = self.parse_expression(0)?.ast;
+        let close = self.expect(TokenKind::RBrace, "expected `}` after the arm's value")?;
+
+        Ok(MapArm {
+            value,
+            body: ArmBody::Braced {
+                body_indent_units: first.indent_units()?,
+                close_indent_units: close.indent_units()?,
+            },
         })
     }
 
@@ -1251,35 +1702,6 @@ impl Parser<'_> {
             column: token.column,
             message,
         })
-    }
-
-    fn parse_match_rhs_number(&mut self) -> Result<f32, Error> {
-        let negative = matches!(self.peek().map(|t| &t.kind), Some(TokenKind::Minus));
-        if negative {
-            self.bump();
-        }
-
-        let token = self.bump().ok_or_else(|| Error::Parse {
-            line: 1,
-            column: 0,
-            message: "expected numeric match RHS".into(),
-        })?;
-
-        let source = match &token.kind {
-            TokenKind::Number(source) => source,
-            _ => return Err(token.error("match RHS must be a number")),
-        };
-
-        let mut value = Self::parse_f32(source).map_err(|message| Error::Parse {
-            line: token.line,
-            column: token.column,
-            message,
-        })?;
-
-        if negative {
-            value = -value;
-        }
-        Ok(value)
     }
 
     fn expect(&mut self, expected: TokenKind, message: &str) -> Result<Token, Error> {

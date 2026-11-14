@@ -1,16 +1,18 @@
+pub use crate::generators::parser::WithMapChanges;
 pub use crate::{
     MayFail, formula as f,
     generators::{
         Generator, GeneratorExt,
         constants::WithConstants,
-        parser::items::{Item, Source::*},
+        parser::items::{Item, ItemEvent::*, Source::*},
         utils::RegExtractor,
     },
 };
-pub use core::fmt::Display;
 pub use lazy_regex::regex;
+pub use tutorlolv2_types::MapMode;
 pub use tutorlolv2_types::{AttackType::*, Attrs::*, CtxVar::*, DamageIndex::*, DamageType::*};
 pub use tutorlolv2_wiki::items::item_parser::WikiItem;
+pub use tutorlolv2_wiki::wikitext::{Formula, IntoFormula};
 
 #[macro_export]
 macro_rules! decl_items {

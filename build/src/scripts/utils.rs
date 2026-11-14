@@ -3,7 +3,9 @@ use crate::{
     generators::parser::{DamageRange, ZERO, items::Item, runes::Rune},
     scripts::{
         batch::FormulaDoc,
-        simplify::{Precision, approx_constant, format_number, simplify, simplify_exact},
+        simplify::{
+            Precision, approx_constant, format_formula, format_formula_exact, format_number,
+        },
     },
 };
 use databake::CrateEnv;
@@ -16,7 +18,7 @@ use std::{
     fmt::{Debug, Write},
     ops::{Index, Range},
 };
-use tutorlolv2_types::{AttackType, Attrs, CtxVar, DamageIndex, DamageType, Tag};
+use tutorlolv2_types::{AttackType, Attrs, CtxVar, DamageIndex, DamageType, MapMode, Tag};
 
 pub const ZERO_FN: &str = "crate::libgen::zero";
 
@@ -31,16 +33,15 @@ impl<T: databake::Bake + ?Sized> BakeExt for T {
     }
 }
 
-pub fn is_zero(value: &str) -> bool {
-    value == ZERO || value == "0" || value == "0.0" || value == "(0.0)" || value == "(0)"
-}
-
 pub trait ItemOrRune {
     const TAG: Tag;
 
     fn id(&self) -> &str;
     fn damage_type(&self) -> DamageType;
     fn attributes(&self) -> Attrs;
+    /// Formulas on each mode that changes them, for melee minimum and maximum,
+    /// then ranged
+    fn map_damages(&self) -> &[Vec<(MapMode, String)>; 4];
 }
 
 impl ItemOrRune for Item {
@@ -57,6 +58,10 @@ impl ItemOrRune for Item {
     fn attributes(&self) -> Attrs {
         self.attributes
     }
+
+    fn map_damages(&self) -> &[Vec<(MapMode, String)>; 4] {
+        &self.map_damages
+    }
 }
 
 impl ItemOrRune for Rune {
@@ -72,6 +77,10 @@ impl ItemOrRune for Rune {
 
     fn attributes(&self) -> Attrs {
         Attrs::Undefined
+    }
+
+    fn map_damages(&self) -> &[Vec<(MapMode, String)>; 4] {
+        &self.map_damages
     }
 }
 
@@ -195,41 +204,36 @@ pub trait ItemOrRuneExt:
             &ranged.max_dmg,
         ];
 
-        let formulas = core::array::from_fn(|i| simplify(raw[i]));
+        let formulas = core::array::from_fn(|i| format_formula(raw[i]));
 
         ItemFormulaPlan {
             functions: self.functions(),
             aliases: self.build_aliases(&formulas),
             formulas,
-            active: core::array::from_fn(|i| !is_zero(raw[i])),
+            active: core::array::from_fn(|i| raw[i] != ZERO),
         }
     }
 
     fn build_aliases(&self, raw: &[String; 4]) -> [Option<(usize, String)>; 4] {
         let all_vars = self.identifiers();
-
         let mut aliases = [None, None, None, None];
 
+        // The ratio between two formulas is only known on Summoner's Rift. Other
+        // modes keep their own formula, see `map_arms`
         for i in 0..4 {
-            if is_zero(&raw[i]) {
+            if raw[i] == ZERO {
                 continue;
             }
 
             for j in 0..i {
-                if is_zero(&raw[j]) {
+                if raw[j] == ZERO {
                     continue;
                 }
 
-                let ratio_sym = simplify(&format!("({}) / ({})", raw[i], raw[j]));
-
-                let ratio = if !ratio_sym.contains("ctx") {
-                    ratio_sym
-                } else {
-                    let Some(k) = probe_ratio(&raw[j], &raw[i], &all_vars) else {
-                        continue;
-                    };
-
-                    k
+                // Sampled numerically: formulas are not simplified, so their ratio is
+                // only known when it is the same at every sample
+                let Some(ratio) = probe_ratio(&raw[j], &raw[i], &all_vars) else {
+                    continue;
                 };
 
                 aliases[i] = Some((j, ratio));
@@ -238,6 +242,33 @@ pub trait ItemOrRuneExt:
         }
 
         aliases
+    }
+
+    /// Formulas of slot `i` on each mode that changes it. An alias multiplies its
+    /// base by a ratio only known on Summoner's Rift, so it keeps its own formula
+    /// on every mode that changes either of them
+    fn map_arms(&self, plan: &ItemFormulaPlan, i: usize) -> Vec<(MapMode, String)> {
+        let map = self.map_damages();
+
+        let Some((j, _)) = plan.aliases[i] else {
+            return map[i].clone();
+        };
+
+        map[i]
+            .iter()
+            .chain(&map[j])
+            .map(|(mode, _)| *mode)
+            .collect::<std::collections::BTreeSet<_>>()
+            .into_iter()
+            .map(|mode| {
+                let formula = map[i]
+                    .iter()
+                    .find(|(m, _)| *m == mode)
+                    .map_or_else(|| plan.formulas[i].clone(), |(_, f)| f.clone());
+
+                (mode, formula)
+            })
+            .collect()
     }
 
     fn closures(&self, plan: &ItemFormulaPlan) -> MayFail<String> {
@@ -250,10 +281,9 @@ pub trait ItemOrRuneExt:
         for i in 0..4 {
             let body = &plan.formulas[i as usize];
             let f = &functions[i as usize];
-
             let default = !plan.active[i as usize];
 
-            let formula_f32 = if default {
+            let mut formula_f32 = if default {
                 continue;
             } else if let Some((base_idx, ref ratio)) = aliases[i as usize] {
                 let base_fn = &functions[base_idx];
@@ -262,6 +292,24 @@ pub trait ItemOrRuneExt:
             } else {
                 cast_f32(body)?
             };
+
+            // Formulas that game modes change branch on the map. Nearly every game
+            // is on Summoner's Rift, so the other arms are cold
+            let map_damage = self.map_arms(plan, i as usize);
+
+            if !map_damage.is_empty() {
+                let mut arms = String::new();
+
+                for (mode, formula) in &map_damage {
+                    write!(
+                        arms,
+                        "tutorlolv2_types::MapMode::{mode:?} => {{ core::hint::cold_path(); {} }}",
+                        cast_f32(&format_formula(formula))?
+                    )?;
+                }
+
+                formula_f32 = format!("match ctx.map {{ {arms} _ => {{ {formula_f32} }} }}");
+            }
 
             if !seen.contains(f) {
                 seen.insert(f);
@@ -301,6 +349,9 @@ pub trait ItemOrRuneExt:
                     formula.clone()
                 };
 
+                // The formula the app runs, with the arms of the modes that change it
+                let source = map_doc_source(&source, &self.map_arms(plan, i));
+
                 Some(FormulaDoc {
                     local: i as u8,
                     function: format!("{id}_f{i}"),
@@ -316,41 +367,40 @@ pub trait ItemOrRuneExt:
         let value_id = self.id();
         let melee = &self[AttackType::Melee];
         let ranged = &self[AttackType::Ranged];
-
         let id = value_id.to_snake_case();
-
         let min = DamageIndex::Min;
         let max = DamageIndex::Max;
+        let has_max = melee[max] != ZERO || ranged[max] != ZERO;
 
-        let has_max = !is_zero(&melee[max]) || !is_zero(&ranged[max]);
-
-        let min_shared = !is_zero(&melee[min]) && melee[min] == ranged[min];
-        let max_shared = !is_zero(&melee[max]) && melee[max] == ranged[max];
+        // Melee and ranged share a function when every map gives them one formula
+        let map = self.map_damages();
+        let min_shared = melee[min] != ZERO && melee[min] == ranged[min] && map[0] == map[2];
+        let max_shared = melee[max] != ZERO && melee[max] == ranged[max] && map[1] == map[3];
         let min_suffix = if has_max { "_min" } else { "" };
 
         [
-            if is_zero(&melee[min]) {
+            if melee[min] == ZERO {
                 ZERO_FN.into()
             } else if min_shared {
                 format!("{id}{min_suffix}")
             } else {
                 format!("{id}_melee{min_suffix}")
             },
-            if is_zero(&melee[max]) {
+            if melee[max] == ZERO {
                 ZERO_FN.into()
             } else if max_shared {
                 format!("{id}_max")
             } else {
                 format!("{id}_melee_max")
             },
-            if is_zero(&ranged[min]) {
+            if ranged[min] == ZERO {
                 ZERO_FN.into()
             } else if min_shared {
                 format!("{id}{min_suffix}")
             } else {
                 format!("{id}_ranged{min_suffix}")
             },
-            if is_zero(&ranged[max]) {
+            if ranged[max] == ZERO {
                 ZERO_FN.into()
             } else if max_shared {
                 format!("{id}_max")
@@ -422,6 +472,7 @@ pub fn cast_f32(s: &str) -> MayFail<String> {
             };
 
             let literal = format_number(value, Precision::F32);
+
             expr.lit = Lit::Float(syn::LitFloat::new(
                 &format!("{literal}f32"),
                 expr.lit.span(),
@@ -445,7 +496,9 @@ pub fn cast_f32(s: &str) -> MayFail<String> {
 
                 if let Some(ability) = ability {
                     expr.expr = syn::parse_quote!(ctx.ability_levels.#ability);
-                } else if member == "level" {
+                } else if member == "level" || member == "stacks" {
+                    // Stacks, as Aphelios's Chakrams, count up to far less than 255, and
+                    // casting saturates beyond it
                     let discriminant = &expr.expr;
                     expr.expr = syn::parse_quote!(#discriminant as u8);
                 }
@@ -463,6 +516,25 @@ pub fn cast_f32(s: &str) -> MayFail<String> {
 
 pub fn ctx_param(s: &str) -> &'static str {
     if s.contains("ctx") { "ctx" } else { "_" }
+}
+
+/// Formula source the codec renders: `default` with the `arms` of the game modes that
+/// change it, as `match ctx.map { #[cold] Aram => …, _ => … }`. Every arm but the
+/// default is cold, as in the generated code. Without arms, `default` alone
+pub fn map_doc_source(default: &str, arms: &[(MapMode, String)]) -> String {
+    let default = format_formula(default);
+
+    if arms.is_empty() {
+        return default;
+    }
+
+    let arms = arms
+        .iter()
+        .map(|(mode, formula)| format!("#[cold] {mode:?} => {}", format_formula(formula)))
+        .collect::<Vec<_>>()
+        .join(", ");
+
+    format!("match ctx.map {{ {arms}, _ => {default} }}")
 }
 
 pub fn probe_ratio(min_expr: &str, max_expr: &str, all_vars: &[CtxVar]) -> Option<String> {
@@ -484,11 +556,11 @@ pub fn probe_ratio(min_expr: &str, max_expr: &str, all_vars: &[CtxVar]) -> Optio
             max_s = max_s.replace(var.as_var(), &v);
         }
 
-        let Ok(min_v) = simplify_exact(&min_s).trim().parse::<f64>() else {
+        let Ok(min_v) = format_formula_exact(&min_s).trim().parse::<f64>() else {
             continue;
         };
 
-        let Ok(max_v) = simplify_exact(&max_s).trim().parse::<f64>() else {
+        let Ok(max_v) = format_formula_exact(&max_s).trim().parse::<f64>() else {
             continue;
         };
 

@@ -1,5 +1,7 @@
 use strum::IntoEnumIterator;
-use tutorlolv2_types::{AdaptiveType, Ctx, CtxAttacker, CtxFlags, CtxTarget, CtxVar, ResistValue};
+use tutorlolv2_types::{
+    AdaptiveType, Ctx, CtxAttacker, CtxFlags, CtxTarget, CtxVar, GameMap, MapMode, ResistValue,
+};
 
 #[test]
 fn ctx_fits_in_two_cache_lines() {
@@ -94,4 +96,27 @@ fn attacker_and_target_parts_rebuild_the_context() {
         ctx.target().flags,
         CtxFlags::target(true, true, false, true)
     );
+}
+
+#[test]
+fn the_map_comes_with_the_attacker() {
+    let attacker = CtxAttacker {
+        map: GameMap::AramMayhem.mode(),
+        ..Default::default()
+    };
+    let ctx = Ctx::new(&attacker, &CtxTarget::default());
+
+    assert_eq!(ctx.map, MapMode::Aram);
+    assert_eq!(ctx.attacker().map, MapMode::Aram);
+    assert_eq!(GameMap::SummonersRift.mode(), MapMode::Default);
+    assert_eq!(GameMap::Unknown.mode(), MapMode::Default);
+}
+
+#[test]
+fn a_zeroed_context_has_no_map_changes() {
+    // Output tables start zeroed, and their rows must read as the default context
+    let zeroed = unsafe { core::mem::zeroed::<Ctx>() };
+
+    assert_eq!(zeroed.map, MapMode::Default);
+    assert_eq!(zeroed, Ctx::default());
 }

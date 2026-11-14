@@ -1,7 +1,8 @@
 use crate::common::{
-    DamageSlot, EntityKind, Error, HEADER_LEN, MAGIC, OP_BIN_BASE, OP_BIN_MAX, OP_CTX, OP_GROUP,
-    OP_MATCH_BLOCK, OP_MATCH_INLINE, OP_NEG, OP_NUM_CONST, OP_NUM_F32, OP_NUM_I8, OP_NUM_U8,
-    OP_REF_LOCAL, VERSION,
+    DamageSlot, EntityKind, Error, HEADER_LEN, MAGIC, OP_AXIS, OP_BIN_BASE, OP_BIN_MAX, OP_CTX,
+    OP_EXPR_MATCH_BLOCK, OP_EXPR_MATCH_INLINE, OP_GROUP, OP_MAP_MATCH_BLOCK, OP_MAP_MATCH_INLINE,
+    OP_MATCH_BLOCK, OP_MATCH_INLINE, OP_MAX_ZERO, OP_NEG, OP_NUM_CONST, OP_NUM_F32, OP_NUM_I8,
+    OP_NUM_U8, OP_NUMERIC_TABLE, OP_REF_LOCAL, VERSION,
 };
 use crate::common::{ParseError, const_try};
 use crate::markup::{Html, Markup};
@@ -284,50 +285,70 @@ impl<'a> FormulaDb<'a> {
         )
     }
 
-    pub fn render_formula_plain<FC, FR>(
+    /// Renders a formula as text. `ctx_name` names the `ctx` variables, `map_name` the
+    /// modes of map matches, and `local_ref_name` the formulas a formula refers to
+    pub fn render_formula_plain<FC, FM, FR>(
         &self,
         formula_id: u16,
         mut ctx_name: FC,
+        mut map_name: FM,
         mut local_ref_name: FR,
     ) -> Result<String, Error>
     where
         FC: FnMut(u8) -> String,
+        FM: FnMut(u8) -> String,
         FR: FnMut(u8) -> FnBuilder,
     {
         let mut emit = |out: &mut String, _: Option<Class>, text: &str| out.push_str(text);
-        self.render_formula(formula_id, &mut ctx_name, &mut local_ref_name, &mut emit)
+        self.render_formula(
+            formula_id,
+            &mut ctx_name,
+            &mut map_name,
+            &mut local_ref_name,
+            &mut emit,
+        )
     }
 
-    pub fn render_formula_html<FC, FR>(
+    pub fn render_formula_html<FC, FM, FR>(
         &self,
         formula_id: u16,
         ctx_name: FC,
+        map_name: FM,
         local_ref_name: FR,
     ) -> Result<String, Error>
     where
         FC: FnMut(u8) -> String,
+        FM: FnMut(u8) -> String,
         FR: FnMut(u8) -> FnBuilder,
     {
-        self.render_formula_markup::<Html, _, _>(formula_id, ctx_name, local_ref_name)
+        self.render_formula_markup::<Html, _, _, _>(formula_id, ctx_name, map_name, local_ref_name)
             .map(Html::into_string)
     }
 
     /// Renders a formula into any [`Markup`], such as [`Html`] or [`crate::Spans`].
-    pub fn render_formula_markup<M, FC, FR>(
+    pub fn render_formula_markup<M, FC, FM, FR>(
         &self,
         formula_id: u16,
         mut ctx_name: FC,
+        mut map_name: FM,
         mut local_ref_name: FR,
     ) -> Result<M, Error>
     where
         M: Markup,
         FC: FnMut(u8) -> String,
+        FM: FnMut(u8) -> String,
         FR: FnMut(u8) -> FnBuilder,
     {
         let mut markup = M::default();
         // The renderer threads a `String` through; this sink ignores it and writes `markup`.
         let mut emit = |_: &mut String, class: Option<Class>, text: &str| markup.push(class, text);
-        self.render_formula(formula_id, &mut ctx_name, &mut local_ref_name, &mut emit)?;
+        self.render_formula(
+            formula_id,
+            &mut ctx_name,
+            &mut map_name,
+            &mut local_ref_name,
+            &mut emit,
+        )?;
         Ok(markup)
     }
 
@@ -335,6 +356,7 @@ impl<'a> FormulaDb<'a> {
         &self,
         formula_id: u16,
         ctx_name: &mut dyn FnMut(u8) -> String,
+        map_name: &mut dyn FnMut(u8) -> String,
         local_ref_name: &mut dyn FnMut(u8) -> FnBuilder,
         emit: &mut dyn FnMut(&mut String, Option<Class>, &str),
     ) -> Result<String, Error> {
@@ -348,9 +370,11 @@ impl<'a> FormulaDb<'a> {
         let mut renderer = FormulaRenderer {
             db: self,
             ctx_name,
+            map_name,
             local_ref_name,
             emit,
             bracket_stack: Vec::new(),
+            axis_scope: false,
         };
 
         renderer.expr(&mut cursor, &mut out)?;
@@ -466,9 +490,11 @@ enum MatchRenderLayout {
 struct FormulaRenderer<'db, 'bytes, 'cb> {
     db: &'db FormulaDb<'bytes>,
     ctx_name: &'cb mut dyn FnMut(u8) -> String,
+    map_name: &'cb mut dyn FnMut(u8) -> String,
     local_ref_name: &'cb mut dyn FnMut(u8) -> FnBuilder,
     emit: &'cb mut dyn FnMut(&mut String, Option<Class>, &str),
     bracket_stack: Vec<Class>,
+    axis_scope: bool,
 }
 
 impl FormulaRenderer<'_, '_, '_> {
@@ -490,6 +516,66 @@ impl FormulaRenderer<'_, '_, '_> {
             OP_NUM_F32 => {
                 let value = f32::from_bits(cursor.u32()?);
                 self.styled(out, Class::Number, &Self::format_f32(value));
+            }
+            OP_AXIS => {
+                if !self.axis_scope {
+                    return Err(Error::Corrupt("axis outside numeric table"));
+                }
+
+                self.styled(out, Class::Variable, "axis");
+            }
+            OP_MAX_ZERO => {
+                self.expr(cursor, out)?;
+                self.raw(out, ".");
+                self.styled(out, Class::Function, "max");
+                self.open_bracket(out, "(");
+                self.styled(out, Class::Number, "0.0");
+                self.close_bracket(out, ")");
+            }
+            OP_NUMERIC_TABLE => {
+                if self.axis_scope {
+                    return Err(Error::Corrupt("nested numeric table"));
+                }
+
+                let count = cursor.u8()?;
+
+                self.open_bracket(out, "{");
+                self.raw(out, " ");
+                self.styled(out, Class::Keyword, "let");
+                self.raw(out, " ");
+                self.styled(out, Class::Variable, "axis");
+                self.raw(out, ": ");
+                self.styled(out, Class::Primitive, "f32");
+                self.raw(out, " = ");
+                self.expr(cursor, out)?;
+                self.raw(out, "; ");
+                self.axis_scope = true;
+
+                for _ in 0..count {
+                    self.styled(out, Class::Control, "if");
+                    self.raw(out, " ");
+                    self.styled(out, Class::Variable, "axis");
+                    self.raw(out, " < ");
+                    self.expr(cursor, out)?;
+                    self.raw(out, " ");
+                    self.open_bracket(out, "{");
+                    self.raw(out, " ");
+                    self.expr(cursor, out)?;
+                    self.raw(out, " ");
+                    self.close_bracket(out, "}");
+                    self.raw(out, " ");
+                    self.styled(out, Class::Control, "else");
+                    self.raw(out, " ");
+                }
+
+                self.open_bracket(out, "{");
+                self.raw(out, " ");
+                self.expr(cursor, out)?;
+                self.raw(out, " ");
+                self.close_bracket(out, "}");
+                self.raw(out, " ");
+                self.close_bracket(out, "}");
+                self.axis_scope = false;
             }
             OP_CTX => {
                 let name = (self.ctx_name)(cursor.u8()?);
@@ -521,6 +607,36 @@ impl FormulaRenderer<'_, '_, '_> {
                     out,
                 )?;
             }
+            OP_EXPR_MATCH_INLINE => {
+                self.render_expr_match(cursor, MatchRenderLayout::Inline, out)?
+            }
+            OP_EXPR_MATCH_BLOCK => {
+                let arm_indent_units = cursor.u8()?;
+                let close_indent_units = cursor.u8()?;
+
+                self.render_expr_match(
+                    cursor,
+                    MatchRenderLayout::Block {
+                        arm_indent_units,
+                        close_indent_units,
+                    },
+                    out,
+                )?;
+            }
+            OP_MAP_MATCH_INLINE => self.render_map_match(cursor, MatchRenderLayout::Inline, out)?,
+            OP_MAP_MATCH_BLOCK => {
+                let arm_indent_units = cursor.u8()?;
+                let close_indent_units = cursor.u8()?;
+
+                self.render_map_match(
+                    cursor,
+                    MatchRenderLayout::Block {
+                        arm_indent_units,
+                        close_indent_units,
+                    },
+                    out,
+                )?;
+            }
             OP_GROUP => {
                 self.open_bracket(out, "(");
                 self.expr(cursor, out)?;
@@ -538,10 +654,11 @@ impl FormulaRenderer<'_, '_, '_> {
                     3 => "/",
                     _ => unreachable!(),
                 };
+
                 let break_kind = (opcode >> 2) & 0x03;
                 let indent = if break_kind == 0 { 0 } else { cursor.u8()? };
-
                 self.expr(cursor, out)?;
+
                 match break_kind {
                     0 => {
                         self.raw(out, " ");
@@ -583,6 +700,7 @@ impl FormulaRenderer<'_, '_, '_> {
 
         self.styled(out, Class::Control, "match");
         self.raw(out, " ");
+
         let name = (self.ctx_name)(ctx);
         self.styled(out, Class::Variable, &name);
 
@@ -617,20 +735,199 @@ impl FormulaRenderer<'_, '_, '_> {
                     self.render_match_arm(&mut cursor, out)?;
                     self.raw(out, ",");
                 }
+
                 self.raw(out, "\n");
                 self.indent(out, close_indent_units);
             }
         }
 
         self.close_bracket(out, "}");
+
         if !cursor.is_eof() {
             return Err(Error::Corrupt("match has trailing bytes"));
         }
+
+        Ok(())
+    }
+
+    /// `match map { #[cold] Aram => …, _ => … }`. Every arm but the default is cold, so
+    /// each one is marked `#[cold]`
+    fn render_map_match(
+        &mut self,
+        cursor: &mut Cursor<'_>,
+        layout: MatchRenderLayout,
+        out: &mut String,
+    ) -> Result<(), Error> {
+        let arm_count = cursor.u8()?;
+
+        self.styled(out, Class::Control, "match");
+        self.raw(out, " ");
+        self.styled(out, Class::Variable, "map");
+        self.raw(out, " ");
+        self.open_bracket(out, "{");
+
+        // Each arm, and the default after them
+        for index in 0..=arm_count {
+            match layout {
+                MatchRenderLayout::Inline if index == 0 => self.raw(out, " "),
+                MatchRenderLayout::Inline => self.raw(out, ", "),
+                MatchRenderLayout::Block {
+                    arm_indent_units, ..
+                } => {
+                    self.raw(out, "\n");
+                    self.indent(out, arm_indent_units);
+                }
+            }
+
+            if index < arm_count {
+                let name = (self.map_name)(cursor.u8()?);
+
+                self.raw(out, "#");
+                self.open_bracket(out, "[");
+                self.styled(out, Class::Function, "cold");
+                self.close_bracket(out, "]");
+
+                // As rustfmt writes it, on its own line in a block
+                match layout {
+                    MatchRenderLayout::Inline => self.raw(out, " "),
+                    MatchRenderLayout::Block {
+                        arm_indent_units, ..
+                    } => {
+                        self.raw(out, "\n");
+                        self.indent(out, arm_indent_units);
+                    }
+                }
+
+                self.styled(out, Class::Constant, &name);
+            } else {
+                self.raw(out, "_");
+            }
+
+            self.raw(out, " => ");
+            self.render_expression_arm(cursor, layout, out)?;
+        }
+
+        match layout {
+            MatchRenderLayout::Inline => self.raw(out, " "),
+            MatchRenderLayout::Block {
+                close_indent_units, ..
+            } => {
+                self.raw(out, "\n");
+                self.indent(out, close_indent_units);
+            }
+        }
+
+        self.close_bracket(out, "}");
+
+        Ok(())
+    }
+
+    fn render_expression_arm(
+        &mut self,
+        cursor: &mut Cursor<'_>,
+        layout: MatchRenderLayout,
+        out: &mut String,
+    ) -> Result<(), Error> {
+        match cursor.u8()? {
+            0 => {
+                self.expr(cursor, out)?;
+
+                if let MatchRenderLayout::Block { .. } = layout {
+                    self.raw(out, ",");
+                }
+            }
+            2 => self.expr(cursor, out)?,
+            1 => {
+                let body_indent_units = cursor.u8()?;
+                let close_indent_units = cursor.u8()?;
+
+                // A block has no comma after it
+                self.open_bracket(out, "{");
+                self.raw(out, "\n");
+                self.indent(out, body_indent_units);
+                self.expr(cursor, out)?;
+                self.raw(out, "\n");
+                self.indent(out, close_indent_units);
+                self.close_bracket(out, "}");
+            }
+            _ => return Err(Error::Corrupt("unknown expression arm body")),
+        }
+        Ok(())
+    }
+
+    fn render_expr_match(
+        &mut self,
+        cursor: &mut Cursor<'_>,
+        layout: MatchRenderLayout,
+        out: &mut String,
+    ) -> Result<(), Error> {
+        let ctx = cursor.u8()?;
+        let flags = cursor.u8()?;
+
+        if flags > 1 {
+            return Err(Error::Corrupt("unknown expression match flags"));
+        }
+
+        let count = cursor.u8()?;
+
+        if count == 0 {
+            return Err(Error::Corrupt("empty expression match"));
+        }
+
+        self.styled(out, Class::Control, "match");
+        self.raw(out, " ");
+
+        let name = (self.ctx_name)(ctx);
+
+        self.styled(out, Class::Variable, &name);
+
+        if flags == 1 {
+            self.raw(out, " ");
+            self.styled(out, Class::Keyword, "as");
+            self.raw(out, " ");
+            self.styled(out, Class::Primitive, "u8");
+        }
+
+        self.raw(out, " ");
+        self.open_bracket(out, "{");
+
+        for index in 0..count {
+            match layout {
+                MatchRenderLayout::Inline if index == 0 => self.raw(out, " "),
+                MatchRenderLayout::Inline => self.raw(out, ", "),
+                MatchRenderLayout::Block {
+                    arm_indent_units, ..
+                } => {
+                    self.raw(out, "\n");
+                    self.indent(out, arm_indent_units);
+                }
+            }
+
+            let pattern = cursor.u8()?;
+
+            self.render_pattern(cursor, out, pattern)?;
+            self.raw(out, " => ");
+            self.render_expression_arm(cursor, layout, out)?;
+        }
+
+        match layout {
+            MatchRenderLayout::Inline => self.raw(out, " "),
+            MatchRenderLayout::Block {
+                close_indent_units, ..
+            } => {
+                self.raw(out, "\n");
+                self.indent(out, close_indent_units);
+            }
+        }
+
+        self.close_bracket(out, "}");
+
         Ok(())
     }
 
     fn render_match_arm(&mut self, cursor: &mut Cursor<'_>, out: &mut String) -> Result<(), Error> {
         let pattern = cursor.u8()?;
+
         self.render_pattern(cursor, out, pattern)?;
         self.raw(out, " => ");
         self.render_encoded_number(cursor, out)
@@ -660,12 +957,14 @@ impl FormulaRenderer<'_, '_, '_> {
             3 | 4 => {
                 let start = cursor.u8()?;
                 let end = cursor.u8()?;
+
                 self.styled(out, Class::Number, &start.to_string());
                 self.raw(out, if pattern == 3 { ".." } else { "..=" });
                 self.styled(out, Class::Number, &end.to_string());
             }
             5 => {
                 let value = cursor.u8()?;
+
                 self.styled(out, Class::Number, &value.to_string());
                 self.raw(out, "..");
             }
@@ -686,7 +985,9 @@ impl FormulaRenderer<'_, '_, '_> {
             OP_NUM_F32 => Self::format_f32(f32::from_bits(cursor.u32()?)),
             _ => return Err(Error::Corrupt("match RHS is not a number opcode")),
         };
+
         self.styled(out, Class::Number, &text);
+
         Ok(())
     }
 
@@ -700,6 +1001,7 @@ impl FormulaRenderer<'_, '_, '_> {
 
     fn open_bracket(&mut self, out: &mut String, text: &str) {
         let class = Class::bracket(self.bracket_stack.len());
+
         self.bracket_stack.push(class);
         self.styled(out, class, text);
     }
@@ -739,7 +1041,9 @@ impl<'a> Cursor<'a> {
             .bytes
             .get(self.pos)
             .ok_or(Error::Corrupt("unexpected end of bytecode"))?;
+
         self.pos += 1;
+
         Ok(value)
     }
 
@@ -748,11 +1052,14 @@ impl<'a> Cursor<'a> {
             .pos
             .checked_add(4)
             .ok_or(Error::Corrupt("offset overflow"))?;
+
         let slice = self
             .bytes
             .get(self.pos..end)
             .ok_or(Error::Corrupt("unexpected end of bytecode"))?;
+
         self.pos = end;
+
         Ok(u32::from_le_bytes(slice.try_into().unwrap()))
     }
 }
@@ -825,6 +1132,7 @@ impl<M: Markup> GenericHighlighter<M> {
     /// Builds one standalone highlighted fragment, such as a comment body.
     pub fn span_markup(class: Class, value: impl Display) -> M {
         let mut out = M::default();
+
         out.push(Some(class), &value.to_string());
         out
     }
@@ -859,6 +1167,7 @@ impl<M: Markup> GenericHighlighter<M> {
         } else {
             self.bracket_stack.pop().unwrap_or(Class::Bracket1)
         };
+
         self.push(class, bracket)
     }
 

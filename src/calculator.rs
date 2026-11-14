@@ -11,10 +11,11 @@
 use {
     crate::{
         ChampionId, Ctx, GameMap, ItemId, L_MSTR, RuneId, helpers::*, libgen::items, model::*,
+        runes,
     },
     alloc::boxed::Box,
     core::num::NonZeroU8,
-    tutorlolv2_types::{AdaptiveType, AttackType, StatName},
+    tutorlolv2_types::{AdaptiveType, AttackType, MapMode, StatName},
 };
 
 #[derive(Debug)]
@@ -54,12 +55,13 @@ impl InferStats<'_> {
         } = self;
 
         let attack_type = champion_id.effective_attack_type(is_mega_gnar);
+        let mode = game_map.mode();
         let data = champion_id.data();
         let mut bonus_stats = const { PlayerStats::default() };
         let mut adaptive_force = 0.0;
         let mut stat_modifiers = const { Modifiers::default() };
 
-        bonus_stats.get_item_bonus_stats(items, &mut stat_modifiers, &mut adaptive_force);
+        bonus_stats.get_item_bonus_stats(items, &mut stat_modifiers, &mut adaptive_force, game_map);
 
         // Warmog's Vitality only scales the health granted by items, which also
         // includes the health that Awe converts from mana in the loop below
@@ -67,7 +69,7 @@ impl InferStats<'_> {
 
         bonus_stats.get_rune_bonus_stats(runes, &mut stat_modifiers, &mut adaptive_force, level);
 
-        let cached_stats = data.stats;
+        let cached_stats = *champion_id.stats_on(game_map);
         let base_stats = champion_id.map_base_stats(level, is_mega_gnar, game_map);
 
         let mut stats = PlayerStats {
@@ -108,7 +110,13 @@ impl InferStats<'_> {
         stats.armor += map_armor;
         stats.magic_resist += map_magic_resist;
 
-        stats.assign_rune_exceptions(rune_exceptions, &mut adaptive_force, attack_type, level);
+        stats.assign_rune_exceptions_on(
+            rune_exceptions,
+            &mut adaptive_force,
+            attack_type,
+            level,
+            game_map,
+        );
 
         let adaptive_type =
             match AdaptiveType::try_infer(bonus_stats.attack_damage, bonus_stats.ability_power) {
@@ -121,9 +129,14 @@ impl InferStats<'_> {
             AdaptiveType::Physical => stats.attack_damage += 0.6 * adaptive_force,
         }
 
-        stats.assign_item_exceptions(item_exceptions, attack_type);
+        stats.assign_item_exceptions(item_exceptions, attack_type, mode);
         stats.assign_champion_exceptions(champion_id, ability_levels, stacks);
         stats.attack_speed = cached_stats.attack_speed(stats.attack_speed, level);
+
+        // Game modes may multiply the total attack speed of some champions
+        if let Some(map_stats) = champion_id.map_stats(game_map) {
+            stats.attack_speed *= map_stats.total_attack_speed;
+        }
 
         let mut has_bloodmail = false;
         let mut has_demonic_embrace = false;
@@ -139,8 +152,9 @@ impl InferStats<'_> {
                     core::hint::cold_path();
 
                     has_bloodmail = true;
-                    stats.attack_damage += items::overlords_bloodmail::TYRANNY_BONUS_HEALTH_RATIO
-                        * bonus_stats.max_health;
+                    stats.attack_damage +=
+                        items::overlords_bloodmail::tyranny_bonus_health_ratio(mode)
+                            * bonus_stats.max_health;
                 }
                 ItemId::Riftmaker => {
                     stats.ability_power +=
@@ -148,11 +162,11 @@ impl InferStats<'_> {
                 }
                 ItemId::ArchangelsStaff => {
                     stats.ability_power +=
-                        items::archangels_staff::AWE_BONUS_MANA_RATIO * bonus_stats.max_mana
+                        items::archangels_staff::awe_bonus_mana_ratio(mode) * bonus_stats.max_mana
                 }
                 ItemId::SeraphsEmbrace => {
                     stats.ability_power +=
-                        items::seraphs_embrace::AWE_BONUS_MANA_RATIO * bonus_stats.max_mana
+                        items::seraphs_embrace::awe_bonus_mana_ratio(mode) * bonus_stats.max_mana
                 }
                 ItemId::DemonicEmbrace => {
                     core::hint::cold_path();
@@ -167,7 +181,8 @@ impl InferStats<'_> {
                 ItemId::WintersApproach => {
                     core::hint::cold_path();
 
-                    let awe = items::winters_approach::AWE_BONUS_MANA_RATIO * bonus_stats.max_mana;
+                    let awe =
+                        items::winters_approach::awe_bonus_mana_ratio(mode) * bonus_stats.max_mana;
 
                     stats.max_health += awe;
                     item_health += awe;
@@ -175,7 +190,8 @@ impl InferStats<'_> {
                 ItemId::Fimbulwinter => {
                     core::hint::cold_path();
 
-                    let awe = items::fimbulwinter::AWE_BONUS_MANA_RATIO * bonus_stats.max_mana;
+                    let awe =
+                        items::fimbulwinter::awe_bonus_mana_ratio(mode) * bonus_stats.max_mana;
 
                     stats.max_health += awe;
                     item_health += awe;
@@ -278,7 +294,8 @@ impl InferStats<'_> {
         if has_bloodmail {
             core::hint::cold_path();
 
-            stats.attack_damage *= 1.0 + RiotFormulas::get_bloodmail_retribution(missing_health);
+            stats.attack_damage *=
+                1.0 + RiotFormulas::get_bloodmail_retribution(missing_health, game_map);
         }
 
         if let GameMap::AramMayhem = game_map {
@@ -320,6 +337,7 @@ impl PlayerStats {
         items: &[ItemId],
         modifiers: &mut Modifiers,
         adaptive_force: &mut f32,
+        game_map: GameMap,
     ) {
         let mut armor_pen_mult = 1.0;
         let mut magic_pen_mult = 1.0;
@@ -327,8 +345,7 @@ impl PlayerStats {
 
         while i < items.len() {
             let item_id = items[i];
-            let item = item_id.data();
-            let item_stats = item.stats;
+            let item_stats = item_id.stats_on(game_map);
 
             let mut armor_pen = 0.0;
             let mut magic_pen = 0.0;
@@ -406,6 +423,7 @@ impl PlayerStats {
         &mut self,
         exceptions: &[ValueException],
         attack_type: AttackType,
+        mode: MapMode,
     ) {
         if exceptions.is_empty() {
             return;
@@ -450,10 +468,11 @@ impl PlayerStats {
 
                         self.attack_damage += match attack_type {
                             AttackType::Melee => {
-                                EMINENCE_MELEE_AD + EMINENCE_MELEE_AD_PER_STACK * stacks
+                                eminence_melee_ad(mode) + eminence_melee_ad_per_stack(mode) * stacks
                             }
                             AttackType::Ranged => {
-                                EMINENCE_RANGED_AD + EMINENCE_RANGED_AD_PER_STACK * stacks
+                                eminence_ranged_ad(mode)
+                                    + eminence_ranged_ad_per_stack(mode) * stacks
                             }
                         }
                     }
@@ -471,6 +490,23 @@ impl PlayerStats {
         attack_type: AttackType,
         level: NonZeroU8,
     ) {
+        self.assign_rune_exceptions_on(
+            exceptions,
+            adaptive_force,
+            attack_type,
+            level,
+            GameMap::Unknown,
+        );
+    }
+
+    pub const fn assign_rune_exceptions_on(
+        &mut self,
+        exceptions: &[ValueException],
+        adaptive_force: &mut f32,
+        attack_type: AttackType,
+        level: NonZeroU8,
+        game_map: GameMap,
+    ) {
         if exceptions.is_empty() {
             return;
         }
@@ -483,16 +519,23 @@ impl PlayerStats {
 
             if let Some(rune_id) = rune_exception.get_rune_id() {
                 match rune_id {
-                    RuneId::LethalTempo => match attack_type {
-                        AttackType::Melee => {
-                            self.attack_speed +=
-                                (stacks as f32) * (5.0 + 11.0 / 17.0 * (level.get() - 1) as f32);
-                        }
-                        AttackType::Ranged => {
-                            self.attack_speed +=
-                                (stacks as f32) * (3.6 + 4.4 / 17.0 * (level.get() - 1) as f32);
-                        }
-                    },
+                    RuneId::LethalTempo => {
+                        let values = match attack_type {
+                            AttackType::Melee => {
+                                runes::lethal_tempo::melee_attack_speed_per_stack(game_map.mode())
+                            }
+                            AttackType::Ranged => {
+                                runes::lethal_tempo::ranged_attack_speed_per_stack(game_map.mode())
+                            }
+                        };
+
+                        self.attack_speed += stacks as f32
+                            * values[if level.get() as usize > values.len() {
+                                values.len() - 1
+                            } else {
+                                level.get() as usize - 1
+                            }];
+                    }
                     RuneId::Conqueror => {
                         *adaptive_force +=
                             (stacks as f32) * (1.8 + 2.2 / 17.0 * (level.get() - 1) as f32)
@@ -514,6 +557,7 @@ impl PlayerStats {
                     _ => {}
                 }
             }
+
             i += 1;
         }
     }
@@ -695,6 +739,9 @@ pub fn calculator(game: InputGame<'_>) -> OutputGame {
     let current_player_items = get_damaging_items(current_player_raw_items);
 
     let self_state = SelfState {
+        bonus_attack_speed_ratio: current_player_champion_id
+            .stats_on(game_map)
+            .bonus_attack_speed_ratio(champion_stats.attack_speed),
         stacks: stacks as _,
         current_stats: champion_stats,
         base_stats: current_player_base_stats,
@@ -721,7 +768,14 @@ pub fn calculator(game: InputGame<'_>) -> OutputGame {
     let mut damages = DamageTable::zeroed(layout, L_MSTR + enemy_players.len(), 1);
     let ability_batch = current_player_cache.ability_batch;
 
-    damages.fill_monster_damages(&self_state, &eval_data, shred, modifiers, ability_batch);
+    damages.fill_monster_damages(
+        &self_state,
+        &eval_data,
+        shred,
+        modifiers,
+        ability_batch,
+        game_map,
+    );
 
     let enemies = damages.calculator_enemies_with(
         enemy_players,
@@ -828,7 +882,9 @@ impl DamageTable {
                     item_exceptions: e_item_exceptions,
                 } = *player;
 
-                let e_base_stats = e_champion_id.base_stats(e_level, e_is_mega_gnar).simple();
+                let e_base_stats = e_champion_id
+                    .base_stats_on(e_level, e_is_mega_gnar, game_map)
+                    .simple();
                 let full_state = EnemyState {
                     current_stats: e_stats,
                     base_stats: e_base_stats,
@@ -842,7 +898,7 @@ impl DamageTable {
                 }
                 .full_state(shred, false);
 
-                let ctx = full_state.ctx(self_state);
+                let ctx = full_state.ctx(self_state, game_map);
                 let map_mod = champion_id.map_damage_modifier(&e_champion_id, game_map);
 
                 let modifiers = Modifiers {

@@ -9,7 +9,7 @@ fn batch_combos_preserve_order_and_stop_at_the_first_invalid_ability() {
         ComboElement::{Ability, Attack},
     };
 
-    let mut champion = Champion::try_from(tutorlolv2_wiki::champions::WikiChampion {
+    let champion = Champion::try_from(tutorlolv2_wiki::champions::WikiChampion {
         name: Default::default(),
         champion_id: Default::default(),
         adaptive_type: Default::default(),
@@ -17,16 +17,27 @@ fn batch_combos_preserve_order_and_stop_at_the_first_invalid_ability() {
         positions: Default::default(),
         stats: Default::default(),
         modifiers: Default::default(),
-        wiki_abilities: Default::default(),
+
         exceptions: Default::default(),
+        map_stats: Default::default(),
     })
     .unwrap();
-    champion.combo([Attack]).unwrap();
+
+    let mut champion = tutorlolv2_build_dep::generators::champions::ChampionGenerator::new(
+        champion,
+        tutorlolv2_wiki::wikitext::ChampionModel {
+            champion_id: "ComboTest".into(),
+            abilities: Default::default(),
+        },
+    );
+
+    champion.combos([&[Attack]]).unwrap();
     champion
         .combos([&[Attack, Attack], &[], &[Attack]])
         .unwrap();
+
     assert_eq!(
-        champion.combo,
+        champion.inner.combo,
         vec![vec![Attack], vec![Attack, Attack], vec![], vec![Attack]]
     );
 
@@ -36,11 +47,15 @@ fn batch_combos_preserve_order_and_stop_at_the_first_invalid_ability() {
             &[Attack, Ability(Q(Void))],
             &[Attack],
         ])
-        .unwrap_err()
+        .err()
+        .unwrap()
         .to_string();
-    assert!(error.contains("self.combo(...) failed"), "{error}");
-    assert_eq!(champion.combo.len(), 5);
-    assert_eq!(champion.combo.last().unwrap(), &[Attack, Attack, Attack]);
+    assert!(error.contains("never taken"), "{error}");
+    assert_eq!(champion.inner.combo.len(), 5);
+    assert_eq!(
+        champion.inner.combo.last().unwrap(),
+        &[Attack, Attack, Attack]
+    );
 }
 
 #[test]
@@ -229,7 +244,12 @@ fn documentation_uses_explicit_indices_and_ignores_stale_files() {
         .item_or_rune_formula_id(EntityKind::Item, 1, DamageSlot::RangedMin)
         .unwrap();
     let rendered = db
-        .render_formula_plain(id, |_| unreachable!(), |_| unreachable!())
+        .render_formula_plain(
+            id,
+            |_| unreachable!(),
+            |_| unreachable!(),
+            |_| unreachable!(),
+        )
         .unwrap();
     assert_eq!(rendered, "10 + 20");
     let recovered: Vec<EntityDocs> =
@@ -364,6 +384,7 @@ fn aggregate_exports_only_contain_current_entities() {
     let dir = TestDir::new();
     tutorlolv2_wiki::write(dir.0.join("internal/runes/Stale.json"), "{}").unwrap();
     let rune = WikiRune {
+        raw_source: String::new(),
         name: "Example".into(),
         rune_id: "Example".into(),
         riot_id: 42,
@@ -470,11 +491,38 @@ fn recipe_fixture(
         .into_iter()
         .map(|item| (item.item_id.clone(), item))
         .collect::<std::collections::BTreeMap<_, _>>();
+
+    // Recipe fixtures use the same raw module boundary as production.
+    let records = wiki
+        .values()
+        .map(|item| {
+            let recipe = item
+                .recipe
+                .iter()
+                .map(|name| format!("{name:?}"))
+                .collect::<Vec<_>>()
+                .join(",");
+
+            format!(
+                "[{:?}] = {{ id = {} {} }}",
+                item.name,
+                item.id,
+                if recipe.is_empty() {
+                    String::new()
+                } else {
+                    format!(", recipe = {{ {recipe} }}")
+                }
+            )
+        })
+        .collect::<Vec<_>>()
+        .join(",");
+
     tutorlolv2_wiki::write(
-        dir.0.join("cache/wiki/items/full.json"),
-        serde_json::to_vec(&wiki).unwrap(),
+        dir.0.join("cache/wiki/items/data.lua"),
+        format!("return {{ {records} }}"),
     )
     .unwrap();
+
     tutorlolv2_wiki::write(
         dir.0.join("cache/riot/items.json"),
         serde_json::to_vec(&serde_json::json!({"data": riot})).unwrap(),
@@ -661,4 +709,96 @@ fn formatter_formats_large_generated_file_sets() {
                 .contains("pub fn value() -> u32 {")
         );
     }
+}
+
+#[test]
+fn doc_sources_include_cold_map_arms() {
+    use tutorlolv2_build_dep::scripts::utils::map_doc_source;
+    use tutorlolv2_types::MapMode;
+
+    let source = map_doc_source(
+        "0.6 * ctx.ability_power",
+        &[
+            (MapMode::Aram, "0.65 * ctx.ability_power".into()),
+            (MapMode::Arena, "0.7 * ctx.ability_power".into()),
+        ],
+    );
+    assert_eq!(
+        source,
+        "match ctx.map { #[cold] Aram => 0.65 * ctx.ability_power, #[cold] Arena => 0.7 * ctx.ability_power, _ => 0.6 * ctx.ability_power }"
+    );
+    assert_eq!(map_doc_source("1.0", &[]), "1");
+}
+
+#[test]
+fn champion_documentation_reads_the_structured_generator_source() {
+    use tutorlolv2_build_dep::scripts::batch::read_generator;
+    let dir = TestDir::new();
+    let active = dir.0.join("build/src/generators/champions/example.rs");
+    let old = dir
+        .0
+        .join("build/src/generators/impls/champions/example.rs");
+    let source =
+        "impl Generator for Example { fn generate(&mut self) { /* structured source */ } }";
+    tutorlolv2_wiki::write(active, source).unwrap();
+    tutorlolv2_wiki::write(
+        old,
+        "impl Generator for Example { fn generate(&mut self) { /* obsolete source */ } }",
+    )
+    .unwrap();
+    assert_eq!(
+        read_generator(&dir.0, Tag::Champions, "Example")
+            .unwrap()
+            .as_deref(),
+        Some(source)
+    );
+    for tag in [Tag::Items, Tag::Runes] {
+        let source = "impl Generator for Example { fn generate(&mut self) {} }";
+        tutorlolv2_wiki::write(
+            dir.0.join(format!(
+                "build/src/generators/impls/{}/example.rs",
+                tag.as_ref()
+            )),
+            source,
+        )
+        .unwrap();
+        assert_eq!(
+            read_generator(&dir.0, tag, "Example").unwrap().as_deref(),
+            Some(source)
+        );
+    }
+}
+
+#[test]
+fn documentation_removes_only_unnecessary_grouping_before_packing() {
+    use tutorlolv2_build_dep::{
+        BuildContext,
+        scripts::batch::{EntityDocs, FormulaDoc},
+    };
+    let dir = TestDir::new();
+    let context = BuildContext::new(&dir.0, &dir.0, true).unwrap();
+    let input = "((49) + (49 * (ctx.e_level - 1))) + (0.7 * ctx.attack_damage) + (0.77 * ctx.ability_power)";
+    let mut docs = vec![EntityDocs {
+        tag: Tag::Champions,
+        index: 0,
+        variant: "Test".into(),
+        generator: None,
+        formulas: vec![FormulaDoc {
+            local: 0,
+            function: "test".into(),
+            source: input.into(),
+            name: "emin".into(),
+            comment: String::new(),
+        }],
+    }];
+    context.format_formulas(&mut docs).unwrap();
+    let result = docs[0].formulas[0]
+        .source
+        .split_whitespace()
+        .collect::<Vec<_>>()
+        .join(" ");
+    assert_eq!(
+        result,
+        "49 + 49 * (ctx.e_level - 1) + 0.7 * ctx.attack_damage + 0.77 * ctx.ability_power"
+    );
 }

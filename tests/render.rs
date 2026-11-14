@@ -5,6 +5,7 @@ use tutorlolv2::{
     CastId, ChampionId, EntityId, ItemId, RuneId,
     yew::render::{FormulaRenderer, MayFail},
 };
+use tutorlolv2_codec::{Class, Spans};
 
 static CSS: &str = include_str!("../style.css");
 
@@ -70,7 +71,8 @@ fn pack_repr_build() -> MayFail {
 
     html += "</pre></body></html>";
 
-    std::fs::write("render.html", html)?;
+    std::fs::create_dir_all("html")?;
+    std::fs::write("html/render.html", html)?;
 
     Ok(())
 }
@@ -90,4 +92,53 @@ fn builtin_comments_are_highlighted_without_delimiters() {
         assert!(!html.contains("/*"));
         assert!(!html.contains("*/"));
     }
+}
+
+#[test]
+fn formulas_changed_by_game_modes_render_their_map_branches() -> MayFail {
+    let mut branches = Vec::new();
+
+    for champion_id in ChampionId::VARIANTS {
+        for metadata in champion_id.abilities() {
+            let rendered = champion_id.render_fn_markup::<Spans>(metadata.kind)?;
+
+            if rendered.text.contains("#[cold]") {
+                branches.push(rendered);
+            }
+        }
+    }
+
+    for item_id in ItemId::VARIANTS {
+        if let EntityId::Item(item) = item_id.entity() {
+            let rendered = item.render_fn_markup::<Spans>()?;
+
+            if rendered.text.contains("#[cold]") {
+                branches.push(rendered);
+            }
+        }
+    }
+
+    assert!(!branches.is_empty(), "No formula renders a map branch");
+
+    for rendered in &branches {
+        let text = &rendered.text;
+        assert!(text.contains("match"), "{text}");
+        assert!(text.contains("Aram") || text.contains("Arena"), "{text}");
+        assert!(!text.contains("cold_path"), "{text}");
+        assert!(!text.contains("tutorlolv2_types"), "{text}");
+
+        for (offset, _) in text.match_indices("#[cold]") {
+            let cold = offset + 2..offset + 6;
+            assert!(
+                rendered.runs().any(|(range, class)| {
+                    class == Some(Class::Function)
+                        && range.start <= cold.start
+                        && range.end >= cold.end
+                }),
+                "cold attribute must use function highlighting: {text}"
+            );
+        }
+    }
+
+    Ok(())
 }

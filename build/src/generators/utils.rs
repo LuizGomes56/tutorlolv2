@@ -6,6 +6,14 @@ use std::fmt::Display;
 
 pub use tutorlolv2_types::Tag;
 
+pub const fn generator_directory(tag: Tag) -> &'static str {
+    match tag {
+        Tag::Champions => "build/src/generators/champions",
+        Tag::Items => "build/src/generators/impls/items",
+        Tag::Runes => "build/src/generators/impls/runes",
+    }
+}
+
 pub trait RegExtractor: Display {
     /// Returns a vector of all the numbers that could be extracted
     /// from some string, preserving the order that they were found
@@ -45,83 +53,6 @@ pub trait RegExtractor: Display {
             .try_into()
             .map_err(|_| format!("Pattern {source:?} has {len} groups, expected {N}").into())
     }
-
-    fn parenthesize(&self) -> String {
-        format!("({self})")
-    }
-
-    fn sep<T: Display>(&self, sep: char, value: T) -> String {
-        format!("{self} {sep} {value}")
-    }
-
-    fn times<T: Display>(&self, value: T) -> String {
-        self.sep('*', value)
-    }
-
-    fn plus<T: Display>(&self, value: T) -> String {
-        self.sep('+', value)
-    }
-
-    fn minus<T: Display>(&self, value: T) -> String {
-        self.sep('-', value)
-    }
-
-    fn div<T: Display>(&self, value: T) -> String {
-        self.sep('/', value)
-    }
-}
-
-#[macro_export]
-macro_rules! formula {
-    (($($inner:tt)*)) => {
-        $crate::formula!($($inner)*).parenthesize()
-    };
-    ($first:tt $($rest:tt)*) => {
-        $crate::formula_impl!($crate::formula_atom!($first); $($rest)*)
-    };
-}
-
-#[doc(hidden)]
-#[macro_export]
-macro_rules! formula_atom {
-    (($($inner:tt)*)) => {
-        $crate::formula!($($inner)*).parenthesize()
-    };
-    ($value:tt) => {
-        &$value
-    };
-}
-
-#[doc(hidden)]
-#[macro_export]
-macro_rules! formula_impl {
-    ($acc:expr;) => {
-        $acc
-    };
-    ($acc:expr; + $rhs:tt $($rest:tt)*) => {
-        $crate::formula_impl!(
-            $acc.plus($crate::formula_atom!($rhs));
-            $($rest)*
-        )
-    };
-    ($acc:expr; - $rhs:tt $($rest:tt)*) => {
-        $crate::formula_impl!(
-            $acc.minus($crate::formula_atom!($rhs));
-            $($rest)*
-        )
-    };
-    ($acc:expr; * $rhs:tt $($rest:tt)*) => {
-        $crate::formula_impl!(
-            $acc.times($crate::formula_atom!($rhs));
-            $($rest)*
-        )
-    };
-    ($acc:expr; / $rhs:tt $($rest:tt)*) => {
-        $crate::formula_impl!(
-            $acc.div($crate::formula_atom!($rhs));
-            $($rest)*
-        )
-    };
 }
 
 impl<T: Display + ?Sized> RegExtractor for T {}
@@ -139,7 +70,7 @@ pub enum SaveTo<'a> {
 impl<'a> SaveTo<'a> {
     pub fn path(&self) -> String {
         let relative: String = match self {
-            SaveTo::GeneratorDir(tag) => format!("build/src/generators/impls/{}", tag.as_ref()),
+            SaveTo::GeneratorDir(tag) => generator_directory(*tag).to_owned(),
             SaveTo::GeneratorRaw(tag, s) => {
                 let path = Self::GeneratorDir(*tag).path();
                 let file = s.to_snake_case();

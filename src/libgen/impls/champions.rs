@@ -3,11 +3,13 @@ use {crate::champions_code::ability_const_eval, tutorlolv2_types::Ctx};
 
 use {
     crate::{
-        ChampionId, ItemId, RuneId, WikiStats,
+        ChampionId, ItemId, MapStats, RuneId, WikiStats,
         champions_code::{RECOMMENDED_ITEMS, RECOMMENDED_RUNES},
     },
     strum::{EnumCount, VariantArray},
-    tutorlolv2_types::{AbilityId, AbilityName, AdaptiveType, AttackType, Position, TypeMetadata},
+    tutorlolv2_types::{
+        AbilityId, AbilityName, AdaptiveType, AttackType, GameMap, MapMode, Position, TypeMetadata,
+    },
 };
 
 impl ChampionId {
@@ -70,6 +72,52 @@ impl ChampionId {
 
     pub const fn stats(&self) -> &'static WikiStats {
         &self.data().stats
+    }
+
+    /// Stats of this champion on `game_map`
+    #[inline(always)]
+    pub const fn stats_on(&self, game_map: GameMap) -> &'static WikiStats {
+        match self.map_stats(game_map) {
+            Some(map_stats) => &map_stats.stats,
+            None => self.stats(),
+        }
+    }
+
+    /// Stats that `game_map` changes. Maps without a mode change none, and nearly
+    /// every game is on Summoner's Rift, so the search is cold
+    #[inline(always)]
+    pub const fn map_stats(&self, game_map: GameMap) -> Option<&'static MapStats> {
+        // Maps without a mode, as Summoner's Rift and unknown maps, change nothing
+        if game_map.mode() as u8 == MapMode::Default as u8 {
+            return None;
+        }
+
+        self.find_map_stats(game_map)
+    }
+
+    /// Search of [`Self::map_stats`], kept out of line so that the check of
+    /// Summoner's Rift inlines into the callers of every enemy
+    #[cold]
+    #[inline(never)]
+    const fn find_map_stats(&self, game_map: GameMap) -> Option<&'static MapStats> {
+        let list = self.data().map_stats;
+        let mut i = 0;
+
+        while i < list.len() {
+            let mut j = 0;
+
+            while j < list[i].maps.len() {
+                if list[i].maps[j] as u8 == game_map as u8 {
+                    return Some(&list[i]);
+                }
+
+                j += 1;
+            }
+
+            i += 1;
+        }
+
+        None
     }
 
     pub const fn number_of_abilities(&self) -> usize {

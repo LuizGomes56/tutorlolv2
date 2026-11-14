@@ -1,7 +1,7 @@
 mod builtin;
 mod ext;
 
-use crate::{AbilityId, AttackType, CastId, ChampionId, CtxVar, DamageIndex};
+use crate::{AbilityId, AttackType, CastId, ChampionId, CtxVar, DamageIndex, MapMode};
 use alloc::{
     borrow::ToOwned,
     boxed::Box,
@@ -89,7 +89,7 @@ impl FormulaRenderer {
 
         Ok(self
             .db
-            .render_formula_markup(formula_id, Self::ctx_name, |local| {
+            .render_formula_markup(formula_id, Self::ctx_name, Self::map_name, |local| {
                 let ability = &champion.abilities()[local as usize].kind;
 
                 FnBuilder {
@@ -119,7 +119,7 @@ impl FormulaRenderer {
 
         Ok(self
             .db
-            .render_formula_markup(formula_id, Self::ctx_name, |local| {
+            .render_formula_markup(formula_id, Self::ctx_name, Self::map_name, |local| {
                 let (fn_type, fn_tag) = match DamageSlot::from_u8(local) {
                     Some(DamageSlot::MeleeMin) => ("Melee", "Min"),
                     Some(DamageSlot::MeleeMax) => ("Melee", "Max"),
@@ -134,6 +134,13 @@ impl FormulaRenderer {
                     fn_tag: fn_tag.to_string(),
                 }
             })?)
+    }
+
+    /// Name of a mode of a map match, as `Aram`
+    fn map_name(map: u8) -> String {
+        MapMode::from_repr(map)
+            .map_or("Unknown", Into::into)
+            .to_owned()
     }
 
     fn ctx_name(ctx: u8) -> String {

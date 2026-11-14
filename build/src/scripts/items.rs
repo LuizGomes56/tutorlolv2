@@ -1,12 +1,18 @@
 use crate::{
     Build, BuildContext, BuildOutput, CLIENT_CFG, DOCS_CFG, MayFail,
-    generators::parser::items::Item,
+    generators::parser::{items::Item, map_changes},
     scripts::utils::{BakeExt, ItemOrRuneExt},
 };
 use heck::ToShoutySnakeCase;
 use std::fmt::Write;
-use tutorlolv2_types::{GameMap, StatName, Tag};
-use tutorlolv2_wiki::items::item_parser::WikiItem;
+use tutorlolv2_types::{GameMap, MapMode, StatName, Tag};
+use tutorlolv2_wiki::{
+    items::item_parser::WikiItem,
+    map_changes::{
+        ChangeTarget,
+        change::{ChangeKind, Values},
+    },
+};
 
 struct ItemExt {
     pub tier: u8,
@@ -47,6 +53,7 @@ impl Build for Item {
                 tier: {tier},
                 price: {price},
                 stats: {full_stats},
+                map_stats: &[{map_stats}],
                 maps: {maps},
                 metadata: {metadata},
                 {fn_names}
@@ -71,6 +78,16 @@ impl Build for Item {
             fn_names = self.function_names(),
             metadata = self.repr_metadata(),
             full_stats = stats.as_slice().bake(),
+            map_stats = map_stats(&self.data.item_id, &stats)?
+                .into_iter()
+                .map(|(mode, stats)| {
+                    format!(
+                        "(tutorlolv2_types::MapMode::{mode:?}, {})",
+                        stats.as_slice().bake()
+                    )
+                })
+                .collect::<Vec<_>>()
+                .join(", "),
             builds_from = item_ids(&self.builds_from),
             builds_into = item_ids(&self.builds_into),
         )?;
@@ -91,6 +108,62 @@ impl Build for Item {
             },
         })
     }
+}
+
+/// Stats of the item on each mode that changes them, as "Attack damage changed to
+/// 45" in Arena: the stats of `stats`, with the ones it changes replaced
+/// Stats of an item on each mode that changes them
+type MapStats = Vec<(MapMode, Vec<(StatName, u16)>)>;
+
+fn map_stats(item_id: &str, stats: &[(StatName, u16)]) -> MayFail<MapStats> {
+    let mut result = Vec::new();
+
+    for changes in map_changes() {
+        let target = ChangeTarget::Item {
+            item_id: item_id.to_string(),
+        };
+
+        let Some(entry) = changes.entries.values().find(|e| e.target == target) else {
+            continue;
+        };
+
+        let mut changed = stats.to_vec();
+
+        for change in &entry.changes {
+            let ChangeKind::ItemStat { stat, amount } = &change.kind else {
+                continue;
+            };
+
+            // Stats are whole numbers, as in the item data
+            let (Values::Scalar(value), None) = (&amount.values, &amount.ranged) else {
+                continue;
+            };
+
+            match changed.iter_mut().find(|(name, _)| name == stat) {
+                Some((_, current)) => *current = *value as u16,
+                None => changed.push((*stat, *value as u16)),
+            }
+        }
+
+        if changed != stats {
+            let [mode] = changes
+                .maps
+                .iter()
+                .map(|map| map.mode())
+                .collect::<std::collections::BTreeSet<_>>()
+                .into_iter()
+                .collect::<Vec<_>>()[..]
+            else {
+                return Err(
+                    format!("[{item_id}] Maps {:?} have different modes", changes.maps).into(),
+                );
+            };
+
+            result.push((mode, changed));
+        }
+    }
+
+    Ok(result)
 }
 
 fn item_ids(items: &[String]) -> String {

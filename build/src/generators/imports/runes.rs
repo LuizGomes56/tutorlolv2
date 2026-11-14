@@ -1,12 +1,15 @@
-pub use crate::{
-    MayFail, formula as f,
-    generators::{
-        Generator, GeneratorExt, constants::WithConstants, parser::runes::Rune, utils::RegExtractor,
+pub use {
+    crate::{
+        MayFail, formula as f,
+        generators::{
+            Generator, GeneratorExt, constants::WithConstants, parser::WithMapChanges,
+            parser::runes::Rune, utils::RegExtractor,
+        },
     },
+    lazy_regex::regex,
+    tutorlolv2_types::{AttackType::*, CtxVar::*, DamageIndex::*, DamageType::*, MapMode},
+    tutorlolv2_wiki::{runes::WikiRune, wikitext::Sample},
 };
-pub use lazy_regex::regex;
-pub use tutorlolv2_types::{AttackType::*, CtxVar::*, DamageIndex::*, DamageType::*};
-pub use tutorlolv2_wiki::runes::WikiRune;
 
 #[macro_export]
 macro_rules! decl_runes {
@@ -51,3 +54,5 @@ macro_rules! decl_runes {
         }
     };
 }
+
+pub use tutorlolv2_wiki::wikitext::{Formula, IntoFormula, SourceForm};

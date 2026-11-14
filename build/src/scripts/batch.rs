@@ -37,7 +37,7 @@ pub fn generator_impl(source: &str) -> MayFail<String> {
                     path.segments.last().is_some_and(|s| s.ident == "Generator"))
             )
         })
-        .ok_or("Generator source has no impl Generator block")?;
+        .ok_or("Generator source has no generator implementation block")?;
 
     Ok(source[item.span().byte_range()].to_owned())
 }
@@ -46,8 +46,7 @@ pub fn read_generator(root: &Path, tag: Tag, variant: &str) -> MayFail<Option<St
     use heck::ToSnakeCase;
 
     let path = root
-        .join("build/src/generators/impls")
-        .join(tag.as_ref())
+        .join(crate::generators::utils::generator_directory(tag))
         .join(variant.to_snake_case())
         .with_extension("rs");
 
@@ -71,7 +70,8 @@ impl BuildContext {
             .flat_map(|doc| &doc.formulas)
             .enumerate()
             .map(|(i, formula)| {
-                source.push_str(&format!("fn __formula_{i}() {{\n{}\n}}\n", formula.source));
+                let body = super::parentheses::remove_redundant_parentheses(&formula.source);
+                source.push_str(&format!("fn __formula_{i}() {{\n{body}\n}}\n"));
             })
             .count();
 

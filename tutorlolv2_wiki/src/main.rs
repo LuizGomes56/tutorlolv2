@@ -1,6 +1,7 @@
 use clap::{Parser, Subcommand, ValueEnum};
 use tutorlolv2_wiki::{
-    HTTP_CLIENT, MayFail, champions, items, lock, lol_version, runes, scraper, stats, version,
+    HTTP_CLIENT, MayFail, champions, items, lock, lol_version, map_changes, runes, scraper, spells,
+    stats, version, wikitext,
 };
 
 #[derive(Parser, Debug)]
@@ -55,6 +56,10 @@ pub enum Stats {
 
 #[derive(Clone, Copy, Debug, ValueEnum)]
 pub enum Wiki {
+    /// Downloads and parses the summoner spell module used by Ignite.
+    Spells,
+    SpellsDownload,
+    SpellsParse,
     #[clap(alias = "a")]
     All,
     #[clap(alias = "c")]
@@ -65,6 +70,7 @@ pub enum Wiki {
     ChampionsDownloadFull,
     #[clap(alias = "cdt")]
     ChampionsDownloadTemplates,
+    /// Downloads raw ability sources for the structured champion model.
     #[clap(alias = "cda")]
     ChampionsDownloadAbilities,
     #[clap(alias = "cde")]
@@ -73,16 +79,28 @@ pub enum Wiki {
     ChampionsParseFull,
     #[clap(alias = "cpt")]
     ChampionsParseTemplates,
-    #[clap(alias = "cpa")]
-    ChampionsParseAbilities,
     #[clap(alias = "cpe")]
     ChampionsParseExceptions,
+    /// Writes the formula-ready model of every ability to `cache/wiki/champions/model.json`
+    #[clap(alias = "cpm")]
+    ChampionsParseModel,
+
     #[clap(alias = "i")]
     Items,
     #[clap(alias = "id")]
     ItemsDownload,
     #[clap(alias = "ip")]
     ItemsParse,
+    /// Downloads and parses the changes of the game modes in `map_changes::MAPS`
+    #[clap(alias = "m")]
+    MapChanges,
+    #[clap(alias = "md")]
+    MapChangesDownload,
+    #[clap(alias = "mp")]
+    MapChangesParse,
+    /// Lists the changes of each game mode that may change a damage
+    #[clap(alias = "mr")]
+    MapChangesReport,
     #[clap(alias = "r")]
     Runes,
     #[clap(alias = "rl")]
@@ -154,19 +172,26 @@ async fn main() -> MayFail {
         },
         AppArgs::Wiki { function } => match function {
             Wiki::All => tutorlolv2_wiki::run().await,
+            Wiki::Spells => spells::run().await,
+            Wiki::SpellsDownload => spells::download().await,
+            Wiki::SpellsParse => spells::parse(),
             Wiki::Champions => champions::run().await,
             Wiki::ChampionsConcat => champions::concat(),
             Wiki::ChampionsDownloadFull => champions::full::download().await.map(|_| ()),
             Wiki::ChampionsParseFull => champions::full::parse().map(|_| ()),
             Wiki::ChampionsDownloadTemplates => champions::template::download().await,
             Wiki::ChampionsParseTemplates => champions::template::parse(),
-            Wiki::ChampionsDownloadAbilities => champions::abilities::download().await,
-            Wiki::ChampionsParseAbilities => champions::abilities::parse(),
+            Wiki::ChampionsDownloadAbilities => champions::download_ability_sources().await,
             Wiki::ChampionsDownloadExceptions => champions::exceptions::download().await,
             Wiki::ChampionsParseExceptions => champions::exceptions::parse(),
+            Wiki::ChampionsParseModel => wikitext::build::parse_model(),
             Wiki::Items => items::run().await,
             Wiki::ItemsDownload => items::download().await.map(|_| ()),
             Wiki::ItemsParse => items::parse().and_then(|_| items::item_parser::parse_items()),
+            Wiki::MapChanges => map_changes::run().await,
+            Wiki::MapChangesDownload => map_changes::download().await,
+            Wiki::MapChangesParse => map_changes::parse(),
+            Wiki::MapChangesReport => map_changes::report(),
             Wiki::Runes => runes::run().await,
             Wiki::RunesLinks => runes::links().await,
             Wiki::RunesDownload => runes::download().await,

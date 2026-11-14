@@ -2,8 +2,8 @@
 
 use core::num::NonZeroU8;
 use tutorlolv2::{
-    AttackType, ChampionId, GameMap, ItemId, L_MSTR, RuneId, calculator::calculator,
-    helpers::get_stacks, model::*, realtime::realtime, riot::*,
+    AttackType, ChampionId, GameMap, ItemId, L_MSTR, RuneId, calculator::calculator, model::*,
+    realtime::realtime, riot::*,
 };
 
 fn close(actual: f32, expected: f32) {
@@ -13,6 +13,7 @@ fn close(actual: f32, expected: f32) {
 #[test]
 fn purchase_and_context_helpers_are_const_callable() {
     const STATE: SelfState = SelfState {
+        bonus_attack_speed_ratio: tutorlolv2_types::AttackSpeedRatio::new(0.0),
         stacks: 0.0,
         ability_levels: AbilityLevels::default(),
         current_stats: PlayerStats {
@@ -34,6 +35,7 @@ fn purchase_and_context_helpers_are_const_callable() {
         &[ItemId::WarmogsArmor, ItemId::Fimbulwinter],
         ChampionId::Gnar,
         Dragons::default(),
+        GameMap::SummonersRift,
     );
     const ENEMY: EnemyFullState = EnemyFullState {
         current_stats: EnemyStats {
@@ -57,8 +59,8 @@ fn purchase_and_context_helpers_are_const_callable() {
         randuin: false,
         accept_negatives: false,
     };
-    const SELF_CTX: tutorlolv2::Ctx = PURCHASE.ctx(&ENEMY);
-    const ENEMY_CTX: tutorlolv2::Ctx = ENEMY.ctx(&PURCHASE);
+    const SELF_CTX: tutorlolv2::Ctx = PURCHASE.ctx(&ENEMY, GameMap::SummonersRift);
+    const ENEMY_CTX: tutorlolv2::Ctx = ENEMY.ctx(&PURCHASE, GameMap::SummonersRift);
     close(SELF_CTX.max_health, 2050.4);
     close(SELF_CTX.bonus_health(), 1050.4);
     assert_eq!(SELF_CTX, ENEMY_CTX);
@@ -244,13 +246,13 @@ fn supplied_and_inferred_enemies_keep_defensive_effects_and_item_flags() {
 #[test]
 fn estimated_stacks_grow_with_elapsed_time() {
     for (champion, average) in [
-        (ChampionId::Nasus, 450.0),
+        (ChampionId::Nasus, 600.0),
         (ChampionId::AurelionSol, 190.0),
         (ChampionId::Kindred, 5.0),
     ] {
-        close(get_stacks(champion, 900.0), average / 2.0);
-        close(get_stacks(champion, 1800.0), average);
-        close(get_stacks(champion, 3600.0), average * 2.0);
+        close(champion.avg_stacks(900.0), average / 2.0);
+        close(champion.avg_stacks(1800.0), average);
+        close(champion.avg_stacks(3600.0), average * 2.0);
     }
 }
 
@@ -263,12 +265,15 @@ fn simulated_dragons_only_multiply_new_item_stats() {
         magic_resist: 90.0,
         ..PlayerStats::default()
     };
-    let plain = stats.get_simulated_stats(Dragons::default());
-    let buffed = stats.get_simulated_stats(Dragons {
-        ally_fire_dragons: 2,
-        ally_earth_dragons: 2,
-        ..Dragons::default()
-    });
+    let plain = stats.get_simulated_stats(Dragons::default(), GameMap::SummonersRift);
+    let buffed = stats.get_simulated_stats(
+        Dragons {
+            ally_fire_dragons: 2,
+            ally_earth_dragons: 2,
+            ..Dragons::default()
+        },
+        GameMap::SummonersRift,
+    );
     for (plain, buffed) in plain.iter().zip(&buffed) {
         close(
             buffed.attack_damage,
@@ -529,6 +534,7 @@ fn simulated_purchase_applies_stat_conversion_and_attack_speed_units() {
     // the same purchase helper directly rather than changing that item selection.
     let player = &out.current_player;
     let state = SelfState {
+        bonus_attack_speed_ratio: tutorlolv2_types::AttackSpeedRatio::new(0.0),
         current_stats: player.current_stats,
         base_stats: player.base_stats,
         adaptive_type: player.adaptive_type,
@@ -542,11 +548,17 @@ fn simulated_purchase_applies_stat_conversion_and_attack_speed_units() {
         &[],
         player.champion_id,
         out.dragons,
+        GameMap::SummonersRift,
     );
     close(cap.current_stats.ability_power, 299.0); // (100 live AP + 130 item AP) * 1.3
 
-    let warmog =
-        state.simulated_purchase(ItemId::WarmogsArmor, &[], player.champion_id, out.dragons);
+    let warmog = state.simulated_purchase(
+        ItemId::WarmogsArmor,
+        &[],
+        player.champion_id,
+        out.dragons,
+        GameMap::SummonersRift,
+    );
     // Warmog's Vitality grants 12% of the bonus health, not of the base health
     close(
         warmog.current_stats.max_health,
@@ -682,11 +694,11 @@ fn mega_gnar_uses_melee_rune_stat_scaling() {
     let mini = calculator(input);
     input.active_player.data.is_mega_gnar = true;
     let mega = calculator(input);
-    // At level 18: 6 * 16% melee versus 6 * 8% ranged, .625 AS ratio.
+    // Source grants 6% melee versus 4.8% ranged per stack, .625 AS ratio.
     close(
         mega.current_player.current_stats.attack_speed
             - mini.current_player.current_stats.attack_speed,
-        0.3,
+        0.045,
     );
 }
 
@@ -758,6 +770,7 @@ fn const_evaluation_preserves_modifiers_with_explicit_stats() {
 #[test]
 fn owned_warmog_amplifies_health_converted_from_new_mana() {
     let state = SelfState {
+        bonus_attack_speed_ratio: tutorlolv2_types::AttackSpeedRatio::new(0.0),
         stacks: 0.0,
         ability_levels: AbilityLevels::default(),
         current_stats: PlayerStats {
@@ -782,6 +795,7 @@ fn owned_warmog_amplifies_health_converted_from_new_mana() {
             owned,
             ChampionId::Gnar,
             Dragons::default(),
+            GameMap::SummonersRift,
         );
         close(sim.current_stats.max_health, 2050.4); // 2000 + 300 * .15 * 1.12
     }
@@ -790,6 +804,7 @@ fn owned_warmog_amplifies_health_converted_from_new_mana() {
         &[ItemId::WarmogsArmor],
         ChampionId::Gnar,
         Dragons::default(),
+        GameMap::SummonersRift,
     );
     close(sim.current_stats.max_health, 2935.2); // 2000 + (550 + 1900 * .15) * 1.12
 }
@@ -1033,5 +1048,356 @@ fn inferred_dragonheart_multiplies_health_after_warmogs_vitality() {
             enemy(&exceptions).max_health,
             (1000.0 + 1000.0 * 1.12) * 1.25,
         );
+    }
+}
+
+#[test]
+fn aram_changes_apply_to_their_closures_only_on_aram() {
+    let ctx = |map| tutorlolv2::Ctx {
+        ability_power: 100.0,
+        ability_levels: AbilityLevels {
+            q: 1,
+            w: 1,
+            e: 1,
+            r: 1,
+        },
+        map: GameMap::mode(map),
+        ..Default::default()
+    };
+
+    // 45 base damage (ignoring AD), with 60% AP on Summoner's Rift and 70% in ARAM
+    let akali_q = |map| tutorlolv2::libgen::champions::akali::akali_q(&ctx(map));
+    close(akali_q(GameMap::SummonersRift), 45.0 + 60.0);
+    close(akali_q(GameMap::Unknown), 45.0 + 60.0);
+    close(akali_q(GameMap::Aram), 45.0 + 70.0);
+    close(akali_q(GameMap::AramMayhem), 45.0 + 70.0);
+
+    // Both the base damage and the ratio of Kassadin's E change
+    let kassadin_e = |map| tutorlolv2::libgen::champions::kassadin::kassadin_e(&ctx(map));
+    close(kassadin_e(GameMap::SummonersRift), 70.0 + 70.0);
+    close(kassadin_e(GameMap::Aram), 80.0 + 75.0);
+}
+
+#[test]
+fn aram_multiplies_the_total_attack_speed_of_some_champions() {
+    let attack_speed = |champion_id, game_map| {
+        let mut input = game(&[], &[], &[]);
+        input.active_player.data.champion_id = champion_id;
+        input.game_map = game_map;
+        calculator(input).current_player.current_stats.attack_speed
+    };
+
+    let rift = attack_speed(ChampionId::Xayah, GameMap::SummonersRift);
+    close(attack_speed(ChampionId::Xayah, GameMap::Aram), rift * 1.03);
+    close(
+        attack_speed(ChampionId::Xayah, GameMap::AramMayhem),
+        rift * 1.03,
+    );
+
+    // Champions without the change keep it
+    let akali = attack_speed(ChampionId::Akali, GameMap::SummonersRift);
+    close(attack_speed(ChampionId::Akali, GameMap::Aram), akali);
+}
+
+fn player_stats_on(
+    items: &[ItemId],
+    item_exceptions: &[ValueException],
+    map: GameMap,
+) -> PlayerStats {
+    let mut input = game(items, &[], &[]);
+    input.active_player.data.item_exceptions = item_exceptions;
+    input.game_map = map;
+    calculator(input).current_player.current_stats
+}
+
+#[test]
+fn arena_changes_base_stats_from_champion_data_and_its_changes() {
+    let level = NonZeroU8::new(18).unwrap();
+    let health = |champion: ChampionId, map| champion.map_base_stats(level, false, map).max_health;
+
+    // Akali grows 2 more health per level in Arena, over 17 levels
+    close(
+        health(ChampionId::Akali, GameMap::Arena)
+            - health(ChampionId::Akali, GameMap::SummonersRift),
+        2.0 * 17.0,
+    );
+    // Azir passively gains {{pp|0 to 187}} base health
+    close(
+        health(ChampionId::Azir, GameMap::Arena) - health(ChampionId::Azir, GameMap::SummonersRift),
+        187.0,
+    );
+    // ARAM keeps them
+    close(
+        health(ChampionId::Akali, GameMap::Aram),
+        health(ChampionId::Akali, GameMap::SummonersRift),
+    );
+}
+
+#[test]
+fn arena_base_stat_bonuses_keep_their_parsed_level_progression() {
+    for level in 1..=18 {
+        let level = NonZeroU8::new(level).unwrap();
+        let health = |map| {
+            ChampionId::Azir
+                .map_base_stats(level, false, map)
+                .max_health
+        };
+        close(
+            health(GameMap::Arena) - health(GameMap::SummonersRift),
+            11.0 * (level.get() - 1) as f32,
+        );
+    }
+}
+
+#[test]
+fn map_attack_speed_purchase_matches_inferred_build() {
+    for map in [GameMap::Aram, GameMap::AramMayhem, GameMap::SummonersRift] {
+        let infer = |items| {
+            let mut input = game(items, &[], &[]);
+            input.active_player.data.champion_id = ChampionId::Xayah;
+            input.game_map = map;
+            calculator(input)
+        };
+        let bare = infer(&[]);
+        let player = &bare.current_player;
+        let state = SelfState {
+            bonus_attack_speed_ratio: ChampionId::Xayah
+                .stats_on(map)
+                .bonus_attack_speed_ratio(player.current_stats.attack_speed),
+            current_stats: player.current_stats,
+            base_stats: player.base_stats,
+            adaptive_type: player.adaptive_type,
+            ability_levels: game(&[], &[], &[]).active_player.abilities,
+            level: player.level,
+            stacks: 0.0,
+        };
+        let purchased = state.simulated_purchase(
+            ItemId::NashorsTooth,
+            &[],
+            ChampionId::Xayah,
+            Dragons::default(),
+            map,
+        );
+        let inferred = infer(&[ItemId::NashorsTooth]);
+        close(
+            purchased.current_stats.attack_speed,
+            inferred.current_player.current_stats.attack_speed,
+        );
+        close(
+            purchased.bonus_attack_speed_ratio.get(),
+            inferred
+                .monster_rows()
+                .next()
+                .unwrap()
+                .ctx
+                .bonus_attack_speed_ratio
+                .get(),
+        );
+    }
+}
+
+#[test]
+fn arena_changes_item_stats() {
+    let ad = |map| {
+        player_stats_on(&[ItemId::BladeOfTheRuinedKing], &[], map).attack_damage
+            - player_stats_on(&[], &[], map).attack_damage
+    };
+
+    // 40 attack damage, and 30 in Arena
+    close(ad(GameMap::SummonersRift), 40.0);
+    close(ad(GameMap::Arena), 30.0);
+    close(ad(GameMap::Aram), 40.0);
+}
+
+#[test]
+fn aram_changes_hubris_eminence_through_its_constants() {
+    let stacks = [ValueException::pack_item_id(ItemId::Hubris, 5)];
+    let eminence = |map| {
+        player_stats_on(&[], &stacks, map).attack_damage
+            - player_stats_on(&[], &[], map).attack_damage
+    };
+
+    // Gnar is ranged: 10 + 2 per stack, and 10 + 1 per stack in ARAM
+    close(eminence(GameMap::SummonersRift), 10.0 + 2.0 * 5.0);
+    close(eminence(GameMap::Aram), 10.0 + 1.0 * 5.0);
+    close(eminence(GameMap::AramMayhem), 10.0 + 1.0 * 5.0);
+}
+
+#[test]
+fn arena_changes_retribution_and_plating() {
+    let retribution = |missing, map| RiotFormulas::get_bloodmail_retribution(missing, map);
+
+    // 1% per 7% missing health up to 10%, and 1.25% per 5% up to 17.5% in Arena
+    close(retribution(0.35, GameMap::SummonersRift), 0.05);
+    close(retribution(0.7, GameMap::SummonersRift), 0.1);
+    close(retribution(0.35, GameMap::Arena), 0.0875);
+    close(retribution(0.7, GameMap::Arena), 0.175);
+
+    let plating = |map: GameMap| {
+        tutorlolv2::Ctx {
+            flags: tutorlolv2::CtxFlags::target(true, false, false, false),
+            map: map.mode(),
+            ..Default::default()
+        }
+        .steelcaps_effect()
+    };
+
+    close(plating(GameMap::SummonersRift), 0.9);
+    close(plating(GameMap::Arena), 0.86);
+}
+
+#[test]
+fn aram_changes_rune_closures() {
+    let ctx = |map: GameMap| tutorlolv2::Ctx {
+        ability_power: 100.0,
+        level: 1.0,
+        map: map.mode(),
+        ..Default::default()
+    };
+
+    // 70 at level 1, with 5% AP, and 10% AP in ARAM
+    let electrocute = |map| tutorlolv2::libgen::runes::electrocute::electrocute(&ctx(map));
+    close(electrocute(GameMap::SummonersRift), 70.0 + 5.0);
+    close(electrocute(GameMap::Aram), 70.0 + 10.0);
+}
+
+#[test]
+fn item_critical_damage_adds_to_the_champion_base_unscaled() {
+    // A real game: Ashe's critical damage is 100 (200 * 0.5) and 130 with Infinity Edge
+    let enemies = [InputMinData {
+        champion_id: ChampionId::Aatrox,
+        level: NonZeroU8::new(18).unwrap(),
+        ..Default::default()
+    }];
+    let mut input = game(&[ItemId::InfinityEdge], &[], &enemies);
+    input.active_player.data.champion_id = ChampionId::Ashe;
+    let output = calculator(input);
+
+    close(output.current_player.current_stats.crit_damage, 130.0);
+}
+
+#[test]
+fn simulated_critical_damage_adds_unscaled() {
+    let state = SelfState {
+        bonus_attack_speed_ratio: tutorlolv2_types::AttackSpeedRatio::new(0.0),
+        stacks: 0.0,
+        ability_levels: AbilityLevels::default(),
+        current_stats: PlayerStats {
+            crit_damage: 100.0,
+            ..PlayerStats::default()
+        },
+        base_stats: BasicStats::default(),
+        level: NonZeroU8::MIN,
+        adaptive_type: tutorlolv2::AdaptiveType::Physical,
+    };
+    let purchase = state.simulated_purchase(
+        ItemId::InfinityEdge,
+        &[],
+        ChampionId::Ashe,
+        Dragons::default(),
+        GameMap::SummonersRift,
+    );
+
+    close(purchase.current_stats.crit_damage, 130.0);
+}
+
+#[test]
+fn bonus_attack_speed_uses_champion_ratio_and_includes_level_growth() {
+    for champion in [ChampionId::Caitlyn, ChampionId::Gnar] {
+        for level in [1, 18] {
+            let mut input = game(&[], &[], &[]);
+            input.active_player.data.champion_id = champion;
+            input.active_player.data.level = NonZeroU8::new(level).unwrap();
+            let out = calculator(input);
+            let ctx = out.monster_rows().next().unwrap().ctx;
+            let wiki = champion.stats_on(GameMap::Unknown);
+            let growth = wiki.attack_speed.per_level * if level == 1 { 0.0 } else { 17.0 };
+            close(ctx.bonus_attack_speed_ratio.get(), growth / 100.0);
+            close(
+                ctx.attack_speed,
+                wiki.attack_speed.base + wiki.attack_speed_ratio * growth / 100.0,
+            );
+        }
+    }
+}
+
+#[test]
+fn live_and_simulated_bonus_attack_speed_use_flat_base_and_ratio() {
+    let mut input = live_game();
+    input.all_players[0].champion_name = "Caitlyn";
+    let wiki = ChampionId::Caitlyn.stats_on(GameMap::SummonersRift);
+    assert!((wiki.attack_speed.base - wiki.attack_speed_ratio).abs() > 0.01);
+    let observed = wiki.attack_speed.base + 1.25 * wiki.attack_speed_ratio;
+    input.active_player.champion_stats.attack_speed = observed;
+    let out = realtime(&input).unwrap();
+    let original = out.enemy_damages(0).ctx;
+    close(original.bonus_attack_speed_ratio.get(), 1.25);
+    assert!((original.base_attack_speed - wiki.attack_speed.base).abs() > 0.01);
+    let purchased = out.siml_damages(0, sim_index(ItemId::NashorsTooth)).ctx;
+    close(purchased.bonus_attack_speed_ratio.get(), 1.75);
+    close(
+        purchased.attack_speed,
+        observed + 0.5 * wiki.attack_speed_ratio,
+    );
+}
+
+#[test]
+fn invalid_attack_speed_ratio_inputs_have_no_bonus() {
+    let original = *ChampionId::Caitlyn.stats_on(GameMap::Unknown);
+    for ratio in [0.0, -1.0, f32::NAN, f32::INFINITY] {
+        let wiki = tutorlolv2::libgen::WikiStats {
+            attack_speed_ratio: ratio,
+            ..original
+        };
+        close(wiki.bonus_attack_speed_ratio(1.0).get(), 0.0);
+    }
+    for observed in [f32::NAN, f32::INFINITY, f32::NEG_INFINITY] {
+        close(original.bonus_attack_speed_ratio(observed).get(), 0.0);
+    }
+    close(
+        original
+            .bonus_attack_speed_ratio(
+                original.attack_speed.base - 0.25 * original.attack_speed_ratio,
+            )
+            .get(),
+        -0.25,
+    );
+}
+
+#[test]
+fn inferred_lethal_tempo_stacks_feed_the_damage_amplification_on_each_map() {
+    let exceptions = [ValueException::pack_rune_id(RuneId::LethalTempo, 6)];
+    for (champion, mega, attack, normal, arena, damage) in [
+        (ChampionId::Gnar, true, AttackType::Melee, 0.36, 1.08, 30.0),
+        (
+            ChampionId::Caitlyn,
+            false,
+            AttackType::Ranged,
+            0.288,
+            0.72,
+            20.01,
+        ),
+    ] {
+        for (map, extra) in [(GameMap::SummonersRift, normal), (GameMap::Arena, arena)] {
+            let mut input = game(&[], &[RuneId::LethalTempo], &[]);
+            input.active_player.data.champion_id = champion;
+            input.active_player.data.is_mega_gnar = mega;
+            input.game_map = map;
+            let baseline = calculator(input).monster_rows().next().unwrap().ctx;
+            input.active_player.rune_exceptions = &exceptions;
+            let out = calculator(input);
+            let ctx = out.monster_rows().next().unwrap().ctx;
+            close(
+                ctx.bonus_attack_speed_ratio.get() - baseline.bonus_attack_speed_ratio.get(),
+                extra,
+            );
+            let actual = RuneId::LethalTempo.eval(&ctx, attack)[0];
+            let expected = damage * (1.0 + ctx.bonus_attack_speed_ratio.get());
+            // Rounded wiki samples may become an inferred growth expression.
+            assert!(
+                (actual - expected).abs() <= expected.abs() * 0.001,
+                "{actual} != {expected}"
+            );
+        }
     }
 }

@@ -4,7 +4,7 @@ use {
         generators::parser::champions::{Ability, Champion},
         scripts::{
             batch::FormulaDoc,
-            simplify::simplify,
+            simplify::format_formula,
             utils::{BakeExt, cast_f32, ctx_param, get_identifiers, probe_ratio},
         },
     },
@@ -55,6 +55,7 @@ impl Build for Champion {
             abilities,
             merge,
             constants,
+            ..
         } = &self;
 
         let mut rust = String::new();
@@ -62,7 +63,7 @@ impl Build for Champion {
 
         let simplified = closures
             .iter()
-            .map(|body| simplify(body))
+            .map(|body| format_formula(body))
             .collect::<Vec<_>>();
 
         let mut damage_override = BTreeMap::<AbilityId, String>::new();
@@ -73,14 +74,9 @@ impl Build for Champion {
             let min_i = self.indexof(merge.min)?;
             let max_i = self.indexof(merge.max)?;
 
-            let ratio_sym = simplify(&format!(
-                "({}) / ({})",
-                simplified[max_i], simplified[min_i],
-            ));
-
-            let ratio = if !ratio_sym.contains("ctx") {
-                ratio_sym
-            } else {
+            // Sampled numerically: formulas are not simplified, so their ratio is only
+            // known when it is the same at every sample
+            let ratio = {
                 let all_vars = &identifiers[min_i]
                     .iter()
                     .chain(&identifiers[max_i])
@@ -95,6 +91,7 @@ impl Build for Champion {
             };
 
             let min_fn = &functions[min_i];
+
             damage_override.insert(merge.max, format!("{ratio} * {min_fn}(ctx)"));
         }
 
@@ -116,6 +113,7 @@ impl Build for Champion {
                 positions: {positions},
                 stats: {stats},
                 modifiers: {modifiers},
+                map_stats: &[{map_stats}],
                 metadata: {metadata},
 
                 {ENGINE_CFG}
@@ -134,6 +132,46 @@ impl Build for Champion {
                 identifiers: &[{identifiers}],
             }};"#,
             stats = cast_f32(&format!("{stats:?}"))?,
+            map_stats = self
+                .map_stats()
+                .iter()
+                .map(|stats| -> MayFail<String> {
+                    Ok(format!(
+                        "crate::libgen::globals::MapStats {{
+                            maps: &[{}],
+                            total_attack_speed: {:?}f32,
+                            stats: {},
+                            level_bonuses: &[{}]
+                        }}",
+                        stats
+                            .data
+                            .maps
+                            .iter()
+                            .map(|map| format!("tutorlolv2_types::GameMap::{map:?}"))
+                            .collect::<Vec<_>>()
+                            .join(", "),
+                        stats.data.total_attack_speed,
+                        cast_f32(&format!("{:?}", stats.data.stats))?,
+                        stats
+                            .level_bonuses
+                            .iter()
+                            .map(|(stat, values)| format!(
+                                "crate::libgen::globals::MapStatBonus {{
+                                    stat: tutorlolv2_types::StatName::{stat:?},
+                                    values: &[{}]
+                                }}",
+                                values
+                                    .iter()
+                                    .map(|(level, value)| format!("({level}u8, {value:?}f32)"))
+                                    .collect::<Vec<_>>()
+                                    .join(", ")
+                            ))
+                            .collect::<Vec<_>>()
+                            .join(", ")
+                    ))
+                })
+                .collect::<MayFail<Vec<_>>>()?
+                .join(", "),
             modifiers = cast_f32(&format!("{modifiers:?}"))?,
             adaptive_type = adaptive_type.bake(),
             attack_type = attack_type.bake(),
@@ -162,13 +200,7 @@ impl Build for Champion {
             let Ability { name, comment, .. } = ability;
 
             let body = &damages[i];
-            let mut rust_formula = cast_f32(body)?;
-
-            if crate::scripts::utils::is_zero(&rust_formula) {
-                println!("[{champion_id}]: ZeroFormula[{ability_id:?}]; Body = {body:?}");
-
-                rust_formula = "0.0".to_string();
-            }
+            let rust_formula = cast_f32(body)?;
 
             write!(
                 rust,
@@ -180,7 +212,13 @@ impl Build for Champion {
                 docs.push(FormulaDoc {
                     local: i.try_into()?,
                     function: function.clone(),
-                    source: body.clone(),
+                    // The formula the app runs, with the arms of the modes that change it.
+                    // v2 generators write it from the same tree as the damage
+                    source: self
+                        .docs
+                        .get(ability_id)
+                        .cloned()
+                        .unwrap_or_else(|| body.clone()),
                     name: name.clone(),
                     comment: comment.clone(),
                 });

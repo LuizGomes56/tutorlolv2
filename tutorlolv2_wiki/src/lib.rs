@@ -11,14 +11,19 @@ pub mod client;
 pub mod formula;
 pub mod items;
 pub mod lock;
+pub mod map_changes;
 pub mod parser;
 pub mod render;
 pub mod riot;
 pub mod runes;
 pub mod scraper;
+pub mod spells;
 pub mod stats;
 pub mod version;
+pub mod wikitext;
 
+/// Text of a formula that is 0 everywhere, the only one any formula is written as
+pub const ZERO: &str = "0";
 pub const DDRAGON_ENDPOINT: &str = "https://ddragon.leagueoflegends.com";
 pub const CANISBACK_ENDPOINT: &str = "https://ddragon.canisback.com/img";
 pub const MOBALYTICS_ENDPOINT: &str = "https://mobalytics.gg/lol/champions";
@@ -203,5 +208,12 @@ pub async fn run() -> MayFail {
     champions::run().await?;
     items::run().await?;
     runes::run().await?;
+    spells::run().await?;
+    // Named ability targets resolve against the structured model.
+    wikitext::build::parse_model()?;
+    // Resolves its keys against the champions, items and runes parsed above
+    map_changes::run().await?;
+    // Reads the data modules of champions and items downloaded above
+    wikitext::build::parse_model()?;
     lock::write()
 }

@@ -1,22 +1,27 @@
+//! What champion generator files import, and [`decl_champions`], which declares the
+//! the supported champions
+
 pub use crate::{
     MayFail, formula as f,
+    generators::champions::{ChampionGenerator, Damage},
     generators::{
-        Generator, GeneratorExt,
-        constants::WithConstants,
-        parser::champions::{Ability, Champion},
+        Generator, GeneratorExt, constants::WithConstants, parser::champions::Champion,
         utils::RegExtractor,
     },
 };
 pub use lazy_regex::regex;
 pub use tutorlolv2_types::{
     AbilityId, AbilityId::*, AbilityName::*, Attrs::*, ComboElement::*, CtxVar::*, DamageType::*,
-    Key,
+    Key, MapMode,
 };
 pub use tutorlolv2_wiki::{
     champions::WikiChampion,
-    parser::{LevelArm, Scaling},
+    wikitext::{Formula, IntoFormula},
 };
 
+/// Declares the supported champions: for each one, its module, a
+/// struct that wraps a [`ChampionGenerator`] and dereferences to it, and the shared generator traits the
+/// build calls. The registry covers every supported champion.
 #[macro_export]
 macro_rules! decl_champions {
     (inner $Name:ident) => {
@@ -24,7 +29,7 @@ macro_rules! decl_champions {
             pub mod [<$Name:snake:lower:replace("jarvan_i_v", "jarvan_iv")>];
         }
     };
-    ($($Name:ident),*$(,)*) => {
+    ($($Name:ident),*$(,)?) => {
         $(
             $crate::decl_champions!(inner $Name);
 
@@ -32,34 +37,25 @@ macro_rules! decl_champions {
             pub struct $Name {
                 #[deref]
                 #[deref_mut]
-                pub inner: Champion
+                pub inner: ChampionGenerator,
             }
 
             impl $Name {
                 pub fn try_from(data: WikiChampion) -> MayFail<Box<dyn GeneratorExt<Champion>>> {
+                    let model = ChampionGenerator::models()?
+                        .get(&data.champion_id)
+                        .cloned()
+                        .ok_or_else(|| format!("[{}] has no model in model.json", data.champion_id))?;
+
                     Ok(Box::new(Self {
-                        inner: Champion::try_from(data)?
+                        inner: ChampionGenerator::new(Champion::try_from(data)?, model),
                     }))
                 }
             }
 
             impl GeneratorExt<Champion> for $Name {
                 fn end(self: Box<Self>) -> MayFail<Champion> {
-                    Ok(self.inner)
-                }
-            }
-
-            impl ::core::ops::Index<AbilityId> for $Name {
-                type Output = Ability;
-
-                fn index(&self, index: AbilityId) -> &Self::Output {
-                    self.get(index).unwrap()
-                }
-            }
-
-            impl ::core::ops::IndexMut<AbilityId> for $Name {
-                fn index_mut(&mut self, index: AbilityId) -> &mut Self::Output {
-                    self.get_mut(index).unwrap()
+                    self.inner.into_champion()
                 }
             }
         )*
@@ -72,5 +68,8 @@ macro_rules! decl_champions {
                 _ => None,
             }
         }
+
+        /// Supported champions
+        pub const CHAMPIONS: &[&str] = &[$(stringify!($Name)),*];
     };
 }

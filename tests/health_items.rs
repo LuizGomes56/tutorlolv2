@@ -121,6 +121,7 @@ fn demonic_embrace_uses_the_flat_missing_health() {
 
 fn state(current_health: f32) -> SelfState {
     SelfState {
+        bonus_attack_speed_ratio: tutorlolv2_types::AttackSpeedRatio::new(0.0),
         stacks: 0.0,
         ability_levels: AbilityLevels::default(),
         current_stats: PlayerStats {
@@ -142,7 +143,13 @@ fn state(current_health: f32) -> SelfState {
 fn purchased_demonic_embrace_uses_the_observed_missing_health() {
     let purchase = |current_health, owned: &[ItemId], item| {
         state(current_health)
-            .simulated_purchase(item, owned, ChampionId::Ahri, Dragons::default())
+            .simulated_purchase(
+                item,
+                owned,
+                ChampionId::Ahri,
+                Dragons::default(),
+                GameMap::SummonersRift,
+            )
             .current_stats
             .ability_power
     };

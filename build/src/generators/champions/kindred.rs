@@ -1,0 +1,83 @@
+use super::*;
+
+impl Generator for Kindred {
+    fn generate(&mut self) -> MayFail {
+        self.take("Physical Damage", Q(Void))?
+            .take("Magic Damage", W(Void))?
+            .take("Additional Physical Damage", E(Void))?
+            .combos([
+                &[
+                    Attack,
+                    Ability(E(Void)),
+                    Attack,
+                    Attack,
+                    Ability(Q(Void)),
+                    Attack,
+                ],
+                &[
+                    Ability(W(Void)),
+                    Ability(E(Void)),
+                    Attack,
+                    Ability(Q(Void)),
+                    Attack,
+                    Attack,
+                    Attack,
+                    Ability(Q(Void)),
+                    Attack,
+                ],
+                &[
+                    Ability(Q(Void)),
+                    Ability(W(Void)),
+                    Ability(E(Void)),
+                    Attack,
+                    Attack,
+                    Attack,
+                    Ability(Q(Void)),
+                    Attack,
+                ],
+                &[
+                    Ability(W(Void)),
+                    Ability(E(Void)),
+                    Ability(Q(Void)),
+                    Attack,
+                    Attack,
+                    Attack,
+                    Ability(Q(Void)),
+                    Attack,
+                ],
+                &[
+                    Ability(W(Void)),
+                    Attack,
+                    Ability(Q(Void)),
+                    Attack,
+                    Ability(E(Void)),
+                    Attack,
+                    Attack,
+                    Ability(Q(Void)),
+                    Attack,
+                ],
+                &[
+                    Ability(E(Void)),
+                    Attack,
+                    Ability(W(Void)),
+                    Ability(Q(Void)),
+                    Attack,
+                    Attack,
+                    Attack,
+                    Ability(Q(Void)),
+                    Attack,
+                ],
+                &[
+                    Ability(W(Void)),
+                    Ability(Q(Void)),
+                    Ability(E(Void)),
+                    Attack,
+                    Attack,
+                    Attack,
+                    Ability(Q(Void)),
+                    Attack,
+                ],
+            ])?
+            .end()
+    }
+}

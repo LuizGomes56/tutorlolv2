@@ -130,14 +130,14 @@ impl ChampionTemplate {
             ($($field:ident)*) => {
                 $(
                     self.skills.$field = cells.get(stringify!($field))
-                        .ok_or(concat!("Failed to get skill: ", stringify!($field)))?
-                        .split(',')
-                        .map(String::from)
-                        .collect::<Vec<_>>();
+                        .map(|text| SkillSet::names(text))
+                        .ok_or(concat!("Failed to get skill: ", stringify!($field)))?;
                 )*
             };
         }
+
         parse!(skill_i skill_q skill_w skill_e skill_r);
+
         Ok(self)
     }
 
@@ -168,8 +168,10 @@ impl ChampionTemplate {
             usb_dmg_taken,
             aram_dmg_dealt,
             aram_dmg_taken,
+            aram_total_as,
             ar_dmg_dealt,
             ar_dmg_taken,
+            ar_total_as,
             nb_dmg_dealt,
             nb_dmg_taken,
             swift_dmg_dealt,
@@ -177,6 +179,23 @@ impl ChampionTemplate {
             urf_dmg_dealt,
             urf_dmg_taken
         );
+
+        // Stats that a mode changes, as `ar_hp_lvl`. The cell is empty when the mode
+        // keeps the stat, and has the resulting value otherwise
+        for source in crate::map_changes::MAPS {
+            let stats = MODE_STAT_KEYS
+                .iter()
+                .filter_map(|key| {
+                    let value = parse_f32(cells, &format!("{}_{key}", source.code))?;
+                    Some((key.to_string(), value))
+                })
+                .collect::<BTreeMap<_, _>>();
+
+            if !stats.is_empty() {
+                self.modes.stats.insert(source.code.to_string(), stats);
+            }
+        }
+
         self
     }
 }
@@ -188,6 +207,26 @@ pub struct SkillSet {
     pub skill_w: Vec<String>,
     pub skill_e: Vec<String>,
     pub skill_r: Vec<String>,
+}
+
+impl SkillSet {
+    /// Names of the skills of one key, written as `Hop,Crunch`. A comma followed by a
+    /// space is part of a name, as Lulu's `Help, Pix!` or Smolder's `Flap, Flap, Flap`
+    pub fn names(text: &str) -> Vec<String> {
+        let mut names = Vec::<String>::new();
+
+        for piece in text.split(',') {
+            match names.last_mut() {
+                Some(name) if piece.starts_with(' ') => {
+                    name.push(',');
+                    name.push_str(piece);
+                }
+                _ => names.push(piece.to_string()),
+            }
+        }
+
+        names
+    }
 }
 
 #[derive(Clone, Debug, Default, Serialize, Deserialize)]
@@ -212,6 +251,14 @@ pub struct Stats {
     pub ms: f32,
 }
 
+/// Keys of the stats that a mode may change, see [`WikiMapStats::new`]
+///
+/// [`WikiMapStats::new`]: crate::champions::WikiMapStats
+pub const MODE_STAT_KEYS: &[&str] = &[
+    "hp_base", "hp_lvl", "mp_base", "mp_lvl", "arm_base", "arm_lvl", "mr_base", "mr_lvl",
+    "dam_base", "dam_lvl", "as_base", "as_lvl", "as_ratio",
+];
+
 #[derive(Clone, Debug, Default, Serialize, Deserialize)]
 pub struct ModeStats {
     pub ofa_dmg_dealt: f32,
@@ -220,6 +267,13 @@ pub struct ModeStats {
     pub usb_dmg_taken: f32,
     pub aram_dmg_dealt: f32,
     pub aram_dmg_taken: f32,
+    /// Multiplier of the total attack speed
+    pub aram_total_as: f32,
+    pub ar_total_as: f32,
+    /// Stats that each mode changes, by the code of its module and the key of the
+    /// stat, as `hp_lvl`
+    #[serde(default)]
+    pub stats: BTreeMap<String, BTreeMap<String, f32>>,
     pub ar_dmg_dealt: f32,
     pub ar_dmg_taken: f32,
     pub nb_dmg_dealt: f32,

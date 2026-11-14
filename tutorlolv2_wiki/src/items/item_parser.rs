@@ -7,7 +7,7 @@ use heck::ToPascalCase;
 use lazy_regex::regex;
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
-use tutorlolv2_types::{CtxVar, Key};
+use tutorlolv2_types::CtxVar;
 
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub struct ItemEffect {
@@ -44,6 +44,33 @@ pub struct ItemEffects {
     /// Effect of consumables, such as the juices of Arena
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub consume: Option<ItemEffect>,
+}
+
+impl WikiItem {
+    /// Effects of every slot, as `("pass2", name, effect)`. The name is the name
+    /// of the passive or active, or the slot when it has none
+    pub fn slot_effects(&self) -> impl Iterator<Item = (&'static str, String, &Effect)> {
+        let e = &self.effects;
+
+        [
+            ("pass", &e.pass),
+            ("pass2", &e.pass2),
+            ("pass3", &e.pass3),
+            ("pass4", &e.pass4),
+            ("act", &e.act),
+            ("consume", &e.consume),
+        ]
+        .into_iter()
+        .filter_map(|(slot, ie)| {
+            let ie = ie.as_ref()?;
+
+            Some((
+                slot,
+                ie.name.clone().unwrap_or_else(|| slot.into()),
+                &ie.effect,
+            ))
+        })
+    }
 }
 
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
@@ -168,48 +195,12 @@ impl EffectAnalysis {
 pub fn parse_items() -> MayFail {
     let bytes = crate::read(cache().join("data").with_extension("json"))?;
     let data = serde_json::from_slice::<BTreeMap<String, ItemRaw>>(&bytes)?;
-
     let result = data
         .into_iter()
         .map(|(name, raw)| {
-            let mut value = raw.parse();
-
-            let assign_formula = |v: Option<&mut ItemEffect>| {
-                if let Some(ie) = v
-                    && let Ok(formula) = ie.effect.simplify_formula(Key::P)
-                {
-                    ie.effect.formula = formula;
-                }
-            };
-
-            let assign_other_formulas = |v: Option<&mut ItemEffect>| {
-                if let Some(ie) = v {
-                    for effect in [&mut ie.ranged, &mut ie.flip, &mut ie.total]
-                        .into_iter()
-                        .flatten()
-                    {
-                        if let Ok(formula) = effect.simplify_formula(Key::P) {
-                            effect.formula = formula;
-                        }
-                    }
-                }
-            };
-
-            assign_other_formulas(value.effects.act.as_mut());
-            assign_other_formulas(value.effects.pass.as_mut());
-            assign_other_formulas(value.effects.pass2.as_mut());
-            assign_other_formulas(value.effects.pass3.as_mut());
-            assign_other_formulas(value.effects.pass4.as_mut());
-            assign_other_formulas(value.effects.consume.as_mut());
-
-            assign_formula(value.effects.act.as_mut());
-            assign_formula(value.effects.pass.as_mut());
-            assign_formula(value.effects.pass2.as_mut());
-            assign_formula(value.effects.pass3.as_mut());
-            assign_formula(value.effects.pass4.as_mut());
-            assign_formula(value.effects.consume.as_mut());
-
+            let mut value = raw.into_native();
             let key = name.replace("'s", "s").to_pascal_case();
+
             value.name = name;
             value.item_id = key.clone();
 
@@ -218,32 +209,18 @@ pub fn parse_items() -> MayFail {
         .collect::<BTreeMap<_, _>>();
 
     let json = serde_json::to_string_pretty(&result)?;
+
     crate::write(cache().join("full").with_extension("json"), &json)
 }
 
 impl ItemRaw {
-    fn parse(self) -> WikiItem {
-        // Variables defined in one effect may be used by another, like Hollow Radiance's
-        // eruption that deals 200% of the damage defined by its burn
-        let mut vars = BTreeMap::new();
-
-        for effect in [
-            &self.effects.pass,
-            &self.effects.pass2,
-            &self.effects.pass3,
-            &self.effects.pass4,
-            &self.effects.act,
-            &self.effects.consume,
-        ]
-        .into_iter()
-        .flatten()
-        {
-            if let Some(description) = &effect.description {
-                resolve_markup(description, Variant::default(), &mut vars, &mut Vec::new());
-            }
-        }
-
-        let parse = |raw: ItemEffectRaw| raw.parse(&vars);
+    pub fn into_native(self) -> WikiItem {
+        let parse = |raw: ItemEffectRaw| ItemEffect {
+            name: raw.name,
+            unique: raw.unique,
+            raw_description: raw.description,
+            ..Default::default()
+        };
 
         WikiItem {
             item_id: self.name.replace("'s", "s").to_pascal_case(),
@@ -264,41 +241,6 @@ impl ItemRaw {
             buy: self.buy,
             purchasable: false,
             custom: false,
-        }
-    }
-}
-
-impl ItemEffectRaw {
-    fn parse(self, vars: &BTreeMap<String, String>) -> ItemEffect {
-        let description = self.description.clone().unwrap_or_default();
-        let ast = parse_markup(&description);
-
-        let (effect, total) = analyze_effect(&description, Variant::default(), vars);
-
-        let variant = |variant| {
-            let (other, _) = analyze_effect(&description, variant, vars);
-            (other != effect).then_some(other)
-        };
-
-        let ranged = variant(Variant {
-            ranged: true,
-            flip: false,
-        });
-
-        let flip = variant(Variant {
-            ranged: false,
-            flip: true,
-        });
-
-        ItemEffect {
-            name: self.name,
-            unique: self.unique,
-            raw_description: self.description,
-            effect,
-            ranged,
-            flip,
-            total,
-            ast,
         }
     }
 }
@@ -620,6 +562,9 @@ fn parse_link(content: &str) -> MarkupNode {
 }
 
 fn find_balanced(input: &str, start: usize, open: &str, close: &str) -> Option<usize> {
+    // Bytes, since `i` moves one byte at a time and may be inside a character
+    // such as `–`. The delimiters are ASCII, so every match is at a boundary
+    let (input, open, close) = (input.as_bytes(), open.as_bytes(), close.as_bytes());
     let mut i = start;
     let mut depth = 0usize;
 
@@ -1295,9 +1240,18 @@ fn join_nonempty(parts: [String; 2]) -> String {
 #[derive(Clone, Debug)]
 pub struct LevelSeries {
     pub values: Vec<f64>,
-    levels: Vec<u8>,
+    pub levels: Vec<u8>,
     /// Whether the progression is colored as damage
     damage: bool,
+}
+
+/// [`resolve_markup`] for text outside item descriptions, such as the changes of
+/// a game mode, with the progressions by level it found
+pub fn resolve_text(input: &str, variant: Variant) -> (String, Vec<LevelSeries>) {
+    let mut series = Vec::new();
+    let text = resolve_markup(input, variant, &mut BTreeMap::new(), &mut series);
+
+    (text, series)
 }
 
 /// Replaces the templates that compute values with the values themselves, so the

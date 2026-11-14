@@ -178,12 +178,15 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
     let shred = ResistShred::new(&current_player_stats);
 
     let self_state = SelfState {
+        bonus_attack_speed_ratio: current_player_champion_id
+            .stats_on(game_map)
+            .bonus_attack_speed_ratio(current_player_stats.attack_speed),
         current_stats: current_player_stats,
         base_stats: current_player_base_stats,
         adaptive_type,
         ability_levels,
         level,
-        stacks: get_stacks(current_player_champion_id, game_time),
+        stacks: current_player_champion_id.avg_stacks(game_time),
     };
 
     let owned_runes = general_runes
@@ -209,6 +212,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
             current_player_champion_id,
             fire,
             earth,
+            game_map,
         );
 
         let shred = ResistShred::new(&state.current_stats);
@@ -308,7 +312,9 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
 
             // Works the same as the current player basic stats inference, but with less fields
             // since the other ones are unnecessary
-            let e_base_stats = e_champion_id.base_stats(e_level, e_is_mega_gnar).simple();
+            let e_base_stats = e_champion_id
+                .base_stats_on(e_level, e_is_mega_gnar, game_map)
+                .simple();
 
             // Holds a collection of more detailed information about this enemy player
             let full_state = EnemyState {
@@ -335,7 +341,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
 
                 damages.fill_batch(
                     base_row,
-                    self_state.ctx(&full_state),
+                    self_state.ctx(&full_state, game_map),
                     &eval_data,
                     modifiers,
                     current_player_champion_id.data().ability_batch,
@@ -344,7 +350,7 @@ pub fn realtime<'a>(game: &'a RiotRealtime) -> Result<Realtime<'a>, RealtimeErro
 
             for (k, (state, shred, buffs, extra_item)) in simulated_candidates.iter().enumerate() {
                 let target = full_state.with_shred(*shred, false);
-                let ctx = state.ctx(&target);
+                let ctx = state.ctx(&target, game_map);
                 let mut buffs = *buffs;
 
                 buffs.damages.global_mod *= map_mod * target.rune_damage_modifier(&owned_runes);

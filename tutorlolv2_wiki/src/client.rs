@@ -5,7 +5,7 @@ use {
         riot::{RiotCdn, RiotCdnChampion, RiotCdnRune},
     },
     reqwest::{
-        Client,
+        Client, StatusCode,
         header::{ACCEPT, ACCEPT_ENCODING, ACCEPT_LANGUAGE, HeaderMap, HeaderValue, USER_AGENT},
     },
     serde::{Deserialize, de::DeserializeOwned},
@@ -112,6 +112,21 @@ impl<'a> DDragon<'a> {
 #[repr(transparent)]
 pub struct HttpClient(Client);
 
+/// An unsuccessful wiki response, kept distinct from transport failures.
+#[derive(Debug)]
+pub(crate) struct WikiStatusError {
+    pub link: String,
+    pub status: StatusCode,
+}
+
+impl std::fmt::Display for WikiStatusError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "[fetch] {} returned status {}", self.link, self.status)
+    }
+}
+
+impl std::error::Error for WikiStatusError {}
+
 impl From<Client> for HttpClient {
     fn from(value: Client) -> Self {
         Self(value)
@@ -126,9 +141,71 @@ impl core::ops::Deref for HttpClient {
 }
 
 impl HttpClient {
+    /// Downloads a wiki page and saves it to `save_to`, unless it is already cached.
+    /// Unless `link` already requests the raw source, the page source is also
+    /// downloaded with `?action=raw` and saved next to it with the `lua` extension
     pub async fn fetch(&self, save_to: impl AsRef<Path>, link: impl Display) -> MayFail<String> {
         let path = save_to.as_ref();
+        let link = link.to_string();
 
+        if !link.contains("action=raw") {
+            let raw_path = path.with_extension("lua");
+            let separator = if link.contains('?') { '&' } else { '?' };
+            let raw_link = format!("{link}{separator}action=raw");
+
+            // The raw source is only gathered for analysis for now, so a failure
+            // here must not prevent the rendered page from being used
+            if let Err(e) = self.fetch_raw(&raw_path, &raw_link).await {
+                eprintln!("[error] Failed to fetch raw source {raw_link}: {e:?}");
+            }
+        }
+
+        self.fetch_wiki(path, &link, false).await
+    }
+
+    /// Downloads the raw source of `link` to `path`. The rendered page follows a
+    /// redirect, but the raw source is only the redirect line, so the source of its
+    /// target is saved in its place, as for pages renamed on the wiki
+    pub(crate) async fn fetch_raw(&self, path: &Path, link: &str) -> MayFail {
+        let src = self.fetch_wiki(path, link, true).await?;
+
+        if let Some(target) = Self::redirect_target(&src) {
+            std::fs::remove_file(path)?;
+            self.fetch_wiki(path, &format!("{target}?action=raw"), true)
+                .await?;
+        }
+
+        Ok(())
+    }
+
+    /// Link of the page a `#REDIRECT [[Page]]` source points to, written as the wiki
+    /// writes its links, such as `Template:Data_Mel/Radiant_Barrage`. `None` for a
+    /// source that does not redirect
+    pub fn redirect_target(src: &str) -> Option<String> {
+        let src = src.trim_start();
+        let rest = src
+            .get(..9)
+            .filter(|start| start.eq_ignore_ascii_case("#redirect"))
+            .map(|_| &src[9..])?;
+
+        let (_, rest) = rest.split_once("[[")?;
+        let (page, _) = rest.split_once("]]")?;
+        let page = page.split(['#', '|']).next()?;
+
+        let link = page
+            .split(':')
+            .map(str::trim)
+            .collect::<Vec<_>>()
+            .join(":")
+            .replace(' ', "_");
+
+        (!link.is_empty()).then_some(link)
+    }
+
+    /// Downloads `https://wiki.leagueoflegends.com/en-us/{link}` to `path`, or reads
+    /// `path` if it already exists. If `check_status` is set, error statuses are
+    /// rejected so they never get cached
+    async fn fetch_wiki(&self, path: &Path, link: &str, check_status: bool) -> MayFail<String> {
         if let Ok(this) = std::fs::exists(path)
             && this
         {
@@ -144,15 +221,25 @@ impl HttpClient {
 
         let url = format!("https://wiki.leagueoflegends.com/en-us/{link}");
 
-        let request =
-            async |url: &str| -> MayFail<String> { Ok(self.get(url).send().await?.text().await?) };
+        let request = async |url: &str| -> MayFail<(StatusCode, String)> {
+            let response = self.get(url).send().await?;
+            Ok((response.status(), response.text().await?))
+        };
 
-        let mut bytes = request(&url).await?;
+        let (mut status, mut bytes) = request(&url).await?;
 
-        if bytes.contains("Too many requests") {
+        if status == StatusCode::TOO_MANY_REQUESTS || bytes.contains("Too many requests") {
             eprintln!("[error] Too many requests, trying again in 500ms");
             tokio::time::sleep(std::time::Duration::from_millis(500)).await;
-            bytes = request(&url).await?;
+            (status, bytes) = request(&url).await?;
+        }
+
+        if check_status && !status.is_success() {
+            return Err(WikiStatusError {
+                link: link.to_string(),
+                status,
+            }
+            .into());
         }
 
         println!("[fetch] {link} -> {path:?}");

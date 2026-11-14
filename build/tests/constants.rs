@@ -47,3 +47,55 @@ fn constants_reject_invalid_or_repeated_names() {
     assert!(constants.insert("ONCE", 1.0).is_ok());
     assert!(constants.insert("ONCE", 2.0).is_err());
 }
+
+#[test]
+fn constants_that_modes_change_get_a_function_of_the_map() {
+    use tutorlolv2_build_dep::generators::constants::Constant;
+    use tutorlolv2_types::MapMode;
+
+    let mut constants = Constants::default();
+
+    constants.insert("RATIO", 0.1).unwrap();
+    constants.insert("STEADY", 3.0).unwrap();
+    constants
+        .insert_map("RATIO", vec![(MapMode::Arena, Constant::Scalar(0.2))])
+        .unwrap();
+    // A mode with the same value has no arm, and no mode still gets a function
+    constants
+        .insert_map("STEADY", vec![(MapMode::Aram, Constant::Scalar(3.0))])
+        .unwrap();
+
+    let baked = constants.bake();
+
+    assert!(baked.contains("pub const fn ratio(map: tutorlolv2_types::MapMode) -> f32"));
+    assert!(baked.contains("tutorlolv2_types::MapMode::Arena => { core::hint::cold_path(); 0.2 }"));
+    assert!(baked.contains("_ => RATIO"));
+    assert!(
+        baked.contains("pub const fn steady(_map: tutorlolv2_types::MapMode) -> f32 { STEADY }")
+    );
+}
+
+#[test]
+fn map_values_need_their_constant_and_its_shape() {
+    use tutorlolv2_build_dep::generators::constants::Constant;
+    use tutorlolv2_types::MapMode;
+
+    let mut constants = Constants::default();
+
+    assert!(constants.insert_map("MISSING", vec![]).is_err());
+
+    constants.insert("RANKED", [1.0, 2.0]).unwrap();
+    assert!(
+        constants
+            .insert_map("RANKED", vec![(MapMode::Aram, Constant::Scalar(1.0))])
+            .is_err()
+    );
+    assert!(
+        constants
+            .insert_map(
+                "RANKED",
+                vec![(MapMode::Default, Constant::Ranked(vec![1.0, 2.0]))]
+            )
+            .is_err()
+    );
+}

@@ -2,7 +2,7 @@ use {
     crate::{ChampionId, ItemId, RuneId, impls::traits::CastId},
     core::fmt::Debug,
     tutorlolv2_types::{
-        AbilityId, AdaptiveType, AttackType, GameMap, Position, StatName, TypeMetadata,
+        AbilityId, AdaptiveType, AttackType, GameMap, MapMode, Position, StatName, TypeMetadata,
     },
 };
 
@@ -54,6 +54,8 @@ pub struct Champion {
     pub positions: &'static [Position],
     pub stats: WikiStats,
     pub modifiers: WikiModifiers,
+    /// Stats that game modes change, see [`ChampionId::map_stats`]
+    pub map_stats: &'static [MapStats],
     pub metadata: &'static [TypeMetadata<AbilityId>],
 
     #[cfg(any(feature = "yew", feature = "formula-docs"))]
@@ -98,6 +100,42 @@ pub struct Modifier {
     pub damage_taken: f32,
 }
 
+/// Stats of a champion that the game modes in `maps` change
+#[derive(Clone, Copy, Debug)]
+pub struct MapStats {
+    pub maps: &'static [GameMap],
+    /// Multiplier of the total attack speed
+    pub total_attack_speed: f32,
+    /// Every stat on these maps, with the ones the mode changes replaced
+    pub stats: WikiStats,
+    /// Additive stat progressions, independent of ordinary champion growth.
+    pub level_bonuses: &'static [MapStatBonus],
+}
+
+#[derive(Clone, Copy, Debug)]
+pub struct MapStatBonus {
+    pub stat: StatName,
+    /// Parsed level/value samples, in ascending level order.
+    pub values: &'static [(u8, f32)],
+}
+
+impl MapStatBonus {
+    /// Preserve the parsed progression, including its lower and upper bounds.
+    pub const fn value(&self, level: u8) -> f32 {
+        if self.values.is_empty() {
+            return 0.0;
+        }
+
+        let mut index = 0;
+
+        while index + 1 < self.values.len() && self.values[index + 1].0 <= level {
+            index += 1;
+        }
+
+        self.values[index].1
+    }
+}
+
 #[derive(Clone, Copy, Debug)]
 pub struct WikiModifiers {
     pub ofa: Modifier,
@@ -115,6 +153,8 @@ pub struct Item {
     pub tier: u8,
     pub price: u16,
     pub stats: &'static [(StatName, u16)],
+    /// Stats on the modes that change them, see [`ItemId::stats_on`]
+    pub map_stats: &'static [(MapMode, &'static [(StatName, u16)])],
     pub maps: &'static [GameMap],
     pub metadata: TypeMetadata<ItemId>,
     pub deals_damage: [bool; 4],

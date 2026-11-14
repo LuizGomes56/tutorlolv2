@@ -2,10 +2,7 @@ use lazy_regex::regex;
 use regex::Captures;
 use syn::{BinOp, Expr};
 
-/// Relative cost of a division compared to an addition or multiplication.
-const DIV_WEIGHT: u32 = 4;
-
-/// Precision of the numeric literals written back into a simplified formula.
+/// Precision of the numeric literals written back into a formatted formula.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Precision {
     /// Shortest literal that parses back to the same `f32`, which is what the generated code
@@ -16,35 +13,144 @@ pub enum Precision {
     F64,
 }
 
-/// Simplifies a formula, keeping the symbolic result only when it is cheaper to evaluate.
-pub fn simplify(f: &str) -> String {
-    simplify_with(f, Precision::F32)
+/// Formats a formula for the generated code: literals keep only the precision an `f32`
+/// holds, and parentheses its evaluation order doesn't need are removed. Formulas are not
+/// simplified, so they keep the shape they are written in, term by term
+pub fn format_formula(f: &str) -> String {
+    format_formula_with(f, Precision::F32)
 }
 
-/// Same as [`simplify`], but keeps every digit an `f64` can hold.
-pub fn simplify_exact(f: &str) -> String {
-    simplify_with(f, Precision::F64)
+/// Same as [`format_formula`], but keeps every digit an `f64` can hold.
+pub fn format_formula_exact(f: &str) -> String {
+    format_formula_with(f, Precision::F64)
 }
 
-pub fn simplify_with(f: &str, precision: Precision) -> String {
+pub fn format_formula_with(f: &str, precision: Precision) -> String {
     let formula = regex!(r"\bzero\b").replace_all(f.trim(), "0");
-    let (protected, matches) = protect_matches(&formula, precision);
 
-    let original = finish(&protected, &matches, precision);
-    let simplified = symbolic(&protected).and_then(|s| finish(&s, &matches, precision));
+    // Formulas without variables are folded into their value
+    if let Ok(expr) = syn::parse_str::<Expr>(&formula)
+        && let Some(value) = evaluate(&expr)
+    {
+        return format_number(value, precision);
+    }
 
-    match (original, simplified) {
-        (Some((original, cost)), Some((simplified, simplified_cost))) => {
-            if simplified_cost < cost {
-                simplified
-            } else {
-                original
+    // Otherwise, only the parentheses around the whole formula are removed
+    let normalized = normalize_around_matches(&formula)
+        .unwrap_or_else(|| strip_outer_parentheses(&formula).to_owned());
+    parenthesize_matches(&format_numbers(&normalized, precision))
+}
+
+/// [`normalize`] of a formula with `match` blocks, which it can't print: each block is
+/// an identifier while the arithmetic around it is normalized, and is put back as it is
+fn normalize_around_matches(formula: &str) -> Option<String> {
+    let mut blocks = Vec::new();
+    let mut swapped = String::new();
+    let mut rest = formula;
+
+    while let Some(keyword) = regex!(r"\bmatch\b").find(rest) {
+        let open = rest[keyword.end()..].find('{')? + keyword.end();
+        let close = closing_brace(rest, open)?;
+
+        swapped.push_str(&rest[..keyword.start()]);
+        swapped.push_str(&format!("__match_{}__", blocks.len()));
+        blocks.push(&rest[keyword.start()..=close]);
+
+        rest = &rest[close + 1..];
+    }
+
+    swapped.push_str(rest);
+
+    let normalized = normalize(&swapped)?;
+
+    Some(
+        regex!(r"__match_(\d+)__")
+            .replace_all(&normalized, |caps: &Captures| {
+                caps[1]
+                    .parse::<usize>()
+                    .map_or("", |i| blocks[i])
+                    .to_owned()
+            })
+            .into_owned(),
+    )
+}
+
+/// `formula` without the parentheses that wrap all of it, as `((a) + (b))`
+fn strip_outer_parentheses(formula: &str) -> &str {
+    let mut formula = formula.trim();
+
+    while formula.starts_with('(') && closing(formula, 0, b'(', b')') == Some(formula.len() - 1) {
+        formula = formula[1..formula.len() - 1].trim();
+    }
+
+    formula
+}
+
+/// Wraps each `match` that is an operand in parentheses: a `match` that starts a sum
+/// is a statement in Rust, not an expression. A `match` alone, already in parentheses,
+/// or as the value of an arm, is kept as it is. Arms are processed too
+fn parenthesize_matches(formula: &str) -> String {
+    let mut out = String::new();
+    let mut rest = formula;
+
+    while let Some(keyword) = regex!(r"\bmatch\b").find(rest) {
+        let Some(open) = rest[keyword.end()..].find('{').map(|i| i + keyword.end()) else {
+            break;
+        };
+
+        let Some(close) = closing_brace(rest, open) else {
+            break;
+        };
+
+        let block = format!(
+            "{}{{{}}}",
+            &rest[keyword.start()..open],
+            parenthesize_matches(&rest[open + 1..close])
+        );
+
+        out.push_str(&rest[..keyword.start()]);
+
+        let before = out.trim_end();
+        let after = rest[close + 1..].trim_start();
+
+        // After `;`, as `cold_path();` in a map arm, the match is the block's value
+        let standalone = (before.is_empty() || before.ends_with(['(', ',', '>', '{', ';']))
+            && (after.is_empty() || after.starts_with([')', ',', '}']));
+
+        match standalone {
+            true => out.push_str(&block),
+            false => out.push_str(&format!("({block})")),
+        }
+
+        rest = &rest[close + 1..];
+    }
+
+    out.push_str(rest);
+    out
+}
+
+/// Index of the `}` that closes the `{` at `open`
+fn closing_brace(s: &str, open: usize) -> Option<usize> {
+    closing(s, open, b'{', b'}')
+}
+
+/// Index of the `right` that closes the `left` at `open`
+fn closing(s: &str, open: usize, left: u8, right: u8) -> Option<usize> {
+    let mut depth = 0;
+
+    for (i, c) in s.bytes().enumerate().skip(open) {
+        if c == left {
+            depth += 1;
+        } else if c == right {
+            depth -= 1;
+
+            if depth == 0 {
+                return Some(i);
             }
         }
-        (Some((original, _)), None) => original,
-        (None, Some((simplified, _))) => simplified,
-        (None, None) => restore_matches(&format_numbers(&protected, precision), &matches),
     }
+
+    None
 }
 
 /// Formats `value` as the shortest decimal literal that round-trips at the given precision.
@@ -97,28 +203,6 @@ pub fn approx_constant(literal: &str) -> Option<&'static str> {
                     || format!("{constant:.*}", literal.len() - 2) == literal)
         })
         .map(|&(_, name, _)| name)
-}
-
-fn symbolic(formula: &str) -> Option<String> {
-    symb_anafis::simplify(&formula.replace("ctx.", "ctx_"), &[], None)
-        .ok()
-        .map(|r| r.replace("ctx_", "ctx."))
-}
-
-/// Turns a candidate into valid Rust and returns it with its evaluation cost.
-fn finish(formula: &str, matches: &[String], precision: Precision) -> Option<(String, Cost)> {
-    let expanded = expand_powers(formula)?;
-    let normalized = normalize(&expanded).unwrap_or(expanded);
-    let result = restore_matches(&format_numbers(&normalized, precision), matches);
-    let expr = syn::parse_str::<Expr>(&result).ok()?;
-
-    match Cost::of(&expr) {
-        (_, true) => {
-            let value = format_number(evaluate(&expr)?, precision);
-            Some((value, Cost::default()))
-        }
-        (cost, false) => Some((result, cost)),
-    }
 }
 
 /// Rewrites an arithmetic expression keeping only the parentheses its evaluation order needs.
@@ -217,72 +301,6 @@ fn evaluate(expr: &Expr) -> Option<f64> {
     .filter(|value| value.is_finite())
 }
 
-fn placeholder(i: usize) -> String {
-    format!("__MATCH_{i}__")
-}
-
-/// Replaces every top-level `match` block with a placeholder symbol the symbolic engine can
-/// handle, simplifying the body of each arm on the way.
-fn protect_matches(formula: &str, precision: Precision) -> (String, Vec<String>) {
-    let mut protected = String::new();
-    let mut matches = Vec::new();
-    let mut rest = formula;
-
-    while let Some(keyword) = regex!(r"\bmatch\b").find(rest) {
-        let Some(open) = rest[keyword.end()..].find('{').map(|i| i + keyword.end()) else {
-            break;
-        };
-
-        let Some(close) = closing_brace(rest, open) else {
-            break;
-        };
-
-        let scrutinee = rest[keyword.end()..open].trim();
-        let arms = split_top_level(&rest[open + 1..close], ',')
-            .into_iter()
-            .filter(|arm| !arm.trim().is_empty())
-            .map(|arm| match arm.split_once("=>") {
-                Some((pattern, body)) => {
-                    format!("{} => {}", pattern.trim(), simplify_with(body, precision))
-                }
-                None => arm.trim().to_owned(),
-            })
-            .collect::<Vec<_>>()
-            .join(", ");
-
-        protected.push_str(&rest[..keyword.start()]);
-        protected.push_str(&placeholder(matches.len()));
-        matches.push(format!("match {scrutinee} {{ {arms} }}"));
-
-        rest = &rest[close + 1..];
-    }
-
-    protected.push_str(rest);
-
-    (protected, matches)
-}
-
-fn restore_matches(formula: &str, matches: &[String]) -> String {
-    regex!(r"__MATCH_(\d+)__")
-        .replace_all(formula, |caps: &Captures| {
-            let whole = caps.get(0).unwrap();
-            let block = &matches[caps[1].parse::<usize>().unwrap()];
-
-            let before = formula[..whole.start()].trim_end();
-            let after = formula[whole.end()..].trim_start();
-
-            let standalone = (before.is_empty() || before.ends_with(['(', ',']))
-                && (after.is_empty() || after.starts_with([')', ',']));
-
-            if standalone {
-                block.clone()
-            } else {
-                format!("({block})")
-            }
-        })
-        .into_owned()
-}
-
 fn format_numbers(formula: &str, precision: Precision) -> String {
     regex!(r"\b\d+(?:\.\d+)?(?:[eE][+-]?\d+)?\b")
         .replace_all(formula, |caps: &Captures| {
@@ -299,196 +317,4 @@ fn format_numbers(formula: &str, precision: Precision) -> String {
             }
         })
         .into_owned()
-}
-
-/// Rewrites `base^n` as repeated multiplication. Returns `None` for non-integer exponents,
-/// which have no `const fn` equivalent.
-pub fn expand_powers(formula: &str) -> Option<String> {
-    let mut s = formula.to_owned();
-
-    while let Some(caret) = s.find('^') {
-        let start = base_start(&s[..caret])?;
-        let base = s[start..caret].trim().to_owned();
-
-        let tail = &s[caret + 1..];
-        let skipped = tail.len() - tail.trim_start().len();
-        let tail = tail.trim_start();
-
-        let (raw, len) = if tail.starts_with('(') {
-            let close = closing_paren(tail)?;
-
-            (&tail[1..close], close + 1)
-        } else {
-            let len = tail
-                .char_indices()
-                .find(|&(i, c)| !(c.is_ascii_digit() || c == '.' || (i == 0 && c == '-')))
-                .map_or(tail.len(), |(i, _)| i);
-
-            (&tail[..len], len)
-        };
-
-        let exponent = raw.trim().parse::<f64>().ok()?;
-
-        if exponent.fract() != 0.0 || exponent.abs() > 16.0 {
-            return None;
-        }
-
-        let product = || vec![base.as_str(); exponent.abs() as usize].join(" * ");
-
-        let expanded = match exponent as i32 {
-            0 => "1".to_owned(),
-            1 => base.clone(),
-            n if n > 0 => format!("({})", product()),
-            _ => format!("(1 / ({}))", product()),
-        };
-
-        s.replace_range(start..caret + 1 + skipped + len, &expanded);
-    }
-
-    Some(s)
-}
-
-/// Finds where the operand that ends at `head` starts: a parenthesized group (with an optional
-/// function name), an identifier, a field access or a number.
-fn base_start(head: &str) -> Option<usize> {
-    let bytes = head.trim_end().as_bytes();
-    let mut i = bytes.len();
-
-    if bytes.last() == Some(&b')') {
-        let mut depth = 0;
-
-        loop {
-            i = i.checked_sub(1)?;
-
-            match bytes[i] {
-                b')' => depth += 1,
-                b'(' => depth -= 1,
-                _ => {}
-            }
-
-            if depth == 0 {
-                break;
-            }
-        }
-    }
-
-    while i > 0 && (bytes[i - 1].is_ascii_alphanumeric() || matches!(bytes[i - 1], b'_' | b'.')) {
-        i -= 1;
-    }
-
-    (i < bytes.len()).then_some(i)
-}
-
-fn closing_brace(s: &str, open: usize) -> Option<usize> {
-    closing(s, open, b'{', b'}')
-}
-
-fn closing_paren(s: &str) -> Option<usize> {
-    closing(s, 0, b'(', b')')
-}
-
-fn closing(s: &str, open: usize, left: u8, right: u8) -> Option<usize> {
-    let mut depth = 0usize;
-
-    for (i, &b) in s.as_bytes().iter().enumerate().skip(open) {
-        if b == left {
-            depth += 1;
-        } else if b == right {
-            depth -= 1;
-
-            if depth == 0 {
-                return Some(i);
-            }
-        }
-    }
-
-    None
-}
-
-fn split_top_level(s: &str, separator: char) -> Vec<&str> {
-    let mut parts = Vec::new();
-    let mut depth = 0i32;
-    let mut start = 0;
-
-    for (i, c) in s.char_indices() {
-        match c {
-            '(' | '[' | '{' => depth += 1,
-            ')' | ']' | '}' => depth -= 1,
-            c if c == separator && depth == 0 => {
-                parts.push(&s[start..i]);
-                start = i + c.len_utf8();
-            }
-            _ => {}
-        }
-    }
-
-    parts.push(&s[start..]);
-    parts
-}
-
-/// Evaluation cost of an expression. Operations whose operands are all literals are folded by
-/// the compiler, so they only count towards `total`, which breaks ties in favor of the
-/// expression with fewer operations overall.
-#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord)]
-struct Cost {
-    runtime: u32,
-    total: u32,
-}
-
-impl Cost {
-    fn add(self, other: Self) -> Self {
-        Self {
-            runtime: self.runtime + other.runtime,
-            total: self.total + other.total,
-        }
-    }
-
-    fn op(self, weight: u32, constant: bool) -> Self {
-        Self {
-            runtime: self.runtime + if constant { 0 } else { weight },
-            total: self.total + weight,
-        }
-    }
-
-    /// Returns the cost of `expr` and whether it is a compile-time constant.
-    fn of(expr: &Expr) -> (Self, bool) {
-        let sum = |exprs: &mut dyn Iterator<Item = &Expr>| {
-            exprs.fold(Self::default(), |acc, e| acc.add(Self::of(e).0))
-        };
-
-        match expr {
-            Expr::Lit(_) => (Self::default(), true),
-            Expr::Paren(e) => Self::of(&e.expr),
-            Expr::Group(e) => Self::of(&e.expr),
-            Expr::Cast(e) => Self::of(&e.expr),
-            Expr::Unary(e) => {
-                let (cost, constant) = Self::of(&e.expr);
-                (cost.op(1, constant), constant)
-            }
-            Expr::Binary(e) => {
-                let weight = match e.op {
-                    BinOp::Div(_) | BinOp::Rem(_) => DIV_WEIGHT,
-                    _ => 1,
-                };
-
-                let (left, left_constant) = Self::of(&e.left);
-                let (right, right_constant) = Self::of(&e.right);
-                let constant = left_constant && right_constant;
-
-                (left.add(right).op(weight, constant), constant)
-            }
-            Expr::Match(e) => {
-                let arms = e.arms.iter().map(|arm| Self::of(&arm.body).0).max();
-                let cost = Self::of(&e.expr).0.add(arms.unwrap_or_default());
-
-                (cost.op(1, false), false)
-            }
-            Expr::Call(e) => (sum(&mut e.args.iter()).op(1, false), false),
-            Expr::MethodCall(e) => {
-                let receiver = std::iter::once(e.receiver.as_ref());
-                (sum(&mut receiver.chain(&e.args)).op(1, false), false)
-            }
-            _ => (Self::default(), false),
-        }
-    }
 }

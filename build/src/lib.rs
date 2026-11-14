@@ -14,7 +14,8 @@ use serde::{Serialize, de::DeserializeOwned};
 use std::{collections::BTreeMap, fmt::Write, process::Command, str::FromStr};
 use strum::VariantNames;
 use tutorlolv2_codec::{Class, ClassOverride, FormulaDbBuilder, GeneratorDbBuilder};
-use tutorlolv2_types::{AbilityName, AttackType, CtxVar, Tag};
+use tutorlolv2_types::{AbilityName, AttackType, CtxVar, MapMode, Tag};
+use tutorlolv2_wiki::JsonRead;
 
 pub use context::{BuildContext, project_root};
 pub use tutorlolv2_wiki::{DynError, MayFail};
@@ -40,9 +41,7 @@ pub trait Build {
 }
 
 pub fn run() -> MayFail {
-    let ctx = BuildContext::from_env()?;
-
-    ctx.run()
+    BuildContext::from_env()?.run()
 }
 
 impl BuildContext {
@@ -170,7 +169,6 @@ impl BuildContext {
         let path = self.out.join(&dir).with_extension("rs");
 
         tutorlolv2_wiki::write(&path, result)?;
-
         command.arg(path);
 
         writeln!(modules, "pub mod {dir}_code;\npub mod {dir};")?;
@@ -185,6 +183,11 @@ impl BuildContext {
 
         println!("cargo:rerun-if-env-changed={FORMULA_DOCS_ENV}");
 
+        let spells_path = self.root.join(tutorlolv2_wiki::spells::FULL_PATH);
+        let spells = tutorlolv2_wiki::spells::SpellData::from_file(&spells_path)
+            .map_err(|e| format!("Reading {spells_path:?}: {e}. Run `cargo run -- wiki spells` from tutorlolv2_wiki first."))?;
+
+        let spells_code = scripts::spells::spells_code(&spells)?;
         let (champions, (items, runes)) = rayon::join(
             || ChampionParser::from_root(&self.root),
             || {
@@ -230,9 +233,15 @@ impl BuildContext {
         }
 
         let mut command = Command::new("rustfmt");
+
         command.args(["--edition", "2024", "--config", "max_width=80"]);
 
         let mut modules = String::new();
+        let spells_path = self.out.join("spells.rs");
+
+        tutorlolv2_wiki::write(&spells_path, spells_code)?;
+        command.arg(spells_path);
+        modules.push_str("include!(concat!(env!(\"OUT_DIR\"), \"/spells.rs\"));\n");
 
         self.write_module(&mut command, &champions, &mut modules)?;
         self.write_module(&mut command, &items, &mut modules)?;
@@ -253,10 +262,13 @@ impl BuildContext {
             .collect::<Vec<_>>();
 
         let mut generators = GeneratorDbBuilder::new(counts[0], counts[1], counts[2], &overrides);
-
-        let mut formulas = FormulaDbBuilder::new(counts[0], counts[1], counts[2], |s| {
-            CtxVar::from_str(s).ok().map(|v| v as u8)
-        });
+        let mut formulas = FormulaDbBuilder::new(
+            counts[0],
+            counts[1],
+            counts[2],
+            |s| CtxVar::from_str(s).ok().map(|v| v as u8),
+            |s| MapMode::from_str(s).ok().map(|m| m as u8),
+        );
 
         for doc in docs.iter() {
             doc.pack_formulas(&mut formulas)?;

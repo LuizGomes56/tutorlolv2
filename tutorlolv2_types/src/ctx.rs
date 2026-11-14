@@ -138,6 +138,12 @@ macro_rules! create_eval_struct {
                 pub ability_levels: AbilityLevels,
                 /// Branches of the derived multipliers, see [`CtxFlags`]
                 pub flags: CtxFlags,
+                /// Changes of the game mode, read by the closures it changes. It
+                /// fits in the padding after `flags`, so the size is unchanged
+                pub map: MapMode,
+                /// Bonus attack speed ratio, packed into the existing two-byte padding.
+                #[serde(default)]
+                pub bonus_attack_speed_ratio: AttackSpeedRatio,
             }
 
             /// Part of [`Ctx`] that comes from the attacker's state. A purchase
@@ -159,6 +165,11 @@ macro_rules! create_eval_struct {
                 pub ability_levels: AbilityLevels,
                 /// Only the bits of [`CtxFlags::ATTACKER`]
                 pub flags: CtxFlags,
+                /// The map is the same for the whole game, so it comes with the attacker
+                pub map: MapMode,
+                /// Bonus attack speed ratio, packed into the existing two-byte padding.
+                #[serde(default)]
+                pub bonus_attack_speed_ratio: AttackSpeedRatio,
             }
 
             /// Part of [`Ctx`] that comes from the target
@@ -188,6 +199,8 @@ macro_rules! create_eval_struct {
                         $($target: target.$target,)*
                         ability_levels: attacker.ability_levels,
                         flags: attacker.flags.union(target.flags),
+                        map: attacker.map,
+                        bonus_attack_speed_ratio: attacker.bonus_attack_speed_ratio,
                     }
                 }
 
@@ -196,6 +209,8 @@ macro_rules! create_eval_struct {
                         $($attacker: self.$attacker,)*
                         ability_levels: self.ability_levels,
                         flags: self.flags.intersection(CtxFlags::ATTACKER),
+                        map: self.map,
+                        bonus_attack_speed_ratio: self.bonus_attack_speed_ratio,
                     }
                 }
 
@@ -273,6 +288,7 @@ create_eval_struct!(
         steelcaps_effect,
         unknown,
         w_level,
+        bonus_attack_speed_ratio,
     }
 );
 
@@ -382,6 +398,9 @@ impl Ctx {
     /// Item Plated Steelcaps gives 10% damage reduction for basic attacks
     pub const STEEL_CAPS_PROTECTION: f32 = 0.9;
 
+    /// Plated Steelcaps gives 14% damage reduction in Arena
+    pub const STEEL_CAPS_PROTECTION_ARENA: f32 = 0.86;
+
     /// Item Randuin's Omen gives 30% damage reduction against critical hits
     pub const RANDUIN_CRIT_PROTECTION: f32 = 0.7;
 
@@ -396,8 +415,19 @@ impl Ctx {
         }
     }
 
+    /// [`Self::STEEL_CAPS_PROTECTION`] on the map of `mode`, as Arena changes it
+    pub const fn steel_caps_protection(mode: MapMode) -> f32 {
+        match mode {
+            MapMode::Arena => {
+                core::hint::cold_path();
+                Self::STEEL_CAPS_PROTECTION_ARENA
+            }
+            _ => Self::STEEL_CAPS_PROTECTION,
+        }
+    }
+
     pub const fn steelcaps_effect(&self) -> f32 {
-        self.select(CtxFlags::STEELCAPS, Self::STEEL_CAPS_PROTECTION)
+        self.select(CtxFlags::STEELCAPS, Self::steel_caps_protection(self.map))
     }
 
     pub const fn randuin_effect(&self) -> f32 {
@@ -454,6 +484,11 @@ impl Ctx {
 
     pub const fn bonus_attack_speed(&self) -> f32 {
         self.attack_speed - self.base_attack_speed
+    }
+
+    /// Bonus attack speed as a ratio, independent of absolute attacks per second.
+    pub const fn bonus_attack_speed_ratio(&self) -> f32 {
+        self.bonus_attack_speed_ratio.get()
     }
 
     pub const fn bonus_health(&self) -> f32 {

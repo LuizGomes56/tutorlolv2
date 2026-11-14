@@ -5,6 +5,9 @@ use tutorlolv2_types::{AdaptiveType, CtxVar};
 
 impl FormulaRenderer {
     pub fn ignite_fn_markup<M: Markup>() -> M {
+        let damage = crate::libgen::IGNITE_DAMAGE_BY_LEVEL;
+        let last = damage.len() - 1;
+        let step = damage[last] - damage[last - 1];
         let mut h = GenericHighlighter::<M>::new();
 
         h.push(Class::Keyword, "fn")
@@ -13,45 +16,55 @@ impl FormulaRenderer {
             .bracket(Bracket::LParen)
             .push(Class::Variable, "level")
             .text(": ")
-            .push(Class::Primitive, "i32")
+            .push(Class::Type, "NonZeroU8")
             .bracket(Bracket::RParen)
             .text(" -> ")
             .push(Class::Primitive, "i32")
             .text(" ")
             .bracket(Bracket::LCurly)
             .text("\n\t")
-            .push(Class::Number, 70)
+            .push(Class::Keyword, "let")
+            .text(" ")
+            .push(Class::Variable, "n")
+            .text(" = ")
+            .push(Class::Variable, "level")
+            .text(".")
+            .push(Class::Function, "get")
+            .bracket(Bracket::LParen)
+            .bracket(Bracket::RParen)
+            .text(" ")
+            .push(Class::Keyword, "as")
+            .text(" ")
+            .push(Class::Primitive, "i32")
+            .text(";\n\t")
+            .push(Class::Control, "match")
+            .text(" ")
+            .push(Class::Variable, "n")
+            .text(" ")
+            .bracket(Bracket::LCurly);
+
+        for (index, value) in damage[..last].iter().enumerate() {
+            h.text("\n\t\t")
+                .push(Class::Number, index + 1)
+                .text(" => ")
+                .push(Class::Number, value)
+                .text(",");
+        }
+
+        h.text("\n\t\t_ => ")
+            .push(Class::Number, damage[last])
             .text(" + ")
-            .push(Class::Number, 20)
+            .push(Class::Number, step)
             .text(" * ")
-            .push(Class::Variable, "level")
-            .text(" + ")
-            .push(Class::Number, 5)
-            .text("\n\t  * ")
-            .push(Class::Control, "if")
-            .text(" ")
-            .push(Class::Variable, "level")
-            .text(" > ")
-            .push(Class::Number, 4)
-            .text(" ")
-            .bracket(Bracket::LCurly)
-            .text(" ")
-            .push(Class::Variable, "level")
+            .bracket(Bracket::LParen)
+            .push(Class::Variable, "n")
             .text(" - ")
-            .push(Class::Number, 4)
-            .text(" ")
-            .bracket(Bracket::RCurly)
-            .text("\n\t\t")
-            .push(Class::Control, "else")
-            .text(" ")
-            .bracket(Bracket::LCurly)
-            .text(" ")
-            .push(Class::Number, 0)
-            .text(" ")
+            .push(Class::Number, damage.len())
+            .bracket(Bracket::RParen)
+            .text(",\n\t")
             .bracket(Bracket::RCurly)
             .text("\n")
             .bracket(Bracket::RCurly);
-
         h.into_markup()
     }
 

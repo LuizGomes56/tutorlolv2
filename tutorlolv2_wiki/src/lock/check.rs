@@ -1,28 +1,22 @@
-//! Checks the generators against the changes between two lock files. Champion
-//! generators select effects by name, so an effect renamed in the wiki is fixed
-//! in their source when exactly one new effect has the same formula, and an
-//! effect that no longer exists is reported as an error. Rune and item
-//! generators select effects and scalings by index, so their changes are only
-//! reported as warnings
+//! Validates structured champion label selections and reports changes to the
+//! named item/rune raw sources and shared wiki metadata.
 
-use super::{LockedAbility, WikiLock, compare, entry_name, hash};
+use super::{LockedAbility, WikiLock, compare, entry_name};
 use crate::{
     MayFail,
     champions::exceptions::{EXCEPTIONS, Exception},
+    map_changes::change::ChangeKind,
 };
 use lazy_regex::regex;
 use serde_json::Value;
 use std::{
     collections::{BTreeMap, BTreeSet},
-    ops::Range,
     path::{Path, PathBuf},
 };
 use tutorlolv2_types::Key;
 
 #[derive(Debug, Default)]
 pub struct Report {
-    /// Generators changed to use the new name of an effect
-    pub fixes: Vec<String>,
     pub warnings: Vec<String>,
     /// Effects used by generators that no longer exist
     pub errors: Vec<String>,
@@ -30,15 +24,11 @@ pub struct Report {
 
 impl Report {
     pub fn print(&self) {
-        if self.fixes.is_empty() && self.warnings.is_empty() && self.errors.is_empty() {
+        if self.warnings.is_empty() && self.errors.is_empty() {
             println!("[lock] Generators are consistent with the lock file");
         }
 
-        for (tag, lines) in [
-            ("fixed", &self.fixes),
-            ("warning", &self.warnings),
-            ("error", &self.errors),
-        ] {
+        for (tag, lines) in [("warning", &self.warnings), ("error", &self.errors)] {
             for line in lines {
                 println!("[lock] {tag}: {line}");
             }
@@ -52,16 +42,6 @@ pub struct GeneratorFile {
     pub path: PathBuf,
     pub id: String,
     pub source: String,
-}
-
-/// An effect selected by name in a champion generator
-#[derive(Debug, PartialEq)]
-pub struct EffectRef {
-    pub key: String,
-    pub nth: usize,
-    pub name: String,
-    /// Byte range of the string literal in the source, quotes included
-    pub span: Range<usize>,
 }
 
 impl GeneratorFile {
@@ -86,7 +66,9 @@ impl GeneratorFile {
             let source = crate::read_to_string(&path)?;
 
             // Matches `impl Generator for Name`, which identifies the generator of a file
-            if let Some(captures) = regex!(r"impl\s+Generator\s+for\s+(\w+)").captures(&source) {
+            if let Some(captures) =
+                regex!(r"impl\s+Generator(?:V2)?\s+for\s+(\w+)").captures(&source)
+            {
                 files.push(Self {
                     id: captures[1].to_string(),
                     path,
@@ -97,103 +79,6 @@ impl GeneratorFile {
 
         files.sort_by(|a, b| a.id.cmp(&b.id));
         Ok(files)
-    }
-
-    /// Every effect selected by name, skipping the ones in line comments
-    pub fn effect_refs(&self) -> Vec<EffectRef> {
-        let source = &self.source;
-        let mut refs = Vec::new();
-
-        // Matches the start of `.ability(Key::Q, [` and `.ability_nth(1, Key::Q, [`
-        for captures in regex!(r"\.ability(?:_nth\(\s*(\d+)\s*,|\()\s*Key::([PQWER])\s*,\s*\[")
-            .captures_iter(source)
-        {
-            let nth = captures
-                .get(1)
-                .and_then(|m| m.as_str().parse().ok())
-                .unwrap_or(0);
-
-            let key = &captures[2];
-            let start = captures.get(0).map_or(0, |m| m.end());
-            let end = self.closing_bracket(start);
-
-            for literal in regex!(r#""(?:[^"\\]|\\.)*""#).find_iter(&source[start..end]) {
-                let span = start + literal.start()..start + literal.end();
-                self.push_ref(&mut refs, key, nth, span);
-            }
-        }
-
-        // Matches `.formula(Key::Q, "name"`, as well as `effect` and `scaling`, and
-        // `.effect_nth(Key::Q, 1, "name"` as well as `scaling_nth`
-        for captures in regex!(r#"\.(?:formula|scaling|effect|effect_nth|scaling_nth)\(\s*Key::([PQWER])\s*,\s*(?:(\d+)\s*,\s*)?("(?:[^"\\]|\\.)*")"#).captures_iter(source) {
-            let nth = captures
-                .get(2)
-                .and_then(|m| m.as_str().parse().ok())
-                .unwrap_or(0);
-
-            if let Some(literal) = captures.get(3) {
-                self.push_ref(&mut refs, &captures[1], nth, literal.range());
-            }
-        }
-
-        refs.sort_by_key(|r| r.span.start);
-        refs
-    }
-
-    fn push_ref(&self, refs: &mut Vec<EffectRef>, key: &str, nth: usize, span: Range<usize>) {
-        let line_start = self.source[..span.start].rfind('\n').map_or(0, |i| i + 1);
-
-        if self.source[line_start..span.start].contains("//") {
-            return;
-        }
-
-        refs.push(EffectRef {
-            key: key.to_string(),
-            nth,
-            name: unquote(&self.source[span.clone()]),
-            span,
-        });
-    }
-
-    /// Position of the `]` closing the array that starts at `start`, skipping
-    /// brackets inside strings, such as in `"Innate [4]"`
-    fn closing_bracket(&self, start: usize) -> usize {
-        let bytes = self.source.as_bytes();
-        let (mut depth, mut in_string, mut i) = (1, false, start);
-
-        while i < bytes.len() {
-            match (in_string, bytes[i]) {
-                (true, b'\\') => i += 1,
-                (_, b'"') => in_string = !in_string,
-                (false, b'[') => depth += 1,
-                (false, b']') => {
-                    depth -= 1;
-                    if depth == 0 {
-                        return i;
-                    }
-                }
-                _ => {}
-            }
-            i += 1;
-        }
-
-        bytes.len()
-    }
-
-    /// Replaces each range of the source with its text and saves the file
-    fn apply(&mut self, mut edits: Vec<(Range<usize>, String)>) -> MayFail {
-        if edits.is_empty() {
-            return Ok(());
-        }
-
-        edits.sort_by_key(|(span, _)| std::cmp::Reverse(span.start));
-
-        for (span, text) in edits {
-            self.source.replace_range(span, &text);
-        }
-
-        println!("[write] {:?}", self.path);
-        crate::write(&self.path, &self.source)
     }
 }
 
@@ -206,79 +91,37 @@ fn unquote(literal: &str) -> String {
     inner.replace("\\\"", "\"").replace("\\\\", "\\")
 }
 
-/// Changes between the effects of an ability in two lock files
-#[derive(Debug, Default, PartialEq)]
-pub struct AbilityDiff {
-    /// Effects whose name changed, matched by having the same formula
-    pub renames: BTreeMap<String, String>,
-    pub removed: Vec<String>,
-    pub added: Vec<String>,
-    /// Effects that kept their name but not their formula
-    pub formulas: usize,
-}
-
 impl LockedAbility {
-    /// Name and formula hash of every effect
+    /// Name and formula hash of every structured effect.
     pub fn entries(&self) -> impl Iterator<Item = (&str, &str)> {
         self.effects.iter().map(|entry| entry_name(entry))
     }
+}
 
-    pub fn has(&self, name: &str) -> bool {
-        self.entries().any(|(n, _)| n == name)
-    }
+/// Match stable structured identities, retaining separate occurrences of repeated labels.
+fn champion_formulas(
+    abilities: &BTreeMap<Key, Vec<LockedAbility>>,
+) -> BTreeMap<(Key, String, String, usize), String> {
+    let mut formulas = BTreeMap::new();
+    let mut occurrences = BTreeMap::new();
 
-    /// Changes from `self` to `new`. A removed effect is renamed to an added
-    /// one only if they are the only ones with that formula, and the formula
-    /// is not empty, since many effects without formulas share its hash
-    pub fn diff(&self, new: &LockedAbility) -> AbilityDiff {
-        let old = self.entries().collect::<BTreeMap<_, _>>();
-        let new = new.entries().collect::<BTreeMap<_, _>>();
-        let empty = hash("");
+    for (key, pages) in abilities {
+        for ability in pages {
+            for (label, hash) in ability.entries() {
+                let identity = (*key, ability.name.clone(), label.to_string());
+                let occurrence = occurrences.entry(identity.clone()).or_insert(0);
 
-        let removed = old
-            .iter()
-            .filter(|(name, _)| !new.contains_key(*name))
-            .collect::<Vec<_>>();
+                formulas.insert(
+                    (identity.0, identity.1, identity.2, *occurrence),
+                    hash.to_string(),
+                );
 
-        let added = new
-            .iter()
-            .filter(|(name, _)| !old.contains_key(*name))
-            .collect::<Vec<_>>();
-
-        let mut diff = AbilityDiff {
-            formulas: old
-                .iter()
-                .filter(|(name, h)| new.get(*name).is_some_and(|n| n != *h))
-                .count(),
-            ..Default::default()
-        };
-
-        let count =
-            |list: &[(&&str, &&str)], h: &str| list.iter().filter(|(_, x)| **x == h).count();
-
-        for (name, h) in &removed {
-            let target = added.iter().find(|(_, x)| *x == *h);
-
-            match target {
-                Some((target, _))
-                    if **h != empty && count(&removed, h) == 1 && count(&added, h) == 1 =>
-                {
-                    diff.renames.insert(name.to_string(), target.to_string());
-                }
-                _ => diff.removed.push(name.to_string()),
+                *occurrence += 1;
             }
         }
-
-        let targets = diff.renames.values().cloned().collect::<BTreeSet<_>>();
-
-        diff.added = added
-            .iter()
-            .map(|(name, _)| name.to_string())
-            .filter(|name| !targets.contains(name))
-            .collect();
-
-        diff
     }
+
+    formulas
 }
 
 fn parse_key(key: &str) -> Option<Key> {
@@ -287,14 +130,23 @@ fn parse_key(key: &str) -> Option<Key> {
 
 impl WikiLock {
     /// Checks the generators in `generators` against `self`, the newest lock
-    /// file. When `old` is given, renamed effects are fixed in champion
-    /// generators, and changes to runes and items with generators are reported
+    /// file. When `old` is given, formula changes and item/rune index changes
+    /// are reported for entities with generators.
     pub fn check(&self, old: Option<&WikiLock>, generators: impl AsRef<Path>) -> MayFail<Report> {
         let generators = generators.as_ref();
         let mut report = Report::default();
 
-        self.check_champions(old, &generators.join("champions"), &mut report)?;
+        let v2 = if generators == Path::new(super::GENERATORS) {
+            PathBuf::from(super::CHAMPION_GENERATORS)
+        } else {
+            generators.join("champions")
+        };
+
+        self.check_champions(old, &v2, &mut report)?;
         self.check_exceptions(old, &mut report);
+        self.check_map_changes(old, &mut report);
+        self.check_map_stats(old, &mut report);
+        self.check_native_sources(old, &mut report);
 
         if let Some(old) = old {
             self.check_runes(old, &generators.join("runes"), &mut report)?;
@@ -304,156 +156,201 @@ impl WikiLock {
         Ok(report)
     }
 
-    fn check_champions(&self, old: Option<&WikiLock>, dir: &Path, report: &mut Report) -> MayFail {
-        let empty = Vec::new();
-        let mut formulas = Vec::new();
+    fn check_native_sources(&self, old: Option<&WikiLock>, report: &mut Report) {
+        let Some(old) = old else { return };
 
-        if let Some(old) = old {
-            for champion_id in self.champions.keys() {
-                if !old.champions.contains_key(champion_id) {
-                    report.warnings.push(format!("{champion_id}: new champion"));
+        if !old.rune_sources.is_empty() {
+            for id in old
+                .rune_sources
+                .keys()
+                .chain(self.rune_sources.keys())
+                .collect::<BTreeSet<_>>()
+            {
+                if old.rune_sources.get(id) != self.rune_sources.get(id) {
+                    report
+                        .warnings
+                        .push(format!("[runes] {id}: raw source changed"));
                 }
             }
         }
 
-        for mut file in GeneratorFile::read_dir(dir)? {
-            let id = file.id.clone();
+        if !old.item_sources.is_empty() {
+            for id in old
+                .item_sources
+                .keys()
+                .chain(self.item_sources.keys())
+                .collect::<BTreeSet<_>>()
+            {
+                let before = old.item_sources.get(id);
+                let after = self.item_sources.get(id);
+                let names = before
+                    .into_iter()
+                    .chain(after)
+                    .flat_map(BTreeMap::keys)
+                    .collect::<BTreeSet<_>>();
 
-            let Some(abilities) = self.champions.get(&id) else {
-                report.warnings.push(format!(
-                    "{id}: the generator has no champion in the lock file"
+                for name in names {
+                    if before.and_then(|map| map.get(name)) != after.and_then(|map| map.get(name)) {
+                        report
+                            .warnings
+                            .push(format!("[items] {id}/{name}: raw source changed"));
+                    }
+                }
+            }
+        }
+    }
+
+    fn check_champions(&self, old: Option<&WikiLock>, dir: &Path, report: &mut Report) -> MayFail {
+        for file in GeneratorFile::read_dir(dir)? {
+            let Some(abilities) = self.champions.get(&file.id) else {
+                report.errors.push(format!(
+                    "{}: the generator has no champion in the lock file",
+                    file.id
                 ));
                 continue;
             };
 
-            let old_abilities = old.and_then(|old| old.champions.get(&id));
-            let old_ability = |key: Key, nth: usize| {
-                old_abilities
-                    .and_then(|abilities| abilities.get(&key))
-                    .and_then(|list| list.get(nth))
-            };
+            if let Some(previous) = old.and_then(|old| old.champions.get(&file.id)) {
+                let previous = champion_formulas(previous);
+                let current = champion_formulas(abilities);
+                let changed = current
+                    .iter()
+                    .filter(|(id, hash)| {
+                        previous.get(*id).is_some_and(|old_hash| old_hash != *hash)
+                    })
+                    .count();
 
-            let refs = file.effect_refs();
-            let mut used = BTreeSet::new();
-            let mut edits = Vec::new();
+                if changed > 0 {
+                    report
+                        .warnings
+                        .push(format!("{}: {changed} champion formulas changed", file.id));
+                }
+            }
 
-            for effect in &refs {
-                let label = format!("{id} {}[{}]", effect.key, effect.nth);
-                let key = parse_key(&effect.key);
+            // take/value select across all pages by label, with an optional occurrence
+            // or ability name, rather than the old ability-vector index.
+            for caps in regex!(
+                r#"\.(take(?:_nth|_in)?|value(?:_nth)?)\(\s*("(?:[^"\\]|\\.)*")\s*,\s*(?:("(?:[^"\\]|\\.)*")\s*,\s*|(\d+)\s*,\s*)?(?:Key::|AbilityId::)?([PQWER])\s*(?:\(|[,\)])"#
+            ).captures_iter(&file.source) {
+                let literal = caps.get(2).unwrap();
+                let line_start = file.source[..literal.start()]
+                    .rfind('\n')
+                    .map_or(0, |i| i + 1);
 
-                let Some((key, ability)) = key.and_then(|key| {
-                    let ability = abilities.get(&key)?.get(effect.nth)?;
-                    Some((key, ability))
-                }) else {
+                if file.source[line_start..literal.start()].contains("//") {
+                    continue;
+                }
+
+                let in_ability = (&caps[1] == "take_in").then(|| unquote(&caps[2]));
+                let label = unquote(caps.get(3).map_or(&caps[2], |m| m.as_str()));
+                let nth = caps.get(4).and_then(|m| m.as_str().parse::<usize>().ok());
+                let key = parse_key(&caps[5]).unwrap();
+                let count = abilities
+                    .get(&key)
+                    .into_iter()
+                    .flatten()
+                    .filter(|ability| in_ability.as_ref().is_none_or(|name| *name == ability.name))
+                    .flat_map(|ability| ability.entries())
+                    .filter(|(name, _)| *name == label)
+                    .count();
+
+                if !match nth {
+                    Some(n) => n < count,
+                    None => count == 1,
+                } {
                     report.errors.push(format!(
-                        "{label}: the ability no longer exists, used for effect {:?}",
-                        effect.name
-                    ));
-                    continue;
-                };
-
-                used.insert((key, effect.nth, effect.name.clone()));
-
-                if ability.has(&effect.name) {
-                    continue;
-                }
-
-                let renamed = old_ability(key, effect.nth)
-                    .and_then(|old| old.diff(ability).renames.remove(&effect.name));
-
-                match renamed {
-                    Some(new_name) => {
-                        report.fixes.push(format!(
-                            "{label}: {:?} renamed to {new_name:?}",
-                            effect.name
-                        ));
-                        edits.push((effect.span.clone(), format!("{new_name:?}")));
-                    }
-                    None => {
-                        let available = ability
-                            .entries()
-                            .map(|(name, _)| format!("{name:?}"))
-                            .collect::<Vec<_>>()
-                            .join(", ");
-
-                        report.errors.push(format!(
-                            "{label}: effect {:?} no longer exists. Available: [{available}]",
-                            effect.name
-                        ));
-                    }
-                }
-            }
-
-            file.apply(edits)?;
-
-            let Some(old_abilities) = old_abilities else {
-                continue;
-            };
-
-            let mut changed = 0;
-
-            for (key, list) in abilities {
-                let old_list = old_abilities.get(key).unwrap_or(&empty);
-
-                if list.len() != old_list.len() {
-                    report.warnings.push(format!(
-                        "{id} {key:?}: {} abilities, previously {}",
-                        list.len(),
-                        old_list.len()
+                        "{} {key:?}: selection {label:?} matches {count} effects{}",
+                        file.id,
+                        nth.map(|n| format!(", requested occurrence {n}"))
+                            .unwrap_or_default()
                     ));
                 }
-
-                for (nth, (ability, old)) in list.iter().zip(old_list).enumerate() {
-                    let label = format!("{id} {key:?}[{nth}]");
-                    let diff = old.diff(ability);
-                    let is_used = |name: &str| used.contains(&(*key, nth, name.to_string()));
-
-                    for (from, to) in &diff.renames {
-                        if !is_used(from) && !is_used(to) {
-                            report
-                                .warnings
-                                .push(format!("{label}: unused effect {from:?} renamed to {to:?}"));
-                        }
-                    }
-
-                    for name in diff.removed.iter().filter(|name| !is_used(name)) {
-                        report
-                            .warnings
-                            .push(format!("{label}: unused effect {name:?} was removed"));
-                    }
-
-                    for name in &diff.added {
-                        report
-                            .warnings
-                            .push(format!("{label}: new effect {name:?}"));
-                    }
-
-                    changed += diff.formulas;
-                }
             }
-
-            for key in old_abilities
-                .keys()
-                .filter(|key| !abilities.contains_key(*key))
-            {
-                report
-                    .warnings
-                    .push(format!("{id} {key:?}: the abilities were removed"));
-            }
-
-            if changed > 0 {
-                formulas.push(format!("{id} ({changed})"));
-            }
-        }
-
-        if !formulas.is_empty() {
-            report.warnings.push(format!(
-                "Champion formulas changed: {}",
-                formulas.join(", ")
-            ));
         }
 
         Ok(())
+    }
+
+    fn check_map_stats(&self, old: Option<&WikiLock>, report: &mut Report) {
+        // Lock files written before map stats were tracked have none to compare
+        let Some(old) = old.map(|old| &old.map_stats).filter(|old| !old.is_empty()) else {
+            return;
+        };
+
+        for champion_id in old
+            .keys()
+            .chain(self.map_stats.keys())
+            .collect::<BTreeSet<_>>()
+        {
+            match (old.get(champion_id), self.map_stats.get(champion_id)) {
+                (Some(a), Some(b)) if a != b => report.warnings.push(format!(
+                    "{champion_id}: the stats that game modes change changed"
+                )),
+                (Some(_), None) => report.warnings.push(format!(
+                    "{champion_id}: game modes no longer change its stats"
+                )),
+                (None, Some(_)) => report
+                    .warnings
+                    .push(format!("{champion_id}: game modes now change its stats")),
+                _ => {}
+            }
+        }
+    }
+
+    /// Changes of the game modes are only warnings: the damage-relevant ones
+    /// are counted, and the ones that were added, edited or removed since the
+    /// old lock file are listed. Which ones are applied depends on the
+    /// generators, so the report lists them
+    fn check_map_changes(&self, old: Option<&WikiLock>, report: &mut Report) {
+        let empty = Vec::new();
+
+        for (code, entries) in &self.map_changes {
+            let relevant = entries
+                .values()
+                .flatten()
+                .filter(|entry| ChangeKind::is_damage_relevant(entry_name(entry).0))
+                .count();
+
+            if relevant > 0 {
+                report.warnings.push(format!(
+                    "{code}: {relevant} damage-relevant changes, see `wiki map-changes-report` for the ones that are not applied"
+                ));
+            }
+
+            // Lock files written before map changes were tracked have none to compare
+            let Some(old_entries) = old.and_then(|old| old.map_changes.get(code)) else {
+                continue;
+            };
+
+            for key in old_entries
+                .keys()
+                .chain(entries.keys())
+                .collect::<BTreeSet<_>>()
+            {
+                let label = format!("{code} {key}");
+
+                match (old_entries.get(key), entries.get(key)) {
+                    (Some(_), None) => report.warnings.push(format!("{label}: changes removed")),
+                    (None, Some(_)) => report.warnings.push(format!("{label}: new changes")),
+                    (old, new) => {
+                        let (lines, edited) = compare(old.unwrap_or(&empty), new.unwrap_or(&empty));
+
+                        if !lines.is_empty() {
+                            report.warnings.push(format!(
+                                "{label}: changes added or removed\n{}",
+                                lines.join("\n")
+                            ));
+                        }
+
+                        if edited > 0 {
+                            report
+                                .warnings
+                                .push(format!("{label}: {edited} changes edited"));
+                        }
+                    }
+                }
+            }
+        }
     }
 
     /// Exceptions are only read by text patterns in their generators, so a changed

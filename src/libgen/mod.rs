@@ -1,4 +1,7 @@
 #![allow(unreachable_patterns)]
+// Formulas keep the shape the wiki writes them in, as Samira's `(19 - 2) / 17`, which
+// clippy reads as a value divided by itself
+#![allow(clippy::eq_op)]
 
 pub mod check;
 pub mod globals;
@@ -169,12 +172,6 @@ const fn is_sorted(names: &[&str]) -> bool {
 #[cfg(feature = "engine")]
 pub const fn zero(_: &tutorlolv2_types::Ctx) -> f32 {
     0.0
-}
-
-pub const fn ignite(level: core::num::NonZeroU8) -> i32 {
-    let n = level.get() as i32;
-    let nth = if n > 4 { n - 4 } else { 0 };
-    70 + 20 * n + 5 * nth
 }
 
 pub const L_MSTR: usize = 7;

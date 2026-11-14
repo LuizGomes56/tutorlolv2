@@ -120,7 +120,7 @@ pub enum Attrs {
 }
 
 impl FromStr for DamageType {
-    type Err = Infallible;
+    type Err = !;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match s {

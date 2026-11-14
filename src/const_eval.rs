@@ -1,15 +1,14 @@
-use core::num::NonZeroU8;
 use {
     crate::{
         ChampionId, GameMap, ItemId, RuneId,
         calculator::InferStats,
-        helpers::ability_id_mod,
         model::{
             AbilityLevels, Attacks, BasicStats, DamageModifiers, Dragons, EnemyState, EnemyStats,
             Modifiers, PlayerStats, RangeDamage, ResistShred, SelfState, SimpleStats,
             ValueException,
         },
     },
+    core::num::NonZeroU8,
     tutorlolv2_types::{AbilityId, AdaptiveType, AttackType, Ctx, TypeMetadata},
 };
 
@@ -29,7 +28,7 @@ pub const fn eval_abilities_const<const N: usize>(
             attributes,
         } = champion_id.metadata()[i];
 
-        let modifier = ability_id_mod(kind, damage_type, modifiers);
+        let modifier = modifiers.ability_id_mod(kind, damage_type);
         let damage = (modifier * champion_id.eval(ctx, kind)) as i32;
 
         onhit.inc_attr(attributes, damage);
@@ -232,6 +231,9 @@ impl<
             };
 
         let self_state = SelfState {
+            bonus_attack_speed_ratio: champion_id
+                .stats_on(GameMap::Unknown)
+                .bonus_attack_speed_ratio(stats.attack_speed),
             stacks: stacks as _,
             ability_levels,
             current_stats: stats,
@@ -274,7 +276,7 @@ impl<
         let attack_type = champion_id.effective_attack_type(is_mega_gnar);
 
         let enemy = enemy_state.full_state(shred, false);
-        let ctx = self_state.ctx(&enemy);
+        let ctx = self_state.ctx(&enemy, GameMap::Unknown);
 
         let modifiers = Modifiers {
             damages: DamageModifiers {
@@ -303,16 +305,18 @@ impl<
 
         let siml = {
             let mut result = unsafe { core::mem::zeroed::<[_; ItemId::L_SIML]>() };
-            let siml_stats = stats.get_simulated_stats(dragons);
             let mut i = 0;
 
             while i < ItemId::L_SIML {
-                let siml_stat = siml_stats[i];
-                let siml_ctx = SelfState {
-                    current_stats: siml_stat,
-                    ..self_state
-                }
-                .ctx(&enemy);
+                let siml_ctx = self_state
+                    .simulated_purchase(
+                        ItemId::SIML[i],
+                        &items,
+                        champion_id,
+                        dragons,
+                        GameMap::Unknown,
+                    )
+                    .ctx(&enemy, GameMap::Unknown);
 
                 let mut onhit = RangeDamage::default();
 
