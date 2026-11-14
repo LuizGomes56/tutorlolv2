@@ -2,11 +2,10 @@
 perf = "run --quiet -p perf_runner --"
 
 # Select applications explicitly; root builds still select math.
-web = "build -p web --target wasm32-unknown-unknown"
 web-check = "check -p web --target wasm32-unknown-unknown"
-desktop = "build -p desktop --target x86_64-pc-windows-msvc"
-desktop-check = "check -p desktop --target x86_64-pc-windows-msvc"
-native = "build -p native --target x86_64-pc-windows-msvc"
-native-check = "check -p native --target x86_64-pc-windows-msvc"
+desktop = "xwin build -p desktop --target x86_64-pc-windows-msvc"
+desktop-check = "xwin check -p desktop --target x86_64-pc-windows-msvc"
+native = "xwin build -p native --target x86_64-pc-windows-msvc"
+native-check = "xwin check -p native --target x86_64-pc-windows-msvc"
 core-check = "check --workspace --exclude web --exclude desktop --exclude native"
 core-test = "test --workspace --exclude web --exclude desktop --exclude native"

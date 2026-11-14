@@ -6,8 +6,15 @@
     "build": {
         "frontendDist": "../../web/dist",
         "devUrl": "http://localhost:8000",
-        "beforeDevCommand": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/web.ps1 serve",
-        "beforeBuildCommand": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/web.ps1 build"
+        "beforeDevCommand": {
+            "script": "trunk serve --locked --features tauri --minify false --port 8000",
+            "cwd": "../../web"
+        },
+        "beforeBuildCommand": {
+            "script": "trunk build --locked --release --features tauri --minify false",
+            "cwd": "../../web"
+        },
+        "runner": "../scripts/xwin-wsl"
     },
     "app": {
         "windows": [

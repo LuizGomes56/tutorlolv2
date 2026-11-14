@@ -4,7 +4,7 @@
 
 The Yew frontend supports two calculation modes at compile time. Both use the same
 shared input and output models. Local calculation is the default, so existing
-build commands continue to calculate directly in WASM:
+build commands continue to calculate directly in WASM. Run them from `apps/web/`:
 
 ```sh
 trunk serve
@@ -53,17 +53,7 @@ service. Desktop builds propagate
 bridge errors instead of falling back to the sample. The overlay is excluded
 from builds without `tauri`.
 
-For Windows Tauri development with the frontend in WSL, use this `build` section
-in `tauri.conf.json`:
-
-```json
-{
-  "frontendDist": "\\\\wsl.localhost\\Ubuntu\\home\\luizg\\Projects\\tutorlolv2_web\\dist",
-  "devUrl": "http://localhost:8000",
-  "beforeDevCommand": "wsl.exe --cd /home/luizg/Projects/tutorlolv2_web --exec /usr/bin/env PATH=/home/luizg/.cargo/bin:/usr/local/bin:/usr/bin:/bin /home/luizg/.cargo/bin/trunk serve --port 8000 --features tauri --minify false",
-  "beforeBuildCommand": "wsl.exe --cd /home/luizg/Projects/tutorlolv2_web --exec /usr/bin/env PATH=/home/luizg/.cargo/bin:/usr/local/bin:/usr/bin:/bin /home/luizg/.cargo/bin/trunk build --release --features tauri"
-}
-```
+For Windows Tauri development, run `cargo tauri dev --target x86_64-pc-windows-msvc` from `apps/desktop/` in WSL. The checked-in configuration uses `cargo-xwin` and runs Trunk directly in `apps/web/`. See [application build instructions](../README.md).
 
 Keep development HTML unminified: Trunk's minifier can fold its reload hostname
 placeholder into the WebSocket URL before the dev server replaces it. This
