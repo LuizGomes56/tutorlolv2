@@ -15,6 +15,7 @@ impl Generator for Zyra {
                     formula: f![15 + 60 / 17 * (Level - 1) + 0.2 * AbilityPower],
                 },
             )?
+            .map_change(P(Void), "Thorn Spitter and Vine Lasher AP ratio")?
             .combos([
                 &[Ability(R(Void)), Ability(E(Void)), Ability(Q(Void))],
                 &[Ability(E(Void)), Ability(Q(Void)), Ability(R(Void)), Attack],

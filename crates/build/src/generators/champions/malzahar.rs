@@ -4,6 +4,7 @@ impl Generator for Malzahar {
     fn generate(&mut self) -> MayFail {
         self.take("Magic Damage", Q(Void))?
             .take("Magic Damage", W(Void))?
+            .map_change(W(Void), "Voidling bonus AD ratio")?
             .take("Magic Damage Per Tick", E(Min))?
             .take("Total Magic Damage", E(Max))?
             .take_nth("Magic Damage Per Tick", 1, R(Min))?

@@ -25,11 +25,15 @@ use {
             parser::champions::{Ability, Champion},
         },
     },
+    lazy_regex::regex,
     std::{collections::BTreeMap, path::Path, sync::LazyLock},
-    types::{AbilityId, Attrs, ComboElement, DamageType, Key},
+    types::{AbilityId, Attrs, ComboElement, CtxVar, DamageType, Key, MapMode},
     wiki::{
         JsonRead,
-        wikitext::{AbilityModel, ChampionModel, EffectModel, Formula},
+        map_changes::change::MapChange,
+        wikitext::{
+            AbilityModel, ChampionModel, EffectModel, Formula, IntoFormula, Lookup, MapValue,
+        },
     },
 };
 
@@ -259,6 +263,266 @@ impl ChampionGenerator {
         self.damages
             .get_mut(&id)
             .unwrap_or_else(|| panic!("[{champion_id}] {id:?} was never taken"))
+    }
+
+    /// Applies one explicitly named map change to a selected damage. Matching the
+    /// ability key prevents identical subjects on other abilities from leaking in.
+    pub fn map_change(&mut self, id: AbilityId, subject: &str) -> MayFail<&mut Self> {
+        let formula = self.map_changed(id.as_key(), subject, self.damage(id)?)?;
+        Ok(self.set(id, formula))
+    }
+
+    /// Mode and bullet of each map change of `key` whose subject is `subject`. The
+    /// notes of a change are read as changes too, as Naafiri Q's "Maximum bonus damage
+    /// changed to …" under its minimum bonus damage. Fails when there is none
+    fn map_bullets(&self, key: Key, subject: &str) -> MayFail<Vec<(MapMode, MapChange)>> {
+        use crate::generators::parser::{map_changes, single_mode};
+        use wiki::map_changes::ChangeTarget;
+
+        let champion_id = self.champion_id();
+        let mut bullets = Vec::new();
+
+        // Changes of the key, or of one of its abilities by name, as Ambessa Q's sweeps
+        let of_key = |target: &ChangeTarget| match target {
+            ChangeTarget::Ability {
+                champion_id: id,
+                key: of,
+            } => id == champion_id && *of == key,
+            ChangeTarget::NamedAbility {
+                champion_id: id,
+                key: of,
+                ..
+            } => id == champion_id && *of == Some(key),
+            _ => false,
+        };
+
+        for module in map_changes() {
+            let changes = module
+                .entries
+                .values()
+                .filter(|entry| of_key(&entry.target))
+                .flat_map(|entry| &entry.changes)
+                .flat_map(|change| {
+                    std::iter::once(change.clone()).chain(
+                        change
+                            .notes
+                            .iter()
+                            .map(|note| MapChange::parse(note, false)),
+                    )
+                });
+
+            for change in changes {
+                if change
+                    .subject()
+                    .is_some_and(|part| part.eq_ignore_ascii_case(subject))
+                {
+                    bullets.push((single_mode(&module.maps, subject)?, change));
+                }
+            }
+        }
+
+        match bullets.is_empty() {
+            true => Err(format!(
+                "[{}] {key:?} has no map change named {subject:?}",
+                self.champion_id()
+            )
+            .into()),
+            false => Ok(bullets),
+        }
+    }
+
+    /// New value and mode of each map change of `key` whose subject is `subject`.
+    /// Fails when there is none, or one can't be read
+    fn map_values(&self, key: Key, subject: &str) -> MayFail<Vec<(MapMode, MapValue)>> {
+        let lookup = Lookup::new("return {}", "return {}")?;
+
+        self.map_bullets(key, subject)?
+            .into_iter()
+            .map(|(mode, change)| {
+                MapValue::new(&change, key, &lookup)
+                    .map(|value| (mode, value))
+                    .ok_or_else(|| format!("Unreadable map change: {}", change.text).into())
+            })
+            .collect()
+    }
+
+    /// Mode and numbers, in order, of what the only map change of `key` named
+    /// `subject` changes to, for one written in a shape [`Self::map_value`] can't
+    /// read, as Zoe Q's "AP ratio changed to 70-175% AP": `[70, 175]`. Reading them
+    /// by position from the wiki follows its updates, where typed values wouldn't
+    pub fn map_numbers(&self, key: Key, subject: &str) -> MayFail<(MapMode, Vec<f64>)> {
+        let mut bullets = self.map_bullets(key, subject)?;
+
+        bullets.dedup_by(|a, b| a.0 == b.0 && a.1.text == b.1.text);
+
+        let [(mode, change)] = <[_; 1]>::try_from(bullets).map_err(|bullets| {
+            format!(
+                "[{}] {key:?} has {} map changes named {subject:?}",
+                self.champion_id(),
+                bullets.len()
+            )
+        })?;
+
+        let value = change
+            .text
+            .split_once("changed to")
+            .map_or(change.text.as_str(), |(_, value)| value);
+
+        let numbers = regex!(r"\d+(?:\.\d+)?")
+            .find_iter(value)
+            .filter_map(|number| number.as_str().parse().ok())
+            .collect();
+
+        Ok((mode, numbers))
+    }
+
+    /// Mode and new value of the only map change of `key` named `subject`, for a
+    /// generator to place itself, as Udyr R's base damage per second, which his
+    /// damage per tick has half of
+    pub fn map_value(&self, key: Key, subject: &str) -> MayFail<(MapMode, Formula)> {
+        let mut values = self.map_values(key, subject)?;
+
+        // The same change written twice, as the notes of both of LeBlanc R's mimics
+        values.dedup();
+
+        match &values[..] {
+            [(mode, MapValue::Base(value) | MapValue::Ratio { ratio: value, .. })] => {
+                Ok((*mode, value.clone()))
+            }
+            values => Err(format!(
+                "[{}] {key:?} has {} map changes named {subject:?}",
+                self.champion_id(),
+                values.len()
+            )
+            .into()),
+        }
+    }
+
+    /// `formula` with the map changes of `key` whose subject is `subject`, as the
+    /// spikes of Evelynn's Q, a value that no damage holds alone. A ratio of a stat
+    /// that also scales with another, as `3% (+ 1.5% per 100 AP)` of the target's
+    /// maximum health, has only its constant part replaced. Fails when no change of
+    /// `key` is named `subject`
+    pub fn map_changed(&self, key: Key, subject: &str, mut formula: Formula) -> MayFail<Formula> {
+        for (mode, value) in self.map_values(key, subject)? {
+            let (targets, replacement) = match value {
+                MapValue::Base(value) => {
+                    (formula.base_mut().into_iter().collect::<Vec<_>>(), value)
+                }
+                MapValue::Ratio { stat, ratio } => (
+                    formula
+                        .stat_ratio_mut(stat)
+                        .into_iter()
+                        .filter_map(|ratio| match ratio {
+                            Formula::Sum(_) => ratio.base_mut(),
+                            ratio => Some(ratio),
+                        })
+                        .collect(),
+                    ratio,
+                ),
+            };
+
+            let [target] = <[_; 1]>::try_from(targets).map_err(|targets| {
+                format!(
+                    "[{}] {key:?}: {} terms for map change {subject:?}",
+                    self.champion_id(),
+                    targets.len()
+                )
+            })?;
+
+            Self::place(target, mode, replacement);
+        }
+
+        Ok(formula)
+    }
+
+    /// Sets `ratio` on `mode` for the ratio reached through `stats` in `id`, for map
+    /// changes whose value the wiki writes in a shape [`Self::map_change`] can't read,
+    /// as Camille W's `{{fd|3}}% per 100 bonus AD` of the target's maximum health,
+    /// reached through `[EnemyMaxHealth, BonusAd]`. A ratio that is a sum has only its
+    /// constant part replaced
+    pub fn map_ratio(
+        &mut self,
+        id: AbilityId,
+        mode: MapMode,
+        stats: &[CtxVar],
+        ratio: impl IntoFormula,
+    ) -> MayFail<&mut Self> {
+        let champion_id = self.champion_id().to_string();
+        let mut target = &mut self.damage_mut(id).formula;
+
+        for stat in stats {
+            let [ratio] = <[_; 1]>::try_from(target.stat_ratio_mut(*stat)).map_err(|ratios| {
+                format!(
+                    "[{champion_id}] {id:?}: {} ratios of {stat:?}",
+                    ratios.len()
+                )
+            })?;
+
+            target = ratio;
+        }
+
+        if let Formula::Sum(_) = target {
+            target = target
+                .base_mut()
+                .ok_or_else(|| format!("[{champion_id}] {id:?}: ratio without a constant"))?;
+        }
+
+        Self::place(target, mode, ratio.to_formula());
+
+        Ok(self)
+    }
+
+    /// Sets `base` on `mode` for the base of `id`, for a map change of another value
+    /// it is derived from, as Udyr R's damage per tick from its damage per second
+    pub fn map_base(&mut self, id: AbilityId, mode: MapMode, base: Formula) -> MayFail<&mut Self> {
+        let champion_id = self.champion_id().to_string();
+        let target = self
+            .damage_mut(id)
+            .formula
+            .base_mut()
+            .ok_or_else(|| format!("[{champion_id}] {id:?} has no base"))?;
+
+        Self::place(target, mode, base);
+
+        Ok(self)
+    }
+
+    /// Gives `target` the value `value` on `mode`. A value it already has there, as
+    /// Viktor Q's discharge AP ratio on Arena, or Twitch E's 6 times 35% AP written
+    /// as 2.0999…, needs no branch
+    fn place(target: &mut Formula, mode: MapMode, value: Formula) {
+        let close = |a: &f64, b: &f64| (a - b).abs() <= 1e-9 * a.abs().max(1.0);
+
+        let same = match (target.on(mode), &value) {
+            (Formula::Const(a), Formula::Const(b)) => close(&a, b),
+            (
+                Formula::ByRank { rank, values },
+                Formula::ByRank {
+                    rank: other,
+                    values: others,
+                },
+            ) => {
+                rank == *other
+                    && values.len() == others.len()
+                    && values.iter().zip(others).all(|(a, b)| close(a, b))
+            }
+            (current, value) => current == *value,
+        };
+
+        if !same {
+            *target = target.clone().with_map(mode, value);
+        } else if target.on(MapMode::Default) == target.on(mode)
+            && let Formula::ByMap { default, maps } = target
+            && maps.iter().any(|(arm, _)| *arm == mode)
+        {
+            // An arm of the model with the default's value, as Irelia R's AP ratio
+            maps.retain(|(arm, _)| *arm != mode);
+
+            if maps.is_empty() {
+                *target = default.as_ref().clone();
+            }
+        }
     }
 
     /// Replaces the formula of `id`

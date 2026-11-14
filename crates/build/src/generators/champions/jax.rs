@@ -7,7 +7,9 @@ impl Generator for Jax {
             .take("Minimum Magic Damage", E(Min))?
             .take("Maximum Magic Damage", E(Max))?
             .take("Magic Damage", R(Void))?
+            .map_change(R(Void), "Active base damage")?
             .take("Additional Magic Damage", R(_1))?
+            .map_change(R(_1), "Passive base damage")?
             .damage_type(Q(Void), Physical)
             .combos([
                 &[

@@ -6,6 +6,7 @@ impl Generator for Urgot {
             .damage_type(P(Void), Physical)
             .take("Physical Damage", Q(Void))?
             .take("Modified Physical Damage", W(Void))?
+            .map_change(W(Void), "Base damage")?
             .take("Physical Damage", E(Void))?
             .take("Physical Damage", R(Void))?
             .damage_type(R(Void), Physical)

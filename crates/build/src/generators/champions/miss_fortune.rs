@@ -9,6 +9,31 @@ impl Generator for MissFortune {
             .take("Total Magic Damage", E(Max))?
             .take("Maximum Total Physical Damage", R(Max))?
             .take("Physical Damage per Wave", R(Min))?
+            .map_change(R(Min), "AP ratio per wave")?;
+
+        // Make It Rain ticks every 0.25 seconds over 2 seconds
+        let (mode, per_second) = self.map_value(Key::E, "AP ratio per second")?;
+
+        self.map_ratio(
+            E(Min),
+            mode,
+            &[AbilityPower],
+            per_second.clone().times(0.25),
+        )?
+        .map_ratio(E(Max), mode, &[AbilityPower], per_second.times(2.0))?;
+
+        // Bullet Time fires 14 / 16 / 18 waves
+        let (mode, per_wave) = self.map_value(Key::R, "AP ratio per wave")?;
+        let Formula::Const(per_wave) = per_wave else {
+            return Err("[MissFortune] R: AP ratio per wave by rank".into());
+        };
+
+        let waves = Formula::ByRank {
+            rank: RLevel,
+            values: [14.0, 16.0, 18.0].map(|waves| waves * per_wave).to_vec(),
+        };
+
+        self.map_ratio(R(Max), mode, &[AbilityPower], waves)?
             .combos([
                 &[
                     Ability(E(Max)),

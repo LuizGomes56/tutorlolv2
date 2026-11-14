@@ -6,6 +6,8 @@ impl Generator for RekSai {
             .take("Bonus Physical Damage", Q(Min))?
             .take("Total Bonus Physical Damage", Q(Max))?
             .take("Magic Damage", W(Void))?
+            .map_change(W(Void), "{{ai|Unburrow|Rek'Sai}} base damage")?
+            .map_change(W(Void), "{{ai|Unburrow|Rek'Sai}} AP ratio")?
             .take("Physical Damage", E(Void))?
             .take("True Damage", E(_1))?
             .take("Physical Damage", R(Void))?

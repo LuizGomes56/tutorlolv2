@@ -3,9 +3,12 @@ use super::*;
 impl Generator for Maokai {
     fn generate(&mut self) -> MayFail {
         self.take("Magic Damage", Q(Void))?
+            .map_change(Q(Void), "AP ratio")?
             .take("Magic Damage", W(Void))?
             .take("Magic Damage", E(Min))?
+            .map_change(E(Min), "AP ratio")?
             .take("Non-Minion Total Magic Damage", E(Max))?
+            .map_change(E(Max), "Total enhanced AP ratio")?
             .take("Magic Damage", R(Void))?
             .combos([
                 &[
