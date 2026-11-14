@@ -1,4 +1,4 @@
-use wiki::rules::{AramMayhem, ByLevel, Drakes, Shards};
+use wiki::rules::{AramMayhem, ByLevel, Drakes, Shards, Turret};
 
 #[test]
 fn drake_buffs_read_the_ratio_of_one_stack() {
@@ -65,6 +65,35 @@ fn aram_mayhem_reads_its_global_stat_changes() {
                 min: 2.0,
                 max: 25.0
             },
+        }
+    );
+}
+
+#[test]
+fn turret_reads_the_outer_turret_and_bulwark_with_one_enemy_nearby() {
+    let src = "\
+{{Infobox turret|
+|name         = Outer turret
+|armor        = 60
+|magicresist  = 60
+}}
+{{Infobox turret|
+|name         = Inner turret
+|armor        = 70
+|magicresist  = 70
+}}
+* {{sbc|Unique Passive - Bulwark:}} Each stack grants the turret {{pp|30;30 to 50|0 to 5 by 1|type=number of nearby enemy champions}} {{sti|{{as|'''bonus''' armor}}}}, up to a maximum of {{pp|30*4;30*4 to 50*4|0 to 5 by 1|type=number of nearby enemy champions}} '''bonus''' resistances at 4 stacks.
+== Damaging turrets ==
+Unmodified basic attacks' damage against turrets is equal to {{as|100% '''base''' AD}} {{as|(+ 100% '''bonus''' AD)}} {{as|(+ 60% AP)}}.
+";
+
+    assert_eq!(
+        Turret::from_page(src).unwrap(),
+        Turret {
+            resists: 60.0,
+            ap_ratio: 0.6,
+            bulwark_resists_per_stack: 30.0,
+            bulwark_max_stacks: 4,
         }
     );
 }

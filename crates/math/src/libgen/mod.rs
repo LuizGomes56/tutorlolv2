@@ -176,4 +176,5 @@ pub const fn zero(_: &types::Ctx) -> f32 {
 }
 
 pub const L_MSTR: usize = <Monster as strum::EnumCount>::COUNT;
-pub const L_TWRD: usize = 6;
+/// One turret for each number of Bulwark stacks, from none to the maximum
+pub const L_TWRD: usize = rules::turret::BULWARK_MAX_STACKS + 1;

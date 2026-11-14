@@ -1,5 +1,6 @@
 //! Values of the game that belong to no champion, item or rune: the multipliers of
-//! the elemental drakes, the stat shards and the global stats of ARAM: Mayhem.
+//! the elemental drakes, the stat shards, the global stats of ARAM: Mayhem and the
+//! resistances of turrets.
 
 use crate::{HTTP_CLIENT, JsonRead, JsonWrite, MayFail};
 use lazy_regex::{Lazy, Regex, regex};
@@ -15,12 +16,15 @@ const ARAM_MAYHEM_PAGE: &str = "ARAM:_Mayhem";
 /// Buff of each [`Drakes`] stack, as shown in `Dragon Slayer`
 const INFERNAL_MIGHT_PAGE: &str = "Template:Buff_data_Infernal_Might";
 const MOUNTAINOUS_VIGOR_PAGE: &str = "Template:Buff_data_Mountainous_Vigor";
+/// Page holding the infobox of every turret and the Bulwark passive
+const TURRET_PAGE: &str = "Turret";
 
-const PAGES: [&str; 4] = [
+const PAGES: [&str; 5] = [
     RUNE_PAGE,
     ARAM_MAYHEM_PAGE,
     INFERNAL_MIGHT_PAGE,
     MOUNTAINOUS_VIGOR_PAGE,
+    TURRET_PAGE,
 ];
 
 #[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
@@ -28,6 +32,21 @@ pub struct Rules {
     pub drakes: Drakes,
     pub shards: Shards,
     pub aram_mayhem: AramMayhem,
+    pub turret: Turret,
+}
+
+/// Outer turret of Summoner's Rift, attacked by a single champion with no other
+/// champion nearby
+#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
+pub struct Turret {
+    /// Armor and magic resistance, which are the same
+    pub resists: f64,
+    /// Ability power ratio of basic attacks against turrets
+    pub ap_ratio: f64,
+    /// Bonus armor and magic resistance of each Bulwark stack, with one enemy
+    /// champion nearby
+    pub bulwark_resists_per_stack: f64,
+    pub bulwark_max_stacks: u8,
 }
 
 /// Ratios each stack of an elemental drake grants, as `0.03` for 3%
@@ -102,6 +121,8 @@ pub fn parse() -> MayFail {
             .map_err(|e| format!("[rules] {RUNE_PAGE}: {e}"))?,
         aram_mayhem: AramMayhem::from_page(&read(ARAM_MAYHEM_PAGE)?)
             .map_err(|e| format!("[rules] {ARAM_MAYHEM_PAGE}: {e}"))?,
+        turret: Turret::from_page(&read(TURRET_PAGE)?)
+            .map_err(|e| format!("[rules] {TURRET_PAGE}: {e}"))?,
     };
 
     rules.write_file(FULL_PATH)
@@ -239,6 +260,54 @@ impl AramMayhem {
                 min: ranged_min_resists,
                 max: ranged_max_resists,
             },
+        })
+    }
+}
+
+impl Turret {
+    pub fn from_page(src: &str) -> MayFail<Self> {
+        // The infobox of the Outer turret, up to the next one
+        let start = src
+            .find("|name         = Outer turret")
+            .ok_or("No infobox of the Outer turret")?;
+
+        let infobox = &src[start..];
+        let infobox = &infobox[..infobox.find("{{Infobox").unwrap_or(infobox.len())];
+
+        let [armor] = capture(infobox, regex!(r"\|armor\s*=\s*([\d.]+)\s*\n"))?;
+        let [magic_resist] = capture(infobox, regex!(r"\|magicresist\s*=\s*([\d.]+)\s*\n"))?;
+
+        if armor != magic_resist {
+            return Err(format!(
+                "Outer turret armor {armor} differs from magic resist {magic_resist}"
+            )
+            .into());
+        }
+
+        let damaging = section(src, "== Damaging turrets ==")?;
+        let [ap_ratio] = capture(
+            damaging,
+            regex!(
+                r"Unmodified basic attacks' damage against turrets is equal to [^\n]*?\(\+ ([\d.]+)% AP\)"
+            ),
+        )?;
+
+        // `{{pp|30;30 to 50|0 to 5 by 1|...}}`: 30 with no enemy champion nearby,
+        // then 30 to 50 from one to five. The attacker is the one enemy nearby
+        let [_, one_enemy, _] = capture(
+            src,
+            regex!(
+                r"Each stack grants the turret \{\{pp\|([\d.]+);([\d.]+) to ([\d.]+)\|0 to 5 by 1\|type=number of nearby enemy champions"
+            ),
+        )?;
+
+        let [_, max_stacks] = capture(src, regex!(r"up to a maximum of \{\{pp\|([\d.]+)\*(\d+);"))?;
+
+        Ok(Self {
+            resists: armor,
+            ap_ratio: ap_ratio / 100.0,
+            bulwark_resists_per_stack: one_enemy,
+            bulwark_max_stacks: max_stacks as u8,
         })
     }
 }

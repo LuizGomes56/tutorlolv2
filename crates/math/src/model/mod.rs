@@ -964,22 +964,21 @@ impl RiotFormulas {
         ResistValue::new(percent_pen, flat_pen, resist, accept_negatives)
     }
 
-    /// Returns an [`i32`] that represents the damage against some turret
+    /// Returns an [`i32`] that represents the damage of a basic attack against the
+    /// Outer turret with `bulwark_stacks` stacks of Bulwark, gained as its health
+    /// drops. Only the attacker is assumed to be near the turret
     pub const fn tower_damage(
-        plates: u32,
+        bulwark_stacks: u32,
         base_attack_damage: f32,
         bonus_attack_damage: f32,
         ability_power: f32,
         pen_percent: f32,
         pen_flat: f32,
     ) -> i32 {
-        let base = base_attack_damage + bonus_attack_damage + ability_power * 0.6;
-        let bonus_resist = match plates == 0 {
-            true => 0.0,
-            false => -25.0 + 50.0 * (plates as f32 - 1.0),
-        };
+        use rules::turret::{AP_RATIO, BULWARK_RESISTS_PER_STACK, RESISTS};
 
-        let raw_resist = 40.0 + bonus_resist;
+        let base = base_attack_damage + bonus_attack_damage + ability_power * AP_RATIO;
+        let raw_resist = RESISTS + BULWARK_RESISTS_PER_STACK * bulwark_stacks as f32;
         let resist = raw_resist * (1.0 - pen_percent / 100.0) - pen_flat;
         let mult = 100.0 / (100.0 + resist);
 

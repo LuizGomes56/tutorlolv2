@@ -1,4 +1,4 @@
-//! Generates the constants of the drakes, the stat shards and ARAM: Mayhem.
+//! Generates the constants of the drakes, the stat shards, ARAM: Mayhem and turrets.
 
 use crate::MayFail;
 use wiki::rules::Rules;
@@ -8,6 +8,7 @@ pub fn rules_code(rules: &Rules) -> MayFail<String> {
         drakes,
         shards,
         aram_mayhem,
+        turret,
     } = rules;
 
     let float = |value: f64| format!("{:?}f32", value as f32);
@@ -44,6 +45,17 @@ pub fn rules_code(rules: &Rules) -> MayFail<String> {
                 /// Bonus armor and magic resistance from level 1 to level 18
                 pub const RANGED_BONUS_RESISTS: [f32; 2] = [{}, {}];
             }}
+
+            /// Outer turret of Summoner's Rift, with only the attacker nearby
+            pub mod turret {{
+                /// Armor and magic resistance
+                pub const RESISTS: f32 = {};
+                /// Ability power ratio of basic attacks against turrets
+                pub const AP_RATIO: f32 = {};
+                /// Bonus armor and magic resistance of each Bulwark stack
+                pub const BULWARK_RESISTS_PER_STACK: f32 = {};
+                pub const BULWARK_MAX_STACKS: usize = {};
+            }}
         }}",
         float(drakes.infernal),
         float(drakes.mountain),
@@ -59,5 +71,9 @@ pub fn rules_code(rules: &Rules) -> MayFail<String> {
         float(aram_mayhem.melee_bonus_resists),
         float(aram_mayhem.ranged_bonus_resists.min),
         float(aram_mayhem.ranged_bonus_resists.max),
+        float(turret.resists),
+        float(turret.ap_ratio),
+        float(turret.bulwark_resists_per_stack),
+        turret.bulwark_max_stacks,
     ))
 }
