@@ -51,8 +51,8 @@ impl BuildContext {
     pub fn inputs(&self) -> Vec<PathBuf> {
         [
             "crates/build/src/generators/champions",
-            "crates/build/src/generators/impls/items",
-            "crates/build/src/generators/impls/runes",
+            "crates/build/src/generators/items",
+            "crates/build/src/generators/runes",
             "cache/wiki/champions/full.json",
             "cache/wiki/champions/model.json",
             "cache/wiki/items/full.json",
