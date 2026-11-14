@@ -1,0 +1,10 @@
+[package]
+name = "codec"
+version = "0.1.0"
+edition.workspace = true
+
+[dependencies]
+heck = { workspace = true }
+strum = { workspace = true, features = ["derive", "strum_macros"], default-features = true }
+synoptic = "2.2.9"
+types = { workspace = true, default-features = false }

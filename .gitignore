@@ -16,8 +16,8 @@ target
 archives
 **/conv
 build_output
-/perf/fixtures/
-/perf/results/
-/perf/__pycache__/
+/crates/perf/fixtures/
+/crates/perf/results/
+/crates/perf/__pycache__/
 /captures/
 docs/

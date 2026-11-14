@@ -1,0 +1,33 @@
+[package]
+name = "wiki"
+version = "0.1.0"
+edition.workspace = true
+
+[dependencies]
+clap = { workspace = true, features = ["derive"] }
+heck = { workspace = true }
+image = { version = "0.25.10", optional = true }
+lazy-regex = { workspace = true }
+mlua = { version = "0.12", features = [
+    "async",
+    "lua54",
+    "serde",
+    "vendored",
+] }
+ravif = { version = "0.13.0", default-features = false, optional = true }
+rayon = { workspace = true }
+regex = { workspace = true }
+reqwest = { workspace = true, features = ["default", "cookies", "gzip", "json"], default-features = true }
+scraper = "0.29"
+serde = { workspace = true, features = ["derive"], default-features = true }
+serde_json = { workspace = true, default-features = true }
+strum = { workspace = true, features = ["derive", "strum_macros"], default-features = true }
+tokio = { workspace = true, default-features = false, features = ["macros", "rt-multi-thread"] }
+types = { workspace = true, default-features = false }
+
+[dev-dependencies]
+tokio = { workspace = true, features = ["test-util"], default-features = true }
+
+[features]
+default = []
+avif = ["dep:image", "dep:ravif"]
