@@ -45,7 +45,7 @@ The variable `data` holds all the information of damages against every player in
 
 ## Project structure
 
-The root is a virtual Cargo workspace using resolver 3. `cargo build`, `cargo check`, and `cargo test` at the root select `math` by default. Use `-p <name>` for a particular crate or `--workspace` for all members.
+The root is a virtual Cargo workspace using resolver 3. `cargo build`, `cargo check`, and `cargo test` at the root select `math` by default. Use `-p <name>` for a particular crate. Use `cargo core-check` or `cargo core-test` for the shared crates; applications require their own platform targets.
 
 | Location | Package | Purpose |
 | --- | --- | --- |
@@ -61,7 +61,7 @@ The root is a virtual Cargo workspace using resolver 3. `cargo build`, `cargo ch
 | `crates/perf` | `perf` | Benchmark harness |
 | `crates/perf/runner` | `perf_runner` | `cargo perf` launcher |
 
-Shared dependency versions and build profiles live in root `Cargo.toml`; `Cargo.lock` and `wiki.lock.json` remain at the root. Images, caches, captures, and `style.css` stay at the root as well. Run `cargo run -p wiki -- <command>` or `cargo run -p build -- <options>` from any working directory in this repository. The applications will be imported under `apps/` in stage 3.
+Shared dependency versions and build profiles live in root `Cargo.toml`; `Cargo.lock` and `wiki.lock.json` remain at the root. Images, caches, captures, and `style.css` stay at the root as well. Run `cargo run -p wiki -- <command>` or `cargo run -p build -- <options>` from any working directory in this repository. Applications live under `apps/{web,desktop,native}`; see [application builds and Zed selections](apps/README.md).
 
 
 This project is split in several different modules or crates, where each do part of the work. Most of these modules help generate the crate `math`, which contains closures and enum definitions that are used in the core library and frontend application

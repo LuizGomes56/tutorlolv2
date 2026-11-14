@@ -1,0 +1,3 @@
+function init_events(wasm) {
+    window.wasm = wasm || null;
+}

@@ -1,0 +1,514 @@
+html {
+    background-color: #262626;
+}
+
+body {
+    color: #ffffff;
+    background-color: #121212;
+}
+
+html:has(.desktop-overlay),
+body:has(.desktop-overlay) {
+    background-color: transparent;
+}
+
+.desktop-overlay {
+    min-height: 100vh;
+}
+
+[data-panel="true"] [data-resize-handle] {
+    opacity: 0;
+    pointer-events: none;
+}
+
+[data-panel="true"][data-active="true"] [data-resize-handle] {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.text-shadow {
+    filter: drop-shadow(1.25px 1.25px 0px black);
+    text-shadow: 0px 0px 4px black;
+}
+
+.img-letter {
+    position: absolute;
+    color: white;
+    height: 100%;
+    width: 100%;
+    align-content: center;
+    font-weight: 700;
+    text-align: center;
+    font-family:
+        ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
+        "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    filter: drop-shadow(1.25px 1.25px 0px black);
+    text-shadow: 0px 0px 4px black;
+    white-space: nowrap;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.img-clipped {
+    width: 100%;
+    object-fit: cover;
+    object-position: 0% 15%;
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: rgba(153, 153, 153, 0.4);
+    border-radius: 4px;
+    border: 1px solid transparent;
+    background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(153, 153, 153, 0.7);
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type="number"] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+
+.documentation {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(153, 153, 153, 0.4) transparent;
+}
+
+table {
+    inline-size: fit-content;
+    border-collapse: collapse;
+    text-align: center;
+    width: 100%;
+}
+
+table:not(.overlay) thead tr {
+    background-color: #18181b;
+}
+
+table:not(.overlay) tbody tr:nth-child(odd) {
+    background-color: #16161c;
+}
+
+table:not(.overlay) tbody tr:nth-child(even) {
+    background-color: #1c1c21;
+    border-bottom: 1px solid #3f3f46;
+    border-top: 1px solid #3f3f46;
+}
+
+table tr {
+    height: 48px;
+}
+
+table tbody tr:last-child {
+    border-bottom: none !important;
+}
+
+table th,
+table td {
+    transition: 0.2s ease;
+    padding: 0 8px;
+}
+
+table.data-table img {
+    height: 32px;
+    min-width: 32px;
+    justify-self: center;
+}
+
+img {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+}
+
+.box {
+    box-shadow: 0 0 10px 2.5px #08080f;
+}
+
+.clip {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.clip img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 15% 15%;
+    display: block;
+}
+
+.bright {
+    background: linear-gradient(
+        90deg,
+        rgba(0, 0, 0, 0) 50%,
+        rgba(90, 255, 255, 0.15) 90%,
+        rgba(90, 255, 255, 1)
+    );
+}
+
+/* Desktop settings use the existing zinc palette and compact widget surfaces. */
+.desktop-settings {
+    max-width: 58rem;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.desktop-settings h1 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.desktop-settings > p {
+    color: #d4d4d8;
+    margin-bottom: 1.5rem;
+}
+
+.overlay-settings-section {
+    padding: 1rem 0;
+    border-top: 1px solid #3f3f46;
+}
+
+.overlay-settings-section h2,
+.overlay-widget-settings h2 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.overlay-settings-section p,
+.overlay-widget-settings > p {
+    color: #d4d4d8;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    margin-bottom: 0.75rem;
+}
+
+.overlay-shortcut-controls,
+.overlay-settings-heading {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.overlay-settings-heading {
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+}
+
+.overlay-shortcut-key {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.5rem;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #52525b;
+    background: #18181b;
+    color: #fafafa;
+    font-family: ui-monospace, monospace;
+}
+
+.overlay-settings-button {
+    min-height: 2.5rem;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #52525b;
+    background: #27272a;
+    color: #f4f4f5;
+    cursor: pointer;
+    font-size: 0.875rem;
+}
+
+.overlay-settings-button:hover:not(:disabled) {
+    background: #3f3f46;
+}
+
+.overlay-settings-button:active:not(:disabled) {
+    background: #52525b;
+}
+
+.overlay-settings-button.primary {
+    border-color: #38bdf8;
+    color: #e0f2fe;
+}
+
+.overlay-settings-button:focus-visible,
+.overlay-widget-table input:focus-visible {
+    outline: 2px solid #7dd3fc;
+    outline-offset: 3px;
+}
+
+.overlay-settings-button:disabled,
+.overlay-widget-table input:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.overlay-settings-section .overlay-settings-feedback {
+    min-height: 2.75rem;
+    margin: 0.75rem 0 0;
+}
+
+.overlay-settings-section .overlay-settings-error,
+.overlay-widget-settings .overlay-settings-error {
+    color: #fca5a5;
+    overflow-wrap: anywhere;
+}
+
+.overlay-settings-section .overlay-settings-warning {
+    color: #fde68a;
+}
+
+.overlay-widget-settings {
+    width: min(34rem, calc(100vw - 3rem));
+    max-height: calc(100vh - 4rem);
+    padding: 0.75rem;
+    overflow: auto;
+}
+
+.overlay-widget-table {
+    width: 100%;
+    margin-bottom: 1rem;
+    font-size: 0.875rem;
+}
+
+.overlay-widget-table th {
+    padding: 0.5rem;
+    text-align: left;
+    font-weight: 500;
+    white-space: normal;
+}
+
+.overlay-widget-table td {
+    padding: 0.5rem;
+    text-align: center;
+}
+
+.overlay-widget-table input {
+    width: 1.125rem;
+    height: 1.125rem;
+    cursor: pointer;
+    accent-color: #38bdf8;
+}
+
+.overlay-widget-table thead tr {
+    background: #27272a;
+}
+
+.overlay-widget-table tbody tr:nth-child(n) {
+    background: transparent;
+    border-bottom: 1px solid #3f3f46;
+}
+
+@media (max-width: 600px) {
+    .desktop-settings {
+        padding: 1rem;
+    }
+    .overlay-widget-settings {
+        padding: 0.25rem;
+    }
+}
+
+[data-panel-id="panel-manager"] {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    z-index: 20;
+}
+
+/* Keep the resize border and handles outside the scaled, intrinsically sized content. */
+.desktop-overlay .overlay-panel {
+    flex: none;
+    align-self: flex-start;
+    width: max-content;
+    height: auto;
+    min-width: 0;
+    min-height: 0;
+}
+
+.overlay-panel-content {
+    display: flow-root;
+    width: max-content;
+    transform-origin: top left;
+}
+
+.overlay-panel-editor {
+    width: max-content;
+    max-width: 32rem;
+}
+
+/* Sharing reuses the app's zinc palette and square dense controls. */
+.watch-page {
+    padding: 1rem;
+    min-width: 0;
+}
+
+.watch-entry h1 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+}
+
+.watch-entry form,
+.watch-toolbar,
+.watch-actions,
+.sharing-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.watch-entry form p,
+.sharing-bar p {
+    flex-basis: 100%;
+}
+
+.watch-entry,
+.watch-timeline,
+.watch-status,
+.sharing-bar {
+    background: #18181b;
+    border: 1px solid #52525b;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.sharing-bar {
+    margin: 1rem;
+}
+
+.watch-toolbar {
+    padding-block: 0.75rem;
+    gap: 1rem;
+}
+
+.watch-page button,
+.sharing-bar button,
+.watch-entry input {
+    padding: 0.45rem 0.75rem;
+    background: #27272a;
+    border: 1px solid #52525b;
+    border-radius: 0;
+}
+
+.watch-page button,
+.sharing-bar button {
+    cursor: pointer;
+}
+
+.watch-page button:hover:enabled,
+.sharing-bar button:hover:enabled {
+    background: #3f3f46;
+}
+
+.watch-page button:active:enabled,
+.sharing-bar button:active:enabled {
+    background: #52525b;
+}
+
+.watch-page button[aria-pressed="true"],
+.sharing-bar button[aria-pressed="true"] {
+    border-color: #38bdf8;
+    color: #38bdf8;
+}
+
+.watch-page :focus-visible,
+.sharing-bar :focus-visible {
+    outline: 2px solid #38bdf8;
+    outline-offset: 3px;
+}
+
+.watch-page button:disabled,
+.sharing-bar button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.watch-entry input {
+    max-width: 100%;
+    width: 12rem;
+    font-family: ui-monospace, monospace;
+    text-transform: uppercase;
+}
+
+.watch-entry p,
+.watch-timeline p,
+.sharing-bar p {
+    color: #d4d4d8;
+    font-size: 0.875rem;
+}
+
+.watch-timeline input[type="range"] {
+    display: block;
+    width: 100%;
+    margin-block: 0.75rem;
+    accent-color: #38bdf8;
+}
+
+.watch-coverage {
+    position: relative;
+    height: 0.5rem;
+    background: #38bdf8;
+    margin-top: 0.5rem;
+}
+
+.watch-gap {
+    position: absolute;
+    height: 100%;
+    background: repeating-linear-gradient(
+        120deg,
+        #52525b 0 3px,
+        #18181b 3px 6px
+    );
+}
+
+.share-code {
+    font-family: ui-monospace, monospace;
+    user-select: all;
+    letter-spacing: 0.12em;
+}
+
+.sharing-feedback {
+    min-height: 1.25rem;
+}
+
+.watch-status button {
+    margin-left: 0.75rem;
+}
+
+@media (max-width: 600px) {
+    .watch-page {
+        padding: 0.5rem;
+    }
+    .watch-entry form {
+        align-items: stretch;
+    }
+    .watch-entry label {
+        flex-basis: 100%;
+    }
+    .watch-toolbar {
+        align-items: start;
+        flex-direction: column;
+    }
+}

@@ -1,0 +1,55 @@
+use crate::components::image::{Image, ImageType};
+use crate::hover::Docs;
+use math::ChampionId;
+use std::rc::Rc;
+use yew::prelude::*;
+
+#[derive(PartialEq, Properties)]
+pub struct BannerProps {
+    pub riot_id: Rc<str>,
+    pub game_time: u32,
+    pub champion_id: ChampionId,
+
+    #[prop_or_default]
+    pub data_idents: Option<AttrValue>,
+}
+
+#[component]
+pub fn Banner(props: &BannerProps) -> Html {
+    let BannerProps {
+        ref riot_id,
+        ref data_idents,
+        game_time,
+        champion_id,
+    } = *props;
+
+    let minutes = game_time / 60;
+    let seconds = game_time % 60;
+    let time = format!("{minutes:02}m {seconds:02}s");
+
+    html! {
+        <div
+            {data_idents}
+            data_docs={Docs::global(champion_id).encode()}
+            class={classes!("box")}
+        >
+            <Image
+                class={classes!(
+                    "img-clipped", "h-24", "sm:h-40",
+                    "md:h-48", "lg:h-64", "xl:h-32"
+                )}
+                src={ImageType::Centered(champion_id)}
+            />
+            <span class={classes!(
+                "flex", "font-bold", "items-center",
+                "justify-between", "text-std-300",
+                "p-4"
+            )}>
+                <p>
+                    {riot_id}{" - "}{champion_id.name()}
+                </p>
+                <p>{time}</p>
+            </span>
+        </div>
+    }
+}

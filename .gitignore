@@ -21,3 +21,11 @@ build_output
 /crates/perf/__pycache__/
 /captures/
 docs/
+
+# Source files in applications must not inherit generated-file exclusions.
+!/apps/**/*.html
+!/apps/**/*.js
+!/apps/**/*.ps1
+
+/tools/
+/.zed/

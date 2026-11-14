@@ -1,0 +1,4 @@
+#!/bin/sh
+# cargo-xwin defaults to Wine; WSL can execute Windows binaries directly.
+export CARGO_TARGET_X86_64_PC_WINDOWS_MSVC_RUNNER=/usr/bin/env
+exec cargo-xwin "$@"
