@@ -85,3 +85,64 @@ fn version_url_does_not_read_the_version_in_use() {
         "https://ddragon.leagueoflegends.com/api/versions.json"
     );
 }
+
+#[test]
+fn archive_keeps_recommendations_active_and_snapshots_other_app_outputs() {
+    let cache = temp_cache("recommendations");
+    let recommendations = r#"{"Aatrox":{"Top":[["BlackCleaver"],["Conqueror"]]}}"#;
+    for (file, data) in [
+        ("app/scraper/data.json", recommendations),
+        ("app/items.json", "old generated items"),
+        ("app/html/champions/Aatrox.html.br", "old docs"),
+    ] {
+        let path = cache.join(file);
+        std::fs::create_dir_all(path.parent().unwrap()).unwrap();
+        std::fs::write(path, data).unwrap();
+    }
+
+    archive(&cache, "16.22.1", cache.join("missing.lock.json")).unwrap();
+
+    let active = cache.join("app/scraper/data.json");
+    let snapshot = cache.join("16.22.1/app/scraper/data.json");
+    assert_eq!(read_to_string(&active).unwrap(), recommendations);
+    assert_eq!(read_to_string(&snapshot).unwrap(), recommendations);
+    assert_eq!(
+        read_to_string(cache.join("16.22.1/app/items.json")).unwrap(),
+        "old generated items"
+    );
+    assert_eq!(
+        read_to_string(cache.join("16.22.1/app/html/champions/Aatrox.html.br")).unwrap(),
+        "old docs"
+    );
+    assert!(!cache.join("app/items.json").exists());
+    assert!(!cache.join("app/html").exists());
+
+    // Refreshing active recommendations must not change the previous patch's snapshot.
+    let updated = r#"{"Aatrox":{"Top":[["SunderedSky"],["Conqueror"]]}}"#;
+    std::fs::write(&active, updated).unwrap();
+    archive(&cache, "16.23.1", cache.join("missing.lock.json")).unwrap();
+    assert_eq!(read_to_string(&active).unwrap(), updated);
+    assert_eq!(read_to_string(&snapshot).unwrap(), recommendations);
+    assert_eq!(
+        read_to_string(cache.join("16.23.1/app/scraper/data.json")).unwrap(),
+        updated
+    );
+    std::fs::remove_dir_all(cache).unwrap();
+}
+
+#[test]
+fn archive_without_recommendations_does_not_recreate_app_cache() {
+    let cache = temp_cache("no-recommendations");
+    let items = cache.join("app/items.json");
+    std::fs::create_dir_all(items.parent().unwrap()).unwrap();
+    std::fs::write(items, "generated items").unwrap();
+
+    archive(&cache, "16.22.1", cache.join("missing.lock.json")).unwrap();
+
+    assert!(!cache.join("app").exists());
+    assert_eq!(
+        read_to_string(cache.join("16.22.1/app/items.json")).unwrap(),
+        "generated items"
+    );
+    std::fs::remove_dir_all(cache).unwrap();
+}

@@ -31,7 +31,9 @@ pub fn is_version(name: &str) -> bool {
 /// Moves every entry of `cache` into `cache/{version}`, except previously
 /// archived versions. `stats` is copied instead of moved, since `update` does
 /// not rebuild it and it is only refreshed by calling `stats` manually. The
-/// lock file is copied as well, so the generators can be checked against it
+/// merged recommendations in `app/scraper/data.json` are archived with `app`
+/// and copied back to the active cache, since `update` does not regenerate them.
+/// The lock file is copied as well, so the generators can be checked against it
 /// with `wiki lock-check` after the update
 pub fn archive(cache: impl AsRef<Path>, version: &str, lock_file: impl AsRef<Path>) -> MayFail {
     let cache = cache.as_ref();
@@ -69,8 +71,23 @@ pub fn archive(cache: impl AsRef<Path>, version: &str, lock_file: impl AsRef<Pat
         }
     }
 
+    // Preserve the manually refreshed input without retaining stale generated app data.
+    let recommendations = Path::new("app/scraper/data.json");
+    let archived_recommendations = target.join(recommendations);
+
+    if archived_recommendations.try_exists()? {
+        let active = cache.join(recommendations);
+
+        crate::create_dir_all(active.parent().unwrap())?;
+        println!("[copy] {archived_recommendations:?} -> {active:?}");
+        std::fs::copy(&archived_recommendations, &active).map_err(|error| {
+            format!("[version] Error restoring recommendations {active:?}: {error}")
+        })?;
+    }
+
     if lock_file.try_exists()? {
         let to = target.join(crate::lock::FILE_NAME);
+
         println!("[copy] {lock_file:?} -> {to:?}");
         std::fs::copy(lock_file, &to)
             .map_err(|e| format!("[version] Error copying {lock_file:?} to {to:?}: {e:?}"))?;
