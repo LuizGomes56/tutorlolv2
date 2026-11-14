@@ -60,7 +60,7 @@ Has several "generator files", which read cache files the following directories
 - `cache/riot/(champions | items)`
 - `cache/meraki/(champions | items)`
 
-With the data in those folders, the useful information is gathered and new JSON files are generated on `internal/(champions | items)`, which will be read by `tutorlolv2_build` module and generate closures, structs, enums, static and constant variables. This method makes the evaluation speed of all functions much faster and type-safe than if we used Regex or other string-parsing method. However, the cost of this approach is that it needs the program to be recompiled every patch
+With the data in those folders, the useful information is gathered and new JSON files are generated on `cache/app/(champions | items)`, which will be read by `tutorlolv2_build` module and generate closures, structs, enums, static and constant variables. This method makes the evaluation speed of all functions much faster and type-safe than if we used Regex or other string-parsing method. However, the cost of this approach is that it needs the program to be recompiled every patch
 
 ### Example of generator file
 
@@ -94,7 +94,7 @@ impl Generator<Champion> for Neeko {
 }
 ```
 
-After this function is called, it generates a JSON file at location `internal/champions/Neeko.json` that look like the following
+After this function is called, it generates a JSON file at location `cache/app/champions/Neeko.json` that look like the following
 
 ```jsonc
 {
@@ -139,7 +139,7 @@ Note that if the function runs successfully, the damage formula of all abilities
 
 ```rs
 ChampionFactory::run(ChampionId::Neeko);
-let data = std::fs::read("internal/champions/Neeko.json")?;
+let data = std::fs::read("cache/app/champions/Neeko.json")?;
 let neeko_data = serde_json::from_slice::<Champion>(&data)?;
 let neeko_q1 = neeko_data.abilities[0];
 
@@ -153,7 +153,7 @@ ChampionFactory::run_all()?;
 ItemFactory::run_all()?;
 ```
 
-Also, this module scrapes from the internet the usual combos for every champion, and their recommended items/runes for each position (top, mid, jungle, adc, support). Check folder `internal/scraper/data.json`
+Also, this module scrapes from the internet the usual combos for every champion, and their recommended items/runes for each position (top, mid, jungle, adc, support). Check folder `cache/app/scraper/data.json`
 
 ### Example of scraped data
 
@@ -202,7 +202,7 @@ Exports enums `AbilityId`, `AbilityName`, and `StatName`, which are used by almo
 
 ### `tutorlolv2_build`
 
-Reads all data generated in the `internal` folder and generates a huge rust file at `tutorlolv2/src/data.rs`. Generates structs, arrays and phf maps with the necessary data to evaluate damages of all kinds, as well as a big brotli-compressed block of about 6MB in size, and several offsets to it, which represents the internal source code used by this application. It is helpful to let users see how the damages are being calculated, if they're accurate, and most importantly, if they're outdated.
+Reads all data generated in the `cache/app` folder and generates a huge rust file at `tutorlolv2/src/data.rs`. Generates structs, arrays and phf maps with the necessary data to evaluate damages of all kinds, as well as a big brotli-compressed block of about 6MB in size, and several offsets to it, which represents the internal source code used by this application. It is helpful to let users see how the damages are being calculated, if they're accurate, and most importantly, if they're outdated.
 
 ### Examples of generated structures (`tutorlolv2`)
 

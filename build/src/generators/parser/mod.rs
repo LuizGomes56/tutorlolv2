@@ -472,7 +472,7 @@ where
             })
             .collect::<MayFail<BTreeMap<_, _>>>()?
             .write_file(
-                root.join("internal")
+                root.join("cache/app")
                     .join(Self::TAG.as_ref())
                     .with_extension("json"),
             )
@@ -508,7 +508,7 @@ where
         })?;
 
         value.write_file(
-            root.join("internal")
+            root.join("cache/app")
                 .join(Self::TAG.as_ref())
                 .join(id)
                 .with_extension("json"),

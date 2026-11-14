@@ -364,14 +364,15 @@ fn recommendations_reject_malformed_optional_files() {
         data: Default::default(),
     };
     assert!(parser.recommendations(&dir.0).is_ok());
-    tutorlolv2_wiki::write(dir.0.join("internal/scraper/data.json"), "{").unwrap();
+    tutorlolv2_wiki::write(dir.0.join("cache/app/scraper/data.json"), "{").unwrap();
     assert!(parser.recommendations(&dir.0).is_err());
 }
 
 #[test]
 fn exports_propagate_write_errors() {
     let dir = TestDir::new();
-    std::fs::write(dir.0.join("internal"), "blocking file").unwrap();
+    std::fs::create_dir_all(dir.0.join("cache")).unwrap();
+    std::fs::write(dir.0.join("cache/app"), "blocking file").unwrap();
     let parser = RuneParser {
         data: Default::default(),
     };
@@ -382,7 +383,7 @@ fn exports_propagate_write_errors() {
 fn aggregate_exports_only_contain_current_entities() {
     use tutorlolv2_wiki::runes::{RuneKeystone, RuneSlot, WikiRune};
     let dir = TestDir::new();
-    tutorlolv2_wiki::write(dir.0.join("internal/runes/Stale.json"), "{}").unwrap();
+    tutorlolv2_wiki::write(dir.0.join("cache/app/runes/Stale.json"), "{}").unwrap();
     let rune = WikiRune {
         raw_source: String::new(),
         name: "Example".into(),
@@ -399,7 +400,8 @@ fn aggregate_exports_only_contain_current_entities() {
     };
     parser.run_all_in(&dir.0).unwrap();
     let result: serde_json::Value =
-        serde_json::from_slice(&std::fs::read(dir.0.join("internal/runes.json")).unwrap()).unwrap();
+        serde_json::from_slice(&std::fs::read(dir.0.join("cache/app/runes.json")).unwrap())
+            .unwrap();
     assert_eq!(result.as_object().unwrap().len(), 1);
     assert_eq!(result["Example"]["riot_id"], 42);
 }
@@ -448,14 +450,14 @@ fn formatting_accepts_formulas_ending_in_line_comments() {
 #[test]
 fn missing_recommendations_watch_the_existing_parent_then_the_file() {
     let dir = TestDir::new();
-    std::fs::create_dir(dir.0.join("internal")).unwrap();
+    std::fs::create_dir_all(dir.0.join("cache/app")).unwrap();
     let context = tutorlolv2_build_dep::BuildContext::new(&dir.0, "out", false).unwrap();
-    assert!(context.inputs().contains(&dir.0.join("internal")));
-    tutorlolv2_wiki::write(dir.0.join("internal/scraper/data.json"), "{}").unwrap();
+    assert!(context.inputs().contains(&dir.0.join("cache/app")));
+    tutorlolv2_wiki::write(dir.0.join("cache/app/scraper/data.json"), "{}").unwrap();
     assert!(
         context
             .inputs()
-            .contains(&dir.0.join("internal/scraper/data.json"))
+            .contains(&dir.0.join("cache/app/scraper/data.json"))
     );
 }
 

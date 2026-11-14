@@ -9,16 +9,16 @@ type MayFail<T = ()> = Result<T, Box<dyn Error + Send + Sync>>;
 static CSS: &str = include_str!("../style.css");
 static PAGE_CSS: &str = "h1,h2{color:#d4d4d4;font-family:sans-serif}";
 
-/// Generates `html/{champions,items,runes}/{Variant}.html.br` at the workspace
+/// Generates `cache/app/html/{champions,items,runes}/{Variant}.html.br` at the workspace
 /// root. The server reads these files from its static folder at runtime, so the
-/// whole `html` folder has to be uploaded next to `img`.
+/// `cache/app/html` folder has to be uploaded alongside `img` under the static root.
 fn main() -> MayFail {
     println!("cargo:rerun-if-changed=build.rs");
 
     let html_dir = Path::new(env!("CARGO_MANIFEST_DIR"))
         .parent()
         .ok_or("Server crate must live inside the workspace")?
-        .join("html");
+        .join("cache/app/html");
 
     write_pages(&html_dir.join("champions"), ChampionId::VARIANTS, |id| {
         let functions = id

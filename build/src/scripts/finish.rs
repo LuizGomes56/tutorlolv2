@@ -44,7 +44,7 @@ impl ChampionParser {
     }
 
     pub fn recommendations(&self, root: &std::path::Path) -> MayFail<String> {
-        let path = root.join("internal/scraper/data.json");
+        let path = root.join("cache/app/scraper/data.json");
 
         let json = match std::fs::read(&path) {
             Ok(bytes) => serde_json::from_slice(&bytes)

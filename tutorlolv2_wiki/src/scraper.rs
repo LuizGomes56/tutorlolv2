@@ -26,7 +26,7 @@ const POSITIONS: [Position; 5] = [
 ];
 
 /// Recommended `[items, runes]` for each position of each champion, in the
-/// format that the build script expects from `internal/scraper/data.json`
+/// format that the build script expects from `cache/app/scraper/data.json`
 pub type Recommendations = BTreeMap<String, BTreeMap<String, [BTreeSet<String>; 2]>>;
 
 /// Where [`parse`] saves the recommendations scraped from mobalytics
@@ -142,7 +142,7 @@ impl Catalog {
 
         let mut catalog = Self::default();
 
-        for (key, item) in BTreeMap::<String, Item>::from_file("internal/items.json")? {
+        for (key, item) in BTreeMap::<String, Item>::from_file("cache/app/items.json")? {
             catalog.insert(key, item.data.id, item.data.custom);
         }
 
@@ -163,7 +163,7 @@ impl Catalog {
 
         let mut catalog = Self::default();
 
-        for (key, rune) in BTreeMap::<String, Rune>::from_file("internal/runes.json")? {
+        for (key, rune) in BTreeMap::<String, Rune>::from_file("cache/app/runes.json")? {
             catalog.insert(key, rune.riot_id, rune.data.custom);
         }
 
@@ -286,7 +286,7 @@ pub fn parse() -> MayFail {
 }
 
 /// Merges the recommendations scraped from mobalytics with the ones computed
-/// from match data into `internal/scraper/data.json`. Match data is only used
+/// from match data into `cache/app/scraper/data.json`. Match data is only used
 /// for the champion positions that mobalytics did not provide
 pub fn concat() -> MayFail {
     println!("[fn] scraper::concat");
@@ -309,7 +309,7 @@ pub fn concat() -> MayFail {
     }
 
     let json = serde_json::to_string_pretty(&recommendations)?;
-    crate::write("internal/scraper/data.json", &json)
+    crate::write("cache/app/scraper/data.json", &json)
 }
 
 pub async fn run() -> MayFail {

@@ -107,7 +107,7 @@ impl BuildContext {
 
             exports.write_file(
                 self.root
-                    .join("internal")
+                    .join("cache/app")
                     .join(tag.as_ref())
                     .with_extension("json"),
             )?;

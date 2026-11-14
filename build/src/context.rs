@@ -63,7 +63,7 @@ impl BuildContext {
             "cache/riot/items.json",
             "cache/riot/runes.json",
             "cache/riot/champion_languages.json",
-            "internal/scraper/data.json",
+            "cache/app/scraper/data.json",
         ]
         .into_iter()
         .map(|path| {
@@ -72,7 +72,7 @@ impl BuildContext {
             // Cargo repeatedly rebuilds for nonexistent paths. Watch the nearest
             // existing parent until the optional recommendations and map changes
             // files appear.
-            if path.ends_with("internal/scraper/data.json")
+            if path.ends_with("cache/app/scraper/data.json")
                 || path.ends_with("cache/wiki/map_changes/full.json")
             {
                 while !path.exists() && path != self.root {

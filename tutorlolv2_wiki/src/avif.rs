@@ -49,30 +49,15 @@ fn convert_to_avif(
 
 fn to_img_path(path: &Path) -> PathBuf {
     let mut result = PathBuf::new();
-    let mut replaced_first_folder = false;
+    let mut components = path.components().peekable();
 
-    for component in path.components() {
-        match component {
-            Component::Prefix(prefix) => result.push(prefix.as_os_str()),
-            Component::RootDir => result.push(component.as_os_str()),
-            Component::CurDir => result.push(component.as_os_str()),
-            Component::ParentDir => result.push(component.as_os_str()),
-            Component::Normal(part) => match !replaced_first_folder {
-                true => {
-                    match part == "img" {
-                        true => {
-                            result.push(part);
-                        }
-                        false => {
-                            result.push("img");
-                        }
-                    }
-                    replaced_first_folder = true;
-                }
-                false => {
-                    result.push(part);
-                }
-            },
+    while let Some(component) = components.next() {
+        result.push(component.as_os_str());
+        // Raw sources live one level below the existing image output folders.
+        if component == Component::Normal("img".as_ref())
+            && components.peek() == Some(&Component::Normal("raw".as_ref()))
+        {
+            components.next();
         }
     }
 
@@ -104,7 +89,7 @@ pub fn convert_folder_avif(folder: &str) -> Result<(), Box<dyn std::error::Error
 }
 
 pub fn convert_folder(folder: &str) -> Result<(), Box<dyn std::error::Error>> {
-    match convert_folder_avif(&format!("raw_img/{folder}")) {
+    match convert_folder_avif(&format!("img/raw/{folder}")) {
         Ok(_) => println!("Convertion of {folder:?} finished"),
         Err(e) => eprintln!("Error converting {folder:?}: {e:#?}"),
     }
@@ -125,5 +110,31 @@ pub fn img_convert_avif() {
     ] {
         println!("Converting folder: {folder:?}");
         let _ = convert_folder(folder);
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::to_img_path;
+    use std::path::Path;
+
+    #[test]
+    fn raw_images_convert_into_existing_image_directories() {
+        assert_eq!(
+            to_img_path(Path::new("img/raw/champions/Ahri.png")),
+            Path::new("img/champions/Ahri.avif")
+        );
+        assert_eq!(
+            to_img_path(Path::new("img/raw/splash/Ahri_0.jpg")),
+            Path::new("img/splash/Ahri_0.avif")
+        );
+        assert_eq!(
+            to_img_path(Path::new("/project/img/raw/items/1001.png")),
+            Path::new("/project/img/items/1001.avif")
+        );
+        assert_eq!(
+            to_img_path(Path::new("img/items/1001.png")),
+            Path::new("img/items/1001.avif")
+        );
     }
 }

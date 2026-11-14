@@ -45,7 +45,7 @@ pub use tutorlolv2_types::Tag;
 
 impl<'a> SaveTo<'a> {
     pub fn path(&self) -> String {
-        let img = "raw_img";
+        let img = "img/raw";
 
         match self {
             SaveTo::ImgChampion(s) => format!("{img}/champions/{s}.png"),

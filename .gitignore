@@ -1,4 +1,3 @@
-*.lock
 *.env
 *.vscode
 *.sh
@@ -12,10 +11,8 @@
 *.html
 *.zip
 target
-html
-raw_img
-internal
-cache
+/img/raw/
+/cache/
 archives
 **/conv
 build_output

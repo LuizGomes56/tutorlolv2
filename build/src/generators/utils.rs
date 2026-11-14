@@ -78,8 +78,8 @@ impl<'a> SaveTo<'a> {
             }
             SaveTo::RiotItems => "cache/riot/items.json".into(),
             SaveTo::RiotRunes => "cache/riot/runes.json".into(),
-            SaveTo::InternalRaw(tag, s) => format!("internal/{}/{s}.json", tag.as_ref()),
-            SaveTo::InternalDir(tag) => format!("internal/{}", tag.as_ref()),
+            SaveTo::InternalRaw(tag, s) => format!("cache/app/{}/{s}.json", tag.as_ref()),
+            SaveTo::InternalDir(tag) => format!("cache/app/{}", tag.as_ref()),
         };
 
         crate::project_root()
